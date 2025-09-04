@@ -1,0 +1,37 @@
+name: ci-e2e
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker info
+        run: |
+          docker version
+          docker compose version
+
+      - name: Build
+        run: docker compose build --no-cache
+
+      - name: Up
+        run: docker compose up -d
+
+      - name: Wait for app on :8000
+        run: |
+          for i in {1..40}; do
+            if curl -fsS http://localhost:8000/; then exit 0; fi
+            sleep 1
+          done
+          echo "Service did not start in time"; docker compose logs app; exit 1
+
+      - if: always()
+        name: Down
+        run: docker compose down -v
