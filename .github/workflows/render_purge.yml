@@ -1,0 +1,23 @@
+name: Purge Render Cache
+on:
+  push:
+    branches: [ main ]
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Purge Render Cache Before Deploy
+        run: |
+          echo "Purging old Render cache..."
+          HTTP_STATUS=$(curl -s -o response.json -w "%{http_code}" -X DELETE \
+            https://api.render.com/v1/services/${{ secrets.RENDER_SERVICE_ID }}/builds \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Accept: application/json")
+
+          if [ "$HTTP_STATUS" -ge 200 ] && [ "$HTTP_STATUS" -lt 300 ]; then
+            echo "✅ Render cache purged successfully. HTTP $HTTP_STATUS"
+          else
+            echo "❌ Render cache purge failed! HTTP $HTTP_STATUS"
+            cat response.json
+            exit 1
+          fi

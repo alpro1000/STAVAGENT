@@ -1,0 +1,704 @@
+# ====================================================================
+# Concrete Agent CI/CD Pipeline
+# Comprehensive deployment workflow for GitHub Actions + Render
+# ====================================================================
+name: 🚀 Deploy Concrete Agent
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'project/backend/**'
+      - 'app/**'
+      - 'requirements.txt'
+      - 'Dockerfile'
+      - '.github/workflows/deploy.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'project/backend/**'
+      - 'app/**'
+      - 'requirements.txt'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+    inputs:
+      skip_tests:
+        description: 'Skip agent tests'
+        required: false
+        default: 'false'
+      deploy_environment:
+        description: 'Deployment environment'
+        required: false
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+env:
+  PYTHON_VERSION: '3.11'
+  BACKEND_DIR: project/backend
+  SERVER_PORT: 8000
+
+jobs:
+  # ====================================================================
+  # Job 1: Setup and Build Backend
+  # ====================================================================
+  setup-and-build:
+    name: 🏗️ Setup & Build Backend
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    outputs:
+      backend_ready: ${{ steps.backend_status.outputs.ready }}
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: 📦 Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: 📂 Create required directories
+        run: |
+          echo "🔧 Creating project structure..."
+          mkdir -p ${{ env.BACKEND_DIR }}/data
+          mkdir -p ${{ env.BACKEND_DIR }}/logs
+          mkdir -p ${{ env.BACKEND_DIR }}/knowledge_base
+          mkdir -p ${{ env.BACKEND_DIR }}/uploads
+          mkdir -p ${{ env.BACKEND_DIR }}/temp
+          echo "✅ Directory structure created"
+
+      - name: 📝 Create .env file
+        run: |
+          echo "🔧 Setting up environment variables..."
+          cat > ${{ env.BACKEND_DIR }}/.env << 'EOF'
+          # Concrete Agent Environment Configuration
+          APP_ENV=ci
+          DEBUG=true
+          LOG_LEVEL=INFO
+          
+          # Server Configuration
+          HOST=0.0.0.0
+          PORT=${{ env.SERVER_PORT }}
+          
+          # Database (for CI testing)
+          DATABASE_URL=sqlite:///./test.db
+          
+          # API Keys (use secrets in production)
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY || 'test-key' }}
+          
+          # Agent Configuration
+          AGENT_TIMEOUT=30
+          MAX_CONCURRENT_AGENTS=5
+          
+          # Knowledge Base
+          KNOWLEDGE_BASE_PATH=./knowledge_base
+          EOF
+          echo "✅ Environment file created"
+
+      - name: 📚 Initialize knowledge base
+        run: |
+          echo "🔧 Initializing knowledge base..."
+          cat > ${{ env.BACKEND_DIR }}/knowledge_base/README.md << 'EOF'
+          # Knowledge Base
+          
+          This directory contains project documentation and knowledge base files.
+          
+          ## Structure
+          - `/docs` - Documentation files
+          - `/examples` - Example files and templates
+          - `/schemas` - Data schemas and specifications
+          EOF
+          
+          mkdir -p ${{ env.BACKEND_DIR }}/knowledge_base/docs
+          mkdir -p ${{ env.BACKEND_DIR }}/knowledge_base/examples
+          mkdir -p ${{ env.BACKEND_DIR }}/knowledge_base/schemas
+          echo "✅ Knowledge base initialized"
+
+      - name: 📊 Create test.xlsx file
+        run: |
+          echo "🔧 Creating test Excel file..."
+          python3 << 'PYEOF'
+          try:
+              import openpyxl
+              from openpyxl import Workbook
+              from pathlib import Path
+              
+              # Create workbook
+              wb = Workbook()
+              ws = wb.active
+              ws.title = "Test Data"
+              
+              # Add headers
+              ws['A1'] = "ID"
+              ws['B1'] = "Name"
+              ws['C1'] = "Description"
+              ws['D1'] = "Status"
+              
+              # Add sample data
+              test_data = [
+                  (1, "TZD Reader", "Technical specifications reader", "active"),
+                  (2, "BOQ Parser", "Bill of quantities parser", "active"),
+                  (3, "Test Agent", "Test agent for CI/CD", "testing"),
+              ]
+              
+              for idx, row_data in enumerate(test_data, start=2):
+                  ws[f'A{idx}'] = row_data[0]
+                  ws[f'B{idx}'] = row_data[1]
+                  ws[f'C{idx}'] = row_data[2]
+                  ws[f'D{idx}'] = row_data[3]
+              
+              # Save file
+              output_path = Path("${{ env.BACKEND_DIR }}/data/test.xlsx")
+              wb.save(output_path)
+              print(f"✅ Test Excel file created at {output_path}")
+          except ImportError:
+              print("⚠️ openpyxl not installed, skipping Excel file creation")
+          except Exception as e:
+              print(f"⚠️ Failed to create Excel file: {e}")
+          PYEOF
+
+      - name: 📦 Install dependencies
+        run: |
+          echo "📦 Installing Python dependencies..."
+          python -m pip install --upgrade pip setuptools wheel
+          
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+            echo "✅ Dependencies installed from requirements.txt"
+          elif [ -f ${{ env.BACKEND_DIR }}/requirements.txt ]; then
+            pip install -r ${{ env.BACKEND_DIR }}/requirements.txt
+            echo "✅ Dependencies installed from ${{ env.BACKEND_DIR }}/requirements.txt"
+          else
+            echo "⚠️ No requirements.txt found, installing minimal dependencies..."
+            pip install fastapi uvicorn pydantic python-multipart openpyxl pytest
+          fi
+          
+          echo "📋 Installed packages:"
+          pip list
+
+      - name: 🔍 Validate backend imports
+        id: backend_status
+        run: |
+          echo "🔍 Validating backend structure..."
+          
+          # Try to import main app
+          if [ -f app/main.py ]; then
+            python3 -c "from app.main import app; print('✅ Backend imports successfully')" && echo "ready=true" >> $GITHUB_OUTPUT || echo "ready=false" >> $GITHUB_OUTPUT
+          elif [ -f ${{ env.BACKEND_DIR }}/app/main.py ]; then
+            cd ${{ env.BACKEND_DIR }}
+            python3 -c "from app.main import app; print('✅ Backend imports successfully')" && echo "ready=true" >> $GITHUB_OUTPUT || echo "ready=false" >> $GITHUB_OUTPUT
+            cd -
+          else
+            echo "⚠️ Backend main.py not found in expected locations"
+            echo "ready=false" >> $GITHUB_OUTPUT
+          fi
+
+  # ====================================================================
+  # Job 2: Test Backend & Agents
+  # ====================================================================
+  test-backend:
+    name: 🧪 Test Backend & Agents
+    runs-on: ubuntu-latest
+    needs: setup-and-build
+    if: github.event.inputs.skip_tests != 'true'
+    permissions:
+      contents: read
+      pull-requests: write
+    
+    outputs:
+      test_results: ${{ steps.save_results.outputs.results }}
+      agents_ok: ${{ steps.agent_tests.outputs.agents_ok }}
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python ${{ env.PYTHON_VERSION }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: 📦 Restore cached dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          elif [ -f ${{ env.BACKEND_DIR }}/requirements.txt ]; then
+            pip install -r ${{ env.BACKEND_DIR }}/requirements.txt
+          else
+            pip install fastapi uvicorn pydantic python-multipart openpyxl pytest httpx
+          fi
+
+      - name: 🚀 Start backend server
+        run: |
+          echo "🚀 Starting Concrete Agent backend..."
+          
+          # Determine main.py location
+          if [ -f app/main.py ]; then
+            nohup uvicorn app.main:app --host 0.0.0.0 --port ${{ env.SERVER_PORT }} > server.log 2>&1 &
+          elif [ -f ${{ env.BACKEND_DIR }}/app/main.py ]; then
+            cd ${{ env.BACKEND_DIR }}
+            nohup uvicorn app.main:app --host 0.0.0.0 --port ${{ env.SERVER_PORT }} > ../server.log 2>&1 &
+            cd -
+          else
+            echo "❌ Cannot find app/main.py"
+            exit 1
+          fi
+          
+          SERVER_PID=$!
+          echo "SERVER_PID=$SERVER_PID" >> $GITHUB_ENV
+          echo "⏳ Server started with PID: $SERVER_PID"
+          
+          # Wait for server to be ready
+          echo "Waiting for server to start..."
+          for i in {1..30}; do
+            if curl -s http://localhost:${{ env.SERVER_PORT }}/health > /dev/null 2>&1; then
+              echo "✅ Backend server is ready!"
+              break
+            fi
+            if [ $i -eq 30 ]; then
+              echo "❌ Server failed to start within timeout"
+              cat server.log || cat ${{ env.BACKEND_DIR }}/../server.log || true
+              exit 1
+            fi
+            echo "Attempt $i/30..."
+            sleep 2
+          done
+
+      - name: 🏥 Health check
+        run: |
+          echo "🏥 Checking backend health..."
+          response=$(curl -s http://localhost:${{ env.SERVER_PORT }}/health)
+          echo "Response: $response"
+          
+          if echo "$response" | grep -q "healthy\|ok\|success"; then
+            echo "✅ Backend is healthy!"
+          else
+            echo "❌ Health check failed"
+            exit 1
+          fi
+
+      - name: 🤖 Test agent endpoints
+        id: agent_tests
+        run: |
+          echo "🤖 Testing agent endpoints..."
+          mkdir -p test-results
+          
+          # Initialize results JSON
+          cat > test-results/agent_test_results.json << 'EOF'
+          {
+            "timestamp": "$(date -u +"%Y-%m-%dT%H:%M:%SZ")",
+            "tests": []
+          }
+          EOF
+          
+          # Test 1: GET /api/agents/agents
+          echo "📋 Test 1: GET /api/agents/agents"
+          agents_response=$(curl -s -w "\n%{http_code}" http://localhost:${{ env.SERVER_PORT }}/api/agents/agents 2>/dev/null || echo '{"error": "endpoint not found"}\n404')
+          agents_body=$(echo "$agents_response" | sed '$d')
+          agents_status=$(echo "$agents_response" | tail -n1)
+          
+          echo "Status: $agents_status"
+          echo "Response: $agents_body"
+          
+          tzd_found=false
+          boq_found=false
+          
+          if [ "$agents_status" = "200" ]; then
+            if echo "$agents_body" | grep -q "tzd_reader"; then
+              echo "✅ Found tzd_reader agent"
+              tzd_found=true
+            else
+              echo "⚠️ tzd_reader agent not found"
+            fi
+            
+            if echo "$agents_body" | grep -q "boq_parser"; then
+              echo "✅ Found boq_parser agent"
+              boq_found=true
+            else
+              echo "⚠️ boq_parser agent not found"
+            fi
+          else
+            echo "⚠️ Agents endpoint returned status $agents_status"
+          fi
+          
+          # Save test 1 results
+          cat > test-results/test1.json << EOJSON
+          {
+            "test": "GET /api/agents/agents",
+            "status": "$agents_status",
+            "tzd_reader_found": $tzd_found,
+            "boq_parser_found": $boq_found,
+            "response": $(echo "$agents_body" | jq -Rs . || echo '"null"')
+          }
+          EOJSON
+          
+          # Test 2: POST /api/agents/execute with tzd_reader
+          echo ""
+          echo "🚀 Test 2: POST /api/agents/execute (tzd_reader)"
+          execute_response=$(curl -s -w "\n%{http_code}" \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -d '{"agent_name": "tzd_reader", "input": "test input"}' \
+            http://localhost:${{ env.SERVER_PORT }}/api/agents/execute 2>/dev/null || echo '{"error": "endpoint not found"}\n404')
+          
+          execute_body=$(echo "$execute_response" | sed '$d')
+          execute_status=$(echo "$execute_response" | tail -n1)
+          
+          echo "Status: $execute_status"
+          echo "Response: $execute_body"
+          
+          execute_success=false
+          if [ "$execute_status" = "200" ] || [ "$execute_status" = "201" ]; then
+            if echo "$execute_body" | grep -q '"success":\s*true'; then
+              echo "✅ Agent execution successful"
+              execute_success=true
+            else
+              echo "⚠️ Agent execution returned but success=false"
+            fi
+          else
+            echo "⚠️ Execute endpoint returned status $execute_status"
+          fi
+          
+          # Save test 2 results
+          cat > test-results/test2.json << EOJSON
+          {
+            "test": "POST /api/agents/execute",
+            "agent": "tzd_reader",
+            "status": "$execute_status",
+            "success": $execute_success,
+            "response": $(echo "$execute_body" | jq -Rs . || echo '"null"')
+          }
+          EOJSON
+          
+          # Combine results
+          jq -s '{timestamp: now | todate, tests: .}' \
+            test-results/test1.json test-results/test2.json > test-results/agent_test_results.json || \
+            echo '{"timestamp": "'$(date -u +"%Y-%m-%dT%H:%M:%SZ")'", "tests": []}' > test-results/agent_test_results.json
+          
+          # Set output
+          if [ "$tzd_found" = true ] && [ "$boq_found" = true ] && [ "$execute_success" = true ]; then
+            echo "agents_ok=true" >> $GITHUB_OUTPUT
+            echo "✅ All agent tests passed!"
+          else
+            echo "agents_ok=false" >> $GITHUB_OUTPUT
+            echo "⚠️ Some agent tests failed or were skipped"
+          fi
+          
+          # Display summary
+          echo ""
+          echo "📊 Test Summary:"
+          echo "  Agents endpoint: $agents_status"
+          echo "  tzd_reader found: $tzd_found"
+          echo "  boq_parser found: $boq_found"
+          echo "  Execute endpoint: $execute_status"
+          echo "  Execution success: $execute_success"
+
+      - name: 📊 Save test results
+        id: save_results
+        if: always()
+        run: |
+          if [ -f test-results/agent_test_results.json ]; then
+            results=$(cat test-results/agent_test_results.json)
+            echo "results<<EOF" >> $GITHUB_OUTPUT
+            echo "$results" >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+            
+            echo "✅ Test results saved"
+          else
+            echo "results={}" >> $GITHUB_OUTPUT
+            echo "⚠️ No test results file found"
+          fi
+
+      - name: 📤 Upload test results artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-test-results
+          path: test-results/
+          retention-days: 30
+
+      - name: 📝 Display test results
+        if: always()
+        run: |
+          echo "📊 Agent Test Results:"
+          if [ -f test-results/agent_test_results.json ]; then
+            cat test-results/agent_test_results.json | jq '.' || cat test-results/agent_test_results.json
+          fi
+
+      - name: 🛑 Stop backend server
+        if: always()
+        run: |
+          if [ -n "$SERVER_PID" ]; then
+            kill $SERVER_PID || true
+            echo "✅ Server stopped"
+          fi
+          
+          # Show server logs if they exist
+          if [ -f server.log ]; then
+            echo "📋 Server logs:"
+            tail -50 server.log
+          elif [ -f ${{ env.BACKEND_DIR }}/../server.log ]; then
+            echo "📋 Server logs:"
+            tail -50 ${{ env.BACKEND_DIR }}/../server.log
+          fi
+
+  # ====================================================================
+  # Job 3: Deploy to Render
+  # ====================================================================
+  deploy-to-render:
+    name: 🚀 Deploy to Render
+    runs-on: ubuntu-latest
+    needs: [setup-and-build, test-backend]
+    if: |
+      github.event_name == 'push' && 
+      github.ref == 'refs/heads/main' &&
+      (needs.test-backend.result == 'success' || needs.test-backend.result == 'skipped')
+    permissions:
+      contents: read
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🚀 Trigger Render deployment
+        id: deploy
+        run: |
+          echo "🚀 Triggering Render deployment..."
+          
+          if [ -z "${{ secrets.RENDER_API_KEY }}" ] || [ -z "${{ secrets.RENDER_BACKEND_SERVICE_ID }}" ]; then
+            echo "⚠️ Render credentials not configured"
+            echo "Skipping deployment (secrets not available)"
+            exit 0
+          fi
+          
+          response=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://api.render.com/v1/services/${{ secrets.RENDER_BACKEND_SERVICE_ID }}/deploys" \
+            -H "Authorization: Bearer ${{ secrets.RENDER_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{"clearCache": false}')
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | sed '$d')
+          
+          echo "Response: $body"
+          echo "HTTP Status: $http_code"
+          
+          if [ "$http_code" = "201" ] || [ "$http_code" = "200" ]; then
+            echo "✅ Deployment triggered successfully!"
+            echo "deploy_id=$(echo "$body" | jq -r '.id // "unknown"')" >> $GITHUB_OUTPUT
+          else
+            echo "❌ Deployment failed with status $http_code"
+            exit 1
+          fi
+
+      - name: ⏳ Wait for deployment
+        if: success()
+        run: |
+          echo "⏳ Waiting for deployment to complete..."
+          echo "Note: This may take several minutes"
+          
+          # Wait initial period for deployment to start
+          sleep 60
+          
+          # Check deployment status (optional, requires deploy ID)
+          echo "✅ Deployment initiated. Check Render dashboard for status."
+
+      - name: 🏥 Verify production deployment
+        if: success()
+        run: |
+          echo "🏥 Verifying production deployment..."
+          
+          if [ -z "${{ secrets.RENDER_SERVICE_URL }}" ]; then
+            echo "⚠️ RENDER_SERVICE_URL not configured, skipping verification"
+            exit 0
+          fi
+          
+          # Give deployment time to complete
+          echo "Waiting for service to be ready..."
+          sleep 30
+          
+          for i in {1..10}; do
+            if curl -f -s "${{ secrets.RENDER_SERVICE_URL }}/health" | grep -q "healthy\|ok\|success"; then
+              echo "✅ Production service is healthy!"
+              
+              # Test critical endpoints
+              echo "Testing /status endpoint..."
+              curl -s "${{ secrets.RENDER_SERVICE_URL }}/status" | jq '.' || true
+              
+              exit 0
+            fi
+            echo "Attempt $i/10 failed, waiting 15 seconds..."
+            sleep 15
+          done
+          
+          echo "⚠️ Health check timed out, but deployment may still succeed"
+          echo "Check Render dashboard for deployment status"
+
+  # ====================================================================
+  # Job 4: Comment on PR
+  # ====================================================================
+  comment-pr:
+    name: 💬 Comment on PR
+    runs-on: ubuntu-latest
+    needs: [test-backend, deploy-to-render]
+    if: always() && github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+    
+    steps:
+      - name: 📥 Download test results
+        uses: actions/download-artifact@v4
+        with:
+          name: agent-test-results
+          path: test-results/
+        continue-on-error: true
+
+      - name: 💬 Comment test results on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+            
+            let comment = '## 🤖 Concrete Agent Test Results\n\n';
+            
+            // Read test results if available
+            const resultsPath = 'test-results/agent_test_results.json';
+            if (fs.existsSync(resultsPath)) {
+              const results = JSON.parse(fs.readFileSync(resultsPath, 'utf8'));
+              
+              comment += '### Agent Tests\n\n';
+              comment += `**Timestamp:** ${results.timestamp}\n\n`;
+              
+              if (results.tests && results.tests.length > 0) {
+                results.tests.forEach((test, idx) => {
+                  comment += `#### Test ${idx + 1}: ${test.test}\n\n`;
+                  
+                  if (test.test.includes('GET')) {
+                    const status = test.status === '200' ? '✅' : '❌';
+                    comment += `- ${status} Status: ${test.status}\n`;
+                    comment += `- ${test.tzd_reader_found ? '✅' : '❌'} tzd_reader agent\n`;
+                    comment += `- ${test.boq_parser_found ? '✅' : '❌'} boq_parser agent\n`;
+                  } else if (test.test.includes('POST')) {
+                    const status = ['200', '201'].includes(test.status) ? '✅' : '❌';
+                    comment += `- ${status} Status: ${test.status}\n`;
+                    comment += `- ${test.success ? '✅' : '❌'} Execution success\n`;
+                    comment += `- Agent: ${test.agent}\n`;
+                  }
+                  
+                  comment += '\n';
+                });
+              } else {
+                comment += '⚠️ No test results available\n\n';
+              }
+            } else {
+              comment += '⚠️ Test results file not found\n\n';
+            }
+            
+            // Add deployment status
+            comment += '### Deployment Status\n\n';
+            const testResult = '${{ needs.test-backend.result }}';
+            const deployResult = '${{ needs.deploy-to-render.result }}';
+            
+            comment += `- Tests: ${testResult === 'success' ? '✅' : testResult === 'skipped' ? '⏭️' : '❌'} ${testResult}\n`;
+            comment += `- Deploy: ${deployResult === 'success' ? '✅' : deployResult === 'skipped' ? '⏭️' : '❌'} ${deployResult}\n`;
+            
+            comment += '\n---\n';
+            comment += `*Workflow run: [#${context.runNumber}](${context.payload.repository.html_url}/actions/runs/${context.runId})*`;
+            
+            // Post comment
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: comment
+            });
+            
+            console.log('✅ PR comment posted successfully');
+
+  # ====================================================================
+  # Job 5: Summary
+  # ====================================================================
+  summary:
+    name: 📋 Workflow Summary
+    runs-on: ubuntu-latest
+    needs: [setup-and-build, test-backend, deploy-to-render]
+    if: always()
+    
+    steps:
+      - name: 📋 Generate workflow summary
+        run: |
+          echo "# 🚀 Concrete Agent CI/CD Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Setup status
+          if [ "${{ needs.setup-and-build.result }}" = "success" ]; then
+            echo "- ✅ Setup & Build: Success" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ❌ Setup & Build: ${{ needs.setup-and-build.result }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Test status
+          if [ "${{ needs.test-backend.result }}" = "success" ]; then
+            echo "- ✅ Backend Tests: Success" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.test-backend.result }}" = "skipped" ]; then
+            echo "- ⏭️ Backend Tests: Skipped" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ❌ Backend Tests: ${{ needs.test-backend.result }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          # Deploy status
+          if [ "${{ needs.deploy-to-render.result }}" = "success" ]; then
+            echo "- ✅ Render Deploy: Success" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.deploy-to-render.result }}" = "skipped" ]; then
+            echo "- ⏭️ Render Deploy: Skipped" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "- ❌ Render Deploy: ${{ needs.deploy-to-render.result }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## Workflow Details" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Event:** ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch:** ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Actor:** @${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Show agents test results if available
+          if [ "${{ needs.test-backend.outputs.agents_ok }}" = "true" ]; then
+            echo "## 🤖 Agent Tests" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ All agent tests passed!" >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ needs.test-backend.outputs.agents_ok }}" = "false" ]; then
+            echo "## 🤖 Agent Tests" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ Some agent tests failed. Check artifacts for details." >> $GITHUB_STEP_SUMMARY
+          fi

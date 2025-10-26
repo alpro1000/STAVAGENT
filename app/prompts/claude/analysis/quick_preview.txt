@@ -1,0 +1,32 @@
+Analyzuj tento dokument výkazu výměr a vytvoř RYCHLÉ SHRNUTÍ v češtině.
+
+ÚKOL:
+1. Počet pozic v dokumentu
+2. Celková suma projektu (pokud je uvedena)
+3. Hlavní typy prací (např. betonové, zednické, zemní)
+4. Stav dokumentu (kompletní/nekompletní)
+
+VÝSTUP musí být JSON:
+{
+  "nahrano": {
+    "nazev_dokumentu": "...",
+    "format": "Excel/XML/PDF",
+    "datum_nacteni": "2025-10-09"
+  },
+  "obsah": {
+    "pocet_pozic": 45,
+    "celkova_suma_kc": 1250000.00,
+    "hlavni_prace": ["Betonové konstrukce", "Zednické práce", "Zemní práce"],
+    "stav": "kompletní"
+  },
+  "co_budeme_kontrolovat": [
+    "Kódy KROS/RTS pro všechny pozice",
+    "Srovnání cen s trhem",
+    "Kontrola norem ČSN",
+    "Výpočet spotřeby materiálu a práce"
+  ],
+  "doporuceni": "Dokument je připraven k analýze. Klikněte na 'Spustit Audit' pro detailní kontrolu.",
+  "estimate_time_minutes": 5
+}
+
+Vrať POUZE validní JSON, bez markdown bloků.

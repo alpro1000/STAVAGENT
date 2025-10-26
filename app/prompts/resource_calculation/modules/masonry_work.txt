@@ -1,0 +1,352 @@
+# Masonry Work Module (Zednické práce)
+
+Specializace: Zdivo, příčky, obklady
+
+## Typické práce:
+- Zdivo nosné (cihly, bloky)
+- Příčky (pěnobeton, sádrokarton)
+- Obklady stěn
+- Dlažby
+- Komíny
+- Příčky akustické
+
+---
+
+## 📊 TABULKY PRODUKTIVITY (ZDIVO)
+
+### Zdění (m²/h na 1 zedníka):
+
+Načíst z B3/productivity_rates.json:
+
+```yaml
+Cihla plná pálená:
+  rychlost_m2_h: 0.6
+  rychlost_m3_h: 0.15  # při tl. 250mm
+  brigáda: 3  # 2 zedníci + 1 pomocník
+  m2_den: 14.4
+  tloustka: 250mm
+  poznámka: "Tradiční, pomalé, kvalitní"
+
+Cihla děrovaná:
+  rychlost_m2_h: 0.73
+  rychlost_m3_h: 0.18
+  brigáda: 3
+  m2_den: 17.5
+  tloustka: 250mm
+  poznámka: "Lehčí než plná"
+
+Bloky betonové:
+  rychlost_m2_h: 0.83
+  rychlost_m3_h: 0.25
+  brigáda: 3
+  m2_den: 20
+  tloustka: 300mm
+  poznámka: "Větší prvky = rychlejší"
+
+Pěnobeton (Ytong, Porotherm):
+  rychlost_m2_h: 1.0
+  rychlost_m3_h: 0.4
+  brigáda: 2  # Lehké, 2 stačí
+  m2_den: 16
+  tloustka: 400mm
+  poznámka: "Nejrychlejší, snadná manipulace"
+```
+
+---
+
+## 🔧 TECHNOLOGIE ZDĚNÍ
+
+### Standardní postup:
+
+1. **Příprava podkladu**
+   - Očištění, vyrovnání
+   - Založení první vrstvy (důležité!)
+
+2. **Zdění**
+   - Nanášení malty
+   - Kladení prvků
+   - Kontrola svislosti a vodorovnosti
+
+3. **Spárování**
+   - Vyplnění spár
+   - Úprava povrchu
+
+4. **Osazení překlady**
+   - Nad otvory (okna, dveře)
+
+---
+
+## 📐 FAKTORY OVLIVŇUJÍCÍ PRODUKTIVITU
+
+### 1. Výška zdiva:
+
+```yaml
+do_3m: 
+  faktor: 1.0  # normální rychlost
+
+3-6m:
+  faktor: 0.85  # potřeba lešení
+  extra_náklady: "Lešení 150 Kč/m²/den"
+
+nad_6m:
+  faktor: 0.7  # složitá manipulace
+  extra_náklady: "Lešení + výtah"
+```
+
+### 2. Otvory (okna, dveře):
+
+```yaml
+žádné_otvory:
+  faktor: 1.0
+
+málo_otvorů_<10%:
+  faktor: 0.95  # malý vliv
+
+hodně_otvorů_>20%:
+  faktor: 0.85  # časté přerušování
+  extra: "Překlady nad každým otvorem"
+```
+
+### 3. Vazba zdiva:
+
+```yaml
+běžná_vazba:
+  faktor: 1.0
+  příklady: ["běžná", "křížová"]
+
+složitá_vazba:
+  faktor: 0.8
+  příklady: ["architektonická", "dekorativní"]
+```
+
+---
+
+## 💰 VÝPOČET ZDROJŮ
+
+### Pro zdivo vypočítat:
+
+```json
+{
+  "zdivo": {
+    "plocha_m2": 85,
+    "material": "POROTHERM 44 Profi",
+    "tloustka_mm": 440,
+    "rychlost_base": 1.0,
+    "faktory": {
+      "vyska": 0.85,  // 4m výška → lešení
+      "otvory": 0.95  // málo otvorů
+    },
+    "rychlost_adjusted": 0.81,  // 1.0 × 0.85 × 0.95
+    
+    "prace": {
+      "brigada_kamenniku": 2,
+      "cas_h": 105,  // 85 / (2 × 0.81)
+      "cas_dny": 7,  // 105 / (2 × 8h)
+      "sazba_h_czk": 380,
+      "celkem_czk": 79800
+    },
+    
+    "materialy": {
+      "prvky_ks": 680,  // depends on block size
+      "malta_m3": 1.7,  // ~2% of wall volume
+      "naklady_prvky_czk": 68000,
+      "naklady_malta_czk": 2550,
+      "celkem_czk": 70550
+    },
+    
+    "pomocne": {
+      "leseni_m2": 85,
+      "leseni_dny": 10,
+      "leseni_czk": 12750,
+      "preklady_ks": 4,
+      "preklady_czk": 8000
+    }
+  },
+  
+  "celkem": {
+    "prace_czk": 79800,
+    "materialy_czk": 70550,
+    "pomocne_czk": 20750,
+    "total_czk": 171100,
+    "cas_dny": 7
+  }
+}
+```
+
+---
+
+## 🚧 SPECIÁLNÍ PŘÍPADY
+
+### Pěnobeton (Ytong, Porotherm):
+
+```yaml
+Výhody:
+  - Nejrychlejší (1.0 m²/h)
+  - Lehký (2 zedníci stačí)
+  - Přesné rozměry
+  - Tenká malta
+
+Speciální:
+  - Lepící malta místo běžné
+  - Potřeba speciální pily
+  - Kontrola rovinnosti důležitá
+```
+
+### Příčky (nenosné):
+
+```yaml
+Typy:
+  - Pěnobeton: 1.2 m²/h (velmi rychle)
+  - Sádrokarton: 2.0 m²/h (nejrychlejší)
+  - Cihla děrovaná: 0.8 m²/h
+
+Poznámka:
+  - Nenosné → lze rychleji
+  - Menší kontrola svislosti
+  - Tenčí (100-150mm)
+```
+
+---
+
+## 🎯 DECISION TREE
+
+```
+START: Zednická práce
+  ↓
+1. Určit typ materiálu
+  ├─ Cihla plná → 0.6 m²/h, tradicná
+  ├─ Cihla děrovaná → 0.73 m²/h
+  ├─ Bloky betonové → 0.83 m²/h
+  ├─ Pěnobeton → 1.0 m²/h, nejrychlejší
+  └─ Speciální → Hledat podobné
+  ↓
+2. Určit faktory
+  ├─ Výška: <3m / 3-6m / >6m
+  ├─ Otvory: žádné / málo / hodně
+  └─ Vazba: běžná / složitá
+  ↓
+3. Vypočítat adjusted rychlost
+  rychlost = base × faktor_výška × faktor_otvory × faktor_vazba
+  ↓
+4. Vypočítat čas
+  čas_h = plocha_m2 / (brigáda × rychlost_adjusted)
+  čas_dny = čas_h / (brigáda × 8h)
+  ↓
+5. Vypočítat materiály
+  ├─ Prvky (cihly/bloky): závisí na rozměru
+  ├─ Malta: ~2% objemu zdiva
+  └─ Překlady: podle otvorů
+  ↓
+6. Pomocné
+  ├─ Lešení: pokud >3m
+  ├─ Výtah: pokud >6m
+  └─ Speciální nástroje
+  ↓
+END: JSON output
+```
+
+---
+
+## KRITICKÉ FAKTORY
+
+### FLAG as AMBER:
+- Neznámý material (hledat podobný)
+- Výška >6m (složitá logistika)
+- Hodně otvorů >20%
+- Speciální vazba
+
+### FLAG as RED:
+- Material není v databázi
+- Složitá architektura
+- Extrémní výška >12m
+- Nestandardní požadavky
+
+---
+
+## PŘÍKLAD
+
+**Pozice: Zdivo POROTHERM 44 Profi, 85 m², výška 4m, 3 okna**
+
+```json
+{
+  "position": "Obvodové zdivo",
+  "material": "POROTHERM 44 Profi",
+  "plocha_m2": 85,
+  "tloustka_mm": 440,
+  
+  "faktory": {
+    "vyska_m": 4,
+    "faktor_vyska": 0.85,
+    "otvory_pocet": 3,
+    "otvory_pct": 8,
+    "faktor_otvory": 0.95
+  },
+  
+  "produktivita": {
+    "base_m2_h": 1.0,
+    "adjusted_m2_h": 0.81,
+    "source": "B3/productivity_rates (pěnobeton) × faktory"
+  },
+  
+  "resources": {
+    "labor": [
+      {
+        "type": "zedníci",
+        "count": 2,
+        "hours": 105,
+        "days": 7,
+        "rate_czk_h": 380,
+        "total_czk": 79800
+      }
+    ],
+    "materials": [
+      {
+        "type": "POROTHERM 44 Profi bloky",
+        "quantity": 680,
+        "unit": "ks",
+        "price_czk": 100,
+        "total_czk": 68000
+      },
+      {
+        "type": "Malta lepící",
+        "quantity": 1.7,
+        "unit": "m³",
+        "price_czk": 1500,
+        "total_czk": 2550
+      },
+      {
+        "type": "Překlady",
+        "quantity": 3,
+        "unit": "ks",
+        "price_czk": 2667,
+        "total_czk": 8000
+      }
+    ],
+    "equipment": [
+      {
+        "type": "Lešení",
+        "quantity": 85,
+        "unit": "m²",
+        "days": 10,
+        "price_czk_day": 1.5,
+        "total_czk": 12750
+      }
+    ]
+  },
+  
+  "summary": {
+    "total_cost_czk": 171100,
+    "total_time_days": 7,
+    "confidence": "MEDIUM",
+    "note": "POROTHERM not in exact DB, estimated from Pěnobeton"
+  }
+}
+```
+
+---
+
+DŮLEŽITÉ:
+- Vždy kontrolovat faktory výšky a otvorů!
+- Pěnobeton = nejrychlejší
+- Lešení nutné >3m
+- FLAG pokud material není v DB

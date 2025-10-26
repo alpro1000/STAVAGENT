@@ -1,0 +1,133 @@
+Analyzuj KROS UNIXML dokument - soupis prací (výkaz výměr).
+
+STRUKTURA UNIXML:
+<unixml>
+  <stavba>
+    <kod_stavby>: kód projektu
+    <nazev_stavby>: název projektu
+    <objekty>
+      <objekt>
+        <kod_objektu>: SO 1, SO 2...
+        <nazev_objektu>: název objektu
+        <zdroje>
+          <zdroje_konstrukce>: POZICE JSOU ZDE
+            <zdroj_konstrukce>: JEDNOTLIVÁ POZICE
+              <kod_polozky>: kód pozice (např. 121151113)
+              <zkraceny_popis_polozky>: krátký popis
+              <plny_popis_polozky>: plný popis
+              <merna_jednotka>: m2/m3/ks/hod...
+              <mnozstvi>: množství (pokud existuje)
+              <jednotkova_cena>: cena za MJ (pokud existuje)
+              <celkova_cena>: celková cena (pokud existuje)
+
+ÚKOL:
+Extrahuj VŠECHNY pozice ze VŠECH objektů (<objekt>) v dokumentu.
+
+HLEDEJ POZICE V:
+- <zdroje_konstrukce> → <zdroj_konstrukce> (každý = 1 pozice)
+
+Z KAŽDÉ POZICE VEZMI:
+- <kod_polozky> → position_code
+- <zkraceny_popis_polozky> NEBO <plny_popis_polozky> → description
+- <merna_jednotka> → unit
+- <mnozstvi> → quantity (pokud není, dej null)
+- <jednotkova_cena> → unit_price (pokud není, dej null)
+- <celkova_cena> → total_price (pokud není, dej null)
+- <kod_objektu> → object_code (SO 1, SO 2...)
+
+VÝSTUP:
+Vrať POUZE validní JSON (bez markdown bloků):
+
+{
+  "document_info": {
+    "document_type": "KROS_UNIXML",
+    "project_code": "01-2025-AP",
+    "project_name": "RD Valcha SO1+ SO2",
+    "date": "08.09.2025",
+    "source_system": "KROS"
+  },
+  "objects": [
+    {
+      "object_code": "SO 1",
+      "object_name": "Dům (RD Valcha)",
+      "position_count": 45
+    }
+  ],
+  "total_positions": 45,
+  "positions": [
+    {
+      "position_number": "1",
+      "position_code": "121151113",
+      "description": "Sejmutí ornice plochy do 500 m2 tl vrstvy do 200 mm strojně",
+      "quantity": 150.5,
+      "unit": "m2",
+      "unit_price": 45.50,
+      "total_price": 6847.75,
+      "object_code": "SO 1",
+      "category": "HSV",
+      "section": "1",
+      "section_name": "Zemní práce",
+      "notes": ""
+    },
+    {
+      "position_number": "2",
+      "position_code": "...",
+      "description": "...",
+      "quantity": null,
+      "unit": "m3",
+      "unit_price": null,
+      "total_price": null,
+      "object_code": "SO 1",
+      "category": "HSV",
+      "section": "2",
+      "section_name": "Zakládání"
+    }
+  ]
+}
+
+PRAVIDLA:
+1. Projdi VŠECHNY <objekt> elementy
+2. Z každého objektu vezmi VŠECHNY <zdroj_konstrukce>
+3. Každý <zdroj_konstrukce> = 1 pozice
+4. Pokud pole neexistuje: použij null
+5. <position_number>: číslo pořadí (1, 2, 3...)
+6. <position_code>: <kod_polozky> (např. 121151113)
+7. Popis: vezmi <zkraceny_popis_polozky>, pokud je prázdný → <plny_popis_polozky>
+8. Kategorie: určit z <zdroje_dily> kde je pozice (HSV/PSV)
+9. Sekce: <kod_dilu> (1, 2, 3, 711, 713...)
+
+KATEGORIE:
+- HSV = Hlavní stavební výroba (díly 1-9)
+- PSV = Pomocné stavební práce (díly 7xx)
+- M = Montáže
+- D = Dodávky
+
+TYPICKÉ JEDNOTKY:
+- m2 = metry čtvereční
+- m3 = metry krychlové
+- m = metry běžné
+- ks = kusy
+- hod = hodiny
+- soubor = soubor (komplety)
+- kg = kilogramy
+- t = tuny
+
+KONTROLA:
+1. Počet pozic = počet všech <zdroj_konstrukce> elementů
+2. Každá pozice má: position_code + description + unit
+3. Pokud má pozice mnozstvi a jednotkova_cena → vypočti celkova_cena
+4. Ověř: množství × cena/MJ ≈ celkem (±1%)
+
+DŮLEŽITÉ:
+- Pozice BEZ <mnozstvi> nebo <jednotkova_cena> jsou OK (šablony)
+- Vrať i pozice s null hodnotami
+- Nezaměňuj <zdroje_dily> (nadpisy sekcí) s <zdroje_konstrukce> (pozice)
+- Jeden projekt může mít více objektů (SO 1, SO 2...) → vezmi všechny
+
+CHYBY K VYHNUTÍ:
+❌ Nevynechávej pozice bez cen
+❌ Nepletej si sekce (<zdroj_dil>) s pozicemi (<zdroj_konstrukce>)
+❌ Nezaměňuj <zkraceny_popis> s <plny_popis>
+❌ Nevrať prázdný positions array pokud jsou pozice v XML
+
+Vrať POUZE validní JSON, nic jiného.

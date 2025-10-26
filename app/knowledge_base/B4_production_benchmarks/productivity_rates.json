@@ -1,0 +1,244 @@
+{
+  "source": "praktická zkušenost z realizovaných projektů",
+  "last_updated": "2025-01-07",
+  "note": "Průměrné hodnoty produktivity pro Czech trh. Ne oficiální normy, ale ověřené praxí.",
+  "currency": "CZK",
+  "year": 2025,
+  
+  "beton": {
+    "bedneni": {
+      "jednoduche": {
+        "rychlost_m2_h_na_cloveka": 1.5,
+        "rychlost_m2_den_brigada": 48,
+        "brigada_tesaru": 4,
+        "priklady": [
+          "sloupy rovné",
+          "stěny systémové panely",
+          "základy jednoduché"
+        ],
+        "poznamka": "Systémové bednění, rovné plochy, opakování"
+      },
+      "stredni": {
+        "rychlost_m2_h_na_cloveka": 1.0,
+        "rychlost_m2_den_brigada": 32,
+        "brigada_tesaru": 4,
+        "priklady": [
+          "pilíře s úpravami",
+          "desky s otvory",
+          "základy složitější"
+        ],
+        "poznamka": "Systémové + úpravy, střední složitost"
+      },
+      "slozite": {
+        "rychlost_m2_h_na_cloveka": 0.5,
+        "rychlost_m2_den_brigada": 16,
+        "brigada_tesaru": 4,
+        "priklady": [
+          "římsы",
+          "hlavice sloupů",
+          "zakládací části",
+          "konzoly"
+        ],
+        "poznamka": "Zakládací díly, dřevěné bednění, přesné úpravy"
+      },
+      "velmi_slozite": {
+        "rychlost_m2_h_na_cloveka": 0.3,
+        "rychlost_m2_den_brigada": 10,
+        "brigada_tesaru": 4,
+        "priklady": [
+          "architektonické prvky",
+          "křivky",
+          "zaoblení",
+          "speciální tvary"
+        ],
+        "poznamka": "Individuální výroba, vysoká přesnost"
+      }
+    },
+    
+    "armovani": {
+      "site": {
+        "rychlost_kg_h_na_cloveka": 60,
+        "rychlost_kg_den_brigada": 1440,
+        "brigada_zelezaru": 3,
+        "poznamka": "Hotové sítě, jen položit a spojit"
+      },
+      "pruty": {
+        "rychlost_kg_h_na_cloveka": 40,
+        "rychlost_kg_den_brigada": 960,
+        "brigada_zelezaru": 3,
+        "poznamka": "Řezání, ohýbání, vázání na místě"
+      },
+      "slozita_vyztuž": {
+        "rychlost_kg_h_na_cloveka": 27,
+        "rychlost_kg_den_brigada": 864,
+        "brigada_zelezaru": 4,
+        "poznamka": "Hustá výztuž, hodně háků, složité uzly"
+      }
+    },
+    
+    "betonaz": {
+      "cerpadlo": {
+        "kapacita_m3_h_prakticka": 30,
+        "kapacita_m3_h_technicka": 36,
+        "kapacita_m3_smena_8h": 240,
+        "obsluha": 1,
+        "brigada_betonaru": 6,
+        "poznamka": "Standardní kapacita. Pro vzdálenost betonárny >20km snížit na 28 m³/h"
+      },
+      "jerab_kbelik": {
+        "kapacita_m3_h": 15,
+        "poznamka": "Mnohem pomaleji! Pouze pokud čerpadlo nedosáhne"
+      },
+      "michacka": {
+        "objem_m3": 7,
+        "rychlost_prumerna_km_h": 30,
+        "cas_plneni_min": 15,
+        "cas_vyprazdneni_min": 9
+      }
+    }
+  },
+  
+  "zdivo": {
+    "cihla_plna": {
+      "rychlost_m2_h_na_cloveka": 0.6,
+      "rychlost_m3_h_na_cloveka": 0.15,
+      "rychlost_m2_den_brigada": 14.4,
+      "brigada_kamenniku": 3,
+      "tloustka_standard_mm": 250,
+      "poznamka": "Cihla pálená plná, tradiční, pomalé ale kvalitní"
+    },
+    "cihla_dirovana": {
+      "rychlost_m2_h_na_cloveka": 0.73,
+      "rychlost_m3_h_na_cloveka": 0.18,
+      "rychlost_m2_den_brigada": 17.5,
+      "brigada_kamenniku": 3,
+      "tloustka_standard_mm": 250,
+      "poznamka": "Lehčí, rychlejší než plná"
+    },
+    "bloky_betonove": {
+      "rychlost_m2_h_na_cloveka": 0.83,
+      "rychlost_m3_h_na_cloveka": 0.25,
+      "rychlost_m2_den_brigada": 20,
+      "brigada_kamenniku": 3,
+      "tloustka_standard_mm": 300,
+      "poznamka": "Větší prvky = rychlejší stavba"
+    },
+    "penobeton": {
+      "rychlost_m2_h_na_cloveka": 1.0,
+      "rychlost_m3_h_na_cloveka": 0.4,
+      "rychlost_m2_den_brigada": 24,
+      "brigada_kamenniku": 2,
+      "tloustka_standard_mm": 400,
+      "poznamka": "Ytong, Porotherm - nejrychlejší, lehké bloky, 2 zedníci stačí"
+    },
+    "faktory_ovlivnujici": {
+      "vyska_do_3m": 1.0,
+      "vyska_3_6m": 0.85,
+      "vyska_nad_6m": 0.7,
+      "otvory_zadne": 1.0,
+      "otvory_malo": 0.95,
+      "otvory_hodne": 0.85,
+      "vazba_bezna": 1.0,
+      "vazba_slozita": 0.8
+    }
+  },
+  
+  "zemni_prace": {
+    "rucni_vykop": {
+      "rychlost_m3_den": 1.5,
+      "rychlost_m3_h": 0.19,
+      "brigada": 2,
+      "pouziti": ["úzké výkopy", "kabely", "přípojky"],
+      "poznamka": "Pouze pro malé objemy!"
+    },
+    "rypadlo_kolove_jcb": {
+      "model": "JCB 3CX",
+      "kapacita_lzice_m3": 0.3,
+      "cykly_h": 60,
+      "rychlost_m3_h": 18,
+      "pronajem_den_czk": 3500,
+      "poznamka": "Standardní kolové rýpadlo"
+    },
+    "bagr_pasovy_20t": {
+      "model": "CAT 320 nebo ekvivalent",
+      "kapacita_lzice_m3": 1.0,
+      "cykly_h": 50,
+      "rychlost_m3_h": 50,
+      "pronajem_den_czk": 6500,
+      "pouziti": ["velké výkopy", "základy"],
+      "poznamka": "Pro velké objemy"
+    },
+    "bagr_pasovy_40t": {
+      "model": "CAT 336 nebo ekvivalent",
+      "kapacita_lzice_m3": 2.2,
+      "cykly_h": 45,
+      "rychlost_m3_h": 99,
+      "pronajem_den_czk": 12000,
+      "pouziti": ["masivní výkopy", "dálnice"],
+      "poznamka": "Pro velmi velké projekty"
+    },
+    "kategorie_zeminy": {
+      "1_lehka_pisek": 1.0,
+      "2_stredni_hlina": 0.85,
+      "3_tezka_jil": 0.70,
+      "4_skaln": 0.50
+    },
+    "hloubka_faktory": {
+      "do_3m": 1.0,
+      "3_6m": 0.90,
+      "nad_6m": 0.80
+    }
+  },
+  
+  "pomocne_prace": {
+    "jerab_manipulace": {
+      "jerab_25t": {
+        "nosnost_t": 25,
+        "radius_m": 20,
+        "pronajem_den_czk": 4500,
+        "pouziti": ["bednění", "malé prefabrikáty"]
+      },
+      "jerab_50t": {
+        "nosnost_t": 50,
+        "radius_m": 25,
+        "pronajem_den_czk": 7500,
+        "pouziti": ["bednění velké", "střední prefabrikáty"]
+      },
+      "jerab_80t": {
+        "nosnost_t": 80,
+        "radius_m": 30,
+        "pronajem_den_czk": 12000,
+        "pouziti": ["těžké prefabrikáty", "předpjaté nosníky", "mostovky"]
+      }
+    },
+    "nakladac": {
+      "typ": "Manipulátor stavební",
+      "nosnost_t": 5,
+      "pronajem_den_czk": 2500,
+      "pouziti": ["palety materiálu", "dodání na patro"]
+    }
+  },
+  
+  "poznamky": {
+    "smena_standardni_h": 8,
+    "smena_prodlouzena_h": 12,
+    "smena_maximalni_h": 14,
+    "prodlouzena_smena_doplatek": "+30% k hodinové sazbě",
+    "vikend_prace_doplatek": "+50%",
+    "nocni_prace_doplatek": "+50%",
+    "zimni_podminky_pod_5c": "-15% produktivita",
+    "regionalni_faktory": {
+      "praha": "+15-20% k cenam",
+      "brno": "+5-10%",
+      "ostrava": "0% (standardní)",
+      "venkovy": "-5-10%"
+    }
+  },
+  
+  "usage_guidelines": {
+    "priority": "1. Oficiální normy (pokud existují) → 2. Tyto praktické hodnoty → 3. Analogie",
+    "confidence": "HIGH pro standardní práce, MEDIUM pro speciální",
+    "update_frequency": "Každé 3 měsíce nebo po dokončení velkého projektu",
+    "learning": "Aktualizovat po každém projektu na základě skutečných hodnot"
+  }
+}

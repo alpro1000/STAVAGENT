@@ -1,0 +1,89 @@
+# Czech Building Audit System - Python Dependencies
+# Phase 1: Production & Development Requirements
+
+# ==========================================
+# API FRAMEWORK
+# ==========================================
+fastapi==0.115.0
+uvicorn[standard]==0.32.0
+python-multipart==0.0.17
+
+# Production server (for deployment)
+gunicorn>=23.0.0
+
+# ==========================================
+# AI MODELS
+# ==========================================
+# Anthropic Claude API
+anthropic==0.40.0
+
+# OpenAI GPT-4 Vision (optional for Workflow B)
+openai==1.54.3
+
+# ==========================================
+# DATA PROCESSING
+# ==========================================
+# Excel parsing
+pandas>=2.2.0
+openpyxl>=3.1.0
+# xlrd==2.0.1
+pdfplumber>=0.11.0  # Для проверки PDF
+# CSV parsing (for KROS/RTS exports)
+# Built-in csv module sufficient
+
+# ==========================================
+# CONFIGURATION & VALIDATION
+# ==========================================
+# CRITICAL: Versions must be compatible!
+pydantic==2.10.3
+pydantic-settings==2.7.0
+python-dotenv>=1.0.0
+python-slugify>=8.0.0
+# ==========================================
+# HTTP & ASYNC
+# ==========================================
+httpx==0.28.1
+aiofiles==24.1.0
+requests==2.32.3
+# ==========================================
+# LOGGING (Production)
+# ==========================================
+python-json-logger==2.0.7
+loguru>=0.7.2
+# ==========================================
+# DEVELOPMENT & TESTING (Optional)
+# ==========================================
+# Uncomment for development:
+pytest==8.3.4
+pytest-asyncio>=0.21.0
+# pytest-cov==6.0.0
+# black==24.10.0
+# ruff==0.8.4
+# mypy==1.13.0
+
+# ==========================================
+# OPTIONAL: Phase 2 Features
+# ==========================================
+# Database (when implementing project storage)
+  sqlalchemy==2.0.36
+  psycopg2-binary==2.9.10
+  alembic==1.14.0
+
+# Advanced Excel export
+  xlsxwriter==3.2.0
+
+# PDF generation (for reports)
+  reportlab==4.2.5
+  weasyprint==62.3
+
+# ==========================================
+# SECURITY NOTES
+# ==========================================
+# Keep dependencies updated regularly:
+# pip install --upgrade pip
+# pip list --outdated
+# pip install -U package_name
+
+# For security audits:
+# pip install safety
+# safety check

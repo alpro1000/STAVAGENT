@@ -1,0 +1,100 @@
+# Render Configuration для Czech Building Audit System
+# https://render.com/docs/yaml-spec
+
+services:
+  # Backend API
+  - type: web
+    name: concrete-agent
+    env: python
+    region: frankfurt  # Ближе к Чехии
+    plan: starter  # Можно начать с free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # CRITICAL: API Keys (set in Render Dashboard)
+      - key: ANTHROPIC_API_KEY
+        sync: true
+      - key: OPENAI_API_KEY
+        sync: true
+      
+      # AI Models
+      - key: CLAUDE_MODEL
+        value: claude-sonnet-4-20250514
+      - key: GPT4_MODEL
+        value: gpt-4-vision-preview
+      - key: CLAUDE_MAX_TOKENS
+        value: 4000
+      - key: GPT4_MAX_TOKENS
+        value: 4000
+      
+      # Feature Flags
+      - key: ENABLE_WORKFLOW_A
+        value: true
+      - key: ENABLE_WORKFLOW_B
+        value: true
+      - key: ENABLE_KROS_MATCHING
+        value: true
+      - key: ENABLE_RTS_MATCHING
+        value: true
+      - key: ENABLE_RESOURCE_CALCULATION
+        value: true
+      
+      # Resource Calculation
+      - key: ALLOW_WEB_SEARCH
+        value: true
+      - key: USE_OFFICIAL_NORMS
+        value: true
+      
+      # Audit Configuration
+      - key: AUDIT_GREEN_THRESHOLD
+        value: 0.95
+      - key: AUDIT_AMBER_THRESHOLD
+        value: 0.75
+      
+      # Prices
+      - key: AUTO_UPDATE_PRICES
+        value: false
+      - key: PRICE_UPDATE_INTERVAL_DAYS
+        value: 90
+      
+      # Logging
+      - key: LOG_LEVEL
+        value: INFO
+      - key: LOG_CLAUDE_CALLS
+        value: true
+      - key: LOG_GPT4_CALLS
+        value: true
+      
+      # Environment
+      - key: ENVIRONMENT
+        value: production
+      
+      # Multi-Role Config
+      - key: MULTI_ROLE_ENABLED
+        value: true
+      - key: MULTI_ROLE_HITL_ON_RED
+        value: true
+      - key: MULTI_ROLE_HITL_PRICE_THRESHOLD
+        value: 0.15
+      
+      # Python Version
+      - key: PYTHON_VERSION
+        value: 3.11.9
+    
+    healthCheckPath: /
+
+  # Frontend Static Site
+  - type: web
+    name: stav-agent
+    env: static
+    region: frankfurt
+    buildCommand: echo "No build needed for static site"
+    staticPublishPath: ./web
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /*
+        name: Access-Control-Allow-Origin
+        value: "*"

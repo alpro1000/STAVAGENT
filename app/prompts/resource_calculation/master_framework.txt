@@ -1,0 +1,294 @@
+# Resource Calculation Master Framework
+
+Tvá úloha: Pro každou pozici ze smetá vypočítat DETAILNÍ ZDROJE (lidé, technika, materiály, čas).
+
+## Univerzální algoritmus (5 kroků):
+
+### KROK 1: KLASIFIKACE PRÁCE
+
+Určit TYP práce:
+- **Betonové práce** (beton, železobeton, monolitické konstrukce)
+- **Zednické práce** (zdivo, cihla, bloky, příčky)
+- **Zemní práce** (výkopy, zásypy, terénní úpravy)
+- **Ocelové konstrukce** (ocel, svařování, montáže)
+- **Dokončovací práce** (omítky, obklady, malování)
+- **Jiné** (specifikovat)
+
+→ Na základě typu načíst příslušný WORK MODULE
+
+### KROK 2: ANALÝZA TECHNOLOGIE
+
+Používat WORK MODULE k určení:
+
+1. **Technologický postup** (posloupnost operací)
+   - Co se dělá první, druhé, třetí...
+   - Závislosti mezi operacemi
+
+2. **Rozdělit na zachytky** (pokud velký objem)
+   - Podle dilatačních spár (každých 25-30m)
+   - Podle kapacity za směnu
+   - Podle logistiky (přístup, technika)
+   - Podle monolitnosti (MUSÍ vs MŮŽE se dělit)
+
+3. **Kritické faktory**
+   - Složitost (jednoduchá/střední/složitá/velmi složitá)
+   - Monolitnost (lze dělit nebo ne)
+   - Přístup (dosah techniky, stísněnost)
+   - Výška/délka (vliv na produktivitu)
+
+### KROK 3: URČENÍ PRODUKTIVITY
+
+Pro každou operaci najít PRODUKTIVITU:
+
+**Priorita zdrojů:**
+1. **Oficiální normy** (B3/official_norms/) - pokud existují
+2. **Výrobce techniky** (B9/Equipment_Specs/) - pro stroje
+3. **Praktické normy** (B3/productivity_rates.json) - zkušenost
+4. **Benchmarks** (B4/benchmarks.json) - podobné projekty
+5. **Odhad z analogií** - pokud nic výše není k dispozici
+
+**DŮLEŽITÉ:**
+- Vždy cituj zdroj!
+- Pokud odhaduješ → FLAG as AMBER
+- Pokud není jistota → HITL required
+
+### KROK 4: VÝPOČET ZDROJŮ
+
+Pro každou zachytku/operaci vypočítat:
+
+#### LIDÉ:
+```
+Typ: (betonáři, zedníci, železáři, tesaři...)
+Počet: X člověk
+Čas: Y dní/hodin
+Sazba: Z Kč/h (z B3 nebo firemní sazby)
+Celkem: Počet × Čas × Sazba
+```
+
+#### TECHNIKA:
+```
+Typ: (čerpadlo, jeřáb, míchačka, bagr...)
+Specifikace: (kapacita, dosah, výkon)
+Model: (např. Schwing S36X)
+Počet: N kusů
+Čas pronájmu: M dní/hodin
+Sazba: P Kč/den
+Celkem: Počet × Čas × Sazba
+```
+
+#### MATERIÁLY:
+```
+Typ: (beton, cihla, výztuž, malta...)
+Množství: Q m³/t/ks
+Cena: R Kč/jednotku (z B3/materials_2025.json)
+Celkem: Množství × Cena
+```
+
+#### DOPRAVA:
+```
+Vzdálenost: S km
+Počet jízd: T
+Cena za jízdu: U Kč
+Celkem: T × U
+```
+
+### KROK 5: OUTPUT (standardní formát JSON)
+
+```json
+{
+  "position": {
+    "idx": 1,
+    "name": "Název práce",
+    "work_type": "betonové_práce",
+    "module_used": "concrete_work_module"
+  },
+  
+  "technology": {
+    "steps": [
+      "1. Bednění",
+      "2. Armování",
+      "3. Betonáž"
+    ],
+    "zachytky": [
+      {
+        "id": 1,
+        "popis": "Spodní část 0-6m",
+        "objem_m3": 65,
+        "monoliticka": false
+      }
+    ],
+    "critical_factors": [
+      "Složitost bednění: střední",
+      "Přístup: omezený z jedné strany"
+    ]
+  },
+  
+  "productivity_rates": {
+    "bedneni": {
+      "rate": "1.0 m²/h",
+      "source": "B3/productivity_rates (střední složitost)",
+      "confidence": 0.85
+    },
+    "betonaz": {
+      "rate": "30 m³/h",
+      "source": "B9/Equipment_Specs/pumps (Schwing S36X)",
+      "confidence": 0.90
+    }
+  },
+  
+  "resources": {
+    "labor": [
+      {
+        "type": "tesaři",
+        "count": 4,
+        "hours": 64,
+        "rate_per_hour_czk": 350,
+        "total_czk": 89600
+      },
+      {
+        "type": "železáři",
+        "count": 3,
+        "hours": 48,
+        "rate_per_hour_czk": 380,
+        "total_czk": 54720
+      },
+      {
+        "type": "betonáři",
+        "count": 6,
+        "hours": 16,
+        "rate_per_hour_czk": 360,
+        "total_czk": 34560
+      }
+    ],
+    
+    "equipment": [
+      {
+        "type": "čerpadlo betonu",
+        "model": "Schwing S36X",
+        "capacity": "30 m³/h",
+        "count": 1,
+        "days": 1,
+        "rate_per_day_czk": 8500,
+        "total_czk": 8500
+      },
+      {
+        "type": "jeřáb",
+        "model": "25t",
+        "count": 1,
+        "days": 10,
+        "rate_per_day_czk": 4500,
+        "total_czk": 45000
+      }
+    ],
+    
+    "materials": [
+      {
+        "type": "beton C25/30",
+        "quantity": 65,
+        "unit": "m³",
+        "price_per_unit_czk": 2450,
+        "total_czk": 159250
+      },
+      {
+        "type": "výztuž B500B",
+        "quantity": 8640,
+        "unit": "kg",
+        "price_per_unit_czk": 25,
+        "total_czk": 216000
+      }
+    ],
+    
+    "transport": [
+      {
+        "type": "míchačky betonu",
+        "distance_km": 15,
+        "trips": 10,
+        "price_per_trip_czk": 850,
+        "total_czk": 8500
+      }
+    ]
+  },
+  
+  "summary": {
+    "total_cost_czk": 616130,
+    "total_time_days": 10,
+    "breakdown_pct": {
+      "labor": 29.0,
+      "equipment": 8.7,
+      "materials": 60.9,
+      "transport": 1.4
+    }
+  },
+  
+  "flags": {
+    "confidence": "HIGH",
+    "classification": "GREEN",
+    "hitl_required": false,
+    "notes": ["Standardní práce", "Známá technologie", "Jasná produktivita"]
+  }
+}
+```
+
+---
+
+## SPECIÁLNÍ PŘÍPADY
+
+### Pokud produktivita není v databázi:
+
+1. Hledej **podobnou práci** (analogie)
+2. Kontroluj **B4 benchmarks** (historické projekty)
+3. Vypočítej **odhad z komponent**
+4. **FLAG as AMBER** → requires HITL review
+
+Příklad:
+```
+"Speciální zdivo POROTHERM Profi"
+→ Není v B3
+→ Najdi podobné: "Bloky betonové" (0.83 m²/h)
+→ Uprav: Porotherm je lehčí → možná +20% rychleji
+→ Odhad: 1.0 m²/h
+→ FLAG: "Estimated from similar work, needs review"
+```
+
+### Pokud objem je velmi malý:
+
+- Stále vypočítej, ale poznamenej minimální pronájem
+- Např. čerpadlo: min 0.5 dne (4h), i když betonáž 1h
+
+### Pokud popis je nejasný:
+
+- Vytvoř RFI s otázkou
+- Navrhni několik interpretací
+- FLAG as AMBER minimum
+
+---
+
+## KRITÉRIA ÚSPĚCHU
+
+✅ **Dobře:**
+- Všechny zdroje identifikovány
+- Produktivita citována ze zdroje
+- Čas realistický
+- Cena rozumná
+- JSON validní
+
+❌ **Špatně:**
+- Chybí zdroj produktivity
+- Nerealistické časy
+- Zapomenuté položky
+- Vágní odhady bez vysvětlení
+
+---
+
+## POZNÁMKY
+
+- Všechny ceny v **Kč**
+- Časy v **dnech** nebo **hodinách** (specifikovat)
+- Produktivita vždy s **jednotkou** (m²/h, m³/h, kg/h)
+- Vždy uvést **zdroj** dat
+- Při pochybnostech → **FLAG** + **HITL**
+
+VELMI DŮLEŽITÉ: 
+- Output POUZE platný JSON
+- Cituj zdroje pro každou hodnotu
+- Když nevíš → přiznej to a FLAG

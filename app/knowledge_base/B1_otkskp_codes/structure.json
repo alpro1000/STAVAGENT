@@ -1,0 +1,238 @@
+{
+  "kb_category": "B1_otkskp_codes",
+  "source_system": "CS ÚRS 2025/II",
+  "description": "OTSKP kódy položek podle TSKP třídníku",
+  "version": "2025-02",
+  "tskp_structure": {
+    "hsv_categories": {
+      "1": {
+        "code": "1",
+        "name": "Zemní práce",
+        "type": "HSV",
+        "description": "Výkopy, násypy, přemístění zeminy",
+        "example_codes": ["121", "122", "123"]
+      },
+      "2": {
+        "code": "2",
+        "name": "Zakládání",
+        "type": "HSV",
+        "description": "Základy, piloty, podkladní betony",
+        "example_codes": ["271", "272", "273"]
+      },
+      "3": {
+        "code": "3",
+        "name": "Svislé a kompletní konstrukce",
+        "type": "HSV",
+        "description": "Zdivo, sloupy, stěny",
+        "example_codes": ["311", "312", "342"]
+      },
+      "4": {
+        "code": "4",
+        "name": "Vodorovné konstrukce",
+        "type": "HSV",
+        "description": "Stropy, překlady, balkóny",
+        "example_codes": ["411", "412", "432"]
+      },
+      "5": {
+        "code": "5",
+        "name": "Komunikace",
+        "type": "HSV",
+        "description": "Chodníky, vozovky, podlahy vnější",
+        "example_codes": ["511"]
+      },
+      "6": {
+        "code": "6",
+        "name": "Úpravy povrchů, podlahy a osazování výplní",
+        "type": "HSV",
+        "description": "Omítky, mazaniny, výplně",
+        "example_codes": ["611", "631", "662"]
+      },
+      "8": {
+        "code": "8",
+        "name": "Trubní vedení",
+        "type": "HSV",
+        "description": "Kanalizace, vodovod, plyn",
+        "example_codes": ["821", "831"]
+      },
+      "9": {
+        "code": "9",
+        "name": "Ostatní konstrukce a práce",
+        "type": "HSV",
+        "description": "Bourání, přemístění hmot, lešení",
+        "example_codes": ["931", "932", "942"]
+      }
+    },
+    "psv_categories": {
+      "711": {
+        "code": "711",
+        "name": "Izolace proti vodě, vlhkosti a plynům",
+        "type": "PSV",
+        "description": "Hydroizolace, parozábrany, radonové bariéry"
+      },
+      "712": {
+        "code": "712",
+        "name": "Povlakové krytiny",
+        "type": "PSV",
+        "description": "Asfaltové pásy, fólie"
+      },
+      "713": {
+        "code": "713",
+        "name": "Izolace tepelné",
+        "type": "PSV",
+        "description": "Polystyren, minerální vata, PUR pěna"
+      },
+      "721": {
+        "code": "721",
+        "name": "Zdravotně technické instalace - vnitřní kanalizace",
+        "type": "PSV"
+      },
+      "722": {
+        "code": "722",
+        "name": "Zdravotně technické instalace - vnitřní vodovod",
+        "type": "PSV"
+      },
+      "731": {
+        "code": "731",
+        "name": "Ústřední vytápění - kotelny",
+        "type": "PSV"
+      },
+      "736": {
+        "code": "736",
+        "name": "Ústřední vytápění - plošné vytápění a chlazení",
+        "type": "PSV"
+      },
+      "763": {
+        "code": "763",
+        "name": "Konstrukce suché výstavby",
+        "type": "PSV",
+        "description": "Sádrokarton, SDK příčky, podhled"
+      },
+      "764": {
+        "code": "764",
+        "name": "Konstrukce klempířské",
+        "type": "PSV",
+        "description": "Oplechování, žlaby, svody"
+      },
+      "765": {
+        "code": "765",
+        "name": "Krytina skládaná",
+        "type": "PSV",
+        "description": "Taška, šindel, plech"
+      },
+      "766": {
+        "code": "766",
+        "name": "Konstrukce truhlářské",
+        "type": "PSV",
+        "description": "Okna, dveře, podlahy dřevěné"
+      },
+      "771": {
+        "code": "771",
+        "name": "Podlahy z dlaždic",
+        "type": "PSV",
+        "description": "Keramické obklady, dlažby"
+      },
+      "776": {
+        "code": "776",
+        "name": "Podlahy povlakové",
+        "type": "PSV",
+        "description": "Lino, PVC, koberec, vlysy"
+      },
+      "781": {
+        "code": "781",
+        "name": "Obklady keramické",
+        "type": "PSV"
+      },
+      "782": {
+        "code": "782",
+        "name": "Obklady z kamene",
+        "type": "PSV"
+      }
+    }
+  },
+  "code_format": {
+    "structure": "XXX YY ZZZ",
+    "explanation": {
+      "XXX": "Stavební díl podle TSKP (např. 271 = Základy betonové)",
+      "YY": "Druh konstrukce (např. 43 = pasy)",
+      "ZZZ": "Detailní specifikace (např. 311 = C20/25 do 800mm)"
+    },
+    "examples": [
+      {
+        "code": "271433311",
+        "breakdown": {
+          "section": "271",
+          "section_name": "Základy betonové a železobetonové monolitické",
+          "type": "43",
+          "type_name": "Základové pasy",
+          "detail": "311",
+          "detail_name": "Prostý beton C20/25 šířka do 800mm"
+        }
+      },
+      {
+        "code": "763111111",
+        "breakdown": {
+          "section": "763",
+          "section_name": "Konstrukce suché výstavby",
+          "type": "11",
+          "type_name": "SDK stěny",
+          "detail": "111",
+          "detail_name": "Jednoduchý SDK plášť na ocelové profily"
+        }
+      }
+    ]
+  },
+  "price_components": {
+    "included_in_unit_price": [
+      "Materiál základní (pokud popis začíná 'BETON, ZDIVO, KRYTINA')",
+      "Práce dělníků",
+      "Malé mechanizace",
+      "Pomocný materiál (lepidla, kotvy, těsnění)"
+    ],
+    "excluded_from_unit_price": [
+      "Přesun hmot (PHM) - oceňuje se samostatně",
+      "Materiál pokud popis začíná 'MONTÁŽ, OSAZENÍ' - uvádí se ve specifikaci",
+      "Lešení - oceňuje se samostatně",
+      "Mimostaveništní doprava"
+    ]
+  },
+  "units_mapping": {
+    "m": "metry běžné",
+    "m2": "metry čtvereční",
+    "m3": "metry krychlové",
+    "ks": "kusy",
+    "hod": "hodiny",
+    "soubor": "soubor (komplet)",
+    "kg": "kilogramy",
+    "t": "tuny"
+  },
+  "audit_rules": {
+    "green": {
+      "code_match": "Kód existuje v ÚRS",
+      "price_tolerance": "±10% od směrné ceny",
+      "description_match": "Popis odpovídá podmínkám použití",
+      "unit_correct": "Měrná jednotka správná"
+    },
+    "amber": {
+      "code_match": "Kód existuje, ale popis mírně odlišný",
+      "price_tolerance": "±10-20% od směrné ceny",
+      "missing_data": "Chybí specifikace nebo upřesnění"
+    },
+    "red": {
+      "code_not_found": "Kód neexistuje v ÚRS",
+      "price_too_high": "Cena >20% nad směrnou cenou",
+      "wrong_unit": "Chybná měrná jednotka",
+      "violates_conditions": "Porušení podmínek použití ÚRS"
+    }
+  },
+  "data_sources": {
+    "online_podmínky": "https://podminky.urs.cz/",
+    "tskp_tridnik": "https://www.cs-urs.cz/tridniky-a-ciselniky/tskp/",
+    "kros_export": "UNIXML z KROS 4 software"
+  },
+  "notes": [
+    "Směrné ceny ÚRS jsou orientační - slouží k porovnání, ne jako závazná cena",
+    "Ceny se aktualizují 2x ročně (I. pololetí, II. pololetí)",
+    "Pro veřejné zakázky je povinné používat popis bez obchodních názvů",
+    "Katalog HSV má 23 titulů, PSV 31 titulů, Montáže 5 titulů"
+  ]
+}

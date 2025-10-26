@@ -1,0 +1,195 @@
+{
+  "source": "manufacturers + rental companies + practical experience",
+  "last_updated": "2025-01-07",
+  "note": "Charakteristiky jeřábů pro Czech stavby",
+  
+  "cranes": [
+    {
+      "manufacturer": "Liebherr",
+      "model": "LTM 1030-2.1",
+      "type": "mobile_crane",
+      "capacity_t": 30,
+      "radius_max_m": 35,
+      "height_max_m": 42,
+      "typical_rental_day_czk": 4500,
+      "typical_rental_hour_czk": 650,
+      "availability": "common",
+      "suitable_for": [
+        "bednění",
+        "malé prefabrikáty",
+        "manipulace panelů",
+        "standardní stavby"
+      ],
+      "note": "Nejběžnější velikost pro běžné stavby"
+    },
+    {
+      "manufacturer": "Liebherr",
+      "model": "LTM 1050-3.1",
+      "type": "mobile_crane",
+      "capacity_t": 50,
+      "radius_max_m": 40,
+      "height_max_m": 52,
+      "typical_rental_day_czk": 7500,
+      "typical_rental_hour_czk": 1050,
+      "availability": "common",
+      "suitable_for": [
+        "bednění velké panely",
+        "střední prefabrikáty",
+        "nosníky do 10m",
+        "montáž ocelových konstrukcí"
+      ],
+      "note": "Pro větší projekty a delší dosah"
+    },
+    {
+      "manufacturer": "Liebherr",
+      "model": "LTM 1070-4.2",
+      "type": "mobile_crane",
+      "capacity_t": 70,
+      "radius_max_m": 48,
+      "height_max_m": 62,
+      "typical_rental_day_czk": 10500,
+      "typical_rental_hour_czk": 1450,
+      "availability": "less_common",
+      "suitable_for": [
+        "těžké prefabrikáty",
+        "dlouhé nosníky 10-15m",
+        "mostovky menší",
+        "montáž těžkých konstrukcí"
+      ],
+      "note": "Pro náročnější projekty"
+    },
+    {
+      "manufacturer": "Liebherr",
+      "model": "LTM 1100-5.2",
+      "type": "mobile_crane",
+      "capacity_t": 100,
+      "radius_max_m": 58,
+      "height_max_m": 78,
+      "typical_rental_day_czk": 15000,
+      "typical_rental_hour_czk": 2000,
+      "availability": "rare",
+      "suitable_for": [
+        "velmi těžké prefabrikáty",
+        "předpjaté nosníky >15m",
+        "mostovky větší",
+        "speciální montáže"
+      ],
+      "note": "Pro velké projekty, vyžaduje plánování dopředu"
+    },
+    {
+      "manufacturer": "Potain",
+      "model": "MD 238 B",
+      "type": "tower_crane",
+      "capacity_t": 10,
+      "radius_max_m": 55,
+      "height_max_m": 70,
+      "typical_rental_month_czk": 45000,
+      "setup_days": 2,
+      "dismantling_days": 2,
+      "availability": "common",
+      "suitable_for": [
+        "výšková výstavba",
+        "dlouhodobé projekty >3 měsíce",
+        "bytové domy",
+        "kancelářské budovy"
+      ],
+      "note": "Věžový jeřáb - pro dlouhodobé projekty s výškou",
+      "rental_note": "Minimální pronájem 3 měsíce, montáž/demontáž extra"
+    },
+    {
+      "manufacturer": "Terex",
+      "model": "Demag AC 45 City",
+      "type": "mobile_crane_compact",
+      "capacity_t": 45,
+      "radius_max_m": 38,
+      "height_max_m": 48,
+      "typical_rental_day_czk": 6500,
+      "availability": "common",
+      "suitable_for": [
+        "stísněné prostory",
+        "městská výstavba",
+        "úzké ulice",
+        "omezený přístup"
+      ],
+      "note": "Kompaktní pro městské stavby s omezeným prostorem"
+    }
+  ],
+  
+  "decision_logic": {
+    "by_weight": {
+      "0-10t": "LTM 1030 (30t) stačí",
+      "10-20t": "LTM 1050 (50t) doporučeno",
+      "20-40t": "LTM 1070 (70t)",
+      "40-60t": "LTM 1100 (100t)",
+      "60t+": "Speciální jeřáb nebo více jeřábů"
+    },
+    
+    "by_radius": {
+      "under_20m": "LTM 1030 OK",
+      "20-30m": "LTM 1050 doporučeno",
+      "30-40m": "LTM 1070 nutné",
+      "40m+": "LTM 1100 nebo tower crane"
+    },
+    
+    "by_height": {
+      "under_15m": "LTM 1030 OK",
+      "15-30m": "LTM 1050 doporučeno",
+      "30-50m": "LTM 1070 nutné",
+      "50m+": "Tower crane (věžový) nutný"
+    },
+    
+    "by_project_duration": {
+      "1_den": "Mobile crane (hodinová sazba)",
+      "2_7_dni": "Mobile crane (denní sazba)",
+      "1_3_mesice": "Mobile crane (týdenní slevy)",
+      "3_mesice_plus": "Tower crane (věžový) ekonomičtější"
+    },
+    
+    "special_considerations": {
+      "stisněné_prostory": "Terex AC 45 City (kompaktní)",
+      "uske_ulice": "Kompaktní jeřáb + dopravní omezení",
+      "vetsí_dosah_niz_vaha": "Tower crane (věžový)",
+      "dlouhe_nosníky_15m_plus": "LTM 1070 minimum, kontrola stability"
+    }
+  },
+  
+  "cost_examples": {
+    "bednění_standardní": {
+      "jeřáb": "LTM 1030 (30t)",
+      "dny": 10,
+      "cost_czk": 45000,
+      "note": "Manipulace s bedněním na běžné stavbě"
+    },
+    
+    "prefabrikáty_střední": {
+      "jeřáb": "LTM 1050 (50t)",
+      "dny": 5,
+      "cost_czk": 37500,
+      "note": "Montáž předpjatých panelů"
+    },
+    
+    "mostovka_těžká": {
+      "jeřáb": "LTM 1070 (70t)",
+      "dny": 3,
+      "cost_czk": 31500,
+      "note": "Montáž těžkých nosníků mostu"
+    },
+    
+    "bytový_dům_10_pater": {
+      "jeřáb": "Potain MD 238 B (tower)",
+      "měsíce": 6,
+      "cost_czk": 270000,
+      "montáž_demontáž": 35000,
+      "total_czk": 305000,
+      "note": "Věžový jeřáb na 6 měsíců včetně montáže"
+    }
+  },
+  
+  "safety_requirements": {
+    "ground_bearing": "Min 5 t/m² pro mobilní jeřáby",
+    "setup_space": "Min 20m × 20m pro 50t jeřáb",
+    "clearance_overhead": "Vzdálenost od el. vedení min 5m",
+    "wind_limit": "Max 12 m/s pro práci",
+    "permits": "Vyžadováno povolení pro městské oblasti"
+  }
+}
