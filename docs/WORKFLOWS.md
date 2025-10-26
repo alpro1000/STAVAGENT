@@ -1,316 +1,419 @@
-# Workflow Guide
+# Workflows Guide
 
-> Step-by-step operational guides for Workflow A and Workflow B
+> Пошаговое руководство по Workflow A и Workflow B с блок-схемами и примерами данных
 
-**Document version:** 1.0.0
-**Last updated:** 2025-01-26
-**Maintainer:** Development Team
-
----
-
-## Table of Contents
-
-1. [Overview](#overview)
-2. [Workflow A: Import & Audit](#workflow-a-import--audit)
-3. [Workflow B: Generate from Drawings](#workflow-b-generate-from-drawings)
-4. [Hybrid Workflow: Combined A+B](#hybrid-workflow-combined-ab)
-5. [Post-Processing](#post-processing)
-6. [Troubleshooting](#troubleshooting)
+**Версия документа:** 2.0.0
+**Последнее обновление:** 2025-01-26
+**Поддержка:** Development Team
 
 ---
 
-## Overview
+## Содержание
 
-### Workflow Types
-
-Concrete Agent supports two primary workflows:
-
-| Workflow | Input | Output | Use Case |
-|----------|-------|--------|----------|
-| **Workflow A** | Existing BoQ (XML, Excel, PDF) | Audited & enriched positions | Verify/audit existing budget |
-| **Workflow B** | Construction drawings (PDF, images) | Generated BoQ positions | Create budget from drawings |
-| **Hybrid (A+B)** | BoQ + Drawings | Cross-validated positions | Maximum accuracy |
-
-### Workflow Selection Guide
-
-**Use Workflow A when:**
-- ✅ You have an existing BoQ (vykaz vymer)
-- ✅ You need to audit/verify positions
-- ✅ You want KROS/RTS code matching
-- ✅ You need compliance checking (ČSN norms)
-
-**Use Workflow B when:**
-- ✅ You only have construction drawings (no BoQ)
-- ✅ You need to generate a budget from scratch
-- ✅ Drawings are clear and detailed
-
-**Use Hybrid (A+B) when:**
-- ✅ You have both BoQ and drawings
-- ✅ You need cross-validation between documents
-- ✅ Maximum accuracy is critical
+1. [Введение](#введение)
+2. [Workflow A: Импорт и Аудит](#workflow-a-импорт-и-аудит)
+3. [Workflow B: Генерация из Чертежей](#workflow-b-генерация-из-чертежей)
+4. [Гибридный Workflow (A+B)](#гибридный-workflow-ab)
+5. [Постобработка](#постобработка)
+6. [Решение проблем](#решение-проблем)
 
 ---
 
-## Workflow A: Import & Audit
+## Введение
 
-**Goal:** Import existing BoQ, parse positions, enrich with KROS/RTS data, perform AI-powered audit.
+### Типы Workflows
 
-**Duration:** 2-5 minutes (depends on BoQ size and AI provider)
+Concrete Agent поддерживает два основных workflow для работы с строительными сметами:
 
-**Prerequisites:**
-- BoQ file (XML, XLSX, XLS, PDF, or CSV)
-- API keys configured (see [CONFIG.md](CONFIG.md))
+| Workflow | Вход | Выход | Когда использовать |
+|----------|------|-------|-------------------|
+| **Workflow A** | Готовый ВВ (XML, Excel, PDF) | Проаудированные позиции | Проверка существующей сметы |
+| **Workflow B** | Чертежи (PDF, images) | Сгенерированный ВВ | Создание сметы с нуля |
+| **Гибридный (A+B)** | ВВ + Чертежи | Кросс-валидированные позиции | Максимальная точность |
+
+### Руководство по выбору Workflow
+
+**Используйте Workflow A если:**
+- ✅ У вас есть готовый выказ выmер (ВВ)
+- ✅ Нужно проверить/проаудировать существующую смету
+- ✅ Требуется сопоставление с базами KROS/RTS
+- ✅ Необходима проверка соответствия нормам (ČSN)
+
+**Используйте Workflow B если:**
+- ✅ Есть только чертежи (нет готового ВВ)
+- ✅ Нужно создать смету с нуля
+- ✅ Чертежи четкие и детальные
+
+**Используйте Гибридный (A+B) если:**
+- ✅ Есть и ВВ, и чертежи
+- ✅ Нужна кросс-валидация между документами
+- ✅ Критична максимальная точность
 
 ---
 
-### Step 1: Prepare Input File
+## Workflow A: Импорт и Аудит
 
-**Supported Formats:**
+### Обзор Workflow A
 
-| Format | Extension | Best For | Notes |
-|--------|-----------|----------|-------|
-| **KROS UNIXML** | `.xml` | Czech construction (KROS software) | ✅ Recommended |
-| **Excel** | `.xlsx`, `.xls` | Custom budgets | Requires standard columns |
-| **PDF** | `.pdf` | Scanned documents | Uses OCR + Claude parsing |
-| **CSV** | `.csv` | Simple exports | Must have headers |
+**Цель:** Импорт существующего ВВ, парсинг позиций, обогащение данными KROS/RTS, AI-powered аудит
 
-**Excel Format Requirements:**
+**Продолжительность:** 2-5 минут (зависит от размера ВВ и AI провайдера)
 
-Required columns (Czech names):
-- `Kód položky` or `Kod` - Position code
-- `Popis` or `Název` - Description
-- `MJ` - Unit of measure
-- `Množství` - Quantity
-- `Cena celkem` or `Celkem` - Total price (optional)
+**Предварительные требования:**
+- Файл ВВ (XML, XLSX, XLS, PDF, или CSV)
+- Настроенные API ключи (см. [CONFIG.md](CONFIG.md))
 
-**Example (rozpocet.xlsx):**
+### Блок-схема Workflow A
 
 ```
-| Kód položky | Popis                | MJ  | Množství | Cena celkem |
-|-------------|---------------------|-----|----------|-------------|
-| 121151113   | Beton C 25/30       | m3  | 10,5     | 26 250,00   |
-| 121151114   | Beton C 30/37       | m3  | 5,0      | 14 000,00   |
-| 271354111   | Ocelová výztuž B500 | t   | 1,2      | 38 400,00   |
-```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         WORKFLOW A: IMPORT & AUDIT                  │
+└─────────────────────────────────────────────────────────────────────┘
 
-**KROS UNIXML Format:**
-
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<unixml version="1.0">
-  <hlavicka>
-    <projekt_nazev>Bytový dům Vinohrady</projekt_nazev>
-    <projekt_kod>BDV-2025-001</projekt_kod>
-  </hlavicka>
-  <objekty>
-    <objekt kod="SO01" nazev="Základy">
-      <polozky>
-        <polozka kod="121151113" nazev="Beton C 25/30" mj="m3" mnozstvi="10.5" cena="26250.00"/>
-      </polozky>
-    </objekt>
-  </objekty>
-</unixml>
+  ┌──────────────┐
+  │  1. UPLOAD   │ ← Вход: ВВ файл (XML/Excel/PDF)
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  2. PARSE    │ ← SmartParser → Позиции (JSON)
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  3. VALIDATE │ ← PositionValidator → Валидные позиции
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  4. ENRICH   │ ← KROS/RTS Matcher → Обогащенные позиции
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  5. AUDIT    │ ← AuditClassifier + Claude → GREEN/AMBER/RED
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  6. EXPORT   │ ← ExcelExporter → audit_report.xlsx
+  └──────────────┘
 ```
 
 ---
 
-### Step 2: Upload & Create Project
+### Шаг 1: Upload - Загрузка файла
 
-**Option A: Web UI (if available)**
+**Описание:** Загрузка файла ВВ на сервер и создание проекта
 
-1. Navigate to `http://localhost:8000/upload`
-2. Fill in project name
-3. Select workflow type: "Workflow A"
-4. Upload BoQ file (drag & drop or browse)
-5. Click "Create Project"
+**Задействованные модули:**
+- `app/api/routes.py::upload_project()` - API endpoint
+- `app/state/project_store.py` - Хранилище проектов
 
-**Option B: API (curl)**
+**Входные данные:**
 
-```bash
-curl -X POST "http://localhost:8000/api/projects/upload" \
-  -F "project_name=Bytový dům Vinohrady" \
-  -F "vykaz_vymer=@rozpocet.xlsx" \
-  -F "workflow=a"
+```http
+POST /api/upload
+Content-Type: multipart/form-data
+
+project_name: "Bytový dům Vinohrady"
+workflow: "A"
+vykaz_vymer: <файл: rozpocet.xlsx>
 ```
 
-**Option C: API (Python)**
-
-```python
-import requests
-
-url = "http://localhost:8000/api/projects/upload"
-
-files = {
-    "vykaz_vymer": open("rozpocet.xlsx", "rb")
-}
-
-data = {
-    "project_name": "Bytový dům Vinohrady",
-    "workflow": "a"
-}
-
-response = requests.post(url, files=files, data=data)
-result = response.json()
-
-project_id = result["project_id"]
-print(f"✅ Project created: {project_id}")
-```
-
-**Expected Output:**
+**Выходные данные:**
 
 ```json
 {
   "success": true,
   "project_id": "proj_1706265000_abc123",
-  "message": "Project created successfully",
-  "data": {
-    "project_name": "Bytový dům Vinohrady",
-    "workflow_type": "a",
-    "status": "uploaded",
-    "files": {
-      "vykaz_vymer": {
-        "filename": "rozpocet.xlsx",
-        "size": 45632
-      }
+  "workflow_type": "A",
+  "status": "uploaded",
+  "files": {
+    "vykaz_vymer": {
+      "filename": "rozpocet.xlsx",
+      "size": 45632,
+      "uploaded_at": "2025-01-26T10:30:00Z"
     }
   }
 }
 ```
 
-**⚠️ Save the `project_id`!** You'll need it for all subsequent operations.
+**Артефакты:**
+- `data/raw/{project_id}/vykaz_vymer/rozpocet.xlsx` - Загруженный файл
+- `project_store[{project_id}]` - Метаданные проекта в памяти
+
+**API Reference:** [POST /api/upload](API.md#post-apiupload)
 
 ---
 
-### Step 3: Execute Workflow A
+### Шаг 2: Parse - Парсинг документа
 
-**Trigger workflow execution:**
+**Описание:** Извлечение позиций из файла ВВ с использованием SmartParser (мульти-формат парсер с fallback стратегией)
 
-```bash
-curl -X POST "http://localhost:8000/api/workflow/a/execute" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "project_id": "proj_1706265000_abc123",
-    "action": "execute"
-  }'
+**Задействованные модули:**
+- `app/parsers/smart_parser.py::SmartParser` - Главный парсер
+- `app/parsers/kros_parser.py::KrosParser` - KROS UNIXML
+- `app/parsers/excel_parser.py::ExcelParser` - Excel файлы
+- `app/parsers/pdf_parser.py` - PDF документы
+
+**Fallback стратегия:**
+```
+1. Попытка прямого парсинга (KROS/Excel/PDF)
+   ↓ (если неудача)
+2. Попытка через AI (Claude)
+   ↓ (если неудача)
+3. Ошибка парсинга
 ```
 
-**Python:**
+**Входные данные:**
 
 ```python
-url = "http://localhost:8000/api/workflow/a/execute"
-
-payload = {
-    "project_id": project_id,
-    "action": "execute"
+{
+  "file_path": "data/raw/proj_123/vykaz_vymer/rozpocet.xlsx",
+  "file_type": "xlsx"
 }
-
-response = requests.post(url, json=payload)
-result = response.json()
-
-print(f"✅ Workflow completed: {result['data']['stats']}")
 ```
 
-**What happens during execution:**
-
-```
-1. [Parsing] 📄 Parse BoQ file → Extract positions
-   - KROS XML: Parse <polozky> elements
-   - Excel: Read rows, normalize European numbers (1 234,56)
-   - PDF: OCR + Claude extraction
-
-2. [Normalization] 🔧 Normalize data
-   - Convert numbers: "10,5" → 10.5
-   - Standardize units: "m3" → "m3"
-   - Clean descriptions
-
-3. [Validation] ✅ Validate positions
-   - Check required fields (code, description, quantity)
-   - Detect missing/invalid data
-
-4. [Enrichment] 💎 Enrich with KROS/RTS
-   - Match position codes to KROS database
-   - Add unit prices, norms, specifications
-   - Calculate derived values
-
-5. [Audit] 🔍 AI-powered audit
-   - Multi-role expert system (SME, ARCH, ENG, SUP)
-   - Classify: GREEN (approved), AMBER (review), RED (reject)
-   - Generate evidence and recommendations
-
-6. [Export] 📊 Export to Excel
-   - Create audit_report.xlsx with color-coded results
-```
-
-**Expected Duration:**
-
-| BoQ Size | Parsing | Enrichment | Audit (Claude) | Total |
-|----------|---------|------------|----------------|-------|
-| 10 positions | 2s | 5s | 30s | ~40s |
-| 50 positions | 5s | 10s | 90s | ~2 min |
-| 100 positions | 10s | 20s | 180s | ~3.5 min |
-| 500 positions | 30s | 60s | 600s | ~12 min |
-
-**Expected Output:**
+**Выходные данные:**
 
 ```json
 {
-  "success": true,
-  "project_id": "proj_1706265000_abc123",
-  "data": {
-    "status": "completed",
-    "artifacts": {
-      "parsed_positions": "/data/processed/proj_.../parsed_positions.json",
-      "audit_results": "/data/processed/proj_.../audit_results.json",
-      "exported_excel": "/data/processed/proj_.../audit_report.xlsx"
+  "positions": [
+    {
+      "code": "121151113",
+      "description": "Beton C 25/30",
+      "unit": "m3",
+      "quantity": 10.5,
+      "unit_price": null,
+      "total_price": 26250.0,
+      "row_index": 5
     },
-    "stats": {
-      "total_positions": 53,
-      "green_count": 48,
-      "amber_count": 3,
-      "red_count": 2,
-      "avg_confidence": 0.92
+    {
+      "code": "121151114",
+      "description": "Beton C 30/37",
+      "unit": "m3",
+      "quantity": 5.0,
+      "unit_price": null,
+      "total_price": 14000.0,
+      "row_index": 6
+    }
+  ],
+  "total_positions": 53,
+  "diagnostics": {
+    "parser_used": "ExcelParser",
+    "normalization": {
+      "numbers_locale": "EU",
+      "numbers_normalized": 106
     }
   }
 }
 ```
 
+**Артефакты:**
+- `data/processed/{project_id}/parsed_positions.json` - Спарсенные позиции
+- Кеш: `project_cache[{project_id}]['parsing_summary']`
+
+**Сервисы:**
+- `SmartParser.parse()` - Автоопределение формата и парсинг
+- `normalize_european_numbers()` - Нормализация чисел (1 234,56 → 1234.56)
+
 ---
 
-### Step 4: Review Audit Results
+### Шаг 3: Validate - Валидация схемы
 
-**Get positions with audit results:**
+**Описание:** Проверка позиций на соответствие Pydantic схеме, дедупликация, проверка обязательных полей
 
-```bash
-curl -X POST "http://localhost:8000/api/workflow/a/positions" \
-  -H "Content-Type: application/json" \
-  -d '{"project_id": "proj_1706265000_abc123"}'
-```
+**Задействованные модули:**
+- `app/validators/position_validator.py::PositionValidator`
+- `app/models/position.py::Position` - Pydantic модель
 
-**Python:**
+**Проверки:**
+- ✅ Обязательные поля: `code`, `description`, `unit`, `quantity`
+- ✅ Типы данных: `quantity` → float, `unit_price` → float (опционально)
+- ✅ Дедупликация по `code`
+- ✅ Валидация единиц измерения (m3, m2, t, ks и т.д.)
 
-```python
-url = "http://localhost:8000/api/workflow/a/positions"
-
-payload = {"project_id": project_id}
-
-response = requests.post(url, json=payload)
-positions = response.json()["data"]["positions"]
-
-for pos in positions:
-    print(f"{pos['code']}: {pos['description']} - {pos['classification']}")
-```
-
-**Example Position (GREEN):**
+**Входные данные:**
 
 ```json
 {
-  "id": "1",
+  "positions": [
+    {"code": "121151113", "description": "Beton C 25/30", "unit": "m3", "quantity": 10.5},
+    {"code": "121151113", "description": "Beton C 25/30", "unit": "m3", "quantity": 10.5},
+    {"code": null, "description": "Invalid position", "unit": "m3", "quantity": "invalid"}
+  ]
+}
+```
+
+**Выходные данные:**
+
+```json
+{
+  "positions": [
+    {
+      "code": "121151113",
+      "description": "Beton C 25/30",
+      "unit": "m3",
+      "quantity": 10.5,
+      "validation_status": "passed"
+    }
+  ],
+  "stats": {
+    "validated_total": 1,
+    "invalid_total": 1,
+    "duplicates_removed": 1,
+    "deduplicated_total": 1
+  },
+  "errors": [
+    {
+      "row": 3,
+      "field": "code",
+      "error": "field required"
+    },
+    {
+      "row": 3,
+      "field": "quantity",
+      "error": "value is not a valid float"
+    }
+  ]
+}
+```
+
+**Артефакты:**
+- Обновлен: `data/processed/{project_id}/parsed_positions.json`
+- Добавлены поля: `validation_status`, `validation_error`
+
+---
+
+### Шаг 4: Enrich - Обогащение данными
+
+**Описание:** Сопоставление позиций с базами KROS/RTS, добавление спецификаций, цен, норм
+
+**Задействованные модули:**
+- `app/services/position_enricher.py::PositionEnricher`
+- `app/core/kb_loader.py::KBLoader` - База знаний (KROS/RTS)
+- `app/parsers/kros_parser.py::match_kros_code()` - Сопоставление кодов
+
+**Стратегия сопоставления:**
+```
+1. Exact match по коду (121151113 → KROS 121151113)
+   ↓ (если не найдено)
+2. Partial match по описанию + fuzzy search
+   ↓ (если не найдено)
+3. No match (требуется ручная обработка)
+```
+
+**Входные данные:**
+
+```json
+{
+  "code": "121151113",
+  "description": "Beton C 25/30",
+  "unit": "m3",
+  "quantity": 10.5,
+  "validation_status": "passed"
+}
+```
+
+**Выходные данные:**
+
+```json
+{
+  "code": "121151113",
+  "description": "Beton C 25/30",
+  "unit": "m3",
+  "quantity": 10.5,
+  "validation_status": "passed",
+  "enrichment_status": "matched",
+  "enrichment": {
+    "match_type": "exact",
+    "confidence": 0.98,
+    "kros_code": "121151113",
+    "kros_name": "Beton prostý C 25/30",
+    "unit_price_kros": 2480.0,
+    "applicable_norms": [
+      "ČSN EN 206-1",
+      "ČSN 73 1201"
+    ],
+    "specifications": {
+      "strength_class": "C 25/30",
+      "consistency": "S3",
+      "max_aggregate_size": "16mm",
+      "exposure_class": "XC1"
+    }
+  }
+}
+```
+
+**Артефакты:**
+- `data/processed/{project_id}/enriched_positions.json` - Обогащенные позиции
+
+**Сервисы:**
+- `KBLoader.match_kros()` - Поиск в базе KROS
+- `KBLoader.match_rts()` - Поиск в базе RTS (опционально)
+
+---
+
+### Шаг 5: Audit - AI-аудит позиций
+
+**Описание:** Мульти-ролевая AI экспертиза позиций с классификацией GREEN/AMBER/RED
+
+**Задействованные модули:**
+- `app/services/audit_classifier.py::AuditClassifier`
+- `app/core/claude_client.py::ClaudeClient` - AI провайдер
+- `app/utils/audit_contracts.py::build_audit_contract()` - Генерация промптов
+
+**Мульти-ролевая система:**
+
+```
+┌─────────────────────────────────────────────────┐
+│  SME (Subject Matter Expert) - Технический эксперт  │
+│  ARCH (Architect) - Архитектор                      │
+│  ENG (Engineer) - Инженер                           │
+│  SUP (Supervisor) - Супервайзер                     │
+└─────────────────────────────────────────────────┘
+         │         │         │         │
+         └────┬────┴────┬────┴────┬────┘
+              ▼         ▼         ▼
+         ┌──────────────────────────┐
+         │  Consensus Algorithm     │
+         │  (Алгоритм консенсуса)   │
+         └──────────┬───────────────┘
+                    ▼
+         ┌──────────────────────────┐
+         │  GREEN (все "за")        │
+         │  AMBER (разногласия)     │
+         │  RED (большинство "против") │
+         └──────────────────────────┘
+```
+
+**Входные данные:**
+
+```json
+{
   "code": "121151113",
   "description": "Beton C 25/30",
   "unit": "m3",
   "quantity": 10.5,
   "unit_price": 2500.0,
-  "total_price": 26250.0,
+  "enrichment": {
+    "kros_code": "121151113",
+    "unit_price_kros": 2480.0,
+    "applicable_norms": ["ČSN EN 206-1"]
+  }
+}
+```
+
+**Выходные данные:**
+
+```json
+{
+  "code": "121151113",
+  "description": "Beton C 25/30",
+  "unit": "m3",
+  "quantity": 10.5,
+  "unit_price": 2500.0,
   "classification": "GREEN",
   "confidence": 0.97,
   "audit": {
@@ -323,185 +426,95 @@ for pos in positions:
       "✅ Technical parameters validated (C 25/30, S3, Dmax 16mm)",
       "✅ Complies with ČSN EN 206-1"
     ],
-    "recommendations": []
-  },
-  "enrichment": {
-    "kros_code": "121151113",
-    "kros_name": "Beton prostý C 25/30",
-    "unit_price_kros": 2480.0,
-    "applicable_norms": ["ČSN EN 206-1", "ČSN 73 1201"]
+    "recommendations": [],
+    "ai_reasoning": "Position fully validated against KROS database with exact match. Unit price is within acceptable range. All technical specifications meet Czech standards."
   }
 }
 ```
 
-**Example Position (AMBER):**
+**Классификация:**
+
+| Цвет | Условие | Действие |
+|------|---------|----------|
+| **GREEN** | Все проверки пройдены | Одобрено, можно использовать |
+| **AMBER** | Частичное соответствие | Требует проверки эксперта |
+| **RED** | Не пройдены проверки | Требует исправления |
+
+**Артефакты:**
+- `data/processed/{project_id}/audit_results.json` - Результаты аудита
+
+**Сервисы:**
+- `ClaudeClient.messages.create()` - AI запрос к Claude
+- `build_audit_contract()` - Генерация промпта для каждой роли
+
+---
+
+### Шаг 6: Export - Экспорт в Excel
+
+**Описание:** Генерация Excel отчета с результатами аудита, цветовое кодирование
+
+**Задействованные модули:**
+- `app/utils/excel_exporter.py::AuditExcelExporter`
+- `openpyxl` - Библиотека для работы с Excel
+
+**Входные данные:**
 
 ```json
 {
-  "id": "15",
-  "code": "121151114",
-  "description": "Beton C 30/37",
-  "unit": "m3",
-  "quantity": 5.0,
-  "unit_price": 3200.0,
-  "total_price": 16000.0,
-  "classification": "AMBER",
-  "confidence": 0.78,
-  "audit": {
-    "status": "review_required",
-    "roles": ["SME", "ENG"],
-    "consensus": "partial",
-    "evidence": [
-      "✅ KROS match found: 121151114",
-      "⚠️  Price 12% above database average (2850 CZK/m3)",
-      "⚠️  Quantity seems high for stated purpose"
-    ],
-    "recommendations": [
-      "Verify unit price with supplier quotes",
-      "Confirm quantity calculation from drawings"
-    ]
+  "positions": [
+    {"code": "121151113", "classification": "GREEN", "confidence": 0.97, ...},
+    {"code": "121151114", "classification": "AMBER", "confidence": 0.78, ...},
+    {"code": "999999999", "classification": "RED", "confidence": 0.32, ...}
+  ],
+  "stats": {
+    "total": 53,
+    "green": 48,
+    "amber": 3,
+    "red": 2
   }
 }
 ```
 
-**Example Position (RED):**
+**Выходные данные:**
 
-```json
-{
-  "id": "42",
-  "code": "999999999",
-  "description": "Custom material XYZ",
-  "unit": "ks",
-  "quantity": 100.0,
-  "unit_price": 0.0,
-  "total_price": 0.0,
-  "classification": "RED",
-  "confidence": 0.32,
-  "audit": {
-    "status": "rejected",
-    "roles": ["SME"],
-    "consensus": "reject",
-    "evidence": [
-      "❌ Code 999999999 not found in KROS database",
-      "❌ Description too vague (no specifications)",
-      "❌ Unit price missing",
-      "❌ No applicable norm identified"
-    ],
-    "recommendations": [
-      "Replace with standard KROS code",
-      "Add detailed technical specifications",
-      "Obtain unit price from supplier"
-    ]
-  }
-}
+Excel файл с листами:
+
+| Лист | Содержимое | Цвет |
+|------|-----------|------|
+| **Summary** | Общая статистика | - |
+| **All Positions** | Все позиции | По классификации |
+| **GREEN** | Одобренные (48) | 🟢 Зеленый фон |
+| **AMBER** | Требуют проверки (3) | 🟡 Желтый фон |
+| **RED** | Отклоненные (2) | 🔴 Красный фон |
+
+**Структура Summary листа:**
+
 ```
+┌──────────────────────────────────────────┐
+│  AUDIT REPORT - Bytový dům Vinohrady     │
+├──────────────────────────────────────────┤
+│  Дата: 2025-01-26                        │
+│  Всего позиций: 53                       │
+│  ✅ GREEN: 48 (90.6%)                    │
+│  ⚠️  AMBER: 3 (5.7%)                     │
+│  ❌ RED: 2 (3.8%)                        │
+│  Средняя уверенность: 0.92               │
+└──────────────────────────────────────────┘
+```
+
+**Артефакты:**
+- `data/processed/{project_id}/audit_report.xlsx` - Excel отчет
+
+**API Reference:** [GET /api/projects/{project_id}/export/excel](API.md#get-apiprojectsproject_idexportexcel)
 
 ---
 
-### Step 5: Download Excel Report
-
-**Download audit report:**
-
-```bash
-curl -O "http://localhost:8000/api/artifacts/proj_1706265000_abc123/audit_report.xlsx"
-```
-
-**Python:**
-
-```python
-url = f"http://localhost:8000/api/artifacts/{project_id}/audit_report.xlsx"
-
-response = requests.get(url)
-
-with open(f"{project_id}_audit.xlsx", "wb") as f:
-    f.write(response.content)
-
-print("✅ Report downloaded")
-```
-
-**Excel Report Structure:**
-
-| Sheet | Content |
-|-------|---------|
-| **Summary** | Overall statistics, GREEN/AMBER/RED counts |
-| **All Positions** | Complete list with audit results |
-| **GREEN** | Approved positions (ready to use) |
-| **AMBER** | Positions requiring review |
-| **RED** | Rejected positions (require fixes) |
-
-**Color Coding:**
-
-- 🟢 **GREEN cells**: Approved, high confidence
-- 🟡 **AMBER cells**: Review required
-- 🔴 **RED cells**: Rejected, needs fixes
-
----
-
-### Step 6: Generate Artifacts (Optional)
-
-Generate detailed artifacts for specific positions:
-
-#### Tech Card (Technologická karta)
-
-```python
-url = "http://localhost:8000/api/workflow/a/tech-card"
-
-payload = {
-    "project_id": project_id,
-    "position_id": "1",
-    "action": "tech_card"
-}
-
-response = requests.post(url, json=payload)
-tech_card = response.json()["artifact"]
-
-print(f"Tech card: {tech_card['title']}")
-print(f"Steps: {len(tech_card['data']['steps'])}")
-```
-
-#### Resource Sheet (TOV)
-
-```python
-url = "http://localhost:8000/api/workflow/a/resource-sheet"
-
-payload = {
-    "project_id": project_id,
-    "position_id": "1",
-    "action": "resource_sheet"
-}
-
-response = requests.post(url, json=payload)
-resource_sheet = response.json()["artifact"]
-
-print(f"Labor hours: {resource_sheet['data']['labor']['total_hours']}")
-print(f"Materials: {len(resource_sheet['data']['materials'])}")
-```
-
-#### Materials Specification
-
-```python
-url = "http://localhost:8000/api/workflow/a/materials"
-
-payload = {
-    "project_id": project_id,
-    "position_id": "1",
-    "action": "materials"
-}
-
-response = requests.post(url, json=payload)
-materials = response.json()["artifact"]
-
-print(f"Total items: {materials['data']['total_items']}")
-```
-
----
-
-### Workflow A: Complete Script
+### Полный пример Workflow A (Python)
 
 ```python
 #!/usr/bin/env python3
 """
-Complete Workflow A automation script
+Полный цикл Workflow A
 """
 import requests
 from pathlib import Path
@@ -509,556 +522,829 @@ import time
 
 BASE_URL = "http://localhost:8000"
 
-def workflow_a_complete(boq_file: Path, project_name: str):
-    """Execute complete Workflow A"""
+def workflow_a_complete():
+    # Шаг 1: Upload
+    print("[1/6] Загрузка файла...")
+    files = {"vykaz_vymer": open("rozpocet.xlsx", "rb")}
+    data = {"project_name": "Bytový dům Vinohrady", "workflow": "A"}
 
-    print(f"🚀 Starting Workflow A for: {project_name}")
-    print(f"📄 BoQ file: {boq_file}")
-
-    # Step 1: Upload & create project
-    print("\n[1/5] Creating project...")
-    url = f"{BASE_URL}/api/projects/upload"
-
-    files = {"vykaz_vymer": open(boq_file, "rb")}
-    data = {"project_name": project_name, "workflow": "a"}
-
-    response = requests.post(url, files=files, data=data)
-    response.raise_for_status()
-
+    response = requests.post(f"{BASE_URL}/api/upload", files=files, data=data)
     project_id = response.json()["project_id"]
-    print(f"✅ Project created: {project_id}")
+    print(f"✅ Project ID: {project_id}")
 
-    # Step 2: Execute workflow
-    print("\n[2/5] Executing Workflow A...")
-    url = f"{BASE_URL}/api/workflow/a/execute"
+    # Шаги 2-6 выполняются автоматически на сервере
+    print("[2/6] Парсинг...")
+    print("[3/6] Валидация...")
+    print("[4/6] Обогащение...")
+    print("[5/6] Аудит...")
 
-    payload = {"project_id": project_id, "action": "execute"}
+    # Ожидание завершения
+    while True:
+        status_response = requests.get(f"{BASE_URL}/api/projects/{project_id}/status")
+        status = status_response.json()["data"]["status"]
 
-    response = requests.post(url, json=payload)
-    response.raise_for_status()
+        if status == "completed":
+            print("✅ Обработка завершена")
+            break
+        elif status == "failed":
+            print("❌ Ошибка обработки")
+            return
 
-    stats = response.json()["data"]["stats"]
-    print(f"✅ Workflow completed:")
-    print(f"   Total: {stats['total_positions']}")
-    print(f"   GREEN: {stats['green_count']}")
-    print(f"   AMBER: {stats['amber_count']}")
-    print(f"   RED: {stats['red_count']}")
+        time.sleep(3)
 
-    # Step 3: Get positions
-    print("\n[3/5] Retrieving positions...")
-    url = f"{BASE_URL}/api/workflow/a/positions"
+    # Шаг 6: Download Excel
+    print("[6/6] Скачивание отчета...")
+    excel_response = requests.get(f"{BASE_URL}/api/projects/{project_id}/export/excel")
 
-    payload = {"project_id": project_id}
+    output = Path(f"{project_id}_audit.xlsx")
+    output.write_bytes(excel_response.content)
+    print(f"✅ Отчет сохранен: {output}")
 
-    response = requests.post(url, json=payload)
-    response.raise_for_status()
+    # Получение статистики
+    results = requests.get(f"{BASE_URL}/api/projects/{project_id}/results").json()
+    stats = results["results"]["statistics"]
 
-    positions = response.json()["data"]["positions"]
-    print(f"✅ Retrieved {len(positions)} positions")
-
-    # Step 4: Download Excel report
-    print("\n[4/5] Downloading Excel report...")
-    url = f"{BASE_URL}/api/artifacts/{project_id}/audit_report.xlsx"
-
-    response = requests.get(url)
-    response.raise_for_status()
-
-    output_path = Path(f"{project_id}_audit.xlsx")
-    output_path.write_bytes(response.content)
-    print(f"✅ Report saved: {output_path}")
-
-    # Step 5: Generate tech cards for GREEN positions
-    print("\n[5/5] Generating tech cards...")
-    green_positions = [p for p in positions if p["classification"] == "GREEN"]
-
-    for pos in green_positions[:3]:  # First 3 GREEN positions
-        url = f"{BASE_URL}/api/workflow/a/tech-card"
-
-        payload = {
-            "project_id": project_id,
-            "position_id": pos["id"],
-            "action": "tech_card"
-        }
-
-        response = requests.post(url, json=payload)
-        response.raise_for_status()
-
-        print(f"  ✅ Tech card: {pos['code']} - {pos['description']}")
-
-    print(f"\n🎉 Workflow A completed successfully!")
-    print(f"📊 Results saved to: {output_path}")
-
-    return project_id, positions
-
+    print(f"\n📊 Статистика:")
+    print(f"   Всего: {stats['total']}")
+    print(f"   GREEN: {stats['green']}")
+    print(f"   AMBER: {stats['amber']}")
+    print(f"   RED: {stats['red']}")
 
 if __name__ == "__main__":
-    boq_file = Path("rozpocet.xlsx")
-    project_name = "Bytový dům Vinohrady"
-
-    project_id, positions = workflow_a_complete(boq_file, project_name)
+    workflow_a_complete()
 ```
 
----
-
-## Workflow B: Generate from Drawings
-
-**Goal:** Analyze construction drawings to generate Bill of Quantities positions.
-
-**Duration:** 3-10 minutes (depends on drawing count and complexity)
-
-**Prerequisites:**
-- Construction drawings (PDF, DWG, images)
-- OpenAI API key configured (for GPT-4 Vision)
-
----
-
-### Step 1: Prepare Drawings
-
-**Supported Formats:**
-
-| Format | Extension | Best For | Notes |
-|--------|-----------|----------|-------|
-| **PDF** | `.pdf` | Architectural plans | ✅ Recommended |
-| **Images** | `.jpg`, `.png` | Scanned drawings | High resolution preferred |
-| **DWG** | `.dwg` | AutoCAD files | Requires conversion |
-| **DXF** | `.dxf` | CAD interchange | Text-based |
-
-**Drawing Quality Requirements:**
-
-✅ **Good:**
-- Clear labels and dimensions
-- High resolution (300+ DPI for scans)
-- Readable text
-- Scale indicator present
-
-❌ **Poor:**
-- Blurry or low resolution
-- Missing dimensions
-- Handwritten notes (illegible)
-- No scale
-
-**Example Drawing Structure:**
-
-```
-floor_plan.pdf
-├── Page 1: Site Plan (měřítko 1:200)
-├── Page 2: Foundation Plan (měřítko 1:50)
-├── Page 3: Floor Plan - Level 1 (měřítko 1:50)
-├── Page 4: Sections (měřítko 1:50)
-└── Page 5: Details (měřítko 1:20)
-```
-
----
-
-### Step 2: Upload & Create Project
-
-**API (curl):**
+**Запуск:**
 
 ```bash
-curl -X POST "http://localhost:8000/api/projects/upload" \
-  -F "project_name=Most přes řeku" \
-  -F "vykresy=@floor_plan.pdf" \
-  -F "vykresy=@sections.pdf" \
-  -F "workflow=b"
-```
-
-**Python:**
-
-```python
-import requests
-
-url = "http://localhost:8000/api/projects/upload"
-
-files = [
-    ("vykresy", open("floor_plan.pdf", "rb")),
-    ("vykresy", open("sections.pdf", "rb"))
-]
-
-data = {
-    "project_name": "Most přes řeku",
-    "workflow": "b"
-}
-
-response = requests.post(url, files=files, data=data)
-result = response.json()
-
-project_id = result["project_id"]
-print(f"✅ Project created: {project_id}")
+python workflow_a_example.py
 ```
 
 ---
 
-### Step 3: Execute Workflow B
+## Workflow B: Генерация из Чертежей
 
-```python
-url = "http://localhost:8000/api/workflow/b/execute"
+### Обзор Workflow B
 
-payload = {
-    "project_id": project_id,
-    "action": "execute"
-}
+**Цель:** Анализ строительных чертежей с использованием AI для генерации выказа выmер с нуля
 
-response = requests.post(url, json=payload)
-result = response.json()
+**Продолжительность:** 5-15 минут (зависит от количества и сложности чертежей)
 
-print(f"✅ Workflow completed: {result['data']['stats']}")
-```
+**Предварительные требования:**
+- Чертежи (PDF, DWG, images)
+- OpenAI API key (для GPT-4 Vision)
+- Anthropic API key (для Claude)
 
-**What happens during execution:**
+### Блок-схема Workflow B
 
 ```
-1. [Drawing Analysis] 🖼️ Analyze drawings with GPT-4 Vision
-   - Extract dimensions, labels, quantities
-   - Identify construction elements
-   - Calculate areas/volumes
+┌─────────────────────────────────────────────────────────────────────┐
+│                    WORKFLOW B: GENERATE FROM DRAWINGS               │
+└─────────────────────────────────────────────────────────────────────┘
 
-2. [Position Generation] 📝 Generate positions
-   - Map elements to KROS codes
-   - Calculate quantities from dimensions
-   - Generate descriptions
-
-3. [Validation] ✅ Validate generated positions
-   - Check completeness
-   - Verify calculations
-   - Flag uncertainties
-
-4. [Export] 💾 Save generated positions
+  ┌──────────────┐
+  │  1. UPLOAD   │ ← Вход: Чертежи (PDF/images)
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  2. ANALYZE  │ ← GPT-4 Vision → Размеры, элементы, материалы
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  3. CALCULATE│ ← Python расчеты → Объемы, площади
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  4. GENERATE │ ← Claude → Позиции ВВ
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  5. AUDIT    │ ← AuditClassifier → GREEN/AMBER/RED
+  └──────┬───────┘
+         │
+         ▼
+  ┌──────────────┐
+  │  6. EXPORT   │ ← ExcelExporter → generated_estimate.xlsx
+  └──────────────┘
 ```
 
-**Expected Output:**
+---
+
+### Шаг 1: Upload - Загрузка чертежей
+
+**Описание:** Загрузка файлов чертежей на сервер
+
+**Задействованные модули:**
+- `app/api/routes.py::upload_project()` - API endpoint
+
+**Входные данные:**
+
+```http
+POST /api/upload
+Content-Type: multipart/form-data
+
+project_name: "Most přes řeku"
+workflow: "B"
+vykresy: <файл: floor_plan.pdf>
+vykresy: <файл: sections.pdf>
+vykresy: <файл: details.pdf>
+```
+
+**Выходные данные:**
 
 ```json
 {
   "success": true,
   "project_id": "proj_1706265100_def456",
-  "data": {
-    "status": "completed",
-    "artifacts": {
-      "generated_positions": "/data/processed/proj_.../generated_positions.json"
-    },
-    "stats": {
-      "total_positions": 27,
-      "drawings_analyzed": 2,
-      "confidence_avg": 0.85
+  "workflow_type": "B",
+  "status": "uploaded",
+  "files": {
+    "vykresy": [
+      {
+        "filename": "floor_plan.pdf",
+        "size": 2345678,
+        "uploaded_at": "2025-01-26T11:00:00Z"
+      },
+      {
+        "filename": "sections.pdf",
+        "size": 1234567,
+        "uploaded_at": "2025-01-26T11:00:01Z"
+      },
+      {
+        "filename": "details.pdf",
+        "size": 987654,
+        "uploaded_at": "2025-01-26T11:00:02Z"
+      }
+    ]
+  }
+}
+```
+
+**Артефакты:**
+- `data/raw/{project_id}/vykresy/floor_plan.pdf`
+- `data/raw/{project_id}/vykresy/sections.pdf`
+- `data/raw/{project_id}/vykresy/details.pdf`
+
+**API Reference:** [POST /api/upload](API.md#post-apiupload)
+
+---
+
+### Шаг 2: Analyze - Анализ чертежей
+
+**Описание:** Использование GPT-4 Vision для извлечения информации из чертежей (размеры, элементы, материалы)
+
+**Задействованные модули:**
+- `app/core/gpt4_client.py::GPT4VisionClient`
+- `app/services/workflow_b.py::_analyze_drawings()`
+
+**AI Промпт для GPT-4 Vision:**
+
+```
+Analyze this construction drawing and extract:
+
+1. Dimensions:
+   - Length, width, height of structural elements
+   - Thickness of walls, slabs, etc.
+
+2. Structural elements:
+   - Foundation slabs
+   - Walls
+   - Columns
+   - Beams
+   - Slabs
+
+3. Materials mentioned:
+   - Concrete grade (C 20/25, C 25/30, etc.)
+   - Reinforcement steel grade
+   - Other materials
+
+4. Quantities (if visible):
+   - Areas (m²)
+   - Volumes (m³)
+   - Lengths (m)
+
+Output format: JSON
+```
+
+**Входные данные:**
+
+```python
+{
+  "drawings": [
+    {
+      "path": "data/raw/proj_456/vykresy/floor_plan.pdf",
+      "page": 2  # Страница с планом фундаментов
+    }
+  ]
+}
+```
+
+**Выходные данные:**
+
+```json
+{
+  "drawing_analysis": [
+    {
+      "drawing": "floor_plan.pdf",
+      "page": 2,
+      "elements_detected": [
+        {
+          "type": "foundation_slab",
+          "description": "Základová deska",
+          "dimensions": {
+            "length": 4.5,
+            "width": 3.5,
+            "depth": 0.1,
+            "unit": "m"
+          },
+          "material": "Beton C 25/30",
+          "location": {
+            "coordinates": {"x": 120, "y": 450},
+            "label": "SO-01"
+          },
+          "confidence": 0.88
+        },
+        {
+          "type": "wall",
+          "description": "Obvodová zeď",
+          "dimensions": {
+            "length": 12.0,
+            "height": 2.8,
+            "thickness": 0.3,
+            "unit": "m"
+          },
+          "material": "Beton C 20/25",
+          "confidence": 0.92
+        }
+      ],
+      "materials_mentioned": [
+        "Beton C 25/30",
+        "Beton C 20/25",
+        "Ocel B500"
+      ],
+      "scale": "1:50",
+      "total_elements": 15
+    }
+  ]
+}
+```
+
+**Артефакты:**
+- `data/processed/{project_id}/drawing_analysis.json`
+
+**Сервисы:**
+- `GPT4VisionClient.analyze_image()` - AI анализ изображения
+- Стоимость: ~$0.01-0.03 за изображение (зависит от разрешения)
+
+---
+
+### Шаг 3: Calculate - Расчет материалов
+
+**Описание:** Вычисление объемов, площадей, масс на основе данных из чертежей
+
+**Задействованные модули:**
+- `app/services/workflow_b.py::_calculate_materials()`
+
+**Формулы расчета:**
+
+```python
+# Фундаментная плита
+volume_concrete = length × width × depth
+# 4.5 × 3.5 × 0.1 = 1.575 m³
+
+# Стена
+volume_wall = length × height × thickness
+# 12.0 × 2.8 × 0.3 = 10.08 m³
+
+# Площадь стены (для штукатурки)
+area_wall = length × height × 2  # обе стороны
+# 12.0 × 2.8 × 2 = 67.2 m²
+
+# Масса арматуры (примерная, 100 кг/м³ бетона)
+reinforcement_mass = volume_concrete × 100
+# 1.575 × 100 = 157.5 kg
+```
+
+**Входные данные:**
+
+```json
+{
+  "elements": [
+    {
+      "type": "foundation_slab",
+      "dimensions": {"length": 4.5, "width": 3.5, "depth": 0.1},
+      "material": "Beton C 25/30"
+    }
+  ]
+}
+```
+
+**Выходные данные:**
+
+```json
+{
+  "calculations": {
+    "materials": [
+      {
+        "material": "Beton C 25/30",
+        "type": "concrete",
+        "total_volume": 15.75,
+        "unit": "m3",
+        "elements": [
+          {
+            "element_id": "foundation_slab_1",
+            "volume": 1.575
+          },
+          {
+            "element_id": "foundation_slab_2",
+            "volume": 14.175
+          }
+        ]
+      },
+      {
+        "material": "Ocel B500",
+        "type": "reinforcement",
+        "total_mass": 1575.0,
+        "unit": "kg",
+        "calculation_method": "estimated_100kg_per_m3"
+      }
+    ],
+    "summary": {
+      "total_concrete_volume": 15.75,
+      "total_reinforcement_mass": 1575.0,
+      "estimated_cost": 52500.0
     }
   }
 }
 ```
 
+**Артефакты:**
+- `data/processed/{project_id}/calculations.json`
+
 ---
 
-### Step 4: Review Generated Positions
+### Шаг 4: Generate - Генерация позиций
 
-```python
-url = "http://localhost:8000/api/workflow/b/positions"
+**Описание:** Использование Claude для генерации позиций ВВ в формате KROS/RTS
 
-payload = {"project_id": project_id}
+**Задействованные модули:**
+- `app/core/claude_client.py::ClaudeClient`
+- `app/services/workflow_b.py::_generate_positions()`
 
-response = requests.post(url, json=payload)
-positions = response.json()["data"]["positions"]
+**AI Промпт для Claude:**
 
-for pos in positions:
-    print(f"{pos['code']}: {pos['description']} - {pos['quantity']} {pos['unit']}")
+```
+Based on the drawing analysis and calculations, generate Bill of Quantities positions in Czech format:
+
+Drawing analysis: {drawing_analysis}
+Calculations: {calculations}
+
+For each structural element, create a position with:
+1. KROS code (from B5_URS_KROS4 database)
+2. Czech description
+3. Unit of measure (m3, m2, t, ks)
+4. Quantity (calculated)
+5. Unit price (from KROS database or estimate)
+
+Output format: JSON array of positions
 ```
 
-**Example Generated Position:**
+**Входные данные:**
 
 ```json
 {
-  "id": "gen_1",
-  "code": "121151113",
-  "description": "Beton C 25/30 - základová deska",
-  "unit": "m3",
-  "quantity": 15.75,
-  "source_drawing": "floor_plan.pdf",
-  "page": 2,
-  "confidence": 0.88,
-  "ai_reasoning": "Detected foundation slab: 450cm × 350cm × 10cm = 15.75 m3",
-  "calculation": {
-    "length": 4.5,
-    "width": 3.5,
-    "depth": 0.1,
-    "formula": "length × width × depth",
-    "result": 15.75
+  "drawing_analysis": [...],
+  "calculations": {
+    "materials": [
+      {"material": "Beton C 25/30", "total_volume": 15.75, "unit": "m3"}
+    ]
+  }
+}
+```
+
+**Выходные данные:**
+
+```json
+{
+  "generated_positions": [
+    {
+      "id": "gen_1",
+      "code": "121151113",
+      "description": "Beton C 25/30 - základová deska",
+      "unit": "m3",
+      "quantity": 15.75,
+      "unit_price": 2500.0,
+      "total_price": 39375.0,
+      "source_drawing": "floor_plan.pdf",
+      "page": 2,
+      "confidence": 0.88,
+      "ai_reasoning": "Detected foundation slab: 450cm × 350cm × 10cm = 15.75 m3. Matched to KROS code 121151113 for C 25/30 plain concrete.",
+      "calculation": {
+        "formula": "length × width × depth",
+        "values": {
+          "length": 4.5,
+          "width": 3.5,
+          "depth": 0.1
+        },
+        "result": 15.75
+      }
+    },
+    {
+      "id": "gen_2",
+      "code": "271354111",
+      "description": "Ocelová výztuž B500 - základy",
+      "unit": "t",
+      "quantity": 1.58,
+      "unit_price": 32000.0,
+      "total_price": 50560.0,
+      "source_drawing": "floor_plan.pdf",
+      "page": 2,
+      "confidence": 0.75,
+      "ai_reasoning": "Estimated reinforcement based on 100kg/m3 concrete ratio. Total concrete: 15.75 m3 → 1575 kg = 1.58 t",
+      "calculation": {
+        "formula": "concrete_volume × 100 / 1000",
+        "values": {
+          "concrete_volume": 15.75,
+          "ratio_kg_per_m3": 100
+        },
+        "result": 1.58
+      }
+    }
+  ],
+  "total_positions": 27,
+  "total_cost": 523450.0
+}
+```
+
+**Артефакты:**
+- `data/processed/{project_id}/generated_positions.json`
+
+**Сервисы:**
+- `ClaudeClient.messages.create()` - AI генерация позиций
+- `KBLoader.match_kros()` - Сопоставление с KROS кодами
+
+**API Reference:** [GET /api/workflow/b/positions](API.md#get-apiworkflowbpositions)
+
+---
+
+### Шаг 5: Audit - Аудит сгенерированных позиций
+
+**Описание:** Аналогично Workflow A - мульти-ролевая экспертиза
+
+**Задействованные модули:**
+- `app/services/audit_classifier.py::AuditClassifier` (тот же, что и в Workflow A)
+
+**Особенности аудита для Workflow B:**
+
+```
+Дополнительные проверки:
+- ✅ Соответствие размеров на чертеже и в расчетах
+- ✅ Корректность формул расчета
+- ✅ Адекватность AI рассуждений (ai_reasoning)
+- ✅ Confidence score > 0.7
+```
+
+**Входные/выходные данные:** Аналогично Workflow A, шаг 5
+
+---
+
+### Шаг 6: Export - Экспорт в Excel
+
+**Описание:** Аналогично Workflow A, но с дополнительными листами для чертежей и расчетов
+
+**Структура Excel файла для Workflow B:**
+
+| Лист | Содержимое |
+|------|-----------|
+| **Summary** | Общая статистика |
+| **Generated Positions** | Все сгенерированные позиции |
+| **Drawings Analysis** | Анализ чертежей (элементы, размеры) |
+| **Calculations** | Подробные расчеты |
+| **GREEN** | Одобренные позиции |
+| **AMBER** | Требуют проверки |
+| **RED** | Отклоненные |
+
+**Артефакты:**
+- `data/processed/{project_id}/generated_estimate.xlsx`
+
+---
+
+### Полный пример Workflow B (Python)
+
+```python
+#!/usr/bin/env python3
+"""
+Полный цикл Workflow B
+"""
+import requests
+from pathlib import Path
+import time
+
+BASE_URL = "http://localhost:8000"
+
+def workflow_b_complete():
+    # Шаг 1: Upload чертежей
+    print("[1/6] Загрузка чертежей...")
+
+    files = [
+        ("vykresy", open("floor_plan.pdf", "rb")),
+        ("vykresy", open("sections.pdf", "rb")),
+        ("vykresy", open("details.pdf", "rb"))
+    ]
+
+    data = {
+        "project_name": "Most přes řeku",
+        "workflow": "B"
+    }
+
+    response = requests.post(f"{BASE_URL}/api/upload", files=files, data=data)
+    project_id = response.json()["project_id"]
+    print(f"✅ Project ID: {project_id}")
+
+    # Шаги 2-6 выполняются автоматически
+    print("[2/6] Анализ чертежей (GPT-4 Vision)...")
+    print("[3/6] Расчет материалов...")
+    print("[4/6] Генерация позиций (Claude)...")
+    print("[5/6] Аудит позиций...")
+
+    # Ожидание завершения
+    while True:
+        status_response = requests.get(f"{BASE_URL}/api/projects/{project_id}/status")
+        status = status_response.json()["data"]["status"]
+
+        if status == "completed":
+            print("✅ Обработка завершена")
+            break
+        elif status == "failed":
+            print("❌ Ошибка обработки")
+            return
+
+        time.sleep(5)  # Workflow B занимает больше времени
+
+    # Получение сгенерированных позиций
+    print("[6/6] Получение результатов...")
+    positions_response = requests.get(
+        f"{BASE_URL}/api/workflow/b/positions?project_id={project_id}"
+    )
+
+    positions = positions_response.json()["data"]["items"]
+
+    print(f"\n📊 Сгенерировано позиций: {len(positions)}")
+    print(f"\nПервые 5 позиций:")
+    for pos in positions[:5]:
+        print(f"  - {pos['code']}: {pos['description']} ({pos['quantity']} {pos['unit']})")
+        print(f"    Источник: {pos['source_drawing']}, стр. {pos['page']}")
+        print(f"    Confidence: {pos['confidence']:.2f}")
+
+if __name__ == "__main__":
+    workflow_b_complete()
+```
+
+---
+
+## Гибридный Workflow (A+B)
+
+### Обзор гибридного Workflow
+
+**Цель:** Максимальная точность через кросс-валидацию между готовым ВВ и чертежами
+
+**Сценарий использования:**
+- Есть готовый ВВ от подрядчика
+- Есть проектные чертежи
+- Нужно проверить соответствие ВВ чертежам
+
+### Блок-схема гибридного Workflow
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    HYBRID WORKFLOW: A + B                           │
+└─────────────────────────────────────────────────────────────────────┘
+
+  ┌──────────────┐    ┌──────────────┐
+  │ Upload ВВ    │    │ Upload       │
+  │ (Workflow A) │    │ Чертежи (B)  │
+  └──────┬───────┘    └──────┬───────┘
+         │                   │
+         ▼                   ▼
+  ┌──────────────┐    ┌──────────────┐
+  │ Parse ВВ     │    │ Analyze      │
+  │ positions    │    │ Drawings     │
+  └──────┬───────┘    └──────┬───────┘
+         │                   │
+         └─────────┬─────────┘
+                   ▼
+         ┌──────────────────┐
+         │ Cross-Validate   │
+         │ (Сравнение)      │
+         └─────────┬────────┘
+                   │
+                   ▼
+         ┌──────────────────┐
+         │ Discrepancy      │
+         │ Report           │
+         │ (Расхождения)    │
+         └─────────┬────────┘
+                   │
+                   ▼
+         ┌──────────────────┐
+         │ Unified Audit    │
+         │ (Общий аудит)    │
+         └─────────┬────────┘
+                   │
+                   ▼
+         ┌──────────────────┐
+         │ Export Report    │
+         └──────────────────┘
+```
+
+### Кросс-валидация
+
+**Проверки:**
+
+1. **Количества:**
+   ```
+   ВВ:       Beton C 25/30 - 10.5 m³
+   Чертежи:  Beton C 25/30 - 15.75 m³
+   → Расхождение: 5.25 m³ (50% разница) ⚠️
+   ```
+
+2. **Коды позиций:**
+   ```
+   ВВ:       121151113 (Beton C 25/30)
+   Чертежи:  121151113 (Beton C 25/30)
+   → Совпадение ✅
+   ```
+
+3. **Недостающие позиции:**
+   ```
+   В ВВ есть, в чертежах нет:
+   - 271354111 (Ocelová výztuž) - возможно, не показана на чертежах
+
+   В чертежах есть, в ВВ нет:
+   - 612312345 (Hydroizolace) - забыли добавить в ВВ ⚠️
+   ```
+
+**Отчет о расхождениях:**
+
+```json
+{
+  "discrepancies": [
+    {
+      "position_code": "121151113",
+      "description": "Beton C 25/30",
+      "type": "quantity_mismatch",
+      "boq_quantity": 10.5,
+      "drawing_quantity": 15.75,
+      "difference": 5.25,
+      "difference_percent": 50.0,
+      "severity": "high",
+      "recommendation": "Verify calculation from drawings. Possible error in BoQ."
+    },
+    {
+      "position_code": "612312345",
+      "description": "Hydroizolace podkladní",
+      "type": "missing_in_boq",
+      "drawing_quantity": 25.0,
+      "severity": "medium",
+      "recommendation": "Add missing position to BoQ"
+    }
+  ],
+  "summary": {
+    "total_discrepancies": 12,
+    "high_severity": 3,
+    "medium_severity": 7,
+    "low_severity": 2
   }
 }
 ```
 
 ---
 
-### Step 5: Refine & Export
+## Постобработка
 
-**Manual review:**
-- Verify quantities match drawings
-- Adjust positions as needed
-- Add missing details
+### Генерация артефактов
 
-**Export to Excel:**
+После завершения любого workflow можно сгенерировать дополнительные артефакты:
 
-```python
-# (Same as Workflow A)
-url = f"http://localhost:8000/api/artifacts/{project_id}/generated_positions.xlsx"
-
-response = requests.get(url)
-
-with open(f"{project_id}_generated.xlsx", "wb") as f:
-    f.write(response.content)
-```
-
----
-
-## Hybrid Workflow: Combined A+B
-
-**Goal:** Maximum accuracy by cross-validating BoQ against drawings.
-
-**Use Case:** You have both an existing BoQ and drawings, want to verify consistency.
-
----
-
-### Step 1: Upload Both BoQ and Drawings
-
-```python
-url = "http://localhost:8000/api/projects/upload"
-
-files = [
-    ("vykaz_vymer", open("rozpocet.xlsx", "rb")),
-    ("vykresy", open("floor_plan.pdf", "rb"))
-]
-
-data = {
-    "project_name": "Bytový dům Vinohrady",
-    "workflow": "both"  # Enable both workflows
-}
-
-response = requests.post(url, files=files, data=data)
-project_id = response.json()["project_id"]
-```
-
----
-
-### Step 2: Execute Both Workflows
-
-```python
-# Execute Workflow A
-url = "http://localhost:8000/api/workflow/a/execute"
-payload = {"project_id": project_id, "action": "execute"}
-requests.post(url, json=payload)
-
-# Execute Workflow B
-url = "http://localhost:8000/api/workflow/b/execute"
-payload = {"project_id": project_id, "action": "execute"}
-requests.post(url, json=payload)
-```
-
----
-
-### Step 3: Cross-Validate Results
-
-**Compare positions:**
-
-```python
-# Get Workflow A results
-url = "http://localhost:8000/api/workflow/a/positions"
-response_a = requests.post(url, json={"project_id": project_id})
-positions_a = response_a.json()["data"]["positions"]
-
-# Get Workflow B results
-url = "http://localhost:8000/api/workflow/b/positions"
-response_b = requests.post(url, json={"project_id": project_id})
-positions_b = response_b.json()["data"]["positions"]
-
-# Compare
-print(f"BoQ positions: {len(positions_a)}")
-print(f"Generated positions: {len(positions_b)}")
-
-# Find discrepancies
-boq_codes = {p["code"] for p in positions_a}
-gen_codes = {p["code"] for p in positions_b}
-
-missing_in_boq = gen_codes - boq_codes
-missing_in_drawings = boq_codes - gen_codes
-
-if missing_in_boq:
-    print(f"⚠️  Positions in drawings but not in BoQ: {missing_in_boq}")
-
-if missing_in_drawings:
-    print(f"⚠️  Positions in BoQ but not in drawings: {missing_in_drawings}")
-```
-
----
-
-## Post-Processing
-
-### Export to Other Formats
-
-**Excel (default):**
-```python
-url = f"{BASE_URL}/api/artifacts/{project_id}/audit_report.xlsx"
-response = requests.get(url)
-# Save XLSX
-```
-
-**JSON (programmatic):**
-```python
-url = f"{BASE_URL}/api/artifacts/{project_id}/audit_results.json"
-response = requests.get(url)
-data = response.json()
-# Process JSON
-```
-
-**CSV (for spreadsheets):**
-```python
-import pandas as pd
-
-# Get positions
-positions = get_positions(project_id)
-
-# Convert to DataFrame
-df = pd.DataFrame(positions)
-
-# Export to CSV
-df.to_csv(f"{project_id}_positions.csv", index=False)
-```
-
----
-
-### Integration with Other Systems
-
-**ERP Integration:**
-
-```python
-# Export to SAP/Oracle format
-positions = get_positions(project_id)
-
-erp_data = []
-for pos in positions:
-    erp_data.append({
-        "MATERIAL_CODE": pos["code"],
-        "MATERIAL_DESC": pos["description"],
-        "QUANTITY": pos["quantity"],
-        "UOM": pos["unit"],
-        "PRICE": pos["unit_price"],
-        "CURRENCY": "CZK"
-    })
-
-# Upload to ERP via API
-```
-
-**Project Management Tools:**
-
-```python
-# Export to MS Project / Primavera format
-# ... custom export logic ...
-```
-
----
-
-## Troubleshooting
-
-### Common Issues
-
-#### 1. Parsing Errors
-
-**Problem:** "Failed to parse XML: Invalid UNIXML format"
-
-**Solutions:**
-- Verify XML is valid UNIXML format
-- Check for encoding issues (must be UTF-8)
-- Ensure `<unixml>` root element exists
-
-#### 2. Low Confidence Scores
-
-**Problem:** Many AMBER/RED positions
-
-**Solutions:**
-- Ensure position codes match KROS database
-- Add more detailed descriptions
-- Verify unit prices are reasonable
-- Check applicable norms are specified
-
-#### 3. AI Timeout
-
-**Problem:** "Request timeout after 120s"
-
-**Solutions:**
-- Increase timeout in config: `CLAUDE_TIMEOUT=300`
-- Process in smaller batches
-- Check Claude API status
-
-#### 4. Excel Export Fails
-
-**Problem:** "Failed to save artifact: Permission denied"
-
-**Solutions:**
-- Check `data/processed/` directory permissions
-- Ensure disk space available
-- Close Excel file if open
-
-#### 5. Drawing Analysis Fails (Workflow B)
-
-**Problem:** "GPT-4 Vision: Image too large"
-
-**Solutions:**
-- Compress images/PDFs before upload
-- Ensure drawings are < 50 MB
-- Use higher quality scans (not photos)
-
----
-
-### Performance Optimization
-
-**For large BoQs (500+ positions):**
-
-1. **Batch processing:**
-```python
-# Process in batches of 50
-for i in range(0, len(positions), 50):
-    batch = positions[i:i+50]
-    # Process batch
-```
-
-2. **Parallel execution:**
-```python
-# Enable parallel processing
-# Set in .env: ENABLE_PARALLEL_AUDIT=true
-```
-
-3. **Cache warm-up:**
-```python
-# Pre-load KROS database
-# Ensures faster matching
-```
-
----
-
-### Debug Mode
-
-**Enable verbose logging:**
+**1. Технологическая карта (Tech Card)**
 
 ```bash
-# In .env
-LOG_LEVEL=DEBUG
-ENABLE_DETAILED_LOGGING=true
+curl -X POST "http://localhost:8000/api/workflow/a/tech-card" \
+  -H "Content-Type: application/json" \
+  -d '{"project_id": "proj_123", "position_id": "1"}'
 ```
 
-**Check logs:**
+**2. Ведомость ресурсов (Resource Sheet)**
 
 ```bash
-tail -f logs/app.log
+curl -X POST "http://localhost:8000/api/workflow/a/resource-sheet" \
+  -H "Content-Type: application/json" \
+  -d '{"project_id": "proj_123", "position_id": "1"}'
 ```
 
+**3. Спецификация материалов**
+
+```bash
+curl -X POST "http://localhost:8000/api/workflow/a/materials" \
+  -H "Content-Type: application/json" \
+  -d '{"project_id": "proj_123", "position_id": "1"}'
+```
+
+**API Reference:** [Workflow A Artifacts](API.md#workflow-a-endpoints)
+
 ---
 
-## Related Documentation
+## Решение проблем
 
-- [README.md](../README.md) - Project overview
-- [ARCHITECTURE.md](../ARCHITECTURE.md) - System architecture
-- [API.md](API.md) - API reference
-- [CONFIG.md](CONFIG.md) - Configuration reference
-- [TESTS.md](TESTS.md) - Testing guide
+### Проблемы Workflow A
+
+#### 1. Ошибка парсинга
+
+**Проблема:**
+```
+"Failed to parse XML: Invalid UNIXML format"
+```
+
+**Решение:**
+1. Проверить, что XML файл валидный
+2. Убедиться, что есть корневой элемент `<unixml>`
+3. Проверить кодировку (должна быть UTF-8)
+4. Попробовать загрузить Excel версию вместо XML
+
+#### 2. Низкие confidence scores
+
+**Проблема:**
+Много позиций с classification = AMBER/RED
+
+**Решение:**
+1. Проверить соответствие кодов позиций базе KROS
+2. Добавить более детальные описания позиций
+3. Указать корректные единицы измерения
+4. Проверить разумность цен
+
+#### 3. Timeout AI запросов
+
+**Проблема:**
+```
+"Claude API error: Request timeout after 120s"
+```
+
+**Решение:**
+```bash
+# В .env увеличить timeout
+CLAUDE_TIMEOUT=300
+```
+
+### Проблемы Workflow B
+
+#### 1. Низкое качество анализа чертежей
+
+**Проблема:**
+GPT-4 Vision не может прочитать размеры
+
+**Решение:**
+1. Использовать чертежи высокого разрешения (300+ DPI)
+2. Убедиться, что размеры четко видны
+3. Использовать PDF вместо отсканированных изображений
+4. Убедиться, что есть масштаб на чертеже
+
+#### 2. Неверные расчеты
+
+**Проблема:**
+Объемы/площади рассчитаны неверно
+
+**Решение:**
+1. Проверить, что GPT-4 правильно распознал размеры
+2. Вручную проверить формулы в `calculations.json`
+3. Сравнить с проектной документацией
+
+#### 3. Высокая стоимость
+
+**Проблема:**
+GPT-4 Vision дорого стоит при большом количестве чертежей
+
+**Решение:**
+1. Использовать только ключевые чертежи (планы, разрезы)
+2. Избегать дублирующих видов
+3. Предобработать PDF: убрать лишние страницы
+4. Рассмотреть гибридный подход: часть позиций вручную
 
 ---
 
-**Last updated:** 2025-01-26
-**Maintainer:** Development Team
-**Questions?** Open an issue on GitHub
+## Связанные документы
+
+- **[API.md](API.md)** - Полная документация API endpoints
+- **[SYSTEM_DESIGN.md](SYSTEM_DESIGN.md)** - Техническая спецификация
+- **[ARCHITECTURE.md](../ARCHITECTURE.md)** - Архитектура системы
+- **[CONFIG.md](CONFIG.md)** - Справочник конфигурации
+- **[TESTS.md](TESTS.md)** - Руководство по тестированию
+
+---
+
+**Последнее обновление:** 2025-01-26
+**Поддержка:** Development Team
+**Вопросы?** Откройте issue на GitHub
