@@ -199,3 +199,4 @@ site/
 # Package files
 *.tar.gz
 *.zip
+.claude/
