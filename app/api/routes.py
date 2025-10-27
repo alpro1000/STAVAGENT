@@ -23,6 +23,10 @@ from app.models.project import (
     ProjectStatus,
     ProjectResponse,
     ProjectStatusResponse,
+    WorkflowResultResponse,
+    ProjectListResponse,
+    ProjectSummary,
+    ProjectFilesResponse,
     WorkflowType,
     FileMetadata,
 )
@@ -646,43 +650,34 @@ async def upload_project(
                     project_name
                 )
         
-        # ✅ Return project_id in response
-        return {
-            "success": True,
-            "project_id": project_id,
-            "project_name": project_name,
-            "workflow": workflow,
-            "status": normalize_status(ProjectStatus.UPLOADED),
-            "uploaded_at": datetime.now().isoformat(),
-            "progress": 0,
-            "files_uploaded": {
+        # ✅ Return project_id in response - using Pydantic model
+        return ProjectResponse(
+            success=True,
+            project_id=project_id,
+            project_name=project_name,
+            name=project_name,  # Alternative field name
+            workflow=workflow,
+            status=normalize_status(ProjectStatus.UPLOADED),
+            uploaded_at=datetime.now().isoformat(),
+            created_at=datetime.now().isoformat(),
+            progress=0,
+            files_uploaded={
                 "vykaz_vymer": vykaz_vymer_meta is not None,
                 "vykresy": len(vykresy_files),
                 "rozpocet": rozpocet_meta is not None,
                 "dokumentace": len(dokumentace_files),
                 "zmeny": len(zmeny_files)
             },
-            "enrichment_enabled": enable_enrichment,  # ✨ NEW
-            "files": safe_files,
-            "message": f"Project uploaded successfully. ID: {project_id}",
-            "diagnostics": project_store[project_id].get("diagnostics", {}),
-            "positions_total": 0,
-            "positions_raw": 0,
-            "positions_skipped": 0,
-            "drawing_specs_detected": 0,
-            "drawing_page_states": {
-                "status": "pending",
-                "good_text": 0,
-                "encoded_text": 0,
-                "image_only": 0,
-            },
-            "drawing_text_recovery": {
-                "used_pdfium": 0,
-                "used_poppler": 0,
-                "ocr_pages": [],
-            },
-            "workflow_selection": project_store[project_id].get("workflow_selection", {}),
-        }
+            enrichment_enabled=enable_enrichment,  # ✨ NEW
+            files=safe_files,
+            message=f"Project uploaded successfully. ID: {project_id}",
+            positions_total=0,
+            total_positions=0,
+            positions_processed=0,
+            green_count=0,
+            amber_count=0,
+            red_count=0
+        )
     
     except HTTPException:
         raise
@@ -694,113 +689,114 @@ async def upload_project(
 @router.get("/api/projects/{project_id}/status", response_model=ProjectStatusResponse)
 async def get_project_status(project_id: str):
     """Get project processing status"""
-    
+
     if project_id not in project_store:
         raise HTTPException(404, f"Project {project_id} not found")
-    
+
     project = project_store[project_id]
 
-    return {
-        "project_id": project_id,
-        "project_name": project["project_name"],
-        "status": normalize_status(project["status"]),
-        "workflow": project["workflow"],
-        "created_at": project["created_at"],
-        "updated_at": project["updated_at"],
-        "progress": project.get("progress", 0),
-        "positions_total": project.get("positions_total", 0),
-        "positions_processed": project.get("positions_processed", 0),
-        "positions_raw": project.get("positions_raw", 0),
-        "positions_skipped": project.get("positions_skipped", 0),
-        "green_count": project.get("green_count", 0),
-        "amber_count": project.get("amber_count", 0),
-        "red_count": project.get("red_count", 0),
-        "diagnostics": project.get("diagnostics", {}),
-        "message": project.get("message"),
-        "error": project.get("error"),
-        "error_message": project.get("error"),
-        "enrichment_enabled": project.get("enable_enrichment"),
-        "workflow_selection": project.get("workflow_selection", {}),
-    }
+    return ProjectStatusResponse(
+        project_id=project_id,
+        project_name=project["project_name"],
+        status=normalize_status(project["status"]),
+        workflow=project["workflow"],
+        created_at=project.get("created_at"),
+        updated_at=project.get("updated_at"),
+        uploaded_at=project.get("created_at"),
+        processed_at=project.get("processed_at"),
+        audit_completed_at=project.get("audit_completed_at"),
+        progress=project.get("progress", 0),
+        positions_total=project.get("positions_total", 0),
+        positions_processed=project.get("positions_processed", 0),
+        green_count=project.get("green_count", 0),
+        amber_count=project.get("amber_count", 0),
+        red_count=project.get("red_count", 0),
+        message=project.get("message"),
+        error_message=project.get("error"),
+        enrichment_enabled=project.get("enable_enrichment")
+    )
 
 
-@router.get("/api/projects/{project_id}/results")
+@router.get("/api/projects/{project_id}/results", response_model=WorkflowResultResponse)
 async def get_project_results(project_id: str):
     """
     Get detailed project results including enriched positions
-    
+
     ✨ NEW: Returns enriched positions with technical specifications
     """
-    
+
     if project_id not in project_store:
         raise HTTPException(404, f"Project {project_id} not found")
-    
+
     project = project_store[project_id]
-    
+
     status = project["status"]
 
     if status != ProjectStatus.COMPLETED:
-        return {
-            "project_id": project_id,
-            "status": normalize_status(status),
-            "message": "Project is still processing",
-        }
+        return WorkflowResultResponse(
+            project_id=project_id,
+            project_name=project.get("project_name", ""),
+            workflow=project.get("workflow", WorkflowType.A),
+            status=normalize_status(status),
+            enrichment_enabled=project.get("enable_enrichment", False),
+            summary="Project is still processing"
+        )
 
     audit_payload = project.get("audit_results", {})
 
-    return {
-        "project_id": project_id,
-        "project_name": project["project_name"],
-        "workflow": project["workflow"],
-        "status": normalize_status(status),
-        "completed_at": project.get("completed_at"),
-        "enrichment_enabled": project.get("enable_enrichment", False),
-        "green_count": project.get("green_count", 0),
-        "amber_count": project.get("amber_count", 0),
-        "red_count": project.get("red_count", 0),
-        "audit_results": audit_payload,
-        "positions_preview": audit_payload.get("preview", []),
-        "summary": project.get("summary", ""),
-        "diagnostics": project.get("diagnostics", {}),
-    }
+    return WorkflowResultResponse(
+        project_id=project_id,
+        project_name=project["project_name"],
+        workflow=project["workflow"],
+        status=normalize_status(status),
+        completed_at=project.get("completed_at"),
+        enrichment_enabled=project.get("enable_enrichment", False),
+        green_count=project.get("green_count", 0),
+        amber_count=project.get("amber_count", 0),
+        red_count=project.get("red_count", 0),
+        audit_results=audit_payload,
+        positions_preview=audit_payload.get("preview", []),
+        summary=project.get("summary", ""),
+        diagnostics=project.get("diagnostics", {})
+    )
 
 
-@router.get("/api/projects")
+@router.get("/api/projects", response_model=ProjectListResponse)
 async def list_projects(
     limit: int = Query(default=50, le=100),
     offset: int = Query(default=0, ge=0)
 ):
     """List all projects with pagination"""
-    
+
     all_projects = list(project_store.values())
     total = len(all_projects)
-    
+
     # Sort by created_at desc
     all_projects.sort(key=lambda x: x['created_at'], reverse=True)
-    
+
     # Paginate
     projects = all_projects[offset:offset + limit]
-    
-    return {
-        "projects": [
-            {
-                "project_id": p["project_id"],
-                "project_name": p["project_name"],
-                "workflow": p["workflow"],
-                "status": normalize_status(p["status"]),
-                "enrichment_enabled": p.get("enable_enrichment", False),
-                "created_at": p["created_at"],
-                "positions_count": p.get("positions_total", 0)
-            }
+
+    return ProjectListResponse(
+        projects=[
+            ProjectSummary(
+                project_id=p["project_id"],
+                project_name=p["project_name"],
+                workflow=p["workflow"],
+                status=normalize_status(p["status"]),
+                enrichment_enabled=p.get("enable_enrichment", False),
+                created_at=p["created_at"],
+                positions_count=p.get("positions_total", 0)
+            )
             for p in projects
         ],
-        "total": total,
-        "limit": limit,
-        "offset": offset
-    }
+        total=total,
+        limit=limit,
+        offset=offset
+    )
 
 
-@router.get("/api/projects/{project_id}/files")
+@router.get("/api/projects/{project_id}/files", response_model=ProjectFilesResponse)
 async def list_project_files(project_id: str):
     """List uploaded files with safe metadata"""
 
@@ -810,12 +806,12 @@ async def list_project_files(project_id: str):
     project = project_store[project_id]
     files_metadata = project.get("files_metadata", [])
 
-    return {
-        "project_id": project_id,
-        "project_name": project.get("project_name"),
-        "total_files": len(files_metadata),
-        "files": files_metadata,
-    }
+    return ProjectFilesResponse(
+        project_id=project_id,
+        project_name=project.get("project_name"),
+        total_files=len(files_metadata),
+        files=files_metadata
+    )
 
 
 @router.get("/api/projects/{project_id}/files/{file_id}/download")

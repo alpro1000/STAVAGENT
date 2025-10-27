@@ -326,6 +326,58 @@ class SuccessResponse(BaseModel):
     timestamp: datetime = Field(default_factory=datetime.utcnow)
 
 
+class WorkflowResultResponse(BaseModel):
+    """Response model for project results with audit data"""
+    project_id: str
+    project_name: str
+    workflow: Union[WorkflowType, str]
+    status: Union[ProjectStatus, str]
+    completed_at: Optional[Union[datetime, str]] = None
+    enrichment_enabled: bool = False
+    green_count: int = 0
+    amber_count: int = 0
+    red_count: int = 0
+    audit_results: Dict[str, Any] = Field(default_factory=dict)
+    positions_preview: List[Dict[str, Any]] = Field(default_factory=list)
+    summary: str = ""
+    diagnostics: Dict[str, Any] = Field(default_factory=dict)
+
+    model_config = ConfigDict(extra="allow")
+
+
+class ProjectSummary(BaseModel):
+    """Summary information for a single project in list"""
+    project_id: str
+    project_name: str
+    workflow: Union[WorkflowType, str]
+    status: Union[ProjectStatus, str]
+    enrichment_enabled: bool = False
+    created_at: Union[datetime, str]
+    positions_count: int = 0
+
+    model_config = ConfigDict(extra="allow")
+
+
+class ProjectListResponse(BaseModel):
+    """Response model for list of projects with pagination"""
+    projects: List[ProjectSummary]
+    total: int
+    limit: int
+    offset: int
+
+    model_config = ConfigDict(extra="allow")
+
+
+class ProjectFilesResponse(BaseModel):
+    """Response model for project files list"""
+    project_id: str
+    project_name: Optional[str] = None
+    total_files: int = 0
+    files: List[Dict[str, Any]] = Field(default_factory=list)
+
+    model_config = ConfigDict(extra="allow")
+
+
 # =============================================================================
 # HELPER FUNCTIONS
 # =============================================================================
