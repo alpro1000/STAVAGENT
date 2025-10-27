@@ -697,7 +697,7 @@ def get_knowledge_base() -> KnowledgeBaseLoader:
     return _kb_instance
 kb_loader = None  # Будет инициализирован при первом вызове
 
-def init_kb_loader():
+def init_kb_loader() -> KnowledgeBaseLoader:
     """Инициализация kb_loader"""
     global kb_loader
     if kb_loader is None:
@@ -706,7 +706,7 @@ def init_kb_loader():
 
 # === ИСПОЛЬЗОВАНИЕ В КОДЕ ===
 
-def example_usage():
+def example_usage() -> None:
     """Примеры как использовать в других сервисах"""
     
     # 1. Получить KB

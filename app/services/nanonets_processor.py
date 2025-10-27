@@ -328,7 +328,7 @@ class NanonetsProcessor:
 
 # === ИСПОЛЬЗОВАНИЕ ===
 
-def example_usage():
+def example_usage() -> None:
     """Примеры использования"""
     
     from app.core.config import settings
