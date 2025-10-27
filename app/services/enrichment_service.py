@@ -4,7 +4,7 @@ Position Enrichment Service
 """
 import json
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from app.core.claude_client import ClaudeClient
@@ -61,7 +61,7 @@ class PositionEnricher:
 
         # ФИНАЛ: Добавить метаданные обогащения
         enriched["enrichment"] = {
-            "enriched_at": datetime.utcnow().isoformat() + "Z",
+            "enriched_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "steps_completed": 7,
             "confidence": self._calculate_confidence(enriched),
             "warnings": self._collect_warnings(enriched),

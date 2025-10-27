@@ -3,7 +3,7 @@ Chat API Routes
 Interactive conversational interface with AI agents
 """
 from typing import Any, Dict, Optional, Tuple
-from datetime import datetime
+from datetime import datetime, timezone
 import logging
 
 from fastapi import APIRouter, HTTPException
@@ -23,7 +23,7 @@ router = APIRouter(prefix="/api/chat", tags=["chat"])
 
 
 def _current_timestamp() -> str:
-    return datetime.utcnow().isoformat() + "Z"
+    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
 def _artifact_metadata(project: Dict[str, Any], generated_by: str = "system") -> Dict[str, Any]:

@@ -309,8 +309,8 @@ Output must be valid JSON with all required fields.
     
     def _get_timestamp(self) -> str:
         """Get current timestamp"""
-        from datetime import datetime
-        return datetime.utcnow().isoformat()
+        from datetime import datetime, timezone
+        return datetime.now(timezone.utc).isoformat()
     
     def _load_kros_database(self) -> List[Dict]:
         """Load local KROS database"""

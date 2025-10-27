@@ -5,6 +5,7 @@ import json
 import logging
 from pathlib import Path
 from typing import Any, Dict, Optional
+from datetime import datetime, timezone
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
@@ -144,7 +145,7 @@ def _generate_tech_card_artifact(position: Dict[str, Any], position_id: str) -> 
             "workflow_notes": position.get("generation_notes", []),
         },
         "metadata": {
-            "generated_at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
+            "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "source": "workflow_b_generation",
         }
     }
@@ -172,7 +173,7 @@ def _generate_resource_sheet_artifact(position: Dict[str, Any], position_id: str
             "workflow_notes": position.get("generation_notes", []),
         },
         "metadata": {
-            "generated_at": __import__("datetime").datetime.utcnow().isoformat() + "Z",
+            "generated_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
             "source": "workflow_b_generation",
         }
     }

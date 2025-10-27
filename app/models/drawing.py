@@ -3,7 +3,7 @@ Pydantic models for Construction Drawings (Stavební výkresy)
 """
 from typing import Optional, List
 from pydantic import BaseModel, Field
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class DrawingUpload(BaseModel):
@@ -50,7 +50,7 @@ class DrawingAnalysisResult(BaseModel):
     drawing_id: str = Field(..., description="ID výkresu")
     project_id: str = Field(..., description="ID projektu")
     file_name: str = Field(..., description="Název souboru")
-    analysis_timestamp: datetime = Field(default_factory=datetime.utcnow)
+    analysis_timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     
     # OCR Results
     text_extracted: List[str] = Field(default_factory=list, description="Extrahovaný text")

@@ -7,7 +7,7 @@ from sqlalchemy import Column, Integer, String, Float, DateTime, Text, Enum as S
 from sqlalchemy.ext.declarative import declarative_base
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List, Dict, Any, Union
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 
 from app.models.position import (
@@ -85,7 +85,7 @@ class Project(Base):
     audit_report_path = Column(String(1000), nullable=True)
     
     # Timestamps
-    uploaded_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    uploaded_at = Column(DateTime, default=lambda: datetime.now(timezone.utc), nullable=False)
     processed_at = Column(DateTime, nullable=True)
     audit_completed_at = Column(DateTime, nullable=True)
     
@@ -315,7 +315,7 @@ class ErrorResponse(BaseModel):
     error: str = Field(..., description="Error type")
     message: str = Field(..., description="Error message")
     detail: Optional[str] = Field(None, description="Detailed error information")
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class SuccessResponse(BaseModel):
@@ -323,7 +323,7 @@ class SuccessResponse(BaseModel):
     success: bool = Field(True, description="Success flag")
     message: str = Field(..., description="Success message")
     data: Optional[Dict[str, Any]] = Field(None, description="Optional response data")
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class WorkflowResultResponse(BaseModel):
