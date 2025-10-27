@@ -47,7 +47,7 @@ class ClaudeClient:
             with open(prompt_path, 'r', encoding='utf-8') as f:
                 return f.read()
         except Exception as e:
-            logger.error(f"Failed to load prompt from {prompt_path}: {e}")
+            logger.exception("Failed to load prompt from %s", prompt_path)
             raise
     
     def call(
@@ -100,7 +100,7 @@ class ClaudeClient:
                 return {"raw_text": result_text}
         
         except Exception as e:
-            logger.error(f"Claude API call failed: {e}")
+            logger.exception("Claude API call failed")
             raise
     
     def parse_excel(
@@ -154,7 +154,7 @@ class ClaudeClient:
             return result
         
         except Exception as e:
-            logger.error(f"Failed to parse Excel: {e}")
+            logger.exception("Failed to parse Excel")
             raise
     
     def parse_xml(
@@ -241,7 +241,7 @@ class ClaudeClient:
             return result
         
         except Exception as e:
-            logger.error(f"Failed to parse XML: {e}")
+            logger.exception("Failed to parse XML")
             raise
     
     def parse_pdf(
@@ -316,7 +316,7 @@ class ClaudeClient:
             return result
         
         except Exception as e:
-            logger.error(f"Failed to parse PDF: {e}")
+            logger.exception("Failed to parse PDF")
             raise
     
     def audit_position(
@@ -356,7 +356,7 @@ class ClaudeClient:
             return result
         
         except Exception as e:
-            logger.error(f"Failed to audit position: {e}")
+            logger.exception("Failed to audit position")
             raise
     
     def analyze_image(
@@ -427,5 +427,5 @@ class ClaudeClient:
                 return {"raw_text": result_text}
         
         except Exception as e:
-            logger.error(f"Failed to analyze image: {e}")
+            logger.exception("Failed to analyze image")
             raise

@@ -48,7 +48,7 @@ class GPT4VisionClient:
             with open(prompt_path, 'r', encoding='utf-8') as f:
                 return f.read()
         except Exception as e:
-            logger.error(f"Failed to load prompt from {prompt_path}: {e}")
+            logger.exception("Failed to load prompt from %s", prompt_path)
             raise
     
     def _encode_image(self, image_path: Path) -> str:
@@ -151,7 +151,7 @@ class GPT4VisionClient:
             return result
         
         except Exception as e:
-            logger.error(f"OCR analysis failed: {e}")
+            logger.exception("OCR analysis failed")
             raise
     
     def analyze_drawing_with_vision(
@@ -221,7 +221,7 @@ class GPT4VisionClient:
             return result
         
         except Exception as e:
-            logger.error(f"Vision analysis failed: {e}")
+            logger.exception("Vision analysis failed")
             raise
     
     def analyze_drawing_comprehensive(
@@ -257,7 +257,7 @@ class GPT4VisionClient:
             return combined_result
         
         except Exception as e:
-            logger.error(f"Comprehensive analysis failed: {e}")
+            logger.exception("Comprehensive analysis failed")
             return {
                 "file_name": image_path.name,
                 "analysis_type": "comprehensive",
