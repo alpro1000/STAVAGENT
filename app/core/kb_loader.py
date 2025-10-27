@@ -9,6 +9,7 @@ import json
 import logging
 import re
 from datetime import datetime
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 import xml.etree.ElementTree as ET

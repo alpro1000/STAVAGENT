@@ -105,12 +105,13 @@ class PositionEnricher:
     async def _enrich_materials(self, position: Dict[str, Any]) -> Dict[str, Any]:
         """STEP 2: Найти материалы и их характеристики."""
         description = position.get("description", "")
+        description_lower = description.lower()  # Cache lowercased version
 
         logger.info("🧱 Analyzing materials in: %s", description[:50])
 
         materials: List[Dict[str, Any]] = []
 
-        if "beton" in description.lower() or "c30" in description.lower():
+        if "beton" in description_lower or "c30" in description_lower:
             beton_match = self.kb.search_material("beton", description)
             if beton_match:
                 materials.append(
@@ -126,7 +127,7 @@ class PositionEnricher:
                     }
                 )
 
-        if "armatur" in description.lower() or "b500" in description.lower():
+        if "armatur" in description_lower or "b500" in description_lower:
             armor_match = self.kb.search_material("armatura", description)
             if armor_match:
                 materials.append(
@@ -140,7 +141,7 @@ class PositionEnricher:
                     }
                 )
 
-        if "oppalubk" in description.lower() or "bedeni" in description.lower():
+        if "oppalubk" in description_lower or "bedeni" in description_lower:
             form_match = self.kb.search_material("oppalubka", description)
             if form_match:
                 materials.append(
