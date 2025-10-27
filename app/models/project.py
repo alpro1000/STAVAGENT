@@ -339,7 +339,7 @@ class WorkflowResultResponse(BaseModel):
     red_count: int = 0
     audit_results: Dict[str, Any] = Field(default_factory=dict)
     positions_preview: List[Dict[str, Any]] = Field(default_factory=list)
-    summary: str = ""
+    summary: Dict[str, Any] | None = None
     diagnostics: Dict[str, Any] = Field(default_factory=dict)
 
     model_config = ConfigDict(extra="allow")

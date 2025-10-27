@@ -732,14 +732,24 @@ async def get_project_results(project_id: str):
 
     status = project["status"]
 
+    summary_payload = project.get("summary")
+    if not isinstance(summary_payload, dict):
+        summary_payload = {
+            "positions_total": project.get("positions_total", 0),
+            "green": project.get("green_count", 0),
+            "amber": project.get("amber_count", 0),
+            "red": project.get("red_count", 0),
+        }
+
     if status != ProjectStatus.COMPLETED:
+        summary_payload.setdefault("message", "Project is still processing")
         return WorkflowResultResponse(
             project_id=project_id,
             project_name=project.get("project_name", ""),
             workflow=project.get("workflow", WorkflowType.A),
             status=normalize_status(status),
             enrichment_enabled=project.get("enable_enrichment", False),
-            summary="Project is still processing"
+            summary=summary_payload
         )
 
     audit_payload = project.get("audit_results", {})
@@ -756,7 +766,7 @@ async def get_project_results(project_id: str):
         red_count=project.get("red_count", 0),
         audit_results=audit_payload,
         positions_preview=audit_payload.get("preview", []),
-        summary=project.get("summary", ""),
+        summary=summary_payload,
         diagnostics=project.get("diagnostics", {})
     )
 
