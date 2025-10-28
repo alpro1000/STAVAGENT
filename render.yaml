@@ -88,8 +88,11 @@ services:
     name: stav-agent
     env: static
     region: frankfurt
-    buildCommand: echo "No build needed for static site"
-    staticPublishPath: ./web
+    buildCommand: cd stav-agent && npm install && npm run build
+    staticPublishPath: ./stav-agent/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://concrete-agent.onrender.com
     routes:
       - type: rewrite
         source: /*
