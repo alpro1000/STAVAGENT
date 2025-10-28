@@ -176,16 +176,34 @@ export default function ChatPage() {
       const quickAction = QUICK_ACTIONS.find(
         (item) => item.apiAction === actionType || item.id === actionType
       );
+
+      if (!quickAction) return;
+
+      // Handle prompt-type buttons (show examples, don't call API)
+      if (quickAction.type === 'prompt') {
+        addMessage({
+          type: 'system',
+          text: quickAction.promptMessage,
+        });
+        if (quickAction.examples && quickAction.examples.length > 0) {
+          const examplesText = quickAction.examples
+            .map((ex, i) => `${i + 1}. "${ex}"`)
+            .join('\n');
+          addMessage({
+            type: 'system',
+            text: `Příklady:\n${examplesText}`,
+          });
+        }
+        return;
+      }
+
+      // Handle action-type buttons (call API immediately)
       const label = quickAction?.label || actionType;
       addMessage({
         type: 'user',
         text: `Akce: ${label}`,
       });
-      if (quickAction) {
-        performAction(projectId, { ...quickAction, label });
-      } else {
-        performAction(projectId, { action: actionType, label });
-      }
+      performAction(projectId, { ...quickAction, label });
     },
     [addMessage, currentProject, performAction, isBusy]
   );

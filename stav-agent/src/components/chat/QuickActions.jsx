@@ -4,7 +4,9 @@ import { QUICK_ACTIONS } from '../../utils/constants';
 export default function QuickActions({ onAction, isLoading }) {
   const handleClick = (action) => {
     if (!isLoading && onAction) {
-      onAction(action.apiAction);
+      // For prompt-type, use id; for action-type, use apiAction
+      const actionKey = action.type === 'prompt' ? action.id : action.apiAction;
+      onAction(actionKey);
     }
   };
 
@@ -28,7 +30,7 @@ export default function QuickActions({ onAction, isLoading }) {
       </div>
       {/* Подсказка для новичков */}
       <div className="text-xs text-gray-500 mt-2 px-2">
-        💡 Pro analýzu pozice napište: "Technická karta 123" nebo "Analýza pozice 45.3"
+        💡 Klikněte na tlačítko pro možnosti nebo zadejte přímo: "Technická karta 123"
       </div>
     </div>
   );
