@@ -3,7 +3,6 @@ Chat API Routes
 Interactive conversational interface with AI agents
 """
 from typing import Any, Dict, Optional, Tuple
-from datetime import datetime, timezone
 import logging
 
 from fastapi import APIRouter, HTTPException
@@ -11,6 +10,7 @@ from pydantic import BaseModel, Field
 
 from app.state.project_store import project_store
 from app.models.project import ProjectStatus
+from app.utils.datetime_utils import get_utc_timestamp_iso
 
 logger = logging.getLogger(__name__)
 
@@ -22,13 +22,9 @@ router = APIRouter(prefix="/api/chat", tags=["chat"])
 # ============================================================================
 
 
-def _current_timestamp() -> str:
-    return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
-
-
 def _artifact_metadata(project: Dict[str, Any], generated_by: str = "system") -> Dict[str, Any]:
     return {
-        "generated_at": _current_timestamp(),
+        "generated_at": get_utc_timestamp_iso(),
         "project_id": project.get("project_id") or project.get("id"),
         "project_name": project.get("project_name") or project.get("name"),
         "generated_by": generated_by,

@@ -3,12 +3,13 @@ API Routes for Agents
 Endpoints for agent management and execution
 """
 from typing import Dict, Any, List, Optional
-from datetime import datetime, timezone
 import logging
 import uuid
 
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel, Field
+
+from app.utils.datetime_utils import get_utc_timestamp_iso
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/api/agents", tags=["agents"])
@@ -203,7 +204,7 @@ async def execute_agent(
 
     # Generate execution ID
     execution_id = f"exec_{uuid.uuid4().hex[:12]}"
-    started_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+    started_at = get_utc_timestamp_iso()
 
     logger.info(f"📋 Execution ID: {execution_id}")
     logger.info(f"📋 Agent: {agent.name}")
@@ -218,7 +219,7 @@ async def execute_agent(
             options=request.options,
         )
 
-        completed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        completed_at = get_utc_timestamp_iso()
 
         logger.info(f"✅ Agent executed successfully: {execution_id}")
 
@@ -235,7 +236,7 @@ async def execute_agent(
     except Exception as e:
         logger.error(f"❌ Agent execution failed: {str(e)}", exc_info=True)
 
-        completed_at = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+        completed_at = get_utc_timestamp_iso()
 
         return AgentExecuteResponse(
             execution_id=execution_id,
