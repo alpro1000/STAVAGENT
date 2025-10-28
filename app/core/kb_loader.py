@@ -41,7 +41,8 @@ class KnowledgeBaseLoader:
         "B5_tech_cards",
         "B6_research_papers",
         "B7_regulations",
-        "B8_company_specific"
+        "B8_company_specific",
+        "B9_Equipment_Specs"
     ]
     
     def __init__(self, kb_dir: Path):
