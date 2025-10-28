@@ -31,6 +31,7 @@ from app.models.project import (
     FileMetadata,
 )
 from app.services.workflow_selector import select
+from app.utils.datetime_utils import get_utc_timestamp_iso
 
 
 def normalize_status(status: Union[ProjectStatus, str]) -> str:
@@ -683,6 +684,111 @@ async def upload_project(
         raise
     except Exception as e:
         logger.error(f"❌ Upload error: {str(e)}", exc_info=True)
+        raise HTTPException(500, f"Upload failed: {str(e)}")
+
+
+@router.post("/api/upload-to-project", response_model=ProjectResponse)
+async def upload_files_to_project(
+    background_tasks: BackgroundTasks,
+    project_id: str = Query(..., description="Existing project ID"),
+    files: List[UploadFile] = File(..., description="Files to upload"),
+) -> ProjectResponse:
+    """
+    Upload files to an existing project
+
+    Use this endpoint to add files to a project created via POST /api/chat/projects.
+    Files will be automatically categorized by extension:
+    - .xlsx/.xls → vykaz_vymer
+    - .pdf/.dwg/.png/.jpg → vykresy
+    """
+    try:
+        # Check project exists
+        if project_id not in project_store:
+            raise HTTPException(404, f"Project {project_id} not found")
+
+        project = project_store[project_id]
+        workflow = project.get("workflow", "A")
+
+        logger.info(f"📤 Uploading {len(files)} files to project {project_id}")
+
+        # Create project directory
+        project_dir = settings.DATA_DIR / "projects" / project_id
+        project_dir.mkdir(parents=True, exist_ok=True)
+
+        # Save files and categorize
+        saved_files = {}
+        vykaz_file = None
+        drawing_files = []
+
+        for file in files:
+            if not file.filename:
+                continue
+
+            # Save file
+            file_path = project_dir / file.filename
+            content = await file.read()
+            async with aiofiles.open(file_path, 'wb') as f:
+                await f.write(content)
+
+            logger.info(f"✅ Saved: {file.filename} ({len(content)} bytes)")
+
+            # Categorize by extension
+            ext = file.filename.lower().split('.')[-1]
+            file_id = f"{project_id}:file:{file.filename}"
+
+            saved_files[file_id] = {
+                "file_id": file_id,
+                "filename": file.filename,
+                "file_type": "unknown",
+                "size": len(content),
+                "uploaded_at": get_utc_timestamp_iso()
+            }
+
+            if ext in ['xlsx', 'xls']:
+                vykaz_file = file_path
+                saved_files[file_id]["file_type"] = "vykaz_vymer"
+            elif ext in ['pdf', 'dwg', 'png', 'jpg', 'jpeg']:
+                drawing_files.append(file_path)
+                saved_files[file_id]["file_type"] = "vykresy"
+
+        # Update project with files
+        project["files"] = saved_files
+        project["status"] = ProjectStatus.PROCESSING
+        project["message"] = f"Processing {len(files)} files..."
+        project_store[project_id] = project
+
+        # Start workflow processing in background
+        if workflow == "A" and vykaz_file:
+            background_tasks.add_task(
+                _process_workflow_a,
+                project_id,
+                vykaz_file,
+                drawing_files
+            )
+        elif workflow == "B" and drawing_files:
+            background_tasks.add_task(
+                _process_workflow_b,
+                project_id,
+                drawing_files
+            )
+        else:
+            project["status"] = ProjectStatus.FAILED
+            project["message"] = f"Workflow {workflow} requires specific files"
+            project_store[project_id] = project
+
+        return ProjectResponse(
+            success=True,
+            project_id=project_id,
+            project_name=project["project_name"],
+            workflow=workflow,
+            status=ProjectStatus.PROCESSING,
+            message=f"Uploaded {len(files)} files, processing started"
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"❌ Upload to project error: {str(e)}", exc_info=True)
         raise HTTPException(500, f"Upload failed: {str(e)}")
 
 

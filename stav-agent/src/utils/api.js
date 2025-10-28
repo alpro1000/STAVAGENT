@@ -37,7 +37,7 @@ export const uploadFiles = (projectId, files, onProgress) => {
   const formData = new FormData();
   files.forEach((file) => formData.append('files', file));
 
-  return apiClient.post(`/api/upload?project_id=${projectId}`, formData, {
+  return apiClient.post(`/api/upload-to-project?project_id=${projectId}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     onUploadProgress: (event) => {
       if (!onProgress || !event.total) return;
