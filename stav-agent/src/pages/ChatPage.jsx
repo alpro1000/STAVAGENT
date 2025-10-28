@@ -3,6 +3,7 @@ import { useAppStore } from '../store/appStore';
 import { useChat } from '../hooks/useChat';
 import {
   getProjects,
+  createProject,
   uploadFiles,
   getProjectResults,
   getProjectStatus,
@@ -227,12 +228,36 @@ export default function ChatPage() {
     ]
   );
 
-  const handleNewProject = useCallback(() => {
+  const handleNewProject = useCallback(async () => {
     const name = prompt('Název nového projektu:');
-    if (name) {
-      console.log('Create project:', name);
+    if (!name || !name.trim()) return;
+
+    console.log('Create project:', name);
+
+    try {
+      const res = await createProject(name.trim());
+      const newProject = res.data;
+
+      console.log('✅ Project created:', newProject);
+
+      // Обновляем список проектов
+      await loadProjects();
+
+      // Выбираем новый проект
+      setCurrentProject(newProject);
+
+      addMessage({
+        type: MESSAGE_TYPES.SYSTEM,
+        text: `Projekt "${name}" vytvořen. ID: ${newProject.project_id || newProject.id}`,
+      });
+    } catch (error) {
+      console.error('Failed to create project:', error);
+      addMessage({
+        type: MESSAGE_TYPES.SYSTEM,
+        text: `Chyba při vytváření projektu: ${error.message}`,
+      });
     }
-  }, []);
+  }, [loadProjects, setCurrentProject, addMessage]);
 
   return (
     <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
