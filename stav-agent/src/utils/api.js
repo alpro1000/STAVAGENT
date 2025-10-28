@@ -31,8 +31,12 @@ export const createProject = (name) =>
 
 // Upload
 export const uploadFiles = (projectId, files, onProgress) => {
+  console.log('📤 Uploading files for project:', projectId);
+  console.log('📂 Files:', files.map(f => f.name));
+
   const formData = new FormData();
   files.forEach((file) => formData.append('files', file));
+
   return apiClient.post(`/api/upload?project_id=${projectId}`, formData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     onUploadProgress: (event) => {
@@ -40,6 +44,9 @@ export const uploadFiles = (projectId, files, onProgress) => {
       const percent = Math.round((event.loaded * 100) / event.total);
       onProgress(percent);
     },
+  }).then(response => {
+    console.log('✅ Upload response:', response.data);
+    return response;
   });
 };
 
@@ -93,37 +100,56 @@ export const getProjectStatus = (projectId) =>
 export const getProjectFiles = (projectId) =>
   apiClient.get(`/api/projects/${projectId}/files`);
 
-// Workflow A artifacts
-export const getWorkflowAParsedPositions = (projectId) =>
-  apiClient.get(`/api/workflow-a/${projectId}/positions`);
+// Workflow A artifacts (NEW body-based endpoints)
+export const getWorkflowAParsedPositions = (projectId) => {
+  console.log('📥 Fetching positions for project:', projectId);
+  return apiClient.get(`/api/workflow/a/positions?project_id=${projectId}`);
+};
 
-export const generateWorkflowATechCard = (projectId, positionId) =>
-  apiClient.post(`/api/workflow-a/${projectId}/tech-card`, {
+export const generateWorkflowATechCard = (projectId, positionId) => {
+  console.log('🛠️ Generating tech card:', { projectId, positionId });
+  return apiClient.post(`/api/workflow/a/tech-card`, {
+    project_id: projectId,
     position_id: positionId,
   });
+};
 
-export const generateWorkflowATov = (projectId, positionId) =>
-  apiClient.post(`/api/workflow-a/${projectId}/tov`, {
+export const generateWorkflowATov = (projectId, positionId) => {
+  console.log('⚙️ Generating resource sheet:', { projectId, positionId });
+  return apiClient.post(`/api/workflow/a/resource-sheet`, {
+    project_id: projectId,
     position_id: positionId,
   });
+};
 
-export const generateWorkflowAMaterials = (projectId, positionId) =>
-  apiClient.post(`/api/workflow-a/${projectId}/materials`, {
+export const generateWorkflowAMaterials = (projectId, positionId) => {
+  console.log('🧱 Generating materials:', { projectId, positionId });
+  return apiClient.post(`/api/workflow/a/materials`, {
+    project_id: projectId,
     position_id: positionId,
   });
+};
 
-// Workflow B artifacts
-export const getWorkflowBPositions = (projectId) =>
-  apiClient.get(`/api/workflow-b/${projectId}/positions`);
+// Workflow B artifacts (NEW body-based endpoints)
+export const getWorkflowBPositions = (projectId) => {
+  console.log('📥 Fetching Workflow B positions for project:', projectId);
+  return apiClient.get(`/api/workflow/b/positions?project_id=${projectId}`);
+};
 
-export const generateWorkflowBTechCard = (projectId, positionId) =>
-  apiClient.post(`/api/workflow-b/${projectId}/tech-card`, {
+export const generateWorkflowBTechCard = (projectId, positionId) => {
+  console.log('🛠️ Generating Workflow B tech card:', { projectId, positionId });
+  return apiClient.post(`/api/workflow/b/tech-card`, {
+    project_id: projectId,
     position_id: positionId,
   });
+};
 
-export const generateWorkflowBTov = (projectId, positionId) =>
-  apiClient.post(`/api/workflow-b/${projectId}/tov`, {
+export const generateWorkflowBTov = (projectId, positionId) => {
+  console.log('⚙️ Generating Workflow B resource sheet:', { projectId, positionId });
+  return apiClient.post(`/api/workflow/b/resource-sheet`, {
+    project_id: projectId,
     position_id: positionId,
   });
+};
 
 export default apiClient;
