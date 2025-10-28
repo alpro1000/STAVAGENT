@@ -33,7 +33,7 @@ Concrete Agent is a production-ready construction management system that automat
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/concrete-agent.git
+git clone https://github.com/alpro1000/concrete-agent.git
 cd concrete-agent
 
 # Create and activate virtual environment
@@ -318,7 +318,7 @@ ENABLE_WORKFLOW_B=true
 OPENAI_API_KEY=sk-xxxxx
 ```
 
-See [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) for complete troubleshooting guide.
+For more help, see [GitHub Issues](https://github.com/alpro1000/concrete-agent/issues).
 
 ## Documentation
 
@@ -337,9 +337,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/your-org/concrete-agent/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-org/concrete-agent/discussions)
-- **Email**: support@your-org.com
+- **Issues**: [GitHub Issues](https://github.com/alpro1000/concrete-agent/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/alpro1000/concrete-agent/discussions)
 
 ## Acknowledgments
 
