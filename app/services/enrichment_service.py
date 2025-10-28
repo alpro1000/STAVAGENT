@@ -7,7 +7,7 @@ import logging
 from typing import Any, Dict, List, Optional
 
 from app.core.claude_client import ClaudeClient
-from app.core.knowledge_base import kb_loader
+from app.core.kb_loader import kb_loader
 from app.utils.datetime_utils import get_utc_timestamp_iso
 
 logger = logging.getLogger(__name__)
