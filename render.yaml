@@ -83,21 +83,15 @@ services:
     
     healthCheckPath: /
 
-  # Frontend Static Site
+  # Frontend Node.js Server
   - type: web
     name: stav-agent
-    env: static
+    env: node
     region: frankfurt
     buildCommand: cd stav-agent && npm install && npm run build
-    staticPublishPath: ./stav-agent/dist
+    startCommand: cd stav-agent && npm start
     envVars:
       - key: VITE_API_URL
         value: https://concrete-agent.onrender.com
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    headers:
-      - path: /*
-        name: Access-Control-Allow-Origin
-        value: "*"
+      - key: NODE_ENV
+        value: production
