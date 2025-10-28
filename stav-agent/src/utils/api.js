@@ -27,7 +27,7 @@ export const getProject = (projectId) =>
   apiClient.get(`/api/projects/${projectId}`);
 
 export const createProject = (name) =>
-  apiClient.post('/api/projects', { name });
+  apiClient.post('/api/chat/projects', { name });
 
 // Upload
 export const uploadFiles = (projectId, files, onProgress) => {
