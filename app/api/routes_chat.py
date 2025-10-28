@@ -926,7 +926,7 @@ async def create_project(request: CreateProjectRequest):
             "project_name": request.name,
             "workflow": workflow,
             "status": ProjectStatus.UPLOADED,
-            "created_at": datetime.now().isoformat(),
+            "created_at": get_utc_timestamp_iso(),
             "message": "Project created successfully",
         }
 
