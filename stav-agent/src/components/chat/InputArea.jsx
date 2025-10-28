@@ -47,7 +47,7 @@ export default function InputArea({ onSend, onUpload, isLoading, uploadProgress 
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
-            placeholder="Napiš otázku nebo popis úkolu... (Shift+Enter pro řádek)"
+            placeholder="Příklad: 'Technická karta pro pozici 123' nebo 'Analýza pozice 45.3'"
             disabled={isLoading}
             rows="2"
             className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 disabled:bg-gray-100 resize-none"

@@ -28,7 +28,7 @@ export default function QuickActions({ onAction, isLoading }) {
       </div>
       {/* Подсказка для новичков */}
       <div className="text-xs text-gray-500 mt-2 px-2">
-        💡 Tip: Můžete také psát příkazy do chatu, např. "Vypiš všechny značky betonu"
+        💡 Pro analýzu pozice napište: "Technická karta 123" nebo "Analýza pozice 45.3"
       </div>
     </div>
   );
