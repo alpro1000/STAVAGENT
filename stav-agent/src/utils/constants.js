@@ -1,7 +1,7 @@
 export const QUICK_ACTIONS = [
   {
     id: 'audit',
-    label: '✅ Audit pozice',
+    label: 'Audit pozice',
     description: 'Zkontroluj všechny pozice podle norem a katalogů',
     apiAction: 'audit_positions',
     color: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
@@ -9,7 +9,7 @@ export const QUICK_ACTIONS = [
   },
   {
     id: 'vykaz',
-    label: '📋 Výkaz výměr',
+    label: 'Výkaz výměr',
     description: 'Přehled výkazu výměr',
     apiAction: 'vykaz_vymer',
     color: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
@@ -17,7 +17,7 @@ export const QUICK_ACTIONS = [
   },
   {
     id: 'materials',
-    label: '🧱 Materiály',
+    label: 'Materiály',
     description: 'Detailní seznam materiálů a dodavatelů',
     apiAction: 'materials_detailed',
     color: 'bg-orange-100 text-orange-700 hover:bg-orange-200',
@@ -25,7 +25,7 @@ export const QUICK_ACTIONS = [
   },
   {
     id: 'resources',
-    label: '⚙️ Zdroje',
+    label: 'Zdroje',
     description: 'Přehled zdrojů (práce, technika)',
     apiAction: 'resource_sheet',
     color: 'bg-green-100 text-green-700 hover:bg-green-200',
@@ -33,7 +33,7 @@ export const QUICK_ACTIONS = [
   },
   {
     id: 'summary',
-    label: '📊 Souhrn projektu',
+    label: 'Souhrn projektu',
     description: 'Souhrn projektu a KPI',
     apiAction: 'project_summary',
     color: 'bg-purple-100 text-purple-700 hover:bg-purple-200',

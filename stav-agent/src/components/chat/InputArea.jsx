@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Send, Upload, X } from 'lucide-react';
 
 export default function InputArea({ onSend, onUpload, isLoading, uploadProgress }) {
   const [input, setInput] = useState('');
   const [showUpload, setShowUpload] = useState(false);
 
-  useEffect(() => {
-    if (showUpload && typeof onUpload === 'function') {
+  const handleUploadClick = () => {
+    setShowUpload(true);
+    if (typeof onUpload === 'function') {
       onUpload();
     }
-  }, [showUpload, onUpload]);
+  };
 
   const handleSend = () => {
     if (!input.trim() || isLoading) return;
@@ -63,7 +64,7 @@ export default function InputArea({ onSend, onUpload, isLoading, uploadProgress 
             </button>
 
             <button
-              onClick={() => setShowUpload((prev) => !prev)}
+              onClick={handleUploadClick}
               disabled={isLoading}
               className="border border-gray-300 text-gray-600 p-2 rounded-lg hover:bg-gray-50 transition disabled:opacity-50"
               title="Nahrát soubory"

@@ -759,21 +759,26 @@ async def upload_files_to_project(
 
         # Start workflow processing in background
         if workflow == "A" and vykaz_file:
+            logger.info(f"🚀 Starting Workflow A processing for {project_id}")
+            workflow_service = WorkflowA()
             background_tasks.add_task(
-                _process_workflow_a,
+                workflow_service.execute,
                 project_id,
-                vykaz_file,
-                drawing_files
+                generate_summary=True,
+                enable_enrichment=project.get("enable_enrichment", True)
             )
         elif workflow == "B" and drawing_files:
+            logger.info(f"🚀 Starting Workflow B processing for {project_id}")
+            drawings_path = str(project_dir)
             background_tasks.add_task(
-                _process_workflow_b,
+                run_workflow_b,
                 project_id,
-                drawing_files
+                drawings_path,
+                project["project_name"]
             )
         else:
             project["status"] = ProjectStatus.FAILED
-            project["message"] = f"Workflow {workflow} requires specific files"
+            project["message"] = f"Workflow {workflow} requires {'vykaz file' if workflow == 'A' else 'drawings'}"
             project_store[project_id] = project
 
         return ProjectResponse(
