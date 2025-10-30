@@ -57,43 +57,77 @@ def _build_audit_positions_artifact(
     *,
     generated_by: str = "system",
 ) -> Tuple[str, Dict[str, Any]]:
-    opts = options or {}
-    positions_total = project.get("positions_total") or 145
-    verified = project.get("green_count") or 132
-    warnings = project.get("amber_count") or 10
-    critical = project.get("red_count") or 3
+    from app.core.config import ArtifactPaths
+    import json
 
-    data = {
-        "status": "WARNING" if critical else "OK",
-        "summary": f"Zkontrolováno {positions_total} pozic. {critical} kritických, {warnings} s varováním.",
-        "statistics": {
-            "total_positions": positions_total,
-            "verified": verified,
-            "with_warnings": warnings,
-            "critical_issues": critical,
-        },
-        "issues": [
-            {
-                "position_id": "pos-001",
-                "code": "214125",
-                "description": "Armatura 10505",
-                "severity": "RED",
-                "problem": "Kód nenalezen v OTSKP",
-                "suggestion": "Doporučujeme prověřit OTSKP 222xxx",
-                "sources": ["OTSKP v2024", "Internal KB"],
+    opts = options or {}
+    project_id = project.get("project_id")
+
+    # Try to load real audit results
+    audit_data = project.get("audit_results")
+    if not audit_data:
+        # Try to read from file
+        audit_file = ArtifactPaths.audit_results(project_id)
+        if audit_file.exists():
+            try:
+                with audit_file.open("r", encoding="utf-8") as f:
+                    audit_data = json.load(f)
+            except Exception as e:
+                logger.error(f"Failed to load audit results: {e}")
+
+    if not audit_data:
+        # No audit results yet
+        data = {
+            "status": "PENDING",
+            "summary": "Audit ještě nebyl proveden. Nahrajte soubory a počkejte na dokončení zpracování.",
+            "statistics": {
+                "total_positions": 0,
+                "verified": 0,
+                "with_warnings": 0,
+                "critical_issues": 0,
             },
-            {
-                "position_id": "pos-002",
-                "code": "305214",
-                "description": "Betonáž říms",
-                "severity": "AMBER",
-                "problem": "Chybí vazba na ČSN 73 1201",
-                "suggestion": "Doplnit normu a technologický postup",
-                "sources": ["ČSN 73 1201", "Projektová dokumentace"],
+            "issues": [],
+            "statistics_by_severity": {"GREEN": 0, "AMBER": 0, "RED": 0},
+        }
+    else:
+        # Extract real data from audit results
+        items = audit_data.get("items", [])
+        totals = audit_data.get("totals", {})
+        meta = audit_data.get("meta", {})
+        audit_meta = meta.get("audit", {})
+
+        positions_total = totals.get("total", len(items))
+        verified = audit_meta.get("green", totals.get("g", 0))
+        warnings = audit_meta.get("amber", totals.get("a", 0))
+        critical = audit_meta.get("red", totals.get("r", 0))
+
+        # Extract issues from RED and AMBER positions
+        issues = []
+        for item in items:
+            classification = item.get("classification", "GREEN")
+            if classification in ["RED", "AMBER"]:
+                issues.append({
+                    "position_id": item.get("position_number", "N/A"),
+                    "code": item.get("position_number", ""),
+                    "description": item.get("description", "")[:80],
+                    "severity": classification,
+                    "problem": ", ".join(item.get("issues_found", [])) or "Pozice vyžaduje kontrolu",
+                    "suggestion": ", ".join(item.get("recommendations", [])) or "Zkontrolujte normy a katalogy",
+                    "sources": ["OTSKP", "ÚRS", "RTS", "ČSN"],
+                })
+
+        data = {
+            "status": "WARNING" if critical > 0 else "OK",
+            "summary": f"Zkontrolováno {positions_total} pozic. {critical} kritických, {warnings} s varováním, {verified} v pořádku.",
+            "statistics": {
+                "total_positions": positions_total,
+                "verified": verified,
+                "with_warnings": warnings,
+                "critical_issues": critical,
             },
-        ],
-        "statistics_by_severity": {"GREEN": verified, "AMBER": warnings, "RED": critical},
-    }
+            "issues": issues[:20],  # Show top 20 issues
+            "statistics_by_severity": {"GREEN": verified, "AMBER": warnings, "RED": critical},
+        }
 
     artifact = {
         "type": "audit_result",
@@ -110,15 +144,15 @@ def _build_audit_positions_artifact(
             "active_section": "summary",
         },
         "actions": _artifact_actions(project, "audit_result"),
-        "status": "WARNING" if critical else "OK",
+        "status": data["status"],
         "warnings": [
             {
                 "level": "INFO",
                 "message": f"Audit proveden s volbami: normy={opts.get('check_norms', True)}, katalog={opts.get('check_catalog', True)}",
             },
             {
-                "level": "WARNING",
-                "message": "3 pozice vyžadují okamžitou pozornost",
+                "level": "WARNING" if data["statistics"]["critical_issues"] > 0 else "INFO",
+                "message": f"{data['statistics']['critical_issues']} pozic vyžaduje okamžitou pozornost" if data["statistics"]["critical_issues"] > 0 else "Všechny pozice jsou v pořádku",
             },
         ],
         "ui_hints": {
@@ -130,10 +164,7 @@ def _build_audit_positions_artifact(
         },
     }
 
-    response = (
-        f"Audit dokončen. Ověřeno {positions_total} pozic, "
-        f"kritické: {critical}, varování: {warnings}."
-    )
+    response = data["summary"]
     return response, artifact
 
 
@@ -143,50 +174,71 @@ def _build_vykaz_vymer_artifact(
     *,
     generated_by: str = "system",
 ) -> Tuple[str, Dict[str, Any]]:
-    data = {
-        "project_name": project.get("project_name", "Most přes potok - fáze 1"),
-        "sections": [
-            {
-                "section_id": "SO-202",
-                "section_title": "Monolit a křídla",
-                "works": [
-                    {
-                        "work_id": "w-001",
-                        "code": "214125",
-                        "description": "Armatura B500B",
-                        "unit": "t",
-                        "quantity_total": 245.5,
-                        "unit_price": 8500,
-                        "total_price": 2_086_750,
-                        "quantity_by_material": [
-                            {"material": "B500B Ø12", "qty": 125.3, "unit": "t"},
-                            {"material": "B500B Ø14", "qty": 87.2, "unit": "t"},
-                            {"material": "B500B Ø16", "qty": 33.0, "unit": "t"},
-                        ],
-                    },
-                    {
-                        "work_id": "w-002",
-                        "code": "315204",
-                        "description": "Betonáž říms C30/37",
-                        "unit": "m3",
-                        "quantity_total": 120.0,
-                        "unit_price": 2100,
-                        "total_price": 252_000,
-                        "quantity_by_material": [
-                            {"material": "C30/37", "qty": 120, "unit": "m3"},
-                        ],
-                    },
-                ],
-                "section_total": 12_450_000,
-            }
-        ],
-        "grand_total": 45_780_000,
-        "totals_by_type": {
-            "Beton": {"qty": 1200, "unit": "m3"},
-            "Armatura": {"qty": 245.5, "unit": "t"},
-            "Oppalubka": {"qty": 3500, "unit": "m2"},
-        },
-    }
+    from app.core.config import ArtifactPaths
+    import json
+
+    opts = options or {}
+    project_id = project.get("project_id")
+    position_id_filter = opts.get("position_id")
+
+    # Try to load parsed positions
+    parsed_data = None
+    parsed_file = ArtifactPaths.parsed_positions(project_id)
+    if parsed_file.exists():
+        try:
+            with parsed_file.open("r", encoding="utf-8") as f:
+                parsed_data = json.load(f)
+        except Exception as e:
+            logger.error(f"Failed to load parsed positions: {e}")
+
+    if not parsed_data or not parsed_data.get("items"):
+        # No positions yet
+        data = {
+            "project_name": project.get("project_name", "Projekt"),
+            "sections": [],
+            "grand_total": 0,
+            "totals_by_type": {},
+            "message": "Pozice ještě nejsou načteny. Nahrajte výkaz výměr (XLSX).",
+        }
+    else:
+        items = parsed_data.get("items", [])
+
+        # Filter by position if requested
+        if position_id_filter:
+            items = [item for item in items if str(item.get("position_number", "")).strip() == str(position_id_filter).strip()]
+
+        # Convert positions to works format
+        works = []
+        grand_total = 0
+        for item in items[:50]:  # Limit to 50 positions
+            unit_price = item.get("unit_price") or 0
+            quantity = item.get("quantity") or 0
+            total_price = item.get("total_price") or (unit_price * quantity)
+            grand_total += total_price
+
+            works.append({
+                "work_id": item.get("position_number", "N/A"),
+                "code": item.get("position_number", ""),
+                "description": item.get("description", ""),
+                "unit": item.get("unit", ""),
+                "quantity_total": quantity,
+                "unit_price": unit_price,
+                "total_price": total_price,
+            })
+
+        data = {
+            "project_name": project.get("project_name", "Projekt"),
+            "sections": [
+                {
+                    "section_id": "main",
+                    "section_title": f"Všechny pozice ({len(works)})",
+                    "works": works,
+                    "section_total": grand_total,
+                }
+            ],
+            "grand_total": grand_total,
+            "totals_by_type": {},  # TODO: Group by material type
+        }
 
     artifact = {
         "type": "vykaz_vymer",
@@ -218,7 +270,13 @@ def _build_vykaz_vymer_artifact(
         },
     }
 
-    response = "Výkaz výměr připraven. Dostupné součty podle typů materiálů."
+    if "message" in data:
+        response = data["message"]
+    elif position_id_filter:
+        response = f"Výkaz výměr pro pozici {position_id_filter} připraven."
+    else:
+        response = f"Výkaz výměr připraven. Celkem {len(data['sections'][0]['works']) if data['sections'] else 0} pozic, celková cena: {data['grand_total']:,.0f} Kč."
+
     return response, artifact
 
 
@@ -228,71 +286,93 @@ def _build_materials_detailed_artifact(
     *,
     generated_by: str = "system",
 ) -> Tuple[str, Dict[str, Any]]:
+    from app.core.config import ArtifactPaths
+    import json
+    import re
+
     opts = options or {}
     filter_label = opts.get("filter_by") or opts.get("material_type")
-    data = {
-        "materials": [
-            {
-                "id": "mat-001",
-                "type": "Beton",
-                "brand": "C30/37",
-                "characteristics": {
-                    "strength": "30 MPa",
-                    "workability": "S4",
-                    "exposure": "XC3",
-                    "slump": "160-210 mm",
-                    "density": "2350-2450 kg/m³",
-                },
-                "norms": ["ČSN EN 206-1", "ČSN 73 1201"],
-                "quantity": {"total": 450.0, "unit": "m3"},
-                "used_in": [
-                    {"section": "SO-202", "work": "Betonáž říms", "qty": 240, "unit": "m3"},
-                    {"section": "SO-202", "work": "Betonáž křídel", "qty": 210, "unit": "m3"},
-                ],
-                "suppliers": [
-                    {
-                        "name": "Betonářský závod Brno",
-                        "distance": "45 km",
-                        "price": 2100,
-                        "delivery": "Po-Pá",
-                    }
-                ],
-                "sources": ["PDF smlouva.pdf", "Specifikace materiálů.xlsx"],
+    project_id = project.get("project_id")
+
+    # Load parsed positions
+    parsed_data = None
+    parsed_file = ArtifactPaths.parsed_positions(project_id)
+    if parsed_file.exists():
+        try:
+            with parsed_file.open("r", encoding="utf-8") as f:
+                parsed_data = json.load(f)
+        except Exception as e:
+            logger.error(f"Failed to load parsed positions: {e}")
+
+    if not parsed_data or not parsed_data.get("items"):
+        data = {
+            "materials": [],
+            "summary": {
+                "total_materials": 0,
+                "material_types": [],
+                "total_cost": 0,
+                "message": "Materiály nejsou dostupné. Nahrajte výkaz výměr.",
             },
-            {
-                "id": "mat-002",
-                "type": "Armatura",
-                "brand": "B500B",
-                "characteristics": {
-                    "yield_strength": "500 MPa",
-                    "surface_type": "Vlnité",
-                    "standards": "ČSN EN 10080",
-                },
-                "variants": [
-                    {"diameter": "Ø10", "qty": 85.3, "unit": "t"},
-                    {"diameter": "Ø12", "qty": 125.3, "unit": "t"},
-                    {"diameter": "Ø14", "qty": 87.2, "unit": "t"},
-                ],
-                "total_quantity": 245.5,
-                "unit": "t",
-                "suppliers": [
-                    {
-                        "name": "Ocel Servis s.r.o.",
-                        "distance": "32 km",
-                        "price": 18_500,
-                        "delivery": "Expres 48 h",
+        }
+    else:
+        items = parsed_data.get("items", [])
+
+        # Extract materials from position descriptions
+        materials_dict = {}
+        for item in items:
+            desc = item.get("description", "").lower()
+            unit = item.get("unit", "")
+            qty = item.get("quantity", 0)
+
+            # Detect material type
+            material_type = None
+            if "beton" in desc or "c30" in desc or "c25" in desc or "c20" in desc:
+                material_type = "Beton"
+            elif "armatur" in desc or "b500" in desc or "výztuž" in desc:
+                material_type = "Armatura"
+            elif "bednění" in desc or "bednic" in desc or "beden" in desc:
+                material_type = "Bednění"
+            elif "ocel" in desc:
+                material_type = "Ocel"
+
+            if material_type:
+                if material_type not in materials_dict:
+                    materials_dict[material_type] = {
+                        "type": material_type,
+                        "quantity": 0,
+                        "unit": unit,
+                        "used_in": [],
                     }
-                ],
-                "sources": ["Materiály.xlsx", "KB Armatura.pdf"],
+                materials_dict[material_type]["quantity"] += qty
+                materials_dict[material_type]["used_in"].append({
+                    "position": item.get("position_number", ""),
+                    "description": item.get("description", "")[:60],
+                    "qty": qty,
+                    "unit": unit,
+                })
+
+        # Convert to list
+        materials = []
+        for i, (mat_type, mat_data) in enumerate(materials_dict.items()):
+            materials.append({
+                "id": f"mat-{i+1:03d}",
+                "type": mat_data["type"],
+                "quantity": {"total": mat_data["quantity"], "unit": mat_data["unit"]},
+                "used_in": mat_data["used_in"][:5],  # Top 5 usages
+            })
+
+        # Apply filter if requested
+        if filter_label:
+            materials = [m for m in materials if filter_label.lower() in m["type"].lower()]
+
+        data = {
+            "materials": materials,
+            "summary": {
+                "total_materials": len(materials),
+                "material_types": list(materials_dict.keys()),
+                "total_cost": 0,  # TODO: Calculate from unit prices
             },
-        ],
-        "summary": {
-            "total_materials": 24,
-            "material_types": ["Beton", "Armatura", "Oppalubka", "Hydroizolace"],
-            "total_cost": 1_850_000,
-            "critical_materials": ["C30/37", "B500B"],
-        },
-    }
+        }
 
     artifact = {
         "type": "materials_detailed",
@@ -324,7 +404,13 @@ def _build_materials_detailed_artifact(
         },
     }
 
-    response = "Materiálový přehled připraven. Zahrnuje charakteristiky a dodavatele."
+    if "message" in data.get("summary", {}):
+        response = data["summary"]["message"]
+    elif filter_label:
+        response = f"Materiálový přehled pro {filter_label} připraven. Nalezeno {len(data['materials'])} materiálů."
+    else:
+        response = f"Materiálový přehled připraven. Nalezeno {data['summary']['total_materials']} typů materiálů."
+
     return response, artifact
 
 
@@ -334,64 +420,58 @@ def _build_resource_sheet_artifact(
     *,
     generated_by: str = "system",
 ) -> Tuple[str, Dict[str, Any]]:
-    data = {
-        "project_name": project.get("project_name", "Most přes potok"),
-        "summary": {
-            "total_labor_hours": 8450,
-            "total_equipment_hours": 2340,
-            "total_materials_cost": 45_780_000,
-            "estimated_duration_days": 120,
-        },
-        "by_section": [
-            {
-                "section": "SO-202",
-                "section_title": "Moností a křídla",
-                "labor": {
-                    "total_hours": 4250,
-                    "by_trade": {
-                        "Tesař (oppalubka)": {"hours": 1850, "workers": 4, "duration_days": 45},
-                        "Zedník (beton)": {"hours": 1200, "workers": 3, "duration_days": 30},
-                        "Armovač": {"hours": 800, "workers": 2, "duration_days": 25},
-                        "Pomocný pracovník": {"hours": 400, "workers": 2},
-                    },
-                },
-                "equipment": {
-                    "total_hours": 1240,
-                    "by_type": {
-                        "Jeřáb mobilní 60t": {"hours": 480, "daily_rate": 8000},
-                        "Autobetonárna": {"hours": 340, "load_m3": 125},
-                        "Vibrátor povrchový": {"hours": 280},
-                        "Ponorný vibrátor": {"hours": 140},
-                    },
-                },
-                "materials_cost": 23_450_000,
-                "timeline": {
-                    "start_day": 1,
-                    "end_day": 60,
-                    "critical_path": "Oppalubka → Armování → Betonáž",
-                },
-            }
-        ],
-        "team_composition": {
-            "Mistr": 1,
-            "Tesaři": 8,
-            "Betonáři": 6,
-            "Armovači": 4,
-            "Pomocníci": 5,
-        },
-        "equipment_schedule": {
-            "Jeřáb mobilní": "Den 1-60 (nepřetržitě)",
-            "Autobetonárna": "Den 20-40",
-            "Vibrátory": "Den 18-45",
-        },
-        "cost_breakdown": {
-            "Práce": 2_120_000,
-            "Technika": 780_000,
-            "Materiály": 45_780_000,
-            "Režie": 1_200_000,
-            "Rezerva": 1_500_000,
-        },
-    }
+    from app.core.config import ArtifactPaths
+    import json
+
+    opts = options or {}
+    project_id = project.get("project_id")
+    position_id_filter = opts.get("position_id")
+
+    # Load parsed positions
+    parsed_data = None
+    parsed_file = ArtifactPaths.parsed_positions(project_id)
+    if parsed_file.exists():
+        try:
+            with parsed_file.open("r", encoding="utf-8") as f:
+                parsed_data = json.load(f)
+        except Exception as e:
+            logger.error(f"Failed to load parsed positions: {e}")
+
+    if not parsed_data or not parsed_data.get("items"):
+        data = {
+            "project_name": project.get("project_name", "Projekt"),
+            "summary": {
+                "message": "Ведомость ресурсов vyžaduje detailní výpočet podle norem ÚRS/RTS. Nahrajte výkaz výměr a počkejte na zpracování.",
+            },
+            "by_section": [],
+        }
+    else:
+        items = parsed_data.get("items", [])
+
+        # Filter by position if requested
+        if position_id_filter:
+            items = [item for item in items if str(item.get("position_number", "")).strip() == str(position_id_filter).strip()]
+
+        # Show simplified resource info - full calculation requires RTS/ÚRS norms
+        positions_info = []
+        for item in items[:20]:  # Show first 20 positions
+            positions_info.append({
+                "position": item.get("position_number", ""),
+                "description": item.get("description", "")[:60],
+                "quantity": item.get("quantity", 0),
+                "unit": item.get("unit", ""),
+                "note": "Ресурсы требуют расчёта по нормам ÚRS/RTS",
+            })
+
+        data = {
+            "project_name": project.get("project_name", "Projekt"),
+            "summary": {
+                "message": f"Для расчёта ведомости ресурсов требуется применить нормы ÚRS/RTS к {len(items)} позициям.",
+                "positions_analyzed": len(items),
+            },
+            "positions_for_calculation": positions_info,
+            "by_section": [],  # TODO: Calculate labor/equipment by RTS norms
+        }
 
     artifact = {
         "type": "resource_sheet",
@@ -424,7 +504,11 @@ def _build_resource_sheet_artifact(
         },
     }
 
-    response = "Zdroje vypočteny včetně harmonogramu a nákladů."
+    if "message" in data.get("summary", {}):
+        response = data["summary"]["message"]
+    else:
+        response = "Zdroje analyzovány. Pro detailní výpočet použijte nástroj pro aplikaci norem ÚRS/RTS."
+
     return response, artifact
 
 
@@ -434,74 +518,109 @@ def _build_project_summary_artifact(
     *,
     generated_by: str = "system",
 ) -> Tuple[str, Dict[str, Any]]:
-    data = {
-        "basic_info": {
-            "project_name": project.get("project_name", "Most přes potok - stavba mostovky"),
-            "object_type": "Mosty a propustky",
-            "investor": "NAKI s.r.o.",
-            "designer": "Ing. Novotný",
-            "location": "u Brna, okres Brno-venkov",
-            "started": "2025-03-01",
-            "planned_completion": "2025-09-30",
-        },
-        "scope": {
-            "total_positions": project.get("positions_total", 145),
-            "main_sections": ["SO-202", "SO-203", "SO-204"],
-            "main_activities": [
-                {"activity": "Oppalubka", "qty": 3500, "unit": "m2"},
-                {"activity": "Armování", "qty": 245.5, "unit": "t"},
-                {"activity": "Betonáž", "qty": 1200, "unit": "m3"},
-            ],
-        },
-        "budget": {
-            "total_budget": 50_680_000,
-            "breakdown": {
-                "Materiály": 45_780_000,
-                "Práce": 2_120_000,
-                "Technika": 780_000,
-                "Režie": 1_200_000,
-                "Rezerva": 800_000,
+    from app.core.config import ArtifactPaths
+    import json
+
+    project_id = project.get("project_id")
+
+    # Load audit results
+    audit_data = project.get("audit_results")
+    if not audit_data:
+        audit_file = ArtifactPaths.audit_results(project_id)
+        if audit_file.exists():
+            try:
+                with audit_file.open("r", encoding="utf-8") as f:
+                    audit_data = json.load(f)
+            except Exception as e:
+                logger.error(f"Failed to load audit results: {e}")
+
+    # Load parsed positions
+    parsed_data = None
+    parsed_file = ArtifactPaths.parsed_positions(project_id)
+    if parsed_file.exists():
+        try:
+            with parsed_file.open("r", encoding="utf-8") as f:
+                parsed_data = json.load(f)
+        except Exception as e:
+            logger.error(f"Failed to load parsed positions: {e}")
+
+    # Calculate real statistics
+    if audit_data and parsed_data:
+        items = parsed_data.get("items", [])
+        totals = audit_data.get("totals", {})
+        meta = audit_data.get("meta", {})
+        audit_meta = meta.get("audit", {})
+
+        total_positions = totals.get("total", len(items))
+        green_count = audit_meta.get("green", 0)
+        amber_count = audit_meta.get("amber", 0)
+        red_count = audit_meta.get("red", 0)
+
+        # Calculate total budget from positions
+        total_budget = sum(item.get("total_price", 0) or 0 for item in items)
+
+        data = {
+            "basic_info": {
+                "project_name": project.get("project_name", "Projekt"),
+                "workflow": project.get("workflow", "A"),
+                "status": project.get("status", "PROCESSING"),
+                "created_at": project.get("created_at", ""),
             },
-        },
-        "kpe": {
-            "cost_per_m2": 3_850,
-            "duration_weeks": 17,
-            "team_size": 24,
-            "equipment_count": 8,
-            "main_risks": [
-                {
-                    "risk": "Nepříznivé počasí",
-                    "probability": "HIGH",
-                    "mitigation": "Provizorní krytí",
-                },
-                {
-                    "risk": "Zpoždění dodavatele",
-                    "probability": "MEDIUM",
-                    "mitigation": "Smluvní penalizace",
-                },
-                {
-                    "risk": "Nedostatek armovačů",
-                    "probability": "MEDIUM",
-                    "mitigation": "Externa agentura",
-                },
-            ],
-        },
-        "source_documents": {
-            "count": 8,
-            "types": ["PDF smlouvy", "XLSX rozpočet", "TXT specifikace"],
-            "last_updated": "2025-10-20",
-        },
-        "compliance": {
-            "norms_used": ["ČSN EN 206-1", "ČSN 73 1201", "TKP 18"],
-            "standards_applied": "Plné",
-            "compliance_status": "OK",
-        },
-        "recommendations": [
-            "Zvážit prefabrikované prvky pro urychlení",
-            "Zvýšit rezervu na počasí o 2 dny",
-            "Připravit záložní tým armovačů",
-        ],
-    }
+            "scope": {
+                "total_positions": total_positions,
+                "positions_green": green_count,
+                "positions_amber": amber_count,
+                "positions_red": red_count,
+                "files_count": len(project.get("files", {})),
+            },
+            "budget": {
+                "total_budget": total_budget,
+                "positions_with_price": sum(1 for item in items if item.get("total_price")),
+                "positions_without_price": sum(1 for item in items if not item.get("total_price")),
+            },
+            "compliance": {
+                "audit_completed": True,
+                "green_percent": round(green_count / total_positions * 100 if total_positions > 0 else 0, 1),
+                "amber_percent": round(amber_count / total_positions * 100 if total_positions > 0 else 0, 1),
+                "red_percent": round(red_count / total_positions * 100 if total_positions > 0 else 0, 1),
+            },
+        }
+    else:
+        data = {
+            "basic_info": {
+                "project_name": project.get("project_name", "Projekt"),
+                "workflow": project.get("workflow", "A"),
+                "status": project.get("status", "PENDING"),
+                "message": "Projekt zatím nebyl zpracován. Nahrajte soubory a počkejte na dokončení.",
+            },
+            "scope": {},
+            "budget": {},
+            "compliance": {},
+        }
+
+    # Determine status based on red/amber counts
+    scope = data.get("scope", {})
+    red_count = scope.get("positions_red", 0)
+    amber_count = scope.get("positions_amber", 0)
+    status = "ERROR" if red_count > 0 else ("WARNING" if amber_count > 0 else "OK")
+
+    # Build warnings list
+    warnings = []
+    if red_count > 0:
+        warnings.append({
+            "level": "ERROR",
+            "message": f"Nalezeno {red_count} kritických pozic vyžadujících okamžitou opravu!",
+        })
+    if amber_count > 0:
+        warnings.append({
+            "level": "WARNING",
+            "message": f"Nalezeno {amber_count} pozic s varováním.",
+        })
+    if not warnings:
+        warnings.append({
+            "level": "INFO",
+            "message": "Všechny pozice jsou v pořádku.",
+        })
 
     artifact = {
         "type": "project_summary",
@@ -514,17 +633,13 @@ def _build_project_summary_artifact(
                 {"id": "info", "label": "Informace", "icon": "ℹ️"},
                 {"id": "scope", "label": "Rozsah", "icon": "📋"},
                 {"id": "budget", "label": "Rozpočet", "icon": "💰"},
+                {"id": "compliance", "label": "Soulad", "icon": "✅"},
             ],
             "active_section": "info",
         },
         "actions": _artifact_actions(project, "project_summary"),
-        "status": "OK",
-        "warnings": [
-            {
-                "level": "INFO",
-                "message": f"Detail: {options.get('detail_level')}" if options and options.get("detail_level") else "Plný detail",
-            }
-        ],
+        "status": status,
+        "warnings": warnings,
         "ui_hints": {
             "display_mode": "card",
             "expandable_sections": True,
@@ -534,7 +649,21 @@ def _build_project_summary_artifact(
         },
     }
 
-    response = "Shrnutí projektu připraveno včetně KPI a rizik."
+    # Build response message based on actual data
+    if "message" in data.get("basic_info", {}):
+        response = data["basic_info"]["message"]
+    else:
+        total = scope.get("total_positions", 0)
+        green = scope.get("positions_green", 0)
+        compliance = data.get("compliance", {})
+        green_pct = compliance.get("green_percent", 0)
+        response = f"Shrnutí projektu: {total} pozic, {green} OK ({green_pct}% soulad)"
+        if red_count > 0:
+            response += f", {red_count} kritických"
+        if amber_count > 0:
+            response += f", {amber_count} varování"
+        response += "."
+
     return response, artifact
 
 
