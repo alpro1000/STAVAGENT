@@ -366,11 +366,11 @@ class ClaudeClient:
     ) -> Dict[str, Any]:
         """
         Analyze image using Claude Vision
-        
+
         Args:
             image_path: Path to image file
             prompt: Analysis instructions
-        
+
         Returns:
             Analysis result
         """
@@ -385,11 +385,11 @@ class ClaudeClient:
                 '.webp': 'image/webp'
             }
             media_type = media_types.get(suffix, 'image/jpeg')
-            
+
             # Read image as base64
             with open(image_path, "rb") as f:
                 image_data = base64.standard_b64encode(f.read()).decode("utf-8")
-            
+
             # Build message with image
             messages = [
                 {
@@ -410,22 +410,61 @@ class ClaudeClient:
                     ]
                 }
             ]
-            
+
             # Call Claude
             response = self.client.messages.create(
                 model=self.model,
                 max_tokens=self.max_tokens,
                 messages=messages
             )
-            
+
             # Extract response
             result_text = response.content[0].text
-            
+
             try:
                 return json.loads(result_text)
             except json.JSONDecodeError:
                 return {"raw_text": result_text}
-        
+
         except Exception as e:
             logger.exception("Failed to analyze image")
             raise
+
+    def analyze_construction_drawing(
+        self,
+        drawing_path: Path,
+        prompt_name: str = "vision/analyze_construction_drawing"
+    ) -> Dict[str, Any]:
+        """
+        Analyze construction drawing using Claude Vision (CHEAPER alternative to GPT-4V)
+
+        Cost comparison:
+        - GPT-4 Vision: ~$0.01 per image + output costs
+        - Claude Sonnet: $3/$15 per MTok (3-5x cheaper for most tasks)
+
+        Args:
+            drawing_path: Path to drawing (PDF page as image, PNG, JPG)
+            prompt_name: Name of prompt file for drawing analysis
+
+        Returns:
+            Analysis result with construction elements, materials, dimensions
+        """
+        try:
+            # Load drawing analysis prompt
+            analysis_prompt = self._load_prompt_from_file(prompt_name)
+
+            logger.info(f"Analyzing construction drawing with Claude Vision: {drawing_path}")
+
+            # Use existing analyze_image method
+            result = self.analyze_image(drawing_path, analysis_prompt)
+
+            logger.info(f"✅ Claude Vision analysis completed for {drawing_path}")
+            return result
+
+        except Exception as e:
+            logger.exception("Failed to analyze construction drawing with Claude")
+            return {
+                "error": str(e),
+                "file_name": drawing_path.name,
+                "success": False
+            }

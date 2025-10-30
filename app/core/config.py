@@ -61,6 +61,7 @@ class Settings(BaseSettings):
     # ==========================================
     ENABLE_WORKFLOW_A: bool = Field(default=True, description="Enable Workflow A")
     ENABLE_WORKFLOW_B: bool = Field(default=False, description="Enable Workflow B")
+    USE_CLAUDE_VISION: bool = Field(default=True, description="Use Claude Vision instead of GPT-4 Vision (3-5x cheaper)")
     ENABLE_KROS_MATCHING: bool = Field(default=True, description="Enable KROS matching")
     ENABLE_RTS_MATCHING: bool = Field(default=True, description="Enable RTS matching")
     ENABLE_RESOURCE_CALCULATION: bool = Field(default=True, description="Enable TOV calculation")

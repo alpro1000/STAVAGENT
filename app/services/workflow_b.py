@@ -21,26 +21,41 @@ logger = logging.getLogger(__name__)
 class WorkflowB:
     """
     Workflow B: Нет выказа, есть только чертежи
-    
+
     Workflow:
     1. Upload → Только документация + чертежи
-    2. GPT-4V анализ чертежей → размеры, объемы (ПЛАТНО)
+    2. Vision AI анализ чертежей → размеры, объемы (ПЛАТНО)
+       - По умолчанию: Claude Vision (3-5x дешевле GPT-4V)
+       - Альтернатива: GPT-4 Vision (если USE_CLAUDE_VISION=False)
     3. Calculate материалы → бетон, арматура, опалубка (БЕСПЛАТНО)
     4. Claude генерация позиций → создание выказа (ПЛАТНО)
     5. AUDIT генерированных → как в Workflow A (ПЛАТНО)
     6. Generate отчет + Tech Card (БЕСПЛАТНО)
+
+    Cost comparison:
+    - Claude Vision: $3/$15 per MTok (RECOMMENDED - cheaper)
+    - GPT-4 Vision: ~$0.01 per image + output costs
     """
-    
+
     def __init__(self):
         """Initialize Workflow B services"""
         self.claude = ClaudeClient()
-        self.gpt4v = GPT4VisionClient() if settings.ENABLE_WORKFLOW_B else None
-        
+        self.use_claude_vision = settings.USE_CLAUDE_VISION
+
+        # Initialize vision clients based on settings
+        if self.use_claude_vision:
+            logger.info("✅ Using Claude Vision for drawing analysis (cheaper option)")
+            self.vision_client = self.claude
+        else:
+            logger.info("Using GPT-4 Vision for drawing analysis")
+            self.gpt4v = GPT4VisionClient() if settings.ENABLE_WORKFLOW_B else None
+            self.vision_client = self.gpt4v
+
         # ✅ ДОБАВЛЕНО: SmartParser для обработки документации
         self.smart_parser = SmartParser()
-        
-        if not self.gpt4v:
-            logger.warning("GPT-4 Vision not available. Workflow B limited.")
+
+        if not self.vision_client:
+            logger.warning("Vision AI not available. Workflow B limited.")
     
     async def process_drawings(
         self,
@@ -115,8 +130,8 @@ class WorkflowB:
     
     async def _analyze_drawings(self, drawings: List[Path]) -> List[Dict[str, Any]]:
         """
-        Analyze drawings with GPT-4 Vision (ПЛАТНО)
-        
+        Analyze drawings with Vision AI (Claude or GPT-4 Vision)
+
         Returns:
             List of analyzed drawing data:
             [{
@@ -127,34 +142,57 @@ class WorkflowB:
                 "notes": str
             }, ...]
         """
-        if not self.gpt4v:
-            raise ValueError("GPT-4 Vision not available")
-        
+        if not self.vision_client:
+            raise ValueError("Vision AI not available")
+
         analysis_results = []
-        
+
         for drawing in drawings:
             logger.info(f"  Analyzing drawing: {drawing.name}")
-            
+
             try:
-                # Use GPT-4V to analyze drawing
-                analysis = await self.gpt4v.analyze_construction_drawing(drawing)
-                
-                analysis_results.append({
-                    "drawing_file": drawing.name,
-                    "elements": analysis.get("elements", []),
-                    "dimensions": analysis.get("dimensions", {}),
-                    "materials": analysis.get("materials", {}),
-                    "notes": analysis.get("notes", ""),
-                    "raw_analysis": analysis
-                })
-                
+                if self.use_claude_vision:
+                    # ✅ CHEAPER: Use Claude Vision
+                    logger.info(f"    Using Claude Vision (cheaper) for {drawing.name}")
+                    analysis = self.claude.analyze_construction_drawing(drawing)
+
+                    # Claude returns direct structure
+                    analysis_results.append({
+                        "drawing_file": drawing.name,
+                        "elements": analysis.get("elements", []),
+                        "dimensions": analysis.get("dimensions", {}),
+                        "materials": analysis.get("materials", {}),
+                        "notes": analysis.get("notes", ""),
+                        "raw_analysis": analysis,
+                        "analysis_method": "claude_vision"
+                    })
+
+                else:
+                    # Use GPT-4V comprehensive analysis (OCR + Vision)
+                    logger.info(f"    Using GPT-4 Vision for {drawing.name}")
+                    analysis = self.gpt4v.analyze_drawing_comprehensive(drawing)
+
+                    # Extract data from comprehensive analysis
+                    vision_data = analysis.get("vision_analysis", {})
+                    ocr_data = analysis.get("ocr_analysis", {})
+
+                    analysis_results.append({
+                        "drawing_file": drawing.name,
+                        "elements": vision_data.get("elements", []),
+                        "dimensions": vision_data.get("dimensions", {}),
+                        "materials": vision_data.get("materials", {}),
+                        "notes": vision_data.get("notes", "") or ocr_data.get("notes", ""),
+                        "raw_analysis": analysis,
+                        "analysis_method": "gpt4_vision"
+                    })
+
             except Exception as e:
                 logger.error(f"Failed to analyze {drawing.name}: {e}")
                 analysis_results.append({
                     "drawing_file": drawing.name,
                     "error": str(e)
                 })
-        
+
         return analysis_results
     
     def _calculate_materials(self, drawing_analysis: List[Dict[str, Any]]) -> Dict[str, Any]:
