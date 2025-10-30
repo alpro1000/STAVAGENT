@@ -3,7 +3,7 @@ import { useAppStore } from '../store/appStore';
 import { useChat } from '../hooks/useChat';
 import {
   getProjects,
-  createProject,
+  uploadProject,
   uploadFiles,
   getProjectResults,
   getProjectStatus,
@@ -18,6 +18,7 @@ import ChatWindow from '../components/chat/ChatWindow';
 import QuickActions from '../components/chat/QuickActions';
 import InputArea from '../components/chat/InputArea';
 import ArtifactPanel from '../components/layout/ArtifactPanel';
+import UploadProjectModal from '../components/common/UploadProjectModal';
 
 export default function ChatPage() {
   const [projects, setProjects] = useState([]);
@@ -25,6 +26,7 @@ export default function ChatPage() {
   const [projectStatus, setProjectStatus] = useState(null);
   const [projectFiles, setProjectFiles] = useState([]);
   const [isProjectLoading, setIsProjectLoading] = useState(false);
+  const [showUploadModal, setShowUploadModal] = useState(false);
   const fileInputRef = React.useRef(null);
 
   const {
@@ -246,17 +248,27 @@ export default function ChatPage() {
     ]
   );
 
-  const handleNewProject = useCallback(async () => {
-    const name = prompt('Název nového projektu:');
-    if (!name || !name.trim()) return;
+  const handleUploadProject = useCallback(async ({ projectName, workflow, files }) => {
+    if (isBusy) return;
 
-    console.log('Create project:', name);
+    setIsLoading(true);
+    setUploadProgress(0);
 
     try {
-      const res = await createProject(name.trim());
+      addMessage({
+        type: MESSAGE_TYPES.SYSTEM,
+        text: `Nahrávám projekt "${projectName}"...`,
+      });
+
+      const res = await uploadProject(projectName, workflow, files, setUploadProgress);
       const newProject = res.data;
 
-      console.log('✅ Project created:', newProject);
+      console.log('✅ Project uploaded:', newProject);
+
+      addMessage({
+        type: MESSAGE_TYPES.SYSTEM,
+        text: `Projekt "${projectName}" nahrán. Spouštím zpracování...`,
+      });
 
       // Обновляем список проектов
       await loadProjects();
@@ -264,26 +276,31 @@ export default function ChatPage() {
       // Выбираем новый проект
       setCurrentProject(newProject);
 
-      addMessage({
-        type: MESSAGE_TYPES.SYSTEM,
-        text: `Projekt "${name}" vytvořen. ID: ${newProject.project_id || newProject.id}`,
-      });
     } catch (error) {
-      console.error('Failed to create project:', error);
+      console.error('Upload project error:', error);
       addMessage({
         type: MESSAGE_TYPES.SYSTEM,
-        text: `Chyba při vytváření projektu: ${error.message}`,
+        text: `Chyba nahrávání: ${error.response?.data?.detail || error.message}`,
       });
+    } finally {
+      setIsLoading(false);
+      setUploadProgress(null);
     }
-  }, [loadProjects, setCurrentProject, addMessage]);
+  }, [isBusy, addMessage, loadProjects, setCurrentProject, setIsLoading]);
 
   return (
     <div className="h-screen flex flex-col bg-gray-50 overflow-hidden">
       <Header
-        onNewProject={handleNewProject}
+        onUploadProject={() => setShowUploadModal(true)}
         onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         currentProject={currentProject}
         projectStatus={projectStatus}
+      />
+
+      <UploadProjectModal
+        isOpen={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+        onUpload={handleUploadProject}
       />
 
       <div className="flex-1 flex overflow-hidden">

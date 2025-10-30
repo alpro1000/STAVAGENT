@@ -1,5 +1,5 @@
 import React from 'react';
-import { Plus, Settings, LogOut, Menu } from 'lucide-react';
+import { Upload, Settings, LogOut, Menu } from 'lucide-react';
 
 const STATUS_COLOR_MAP = {
   AUDITED: 'bg-green-100 text-green-700 border-green-200',
@@ -8,7 +8,7 @@ const STATUS_COLOR_MAP = {
   ERROR: 'bg-red-100 text-red-700 border-red-200',
 };
 
-export default function Header({ onNewProject, onToggleSidebar, currentProject, projectStatus }) {
+export default function Header({ onUploadProject, onToggleSidebar, currentProject, projectStatus }) {
   const projectName = currentProject?.name || currentProject?.project_name;
   const normalizedStatus = projectStatus?.toUpperCase();
   const statusClasses =
@@ -41,11 +41,11 @@ export default function Header({ onNewProject, onToggleSidebar, currentProject, 
 
       <div className="flex items-center gap-2">
         <button
-          onClick={onNewProject}
+          onClick={onUploadProject}
           className="hidden sm:flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium"
           type="button"
         >
-          <Plus size={18} /> Nový projekt
+          <Upload size={18} /> Nahrát projekt
         </button>
 
         <button className="p-2 hover:bg-gray-100 rounded-lg transition" title="Nastavení" type="button">

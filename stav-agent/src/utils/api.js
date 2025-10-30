@@ -29,6 +29,37 @@ export const getProject = (projectId) =>
 export const createProject = (name) =>
   apiClient.post('/api/chat/projects', { name });
 
+export const uploadProject = (projectName, workflow, files, onProgress) => {
+  console.log('📤 Uploading new project:', projectName);
+  console.log('📂 Files:', files.map(f => f.name));
+  console.log('⚙️ Workflow:', workflow);
+
+  const formData = new FormData();
+  formData.append('project_name', projectName);
+  formData.append('workflow', workflow);
+
+  files.forEach((file) => {
+    const ext = file.name.toLowerCase().split('.').pop();
+    if (['xlsx', 'xls'].includes(ext)) {
+      formData.append('vykaz_vymer', file);
+    } else if (['pdf', 'dwg', 'png', 'jpg', 'jpeg'].includes(ext)) {
+      formData.append('vykresy', file);
+    }
+  });
+
+  return apiClient.post('/api/upload', formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+    onUploadProgress: (event) => {
+      if (!onProgress || !event.total) return;
+      const percent = Math.round((event.loaded * 100) / event.total);
+      onProgress(percent);
+    },
+  }).then(response => {
+    console.log('✅ Upload response:', response.data);
+    return response;
+  });
+};
+
 // Upload
 export const uploadFiles = (projectId, files, onProgress) => {
   console.log('📤 Uploading files for project:', projectId);
