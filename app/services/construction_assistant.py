@@ -62,20 +62,37 @@ class ConstructionAssistant:
         }
 
     def _load_system_prompt(self) -> str:
-        """Load construction expert system prompt"""
-        prompt_path = settings.PROMPTS_DIR / "claude" / "assistant" / "construction_expert.txt"
+        """Load construction expert system prompt (STAV EXPERT v2)"""
+        # Try v2 first
+        prompt_v2_path = settings.PROMPTS_DIR / "claude" / "assistant" / "stav_expert_v2.txt"
+        if prompt_v2_path.exists():
+            try:
+                with open(prompt_v2_path, 'r', encoding='utf-8') as f:
+                    logger.info("✅ Loaded STAV EXPERT v2 prompt (RAG++)")
+                    return f.read()
+            except Exception as e:
+                logger.warning(f"Failed to load v2 prompt: {e}")
 
-        try:
-            with open(prompt_path, 'r', encoding='utf-8') as f:
-                return f.read()
-        except FileNotFoundError:
-            logger.warning(f"System prompt not found at {prompt_path}, using default")
-            return self._default_system_prompt()
+        # Fallback to v1
+        prompt_v1_path = settings.PROMPTS_DIR / "claude" / "assistant" / "construction_expert.txt"
+        if prompt_v1_path.exists():
+            try:
+                with open(prompt_v1_path, 'r', encoding='utf-8') as f:
+                    return f.read()
+            except Exception as e:
+                logger.warning(f"Failed to load v1 prompt: {e}")
+
+        # Ultimate fallback
+        logger.warning("Using default system prompt")
+        return self._default_system_prompt()
 
     def _default_system_prompt(self) -> str:
         """Fallback system prompt if file not found"""
-        return """Jsi odborník na české stavebnictví. Odpovídáš pouze na otázky týkající se stavebnictví,
-                  norem ČSN, technologických postupů, materiálů a montáže. Nerelevantní otázky zdvořile odmítneš."""
+        return """Jsi STAV EXPERT — odborník na české stavebnictví.
+Odpovídáš MULTILINGVÁLNĚ (v jazyce dotazu).
+Odpovídáš pouze na otázky o stavebnictví, normách ČSN, technologiích, materiálech.
+Nerelevantní otázky zdvořile odmítneš.
+Vždy uvedeš zdroje a confidence score."""
 
     def is_construction_related(self, question: str) -> bool:
         """
@@ -148,10 +165,10 @@ Odpověď:"""
         context: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """
-        Ask construction expert a question
+        Ask construction expert a question (STAV EXPERT RAG++)
 
         Args:
-            question: User's question
+            question: User's question (any language)
             context: Optional context (project data, previous messages)
 
         Returns:
@@ -160,25 +177,32 @@ Odpověď:"""
                 "answer": str,
                 "relevant": bool,
                 "sources": List[str],
-                "related_norms": List[str]
+                "related_norms": List[str],
+                "confidence": float,  # 0.0 - 1.0
+                "rfi": List[str],     # Requests for Information
+                "language": str        # Detected language
             }
         """
-        logger.info(f"Construction Assistant: Received question: {question[:100]}...")
+        logger.info(f"🏗️  STAV EXPERT: {question[:100]}...")
+
+        # Detect question language
+        detected_lang = self._detect_language(question)
+        logger.info(f"📝 Detected language: {detected_lang}")
 
         # Check if question is construction-related
         is_relevant = self.is_construction_related(question)
 
         if not is_relevant:
+            # Multilingual rejection
+            rejection = self._get_rejection_message(detected_lang)
             return {
-                "answer": (
-                    "Promiň, jsem specializovaný asistent pro české stavebnictví. "
-                    "Pomůžu ti s technologickými postupy, normami ČSN, materiály a montáží. "
-                    "Máš nějaký stavební dotaz? Například o montáži vodoměrné šachty, "
-                    "pokládce potrubí nebo betonáži konstrukcí?"
-                ),
+                "answer": rejection,
                 "relevant": False,
                 "sources": [],
-                "related_norms": []
+                "related_norms": [],
+                "confidence": 1.0,
+                "rfi": [],
+                "language": detected_lang
             }
 
         # Build prompt with context
@@ -194,14 +218,20 @@ Odpověď:"""
 
             answer = response.get("raw_text", "Omlouváme se, nepodařilo se získat odpověď.")
 
-            # Extract norms mentioned in answer
+            # Extract metadata from answer
             related_norms = self._extract_norms(answer)
+            confidence = self._extract_confidence(answer)
+            rfi = self._extract_rfi(answer)
+            sources = self._extract_sources(answer)
 
             return {
                 "answer": answer,
                 "relevant": True,
-                "sources": ["Knowledge Base", "ČSN Normy", "OTSKP"],
-                "related_norms": related_norms
+                "sources": sources or ["Knowledge Base", "ČSN Normy", "OTSKP"],
+                "related_norms": related_norms,
+                "confidence": confidence,
+                "rfi": rfi,
+                "language": detected_lang
             }
 
         except Exception as e:
@@ -210,7 +240,10 @@ Odpověď:"""
                 "answer": f"Omlouváme se, došlo k chybě: {str(e)}",
                 "relevant": True,
                 "sources": [],
-                "related_norms": []
+                "related_norms": [],
+                "confidence": 0.0,
+                "rfi": [f"ERROR: {str(e)}"],
+                "language": detected_lang
             }
 
     def _build_prompt(self, question: str, context: Optional[Dict[str, Any]]) -> str:
@@ -249,6 +282,70 @@ Odpověď:"""
 
         # Remove duplicates and return
         return list(set(norms))
+
+    def _detect_language(self, text: str) -> str:
+        """Detect language of text: 'cs', 'ru', 'en', or 'unknown'"""
+        text_lower = text.lower()
+
+        czech_words = ['jak', 'co', 'kde', 'kdy', 'proč', 'kolik']
+        russian_words = ['как', 'что', 'где', 'когда', 'почему', 'сколько']
+        english_words = ['how', 'what', 'where', 'when', 'why']
+
+        czech_chars = ['ř', 'ž', 'č', 'š', 'ě', 'ů']
+        russian_chars = ['ы', 'э', 'ъ', 'ё', 'ю', 'я']
+
+        czech_score = sum(1 for w in czech_words if w in text_lower) + sum(1 for c in czech_chars if c in text_lower) * 2
+        russian_score = sum(1 for w in russian_words if w in text_lower) + sum(1 for c in russian_chars if c in text_lower) * 2
+        english_score = sum(1 for w in english_words if w in text_lower)
+
+        scores = {'cs': czech_score, 'ru': russian_score, 'en': english_score}
+        max_lang = max(scores, key=scores.get)
+        return max_lang if scores[max_lang] > 0 else 'unknown'
+
+    def _get_rejection_message(self, language: str) -> str:
+        """Get rejection message in appropriate language"""
+        messages = {
+            'cs': "Promiň, jsem specializovaný asistent pro české stavebnictví. Pomůžu ti s technologickými postupy, normami ČSN, materiály a montáží. Máš nějaký stavební dotaz?",
+            'ru': "Извини, я специализированный помощник по чешскому строительству. Помогу с технологическими процессами, нормами ČSN, материалами и монтажом. Есть строительный вопрос?",
+            'en': "Sorry, I'm a specialized assistant for Czech construction. I can help with processes, ČSN norms, materials and installation. Do you have a construction question?"
+        }
+        return messages.get(language, messages['cs'])
+
+    def _extract_confidence(self, text: str) -> float:
+        """Extract confidence score from answer"""
+        import re
+        patterns = [r'CONFIDENCE[:\s]+([0-9]\.[0-9]+)', r'Důvěra[:\s]+([0-9]\.[0-9]+)']
+        for pattern in patterns:
+            match = re.search(pattern, text, re.IGNORECASE)
+            if match:
+                try:
+                    return min(max(float(match.group(1)), 0.0), 1.0)
+                except ValueError:
+                    continue
+        return 0.85  # Default
+
+    def _extract_rfi(self, text: str) -> List[str]:
+        """Extract RFI (Requests for Information) from answer"""
+        import re
+        rfis = []
+        numbered = re.findall(r'⚠️\s*RFI\s*#?\d+:\s*([^\n]+)', text)
+        rfis.extend(numbered)
+        if not rfis:
+            general = re.findall(r'RFI[:\s]+([^\n]+)', text, re.IGNORECASE)
+            rfis.extend(general)
+        return rfis
+
+    def _extract_sources(self, text: str) -> List[str]:
+        """Extract sources mentioned in answer"""
+        import re
+        sources = []
+        patterns = [r'🔍\s*Zdroj:\s*([^\n]+)', r'Zdroj:\s*([^\n]+)', r'Source:\s*([^\n]+)']
+        for pattern in patterns:
+            sources.extend(re.findall(pattern, text, re.IGNORECASE))
+        csn_refs = self._extract_norms(text)
+        if csn_refs:
+            sources.extend([f"ČSN: {norm}" for norm in csn_refs])
+        return list(set(sources))
 
 
 # Singleton instance

@@ -1186,12 +1186,15 @@ class AssistantRequest(BaseModel):
 
 
 class AssistantResponse(BaseModel):
-    """Response from construction assistant"""
+    """Response from construction assistant (STAV EXPERT v2 with RAG++)"""
 
     answer: str = Field(..., description="Odpověď asistenta")
     relevant: bool = Field(..., description="Zda je otázka relevantní pro stavebnictví")
     sources: list[str] = Field(default_factory=list, description="Použité zdroje")
     related_norms: list[str] = Field(default_factory=list, description="Související normy ČSN")
+    confidence: float = Field(default=0.85, description="Jistota odpovědi (0.0-1.0)", ge=0.0, le=1.0)
+    rfi: list[str] = Field(default_factory=list, description="Požadavky na doplnění informací (RFI)")
+    language: str = Field(default="cs", description="Detekovaný jazyk otázky (cs/ru/en)")
 
 
 @router.post("/assistant", response_model=AssistantResponse)
@@ -1230,7 +1233,10 @@ async def ask_construction_assistant(request: AssistantRequest):
             answer=result["answer"],
             relevant=result["relevant"],
             sources=result["sources"],
-            related_norms=result["related_norms"]
+            related_norms=result["related_norms"],
+            confidence=result.get("confidence", 0.85),
+            rfi=result.get("rfi", []),
+            language=result.get("language", "cs")
         )
 
     except Exception as e:  # pragma: no cover - defensive logging
