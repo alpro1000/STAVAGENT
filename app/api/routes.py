@@ -764,8 +764,8 @@ async def upload_files_to_project(
             background_tasks.add_task(
                 workflow_service.execute,
                 project_id,
-                generate_summary=True,
-                enable_enrichment=project.get("enable_enrichment", True)
+                True,  # generate_summary
+                project.get("enable_enrichment", True)  # enable_enrichment
             )
         elif workflow == "B" and drawing_files:
             logger.info(f"🚀 Starting Workflow B processing for {project_id}")
