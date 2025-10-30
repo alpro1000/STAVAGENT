@@ -32,6 +32,10 @@ services:
         value: true
       - key: ENABLE_WORKFLOW_B
         value: true
+      - key: USE_MINERU
+        value: true
+      - key: USE_CLAUDE_VISION
+        value: true
       - key: ENABLE_KROS_MATCHING
         value: true
       - key: ENABLE_RTS_MATCHING
