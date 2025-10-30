@@ -26,7 +26,7 @@ openai==1.54.3
 # MinerU for high-quality PDF extraction (FREE, local)
 # Install: pip install magic-pdf[full]
 # Docs: https://github.com/opendatalab/MinerU
-magic-pdf==0.8.2  # High-quality PDF parsing (pinned for Render.com)
+magic-pdf==1.3.12  # High-quality PDF parsing (latest stable)
 # Note: requires system dependencies (poppler, tesseract)
 
 # ==========================================
