@@ -18,9 +18,7 @@ export default function Sidebar({
 
   return (
     <aside
-      className={`${
-        isOpen ? 'w-64' : 'w-0'
-      } bg-gray-900 text-white transition-all duration-300 overflow-hidden flex flex-col shadow-lg`}
+      className="w-full h-full bg-gray-900 text-white flex flex-col shadow-lg overflow-hidden"
     >
       <div className="p-4 border-b border-gray-700 flex items-center justify-between">
         <h2 className="font-bold text-lg">Projekty</h2>

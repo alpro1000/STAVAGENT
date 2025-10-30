@@ -684,30 +684,46 @@ def _detect_action_from_query(query: str) -> Tuple[Optional[str], Dict[str, Any]
     lowered = query.lower()
     options: Dict[str, Any] = {}
 
-    if "techn" in lowered and "karta" in lowered:
+    # Technická karta / Техкарта
+    if ("techn" in lowered and "karta" in lowered) or "техкарт" in lowered or "tech card" in lowered:
         tokens = [token.strip(",. ") for token in query.split()]
         position = next((token for token in tokens if any(char.isdigit() for char in token)), None)
         if position:
             options["position_id"] = position
         return "tech_card", options
 
-    if "shrn" in lowered or "souhrn" in lowered or "projekt" in lowered:
+    # Souhrn projektu / Саммари
+    if "komplet" in lowered or "shrn" in lowered or "souhrn" in lowered or "саммари" in lowered or "kpi" in lowered or "rekapitulac" in lowered:
         options["detail_level"] = "full"
         return "project_summary", options
 
-    if "zdroj" in lowered or "pracovní" in lowered or "pracovnik" in lowered or "pracovníků" in lowered:
+    # Ведомость ресурсов / Zdroje
+    if "ведомость" in lowered or "ресурс" in lowered or "zdroj" in lowered or "pracovní" in lowered or "pracovnik" in lowered or "pracovníků" in lowered or "časov" in lowered:
+        tokens = [token.strip(",. ") for token in query.split()]
+        position = next((token for token in tokens if any(char.isdigit() for char in token)), None)
+        if position:
+            options["position_id"] = position
         options["include_timeline"] = True
         return "resource_sheet", options
 
-    if "materi" in lowered or "beton" in lowered or "armatur" in lowered:
+    # Materiály / Материалы
+    if "materi" in lowered or "beton" in lowered or "armatur" in lowered or "přehled" in lowered or "spotřeba" in lowered or "spotřeb" in lowered:
         if "beton" in lowered:
             options["filter_by"] = "beton"
+        if "celkov" in lowered or "přehled" in lowered:
+            options["summary"] = True
         return "materials_detailed", options
 
-    if "výkaz" in lowered or "výměr" in lowered or "sumar" in lowered:
+    # Výkaz výměr / Выказ
+    if "výkaz" in lowered or "výměr" in lowered or "vykaz" in lowered or "vymer" in lowered or "sumar" in lowered or "detailn" in lowered:
+        tokens = [token.strip(",. ") for token in query.split()]
+        position = next((token for token in tokens if any(char.isdigit() for char in token)), None)
+        if position:
+            options["position_id"] = position
         return "vykaz_vymer", options
 
-    if "audit" in lowered or "kontrol" in lowered or "norm" in lowered:
+    # Audit pozic / Аудит
+    if "audit" in lowered or "kontrol" in lowered or "norm" in lowered or "zkontrol" in lowered or "ověř" in lowered:
         options["check_norms"] = True
         options["check_catalog"] = True
         return "audit_positions", options

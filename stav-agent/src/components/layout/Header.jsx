@@ -8,11 +8,19 @@ const STATUS_COLOR_MAP = {
   ERROR: 'bg-red-100 text-red-700 border-red-200',
 };
 
-export default function Header({ onUploadProject, onToggleSidebar, currentProject, projectStatus }) {
+export default function Header({ onUploadProject, onToggleSidebar, currentProject, projectStatus, onHomeClick }) {
   const projectName = currentProject?.name || currentProject?.project_name;
   const normalizedStatus = projectStatus?.toUpperCase();
   const statusClasses =
     STATUS_COLOR_MAP[normalizedStatus] || 'bg-gray-100 text-gray-600 border-gray-200';
+
+  const handleHomeClick = () => {
+    if (onHomeClick) {
+      onHomeClick();
+    } else {
+      window.location.href = '/';
+    }
+  };
 
   return (
     <header className="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between shadow-sm">
@@ -24,7 +32,12 @@ export default function Header({ onUploadProject, onToggleSidebar, currentProjec
         >
           <Menu size={20} className="text-gray-600" />
         </button>
-        <h1 className="text-xl font-bold text-gray-900">🏗️ Stav Agent</h1>
+        <h1
+          onClick={handleHomeClick}
+          className="text-xl font-bold text-gray-900 cursor-pointer hover:text-blue-600 transition"
+        >
+          🏗️ Stav Agent
+        </h1>
         {projectName && (
           <span className="text-sm text-gray-500 ml-2 truncate max-w-[12rem] sm:max-w-[16rem]">
             / {projectName}

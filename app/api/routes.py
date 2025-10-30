@@ -787,6 +787,7 @@ async def upload_files_to_project(
             project_name=project["project_name"],
             workflow=workflow,
             status=ProjectStatus.PROCESSING,
+            uploaded_at=get_utc_timestamp_iso(),
             message=f"Uploaded {len(files)} files, processing started"
         )
 
