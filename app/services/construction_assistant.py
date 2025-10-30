@@ -8,6 +8,7 @@ from typing import Dict, Any, Optional, List
 
 from app.core.claude_client import ClaudeClient
 from app.core.config import settings
+from app.core.perplexity_client import get_perplexity_client
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +31,15 @@ class ConstructionAssistant:
         """Initialize Construction Assistant"""
         self.claude = ClaudeClient()
         self.system_prompt = self._load_system_prompt()
+
+        # Initialize Perplexity for EXTERNAL_RESOLVER (live norms search)
+        self.perplexity = get_perplexity_client()
+        self.use_external_resolver = settings.has_perplexity and settings.ALLOW_WEB_SEARCH
+
+        if self.use_external_resolver:
+            logger.info("✅ EXTERNAL_RESOLVER enabled - Perplexity available for current norms")
+        else:
+            logger.info("⚠️ EXTERNAL_RESOLVER disabled - using local knowledge only")
 
         # Keywords для определения строительных тем
         self.construction_keywords = {
@@ -159,6 +169,138 @@ Odpověď:"""
             # If check fails, assume it's construction-related to be safe
             return True
 
+    def _should_use_external_search(self, question: str) -> bool:
+        """
+        Check if question requires external search for current norms
+
+        Triggers on keywords like:
+        - "aktuální", "current", "latest", "текущие"
+        - "nové", "new", "новые"
+        - "platné", "valid"
+        - "z internetu", "from internet"
+        """
+        if not self.use_external_resolver:
+            return False
+
+        question_lower = question.lower()
+
+        # Explicit internet request
+        if any(kw in question_lower for kw in ["internet", "web", "online", "perplexity"]):
+            return True
+
+        # Current/latest/new norms request
+        current_keywords = [
+            "aktuální", "current", "текущ", "latest",
+            "nové", "new", "нов",
+            "platné", "valid", "действующ",
+            "poslední", "recent"
+        ]
+
+        norm_keywords = ["norma", "norm", "норм", "čsn", "standard", "předpis"]
+
+        # If mentions both "current/latest" AND "norm/standard"
+        has_current = any(kw in question_lower for kw in current_keywords)
+        has_norm = any(kw in question_lower for kw in norm_keywords)
+
+        return has_current and has_norm
+
+    async def _search_current_norms(
+        self,
+        question: str,
+        work_type: Optional[str] = None,
+        material: Optional[str] = None
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Search for current Czech norms using Perplexity (EXTERNAL_RESOLVER)
+
+        Args:
+            question: User's question
+            work_type: Type of construction work (optional)
+            material: Material type (optional)
+
+        Returns:
+            Dict with norms found or None if search failed/disabled
+            {
+                "standards": List[Dict],  # ČSN norms found
+                "sources": List[str],      # URLs with citations
+                "raw_response": str,       # Full Perplexity response
+                "searched": bool           # Whether search was performed
+            }
+        """
+        if not self.use_external_resolver or not self.perplexity:
+            return None
+
+        try:
+            logger.info(f"🔍 EXTERNAL_RESOLVER: Searching current norms for: {question[:60]}...")
+
+            # Extract work type and material from question if not provided
+            if not work_type:
+                work_type = self._extract_work_type_from_question(question)
+
+            if not material:
+                material = self._extract_material_from_question(question)
+
+            # Search using Perplexity
+            result = await self.perplexity.search_csn_standard(
+                work_type=work_type or question[:100],
+                material=material
+            )
+
+            # Enhance with additional context
+            standards = result.get("standards", [])
+            citations = result.get("citations", [])
+
+            logger.info(f"✅ Found {len(standards)} standards via Perplexity")
+
+            return {
+                "standards": standards,
+                "sources": citations,
+                "raw_response": result.get("raw_response", ""),
+                "searched": True
+            }
+
+        except Exception as e:
+            logger.warning(f"EXTERNAL_RESOLVER search failed: {e}")
+            return {"searched": False, "error": str(e)}
+
+    def _extract_work_type_from_question(self, question: str) -> str:
+        """Extract work type from question for norm search"""
+        question_lower = question.lower()
+
+        if any(kw in question_lower for kw in ["beton", "železobeton", "betonáž"]):
+            return "betonové práce"
+        elif any(kw in question_lower for kw in ["armatur", "výztuž", "ocel"]):
+            return "armování, ocelové konstrukce"
+        elif any(kw in question_lower for kw in ["základ", "pilíř", "sloup"]):
+            return "základy a konstrukce"
+        elif any(kw in question_lower for kw in ["výkop", "zemní"]):
+            return "zemní práce"
+        elif any(kw in question_lower for kw in ["bednění", "bednic"]):
+            return "bednění"
+        elif any(kw in question_lower for kw in ["montáž", "instalace"]):
+            return "montážní práce"
+        else:
+            return "obecné stavební práce"
+
+    def _extract_material_from_question(self, question: str) -> Optional[str]:
+        """Extract material type from question"""
+        question_lower = question.lower()
+
+        if "beton" in question_lower:
+            # Try to extract concrete class (C25/30, C30/37, etc.)
+            import re
+            concrete_pattern = r'C\d{2}/\d{2}'
+            match = re.search(concrete_pattern, question, re.IGNORECASE)
+            return match.group(0) if match else "beton"
+
+        elif "ocel" in question_lower or "armatur" in question_lower:
+            return "ocel, armatura"
+
+        elif any(kw in question_lower for kw in ["cihla", "tvárnice", "zdivo"]):
+            return "zdivo"
+
+        return None
+
     def ask(
         self,
         question: str,
@@ -205,8 +347,18 @@ Odpověď:"""
                 "language": detected_lang
             }
 
-        # Build prompt with context
-        full_prompt = self._build_prompt(question, context)
+        # Check if user wants CURRENT/LATEST norms (EXTERNAL_RESOLVER)
+        external_norms_data = None
+        if self._should_use_external_search(question):
+            logger.info("🌐 User requested current/latest norms - using EXTERNAL_RESOLVER")
+            try:
+                import asyncio
+                external_norms_data = asyncio.run(self._search_current_norms(question))
+            except Exception as e:
+                logger.warning(f"External search failed, continuing with local KB: {e}")
+
+        # Build prompt with context and external data
+        full_prompt = self._build_prompt(question, context, external_norms_data)
 
         # Get answer from Claude
         try:
@@ -223,6 +375,14 @@ Odpověď:"""
             confidence = self._extract_confidence(answer)
             rfi = self._extract_rfi(answer)
             sources = self._extract_sources(answer)
+
+            # Add external sources if used
+            if external_norms_data and external_norms_data.get("searched"):
+                external_sources = external_norms_data.get("sources", [])
+                if external_sources:
+                    sources = sources or []
+                    sources.extend([f"Perplexity: {src}" for src in external_sources[:3]])
+                    logger.info(f"✅ Added {len(external_sources)} external sources")
 
             return {
                 "answer": answer,
@@ -246,8 +406,13 @@ Odpověď:"""
                 "language": detected_lang
             }
 
-    def _build_prompt(self, question: str, context: Optional[Dict[str, Any]]) -> str:
-        """Build full prompt with question and context"""
+    def _build_prompt(
+        self,
+        question: str,
+        context: Optional[Dict[str, Any]],
+        external_norms_data: Optional[Dict[str, Any]] = None
+    ) -> str:
+        """Build full prompt with question, context, and external data"""
         prompt_parts = []
 
         # Add context if provided
@@ -259,6 +424,23 @@ Odpověď:"""
             materials = context.get("materials")
             if materials:
                 prompt_parts.append(f"MATERIÁLY V PROJEKTU: {', '.join(materials[:5])}")
+
+        # Add external norms data if available (EXTERNAL_RESOLVER)
+        if external_norms_data and external_norms_data.get("searched"):
+            standards = external_norms_data.get("standards", [])
+            sources = external_norms_data.get("sources", [])
+
+            if standards:
+                prompt_parts.append("\n🌐 AKTUÁLNÍ NORMY Z INTERNETU (Perplexity):")
+                for std in standards[:5]:  # Top 5 standards
+                    code = std.get("code", "N/A")
+                    name = std.get("name", "")
+                    prompt_parts.append(f"  - {code}: {name}")
+
+                if sources:
+                    prompt_parts.append(f"\nZdroje: {', '.join(sources[:3])}")
+
+                prompt_parts.append("\nPOZOR: Tyto informace jsou z internetu. Použij je jako doplňkový zdroj.")
 
         # Add main question
         prompt_parts.append(f"\nOTÁZKA: {question}")
