@@ -3,8 +3,13 @@ export const QUICK_ACTIONS = [
     id: 'audit',
     label: 'Audit pozice',
     description: 'Zkontroluj všechny pozice podle norem a katalogů',
-    type: 'action',
-    apiAction: 'audit_positions',
+    type: 'prompt',
+    promptMessage: 'Mohu provést audit pozic. Co chcete zkontrolovat?',
+    examples: [
+      'Audit všech pozic v projektu',
+      'Zkontroluj pozici 123 podle ÚRS',
+      'Ověř soulad s normami ČSN'
+    ],
     color: 'bg-blue-100 text-blue-700 hover:bg-blue-200',
     icon: '✅',
   },
@@ -16,8 +21,8 @@ export const QUICK_ACTIONS = [
     promptMessage: 'Mohu analyzovat výkaz výměr. Co potřebujete?',
     examples: [
       'Technická karta pro pozici 123',
-      'Výkaz pro celý projekt',
-      'Detail pozice 45.3'
+      'Výkaz výměr pro celý projekt',
+      'Detailní popis pozice 45.3'
     ],
     color: 'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
     icon: '📋',
@@ -27,25 +32,25 @@ export const QUICK_ACTIONS = [
     label: 'Materiály',
     description: 'Analýza materiálů a spotřeby',
     type: 'prompt',
-    promptMessage: 'Mohu analyzovat materiály. Příklady dotazů:',
+    promptMessage: 'Mohu analyzovat materiály. Co chcete vědět?',
     examples: [
       'Materiály pro pozici 123',
-      'Celkový přehled materiálů',
-      'Spotřeba betonu C30/37'
+      'Celkový přehled materiálů projektu',
+      'Spotřeba betonu C30/37 pro sloupy'
     ],
     color: 'bg-orange-100 text-orange-700 hover:bg-orange-200',
     icon: '🧱',
   },
   {
     id: 'resources',
-    label: 'Zdroje',
-    description: 'Analýza pracovních zdrojů',
+    label: 'Ведомость ресурсов',
+    description: 'Analýza pracovních zdrojů po pozicích',
     type: 'prompt',
-    promptMessage: 'Mohu analyzovat pracovní zdroje. Co chcete vědět?',
+    promptMessage: 'Mohu vypracovat ведомость ресурсов. Uveďte prosím:',
     examples: [
-      'Zdroje pro pozici 123',
-      'Celkové hodiny práce',
-      'Potřeba pracovníků'
+      'Ведомость ресурсов для pozice 123',
+      'Zdroje práce pro všechny sloupy',
+      'Časový odhad pro pozici 45.3'
     ],
     color: 'bg-green-100 text-green-700 hover:bg-green-200',
     icon: '⚙️',
@@ -53,9 +58,14 @@ export const QUICK_ACTIONS = [
   {
     id: 'summary',
     label: 'Souhrn projektu',
-    description: 'Souhrn projektu a KPI',
-    type: 'action',
-    apiAction: 'project_summary',
+    description: 'Souhrnná zpráva projektu',
+    type: 'prompt',
+    promptMessage: 'Mohu vytvořit souhrn projektu. Co zahrnout?',
+    examples: [
+      'Kompletní souhrn projektu',
+      'KPI a statistiky projektu',
+      'Rekapitulace nákladů a zdrojů'
+    ],
     color: 'bg-purple-100 text-purple-700 hover:bg-purple-200',
     icon: '📊',
   },
