@@ -145,7 +145,7 @@ def test_workflow_a_tech_card_generation_and_caching(client: TestClient, artifac
     if tech_path.exists():
         tech_path.unlink()
 
-    response = client.get(f"/api/workflow-a/workflow/a/{project_id}/tech-card")
+    response = client.get(f"/api/workflow-a/{project_id}/tech-card")
     assert response.status_code == 200
     tech_card = response.json()
 
@@ -160,7 +160,7 @@ def test_workflow_a_tech_card_generation_and_caching(client: TestClient, artifac
     assert "tech_card" in project_meta.get("artifacts", {})
 
     project_meta["artifacts"].pop("tech_card")
-    second_response = client.get(f"/api/workflow-a/workflow/a/{project_id}/tech-card")
+    second_response = client.get(f"/api/workflow-a/{project_id}/tech-card")
     assert second_response.status_code == 200
     assert second_response.json() == stored
 
@@ -169,7 +169,7 @@ def test_workflow_a_resource_and_material_artifacts(client: TestClient, artifact
     project_id = artifact_project
 
     resource_response = client.get(
-        f"/api/workflow-a/workflow/a/{project_id}/resource-sheet"
+        f"/api/workflow-a/{project_id}/resource-sheet"
     )
     assert resource_response.status_code == 200
     resource_sheet = resource_response.json()
@@ -177,7 +177,7 @@ def test_workflow_a_resource_and_material_artifacts(client: TestClient, artifact
     assert _curated_path(project_id, "resource_sheet.json").exists()
 
     materials_response = client.get(
-        f"/api/workflow-a/workflow/a/{project_id}/material-analysis"
+        f"/api/workflow-a/{project_id}/material-analysis"
     )
     assert materials_response.status_code == 200
     materials = materials_response.json()
