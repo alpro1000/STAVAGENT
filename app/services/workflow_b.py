@@ -9,6 +9,7 @@ from typing import Dict, Any, List, Optional
 
 from app.core.claude_client import ClaudeClient
 from app.core.gpt4_client import GPT4VisionClient
+from app.core.mineru_client import MinerUClient
 from app.core.config import settings, ArtifactPaths
 
 # ✅ ДОБАВЛЕНО: SmartParser для документации
@@ -33,29 +34,42 @@ class WorkflowB:
     6. Generate отчет + Tech Card (БЕСПЛАТНО)
 
     Cost comparison:
-    - Claude Vision: $3/$15 per MTok (RECOMMENDED - cheaper)
+    - MinerU: FREE (local parsing, no API costs) ✅ BEST
+    - Claude Vision: $3/$15 per MTok (good balance)
     - GPT-4 Vision: ~$0.01 per image + output costs
     """
 
     def __init__(self):
         """Initialize Workflow B services"""
         self.claude = ClaudeClient()
+        self.use_mineru = settings.USE_MINERU
         self.use_claude_vision = settings.USE_CLAUDE_VISION
 
-        # Initialize vision clients based on settings
+        # Initialize MinerU for FREE PDF parsing
+        if self.use_mineru:
+            logger.info("✅ Using MinerU for PDF parsing (FREE, local)")
+            self.mineru = MinerUClient()
+            if not self.mineru.available:
+                logger.warning("⚠️  MinerU not available. Install with: pip install magic-pdf[full]")
+                logger.info("Falling back to Vision AI parsing")
+                self.use_mineru = False
+        else:
+            self.mineru = None
+
+        # Initialize vision clients for fallback
         if self.use_claude_vision:
-            logger.info("✅ Using Claude Vision for drawing analysis (cheaper option)")
+            logger.info("✅ Using Claude Vision for drawing analysis (fallback/supplement)")
             self.vision_client = self.claude
         else:
-            logger.info("Using GPT-4 Vision for drawing analysis")
+            logger.info("Using GPT-4 Vision for drawing analysis (fallback)")
             self.gpt4v = GPT4VisionClient() if settings.ENABLE_WORKFLOW_B else None
             self.vision_client = self.gpt4v
 
         # ✅ ДОБАВЛЕНО: SmartParser для обработки документации
         self.smart_parser = SmartParser()
 
-        if not self.vision_client:
-            logger.warning("Vision AI not available. Workflow B limited.")
+        if not self.vision_client and not self.use_mineru:
+            logger.warning("Neither MinerU nor Vision AI available. Workflow B limited.")
     
     async def process_drawings(
         self,
@@ -130,7 +144,12 @@ class WorkflowB:
     
     async def _analyze_drawings(self, drawings: List[Path]) -> List[Dict[str, Any]]:
         """
-        Analyze drawings with Vision AI (Claude or GPT-4 Vision)
+        Analyze drawings with MinerU (FREE) or Vision AI (fallback)
+
+        Priority:
+        1. MinerU (FREE, local parsing)
+        2. Claude Vision (3-5x cheaper than GPT-4)
+        3. GPT-4 Vision (most expensive)
 
         Returns:
             List of analyzed drawing data:
@@ -142,8 +161,8 @@ class WorkflowB:
                 "notes": str
             }, ...]
         """
-        if not self.vision_client:
-            raise ValueError("Vision AI not available")
+        if not self.vision_client and not self.use_mineru:
+            raise ValueError("Neither MinerU nor Vision AI available")
 
         analysis_results = []
 
@@ -151,9 +170,35 @@ class WorkflowB:
             logger.info(f"  Analyzing drawing: {drawing.name}")
 
             try:
+                # ✅ PRIORITY 1: Try MinerU first (FREE!)
+                if self.use_mineru and self.mineru.available:
+                    logger.info(f"    Using MinerU (FREE) for {drawing.name}")
+
+                    try:
+                        # MinerU extracts text, tables, specifications from PDF
+                        mineru_result = self.mineru.parse_technical_drawings(str(drawing))
+
+                        analysis_results.append({
+                            "drawing_file": drawing.name,
+                            "elements": [],  # MinerU doesn't detect visual elements
+                            "dimensions": mineru_result.get("dimensions", []),
+                            "materials": mineru_result.get("materials", []),
+                            "notes": mineru_result.get("raw_text", "")[:1000],
+                            "raw_analysis": mineru_result,
+                            "analysis_method": "mineru"
+                        })
+
+                        logger.info(f"    ✅ MinerU extraction successful (FREE)")
+                        continue  # Skip Vision AI if MinerU succeeded
+
+                    except Exception as mineru_error:
+                        logger.warning(f"    MinerU failed for {drawing.name}: {mineru_error}")
+                        logger.info(f"    Falling back to Vision AI...")
+
+                # ✅ PRIORITY 2 & 3: Vision AI fallback
                 if self.use_claude_vision:
                     # ✅ CHEAPER: Use Claude Vision
-                    logger.info(f"    Using Claude Vision (cheaper) for {drawing.name}")
+                    logger.info(f"    Using Claude Vision for {drawing.name}")
                     analysis = self.claude.analyze_construction_drawing(drawing)
 
                     # Claude returns direct structure

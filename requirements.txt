@@ -21,6 +21,15 @@ anthropic==0.40.0
 openai==1.54.3
 
 # ==========================================
+# PDF PARSING (MinerU - FREE alternative)
+# ==========================================
+# MinerU for high-quality PDF extraction (FREE, local)
+# Install: pip install magic-pdf[full]
+# Docs: https://github.com/opendatalab/MinerU
+magic-pdf>=0.7.0  # High-quality PDF parsing
+# Note: requires system dependencies (poppler, tesseract)
+
+# ==========================================
 # DATA PROCESSING
 # ==========================================
 # Excel parsing
