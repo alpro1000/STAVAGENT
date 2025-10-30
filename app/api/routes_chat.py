@@ -1168,3 +1168,71 @@ async def enrich_position(request: EnrichRequest):
     except Exception as e:  # pragma: no cover - defensive logging
         logger.error(f"Enrichment error: {str(e)}", exc_info=True)
         raise HTTPException(500, f"Enrichment failed: {str(e)}")
+
+
+# ============================================================================
+# CONSTRUCTION ASSISTANT (без документов)
+# ============================================================================
+
+
+class AssistantRequest(BaseModel):
+    """Request for construction assistant without documents"""
+
+    question: str = Field(..., description="Otázka pro stavebního asistenta")
+    context: Optional[Dict[str, Any]] = Field(
+        default=None,
+        description="Volitelný kontext (projekt, materiály)"
+    )
+
+
+class AssistantResponse(BaseModel):
+    """Response from construction assistant"""
+
+    answer: str = Field(..., description="Odpověď asistenta")
+    relevant: bool = Field(..., description="Zda je otázka relevantní pro stavebnictví")
+    sources: list[str] = Field(default_factory=list, description="Použité zdroje")
+    related_norms: list[str] = Field(default_factory=list, description="Související normy ČSN")
+
+
+@router.post("/assistant", response_model=AssistantResponse)
+async def ask_construction_assistant(request: AssistantRequest):
+    """
+    Zeptej se stavebního asistenta (БЕЗ ДОКУМЕНТŮ)
+
+    Stavební expert odpoví na otázky o:
+    - **Technologických postupech** (montáž vodoměrné šachty, pokládka potrubí)
+    - **Českých normách ČSN** (specifikace betonu, armování)
+    - **Materiálech** (třídy betonu, ocel, izolace)
+    - **OTSKP/KROS/RTS kódech**
+    - **Bezpečnosti práce** (BOZP)
+
+    Nerelevantní otázky (vaření, politika, atd.) budou zdvořile odmítnuty.
+
+    **Příklady otázek:**
+    - "Jak montovat vodoměrnou šachtu?"
+    - "Jaký je postup při pokládce kanalizačního potrubí?"
+    - "Jaké jsou požadavky ČSN pro beton C30/37?"
+    - "Jak správně ukládat a hutnit zásyp?"
+    - "Co musím dodržet při betonáži základů?"
+    """
+    try:
+        from app.services.construction_assistant import construction_assistant
+
+        logger.info(f"🏗️  Construction Assistant: {request.question[:80]}...")
+
+        # Ask construction assistant
+        result = construction_assistant.ask(
+            question=request.question,
+            context=request.context
+        )
+
+        return AssistantResponse(
+            answer=result["answer"],
+            relevant=result["relevant"],
+            sources=result["sources"],
+            related_norms=result["related_norms"]
+        )
+
+    except Exception as e:  # pragma: no cover - defensive logging
+        logger.error(f"Construction Assistant error: {str(e)}", exc_info=True)
+        raise HTTPException(500, f"Assistant error: {str(e)}")
