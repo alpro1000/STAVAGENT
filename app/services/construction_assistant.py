@@ -9,6 +9,7 @@ from typing import Dict, Any, Optional, List
 from app.core.claude_client import ClaudeClient
 from app.core.config import settings
 from app.core.perplexity_client import get_perplexity_client
+from app.services.kb_enrichment_service import kb_enrichment_service
 
 logger = logging.getLogger(__name__)
 
@@ -213,6 +214,8 @@ Odpověď:"""
         """
         Search for current Czech norms using Perplexity (EXTERNAL_RESOLVER)
 
+        Enriches Knowledge Base with results (Self-learning)
+
         Args:
             question: User's question
             work_type: Type of construction work (optional)
@@ -225,13 +228,30 @@ Odpověď:"""
                 "sources": List[str],      # URLs with citations
                 "raw_response": str,       # Full Perplexity response
                 "searched": bool           # Whether search was performed
+                "from_kb": bool            # If from local Knowledge Base
             }
         """
         if not self.use_external_resolver or not self.perplexity:
             return None
 
         try:
-            logger.info(f"🔍 EXTERNAL_RESOLVER: Searching current norms for: {question[:60]}...")
+            # 🔍 STEP 1: Check local Knowledge Base first (FREE!)
+            logger.info(f"🔍 Checking local KB for: {question[:60]}...")
+            local_result = kb_enrichment_service.search_local_kb(question)
+
+            if local_result:
+                logger.info("✅ Found in local KB - no Perplexity call needed!")
+                # Extract relevant fields
+                return {
+                    "standards": local_result.get("standards", []),
+                    "sources": local_result.get("citations", []),
+                    "raw_response": local_result.get("raw_response", ""),
+                    "searched": True,
+                    "from_kb": True  # Mark as from local KB
+                }
+
+            # 🌐 STEP 2: Not in KB - search via Perplexity
+            logger.info(f"🌐 EXTERNAL_RESOLVER: Searching Perplexity for: {question[:60]}...")
 
             # Extract work type and material from question if not provided
             if not work_type:
@@ -252,11 +272,21 @@ Odpověď:"""
 
             logger.info(f"✅ Found {len(standards)} standards via Perplexity")
 
+            # 💾 STEP 3: Save to Knowledge Base (Self-learning!)
+            if standards or result.get("raw_response"):
+                saved_path = kb_enrichment_service.save_perplexity_result(
+                    query=question,
+                    result=result
+                )
+                if saved_path:
+                    logger.info(f"📚 Enriched KB: {saved_path.name}")
+
             return {
                 "standards": standards,
                 "sources": citations,
                 "raw_response": result.get("raw_response", ""),
-                "searched": True
+                "searched": True,
+                "from_kb": False  # From Perplexity
             }
 
         except Exception as e:
@@ -429,9 +459,15 @@ Odpověď:"""
         if external_norms_data and external_norms_data.get("searched"):
             standards = external_norms_data.get("standards", [])
             sources = external_norms_data.get("sources", [])
+            from_kb = external_norms_data.get("from_kb", False)
 
             if standards:
-                prompt_parts.append("\n🌐 AKTUÁLNÍ NORMY Z INTERNETU (Perplexity):")
+                # Different header based on source
+                if from_kb:
+                    prompt_parts.append("\n📚 NORMY Z LOKÁLNÍ KNOWLEDGE BASE:")
+                else:
+                    prompt_parts.append("\n🌐 AKTUÁLNÍ NORMY Z INTERNETU (Perplexity):")
+
                 for std in standards[:5]:  # Top 5 standards
                     code = std.get("code", "N/A")
                     name = std.get("name", "")
@@ -440,7 +476,11 @@ Odpověď:"""
                 if sources:
                     prompt_parts.append(f"\nZdroje: {', '.join(sources[:3])}")
 
-                prompt_parts.append("\nPOZOR: Tyto informace jsou z internetu. Použij je jako doplňkový zdroj.")
+                # Different warning based on source
+                if from_kb:
+                    prompt_parts.append("\nInformace z lokální databáze (ověřené).")
+                else:
+                    prompt_parts.append("\nPOZOR: Tyto informace jsou z internetu. Použij je jako doplňkový zdroj.")
 
         # Add main question
         prompt_parts.append(f"\nOTÁZKA: {question}")
