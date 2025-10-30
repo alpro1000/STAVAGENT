@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import { useAppStore } from '../store/appStore';
 import { useChat } from '../hooks/useChat';
 import {
@@ -303,39 +304,55 @@ export default function ChatPage() {
         onUpload={handleUploadProject}
       />
 
-      <div className="flex-1 flex overflow-hidden">
-        <Sidebar
-          isOpen={sidebarOpen}
-          onToggle={() => setSidebarOpen(!sidebarOpen)}
-          projects={projects}
-          onSelectProject={setCurrentProject}
-          currentProject={currentProject}
-          projectFiles={projectFiles}
-        />
+      <PanelGroup direction="horizontal" className="flex-1 overflow-hidden">
+        {sidebarOpen && (
+          <>
+            <Panel defaultSize={20} minSize={15} maxSize={35}>
+              <Sidebar
+                isOpen={sidebarOpen}
+                onToggle={() => setSidebarOpen(!sidebarOpen)}
+                projects={projects}
+                onSelectProject={setCurrentProject}
+                currentProject={currentProject}
+                projectFiles={projectFiles}
+              />
+            </Panel>
+            <PanelResizeHandle className="w-1 bg-gray-300 hover:bg-blue-500 transition cursor-col-resize" />
+          </>
+        )}
 
-        <div className="flex-1 flex flex-col overflow-hidden">
-          <ChatWindow messages={messages} isLoading={isLoading} />
-          {currentProject && (
-            <QuickActions onAction={handleQuickAction} isLoading={isBusy} />
-          )}
-          <InputArea
-            onSend={handleSendMessage}
-            onUpload={() => fileInputRef.current?.click()}
-            isLoading={isBusy}
-            uploadProgress={uploadProgress}
-          />
-          <input
-            ref={fileInputRef}
-            type="file"
-            multiple
-            hidden
-            onChange={(e) => handleFileUpload(e.target.files)}
-            accept=".pdf,.xlsx,.xls,.png,.jpg,.jpeg,.dwg"
-          />
-        </div>
+        <Panel defaultSize={selectedArtifact ? 50 : 80} minSize={30}>
+          <div className="h-full flex flex-col overflow-hidden">
+            <ChatWindow messages={messages} isLoading={isLoading} />
+            {currentProject && (
+              <QuickActions onAction={handleQuickAction} isLoading={isBusy} />
+            )}
+            <InputArea
+              onSend={handleSendMessage}
+              onUpload={() => fileInputRef.current?.click()}
+              isLoading={isBusy}
+              uploadProgress={uploadProgress}
+            />
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              hidden
+              onChange={(e) => handleFileUpload(e.target.files)}
+              accept=".pdf,.xlsx,.xls,.png,.jpg,.jpeg,.dwg"
+            />
+          </div>
+        </Panel>
 
-        <ArtifactPanel artifact={selectedArtifact} isLoading={isBusy} />
-      </div>
+        {selectedArtifact && (
+          <>
+            <PanelResizeHandle className="w-1 bg-gray-300 hover:bg-blue-500 transition cursor-col-resize" />
+            <Panel defaultSize={30} minSize={20} maxSize={50}>
+              <ArtifactPanel artifact={selectedArtifact} isLoading={isBusy} />
+            </Panel>
+          </>
+        )}
+      </PanelGroup>
     </div>
   );
 }
