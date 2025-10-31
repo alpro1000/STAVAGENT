@@ -66,6 +66,7 @@ colorlog>=6.10.1  # Explicit version to avoid hash mismatch on Render
 # Uncomment for development:
 pytest==8.3.4
 pytest-asyncio>=0.21.0
+rich>=13.7.0  # Beautiful terminal output for test scripts
 # pytest-cov==6.0.0
 # black==24.10.0
 # ruff==0.8.4
