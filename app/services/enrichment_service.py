@@ -7,7 +7,7 @@ import logging
 from typing import Any, Dict, List, Optional
 
 from app.core.claude_client import ClaudeClient
-from app.core.kb_loader import kb_loader
+from app.core.kb_loader import get_knowledge_base
 from app.utils.datetime_utils import get_utc_timestamp_iso
 
 logger = logging.getLogger(__name__)
@@ -18,7 +18,7 @@ class PositionEnricher:
 
     def __init__(self) -> None:
         self.claude = ClaudeClient()
-        self.kb = kb_loader
+        self.kb = get_knowledge_base()
         logger.info("✅ PositionEnricher initialized")
 
     async def enrich_position(
@@ -83,7 +83,8 @@ class PositionEnricher:
 
         logger.info("🔍 Searching KB for code: %s", code)
 
-        kb_data = self.kb.search_by_code(code)
+        kros_index = self.kb.get_kros_index()
+        kb_data = kros_index.get(code)
 
         if kb_data:
             position.update(
@@ -91,7 +92,7 @@ class PositionEnricher:
                     "kb_code": code,
                     "kb_name": kb_data.get("name"),
                     "kb_unit": kb_data.get("unit"),
-                    "kb_category": kb_data.get("category"),
+                    "kb_category": kb_data.get("section"),  # Use 'section' instead of 'category'
                     "kb_source": "OTSKP_2024",
                 }
             )
