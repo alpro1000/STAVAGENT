@@ -381,13 +381,137 @@ async def search_perplexity(question: str) -> Optional[str]:
     """
     Search Perplexity for live standards and norms
 
-    TODO: Implement actual Perplexity API integration
-    """
-    # Placeholder for Perplexity integration
-    logger.info(f"🔍 Perplexity search requested for: {question}")
+    Intelligently detects query type and uses appropriate search:
+    - KROS/RTS codes → search_kros_code()
+    - ČSN standards → search_csn_standard()
+    - Market prices → search_market_price()
+    - General query → generic search
 
-    # For now, return None (will be implemented in next phase)
-    return None
+    Args:
+        question: User's question
+
+    Returns:
+        Formatted search results or None if disabled/failed
+    """
+    try:
+        from app.core.perplexity_client import get_perplexity_client
+
+        client = get_perplexity_client()
+        if not client:
+            logger.debug("Perplexity client not available (API key not set)")
+            return None
+
+        logger.info(f"🔍 Perplexity search for: {question[:80]}...")
+
+        question_lower = question.lower()
+
+        # Detect query type and route to appropriate method
+
+        # 1. KROS/RTS code search
+        if any(kw in question_lower for kw in ["otskp", "kros", "rts", "úrs", "kód", "code"]):
+            logger.debug("Detected KROS code search")
+            result = await client.search_kros_code(
+                description=question,
+                quantity=None,
+                unit=None
+            )
+
+            if result.get("found"):
+                codes = result.get("codes", [])
+                if codes:
+                    response_parts = ["**Live KROS Search Results:**\n"]
+                    for code_data in codes[:3]:  # Top 3
+                        response_parts.append(
+                            f"- Code: **{code_data['code']}**\n"
+                            f"  Name: {code_data['name']}\n"
+                            f"  Source: {code_data['source']}\n"
+                        )
+                    return "\n".join(response_parts)
+
+        # 2. ČSN standard search
+        elif any(kw in question_lower for kw in ["čsn", "csn", "en", "standard", "norma", "exposure"]):
+            logger.debug("Detected ČSN standards search")
+
+            # Extract work type and material
+            work_type = question
+            material = None
+
+            if "beton" in question_lower or "concrete" in question_lower:
+                material = "beton"
+            elif "ocel" in question_lower or "steel" in question_lower:
+                material = "ocel"
+
+            result = await client.search_csn_standard(
+                work_type=work_type,
+                material=material
+            )
+
+            standards = result.get("standards", [])
+            if standards:
+                response_parts = ["**Live ČSN Standards Search:**\n"]
+                for std in standards[:5]:  # Top 5
+                    response_parts.append(
+                        f"- Standard: **{std['code']}**\n"
+                        f"  Name: {std['name']}\n"
+                    )
+                return "\n".join(response_parts)
+
+        # 3. Price search
+        elif any(kw in question_lower for kw in ["cena", "price", "kolik stojí", "cost", "stojí"]):
+            logger.debug("Detected price search")
+
+            # Extract unit if possible
+            unit = "m³"  # Default
+            if "m²" in question or "m2" in question:
+                unit = "m²"
+            elif "m³" in question or "m3" in question:
+                unit = "m³"
+
+            result = await client.search_market_price(
+                description=question,
+                unit=unit,
+                region="Prague"
+            )
+
+            if result.get("found"):
+                price_range = result["price_range"]
+                response_parts = [
+                    "**Live Market Price Search:**\n",
+                    f"- Min: {price_range['min']:.0f} {price_range['currency']}/{unit}",
+                    f"- Avg: {price_range['avg']:.0f} {price_range['currency']}/{unit}",
+                    f"- Max: {price_range['max']:.0f} {price_range['currency']}/{unit}",
+                    f"\nSources: {len(result.get('sources', []))} verified sources"
+                ]
+                return "\n".join(response_parts)
+
+        # 4. Generic search (fallback)
+        else:
+            logger.debug("Using generic Perplexity search")
+
+            # Build targeted query
+            search_query = f"""
+            Odpověz na otázku týkající se českého stavebnictví:
+            {question}
+
+            Poskytni přesnou odpověď s odkazy na zdroje.
+            """
+
+            result = await client._search(
+                query=search_query,
+                domains=["podminky.urs.cz", "urs.cz", "csnonline.cz"],
+                search_recency_filter="year"
+            )
+
+            content = result.get("choices", [{}])[0].get("message", {}).get("content", "")
+            if content:
+                return f"**Live Search Result:**\n\n{content[:500]}"
+
+        logger.warning("Perplexity search returned no results")
+        return None
+
+    except Exception as e:
+        logger.error(f"❌ Perplexity search failed: {str(e)}", exc_info=True)
+        return None
 
 
 def log_interaction(

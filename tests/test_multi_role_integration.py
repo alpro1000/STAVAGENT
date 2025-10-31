@@ -116,12 +116,56 @@ class TestAskEndpoint:
 
     @patch('app.api.routes_multi_role.classify_task')
     @patch('app.api.routes_multi_role.execute_multi_role')
-    def test_ask_with_perplexity(
-        self, mock_execute, mock_classify, client, mock_classification, mock_result
+    @patch('app.api.routes_multi_role.search_perplexity')
+    def test_ask_with_perplexity_kros(
+        self, mock_perplexity, mock_execute, mock_classify, client, mock_classification, mock_result
     ):
-        """Test asking with Perplexity search enabled"""
+        """Test asking with Perplexity search for KROS codes"""
         mock_classify.return_value = mock_classification
         mock_execute.return_value = mock_result
+
+        # Mock Perplexity returning KROS codes
+        mock_perplexity.return_value = """**Live KROS Search Results:**
+
+- Code: **272-32-501**
+  Name: Betonové konstrukce monolitické
+  Source: podminky.urs.cz
+"""
+
+        response = client.post(
+            "/api/v1/multi-role/ask",
+            json={
+                "question": "What's the KROS code for monolithic concrete?",
+                "enable_perplexity": True,
+                "use_cache": False,
+            },
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        # Perplexity should be used
+        assert data["perplexity_used"] is True
+
+    @patch('app.api.routes_multi_role.classify_task')
+    @patch('app.api.routes_multi_role.execute_multi_role')
+    @patch('app.api.routes_multi_role.search_perplexity')
+    def test_ask_with_perplexity_standards(
+        self, mock_perplexity, mock_execute, mock_classify, client, mock_classification, mock_result
+    ):
+        """Test asking with Perplexity search for ČSN standards"""
+        mock_classify.return_value = mock_classification
+        mock_execute.return_value = mock_result
+
+        # Mock Perplexity returning ČSN standards
+        mock_perplexity.return_value = """**Live ČSN Standards Search:**
+
+- Standard: **ČSN EN 206**
+  Name: Beton - Specifikace, vlastnosti, výroba
+
+- Standard: **ČSN 73 1201**
+  Name: Navrhování betonových konstrukcí
+"""
 
         response = client.post(
             "/api/v1/multi-role/ask",
@@ -135,8 +179,43 @@ class TestAskEndpoint:
         assert response.status_code == 200
         data = response.json()
 
-        # Perplexity is placeholder for now
-        assert data["perplexity_used"] is False
+        # Perplexity should be used
+        assert data["perplexity_used"] is True
+
+    @patch('app.api.routes_multi_role.classify_task')
+    @patch('app.api.routes_multi_role.execute_multi_role')
+    @patch('app.api.routes_multi_role.search_perplexity')
+    def test_ask_with_perplexity_prices(
+        self, mock_perplexity, mock_execute, mock_classify, client, mock_classification, mock_result
+    ):
+        """Test asking with Perplexity search for market prices"""
+        mock_classify.return_value = mock_classification
+        mock_execute.return_value = mock_result
+
+        # Mock Perplexity returning price data
+        mock_perplexity.return_value = """**Live Market Price Search:**
+
+- Min: 2200 CZK/m³
+- Avg: 2450 CZK/m³
+- Max: 2800 CZK/m³
+
+Sources: 3 verified sources
+"""
+
+        response = client.post(
+            "/api/v1/multi-role/ask",
+            json={
+                "question": "Kolik stojí beton C30/37 v Praze?",
+                "enable_perplexity": True,
+                "use_cache": False,
+            },
+        )
+
+        assert response.status_code == 200
+        data = response.json()
+
+        # Perplexity should be used
+        assert data["perplexity_used"] is True
 
     @patch('app.api.routes_multi_role.classify_task')
     @patch('app.api.routes_multi_role.execute_multi_role')
