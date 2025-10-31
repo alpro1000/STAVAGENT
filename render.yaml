@@ -8,7 +8,7 @@ services:
     env: python
     region: frankfurt  # Ближе к Чехии
     plan: starter  # Можно начать с free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install --no-cache-dir -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
       # CRITICAL: API Keys (set in Render Dashboard)
