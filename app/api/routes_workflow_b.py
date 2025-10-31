@@ -24,22 +24,22 @@ router = APIRouter(prefix="/api/workflow/b", tags=["Workflow B"])
 # ============================================================================
 
 
-class TechCardRequest(BaseModel):
-    """Request for tech card generation."""
+class WorkflowBTechCardRequest(BaseModel):
+    """Request for tech card generation (Workflow B)."""
     project_id: str = Field(..., description="Project ID")
     position_id: str = Field(..., description="Position ID")
     action: str = Field(default="tech_card", description="Action type")
 
 
-class ResourceSheetRequest(BaseModel):
-    """Request for resource sheet generation."""
+class WorkflowBResourceSheetRequest(BaseModel):
+    """Request for resource sheet generation (Workflow B)."""
     project_id: str = Field(..., description="Project ID")
     position_id: str = Field(..., description="Position ID")
     action: str = Field(default="resource_sheet", description="Action type")
 
 
-class PositionsRequest(BaseModel):
-    """Request for listing positions."""
+class WorkflowBPositionsRequest(BaseModel):
+    """Request for listing positions (Workflow B)."""
     project_id: str = Field(..., description="Project ID")
 
 
@@ -226,7 +226,7 @@ async def list_generated_positions(project_id: str) -> APIResponse:
 
 
 @router.post("/tech-card", response_model=APIResponse)
-async def generate_tech_card(request: TechCardRequest) -> APIResponse:
+async def generate_tech_card(request: WorkflowBTechCardRequest) -> APIResponse:
     """
     Generate or fetch tech card for a generated position.
     
@@ -288,7 +288,7 @@ async def generate_tech_card(request: TechCardRequest) -> APIResponse:
 
 
 @router.post("/resource-sheet", response_model=APIResponse)
-async def generate_resource_sheet(request: ResourceSheetRequest) -> APIResponse:
+async def generate_resource_sheet(request: WorkflowBResourceSheetRequest) -> APIResponse:
     """
     Generate or fetch resource sheet for a generated position.
     

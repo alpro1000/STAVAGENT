@@ -26,29 +26,29 @@ legacy_router = APIRouter(prefix="/api/workflow-a", tags=["Workflow A Legacy"])
 # ============================================================================
 
 
-class TechCardRequest(BaseModel):
-    """Request for tech card generation."""
+class WorkflowATechCardRequest(BaseModel):
+    """Request for tech card generation (Workflow A)."""
     project_id: str = Field(..., description="Project ID")
     position_id: str = Field(..., description="Position ID")
     action: str = Field(default="tech_card", description="Action type")
 
 
-class ResourceSheetRequest(BaseModel):
-    """Request for resource sheet (TOV) generation."""
+class WorkflowAResourceSheetRequest(BaseModel):
+    """Request for resource sheet (TOV) generation (Workflow A)."""
     project_id: str = Field(..., description="Project ID")
     position_id: str = Field(..., description="Position ID")
     action: str = Field(default="resource_sheet", description="Action type")
 
 
-class MaterialsRequest(BaseModel):
-    """Request for materials specification."""
+class WorkflowAMaterialsRequest(BaseModel):
+    """Request for materials specification (Workflow A)."""
     project_id: str = Field(..., description="Project ID")
     position_id: str = Field(..., description="Position ID")
     action: str = Field(default="materials", description="Action type")
 
 
-class EnrichPositionRequest(BaseModel):
-    """Request for enrichment of a position."""
+class WorkflowAEnrichPositionRequest(BaseModel):
+    """Request for enrichment of a position (Workflow A)."""
 
     project_id: str = Field(..., description="Project ID")
     position_id: str = Field(..., description="Position ID")
@@ -58,8 +58,8 @@ class EnrichPositionRequest(BaseModel):
     )
 
 
-class PositionsRequest(BaseModel):
-    """Request for listing positions."""
+class WorkflowAPositionsRequest(BaseModel):
+    """Request for listing positions (Workflow A)."""
     project_id: str = Field(..., description="Project ID")
 
 
@@ -425,7 +425,7 @@ async def list_positions(project_id: str) -> APIResponse:
 
 
 @router.post("/tech-card", response_model=APIResponse)
-async def generate_tech_card(request: TechCardRequest) -> APIResponse:
+async def generate_tech_card(request: WorkflowATechCardRequest) -> APIResponse:
     """
     Generate or fetch tech card artifact for a position.
 
@@ -478,7 +478,7 @@ async def generate_tech_card(request: TechCardRequest) -> APIResponse:
 
 
 @router.post("/resource-sheet", response_model=APIResponse)
-async def generate_resource_sheet(request: ResourceSheetRequest) -> APIResponse:
+async def generate_resource_sheet(request: WorkflowAResourceSheetRequest) -> APIResponse:
     """
     Generate or fetch resource sheet (TOV) artifact for a position.
 
@@ -528,7 +528,7 @@ async def generate_resource_sheet(request: ResourceSheetRequest) -> APIResponse:
 
 
 @router.post("/materials", response_model=APIResponse)
-async def generate_materials(request: MaterialsRequest) -> APIResponse:
+async def generate_materials(request: WorkflowAMaterialsRequest) -> APIResponse:
     """
     Generate or fetch materials specification for a position.
 
@@ -578,7 +578,7 @@ async def generate_materials(request: MaterialsRequest) -> APIResponse:
 
 
 @router.post("/enrich", response_model=APIResponse)
-async def enrich_position(request: EnrichPositionRequest) -> APIResponse:
+async def enrich_position(request: WorkflowAEnrichPositionRequest) -> APIResponse:
     """
     Enrich a position with full technical information.
 
