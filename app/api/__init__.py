@@ -14,6 +14,7 @@ from app.api.routes_workflow_b import router as workflow_b_router
 from app.api.routes_chat import router as chat_router
 from app.api.pdf_extraction_routes import router as pdf_router
 from app.api.routes_agents import router as agents_router
+from app.api.routes_multi_role import router as multi_role_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -26,5 +27,6 @@ api_router.include_router(workflow_b_router)      # /api/workflow/b/*
 api_router.include_router(chat_router)            # /api/chat/*
 api_router.include_router(pdf_router)             # /api/pdf/*
 api_router.include_router(agents_router)          # /api/agents/*
+api_router.include_router(multi_role_router)      # /api/v1/multi-role/* (NEW!)
 
 __all__ = ["api_router"]
