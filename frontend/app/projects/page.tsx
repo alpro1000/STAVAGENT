@@ -4,11 +4,13 @@ import { useEffect, useState } from 'react';
 import { Project } from '@/lib/types';
 import { getProjects } from '@/lib/api';
 import { ProjectCard } from '@/components/projects/ProjectCard';
+import { CreateProjectModal } from '@/components/projects/CreateProjectModal';
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
 
   useEffect(() => {
     loadProjects();
@@ -39,10 +41,7 @@ export default function ProjectsPage() {
             </h1>
             <button
               className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-              onClick={() => {
-                // TODO: Open create project modal
-                console.log('Create new project');
-              }}
+              onClick={() => setCreateModalOpen(true)}
             >
               + New Project
             </button>
@@ -101,10 +100,7 @@ export default function ProjectsPage() {
             </p>
             <button
               className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
-              onClick={() => {
-                // TODO: Open create project modal
-                console.log('Create new project');
-              }}
+              onClick={() => setCreateModalOpen(true)}
             >
               + Create Project
             </button>
@@ -151,6 +147,13 @@ export default function ProjectsPage() {
           </div>
         )}
       </main>
+
+      {/* Create Project Modal */}
+      <CreateProjectModal
+        open={createModalOpen}
+        onOpenChange={setCreateModalOpen}
+        onSuccess={loadProjects}
+      />
     </div>
   );
 }
