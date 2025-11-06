@@ -266,4 +266,59 @@ export const generateWorkflowBTov = async (
   return data;
 };
 
+// ========================================
+// MULTI-ROLE ASSISTANT
+// ========================================
+
+export interface MultiRoleRequest {
+  question: string;
+  projectId?: string;
+  context?: {
+    projectName?: string;
+    workflow?: 'A' | 'B';
+    positions?: Position[];
+    [key: string]: any;
+  };
+}
+
+export interface MultiRoleResponse {
+  answer: string;
+  roles_consulted: string[];
+  confidence: number;
+  conflicts?: any[];
+  warnings?: string[];
+  critical_issues?: string[];
+  artifacts?: any[];
+  interaction_id: string;
+  metadata?: any;
+}
+
+export const askMultiRole = async (
+  request: MultiRoleRequest
+): Promise<MultiRoleResponse> => {
+  console.log('🤖 Asking multi-role assistant:', request);
+  const { data } = await apiClient.post('/api/v1/multi-role/ask', {
+    question: request.question,
+    context: request.context || {},
+  });
+  return data;
+};
+
+export const submitFeedback = async (
+  interactionId: string,
+  feedback: {
+    rating: number;
+    helpful: boolean;
+    correct?: boolean;
+    comment?: string;
+  }
+): Promise<any> => {
+  console.log('👍 Submitting feedback:', interactionId, feedback);
+  const { data } = await apiClient.post('/api/v1/multi-role/feedback', {
+    interaction_id: interactionId,
+    ...feedback,
+  });
+  return data;
+};
+
 export default apiClient;
