@@ -6,6 +6,9 @@ import { Project } from '@/lib/types';
 import { getProject } from '@/lib/api';
 import { STATUS_CONFIG, WORKFLOW_CONFIG } from '@/lib/constants';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { IssuesPieChart } from '@/components/charts/IssuesPieChart';
+import { StatusBarChart } from '@/components/charts/StatusBarChart';
+import { ProgressAreaChart } from '@/components/charts/ProgressAreaChart';
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -233,14 +236,44 @@ export default function ProjectDetailPage() {
                 </dl>
               </div>
 
-              {/* Placeholder for charts */}
+              {/* Charts Section */}
               <div className="rounded-lg border border-gray-200 bg-white p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                <h3 className="text-lg font-semibold text-gray-900 mb-6">
                   Analytics & Charts
                 </h3>
-                <p className="text-gray-500 text-sm">
-                  Charts will be added here (Recharts integration coming next)
-                </p>
+
+                {/* Charts Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                  {/* Pie Chart */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Issues Distribution
+                    </h4>
+                    <IssuesPieChart
+                      data={project.issuesCount || { green: 0, amber: 0, red: 0 }}
+                    />
+                  </div>
+
+                  {/* Bar Chart */}
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Issues Breakdown
+                    </h4>
+                    <StatusBarChart
+                      data={project.issuesCount || { green: 0, amber: 0, red: 0 }}
+                    />
+                  </div>
+                </div>
+
+                {/* Area Chart - Full Width */}
+                {project.progress !== undefined && (
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-700 mb-3">
+                      Progress Over Time
+                    </h4>
+                    <ProgressAreaChart progress={project.progress} />
+                  </div>
+                )}
               </div>
             </div>
           </TabsContent>
