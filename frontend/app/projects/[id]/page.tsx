@@ -9,8 +9,13 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { IssuesPieChart } from '@/components/charts/IssuesPieChart';
 import { StatusBarChart } from '@/components/charts/StatusBarChart';
 import { ProgressAreaChart } from '@/components/charts/ProgressAreaChart';
+import { CostTrendChart } from '@/components/charts/CostTrendChart';
 import { AssistantChat } from '@/components/assistant/AssistantChat';
 import { ArtifactWorkspace } from '@/components/artifacts/ArtifactWorkspace';
+import { BudgetAnalysis } from '@/components/dashboard/BudgetAnalysis';
+import { TopIssues, Issue } from '@/components/dashboard/TopIssues';
+import { ProjectTimeline, TimelineEvent } from '@/components/dashboard/ProjectTimeline';
+import { DashboardExport } from '@/components/dashboard/DashboardExport';
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -277,6 +282,123 @@ export default function ProjectDetailPage() {
                   </div>
                 )}
               </div>
+
+              {/* Budget Analysis */}
+              <BudgetAnalysis
+                original={230100}
+                afterAudit={185500}
+                breakdown={{
+                  overpriced: { count: 8, amount: 52000 },
+                  missing: { count: 3, amount: 12400 },
+                  optimized: { count: 15, amount: 32200 },
+                }}
+              />
+
+              {/* Cost Trend Chart */}
+              <CostTrendChart
+                data={[
+                  { date: 'Week 1', original: 50000, afterAudit: 48000, savings: 2000 },
+                  { date: 'Week 2', original: 80000, afterAudit: 75000, savings: 5000 },
+                  { date: 'Week 3', original: 120000, afterAudit: 110000, savings: 10000 },
+                  { date: 'Week 4', original: 180000, afterAudit: 160000, savings: 20000 },
+                  { date: 'Week 5', original: 230100, afterAudit: 185500, savings: 44600 },
+                ]}
+              />
+
+              {/* Two Column Layout: Top Issues + Timeline */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Top Issues */}
+                <TopIssues
+                  issues={[
+                    {
+                      id: '1',
+                      type: 'red',
+                      category: 'price',
+                      description: 'Reinforcement steel price 35% above market average',
+                      impact: 'high',
+                      positionCode: '121151113',
+                      positionName: 'Concrete C30/37',
+                      recommendation: 'Review supplier pricing. Current: 18 Kč/kg, Market avg: 13 Kč/kg. Potential savings: 16,000 Kč',
+                    },
+                    {
+                      id: '2',
+                      type: 'amber',
+                      category: 'standards',
+                      description: 'Missing ČSN 73 1201 reference for load calculation',
+                      impact: 'medium',
+                      positionCode: '121151114',
+                      positionName: 'Foundation formwork',
+                      recommendation: 'Add standards citation. Verify load-bearing capacity calculation meets ČSN requirements',
+                    },
+                    {
+                      id: '3',
+                      type: 'red',
+                      category: 'quantity',
+                      description: 'Quantity mismatch between drawings and estimate',
+                      impact: 'high',
+                      positionCode: '121151115',
+                      positionName: 'Excavation',
+                      recommendation: 'Recalculate volume. Drawing shows 52 m³, estimate shows 42 m³. Verify with GPT-4 Vision analysis',
+                    },
+                  ]}
+                />
+
+                {/* Project Timeline */}
+                <ProjectTimeline
+                  events={[
+                    {
+                      id: '1',
+                      type: 'upload',
+                      title: 'Project Created',
+                      description: 'Uploaded 3 files (vykaz_vymer.xlsx, foundation.pdf)',
+                      timestamp: new Date(Date.now() - 7200000), // 2 hours ago
+                      user: 'Admin User',
+                    },
+                    {
+                      id: '2',
+                      type: 'parse',
+                      title: 'Files Parsed',
+                      description: 'Successfully parsed 53 positions from Excel',
+                      timestamp: new Date(Date.now() - 7000000),
+                      metadata: { positions: 53, workflow: 'A' },
+                    },
+                    {
+                      id: '3',
+                      type: 'validate',
+                      title: 'Validation Complete',
+                      description: 'All positions validated against KROS database',
+                      timestamp: new Date(Date.now() - 6800000),
+                    },
+                    {
+                      id: '4',
+                      type: 'enrich',
+                      title: 'Enrichment Complete',
+                      description: 'Added price data and standards references',
+                      timestamp: new Date(Date.now() - 6600000),
+                      metadata: { matched: 48, partial: 5 },
+                    },
+                    {
+                      id: '5',
+                      type: 'audit',
+                      title: 'AI Audit Complete',
+                      description: 'Multi-role audit finished: 42 OK, 8 warnings, 3 errors',
+                      timestamp: new Date(Date.now() - 6400000),
+                      metadata: { green: 42, amber: 8, red: 3 },
+                    },
+                    {
+                      id: '6',
+                      type: 'chat',
+                      title: 'Assistant Consulted',
+                      description: 'User asked: "Calculate concrete volume for foundation"',
+                      timestamp: new Date(Date.now() - 3600000),
+                      user: 'Admin User',
+                    },
+                  ]}
+                />
+              </div>
+
+              {/* Export Dashboard */}
+              <DashboardExport projectName={project.name} projectId={projectId} />
             </div>
           </TabsContent>
 
