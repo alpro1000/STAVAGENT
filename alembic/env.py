@@ -27,12 +27,12 @@ if config.config_file_name is not None:
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
 
-# Import Base from models (will be created in Day 3)
+# Import Base from db.models (created in Day 3)
 try:
-    from app.models.base import Base
+    from app.db.models.base import Base
     target_metadata = Base.metadata
 except ImportError:
-    # Models not yet created, will be added in Day 3
+    # Fallback if models not yet created
     target_metadata = None
 
 # other values from the config, defined by the needs of env.py,
