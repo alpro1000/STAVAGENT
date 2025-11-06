@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { IssuesPieChart } from '@/components/charts/IssuesPieChart';
 import { StatusBarChart } from '@/components/charts/StatusBarChart';
 import { ProgressAreaChart } from '@/components/charts/ProgressAreaChart';
+import { AssistantChat } from '@/components/assistant/AssistantChat';
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -280,14 +281,21 @@ export default function ProjectDetailPage() {
 
           {/* Assistant Tab */}
           <TabsContent value="assistant">
-            <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
-              <span className="text-6xl">💬</span>
-              <h3 className="mt-4 text-lg font-medium text-gray-900">
-                Assistant Chat
-              </h3>
-              <p className="mt-2 text-gray-600">
-                AI assistant chat will be added here (Phase 3 Week 3)
-              </p>
+            <div className="h-[calc(100vh-300px)] min-h-[600px]">
+              <AssistantChat
+                projectId={projectId}
+                context={{
+                  projectId: projectId,
+                  projectName: project.name,
+                  workflow: project.workflow,
+                  metadata: {
+                    status: project.status,
+                    progress: project.progress,
+                    positionsCount: project.positionsCount,
+                    issuesCount: project.issuesCount,
+                  },
+                }}
+              />
             </div>
           </TabsContent>
 
