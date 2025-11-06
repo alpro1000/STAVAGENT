@@ -73,12 +73,13 @@ rich>=13.7.0  # Beautiful terminal output for test scripts
 # mypy==1.13.0
 
 # ==========================================
-# OPTIONAL: Phase 2 Features
+# DATABASE - Phase 4 Backend Infrastructure
 # ==========================================
-# Database (when implementing project storage)
-  sqlalchemy==2.0.36
-  psycopg2-binary==2.9.10
-  alembic==1.14.0
+# PostgreSQL with async support
+sqlalchemy[asyncio]==2.0.36
+asyncpg==0.29.0  # Async PostgreSQL driver
+psycopg2-binary==2.9.10  # Sync driver (fallback)
+alembic==1.14.0  # Database migrations
 
 # Advanced Excel export
   xlsxwriter==3.2.0
