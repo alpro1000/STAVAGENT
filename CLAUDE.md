@@ -11,8 +11,8 @@
 
 ### 🎯 Current Status (2025-11-06)
 - **Phase:** 4 - Backend Infrastructure
-- **Sprint:** Week 1 (Nov 6-13, 2025)
-- **Today's Task:** Create 4 detailed tech specs
+- **Sprint:** Week 1 (Nov 6-13, 2025) - Day 2 IN PROGRESS
+- **Today's Task:** PostgreSQL Setup & Schema Migration
 - **Production:**
   - Backend: https://concrete-agent.onrender.com
   - Frontend: https://stav-agent.onrender.com
@@ -25,21 +25,47 @@
    - Implementation guidelines
 
 2. **DEPLOYMENT_URLS.md** - Production environment info
-3. **docs/TECH_SPECS/** - Detailed technical specifications (creating now)
+3. **docs/TECH_SPECS/** - Detailed technical specifications (4 specs completed!)
 4. **docs/COMPETITIVE_ANALYSIS_RozpocetPRO.md** (Part 1 & 2) - Market insights
 
-### 🚀 Phase 4 Goals (Current)
-- [ ] PostgreSQL migration (file-based → relational DB)
-- [ ] Redis integration (caching & sessions)
-- [ ] Celery queue system (background jobs)
-- [ ] WebSocket real-time updates
-- [ ] Document intelligence (multi-step Q&A)
-- [ ] Credential management (proxy for paid sites)
+### 🚀 Phase 4 Goals (Current - Week 1)
+- [x] **Day 1 (Nov 6):** Tech specs created (4 files, ~39,000 lines)
+- [x] **Day 2 (Nov 7):** PostgreSQL setup & Alembic migrations
+  - ✅ Dependencies installed (SQLAlchemy 2.0.36, asyncpg, Alembic)
+  - ✅ Alembic configured for async migrations
+  - ✅ Initial schema migration created (10 tables, 30+ indexes)
+  - ⏳ Migration testing (pending Render PostgreSQL)
+- [ ] **Day 3 (Nov 8):** SQLAlchemy models & relationships
+- [ ] **Day 4 (Nov 9):** Redis integration (caching & sessions)
+- [ ] **Day 5 (Nov 10):** Celery queue system (background jobs)
+
+### 🗄️ Database Schema (Day 2 Progress)
+**10 Tables Created:**
+1. ✅ users - User accounts with auth
+2. ✅ projects - Project metadata & status
+3. ✅ project_documents - Uploaded files with full-text search
+4. ✅ positions - Budget line items
+5. ✅ audit_results - Multi-role audit outcomes
+6. ✅ chat_messages - Project chat history
+7. ✅ background_jobs - Celery task tracking
+8. ✅ budget_versions - Git-like version control
+9. ✅ knowledge_base_cache - Query result caching
+10. ✅ user_credentials - Encrypted credentials for paid services
+
+**Key Features:**
+- UUID primary keys with gen_random_uuid()
+- JSONB columns for flexible metadata
+- Full-text search (GIN index) for Czech documents
+- Cascading deletes for data integrity
+- Check constraints for enum validation
+- 30+ indexes for query performance
 
 ### 📊 Recent Major Achievements
 - ✅ Phase 3 Week 6: Knowledge Base UI (Nov 5)
 - ✅ Competitive analysis Part 2 (Nov 6)
 - ✅ Development planning framework (Nov 6)
+- ✅ Phase 4 tech specs (4 files, 39k lines) (Nov 6)
+- ✅ Database schema migration created (Nov 7)
 
 ---
 
@@ -76,8 +102,12 @@
 | Component | Technology |
 |-----------|-----------|
 | **Backend** | FastAPI (Python 3.10+) |
+| **Database** | PostgreSQL 16 (async with SQLAlchemy 2.0 + asyncpg) |
+| **Cache** | Redis (sessions, caching, Pub/Sub) - Coming Day 4 |
+| **Queue** | Celery + Redis (background jobs) - Coming Day 5 |
 | **AI** | Claude (Anthropic), GPT-4 Vision (OpenAI) |
-| **Database** | KROS/RTS databases (JSON) |
+| **Knowledge Base** | KROS, RTS, ČSN standards (JSON files) |
+| **Migrations** | Alembic (async migrations) |
 | **Testing** | pytest, pytest-asyncio |
 | **API Docs** | OpenAPI (Swagger) |
 
