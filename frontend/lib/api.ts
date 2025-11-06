@@ -297,10 +297,18 @@ export const askMultiRole = async (
   request: MultiRoleRequest
 ): Promise<MultiRoleResponse> => {
   console.log('🤖 Asking multi-role assistant:', request);
-  const { data } = await apiClient.post('/api/v1/multi-role/ask', {
+
+  const payload: any = {
     question: request.question,
     context: request.context || {},
-  });
+  };
+
+  // Include project_id if provided (for project-scoped interactions)
+  if (request.projectId) {
+    payload.project_id = request.projectId;
+  }
+
+  const { data } = await apiClient.post('/api/v1/multi-role/ask', payload);
   return data;
 };
 
