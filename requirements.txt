@@ -81,6 +81,13 @@ asyncpg==0.29.0  # Async PostgreSQL driver
 psycopg2-binary==2.9.10  # Sync driver (fallback)
 alembic==1.14.0  # Database migrations
 
+# ==========================================
+# REDIS - Phase 4 Backend Infrastructure
+# ==========================================
+# Redis for caching, sessions, and Pub/Sub
+redis[hiredis]==5.0.1  # Redis client with C parser for performance
+
+
 # Advanced Excel export
   xlsxwriter==3.2.0
 
