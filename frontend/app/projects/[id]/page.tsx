@@ -16,6 +16,17 @@ import { BudgetAnalysis } from '@/components/dashboard/BudgetAnalysis';
 import { TopIssues, Issue } from '@/components/dashboard/TopIssues';
 import { ProjectTimeline, TimelineEvent } from '@/components/dashboard/ProjectTimeline';
 import { DashboardExport } from '@/components/dashboard/DashboardExport';
+import { KBSearch } from '@/components/kb/KBSearch';
+import { KBResults } from '@/components/kb/KBResults';
+import { KBDetail } from '@/components/kb/KBDetail';
+import { KBRelatedItems } from '@/components/kb/KBRelatedItems';
+import { KBStatisticsView } from '@/components/kb/KBStatistics';
+import {
+  KBItem,
+  KBSearchFilters,
+  KBViewMode,
+} from '@/lib/kb-types';
+import { mockKBItems, mockKBStatistics } from '@/lib/mock-kb-data';
 
 export default function ProjectDetailPage() {
   const params = useParams();
@@ -25,6 +36,13 @@ export default function ProjectDetailPage() {
   const [project, setProject] = useState<Project | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  // Knowledge Base state
+  const [kbItems, setKbItems] = useState<KBItem[]>(mockKBItems);
+  const [filteredKbItems, setFilteredKbItems] = useState<KBItem[]>(mockKBItems);
+  const [kbViewMode, setKbViewMode] = useState<KBViewMode>('list');
+  const [selectedKbItem, setSelectedKbItem] = useState<KBItem | null>(null);
+  const [showKbStats, setShowKbStats] = useState(false);
 
   useEffect(() => {
     loadProject();
@@ -41,6 +59,71 @@ export default function ProjectDetailPage() {
       setError(err?.response?.data?.detail || 'Failed to load project');
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Knowledge Base handlers
+  const handleKbSearch = (filters: KBSearchFilters) => {
+    let filtered = [...kbItems];
+
+    // Filter by query
+    if (filters.query) {
+      const query = filters.query.toLowerCase();
+      filtered = filtered.filter(
+        (item) =>
+          item.title.toLowerCase().includes(query) ||
+          item.description.toLowerCase().includes(query) ||
+          item.content.toLowerCase().includes(query) ||
+          item.tags.some((tag) => tag.toLowerCase().includes(query)) ||
+          item.standardCode?.toLowerCase().includes(query)
+      );
+    }
+
+    // Filter by categories
+    if (filters.categories && filters.categories.length > 0) {
+      filtered = filtered.filter((item) => filters.categories!.includes(item.category));
+    }
+
+    // Filter by languages
+    if (filters.languages && filters.languages.length > 0) {
+      filtered = filtered.filter((item) => filters.languages!.includes(item.language));
+    }
+
+    // Filter by standard types
+    if (filters.standardTypes && filters.standardTypes.length > 0) {
+      filtered = filtered.filter(
+        (item) => item.standardType && filters.standardTypes!.includes(item.standardType)
+      );
+    }
+
+    setFilteredKbItems(filtered);
+  };
+
+  const handleKbReset = () => {
+    setFilteredKbItems(kbItems);
+  };
+
+  const handleKbItemClick = (item: KBItem) => {
+    // Increment view count
+    const updatedItems = kbItems.map((i) =>
+      i.id === item.id ? { ...i, views: i.views + 1 } : i
+    );
+    setKbItems(updatedItems);
+    setFilteredKbItems(updatedItems);
+
+    // Show detail
+    setSelectedKbItem(item);
+  };
+
+  const handleKbDetailClose = () => {
+    setSelectedKbItem(null);
+  };
+
+  const handleKbRelatedClick = (itemId: string) => {
+    // Find and show related items
+    const item = kbItems.find((i) => i.id === itemId);
+    if (item) {
+      handleKbItemClick(item);
     }
   };
 
@@ -429,16 +512,72 @@ export default function ProjectDetailPage() {
             </div>
           </TabsContent>
 
-          {/* Library Tab */}
+          {/* Library Tab - Knowledge Base */}
           <TabsContent value="library">
-            <div className="rounded-lg border border-gray-200 bg-white p-8 text-center">
-              <span className="text-6xl">📚</span>
-              <h3 className="mt-4 text-lg font-medium text-gray-900">
-                Knowledge Base
-              </h3>
-              <p className="mt-2 text-gray-600">
-                Project-specific standards library will be added here (Phase 3 Week 6)
-              </p>
+            <div className="space-y-6">
+              {/* KB Header */}
+              <div className="flex items-center justify-between">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">📚 Knowledge Base</h2>
+                  <p className="text-gray-600 mt-1">
+                    Vyhledejte v databázi norem, ceníků a technických informací
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowKbStats(!showKbStats)}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    showKbStats
+                      ? 'bg-blue-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  {showKbStats ? '📊 Zobrazit vyhledávání' : '📊 Zobrazit statistiky'}
+                </button>
+              </div>
+
+              {showKbStats ? (
+                /* Statistics View */
+                <KBStatisticsView
+                  statistics={mockKBStatistics}
+                  onItemClick={handleKbRelatedClick}
+                />
+              ) : (
+                <>
+                  {/* Search */}
+                  <KBSearch onSearch={handleKbSearch} onReset={handleKbReset} />
+
+                  {/* Results */}
+                  <KBResults
+                    items={filteredKbItems}
+                    viewMode={kbViewMode}
+                    onViewModeChange={setKbViewMode}
+                    onItemClick={handleKbItemClick}
+                    total={filteredKbItems.length}
+                    page={1}
+                    pageSize={filteredKbItems.length}
+                  />
+
+                  {/* Related Items (shown when item has related) */}
+                  {selectedKbItem?.relatedItems &&
+                    selectedKbItem.relatedItems.length > 0 && (
+                      <KBRelatedItems
+                        items={kbItems.filter((item) =>
+                          selectedKbItem.relatedItems?.includes(item.id)
+                        )}
+                        onItemClick={handleKbItemClick}
+                      />
+                    )}
+                </>
+              )}
+
+              {/* Detail Modal */}
+              {selectedKbItem && (
+                <KBDetail
+                  item={selectedKbItem}
+                  onClose={handleKbDetailClose}
+                  onRelatedClick={handleKbRelatedClick}
+                />
+              )}
             </div>
           </TabsContent>
         </Tabs>

@@ -2,8 +2,44 @@
 
 > Guidelines for Claude Code (claude.ai/code) when working with this repository
 
-**Version:** 2.0.0
-**Last updated:** 2025-01-26
+**Version:** 2.1.0
+**Last updated:** 2025-11-06
+
+---
+
+## ⚡ QUICK REFERENCE (READ THIS FIRST!)
+
+### 🎯 Current Status (2025-11-06)
+- **Phase:** 4 - Backend Infrastructure
+- **Sprint:** Week 1 (Nov 6-13, 2025)
+- **Today's Task:** Create 4 detailed tech specs
+- **Production:**
+  - Backend: https://concrete-agent.onrender.com
+  - Frontend: https://stav-agent.onrender.com
+
+### 📋 Essential Documents (Read Before Starting)
+1. **DEVELOPMENT_PLAN.md** ⭐ **READ FIRST EVERY SESSION!**
+   - Current priorities and tasks
+   - Weekly sprint planning
+   - Tech specs to create
+   - Implementation guidelines
+
+2. **DEPLOYMENT_URLS.md** - Production environment info
+3. **docs/TECH_SPECS/** - Detailed technical specifications (creating now)
+4. **docs/COMPETITIVE_ANALYSIS_RozpocetPRO.md** (Part 1 & 2) - Market insights
+
+### 🚀 Phase 4 Goals (Current)
+- [ ] PostgreSQL migration (file-based → relational DB)
+- [ ] Redis integration (caching & sessions)
+- [ ] Celery queue system (background jobs)
+- [ ] WebSocket real-time updates
+- [ ] Document intelligence (multi-step Q&A)
+- [ ] Credential management (proxy for paid sites)
+
+### 📊 Recent Major Achievements
+- ✅ Phase 3 Week 6: Knowledge Base UI (Nov 5)
+- ✅ Competitive analysis Part 2 (Nov 6)
+- ✅ Development planning framework (Nov 6)
 
 ---
 
