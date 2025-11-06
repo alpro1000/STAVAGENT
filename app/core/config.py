@@ -204,6 +204,26 @@ class Settings(BaseSettings):
     LOG_PERPLEXITY_CALLS: bool = Field(default=True, description="Log Perplexity calls")
     
     # ==========================================
+    # DATABASE & CACHE - Phase 4
+    # ==========================================
+    DATABASE_URL: str = Field(
+        default="postgresql+asyncpg://postgres:postgres@localhost/concrete_agent_dev",
+        description="PostgreSQL database URL (async)"
+    )
+    REDIS_URL: str = Field(
+        default="redis://localhost:6379/0",
+        description="Redis URL for caching and sessions"
+    )
+    SESSION_TTL: int = Field(
+        default=3600,
+        description="Session TTL in seconds (default 1 hour)"
+    )
+    CACHE_TTL: int = Field(
+        default=300,
+        description="Default cache TTL in seconds (default 5 minutes)"
+    )
+
+    # ==========================================
     # ENVIRONMENT
     # ==========================================
     ENVIRONMENT: str = Field(default="development", description="Environment")
