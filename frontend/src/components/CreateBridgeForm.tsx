@@ -25,7 +25,7 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
     setError('');
 
     if (!objectName.trim() || !bridgeId.trim()) {
-      setError('Наименование объекта и номер моста обязательны');
+      setError('Název objektu a číslo mostu jsou povinné');
       return;
     }
 
@@ -42,7 +42,7 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
 
       onSuccess(bridgeId.trim());
     } catch (err: any) {
-      setError(err.response?.data?.error || err.message || 'Ошибка при создании моста');
+      setError(err.response?.data?.error || err.message || 'Chyba při vytváření mostu');
     } finally {
       setIsSubmitting(false);
     }
@@ -50,17 +50,17 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
 
   return (
     <div className="create-bridge-form">
-      <h2>🌉 Создать новый мост</h2>
+      <h2>🌉 Vytvořit nový most</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <label>
-            Наименование объекта *
+            Název objektu *
             <input
               type="text"
               value={objectName}
               onChange={(e) => setObjectName(e.target.value)}
-              placeholder="например: Dálnice D1"
+              placeholder="například: Dálnice D1"
               required
               disabled={isSubmitting}
               autoFocus
@@ -70,29 +70,29 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
 
         <div className="form-row">
           <label>
-            Номер моста *
+            Číslo mostu *
             <input
               type="text"
               value={bridgeId}
               onChange={(e) => setBridgeId(e.target.value)}
-              placeholder="например: SO201"
+              placeholder="například: SO201"
               required
               disabled={isSubmitting}
             />
           </label>
         </div>
 
-        <h3>Опциональные параметры:</h3>
+        <h3>Volitelné parametry:</h3>
 
         <div className="form-row">
           <label>
-            Длина пролёта (м)
+            Délka pole (m)
             <input
               type="number"
               step="0.01"
               value={spanLength}
               onChange={(e) => setSpanLength(e.target.value)}
-              placeholder="например: 25.5"
+              placeholder="například: 25.5"
               disabled={isSubmitting}
             />
           </label>
@@ -100,13 +100,13 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
 
         <div className="form-row">
           <label>
-            Ширина мостового полотна (м)
+            Šířka mostovky (m)
             <input
               type="number"
               step="0.01"
               value={deckWidth}
               onChange={(e) => setDeckWidth(e.target.value)}
-              placeholder="например: 12.0"
+              placeholder="například: 12.0"
               disabled={isSubmitting}
             />
           </label>
@@ -114,13 +114,13 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
 
         <div className="form-row">
           <label>
-            PD недели
+            PD týdny
             <input
               type="number"
               step="0.01"
               value={pdWeeks}
               onChange={(e) => setPdWeeks(e.target.value)}
-              placeholder="например: 4.0"
+              placeholder="například: 4.0"
               disabled={isSubmitting}
             />
           </label>
@@ -134,11 +134,11 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
 
         <div className="form-actions">
           <button type="submit" disabled={isSubmitting} className="btn-primary">
-            {isSubmitting ? 'Создание...' : 'Создать мост'}
+            {isSubmitting ? 'Vytváření...' : 'Vytvořit most'}
           </button>
           {onCancel && (
             <button type="button" onClick={onCancel} disabled={isSubmitting} className="btn-secondary">
-              Отмена
+              Zrušit
             </button>
           )}
         </div>
