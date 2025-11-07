@@ -26,8 +26,16 @@ export const bridgesAPI = {
     return data;
   },
 
+  create: async (params: { bridge_id: string; object_name: string; span_length_m?: number; deck_width_m?: number; pd_weeks?: number }): Promise<void> => {
+    await api.post('/api/bridges', params);
+  },
+
   update: async (bridgeId: string, params: Partial<Bridge>): Promise<void> => {
-    await api.post(`/api/bridges/${bridgeId}`, params);
+    await api.put(`/api/bridges/${bridgeId}`, params);
+  },
+
+  delete: async (bridgeId: string): Promise<void> => {
+    await api.delete(`/api/bridges/${bridgeId}`);
   }
 };
 
@@ -130,5 +138,9 @@ export const mappingAPI = {
     return data;
   }
 };
+
+// Helper exports for convenience
+export const createBridge = bridgesAPI.create;
+export const deleteBridge = bridgesAPI.delete;
 
 export default api;

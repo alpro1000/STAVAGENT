@@ -54,6 +54,7 @@ export function initDatabase() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS bridges (
       bridge_id TEXT PRIMARY KEY,
+      object_name TEXT NOT NULL DEFAULT '',
       element_count INTEGER DEFAULT 0,
       concrete_m3 REAL DEFAULT 0,
       sum_kros_czk REAL DEFAULT 0,
@@ -64,6 +65,13 @@ export function initDatabase() {
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
   `);
+
+  // Migration: Add object_name column if it doesn't exist
+  const columns = db.prepare("PRAGMA table_info(bridges)").all();
+  const hasObjectName = columns.some(col => col.name === 'object_name');
+  if (!hasObjectName) {
+    db.exec("ALTER TABLE bridges ADD COLUMN object_name TEXT NOT NULL DEFAULT ''");
+  }
 
   // Mapping profiles table
   db.exec(`
