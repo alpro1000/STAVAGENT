@@ -94,22 +94,23 @@ export default function PositionsTable() {
               <table className="positions-table">
                 <thead>
                   <tr>
-                    <th>Podtyp</th>
-                    <th>MJ</th>
-                    <th>Množství</th>
-                    <th>Lidi</th>
-                    <th>Kč/hod</th>
-                    <th>Hod/den</th>
-                    <th>Den</th>
-                    <th>Hod celkem</th>
-                    <th>Kč celkem</th>
-                    <th>Beton m³</th>
-                    <th className="tooltip" data-tooltip="Kč/m³ betonu - klíčová metrika!">
-                      Kč/m³
+                    <th title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
+                    <th title="Měrná jednotka: m³, m², kg">MJ</th>
+                    <th title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
+                    <th title="Počet lidí v partě (EDITABLE)">Lidi</th>
+                    <th title="Hodinová sazba v CZK (EDITABLE)">Kč/hod</th>
+                    <th title="Hodin za směnu (EDITABLE)">Hod/den</th>
+                    <th title="Počet dní - koeficient 1 (EDITABLE)">Den</th>
+                    <th title="Celkový počet hodin = lidi × hod/den × den">Hod celkem</th>
+                    <th title="Celková cena = hod celkem × Kč/hod">Kč celkem</th>
+                    <th title="Objem betonu této části">Beton m³</th>
+                    <th title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Beton m³">
+                      Kč/m³ ⭐
                     </th>
-                    <th>KROS JC</th>
-                    <th>KROS celkem</th>
-                    <th>Akce</th>
+                    <th title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS JC</th>
+                    <th title="KROS celkem = KROS JC × Beton m³">KROS celkem</th>
+                    <th title="Request For Information - problémové položky">RFI</th>
+                    <th title="Akce: Smazat / Info">Akce</th>
                   </tr>
                 </thead>
                 <tbody>

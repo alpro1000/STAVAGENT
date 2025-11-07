@@ -1,5 +1,5 @@
 /**
- * PositionRow - Editable table row for a single position
+ * PositionRow - Editable table row for a single position (v3.4 Modern UI)
  */
 
 import { useState } from 'react';
@@ -9,15 +9,18 @@ import { usePositions } from '../hooks/usePositions';
 
 interface Props {
   position: Position;
+  isLocked?: boolean;
 }
 
-export default function PositionRow({ position }: Props) {
+export default function PositionRow({ position, isLocked = false }: Props) {
   const { selectedBridge } = useAppContext();
   const { updatePositions, deletePosition } = usePositions(selectedBridge);
 
   const [editedFields, setEditedFields] = useState<Partial<Position>>({});
 
   const handleFieldChange = (field: keyof Position, value: any) => {
+    if (isLocked) return;
+
     setEditedFields((prev) => ({
       ...prev,
       [field]: value
@@ -25,7 +28,7 @@ export default function PositionRow({ position }: Props) {
   };
 
   const handleBlur = () => {
-    if (Object.keys(editedFields).length === 0) return;
+    if (Object.keys(editedFields).length === 0 || isLocked) return;
 
     // Send update to server
     updatePositions([
@@ -39,6 +42,11 @@ export default function PositionRow({ position }: Props) {
   };
 
   const handleDelete = () => {
+    if (isLocked) {
+      alert('❌ Nelze smazat: Data jsou zafixována (snapshot aktivní)');
+      return;
+    }
+
     if (confirm(`Smazat pozici "${position.subtype}"?`)) {
       deletePosition(position.id!);
     }
@@ -46,7 +54,7 @@ export default function PositionRow({ position }: Props) {
 
   const formatNumber = (num: number | undefined, decimals = 2): string => {
     if (num === undefined || num === null || isNaN(num)) return '0';
-    return num.toFixed(decimals).replace('.', ',');
+    return num.toFixed(decimals).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   };
 
   const getValue = (field: keyof Position): number => {
@@ -57,154 +65,170 @@ export default function PositionRow({ position }: Props) {
   const icon = SUBTYPE_ICONS[position.subtype as keyof typeof SUBTYPE_ICONS] || '📋';
 
   return (
-    <tr className={position.has_rfi ? 'rfi-row' : ''}>
-      {/* Subtype */}
-      <td>
+    <tr className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''}`}>
+      {/* Locked indicator */}
+      {isLocked && <td className="lock-indicator">🔒</td>}
+
+      {/* Subtype with icon */}
+      <td className="cell-subtype">
         <div className="subtype-cell">
-          <span className="icon">{icon}</span>
-          <span>{position.subtype}</span>
+          <span className="subtype-icon">{icon}</span>
+          <span className="subtype-label">{position.subtype}</span>
         </div>
+      </td>
+
+      {/* Unit */}
+      <td className="cell-unit">{position.unit}</td>
+
+      {/* INPUT CELLS - Editable (orange/cyan gradient) */}
+
+      {/* Qty */}
+      <td className="cell-input">
+        <input
+          type="number"
+          step="0.1"
+          className="input-cell"
+          value={getValue('qty')}
+          onChange={(e) => handleFieldChange('qty', parseFloat(e.target.value) || 0)}
+          onBlur={handleBlur}
+          disabled={isLocked}
+          title="Množství v měrných jednotkách"
+        />
+      </td>
+
+      {/* Crew size */}
+      <td className="cell-input">
+        <input
+          type="number"
+          className="input-cell"
+          value={getValue('crew_size')}
+          onChange={(e) => handleFieldChange('crew_size', parseInt(e.target.value) || 0)}
+          onBlur={handleBlur}
+          disabled={isLocked}
+          title="Počet lidí v partě"
+        />
+      </td>
+
+      {/* Wage */}
+      <td className="cell-input">
+        <input
+          type="number"
+          step="1"
+          className="input-cell"
+          value={getValue('wage_czk_ph')}
+          onChange={(e) => handleFieldChange('wage_czk_ph', parseFloat(e.target.value) || 0)}
+          onBlur={handleBlur}
+          disabled={isLocked}
+          title="Hodinová sazba v CZK"
+        />
+      </td>
+
+      {/* Shift hours */}
+      <td className="cell-input">
+        <input
+          type="number"
+          step="0.5"
+          className="input-cell"
+          value={getValue('shift_hours')}
+          onChange={(e) => handleFieldChange('shift_hours', parseFloat(e.target.value) || 0)}
+          onBlur={handleBlur}
+          disabled={isLocked}
+          title="Hodin za směnu"
+        />
+      </td>
+
+      {/* Days */}
+      <td className="cell-input">
+        <input
+          type="number"
+          step="0.5"
+          className="input-cell"
+          value={getValue('days')}
+          onChange={(e) => handleFieldChange('days', parseFloat(e.target.value) || 0)}
+          onBlur={handleBlur}
+          disabled={isLocked}
+          title="Počet dní (koeficient 1)"
+        />
+      </td>
+
+      {/* COMPUTED CELLS - Readonly (gray) */}
+
+      {/* Labor hours */}
+      <td className="cell-computed">
+        <div className="computed-cell" title="= crew_size × shift_hours × days">
+          {formatNumber(position.labor_hours, 1)}
+        </div>
+      </td>
+
+      {/* Cost CZK */}
+      <td className="cell-computed">
+        <div className="computed-cell" title="= labor_hours × wage_czk_ph">
+          {formatNumber(position.cost_czk, 2)}
+        </div>
+      </td>
+
+      {/* Concrete m³ */}
+      <td className="cell-computed">
+        <div className="computed-cell" title="Objem betonu této části">
+          {formatNumber(position.concrete_m3, 2)}
+        </div>
+      </td>
+
+      {/* KROS CELLS - Success green with glow */}
+
+      {/* Unit cost on m³ - KEY METRIC */}
+      <td className="cell-kros-key">
+        <div
+          className={`kros-cell kros-key ${position.has_rfi ? 'warning' : ''}`}
+          title="⭐ KLÍČOVÁ METRIKA: Kč/m³ betonu (= cost_czk / concrete_m3)"
+        >
+          {formatNumber(position.unit_cost_on_m3, 2)}
+        </div>
+      </td>
+
+      {/* KROS unit */}
+      <td className="cell-kros">
+        <div
+          className="kros-cell"
+          title="KROS jednotková cena (= ceil(unit_cost_on_m3 / 50) × 50)"
+        >
+          {formatNumber(position.kros_unit_czk, 0)}
+        </div>
+      </td>
+
+      {/* KROS total */}
+      <td className="cell-kros">
+        <div
+          className="kros-cell"
+          title="KROS celkem (= kros_unit_czk × concrete_m3)"
+        >
+          {formatNumber(position.kros_total_czk, 2)}
+        </div>
+      </td>
+
+      {/* RFI indicator */}
+      <td className="cell-rfi">
         {position.has_rfi && (
-          <div className="rfi-badge" title={position.rfi_message}>
-            ⚠️ RFI
+          <div className="rfi-badge" title={position.rfi_message || 'Request For Information'}>
+            ⚠️
           </div>
         )}
       </td>
 
-      {/* Unit */}
-      <td>{position.unit}</td>
-
-      {/* Qty - EDITABLE (orange) */}
-      <td className="input-cell">
-        <input
-          type="number"
-          step="0.1"
-          value={getValue('qty')}
-          onChange={(e) => handleFieldChange('qty', parseFloat(e.target.value) || 0)}
-          onBlur={handleBlur}
-        />
-      </td>
-
-      {/* Crew size - EDITABLE (orange) */}
-      <td className="input-cell">
-        <input
-          type="number"
-          value={getValue('crew_size')}
-          onChange={(e) => handleFieldChange('crew_size', parseInt(e.target.value) || 0)}
-          onBlur={handleBlur}
-        />
-      </td>
-
-      {/* Wage - EDITABLE (orange) */}
-      <td className="input-cell">
-        <input
-          type="number"
-          step="1"
-          value={getValue('wage_czk_ph')}
-          onChange={(e) => handleFieldChange('wage_czk_ph', parseFloat(e.target.value) || 0)}
-          onBlur={handleBlur}
-        />
-      </td>
-
-      {/* Shift hours - EDITABLE (orange) */}
-      <td className="input-cell">
-        <input
-          type="number"
-          step="0.5"
-          value={getValue('shift_hours')}
-          onChange={(e) => handleFieldChange('shift_hours', parseFloat(e.target.value) || 0)}
-          onBlur={handleBlur}
-        />
-      </td>
-
-      {/* Days - EDITABLE (orange) */}
-      <td className="input-cell">
-        <input
-          type="number"
-          step="0.5"
-          value={getValue('days')}
-          onChange={(e) => handleFieldChange('days', parseFloat(e.target.value) || 0)}
-          onBlur={handleBlur}
-        />
-      </td>
-
-      {/* Labor hours - COMPUTED (readonly gray) */}
-      <td className="computed-cell">
-        <input
-          type="text"
-          className="readonly-field"
-          value={formatNumber(position.labor_hours, 1)}
-          readOnly
-        />
-      </td>
-
-      {/* Cost CZK - COMPUTED (readonly gray) */}
-      <td className="computed-cell">
-        <input
-          type="text"
-          className="readonly-field"
-          value={formatNumber(position.cost_czk, 2)}
-          readOnly
-        />
-      </td>
-
-      {/* Concrete m³ - COMPUTED (readonly gray) */}
-      <td className="computed-cell">
-        <input
-          type="text"
-          className="readonly-field"
-          value={formatNumber(position.concrete_m3, 2)}
-          readOnly
-        />
-      </td>
-
-      {/* Unit cost on m³ - KEY METRIC (readonly, bold) */}
-      <td className="computed-cell">
-        <input
-          type="text"
-          className="readonly-field"
-          style={{ fontWeight: 700, color: 'var(--primary-action)' }}
-          value={formatNumber(position.unit_cost_on_m3, 2)}
-          readOnly
-          title="Klíčová metrika: Kč/m³ betonu"
-        />
-      </td>
-
-      {/* KROS unit - COMPUTED (green bg) */}
-      <td className="kros-cell">
-        <input
-          type="text"
-          className="readonly-field"
-          style={{ background: 'var(--kros-success-bg)', color: 'var(--success)' }}
-          value={formatNumber(position.kros_unit_czk, 0)}
-          readOnly
-        />
-      </td>
-
-      {/* KROS total - COMPUTED (green bg) */}
-      <td className="kros-cell">
-        <input
-          type="text"
-          className="readonly-field"
-          style={{ background: 'var(--kros-success-bg)', color: 'var(--success)' }}
-          value={formatNumber(position.kros_total_czk, 2)}
-          readOnly
-        />
-      </td>
-
       {/* Actions */}
-      <td>
+      <td className="cell-actions">
         <div className="action-buttons">
           <button
-            className="icon-button"
+            className="icon-btn btn-delete"
             onClick={handleDelete}
-            title="Smazat"
+            title={isLocked ? 'Nelze smazat (zafixováno)' : 'Smazat pozici'}
+            disabled={isLocked}
           >
             ❌
           </button>
           <button
-            className="icon-button"
-            title="Info"
+            className="icon-btn btn-info"
+            title="Zobrazit detaily"
             onClick={() => alert(JSON.stringify(position, null, 2))}
           >
             ℹ️
