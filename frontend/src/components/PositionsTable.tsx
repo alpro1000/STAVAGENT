@@ -6,7 +6,6 @@ import { useState, useMemo, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { Position } from '@monolit/shared';
-import { SUBTYPE_ICONS } from '@monolit/shared';
 import PositionRow from './PositionRow';
 
 export default function PositionsTable() {
