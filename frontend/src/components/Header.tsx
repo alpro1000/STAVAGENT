@@ -1,5 +1,5 @@
 /**
- * Header component
+ * Header component - Modern UI with Dark mode toggle
  */
 
 import { useState, useRef } from 'react';
@@ -10,7 +10,14 @@ import { exportAPI, uploadAPI, snapshotsAPI } from '../services/api';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 import CreateBridgeForm from './CreateBridgeForm';
 
-export default function Header() {
+interface HeaderProps {
+  isDark: boolean;
+  toggleTheme: () => void;
+  sidebarOpen: boolean;
+  setSidebarOpen: (open: boolean) => void;
+}
+
+export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const { selectedBridge, setSelectedBridge, bridges, positions, headerKPI } = useAppContext();
   const { refetch: refetchBridges } = useBridges();
   const { refetch: refetchPositions } = usePositions(selectedBridge);
@@ -120,6 +127,14 @@ export default function Header() {
       </div>
 
       <div className="header-controls">
+        <button
+          className="btn-theme-toggle"
+          onClick={toggleTheme}
+          title={isDark ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
+        >
+          {isDark ? '☀️' : '🌙'}
+        </button>
+
         <button className="btn-create" onClick={() => setShowCreateForm(true)}>
           ➕ Nový most
         </button>
