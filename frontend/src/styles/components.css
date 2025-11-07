@@ -423,7 +423,7 @@ button:disabled {
 
 .positions-table th {
   position: sticky;
-  top: 0;
+  top: 140px;
   background: var(--bg-tertiary);
   color: var(--text-secondary);
   font-weight: 600;
@@ -435,7 +435,7 @@ button:disabled {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  z-index: 10;
+  z-index: 90;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -647,13 +647,13 @@ button:disabled {
 .kpi-float-card {
   position: sticky;
   top: 0;
-  margin: 20px;
-  padding: 20px;
+  margin: 16px 20px;
+  padding: 14px 16px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-default);
   border-radius: 4px;
   box-shadow: var(--shadow-md);
-  z-index: 5;
+  z-index: 100;
 }
 
 .kpi-header {
@@ -680,15 +680,16 @@ button:disabled {
 
 .kpi-grid-modern {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 }
 
 .kpi-card {
-  padding: 12px;
+  padding: 8px 10px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-default);
   border-radius: 4px;
+  min-height: 60px;
 }
 
 .kpi-card-primary {
@@ -710,22 +711,22 @@ button:disabled {
 }
 
 .kpi-card-label {
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  margin-bottom: 4px;
+  margin-bottom: 3px;
   opacity: 0.9;
 }
 
 .kpi-card-value {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 700;
   font-family: var(--font-mono);
 }
 
 .kpi-card-unit {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
   margin-left: 4px;
   opacity: 0.8;

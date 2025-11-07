@@ -37,7 +37,7 @@ export default function KPIPanel() {
       </div>
 
       <div className="kpi-grid-modern">
-        {/* Primary Metrics - Highlighted */}
+        {/* ROW 1: Main metrics */}
         <div className="kpi-card kpi-card-primary">
           <div className="kpi-card-icon">💰</div>
           <div className="kpi-card-content">
@@ -71,18 +71,6 @@ export default function KPIPanel() {
           </div>
         </div>
 
-        {/* Secondary Metrics */}
-        <div className="kpi-card">
-          <div className="kpi-card-icon">📐</div>
-          <div className="kpi-card-content">
-            <div className="kpi-card-label">Kč/t (ρ=2.4)</div>
-            <div className="kpi-card-value">
-              {formatNumber(headerKPI.project_unit_cost_czk_per_t, 2)}
-              <span className="kpi-card-unit">CZK/t</span>
-            </div>
-          </div>
-        </div>
-
         <div className="kpi-card">
           <div className="kpi-card-icon">📆</div>
           <div className="kpi-card-content">
@@ -94,6 +82,7 @@ export default function KPIPanel() {
           </div>
         </div>
 
+        {/* ROW 2: Averages */}
         <div className="kpi-card">
           <div className="kpi-card-icon">👥</div>
           <div className="kpi-card-content">
