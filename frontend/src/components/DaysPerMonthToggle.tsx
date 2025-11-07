@@ -2,7 +2,7 @@
  * DaysPerMonthToggle - Switch between 30 and 22 days/month
  */
 
-import React from 'react';
+
 import { useAppContext } from '../context/AppContext';
 import { useConfig } from '../hooks/useConfig';
 

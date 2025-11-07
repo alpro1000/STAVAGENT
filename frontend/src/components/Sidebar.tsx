@@ -2,7 +2,7 @@
  * Sidebar component
  */
 
-import React from 'react';
+
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 

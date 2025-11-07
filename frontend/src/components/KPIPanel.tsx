@@ -2,7 +2,7 @@
  * KPIPanel - Display header KPI metrics
  */
 
-import React from 'react';
+
 import { useAppContext } from '../context/AppContext';
 
 export default function KPIPanel() {
