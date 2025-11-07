@@ -44,3 +44,4 @@ exports/
 # Testing
 coverage/
 .nyc_output/
+*.backup
