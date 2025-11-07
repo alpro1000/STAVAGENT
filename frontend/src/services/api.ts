@@ -3,7 +3,7 @@
  */
 
 import axios from 'axios';
-import { Position, HeaderKPI, Bridge, ProjectConfig } from '@monolit/shared';
+import { Position, HeaderKPI, Bridge, ProjectConfig, SnapshotListItem, Snapshot } from '@monolit/shared';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
@@ -135,6 +135,56 @@ export const mappingAPI = {
       raw_rows: rawRows,
       column_mapping: columnMapping
     });
+    return data;
+  }
+};
+
+// Snapshots
+export const snapshotsAPI = {
+  create: async (params: {
+    bridge_id: string;
+    positions: Position[];
+    header_kpi: HeaderKPI;
+    description?: string;
+    snapshot_name?: string;
+    created_by?: string;
+  }) => {
+    const { data } = await api.post('/api/snapshots/create', params);
+    return data;
+  },
+
+  list: async (bridgeId: string): Promise<SnapshotListItem[]> => {
+    const { data } = await api.get(`/api/snapshots/${bridgeId}`);
+    return data;
+  },
+
+  getDetail: async (snapshotId: string): Promise<Snapshot> => {
+    const { data } = await api.get(`/api/snapshots/detail/${snapshotId}`);
+    return data;
+  },
+
+  restore: async (snapshotId: string, comment?: string, created_by?: string) => {
+    const { data } = await api.post(`/api/snapshots/${snapshotId}/restore`, {
+      comment,
+      created_by
+    });
+    return data;
+  },
+
+  unlock: async (snapshotId: string, reason: string, created_by?: string) => {
+    const { data } = await api.post(`/api/snapshots/${snapshotId}/unlock`, {
+      reason,
+      created_by
+    });
+    return data;
+  },
+
+  delete: async (snapshotId: string) => {
+    await api.delete(`/api/snapshots/${snapshotId}`);
+  },
+
+  getActive: async (bridgeId: string) => {
+    const { data } = await api.get(`/api/snapshots/active/${bridgeId}`);
     return data;
   }
 };

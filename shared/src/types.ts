@@ -135,3 +135,39 @@ export interface ExportOptions {
   delimiter?: string;
   include_formulas?: boolean;
 }
+
+export interface Snapshot {
+  id: string;                       // snapshot_id
+  bridge_id: string;
+  snapshot_name?: string;           // "základní", "finální"...
+  snapshot_hash: string;            // SHA256 hash
+  created_at: string;               // ISO timestamp
+  created_by?: string;              // Jméno uživatele
+  positions_snapshot: Position[];   // Úplná kopie pozic
+  header_kpi_snapshot: HeaderKPI;   // Kopie KPI
+  description?: string;             // "Finální výpočty"...
+  is_locked: boolean;               // true = aktivní zámek
+  parent_snapshot_id?: string;      // Pro sledování verzí
+  sum_kros_at_lock: number;         // Suma KROS v okamžiku lock
+  delta_to_previous?: number;       // Rozdíl oproti předchozímu
+}
+
+export interface SnapshotListItem {
+  snapshot_id: string;
+  snapshot_name?: string;
+  created_at: string;
+  created_by?: string;
+  sum_kros_at_lock: number;
+  delta_to_previous: number | null;
+  description?: string;
+  is_locked: boolean;
+  parent_snapshot_id?: string;
+}
+
+export interface SnapshotIntegrity {
+  is_valid: boolean;
+  hash_matches: boolean;
+  stored_hash: string;
+  calculated_hash: string;
+  positions_count: number;
+}
