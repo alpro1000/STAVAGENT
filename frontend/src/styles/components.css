@@ -174,73 +174,159 @@
   color: white;
 }
 
-/* Positions Table */
+/* ===== POSITIONS TABLE v3.3 ===== */
+
 .positions-container {
-  padding: 32px;
+  padding: 24px;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .part-card {
-  background: var(--white);
-  border: 1px solid var(--divider-border);
-  border-radius: 8px;
-  margin-bottom: 24px;
+  background: var(--bg-glassmorphism);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border-default);
+  border-radius: 12px;
+  margin-bottom: 20px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-glass);
+  transition: all var(--transition-base);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.part-card:hover {
+  box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.45);
+  transform: translateY(-2px);
 }
 
 .part-header {
-  background: var(--primary-action);
-  color: white;
-  padding: 16px 24px;
-  font-size: 18px;
-  font-weight: 600;
+  background: var(--gradient-primary);
+  color: var(--bg-primary);
+  padding: 18px 24px;
+  font-size: 16px;
+  font-weight: 700;
   display: flex;
   justify-content: space-between;
   align-items: center;
   cursor: pointer;
   user-select: none;
+  transition: all var(--transition-base);
+  position: relative;
+  overflow: hidden;
+}
+
+.part-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, transparent 100%);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.part-header:hover::before {
+  opacity: 1;
 }
 
 .part-header:hover {
-  background: #184775;
+  filter: brightness(1.1);
+}
+
+.part-header:active {
+  transform: scale(0.99);
 }
 
 .positions-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 14px;
+  background: var(--bg-secondary);
 }
 
 .positions-table th {
-  background: var(--medium-concrete);
+  background: var(--bg-tertiary);
   color: var(--text-primary);
-  font-weight: 600;
+  font-weight: 700;
   text-align: left;
-  padding: 12px 8px;
-  border-bottom: 2px solid var(--divider-border);
-  font-size: 13px;
+  padding: 14px 10px;
+  border-bottom: 2px solid var(--border-default);
+  font-size: 12px;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.positions-table th:first-child {
+  padding-left: 20px;
+}
+
+.positions-table th:last-child {
+  padding-right: 20px;
 }
 
 .positions-table td {
-  padding: 10px 8px;
-  border-bottom: 1px solid var(--medium-concrete);
+  padding: 12px 10px;
+  border-bottom: 1px solid var(--border-subtle);
   vertical-align: middle;
+  background: var(--bg-secondary);
+  transition: background var(--transition-base);
 }
 
-.positions-table tbody tr:hover {
-  background: var(--highlight-row);
+.positions-table td:first-child {
+  padding-left: 20px;
 }
 
-.positions-table tbody tr.rfi-row {
-  background: var(--rfi-warning);
+.positions-table td:last-child {
+  padding-right: 20px;
+}
+
+.positions-table tbody tr {
+  transition: all var(--transition-base);
+}
+
+.positions-table tbody tr:hover td {
+  background: var(--bg-tertiary);
+}
+
+.positions-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.positions-table tbody tr.rfi-row td {
+  background: rgba(255, 107, 53, 0.1);
+  border-left: 3px solid var(--accent-secondary);
 }
 
 .positions-table input,
 .positions-table select {
   width: 100%;
   min-width: 80px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  transition: all var(--transition-base);
+}
+
+.positions-table input:focus,
+.positions-table select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  background: var(--bg-primary);
+  box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1);
+}
+
+.positions-table input:hover,
+.positions-table select:hover {
+  border-color: var(--border-hover);
 }
 
 .subtype-cell {
