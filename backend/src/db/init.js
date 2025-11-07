@@ -73,6 +73,13 @@ export function initDatabase() {
     db.exec("ALTER TABLE bridges ADD COLUMN object_name TEXT NOT NULL DEFAULT ''");
   }
 
+  // Migration: Add item_name column to positions if it doesn't exist
+  const posColumns = db.prepare("PRAGMA table_info(positions)").all();
+  const hasItemName = posColumns.some(col => col.name === 'item_name');
+  if (!hasItemName) {
+    db.exec("ALTER TABLE positions ADD COLUMN item_name TEXT");
+  }
+
   // Snapshots table
   db.exec(`
     CREATE TABLE IF NOT EXISTS snapshots (

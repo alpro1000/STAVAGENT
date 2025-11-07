@@ -107,7 +107,50 @@ router.post('/', (req, res) => {
       VALUES (?, ?, ?, ?, ?)
     `).run(bridge_id, object_name, span_length_m || null, deck_width_m || null, pd_weeks || null);
 
-    logger.info(`Created new bridge: ${bridge_id} (${object_name})`);
+    // Create template positions with default values
+    const templatePositions = [
+      { part_name: 'ZÁKLADY', item_name: 'ZÁKLADY ZE ŽELEZOBETONU DO C30/37', subtype: 'beton', unit: 'M3' },
+      { part_name: 'ZÁKLADY', item_name: 'ZÁKLADY ZE ŽELEZOBETONU DO C30/37', subtype: 'bednění', unit: 'm2' },
+      { part_name: 'ŘÍMSY', item_name: 'ŘÍMSY ZE ŽELEZOBETONU DO C30/37', subtype: 'beton', unit: 'M3' },
+      { part_name: 'ŘÍMSY', item_name: 'ŘÍMSY ZE ŽELEZOBETONU DO C30/37', subtype: 'bednění', unit: 'm2' },
+      { part_name: 'MOSTNÍ OPĚRY', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ OPĚRY', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA', subtype: 'oboustranné (opěry)', unit: 'm2' },
+      { part_name: 'MOSTNÍ OPĚRY', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA', subtype: 'bednění', unit: 'm2' },
+      { part_name: 'MOSTNÍ PILÍŘE', item_name: 'MOSTNÍ PILÍŘE A STATIVA', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ PILÍŘE', item_name: 'MOSTNÍ PILÍŘE A STATIVA', subtype: 'bednění', unit: 'm2' },
+      { part_name: 'MOSTNÍ KŘÍDLA', item_name: 'MOSTNÍ KŘÍDLA', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ KŘÍDLA', item_name: 'MOSTNÍ KŘÍDLA', subtype: 'oboustranné (křídla)', unit: 'm2' },
+      { part_name: 'MOSTNÍ KŘÍDLA', item_name: 'MOSTNÍ KŘÍDLA', subtype: 'bednění', unit: 'm2' },
+      { part_name: 'MOSTOVKA', item_name: 'MOSTOVKA ZE ŽELEZOBETONU DO C30/37', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTOVKA', item_name: 'MOSTOVKA ZE ŽELEZOBETONU DO C30/37', subtype: 'bednění', unit: 'm2' },
+      { part_name: 'VÝZTUŽ', item_name: 'VÝZTUŽ BETONÁŘSKÁ', subtype: 'výztuž', unit: 'kg' }
+    ];
+
+    const insertPosition = db.prepare(`
+      INSERT INTO positions (
+        id, bridge_id, part_name, item_name, subtype, unit,
+        qty, crew_size, wage_czk_ph, shift_hours, days
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    templatePositions.forEach((template, index) => {
+      const id = `${bridge_id}_${Date.now()}_${index}`;
+      insertPosition.run(
+        id,
+        bridge_id,
+        template.part_name,
+        template.item_name,
+        template.subtype,
+        template.unit,
+        0, // qty - to be filled by user
+        4, // crew_size - default
+        398, // wage_czk_ph - default
+        10, // shift_hours - default
+        0  // days - to be filled by user
+      );
+    });
+
+    logger.info(`Created new bridge: ${bridge_id} (${object_name}) with ${templatePositions.length} template positions`);
     res.json({ success: true, bridge_id, object_name });
   } catch (error) {
     logger.error('Error creating bridge:', error);
