@@ -7,7 +7,7 @@ services:
     name: monolit-planner-api
     env: node
     plan: free
-    buildCommand: cd backend && npm install && cd ../shared && npm install && npm run build
+    buildCommand: cd shared && npm install && npm run build && cd ../backend && npm install
     startCommand: cd backend && npm start
     envVars:
       - key: NODE_VERSION
@@ -23,24 +23,18 @@ services:
       - key: EXPORT_DIR
         value: /opt/render/project/src/backend/exports
       - key: CORS_ORIGIN
-        fromService:
-          type: web
-          name: monolit-planner-frontend
-          property: host
+        value: "*"
     healthCheckPath: /health
 
   # Frontend (Static Site)
   - type: web
     name: monolit-planner-frontend
     env: static
-    buildCommand: cd shared && npm install && cd ../frontend && npm install && npm run build
+    buildCommand: cd shared && npm install && npm run build && cd ../frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
-        fromService:
-          type: web
-          name: monolit-planner-api
-          property: host
+        sync: false
     routes:
       - type: rewrite
         source: /*
