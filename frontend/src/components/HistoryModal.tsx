@@ -5,17 +5,7 @@
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { snapshotsAPI } from '../services/api';
-
-interface SnapshotItem {
-  id: string;
-  snapshot_name?: string;
-  created_at: string;
-  created_by?: string;
-  is_locked: boolean;
-  sum_kros_at_lock: number;
-  delta_to_previous?: number;
-  description?: string;
-}
+import { SnapshotListItem } from '@monolit/shared';
 
 interface HistoryModalProps {
   isOpen: boolean;
@@ -24,7 +14,7 @@ interface HistoryModalProps {
 
 export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
   const { selectedBridge } = useAppContext();
-  const [snapshots, setSnapshots] = useState<SnapshotItem[]>([]);
+  const [snapshots, setSnapshots] = useState<SnapshotListItem[]>([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -102,8 +92,8 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
     return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   };
 
-  const formatDelta = (delta: number | undefined) => {
-    if (delta === undefined || delta === 0) return null;
+  const formatDelta = (delta: number | null | undefined) => {
+    if (!delta || delta === 0) return null;
     const sign = delta > 0 ? '+' : '';
     const color = delta > 0 ? 'var(--accent-success)' : 'var(--accent-secondary)';
     return (
@@ -138,7 +128,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
           ) : (
             <div className="history-timeline">
               {snapshots.map((snapshot, index) => (
-                <div key={snapshot.id} className="timeline-item">
+                <div key={snapshot.snapshot_id} className="timeline-item">
                   <div className="timeline-marker">
                     {snapshot.is_locked ? '🔒' : '🔓'}
                   </div>
@@ -163,7 +153,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
                           <span className="stat-value">{formatNumber(snapshot.sum_kros_at_lock)} CZK</span>
                         </div>
 
-                        {snapshot.delta_to_previous !== undefined && snapshot.delta_to_previous !== 0 && (
+                        {snapshot.delta_to_previous !== null && snapshot.delta_to_previous !== 0 && (
                           <div className="snapshot-stat">
                             <span className="stat-label">Delta:</span>
                             <span className="stat-value">{formatDelta(snapshot.delta_to_previous)}</span>
@@ -187,7 +177,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
                       <div className="snapshot-actions">
                         <button
                           className="snapshot-action-btn btn-restore"
-                          onClick={() => handleRestore(snapshot.id, snapshot.snapshot_name)}
+                          onClick={() => handleRestore(snapshot.snapshot_id, snapshot.snapshot_name)}
                           title="Obnovit data z tohoto snapshotu"
                         >
                           🔄 Obnovit
@@ -196,7 +186,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
                         {!snapshot.is_locked && (
                           <button
                             className="snapshot-action-btn btn-danger"
-                            onClick={() => handleDelete(snapshot.id, snapshot.snapshot_name)}
+                            onClick={() => handleDelete(snapshot.snapshot_id, snapshot.snapshot_name)}
                             title="Smazat tento snapshot"
                           >
                             🗑️ Smazat
