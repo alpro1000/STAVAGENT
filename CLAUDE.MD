@@ -376,6 +376,32 @@ monolit-planner/
 - ✅ Используй Blueprint (render.yaml)
 - ✅ Auto-deploy: push в main → автодеплой
 
+### 📝 Правильный синтаксис render.yaml:
+
+**Backend (Web Service):**
+```yaml
+- type: web
+  name: monolit-planner-api
+  env: node
+  plan: free
+  buildCommand: ...
+  startCommand: ...
+```
+
+**Frontend (Static Site):**
+```yaml
+- type: web              # ⚠️ НЕ "static"!
+  name: monolit-planner-frontend
+  env: static            # Это указывает на static site
+  buildCommand: ...
+  staticPublishPath: frontend/dist
+```
+
+⚠️ **ВАЖНО:**
+- Render Blueprint НЕ поддерживает `type: static`
+- Используй `type: web` + `env: static` для static sites
+- НЕ добавляй `region` — не поддерживается free tier
+
 ---
 
 ## 📝 FEATURE FLAGS
@@ -500,8 +526,9 @@ POST /api/config
 
 - **1.0.1** (2025-11-07):
   - 🔧 Исправлен render.yaml для Blueprint deployment
-  - ✅ Frontend: изменён type с 'web' на 'static'
-  - ✅ Удалён параметр 'region' (не поддерживается static sites)
+  - ✅ Frontend: используется `type: web` с `env: static` (правильный синтаксис)
+  - ✅ Удалён параметр 'region' (не поддерживается free tier)
+  - ⚠️ ВАЖНО: Render Blueprint требует `type: web` + `env: static`, НЕ `type: static`!
 
 - **1.0.0** (2025-11-07):
   - ✅ Полная реализация core-функциональности
