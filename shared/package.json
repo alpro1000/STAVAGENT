@@ -2,8 +2,15 @@
   "name": "@monolit/shared",
   "version": "1.0.0",
   "description": "Shared types and formulas for Monolit Planner",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
   "scripts": {
     "build": "tsc",
     "test": "echo \"No tests yet\""
