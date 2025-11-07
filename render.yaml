@@ -28,8 +28,9 @@ services:
     healthCheckPath: /health
 
   # Frontend (Static Site)
-  - type: static
+  - type: web
     name: monolit-planner-frontend
+    env: static
     buildCommand: cd shared && npm install && cd ../frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
