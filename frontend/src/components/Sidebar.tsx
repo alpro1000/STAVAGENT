@@ -2,8 +2,10 @@
  * Sidebar component - Collapsible with Glassmorphism
  */
 
+import { useState } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
+import HistoryModal from './HistoryModal';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -13,6 +15,7 @@ interface SidebarProps {
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
   const { isLoading } = useBridges();
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
 
   return (
     <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
@@ -77,7 +80,12 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
               <span>🔧</span> Nástroje
             </h3>
             <div className="sidebar-tools">
-              <button className="tool-button" disabled title="Připravujeme">
+              <button
+                className="tool-button"
+                onClick={() => setShowHistoryModal(true)}
+                disabled={!selectedBridge}
+                title={selectedBridge ? 'Zobrazit historii snapshots' : 'Nejprve vyberte most'}
+              >
                 📊 Historie
               </button>
               <button className="tool-button" disabled title="Připravujeme">
@@ -87,6 +95,8 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
           </div>
         </div>
       )}
+
+      <HistoryModal isOpen={showHistoryModal} onClose={() => setShowHistoryModal(false)} />
     </aside>
   );
 }
