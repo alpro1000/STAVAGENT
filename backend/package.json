@@ -5,7 +5,10 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
+    "prepare:shared": "node ./scripts/ensure-shared-build.js",
+    "predev": "npm run prepare:shared",
     "dev": "nodemon server.js",
+    "prestart": "npm run prepare:shared",
     "start": "node server.js",
     "build": "echo 'No build needed for Node.js'",
     "test": "echo 'Tests not implemented yet'"
