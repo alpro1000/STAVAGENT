@@ -1,9 +1,9 @@
 /**
- * Monolit Planner v3.3 - Global Styles
- * Modern Design System: Glassmorphism + Neumorphism + Dark/Light Mode
+ * Monolit Planner v4.0 - Concrete Design System
+ * Минималистичный стиль "Бетон" - серая монохромная палитра
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap');
 
 /* ============================================
    CSS RESET & BASE
@@ -22,204 +22,167 @@ html {
 }
 
 /* ============================================
-   DARK MODE (DEFAULT)
+   БЕТОН ПАЛИТРА (LIGHT MODE - DEFAULT)
    ============================================ */
 
 :root,
-:root[data-theme="dark"] {
-  /* Backgrounds */
-  --bg-primary: #0f1419;
-  --bg-secondary: #1a1f2e;
-  --bg-tertiary: #252d3d;
-  --bg-glassmorphism: rgba(26, 31, 46, 0.7);
-
-  /* Text Colors */
-  --text-primary: #e8eef7;
-  --text-secondary: #a8b2c1;
-  --text-tertiary: #7a8294;
-
-  /* Accent Colors */
-  --accent-primary: #00d9ff;
-  --accent-secondary: #ff6b9d;
-  --accent-success: #00f08c;
-  --accent-warning: #ffa500;
-  --accent-error: #ff4757;
-
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #00d9ff 0%, #0099cc 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff6b9d 0%, #c94b6d 100%);
-  --gradient-success: linear-gradient(135deg, #00f08c 0%, #00a86b 100%);
-  --gradient-warning: linear-gradient(135deg, #ffa500 0%, #ff7a00 100%);
-
-  /* Shadows (Glassmorphism) */
-  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
-
-  /* Borders */
-  --border-glass: 1px solid rgba(255, 255, 255, 0.1);
-  --border-divider: 1px solid rgba(255, 255, 255, 0.05);
-
-  /* Special Colors */
-  --input-bg: rgba(0, 217, 255, 0.05);
-  --input-border: rgba(0, 217, 255, 0.3);
-  --readonly-bg: rgba(255, 255, 255, 0.03);
-  --kros-bg: rgba(0, 240, 140, 0.1);
-  --kros-border: rgba(0, 240, 140, 0.3);
-}
-
-/* ============================================
-   LIGHT MODE
-   ============================================ */
-
 :root[data-theme="light"] {
-  /* Backgrounds */
-  --bg-primary: #f8fafb;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f0f2f5;
-  --bg-glassmorphism: rgba(255, 255, 255, 0.7);
+  /* Backgrounds - оттенки бетона */
+  --bg-primary: #E8E8E8;        /* Светлый бетон - основной фон */
+  --bg-secondary: #FFFFFF;       /* Белый - карточки, модалы */
+  --bg-tertiary: #F5F5F5;        /* Очень светлый - hover состояния */
+  --bg-dark: #D0D0D0;            /* Тёмный бетон - sidebar, header */
 
   /* Text Colors */
-  --text-primary: #1a1a1a;
-  --text-secondary: #555555;
-  --text-tertiary: #888888;
+  --text-primary: #2C2C2C;       /* Почти чёрный - основной текст */
+  --text-secondary: #5A5A5A;     /* Средне-серый - вторичный текст */
+  --text-tertiary: #8B8B8B;      /* Светло-серый - плейсхолдеры */
+  --text-muted: #A0A0A0;         /* Muted текст */
 
-  /* Accent Colors */
-  --accent-primary: #0084ff;
-  --accent-secondary: #ff2d55;
-  --accent-success: #31a24c;
-  --accent-warning: #ff9800;
-  --accent-error: #f44336;
+  /* Accent Colors - монохромные акценты */
+  --accent-primary: #606060;     /* Тёмно-серый - активные элементы */
+  --accent-hover: #4A4A4A;       /* Hover состояние */
+  --accent-active: #353535;      /* Active/pressed состояние */
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #0084ff 0%, #00d4ff 100%);
-  --gradient-secondary: linear-gradient(135deg, #ff2d55 0%, #ff6b9d 100%);
-  --gradient-success: linear-gradient(135deg, #31a24c 0%, #00f08c 100%);
-  --gradient-warning: linear-gradient(135deg, #ff9800 0%, #ffc107 100%);
-
-  /* Shadows */
-  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.12);
+  /* Functional Colors - минимум цвета */
+  --color-success: #5A8A5A;      /* Приглушенный зелёный для KROS */
+  --color-error: #A85A5A;        /* Приглушенный красный для ошибок */
+  --color-warning: #B8945A;      /* Приглушенный оранжевый для RFI */
+  --color-info: #5A7A9A;         /* Приглушенный синий для info */
 
   /* Borders */
-  --border-glass: 1px solid rgba(0, 0, 0, 0.08);
-  --border-divider: 1px solid rgba(0, 0, 0, 0.04);
+  --border-default: #B0B0B0;     /* Средне-серая граница */
+  --border-light: #C8C8C8;       /* Светлая граница */
+  --border-dark: #909090;        /* Тёмная граница */
 
-  /* Special Colors */
-  --input-bg: rgba(0, 132, 255, 0.05);
-  --input-border: rgba(0, 132, 255, 0.3);
-  --readonly-bg: rgba(0, 0, 0, 0.02);
-  --kros-bg: rgba(49, 162, 76, 0.1);
-  --kros-border: rgba(49, 162, 76, 0.3);
+  /* Shadows - минимальные, без цвета */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.16);
+
+  /* Input & Interactive Elements */
+  --input-bg: #FFFFFF;
+  --input-border: #B0B0B0;
+  --input-focus: #606060;
+
+  /* Transitions - быстрые, минимальные */
+  --transition-fast: 0.1s ease;
+  --transition-base: 0.15s ease;
+
+  /* Typography */
+  --font-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'Roboto Mono', 'Courier New', monospace;
 }
 
 /* ============================================
-   TYPOGRAPHY
+   DARK MODE (OPTIONAL)
    ============================================ */
 
-:root {
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'Fira Code', monospace;
+:root[data-theme="dark"] {
+  /* Инверсия для темного режима */
+  --bg-primary: #2C2C2C;
+  --bg-secondary: #3A3A3A;
+  --bg-tertiary: #454545;
+  --bg-dark: #1F1F1F;
 
-  --text-xs: 12px;
-  --text-sm: 14px;
-  --text-base: 16px;
-  --text-lg: 18px;
-  --text-xl: 20px;
-  --text-2xl: 24px;
-  --text-3xl: 32px;
+  --text-primary: #E8E8E8;
+  --text-secondary: #B0B0B0;
+  --text-tertiary: #8B8B8B;
+  --text-muted: #707070;
 
-  --line-height-tight: 1.2;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.75;
+  --accent-primary: #A0A0A0;
+  --accent-hover: #B8B8B8;
+  --accent-active: #C8C8C8;
 
-  --letter-spacing-tight: -0.5px;
-  --letter-spacing-normal: 0px;
-  --letter-spacing-wide: 0.5px;
+  --border-default: #555555;
+  --border-light: #656565;
+  --border-dark: #454545;
+
+  --input-bg: #3A3A3A;
+  --input-border: #555555;
+  --input-focus: #A0A0A0;
 }
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
 
 body {
-  font-family: var(--font-sans);
-  font-size: var(--text-base);
-  line-height: var(--line-height-normal);
-  color: var(--text-primary);
+  font-family: var(--font-base);
   background: var(--bg-primary);
-  height: 100%;
-
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-#root {
-  height: 100%;
+  color: var(--text-primary);
+  line-height: 1.5;
+  font-size: 14px;
+  overflow-x: hidden;
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
-  line-height: var(--line-height-tight);
-  letter-spacing: var(--letter-spacing-tight);
+  line-height: 1.3;
+  color: var(--text-primary);
 }
 
-h1 { font-size: var(--text-3xl); }
-h2 { font-size: var(--text-2xl); }
-h3 { font-size: var(--text-xl); }
-h4 { font-size: var(--text-lg); }
-h5 { font-size: var(--text-base); }
-h6 { font-size: var(--text-sm); }
+h1 { font-size: 24px; }
+h2 { font-size: 20px; }
+h3 { font-size: 16px; }
+h4 { font-size: 14px; }
 
-/* ============================================
-   APP LAYOUT
-   ============================================ */
-
-.app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  background: var(--bg-primary);
+p {
+  margin-bottom: 12px;
+  color: var(--text-secondary);
 }
 
-.main-layout {
-  display: flex;
-  flex: 1;
-  overflow: hidden;
-  position: relative;
+/* Links */
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
 }
 
-.content {
-  flex: 1;
-  overflow-y: auto;
-  padding: 0;
-  transition: margin-left 0.3s ease;
+a:hover {
+  color: var(--accent-hover);
 }
 
-.content.with-sidebar {
-  margin-left: 280px;
+/* Buttons - простой плоский стиль */
+button {
+  font-family: var(--font-base);
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  background: transparent;
+  color: inherit;
 }
 
-/* ============================================
-   SMOOTH TRANSITIONS (GLOBAL)
-   ============================================ */
-
-* {
-  transition: background-color 0.2s ease,
-              color 0.2s ease,
-              border-color 0.2s ease,
-              box-shadow 0.2s ease,
-              transform 0.2s ease;
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
-/* Disable transitions on inputs for performance */
-input, textarea, select {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+/* Inputs - простой стиль */
+input, select, textarea {
+  font-family: var(--font-base);
+  font-size: 14px;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text-primary);
+  transition: border-color var(--transition-fast);
 }
 
-/* ============================================
-   SCROLLBAR STYLING
-   ============================================ */
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--input-focus);
+}
 
+input:disabled, select:disabled, textarea:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+}
+
+/* Scrollbar - минималистичный */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -227,225 +190,57 @@ input, textarea, select {
 
 ::-webkit-scrollbar-track {
   background: var(--bg-tertiary);
-  border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--accent-primary);
-  border-radius: 10px;
+  background: var(--border-default);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent-secondary);
-}
-
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: var(--accent-primary) var(--bg-tertiary);
-}
-
-/* ============================================
-   FOCUS VISIBLE (ACCESSIBILITY)
-   ============================================ */
-
-*:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-/* ============================================
-   SELECTION
-   ============================================ */
-
-::selection {
   background: var(--accent-primary);
-  color: white;
 }
 
-::-moz-selection {
-  background: var(--accent-primary);
-  color: white;
+/* Utility classes */
+.text-muted {
+  color: var(--text-muted);
 }
 
-/* ============================================
-   ANIMATIONS
-   ============================================ */
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.text-secondary {
+  color: var(--text-secondary);
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.text-success {
+  color: var(--color-success);
 }
 
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.text-error {
+  color: var(--color-error);
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(0, 217, 255, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 10px rgba(0, 217, 255, 0);
-  }
+/* Spinner - простой */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-light);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
 @keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+  to { transform: rotate(360deg); }
 }
 
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: -200% 0;
-  }
-}
-
-@keyframes copySuccess {
-  0% {
-    background: var(--gradient-success);
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.1);
-  }
-  100% {
-    background: var(--gradient-success);
-    transform: scale(1);
-  }
-}
-
-/* ============================================
-   SKELETON LOADING
-   ============================================ */
-
-.skeleton {
-  background: linear-gradient(
-    90deg,
-    var(--bg-tertiary) 25%,
-    var(--bg-secondary) 50%,
-    var(--bg-tertiary) 75%
-  );
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  border-radius: 8px;
-  height: 20px;
-}
-
-/* ============================================
-   ACCESSIBILITY
-   ============================================ */
-
-/* High contrast mode */
-@media (prefers-contrast: more) {
-  :root {
-    --accent-primary: #00ffff;
-    --accent-secondary: #ff00ff;
-    --text-primary: #ffffff;
-  }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* ============================================
-   UTILITY CLASSES
-   ============================================ */
-
-.visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-right {
-  text-align: right;
-}
-
-.flex {
+/* Layout */
+#root {
   display: flex;
-}
-
-.flex-col {
   flex-direction: column;
+  min-height: 100vh;
 }
 
-.items-center {
-  align-items: center;
-}
-
-.justify-center {
-  justify-content: center;
-}
-
-.justify-between {
-  justify-content: space-between;
-}
-
-.gap-1 {
-  gap: 8px;
-}
-
-.gap-2 {
-  gap: 16px;
-}
-
-.gap-3 {
-  gap: 24px;
-}
-
-.gap-4 {
-  gap: 32px;
+/* Убираем все излишние анимации */
+*, *::before, *::after {
+  animation-duration: 0.1s !important;
+  animation-delay: 0s !important;
 }
