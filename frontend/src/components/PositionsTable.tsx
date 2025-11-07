@@ -69,23 +69,30 @@ export default function PositionsTable() {
     );
   }
 
-  if (positions.length === 0) {
-    return (
-      <div className="positions-container">
-        <div className="empty-state">
-          <div className="empty-state-icon">📋</div>
-          <h3>Žádné pozice</h3>
-          <p>Pro tento most nejsou žádné pozice</p>
-        </div>
-      </div>
-    );
-  }
+  // If no positions exist, show empty table with ability to add rows
+  const hasPositions = positions.length > 0;
+  const displayGroups = hasPositions ? groupedPositions : { 'NOVÁ ČÁST': [] };
 
   return (
     <div className="positions-container">
       <SnapshotBadge />
 
-      {Object.entries(groupedPositions).map(([partName, partPositions]) => {
+      {!hasPositions && (
+        <div style={{
+          padding: '16px 20px',
+          background: 'var(--bg-tertiary)',
+          border: '1px solid var(--border-default)',
+          borderRadius: '4px',
+          marginBottom: '16px',
+          textAlign: 'center'
+        }}>
+          <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px' }}>
+            📝 Žádné pozice. Vytvořte první řádek kliknutím na "➕ Přidat řádek" níže.
+          </p>
+        </div>
+      )}
+
+      {Object.entries(displayGroups).map(([partName, partPositions]) => {
         const isExpanded = expandedParts.has(partName);
 
         return (
@@ -96,35 +103,65 @@ export default function PositionsTable() {
             </div>
 
             {isExpanded && (
-              <table className="positions-table">
-                <thead>
-                  <tr>
-                    {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
-                    <th title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
-                    <th title="Měrná jednotka: m³, m², kg">MJ</th>
-                    <th title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
-                    <th title="Počet lidí v partě (EDITABLE)">Lidi</th>
-                    <th title="Hodinová sazba v CZK (EDITABLE)">Kč/hod</th>
-                    <th title="Hodin za směnu (EDITABLE)">Hod/den</th>
-                    <th title="Počet dní - koeficient 1 (EDITABLE)">Den</th>
-                    <th title="Celkový počet hodin = lidi × hod/den × den">Hod celkem</th>
-                    <th title="Celková cena = hod celkem × Kč/hod">Kč celkem</th>
-                    <th title="Objem betonu této části">Beton m³</th>
-                    <th title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Beton m³">
-                      Kč/m³ ⭐
-                    </th>
-                    <th title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS JC</th>
-                    <th title="KROS celkem = KROS JC × Beton m³">KROS celkem</th>
-                    <th title="Request For Information - problémové položky">RFI</th>
-                    <th title="Akce: Smazat / Info">Akce</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {partPositions.map((position) => (
-                    <PositionRow key={position.id} position={position} isLocked={isLocked} />
-                  ))}
-                </tbody>
-              </table>
+              <>
+                <table className="positions-table">
+                  <thead>
+                    <tr>
+                      {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
+                      <th title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
+                      <th title="Měrná jednotka: m³, m², kg">MJ</th>
+                      <th title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
+                      <th title="Počet lidí v partě (EDITABLE)">Lidi</th>
+                      <th title="Hodinová sazba v CZK (EDITABLE)">Kč/hod</th>
+                      <th title="Hodin za směnu (EDITABLE)">Hod/den</th>
+                      <th title="Počet dní - koeficient 1 (EDITABLE)">Den</th>
+                      <th title="Celkový počet hodin = lidi × hod/den × den">Hod celkem</th>
+                      <th title="Celková cena = hod celkem × Kč/hod">Kč celkem</th>
+                      <th title="Objem betonu této části">Beton m³</th>
+                      <th title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Beton m³">
+                        Kč/m³ ⭐
+                      </th>
+                      <th title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS JC</th>
+                      <th title="KROS celkem = KROS JC × Beton m³">KROS celkem</th>
+                      <th title="Request For Information - problémové položky">RFI</th>
+                      <th title="Akce: Smazat / Info">Akce</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {partPositions.length > 0 ? (
+                      partPositions.map((position) => (
+                        <PositionRow key={position.id} position={position} isLocked={isLocked} />
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={16} style={{
+                          textAlign: 'center',
+                          padding: '20px',
+                          color: 'var(--text-secondary)',
+                          fontStyle: 'italic'
+                        }}>
+                          Zatím žádné řádky. Klikněte na "➕ Přidat řádek" níže.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+
+                <div style={{
+                  padding: '16px',
+                  borderTop: '1px solid var(--border-light)',
+                  background: 'var(--bg-tertiary)'
+                }}>
+                  <button
+                    className="btn-create"
+                    onClick={() => alert('TODO: Implement add row functionality')}
+                    disabled={isLocked}
+                    title={isLocked ? 'Nelze přidat řádek - snapshot je zamčen' : 'Přidat nový řádek'}
+                  >
+                    ➕ Přidat řádek
+                  </button>
+                </div>
+              </>
             )}
           </div>
         );
