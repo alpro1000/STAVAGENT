@@ -359,12 +359,21 @@ monolit-planner/
    - `monolit-planner-api` (backend)
    - `monolit-planner-frontend` (frontend)
 
-4. **Автонастройка:**
-   - Backend получит `CORS_ORIGIN` от frontend
-   - Frontend получит `VITE_API_URL` от backend
-   - Build commands выполнятся автоматически
+4. **После успешного деплоя backend:**
+   - Backend получит URL типа: `https://monolit-planner-api.onrender.com`
+   - ⚠️ **ВАЖНО**: Нужно вручную настроить frontend!
 
-5. **URLs:**
+5. **Настройка frontend (ОБЯЗАТЕЛЬНО!):**
+   - Открой Render Dashboard → `monolit-planner-frontend` → Environment
+   - Добавь переменную `VITE_API_URL` = `https://monolit-planner-api.onrender.com`
+   - Нажми **"Save Changes"** → frontend пересобрётся автоматически
+
+6. **(Опционально) Ограничить CORS:**
+   - После деплоя frontend получит URL типа: `https://monolit-planner-frontend.onrender.com`
+   - Открой backend Environment
+   - Измени `CORS_ORIGIN` с `*` на URL frontend'а для безопасности
+
+7. **URLs:**
    - Frontend: `https://monolit-planner-frontend.onrender.com`
    - Backend: `https://monolit-planner-api.onrender.com`
 
@@ -524,9 +533,26 @@ POST /api/config
 
 ## 🔐 ВЕРСИОНИРОВАНИЕ
 
-**Текущая версия:** 1.0.0
+**Текущая версия:** 1.0.4
 
 **История изменений:**
+
+- **1.0.4** (2025-11-07):
+  - 🔧 Исправлена циклическая зависимость в render.yaml
+  - ✅ Убрана fromService зависимость между backend ↔ frontend
+  - ✅ CORS_ORIGIN временно = "*" (после деплоя можно ограничить)
+  - ✅ VITE_API_URL = sync:false (устанавливается вручную после деплоя backend)
+  - ✅ Исправлена последовательность buildCommand: shared build ПЕРВЫМ
+  - ⚠️ КРИТИЧНО: fromService создаёт deadlock при первом деплое!
+  - 📝 После деплоя: установить VITE_API_URL в Render dashboard вручную
+
+- **1.0.3** (2025-11-07):
+  - 🔧 Исправлена ESM конфигурация shared пакета
+  - ✅ Добавлено "type": "module" в shared/package.json
+  - ✅ TypeScript компиляция: CommonJS → ES2020
+  - ✅ Добавлены .js расширения в импорты (требование ESM)
+  - ✅ Исправлены TypeScript ошибки во frontend (unused imports, type assertions)
+  - ⚠️ ВАЖНО: shared пакет ДОЛЖЕН собираться перед backend/frontend
 
 - **1.0.2** (2025-11-07):
   - 🔧 Исправлена версия Node.js для better-sqlite3
