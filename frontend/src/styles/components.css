@@ -376,7 +376,7 @@ button:disabled {
 .content {
   flex: 1;
   overflow-y: auto;
-  background: var(--bg-primary);
+  background: var(--gradient-concrete);
 }
 
 /* ============================================
@@ -611,7 +611,7 @@ button:disabled {
   background: var(--bg-secondary);
   border: 1px solid var(--border-default);
   border-radius: 4px;
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .kpi-header {
