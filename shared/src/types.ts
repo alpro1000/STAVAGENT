@@ -74,6 +74,7 @@ export interface HeaderKPI {
 
 export interface Bridge {
   bridge_id: string;
+  object_name: string;            // Наименование объекта (например: "Dálnice D1")
   element_count: number;
   concrete_m3: number;
   sum_kros_czk: number;

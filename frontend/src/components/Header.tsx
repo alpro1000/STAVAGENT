@@ -2,16 +2,18 @@
  * Header component
  */
 
-import React, { useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { exportAPI, uploadAPI } from '../services/api';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
+import CreateBridgeForm from './CreateBridgeForm';
 
 export default function Header() {
   const { selectedBridge, setSelectedBridge, bridges } = useAppContext();
   const { refetch: refetchBridges } = useBridges();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -68,6 +70,12 @@ export default function Header() {
     }
   };
 
+  const handleCreateSuccess = async (bridge_id: string) => {
+    setShowCreateForm(false);
+    await refetchBridges();
+    setSelectedBridge(bridge_id);
+  };
+
   return (
     <header className="header">
       <div className="header-logo">
@@ -76,6 +84,10 @@ export default function Header() {
       </div>
 
       <div className="header-controls">
+        <button className="btn-create" onClick={() => setShowCreateForm(true)}>
+          ➕ Новый мост
+        </button>
+
         <select
           className="bridge-selector"
           value={selectedBridge || ''}
@@ -91,7 +103,7 @@ export default function Header() {
 
         <DaysPerMonthToggle />
 
-        <button className="btn-primary" onClick={handleUploadClick}>
+        <button className="btn-secondary" onClick={handleUploadClick}>
           💾 Upload XLSX
         </button>
 
@@ -119,6 +131,18 @@ export default function Header() {
           📥 Export CSV
         </button>
       </div>
+
+      {/* Modal for Create Bridge Form */}
+      {showCreateForm && (
+        <div className="modal-overlay" onClick={() => setShowCreateForm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <CreateBridgeForm
+              onSuccess={handleCreateSuccess}
+              onCancel={() => setShowCreateForm(false)}
+            />
+          </div>
+        </div>
+      )}
     </header>
   );
 }
