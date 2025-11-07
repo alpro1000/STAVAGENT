@@ -1,0 +1,48 @@
+# Render deployment configuration
+# https://render.com/docs/blueprint-spec
+
+services:
+  # Backend API (Node.js)
+  - type: web
+    name: monolit-planner-api
+    env: node
+    region: frankfurt
+    plan: free
+    buildCommand: cd backend && npm install && cd ../shared && npm install && npm run build
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DB_PATH
+        value: /opt/render/project/src/backend/data/monolit.db
+      - key: UPLOAD_DIR
+        value: /opt/render/project/src/backend/uploads
+      - key: EXPORT_DIR
+        value: /opt/render/project/src/backend/exports
+      - key: CORS_ORIGIN
+        fromService:
+          type: web
+          name: monolit-planner-frontend
+          property: host
+    healthCheckPath: /health
+
+  # Frontend (Static Site)
+  - type: web
+    name: monolit-planner-frontend
+    env: static
+    region: frankfurt
+    plan: free
+    buildCommand: cd shared && npm install && cd ../frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: monolit-planner-api
+          property: host
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
