@@ -469,6 +469,41 @@ button:disabled {
   opacity: 0.5;
 }
 
+/* Item Name Column - First editable column */
+.col-item-name {
+  min-width: 250px;
+  max-width: 400px;
+  text-align: left !important;
+}
+
+.cell-item-name {
+  min-width: 250px;
+  max-width: 400px;
+  padding: 4px !important;
+}
+
+.cell-item-name input.input-text {
+  width: 100%;
+  min-width: 250px;
+  padding: 8px;
+  font-family: var(--font-base);
+  font-size: 13px;
+  text-align: left;
+  background: var(--input-required);
+  border: 1px solid var(--input-border);
+  color: var(--text-primary);
+}
+
+.cell-item-name input.input-text:focus {
+  border-color: var(--input-focus);
+  background: var(--input-bg);
+}
+
+.cell-item-name input.input-text::placeholder {
+  color: var(--text-tertiary);
+  font-size: 12px;
+}
+
 /* Table Row States */
 .table-row {
   transition: background var(--transition-fast);
