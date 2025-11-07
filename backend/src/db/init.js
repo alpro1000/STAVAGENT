@@ -73,6 +73,34 @@ export function initDatabase() {
     db.exec("ALTER TABLE bridges ADD COLUMN object_name TEXT NOT NULL DEFAULT ''");
   }
 
+  // Snapshots table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS snapshots (
+      id TEXT PRIMARY KEY,
+      bridge_id TEXT NOT NULL,
+      snapshot_name TEXT,
+      snapshot_hash TEXT NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      created_by TEXT,
+      positions_snapshot TEXT NOT NULL,
+      header_kpi_snapshot TEXT NOT NULL,
+      description TEXT,
+      is_locked INTEGER DEFAULT 1,
+      parent_snapshot_id TEXT,
+      sum_kros_at_lock REAL,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (bridge_id) REFERENCES bridges(bridge_id),
+      FOREIGN KEY (parent_snapshot_id) REFERENCES snapshots(id)
+    );
+  `);
+
+  // Create indexes for snapshots
+  db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_snapshots_bridge ON snapshots(bridge_id);
+    CREATE INDEX IF NOT EXISTS idx_snapshots_created ON snapshots(created_at DESC);
+    CREATE INDEX IF NOT EXISTS idx_snapshots_locked ON snapshots(is_locked);
+  `);
+
   // Mapping profiles table
   db.exec(`
     CREATE TABLE IF NOT EXISTS mapping_profiles (
@@ -112,7 +140,10 @@ export function initDatabase() {
       LOCALE: 'cs-CZ',
       CURRENCY: 'CZK',
       DAYS_PER_MONTH_OPTIONS: [30, 22],
-      DAYS_PER_MONTH_DEFAULT: 30
+      DAYS_PER_MONTH_DEFAULT: 30,
+      SNAPSHOT_RETENTION_DAYS: 30,
+      REQUIRE_SNAPSHOT_FOR_EXPORT: true,
+      AUTO_SNAPSHOT_ON_EXPORT: false
     });
 
     db.prepare(`

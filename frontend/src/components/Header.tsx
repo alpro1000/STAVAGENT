@@ -5,15 +5,18 @@
 import { useState, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
-import { exportAPI, uploadAPI } from '../services/api';
+import { usePositions } from '../hooks/usePositions';
+import { exportAPI, uploadAPI, snapshotsAPI } from '../services/api';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 import CreateBridgeForm from './CreateBridgeForm';
 
 export default function Header() {
-  const { selectedBridge, setSelectedBridge, bridges } = useAppContext();
+  const { selectedBridge, setSelectedBridge, bridges, positions, headerKPI } = useAppContext();
   const { refetch: refetchBridges } = useBridges();
+  const { refetch: refetchPositions } = usePositions(selectedBridge);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [isCreatingSnapshot, setIsCreatingSnapshot] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -76,6 +79,39 @@ export default function Header() {
     setSelectedBridge(bridge_id);
   };
 
+  const handleCreateSnapshot = async () => {
+    if (!selectedBridge || !positions.length || !headerKPI) {
+      alert('Nejdříve vyberte most s pozicemi');
+      return;
+    }
+
+    const confirmCreate = window.confirm(
+      'Zafixovat aktuální stav?\n\nVšechna pole budou uzamčena a nelze je upravovat.\n\nChcete pokračovat?'
+    );
+
+    if (!confirmCreate) return;
+
+    setIsCreatingSnapshot(true);
+
+    try {
+      await snapshotsAPI.create({
+        bridge_id: selectedBridge,
+        positions,
+        header_kpi: headerKPI,
+        description: 'Snapshot vytvořen',
+        snapshot_name: `Snapshot ${new Date().toLocaleString('cs-CZ')}`
+      });
+
+      alert('✅ Snapshot vytvořen! Data jsou nyní zafixována.');
+      await refetchPositions();
+    } catch (error: any) {
+      console.error('Error creating snapshot:', error);
+      alert(`Chyba při vytváření snapshot: ${error.message}`);
+    } finally {
+      setIsCreatingSnapshot(false);
+    }
+  };
+
   return (
     <header className="header">
       <div className="header-logo">
@@ -85,7 +121,7 @@ export default function Header() {
 
       <div className="header-controls">
         <button className="btn-create" onClick={() => setShowCreateForm(true)}>
-          ➕ Новый мост
+          ➕ Nový most
         </button>
 
         <select
@@ -96,7 +132,7 @@ export default function Header() {
           <option value="">Vyberte most...</option>
           {bridges.map((bridge) => (
             <option key={bridge.bridge_id} value={bridge.bridge_id}>
-              {bridge.bridge_id} ({bridge.element_count} prvků)
+              {bridge.object_name || bridge.bridge_id} - {bridge.bridge_id} ({bridge.element_count} prvků)
             </option>
           ))}
         </select>
@@ -104,7 +140,16 @@ export default function Header() {
         <DaysPerMonthToggle />
 
         <button className="btn-secondary" onClick={handleUploadClick}>
-          💾 Upload XLSX
+          💾 Nahrát XLSX
+        </button>
+
+        <button
+          className="btn-lock"
+          onClick={handleCreateSnapshot}
+          disabled={!selectedBridge || isCreatingSnapshot}
+          title="Zafixovat aktuální stav (snapshot)"
+        >
+          🔒 {isCreatingSnapshot ? 'Fixuji...' : 'Zafixovat'}
         </button>
 
         <input
