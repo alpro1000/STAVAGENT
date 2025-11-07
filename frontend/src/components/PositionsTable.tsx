@@ -99,6 +99,7 @@ export default function PositionsTable() {
               <table className="positions-table">
                 <thead>
                   <tr>
+                    {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
                     <th title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
                     <th title="Měrná jednotka: m³, m², kg">MJ</th>
                     <th title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
