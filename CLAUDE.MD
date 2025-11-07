@@ -591,9 +591,30 @@ POST /api/config
 
 ## 🔐 ВЕРСИОНИРОВАНИЕ
 
-**Текущая версия:** 1.0.5
+**Текущая версия:** v4.1 (2025-11-07)
 
 **История изменений:**
+
+- **v4.1** (2025-11-07) - KPI Optimization & Template Update:
+  - 🎨 **Optimized KPI Panel layout** (4 columns × 2 rows instead of dynamic grid)
+  - 🗑️ **Removed Kč/t (ρ=2.4) metric** as per detailed audit requirements
+  - 📏 **Reduced KPI card sizes**: padding 12px → 8px 10px, fonts: label 11px → 10px, value 18px → 16px
+  - 🔢 **Fixed z-index hierarchy**: KPI panel (z-index: 100), table headers (z-index: 90, top: 140px)
+  - ✨ **Updated bridge templates**: from 15 → 24 positions (11 construction parts from detailed spec)
+  - 🏗️ **New templates**: ŘÍMSY (B37), PŘECHODOVÉ DESKY, MOSTNÍ NOSNÉ KONSTRUKCE, SCHODIŠŤ, PODKLADNÍ VRSTVY, PATKY
+  - 📋 **KPI Layout**: Row 1 (Celková cena, Kč/m³, Měsíce, Týdny), Row 2 (Averages: lidi, Kč/hod, hod/den, Režim práce)
+  - 🎯 **Fixed sticky behavior**: KPI stays on top, table headers scroll under KPI
+
+- **v4.0** (2025-11-07) - Comprehensive UI/UX Audit Implementation:
+  - ✅ **Czech translation complete**: CreateBridgeForm translated from Russian to Czech
+  - 🎨 **True concrete colors**: #F5F5F5 (primary bg), #E8E8E8 (cards/modals), #D0D0D0 (borders)
+  - 📝 **Added "Název položky" column**: first editable column with min-width: 250px, orange background
+  - ✨ **Pre-filled template positions**: 15 positions with ZÁKLADY, ŘÍMSY, MOSTNÍ OPĚRY, PILÍŘE, KŘÍDLA, MOSTOVKA, VÝZTUŽ
+  - 📌 **Sticky header**: table and KPI card always visible while scrolling
+  - 🟠 **Orange inputs (#FFA726)** for all editable fields maintained
+  - 🌀 **Concrete gradient**: linear-gradient(170deg, #F5F5F5 80%, #E8E8E8 100%)
+  - 🔒 **Database migration**: added item_name column to positions table
+  - 📊 **Table always visible**: removed "Žádné pozice" blocking state from previous sessions
 
 - **1.0.5** (2025-11-07):
   - ✨ Добавлены ensure-shared-build.js скрипты (решение от Codex)
