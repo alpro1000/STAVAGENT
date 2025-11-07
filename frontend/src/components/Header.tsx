@@ -6,6 +6,7 @@ import { useState, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { usePositions } from '../hooks/usePositions';
+import { useSnapshots } from '../hooks/useSnapshots';
 import { exportAPI, uploadAPI, snapshotsAPI } from '../services/api';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 import CreateBridgeForm from './CreateBridgeForm';
@@ -21,6 +22,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const { selectedBridge, setSelectedBridge, bridges, positions, headerKPI } = useAppContext();
   const { refetch: refetchBridges } = useBridges();
   const { refetch: refetchPositions } = usePositions(selectedBridge);
+  const { refetchActiveSnapshot } = useSnapshots(selectedBridge);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [isCreatingSnapshot, setIsCreatingSnapshot] = useState(false);
@@ -110,7 +112,12 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       });
 
       alert('✅ Snapshot vytvořen! Data jsou nyní zafixována.');
-      await refetchPositions();
+
+      // Refetch positions and active snapshot to reflect lock state
+      await Promise.all([
+        refetchPositions(),
+        refetchActiveSnapshot()
+      ]);
     } catch (error: any) {
       console.error('Error creating snapshot:', error);
       alert(`Chyba při vytváření snapshot: ${error.message}`);
