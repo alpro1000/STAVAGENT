@@ -1555,3 +1555,113 @@
   background: #4a90e2;
   border-color: #4a90e2;
 }
+
+/* ===== SNAPSHOT BADGE ===== */
+
+.snapshot-badge-container {
+  margin: 24px 24px 0;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.snapshot-badge {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  padding: 16px 20px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(255, 167, 38, 0.1) 0%,
+    rgba(255, 107, 53, 0.05) 100%
+  );
+
+  border: 2px solid var(--accent-secondary);
+  border-radius: 12px;
+
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.2);
+
+  animation: snapshotGlow 2s ease-in-out infinite;
+}
+
+@keyframes snapshotGlow {
+  0%, 100% {
+    box-shadow: 0 4px 16px rgba(255, 107, 53, 0.2);
+  }
+  50% {
+    box-shadow: 0 4px 24px rgba(255, 107, 53, 0.4);
+  }
+}
+
+.snapshot-icon {
+  font-size: 32px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.snapshot-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.snapshot-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.snapshot-date {
+  font-size: 13px;
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+}
+
+.snapshot-unlock-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+
+  cursor: pointer;
+  transition: all var(--transition-base);
+
+  white-space: nowrap;
+}
+
+.snapshot-unlock-btn:hover {
+  background: var(--accent-success);
+  border-color: var(--accent-success);
+  color: var(--bg-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 240, 140, 0.3);
+}
+
+.snapshot-unlock-btn:active {
+  transform: translateY(0);
+}
+
+.snapshot-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: 12px;
+  padding: 12px 16px;
+
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+
+  font-size: 13px;
+  color: var(--text-secondary);
+}

@@ -5,12 +5,15 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
+import { useSnapshots } from '../hooks/useSnapshots';
 import { Position } from '@monolit/shared';
 import PositionRow from './PositionRow';
+import SnapshotBadge from './SnapshotBadge';
 
 export default function PositionsTable() {
   const { selectedBridge, positions } = useAppContext();
   const { isLoading } = usePositions(selectedBridge);
+  const { isLocked } = useSnapshots(selectedBridge);
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
 
   // Group positions by part_name
@@ -80,6 +83,8 @@ export default function PositionsTable() {
 
   return (
     <div className="positions-container">
+      <SnapshotBadge />
+
       {Object.entries(groupedPositions).map(([partName, partPositions]) => {
         const isExpanded = expandedParts.has(partName);
 
@@ -115,7 +120,7 @@ export default function PositionsTable() {
                 </thead>
                 <tbody>
                   {partPositions.map((position) => (
-                    <PositionRow key={position.id} position={position} />
+                    <PositionRow key={position.id} position={position} isLocked={isLocked} />
                   ))}
                 </tbody>
               </table>

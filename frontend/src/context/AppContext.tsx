@@ -5,6 +5,13 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 import { Position, HeaderKPI, Bridge } from '@monolit/shared';
 
+interface ActiveSnapshot {
+  id: string;
+  snapshot_name?: string;
+  created_at: string;
+  is_locked: boolean;
+}
+
 interface AppContextType {
   selectedBridge: string | null;
   setSelectedBridge: (bridgeId: string | null) => void;
@@ -23,6 +30,9 @@ interface AppContextType {
 
   showOnlyRFI: boolean;
   setShowOnlyRFI: (show: boolean) => void;
+
+  activeSnapshot: ActiveSnapshot | null;
+  setActiveSnapshot: (snapshot: ActiveSnapshot | null) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -34,6 +44,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [bridges, setBridges] = useState<Bridge[]>([]);
   const [daysPerMonth, setDaysPerMonth] = useState<30 | 22>(30);
   const [showOnlyRFI, setShowOnlyRFI] = useState(false);
+  const [activeSnapshot, setActiveSnapshot] = useState<ActiveSnapshot | null>(null);
 
   return (
     <AppContext.Provider
@@ -49,7 +60,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
         daysPerMonth,
         setDaysPerMonth,
         showOnlyRFI,
-        setShowOnlyRFI
+        setShowOnlyRFI,
+        activeSnapshot,
+        setActiveSnapshot
       }}
     >
       {children}
