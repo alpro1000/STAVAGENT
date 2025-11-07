@@ -6,7 +6,6 @@ services:
   - type: web
     name: monolit-planner-api
     env: node
-    region: frankfurt
     plan: free
     buildCommand: cd backend && npm install && cd ../shared && npm install && npm run build
     startCommand: cd backend && npm start
@@ -29,11 +28,8 @@ services:
     healthCheckPath: /health
 
   # Frontend (Static Site)
-  - type: web
+  - type: static
     name: monolit-planner-frontend
-    env: static
-    region: frankfurt
-    plan: free
     buildCommand: cd shared && npm install && cd ../frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
