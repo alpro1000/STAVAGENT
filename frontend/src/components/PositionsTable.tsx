@@ -2,7 +2,7 @@
  * PositionsTable - Main table with editable fields
  */
 
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { Position } from '@monolit/shared';
@@ -39,7 +39,7 @@ export default function PositionsTable() {
   };
 
   // Expand all by default
-  React.useEffect(() => {
+  useEffect(() => {
     const allParts = Object.keys(groupedPositions);
     setExpandedParts(new Set(allParts));
   }, [groupedPositions]);

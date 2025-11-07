@@ -2,9 +2,8 @@
  * PositionRow - Editable table row for a single position
  */
 
-import React, { useState } from 'react';
-import { Position } from '@monolit/shared';
-import { SUBTYPE_ICONS } from '@monolit/shared';
+import { useState } from 'react';
+import { Position, SUBTYPE_ICONS } from '@monolit/shared';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 
@@ -50,8 +49,9 @@ export default function PositionRow({ position }: Props) {
     return num.toFixed(decimals).replace('.', ',');
   };
 
-  const getValue = (field: keyof Position) => {
-    return editedFields[field] !== undefined ? editedFields[field] : position[field];
+  const getValue = (field: keyof Position): number => {
+    const value = editedFields[field] !== undefined ? editedFields[field] : position[field];
+    return typeof value === 'number' ? value : 0;
   };
 
   const icon = SUBTYPE_ICONS[position.subtype as keyof typeof SUBTYPE_ICONS] || '📋';
