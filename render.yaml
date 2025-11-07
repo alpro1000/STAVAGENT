@@ -10,6 +10,8 @@ services:
     buildCommand: cd backend && npm install && cd ../shared && npm install && npm run build
     startCommand: cd backend && npm start
     envVars:
+      - key: NODE_VERSION
+        value: 18.20.4
       - key: NODE_ENV
         value: production
       - key: PORT
