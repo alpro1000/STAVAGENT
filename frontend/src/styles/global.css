@@ -27,11 +27,14 @@ html {
 
 :root,
 :root[data-theme="light"] {
-  /* Backgrounds - оттенки бетона */
-  --bg-primary: #E8E8E8;        /* Светлый бетон - основной фон */
-  --bg-secondary: #FFFFFF;       /* Белый - карточки, модалы */
-  --bg-tertiary: #F5F5F5;        /* Очень светлый - hover состояния */
+  /* Backgrounds - оттенки бетона (НАСТОЯЩИЙ БЕТОН) */
+  --bg-primary: #F5F5F5;        /* Светлый бетон - основной фон */
+  --bg-secondary: #E8E8E8;       /* Средний бетон - карточки, модалы */
+  --bg-tertiary: #FAFAFA;        /* Очень светлый - hover состояния */
   --bg-dark: #D0D0D0;            /* Тёмный бетон - sidebar, header */
+
+  /* Gradients - бетонная текстура */
+  --gradient-concrete: linear-gradient(170deg, #F5F5F5 80%, #E8E8E8 100%);
 
   /* Text Colors */
   --text-primary: #2C2C2C;       /* Почти чёрный - основной текст */
@@ -44,26 +47,27 @@ html {
   --accent-hover: #4A4A4A;       /* Hover состояние */
   --accent-active: #353535;      /* Active/pressed состояние */
 
-  /* Functional Colors - минимум цвета */
-  --color-success: #5A8A5A;      /* Приглушенный зелёный для KROS */
-  --color-error: #A85A5A;        /* Приглушенный красный для ошибок */
-  --color-warning: #B8945A;      /* Приглушенный оранжевый для RFI */
-  --color-info: #5A7A9A;         /* Приглушенный синий для info */
+  /* Functional Colors - ПРИГЛУШЕННЫЕ */
+  --color-success: #6B8E6B;      /* Приглушенный зелёный для KROS */
+  --color-error: #B86B6B;        /* Приглушенный красный для ошибок */
+  --color-warning: #C9A66B;      /* Приглушенный оранжевый для RFI */
+  --color-info: #6B86A8;         /* Приглушенный синий для info */
 
-  /* Borders */
-  --border-default: #B0B0B0;     /* Средне-серая граница */
-  --border-light: #C8C8C8;       /* Светлая граница */
-  --border-dark: #909090;        /* Тёмная граница */
+  /* Borders - бетонные тона */
+  --border-default: #D0D0D0;     /* Тёмный бетон - главная граница */
+  --border-light: #E0E0E0;       /* Светлая граница */
+  --border-dark: #B0B0B0;        /* Тёмная граница */
 
   /* Shadows - минимальные, без цвета */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.08);
-  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.12);
-  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.16);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 2px 4px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 4px 8px rgba(0, 0, 0, 0.10);
 
   /* Input & Interactive Elements */
   --input-bg: #FFFFFF;
-  --input-border: #B0B0B0;
+  --input-border: #D0D0D0;
   --input-focus: #606060;
+  --input-required: #FFA726;     /* Оранжевый для обязательных полей */
 
   /* Transitions - быстрые, минимальные */
   --transition-fast: 0.1s ease;

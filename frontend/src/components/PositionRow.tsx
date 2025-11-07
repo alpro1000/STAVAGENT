@@ -69,6 +69,20 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       {/* Locked indicator */}
       {isLocked && <td className="lock-indicator">🔒</td>}
 
+      {/* Item Name - Detailed description */}
+      <td className="cell-item-name">
+        <input
+          type="text"
+          className="input-cell input-text"
+          value={editedFields.item_name !== undefined ? editedFields.item_name : (position.item_name || '')}
+          onChange={(e) => handleFieldChange('item_name', e.target.value)}
+          onBlur={handleBlur}
+          disabled={isLocked}
+          placeholder="např. ZÁKLADY ZE ŽELEZOBETONU DO C30/37"
+          title="Název položky: detailní popis prvku"
+        />
+      </td>
+
       {/* Subtype with icon */}
       <td className="cell-subtype">
         <div className="subtype-cell">

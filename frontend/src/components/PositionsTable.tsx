@@ -108,6 +108,7 @@ export default function PositionsTable() {
                   <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
+                      <th className="col-item-name" title="Název položky: detailní popis prvku">Název položky</th>
                       <th title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
                       <th title="Měrná jednotka: m³, m², kg">MJ</th>
                       <th title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
@@ -134,7 +135,7 @@ export default function PositionsTable() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={16} style={{
+                        <td colSpan={17} style={{
                           textAlign: 'center',
                           padding: '20px',
                           color: 'var(--text-secondary)',

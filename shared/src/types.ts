@@ -18,6 +18,7 @@ export interface Position {
   id?: string;
   bridge_id: string;              // SO201, SO202...
   part_name: string;              // ZÁKLADY, ŘÍMSY, OPĚRY...
+  item_name?: string;             // Detailed item description: "ZÁKLADY ZE ŽELEZOBETONU DO C30/37"
   subtype: Subtype;
   unit: Unit;
   qty: number;                    // Quantity in native unit
