@@ -3,7 +3,7 @@
  * v4.3.2: Correct architecture - input field for concrete volume (sync with beton row)
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Props {
   itemName?: string;
@@ -22,6 +22,16 @@ export default function PartHeader({
 }: Props) {
   const [editedName, setEditedName] = useState(itemName || '');
   const [editedBeton, setEditedBeton] = useState(betonQuantity.toString());
+
+  // Sync state when props change (two-way binding)
+  useEffect(() => {
+    setEditedName(itemName || '');
+  }, [itemName]);
+
+  useEffect(() => {
+    setEditedBeton(betonQuantity.toString());
+    console.log(`🪨 PartHeader useEffect: betonQuantity changed to ${betonQuantity}, syncing state`);
+  }, [betonQuantity]);
 
   const handleNameBlur = () => {
     if (editedName !== itemName) {
