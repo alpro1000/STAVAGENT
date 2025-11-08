@@ -175,91 +175,167 @@ project_unit_cost_czk_per_t = project_unit_cost_czk_per_m3 / 2.4  // ρ=2.4 t/m�
 
 ---
 
-## 🔄 ПОТОК ДАННЫХ БЕТОНА (v4.3.1 - Correct Architecture)
+## 🔄 ПОТОК ДАННЫХ БЕТОНА (v4.3.2 - Правильная архитектура)
 
-### Архитектура (v4.3.1 - РАБОТАЮЩАЯ ВЕРСИЯ)
+### Архитектура (v4.3.2 - FINAL CORRECT DESIGN)
 
-**ПРАВИЛЬНЫЙ ПОТОК (v4.3.1):**
+**ПРАВИЛЬНЫЙ ПОТОК (v4.3.2):**
 ```
-PartHeader (только название):
-  - Редактируемое поле: "Název části" = "ZÁKLADY" 📝
-         ↓
+PartHeader (рядом с названием):
+  - Название "Název části": "ZÁKLADY ZE ŽELEZOBETONU..." 📝
+  - Objem betonu: [INPUT 255] m³ ← 🟠 ГЛАВНОЕ ПОЛЕ! EDITABLE!
+         ↓ автоматически синхронизируется ↓
 Таблица позиций РАЗВЕРНУТА:
          ↓
-Строка 'beton' (ключевая!):
-  - Подтип: "beton" 🟠 EDITABLE! (Oранжевый input)
-  - Колонка "Množství": [INPUT 43.8] m³ ← ВОТ ЭТО ГЛАВНОЕ!
+Строка 'beton' (представляет работу по БЕТОНИРОВАНИЮ):
+  - Podtyp: "beton" (тип работы - бетонирование)
+  - MJ: M3
+  - Množství: 255 (из PartHeader) ← синхронизировано!
+  - LIDI: 4 (люди на работе)
+  - KČ/HOD: 398 (зарплата в час)
+  - HOD/DEN: 10 (часов в день)
+  - DEN: ? (дни вычисляются!)
          ↓
 Формула вычисляет:
-  concrete_m3 = position.qty = 43.8  ← Прямой доступ!
+  concrete_m3 = position.qty = 255  ← Основание расчетов!
          ↓
-Остальные строки (bednění, výztuž):
-  - concrete_m3 = findConcreteVolumeForPart() = 43.8
-  - Используют ту же бетонную строку!
+Остальные строки (bednění=опалубка, výztuž=арматура):
+  - concrete_m3 = findConcreteVolumeForPart() = 255
+  - Используют ТОЖЕ объем бетона!
          ↓
-✅ Все расчёты используют значение из таблицы!
+✅ Все расчёты: unit_cost_on_m3 = cost_czk / 255!
 ```
 
-### Компоненты и функции (v4.3.1 FIXED)
+### Компоненты и функции (v4.3.2 FINAL)
 
-#### PartHeader.tsx (УПРОЩЕНА)
+#### PartHeader.tsx (НАЗВАНИЕ + ОБЪЕМ БЕТОНА)
 ```typescript
-// УПРОЩЕНО: только название
+// ПРАВИЛЬНО: два input поля
 interface Props {
   itemName?: string;
+  betonQuantity: number;  // ← Объем бетона!
   onItemNameUpdate: (itemName: string) => void;
+  onBetonQuantityUpdate: (quantity: number) => void;  // ← Синхро!
   isLocked: boolean;
 }
 
 export default function PartHeader({
   itemName,
+  betonQuantity,
   onItemNameUpdate,
+  onBetonQuantityUpdate,
   isLocked
 }: Props) {
-  // Только один input для названия!
   return (
-    <input
-      type="text"
-      value={itemName}
-      onChange={(e) => setEditedName(e.target.value)}
-      onBlur={handleNameBlur}
-      disabled={isLocked}
-      placeholder="ZÁKLADY ZE ŽELEZOBETONU DO C30/37"
-    />
+    <div className="part-header-container">
+      {/* Input 1: Название */}
+      <input
+        type="text"
+        value={itemName}
+        onBlur={handleNameBlur}
+        disabled={isLocked}
+        placeholder="ZÁKLADY ZE ŽELEZOBETONU DO C30/37"
+      />
+
+      {/* Input 2: Объем бетона - ГЛАВНОЕ ПОЛЕ! */}
+      <div className="concrete-params">
+        <label>Objem betonu celkem:</label>
+        <input
+          type="number"
+          className="concrete-input"  // 🟠 Оранжевое!
+          value={editedBeton}
+          onChange={handleBetonChange}
+          onBlur={handleBetonBlur}  // ← Отправляет обновление!
+          disabled={isLocked}
+          step="0.01"
+          min="0"
+          placeholder="255"
+        />
+        <span>m³</span>
+      </div>
+    </div>
   );
 }
 ```
 
-#### PositionRow.tsx (РАЗБЛОКИРОВАНА ЯЧЕЙКА БЕТОНА!)
+#### PositionRow.tsx (BETON - EDITABLE!)
 ```typescript
-// ✍️ EDITABLE для ВСЕХ subtypes включая 'beton'
+// ПРАВИЛЬНО: beton НЕ заблокирован, редактируется свободно
 <td className="cell-input">
   <input
     type="number"
-    step="0.01"  // ← Precision для beton!
-    className="input-cell"  // 🟠 Оранжевый!
+    step="0.01"
+    className="input-cell"  // 🟠 Оранжевый input!
     value={getValue('qty')}
     onChange={(e) => handleFieldChange('qty', parseFloat(e.target.value) || 0)}
     onBlur={handleBlur}
-    disabled={isLocked}  // ← ТОЛЬКО заблокирован если snapshot locked!
+    disabled={isLocked}  // ← ТОЛЬКО если snapshot locked!
     title={
       position.subtype === 'beton'
-        ? 'Objem betonu v m³ - EDITABLE, používá se pro všechny výpočty' ✓
+        ? 'Objem betonu v m³ (синхронизовано с PartHeader выше)'
         : 'Množství v měrných jednotkách'
     }
   />
 </td>
 ```
 
-#### PositionsTable.tsx (УПРОЩЕНА)
+#### PositionsTable.tsx (СИНХРОНИЗАЦИЯ)
 ```typescript
-// ❌ УДАЛЕНО: handleBetonQuantityUpdate() - не нужна!
-// ✅ Просто передаём обновление qty через updatePositions()
-// Формулы на backend автоматически вычисляют concrete_m3 = qty
+// ПРАВИЛЬНО: handleBetonQuantityUpdate() синхронизирует PartHeader → Table
+const handleBetonQuantityUpdate = (partName: string, newQuantity: number) => {
+  // Находим beton position в части
+  const betonPosition = positions.find(
+    p => p.part_name === partName && p.subtype === 'beton'
+  );
 
-// Таблица больше НЕ ИМЕ Т колонну "Beton m³" (убрана!)
-// Колонки: Подtyp | MJ | Množství ✍️ | Lidi | Kč/hod | ... | Kč/m³ | KROS
+  // Обновляем его qty
+  updatePositions([{
+    ...betonPosition,
+    qty: newQuantity  // ← Это значение используется везде!
+  }]);
+};
+
+// PartHeader передает:
+<PartHeader
+  betonQuantity={betonQty}  // ← читает текущее значение
+  onBetonQuantityUpdate={(qty) => handleBetonQuantityUpdate(partName, qty)}  // ← отправляет
+  ...
+/>
 ```
+
+### Как работает ДВУСТОРОННЯЯ синхронизация
+
+**Сценарий 1: Пользователь меняет в PartHeader**
+```
+PartHeader [255] → onBetonQuantityUpdate() → PositionsTable
+  ↓
+updatePositions({beton, qty: 255}) → backend
+  ↓
+React Query обновляет positions
+  ↓
+PartHeader перерисовывается: betonQuantity = 255 ✓
+Table строка beton перерисовывается: qty = 255 ✓
+```
+
+**Сценарий 2: Пользователь меняет в таблице (beton row)**
+```
+PositionRow [255] → handleFieldChange() → updatePositions()
+  ↓
+backend обновляет
+  ↓
+React Query обновляет positions
+  ↓
+PartHeader перерисовывается: betonQuantity = 255 (вычисляется!) ✓
+```
+
+**Ключевой момент:** betonQuantity в PartHeader вычисляется КАЖДЫЙ РАЗ:
+```typescript
+betonQuantity={partPositions
+  .filter(p => p.subtype === 'beton')
+  .reduce((sum, p) => sum + (p.qty || 0), 0)}
+```
+
+Это значит изменение в ЛЮБОМ месте будет видно везде! ✅
 
 ### Примеры использования (v4.3.1)
 
@@ -741,27 +817,40 @@ POST /api/config
 
 ## 🔐 ВЕРСИОНИРОВАНИЕ
 
-**Текущая версия:** v4.3.1 (2025-11-08)
+**Текущая версия:** v4.3.2 (2025-11-08)
 
 **История изменений:**
 
-- **v4.3.1** (2025-11-08) - **FIXED: Concrete Volume Calculation** ⭐ CRITICAL ARCHITECTURE FIX
-  - 🐛 **PROBLEM v4.3**: Input in PartHeader didn't actually work - values were read-only in table!
-  - ✨ **SOLUTION**: Move concrete volume input to WHERE IT BELONGS - the 'beton' row in table
-  - 🎯 **Correct architecture**:
+- **v4.3.2** (2025-11-08) - **FINAL: Correct Concrete Volume Architecture** ⭐⭐⭐ DEFINITIVE FIX
+  - ✨ **РЕШЕНИЕ**: Поле для ввода объема бетона находится ГДЕ НАДО - в PartHeader, РЯДОМ с названием!
+  - 🎯 **Архитектура v4.3.2 (ПРАВИЛЬНАЯ)**:
     ```
-    PartHeader:  Just shows "Název části" (construction part name)
-    Table row (subtype='beton'): ✍️ EDITABLE "Množství" cell (ORANGE INPUT)
-    All calculations: Use qty from beton row = concrete_m3
-    ```
-  - 📊 **Flow simplified**: User enters → beton row qty → concrete_m3 auto-calculated → formulas work
-  - ✅ **Formulas now working correctly**: All calculations use data from table!
-  - **Files changed**: PartHeader.tsx, PositionsTable.tsx, PositionRow.tsx
-  - **Removed**: 45 lines of broken handleBetonQuantityUpdate logic
-  - **Removed**: Useless "Beton m³" table column (redundant with Množství)
-  - **Updated**: colSpan values to match new table structure (17→15, 16→14)
+    PartHeader:
+      - "Název části konstrukce": [текст] ← Название элемента
+      - "Objem betonu celkem": [255] m³ ← 🟠 ГЛАВНОЕ ПОЛЕ! EDITABLE!
+           ↓ автоматическая синхронизация ↓
+    Table beton row:
+      - "Množství": 255 m³ ← синхронизировано из PartHeader
 
-- **v4.3** (2025-11-08) - **MAJOR UI/UX Improvements** (BROKEN - Fixed in v4.3.1):
+    Двусторонняя синхронизация:
+    - Меняешь в PartHeader → обновляется в таблице ✓
+    - Меняешь в таблице → обновляется в PartHeader ✓
+    ```
+  - 📊 **Поток данных**: PartHeader [255] ↔ PositionRow (beton) ↔ Формулы
+  - ✅ **Синхронизация**: Двусторонняя через React Query
+  - **Что это значит**:
+    - 🟠 Ввод объема: ТОЛЬКО в PartHeader (удобно, видно сразу)
+    - 📋 Таблица: показывает это значение + остальные параметры (лили, зп, часы, дни)
+    - 📐 Формулы: используют qty из beton = concrete_m3 (все расчеты правильны!)
+  - **Files changed**: PartHeader.tsx (restored volume input), PositionsTable.tsx (restored sync function)
+  - **Result**: Логичная, интуитивная архитектура - объем вводишь рядом с названием!
+
+- **v4.3.1** (2025-11-08) - **BROKEN: Incomplete Refactor**
+  - ❌ Ошибка: Пытался убрать input из PartHeader
+  - ❌ Результат: Формулы не работали, нет удобного места ввода
+  - ✓ Исправлено в v4.3.2
+
+- **v4.3** (2025-11-08) - **MAJOR UI/UX Improvements** (BROKEN - Fixed in v4.3.2):
 
   ### Part A: Concrete Volume Input Refactor (❌ BROKEN - Fixed in v4.3.1)
   - ❌ BROKEN: Attempted to move input to PartHeader
