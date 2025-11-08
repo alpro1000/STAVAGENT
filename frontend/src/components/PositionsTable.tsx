@@ -50,10 +50,14 @@ export default function PositionsTable() {
 
     console.log(`✅ Found beton position: id=${betonPosition.id}, current qty=${betonPosition.qty}, new qty=${newQuantity}`);
 
-    // Update the beton position with new quantity
+    // IMPORTANT: Only send editable fields, NOT calculated fields!
+    // Backend will recalculate: labor_hours, cost_czk, unit_cost_on_m3, kros_total_czk, etc.
     const updates = [{
-      ...betonPosition,
+      id: betonPosition.id,
       qty: newQuantity
+      // Do NOT include: labor_hours, cost_czk, unit_cost_native, concrete_m3,
+      //                 unit_cost_on_m3, kros_unit_czk, kros_total_czk, has_rfi, rfi_message
+      // These are calculated by backend in calculatePositionFields()
     }];
 
     console.log(`📤 Calling updatePositions with:`, updates);
@@ -62,16 +66,21 @@ export default function PositionsTable() {
 
   // Handle item name update from PartHeader
   const handleItemNameUpdate = (partName: string, newItemName: string) => {
+    console.log(`📝 handleItemNameUpdate called: part="${partName}", newName="${newItemName}"`);
+
     // Update item_name for all positions in this part
     const partPositions = positions.filter(p => p.part_name === partName);
 
     if (partPositions.length === 0) return;
 
+    // IMPORTANT: Only send editable fields!
     const updates = partPositions.map(pos => ({
-      ...pos,
+      id: pos.id,
       item_name: newItemName
+      // Do NOT include calculated fields
     }));
 
+    console.log(`📤 Calling updatePositions with ${updates.length} updates:`, updates);
     updatePositions(updates);
   };
 
