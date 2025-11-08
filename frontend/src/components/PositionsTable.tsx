@@ -3,16 +3,18 @@
  */
 
 import { useState, useMemo, useEffect } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
+import { positionsAPI } from '../services/api';
 import { Position } from '@monolit/shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
 
 export default function PositionsTable() {
-  const { selectedBridge, positions } = useAppContext();
+  const { selectedBridge, positions, setPositions, setHeaderKPI } = useAppContext();
   const { isLoading, updatePositions } = usePositions(selectedBridge);
   const { isLocked } = useSnapshots(selectedBridge);
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
@@ -92,6 +94,45 @@ export default function PositionsTable() {
       newExpanded.add(partName);
     }
     setExpandedParts(newExpanded);
+  };
+
+  // Handle adding new row to a part
+  const handleAddRow = async (partName: string) => {
+    if (!selectedBridge) return;
+
+    try {
+      // Create new position with default values
+      const newPosition: Partial<Position> = {
+        id: uuidv4(),
+        bridge_id: selectedBridge,
+        part_name: partName,
+        item_name: '',
+        subtype: 'jiné', // Default subtype: "Other"
+        unit: 'ks',
+        qty: 1,
+        crew_size: 4,
+        wage_czk_ph: 398,
+        shift_hours: 10,
+        days: 0
+      };
+
+      console.log(`➕ Adding new row to part "${partName}":`, newPosition);
+
+      // Create position via API
+      const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
+      console.log(`✅ New row added:`, result);
+
+      // Update context with new positions
+      if (result.positions) {
+        setPositions(result.positions);
+        if (result.header_kpi) {
+          setHeaderKPI(result.header_kpi);
+        }
+      }
+    } catch (error) {
+      console.error(`❌ Error adding row:`, error);
+      alert(`Chyba při přidávání řádku: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
+    }
   };
 
   // Expand all by default
@@ -221,7 +262,7 @@ export default function PositionsTable() {
                 }}>
                   <button
                     className="btn-create"
-                    onClick={() => alert('TODO: Implement add row functionality')}
+                    onClick={() => handleAddRow(partName)}
                     disabled={isLocked}
                     title={isLocked ? 'Nelze přidat řádek - snapshot je zamčen' : 'Přidat nový řádek'}
                   >

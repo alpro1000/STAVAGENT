@@ -752,16 +752,19 @@ button:disabled {
 
 .kpi-grid-modern {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
 }
 
 .kpi-card {
-  padding: 4px 6px;
+  padding: 6px 8px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-default);
   border-radius: 4px;
-  min-height: 48px;
+  min-height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .kpi-card-primary {
@@ -783,7 +786,7 @@ button:disabled {
 }
 
 .kpi-card-label {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.4px;
@@ -792,13 +795,14 @@ button:disabled {
 }
 
 .kpi-card-value {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   font-family: var(--font-mono);
+  line-height: 1.2;
 }
 
 .kpi-card-unit {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 500;
   margin-left: 2px;
   opacity: 0.8;
