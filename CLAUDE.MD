@@ -591,9 +591,17 @@ POST /api/config
 
 ## 🔐 ВЕРСИОНИРОВАНИЕ
 
-**Текущая версия:** v4.1 (2025-11-07)
+**Текущая версия:** v4.2 (2025-11-08)
 
 **История изменений:**
+
+- **v4.2** (2025-11-08) - Hierarchical Table Structure:
+  - 🏗️ **Fixed critical "Název položky" duplication** in table headers
+  - ✨ **Created PartHeader component**: item name displayed once per construction part
+  - 🗑️ **Removed "Název položky" column** from main table (17 → 16 columns)
+  - 📊 **Clean hierarchical structure**: Header → Concrete Params → Table (subtypes)
+  - 🎯 **Improved UX**: cleaner, less cluttered table layout
+  - ✅ **Fully documented** with visual diagrams in CLAUDE.MD
 
 - **v4.1** (2025-11-07) - KPI Optimization & Template Update:
   - 🎨 **Optimized KPI Panel layout** (4 columns × 2 rows instead of dynamic grid)
