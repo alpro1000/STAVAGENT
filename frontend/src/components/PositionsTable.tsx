@@ -13,7 +13,7 @@ import PartHeader from './PartHeader';
 
 export default function PositionsTable() {
   const { selectedBridge, positions } = useAppContext();
-  const { isLoading } = usePositions(selectedBridge);
+  const { isLoading, updatePositions } = usePositions(selectedBridge);
   const { isLocked } = useSnapshots(selectedBridge);
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
 
@@ -30,6 +30,39 @@ export default function PositionsTable() {
 
     return groups;
   }, [positions]);
+
+  // Handle concrete volume update from PartHeader
+  const handleBetonQuantityUpdate = (partName: string, newQuantity: number) => {
+    // Find all positions in this part with subtype='beton'
+    const betonPositions = positions.filter(
+      p => p.part_name === partName && p.subtype === 'beton'
+    );
+
+    if (betonPositions.length === 0) return;
+
+    // Update all 'beton' positions to have qty = newQuantity
+    const updates = betonPositions.map(pos => ({
+      ...pos,
+      qty: newQuantity
+    }));
+
+    updatePositions(updates);
+  };
+
+  // Handle item name update from PartHeader
+  const handleItemNameUpdate = (partName: string, newItemName: string) => {
+    // Update item_name for all positions in this part
+    const partPositions = positions.filter(p => p.part_name === partName);
+
+    if (partPositions.length === 0) return;
+
+    const updates = partPositions.map(pos => ({
+      ...pos,
+      item_name: newItemName
+    }));
+
+    updatePositions(updates);
+  };
 
   const togglePart = (partName: string) => {
     const newExpanded = new Set(expandedParts);
@@ -109,11 +142,13 @@ export default function PositionsTable() {
                   itemName={partPositions[0]?.item_name || ''}
                   betonQuantity={partPositions
                     .filter(p => p.subtype === 'beton')
-                    .reduce((sum, p) => sum + (p.concrete_m3 || 0), 0)}
-                  onUpdate={(newName) => {
-                    // TODO: Update all positions in this part with new item_name
-                    console.log('Update item_name for', partName, 'to:', newName);
-                  }}
+                    .reduce((sum, p) => sum + (p.qty || 0), 0)}
+                  onItemNameUpdate={(newName) =>
+                    handleItemNameUpdate(partName, newName)
+                  }
+                  onBetonQuantityUpdate={(newQuantity) =>
+                    handleBetonQuantityUpdate(partName, newQuantity)
+                  }
                   isLocked={isLocked}
                 />
 

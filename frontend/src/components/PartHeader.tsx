@@ -1,5 +1,5 @@
 /**
- * PartHeader - Header for a construction part with editable name and concrete parameters
+ * PartHeader - Header for a construction part with editable name and concrete volume
  */
 
 import { useState } from 'react';
@@ -7,17 +7,36 @@ import { useState } from 'react';
 interface Props {
   itemName?: string;
   betonQuantity: number;
-  onUpdate: (itemName: string) => void;
+  onItemNameUpdate: (itemName: string) => void;
+  onBetonQuantityUpdate: (quantity: number) => void;
   isLocked: boolean;
 }
 
-export default function PartHeader({ itemName, betonQuantity, onUpdate, isLocked }: Props) {
+export default function PartHeader({
+  itemName,
+  betonQuantity,
+  onItemNameUpdate,
+  onBetonQuantityUpdate,
+  isLocked
+}: Props) {
   const [editedName, setEditedName] = useState(itemName || '');
+  const [editedBeton, setEditedBeton] = useState(betonQuantity.toString());
 
-  const handleBlur = () => {
+  const handleNameBlur = () => {
     if (editedName !== itemName) {
-      onUpdate(editedName);
+      onItemNameUpdate(editedName);
     }
+  };
+
+  const handleBetonBlur = () => {
+    const numValue = parseFloat(editedBeton) || 0;
+    if (numValue !== betonQuantity) {
+      onBetonQuantityUpdate(numValue);
+    }
+  };
+
+  const handleBetonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedBeton(e.target.value);
   };
 
   return (
@@ -30,7 +49,7 @@ export default function PartHeader({ itemName, betonQuantity, onUpdate, isLocked
           className="part-name-input"
           value={editedName}
           onChange={(e) => setEditedName(e.target.value)}
-          onBlur={handleBlur}
+          onBlur={handleNameBlur}
           disabled={isLocked}
           placeholder="např. ZÁKLADY ZE ŽELEZOBETONU DO C30/37"
           title="Název části konstrukce: detailní popis prvku"
@@ -45,9 +64,19 @@ export default function PartHeader({ itemName, betonQuantity, onUpdate, isLocked
         </div>
         <div className="concrete-param">
           <label>Množství betonu celkem:</label>
-          <span className="concrete-value">
-            {betonQuantity.toFixed(2).replace('.', ',')} m³
-          </span>
+          <input
+            type="number"
+            className="concrete-input"
+            value={editedBeton}
+            onChange={handleBetonChange}
+            onBlur={handleBetonBlur}
+            disabled={isLocked}
+            step="0.01"
+            min="0"
+            placeholder="0.00"
+            title="Zadejte celkový objem betonu v m³ pro tuto část konstrukce"
+          />
+          <span style={{ marginLeft: '4px' }}>m³</span>
         </div>
       </div>
     </div>
