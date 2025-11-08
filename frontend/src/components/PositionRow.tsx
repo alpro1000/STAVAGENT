@@ -83,16 +83,24 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       {/* INPUT CELLS - Editable (orange/cyan gradient) */}
 
       {/* Qty */}
-      <td className="cell-input">
+      <td className={`cell-input ${position.subtype === 'beton' ? 'cell-computed' : ''}`}>
         <input
           type="number"
           step="0.1"
-          className="input-cell"
+          className={`input-cell ${position.subtype === 'beton' ? 'readonly-style' : ''}`}
           value={getValue('qty')}
-          onChange={(e) => handleFieldChange('qty', parseFloat(e.target.value) || 0)}
+          onChange={(e) => {
+            // For beton rows, input is read-only, so we prevent changes
+            if (position.subtype === 'beton') return;
+            handleFieldChange('qty', parseFloat(e.target.value) || 0);
+          }}
           onBlur={handleBlur}
-          disabled={isLocked}
-          title="Množství v měrných jednotkách"
+          disabled={isLocked || position.subtype === 'beton'}
+          title={
+            position.subtype === 'beton'
+              ? 'Objem betonu - upravte v záhlaví "Název části konstrukce" výše'
+              : 'Množství v měrných jednotkách'
+          }
         />
       </td>
 

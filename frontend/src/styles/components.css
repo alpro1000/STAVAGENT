@@ -1214,3 +1214,54 @@ select:focus {
   background: var(--bg-tertiary);
   color: var(--text-secondary);
 }
+
+/* ============================================
+   CONCRETE VOLUME FIELDS
+   ============================================ */
+
+/* Read-only style for beton quantity in table */
+.input-cell.readonly-style {
+  background: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-weight: 500;
+  cursor: not-allowed;
+}
+
+.input-cell.readonly-style input {
+  background: var(--bg-tertiary);
+  border-color: var(--border-light);
+  color: var(--text-secondary);
+  cursor: not-allowed;
+}
+
+.input-cell.readonly-style input:disabled {
+  opacity: 1;
+  color: var(--text-secondary);
+}
+
+/* Concrete input field in PartHeader */
+.concrete-input {
+  padding: 6px 8px;
+  border: 2px solid var(--input-border);
+  border-radius: 4px;
+  background: var(--input-bg);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--font-mono);
+  width: 100px;
+  text-align: right;
+}
+
+.concrete-input:focus {
+  outline: none;
+  border-color: var(--input-focus);
+  box-shadow: 0 0 0 2px rgba(255, 112, 67, 0.2);
+}
+
+.concrete-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--bg-tertiary);
+  border-color: var(--border-light);
+}
