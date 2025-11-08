@@ -231,22 +231,59 @@ interface Props {
 
 #### PositionsTable.tsx
 ```typescript
-// НОВОЕ: синхронизация бетона
+// НОВОЕ: синхронизация бетона с защитой от дублирования данных
 handleBetonQuantityUpdate = (partName: string, newQuantity: number) => {
   // 1. Находим все строки этой части с subtype='beton'
   const betonPositions = positions.filter(
     p => p.part_name === partName && p.subtype === 'beton'
   );
 
-  // 2. Обновляем их qty на новое значение
-  const updates = betonPositions.map(pos => ({
-    ...pos,
+  if (betonPositions.length === 0) {
+    console.warn(`⚠️ No 'beton' position found for part "${partName}".`);
+    return;
+  }
+
+  // 2. SAFETY: Обновляем ТОЛЬКО первую 'beton' позицию
+  // Если несколько позиций (edge case из Excel импорта),
+  // зануляем остальные, чтобы избежать дублирования!
+  const updates = [];
+
+  // Обновляем первую позицию
+  updates.push({
+    ...betonPositions[0],
     qty: newQuantity  // ← Единственное место, где меняется qty!
-  }));
+  });
+
+  // ЗАЩИТА: если найдено несколько 'beton' позиций, зануляем остальные
+  if (betonPositions.length > 1) {
+    console.warn(`Multiple 'beton' positions found for part "${partName}". ` +
+      `Zeroing duplicates to prevent data corruption.`);
+
+    for (let i = 1; i < betonPositions.length; i++) {
+      updates.push({
+        ...betonPositions[i],
+        qty: 0  // ← Предотвращаем двойной подсчет!
+      });
+    }
+  }
 
   // 3. Отправляем на backend через React Query
   updatePositions(updates);
 };
+```
+
+**⭐ Критическая защита от data corruption:**
+```
+ПРОБЛЕМА (v4.3 до фиксации):
+- ZÁKLADY имеет 2 'beton' позиции
+- Пользователь вводит: 43.8 m³
+- Код обновляет ОБЕ: qty=43.8, qty=43.8
+- Результат: 87.6 m³ ИТОГО (НЕПРАВИЛЬНО!)
+
+РЕШЕНИЕ (v4.3 после фиксации):
+- Обновляем только первую: qty=43.8
+- Зануляем остальные: qty=0
+- Результат: 43.8 m³ ИТОГО (ПРАВИЛЬНО!)
 ```
 
 #### PositionRow.tsx
