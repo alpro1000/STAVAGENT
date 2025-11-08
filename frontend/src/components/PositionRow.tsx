@@ -3,7 +3,7 @@
  */
 
 import { useState } from 'react';
-import { Position, SUBTYPE_ICONS } from '@monolit/shared';
+import { Position, SUBTYPE_ICONS, SUBTYPE_LABELS } from '@monolit/shared';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 
@@ -63,6 +63,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   };
 
   const icon = SUBTYPE_ICONS[position.subtype as keyof typeof SUBTYPE_ICONS] || '📋';
+  const displayLabel = SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
 
   return (
     <tr className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''}`}>
@@ -73,7 +74,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-subtype">
         <div className="subtype-cell">
           <span className="subtype-icon">{icon}</span>
-          <span className="subtype-label">{position.subtype}</span>
+          <span className="subtype-label" title={`Internal: ${position.subtype}`}>{displayLabel}</span>
         </div>
       </td>
 
@@ -99,7 +100,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
           disabled={isLocked || position.subtype === 'beton'}
           title={
             position.subtype === 'beton'
-              ? 'Objem betonu (čte se z PartHeader výše - "Objem betonu celkem"). Klikněte tam pro změnu.'
+              ? 'Objem betonu - Betonování (čte se z PartHeader výše - "Objem betonu celkem"). Klikněte tam pro změnu.'
               : 'Množství v měrných jednotkách'
           }
         />

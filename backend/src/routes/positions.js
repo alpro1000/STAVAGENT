@@ -183,6 +183,14 @@ router.put('/', (req, res) => {
 
         // Build SQL dynamically for each update
         const fieldNames = Object.keys(fields);
+
+        // If there are no fields to update, skip this update
+        // (only updated_at will be set by the DEFAULT in the UPDATE statement)
+        if (fieldNames.length === 0) {
+          logger.warn(`  ⚠️ No fields to update for position id=${id}, skipping`);
+          continue;
+        }
+
         const fieldPlaceholders = fieldNames.map(f => `${f} = ?`).join(', ');
 
         const sql = `
