@@ -33,17 +33,22 @@ export default function PositionsTable() {
 
   // Handle concrete volume update from PartHeader
   const handleBetonQuantityUpdate = (partName: string, newQuantity: number) => {
+    console.log(`📊 handleBetonQuantityUpdate called: part="${partName}", qty=${newQuantity}`);
+
     // Find the beton position for this part
     const betonPosition = positions.find(
       p => p.part_name === partName && p.subtype === 'beton'
     );
 
     if (!betonPosition) {
-      console.warn(
-        `⚠️ No 'beton' position found for part "${partName}". Cannot update concrete volume.`
+      console.error(
+        `❌ No 'beton' position found for part "${partName}". Cannot update concrete volume.`
       );
+      console.log(`Available parts: ${positions.map(p => `${p.part_name}/${p.subtype}`).join(', ')}`);
       return;
     }
+
+    console.log(`✅ Found beton position: id=${betonPosition.id}, current qty=${betonPosition.qty}, new qty=${newQuantity}`);
 
     // Update the beton position with new quantity
     const updates = [{
@@ -51,6 +56,7 @@ export default function PositionsTable() {
       qty: newQuantity
     }];
 
+    console.log(`📤 Calling updatePositions with:`, updates);
     updatePositions(updates);
   };
 

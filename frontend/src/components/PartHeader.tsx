@@ -31,13 +31,19 @@ export default function PartHeader({
 
   const handleBetonBlur = () => {
     const numValue = parseFloat(editedBeton) || 0;
+    console.log(`🪨 PartHeader.handleBetonBlur: value="${editedBeton}", parsed=${numValue}, current=${betonQuantity}`);
+
     if (numValue !== betonQuantity) {
+      console.log(`🪨 Calling onBetonQuantityUpdate(${numValue})`);
       onBetonQuantityUpdate(numValue);
+    } else {
+      console.log(`🪨 Value unchanged, not calling callback`);
     }
   };
 
   const handleBetonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedBeton(e.target.value);
+    console.log(`🪨 PartHeader.handleBetonChange: ${e.target.value}`);
   };
 
   return (
