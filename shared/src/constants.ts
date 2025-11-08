@@ -71,6 +71,21 @@ export const SUBTYPE_ICONS = {
   'jiné': '📋'
 };
 
+/**
+ * Human-readable labels for subtypes (what shows in UI)
+ * Key: internal subtype value (used in data)
+ * Value: display name for UI
+ */
+export const SUBTYPE_LABELS = {
+  'beton': 'Betonování',
+  'bednění': 'Bednění',
+  'oboustranné (opěry)': 'Oboustranné (opěry)',
+  'oboustranné (křídla)': 'Oboustranné (křídla)',
+  'oboustranné (závěrné zídky)': 'Oboustranné (závěrné zídky)',
+  'výztuž': 'Výztuž',
+  'jiné': 'Jiné'
+};
+
 export const UNIT_LABELS = {
   'M3': 'm³',
   'm2': 'm²',
