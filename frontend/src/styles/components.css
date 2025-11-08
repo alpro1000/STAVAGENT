@@ -414,6 +414,88 @@ button:disabled {
   color: var(--bg-secondary);
 }
 
+/* Part Header - Editable name and concrete parameters */
+.part-header-container {
+  background: linear-gradient(135deg, #E8E8E8 0%, #F5F5F5 100%);
+  border-bottom: 2px solid var(--border-default);
+  padding: 16px;
+}
+
+.part-name-input-wrapper {
+  margin-bottom: 12px;
+}
+
+.part-name-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.part-name-input {
+  width: 100%;
+  background: var(--input-required);
+  border: 2px solid #FF9800;
+  color: var(--text-primary);
+  padding: 10px 14px;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-base);
+  transition: all var(--transition-base);
+}
+
+.part-name-input:focus {
+  outline: none;
+  border-color: #FF7043;
+  background: var(--input-bg);
+  box-shadow: 0 0 0 3px rgba(255, 112, 67, 0.2);
+}
+
+.part-name-input:disabled {
+  background: var(--bg-tertiary);
+  color: var(--text-tertiary);
+  cursor: not-allowed;
+  border-color: var(--border-default);
+}
+
+.part-name-input::placeholder {
+  color: var(--text-tertiary);
+  font-size: 13px;
+  font-weight: 400;
+}
+
+.concrete-params {
+  display: flex;
+  gap: 20px;
+  padding: 10px 14px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-light);
+  border-radius: 4px;
+}
+
+.concrete-param {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.concrete-param label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.concrete-value {
+  font-size: 14px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  color: var(--text-primary);
+}
+
 .positions-table {
   width: 100%;
   border-collapse: collapse;
@@ -471,41 +553,6 @@ button:disabled {
   padding: 8px !important;
   font-size: 16px;
   opacity: 0.5;
-}
-
-/* Item Name Column - First editable column */
-.col-item-name {
-  min-width: 250px;
-  max-width: 400px;
-  text-align: left !important;
-}
-
-.cell-item-name {
-  min-width: 250px;
-  max-width: 400px;
-  padding: 4px !important;
-}
-
-.cell-item-name input.input-text {
-  width: 100%;
-  min-width: 250px;
-  padding: 8px;
-  font-family: var(--font-base);
-  font-size: 13px;
-  text-align: left;
-  background: var(--input-required);
-  border: 1px solid var(--input-border);
-  color: var(--text-primary);
-}
-
-.cell-item-name input.input-text:focus {
-  border-color: var(--input-focus);
-  background: var(--input-bg);
-}
-
-.cell-item-name input.input-text::placeholder {
-  color: var(--text-tertiary);
-  font-size: 12px;
 }
 
 /* Table Row States */

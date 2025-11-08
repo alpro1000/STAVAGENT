@@ -9,6 +9,7 @@ import { useSnapshots } from '../hooks/useSnapshots';
 import { Position } from '@monolit/shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
+import PartHeader from './PartHeader';
 
 export default function PositionsTable() {
   const { selectedBridge, positions } = useAppContext();
@@ -104,11 +105,22 @@ export default function PositionsTable() {
 
             {isExpanded && (
               <>
+                <PartHeader
+                  itemName={partPositions[0]?.item_name || ''}
+                  betonQuantity={partPositions
+                    .filter(p => p.subtype === 'beton')
+                    .reduce((sum, p) => sum + (p.concrete_m3 || 0), 0)}
+                  onUpdate={(newName) => {
+                    // TODO: Update all positions in this part with new item_name
+                    console.log('Update item_name for', partName, 'to:', newName);
+                  }}
+                  isLocked={isLocked}
+                />
+
                 <table className="positions-table">
                   <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
-                      <th className="col-item-name" title="Název položky: detailní popis prvku">Název položky</th>
                       <th title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
                       <th title="Měrná jednotka: m³, m², kg">MJ</th>
                       <th title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
@@ -135,7 +147,7 @@ export default function PositionsTable() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={17} style={{
+                        <td colSpan={16} style={{
                           textAlign: 'center',
                           padding: '20px',
                           color: 'var(--text-secondary)',
