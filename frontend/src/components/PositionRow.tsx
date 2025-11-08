@@ -83,20 +83,22 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       {/* INPUT CELLS - Editable (orange/cyan gradient) */}
 
       {/* Qty */}
-      <td className="cell-input">
+      <td className={`cell-input ${position.subtype === 'beton' ? 'cell-computed' : ''}`}>
         <input
           type="number"
           step="0.01"
-          className="input-cell"
+          className={`input-cell ${position.subtype === 'beton' ? 'readonly-style' : ''}`}
           value={getValue('qty')}
           onChange={(e) => {
+            // For beton rows, prevent manual edits (sync from PartHeader only)
+            if (position.subtype === 'beton') return;
             handleFieldChange('qty', parseFloat(e.target.value) || 0);
           }}
           onBlur={handleBlur}
-          disabled={isLocked}
+          disabled={isLocked || position.subtype === 'beton'}
           title={
             position.subtype === 'beton'
-              ? 'Objem betonu v m³ - EDITABLE, používá se pro všechny výpočty'
+              ? 'Objem betonu (čte se z PartHeader výše - "Objem betonu celkem"). Klikněte tam pro změnu.'
               : 'Množství v měrných jednotkách'
           }
         />
