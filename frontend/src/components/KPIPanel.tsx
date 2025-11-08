@@ -39,90 +39,82 @@ export default function KPIPanel() {
       <div className="kpi-grid-modern">
         {/* ROW 1: Main metrics */}
         <div className="kpi-card kpi-card-primary">
-          <div className="kpi-card-icon">💰</div>
-          <div className="kpi-card-content">
-            <div className="kpi-card-label">Celková cena (KROS)</div>
-            <div className="kpi-card-value">
-              {formatNumber(headerKPI.sum_kros_total_czk, 2)}
-              <span className="kpi-card-unit">CZK</span>
-            </div>
+          <div className="kpi-card-label">
+            <span>💰</span> Celková cena (KROS)
+          </div>
+          <div className="kpi-card-value">
+            {formatNumber(headerKPI.sum_kros_total_czk, 2)}
+            <span className="kpi-card-unit">CZK</span>
           </div>
         </div>
 
         <div className="kpi-card kpi-card-accent">
-          <div className="kpi-card-icon">📏</div>
-          <div className="kpi-card-content">
-            <div className="kpi-card-label">Kč/m³ (projekt)</div>
-            <div className="kpi-card-value">
-              {formatNumber(headerKPI.project_unit_cost_czk_per_m3, 2)}
-              <span className="kpi-card-unit">CZK/m³</span>
-            </div>
+          <div className="kpi-card-label">
+            <span>📏</span> Kč/m³ (projekt)
+          </div>
+          <div className="kpi-card-value">
+            {formatNumber(headerKPI.project_unit_cost_czk_per_m3, 2)}
+            <span className="kpi-card-unit">CZK/m³</span>
           </div>
         </div>
 
         <div className="kpi-card kpi-card-success">
-          <div className="kpi-card-icon">⏱️</div>
-          <div className="kpi-card-content">
-            <div className="kpi-card-label">Měsíce (výpočet)</div>
-            <div className="kpi-card-value">
-              {formatNumber(headerKPI.estimated_months, 1)}
-              <span className="kpi-card-unit">měsíců</span>
-            </div>
+          <div className="kpi-card-label">
+            <span>⏱️</span> Měsíce (výpočet)
+          </div>
+          <div className="kpi-card-value">
+            {formatNumber(headerKPI.estimated_months, 1)}
+            <span className="kpi-card-unit">měsíců</span>
           </div>
         </div>
 
         <div className="kpi-card">
-          <div className="kpi-card-icon">📆</div>
-          <div className="kpi-card-content">
-            <div className="kpi-card-label">Týdny (výpočet)</div>
-            <div className="kpi-card-value">
-              {formatNumber(headerKPI.estimated_weeks, 1)}
-              <span className="kpi-card-unit">týdnů</span>
-            </div>
+          <div className="kpi-card-label">
+            <span>📆</span> Týdny (výpočet)
+          </div>
+          <div className="kpi-card-value">
+            {formatNumber(headerKPI.estimated_weeks, 1)}
+            <span className="kpi-card-unit">týdnů</span>
           </div>
         </div>
 
         {/* ROW 2: Averages */}
         <div className="kpi-card">
-          <div className="kpi-card-icon">👥</div>
-          <div className="kpi-card-content">
-            <div className="kpi-card-label">Průměr: lidi</div>
-            <div className="kpi-card-value">
-              {formatNumber(headerKPI.avg_crew_size, 1)}
-              <span className="kpi-card-unit">lidí</span>
-            </div>
+          <div className="kpi-card-label">
+            <span>👥</span> Průměr: lidi
+          </div>
+          <div className="kpi-card-value">
+            {formatNumber(headerKPI.avg_crew_size, 1)}
+            <span className="kpi-card-unit">lidí</span>
           </div>
         </div>
 
         <div className="kpi-card">
-          <div className="kpi-card-icon">💵</div>
-          <div className="kpi-card-content">
-            <div className="kpi-card-label">Průměr: Kč/hod</div>
-            <div className="kpi-card-value">
-              {formatNumber(headerKPI.avg_wage_czk_ph, 0)}
-              <span className="kpi-card-unit">CZK</span>
-            </div>
+          <div className="kpi-card-label">
+            <span>💵</span> Průměr: Kč/hod
+          </div>
+          <div className="kpi-card-value">
+            {formatNumber(headerKPI.avg_wage_czk_ph, 0)}
+            <span className="kpi-card-unit">CZK</span>
           </div>
         </div>
 
         <div className="kpi-card">
-          <div className="kpi-card-icon">⏰</div>
-          <div className="kpi-card-content">
-            <div className="kpi-card-label">Průměr: hod/den</div>
-            <div className="kpi-card-value">
-              {formatNumber(headerKPI.avg_shift_hours, 1)}
-              <span className="kpi-card-unit">hod</span>
-            </div>
+          <div className="kpi-card-label">
+            <span>⏰</span> Průměr: hod/den
+          </div>
+          <div className="kpi-card-value">
+            {formatNumber(headerKPI.avg_shift_hours, 1)}
+            <span className="kpi-card-unit">hod</span>
           </div>
         </div>
 
         <div className="kpi-card">
-          <div className="kpi-card-icon">📅</div>
-          <div className="kpi-card-content">
-            <div className="kpi-card-label">Režim práce</div>
-            <div className="kpi-card-value kpi-mode-value">
-              {daysPerMonth === 30 ? '30 dní/měsíc' : '22 dní/měsíc'}
-            </div>
+          <div className="kpi-card-label">
+            <span>📅</span> Režim práce
+          </div>
+          <div className="kpi-card-value kpi-mode-value">
+            {daysPerMonth === 30 ? '30 dní/měsíc' : '22 dní/měsíc'}
           </div>
         </div>
       </div>
