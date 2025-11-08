@@ -17,11 +17,25 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { isLoading } = useBridges();
   const [showHistoryModal, setShowHistoryModal] = useState(false);
 
+  const bridgeCount = bridges.length;
+
   return (
     <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
-      <button className="sidebar-toggle" onClick={onToggle} title={isOpen ? 'Skrýt' : 'Zobrazit'}>
+      <button
+        className="sidebar-toggle"
+        onClick={onToggle}
+        title={isOpen ? 'Skrýt (Ctrl+B)' : `Zobrazit seznam (Ctrl+B) • ${bridgeCount} mostů`}
+      >
         {isOpen ? '◀' : '▶'}
       </button>
+
+      {/* Collapsed state indicator */}
+      {!isOpen && bridgeCount > 0 && (
+        <div className="sidebar-collapsed-indicator">
+          <div className="collapsed-icon">🏗️</div>
+          <div className="collapsed-badge">{bridgeCount}</div>
+        </div>
+      )}
 
       {isOpen && (
         <div className="sidebar-content">
