@@ -134,15 +134,20 @@ export function calculatePositionFields(
   let has_rfi = false;
   let rfi_message = '';
 
-  if (position.subtype !== 'beton' && concrete_m3 === 0) {
+  // Check if beton quantity is missing (for both beton and other subtypes)
+  if (concrete_m3 === 0) {
     has_rfi = true;
-    rfi_message = `Не найдена строка beton для части "${position.part_name}" на мосту "${position.bridge_id}". Укажите объём бетона (м³) вручную.`;
+    if (position.subtype === 'beton') {
+      rfi_message = `⚠️ Chybí objem betonu! Zadejte "Objem betonu celkem" v PartHeader výše.`;
+    } else {
+      rfi_message = `Není najdena řádka beton pro část "${position.part_name}". Zadejte objem betonu (m³) v PartHeader.`;
+    }
   }
 
   if (position.days === 0) {
     has_rfi = true;
     rfi_message += (rfi_message ? ' | ' : '') +
-      'Пусто: den (koef 1). Расчёт выполнен (cost_czk=0), но строка не учтена в KPI.';
+      'Chybí počet dní (den=0). Náklady nejsou zahrnuty do KPI.';
   }
 
   return {
