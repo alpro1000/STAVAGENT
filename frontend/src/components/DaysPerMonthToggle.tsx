@@ -16,7 +16,7 @@ export default function DaysPerMonthToggle() {
 
   return (
     <div className="duration-toggle">
-      <span style={{ fontSize: '16px' }}>📅</span>
+      <span className="toggle-icon">📅</span>
       <button
         className={daysPerMonth === 30 ? 'active' : ''}
         onClick={() => handleToggle(30)}

@@ -173,15 +173,8 @@ export default function PositionsTable() {
       <SnapshotBadge />
 
       {!hasPositions && (
-        <div style={{
-          padding: '16px 20px',
-          background: 'var(--bg-tertiary)',
-          border: '1px solid var(--border-default)',
-          borderRadius: '4px',
-          marginBottom: '16px',
-          textAlign: 'center'
-        }}>
-          <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '14px' }}>
+        <div className="empty-positions-container">
+          <p className="empty-positions-message">
             📝 Žádné pozice. Vytvořte první řádek kliknutím na "➕ Přidat řádek" níže.
           </p>
         </div>

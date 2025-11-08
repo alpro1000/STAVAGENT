@@ -144,7 +144,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   return (
     <header className="header">
       <div className="header-logo">
-        <span style={{ fontSize: '32px' }}>🏗️</span>
+        <span className="header-icon">🏗️</span>
         <h1>Monolit Planner</h1>
       </div>
 
