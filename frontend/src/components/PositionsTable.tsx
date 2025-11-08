@@ -147,7 +147,7 @@ export default function PositionsTable() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={16} style={{
+                        <td colSpan={isLocked ? 17 : 16} style={{
                           textAlign: 'center',
                           padding: '20px',
                           color: 'var(--text-secondary)',

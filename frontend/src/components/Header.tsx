@@ -84,8 +84,23 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
   const handleCreateSuccess = async (bridge_id: string) => {
     setShowCreateForm(false);
-    await refetchBridges();
-    setSelectedBridge(bridge_id);
+
+    try {
+      // Refetch bridges list to update sidebar
+      const result = await refetchBridges();
+
+      // Set selected bridge AFTER refetch completes
+      // This ensures the new bridge appears in the sidebar before being selected
+      if (result.isSuccess || result.data) {
+        setSelectedBridge(bridge_id);
+      } else {
+        setSelectedBridge(bridge_id);
+      }
+    } catch (error) {
+      console.error('Error refetching bridges after creation:', error);
+      // Still set selected bridge even if refetch fails
+      setSelectedBridge(bridge_id);
+    }
   };
 
   const handleCreateSnapshot = async () => {

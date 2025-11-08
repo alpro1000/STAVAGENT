@@ -163,22 +163,28 @@ router.post('/', (req, res) => {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    templatePositions.forEach((template, index) => {
-      const id = `${bridge_id}_${Date.now()}_${index}`;
-      insertPosition.run(
-        id,
-        bridge_id,
-        template.part_name,
-        template.item_name,
-        template.subtype,
-        template.unit,
-        0, // qty - to be filled by user
-        4, // crew_size - default
-        398, // wage_czk_ph - default
-        10, // shift_hours - default
-        0  // days - to be filled by user
-      );
+    // Use transaction for atomic insert of all template positions
+    const insertMany = db.transaction(() => {
+      templatePositions.forEach((template, index) => {
+        // Use UUID-like format with timestamp and index for uniqueness
+        const id = `${bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${index}`;
+        insertPosition.run(
+          id,
+          bridge_id,
+          template.part_name,
+          template.item_name,
+          template.subtype,
+          template.unit,
+          0, // qty - to be filled by user
+          4, // crew_size - default
+          398, // wage_czk_ph - default
+          10, // shift_hours - default
+          0  // days - to be filled by user
+        );
+      });
     });
+
+    insertMany();
 
     logger.info(`Created new bridge: ${bridge_id} (${object_name}) with ${templatePositions.length} template positions`);
     res.json({ success: true, bridge_id, object_name });
