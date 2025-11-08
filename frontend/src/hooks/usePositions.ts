@@ -16,15 +16,18 @@ export function usePositions(bridgeId: string | null) {
     queryFn: async () => {
       if (!bridgeId) return null;
 
-      const result = await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
-      setPositions(result.positions);
-      setHeaderKPI(result.header_kpi);
-
-      return result;
+      return await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
     },
     enabled: !!bridgeId,
     refetchOnMount: true
   });
+
+  // Update context AFTER query succeeds, not inside queryFn
+  // This prevents setState race conditions
+  if (query.data) {
+    setPositions(query.data.positions);
+    setHeaderKPI(query.data.header_kpi);
+  }
 
   const updateMutation = useMutation({
     mutationFn: async (updates: Partial<Position>[]) => {

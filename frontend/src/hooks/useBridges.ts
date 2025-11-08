@@ -12,12 +12,16 @@ export function useBridges() {
   const query = useQuery({
     queryKey: ['bridges'],
     queryFn: async () => {
-      const bridges = await bridgesAPI.getAll();
-      setBridges(bridges);
-      return bridges;
+      return await bridgesAPI.getAll();
     },
     refetchOnMount: true
   });
+
+  // Update context AFTER query succeeds, not inside queryFn
+  // This prevents setState race conditions
+  if (query.data) {
+    setBridges(query.data);
+  }
 
   return query;
 }
