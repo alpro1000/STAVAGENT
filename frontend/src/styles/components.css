@@ -803,7 +803,7 @@ button:disabled {
 
 .positions-table th {
   position: sticky;
-  top: 140px;
+  top: 80px;
   background: var(--bg-tertiary);
   color: var(--text-secondary);
   font-weight: 600;
