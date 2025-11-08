@@ -1,42 +1,27 @@
 /**
- * PartHeader - Header for a construction part with editable name and concrete volume
+ * PartHeader - Header for a construction part (name only)
+ * Quantity input moved to PositionRow for beton subtype
  */
 
 import { useState } from 'react';
 
 interface Props {
   itemName?: string;
-  betonQuantity: number;
   onItemNameUpdate: (itemName: string) => void;
-  onBetonQuantityUpdate: (quantity: number) => void;
   isLocked: boolean;
 }
 
 export default function PartHeader({
   itemName,
-  betonQuantity,
   onItemNameUpdate,
-  onBetonQuantityUpdate,
   isLocked
 }: Props) {
   const [editedName, setEditedName] = useState(itemName || '');
-  const [editedBeton, setEditedBeton] = useState(betonQuantity.toString());
 
   const handleNameBlur = () => {
     if (editedName !== itemName) {
       onItemNameUpdate(editedName);
     }
-  };
-
-  const handleBetonBlur = () => {
-    const numValue = parseFloat(editedBeton) || 0;
-    if (numValue !== betonQuantity) {
-      onBetonQuantityUpdate(numValue);
-    }
-  };
-
-  const handleBetonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditedBeton(e.target.value);
   };
 
   return (
@@ -54,30 +39,6 @@ export default function PartHeader({
           placeholder="např. ZÁKLADY ZE ŽELEZOBETONU DO C30/37"
           title="Název části konstrukce: detailní popis prvku"
         />
-      </div>
-
-      {/* Concrete parameters */}
-      <div className="concrete-params">
-        <div className="concrete-param">
-          <label>MJ betonu:</label>
-          <span className="concrete-value">M3</span>
-        </div>
-        <div className="concrete-param">
-          <label>Množství betonu celkem:</label>
-          <input
-            type="number"
-            className="concrete-input"
-            value={editedBeton}
-            onChange={handleBetonChange}
-            onBlur={handleBetonBlur}
-            disabled={isLocked}
-            step="0.01"
-            min="0"
-            placeholder="0.00"
-            title="Zadejte celkový objem betonu v m³ pro tuto část konstrukce"
-          />
-          <span style={{ marginLeft: '4px' }}>m³</span>
-        </div>
       </div>
     </div>
   );

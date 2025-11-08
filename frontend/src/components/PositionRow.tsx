@@ -83,22 +83,20 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       {/* INPUT CELLS - Editable (orange/cyan gradient) */}
 
       {/* Qty */}
-      <td className={`cell-input ${position.subtype === 'beton' ? 'cell-computed' : ''}`}>
+      <td className="cell-input">
         <input
           type="number"
-          step="0.1"
-          className={`input-cell ${position.subtype === 'beton' ? 'readonly-style' : ''}`}
+          step="0.01"
+          className="input-cell"
           value={getValue('qty')}
           onChange={(e) => {
-            // For beton rows, input is read-only, so we prevent changes
-            if (position.subtype === 'beton') return;
             handleFieldChange('qty', parseFloat(e.target.value) || 0);
           }}
           onBlur={handleBlur}
-          disabled={isLocked || position.subtype === 'beton'}
+          disabled={isLocked}
           title={
             position.subtype === 'beton'
-              ? 'Objem betonu - upravte v záhlaví "Název části konstrukce" výše'
+              ? 'Objem betonu v m³ - EDITABLE, používá se pro všechny výpočty'
               : 'Množství v měrných jednotkách'
           }
         />
@@ -172,13 +170,6 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-computed">
         <div className="computed-cell" title="= labor_hours × wage_czk_ph">
           {formatNumber(position.cost_czk, 2)}
-        </div>
-      </td>
-
-      {/* Concrete m³ */}
-      <td className="cell-computed">
-        <div className="computed-cell" title="Objem betonu této části">
-          {formatNumber(position.concrete_m3, 2)}
         </div>
       </td>
 

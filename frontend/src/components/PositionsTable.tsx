@@ -31,49 +31,6 @@ export default function PositionsTable() {
     return groups;
   }, [positions]);
 
-  // Handle concrete volume update from PartHeader
-  const handleBetonQuantityUpdate = (partName: string, newQuantity: number) => {
-    // Find all positions in this part with subtype='beton'
-    const betonPositions = positions.filter(
-      p => p.part_name === partName && p.subtype === 'beton'
-    );
-
-    if (betonPositions.length === 0) {
-      console.warn(
-        `⚠️ No 'beton' position found for part "${partName}". Cannot update concrete volume.`
-      );
-      return;
-    }
-
-    // SAFETY: Only update the FIRST 'beton' position with the new quantity
-    // If multiple 'beton' positions exist (edge case from Excel import),
-    // zero out the rest to prevent data duplication/corruption
-    const updates: typeof positions = [];
-
-    // Update first position
-    updates.push({
-      ...betonPositions[0],
-      qty: newQuantity
-    });
-
-    // Zero out any additional 'beton' positions (prevent data corruption)
-    if (betonPositions.length > 1) {
-      console.warn(
-        `⚠️ Multiple 'beton' positions found for part "${partName}" (${betonPositions.length} positions). ` +
-        `Updating only the first one with qty=${newQuantity}. Setting others to qty=0 to prevent data duplication.`
-      );
-
-      for (let i = 1; i < betonPositions.length; i++) {
-        updates.push({
-          ...betonPositions[i],
-          qty: 0
-        });
-      }
-    }
-
-    updatePositions(updates);
-  };
-
   // Handle item name update from PartHeader
   const handleItemNameUpdate = (partName: string, newItemName: string) => {
     // Update item_name for all positions in this part
@@ -165,14 +122,8 @@ export default function PositionsTable() {
               <>
                 <PartHeader
                   itemName={partPositions[0]?.item_name || ''}
-                  betonQuantity={partPositions
-                    .filter(p => p.subtype === 'beton')
-                    .reduce((sum, p) => sum + (p.qty || 0), 0)}
                   onItemNameUpdate={(newName) =>
                     handleItemNameUpdate(partName, newName)
-                  }
-                  onBetonQuantityUpdate={(newQuantity) =>
-                    handleBetonQuantityUpdate(partName, newQuantity)
                   }
                   isLocked={isLocked}
                 />
@@ -190,8 +141,7 @@ export default function PositionsTable() {
                       <th title="Počet dní - koeficient 1 (EDITABLE)">Den</th>
                       <th title="Celkový počet hodin = lidi × hod/den × den">Hod celkem</th>
                       <th title="Celková cena = hod celkem × Kč/hod">Kč celkem</th>
-                      <th title="Objem betonu této části">Beton m³</th>
-                      <th title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Beton m³">
+                      <th title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Množství (Beton m³)">
                         Kč/m³ ⭐
                       </th>
                       <th title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS JC</th>
@@ -207,7 +157,7 @@ export default function PositionsTable() {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan={isLocked ? 17 : 16} style={{
+                        <td colSpan={isLocked ? 15 : 14} style={{
                           textAlign: 'center',
                           padding: '20px',
                           color: 'var(--text-secondary)',
