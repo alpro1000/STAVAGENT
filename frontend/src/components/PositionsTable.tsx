@@ -31,6 +31,29 @@ export default function PositionsTable() {
     return groups;
   }, [positions]);
 
+  // Handle concrete volume update from PartHeader
+  const handleBetonQuantityUpdate = (partName: string, newQuantity: number) => {
+    // Find the beton position for this part
+    const betonPosition = positions.find(
+      p => p.part_name === partName && p.subtype === 'beton'
+    );
+
+    if (!betonPosition) {
+      console.warn(
+        `⚠️ No 'beton' position found for part "${partName}". Cannot update concrete volume.`
+      );
+      return;
+    }
+
+    // Update the beton position with new quantity
+    const updates = [{
+      ...betonPosition,
+      qty: newQuantity
+    }];
+
+    updatePositions(updates);
+  };
+
   // Handle item name update from PartHeader
   const handleItemNameUpdate = (partName: string, newItemName: string) => {
     // Update item_name for all positions in this part
@@ -122,8 +145,14 @@ export default function PositionsTable() {
               <>
                 <PartHeader
                   itemName={partPositions[0]?.item_name || ''}
+                  betonQuantity={partPositions
+                    .filter(p => p.subtype === 'beton')
+                    .reduce((sum, p) => sum + (p.qty || 0), 0)}
                   onItemNameUpdate={(newName) =>
                     handleItemNameUpdate(partName, newName)
+                  }
+                  onBetonQuantityUpdate={(newQuantity) =>
+                    handleBetonQuantityUpdate(partName, newQuantity)
                   }
                   isLocked={isLocked}
                 />
