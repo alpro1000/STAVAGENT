@@ -735,7 +735,9 @@ POST /api/config
 
 **История изменений:**
 
-- **v4.3** (2025-11-08) - Centralize Concrete Volume Input:
+- **v4.3** (2025-11-08) - **MAJOR UI/UX Improvements** (Two Independent Features):
+
+  ### Part A: Centralize Concrete Volume Input ⭐ CRITICAL REFACTOR
   - 🎯 **Single point of entry for concrete volume**: moved from table (beton row) to PartHeader
   - ✨ **PartHeader now has editable concrete volume field** "Množství betonu celkem:"
   - 🔄 **Synchronization logic**: updatePositions() syncs PartHeader value to beton row qty
@@ -745,6 +747,17 @@ POST /api/config
   - ✅ **Architecture ready for Excel import**: one concrete field = one Excel column = auto-sync
   - 📊 **Data flow simplified**: PartHeader (input) → Table (readonly) → Calculations
   - **Files changed**: PartHeader.tsx, PositionsTable.tsx, PositionRow.tsx, components.css
+
+  ### Part B: Collapsible Sidebar with Smart Features
+  - ✨ **localStorage persistence**: Sidebar state remembered between sessions
+  - ⌨️ **Keyboard shortcut**: `Ctrl+B` (Windows/Linux) / `Cmd+B` (Mac) to toggle
+  - 📱 **Smart defaults**: Auto-collapsed on screens < 1280px
+  - 🏗️ **Collapsed state indicator**: Icon + badge showing bridge count
+  - 💡 **Improved tooltips**: Show keyboard hints and bridge count
+  - 📏 **Table expansion**: Gains +180-200px width when sidebar collapsed (less horizontal scrolling)
+  - 🎨 **Smooth transitions**: Already implemented in previous versions
+  - 🎯 **UX improvement**: Users control their workspace layout (modern pattern from VS Code, Gmail, Notion)
+  - **Files changed**: App.tsx, Sidebar.tsx, components.css
 
 - **v4.2.1** (2025-11-08) - Fix Critical Hangs on Bridge Creation:
   - 🐛 **Fixed infinite refetch loop in useBridges hook**: setState removed from queryFn
