@@ -591,9 +591,23 @@ POST /api/config
 
 ## 🔐 ВЕРСИОНИРОВАНИЕ
 
-**Текущая версия:** v4.2 (2025-11-08)
+**Текущая версия:** v4.3 (2025-11-08)
 
 **История изменений:**
+
+- **v4.3** (2025-11-08) - Collapsible Sidebar with Smart Features:
+  - ✨ **localStorage persistence**: Sidebar state remembered between sessions
+  - ⌨️ **Keyboard shortcut**: `Ctrl+B` (Windows/Linux) / `Cmd+B` (Mac) to toggle
+  - 📱 **Smart defaults**: Auto-collapsed on screens < 1280px
+  - 🏗️ **Collapsed state indicator**: Icon + badge showing bridge count
+  - 💡 **Improved tooltips**: Show keyboard hints and bridge count
+  - 📏 **Table expansion**: Gains +180-200px width when sidebar collapsed (less horizontal scrolling)
+  - 🎨 **Smooth transitions**: Already implemented in previous versions
+  - 🎯 **UX improvement**: Users control their workspace layout (modern pattern from VS Code, Gmail, Notion)
+  - 📂 **Files modified**:
+    - `App.tsx`: localStorage, keyboard shortcuts, smart defaults
+    - `Sidebar.tsx`: collapsed indicator with badge
+    - `components.css`: collapsed-indicator styles
 
 - **v4.2** (2025-11-08) - Hierarchical Table Structure (CRITICAL FIX):
   - 🏗️ **MAJOR REFACTOR**: Fixed "Název položky" duplication problem
