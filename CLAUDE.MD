@@ -111,9 +111,10 @@ project_unit_cost_czk_per_t = project_unit_cost_czk_per_m3 / 2.4  // ρ=2.4 t/m�
   // Входные данные (ОРАНЖЕВЫЕ поля — редактируемые):
   bridge_id: string          // SO201, SO202...
   part_name: string          // ZÁKLADY, ŘÍMSY, OPĚRY...
+  item_name: string          // Название элемента (v4.3: заполняется из PartHeader)
   subtype: Subtype          // beton | bednění | výztuž | ...
   unit: string              // M3, m2, kg, ks...
-  qty: number               // Количество в нативной ЕИ
+  qty: number               // ⭐ v4.3: Количество (ТОЛЬКО для beton редактируется в PartHeader, для остальных — из других источников)
   qty_m3_helper?: number    // Справочно (для анализа скорости)
 
   crew_size: number         // Людей в бригаде (default: 4)
@@ -169,6 +170,145 @@ project_unit_cost_czk_per_t = project_unit_cost_czk_per_m3 / 2.4  // ρ=2.4 t/m�
 
   // Константы:
   rho_t_per_m3: number  // = 2.4
+}
+```
+
+---
+
+## 🔄 ПОТОК ДАННЫХ БЕТОНА (v4.3 - Centralize Concrete Volume)
+
+### Архитектура (БЫЛО vs СТАЛО)
+
+**БЫЛО (v4.2 и раньше):**
+```
+Пользователь вводит в таблице:
+  - Строка 'beton', колонка "MNOŽSTVÍ" = qty = 43.8
+         ↓
+PartHeader вычисляет (readonly):
+  - Сумма всех beton qty = "Množství betonu celkem: 43.8"
+         ↓
+Другие строки (bednění, výztuž):
+  - concrete_m3 = findConcreteVolumeForPart() = 43.8
+
+ПРОБЛЕМЫ: Путаница где вводить, два места для информации о бетоне
+```
+
+**СТАЛО (v4.3):**
+```
+PartHeader (единственная точка ввода):
+  - Редактируемое поле: "Množství betonu celkem: [INPUT 43.8]" 🟠
+         ↓
+handleBetonQuantityUpdate() → updatePositions()
+         ↓
+Строка 'beton' в таблице:
+  - qty = 43.8 (READONLY, серое, синхронизированное) 🔒
+         ↓
+Остальные строки (bednění, výztuž):
+  - concrete_m3 = 43.8 (автоматически из beton)
+         ↓
+Все расчёты используют одно значение!
+```
+
+### Компоненты и функции (v4.3)
+
+#### PartHeader.tsx
+```typescript
+// НОВОЕ: два колбэка вместо одного
+interface Props {
+  betonQuantity: number;
+  onItemNameUpdate: (itemName: string) => void;        // ← NEW
+  onBetonQuantityUpdate: (quantity: number) => void;   // ← NEW
+}
+
+// Пользователь редактирует поле
+<input
+  type="number"
+  className="concrete-input"  // 🟠 Оранжевое, редактируемое
+  value={editedBeton}
+  onBlur={handleBetonBlur}    // Отправляет обновление
+/>
+```
+
+#### PositionsTable.tsx
+```typescript
+// НОВОЕ: синхронизация бетона
+handleBetonQuantityUpdate = (partName: string, newQuantity: number) => {
+  // 1. Находим все строки этой части с subtype='beton'
+  const betonPositions = positions.filter(
+    p => p.part_name === partName && p.subtype === 'beton'
+  );
+
+  // 2. Обновляем их qty на новое значение
+  const updates = betonPositions.map(pos => ({
+    ...pos,
+    qty: newQuantity  // ← Единственное место, где меняется qty!
+  }));
+
+  // 3. Отправляем на backend через React Query
+  updatePositions(updates);
+};
+```
+
+#### PositionRow.tsx
+```typescript
+// НОВОЕ: read-only для beton
+<input
+  type="number"
+  disabled={isLocked || position.subtype === 'beton'}  // ← Блокировано!
+  className="readonly-style"                             // 🔒 Серое
+  title="Objem betonu - upravte v záhlaví výše"        // Подсказка
+/>
+```
+
+### Примеры использования
+
+#### Сценарий 1: Пользователь вводит объём бетона
+```
+1. Открывает часть конструкции: "ZÁKLADY"
+2. Видит PartHeader с полем "Množství betonu celkem: [0.00]"
+3. Вводит: 43.8
+4. Нажимает Tab или кликает вне поля (onBlur)
+5. handleBetonBlur() → onBetonQuantityUpdate(43.8) → handleBetonQuantityUpdate()
+6. updatePositions([{id: ..., qty: 43.8}]) → backend
+7. Backend пересчитывает: concrete_m3 = 43.8, unit_cost_on_m3 = ... (для всей части)
+8. React Query инвалидирует кэш
+9. usePositions() перезагружает данные
+10. Таблица ре-рендерится:
+    - Строка 'beton': qty = 43.8 (серый, readonly)
+    - Строка 'bednění': concrete_m3 = 43.8 (вычислено)
+    - KPI: sum_concrete_m3 обновляется
+```
+
+#### Сценарий 2: Excel импорт (будущее)
+```
+Excel содержит: "ČÁST KONSTRUKCE" + "OBJEM BETONU"
+           ↓
+Parser читает и создаёт positions
+           ↓
+PartHeader загружается с бетоном из Excel
+           ↓
+Всё остальное синхронизируется автоматически!
+```
+
+### CSS стили (v4.3)
+
+```css
+/* Редактируемое поле бетона в PartHeader */
+.concrete-input {
+  background: var(--input-bg);      /* 🟠 #FFA726 оранжевый */
+  border: 2px solid #FF9800;        /* Оранжевый бордер */
+  padding: 6px 8px;
+  width: 100px;                     /* Компактный размер */
+  text-align: right;                /* Выравнивание чисел */
+  font-family: monospace;           /* Моно-шрифт для чисел */
+}
+
+/* Read-only поле в таблице для beton */
+.input-cell.readonly-style input {
+  background: var(--bg-tertiary);   /* 🔒 #E8E8E8 серый */
+  border-color: var(--border-light);
+  color: var(--text-secondary);
+  cursor: not-allowed;              /* Запретный курсор */
 }
 ```
 
@@ -591,9 +731,30 @@ POST /api/config
 
 ## 🔐 ВЕРСИОНИРОВАНИЕ
 
-**Текущая версия:** v4.2 (2025-11-08)
+**Текущая версия:** v4.3 (2025-11-08)
 
 **История изменений:**
+
+- **v4.3** (2025-11-08) - Centralize Concrete Volume Input:
+  - 🎯 **Single point of entry for concrete volume**: moved from table (beton row) to PartHeader
+  - ✨ **PartHeader now has editable concrete volume field** "Množství betonu celkem:"
+  - 🔄 **Synchronization logic**: updatePositions() syncs PartHeader value to beton row qty
+  - 🔒 **Beton row qty is read-only in table**: shows as gray/disabled field
+  - 📝 **Helpful tooltip for users**: "Editujte v záhlaví výše" (Edit in header above)
+  - 🎨 **New CSS styles**: `.readonly-style` for disabled inputs, `.concrete-input` for PartHeader
+  - ✅ **Architecture ready for Excel import**: one concrete field = one Excel column = auto-sync
+  - 📊 **Data flow simplified**: PartHeader (input) → Table (readonly) → Calculations
+  - **Files changed**: PartHeader.tsx, PositionsTable.tsx, PositionRow.tsx, components.css
+
+- **v4.2.1** (2025-11-08) - Fix Critical Hangs on Bridge Creation:
+  - 🐛 **Fixed infinite refetch loop in useBridges hook**: setState removed from queryFn
+  - 🐛 **Fixed race condition in usePositions hook**: setState moved outside queryFn
+  - ✅ **Fixed colSpan mismatch**: dynamic colSpan based on isLocked state (16 or 17)
+  - ✅ **Improved template position insertion**: transaction wrapper + unique ID generation
+  - ✅ **Better error handling in bridge creation**: try-catch in handleCreateSuccess
+  - **Root cause**: setState inside React Query queryFn with refetchOnMount creates update loop
+  - **Solution**: setState AFTER query completes, not inside queryFn
+  - **Impact**: Bridge creation no longer hangs, positions load immediately
 
 - **v4.2** (2025-11-08) - Hierarchical Table Structure:
   - 🏗️ **Fixed critical "Název položky" duplication** in table headers
