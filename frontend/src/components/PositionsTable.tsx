@@ -38,13 +38,38 @@ export default function PositionsTable() {
       p => p.part_name === partName && p.subtype === 'beton'
     );
 
-    if (betonPositions.length === 0) return;
+    if (betonPositions.length === 0) {
+      console.warn(
+        `⚠️ No 'beton' position found for part "${partName}". Cannot update concrete volume.`
+      );
+      return;
+    }
 
-    // Update all 'beton' positions to have qty = newQuantity
-    const updates = betonPositions.map(pos => ({
-      ...pos,
+    // SAFETY: Only update the FIRST 'beton' position with the new quantity
+    // If multiple 'beton' positions exist (edge case from Excel import),
+    // zero out the rest to prevent data duplication/corruption
+    const updates: typeof positions = [];
+
+    // Update first position
+    updates.push({
+      ...betonPositions[0],
       qty: newQuantity
-    }));
+    });
+
+    // Zero out any additional 'beton' positions (prevent data corruption)
+    if (betonPositions.length > 1) {
+      console.warn(
+        `⚠️ Multiple 'beton' positions found for part "${partName}" (${betonPositions.length} positions). ` +
+        `Updating only the first one with qty=${newQuantity}. Setting others to qty=0 to prevent data duplication.`
+      );
+
+      for (let i = 1; i < betonPositions.length; i++) {
+        updates.push({
+          ...betonPositions[i],
+          qty: 0
+        });
+      }
+    }
 
     updatePositions(updates);
   };
