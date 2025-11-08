@@ -1033,8 +1033,8 @@ button:disabled {
 .kpi-float-card {
   position: sticky;
   top: 0;
-  margin: 16px 20px;
-  padding: 14px 16px;
+  margin: 8px 16px;
+  padding: 8px 12px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-default);
   border-radius: 4px;
@@ -1046,20 +1046,20 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
   border-bottom: 1px solid var(--border-light);
 }
 
 .kpi-bridge-title {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
   margin: 0;
 }
 
 .kpi-metadata {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--text-secondary);
   font-family: var(--font-mono);
 }
@@ -1067,12 +1067,12 @@ button:disabled {
 .kpi-grid-modern {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 6px;
+  margin-bottom: 6px;
 }
 
 .kpi-card {
-  padding: 14px 12px;
+  padding: 8px 6px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-default);
   border-radius: 6px;
@@ -1081,7 +1081,7 @@ button:disabled {
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  gap: 8px;
+  gap: 4px;
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
@@ -1144,40 +1144,41 @@ button:disabled {
 }
 
 .kpi-card-label {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.2px;
   margin: 0;
-  opacity: 0.95;
+  opacity: 0.9;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
 }
 
 .kpi-card-value {
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 700;
   font-family: var(--font-mono);
-  line-height: 1.3;
+  line-height: 1.2;
   margin: 0;
 }
 
 .kpi-card-unit {
-  font-size: 11px;
+  font-size: 9px;
   font-weight: 500;
-  margin-left: 2px;
-  opacity: 0.85;
+  margin-left: 1px;
+  opacity: 0.8;
 }
 
 .kpi-formula {
-  padding: 12px;
+  padding: 6px 8px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-light);
   border-radius: 4px;
-  font-size: 12px;
+  font-size: 10px;
   color: var(--text-secondary);
   font-family: var(--font-mono);
-  margin-top: 12px;
+  margin-top: 6px;
+  line-height: 1.3;
 }
 
 .formula-label {
