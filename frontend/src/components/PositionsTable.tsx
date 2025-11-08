@@ -213,7 +213,8 @@ export default function PositionsTable() {
                   isLocked={isLocked}
                 />
 
-                <table className="positions-table">
+                <div className="table-wrapper">
+                  <table className="positions-table">
                   <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
@@ -254,6 +255,7 @@ export default function PositionsTable() {
                     )}
                   </tbody>
                 </table>
+                </div>
 
                 <div style={{
                   padding: '16px',
