@@ -87,12 +87,13 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         <input
           type="number"
           step="0.01"
+          min="0"
           className={`input-cell ${position.subtype === 'beton' ? 'readonly-style' : ''}`}
           value={getValue('qty')}
           onChange={(e) => {
             // For beton rows, prevent manual edits (sync from PartHeader only)
             if (position.subtype === 'beton') return;
-            handleFieldChange('qty', parseFloat(e.target.value) || 0);
+            handleFieldChange('qty', Math.max(0, parseFloat(e.target.value) || 0));
           }}
           onBlur={handleBlur}
           disabled={isLocked || position.subtype === 'beton'}
@@ -108,9 +109,10 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-input">
         <input
           type="number"
+          min="0"
           className="input-cell"
           value={getValue('crew_size')}
-          onChange={(e) => handleFieldChange('crew_size', parseInt(e.target.value) || 0)}
+          onChange={(e) => handleFieldChange('crew_size', Math.max(0, parseInt(e.target.value) || 0))}
           onBlur={handleBlur}
           disabled={isLocked}
           title="Počet lidí v partě"
@@ -122,9 +124,10 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         <input
           type="number"
           step="1"
+          min="0"
           className="input-cell"
           value={getValue('wage_czk_ph')}
-          onChange={(e) => handleFieldChange('wage_czk_ph', parseFloat(e.target.value) || 0)}
+          onChange={(e) => handleFieldChange('wage_czk_ph', Math.max(0, parseFloat(e.target.value) || 0))}
           onBlur={handleBlur}
           disabled={isLocked}
           title="Hodinová sazba v CZK"
@@ -136,9 +139,10 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         <input
           type="number"
           step="0.5"
+          min="0"
           className="input-cell"
           value={getValue('shift_hours')}
-          onChange={(e) => handleFieldChange('shift_hours', parseFloat(e.target.value) || 0)}
+          onChange={(e) => handleFieldChange('shift_hours', Math.max(0, parseFloat(e.target.value) || 0))}
           onBlur={handleBlur}
           disabled={isLocked}
           title="Hodin za směnu"
@@ -150,9 +154,10 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         <input
           type="number"
           step="0.5"
+          min="0"
           className="input-cell"
           value={getValue('days')}
-          onChange={(e) => handleFieldChange('days', parseFloat(e.target.value) || 0)}
+          onChange={(e) => handleFieldChange('days', Math.max(0, parseFloat(e.target.value) || 0))}
           onBlur={handleBlur}
           disabled={isLocked}
           title="Počet dní (koeficient 1)"

@@ -60,6 +60,7 @@ export default function PartHeader({
           disabled={isLocked}
           placeholder="např. ZÁKLADY ZE ŽELEZOBETONU DO C30/37"
           title="Název části konstrukce: detailní popis prvku"
+          minLength={0}
         />
       </div>
 

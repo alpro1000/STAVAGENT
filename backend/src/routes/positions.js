@@ -170,22 +170,42 @@ router.put('/', (req, res) => {
       });
     }
 
-    const updateStmt = db.prepare(`
-      UPDATE positions
-      SET ${Object.keys(updates[0]).filter(k => k !== 'id').map(k => `${k} = ?`).join(', ')},
-          updated_at = CURRENT_TIMESTAMP
-      WHERE id = ? AND bridge_id = ?
-    `);
+    logger.info(`📝 PUT /api/positions: bridge_id=${bridge_id}, ${updates.length} updates`);
+    logger.info(`Updates: ${JSON.stringify(updates.slice(0, 1))}`);
 
-    const updateMany = db.transaction((updates) => {
+    const updateMany = db.transaction((updates, bridgeId) => {
       for (const update of updates) {
         const { id, ...fields } = update;
-        const values = Object.values(fields);
-        updateStmt.run(...values, id, bridge_id);
+
+        if (!id) {
+          throw new Error('Each update must have an id field');
+        }
+
+        // Build SQL dynamically for each update
+        const fieldNames = Object.keys(fields);
+        const fieldPlaceholders = fieldNames.map(f => `${f} = ?`).join(', ');
+
+        const sql = `
+          UPDATE positions
+          SET ${fieldPlaceholders},
+              updated_at = CURRENT_TIMESTAMP
+          WHERE id = ? AND bridge_id = ?
+        `;
+
+        const values = [...Object.values(fields), id, bridgeId];
+
+        logger.info(`  Updating position id=${id}: ${fieldNames.join(', ')}`);
+
+        const stmt = db.prepare(sql);
+        const result = stmt.run(...values);
+
+        if (result.changes === 0) {
+          logger.warn(`  ⚠️ No rows updated for id=${id}`);
+        }
       }
     });
 
-    updateMany(updates);
+    updateMany(updates, bridge_id);
 
     // Return updated positions
     const positions = db.prepare(`

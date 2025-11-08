@@ -32,12 +32,22 @@ export function usePositions(bridgeId: string | null) {
   const updateMutation = useMutation({
     mutationFn: async (updates: Partial<Position>[]) => {
       if (!bridgeId) throw new Error('No bridge selected');
-      return await positionsAPI.update(bridgeId, updates);
+      console.log(`🔄 updateMutation: sending ${updates.length} updates to backend`);
+      console.log(`   Updates: ${JSON.stringify(updates)}`);
+      const result = await positionsAPI.update(bridgeId, updates);
+      console.log(`✅ updateMutation: response received`, result);
+      return result;
     },
     onSuccess: (data) => {
+      console.log(`✅ updateMutation.onSuccess: updating context with ${data.positions.length} positions`);
+      console.log(`   Header KPI:`, data.header_kpi);
       setPositions(data.positions);
       setHeaderKPI(data.header_kpi);
       queryClient.invalidateQueries({ queryKey: ['positions', bridgeId] });
+      console.log(`✅ updateMutation.onSuccess: invalidated query cache`);
+    },
+    onError: (error) => {
+      console.error(`❌ updateMutation.onError:`, error);
     }
   });
 
