@@ -772,20 +772,7 @@ POST /api/config
 
 **История изменений:**
 
-- **v4.3** (2025-11-08) - **MAJOR UI/UX Improvements** (Two Independent Features):
-
-  ### Part A: Centralize Concrete Volume Input ⭐ CRITICAL REFACTOR
-  - 🎯 **Single point of entry for concrete volume**: moved from table (beton row) to PartHeader
-  - ✨ **PartHeader now has editable concrete volume field** "Množství betonu celkem:"
-  - 🔄 **Synchronization logic**: updatePositions() syncs PartHeader value to beton row qty
-  - 🔒 **Beton row qty is read-only in table**: shows as gray/disabled field
-  - 📝 **Helpful tooltip for users**: "Editujte v záhlaví výše" (Edit in header above)
-  - 🎨 **New CSS styles**: `.readonly-style` for disabled inputs, `.concrete-input` for PartHeader
-  - ✅ **Architecture ready for Excel import**: one concrete field = one Excel column = auto-sync
-  - 📊 **Data flow simplified**: PartHeader (input) → Table (readonly) → Calculations
-  - **Files changed**: PartHeader.tsx, PositionsTable.tsx, PositionRow.tsx, components.css
-
-  ### Part B: Collapsible Sidebar with Smart Features
+- **v4.3** (2025-11-08) - Collapsible Sidebar with Smart Features:
   - ✨ **localStorage persistence**: Sidebar state remembered between sessions
   - ⌨️ **Keyboard shortcut**: `Ctrl+B` (Windows/Linux) / `Cmd+B` (Mac) to toggle
   - 📱 **Smart defaults**: Auto-collapsed on screens < 1280px
@@ -794,25 +781,32 @@ POST /api/config
   - 📏 **Table expansion**: Gains +180-200px width when sidebar collapsed (less horizontal scrolling)
   - 🎨 **Smooth transitions**: Already implemented in previous versions
   - 🎯 **UX improvement**: Users control their workspace layout (modern pattern from VS Code, Gmail, Notion)
-  - **Files changed**: App.tsx, Sidebar.tsx, components.css
+  - 📂 **Files modified**:
+    - `App.tsx`: localStorage, keyboard shortcuts, smart defaults
+    - `Sidebar.tsx`: collapsed indicator with badge
+    - `components.css`: collapsed-indicator styles
 
-- **v4.2.1** (2025-11-08) - Fix Critical Hangs on Bridge Creation:
-  - 🐛 **Fixed infinite refetch loop in useBridges hook**: setState removed from queryFn
-  - 🐛 **Fixed race condition in usePositions hook**: setState moved outside queryFn
-  - ✅ **Fixed colSpan mismatch**: dynamic colSpan based on isLocked state (16 or 17)
-  - ✅ **Improved template position insertion**: transaction wrapper + unique ID generation
-  - ✅ **Better error handling in bridge creation**: try-catch in handleCreateSuccess
-  - **Root cause**: setState inside React Query queryFn with refetchOnMount creates update loop
-  - **Solution**: setState AFTER query completes, not inside queryFn
-  - **Impact**: Bridge creation no longer hangs, positions load immediately
-
-- **v4.2** (2025-11-08) - Hierarchical Table Structure:
-  - 🏗️ **Fixed critical "Název položky" duplication** in table headers
-  - ✨ **Created PartHeader component**: item name displayed once per construction part
-  - 🗑️ **Removed "Název položky" column** from main table (17 → 16 columns)
-  - 📊 **Clean hierarchical structure**: Header → Concrete Params → Table (subtypes)
-  - 🎯 **Improved UX**: cleaner, less cluttered table layout
-  - ✅ **Fully documented** with visual diagrams in CLAUDE.MD
+- **v4.2** (2025-11-08) - Hierarchical Table Structure (CRITICAL FIX):
+  - 🏗️ **MAJOR REFACTOR**: Fixed "Název položky" duplication problem
+  - ✨ **Created PartHeader component**: Shows construction part name ONCE instead of in every row
+  - 🗑️ **Removed "Název položky" column from table**: Eliminated redundant name inputs
+  - 📊 **New hierarchical structure**:
+    ```
+    ╔══════════════════════════════════════╗
+    ║ NÁZEV: [Editable Input - one time]  ║ ← PartHeader
+    ║ MJ: M3 | Množství: 43.8 m³          ║
+    ╠══════════════════════════════════════╣
+    ║ Podtyp │ MJ │ Množství │ ...        ║
+    ║────────┼────┼──────────┼───         ║
+    ║ beton  │ M3 │  43.8    │ ...        ║ ← PositionRow
+    ║ bednění│ m2 │  63.6    │ ...        ║
+    ╚══════════════════════════════════════╝
+    ```
+  - 🎨 **PartHeader styles**: Orange editable input (#FFA726), concrete-params display
+  - 📁 **New component**: `frontend/src/components/PartHeader.tsx` (59 lines)
+  - 🔢 **Updated colSpan**: 17 → 16 columns after removing name column
+  - 🗄️ **Database**: item_name field now stored at position level, displayed once per part
+  - ✅ **Result**: Cleaner UX - users fill name once, not for every subtype (beton/bednění/výztuž)
 
 - **v4.1** (2025-11-07) - KPI Optimization & Template Update:
   - 🎨 **Optimized KPI Panel layout** (4 columns × 2 rows instead of dynamic grid)
