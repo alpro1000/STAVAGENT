@@ -169,14 +169,14 @@ export default function PositionRow({ position, isLocked = false }: Props) {
 
       {/* Labor hours */}
       <td className="cell-computed">
-        <div className="computed-cell" title="= crew_size × shift_hours × days">
+        <div className="computed-cell" title={`${formatNumber(position.labor_hours, 1)} hod (= crew_size × shift_hours × days)`}>
           {formatNumber(position.labor_hours, 1)}
         </div>
       </td>
 
       {/* Cost CZK */}
       <td className="cell-computed">
-        <div className="computed-cell" title="= labor_hours × wage_czk_ph">
+        <div className="computed-cell" title={`${formatNumber(position.cost_czk, 2)} CZK (= labor_hours × wage_czk_ph)`}>
           {formatNumber(position.cost_czk, 2)}
         </div>
       </td>
@@ -187,7 +187,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-kros-key">
         <div
           className={`kros-cell kros-key ${position.has_rfi ? 'warning' : ''}`}
-          title="⭐ KLÍČOVÁ METRIKA: Kč/m³ betonu (= cost_czk / concrete_m3)"
+          title={`${formatNumber(position.unit_cost_on_m3, 2)} CZK/m³ ⭐ (= ${formatNumber(position.cost_czk, 2)} / ${position.concrete_m3})`}
         >
           {formatNumber(position.unit_cost_on_m3, 2)}
         </div>
@@ -197,7 +197,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-kros">
         <div
           className="kros-cell"
-          title="KROS jednotková cena (= ceil(unit_cost_on_m3 / 50) × 50)"
+          title={`${formatNumber(position.kros_unit_czk, 0)} CZK (= ceil(${formatNumber(position.unit_cost_on_m3, 2)} / 50) × 50)`}
         >
           {formatNumber(position.kros_unit_czk, 0)}
         </div>
@@ -207,7 +207,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-kros">
         <div
           className="kros-cell"
-          title="KROS celkem (= kros_unit_czk × concrete_m3)"
+          title={`${formatNumber(position.kros_total_czk, 2)} CZK (= ${formatNumber(position.kros_unit_czk, 0)} × ${position.concrete_m3})`}
         >
           {formatNumber(position.kros_total_czk, 2)}
         </div>
