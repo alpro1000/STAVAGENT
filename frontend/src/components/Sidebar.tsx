@@ -125,13 +125,13 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
               <span>🔍</span> Filtry
             </h3>
 
-            <label className="sidebar-checkbox">
+            <label className="sidebar-checkbox" title="Zobrazit pouze řádky s problémy (varovná oznámení)">
               <input
                 type="checkbox"
                 checked={showOnlyRFI}
                 onChange={(e) => setShowOnlyRFI(e.target.checked)}
               />
-              <span className="checkbox-label">Pouze s RFI</span>
+              <span className="checkbox-label">⚠️ Jen problémy</span>
             </label>
           </div>
 
