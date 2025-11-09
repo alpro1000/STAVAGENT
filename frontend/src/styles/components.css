@@ -796,7 +796,36 @@ button:disabled {
   color: var(--text-primary);
 }
 
-/* Table Container for Body (scrollable) - bottom border and scrollbar styling */
+/* Unified Table Wrapper - Ensures header and body have synchronized widths */
+.table-wrapper-unified {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Header Table - Top part of unified wrapper, sticky and full width */
+.table-wrapper-unified .positions-table-header {
+  border: none;
+  border-radius: 0;
+  border-bottom: none;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+/* Table Container for Body (scrollable) - bottom part of unified wrapper */
+.table-wrapper-unified .table-container {
+  border: none;
+  border-radius: 0;
+  border-top: 1px solid var(--border-light);
+  flex: 1;
+  min-height: 0;
+  scrollbar-gutter: stable;
+}
+
+/* Legacy .table-container (standalone) styling */
 .table-container {
   width: 100%;
   border: 1px solid var(--border-light);
@@ -828,26 +857,32 @@ button:disabled {
   background: var(--text-secondary);
 }
 
-/* Header table styling - top border and rounded */
-.positions-table-header {
-  border: 1px solid var(--border-light);
-  border-radius: 6px 6px 0 0;
-}
-
 /* SINGLE Positions Table */
 .positions-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 13px;
   background: var(--bg-secondary);
+  table-layout: fixed;
+  margin: 0;
 }
 
-/* Sticky Header - positioned below KPI panel */
-.positions-table thead {
+/* POSITIONS-TABLE-HEADER: Sticky header table in unified wrapper */
+.positions-table-header {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  margin: 0;
+  border: none;
+  border-bottom: none;
+}
+
+.positions-table-header thead {
   position: sticky;
-  top: 195px;
+  top: 0;
   z-index: 150;
   display: table-header-group;
+  background: var(--bg-secondary);
 }
 
 /* POSITIONS-TABLE-BODY: Body table (inside overflow) - no thead, only tbody */
@@ -855,6 +890,7 @@ button:disabled {
   display: table;
   table-layout: fixed;
   width: 100%;
+  margin: 0;
 }
 
 .positions-table-body thead {
