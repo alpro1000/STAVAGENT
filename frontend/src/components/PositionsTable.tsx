@@ -206,30 +206,44 @@ export default function PositionsTable() {
                   isLocked={isLocked}
                 />
 
-                {/* Table header - OUTSIDE overflow container so sticky works */}
-                <table className="positions-table positions-table-header">
-                  <thead>
-                    <tr>
-                      {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
-                      <th title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
-                      <th title="Měrná jednotka: m³, m², kg">MJ</th>
-                      <th title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
-                      <th title="Počet lidí v partě (EDITABLE)">Lidi</th>
-                      <th title="Hodinová sazba v CZK (EDITABLE)">Kč/hod</th>
-                      <th title="Hodin za směnu (EDITABLE)">Hod/den</th>
-                      <th title="Počet dní - koeficient 1 (EDITABLE)">Den</th>
-                      <th title="Celkový počet hodin = lidi × hod/den × den">Hod celkem</th>
-                      <th title="Celková cena = hod celkem × Kč/hod">Kč celkem</th>
-                      <th title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Množství (Beton m³)">
-                        Kč/m³ ⭐
-                      </th>
-                      <th title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS JC</th>
-                      <th title="KROS celkem = KROS JC × Beton m³">KROS celkem</th>
-                      <th title="Request For Information - problémové položky">RFI</th>
-                      <th title="Akce: Smazat / Info">Akce</th>
-                    </tr>
-                  </thead>
-                </table>
+                {/* Table header wrapper - synced with body scroll */}
+                <div
+                  className="table-header-wrapper"
+                  ref={(el) => {
+                    if (el) {
+                      const bodyWrapper = el.parentElement?.querySelector('.table-wrapper');
+                      if (bodyWrapper) {
+                        bodyWrapper.addEventListener('scroll', () => {
+                          el.scrollLeft = bodyWrapper.scrollLeft;
+                        });
+                      }
+                    }
+                  }}
+                >
+                  <table className="positions-table positions-table-header">
+                    <thead>
+                      <tr>
+                        {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
+                        <th title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
+                        <th title="Měrná jednotka: m³, m², kg">MJ</th>
+                        <th title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
+                        <th title="Počet lidí v partě (EDITABLE)">Lidi</th>
+                        <th title="Hodinová sazba v CZK (EDITABLE)">Kč/hod</th>
+                        <th title="Hodin za směnu (EDITABLE)">Hod/den</th>
+                        <th title="Počet dní - koeficient 1 (EDITABLE)">Den</th>
+                        <th className="hod-celkem-col" title="Celkový počet hodin = lidi × hod/den × den">Hod celkem</th>
+                        <th title="Celková cena = hod celkem × Kč/hod">Kč celkem</th>
+                        <th title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Množství (Beton m³)">
+                          Kč/m³ ⭐
+                        </th>
+                        <th title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS JC</th>
+                        <th title="KROS celkem = KROS JC × Beton m³">KROS celkem</th>
+                        <th title="Request For Information - problémové položky">RFI</th>
+                        <th title="Akce: Smazat / Info">Akce</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
 
                 {/* Table body - INSIDE overflow container for horizontal scrolling */}
                 <div className="table-wrapper">
@@ -244,7 +258,7 @@ export default function PositionsTable() {
                         <th>Kč/hod</th>
                         <th>Hod/den</th>
                         <th>Den</th>
-                        <th>Hod celkem</th>
+                        <th className="hod-celkem-col">Hod celkem</th>
                         <th>Kč celkem</th>
                         <th>Kč/m³ ⭐</th>
                         <th>KROS JC</th>
