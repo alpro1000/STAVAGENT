@@ -180,6 +180,13 @@
   transform: translateY(0);
 }
 
+/* Compact buttons for header export section */
+.header-controls .btn-success,
+.header-controls .btn-secondary {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -1152,6 +1159,46 @@ button:disabled {
   margin-bottom: 8px;
   padding-bottom: 6px;
   border-bottom: 1px solid var(--border-light);
+  gap: 12px;
+}
+
+.kpi-title-section {
+  flex: 1;
+  min-width: 0;
+}
+
+.btn-lock-kpi {
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--color-warning);
+  background: var(--color-warning);
+  color: var(--bg-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.btn-lock-kpi:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-lock-kpi:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-lock-kpi:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .kpi-bridge-title {

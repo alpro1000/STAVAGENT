@@ -3,9 +3,11 @@
  */
 
 import { useAppContext } from '../context/AppContext';
+import { useCreateSnapshot } from '../hooks/useCreateSnapshot';
 
 export default function KPIPanel() {
   const { headerKPI, selectedBridge, daysPerMonth } = useAppContext();
+  const { handleCreateSnapshot, isCreating } = useCreateSnapshot();
 
   if (!selectedBridge || !headerKPI) {
     return (
@@ -34,6 +36,14 @@ export default function KPIPanel() {
             {headerKPI.pd_weeks && ` | PD: ${headerKPI.pd_weeks} týdnů`}
           </p>
         </div>
+        <button
+          className="btn-lock-kpi"
+          onClick={handleCreateSnapshot}
+          disabled={isCreating}
+          title="Zafixovat aktuální stav (snapshot)"
+        >
+          🔒 {isCreating ? 'Fixuji...' : 'Zafixovat'}
+        </button>
       </div>
 
       <div className="kpi-grid-modern">
