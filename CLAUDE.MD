@@ -1784,6 +1784,20 @@ cd backend && npm run dev
 **Файл**: `frontend/src/styles/components.css` (media query overrides)
 **Build**: ✅ Успешно компилируется (261KB JS, 29KB CSS)
 
+#### 6️⃣ ✅ ГОТОВО: Синхронизировать горизонтальный скролл header и body
+**Проблема**: Header был sticky, но не двигался горизонтально с table body
+- При скроллинге таблицы влево/вправо, header оставался на месте
+- Колонки header не совпадали с колонками body
+**Решение РЕАЛИЗОВАНО (commit `5a9fa83`)**:
+- ✅ Обёрнута header таблица в `.table-header-wrapper` с `overflow-x: auto`
+- ✅ Добавлена JavaScript синхронизация scroll событий
+- ✅ Когда body scrollит, header wrapper синхронизирует свой scrollLeft
+- ✅ Scrollbar header-wrapper скрыт (видна только scrollbar body)
+- ✅ Уменьшена ширина колонки "Hod celkem" до 70px (сохраняет горизонтальное место)
+
+**Файл**: `frontend/src/components/PositionsTable.tsx`, `frontend/src/styles/components.css`
+**Build**: ✅ Успешно компилируется (262KB JS, 30KB CSS)
+
 ### ✅ PRIORITY 1 - ВСЕ ИСПРАВЛЕНИЯ ЗАВЕРШЕНЫ!
 
 **Commit history:**
@@ -1793,8 +1807,9 @@ cd backend && npm run dev
 - `1b52fde` - 📝 Document Priority 1 completion
 - `9599e52` - 🔧 Fix table header sticky positioning (move thead outside overflow)
 - `b6e83ed` - 🔧 Fix table header sticky offset for responsive breakpoints
+- `5a9fa83` - 🔧 Synchronize table header and body horizontal scrolling
 
-**Status:** Все пять критичных исправлений успешно реализованы и протестированы ✅
+**Status:** Все шесть критичных исправлений успешно реализованы и протестированы ✅
 
 ---
 

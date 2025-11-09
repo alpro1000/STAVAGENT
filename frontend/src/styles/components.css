@@ -789,6 +789,20 @@ button:disabled {
   color: var(--text-primary);
 }
 
+/* Table Header Wrapper - synced scroll with body (no visible scrollbar) */
+.table-header-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar on header wrapper (only body scrollbar visible) */
+.table-header-wrapper::-webkit-scrollbar {
+  height: 0;
+  display: none;
+}
+
 /* Table Wrapper for Horizontal Scrolling */
 .table-wrapper {
   width: 100%;
@@ -888,6 +902,20 @@ button:disabled {
   padding: 8px !important;
   font-size: 16px;
   opacity: 0.5;
+}
+
+/* Reduce width of "Hod celkem" (Total Hours) column */
+.hod-celkem-col {
+  width: 70px !important;
+  min-width: 70px !important;
+  padding: 6px 4px !important;
+}
+
+/* Target the 9th column (Hod celkem) in table rows */
+.positions-table tbody tr td:nth-child(9),
+.positions-table thead tr th:nth-child(9) {
+  width: 70px !important;
+  min-width: 70px !important;
 }
 
 /* Table Row States */
