@@ -16,7 +16,7 @@ export function usePositions(bridgeId: string | null) {
     queryFn: async () => {
       if (!bridgeId) return null;
 
-      return await positionsAPI.getForBridge(bridgeId, showOnlyRFI);
+      return await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
     },
     enabled: !!bridgeId,
     staleTime: 30 * 1000, // Cache for 30 seconds
@@ -44,7 +44,7 @@ export function usePositions(bridgeId: string | null) {
       console.log(`   Header KPI:`, data.header_kpi);
       setPositions(data.positions);
       setHeaderKPI(data.header_kpi);
-      queryClient.invalidateQueries({ queryKey: ['positions', bridgeId] });
+      queryClient.invalidateQueries({ queryKey: ['positions', bridgeId, showOnlyRFI] });
       console.log(`✅ updateMutation.onSuccess: invalidated query cache`);
     },
     onError: (error) => {
@@ -57,6 +57,7 @@ export function usePositions(bridgeId: string | null) {
       return await positionsAPI.delete(id);
     },
     onSuccess: () => {
+      // Invalidate all positions queries for this bridge (both RFI filters)
       queryClient.invalidateQueries({ queryKey: ['positions', bridgeId] });
     }
   });
