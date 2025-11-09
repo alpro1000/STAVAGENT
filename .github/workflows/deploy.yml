@@ -362,22 +362,22 @@ jobs:
           execute_response=$(curl -s -w "\n%{http_code}" \
             -X POST \
             -H "Content-Type: application/json" \
-            -d '{"agent_name": "tzd_reader", "input": "test input"}' \
+            -d '{"agent_id": "tzd_reader", "input_data": {"test": "data"}, "options": {}}' \
             http://localhost:${{ env.SERVER_PORT }}/api/agents/execute 2>/dev/null || echo '{"error": "endpoint not found"}\n404')
-          
+
           execute_body=$(echo "$execute_response" | sed '$d')
           execute_status=$(echo "$execute_response" | tail -n1)
-          
+
           echo "Status: $execute_status"
           echo "Response: $execute_body"
-          
+
           execute_success=false
           if [ "$execute_status" = "200" ] || [ "$execute_status" = "201" ]; then
-            if echo "$execute_body" | grep -q '"success":\s*true'; then
+            if echo "$execute_body" | grep -q '"status":\s*"success"'; then
               echo "✅ Agent execution successful"
               execute_success=true
             else
-              echo "⚠️ Agent execution returned but success=false"
+              echo "⚠️ Agent execution returned but status != success"
             fi
           else
             echo "⚠️ Execute endpoint returned status $execute_status"

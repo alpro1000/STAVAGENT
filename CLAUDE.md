@@ -198,20 +198,52 @@ CACHE_TTL: int     # Default cache TTL (default: 300s = 5min)
 pip install -r requirements.txt
 ```
 
+**Key Dependencies (Phase 4 Backend Infrastructure):**
+- **Database:** SQLAlchemy 2.0.36, asyncpg, psycopg2-binary
+- **Migrations:** Alembic 1.13.1
+- **Cache:** redis[hiredis]==5.0.1 (Redis with C parser)
+- **Queue:** Celery + Redis (coming Day 5)
+- **Testing:** pytest, pytest-asyncio
+
+**Full dependency list:** See `requirements.txt`
+
 ### 2. Configure Environment
 
 Create `.env` file:
 
 ```env
+# ==========================================
+# AI API Keys
+# ==========================================
 # Required for Workflow A
 ANTHROPIC_API_KEY=sk-ant-...
 
 # Required for Workflow B
 OPENAI_API_KEY=sk-...
 
-# Optional
+# Optional - for live knowledge base
 PERPLEXITY_API_KEY=pplx-...
+
+# ==========================================
+# Database & Cache (Phase 4)
+# ==========================================
+# PostgreSQL async connection
+DATABASE_URL=postgresql+asyncpg://user:password@localhost/concrete_agent_dev
+
+# Redis for sessions and caching
+REDIS_URL=redis://localhost:6379/0
+
+# Session TTL (default: 3600 = 1 hour)
+SESSION_TTL=3600
+
+# Cache TTL (default: 300 = 5 minutes)
+CACHE_TTL=300
+
+# ==========================================
+# Application Settings
+# ==========================================
 ENVIRONMENT=development
+LOG_LEVEL=INFO
 ```
 
 ### 3. Run Application
@@ -283,16 +315,72 @@ Drawing  Vision   Rebar Qty   KROS     Role    Report
 ```
 app/
 ├── api/                    # Layer 1: API routes
+│   ├── routes.py           # Main API routes
+│   ├── routes_workflow_a.py # Workflow A endpoints
+│   ├── routes_workflow_b.py # Workflow B endpoints
+│   └── routes_agents.py    # Agent management endpoints
 ├── services/               # Layer 2: Business logic
+│   ├── workflow_a.py       # Workflow A service
+│   ├── audit_service.py    # Multi-role audit
+│   └── enricher.py         # Position enrichment
 ├── parsers/                # Layer 3: Document parsing
-├── core/                   # Layer 4: AI clients, config
-├── models/                 # Layer 5: Pydantic models
+│   ├── kros_parser.py      # KROS XML parser
+│   ├── excel_parser.py     # Excel parser
+│   └── pdf_parser.py       # PDF extraction
+├── core/                   # Layer 4: Core infrastructure
+│   ├── claude_client.py    # Claude API client
+│   ├── gpt4_client.py      # GPT-4 API client
+│   ├── perplexity_client.py # Perplexity API client
+│   ├── config.py           # Configuration & settings
+│   ├── redis_client.py     # Redis async client (Phase 4) ✅
+│   ├── session.py          # Session management (Phase 4) ✅
+│   └── cache.py            # Caching layer (Phase 4) ✅
+├── db/                     # Database layer (Phase 4) ✅
+│   └── models/             # SQLAlchemy ORM models
+│       ├── base.py         # Base model with UUID & timestamps
+│       ├── user.py         # User authentication
+│       ├── project.py      # Project tracking
+│       ├── document.py     # File uploads
+│       ├── position.py     # Budget line items
+│       ├── audit.py        # Audit results
+│       ├── chat.py         # Chat messages
+│       ├── job.py          # Background jobs
+│       ├── version.py      # Version control
+│       ├── kb_cache.py     # KB cache
+│       └── credential.py   # Encrypted credentials
+├── models/                 # Layer 5: Pydantic schemas
 ├── knowledge_base/         # Layer 5: KB (B1-B9)
+│   ├── B1_urs_codes/       # Construction codes
+│   ├── B2_csn_standards/   # Czech standards
+│   ├── B3_current_prices/  # Market prices
+│   ├── B5_tech_cards/      # Technical specs
+│   └── B9_Equipment_Specs/ # Equipment
 └── utils/                  # Shared utilities
 
-tests/                      # 67 tests (97% pass rate)
+alembic/                    # Database migrations (Phase 4) ✅
+├── versions/               # Migration files
+│   └── 868b39220cfa_initial_schema.py # Initial 10-table schema
+└── env.py                  # Async migration config
+
+tests/                      # Test suite
+├── test_imports.py         # Import validation (6 tests)
+├── test_workflow_a_*.py    # Workflow A tests (18 tests)
+├── test_*_parser.py        # Parser tests (12 tests)
+├── test_*_enricher.py      # Service tests (15 tests)
+├── test_file_security.py   # Security tests (13 tests)
+├── test_redis_integration.py # Redis tests (20+ tests) ✅
+└── ...                     # Total: 87+ tests
+
 docs/                       # Complete documentation
+├── TECH_SPECS/             # Phase 4 technical specs (4 files)
+├── API.md                  # API documentation (27+ endpoints)
+├── WORKFLOWS.md            # Workflow documentation
+├── SYSTEM_DESIGN.md        # System design
+└── TESTS.md                # Testing guide
+
 data/                       # Project files (gitignored)
+└── projects/               # Project-specific data
+    └── {project_id}/       # Individual project folders
 ```
 
 ### Architectural Patterns
@@ -386,6 +474,76 @@ pytest -s
 ```
 
 **Reference:** [TESTS.md](docs/TESTS.md)
+
+### Database Migrations (Phase 4)
+
+```bash
+# Create new migration
+alembic revision --autogenerate -m "description"
+
+# Apply migrations
+alembic upgrade head
+
+# Rollback one migration
+alembic downgrade -1
+
+# Show current migration
+alembic current
+
+# Show migration history
+alembic history
+
+# Generate SQL for migration (dry run)
+alembic upgrade head --sql
+
+# Reset database to specific revision
+alembic downgrade <revision_id>
+```
+
+**Note:** Migrations require PostgreSQL running. See `alembic/versions/` for migration files.
+
+### Redis Operations (Phase 4)
+
+```bash
+# Start Redis server (local)
+redis-server
+
+# Connect to Redis CLI
+redis-cli
+
+# Check Redis connection
+redis-cli ping
+# Expected output: PONG
+
+# Monitor Redis commands
+redis-cli monitor
+
+# Get all keys with prefix
+redis-cli KEYS "concrete:*"
+
+# Flush all data (DANGER: deletes all data!)
+redis-cli FLUSHALL
+```
+
+**Python usage:**
+```python
+from app.core.redis_client import get_redis
+from app.core.session import get_session_manager
+from app.core.cache import get_kb_cache
+
+# Redis client
+redis = await get_redis()
+await redis.set("key", {"data": "value"}, ttl=60)
+value = await redis.get("key")
+
+# Session management
+session_mgr = await get_session_manager()
+session_id = await session_mgr.create_session(user_id="user-123")
+
+# Knowledge base cache
+kb_cache = await get_kb_cache()
+await kb_cache.cache_kros_lookup("121151113", kros_data)
+```
 
 ### Git Commands
 
