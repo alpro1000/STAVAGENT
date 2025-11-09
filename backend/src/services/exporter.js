@@ -1,15 +1,41 @@
 /**
- * Export service
- * Generate XLSX and CSV files
+ * Export service - Czech language
+ * Generate XLSX and CSV files with proper structure
+ * SAVE to disk for history/archive
  */
 
 import XLSX from 'xlsx';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { logger } from '../utils/logger.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const EXPORTS_DIR = path.join(__dirname, '../../exports');
+
+// Ensure exports directory exists
+if (!fs.existsSync(EXPORTS_DIR)) {
+  fs.mkdirSync(EXPORTS_DIR, { recursive: true });
+  logger.info(`Created exports directory: ${EXPORTS_DIR}`);
+}
+
+// Format helpers
+const formatNumber = (num, decimals = 2) => {
+  if (num === undefined || num === null || isNaN(num)) return '0';
+  return parseFloat(num).toFixed(decimals).replace('.', ',');
+};
+
+const formatCurrency = (num, decimals = 2) => {
+  if (num === undefined || num === null || isNaN(num)) return '0';
+  return parseFloat(num).toFixed(decimals).replace('.', ',');
+};
+
 /**
- * Export positions and KPI to XLSX (Czech language with full structure)
+ * Export positions and KPI to XLSX (Czech structure)
+ * Returns: { buffer, filename, filepath }
  */
-export async function exportToXLSX(positions, header_kpi, bridge_id) {
+export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServer = false) {
   try {
     const workbook = XLSX.utils.book_new();
 
@@ -110,12 +136,106 @@ export async function exportToXLSX(positions, header_kpi, bridge_id) {
     // Generate buffer
     const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
 
-    logger.info(`XLSX export generated for ${bridge_id}: ${positions.length} positions in ${Object.keys(groupedPositions).length} parts`);
+    // Save to server if requested
+    let filename = null;
+    let filepath = null;
+    if (saveToServer) {
+      const timestamp = Date.now();
+      filename = `monolit_${bridge_id}_${timestamp}.xlsx`;
+      filepath = path.join(EXPORTS_DIR, filename);
+      fs.writeFileSync(filepath, buffer);
+      logger.info(`XLSX export saved to disk: ${filepath}`);
+    }
 
-    return buffer;
+    logger.info(`XLSX export generated for ${bridge_id}: ${positions.length} positions`);
+
+    return { buffer, filename, filepath };
   } catch (error) {
     logger.error('XLSX export error:', error);
     throw new Error(`Failed to export XLSX: ${error.message}`);
+  }
+}
+
+/**
+ * Get list of saved exports
+ */
+export function getExportsList() {
+  try {
+    if (!fs.existsSync(EXPORTS_DIR)) {
+      return [];
+    }
+
+    const files = fs.readdirSync(EXPORTS_DIR);
+    const exports = files
+      .filter(f => f.endsWith('.xlsx'))
+      .map(filename => {
+        const filepath = path.join(EXPORTS_DIR, filename);
+        const stats = fs.statSync(filepath);
+        const [_, bridge_id, timestamp] = filename.match(/monolit_(.+?)_(\d+)\.xlsx/) || [];
+
+        return {
+          filename,
+          bridge_id: bridge_id || 'unknown',
+          timestamp: parseInt(timestamp) || stats.mtimeMs,
+          created_at: new Date(parseInt(timestamp) || stats.mtimeMs).toLocaleString('cs-CZ'),
+          size: Math.round(stats.size / 1024) // KB
+        };
+      })
+      .sort((a, b) => b.timestamp - a.timestamp); // Newest first
+
+    return exports;
+  } catch (error) {
+    logger.error('Error listing exports:', error);
+    return [];
+  }
+}
+
+/**
+ * Download export file
+ */
+export function getExportFile(filename) {
+  try {
+    // Security: prevent directory traversal
+    if (filename.includes('..') || filename.includes('/')) {
+      throw new Error('Invalid filename');
+    }
+
+    const filepath = path.join(EXPORTS_DIR, filename);
+
+    // Verify file exists
+    if (!fs.existsSync(filepath)) {
+      throw new Error('File not found');
+    }
+
+    return fs.readFileSync(filepath);
+  } catch (error) {
+    logger.error('Error reading export:', error);
+    throw new Error(`Failed to read export: ${error.message}`);
+  }
+}
+
+/**
+ * Delete export file
+ */
+export function deleteExportFile(filename) {
+  try {
+    // Security: prevent directory traversal
+    if (filename.includes('..') || filename.includes('/')) {
+      throw new Error('Invalid filename');
+    }
+
+    const filepath = path.join(EXPORTS_DIR, filename);
+
+    if (!fs.existsSync(filepath)) {
+      throw new Error('File not found');
+    }
+
+    fs.unlinkSync(filepath);
+    logger.info(`Export deleted: ${filename}`);
+    return true;
+  } catch (error) {
+    logger.error('Error deleting export:', error);
+    throw new Error(`Failed to delete export: ${error.message}`);
   }
 }
 
@@ -152,22 +272,6 @@ export function exportToCSV(positions, delimiter = ';') {
     logger.error('CSV export error:', error);
     throw new Error(`Failed to export CSV: ${error.message}`);
   }
-}
-
-/**
- * Format number for display (EU format with comma)
- */
-function formatNumber(num, decimals = 2) {
-  if (num === null || num === undefined || isNaN(num)) return '0';
-  return num.toFixed(decimals).replace('.', ',');
-}
-
-/**
- * Format currency
- */
-function formatCurrency(num) {
-  if (num === null || num === undefined || isNaN(num)) return '0,00';
-  return num.toFixed(2).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 /**
