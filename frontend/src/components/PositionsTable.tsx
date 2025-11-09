@@ -206,8 +206,10 @@ export default function PositionsTable() {
                   isLocked={isLocked}
                 />
 
-                {/* Header Table - OUTSIDE overflow, STICKY */}
-                <table className="positions-table positions-table-header">
+                {/* Unified Table Wrapper - Synchronized header and body widths */}
+                <div className="table-wrapper-unified">
+                  {/* Header Table - Sticky with synchronized width */}
+                  <table className="positions-table positions-table-header">
                   <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
@@ -231,8 +233,8 @@ export default function PositionsTable() {
                   </thead>
                 </table>
 
-                {/* Body Table - INSIDE overflow, scrollable - NO THEAD */}
-                <div className="table-container">
+                  {/* Body Table - Inside scrollable container with synchronized width */}
+                  <div className="table-container">
                   <table className="positions-table positions-table-body">
                     <tbody>
                       {partPositions.length > 0 ? (
@@ -253,6 +255,7 @@ export default function PositionsTable() {
                       )}
                     </tbody>
                   </table>
+                  </div>
                 </div>
 
                 <div style={{
