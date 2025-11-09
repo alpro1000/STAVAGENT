@@ -789,26 +789,14 @@ button:disabled {
   color: var(--text-primary);
 }
 
-/* Table Header Wrapper - synced scroll with body (no visible scrollbar) */
-.table-header-wrapper {
-  width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
-}
-
-/* Hide scrollbar on header wrapper (only body scrollbar visible) */
-.table-header-wrapper::-webkit-scrollbar {
-  height: 0;
-  display: none;
-}
-
 /* Table Wrapper for Horizontal Scrolling */
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
   overflow-y: visible;
   -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--border-light);
+  border-radius: 6px;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -829,12 +817,19 @@ button:disabled {
   background: var(--text-secondary);
 }
 
+/* SINGLE Positions Table */
 .positions-table {
   width: 100%;
-  min-width: 1300px;
   border-collapse: collapse;
   font-size: 13px;
   background: var(--bg-secondary);
+}
+
+/* Sticky Header */
+.positions-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .positions-table th {
@@ -850,24 +845,7 @@ button:disabled {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* Header table - sticky positioned (outside overflow container) */
-.positions-table-header {
-  position: relative;
-  z-index: 50;
-}
-
-.positions-table-header th {
-  position: sticky;
-  top: 180px;
-  z-index: 51;
-}
-
-/* Body table - inside overflow container */
-.positions-table-body {
-  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .positions-table th:last-child {
@@ -889,11 +867,85 @@ button:disabled {
   border-bottom: none;
 }
 
-/* Lock Column */
-.lock-col {
+/* FIXED COLUMN WIDTHS - All columns with specific widths */
+.lock-col,
+.positions-table td:first-child,
+.positions-table th:first-child {
   width: 40px;
+  min-width: 40px;
   text-align: center;
-  padding: 10px 8px !important;
+}
+
+.col-podtyp {
+  width: 140px;
+  min-width: 140px;
+}
+
+.col-mj {
+  width: 50px;
+  min-width: 50px;
+}
+
+.col-mnozstvi {
+  width: 80px;
+  min-width: 80px;
+}
+
+.col-lidi {
+  width: 70px;
+  min-width: 70px;
+}
+
+.col-cena-hod {
+  width: 80px;
+  min-width: 80px;
+}
+
+.col-hod-den {
+  width: 80px;
+  min-width: 80px;
+}
+
+.col-den {
+  width: 70px;
+  min-width: 70px;
+}
+
+.col-hod-celkem {
+  width: 80px;
+  min-width: 80px;
+}
+
+.col-kc-celkem {
+  width: 110px;
+  min-width: 110px;
+}
+
+.col-kc-m3 {
+  width: 100px;
+  min-width: 100px;
+}
+
+.col-kros-jc {
+  width: 90px;
+  min-width: 90px;
+}
+
+.col-kros-celkem {
+  width: 110px;
+  min-width: 110px;
+}
+
+.col-rfi {
+  width: 50px;
+  min-width: 50px;
+  text-align: center;
+}
+
+.col-akce {
+  width: 90px;
+  min-width: 90px;
+  text-align: center;
 }
 
 .lock-indicator {
@@ -902,20 +954,6 @@ button:disabled {
   padding: 8px !important;
   font-size: 16px;
   opacity: 0.5;
-}
-
-/* Reduce width of "Hod celkem" (Total Hours) column */
-.hod-celkem-col {
-  width: 70px !important;
-  min-width: 70px !important;
-  padding: 6px 4px !important;
-}
-
-/* Target the 9th column (Hod celkem) in table rows */
-.positions-table tbody tr td:nth-child(9),
-.positions-table thead tr th:nth-child(9) {
-  width: 70px !important;
-  min-width: 70px !important;
 }
 
 /* Table Row States */
