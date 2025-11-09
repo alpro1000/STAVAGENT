@@ -206,8 +206,8 @@ export default function PositionsTable() {
                   isLocked={isLocked}
                 />
 
-                <div className="table-wrapper">
-                  <table className="positions-table">
+                {/* Table header - OUTSIDE overflow container so sticky works */}
+                <table className="positions-table positions-table-header">
                   <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
@@ -229,25 +229,49 @@ export default function PositionsTable() {
                       <th title="Akce: Smazat / Info">Akce</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {partPositions.length > 0 ? (
-                      partPositions.map((position) => (
-                        <PositionRow key={position.id} position={position} isLocked={isLocked} />
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={isLocked ? 15 : 14} style={{
-                          textAlign: 'center',
-                          padding: '20px',
-                          color: 'var(--text-secondary)',
-                          fontStyle: 'italic'
-                        }}>
-                          Zatím žádné řádky. Klikněte na "➕ Přidat řádek" níže.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
                 </table>
+
+                {/* Table body - INSIDE overflow container for horizontal scrolling */}
+                <div className="table-wrapper">
+                  <table className="positions-table positions-table-body">
+                    <thead style={{ display: 'none' }}>
+                      <tr>
+                        {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
+                        <th>Podtyp</th>
+                        <th>MJ</th>
+                        <th>Množství</th>
+                        <th>Lidi</th>
+                        <th>Kč/hod</th>
+                        <th>Hod/den</th>
+                        <th>Den</th>
+                        <th>Hod celkem</th>
+                        <th>Kč celkem</th>
+                        <th>Kč/m³ ⭐</th>
+                        <th>KROS JC</th>
+                        <th>KROS celkem</th>
+                        <th>RFI</th>
+                        <th>Akce</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {partPositions.length > 0 ? (
+                        partPositions.map((position) => (
+                          <PositionRow key={position.id} position={position} isLocked={isLocked} />
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={isLocked ? 15 : 14} style={{
+                            textAlign: 'center',
+                            padding: '20px',
+                            color: 'var(--text-secondary)',
+                            fontStyle: 'italic'
+                          }}>
+                            Zatím žádné řádky. Klikněte na "➕ Přidat řádek" níže.
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
 
                 <div style={{
