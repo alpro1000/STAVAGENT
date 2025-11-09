@@ -42,6 +42,12 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   };
 
   const handleDelete = () => {
+    // CRITICAL: Prevent deletion of beton row - it's essential for calculations
+    if (position.subtype === 'beton') {
+      alert('❌ Nelze smazat Betonování řádek\n\nTato řádka je KRITICKÁ pro správné výpočty:\n- Určuje objem betonu (concrete_m3)\n- Ovlivňuje ceny všech ostatních prací (Kč/m³)\n\nProto ji nelze odstranit.\n\nAbyste změnili objem betonu, editujte pole "Objem betonu celkem" v PartHeader výše.');
+      return;
+    }
+
     if (isLocked) {
       alert('❌ Nelze smazat: Data jsou zafixována (snapshot aktivní)');
       return;
@@ -228,8 +234,14 @@ export default function PositionRow({ position, isLocked = false }: Props) {
           <button
             className="icon-btn btn-delete"
             onClick={handleDelete}
-            title={isLocked ? 'Nelze smazat (zafixováno)' : 'Smazat pozici'}
-            disabled={isLocked}
+            title={
+              position.subtype === 'beton'
+                ? 'Nelze smazat - Betonování řádka je KRITICKÁ pro výpočty'
+                : isLocked
+                ? 'Nelze smazat (zafixováno)'
+                : 'Smazat pozici'
+            }
+            disabled={isLocked || position.subtype === 'beton'}
           >
             ❌
           </button>
