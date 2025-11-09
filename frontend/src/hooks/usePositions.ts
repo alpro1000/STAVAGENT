@@ -16,7 +16,7 @@ export function usePositions(bridgeId: string | null) {
     queryFn: async () => {
       if (!bridgeId) return null;
 
-      return await positionsAPI.getForBridge(bridgeId, showOnlyRFI);
+      return await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
     },
     enabled: !!bridgeId,
     staleTime: 5 * 60 * 1000, // Cache for 5 minutes - no refetch unless stale
