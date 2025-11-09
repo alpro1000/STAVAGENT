@@ -7,84 +7,110 @@ import XLSX from 'xlsx';
 import { logger } from '../utils/logger.js';
 
 /**
- * Export positions and KPI to XLSX
+ * Export positions and KPI to XLSX (Czech language with full structure)
  */
 export async function exportToXLSX(positions, header_kpi, bridge_id) {
   try {
     const workbook = XLSX.utils.book_new();
 
-    // Sheet 1: Summary
-    const summaryData = [
-      ['MONOLIT PLANNER — SUMMARY REPORT'],
-      [`Bridge: ${bridge_id} | Date: ${new Date().toISOString().split('T')[0]}`],
+    // ============= SHEET 1: KPI SUMMARY =============
+    const kpiData = [
+      ['MONOLIT PLANNER — ZPRÁVA O PROJEKTU'],
+      [`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`],
       [],
-      ['Délka nosné kce:', header_kpi.span_length_m || 'N/A', 'm'],
-      ['Šířka nosné kce:', header_kpi.deck_width_m || 'N/A', 'm'],
-      ['PD — předpoklad:', header_kpi.pd_weeks || 'N/A', 'týdnů'],
+      ['=== PARAMETRY OBJEKTU ==='],
+      ['Délka nosné konstrukce:', formatNumber(header_kpi.span_length_m), 'm'],
+      ['Šířka nosné konstrukce:', formatNumber(header_kpi.deck_width_m), 'm'],
+      ['Předpokládaná doba realizace:', formatNumber(header_kpi.pd_weeks), 'týdnů'],
       [],
-      ['Σ beton:', formatNumber(header_kpi.sum_concrete_m3), 'm³'],
-      ['Kč/celkem (KROS):', formatCurrency(header_kpi.sum_kros_total_czk), 'CZK'],
-      ['Kč/m³:', formatCurrency(header_kpi.project_unit_cost_czk_per_m3), 'CZK/m³'],
-      ['Kč/t (ρ=2.4):', formatCurrency(header_kpi.project_unit_cost_czk_per_t), 'CZK/t'],
+      ['=== KLÍČOVÉ METRIKY PROJEKTU ==='],
+      ['Σ Objem betonu:', formatNumber(header_kpi.sum_concrete_m3), 'm³'],
+      ['Σ Cena (KROS):', formatCurrency(header_kpi.sum_kros_total_czk), 'CZK'],
+      ['Jednotková cena:', formatCurrency(header_kpi.project_unit_cost_czk_per_m3), 'CZK/m³'],
+      ['Cena na tunu:', formatCurrency(header_kpi.project_unit_cost_czk_per_t), 'CZK/t'],
       [],
-      ['📅 Režim работы:', header_kpi.days_per_month === 30 ? '30 дней/месяц [непрерывная стройка]' : '22 дня/месяц [рабочие дни]'],
-      ['⏱️  Расчётная длительность:', `${formatNumber(header_kpi.estimated_months)} месяца | ${formatNumber(header_kpi.estimated_weeks)} недель`],
+      ['=== REŽIM PRÁCE ==='],
+      ['Režim:', header_kpi.days_per_month === 30 ? '30 dní/měsíc [spojitá stavba]' : '22 dní/měsíc [pracovní dny]'],
+      ['Odhadovaná doba trvání:', `${formatNumber(header_kpi.estimated_months)} měsíců | ${formatNumber(header_kpi.estimated_weeks)} týdnů`],
       [],
-      ['avg crew:', formatNumber(header_kpi.avg_crew_size), 'lidi'],
-      ['avg wage:', formatCurrency(header_kpi.avg_wage_czk_ph), 'CZK/hod'],
-      ['avg shift:', formatNumber(header_kpi.avg_shift_hours), 'hod/den'],
-      ['ρ (density):', header_kpi.rho_t_per_m3, 't/m³'],
-      [],
-      ['Формула расчёта месяцев:'],
-      [`= sum_kros_total_czk / (avg_crew × avg_wage × avg_shift × days_per_month)`],
-      [`= ${formatCurrency(header_kpi.sum_kros_total_czk)} / (${formatNumber(header_kpi.avg_crew_size)} × ${formatCurrency(header_kpi.avg_wage_czk_ph)} × ${formatNumber(header_kpi.avg_shift_hours)} × ${header_kpi.days_per_month})`],
-      [`= ${formatNumber(header_kpi.estimated_months)} месяца`],
-      [],
-      ['Формула расчёта недель:'],
-      [`= estimated_months × days_per_month / 7`],
-      [`= ${formatNumber(header_kpi.estimated_months)} × ${header_kpi.days_per_month} / 7 = ${formatNumber(header_kpi.estimated_weeks)} недель`]
+      ['=== PRŮMĚRNÉ HODNOTY ==='],
+      ['Průměrná velikost party:', formatNumber(header_kpi.avg_crew_size), 'osob'],
+      ['Průměrná hodinová sazba:', formatCurrency(header_kpi.avg_wage_czk_ph), 'CZK/hod'],
+      ['Průměrný počet hodin za den:', formatNumber(header_kpi.avg_shift_hours), 'hod'],
+      ['Hustota betonu:', formatNumber(header_kpi.rho_t_per_m3), 't/m³']
     ];
 
-    const summarySheet = XLSX.utils.aoa_to_sheet(summaryData);
-    XLSX.utils.book_append_sheet(workbook, summarySheet, 'Summary');
+    const kpiSheet = XLSX.utils.aoa_to_sheet(kpiData);
+    kpiSheet['!cols'] = [{ wch: 35 }, { wch: 20 }, { wch: 15 }];
+    XLSX.utils.book_append_sheet(workbook, kpiSheet, 'KPI');
 
-    // Sheet 2: Positions
+    // ============= SHEET 2: DETAILED POSITIONS =============
+    // Group positions by part_name
+    const groupedPositions = {};
+    positions.forEach(pos => {
+      if (!groupedPositions[pos.part_name]) {
+        groupedPositions[pos.part_name] = [];
+      }
+      groupedPositions[pos.part_name].push(pos);
+    });
+
     const positionHeaders = [
-      'Název objektu', 'Název položky', 'Podtyp práce', 'MJ', 'Množství',
-      'qty_m3_helper', 'lidi', 'Kč/hod', 'Hod/den', 'den',
-      'labor_hours', 'cost_czk', 'unit_cost_native', 'concrete_m3',
-      'unit_cost_on_m3', 'kros_unit_czk', 'kros_total_czk', 'RFI'
+      'Podtyp',
+      'MJ',
+      'Množství',
+      'Lidi',
+      'Kč/hod',
+      'Hod/den',
+      'Den',
+      'Hod celkem',
+      'Kč celkem',
+      'Kč/m³ ⭐',
+      'KROS JC',
+      'KROS celkem',
+      'RFI'
     ];
 
-    const positionRows = positions.map(p => [
-      p.bridge_id,
-      p.part_name,
-      p.subtype,
-      p.unit,
-      formatNumber(p.qty),
-      formatNumber(p.qty_m3_helper || 0),
-      p.crew_size,
-      formatCurrency(p.wage_czk_ph),
-      formatNumber(p.shift_hours),
-      formatNumber(p.days),
-      formatNumber(p.labor_hours),
-      formatCurrency(p.cost_czk),
-      formatCurrency(p.unit_cost_native),
-      formatNumber(p.concrete_m3),
-      formatCurrency(p.unit_cost_on_m3),
-      formatCurrency(p.kros_unit_czk),
-      formatCurrency(p.kros_total_czk),
-      p.has_rfi ? p.rfi_message : ''
-    ]);
+    const detailedData = [];
 
-    const positionsData = [positionHeaders, ...positionRows];
-    const positionsSheet = XLSX.utils.aoa_to_sheet(positionsData);
-    XLSX.utils.book_append_sheet(workbook, positionsSheet, 'Positions');
+    // Add header
+    detailedData.push(['MONOLIT PLANNER — DETAILNÍ PŘEHLED POZIC']);
+    detailedData.push([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
+    detailedData.push([]);
+
+    // Add each part group
+    Object.entries(groupedPositions).forEach(([partName, partPositions]) => {
+      detailedData.push([`=== ${partName} ===`]);
+      detailedData.push(positionHeaders);
+
+      partPositions.forEach(pos => {
+        detailedData.push([
+          pos.subtype,
+          pos.unit,
+          formatNumber(pos.qty),
+          pos.crew_size,
+          formatCurrency(pos.wage_czk_ph),
+          formatNumber(pos.shift_hours),
+          formatNumber(pos.days),
+          formatNumber(pos.labor_hours),
+          formatCurrency(pos.cost_czk),
+          formatCurrency(pos.unit_cost_on_m3),
+          formatCurrency(pos.kros_unit_czk),
+          formatCurrency(pos.kros_total_czk),
+          pos.has_rfi ? (pos.rfi_message || '⚠️ RFI') : ''
+        ]);
+      });
+
+      detailedData.push([]); // Blank line between parts
+    });
+
+    const detailedSheet = XLSX.utils.aoa_to_sheet(detailedData);
+    detailedSheet['!cols'] = Array(13).fill({ wch: 15 });
+    XLSX.utils.book_append_sheet(workbook, detailedSheet, 'Detaily');
 
     // Generate buffer
     const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
 
-    logger.info(`XLSX export generated for ${bridge_id}: ${positions.length} positions`);
+    logger.info(`XLSX export generated for ${bridge_id}: ${positions.length} positions in ${Object.keys(groupedPositions).length} parts`);
 
     return buffer;
   } catch (error) {
