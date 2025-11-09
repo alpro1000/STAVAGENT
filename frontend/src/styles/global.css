@@ -76,6 +76,30 @@ html {
   /* Typography */
   --font-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'Roboto Mono', 'Courier New', monospace;
+
+  /* Font Sizes - Standardized Scale */
+  --font-size-xs: 9px;         /* Component units */
+  --font-size-sm: 10px;        /* KPI labels, stat labels */
+  --font-size-meta: 11px;      /* Badges, metadata, headers */
+  --font-size-label: 12px;     /* Form labels, dates */
+  --font-size-body: 13px;      /* Table cells, inputs */
+  --font-size-base: 14px;      /* STANDARD: Body, buttons, values */
+  --font-size-md: 16px;        /* Secondary headings, icons */
+  --font-size-lg: 18px;        /* Component titles */
+  --font-size-xl: 20px;        /* Section headers (h2) */
+  --font-size-2xl: 24px;       /* Page titles (h1) */
+  --font-size-3xl: 32px;       /* Large icons, special elements */
+
+  /* Font Weights */
+  --font-weight-regular: 400;  /* Default text */
+  --font-weight-medium: 500;   /* Interactive, buttons */
+  --font-weight-semibold: 600; /* Headings, emphasis */
+  --font-weight-bold: 700;     /* Bold text, values */
+
+  /* Line Heights */
+  --line-height-tight: 1.2;    /* Compact (KPI values) */
+  --line-height-normal: 1.3;   /* Headings */
+  --line-height-relaxed: 1.5;  /* Body text */
 }
 
 /* ============================================
