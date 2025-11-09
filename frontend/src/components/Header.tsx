@@ -109,6 +109,35 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       return;
     }
 
+    // CRITICAL VALIDATION: Check for missing concrete volume and RFI warnings
+    const rfiIssues = positions.filter(p => p.has_rfi);
+    const hasNoConcrete = headerKPI.sum_concrete_m3 === 0 || headerKPI.sum_concrete_m3 === undefined;
+
+    if (hasNoConcrete || rfiIssues.length > 0) {
+      let warningMessage = '⚠️ UPOZORNĚNÍ: Projekt má problémy!\n\n';
+
+      if (hasNoConcrete) {
+        warningMessage += '❌ Chybí objem betonu!\n   Zadejte "Objem betonu celkem" v PartHeader.\n\n';
+      }
+
+      if (rfiIssues.length > 0) {
+        warningMessage += `⚠️ Nalezeno ${rfiIssues.length} RFI problém(ů):\n`;
+        rfiIssues.slice(0, 3).forEach(p => {
+          warningMessage += `   • ${p.subtype}: ${p.rfi_message || 'Problem'}\n`;
+        });
+        if (rfiIssues.length > 3) {
+          warningMessage += `   ... a další ${rfiIssues.length - 3}\n\n`;
+        } else {
+          warningMessage += '\n';
+        }
+      }
+
+      warningMessage += 'Chcete přesto pokračovat a zafixovat data?\n(Later můžete vytvořit nový snapshot s opravami)';
+
+      const confirmWithWarnings = window.confirm(warningMessage);
+      if (!confirmWithWarnings) return;
+    }
+
     const confirmCreate = window.confirm(
       'Zafixovat aktuální stav?\n\nVšechna pole budou uzamčena a nelze je upravovat.\n\nChcete pokračovat?'
     );
