@@ -825,20 +825,21 @@ button:disabled {
 
 .positions-table th {
   position: sticky;
-  top: 80px;
-  background: var(--bg-tertiary);
-  color: var(--text-secondary);
+  top: 180px;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   font-weight: 600;
   text-align: left;
-  padding: 10px 8px;
+  padding: 12px 8px;
   border-bottom: 2px solid var(--border-default);
   border-right: 1px solid var(--border-light);
+  border-top: 1px solid var(--border-default);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  z-index: 90;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .positions-table th:last-child {
