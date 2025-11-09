@@ -38,7 +38,7 @@ export function useSnapshots(bridgeId: string | null) {
   // Load active snapshot when bridge changes
   useEffect(() => {
     refetchActiveSnapshot();
-  }, [refetchActiveSnapshot]);
+  }, [bridgeId, setActiveSnapshot]);
 
   return {
     activeSnapshot,

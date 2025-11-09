@@ -12,14 +12,15 @@ export function usePositions(bridgeId: string | null) {
   const queryClient = useQueryClient();
 
   const query = useQuery({
-    queryKey: ['positions', bridgeId],
+    queryKey: ['positions', bridgeId, showOnlyRFI],
     queryFn: async () => {
       if (!bridgeId) return null;
 
-      return await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
+      return await positionsAPI.getForBridge(bridgeId, showOnlyRFI);
     },
     enabled: !!bridgeId,
-    refetchOnMount: true
+    staleTime: 30 * 1000, // Cache for 30 seconds
+    refetchOnMount: false // Prevent infinite refetch loop
   });
 
   // Update context AFTER query succeeds, not inside queryFn
