@@ -866,7 +866,7 @@ button:disabled {
 /* SINGLE Positions Table */
 .positions-table {
   width: 100%;
-  min-width: 1240px;
+  min-width: 1225px;
   border-collapse: collapse;
   font-size: 13px;
   background: var(--bg-secondary);
@@ -944,8 +944,7 @@ button:disabled {
 
 /* FIXED COLUMN WIDTHS - All columns with specific widths */
 .lock-col,
-.positions-table td:first-child,
-.positions-table th:first-child {
+.lock-indicator {
   width: 40px;
   min-width: 40px;
   text-align: center;
@@ -987,8 +986,8 @@ button:disabled {
 }
 
 .col-hod-celkem {
-  width: 80px;
-  min-width: 80px;
+  width: 65px;
+  min-width: 65px;
 }
 
 .col-kc-celkem {
