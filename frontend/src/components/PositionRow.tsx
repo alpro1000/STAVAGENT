@@ -74,10 +74,10 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   return (
     <tr className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''}`}>
       {/* Locked indicator */}
-      {isLocked && <td className="lock-indicator">🔒</td>}
+      {isLocked && <td className="lock-indicator col-lock">🔒</td>}
 
       {/* Subtype with icon */}
-      <td className="cell-subtype">
+      <td className="cell-subtype col-podtyp">
         <div className="subtype-cell">
           <span className="subtype-icon">{icon}</span>
           <span className="subtype-label" title={`Internal: ${position.subtype}`}>{displayLabel}</span>
@@ -85,12 +85,12 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       </td>
 
       {/* Unit */}
-      <td className="cell-unit">{position.unit}</td>
+      <td className="cell-unit col-mj">{position.unit}</td>
 
       {/* INPUT CELLS - Editable (orange/cyan gradient) */}
 
       {/* Qty */}
-      <td className={`cell-input ${position.subtype === 'beton' ? 'cell-computed' : ''}`}>
+      <td className={`cell-input col-mnozstvi ${position.subtype === 'beton' ? 'cell-computed' : ''}`}>
         <input
           type="number"
           step="0.01"
@@ -113,7 +113,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       </td>
 
       {/* Crew size */}
-      <td className="cell-input">
+      <td className="cell-input col-lidi">
         <input
           type="number"
           min="0"
@@ -127,7 +127,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       </td>
 
       {/* Wage */}
-      <td className="cell-input">
+      <td className="cell-input col-cena-hod">
         <input
           type="number"
           step="1"
@@ -142,7 +142,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       </td>
 
       {/* Shift hours */}
-      <td className="cell-input">
+      <td className="cell-input col-hod-den">
         <input
           type="number"
           step="0.5"
@@ -157,7 +157,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       </td>
 
       {/* Days */}
-      <td className="cell-input">
+      <td className="cell-input col-den">
         <input
           type="number"
           step="0.5"
@@ -174,14 +174,14 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       {/* COMPUTED CELLS - Readonly (gray) */}
 
       {/* Labor hours */}
-      <td className="cell-computed">
+      <td className="cell-computed col-hod-celkem">
         <div className="computed-cell" title={`${formatNumber(position.labor_hours, 1)} hod (= crew_size × shift_hours × days)`}>
           {formatNumber(position.labor_hours, 1)}
         </div>
       </td>
 
       {/* Cost CZK */}
-      <td className="cell-computed">
+      <td className="cell-computed col-kc-celkem">
         <div className="computed-cell" title={`${formatNumber(position.cost_czk, 2)} CZK (= labor_hours × wage_czk_ph)`}>
           {formatNumber(position.cost_czk, 2)}
         </div>
@@ -190,7 +190,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       {/* KROS CELLS - Success green with glow */}
 
       {/* Unit cost on m³ - KEY METRIC */}
-      <td className="cell-kros-key">
+      <td className="cell-kros-key col-kc-m3">
         <div
           className={`kros-cell kros-key ${position.has_rfi ? 'warning' : ''}`}
           title={`${formatNumber(position.unit_cost_on_m3, 2)} CZK/m³ ⭐ (= ${formatNumber(position.cost_czk, 2)} / ${position.concrete_m3})`}
@@ -200,7 +200,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       </td>
 
       {/* KROS unit */}
-      <td className="cell-kros">
+      <td className="cell-kros col-kros-jc">
         <div
           className="kros-cell"
           title={`${formatNumber(position.kros_unit_czk, 0)} CZK (= ceil(${formatNumber(position.unit_cost_on_m3, 2)} / 50) × 50)`}
@@ -210,7 +210,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       </td>
 
       {/* KROS total */}
-      <td className="cell-kros">
+      <td className="cell-kros col-kros-celkem">
         <div
           className="kros-cell"
           title={`${formatNumber(position.kros_total_czk, 2)} CZK (= ${formatNumber(position.kros_unit_czk, 0)} × ${position.concrete_m3})`}
@@ -220,7 +220,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       </td>
 
       {/* RFI indicator */}
-      <td className="cell-rfi">
+      <td className="cell-rfi col-rfi">
         {position.has_rfi && (
           <div className="rfi-badge" title={position.rfi_message || 'Request For Information'}>
             ⚠️
@@ -229,7 +229,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       </td>
 
       {/* Actions */}
-      <td className="cell-actions">
+      <td className="cell-actions col-akce">
         <div className="action-buttons">
           <button
             className="icon-btn btn-delete"
