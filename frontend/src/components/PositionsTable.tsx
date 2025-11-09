@@ -19,7 +19,7 @@ export default function PositionsTable() {
   const { isLocked } = useSnapshots(selectedBridge);
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
 
-  // Group positions by part_name
+  // Group positions by part_name and sort each group (beton first, then others)
   const groupedPositions = useMemo(() => {
     const groups: Record<string, Position[]> = {};
 
@@ -28,6 +28,17 @@ export default function PositionsTable() {
         groups[pos.part_name] = [];
       }
       groups[pos.part_name].push(pos);
+    });
+
+    // Sort each group: 'beton' first, then others
+    Object.keys(groups).forEach((partName) => {
+      groups[partName].sort((a, b) => {
+        // 'beton' (Бетонирование) always first
+        if (a.subtype === 'beton' && b.subtype !== 'beton') return -1;
+        if (a.subtype !== 'beton' && b.subtype === 'beton') return 1;
+        // Keep original order for others
+        return 0;
+      });
     });
 
     return groups;
@@ -207,35 +218,30 @@ export default function PositionsTable() {
                 />
 
                 {/* Unified Table Wrapper - Synchronized header and body widths */}
-                <div className="table-wrapper-unified">
+                <div className="table-wrapper">
                   {/* Header Table - Sticky with synchronized width */}
-                  <table className="positions-table positions-table-header">
-                  <thead>
+                  <table className="positions-table">
+                    <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
                       <th className="col-podtyp" title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
                       <th className="col-mj" title="Měrná jednotka: m³, m², kg">MJ</th>
-                      <th className="col-mnozstvi" title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
-                      <th className="col-lidi" title="Počet lidí v partě (EDITABLE)">Lidi</th>
-                      <th className="col-cena-hod" title="Hodinová sazba v CZK (EDITABLE)">Kč/hod</th>
-                      <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">Hod/den</th>
-                      <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Den</th>
-                      <th className="col-hod-celkem" title="Celkový počet hodin = lidi × hod/den × den">Hod celkem</th>
-                      <th className="col-kc-celkem" title="Celková cena = hod celkem × Kč/hod">Kč celkem</th>
+                      <th className="col-mnozstvi" title="Množství v měrných jednotkách (EDITABLE)">Mn.</th>
+                      <th className="col-lidi" title="Počet lidí v partě (EDITABLE)">Ldi</th>
+                      <th className="col-cena-hod" title="Hodinová sazba v CZK (EDITABLE)">Kč/h</th>
+                      <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">H/d</th>
+                      <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Dn</th>
+                      <th className="col-hod-celkem" title="Celkový počet hodin = lidi × hod/den × den">Hod</th>
+                      <th className="col-kc-celkem" title="Celková cena = hod celkem × Kč/hod">Kč</th>
                       <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Množství (Beton m³)">
                         Kč/m³ ⭐
                       </th>
-                      <th className="col-kros-jc" title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS JC</th>
-                      <th className="col-kros-celkem" title="KROS celkem = KROS JC × Beton m³">KROS celkem</th>
+                      <th className="col-kros-jc" title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS</th>
+                      <th className="col-kros-celkem" title="KROS celkem = KROS JC × Beton m³">KROS Σ</th>
                       <th className="col-rfi" title="Request For Information - problémové položky">RFI</th>
-                      <th className="col-akce" title="Akce: Smazat / Info">Akce</th>
+                      <th className="col-akce" title="Akce: Smazat / Info">⚙️</th>
                     </tr>
-                  </thead>
-                </table>
-
-                  {/* Body Table - Inside scrollable container with synchronized width */}
-                  <div className="table-container">
-                  <table className="positions-table positions-table-body">
+                    </thead>
                     <tbody>
                       {partPositions.length > 0 ? (
                         partPositions.map((position) => (
@@ -255,7 +261,6 @@ export default function PositionsTable() {
                       )}
                     </tbody>
                   </table>
-                  </div>
                 </div>
 
                 <div style={{

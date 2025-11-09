@@ -796,10 +796,8 @@ button:disabled {
   color: var(--text-primary);
 }
 
-/* Unified Table Wrapper - Ensures header and body have synchronized widths */
-.table-wrapper-unified {
-  display: flex;
-  flex-direction: column;
+/* New Table Wrapper - Single table with sticky header, scrolls under KPI */
+.table-wrapper {
   border: 1px solid var(--border-light);
   border-radius: 6px;
   overflow-x: auto;
@@ -807,101 +805,48 @@ button:disabled {
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
   width: 100%;
-}
-
-/* Header Table - Top part of unified wrapper, sticky and full width */
-.table-wrapper-unified .positions-table-header {
-  border: none;
-  border-radius: 0;
-  border-bottom: none;
-  margin: 0;
-  flex-shrink: 0;
-  overflow: visible;
-}
-
-/* Table Container for Body (scrollable) - bottom part of unified wrapper */
-.table-wrapper-unified .table-container {
-  border: none;
-  border-radius: 0;
-  border-top: 1px solid var(--border-light);
-  flex: 1;
-  min-height: 0;
-  overflow-x: visible;
+  max-height: calc(100vh - 300px);
   overflow-y: auto;
-  scrollbar-gutter: stable;
 }
 
-/* Legacy .table-container (standalone) styling */
-.table-container {
-  width: 100%;
-  border: 1px solid var(--border-light);
-  border-top: none;
-  border-radius: 0 0 6px 6px;
-  overflow-x: auto;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  max-height: calc(100vh - 400px);
-  scrollbar-gutter: stable;
+.table-wrapper::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
 }
 
-.table-container::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
-}
-
-.table-container::-webkit-scrollbar-track {
+.table-wrapper::-webkit-scrollbar-track {
   background: var(--bg-tertiary);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
-.table-container::-webkit-scrollbar-thumb {
+.table-wrapper::-webkit-scrollbar-thumb {
   background: var(--border-default);
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
-.table-container::-webkit-scrollbar-thumb:hover {
+.table-wrapper::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
 }
 
-/* SINGLE Positions Table */
+/* SINGLE Positions Table with sticky header */
 .positions-table {
   width: 100%;
-  min-width: 1225px;
+  min-width: 1050px;
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: 12px;
   background: var(--bg-secondary);
   table-layout: fixed;
   margin: 0;
-}
-
-/* POSITIONS-TABLE-HEADER: Sticky header table in unified wrapper */
-.positions-table-header {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-  margin: 0;
   border: none;
-  border-bottom: none;
 }
 
-.positions-table-header thead {
+/* Sticky header that stays visible when scrolling */
+.positions-table thead {
   position: sticky;
   top: 0;
   z-index: 150;
   display: table-header-group;
   background: var(--bg-secondary);
-}
-
-/* POSITIONS-TABLE-BODY: Body table (inside overflow) - no thead, only tbody */
-.positions-table-body {
-  display: table;
-  table-layout: fixed;
-  width: 100%;
-  margin: 0;
-}
-
-.positions-table-body thead {
-  display: none;
 }
 
 .positions-table th {
@@ -961,53 +906,53 @@ button:disabled {
 }
 
 .col-mnozstvi {
-  width: 80px;
-  min-width: 80px;
+  width: 55px;
+  min-width: 55px;
 }
 
 .col-lidi {
-  width: 70px;
-  min-width: 70px;
+  width: 50px;
+  min-width: 50px;
 }
 
 .col-cena-hod {
-  width: 80px;
-  min-width: 80px;
+  width: 60px;
+  min-width: 60px;
 }
 
 .col-hod-den {
-  width: 80px;
-  min-width: 80px;
+  width: 50px;
+  min-width: 50px;
 }
 
 .col-den {
+  width: 45px;
+  min-width: 45px;
+}
+
+.col-hod-celkem {
+  width: 55px;
+  min-width: 55px;
+}
+
+.col-kc-celkem {
   width: 70px;
   min-width: 70px;
 }
 
-.col-hod-celkem {
-  width: 65px;
-  min-width: 65px;
-}
-
-.col-kc-celkem {
-  width: 110px;
-  min-width: 110px;
-}
-
 .col-kc-m3 {
-  width: 100px;
-  min-width: 100px;
+  width: 85px;
+  min-width: 85px;
 }
 
 .col-kros-jc {
-  width: 90px;
-  min-width: 90px;
+  width: 70px;
+  min-width: 70px;
 }
 
 .col-kros-celkem {
-  width: 110px;
-  min-width: 110px;
+  width: 85px;
+  min-width: 85px;
 }
 
 .col-rfi {
@@ -1044,18 +989,19 @@ button:disabled {
   border-left: 3px solid var(--color-warning);
 }
 
-/* Inputs */
+/* Inputs - Smaller and more compact */
 .positions-table input,
 .positions-table select {
-  width: 65px;
-  max-width: 65px;
+  width: 100%;
+  max-width: 100%;
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   color: var(--text-primary);
-  padding: 6px 8px;
-  border-radius: 3px;
-  font-size: 13px;
+  padding: 4px 6px;
+  border-radius: 2px;
+  font-size: 12px;
   font-family: var(--font-mono);
+  box-sizing: border-box;
 }
 
 .positions-table input:focus,
@@ -1888,8 +1834,10 @@ select:focus {
 /* Tablet and small screens (768px and below) */
 @media (max-width: 768px) {
   /* Table header: adjust sticky offset for expanded KPI panel (2 columns) */
-  .positions-table-header th {
-    top: 220px;
+  .positions-table th {
+    top: 0;
+    font-size: 10px;
+    padding: 6px 4px;
   }
 
   /* KPI Grid: 4 columns → 2 columns for better mobile layout */
@@ -2191,9 +2139,11 @@ select:focus {
 
 /* Small phones (480px and below) */
 @media (max-width: 480px) {
-  /* Table header: adjust sticky offset for fully expanded KPI panel (1 column) */
-  .positions-table-header th {
-    top: 290px;
+  /* Table header: single column sticky header */
+  .positions-table th {
+    top: 0;
+    font-size: 9px;
+    padding: 4px 3px;
   }
 
   /* KPI Grid: 1 column on very small screens */
