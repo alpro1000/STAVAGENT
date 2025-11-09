@@ -19,8 +19,10 @@ export function usePositions(bridgeId: string | null) {
       return await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
     },
     enabled: !!bridgeId,
-    staleTime: 30 * 1000, // Cache for 30 seconds
-    refetchOnMount: false // Prevent infinite refetch loop
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes - no refetch unless stale
+    refetchOnMount: false, // CRITICAL: Never refetch on mount
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    gcTime: 10 * 60 * 1000 // Keep in cache for 10 minutes before garbage collection
   });
 
   // Update context AFTER query succeeds, not inside queryFn

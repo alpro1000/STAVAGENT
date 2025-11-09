@@ -1818,9 +1818,11 @@ cd backend && npm run dev
 ### ✅ ЭКСТРЕННОЕ ИСПРАВЛЕНИЕ: Таблица + React Query
 
 #### 1️⃣ ✅ ГОТОВО: Бесконечный цикл загрузки (React Query)
-**Проблема**: `refetchOnMount: true` + context updates вызывало бесконечный loop
+**Проблема**: Отсутствие правильной конфигурации React Query + setState в queryFn вызывало бесконечный loop
 **Признак**: "Načítám..." зацикливается, страница невидима
-**Решение РЕАЛИЗОВАНО (commit `d487466`)**:
+**Решение РЕАЛИЗОВАНО (commits `d487466`, `7508965`)**:
+
+**Этап 1 (d487466):**
 - ✅ **usePositions.ts**:
   - Добавлен `showOnlyRFI` в `queryKey: ['positions', bridgeId, showOnlyRFI]`
   - Отключено `refetchOnMount: true` → `refetchOnMount: false`
@@ -1829,7 +1831,24 @@ cd backend && npm run dev
 - ✅ **useBridges.ts**: Отключено `refetchOnMount`, добавлен `staleTime`
 - ✅ **useSnapshots.ts**: Исправлены зависимости в useEffect
 
-**Impact**: Решено зацикленное "Načítám..." ✅
+**Этап 2 - Полная переконфигурация React Query (7508965):**
+- ✅ **main.tsx** - QueryClient defaultOptions:
+  - `refetchOnMount: false` (CRITICAL - главный виновник цикла!)
+  - `refetchOnWindowFocus: false`
+  - `staleTime: 5 * 60 * 1000` (5 минут без автоматического refetch)
+  - `gcTime: 10 * 60 * 1000` (10 минут до garbage collection)
+- ✅ **useConfig.ts**: Убран setState из queryFn (anti-pattern), переписан как context update
+- ✅ **Все useQuery hooks** (usePositions, useBridges, useConfig):
+  - Добавлены `refetchOnWindowFocus: false`, `gcTime` для всех
+  - Увеличен `staleTime` с 30сек до 5 минут (меньше refetch)
+
+**Почему это работает:**
+- `staleTime: 5min` = данные считаются "свежими" 5 минут, БЕЗ refetch
+- `refetchOnMount: false` = при ре-рендере компонента НЕ вызывается API запрос
+- `refetchOnWindowFocus: false` = при возврате в окно НЕ рефетчить
+- **Итог:** Данные кэшируются, API вызывается только по необходимости
+
+**Impact**: Полностью устранён бесконечный "Načítám..." цикл ✅
 
 #### 2️⃣ ✅ ГОТОВО: Перевёрнутая логика RFI фильтра
 **Проблема**: Codex Review перехватил инверсию логики showOnlyRFI
