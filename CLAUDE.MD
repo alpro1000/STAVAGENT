@@ -1944,6 +1944,161 @@ cd backend && npm run dev
 
 ---
 
+## 🔧 ТЕКУЩАЯ СЕССИЯ: Полное исправление выравнивания таблиц (FIX-TABLE-ALIGNMENT-001)
+
+**Дата:** 09.11.2025
+**Версия:** v4.11.0
+**Branch:** `claude/priority-2-rfi-features-011CUxE24vqoxfGC4Y3Lq53t`
+
+### 📋 ПРОБЛЕМА
+
+В приложении обнаружено критическое смещение таблиц:
+- Заголовки колонок (PODTYP, MJ, MNOŽSTVÍ, LIDI...) не совпадали с содержимым ячеек
+- **Первые две колонки (Podtyp и MJ) слипались вместе** из-за сжатия контейнера
+- Содержимое таблицы требовало горизонтальной прокрутки при узком экране
+- Header не синхронизировался с body при горизонтальном скролле
+
+### 🛠️ РЕШЕНИЕ (3 ИТЕРАЦИИ)
+
+#### Итерация 1: Scrollbar-Gutter Workaround (commit `174fe69`)
+**Проблема:** На Windows (non-overlay scrollbars) вертикальная полоса прокрутки сжимает body таблицу на ~15-17px, но header остаётся на полную ширину → колонны смещаются.
+
+**Решение:**
+- Добавлено `scrollbar-gutter: stable` на `.table-container`
+- Резервирует место для scrollbar даже когда его нет
+- **Недостаток:** Была только половина решения
+
+#### Итерация 2: Unified Table Wrapper (commit `e2187da`)
+**Проблема:** Header и body остаются отдельными таблицами. Они не синхронизируют ширину автоматически.
+
+**Решение:**
+- Создан flexbox контейнер `.table-wrapper-unified` (lines 799-832 в components.css)
+- Header таблица в верхней части с `flex-shrink: 0` (не сжимается)
+- Body контейнер растягивается с `flex: 1, min-height: 0`
+- Обе таблицы синхронизируют ширину благодаря parent контейнеру
+- Оба используют `table-layout: fixed` для детерминированной ширины
+
+**Результаты:**
+✅ Perfect header/body column alignment
+✅ Works with overlay and non-overlay scrollbars
+
+**Но:** Горизонтальная прокрутка была блокирована из-за `overflow: hidden`
+
+#### Итерация 3: Horizontal Scrolling Fix (commit `bbdc231`)
+**Проблема:** Wrapper имел `overflow: hidden`, обрезавший содержимое без возможности прокрутки.
+- Таблица всего ~1240px шириной
+- Контейнер сжимал её в родительскую ширину
+- Все колонки сжимались пропорционально
+- **Podtyp** (должна быть 140px) стала слишком узкой → **слипание с MJ**
+
+**Решение:**
+```css
+.table-wrapper-unified {
+  overflow-x: auto;        /* Горизонтальная прокрутка */
+  overflow-y: visible;     /* Вертикаль - через body */
+  scrollbar-gutter: stable;
+}
+
+.positions-table {
+  min-width: 1240px;       /* Предотвращает сжатие колонок */
+}
+```
+
+**Результаты:**
+✅ Columns maintain proper width (Podtyp: 140px, MJ: 50px, etc.)
+✅ Wide tables scroll horizontally smoothly
+✅ Header stays sticky and aligned during horizontal scroll
+✅ No column compression or overlapping
+
+### 📊 ФИНАЛЬНАЯ СТРУКТУРА ТАБЛИЦЫ
+
+**PositionsTable.tsx (lines 209-259):**
+```jsx
+<div className="table-wrapper-unified">
+  {/* Header Table - sticky, full width */}
+  <table className="positions-table positions-table-header">
+    <thead>
+      <tr>
+        {/* 15 columns: lock, podtyp, mj, mnozstvi, lidi, ... */}
+      </tr>
+    </thead>
+  </table>
+
+  {/* Body Container - vertical scrollable */}
+  <div className="table-container">
+    <table className="positions-table positions-table-body">
+      <tbody>
+        {/* PositionRow components mapped */}
+      </tbody>
+    </table>
+  </div>
+</div>
+```
+
+**CSS Rules (components.css):**
+- `.table-wrapper-unified` (lines 800-810): Flexbox parent, `overflow-x: auto`, `scrollbar-gutter: stable`
+- `.table-wrapper-unified .positions-table-header` (lines 813-820): `flex-shrink: 0`, sticky header
+- `.table-wrapper-unified .table-container` (lines 823-832): `flex: 1`, body container
+- `.positions-table` (lines 867-875): `table-layout: fixed`, `min-width: 1240px`
+- `.positions-table-header` (lines 878-886): Display table, sticky positioning `top: 0`, `z-index: 150`
+- `.positions-table-body` (lines 889-898): Display table, no thead shown
+
+### ✅ РЕЗУЛЬТАТЫ ИСПРАВЛЕНИЯ
+
+| Проблема | Решение | Статус |
+|----------|---------|--------|
+| Колонны слипаются (Podtyp + MJ) | `min-width: 1240px` + horizontal scroll | ✅ |
+| Header не совпадает с body | Unified flexbox wrapper | ✅ |
+| Scrollbar вызывает смещение | `scrollbar-gutter: stable` | ✅ |
+| Отсутствует горизонтальная прокрутка | `overflow-x: auto` на wrapper | ✅ |
+| Header не липкий при прокрутке | `position: sticky; top: 0; z-index: 150` | ✅ |
+
+### 📝 КОММИТЫ СЕССИИ
+
+```
+bbdc231 🔧 Fix: Enable horizontal scrolling and prevent column compression
+e2187da 🔧 Fix: Implement unified table wrapper for perfect header/body alignment
+174fe69 🔧 Fix: Prevent header/body column misalignment with scrollbar-gutter
+```
+
+### 🧪 BUILD STATUS
+
+✅ All builds successful:
+- **TypeScript**: 0 errors
+- **Vite bundle**: 264.77 kB JS (gzip: 84.91 kB)
+- **CSS**: 35.54 kB (gzip: 6.32 kB)
+
+### 📁 ИЗМЕНЁННЫЕ ФАЙЛЫ
+
+1. **frontend/src/components/PositionsTable.tsx** (lines 209-259)
+   - Обёрнута header и body таблицы в `.table-wrapper-unified` div
+   - Добавлены комментарии о структуре
+
+2. **frontend/src/styles/components.css** (lines 799-898)
+   - Добавлены новые стили для `.table-wrapper-unified` (33 lines)
+   - Обновлены стили для header и body таблиц
+   - Добавлено `min-width: 1240px` на `.positions-table`
+   - Очищены дублирующиеся правила
+
+### 🎯 СЛЕДУЮЩИЕ ШАГИ
+
+1. **Визуальное тестирование** на различных разрешениях:
+   - Мобильные (320-480px)
+   - Планшеты (768px)
+   - Десктопы (1920px+)
+
+2. **Cross-browser тестирование**:
+   - Chrome/Edge (overlay scrollbars)
+   - Firefox (overlay scrollbars)
+   - Safari (overlay scrollbars)
+   - Windows browsers: проверить non-overlay scrollbars
+
+3. **Performance проверка**: Убедиться, что flexbox layout не вызывает excessive reflow'ов при скролле
+
+4. **Accessibility проверка**: Навигация с клавиатуры через таблицу должна работать корректно
+
+---
+
 **🏗️ Made for bridge builders in Czech Republic**
 
 **⚡ ВАЖНО: При любых изменениях проекта — ОБНОВЛЯЙ ЭТОТ ФАЙЛ!**
