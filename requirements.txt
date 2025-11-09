@@ -87,6 +87,12 @@ alembic==1.14.0  # Database migrations
 # Redis for caching, sessions, and Pub/Sub
 redis[hiredis]==5.0.1  # Redis client with C parser for performance
 
+# ==========================================
+# CELERY - Phase 4 Backend Infrastructure
+# ==========================================
+# Celery for background task processing
+celery[redis]==5.4.0  # Task queue with Redis broker
+
 
 # Advanced Excel export
   xlsxwriter==3.2.0

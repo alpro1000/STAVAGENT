@@ -224,6 +224,42 @@ class Settings(BaseSettings):
     )
 
     # ==========================================
+    # CELERY - Phase 4 (Background Tasks)
+    # ==========================================
+    CELERY_BROKER_URL: str = Field(
+        default="redis://localhost:6379/1",
+        description="Celery broker URL (Redis database 1)"
+    )
+    CELERY_RESULT_BACKEND: str = Field(
+        default="redis://localhost:6379/1",
+        description="Celery result backend URL"
+    )
+    CELERY_TASK_TRACK_STARTED: bool = Field(
+        default=True,
+        description="Track when tasks are started"
+    )
+    CELERY_TASK_TIME_LIMIT: int = Field(
+        default=1800,
+        description="Hard time limit for tasks (30 minutes)"
+    )
+    CELERY_TASK_SOFT_TIME_LIMIT: int = Field(
+        default=1500,
+        description="Soft time limit for tasks (25 minutes)"
+    )
+    CELERY_ACCEPT_CONTENT: list[str] = Field(
+        default=["json"],
+        description="Accepted content types for Celery"
+    )
+    CELERY_TASK_SERIALIZER: str = Field(
+        default="json",
+        description="Task serialization format"
+    )
+    CELERY_RESULT_SERIALIZER: str = Field(
+        default="json",
+        description="Result serialization format"
+    )
+
+    # ==========================================
     # ENVIRONMENT
     # ==========================================
     ENVIRONMENT: str = Field(default="development", description="Environment")

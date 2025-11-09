@@ -49,7 +49,18 @@
   - ✅ Created app/core/cache.py - Caching layer with decorators
   - ✅ KnowledgeBaseCache for KROS/RTS/Perplexity caching
   - ✅ Test suite created (tests/test_redis_integration.py)
-- [ ] **Day 5 (Nov 10):** Celery queue system (background jobs)
+- [x] **Day 5 (Nov 9):** Celery queue system (background jobs) ✅
+  - ✅ Added celery[redis]==5.4.0 to requirements.txt
+  - ✅ Celery configuration in config.py (CELERY_BROKER_URL, CELERY_RESULT_BACKEND, etc.)
+  - ✅ Created app/core/celery_app.py - Celery app with Redis broker (420 lines)
+  - ✅ Created app/tasks/ structure - Background task modules
+  - ✅ Created app/tasks/pdf_tasks.py - PDF parsing tasks (200+ lines)
+  - ✅ Created app/tasks/enrichment_tasks.py - Position enrichment tasks (170+ lines)
+  - ✅ Created app/tasks/audit_tasks.py - Audit execution tasks (190+ lines)
+  - ✅ Created app/tasks/maintenance.py - Periodic maintenance tasks (220+ lines)
+  - ✅ Created app/services/task_monitor.py - Task monitoring service (270+ lines)
+  - ✅ Celery Beat schedule configured (cleanup, KB updates)
+  - ✅ Test suite created (tests/test_celery_integration.py - 30+ tests)
 
 ### 🗄️ Database Schema (Day 2 Progress)
 **10 Tables Created:**
@@ -135,6 +146,68 @@ CACHE_TTL: int     # Default cache TTL (default: 300s = 5min)
 - Tests skip gracefully if Redis not available
 - Test categories: RedisClient, SessionManager, CacheManager, KnowledgeBaseCache
 
+### 🔵 Celery Queue System (Day 5 Progress)
+**5 Core Modules Created:**
+1. ✅ **CeleryApp** (app/core/celery_app.py) - 420 lines
+   - Celery application with Redis broker
+   - Configuration from settings (broker, backend, serialization)
+   - Auto-discovery of tasks from app.tasks
+   - Signal handlers for task lifecycle (prerun, postrun, failure)
+   - Celery Beat schedule for periodic tasks
+   - Global instance: get_celery_app()
+
+2. ✅ **PDF Tasks** (app/tasks/pdf_tasks.py) - 200+ lines
+   - parse_pdf_task - Async PDF parsing with MinerU/fallback
+   - extract_positions_task - Position extraction from PDF with Claude
+   - Retry logic with exponential backoff
+   - Task status utilities
+
+3. ✅ **Enrichment Tasks** (app/tasks/enrichment_tasks.py) - 170+ lines
+   - enrich_position_task - Single position enrichment with KROS/RTS
+   - enrich_batch_task - Parallel batch processing using Celery groups
+   - Result aggregation and error handling
+
+4. ✅ **Audit Tasks** (app/tasks/audit_tasks.py) - 190+ lines
+   - audit_position_task - Multi-role AI audit (SME, ARCH, ENG, SUP)
+   - audit_project_task - Project-level audit orchestration
+   - Classification logic (GREEN/AMBER/RED)
+   - HITL detection
+
+5. ✅ **Maintenance Tasks** (app/tasks/maintenance.py) - 220+ lines
+   - cleanup_old_results - Daily cleanup of old task results
+   - update_kb_cache - 6-hour KB cache refresh
+   - cleanup_old_projects - Weekly project archival
+   - health_check - System health monitoring
+
+6. ✅ **TaskMonitor Service** (app/services/task_monitor.py) - 270+ lines
+   - Bridge between Celery tasks and BackgroundJob model
+   - Task status tracking and updates
+   - Project-level job monitoring
+   - Task cancellation support
+
+**Configuration Added (config.py):**
+```python
+CELERY_BROKER_URL: str          # Redis broker (db=1)
+CELERY_RESULT_BACKEND: str      # Redis result backend
+CELERY_TASK_TRACK_STARTED: bool # Track task start
+CELERY_TASK_TIME_LIMIT: int     # 30 min hard limit
+CELERY_TASK_SOFT_TIME_LIMIT: int # 25 min soft limit
+CELERY_ACCEPT_CONTENT: list     # ["json"]
+CELERY_TASK_SERIALIZER: str     # "json"
+CELERY_RESULT_SERIALIZER: str   # "json"
+```
+
+**Celery Beat Schedule:**
+- cleanup-old-results: Daily (24h) - Remove old task results
+- update-kb-cache: Every 6 hours - Refresh KB cache
+
+**Test Suite (tests/test_celery_integration.py):**
+- 30+ tests covering all Celery operations
+- Configuration tests (broker, serialization, time limits)
+- Task registration tests (PDF, enrichment, audit, maintenance)
+- TaskMonitor tests (status, cancellation)
+- Integration tests (require Redis, currently skipped)
+
 ### 📊 Recent Major Achievements
 - ✅ Phase 3 Week 6: Knowledge Base UI (Nov 5)
 - ✅ Competitive analysis Part 2 (Nov 6)
@@ -143,6 +216,7 @@ CACHE_TTL: int     # Default cache TTL (default: 300s = 5min)
 - ✅ Database schema migration created (Nov 7)
 - ✅ SQLAlchemy ORM models created (Nov 7)
 - ✅ Redis integration complete (Nov 7) - 3 modules, 1450+ lines
+- ✅ Celery queue system complete (Nov 9) - 6 modules, 1470+ lines
 
 ---
 
@@ -181,7 +255,7 @@ CACHE_TTL: int     # Default cache TTL (default: 300s = 5min)
 | **Backend** | FastAPI (Python 3.10+) |
 | **Database** | PostgreSQL 16 (async with SQLAlchemy 2.0 + asyncpg) |
 | **Cache** | Redis 5.0.1 with hiredis (sessions, caching, Pub/Sub) ✅ |
-| **Queue** | Celery + Redis (background jobs) - Coming Day 5 |
+| **Queue** | Celery 5.4.0 + Redis (background jobs, task scheduling) ✅ |
 | **AI** | Claude (Anthropic), GPT-4 Vision (OpenAI) |
 | **Knowledge Base** | KROS, RTS, ČSN standards (JSON files) |
 | **Migrations** | Alembic (async migrations) |
@@ -202,7 +276,7 @@ pip install -r requirements.txt
 - **Database:** SQLAlchemy 2.0.36, asyncpg, psycopg2-binary
 - **Migrations:** Alembic 1.13.1
 - **Cache:** redis[hiredis]==5.0.1 (Redis with C parser)
-- **Queue:** Celery + Redis (coming Day 5)
+- **Queue:** celery[redis]==5.4.0 (Task queue with Redis broker) ✅
 - **Testing:** pytest, pytest-asyncio
 
 **Full dependency list:** See `requirements.txt`
