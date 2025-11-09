@@ -1747,14 +1747,25 @@ cd backend && npm run dev
 **Файл**: `frontend/src/components/Header.tsx` (lines 112-139)
 **Build**: ✅ Успешно компилируется (260KB JS, 29KB CSS)
 
-#### 3️⃣ Заменить hardcoded font-sizes на переменные в KPI (В РАБОТЕ)
+#### 3️⃣ ✅ ГОТОВО: Заменить hardcoded font-sizes на переменные в KPI
 **Проблема**: KPI использует hardcoded sizes вместо CSS переменных
-**Решение**:
-- Line 1169: `.kpi-card-label` → `font-size: var(--font-size-sm);` вместо `10px`
-- Line 1180: `.kpi-card-value` → `font-size: var(--font-size-base);` вместо `14px`
-- Line 1084: `.kpi-metadata` → `font-size: var(--font-size-meta);` вместо `11px`
+**Решение РЕАЛИЗОВАНО (commit `ed69cbc`)**:
+- ✅ Line 1084: `.kpi-metadata` 11px → `var(--font-size-meta)`
+- ✅ Line 1169: `.kpi-card-label` 10px → `var(--font-size-sm)`
+- ✅ Line 1180: `.kpi-card-value` 14px → `var(--font-size-base)`
+- ✅ Line 1188: `.kpi-card-unit` 9px → `var(--font-size-xs)` (bonus)
 
 **Файл**: `frontend/src/styles/components.css`
+**Build**: ✅ Успешно компилируется (260KB JS, 29KB CSS)
+
+### ✅ PRIORITY 1 - ВСЕ ИСПРАВЛЕНИЯ ЗАВЕРШЕНЫ!
+
+**Commit history:**
+- `aaa1e90` - 🔒 Prevent deletion of beton row
+- `5823c9c` - 🔍 Add validation before snapshot creation
+- `ed69cbc` - 🎨 Replace hardcoded fonts with CSS variables
+
+**Status:** Все три критичных исправления успешно реализованы и протестированы ✅
 
 ---
 
