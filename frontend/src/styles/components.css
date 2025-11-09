@@ -1685,3 +1685,131 @@ select:focus {
   background: var(--bg-tertiary);
   border-color: var(--border-light);
 }
+
+/* ============================================
+   RESPONSIVE DESIGN - MOBILE & TABLET
+   ============================================ */
+
+/* Tablet and small screens (768px and below) */
+@media (max-width: 768px) {
+  /* KPI Grid: 4 columns → 2 columns for better mobile layout */
+  .kpi-grid-modern {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 5px;
+  }
+
+  /* KPI Card: reduce padding on mobile */
+  .kpi-card {
+    padding: 6px 4px;
+  }
+
+  /* KPI Card Label: slightly smaller on mobile */
+  .kpi-card-label {
+    font-size: var(--font-size-xs);
+    gap: 2px;
+  }
+
+  /* KPI Card Value: maintain readability on mobile */
+  .kpi-card-value {
+    font-size: var(--font-size-body);
+  }
+
+  /* KPI Float Card: reduce padding on mobile */
+  .kpi-float-card {
+    margin: 4px 8px;
+    padding: 6px 8px;
+  }
+
+  /* KPI Header: stack on mobile if needed */
+  .kpi-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  /* KPI Metadata: smaller on mobile */
+  .kpi-metadata {
+    font-size: var(--font-size-xs);
+  }
+
+  /* KPI Bridge Title: slightly smaller on mobile */
+  .kpi-bridge-title {
+    font-size: 14px;
+  }
+
+  /* KPI Formula: reduce font size on mobile */
+  .kpi-formula {
+    font-size: 9px;
+    padding: 4px 6px;
+  }
+
+  /* Header: more compact on mobile */
+  .header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Header Controls: stack better on mobile */
+  .header-controls {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* Button: smaller text on mobile */
+  .btn-primary,
+  .btn-secondary,
+  .btn-create,
+  .btn-lock,
+  .btn-success,
+  .btn-danger,
+  .btn-info,
+  .btn-restore {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  /* Table: more compact on mobile */
+  table {
+    font-size: 12px;
+  }
+
+  table th,
+  table td {
+    padding: 6px 4px;
+  }
+}
+
+/* Small phones (480px and below) */
+@media (max-width: 480px) {
+  /* KPI Grid: 1 column on very small screens */
+  .kpi-grid-modern {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  /* KPI Card: minimal padding on phones */
+  .kpi-card {
+    padding: 4px 3px;
+  }
+
+  /* KPI Float Card: very compact on phones */
+  .kpi-float-card {
+    margin: 2px 4px;
+    padding: 4px 6px;
+  }
+
+  /* Header Logo: hide text on very small screens */
+  .header-logo h1 {
+    display: none;
+  }
+
+  /* KPI Bridge Title: hide subtitle on phones */
+  .kpi-metadata {
+    display: none;
+  }
+
+  /* Formula: hide on very small screens */
+  .kpi-formula {
+    display: none;
+  }
+}
