@@ -14,7 +14,8 @@ export function useBridges() {
     queryFn: async () => {
       return await bridgesAPI.getAll();
     },
-    refetchOnMount: true
+    staleTime: 30 * 1000, // Cache for 30 seconds
+    refetchOnMount: false // Prevent infinite refetch loop
   });
 
   // Update context AFTER query succeeds, not inside queryFn
