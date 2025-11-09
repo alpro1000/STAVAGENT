@@ -1733,13 +1733,28 @@ cd backend && npm run dev
 **Файл**: `frontend/src/components/PositionRow.tsx` (lines 44-59, 234-247)
 **Build**: ✅ Успешно компилируется (259KB JS, 29KB CSS)
 
-#### 2️⃣ Validation "Objem betonu" перед snapshot (В ОЧЕРЕДИ)
+#### 2️⃣ ✅ ГОТОВО: Validation "Objem betonu" перед snapshot
 **Проблема**: Можно создать snapshot без введенного объема бетона
-**Решение**:
-- Добавить проверку перед snapshotsAPI.create()
-- Alert если sum_concrete_m3 === 0 или есть RFI warnings
+**Решение РЕАЛИЗОВАНО (commit `5823c9c`)**:
+- ✅ Добавлена проверка в handleCreateSnapshot()
+- ✅ Детектирует missing concrete volume (sum_concrete_m3 === 0)
+- ✅ Детектирует RFI warnings (позиции с проблемами)
+- ✅ Показывает детальное warning диалог с:
+  * Перечнем RFI проблем (до 3 показаны полностью)
+  * Возможностью override (user может продолжить если нужно)
+  * Guidance как исправить и создать новый snapshot
 
-**Файл**: `frontend/src/components/Header.tsx`
+**Файл**: `frontend/src/components/Header.tsx` (lines 112-139)
+**Build**: ✅ Успешно компилируется (260KB JS, 29KB CSS)
+
+#### 3️⃣ Заменить hardcoded font-sizes на переменные в KPI (В РАБОТЕ)
+**Проблема**: KPI использует hardcoded sizes вместо CSS переменных
+**Решение**:
+- Line 1169: `.kpi-card-label` → `font-size: var(--font-size-sm);` вместо `10px`
+- Line 1180: `.kpi-card-value` → `font-size: var(--font-size-base);` вместо `14px`
+- Line 1084: `.kpi-metadata` → `font-size: var(--font-size-meta);` вместо `11px`
+
+**Файл**: `frontend/src/styles/components.css`
 
 ---
 
