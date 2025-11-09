@@ -1707,6 +1707,11 @@ select:focus {
 
 /* Tablet and small screens (768px and below) */
 @media (max-width: 768px) {
+  /* Table header: adjust sticky offset for expanded KPI panel (2 columns) */
+  .positions-table-header th {
+    top: 220px;
+  }
+
   /* KPI Grid: 4 columns → 2 columns for better mobile layout */
   .kpi-grid-modern {
     grid-template-columns: repeat(2, 1fr);
@@ -1796,6 +1801,11 @@ select:focus {
 
 /* Small phones (480px and below) */
 @media (max-width: 480px) {
+  /* Table header: adjust sticky offset for fully expanded KPI panel (1 column) */
+  .positions-table-header th {
+    top: 290px;
+  }
+
   /* KPI Grid: 1 column on very small screens */
   .kpi-grid-modern {
     grid-template-columns: 1fr;
