@@ -824,8 +824,6 @@ button:disabled {
 }
 
 .positions-table th {
-  position: sticky;
-  top: 180px;
   background: var(--bg-secondary);
   color: var(--text-primary);
   font-weight: 600;
@@ -838,8 +836,24 @@ button:disabled {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  z-index: 50;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Header table - sticky positioned (outside overflow container) */
+.positions-table-header {
+  position: relative;
+  z-index: 50;
+}
+
+.positions-table-header th {
+  position: sticky;
+  top: 180px;
+  z-index: 51;
+}
+
+/* Body table - inside overflow container */
+.positions-table-body {
+  position: relative;
 }
 
 .positions-table th:last-child {
