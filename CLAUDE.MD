@@ -1758,6 +1758,32 @@ cd backend && npm run dev
 **Файл**: `frontend/src/styles/components.css`
 **Build**: ✅ Успешно компилируется (260KB JS, 29KB CSS)
 
+#### 4️⃣ ✅ ГОТОВО: Исправить sticky positioning таблицы (thead не блокирует строки)
+**Проблема**: Table header (thead) блокировал таблицу при скроллинге
+**Причина**: `position: sticky` не работает внутри контейнера с `overflow-x: auto`
+**Решение РЕАЛИЗОВАНО (commit `9599e52`)**:
+- ✅ Перемещена `<thead>` из `.table-wrapper` (overflow контейнер)
+- ✅ Создана отдельная header table `.positions-table-header` (sticky работает)
+- ✅ Body таблица остаётся в `.table-wrapper` для горизонтального скролла
+- ✅ Header и body таблицы выравнены по ширине колонок
+
+**Файл**: `frontend/src/components/PositionsTable.tsx`, `frontend/src/styles/components.css`
+**Build**: ✅ Успешно компилируется (261KB JS, 29KB CSS)
+
+#### 5️⃣ ✅ ГОТОВО: Исправить responsive table header offset
+**Проблема**: На мобилях KPI panel выше 180px, header скрывается за ней (z-index: 100 vs 50)
+**Причина**: Статический `top: 180px` не учитывает меняющуюся высоту KPI на разных экранах:
+  - Desktop (4 col): ~140px
+  - Tablet (2 col @ 768px): ~180-200px
+  - Phone (1 col @ 480px): ~240-250px
+**Решение РЕАЛИЗОВАНО (commit `b6e83ed`)**:
+- ✅ Tablet (≤768px): `top: 220px` для 2-column KPI layout
+- ✅ Phone (≤480px): `top: 290px` для 1-column KPI layout
+- ✅ Header теперь видна на всех экранах
+
+**Файл**: `frontend/src/styles/components.css` (media query overrides)
+**Build**: ✅ Успешно компилируется (261KB JS, 29KB CSS)
+
 ### ✅ PRIORITY 1 - ВСЕ ИСПРАВЛЕНИЯ ЗАВЕРШЕНЫ!
 
 **Commit history:**
@@ -1765,8 +1791,10 @@ cd backend && npm run dev
 - `5823c9c` - 🔍 Add validation before snapshot creation
 - `ed69cbc` - 🎨 Replace hardcoded fonts with CSS variables
 - `1b52fde` - 📝 Document Priority 1 completion
+- `9599e52` - 🔧 Fix table header sticky positioning (move thead outside overflow)
+- `b6e83ed` - 🔧 Fix table header sticky offset for responsive breakpoints
 
-**Status:** Все три критичных исправления успешно реализованы и протестированы ✅
+**Status:** Все пять критичных исправлений успешно реализованы и протестированы ✅
 
 ---
 
