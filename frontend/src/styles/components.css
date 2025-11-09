@@ -796,32 +796,41 @@ button:disabled {
   color: var(--text-primary);
 }
 
-/* Table Wrapper for Horizontal Scrolling */
-.table-wrapper {
+/* Table Container for Body (scrollable) - bottom border and scrollbar styling */
+.table-container {
   width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
-  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--border-light);
-  border-radius: 6px;
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  overflow-x: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  max-height: calc(100vh - 400px);
 }
 
-.table-wrapper::-webkit-scrollbar {
+.table-container::-webkit-scrollbar {
   height: 6px;
+  width: 6px;
 }
 
-.table-wrapper::-webkit-scrollbar-track {
+.table-container::-webkit-scrollbar-track {
   background: var(--bg-tertiary);
   border-radius: 3px;
 }
 
-.table-wrapper::-webkit-scrollbar-thumb {
+.table-container::-webkit-scrollbar-thumb {
   background: var(--border-default);
   border-radius: 3px;
 }
 
-.table-wrapper::-webkit-scrollbar-thumb:hover {
+.table-container::-webkit-scrollbar-thumb:hover {
   background: var(--text-secondary);
+}
+
+/* Header table styling - top border and rounded */
+.positions-table-header {
+  border: 1px solid var(--border-light);
+  border-radius: 6px 6px 0 0;
 }
 
 /* SINGLE Positions Table */
@@ -837,6 +846,18 @@ button:disabled {
   position: sticky;
   top: 195px;
   z-index: 150;
+  display: table-header-group;
+}
+
+/* POSITIONS-TABLE-BODY: Body table (inside overflow) - no thead, only tbody */
+.positions-table-body {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+}
+
+.positions-table-body thead {
+  display: none;
 }
 
 .positions-table th {

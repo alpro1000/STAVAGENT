@@ -206,30 +206,34 @@ export default function PositionsTable() {
                   isLocked={isLocked}
                 />
 
-                {/* SINGLE Table with Sticky Header */}
-                <div className="table-wrapper">
-                  <table className="positions-table">
-                    <thead>
-                      <tr>
-                        {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
-                        <th className="col-podtyp" title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
-                        <th className="col-mj" title="Měrná jednotka: m³, m², kg">MJ</th>
-                        <th className="col-mnozstvi" title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
-                        <th className="col-lidi" title="Počet lidí v partě (EDITABLE)">Lidi</th>
-                        <th className="col-cena-hod" title="Hodinová sazba v CZK (EDITABLE)">Kč/hod</th>
-                        <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">Hod/den</th>
-                        <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Den</th>
-                        <th className="col-hod-celkem" title="Celkový počet hodin = lidi × hod/den × den">Hod celkem</th>
-                        <th className="col-kc-celkem" title="Celková cena = hod celkem × Kč/hod">Kč celkem</th>
-                        <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Množství (Beton m³)">
-                          Kč/m³ ⭐
-                        </th>
-                        <th className="col-kros-jc" title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS JC</th>
-                        <th className="col-kros-celkem" title="KROS celkem = KROS JC × Beton m³">KROS celkem</th>
-                        <th className="col-rfi" title="Request For Information - problémové položky">RFI</th>
-                        <th className="col-akce" title="Akce: Smazat / Info">Akce</th>
-                      </tr>
-                    </thead>
+                {/* Header Table - OUTSIDE overflow, STICKY */}
+                <table className="positions-table positions-table-header">
+                  <thead>
+                    <tr>
+                      {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
+                      <th className="col-podtyp" title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
+                      <th className="col-mj" title="Měrná jednotka: m³, m², kg">MJ</th>
+                      <th className="col-mnozstvi" title="Množství v měrných jednotkách (EDITABLE)">Množství</th>
+                      <th className="col-lidi" title="Počet lidí v partě (EDITABLE)">Lidi</th>
+                      <th className="col-cena-hod" title="Hodinová sazba v CZK (EDITABLE)">Kč/hod</th>
+                      <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">Hod/den</th>
+                      <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Den</th>
+                      <th className="col-hod-celkem" title="Celkový počet hodin = lidi × hod/den × den">Hod celkem</th>
+                      <th className="col-kc-celkem" title="Celková cena = hod celkem × Kč/hod">Kč celkem</th>
+                      <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Množství (Beton m³)">
+                        Kč/m³ ⭐
+                      </th>
+                      <th className="col-kros-jc" title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS JC</th>
+                      <th className="col-kros-celkem" title="KROS celkem = KROS JC × Beton m³">KROS celkem</th>
+                      <th className="col-rfi" title="Request For Information - problémové položky">RFI</th>
+                      <th className="col-akce" title="Akce: Smazat / Info">Akce</th>
+                    </tr>
+                  </thead>
+                </table>
+
+                {/* Body Table - INSIDE overflow, scrollable - NO THEAD */}
+                <div className="table-container">
+                  <table className="positions-table positions-table-body">
                     <tbody>
                       {partPositions.length > 0 ? (
                         partPositions.map((position) => (
@@ -243,7 +247,7 @@ export default function PositionsTable() {
                             color: 'var(--text-secondary)',
                             fontStyle: 'italic'
                           }}>
-                            Zatím žádné řádky. Klikněte na "➕ Přidat řádek" níže.
+                            Zatім žádné řádky. Klikněte na "➕ Přidat řádek" níže.
                           </td>
                         </tr>
                       )}
