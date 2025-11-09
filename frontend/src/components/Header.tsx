@@ -5,10 +5,8 @@
 import { useState, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
-import { usePositions } from '../hooks/usePositions';
-import { useSnapshots } from '../hooks/useSnapshots';
 import { useExports } from '../hooks/useExports';
-import { exportAPI, uploadAPI, snapshotsAPI } from '../services/api';
+import { exportAPI, uploadAPI } from '../services/api';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 import CreateBridgeForm from './CreateBridgeForm';
 import ExportHistory from './ExportHistory';
@@ -21,14 +19,11 @@ interface HeaderProps {
 }
 
 export default function Header({ isDark, toggleTheme }: HeaderProps) {
-  const { selectedBridge, setSelectedBridge, bridges, positions, headerKPI } = useAppContext();
+  const { selectedBridge, setSelectedBridge, bridges } = useAppContext();
   const { refetch: refetchBridges } = useBridges();
-  const { refetch: refetchPositions } = usePositions(selectedBridge);
-  const { refetchActiveSnapshot } = useSnapshots(selectedBridge);
   const { saveXLSX, isSaving } = useExports();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
-  const [isCreatingSnapshot, setIsCreatingSnapshot] = useState(false);
   const [showExportHistory, setShowExportHistory] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -128,73 +123,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     }
   };
 
-  const handleCreateSnapshot = async () => {
-    if (!selectedBridge || !positions.length || !headerKPI) {
-      alert('Nejdříve vyberte most s pozicemi');
-      return;
-    }
-
-    // CRITICAL VALIDATION: Check for missing concrete volume and RFI warnings
-    const rfiIssues = positions.filter(p => p.has_rfi);
-    const hasNoConcrete = headerKPI.sum_concrete_m3 === 0 || headerKPI.sum_concrete_m3 === undefined;
-
-    if (hasNoConcrete || rfiIssues.length > 0) {
-      let warningMessage = '⚠️ UPOZORNĚNÍ: Projekt má problémy!\n\n';
-
-      if (hasNoConcrete) {
-        warningMessage += '❌ Chybí objem betonu!\n   Zadejte "Objem betonu celkem" v PartHeader.\n\n';
-      }
-
-      if (rfiIssues.length > 0) {
-        warningMessage += `⚠️ Nalezeno ${rfiIssues.length} RFI problém(ů):\n`;
-        rfiIssues.slice(0, 3).forEach(p => {
-          warningMessage += `   • ${p.subtype}: ${p.rfi_message || 'Problem'}\n`;
-        });
-        if (rfiIssues.length > 3) {
-          warningMessage += `   ... a další ${rfiIssues.length - 3}\n\n`;
-        } else {
-          warningMessage += '\n';
-        }
-      }
-
-      warningMessage += 'Chcete přesto pokračovat a zafixovat data?\n(Later můžete vytvořit nový snapshot s opravami)';
-
-      const confirmWithWarnings = window.confirm(warningMessage);
-      if (!confirmWithWarnings) return;
-    }
-
-    const confirmCreate = window.confirm(
-      'Zafixovat aktuální stav?\n\nVšechna pole budou uzamčena a nelze je upravovat.\n\nChcete pokračovat?'
-    );
-
-    if (!confirmCreate) return;
-
-    setIsCreatingSnapshot(true);
-
-    try {
-      await snapshotsAPI.create({
-        bridge_id: selectedBridge,
-        positions,
-        header_kpi: headerKPI,
-        description: 'Snapshot vytvořen',
-        snapshot_name: `Snapshot ${new Date().toLocaleString('cs-CZ')}`
-      });
-
-      alert('✅ Snapshot vytvořen! Data jsou nyní zafixována.');
-
-      // Refetch positions and active snapshot to reflect lock state
-      await Promise.all([
-        refetchPositions(),
-        refetchActiveSnapshot()
-      ]);
-    } catch (error: any) {
-      console.error('Error creating snapshot:', error);
-      alert(`Chyba při vytváření snapshot: ${error.message}`);
-    } finally {
-      setIsCreatingSnapshot(false);
-    }
-  };
-
   return (
     <header className="header">
       <div className="header-logo">
@@ -232,15 +160,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
         <button className="btn-secondary" onClick={handleUploadClick}>
           💾 Nahrát XLSX
-        </button>
-
-        <button
-          className="btn-lock"
-          onClick={handleCreateSnapshot}
-          disabled={!selectedBridge || isCreatingSnapshot}
-          title="Zafixovat aktuální stav (snapshot)"
-        >
-          🔒 {isCreatingSnapshot ? 'Fixuji...' : 'Zafixovat'}
         </button>
 
         <input
