@@ -806,6 +806,7 @@ button:disabled {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   max-height: calc(100vh - 400px);
+  scrollbar-gutter: stable;
 }
 
 .table-container::-webkit-scrollbar {
