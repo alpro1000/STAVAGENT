@@ -7,9 +7,11 @@ import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
+import { useExports } from '../hooks/useExports';
 import { exportAPI, uploadAPI, snapshotsAPI } from '../services/api';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 import CreateBridgeForm from './CreateBridgeForm';
+import ExportHistory from './ExportHistory';
 
 interface HeaderProps {
   isDark: boolean;
@@ -23,9 +25,11 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const { refetch: refetchBridges } = useBridges();
   const { refetch: refetchPositions } = usePositions(selectedBridge);
   const { refetchActiveSnapshot } = useSnapshots(selectedBridge);
+  const { saveXLSX, isSaving } = useExports();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [isCreatingSnapshot, setIsCreatingSnapshot] = useState(false);
+  const [showExportHistory, setShowExportHistory] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -59,7 +63,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
   const handleExport = async (format: 'xlsx' | 'csv') => {
     if (!selectedBridge) {
-      alert('Please select a bridge first');
+      alert('Nejdříve vyberte most');
       return;
     }
 
@@ -78,7 +82,28 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       URL.revokeObjectURL(url);
     } catch (error: any) {
       console.error('Export error:', error);
-      alert(`Export failed: ${error.message}`);
+      alert(`Chyba při exportu: ${error.message}`);
+    }
+  };
+
+  const handleSaveToServer = async () => {
+    if (!selectedBridge) {
+      alert('Nejdříve vyberte most');
+      return;
+    }
+
+    try {
+      saveXLSX(selectedBridge, {
+        onSuccess: (data: any) => {
+          alert(`✅ Export uložen na server!\nSoubor: ${data.filename}\nVelikost: ${data.size} KB`);
+        },
+        onError: (error: any) => {
+          alert(`❌ Chyba při ukládání: ${error.message}`);
+        }
+      });
+    } catch (error: any) {
+      console.error('Save error:', error);
+      alert(`Chyba při ukládání: ${error.message}`);
     }
   };
 
@@ -241,6 +266,23 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         >
           📥 Export CSV
         </button>
+
+        <button
+          className="btn-success"
+          onClick={handleSaveToServer}
+          disabled={!selectedBridge || isSaving}
+          title="Uložit export na server"
+        >
+          💾 {isSaving ? 'Ukládám...' : 'Uložit na server'}
+        </button>
+
+        <button
+          className="btn-secondary"
+          onClick={() => setShowExportHistory(true)}
+          title="Zobrazit historii exportů"
+        >
+          📋 Historie exportů
+        </button>
       </div>
 
       {/* Modal for Create Bridge Form */}
@@ -251,6 +293,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
               onSuccess={handleCreateSuccess}
               onCancel={() => setShowCreateForm(false)}
             />
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Export History */}
+      {showExportHistory && (
+        <div className="modal-overlay" onClick={() => setShowExportHistory(false)}>
+          <div className="modal-content-large" onClick={(e) => e.stopPropagation()}>
+            <ExportHistory onClose={() => setShowExportHistory(false)} />
           </div>
         </div>
       )}

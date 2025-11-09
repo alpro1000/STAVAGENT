@@ -96,6 +96,30 @@ export const exportAPI = {
     return data;
   },
 
+  saveXLSX: async (bridgeId: string) => {
+    const { data } = await api.post('/api/export/save', null, {
+      params: { bridge_id: bridgeId }
+    });
+    return data;
+  },
+
+  getExportsList: async () => {
+    const { data } = await api.get('/api/export/list');
+    return data.exports;
+  },
+
+  downloadExport: async (filename: string): Promise<Blob> => {
+    const { data } = await api.get(`/api/export/download/${filename}`, {
+      responseType: 'blob'
+    });
+    return data;
+  },
+
+  deleteExport: async (filename: string) => {
+    const { data } = await api.delete(`/api/export/${filename}`);
+    return data;
+  },
+
   exportCSV: async (bridgeId: string, delimiter = ';'): Promise<Blob> => {
     const { data } = await api.get('/api/export/csv', {
       params: { bridge_id: bridgeId, delimiter },
