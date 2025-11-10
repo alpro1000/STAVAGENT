@@ -83,7 +83,7 @@ export default function FormulaDetailsModal({ position, isOpen, onClose }: Props
             <table className="details-table">
               <tbody>
                 <tr>
-                  <td className="label formula-label">Hod. Σ (Celk. hodin):</td>
+                  <td className="label formula-label">Celk.hod. (Celkový počet hodin):</td>
                   <td className="value">
                     {formatNumber(position.labor_hours, 1)} h
                   </td>
@@ -92,7 +92,7 @@ export default function FormulaDetailsModal({ position, isOpen, onClose }: Props
                   </td>
                 </tr>
                 <tr>
-                  <td className="label formula-label">Kč Σ (Celk. cena):</td>
+                  <td className="label formula-label">Celk.Kč (Celková cena):</td>
                   <td className="value">
                     {formatNumber(position.cost_czk, 2)} CZK
                   </td>
@@ -128,7 +128,7 @@ export default function FormulaDetailsModal({ position, isOpen, onClose }: Props
                   </td>
                 </tr>
                 <tr>
-                  <td className="label formula-label">KROS JC (Jednotková):</td>
+                  <td className="label formula-label">KROS j. (Jednotková):</td>
                   <td className="value">
                     {formatNumber(position.kros_unit_czk, 0)} CZK
                   </td>
