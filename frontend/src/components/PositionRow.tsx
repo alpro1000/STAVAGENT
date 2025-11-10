@@ -18,6 +18,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
 
   const [editedFields, setEditedFields] = useState<Partial<Position>>({});
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingFieldsRef = useRef<Set<string>>(new Set());
 
   const handleFieldChange = (field: keyof Position, value: any) => {
     if (isLocked) return;
@@ -37,16 +38,31 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       clearTimeout(debounceTimerRef.current);
     }
 
+    // Track which fields we're about to send
+    const fieldsToSend = { ...editedFields };
+    pendingFieldsRef.current = new Set(Object.keys(fieldsToSend));
+
     // Set new timer for debounced update
     debounceTimerRef.current = setTimeout(() => {
       updatePositions([
         {
           id: position.id,
-          ...editedFields
+          ...fieldsToSend
         }
       ]);
-      setEditedFields({});
+
+      // FIX: Only clear sent fields, preserve any new edits made during debounce
+      setEditedFields((prev) => {
+        const updated = { ...prev };
+        // Remove only the fields we just sent
+        pendingFieldsRef.current.forEach(field => {
+          delete updated[field as keyof Position];
+        });
+        return updated;
+      });
+
       debounceTimerRef.current = null;
+      pendingFieldsRef.current.clear();
     }, 300); // 300ms debounce
   };
 
