@@ -139,6 +139,19 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
         continue;
       }
 
+      // EXCLUDE: Prefabricated elements (prefa dilce)
+      const isPrefab = fullText.includes('prefa') ||
+                       fullText.includes('prefabricated') ||
+                       fullText.includes('dilce') ||
+                       fullText.includes('díl') ||
+                       fullText.includes('hotov') ||
+                       fullText.includes('prefab');
+
+      if (isPrefab) {
+        logger.info(`Skipping prefab item: ${itemName || partName}`);
+        continue;
+      }
+
       // Determine subtype
       let subtype = 'beton'; // default
       if (subtypeRaw) {
