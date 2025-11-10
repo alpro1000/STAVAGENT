@@ -2118,6 +2118,172 @@ select:focus {
    RESPONSIVE DESIGN - MOBILE & TABLET
    ============================================ */
 
+/* Tablet screens (769px to 1024px) - Optimized layout */
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Layout: Better use of tablet space */
+  .app-container {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0;
+  }
+
+  /* Sidebar: Keep visible, compact */
+  .sidebar {
+    width: 250px;
+    padding: 12px 8px;
+  }
+
+  .sidebar-title {
+    font-size: 14px;
+    padding: 12px 8px;
+  }
+
+  .bridge-item,
+  .project-header {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  /* Header: Optimize button layout */
+  .header {
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: 12px 16px;
+  }
+
+  .header-logo h1 {
+    font-size: 18px;
+  }
+
+  /* Header controls: More room for buttons */
+  .header-controls {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* Buttons: Larger for touch */
+  .btn-primary,
+  .btn-secondary,
+  .btn-create,
+  .btn-lock,
+  .btn-success,
+  .btn-danger,
+  .btn-info,
+  .btn-restore {
+    font-size: 13px;
+    padding: 10px 14px;
+    min-height: 40px;
+  }
+
+  /* Table: Better readability on tablet */
+  .positions-table {
+    font-size: 13px;
+  }
+
+  .positions-table th,
+  .positions-table td {
+    padding: 8px 6px;
+  }
+
+  /* KPI Grid: 3 columns for tablet landscape */
+  .kpi-grid-modern {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+
+  /* KPI Card: Better spacing */
+  .kpi-card {
+    padding: 10px 8px;
+  }
+
+  .kpi-card-label {
+    font-size: 12px;
+    gap: 4px;
+  }
+
+  .kpi-card-value {
+    font-size: 15px;
+  }
+
+  .kpi-card-unit {
+    font-size: 10px;
+  }
+
+  /* KPI Float Card: Better spacing */
+  .kpi-float-card {
+    margin: 6px 10px;
+    padding: 8px 10px;
+  }
+
+  /* KPI Bridge Title: Readable on tablet */
+  .kpi-bridge-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  /* KPI Header: Better layout */
+  .kpi-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  /* KPI Metadata: Visible on tablet */
+  .kpi-metadata {
+    font-size: 12px;
+    display: block;
+  }
+
+  /* KPI Formula: Smaller but visible */
+  .kpi-formula {
+    font-size: 11px;
+    padding: 6px 8px;
+  }
+
+  /* Modals: Better size for tablet */
+  .modal-content-large {
+    max-width: 85vw;
+    max-height: 85vh;
+    width: 100%;
+  }
+
+  /* Input fields: Better for touch */
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 16px;
+    padding: 10px 12px;
+    min-height: 40px;
+  }
+
+  /* Part header: Tablet layout */
+  .part-header {
+    padding: 12px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  /* Dropdown: Better positioning */
+  .otskp-dropdown {
+    max-height: 300px;
+  }
+
+  .otskp-dropdown-item {
+    padding: 10px 12px;
+    min-height: 44px;
+  }
+
+  /* Toggle buttons: Larger for touch */
+  .toggle-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+    min-width: 44px;
+    min-height: 40px;
+  }
+}
+
 /* Tablet and small screens (768px and below) */
 @media (max-width: 768px) {
   /* Table header: adjust sticky offset for expanded KPI panel (2 columns) */
