@@ -129,34 +129,27 @@ router.get('/search', (req, res) => {
 });
 
 /**
- * GET /api/otskp/:code
- * Get specific OTSKP code by exact code
+ * GET /api/otskp/count
+ * Get total count of OTSKP codes in database
+ * Must be before /:code route to avoid being caught by catch-all pattern
  */
-router.get('/:code', (req, res) => {
+router.get('/count', (req, res) => {
   try {
-    const { code } = req.params;
-
-    const result = db.prepare(`
-      SELECT code, name, unit, unit_price, specification
-      FROM otskp_codes
-      WHERE code = ?
-    `).get(code);
-
-    if (!result) {
-      return res.status(404).json({ error: 'OTSKP code not found' });
-    }
-
-    res.json(result);
-
+    const result = db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
+    res.json({
+      count: result.count,
+      message: result.count === 0 ? 'No OTSKP codes loaded. Use POST /api/otskp/import to load them.' : 'OTSKP codes available'
+    });
   } catch (error) {
-    console.error('Error fetching OTSKP code:', error);
-    res.status(500).json({ error: 'Failed to fetch OTSKP code' });
+    console.error('Error getting OTSKP count:', error);
+    res.status(500).json({ error: 'Failed to get OTSKP count' });
   }
 });
 
 /**
  * GET /api/otskp/stats
  * Get OTSKP database statistics
+ * Must be before /:code route to avoid being caught by catch-all pattern
  */
 router.get('/stats/summary', (req, res) => {
   try {
@@ -190,19 +183,52 @@ router.get('/stats/summary', (req, res) => {
 });
 
 /**
+ * GET /api/otskp/:code
+ * Get specific OTSKP code by exact code
+ * Must be last to avoid catching other routes
+ */
+router.get('/:code', (req, res) => {
+  try {
+    const { code } = req.params;
+
+    const result = db.prepare(`
+      SELECT code, name, unit, unit_price, specification
+      FROM otskp_codes
+      WHERE code = ?
+    `).get(code);
+
+    if (!result) {
+      return res.status(404).json({ error: 'OTSKP code not found' });
+    }
+
+    res.json(result);
+
+  } catch (error) {
+    console.error('Error fetching OTSKP code:', error);
+    res.status(500).json({ error: 'Failed to fetch OTSKP code' });
+  }
+});
+
+/**
  * POST /api/otskp/import
  * Import OTSKP codes from XML file
  * Authorization required via OTSKP_IMPORT_TOKEN env variable
  */
 router.post('/import', (req, res) => {
   try {
-    // Check authorization token
+    // Check authorization token - fail closed if env var not set
+    const expectedToken = process.env.OTSKP_IMPORT_TOKEN;
+
+    if (!expectedToken) {
+      console.error('[OTSKP Import] Missing OTSKP_IMPORT_TOKEN environment variable');
+      return res.status(401).json({ error: 'OTSKP import endpoint not configured. Set OTSKP_IMPORT_TOKEN environment variable.' });
+    }
+
     const token = req.headers['x-import-token'];
-    const expectedToken = process.env.OTSKP_IMPORT_TOKEN || 'default-token-change-this';
 
     if (!token || token !== expectedToken) {
-      console.log('[OTSKP Import] Unauthorized import attempt');
-      return res.status(401).json({ error: 'Unauthorized' });
+      console.log('[OTSKP Import] Unauthorized import attempt with token:', token ? 'provided but invalid' : 'missing');
+      return res.status(401).json({ error: 'Unauthorized - invalid or missing X-Import-Token header' });
     }
 
     console.log('[OTSKP Import] Starting import...');
@@ -303,23 +329,6 @@ router.post('/import', (req, res) => {
   } catch (error) {
     console.error('[OTSKP Import] Error:', error);
     res.status(500).json({ error: 'Failed to import OTSKP codes', details: error.message });
-  }
-});
-
-/**
- * GET /api/otskp/count
- * Get total count of OTSKP codes in database
- */
-router.get('/count', (req, res) => {
-  try {
-    const result = db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
-    res.json({
-      count: result.count,
-      message: result.count === 0 ? 'No OTSKP codes loaded. Use POST /api/otskp/import to load them.' : 'OTSKP codes available'
-    });
-  } catch (error) {
-    console.error('Error getting OTSKP count:', error);
-    res.status(500).json({ error: 'Failed to get OTSKP count' });
   }
 });
 
