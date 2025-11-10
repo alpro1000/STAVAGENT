@@ -1,9 +1,11 @@
 /**
  * PartHeader - Header for a construction part with name and concrete volume
  * v4.3.2: Correct architecture - input field for concrete volume (sync with beton row)
+ * v4.4.0: Added OTSKP autocomplete search
  */
 
 import { useState, useEffect } from 'react';
+import OtskpAutocomplete from './OtskpAutocomplete';
 
 interface Props {
   itemName?: string;
@@ -65,9 +67,14 @@ export default function PartHeader({
     console.log(`🪨 PartHeader.handleBetonChange: ${e.target.value}`);
   };
 
-  const handleOtskpBlur = () => {
-    if (editedOtskp !== otskpCode) {
-      onOtskpCodeUpdate(editedOtskp);
+  const handleOtskpSelect = (code: string, name: string) => {
+    console.log(`🏗️ OTSKP selected: ${code} - ${name}`);
+    setEditedOtskp(code);
+    onOtskpCodeUpdate(code);
+    // Optionally update item name if it's empty
+    if (!editedName || editedName.trim() === '') {
+      setEditedName(name);
+      onItemNameUpdate(name);
     }
   };
 
@@ -108,19 +115,13 @@ export default function PartHeader({
           <span style={{ marginLeft: '4px' }}>m³</span>
         </div>
 
-        {/* OTSKP Code input */}
+        {/* OTSKP Code autocomplete */}
         <div className="concrete-param">
           <label>OTSKP kód:</label>
-          <input
-            type="text"
-            className="concrete-input"
+          <OtskpAutocomplete
             value={editedOtskp}
-            onChange={(e) => setEditedOtskp(e.target.value)}
-            onBlur={handleOtskpBlur}
+            onSelect={handleOtskpSelect}
             disabled={isLocked}
-            placeholder="např. 113472"
-            title="OTSKP kód z katalogu pro tento prvek konstrukce"
-            style={{ width: '140px', fontFamily: 'monospace' }}
           />
         </div>
       </div>
