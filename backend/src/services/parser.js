@@ -24,32 +24,17 @@ export async function parseXLSX(filePath) {
 
     logger.info(`Parsed ${rawData.length} rows from ${sheetName}`);
 
-    // Extract unique bridge IDs
-    const bridges = new Set();
-    rawData.forEach(row => {
-      // Try to find bridge_id in various column names
-      const possibleBridgeFields = [
-        'Poř. číslo', 'Por cislo', 'bridge_id', 'Bridge ID',
-        'SO', 'Název objektu', 'Objekt'
-      ];
+    // Extract bridges (SO codes) and their concrete quantities
+    const bridges = extractBridgesFromData(rawData);
 
-      for (const field of possibleBridgeFields) {
-        if (row[field]) {
-          const value = String(row[field]).trim();
-          if (value.match(/SO\d+/i)) {
-            bridges.add(value);
-            break;
-          }
-        }
-      }
-    });
+    logger.info(`Found ${bridges.length} bridges:`, bridges);
 
     // Suggest column mapping based on headers
     const headers = Object.keys(rawData[0] || {});
     const mapping_suggestions = suggestMapping(headers);
 
     return {
-      bridges: Array.from(bridges),
+      bridges,
       raw_rows: rawData,
       mapping_suggestions,
       headers
@@ -61,17 +46,91 @@ export async function parseXLSX(filePath) {
 }
 
 /**
+ * Extract bridges from raw data
+ * Looks for SO codes in any column and tries to find concrete quantities
+ */
+function extractBridgesFromData(rawData) {
+  const bridges = [];
+  const foundSOCodes = new Set();
+
+  // First pass: find all SO codes
+  const soCodeMap = new Map(); // SO code -> row index
+
+  rawData.forEach((row, index) => {
+    // Search ALL columns for SO code pattern
+    for (const [key, value] of Object.entries(row)) {
+      if (value && typeof value === 'string') {
+        const match = value.match(/SO\s*(\d+)/i);
+        if (match) {
+          const soCode = `SO ${match[1]}`.trim();
+          if (!foundSOCodes.has(soCode)) {
+            foundSOCodes.add(soCode);
+            soCodeMap.set(soCode, index);
+            logger.info(`Found bridge: ${soCode} at row ${index}`);
+          }
+          break; // Found SO code in this row, move to next row
+        }
+      }
+    }
+  });
+
+  // Second pass: try to find concrete quantities for each bridge
+  foundSOCodes.forEach(soCode => {
+    const startRow = soCodeMap.get(soCode);
+    let concrete_m3 = 0;
+
+    // Look in next 20 rows for concrete quantity
+    for (let i = startRow; i < Math.min(startRow + 20, rawData.length); i++) {
+      const row = rawData[i];
+      for (const [key, value] of Object.entries(row)) {
+        if (value && typeof value === 'string') {
+          // Look for "beton", "betón", "m3", "m³"
+          const lowerValue = value.toLowerCase();
+          if (lowerValue.includes('beton') || lowerValue.includes('betón')) {
+            // Check next column for quantity
+            const keys = Object.keys(row);
+            const currentIndex = keys.indexOf(key);
+            if (currentIndex >= 0 && currentIndex < keys.length - 1) {
+              const nextValue = row[keys[currentIndex + 1]];
+              if (nextValue) {
+                concrete_m3 = parseNumber(nextValue);
+                if (concrete_m3 > 0) {
+                  logger.info(`Found concrete for ${soCode}: ${concrete_m3} m³`);
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+      if (concrete_m3 > 0) break;
+    }
+
+    bridges.push({
+      bridge_id: soCode,
+      object_name: soCode,
+      concrete_m3: concrete_m3,
+      span_length_m: 0,
+      deck_width_m: 0,
+      pd_weeks: 0
+    });
+  });
+
+  return bridges;
+}
+
+/**
  * Suggest column mapping based on common patterns
  */
 function suggestMapping(headers) {
   const mapping = {};
 
   const patterns = {
-    bridge_id: ['Poř. číslo', 'Por cislo', 'SO', 'Bridge ID', 'Objekt'],
-    part_name: ['Název položky', 'Nazev polozky', 'Part', 'Element', 'Položka'],
-    subtype: ['Podtyp', 'Typ práce', 'Type', 'Subtype'],
+    bridge_id: ['Poř. číslo', 'Por cislo', 'SO', 'Bridge ID', 'Objekt', 'Stavba'],
+    part_name: ['Název položky', 'Nazev polozky', 'Part', 'Element', 'Položka', 'Popis'],
+    subtype: ['Podtyp', 'Typ práce', 'Type', 'Subtype', 'Druh'],
     unit: ['MJ', 'Jednotka', 'Unit'],
-    qty: ['Množství', 'Mnozstvi', 'Quantity', 'Qty'],
+    qty: ['Množství', 'Mnozstvi', 'Quantity', 'Qty', 'Počet'],
     crew_size: ['lidi', 'Lidi', 'Crew', 'People', 'Počet lidí'],
     wage_czk_ph: ['Kč/hod', 'Kc/hod', 'Wage', 'Hourly rate'],
     shift_hours: ['Hod/den', 'Hours', 'Shift'],

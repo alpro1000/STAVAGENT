@@ -9,6 +9,7 @@ import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX } from '../services/parser.js';
 import { logger } from '../utils/logger.js';
+import db from '../db/init.js';
 
 const router = express.Router();
 
@@ -55,14 +56,58 @@ router.post('/', upload.single('file'), async (req, res) => {
     // Parse XLSX
     const parseResult = await parseXLSX(filePath);
 
+    // Auto-create bridges in database
+    const createdBridges = [];
+    for (const bridge of parseResult.bridges) {
+      try {
+        // Check if bridge already exists
+        const existing = db.prepare('SELECT id FROM bridges WHERE bridge_id = ?').get(bridge.bridge_id);
+
+        if (!existing) {
+          const bridgeId = uuidv4();
+          db.prepare(`
+            INSERT INTO bridges (id, bridge_id, object_name, span_length_m, deck_width_m, pd_weeks)
+            VALUES (?, ?, ?, ?, ?, ?)
+          `).run(
+            bridgeId,
+            bridge.bridge_id,
+            bridge.object_name,
+            bridge.span_length_m || 0,
+            bridge.deck_width_m || 0,
+            bridge.pd_weeks || 0
+          );
+
+          logger.info(`Created bridge: ${bridge.bridge_id} (${bridgeId})`);
+          createdBridges.push({
+            id: bridgeId,
+            bridge_id: bridge.bridge_id,
+            object_name: bridge.object_name,
+            concrete_m3: bridge.concrete_m3 || 0
+          });
+        } else {
+          logger.info(`Bridge already exists: ${bridge.bridge_id}`);
+          createdBridges.push({
+            id: existing.id,
+            bridge_id: bridge.bridge_id,
+            object_name: bridge.object_name,
+            concrete_m3: bridge.concrete_m3 || 0,
+            note: 'Existing bridge - check if concrete quantity needs update'
+          });
+        }
+      } catch (error) {
+        logger.error(`Error creating bridge ${bridge.bridge_id}:`, error);
+      }
+    }
+
     res.json({
       import_id,
       filename: req.file.originalname,
-      bridges: parseResult.bridges,
+      bridges: createdBridges,
       mapping_suggestions: parseResult.mapping_suggestions,
       raw_rows: parseResult.raw_rows,
       row_count: parseResult.raw_rows.length,
-      status: 'pending_mapping'
+      status: 'bridges_created',
+      message: `Created ${createdBridges.length} bridges from Excel file`
     });
   } catch (error) {
     logger.error('Upload error:', error);
