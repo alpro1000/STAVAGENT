@@ -191,6 +191,7 @@ export function initDatabase() {
     CREATE INDEX IF NOT EXISTS idx_positions_part ON positions(part_name);
     CREATE INDEX IF NOT EXISTS idx_positions_subtype ON positions(subtype);
     CREATE INDEX IF NOT EXISTS idx_positions_otskp ON positions(otskp_code);
+    CREATE INDEX IF NOT EXISTS idx_otskp_code ON otskp_codes(code);
     CREATE INDEX IF NOT EXISTS idx_otskp_name ON otskp_codes(name);
   `);
 
