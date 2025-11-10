@@ -232,37 +232,52 @@ router.post('/import', (req, res) => {
     }
 
     console.log('[OTSKP Import] Starting import...');
+    console.log('[OTSKP Import] __dirname:', __dirname);
+    console.log('[OTSKP Import] process.cwd():', process.cwd());
 
     // Find OTSKP XML file
     const possiblePaths = [
-      path.join(__dirname, '../../2025_03 OTSKP.xml'),  // Local dev
-      path.join(__dirname, '../../../2025_03 OTSKP.xml'), // Production
-      '/app/2025_03 OTSKP.xml', // Render absolute
-      process.cwd() + '/2025_03 OTSKP.xml' // Current working directory
+      path.join(__dirname, '../../2025_03 OTSKP.xml'),    // Local dev: /app/2025_03 OTSKP.xml
+      path.join(__dirname, '../../..', '2025_03 OTSKP.xml'), // Production root
+      '/app/2025_03 OTSKP.xml',                            // Render root absolute
+      path.join(process.cwd(), '2025_03 OTSKP.xml'),       // Current working directory
+      '/workspace/2025_03 OTSKP.xml',                      // Render workspace path
+      '/home/2025_03 OTSKP.xml'                            // Alternative Render path
     ];
+
+    console.log('[OTSKP Import] Checking paths:', possiblePaths);
 
     let xmlPath = null;
     let xmlContent = null;
+    const checkedPaths = [];
 
     for (const p of possiblePaths) {
+      console.log(`[OTSKP Import] Checking path: ${p}`);
+      checkedPaths.push({ path: p, exists: fs.existsSync(p) });
+
       if (fs.existsSync(p)) {
         xmlPath = p;
-        console.log('[OTSKP Import] Found OTSKP XML at:', p);
+        console.log('[OTSKP Import] ✓ Found OTSKP XML at:', p);
         try {
           xmlContent = fs.readFileSync(p, 'utf-8');
-          console.log('[OTSKP Import] Read file size:', (xmlContent.length / 1024 / 1024).toFixed(2), 'MB');
+          console.log('[OTSKP Import] ✓ Read file size:', (xmlContent.length / 1024 / 1024).toFixed(2), 'MB');
           break;
         } catch (err) {
-          console.log('[OTSKP Import] Error reading file:', err.message);
+          console.error('[OTSKP Import] Error reading file at', p, ':', err.message);
+          checkedPaths[checkedPaths.length - 1].error = err.message;
         }
       }
     }
 
     if (!xmlContent) {
       console.error('[OTSKP Import] OTSKP XML file not found in any location');
+      console.error('[OTSKP Import] Paths checked:', JSON.stringify(checkedPaths, null, 2));
       return res.status(404).json({
-        error: 'OTSKP XML file not found',
-        tried: possiblePaths
+        error: 'OTSKP XML file not found. Make sure the file is deployed with the application.',
+        tried: checkedPaths,
+        cwd: process.cwd(),
+        dirname: __dirname,
+        help: 'Upload 2025_03 OTSKP.xml to the /app directory in Render or check deployment configuration'
       });
     }
 
