@@ -224,22 +224,22 @@ export default function PositionsTable() {
                     <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
-                      <th className="col-podtyp" title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Podtyp</th>
+                      <th className="col-podtyp" title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Typ</th>
                       <th className="col-mj" title="Měrná jednotka: m³, m², kg">MJ</th>
                       <th className="col-mnozstvi" title="Množství v měrných jednotkách (EDITABLE)">Mn.</th>
                       <th className="col-lidi" title="Počet lidí v partě (EDITABLE)">Ldi</th>
                       <th className="col-cena-hod" title="Hodinová sazba v CZK (EDITABLE)">Kč/h</th>
                       <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">H/d</th>
-                      <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Dn</th>
-                      <th className="col-hod-celkem" title="Celkový počet hodin = lidi × hod/den × den">Hod</th>
-                      <th className="col-kc-celkem" title="Celková cena = hod celkem × Kč/hod">Kč</th>
-                      <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč celkem / Množství (Beton m³)">
+                      <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">D</th>
+                      <th className="col-hod-celkem" title="Celkový počet hodin = Počet lidí × Hodin za směnu × Počet dní">Hod. Σ</th>
+                      <th className="col-kc-celkem" title="Celková cena v CZK = Hod. Σ × Kč/h">Kč Σ</th>
+                      <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Kč Σ ÷ Objem betonu">
                         Kč/m³ ⭐
                       </th>
-                      <th className="col-kros-jc" title="KROS jednotková cena = ceil(Kč/m³ / 50) × 50">KROS</th>
-                      <th className="col-kros-celkem" title="KROS celkem = KROS JC × Beton m³">KROS Σ</th>
+                      <th className="col-kros-jc" title="KROS jednotková cena = zaokrouhleno nahoru na nejbližších 50 CZK">KROS JC</th>
+                      <th className="col-kros-celkem" title="KROS celkem = KROS JC × Objem betonu">KROS Σ</th>
                       <th className="col-rfi" title="Request For Information - problémové položky">RFI</th>
-                      <th className="col-akce" title="Akce: Smazat / Info">⚙️</th>
+                      <th className="col-akce" title="Akce se řádkem">Akce</th>
                     </tr>
                     </thead>
                     <tbody>
