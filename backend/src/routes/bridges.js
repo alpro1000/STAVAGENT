@@ -146,8 +146,8 @@ router.post('/', (req, res) => {
     const insertPosition = db.prepare(`
       INSERT INTO positions (
         id, bridge_id, part_name, item_name, subtype, unit,
-        qty, crew_size, wage_czk_ph, shift_hours, days
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     // Use transaction for atomic insert of all template positions
@@ -166,7 +166,8 @@ router.post('/', (req, res) => {
           4, // crew_size - default
           398, // wage_czk_ph - default
           10, // shift_hours - default
-          0  // days - to be filled by user
+          0,  // days - to be filled by user
+          null // otskp_code - to be filled by user
         );
       });
     });

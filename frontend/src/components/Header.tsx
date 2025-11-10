@@ -9,6 +9,7 @@ import { useExports } from '../hooks/useExports';
 import { exportAPI, uploadAPI } from '../services/api';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 import CreateBridgeForm from './CreateBridgeForm';
+import EditBridgeForm from './EditBridgeForm';
 import ExportHistory from './ExportHistory';
 
 interface HeaderProps {
@@ -24,6 +25,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const { saveXLSX, isSaving } = useExports();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   const [showExportHistory, setShowExportHistory] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -123,6 +125,13 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     }
   };
 
+  const handleEditSuccess = async () => {
+    setShowEditForm(false);
+    // Refetch bridges to update the name in the selector
+    await refetchBridges();
+    alert('✅ Most byl úspěšně aktualizován!');
+  };
+
   return (
     <header className="header">
       <div className="header-logo">
@@ -155,6 +164,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             </option>
           ))}
         </select>
+
+        <button
+          className="btn-secondary"
+          onClick={() => setShowEditForm(true)}
+          disabled={!selectedBridge}
+          title="Upravit název a metadata mostu"
+        >
+          ✏️ Upravit most
+        </button>
 
         <DaysPerMonthToggle />
 
@@ -221,6 +239,19 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         <div className="modal-overlay" onClick={() => setShowExportHistory(false)}>
           <div className="modal-content-large" onClick={(e) => e.stopPropagation()}>
             <ExportHistory onClose={() => setShowExportHistory(false)} />
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Edit Bridge Form */}
+      {showEditForm && selectedBridge && (
+        <div className="modal-overlay" onClick={() => setShowEditForm(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <EditBridgeForm
+              bridge={bridges.find(b => b.bridge_id === selectedBridge)!}
+              onSuccess={handleEditSuccess}
+              onCancel={() => setShowEditForm(false)}
+            />
           </div>
         </div>
       )}

@@ -132,8 +132,8 @@ router.post('/', (req, res) => {
     const insertStmt = db.prepare(`
       INSERT INTO positions (
         id, bridge_id, part_name, item_name, subtype, unit, qty, qty_m3_helper,
-        crew_size, wage_czk_ph, shift_hours, days
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        crew_size, wage_czk_ph, shift_hours, days, otskp_code
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     const insertMany = db.transaction((positions) => {
@@ -151,7 +151,8 @@ router.post('/', (req, res) => {
           pos.crew_size || 4,
           pos.wage_czk_ph || 398,
           pos.shift_hours || 10,
-          pos.days || 0
+          pos.days || 0,
+          pos.otskp_code || null
         );
       }
     });
