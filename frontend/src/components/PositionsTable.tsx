@@ -136,9 +136,9 @@ export default function PositionsTable() {
         bridge_id: selectedBridge,
         part_name: partName,
         item_name: '',
-        subtype: 'jiné', // Default subtype: "Other"
-        unit: 'ks',
-        qty: 1,
+        subtype: 'beton', // Default: beton (concrete work)
+        unit: 'M3',
+        qty: 0,
         crew_size: 4,
         wage_czk_ph: 398,
         shift_hours: 10,
