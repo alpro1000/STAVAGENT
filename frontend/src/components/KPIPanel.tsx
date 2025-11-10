@@ -46,7 +46,7 @@ export default function KPIPanel() {
           <button
             className={`btn-lock-kpi ${isLocked ? 'locked' : 'unlocked'}`}
             onClick={handleCreateSnapshot}
-            disabled={isCreating}
+            disabled={isCreating || isLocked}
             title={isLocked ? "Data jsou zafixována (snapshot vytvořen)" : "Zafixovat aktuální stav (vytvořit snapshot)"}
           >
             {isLocked ? (
