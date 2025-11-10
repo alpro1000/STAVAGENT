@@ -147,7 +147,11 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           {isDark ? '☀️' : '🌙'}
         </button>
 
-        <button className="btn-create" onClick={() => setShowCreateForm(true)}>
+        <button
+          className="btn-create"
+          onClick={() => setShowCreateForm(true)}
+          title="Vytvořit nový most s prázdnými pozicemi"
+        >
           ➕ Nový most
         </button>
 
@@ -196,7 +200,11 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           🗑️ Smazat most
         </button>
 
-        <button className="btn-secondary" onClick={handleUploadClick}>
+        <button
+          className="btn-secondary"
+          onClick={handleUploadClick}
+          title="Nahrát Excel soubor s pozicemi mostů"
+        >
           💾 Nahrát XLSX
         </button>
 
@@ -212,6 +220,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           className="btn-success"
           onClick={() => handleExport('xlsx')}
           disabled={!selectedBridge}
+          title="Exportovat aktuální pozice do Excel souboru"
         >
           📥 Export XLSX
         </button>
@@ -220,6 +229,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           className="btn-secondary"
           onClick={() => handleExport('csv')}
           disabled={!selectedBridge}
+          title="Exportovat aktuální pozice do CSV souboru"
         >
           📥 Export CSV
         </button>
