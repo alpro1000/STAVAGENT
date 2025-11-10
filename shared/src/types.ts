@@ -78,7 +78,8 @@ export interface HeaderKPI {
 
 export interface Bridge {
   bridge_id: string;
-  object_name: string;            // Наименование объекта (например: "Dálnice D1")
+  project_name?: string;          // Stavba (Project): "D6 Žalmanov – Knínice, VD – ZDS, bez cen"
+  object_name: string;            // Objekt (Bridge): "SO 204 - Most na D6 přes biokoridor v km 3,340"
   element_count: number;
   concrete_m3: number;
   sum_kros_czk: number;

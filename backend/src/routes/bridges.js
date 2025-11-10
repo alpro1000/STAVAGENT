@@ -16,6 +16,7 @@ router.get('/', (req, res) => {
     const bridgesWithStats = db.prepare(`
       SELECT
         b.bridge_id,
+        b.project_name,
         b.object_name,
         b.span_length_m,
         b.deck_width_m,
@@ -27,8 +28,8 @@ router.get('/', (req, res) => {
         COALESCE(SUM(p.kros_total_czk), 0) as sum_kros_czk
       FROM bridges b
       LEFT JOIN positions p ON b.bridge_id = p.bridge_id
-      GROUP BY b.bridge_id, b.object_name, b.span_length_m, b.deck_width_m, b.pd_weeks, b.created_at, b.updated_at
-      ORDER BY b.created_at DESC
+      GROUP BY b.bridge_id, b.project_name, b.object_name, b.span_length_m, b.deck_width_m, b.pd_weeks, b.created_at, b.updated_at
+      ORDER BY b.project_name, b.created_at DESC
     `).all();
 
     res.json(bridgesWithStats);
@@ -76,10 +77,10 @@ router.get('/:bridge_id', (req, res) => {
 // POST create new bridge manually
 router.post('/', (req, res) => {
   try {
-    const { bridge_id, object_name, span_length_m, deck_width_m, pd_weeks } = req.body;
+    const { bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks } = req.body;
 
-    if (!bridge_id || !object_name) {
-      return res.status(400).json({ error: 'bridge_id and object_name are required' });
+    if (!bridge_id) {
+      return res.status(400).json({ error: 'bridge_id is required' });
     }
 
     // Check if bridge already exists
@@ -90,9 +91,16 @@ router.post('/', (req, res) => {
 
     // Insert new bridge
     db.prepare(`
-      INSERT INTO bridges (bridge_id, object_name, span_length_m, deck_width_m, pd_weeks)
-      VALUES (?, ?, ?, ?, ?)
-    `).run(bridge_id, object_name, span_length_m || null, deck_width_m || null, pd_weeks || null);
+      INSERT INTO bridges (bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `).run(
+      bridge_id,
+      project_name || null,
+      object_name || bridge_id,
+      span_length_m || null,
+      deck_width_m || null,
+      pd_weeks || null
+    );
 
     // Create template positions with default values (11 parts from audit)
     const templatePositions = [
@@ -186,7 +194,7 @@ router.post('/', (req, res) => {
 router.put('/:bridge_id', (req, res) => {
   try {
     const { bridge_id } = req.params;
-    const { object_name, span_length_m, deck_width_m, pd_weeks } = req.body;
+    const { project_name, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3 } = req.body;
 
     const existing = db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge_id);
     if (!existing) {
@@ -196,13 +204,15 @@ router.put('/:bridge_id', (req, res) => {
     // Update
     db.prepare(`
       UPDATE bridges
-      SET object_name = COALESCE(?, object_name),
+      SET project_name = COALESCE(?, project_name),
+          object_name = COALESCE(?, object_name),
           span_length_m = COALESCE(?, span_length_m),
           deck_width_m = COALESCE(?, deck_width_m),
           pd_weeks = COALESCE(?, pd_weeks),
+          concrete_m3 = COALESCE(?, concrete_m3),
           updated_at = CURRENT_TIMESTAMP
       WHERE bridge_id = ?
-    `).run(object_name, span_length_m, deck_width_m, pd_weeks, bridge_id);
+    `).run(project_name, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3, bridge_id);
 
     res.json({ success: true, bridge_id });
   } catch (error) {
