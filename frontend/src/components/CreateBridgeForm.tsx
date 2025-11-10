@@ -12,6 +12,7 @@ interface CreateBridgeFormProps {
 }
 
 export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFormProps) {
+  const [projectName, setProjectName] = useState('');
   const [objectName, setObjectName] = useState('');
   const [bridgeId, setBridgeId] = useState('');
   const [spanLength, setSpanLength] = useState('');
@@ -24,8 +25,8 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
     e.preventDefault();
     setError('');
 
-    if (!objectName.trim() || !bridgeId.trim()) {
-      setError('Název objektu a číslo mostu jsou povinné');
+    if (!bridgeId.trim()) {
+      setError('Číslo mostu je povinné');
       return;
     }
 
@@ -34,7 +35,8 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
     try {
       await createBridge({
         bridge_id: bridgeId.trim(),
-        object_name: objectName.trim(),
+        project_name: projectName.trim() || undefined,
+        object_name: objectName.trim() || bridgeId.trim(),
         span_length_m: spanLength ? parseFloat(spanLength) : undefined,
         deck_width_m: deckWidth ? parseFloat(deckWidth) : undefined,
         pd_weeks: pdWeeks ? parseFloat(pdWeeks) : undefined,
@@ -55,12 +57,12 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <label>
-            Název objektu *
+            Číslo mostu (Bridge ID) *
             <input
               type="text"
-              value={objectName}
-              onChange={(e) => setObjectName(e.target.value)}
-              placeholder="například: Dálnice D1"
+              value={bridgeId}
+              onChange={(e) => setBridgeId(e.target.value)}
+              placeholder="např: SO201, SO202..."
               required
               disabled={isSubmitting}
               autoFocus
@@ -70,15 +72,33 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
 
         <div className="form-row">
           <label>
-            Číslo mostu *
+            Stavba (Project)
             <input
               type="text"
-              value={bridgeId}
-              onChange={(e) => setBridgeId(e.target.value)}
-              placeholder="například: SO201"
-              required
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              placeholder="např: D6 Žalmanov – Knínice, VD – ZDS, bez cen"
               disabled={isSubmitting}
             />
+            <small style={{ color: '#666', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
+              Název projektu - ke kterému patří více mostů
+            </small>
+          </label>
+        </div>
+
+        <div className="form-row">
+          <label>
+            Objekt (Bridge Name)
+            <input
+              type="text"
+              value={objectName}
+              onChange={(e) => setObjectName(e.target.value)}
+              placeholder="např: SO 204 - Most na D6 přes biokoridor v km 3,340"
+              disabled={isSubmitting}
+            />
+            <small style={{ color: '#666', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
+              Název конкретного моста (опционально, по умолчанию = Bridge ID)
+            </small>
           </label>
         </div>
 

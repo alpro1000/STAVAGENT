@@ -14,6 +14,7 @@ interface EditBridgeFormProps {
 }
 
 export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBridgeFormProps) {
+  const [projectName, setProjectName] = useState(bridge.project_name || '');
   const [objectName, setObjectName] = useState(bridge.object_name || '');
   const [spanLength, setSpanLength] = useState(bridge.span_length_m?.toString() || '');
   const [deckWidth, setDeckWidth] = useState(bridge.deck_width_m?.toString() || '');
@@ -24,6 +25,7 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
 
   useEffect(() => {
     // Update form if bridge prop changes
+    setProjectName(bridge.project_name || '');
     setObjectName(bridge.object_name || '');
     setSpanLength(bridge.span_length_m?.toString() || '');
     setDeckWidth(bridge.deck_width_m?.toString() || '');
@@ -35,16 +37,12 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
     e.preventDefault();
     setError('');
 
-    if (!objectName.trim()) {
-      setError('Název objektu je povinný');
-      return;
-    }
-
     setIsSubmitting(true);
 
     try {
       await bridgesAPI.update(bridge.bridge_id, {
-        object_name: objectName.trim(),
+        project_name: projectName.trim() || undefined,
+        object_name: objectName.trim() || bridge.bridge_id,
         span_length_m: spanLength ? parseFloat(spanLength) : undefined,
         deck_width_m: deckWidth ? parseFloat(deckWidth) : undefined,
         pd_weeks: pdWeeks ? parseFloat(pdWeeks) : undefined,
@@ -66,16 +64,34 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
       <form onSubmit={handleSubmit}>
         <div className="form-row">
           <label>
-            Název objektu (Stavba/Objekt) *
+            Stavba (Project)
+            <input
+              type="text"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+              placeholder="např: D6 Žalmanov – Knínice, VD – ZDS, bez cen"
+              disabled={isSubmitting}
+              autoFocus
+            />
+            <small style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
+              Název projektu - ke kterému patří více mostů
+            </small>
+          </label>
+        </div>
+
+        <div className="form-row">
+          <label>
+            Objekt (Bridge Name)
             <input
               type="text"
               value={objectName}
               onChange={(e) => setObjectName(e.target.value)}
-              placeholder="např: D6 Žalmanov – Knínice, SO 204 - Most přes biokoridor"
-              required
+              placeholder="např: SO 204 - Most na D6 přes biokoridor v km 3,340"
               disabled={isSubmitting}
-              autoFocus
             />
+            <small style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
+              Název конкретного моста (опционально, по умолчанию = Bridge ID)
+            </small>
           </label>
         </div>
 

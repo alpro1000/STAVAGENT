@@ -86,6 +86,14 @@ export function initDatabase() {
     db.exec("ALTER TABLE positions ADD COLUMN otskp_code TEXT");
   }
 
+  // Migration: Add project_name column to bridges if it doesn't exist
+  const bridgeColumns = db.prepare("PRAGMA table_info(bridges)").all();
+  const hasProjectName = bridgeColumns.some(col => col.name === 'project_name');
+  if (!hasProjectName) {
+    db.exec("ALTER TABLE bridges ADD COLUMN project_name TEXT DEFAULT ''");
+    console.log('[MIGRATION] Added project_name column to bridges table');
+  }
+
   // Snapshots table
   db.exec(`
     CREATE TABLE IF NOT EXISTS snapshots (
