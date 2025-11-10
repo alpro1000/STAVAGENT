@@ -26,7 +26,7 @@ export const bridgesAPI = {
     return data;
   },
 
-  create: async (params: { bridge_id: string; object_name: string; span_length_m?: number; deck_width_m?: number; pd_weeks?: number }): Promise<void> => {
+  create: async (params: { bridge_id: string; project_name?: string; object_name?: string; span_length_m?: number; deck_width_m?: number; pd_weeks?: number }): Promise<void> => {
     await api.post('/api/bridges', params);
   },
 
