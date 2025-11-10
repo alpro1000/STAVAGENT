@@ -1,14 +1,15 @@
 /**
  * WorkTypeSelector - Select work type when adding a new position row
- * Types: beton, bednění, výztuž, oboustranné, jiné (custom)
+ * Types: beton, bednění, výztuž, oboustranné (opěry), jiné (custom)
  */
 
 import { useState } from 'react';
+import type { Subtype, Unit } from '@monolit/shared';
 
 interface WorkType {
-  value: string;
+  value: Subtype;
   label: string;
-  unit: string;
+  unit: Unit;
   icon: string;
 }
 
@@ -16,17 +17,17 @@ const WORK_TYPES: WorkType[] = [
   { value: 'beton', label: 'Betonování', unit: 'M3', icon: '🧱' },
   { value: 'bednění', label: 'Bednění', unit: 'm2', icon: '🪵' },
   { value: 'výztuž', label: 'Výztuž', unit: 't', icon: '⚙️' },
-  { value: 'oboustranné', label: 'Oboustranné bednění', unit: 'm2', icon: '📐' },
+  { value: 'oboustranné (opěry)', label: 'Oboustranné bednění', unit: 'm2', icon: '📐' },
   { value: 'jiné', label: 'Jiné (vlastní práce)', unit: 'ks', icon: '➕' }
 ];
 
 interface Props {
-  onSelect: (subtype: string, unit: string) => void;
+  onSelect: (subtype: Subtype, unit: Unit) => void;
   onCancel: () => void;
 }
 
 export default function WorkTypeSelector({ onSelect, onCancel }: Props) {
-  const [selectedType, setSelectedType] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<Subtype | null>(null);
 
   const handleSelect = (type: WorkType) => {
     setSelectedType(type.value);
