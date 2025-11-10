@@ -40,21 +40,40 @@ Monolit Planner is a comprehensive planning tool designed for bridge constructio
      - 729 CZK/m³ → 750 CZK (KROS)
      - 1079 CZK/m³ → 1100 CZK (KROS)
 
-3. **Duration Calculation** ⭐ NEW
+3. **Duration Calculation**
    - **Months**: `sum_kros_total_czk / (avg_crew × avg_wage × avg_shift × days_per_month)`
    - **Weeks**: `estimated_months × days_per_month / 7`
    - **Toggle**: 30 days (continuous) or 22 days (working days)
 
-4. **RFI System**
+4. **OTSKP Integration** ⭐ NEW
+   - **17,904 construction codes** from Czech OTSKP catalog
+   - **Autocomplete search** by code or name
+   - **Auto-fill position names** from catalog
+   - **Two-level structure**: Bridge parts (with OTSKP) → Work positions
+
+5. **Work Type Management** ⭐ NEW
+   - **Visual selector** for work types: beton, bednění, výztuž, oboustranné (opěry), jiné
+   - **Smart defaults**: Each type has predefined unit (M3, m2, t, ks)
+   - **Dual creation modes**:
+     - Type 1: Add bridge parts (ZÁKLADY, ŘÍMSY) with OTSKP search
+     - Type 2: Add work rows (betonování, bednění) with work type selector
+
+6. **Project Hierarchy** ⭐ NEW
+   - **Collapsible folders** by project_name
+   - **Visual organization**: Project → Bridges → Bridge ID
+   - **Quick navigation** with expand/collapse
+
+7. **RFI System**
    - Highlights missing critical data (but doesn't block calculations)
    - Warnings for:
      - Missing concrete volume reference
      - Empty days field
      - Unmapped columns
 
-5. **Formula Transparency**
+8. **Formula Transparency**
    - Every number shows clear formula on hover
    - All calculations are traceable
+   - Tooltips on all interactive elements
 
 ### 🎨 Design
 
@@ -84,11 +103,23 @@ monolit-planner/
 │
 ├── frontend/          # React + TypeScript + Vite
 │   ├── src/
-│   │   ├── components/  # UI components
-│   │   ├── hooks/       # React Query hooks
-│   │   ├── services/    # API client
-│   │   ├── context/     # Global state
-│   │   ├── styles/      # CSS (concrete + orange theme)
+│   │   ├── components/     # UI components
+│   │   │   ├── Header.tsx              # Main header with bridge selector
+│   │   │   ├── Sidebar.tsx             # Project hierarchy sidebar
+│   │   │   ├── PositionsTable.tsx      # Main table with positions
+│   │   │   ├── PositionRow.tsx         # Editable table row
+│   │   │   ├── PartHeader.tsx          # Part header with OTSKP
+│   │   │   ├── KPIPanel.tsx            # KPI metrics panel
+│   │   │   ├── WorkTypeSelector.tsx    # Modal: Select work type ⭐ NEW
+│   │   │   ├── NewPartModal.tsx        # Modal: Create part with OTSKP ⭐ NEW
+│   │   │   ├── OtskpAutocomplete.tsx   # OTSKP search autocomplete
+│   │   │   ├── SnapshotBadge.tsx       # Snapshot lock indicator
+│   │   │   ├── DaysPerMonthToggle.tsx  # 30/22 days toggle
+│   │   │   └── ...other components
+│   │   ├── hooks/          # React Query hooks
+│   │   ├── services/       # API client
+│   │   ├── context/        # Global state
+│   │   ├── styles/         # CSS (concrete + orange theme)
 │   │   └── pages/
 │   ├── vite.config.ts
 │   └── package.json
