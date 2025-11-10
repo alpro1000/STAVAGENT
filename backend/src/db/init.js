@@ -6,6 +6,7 @@ import Database from 'better-sqlite3';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
+import { normalizeForSearch } from '../utils/text.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -181,9 +182,47 @@ export function initDatabase() {
       unit TEXT NOT NULL,
       unit_price REAL NOT NULL,
       specification TEXT,
+      search_name TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
   `);
+
+  // Migration: ensure search_name column exists (for diacritic-insensitive search)
+  const otskpColumns = db.prepare("PRAGMA table_info(otskp_codes)").all();
+  const hasSearchName = otskpColumns.some(col => col.name === 'search_name');
+  if (!hasSearchName) {
+    db.exec("ALTER TABLE otskp_codes ADD COLUMN search_name TEXT");
+  }
+
+  // Backfill search_name for existing records if needed
+  const missingSearchName = db.prepare(`
+    SELECT COUNT(*) as count
+    FROM otskp_codes
+    WHERE search_name IS NULL OR search_name = ''
+  `).get();
+
+  if (missingSearchName.count > 0) {
+    const rows = db.prepare(`
+      SELECT code, name
+      FROM otskp_codes
+      WHERE search_name IS NULL OR search_name = ''
+    `).all();
+
+    const updateStmt = db.prepare(`
+      UPDATE otskp_codes
+      SET search_name = ?
+      WHERE code = ?
+    `);
+
+    const updateMany = db.transaction((items) => {
+      for (const item of items) {
+        updateStmt.run(normalizeForSearch(item.name), item.code);
+      }
+    });
+
+    updateMany(rows);
+    console.log(`[MIGRATION] Backfilled search_name for ${rows.length} OTSKP codes`);
+  }
 
   // Create indexes
   db.exec(`
@@ -193,6 +232,7 @@ export function initDatabase() {
     CREATE INDEX IF NOT EXISTS idx_positions_otskp ON positions(otskp_code);
     CREATE INDEX IF NOT EXISTS idx_otskp_code ON otskp_codes(code);
     CREATE INDEX IF NOT EXISTS idx_otskp_name ON otskp_codes(name);
+    CREATE INDEX IF NOT EXISTS idx_otskp_search_name ON otskp_codes(search_name);
   `);
 
   return db;
