@@ -42,6 +42,13 @@ const upload = multer({
 });
 
 /**
+ * Normalize bridge code for comparison (e.g., "SO  200" -> "SO 200")
+ */
+function normalizeBridgeCode(code) {
+  return code.trim().replace(/\s+/g, ' ').toUpperCase();
+}
+
+/**
  * Convert raw Excel rows to position objects for a specific bridge
  * Extracts real data from Excel instead of using templates
  */
@@ -49,14 +56,16 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
   const positions = [];
   let currentBridgeRows = [];
   let foundBridge = false;
+  const normalizedBridgeId = normalizeBridgeCode(bridgeId);
 
   // First pass: find all rows for this bridge
   for (let i = 0; i < rawRows.length; i++) {
     const row = rawRows[i];
 
-    // Check if this row contains the bridge ID
-    const rowText = Object.values(row).join(' ').toUpperCase();
-    if (rowText.includes(bridgeId.toUpperCase())) {
+    // Check if this row contains the bridge ID (exact match)
+    const rowText = Object.values(row).join(' ');
+    const soMatch = rowText.match(/SO\s*\d+/i);
+    if (soMatch && normalizeBridgeCode(soMatch[0]) === normalizedBridgeId) {
       foundBridge = true;
       currentBridgeRows = [];
       continue;
@@ -64,11 +73,15 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
 
     // If we found the bridge, collect rows until we hit the next bridge or end
     if (foundBridge) {
-      // Check if we hit another SO code (next bridge)
+      // Check if we hit another SO code (next bridge) - EXACT comparison, not substring
       const hasAnotherSO = Object.values(row).some(val => {
         if (val && typeof val === 'string') {
           const match = val.match(/SO\s*\d+/i);
-          return match && !match[0].toUpperCase().includes(bridgeId.toUpperCase());
+          if (match) {
+            const foundSO = normalizeBridgeCode(match[0]);
+            // Return true if this is a DIFFERENT bridge (exact comparison)
+            return foundSO !== normalizedBridgeId;
+          }
         }
         return false;
       });
