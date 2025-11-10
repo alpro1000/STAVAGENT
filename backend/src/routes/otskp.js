@@ -18,7 +18,10 @@ router.get('/search', (req, res) => {
   try {
     const { q, limit = 20 } = req.query;
 
+    console.log('[OTSKP Search] Received request:', { q, limit });
+
     if (!q || q.trim().length < 2) {
+      console.log('[OTSKP Search] Query too short:', q);
       return res.status(400).json({
         error: 'Search query must be at least 2 characters'
       });
@@ -27,6 +30,7 @@ router.get('/search', (req, res) => {
     const searchLimit = Math.min(parseInt(limit) || 20, 100);
     const searchQuery = q.trim();
     const searchQueryUpper = searchQuery.toUpperCase();
+    console.log('[OTSKP Search] Searching for:', { searchQuery, searchQueryUpper, limit: searchLimit });
 
     // Search by code (exact or prefix) or name (LIKE)
     // Using UPPER() to make search case-insensitive for UTF-8 characters (Czech diacritics)
@@ -50,6 +54,7 @@ router.get('/search', (req, res) => {
       searchLimit
     );
 
+    console.log('[OTSKP Search] Found results:', results.length);
     res.json({
       query: searchQuery,
       count: results.length,
@@ -57,7 +62,7 @@ router.get('/search', (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error searching OTSKP codes:', error);
+    console.error('[OTSKP Search] Error:', error);
     res.status(500).json({ error: 'Failed to search OTSKP codes' });
   }
 });
