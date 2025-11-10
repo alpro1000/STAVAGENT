@@ -17,6 +17,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { db, initDatabase } from '../src/db/init.js';
+import { normalizeForSearch } from '../src/utils/text.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -75,12 +76,16 @@ function parseOtskpXml(xmlContent) {
     }
 
     // Add valid item
+    const code = codeMatch[1].trim();
+    const name = nameMatch[1].trim();
+
     items.push({
-      code: codeMatch[1].trim(),
-      name: nameMatch[1].trim(),
+      code,
+      name,
       unit: unitMatch[1].trim(),
       unit_price: parseFloat(priceMatch[1].trim()),
-      specification: specMatch ? specMatch[1].trim() : null
+      specification: specMatch ? specMatch[1].trim() : null,
+      searchName: normalizeForSearch(name)
     });
     validCount++;
   }
@@ -138,8 +143,8 @@ async function importOtskpCodes() {
   // Insert items
   console.log('💾 Inserting OTSKP codes into database...');
   const insertStmt = db.prepare(`
-    INSERT INTO otskp_codes (code, name, unit, unit_price, specification)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
+    VALUES (?, ?, ?, ?, ?, ?)
   `);
 
   const insertMany = db.transaction((items) => {
@@ -150,7 +155,8 @@ async function importOtskpCodes() {
           item.name,
           item.unit,
           item.unit_price,
-          item.specification
+          item.specification,
+          item.searchName
         );
       } catch (error) {
         console.error(`   ⚠️  Failed to insert code ${item.code}: ${error.message}`);
