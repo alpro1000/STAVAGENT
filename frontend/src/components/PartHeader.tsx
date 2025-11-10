@@ -8,20 +8,25 @@ import { useState, useEffect } from 'react';
 interface Props {
   itemName?: string;
   betonQuantity: number;
+  otskpCode?: string;
   onItemNameUpdate: (itemName: string) => void;
   onBetonQuantityUpdate: (quantity: number) => void;
+  onOtskpCodeUpdate: (code: string) => void;
   isLocked: boolean;
 }
 
 export default function PartHeader({
   itemName,
   betonQuantity,
+  otskpCode,
   onItemNameUpdate,
   onBetonQuantityUpdate,
+  onOtskpCodeUpdate,
   isLocked
 }: Props) {
   const [editedName, setEditedName] = useState(itemName || '');
   const [editedBeton, setEditedBeton] = useState(betonQuantity.toString());
+  const [editedOtskp, setEditedOtskp] = useState(otskpCode || '');
 
   // Sync state when props change (two-way binding)
   useEffect(() => {
@@ -32,6 +37,10 @@ export default function PartHeader({
     setEditedBeton(betonQuantity.toString());
     console.log(`🪨 PartHeader useEffect: betonQuantity changed to ${betonQuantity}, syncing state`);
   }, [betonQuantity]);
+
+  useEffect(() => {
+    setEditedOtskp(otskpCode || '');
+  }, [otskpCode]);
 
   const handleNameBlur = () => {
     if (editedName !== itemName) {
@@ -54,6 +63,12 @@ export default function PartHeader({
   const handleBetonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedBeton(e.target.value);
     console.log(`🪨 PartHeader.handleBetonChange: ${e.target.value}`);
+  };
+
+  const handleOtskpBlur = () => {
+    if (editedOtskp !== otskpCode) {
+      onOtskpCodeUpdate(editedOtskp);
+    }
   };
 
   return (
@@ -91,6 +106,22 @@ export default function PartHeader({
             title="Zadejte celkový objem betonu v m³ - HLAVNÍ PARAMETR PRVKU"
           />
           <span style={{ marginLeft: '4px' }}>m³</span>
+        </div>
+
+        {/* OTSKP Code input */}
+        <div className="concrete-param">
+          <label>OTSKP kód:</label>
+          <input
+            type="text"
+            className="concrete-input"
+            value={editedOtskp}
+            onChange={(e) => setEditedOtskp(e.target.value)}
+            onBlur={handleOtskpBlur}
+            disabled={isLocked}
+            placeholder="např. 113472"
+            title="OTSKP kód z katalogu pro tento prvek konstrukce"
+            style={{ width: '140px', fontFamily: 'monospace' }}
+          />
         </div>
       </div>
     </div>

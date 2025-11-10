@@ -19,6 +19,7 @@ import exportRoutes from './src/routes/export.js';
 import mappingRoutes from './src/routes/mapping.js';
 import configRoutes from './src/routes/config.js';
 import snapshotsRoutes from './src/routes/snapshots.js';
+import otskpRoutes from './src/routes/otskp.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -85,6 +86,7 @@ app.use('/api/export', exportRoutes);
 app.use('/api/mapping', mappingRoutes);
 app.use('/api/config', configRoutes);
 app.use('/api/snapshots', snapshotsRoutes);
+app.use('/api/otskp', otskpRoutes);
 
 // 404 handler
 app.use((req, res) => {
