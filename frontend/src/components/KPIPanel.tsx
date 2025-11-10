@@ -4,9 +4,10 @@
 
 import { useAppContext } from '../context/AppContext';
 import { useCreateSnapshot } from '../hooks/useCreateSnapshot';
+import DaysPerMonthToggle from './DaysPerMonthToggle';
 
 export default function KPIPanel() {
-  const { headerKPI, selectedBridge, daysPerMonth } = useAppContext();
+  const { headerKPI, selectedBridge, daysPerMonth, activeSnapshot } = useAppContext();
   const { handleCreateSnapshot, isCreating } = useCreateSnapshot();
 
   if (!selectedBridge || !headerKPI) {
@@ -23,6 +24,9 @@ export default function KPIPanel() {
     return num.toFixed(decimals).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   };
 
+  // Check if current data is locked (has active snapshot)
+  const isLocked = activeSnapshot !== null;
+
   return (
     <div className="kpi-float-card">
       <div className="kpi-header">
@@ -36,14 +40,22 @@ export default function KPIPanel() {
             {headerKPI.pd_weeks && ` | PD: ${headerKPI.pd_weeks} týdnů`}
           </p>
         </div>
-        <button
-          className="btn-lock-kpi"
-          onClick={handleCreateSnapshot}
-          disabled={isCreating}
-          title="Zafixovat aktuální stav (snapshot)"
-        >
-          🔒 {isCreating ? 'Fixuji...' : 'Zafixovat'}
-        </button>
+
+        <div className="kpi-header-controls">
+          <DaysPerMonthToggle />
+          <button
+            className={`btn-lock-kpi ${isLocked ? 'locked' : 'unlocked'}`}
+            onClick={handleCreateSnapshot}
+            disabled={isCreating}
+            title={isLocked ? "Data jsou zafixována (snapshot vytvořen)" : "Zafixovat aktuální stav (vytvořit snapshot)"}
+          >
+            {isLocked ? (
+              <>🔒 Zafixováno</>
+            ) : (
+              <>{isCreating ? '🔄 Fixuji...' : '🔓 Zafixovat'}</>
+            )}
+          </button>
+        </div>
       </div>
 
       <div className="kpi-grid-modern">

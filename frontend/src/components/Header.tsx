@@ -7,7 +7,6 @@ import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
 import { exportAPI, uploadAPI, bridgesAPI } from '../services/api';
-import DaysPerMonthToggle from './DaysPerMonthToggle';
 import CreateBridgeForm from './CreateBridgeForm';
 import EditBridgeForm from './EditBridgeForm';
 import ExportHistory from './ExportHistory';
@@ -196,8 +195,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         >
           🗑️ Smazat most
         </button>
-
-        <DaysPerMonthToggle />
 
         <button className="btn-secondary" onClick={handleUploadClick}>
           💾 Nahrát XLSX

@@ -1236,6 +1236,40 @@ button:disabled {
   transform: none;
 }
 
+/* KPI Header Controls - Container for DaysToggle + Lock Button */
+.kpi-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Lock Button - Unlocked State (orange/warning) */
+.btn-lock-kpi.unlocked {
+  background: var(--color-warning);
+  border-color: var(--color-warning);
+  color: var(--bg-secondary);
+}
+
+.btn-lock-kpi.unlocked:hover:not(:disabled) {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+/* Lock Button - Locked State (green/success) */
+.btn-lock-kpi.locked {
+  background: var(--color-success);
+  border-color: var(--color-success);
+  color: white;
+  cursor: default;
+  pointer-events: none;
+}
+
+.btn-lock-kpi.locked:hover {
+  transform: none;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
 .kpi-bridge-title {
   font-size: 16px;
   font-weight: 600;
