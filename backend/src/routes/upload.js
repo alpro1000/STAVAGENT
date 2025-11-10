@@ -49,6 +49,52 @@ function normalizeBridgeCode(code) {
 }
 
 /**
+ * Find OTSKP code by searching for similar work name in catalog
+ * Returns best matching code or null if not found
+ */
+function findOtskpCodeByName(itemName, subtype) {
+  if (!itemName) return null;
+
+  try {
+    const searchTerms = itemName.toUpperCase();
+
+    // Build search patterns based on subtype
+    let whereClause = 'WHERE 1=1';
+
+    if (subtype === 'beton') {
+      whereClause += ` AND (UPPER(name) LIKE '%BETON%' OR UPPER(name) LIKE '%BETONOVÁNÍ%')`;
+    } else if (subtype === 'bednění') {
+      whereClause += ` AND UPPER(name) LIKE '%BEDN%'`;
+    } else if (subtype === 'výztuž') {
+      whereClause += ` AND (UPPER(name) LIKE '%VÝZTUŽ%' OR UPPER(name) LIKE '%OCEL%')`;
+    }
+
+    // Try exact substring match first
+    const keywords = itemName.split(/[\s\-\/]+/).filter(k => k.length > 3);
+    let query = `SELECT code, name FROM otskp_codes ${whereClause}`;
+
+    // Add keyword matching
+    if (keywords.length > 0) {
+      const keywordConditions = keywords.map(k => `UPPER(name) LIKE '%${k}%'`).join(' AND ');
+      query = `SELECT code, name FROM otskp_codes ${whereClause} AND (${keywordConditions})`;
+    }
+
+    query += ' LIMIT 1';
+
+    const result = db.prepare(query).get();
+    if (result) {
+      logger.info(`[OTSKP Match] "${itemName}" -> ${result.code}`);
+      return result.code;
+    }
+
+    return null;
+  } catch (error) {
+    logger.warn(`Error finding OTSKP code for "${itemName}":`, error.message);
+    return null;
+  }
+}
+
+/**
  * Convert raw Excel rows to position objects for a specific bridge
  * Extracts real data from Excel instead of using templates
  */
@@ -175,12 +221,22 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
         }
       }
 
-      // Extract OTSKP code (5-6 digits)
+      // Extract OTSKP code (5-6 digits from Excel)
       let otskpCode = null;
       if (otskpRaw) {
         const otskpMatch = String(otskpRaw).match(/\d{5,6}/);
         if (otskpMatch) {
           otskpCode = otskpMatch[0];
+          logger.info(`[OTSKP] Found code in Excel: ${otskpCode} for "${itemName}"`);
+        }
+      }
+
+      // If code not found in Excel, try to find it by work name
+      if (!otskpCode && itemName) {
+        const autoFoundCode = findOtskpCodeByName(itemName, subtype);
+        if (autoFoundCode) {
+          otskpCode = autoFoundCode;
+          logger.info(`[OTSKP Auto] Found code by name match: ${otskpCode} for "${itemName}"`);
         }
       }
 
@@ -344,6 +400,16 @@ router.post('/', upload.single('file'), async (req, res) => {
 
           positionsToInsert.forEach((pos, index) => {
             const id = `${bridge.bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${index}`;
+
+            // Try to find OTSKP code if not present
+            let otskpCode = pos.otskp_code;
+            if (!otskpCode && pos.item_name) {
+              otskpCode = findOtskpCodeByName(pos.item_name, pos.subtype);
+              if (otskpCode) {
+                logger.info(`[OTSKP Auto Template] Found code for template: ${otskpCode} - ${pos.item_name}`);
+              }
+            }
+
             insertPosition.run(
               id,
               bridge.bridge_id,
@@ -356,7 +422,7 @@ router.post('/', upload.single('file'), async (req, res) => {
               pos.wage_czk_ph || 398,
               pos.shift_hours || 10,
               pos.days || 0,
-              pos.otskp_code || null
+              otskpCode || null
             );
           });
 
