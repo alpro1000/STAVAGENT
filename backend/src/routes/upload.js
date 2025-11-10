@@ -7,7 +7,7 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
-import { parseXLSX } from '../services/parser.js';
+import { parseXLSX, parseNumber } from '../services/parser.js';
 import { logger } from '../utils/logger.js';
 import db from '../db/init.js';
 
@@ -40,6 +40,175 @@ const upload = multer({
     cb(null, true);
   }
 });
+
+/**
+ * Convert raw Excel rows to position objects for a specific bridge
+ * Extracts real data from Excel instead of using templates
+ */
+function convertRawRowsToPositions(rawRows, bridgeId) {
+  const positions = [];
+  let currentBridgeRows = [];
+  let foundBridge = false;
+
+  // First pass: find all rows for this bridge
+  for (let i = 0; i < rawRows.length; i++) {
+    const row = rawRows[i];
+
+    // Check if this row contains the bridge ID
+    const rowText = Object.values(row).join(' ').toUpperCase();
+    if (rowText.includes(bridgeId.toUpperCase())) {
+      foundBridge = true;
+      currentBridgeRows = [];
+      continue;
+    }
+
+    // If we found the bridge, collect rows until we hit the next bridge or end
+    if (foundBridge) {
+      // Check if we hit another SO code (next bridge)
+      const hasAnotherSO = Object.values(row).some(val => {
+        if (val && typeof val === 'string') {
+          const match = val.match(/SO\s*\d+/i);
+          return match && !match[0].toUpperCase().includes(bridgeId.toUpperCase());
+        }
+        return false;
+      });
+
+      if (hasAnotherSO) {
+        // Hit next bridge, stop collecting
+        break;
+      }
+
+      // Check if this row has actual data (not empty)
+      const hasData = Object.values(row).some(val => val !== null && val !== '');
+      if (hasData) {
+        currentBridgeRows.push(row);
+      }
+    }
+  }
+
+  logger.info(`Found ${currentBridgeRows.length} rows for bridge ${bridgeId}`);
+
+  // Second pass: extract positions from collected rows
+  for (const row of currentBridgeRows) {
+    try {
+      // Find column values (handle different possible column names)
+      const partName = findColumnValue(row, ['Název části konstrukce', 'Part', 'Část', 'Element']);
+      const itemName = findColumnValue(row, ['Název položky', 'Nazev polozky', 'Item', 'Položka', 'Popis']);
+      const subtypeRaw = findColumnValue(row, ['Podtyp', 'Typ práce', 'Subtype', 'Type']);
+      const unit = findColumnValue(row, ['MJ', 'Jednotka', 'Unit']);
+      const qtyRaw = findColumnValue(row, ['Množství', 'Mnozstvi', 'Quantity', 'Qty']);
+      const otskpRaw = findColumnValue(row, ['OTSKP', 'Kód', 'Code']);
+      const crewSizeRaw = findColumnValue(row, ['lidi', 'Lidi', 'Crew', 'Počet lidí']);
+      const wageRaw = findColumnValue(row, ['Kč/hod', 'Kc/hod', 'Wage']);
+      const hoursRaw = findColumnValue(row, ['Hod/den', 'Hours', 'Shift']);
+      const daysRaw = findColumnValue(row, ['den (koef 1)', 'den', 'Days', 'Dny']);
+
+      // Skip if no part name or item name
+      if (!partName && !itemName) {
+        continue;
+      }
+
+      // Filter: Only concrete-related work
+      const fullText = `${partName || ''} ${itemName || ''} ${subtypeRaw || ''}`.toLowerCase();
+      const isConcrete = fullText.includes('beton') ||
+                        fullText.includes('betón') ||
+                        fullText.includes('bednění') ||
+                        fullText.includes('výztuž') ||
+                        fullText.includes('základy') ||
+                        fullText.includes('římsy') ||
+                        fullText.includes('opěr') ||
+                        fullText.includes('pilíř') ||
+                        fullText.includes('nosn') ||
+                        fullText.includes('most') ||
+                        fullText.includes('desk');
+
+      if (!isConcrete) {
+        continue;
+      }
+
+      // Determine subtype
+      let subtype = 'beton'; // default
+      if (subtypeRaw) {
+        const subtypeLower = subtypeRaw.toLowerCase();
+        if (subtypeLower.includes('bedn') || subtypeLower.includes('formwork')) {
+          subtype = 'bednění';
+        } else if (subtypeLower.includes('výztuž') || subtypeLower.includes('reinforcement') || subtypeLower.includes('ocel')) {
+          subtype = 'výztuž';
+        } else if (subtypeLower.includes('oboustran')) {
+          subtype = 'oboustranné';
+        }
+      } else if (unit) {
+        // Infer from unit
+        const unitLower = unit.toLowerCase();
+        if (unitLower === 'm3' || unitLower === 'M3') {
+          subtype = 'beton';
+        } else if (unitLower === 'm2' || unitLower === 'm²') {
+          subtype = 'bednění';
+        } else if (unitLower === 't' || unitLower === 'kg') {
+          subtype = 'výztuž';
+        }
+      }
+
+      // Extract OTSKP code (5-6 digits)
+      let otskpCode = null;
+      if (otskpRaw) {
+        const otskpMatch = String(otskpRaw).match(/\d{5,6}/);
+        if (otskpMatch) {
+          otskpCode = otskpMatch[0];
+        }
+      }
+
+      // Parse numeric values
+      const qty = parseNumber(qtyRaw);
+      const crewSize = parseNumber(crewSizeRaw) || 4; // default 4
+      const wage = parseNumber(wageRaw) || 398; // default 398
+      const hours = parseNumber(hoursRaw) || 10; // default 10
+      const days = parseNumber(daysRaw) || 0;
+
+      // Create position object
+      const position = {
+        part_name: partName || itemName || 'Neznámá část',
+        item_name: itemName || partName || 'Neznámá položka',
+        subtype: subtype,
+        unit: unit || (subtype === 'beton' ? 'M3' : 'm2'),
+        qty: qty,
+        crew_size: crewSize,
+        wage_czk_ph: wage,
+        shift_hours: hours,
+        days: days,
+        otskp_code: otskpCode
+      };
+
+      positions.push(position);
+      logger.info(`Extracted position: ${position.part_name} - ${position.subtype} (${position.qty} ${position.unit}, OTSKP: ${otskpCode || 'N/A'})`);
+    } catch (error) {
+      logger.error('Error extracting position from row:', error);
+    }
+  }
+
+  return positions;
+}
+
+/**
+ * Find value in row by trying multiple possible column names
+ */
+function findColumnValue(row, possibleNames) {
+  for (const name of possibleNames) {
+    if (row[name] !== undefined && row[name] !== null && row[name] !== '') {
+      return row[name];
+    }
+    // Try case-insensitive match
+    const keys = Object.keys(row);
+    for (const key of keys) {
+      if (key.toLowerCase().includes(name.toLowerCase())) {
+        if (row[key] !== null && row[key] !== '') {
+          return row[key];
+        }
+      }
+    }
+  }
+  return null;
+}
 
 // POST upload XLSX
 router.post('/', upload.single('file'), async (req, res) => {
@@ -135,32 +304,44 @@ router.post('/', upload.single('file'), async (req, res) => {
 
           logger.info(`Created bridge: ${bridge.bridge_id}`);
 
-          // Create template positions for new bridge
-          templatePositions.forEach((template, index) => {
+          // Extract positions from Excel data for this bridge
+          const extractedPositions = convertRawRowsToPositions(parseResult.raw_rows, bridge.bridge_id);
+
+          // Insert extracted positions (or use templates if nothing extracted)
+          let positionsToInsert = extractedPositions;
+
+          // Fallback to templates if no positions were extracted
+          if (extractedPositions.length === 0) {
+            logger.warn(`No positions extracted from Excel for ${bridge.bridge_id}, using templates`);
+            positionsToInsert = templatePositions;
+          }
+
+          positionsToInsert.forEach((pos, index) => {
             const id = `${bridge.bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${index}`;
             insertPosition.run(
               id,
               bridge.bridge_id,
-              template.part_name,
-              template.item_name,
-              template.subtype,
-              template.unit,
-              0, // qty - to be filled by user
-              4, // crew_size - default
-              398, // wage_czk_ph - default
-              10, // shift_hours - default
-              0,  // days - to be filled by user
-              null // otskp_code - to be filled by user
+              pos.part_name,
+              pos.item_name,
+              pos.subtype,
+              pos.unit,
+              pos.qty || 0,
+              pos.crew_size || 4,
+              pos.wage_czk_ph || 398,
+              pos.shift_hours || 10,
+              pos.days || 0,
+              pos.otskp_code || null
             );
           });
 
-          logger.info(`Created ${templatePositions.length} template positions for bridge ${bridge.bridge_id}`);
+          logger.info(`Created ${positionsToInsert.length} positions for bridge ${bridge.bridge_id} (${extractedPositions.length} from Excel, ${positionsToInsert.length - extractedPositions.length} from templates)`);
 
           createdBridges.push({
             bridge_id: bridge.bridge_id,
             object_name: bridge.object_name,
             concrete_m3: bridge.concrete_m3 || 0,
-            positions_created: templatePositions.length
+            positions_created: positionsToInsert.length,
+            positions_from_excel: extractedPositions.length
           });
         } else {
           logger.info(`Bridge already exists: ${bridge.bridge_id}`);
@@ -178,6 +359,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     // Count total positions created
     const totalPositions = createdBridges.reduce((sum, b) => sum + (b.positions_created || 0), 0);
+    const totalFromExcel = createdBridges.reduce((sum, b) => sum + (b.positions_from_excel || 0), 0);
 
     res.json({
       import_id,
@@ -187,7 +369,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       raw_rows: parseResult.raw_rows,
       row_count: parseResult.raw_rows.length,
       status: 'success',
-      message: `Created ${createdBridges.length} bridges with ${totalPositions} template positions from Excel file`
+      message: `Created ${createdBridges.length} bridges with ${totalPositions} positions (${totalFromExcel} from Excel, ${totalPositions - totalFromExcel} from templates)`
     });
   } catch (error) {
     logger.error('Upload error:', error);
