@@ -131,9 +131,19 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     alert('✅ Most byl úspěšně aktualizován!');
   };
 
+  const handleLogoClick = () => {
+    // Refresh page to reset state
+    window.location.reload();
+  };
+
   return (
     <header className="header">
-      <div className="header-logo">
+      <div
+        className="header-logo"
+        onClick={handleLogoClick}
+        style={{ cursor: 'pointer' }}
+        title="Obnovit aplikaci (F5)"
+      >
         <span className="header-icon">🏗️</span>
         <h1>Monolit Planner</h1>
       </div>
@@ -147,7 +157,11 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           {isDark ? '☀️' : '🌙'}
         </button>
 
-        <button className="btn-create" onClick={() => setShowCreateForm(true)}>
+        <button
+          className="btn-create"
+          onClick={() => setShowCreateForm(true)}
+          title="Vytvořit nový most s prázdnými pozicemi"
+        >
           ➕ Nový most
         </button>
 
@@ -196,7 +210,11 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           🗑️ Smazat most
         </button>
 
-        <button className="btn-secondary" onClick={handleUploadClick}>
+        <button
+          className="btn-secondary"
+          onClick={handleUploadClick}
+          title="Nahrát Excel soubor s pozicemi mostů"
+        >
           💾 Nahrát XLSX
         </button>
 
@@ -212,6 +230,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           className="btn-success"
           onClick={() => handleExport('xlsx')}
           disabled={!selectedBridge}
+          title="Exportovat aktuální pozice do Excel souboru"
         >
           📥 Export XLSX
         </button>
@@ -220,6 +239,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           className="btn-secondary"
           onClick={() => handleExport('csv')}
           disabled={!selectedBridge}
+          title="Exportovat aktuální pozice do CSV souboru"
         >
           📥 Export CSV
         </button>

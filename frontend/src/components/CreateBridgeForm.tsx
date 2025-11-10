@@ -153,11 +153,22 @@ export default function CreateBridgeForm({ onSuccess, onCancel }: CreateBridgeFo
         )}
 
         <div className="form-actions">
-          <button type="submit" disabled={isSubmitting} className="btn-primary">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="btn-primary"
+            title="Vytvořit nový most se zadanými parametry"
+          >
             {isSubmitting ? 'Vytváření...' : 'Vytvořit most'}
           </button>
           {onCancel && (
-            <button type="button" onClick={onCancel} disabled={isSubmitting} className="btn-secondary">
+            <button
+              type="button"
+              onClick={onCancel}
+              disabled={isSubmitting}
+              className="btn-secondary"
+              title="Zavřít formulář bez uložení"
+            >
               Zrušit
             </button>
           )}

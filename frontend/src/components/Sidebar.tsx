@@ -23,6 +23,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [hoveredBridgeId, setHoveredBridgeId] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
 
   const bridgeCount = bridges.length;
 
@@ -37,6 +38,32 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       });
     }
   };
+
+  // Group bridges by project_name
+  const bridgesByProject = bridges.reduce((acc, bridge) => {
+    const projectName = bridge.project_name || 'Bez projektu';
+    if (!acc[projectName]) {
+      acc[projectName] = [];
+    }
+    acc[projectName].push(bridge);
+    return acc;
+  }, {} as Record<string, typeof bridges>);
+
+  // Toggle project expansion
+  const toggleProject = (projectName: string) => {
+    const newExpanded = new Set(expandedProjects);
+    if (newExpanded.has(projectName)) {
+      newExpanded.delete(projectName);
+    } else {
+      newExpanded.add(projectName);
+    }
+    setExpandedProjects(newExpanded);
+  };
+
+  // Expand all projects by default on first load
+  if (expandedProjects.size === 0 && Object.keys(bridgesByProject).length > 0) {
+    setExpandedProjects(new Set(Object.keys(bridgesByProject)));
+  }
 
   return (
     <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
@@ -74,24 +101,50 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 <p className="text-muted">Vytvořte nový nebo nahrajte XLSX.</p>
               </div>
             ) : (
-              <ul className="bridge-list">
-                {bridges.map((bridge) => (
-                  <li
-                    key={bridge.bridge_id}
-                    className={`bridge-item ${selectedBridge === bridge.bridge_id ? 'active' : ''}`}
-                    onClick={() => setSelectedBridge(bridge.bridge_id)}
-                    onMouseEnter={(e) => handleBridgeHover(bridge.bridge_id, e)}
-                    onMouseLeave={() => setHoveredBridgeId(null)}
-                    title={`${bridge.object_name || bridge.bridge_id} (${bridge.element_count} prvků)`}
-                  >
-                    <div className="bridge-info">
-                      <span className="bridge-name">{bridge.object_name || bridge.bridge_id}</span>
-                      <span className="bridge-id">{bridge.bridge_id}</span>
+              <div className="project-list">
+                {Object.entries(bridgesByProject).map(([projectName, projectBridges]) => {
+                  const isExpanded = expandedProjects.has(projectName);
+                  const bridgeCount = projectBridges.length;
+
+                  return (
+                    <div key={projectName} className="project-group">
+                      {/* Project Header */}
+                      <div
+                        className="project-header"
+                        onClick={() => toggleProject(projectName)}
+                        title={`${projectName} (${bridgeCount} mostů)`}
+                      >
+                        <span className="project-toggle">{isExpanded ? '▼' : '▶'}</span>
+                        <span className="project-icon">📁</span>
+                        <span className="project-name">{projectName}</span>
+                        <span className="project-count">{bridgeCount}</span>
+                      </div>
+
+                      {/* Bridge List (shown when expanded) */}
+                      {isExpanded && (
+                        <ul className="bridge-list">
+                          {projectBridges.map((bridge) => (
+                            <li
+                              key={bridge.bridge_id}
+                              className={`bridge-item ${selectedBridge === bridge.bridge_id ? 'active' : ''}`}
+                              onClick={() => setSelectedBridge(bridge.bridge_id)}
+                              onMouseEnter={(e) => handleBridgeHover(bridge.bridge_id, e)}
+                              onMouseLeave={() => setHoveredBridgeId(null)}
+                              title={`${bridge.object_name || bridge.bridge_id} (${bridge.element_count} prvků)`}
+                            >
+                              <div className="bridge-info">
+                                <span className="bridge-name">{bridge.object_name || bridge.bridge_id}</span>
+                                <span className="bridge-id">{bridge.bridge_id}</span>
+                              </div>
+                              <span className="bridge-badge">{bridge.element_count}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </div>
-                    <span className="bridge-badge">{bridge.element_count}</span>
-                  </li>
-                ))}
-              </ul>
+                  );
+                })}
+              </div>
             )}
 
             {/* Hover Tooltip for Collapsed State */}

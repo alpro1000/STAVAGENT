@@ -20,12 +20,14 @@ export default function DaysPerMonthToggle() {
       <button
         className={daysPerMonth === 30 ? 'active' : ''}
         onClick={() => handleToggle(30)}
+        title="Režim 30 dní/měsíc (nepřetržitá práce, víkendy)"
       >
         30 dní
       </button>
       <button
         className={daysPerMonth === 22 ? 'active' : ''}
         onClick={() => handleToggle(22)}
+        title="Režim 22 dní/měsíc (pracovní dny, bez víkendů)"
       >
         22 dní
       </button>

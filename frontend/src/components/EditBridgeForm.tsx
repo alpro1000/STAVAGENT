@@ -160,10 +160,21 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
         )}
 
         <div className="form-actions">
-          <button type="submit" disabled={isSubmitting} className="btn-primary">
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="btn-primary"
+            title="Uložit změny v názvu a parametrech mostu"
+          >
             {isSubmitting ? 'Ukládání...' : '💾 Uložit změny'}
           </button>
-          <button type="button" onClick={onCancel} disabled={isSubmitting} className="btn-secondary">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={isSubmitting}
+            className="btn-secondary"
+            title="Zavřít formulář bez uložení změn"
+          >
             Zrušit
           </button>
         </div>
