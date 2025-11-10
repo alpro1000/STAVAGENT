@@ -12,37 +12,24 @@ const router = express.Router();
 // GET all bridges with summary
 router.get('/', (req, res) => {
   try {
-    const bridges = db.prepare(`
+    // OPTIMIZED: Single JOIN query instead of N+1
+    const bridgesWithStats = db.prepare(`
       SELECT
-        bridge_id,
-        object_name,
-        span_length_m,
-        deck_width_m,
-        pd_weeks,
-        created_at,
-        updated_at
-      FROM bridges
-      ORDER BY created_at DESC
+        b.bridge_id,
+        b.object_name,
+        b.span_length_m,
+        b.deck_width_m,
+        b.pd_weeks,
+        b.created_at,
+        b.updated_at,
+        COUNT(p.id) as element_count,
+        COALESCE(SUM(CASE WHEN p.subtype = 'beton' THEN p.concrete_m3 ELSE 0 END), 0) as concrete_m3,
+        COALESCE(SUM(p.kros_total_czk), 0) as sum_kros_czk
+      FROM bridges b
+      LEFT JOIN positions p ON b.bridge_id = p.bridge_id
+      GROUP BY b.bridge_id, b.object_name, b.span_length_m, b.deck_width_m, b.pd_weeks, b.created_at, b.updated_at
+      ORDER BY b.created_at DESC
     `).all();
-
-    // Get aggregated data for each bridge
-    const bridgesWithStats = bridges.map(bridge => {
-      const stats = db.prepare(`
-        SELECT
-          COUNT(*) as element_count,
-          SUM(CASE WHEN subtype = 'beton' THEN concrete_m3 ELSE 0 END) as concrete_m3,
-          SUM(kros_total_czk) as sum_kros_czk
-        FROM positions
-        WHERE bridge_id = ?
-      `).get(bridge.bridge_id);
-
-      return {
-        ...bridge,
-        element_count: stats.element_count || 0,
-        concrete_m3: stats.concrete_m3 || 0,
-        sum_kros_czk: stats.sum_kros_czk || 0
-      };
-    });
 
     res.json(bridgesWithStats);
   } catch (error) {
