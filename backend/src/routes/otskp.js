@@ -3,9 +3,70 @@
  */
 
 import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import { db } from '../db/init.js';
 
 const router = express.Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+/**
+ * Parse OTSKP XML file using regex
+ */
+function parseOtskpXml(xmlContent) {
+  const items = [];
+  const errors = [];
+  let validCount = 0;
+  let invalidCount = 0;
+
+  xmlContent = xmlContent.replace(/^\uFEFF/, '');
+  const polozkaRegex = /<Polozka>([\s\S]*?)<\/Polozka>/g;
+  const matches = xmlContent.matchAll(polozkaRegex);
+
+  for (const match of matches) {
+    const polozkaContent = match[1];
+    const codeMatch = polozkaContent.match(/<znacka>(.*?)<\/znacka>/);
+    const nameMatch = polozkaContent.match(/<nazev>(.*?)<\/nazev>/);
+    const unitMatch = polozkaContent.match(/<MJ>(.*?)<\/MJ>/);
+    const priceMatch = polozkaContent.match(/<jedn_cena>(.*?)<\/jedn_cena>/);
+    const specMatch = polozkaContent.match(/<technicka_specifikace>([\s\S]*?)<\/technicka_specifikace>/);
+
+    if (!codeMatch || !codeMatch[1].trim()) {
+      invalidCount++;
+      errors.push(`Missing or empty code`);
+      continue;
+    }
+    if (!nameMatch || !nameMatch[1].trim()) {
+      invalidCount++;
+      errors.push(`Missing name for code: ${codeMatch[1]}`);
+      continue;
+    }
+    if (!unitMatch || !unitMatch[1].trim()) {
+      invalidCount++;
+      errors.push(`Missing unit for code: ${codeMatch[1]}`);
+      continue;
+    }
+    if (!priceMatch || isNaN(parseFloat(priceMatch[1].trim()))) {
+      invalidCount++;
+      errors.push(`Invalid price for code: ${codeMatch[1]}`);
+      continue;
+    }
+
+    items.push({
+      code: codeMatch[1].trim(),
+      name: nameMatch[1].trim(),
+      unit: unitMatch[1].trim(),
+      unit_price: parseFloat(priceMatch[1].trim()),
+      specification: specMatch ? specMatch[1].trim() : null
+    });
+    validCount++;
+  }
+
+  return { items, validCount, invalidCount, errors };
+}
 
 /**
  * GET /api/otskp/search
@@ -125,6 +186,140 @@ router.get('/stats/summary', (req, res) => {
   } catch (error) {
     console.error('Error fetching OTSKP stats:', error);
     res.status(500).json({ error: 'Failed to fetch OTSKP stats' });
+  }
+});
+
+/**
+ * POST /api/otskp/import
+ * Import OTSKP codes from XML file
+ * Authorization required via OTSKP_IMPORT_TOKEN env variable
+ */
+router.post('/import', (req, res) => {
+  try {
+    // Check authorization token
+    const token = req.headers['x-import-token'];
+    const expectedToken = process.env.OTSKP_IMPORT_TOKEN || 'default-token-change-this';
+
+    if (!token || token !== expectedToken) {
+      console.log('[OTSKP Import] Unauthorized import attempt');
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    console.log('[OTSKP Import] Starting import...');
+
+    // Find OTSKP XML file
+    const possiblePaths = [
+      path.join(__dirname, '../../2025_03 OTSKP.xml'),  // Local dev
+      path.join(__dirname, '../../../2025_03 OTSKP.xml'), // Production
+      '/app/2025_03 OTSKP.xml', // Render absolute
+      process.cwd() + '/2025_03 OTSKP.xml' // Current working directory
+    ];
+
+    let xmlPath = null;
+    let xmlContent = null;
+
+    for (const p of possiblePaths) {
+      if (fs.existsSync(p)) {
+        xmlPath = p;
+        console.log('[OTSKP Import] Found OTSKP XML at:', p);
+        try {
+          xmlContent = fs.readFileSync(p, 'utf-8');
+          console.log('[OTSKP Import] Read file size:', (xmlContent.length / 1024 / 1024).toFixed(2), 'MB');
+          break;
+        } catch (err) {
+          console.log('[OTSKP Import] Error reading file:', err.message);
+        }
+      }
+    }
+
+    if (!xmlContent) {
+      console.error('[OTSKP Import] OTSKP XML file not found in any location');
+      return res.status(404).json({
+        error: 'OTSKP XML file not found',
+        tried: possiblePaths
+      });
+    }
+
+    // Parse XML
+    console.log('[OTSKP Import] Parsing XML...');
+    const { items, validCount, invalidCount, errors } = parseOtskpXml(xmlContent);
+    console.log('[OTSKP Import] Parsed:', { validCount, invalidCount, total: items.length });
+
+    // Clear existing codes
+    console.log('[OTSKP Import] Clearing existing codes...');
+    db.prepare('DELETE FROM otskp_codes').run();
+
+    // Insert new codes
+    console.log('[OTSKP Import] Inserting', items.length, 'codes...');
+    const insertStmt = db.prepare(`
+      INSERT INTO otskp_codes (code, name, unit, unit_price, specification)
+      VALUES (?, ?, ?, ?, ?)
+    `);
+
+    const insertMany = db.transaction((items) => {
+      for (const item of items) {
+        insertStmt.run(
+          item.code,
+          item.name,
+          item.unit,
+          item.unit_price,
+          item.specification
+        );
+      }
+    });
+
+    insertMany(items);
+
+    // Verify import
+    const verifyStats = db.prepare(`
+      SELECT
+        COUNT(*) as total,
+        COUNT(DISTINCT unit) as unique_units,
+        MIN(unit_price) as min_price,
+        MAX(unit_price) as max_price,
+        AVG(unit_price) as avg_price
+      FROM otskp_codes
+    `).get();
+
+    console.log('[OTSKP Import] Verification:', verifyStats);
+
+    res.json({
+      success: true,
+      message: 'OTSKP codes imported successfully',
+      stats: {
+        imported: items.length,
+        valid: validCount,
+        invalid: invalidCount,
+        totalInDB: verifyStats.total,
+        uniqueUnits: verifyStats.unique_units,
+        priceRange: {
+          min: verifyStats.min_price,
+          max: verifyStats.max_price,
+          avg: verifyStats.avg_price
+        }
+      }
+    });
+
+  } catch (error) {
+    console.error('[OTSKP Import] Error:', error);
+    res.status(500).json({ error: 'Failed to import OTSKP codes', details: error.message });
+  }
+});
+
+/**
+ * GET /api/otskp/count
+ * Get total count of OTSKP codes in database
+ */
+router.get('/count', (req, res) => {
+  try {
+    const result = db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
+    res.json({
+      count: result.count,
+      message: result.count === 0 ? 'No OTSKP codes loaded. Use POST /api/otskp/import to load them.' : 'OTSKP codes available'
+    });
+  } catch (error) {
+    console.error('Error getting OTSKP count:', error);
+    res.status(500).json({ error: 'Failed to get OTSKP count' });
   }
 });
 
