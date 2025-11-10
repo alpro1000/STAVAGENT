@@ -100,14 +100,16 @@
 }
 
 .btn-primary,
-.btn-create {
+.btn-create,
+.btn-add-part {
   background: var(--accent-primary);
   color: var(--bg-secondary);
   border-color: var(--accent-primary);
 }
 
 .btn-primary:hover:not(:disabled),
-.btn-create:hover:not(:disabled) {
+.btn-create:hover:not(:disabled),
+.btn-add-part:hover:not(:disabled) {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
   transform: translateY(-2px);
@@ -115,7 +117,8 @@
 }
 
 .btn-primary:active:not(:disabled),
-.btn-create:active:not(:disabled) {
+.btn-create:active:not(:disabled),
+.btn-add-part:active:not(:disabled) {
   transform: translateY(0);
 }
 

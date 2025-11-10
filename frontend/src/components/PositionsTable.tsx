@@ -12,12 +12,17 @@ import { Position } from '@monolit/shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
+import WorkTypeSelector from './WorkTypeSelector';
+import NewPartModal from './NewPartModal';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI } = useAppContext();
   const { isLoading, updatePositions } = usePositions(selectedBridge);
   const { isLocked } = useSnapshots(selectedBridge);
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
+  const [showWorkSelector, setShowWorkSelector] = useState(false);
+  const [selectedPartForAdd, setSelectedPartForAdd] = useState<string | null>(null);
+  const [showNewPartModal, setShowNewPartModal] = useState(false);
 
   // Group positions by part_name and sort each group (beton first, then others)
   const groupedPositions = useMemo(() => {
@@ -125,20 +130,26 @@ export default function PositionsTable() {
     setExpandedParts(newExpanded);
   };
 
-  // Handle adding new row to a part
-  const handleAddRow = async (partName: string) => {
-    if (!selectedBridge) return;
+  // Handle adding new row to a part - show work type selector first
+  const handleAddRow = (partName: string) => {
+    setSelectedPartForAdd(partName);
+    setShowWorkSelector(true);
+  };
+
+  // Handle work type selection - create position with selected type
+  const handleWorkTypeSelected = async (subtype: string, unit: string) => {
+    if (!selectedBridge || !selectedPartForAdd) return;
 
     try {
-      // TODO: Show work selection dialog before creating row
-      // For now, create with default values that can be fully edited
+      setShowWorkSelector(false);
+
       const newPosition: Partial<Position> = {
         id: uuidv4(),
         bridge_id: selectedBridge,
-        part_name: partName,
+        part_name: selectedPartForAdd,
         item_name: 'Nová práce',
-        subtype: 'jiné', // Custom work - user can select from catalog or enter manually
-        unit: 'ks',
+        subtype: subtype,
+        unit: unit,
         qty: 0,
         crew_size: 4,
         wage_czk_ph: 398,
@@ -146,7 +157,7 @@ export default function PositionsTable() {
         days: 0
       };
 
-      console.log(`➕ Adding new row to part "${partName}":`, newPosition);
+      console.log(`➕ Adding new row to part "${selectedPartForAdd}" with type "${subtype}":`, newPosition);
 
       // Create position via API
       const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
@@ -159,10 +170,66 @@ export default function PositionsTable() {
           setHeaderKPI(result.header_kpi);
         }
       }
+
+      setSelectedPartForAdd(null);
     } catch (error) {
       console.error(`❌ Error adding row:`, error);
       alert(`Chyba při přidávání řádku: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
+      setSelectedPartForAdd(null);
     }
+  };
+
+  // Handle work type selector cancel
+  const handleWorkTypeCancelled = () => {
+    setShowWorkSelector(false);
+    setSelectedPartForAdd(null);
+  };
+
+  // Handle new part creation from OTSKP search
+  const handleNewPartSelected = async (otskpCode: string, partName: string) => {
+    if (!selectedBridge) return;
+
+    try {
+      setShowNewPartModal(false);
+
+      // Create first position (beton) for the new part
+      const newPosition: Partial<Position> = {
+        id: uuidv4(),
+        bridge_id: selectedBridge,
+        part_name: partName,
+        item_name: partName, // Use OTSKP name as item name
+        otskp_code: otskpCode,
+        subtype: 'beton', // First position is always beton (concrete volume)
+        unit: 'M3',
+        qty: 0,
+        crew_size: 4,
+        wage_czk_ph: 398,
+        shift_hours: 10,
+        days: 0
+      };
+
+      console.log(`🏗️ Creating new part "${partName}" with OTSKP ${otskpCode}:`, newPosition);
+
+      // Create position via API
+      const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
+      console.log(`✅ New part created:`, result);
+
+      // Update context with new positions
+      if (result.positions) {
+        setPositions(result.positions);
+        if (result.header_kpi) {
+          setHeaderKPI(result.header_kpi);
+        }
+      }
+    } catch (error) {
+      console.error(`❌ Error creating new part:`, error);
+      alert(`Chyba při vytváření části: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
+    }
+  };
+
+  // Handle new part modal cancel
+  const handleNewPartCancelled = () => {
+    setShowNewPartModal(false);
   };
 
   // Expand all by default
@@ -202,10 +269,26 @@ export default function PositionsTable() {
     <div className="positions-container">
       <SnapshotBadge />
 
+      {/* Add New Part Button */}
+      <div style={{
+        padding: '16px',
+        borderBottom: '1px solid var(--border-light)',
+        background: 'var(--bg-secondary)'
+      }}>
+        <button
+          className="btn-add-part"
+          onClick={() => setShowNewPartModal(true)}
+          disabled={isLocked}
+          title={isLocked ? 'Nelze přidat část - snapshot je zamčen' : 'Přidat novou část konstrukce s OTSKP kódem'}
+        >
+          🏗️ Přidat část konstrukce
+        </button>
+      </div>
+
       {!hasPositions && (
         <div className="empty-positions-container">
           <p className="empty-positions-message">
-            📝 Žádné pozice. Vytvořte první řádek kliknutím na "➕ Přidat řádek" níže.
+            📝 Žádné pozice. Vytvořte první část konstrukce kliknutím na "🏗️ Přidat část konstrukce" výše.
           </p>
         </div>
       )}
@@ -305,6 +388,22 @@ export default function PositionsTable() {
           </div>
         );
       })}
+
+      {/* Work Type Selector Modal */}
+      {showWorkSelector && selectedPartForAdd && (
+        <WorkTypeSelector
+          onSelect={handleWorkTypeSelected}
+          onCancel={handleWorkTypeCancelled}
+        />
+      )}
+
+      {/* New Part Modal */}
+      {showNewPartModal && (
+        <NewPartModal
+          onSelect={handleNewPartSelected}
+          onCancel={handleNewPartCancelled}
+        />
+      )}
     </div>
   );
 }
