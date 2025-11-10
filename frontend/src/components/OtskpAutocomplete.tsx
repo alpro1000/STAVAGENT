@@ -36,7 +36,10 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
 
   // Debounced search
   useEffect(() => {
+    console.log('[OtskpAutocomplete] useEffect triggered, searchQuery:', searchQuery, 'length:', searchQuery.length);
+
     if (searchQuery.length < 2) {
+      console.log('[OtskpAutocomplete] Query too short, clearing results');
       setResults([]);
       setIsOpen(false);
       return;
@@ -44,13 +47,18 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
 
     const timeoutId = setTimeout(async () => {
       try {
+        console.log('[OtskpAutocomplete] Starting search for:', searchQuery);
         setIsLoading(true);
         const response = await otskpAPI.search(searchQuery, 20);
+        console.log('[OtskpAutocomplete] API response received:', response);
+        console.log('[OtskpAutocomplete] Results count:', response.results.length);
         setResults(response.results);
-        setIsOpen(response.results.length > 0);
+        const shouldOpen = response.results.length > 0;
+        console.log('[OtskpAutocomplete] Opening dropdown?', shouldOpen);
+        setIsOpen(shouldOpen);
         setSelectedIndex(-1);
       } catch (error) {
-        console.error('OTSKP search error:', error);
+        console.error('[OtskpAutocomplete] Search error:', error);
         setResults([]);
         setIsOpen(false);
       } finally {

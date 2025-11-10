@@ -7,12 +7,31 @@ import { Position, HeaderKPI, Bridge, ProjectConfig, SnapshotListItem, Snapshot,
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
+console.log('[API Service] Initializing with API_URL:', API_URL);
+
 const api = axios.create({
   baseURL: API_URL,
   headers: {
     'Content-Type': 'application/json'
   }
 });
+
+// Add request logging for debugging
+api.interceptors.request.use(request => {
+  console.log(`[API] ${request.method?.toUpperCase()} ${request.url}`, request.params);
+  return request;
+});
+
+api.interceptors.response.use(
+  response => {
+    console.log(`[API] Response ${response.status}:`, response.data);
+    return response;
+  },
+  error => {
+    console.error(`[API] Error:`, error.response?.status, error.message);
+    return Promise.reject(error);
+  }
+);
 
 // Bridges
 export const bridgesAPI = {
