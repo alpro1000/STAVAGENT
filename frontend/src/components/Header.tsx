@@ -131,9 +131,19 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     alert('✅ Most byl úspěšně aktualizován!');
   };
 
+  const handleLogoClick = () => {
+    // Refresh page to reset state
+    window.location.reload();
+  };
+
   return (
     <header className="header">
-      <div className="header-logo">
+      <div
+        className="header-logo"
+        onClick={handleLogoClick}
+        style={{ cursor: 'pointer' }}
+        title="Obnovit aplikaci (F5)"
+      >
         <span className="header-icon">🏗️</span>
         <h1>Monolit Planner</h1>
       </div>
