@@ -8,7 +8,7 @@ import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
 import { positionsAPI } from '../services/api';
-import { Position } from '@monolit/shared';
+import type { Position, Subtype, Unit } from '@monolit/shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
@@ -137,7 +137,7 @@ export default function PositionsTable() {
   };
 
   // Handle work type selection - create position with selected type
-  const handleWorkTypeSelected = async (subtype: string, unit: string) => {
+  const handleWorkTypeSelected = async (subtype: Subtype, unit: Unit) => {
     if (!selectedBridge || !selectedPartForAdd) return;
 
     try {
