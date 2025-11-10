@@ -80,6 +80,12 @@ export function initDatabase() {
     db.exec("ALTER TABLE positions ADD COLUMN item_name TEXT");
   }
 
+  // Migration: Add otskp_code column to positions if it doesn't exist
+  const hasOtskpCode = posColumns.some(col => col.name === 'otskp_code');
+  if (!hasOtskpCode) {
+    db.exec("ALTER TABLE positions ADD COLUMN otskp_code TEXT");
+  }
+
   // Snapshots table
   db.exec(`
     CREATE TABLE IF NOT EXISTS snapshots (
@@ -159,11 +165,25 @@ export function initDatabase() {
     `).run(defaultFeatureFlags, defaultDefaults);
   }
 
+  // OTSKP codes table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS otskp_codes (
+      code TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      unit TEXT NOT NULL,
+      unit_price REAL NOT NULL,
+      specification TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
   // Create indexes
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_positions_bridge ON positions(bridge_id);
     CREATE INDEX IF NOT EXISTS idx_positions_part ON positions(part_name);
     CREATE INDEX IF NOT EXISTS idx_positions_subtype ON positions(subtype);
+    CREATE INDEX IF NOT EXISTS idx_positions_otskp ON positions(otskp_code);
+    CREATE INDEX IF NOT EXISTS idx_otskp_name ON otskp_codes(name);
   `);
 
   return db;

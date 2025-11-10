@@ -3,7 +3,7 @@
  */
 
 import axios from 'axios';
-import { Position, HeaderKPI, Bridge, ProjectConfig, SnapshotListItem, Snapshot } from '@monolit/shared';
+import { Position, HeaderKPI, Bridge, ProjectConfig, SnapshotListItem, Snapshot, OtskpCode, OtskpSearchResult } from '@monolit/shared';
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
@@ -209,6 +209,26 @@ export const snapshotsAPI = {
 
   getActive: async (bridgeId: string) => {
     const { data } = await api.get(`/api/snapshots/active/${bridgeId}`);
+    return data;
+  }
+};
+
+// OTSKP (pricing catalog)
+export const otskpAPI = {
+  search: async (query: string, limit = 20): Promise<OtskpSearchResult> => {
+    const { data } = await api.get('/api/otskp/search', {
+      params: { q: query, limit }
+    });
+    return data;
+  },
+
+  getByCode: async (code: string): Promise<OtskpCode> => {
+    const { data } = await api.get(`/api/otskp/${code}`);
+    return data;
+  },
+
+  getStats: async () => {
+    const { data } = await api.get('/api/otskp/stats/summary');
     return data;
   }
 };

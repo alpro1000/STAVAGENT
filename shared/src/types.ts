@@ -28,6 +28,9 @@ export interface Position {
   shift_hours: number;            // Hod/den
   days: number;                   // den (koef 1)
 
+  // OTSKP code (pricing catalog reference)
+  otskp_code?: string;            // OTSKP code from catalog (e.g., "113472")
+
   // Calculated fields
   labor_hours?: number;           // Celkový počet hodin
   cost_czk?: number;              // celkem (CZK)
@@ -171,4 +174,26 @@ export interface SnapshotIntegrity {
   stored_hash: string;
   calculated_hash: string;
   positions_count: number;
+}
+
+/**
+ * OTSKP Code - Pricing catalog item
+ * Represents a single item from the OTSKP (Czech construction pricing) catalog
+ */
+export interface OtskpCode {
+  code: string;                   // OTSKP code (e.g., "113472")
+  name: string;                   // Full item name
+  unit: string;                   // Unit of measurement (M3, M2, KUS, etc.)
+  unit_price: number;             // Unit price in CZK
+  specification?: string;         // Technical specification
+  created_at?: string;            // When added to database
+}
+
+/**
+ * OTSKP Search Result
+ */
+export interface OtskpSearchResult {
+  query: string;
+  count: number;
+  results: OtskpCode[];
 }

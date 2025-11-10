@@ -90,6 +90,24 @@ export default function PositionsTable() {
     const updates = partPositions.map(pos => ({
       id: pos.id,
       item_name: newItemName
+    }));
+
+    updatePositions(updates);
+  };
+
+  // Handle OTSKP code update from PartHeader
+  const handleOtskpCodeUpdate = (partName: string, newOtskpCode: string) => {
+    console.log(`🔖 handleOtskpCodeUpdate called: part="${partName}", code="${newOtskpCode}"`);
+
+    // Update otskp_code for all positions in this part (same OTSKP code for all works in the part)
+    const partPositions = positions.filter(p => p.part_name === partName);
+
+    if (partPositions.length === 0) return;
+
+    // IMPORTANT: Only send editable fields!
+    const updates = partPositions.map(pos => ({
+      id: pos.id,
+      otskp_code: newOtskpCode
       // Do NOT include calculated fields
     }));
 
@@ -208,11 +226,15 @@ export default function PositionsTable() {
                   betonQuantity={partPositions
                     .filter(p => p.subtype === 'beton')
                     .reduce((sum, p) => sum + (p.qty || 0), 0)}
+                  otskpCode={partPositions[0]?.otskp_code || ''}
                   onItemNameUpdate={(newName) =>
                     handleItemNameUpdate(partName, newName)
                   }
                   onBetonQuantityUpdate={(newQuantity) =>
                     handleBetonQuantityUpdate(partName, newQuantity)
+                  }
+                  onOtskpCodeUpdate={(code) =>
+                    handleOtskpCodeUpdate(partName, code)
                   }
                   isLocked={isLocked}
                 />
