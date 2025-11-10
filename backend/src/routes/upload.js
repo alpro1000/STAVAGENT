@@ -61,25 +61,23 @@ router.post('/', upload.single('file'), async (req, res) => {
     for (const bridge of parseResult.bridges) {
       try {
         // Check if bridge already exists
-        const existing = db.prepare('SELECT id FROM bridges WHERE bridge_id = ?').get(bridge.bridge_id);
+        const existing = db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge.bridge_id);
 
         if (!existing) {
-          const bridgeId = uuidv4();
           db.prepare(`
-            INSERT INTO bridges (id, bridge_id, object_name, span_length_m, deck_width_m, pd_weeks)
+            INSERT INTO bridges (bridge_id, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3)
             VALUES (?, ?, ?, ?, ?, ?)
           `).run(
-            bridgeId,
             bridge.bridge_id,
             bridge.object_name,
             bridge.span_length_m || 0,
             bridge.deck_width_m || 0,
-            bridge.pd_weeks || 0
+            bridge.pd_weeks || 0,
+            bridge.concrete_m3 || 0
           );
 
-          logger.info(`Created bridge: ${bridge.bridge_id} (${bridgeId})`);
+          logger.info(`Created bridge: ${bridge.bridge_id}`);
           createdBridges.push({
-            id: bridgeId,
             bridge_id: bridge.bridge_id,
             object_name: bridge.object_name,
             concrete_m3: bridge.concrete_m3 || 0
@@ -87,7 +85,6 @@ router.post('/', upload.single('file'), async (req, res) => {
         } else {
           logger.info(`Bridge already exists: ${bridge.bridge_id}`);
           createdBridges.push({
-            id: existing.id,
             bridge_id: bridge.bridge_id,
             object_name: bridge.object_name,
             concrete_m3: bridge.concrete_m3 || 0,
