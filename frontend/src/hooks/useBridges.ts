@@ -2,6 +2,7 @@
  * useBridges hook - Fetch and manage bridges
  */
 
+import { useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { bridgesAPI } from '../services/api';
 import { useAppContext } from '../context/AppContext';
@@ -20,11 +21,13 @@ export function useBridges() {
     gcTime: 10 * 60 * 1000 // Keep in cache for 10 minutes before garbage collection
   });
 
-  // Update context AFTER query succeeds, not inside queryFn
-  // This prevents setState race conditions
-  if (query.data) {
-    setBridges(query.data);
-  }
+  // Update context when query.data changes
+  // Use useEffect to prevent infinite render loops
+  useEffect(() => {
+    if (query.data) {
+      setBridges(query.data);
+    }
+  }, [query.data, setBridges]);
 
   return query;
 }
