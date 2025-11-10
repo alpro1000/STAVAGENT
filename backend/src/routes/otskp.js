@@ -26,25 +26,27 @@ router.get('/search', (req, res) => {
 
     const searchLimit = Math.min(parseInt(limit) || 20, 100);
     const searchQuery = q.trim();
+    const searchQueryUpper = searchQuery.toUpperCase();
 
     // Search by code (exact or prefix) or name (LIKE)
+    // Using UPPER() to make search case-insensitive for UTF-8 characters (Czech diacritics)
     const results = db.prepare(`
       SELECT code, name, unit, unit_price, specification
       FROM otskp_codes
-      WHERE code LIKE ? OR name LIKE ?
+      WHERE UPPER(code) LIKE ? OR UPPER(name) LIKE ?
       ORDER BY
         CASE
-          WHEN code = ? THEN 0
-          WHEN code LIKE ? THEN 1
+          WHEN UPPER(code) = ? THEN 0
+          WHEN UPPER(code) LIKE ? THEN 1
           ELSE 2
         END,
         code
       LIMIT ?
     `).all(
-      `${searchQuery}%`,           // code prefix
-      `%${searchQuery}%`,          // name contains
-      searchQuery,                 // exact code match
-      `${searchQuery}%`,           // code prefix (for sorting)
+      `${searchQueryUpper}%`,           // code prefix (case-insensitive)
+      `%${searchQueryUpper}%`,          // name contains (case-insensitive)
+      searchQueryUpper,                 // exact code match (case-insensitive)
+      `${searchQueryUpper}%`,           // code prefix (for sorting, case-insensitive)
       searchLimit
     );
 
