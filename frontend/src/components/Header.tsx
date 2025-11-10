@@ -6,7 +6,7 @@ import { useState, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
-import { exportAPI, uploadAPI } from '../services/api';
+import { exportAPI, uploadAPI, bridgesAPI } from '../services/api';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 import CreateBridgeForm from './CreateBridgeForm';
 import EditBridgeForm from './EditBridgeForm';
