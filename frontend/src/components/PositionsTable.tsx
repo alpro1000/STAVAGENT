@@ -130,15 +130,16 @@ export default function PositionsTable() {
     if (!selectedBridge) return;
 
     try {
-      // Create new position with default values
+      // TODO: Show work selection dialog before creating row
+      // For now, create with default values that can be fully edited
       const newPosition: Partial<Position> = {
         id: uuidv4(),
         bridge_id: selectedBridge,
         part_name: partName,
-        item_name: '',
-        subtype: 'jiné', // Default subtype: "Other"
+        item_name: 'Nová práce',
+        subtype: 'jiné', // Custom work - user can select from catalog or enter manually
         unit: 'ks',
-        qty: 1,
+        qty: 0,
         crew_size: 4,
         wage_czk_ph: 398,
         shift_hours: 10,
