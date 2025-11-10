@@ -24,6 +24,17 @@ router.post('/create', (req, res) => {
       return res.status(400).json({ error: 'bridge_id and positions are required' });
     }
 
+    // FIX: Unlock previous locked snapshot if exists
+    const previousLocked = db.prepare(`
+      SELECT id FROM snapshots
+      WHERE bridge_id = ? AND is_locked = 1
+    `).get(bridge_id);
+
+    if (previousLocked) {
+      db.prepare('UPDATE snapshots SET is_locked = 0 WHERE id = ?').run(previousLocked.id);
+      logger.info(`Unlocked previous snapshot: ${previousLocked.id}`);
+    }
+
     // Create snapshot
     const snapshot = createSnapshot(bridge_id, positions, header_kpi, {
       snapshot_name,
