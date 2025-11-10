@@ -2,6 +2,7 @@
  * usePositions hook - Fetch and manage positions for a bridge
  */
 
+import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { positionsAPI } from '../services/api';
 import { useAppContext } from '../context/AppContext';
@@ -25,12 +26,13 @@ export function usePositions(bridgeId: string | null) {
     gcTime: 10 * 60 * 1000 // Keep in cache for 10 minutes before garbage collection
   });
 
-  // Update context AFTER query succeeds, not inside queryFn
-  // This prevents setState race conditions
-  if (query.data) {
-    setPositions(query.data.positions);
-    setHeaderKPI(query.data.header_kpi);
-  }
+  // FIX: Use useEffect to sync context with query data (prevents race condition)
+  useEffect(() => {
+    if (query.data) {
+      setPositions(query.data.positions);
+      setHeaderKPI(query.data.header_kpi);
+    }
+  }, [query.data, setPositions, setHeaderKPI]);
 
   const updateMutation = useMutation({
     mutationFn: async (updates: Partial<Position>[]) => {

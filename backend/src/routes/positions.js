@@ -60,7 +60,7 @@ router.get('/', (req, res) => {
     // Filter RFI if requested
     let responsePositions = calculatedPositions;
     if (include_rfi === 'false') {
-      responsePositions = calculatedPositions.filter(p => !p.has_rfi);
+      responsePositions = calculatedPositions.filter(p => p.has_rfi);
     }
 
     // RFI summary
@@ -96,6 +96,31 @@ router.post('/', (req, res) => {
       return res.status(400).json({
         error: 'bridge_id and positions array are required'
       });
+    }
+
+    // VALIDATION: Check all input fields
+    for (const pos of inputPositions) {
+      if (!pos.part_name) {
+        return res.status(400).json({ error: 'part_name is required' });
+      }
+      if (!pos.subtype) {
+        return res.status(400).json({ error: 'subtype is required' });
+      }
+      if (typeof pos.qty !== 'number' || pos.qty < 0) {
+        return res.status(400).json({ error: `qty must be >= 0, got ${pos.qty}` });
+      }
+      if (pos.crew_size && (typeof pos.crew_size !== 'number' || pos.crew_size <= 0)) {
+        return res.status(400).json({ error: `crew_size must be > 0, got ${pos.crew_size}` });
+      }
+      if (pos.wage_czk_ph && (typeof pos.wage_czk_ph !== 'number' || pos.wage_czk_ph < 0)) {
+        return res.status(400).json({ error: `wage_czk_ph must be >= 0, got ${pos.wage_czk_ph}` });
+      }
+      if (pos.shift_hours && (typeof pos.shift_hours !== 'number' || pos.shift_hours <= 0)) {
+        return res.status(400).json({ error: `shift_hours must be > 0, got ${pos.shift_hours}` });
+      }
+      if (typeof pos.days !== 'number' || pos.days < 0) {
+        return res.status(400).json({ error: `days must be >= 0, got ${pos.days}` });
+      }
     }
 
     // Ensure bridge exists
@@ -168,6 +193,27 @@ router.put('/', (req, res) => {
       return res.status(400).json({
         error: 'bridge_id and updates array are required'
       });
+    }
+
+    // VALIDATION: Check all update fields
+    for (const update of updates) {
+      const { qty, crew_size, wage_czk_ph, shift_hours, days } = update;
+
+      if (typeof qty !== 'undefined' && (typeof qty !== 'number' || qty < 0)) {
+        return res.status(400).json({ error: `qty must be >= 0, got ${qty}` });
+      }
+      if (typeof crew_size !== 'undefined' && (typeof crew_size !== 'number' || crew_size <= 0)) {
+        return res.status(400).json({ error: `crew_size must be > 0, got ${crew_size}` });
+      }
+      if (typeof wage_czk_ph !== 'undefined' && (typeof wage_czk_ph !== 'number' || wage_czk_ph < 0)) {
+        return res.status(400).json({ error: `wage_czk_ph must be >= 0, got ${wage_czk_ph}` });
+      }
+      if (typeof shift_hours !== 'undefined' && (typeof shift_hours !== 'number' || shift_hours <= 0)) {
+        return res.status(400).json({ error: `shift_hours must be > 0, got ${shift_hours}` });
+      }
+      if (typeof days !== 'undefined' && (typeof days !== 'number' || days < 0)) {
+        return res.status(400).json({ error: `days must be >= 0, got ${days}` });
+      }
     }
 
     logger.info(`📝 PUT /api/positions: bridge_id=${bridge_id}, ${updates.length} updates`);

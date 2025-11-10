@@ -228,7 +228,10 @@ router.delete('/:bridge_id', (req, res) => {
   try {
     const { bridge_id } = req.params;
 
-    // Delete positions first
+    // Delete snapshots first (cascade)
+    db.prepare('DELETE FROM snapshots WHERE bridge_id = ?').run(bridge_id);
+
+    // Delete positions
     db.prepare('DELETE FROM positions WHERE bridge_id = ?').run(bridge_id);
 
     // Delete bridge
