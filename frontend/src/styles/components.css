@@ -991,6 +991,24 @@ button:disabled {
   border-left: 3px solid var(--color-warning);
 }
 
+.table-row.editing td {
+  background-color: rgba(100, 150, 200, 0.05) !important;
+  border-left: 3px solid rgba(100, 150, 200, 0.3);
+}
+
+.table-row.saving td {
+  opacity: 0.8;
+  background-color: rgba(100, 150, 200, 0.1) !important;
+  border-left: 3px solid #4a9eff;
+  animation: pulse-save 1s infinite;
+}
+
+@keyframes pulse-save {
+  0% { opacity: 0.8; }
+  50% { opacity: 0.95; }
+  100% { opacity: 0.8; }
+}
+
 /* Inputs - Smaller and more compact */
 .positions-table input,
 .positions-table select {

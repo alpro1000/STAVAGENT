@@ -2,7 +2,7 @@
  * PositionRow - Editable table row for a single position (v3.4 Modern UI)
  */
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Position, SUBTYPE_ICONS, SUBTYPE_LABELS } from '@monolit/shared';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
@@ -14,9 +14,10 @@ interface Props {
 
 export default function PositionRow({ position, isLocked = false }: Props) {
   const { selectedBridge } = useAppContext();
-  const { updatePositions, deletePosition } = usePositions(selectedBridge);
+  const { updatePositions, deletePosition, isUpdating } = usePositions(selectedBridge);
 
   const [editedFields, setEditedFields] = useState<Partial<Position>>({});
+  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleFieldChange = (field: keyof Position, value: any) => {
     if (isLocked) return;
@@ -27,19 +28,36 @@ export default function PositionRow({ position, isLocked = false }: Props) {
     }));
   };
 
+  // FIX: Debounce blur - don't send immediately, wait 300ms
   const handleBlur = () => {
     if (Object.keys(editedFields).length === 0 || isLocked) return;
 
-    // Send update to server
-    updatePositions([
-      {
-        id: position.id,
-        ...editedFields
-      }
-    ]);
+    // Clear existing timer
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current);
+    }
 
-    setEditedFields({});
+    // Set new timer for debounced update
+    debounceTimerRef.current = setTimeout(() => {
+      updatePositions([
+        {
+          id: position.id,
+          ...editedFields
+        }
+      ]);
+      setEditedFields({});
+      debounceTimerRef.current = null;
+    }, 300); // 300ms debounce
   };
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
 
   const handleDelete = () => {
     // CRITICAL: Prevent deletion of beton row - it's essential for calculations
@@ -72,7 +90,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   const displayLabel = SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
 
   return (
-    <tr className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''}`}>
+    <tr className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''} ${Object.keys(editedFields).length > 0 ? 'editing' : ''} ${isUpdating ? 'saving' : ''}`}>
       {/* Locked indicator */}
       {isLocked && <td className="lock-indicator col-lock">🔒</td>}
 
