@@ -58,6 +58,63 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     // Auto-create bridges in database
     const createdBridges = [];
+
+    // Template positions (11 default parts)
+    const templatePositions = [
+      // 1. ZÁKLADY ZE ŽELEZOBETONU DO C30/37
+      { part_name: 'ZÁKLADY', item_name: 'ZÁKLADY ZE ŽELEZOBETONU DO C30/37', subtype: 'beton', unit: 'M3' },
+      { part_name: 'ZÁKLADY', item_name: 'ZÁKLADY ZE ŽELEZOBETONU DO C30/37', subtype: 'bednění', unit: 'm2' },
+
+      // 2. ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)
+      { part_name: 'ŘÍMSY', item_name: 'ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)', subtype: 'beton', unit: 'M3' },
+      { part_name: 'ŘÍMSY', item_name: 'ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)', subtype: 'bednění', unit: 'm2' },
+
+      // 3. MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37', subtype: 'oboustranné (opěry)', unit: 'm2' },
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37', subtype: 'oboustranné (křídla)', unit: 'm2' },
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37', subtype: 'oboustranné (závěrné zídky)', unit: 'm2' },
+
+      // 4. MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C40/50
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA C40/50', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C40/50', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA C40/50', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C40/50', subtype: 'bednění', unit: 'm2' },
+
+      // 5. MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C30/37 (B37)
+      { part_name: 'MOSTNÍ PILÍŘE A STATIVA', item_name: 'MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C30/37 (B37)', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ PILÍŘE A STATIVA', item_name: 'MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C30/37 (B37)', subtype: 'bednění', unit: 'm2' },
+
+      // 6. PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30
+      { part_name: 'PŘECHODOVÉ DESKY', item_name: 'PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30', subtype: 'beton', unit: 'M3' },
+      { part_name: 'PŘECHODOVÉ DESKY', item_name: 'PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30', subtype: 'bednění', unit: 'm2' },
+
+      // 7. MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE Z PŘEDPJATÉHO BETONU C30/37
+      { part_name: 'MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE', item_name: 'MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE Z PŘEDPJATÉHO BETONU C30/37', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE', item_name: 'MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE Z PŘEDPJATÉHO BETONU C30/37', subtype: 'bednění', unit: 'm2' },
+
+      // 8. SCHODIŠŤ KONSTR Z PROST BETONU DO C20/25
+      { part_name: 'SCHODIŠŤ KONSTRUKCE', item_name: 'SCHODIŠŤ KONSTR Z PROST BETONU DO C20/25', subtype: 'beton', unit: 'M3' },
+      { part_name: 'SCHODIŠŤ KONSTRUKCE', item_name: 'SCHODIŠŤ KONSTR Z PROST BETONU DO C20/25', subtype: 'bednění', unit: 'm2' },
+
+      // 9. PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15
+      { part_name: 'PODKLADNÍ VRSTVY C12/15', item_name: 'PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15', subtype: 'beton', unit: 'M3' },
+      { part_name: 'PODKLADNÍ VRSTVY C12/15', item_name: 'PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15', subtype: 'bednění', unit: 'm2' },
+
+      // 10. PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25
+      { part_name: 'PODKLADNÍ VRSTVY C20/25', item_name: 'PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25', subtype: 'beton', unit: 'M3' },
+      { part_name: 'PODKLADNÍ VRSTVY C20/25', item_name: 'PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25', subtype: 'bednění', unit: 'm2' },
+
+      // 11. PATKY Z PROSTÉHO BETONU C25/30
+      { part_name: 'PATKY', item_name: 'PATKY Z PROSTÉHO BETONU C25/30', subtype: 'beton', unit: 'M3' },
+      { part_name: 'PATKY', item_name: 'PATKY Z PROSTÉHO BETONU C25/30', subtype: 'bednění', unit: 'm2' }
+    ];
+
+    const insertPosition = db.prepare(`
+      INSERT INTO positions (
+        id, bridge_id, part_name, item_name, subtype, unit,
+        qty, crew_size, wage_czk_ph, shift_hours, days
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
     for (const bridge of parseResult.bridges) {
       try {
         // Check if bridge already exists
@@ -77,10 +134,32 @@ router.post('/', upload.single('file'), async (req, res) => {
           );
 
           logger.info(`Created bridge: ${bridge.bridge_id}`);
+
+          // Create template positions for new bridge
+          templatePositions.forEach((template, index) => {
+            const id = `${bridge.bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${index}`;
+            insertPosition.run(
+              id,
+              bridge.bridge_id,
+              template.part_name,
+              template.item_name,
+              template.subtype,
+              template.unit,
+              0, // qty - to be filled by user
+              4, // crew_size - default
+              398, // wage_czk_ph - default
+              10, // shift_hours - default
+              0  // days - to be filled by user
+            );
+          });
+
+          logger.info(`Created ${templatePositions.length} template positions for bridge ${bridge.bridge_id}`);
+
           createdBridges.push({
             bridge_id: bridge.bridge_id,
             object_name: bridge.object_name,
-            concrete_m3: bridge.concrete_m3 || 0
+            concrete_m3: bridge.concrete_m3 || 0,
+            positions_created: templatePositions.length
           });
         } else {
           logger.info(`Bridge already exists: ${bridge.bridge_id}`);
@@ -96,6 +175,9 @@ router.post('/', upload.single('file'), async (req, res) => {
       }
     }
 
+    // Count total positions created
+    const totalPositions = createdBridges.reduce((sum, b) => sum + (b.positions_created || 0), 0);
+
     res.json({
       import_id,
       filename: req.file.originalname,
@@ -103,8 +185,8 @@ router.post('/', upload.single('file'), async (req, res) => {
       mapping_suggestions: parseResult.mapping_suggestions,
       raw_rows: parseResult.raw_rows,
       row_count: parseResult.raw_rows.length,
-      status: 'bridges_created',
-      message: `Created ${createdBridges.length} bridges from Excel file`
+      status: 'success',
+      message: `Created ${createdBridges.length} bridges with ${totalPositions} template positions from Excel file`
     });
   } catch (error) {
     logger.error('Upload error:', error);
