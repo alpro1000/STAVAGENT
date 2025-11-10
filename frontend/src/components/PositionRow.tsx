@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Position, SUBTYPE_ICONS, SUBTYPE_LABELS } from '@monolit/shared';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
+import FormulaDetailsModal from './FormulaDetailsModal';
 
 interface Props {
   position: Position;
@@ -17,6 +18,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   const { updatePositions, deletePosition, isUpdating } = usePositions(selectedBridge);
 
   const [editedFields, setEditedFields] = useState<Partial<Position>>({});
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pendingFieldsRef = useRef<Set<string>>(new Set());
 
@@ -106,6 +108,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   const displayLabel = SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
 
   return (
+    <>
     <tr className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''} ${Object.keys(editedFields).length > 0 ? 'editing' : ''} ${isUpdating ? 'saving' : ''}`}>
       {/* Locked indicator */}
       {isLocked && <td className="lock-indicator col-lock">🔒</td>}
@@ -270,10 +273,10 @@ export default function PositionRow({ position, isLocked = false }: Props) {
             onClick={handleDelete}
             title={
               position.subtype === 'beton'
-                ? 'Nelze smazat - Betonování řádka je KRITICKÁ pro výpočty'
+                ? '❌ NELZE - Betonování je kritické\n\nTato řádka určuje objem betonu.\nSmaže se pouze s celou částí.'
                 : isLocked
-                ? 'Nelze smazat (zafixováno)'
-                : 'Smazat pozici'
+                ? '❌ ZAFIXOVÁNO\n\nSnapshot je aktivní.\nOdemkněte jej nejdříve.'
+                : '❌ Smazat\n\nTrvale odstraní tuto pozici\nz projektu. NELZE vrátit!'
             }
             disabled={isLocked || position.subtype === 'beton'}
           >
@@ -281,13 +284,21 @@ export default function PositionRow({ position, isLocked = false }: Props) {
           </button>
           <button
             className="icon-btn btn-info"
-            title="Zobrazit detaily"
-            onClick={() => alert(JSON.stringify(position, null, 2))}
+            title="ℹ️ Zobrazit detaily\n\nVidět všechny výpočty,\nformule a surová data"
+            onClick={() => setIsDetailsOpen(true)}
           >
             ℹ️
           </button>
         </div>
       </td>
     </tr>
+
+    {/* Formula Details Modal */}
+    <FormulaDetailsModal
+      position={position}
+      isOpen={isDetailsOpen}
+      onClose={() => setIsDetailsOpen(false)}
+    />
+    </>
   );
 }
