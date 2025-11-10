@@ -8,6 +8,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { db } from '../db/init.js';
+import { normalizeForSearch, normalizeCode } from '../utils/text.js';
 
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
@@ -55,12 +56,16 @@ function parseOtskpXml(xmlContent) {
       continue;
     }
 
+    const code = codeMatch[1].trim();
+    const name = nameMatch[1].trim();
+
     items.push({
-      code: codeMatch[1].trim(),
-      name: nameMatch[1].trim(),
+      code,
+      name,
       unit: unitMatch[1].trim(),
       unit_price: parseFloat(priceMatch[1].trim()),
-      specification: specMatch ? specMatch[1].trim() : null
+      specification: specMatch ? specMatch[1].trim() : null,
+      searchName: normalizeForSearch(name)
     });
     validCount++;
   }
@@ -74,6 +79,7 @@ function parseOtskpXml(xmlContent) {
  * Query params:
  *   - q: search query (code or name)
  *   - limit: max results (default 20, max 100)
+ * Supports accent-insensitive name search and partial code matches.
  */
 router.get('/search', (req, res) => {
   try {
@@ -91,29 +97,54 @@ router.get('/search', (req, res) => {
     const searchLimit = Math.min(parseInt(limit) || 20, 100);
     const searchQuery = q.trim();
     const searchQueryUpper = searchQuery.toUpperCase();
-    console.log('[OTSKP Search] Searching for:', { searchQuery, searchQueryUpper, limit: searchLimit });
+    // Prepare normalized variants for accent-insensitive search
+    const normalizedQuery = normalizeForSearch(searchQuery);
+    const normalizedPattern = `%${normalizedQuery.replace(/\s+/g, '%')}%`;
+    const normalizedCode = normalizeCode(searchQuery);
 
-    // Search by code (exact or prefix) or name (LIKE)
-    // Using UPPER() to make search case-insensitive for UTF-8 characters (Czech diacritics)
+    console.log('[OTSKP Search] Searching for:', {
+      searchQuery,
+      searchQueryUpper,
+      normalizedQuery,
+      normalizedCode,
+      limit: searchLimit
+    });
+
+    const whereClauses = ['UPPER(code) LIKE ?'];
+    const whereParams = [`${searchQueryUpper}%`];
+
+    if (normalizedCode) {
+      whereClauses.push("REPLACE(UPPER(code), ' ', '') LIKE ?");
+      whereParams.push(`%${normalizedCode}%`);
+    }
+
+    whereClauses.push('search_name LIKE ?');
+    whereParams.push(normalizedPattern);
+
+    const orderByCases = [
+      { sql: 'WHEN UPPER(code) = ? THEN 0', param: searchQueryUpper },
+      { sql: 'WHEN UPPER(code) LIKE ? THEN 1', param: `${searchQueryUpper}%` }
+    ];
+
+    if (normalizedCode) {
+      orderByCases.push({ sql: "WHEN REPLACE(UPPER(code), ' ', '') LIKE ? THEN 2", param: `%${normalizedCode}%` });
+    }
+
+    orderByCases.push({ sql: 'WHEN search_name LIKE ? THEN 3', param: normalizedPattern });
+    orderByCases.push({ sql: 'ELSE 4' });
+
+    const orderCaseSql = orderByCases.map(entry => entry.sql).join(' ');
+    const orderParams = orderByCases
+      .filter(entry => typeof entry.param !== 'undefined')
+      .map(entry => entry.param);
+
     const results = db.prepare(`
       SELECT code, name, unit, unit_price, specification
       FROM otskp_codes
-      WHERE UPPER(code) LIKE ? OR UPPER(name) LIKE ?
-      ORDER BY
-        CASE
-          WHEN UPPER(code) = ? THEN 0
-          WHEN UPPER(code) LIKE ? THEN 1
-          ELSE 2
-        END,
-        code
+      WHERE ${whereClauses.join(' OR ')}
+      ORDER BY CASE ${orderCaseSql} END, code
       LIMIT ?
-    `).all(
-      `${searchQueryUpper}%`,           // code prefix (case-insensitive)
-      `%${searchQueryUpper}%`,          // name contains (case-insensitive)
-      searchQueryUpper,                 // exact code match (case-insensitive)
-      `${searchQueryUpper}%`,           // code prefix (for sorting, case-insensitive)
-      searchLimit
-    );
+    `).all(...whereParams, ...orderParams, searchLimit);
 
     console.log('[OTSKP Search] Found results:', results.length);
     res.json({
@@ -293,8 +324,8 @@ router.post('/import', (req, res) => {
     // Insert new codes
     console.log('[OTSKP Import] Inserting', items.length, 'codes...');
     const insertStmt = db.prepare(`
-      INSERT INTO otskp_codes (code, name, unit, unit_price, specification)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
+      VALUES (?, ?, ?, ?, ?, ?)
     `);
 
     const insertMany = db.transaction((items) => {
@@ -304,7 +335,8 @@ router.post('/import', (req, res) => {
           item.name,
           item.unit,
           item.unit_price,
-          item.specification
+          item.specification,
+          item.searchName
         );
       }
     });
