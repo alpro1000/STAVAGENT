@@ -115,7 +115,7 @@ router.get('/search', (req, res) => {
 
     if (normalizedCode) {
       whereClauses.push("REPLACE(UPPER(code), ' ', '') LIKE ?");
-      whereParams.push(`%${normalizedCode}%`);
+      whereParams.push(`${normalizedCode}%`);
     }
 
     whereClauses.push('search_name LIKE ?');
@@ -127,7 +127,7 @@ router.get('/search', (req, res) => {
     ];
 
     if (normalizedCode) {
-      orderByCases.push({ sql: "WHEN REPLACE(UPPER(code), ' ', '') LIKE ? THEN 2", param: `%${normalizedCode}%` });
+      orderByCases.push({ sql: "WHEN REPLACE(UPPER(code), ' ', '') LIKE ? THEN 2", param: `${normalizedCode}%` });
     }
 
     orderByCases.push({ sql: 'WHEN search_name LIKE ? THEN 3', param: normalizedPattern });
