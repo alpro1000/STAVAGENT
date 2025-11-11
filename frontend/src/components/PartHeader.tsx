@@ -70,7 +70,8 @@ export default function PartHeader({
   const handleOtskpSelect = (code: string, name: string) => {
     console.log(`🏗️ OTSKP selected: ${code} - ${name}`);
     setEditedOtskp(code);
-    setEditedName(name);
+    // Don't update editedName locally - let API response update it via useEffect
+    // This prevents the "flash" where it shows new name then reverts to old
     // Update BOTH code and name in a SINGLE API call to avoid race condition
     onOtskpCodeAndNameUpdate(code, name);
   };

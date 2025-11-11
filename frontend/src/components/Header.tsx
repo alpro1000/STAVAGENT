@@ -26,6 +26,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [showExportHistory, setShowExportHistory] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -39,6 +40,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setIsUploading(true);
     try {
       console.log('Uploading:', file.name);
       const result = await uploadAPI.uploadXLSX(file);
@@ -51,6 +53,8 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     } catch (error: any) {
       console.error('Upload error:', error);
       alert(`Upload failed: ${error.message}`);
+    } finally {
+      setIsUploading(false);
     }
 
     // Reset input
@@ -213,9 +217,17 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         <button
           className="btn-secondary"
           onClick={handleUploadClick}
-          title="Nahrát Excel soubor s pozicemi mostů"
+          disabled={isUploading}
+          title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi mostů'}
         >
-          💾 Nahrát XLSX
+          {isUploading ? (
+            <>
+              <span className="upload-spinner"></span>
+              Načítání...
+            </>
+          ) : (
+            <>💾 Nahrát XLSX</>
+          )}
         </button>
 
         <input
@@ -295,6 +307,23 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           </div>
         </div>
       )}
+
+      <style>{`
+        .upload-spinner {
+          display: inline-block;
+          width: 14px;
+          height: 14px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top-color: white;
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+          margin-right: 6px;
+        }
+
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
     </header>
   );
 }
