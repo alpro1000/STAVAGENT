@@ -124,15 +124,6 @@ router.post('/', upload.single('file'), async (req, res) => {
           positionsToInsert.forEach((pos, index) => {
             const id = `${bridge.bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${index}`;
 
-            // Try to find OTSKP code if not present
-            let otskpCode = pos.otskp_code;
-            if (!otskpCode && pos.item_name) {
-              otskpCode = findOtskpCodeByName(pos.item_name, pos.subtype);
-              if (otskpCode) {
-                logger.info(`[OTSKP Auto Template] Found code for template: ${otskpCode} - ${pos.item_name}`);
-              }
-            }
-
             insertPosition.run(
               id,
               bridge.bridge_id,
@@ -145,7 +136,7 @@ router.post('/', upload.single('file'), async (req, res) => {
               pos.wage_czk_ph || 398,
               pos.shift_hours || 10,
               pos.days || 0,
-              otskpCode || null
+              pos.otskp_code || null
             );
           });
 
