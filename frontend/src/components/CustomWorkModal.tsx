@@ -11,7 +11,7 @@ interface Props {
   onCancel: () => void;
 }
 
-const COMMON_UNITS: Unit[] = ['ks', 'm', 'm2', 'm3', 't', 'kg', 'hod', 'den'];
+const COMMON_UNITS: Unit[] = ['ks', 'm2', 'M3', 'kg', 't'];
 
 export default function CustomWorkModal({ onSelect, onCancel }: Props) {
   const [itemName, setItemName] = useState('');
@@ -87,7 +87,7 @@ export default function CustomWorkModal({ onSelect, onCancel }: Props) {
                 className="custom-unit-input"
                 value={customUnit}
                 onChange={(e) => setCustomUnit(e.target.value)}
-                placeholder="např. balení, sada, ltr"
+                placeholder="např. hod, den, balení"
                 maxLength={20}
               />
             )}
