@@ -56,32 +56,37 @@ function findOtskpCodeByName(itemName, subtype) {
   if (!itemName) return null;
 
   try {
-    const searchTerms = itemName.toUpperCase();
+    const searchTermsUpper = itemName.toUpperCase();
 
-    // Build search patterns based on subtype
-    let whereClause = 'WHERE 1=1';
-
-    if (subtype === 'beton') {
-      whereClause += ` AND (UPPER(name) LIKE '%BETON%' OR UPPER(name) LIKE '%BETONOVÁNÍ%')`;
-    } else if (subtype === 'bednění') {
-      whereClause += ` AND UPPER(name) LIKE '%BEDN%'`;
-    } else if (subtype === 'výztuž') {
-      whereClause += ` AND (UPPER(name) LIKE '%VÝZTUŽ%' OR UPPER(name) LIKE '%OCEL%')`;
-    }
-
-    // Try exact substring match first
+    // Extract keywords for matching
     const keywords = itemName.split(/[\s\-\/]+/).filter(k => k.length > 3);
-    let query = `SELECT code, name FROM otskp_codes ${whereClause}`;
 
-    // Add keyword matching
-    if (keywords.length > 0) {
-      const keywordConditions = keywords.map(k => `UPPER(name) LIKE '%${k}%'`).join(' AND ');
-      query = `SELECT code, name FROM otskp_codes ${whereClause} AND (${keywordConditions})`;
+    // Build WHERE clause with subtype filter
+    let whereConditions = [];
+    let queryParams = [];
+
+    // Subtype-specific filtering
+    if (subtype === 'beton') {
+      whereConditions.push("(UPPER(name) LIKE ? OR UPPER(name) LIKE ?)");
+      queryParams.push('%BETON%', '%BETONOVÁNÍ%');
+    } else if (subtype === 'bednění') {
+      whereConditions.push("UPPER(name) LIKE ?");
+      queryParams.push('%BEDN%');
+    } else if (subtype === 'výztuž') {
+      whereConditions.push("(UPPER(name) LIKE ? OR UPPER(name) LIKE ?)");
+      queryParams.push('%VÝZTUŽ%', '%OCEL%');
     }
 
-    query += ' LIMIT 1';
+    // Add keyword matching (all keywords must be in name)
+    for (const keyword of keywords) {
+      whereConditions.push("UPPER(name) LIKE ?");
+      queryParams.push(`%${keyword}%`);
+    }
 
-    const result = db.prepare(query).get();
+    const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+    const query = `SELECT code, name FROM otskp_codes ${whereClause} LIMIT 1`;
+
+    const result = db.prepare(query).all(...queryParams)[0] || null;
     if (result) {
       logger.info(`[OTSKP Match] "${itemName}" -> ${result.code}`);
       return result.code;
