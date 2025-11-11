@@ -86,7 +86,7 @@ export function usePositions(bridgeId: string | null) {
   return {
     ...query,
     updatePositions: updateMutation.mutate,
-    deletePosition: deleteMutation.mutate,
+    deletePosition: deleteMutation.mutateAsync,
     isUpdating: updateMutation.isPending
   };
 }
