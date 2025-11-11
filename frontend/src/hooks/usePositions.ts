@@ -63,8 +63,8 @@ export function usePositions(bridgeId: string | null) {
       // Invalidate cache to refetch if needed
       queryClient.invalidateQueries({ queryKey: ['positions', bridgeId, showOnlyRFI] });
     },
-    onError: (error: any) => {
-      // Error handling
+    onError: (_error: any) => {
+      // Error handling - intentionally unused for now
     }
   });
 
@@ -78,8 +78,8 @@ export function usePositions(bridgeId: string | null) {
 
       queryClient.invalidateQueries({ queryKey: ['positions', bridgeId] });
     },
-    onError: (error: any) => {
-      // Error handling
+    onError: (_error: any) => {
+      // Error handling - intentionally unused for now
     }
   });
 
