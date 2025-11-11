@@ -25,6 +25,11 @@ import otskpRoutes from './src/routes/otskp.js';
 import { initDatabase } from './src/db/init.js';
 import { errorHandler } from './src/utils/errorHandler.js';
 import { logger } from './src/utils/logger.js';
+import { schedulePeriodicCleanup } from './src/utils/fileCleanup.js';
+
+// Middleware
+import { requireAuth } from './src/middleware/auth.js';
+import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter } from './src/middleware/rateLimiter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -45,6 +50,9 @@ app.use(cors({
 
 // Logging
 app.use(morgan('combined', { stream: { write: msg => logger.info(msg.trim()) } }));
+
+// Rate limiting - apply to all routes by default
+app.use(apiLimiter);
 
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
@@ -68,6 +76,9 @@ try {
   process.exit(1);
 }
 
+// Schedule periodic file cleanup
+schedulePeriodicCleanup();
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({
@@ -79,14 +90,15 @@ app.get('/health', (req, res) => {
 });
 
 // API Routes
-app.use('/api/upload', uploadRoutes);
+// Note: Authentication can be applied per-route within route handlers for gradual rollout
+app.use('/api/upload', uploadLimiter, uploadRoutes);
 app.use('/api/positions', positionsRoutes);
 app.use('/api/bridges', bridgesRoutes);
 app.use('/api/export', exportRoutes);
 app.use('/api/mapping', mappingRoutes);
 app.use('/api/config', configRoutes);
 app.use('/api/snapshots', snapshotsRoutes);
-app.use('/api/otskp', otskpRoutes);
+app.use('/api/otskp', otskpLimiter, otskpRoutes);
 
 // 404 handler
 app.use((req, res) => {

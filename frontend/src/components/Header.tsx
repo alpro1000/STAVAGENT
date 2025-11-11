@@ -42,17 +42,14 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
     setIsUploading(true);
     try {
-      console.log('Uploading:', file.name);
       const result = await uploadAPI.uploadXLSX(file);
-      console.log('Upload result:', result);
 
       // Refetch bridges after upload
       await refetchBridges();
 
-      alert(`Import successful! Found ${result.bridges.length} bridges with ${result.row_count} rows.`);
+      alert(`✅ Import úspěšný! Nalezeno ${result.bridges.length} mostů s ${result.row_count} řádky.`);
     } catch (error: any) {
-      console.error('Upload error:', error);
-      alert(`Upload failed: ${error.message}`);
+      alert(`❌ Nahrání selhalo: ${error.message}`);
     } finally {
       setIsUploading(false);
     }
@@ -81,7 +78,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error: any) {
-      console.error('Export error:', error);
       alert(`Chyba při exportu: ${error.message}`);
     }
   };
@@ -102,7 +98,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         }
       });
     } catch (error: any) {
-      console.error('Save error:', error);
       alert(`Chyba při ukládání: ${error.message}`);
     }
   };
@@ -122,7 +117,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         setSelectedBridge(bridge_id);
       }
     } catch (error) {
-      console.error('Error refetching bridges after creation:', error);
       // Still set selected bridge even if refetch fails
       setSelectedBridge(bridge_id);
     }
