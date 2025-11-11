@@ -235,7 +235,128 @@ export function initDatabase() {
     CREATE INDEX IF NOT EXISTS idx_otskp_search_name ON otskp_codes(search_name);
   `);
 
+  // Auto-load OTSKP codes if database is empty
+  autoLoadOtskpCodesIfNeeded();
+
   return db;
+}
+
+/**
+ * Auto-load OTSKP codes from XML file if database is empty
+ * This ensures codes are available on first deploy to production
+ */
+function autoLoadOtskpCodesIfNeeded() {
+  try {
+    const countResult = db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
+
+    if (countResult && countResult.count > 0) {
+      console.log(`[OTSKP] Database already has ${countResult.count} codes, skipping auto-load`);
+      return;
+    }
+
+    console.log('[OTSKP] Database is empty, attempting to auto-load codes from XML...');
+
+    // Try multiple paths for XML file
+    const possiblePaths = [
+      join(__dirname, '../../2025_03 OTSKP.xml'),
+      join(__dirname, '../../../2025_03 OTSKP.xml'),
+      '/app/2025_03 OTSKP.xml',
+      '/workspace/2025_03 OTSKP.xml',
+      process.cwd() + '/2025_03 OTSKP.xml'
+    ];
+
+    let xmlPath = null;
+    for (const path of possiblePaths) {
+      if (fs.existsSync(path)) {
+        xmlPath = path;
+        console.log(`[OTSKP] Found XML file at: ${xmlPath}`);
+        break;
+      }
+    }
+
+    if (!xmlPath) {
+      console.warn('[OTSKP] ⚠️  XML file not found. Codes will not be loaded.');
+      console.warn('[OTSKP] Either:');
+      console.warn('[OTSKP]   1. Run: node scripts/import-otskp.js (locally)');
+      console.warn('[OTSKP]   2. Or set OTSKP_IMPORT_TOKEN and POST /api/otskp/import');
+      return;
+    }
+
+    // Parse and load XML
+    const xmlContent = fs.readFileSync(xmlPath, 'utf-8');
+    const items = parseOtskpXml(xmlContent);
+
+    if (items.length === 0) {
+      console.warn('[OTSKP] XML parsing returned 0 items');
+      return;
+    }
+
+    // Insert into database
+    const insertStmt = db.prepare(`
+      INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
+      VALUES (?, ?, ?, ?, ?, ?)
+    `);
+
+    const insertMany = db.transaction((itemsToInsert) => {
+      for (const item of itemsToInsert) {
+        insertStmt.run(
+          item.code,
+          item.name,
+          item.unit,
+          item.unit_price,
+          item.specification,
+          item.searchName
+        );
+      }
+    });
+
+    insertMany(items);
+    console.log(`[OTSKP] ✅ Successfully auto-loaded ${items.length} codes from XML`);
+
+  } catch (error) {
+    console.error('[OTSKP] ⚠️  Error during auto-load:', error.message);
+    console.warn('[OTSKP] Continuing startup without codes. Search will not work.');
+  }
+}
+
+/**
+ * Parse OTSKP XML file
+ */
+function parseOtskpXml(xmlContent) {
+  const items = [];
+
+  xmlContent = xmlContent.replace(/^\uFEFF/, '');
+  const polozkaRegex = /<Polozka>([\s\S]*?)<\/Polozka>/g;
+  const matches = xmlContent.matchAll(polozkaRegex);
+
+  for (const match of matches) {
+    const polozkaContent = match[1];
+
+    const codeMatch = polozkaContent.match(/<znacka>(.*?)<\/znacka>/);
+    const nameMatch = polozkaContent.match(/<nazev>(.*?)<\/nazev>/);
+    const unitMatch = polozkaContent.match(/<MJ>(.*?)<\/MJ>/);
+    const priceMatch = polozkaContent.match(/<jedn_cena>(.*?)<\/jedn_cena>/);
+    const specMatch = polozkaContent.match(/<technicka_specifikace>([\s\S]*?)<\/technicka_specifikace>/);
+
+    // Validate required fields
+    if (!codeMatch || !codeMatch[1].trim() ||
+        !nameMatch || !nameMatch[1].trim() ||
+        !unitMatch || !unitMatch[1].trim() ||
+        !priceMatch || isNaN(parseFloat(priceMatch[1].trim()))) {
+      continue;
+    }
+
+    items.push({
+      code: codeMatch[1].trim(),
+      name: nameMatch[1].trim(),
+      unit: unitMatch[1].trim(),
+      unit_price: parseFloat(priceMatch[1].trim()),
+      specification: specMatch ? specMatch[1].trim() : null,
+      searchName: normalizeForSearch(nameMatch[1].trim())
+    });
+  }
+
+  return items;
 }
 
 export default db;
