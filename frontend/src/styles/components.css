@@ -744,7 +744,7 @@ button:disabled {
   flex-direction: column;
   gap: 12px;
   flex: 1;
-  overflow: visible;
+  overflow: hidden;
   min-height: 0;
 }
 
@@ -911,11 +911,12 @@ button:disabled {
   border: 1px solid var(--border-light);
   border-radius: 6px;
   overflow-x: auto;
-  overflow-y: auto;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
   width: 100%;
-  min-height: 100px;
+  flex: 1;
+  min-height: 0;
 }
 
 .table-wrapper::-webkit-scrollbar {
