@@ -14,13 +14,20 @@ interface Props {
 }
 
 export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(value || '');
   const [results, setResults] = useState<OtskpCode[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Initialize searchQuery when value prop changes
+  useEffect(() => {
+    if (value && value !== searchQuery) {
+      setSearchQuery(value);
+    }
+  }, [value]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -109,7 +116,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
           ref={inputRef}
           type="text"
           className="otskp-search-input"
-          value={searchQuery || value}
+          value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => {
             if (results.length > 0) setIsOpen(true);

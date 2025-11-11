@@ -320,6 +320,8 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           animation: spin 0.8s linear infinite;
           margin-right: 6px;
           vertical-align: middle;
+          position: relative;
+          z-index: 10000;
         }
 
         @keyframes spin {
