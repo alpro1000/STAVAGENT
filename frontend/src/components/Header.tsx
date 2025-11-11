@@ -49,10 +49,10 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       // Refetch bridges after upload
       await refetchBridges();
 
-      alert(`Import successful! Found ${result.bridges.length} bridges with ${result.row_count} rows.`);
+      alert(`✅ Import úspěšný! Nalezeno ${result.bridges.length} mostů s ${result.row_count} řádky.`);
     } catch (error: any) {
       console.error('Upload error:', error);
-      alert(`Upload failed: ${error.message}`);
+      alert(`❌ Nahrání selhalo: ${error.message}`);
     } finally {
       setIsUploading(false);
     }
