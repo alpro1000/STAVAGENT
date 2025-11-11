@@ -2425,7 +2425,8 @@ select:focus {
   /* Table adjustments */
   .table-wrapper {
     border-radius: 4px;
-    flex: 1;
+    overflow-x: auto;
+    overflow-y: auto;
   }
 
   .positions-table {
