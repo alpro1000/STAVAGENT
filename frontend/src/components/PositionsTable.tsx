@@ -15,6 +15,7 @@ import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
 import WorkTypeSelector from './WorkTypeSelector';
 import NewPartModal from './NewPartModal';
+import CustomWorkModal from './CustomWorkModal';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
@@ -25,6 +26,8 @@ export default function PositionsTable() {
   const [showWorkSelector, setShowWorkSelector] = useState(false);
   const [selectedPartForAdd, setSelectedPartForAdd] = useState<string | null>(null);
   const [showNewPartModal, setShowNewPartModal] = useState(false);
+  const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
+  const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
 
   // Group positions by part_name and sort each group (beton first, then others)
   const groupedPositions = useMemo(() => {
@@ -142,9 +145,17 @@ export default function PositionsTable() {
   const handleWorkTypeSelected = async (subtype: Subtype, unit: Unit) => {
     if (!selectedBridge || !selectedPartForAdd) return;
 
-    try {
-      setShowWorkSelector(false);
+    setShowWorkSelector(false);
 
+    // If custom work type ("jiné"), show modal for user input
+    if (subtype === 'jiné') {
+      console.log(`📝 Opening custom work modal for part "${selectedPartForAdd}"`);
+      setPendingCustomWork({ subtype });
+      setShowCustomWorkModal(true);
+      return;
+    }
+
+    try {
       const newPosition: Partial<Position> = {
         id: uuidv4(),
         bridge_id: selectedBridge,
@@ -185,10 +196,66 @@ export default function PositionsTable() {
     }
   };
 
+  // Handle custom work modal submission
+  const handleCustomWorkSubmit = async (itemName: string, unit: Unit) => {
+    if (!selectedBridge || !selectedPartForAdd || !pendingCustomWork) return;
+
+    try {
+      setShowCustomWorkModal(false);
+
+      const newPosition: Partial<Position> = {
+        id: uuidv4(),
+        bridge_id: selectedBridge,
+        part_name: selectedPartForAdd,
+        item_name: itemName,
+        subtype: pendingCustomWork.subtype,
+        unit: unit,
+        qty: 0,
+        crew_size: 4,
+        wage_czk_ph: 398,
+        shift_hours: 10,
+        days: 0
+      };
+
+      console.log(`➕ Adding custom work to part "${selectedPartForAdd}":`, newPosition);
+
+      // Create position via API
+      const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
+      console.log(`✅ Custom work added:`, result);
+
+      // Update context with new positions
+      if (result.positions) {
+        setPositions(result.positions);
+        if (result.header_kpi) {
+          setHeaderKPI(result.header_kpi);
+        }
+      }
+
+      // 🔄 Invalidate React Query cache
+      queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
+      console.log(`🔄 Invalidated query cache for positions`);
+
+      setSelectedPartForAdd(null);
+      setPendingCustomWork(null);
+    } catch (error) {
+      console.error(`❌ Error adding custom work:`, error);
+      alert(`Chyba při přidávání práce: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
+      setSelectedPartForAdd(null);
+      setPendingCustomWork(null);
+    }
+  };
+
   // Handle work type selector cancel
   const handleWorkTypeCancelled = () => {
     setShowWorkSelector(false);
     setSelectedPartForAdd(null);
+  };
+
+  // Handle custom work modal cancel
+  const handleCustomWorkCancelled = () => {
+    setShowCustomWorkModal(false);
+    setSelectedPartForAdd(null);
+    setPendingCustomWork(null);
   };
 
   // Handle new part creation from OTSKP search
@@ -412,6 +479,14 @@ export default function PositionsTable() {
         <NewPartModal
           onSelect={handleNewPartSelected}
           onCancel={handleNewPartCancelled}
+        />
+      )}
+
+      {/* Custom Work Modal */}
+      {showCustomWorkModal && (
+        <CustomWorkModal
+          onSelect={handleCustomWorkSubmit}
+          onCancel={handleCustomWorkCancelled}
         />
       )}
     </div>
