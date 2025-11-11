@@ -8,6 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import db from '../db/init.js';
 import { calculatePositions, calculateKPI } from '../services/calculator.js';
 import { logger } from '../utils/logger.js';
+import { extractPartName } from '../utils/text.js';
 
 const router = express.Router();
 
@@ -226,6 +227,15 @@ router.put('/', (req, res) => {
 
         if (!id) {
           throw new Error('Each update must have an id field');
+        }
+
+        // 🔄 IMPORTANT: If item_name is being updated, also auto-update part_name
+        if (fields.item_name && !fields.part_name) {
+          const extractedPartName = extractPartName(fields.item_name);
+          if (extractedPartName) {
+            fields.part_name = extractedPartName;
+            logger.info(`  Auto-updated part_name: "${fields.item_name}" → part_name="${extractedPartName}"`);
+          }
         }
 
         // Build SQL dynamically for each update
