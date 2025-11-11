@@ -125,6 +125,41 @@ export default function PositionsTable() {
     updatePositions(updates);
   };
 
+  // Handle deletion of entire part with all its positions
+  const handleDeletePart = async (partName: string) => {
+    if (!selectedBridge) return;
+    if (isLocked) {
+      alert('❌ Nelze smazat: Data jsou zafixována (snapshot aktivní)');
+      return;
+    }
+
+    // Confirm deletion
+    const partPositions = positions.filter(p => p.part_name === partName);
+    const confirmed = window.confirm(
+      `Opravdu smazat část "${partName}" se všemi ${partPositions.length} pozicemi?\n\nTuto akci nelze vrátit!`
+    );
+    if (!confirmed) return;
+
+    try {
+      console.log(`🗑️ Deleting part "${partName}" with ${partPositions.length} positions`);
+
+      // Delete all positions in this part
+      for (const position of partPositions) {
+        await deletePosition(position.id);
+      }
+
+      console.log(`✅ Part "${partName}" deleted successfully`);
+      setExpandedParts(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(partName);
+        return newSet;
+      });
+    } catch (error) {
+      console.error(`❌ Error deleting part:`, error);
+      alert(`Chyba při mazání části: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
+    }
+  };
+
   const togglePart = (partName: string) => {
     const newExpanded = new Set(expandedParts);
     if (newExpanded.has(partName)) {
@@ -377,7 +412,21 @@ export default function PositionsTable() {
           <div key={partName} className="part-card">
             <div className="part-header" onClick={() => togglePart(partName)}>
               <span>{partPositions[0]?.item_name || partName}</span>
-              <span>{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <span>{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
+                {!isLocked && (
+                  <button
+                    className="btn-delete-part"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeletePart(partName);
+                    }}
+                    title={`Smazat část "${partName}" (${partPositions.length} pozic)`}
+                  >
+                    🗑️ Smazat
+                  </button>
+                )}
+              </div>
             </div>
 
             {isExpanded && (

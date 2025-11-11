@@ -116,6 +116,16 @@ function extractBridgesFromData(rawData) {
     objectDescription
   });
 
+  // Extract SO code from header "Objekt" if present
+  if (objectDescription) {
+    const headerSOMatch = objectDescription.match(/SO\s*(\d+)/i);
+    if (headerSOMatch) {
+      const headerSO = `SO ${headerSOMatch[1]}`.trim();
+      foundSOCodes.add(headerSO);
+      logger.info(`[Parser] Found bridge from Objekt header: ${headerSO}`);
+    }
+  }
+
   // First pass: find all SO codes
   const soCodeMap = new Map(); // SO code -> row index
 
