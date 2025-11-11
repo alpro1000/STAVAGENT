@@ -105,6 +105,26 @@ export default function PositionsTable() {
     updatePositions(updates);
   };
 
+  // Handle OTSKP code AND name update together (prevent race condition)
+  const handleOtskpCodeAndNameUpdate = (partName: string, newOtskpCode: string, newItemName: string) => {
+    console.log(`🔖 handleOtskpCodeAndNameUpdate called: part="${partName}", code="${newOtskpCode}", name="${newItemName}"`);
+
+    // Update BOTH otskp_code and item_name for all positions in this part
+    const partPositions = positions.filter(p => p.part_name === partName);
+
+    if (partPositions.length === 0) return;
+
+    // Send both updates in ONE API call to avoid race condition
+    const updates = partPositions.map(pos => ({
+      id: pos.id,
+      otskp_code: newOtskpCode,
+      item_name: newItemName
+    }));
+
+    console.log(`📤 Calling updatePositions with ${updates.length} updates (code + name together):`, updates);
+    updatePositions(updates);
+  };
+
   // Handle OTSKP code update from PartHeader
   const handleOtskpCodeUpdate = (partName: string, newOtskpCode: string) => {
     console.log(`🔖 handleOtskpCodeUpdate called: part="${partName}", code="${newOtskpCode}"`);
@@ -396,6 +416,9 @@ export default function PositionsTable() {
                   }
                   onOtskpCodeUpdate={(code) =>
                     handleOtskpCodeUpdate(partName, code)
+                  }
+                  onOtskpCodeAndNameUpdate={(code, name) =>
+                    handleOtskpCodeAndNameUpdate(partName, code, name)
                   }
                   isLocked={isLocked}
                 />

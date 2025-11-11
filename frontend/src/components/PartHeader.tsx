@@ -14,6 +14,7 @@ interface Props {
   onItemNameUpdate: (itemName: string) => void;
   onBetonQuantityUpdate: (quantity: number) => void;
   onOtskpCodeUpdate: (code: string) => void;
+  onOtskpCodeAndNameUpdate: (code: string, name: string) => void;
   isLocked: boolean;
 }
 
@@ -24,6 +25,7 @@ export default function PartHeader({
   onItemNameUpdate,
   onBetonQuantityUpdate,
   onOtskpCodeUpdate,
+  onOtskpCodeAndNameUpdate,
   isLocked
 }: Props) {
   const [editedName, setEditedName] = useState(itemName || '');
@@ -70,10 +72,9 @@ export default function PartHeader({
   const handleOtskpSelect = (code: string, name: string) => {
     console.log(`🏗️ OTSKP selected: ${code} - ${name}`);
     setEditedOtskp(code);
-    onOtskpCodeUpdate(code);
-    // Always update item name to match the OTSKP catalog name
     setEditedName(name);
-    onItemNameUpdate(name);
+    // Update BOTH code and name in a SINGLE API call to avoid race condition
+    onOtskpCodeAndNameUpdate(code, name);
   };
 
   return (
