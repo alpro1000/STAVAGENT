@@ -150,7 +150,10 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
     }
   }
 
-  logger.info(`Found ${currentBridgeRows.length} rows for bridge ${bridgeId}`);
+  logger.info(`[Upload Parse] Found ${currentBridgeRows.length} rows for bridge ${bridgeId}`);
+  if (currentBridgeRows.length === 0) {
+    logger.warn(`[Upload Parse] No rows found for bridge ${bridgeId}. Bridge code search might have failed.`);
+  }
 
   // Second pass: extract positions from collected rows
   for (const row of currentBridgeRows) {
