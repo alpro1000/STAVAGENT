@@ -78,7 +78,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
 
   const handleSelect = (item: OtskpCode) => {
     onSelect(item.code, item.name);
-    setSearchQuery('');
+    setSearchQuery(item.code); // Show the selected code in the input
     setIsOpen(false);
     setResults([]);
   };

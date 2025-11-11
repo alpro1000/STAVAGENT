@@ -183,6 +183,9 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
         // Will be set to defaults below
       }
 
+      // Log the row being processed for debugging
+      logger.info(`[Upload Parse] Processing row: part="${partName}", item="${itemName}", unit="${unit}", qty=${qtyRaw}, wage=${wageRaw}, otskp=${otskpRaw}`);
+
       // Filter: Only concrete-related work
       const fullText = `${partName || ''} ${itemName || ''} ${subtypeRaw || ''}`.toLowerCase();
 
@@ -217,9 +220,11 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
       const acceptRow = (isConcrete || isConcreteUnit || hasOtskpCode) && hasPrice;
 
       if (!acceptRow) {
-        logger.debug(`[Upload Parse] Skipping non-concrete or unpriceable row: text="${fullText.slice(0, 50)}", unit="${unit}", qty=${qtyRaw}, wage=${wageRaw}, otskp=${otskpRaw}`);
+        logger.info(`[Upload Parse] ❌ Skipping row (not concrete, no unit, no price): "${fullText.slice(0, 50)}", unit="${unit}", qty=${qtyRaw}, wage=${wageRaw}, otskp=${otskpRaw}`);
         continue;
       }
+
+      logger.info(`[Upload Parse] ✅ Row ACCEPTED: concrete=${isConcrete}, unit=${isConcreteUnit}, otskp=${hasOtskpCode}, price=${hasPrice}`);
 
       // EXCLUDE: Prefabricated elements (prefa dilce)
       const isPrefab = fullText.includes('prefa') ||
