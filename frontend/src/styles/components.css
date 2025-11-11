@@ -944,9 +944,10 @@ button:disabled {
   border-collapse: collapse;
   font-size: 12px;
   background: var(--bg-secondary);
-  table-layout: auto;
+  table-layout: fixed;
   margin: 0;
   border: none;
+  display: table;
 }
 
 /* Sticky header that stays visible when scrolling */
