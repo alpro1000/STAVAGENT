@@ -16,19 +16,14 @@ export function usePositions(bridgeId: string | null) {
 
   // Note: bridgeId may be null initially, before user selects a bridge
   // This is normal and not an error condition
-  if (!bridgeId) {
-    console.debug('[usePositions] No bridgeId provided - user may not have selected a bridge yet');
-  }
 
   const query = useQuery({
     queryKey: ['positions', bridgeId, showOnlyRFI],
     queryFn: async () => {
       if (!bridgeId) {
-        console.debug('[usePositions] queryFn: bridgeId is null, returning null');
         return null;
       }
 
-      console.log(`[usePositions] Fetching positions for bridge: "${bridgeId}"`);
       return await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
     },
     enabled: !!bridgeId,
@@ -41,7 +36,6 @@ export function usePositions(bridgeId: string | null) {
   // Sync context with query data
   useEffect(() => {
     if (query.data) {
-      console.log(`[usePositions] Syncing ${query.data.positions.length} positions to context`);
       setPositions(query.data.positions);
       setHeaderKPI(query.data.header_kpi);
     }
@@ -53,23 +47,14 @@ export function usePositions(bridgeId: string | null) {
       // Use the bridgeId from closure (guaranteed fresh because hook is called with it)
       if (!bridgeId) {
         const error = 'Bridge ID is required for updates';
-        console.error(`❌ [usePositions] updateMutation: ${error}`);
         throw new Error(error);
       }
 
-      console.log(`🔄 [usePositions] Sending ${updates.length} updates to backend`);
-      console.log(`   Bridge: "${bridgeId}"`);
-      console.log(`   Updates:`, updates);
-
       const result = await positionsAPI.update(bridgeId, updates);
-
-      console.log(`✅ [usePositions] Update response received:`, result);
       return result;
     },
     onSuccess: (data) => {
       if (!bridgeId) return;
-
-      console.log(`✅ [usePositions] Update successful, syncing ${data.positions.length} positions`);
 
       // Update context immediately
       setPositions(data.positions);
@@ -77,27 +62,24 @@ export function usePositions(bridgeId: string | null) {
 
       // Invalidate cache to refetch if needed
       queryClient.invalidateQueries({ queryKey: ['positions', bridgeId, showOnlyRFI] });
-      console.log(`🔄 [usePositions] Invalidated query cache for bridge: "${bridgeId}"`);
     },
     onError: (error: any) => {
-      console.error(`❌ [usePositions] Update failed:`, error.message || error);
+      // Error handling
     }
   });
 
   // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      console.log(`🗑️ [usePositions] Deleting position: ${id}`);
       return await positionsAPI.delete(id);
     },
     onSuccess: () => {
       if (!bridgeId) return;
 
-      console.log(`✅ [usePositions] Position deleted, invalidating cache`);
       queryClient.invalidateQueries({ queryKey: ['positions', bridgeId] });
     },
     onError: (error: any) => {
-      console.error(`❌ [usePositions] Delete failed:`, error.message || error);
+      // Error handling
     }
   });
 

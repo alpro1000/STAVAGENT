@@ -56,22 +56,14 @@ export default function PositionsTable() {
 
   // Handle concrete volume update from PartHeader
   const handleBetonQuantityUpdate = (partName: string, newQuantity: number) => {
-    console.log(`📊 handleBetonQuantityUpdate called: part="${partName}", qty=${newQuantity}`);
-
     // Find the beton position for this part
     const betonPosition = positions.find(
       p => p.part_name === partName && p.subtype === 'beton'
     );
 
     if (!betonPosition) {
-      console.error(
-        `❌ No 'beton' position found for part "${partName}". Cannot update concrete volume.`
-      );
-      console.log(`Available parts: ${positions.map(p => `${p.part_name}/${p.subtype}`).join(', ')}`);
       return;
     }
-
-    console.log(`✅ Found beton position: id=${betonPosition.id}, current qty=${betonPosition.qty}, new qty=${newQuantity}`);
 
     // IMPORTANT: Only send editable fields, NOT calculated fields!
     // Backend will recalculate: labor_hours, cost_czk, unit_cost_on_m3, kros_total_czk, etc.
@@ -83,14 +75,11 @@ export default function PositionsTable() {
       // These are calculated by backend in calculatePositionFields()
     }];
 
-    console.log(`📤 Calling updatePositions with:`, updates);
     updatePositions(updates);
   };
 
   // Handle item name update from PartHeader
   const handleItemNameUpdate = (partName: string, newItemName: string) => {
-    console.log(`📝 handleItemNameUpdate called: part="${partName}", newName="${newItemName}"`);
-
     // Update item_name for all positions in this part
     const partPositions = positions.filter(p => p.part_name === partName);
 
@@ -107,8 +96,6 @@ export default function PositionsTable() {
 
   // Handle OTSKP code AND name update together (prevent race condition)
   const handleOtskpCodeAndNameUpdate = (partName: string, newOtskpCode: string, newItemName: string) => {
-    console.log(`🔖 handleOtskpCodeAndNameUpdate called: part="${partName}", code="${newOtskpCode}", name="${newItemName}"`);
-
     // Update BOTH otskp_code and item_name for all positions in this part
     const partPositions = positions.filter(p => p.part_name === partName);
 
@@ -121,7 +108,6 @@ export default function PositionsTable() {
       item_name: newItemName
     }));
 
-    console.log(`📤 Calling updatePositions with ${updates.length} updates (code + name together):`, updates);
     updatePositions(updates);
   };
 
@@ -141,8 +127,6 @@ export default function PositionsTable() {
     if (!confirmed) return;
 
     try {
-      console.log(`🗑️ Deleting part "${partName}" with ${partPositions.length} positions`);
-
       // Delete all positions in this part (filter out positions without id)
       const positionsToDelete = partPositions.filter(p => p.id);
       if (positionsToDelete.length === 0) {
@@ -153,8 +137,6 @@ export default function PositionsTable() {
       await Promise.all(
         positionsToDelete.map(position => positionsAPI.delete(position.id!))
       );
-
-      console.log(`✅ Part "${partName}" deleted successfully`);
       setExpandedParts(prev => {
         const newSet = new Set(prev);
         newSet.delete(partName);
@@ -164,7 +146,6 @@ export default function PositionsTable() {
       // Invalidate and refetch positions
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge] });
     } catch (error) {
-      console.error(`❌ Error deleting part:`, error);
       alert(`Chyba při mazání části: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
     }
   };
@@ -193,7 +174,6 @@ export default function PositionsTable() {
 
     // If custom work type ("jiné"), show modal for user input
     if (subtype === 'jiné') {
-      console.log(`📝 Opening custom work modal for part "${selectedPartForAdd}"`);
       setPendingCustomWork({ subtype });
       setShowCustomWorkModal(true);
       return;
@@ -214,11 +194,8 @@ export default function PositionsTable() {
         days: 0
       };
 
-      console.log(`➕ Adding new row to part "${selectedPartForAdd}" with type "${subtype}":`, newPosition);
-
       // Create position via API
       const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
-      console.log(`✅ New row added:`, result);
 
       // Update context with new positions
       if (result.positions) {
@@ -230,11 +207,9 @@ export default function PositionsTable() {
 
       // 🔄 Invalidate React Query cache to ensure UI syncs immediately
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
-      console.log(`🔄 Invalidated query cache for positions`);
 
       setSelectedPartForAdd(null);
     } catch (error) {
-      console.error(`❌ Error adding row:`, error);
       alert(`Chyba při přidávání řádku: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
       setSelectedPartForAdd(null);
     }
@@ -261,11 +236,8 @@ export default function PositionsTable() {
         days: 0
       };
 
-      console.log(`➕ Adding custom work to part "${selectedPartForAdd}":`, newPosition);
-
       // Create position via API
       const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
-      console.log(`✅ Custom work added:`, result);
 
       // Update context with new positions
       if (result.positions) {
@@ -277,12 +249,10 @@ export default function PositionsTable() {
 
       // 🔄 Invalidate React Query cache
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
-      console.log(`🔄 Invalidated query cache for positions`);
 
       setSelectedPartForAdd(null);
       setPendingCustomWork(null);
     } catch (error) {
-      console.error(`❌ Error adding custom work:`, error);
       alert(`Chyba při přidávání práce: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
       setSelectedPartForAdd(null);
       setPendingCustomWork(null);
@@ -325,11 +295,8 @@ export default function PositionsTable() {
         days: 0
       };
 
-      console.log(`🏗️ Creating new part "${partName}" with OTSKP ${otskpCode}:`, newPosition);
-
       // Create position via API
       const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
-      console.log(`✅ New part created:`, result);
 
       // Update context with new positions
       if (result.positions) {
@@ -341,9 +308,7 @@ export default function PositionsTable() {
 
       // 🔄 Invalidate React Query cache to ensure UI syncs immediately
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
-      console.log(`🔄 Invalidated query cache for positions`);
     } catch (error) {
-      console.error(`❌ Error creating new part:`, error);
       alert(`Chyba při vytváření části: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
     }
   };

@@ -37,7 +37,6 @@ export default function PartHeader({
 
   useEffect(() => {
     setEditedBeton(betonQuantity.toString());
-    console.log(`🪨 PartHeader useEffect: betonQuantity changed to ${betonQuantity}, syncing state`);
   }, [betonQuantity]);
 
   useEffect(() => {
@@ -52,23 +51,17 @@ export default function PartHeader({
 
   const handleBetonBlur = () => {
     const numValue = parseFloat(editedBeton) || 0;
-    console.log(`🪨 PartHeader.handleBetonBlur: value="${editedBeton}", parsed=${numValue}, current=${betonQuantity}`);
 
     if (numValue !== betonQuantity) {
-      console.log(`🪨 Calling onBetonQuantityUpdate(${numValue})`);
       onBetonQuantityUpdate(numValue);
-    } else {
-      console.log(`🪨 Value unchanged, not calling callback`);
     }
   };
 
   const handleBetonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedBeton(e.target.value);
-    console.log(`🪨 PartHeader.handleBetonChange: ${e.target.value}`);
   };
 
   const handleOtskpSelect = (code: string, name: string) => {
-    console.log(`🏗️ OTSKP selected: ${code} - ${name}`);
     setEditedOtskp(code);
     // Don't update editedName locally - let API response update it via useEffect
     // This prevents the "flash" where it shows new name then reverts to old
