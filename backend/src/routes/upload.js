@@ -170,13 +170,27 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
       const hoursRaw = findColumnValue(row, ['Hod/den', 'Hours', 'Shift']);
       const daysRaw = findColumnValue(row, ['den (koef 1)', 'den', 'Days', 'Dny']);
 
-      // Skip if no part name or item name
-      if (!partName && !itemName) {
+      // Check if row has ANY useful data (name, qty, price, or crew info)
+      const hasUsefulData = partName || itemName || qtyRaw || wageRaw || crewSizeRaw;
+      if (!hasUsefulData) {
+        logger.debug(`[Upload Parse] Skipping empty row with no useful data`);
         continue;
+      }
+
+      // If no names but has data, generate generic names
+      if (!partName && !itemName) {
+        logger.warn(`[Upload Parse] Row has data (qty=${qtyRaw}, wage=${wageRaw}) but no names - generating defaults`);
+        // Will be set to defaults below
       }
 
       // Filter: Only concrete-related work
       const fullText = `${partName || ''} ${itemName || ''} ${subtypeRaw || ''}`.toLowerCase();
+
+      // Check unit type (M3, m2, t = concrete-related)
+      const unitLower = unit ? unit.toLowerCase() : '';
+      const isConcreteUnit = unitLower === 'm3' || unitLower === 'm²' || unitLower === 'm2' || unitLower === 't';
+
+      // Check text for concrete keywords
       const isConcrete = fullText.includes('beton') ||
                         fullText.includes('betón') ||
                         fullText.includes('bednění') ||
@@ -189,7 +203,12 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
                         fullText.includes('most') ||
                         fullText.includes('desk');
 
-      if (!isConcrete) {
+      // Accept if: (has concrete text OR has concrete unit) AND has qty/price
+      const hasPrice = qtyRaw || wageRaw || crewSizeRaw;
+      const acceptRow = (isConcrete || isConcreteUnit) && hasPrice;
+
+      if (!acceptRow) {
+        logger.debug(`[Upload Parse] Skipping non-concrete or unpriceable row: text="${fullText.slice(0, 50)}", unit="${unit}", qty=${qtyRaw}, wage=${wageRaw}`);
         continue;
       }
 

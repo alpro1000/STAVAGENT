@@ -267,8 +267,8 @@ input:disabled, select:disabled, textarea:disabled {
   min-height: 100vh;
 }
 
-/* Убираем все излишние анимации */
-*, *::before, *::after {
+/* Убираем все излишние анимации, кроме необходимых спиннеров */
+*:not(.upload-spinner):not(.upload-spinner *), *::before:not(.upload-spinner *), *::after:not(.upload-spinner *) {
   animation-duration: 0.1s !important;
   animation-delay: 0s !important;
 }
