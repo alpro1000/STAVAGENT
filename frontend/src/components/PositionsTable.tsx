@@ -19,7 +19,7 @@ import CustomWorkModal from './CustomWorkModal';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
-  const { isLoading, updatePositions, deletePosition } = usePositions(selectedBridge);
+  const { isLoading, updatePositions } = usePositions(selectedBridge);
   const { isLocked } = useSnapshots(selectedBridge);
   const queryClient = useQueryClient();
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
@@ -143,9 +143,15 @@ export default function PositionsTable() {
     try {
       console.log(`🗑️ Deleting part "${partName}" with ${partPositions.length} positions`);
 
-      // Delete all positions in this part
+      // Delete all positions in this part (filter out positions without id)
+      const positionsToDelete = partPositions.filter(p => p.id);
+      if (positionsToDelete.length === 0) {
+        alert('Chyba: Žádné pozice k smazání');
+        return;
+      }
+
       await Promise.all(
-        partPositions.map(position => positionsAPI.delete(position.id))
+        positionsToDelete.map(position => positionsAPI.delete(position.id!))
       );
 
       console.log(`✅ Part "${partName}" deleted successfully`);
