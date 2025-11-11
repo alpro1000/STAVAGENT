@@ -6,6 +6,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
+import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX, parseNumber } from '../services/parser.js';
 import { logger } from '../utils/logger.js';
@@ -30,11 +31,25 @@ const upload = multer({
     fileSize: parseInt(process.env.MAX_FILE_SIZE) || 10485760 // 10MB
   },
   fileFilter: (req, file, cb) => {
+    // Check file extension
     const allowedExt = ['.xlsx', '.xls'];
     const ext = path.extname(file.originalname).toLowerCase();
 
     if (!allowedExt.includes(ext)) {
-      return cb(new Error('Only .xlsx and .xls files are allowed'));
+      return cb(new Error('Pouze .xlsx a .xls soubory jsou povoleny'));
+    }
+
+    // Check MIME type
+    const allowedMimes = [
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', // .xlsx
+      'application/vnd.ms-excel', // .xls
+      'application/x-excel', // Alternative .xls MIME type
+      'application/x-msexcel' // Another alternative
+    ];
+
+    if (!allowedMimes.includes(file.mimetype)) {
+      logger.warn(`Rejected file with invalid MIME type: ${file.mimetype} (${file.originalname})`);
+      return cb(new Error(`Neplatný typ souboru: ${file.mimetype}. Očekáváno: Excel soubor (.xlsx nebo .xls)`));
     }
 
     cb(null, true);
@@ -335,12 +350,14 @@ function findColumnValue(row, possibleNames) {
 
 // POST upload XLSX
 router.post('/', upload.single('file'), async (req, res) => {
+  let filePath = null;
+
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const filePath = req.file.path;
+    filePath = req.file.path;
     const import_id = uuidv4();
 
     logger.info(`Processing upload: ${req.file.originalname} (${import_id})`);
@@ -508,6 +525,16 @@ router.post('/', upload.single('file'), async (req, res) => {
   } catch (error) {
     logger.error('Upload error:', error);
     res.status(500).json({ error: error.message });
+  } finally {
+    // Clean up uploaded file after processing (success or failure)
+    if (filePath && fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+        logger.info(`Cleaned up uploaded file: ${filePath}`);
+      } catch (cleanupError) {
+        logger.warn(`Failed to clean up file ${filePath}:`, cleanupError.message);
+      }
+    }
   }
 });
 
