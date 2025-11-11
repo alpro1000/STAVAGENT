@@ -48,10 +48,54 @@ export async function parseXLSX(filePath) {
 /**
  * Extract bridges from raw data
  * Looks for SO codes in any column and tries to find concrete quantities
+ * Also extracts project and bridge names from header rows (Stavba, Objekt, Soupis)
  */
 function extractBridgesFromData(rawData) {
   const bridges = [];
   const foundSOCodes = new Set();
+
+  // Extract header metadata (Stavba, Objekt, Soupis)
+  let projectName = '';      // "I/20 HNĚVKOV - SEDLICE_N_CENA"
+  let objectDescription = ''; // "SO 201 - MOST PŘES BIOKORIDOR V KM 1,480"
+
+  // First: scan for header rows (rows 0-15, usually headers are at top)
+  for (let i = 0; i < Math.min(15, rawData.length); i++) {
+    const row = rawData[i];
+    const keys = Object.keys(row);
+
+    // Look for "Stavba" label
+    for (let keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+      const key = keys[keyIndex];
+      const value = row[key];
+
+      if (value && typeof value === 'string') {
+        const normalized = value.trim().toLowerCase();
+
+        // Find "Stavba" (Project name)
+        if (normalized === 'stavba' && keyIndex + 1 < keys.length) {
+          projectName = row[keys[keyIndex + 1]] || '';
+        }
+
+        // Find "Objekt" (Object/Bridge description)
+        if (normalized === 'objekt' && keyIndex + 1 < keys.length) {
+          objectDescription = row[keys[keyIndex + 1]] || '';
+        }
+
+        // Find "Soupis" (Bill of quantities name)
+        if (normalized === 'soupis' && keyIndex + 1 < keys.length) {
+          const soupisValue = row[keys[keyIndex + 1]];
+          if (soupisValue) {
+            projectName = soupisValue;
+          }
+        }
+      }
+    }
+  }
+
+  logger.info(`[Parser] Extracted header metadata:`, {
+    projectName,
+    objectDescription
+  });
 
   // First pass: find all SO codes
   const soCodeMap = new Map(); // SO code -> row index
@@ -74,10 +118,20 @@ function extractBridgesFromData(rawData) {
     }
   });
 
-  // Second pass: try to find concrete quantities for each bridge
+  // Second pass: try to find concrete quantities and build names for each bridge
   foundSOCodes.forEach(soCode => {
     const startRow = soCodeMap.get(soCode);
     let concrete_m3 = 0;
+    let objectName = soCode; // Default to SO code
+
+    // Try to build descriptive object name
+    if (objectDescription && objectDescription.includes(soCode)) {
+      // Use full description from XLSX header
+      objectName = objectDescription;
+    } else if (projectName) {
+      // Fallback: combine project name with SO code
+      objectName = `${soCode} - ${projectName}`;
+    }
 
     // Look in next 20 rows for concrete quantity
     for (let i = startRow; i < Math.min(startRow + 20, rawData.length); i++) {
@@ -108,7 +162,7 @@ function extractBridgesFromData(rawData) {
 
     bridges.push({
       bridge_id: soCode,
-      object_name: soCode,
+      object_name: objectName,
       concrete_m3: concrete_m3,
       span_length_m: 0,
       deck_width_m: 0,
