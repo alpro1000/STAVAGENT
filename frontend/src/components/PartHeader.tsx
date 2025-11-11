@@ -13,7 +13,6 @@ interface Props {
   otskpCode?: string;
   onItemNameUpdate: (itemName: string) => void;
   onBetonQuantityUpdate: (quantity: number) => void;
-  onOtskpCodeUpdate: (code: string) => void;
   onOtskpCodeAndNameUpdate: (code: string, name: string) => void;
   isLocked: boolean;
 }
@@ -24,7 +23,6 @@ export default function PartHeader({
   otskpCode,
   onItemNameUpdate,
   onBetonQuantityUpdate,
-  onOtskpCodeUpdate,
   onOtskpCodeAndNameUpdate,
   isLocked
 }: Props) {
