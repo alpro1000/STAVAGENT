@@ -71,11 +71,9 @@ export default function PartHeader({
     console.log(`🏗️ OTSKP selected: ${code} - ${name}`);
     setEditedOtskp(code);
     onOtskpCodeUpdate(code);
-    // Optionally update item name if it's empty
-    if (!editedName || editedName.trim() === '') {
-      setEditedName(name);
-      onItemNameUpdate(name);
-    }
+    // Always update item name to match the OTSKP catalog name
+    setEditedName(name);
+    onItemNameUpdate(name);
   };
 
   return (
