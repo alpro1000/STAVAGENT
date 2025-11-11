@@ -719,13 +719,18 @@ button:disabled {
 
 .main-layout {
   display: flex;
-  height: calc(100vh - 60px);
+  flex: 1;
+  min-height: calc(100vh - 60px);
+  overflow: hidden;
 }
 
 .content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--gradient-concrete);
+  display: flex;
+  flex-direction: column;
 }
 
 /* ============================================
@@ -733,7 +738,12 @@ button:disabled {
    ============================================ */
 
 .positions-container {
-  padding: 20px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  overflow: hidden;
 }
 
 .empty-positions-container {
@@ -897,12 +907,12 @@ button:disabled {
   border: 1px solid var(--border-light);
   border-radius: 6px;
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
   width: 100%;
-  max-height: calc(100vh - 300px);
-  overflow-y: auto;
+  flex: 1;
+  min-height: 200px;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -927,11 +937,10 @@ button:disabled {
 /* SINGLE Positions Table with sticky header */
 .positions-table {
   width: 100%;
-  min-width: 955px;
   border-collapse: collapse;
   font-size: 12px;
   background: var(--bg-secondary);
-  table-layout: fixed;
+  table-layout: auto;
   margin: 0;
   border: none;
 }
@@ -1274,13 +1283,14 @@ button:disabled {
 .kpi-float-card {
   position: sticky;
   top: 0;
-  margin: 8px 16px;
-  padding: 8px 12px;
+  margin: 8px 12px;
+  padding: 8px 10px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-default);
   border-radius: 4px;
   box-shadow: var(--shadow-md);
   z-index: 200;
+  flex-shrink: 0;
 }
 
 .kpi-header {
@@ -2150,6 +2160,17 @@ select:focus {
    RESPONSIVE DESIGN - MOBILE & TABLET
    ============================================ */
 
+/* Large screens (1025px and above) - Default layout */
+@media (min-width: 1025px) {
+  .sidebar {
+    width: 240px;
+  }
+
+  .main-layout {
+    min-height: calc(100vh - 60px);
+  }
+}
+
 /* Tablet screens (769px to 1024px) - Optimized layout */
 @media (min-width: 769px) and (max-width: 1024px) {
   /* Layout: Better use of tablet space */
@@ -2318,77 +2339,67 @@ select:focus {
 
 /* Tablet and small screens (768px and below) */
 @media (max-width: 768px) {
-  /* Table header: adjust sticky offset for expanded KPI panel (2 columns) */
-  .positions-table th {
-    top: 0;
-    font-size: 10px;
-    padding: 6px 4px;
+  /* Main layout adjustments */
+  body {
+    font-size: 13px;
   }
 
-  /* KPI Grid: 4 columns → 2 columns for better mobile layout */
-  .kpi-grid-modern {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 5px;
-  }
-
-  /* KPI Card: reduce padding on mobile */
-  .kpi-card {
-    padding: 6px 4px;
-  }
-
-  /* KPI Card Label: slightly smaller on mobile */
-  .kpi-card-label {
-    font-size: var(--font-size-xs);
-    gap: 2px;
-  }
-
-  /* KPI Card Value: maintain readability on mobile */
-  .kpi-card-value {
-    font-size: var(--font-size-body);
-  }
-
-  /* KPI Float Card: reduce padding on mobile */
-  .kpi-float-card {
-    margin: 4px 8px;
-    padding: 6px 8px;
-  }
-
-  /* KPI Header: stack on mobile if needed */
-  .kpi-header {
+  .app {
+    display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
+    height: 100vh;
   }
 
-  /* KPI Metadata: smaller on mobile */
-  .kpi-metadata {
-    font-size: var(--font-size-xs);
+  .main-layout {
+    flex: 1;
+    overflow: hidden;
   }
 
-  /* KPI Bridge Title: slightly smaller on mobile */
-  .kpi-bridge-title {
+  .content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* Sidebar on mobile: collapsible */
+  .sidebar {
+    width: 70px;
+    padding: 0;
+  }
+
+  .sidebar-content {
+    display: none;
+  }
+
+  .sidebar.collapsed {
+    width: 70px;
+  }
+
+  /* Header adjustments */
+  .header {
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 12px;
+    height: auto;
+    min-height: 50px;
+  }
+
+  .header-logo {
+    flex: 1;
+  }
+
+  .header-logo h1 {
     font-size: 14px;
   }
 
-  /* KPI Formula: reduce font size on mobile */
-  .kpi-formula {
-    font-size: 9px;
-    padding: 4px 6px;
-  }
-
-  /* Header: more compact on mobile */
-  .header {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  /* Header Controls: stack better on mobile */
   .header-controls {
+    width: 100%;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: 4px;
   }
 
-  /* Button: smaller text on mobile */
+  /* Buttons */
   .btn-primary,
   .btn-secondary,
   .btn-create,
@@ -2397,18 +2408,142 @@ select:focus {
   .btn-danger,
   .btn-info,
   .btn-restore {
-    font-size: 12px;
+    font-size: 11px;
+    padding: 6px 10px;
+    min-height: 32px;
+  }
+
+  /* Positions container */
+  .positions-container {
+    padding: 8px;
+    gap: 8px;
+  }
+
+  /* Table adjustments */
+  .table-wrapper {
+    border-radius: 4px;
+    flex: 1;
+  }
+
+  .positions-table {
+    font-size: 11px;
+  }
+
+  .positions-table th {
+    top: 0;
+    font-size: 9px;
+    padding: 4px 3px;
+    height: 32px;
+  }
+
+  .positions-table td {
+    padding: 4px 3px;
+    height: 32px;
+  }
+
+  /* KPI Panel adjustments */
+  .kpi-float-card {
+    margin: 4px 8px;
+    padding: 6px 8px;
+  }
+
+  .kpi-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .kpi-bridge-title {
+    font-size: 13px;
+  }
+
+  .kpi-metadata {
+    font-size: 10px;
+    display: block;
+  }
+
+  /* KPI Grid: 4 columns → 2 columns for better mobile layout */
+  .kpi-grid-modern {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+  }
+
+  /* KPI Card: reduce padding on mobile */
+  .kpi-card {
+    padding: 5px 4px;
+  }
+
+  /* KPI Card Label: slightly smaller on mobile */
+  .kpi-card-label {
+    font-size: 9px;
+    gap: 2px;
+  }
+
+  /* KPI Card Value: maintain readability on mobile */
+  .kpi-card-value {
+    font-size: 11px;
+  }
+
+  /* KPI Formula: reduce font size on mobile */
+  .kpi-formula {
+    font-size: 8px;
+    padding: 4px 6px;
+  }
+
+  /* Column widths adjustments for mobile */
+  .col-podtyp {
+    width: 80px;
+    min-width: 80px;
+  }
+
+  .col-cena-hod {
+    width: 50px;
+    min-width: 50px;
+  }
+
+  .col-kc-m3 {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  .col-akce {
+    width: 70px;
+    min-width: 70px;
+  }
+
+  /* Modal adjustments */
+  .modal-content {
+    max-width: 95vw;
+    max-height: 90vh;
+  }
+
+  .modal-header {
+    padding: 12px 16px;
+  }
+
+  .modal-body {
+    max-height: calc(90vh - 100px);
+    padding: 12px;
+  }
+
+  /* Part header adjustments */
+  .part-header {
+    flex-wrap: wrap;
     padding: 8px 12px;
   }
 
-  /* Table: more compact on mobile */
-  table {
-    font-size: 12px;
+  .concrete-params {
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
-  table th,
-  table td {
-    padding: 6px 4px;
+  /* Input fields for mobile */
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    font-size: 14px;
+    min-height: 36px;
   }
 }
 
@@ -2623,92 +2758,8 @@ select:focus {
 }
 
 /* ============================================================================
-   FORMULA DETAILS MODAL
+   FORMULA DETAILS MODAL - Additional styles
    ============================================================================ */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 16px;
-  animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.modal-content {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
-  max-width: 600px;
-  width: 100%;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.modal-header {
-  padding: 16px;
-  border-bottom: 1px solid var(--border-light);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-header h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.btn-close {
-  background: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: var(--text-secondary);
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.btn-close:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
 
 .modal-body {
   flex: 1;
@@ -2847,35 +2898,36 @@ select:focus {
   gap: 8px;
 }
 
-.btn-primary {
-  background: var(--color-primary);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  background: var(--color-primary-dark);
-  opacity: 0.9;
-}
-
 /* Small phones (480px and below) */
 @media (max-width: 480px) {
+  /* Further compact everything for very small screens */
+  .header {
+    min-height: 45px;
+    padding: 6px 8px;
+    gap: 4px;
+  }
+
+  .header-logo h1 {
+    font-size: 12px;
+  }
+
   /* Table header: single column sticky header */
   .positions-table th {
     top: 0;
-    font-size: 9px;
-    padding: 4px 3px;
+    font-size: 8px;
+    padding: 3px 2px;
+    height: 28px;
+  }
+
+  .positions-table td {
+    padding: 3px 2px;
+    height: 28px;
   }
 
   /* KPI Grid: 1 column on very small screens */
   .kpi-grid-modern {
     grid-template-columns: 1fr;
-    gap: 4px;
+    gap: 3px;
   }
 
   /* KPI Card: minimal padding on phones */
@@ -2883,10 +2935,26 @@ select:focus {
     padding: 4px 3px;
   }
 
+  .kpi-card-label {
+    font-size: 8px;
+  }
+
+  .kpi-card-value {
+    font-size: 10px;
+  }
+
+  .kpi-card-unit {
+    font-size: 7px;
+  }
+
   /* KPI Float Card: very compact on phones */
   .kpi-float-card {
     margin: 2px 4px;
     padding: 4px 6px;
+  }
+
+  .kpi-bridge-title {
+    font-size: 12px;
   }
 
   /* Header Logo: hide text on very small screens */
@@ -2902,5 +2970,41 @@ select:focus {
   /* Formula: hide on very small screens */
   .kpi-formula {
     display: none;
+  }
+
+  /* Buttons: even smaller */
+  .btn-primary,
+  .btn-secondary,
+  .btn-create {
+    font-size: 10px;
+    padding: 5px 8px;
+    min-height: 28px;
+  }
+
+  /* Columns: ultra-narrow on small phones */
+  .col-podtyp {
+    width: 60px;
+    min-width: 60px;
+  }
+
+  .col-mj {
+    width: 40px;
+    min-width: 40px;
+  }
+
+  .lock-col {
+    width: 30px;
+    min-width: 30px;
+  }
+
+  /* Modal: full screen on small phones */
+  .modal-content {
+    max-width: 100vw;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  .modal-body {
+    max-height: calc(100vh - 80px);
   }
 }
