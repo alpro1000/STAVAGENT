@@ -190,25 +190,34 @@ function convertRawRowsToPositions(rawRows, bridgeId) {
       const unitLower = unit ? unit.toLowerCase() : '';
       const isConcreteUnit = unitLower === 'm3' || unitLower === 'm²' || unitLower === 'm2' || unitLower === 't';
 
-      // Check text for concrete keywords
+      // Check text for concrete keywords (more comprehensive list)
       const isConcrete = fullText.includes('beton') ||
                         fullText.includes('betón') ||
                         fullText.includes('bednění') ||
                         fullText.includes('výztuž') ||
+                        fullText.includes('ocel') ||
                         fullText.includes('základy') ||
-                        fullText.includes('římsy') ||
+                        fullText.includes('základu') ||
+                        fullText.includes('римsy') ||
                         fullText.includes('opěr') ||
                         fullText.includes('pilíř') ||
                         fullText.includes('nosn') ||
                         fullText.includes('most') ||
-                        fullText.includes('desk');
+                        fullText.includes('desk') ||
+                        fullText.includes('pažen') ||
+                        fullText.includes('vrty') ||
+                        fullText.includes('drenáž') ||
+                        fullText.includes('drénáž');
 
-      // Accept if: (has concrete text OR has concrete unit) AND has qty/price
+      // Also accept if OTSKP code exists (will be checked later in code)
+      const hasOtskpCode = !!otskpRaw;
+
+      // Accept if: has concrete text OR concrete unit OR OTSKP code, AND has qty/price
       const hasPrice = qtyRaw || wageRaw || crewSizeRaw;
-      const acceptRow = (isConcrete || isConcreteUnit) && hasPrice;
+      const acceptRow = (isConcrete || isConcreteUnit || hasOtskpCode) && hasPrice;
 
       if (!acceptRow) {
-        logger.debug(`[Upload Parse] Skipping non-concrete or unpriceable row: text="${fullText.slice(0, 50)}", unit="${unit}", qty=${qtyRaw}, wage=${wageRaw}`);
+        logger.debug(`[Upload Parse] Skipping non-concrete or unpriceable row: text="${fullText.slice(0, 50)}", unit="${unit}", qty=${qtyRaw}, wage=${wageRaw}, otskp=${otskpRaw}`);
         continue;
       }
 

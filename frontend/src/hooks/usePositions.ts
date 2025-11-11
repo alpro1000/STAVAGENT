@@ -14,16 +14,17 @@ export function usePositions(bridgeId: string | null) {
   const { setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
   const queryClient = useQueryClient();
 
-  // CRITICAL: Ensure bridgeId is available
+  // Note: bridgeId may be null initially, before user selects a bridge
+  // This is normal and not an error condition
   if (!bridgeId) {
-    console.warn('[usePositions] No bridgeId provided');
+    console.debug('[usePositions] No bridgeId provided - user may not have selected a bridge yet');
   }
 
   const query = useQuery({
     queryKey: ['positions', bridgeId, showOnlyRFI],
     queryFn: async () => {
       if (!bridgeId) {
-        console.warn('[usePositions] queryFn: bridgeId is null, returning null');
+        console.debug('[usePositions] queryFn: bridgeId is null, returning null');
         return null;
       }
 
