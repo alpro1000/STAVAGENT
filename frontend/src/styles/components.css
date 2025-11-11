@@ -58,7 +58,7 @@
 .btn-delete-part,
 .btn-close {
   padding: 10px 18px;
-  border: none;
+  border: 1px solid var(--border-default);
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
@@ -68,44 +68,182 @@
   align-items: center;
   gap: 6px;
   min-height: 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::after,
+.btn-secondary::after,
+.btn-create::after,
+.btn-lock::after,
+.btn-success::after,
+.btn-danger::after,
+.btn-info::after,
+.btn-restore::after,
+.btn-add-part::after,
+.btn-delete-part::after,
+.btn-close::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  left: -100%;
+  transition: left 0.4s ease;
 }
 
 .btn-primary {
   background: var(--color-primary);
   color: white;
+  border-color: var(--color-primary);
+}
+
+.btn-primary:hover::after {
+  left: 100%;
 }
 
 .btn-primary:hover {
   background: var(--color-primary-dark);
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
 }
 
 .btn-secondary {
   background: var(--bg-tertiary);
   color: var(--text-primary);
-  border: 1px solid var(--border-default);
+  border-color: var(--border-default);
+}
+
+.btn-secondary:hover::after {
+  left: 100%;
 }
 
 .btn-secondary:hover {
-  background: var(--border-light);
+  background: var(--bg-dark);
+  border-color: var(--border-default);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
 }
 
 .btn-create {
   background: var(--color-success);
   color: white;
+  border-color: var(--color-success);
+}
+
+.btn-create:hover::after {
+  left: 100%;
 }
 
 .btn-create:hover {
   background: var(--color-success-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-create:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   ADDITIONAL BUTTON TYPES
+   ============================================ */
+
+.btn-lock {
+  background: var(--color-warning);
+  color: white;
+  border-color: var(--color-warning);
+}
+
+.btn-lock:hover::after {
+  left: 100%;
+}
+
+.btn-lock:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-success {
+  background: var(--color-success);
+  color: white;
+  border-color: var(--color-success);
+}
+
+.btn-success:hover::after {
+  left: 100%;
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-danger {
+  background: var(--color-error);
+  color: white;
+  border-color: var(--color-error);
+}
+
+.btn-danger:hover::after {
+  left: 100%;
+}
+
+.btn-danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-info {
+  background: var(--color-info);
+  color: white;
+  border-color: var(--color-info);
+}
+
+.btn-info:hover::after {
+  left: 100%;
+}
+
+.btn-info:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-restore {
+  background: var(--color-info);
+  color: white;
+  border-color: var(--color-info);
+}
+
+.btn-restore:hover::after {
+  left: 100%;
+}
+
+.btn-restore:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-delete-part {
   background: var(--color-error);
   color: white;
+  border-color: var(--color-error);
+}
+
+.btn-delete-part:hover::after {
+  left: 100%;
 }
 
 .btn-delete-part:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-add-part {
@@ -113,10 +251,16 @@
   color: white;
   width: 100%;
   justify-content: center;
+  border-color: var(--accent-primary);
+}
+
+.btn-add-part:hover::after {
+  left: 100%;
 }
 
 .btn-add-part:hover {
-  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-close {
@@ -127,11 +271,28 @@
   height: 32px;
   padding: 0;
   color: var(--text-secondary);
+  position: relative;
+}
+
+.btn-close::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  left: -100%;
+  transition: left 0.4s ease;
+  border-radius: 6px;
+}
+
+.btn-close:hover::after {
+  left: 100%;
 }
 
 .btn-close:hover {
   background: var(--bg-tertiary);
   color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* ============================================
