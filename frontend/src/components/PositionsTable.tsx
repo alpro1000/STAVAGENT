@@ -125,26 +125,6 @@ export default function PositionsTable() {
     updatePositions(updates);
   };
 
-  // Handle OTSKP code update from PartHeader
-  const handleOtskpCodeUpdate = (partName: string, newOtskpCode: string) => {
-    console.log(`🔖 handleOtskpCodeUpdate called: part="${partName}", code="${newOtskpCode}"`);
-
-    // Update otskp_code for all positions in this part (same OTSKP code for all works in the part)
-    const partPositions = positions.filter(p => p.part_name === partName);
-
-    if (partPositions.length === 0) return;
-
-    // IMPORTANT: Only send editable fields!
-    const updates = partPositions.map(pos => ({
-      id: pos.id,
-      otskp_code: newOtskpCode
-      // Do NOT include calculated fields
-    }));
-
-    console.log(`📤 Calling updatePositions with ${updates.length} updates:`, updates);
-    updatePositions(updates);
-  };
-
   const togglePart = (partName: string) => {
     const newExpanded = new Set(expandedParts);
     if (newExpanded.has(partName)) {
@@ -413,9 +393,6 @@ export default function PositionsTable() {
                   }
                   onBetonQuantityUpdate={(newQuantity) =>
                     handleBetonQuantityUpdate(partName, newQuantity)
-                  }
-                  onOtskpCodeUpdate={(code) =>
-                    handleOtskpCodeUpdate(partName, code)
                   }
                   onOtskpCodeAndNameUpdate={(code, name) =>
                     handleOtskpCodeAndNameUpdate(partName, code, name)
