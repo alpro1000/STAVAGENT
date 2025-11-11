@@ -461,6 +461,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     const totalPositions = createdBridges.reduce((sum, b) => sum + (b.positions_created || 0), 0);
     const totalFromExcel = createdBridges.reduce((sum, b) => sum + (b.positions_from_excel || 0), 0);
 
+    res.set('Content-Type', 'application/json; charset=utf-8');
     res.json({
       import_id,
       filename: req.file.originalname,
