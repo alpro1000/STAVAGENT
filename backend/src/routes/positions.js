@@ -316,9 +316,10 @@ router.put('/', (req, res) => {
 
     updateMany(updates, bridge_id);
 
-    // Return updated positions
+    // Return updated positions (with proper sorting to match GET route)
     const positions = db.prepare(`
       SELECT * FROM positions WHERE bridge_id = ?
+      ORDER BY part_name, subtype
     `).all(bridge_id);
 
     const configRow = db.prepare(`
