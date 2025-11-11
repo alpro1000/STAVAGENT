@@ -9,6 +9,7 @@ import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX, parseNumber } from '../services/parser.js';
+import { extractConcretePositions } from '../services/concreteExtractor.js';
 import { logger } from '../utils/logger.js';
 import { BRIDGE_TEMPLATE_POSITIONS } from '../constants/bridgeTemplates.js';
 import db from '../db/init.js';
@@ -400,8 +401,8 @@ router.post('/', upload.single('file'), async (req, res) => {
 
           logger.info(`Created bridge: ${bridge.bridge_id}`);
 
-          // Extract positions from Excel data for this bridge
-          const extractedPositions = convertRawRowsToPositions(parseResult.raw_rows, bridge.bridge_id);
+          // Extract positions from Excel data for this bridge (using concrete extractor)
+          const extractedPositions = extractConcretePositions(parseResult.raw_rows, bridge.bridge_id);
 
           // Insert extracted positions (or use templates if nothing extracted)
           let positionsToInsert = extractedPositions;
