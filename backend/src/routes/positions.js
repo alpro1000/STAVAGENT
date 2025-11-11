@@ -263,7 +263,12 @@ router.put('/', (req, res) => {
     }
 
     logger.info(`📝 PUT /api/positions: bridge_id=${bridge_id}, ${updates.length} updates`);
-    logger.info(`Updates: ${JSON.stringify(updates.slice(0, 1))}`);
+    // Log all updates (up to 5 for readability)
+    const previewUpdates = updates.slice(0, 5).map(u => ({
+      id: u.id?.substring(0, 20) + '...' || 'unknown',
+      fields: Object.keys(u).filter(k => k !== 'id').join(', ')
+    }));
+    logger.info(`Updates preview: ${JSON.stringify(previewUpdates)}`);
 
     const updateMany = db.transaction((updates, bridgeId) => {
       for (const update of updates) {
@@ -273,13 +278,11 @@ router.put('/', (req, res) => {
           throw new Error('Each update must have an id field');
         }
 
-        // 🔄 IMPORTANT: If item_name is being updated, also auto-update part_name
+        // 🚫 DO NOT auto-update part_name when item_name changes
+        // Only update fields that were explicitly sent (item_name, otskp_code, etc.)
+        // Changing part_name requires explicit API call
         if (fields.item_name && !fields.part_name) {
-          const correctPartName = findPartNameForItemName(fields.item_name);
-          if (correctPartName) {
-            fields.part_name = correctPartName;
-            logger.info(`  Auto-updated part_name: "${fields.item_name}" → part_name="${correctPartName}"`);
-          }
+          logger.debug(`  Item name being updated to "${fields.item_name}", but part_name NOT auto-updated (explicit update required)`);
         }
 
         // Build SQL dynamically for each update
