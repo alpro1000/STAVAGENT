@@ -731,6 +731,7 @@ button:disabled {
   background: var(--gradient-concrete);
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 /* ============================================
@@ -743,8 +744,7 @@ button:disabled {
   flex-direction: column;
   gap: 12px;
   flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: visible;
   min-height: 0;
 }
 
