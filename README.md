@@ -2,7 +2,7 @@
 
 **Full-stack web application for planning and calculating concrete bridge structures in Czech Republic**
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Version](https://img.shields.io/badge/version-1.2.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
 
@@ -47,7 +47,9 @@ Monolit Planner is a comprehensive planning tool designed for bridge constructio
 
 4. **OTSKP Integration** ⭐ NEW
    - **17,904 construction codes** from Czech OTSKP catalog
-   - **Autocomplete search** by code or name
+   - **Accent-insensitive search** (v1.2.0): Find "ZÁKLADY" by searching "zaklady" or "27 211" by searching "27211"
+   - **Autocomplete search** by code or name with flexible matching
+   - **Automatic code lookup** (v1.2.0): When parsing XLSX estimates, system automatically finds matching OTSKP codes by work name and type
    - **Auto-fill position names** from catalog
    - **Two-level structure**: Bridge parts (with OTSKP) → Work positions
 
@@ -63,17 +65,34 @@ Monolit Planner is a comprehensive planning tool designed for bridge constructio
    - **Visual organization**: Project → Bridges → Bridge ID
    - **Quick navigation** with expand/collapse
 
-7. **RFI System**
+7. **Smart Estimate Parsing** ⭐ NEW v1.2.0
+   - **Auto-find concrete work positions** when uploading XLSX estimates
+   - **Prefabricated elements filter**: Automatically excludes non-monolithic prefab items (prefa, dilce, díl, hotov)
+   - **Type-specific OTSKP matching**:
+     - "beton" items → searches for BETONOVÁNÍ/BETON codes
+     - "bednění" items → searches for BEDNAŘENÍ codes
+     - "výztuž" items → searches for VÝZTUŽ/OCEL codes
+   - **Three-level fallback**: Extract from Excel → Auto-find by name → NULL
+   - **Automatic table generation**: Creates position rows with quantities and OTSKP codes ready to use
+
+8. **Responsive Design**
+   - **Desktop** (>1024px): Full 4-column KPI grid, expanded sidebar, all details visible
+   - **Tablet** (769-1024px) ⭐ NEW v1.2.0: 3-column KPI grid, 250px sidebar, touch-friendly 40-44px targets
+   - **Mobile** (≤768px): 2-column KPI grid, collapsed sidebar, optimized spacing
+   - **Touch-optimized**: All buttons and inputs have minimum 40px height (Apple HIG compliance)
+   - **Font sizes**: 16px on inputs to prevent iOS auto-zoom
+
+9. **RFI System**
    - Highlights missing critical data (but doesn't block calculations)
    - Warnings for:
      - Missing concrete volume reference
      - Empty days field
      - Unmapped columns
 
-8. **Formula Transparency**
-   - Every number shows clear formula on hover
-   - All calculations are traceable
-   - Tooltips on all interactive elements
+10. **Formula Transparency**
+    - Every number shows clear formula on hover
+    - All calculations are traceable
+    - Tooltips on all interactive elements
 
 ### 🎨 Design
 
@@ -81,7 +100,98 @@ Monolit Planner is a comprehensive planning tool designed for bridge constructio
 - **Orange input cells**: `#FFA726` background for all editable fields
 - **Computed fields**: Gray readonly cells with bold values
 - **KROS cells**: Green background for final values
-- **Responsive**: Works on desktop and tablet
+- **Responsive**: Works on desktop, tablet, and mobile
+
+---
+
+## 🎯 Version 1.2.0 Enhancements (November 2025)
+
+### ✨ What's New
+
+1. **Accent-Insensitive OTSKP Search**
+   - Search functionality now handles Czech diacritics (ě, á, ř, ý, etc.)
+   - Find "ZÁKLADY" by searching "zaklady", "základy", or "ZAKLADY"
+   - Code search supports flexible formatting: "27211" matches "27 211"
+   - Powered by Unicode NFD normalization with database pre-computation
+   - **Files**: `backend/src/utils/text.js`, `backend/src/routes/otskp.js`
+
+2. **Automatic OTSKP Code Lookup**
+   - When uploading XLSX estimates, system automatically matches work items to OTSKP codes
+   - Uses three-level fallback: Excel extraction → Name-based search → NULL
+   - Type-specific filtering for concrete work: beton, bednění, výztuž, základy
+   - Detailed logging of all matches for debugging
+   - **Files**: `backend/src/routes/upload.js`
+
+3. **Prefabricated Elements Filter**
+   - Estimate parsing now excludes non-monolithic prefab elements
+   - Filtered keywords: prefa, prefabricated, dilce, díl, hotov, prefab
+   - Logged as skipped items for debugging
+   - Ensures only monolithic concrete work is included
+   - **Files**: `backend/src/routes/upload.js`
+
+4. **Tablet Responsive Design**
+   - Optimized layout for iPad landscape and Android tablets (769-1024px)
+   - Touch-friendly button/input sizes: minimum 40-44px heights
+   - 3-column KPI grid (vs 4 on desktop, 2 on mobile)
+   - 250px sidebar remains visible (not collapsed)
+   - 16px input font size to prevent iOS auto-zoom
+   - **Files**: `frontend/src/styles/components.css` (164 lines of tablet-specific CSS)
+
+5. **Database Enhancements**
+   - New `search_name` field in `otskp_codes` table with pre-computed normalized text
+   - Automatic migration for 17,904 existing codes
+   - New index `idx_otskp_search_name` for O(log n) search performance
+   - **Files**: `backend/src/db/init.js`, `backend/scripts/import-otskp.js`
+
+6. **Production OTSKP Import**
+   - Created `POST /api/otskp/import` endpoint for on-demand code import on production servers
+   - Token-based authorization with `OTSKP_IMPORT_TOKEN` environment variable
+   - Fail-closed security: Returns 401 if token not configured
+   - Multiple file path fallbacks for different deployment scenarios
+   - **Files**: `backend/src/routes/otskp.js`
+
+### 🐛 Bugs Fixed (P1 Priority)
+
+| Bug | Symptom | Fix |
+|-----|---------|-----|
+| **SQLite Case-Sensitivity** | "základy" → 0 results, "ZÁKLADY" → 71 results | Added `UPPER()` to search queries |
+| **Route Ordering** | `/count` endpoint unreachable (caught by `/:code`) | Reordered: /search → /count → /stats/summary → /:code → /import |
+| **Authorization Bypass** | Hardcoded fallback token "default-token-change-this" | Fail-closed: return 401 if `OTSKP_IMPORT_TOKEN` env var missing |
+| **Production Code Gap** | Render had 0 OTSKP codes, local dev had 17,904 | Created secure import endpoint requiring token auth |
+
+### ✅ What Works
+
+- ✅ Accent-insensitive search works for all 17,904 OTSKP codes
+- ✅ Automatic code lookup finds matches by work name with type filtering
+- ✅ Prefabricated elements properly excluded from estimate parsing
+- ✅ Tablet responsive design verified on iPad/Android tablet viewport sizes
+- ✅ Database migration runs automatically on first start
+- ✅ Import endpoint successfully imports all 17,904 codes with proper validation
+- ✅ Security: No hardcoded secrets, fail-closed authorization
+
+### ⚠️ Known Issues & Limitations
+
+1. **Production OTSKP Import** (User Action Required)
+   - After deploying to Render, user must manually:
+     1. Set `OTSKP_IMPORT_TOKEN` environment variable in Render Dashboard
+     2. Execute `POST /api/otskp/import` with correct token header
+   - Import script is development-only and doesn't run automatically on production startup
+
+2. **Tablet Testing**
+   - Tested in Chrome DevTools mobile emulation
+   - Recommend testing on actual iPad/Android tablet device for final validation
+   - Orientation switching (portrait ↔ landscape) may need additional tweaks
+
+3. **Code Lookup Matching**
+   - Fuzzy matching is name-based only (not specification-based)
+   - Works best with standardized estimate column names (e.g., "Betonování základů")
+   - Custom or non-standard item names may not find matches automatically
+
+### 📚 Documentation
+
+- **claude.md**: Complete session development notes with code flows and technical details
+- **CHANGELOG.md**: Detailed changelog with all changes, commits, and impact analysis
+- **COMPONENTS.md**: Component documentation with v1.2.0 technical specifications
 
 ---
 

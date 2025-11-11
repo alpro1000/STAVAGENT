@@ -718,8 +718,173 @@ try {
 
 ---
 
+## 🆕 Version 1.2.0 Enhancements
+
+### Backend Components
+
+#### Text Normalization Utility (`backend/src/utils/text.js`)
+
+**Назначение:** Нормализация текста для поиска без диакритик.
+
+**Functions:**
+
+```javascript
+// Removes diacritics using Unicode NFD normalization
+normalizeForSearch('ZÁKLADY') → 'ZAKLADY'
+normalizeForSearch('ěščřžýáíé') → 'ESCRZYZAIE'
+
+// Strips non-alphanumeric from codes
+normalizeCode('27-211 A') → '27211A'
+normalizeCode('27 211') → '27211'
+```
+
+**Usage:** Pre-computed in `otskp_codes.search_name` field for fast lookup.
+
+#### OTSKP Import Routes (`backend/src/routes/otskp.js`)
+
+**New/Updated Endpoints:**
+
+1. **GET /api/otskp/search** - Поиск кодов
+   - Query params: `q` (query), `limit` (default 20)
+   - Multi-level search: code exact → code prefix → normalized name
+   - 4-level relevance ranking
+   - Returns: `{ query, count, results }`
+
+2. **POST /api/otskp/import** - Импорт каталога (Protected)
+   - Header: `X-Import-Token: <token>`
+   - Requires: `OTSKP_IMPORT_TOKEN` environment variable
+   - Reads: XML file from multiple paths (dev, production, Render)
+   - Clears old codes and inserts 17,904 new codes in transaction
+   - Returns: Statistics with detailed import info
+
+3. **GET /api/otskp/count** - Проверить количество кодов
+   - Returns: `{ count: 17904, message: "..." }`
+
+4. **GET /api/otskp/:code** - Получить код по ID
+   - Returns: Single code with all details
+
+5. **GET /api/otskp/stats/summary** - Статистика каталога
+   - Returns: Summary stats + top 10 units by count
+
+#### Upload Routes Enhancement (`backend/src/routes/upload.js`)
+
+**New Function: `findOtskpCodeByName(itemName, subtype)`**
+
+Automatic OTSKP code lookup for construction work items:
+
+```
+Input: "ZÁKLADY ZE ŽELEZOBETONU", "beton"
+Search strategy:
+1. Split into keywords: ["ZÁKLADY", "ŽELEZOBETONU"]
+2. Filter by subtype (beton → search BETON/BETONOVÁNÍ)
+3. Match ALL keywords in catalog name
+4. Return first match or NULL
+
+Output: "27212"
+```
+
+**Features:**
+- Type-aware filtering
+- Keyword-based matching
+- Fallback for templates
+- Detailed logging with source
+
+**Prefab Filter:**
+Exclude items containing: prefa, prefabricated, dilce, díl, hotov, prefab
+
+### Frontend Components
+
+#### Responsive Design - Tablet Breakpoint
+
+**File:** `frontend/src/styles/components.css:2122-2285`
+
+**Media Query:** `@media (min-width: 769px) and (max-width: 1024px)`
+
+**Components Optimized:**
+
+| Component | Desktop | Tablet | Mobile | Notes |
+|-----------|---------|--------|--------|-------|
+| Sidebar | 280px | 250px | Hidden | Visible on tablet |
+| Buttons | - | 40px | 36px | Touch-friendly min-height |
+| KPI Grid | 4 cols | 3 cols | 2 cols | Responsive columns |
+| Input | normal | 16px | 14px | 16px prevents iOS zoom |
+| Dropdowns | - | 44px | 40px | Apple HIG compliance |
+| Tables | normal | 13px | 10px | Readable on tablet |
+| Modals | 90vw | 85vw | 95vw | Better fit on tablet |
+
+**Key Features:**
+- Touch-friendly sizing (40-44px minimum)
+- Proper spacing for tablet screens
+- Readable font sizes
+- Prevents unintended zooming on iOS
+- Maintains functionality while optimizing layout
+
+---
+
+### Database Schema Changes (v1.2.0)
+
+**New Field in `otskp_codes` table:**
+
+```sql
+ALTER TABLE otskp_codes ADD COLUMN search_name TEXT;
+
+-- Example:
+code: "27211"
+name: "ZÁKLADY ZE ŽELEZOBETONU DO C30/37"
+search_name: "ZAKLADY ZE ZELEZOBETONU DO C3037"  -- normalized
+```
+
+**New Index:**
+
+```sql
+CREATE INDEX idx_otskp_search_name ON otskp_codes(search_name);
+```
+
+**Automatic Migration:**
+- Checks if column exists
+- Backfills existing 17,904 codes with normalized names
+- Non-blocking operation during initialization
+
+### Data Flow: Estimate → Positions with OTSKP Codes
+
+```
+User uploads XLSX estimate
+           ↓
+POST /api/upload → parseXLSX()
+           ↓
+convertRawRowsToPositions()
+  ├─ Filter: Keep concrete work (beton, bednění, výztuž...)
+  ├─ Filter: Exclude prefabricated (prefa dilce)
+  ├─ Extract OTSKP code from Excel IF present
+  └─ IF NOT found:
+     → findOtskpCodeByName() searches catalog
+     → Returns code OR NULL
+           ↓
+Database positions table:
+  - part_name: "ZÁKLADY"
+  - item_name: "ZÁKLADY ZE ŽELEZOBETONU C30/37"
+  - otskp_code: "27212" ← AUTO-FOUND!
+  - qty, unit, crew_size, etc.
+           ↓
+Frontend PositionsTable displays all with codes ✅
+```
+
+### Search Capabilities Matrix
+
+| Search Query | Before | After | Notes |
+|--------------|--------|-------|-------|
+| "vykop" | ✅ 20 | ✅ 20 | No change (already worked) |
+| "VYKOP" | ✅ 20 | ✅ 20 | No change (already worked) |
+| "základy" | ❌ 0 | ✅ 71 | **FIXED** - Now works |
+| "zaklady" | ❌ 0 | ✅ ~ | **NEW** - Diacritic-insensitive |
+| "27 211" | ❌ 0 | ✅ ✓ | **NEW** - Code with spaces |
+| "27-211" | ❌ 0 | ✅ ✓ | **NEW** - Code with dashes |
+
+---
+
 ## 📚 Related Documentation
 
+- [claude.md](./claude.md) - Session development notes
 - [README.md](./README.md) - Основная документация
 - [DEPLOY.md](./DEPLOY.md) - Deployment guide
 - [shared/src/types.ts](./shared/src/types.ts) - Type definitions
@@ -727,5 +892,5 @@ try {
 
 ---
 
-**Last Updated:** 2024-01-10
-**Version:** 1.0.0
+**Last Updated:** 2025-11-11
+**Version:** 1.2.0

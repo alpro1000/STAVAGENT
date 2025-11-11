@@ -4,6 +4,105 @@
 
 ---
 
+## [1.2.0] - 2025-11-11
+
+### ✨ Добавлено
+
+#### OTSKP Search Improvements - Accent-Insensitive Search
+- **New Utility**: `backend/src/utils/text.js` with normalization functions
+  - `normalizeForSearch()` - removes diacritics using Unicode NFD
+  - `normalizeCode()` - strips non-alphanumeric from codes
+- **New Database Field**: `search_name` in `otskp_codes` table
+  - Pre-computed normalized names for fast search
+  - Automatic migration for 17,904 existing codes
+  - New index: `idx_otskp_search_name`
+- **Enhanced Search Logic**:
+  - Multiple WHERE clauses for flexible matching
+  - 4-level relevance ranking in ORDER BY
+  - Code search with/without spaces support
+- **Search Capabilities**:
+  - "zaklady" → finds "ZÁKLADY" (diacritic-insensitive)
+  - "27 211" → finds "27211" (code formatting flexible)
+  - All variants properly ranked by relevance
+
+#### Automatic OTSKP Code Lookup for Estimates
+- **New Function**: `findOtskpCodeByName()` in `upload.js`
+- **Three-Level Fallback**:
+  1. Extract code from Excel if present
+  2. Auto-search catalog by work name if not found
+  3. NULL if not found anywhere
+- **Type-Specific Filtering**:
+  - 'beton' → searches БЕТОН/BETONOVÁNÍ items
+  - 'bednění' → searches BEDNAŘENÍ items
+  - 'výztuž' → searches VÝZTUŽ/OCEL items
+- **Auto-Fill Templates**: Even default templates get codes found automatically
+- **Detailed Logging**: All matches logged with source and confidence
+
+#### Prefabricated Elements Filter
+- **Exclude Items**: prefa, prefabricated, dilce, díl, hotov, prefab
+- **Purpose**: Remove non-monolithic prefab elements from parsing
+- **Status**: Logged as skipped for debugging
+- **File**: `backend/src/routes/upload.js:142-153`
+
+#### Tablet Responsive Design
+- **Breakpoint**: 769px - 1024px (iPad landscape, Android tablets)
+- **Sidebar**: 250px width (visible on tablet, not collapsed)
+- **Buttons**: min-height 40px, font-size 13px (touch-friendly)
+- **KPI Grid**: 3 columns (vs 4 on desktop, 2 on mobile)
+- **Input Fields**: min-height 40px, font-size 16px (prevents iOS zoom)
+- **Dropdowns**: 44px min-height (Apple HIG compliance)
+- **Tables**: font-size 13px with optimized padding
+- **Modals**: max-width 85vw
+- **Toggle Buttons**: 44px min-width, 40px min-height
+- **File**: `frontend/src/styles/components.css:2122-2285` (164 lines)
+
+#### OTSKP Import Endpoint Diagnostics
+- **Logging**: `__dirname` and `process.cwd()` on import start
+- **Path Checking**: Detailed list of all checked paths with status
+- **Error Response**: Includes tried paths, cwd, dirname, helpful message
+- **Multiple Fallbacks**: Handles dev, production, and Render paths
+
+### 🐛 Исправлено
+
+#### OTSKP Search Case-Sensitivity (P1)
+- **Symptom**: "základy" (lowercase) → 0 results, "ZÁKLADY" (uppercase) → 71 results
+- **Root Cause**: SQLite LIKE case-sensitive for UTF-8 diacritics
+- **Fix**: Added `UPPER()` to both sides of LIKE clause in search SQL
+- **File**: `backend/src/routes/otskp.js:101-102`
+
+#### Route Ordering Issue (P1)
+- **Symptom**: GET /api/otskp/count returned 404 or wrong result
+- **Root Cause**: `/count` route caught by catch-all `/:code` pattern
+- **Fix**: Reordered routes - specific before catch-all
+- **Order**: /search → /count → /stats/summary → /:code → /import
+- **File**: `backend/src/routes/otskp.js`
+
+#### Authorization Security Issue (P1)
+- **Symptom**: Fallback to hardcoded 'default-token-change-this'
+- **Risk**: Attacker could bypass auth with known default
+- **Fix**: Fail-closed - require OTSKP_IMPORT_TOKEN env var
+- **Return**: 401 if env var not set, before checking request token
+- **File**: `backend/src/routes/otskp.js:220-224`
+
+#### OTSKP Codes Missing on Production
+- **Symptom**: Render production had 0 codes, local dev had 17,904
+- **Root Cause**: Import script never run on production server
+- **Fix**: Created POST /api/otskp/import endpoint with auth
+- **Trigger**: User must call endpoint with correct token
+- **File**: `backend/src/routes/otskp.js:217-333`
+
+### 📦 Commits
+
+- `9dddd8c` Merge remote-tracking branch 'origin/codex/fix-search-functionality-in-codebase'
+- `8c5adaf` Improve OTSKP search normalization (Codex)
+- `0461254` 🔍 Add automatic OTSKP code lookup for concrete work items
+- `288daa1` 🏗️ Add filter to exclude prefabricated elements (prefa dilce)
+- `f2bb3ce` 🔍 Add comprehensive OTSKP import diagnostics
+- `af5750a` 🔒 Fix critical OTSKP API issues - route ordering and authorization
+- `5b46f77` 📱 Add comprehensive tablet responsive design
+
+---
+
 ## [1.1.0] - 2024-01-10
 
 ### ✨ Добавлено
