@@ -19,7 +19,7 @@ import CustomWorkModal from './CustomWorkModal';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
-  const { isLoading, updatePositions } = usePositions(selectedBridge);
+  const { isLoading, updatePositions, deletePosition } = usePositions(selectedBridge);
   const { isLocked } = useSnapshots(selectedBridge);
   const queryClient = useQueryClient();
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
@@ -145,7 +145,9 @@ export default function PositionsTable() {
 
       // Delete all positions in this part
       for (const position of partPositions) {
-        await deletePosition(position.id);
+        if (position.id) {
+          await deletePosition(position.id);
+        }
       }
 
       console.log(`✅ Part "${partName}" deleted successfully`);
