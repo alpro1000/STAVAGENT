@@ -1,7 +1,6 @@
 /**
  * Concrete Work Extractor
  * Automatically extracts concrete-related positions from Excel data
- * Matches items by keywords and OTSKP codes
  */
 
 import { logger } from '../utils/logger.js';
@@ -57,7 +56,7 @@ export function extractConcretePositions(rawRows, bridgeId) {
       const position = parseConcreteRow(row);
       if (position) {
         positions.push(position);
-        logger.info(`[ConcreteExtractor] Extracted: ${position.item_name} (${position.qty} ${position.unit}, OTSKP: ${position.otskp_code || 'auto'})`);
+        logger.info(`[ConcreteExtractor] Extracted: ${position.item_name} (${position.qty} ${position.unit})`);
       }
     } catch (error) {
       logger.error('[ConcreteExtractor] Error parsing row:', error.message);
@@ -69,16 +68,14 @@ export function extractConcretePositions(rawRows, bridgeId) {
 
 /**
  * Parse a single row and return a position object if it's concrete-related
- * Expected column structure: PČ | Typ | Kód | Popis | MJ | Množství | J.cena | Cena celkem | Cenová soustava
+ * Expected columns: PČ | Typ | Kód | Popis | MJ | Množství | J.cena | Cena celkem | Cenová soustava
  */
 function parseConcreteRow(row) {
-  // Extract values by column name pattern matching
   const kod = getColumnValue(row, ['Kód', 'kod', 'Code']);
   const popis = getColumnValue(row, ['Popis', 'popis', 'Description', 'Item']);
   const mj = getColumnValue(row, ['MJ', 'mj', 'Unit', 'Jednotka']);
   const mnozstvi = getColumnValue(row, ['Množství', 'Mnozstvi', 'mnozstvi', 'Quantity', 'Qty']);
 
-  // Basic data validation
   if (!popis || !mnozstvi) {
     return null;
   }
@@ -94,7 +91,7 @@ function parseConcreteRow(row) {
     return null;
   }
 
-  // Extract OTSKP code from "Kód" column (should be 5-6 digits)
+  // Extract OTSKP code (5-6 digits)
   let otskpCode = null;
   if (kod) {
     const match = String(kod).match(/\d{5,6}/);
@@ -106,7 +103,6 @@ function parseConcreteRow(row) {
   // Determine work subtype
   const subtype = determineSubtype(popis, mj);
 
-  // Create and return position
   const position = {
     part_name: extractPartName(popis),
     item_name: popis.trim(),
@@ -132,48 +128,40 @@ function isConcreteWork(popis, mj) {
   const text = popis.toLowerCase();
   const unit = (mj || '').toLowerCase();
 
-  // Keywords indicating concrete work
   const concreteKeywords = [
-    'beton', 'betón',  // concrete
-    'bednění', 'bedná', // formwork
-    'výztuž', 'ocel',  // reinforcement, steel
-    'základy', 'základu', // foundations
-    'piloty', 'pilíř', // piles, columns
-    'opěr', 'křídla',  // supports, wings
-    'rimsy', 'románsy',  // cornices
-    'nosníky', 'nosn',  // beams
-    'desk', 'deska',  // plates
-    'drenáž', 'drénáž',  // drainage
-    'vrty',  // drilling
-    'schod', 'stupně',  // stairs, steps
-    'podklad', 'podkladní',  // base layers
-    'izolace', 'izoláci',  // insulation
-    'kameniva',  // aggregates
-    'vápenec', 'vápenatý',  // limestone
-    'most', 'mostní'  // bridge
+    'beton', 'betón',
+    'bednění', 'bedná',
+    'výztuž', 'ocel',
+    'základy', 'základu',
+    'piloty', 'pilíř',
+    'opěr', 'křídla',
+    'rimsy', 'románsy',
+    'nosníky', 'nosn',
+    'desk', 'deska',
+    'drenáž', 'drénáž',
+    'vrty',
+    'schod', 'stupně',
+    'podklad', 'podkladní',
+    'izolace', 'izoláci',
+    'most', 'mostní'
   ];
 
-  // Check text keywords
   const hasConcreteText = concreteKeywords.some(keyword => text.includes(keyword));
-
-  // Check unit (M3 = concrete volume, M2 = formwork area, T = reinforcement weight)
   const concreteUnits = ['m3', 'm³', 'm 3', 'm2', 'm²', 'm 2', 't', 'kg'];
   const hasConcreteUnit = concreteUnits.some(u => unit.includes(u));
 
-  // Exclude prefab elements
   const isPrefab = text.includes('prefa') || text.includes('díl') || text.includes('prefab');
 
   return (hasConcreteText || hasConcreteUnit) && !isPrefab;
 }
 
 /**
- * Determine work subtype based on description and unit
+ * Determine work subtype
  */
 function determineSubtype(popis, mj) {
   const text = (popis || '').toLowerCase();
   const unit = (mj || '').toLowerCase();
 
-  // Unit-based determination (most reliable)
   if (unit === 'm3' || unit === 'm³' || unit === 'm 3') {
     return 'beton';
   }
@@ -184,28 +172,23 @@ function determineSubtype(popis, mj) {
     return 'výztuž';
   }
 
-  // Text-based determination
-  if (text.includes('výztuž') || text.includes('ocel') || text.includes('reinforcement')) {
+  if (text.includes('výztuž') || text.includes('ocel')) {
     return 'výztuž';
   }
-  if (text.includes('bedn') || text.includes('formwork')) {
+  if (text.includes('bedn')) {
     return 'bednění';
   }
 
-  // Default
   return 'beton';
 }
 
 /**
- * Extract part name from description (usually before first hyphen)
+ * Extract part name from description
  */
 function extractPartName(popis) {
   if (!popis) return 'Neznámá část';
-
-  // Take text before hyphen if present
   const parts = popis.split('-');
   const partName = parts[0].trim();
-
   return partName.length > 0 ? partName : 'Neznámá část';
 }
 
@@ -216,12 +199,10 @@ function getColumnValue(row, possibleNames) {
   const keys = Object.keys(row);
 
   for (const name of possibleNames) {
-    // Exact match
     if (row[name] !== undefined && row[name] !== null && row[name] !== '') {
       return row[name];
     }
 
-    // Case-insensitive match
     const key = keys.find(k => k.toLowerCase().includes(name.toLowerCase()));
     if (key && row[key] !== null && row[key] !== '') {
       return row[key];
@@ -232,23 +213,19 @@ function getColumnValue(row, possibleNames) {
 }
 
 /**
- * Parse number from string, handling both . and , as decimal separators
+ * Parse number from string
  */
 function parseNumber(value) {
   if (!value) return 0;
-
   const str = String(value).trim();
   if (str === '') return 0;
-
-  // Replace comma with dot for parsing
   const normalized = str.replace(',', '.');
-
   const num = parseFloat(normalized);
   return isNaN(num) ? 0 : num;
 }
 
 /**
- * Normalize bridge code for comparison
+ * Normalize bridge code
  */
 function normalizeBridgeCode(code) {
   return code.trim().replace(/\s+/g, ' ').toUpperCase();
