@@ -314,14 +314,21 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           width: 14px;
           height: 14px;
           border: 2px solid rgba(255, 255, 255, 0.3);
-          border-top-color: white;
+          border-top-color: #fff;
+          border-right-color: rgba(255, 255, 255, 0.6);
           border-radius: 50%;
           animation: spin 0.8s linear infinite;
           margin-right: 6px;
+          vertical-align: middle;
         }
 
         @keyframes spin {
-          to { transform: rotate(360deg); }
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
       `}</style>
     </header>

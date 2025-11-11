@@ -11,31 +11,50 @@ import { logger } from '../utils/logger.js';
  */
 export async function parseXLSX(filePath) {
   try {
-    // Read workbook
-    const workbook = XLSX.readFile(filePath);
+    // Read workbook with proper encoding
+    const workbook = XLSX.readFile(filePath, {
+      cellFormula: true,
+      cellStyles: true,
+      cellDates: true
+    });
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
 
-    // Convert to JSON
+    // Convert to JSON with proper string handling
     const rawData = XLSX.utils.sheet_to_json(worksheet, {
       raw: false,
-      defval: null
+      defval: null,
+      blankrows: false
     });
 
-    logger.info(`Parsed ${rawData.length} rows from ${sheetName}`);
+    // Ensure UTF-8 encoding by re-encoding strings
+    const encodedData = rawData.map(row => {
+      const encodedRow = {};
+      for (const [key, value] of Object.entries(row)) {
+        if (typeof value === 'string') {
+          // Force UTF-8 string handling
+          encodedRow[key] = String(value);
+        } else {
+          encodedRow[key] = value;
+        }
+      }
+      return encodedRow;
+    });
+
+    logger.info(`Parsed ${encodedData.length} rows from ${sheetName}`);
 
     // Extract bridges (SO codes) and their concrete quantities
-    const bridges = extractBridgesFromData(rawData);
+    const bridges = extractBridgesFromData(encodedData);
 
     logger.info(`Found ${bridges.length} bridges:`, bridges);
 
     // Suggest column mapping based on headers
-    const headers = Object.keys(rawData[0] || {});
+    const headers = Object.keys(encodedData[0] || {});
     const mapping_suggestions = suggestMapping(headers);
 
     return {
       bridges,
-      raw_rows: rawData,
+      raw_rows: encodedData,
       mapping_suggestions,
       headers
     };

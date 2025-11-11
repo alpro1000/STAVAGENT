@@ -376,7 +376,7 @@ export default function PositionsTable() {
         return (
           <div key={partName} className="part-card">
             <div className="part-header" onClick={() => togglePart(partName)}>
-              <span>{partName}</span>
+              <span>{partPositions[0]?.item_name || partName}</span>
               <span>{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
             </div>
 
