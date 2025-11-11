@@ -4,6 +4,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
@@ -16,9 +17,10 @@ import WorkTypeSelector from './WorkTypeSelector';
 import NewPartModal from './NewPartModal';
 
 export default function PositionsTable() {
-  const { selectedBridge, positions, setPositions, setHeaderKPI } = useAppContext();
+  const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
   const { isLoading, updatePositions } = usePositions(selectedBridge);
   const { isLocked } = useSnapshots(selectedBridge);
+  const queryClient = useQueryClient();
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
   const [showWorkSelector, setShowWorkSelector] = useState(false);
   const [selectedPartForAdd, setSelectedPartForAdd] = useState<string | null>(null);
@@ -171,6 +173,10 @@ export default function PositionsTable() {
         }
       }
 
+      // 🔄 Invalidate React Query cache to ensure UI syncs immediately
+      queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
+      console.log(`🔄 Invalidated query cache for positions`);
+
       setSelectedPartForAdd(null);
     } catch (error) {
       console.error(`❌ Error adding row:`, error);
@@ -221,6 +227,10 @@ export default function PositionsTable() {
           setHeaderKPI(result.header_kpi);
         }
       }
+
+      // 🔄 Invalidate React Query cache to ensure UI syncs immediately
+      queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
+      console.log(`🔄 Invalidated query cache for positions`);
     } catch (error) {
       console.error(`❌ Error creating new part:`, error);
       alert(`Chyba při vytváření části: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
