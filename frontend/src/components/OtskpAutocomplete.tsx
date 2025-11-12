@@ -94,6 +94,10 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
           handleSelect(results[selectedIndex]);
         }
         break;
+            case 'Backspace':
+    case 'Delete':
+      // Allow deletion of characters
+      break;
       case 'Escape':
         e.preventDefault();
         setIsOpen(false);
