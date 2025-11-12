@@ -768,7 +768,7 @@ button:disabled {
   border: 1px solid var(--border-default);
   border-radius: 4px;
   margin-bottom: 16px;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
 }
@@ -911,12 +911,12 @@ button:disabled {
   border: 1px solid var(--border-light);
   border-radius: 6px;
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
   width: 100%;
   flex: 1;
-  min-height: 0;
+  min-height: auto;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -990,6 +990,10 @@ button:disabled {
 
 .positions-table th:last-child {
   border-right: none;
+}
+
+.positions-table tbody {
+  display: table-row-group;
 }
 
 .positions-table tbody tr {
