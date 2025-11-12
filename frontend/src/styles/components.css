@@ -744,7 +744,8 @@ button:disabled {
   flex-direction: column;
   gap: 12px;
   flex: 1;
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   min-height: 0;
 }
 
@@ -767,10 +768,11 @@ button:disabled {
   background: var(--bg-secondary);
   border: 1px solid var(--border-default);
   border-radius: 4px;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
   flex-direction: column;
   min-height: 0;
+  flex: 1;
 }
 
 .part-header {
