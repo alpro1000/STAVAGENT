@@ -36,7 +36,14 @@ const __dirname = dirname(__filename);
 
 // Configuration
 const PORT = process.env.PORT || 3001;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
+
+// CORS configuration - support multiple origins
+const ALLOWED_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://monolit-planner-frontend.onrender.com',
+  process.env.CORS_ORIGIN // Allow custom origin from env
+].filter(Boolean); // Remove undefined/null values
 
 // Initialize Express
 const app = express();
@@ -44,7 +51,17 @@ const app = express();
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: CORS_ORIGIN,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (like mobile apps or curl)
+    if (!origin) return callback(null, true);
+
+    if (ALLOWED_ORIGINS.includes(origin)) {
+      callback(null, true);
+    } else {
+      logger.warn(`CORS blocked origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
@@ -114,7 +131,7 @@ app.use(errorHandler);
 // Start server
 app.listen(PORT, () => {
   logger.info(`🚀 Monolit Planner Backend running on port ${PORT}`);
-  logger.info(`📊 CORS enabled for: ${CORS_ORIGIN}`);
+  logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
   logger.info(`🗄️  Database: ${process.env.DB_PATH || './data/monolit.db'}`);
 });
 
