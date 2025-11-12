@@ -7,7 +7,7 @@
  * - Keyboard shortcut: Ctrl+B / Cmd+B
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
@@ -61,9 +61,11 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   };
 
   // Expand all projects by default on first load
-  if (expandedProjects.size === 0 && Object.keys(bridgesByProject).length > 0) {
-    setExpandedProjects(new Set(Object.keys(bridgesByProject)));
-  }
+  useEffect(() => {
+    if (expandedProjects.size === 0 && Object.keys(bridgesByProject).length > 0) {
+      setExpandedProjects(new Set(Object.keys(bridgesByProject)));
+    }
+  }, [bridgesByProject]);
 
   return (
     <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
