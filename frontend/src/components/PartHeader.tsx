@@ -13,7 +13,7 @@ interface Props {
   otskpCode?: string;
   onItemNameUpdate: (itemName: string) => void;
   onBetonQuantityUpdate: (quantity: number) => void;
-  onOtskpCodeUpdate: (code: string) => void;
+  onOtskpCodeAndNameUpdate: (code: string, name: string) => void;
   isLocked: boolean;
 }
 
@@ -23,7 +23,7 @@ export default function PartHeader({
   otskpCode,
   onItemNameUpdate,
   onBetonQuantityUpdate,
-  onOtskpCodeUpdate,
+  onOtskpCodeAndNameUpdate,
   isLocked
 }: Props) {
   const [editedName, setEditedName] = useState(itemName || '');
@@ -37,7 +37,6 @@ export default function PartHeader({
 
   useEffect(() => {
     setEditedBeton(betonQuantity.toString());
-    console.log(`🪨 PartHeader useEffect: betonQuantity changed to ${betonQuantity}, syncing state`);
   }, [betonQuantity]);
 
   useEffect(() => {
@@ -52,30 +51,22 @@ export default function PartHeader({
 
   const handleBetonBlur = () => {
     const numValue = parseFloat(editedBeton) || 0;
-    console.log(`🪨 PartHeader.handleBetonBlur: value="${editedBeton}", parsed=${numValue}, current=${betonQuantity}`);
 
     if (numValue !== betonQuantity) {
-      console.log(`🪨 Calling onBetonQuantityUpdate(${numValue})`);
       onBetonQuantityUpdate(numValue);
-    } else {
-      console.log(`🪨 Value unchanged, not calling callback`);
     }
   };
 
   const handleBetonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditedBeton(e.target.value);
-    console.log(`🪨 PartHeader.handleBetonChange: ${e.target.value}`);
   };
 
   const handleOtskpSelect = (code: string, name: string) => {
-    console.log(`🏗️ OTSKP selected: ${code} - ${name}`);
     setEditedOtskp(code);
-    onOtskpCodeUpdate(code);
-    // Optionally update item name if it's empty
-    if (!editedName || editedName.trim() === '') {
-      setEditedName(name);
-      onItemNameUpdate(name);
-    }
+    // Don't update editedName locally - let API response update it via useEffect
+    // This prevents the "flash" where it shows new name then reverts to old
+    // Update BOTH code and name in a SINGLE API call to avoid race condition
+    onOtskpCodeAndNameUpdate(code, name);
   };
 
   return (

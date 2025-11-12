@@ -136,6 +136,8 @@ html {
    ============================================ */
 
 body {
+  margin: 0;
+  padding: 0;
   font-family: var(--font-base);
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -264,11 +266,19 @@ input:disabled, select:disabled, textarea:disabled {
 #root {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
 }
 
-/* Убираем все излишние анимации */
-*, *::before, *::after {
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+/* Убираем все излишние анимации, кроме необходимых спиннеров */
+*:not(.upload-spinner):not(.upload-spinner *), *::before:not(.upload-spinner *), *::after:not(.upload-spinner *) {
   animation-duration: 0.1s !important;
   animation-delay: 0s !important;
 }

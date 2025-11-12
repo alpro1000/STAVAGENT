@@ -15,16 +15,19 @@ import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
 import WorkTypeSelector from './WorkTypeSelector';
 import NewPartModal from './NewPartModal';
+import CustomWorkModal from './CustomWorkModal';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
-  const { isLoading, updatePositions } = usePositions(selectedBridge);
+  const { isLoading, updatePositions, deletePosition } = usePositions(selectedBridge);
   const { isLocked } = useSnapshots(selectedBridge);
   const queryClient = useQueryClient();
   const [expandedParts, setExpandedParts] = useState<Set<string>>(new Set());
   const [showWorkSelector, setShowWorkSelector] = useState(false);
   const [selectedPartForAdd, setSelectedPartForAdd] = useState<string | null>(null);
   const [showNewPartModal, setShowNewPartModal] = useState(false);
+  const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
+  const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
 
   // Group positions by part_name and sort each group (beton first, then others)
   const groupedPositions = useMemo(() => {
@@ -53,22 +56,14 @@ export default function PositionsTable() {
 
   // Handle concrete volume update from PartHeader
   const handleBetonQuantityUpdate = (partName: string, newQuantity: number) => {
-    console.log(`📊 handleBetonQuantityUpdate called: part="${partName}", qty=${newQuantity}`);
-
     // Find the beton position for this part
     const betonPosition = positions.find(
       p => p.part_name === partName && p.subtype === 'beton'
     );
 
     if (!betonPosition) {
-      console.error(
-        `❌ No 'beton' position found for part "${partName}". Cannot update concrete volume.`
-      );
-      console.log(`Available parts: ${positions.map(p => `${p.part_name}/${p.subtype}`).join(', ')}`);
       return;
     }
-
-    console.log(`✅ Found beton position: id=${betonPosition.id}, current qty=${betonPosition.qty}, new qty=${newQuantity}`);
 
     // IMPORTANT: Only send editable fields, NOT calculated fields!
     // Backend will recalculate: labor_hours, cost_czk, unit_cost_on_m3, kros_total_czk, etc.
@@ -80,14 +75,11 @@ export default function PositionsTable() {
       // These are calculated by backend in calculatePositionFields()
     }];
 
-    console.log(`📤 Calling updatePositions with:`, updates);
     updatePositions(updates);
   };
 
   // Handle item name update from PartHeader
   const handleItemNameUpdate = (partName: string, newItemName: string) => {
-    console.log(`📝 handleItemNameUpdate called: part="${partName}", newName="${newItemName}"`);
-
     // Update item_name for all positions in this part
     const partPositions = positions.filter(p => p.part_name === partName);
 
@@ -102,24 +94,60 @@ export default function PositionsTable() {
     updatePositions(updates);
   };
 
-  // Handle OTSKP code update from PartHeader
-  const handleOtskpCodeUpdate = (partName: string, newOtskpCode: string) => {
-    console.log(`🔖 handleOtskpCodeUpdate called: part="${partName}", code="${newOtskpCode}"`);
-
-    // Update otskp_code for all positions in this part (same OTSKP code for all works in the part)
+  // Handle OTSKP code AND name update together (prevent race condition)
+  const handleOtskpCodeAndNameUpdate = (partName: string, newOtskpCode: string, newItemName: string) => {
+    // Update BOTH otskp_code and item_name for all positions in this part
     const partPositions = positions.filter(p => p.part_name === partName);
 
     if (partPositions.length === 0) return;
 
-    // IMPORTANT: Only send editable fields!
+    // Send both updates in ONE API call to avoid race condition
     const updates = partPositions.map(pos => ({
       id: pos.id,
-      otskp_code: newOtskpCode
-      // Do NOT include calculated fields
+      otskp_code: newOtskpCode,
+      item_name: newItemName
     }));
 
-    console.log(`📤 Calling updatePositions with ${updates.length} updates:`, updates);
     updatePositions(updates);
+  };
+
+  // Handle deletion of entire part with all its positions
+  const handleDeletePart = async (partName: string) => {
+    if (!selectedBridge) return;
+    if (isLocked) {
+      alert('❌ Nelze smazat: Data jsou zafixována (snapshot aktivní)');
+      return;
+    }
+
+    // Confirm deletion
+    const partPositions = positions.filter(p => p.part_name === partName);
+    const confirmed = window.confirm(
+      `Opravdu smazat část "${partName}" se všemi ${partPositions.length} pozicemi?\n\nTuto akci nelze vrátit!`
+    );
+    if (!confirmed) return;
+
+    try {
+      // Delete all positions in this part (filter out positions without id)
+      const positionsToDelete = partPositions.filter(p => p.id);
+      if (positionsToDelete.length === 0) {
+        alert('Chyba: Žádné pozice k smazání');
+        return;
+      }
+
+      await Promise.all(
+        positionsToDelete.map(position => positionsAPI.delete(position.id!))
+      );
+      setExpandedParts(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(partName);
+        return newSet;
+      });
+
+      // Invalidate and refetch positions
+      queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge] });
+    } catch (error) {
+      alert(`Chyba při mazání části: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
+    }
   };
 
   const togglePart = (partName: string) => {
@@ -142,9 +170,16 @@ export default function PositionsTable() {
   const handleWorkTypeSelected = async (subtype: Subtype, unit: Unit) => {
     if (!selectedBridge || !selectedPartForAdd) return;
 
-    try {
-      setShowWorkSelector(false);
+    setShowWorkSelector(false);
 
+    // If custom work type ("jiné"), show modal for user input
+    if (subtype === 'jiné') {
+      setPendingCustomWork({ subtype });
+      setShowCustomWorkModal(true);
+      return;
+    }
+
+    try {
       const newPosition: Partial<Position> = {
         id: uuidv4(),
         bridge_id: selectedBridge,
@@ -159,11 +194,8 @@ export default function PositionsTable() {
         days: 0
       };
 
-      console.log(`➕ Adding new row to part "${selectedPartForAdd}" with type "${subtype}":`, newPosition);
-
       // Create position via API
       const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
-      console.log(`✅ New row added:`, result);
 
       // Update context with new positions
       if (result.positions) {
@@ -175,13 +207,55 @@ export default function PositionsTable() {
 
       // 🔄 Invalidate React Query cache to ensure UI syncs immediately
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
-      console.log(`🔄 Invalidated query cache for positions`);
 
       setSelectedPartForAdd(null);
     } catch (error) {
-      console.error(`❌ Error adding row:`, error);
       alert(`Chyba při přidávání řádku: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
       setSelectedPartForAdd(null);
+    }
+  };
+
+  // Handle custom work modal submission
+  const handleCustomWorkSubmit = async (itemName: string, unit: Unit) => {
+    if (!selectedBridge || !selectedPartForAdd || !pendingCustomWork) return;
+
+    try {
+      setShowCustomWorkModal(false);
+
+      const newPosition: Partial<Position> = {
+        id: uuidv4(),
+        bridge_id: selectedBridge,
+        part_name: selectedPartForAdd,
+        item_name: itemName,
+        subtype: pendingCustomWork.subtype,
+        unit: unit,
+        qty: 0,
+        crew_size: 4,
+        wage_czk_ph: 398,
+        shift_hours: 10,
+        days: 0
+      };
+
+      // Create position via API
+      const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
+
+      // Update context with new positions
+      if (result.positions) {
+        setPositions(result.positions);
+        if (result.header_kpi) {
+          setHeaderKPI(result.header_kpi);
+        }
+      }
+
+      // 🔄 Invalidate React Query cache
+      queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
+
+      setSelectedPartForAdd(null);
+      setPendingCustomWork(null);
+    } catch (error) {
+      alert(`Chyba při přidávání práce: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
+      setSelectedPartForAdd(null);
+      setPendingCustomWork(null);
     }
   };
 
@@ -189,6 +263,13 @@ export default function PositionsTable() {
   const handleWorkTypeCancelled = () => {
     setShowWorkSelector(false);
     setSelectedPartForAdd(null);
+  };
+
+  // Handle custom work modal cancel
+  const handleCustomWorkCancelled = () => {
+    setShowCustomWorkModal(false);
+    setSelectedPartForAdd(null);
+    setPendingCustomWork(null);
   };
 
   // Handle new part creation from OTSKP search
@@ -214,11 +295,8 @@ export default function PositionsTable() {
         days: 0
       };
 
-      console.log(`🏗️ Creating new part "${partName}" with OTSKP ${otskpCode}:`, newPosition);
-
       // Create position via API
       const result = await positionsAPI.create(selectedBridge, [newPosition as Position]);
-      console.log(`✅ New part created:`, result);
 
       // Update context with new positions
       if (result.positions) {
@@ -230,9 +308,7 @@ export default function PositionsTable() {
 
       // 🔄 Invalidate React Query cache to ensure UI syncs immediately
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
-      console.log(`🔄 Invalidated query cache for positions`);
     } catch (error) {
-      console.error(`❌ Error creating new part:`, error);
       alert(`Chyba při vytváření části: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
     }
   };
@@ -303,14 +379,30 @@ export default function PositionsTable() {
         </div>
       )}
 
-      {Object.entries(displayGroups).map(([partName, partPositions]) => {
+      {Object.entries(displayGroups)
+        .filter(([_, partPositions]) => partPositions.length > 0)
+        .map(([partName, partPositions]) => {
         const isExpanded = expandedParts.has(partName);
 
         return (
           <div key={partName} className="part-card">
             <div className="part-header" onClick={() => togglePart(partName)}>
-              <span>{partName}</span>
-              <span>{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
+              <span>{partPositions[0]?.item_name || partName}</span>
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <span>{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
+                {!isLocked && (
+                  <button
+                    className="btn-delete-part"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleDeletePart(partName);
+                    }}
+                    title={`Smazat část "${partName}" (${partPositions.length} pozic)`}
+                  >
+                    🗑️ Smazat
+                  </button>
+                )}
+              </div>
             </div>
 
             {isExpanded && (
@@ -327,8 +419,8 @@ export default function PositionsTable() {
                   onBetonQuantityUpdate={(newQuantity) =>
                     handleBetonQuantityUpdate(partName, newQuantity)
                   }
-                  onOtskpCodeUpdate={(code) =>
-                    handleOtskpCodeUpdate(partName, code)
+                  onOtskpCodeAndNameUpdate={(code, name) =>
+                    handleOtskpCodeAndNameUpdate(partName, code, name)
                   }
                   isLocked={isLocked}
                 />
@@ -412,6 +504,14 @@ export default function PositionsTable() {
         <NewPartModal
           onSelect={handleNewPartSelected}
           onCancel={handleNewPartCancelled}
+        />
+      )}
+
+      {/* Custom Work Modal */}
+      {showCustomWorkModal && (
+        <CustomWorkModal
+          onSelect={handleCustomWorkSubmit}
+          onCancel={handleCustomWorkCancelled}
         />
       )}
     </div>

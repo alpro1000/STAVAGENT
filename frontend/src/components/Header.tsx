@@ -26,6 +26,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [showExportHistory, setShowExportHistory] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -39,18 +40,18 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    setIsUploading(true);
     try {
-      console.log('Uploading:', file.name);
       const result = await uploadAPI.uploadXLSX(file);
-      console.log('Upload result:', result);
 
       // Refetch bridges after upload
       await refetchBridges();
 
-      alert(`Import successful! Found ${result.bridges.length} bridges with ${result.row_count} rows.`);
+      alert(`✅ Import úspěšný! Nalezeno ${result.bridges.length} mostů s ${result.row_count} řádky.`);
     } catch (error: any) {
-      console.error('Upload error:', error);
-      alert(`Upload failed: ${error.message}`);
+      alert(`❌ Nahrání selhalo: ${error.message}`);
+    } finally {
+      setIsUploading(false);
     }
 
     // Reset input
@@ -77,7 +78,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     } catch (error: any) {
-      console.error('Export error:', error);
       alert(`Chyba při exportu: ${error.message}`);
     }
   };
@@ -98,7 +98,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         }
       });
     } catch (error: any) {
-      console.error('Save error:', error);
       alert(`Chyba při ukládání: ${error.message}`);
     }
   };
@@ -118,7 +117,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         setSelectedBridge(bridge_id);
       }
     } catch (error) {
-      console.error('Error refetching bridges after creation:', error);
       // Still set selected bridge even if refetch fails
       setSelectedBridge(bridge_id);
     }
@@ -213,9 +211,17 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         <button
           className="btn-secondary"
           onClick={handleUploadClick}
-          title="Nahrát Excel soubor s pozicemi mostů"
+          disabled={isUploading}
+          title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi mostů'}
         >
-          💾 Nahrát XLSX
+          {isUploading ? (
+            <>
+              <span className="upload-spinner"></span>
+              Načítání...
+            </>
+          ) : (
+            <>💾 Nahrát XLSX</>
+          )}
         </button>
 
         <input
@@ -295,6 +301,32 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           </div>
         </div>
       )}
+
+      <style>{`
+        .upload-spinner {
+          display: inline-block;
+          width: 14px;
+          height: 14px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-top-color: #fff;
+          border-right-color: rgba(255, 255, 255, 0.6);
+          border-radius: 50%;
+          animation: spin 0.8s linear infinite;
+          margin-right: 6px;
+          vertical-align: middle;
+          position: relative;
+          z-index: 10000;
+        }
+
+        @keyframes spin {
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
+        }
+      `}</style>
     </header>
   );
 }

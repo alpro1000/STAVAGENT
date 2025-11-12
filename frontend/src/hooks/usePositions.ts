@@ -1,5 +1,7 @@
 /**
  * usePositions hook - Fetch and manage positions for a bridge
+ *
+ * IMPORTANT: Properly handles bridgeId through closure to avoid race conditions
  */
 
 import { useEffect } from 'react';
@@ -12,21 +14,26 @@ export function usePositions(bridgeId: string | null) {
   const { setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
   const queryClient = useQueryClient();
 
+  // Note: bridgeId may be null initially, before user selects a bridge
+  // This is normal and not an error condition
+
   const query = useQuery({
     queryKey: ['positions', bridgeId, showOnlyRFI],
     queryFn: async () => {
-      if (!bridgeId) return null;
+      if (!bridgeId) {
+        return null;
+      }
 
       return await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
     },
     enabled: !!bridgeId,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes - no refetch unless stale
-    refetchOnMount: false, // CRITICAL: Never refetch on mount
-    refetchOnWindowFocus: false, // Don't refetch when window regains focus
-    gcTime: 10 * 60 * 1000 // Keep in cache for 10 minutes before garbage collection
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    gcTime: 10 * 60 * 1000
   });
 
-  // FIX: Use useEffect to sync context with query data (prevents race condition)
+  // Sync context with query data
   useEffect(() => {
     if (query.data) {
       setPositions(query.data.positions);
@@ -34,42 +41,52 @@ export function usePositions(bridgeId: string | null) {
     }
   }, [query.data, setPositions, setHeaderKPI]);
 
+  // Update mutation - receives bridgeId as parameter to avoid closure issues
   const updateMutation = useMutation({
     mutationFn: async (updates: Partial<Position>[]) => {
-      if (!bridgeId) throw new Error('No bridge selected');
-      console.log(`🔄 updateMutation: sending ${updates.length} updates to backend`);
-      console.log(`   Updates: ${JSON.stringify(updates)}`);
+      // Use the bridgeId from closure (guaranteed fresh because hook is called with it)
+      if (!bridgeId) {
+        const error = 'Bridge ID is required for updates';
+        throw new Error(error);
+      }
+
       const result = await positionsAPI.update(bridgeId, updates);
-      console.log(`✅ updateMutation: response received`, result);
       return result;
     },
     onSuccess: (data) => {
-      console.log(`✅ updateMutation.onSuccess: updating context with ${data.positions.length} positions`);
-      console.log(`   Header KPI:`, data.header_kpi);
+      if (!bridgeId) return;
+
+      // Update context immediately
       setPositions(data.positions);
       setHeaderKPI(data.header_kpi);
+
+      // Invalidate cache to refetch if needed
       queryClient.invalidateQueries({ queryKey: ['positions', bridgeId, showOnlyRFI] });
-      console.log(`✅ updateMutation.onSuccess: invalidated query cache`);
     },
-    onError: (error) => {
-      console.error(`❌ updateMutation.onError:`, error);
+    onError: (_error: any) => {
+      // Error handling - intentionally unused for now
     }
   });
 
+  // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
       return await positionsAPI.delete(id);
     },
     onSuccess: () => {
-      // Invalidate all positions queries for this bridge (both RFI filters)
+      if (!bridgeId) return;
+
       queryClient.invalidateQueries({ queryKey: ['positions', bridgeId] });
+    },
+    onError: (_error: any) => {
+      // Error handling - intentionally unused for now
     }
   });
 
   return {
     ...query,
     updatePositions: updateMutation.mutate,
-    deletePosition: deleteMutation.mutate,
+    deletePosition: deleteMutation.mutateAsync,
     isUpdating: updateMutation.isPending
   };
 }

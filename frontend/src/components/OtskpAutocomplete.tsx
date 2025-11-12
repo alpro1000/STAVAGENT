@@ -14,13 +14,20 @@ interface Props {
 }
 
 export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(value || '');
   const [results, setResults] = useState<OtskpCode[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Initialize searchQuery when value prop changes
+  useEffect(() => {
+    if (value && value !== searchQuery) {
+      setSearchQuery(value);
+    }
+  }, [value]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -36,10 +43,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
 
   // Debounced search
   useEffect(() => {
-    console.log('[OtskpAutocomplete] useEffect triggered, searchQuery:', searchQuery, 'length:', searchQuery.length);
-
     if (searchQuery.length < 2) {
-      console.log('[OtskpAutocomplete] Query too short, clearing results');
       setResults([]);
       setIsOpen(false);
       return;
@@ -47,18 +51,13 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
 
     const timeoutId = setTimeout(async () => {
       try {
-        console.log('[OtskpAutocomplete] Starting search for:', searchQuery);
         setIsLoading(true);
         const response = await otskpAPI.search(searchQuery, 20);
-        console.log('[OtskpAutocomplete] API response received:', response);
-        console.log('[OtskpAutocomplete] Results count:', response.results.length);
         setResults(response.results);
         const shouldOpen = response.results.length > 0;
-        console.log('[OtskpAutocomplete] Opening dropdown?', shouldOpen);
         setIsOpen(shouldOpen);
         setSelectedIndex(-1);
       } catch (error) {
-        console.error('[OtskpAutocomplete] Search error:', error);
         setResults([]);
         setIsOpen(false);
       } finally {
@@ -71,7 +70,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
 
   const handleSelect = (item: OtskpCode) => {
     onSelect(item.code, item.name);
-    setSearchQuery('');
+    setSearchQuery(item.code); // Show the selected code in the input
     setIsOpen(false);
     setResults([]);
   };
@@ -113,7 +112,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
           ref={inputRef}
           type="text"
           className="otskp-search-input"
-          value={searchQuery || value}
+          value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onFocus={() => {
             if (results.length > 0) setIsOpen(true);

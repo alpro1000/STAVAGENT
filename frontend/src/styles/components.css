@@ -719,13 +719,19 @@ button:disabled {
 
 .main-layout {
   display: flex;
-  height: calc(100vh - 60px);
+  flex: 1;
+  min-height: calc(100vh - 60px);
+  overflow: hidden;
 }
 
 .content {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
   background: var(--gradient-concrete);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
 
 /* ============================================
@@ -733,7 +739,13 @@ button:disabled {
    ============================================ */
 
 .positions-container {
-  padding: 20px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
 }
 
 .empty-positions-container {
@@ -757,6 +769,8 @@ button:disabled {
   border-radius: 4px;
   margin-bottom: 16px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .part-header {
@@ -776,6 +790,38 @@ button:disabled {
 .part-header:hover {
   background: var(--accent-primary);
   color: var(--bg-secondary);
+}
+
+/* Delete part button */
+.btn-delete-part {
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.btn-delete-part:hover {
+  background: #c82333;
+  transform: scale(1.05);
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.4);
+}
+
+.btn-delete-part:active {
+  transform: scale(0.98);
+}
+
+.btn-delete-part:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 /* Part Header - Editable name and concrete parameters */
@@ -865,12 +911,12 @@ button:disabled {
   border: 1px solid var(--border-light);
   border-radius: 6px;
   overflow-x: auto;
-  overflow-y: visible;
+  overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
   scrollbar-gutter: stable;
   width: 100%;
-  max-height: calc(100vh - 300px);
-  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
 }
 
 .table-wrapper::-webkit-scrollbar {
@@ -895,13 +941,14 @@ button:disabled {
 /* SINGLE Positions Table with sticky header */
 .positions-table {
   width: 100%;
-  min-width: 955px;
   border-collapse: collapse;
   font-size: 12px;
   background: var(--bg-secondary);
   table-layout: fixed;
   margin: 0;
   border: none;
+  display: table;
+  line-height: 1.5;
 }
 
 /* Sticky header that stays visible when scrolling */
@@ -911,6 +958,13 @@ button:disabled {
   z-index: 150;
   display: table-header-group;
   background: var(--bg-secondary);
+  min-height: 36px;
+}
+
+.positions-table thead tr {
+  height: auto;
+  min-height: 36px;
+  display: table-row;
 }
 
 .positions-table th {
@@ -927,13 +981,21 @@ button:disabled {
   letter-spacing: 0.5px;
   white-space: nowrap;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 36px;
+  height: auto;
+  min-height: 36px;
   vertical-align: middle;
   box-sizing: border-box;
+  display: table-cell;
 }
 
 .positions-table th:last-child {
   border-right: none;
+}
+
+.positions-table tbody tr {
+  height: auto;
+  min-height: 36px;
+  display: table-row;
 }
 
 .positions-table td {
@@ -941,8 +1003,10 @@ button:disabled {
   border-bottom: 1px solid var(--border-light);
   vertical-align: middle;
   background: var(--bg-secondary);
-  height: 36px;
+  height: auto;
+  min-height: 36px;
   box-sizing: border-box;
+  display: table-cell;
 }
 
 .positions-table tbody tr:hover td {
@@ -1242,13 +1306,14 @@ button:disabled {
 .kpi-float-card {
   position: sticky;
   top: 0;
-  margin: 8px 16px;
-  padding: 8px 12px;
+  margin: 8px 12px;
+  padding: 8px 10px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-default);
   border-radius: 4px;
   box-shadow: var(--shadow-md);
   z-index: 200;
+  flex-shrink: 0;
 }
 
 .kpi-header {
@@ -2114,761 +2179,3 @@ select:focus {
   font-style: italic;
 }
 
-/* ============================================
-   RESPONSIVE DESIGN - MOBILE & TABLET
-   ============================================ */
-
-/* Tablet screens (769px to 1024px) - Optimized layout */
-@media (min-width: 769px) and (max-width: 1024px) {
-  /* Layout: Better use of tablet space */
-  .app-container {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 0;
-  }
-
-  /* Sidebar: Keep visible, compact */
-  .sidebar {
-    width: 250px;
-    padding: 12px 8px;
-  }
-
-  .sidebar-title {
-    font-size: 14px;
-    padding: 12px 8px;
-  }
-
-  .bridge-item,
-  .project-header {
-    padding: 10px 12px;
-    font-size: 13px;
-  }
-
-  /* Header: Optimize button layout */
-  .header {
-    flex-wrap: nowrap;
-    gap: 10px;
-    padding: 12px 16px;
-  }
-
-  .header-logo h1 {
-    font-size: 18px;
-  }
-
-  /* Header controls: More room for buttons */
-  .header-controls {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  /* Buttons: Larger for touch */
-  .btn-primary,
-  .btn-secondary,
-  .btn-create,
-  .btn-lock,
-  .btn-success,
-  .btn-danger,
-  .btn-info,
-  .btn-restore {
-    font-size: 13px;
-    padding: 10px 14px;
-    min-height: 40px;
-  }
-
-  /* Table: Better readability on tablet */
-  .positions-table {
-    font-size: 13px;
-  }
-
-  .positions-table th,
-  .positions-table td {
-    padding: 8px 6px;
-  }
-
-  /* KPI Grid: 3 columns for tablet landscape */
-  .kpi-grid-modern {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-  }
-
-  /* KPI Card: Better spacing */
-  .kpi-card {
-    padding: 10px 8px;
-  }
-
-  .kpi-card-label {
-    font-size: 12px;
-    gap: 4px;
-  }
-
-  .kpi-card-value {
-    font-size: 15px;
-  }
-
-  .kpi-card-unit {
-    font-size: 10px;
-  }
-
-  /* KPI Float Card: Better spacing */
-  .kpi-float-card {
-    margin: 6px 10px;
-    padding: 8px 10px;
-  }
-
-  /* KPI Bridge Title: Readable on tablet */
-  .kpi-bridge-title {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
-
-  /* KPI Header: Better layout */
-  .kpi-header {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  /* KPI Metadata: Visible on tablet */
-  .kpi-metadata {
-    font-size: 12px;
-    display: block;
-  }
-
-  /* KPI Formula: Smaller but visible */
-  .kpi-formula {
-    font-size: 11px;
-    padding: 6px 8px;
-  }
-
-  /* Modals: Better size for tablet */
-  .modal-content-large {
-    max-width: 85vw;
-    max-height: 85vh;
-    width: 100%;
-  }
-
-  /* Input fields: Better for touch */
-  input[type="text"],
-  input[type="number"],
-  select,
-  textarea {
-    font-size: 16px;
-    padding: 10px 12px;
-    min-height: 40px;
-  }
-
-  /* Part header: Tablet layout */
-  .part-header {
-    padding: 12px;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-
-  /* Dropdown: Better positioning */
-  .otskp-dropdown {
-    max-height: 300px;
-  }
-
-  .otskp-dropdown-item {
-    padding: 10px 12px;
-    min-height: 44px;
-  }
-
-  /* Toggle buttons: Larger for touch */
-  .toggle-btn {
-    padding: 8px 12px;
-    font-size: 12px;
-    min-width: 44px;
-    min-height: 40px;
-  }
-}
-
-/* Tablet and small screens (768px and below) */
-@media (max-width: 768px) {
-  /* Table header: adjust sticky offset for expanded KPI panel (2 columns) */
-  .positions-table th {
-    top: 0;
-    font-size: 10px;
-    padding: 6px 4px;
-  }
-
-  /* KPI Grid: 4 columns → 2 columns for better mobile layout */
-  .kpi-grid-modern {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 5px;
-  }
-
-  /* KPI Card: reduce padding on mobile */
-  .kpi-card {
-    padding: 6px 4px;
-  }
-
-  /* KPI Card Label: slightly smaller on mobile */
-  .kpi-card-label {
-    font-size: var(--font-size-xs);
-    gap: 2px;
-  }
-
-  /* KPI Card Value: maintain readability on mobile */
-  .kpi-card-value {
-    font-size: var(--font-size-body);
-  }
-
-  /* KPI Float Card: reduce padding on mobile */
-  .kpi-float-card {
-    margin: 4px 8px;
-    padding: 6px 8px;
-  }
-
-  /* KPI Header: stack on mobile if needed */
-  .kpi-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-
-  /* KPI Metadata: smaller on mobile */
-  .kpi-metadata {
-    font-size: var(--font-size-xs);
-  }
-
-  /* KPI Bridge Title: slightly smaller on mobile */
-  .kpi-bridge-title {
-    font-size: 14px;
-  }
-
-  /* KPI Formula: reduce font size on mobile */
-  .kpi-formula {
-    font-size: 9px;
-    padding: 4px 6px;
-  }
-
-  /* Header: more compact on mobile */
-  .header {
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  /* Header Controls: stack better on mobile */
-  .header-controls {
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-
-  /* Button: smaller text on mobile */
-  .btn-primary,
-  .btn-secondary,
-  .btn-create,
-  .btn-lock,
-  .btn-success,
-  .btn-danger,
-  .btn-info,
-  .btn-restore {
-    font-size: 12px;
-    padding: 8px 12px;
-  }
-
-  /* Table: more compact on mobile */
-  table {
-    font-size: 12px;
-  }
-
-  table th,
-  table td {
-    padding: 6px 4px;
-  }
-}
-
-/* ============================================
-   EXPORT HISTORY MODAL
-   ============================================ */
-
-.modal-content-large {
-  background: var(--bg-secondary);
-  border-radius: 4px;
-  box-shadow: var(--shadow-lg);
-  max-width: 90vw;
-  max-height: 90vh;
-  overflow: auto;
-  width: 900px;
-}
-
-.export-history-modal {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.export-history-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.export-history-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--border-default);
-  background: var(--bg-tertiary);
-}
-
-.export-history-header h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.btn-close {
-  width: 32px;
-  height: 32px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 1px solid var(--border-default);
-  border-radius: 4px;
-  color: var(--text-secondary);
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-close:hover {
-  background: var(--color-error);
-  color: var(--bg-secondary);
-  border-color: var(--color-error);
-}
-
-.export-history-body {
-  padding: 20px;
-  overflow-y: auto;
-  flex: 1;
-  min-height: 300px;
-}
-
-.loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 30px;
-  text-align: center;
-  color: var(--text-secondary);
-  font-size: 14px;
-}
-
-.empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 60px 30px;
-  text-align: center;
-  color: var(--text-secondary);
-}
-
-.empty-state p {
-  margin: 0;
-  font-size: 14px;
-}
-
-.empty-state .hint {
-  font-size: 12px;
-  opacity: 0.7;
-  margin-top: 10px;
-}
-
-.exports-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
-  border: 1px solid var(--border-default);
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.exports-table thead {
-  background: var(--bg-tertiary);
-  border-bottom: 1px solid var(--border-default);
-}
-
-.exports-table th {
-  padding: 12px;
-  text-align: left;
-  font-weight: 600;
-  color: var(--text-primary);
-  border-right: 1px solid var(--border-default);
-}
-
-.exports-table th:last-child {
-  border-right: none;
-}
-
-.exports-table tbody tr {
-  border-bottom: 1px solid var(--border-default);
-  transition: background-color 0.2s ease;
-}
-
-.exports-table tbody tr:hover {
-  background: var(--bg-dark);
-}
-
-.exports-table td {
-  padding: 12px;
-  border-right: 1px solid var(--border-default);
-  color: var(--text-primary);
-}
-
-.exports-table td:last-child {
-  border-right: none;
-}
-
-.export-bridge {
-  font-family: var(--font-mono);
-  font-weight: 600;
-  color: var(--accent-primary);
-}
-
-.export-date {
-  color: var(--text-secondary);
-}
-
-.export-size {
-  text-align: right;
-  color: var(--text-secondary);
-}
-
-.export-actions {
-  text-align: right;
-  white-space: nowrap;
-}
-
-.btn-small {
-  padding: 6px 12px;
-  font-size: 12px;
-  border-radius: 4px;
-  border: 1px solid var(--border-default);
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-left: 6px;
-}
-
-.btn-small:hover:not(:disabled) {
-  background: var(--bg-tertiary);
-  border-color: var(--accent-primary);
-}
-
-.btn-small:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.btn-small.btn-success {
-  border-color: var(--color-success);
-}
-
-.btn-small.btn-success:hover:not(:disabled) {
-  background: var(--color-success);
-  color: var(--bg-secondary);
-}
-
-.btn-small.btn-danger {
-  border-color: var(--color-error);
-}
-
-.btn-small.btn-danger:hover:not(:disabled) {
-  background: var(--color-error);
-  color: var(--bg-secondary);
-}
-
-/* ============================================================================
-   FORMULA DETAILS MODAL
-   ============================================================================ */
-
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 16px;
-  animation: fadeIn 0.2s ease-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.modal-content {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
-  max-width: 600px;
-  width: 100%;
-  max-height: 80vh;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-  animation: slideIn 0.3s ease-out;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateY(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.modal-header {
-  padding: 16px;
-  border-bottom: 1px solid var(--border-light);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.modal-header h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  color: var(--text-primary);
-}
-
-.btn-close {
-  background: transparent;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: var(--text-secondary);
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 4px;
-  transition: all 0.2s ease;
-}
-
-.btn-close:hover {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
-}
-
-.modal-body {
-  flex: 1;
-  overflow-y: auto;
-  padding: 16px;
-  font-size: 13px;
-}
-
-.modal-body::-webkit-scrollbar {
-  width: 8px;
-}
-
-.modal-body::-webkit-scrollbar-track {
-  background: var(--bg-tertiary);
-}
-
-.modal-body::-webkit-scrollbar-thumb {
-  background: var(--border-light);
-  border-radius: 4px;
-}
-
-.modal-body::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
-}
-
-.details-section {
-  margin-bottom: 16px;
-  padding: 12px;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-light);
-  border-radius: 4px;
-}
-
-.details-section h3 {
-  margin: 0 0 12px 0;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.details-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--font-mono);
-}
-
-.details-table tr {
-  border-bottom: 1px solid var(--border-light);
-}
-
-.details-table tr:last-child {
-  border-bottom: none;
-}
-
-.details-table td {
-  padding: 8px 4px;
-  text-align: left;
-}
-
-.details-table td.label {
-  font-weight: 600;
-  color: var(--text-secondary);
-  width: 35%;
-  vertical-align: top;
-}
-
-.details-table td.formula-label {
-  color: var(--text-primary);
-  font-weight: 600;
-}
-
-.details-table td.value {
-  color: var(--color-success);
-  font-weight: 600;
-  width: 30%;
-  text-align: right;
-}
-
-.details-table td.formula {
-  color: var(--text-secondary);
-  font-size: 11px;
-  padding-left: 8px;
-  text-align: right;
-  width: 35%;
-  font-style: italic;
-}
-
-.rfi-section {
-  background: rgba(255, 152, 0, 0.08);
-  border: 1px solid rgba(255, 152, 0, 0.3);
-}
-
-.rfi-message {
-  margin: 0;
-  color: var(--color-warning);
-  font-weight: 500;
-  line-height: 1.5;
-}
-
-.raw-data-section {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-light);
-}
-
-.raw-data-section summary {
-  cursor: pointer;
-  padding: 8px;
-  color: var(--text-secondary);
-  font-weight: 500;
-  user-select: none;
-}
-
-.raw-data-section summary:hover {
-  color: var(--text-primary);
-}
-
-.raw-data-section pre {
-  margin: 8px 0 0 0;
-  padding: 8px;
-  background: var(--bg-primary);
-  border-top: 1px solid var(--border-light);
-  border-radius: 0 0 4px 4px;
-  overflow-x: auto;
-  font-size: 11px;
-  line-height: 1.4;
-  color: var(--text-secondary);
-}
-
-.modal-footer {
-  padding: 12px 16px;
-  border-top: 1px solid var(--border-light);
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-}
-
-.btn-primary {
-  background: var(--color-primary);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.btn-primary:hover {
-  background: var(--color-primary-dark);
-  opacity: 0.9;
-}
-
-/* Small phones (480px and below) */
-@media (max-width: 480px) {
-  /* Table header: single column sticky header */
-  .positions-table th {
-    top: 0;
-    font-size: 9px;
-    padding: 4px 3px;
-  }
-
-  /* KPI Grid: 1 column on very small screens */
-  .kpi-grid-modern {
-    grid-template-columns: 1fr;
-    gap: 4px;
-  }
-
-  /* KPI Card: minimal padding on phones */
-  .kpi-card {
-    padding: 4px 3px;
-  }
-
-  /* KPI Float Card: very compact on phones */
-  .kpi-float-card {
-    margin: 2px 4px;
-    padding: 4px 6px;
-  }
-
-  /* Header Logo: hide text on very small screens */
-  .header-logo h1 {
-    display: none;
-  }
-
-  /* KPI Bridge Title: hide subtitle on phones */
-  .kpi-metadata {
-    display: none;
-  }
-
-  /* Formula: hide on very small screens */
-  .kpi-formula {
-    display: none;
-  }
-}
