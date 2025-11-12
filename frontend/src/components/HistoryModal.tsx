@@ -3,6 +3,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useAppContext } from '../context/AppContext';
 import { snapshotsAPI } from '../services/api';
 import { SnapshotListItem } from '@monolit/shared';
@@ -105,7 +106,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
 
   if (!isOpen) return null;
 
-  return (
+  const modalContent = (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content history-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
@@ -223,4 +224,6 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
