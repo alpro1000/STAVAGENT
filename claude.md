@@ -12,11 +12,85 @@
 | **Issues Fixed** | Layout + TypeScript + Table Display |
 | **Status** | ✅ FULLY FUNCTIONAL & PRODUCTION READY |
 
-### ✨ Session 4 Fixes (Latest)
-- ✅ **Table Layout** - Changed from `auto` to `fixed` for proper column widths
-- ✅ **Table Row Display** - Added explicit `min-height: 36px` and `display: table-row`
-- ✅ **Table Line Height** - Fixed collapsed rows with `line-height: 1.5`
-- ✅ **Table Cells** - Added explicit `display: table-cell` for all TD and TH
+### ✨ Session 4 Fixes (Latest) - Table Layout Complete Fix
+**Problem**: Rows were cramped, not showing full content, wouldn't expand properly
+**Root Cause**: 5-level CSS issue - input height not set + nested overflow:hidden + flex chain broken
+
+**Fixes Applied**:
+- ✅ **Flex Layout Chain**
+  - `.positions-container`: `overflow-y: auto; overflow-x: hidden;` (allows vertical scroll)
+  - `.part-card`: `overflow: visible; flex: 1;` (doesn't clip, fills space)
+  - `.table-wrapper`: `flex: 1; min-height: 0; overflow-y: auto;` (has scrollable space)
+
+- ✅ **Input Height** - Added `height: 24px; min-height: 24px;` to `.positions-table input/select`
+  - Before: Inputs only ~20px (text only)
+  - Now: 24px explicit height = rows properly expand
+
+- ✅ **Row Expansion** - Restored `height: auto;` with guarantee `min-height: 36px;` on:
+  - `.positions-table tbody tr` - Rows expand by content
+  - `.positions-table td` - Cells expand by content
+
+**Result**:
+- Rows minimum 36px (clean spacing)
+- Rows expand for multiline content
+- Full height: ~8px (top padding) + 24px (input) + 8px (bottom padding) = 40px
+- Vertical scroll works
+- Horizontal scroll works for wide tables
+
+---
+
+## 🔧 TECHNICAL DEEP DIVE: Why `height: auto` Works Now
+
+### The Problem (Before)
+```
+.positions-table input { /* NO height property */ }
+↓
+Input renders at ~20px (text height only)
+↓
+height: auto on TR/TD thinks: "content = 20px"
+↓
+Rows appeared cramped (looked like 20px even though min-height: 36px existed)
+```
+
+### The 5-Level CSS Failure Chain
+
+| Level | Component | Problem | Effect |
+|-------|-----------|---------|--------|
+| 1 | `.positions-table input` | No height property | Input only ~20px |
+| 2 | `.positions-table tbody tr` | `height: auto` calculates from input height | min-height ignored |
+| 3 | `.positions-table td` | `height: auto` + no forced height | Cells not tall enough |
+| 4 | `.part-card { overflow: hidden }` | Clipped content at card boundary | Rows looked cut off |
+| 5 | `.positions-container { overflow: hidden }` | Clipped everything | Rows couldn't expand visually |
+
+### The Solution (Now)
+```
+INPUT LAYER:
+.positions-table input { height: 24px; }
+↓ Input now 24px explicit
+↓
+TR/TD LAYER:
+.positions-table tbody tr { height: auto; min-height: 36px; }
+↓ height: auto calculates from 24px content → ~32-36px
+↓ min-height: 36px ensures never smaller
+↓
+FLEX CHAIN:
+.table-wrapper { flex: 1; overflow-y: auto; }
+.part-card { flex: 1; overflow: visible; }
+.positions-container { overflow-y: auto; }
+↓ All constraints removed, proper space distribution
+↓
+RESULT: Rows expand to content (24px + padding) with 36px minimum guarantee
+```
+
+### Why This Works
+
+1. **Input has explicit height** → `height: auto` has real value to calculate from
+2. **`min-height: 36px` is backup** → If content less than 36px, uses minimum
+3. **Flex chain distributes space** → `.table-wrapper` gets all available height
+4. **No overflow clipping** → Content expands freely within boundaries
+5. **`overflow-y: auto` on wrapper** → Scrollbar appears only if needed
+
+---
 
 ### ✨ Previous Session 3 Fixes
 - ✅ **Layout Restored** - Rolled back to stable commit `2e460fe` (14:59 UTC)
