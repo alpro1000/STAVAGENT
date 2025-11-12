@@ -22,10 +22,13 @@ export function useExports() {
     queryFn: async () => {
       return await exportAPI.getExportsList();
     },
-    staleTime: 1 * 60 * 1000, // Cache for 1 minute
+    staleTime: 10 * 60 * 1000, // Cache for 10 minutes - same as useBridges
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    gcTime: 5 * 60 * 1000
+    refetchOnReconnect: false, // Don't refetch when reconnecting
+    retry: 3, // Retry failed requests 3 times
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
+    gcTime: 30 * 60 * 1000 // Keep in cache for 30 minutes before garbage collection
   });
 
   // Save XLSX to server
