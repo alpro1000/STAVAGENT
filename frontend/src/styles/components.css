@@ -941,9 +941,10 @@ button:disabled {
 /* SINGLE Positions Table with sticky header */
 .positions-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 2px;
   font-size: 12px;
-  background: var(--bg-secondary);
+  background: transparent;
   table-layout: fixed;
   margin: 0;
   border: none;
@@ -996,17 +997,23 @@ button:disabled {
   height: auto;
   min-height: 36px;
   display: table-row;
+  background: var(--bg-secondary);
 }
 
 .positions-table td {
   padding: 8px 6px;
-  border-bottom: 1px solid var(--border-light);
+  border: 1px solid var(--border-light);
+  border-right: none;
   vertical-align: middle;
-  background: var(--bg-secondary);
+  background: inherit;
   height: auto;
   min-height: 36px;
   box-sizing: border-box;
   display: table-cell;
+}
+
+.positions-table td:last-child {
+  border-right: 1px solid var(--border-light);
 }
 
 .positions-table tbody tr:hover td {
@@ -1014,7 +1021,7 @@ button:disabled {
 }
 
 .positions-table tbody tr:last-child td {
-  border-bottom: none;
+  border-bottom: 1px solid var(--border-light);
 }
 
 /* FIXED COLUMN WIDTHS - All columns with specific widths */
