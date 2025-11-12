@@ -1,10 +1,10 @@
 /**
  * Export service - Czech language
- * Generate XLSX and CSV files with proper structure
+ * Generate beautiful XLSX files with formatting
  * SAVE to disk for history/archive
  */
 
-import XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -32,14 +32,67 @@ const formatCurrency = (num, decimals = 2) => {
 };
 
 /**
- * Export positions and KPI to XLSX (Czech structure)
+ * Apply borders to a cell
+ */
+const applyBorders = (cell) => {
+  cell.border = {
+    top: { style: 'thin', color: { argb: 'FF000000' } },
+    left: { style: 'thin', color: { argb: 'FF000000' } },
+    bottom: { style: 'thin', color: { argb: 'FF000000' } },
+    right: { style: 'thin', color: { argb: 'FF000000' } }
+  };
+};
+
+/**
+ * Apply header style (dark blue background, white bold text)
+ */
+const applyHeaderStyle = (cell) => {
+  cell.fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FF4472C4' } // Dark blue
+  };
+  cell.font = {
+    bold: true,
+    color: { argb: 'FFFFFFFF' }, // White
+    size: 11
+  };
+  cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+  applyBorders(cell);
+};
+
+/**
+ * Apply group header style (light gray background, bold text)
+ */
+const applyGroupHeaderStyle = (cell) => {
+  cell.fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FFE7E6E6' } // Light gray
+  };
+  cell.font = {
+    bold: true,
+    size: 11
+  };
+  cell.alignment = { vertical: 'middle', horizontal: 'left' };
+  applyBorders(cell);
+};
+
+/**
+ * Export positions and KPI to XLSX with beautiful formatting
  * Returns: { buffer, filename, filepath }
  */
 export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServer = false) {
   try {
-    const workbook = XLSX.utils.book_new();
+    const workbook = new ExcelJS.Workbook();
+    workbook.creator = 'Monolit Planner';
+    workbook.created = new Date();
 
     // ============= SHEET 1: KPI SUMMARY =============
+    const kpiSheet = workbook.addWorksheet('KPI', {
+      views: [{ state: 'frozen', ySplit: 2 }] // Freeze first 2 rows
+    });
+
     const kpiData = [
       ['MONOLIT PLANNER — ZPRÁVA O PROJEKTU'],
       [`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`],
@@ -53,7 +106,6 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       ['Σ Objem betonu:', formatNumber(header_kpi.sum_concrete_m3), 'm³'],
       ['Σ Cena (KROS):', formatCurrency(header_kpi.sum_kros_total_czk), 'CZK'],
       ['Jednotková cena:', formatCurrency(header_kpi.project_unit_cost_czk_per_m3), 'CZK/m³'],
-      ['Cena na tunu:', formatCurrency(header_kpi.project_unit_cost_czk_per_t), 'CZK/t'],
       [],
       ['=== REŽIM PRÁCE ==='],
       ['Režim:', header_kpi.days_per_month === 30 ? '30 dní/měsíc [spojitá stavba]' : '22 dní/měsíc [pracovní dny]'],
@@ -62,15 +114,37 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       ['=== PRŮMĚRNÉ HODNOTY ==='],
       ['Průměrná velikost party:', formatNumber(header_kpi.avg_crew_size), 'osob'],
       ['Průměrná hodinová sazba:', formatCurrency(header_kpi.avg_wage_czk_ph), 'CZK/hod'],
-      ['Průměrný počet hodin za den:', formatNumber(header_kpi.avg_shift_hours), 'hod'],
-      ['Hustota betonu:', formatNumber(header_kpi.rho_t_per_m3), 't/m³']
+      ['Průměrný počet hodin za den:', formatNumber(header_kpi.avg_shift_hours), 'hod']
     ];
 
-    const kpiSheet = XLSX.utils.aoa_to_sheet(kpiData);
-    kpiSheet['!cols'] = [{ wch: 35 }, { wch: 20 }, { wch: 15 }];
-    XLSX.utils.book_append_sheet(workbook, kpiSheet, 'KPI');
+    // Add KPI data to sheet
+    kpiData.forEach((row, rowIndex) => {
+      const excelRow = kpiSheet.addRow(row);
+
+      // Style first two rows (title)
+      if (rowIndex === 0 || rowIndex === 1) {
+        excelRow.font = { bold: true, size: 14 };
+        excelRow.alignment = { vertical: 'middle', horizontal: 'left' };
+      }
+
+      // Apply borders to all cells with content
+      excelRow.eachCell((cell) => {
+        if (cell.value) {
+          applyBorders(cell);
+        }
+      });
+    });
+
+    // Set column widths for KPI sheet
+    kpiSheet.getColumn(1).width = 40;
+    kpiSheet.getColumn(2).width = 25;
+    kpiSheet.getColumn(3).width = 15;
 
     // ============= SHEET 2: DETAILED POSITIONS =============
+    const detailSheet = workbook.addWorksheet('Detaily', {
+      views: [{ state: 'frozen', ySplit: 1 }] // Freeze header row
+    });
+
     // Group positions by part_name
     const groupedPositions = {};
     positions.forEach(pos => {
@@ -96,20 +170,38 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       'RFI'
     ];
 
-    const detailedData = [];
+    // Add title rows
+    const titleRow = detailSheet.addRow(['MONOLIT PLANNER — DETAILNÍ PŘEHLED POZIC']);
+    titleRow.font = { bold: true, size: 14 };
+    titleRow.alignment = { vertical: 'middle', horizontal: 'left' };
 
-    // Add header
-    detailedData.push(['MONOLIT PLANNER — DETAILNÍ PŘEHLED POZIC']);
-    detailedData.push([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
-    detailedData.push([]);
+    const subtitleRow = detailSheet.addRow([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
+    subtitleRow.font = { bold: true, size: 12 };
+
+    detailSheet.addRow([]); // Empty row
+
+    // Track header row number for freeze panes
+    let firstHeaderRow = null;
 
     // Add each part group
     Object.entries(groupedPositions).forEach(([partName, partPositions]) => {
-      detailedData.push([`=== ${partName} ===`]);
-      detailedData.push(positionHeaders);
+      // Part name header
+      const partHeaderRow = detailSheet.addRow([`=== ${partName} ===`]);
+      applyGroupHeaderStyle(partHeaderRow.getCell(1));
+      detailSheet.mergeCells(partHeaderRow.number, 1, partHeaderRow.number, positionHeaders.length);
 
+      // Column headers
+      const headerRow = detailSheet.addRow(positionHeaders);
+      if (!firstHeaderRow) {
+        firstHeaderRow = headerRow.number;
+      }
+      headerRow.eachCell((cell) => {
+        applyHeaderStyle(cell);
+      });
+
+      // Data rows
       partPositions.forEach(pos => {
-        detailedData.push([
+        const dataRow = detailSheet.addRow([
           pos.subtype,
           pos.unit,
           formatNumber(pos.qty),
@@ -124,17 +216,49 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
           formatCurrency(pos.kros_total_czk),
           pos.has_rfi ? (pos.rfi_message || '⚠️ RFI') : ''
         ]);
+
+        // Apply borders and alignment to all cells
+        dataRow.eachCell((cell, colNumber) => {
+          applyBorders(cell);
+
+          // Right align numbers (columns 3-12), left align text
+          if (colNumber >= 3 && colNumber <= 12) {
+            cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          } else {
+            cell.alignment = { vertical: 'middle', horizontal: 'left' };
+          }
+        });
+
+        // Highlight RFI rows
+        if (pos.has_rfi) {
+          dataRow.eachCell((cell) => {
+            cell.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'FFFFF8DC' } // Light yellow
+            };
+          });
+        }
       });
 
-      detailedData.push([]); // Blank line between parts
+      // Empty row between groups
+      detailSheet.addRow([]);
     });
 
-    const detailedSheet = XLSX.utils.aoa_to_sheet(detailedData);
-    detailedSheet['!cols'] = Array(13).fill({ wch: 15 });
-    XLSX.utils.book_append_sheet(workbook, detailedSheet, 'Detaily');
+    // Auto-fit columns based on content
+    detailSheet.columns.forEach((column, index) => {
+      let maxLength = positionHeaders[index]?.length || 10;
+
+      column.eachCell({ includeEmpty: false }, (cell) => {
+        const cellLength = cell.value ? String(cell.value).length : 0;
+        maxLength = Math.max(maxLength, cellLength);
+      });
+
+      column.width = Math.min(maxLength + 3, 50); // Add padding, max 50
+    });
 
     // Generate buffer
-    const buffer = XLSX.write(workbook, { type: 'buffer', bookType: 'xlsx' });
+    const buffer = await workbook.xlsx.writeBuffer();
 
     // Save to server if requested
     let filename = null;
@@ -143,7 +267,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       const timestamp = Date.now();
       filename = `monolit_${bridge_id}_${timestamp}.xlsx`;
       filepath = path.join(EXPORTS_DIR, filename);
-      fs.writeFileSync(filepath, buffer);
+      await fs.promises.writeFile(filepath, buffer);
       logger.info(`XLSX export saved to disk: ${filepath}`);
     }
 
