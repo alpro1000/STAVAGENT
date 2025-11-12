@@ -184,29 +184,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         </button>
 
         <button
-          className="btn-danger"
-          onClick={async () => {
-            if (!selectedBridge) return;
-            const bridge = bridges.find(b => b.bridge_id === selectedBridge);
-            const bridgeName = bridge?.object_name || selectedBridge;
-            if (window.confirm(`❌ Opravdu chcete smazat most "${bridgeName}"?\n\nTato akce je nevratná! Budou smazány všechny pozice, snapshoty a data.`)) {
-              try {
-                await bridgesAPI.delete(selectedBridge);
-                setSelectedBridge(null);
-                await refetchBridges();
-                alert('✅ Most byl úspěšně smazán');
-              } catch (err: any) {
-                alert(`❌ Chyba při mazání: ${err.message}`);
-              }
-            }
-          }}
-          disabled={!selectedBridge}
-          title="Smazat most (nevratné!)"
-        >
-          🗑️ Smazat most
-        </button>
-
-        <button
           className="btn-secondary"
           onClick={handleUploadClick}
           disabled={isUploading}

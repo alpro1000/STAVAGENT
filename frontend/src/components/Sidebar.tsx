@@ -9,7 +9,9 @@
 
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
+import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
+import DeleteBridgeModal from './DeleteBridgeModal';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -18,11 +20,13 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
+  const { updateBridgeStatus, deleteBridge, isLoading } = useBridges();
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [hoveredBridgeId, setHoveredBridgeId] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('active');
+  const [bridgeToDelete, setBridgeToDelete] = useState<typeof bridges[0] | null>(null);
 
   const bridgeCount = bridges.length;
 
@@ -53,6 +57,41 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
     acc[projectName].push(bridge);
     return acc;
   }, {} as Record<string, typeof bridges>);
+
+  // Handle status change (mark as completed)
+  const handleMarkComplete = async (e: React.MouseEvent, bridgeId: string) => {
+    e.stopPropagation();
+    try {
+      await updateBridgeStatus(bridgeId, 'completed');
+    } catch (error) {
+      console.error('Failed to update bridge status:', error);
+      alert('Chyba při změně statusu mostu');
+    }
+  };
+
+  // Handle delete click (open modal)
+  const handleDeleteClick = (e: React.MouseEvent, bridge: typeof bridges[0]) => {
+    e.stopPropagation();
+    setBridgeToDelete(bridge);
+  };
+
+  // Confirm delete (called from modal)
+  const confirmDelete = async () => {
+    if (!bridgeToDelete) return;
+
+    try {
+      await deleteBridge(bridgeToDelete.bridge_id);
+      setBridgeToDelete(null);
+
+      // If deleted bridge was selected, clear selection
+      if (selectedBridge === bridgeToDelete.bridge_id) {
+        setSelectedBridge(null);
+      }
+    } catch (error) {
+      console.error('Failed to delete bridge:', error);
+      alert('Chyba při mazání mostu');
+    }
+  };
 
   // Toggle project expansion
   const toggleProject = (projectName: string) => {
@@ -168,7 +207,27 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                                 <span className="bridge-name">{bridge.object_name || bridge.bridge_id}</span>
                                 <span className="bridge-id">{bridge.bridge_id}</span>
                               </div>
-                              <span className="bridge-badge">{bridge.element_count}</span>
+                              <div className="bridge-actions">
+                                <span className="bridge-badge">{bridge.element_count}</span>
+                                {bridge.status !== 'completed' && (
+                                  <button
+                                    className="bridge-action-btn btn-complete"
+                                    onClick={(e) => handleMarkComplete(e, bridge.bridge_id)}
+                                    title="Označit jako dokončený"
+                                    disabled={isLoading}
+                                  >
+                                    ✅
+                                  </button>
+                                )}
+                                <button
+                                  className="bridge-action-btn btn-delete"
+                                  onClick={(e) => handleDeleteClick(e, bridge)}
+                                  title="Smazat most"
+                                  disabled={isLoading}
+                                >
+                                  🗑️
+                                </button>
+                              </div>
                             </li>
                           ))}
                         </ul>
@@ -242,6 +301,13 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       )}
 
       <HistoryModal isOpen={showHistoryModal} onClose={() => setShowHistoryModal(false)} />
+      <DeleteBridgeModal
+        bridge={bridgeToDelete}
+        isOpen={!!bridgeToDelete}
+        onConfirm={confirmDelete}
+        onCancel={() => setBridgeToDelete(null)}
+        isDeleting={isLoading}
+      />
     </aside>
   );
 }
