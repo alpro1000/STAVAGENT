@@ -27,10 +27,13 @@ export function usePositions(bridgeId: string | null) {
       return await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
     },
     enabled: !!bridgeId,
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    staleTime: 10 * 60 * 1000, // Cache for 10 minutes - reduced API load
     refetchOnMount: false,
     refetchOnWindowFocus: false,
-    gcTime: 10 * 60 * 1000
+    refetchOnReconnect: false, // Don't refetch when reconnecting
+    retry: 3, // Retry failed requests 3 times
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
+    gcTime: 30 * 60 * 1000 // Keep in cache for 30 minutes before garbage collection
   });
 
   // Sync context with query data
