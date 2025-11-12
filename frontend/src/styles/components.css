@@ -948,6 +948,7 @@ button:disabled {
   margin: 0;
   border: none;
   display: table;
+  line-height: 1.5;
 }
 
 /* Sticky header that stays visible when scrolling */
@@ -957,6 +958,13 @@ button:disabled {
   z-index: 150;
   display: table-header-group;
   background: var(--bg-secondary);
+  min-height: 36px;
+}
+
+.positions-table thead tr {
+  height: auto;
+  min-height: 36px;
+  display: table-row;
 }
 
 .positions-table th {
@@ -973,13 +981,21 @@ button:disabled {
   letter-spacing: 0.5px;
   white-space: nowrap;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  height: 36px;
+  height: auto;
+  min-height: 36px;
   vertical-align: middle;
   box-sizing: border-box;
+  display: table-cell;
 }
 
 .positions-table th:last-child {
   border-right: none;
+}
+
+.positions-table tbody tr {
+  height: auto;
+  min-height: 36px;
+  display: table-row;
 }
 
 .positions-table td {
@@ -987,8 +1003,10 @@ button:disabled {
   border-bottom: 1px solid var(--border-light);
   vertical-align: middle;
   background: var(--bg-secondary);
-  height: 36px;
+  height: auto;
+  min-height: 36px;
   box-sizing: border-box;
+  display: table-cell;
 }
 
 .positions-table tbody tr:hover td {
