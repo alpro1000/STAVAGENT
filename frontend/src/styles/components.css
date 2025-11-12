@@ -1643,6 +1643,8 @@ button:disabled {
   max-width: 90vw;
   max-height: 90vh;
   overflow: auto;
+  position: relative;
+  z-index: 10001; /* Ensure modal content appears above all elements including sticky KPI card */
 }
 
 .history-modal {
