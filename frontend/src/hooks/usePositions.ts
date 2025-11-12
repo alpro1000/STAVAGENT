@@ -28,9 +28,9 @@ export function usePositions(bridgeId: string | null) {
     },
     enabled: !!bridgeId,
     staleTime: 10 * 60 * 1000, // Cache for 10 minutes - reduced API load
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false, // Don't refetch when reconnecting
+    refetchOnMount: false, // Don't refetch when component remounts
+    refetchOnWindowFocus: false, // Don't refetch when window regains focus
+    // refetchOnReconnect defaults to true - important for recovering from network issues
     retry: 3, // Retry failed requests 3 times
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
     gcTime: 30 * 60 * 1000 // Keep in cache for 30 minutes before garbage collection
