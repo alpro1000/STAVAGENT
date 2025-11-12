@@ -55,6 +55,11 @@ app.use(cors({
     // Allow requests with no origin (like mobile apps or curl)
     if (!origin) return callback(null, true);
 
+    // Check if wildcard is set (for development or multiple frontends)
+    if (ALLOWED_ORIGINS.includes('*')) {
+      return callback(null, true);
+    }
+
     if (ALLOWED_ORIGINS.includes(origin)) {
       callback(null, true);
     } else {
