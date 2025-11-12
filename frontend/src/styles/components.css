@@ -1158,6 +1158,8 @@ button:disabled {
   font-size: 12px;
   font-family: var(--font-mono);
   box-sizing: border-box;
+  height: 24px;
+  min-height: 24px;
 }
 
 .positions-table input:focus,
