@@ -2,6 +2,7 @@
  * FormulaDetailsModal - Shows calculation formulas and details for a position
  */
 
+import { createPortal } from 'react-dom';
 import { Position } from '@monolit/shared';
 
 interface Props {
@@ -18,7 +19,7 @@ export default function FormulaDetailsModal({ position, isOpen, onClose }: Props
     return num.toFixed(decimals).replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
   };
 
-  return (
+  const modalContent = (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
@@ -170,4 +171,6 @@ export default function FormulaDetailsModal({ position, isOpen, onClose }: Props
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
