@@ -1633,7 +1633,7 @@ button:disabled {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 10000; /* High z-index to ensure modals appear above all other elements (KPI, headers, dropdowns) */
 }
 
 .modal-content {
