@@ -768,9 +768,10 @@ button:disabled {
   border: 1px solid var(--border-default);
   border-radius: 4px;
   margin-bottom: 16px;
-  overflow: visible;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .part-header {
@@ -916,7 +917,7 @@ button:disabled {
   scrollbar-gutter: stable;
   width: 100%;
   flex: 1;
-  min-height: auto;
+  min-height: 0;
 }
 
 .table-wrapper::-webkit-scrollbar {
