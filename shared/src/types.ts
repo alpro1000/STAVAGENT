@@ -86,6 +86,7 @@ export interface Bridge {
   span_length_m?: number;
   deck_width_m?: number;
   pd_weeks?: number;
+  status?: 'active' | 'completed' | 'archived';  // Bridge lifecycle status
   created_at?: string;
   updated_at?: string;
 }
