@@ -3,12 +3,13 @@
  */
 
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { bridgesAPI } from '../services/api';
 import { useAppContext } from '../context/AppContext';
 
 export function useBridges() {
   const { setBridges } = useAppContext();
+  const queryClient = useQueryClient();
 
   const query = useQuery({
     queryKey: ['bridges'],
@@ -32,5 +33,34 @@ export function useBridges() {
     }
   }, [query.data, setBridges]);
 
-  return query;
+  // Mutation: Update bridge status
+  const statusMutation = useMutation({
+    mutationFn: ({ bridgeId, status }: { bridgeId: string; status: 'active' | 'completed' | 'archived' }) => {
+      return bridgesAPI.updateStatus(bridgeId, status);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+    }
+  });
+
+  // Mutation: Delete bridge
+  const deleteMutation = useMutation({
+    mutationFn: (bridgeId: string) => {
+      return bridgesAPI.delete(bridgeId);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+    }
+  });
+
+  return {
+    ...query,
+    updateBridgeStatus: async (bridgeId: string, status: 'active' | 'completed' | 'archived') => {
+      await statusMutation.mutateAsync({ bridgeId, status });
+    },
+    deleteBridge: async (bridgeId: string) => {
+      await deleteMutation.mutateAsync(bridgeId);
+    },
+    isLoading: query.isLoading || statusMutation.isPending || deleteMutation.isPending
+  };
 }

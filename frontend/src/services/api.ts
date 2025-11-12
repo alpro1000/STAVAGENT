@@ -82,6 +82,10 @@ export const bridgesAPI = {
     await api.put(`/api/bridges/${bridgeId}`, params);
   },
 
+  updateStatus: async (bridgeId: string, status: 'active' | 'completed' | 'archived'): Promise<void> => {
+    await api.patch(`/api/bridges/${bridgeId}/status`, { status });
+  },
+
   delete: async (bridgeId: string): Promise<void> => {
     await api.delete(`/api/bridges/${bridgeId}`);
   }
