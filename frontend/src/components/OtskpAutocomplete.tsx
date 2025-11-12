@@ -149,7 +149,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
         </div>
       )}
 
-      {searchQuery.length >= 2 && !isLoading && results.length === 0 && (
+      {!isOpen && searchQuery.length >= 2 && !isLoading && results.length === 0 && (
         <div className="otskp-dropdown">
           <div className="otskp-no-results">
             Nenalezeny žádné výsledky pro "{searchQuery}"

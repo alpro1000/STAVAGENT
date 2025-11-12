@@ -22,13 +22,42 @@ api.interceptors.request.use(request => {
   return request;
 });
 
+// Retry configuration
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 2000; // 2 seconds base delay
+
+// Helper: delay with exponential backoff
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+// Retry logic for 429 errors
 api.interceptors.response.use(
   response => {
     console.log(`[API] Response ${response.status}:`, response.data);
     return response;
   },
-  error => {
-    console.error(`[API] Error:`, error.response?.status, error.message);
+  async error => {
+    const config = error.config;
+    const status = error.response?.status;
+
+    console.error(`[API] Error:`, status, error.message);
+
+    // Retry on 429 (Too Many Requests) with exponential backoff
+    if (status === 429 && config && !config.__retryCount) {
+      config.__retryCount = 0;
+    }
+
+    if (status === 429 && config && config.__retryCount < MAX_RETRIES) {
+      config.__retryCount += 1;
+      const retryDelay = RETRY_DELAY * Math.pow(2, config.__retryCount - 1);
+
+      console.warn(
+        `[API] 429 Rate Limited. Retry ${config.__retryCount}/${MAX_RETRIES} after ${retryDelay}ms`
+      );
+
+      await delay(retryDelay);
+      return api.request(config);
+    }
+
     return Promise.reject(error);
   }
 );

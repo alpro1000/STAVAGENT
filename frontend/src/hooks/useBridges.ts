@@ -15,10 +15,13 @@ export function useBridges() {
     queryFn: async () => {
       return await bridgesAPI.getAll();
     },
-    staleTime: 5 * 60 * 1000, // Cache for 5 minutes - no refetch unless stale
+    staleTime: 10 * 60 * 1000, // Cache for 10 minutes - no refetch unless stale
     refetchOnMount: false, // CRITICAL: Never refetch on mount
     refetchOnWindowFocus: false, // Don't refetch when window regains focus
-    gcTime: 10 * 60 * 1000 // Keep in cache for 10 minutes before garbage collection
+    refetchOnReconnect: false, // Don't refetch when reconnecting
+    retry: 3, // Retry failed requests 3 times
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
+    gcTime: 30 * 60 * 1000 // Keep in cache for 30 minutes before garbage collection
   });
 
   // Update context when query.data changes
