@@ -58,21 +58,19 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     e.target.value = '';
   };
 
-  const handleExport = async (format: 'xlsx' | 'csv') => {
+  const handleExport = async () => {
     if (!selectedBridge) {
       alert('Nejdříve vyberte most');
       return;
     }
 
     try {
-      const blob = format === 'xlsx'
-        ? await exportAPI.exportXLSX(selectedBridge)
-        : await exportAPI.exportCSV(selectedBridge);
+      const blob = await exportAPI.exportXLSX(selectedBridge);
 
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `monolit_${selectedBridge}_${Date.now()}.${format}`;
+      a.download = `monolit_${selectedBridge}_${Date.now()}.xlsx`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
@@ -234,20 +232,11 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
         <button
           className="btn-success"
-          onClick={() => handleExport('xlsx')}
+          onClick={handleExport}
           disabled={!selectedBridge}
           title="Exportovat aktuální pozice do Excel souboru"
         >
           📥 Export XLSX
-        </button>
-
-        <button
-          className="btn-secondary"
-          onClick={() => handleExport('csv')}
-          disabled={!selectedBridge}
-          title="Exportovat aktuální pozice do CSV souboru"
-        >
-          📥 Export CSV
         </button>
 
         <button

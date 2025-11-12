@@ -121,8 +121,20 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         </div>
       </td>
 
-      {/* Unit */}
-      <td className="cell-unit col-mj">{position.unit}</td>
+      {/* Unit - Editable */}
+      <td className="cell-unit col-mj">
+        <input
+          type="text"
+          maxLength={10}
+          className="input-cell"
+          value={editedFields.unit ?? position.unit}
+          onChange={(e) => handleFieldChange('unit', e.target.value)}
+          onBlur={handleBlur}
+          disabled={isLocked}
+          placeholder="m2"
+          title="Měrná jednotka (m2, m3, t, ks, ...)"
+        />
+      </td>
 
       {/* INPUT CELLS - Editable (orange/cyan gradient) */}
 
