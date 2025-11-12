@@ -95,6 +95,13 @@ export function initDatabase() {
     console.log('[MIGRATION] Added project_name column to bridges table');
   }
 
+  // Migration: Add status column to bridges if it doesn't exist
+  const hasStatus = bridgeColumns.some(col => col.name === 'status');
+  if (!hasStatus) {
+    db.exec("ALTER TABLE bridges ADD COLUMN status TEXT DEFAULT 'active'");
+    console.log('[MIGRATION] Added status column to bridges table');
+  }
+
   // Snapshots table
   db.exec(`
     CREATE TABLE IF NOT EXISTS snapshots (

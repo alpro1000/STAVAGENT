@@ -18,6 +18,7 @@ router.get('/', (req, res) => {
         b.bridge_id,
         b.project_name,
         b.object_name,
+        b.status,
         b.span_length_m,
         b.deck_width_m,
         b.pd_weeks,
@@ -28,8 +29,8 @@ router.get('/', (req, res) => {
         COALESCE(SUM(p.kros_total_czk), 0) as sum_kros_czk
       FROM bridges b
       LEFT JOIN positions p ON b.bridge_id = p.bridge_id
-      GROUP BY b.bridge_id, b.project_name, b.object_name, b.span_length_m, b.deck_width_m, b.pd_weeks, b.created_at, b.updated_at
-      ORDER BY b.project_name, b.created_at DESC
+      GROUP BY b.bridge_id, b.project_name, b.object_name, b.status, b.span_length_m, b.deck_width_m, b.pd_weeks, b.created_at, b.updated_at
+      ORDER BY b.status DESC, b.project_name, b.created_at DESC
     `).all();
 
     res.json(bridgesWithStats);
@@ -217,6 +218,36 @@ router.put('/:bridge_id', (req, res) => {
     res.json({ success: true, bridge_id });
   } catch (error) {
     logger.error('Error updating bridge:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// PATCH update bridge status
+router.patch('/:bridge_id/status', (req, res) => {
+  try {
+    const { bridge_id } = req.params;
+    const { status } = req.body;
+
+    if (!status || !['active', 'completed', 'archived'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status. Must be: active, completed, or archived' });
+    }
+
+    const existing = db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge_id);
+    if (!existing) {
+      return res.status(404).json({ error: 'Bridge not found' });
+    }
+
+    db.prepare(`
+      UPDATE bridges
+      SET status = ?,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE bridge_id = ?
+    `).run(status, bridge_id);
+
+    logger.info(`Updated bridge ${bridge_id} status to: ${status}`);
+    res.json({ success: true, bridge_id, status });
+  } catch (error) {
+    logger.error('Error updating bridge status:', error);
     res.status(500).json({ error: error.message });
   }
 });
