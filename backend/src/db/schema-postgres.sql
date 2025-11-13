@@ -8,8 +8,30 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash VARCHAR(255) NOT NULL,
   name VARCHAR(255) NOT NULL,
   role VARCHAR(50) DEFAULT 'user',
+  email_verified BOOLEAN DEFAULT false,
+  email_verified_at TIMESTAMP,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Email verification tokens table (Phase 1: Email Verification)
+CREATE TABLE IF NOT EXISTS email_verification_tokens (
+  id VARCHAR(255) PRIMARY KEY,
+  user_id INTEGER NOT NULL UNIQUE,
+  token_hash VARCHAR(255) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Password reset tokens table (Phase 2: Password Reset)
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  id VARCHAR(255) PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  token_hash VARCHAR(255) NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
 -- Bridges table
