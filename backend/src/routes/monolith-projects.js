@@ -1,0 +1,342 @@
+/**
+ * MonolithProjects routes
+ * Universal object API for all construction types (bridge, building, parking, road)
+ *
+ * GET    /api/monolith-projects              - List all projects
+ * POST   /api/monolith-projects              - Create new project
+ * GET    /api/monolith-projects/:id          - Get project details
+ * PUT    /api/monolith-projects/:id          - Update project
+ * DELETE /api/monolith-projects/:id          - Delete project
+ * GET    /api/monolith-projects/search/:type - Search by type
+ */
+
+import express from 'express';
+import db from '../db/init.js';
+import { logger } from '../utils/logger.js';
+import { requireAuth } from '../middleware/auth.js';
+
+const router = express.Router();
+
+// Apply authentication to all routes
+router.use(requireAuth);
+
+/**
+ * GET /api/monolith-projects
+ * List all projects for current user
+ * Query params: type (optional), status (optional)
+ */
+router.get('/', async (req, res) => {
+  try {
+    const ownerId = req.user.userId;
+    const { type, status } = req.query;
+
+    let query = `
+      SELECT
+        mp.project_id,
+        mp.object_type,
+        mp.project_name,
+        mp.object_name,
+        mp.status,
+        mp.created_at,
+        mp.updated_at,
+        mp.element_count,
+        mp.concrete_m3,
+        mp.sum_kros_czk,
+        mp.description,
+        COUNT(DISTINCT p.part_id) as parts_count
+      FROM monolith_projects mp
+      LEFT JOIN parts p ON mp.project_id = p.project_id
+      WHERE mp.owner_id = ?
+    `;
+
+    const params = [ownerId];
+
+    if (type) {
+      query += ` AND mp.object_type = ?`;
+      params.push(type);
+    }
+
+    if (status) {
+      query += ` AND mp.status = ?`;
+      params.push(status);
+    }
+
+    query += ` GROUP BY mp.project_id ORDER BY mp.status DESC, mp.created_at DESC`;
+
+    const projects = await db.prepare(query).all(...params);
+
+    res.json(projects);
+  } catch (error) {
+    logger.error('Error fetching monolith projects:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/monolith-projects
+ * Create new project
+ */
+router.post('/', async (req, res) => {
+  try {
+    const ownerId = req.user.userId;
+    const {
+      project_id,
+      object_type,
+      project_name,
+      object_name,
+      description,
+      // Type-specific fields
+      span_length_m,
+      deck_width_m,
+      pd_weeks,
+      building_area_m2,
+      building_floors,
+      road_length_km,
+      road_width_m
+    } = req.body;
+
+    // Validation
+    if (!project_id || !object_type) {
+      return res.status(400).json({ error: 'project_id and object_type are required' });
+    }
+
+    if (!['bridge', 'building', 'parking', 'road', 'custom'].includes(object_type)) {
+      return res.status(400).json({ error: 'Invalid object_type' });
+    }
+
+    // Check if project already exists
+    const existing = await db.prepare('SELECT project_id FROM monolith_projects WHERE project_id = ?').get(project_id);
+    if (existing) {
+      return res.status(409).json({ error: 'Project already exists' });
+    }
+
+    // Create project
+    await db.prepare(`
+      INSERT INTO monolith_projects (
+        project_id, object_type, project_name, object_name, owner_id, description,
+        span_length_m, deck_width_m, pd_weeks,
+        building_area_m2, building_floors,
+        road_length_km, road_width_m
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      project_id,
+      object_type,
+      project_name || '',
+      object_name || '',
+      ownerId,
+      description || '',
+      span_length_m || null,
+      deck_width_m || null,
+      pd_weeks || null,
+      building_area_m2 || null,
+      building_floors || null,
+      road_length_km || null,
+      road_width_m || null
+    );
+
+    // Create default parts from templates
+    const templates = await db.prepare(`
+      SELECT * FROM part_templates
+      WHERE object_type = ? AND is_default = 1
+      ORDER BY display_order
+    `).all(object_type);
+
+    for (const template of templates) {
+      const partId = `${project_id}_${template.part_name}`;
+      await db.prepare(`
+        INSERT INTO parts (part_id, project_id, part_name, is_predefined)
+        VALUES (?, ?, ?, 1)
+      `).run(partId, project_id, template.part_name);
+    }
+
+    const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
+
+    res.status(201).json({
+      ...project,
+      parts_count: templates.length
+    });
+
+    logger.info(`Created monolith project: ${project_id} (${object_type})`);
+  } catch (error) {
+    logger.error('Error creating monolith project:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/monolith-projects/:id
+ * Get project details with all parts
+ */
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const ownerId = req.user.userId;
+
+    // Get project (check ownership)
+    const project = await db.prepare(`
+      SELECT * FROM monolith_projects WHERE project_id = ? AND owner_id = ?
+    `).get(id, ownerId);
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found or access denied' });
+    }
+
+    // Get all parts for this project
+    const parts = await db.prepare(`
+      SELECT * FROM parts WHERE project_id = ? ORDER BY part_name
+    `).all(id);
+
+    // Get part templates for this object type
+    const templates = await db.prepare(`
+      SELECT * FROM part_templates WHERE object_type = ? ORDER BY display_order
+    `).all(project.object_type);
+
+    res.json({
+      ...project,
+      parts,
+      templates
+    });
+  } catch (error) {
+    logger.error('Error fetching monolith project:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * PUT /api/monolith-projects/:id
+ * Update project
+ */
+router.put('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const ownerId = req.user.userId;
+
+    // Check ownership
+    const project = await db.prepare(`
+      SELECT * FROM monolith_projects WHERE project_id = ? AND owner_id = ?
+    `).get(id, ownerId);
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found or access denied' });
+    }
+
+    const {
+      project_name,
+      object_name,
+      description,
+      status,
+      span_length_m,
+      deck_width_m,
+      pd_weeks,
+      building_area_m2,
+      building_floors,
+      road_length_km,
+      road_width_m,
+      element_count,
+      concrete_m3,
+      sum_kros_czk
+    } = req.body;
+
+    // Update project
+    await db.prepare(`
+      UPDATE monolith_projects SET
+        project_name = COALESCE(?, project_name),
+        object_name = COALESCE(?, object_name),
+        description = COALESCE(?, description),
+        status = COALESCE(?, status),
+        span_length_m = COALESCE(?, span_length_m),
+        deck_width_m = COALESCE(?, deck_width_m),
+        pd_weeks = COALESCE(?, pd_weeks),
+        building_area_m2 = COALESCE(?, building_area_m2),
+        building_floors = COALESCE(?, building_floors),
+        road_length_km = COALESCE(?, road_length_km),
+        road_width_m = COALESCE(?, road_width_m),
+        element_count = COALESCE(?, element_count),
+        concrete_m3 = COALESCE(?, concrete_m3),
+        sum_kros_czk = COALESCE(?, sum_kros_czk),
+        updated_at = CURRENT_TIMESTAMP
+      WHERE project_id = ?
+    `).run(
+      project_name,
+      object_name,
+      description,
+      status,
+      span_length_m,
+      deck_width_m,
+      pd_weeks,
+      building_area_m2,
+      building_floors,
+      road_length_km,
+      road_width_m,
+      element_count,
+      concrete_m3,
+      sum_kros_czk,
+      id
+    );
+
+    const updated = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(id);
+
+    res.json(updated);
+    logger.info(`Updated monolith project: ${id}`);
+  } catch (error) {
+    logger.error('Error updating monolith project:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/monolith-projects/:id
+ * Delete project (and all related parts)
+ */
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const ownerId = req.user.userId;
+
+    // Check ownership
+    const project = await db.prepare(`
+      SELECT * FROM monolith_projects WHERE project_id = ? AND owner_id = ?
+    `).get(id, ownerId);
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found or access denied' });
+    }
+
+    // Delete project (parts will be deleted by CASCADE)
+    await db.prepare('DELETE FROM monolith_projects WHERE project_id = ?').run(id);
+
+    res.json({ message: 'Project deleted successfully' });
+    logger.info(`Deleted monolith project: ${id}`);
+  } catch (error) {
+    logger.error('Error deleting monolith project:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/monolith-projects/search/:type
+ * Search projects by type
+ */
+router.get('/search/:type', async (req, res) => {
+  try {
+    const { type } = req.params;
+    const ownerId = req.user.userId;
+
+    if (!['bridge', 'building', 'parking', 'road', 'custom'].includes(type)) {
+      return res.status(400).json({ error: 'Invalid type' });
+    }
+
+    const projects = await db.prepare(`
+      SELECT * FROM monolith_projects
+      WHERE object_type = ? AND owner_id = ?
+      ORDER BY created_at DESC
+    `).all(type, ownerId);
+
+    res.json(projects);
+  } catch (error) {
+    logger.error('Error searching projects:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+export default router;
