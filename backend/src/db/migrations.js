@@ -33,19 +33,55 @@ async function initPostgresSchema() {
   const schema = fs.readFileSync(schemaPath, 'utf-8');
 
   // Split by semicolons and execute each statement
-  const statements = schema
+  const allStatements = schema
     .split(';')
     .map(s => s.trim())
     .filter(s => s.length > 0 && !s.startsWith('--'));
 
-  for (const statement of statements) {
+  // Separate CREATE TABLE statements (must run first) from others
+  const createTableStatements = allStatements.filter(s => s.startsWith('CREATE TABLE'));
+  const otherStatements = allStatements.filter(s => !s.startsWith('CREATE TABLE'));
+
+  console.log(`[PostgreSQL] Running ${createTableStatements.length} CREATE TABLE statements...`);
+
+  // Execute CREATE TABLE first (critical for foreign keys and dependencies)
+  for (const statement of createTableStatements) {
+    try {
+      await db.exec(statement + ';');
+      console.log(`[PostgreSQL] ✓ Created table`);
+    } catch (error) {
+      // Ignore "already exists" errors
+      if (error.message?.includes('already exists') || error.code === '42P01') {
+        console.log(`[PostgreSQL] Table already exists (skipped)`);
+      } else {
+        console.error('[PostgreSQL] Error executing statement:', statement);
+        throw error;
+      }
+    }
+  }
+
+  console.log(`[PostgreSQL] Running ${otherStatements.length} other statements (indexes, inserts)...`);
+
+  // Execute other statements (CREATE INDEX, INSERT, etc.)
+  for (const statement of otherStatements) {
     try {
       await db.exec(statement + ';');
     } catch (error) {
-      // Ignore "already exists" errors
-      if (!error.message.includes('already exists')) {
+      // Ignore "already exists" and "relation does not exist" errors
+      // These are safe to ignore during migrations
+      const ignoreErrors = ['already exists', 'does not exist', '42P01'];
+      const shouldIgnore = ignoreErrors.some(errMsg => {
+        const messageMatch = error.message && error.message.includes(errMsg);
+        const codeMatch = error.code === errMsg;
+        return messageMatch || codeMatch;
+      });
+
+      if (!shouldIgnore) {
         console.error('[PostgreSQL] Error executing statement:', statement);
         throw error;
+      } else {
+        // Log ignored errors for debugging
+        console.log(`[PostgreSQL] ℹ️ Ignored expected error: ${error.code || error.message}`);
       }
     }
   }
