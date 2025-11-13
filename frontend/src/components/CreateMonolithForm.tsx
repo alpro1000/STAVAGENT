@@ -73,8 +73,8 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
     const titles = {
       bridge: '🌉 Vytvořit nový most',
       building: '🏢 Vytvořit novou budovu',
-      parking: '🅿️ Vytvořit novou garáž',
-      road: '🛣️ Vytvořit novou cestu',
+      parking: '🅿️ Vytvořit nové parkoviště',
+      road: '🛣️ Vytvořit novou komunikaci',
       custom: '📦 Vytvořit nový objekt'
     };
     return titles[objectType as keyof typeof titles] || 'Vytvořit nový objekt';
@@ -164,7 +164,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
           <>
             <div className="form-row">
               <label>
-                Délka rozpětí (m)
+                Délka rozpětí mostu (m)
                 <input
                   type="number"
                   value={spanLength}
@@ -190,7 +190,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
             </div>
             <div className="form-row">
               <label>
-                Trvání projektu (týdny)
+                Doba realizace (týdny)
                 <input
                   type="number"
                   value={pdWeeks}
@@ -240,7 +240,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
         {objectType === 'parking' && (
           <div className="form-row">
             <label>
-              Plocha garáže (m²)
+              Plocha parkoviště (m²)
               <input
                 type="number"
                 value={buildingArea}
@@ -258,7 +258,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
           <>
             <div className="form-row">
               <label>
-                Délka cesty (km)
+                Délka komunikace (km)
                 <input
                   type="number"
                   value={roadLength}
@@ -271,7 +271,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
             </div>
             <div className="form-row">
               <label>
-                Šířka cesty (m)
+                Šířka komunikace (m)
                 <input
                   type="number"
                   value={roadWidth}

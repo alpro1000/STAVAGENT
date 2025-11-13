@@ -14,8 +14,8 @@ interface ObjectTypeSelectorProps {
 const objectTypes = [
   {
     id: 'bridge',
-    label: '🌉 Мост',
-    description: 'Most přes vodoteč, údolí nebo silnici',
+    label: '🌉 Most',
+    description: 'Silniční most, kolejový most nebo lávka přes vodní tok',
     icon: '🌉'
   },
   {
@@ -26,20 +26,20 @@ const objectTypes = [
   },
   {
     id: 'parking',
-    label: '🅿️ Garáž',
-    description: 'Podzemní garáž nebo parkovací dům',
+    label: '🅿️ Parkoviště',
+    description: 'Parkoviště, podzemní garáž nebo otevřená stojanka',
     icon: '🅿️'
   },
   {
     id: 'road',
-    label: '🛣️ Cesta',
-    description: 'Silnice, cesta nebo komunikace',
+    label: '🛣️ Komunikace',
+    description: 'Silnice, ulice nebo komunikační cesta',
     icon: '🛣️'
   },
   {
     id: 'custom',
-    label: '📦 Vlastní',
-    description: 'Libovolný jiný typ objektu',
+    label: '📦 Ostatní',
+    description: 'Jiný typ stavby nebo konstrukčního objektu',
     icon: '📦'
   }
 ];
