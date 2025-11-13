@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
 import { exportAPI, uploadAPI, bridgesAPI } from '../services/api';
-import CreateBridgeForm from './CreateBridgeForm';
+import CreateMonolithForm from './CreateMonolithForm';
 import EditBridgeForm from './EditBridgeForm';
 import ExportHistory from './ExportHistory';
 
@@ -49,7 +49,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       // Refetch bridges after upload
       await refetchBridges();
 
-      alert(`✅ Import úspěšný! Nalezeno ${result.bridges.length} mostů s ${result.row_count} řádky.`);
+      alert(`✅ Import úspěšný! Nalezeno ${result.bridges.length} objektů s ${result.row_count} řádky.`);
     } catch (error: any) {
       alert(`❌ Nahrání selhalo: ${error.message}`);
     } finally {
@@ -62,7 +62,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
   const handleExport = async () => {
     if (!selectedBridge) {
-      alert('Nejdříve vyberte most');
+      alert('Nejdříve vyberte objekt');
       return;
     }
 
@@ -84,7 +84,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
   const handleSaveToServer = async () => {
     if (!selectedBridge) {
-      alert('Nejdříve vyberte most');
+      alert('Nejdříve vyberte objekt');
       return;
     }
 
@@ -126,7 +126,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     setShowEditForm(false);
     // Refetch bridges to update the name in the selector
     await refetchBridges();
-    alert('✅ Most byl úspěšně aktualizován!');
+    alert('✅ Objekt byl úspěšně aktualizován!');
   };
 
   const handleLogoClick = () => {
@@ -158,9 +158,9 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         <button
           className="btn-create"
           onClick={() => setShowCreateForm(true)}
-          title="Vytvořit nový most s prázdnými pozicemi"
+          title="Vytvořit nový objekt s prázdnými pozicemi"
         >
-          ➕ Nový most
+          ➕ Nový objekt
         </button>
 
         <select
@@ -168,7 +168,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           value={selectedBridge || ''}
           onChange={handleBridgeChange}
         >
-          <option value="">Vyberte most...</option>
+          <option value="">Vyberte objekt...</option>
           {bridges.map((bridge) => (
             <option key={bridge.bridge_id} value={bridge.bridge_id}>
               {bridge.object_name || bridge.bridge_id} - {bridge.bridge_id} ({bridge.element_count} prvků)
@@ -180,16 +180,16 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           className="btn-secondary"
           onClick={() => setShowEditForm(true)}
           disabled={!selectedBridge}
-          title="Upravit název a metadata mostu"
+          title="Upravit název a metadata objektu"
         >
-          ✏️ Upravit most
+          ✏️ Upravit objekt
         </button>
 
         <button
           className="btn-secondary"
           onClick={handleUploadClick}
           disabled={isUploading}
-          title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi mostů'}
+          title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi objektů'}
         >
           {isUploading ? (
             <>
@@ -249,11 +249,11 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         </div>
       </div>
 
-      {/* Modal for Create Bridge Form */}
+      {/* Modal for Create Monolith Form */}
       {showCreateForm && (
         <div className="modal-overlay" onClick={() => setShowCreateForm(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <CreateBridgeForm
+            <CreateMonolithForm
               onSuccess={handleCreateSuccess}
               onCancel={() => setShowCreateForm(false)}
             />
