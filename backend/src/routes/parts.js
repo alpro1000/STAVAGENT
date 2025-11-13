@@ -130,7 +130,7 @@ router.post('/', async (req, res) => {
       partId,
       project_id,
       part_name,
-      is_predefined ? 1 : 0
+      is_predefined ? true : false
     );
 
     const part = await db.prepare('SELECT * FROM parts WHERE part_id = ?').get(partId);
