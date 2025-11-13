@@ -128,7 +128,7 @@ router.post('/', async (req, res) => {
     // Check if templates exist for this object type (CRITICAL: needed for default parts)
     const templates = await db.prepare(`
       SELECT * FROM part_templates
-      WHERE object_type = ? AND is_default = 1
+      WHERE object_type = ? AND is_default = true
       ORDER BY display_order
     `).all(object_type);
 
@@ -172,8 +172,8 @@ router.post('/', async (req, res) => {
       const partId = `${project_id}_${template.part_name}`;
       await db.prepare(`
         INSERT INTO parts (part_id, project_id, part_name, is_predefined)
-        VALUES (?, ?, ?, 1)
-      `).run(partId, project_id, template.part_name);
+        VALUES (?, ?, ?, ?)
+      `).run(partId, project_id, template.part_name, true);
     }
 
     const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
