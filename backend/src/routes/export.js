@@ -17,8 +17,8 @@ const router = express.Router();
 
 // Helper function to fetch and calculate positions
 async function getCalculatedPositions(bridge_id) {
-  // Get positions
-  const positions = db.prepare(`
+  // Get positions (async/await for PostgreSQL)
+  const positions = await db.prepare(`
     SELECT * FROM positions WHERE bridge_id = ?
   `).all(bridge_id);
 
@@ -26,18 +26,18 @@ async function getCalculatedPositions(bridge_id) {
     throw new Error('No positions found for this bridge');
   }
 
-  // Get bridge metadata
-  const bridge = db.prepare(`
+  // Get bridge metadata (async/await for PostgreSQL)
+  const bridge = await db.prepare(`
     SELECT * FROM bridges WHERE bridge_id = ?
   `).get(bridge_id);
 
-  // Get config
-  const configRow = db.prepare(`
+  // Get config (async/await for PostgreSQL)
+  const configRow = await db.prepare(`
     SELECT defaults, days_per_month_mode FROM project_config WHERE id = 1
   `).get();
 
   const config = {
-    defaults: JSON.parse(configRow.defaults),
+    defaults: typeof configRow.defaults === 'string' ? JSON.parse(configRow.defaults) : configRow.defaults,
     days_per_month_mode: configRow.days_per_month_mode
   };
 
