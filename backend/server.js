@@ -49,6 +49,10 @@ const ALLOWED_ORIGINS = [
 // Initialize Express
 const app = express();
 
+// Trust proxy - required for rate limiting and IP detection behind Render/nginx
+// This must be set BEFORE rate limiting middleware
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet());
 app.use(cors({
