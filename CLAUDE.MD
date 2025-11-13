@@ -2800,6 +2800,19 @@ d8635ec - 🐛 Fix P1 issues from Codex review
 - Все остальные statements (CREATE INDEX, INSERT) выполняются **после**
 - Гарантирует, что таблицы существуют перед созданием индексов
 
+#### 3. Исправлено парсирование SQL файла (обработка комментариев)
+**Проблема:** В schema-postgres.sql есть комментарии перед CREATE TABLE:
+```sql
+-- Users table
+CREATE TABLE IF NOT EXISTS users (...)
+```
+Когда split по `;`, каждый statement содержал комментарии. Фильтр не находил таблицы, потому что строка начиналась с `--`.
+
+**Решение:**
+- Убираем все строки с комментариями (`--`) из каждого statement
+- Проверяем `startsWith('CREATE TABLE')` без учета регистра
+- Теперь все 8 CREATE TABLE statements правильно обнаруживаются и выполняются первыми
+
 **Результат:**
 ```
 [PostgreSQL] Running 8 CREATE TABLE statements...
@@ -2808,11 +2821,13 @@ d8635ec - 🐛 Fix P1 issues from Codex review
 ...
 [PostgreSQL] Running 14 other statements (indexes, inserts)...
 [PostgreSQL] ✓ Created index
+[Database] Schema initialized successfully
 ```
 
 ### 📊 КОММИТЫ В ЭТОЙ СЕССИИ
 
 ```bash
+e78f30b - 🔧 Fix PostgreSQL schema parsing - handle comments in SQL statements
 e2ab4be - 🔧 Separate CREATE TABLE and CREATE INDEX execution for PostgreSQL migrations
 b8327d9 - 🔧 Improve PostgreSQL error handling with better logging
 7e8d544 - 🔧 Fix PostgreSQL migration error handling for relation not existing
