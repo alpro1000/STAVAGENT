@@ -338,6 +338,58 @@ async function initSqliteSchema() {
     console.log(`[MIGRATION] Backfilled search_name for ${rows.length} OTSKP codes`);
   }
 
+  // MonolithProjects table (universal object for all construction types)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS monolith_projects (
+      project_id TEXT PRIMARY KEY,
+      object_type TEXT NOT NULL DEFAULT 'custom',
+      project_name TEXT,
+      object_name TEXT NOT NULL DEFAULT '',
+      owner_id INTEGER NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      element_count INTEGER DEFAULT 0,
+      concrete_m3 REAL DEFAULT 0,
+      sum_kros_czk REAL DEFAULT 0,
+      span_length_m REAL,
+      deck_width_m REAL,
+      pd_weeks REAL,
+      building_area_m2 REAL,
+      building_floors INTEGER,
+      road_length_km REAL,
+      road_width_m REAL,
+      description TEXT,
+      status TEXT DEFAULT 'active',
+      FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
+
+  // Part Templates table (predefined parts for each construction type)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS part_templates (
+      template_id TEXT PRIMARY KEY,
+      object_type TEXT NOT NULL,
+      part_name TEXT NOT NULL,
+      display_order INTEGER DEFAULT 0,
+      is_default INTEGER DEFAULT 1,
+      description TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // Parts table (actual parts for each project)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS parts (
+      part_id TEXT PRIMARY KEY,
+      project_id TEXT NOT NULL,
+      part_name TEXT NOT NULL,
+      is_predefined INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id) ON DELETE CASCADE
+    );
+  `);
+
   // Create indexes
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_positions_bridge ON positions(bridge_id);
@@ -350,7 +402,53 @@ async function initSqliteSchema() {
     CREATE INDEX IF NOT EXISTS idx_bridges_owner ON bridges(owner_id);
     CREATE INDEX IF NOT EXISTS idx_bridges_status ON bridges(status);
     CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+    CREATE INDEX IF NOT EXISTS idx_monolith_projects_owner ON monolith_projects(owner_id);
+    CREATE INDEX IF NOT EXISTS idx_monolith_projects_type ON monolith_projects(object_type);
+    CREATE INDEX IF NOT EXISTS idx_monolith_projects_status ON monolith_projects(status);
+    CREATE INDEX IF NOT EXISTS idx_part_templates_type ON part_templates(object_type);
+    CREATE INDEX IF NOT EXISTS idx_parts_project ON parts(project_id);
   `);
+
+  // Seed part templates for all construction types
+  const partTemplates = [
+    // Bridge parts
+    { template_id: 'bridge_ZÁKLADY', object_type: 'bridge', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Hloubkové a plošné založení' },
+    { template_id: 'bridge_OPĚRY', object_type: 'bridge', part_name: 'OPĚRY', display_order: 2, is_default: 1, description: 'Koncové opěry/krajní podpory' },
+    { template_id: 'bridge_PILÍŘE', object_type: 'bridge', part_name: 'PILÍŘE', display_order: 3, is_default: 1, description: 'Mezipolí/středové pilíře' },
+    { template_id: 'bridge_KLENBY', object_type: 'bridge', part_name: 'KLENBY', display_order: 4, is_default: 1, description: 'Rozpětná pole/pěšinka' },
+    { template_id: 'bridge_ŘÍMSY', object_type: 'bridge', part_name: 'ŘÍMSY', display_order: 5, is_default: 1, description: 'Římsové profily a ochranné prvky' },
+    // Building parts
+    { template_id: 'building_ZÁKLADY', object_type: 'building', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Hloubkové a plošné základy' },
+    { template_id: 'building_SLOUPY', object_type: 'building', part_name: 'SLOUPY', display_order: 2, is_default: 1, description: 'Nosné sloupy' },
+    { template_id: 'building_STĚNY', object_type: 'building', part_name: 'STĚNY', display_order: 3, is_default: 1, description: 'Nosné a obvodové stěny' },
+    { template_id: 'building_STROPY', object_type: 'building', part_name: 'STROPY', display_order: 4, is_default: 1, description: 'Stropní desky a konstrukce' },
+    { template_id: 'building_SCHODIŠTĚ', object_type: 'building', part_name: 'SCHODIŠTĚ', display_order: 5, is_default: 0, description: 'Schodiště a výtahové šachty' },
+    // Parking parts
+    { template_id: 'parking_ZÁKLADY', object_type: 'parking', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Hloubkové založení' },
+    { template_id: 'parking_SLOUPY', object_type: 'parking', part_name: 'SLOUPY', display_order: 2, is_default: 1, description: 'Nosné sloupy' },
+    { template_id: 'parking_STĚNY', object_type: 'parking', part_name: 'STĚNY', display_order: 3, is_default: 1, description: 'Obvodové a nosné stěny' },
+    { template_id: 'parking_STROPY', object_type: 'parking', part_name: 'STROPY', display_order: 4, is_default: 1, description: 'Stropní platformy' },
+    { template_id: 'parking_RAMPY', object_type: 'parking', part_name: 'RAMPY', display_order: 5, is_default: 1, description: 'Sjezdové rampy a komunikace' },
+    // Road parts
+    { template_id: 'road_ZÁKLADY', object_type: 'road', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Zemní těleso/podklad' },
+    { template_id: 'road_PODBASE', object_type: 'road', part_name: 'PODBASE', display_order: 2, is_default: 1, description: 'Podkladní stabilizační vrstva' },
+    { template_id: 'road_ASFALT', object_type: 'road', part_name: 'ASFALT', display_order: 3, is_default: 1, description: 'Asfaltobetonová vrstva' },
+    { template_id: 'road_DRENÁŽ', object_type: 'road', part_name: 'DRENÁŽ', display_order: 4, is_default: 1, description: 'Drenážní systém' }
+  ];
+
+  const insertTemplate = db.prepare(`
+    INSERT OR IGNORE INTO part_templates (template_id, object_type, part_name, display_order, is_default, description)
+    VALUES (?, ?, ?, ?, ?, ?)
+  `);
+
+  const insertManyTemplates = db.transaction((templates) => {
+    for (const tpl of templates) {
+      insertTemplate.run(tpl.template_id, tpl.object_type, tpl.part_name, tpl.display_order, tpl.is_default, tpl.description);
+    }
+  });
+
+  insertManyTemplates(partTemplates);
+  console.log('[MIGRATION] Seeded part templates for all construction types');
 
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();

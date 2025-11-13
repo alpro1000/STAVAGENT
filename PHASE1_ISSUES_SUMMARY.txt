@@ -1,0 +1,121 @@
+================================================================================
+PHASE 1 IMPLEMENTATION - CRITICAL ISSUES SUMMARY
+================================================================================
+
+OVERALL STATUS: INCOMPLETE - Frontend not fully integrated with new API
+
+================================================================================
+CRITICAL ISSUES (MUST FIX BEFORE PRODUCTION)
+================================================================================
+
+1. FRONTEND USING LEGACY API
+   - CreateMonolithForm calls /api/bridges instead of /api/monolith-projects
+   - Sends bridge_id parameter instead of project_id
+   - Result: monolith_projects table never populated
+   - File: frontend/src/components/CreateMonolithForm.tsx:50
+   - Severity: CRITICAL
+
+2. SQLITE MISSING CASCADE DELETES
+   - User deletion doesn't cascade to projects/bridges/positions/snapshots
+   - PostgreSQL has CASCADE, SQLite doesn't
+   - Result: Orphaned records, referential integrity violation
+   - Files: backend/src/db/migrations.js, schema-postgres.sql
+   - Severity: CRITICAL
+
+3. BOOLEAN TYPE MISMATCH
+   - SQLite uses INTEGER (0/1), PostgreSQL uses BOOLEAN
+   - Affects: part_templates.is_default, parts.is_predefined
+   - Result: Data type inconsistency during SQLite→PostgreSQL migration
+   - Files: migrations.js (lines 374, 386), schema-postgres.sql (lines 136, 146)
+   - Severity: HIGH
+
+4. PARTS-POSITIONS JOIN ERROR
+   - Query joins p.project_id with pos.bridge_id (different tables!)
+   - Result: Incorrect position counts, broken queries
+   - File: backend/src/routes/parts.js:83
+   - Severity: HIGH
+
+5. MIXED DATA MODELS
+   - Both legacy bridges and new monolith_projects tables coexist
+   - positions references bridges (legacy)
+   - parts references monolith_projects (new)
+   - Result: Architectural confusion, hard to maintain
+   - Severity: HIGH
+
+================================================================================
+HIGH-PRIORITY ISSUES
+================================================================================
+
+6. NO INPUT VALIDATION
+   - Can set negative span_length_m, building_floors, concrete_m3
+   - No part_name length validation
+   - No duplicate part name detection
+   - Files: monolith-projects.js, parts.js
+   - Severity: MEDIUM
+
+7. NO TYPESCRIPT TYPES FOR MONOLITH PROJECTS
+   - Using generic Bridge type instead of MonolithProject
+   - Frontend type safety compromised
+   - File: frontend/src/services/api.ts
+   - Severity: MEDIUM
+
+8. PART ID COLLISION RISK
+   - Uses Date.now() for uniqueness (not collision-proof)
+   - High concurrency could create duplicates
+   - File: backend/src/routes/parts.js:120
+   - Severity: MEDIUM
+
+================================================================================
+DATABASE INCONSISTENCIES TABLE
+================================================================================
+
+Relationship                      SQLite    PostgreSQL    Risk Level
+users → monolith_projects         NO        CASCADE       CRITICAL
+users → bridges                   NO        CASCADE       CRITICAL  
+monolith_projects → parts         CASCADE   CASCADE       LOW
+bridges → positions               NO        CASCADE       HIGH
+bridges → snapshots               NO        CASCADE       HIGH
+snapshots → snapshots (parent)    NO        SET NULL      MEDIUM
+
+================================================================================
+ACTION ITEMS - PRIORITY ORDER
+================================================================================
+
+IMMEDIATE (Before any user-facing deployment):
+  [ ] Fix CreateMonolithForm to call /api/monolith-projects
+  [ ] Change bridge_id parameter to project_id
+  [ ] Add SQLite CASCADE deletes or implement app-level logic
+  [ ] Add input validation (numeric ranges, string length)
+
+SHORT-TERM (Next sprint):
+  [ ] Create MonolithProject TypeScript interface
+  [ ] Fix parts-positions join logic
+  [ ] Replace Date.now() with UUID for part IDs
+  [ ] Fix boolean type consistency (INT→BOOLEAN in PostgreSQL)
+
+MEDIUM-TERM (Planning phase):
+  [ ] Consolidate bridges→monolith_projects migration
+  [ ] Deprecate legacy bridges table
+  [ ] Update all positions references to monolith_projects
+
+================================================================================
+FILE LOCATIONS
+================================================================================
+
+Database:
+  - /home/user/Monolit-Planner/backend/src/db/migrations.js (SQLite)
+  - /home/user/Monolit-Planner/backend/src/db/schema-postgres.sql (PostgreSQL)
+
+Backend API:
+  - /home/user/Monolit-Planner/backend/src/routes/monolith-projects.js
+  - /home/user/Monolit-Planner/backend/src/routes/parts.js
+  - /home/user/Monolit-Planner/backend/src/routes/bridges.js (Legacy)
+
+Frontend:
+  - /home/user/Monolit-Planner/frontend/src/components/CreateMonolithForm.tsx
+  - /home/user/Monolit-Planner/frontend/src/services/api.ts
+
+Full Analysis:
+  - /home/user/Monolit-Planner/PHASE1_ANALYSIS.md
+
+================================================================================

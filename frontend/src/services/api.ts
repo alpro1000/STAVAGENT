@@ -5,6 +5,53 @@
 import axios from 'axios';
 import { Position, HeaderKPI, Bridge, ProjectConfig, SnapshotListItem, Snapshot, OtskpCode, OtskpSearchResult } from '@monolit/shared';
 
+// ============ MonolithProject Types ============
+interface MonolithProject {
+  project_id: string;
+  object_type: 'bridge' | 'building' | 'parking' | 'road' | 'custom';
+  project_name?: string;
+  object_name: string;
+  owner_id: number;
+  created_at: string;
+  updated_at: string;
+  element_count: number;
+  concrete_m3: number;
+  sum_kros_czk: number;
+  description?: string;
+  status: 'active' | 'completed' | 'archived';
+  // Type-specific fields
+  span_length_m?: number;
+  deck_width_m?: number;
+  pd_weeks?: number;
+  building_area_m2?: number;
+  building_floors?: number;
+  road_length_km?: number;
+  road_width_m?: number;
+  parts_count?: number;
+  parts?: Part[];
+  templates?: PartTemplate[];
+}
+
+interface Part {
+  part_id: string;
+  project_id: string;
+  part_name: string;
+  is_predefined: boolean;
+  created_at: string;
+  updated_at: string;
+  positions_count?: number;
+}
+
+interface PartTemplate {
+  template_id: string;
+  object_type: string;
+  part_name: string;
+  display_order: number;
+  is_default: boolean;
+  description?: string;
+  created_at: string;
+}
+
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
 console.log('[API Service] Initializing with API_URL:', API_URL);
@@ -110,6 +157,95 @@ export const bridgesAPI = {
 
   delete: async (bridgeId: string): Promise<void> => {
     await api.delete(`/api/bridges/${bridgeId}`);
+  }
+};
+
+// MonolithProjects (Universal objects for all construction types)
+export const monolithProjectsAPI = {
+  getAll: async (type?: string, status?: string): Promise<MonolithProject[]> => {
+    const params: any = {};
+    if (type) params.type = type;
+    if (status) params.status = status;
+
+    const { data } = await api.get('/api/monolith-projects', { params });
+    return data;
+  },
+
+  getOne: async (projectId: string): Promise<MonolithProject> => {
+    const { data } = await api.get(`/api/monolith-projects/${projectId}`);
+    return data;
+  },
+
+  create: async (params: {
+    project_id: string;
+    object_type: 'bridge' | 'building' | 'parking' | 'road' | 'custom';
+    project_name?: string;
+    object_name?: string;
+    description?: string;
+    span_length_m?: number;
+    deck_width_m?: number;
+    pd_weeks?: number;
+    building_area_m2?: number;
+    building_floors?: number;
+    road_length_km?: number;
+    road_width_m?: number;
+  }): Promise<MonolithProject> => {
+    const { data } = await api.post('/api/monolith-projects', params);
+    return data;
+  },
+
+  update: async (projectId: string, params: Partial<MonolithProject>): Promise<MonolithProject> => {
+    const { data } = await api.put(`/api/monolith-projects/${projectId}`, params);
+    return data;
+  },
+
+  updateStatus: async (projectId: string, status: 'active' | 'completed' | 'archived'): Promise<void> => {
+    await api.patch(`/api/monolith-projects/${projectId}/status`, { status });
+  },
+
+  delete: async (projectId: string): Promise<void> => {
+    await api.delete(`/api/monolith-projects/${projectId}`);
+  },
+
+  searchByType: async (type: string): Promise<MonolithProject[]> => {
+    const { data } = await api.get(`/api/monolith-projects/search/${type}`);
+    return data;
+  }
+};
+
+// Part Templates (no auth required)
+export const partTemplatesAPI = {
+  getAll: async (type?: string): Promise<PartTemplate[]> => {
+    const params: any = {};
+    if (type) params.type = type;
+
+    const { data } = await api.get('/api/parts/templates', { params });
+    return data;
+  }
+};
+
+// Parts
+export const partsAPI = {
+  getForProject: async (projectId: string): Promise<Part[]> => {
+    const { data } = await api.get(`/api/parts/list/${projectId}`);
+    return data;
+  },
+
+  create: async (params: {
+    project_id: string;
+    part_name: string;
+  }): Promise<Part> => {
+    const { data } = await api.post('/api/parts', params);
+    return data;
+  },
+
+  update: async (partId: string, params: { part_name?: string }): Promise<Part> => {
+    const { data } = await api.put(`/api/parts/${partId}`, params);
+    return data;
+  },
+
+  delete: async (partId: string): Promise<void> => {
+    await api.delete(`/api/parts/${partId}`);
   }
 };
 
@@ -310,5 +446,7 @@ export const otskpAPI = {
 // Helper exports for convenience
 export const createBridge = bridgesAPI.create;
 export const deleteBridge = bridgesAPI.delete;
+export const createMonolithProject = monolithProjectsAPI.create;
+export const deleteMonolithProject = monolithProjectsAPI.delete;
 
 export default api;
