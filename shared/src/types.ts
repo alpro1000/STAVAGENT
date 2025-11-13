@@ -153,6 +153,7 @@ export interface Snapshot {
   header_kpi_snapshot: HeaderKPI;   // Kopie KPI
   description?: string;             // "Finální výpočty"...
   is_locked: boolean;               // true = aktivní zámek
+  is_final: boolean;                // true = finální snapshot (při completed)
   parent_snapshot_id?: string;      // Pro sledování verzí
   sum_kros_at_lock: number;         // Suma KROS v okamžiku lock
   delta_to_previous?: number;       // Rozdíl oproti předchozímu

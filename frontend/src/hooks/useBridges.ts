@@ -53,14 +53,27 @@ export function useBridges() {
     }
   });
 
+  // Mutation: Complete bridge (with final snapshot)
+  const completeMutation = useMutation({
+    mutationFn: (params: { bridgeId: string; created_by?: string; description?: string }) => {
+      return bridgesAPI.complete(params.bridgeId, { created_by: params.created_by, description: params.description });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+    }
+  });
+
   return {
     ...query,
     updateBridgeStatus: async (bridgeId: string, status: 'active' | 'completed' | 'archived') => {
       await statusMutation.mutateAsync({ bridgeId, status });
     },
+    completeBridge: async (bridgeId: string, params?: { created_by?: string; description?: string }) => {
+      return await completeMutation.mutateAsync({ bridgeId, ...params });
+    },
     deleteBridge: async (bridgeId: string) => {
       await deleteMutation.mutateAsync(bridgeId);
     },
-    isLoading: query.isLoading || statusMutation.isPending || deleteMutation.isPending
+    isLoading: query.isLoading || statusMutation.isPending || deleteMutation.isPending || completeMutation.isPending
   };
 }

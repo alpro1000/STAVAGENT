@@ -15,7 +15,7 @@ export function createSnapshot(
   header_kpi,
   config = {}
 ) {
-  const { snapshot_name, description, created_by } = config;
+  const { snapshot_name, description, created_by, is_final } = config;
 
   // Calculate hash from positions
   const positionsJson = JSON.stringify(positions);
@@ -38,6 +38,7 @@ export function createSnapshot(
     description: description || null,
     created_by: created_by || null,
     is_locked: 1, // По умолчанию locked
+    is_final: is_final ? 1 : 0, // Final snapshot flag
     parent_snapshot_id: null
   };
 }

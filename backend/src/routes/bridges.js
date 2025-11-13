@@ -6,6 +6,7 @@
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
+import { createSnapshot } from '../services/snapshot.js';
 
 const router = express.Router();
 
@@ -248,6 +249,107 @@ router.patch('/:bridge_id/status', (req, res) => {
     res.json({ success: true, bridge_id, status });
   } catch (error) {
     logger.error('Error updating bridge status:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /api/bridges/:bridge_id/complete - Mark bridge as completed with final snapshot
+router.post('/:bridge_id/complete', (req, res) => {
+  try {
+    const { bridge_id } = req.params;
+    const { created_by, description } = req.body;
+
+    // Check if bridge exists
+    const bridge = db.prepare('SELECT bridge_id, object_name FROM bridges WHERE bridge_id = ?').get(bridge_id);
+    if (!bridge) {
+      return res.status(404).json({ error: 'Bridge not found' });
+    }
+
+    // Get current positions and calculate header_kpi
+    const positions = db.prepare(`
+      SELECT * FROM positions WHERE bridge_id = ?
+    `).all(bridge_id);
+
+    if (positions.length === 0) {
+      return res.status(400).json({ error: 'Cannot complete bridge with no positions' });
+    }
+
+    // Calculate header_kpi
+    const sum_concrete_m3 = positions.reduce((sum, p) => {
+      if (p.subtype === 'beton') {
+        return sum + (p.concrete_m3 || 0);
+      }
+      return sum;
+    }, 0);
+
+    const sum_kros_total_czk = positions.reduce((sum, p) => sum + (p.kros_total_czk || 0), 0);
+
+    const header_kpi = {
+      sum_concrete_m3,
+      sum_kros_total_czk,
+      project_unit_cost_czk_per_m3: sum_concrete_m3 > 0 ? sum_kros_total_czk / sum_concrete_m3 : 0,
+      project_unit_cost_czk_per_t: sum_concrete_m3 > 0 ? sum_kros_total_czk / (sum_concrete_m3 * 2.4) : 0,
+      rho_t_per_m3: 2.4
+    };
+
+    // VARIANT B: Delete ALL existing snapshots (full replacement)
+    const deleteResult = db.prepare('DELETE FROM snapshots WHERE bridge_id = ?').run(bridge_id);
+    logger.info(`Deleted ${deleteResult.changes} existing snapshots for bridge ${bridge_id}`);
+
+    // Create ONE final snapshot with is_final=true
+    const finalSnapshot = createSnapshot(
+      bridge_id,
+      positions,
+      header_kpi,
+      {
+        snapshot_name: 'Finální verze',
+        description: description || `Projekt dokončen - ${new Date().toLocaleDateString('cs-CZ')}`,
+        created_by: created_by || null,
+        is_final: true // CRITICAL: Final snapshot flag
+      }
+    );
+
+    // Insert final snapshot
+    db.prepare(`
+      INSERT INTO snapshots (
+        id, bridge_id, snapshot_name, snapshot_hash, created_by,
+        positions_snapshot, header_kpi_snapshot, description,
+        is_locked, is_final, sum_kros_at_lock
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      finalSnapshot.id,
+      finalSnapshot.bridge_id,
+      finalSnapshot.snapshot_name,
+      finalSnapshot.snapshot_hash,
+      finalSnapshot.created_by,
+      finalSnapshot.positions_snapshot,
+      finalSnapshot.header_kpi_snapshot,
+      finalSnapshot.description,
+      finalSnapshot.is_locked,
+      finalSnapshot.is_final,
+      finalSnapshot.sum_kros_at_lock
+    );
+
+    // Update bridge status to 'completed'
+    db.prepare(`
+      UPDATE bridges
+      SET status = 'completed',
+          updated_at = CURRENT_TIMESTAMP
+      WHERE bridge_id = ?
+    `).run(bridge_id);
+
+    logger.info(`Completed bridge ${bridge_id} (${bridge.object_name}) with final snapshot ${finalSnapshot.id}`);
+
+    res.json({
+      success: true,
+      bridge_id,
+      status: 'completed',
+      final_snapshot_id: finalSnapshot.id,
+      snapshots_deleted: deleteResult.changes,
+      sum_kros_at_lock: finalSnapshot.sum_kros_at_lock
+    });
+  } catch (error) {
+    logger.error('Error completing bridge:', error);
     res.status(500).json({ error: error.message });
   }
 });

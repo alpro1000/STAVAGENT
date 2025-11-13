@@ -20,7 +20,7 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
-  const { updateBridgeStatus, deleteBridge, isLoading } = useBridges();
+  const { completeBridge, deleteBridge, isLoading } = useBridges();
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [hoveredBridgeId, setHoveredBridgeId] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
@@ -58,14 +58,34 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
     return acc;
   }, {} as Record<string, typeof bridges>);
 
-  // Handle status change (mark as completed)
+  // Handle status change (mark as completed with final snapshot)
   const handleMarkComplete = async (e: React.MouseEvent, bridgeId: string) => {
     e.stopPropagation();
+
+    const bridge = bridges.find(b => b.bridge_id === bridgeId);
+    const bridgeName = bridge?.object_name || bridgeId;
+
+    const confirmed = window.confirm(
+      `✅ Dokončit projekt "${bridgeName}"?\n\n` +
+      `Tato akce:\n` +
+      `• Vytvoří finální snapshot s aktuálními daty\n` +
+      `• Smaže všechny předchozí snapshots\n` +
+      `• Označí projekt jako dokončený\n\n` +
+      `Pokračovat?`
+    );
+
+    if (!confirmed) return;
+
     try {
-      await updateBridgeStatus(bridgeId, 'completed');
+      const result = await completeBridge(bridgeId);
+      alert(
+        `✅ Projekt dokončen!\n\n` +
+        `Finální snapshot: ${result.final_snapshot_id}\n` +
+        `Smazáno snapshotů: ${result.snapshots_deleted}`
+      );
     } catch (error) {
-      console.error('Failed to update bridge status:', error);
-      alert('Chyba při změně statusu mostu');
+      console.error('Failed to complete bridge:', error);
+      alert('Chyba při dokončování projektu');
     }
   };
 

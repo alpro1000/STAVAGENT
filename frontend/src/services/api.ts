@@ -86,6 +86,11 @@ export const bridgesAPI = {
     await api.patch(`/api/bridges/${bridgeId}/status`, { status });
   },
 
+  complete: async (bridgeId: string, params?: { created_by?: string; description?: string }): Promise<{ success: boolean; final_snapshot_id: string; snapshots_deleted: number }> => {
+    const { data } = await api.post(`/api/bridges/${bridgeId}/complete`, params || {});
+    return data;
+  },
+
   delete: async (bridgeId: string): Promise<void> => {
     await api.delete(`/api/bridges/${bridgeId}`);
   }
