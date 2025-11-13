@@ -28,19 +28,22 @@
 | Email Verification | ❌ Missing | CRITICAL - Phase 1 priority |
 | Admin Panel | ❌ Missing | Phase 3 priority |
 | Rate Limiting | ✅ Working | Trust proxy properly guarded |
-| Security | ⚠️ Issues Found | /api/config unprotected, email validation missing |
+| Security | 🟡 Partially Fixed | /api/config NOW protected, email validation still missing |
+| Admin Middleware | ✅ Added | adminOnly.js middleware for role enforcement |
 | Documentation | ✅ Complete | ARCHITECTURE.md, MONOLITH_SPEC.md, ROADMAP.md, USER_MANAGEMENT_ARCHITECTURE.md, MULTI_KIOSK_ARCHITECTURE.md |
 
 ### 🎯 Current Branch
 `claude/read-claude-md-011CV5hwVrSBiNWFD9WgKc1q`
 
-### 📊 Latest Commits (5 commits)
+### 📊 Latest Commits (7 commits)
 ```
+e5e3b4e 🔒 CRITICAL: Protect /api/config endpoint with requireAuth and adminOnly middleware
+c5db588 🔧 Fix: Sidebar now fetches from monolith-projects endpoint with bridge_id alias
+9f6eede 📋 Add: Comprehensive user management and multi-kiosk architecture documentation
+8b209ba 📚 Update: Comprehensive claude.md with user management and multi-kiosk architecture documentation
 65bf69e 🐛 Fix: PostgreSQL boolean type mismatch in project creation
 92c26c0 🔧 Add database initialization script and deployment guide
 7d00902 🎨 Fix: Project creation validation, UI improvements, and form control errors
-af329e0 🐛 Fix: Remove TypeScript syntax from JavaScript file
-58df225 ✨ Phase 1: Fix critical and high-priority issues
 ```
 
 ---
@@ -356,19 +359,16 @@ npm test -- --coverage
 
 ## 🔐 Security Issues (To Be Fixed)
 
-### 🔴 CRITICAL: Config Endpoint Unprotected
+### 🔴 CRITICAL: Config Endpoint ✅ FIXED
 
-**File:** `backend/src/routes/config.js`
-**Issue:** POST /api/config endpoint has NO authentication
-**Impact:** Anyone can modify system feature flags (ROUNDING_STEP_KROS, etc.)
-**Fix Required:**
-```javascript
-// Add middleware protection:
-router.post('/api/config', requireAuth, adminOnly, async (req, res) => {
-  // Only admins can modify config
-});
-```
-**Priority:** IMMEDIATE - affects production stability
+**File:** `backend/src/middleware/adminOnly.js` (NEW), `backend/src/routes/config.js` (UPDATED)
+**Issue:** POST /api/config endpoint had NO authentication
+**Status:** ✅ FIXED - Added requireAuth and adminOnly middleware
+**Implementation:**
+- Created `adminOnly.js` middleware for role-based access control
+- Protected GET /api/config with `requireAuth` (any authenticated user can read)
+- Protected POST /api/config with `requireAuth` + `adminOnly` (only admins can modify)
+- Commit: e5e3b4e 🔒 CRITICAL: Protect /api/config endpoint with requireAuth and adminOnly middleware
 
 ---
 
@@ -416,6 +416,8 @@ router.post('/api/config', requireAuth, adminOnly, async (req, res) => {
 
 ### ✅ Fixed This Session
 
+- ✅ CRITICAL: /api/config endpoint unprotected (added requireAuth + adminOnly middleware)
+- ✅ Sidebar project display (now fetches from /api/monolith-projects)
 - ✅ PostgreSQL boolean type mismatch (is_default = 1 → is_default = true)
 - ✅ Form control errors (removed hidden select element)
 - ✅ Project creation validation (check templates exist)
@@ -580,10 +582,19 @@ rm -f data/database.db && npm run dev
 
 ## ✨ Last Session Summary
 
-**Date:** November 13, 2025 (Continuation)
-**Focus:** Code review, critical bug fixes, and architectural design for user management & multi-kiosk support
+**Date:** November 13, 2025 (Continuation 2)
+**Focus:** CRITICAL security fix, sidebar bug fix, and Phase 1 implementation beginning
 
 **Accomplishments:**
+
+### CRITICAL SECURITY FIX (Just Completed)
+0. ✅ **CRITICAL: Protected /api/config endpoint**
+   - Created `adminOnly.js` middleware for role-based access control
+   - Protected GET /api/config with requireAuth (read allowed)
+   - Protected POST /api/config with requireAuth + adminOnly (write restricted to admins only)
+   - Prevents unauthorized users from modifying system feature flags
+   - File: backend/src/middleware/adminOnly.js (NEW)
+   - File: backend/src/routes/config.js (UPDATED)
 
 ### Phase 1: Code Review & Bug Fixes
 1. ✅ Fixed PostgreSQL boolean type mismatch (is_default = 1 → true)
@@ -611,37 +622,46 @@ rm -f data/database.db && npm run dev
    - File: DEPLOYMENT_GUIDE.md
    - Content: Database initialization, troubleshooting, workflow documentation
 
+7. ✅ Fixed sidebar project display bug
+   - Issue: Projects created but not appearing in left sidebar
+   - Root Cause: Sidebar querying old /api/bridges instead of /api/monolith-projects
+   - Fix: Updated bridgesAPI to use /api/monolith-projects endpoint
+   - Added bridge_id alias for backward compatibility
+   - Files: frontend/src/services/api.ts, backend/src/routes/monolith-projects.js
+
 ### Phase 2: Architectural Design (4 Implementation Phases)
-7. ✅ Designed User Management Architecture (520+ lines)
+8. ✅ Designed User Management Architecture (520+ lines)
    - **Phase 1 (Days 1-3):** Email verification + /api/config security fix
    - **Phase 2 (Days 4-7):** User dashboard + password reset
    - **Phase 3 (Days 8-12):** Admin panel + audit logging
    - **Phase 4 (Future):** Multi-kiosk support
    - File: USER_MANAGEMENT_ARCHITECTURE.md
 
-8. ✅ Designed Multi-Kiosk Architecture (550+ lines)
+9. ✅ Designed Multi-Kiosk Architecture (550+ lines)
    - Business requirement: Kiosk independence (if one fails, others work)
    - Architecture: Distributed with local databases (Option B - recommended)
    - Features: User-kiosk assignment, health monitoring, Docker Compose deployment
    - File: MULTI_KIOSK_ARCHITECTURE.md
 
 ### Phase 3: Documentation Updates
-9. ✅ Updated claude.md with:
+10. ✅ Updated claude.md with:
    - New architecture document references
    - Security issues section (4 CRITICAL/HIGH issues)
    - Fixes summary for this session
    - Status update for all components
 
-**Commits:** 5 commits, all production-ready
+**Commits:** 7 commits, all production-ready
 ```
+e5e3b4e 🔒 CRITICAL: Protect /api/config endpoint with requireAuth and adminOnly middleware
+c5db588 🔧 Fix: Sidebar now fetches from monolith-projects endpoint with bridge_id alias
+9f6eede 📋 Add: Comprehensive user management and multi-kiosk architecture documentation
+8b209ba 📚 Update: Comprehensive claude.md with user management and multi-kiosk architecture documentation
 65bf69e 🐛 Fix: PostgreSQL boolean type mismatch in project creation
 92c26c0 🔧 Add database initialization script and deployment guide
 7d00902 🎨 Fix: Project creation validation, UI improvements, and form control errors
-af329e0 🐛 Fix: Remove TypeScript syntax from JavaScript file
-58df225 ✨ Phase 1: Fix critical and high-priority issues
 ```
 
-**Status:** ✅ Production bugs fixed, Architecture designed, Ready for Phase 1 implementation
+**Status:** ✅ CRITICAL security fix deployed, Sidebar fixed, Ready for Phase 1 Email Verification implementation
 
 ---
 
