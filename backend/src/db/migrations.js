@@ -224,8 +224,34 @@ async function initSqliteSchema() {
       password_hash TEXT NOT NULL,
       name TEXT NOT NULL,
       role TEXT DEFAULT 'user',
+      email_verified INTEGER DEFAULT 0,
+      email_verified_at TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // Create email verification tokens table (Phase 1: Email Verification)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS email_verification_tokens (
+      id TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL UNIQUE,
+      token_hash TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
+
+  // Create password reset tokens table (Phase 2: Password Reset)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS password_reset_tokens (
+      id TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      token_hash TEXT NOT NULL,
+      expires_at TEXT NOT NULL,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
   `);
 

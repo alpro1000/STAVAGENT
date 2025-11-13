@@ -7,15 +7,18 @@
 
 import express from 'express';
 import bcrypt from 'bcrypt';
+import { randomUUID } from 'crypto';
+import { createHash } from 'crypto';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { generateToken, requireAuth } from '../middleware/auth.js';
+import { sendVerificationEmail } from '../services/emailService.js';
 
 const router = express.Router();
 
 const SALT_ROUNDS = 10;
 
-// POST /api/auth/register - Register new user
+// POST /api/auth/register - Register new user (requires email verification)
 router.post('/register', async (req, res) => {
   try {
     const { email, password, name } = req.body;
@@ -44,10 +47,10 @@ router.post('/register', async (req, res) => {
     // Hash password
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
-    // Insert user
+    // Insert user (email_verified = false by default)
     const result = await db.prepare(`
-      INSERT INTO users (email, password_hash, name, role)
-      VALUES (?, ?, ?, 'user')
+      INSERT INTO users (email, password_hash, name, role, email_verified)
+      VALUES (?, ?, ?, 'user', 0)
     `).run(email, passwordHash, name);
 
     // For SQLite, lastID is directly available
@@ -60,24 +63,34 @@ router.post('/register', async (req, res) => {
       userId = user.id;
     }
 
-    // Generate JWT token
-    const token = generateToken({
-      userId,
-      email,
-      name,
-      role: 'user'
-    });
+    // Generate verification token (unique per user)
+    const tokenString = randomUUID();
+    const tokenHash = createHash('sha256').update(tokenString).digest('hex');
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(); // 24h
 
-    logger.info(`User registered: ${email} (ID: ${userId})`);
+    // Store verification token
+    await db.prepare(`
+      INSERT INTO email_verification_tokens (id, user_id, token_hash, expires_at)
+      VALUES (?, ?, ?, ?)
+    `).run(randomUUID(), userId, tokenHash, expiresAt);
+
+    // Send verification email
+    const emailResult = await sendVerificationEmail(email, tokenString);
+    if (!emailResult.success) {
+      logger.warn(`Failed to send verification email to ${email}: ${emailResult.error}`);
+      // Don't fail registration if email fails in dev/test mode
+    }
+
+    logger.info(`User registered: ${email} (ID: ${userId}) - awaiting email verification`);
 
     res.status(201).json({
       success: true,
-      token,
+      message: 'Registration successful. Please check your email to verify your account.',
       user: {
         id: userId,
         email,
         name,
-        role: 'user'
+        email_verified: false
       }
     });
   } catch (error) {
@@ -100,6 +113,14 @@ router.post('/login', async (req, res) => {
     const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(email);
     if (!user) {
       return res.status(401).json({ error: 'Invalid email or password' });
+    }
+
+    // Check if email is verified
+    if (!user.email_verified) {
+      return res.status(403).json({
+        error: 'Email not verified',
+        message: 'Please verify your email address before logging in. Check your inbox for verification link.'
+      });
     }
 
     // Verify password
@@ -125,7 +146,8 @@ router.post('/login', async (req, res) => {
         id: user.id,
         email: user.email,
         name: user.name,
-        role: user.role
+        role: user.role,
+        email_verified: user.email_verified
       }
     });
   } catch (error) {
@@ -155,12 +177,75 @@ router.get('/me', requireAuth, async (req, res) => {
         email: user.email,
         name: user.name,
         role: user.role,
+        email_verified: user.email_verified,
         created_at: user.created_at
       }
     });
   } catch (error) {
     logger.error('Get user info error:', error);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// POST /api/auth/verify - Verify email with token
+router.post('/verify', async (req, res) => {
+  try {
+    const { token } = req.body;
+
+    if (!token) {
+      return res.status(400).json({ error: 'Verification token is required' });
+    }
+
+    // Hash the provided token to compare with stored hash
+    const tokenHash = createHash('sha256').update(token).digest('hex');
+
+    // Find verification token
+    const verificationToken = await db.prepare(`
+      SELECT * FROM email_verification_tokens
+      WHERE token_hash = ?
+    `).get(tokenHash);
+
+    if (!verificationToken) {
+      return res.status(400).json({ error: 'Invalid or expired verification token' });
+    }
+
+    // Check if token has expired
+    if (new Date(verificationToken.expires_at) < new Date()) {
+      return res.status(400).json({ error: 'Verification token has expired' });
+    }
+
+    // Get user info
+    const user = await db.prepare('SELECT * FROM users WHERE id = ?').get(verificationToken.user_id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Mark email as verified
+    const verifiedAt = new Date().toISOString();
+    await db.prepare(`
+      UPDATE users
+      SET email_verified = 1, email_verified_at = ?, updated_at = ?
+      WHERE id = ?
+    `).run(verifiedAt, verifiedAt, user.id);
+
+    // Delete used token
+    await db.prepare('DELETE FROM email_verification_tokens WHERE id = ?').run(verificationToken.id);
+
+    logger.info(`Email verified for user: ${user.email} (ID: ${user.id})`);
+
+    res.json({
+      success: true,
+      message: 'Email verified successfully! You can now log in.',
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        email_verified: true
+      }
+    });
+  } catch (error) {
+    logger.error('Email verification error:', error);
+    res.status(500).json({ error: 'Server error during email verification' });
   }
 });
 
