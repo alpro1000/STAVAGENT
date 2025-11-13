@@ -138,13 +138,18 @@ router.get('/search', async (req, res) => {
       .filter(entry => typeof entry.param !== 'undefined')
       .map(entry => entry.param);
 
-    const results = await db.prepare(`
+    const sql = `
       SELECT code, name, unit, unit_price, specification
       FROM otskp_codes
       WHERE ${whereClauses.join(' OR ')}
       ORDER BY CASE ${orderCaseSql} END, code
       LIMIT ?
-    `).all(...whereParams, ...orderParams, searchLimit);
+    `;
+
+    console.log('[OTSKP Search] SQL:', sql.replace(/\s+/g, ' ').trim());
+    console.log('[OTSKP Search] Params:', { whereParams, orderParams, searchLimit });
+
+    const results = await db.prepare(sql).all(...whereParams, ...orderParams, searchLimit);
 
     console.log('[OTSKP Search] Found results:', results.length);
     res.json({
@@ -323,7 +328,7 @@ router.post('/import', async (req, res) => {
 
     // Insert new codes
     console.log('[OTSKP Import] Inserting', items.length, 'codes...');
-    const insertStmt = await db.prepare(`
+    const insertStmt = db.prepare(`
       INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
       VALUES (?, ?, ?, ?, ?, ?)
     `);
