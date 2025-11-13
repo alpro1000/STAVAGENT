@@ -138,13 +138,18 @@ router.get('/search', async (req, res) => {
       .filter(entry => typeof entry.param !== 'undefined')
       .map(entry => entry.param);
 
-    const results = await await db.prepare(`
+    const sql = `
       SELECT code, name, unit, unit_price, specification
       FROM otskp_codes
       WHERE ${whereClauses.join(' OR ')}
       ORDER BY CASE ${orderCaseSql} END, code
       LIMIT ?
-    `).all(...whereParams, ...orderParams, searchLimit);
+    `;
+
+    console.log('[OTSKP Search] SQL:', sql.replace(/\s+/g, ' ').trim());
+    console.log('[OTSKP Search] Params:', { whereParams, orderParams, searchLimit });
+
+    const results = await db.prepare(sql).all(...whereParams, ...orderParams, searchLimit);
 
     console.log('[OTSKP Search] Found results:', results.length);
     res.json({
@@ -166,7 +171,7 @@ router.get('/search', async (req, res) => {
  */
 router.get('/count', async (req, res) => {
   try {
-    const result = await await db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
+    const result = await db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
     res.json({
       count: result.count,
       message: result.count === 0 ? 'No OTSKP codes loaded. Use POST /api/otskp/import to load them.' : 'OTSKP codes available'
@@ -184,7 +189,7 @@ router.get('/count', async (req, res) => {
  */
 router.get('/stats/summary', async (req, res) => {
   try {
-    const stats = await await db.prepare(`
+    const stats = await db.prepare(`
       SELECT
         COUNT(*) as total_codes,
         COUNT(DISTINCT unit) as unique_units,
@@ -194,7 +199,7 @@ router.get('/stats/summary', async (req, res) => {
       FROM otskp_codes
     `).get();
 
-    const unitStats = await await db.prepare(`
+    const unitStats = await db.prepare(`
       SELECT unit, COUNT(*) as count
       FROM otskp_codes
       GROUP BY unit
@@ -222,7 +227,7 @@ router.get('/:code', async (req, res) => {
   try {
     const { code } = req.params;
 
-    const result = await await db.prepare(`
+    const result = await db.prepare(`
       SELECT code, name, unit, unit_price, specification
       FROM otskp_codes
       WHERE code = ?
@@ -323,7 +328,7 @@ router.post('/import', async (req, res) => {
 
     // Insert new codes
     console.log('[OTSKP Import] Inserting', items.length, 'codes...');
-    const insertStmt = await db.prepare(`
+    const insertStmt = db.prepare(`
       INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
       VALUES (?, ?, ?, ?, ?, ?)
     `);
