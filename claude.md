@@ -36,8 +36,11 @@
 ### 🎯 Current Branch
 `claude/read-claude-md-011CV5hwVrSBiNWFD9WgKc1q`
 
-### 📊 Latest Commits (11 commits - Phase 1 & Phase 2 Complete)
+### 📊 Latest Commits (13 commits - Phase 1 & Phase 2 Complete + PostgreSQL Fix)
 ```
+8e27b12 🔧 CRITICAL FIX: PostgreSQL schema mismatch - add Phase 1&2 tables and fix boolean types
+c13ddea 🔧 CRITICAL FIX: Config endpoint unreachable - add admin creation endpoint
+3cdb546 📚 Update: Phase 2 completion documentation in claude.md
 5c9d438 ✨ Phase 2: User Dashboard & Password Reset implementation (4 new pages, 3 new endpoints)
 ea5801d 🐛 Fix: Include email_verified in GET /api/auth/me response + comprehensive testing guide
 b32c24e ✨ Phase 1: Implement frontend email verification (LoginPage updates, VerifyEmailPage component, routing)
@@ -48,7 +51,6 @@ c5db588 🔧 Fix: Sidebar now fetches from monolith-projects endpoint with bridg
 9f6eede 📋 Add: Comprehensive user management and multi-kiosk architecture documentation
 8b209ba 📚 Update: Comprehensive claude.md with user management and multi-kiosk architecture documentation
 65bf69e 🐛 Fix: PostgreSQL boolean type mismatch in project creation
-92c26c0 🔧 Add database initialization script and deployment guide
 ```
 
 ---
@@ -338,6 +340,34 @@ if (shouldTrustProxy) {
 - JWT tokens with secret
 - requireAuth() middleware on protected routes
 - Password hashing with bcrypt
+
+---
+
+## 🔴 Production Issues (Caught & Fixed)
+
+### PostgreSQL Schema Mismatch ✅ FIXED
+**Error:** `column "email_verified" of relation "users" does not exist`
+**Cause:**
+- Updated SQLite migrations with Phase 1 & 2 tables
+- Never updated PostgreSQL schema-postgres.sql
+- Production PostgreSQL deployment missing all Phase 1&2 features
+
+**Fixed In:**
+- Added `email_verified` BOOLEAN and `email_verified_at` TIMESTAMP to users table
+- Added `email_verification_tokens` table (Phase 1)
+- Added `password_reset_tokens` table (Phase 2)
+- Fixed boolean type usage: `0` → `false`, `1` → `true` for PostgreSQL compatibility
+- File: `backend/src/db/schema-postgres.sql`, `backend/src/routes/auth.js`
+- Commit: 8e27b12
+
+**Deployment Note:**
+If database already exists on production, run manual migration:
+```sql
+ALTER TABLE users ADD COLUMN email_verified BOOLEAN DEFAULT false;
+ALTER TABLE users ADD COLUMN email_verified_at TIMESTAMP;
+CREATE TABLE email_verification_tokens (...);
+CREATE TABLE password_reset_tokens (...);
+```
 
 ---
 

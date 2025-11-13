@@ -50,7 +50,7 @@ router.post('/register', async (req, res) => {
     // Insert user (email_verified = false by default)
     const result = await db.prepare(`
       INSERT INTO users (email, password_hash, name, role, email_verified)
-      VALUES (?, ?, ?, 'user', 0)
+      VALUES (?, ?, ?, 'user', false)
     `).run(email, passwordHash, name);
 
     // For SQLite, lastID is directly available
@@ -224,7 +224,7 @@ router.post('/verify', async (req, res) => {
     const verifiedAt = new Date().toISOString();
     await db.prepare(`
       UPDATE users
-      SET email_verified = 1, email_verified_at = ?, updated_at = ?
+      SET email_verified = true, email_verified_at = ?, updated_at = ?
       WHERE id = ?
     `).run(verifiedAt, verifiedAt, user.id);
 
@@ -464,10 +464,10 @@ router.post('/create-admin-if-first', async (req, res) => {
     // Hash password
     const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
 
-    // Create admin user (email_verified = 1 for admin, skip email verification)
+    // Create admin user (email_verified = true for admin, skip email verification)
     const result = await db.prepare(`
       INSERT INTO users (email, password_hash, name, role, email_verified, email_verified_at)
-      VALUES (?, ?, ?, 'admin', 1, ?)
+      VALUES (?, ?, ?, 'admin', true, ?)
     `).run(email, passwordHash, name, new Date().toISOString());
 
     let userId;
