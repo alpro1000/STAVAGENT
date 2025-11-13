@@ -161,6 +161,25 @@ router.put('/:partId', async (req, res) => {
       return res.status(404).json({ error: 'Part not found or access denied' });
     }
 
+    // Check if part_name is being changed
+    if (part_name !== undefined && part_name !== part.part_name) {
+      // Check if there are any positions associated with this part
+      const positionsCount = await db.prepare(`
+        SELECT COUNT(*) as count FROM positions WHERE part_name = ?
+      `).get(part.part_name);
+
+      if (positionsCount && positionsCount.count > 0) {
+        return res.status(400).json({
+          error: `Cannot rename part "${part.part_name}" because it has ${positionsCount.count} associated position(s). Delete all positions before renaming.`,
+          details: {
+            current_name: part.part_name,
+            new_name: part_name,
+            associated_positions: positionsCount.count
+          }
+        });
+      }
+    }
+
     // Update part
     const updates = [];
     const values = [];

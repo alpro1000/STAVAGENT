@@ -386,7 +386,7 @@ async function initSqliteSchema() {
       is_predefined INTEGER DEFAULT 0,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id)
+      FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id) ON DELETE CASCADE
     );
   `);
 
