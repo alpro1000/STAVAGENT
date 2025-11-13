@@ -412,26 +412,26 @@ async function initSqliteSchema() {
   // Seed part templates for all construction types
   const partTemplates = [
     // Bridge parts
-    { template_id: 'bridge_ZÁKLADY', object_type: 'bridge', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Hloubkové založení pro opěry' },
-    { template_id: 'bridge_OPĚRY', object_type: 'bridge', part_name: 'OPĚRY', display_order: 2, is_default: 1, description: 'Krajní opěry (pilíře koncové)' },
-    { template_id: 'bridge_PILÍŘE', object_type: 'bridge', part_name: 'PILÍŘE', display_order: 3, is_default: 1, description: 'Mezilehlé nosné pilíře' },
-    { template_id: 'bridge_KLENBY', object_type: 'bridge', part_name: 'KLENBY', display_order: 4, is_default: 1, description: 'Rozpětí mostu (pole)' },
-    { template_id: 'bridge_ŘÍMSY', object_type: 'bridge', part_name: 'ŘÍMSY', display_order: 5, is_default: 1, description: 'Okrajové prvky a ochranné prvky' },
+    { template_id: 'bridge_ZÁKLADY', object_type: 'bridge', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Hloubkové a plošné založení' },
+    { template_id: 'bridge_OPĚRY', object_type: 'bridge', part_name: 'OPĚRY', display_order: 2, is_default: 1, description: 'Koncové opěry/krajní podpory' },
+    { template_id: 'bridge_PILÍŘE', object_type: 'bridge', part_name: 'PILÍŘE', display_order: 3, is_default: 1, description: 'Mezipolí/středové pilíře' },
+    { template_id: 'bridge_KLENBY', object_type: 'bridge', part_name: 'KLENBY', display_order: 4, is_default: 1, description: 'Rozpětná pole/pěšinka' },
+    { template_id: 'bridge_ŘÍMSY', object_type: 'bridge', part_name: 'ŘÍMSY', display_order: 5, is_default: 1, description: 'Římsové profily a ochranné prvky' },
     // Building parts
     { template_id: 'building_ZÁKLADY', object_type: 'building', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Hloubkové a plošné základy' },
-    { template_id: 'building_SLOUPY', object_type: 'building', part_name: 'SLOUPY', display_order: 2, is_default: 1, description: 'Nosné sloupy a pilíře' },
-    { template_id: 'building_STĚNY', object_type: 'building', part_name: 'STĚNY', display_order: 3, is_default: 1, description: 'Nosné a nenosné stěny' },
-    { template_id: 'building_STROPY', object_type: 'building', part_name: 'STROPY', display_order: 4, is_default: 1, description: 'Stropní konstrukce' },
+    { template_id: 'building_SLOUPY', object_type: 'building', part_name: 'SLOUPY', display_order: 2, is_default: 1, description: 'Nosné sloupy' },
+    { template_id: 'building_STĚNY', object_type: 'building', part_name: 'STĚNY', display_order: 3, is_default: 1, description: 'Nosné a obvodové stěny' },
+    { template_id: 'building_STROPY', object_type: 'building', part_name: 'STROPY', display_order: 4, is_default: 1, description: 'Stropní desky a konstrukce' },
     { template_id: 'building_SCHODIŠTĚ', object_type: 'building', part_name: 'SCHODIŠTĚ', display_order: 5, is_default: 0, description: 'Schodiště a výtahové šachty' },
     // Parking parts
     { template_id: 'parking_ZÁKLADY', object_type: 'parking', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Hloubkové založení' },
     { template_id: 'parking_SLOUPY', object_type: 'parking', part_name: 'SLOUPY', display_order: 2, is_default: 1, description: 'Nosné sloupy' },
-    { template_id: 'parking_STĚNY', object_type: 'parking', part_name: 'STĚNY', display_order: 3, is_default: 1, description: 'Bočné nosné stěny' },
+    { template_id: 'parking_STĚNY', object_type: 'parking', part_name: 'STĚNY', display_order: 3, is_default: 1, description: 'Obvodové a nosné stěny' },
     { template_id: 'parking_STROPY', object_type: 'parking', part_name: 'STROPY', display_order: 4, is_default: 1, description: 'Stropní platformy' },
     { template_id: 'parking_RAMPY', object_type: 'parking', part_name: 'RAMPY', display_order: 5, is_default: 1, description: 'Sjezdové rampy a komunikace' },
     // Road parts
-    { template_id: 'road_ZÁKLADY', object_type: 'road', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Zemní těleso' },
-    { template_id: 'road_PODBASE', object_type: 'road', part_name: 'PODBASE', display_order: 2, is_default: 1, description: 'Podkladní vrstva' },
+    { template_id: 'road_ZÁKLADY', object_type: 'road', part_name: 'ZÁKLADY', display_order: 1, is_default: 1, description: 'Zemní těleso/podklad' },
+    { template_id: 'road_PODBASE', object_type: 'road', part_name: 'PODBASE', display_order: 2, is_default: 1, description: 'Podkladní stabilizační vrstva' },
     { template_id: 'road_ASFALT', object_type: 'road', part_name: 'ASFALT', display_order: 3, is_default: 1, description: 'Asfaltobetonová vrstva' },
     { template_id: 'road_DRENÁŽ', object_type: 'road', part_name: 'DRENÁŽ', display_order: 4, is_default: 1, description: 'Drenážní systém' }
   ];
