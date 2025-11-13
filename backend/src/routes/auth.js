@@ -423,4 +423,78 @@ router.post('/reset-password', async (req, res) => {
   }
 });
 
+// POST /api/auth/create-admin-if-first - Create first admin user
+// This endpoint allows creating the first admin user without authentication
+// Once an admin exists, this endpoint becomes unavailable for security
+router.post('/create-admin-if-first', async (req, res) => {
+  try {
+    const { email, password, name } = req.body;
+
+    // Check if any admins already exist
+    const adminExists = await db.prepare('SELECT id FROM users WHERE role = ?').get('admin');
+
+    if (adminExists) {
+      return res.status(403).json({
+        error: 'Admin user already exists',
+        message: 'The first admin has already been created. Contact existing admin for access.'
+      });
+    }
+
+    // Validate input
+    if (!email || !password || !name) {
+      return res.status(400).json({ error: 'Email, password and name are required' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ error: 'Password must be at least 6 characters' });
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    // Check if user already exists
+    const existingUser = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+    if (existingUser) {
+      return res.status(400).json({ error: 'User with this email already exists' });
+    }
+
+    // Hash password
+    const passwordHash = await bcrypt.hash(password, SALT_ROUNDS);
+
+    // Create admin user (email_verified = 1 for admin, skip email verification)
+    const result = await db.prepare(`
+      INSERT INTO users (email, password_hash, name, role, email_verified, email_verified_at)
+      VALUES (?, ?, ?, 'admin', 1, ?)
+    `).run(email, passwordHash, name, new Date().toISOString());
+
+    let userId;
+    if (db.isSqlite) {
+      userId = result.lastID;
+    } else {
+      const user = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
+      userId = user.id;
+    }
+
+    logger.warn(`⚠️ FIRST ADMIN CREATED: ${email} (ID: ${userId}) - This endpoint is now disabled`);
+
+    res.status(201).json({
+      success: true,
+      message: 'First admin user created successfully!',
+      user: {
+        id: userId,
+        email,
+        name,
+        role: 'admin',
+        email_verified: true
+      }
+    });
+  } catch (error) {
+    logger.error('Create first admin error:', error);
+    res.status(500).json({ error: 'Server error during admin creation' });
+  }
+});
+
 export default router;

@@ -477,6 +477,10 @@ export const authAPI = {
   resetPassword: async (token: string, newPassword: string): Promise<any> => {
     const { data } = await api.post('/api/auth/reset-password', { token, newPassword });
     return data;
+  },
+  createAdminIfFirst: async (email: string, password: string, name: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/create-admin-if-first', { email, password, name });
+    return data;
   }
 };
 

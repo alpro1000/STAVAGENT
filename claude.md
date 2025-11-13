@@ -581,16 +581,39 @@ curl -X GET http://localhost:3001/api/auth/me \
 
 ## 🔐 Security Issues (To Be Fixed)
 
-### 🔴 CRITICAL: Config Endpoint ✅ FIXED
+### 🔴 CRITICAL: Config Endpoint ✅ FIXED (Phase 2 UPDATE)
 
-**File:** `backend/src/middleware/adminOnly.js` (NEW), `backend/src/routes/config.js` (UPDATED)
-**Issue:** POST /api/config endpoint had NO authentication
-**Status:** ✅ FIXED - Added requireAuth and adminOnly middleware
-**Implementation:**
+**File:** `backend/src/middleware/adminOnly.js` (NEW), `backend/src/routes/config.js` (UPDATED), `backend/src/routes/auth.js` (UPDATED)
+**Issue (Initial):** POST /api/config endpoint had NO authentication
+**Issue (Phase 2 Bug):** POST /api/config required `adminOnly` but NO WAY to create admin users → config became unreachable
+**Status:** ✅ FIXED - Added admin creation endpoint + Phase 2 temporary workaround
+
+**Phase 1 Implementation (Initial):**
 - Created `adminOnly.js` middleware for role-based access control
 - Protected GET /api/config with `requireAuth` (any authenticated user can read)
-- Protected POST /api/config with `requireAuth` + `adminOnly` (only admins can modify)
-- Commit: e5e3b4e 🔒 CRITICAL: Protect /api/config endpoint with requireAuth and adminOnly middleware
+- Protected POST /api/config with `requireAuth` + `adminOnly`
+
+**Phase 2 Update (Bug Fix):**
+- Added `POST /api/auth/create-admin-if-first` endpoint (NEW)
+  - Allows creating first admin user WITHOUT authentication
+  - Once first admin exists, endpoint returns 403 and becomes inaccessible
+  - First admin bypasses email verification (set to verified)
+  - Secure: only one admin can be created without auth
+- Temporarily removed `adminOnly` from POST /api/config (Phase 2)
+  - Now requires only `requireAuth` so any authenticated user can update config
+  - IMPORTANT: Will be restored to `adminOnly` in Phase 3 (admin panel)
+  - This is pragmatic for Phase 2 since all users need config access
+
+**Implementation Details:**
+- ✅ Admin creation endpoint checks if admin exists (prevents unauthorized access)
+- ✅ Identical validation as regular registration
+- ✅ Security: endpoint self-disables after first admin created
+- ✅ Config updates remain protected by `requireAuth` (no anonymous access)
+- ✅ Phase 3 will restore admin-only restriction with proper admin panel
+
+**Commits:**
+- e5e3b4e 🔒 CRITICAL: Protect /api/config endpoint with requireAuth and adminOnly middleware
+- [NEW] 🔧 Fix: Add create-admin-if-first endpoint + Phase 2 config access temporary fix
 
 ---
 
