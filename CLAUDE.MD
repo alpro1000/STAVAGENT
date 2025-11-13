@@ -2490,3 +2490,290 @@ return foundSO !== normalizedBridgeId; // Точное сравнение!
 **Цель:** Держать CLAUDE.MD в пределах 500-800 строк для быстрой навигации.
 
 Текущая структура работает, но при следующей большой сессии стоит провести реструктуризацию.
+
+---
+
+## 🔐 СЕССИЯ 2025-11-13: PostgreSQL + Multi-user Authentication
+
+### 📋 ЧТО СДЕЛАНО
+
+#### 1. PostgreSQL интеграция для персистентного хранения на Render
+**Проблема:** SQLite терял данные при каждом рестарте на Render (эфемерная FS)
+
+**Решение:**
+- Добавлен PostgreSQL в `render.yaml` (бесплатный план 500MB)
+- Создан универсальный адаптер: SQLite (dev) / PostgreSQL (prod)
+- Автоматический выбор БД по переменной окружения `DATABASE_URL`
+
+**Файлы:**
+- `backend/src/db/postgres.js` - PostgreSQL adapter с prepare/exec/transaction
+- `backend/src/db/index.js` - Unified database interface
+- `backend/src/db/migrations.js` - Миграции для обеих БД
+- `backend/src/db/schema-postgres.sql` - PostgreSQL schema (users, bridges, positions, snapshots)
+- `render.yaml` - Добавлен database service
+
+#### 2. Multi-user Authentication система
+**Проблема:** Все пользователи работали с общей базой данных
+
+**Решение:**
+- Установлен `bcrypt` для хеширования паролей
+- Таблица `users` (id, email, password_hash, name, role)
+- JWT токены (24 часа) через существующий middleware
+- Роуты `/api/auth`: register, login, me, logout
+- Поле `owner_id` в таблице `bridges` для изоляции данных
+
+**Файлы:**
+- `backend/src/routes/auth.js` - Роуты регистрации и входа
+- `backend/src/routes/bridges.js` - Фильтрация по owner_id
+- `backend/package.json` - Добавлен bcrypt
+
+#### 3. Frontend - Login/Register UI + Protected Routes
+**Проблема:** Не было UI для аутентификации
+
+**Решение:**
+- Установлен `react-router-dom` для роутинга
+- Красивая страница Login/Register с градиентным фоном
+- AuthContext для управления состоянием авторизации
+- ProtectedRoute компонент для защиты главной страницы
+- JWT token в axios interceptors
+- 401 → redirect на /login
+- Кнопка "Odhlásit" в Header с отображением имени пользователя
+
+**Новые компоненты:**
+```
+frontend/src/
+├── context/
+│   └── AuthContext.tsx                 ← JWT token, login/register/logout
+├── pages/
+│   └── LoginPage.tsx                   ← Форма логина/регистрации
+├── components/
+│   ├── MainApp.tsx                     ← Основное приложение (moved from App.tsx)
+│   ├── ProtectedRoute.tsx              ← HOC для защиты маршрутов
+│   ├── Header.tsx                      ← Добавлена кнопка "Odhlásit" + имя юзера
+│   ├── PartHeader.tsx
+│   ├── PositionsTable.tsx
+│   ├── PositionRow.tsx
+│   ├── KPIPanel.tsx
+│   ├── Sidebar.tsx
+│   ├── CreateBridgeForm.tsx
+│   ├── EditBridgeForm.tsx
+│   ├── HistoryModal.tsx
+│   ├── DeleteBridgeModal.tsx
+│   └── ExportHistory.tsx
+```
+
+**Обновленная структура App:**
+```typescript
+// frontend/src/App.tsx
+<QueryClientProvider>
+  <AuthProvider>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={
+          <ProtectedRoute>
+            <AppProvider>
+              <MainApp />
+            </AppProvider>
+          </ProtectedRoute>
+        } />
+      </Routes>
+    </BrowserRouter>
+  </AuthProvider>
+</QueryClientProvider>
+```
+
+**Файлы:**
+- `frontend/src/App.tsx` - Routing setup
+- `frontend/src/context/AuthContext.tsx` - Auth state management
+- `frontend/src/pages/LoginPage.tsx` - Login/Register form
+- `frontend/src/components/MainApp.tsx` - Main app content
+- `frontend/src/components/ProtectedRoute.tsx` - Route protection
+- `frontend/src/services/api.ts` - JWT в headers + 401 redirect
+- `frontend/package.json` - Добавлен react-router-dom
+
+#### 4. Исправления P1 критических багов (Codex Review)
+**Проблема 1:** `initDatabase()` вызывался без `await`
+- Сервер мог запуститься до создания таблиц PostgreSQL
+- **Решение:** Обернули в `async function bootstrap()`
+
+**Проблема 2:** Positions routes были синхронными
+- `db.prepare().all()` возвращает Promise для PostgreSQL
+- **Решение:** Сделали все routes async/await (GET/POST/PUT/DELETE)
+
+**Проблема 3:** Transaction helper не работал для PostgreSQL
+- BEGIN/COMMIT не оборачивали запросы (использовались разные pool connections)
+- **Решение:** Упростили для PostgreSQL (auto-commit), сохранили transactions для SQLite
+
+**Файлы:**
+- `backend/server.js` - Bootstrap function с await
+- `backend/src/routes/positions.js` - Все routes async/await
+- `backend/src/db/index.js` - Simplified transaction для PostgreSQL
+
+### 📦 НОВЫЕ ЗАВИСИМОСТИ
+
+**Backend:**
+- `bcrypt` - Хеширование паролей (10 salt rounds)
+- `pg` - PostgreSQL driver (уже был установлен ранее)
+
+**Frontend:**
+- `react-router-dom` - Routing для /login и /
+
+### 🗄️ ОБНОВЛЕННАЯ СТРУКТУРА БД
+
+```sql
+-- Таблица пользователей (NEW)
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  role VARCHAR(50) DEFAULT 'user',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Обновленная таблица bridges
+CREATE TABLE bridges (
+  bridge_id VARCHAR(255) PRIMARY KEY,
+  project_name VARCHAR(255),
+  object_name VARCHAR(255) NOT NULL DEFAULT '',
+  status VARCHAR(50) DEFAULT 'active',
+  owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,  -- NEW!
+  -- ... other fields
+);
+
+-- Обновленная таблица snapshots
+CREATE TABLE snapshots (
+  id VARCHAR(255) PRIMARY KEY,
+  bridge_id VARCHAR(255) NOT NULL REFERENCES bridges(bridge_id),
+  is_final INTEGER DEFAULT 0,  -- NEW! (added in previous session)
+  is_locked INTEGER DEFAULT 1,
+  -- ... other fields
+);
+```
+
+### 🔒 БЕЗОПАСНОСТЬ
+
+**Реализовано:**
+- ✅ Пароли хешируются через bcrypt (10 rounds)
+- ✅ JWT токены с 24h expiry
+- ✅ requireAuth middleware на всех защищенных роутах
+- ✅ Owner-based access control (пользователи видят только свои проекты)
+- ✅ 401 errors автоматически редиректят на /login
+- ✅ Token хранится в localStorage
+- ✅ Auto-generated JWT_SECRET на Render
+
+**Что НЕ реализовано (для будущего):**
+- ⏳ Password recovery
+- ⏳ Email verification
+- ⏳ Rate limiting на auth endpoints (частично есть через authLimiter)
+- ⏳ Refresh tokens
+- ⏳ Roles/permissions (role field есть, но не используется)
+- ⏳ Shared projects (команды)
+
+### 📊 КОММИТЫ В ЭТОЙ СЕССИИ
+
+```bash
+99b06db - ✨ Implement final snapshot logic for completed projects (Variant B)
+7c8df57 - 🔐 Add PostgreSQL + Multi-user Authentication System
+d8635ec - 🐛 Fix P1 issues from Codex review
+```
+
+**Branch:** `claude/css-table-layout-fix-011CV3qzXMyv5VjnKTrJSbYq`
+
+---
+
+## 🚀 СЛЕДУЮЩИЕ ШАГИ
+
+### Высокий приоритет
+1. **Тестирование multi-user системы**
+   - [ ] Создать 2-3 тестовых аккаунта
+   - [ ] Проверить изоляцию данных между пользователями
+   - [ ] Проверить работу на production (Render PostgreSQL)
+   - [ ] Убедиться что миграции применились корректно
+
+2. **Улучшить transaction support для PostgreSQL**
+   - [ ] Текущее решение: auto-commit (безопасно, но не оптимально)
+   - [ ] Будущее решение: передавать client в callback
+   - [ ] Критично для массовых операций (bulk inserts/updates)
+
+3. **UI/UX улучшения**
+   - [ ] Добавить индикатор загрузки при login
+   - [ ] Улучшить сообщения об ошибках (validation feedback)
+   - [ ] Добавить "Remember me" опцию
+   - [ ] Profile page для редактирования имени/email
+
+### Средний приоритет
+4. **Миграция существующих данных**
+   - [ ] Если есть данные в SQLite на dev → мигрировать на PostgreSQL
+   - [ ] Создать скрипт миграции для существующих bridges
+   - [ ] Назначить owner_id для legacy bridges
+
+5. **Роли и права доступа**
+   - [ ] Использовать поле `role` (admin/user)
+   - [ ] Admin может видеть все проекты
+   - [ ] Admin может управлять пользователями
+
+6. **Shared projects**
+   - [ ] Таблица project_members (project_id, user_id, role)
+   - [ ] Возможность пригласить коллег в проект
+   - [ ] Права: viewer / editor / admin
+
+### Низкий приоритет
+7. **Email notifications**
+   - [ ] Welcome email при регистрации
+   - [ ] Password recovery через email
+   - [ ] Уведомления о изменениях в shared projects
+
+8. **Audit log**
+   - [ ] Логирование всех изменений (кто, когда, что)
+   - [ ] History timeline в UI
+   - [ ] Export audit log
+
+---
+
+## 📝 ЗАМЕТКИ ДЛЯ СЛЕДУЮЩЕЙ СЕССИИ
+
+### ⚠️ ВАЖНО: Известные ограничения
+
+1. **PostgreSQL transactions упрощены**
+   - Сейчас: каждый statement auto-commits
+   - Причина: сложность передачи client в callback
+   - Риск: теоретически возможны race conditions при concurrent updates
+   - Приоритет исправления: P2 (средний)
+
+2. **Password recovery отсутствует**
+   - Пользователь не может восстановить пароль
+   - Временное решение: admin меняет пароль вручную в БД
+   - Приоритет: P3 (низкий для MVP)
+
+3. **Shared projects пока нет**
+   - Каждый проект принадлежит одному пользователю
+   - Для команд нужна отдельная таблица project_members
+   - Приоритет: P3 (после MVP)
+
+### 🎯 Архитектурные решения
+
+**SQLite vs PostgreSQL:**
+- Development: SQLite (быстро, локально, без зависимостей)
+- Production: PostgreSQL (persistent storage, multi-user safe)
+- Unified interface: `backend/src/db/index.js` автоматически выбирает БД
+
+**Frontend routing:**
+- `/` - Main app (protected)
+- `/login` - Login/Register page (public)
+- Redirect: 401 errors → `/login`
+
+**Authentication flow:**
+1. User fills login form
+2. POST /api/auth/login → returns JWT token
+3. Token stored in localStorage
+4. All API requests include `Authorization: Bearer <token>` header
+5. Backend validates token via requireAuth middleware
+6. Expired/invalid token → 401 → redirect to /login
+
+---
+
+**⚡ ВНИМАНИЕ:** Файл разросся до 2600+ строк. Следующая сессия должна начаться с рефакторинга CLAUDE.MD!
+
