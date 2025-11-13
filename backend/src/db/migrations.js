@@ -35,12 +35,21 @@ async function initPostgresSchema() {
   // Split by semicolons and execute each statement
   const allStatements = schema
     .split(';')
-    .map(s => s.trim())
-    .filter(s => s.length > 0 && !s.startsWith('--'));
+    .map(s => {
+      // Trim and remove comment lines
+      const lines = s.trim().split('\n');
+      const cleanedLines = lines.filter(line => !line.trim().startsWith('--'));
+      return cleanedLines.join('\n').trim();
+    })
+    .filter(s => s.length > 0);
 
   // Separate CREATE TABLE statements (must run first) from others
-  const createTableStatements = allStatements.filter(s => s.startsWith('CREATE TABLE'));
-  const otherStatements = allStatements.filter(s => !s.startsWith('CREATE TABLE'));
+  const createTableStatements = allStatements.filter(s =>
+    s.trim().toUpperCase().startsWith('CREATE TABLE')
+  );
+  const otherStatements = allStatements.filter(s =>
+    !s.trim().toUpperCase().startsWith('CREATE TABLE')
+  );
 
   console.log(`[PostgreSQL] Running ${createTableStatements.length} CREATE TABLE statements...`);
 
