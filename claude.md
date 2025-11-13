@@ -14,26 +14,33 @@
 
 ## Current Status
 
-### ✅ Project Status: PRODUCTION READY
+### ✅ Project Status: PRODUCTION READY + ARCHITECTURAL DESIGN
 
 | Компонент | Статус | Примечание |
 |-----------|--------|-----------|
 | Backend | ✅ Working | Express + PostgreSQL (Render) + SQLite (dev) |
 | Frontend | ✅ Working | React + TypeScript + Vite |
 | OTSKP Integration | ✅ Working | 17,904 codes, auto-load, search functional |
-| PostgreSQL Support | ✅ Working | All async/await issues fixed |
+| PostgreSQL Support | ✅ Fixed | Boolean type mismatch resolved (Phase 1) |
+| MonolithProject | ✅ Working | Bridges, buildings, parking, roads unified |
+| User Management | 🔲 Design Complete | 4-phase architecture documented |
+| Multi-Kiosk Support | 🔲 Design Complete | Distributed architecture documented |
+| Email Verification | ❌ Missing | CRITICAL - Phase 1 priority |
+| Admin Panel | ❌ Missing | Phase 3 priority |
 | Rate Limiting | ✅ Working | Trust proxy properly guarded |
-| Security | ✅ Fixed | P1 issue resolved (trust proxy) |
-| Documentation | ✅ Complete | ARCHITECTURE.md, MONOLITH_SPEC.md, ROADMAP.md |
+| Security | ⚠️ Issues Found | /api/config unprotected, email validation missing |
+| Documentation | ✅ Complete | ARCHITECTURE.md, MONOLITH_SPEC.md, ROADMAP.md, USER_MANAGEMENT_ARCHITECTURE.md, MULTI_KIOSK_ARCHITECTURE.md |
 
 ### 🎯 Current Branch
-`claude/review-previous-session-011CV5UjfnsrTsbV42b46UrS`
+`claude/read-claude-md-011CV5hwVrSBiNWFD9WgKc1q`
 
-### 📊 Latest Commits (3 commits)
+### 📊 Latest Commits (5 commits)
 ```
-77fc4e4 🔒 Fix P1 security issue: Guard trust proxy behind environment check
-b5a6e1c 🔧 Fix rate limiting and OTSKP search for PostgreSQL
-dca6bad 🔧 Add PostgreSQL OTSKP auto-load on startup
+65bf69e 🐛 Fix: PostgreSQL boolean type mismatch in project creation
+92c26c0 🔧 Add database initialization script and deployment guide
+7d00902 🎨 Fix: Project creation validation, UI improvements, and form control errors
+af329e0 🐛 Fix: Remove TypeScript syntax from JavaScript file
+58df225 ✨ Phase 1: Fix critical and high-priority issues
 ```
 
 ---
@@ -74,6 +81,38 @@ dca6bad 🔧 Add PostgreSQL OTSKP auto-load on startup
 
 ---
 
+### User Management & Admin System
+📄 **[USER_MANAGEMENT_ARCHITECTURE.md](USER_MANAGEMENT_ARCHITECTURE.md)** - 520+ lines (NEW)
+- Current state analysis (what's working, what's missing)
+- 4-phase implementation plan (Days 1-12)
+  - Phase 1: Email Verification & Security Fixes (Days 1-3)
+  - Phase 2: User Dashboard & Password Reset (Days 4-7)
+  - Phase 3: Admin Panel & Audit Logging (Days 8-12)
+  - Phase 4: Multi-Kiosk Support (Future)
+- Database schema changes for each phase
+- Security fixes (CRITICAL: /api/config endpoint protection)
+- Implementation checklists and code examples
+
+🎯 **Why read:** To implement user registration email verification, admin panel, and role-based access control
+
+---
+
+### Multi-Kiosk Deployment Architecture
+📄 **[MULTI_KIOSK_ARCHITECTURE.md](MULTI_KIOSK_ARCHITECTURE.md)** - 550+ lines (NEW)
+- Business requirements (kiosk independence, factory isolation)
+- Architecture options (Option B: Distributed with local databases recommended)
+- Database schema for kiosks management
+- User-kiosk assignment and role inheritance
+- Backend implementation (kiosk context middleware, kiosk-aware queries)
+- Frontend implementation (KioskSelector component, routing updates)
+- Docker Compose multi-kiosk deployment setup
+- Health monitoring and sync strategy
+- Implementation checklist (Phase 4)
+
+🎯 **Why read:** To understand how to support multiple independent kiosk installations (factories)
+
+---
+
 ### Session History
 📄 **[SESSION_HISTORY.md](SESSION_HISTORY.md)** - 300+ lines
 - All previous sessions (1-4)
@@ -89,6 +128,7 @@ dca6bad 🔧 Add PostgreSQL OTSKP auto-load on startup
 📄 **SECURITY.md** - Security audit findings
 📄 **CLEANUP.md** - Code cleanup tasks
 📄 **FIXES.md** - Summary of applied fixes
+📄 **DEPLOYMENT_GUIDE.md** - Production deployment steps
 
 ---
 
@@ -314,15 +354,79 @@ npm test -- --coverage
 
 ---
 
-## 🐛 Known Issues
+## 🔐 Security Issues (To Be Fixed)
 
-### None Critical ✅
+### 🔴 CRITICAL: Config Endpoint Unprotected
 
-All critical issues have been fixed:
-- ✅ PostgreSQL async/await (fixed in previous sessions)
-- ✅ OTSKP code loading (fixed this session)
-- ✅ Rate limiting validation (fixed this session)
-- ✅ Security: Trust proxy (fixed this session)
+**File:** `backend/src/routes/config.js`
+**Issue:** POST /api/config endpoint has NO authentication
+**Impact:** Anyone can modify system feature flags (ROUNDING_STEP_KROS, etc.)
+**Fix Required:**
+```javascript
+// Add middleware protection:
+router.post('/api/config', requireAuth, adminOnly, async (req, res) => {
+  // Only admins can modify config
+});
+```
+**Priority:** IMMEDIATE - affects production stability
+
+---
+
+### 🔴 CRITICAL: Email Verification Missing
+
+**Issue:** Users can register with fake/invalid email addresses
+**Current:** Anyone with any email can create an account
+**Impact:** Fake accounts, spam registrations
+**Solution:** Phase 1 implementation in USER_MANAGEMENT_ARCHITECTURE.md
+**Required:**
+- Email verification tokens system
+- sendVerificationEmail() function
+- Email verification endpoint: POST /api/auth/verify
+- Block login until email verified
+
+---
+
+### 🟡 HIGH: Role-Based Access Control Not Enforced
+
+**Issue:** Role field exists in users table but never checked
+**Current:** All authenticated users treated as 'user', 'admin' role ignored
+**Impact:** No way to restrict admin-only features
+**Solution:** Phase 1-3 in USER_MANAGEMENT_ARCHITECTURE.md
+**Required:**
+- adminOnly() middleware implementation
+- Check role on protected routes
+- Admin panel creation (Phase 3)
+
+---
+
+### 🟡 HIGH: No User Dashboard
+
+**Issue:** Users have no profile or settings page
+**Current:** After login, no place to see user info or change password
+**Impact:** Poor user experience, no password recovery
+**Solution:** Phase 2 in USER_MANAGEMENT_ARCHITECTURE.md
+**Required:**
+- DashboardPage.tsx component
+- User profile display
+- Change password functionality
+
+---
+
+## 🐛 Known Issues (Phase 1 Fixes)
+
+### ✅ Fixed This Session
+
+- ✅ PostgreSQL boolean type mismatch (is_default = 1 → is_default = true)
+- ✅ Form control errors (removed hidden select element)
+- ✅ Project creation validation (check templates exist)
+- ✅ TypeScript syntax in JavaScript files (removed `as any` casts)
+- ✅ Database initialization script (backend/scripts/init-database.js)
+
+### ✅ Fixed Previous Sessions
+- ✅ PostgreSQL async/await
+- ✅ OTSKP code loading
+- ✅ Rate limiting validation
+- ✅ Security: Trust proxy
 
 ### Nice-to-haves
 - [ ] Performance profiling for large imports (100k+ rows)
@@ -476,33 +580,149 @@ rm -f data/database.db && npm run dev
 
 ## ✨ Last Session Summary
 
-**Date:** November 13, 2025
+**Date:** November 13, 2025 (Continuation)
+**Focus:** Code review, critical bug fixes, and architectural design for user management & multi-kiosk support
 
 **Accomplishments:**
-1. Fixed PostgreSQL OTSKP auto-load (async compatibility)
-2. Fixed rate limiting validation (trust proxy guarding)
-3. Refactored OTSKP search for PostgreSQL
-4. Designed universal MonolithProject specification
-5. Created comprehensive documentation (ARCHITECTURE, MONOLITH_SPEC, ROADMAP)
 
-**Commits:** 3 major commits, all production-ready
+### Phase 1: Code Review & Bug Fixes
+1. ✅ Fixed PostgreSQL boolean type mismatch (is_default = 1 → true)
+   - Issue: 500 errors in production preventing project creation
+   - Files: monolith-projects.js (line 131, 175), parts.js (line 133)
+   - Severity: CRITICAL - blocked production
 
-**Status:** ✅ All systems operational
+2. ✅ Fixed form control console errors
+   - Issue: "An invalid form control with name='' is not focusable"
+   - File: ObjectTypeSelector.tsx - removed hidden select element
+
+3. ✅ Added project creation validation
+   - Check: Templates must exist before creating project
+   - File: monolith-projects.js (lines 107-144)
+
+4. ✅ Removed TypeScript syntax from JavaScript
+   - Issue: `as any` casts cause runtime errors
+   - Files: monolith-projects.js (lines 115, 264)
+
+5. ✅ Created database initialization script
+   - File: backend/scripts/init-database.js
+   - Purpose: Manual OTSKP code loading for production
+
+6. ✅ Created deployment guide
+   - File: DEPLOYMENT_GUIDE.md
+   - Content: Database initialization, troubleshooting, workflow documentation
+
+### Phase 2: Architectural Design (4 Implementation Phases)
+7. ✅ Designed User Management Architecture (520+ lines)
+   - **Phase 1 (Days 1-3):** Email verification + /api/config security fix
+   - **Phase 2 (Days 4-7):** User dashboard + password reset
+   - **Phase 3 (Days 8-12):** Admin panel + audit logging
+   - **Phase 4 (Future):** Multi-kiosk support
+   - File: USER_MANAGEMENT_ARCHITECTURE.md
+
+8. ✅ Designed Multi-Kiosk Architecture (550+ lines)
+   - Business requirement: Kiosk independence (if one fails, others work)
+   - Architecture: Distributed with local databases (Option B - recommended)
+   - Features: User-kiosk assignment, health monitoring, Docker Compose deployment
+   - File: MULTI_KIOSK_ARCHITECTURE.md
+
+### Phase 3: Documentation Updates
+9. ✅ Updated claude.md with:
+   - New architecture document references
+   - Security issues section (4 CRITICAL/HIGH issues)
+   - Fixes summary for this session
+   - Status update for all components
+
+**Commits:** 5 commits, all production-ready
+```
+65bf69e 🐛 Fix: PostgreSQL boolean type mismatch in project creation
+92c26c0 🔧 Add database initialization script and deployment guide
+7d00902 🎨 Fix: Project creation validation, UI improvements, and form control errors
+af329e0 🐛 Fix: Remove TypeScript syntax from JavaScript file
+58df225 ✨ Phase 1: Fix critical and high-priority issues
+```
+
+**Status:** ✅ Production bugs fixed, Architecture designed, Ready for Phase 1 implementation
 
 ---
 
-## 🎓 Next Steps
+## 🎓 Next Steps (READY TO IMPLEMENT)
 
-1. **Immediate (if continuing):** Start Phase 1 implementation
-   - See ROADMAP.md Phase 1 section
-   - See MONOLITH_SPEC.md database schema
+### PHASE 1: Security & Email Verification (Days 1-3)
 
-2. **For any session:** Always check ARCHITECTURE.md for context
+**CRITICAL FIX (Do First):**
+```bash
+# 1. Fix /api/config endpoint protection
+#    File: backend/src/routes/config.js
+#    Add: requireAuth, adminOnly middleware to POST route
+#    Time: 30 minutes
+```
 
-3. **Questions?** Check SESSION_HISTORY.md for background
+**Implementation Tasks (in order):**
+1. Create emailService.js with Resend API integration (1h)
+2. Update users table schema: add email_verified, email_verified_at (30m)
+3. Create email_verification_tokens table (30m)
+4. Update POST /api/auth/register (send verification email) (1h)
+5. Create POST /api/auth/verify endpoint (30m)
+6. Update LoginPage.tsx UI (30m)
+7. Create VerifyEmail.tsx component (1h)
+8. Test full email verification flow (1h)
+
+**See:** USER_MANAGEMENT_ARCHITECTURE.md Phase 1 section for detailed implementation guide
+
+---
+
+### PHASE 2: User Dashboard & Password Reset (Days 4-7)
+
+**Implementation Tasks:**
+1. Create DashboardPage.tsx component (2h)
+2. Create ChangePasswordPage.tsx component (1h)
+3. Add change-password endpoint (1h)
+4. Add forgot-password endpoint (1h)
+5. Add reset-password endpoint (1h)
+6. Create password_reset_tokens table (30m)
+7. Full password reset flow testing (1h)
+
+**See:** USER_MANAGEMENT_ARCHITECTURE.md Phase 2 section
+
+---
+
+### PHASE 3: Admin Panel (Days 8-12)
+
+**Implementation Tasks:**
+1. Create adminOnly.js middleware (30m)
+2. Create admin.js routes with user management (2h)
+3. Create AdminPanel.tsx page (2h)
+4. Create AdminRoute.tsx component (30m)
+5. Create audit_logs table (30m)
+6. Add audit logging to key endpoints (1h)
+7. Full admin panel testing (1h)
+
+**See:** USER_MANAGEMENT_ARCHITECTURE.md Phase 3 section
+
+---
+
+### PHASE 4: Multi-Kiosk Support (Weeks 3-4, Future)
+
+**See:** MULTI_KIOSK_ARCHITECTURE.md for complete design
+
+---
+
+### Resources for Implementation:
+1. **USER_MANAGEMENT_ARCHITECTURE.md** - Detailed phase breakdown with code examples
+2. **MULTI_KIOSK_ARCHITECTURE.md** - Complete distributed kiosk design
+3. **DEPLOYMENT_GUIDE.md** - Production deployment procedures
+
+### Priority Matrix:
+| Task | Priority | Effort | Impact |
+|------|----------|--------|--------|
+| Fix /api/config security | 🔴 CRITICAL | 30m | HIGH |
+| Email verification | 🔴 CRITICAL | 5h | HIGH |
+| Admin panel | 🟡 HIGH | 8h | HIGH |
+| User dashboard | 🟡 HIGH | 4h | MEDIUM |
+| Multi-kiosk support | 🟢 LOW | 16h | MEDIUM |
 
 ---
 
 **Last Updated:** November 13, 2025
-**File Size:** Optimized (replaced 600+ line history)
-**Status:** Navigation-Ready ✅
+**File Size:** Optimized with new architecture docs
+**Status:** Ready for Phase 1 Implementation ✅
