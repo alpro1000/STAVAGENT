@@ -47,8 +47,8 @@ router.post('/create', (req, res) => {
       INSERT INTO snapshots (
         id, bridge_id, snapshot_name, snapshot_hash, created_by,
         positions_snapshot, header_kpi_snapshot, description,
-        is_locked, sum_kros_at_lock
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        is_locked, is_final, sum_kros_at_lock
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       snapshot.id,
       snapshot.bridge_id,
@@ -59,6 +59,7 @@ router.post('/create', (req, res) => {
       snapshot.header_kpi_snapshot,
       snapshot.description,
       snapshot.is_locked,
+      snapshot.is_final,
       snapshot.sum_kros_at_lock
     );
 
@@ -196,8 +197,8 @@ router.post('/:snapshot_id/restore', (req, res) => {
       INSERT INTO snapshots (
         id, bridge_id, snapshot_name, snapshot_hash, created_by,
         positions_snapshot, header_kpi_snapshot, description,
-        is_locked, sum_kros_at_lock, parent_snapshot_id
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        is_locked, is_final, sum_kros_at_lock, parent_snapshot_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       newSnapshot.id,
       newSnapshot.bridge_id,
@@ -208,6 +209,7 @@ router.post('/:snapshot_id/restore', (req, res) => {
       newSnapshot.header_kpi_snapshot,
       newSnapshot.description,
       newSnapshot.is_locked,
+      newSnapshot.is_final || 0,
       newSnapshot.sum_kros_at_lock,
       newSnapshot.parent_snapshot_id
     );
@@ -253,8 +255,8 @@ router.post('/:snapshot_id/unlock', (req, res) => {
       INSERT INTO snapshots (
         id, bridge_id, snapshot_name, snapshot_hash, created_by,
         positions_snapshot, header_kpi_snapshot, description,
-        is_locked, sum_kros_at_lock, parent_snapshot_id
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        is_locked, is_final, sum_kros_at_lock, parent_snapshot_id
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `).run(
       draftSnapshot.id,
       draftSnapshot.bridge_id,
@@ -265,6 +267,7 @@ router.post('/:snapshot_id/unlock', (req, res) => {
       draftSnapshot.header_kpi_snapshot,
       draftSnapshot.description,
       draftSnapshot.is_locked,
+      draftSnapshot.is_final || 0,
       draftSnapshot.sum_kros_at_lock,
       draftSnapshot.parent_snapshot_id
     );

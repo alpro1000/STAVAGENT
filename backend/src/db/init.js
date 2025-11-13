@@ -123,6 +123,14 @@ export function initDatabase() {
     );
   `);
 
+  // Migration: Add is_final column to snapshots if it doesn't exist
+  const snapshotColumns = db.prepare("PRAGMA table_info(snapshots)").all();
+  const hasIsFinal = snapshotColumns.some(col => col.name === 'is_final');
+  if (!hasIsFinal) {
+    db.exec("ALTER TABLE snapshots ADD COLUMN is_final INTEGER DEFAULT 0");
+    console.log('[MIGRATION] Added is_final column to snapshots table');
+  }
+
   // Create indexes for snapshots
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_snapshots_bridge ON snapshots(bridge_id);
