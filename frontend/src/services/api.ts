@@ -456,6 +456,34 @@ export const otskpAPI = {
   }
 };
 
+// Auth API (email verification, login, etc.)
+export const authAPI = {
+  verify: async (token: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/verify', { token });
+    return data;
+  },
+  getMe: async (): Promise<any> => {
+    const { data } = await api.get('/api/auth/me');
+    return data;
+  },
+  changePassword: async (currentPassword: string, newPassword: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/change-password', { currentPassword, newPassword });
+    return data;
+  },
+  forgotPassword: async (email: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/forgot-password', { email });
+    return data;
+  },
+  resetPassword: async (token: string, newPassword: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/reset-password', { token, newPassword });
+    return data;
+  },
+  createAdminIfFirst: async (email: string, password: string, name: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/create-admin-if-first', { email, password, name });
+    return data;
+  }
+};
+
 // Helper exports for convenience
 export const createBridge = bridgesAPI.create;
 export const deleteBridge = bridgesAPI.delete;

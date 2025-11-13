@@ -9,6 +9,11 @@ import { AuthProvider } from './context/AuthContext';
 import { AppProvider } from './context/AppContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
+import DashboardPage from './pages/DashboardPage';
+import ChangePasswordPage from './pages/ChangePasswordPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import MainApp from './components/MainApp';
 import './styles/components.css';
 
@@ -31,6 +36,21 @@ function App() {
           <Routes>
             {/* Login page */}
             <Route path="/login" element={<LoginPage />} />
+
+            {/* Email verification page (public - users click link from email) */}
+            <Route path="/verify" element={<VerifyEmailPage />} />
+
+            {/* Forgot password page (public - users request reset) */}
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
+            {/* Reset password page (public - users click link from email) */}
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+
+            {/* Protected user dashboard */}
+            <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+
+            {/* Protected change password page */}
+            <Route path="/change-password" element={<ProtectedRoute><ChangePasswordPage /></ProtectedRoute>} />
 
             {/* Protected main application */}
             <Route
