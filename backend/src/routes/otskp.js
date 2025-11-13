@@ -333,9 +333,9 @@ router.post('/import', async (req, res) => {
       VALUES (?, ?, ?, ?, ?, ?)
     `);
 
-    const insertMany = db.transaction((items) => {
+    const insertMany = db.transaction(async (items) => {
       for (const item of items) {
-        insertStmt.run(
+        await insertStmt.run(
           item.code,
           item.name,
           item.unit,
@@ -346,7 +346,7 @@ router.post('/import', async (req, res) => {
       }
     });
 
-    insertMany(items);
+    await insertMany(items);
 
     // Verify import
     const verifyStats = await db.prepare(`
