@@ -125,6 +125,24 @@ router.post('/', async (req, res) => {
       return res.status(409).json({ error: 'Project already exists' });
     }
 
+    // Check if templates exist for this object type (CRITICAL: needed for default parts)
+    const templates = await db.prepare(`
+      SELECT * FROM part_templates
+      WHERE object_type = ? AND is_default = 1
+      ORDER BY display_order
+    `).all(object_type);
+
+    if (!templates || templates.length === 0) {
+      return res.status(503).json({
+        error: `No part templates found for object type '${object_type}'. Please contact administrator to load templates.`,
+        details: {
+          object_type,
+          available_templates: 0,
+          required_for_creation: true
+        }
+      });
+    }
+
     // Create project
     await db.prepare(`
       INSERT INTO monolith_projects (
@@ -149,13 +167,7 @@ router.post('/', async (req, res) => {
       road_width_m || null
     );
 
-    // Create default parts from templates
-    const templates = await db.prepare(`
-      SELECT * FROM part_templates
-      WHERE object_type = ? AND is_default = 1
-      ORDER BY display_order
-    `).all(object_type);
-
+    // Create default parts from templates (templates already validated above)
     for (const template of templates) {
       const partId = `${project_id}_${template.part_name}`;
       await db.prepare(`

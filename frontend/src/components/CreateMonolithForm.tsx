@@ -96,7 +96,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
       <h2>{getTitle()}</h2>
 
       {error && (
-        <div className="error-message" style={{ marginBottom: '16px', padding: '12px', backgroundColor: '#fee', border: '1px solid #fcc', borderRadius: '4px', color: '#c33' }}>
+        <div className="error-message">
           ❌ {error}
         </div>
       )}
@@ -286,12 +286,11 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
         )}
 
         {/* Form buttons */}
-        <div className="form-buttons" style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+        <div className="form-buttons">
           <button
             type="submit"
             disabled={isSubmitting}
             className="btn-primary"
-            style={{ flex: 1 }}
           >
             {isSubmitting ? 'Vytváření...' : '✅ Vytvořit objekt'}
           </button>
@@ -301,7 +300,6 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
               onClick={onCancel}
               disabled={isSubmitting}
               className="btn-secondary"
-              style={{ flex: 1 }}
             >
               ❌ Zrušit
             </button>

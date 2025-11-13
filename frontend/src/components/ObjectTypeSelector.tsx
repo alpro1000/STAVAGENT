@@ -71,15 +71,6 @@ export default function ObjectTypeSelector({ value, onChange, disabled = false }
           {selectedType.description}
         </small>
       )}
-
-      {/* Hidden select for form submission */}
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        disabled={disabled}
-        style={{ display: 'none' }}
-        required
-      />
     </div>
   );
 }
