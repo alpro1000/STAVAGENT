@@ -12,6 +12,7 @@ import { dirname, join } from 'path';
 import fs from 'fs';
 
 // Routes
+import authRoutes from './src/routes/auth.js';
 import uploadRoutes from './src/routes/upload.js';
 import positionsRoutes from './src/routes/positions.js';
 import bridgesRoutes from './src/routes/bridges.js';
@@ -89,18 +90,6 @@ dirs.forEach(dir => {
   }
 });
 
-// Initialize database
-try {
-  initDatabase();
-  logger.info('Database initialized successfully');
-} catch (error) {
-  logger.error('Database initialization failed:', error);
-  process.exit(1);
-}
-
-// Schedule periodic file cleanup
-schedulePeriodicCleanup();
-
 // Health check
 app.get('/health', (req, res) => {
   res.json({
@@ -112,7 +101,10 @@ app.get('/health', (req, res) => {
 });
 
 // API Routes
-// Note: Authentication can be applied per-route within route handlers for gradual rollout
+// Auth routes (no auth required for login/register)
+app.use('/api/auth', authLimiter, authRoutes);
+
+// Protected routes (authentication will be applied within each route handler)
 app.use('/api/upload', uploadLimiter, uploadRoutes);
 app.use('/api/positions', positionsRoutes);
 app.use('/api/bridges', bridgesRoutes);
@@ -133,12 +125,30 @@ app.use((req, res) => {
 // Error handler
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-  logger.info(`🚀 Monolit Planner Backend running on port ${PORT}`);
-  logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
-  logger.info(`🗄️  Database: ${process.env.DB_PATH || './data/monolit.db'}`);
-});
+// Bootstrap function - initialize database then start server
+async function bootstrap() {
+  try {
+    // Initialize database (await for PostgreSQL migrations)
+    await initDatabase();
+    logger.info('✅ Database initialized successfully');
+
+    // Schedule periodic file cleanup
+    schedulePeriodicCleanup();
+
+    // Start server
+    app.listen(PORT, () => {
+      logger.info(`🚀 Monolit Planner Backend running on port ${PORT}`);
+      logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
+      logger.info(`🗄️  Database: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
+    });
+  } catch (error) {
+    logger.error('❌ Database initialization failed:', error);
+    process.exit(1);
+  }
+}
+
+// Start application
+bootstrap();
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

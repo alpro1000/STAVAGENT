@@ -57,7 +57,7 @@ function findPartNameForItemName(itemName) {
 }
 
 // GET positions for a bridge with KPI
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { bridge_id, include_rfi } = req.query;
 
@@ -66,21 +66,21 @@ router.get('/', (req, res) => {
     }
 
     // Get all positions for this bridge
-    const positions = db.prepare(`
+    const positions = await db.prepare(`
       SELECT * FROM positions
       WHERE bridge_id = ?
       ORDER BY part_name, subtype
     `).all(bridge_id);
 
     // Get bridge metadata
-    const bridge = db.prepare(`
+    const bridge = await db.prepare(`
       SELECT span_length_m, deck_width_m, pd_weeks
       FROM bridges
       WHERE bridge_id = ?
     `).get(bridge_id);
 
     // Get config
-    const configRow = db.prepare(`
+    const configRow = await db.prepare(`
       SELECT defaults, days_per_month_mode
       FROM project_config
       WHERE id = 1
@@ -133,7 +133,7 @@ router.get('/', (req, res) => {
 });
 
 // POST - Create or update positions
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { bridge_id, positions: inputPositions } = req.body;
 
@@ -169,9 +169,9 @@ router.post('/', (req, res) => {
     }
 
     // Ensure bridge exists
-    const bridgeExists = db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge_id);
+    const bridgeExists = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge_id);
     if (!bridgeExists) {
-      db.prepare('INSERT INTO bridges (bridge_id) VALUES (?)').run(bridge_id);
+      await db.prepare('INSERT INTO bridges (bridge_id) VALUES (?)').run(bridge_id);
     }
 
     const insertStmt = db.prepare(`
@@ -181,10 +181,10 @@ router.post('/', (req, res) => {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    const insertMany = db.transaction((positions) => {
+    const insertMany = db.transaction(async (positions) => {
       for (const pos of positions) {
         const id = pos.id || uuidv4();
-        insertStmt.run(
+        await insertStmt.run(
           id,
           bridge_id,
           pos.part_name,
@@ -202,14 +202,14 @@ router.post('/', (req, res) => {
       }
     });
 
-    insertMany(inputPositions);
+    await insertMany(inputPositions);
 
     // Return calculated positions
-    const positions = db.prepare(`
+    const positions = await db.prepare(`
       SELECT * FROM positions WHERE bridge_id = ?
     `).all(bridge_id);
 
-    const configRow = db.prepare(`
+    const configRow = await db.prepare(`
       SELECT defaults, days_per_month_mode FROM project_config WHERE id = 1
     `).get();
     const config = {
@@ -231,7 +231,7 @@ router.post('/', (req, res) => {
 });
 
 // PUT - Update specific positions
-router.put('/', (req, res) => {
+router.put('/', async (req, res) => {
   try {
     const { bridge_id, updates } = req.body;
 
@@ -270,7 +270,7 @@ router.put('/', (req, res) => {
     }));
     logger.info(`Updates preview: ${JSON.stringify(previewUpdates)}`);
 
-    const updateMany = db.transaction((updates, bridgeId) => {
+    const updateMany = db.transaction(async (updates, bridgeId) => {
       for (const update of updates) {
         const { id, ...fields } = update;
 
@@ -309,7 +309,7 @@ router.put('/', (req, res) => {
         logger.info(`  Updating position id=${id}: ${fieldNames.join(', ')}`);
 
         const stmt = db.prepare(sql);
-        const result = stmt.run(...values);
+        const result = await stmt.run(...values);
 
         if (result.changes === 0) {
           logger.warn(`  ⚠️ No rows updated for id=${id}`);
@@ -317,15 +317,15 @@ router.put('/', (req, res) => {
       }
     });
 
-    updateMany(updates, bridge_id);
+    await updateMany(updates, bridge_id);
 
     // Return updated positions (with proper sorting to match GET route)
-    const positions = db.prepare(`
+    const positions = await db.prepare(`
       SELECT * FROM positions WHERE bridge_id = ?
       ORDER BY part_name, subtype
     `).all(bridge_id);
 
-    const configRow = db.prepare(`
+    const configRow = await db.prepare(`
       SELECT defaults, days_per_month_mode FROM project_config WHERE id = 1
     `).get();
     const config = {
@@ -334,7 +334,7 @@ router.put('/', (req, res) => {
     };
 
     const calculatedPositions = calculatePositions(positions, config);
-    const bridge = db.prepare('SELECT * FROM bridges WHERE bridge_id = ?').get(bridge_id);
+    const bridge = await db.prepare('SELECT * FROM bridges WHERE bridge_id = ?').get(bridge_id);
 
     const header_kpi = calculateKPI(calculatedPositions, {
       span_length_m: bridge?.span_length_m,
@@ -355,11 +355,11 @@ router.put('/', (req, res) => {
 });
 
 // DELETE position
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = db.prepare('DELETE FROM positions WHERE id = ?').run(id);
+    const result = await db.prepare('DELETE FROM positions WHERE id = ?').run(id);
 
     if (result.changes === 0) {
       return res.status(404).json({ error: 'Position not found' });

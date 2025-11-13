@@ -7,14 +7,20 @@ import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { createSnapshot } from '../services/snapshot.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// GET all bridges with summary
-router.get('/', (req, res) => {
+// Apply authentication to all routes
+router.use(requireAuth);
+
+// GET all bridges with summary (filtered by owner)
+router.get('/', async (req, res) => {
   try {
-    // OPTIMIZED: Single JOIN query instead of N+1
-    const bridgesWithStats = db.prepare(`
+    const ownerId = req.user.userId;
+
+    // OPTIMIZED: Single JOIN query instead of N+1, filtered by owner
+    const bridgesWithStats = await db.prepare(`
       SELECT
         b.bridge_id,
         b.project_name,
@@ -30,9 +36,10 @@ router.get('/', (req, res) => {
         COALESCE(SUM(p.kros_total_czk), 0) as sum_kros_czk
       FROM bridges b
       LEFT JOIN positions p ON b.bridge_id = p.bridge_id
+      WHERE b.owner_id = ?
       GROUP BY b.bridge_id, b.project_name, b.object_name, b.status, b.span_length_m, b.deck_width_m, b.pd_weeks, b.created_at, b.updated_at
       ORDER BY b.status DESC, b.project_name, b.created_at DESC
-    `).all();
+    `).all(ownerId);
 
     res.json(bridgesWithStats);
   } catch (error) {
@@ -41,21 +48,22 @@ router.get('/', (req, res) => {
   }
 });
 
-// GET single bridge
-router.get('/:bridge_id', (req, res) => {
+// GET single bridge (check ownership)
+router.get('/:bridge_id', async (req, res) => {
   try {
     const { bridge_id } = req.params;
+    const ownerId = req.user.userId;
 
-    const bridge = db.prepare(`
-      SELECT * FROM bridges WHERE bridge_id = ?
-    `).get(bridge_id);
+    const bridge = await db.prepare(`
+      SELECT * FROM bridges WHERE bridge_id = ? AND owner_id = ?
+    `).get(bridge_id, ownerId);
 
     if (!bridge) {
-      return res.status(404).json({ error: 'Bridge not found' });
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
     }
 
     // Get stats
-    const stats = db.prepare(`
+    const stats = await db.prepare(`
       SELECT
         COUNT(*) as element_count,
         SUM(CASE WHEN subtype = 'beton' THEN concrete_m3 ELSE 0 END) as concrete_m3,
@@ -76,32 +84,34 @@ router.get('/:bridge_id', (req, res) => {
   }
 });
 
-// POST create new bridge manually
-router.post('/', (req, res) => {
+// POST create new bridge manually (set owner)
+router.post('/', async (req, res) => {
   try {
     const { bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks } = req.body;
+    const ownerId = req.user.userId;
 
     if (!bridge_id) {
       return res.status(400).json({ error: 'bridge_id is required' });
     }
 
-    // Check if bridge already exists
-    const existing = db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge_id);
+    // Check if bridge already exists for this owner
+    const existing = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
     if (existing) {
       return res.status(400).json({ error: `Bridge ${bridge_id} already exists` });
     }
 
-    // Insert new bridge
-    db.prepare(`
-      INSERT INTO bridges (bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks)
-      VALUES (?, ?, ?, ?, ?, ?)
+    // Insert new bridge with owner_id
+    await db.prepare(`
+      INSERT INTO bridges (bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks, owner_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `).run(
       bridge_id,
       project_name || null,
       object_name || bridge_id,
       span_length_m || null,
       deck_width_m || null,
-      pd_weeks || null
+      pd_weeks || null,
+      ownerId
     );
 
     // Create template positions with default values (11 parts from audit)
@@ -192,19 +202,20 @@ router.post('/', (req, res) => {
   }
 });
 
-// PUT update bridge metadata
-router.put('/:bridge_id', (req, res) => {
+// PUT update bridge metadata (check ownership)
+router.put('/:bridge_id', async (req, res) => {
   try {
     const { bridge_id } = req.params;
     const { project_name, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3 } = req.body;
+    const ownerId = req.user.userId;
 
-    const existing = db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge_id);
+    const existing = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
     if (!existing) {
-      return res.status(404).json({ error: 'Bridge not found' });
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
     }
 
     // Update
-    db.prepare(`
+    await db.prepare(`
       UPDATE bridges
       SET project_name = COALESCE(?, project_name),
           object_name = COALESCE(?, object_name),
@@ -213,8 +224,8 @@ router.put('/:bridge_id', (req, res) => {
           pd_weeks = COALESCE(?, pd_weeks),
           concrete_m3 = COALESCE(?, concrete_m3),
           updated_at = CURRENT_TIMESTAMP
-      WHERE bridge_id = ?
-    `).run(project_name, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3, bridge_id);
+      WHERE bridge_id = ? AND owner_id = ?
+    `).run(project_name, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3, bridge_id, ownerId);
 
     res.json({ success: true, bridge_id });
   } catch (error) {
@@ -223,27 +234,28 @@ router.put('/:bridge_id', (req, res) => {
   }
 });
 
-// PATCH update bridge status
-router.patch('/:bridge_id/status', (req, res) => {
+// PATCH update bridge status (check ownership)
+router.patch('/:bridge_id/status', async (req, res) => {
   try {
     const { bridge_id } = req.params;
     const { status } = req.body;
+    const ownerId = req.user.userId;
 
     if (!status || !['active', 'completed', 'archived'].includes(status)) {
       return res.status(400).json({ error: 'Invalid status. Must be: active, completed, or archived' });
     }
 
-    const existing = db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge_id);
+    const existing = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
     if (!existing) {
-      return res.status(404).json({ error: 'Bridge not found' });
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
     }
 
-    db.prepare(`
+    await db.prepare(`
       UPDATE bridges
       SET status = ?,
           updated_at = CURRENT_TIMESTAMP
-      WHERE bridge_id = ?
-    `).run(status, bridge_id);
+      WHERE bridge_id = ? AND owner_id = ?
+    `).run(status, bridge_id, ownerId);
 
     logger.info(`Updated bridge ${bridge_id} status to: ${status}`);
     res.json({ success: true, bridge_id, status });
@@ -253,16 +265,17 @@ router.patch('/:bridge_id/status', (req, res) => {
   }
 });
 
-// POST /api/bridges/:bridge_id/complete - Mark bridge as completed with final snapshot
-router.post('/:bridge_id/complete', (req, res) => {
+// POST /api/bridges/:bridge_id/complete - Mark bridge as completed with final snapshot (check ownership)
+router.post('/:bridge_id/complete', async (req, res) => {
   try {
     const { bridge_id } = req.params;
     const { created_by, description } = req.body;
+    const ownerId = req.user.userId;
 
-    // Check if bridge exists
-    const bridge = db.prepare('SELECT bridge_id, object_name FROM bridges WHERE bridge_id = ?').get(bridge_id);
+    // Check if bridge exists and user owns it
+    const bridge = await db.prepare('SELECT bridge_id, object_name FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
     if (!bridge) {
-      return res.status(404).json({ error: 'Bridge not found' });
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
     }
 
     // Get current positions and calculate header_kpi
@@ -354,25 +367,28 @@ router.post('/:bridge_id/complete', (req, res) => {
   }
 });
 
-// DELETE bridge
-router.delete('/:bridge_id', (req, res) => {
+// DELETE bridge (check ownership)
+router.delete('/:bridge_id', async (req, res) => {
   try {
     const { bridge_id } = req.params;
+    const ownerId = req.user.userId;
 
-    // Delete snapshots first (cascade)
-    db.prepare('DELETE FROM snapshots WHERE bridge_id = ?').run(bridge_id);
-
-    // Delete positions
-    db.prepare('DELETE FROM positions WHERE bridge_id = ?').run(bridge_id);
-
-    // Delete bridge
-    const result = db.prepare('DELETE FROM bridges WHERE bridge_id = ?').run(bridge_id);
-
-    if (result.changes === 0) {
-      return res.status(404).json({ error: 'Bridge not found' });
+    // Check if bridge exists and user owns it
+    const bridge = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
+    if (!bridge) {
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
     }
 
-    logger.info(`Deleted bridge: ${bridge_id}`);
+    // Delete snapshots first (cascade)
+    await db.prepare('DELETE FROM snapshots WHERE bridge_id = ?').run(bridge_id);
+
+    // Delete positions
+    await db.prepare('DELETE FROM positions WHERE bridge_id = ?').run(bridge_id);
+
+    // Delete bridge
+    await db.prepare('DELETE FROM bridges WHERE bridge_id = ? AND owner_id = ?').run(bridge_id, ownerId);
+
+    logger.info(`Deleted bridge: ${bridge_id} (owner: ${ownerId})`);
     res.json({ success: true, bridge_id });
   } catch (error) {
     logger.error('Error deleting bridge:', error);

@@ -16,8 +16,13 @@ const api = axios.create({
   }
 });
 
-// Add request logging for debugging
+// Add JWT token to all requests
 api.interceptors.request.use(request => {
+  const token = localStorage.getItem('auth_token');
+  if (token) {
+    request.headers.Authorization = `Bearer ${token}`;
+  }
+
   console.log(`[API] ${request.method?.toUpperCase()} ${request.url}`, request.params);
   return request;
 });
@@ -29,7 +34,7 @@ const RETRY_DELAY = 2000; // 2 seconds base delay
 // Helper: delay with exponential backoff
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Retry logic for 429 errors
+// Retry logic for 429 errors + 401 redirect
 api.interceptors.response.use(
   response => {
     console.log(`[API] Response ${response.status}:`, response.data);
@@ -40,6 +45,18 @@ api.interceptors.response.use(
     const status = error.response?.status;
 
     console.error(`[API] Error:`, status, error.message);
+
+    // Handle 401 Unauthorized - redirect to login
+    if (status === 401) {
+      console.warn('[API] 401 Unauthorized - redirecting to login');
+      localStorage.removeItem('auth_token');
+
+      // Only redirect if not already on login page
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
+      }
+      return Promise.reject(error);
+    }
 
     // Retry on 429 (Too Many Requests) with exponential backoff
     if (status === 429 && config && !config.__retryCount) {

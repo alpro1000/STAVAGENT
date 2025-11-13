@@ -4,6 +4,7 @@
 
 import { useState, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
 import { exportAPI, uploadAPI, bridgesAPI } from '../services/api';
@@ -20,6 +21,7 @@ interface HeaderProps {
 
 export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const { selectedBridge, setSelectedBridge, bridges } = useAppContext();
+  const { user, logout } = useAuth();
   const { refetch: refetchBridges } = useBridges();
   const { saveXLSX, isSaving } = useExports();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -232,6 +234,19 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         >
           📋 Historie exportů
         </button>
+
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <span style={{ fontSize: '14px', color: '#718096' }}>
+            {user?.name || user?.email}
+          </span>
+          <button
+            className="btn-danger"
+            onClick={logout}
+            title="Odhlásit se"
+          >
+            🚪 Odhlásit
+          </button>
+        </div>
       </div>
 
       {/* Modal for Create Bridge Form */}
