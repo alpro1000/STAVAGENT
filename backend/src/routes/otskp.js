@@ -7,7 +7,7 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { db } from '../db/init.js';
+import db from '../db/init.js';
 import { normalizeForSearch, normalizeCode } from '../utils/text.js';
 
 const router = express.Router();
@@ -333,20 +333,39 @@ router.post('/import', async (req, res) => {
       VALUES (?, ?, ?, ?, ?, ?)
     `);
 
-    const insertMany = db.transaction(async (items) => {
-      for (const item of items) {
-        await insertStmt.run(
-          item.code,
-          item.name,
-          item.unit,
-          item.unit_price,
-          item.specification,
-          item.searchName
-        );
-      }
-    });
-
-    await insertMany(items);
+    // For SQLite: keep transaction synchronous (atomic)
+    // For PostgreSQL: use async/await to properly await each insert
+    if (db.isSqlite) {
+      // SQLite: synchronous transaction (atomic - all or nothing)
+      const insertMany = db.transaction((items) => {
+        for (const item of items) {
+          insertStmt.run(
+            item.code,
+            item.name,
+            item.unit,
+            item.unit_price,
+            item.specification,
+            item.searchName
+          );
+        }
+      });
+      insertMany(items);
+    } else {
+      // PostgreSQL: async transaction (must await each insert)
+      const insertMany = db.transaction(async (items) => {
+        for (const item of items) {
+          await insertStmt.run(
+            item.code,
+            item.name,
+            item.unit,
+            item.unit_price,
+            item.specification,
+            item.searchName
+          );
+        }
+      });
+      await insertMany(items);
+    }
 
     // Verify import
     const verifyStats = await db.prepare(`
