@@ -10,6 +10,7 @@
  */
 
 import express from 'express';
+import { randomUUID } from 'crypto';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { requireAuth } from '../middleware/auth.js';
@@ -70,6 +71,8 @@ router.get('/list/:projectId', async (req, res) => {
     }
 
     // Get all parts for this project
+    // Note: positions are still linked to legacy bridges table, not monolith_projects
+    // So we count by part_name only (architectural issue to fix in Phase 2)
     const parts = await db.prepare(`
       SELECT
         p.part_id,
@@ -80,7 +83,7 @@ router.get('/list/:projectId', async (req, res) => {
         p.updated_at,
         COUNT(DISTINCT pos.id) as positions_count
       FROM parts p
-      LEFT JOIN positions pos ON p.part_name = pos.part_name AND p.project_id = pos.bridge_id
+      LEFT JOIN positions pos ON p.part_name = pos.part_name
       WHERE p.project_id = ?
       GROUP BY p.part_id
       ORDER BY p.part_name
@@ -116,8 +119,8 @@ router.post('/', async (req, res) => {
       return res.status(404).json({ error: 'Project not found or access denied' });
     }
 
-    // Generate part ID
-    const partId = `${project_id}_${part_name}_${Date.now()}`;
+    // Generate part ID using UUID for collision-free uniqueness
+    const partId = randomUUID();
 
     // Create part
     await db.prepare(`

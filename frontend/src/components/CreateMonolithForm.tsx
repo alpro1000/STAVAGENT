@@ -5,7 +5,7 @@
  */
 
 import { useState } from 'react';
-import { createBridge } from '../services/api';
+import { createMonolithProject } from '../services/api';
 import ObjectTypeSelector from './ObjectTypeSelector';
 
 interface CreateMonolithFormProps {
@@ -47,9 +47,9 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
     setIsSubmitting(true);
 
     try {
-      await createBridge({
-        bridge_id: projectId.trim(),
-        object_type: objectType,
+      await createMonolithProject({
+        project_id: projectId.trim(),
+        object_type: objectType as 'bridge' | 'building' | 'parking' | 'road' | 'custom',
         project_name: projectName.trim() || undefined,
         object_name: objectName.trim() || projectId.trim(),
         span_length_m: spanLength ? parseFloat(spanLength) : undefined,

@@ -360,7 +360,7 @@ async function initSqliteSchema() {
       road_width_m REAL,
       description TEXT,
       status TEXT DEFAULT 'active',
-      FOREIGN KEY (owner_id) REFERENCES users(id)
+      FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
     );
   `);
 

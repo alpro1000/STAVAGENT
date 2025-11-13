@@ -104,6 +104,21 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'Invalid object_type' });
     }
 
+    // Validate numeric fields (must be positive if provided)
+    const numericFields = {
+      span_length_m, deck_width_m, pd_weeks, building_area_m2,
+      building_floors, road_length_km, road_width_m
+    };
+
+    for (const [field, value] of Object.entries(numericFields)) {
+      if (value !== undefined && value !== null) {
+        const numValue = parseFloat(value as any);
+        if (isNaN(numValue) || numValue < 0) {
+          return res.status(400).json({ error: `${field} must be a positive number` });
+        }
+      }
+    }
+
     // Check if project already exists
     const existing = await db.prepare('SELECT project_id FROM monolith_projects WHERE project_id = ?').get(project_id);
     if (existing) {
@@ -236,6 +251,22 @@ router.put('/:id', async (req, res) => {
       concrete_m3,
       sum_kros_czk
     } = req.body;
+
+    // Validate numeric fields (must be positive if provided)
+    const numericFields = {
+      span_length_m, deck_width_m, pd_weeks, building_area_m2,
+      building_floors, road_length_km, road_width_m,
+      element_count, concrete_m3, sum_kros_czk
+    };
+
+    for (const [field, value] of Object.entries(numericFields)) {
+      if (value !== undefined && value !== null) {
+        const numValue = parseFloat(value as any);
+        if (isNaN(numValue) || numValue < 0) {
+          return res.status(400).json({ error: `${field} must be a positive number` });
+        }
+      }
+    }
 
     // Update project
     await db.prepare(`
