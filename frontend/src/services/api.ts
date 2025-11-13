@@ -456,6 +456,14 @@ export const otskpAPI = {
   }
 };
 
+// Auth API (email verification, login, etc.)
+export const authAPI = {
+  verify: async (token: string): Promise<any> => {
+    const { data } = await api.post('/api/auth/verify', { token });
+    return data;
+  }
+};
+
 // Helper exports for convenience
 export const createBridge = bridgesAPI.create;
 export const deleteBridge = bridgesAPI.delete;

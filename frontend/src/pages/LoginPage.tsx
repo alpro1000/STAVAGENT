@@ -17,6 +17,8 @@ export default function LoginPage() {
   const [name, setName] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [emailNotVerified, setEmailNotVerified] = useState(false);
 
   // Redirect if already authenticated
   if (isAuthenticated) {
@@ -27,11 +29,15 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setRegistrationSuccess(false);
+    setEmailNotVerified(false);
     setIsLoading(true);
 
     try {
       if (isLoginMode) {
         await login(email, password);
+        // Navigate to home on success
+        navigate('/');
       } else {
         if (!name.trim()) {
           setError('Jméno je povinné');
@@ -39,12 +45,21 @@ export default function LoginPage() {
           return;
         }
         await register(email, password, name);
+        setRegistrationSuccess(true);
+        setEmail('');
+        setPassword('');
+        setName('');
       }
-
-      // Navigate to home on success
-      navigate('/');
     } catch (err: any) {
-      setError(err.message || 'Chyba při přihlášení');
+      const errorMessage = err.message || 'Chyba při přihlášení';
+
+      // Check if it's an email verification error
+      if (errorMessage.includes('Email not verified') || errorMessage.includes('Ověřte si')) {
+        setEmailNotVerified(true);
+        setError('');
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +99,53 @@ export default function LoginPage() {
           {isLoginMode ? 'Přihlaste se ke svému účtu' : 'Vytvořte si nový účet'}
         </p>
 
-        <form onSubmit={handleSubmit}>
+        {registrationSuccess && (
+          <div style={{
+            padding: '12px',
+            background: '#c6f6d5',
+            border: '1px solid #9ae6b4',
+            borderRadius: '6px',
+            color: '#22543d',
+            fontSize: '14px',
+            marginBottom: '20px'
+          }}>
+            ✅ Registrace byla úspěšná! Zkontrolujte si email a klikněte na odkaz k ověření.
+          </div>
+        )}
+
+        {emailNotVerified && (
+          <div style={{
+            padding: '12px',
+            background: '#fef3c7',
+            border: '1px solid #fcd34d',
+            borderRadius: '6px',
+            color: '#78350f',
+            fontSize: '14px',
+            marginBottom: '20px'
+          }}>
+            ⚠️ Váš email ještě není ověřen. Zkontrolujte si poštovní schránku a klikněte na odkaz k ověření.
+            <br />
+            <button
+              type="button"
+              onClick={() => navigate('/verify')}
+              style={{
+                marginTop: '8px',
+                display: 'inline-block',
+                color: '#92400e',
+                textDecoration: 'underline',
+                cursor: 'pointer',
+                background: 'none',
+                border: 'none',
+                fontSize: '14px',
+                fontWeight: '600'
+              }}
+            >
+              Máte token? Ověřte si email zde →
+            </button>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} style={{ display: registrationSuccess ? 'none' : 'block' }}>
           {!isLoginMode && (
             <div style={{ marginBottom: '20px' }}>
               <label style={{
@@ -231,27 +292,55 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div style={{
-          marginTop: '24px',
-          textAlign: 'center'
-        }}>
-          <button
-            onClick={() => {
-              setIsLoginMode(!isLoginMode);
-              setError('');
-            }}
-            style={{
-              background: 'none',
-              border: 'none',
-              color: '#667eea',
-              fontSize: '14px',
-              cursor: 'pointer',
-              textDecoration: 'underline'
-            }}
-          >
-            {isLoginMode ? 'Nemáte účet? Zaregistrujte se' : 'Už máte účet? Přihlaste se'}
-          </button>
-        </div>
+        {!registrationSuccess && (
+          <div style={{
+            marginTop: '24px',
+            textAlign: 'center'
+          }}>
+            <button
+              onClick={() => {
+                setIsLoginMode(!isLoginMode);
+                setError('');
+                setEmailNotVerified(false);
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#667eea',
+                fontSize: '14px',
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+            >
+              {isLoginMode ? 'Nemáte účet? Zaregistrujte se' : 'Už máte účet? Přihlaste se'}
+            </button>
+          </div>
+        )}
+
+        {registrationSuccess && (
+          <div style={{
+            marginTop: '24px',
+            textAlign: 'center'
+          }}>
+            <button
+              onClick={() => {
+                setRegistrationSuccess(false);
+                setIsLoginMode(true);
+                setError('');
+              }}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#667eea',
+                fontSize: '14px',
+                cursor: 'pointer',
+                textDecoration: 'underline'
+              }}
+            >
+              Zpět na přihlášení
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

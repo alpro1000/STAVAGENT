@@ -9,6 +9,7 @@ import { AuthProvider } from './context/AuthContext';
 import { AppProvider } from './context/AppContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoginPage from './pages/LoginPage';
+import VerifyEmailPage from './pages/VerifyEmailPage';
 import MainApp from './components/MainApp';
 import './styles/components.css';
 
@@ -31,6 +32,9 @@ function App() {
           <Routes>
             {/* Login page */}
             <Route path="/login" element={<LoginPage />} />
+
+            {/* Email verification page */}
+            <Route path="/verify" element={<VerifyEmailPage />} />
 
             {/* Protected main application */}
             <Route
