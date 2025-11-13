@@ -12,6 +12,7 @@ import { dirname, join } from 'path';
 import fs from 'fs';
 
 // Routes
+import authRoutes from './src/routes/auth.js';
 import uploadRoutes from './src/routes/upload.js';
 import positionsRoutes from './src/routes/positions.js';
 import bridgesRoutes from './src/routes/bridges.js';
@@ -112,7 +113,10 @@ app.get('/health', (req, res) => {
 });
 
 // API Routes
-// Note: Authentication can be applied per-route within route handlers for gradual rollout
+// Auth routes (no auth required for login/register)
+app.use('/api/auth', authLimiter, authRoutes);
+
+// Protected routes (authentication will be applied within each route handler)
 app.use('/api/upload', uploadLimiter, uploadRoutes);
 app.use('/api/positions', positionsRoutes);
 app.use('/api/bridges', bridgesRoutes);

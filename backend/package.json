@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@monolit/shared": "file:../shared",
+    "bcrypt": "^6.0.0",
     "better-sqlite3": "^9.2.2",
     "cors": "^2.8.5",
     "exceljs": "^4.4.0",
