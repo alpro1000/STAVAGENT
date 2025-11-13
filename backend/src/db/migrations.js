@@ -42,8 +42,14 @@ async function initPostgresSchema() {
     try {
       await db.exec(statement + ';');
     } catch (error) {
-      // Ignore "already exists" errors
-      if (!error.message.includes('already exists')) {
+      // Ignore "already exists" and "relation does not exist" errors
+      // These are safe to ignore during migrations
+      const ignoreErrors = ['already exists', 'does not exist', '42P01'];
+      const shouldIgnore = ignoreErrors.some(errMsg =>
+        error.message?.includes(errMsg) || error.code === errMsg
+      );
+
+      if (!shouldIgnore) {
         console.error('[PostgreSQL] Error executing statement:', statement);
         throw error;
       }
