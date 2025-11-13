@@ -112,7 +112,7 @@ router.post('/', async (req, res) => {
 
     for (const [field, value] of Object.entries(numericFields)) {
       if (value !== undefined && value !== null) {
-        const numValue = parseFloat(value as any);
+        const numValue = parseFloat(value);
         if (isNaN(numValue) || numValue < 0) {
           return res.status(400).json({ error: `${field} must be a positive number` });
         }
@@ -261,7 +261,7 @@ router.put('/:id', async (req, res) => {
 
     for (const [field, value] of Object.entries(numericFields)) {
       if (value !== undefined && value !== null) {
-        const numValue = parseFloat(value as any);
+        const numValue = parseFloat(value);
         if (isNaN(numValue) || numValue < 0) {
           return res.status(400).json({ error: `${field} must be a positive number` });
         }
