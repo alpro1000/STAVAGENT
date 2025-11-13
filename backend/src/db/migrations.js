@@ -45,13 +45,18 @@ async function initPostgresSchema() {
       // Ignore "already exists" and "relation does not exist" errors
       // These are safe to ignore during migrations
       const ignoreErrors = ['already exists', 'does not exist', '42P01'];
-      const shouldIgnore = ignoreErrors.some(errMsg =>
-        error.message?.includes(errMsg) || error.code === errMsg
-      );
+      const shouldIgnore = ignoreErrors.some(errMsg => {
+        const messageMatch = error.message && error.message.includes(errMsg);
+        const codeMatch = error.code === errMsg;
+        return messageMatch || codeMatch;
+      });
 
       if (!shouldIgnore) {
         console.error('[PostgreSQL] Error executing statement:', statement);
         throw error;
+      } else {
+        // Log ignored errors for debugging
+        console.log(`[PostgreSQL] Ignored expected error: ${error.message}`);
       }
     }
   }
