@@ -126,37 +126,50 @@ api.interceptors.response.use(
   }
 );
 
-// Bridges
+// Bridges (now maps to MonolithProjects for universal object support)
 export const bridgesAPI = {
   getAll: async (): Promise<Bridge[]> => {
-    const { data } = await api.get('/api/bridges');
+    const { data } = await api.get('/api/monolith-projects');
     return data;
   },
 
   getOne: async (bridgeId: string): Promise<Bridge> => {
-    const { data } = await api.get(`/api/bridges/${bridgeId}`);
+    const { data } = await api.get(`/api/monolith-projects/${bridgeId}`);
     return data;
   },
 
   create: async (params: { bridge_id: string; project_name?: string; object_name?: string; span_length_m?: number; deck_width_m?: number; pd_weeks?: number }): Promise<void> => {
-    await api.post('/api/bridges', params);
+    // Map bridge_id to project_id and bridge params to monolith params
+    const monolithParams = {
+      project_id: params.bridge_id,
+      object_type: 'bridge',
+      project_name: params.project_name || '',
+      object_name: params.object_name || '',
+      span_length_m: params.span_length_m,
+      deck_width_m: params.deck_width_m,
+      pd_weeks: params.pd_weeks
+    };
+    await api.post('/api/monolith-projects', monolithParams);
   },
 
   update: async (bridgeId: string, params: Partial<Bridge>): Promise<void> => {
-    await api.put(`/api/bridges/${bridgeId}`, params);
+    await api.put(`/api/monolith-projects/${bridgeId}`, params);
   },
 
   updateStatus: async (bridgeId: string, status: 'active' | 'completed' | 'archived'): Promise<void> => {
-    await api.patch(`/api/bridges/${bridgeId}/status`, { status });
+    // Use PUT to update status (no dedicated PATCH endpoint)
+    await api.put(`/api/monolith-projects/${bridgeId}`, { status });
   },
 
   complete: async (bridgeId: string, params?: { created_by?: string; description?: string }): Promise<{ success: boolean; final_snapshot_id: string; snapshots_deleted: number }> => {
-    const { data } = await api.post(`/api/bridges/${bridgeId}/complete`, params || {});
-    return data;
+    // Complete is now handled through updateStatus + snapshot system
+    // For now, just update status to completed
+    await api.put(`/api/monolith-projects/${bridgeId}`, { status: 'completed', ...params });
+    return { success: true, final_snapshot_id: '', snapshots_deleted: 0 };
   },
 
   delete: async (bridgeId: string): Promise<void> => {
-    await api.delete(`/api/bridges/${bridgeId}`);
+    await api.delete(`/api/monolith-projects/${bridgeId}`);
   }
 };
 
