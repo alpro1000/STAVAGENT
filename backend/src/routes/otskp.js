@@ -97,9 +97,7 @@ router.get('/search', async (req, res) => {
     const searchLimit = Math.min(parseInt(limit) || 20, 100);
     const searchQuery = q.trim();
     const searchQueryUpper = searchQuery.toUpperCase();
-    // Prepare normalized variants for accent-insensitive search
     const normalizedQuery = normalizeForSearch(searchQuery);
-    const normalizedPattern = `%${normalizedQuery.replace(/\s+/g, '%')}%`;
     const normalizedCode = normalizeCode(searchQuery);
 
     console.log('[OTSKP Search] Searching for:', {
@@ -110,46 +108,47 @@ router.get('/search', async (req, res) => {
       limit: searchLimit
     });
 
-    const whereClauses = ['UPPER(code) LIKE ?'];
-    const whereParams = [`${searchQueryUpper}%`];
+    // Build WHERE clause with all search conditions
+    const codePrefix = `${searchQueryUpper}%`;
+    const namePattern = `%${normalizedQuery}%`;
 
-    if (normalizedCode) {
-      whereClauses.push("REPLACE(UPPER(code), ' ', '') LIKE ?");
-      whereParams.push(`${normalizedCode}%`);
-    }
-
-    whereClauses.push('search_name LIKE ?');
-    whereParams.push(normalizedPattern);
-
-    const orderByCases = [
-      { sql: 'WHEN UPPER(code) = ? THEN 0', param: searchQueryUpper },
-      { sql: 'WHEN UPPER(code) LIKE ? THEN 1', param: `${searchQueryUpper}%` }
-    ];
-
-    if (normalizedCode) {
-      orderByCases.push({ sql: "WHEN REPLACE(UPPER(code), ' ', '') LIKE ? THEN 2", param: `${normalizedCode}%` });
-    }
-
-    orderByCases.push({ sql: 'WHEN search_name LIKE ? THEN 3', param: normalizedPattern });
-    orderByCases.push({ sql: 'ELSE 4' });
-
-    const orderCaseSql = orderByCases.map(entry => entry.sql).join(' ');
-    const orderParams = orderByCases
-      .filter(entry => typeof entry.param !== 'undefined')
-      .map(entry => entry.param);
-
-    const sql = `
+    let sql = `
       SELECT code, name, unit, unit_price, specification
       FROM otskp_codes
-      WHERE ${whereClauses.join(' OR ')}
-      ORDER BY CASE ${orderCaseSql} END, code
+      WHERE UPPER(code) LIKE ? OR search_name LIKE ?
+    `;
+
+    const params = [codePrefix, namePattern];
+
+    // Add REPLACE variant for codes with spaces (PostgreSQL + SQLite compatible)
+    if (normalizedCode && normalizedCode !== searchQueryUpper) {
+      sql += ` OR REPLACE(UPPER(code), ' ', '') LIKE ?`;
+      params.push(`${normalizedCode}%`);
+    }
+
+    // ORDER BY with priority: exact match > prefix match > name match
+    sql += `
+      ORDER BY
+        CASE
+          WHEN UPPER(code) = ? THEN 0
+          WHEN UPPER(code) LIKE ? THEN 1
+          WHEN search_name LIKE ? THEN 2
+          ELSE 3
+        END,
+        code
       LIMIT ?
     `;
 
-    console.log('[OTSKP Search] SQL:', sql.replace(/\s+/g, ' ').trim());
-    console.log('[OTSKP Search] Params:', { whereParams, orderParams, searchLimit });
+    // Add parameters for ORDER BY CASE statement
+    params.push(searchQueryUpper);    // exact match
+    params.push(codePrefix);          // prefix match
+    params.push(namePattern);         // name match
+    params.push(searchLimit);         // LIMIT
 
-    const results = await db.prepare(sql).all(...whereParams, ...orderParams, searchLimit);
+    console.log('[OTSKP Search] SQL:', sql.replace(/\s+/g, ' ').trim());
+    console.log('[OTSKP Search] Params:', params);
+
+    const results = await db.prepare(sql).all(...params);
 
     console.log('[OTSKP Search] Found results:', results.length);
     res.json({
