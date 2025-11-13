@@ -11,9 +11,9 @@ import { logger } from '../utils/logger.js';
 const router = express.Router();
 
 // GET all mapping profiles
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const profiles = db.prepare(`
+    const profiles = await db.prepare(`
       SELECT id, name, description, column_mapping, created_at
       FROM mapping_profiles
       ORDER BY created_at DESC
@@ -32,7 +32,7 @@ router.get('/', (req, res) => {
 });
 
 // POST save mapping profile
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { name, description, column_mapping } = req.body;
 
@@ -42,7 +42,7 @@ router.post('/', (req, res) => {
 
     const id = uuidv4();
 
-    db.prepare(`
+    await db.prepare(`
       INSERT INTO mapping_profiles (id, name, description, column_mapping)
       VALUES (?, ?, ?, ?)
     `).run(id, name, description || '', JSON.stringify(column_mapping));

@@ -13,8 +13,12 @@ import { extractConcretePositions } from '../services/concreteExtractor.js';
 import { logger } from '../utils/logger.js';
 import { BRIDGE_TEMPLATE_POSITIONS } from '../constants/bridgeTemplates.js';
 import db from '../db/init.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
+
+// Apply authentication to all upload routes
+router.use(requireAuth);
 
 // Configure multer for file upload
 const storage = multer.diskStorage({
@@ -81,30 +85,24 @@ router.post('/', upload.single('file'), async (req, res) => {
     // Use shared template positions for default parts
     const templatePositions = BRIDGE_TEMPLATE_POSITIONS;
 
-
-    const insertPosition = db.prepare(`
-      INSERT INTO positions (
-        id, bridge_id, part_name, item_name, subtype, unit,
-        qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
     for (const bridge of parseResult.bridges) {
       try {
-        // Check if bridge already exists
-        const existing = db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge.bridge_id);
+        // Check if bridge already exists (async/await for PostgreSQL)
+        const existing = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge.bridge_id);
 
         if (!existing) {
-          db.prepare(`
-            INSERT INTO bridges (bridge_id, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3)
-            VALUES (?, ?, ?, ?, ?, ?)
+          // Create bridge (async/await)
+          await db.prepare(`
+            INSERT INTO bridges (bridge_id, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3, owner_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
           `).run(
             bridge.bridge_id,
             bridge.object_name,
             bridge.span_length_m || 0,
             bridge.deck_width_m || 0,
             bridge.pd_weeks || 0,
-            bridge.concrete_m3 || 0
+            bridge.concrete_m3 || 0,
+            req.user?.userId || null  // Add owner_id if user is authenticated
           );
 
           logger.info(`Created bridge: ${bridge.bridge_id}`);
@@ -121,10 +119,16 @@ router.post('/', upload.single('file'), async (req, res) => {
             positionsToInsert = templatePositions;
           }
 
-          positionsToInsert.forEach((pos, index) => {
-            const id = `${bridge.bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${index}`;
+          // Insert all positions (async/await)
+          for (const pos of positionsToInsert) {
+            const id = `${bridge.bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-            insertPosition.run(
+            await db.prepare(`
+              INSERT INTO positions (
+                id, bridge_id, part_name, item_name, subtype, unit,
+                qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
+              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `).run(
               id,
               bridge.bridge_id,
               pos.part_name,
@@ -138,7 +142,7 @@ router.post('/', upload.single('file'), async (req, res) => {
               pos.days || 0,
               pos.otskp_code || null
             );
-          });
+          }
 
           logger.info(`Created ${positionsToInsert.length} positions for bridge ${bridge.bridge_id} (${extractedPositions.length} from Excel, ${positionsToInsert.length - extractedPositions.length} from templates)`);
 

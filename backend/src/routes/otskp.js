@@ -81,7 +81,7 @@ function parseOtskpXml(xmlContent) {
  *   - limit: max results (default 20, max 100)
  * Supports accent-insensitive name search and partial code matches.
  */
-router.get('/search', (req, res) => {
+router.get('/search', async (req, res) => {
   try {
     const { q, limit = 20 } = req.query;
 
@@ -138,7 +138,7 @@ router.get('/search', (req, res) => {
       .filter(entry => typeof entry.param !== 'undefined')
       .map(entry => entry.param);
 
-    const results = db.prepare(`
+    const results = await await db.prepare(`
       SELECT code, name, unit, unit_price, specification
       FROM otskp_codes
       WHERE ${whereClauses.join(' OR ')}
@@ -164,9 +164,9 @@ router.get('/search', (req, res) => {
  * Get total count of OTSKP codes in database
  * Must be before /:code route to avoid being caught by catch-all pattern
  */
-router.get('/count', (req, res) => {
+router.get('/count', async (req, res) => {
   try {
-    const result = db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
+    const result = await await db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
     res.json({
       count: result.count,
       message: result.count === 0 ? 'No OTSKP codes loaded. Use POST /api/otskp/import to load them.' : 'OTSKP codes available'
@@ -182,9 +182,9 @@ router.get('/count', (req, res) => {
  * Get OTSKP database statistics
  * Must be before /:code route to avoid being caught by catch-all pattern
  */
-router.get('/stats/summary', (req, res) => {
+router.get('/stats/summary', async (req, res) => {
   try {
-    const stats = db.prepare(`
+    const stats = await await db.prepare(`
       SELECT
         COUNT(*) as total_codes,
         COUNT(DISTINCT unit) as unique_units,
@@ -194,7 +194,7 @@ router.get('/stats/summary', (req, res) => {
       FROM otskp_codes
     `).get();
 
-    const unitStats = db.prepare(`
+    const unitStats = await await db.prepare(`
       SELECT unit, COUNT(*) as count
       FROM otskp_codes
       GROUP BY unit
@@ -218,11 +218,11 @@ router.get('/stats/summary', (req, res) => {
  * Get specific OTSKP code by exact code
  * Must be last to avoid catching other routes
  */
-router.get('/:code', (req, res) => {
+router.get('/:code', async (req, res) => {
   try {
     const { code } = req.params;
 
-    const result = db.prepare(`
+    const result = await await db.prepare(`
       SELECT code, name, unit, unit_price, specification
       FROM otskp_codes
       WHERE code = ?
@@ -245,7 +245,7 @@ router.get('/:code', (req, res) => {
  * Import OTSKP codes from XML file
  * Authorization required via OTSKP_IMPORT_TOKEN env variable
  */
-router.post('/import', (req, res) => {
+router.post('/import', async (req, res) => {
   try {
     // Check authorization token - fail closed if env var not set
     const expectedToken = process.env.OTSKP_IMPORT_TOKEN;
@@ -319,11 +319,11 @@ router.post('/import', (req, res) => {
 
     // Clear existing codes
     console.log('[OTSKP Import] Clearing existing codes...');
-    db.prepare('DELETE FROM otskp_codes').run();
+    await db.prepare('DELETE FROM otskp_codes').run();
 
     // Insert new codes
     console.log('[OTSKP Import] Inserting', items.length, 'codes...');
-    const insertStmt = db.prepare(`
+    const insertStmt = await db.prepare(`
       INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
       VALUES (?, ?, ?, ?, ?, ?)
     `);
@@ -344,7 +344,7 @@ router.post('/import', (req, res) => {
     insertMany(items);
 
     // Verify import
-    const verifyStats = db.prepare(`
+    const verifyStats = await db.prepare(`
       SELECT
         COUNT(*) as total,
         COUNT(DISTINCT unit) as unique_units,
