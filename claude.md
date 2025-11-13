@@ -357,6 +357,223 @@ npm test -- partDetector.test.js
 npm test -- --coverage
 ```
 
+### Phase 1: Email Verification Testing Guide
+
+**Status:** Manual testing required (endpoints implemented, ready for QA)
+
+**Test Plan:**
+
+#### 1. User Registration (POST /api/auth/register)
+```bash
+# ✅ Test: Valid registration
+curl -X POST http://localhost:3001/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "password123",
+    "name": "Test User"
+  }'
+
+# Expected Response (201):
+{
+  "success": true,
+  "message": "Registration successful. Please check your email...",
+  "user": {
+    "id": 1,
+    "email": "test@example.com",
+    "name": "Test User",
+    "email_verified": false
+  }
+}
+
+# ✅ Verify in Database:
+# - SELECT email_verified FROM users WHERE email = 'test@example.com' → should be 0
+# - SELECT COUNT(*) FROM email_verification_tokens WHERE user_id = 1 → should be 1
+# - Email should be logged to console (dev mode) or sent via Resend
+
+# ✅ Test: Duplicate email (should fail)
+# Expected: 400 error "User with this email already exists"
+
+# ✅ Test: Invalid email format
+# Expected: 400 error "Invalid email format"
+
+# ✅ Test: Password too short
+# Expected: 400 error "Password must be at least 6 characters"
+```
+
+#### 2. Login Before Verification (POST /api/auth/login)
+```bash
+# ✅ Test: Login with unverified email (should FAIL)
+curl -X POST http://localhost:3001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "password123"
+  }'
+
+# Expected Response (403):
+{
+  "error": "Email not verified",
+  "message": "Please verify your email address before logging in..."
+}
+
+# ✅ Test: Login with correct password but unverified email
+# Expected: 403 error (NOT 401) - email verification required before password check
+```
+
+#### 3. Email Verification (POST /api/auth/verify)
+```bash
+# Get token from:
+# - Dev mode: console log in terminal (format: UUID)
+# - Resend: Check test email inbox for verification link
+
+# ✅ Test: Valid token verification
+curl -X POST http://localhost:3001/api/auth/verify \
+  -H "Content-Type: application/json" \
+  -d '{
+    "token": "YOUR-TOKEN-FROM-EMAIL"
+  }'
+
+# Expected Response (200):
+{
+  "success": true,
+  "message": "Email verified successfully! You can now log in.",
+  "user": {
+    "id": 1,
+    "email": "test@example.com",
+    "name": "Test User",
+    "email_verified": true
+  }
+}
+
+# ✅ Verify in Database:
+# - SELECT email_verified FROM users WHERE id = 1 → should be 1
+# - SELECT COUNT(*) FROM email_verification_tokens WHERE user_id = 1 → should be 0
+
+# ✅ Test: Invalid token (should fail)
+# Expected: 400 error "Invalid or expired verification token"
+
+# ✅ Test: Expired token (>24h old)
+# Expected: 400 error "Verification token has expired"
+
+# ✅ Test: Token used twice (should fail second time)
+# Expected: 400 error "Invalid or expired verification token"
+```
+
+#### 4. Login After Verification (POST /api/auth/login)
+```bash
+# ✅ Test: Login with correct credentials after verification
+curl -X POST http://localhost:3001/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "test@example.com",
+    "password": "password123"
+  }'
+
+# Expected Response (200):
+{
+  "success": true,
+  "token": "eyJhbGc...",
+  "user": {
+    "id": 1,
+    "email": "test@example.com",
+    "name": "Test User",
+    "role": "user",
+    "email_verified": true
+  }
+}
+
+# ✅ Test: Verify JWT token is valid
+# - Copy token and use for other endpoints
+# - GET /api/auth/me with Authorization header should work
+```
+
+#### 5. Get Current User (GET /api/auth/me)
+```bash
+# ✅ Test: Get user info after login
+curl -X GET http://localhost:3001/api/auth/me \
+  -H "Authorization: Bearer YOUR-JWT-TOKEN"
+
+# Expected Response (200):
+{
+  "success": true,
+  "user": {
+    "id": 1,
+    "email": "test@example.com",
+    "name": "Test User",
+    "role": "user",
+    "email_verified": true,
+    "created_at": "2025-11-13T10:00:00Z"
+  }
+}
+
+# ✅ Verify: email_verified field is included in response
+```
+
+#### 6. Frontend Integration Tests
+```bash
+# ✅ Test: Registration Page
+# 1. Fill in email, password, name
+# 2. Submit form
+# 3. Should show "Registration successful" message
+# 4. Form should hide
+# 5. Should show email verification prompt
+
+# ✅ Test: Email Verification Page
+# 1. Navigate to /verify (no token in URL)
+# 2. Should show "No token provided" error
+# 3. Should show manual token entry form
+# 4. Enter valid token and click "Verify Email"
+# 5. Should show "Email verified successfully!" success message
+# 6. Should show "Go to Login" button
+
+# ✅ Test: Email Verification from Link
+# 1. Click verification link in email
+# 2. Should auto-verify and show success page
+# 3. Should allow immediate login
+
+# ✅ Test: Login Redirect
+# 1. Try to login with unverified email
+# 2. Should show "Email not verified" warning
+# 3. Should have link to /verify page
+# 4. After verification, login should work
+```
+
+#### 7. Edge Cases & Security
+```
+✅ Test: SQL Injection in verify endpoint
+- Token with SQL syntax should fail gracefully
+
+✅ Test: XSS in error messages
+- Invalid token should show safe error message
+
+✅ Test: Token expiry enforcement
+- Token older than 24 hours should be rejected
+
+✅ Test: Token uniqueness
+- Only one token per user should exist
+- Old tokens should be replaced on re-register
+
+✅ Test: Hash security
+- Stored token should be SHA256 hash (not plain text)
+- Comparing: hash(received_token) = stored_hash
+
+✅ Test: CORS headers
+- /api/auth/verify should be accessible from frontend URL
+```
+
+**Testing Status:**
+- [ ] Manual registration test
+- [ ] Token generation verification
+- [ ] Email delivery (dev/prod mode)
+- [ ] Token validation and expiry
+- [ ] Login blocking for unverified
+- [ ] Email verification flow
+- [ ] Post-verification login success
+- [ ] Frontend integration tests
+- [ ] Error handling (invalid token, expired, etc.)
+- [ ] Security edge cases
+
 ---
 
 ## 🔐 Security Issues (To Be Fixed)

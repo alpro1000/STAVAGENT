@@ -161,7 +161,7 @@ router.get('/me', requireAuth, async (req, res) => {
   try {
     // req.user is set by requireAuth middleware
     const user = await db.prepare(`
-      SELECT id, email, name, role, created_at
+      SELECT id, email, name, role, email_verified, created_at
       FROM users
       WHERE id = ?
     `).get(req.user.userId);
