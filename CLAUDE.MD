@@ -2930,9 +2930,38 @@ res.json({ success: true })  // ответ ПОСЛЕ полного сохра�
 - ✅ Поиск находит коды
 - ✅ UI обновляется с результатами
 
-### 📊 ФИНАЛЬНЫЕ КОММИТЫ В СЕССИИ
+#### 7. Исправлена SQLite атомарность транзакции (Codex Review P1)
+**Проблема:** Мое предыдущее исправление сломало SQLite!
+
+**Почему:**
+- SQLite использует better-sqlite3 с **синхронной** транзакцией
+- Когда callback `async`, он возвращает Promise **сразу** после первого await
+- Транзакция коммитится до завершения цикла → **половина данных в БД, откат невозможен!**
+
+**Решение (Codex P1):** Разные пути для SQLite и PostgreSQL
+```javascript
+if (db.isSqlite) {
+  // ✅ SQLite: синхронная транзакция (атомарна)
+  const insertMany = db.transaction((items) => {
+    for (const item of items) insertStmt.run(...);
+  });
+  insertMany(items);
+} else {
+  // ✅ PostgreSQL: async/await транзакция
+  const insertMany = db.transaction(async (items) => {
+    for (const item of items) await insertStmt.run(...);
+  });
+  await insertMany(items);
+}
+```
+
+**Результат:** ✅ SQLite и PostgreSQL работают правильно
+
+### 📊 ФИНАЛЬНЫЕ КОММИТЫ (ПОСЛЕ CODEX REVIEW)
 
 ```bash
+6f24c90 - 🐛 Keep SQLite transaction callback synchronous (Codex P1 review)
+146dbd9 - 📝 Document critical P1 bug fix: OTSKP import transaction await
 5d51460 - 🐛 Fix P1 issues from Codex review: await OTSKP import transaction
 92ee4e1 - 📝 Document OTSKP search bug fixes and async/await best practices
 9243e73 - 🐛 Fix OTSKP search: remove unnecessary await, add debug logging
@@ -2949,8 +2978,9 @@ b8327d9 - 🔧 Improve PostgreSQL error handling
 ```
 
 **Branch:** `claude/review-previous-session-011CV5UjfnsrTsbV42b46UrS`
-**Всего коммитов:** 13
+**Всего коммитов:** 15
 **Всего файлов изменено:** 9 route файлов + миграции + документация
+**Codex Review issues:** ✅ ВСЕ P1 ИСПРАВЛЕНЫ
 
 **🎯 СТАТУС: ПОЛНОСТЬЮ ГОТОВО К PRODUCTION** ✅
 
