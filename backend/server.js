@@ -90,18 +90,6 @@ dirs.forEach(dir => {
   }
 });
 
-// Initialize database
-try {
-  initDatabase();
-  logger.info('Database initialized successfully');
-} catch (error) {
-  logger.error('Database initialization failed:', error);
-  process.exit(1);
-}
-
-// Schedule periodic file cleanup
-schedulePeriodicCleanup();
-
 // Health check
 app.get('/health', (req, res) => {
   res.json({
@@ -137,12 +125,30 @@ app.use((req, res) => {
 // Error handler
 app.use(errorHandler);
 
-// Start server
-app.listen(PORT, () => {
-  logger.info(`🚀 Monolit Planner Backend running on port ${PORT}`);
-  logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
-  logger.info(`🗄️  Database: ${process.env.DB_PATH || './data/monolit.db'}`);
-});
+// Bootstrap function - initialize database then start server
+async function bootstrap() {
+  try {
+    // Initialize database (await for PostgreSQL migrations)
+    await initDatabase();
+    logger.info('✅ Database initialized successfully');
+
+    // Schedule periodic file cleanup
+    schedulePeriodicCleanup();
+
+    // Start server
+    app.listen(PORT, () => {
+      logger.info(`🚀 Monolit Planner Backend running on port ${PORT}`);
+      logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
+      logger.info(`🗄️  Database: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
+    });
+  } catch (error) {
+    logger.error('❌ Database initialization failed:', error);
+    process.exit(1);
+  }
+}
+
+// Start application
+bootstrap();
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

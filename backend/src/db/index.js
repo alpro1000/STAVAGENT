@@ -24,7 +24,10 @@ if (USE_POSTGRES) {
   db = {
     prepare: postgres.prepare,
     exec: postgres.exec,
-    transaction: postgres.transaction,
+    // Transaction for PostgreSQL: simplified - just execute callback
+    // Each statement is auto-committed (PostgreSQL default)
+    // TODO: Implement proper transaction support with client passing
+    transaction: (callback) => callback,
     pragma: postgres.pragma,
     isPostgres: true,
     isSqlite: false
