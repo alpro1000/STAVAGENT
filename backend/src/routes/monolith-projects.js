@@ -33,6 +33,7 @@ router.get('/', async (req, res) => {
     let query = `
       SELECT
         mp.project_id,
+        mp.project_id as bridge_id,
         mp.object_type,
         mp.project_name,
         mp.object_name,
@@ -180,6 +181,7 @@ router.post('/', async (req, res) => {
 
     res.status(201).json({
       ...project,
+      bridge_id: project.project_id,  // Backward compatibility alias
       parts_count: templates.length
     });
 
@@ -220,6 +222,7 @@ router.get('/:id', async (req, res) => {
 
     res.json({
       ...project,
+      bridge_id: project.project_id,  // Backward compatibility alias
       parts,
       templates
     });
@@ -319,7 +322,10 @@ router.put('/:id', async (req, res) => {
 
     const updated = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(id);
 
-    res.json(updated);
+    res.json({
+      ...updated,
+      bridge_id: updated.project_id  // Backward compatibility alias
+    });
     logger.info(`Updated monolith project: ${id}`);
   } catch (error) {
     logger.error('Error updating monolith project:', error);
