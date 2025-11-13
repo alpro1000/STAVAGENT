@@ -290,6 +290,29 @@ export default function LoginPage() {
           >
             {isLoading ? 'Načítání...' : (isLoginMode ? 'Přihlásit se' : 'Registrovat')}
           </button>
+
+          {/* Forgot Password link - only show in login mode */}
+          {isLoginMode && (
+            <div style={{
+              marginTop: '12px',
+              textAlign: 'center'
+            }}>
+              <button
+                type="button"
+                onClick={() => navigate('/forgot-password')}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: '#667eea',
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  textDecoration: 'underline'
+                }}
+              >
+                Zapomenuté heslo?
+              </button>
+            </div>
+          )}
         </form>
 
         {!registrationSuccess && (

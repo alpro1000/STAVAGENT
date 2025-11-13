@@ -256,4 +256,171 @@ router.post('/logout', requireAuth, (req, res) => {
   res.json({ success: true, message: 'Logged out successfully' });
 });
 
+// POST /api/auth/change-password - Change current user's password
+router.post('/change-password', requireAuth, async (req, res) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+    const userId = req.user.userId;
+
+    // Validation
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({ error: 'Current password and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: 'New password must be at least 6 characters' });
+    }
+
+    // Get user from database
+    const user = await db.prepare('SELECT * FROM users WHERE id = ?').get(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Verify current password
+    const passwordMatch = await bcrypt.compare(currentPassword, user.password_hash);
+    if (!passwordMatch) {
+      return res.status(401).json({ error: 'Current password is incorrect' });
+    }
+
+    // Hash new password
+    const newPasswordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
+
+    // Update password in database
+    await db.prepare(`
+      UPDATE users
+      SET password_hash = ?, updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).run(newPasswordHash, userId);
+
+    logger.info(`Password changed for user: ${user.email} (ID: ${userId})`);
+
+    res.json({
+      success: true,
+      message: 'Password changed successfully'
+    });
+  } catch (error) {
+    logger.error('Change password error:', error);
+    res.status(500).json({ error: 'Server error during password change' });
+  }
+});
+
+// POST /api/auth/forgot-password - Request password reset email
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // Find user by email
+    const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+
+    if (!user) {
+      // Don't reveal if email exists for security
+      logger.warn(`Password reset requested for non-existent email: ${email}`);
+      return res.json({
+        success: true,
+        message: 'If an account exists with this email, a password reset link has been sent'
+      });
+    }
+
+    // Generate reset token
+    const tokenString = randomUUID();
+    const tokenHash = createHash('sha256').update(tokenString).digest('hex');
+    const expiresAt = new Date(Date.now() + 60 * 60 * 1000).toISOString(); // 1 hour
+
+    // Delete any existing reset tokens for this user
+    await db.prepare('DELETE FROM password_reset_tokens WHERE user_id = ?').run(user.id);
+
+    // Store new reset token
+    await db.prepare(`
+      INSERT INTO password_reset_tokens (id, user_id, token_hash, expires_at)
+      VALUES (?, ?, ?, ?)
+    `).run(randomUUID(), user.id, tokenHash, expiresAt);
+
+    // Send password reset email
+    const { sendPasswordResetEmail } = await import('../services/emailService.js');
+    const emailResult = await sendPasswordResetEmail(email, tokenString);
+
+    if (!emailResult.success) {
+      logger.warn(`Failed to send password reset email to ${email}: ${emailResult.error}`);
+      // Don't fail the request if email fails in dev/test mode
+    }
+
+    logger.info(`Password reset token generated for user: ${email} (ID: ${user.id})`);
+
+    res.json({
+      success: true,
+      message: 'If an account exists with this email, a password reset link has been sent'
+    });
+  } catch (error) {
+    logger.error('Forgot password error:', error);
+    res.status(500).json({ error: 'Server error during password reset request' });
+  }
+});
+
+// POST /api/auth/reset-password - Reset password using token
+router.post('/reset-password', async (req, res) => {
+  try {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res.status(400).json({ error: 'Token and new password are required' });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({ error: 'New password must be at least 6 characters' });
+    }
+
+    // Hash the provided token to compare with stored hash
+    const tokenHash = createHash('sha256').update(token).digest('hex');
+
+    // Find reset token
+    const resetToken = await db.prepare(`
+      SELECT * FROM password_reset_tokens
+      WHERE token_hash = ?
+    `).get(tokenHash);
+
+    if (!resetToken) {
+      return res.status(400).json({ error: 'Invalid or expired password reset token' });
+    }
+
+    // Check if token has expired
+    if (new Date(resetToken.expires_at) < new Date()) {
+      return res.status(400).json({ error: 'Password reset token has expired' });
+    }
+
+    // Get user
+    const user = await db.prepare('SELECT * FROM users WHERE id = ?').get(resetToken.user_id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Hash new password
+    const newPasswordHash = await bcrypt.hash(newPassword, SALT_ROUNDS);
+
+    // Update password
+    await db.prepare(`
+      UPDATE users
+      SET password_hash = ?, updated_at = CURRENT_TIMESTAMP
+      WHERE id = ?
+    `).run(newPasswordHash, user.id);
+
+    // Delete used token
+    await db.prepare('DELETE FROM password_reset_tokens WHERE id = ?').run(resetToken.id);
+
+    logger.info(`Password reset for user: ${user.email} (ID: ${user.id})`);
+
+    res.json({
+      success: true,
+      message: 'Password reset successfully! You can now log in with your new password.'
+    });
+  } catch (error) {
+    logger.error('Reset password error:', error);
+    res.status(500).json({ error: 'Server error during password reset' });
+  }
+});
+
 export default router;
