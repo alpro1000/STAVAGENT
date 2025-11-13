@@ -2858,9 +2858,41 @@ b8327d9 - 🔧 Improve PostgreSQL error handling with better logging
 - Конфиг загружается без ошибок JSON парсинга
 - Все экспорты работают корректно
 
+#### 5. Исправлены баги поиска по OTSKP коду
+**Проблема:** Поиск не работал - "при вводе числа не ищет"
+
+**Причина:** Ошибки при автоматическом добавлении async/await в otskp.js:
+- ❌ Двойной `await await db.prepare()` в search, count, stats, import routes
+- ❌ Неправильный `await db.prepare()` в import route (prepare не возвращает Promise)
+
+**Решение:**
+- ✅ Удалены все двойные await
+- ✅ Удален await перед db.prepare() в import route (это просто подготовка statement)
+- ✅ Добавлено логирование SQL запроса и параметров для отладки
+- ✅ Правильно используется await только для `.get()`, `.all()`, `.run()` методов
+
+**Правило для async/await в DB операциях:**
+```javascript
+// ❌ НЕПРАВИЛЬНО:
+const stmt = await db.prepare(...)    // prepare не async!
+const result = await await stmt.get() // двойной await!
+
+// ✅ ПРАВИЛЬНО:
+const stmt = db.prepare(...)           // sync, подготовка statement
+const result = await stmt.get()        // async, выполнение с await
+
+// ✅ ОДНОЙ СТРОКОЙ:
+const result = await db.prepare(...).get() // правильно!
+```
+
+**Результат:** Поиск по OTSKP коду работает корректно
+
 ### 📊 ИТОГОВЫЕ КОММИТЫ В СЕССИИ
 
 ```bash
+9243e73 - 🐛 Fix OTSKP search: remove unnecessary await, add debug logging
+916f7c4 - 🐛 Fix double await in otskp search route (broke OTSKP code search)
+8f72abd - 📝 Document all PostgreSQL async/await fixes in comprehensive session summary
 543fe5d - 🔧 Fix async/await for PostgreSQL in export, mapping, and otskp routes
 38ee9d3 - 🐛 Fix async/await for PostgreSQL in config and upload routes
 e8e1ad2 - 📝 Update documentation with SQL parsing fix details
@@ -2872,8 +2904,8 @@ b8327d9 - 🔧 Improve PostgreSQL error handling with better logging
 ```
 
 **Branch:** `claude/review-previous-session-011CV5UjfnsrTsbV42b46UrS`
-**Всего коммитов:** 8
-**Всего файлов изменено:** 8 route файлов + миграции + документация
+**Всего коммитов:** 11
+**Всего файлов изменено:** 9 route файлов + миграции + документация
 
 ### 🚀 СЛЕДУЮЩИЕ ШАГИ
 
