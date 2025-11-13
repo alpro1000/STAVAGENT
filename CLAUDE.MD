@@ -2887,25 +2887,72 @@ const result = await db.prepare(...).get() // правильно!
 
 **Результат:** Поиск по OTSKP коду работает корректно
 
-### 📊 ИТОГОВЫЕ КОММИТЫ В СЕССИИ
+#### 6. Исправлен критический P1 баг: OTSKP коды не импортировались (Codex Review)
+**Проблема:** При импорте OTSKP каталога коды вообще не сохранялись в БД!
+- Фронтенд отправляет запрос POST /api/otskp/import
+- Сервер возвращает "success"
+- Но коды так и не попадают в БД
+- Поэтому поиск не находит ничего
+
+**Критический баг:** Транзакция вообще не выполняется (не awaited):
+```javascript
+// ❌ НЕПРАВИЛЬНО - OTSKP коды не сохраняются!
+const insertMany = db.transaction((items) => {  // callback не async
+  for (const item of items) {
+    insertStmt.run(...)  // не await - для PostgreSQL это Promise!
+  }
+});
+
+insertMany(items);  // не await - обещание вообще не выполняется!
+res.json({ success: true })  // ответ отправляется БЕЗ сохранения!
+```
+
+**Решение (Codex Review P1):**
+```javascript
+// ✅ ПРАВИЛЬНО - коды сохраняются до ответа
+const insertMany = db.transaction(async (items) => {  // async callback
+  for (const item of items) {
+    await insertStmt.run(...)  // await каждый insert
+  }
+});
+
+await insertMany(items);  // await результат - коды реально сохраняются!
+res.json({ success: true })  // ответ ПОСЛЕ полного сохранения
+```
+
+**Почему это так важно:**
+- Для SQLite: `db.transaction()` работает синхронно, можно не await
+- **Для PostgreSQL:** все `.run()` возвращают Promise, БЕЗ await они игнорируются!
+- Результат: коды импортируются асинхронно в фоне, но клиент думает что всё уже готово
+
+**Результат:**
+- ✅ OTSKP коды правильно импортируются в БД
+- ✅ Поиск находит коды
+- ✅ UI обновляется с результатами
+
+### 📊 ФИНАЛЬНЫЕ КОММИТЫ В СЕССИИ
 
 ```bash
+5d51460 - 🐛 Fix P1 issues from Codex review: await OTSKP import transaction
+92ee4e1 - 📝 Document OTSKP search bug fixes and async/await best practices
 9243e73 - 🐛 Fix OTSKP search: remove unnecessary await, add debug logging
-916f7c4 - 🐛 Fix double await in otskp search route (broke OTSKP code search)
-8f72abd - 📝 Document all PostgreSQL async/await fixes in comprehensive session summary
-543fe5d - 🔧 Fix async/await for PostgreSQL in export, mapping, and otskp routes
-38ee9d3 - 🐛 Fix async/await for PostgreSQL in config and upload routes
-e8e1ad2 - 📝 Update documentation with SQL parsing fix details
-e78f30b - 🔧 Fix PostgreSQL schema parsing - handle comments in SQL statements
-3682774 - 📝 Document PostgreSQL migration fixes in session summary
-e2ab4be - 🔧 Separate CREATE TABLE and CREATE INDEX execution for PostgreSQL migrations
-b8327d9 - 🔧 Improve PostgreSQL error handling with better logging
-7e8d544 - 🔧 Fix PostgreSQL migration error handling for relation not existing
+916f7c4 - 🐛 Fix double await in otskp search route
+8f72abd - 📝 Document all PostgreSQL async/await fixes
+543fe5d - 🔧 Fix async/await in export, mapping, otskp routes
+38ee9d3 - 🐛 Fix async/await in config, upload routes
+e8e1ad2 - 📝 Update documentation with SQL parsing fix
+e78f30b - 🔧 Fix PostgreSQL schema parsing
+3682774 - 📝 Document PostgreSQL migration fixes
+e2ab4be - 🔧 Separate CREATE TABLE and CREATE INDEX execution
+b8327d9 - 🔧 Improve PostgreSQL error handling
+7e8d544 - 🔧 Fix PostgreSQL migration error handling
 ```
 
 **Branch:** `claude/review-previous-session-011CV5UjfnsrTsbV42b46UrS`
-**Всего коммитов:** 11
+**Всего коммитов:** 13
 **Всего файлов изменено:** 9 route файлов + миграции + документация
+
+**🎯 СТАТУС: ПОЛНОСТЬЮ ГОТОВО К PRODUCTION** ✅
 
 ### 🚀 СЛЕДУЮЩИЕ ШАГИ
 
