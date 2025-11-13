@@ -123,6 +123,9 @@ async function initPostgresSchema() {
       VALUES (1, ?, ?, 30)
     `).run(defaultFeatureFlags, defaultDefaults);
   }
+
+  // Auto-load OTSKP codes if database is empty
+  await autoLoadOtskpCodesIfNeeded();
 }
 
 /**
@@ -350,7 +353,7 @@ async function initSqliteSchema() {
   `);
 
   // Auto-load OTSKP codes if database is empty
-  autoLoadOtskpCodesIfNeeded();
+  await autoLoadOtskpCodesIfNeeded();
 }
 
 /**
@@ -395,10 +398,11 @@ async function applySqliteMigrations() {
 
 /**
  * Auto-load OTSKP codes from XML file if database is empty
+ * Works with both SQLite and PostgreSQL
  */
-function autoLoadOtskpCodesIfNeeded() {
+async function autoLoadOtskpCodesIfNeeded() {
   try {
-    const countResult = db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
+    const countResult = await db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
 
     if (countResult && countResult.count > 0) {
       console.log(`[OTSKP] Database already has ${countResult.count} codes, skipping auto-load`);
@@ -439,15 +443,32 @@ function autoLoadOtskpCodesIfNeeded() {
       return;
     }
 
-    // Insert into database
+    // Insert into database (works with both SQLite and PostgreSQL)
     const insertStmt = db.prepare(`
       INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
       VALUES (?, ?, ?, ?, ?, ?)
     `);
 
-    const insertMany = db.transaction((itemsToInsert) => {
-      for (const item of itemsToInsert) {
-        insertStmt.run(
+    // For SQLite: use synchronous transaction
+    // For PostgreSQL: db.transaction just calls the callback immediately (not a real transaction)
+    if (db.isSqlite) {
+      const insertMany = db.transaction((itemsToInsert) => {
+        for (const item of itemsToInsert) {
+          insertStmt.run(
+            item.code,
+            item.name,
+            item.unit,
+            item.unit_price,
+            item.specification,
+            item.searchName
+          );
+        }
+      });
+      insertMany(items);
+    } else {
+      // For PostgreSQL, execute inserts asynchronously
+      for (const item of items) {
+        await insertStmt.run(
           item.code,
           item.name,
           item.unit,
@@ -456,9 +477,8 @@ function autoLoadOtskpCodesIfNeeded() {
           item.searchName
         );
       }
-    });
+    }
 
-    insertMany(items);
     console.log(`[OTSKP] ✅ Successfully auto-loaded ${items.length} codes from XML`);
 
   } catch (error) {
