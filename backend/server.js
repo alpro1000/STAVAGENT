@@ -49,9 +49,18 @@ const ALLOWED_ORIGINS = [
 // Initialize Express
 const app = express();
 
-// Trust proxy - required for rate limiting and IP detection behind Render/nginx
-// This must be set BEFORE rate limiting middleware
-app.set('trust proxy', 1);
+// Trust proxy - SECURITY: Only enable behind verified proxy environments
+// This prevents IP spoofing attacks in local development
+// Enable ONLY:
+// 1. On Render (detected by RENDER env var), OR
+// 2. Explicitly with TRUST_PROXY=true env var
+const shouldTrustProxy = process.env.RENDER === 'true' || process.env.TRUST_PROXY === 'true';
+if (shouldTrustProxy) {
+  app.set('trust proxy', 1);
+  console.log('[Security] Trust proxy enabled (behind verified proxy)');
+} else {
+  console.log('[Security] Trust proxy disabled (development mode)');
+}
 
 // Security middleware
 app.use(helmet());
