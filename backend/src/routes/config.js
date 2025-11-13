@@ -6,11 +6,13 @@
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
+import { requireAuth } from '../middleware/auth.js';
+import { adminOnly } from '../middleware/adminOnly.js';
 
 const router = express.Router();
 
-// GET config
-router.get('/', async (req, res) => {
+// GET config - PROTECTED: requires authentication (any authenticated user can read)
+router.get('/', requireAuth, async (req, res) => {
   try {
     const config = await db.prepare(`
       SELECT feature_flags, defaults, days_per_month_mode
@@ -37,8 +39,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-// POST config (update)
-router.post('/', async (req, res) => {
+// POST config (update) - PROTECTED: requires authentication and admin role
+router.post('/', requireAuth, adminOnly, async (req, res) => {
   try {
     const { feature_flags, defaults, days_per_month_mode } = req.body;
 
