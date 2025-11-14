@@ -130,6 +130,9 @@ async function initPostgresSchema() {
   // Run Phase 3 migrations (add admin panel and audit logging)
   await runPhase3Migrations();
 
+  // Run Phase 4 migrations (document upload and analysis)
+  await runPhase4Migrations();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 }
@@ -279,6 +282,157 @@ async function runPhase3Migrations() {
 }
 
 /**
+ * Migrations for Phase 4 - Document Upload & Analysis
+ */
+async function runPhase4Migrations() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 4 migrations (Document Upload & Analysis)...');
+
+    // Phase 4: Create documents table
+    try {
+      console.log('[Migration] Creating documents table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS documents (
+          id VARCHAR(255) PRIMARY KEY,
+          project_id VARCHAR(255) NOT NULL,
+          user_id INTEGER NOT NULL,
+          original_filename VARCHAR(255) NOT NULL,
+          file_path TEXT NOT NULL,
+          file_size INTEGER,
+          file_type VARCHAR(50),
+          status VARCHAR(50) DEFAULT 'uploaded',
+          analysis_status VARCHAR(50) DEFAULT 'pending',
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id) ON DELETE CASCADE,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration] ✓ documents table created or already exists');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration] Error creating documents:', error);
+      } else {
+        console.log('[Migration] ✓ documents table already exists');
+      }
+    }
+
+    // Phase 4: Create document_analyses table (results from CORE Engine)
+    try {
+      console.log('[Migration] Creating document_analyses table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS document_analyses (
+          id VARCHAR(255) PRIMARY KEY,
+          document_id VARCHAR(255) NOT NULL,
+          workflow_id VARCHAR(255),
+          workflow_type VARCHAR(50),
+          parsed_positions TEXT,
+          materials TEXT,
+          dimensions TEXT,
+          analysis_metadata TEXT,
+          audit_results TEXT,
+          ai_enrichment TEXT,
+          status VARCHAR(50) DEFAULT 'completed',
+          error_message TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration] ✓ document_analyses table created or already exists');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration] Error creating document_analyses:', error);
+      } else {
+        console.log('[Migration] ✓ document_analyses table already exists');
+      }
+    }
+
+    // Phase 4: Create work_lists table
+    try {
+      console.log('[Migration] Creating work_lists table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS work_lists (
+          id VARCHAR(255) PRIMARY KEY,
+          project_id VARCHAR(255) NOT NULL,
+          document_id VARCHAR(255),
+          user_id INTEGER NOT NULL,
+          title VARCHAR(255),
+          description TEXT,
+          status VARCHAR(50) DEFAULT 'draft',
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id) ON DELETE CASCADE,
+          FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE SET NULL,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration] ✓ work_lists table created or already exists');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration] Error creating work_lists:', error);
+      } else {
+        console.log('[Migration] ✓ work_lists table already exists');
+      }
+    }
+
+    // Phase 4: Create work_list_items table (individual items in a work list)
+    try {
+      console.log('[Migration] Creating work_list_items table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS work_list_items (
+          id VARCHAR(255) PRIMARY KEY,
+          work_list_id VARCHAR(255) NOT NULL,
+          description VARCHAR(500) NOT NULL,
+          category VARCHAR(100),
+          unit VARCHAR(50),
+          quantity REAL,
+          otskp_code VARCHAR(50),
+          status VARCHAR(50) DEFAULT 'pending',
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (work_list_id) REFERENCES work_lists(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration] ✓ work_list_items table created or already exists');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration] Error creating work_list_items:', error);
+      } else {
+        console.log('[Migration] ✓ work_list_items table already exists');
+      }
+    }
+
+    // Phase 4: Create indexes for document tables
+    try {
+      console.log('[Migration] Creating indexes for document tables...');
+      await db.exec(`
+        CREATE INDEX IF NOT EXISTS idx_documents_project ON documents(project_id);
+        CREATE INDEX IF NOT EXISTS idx_documents_user ON documents(user_id);
+        CREATE INDEX IF NOT EXISTS idx_documents_status ON documents(status);
+        CREATE INDEX IF NOT EXISTS idx_document_analyses_document ON document_analyses(document_id);
+        CREATE INDEX IF NOT EXISTS idx_document_analyses_status ON document_analyses(status);
+        CREATE INDEX IF NOT EXISTS idx_work_lists_project ON work_lists(project_id);
+        CREATE INDEX IF NOT EXISTS idx_work_lists_user ON work_lists(user_id);
+        CREATE INDEX IF NOT EXISTS idx_work_list_items_work_list ON work_list_items(work_list_id);
+      `);
+      console.log('[Migration] ✓ document indexes created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration] Error creating indexes:', error);
+      } else {
+        console.log('[Migration] ✓ document indexes already exist');
+      }
+    }
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 4 migrations completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 4 migrations:', error);
+    // Don't fail startup if migrations fail
+  }
+}
+
+/**
  * Initialize SQLite schema (existing logic from init.js)
  */
 async function initSqliteSchema() {
@@ -323,6 +477,81 @@ async function initSqliteSchema() {
       pd_weeks REAL,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // Phase 4: Documents table (SQLite)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS documents (
+      id TEXT PRIMARY KEY,
+      project_id TEXT NOT NULL,
+      user_id INTEGER NOT NULL,
+      original_filename TEXT NOT NULL,
+      file_path TEXT NOT NULL,
+      file_size INTEGER,
+      file_type TEXT,
+      status TEXT DEFAULT 'uploaded',
+      analysis_status TEXT DEFAULT 'pending',
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id) ON DELETE CASCADE,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
+
+  // Phase 4: Document analyses table (SQLite)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS document_analyses (
+      id TEXT PRIMARY KEY,
+      document_id TEXT NOT NULL,
+      workflow_id TEXT,
+      workflow_type TEXT,
+      parsed_positions TEXT,
+      materials TEXT,
+      dimensions TEXT,
+      analysis_metadata TEXT,
+      audit_results TEXT,
+      ai_enrichment TEXT,
+      status TEXT DEFAULT 'completed',
+      error_message TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE CASCADE
+    );
+  `);
+
+  // Phase 4: Work lists table (SQLite)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS work_lists (
+      id TEXT PRIMARY KEY,
+      project_id TEXT NOT NULL,
+      document_id TEXT,
+      user_id INTEGER NOT NULL,
+      title TEXT,
+      description TEXT,
+      status TEXT DEFAULT 'draft',
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id) ON DELETE CASCADE,
+      FOREIGN KEY (document_id) REFERENCES documents(id) ON DELETE SET NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
+
+  // Phase 4: Work list items table (SQLite)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS work_list_items (
+      id TEXT PRIMARY KEY,
+      work_list_id TEXT NOT NULL,
+      description TEXT NOT NULL,
+      category TEXT,
+      unit TEXT,
+      quantity REAL,
+      otskp_code TEXT,
+      status TEXT DEFAULT 'pending',
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (work_list_id) REFERENCES work_lists(id) ON DELETE CASCADE
     );
   `);
 
@@ -598,6 +827,14 @@ async function initSqliteSchema() {
     CREATE INDEX IF NOT EXISTS idx_monolith_projects_status ON monolith_projects(status);
     CREATE INDEX IF NOT EXISTS idx_part_templates_type ON part_templates(object_type);
     CREATE INDEX IF NOT EXISTS idx_parts_project ON parts(project_id);
+    CREATE INDEX IF NOT EXISTS idx_documents_project ON documents(project_id);
+    CREATE INDEX IF NOT EXISTS idx_documents_user ON documents(user_id);
+    CREATE INDEX IF NOT EXISTS idx_documents_status ON documents(status);
+    CREATE INDEX IF NOT EXISTS idx_document_analyses_document ON document_analyses(document_id);
+    CREATE INDEX IF NOT EXISTS idx_document_analyses_status ON document_analyses(status);
+    CREATE INDEX IF NOT EXISTS idx_work_lists_project ON work_lists(project_id);
+    CREATE INDEX IF NOT EXISTS idx_work_lists_user ON work_lists(user_id);
+    CREATE INDEX IF NOT EXISTS idx_work_list_items_work_list ON work_list_items(work_list_id);
   `);
 
   // Seed part templates for all construction types
