@@ -36,8 +36,9 @@
 ### 🎯 Current Branch
 `claude/read-claude-md-011CV5hwVrSBiNWFD9WgKc1q`
 
-### 📊 Latest Commits (13 commits - Phase 1 & Phase 2 Complete + PostgreSQL Fix)
+### 📊 Latest Commits (14 commits - Phase 1 & Phase 2 Complete + All Fixes)
 ```
+62ed7c3 🐛 Fix: Email verification flow - improve error handling and logging
 8e27b12 🔧 CRITICAL FIX: PostgreSQL schema mismatch - add Phase 1&2 tables and fix boolean types
 c13ddea 🔧 CRITICAL FIX: Config endpoint unreachable - add admin creation endpoint
 3cdb546 📚 Update: Phase 2 completion documentation in claude.md
@@ -371,7 +372,33 @@ CREATE TABLE password_reset_tokens (...);
 
 ---
 
-## 🧪 Testing
+### Email Verification Flow ✅ FIXED
+**Problem:** Users logging in with unverified emails got 403 response but no clear UI feedback
+- App appeared frozen/loading when actually returning 403
+- Error message not properly passed from backend to frontend
+- Frontend error detection incomplete for email verification failures
+
+**Cause:**
+- Backend returned both `error` and `message` fields in 403 response
+- AuthContext only extracted `error` field (short text)
+- LoginPage error detection didn't match all message variations
+- Users didn't know to go to email verification page
+
+**Fixed In:**
+- Backend: Enhanced login logging ([LOGIN START], [LOGIN QUERY], etc.)
+- Backend: Improved 403 message (bilingual: contains "Email not verified")
+- AuthContext: Extract `message` field first, fallback to `error`
+- LoginPage: Multiple error detection patterns (English + Czech)
+- Added console logging for debugging login flow
+- Files: `backend/src/routes/auth.js`, `frontend/src/context/AuthContext.tsx`, `frontend/src/pages/LoginPage.tsx`
+- Commit: 62ed7c3
+
+**UX Improvement:**
+- Before: Login → frozen appearance
+- After: Login → yellow warning "Váš email ještě není ověřen" with link to verify page
+- User immediately understands what to do next
+
+---
 
 ### Current Test Coverage
 - Unit tests: concreteExtractor, calculator, text normalization
