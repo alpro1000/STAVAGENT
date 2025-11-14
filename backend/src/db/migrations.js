@@ -1065,15 +1065,23 @@ function parseOtskpXml(xmlContent) {
  */
 async function autoLoadPartTemplatesIfNeeded() {
   try {
+    console.log('[Part Templates] Checking if templates need to be loaded...');
+
     // Check if templates already exist
     const count = await db.prepare('SELECT COUNT(*) as count FROM part_templates').get();
+    console.log(`[Part Templates] Current count in database: ${count.count}`);
 
-    if (count.count > 0) {
-      console.log(`[Part Templates] Already loaded (${count.count} templates exist)`);
+    // If old templates exist (19 parts from old migration), delete and reload new ones (34 parts)
+    if (count.count > 0 && count.count < 34) {
+      console.log(`[Part Templates] Found old templates (${count.count}). Deleting and reloading with new templates (34)...`);
+      await db.prepare('DELETE FROM part_templates').run();
+      console.log('[Part Templates] Old templates deleted.');
+    } else if (count.count >= 34) {
+      console.log(`[Part Templates] ✓ Already loaded (${count.count} templates exist)`);
       return;
     }
 
-    console.log('[Part Templates] Loading predefined templates...');
+    console.log('[Part Templates] Loading predefined templates (34 total)...');
 
     const templates = [
       // BRIDGE templates
@@ -1121,20 +1129,29 @@ async function autoLoadPartTemplatesIfNeeded() {
 
     // Insert all templates
     let inserted = 0;
+    let errors = 0;
     for (const template of templates) {
       const template_id = `${template.object_type}_${template.part_name}`;
       try {
         await db.prepare(`
           INSERT INTO part_templates (template_id, object_type, part_name, display_order, is_default)
           VALUES (?, ?, ?, ?, ?)
-        `).run(template_id, template.object_type, template.part_name, template.display_order, template.is_default ? 1 : 0);
+        `).run(template_id, template.object_type, template.part_name, template.display_order, template.is_default);
         inserted++;
+        console.log(`[Part Templates]   ✓ Inserted: ${template.object_type}/${template.part_name}`);
       } catch (error) {
         // Ignore duplicates
-        if (!error.message?.includes('UNIQUE constraint') && !error.code?.includes('23505')) {
-          throw error;
+        if (error.message?.includes('UNIQUE constraint') || error.code?.includes('23505')) {
+          console.log(`[Part Templates]   ⊘ Duplicate skipped: ${template.object_type}/${template.part_name}`);
+        } else {
+          errors++;
+          console.error(`[Part Templates]   ✗ Error inserting ${template.object_type}/${template.part_name}:`, error.message);
         }
       }
+    }
+
+    if (errors > 0) {
+      console.warn(`[Part Templates] ⚠️  ${errors} errors occurred during insertion`);
     }
 
     console.log(`[Part Templates] ✅ Successfully loaded ${inserted} templates`);

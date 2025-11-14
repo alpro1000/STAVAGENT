@@ -61,8 +61,10 @@ router.get('/', async (req, res) => {
   try {
     const { bridge_id, include_rfi } = req.query;
 
+    // If no bridge_id provided, return empty array (not an error)
+    // This allows frontend to call endpoint before user selects a project
     if (!bridge_id) {
-      return res.status(400).json({ error: 'bridge_id query parameter is required' });
+      return res.json([]);
     }
 
     // Get all positions for this bridge
