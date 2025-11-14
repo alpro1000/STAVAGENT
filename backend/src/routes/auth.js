@@ -512,9 +512,9 @@ router.post('/create-admin-if-first', async (req, res) => {
   }
 });
 
-// POST /api/auth/force-verify-email - Force verify email for existing user
+// POST /api/auth/force-verify-email - Force verify email for ADMIN users ONLY
 // Emergency endpoint for first-time setup when email verification fails
-// Only works if no verified admins exist (first setup scenario)
+// SECURITY: Only verifies admin accounts, only works if no verified admins exist
 router.post('/force-verify-email', async (req, res) => {
   try {
     const { email } = req.body;
@@ -542,6 +542,14 @@ router.post('/force-verify-email', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
+    // CRITICAL SECURITY CHECK: Only verify admin accounts
+    if (user.role !== 'admin') {
+      return res.status(403).json({
+        error: 'Access denied',
+        message: 'This endpoint can only verify admin accounts. Regular users must use email verification.'
+      });
+    }
+
     // Update user to verified
     await db.prepare(`
       UPDATE users
@@ -552,7 +560,7 @@ router.post('/force-verify-email', async (req, res) => {
     // Delete any pending verification tokens for this user
     await db.prepare('DELETE FROM email_verification_tokens WHERE user_id = ?').run(user.id);
 
-    logger.warn(`⚠️ EMERGENCY EMAIL VERIFICATION: ${email} (ID: ${user.id}) - Verified manually`);
+    logger.warn(`⚠️ EMERGENCY ADMIN VERIFICATION: ${email} (ID: ${user.id}, role: admin) - Verified manually for first setup`);
 
     res.json({
       success: true,
