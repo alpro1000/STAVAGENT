@@ -193,7 +193,7 @@ router.post('/', async (req, res) => {
       partsCreated++;
       logger.info(`[CREATE PROJECT]   ✓ Part ${partsCreated}/${templates.length}: ${template.part_name}`);
     }
-    logger.info(`[CREATE PROJECT] ✓ All ${partsCreated} parts created successfully`)
+    logger.info(`[CREATE PROJECT] ✓ All ${partsCreated} parts created successfully`);
 
     const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
 
