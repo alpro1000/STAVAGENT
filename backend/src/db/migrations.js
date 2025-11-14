@@ -124,8 +124,103 @@ async function initPostgresSchema() {
     `).run(defaultFeatureFlags, defaultDefaults);
   }
 
+  // Run Phase 1 & 2 migrations (add missing columns/tables for existing databases)
+  await runPhase1Phase2Migrations();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
+}
+
+/**
+ * Migrations for Phase 1 & 2 - Add missing columns and tables to existing PostgreSQL databases
+ * This ensures existing production databases get the new schema without manual intervention
+ */
+async function runPhase1Phase2Migrations() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 1 & 2 migrations...');
+
+    // Phase 1: Add email_verified column to users table if it doesn't exist
+    try {
+      console.log('[Migration] Checking users table for email_verified column...');
+      await db.exec(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT false;
+      `);
+      console.log('[Migration] ✓ email_verified column added or already exists');
+    } catch (error) {
+      // Column might already exist, that's fine
+      if (!error.message.includes('already exists') && !error.message.includes('column')) {
+        console.error('[Migration] Unexpected error adding email_verified:', error);
+      } else {
+        console.log('[Migration] ✓ email_verified column already exists');
+      }
+    }
+
+    // Phase 1: Add email_verified_at column to users table if it doesn't exist
+    try {
+      console.log('[Migration] Checking users table for email_verified_at column...');
+      await db.exec(`
+        ALTER TABLE users
+        ADD COLUMN IF NOT EXISTS email_verified_at TIMESTAMP;
+      `);
+      console.log('[Migration] ✓ email_verified_at column added or already exists');
+    } catch (error) {
+      if (!error.message.includes('already exists') && !error.message.includes('column')) {
+        console.error('[Migration] Unexpected error adding email_verified_at:', error);
+      } else {
+        console.log('[Migration] ✓ email_verified_at column already exists');
+      }
+    }
+
+    // Phase 1: Create email_verification_tokens table if it doesn't exist
+    try {
+      console.log('[Migration] Checking for email_verification_tokens table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS email_verification_tokens (
+          id VARCHAR(255) PRIMARY KEY,
+          user_id INTEGER NOT NULL UNIQUE,
+          token_hash VARCHAR(255) NOT NULL,
+          expires_at TIMESTAMP NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration] ✓ email_verification_tokens table created or already exists');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration] Error creating email_verification_tokens:', error);
+      } else {
+        console.log('[Migration] ✓ email_verification_tokens table already exists');
+      }
+    }
+
+    // Phase 2: Create password_reset_tokens table if it doesn't exist
+    try {
+      console.log('[Migration] Checking for password_reset_tokens table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS password_reset_tokens (
+          id VARCHAR(255) PRIMARY KEY,
+          user_id INTEGER NOT NULL,
+          token_hash VARCHAR(255) NOT NULL,
+          expires_at TIMESTAMP NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration] ✓ password_reset_tokens table created or already exists');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration] Error creating password_reset_tokens:', error);
+      } else {
+        console.log('[Migration] ✓ password_reset_tokens table already exists');
+      }
+    }
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 1 & 2 migrations completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during migrations:', error);
+    // Don't fail startup if migrations fail - they might already exist
+  }
 }
 
 /**
