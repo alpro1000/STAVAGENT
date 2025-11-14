@@ -135,6 +135,9 @@ async function initPostgresSchema() {
 
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
+
+  // Auto-load part templates if database is empty
+  await autoLoadPartTemplatesIfNeeded();
 }
 
 /**
@@ -880,6 +883,9 @@ async function initSqliteSchema() {
 
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
+
+  // Auto-load part templates if database is empty (SQLite)
+  await autoLoadPartTemplatesIfNeeded();
 }
 
 /**
@@ -1051,6 +1057,105 @@ function parseOtskpXml(xmlContent) {
   }
 
   return items;
+}
+
+/**
+ * Auto-load part templates if database is empty
+ * This ensures predefined parts exist for each object type
+ */
+async function autoLoadPartTemplatesIfNeeded() {
+  try {
+    // Check if templates already exist
+    const count = await db.prepare('SELECT COUNT(*) as count FROM part_templates').get();
+
+    if (count.count > 0) {
+      console.log(`[Part Templates] Already loaded (${count.count} templates exist)`);
+      return;
+    }
+
+    console.log('[Part Templates] Loading predefined templates...');
+
+    const templates = [
+      // BRIDGE templates
+      { object_type: 'bridge', part_name: 'ZÁKLADY', display_order: 1, is_default: true },
+      { object_type: 'bridge', part_name: 'OPĚRY', display_order: 2, is_default: true },
+      { object_type: 'bridge', part_name: 'SLOUPY', display_order: 3, is_default: true },
+      { object_type: 'bridge', part_name: 'PILÍŘE', display_order: 4, is_default: true },
+      { object_type: 'bridge', part_name: 'LOŽISKA', display_order: 5, is_default: true },
+      { object_type: 'bridge', part_name: 'NOSNÁ KONSTRUKCE', display_order: 6, is_default: true },
+      { object_type: 'bridge', part_name: 'MOSTOVKA', display_order: 7, is_default: true },
+      { object_type: 'bridge', part_name: 'IZOLACE', display_order: 8, is_default: true },
+      { object_type: 'bridge', part_name: 'ŘÍMSY', display_order: 9, is_default: true },
+      { object_type: 'bridge', part_name: 'ZÁVĚRNÉ ZÍDKY', display_order: 10, is_default: true },
+      { object_type: 'bridge', part_name: 'PŘECHODY', display_order: 11, is_default: true },
+      { object_type: 'bridge', part_name: 'SVODIDLA', display_order: 12, is_default: true },
+
+      // BUILDING templates
+      { object_type: 'building', part_name: 'ZÁKLADY', display_order: 1, is_default: true },
+      { object_type: 'building', part_name: 'SUTERÉN', display_order: 2, is_default: true },
+      { object_type: 'building', part_name: 'NOSNÉ ZÍDKY', display_order: 3, is_default: true },
+      { object_type: 'building', part_name: 'SLOUPY', display_order: 4, is_default: true },
+      { object_type: 'building', part_name: 'STROPY', display_order: 5, is_default: true },
+      { object_type: 'building', part_name: 'SCHODIŠTĚ', display_order: 6, is_default: true },
+      { object_type: 'building', part_name: 'ATIKA', display_order: 7, is_default: true },
+      { object_type: 'building', part_name: 'BALKONY', display_order: 8, is_default: true },
+
+      // PARKING templates
+      { object_type: 'parking', part_name: 'ZÁKLADY', display_order: 1, is_default: true },
+      { object_type: 'parking', part_name: 'PODKLADNÍ BETON', display_order: 2, is_default: true },
+      { object_type: 'parking', part_name: 'RAMPY', display_order: 3, is_default: true },
+      { object_type: 'parking', part_name: 'STROPNÍ DESKY', display_order: 4, is_default: true },
+      { object_type: 'parking', part_name: 'SLOUPY', display_order: 5, is_default: true },
+      { object_type: 'parking', part_name: 'OBVODOVÉ ZÍDKY', display_order: 6, is_default: true },
+
+      // ROAD templates
+      { object_type: 'road', part_name: 'ZEMNÍ PRÁCE', display_order: 1, is_default: true },
+      { object_type: 'road', part_name: 'PODKLAD', display_order: 2, is_default: true },
+      { object_type: 'road', part_name: 'ZÁKLADNÍ VRSTVA', display_order: 3, is_default: true },
+      { object_type: 'road', part_name: 'LOŽNÁ VRSTVA', display_order: 4, is_default: true },
+      { object_type: 'road', part_name: 'KRYT', display_order: 5, is_default: true },
+      { object_type: 'road', part_name: 'KRAJNICE', display_order: 6, is_default: true },
+      { object_type: 'road', part_name: 'OBRUBY', display_order: 7, is_default: true },
+      { object_type: 'road', part_name: 'ODVODNĚNÍ', display_order: 8, is_default: true },
+    ];
+
+    // Insert all templates
+    let inserted = 0;
+    for (const template of templates) {
+      const template_id = `${template.object_type}_${template.part_name}`;
+      try {
+        await db.prepare(`
+          INSERT INTO part_templates (template_id, object_type, part_name, display_order, is_default)
+          VALUES (?, ?, ?, ?, ?)
+        `).run(template_id, template.object_type, template.part_name, template.display_order, template.is_default ? 1 : 0);
+        inserted++;
+      } catch (error) {
+        // Ignore duplicates
+        if (!error.message?.includes('UNIQUE constraint') && !error.code?.includes('23505')) {
+          throw error;
+        }
+      }
+    }
+
+    console.log(`[Part Templates] ✅ Successfully loaded ${inserted} templates`);
+
+    // Show summary
+    const summary = await db.prepare(`
+      SELECT object_type, COUNT(*) as count
+      FROM part_templates
+      GROUP BY object_type
+      ORDER BY object_type
+    `).all();
+
+    console.log('[Part Templates] Summary by type:');
+    summary.forEach(s => {
+      console.log(`  - ${s.object_type}: ${s.count} parts`);
+    });
+
+  } catch (error) {
+    console.error('[Part Templates] ⚠️  Error during auto-load:', error.message);
+    console.warn('[Part Templates] Continuing startup without templates.');
+  }
 }
 
 export default { initDatabase };
