@@ -15,8 +15,12 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
 
+  // 🚨 TEMPORARY: Auth bypass for calculator testing
+  // TODO: REMOVE THIS BEFORE FINAL DEPLOYMENT!
+  const TEMP_BYPASS_AUTH = true; // ⚠️ Set to false after testing!
+
   // DEV MODE: Bypass authentication if VITE_DISABLE_AUTH is set
-  const devModeBypass = import.meta.env.VITE_DISABLE_AUTH === 'true';
+  const devModeBypass = import.meta.env.VITE_DISABLE_AUTH === 'true' || TEMP_BYPASS_AUTH;
 
   if (devModeBypass) {
     console.warn('⚠️ DEV MODE: Authentication disabled! This should NEVER be enabled in production.');
