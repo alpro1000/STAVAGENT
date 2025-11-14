@@ -13,9 +13,26 @@ const JWT_EXPIRY = process.env.JWT_EXPIRY || '24h';
 /**
  * Middleware to require valid JWT token
  * Attaches decoded token data to req.user
+ *
+ * 🚨 TEMPORARY DEV MODE: Set DISABLE_AUTH=true in env to bypass authentication
  */
 export function requireAuth(req, res, next) {
   try {
+    // 🚨 TEMPORARY: Dev mode bypass for calculator testing
+    const TEMP_BYPASS_AUTH = process.env.DISABLE_AUTH === 'true';
+
+    if (TEMP_BYPASS_AUTH) {
+      // Mock user for dev mode
+      req.user = {
+        userId: 1,
+        email: 'dev@test.com',
+        role: 'admin',
+        name: 'Dev User'
+      };
+      logger.warn('⚠️ [DEV MODE] Auth bypassed - using mock user');
+      return next();
+    }
+
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
