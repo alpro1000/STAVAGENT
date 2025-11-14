@@ -19,10 +19,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   // TODO: REMOVE THIS BEFORE FINAL DEPLOYMENT!
   const TEMP_BYPASS_AUTH = true; // ⚠️ Set to false after testing!
 
-  // DEV MODE: Bypass authentication if VITE_DISABLE_AUTH is set
-  const devModeBypass = import.meta.env.VITE_DISABLE_AUTH === 'true' || TEMP_BYPASS_AUTH;
-
-  if (devModeBypass) {
+  if (TEMP_BYPASS_AUTH) {
     console.warn('⚠️ DEV MODE: Authentication disabled! This should NEVER be enabled in production.');
     return <>{children}</>;
   }
