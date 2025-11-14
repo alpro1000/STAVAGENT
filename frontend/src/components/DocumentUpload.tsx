@@ -16,7 +16,7 @@ interface DocumentUploadProps {
 export default function DocumentUpload({
   onUpload,
   isUploading,
-  uploadProgress,
+  uploadProgress: _uploadProgress, // Reserved for future progress bar implementation
   currentDocument,
   isAnalyzing
 }: DocumentUploadProps) {

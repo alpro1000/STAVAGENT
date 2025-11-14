@@ -35,14 +35,14 @@ interface AnalysisResult {
 
 interface AnalysisPreviewProps {
   analysis: AnalysisResult;
-  document: any;
+  document?: any; // Optional, may be used in future
   onConfirm: (workListTitle?: string) => void;
   onDelete: () => void;
 }
 
 export default function AnalysisPreview({
   analysis,
-  document,
+  document: _document, // Prefix with _ to indicate intentionally unused
   onConfirm,
   onDelete
 }: AnalysisPreviewProps) {
