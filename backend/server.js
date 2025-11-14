@@ -23,6 +23,7 @@ import mappingRoutes from './src/routes/mapping.js';
 import configRoutes from './src/routes/config.js';
 import snapshotsRoutes from './src/routes/snapshots.js';
 import otskpRoutes from './src/routes/otskp.js';
+import adminRoutes from './src/routes/admin.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -118,6 +119,9 @@ app.get('/health', (req, res) => {
 // API Routes
 // Auth routes (no auth required for login/register)
 app.use('/api/auth', authLimiter, authRoutes);
+
+// Admin routes (requires authentication + admin role)
+app.use('/api/admin', adminRoutes);
 
 // Protected routes (authentication will be applied within each route handler)
 app.use('/api/upload', uploadLimiter, uploadRoutes);

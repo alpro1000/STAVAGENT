@@ -127,6 +127,9 @@ async function initPostgresSchema() {
   // Run Phase 1 & 2 migrations (add missing columns/tables for existing databases)
   await runPhase1Phase2Migrations();
 
+  // Run Phase 3 migrations (add admin panel and audit logging)
+  await runPhase3Migrations();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 }
@@ -220,6 +223,58 @@ async function runPhase1Phase2Migrations() {
   } catch (error) {
     console.error('[PostgreSQL Migrations] Error during migrations:', error);
     // Don't fail startup if migrations fail - they might already exist
+  }
+}
+
+/**
+ * Migrations for Phase 3 - Add admin panel and audit logging
+ */
+async function runPhase3Migrations() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 3 migrations (Admin Panel & Audit Logging)...');
+
+    // Phase 3: Create audit_logs table if it doesn't exist
+    try {
+      console.log('[Migration] Checking for audit_logs table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS audit_logs (
+          id VARCHAR(255) PRIMARY KEY,
+          admin_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+          action VARCHAR(50) NOT NULL,
+          data TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+      console.log('[Migration] ✓ audit_logs table created or already exists');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration] Error creating audit_logs:', error);
+      } else {
+        console.log('[Migration] ✓ audit_logs table already exists');
+      }
+    }
+
+    // Create indexes for audit_logs table
+    try {
+      console.log('[Migration] Creating indexes for audit_logs table...');
+      await db.exec(`
+        CREATE INDEX IF NOT EXISTS idx_audit_logs_admin ON audit_logs(admin_id);
+        CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
+        CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
+      `);
+      console.log('[Migration] ✓ audit_logs indexes created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration] Error creating indexes:', error);
+      } else {
+        console.log('[Migration] ✓ audit_logs indexes already exist');
+      }
+    }
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 3 migrations completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 3 migrations:', error);
+    // Don't fail startup if migrations fail
   }
 }
 
@@ -350,12 +405,27 @@ async function initSqliteSchema() {
     );
   `);
 
-  // Create indexes for snapshots
+  // Create audit logs table (Phase 3: Admin Panel & Audit Logging)
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS audit_logs (
+      id TEXT PRIMARY KEY,
+      admin_id INTEGER NOT NULL,
+      action TEXT NOT NULL,
+      data TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
+
+  // Create indexes for snapshots and audit_logs
   db.exec(`
     CREATE INDEX IF NOT EXISTS idx_snapshots_bridge ON snapshots(bridge_id);
     CREATE INDEX IF NOT EXISTS idx_snapshots_created ON snapshots(created_at DESC);
     CREATE INDEX IF NOT EXISTS idx_snapshots_locked ON snapshots(is_locked);
     CREATE INDEX IF NOT EXISTS idx_snapshots_final ON snapshots(is_final);
+    CREATE INDEX IF NOT EXISTS idx_audit_logs_admin ON audit_logs(admin_id);
+    CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
+    CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
   `);
 
   // Mapping profiles table

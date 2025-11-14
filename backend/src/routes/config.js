@@ -7,6 +7,7 @@ import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { requireAuth } from '../middleware/auth.js';
+import { adminOnly } from '../middleware/adminOnly.js';
 
 const router = express.Router();
 
@@ -38,10 +39,9 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
-// POST config (update) - PROTECTED: requires authentication
-// NOTE: In Phase 2 this is available to all authenticated users
-// In Phase 3 (admin panel), this will be restricted to adminOnly
-router.post('/', requireAuth, async (req, res) => {
+// POST config (update) - PROTECTED: requires authentication + admin role
+// Phase 3: Config updates now require admin permissions
+router.post('/', requireAuth, adminOnly, async (req, res) => {
   try {
     const { feature_flags, defaults, days_per_month_mode } = req.body;
 
