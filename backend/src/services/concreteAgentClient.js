@@ -9,11 +9,12 @@
  * - Resource calculations
  */
 
-import fetch from 'node-fetch';
 import FormData from 'form-data';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+
+// Note: fetch is available natively in Node.js 18+
 
 // Configuration
 const CONCRETE_AGENT_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent.onrender.com';
