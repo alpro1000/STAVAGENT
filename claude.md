@@ -36,8 +36,10 @@
 ### 🎯 Current Branch
 `claude/read-claude-md-011CV5hwVrSBiNWFD9WgKc1q`
 
-### 📊 Latest Commits (14 commits - Phase 1 & Phase 2 Complete + All Fixes)
+### 📊 Latest Commits (15 commits - Phase 1 & Phase 2 Complete + All Fixes + Auto Migration)
 ```
+a59121c 🔧 AUTO MIGRATION: Add Phase 1&2 columns/tables to existing PostgreSQL databases
+412a21f 📚 Update: Document email verification flow fix in claude.md
 62ed7c3 🐛 Fix: Email verification flow - improve error handling and logging
 8e27b12 🔧 CRITICAL FIX: PostgreSQL schema mismatch - add Phase 1&2 tables and fix boolean types
 c13ddea 🔧 CRITICAL FIX: Config endpoint unreachable - add admin creation endpoint
@@ -50,7 +52,6 @@ e83ea8e ✨ Phase 1: Implement email verification backend (emailService, databas
 e5e3b4e 🔒 CRITICAL: Protect /api/config endpoint with requireAuth and adminOnly middleware
 c5db588 🔧 Fix: Sidebar now fetches from monolith-projects endpoint with bridge_id alias
 9f6eede 📋 Add: Comprehensive user management and multi-kiosk architecture documentation
-8b209ba 📚 Update: Comprehensive claude.md with user management and multi-kiosk architecture documentation
 65bf69e 🐛 Fix: PostgreSQL boolean type mismatch in project creation
 ```
 
@@ -362,7 +363,15 @@ if (shouldTrustProxy) {
 - Commit: 8e27b12
 
 **Deployment Note:**
-If database already exists on production, run manual migration:
+✅ **AUTO-MIGRATION IMPLEMENTED** - No manual SQL needed!
+- Added `runPhase1Phase2Migrations()` function to backend startup
+- Automatically checks and adds missing columns/tables on backend restart
+- Uses `ADD COLUMN IF NOT EXISTS` and `CREATE TABLE IF NOT EXISTS` (idempotent)
+- Safely handles already-existing schema elements
+- Comprehensive logging for debugging
+- Commit: a59121c
+
+If needed, manual migration:
 ```sql
 ALTER TABLE users ADD COLUMN email_verified BOOLEAN DEFAULT false;
 ALTER TABLE users ADD COLUMN email_verified_at TIMESTAMP;
