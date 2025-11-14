@@ -23,21 +23,24 @@
 | OTSKP Integration | ✅ Working | 17,904 codes, auto-load, search functional |
 | PostgreSQL Support | ✅ Fixed | Boolean type mismatch resolved (Phase 1) |
 | MonolithProject | ✅ Working | Bridges, buildings, parking, roads unified |
-| User Management | ✅ Phase 1-2 Complete | Email verification (Phase 1) + Dashboard & Password Reset (Phase 2) |
+| User Management | ✅ Phase 1-3 Complete | Email verification (Phase 1) + Dashboard (Phase 2) + Admin Panel (Phase 3) |
 | User Dashboard | ✅ Implemented | Phase 2 COMPLETE - profile, password change, settings |
 | Password Reset | ✅ Implemented | Phase 2 COMPLETE - forgot password, reset via email |
+| Admin Panel | ✅ Implemented | Phase 3 COMPLETE - user management, audit logs, statistics |
+| Audit Logging | ✅ Implemented | Phase 3 COMPLETE - tracks all admin actions in database |
 | Multi-Kiosk Support | 🔲 Design Complete | Distributed architecture documented |
-| Admin Panel | ❌ Missing | Phase 3 priority |
 | Rate Limiting | ✅ Working | Trust proxy properly guarded |
-| Security | 🟡 Partially Fixed | /api/config protected, adminOnly middleware in place |
+| Security | ✅ Complete | /api/config protected, adminOnly middleware enforced |
 | Admin Middleware | ✅ Added | adminOnly.js middleware for role enforcement |
 | Documentation | ✅ Complete | ARCHITECTURE.md, MONOLITH_SPEC.md, ROADMAP.md, USER_MANAGEMENT_ARCHITECTURE.md, MULTI_KIOSK_ARCHITECTURE.md |
 
 ### 🎯 Current Branch
 `claude/read-claude-md-011CV5hwVrSBiNWFD9WgKc1q`
 
-### 📊 Latest Commits (15 commits - Phase 1 & Phase 2 Complete + All Fixes + Auto Migration)
+### 📊 Latest Commits (17 commits - Phase 1, 2 & 3 Complete + All Fixes + Auto Migration)
 ```
+570e7c4 ✨ Phase 3: Admin Panel frontend implementation
+e7f1034 ✨ Phase 3: Admin Panel backend implementation
 a59121c 🔧 AUTO MIGRATION: Add Phase 1&2 columns/tables to existing PostgreSQL databases
 412a21f 📚 Update: Document email verification flow fix in claude.md
 62ed7c3 🐛 Fix: Email verification flow - improve error handling and logging
@@ -406,6 +409,157 @@ CREATE TABLE password_reset_tokens (...);
 - Before: Login → frozen appearance
 - After: Login → yellow warning "Váš email ještě není ověřen" with link to verify page
 - User immediately understands what to do next
+
+---
+
+## ✅ Phase 3: Admin Panel & Audit Logging (COMPLETE)
+
+### Admin Backend Endpoints ✅ IMPLEMENTED
+**Location:** `backend/src/routes/admin.js`
+
+**User Management Endpoints:**
+```
+GET    /api/admin/users              - List all users
+GET    /api/admin/users/:id          - Get user details
+PUT    /api/admin/users/:id          - Update user role/verification
+DELETE /api/admin/users/:id          - Delete user
+```
+
+**Audit Log Endpoints:**
+```
+GET    /api/admin/audit-logs         - View audit logs with filtering & pagination
+GET    /api/admin/audit-logs/stats   - Audit log statistics by action & admin
+GET    /api/admin/stats              - Overall system statistics
+```
+
+**Security Features:**
+- All endpoints require `requireAuth` + `adminOnly` middleware
+- Admin cannot modify own role or delete themselves
+- Comprehensive validation and error messages
+- Admin can verify user emails (helps unblock locked accounts)
+
+### Audit Logging System ✅ IMPLEMENTED
+**Location:** `backend/src/utils/auditLogger.js`
+
+**Features:**
+- `logAdminAction(adminId, action, data)` - Record admin actions
+- `getAuditLogs(filter)` - Retrieve with pagination
+- `getAuditStats()` - Statistics breakdown by action
+- `cleanupOldAuditLogs(daysToKeep)` - Retention policy (default: 90 days)
+
+**Tracked Actions:**
+- `VIEW_USERS_LIST` - List all users
+- `VIEW_USER_DETAILS` - View user details
+- `UPDATE_USER` - Change user role or email verification
+- `DELETE_USER` - Delete user account
+- `VIEW_AUDIT_LOGS` - View audit logs
+- `VIEW_ADMIN_STATS` - View statistics
+
+**Database Schema:**
+```sql
+CREATE TABLE audit_logs (
+  id VARCHAR(255) PRIMARY KEY,
+  admin_id INTEGER NOT NULL,
+  action VARCHAR(50) NOT NULL,
+  data TEXT,                          -- JSON field for action details
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE INDEX idx_audit_logs_admin ON audit_logs(admin_id);
+CREATE INDEX idx_audit_logs_action ON audit_logs(action);
+CREATE INDEX idx_audit_logs_created ON audit_logs(created_at DESC);
+```
+
+### Admin Frontend Dashboard ✅ IMPLEMENTED
+**Location:** `frontend/src/pages/AdminDashboard.tsx`
+
+**Main Components:**
+
+1. **AdminDashboard (Page)**
+   - Tab-based navigation: Overview | Users | Audit Logs
+   - Admin-only access check (redirects non-admins)
+   - Real-time statistics refresh
+
+2. **UserManagement Component** (`frontend/src/components/admin/UserManagement.tsx`)
+   - Two-column layout: Users list | Edit form
+   - View all users with email, role, verification status
+   - Edit user:
+     * Change role (user ↔ admin)
+     * Toggle email verification
+   - Delete user with confirmation dialog
+   - Real-time save and error handling
+
+3. **AuditLogs Component** (`frontend/src/components/admin/AuditLogs.tsx`)
+   - View all admin actions with timestamps
+   - Filter by action type
+   - Expandable JSON data viewer for action details
+   - Pagination (10/50/100 per page)
+   - Action type badges with color coding:
+     * Blue: View actions
+     * Orange: Update actions
+     * Red: Delete actions
+
+4. **AdminStats Component** (`frontend/src/components/admin/AdminStats.tsx`)
+   - Dashboard metrics:
+     * Total users
+     * Admin users
+     * Email verified users
+     * Total projects
+   - Projects by type breakdown
+   - Recent 5 registered users
+   - Refresh button for real-time updates
+
+### API Integration ✅ COMPLETE
+**Location:** `frontend/src/services/api.ts`
+
+**adminAPI Methods:**
+```typescript
+adminAPI.getUsers()                    // Get all users
+adminAPI.getUser(id)                   // Get user details
+adminAPI.updateUser(id, updates)       // Update user
+adminAPI.deleteUser(id)                // Delete user
+adminAPI.getAuditLogs(filters)         // Get audit logs
+adminAPI.getAuditStats()               // Get audit statistics
+adminAPI.getStats()                    // Get system statistics
+```
+
+### Security & Protection ✅ RESTORED
+**File:** `backend/src/routes/config.js`
+
+- POST /api/config now requires `requireAuth` + `adminOnly`
+- Only admins can update project configuration
+- GET /api/config still available to all authenticated users (read-only)
+
+### Database Migrations ✅ AUTO-MIGRATION ADDED
+**Location:** `backend/src/db/migrations.js`
+
+**Phase 3 Auto-Migration Function:**
+- `runPhase3Migrations()` runs automatically on backend startup
+- Creates `audit_logs` table if missing (idempotent)
+- Creates indexes for performance
+- Works on both new and existing databases
+- Safe error handling (doesn't break startup)
+
+**Both SQLite and PostgreSQL:**
+- Updated `backend/src/db/schema-postgres.sql`
+- Updated SQLite schema in migrations
+- Consistent schema across both databases
+
+### Routing ✅ COMPLETE
+**File:** `frontend/src/App.tsx`
+
+- Added protected route: `/admin` → AdminDashboard
+- Admin-only access enforced by AdminDashboard component
+- Redirects non-admins to home page
+
+### Implementation Stats
+- **Backend Endpoints:** 7 (4 user management + 3 admin)
+- **Frontend Pages:** 1 (AdminDashboard)
+- **Frontend Components:** 3 (UserManagement, AuditLogs, AdminStats)
+- **Database Tables:** 1 (audit_logs)
+- **Commits:** 2 (backend + frontend)
+- **Lines of Code:** 700+ backend, 1000+ frontend
 
 ---
 
