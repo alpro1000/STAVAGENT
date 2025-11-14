@@ -28,6 +28,7 @@
 | Password Reset | ✅ Implemented | Phase 2 COMPLETE - forgot password, reset via email |
 | Admin Panel | ✅ Implemented | Phase 3 COMPLETE - user management, audit logs, statistics |
 | Audit Logging | ✅ Implemented | Phase 3 COMPLETE - tracks all admin actions in database |
+| Document Upload & Analysis | ✅ Phase 4 COMPLETE | Document pipeline, CORE Engine integration, async analysis |
 | Multi-Kiosk Support | 🔲 Design Complete | Distributed architecture documented |
 | Rate Limiting | ✅ Working | Trust proxy properly guarded |
 | Security | ✅ Complete | /api/config protected, adminOnly middleware enforced |
@@ -37,8 +38,83 @@
 ### 🎯 Current Branch
 `claude/read-claude-md-011CV5hwVrSBiNWFD9WgKc1q`
 
-### 📊 Latest Commits (17 commits - Phase 1, 2 & 3 Complete + All Fixes + Auto Migration)
+---
+
+### ✨ PHASE 4: Document Upload & Analysis - IMPLEMENTATION COMPLETE! 🎉
+**Status:** Full implementation of document upload pipeline (2,210+ lines)
+
+**Backend Implementation:**
+- ✅ **concreteAgentClient.js** - CORE Engine HTTP wrapper (400+ lines)
+  - Workflow A: Document import & audit (Excel, KROS)
+  - Workflow B: Drawing analysis (PDFs, images)
+  - Multi-role audit, AI enrichment, KB search
+- ✅ **documents.js routes** - Full API (500+ lines)
+  - POST /api/documents/upload - Async file upload
+  - GET /api/documents/:id - Document info
+  - GET /api/documents/:id/analysis - Results
+  - POST /api/documents/:id/confirm - Work list creation
+- ✅ **Database migrations** (Phase 4)
+  - documents, document_analyses, work_lists, work_list_items tables
+  - PostgreSQL + SQLite support
+  - Proper indexes for performance
+- ✅ **server.js updates** - Route registration + upload limiting
+
+**Frontend Implementation:**
+- ✅ **DocumentUploadPage** - Main UI (200+ lines)
+  - Project-aware, real-time polling, auto-detection
+- ✅ **DocumentUpload** - Drag-drop component (150+ lines)
+  - File validation, progress tracking, animations
+- ✅ **AnalysisPreview** - Results display (300+ lines)
+  - Tabbed interface, OTSKP codes, materials, dimensions
+- ✅ **App.tsx routing** - Protected route integration
+
+**Key Features:**
+- ✅ Async analysis (non-blocking)
+- ✅ Multi-role validation
+- ✅ AI enrichment ready
+- ✅ Material extraction
+- ✅ OTSKP code detection
+- ✅ Work list generation
+
+**Commits:**
 ```
+d475425 🔧 Fix: Add form-data dependency and remove unnecessary node-fetch import
+fe619e3 ✨ Phase 4: Document Upload & Analysis - Core Implementation
+```
+
+---
+
+### 🔄 Latest Session (2025-11-14) - Systems Architecture + Phase 4 Completion
+**Key Achievement:** Complete integration strategy between Monolit-Planner and Concrete-Agent CORE Engine documented
+
+**What happened:**
+- ✅ Discovered and documented Concrete-Agent (CORE Engine) already exists at https://concrete-agent.onrender.com
+- ✅ Clarified that two systems are **complementary, not competing**
+- ✅ Created comprehensive integration documentation (1,350+ lines)
+- ✅ Clear roadmap for Phases 4-7 (Implementation ready)
+
+**Key Insights:**
+1. Monolit-Planner = User-facing UI + Admin Panel (what you built)
+2. Concrete-Agent = Powerful CORE Engine (AI analysis, document parsing, KB)
+3. "Киоски" clarified = Specialized calculators (Bridge, Building, Parking, Road, Delivery)
+4. Real smetčик workflow now maps perfectly to system design
+
+**New Documentation Created:**
+- `SYSTEMS_INTEGRATION.md` (600+ lines) - Main architecture & roadmap
+- `QUICK_REFERENCE.md` (400+ lines) - Developer cheatsheet
+- `SESSION_NOTES_2025-11-14.md` (350+ lines) - Context & insights
+
+**Ready for:** Phase 4 - Document Upload & Analysis (2-3 days)
+
+---
+
+### 📊 Latest Commits (25 commits - Phase 1-4 Complete: User Management, Admin, Document Upload)
+```
+d475425 🔧 Fix: Add form-data dependency and remove unnecessary node-fetch import
+fe619e3 ✨ Phase 4: Document Upload & Analysis - Core Implementation
+662ef05 📝 Session notes: Complete system architecture understanding
+e7399b5 📚 Systems Integration documentation - Monolit-Planner + Concrete-Agent CORE Engine
+c8586db 📚 Update: Document Phase 3 Admin Panel completion in claude.md
 570e7c4 ✨ Phase 3: Admin Panel frontend implementation
 e7f1034 ✨ Phase 3: Admin Panel backend implementation
 a59121c 🔧 AUTO MIGRATION: Add Phase 1&2 columns/tables to existing PostgreSQL databases
@@ -70,6 +146,39 @@ c5db588 🔧 Fix: Sidebar now fetches from monolith-projects endpoint with bridg
 - Error handling and deployment
 
 🎯 **Why read:** Understand how Monolit-Planner and Concrete-Agent work together
+
+---
+
+### Systems Integration Map (🆕 CRITICAL - NEW!)
+📄 **[SYSTEMS_INTEGRATION.md](SYSTEMS_INTEGRATION.md)** - 600+ lines
+- **Complete integration of TWO systems:**
+  - Monolit-Planner (Frontend/Backend) ← what you already built
+  - Concrete-Agent (CORE Engine) ← existing at https://concrete-agent.onrender.com
+- Architecture diagram showing all 5 tiers
+- Integration points (document upload → analysis → estimate)
+- All API endpoints reference
+- New database tables needed
+- Implementation roadmap (Phases 4-7):
+  - Phase 4: Document Upload & Analysis
+  - Phase 5: Work List Generation
+  - Phase 6: Calculator Integration
+  - Phase 7: Estimate Assembly & Export
+
+🎯 **Why read:** THIS IS YOUR MAIN ROADMAP - How to integrate CORE Engine and build Phase 4+
+
+---
+
+### Quick Developer Reference (🆕 NEW!)
+📄 **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Cheatsheet
+- Where all systems are located (URLs, repos, folders)
+- Quick data flow paths
+- API endpoints cheatsheet
+- Development commands (npm, uvicorn, etc.)
+- File structure for quick navigation
+- Debugging tips
+- Environment variables
+
+🎯 **Why read:** Quick lookup during development - don't re-read long docs
 
 ---
 

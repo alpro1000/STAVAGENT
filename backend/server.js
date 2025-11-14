@@ -24,6 +24,7 @@ import configRoutes from './src/routes/config.js';
 import snapshotsRoutes from './src/routes/snapshots.js';
 import otskpRoutes from './src/routes/otskp.js';
 import adminRoutes from './src/routes/admin.js';
+import documentsRoutes from './src/routes/documents.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -134,6 +135,7 @@ app.use('/api/mapping', mappingRoutes);
 app.use('/api/config', configRoutes);
 app.use('/api/snapshots', snapshotsRoutes);
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
+app.use('/api/documents', uploadLimiter, documentsRoutes);
 
 // 404 handler
 app.use((req, res) => {
