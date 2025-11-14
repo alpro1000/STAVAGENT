@@ -96,8 +96,12 @@ router.post('/', async (req, res) => {
       road_width_m
     } = req.body;
 
+    logger.info(`[CREATE PROJECT] Starting creation for project_id: ${project_id}, type: ${object_type}`);
+    logger.info(`[CREATE PROJECT] Owner ID: ${ownerId}, User: ${req.user?.email || 'unknown'}`);
+
     // Validation
     if (!project_id || !object_type) {
+      logger.warn(`[CREATE PROJECT] Validation failed - missing required fields`);
       return res.status(400).json({ error: 'project_id and object_type are required' });
     }
 
@@ -127,13 +131,20 @@ router.post('/', async (req, res) => {
     }
 
     // Check if templates exist for this object type (CRITICAL: needed for default parts)
+    logger.info(`[CREATE PROJECT] Checking for templates with object_type: ${object_type}`);
     const templates = await db.prepare(`
       SELECT * FROM part_templates
       WHERE object_type = ? AND is_default = true
       ORDER BY display_order
     `).all(object_type);
 
+    logger.info(`[CREATE PROJECT] Found ${templates?.length || 0} templates for ${object_type}`);
+    if (templates && templates.length > 0) {
+      logger.info(`[CREATE PROJECT] Templates: ${templates.map(t => t.part_name).join(', ')}`);
+    }
+
     if (!templates || templates.length === 0) {
+      logger.error(`[CREATE PROJECT] ❌ No templates found for object_type: ${object_type}`);
       return res.status(503).json({
         error: `No part templates found for object type '${object_type}'. Please contact administrator to load templates.`,
         details: {
@@ -145,6 +156,7 @@ router.post('/', async (req, res) => {
     }
 
     // Create project
+    logger.info(`[CREATE PROJECT] Creating project in database...`);
     await db.prepare(`
       INSERT INTO monolith_projects (
         project_id, object_type, project_name, object_name, owner_id, description,
@@ -167,17 +179,25 @@ router.post('/', async (req, res) => {
       road_length_km || null,
       road_width_m || null
     );
+    logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
 
     // Create default parts from templates (templates already validated above)
+    logger.info(`[CREATE PROJECT] Creating ${templates.length} default parts...`);
+    let partsCreated = 0;
     for (const template of templates) {
       const partId = `${project_id}_${template.part_name}`;
       await db.prepare(`
         INSERT INTO parts (part_id, project_id, part_name, is_predefined)
         VALUES (?, ?, ?, ?)
       `).run(partId, project_id, template.part_name, true);
+      partsCreated++;
+      logger.info(`[CREATE PROJECT]   ✓ Part ${partsCreated}/${templates.length}: ${template.part_name}`);
     }
+    logger.info(`[CREATE PROJECT] ✓ All ${partsCreated} parts created successfully`)
 
     const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
+
+    logger.info(`[CREATE PROJECT] ✅ SUCCESS - Project ${project_id} created with ${partsCreated} parts`);
 
     res.status(201).json({
       ...project,
@@ -187,7 +207,8 @@ router.post('/', async (req, res) => {
 
     logger.info(`Created monolith project: ${project_id} (${object_type})`);
   } catch (error) {
-    logger.error('Error creating monolith project:', error);
+    logger.error(`[CREATE PROJECT] ❌ FAILED - Error creating project:`, error);
+    logger.error(`[CREATE PROJECT] Error stack:`, error.stack);
     res.status(500).json({ error: error.message });
   }
 });
