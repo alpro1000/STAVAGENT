@@ -73,6 +73,39 @@ c5db588 🔧 Fix: Sidebar now fetches from monolith-projects endpoint with bridg
 
 ---
 
+### Systems Integration Map (🆕 CRITICAL - NEW!)
+📄 **[SYSTEMS_INTEGRATION.md](SYSTEMS_INTEGRATION.md)** - 600+ lines
+- **Complete integration of TWO systems:**
+  - Monolit-Planner (Frontend/Backend) ← what you already built
+  - Concrete-Agent (CORE Engine) ← existing at https://concrete-agent.onrender.com
+- Architecture diagram showing all 5 tiers
+- Integration points (document upload → analysis → estimate)
+- All API endpoints reference
+- New database tables needed
+- Implementation roadmap (Phases 4-7):
+  - Phase 4: Document Upload & Analysis
+  - Phase 5: Work List Generation
+  - Phase 6: Calculator Integration
+  - Phase 7: Estimate Assembly & Export
+
+🎯 **Why read:** THIS IS YOUR MAIN ROADMAP - How to integrate CORE Engine and build Phase 4+
+
+---
+
+### Quick Developer Reference (🆕 NEW!)
+📄 **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Cheatsheet
+- Where all systems are located (URLs, repos, folders)
+- Quick data flow paths
+- API endpoints cheatsheet
+- Development commands (npm, uvicorn, etc.)
+- File structure for quick navigation
+- Debugging tips
+- Environment variables
+
+🎯 **Why read:** Quick lookup during development - don't re-read long docs
+
+---
+
 ### Implementation Plan
 📄 **[ROADMAP.md](ROADMAP.md)** - 600+ lines
 - 4-phase implementation plan (Weeks 1-4)
