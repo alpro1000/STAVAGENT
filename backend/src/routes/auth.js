@@ -512,9 +512,9 @@ router.post('/create-admin-if-first', async (req, res) => {
   }
 });
 
-// POST /api/auth/force-verify-email - Force verify email for existing user
-// Emergency endpoint for first-time setup when email verification fails
-// Only works if no verified admins exist (first setup scenario)
+// POST /api/auth/force-verify-email - Emergency first admin setup endpoint
+// Promotes user to admin role and verifies their email in one step
+// SECURITY: Only works if no verified admins exist (first-time setup scenario)
 router.post('/force-verify-email', async (req, res) => {
   try {
     const { email } = req.body;
@@ -542,25 +542,33 @@ router.post('/force-verify-email', async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Update user to verified
+    // SECURITY: Upgrade user to admin if needed (first setup scenario)
+    // This allows promoting the first user to admin and verifying them in one step
+    if (user.role !== 'admin') {
+      logger.warn(`⚠️ EMERGENCY ROLE UPGRADE: Promoting ${email} (ID: ${user.id}) from '${user.role}' to 'admin' for first setup`);
+    }
+
+    // Update user to verified AND admin role (if not already)
     await db.prepare(`
       UPDATE users
-      SET email_verified = ?, email_verified_at = ?
+      SET email_verified = ?,
+          email_verified_at = ?,
+          role = 'admin'
       WHERE email = ?
     `).run(true, new Date().toISOString(), email);
 
     // Delete any pending verification tokens for this user
     await db.prepare('DELETE FROM email_verification_tokens WHERE user_id = ?').run(user.id);
 
-    logger.warn(`⚠️ EMERGENCY EMAIL VERIFICATION: ${email} (ID: ${user.id}) - Verified manually`);
+    logger.warn(`⚠️ EMERGENCY ADMIN VERIFICATION: ${email} (ID: ${user.id}, role: admin) - Verified manually for first setup`);
 
     res.json({
       success: true,
-      message: 'Email verified successfully! You can now log in.',
+      message: 'Admin account verified successfully! You can now log in with full admin privileges.',
       user: {
         id: user.id,
         email: user.email,
-        role: user.role,
+        role: 'admin',
         email_verified: true
       }
     });
