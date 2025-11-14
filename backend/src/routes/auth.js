@@ -103,41 +103,55 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+    logger.info(`[LOGIN START] Email: ${email}`);
 
     // Validation
     if (!email || !password) {
+      logger.warn(`[LOGIN FAIL] Missing email or password`);
       return res.status(400).json({ error: 'Email and password are required' });
     }
 
     // Find user
+    logger.info(`[LOGIN] Querying database for user: ${email}`);
     const user = await db.prepare('SELECT * FROM users WHERE email = ?').get(email);
+    logger.info(`[LOGIN] Database query returned: ${user ? 'User found' : 'User not found'}`);
+
     if (!user) {
+      logger.warn(`[LOGIN FAIL] User not found: ${email}`);
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Check if email is verified
+    logger.info(`[LOGIN] Checking email verification: email_verified=${user.email_verified}`);
     if (!user.email_verified) {
+      logger.warn(`[LOGIN FAIL] Email not verified: ${email}`);
       return res.status(403).json({
         error: 'Email not verified',
-        message: 'Please verify your email address before logging in. Check your inbox for verification link.'
+        message: 'Email not verified. Vaš email není ověřen. Zkontrolujte si poštovní schránku a klikněte na odkaz k ověření.'
       });
     }
 
     // Verify password
+    logger.info(`[LOGIN] Starting bcrypt.compare for password`);
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
+    logger.info(`[LOGIN] bcrypt.compare completed: ${passwordMatch ? 'Match' : 'No match'}`);
+
     if (!passwordMatch) {
+      logger.warn(`[LOGIN FAIL] Password mismatch for: ${email}`);
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Generate JWT token
+    logger.info(`[LOGIN] Generating JWT token`);
     const token = generateToken({
       userId: user.id,
       email: user.email,
       name: user.name,
       role: user.role
     });
+    logger.info(`[LOGIN] JWT token generated`);
 
-    logger.info(`User logged in: ${email} (ID: ${user.id})`);
+    logger.info(`[LOGIN SUCCESS] User logged in: ${email} (ID: ${user.id})`);
 
     res.json({
       success: true,
@@ -151,7 +165,8 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (error) {
-    logger.error('Login error:', error);
+    logger.error('[LOGIN ERROR] Exception caught:', error);
+    logger.error('[LOGIN ERROR] Stack:', error.stack);
     res.status(500).json({ error: 'Server error during login' });
   }
 });

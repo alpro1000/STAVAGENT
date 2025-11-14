@@ -89,8 +89,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error('Login failed');
       }
     } catch (error: any) {
-      const message = error.response?.data?.error || 'Login failed';
-      throw new Error(message);
+      // Handle both error and message fields from backend
+      const errorMsg = error.response?.data?.message || error.response?.data?.error || 'Login failed';
+      console.error('[AUTH] Login error:', errorMsg);
+      throw new Error(errorMsg);
     }
   };
 

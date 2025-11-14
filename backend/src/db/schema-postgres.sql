@@ -170,6 +170,15 @@ CREATE TABLE IF NOT EXISTS parts (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Audit logs table (Phase 3: Admin Panel & Audit Logging)
+CREATE TABLE IF NOT EXISTS audit_logs (
+  id VARCHAR(255) PRIMARY KEY,
+  admin_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  action VARCHAR(50) NOT NULL,
+  data TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_bridges_owner ON bridges(owner_id);
 CREATE INDEX IF NOT EXISTS idx_bridges_status ON bridges(status);
@@ -190,6 +199,9 @@ CREATE INDEX IF NOT EXISTS idx_monolith_projects_type ON monolith_projects(objec
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_status ON monolith_projects(status);
 CREATE INDEX IF NOT EXISTS idx_part_templates_type ON part_templates(object_type);
 CREATE INDEX IF NOT EXISTS idx_parts_project ON parts(project_id);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_admin ON audit_logs(admin_id);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
 
 -- Seed part templates for all construction types
 INSERT INTO part_templates (template_id, object_type, part_name, display_order, is_default, description) VALUES

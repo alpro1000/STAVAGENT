@@ -484,6 +484,38 @@ export const authAPI = {
   }
 };
 
+// Admin API
+export const adminAPI = {
+  getUsers: async (): Promise<any> => {
+    const { data } = await api.get('/api/admin/users');
+    return data;
+  },
+  getUser: async (userId: number): Promise<any> => {
+    const { data } = await api.get(`/api/admin/users/${userId}`);
+    return data;
+  },
+  updateUser: async (userId: number, updates: any): Promise<any> => {
+    const { data } = await api.put(`/api/admin/users/${userId}`, updates);
+    return data;
+  },
+  deleteUser: async (userId: number): Promise<any> => {
+    const { data } = await api.delete(`/api/admin/users/${userId}`);
+    return data;
+  },
+  getAuditLogs: async (filters?: any): Promise<any> => {
+    const { data } = await api.get('/api/admin/audit-logs', { params: filters });
+    return data;
+  },
+  getAuditStats: async (): Promise<any> => {
+    const { data } = await api.get('/api/admin/audit-logs/stats');
+    return data;
+  },
+  getStats: async (): Promise<any> => {
+    const { data } = await api.get('/api/admin/stats');
+    return data;
+  }
+};
+
 // Helper exports for convenience
 export const createBridge = bridgesAPI.create;
 export const deleteBridge = bridgesAPI.delete;

@@ -52,12 +52,18 @@ export default function LoginPage() {
       }
     } catch (err: any) {
       const errorMessage = err.message || 'Chyba při přihlášení';
+      console.error('[LOGIN] Error:', errorMessage);
 
-      // Check if it's an email verification error
-      if (errorMessage.includes('Email not verified') || errorMessage.includes('Ověřte si')) {
+      // Check if it's an email verification error (check both English and Czech versions)
+      if (errorMessage.includes('Email not verified') ||
+          errorMessage.includes('Ověřte si') ||
+          errorMessage.includes('verify your email') ||
+          errorMessage.includes('ověřen')) {
+        console.log('[LOGIN] Email verification error detected, showing prompt');
         setEmailNotVerified(true);
         setError('');
       } else {
+        console.log('[LOGIN] Other error:', errorMessage);
         setError(errorMessage);
       }
     } finally {
