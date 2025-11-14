@@ -512,4 +512,62 @@ router.post('/create-admin-if-first', async (req, res) => {
   }
 });
 
+// POST /api/auth/force-verify-email - Force verify email for existing user
+// Emergency endpoint for first-time setup when email verification fails
+// Only works if no verified admins exist (first setup scenario)
+router.post('/force-verify-email', async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // Security check: Only allow if no verified admins exist
+    const verifiedAdmin = await db.prepare(
+      'SELECT id FROM users WHERE role = ? AND email_verified = ?'
+    ).get('admin', true);
+
+    if (verifiedAdmin) {
+      return res.status(403).json({
+        error: 'This endpoint is disabled',
+        message: 'Verified admin already exists. Use normal verification flow.'
+      });
+    }
+
+    // Find user by email
+    const user = await db.prepare('SELECT id, email, role FROM users WHERE email = ?').get(email);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update user to verified
+    await db.prepare(`
+      UPDATE users
+      SET email_verified = ?, email_verified_at = ?
+      WHERE email = ?
+    `).run(true, new Date().toISOString(), email);
+
+    // Delete any pending verification tokens for this user
+    await db.prepare('DELETE FROM email_verification_tokens WHERE user_id = ?').run(user.id);
+
+    logger.warn(`⚠️ EMERGENCY EMAIL VERIFICATION: ${email} (ID: ${user.id}) - Verified manually`);
+
+    res.json({
+      success: true,
+      message: 'Email verified successfully! You can now log in.',
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        email_verified: true
+      }
+    });
+  } catch (error) {
+    logger.error('Force verify email error:', error);
+    res.status(500).json({ error: 'Server error during email verification' });
+  }
+});
+
 export default router;
