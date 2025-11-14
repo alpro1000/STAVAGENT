@@ -12,6 +12,7 @@
 
 import express from 'express';
 import db from '../db/init.js';
+import { getPool } from '../db/postgres.js';
 import { logger } from '../utils/logger.js';
 import { requireAuth } from '../middleware/auth.js';
 
@@ -75,9 +76,12 @@ router.get('/', async (req, res) => {
 
 /**
  * POST /api/monolith-projects
- * Create new project
+ * Create new project with parts (using transaction for PostgreSQL)
  */
 router.post('/', async (req, res) => {
+  // PostgreSQL client for transaction
+  let client = null;
+
   try {
     const ownerId = req.user.userId;
     const {
@@ -155,49 +159,78 @@ router.post('/', async (req, res) => {
       });
     }
 
-    // Create project
-    logger.info(`[CREATE PROJECT] Creating project in database...`);
-    await db.prepare(`
-      INSERT INTO monolith_projects (
-        project_id, object_type, project_name, object_name, owner_id, description,
-        span_length_m, deck_width_m, pd_weeks,
-        building_area_m2, building_floors,
-        road_length_km, road_width_m
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `).run(
-      project_id,
-      object_type,
-      project_name || '',
-      object_name || '',
-      ownerId,
-      description || '',
-      span_length_m || null,
-      deck_width_m || null,
-      pd_weeks || null,
-      building_area_m2 || null,
-      building_floors || null,
-      road_length_km || null,
-      road_width_m || null
-    );
-    logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
+    // ===== TRANSACTION START =====
+    // Use single PostgreSQL client for atomicity
+    try {
+      const pool = getPool();
+      client = await pool.connect();
+      await client.query('BEGIN');
+      logger.info(`[CREATE PROJECT] Transaction started`);
 
-    // Create default parts from templates (templates already validated above)
-    logger.info(`[CREATE PROJECT] Creating ${templates.length} default parts...`);
-    let partsCreated = 0;
-    for (const template of templates) {
-      const partId = `${project_id}_${template.part_name}`;
-      await db.prepare(`
+      // Convert SQLite ? placeholders to PostgreSQL $1, $2, etc.
+      const insertProjectSql = `
+        INSERT INTO monolith_projects (
+          project_id, object_type, project_name, object_name, owner_id, description,
+          span_length_m, deck_width_m, pd_weeks,
+          building_area_m2, building_floors,
+          road_length_km, road_width_m
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+      `;
+
+      logger.info(`[CREATE PROJECT] Creating project in database...`);
+      await client.query(insertProjectSql, [
+        project_id,
+        object_type,
+        project_name || '',
+        object_name || '',
+        ownerId,
+        description || '',
+        span_length_m || null,
+        deck_width_m || null,
+        pd_weeks || null,
+        building_area_m2 || null,
+        building_floors || null,
+        road_length_km || null,
+        road_width_m || null
+      ]);
+      logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
+
+      // Create default parts from templates (in same transaction)
+      logger.info(`[CREATE PROJECT] Creating ${templates.length} default parts...`);
+      const insertPartSql = `
         INSERT INTO parts (part_id, project_id, part_name, is_predefined)
-        VALUES (?, ?, ?, ?)
-      `).run(partId, project_id, template.part_name, true);
-      partsCreated++;
-      logger.info(`[CREATE PROJECT]   ✓ Part ${partsCreated}/${templates.length}: ${template.part_name}`);
-    }
-    logger.info(`[CREATE PROJECT] ✓ All ${partsCreated} parts created successfully`)
+        VALUES ($1, $2, $3, $4)
+      `;
 
+      let partsCreated = 0;
+      for (const template of templates) {
+        const partId = `${project_id}_${template.part_name}`;
+        await client.query(insertPartSql, [partId, project_id, template.part_name, true]);
+        partsCreated++;
+        logger.info(`[CREATE PROJECT]   ✓ Part ${partsCreated}/${templates.length}: ${template.part_name}`);
+      }
+      logger.info(`[CREATE PROJECT] ✓ All ${partsCreated} parts created successfully`);
+
+      // Commit transaction
+      await client.query('COMMIT');
+      logger.info(`[CREATE PROJECT] Transaction committed`);
+    } catch (txError) {
+      if (client) {
+        await client.query('ROLLBACK');
+        logger.error(`[CREATE PROJECT] Transaction rolled back due to error`);
+      }
+      throw txError;
+    } finally {
+      if (client) {
+        client.release();
+      }
+    }
+    // ===== TRANSACTION END =====
+
+    // Fetch created project
     const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
 
-    logger.info(`[CREATE PROJECT] ✅ SUCCESS - Project ${project_id} created with ${partsCreated} parts`);
+    logger.info(`[CREATE PROJECT] ✅ SUCCESS - Project ${project_id} created with ${templates.length} parts`);
 
     res.status(201).json({
       ...project,
