@@ -17,7 +17,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { authenticateToken } from '../middleware/auth.js';
+import { requireAuth } from '../middleware/auth.js';
 import { getPool } from '../db/postgres.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
 
@@ -68,7 +68,7 @@ const upload = multer({
 });
 
 // All routes require authentication
-router.use(authenticateToken);
+router.use(requireAuth);
 
 /**
  * POST /api/portal-files/:projectId/upload
@@ -83,7 +83,7 @@ router.post('/:projectId/upload', upload.single('file'), async (req, res) => {
   const client = await pool.connect();
 
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { projectId } = req.params;
     const { file_type } = req.body;
 
@@ -173,7 +173,7 @@ router.post('/:projectId/upload', upload.single('file'), async (req, res) => {
  */
 router.get('/:fileId', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { fileId } = req.params;
     const pool = getPool();
 
@@ -215,7 +215,7 @@ router.delete('/:fileId', async (req, res) => {
   const client = await pool.connect();
 
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { fileId } = req.params;
 
     await client.query('BEGIN');
@@ -278,7 +278,7 @@ router.delete('/:fileId', async (req, res) => {
  */
 router.get('/:fileId/download', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { fileId } = req.params;
     const pool = getPool();
 
@@ -329,7 +329,7 @@ router.post('/:fileId/analyze', async (req, res) => {
   const client = await pool.connect();
 
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { fileId } = req.params;
     const { workflow } = req.body;
 
