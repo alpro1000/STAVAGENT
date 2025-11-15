@@ -15,13 +15,13 @@
 
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { authenticateToken } from '../middleware/auth.js';
+import { requireAuth } from '../middleware/auth.js';
 import { getPool } from '../db/postgres.js';
 
 const router = express.Router();
 
 // All routes require authentication
-router.use(authenticateToken);
+router.use(requireAuth);
 
 /**
  * POST /api/kiosk-links
@@ -38,7 +38,7 @@ router.post('/', async (req, res) => {
   const client = await pool.connect();
 
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { portal_project_id, kiosk_type, kiosk_project_id, handshake_data } = req.body;
 
     // Validation
@@ -129,7 +129,7 @@ router.post('/', async (req, res) => {
  */
 router.get('/:linkId', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { linkId } = req.params;
     const pool = getPool();
 
@@ -175,7 +175,7 @@ router.put('/:linkId', async (req, res) => {
   const client = await pool.connect();
 
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { linkId } = req.params;
     const { status, handshake_data } = req.body;
 
@@ -256,7 +256,7 @@ router.put('/:linkId', async (req, res) => {
  */
 router.delete('/:linkId', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { linkId } = req.params;
     const pool = getPool();
 
@@ -308,7 +308,7 @@ router.post('/:linkId/sync', async (req, res) => {
   const client = await pool.connect();
 
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { linkId } = req.params;
     const { data } = req.body;
 
@@ -381,7 +381,7 @@ router.post('/:linkId/sync', async (req, res) => {
  */
 router.get('/by-kiosk/:kioskType/:kioskProjectId', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { kioskType, kioskProjectId } = req.params;
     const pool = getPool();
 

@@ -17,14 +17,14 @@
 
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
-import { authenticateToken } from '../middleware/auth.js';
+import { requireAuth } from '../middleware/auth.js';
 import { getPool } from '../db/postgres.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
 
 const router = express.Router();
 
 // All routes require authentication
-router.use(authenticateToken);
+router.use(requireAuth);
 
 /**
  * GET /api/portal-projects
@@ -32,7 +32,7 @@ router.use(authenticateToken);
  */
 router.get('/', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const pool = getPool();
 
     const result = await pool.query(
@@ -82,7 +82,7 @@ router.post('/', async (req, res) => {
   const client = await pool.connect();
 
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { project_name, project_type, description } = req.body;
 
     // Validation
@@ -140,7 +140,7 @@ router.post('/', async (req, res) => {
  */
 router.get('/:id', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { id } = req.params;
     const pool = getPool();
 
@@ -182,7 +182,7 @@ router.get('/:id', async (req, res) => {
  */
 router.put('/:id', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { id } = req.params;
     const { project_name, project_type, description } = req.body;
     const pool = getPool();
@@ -259,7 +259,7 @@ router.put('/:id', async (req, res) => {
  */
 router.delete('/:id', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { id } = req.params;
     const pool = getPool();
 
@@ -305,7 +305,7 @@ router.post('/:id/send-to-core', async (req, res) => {
   const client = await pool.connect();
 
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { id } = req.params;
 
     // Get project
@@ -402,7 +402,7 @@ router.post('/:id/send-to-core', async (req, res) => {
  */
 router.get('/:id/files', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { id } = req.params;
     const pool = getPool();
 
@@ -446,7 +446,7 @@ router.get('/:id/files', async (req, res) => {
  */
 router.get('/:id/kiosks', async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.user.userId;
     const { id } = req.params;
     const pool = getPool();
 
