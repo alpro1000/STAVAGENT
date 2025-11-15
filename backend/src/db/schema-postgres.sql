@@ -179,6 +179,74 @@ CREATE TABLE IF NOT EXISTS audit_logs (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- ============================================================================
+-- PORTAL TABLES (Main entry point for all projects and files)
+-- ============================================================================
+
+-- Portal projects table (main project registry)
+CREATE TABLE IF NOT EXISTS portal_projects (
+  portal_project_id VARCHAR(255) PRIMARY KEY,
+  project_name VARCHAR(255) NOT NULL,
+  project_type VARCHAR(50),
+  description TEXT,
+  owner_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  core_project_id VARCHAR(255),
+  core_status VARCHAR(50) DEFAULT 'not_sent',
+  core_audit_result VARCHAR(50),
+  core_last_sync TIMESTAMP,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Portal files table (all files uploaded to portal)
+CREATE TABLE IF NOT EXISTS portal_files (
+  file_id VARCHAR(255) PRIMARY KEY,
+  portal_project_id VARCHAR(255) NOT NULL REFERENCES portal_projects(portal_project_id) ON DELETE CASCADE,
+  file_type VARCHAR(50) NOT NULL,
+  file_name VARCHAR(255) NOT NULL,
+  file_path VARCHAR(512) NOT NULL,
+  file_size BIGINT,
+  mime_type VARCHAR(100),
+  uploaded_by INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  core_workflow_id VARCHAR(255),
+  core_status VARCHAR(50) DEFAULT 'not_sent',
+  analysis_result TEXT,
+  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  processed_at TIMESTAMP
+);
+
+-- Kiosk links table (links between portal projects and kiosk services)
+CREATE TABLE IF NOT EXISTS kiosk_links (
+  link_id VARCHAR(255) PRIMARY KEY,
+  portal_project_id VARCHAR(255) NOT NULL REFERENCES portal_projects(portal_project_id) ON DELETE CASCADE,
+  kiosk_type VARCHAR(50) NOT NULL,
+  kiosk_project_id VARCHAR(255) NOT NULL,
+  status VARCHAR(50) DEFAULT 'active',
+  handshake_data TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  last_sync TIMESTAMP
+);
+
+-- Chat sessions table (chat sessions for each project)
+CREATE TABLE IF NOT EXISTS chat_sessions (
+  session_id VARCHAR(255) PRIMARY KEY,
+  portal_project_id VARCHAR(255) NOT NULL REFERENCES portal_projects(portal_project_id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  session_name VARCHAR(255),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Chat messages table (messages in chat sessions)
+CREATE TABLE IF NOT EXISTS chat_messages (
+  message_id VARCHAR(255) PRIMARY KEY,
+  session_id VARCHAR(255) NOT NULL REFERENCES chat_sessions(session_id) ON DELETE CASCADE,
+  role VARCHAR(50) NOT NULL,
+  content TEXT NOT NULL,
+  metadata TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_bridges_owner ON bridges(owner_id);
 CREATE INDEX IF NOT EXISTS idx_bridges_status ON bridges(status);
@@ -202,6 +270,22 @@ CREATE INDEX IF NOT EXISTS idx_parts_project ON parts(project_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_admin ON audit_logs(admin_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
+
+-- Portal indexes
+CREATE INDEX IF NOT EXISTS idx_portal_projects_owner ON portal_projects(owner_id);
+CREATE INDEX IF NOT EXISTS idx_portal_projects_type ON portal_projects(project_type);
+CREATE INDEX IF NOT EXISTS idx_portal_projects_core_status ON portal_projects(core_status);
+CREATE INDEX IF NOT EXISTS idx_portal_files_project ON portal_files(portal_project_id);
+CREATE INDEX IF NOT EXISTS idx_portal_files_type ON portal_files(file_type);
+CREATE INDEX IF NOT EXISTS idx_portal_files_uploader ON portal_files(uploaded_by);
+CREATE INDEX IF NOT EXISTS idx_portal_files_core_workflow ON portal_files(core_workflow_id);
+CREATE INDEX IF NOT EXISTS idx_kiosk_links_project ON kiosk_links(portal_project_id);
+CREATE INDEX IF NOT EXISTS idx_kiosk_links_type ON kiosk_links(kiosk_type);
+CREATE INDEX IF NOT EXISTS idx_kiosk_links_kiosk_project ON kiosk_links(kiosk_project_id);
+CREATE INDEX IF NOT EXISTS idx_chat_sessions_project ON chat_sessions(portal_project_id);
+CREATE INDEX IF NOT EXISTS idx_chat_sessions_user ON chat_sessions(user_id);
+CREATE INDEX IF NOT EXISTS idx_chat_messages_session ON chat_messages(session_id);
+CREATE INDEX IF NOT EXISTS idx_chat_messages_created ON chat_messages(created_at DESC);
 
 -- Seed part templates for all construction types
 INSERT INTO part_templates (template_id, object_type, part_name, display_order, is_default, description) VALUES
