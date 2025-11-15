@@ -18,7 +18,7 @@ import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { authenticateToken } from '../middleware/auth.js';
-import pool from '../config/db.js';
+import { getPool } from '../db/postgres.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
 
 const router = express.Router();
@@ -79,6 +79,7 @@ router.use(authenticateToken);
  * - file_type: 'tz' | 'vykaz' | 'drawing' | 'other'
  */
 router.post('/:projectId/upload', upload.single('file'), async (req, res) => {
+  const pool = getPool();
   const client = await pool.connect();
 
   try {
@@ -174,6 +175,7 @@ router.get('/:fileId', async (req, res) => {
   try {
     const userId = req.user.id;
     const { fileId } = req.params;
+    const pool = getPool();
 
     const result = await pool.query(
       `SELECT pf.*
@@ -209,6 +211,7 @@ router.get('/:fileId', async (req, res) => {
  * Delete file from portal project
  */
 router.delete('/:fileId', async (req, res) => {
+  const pool = getPool();
   const client = await pool.connect();
 
   try {
@@ -277,6 +280,7 @@ router.get('/:fileId/download', async (req, res) => {
   try {
     const userId = req.user.id;
     const { fileId } = req.params;
+    const pool = getPool();
 
     const result = await pool.query(
       `SELECT pf.*
@@ -321,6 +325,7 @@ router.get('/:fileId/download', async (req, res) => {
  * - workflow: 'A' | 'B' (default: 'A')
  */
 router.post('/:fileId/analyze', async (req, res) => {
+  const pool = getPool();
   const client = await pool.connect();
 
   try {

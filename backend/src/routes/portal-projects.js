@@ -18,7 +18,7 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { authenticateToken } from '../middleware/auth.js';
-import pool from '../config/db.js';
+import { getPool } from '../db/postgres.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
 
 const router = express.Router();
@@ -33,6 +33,7 @@ router.use(authenticateToken);
 router.get('/', async (req, res) => {
   try {
     const userId = req.user.id;
+    const pool = getPool();
 
     const result = await pool.query(
       `SELECT
@@ -77,6 +78,7 @@ router.get('/', async (req, res) => {
  * - description: string
  */
 router.post('/', async (req, res) => {
+  const pool = getPool();
   const client = await pool.connect();
 
   try {
@@ -140,6 +142,7 @@ router.get('/:id', async (req, res) => {
   try {
     const userId = req.user.id;
     const { id } = req.params;
+    const pool = getPool();
 
     const result = await pool.query(
       `SELECT * FROM portal_projects
@@ -182,6 +185,7 @@ router.put('/:id', async (req, res) => {
     const userId = req.user.id;
     const { id } = req.params;
     const { project_name, project_type, description } = req.body;
+    const pool = getPool();
 
     // Check ownership
     const checkResult = await pool.query(
@@ -257,6 +261,7 @@ router.delete('/:id', async (req, res) => {
   try {
     const userId = req.user.id;
     const { id } = req.params;
+    const pool = getPool();
 
     const result = await pool.query(
       `DELETE FROM portal_projects
@@ -296,6 +301,7 @@ router.delete('/:id', async (req, res) => {
  * Currently uses Workflow A (document parsing).
  */
 router.post('/:id/send-to-core', async (req, res) => {
+  const pool = getPool();
   const client = await pool.connect();
 
   try {
@@ -398,6 +404,7 @@ router.get('/:id/files', async (req, res) => {
   try {
     const userId = req.user.id;
     const { id } = req.params;
+    const pool = getPool();
 
     // Check project ownership
     const projectCheck = await pool.query(
@@ -441,6 +448,7 @@ router.get('/:id/kiosks', async (req, res) => {
   try {
     const userId = req.user.id;
     const { id } = req.params;
+    const pool = getPool();
 
     // Check project ownership
     const projectCheck = await pool.query(
