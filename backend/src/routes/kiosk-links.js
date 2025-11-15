@@ -16,7 +16,7 @@
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { authenticateToken } from '../middleware/auth.js';
-import pool from '../config/db.js';
+import { getPool } from '../db/postgres.js';
 
 const router = express.Router();
 
@@ -34,6 +34,7 @@ router.use(authenticateToken);
  * - handshake_data: object - Additional data from kiosk
  */
 router.post('/', async (req, res) => {
+  const pool = getPool();
   const client = await pool.connect();
 
   try {
@@ -130,6 +131,7 @@ router.get('/:linkId', async (req, res) => {
   try {
     const userId = req.user.id;
     const { linkId } = req.params;
+    const pool = getPool();
 
     const result = await pool.query(
       `SELECT kl.*
@@ -169,6 +171,7 @@ router.get('/:linkId', async (req, res) => {
  * - handshake_data: object
  */
 router.put('/:linkId', async (req, res) => {
+  const pool = getPool();
   const client = await pool.connect();
 
   try {
@@ -255,6 +258,7 @@ router.delete('/:linkId', async (req, res) => {
   try {
     const userId = req.user.id;
     const { linkId } = req.params;
+    const pool = getPool();
 
     const result = await pool.query(
       `DELETE FROM kiosk_links
@@ -300,6 +304,7 @@ router.delete('/:linkId', async (req, res) => {
  * - data: object - Data to sync
  */
 router.post('/:linkId/sync', async (req, res) => {
+  const pool = getPool();
   const client = await pool.connect();
 
   try {
@@ -378,6 +383,7 @@ router.get('/by-kiosk/:kioskType/:kioskProjectId', async (req, res) => {
   try {
     const userId = req.user.id;
     const { kioskType, kioskProjectId } = req.params;
+    const pool = getPool();
 
     const result = await pool.query(
       `SELECT kl.*, pp.project_name, pp.project_type
