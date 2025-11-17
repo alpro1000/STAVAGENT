@@ -1,0 +1,33 @@
+{
+  "name": "@monolit/frontend",
+  "version": "1.0.0",
+  "description": "Frontend for Monolit Planner",
+  "type": "module",
+  "scripts": {
+    "prepare:shared": "node ./scripts/ensure-shared-build.js",
+    "predev": "npm run prepare:shared",
+    "dev": "vite",
+    "prebuild": "npm run prepare:shared",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext ts,tsx"
+  },
+  "dependencies": {
+    "@monolit/shared": "file:../shared",
+    "@tanstack/react-query": "^5.17.9",
+    "axios": "^1.6.5",
+    "lucide-react": "^0.263.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.9.5",
+    "uuid": "^13.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.26",
+    "@types/react-dom": "^18.3.7",
+    "@types/uuid": "^10.0.0",
+    "@vitejs/plugin-react": "^4.2.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11"
+  }
+}
