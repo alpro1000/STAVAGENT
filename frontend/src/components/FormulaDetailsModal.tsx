@@ -3,7 +3,7 @@
  */
 
 import { createPortal } from 'react-dom';
-import { Position } from '@monolit/shared';
+import { Position } from '@stavagent/monolit-shared';
 
 interface Props {
   position: Position;

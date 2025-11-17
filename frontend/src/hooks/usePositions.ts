@@ -8,7 +8,7 @@ import { useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { positionsAPI } from '../services/api';
 import { useAppContext } from '../context/AppContext';
-import { Position } from '@monolit/shared';
+import { Position } from '@stavagent/monolit-shared';
 
 export function usePositions(bridgeId: string | null) {
   const { setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();

@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import type { Subtype, Unit } from '@monolit/shared';
+import type { Subtype, Unit } from '@stavagent/monolit-shared';
 
 interface WorkType {
   value: Subtype;

@@ -3,7 +3,7 @@
  */
 
 import { useState, useRef, useEffect } from 'react';
-import { Position, SUBTYPE_ICONS, SUBTYPE_LABELS } from '@monolit/shared';
+import { Position, SUBTYPE_ICONS, SUBTYPE_LABELS } from '@stavagent/monolit-shared';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import FormulaDetailsModal from './FormulaDetailsModal';
