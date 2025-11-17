@@ -1,7 +1,7 @@
 {
-  "name": "@monolit/backend",
+  "name": "@stavagent/monolit-backend",
   "version": "1.0.0",
-  "description": "Backend API for Monolit Planner",
+  "description": "Backend API for Monolit Calculator",
   "main": "server.js",
   "type": "module",
   "scripts": {
@@ -14,7 +14,7 @@
     "test": "echo 'Tests not implemented yet'"
   },
   "dependencies": {
-    "@monolit/shared": "file:../shared",
+    "@stavagent/monolit-shared": "file:../shared",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^9.2.2",
     "cors": "^2.8.5",

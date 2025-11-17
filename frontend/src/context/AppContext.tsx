@@ -3,7 +3,7 @@
  */
 
 import { createContext, useContext, useState, ReactNode } from 'react';
-import { Position, HeaderKPI, Bridge } from '@monolit/shared';
+import { Position, HeaderKPI, Bridge } from '@stavagent/monolit-shared';
 
 interface ActiveSnapshot {
   id: string;

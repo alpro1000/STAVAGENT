@@ -5,7 +5,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { configAPI } from '../services/api';
 import { useAppContext } from '../context/AppContext';
-import { ProjectConfig } from '@monolit/shared';
+import { ProjectConfig } from '@stavagent/monolit-shared';
 
 export function useConfig() {
   const { setDaysPerMonth } = useAppContext();

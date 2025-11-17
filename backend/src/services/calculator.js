@@ -6,7 +6,7 @@
 import {
   calculatePositionFields,
   calculateHeaderKPI
-} from '@monolit/shared';
+} from '@stavagent/monolit-shared';
 
 /**
  * Calculate all positions with derived fields

@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import type { Unit } from '@monolit/shared';
+import type { Unit } from '@stavagent/monolit-shared';
 
 interface Props {
   onSelect: (itemName: string, unit: Unit) => void;

@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useAppContext } from '../context/AppContext';
 import { snapshotsAPI } from '../services/api';
-import { SnapshotListItem } from '@monolit/shared';
+import { SnapshotListItem } from '@stavagent/monolit-shared';
 
 interface HistoryModalProps {
   isOpen: boolean;
