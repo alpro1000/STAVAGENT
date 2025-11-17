@@ -1,0 +1,399 @@
+/**
+ * Bridges routes
+ * GET /api/bridges - List all bridges with summary
+ */
+
+import express from 'express';
+import db from '../db/init.js';
+import { logger } from '../utils/logger.js';
+import { createSnapshot } from '../services/snapshot.js';
+import { requireAuth } from '../middleware/auth.js';
+
+const router = express.Router();
+
+// Apply authentication to all routes
+router.use(requireAuth);
+
+// GET all bridges with summary (filtered by owner)
+router.get('/', async (req, res) => {
+  try {
+    const ownerId = req.user.userId;
+
+    // OPTIMIZED: Single JOIN query instead of N+1, filtered by owner
+    const bridgesWithStats = await db.prepare(`
+      SELECT
+        b.bridge_id,
+        b.project_name,
+        b.object_name,
+        b.status,
+        b.span_length_m,
+        b.deck_width_m,
+        b.pd_weeks,
+        b.created_at,
+        b.updated_at,
+        COUNT(p.id) as element_count,
+        COALESCE(SUM(CASE WHEN p.subtype = 'beton' THEN p.concrete_m3 ELSE 0 END), 0) as concrete_m3,
+        COALESCE(SUM(p.kros_total_czk), 0) as sum_kros_czk
+      FROM bridges b
+      LEFT JOIN positions p ON b.bridge_id = p.bridge_id
+      WHERE b.owner_id = ?
+      GROUP BY b.bridge_id, b.project_name, b.object_name, b.status, b.span_length_m, b.deck_width_m, b.pd_weeks, b.created_at, b.updated_at
+      ORDER BY b.status DESC, b.project_name, b.created_at DESC
+    `).all(ownerId);
+
+    res.json(bridgesWithStats);
+  } catch (error) {
+    logger.error('Error fetching bridges:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET single bridge (check ownership)
+router.get('/:bridge_id', async (req, res) => {
+  try {
+    const { bridge_id } = req.params;
+    const ownerId = req.user.userId;
+
+    const bridge = await db.prepare(`
+      SELECT * FROM bridges WHERE bridge_id = ? AND owner_id = ?
+    `).get(bridge_id, ownerId);
+
+    if (!bridge) {
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
+    }
+
+    // Get stats
+    const stats = await db.prepare(`
+      SELECT
+        COUNT(*) as element_count,
+        SUM(CASE WHEN subtype = 'beton' THEN concrete_m3 ELSE 0 END) as concrete_m3,
+        SUM(kros_total_czk) as sum_kros_czk
+      FROM positions
+      WHERE bridge_id = ?
+    `).get(bridge_id);
+
+    res.json({
+      ...bridge,
+      element_count: stats.element_count || 0,
+      concrete_m3: stats.concrete_m3 || 0,
+      sum_kros_czk: stats.sum_kros_czk || 0
+    });
+  } catch (error) {
+    logger.error('Error fetching bridge:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST create new bridge manually (set owner)
+router.post('/', async (req, res) => {
+  try {
+    const { bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks } = req.body;
+    const ownerId = req.user.userId;
+
+    if (!bridge_id) {
+      return res.status(400).json({ error: 'bridge_id is required' });
+    }
+
+    // Check if bridge already exists for this owner
+    const existing = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
+    if (existing) {
+      return res.status(400).json({ error: `Bridge ${bridge_id} already exists` });
+    }
+
+    // Insert new bridge with owner_id
+    await db.prepare(`
+      INSERT INTO bridges (bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks, owner_id)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      bridge_id,
+      project_name || null,
+      object_name || bridge_id,
+      span_length_m || null,
+      deck_width_m || null,
+      pd_weeks || null,
+      ownerId
+    );
+
+    // Create template positions with default values (11 parts from audit)
+    const templatePositions = [
+      // 1. ZÁKLADY ZE ŽELEZOBETONU DO C30/37
+      { part_name: 'ZÁKLADY', item_name: 'ZÁKLADY ZE ŽELEZOBETONU DO C30/37', subtype: 'beton', unit: 'M3' },
+      { part_name: 'ZÁKLADY', item_name: 'ZÁKLADY ZE ŽELEZOBETONU DO C30/37', subtype: 'bednění', unit: 'm2' },
+
+      // 2. ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)
+      { part_name: 'ŘÍMSY', item_name: 'ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)', subtype: 'beton', unit: 'M3' },
+      { part_name: 'ŘÍMSY', item_name: 'ŘÍMSY ZE ŽELEZOBETONU DO C30/37 (B37)', subtype: 'bednění', unit: 'm2' },
+
+      // 3. MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37', subtype: 'oboustranné (opěry)', unit: 'm2' },
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37', subtype: 'oboustranné (křídla)', unit: 'm2' },
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C30/37', subtype: 'oboustranné (závěrné zídky)', unit: 'm2' },
+
+      // 4. MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C40/50
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA C40/50', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C40/50', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ OPĚRY A KŘÍDLA C40/50', item_name: 'MOSTNÍ OPĚRY A KŘÍDLA ZE ŽELEZOVÉHO BETONU DO C40/50', subtype: 'bednění', unit: 'm2' },
+
+      // 5. MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C30/37 (B37)
+      { part_name: 'MOSTNÍ PILÍŘE A STATIVA', item_name: 'MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C30/37 (B37)', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ PILÍŘE A STATIVA', item_name: 'MOSTNÍ PILÍŘE A STATIVA ZE ŽELEZOVÉHO BETONU DO C30/37 (B37)', subtype: 'bednění', unit: 'm2' },
+
+      // 6. PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30
+      { part_name: 'PŘECHODOVÉ DESKY', item_name: 'PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30', subtype: 'beton', unit: 'M3' },
+      { part_name: 'PŘECHODOVÉ DESKY', item_name: 'PŘECHODOVÉ DESKY MOSTNÍCH OPĚR ZE ŽELEZOBETONU C25/30', subtype: 'bednění', unit: 'm2' },
+
+      // 7. MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE Z PŘEDPJATÉHO BETONU C30/37
+      { part_name: 'MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE', item_name: 'MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE Z PŘEDPJATÉHO BETONU C30/37', subtype: 'beton', unit: 'M3' },
+      { part_name: 'MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE', item_name: 'MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE Z PŘEDPJATÉHO BETONU C30/37', subtype: 'bednění', unit: 'm2' },
+
+      // 8. SCHODIŠŤ KONSTR Z PROST BETONU DO C20/25
+      { part_name: 'SCHODIŠŤ KONSTRUKCE', item_name: 'SCHODIŠŤ KONSTR Z PROST BETONU DO C20/25', subtype: 'beton', unit: 'M3' },
+      { part_name: 'SCHODIŠŤ KONSTRUKCE', item_name: 'SCHODIŠŤ KONSTR Z PROST BETONU DO C20/25', subtype: 'bednění', unit: 'm2' },
+
+      // 9. PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15
+      { part_name: 'PODKLADNÍ VRSTVY C12/15', item_name: 'PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15', subtype: 'beton', unit: 'M3' },
+      { part_name: 'PODKLADNÍ VRSTVY C12/15', item_name: 'PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C12/15', subtype: 'bednění', unit: 'm2' },
+
+      // 10. PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25
+      { part_name: 'PODKLADNÍ VRSTVY C20/25', item_name: 'PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25', subtype: 'beton', unit: 'M3' },
+      { part_name: 'PODKLADNÍ VRSTVY C20/25', item_name: 'PODKLADNÍ A VÝPLŇOVÉ VRSTVY Z PROSTÉHO BETONU C20/25', subtype: 'bednění', unit: 'm2' },
+
+      // 11. PATKY Z PROSTÉHO BETONU C25/30
+      { part_name: 'PATKY', item_name: 'PATKY Z PROSTÉHO BETONU C25/30', subtype: 'beton', unit: 'M3' },
+      { part_name: 'PATKY', item_name: 'PATKY Z PROSTÉHO BETONU C25/30', subtype: 'bednění', unit: 'm2' }
+    ];
+
+    const insertPosition = db.prepare(`
+      INSERT INTO positions (
+        id, bridge_id, part_name, item_name, subtype, unit,
+        qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+
+    // Use transaction for atomic insert of all template positions
+    const insertMany = db.transaction(() => {
+      templatePositions.forEach((template, index) => {
+        // Use UUID-like format with timestamp and index for uniqueness
+        const id = `${bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${index}`;
+        insertPosition.run(
+          id,
+          bridge_id,
+          template.part_name,
+          template.item_name,
+          template.subtype,
+          template.unit,
+          0, // qty - to be filled by user
+          4, // crew_size - default
+          398, // wage_czk_ph - default
+          10, // shift_hours - default
+          0,  // days - to be filled by user
+          null // otskp_code - to be filled by user
+        );
+      });
+    });
+
+    insertMany();
+
+    logger.info(`Created new bridge: ${bridge_id} (${object_name}) with ${templatePositions.length} template positions`);
+    res.json({ success: true, bridge_id, object_name });
+  } catch (error) {
+    logger.error('Error creating bridge:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// PUT update bridge metadata (check ownership)
+router.put('/:bridge_id', async (req, res) => {
+  try {
+    const { bridge_id } = req.params;
+    const { project_name, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3 } = req.body;
+    const ownerId = req.user.userId;
+
+    const existing = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
+    if (!existing) {
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
+    }
+
+    // Update
+    await db.prepare(`
+      UPDATE bridges
+      SET project_name = COALESCE(?, project_name),
+          object_name = COALESCE(?, object_name),
+          span_length_m = COALESCE(?, span_length_m),
+          deck_width_m = COALESCE(?, deck_width_m),
+          pd_weeks = COALESCE(?, pd_weeks),
+          concrete_m3 = COALESCE(?, concrete_m3),
+          updated_at = CURRENT_TIMESTAMP
+      WHERE bridge_id = ? AND owner_id = ?
+    `).run(project_name, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3, bridge_id, ownerId);
+
+    res.json({ success: true, bridge_id });
+  } catch (error) {
+    logger.error('Error updating bridge:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// PATCH update bridge status (check ownership)
+router.patch('/:bridge_id/status', async (req, res) => {
+  try {
+    const { bridge_id } = req.params;
+    const { status } = req.body;
+    const ownerId = req.user.userId;
+
+    if (!status || !['active', 'completed', 'archived'].includes(status)) {
+      return res.status(400).json({ error: 'Invalid status. Must be: active, completed, or archived' });
+    }
+
+    const existing = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
+    if (!existing) {
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
+    }
+
+    await db.prepare(`
+      UPDATE bridges
+      SET status = ?,
+          updated_at = CURRENT_TIMESTAMP
+      WHERE bridge_id = ? AND owner_id = ?
+    `).run(status, bridge_id, ownerId);
+
+    logger.info(`Updated bridge ${bridge_id} status to: ${status}`);
+    res.json({ success: true, bridge_id, status });
+  } catch (error) {
+    logger.error('Error updating bridge status:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /api/bridges/:bridge_id/complete - Mark bridge as completed with final snapshot (check ownership)
+router.post('/:bridge_id/complete', async (req, res) => {
+  try {
+    const { bridge_id } = req.params;
+    const { created_by, description } = req.body;
+    const ownerId = req.user.userId;
+
+    // Check if bridge exists and user owns it
+    const bridge = await db.prepare('SELECT bridge_id, object_name FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
+    if (!bridge) {
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
+    }
+
+    // Get current positions and calculate header_kpi
+    const positions = db.prepare(`
+      SELECT * FROM positions WHERE bridge_id = ?
+    `).all(bridge_id);
+
+    if (positions.length === 0) {
+      return res.status(400).json({ error: 'Cannot complete bridge with no positions' });
+    }
+
+    // Calculate header_kpi
+    const sum_concrete_m3 = positions.reduce((sum, p) => {
+      if (p.subtype === 'beton') {
+        return sum + (p.concrete_m3 || 0);
+      }
+      return sum;
+    }, 0);
+
+    const sum_kros_total_czk = positions.reduce((sum, p) => sum + (p.kros_total_czk || 0), 0);
+
+    const header_kpi = {
+      sum_concrete_m3,
+      sum_kros_total_czk,
+      project_unit_cost_czk_per_m3: sum_concrete_m3 > 0 ? sum_kros_total_czk / sum_concrete_m3 : 0,
+      project_unit_cost_czk_per_t: sum_concrete_m3 > 0 ? sum_kros_total_czk / (sum_concrete_m3 * 2.4) : 0,
+      rho_t_per_m3: 2.4
+    };
+
+    // VARIANT B: Delete ALL existing snapshots (full replacement)
+    const deleteResult = db.prepare('DELETE FROM snapshots WHERE bridge_id = ?').run(bridge_id);
+    logger.info(`Deleted ${deleteResult.changes} existing snapshots for bridge ${bridge_id}`);
+
+    // Create ONE final snapshot with is_final=true
+    const finalSnapshot = createSnapshot(
+      bridge_id,
+      positions,
+      header_kpi,
+      {
+        snapshot_name: 'Finální verze',
+        description: description || `Projekt dokončen - ${new Date().toLocaleDateString('cs-CZ')}`,
+        created_by: created_by || null,
+        is_final: true // CRITICAL: Final snapshot flag
+      }
+    );
+
+    // Insert final snapshot
+    db.prepare(`
+      INSERT INTO snapshots (
+        id, bridge_id, snapshot_name, snapshot_hash, created_by,
+        positions_snapshot, header_kpi_snapshot, description,
+        is_locked, is_final, sum_kros_at_lock
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `).run(
+      finalSnapshot.id,
+      finalSnapshot.bridge_id,
+      finalSnapshot.snapshot_name,
+      finalSnapshot.snapshot_hash,
+      finalSnapshot.created_by,
+      finalSnapshot.positions_snapshot,
+      finalSnapshot.header_kpi_snapshot,
+      finalSnapshot.description,
+      finalSnapshot.is_locked,
+      finalSnapshot.is_final,
+      finalSnapshot.sum_kros_at_lock
+    );
+
+    // Update bridge status to 'completed'
+    db.prepare(`
+      UPDATE bridges
+      SET status = 'completed',
+          updated_at = CURRENT_TIMESTAMP
+      WHERE bridge_id = ?
+    `).run(bridge_id);
+
+    logger.info(`Completed bridge ${bridge_id} (${bridge.object_name}) with final snapshot ${finalSnapshot.id}`);
+
+    res.json({
+      success: true,
+      bridge_id,
+      status: 'completed',
+      final_snapshot_id: finalSnapshot.id,
+      snapshots_deleted: deleteResult.changes,
+      sum_kros_at_lock: finalSnapshot.sum_kros_at_lock
+    });
+  } catch (error) {
+    logger.error('Error completing bridge:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// DELETE bridge (check ownership)
+router.delete('/:bridge_id', async (req, res) => {
+  try {
+    const { bridge_id } = req.params;
+    const ownerId = req.user.userId;
+
+    // Check if bridge exists and user owns it
+    const bridge = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ? AND owner_id = ?').get(bridge_id, ownerId);
+    if (!bridge) {
+      return res.status(404).json({ error: 'Bridge not found or access denied' });
+    }
+
+    // Delete snapshots first (cascade)
+    await db.prepare('DELETE FROM snapshots WHERE bridge_id = ?').run(bridge_id);
+
+    // Delete positions
+    await db.prepare('DELETE FROM positions WHERE bridge_id = ?').run(bridge_id);
+
+    // Delete bridge
+    await db.prepare('DELETE FROM bridges WHERE bridge_id = ? AND owner_id = ?').run(bridge_id, ownerId);
+
+    logger.info(`Deleted bridge: ${bridge_id} (owner: ${ownerId})`);
+    res.json({ success: true, bridge_id });
+  } catch (error) {
+    logger.error('Error deleting bridge:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+export default router;
