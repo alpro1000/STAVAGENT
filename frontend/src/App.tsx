@@ -16,7 +16,6 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import AdminDashboard from './pages/AdminDashboard';
 import DocumentUploadPage from './pages/DocumentUploadPage';
-import PortalPage from './pages/PortalPage';
 import MainApp from './components/MainApp';
 import './styles/components.css';
 
@@ -54,9 +53,6 @@ function App() {
 
             {/* Protected change password page */}
             <Route path="/change-password" element={<ProtectedRoute><ChangePasswordPage /></ProtectedRoute>} />
-
-            {/* Protected Portal page (main entry point) */}
-            <Route path="/portal" element={<ProtectedRoute><PortalPage /></ProtectedRoute>} />
 
             {/* Protected admin panel */}
             <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />

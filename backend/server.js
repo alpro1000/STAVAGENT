@@ -26,9 +26,6 @@ import otskpRoutes from './src/routes/otskp.js';
 import adminRoutes from './src/routes/admin.js';
 import documentsRoutes from './src/routes/documents.js';
 import debugRoutes from './src/routes/debug.js';
-import portalProjectsRoutes from './src/routes/portal-projects.js';
-import portalFilesRoutes from './src/routes/portal-files.js';
-import kioskLinksRoutes from './src/routes/kiosk-links.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -141,11 +138,6 @@ app.use('/api/snapshots', snapshotsRoutes);
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
 app.use('/api/documents', uploadLimiter, documentsRoutes);
 app.use('/api/debug', debugRoutes); // 🚨 DEBUG ONLY - disable in production
-
-// Portal routes (main entry point for projects, files, and kiosk coordination)
-app.use('/api/portal-projects', portalProjectsRoutes);
-app.use('/api/portal-files', uploadLimiter, portalFilesRoutes);
-app.use('/api/kiosk-links', kioskLinksRoutes);
 
 // 404 handler
 app.use((req, res) => {
