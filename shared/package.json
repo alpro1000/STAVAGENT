@@ -1,5 +1,5 @@
 {
-  "name": "@stavagent/shared",
+  "name": "@stavagent/portal-shared",
   "version": "1.0.0",
   "description": "Shared types and utilities for StavAgent Portal",
   "type": "module",

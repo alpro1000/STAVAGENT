@@ -7,7 +7,7 @@
 import { logger } from '../utils/logger.js';
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@monolit-planner.com';
+const RESEND_FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'noreply@stavagent.com';
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 /**
