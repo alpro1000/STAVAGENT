@@ -3,7 +3,7 @@
  */
 
 import axios from 'axios';
-import { Position, HeaderKPI, Bridge, ProjectConfig, SnapshotListItem, Snapshot, OtskpCode, OtskpSearchResult } from '@monolit/shared';
+import { Position, HeaderKPI, Bridge, ProjectConfig, SnapshotListItem, Snapshot, OtskpCode, OtskpSearchResult } from '@stavagent/portal-shared';
 
 // ============ MonolithProject Types ============
 interface MonolithProject {

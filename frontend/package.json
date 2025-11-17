@@ -1,7 +1,7 @@
 {
-  "name": "@monolit/frontend",
+  "name": "@stavagent/portal-frontend",
   "version": "1.0.0",
-  "description": "Frontend for Monolit Planner",
+  "description": "Frontend for StavAgent Portal",
   "type": "module",
   "scripts": {
     "prepare:shared": "node ./scripts/ensure-shared-build.js",
@@ -13,7 +13,7 @@
     "lint": "eslint src --ext ts,tsx"
   },
   "dependencies": {
-    "@monolit/shared": "file:../shared",
+    "@stavagent/portal-shared": "file:../shared",
     "@tanstack/react-query": "^5.17.9",
     "axios": "^1.6.5",
     "lucide-react": "^0.263.1",
