@@ -1,6 +1,14 @@
 /**
- * Monolit Planner - Backend Server
- * Express + SQLite API
+ * StavAgent Portal - Backend Server
+ * Main entry point for StavAgent microservices architecture
+ * Express + PostgreSQL/SQLite API
+ *
+ * Portal handles:
+ * - User authentication & authorization
+ * - Project management (portal_projects)
+ * - File storage (portal_files)
+ * - Kiosk coordination (kiosk_links)
+ * - CORE integration (concreteAgentClient)
  */
 
 import express from 'express';
@@ -11,24 +19,14 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import fs from 'fs';
 
-// Routes
+// Portal Routes (Kiosk routes moved to kiosk-monolit repo)
 import authRoutes from './src/routes/auth.js';
-import uploadRoutes from './src/routes/upload.js';
-import positionsRoutes from './src/routes/positions.js';
-import bridgesRoutes from './src/routes/bridges.js';
-import monolithProjectsRoutes from './src/routes/monolith-projects.js';
-import partsRoutes from './src/routes/parts.js';
-import exportRoutes from './src/routes/export.js';
-import mappingRoutes from './src/routes/mapping.js';
-import configRoutes from './src/routes/config.js';
-import snapshotsRoutes from './src/routes/snapshots.js';
-import otskpRoutes from './src/routes/otskp.js';
 import adminRoutes from './src/routes/admin.js';
-import documentsRoutes from './src/routes/documents.js';
-import debugRoutes from './src/routes/debug.js';
 import portalProjectsRoutes from './src/routes/portal-projects.js';
 import portalFilesRoutes from './src/routes/portal-files.js';
 import kioskLinksRoutes from './src/routes/kiosk-links.js';
+import otskpRoutes from './src/routes/otskp.js';
+import debugRoutes from './src/routes/debug.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -128,24 +126,16 @@ app.use('/api/auth', authLimiter, authRoutes);
 // Admin routes (requires authentication + admin role)
 app.use('/api/admin', adminRoutes);
 
-// Protected routes (authentication will be applied within each route handler)
-app.use('/api/upload', uploadLimiter, uploadRoutes);
-app.use('/api/positions', positionsRoutes);
-app.use('/api/bridges', bridgesRoutes);
-app.use('/api/monolith-projects', monolithProjectsRoutes);
-app.use('/api/parts', partsRoutes);
-app.use('/api/export', exportRoutes);
-app.use('/api/mapping', mappingRoutes);
-app.use('/api/config', configRoutes);
-app.use('/api/snapshots', snapshotsRoutes);
-app.use('/api/otskp', otskpLimiter, otskpRoutes);
-app.use('/api/documents', uploadLimiter, documentsRoutes);
-app.use('/api/debug', debugRoutes); // 🚨 DEBUG ONLY - disable in production
-
 // Portal routes (main entry point for projects, files, and kiosk coordination)
 app.use('/api/portal-projects', portalProjectsRoutes);
 app.use('/api/portal-files', uploadLimiter, portalFilesRoutes);
 app.use('/api/kiosk-links', kioskLinksRoutes);
+
+// OTSKP reference (shared across all kiosks)
+app.use('/api/otskp', otskpLimiter, otskpRoutes);
+
+// Debug routes (disable in production)
+app.use('/api/debug', debugRoutes);
 
 // 404 handler
 app.use((req, res) => {
@@ -170,9 +160,10 @@ async function bootstrap() {
 
     // Start server
     app.listen(PORT, () => {
-      logger.info(`🚀 Monolit Planner Backend running on port ${PORT}`);
+      logger.info(`🚀 StavAgent Portal Backend running on port ${PORT}`);
       logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
       logger.info(`🗄️  Database: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
+      logger.info(`🏛️  Portal API: Auth, Admin, Projects, Files, Kiosk Links`);
     });
   } catch (error) {
     logger.error('❌ Database initialization failed:', error);
