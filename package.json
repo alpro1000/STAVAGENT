@@ -1,0 +1,35 @@
+{
+  "name": "concrete-agent",
+  "version": "2.3.0",
+  "description": "Czech construction cost estimation and audit system",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/core-backend",
+    "packages/core-frontend",
+    "packages/core-shared"
+  ],
+  "scripts": {
+    "install-all": "npm install && npm --prefix packages/core-shared install && npm --prefix packages/core-frontend install",
+    "build": "npm --prefix packages/core-shared run build && npm --prefix packages/core-frontend run build",
+    "dev:frontend": "npm --prefix packages/core-frontend run dev",
+    "dev:backend": "cd packages/core-backend && python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "test": "cd packages/core-backend && pytest -v",
+    "test:cov": "cd packages/core-backend && pytest --cov=app --cov-report=html",
+    "lint": "npm --prefix packages/core-frontend run lint"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "keywords": [
+    "construction",
+    "budget",
+    "audit",
+    "czech",
+    "ai",
+    "claude"
+  ],
+  "author": "Development Team",
+  "license": "UNLICENSED"
+}
