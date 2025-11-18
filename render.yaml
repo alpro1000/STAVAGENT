@@ -7,7 +7,7 @@ services:
     name: stavagent-portal-backend
     env: node
     plan: free
-    region: frankfurt  # EU region (или oregon для US)
+    region: oregon  # US West (frankfurt может не работать в Blueprint)
     buildCommand: npm install && cd backend && npm install
     startCommand: cd backend && npm start
     healthCheckPath: /health
@@ -18,11 +18,9 @@ services:
         value: production
       - key: PORT
         value: 3001
-      # Database connection (автоматически подтянется из БД ниже)
+      # Database connection (вручную укажи DATABASE_URL после деплоя)
       - key: DATABASE_URL
-        fromDatabase:
-          name: stavagent-portal-db
-          property: connectionString
+        sync: false
       # JWT Secret (автоматически сгенерируется)
       - key: JWT_SECRET
         generateValue: true
@@ -73,10 +71,4 @@ services:
         destination: /index.html
 
 # Database (PostgreSQL)
-databases:
-  - name: stavagent-portal-db
-    databaseName: stavagent_portal
-    user: portal_user
-    plan: free
-    region: frankfurt  # EU region
-    ipAllowList: []  # Пустой список = доступ только с Render services
+# Используется существующая БД - DATABASE_URL нужно добавить вручную в backend env vars
