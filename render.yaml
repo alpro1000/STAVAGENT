@@ -7,7 +7,7 @@ services:
     name: stavagent-portal-backend
     env: node
     plan: free
-    region: frankfurt  # EU region (или oregon для US)
+    region: oregon  # US West (frankfurt может не работать в Blueprint)
     buildCommand: npm install && cd backend && npm install
     startCommand: cd backend && npm start
     healthCheckPath: /health
@@ -78,5 +78,5 @@ databases:
     databaseName: stavagent_portal
     user: portal_user
     plan: free
-    region: frankfurt  # EU region
+    region: oregon  # US West (должен совпадать с backend)
     ipAllowList: []  # Пустой список = доступ только с Render services
