@@ -57,8 +57,9 @@ services:
         value: "true"
 
   # Frontend (Static Site - React + Vite)
-  - type: static
+  - type: web
     name: stavagent-portal-frontend
+    env: static
     buildCommand: npm install && cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
