@@ -57,11 +57,8 @@ services:
         value: "true"
 
   # Frontend (Static Site - React + Vite)
-  - type: web
+  - type: static
     name: stavagent-portal-frontend
-    env: static
-    plan: free
-    region: frankfurt  # EU region (или oregon для US)
     buildCommand: npm install && cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
     envVars:
