@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@stavagent/monolit-shared": "file:../shared",
+    "axios": "^1.6.2",
     "bcrypt": "^6.0.0",
     "better-sqlite3": "^9.2.2",
     "cors": "^2.8.5",
