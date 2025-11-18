@@ -2,20 +2,23 @@
 
 > Guidelines for Claude Code (claude.ai/code) when working with this repository
 
-**Version:** 2.2.0
-**Last updated:** 2025-11-16
+**Version:** 2.3.0
+**Last updated:** 2025-11-18
 
 ---
 
 ## ⚡ QUICK REFERENCE (READ THIS FIRST!)
 
-### 🎯 Current Status (2025-11-16)
-- **Phase:** 4 - Backend Infrastructure
-- **Sprint:** Week 1 (Nov 6-13, 2025) - ✅ 100% COMPLETE
-- **Next:** Week 2 - Integration & Deployment (Nov 17+)
-- **Ready for:** Integration with Monolit-Planner 🔗
+### 🎯 Current Status (2025-11-18)
+- **Phase:** 4 - Backend Infrastructure + Integration
+- **Sprint:** Week 1 (Nov 6-13) - ✅ 100% COMPLETE
+- **Current:** Week 2 - Production Deployment (Nov 19-23)
+- **Status:**
+  - Backend infrastructure: ✅ Ready (PostgreSQL, Redis, Celery)
+  - Monolit integration: ✅ Live (Smart fallback parser - Nov 18)
+  - Monorepo strategy: ⏳ Pending decision
 - **Production:**
-  - Backend: https://concrete-agent.onrender.com
+  - Backend: https://concrete-agent.onrender.com (pending Nov 19 deployment)
   - Frontend: https://stav-agent.onrender.com
 
 ### 📋 Essential Documents (Read Before Starting)
@@ -25,15 +28,19 @@
    - Tech specs to create
    - Implementation guidelines
 
-2. **INTEGRATION DOCUMENTS (NEW - Nov 16)** 🆕
+2. **CURRENT STATUS & DECISIONS** 🆕 (Nov 18)
+   - **CURRENT_STATUS.md** - Complete integration status + Week 2 decisions
+   - **CORE_INTEGRATION.md** - Live integration with Monolit-Planner (Nov 18)
+
+3. **INTEGRATION DOCUMENTS (Nov 16-18)** 🔗
    - **INTEGRATION_CHECKLIST.md** - Complete 5-phase integration plan
    - **DOCKER_SETUP.md** - Docker & docker-compose configuration
    - **KB_TRAINING_GUIDE.md** - Knowledge base training with real data
    - **MONOLIT_TS_CLIENT.md** - TypeScript client for Monolit-Planner
 
-3. **DEPLOYMENT_URLS.md** - Production environment info
-4. **docs/TECH_SPECS/** - Detailed technical specifications (4 specs completed!)
-5. **docs/COMPETITIVE_ANALYSIS_RozpocetPRO.md** (Part 1 & 2) - Market insights
+4. **DEPLOYMENT_URLS.md** - Production environment info
+5. **docs/TECH_SPECS/** - Detailed technical specifications (4 specs completed!)
+6. **docs/COMPETITIVE_ANALYSIS_RozpocetPRO.md** (Part 1 & 2) - Market insights
 
 ### 🚀 Phase 4 Goals (Current - Week 1)
 - [x] **Day 1 (Nov 6):** Tech specs created (4 files, ~39,000 lines)
@@ -237,32 +244,66 @@ CELERY_RESULT_SERIALIZER: str   # "json"
 - TaskMonitor tests (status, cancellation)
 - Integration tests (require Redis, currently skipped)
 
-### 🔗 Monolit-Planner Integration (NEW - Nov 16)
+### 🔗 Monolit-Planner Integration (Nov 16-18) ✅ LIVE
 
-**Status:** ✅ READY FOR INTEGRATION
+**Status:** ✅ **INTEGRATION LIVE** (Smart Fallback Parser - Nov 18)
 
-**Delivered Components:**
+**Phase 1: Documentation & Planning (Nov 16)** ✅ Complete
+- INTEGRATION_CHECKLIST.md - 6-phase integration plan
+- DOCKER_SETUP.md - Dockerfile & docker-compose
+- KB_TRAINING_GUIDE.md - Knowledge base training
+- API Adapter (550+ lines) - FastAPI endpoints
+- TypeScript Client - Client library
 
-| Component | Status | Details |
-|-----------|--------|---------|
-| **INTEGRATION_CHECKLIST.md** | ✅ Complete | 6-phase plan (setup, auth, adapter, KB, testing, deploy) |
-| **DOCKER_SETUP.md** | ✅ Complete | Dockerfile, docker-compose.yml, env config |
-| **KB_TRAINING_GUIDE.md** | ✅ Complete | Data formats, preparation, loading, validation |
-| **API Adapter** | ✅ Complete | `app/integrations/monolit_adapter.py` (550+ lines) |
-| **TypeScript Client** | ✅ Complete | `docs/MONOLIT_TS_CLIENT.md` with examples |
-| **Python Client** | ✅ Complete | `ConcreteAgentClient` class for backend integration |
+**Phase 2: Implementation (Nov 18)** ✅ Complete
+- ✅ Created POST `/api/parse-excel` endpoint (concrete-agent)
+  - Accepts Excel files
+  - Uses SmartParser (20+ column variants, EU numbers, header detection)
+  - Returns positions + diagnostics
+  - Commit: 15e9f2a
+
+- ✅ Created CORE API Client (Monolit-Planner)
+  - `backend/src/services/coreAPI.js` (180+ lines)
+  - parseExcelByCORE() - HTTP integration
+  - convertCOREToMonolitPosition() - Format conversion
+  - isCOREAvailable() - Health check
+
+- ✅ Integrated Fallback Chain (Monolit-Planner)
+  - upload.js updated with 3-tier fallback
+  - Local extractor (fast) → CORE parser (smart) → Templates (safety)
+  - Tracks source in database (excel/core/templates)
+  - Commit: 60a48ed
+
+- ✅ Created CORE_INTEGRATION.md documentation
+  - Setup guide with env variables
+  - Testing procedures
+  - Troubleshooting & FAQ
+  - Performance targets
+
+**Smart Parser Capabilities:**
+- ✅ 20+ column name variants per field
+- ✅ Header detection in first 100 rows
+- ✅ EU number format parsing (1.234,56 → 1234.56)
+- ✅ Service row filtering (Souhrn, Celkem, separators)
+- ✅ Full parsing diagnostics
+- ✅ 30-second timeout with fallback
+
+**Environment Variables:**
+```env
+ENABLE_CORE_FALLBACK=true           # Enable/disable
+CORE_API_URL=http://localhost:8000  # CORE endpoint
+CORE_TIMEOUT=30000                  # 30s timeout
+```
 
 **Integration Timeline:**
-- Phase 1: Docker setup (1-2 days)
-- Phase 2: Authentication (1 day)
-- Phase 3: Adapter integration (1 day)
-- Phase 4: KB training (1-2 days)
-- Phase 5: Testing (1 day)
-- **Total: 3-5 days to production**
+- ✅ Nov 16: Documentation (INTEGRATION_CHECKLIST, DOCKER_SETUP, KB guide)
+- ✅ Nov 18: Live implementation (endpoint, client, fallback)
+- ⏳ Nov 19-23: Week 2 deployment (PostgreSQL, Redis, Celery on Render)
+- ⏳ After Nov 23: Monorepo refactoring + complete integration
 
-**Expected Results After Integration:**
+**Expected Results (Post-Deployment):**
 - ✅ 90%+ enrichment accuracy
-- ✅ <500ms enrichment latency (single position)
+- ✅ <500ms parsing + conversion (CORE fallback)
 - ✅ 10+ positions/second throughput (with Celery)
 - ✅ <1% hallucination rate
 - ✅ Zero false positives
@@ -279,6 +320,12 @@ CELERY_RESULT_SERIALIZER: str   # "json"
 - ✅ Redis integration complete (Nov 7) - 3 modules, 1450+ lines
 - ✅ Celery queue system complete (Nov 9) - 6 modules, 1470+ lines
 - ✅ Monolit-Planner integration docs (Nov 16) - 4 documents, 3500+ lines
+- ✅ CORE-Monolit live integration (Nov 18) - Smart fallback parser operational
+  - POST /api/parse-excel endpoint (concrete-agent)
+  - CORE API client (Monolit-Planner)
+  - 3-tier fallback chain (local → CORE → templates)
+  - CORE_INTEGRATION.md documentation
+  - 2 commits: 15e9f2a (CORE), 60a48ed (Monolit)
 
 ---
 
