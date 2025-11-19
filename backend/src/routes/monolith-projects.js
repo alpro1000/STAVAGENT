@@ -203,15 +203,14 @@ router.post('/', async (req, res) => {
       `;
 
       let partsCreated = 0;
-// Batch insert all parts using Promise.all for parallelization
-     const partInsertPromises = templates.map((template, index) => {
-       const partId = `${project_id}_${template.part_name}`;
-       return client.query(insertPartSql, [partId, project_id, template.part_name, true]);
-     });
-     await Promise.all(partInsertPromises);
-     logger.info(`[CREATE PROJECT] ✓ All ${templates.length} parts created successfully`);
-     }
-     } catch (txError) {
+      for (const template of templates) {
+        const partId = `${project_id}_${template.part_name}`;
+        await client.query(insertPartSql, [partId, project_id, template.part_name, true]);
+        partsCreated++;
+        logger.info(`[CREATE PROJECT]   ✓ Part ${partsCreated}/${templates.length}: ${template.part_name}`);
+      }
+      logger.info(`[CREATE PROJECT] ✓ All ${partsCreated} parts created successfully`);
+
       // Commit transaction
       await client.query('COMMIT');
       logger.info(`[CREATE PROJECT] Transaction committed`);
