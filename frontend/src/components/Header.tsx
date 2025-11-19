@@ -2,14 +2,12 @@
  * Header component - Modern UI with Dark mode toggle
  */
 
-import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useRef, Dispatch, SetStateAction } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { useAuth } from '../context/AuthContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
-import { exportAPI, uploadAPI, bridgesAPI } from '../services/api';
-import CreateMonolithForm from './CreateMonolithForm';
+import { exportAPI, uploadAPI } from '../services/api';
+import CreateBridgeForm from './CreateBridgeForm';
 import EditBridgeForm from './EditBridgeForm';
 import ExportHistory from './ExportHistory';
 
@@ -17,20 +15,22 @@ interface HeaderProps {
   isDark: boolean;
   toggleTheme: () => void;
   sidebarOpen: boolean;
-  setSidebarOpen: (open: boolean) => void;
+  setSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Header({ isDark, toggleTheme }: HeaderProps) {
+export default function Header({ isDark, toggleTheme, sidebarOpen, setSidebarOpen }: HeaderProps) {
   const { selectedBridge, setSelectedBridge, bridges } = useAppContext();
-  const { user, logout } = useAuth();
   const { refetch: refetchBridges } = useBridges();
   const { saveXLSX, isSaving } = useExports();
-  const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [showExportHistory, setShowExportHistory] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+
+  const handleSidebarToggle = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -158,11 +158,19 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         </button>
 
         <button
+          className="btn-secondary"
+          onClick={handleSidebarToggle}
+          title={sidebarOpen ? 'Skrýt panel částí (klávesa Ctrl+B)' : 'Zobrazit panel částí (klávesa Ctrl+B)'}
+        >
+          {sidebarOpen ? '⬅️ Skrýt panel' : '➡️ Zobrazit panel'}
+        </button>
+
+        <button
           className="btn-create"
           onClick={() => setShowCreateForm(true)}
-          title="Vytvořit nový objekt s prázdnými pozicemi"
+          title="Vytvořit nový most s předvyplněnou tabulkou"
         >
-          ➕ Nový objekt
+          ➕ Nový most
         </button>
 
         <select
@@ -236,53 +244,13 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         >
           📋 Historie exportů
         </button>
-
-        <button
-          className="btn-primary"
-          onClick={() => navigate(`/projects/${selectedBridge}/upload-document`)}
-          disabled={!selectedBridge}
-          title="Nahrát a analyzovat dokument (PDF, Excel)"
-        >
-          📄 Upload Document
-        </button>
-
-        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          {user?.role === 'admin' && (
-            <button
-              className="btn-admin"
-              onClick={() => navigate('/admin')}
-              title="Admin Panel - správa uživatelů a audit logs"
-            >
-              👑 Admin Panel
-            </button>
-          )}
-
-          <button
-            className="btn-secondary"
-            onClick={() => navigate('/dashboard')}
-            title="Uživatelský profil a nastavení"
-          >
-            👤 Profil
-          </button>
-
-          <span style={{ fontSize: '14px', color: '#718096' }}>
-            {user?.name || user?.email}
-          </span>
-          <button
-            className="btn-danger"
-            onClick={logout}
-            title="Odhlásit se"
-          >
-            🚪 Odhlásit
-          </button>
-        </div>
       </div>
 
       {/* Modal for Create Monolith Form */}
       {showCreateForm && (
         <div className="modal-overlay" onClick={() => setShowCreateForm(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <CreateMonolithForm
+            <CreateBridgeForm
               onSuccess={handleCreateSuccess}
               onCancel={() => setShowCreateForm(false)}
             />
@@ -326,25 +294,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           vertical-align: middle;
           position: relative;
           z-index: 10000;
-        }
-
-        .btn-admin {
-          padding: 8px 16px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 14px;
-          font-weight: 500;
-          transition: all 0.3s ease;
-          box-shadow: 0 2px 4px rgba(102, 126, 234, 0.2);
-        }
-
-        .btn-admin:hover {
-          background: linear-gradient(135deg, #5568d3 0%, #6b3f8f 100%);
-          box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
-          transform: translateY(-1px);
         }
 
         @keyframes spin {
