@@ -5,6 +5,19 @@
 
 import { logger } from '../utils/logger.js';
 
+const PART_KEYWORDS = [
+  { name: 'ZÁKLADY', keywords: ['zaklad'] },
+  { name: 'ŘÍMSY', keywords: ['rimsy', 'rims'] },
+  { name: 'MOSTNÍ OPĚRY A KŘÍDLA', keywords: ['opery', 'kridl'] },
+  { name: 'MOSTNÍ OPĚRY A KŘÍDLA C40/50', keywords: ['c40/50', 'c4050'] },
+  { name: 'MOSTNÍ PILÍŘE A STATIVA', keywords: ['pilir', 'stativ'] },
+  { name: 'PŘECHODOVÉ DESKY', keywords: ['prechodov'] },
+  { name: 'MOSTNÍ NOSNÉ DESKOVÉ KONSTRUKCE', keywords: ['nosn', 'deskov', 'monolitick', 'monoliticka deska'] },
+  { name: 'SCHODIŠŤ KONSTRUKCE', keywords: ['schod', 'schodist'] },
+  { name: 'PODKLADNÍ VRSTVY', keywords: ['podkladn', 'vyplnov'] },
+  { name: 'PATKY', keywords: ['patk'] }
+];
+
 /**
  * Extract concrete positions from raw Excel rows for a specific bridge
  * @param {Array} rawRows - All rows from Excel file
@@ -125,32 +138,28 @@ function parseConcreteRow(row) {
 function isConcreteWork(popis, mj) {
   if (!popis) return false;
 
-  const text = popis.toLowerCase();
-  const unit = (mj || '').toLowerCase();
+  const normalizedText = normalizeText(popis);
+  const normalizedUnit = normalizeText(mj || '');
+  const compactUnit = normalizedUnit.replace(/\s+/g, '');
 
   const concreteKeywords = [
-    'beton', 'betón',
-    'bednění', 'bedná',
-    'výztuž', 'ocel',
-    'základy', 'základu',
-    'piloty', 'pilíř',
-    'opěr', 'křídla',
-    'rimsy', 'románsy',
-    'nosníky', 'nosn',
-    'desk', 'deska',
-    'drenáž', 'drénáž',
-    'vrty',
-    'schod', 'stupně',
-    'podklad', 'podkladní',
-    'izolace', 'izoláci',
-    'most', 'mostní'
+    'beton', 'betonaz', 'zelezobeton', 'zb', 'zlb', 'armobeton',
+    'monolit', 'monolitick', 'konstrukc', 'nosn', 'nosnik', 'deska',
+    'most', 'mostni', 'opery', 'kridl', 'pilir', 'pilota', 'stativ',
+    'patk', 'zaver', 'zaverne', 'deskov', 'rimsy', 'schod', 'podkladn', 'vyplnov'
   ];
+  const mixDesignKeywords = ['c20/25', 'c25/30', 'c30/37', 'c35/45', 'c40/50', 'c45/55', 'c50/60'];
+  const reinforcementKeywords = ['vyztuz', 'ocel', 'armat', 'kari'];
 
-  const hasConcreteText = concreteKeywords.some(keyword => text.includes(keyword));
-  const concreteUnits = ['m3', 'm³', 'm 3', 'm2', 'm²', 'm 2', 't', 'kg'];
-  const hasConcreteUnit = concreteUnits.some(u => unit.includes(u));
+  const hasConcreteText =
+    containsAny(normalizedText, concreteKeywords) ||
+    containsAny(normalizedText, mixDesignKeywords) ||
+    containsAny(normalizedText, reinforcementKeywords);
 
-  const isPrefab = text.includes('prefa') || text.includes('díl') || text.includes('prefab');
+  const concreteUnits = ['m3', 'm^3', 'm2', 'm^2', 't', 'kg'];
+  const hasConcreteUnit = concreteUnits.some(unit => compactUnit.includes(unit.replace('^', '')));
+
+  const isPrefab = containsAny(normalizedText, ['prefa', 'prefabrik', 'prefabrikat']);
 
   return (hasConcreteText || hasConcreteUnit) && !isPrefab;
 }
@@ -159,23 +168,24 @@ function isConcreteWork(popis, mj) {
  * Determine work subtype
  */
 function determineSubtype(popis, mj) {
-  const text = (popis || '').toLowerCase();
-  const unit = (mj || '').toLowerCase();
+  const normalizedText = normalizeText(popis || '');
+  const normalizedUnit = normalizeText(mj || '');
+  const compactUnit = normalizedUnit.replace(/\s+/g, '');
 
-  if (unit === 'm3' || unit === 'm³' || unit === 'm 3') {
+  if (['m3', 'm^3'].includes(compactUnit)) {
     return 'beton';
   }
-  if (unit === 'm2' || unit === 'm²' || unit === 'm 2') {
+  if (['m2', 'm^2'].includes(compactUnit)) {
     return 'bednění';
   }
-  if (unit === 't' || unit === 'kg') {
+  if (compactUnit === 't' || compactUnit === 'kg') {
     return 'výztuž';
   }
 
-  if (text.includes('výztuž') || text.includes('ocel')) {
+  if (containsAny(normalizedText, ['vyztuz', 'ocel', 'armat', 'kari'])) {
     return 'výztuž';
   }
-  if (text.includes('bedn')) {
+  if (containsAny(normalizedText, ['bedn'])) {
     return 'bednění';
   }
 
@@ -187,9 +197,29 @@ function determineSubtype(popis, mj) {
  */
 function extractPartName(popis) {
   if (!popis) return 'Neznámá část';
-  const parts = popis.split('-');
-  const partName = parts[0].trim();
-  return partName.length > 0 ? partName : 'Neznámá část';
+  const normalized = normalizeText(popis);
+
+  for (const part of PART_KEYWORDS) {
+    if (containsAny(normalized, part.keywords)) {
+      return part.name;
+    }
+  }
+
+  const segments = popis.split(/[-–—:]/);
+  const candidate = segments[0]?.trim();
+  return candidate && candidate.length > 0 ? candidate : 'Neznámá část';
+}
+
+function normalizeText(value) {
+  if (!value) return '';
+  return String(value)
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+function containsAny(text, keywords) {
+  return keywords.some(keyword => text.includes(keyword));
 }
 
 /**
