@@ -146,7 +146,13 @@ CREATE TABLE IF NOT EXISTS monolith_projects (
   road_length_km REAL,
   road_width_m REAL,
   description TEXT,
-  status VARCHAR(50) DEFAULT 'active'
+  status VARCHAR(50) DEFAULT 'active',
+  -- Project hierarchy fields (Phase 2 - added for Stavba/Object relationship)
+  stavba VARCHAR(255),                    -- Project name from file header
+  objekt VARCHAR(255),                    -- Object description from file header
+  soupis VARCHAR(255),                    -- Budget/list name from file
+  parent_project_id VARCHAR(255),         -- Link to parent project (stavba) for hierarchy
+  FOREIGN KEY (parent_project_id) REFERENCES monolith_projects(project_id) ON DELETE SET NULL
 );
 
 -- Part Templates table (predefined parts for each construction type)
@@ -265,6 +271,9 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_owner ON monolith_projects(owner_id);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_type ON monolith_projects(object_type);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_status ON monolith_projects(status);
+CREATE INDEX IF NOT EXISTS idx_monolith_projects_stavba ON monolith_projects(stavba);
+CREATE INDEX IF NOT EXISTS idx_monolith_projects_parent ON monolith_projects(parent_project_id);
+CREATE INDEX IF NOT EXISTS idx_monolith_projects_hierarchy ON monolith_projects(parent_project_id, object_type);
 CREATE INDEX IF NOT EXISTS idx_part_templates_type ON part_templates(object_type);
 CREATE INDEX IF NOT EXISTS idx_parts_project ON parts(project_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_admin ON audit_logs(admin_id);
