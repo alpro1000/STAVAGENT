@@ -2,20 +2,20 @@
 
 > Guidelines for Claude Code (claude.ai/code) when working with this repository
 
-**Version:** 2.4.0
-**Last updated:** 2025-11-18
+**Version:** 2.4.1
+**Last updated:** 2025-11-20
 
 ---
 
 ## ⚡ QUICK REFERENCE (READ THIS FIRST!)
 
-### 🎯 Current Status (2025-11-18)
+### 🎯 Current Status (2025-11-20)
 - **Phase:** 4 - Backend Infrastructure + Integration ✅ COMPLETE
 - **Sprint:** Week 1 (Nov 6-13) - ✅ 100% COMPLETE
 - **Current:** Week 2 - Production Deployment (Nov 19-23)
 - **Status:**
   - Backend infrastructure: ✅ Ready (PostgreSQL, Redis, Celery)
-  - Monolit integration: ✅ Live (Smart fallback parser - Nov 18)
+  - Monolit integration: ✅ PRODUCTION LIVE (Endpoint fixed Nov 20)
   - Monorepo refactoring: ✅ COMPLETE (Nov 18) - @stavagent/core-* packages
 - **Monorepo Structure:** ✅ COMPLETE
   - @stavagent/core-backend (FastAPI, 92 files, 26,926 LOC)
@@ -194,15 +194,16 @@ All other code remains identical - this is purely a structural reorganization.
    - Tech specs to create
    - Implementation guidelines
 
-3. **CURRENT STATUS & DECISIONS** (Nov 18)
+3. **CURRENT STATUS & DECISIONS** (Nov 20)
    - **CURRENT_STATUS.md** - Complete integration status + Week 2 decisions
-   - **CORE_INTEGRATION.md** - Live integration with Monolit-Planner (Nov 18)
+   - **CORE_INTEGRATION.md** 🆕 (Nov 20) - **PRODUCTION LIVE** - Full integration guide with API docs, examples, troubleshooting
 
-4. **INTEGRATION DOCUMENTS (Nov 16-18)** 🔗
+4. **INTEGRATION DOCUMENTS (Nov 16-20)** 🔗
    - **INTEGRATION_CHECKLIST.md** - Complete 5-phase integration plan
    - **DOCKER_SETUP.md** - Docker & docker-compose configuration
    - **KB_TRAINING_GUIDE.md** - Knowledge base training with real data
    - **MONOLIT_TS_CLIENT.md** - TypeScript client for Monolit-Planner
+   - **CORE_INTEGRATION.md** 🆕 - Excel parsing & fallback chain (endpoints, examples, monitoring)
 
 5. **DEPLOYMENT_URLS.md** - Production environment info
 6. **docs/TECH_SPECS/** - Detailed technical specifications (4 specs completed!)
@@ -473,8 +474,11 @@ CORE_TIMEOUT=30000                  # 30s timeout
 **Integration Timeline:**
 - ✅ Nov 16: Documentation (INTEGRATION_CHECKLIST, DOCKER_SETUP, KB guide)
 - ✅ Nov 18: Live implementation (endpoint, client, fallback)
-- ⏳ Nov 19-23: Week 2 deployment (PostgreSQL, Redis, Celery on Render)
-- ⏳ After Nov 23: Monorepo refactoring + complete integration
+- ✅ Nov 20: PRODUCTION FIX + Complete documentation (CORE_INTEGRATION.md)
+  - Endpoint corrected: `/api/upload` (not `/workflow-a/start`)
+  - Auto-deployment to production (Render)
+  - Full API docs, examples, troubleshooting
+- ⏳ Nov 21-23: Performance tuning (Redis caching, Celery optimization)
 
 **Expected Results (Post-Deployment):**
 - ✅ 90%+ enrichment accuracy
@@ -499,8 +503,14 @@ CORE_TIMEOUT=30000                  # 30s timeout
   - POST /api/parse-excel endpoint (concrete-agent)
   - CORE API client (Monolit-Planner)
   - 3-tier fallback chain (local → CORE → templates)
-  - CORE_INTEGRATION.md documentation
   - 2 commits: 15e9f2a (CORE), 60a48ed (Monolit)
+- ✅ **PRODUCTION CRITICAL FIX (Nov 20)** - Integration fully documented & live
+  - Fixed endpoint: `/api/upload` (not `/workflow-a/start`) ⭐
+  - Correct field name: `vykaz_vymer`
+  - Full API documentation with 11 sections
+  - JavaScript + Python code examples
+  - Troubleshooting & monitoring guide
+  - Commit: c0db811 + CORE_INTEGRATION.md (1000+ lines)
 
 ---
 
@@ -1771,14 +1781,15 @@ This project follows best practices from modern Python starter repositories:
 
 ---
 
-**Last updated:** 2025-11-16
-**Version:** 2.2.0
+**Last updated:** 2025-11-20
+**Version:** 2.4.1
 **Maintained by:** Development Team
 **Questions?** See [CONTRIBUTING.md](docs/CONTRIBUTING.md)
 
-**Recent Updates (Nov 16):**
-- ✅ Added Monolit-Planner integration documentation
-- ✅ Created 4 integration guides (checklist, Docker, KB training, TypeScript client)
-- ✅ Added API adapter for seamless integration
-- ✅ Confirmed Redis and Celery in production
-- ✅ Ready for 3-5 day integration timeline
+**Recent Updates (Nov 20):**
+- ✅ PRODUCTION CRITICAL FIX: Endpoint corrected to `/api/upload`
+- ✅ Created comprehensive CORE_INTEGRATION.md (1000+ lines)
+- ✅ Full API documentation with 11 sections
+- ✅ JavaScript + Python integration examples
+- ✅ Complete troubleshooting & monitoring guide
+- ✅ Auto-deployment to production (live now!)
