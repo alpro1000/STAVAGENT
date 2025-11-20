@@ -25,6 +25,7 @@ import snapshotsRoutes from './src/routes/snapshots.js';
 import otskpRoutes from './src/routes/otskp.js';
 import adminRoutes from './src/routes/admin.js';
 import documentsRoutes from './src/routes/documents.js';
+import sheathingRoutes from './src/routes/sheathing.js';
 import debugRoutes from './src/routes/debug.js';
 
 // Utils
@@ -137,6 +138,7 @@ app.use('/api/config', configRoutes);
 app.use('/api/snapshots', snapshotsRoutes);
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
 app.use('/api/documents', uploadLimiter, documentsRoutes);
+app.use('/api/sheathing', sheathingRoutes);
 app.use('/api/debug', debugRoutes); // 🚨 DEBUG ONLY - disable in production
 
 // 404 handler
