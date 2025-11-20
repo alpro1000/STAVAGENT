@@ -200,3 +200,121 @@ export interface OtskpSearchResult {
   count: number;
   results: OtskpCode[];
 }
+
+/**
+ * SheathingCapture - Захватка для опалубки (шахматный метод)
+ * Represents one sheathing capture unit for formwork calculations
+ *
+ * Шахматный метод (checkerboard method):
+ * - Несколько захватки (kits) работают одновременно
+ * - Каждая захватка проходит: сборка → бетонирование → разборка
+ * - Временное смещение между захватками уменьшает общий срок проекта
+ */
+export interface SheathingCapture {
+  id?: string;
+  capture_id?: string;              // e.g., "CAP-SO201-01"
+  project_id: string;               // Bridge ID (SO201, SO202...)
+  part_name: string;                // Part: ZÁKLADY, PILÍŘE, MOSTOVKA...
+
+  // Dimensions (размеры)
+  length_m: number;                 // Длина (L) в метрах
+  width_m: number;                  // Ширина (W) в метрах
+  height_m?: number;                // Высота (H) в метрах (опционально)
+  area_m2: number;                  // Опалубочная площадь (length × width)
+  volume_m3?: number;               // Объём бетона (area × height / 1000)
+
+  // Work characteristics
+  assembly_norm_ph_m2: number;       // Норма сборки опалубки (человеко-часы на м²)
+  concrete_class?: string;           // C25/30, C30/37, C35/45...
+  concrete_curing_days: number;      // Дни набора прочности (3-7 дней в зависимости от класса и температуры)
+
+  // Sheathing kit/rental info
+  num_kits: number;                 // Количество комплектов опалубки (обычно 2-4 для шахматного метода)
+  kit_type?: string;                // DOKA, PERI, местный... (опционально)
+  daily_rental_cost_czk?: number;   // Суточная стоимость аренды за 1 комплект (опционально)
+
+  // Work method
+  work_method: 'sequential' | 'staggered'; // 'sequential' = последовательно, 'staggered' = шахматный
+
+  // Calculated fields
+  single_cycle_days?: number;       // Дни на одну захватку (сборка + бетонирование + разборка)
+  project_duration_days?: number;   // Общий срок проекта (все захватки)
+  crew_size?: number;               // Количество рабочих в смене
+  shift_hours?: number;             // Часов в смене (обычно 10)
+  days_per_month?: number;          // Рабочих дней в месяце (22 или 30)
+
+  // Cost estimates
+  assembly_labor_hours?: number;    // Человеко-часы на сборку (area_m2 × assembly_norm_ph_m2)
+  disassembly_labor_hours?: number; // Человеко-часы на разборку (обычно 0.5 × сборки)
+  total_rental_cost_czk?: number;   // Общая стоимость аренды комплектов
+
+  // Metadata
+  created_at?: string;
+  updated_at?: string;
+}
+
+/**
+ * SheathingCalculationResult - Результат расчёта захватки
+ * Вывод для UI и отчётов
+ */
+export interface SheathingCalculationResult {
+  capture_id: string;
+  part_name: string;
+
+  // Input summary
+  area_m2: number;
+  num_kits: number;
+  work_method: 'sequential' | 'staggered';
+
+  // Timeline calculations
+  assembly_days: number;            // Дни на сборку одного комплекта
+  curing_days: number;              // Дни набора прочности бетона
+  disassembly_days: number;         // Дни на разборку
+  single_cycle_days: number;        // Полный цикл для одного комплекта
+
+  // Project duration
+  sequential_duration_days: number;        // Если работать последовательно
+  staggered_duration_days: number;        // Если работать шахматным методом
+  staggered_shift_days: number;           // Дни смещения между захватками
+  time_savings_days?: number;             // Экономия времени vs последовательный
+  time_savings_percent?: number;          // % экономии
+
+  // Labor
+  total_labor_hours: number;        // Сборка + разборка
+  daily_crew_hours: number;         // Часов в день на одного рабочего
+  crew_size: number;
+
+  // Costs (if rental data available)
+  total_rental_cost_czk?: number;
+  daily_rental_cost_czk?: number;
+
+  // Summary for reports
+  summary: string;                  // Human-readable summary
+}
+
+/**
+ * SheathingProjectConfig - Конфигурация проекта для расчётов захватки
+ */
+export interface SheathingProjectConfig {
+  project_id: string;
+
+  // Default values
+  default_assembly_norm_ph_m2: number;    // По умолчанию 0.5-1.5 ч/м²
+  default_concrete_curing_days: number;   // По умолчанию 3-7 дней
+  default_num_kits: number;               // По умолчанию 2-3
+  default_work_method: 'sequential' | 'staggered';
+
+  // Concrete characteristics
+  concrete_class_default?: string;  // C30/37
+
+  // Rental info
+  daily_rental_cost_per_kit_czk?: number; // Суточная аренда
+
+  // Labor defaults
+  crew_size: number;               // Стандартный размер бригады
+  shift_hours: number;             // Часов в смене (обычно 10)
+  days_per_month: 22 | 30;        // Рабочих дней в месяце
+
+  created_at?: string;
+  updated_at?: string;
+}
