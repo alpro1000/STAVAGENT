@@ -23,11 +23,11 @@ services:
       - key: JWT_SECRET
         generateValue: true
       - key: UPLOAD_DIR
-        value: /opt/render/project/src/backend/uploads
+        value: /opt/render/project/backend/uploads
       - key: EXPORT_DIR
-        value: /opt/render/project/src/backend/exports
+        value: /opt/render/project/backend/exports
       - key: CORS_ORIGIN
-        value: "*"
+        value: "https://monolit-planner-frontend.onrender.com"
     healthCheckPath: /health
 
   # Frontend (Static Site)
@@ -38,7 +38,7 @@ services:
     staticPublishPath: frontend/dist
     envVars:
       - key: VITE_API_URL
-        sync: false
+        value: "https://monolit-planner-api.onrender.com"
     routes:
       - type: rewrite
         source: /*
