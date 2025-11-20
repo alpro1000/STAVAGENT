@@ -280,29 +280,38 @@ router.post('/', upload.single('file'), async (req, res) => {
           positionsSource = 'templates';
         }
 
-        // Insert all positions (async/await)
-        for (const pos of positionsToInsert) {
-          const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-          await db.prepare(`
+        // Insert all positions using batch insert (MUCH FASTER)
+        if (positionsToInsert.length > 0) {
+          const stmt = db.prepare(`
             INSERT INTO positions (
               id, bridge_id, part_name, item_name, subtype, unit,
               qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-          `).run(
-            id,
-            bridgeId,
-            pos.part_name,
-            pos.item_name,
-            pos.subtype,
-            pos.unit,
-            pos.qty || 0,
-            pos.crew_size || 4,
-            pos.wage_czk_ph || 398,
-            pos.shift_hours || 10,
-            pos.days || 0,
-            pos.otskp_code || null
-          );
+          `);
+
+          // Use transaction for batch insert
+          const insertMany = db.transaction((positions) => {
+            for (const pos of positions) {
+              const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+              stmt.run(
+                id,
+                bridgeId,
+                pos.part_name,
+                pos.item_name,
+                pos.subtype,
+                pos.unit,
+                pos.qty || 0,
+                pos.crew_size || 4,
+                pos.wage_czk_ph || 398,
+                pos.shift_hours || 10,
+                pos.days || 0,
+                pos.otskp_code || null
+              );
+            }
+          });
+
+          insertMany(positionsToInsert);
+          logger.info(`[Upload] 🚀 Batch inserted ${positionsToInsert.length} positions for ${objectId}`);
         }
 
         logger.info(

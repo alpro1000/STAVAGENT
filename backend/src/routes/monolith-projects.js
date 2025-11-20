@@ -202,14 +202,27 @@ router.post('/', async (req, res) => {
         VALUES ($1, $2, $3, $4)
       `;
 
-      let partsCreated = 0;
-      for (const template of templates) {
-        const partId = `${project_id}_${template.part_name}`;
-        await client.query(insertPartSql, [partId, project_id, template.part_name, true]);
-        partsCreated++;
-        logger.info(`[CREATE PROJECT]   ✓ Part ${partsCreated}/${templates.length}: ${template.part_name}`);
+      // Batch insert all parts (MUCH FASTER with parameterized query)
+      if (templates.length > 0) {
+        const placeholders = templates.map((_, idx) => {
+          const offset = idx * 4;
+          return `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4})`;
+        }).join(',');
+
+        const values = [];
+        for (const template of templates) {
+          const partId = `${project_id}_${template.part_name}`;
+          values.push(partId, project_id, template.part_name, true);
+        }
+
+        const batchInsertSql = `
+          INSERT INTO parts (part_id, project_id, part_name, is_predefined)
+          VALUES ${placeholders}
+        `;
+
+        await client.query(batchInsertSql, values);
+        logger.info(`[CREATE PROJECT] 🚀 Batch inserted ${templates.length} parts successfully`);
       }
-      logger.info(`[CREATE PROJECT] ✓ All ${partsCreated} parts created successfully`);
 
       // Commit transaction
       await client.query('COMMIT');
