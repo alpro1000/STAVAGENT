@@ -188,14 +188,26 @@ export default function WorkTypeSelector({ onSelect, onCancel }: Props) {
           border-color: var(--border-hover);
         }
 
-        /* Mobile responsive */
-        @media (max-width: 480px) {
+        /* Small devices (14" laptop, tablets) - 600px to 900px */
+        @media (max-width: 900px) and (min-width: 481px) {
+          .work-type-selector {
+            padding: 1.5rem;
+            max-width: 90vw;
+          }
+
+          .work-type-title {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+          }
+
           .work-type-grid {
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 1rem;
           }
 
           .work-type-card {
-            padding: 1rem 0.5rem;
+            padding: 1rem 0.75rem;
           }
 
           .work-type-icon {
@@ -204,6 +216,51 @@ export default function WorkTypeSelector({ onSelect, onCancel }: Props) {
 
           .work-type-label {
             font-size: 0.8rem;
+          }
+
+          .work-type-unit {
+            font-size: 0.7rem;
+            padding: 2px 6px;
+          }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 480px) {
+          .work-type-selector {
+            padding: 1rem;
+            width: 95%;
+          }
+
+          .work-type-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+          }
+
+          .work-type-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+          }
+
+          .work-type-card {
+            padding: 0.75rem 0.5rem;
+          }
+
+          .work-type-icon {
+            font-size: 1.75rem;
+          }
+
+          .work-type-label {
+            font-size: 0.75rem;
+          }
+
+          .work-type-unit {
+            font-size: 0.65rem;
+          }
+
+          .btn-cancel-work-type {
+            padding: 0.6rem;
+            font-size: 0.9rem;
           }
         }
       `}</style>

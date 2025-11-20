@@ -74,7 +74,7 @@
   font-style: italic;
 }
 
-/* Mobile responsive */
+/* Tablet/Mobile responsive (768px and below) */
 @media (max-width: 768px) {
   .type-buttons {
     grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
@@ -91,5 +91,63 @@
 
   .type-button .label {
     font-size: 0.8rem;
+  }
+}
+
+/* Small devices (14" laptop, small tablets) - less than 900px width */
+@media (max-width: 900px) {
+  .object-type-selector {
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .type-buttons {
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 8px;
+  }
+
+  .type-button {
+    padding: 8px 6px;
+    gap: 4px;
+  }
+
+  .type-button .icon {
+    font-size: 24px;
+  }
+
+  .type-button .label {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .type-description {
+    font-size: 0.8rem;
+    padding: 6px 0;
+  }
+}
+
+/* Extra small devices (less than 600px width) - phones */
+@media (max-width: 600px) {
+  .type-buttons {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .type-button {
+    padding: 8px 4px;
+    gap: 3px;
+  }
+
+  .type-button .icon {
+    font-size: 20px;
+  }
+
+  .type-button .label {
+    font-size: 0.7rem;
+  }
+
+  .type-description {
+    font-size: 0.75rem;
   }
 }
