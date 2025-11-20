@@ -165,6 +165,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       'Hod celkem',
       'Kč celkem',
       'Kč/m³ ⭐',
+      'Objem m³',
       'KROS JC',
       'KROS celkem',
       'RFI'
@@ -212,9 +213,10 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
           null,  // Column H: Labor hours (will be formula)
           null,  // Column I: Cost CZK (will be formula)
           pos.unit_cost_on_m3,  // Column J: Unit cost on m3
-          pos.kros_unit_czk,  // Column K: KROS unit
-          null,  // Column L: KROS total (will be formula)
-          pos.has_rfi ? (pos.rfi_message || '⚠️ RFI') : ''  // Column M: RFI
+          pos.concrete_m3,  // Column K: Concrete volume m³ (CRITICAL for KROS formula)
+          pos.kros_unit_czk,  // Column L: KROS unit
+          null,  // Column M: KROS total (will be formula)
+          pos.has_rfi ? (pos.rfi_message || '⚠️ RFI') : ''  // Column N: RFI
         ];
 
         const dataRow = detailSheet.addRow(rowData);
@@ -248,15 +250,15 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
             // Crew size - integer
             cell.numFmt = '0';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 5 || colNumber === 10 || colNumber === 11) {
-            // Wage, unit cost, KROS unit - currency format
+          } else if (colNumber === 5 || colNumber === 10 || colNumber === 12) {
+            // Wage, unit cost on m3, KROS unit - currency format
             cell.numFmt = '#,##0.00';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 6 || colNumber === 7 || colNumber === 8 || colNumber === 9) {
-            // Hours, days, labor hours, cost - number format
+          } else if (colNumber === 6 || colNumber === 7 || colNumber === 8 || colNumber === 9 || colNumber === 11) {
+            // Hours, days, labor hours, cost, concrete volume - number format
             cell.numFmt = '0.00';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 12) {
+          } else if (colNumber === 13) {
             // KROS total - currency format
             cell.numFmt = '#,##0.00';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
@@ -279,10 +281,11 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
           result: pos.wage_czk_ph * (pos.crew_size * pos.shift_hours * pos.days)
         };
 
-        // L: KROS total = K * C (kros_unit_czk * qty)
-        dataRow.getCell(12).value = {
-          formula: `K${rowNumber}*C${rowNumber}`,
-          result: pos.kros_unit_czk * pos.qty
+        // M: KROS total = L * K (kros_unit_czk * concrete_m3) - CRITICAL FIX!
+        // This is the correct formula from calculateKrosTotalCZK in formulas.ts
+        dataRow.getCell(13).value = {
+          formula: `L${rowNumber}*K${rowNumber}`,
+          result: pos.kros_unit_czk * pos.concrete_m3
         };
 
         // Highlight RFI rows
@@ -316,9 +319,10 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         null, // Column H: Sum labor hours
         null, // Column I: Sum cost CZK
         '', // Column J
-        '', // Column K
-        null, // Column L: Sum KROS total
-        ''  // Column M
+        '', // Column K: (concrete_m3 - not summed)
+        '', // Column L
+        null, // Column M: Sum KROS total
+        ''  // Column N: RFI
       ]);
 
       const totalRowNumber = totalsRow.number;
@@ -333,7 +337,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         };
         applyBorders(cell);
 
-        if (colNumber >= 3 && colNumber <= 12) {
+        if (colNumber >= 3 && colNumber <= 13) {
           cell.alignment = { vertical: 'middle', horizontal: 'right' };
         } else {
           cell.alignment = { vertical: 'middle', horizontal: 'left' };
@@ -353,11 +357,11 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       };
       totalsRow.getCell(9).numFmt = '#,##0.00';
 
-      // L: Sum of KROS total
-      totalsRow.getCell(12).value = {
-        formula: `SUM(L${firstDataRow}:L${lastDataRow})`
+      // M: Sum of KROS total (CRITICAL FIX: using correct column M instead of L)
+      totalsRow.getCell(13).value = {
+        formula: `SUM(M${firstDataRow}:M${lastDataRow})`
       };
-      totalsRow.getCell(12).numFmt = '#,##0.00';
+      totalsRow.getCell(13).numFmt = '#,##0.00';
     }
 
     // Auto-fit columns based on content
