@@ -4,7 +4,63 @@
 
 ---
 
-## [1.2.1] - 2025-11-11
+## [2.0.0] - 2025-11-20 - Phase 4 Complete ✅
+
+### ✨ Major Features
+- **User Management System**: Email verification, dashboard, admin panel, audit logging
+- **Document Upload & Analysis**: Excel import, async analysis, work list generation
+- **Professional Excel Export**: Dynamic formulas, formatting, multi-format support
+- **Performance Optimization**: 10-20x faster operations, critical hang fixes
+
+### 🔴 Critical Fixes
+- **fe4be6a**: 📝 Documentation: Hang analysis and quick reference guide
+- **2fd7199**: ⚡ CRITICAL FIX: Resolve project creation and file upload hangs
+  - Frontend: Added 60-second timeout to axios instance
+  - Backend: Batch insert positions in transaction (5-30s → 0.5-1s)
+  - Backend: Batch insert parts with parameterized query (5-10s → 0.1s)
+  - Impact: 10-20x performance improvement
+
+### 🔧 Bug Fixes
+- **7273670**: 🚨 CRITICAL FIX: Correct KROS formula in Excel export
+  - Fixed: KROS formula was using qty instead of concrete_m3
+  - Impact: 2-500× calculation errors for non-beton positions
+  - Solution: Added "Objem m³" column, updated formula to L*K
+
+- **7d44887**: 🔧 Render deployment configuration fixes
+  - Fixed: Missing VITE_API_URL in frontend
+  - Fixed: Wrong directory paths in backend
+  - Fixed: Overly permissive CORS
+  - Impact: Frontend-backend communication now works on Render
+
+- **300f3d2**: ♻️ Excel export with formulas and professional formatting
+  - Replaced static values with Excel formulas
+  - Added professional formatting (zebra striping, freeze panes, auto-fit)
+  - Added totals row with SUM formulas
+
+### 📚 Documentation
+- Updated claude.md with Phase 4 completion and hang analysis
+- Updated README.md with v2.0.0 features
+- Updated ROADMAP.md with Phase completion status
+- Created HANG_ANALYSIS.md with performance audit
+- Created HANG_POINTS_QUICK_REFERENCE.md
+
+### 📊 Phase Completion
+- Phase 1: ✅ Email Verification
+- Phase 2: ✅ User Dashboard & Password Reset
+- Phase 3: ✅ Admin Panel & Audit Logging
+- Phase 4: ✅ Document Upload, Analysis, Excel Export
+- Phase 5: 🔲 Ready to Start (Concrete-Agent Advanced Integration)
+
+### 🚀 Performance Impact
+| Operation | Before | After | Improvement |
+|-----------|--------|-------|-------------|
+| File Upload (100+ positions) | 30-60s | 3-5s | **10-20x** |
+| Project Creation | 10-15s | 1-2s | **8-10x** |
+| API Request Timeout | Infinite | 60s | ✅ Safe |
+
+---
+
+## [1.2.1] - 2025-11-11 (Legacy)
 
 ### 🐛 Исправлено
 
