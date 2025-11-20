@@ -8,7 +8,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { parseXLSX, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription } from '../services/parser.js';
+import { parseXLSX, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription, normalizeString } from '../services/parser.js';
 import { extractConcretePositions } from '../services/concreteExtractor.js';
 import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge } from '../services/coreAPI.js';
 import { logger } from '../utils/logger.js';
@@ -86,11 +86,44 @@ router.post('/', upload.single('file'), async (req, res) => {
     // Use shared template positions for default parts
     const templatePositions = BRIDGE_TEMPLATE_POSITIONS;
 
+    // 🔍 Extract file metadata (Stavba, Objekt, Сoupis) - project hierarchy context
+    const fileMetadata = extractFileMetadata(parseResult.raw_rows);
+    logger.info(`[Upload] File metadata: Stavba="${fileMetadata.stavba}", Objekt="${fileMetadata.objekt}", Сoupis="${fileMetadata.soupis}"`);
+
     // ⭐ CORE-FIRST APPROACH (User requirement: Don't use M3 detection, rely on CORE)
-    // Start with EMPTY bridges - only CORE's intelligent classification populates this
-    let bridgesForImport = [];
+    // Start with EMPTY projects - only CORE's intelligent classification populates this
+    let projectsForImport = [];
     let parsedPositionsFromCORE = [];
-    let sourceOfBridges = 'none';
+    let sourceOfProjects = 'none';
+    let stavbaProjectId = null;
+
+    // Create project-level record (stavba) if metadata exists
+    if (fileMetadata.stavba) {
+      const projectId = normalizeString(fileMetadata.stavba);
+      stavbaProjectId = projectId;
+
+      try {
+        // Check if stavba project already exists
+        const existing = await db.prepare(
+          'SELECT project_id FROM monolith_projects WHERE project_id = ? AND object_type = ?'
+        ).get(projectId, 'project');
+
+        if (!existing) {
+          // Create stavba (project container) record
+          await db.prepare(`
+            INSERT INTO monolith_projects
+            (project_id, object_type, stavba, description, owner_id)
+            VALUES (?, ?, ?, ?, ?)
+          `).run(projectId, 'project', fileMetadata.stavba, fileMetadata.stavba, req.user?.userId || null);
+
+          logger.info(`[Upload] Created stavba project: ${projectId} ("${fileMetadata.stavba}")`);
+        } else {
+          logger.info(`[Upload] Stavba project already exists: ${projectId}`);
+        }
+      } catch (stavbaError) {
+        logger.error(`[Upload] Error creating stavba record:`, stavbaError);
+      }
+    }
 
     try {
       logger.info(`[Upload] ✨ Attempting CORE parser (PRIMARY) - uses intelligent material_type classification...`);
@@ -105,9 +138,9 @@ router.post('/', upload.single('file'), async (req, res) => {
 
         if (coreProjects && coreProjects.length > 0) {
           logger.info(`[Upload] ✅ CORE identified ${coreProjects.length} concrete projects using material_type classification`);
-          bridgesForImport = coreProjects;  // Rename: projects but stored in bridgesForImport for now
+          projectsForImport = coreProjects;
           parsedPositionsFromCORE = corePositions;
-          sourceOfBridges = 'core_intelligent_classification';
+          sourceOfProjects = 'core_intelligent_classification';
         } else {
           logger.warn('[Upload] ⚠️ CORE returned positions but identified NO concrete bridges (material_type != "concrete")');
           // Don't fall back to unreliable M3 detection!
@@ -122,101 +155,134 @@ router.post('/', upload.single('file'), async (req, res) => {
       // Don't fall back to unreliable M3 detection!
     }
 
-    // VALIDATION: Ensure CORE identified concrete bridges
-    if (bridgesForImport.length === 0) {
-      logger.warn('[Upload] ⚠️ Import warning: CORE did not identify any concrete bridges');
+    // VALIDATION: Ensure CORE identified concrete projects
+    if (projectsForImport.length === 0) {
+      logger.warn('[Upload] ⚠️ Import warning: CORE did not identify any concrete projects');
       logger.info('[Upload] Possible reasons:');
       logger.info('  1. No concrete items in the file (material_type != "concrete")');
       logger.info('  2. CORE parser is unavailable');
       logger.info('  3. File format not recognized by CORE');
 
-      // Allow user to see the warning but don't create bridges from unreliable sources
+      // Allow user to see the warning but don't create projects from unreliable sources
       res.set('Content-Type', 'application/json; charset=utf-8');
       res.json({
         success: false,
-        error: 'No concrete bridges identified',
+        error: 'No concrete projects identified',
         import_id: import_id,
         message: 'CORE parser did not identify any concrete items in this file. Please verify:' +
                  '\n- File contains concrete items with concrete specifications (C20/25, C30/37, etc.)' +
                  '\n- CORE parser service is available' +
                  '\n- File format is supported',
-        createdBridges: [],
+        createdProjects: [],
         positionsCreated: 0
       });
       return;
     }
 
-    for (const bridge of bridgesForImport) {
+    for (const project of projectsForImport) {
       try {
-        // Check if bridge already exists (async/await for PostgreSQL)
-        const existing = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge.bridge_id);
+        // Create object-level record in monolith_projects with hierarchy
+        const objectId = project.project_id;
+
+        // Check if object already exists
+        const existing = await db.prepare(
+          'SELECT project_id FROM monolith_projects WHERE project_id = ?'
+        ).get(objectId);
 
         if (!existing) {
-          // Create bridge (async/await)
+          // Create object record linked to stavba project (if it exists)
+          await db.prepare(`
+            INSERT INTO monolith_projects
+            (project_id, object_type, object_name, stavba, parent_project_id, concrete_m3, span_length_m, deck_width_m, pd_weeks, owner_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `).run(
+            objectId,
+            project.object_type || 'custom',  // Type detected from description
+            project.object_name,
+            fileMetadata.stavba || null,      // Store stavba context
+            stavbaProjectId || null,          // Link to parent project
+            project.concrete_m3 || 0,
+            project.span_length_m || 0,
+            project.deck_width_m || 0,
+            project.pd_weeks || 0,
+            req.user?.userId || null
+          );
+
+          logger.info(`[Upload] Created object: ${objectId} (type: ${project.object_type}, ${project.concrete_m3} m³)`);
+        } else {
+          logger.info(`[Upload] Object already exists: ${objectId}`);
+        }
+
+        // Also create/update bridges table for backward compatibility
+        const bridgeId = objectId;  // Use same ID for now
+        const bridgeExisting = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridgeId);
+
+        if (!bridgeExisting) {
+          // Create bridge record
           await db.prepare(`
             INSERT INTO bridges (bridge_id, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3, owner_id)
             VALUES (?, ?, ?, ?, ?, ?, ?)
           `).run(
-            bridge.bridge_id,
-            bridge.object_name,
-            bridge.span_length_m || 0,
-            bridge.deck_width_m || 0,
-            bridge.pd_weeks || 0,
-            bridge.concrete_m3 || 0,
-            req.user?.userId || null  // Add owner_id if user is authenticated
+            bridgeId,
+            project.object_name,
+            project.span_length_m || 0,
+            project.deck_width_m || 0,
+            project.pd_weeks || 0,
+            project.concrete_m3 || 0,
+            req.user?.userId || null
           );
 
-          logger.info(`Created bridge: ${bridge.bridge_id}`);
-        } else {
-          logger.info(`Bridge already exists: ${bridge.bridge_id}`);
+          logger.info(`[Upload] Created bridge record: ${bridgeId}`);
         }
 
         // Extract positions with intelligent fallback chain
         let positionsToInsert = [];
         let positionsSource = 'unknown';
 
-        // PRIORITY 1: If CORE was used for bridge identification, use CORE positions
-        if (sourceOfBridges === 'core_intelligent_classification' && parsedPositionsFromCORE.length > 0) {
+        // PRIORITY 1: If CORE was used for project identification, use CORE positions
+        if (sourceOfProjects === 'core_intelligent_classification' && parsedPositionsFromCORE.length > 0) {
           logger.info(`[Upload] Using CORE positions (${parsedPositionsFromCORE.length} total)`);
 
-          // Filter positions matching this bridge
-          const bridgePositions = parsedPositionsFromCORE.filter(pos => {
-            // Match by bridge_id from CORE metadata or by description similarity
-            return pos.bridge_id === bridge.bridge_id ||
-                   (bridge.object_name && pos.description && pos.description.includes(bridge.object_name));
+          // Filter positions matching this project
+          const projectPositions = parsedPositionsFromCORE.filter(pos => {
+            // Match by project_id from CORE metadata or by description similarity
+            return pos.bridge_id === bridgeId ||
+                   (project.object_name && pos.description && pos.description.includes(project.object_name));
           });
 
-          if (bridgePositions.length > 0) {
+          if (projectPositions.length > 0) {
             // Convert CORE format to Monolit format
-            positionsToInsert = bridgePositions.map(pos =>
-              convertCOREToMonolitPosition(pos, bridge.bridge_id)
+            positionsToInsert = projectPositions.map(pos =>
+              convertCOREToMonolitPosition(pos, bridgeId)
             );
             positionsSource = 'core_intelligent';
-            logger.info(`[Upload] Using ${positionsToInsert.length} positions from CORE for ${bridge.bridge_id}`);
+            logger.info(`[Upload] Using ${positionsToInsert.length} positions from CORE for ${objectId}`);
           }
         }
 
         // PRIORITY 2: Try local extractor if CORE positions not available
+        let extractedPositionsCount = 0;
         if (positionsToInsert.length === 0) {
-          const extractedPositions = extractConcretePositions(parseResult.raw_rows, bridge.bridge_id);
+          const extractedPositions = extractConcretePositions(parseResult.raw_rows, bridgeId);
 
           if (extractedPositions.length > 0) {
             positionsToInsert = extractedPositions;
+            extractedPositionsCount = extractedPositions.length;
             positionsSource = 'local_extractor';
-            logger.info(`[Upload] Using ${extractedPositions.length} positions from local extractor for ${bridge.bridge_id}`);
+            logger.info(`[Upload] Using ${extractedPositions.length} positions from local extractor for ${objectId}`);
           }
         }
 
         // PRIORITY 3: Fallback to templates if nothing else worked
         if (positionsToInsert.length === 0) {
-          logger.warn(`[Upload] No positions found for ${bridge.bridge_id}, using templates`);
+          logger.warn(`[Upload] No positions found for ${objectId}, using templates`);
           positionsToInsert = templatePositions;
           positionsSource = 'templates';
         }
 
         // Insert all positions (async/await)
         for (const pos of positionsToInsert) {
-          const id = `${bridge.bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+          const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
           await db.prepare(`
             INSERT INTO positions (
@@ -225,7 +291,7 @@ router.post('/', upload.single('file'), async (req, res) => {
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           `).run(
             id,
-            bridge.bridge_id,
+            bridgeId,
             pos.part_name,
             pos.item_name,
             pos.subtype,
@@ -240,20 +306,22 @@ router.post('/', upload.single('file'), async (req, res) => {
         }
 
         logger.info(
-          `Created ${positionsToInsert.length} positions for bridge ${bridge.bridge_id} ` +
-          `(source: ${positionsSource}, local_extracted: ${extractedPositions.length})`
+          `[Upload] Created ${positionsToInsert.length} positions for ${objectId} ` +
+          `(type: ${project.object_type}, source: ${positionsSource})`
         );
 
         createdBridges.push({
-          bridge_id: bridge.bridge_id,
-          object_name: bridge.object_name,
-          concrete_m3: bridge.concrete_m3 || 0,
+          bridge_id: bridgeId,
+          object_name: project.object_name,
+          object_type: project.object_type,
+          concrete_m3: project.concrete_m3 || 0,
           positions_created: positionsToInsert.length,
-          positions_from_excel: extractedPositions.length,
-          positions_source: positionsSource  // Added: track source
+          positions_from_excel: extractedPositionsCount,
+          positions_source: positionsSource,
+          parent_project: stavbaProjectId || null  // Include hierarchy info
         });
       } catch (error) {
-        logger.error(`Error creating bridge ${bridge.bridge_id}:`, error);
+        logger.error(`Error creating project ${project.project_id}:`, error);
       }
     }
 
@@ -265,12 +333,16 @@ router.post('/', upload.single('file'), async (req, res) => {
     res.json({
       import_id,
       filename: req.file.originalname,
+      stavba: fileMetadata.stavba || null,
       bridges: createdBridges,
+      createdProjects: createdBridges.length,
+      stavbaProject: stavbaProjectId || null,
       mapping_suggestions: parseResult.mapping_suggestions,
       raw_rows: parseResult.raw_rows,
       row_count: parseResult.raw_rows.length,
       status: 'success',
-      message: `Created ${createdBridges.length} bridges with ${totalPositions} positions (${totalFromExcel} from Excel, ${totalPositions - totalFromExcel} from templates)`
+      message: `Created ${createdBridges.length} objects with ${totalPositions} positions (${totalFromExcel} from Excel, ${totalPositions - totalFromExcel} from templates)` +
+               (stavbaProjectId ? ` in project "${fileMetadata.stavba}"` : '')
     });
   } catch (error) {
     logger.error('Upload error:', error);

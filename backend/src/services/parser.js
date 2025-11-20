@@ -235,9 +235,10 @@ function findConcretePositions(rawData, headerRow) {
 }
 
 /**
- * Normalize bridge name for consistent bridge_id
+ * Normalize string for consistent project_id/object_id
+ * Used for creating normalized IDs from project/object names
  */
-function normalizeString(str) {
+export function normalizeString(str) {
   return str
     .trim()
     .replace(/\s+/g, '_')      // Replace spaces with underscores
