@@ -45,14 +45,20 @@ psql -U user -d monolit_planner -f backend/src/db/migrations/001-add-project-hie
 #### Option 2: Manual SQL Commands
 
 ```sql
--- 1. Add new columns
+-- 1. Add new columns (PostgreSQL syntax)
 ALTER TABLE monolith_projects
 ADD COLUMN IF NOT EXISTS stavba VARCHAR(255),
 ADD COLUMN IF NOT EXISTS objekt VARCHAR(255),
 ADD COLUMN IF NOT EXISTS soupis VARCHAR(255),
 ADD COLUMN IF NOT EXISTS parent_project_id VARCHAR(255);
 
--- 2. Create indexes
+-- 2. Add column comments (PostgreSQL requires separate COMMENT statements)
+COMMENT ON COLUMN monolith_projects.stavba IS 'Project name from file header';
+COMMENT ON COLUMN monolith_projects.objekt IS 'Object description from file header';
+COMMENT ON COLUMN monolith_projects.soupis IS 'Budget/list name from file';
+COMMENT ON COLUMN monolith_projects.parent_project_id IS 'Link to parent project for hierarchy';
+
+-- 3. Create indexes
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_stavba ON monolith_projects(stavba);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_parent ON monolith_projects(parent_project_id);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_hierarchy ON monolith_projects(parent_project_id, object_type);
