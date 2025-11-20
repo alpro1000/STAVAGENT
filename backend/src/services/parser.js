@@ -376,6 +376,94 @@ function suggestMapping(headers) {
 }
 
 /**
+ * Extract bridges from CORE parser response
+ * Uses intelligent material_type classification instead of simple M3 detection
+ *
+ * CORE parser returns positions with:
+ * - material_type: "concrete" | "reinforcement" | "masonry" | "insulation" | "other"
+ * - technical_specs: { concrete_class, exposure_classes, ... }
+ * - validation: GREEN | AMBER | RED
+ * - confidence_score: 0.0-1.0
+ */
+export function extractBridgesFromCOREResponse(corePositions) {
+  if (!Array.isArray(corePositions) || corePositions.length === 0) {
+    logger.warn('[Parser] CORE returned empty positions');
+    return [];
+  }
+
+  const bridges = [];
+  const processedDescriptions = new Set();
+
+  logger.info(`[Parser] Extracting bridges from ${corePositions.length} CORE positions`);
+
+  // Filter for concrete positions only
+  // CORE's material_type field is reliable (uses class patterns, exposure classes, not just M3)
+  const concretePositions = corePositions.filter(pos => {
+    // Match positions where CORE identified as concrete
+    const isConcrete = pos.material_type === 'concrete' ||
+                      pos.material_type === 'CONCRETE';
+
+    // Optionally prefer high-confidence GREEN positions
+    const isValidated = pos.audit === 'GREEN' || pos.audit === 'AMBER';
+
+    return isConcrete;
+  });
+
+  logger.info(`[Parser] CORE identified ${concretePositions.length} concrete positions (out of ${corePositions.length})`);
+
+  // Create bridges from concrete positions
+  concretePositions.forEach(pos => {
+    const description = pos.description || `Position ${pos.code}`;
+    const quantity = parseNumber(pos.quantity || 0);
+
+    // Skip if already processed (avoid duplicates)
+    if (processedDescriptions.has(description)) {
+      return;
+    }
+
+    if (quantity <= 0 || description.length < 3) {
+      return;
+    }
+
+    // Use full description as bridge name
+    const bridge_id = normalizeString(description);
+    const concrete_m3 = quantity;
+
+    // Check for duplicate bridge_id (from different descriptions)
+    if (!bridges.find(b => b.bridge_id === bridge_id)) {
+      bridges.push({
+        bridge_id: bridge_id,
+        object_name: description,       // Full description from CORE
+        concrete_m3: concrete_m3,        // Quantity from CORE
+        span_length_m: 0,
+        deck_width_m: 0,
+        pd_weeks: 0,
+        // Store CORE metadata
+        core_code: pos.code,
+        core_material_type: pos.material_type,
+        core_validation: pos.audit,
+        core_confidence: pos.enrichment?.confidence_score || 0
+      });
+
+      processedDescriptions.add(description);
+
+      logger.info(
+        `[Parser] Created bridge from CORE concrete: ${bridge_id} ` +
+        `(${concrete_m3} m³, ${pos.audit}, conf: ${pos.enrichment?.confidence_score || 'N/A'})`
+      );
+    }
+  });
+
+  if (bridges.length === 0) {
+    logger.warn('[Parser] No concrete positions found in CORE response');
+  } else {
+    logger.info(`[Parser] ✅ Successfully created ${bridges.length} bridges from CORE concrete positions`);
+  }
+
+  return bridges;
+}
+
+/**
  * Parse number from Czech/EU format (comma as decimal separator)
  */
 export function parseNumber(value) {
