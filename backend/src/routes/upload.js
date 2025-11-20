@@ -8,7 +8,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { parseXLSX, parseNumber } from '../services/parser.js';
+import { parseXLSX, parseNumber, extractBridgesFromCOREResponse } from '../services/parser.js';
 import { extractConcretePositions } from '../services/concreteExtractor.js';
 import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge } from '../services/coreAPI.js';
 import { logger } from '../utils/logger.js';
@@ -77,7 +77,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     logger.info(`Processing upload: ${req.file.originalname} (${import_id})`);
 
-    // Parse XLSX
+    // Parse XLSX - only need raw_rows for local extractor fallback
     const parseResult = await parseXLSX(filePath);
 
     // Auto-create bridges in database
@@ -86,7 +86,66 @@ router.post('/', upload.single('file'), async (req, res) => {
     // Use shared template positions for default parts
     const templatePositions = BRIDGE_TEMPLATE_POSITIONS;
 
-    for (const bridge of parseResult.bridges) {
+    // ⭐ CORE-FIRST APPROACH (User requirement: Don't use M3 detection, rely on CORE)
+    // Start with EMPTY bridges - only CORE's intelligent classification populates this
+    let bridgesForImport = [];
+    let parsedPositionsFromCORE = [];
+    let sourceOfBridges = 'none';
+
+    try {
+      logger.info(`[Upload] ✨ Attempting CORE parser (PRIMARY) - uses intelligent material_type classification...`);
+      const corePositions = await parseExcelByCORE(filePath);
+
+      if (corePositions && corePositions.length > 0) {
+        logger.info(`[Upload] CORE parser returned ${corePositions.length} positions`);
+
+        // Extract bridges using CORE's intelligent material classification
+        const coreBridges = extractBridgesFromCOREResponse(corePositions);
+
+        if (coreBridges && coreBridges.length > 0) {
+          logger.info(`[Upload] ✅ CORE identified ${coreBridges.length} concrete bridges using material_type classification`);
+          bridgesForImport = coreBridges;
+          parsedPositionsFromCORE = corePositions;
+          sourceOfBridges = 'core_intelligent_classification';
+        } else {
+          logger.warn('[Upload] ⚠️ CORE returned positions but identified NO concrete bridges (material_type != "concrete")');
+          // Don't fall back to unreliable M3 detection!
+        }
+      } else {
+        logger.warn('[Upload] ⚠️ CORE returned empty response (no positions parsed)');
+        // Don't fall back to unreliable M3 detection!
+      }
+    } catch (coreError) {
+      logger.error(`[Upload] ❌ CORE parser failed: ${coreError.message}`);
+      logger.error('[Upload] Cannot identify concrete bridges without CORE intelligence');
+      // Don't fall back to unreliable M3 detection!
+    }
+
+    // VALIDATION: Ensure CORE identified concrete bridges
+    if (bridgesForImport.length === 0) {
+      logger.warn('[Upload] ⚠️ Import warning: CORE did not identify any concrete bridges');
+      logger.info('[Upload] Possible reasons:');
+      logger.info('  1. No concrete items in the file (material_type != "concrete")');
+      logger.info('  2. CORE parser is unavailable');
+      logger.info('  3. File format not recognized by CORE');
+
+      // Allow user to see the warning but don't create bridges from unreliable sources
+      res.set('Content-Type', 'application/json; charset=utf-8');
+      res.json({
+        success: false,
+        error: 'No concrete bridges identified',
+        import_id: import_id,
+        message: 'CORE parser did not identify any concrete items in this file. Please verify:' +
+                 '\n- File contains concrete items with concrete specifications (C20/25, C30/37, etc.)' +
+                 '\n- CORE parser service is available' +
+                 '\n- File format is supported',
+        createdBridges: [],
+        positionsCreated: 0
+      });
+      return;
+    }
+
+    for (const bridge of bridgesForImport) {
       try {
         // Check if bridge already exists (async/await for PostgreSQL)
         const existing = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridge.bridge_id);
@@ -111,41 +170,47 @@ router.post('/', upload.single('file'), async (req, res) => {
           logger.info(`Bridge already exists: ${bridge.bridge_id}`);
         }
 
-        // ✅ FIX: ALWAYS extract and create positions (whether bridge is new or existing)
-        // This ensures data is imported even if bridge was created in previous upload
-        const extractedPositions = extractConcretePositions(parseResult.raw_rows, bridge.bridge_id);
+        // Extract positions with intelligent fallback chain
+        let positionsToInsert = [];
+        let positionsSource = 'unknown';
 
-        // Insert extracted positions (or use fallback)
-        let positionsToInsert = extractedPositions;
-        let positionsSource = 'excel';
+        // PRIORITY 1: If CORE was used for bridge identification, use CORE positions
+        if (sourceOfBridges === 'core_intelligent_classification' && parsedPositionsFromCORE.length > 0) {
+          logger.info(`[Upload] Using CORE positions (${parsedPositionsFromCORE.length} total)`);
 
-        // Fallback chain: Local extractor → CORE parser → Templates
-        if (extractedPositions.length === 0) {
-          logger.warn(`No positions extracted from Excel for ${bridge.bridge_id}, trying CORE parser...`);
+          // Filter positions matching this bridge
+          const bridgePositions = parsedPositionsFromCORE.filter(pos => {
+            // Match by bridge_id from CORE metadata or by description similarity
+            return pos.bridge_id === bridge.bridge_id ||
+                   (bridge.object_name && pos.description && pos.description.includes(bridge.object_name));
+          });
 
-          // Try CORE parser as fallback
-          try {
-            const corePositions = await parseExcelByCORE(filePath);
-
-            if (corePositions && corePositions.length > 0) {
-              // Filter positions for this bridge
-              const bridgePositions = filterPositionsForBridge(corePositions, bridge.bridge_id);
-
-              // Convert CORE format to Monolit format
-              positionsToInsert = bridgePositions.map(pos =>
-                convertCOREToMonolitPosition(pos, bridge.bridge_id)
-              );
-
-              positionsSource = 'core';
-              logger.info(`✅ CORE extracted ${positionsToInsert.length} positions for ${bridge.bridge_id}`);
-            } else {
-              throw new Error('CORE returned no positions');
-            }
-          } catch (coreError) {
-            logger.warn(`CORE parser failed: ${coreError.message}, falling back to templates`);
-            positionsToInsert = templatePositions;
-            positionsSource = 'templates';
+          if (bridgePositions.length > 0) {
+            // Convert CORE format to Monolit format
+            positionsToInsert = bridgePositions.map(pos =>
+              convertCOREToMonolitPosition(pos, bridge.bridge_id)
+            );
+            positionsSource = 'core_intelligent';
+            logger.info(`[Upload] Using ${positionsToInsert.length} positions from CORE for ${bridge.bridge_id}`);
           }
+        }
+
+        // PRIORITY 2: Try local extractor if CORE positions not available
+        if (positionsToInsert.length === 0) {
+          const extractedPositions = extractConcretePositions(parseResult.raw_rows, bridge.bridge_id);
+
+          if (extractedPositions.length > 0) {
+            positionsToInsert = extractedPositions;
+            positionsSource = 'local_extractor';
+            logger.info(`[Upload] Using ${extractedPositions.length} positions from local extractor for ${bridge.bridge_id}`);
+          }
+        }
+
+        // PRIORITY 3: Fallback to templates if nothing else worked
+        if (positionsToInsert.length === 0) {
+          logger.warn(`[Upload] No positions found for ${bridge.bridge_id}, using templates`);
+          positionsToInsert = templatePositions;
+          positionsSource = 'templates';
         }
 
         // Insert all positions (async/await)

@@ -59,18 +59,41 @@ export async function parseExcelByCORE(filePath) {
       throw new Error(`CORE returned invalid response: ${JSON.stringify(response.data)}`);
     }
 
+    // Log full response for debugging
+    logger.info(`[CORE] Raw response: ${JSON.stringify(response.data).substring(0, 500)}`);
+
     // Extract positions from response
-    // concrete-agent creates a project and returns project_id
-    // Positions will be in the response.data.files or need to be fetched separately
+    // concrete-agent returns: { success: true, project_id: "...", ... }
     const projectId = response.data.project_id;
-    const positions = response.data.positions || response.data.files || [];
+
+    // Try multiple possible response formats
+    let positions = [];
+
+    if (Array.isArray(response.data.positions)) {
+      positions = response.data.positions;
+      logger.info(`[CORE] Found positions in response.data.positions: ${positions.length}`);
+    } else if (Array.isArray(response.data.files)) {
+      positions = response.data.files;
+      logger.info(`[CORE] Found positions in response.data.files: ${positions.length}`);
+    } else if (Array.isArray(response.data.items)) {
+      positions = response.data.items;
+      logger.info(`[CORE] Found positions in response.data.items: ${positions.length}`);
+    } else if (response.data.data && Array.isArray(response.data.data.positions)) {
+      positions = response.data.data.positions;
+      logger.info(`[CORE] Found positions in response.data.data.positions: ${positions.length}`);
+    } else {
+      // If no positions in expected locations, check what's in the response
+      logger.info(`[CORE] Response keys: ${Object.keys(response.data).join(', ')}`);
+      logger.info(`[CORE] No positions found in response, using empty array`);
+      positions = [];
+    }
 
     logger.info(
       `[CORE] ✅ Successfully parsed Excel file at concrete-agent ` +
-      `(project_id: ${projectId}, files: ${Array.isArray(positions) ? positions.length : 'N/A'})`
+      `(project_id: ${projectId}, positions: ${positions.length})`
     );
 
-    // Return positions if available, otherwise return empty array for fallback
+    // Return positions array
     return Array.isArray(positions) ? positions : [];
 
   } catch (error) {
