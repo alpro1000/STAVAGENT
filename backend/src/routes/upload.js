@@ -8,7 +8,7 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
-import { parseXLSX, parseNumber, extractBridgesFromCOREResponse } from '../services/parser.js';
+import { parseXLSX, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription } from '../services/parser.js';
 import { extractConcretePositions } from '../services/concreteExtractor.js';
 import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge } from '../services/coreAPI.js';
 import { logger } from '../utils/logger.js';
@@ -99,12 +99,13 @@ router.post('/', upload.single('file'), async (req, res) => {
       if (corePositions && corePositions.length > 0) {
         logger.info(`[Upload] CORE parser returned ${corePositions.length} positions`);
 
-        // Extract bridges using CORE's intelligent material classification
-        const coreBridges = extractBridgesFromCOREResponse(corePositions);
+        // Extract projects using CORE's intelligent material classification
+        // detectObjectTypeFromDescription determines type from text, not SO code
+        const coreProjects = extractProjectsFromCOREResponse(corePositions);
 
-        if (coreBridges && coreBridges.length > 0) {
-          logger.info(`[Upload] ✅ CORE identified ${coreBridges.length} concrete bridges using material_type classification`);
-          bridgesForImport = coreBridges;
+        if (coreProjects && coreProjects.length > 0) {
+          logger.info(`[Upload] ✅ CORE identified ${coreProjects.length} concrete projects using material_type classification`);
+          bridgesForImport = coreProjects;  // Rename: projects but stored in bridgesForImport for now
           parsedPositionsFromCORE = corePositions;
           sourceOfBridges = 'core_intelligent_classification';
         } else {

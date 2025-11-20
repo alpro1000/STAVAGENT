@@ -65,63 +65,83 @@ export async function parseXLSX(filePath) {
 }
 
 /**
- * Extract bridges from raw data - POSITION-FIRST APPROACH
+ * Extract file metadata (Stavba, Objekt, Сoupis)
+ * This metadata is used to create project hierarchy
  *
- * NEW STRATEGY (Changed from SO-code-first):
- * 1. Find ALL positions where Unit = "M3"/"m3" (concrete items)
- * 2. Use the position DESCRIPTION as bridge name
- * 3. Extract concrete volume DIRECTLY from that row's quantity column
- * 4. Fall back to SO code detection if no concrete positions found
+ * Stavba = Project container (from file headers)
+ * Objekt = Object name (from file headers or CORE)
+ * Сoupis = Budget/list name
  */
-function extractBridgesFromData(rawData) {
-  const bridges = [];
+export function extractFileMetadata(rawData) {
+  let metadata = {
+    stavba: null,
+    objekt: null,
+    soupis: null
+  };
 
-  logger.info('[Parser] Starting position-first bridge extraction');
+  // Scan first 15 rows for metadata labels
+  for (let i = 0; i < Math.min(15, rawData.length); i++) {
+    const row = rawData[i];
+    const keys = Object.keys(row);
 
-  // Detect column headers (usually in first 5 rows)
-  const headerRow = detectHeaderRow(rawData);
-  logger.info('[Parser] Detected columns:', headerRow);
+    for (let keyIndex = 0; keyIndex < keys.length; keyIndex++) {
+      const key = keys[keyIndex];
+      const value = row[key];
 
-  if (!headerRow) {
-    logger.warn('[Parser] Could not detect column headers, falling back to SO code extraction');
-    return extractBridgesFromSOCodes(rawData);
-  }
+      if (!value || typeof value !== 'string') continue;
 
-  // PRIMARY: Find bridges from concrete positions (M3 rows)
-  const concretePositions = findConcretePositions(rawData, headerRow);
-  logger.info(`[Parser] Found ${concretePositions.length} concrete positions`);
+      const normalized = value.trim().toLowerCase();
 
-  if (concretePositions.length > 0) {
-    // Create bridges from concrete positions
-    concretePositions.forEach(pos => {
-      // Use full description as bridge identifier
-      const bridge_id = normalizeString(pos.description);
-
-      // Check if bridge already exists in our list
-      const existing = bridges.find(b => b.bridge_id === bridge_id);
-
-      if (!existing) {
-        bridges.push({
-          bridge_id: bridge_id,
-          object_name: pos.description, // Full description from source
-          concrete_m3: pos.quantity,     // Volume directly from source
-          span_length_m: 0,
-          deck_width_m: 0,
-          pd_weeks: 0
-        });
-        logger.info(`[Parser] Created bridge from concrete position: ${bridge_id} (${pos.quantity} m³)`);
+      // Look for "Stavba:" label
+      if (normalized === 'stavba' && keyIndex + 1 < keys.length) {
+        metadata.stavba = row[keys[keyIndex + 1]];
+        logger.info(`[Parser] Found Stavba: "${metadata.stavba}"`);
       }
-    });
 
-    if (bridges.length > 0) {
-      logger.info(`[Parser] ✅ Successfully created ${bridges.length} bridges from concrete positions`);
-      return bridges;
+      // Look for "Objekt:" label
+      if (normalized === 'objekt' && keyIndex + 1 < keys.length) {
+        metadata.objekt = row[keys[keyIndex + 1]];
+        logger.info(`[Parser] Found Objekt: "${metadata.objekt}"`);
+      }
+
+      // Look for "Сoupis:" label
+      if (normalized === 'soupis' && keyIndex + 1 < keys.length) {
+        metadata.soupis = row[keys[keyIndex + 1]];
+        logger.info(`[Parser] Found Сoupis: "${metadata.soupis}"`);
+      }
     }
   }
 
-  // SECONDARY FALLBACK: Use SO code detection if no concrete positions found
-  logger.warn('[Parser] No concrete positions found, falling back to SO code detection');
-  return extractBridgesFromSOCodes(rawData);
+  return metadata;
+}
+
+/**
+ * Detect object type from description text
+ * DO NOT use SO code for type detection - SO is just an ID!
+ *
+ * Type determined from keywords in description:
+ * - "MOST" / "most" → bridge
+ * - "TUNEL" / "tunnel" → tunnel
+ * - "BUDOVA" / "building" → building
+ * - "NASYPOV" / "embankment" → embankment
+ * - "RETENCI" / "retaining" → retaining_wall
+ * - "PARKOV" / "parking" → parking
+ * - "SILNIC" / "road" → road
+ */
+export function detectObjectTypeFromDescription(description) {
+  if (!description) return 'custom';
+
+  const desc = description.toLowerCase();
+
+  if (desc.includes('most')) return 'bridge';
+  if (desc.includes('tunel')) return 'tunnel';
+  if (desc.includes('budov')) return 'building';
+  if (desc.includes('nasypov') || desc.includes('nasyp')) return 'embankment';
+  if (desc.includes('retenci') || desc.includes('opěrn')) return 'retaining_wall';
+  if (desc.includes('parkov')) return 'parking';
+  if (desc.includes('silnic') || desc.includes('cesta')) return 'road';
+
+  return 'custom';
 }
 
 /**
@@ -227,118 +247,15 @@ function normalizeString(str) {
 }
 
 /**
- * Fallback: Extract bridges from SO codes
- * Used if no concrete positions found
+ * REMOVED: extractBridgesFromSOCodes()
+ *
+ * This function was WRONG because:
+ * - Assumed SO code determines object type (FALSE!)
+ * - SO is just an ID (Stavební Objekt), not a type classifier
+ * - Type should be determined from DESCRIPTION text
+ *
+ * Use detectObjectTypeFromDescription() instead!
  */
-function extractBridgesFromSOCodes(rawData) {
-  const bridges = [];
-  const foundSOCodes = new Set();
-
-  // Extract header metadata
-  let projectName = '';
-  let objectDescription = '';
-
-  // Scan header rows
-  for (let i = 0; i < Math.min(15, rawData.length); i++) {
-    const row = rawData[i];
-    const keys = Object.keys(row);
-
-    for (let keyIndex = 0; keyIndex < keys.length; keyIndex++) {
-      const key = keys[keyIndex];
-      const value = row[key];
-
-      if (value && typeof value === 'string') {
-        const normalized = value.trim().toLowerCase();
-
-        if (normalized === 'stavba' && keyIndex + 1 < keys.length) {
-          projectName = row[keys[keyIndex + 1]] || '';
-        }
-
-        if (normalized === 'objekt' && keyIndex + 1 < keys.length) {
-          objectDescription = row[keys[keyIndex + 1]] || '';
-        }
-
-        if (normalized === 'soupis' && keyIndex + 1 < keys.length) {
-          const soupisValue = row[keys[keyIndex + 1]];
-          if (soupisValue) {
-            projectName = soupisValue;
-          }
-        }
-      }
-    }
-  }
-
-  logger.info(`[Parser] Fallback to SO codes - Project: "${projectName}", Object: "${objectDescription}"`);
-
-  // Find SO codes
-  const soCodeMap = new Map();
-
-  rawData.forEach((row, index) => {
-    for (const [key, value] of Object.entries(row)) {
-      if (value && typeof value === 'string') {
-        const match = value.match(/SO\s*(\d+)/i);
-        if (match) {
-          const soCode = `SO ${match[1]}`.trim();
-          if (!foundSOCodes.has(soCode)) {
-            foundSOCodes.add(soCode);
-            soCodeMap.set(soCode, index);
-            logger.info(`[Parser] Found SO code: ${soCode} at row ${index}`);
-          }
-          break;
-        }
-      }
-    }
-  });
-
-  // Build bridges from SO codes
-  foundSOCodes.forEach(soCode => {
-    const startRow = soCodeMap.get(soCode);
-    let concrete_m3 = 0;
-    let objectName = soCode;
-
-    if (objectDescription && objectDescription.includes(soCode)) {
-      objectName = objectDescription;
-    } else if (projectName) {
-      objectName = `${soCode} - ${projectName}`;
-    }
-
-    // Try to find concrete in next 20 rows
-    for (let i = startRow; i < Math.min(startRow + 20, rawData.length); i++) {
-      const row = rawData[i];
-      for (const [key, value] of Object.entries(row)) {
-        if (value && typeof value === 'string') {
-          const lowerValue = value.toLowerCase();
-          if (lowerValue.includes('beton') || lowerValue.includes('betón')) {
-            const keys = Object.keys(row);
-            const currentIndex = keys.indexOf(key);
-            if (currentIndex >= 0 && currentIndex < keys.length - 1) {
-              const nextValue = row[keys[currentIndex + 1]];
-              if (nextValue) {
-                concrete_m3 = parseNumber(nextValue);
-                if (concrete_m3 > 0) {
-                  logger.info(`Found concrete for ${soCode}: ${concrete_m3} m³`);
-                  break;
-                }
-              }
-            }
-          }
-        }
-      }
-      if (concrete_m3 > 0) break;
-    }
-
-    bridges.push({
-      bridge_id: soCode,
-      object_name: objectName,
-      concrete_m3: concrete_m3,
-      span_length_m: 0,
-      deck_width_m: 0,
-      pd_weeks: 0
-    });
-  });
-
-  return bridges;
-}
 
 /**
  * Suggest column mapping based on common patterns
@@ -376,25 +293,29 @@ function suggestMapping(headers) {
 }
 
 /**
- * Extract bridges from CORE parser response
- * Uses intelligent material_type classification instead of simple M3 detection
+ * Extract projects from CORE parser response
+ * Uses intelligent material_type classification to identify concrete positions
+ * Then determines object type from description (not from SO code!)
  *
  * CORE parser returns positions with:
  * - material_type: "concrete" | "reinforcement" | "masonry" | "insulation" | "other"
- * - technical_specs: { concrete_class, exposure_classes, ... }
+ * - description: full text with type keywords (MOST, TUNEL, BUDOVA, etc.)
+ * - quantity: volume in units
  * - validation: GREEN | AMBER | RED
  * - confidence_score: 0.0-1.0
+ *
+ * Returns projects/objects with proper type classification
  */
-export function extractBridgesFromCOREResponse(corePositions) {
+export function extractProjectsFromCOREResponse(corePositions) {
   if (!Array.isArray(corePositions) || corePositions.length === 0) {
     logger.warn('[Parser] CORE returned empty positions');
     return [];
   }
 
-  const bridges = [];
+  const projects = [];
   const processedDescriptions = new Set();
 
-  logger.info(`[Parser] Extracting bridges from ${corePositions.length} CORE positions`);
+  logger.info(`[Parser] Extracting projects from ${corePositions.length} CORE positions`);
 
   // Filter for concrete positions only
   // CORE's material_type field is reliable (uses class patterns, exposure classes, not just M3)
@@ -403,15 +324,12 @@ export function extractBridgesFromCOREResponse(corePositions) {
     const isConcrete = pos.material_type === 'concrete' ||
                       pos.material_type === 'CONCRETE';
 
-    // Optionally prefer high-confidence GREEN positions
-    const isValidated = pos.audit === 'GREEN' || pos.audit === 'AMBER';
-
     return isConcrete;
   });
 
   logger.info(`[Parser] CORE identified ${concretePositions.length} concrete positions (out of ${corePositions.length})`);
 
-  // Create bridges from concrete positions
+  // Create projects from concrete positions
   concretePositions.forEach(pos => {
     const description = pos.description || `Position ${pos.code}`;
     const quantity = parseNumber(pos.quantity || 0);
@@ -425,20 +343,24 @@ export function extractBridgesFromCOREResponse(corePositions) {
       return;
     }
 
-    // Use full description as bridge name
-    const bridge_id = normalizeString(description);
+    // Use full description as project/object name
+    const project_id = normalizeString(description);
     const concrete_m3 = quantity;
 
-    // Check for duplicate bridge_id (from different descriptions)
-    if (!bridges.find(b => b.bridge_id === bridge_id)) {
-      bridges.push({
-        bridge_id: bridge_id,
-        object_name: description,       // Full description from CORE
-        concrete_m3: concrete_m3,        // Quantity from CORE
+    // Detect object type from description (not from SO code!)
+    const object_type = detectObjectTypeFromDescription(description);
+
+    // Check for duplicate project_id (from different descriptions)
+    if (!projects.find(p => p.project_id === project_id)) {
+      projects.push({
+        project_id: project_id,
+        object_name: description,           // Full description from CORE
+        object_type: object_type,           // Detected from description keywords
+        concrete_m3: concrete_m3,           // Quantity from CORE
         span_length_m: 0,
         deck_width_m: 0,
         pd_weeks: 0,
-        // Store CORE metadata
+        // Store CORE metadata for traceability
         core_code: pos.code,
         core_material_type: pos.material_type,
         core_validation: pos.audit,
@@ -448,19 +370,19 @@ export function extractBridgesFromCOREResponse(corePositions) {
       processedDescriptions.add(description);
 
       logger.info(
-        `[Parser] Created bridge from CORE concrete: ${bridge_id} ` +
-        `(${concrete_m3} m³, ${pos.audit}, conf: ${pos.enrichment?.confidence_score || 'N/A'})`
+        `[Parser] Created project from CORE concrete: ${project_id} ` +
+        `(type: ${object_type}, ${concrete_m3} m³, ${pos.audit}, conf: ${pos.enrichment?.confidence_score || 'N/A'})`
       );
     }
   });
 
-  if (bridges.length === 0) {
+  if (projects.length === 0) {
     logger.warn('[Parser] No concrete positions found in CORE response');
   } else {
-    logger.info(`[Parser] ✅ Successfully created ${bridges.length} bridges from CORE concrete positions`);
+    logger.info(`[Parser] ✅ Successfully created ${projects.length} projects from CORE concrete positions`);
   }
 
-  return bridges;
+  return projects;
 }
 
 /**
