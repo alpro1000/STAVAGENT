@@ -8,7 +8,7 @@ import fs from 'fs';
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 
-const CORE_API_URL = process.env.CORE_API_URL || 'http://localhost:8000';
+const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent.onrender.com';
 const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT) || 30000; // 30 seconds
 const CORE_ENABLED = process.env.ENABLE_CORE_FALLBACK !== 'false'; // Enabled by default
 
@@ -35,9 +35,10 @@ export async function parseExcelByCORE(filePath) {
     const form = new FormData();
     form.append('file', fs.createReadStream(filePath));
 
-    // Call CORE API
+    // Call CORE API using workflow-a/start endpoint
+    // This is the concrete-agent.onrender.com API for parsing documents
     const response = await axios.post(
-      `${CORE_API_URL}/api/parse-excel`,
+      `${CORE_API_URL}/workflow-a/start`,
       form,
       {
         headers: {
@@ -49,18 +50,16 @@ export async function parseExcelByCORE(filePath) {
       }
     );
 
-    if (!response.data || !response.data.success) {
+    if (!response.data) {
       throw new Error('CORE returned invalid response');
     }
 
     const positions = response.data.positions || [];
-    const diagnostics = response.data.diagnostics || {};
+    const metadata = response.data.metadata || {};
 
     logger.info(
-      `[CORE] ✅ Parsed ${positions.length} positions ` +
-      `(format: ${diagnostics.format || 'unknown'}, ` +
-      `raw: ${diagnostics.raw_total || 0}, ` +
-      `normalized: ${diagnostics.normalized_total || 0})`
+      `[CORE] ✅ Parsed ${positions.length} positions from document ` +
+      `(extraction: ${metadata.extraction_method || 'unknown'})`
     );
 
     return positions;
@@ -166,12 +165,22 @@ export async function isCOREAvailable() {
   }
 
   try {
-    const response = await axios.get(`${CORE_API_URL}/api/health`, {
+    // Try to call workflow-a/start with a health check
+    // If the endpoint exists and responds, CORE is available
+    const response = await axios.head(`${CORE_API_URL}/workflow-a/start`, {
       timeout: 5000
     });
     return response.status === 200;
   } catch (error) {
-    return false;
+    // If head request fails, try a simple GET to any endpoint
+    try {
+      const response = await axios.get(`${CORE_API_URL}/`, {
+        timeout: 5000
+      });
+      return response.status === 200;
+    } catch {
+      return false;
+    }
   }
 }
 
@@ -181,19 +190,23 @@ export async function isCOREAvailable() {
  */
 export async function getCOREInfo() {
   try {
-    const response = await axios.get(`${CORE_API_URL}/api/health`, {
+    // Test connectivity by attempting a simple request
+    const response = await axios.get(`${CORE_API_URL}/`, {
       timeout: 5000
     });
     return {
       available: true,
-      version: response.data.version || 'unknown',
-      features: response.data.features || {},
-      stats: response.data.stats || {}
+      url: CORE_API_URL,
+      endpoint: 'workflow-a/start',
+      version: 'concrete-agent',
+      status: 'connected'
     };
   } catch (error) {
     return {
       available: false,
-      error: error.message
+      url: CORE_API_URL,
+      error: error.message,
+      status: 'disconnected'
     };
   }
 }
