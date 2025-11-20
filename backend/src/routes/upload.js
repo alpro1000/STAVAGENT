@@ -107,90 +107,85 @@ router.post('/', upload.single('file'), async (req, res) => {
           );
 
           logger.info(`Created bridge: ${bridge.bridge_id}`);
-
-          // Extract concrete positions from Excel data for this bridge
-          const extractedPositions = extractConcretePositions(parseResult.raw_rows, bridge.bridge_id);
-
-          // Insert extracted positions (or use fallback)
-          let positionsToInsert = extractedPositions;
-          let positionsSource = 'excel';
-
-          // Fallback chain: Local extractor → CORE parser → Templates
-          if (extractedPositions.length === 0) {
-            logger.warn(`No positions extracted from Excel for ${bridge.bridge_id}, trying CORE parser...`);
-
-            // Try CORE parser as fallback
-            try {
-              const corePositions = await parseExcelByCORE(filePath);
-
-              if (corePositions && corePositions.length > 0) {
-                // Filter positions for this bridge
-                const bridgePositions = filterPositionsForBridge(corePositions, bridge.bridge_id);
-
-                // Convert CORE format to Monolit format
-                positionsToInsert = bridgePositions.map(pos =>
-                  convertCOREToMonolitPosition(pos, bridge.bridge_id)
-                );
-
-                positionsSource = 'core';
-                logger.info(`✅ CORE extracted ${positionsToInsert.length} positions for ${bridge.bridge_id}`);
-              } else {
-                throw new Error('CORE returned no positions');
-              }
-            } catch (coreError) {
-              logger.warn(`CORE parser failed: ${coreError.message}, falling back to templates`);
-              positionsToInsert = templatePositions;
-              positionsSource = 'templates';
-            }
-          }
-
-          // Insert all positions (async/await)
-          for (const pos of positionsToInsert) {
-            const id = `${bridge.bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-
-            await db.prepare(`
-              INSERT INTO positions (
-                id, bridge_id, part_name, item_name, subtype, unit,
-                qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
-              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `).run(
-              id,
-              bridge.bridge_id,
-              pos.part_name,
-              pos.item_name,
-              pos.subtype,
-              pos.unit,
-              pos.qty || 0,
-              pos.crew_size || 4,
-              pos.wage_czk_ph || 398,
-              pos.shift_hours || 10,
-              pos.days || 0,
-              pos.otskp_code || null
-            );
-          }
-
-          logger.info(
-            `Created ${positionsToInsert.length} positions for bridge ${bridge.bridge_id} ` +
-            `(source: ${positionsSource}, local_extracted: ${extractedPositions.length})`
-          );
-
-          createdBridges.push({
-            bridge_id: bridge.bridge_id,
-            object_name: bridge.object_name,
-            concrete_m3: bridge.concrete_m3 || 0,
-            positions_created: positionsToInsert.length,
-            positions_from_excel: extractedPositions.length,
-            positions_source: positionsSource  // Added: track source
-          });
         } else {
           logger.info(`Bridge already exists: ${bridge.bridge_id}`);
-          createdBridges.push({
-            bridge_id: bridge.bridge_id,
-            object_name: bridge.object_name,
-            concrete_m3: bridge.concrete_m3 || 0,
-            note: 'Existing bridge - check if concrete quantity needs update'
-          });
         }
+
+        // ✅ FIX: ALWAYS extract and create positions (whether bridge is new or existing)
+        // This ensures data is imported even if bridge was created in previous upload
+        const extractedPositions = extractConcretePositions(parseResult.raw_rows, bridge.bridge_id);
+
+        // Insert extracted positions (or use fallback)
+        let positionsToInsert = extractedPositions;
+        let positionsSource = 'excel';
+
+        // Fallback chain: Local extractor → CORE parser → Templates
+        if (extractedPositions.length === 0) {
+          logger.warn(`No positions extracted from Excel for ${bridge.bridge_id}, trying CORE parser...`);
+
+          // Try CORE parser as fallback
+          try {
+            const corePositions = await parseExcelByCORE(filePath);
+
+            if (corePositions && corePositions.length > 0) {
+              // Filter positions for this bridge
+              const bridgePositions = filterPositionsForBridge(corePositions, bridge.bridge_id);
+
+              // Convert CORE format to Monolit format
+              positionsToInsert = bridgePositions.map(pos =>
+                convertCOREToMonolitPosition(pos, bridge.bridge_id)
+              );
+
+              positionsSource = 'core';
+              logger.info(`✅ CORE extracted ${positionsToInsert.length} positions for ${bridge.bridge_id}`);
+            } else {
+              throw new Error('CORE returned no positions');
+            }
+          } catch (coreError) {
+            logger.warn(`CORE parser failed: ${coreError.message}, falling back to templates`);
+            positionsToInsert = templatePositions;
+            positionsSource = 'templates';
+          }
+        }
+
+        // Insert all positions (async/await)
+        for (const pos of positionsToInsert) {
+          const id = `${bridge.bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+
+          await db.prepare(`
+            INSERT INTO positions (
+              id, bridge_id, part_name, item_name, subtype, unit,
+              qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+          `).run(
+            id,
+            bridge.bridge_id,
+            pos.part_name,
+            pos.item_name,
+            pos.subtype,
+            pos.unit,
+            pos.qty || 0,
+            pos.crew_size || 4,
+            pos.wage_czk_ph || 398,
+            pos.shift_hours || 10,
+            pos.days || 0,
+            pos.otskp_code || null
+          );
+        }
+
+        logger.info(
+          `Created ${positionsToInsert.length} positions for bridge ${bridge.bridge_id} ` +
+          `(source: ${positionsSource}, local_extracted: ${extractedPositions.length})`
+        );
+
+        createdBridges.push({
+          bridge_id: bridge.bridge_id,
+          object_name: bridge.object_name,
+          concrete_m3: bridge.concrete_m3 || 0,
+          positions_created: positionsToInsert.length,
+          positions_from_excel: extractedPositions.length,
+          positions_source: positionsSource  // Added: track source
+        });
       } catch (error) {
         logger.error(`Error creating bridge ${bridge.bridge_id}:`, error);
       }
