@@ -65,24 +65,184 @@ export async function parseXLSX(filePath) {
 }
 
 /**
- * Extract bridges from raw data
- * Looks for SO codes in any column and tries to find concrete quantities
- * Also extracts project and bridge names from header rows (Stavba, Objekt, Soupis)
+ * Extract bridges from raw data - POSITION-FIRST APPROACH
+ *
+ * NEW STRATEGY (Changed from SO-code-first):
+ * 1. Find ALL positions where Unit = "M3"/"m3" (concrete items)
+ * 2. Use the position DESCRIPTION as bridge name
+ * 3. Extract concrete volume DIRECTLY from that row's quantity column
+ * 4. Fall back to SO code detection if no concrete positions found
  */
 function extractBridgesFromData(rawData) {
   const bridges = [];
+
+  logger.info('[Parser] Starting position-first bridge extraction');
+
+  // Detect column headers (usually in first 5 rows)
+  const headerRow = detectHeaderRow(rawData);
+  logger.info('[Parser] Detected columns:', headerRow);
+
+  if (!headerRow) {
+    logger.warn('[Parser] Could not detect column headers, falling back to SO code extraction');
+    return extractBridgesFromSOCodes(rawData);
+  }
+
+  // PRIMARY: Find bridges from concrete positions (M3 rows)
+  const concretePositions = findConcretePositions(rawData, headerRow);
+  logger.info(`[Parser] Found ${concretePositions.length} concrete positions`);
+
+  if (concretePositions.length > 0) {
+    // Create bridges from concrete positions
+    concretePositions.forEach(pos => {
+      // Use full description as bridge identifier
+      const bridge_id = normalizeString(pos.description);
+
+      // Check if bridge already exists in our list
+      const existing = bridges.find(b => b.bridge_id === bridge_id);
+
+      if (!existing) {
+        bridges.push({
+          bridge_id: bridge_id,
+          object_name: pos.description, // Full description from source
+          concrete_m3: pos.quantity,     // Volume directly from source
+          span_length_m: 0,
+          deck_width_m: 0,
+          pd_weeks: 0
+        });
+        logger.info(`[Parser] Created bridge from concrete position: ${bridge_id} (${pos.quantity} m³)`);
+      }
+    });
+
+    if (bridges.length > 0) {
+      logger.info(`[Parser] ✅ Successfully created ${bridges.length} bridges from concrete positions`);
+      return bridges;
+    }
+  }
+
+  // SECONDARY FALLBACK: Use SO code detection if no concrete positions found
+  logger.warn('[Parser] No concrete positions found, falling back to SO code detection');
+  return extractBridgesFromSOCodes(rawData);
+}
+
+/**
+ * Detect which columns contain what data
+ * Returns mapping of detected columns
+ */
+function detectHeaderRow(rawData) {
+  // Check first 5 rows for headers
+  for (let i = 0; i < Math.min(5, rawData.length); i++) {
+    const row = rawData[i];
+    const keys = Object.keys(row);
+
+    // Look for common header patterns
+    const hasQuantity = keys.some(k => {
+      const lower = k.toLowerCase();
+      return lower.includes('počet') || lower.includes('množství') ||
+             lower.includes('quantity') || lower.includes('qty') || lower.includes('mnozstvi');
+    });
+
+    const hasUnit = keys.some(k => {
+      const lower = k.toLowerCase();
+      return lower.includes('mj') || lower.includes('jednotka') ||
+             lower.includes('unit') || lower.includes('jednotka');
+    });
+
+    const hasDescription = keys.some(k => {
+      const lower = k.toLowerCase();
+      return lower.includes('popis') || lower.includes('název') ||
+             lower.includes('description') || lower.includes('item') || lower.includes('nazev');
+    });
+
+    if (hasQuantity && hasUnit && hasDescription) {
+      // Found header row, extract column mappings
+      return {
+        description: keys.find(k => {
+          const lower = k.toLowerCase();
+          return lower.includes('popis') || lower.includes('název') ||
+                 lower.includes('description') || lower.includes('item') || lower.includes('nazev');
+        }),
+        quantity: keys.find(k => {
+          const lower = k.toLowerCase();
+          return lower.includes('počet') || lower.includes('množství') ||
+                 lower.includes('quantity') || lower.includes('qty') || lower.includes('mnozstvi');
+        }),
+        unit: keys.find(k => {
+          const lower = k.toLowerCase();
+          return lower.includes('mj') || lower.includes('jednotka') ||
+                 lower.includes('unit') || lower.includes('jednotka');
+        }),
+        headerRowIndex: i
+      };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Find all positions where Unit = M3 (concrete work)
+ */
+function findConcretePositions(rawData, headerRow) {
+  const positions = [];
+  const { description: descCol, quantity: qtyCol, unit: unitCol, headerRowIndex } = headerRow;
+
+  // Start from row after header
+  for (let i = headerRowIndex + 1; i < rawData.length; i++) {
+    const row = rawData[i];
+    const unitValue = String(row[unitCol] || '').trim();
+    const descValue = String(row[descCol] || '').trim();
+    const qtyValue = String(row[qtyCol] || '').trim();
+
+    // Check if this is a concrete row (Unit = M3 or m³)
+    if ((unitValue === 'M3' || unitValue === 'm3' || unitValue === 'm³' || unitValue === 'M³') &&
+        descValue && qtyValue) {
+
+      const qty = parseNumber(qtyValue);
+
+      if (qty > 0 && descValue.length > 3) { // Only if valid description and quantity
+        positions.push({
+          description: descValue,
+          quantity: qty,
+          unit: unitValue
+        });
+
+        logger.info(`[Parser] Found concrete position: "${descValue}" = ${qty} ${unitValue}`);
+      }
+    }
+  }
+
+  return positions;
+}
+
+/**
+ * Normalize bridge name for consistent bridge_id
+ */
+function normalizeString(str) {
+  return str
+    .trim()
+    .replace(/\s+/g, '_')      // Replace spaces with underscores
+    .replace(/[^\w-]/g, '')    // Remove special characters
+    .toLowerCase()
+    .substring(0, 100);        // Limit length
+}
+
+/**
+ * Fallback: Extract bridges from SO codes
+ * Used if no concrete positions found
+ */
+function extractBridgesFromSOCodes(rawData) {
+  const bridges = [];
   const foundSOCodes = new Set();
 
-  // Extract header metadata (Stavba, Objekt, Soupis)
-  let projectName = '';      // "I/20 HNĚVKOV - SEDLICE_N_CENA"
-  let objectDescription = ''; // "SO 201 - MOST PŘES BIOKORIDOR V KM 1,480"
+  // Extract header metadata
+  let projectName = '';
+  let objectDescription = '';
 
-  // First: scan for header rows (rows 0-15, usually headers are at top)
+  // Scan header rows
   for (let i = 0; i < Math.min(15, rawData.length); i++) {
     const row = rawData[i];
     const keys = Object.keys(row);
 
-    // Look for "Stavba" label
     for (let keyIndex = 0; keyIndex < keys.length; keyIndex++) {
       const key = keys[keyIndex];
       const value = row[key];
@@ -90,17 +250,14 @@ function extractBridgesFromData(rawData) {
       if (value && typeof value === 'string') {
         const normalized = value.trim().toLowerCase();
 
-        // Find "Stavba" (Project name)
         if (normalized === 'stavba' && keyIndex + 1 < keys.length) {
           projectName = row[keys[keyIndex + 1]] || '';
         }
 
-        // Find "Objekt" (Object/Bridge description)
         if (normalized === 'objekt' && keyIndex + 1 < keys.length) {
           objectDescription = row[keys[keyIndex + 1]] || '';
         }
 
-        // Find "Soupis" (Bill of quantities name)
         if (normalized === 'soupis' && keyIndex + 1 < keys.length) {
           const soupisValue = row[keys[keyIndex + 1]];
           if (soupisValue) {
@@ -111,26 +268,12 @@ function extractBridgesFromData(rawData) {
     }
   }
 
-  logger.info(`[Parser] Extracted header metadata:`, {
-    projectName,
-    objectDescription
-  });
+  logger.info(`[Parser] Fallback to SO codes - Project: "${projectName}", Object: "${objectDescription}"`);
 
-  // Extract SO code from header "Objekt" if present
-  if (objectDescription) {
-    const headerSOMatch = objectDescription.match(/SO\s*(\d+)/i);
-    if (headerSOMatch) {
-      const headerSO = `SO ${headerSOMatch[1]}`.trim();
-      foundSOCodes.add(headerSO);
-      logger.info(`[Parser] Found bridge from Objekt header: ${headerSO}`);
-    }
-  }
-
-  // First pass: find all SO codes
-  const soCodeMap = new Map(); // SO code -> row index
+  // Find SO codes
+  const soCodeMap = new Map();
 
   rawData.forEach((row, index) => {
-    // Search ALL columns for SO code pattern
     for (const [key, value] of Object.entries(row)) {
       if (value && typeof value === 'string') {
         const match = value.match(/SO\s*(\d+)/i);
@@ -139,38 +282,33 @@ function extractBridgesFromData(rawData) {
           if (!foundSOCodes.has(soCode)) {
             foundSOCodes.add(soCode);
             soCodeMap.set(soCode, index);
-            logger.info(`Found bridge: ${soCode} at row ${index}`);
+            logger.info(`[Parser] Found SO code: ${soCode} at row ${index}`);
           }
-          break; // Found SO code in this row, move to next row
+          break;
         }
       }
     }
   });
 
-  // Second pass: try to find concrete quantities and build names for each bridge
+  // Build bridges from SO codes
   foundSOCodes.forEach(soCode => {
     const startRow = soCodeMap.get(soCode);
     let concrete_m3 = 0;
-    let objectName = soCode; // Default to SO code
+    let objectName = soCode;
 
-    // Try to build descriptive object name
     if (objectDescription && objectDescription.includes(soCode)) {
-      // Use full description from XLSX header
       objectName = objectDescription;
     } else if (projectName) {
-      // Fallback: combine project name with SO code
       objectName = `${soCode} - ${projectName}`;
     }
 
-    // Look in next 20 rows for concrete quantity
+    // Try to find concrete in next 20 rows
     for (let i = startRow; i < Math.min(startRow + 20, rawData.length); i++) {
       const row = rawData[i];
       for (const [key, value] of Object.entries(row)) {
         if (value && typeof value === 'string') {
-          // Look for "beton", "betón", "m3", "m³"
           const lowerValue = value.toLowerCase();
           if (lowerValue.includes('beton') || lowerValue.includes('betón')) {
-            // Check next column for quantity
             const keys = Object.keys(row);
             const currentIndex = keys.indexOf(key);
             if (currentIndex >= 0 && currentIndex < keys.length - 1) {
