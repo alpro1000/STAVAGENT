@@ -77,7 +77,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     logger.info(`Processing upload: ${req.file.originalname} (${import_id})`);
 
-    // Parse XLSX - do basic parsing for structure
+    // Parse XLSX - only need raw_rows for local extractor fallback
     const parseResult = await parseXLSX(filePath);
 
     // Auto-create bridges in database
@@ -86,11 +86,11 @@ router.post('/', upload.single('file'), async (req, res) => {
     // Use shared template positions for default parts
     const templatePositions = BRIDGE_TEMPLATE_POSITIONS;
 
-    // INTELLIGENT BRIDGE DETECTION: Try CORE parser FIRST
-    // CORE uses material_type classification, not just M3 units
-    let bridgesForImport = parseResult.bridges;
+    // ⭐ CORE-FIRST APPROACH (User requirement: Don't use M3 detection, rely on CORE)
+    // Start with EMPTY bridges - only CORE's intelligent classification populates this
+    let bridgesForImport = [];
     let parsedPositionsFromCORE = [];
-    let sourceOfBridges = 'local_parser';
+    let sourceOfBridges = 'none';
 
     try {
       logger.info(`[Upload] ✨ Attempting CORE parser (PRIMARY) - uses intelligent material_type classification...`);
@@ -105,17 +105,44 @@ router.post('/', upload.single('file'), async (req, res) => {
         if (coreBridges && coreBridges.length > 0) {
           logger.info(`[Upload] ✅ CORE identified ${coreBridges.length} concrete bridges using material_type classification`);
           bridgesForImport = coreBridges;
-          parsedPositionsFromCORE = corePositions; // Keep CORE positions for later
+          parsedPositionsFromCORE = corePositions;
           sourceOfBridges = 'core_intelligent_classification';
         } else {
-          logger.warn('[Upload] CORE returned no concrete positions, falling back to local parser');
+          logger.warn('[Upload] ⚠️ CORE returned positions but identified NO concrete bridges (material_type != "concrete")');
+          // Don't fall back to unreliable M3 detection!
         }
       } else {
-        logger.warn('[Upload] CORE returned empty response, falling back to local parser');
+        logger.warn('[Upload] ⚠️ CORE returned empty response (no positions parsed)');
+        // Don't fall back to unreliable M3 detection!
       }
     } catch (coreError) {
-      logger.warn(`[Upload] CORE parser failed: ${coreError.message}, using local parser as fallback`);
-      // Continue with local parser results
+      logger.error(`[Upload] ❌ CORE parser failed: ${coreError.message}`);
+      logger.error('[Upload] Cannot identify concrete bridges without CORE intelligence');
+      // Don't fall back to unreliable M3 detection!
+    }
+
+    // VALIDATION: Ensure CORE identified concrete bridges
+    if (bridgesForImport.length === 0) {
+      logger.warn('[Upload] ⚠️ Import warning: CORE did not identify any concrete bridges');
+      logger.info('[Upload] Possible reasons:');
+      logger.info('  1. No concrete items in the file (material_type != "concrete")');
+      logger.info('  2. CORE parser is unavailable');
+      logger.info('  3. File format not recognized by CORE');
+
+      // Allow user to see the warning but don't create bridges from unreliable sources
+      res.set('Content-Type', 'application/json; charset=utf-8');
+      res.json({
+        success: false,
+        error: 'No concrete bridges identified',
+        import_id: import_id,
+        message: 'CORE parser did not identify any concrete items in this file. Please verify:' +
+                 '\n- File contains concrete items with concrete specifications (C20/25, C30/37, etc.)' +
+                 '\n- CORE parser service is available' +
+                 '\n- File format is supported',
+        createdBridges: [],
+        positionsCreated: 0
+      });
+      return;
     }
 
     for (const bridge of bridgesForImport) {
