@@ -180,8 +180,10 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
     detailSheet.addRow([]); // Empty row
 
-    // Track header row number for freeze panes
-    let firstHeaderRow = null;
+    // Track data row ranges for totals row
+    let firstDataRow = null;
+    let lastDataRow = null;
+    let rowCounter = 0;
 
     // Add each part group
     Object.entries(groupedPositions).forEach(([partName, partPositions]) => {
@@ -192,42 +194,96 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
       // Column headers
       const headerRow = detailSheet.addRow(positionHeaders);
-      if (!firstHeaderRow) {
-        firstHeaderRow = headerRow.number;
-      }
       headerRow.eachCell((cell) => {
         applyHeaderStyle(cell);
       });
 
-      // Data rows
-      partPositions.forEach(pos => {
-        const dataRow = detailSheet.addRow([
+      // Data rows with formulas
+      partPositions.forEach((pos, posIndex) => {
+        const rowNumber = detailSheet.lastRow.number + 1;
+        const rowData = [
           pos.subtype,
           pos.unit,
-          formatNumber(pos.qty),
-          pos.crew_size,
-          formatCurrency(pos.wage_czk_ph),
-          formatNumber(pos.shift_hours),
-          formatNumber(pos.days),
-          formatNumber(pos.labor_hours),
-          formatCurrency(pos.cost_czk),
-          formatCurrency(pos.unit_cost_on_m3),
-          formatCurrency(pos.kros_unit_czk),
-          formatCurrency(pos.kros_total_czk),
-          pos.has_rfi ? (pos.rfi_message || '⚠️ RFI') : ''
-        ]);
+          pos.qty,  // Column C: Quantity (raw value, not formatted)
+          pos.crew_size,  // Column D: Crew size
+          pos.wage_czk_ph,  // Column E: Wage per hour
+          pos.shift_hours,  // Column F: Shift hours
+          pos.days,  // Column G: Days
+          null,  // Column H: Labor hours (will be formula)
+          null,  // Column I: Cost CZK (will be formula)
+          pos.unit_cost_on_m3,  // Column J: Unit cost on m3
+          pos.kros_unit_czk,  // Column K: KROS unit
+          null,  // Column L: KROS total (will be formula)
+          pos.has_rfi ? (pos.rfi_message || '⚠️ RFI') : ''  // Column M: RFI
+        ];
+
+        const dataRow = detailSheet.addRow(rowData);
+
+        // Track first and last data rows
+        if (firstDataRow === null) {
+          firstDataRow = rowNumber;
+        }
+        lastDataRow = rowNumber;
+        rowCounter++;
 
         // Apply borders and alignment to all cells
         dataRow.eachCell((cell, colNumber) => {
           applyBorders(cell);
 
-          // Right align numbers (columns 3-12), left align text
-          if (colNumber >= 3 && colNumber <= 12) {
+          // Apply zebra striping (alternate background colors for data rows)
+          if (rowCounter % 2 === 0) {
+            cell.fill = {
+              type: 'pattern',
+              pattern: 'solid',
+              fgColor: { argb: 'FFF9F9F9' } // Very light gray
+            };
+          }
+
+          // Format numbers with proper alignment and number format
+          if (colNumber === 3) {
+            // Quantity column - format as number with 2 decimals
+            cell.numFmt = '0.00';
+            cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          } else if (colNumber === 4) {
+            // Crew size - integer
+            cell.numFmt = '0';
+            cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          } else if (colNumber === 5 || colNumber === 10 || colNumber === 11) {
+            // Wage, unit cost, KROS unit - currency format
+            cell.numFmt = '#,##0.00';
+            cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          } else if (colNumber === 6 || colNumber === 7 || colNumber === 8 || colNumber === 9) {
+            // Hours, days, labor hours, cost - number format
+            cell.numFmt = '0.00';
+            cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          } else if (colNumber === 12) {
+            // KROS total - currency format
+            cell.numFmt = '#,##0.00';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
           } else {
+            // Text columns
             cell.alignment = { vertical: 'middle', horizontal: 'left' };
           }
         });
+
+        // Add formulas for calculated columns
+        // H: Labor hours = D * F * G (crew_size * shift_hours * days)
+        dataRow.getCell(8).value = {
+          formula: `D${rowNumber}*F${rowNumber}*G${rowNumber}`,
+          result: pos.crew_size * pos.shift_hours * pos.days
+        };
+
+        // I: Cost CZK = E * H (wage_czk_ph * labor_hours)
+        dataRow.getCell(9).value = {
+          formula: `E${rowNumber}*H${rowNumber}`,
+          result: pos.wage_czk_ph * (pos.crew_size * pos.shift_hours * pos.days)
+        };
+
+        // L: KROS total = K * C (kros_unit_czk * qty)
+        dataRow.getCell(12).value = {
+          formula: `K${rowNumber}*C${rowNumber}`,
+          result: pos.kros_unit_czk * pos.qty
+        };
 
         // Highlight RFI rows
         if (pos.has_rfi) {
@@ -245,16 +301,86 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       detailSheet.addRow([]);
     });
 
+    // Add totals row
+    if (firstDataRow !== null && lastDataRow !== null) {
+      detailSheet.addRow([]); // Empty row before totals
+
+      const totalsRow = detailSheet.addRow([
+        'CELKEM / TOTAL', // Column A
+        '', // Column B
+        null, // Column C: Sum qty (if needed)
+        '', // Column D
+        '', // Column E
+        '', // Column F
+        '', // Column G
+        null, // Column H: Sum labor hours
+        null, // Column I: Sum cost CZK
+        '', // Column J
+        '', // Column K
+        null, // Column L: Sum KROS total
+        ''  // Column M
+      ]);
+
+      const totalRowNumber = totalsRow.number;
+
+      // Apply totals row styling
+      totalsRow.eachCell((cell, colNumber) => {
+        cell.font = { bold: true, size: 11 };
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFE7E6E6' } // Light gray
+        };
+        applyBorders(cell);
+
+        if (colNumber >= 3 && colNumber <= 12) {
+          cell.alignment = { vertical: 'middle', horizontal: 'right' };
+        } else {
+          cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        }
+      });
+
+      // Add SUM formulas for totals row
+      // H: Sum of labor hours
+      totalsRow.getCell(8).value = {
+        formula: `SUM(H${firstDataRow}:H${lastDataRow})`
+      };
+      totalsRow.getCell(8).numFmt = '0.00';
+
+      // I: Sum of cost CZK
+      totalsRow.getCell(9).value = {
+        formula: `SUM(I${firstDataRow}:I${lastDataRow})`
+      };
+      totalsRow.getCell(9).numFmt = '#,##0.00';
+
+      // L: Sum of KROS total
+      totalsRow.getCell(12).value = {
+        formula: `SUM(L${firstDataRow}:L${lastDataRow})`
+      };
+      totalsRow.getCell(12).numFmt = '#,##0.00';
+    }
+
     // Auto-fit columns based on content
     detailSheet.columns.forEach((column, index) => {
-      let maxLength = positionHeaders[index]?.length || 10;
+      let maxLength = (positionHeaders[index]?.length || 10) + 2;
 
       column.eachCell({ includeEmpty: false }, (cell) => {
-        const cellLength = cell.value ? String(cell.value).length : 0;
+        let cellLength = 0;
+        const value = cell.value;
+
+        if (value === null || value === undefined) {
+          cellLength = 0;
+        } else if (typeof value === 'object' && value.formula) {
+          // For formulas, estimate based on the header
+          cellLength = (positionHeaders[index]?.length || 10);
+        } else {
+          cellLength = String(value).length;
+        }
+
         maxLength = Math.max(maxLength, cellLength);
       });
 
-      column.width = Math.min(maxLength + 3, 50); // Add padding, max 50
+      column.width = Math.min(maxLength + 2, 50); // Add padding, max 50
     });
 
     // Generate buffer
