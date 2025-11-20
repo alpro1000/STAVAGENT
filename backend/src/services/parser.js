@@ -43,17 +43,11 @@ export async function parseXLSX(filePath) {
 
     logger.info(`Parsed ${encodedData.length} rows from ${sheetName}`);
 
-    // Extract bridges (SO codes) and their concrete quantities
-    const bridges = extractBridgesFromData(encodedData);
-
-    logger.info(`Found ${bridges.length} bridges:`, bridges);
-
     // Suggest column mapping based on headers
     const headers = Object.keys(encodedData[0] || {});
     const mapping_suggestions = suggestMapping(headers);
 
     return {
-      bridges,
       raw_rows: encodedData,
       mapping_suggestions,
       headers
