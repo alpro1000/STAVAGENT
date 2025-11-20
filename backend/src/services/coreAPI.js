@@ -31,14 +31,19 @@ export async function parseExcelByCORE(filePath) {
       throw new Error(`File not found: ${filePath}`);
     }
 
-    // Create form data
+    // Create form data with correct concrete-agent parameters
     const form = new FormData();
-    form.append('file', fs.createReadStream(filePath));
+    form.append('vykaz_vymer', fs.createReadStream(filePath)); // ← Field name is 'vykaz_vymer'
+    form.append('project_name', `Import_${Date.now()}`); // ← Required parameter
+    form.append('workflow', 'A'); // ← Workflow A for Excel import
+    form.append('auto_start_audit', 'false'); // ← Don't auto-start audit
 
-    // Call CORE API using workflow-a/start endpoint
-    // This is the concrete-agent.onrender.com API for parsing documents
+    // Call CORE API using CORRECT /api/upload endpoint
+    // This is the concrete-agent.onrender.com API for parsing Excel documents
+    logger.info(`[CORE] POST ${CORE_API_URL}/api/upload`);
+
     const response = await axios.post(
-      `${CORE_API_URL}/workflow-a/start`,
+      `${CORE_API_URL}/api/upload`,
       form,
       {
         headers: {
@@ -50,19 +55,23 @@ export async function parseExcelByCORE(filePath) {
       }
     );
 
-    if (!response.data) {
-      throw new Error('CORE returned invalid response');
+    if (!response.data || !response.data.success) {
+      throw new Error(`CORE returned invalid response: ${JSON.stringify(response.data)}`);
     }
 
-    const positions = response.data.positions || [];
-    const metadata = response.data.metadata || {};
+    // Extract positions from response
+    // concrete-agent creates a project and returns project_id
+    // Positions will be in the response.data.files or need to be fetched separately
+    const projectId = response.data.project_id;
+    const positions = response.data.positions || response.data.files || [];
 
     logger.info(
-      `[CORE] ✅ Parsed ${positions.length} positions from document ` +
-      `(extraction: ${metadata.extraction_method || 'unknown'})`
+      `[CORE] ✅ Successfully parsed Excel file at concrete-agent ` +
+      `(project_id: ${projectId}, files: ${Array.isArray(positions) ? positions.length : 'N/A'})`
     );
 
-    return positions;
+    // Return positions if available, otherwise return empty array for fallback
+    return Array.isArray(positions) ? positions : [];
 
   } catch (error) {
     if (error.code === 'ECONNREFUSED') {
@@ -165,20 +174,20 @@ export async function isCOREAvailable() {
   }
 
   try {
-    // Try to call workflow-a/start with a health check
-    // If the endpoint exists and responds, CORE is available
-    const response = await axios.head(`${CORE_API_URL}/workflow-a/start`, {
+    // Try health check endpoint
+    const response = await axios.get(`${CORE_API_URL}/health`, {
       timeout: 5000
     });
     return response.status === 200;
   } catch (error) {
-    // If head request fails, try a simple GET to any endpoint
+    // If health endpoint fails, try root endpoint
     try {
       const response = await axios.get(`${CORE_API_URL}/`, {
         timeout: 5000
       });
       return response.status === 200;
     } catch {
+      logger.warn(`[CORE] Health check failed: ${error.message}`);
       return false;
     }
   }
@@ -190,21 +199,23 @@ export async function isCOREAvailable() {
  */
 export async function getCOREInfo() {
   try {
-    // Test connectivity by attempting a simple request
-    const response = await axios.get(`${CORE_API_URL}/`, {
+    // Test connectivity
+    const response = await axios.get(`${CORE_API_URL}/health`, {
       timeout: 5000
     });
     return {
       available: true,
       url: CORE_API_URL,
-      endpoint: 'workflow-a/start',
-      version: 'concrete-agent',
-      status: 'connected'
+      endpoint: '/api/upload',
+      version: 'concrete-agent v2.0',
+      status: 'connected',
+      details: response.data
     };
   } catch (error) {
     return {
       available: false,
       url: CORE_API_URL,
+      endpoint: '/api/upload',
       error: error.message,
       status: 'disconnected'
     };
