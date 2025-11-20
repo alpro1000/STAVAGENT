@@ -3,6 +3,7 @@
  */
 
 import { useState, useRef } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
@@ -22,6 +23,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const { selectedBridge, setSelectedBridge, bridges } = useAppContext();
   const { refetch: refetchBridges } = useBridges();
   const { saveXLSX, isSaving } = useExports();
+  const queryClient = useQueryClient();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
@@ -46,6 +48,11 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
       // Refetch bridges after upload
       await refetchBridges();
+
+      // ✅ FIX: Invalidate positions cache to force refresh of displayed data
+      // Without this, React Query keeps cached positions for 10 minutes,
+      // so newly imported positions don't display until cache expires
+      queryClient.invalidateQueries({ queryKey: ['positions'] });
 
       alert(`✅ Import úspěšný! Nalezeno ${result.bridges.length} objektů s ${result.row_count} řádky.`);
     } catch (error: any) {
