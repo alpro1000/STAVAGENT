@@ -46,13 +46,23 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     try {
       const result = await uploadAPI.uploadXLSX(file);
 
+      console.log('[Upload] Response:', result);
+
       // Refetch bridges after upload
       await refetchBridges();
 
-      // ✅ FIX: Invalidate positions cache to force refresh of displayed data
-      // Without this, React Query keeps cached positions for 10 minutes,
-      // so newly imported positions don't display until cache expires
+      // ✅ AGGRESSIVE CACHE INVALIDATION
+      // Invalidate ALL caches to force complete refresh
+      await queryClient.refetchQueries({ queryKey: ['bridges'] });
       queryClient.invalidateQueries({ queryKey: ['positions'] });
+
+      // Optional: Force refetch of positions if a bridge is selected
+      if (selectedBridge) {
+        console.log('[Upload] Refetching positions for bridge:', selectedBridge);
+        await queryClient.refetchQueries({
+          queryKey: ['positions', selectedBridge]
+        });
+      }
 
       alert(`✅ Import úspěšný! Nalezeno ${result.bridges.length} objektů s ${result.row_count} řádky.`);
     } catch (error: any) {
