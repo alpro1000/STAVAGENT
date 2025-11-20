@@ -129,21 +129,51 @@ function isConcreteWork(popis, mj) {
   const unit = (mj || '').toLowerCase();
 
   const concreteKeywords = [
-    'beton', 'betón',
-    'bednění', 'bedná',
-    'výztuž', 'ocel',
-    'základy', 'základu',
-    'piloty', 'pilíř',
-    'opěr', 'křídla',
-    'rimsy', 'románsy',
-    'nosníky', 'nosn',
-    'desk', 'deska',
-    'drenáž', 'drénáž',
-    'vrty',
-    'schod', 'stupně',
-    'podklad', 'podkladní',
-    'izolace', 'izoláci',
-    'most', 'mostní'
+    // Basic concrete types
+    'beton', 'betón', 'betonová', 'betonové',
+    'žb', 'žb konstrukce', 'železobetonová', 'železobetonové',
+    'monolitická', 'monolitické', 'monolitická deska',
+
+    // Formwork
+    'bednění', 'bedná', 'bedna', 'bedny',
+    'desková', 'deskové', 'deska',
+
+    // Reinforcement
+    'výztuž', 'výztužení', 'ocel', 'ocelová', 'ocelové',
+    'drát', 'síť', 'trubka',
+
+    // Foundations
+    'základy', 'základu', 'základní', 'základem',
+    'základ', 'pase',
+
+    // Piles and pillars
+    'piloty', 'pilíř', 'pilota', 'pilíře',
+    'sloupek', 'sloupky',
+
+    // Abutments and retaining walls
+    'opěr', 'opěry', 'křídla', 'křídlo',
+    'zídka',
+
+    // Beams and ribs
+    'rimsy', 'románsy', 'rimsa',
+    'nosníky', 'nosn', 'nosník', 'nosník',
+    'průvlak',
+
+    // Drainage and waterproofing
+    'drenáž', 'drénáž', 'drén',
+    'izolace', 'izoláci', 'izolací',
+    'těsnění',
+
+    // Other concrete work
+    'vrty', 'vrt',
+    'schod', 'stupně', 'schodiště',
+    'podklad', 'podkladní', 'podkladu',
+    'podpěra', 'podpěry',
+    'most', 'mostní', 'mostovka',
+    'koruna', 'korunu',
+    'pražec', 'pražce',
+    'opoždění',
+    'stojina', 'stěna', 'stěny'
   ];
 
   const hasConcreteText = concreteKeywords.some(keyword => text.includes(keyword));
