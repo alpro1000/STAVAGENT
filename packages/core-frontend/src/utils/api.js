@@ -11,7 +11,7 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 30000,
+  timeout: 300000,  // 5 minutes for large file uploads
 });
 
 export const normalizeChat = (data) => ({
