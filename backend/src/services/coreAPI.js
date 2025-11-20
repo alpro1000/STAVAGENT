@@ -72,9 +72,31 @@ export async function parseExcelByCORE(filePath) {
     if (Array.isArray(response.data.positions)) {
       positions = response.data.positions;
       logger.info(`[CORE] Found positions in response.data.positions: ${positions.length}`);
-    } else if (Array.isArray(response.data.files)) {
-      positions = response.data.files;
-      logger.info(`[CORE] Found positions in response.data.files: ${positions.length}`);
+    } else if (Array.isArray(response.data.files) && response.data.files.length > 0) {
+      // If files returned, check if they contain positions
+      logger.info(`[CORE] Found ${response.data.files.length} file(s) in response.data.files`);
+
+      // Files might contain parsed content - need to extract positions from them
+      const filesArray = response.data.files;
+      for (const file of filesArray) {
+        // Try different property names where positions might be
+        if (Array.isArray(file.positions)) {
+          positions.push(...file.positions);
+          logger.info(`[CORE] Found ${file.positions.length} positions in file.positions`);
+        } else if (Array.isArray(file.items)) {
+          positions.push(...file.items);
+          logger.info(`[CORE] Found ${file.items.length} items in file.items`);
+        } else if (Array.isArray(file.data)) {
+          positions.push(...file.data);
+          logger.info(`[CORE] Found ${file.data.length} data items in file.data`);
+        } else if (file.parsed_data && Array.isArray(file.parsed_data)) {
+          positions.push(...file.parsed_data);
+          logger.info(`[CORE] Found ${file.parsed_data.length} parsed_data items`);
+        } else {
+          // Log what's in the file object for debugging
+          logger.info(`[CORE] File object keys: ${Object.keys(file).join(', ')}`);
+        }
+      }
     } else if (Array.isArray(response.data.items)) {
       positions = response.data.items;
       logger.info(`[CORE] Found positions in response.data.items: ${positions.length}`);
@@ -84,7 +106,8 @@ export async function parseExcelByCORE(filePath) {
     } else {
       // If no positions in expected locations, check what's in the response
       logger.info(`[CORE] Response keys: ${Object.keys(response.data).join(', ')}`);
-      logger.info(`[CORE] No positions found in response, using empty array`);
+      logger.warn(`[CORE] ⚠️ Could not find positions in standard locations`);
+      logger.info(`[CORE] Full response structure: ${JSON.stringify(response.data, null, 2).substring(0, 1000)}`);
       positions = [];
     }
 
@@ -93,7 +116,29 @@ export async function parseExcelByCORE(filePath) {
       `(project_id: ${projectId}, positions: ${positions.length})`
     );
 
-    // Return positions array
+    // If no positions found but file was uploaded, CORE might be async
+    // Try to fetch positions using the project_id
+    if (positions.length === 0 && projectId) {
+      logger.warn(`[CORE] ⚠️ No positions extracted immediately, attempting async fetch...`);
+      try {
+        // Give CORE a moment to process
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Try to fetch results using project_id
+        const resultResponse = await axios.get(
+          `${CORE_API_URL}/api/projects/${projectId}/results`,
+          { timeout: 5000 }
+        );
+
+        if (resultResponse.data && Array.isArray(resultResponse.data.positions)) {
+          positions = resultResponse.data.positions;
+          logger.info(`[CORE] ✅ Fetched ${positions.length} positions asynchronously`);
+        }
+      } catch (asyncError) {
+        logger.warn(`[CORE] Could not fetch async results: ${asyncError.message}`);
+      }
+    }
+
     return Array.isArray(positions) ? positions : [];
 
   } catch (error) {
