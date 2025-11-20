@@ -425,10 +425,11 @@ const costConfig: SheathingProjectConfig = {
 const costResult = calculateSheathing(captureCost, costConfig);
 
 console.log('\nCost Estimation:');
-console.log(`  Daily Rental Cost: ${captureCost.daily_rental_cost_czk} CZK per kit`);
+console.log(`  Daily Rental Cost: ${captureCost.daily_rental_cost_czk ?? 'N/A'} CZK per kit`);
 console.log(`  Duration: ${costResult.staggered_duration_days} days`);
 console.log(`  Total Rental Cost: ${costResult.total_rental_cost_czk} CZK`);
-console.log(`  Expected Cost: ${costResult.staggered_duration_days * captureCost.daily_rental_cost_czk * captureCost.num_kits} CZK`);
+const expectedCost = (captureCost.daily_rental_cost_czk ?? 0) * costResult.staggered_duration_days * captureCost.num_kits;
+console.log(`  Expected Cost: ${expectedCost} CZK`);
 
 assert(costResult.total_rental_cost_czk! >= 0, 'Rental cost is non-negative');
 

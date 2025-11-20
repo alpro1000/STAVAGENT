@@ -145,7 +145,7 @@ export default function SheathingCapturesTable({
                   capture={capture}
                   result={result}
                   isEditing={editingId === capture.capture_id}
-                  onEdit={() => setEditingId(capture.capture_id)}
+                  onEdit={() => setEditingId(capture.capture_id ?? null)}
                   onSave={handleCaptureSave}
                   onCancel={() => setEditingId(null)}
                   onDelete={() => handleCaptureDelete(capture.capture_id || '')}
