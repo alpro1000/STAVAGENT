@@ -694,6 +694,7 @@ MonolithProject (main entity)
 
 **Tier 1 - Foundation (implement first):**
 - ✅ **Positions** (main table) - DONE
+- ✅ **Sheathing Calculator** (NEW - Nov 20, 2025) - formwork scheduling
 - **B6: Project Summary** - project dashboard
 - **B4: Concrete Compare** - concrete types comparison
 
@@ -709,6 +710,103 @@ MonolithProject (main entity)
 
 **Tier 4 - Automation (with AI):**
 - **B8: Text Builder** - text generation (requires AI)
+
+---
+
+## 🏗️ SHEATHING CALCULATOR MODULE (NEW - Nov 20, 2025)
+
+**Status:** ✅ **Days 1-5 Complete** - Ready for testing and parser integration
+
+**Purpose:** Calculate formwork/sheathing construction schedules using the **checkerboard method** (шахматный метод) to optimize project duration and costs.
+
+### Key Features:
+
+1. **Checkerboard Scheduling** - Multiple kits work simultaneously with time offset
+   - Sequential duration: (assembly + curing + disassembly) × num_kits
+   - Staggered duration: (num_kits - 1) × shift_days + single_cycle_days
+   - Time savings: 30-60% reduction possible
+
+2. **Real-time Calculations** - Pure formula functions for:
+   - Assembly days based on area, norm, crew size
+   - Curing days based on concrete class and temperature
+   - Disassembly days (typically 50% of assembly)
+   - Optimal shift days between captures
+   - Labor hours and rental costs
+
+3. **Frontend Components:**
+   - `SheathingCapturesTable.tsx` - Main table with project statistics
+   - `SheathingCaptureRow.tsx` - Inline editing for each capture
+   - Real-time recalculation on input changes
+
+4. **Backend API:**
+   - CRUD operations for captures
+   - Project configuration management
+   - Ownership validation and authorization
+
+5. **Database:**
+   - `sheathing_captures` table - Dimension, work, rental data
+   - `sheathing_project_configs` table - Project-level defaults
+   - Proper indexes for performance
+
+### Data Structure:
+
+```typescript
+interface SheathingCapture {
+  capture_id: string;              // CAP-SO201-01
+  project_id: string;              // Bridge ID
+  part_name: string;               // ZÁKLADY, PILÍŘE...
+
+  // Dimensions
+  length_m: number;                // Length (m)
+  width_m: number;                 // Width (m)
+  height_m?: number;               // Height (m)
+  area_m2: number;                 // Sheathing area (L × W)
+
+  // Work parameters
+  assembly_norm_ph_m2: number;     // Assembly norm (man-hours/m²)
+  concrete_curing_days: number;    // Curing time (3-7 days)
+  num_kits: number;                // Number of kits (2-4)
+  work_method: 'sequential' | 'staggered';
+
+  // Optional
+  concrete_class?: string;         // C25/30, C30/37...
+  daily_rental_cost_czk?: number;
+  kit_type?: string;               // DOKA, PERI...
+}
+```
+
+### API Endpoints:
+
+```
+GET    /api/sheathing/:project_id              Get all captures
+POST   /api/sheathing                          Create capture
+PUT    /api/sheathing/:capture_id              Update capture
+DELETE /api/sheathing/:capture_id              Delete capture
+GET    /api/sheathing/:project_id/config       Get project config
+POST   /api/sheathing/:project_id/config       Update project config
+```
+
+### Implementation Progress:
+
+- [x] Day 1: Type definitions (SheathingCapture, SheathingProjectConfig)
+- [x] Day 2: Calculation formulas (pure functions, no AI)
+- [x] Day 3: Frontend components (table, row, inline editing)
+- [x] Day 4: Backend API routes (CRUD + config)
+- [x] Day 5: Database schema (tables, indexes, migrations)
+- [ ] Day 6: Testing & edge cases
+- [ ] Day 7: Parser integration (extract dims from Excel), exports
+
+### Commits:
+
+- `ee3a91e` - Add sheathing capture types and formulas
+- `dd7a3a3` - Add SheathingCapturesTable component
+- `bd544e5` - Add SheathingCaptureRow component
+- `e9e1d00` - Add sheathing API routes
+- `12ebcbc` - Add database tables and indexes
+
+### Documentation:
+
+See `SHEATHING_CALCULATOR.md` for detailed specifications, formulas, testing scenarios, and integration planning with concrete-agent parsers.
 
 ---
 
