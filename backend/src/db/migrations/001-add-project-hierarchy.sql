@@ -4,10 +4,16 @@
 
 -- Add new columns for project hierarchy
 ALTER TABLE IF EXISTS monolith_projects
-ADD COLUMN IF NOT EXISTS stavba VARCHAR(255) COMMENT 'Project name from file header',
-ADD COLUMN IF NOT EXISTS objekt VARCHAR(255) COMMENT 'Object description from file header',
-ADD COLUMN IF NOT EXISTS soupis VARCHAR(255) COMMENT 'Budget/list name from file',
-ADD COLUMN IF NOT EXISTS parent_project_id VARCHAR(255) COMMENT 'Link to parent project for hierarchy';
+ADD COLUMN IF NOT EXISTS stavba VARCHAR(255),
+ADD COLUMN IF NOT EXISTS objekt VARCHAR(255),
+ADD COLUMN IF NOT EXISTS soupis VARCHAR(255),
+ADD COLUMN IF NOT EXISTS parent_project_id VARCHAR(255);
+
+-- Add column comments (PostgreSQL-style)
+COMMENT ON COLUMN monolith_projects.stavba IS 'Project name from file header';
+COMMENT ON COLUMN monolith_projects.objekt IS 'Object description from file header';
+COMMENT ON COLUMN monolith_projects.soupis IS 'Budget/list name from file';
+COMMENT ON COLUMN monolith_projects.parent_project_id IS 'Link to parent project for hierarchy';
 
 -- Add foreign key constraint for parent_project_id if not exists
 -- Note: This is checked with IF NOT EXISTS logic in application code
