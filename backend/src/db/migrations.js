@@ -811,6 +811,80 @@ async function initSqliteSchema() {
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
       FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id) ON DELETE CASCADE
     );
+
+    -- Sheathing Captures table for formwork calculations (checkerboard method)
+    CREATE TABLE IF NOT EXISTS sheathing_captures (
+      capture_id TEXT PRIMARY KEY,
+      project_id TEXT NOT NULL,
+      part_name TEXT NOT NULL,
+
+      -- Dimensions
+      length_m REAL NOT NULL,
+      width_m REAL NOT NULL,
+      height_m REAL,
+      area_m2 REAL NOT NULL,
+      volume_m3 REAL,
+
+      -- Work characteristics
+      assembly_norm_ph_m2 REAL NOT NULL DEFAULT 1.0,
+      concrete_class TEXT,
+      concrete_curing_days INTEGER NOT NULL DEFAULT 5,
+
+      -- Kit/rental info
+      num_kits INTEGER NOT NULL DEFAULT 2,
+      kit_type TEXT,
+      daily_rental_cost_czk REAL,
+
+      -- Work method: 'sequential' or 'staggered' (checkerboard)
+      work_method TEXT NOT NULL DEFAULT 'staggered',
+
+      -- Calculated fields
+      single_cycle_days INTEGER,
+      project_duration_days INTEGER,
+      crew_size INTEGER DEFAULT 4,
+      shift_hours INTEGER DEFAULT 10,
+      days_per_month INTEGER DEFAULT 22,
+
+      -- Cost estimates
+      assembly_labor_hours REAL,
+      disassembly_labor_hours REAL,
+      total_rental_cost_czk REAL,
+
+      -- Metadata
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+
+      FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id) ON DELETE CASCADE
+    );
+
+    -- Sheathing Project Configuration
+    CREATE TABLE IF NOT EXISTS sheathing_project_configs (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      project_id TEXT NOT NULL UNIQUE,
+
+      -- Default values for new captures
+      default_assembly_norm_ph_m2 REAL NOT NULL DEFAULT 1.0,
+      default_concrete_curing_days INTEGER NOT NULL DEFAULT 5,
+      default_num_kits INTEGER NOT NULL DEFAULT 2,
+      default_work_method TEXT NOT NULL DEFAULT 'staggered',
+
+      -- Concrete defaults
+      concrete_class_default TEXT,
+
+      -- Rental info
+      daily_rental_cost_per_kit_czk REAL,
+
+      -- Labor defaults
+      crew_size INTEGER NOT NULL DEFAULT 4,
+      shift_hours INTEGER NOT NULL DEFAULT 10,
+      days_per_month INTEGER NOT NULL DEFAULT 22,
+
+      -- Metadata
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+
+      FOREIGN KEY (project_id) REFERENCES monolith_projects(project_id) ON DELETE CASCADE
+    );
   `);
 
   // Create indexes
@@ -838,6 +912,9 @@ async function initSqliteSchema() {
     CREATE INDEX IF NOT EXISTS idx_work_lists_project ON work_lists(project_id);
     CREATE INDEX IF NOT EXISTS idx_work_lists_user ON work_lists(user_id);
     CREATE INDEX IF NOT EXISTS idx_work_list_items_work_list ON work_list_items(work_list_id);
+    CREATE INDEX IF NOT EXISTS idx_sheathing_captures_project ON sheathing_captures(project_id);
+    CREATE INDEX IF NOT EXISTS idx_sheathing_captures_part ON sheathing_captures(part_name);
+    CREATE INDEX IF NOT EXISTS idx_sheathing_configs_project ON sheathing_project_configs(project_id);
   `);
 
   // Seed part templates for all construction types
