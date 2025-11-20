@@ -8,6 +8,7 @@ from datetime import datetime
 import json
 import logging
 import uuid
+import asyncio
 import aiofiles
 import mimetypes
 
@@ -637,11 +638,14 @@ async def upload_project(
 
             if workflow == 'A':
                 workflow_service = WorkflowA()
-                background_tasks.add_task(
-                    workflow_service.execute,
-                    project_id,
-                    generate_summary,
-                    enable_enrichment  # ✨ NEW: Pass enrichment flag
+                # 🔧 FIX: Use asyncio.create_task for async functions
+                # BackgroundTasks.add_task() doesn't properly handle async functions
+                asyncio.create_task(
+                    workflow_service.execute(
+                        project_id,
+                        generate_summary,
+                        enable_enrichment  # ✨ NEW: Pass enrichment flag
+                    )
                 )
             elif workflow == 'B':
                 background_tasks.add_task(
