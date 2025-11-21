@@ -15,9 +15,10 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
 
-  // 🔐 Authentication is now ENABLED
-  // Use VITE_DISABLE_AUTH=true in .env for development only
-  const TEMP_BYPASS_AUTH = false; // ✅ Authentication enabled for production
+  // 🔐 Authentication is handled by stavagent-portal
+  // Monolit-Planner is a calculator app that runs AFTER user logs in to portal
+  // NEVER enable authentication here - portal handles it!
+  const TEMP_BYPASS_AUTH = true; // ✅ Always bypass - auth in portal
 
   if (isLoading) {
     // Show loading spinner while checking authentication
