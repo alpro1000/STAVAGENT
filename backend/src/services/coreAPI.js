@@ -166,36 +166,50 @@ export async function parseExcelByCORE(filePath) {
     logger.info(`[CORE] ═══════════════════════════════════════════`);
 
     // If no positions found but file was uploaded, CORE might be async or still processing
-    // Try to fetch positions using the project_id with multiple retry attempts
+    // Try to fetch positions using the project_id with CORE's new async waiting feature
     if (positions.length === 0 && projectId) {
-      logger.warn(`[CORE] ⚠️ No positions extracted immediately, attempting async fetch with retries...`);
-      logger.warn(`[CORE] CORE парсит файл асинхронно, ждем результаты...`);
+      logger.warn(`[CORE] ⚠️ No positions extracted immediately, attempting async fetch with CORE waiting...`);
+      logger.info(`[CORE] Using new CORE async feature: wait_for_completion=true (up to 30s)`);
 
-      // Try multiple endpoints and wait for processing
+      // CORE endpoints - prioritize /positions with wait_for_completion
       const endpoints = [
+        // PRIMARY: New CORE endpoints with async waiting (up to 30s)
+        `/api/projects/${projectId}/positions?wait_for_completion=true`,
+        `/api/projects/${projectId}/items?wait_for_completion=true`,
+        // SECONDARY: Async results endpoints
         `/api/projects/${projectId}/results`,
-        `/api/projects/${projectId}/items`,
-        `/api/projects/${projectId}/positions`,
         `/api/projects/${projectId}/audit/results`
       ];
 
-      for (let attempt = 0; attempt < 3; attempt++) {
+      for (let attempt = 0; attempt < 2; attempt++) {
         try {
-          // Give CORE more time to process on subsequent attempts
-          const waitTime = 500 + (attempt * 1000); // 500ms, 1500ms, 2500ms
-          logger.info(`[CORE] Waiting ${waitTime}ms before attempt ${attempt + 1}/3...`);
-          await new Promise(resolve => setTimeout(resolve, waitTime));
+          // First attempt: CORE's async waiting does the heavy lifting (30s wait)
+          // Second attempt: Quick re-check without waiting
+          const includeWait = attempt === 0;
+          const waitMsg = includeWait ? '(CORE waits 30s for processing)' : '(quick re-check)';
+
+          logger.info(`[CORE] Attempt ${attempt + 1}/2 ${waitMsg}`);
 
           // Try each endpoint
           for (const endpoint of endpoints) {
             try {
-              logger.info(`[CORE] 🔍 Trying endpoint: GET ${endpoint}`);
+              logger.info(`[CORE] 🔍 GET ${endpoint}`);
               const resultResponse = await axios.get(
                 `${CORE_API_URL}${endpoint}`,
-                { timeout: 5000 }
+                { timeout: 35000 } // 35s timeout (CORE may wait 30s)
               );
 
-              logger.info(`[CORE] Response keys from ${endpoint}: ${Object.keys(resultResponse.data).join(', ')}`);
+              logger.info(`[CORE] Response keys: ${Object.keys(resultResponse.data).join(', ')}`);
+
+              // Check for completion status
+              if (resultResponse.data.status === 'pending') {
+                logger.warn(`[CORE] Status: PENDING - Processing still in progress`);
+                continue;
+              }
+
+              if (resultResponse.data.status === 'success') {
+                logger.info(`[CORE] Status: SUCCESS - Processing complete`);
+              }
 
               // Check multiple locations in response
               if (resultResponse.data) {
@@ -215,13 +229,11 @@ export async function parseExcelByCORE(filePath) {
                   positions = resultResponse.data.data;
                   logger.info(`[CORE] ✅ Fetched ${positions.length} data items from ${endpoint}`);
                   break;
-                } else if (resultResponse.data.processed_at || resultResponse.data.audit_completed_at) {
-                  logger.info(`[CORE] 📊 File processing status from ${endpoint}: ${JSON.stringify(resultResponse.data).substring(0, 300)}`);
                 }
 
                 // If response has files, try to extract from them
                 if (resultResponse.data.files && Array.isArray(resultResponse.data.files)) {
-                  logger.info(`[CORE] Found ${resultResponse.data.files.length} files in async response`);
+                  logger.info(`[CORE] Found ${resultResponse.data.files.length} files in response`);
                   for (const file of resultResponse.data.files) {
                     if (Array.isArray(file.positions)) {
                       positions.push(...file.positions);
@@ -235,12 +247,17 @@ export async function parseExcelByCORE(filePath) {
                 }
               }
             } catch (endpointError) {
-              logger.debug(`[CORE] Endpoint ${endpoint} not available: ${endpointError.message}`);
+              if (endpointError.response?.status === 404) {
+                logger.debug(`[CORE] Endpoint not available: ${endpoint}`);
+              } else {
+                logger.warn(`[CORE] Endpoint error: ${endpointError.message}`);
+              }
             }
           }
 
           // If we found positions, stop retrying
           if (positions.length > 0) {
+            logger.info(`[CORE] ✅ Found positions on attempt ${attempt + 1}, stopping retries`);
             break;
           }
         } catch (asyncError) {
@@ -249,11 +266,11 @@ export async function parseExcelByCORE(filePath) {
       }
 
       if (positions.length === 0) {
-        logger.warn(`[CORE] ⚠️ After 3 retries, CORE still returned 0 positions. File may not contain structured concrete data.`);
-        logger.warn(`[CORE] Возможные причины:`);
-        logger.warn(`[CORE]   1. CORE обрабатывает файл (нужно больше времени)`);
-        logger.warn(`[CORE]   2. Файл не содержит структурированные данные о бетоне`);
-        logger.warn(`[CORE]   3. CORE эндпоинты возвращают данные в другом формате`);
+        logger.warn(`[CORE] ⚠️ After async waiting, CORE still returned 0 positions`);
+        logger.warn(`[CORE] Possible reasons:`);
+        logger.warn(`[CORE]   1. File does not contain structured concrete data`);
+        logger.warn(`[CORE]   2. CORE parsing failed or timed out`);
+        logger.warn(`[CORE]   3. Unknown CORE response format`);
       }
     }
 
