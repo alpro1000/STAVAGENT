@@ -1,0 +1,25 @@
+{
+  "project_id": "proj_f277326d359e",
+  "project_name": "CSV Test",
+  "workflow": "A",
+  "requested_workflow": "A",
+  "selected_workflow": "A",
+  "selection_status": "OK",
+  "uploaded_at": "2025-10-26T17:52:34.128985",
+  "files": [
+    {
+      "file_id": "proj_f277326d359e:vykaz_vymer:vykaz.csv",
+      "filename": "vykaz.csv",
+      "file_type": "vykaz_vymer",
+      "size": 29,
+      "uploaded_at": "2025-10-26T17:52:34.128985"
+    },
+    {
+      "file_id": "proj_f277326d359e:vykresy:drawing.pdf",
+      "filename": "drawing.pdf",
+      "file_type": "vykresy",
+      "size": 11,
+      "uploaded_at": "2025-10-26T17:52:34.128985"
+    }
+  ]
+}

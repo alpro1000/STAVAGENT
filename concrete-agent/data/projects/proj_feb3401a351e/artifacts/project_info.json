@@ -1,0 +1,25 @@
+{
+  "project_id": "proj_feb3401a351e",
+  "project_name": "TXT Test",
+  "workflow": "A",
+  "requested_workflow": "A",
+  "selected_workflow": "A",
+  "selection_status": "OK",
+  "uploaded_at": "2025-10-28T09:55:26.729451",
+  "files": [
+    {
+      "file_id": "proj_feb3401a351e:vykaz_vymer:vykaz.xml",
+      "filename": "vykaz.xml",
+      "file_type": "vykaz_vymer",
+      "size": 15,
+      "uploaded_at": "2025-10-28T09:55:26.729451"
+    },
+    {
+      "file_id": "proj_feb3401a351e:vykresy:drawing.txt",
+      "filename": "drawing.txt",
+      "file_type": "vykresy",
+      "size": 24,
+      "uploaded_at": "2025-10-28T09:55:26.729451"
+    }
+  ]
+}

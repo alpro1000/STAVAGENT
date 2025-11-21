@@ -1,0 +1,20 @@
+{
+  "name": "@stavagent/core-backend",
+  "version": "2.3.0",
+  "description": "concrete-agent backend - FastAPI service",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "start": "python -m uvicorn app.main:app --host 0.0.0.0 --port 8000",
+    "test": "pytest -v",
+    "test:cov": "pytest --cov=app --cov-report=html",
+    "migrate": "alembic upgrade head",
+    "migrate:down": "alembic downgrade -1",
+    "lint": "flake8 app --max-line-length=120",
+    "format": "black app tests"
+  },
+  "engines": {
+    "python": ">=3.10"
+  }
+}

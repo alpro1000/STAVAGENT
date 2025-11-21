@@ -1,0 +1,121 @@
+Analyzuj stavební výkres a extrahuj VEŠKERÝ text pomocí OCR.
+
+ZAMĚŘ SE NA:
+1. TEXTOVÉ INFORMACE
+   - Název výkresu a číslo výkresu
+   - Měřítko
+   - Datum a razítka
+   - Poznámky a legendy
+
+2. TECHNICKÉ SPECIFIKACE
+   - Materiály (BETON, OCEL, OPÁLUBKA)
+   - Třídy betonu (C25/30, C30/37, atd.)
+   - Ocel (B500B, atd.)
+   - Normy (ČSN EN 206+A2, TKP KAP. 18)
+
+3. ROZMĚRY A KÓTY
+   - Délky, šířky, výšky
+   - Průměry
+   - Úrovně (±0.000, +3.500, atd.)
+
+4. OZNAČENÍ PRVKŮ
+   - Čísla pozic
+   - Typy konstrukcí (PILOTY, ZÁKLADY, PILÍŘE, OPĚRY)
+   - Značky průřezů
+
+5. TŘÍDY PROSTŘEDÍ
+   - XA2+XC2 (chemická agrese + karbonatizace)
+   - XF3+XC2 (zmrazování-rozmrazování + karbonatizace)
+   - Další třídy podle ČSN EN 206
+
+6. KATEGORIE POVRCHŮ
+   - Aa, C1a, C2d, Bd, E
+   - Požadavky na povrchovou úpravu
+
+7. TABULKY A VÝKAZY
+   - Tabulky výztuže
+   - Výkazy prvků
+   - Seznamy materiálů
+
+VÝSTUP:
+Vrať validní JSON v tomto formátu:
+
+{
+  "metadata": {
+    "drawing_title": "název výkresu",
+    "drawing_number": "číslo výkresu",
+    "scale": "měřítko (např. 1:50)",
+    "date": "datum",
+    "format": "PDF/PNG/JPG"
+  },
+  "text_blocks": [
+    {
+      "text": "extrahovaný text",
+      "location": "umístění ve výkresu (např. 'záhlaví', 'detail A', 'poznámka 1')",
+      "type": "typ (title/dimension/note/specification/standard)"
+    }
+  ],
+  "materials_found": [
+    {
+      "material_type": "BETON",
+      "specification": "C30/37",
+      "location": "kde ve výkresu",
+      "standard": "ČSN EN 206+A2"
+    },
+    {
+      "material_type": "OCEL",
+      "specification": "B500B",
+      "location": "kde ve výkresu",
+      "standard": "ČSN EN 10080"
+    }
+  ],
+  "construction_elements": [
+    {
+      "element_type": "ZÁKLADY",
+      "mark": "Z1",
+      "dimensions": "rozměry",
+      "material": "materiál",
+      "quantity": "počet kusů pokud uveden"
+    }
+  ],
+  "standards": [
+    "ČSN EN 206+A2",
+    "TKP KAP. 18"
+  ],
+  "exposure_classes": [
+    {
+      "code": "XA2+XC2",
+      "description": "chemická agrese + karbonatizace",
+      "location": "kde uvedeno"
+    }
+  ],
+  "surface_categories": [
+    {
+      "category": "C1a",
+      "location": "kde uvedeno",
+      "requirements": "požadavky"
+    }
+  ],
+  "dimensions": [
+    {
+      "value": "hodnota kóty",
+      "unit": "jednotka",
+      "element": "k čemu se vztahuje"
+    }
+  ],
+  "notes": [
+    "poznámka 1",
+    "poznámka 2"
+  ],
+  "confidence": "HIGH/MEDIUM/LOW"
+}
+
+DŮLEŽITÉ:
+- Extrahuj VEŠKERÝ viditelný text
+- Zachovej všechny české diakritické znaky (č, ř, ž, á, é, í, ó, ú, ů, ý)
+- Identifikuj VŠECHNY normy ČSN
+- Rozpoznej všechny třídy prostředí podle ČSN EN 206
+- Zaznamenej všechny rozměry s jednotkami
+- Pokud text není jasný, uveď "nejasné" do notes
+
+Vrať POUZE JSON, bez markdown bloků.

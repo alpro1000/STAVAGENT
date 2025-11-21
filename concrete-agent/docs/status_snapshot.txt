@@ -1,0 +1,44 @@
+INFO:     90.183.66.139:0 - "GET /docs HTTP/1.1" 200 OK
+INFO:     90.183.66.139:0 - "GET /openapi.json HTTP/1.1" 200 OK
+2025-10-16 08:19:46,441 - app.api.routes - INFO - 📤 Nové nahrání: proj_0117d25a60fb - 7777 (Workflow A, Enrichment: enabled)
+2025-10-16 08:19:46,441 - app.api.routes - INFO - Soubory po filtraci: vykresy=1, dokumentace=1, zmeny=0
+2025-10-16 08:19:46,442 - app.api.routes - INFO - ✅ Validace OK: 049-25-DZMS-DI-32-36 - I-20 HNĚVKOV - SEDLICE.xlsx (43.9 KB)
+2025-10-16 08:19:46,442 - app.api.routes - INFO - 💾 Uloženo: 049-25-DZMS-DI-32-36 - I-20 HNĚVKOV - SEDLICE.xlsx (43.9 KB)
+2025-10-16 08:19:46,443 - app.api.routes - INFO - 💾 Uloženo: 202_05_Zalozeni.pdf
+2025-10-16 08:19:46,448 - app.api.routes - INFO - 💾 Uloženo: 202_01_Technicka_zprava.pdf
+2025-10-16 08:19:46,448 - app.api.routes - INFO - ✅ Nahrání dokončeno: proj_0117d25a60fb
+2025-10-16 08:19:46,448 - app.api.routes - INFO - 🚀 Začínám zpracování projektu proj_0117d25a60fb (Workflow A, Enrichment: ON)
+INFO:     90.183.66.139:0 - "POST /api/upload HTTP/1.1" 200 OK
+2025-10-16 08:19:46,479 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Starting Workflow A Step 1 (upload handling)
+2025-10-16 08:19:46,479 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Resolved 1 cost document(s) and 1 drawing(s)
+2025-10-16 08:19:46,480 - app.services.project_cache - INFO - Project proj_0117d25a60fb: Cache saved to /opt/render/project/src/data/projects/proj_0117d25a60fb.json
+2025-10-16 08:19:46,480 - app.services.project_cache - INFO - Project proj_0117d25a60fb: Created new project cache at /opt/render/project/src/data/projects/proj_0117d25a60fb.json
+2025-10-16 08:19:46,480 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Cache created at /opt/render/project/src/data/projects/proj_0117d25a60fb.json
+2025-10-16 08:19:46,480 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Starting Workflow A Step 2 (parsing)
+2025-10-16 08:19:46,480 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Parsing 049-25-DZMS-DI-32-36 - I-20 HNĚVKOV - SEDLICE.xlsx (vykaz_vymer)
+2025-10-16 08:19:46,480 - app.parsers.smart_parser - INFO - [project=proj_0117d25a60fb] 📊 Excel file: 049-25-DZMS-DI-32-36 - I-20 HNĚVKOV - SEDLICE.xlsx (0.0MB)
+2025-10-16 08:19:46,480 - app.parsers.smart_parser - INFO - [project=proj_0117d25a60fb] ✅ Using standard pandas parser
+2025-10-16 08:19:46,480 - app.parsers.excel_parser - INFO - [project=proj_0117d25a60fb] 📊 Parsing Excel: 049-25-DZMS-DI-32-36 - I-20 HNĚVKOV - SEDLICE.xlsx
+2025-10-16 08:19:46,621 - app.parsers.excel_parser - INFO - [project=proj_0117d25a60fb] Excel has 2 sheet(s): ['Rekapitulace stavby', '202 - MOST PŘES POTOK V K...']
+2025-10-16 08:19:46,621 - app.parsers.excel_parser - INFO - [project=proj_0117d25a60fb] Processing sheet: Rekapitulace stavby
+2025-10-16 08:19:46,722 - app.parsers.excel_parser - WARNING - No header detected in sheet 'Rekapitulace stavby'. Best candidate: {'row_index': 5, 'match_count': 2, 'matched_fields': ['code', 'quantity'], 'raw_headers': ['', '', '', 'Kód:', '', '', '', '', '', '', '049/25-DZMS-DI-32-36', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'Měnit lze pouze buňky se žlutým podbarvením!_x000D_\n_x000D_\n1) na prvním listu Rekapitulace stavby vyplňte v sestavě_x000D_\n_x000D_\n    a) Souhrnný list_x000D_\n       - údaje o Uchazeči_x000D_\n         (přenesou se do ostatních sestav i v jiných listech)_x000D_\n_x000D_\n    b) Rekapitulace objektů_x000D_\n       - potřebné Ostatní náklady_x000D_\n_x000D_\n2) na vybraných listech vyplňte v sestavě_x000D_\n_x000D_\n    a) Krycí list_x000D_\n       - údaje o Uchazeči, pokud se liší od údajů o Uchazeči na Souhrnném listu_x000D_\n         (údaje se přenesou do ostatních sestav v daném listu)_x000D_\n_x000D_\n    b) Rekapitulace rozpočtu_x000D_\n       - potřebné Ostatní náklady_x000D_\n_x000D_\n    c) Celkové náklady za stavbu_x000D_\n       - ceny u položek_x000D_\n       - množství, pokud má žluté podbarvení_x000D_\n       - a v případě potřeby poznámku (ta je ve skrytém sloupci)', '', '', '', '', '', '', '', '', '', '', '', '', '', '0,01', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '']}
+2025-10-16 08:19:46,722 - app.parsers.excel_parser - INFO - [project=proj_0117d25a60fb] Processing sheet: 202 - MOST PŘES POTOK V K...
+2025-10-16 08:19:46,833 - app.parsers.excel_parser - INFO - 🔎 Header detected in sheet '202 - MOST PŘES POTOK V K...' at row 127: matched=['code', 'description', 'quantity', 'unit'], mapping={'code': 4, 'description': 5, 'unit': 6, 'quantity': 7}
+2025-10-16 08:19:46,942 - app.parsers.excel_parser - INFO - Extracted 53 positions from sheet '202 - MOST PŘES POTOK V K...'
+2025-10-16 08:19:46,942 - app.parsers.excel_parser - INFO - Total raw positions from all sheets: 53
+2025-10-16 08:19:46,945 - app.utils.position_normalizer - INFO - Normalized 53 positions (0 invalid/skipped)
+2025-10-16 08:19:46,945 - app.parsers.excel_parser - INFO - ✅ Excel parsed: 53 valid positions from 2 sheet(s)
+2025-10-16 08:19:46,945 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Parsed 53 positions from 049-25-DZMS-DI-32-36 - I-20 HNĚVKOV - SEDLICE.xlsx
+2025-10-16 08:19:46,950 - app.services.project_cache - INFO - Project proj_0117d25a60fb: Cache saved to /opt/render/project/src/data/projects/proj_0117d25a60fb.json
+2025-10-16 08:19:46,951 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Extracting drawing specifications from 1 file(s)
+2025-10-16 08:19:46,951 - app.parsers.drawing_specs_parser - INFO - 📐 Analysing drawing 202_05_Zalozeni.pdf
+2025-10-16 08:19:49,141 - app.parsers.drawing_specs_parser - INFO - Parsed 1 drawing(s); collected 14 technical specification markers
+2025-10-16 08:19:49,141 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Drawing specs detected=14
+2025-10-16 08:19:49,147 - app.services.position_enricher - INFO - Enrichment summary → matched=0, partial=8, unmatched=45
+2025-10-16 08:19:49,148 - app.services.specifications_validator - INFO - Validation summary → passed=46, warning=1, failed=6
+2025-10-16 08:19:49,148 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Audit summary GREEN=0, AMBER=47, RED=6
+2025-10-16 08:19:49,154 - app.services.project_cache - INFO - Project proj_0117d25a60fb: Cache saved to /opt/render/project/src/data/projects/proj_0117d25a60fb.json
+2025-10-16 08:19:49,154 - app.services.workflow_a - INFO - Project proj_0117d25a60fb: Completed Steps 1–6 → 1 document(s), 53 positions
+INFO:     90.183.66.139:0 - "GET /api/projects/proj_0117d25a60fb/status HTTP/1.1" 200 OK
+INFO:     90.183.66.139:0 - "GET /api/projects/proj_0117d25a60fb/results HTTP/1.1" 200 OK
+INFO:     90.183.66.139:0 - "GET /api/projects/proj_0117d25a60fb/files HTTP/1.1" 200 OK

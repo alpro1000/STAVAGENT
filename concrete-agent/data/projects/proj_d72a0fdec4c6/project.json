@@ -1,0 +1,25 @@
+{
+  "project_id": "proj_d72a0fdec4c6",
+  "project_name": "Test Listing Project",
+  "workflow": "A",
+  "requested_workflow": "A",
+  "selected_workflow": "A",
+  "selection_status": "OK",
+  "uploaded_at": "2025-10-26T11:11:45.298732",
+  "files": [
+    {
+      "file_id": "proj_d72a0fdec4c6:vykaz_vymer:list_test.xml",
+      "filename": "list_test.xml",
+      "file_type": "vykaz_vymer",
+      "size": 7,
+      "uploaded_at": "2025-10-26T11:11:45.290676"
+    },
+    {
+      "file_id": "proj_d72a0fdec4c6:vykresy:drawing1.pdf",
+      "filename": "drawing1.pdf",
+      "file_type": "vykresy",
+      "size": 7,
+      "uploaded_at": "2025-10-26T11:11:45.298732"
+    }
+  ]
+}

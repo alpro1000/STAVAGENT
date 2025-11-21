@@ -1,0 +1,25 @@
+{
+  "project_id": "proj_2d44d2e5c4f1",
+  "project_name": "Integration Test",
+  "workflow": "A",
+  "requested_workflow": "A",
+  "selected_workflow": "A",
+  "selection_status": "OK",
+  "uploaded_at": "2025-10-27T19:15:26.452813",
+  "files": [
+    {
+      "file_id": "proj_2d44d2e5c4f1:vykaz_vymer:integration.xml",
+      "filename": "integration.xml",
+      "file_type": "vykaz_vymer",
+      "size": 39,
+      "uploaded_at": "2025-10-27T19:15:26.441972"
+    },
+    {
+      "file_id": "proj_2d44d2e5c4f1:vykresy:drawing.pdf",
+      "filename": "drawing.pdf",
+      "file_type": "vykresy",
+      "size": 30,
+      "uploaded_at": "2025-10-27T19:15:26.452813"
+    }
+  ]
+}

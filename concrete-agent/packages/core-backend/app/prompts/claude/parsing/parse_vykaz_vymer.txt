@@ -1,0 +1,69 @@
+Analyzuj český dokument výkaz výměr (Excel, PDF nebo XML).
+
+ÚKOL:
+Extrahuj VŠECHNY pozice z dokumentu.
+
+HLEDEJ:
+- Číslo pozice (Poz., Č., #)
+- Popis práce (Popis, Název)
+- Množství (Množství)
+- Jednotka (MJ, Jednotka)
+- Cena za jednotku (Cena/MJ, Jednotková cena)
+- Celková cena (Celkem, Cena celkem)
+
+VÝSTUP:
+Vrať POUZE validní JSON (bez markdown):
+
+{
+  "document_info": {
+    "document_name": "název dokumentu",
+    "project_name": "název projektu",
+    "date": "datum"
+  },
+  "total_positions": 45,
+  "positions": [
+    {
+      "position_number": "1",
+      "description": "Betonová deska C25/30, tl. 200mm",
+      "quantity": 150.5,
+      "unit": "m³",
+      "unit_price": 2450.00,
+      "total_price": 368725.00,
+      "category": "HSV",
+      "notes": ""
+    },
+    {
+      "position_number": "2",
+      "description": "další pozice...",
+      "quantity": 0.0,
+      "unit": "...",
+      "unit_price": 0.0,
+      "total_price": 0.0
+    }
+  ]
+}
+
+PRAVIDLA:
+1. Extrahuj VŠECHNY pozice
+2. Číslo pozice: zachovej původní formát (1, 1.1, A.1)
+3. Popis: celý český text
+4. Množství: pouze číslo
+5. Jednotka: české zkratky (m³, m², kg, ks, soubor, hod)
+6. Ceny: pouze čísla (bez měny, mezer)
+7. Pokud chybí data: použij null
+
+BĚŽNÉ ČESKÉ TERMÍNY:
+- Poz./Č./# = Číslo pozice
+- Popis/Název = Popis práce
+- MJ/Jednotka = Jednotka
+- Množství = Quantity
+- Cena/MJ = Cena za jednotku
+- Celkem = Celková cena
+- HSV = Hlavní stavební výroba
+- PSV = Pomocné stavební práce
+
+KONTROLA:
+- Ověř že jsou extrahovány všechny pozice
+- Zkontroluj: množství × cena/MJ ≈ celkem (±5%)
+
+Vrať POUZE JSON, nic jiného.

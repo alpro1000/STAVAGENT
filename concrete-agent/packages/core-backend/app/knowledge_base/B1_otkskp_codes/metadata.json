@@ -1,0 +1,12 @@
+{
+  "category": "B1_otkskp_codes",
+  "last_updated": "2025-10-09",
+  "version": "1.1",
+  "source": "Cenová soustava OTSKP",
+  "description": "OTSKP cost catalogue exported from CROSS/KROS (cenové soustavy)",
+  "files": [
+    "2025_03_otskp.xml",
+    "xmk_tskp_tridnik.xml"
+  ],
+  "notes": "Primary OTSKP catalogue for Workflow A enrichment (Task H)."
+}

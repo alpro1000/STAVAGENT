@@ -1,0 +1,18 @@
+{
+  "project_id": "proj_4eecd37888ae",
+  "project_name": "Test Project",
+  "workflow": "B",
+  "requested_workflow": "B",
+  "selected_workflow": "B",
+  "selection_status": "OK",
+  "uploaded_at": "2025-10-28T10:03:51.033566",
+  "files": [
+    {
+      "file_id": "proj_4eecd37888ae:vykresy:drawing.pdf",
+      "filename": "drawing.pdf",
+      "file_type": "vykresy",
+      "size": 23,
+      "uploaded_at": "2025-10-28T10:03:51.033566"
+    }
+  ]
+}

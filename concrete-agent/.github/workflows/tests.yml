@@ -1,0 +1,45 @@
+name: Test Application
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Sync PDF prompt
+      run: |
+        make prompt.sync
+        if ! git diff --quiet -- app/prompts/pdf_extraction_system_prompt_v2_1.py; then
+          echo "::error::PDF prompt desynchronised. Run make prompt.sync locally."
+          git --no-pager diff -- app/prompts/pdf_extraction_system_prompt_v2_1.py
+          exit 1
+        fi
+
+    - name: Check PDF prompt wiring
+      run: python scripts/check_pdf_prompt_wired.py
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      env:
+        # ⭐ Здесь используются GitHub Secrets
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      run: |
+        python -m pytest tests/

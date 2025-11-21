@@ -1,0 +1,101 @@
+{
+  "source": "manufacturers + web search + practical experience",
+  "last_updated": "2025-01-07",
+  "note": "Charakteristiky betonových čerpadel pro Czech market",
+  
+  "pumps": [
+    {
+      "manufacturer": "Schwing",
+      "model": "S36X",
+      "type": "truck_mounted",
+      "capacity_m3_h": 30,
+      "technical_max_m3_h": 36,
+      "reach_vertical_m": 36,
+      "reach_horizontal_m": 32,
+      "typical_rental_day_czk": 8500,
+      "typical_rental_hour_czk": 1200,
+      "availability": "common",
+      "suitable_for": [
+        "standardní betonáž",
+        "sloupy do 15m",
+        "desky do 200 m³",
+        "stěny běžné"
+      ],
+      "limitations": "Při vzdálenosti betonárny >20km snížit kapacitu na 28 m³/h",
+      "url": "https://www.schwing.cz/"
+    },
+    {
+      "manufacturer": "Putzmeister",
+      "model": "BSF 38.16H",
+      "type": "truck_mounted",
+      "capacity_m3_h": 32,
+      "technical_max_m3_h": 38,
+      "reach_vertical_m": 38,
+      "reach_horizontal_m": 34,
+      "typical_rental_day_czk": 9500,
+      "typical_rental_hour_czk": 1350,
+      "availability": "common",
+      "suitable_for": [
+        "větší betonáže",
+        "mostovky",
+        "vysoké sloupy",
+        "stropy nad 3m výšky"
+      ],
+      "url": "https://www.putzmeister.cz/"
+    },
+    {
+      "manufacturer": "Schwing",
+      "model": "S43SX",
+      "type": "truck_mounted",
+      "capacity_m3_h": 35,
+      "technical_max_m3_h": 43,
+      "reach_vertical_m": 43,
+      "reach_horizontal_m": 38,
+      "typical_rental_day_czk": 11500,
+      "typical_rental_hour_czk": 1600,
+      "availability": "less_common",
+      "suitable_for": [
+        "velké projekty",
+        "mostovky >300 m³",
+        "výšky >20m"
+      ],
+      "note": "Pro monolitické konstrukce >300 m³ doporučit 2× čerpadla (S36X nebo BSF38)"
+    },
+    {
+      "manufacturer": "Genérique",
+      "model": "Portable 20",
+      "type": "stationary",
+      "capacity_m3_h": 20,
+      "reach_vertical_m": 100,
+      "reach_horizontal_m": 150,
+      "typical_rental_day_czk": 5500,
+      "availability": "common",
+      "suitable_for": [
+        "stísněné prostory",
+        "betonáž v suterénu",
+        "dlouhé horizontální vzdálenosti"
+      ],
+      "limitations": "Vyžaduje hadice (cena +1,500 Kč/den za 100m hadice)"
+    }
+  ],
+  
+  "decision_logic": {
+    "volume_per_shift_m3": {
+      "0-80": "S36X (1× čerpadlo, 8h směna)",
+      "80-200": "S36X (1× čerpadlo, možná prodloužená směna)",
+      "200-240": "S36X nebo BSF38 (1× čerpadlo, 8h směna)",
+      "240-300": "BSF38 (1× čerpadlo, prodloužená 10-12h) nebo S36X (prodloužená 12-14h)",
+      "300-500": "2× S36X nebo 2× BSF38 (paralelně, 12h směna)",
+      "500+": "2× S43SX nebo 3× S36X (paralelně)"
+    },
+    
+    "reach_considerations": {
+      "vertical_under_15m": "S36X stačí",
+      "vertical_15_30m": "BSF38 doporučeno",
+      "vertical_over_30m": "S43SX nebo jiné řešení",
+      "horizontal_over_30m": "Stationary + hadice"
+    },
+    
+    "monolithic_structures": "Pro monolitické konstrukce NELZE dělit → použít 2× čerpadla když >240 m³"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "category": "B1_urs_codes",
+  "last_updated": "2025-10-09",
+  "version": "0.1",
+  "source": "Sample data",
+  "description": "Placeholder for ÚRS/KROS catalogue integration",
+  "files": ["kros_sample.json"],
+  "notes": "Contains illustrative sample only; enrichment not activated."
+}
