@@ -313,34 +313,60 @@ export async function parseExcelByCORE(filePath) {
  * @returns {Object} Position in Monolit format
  */
 export function convertCOREToMonolitPosition(corePosition, bridgeId) {
-  const description = corePosition.description || '';
-  const unit = (corePosition.unit || 'M3').toUpperCase();
+  const description = corePosition.description || corePosition.item_name || '';
+  const unit = (corePosition.unit || corePosition.units || 'M3').toUpperCase();
+  const quantity = parseFloat(corePosition.quantity || corePosition.qty || 0) || 0;
 
   // Extract part name from description (before first dash or full text)
   let partName = 'Neznámá část';
   if (description) {
-    const parts = description.split('-');
-    partName = parts[0].trim();
-    if (partName.length < 3) {
-      partName = description.substring(0, 50); // Use first 50 chars if no dash
+    // Try to extract concrete mark (C30/37, C25/30, etc.)
+    const concreteMarkMatch = description.match(/C\d{2}\/\d{2}/i);
+    if (concreteMarkMatch) {
+      partName = `Beton ${concreteMarkMatch[0]}`;
+    } else {
+      const parts = description.split('-');
+      partName = parts[0].trim();
+      if (partName.length < 3) {
+        partName = description.substring(0, 50); // Use first 50 chars if no dash
+      }
     }
   }
 
   // Determine subtype based on unit and description
   const subtype = determineSubtype(description, unit);
 
-  return {
+  // Build position with enrichment data from CORE
+  const position = {
     part_name: partName,
     item_name: description,
     subtype: subtype,
     unit: unit,
-    qty: parseFloat(corePosition.quantity) || 0,
-    crew_size: 4,
-    wage_czk_ph: 398,
-    shift_hours: 10,
-    days: 0,
-    otskp_code: corePosition.code || null
+    qty: quantity,
+    crew_size: corePosition.crew_size || 4,
+    wage_czk_ph: corePosition.wage_czk_ph || 398,
+    shift_hours: corePosition.shift_hours || 10,
+    days: corePosition.days || 0,
+    otskp_code: corePosition.code || corePosition.otskp_code || null,
+    // CORE enrichment data
+    material_type: corePosition.material_type || subtype,
+    confidence_score: corePosition.confidence_score || null,
+    audit_classification: corePosition.audit_classification || corePosition.audit_class || null,
+    // Pricing from CORE
+    unit_price_rts: corePosition.unit_price_rts || null,
+    unit_price_kros: corePosition.unit_price_kros || null,
+    total_price: corePosition.total_price || (quantity * (corePosition.unit_price_rts || 0)),
+    source: 'CORE',
+    enriched: true
   };
+
+  // Log extraction for diagnostics
+  logger.debug(
+    `[CORE Converter] Extracted: ${partName} | qty=${quantity}${unit} | ` +
+    `confidence=${position.confidence_score || 'N/A'} | audit=${position.audit_classification || 'N/A'}`
+  );
+
+  return position;
 }
 
 /**
