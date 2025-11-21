@@ -8,6 +8,7 @@ import { logger } from '../utils/logger.js';
 
 /**
  * Parse XLSX file and extract data
+ * Intelligently selects the best sheet containing actual data
  */
 export async function parseXLSX(filePath) {
   try {
@@ -23,32 +24,86 @@ export async function parseXLSX(filePath) {
       throw new Error('Excel file has no sheets or is empty');
     }
 
-    const sheetName = workbook.SheetNames[0];
-    const worksheet = workbook.Sheets[sheetName];
+    logger.info(`[Parser] Available sheets: ${workbook.SheetNames.join(', ')}`);
 
-    // 🔴 FIX: Check if worksheet exists
-    if (!worksheet) {
-      throw new Error(`Sheet "${sheetName}" is empty or invalid`);
+    // 🔍 SMART SHEET SELECTION: Find the best sheet with actual data
+    let bestSheet = null;
+    let bestData = null;
+    let bestRowCount = 0;
+    let selectedSheetName = null;
+
+    // Try each sheet to find one with the most data rows
+    for (const sheetName of workbook.SheetNames) {
+      try {
+        const worksheet = workbook.Sheets[sheetName];
+        if (!worksheet) continue;
+
+        // Convert to JSON
+        const rawData = XLSX.utils.sheet_to_json(worksheet, {
+          raw: false,
+          defval: null,
+          blankrows: false
+        });
+
+        if (!Array.isArray(rawData) || rawData.length === 0) {
+          logger.debug(`[Parser] Sheet "${sheetName}" is empty`);
+          continue;
+        }
+
+        // Count data rows (filter out mostly empty rows)
+        const dataRows = rawData.filter(row => {
+          const values = Object.values(row).filter(v => v !== null && v !== '');
+          return values.length > 0;
+        });
+
+        logger.info(`[Parser] Sheet "${sheetName}": ${rawData.length} total rows, ${dataRows.length} data rows`);
+
+        // Prefer sheets with more data, but also prefer sheets with "soupis", "pracovní", "rozpočet" in name (Czech for work list, budget)
+        const isPreferredName = /soupis|pracovní|rozpočet|položky|pozice/i.test(sheetName);
+        const score = dataRows.length + (isPreferredName ? 1000 : 0);
+
+        if (score > bestRowCount || (bestData === null)) {
+          bestSheet = worksheet;
+          bestData = rawData;
+          bestRowCount = dataRows.length;
+          selectedSheetName = sheetName;
+          logger.info(`[Parser] Sheet "${sheetName}" selected (score: ${score})`);
+        }
+      } catch (sheetError) {
+        logger.debug(`[Parser] Error parsing sheet "${sheetName}": ${sheetError.message}`);
+      }
     }
 
-    // Convert to JSON with proper string handling
-    const rawData = XLSX.utils.sheet_to_json(worksheet, {
-      raw: false,
-      defval: null,
-      blankrows: false
-    });
+    // If no suitable sheet found, use first sheet
+    if (!bestData) {
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
 
-    // 🔴 FIX: Check if rawData is valid array
-    if (!Array.isArray(rawData)) {
+      if (!worksheet) {
+        throw new Error(`Sheet "${sheetName}" is empty or invalid`);
+      }
+
+      bestData = XLSX.utils.sheet_to_json(worksheet, {
+        raw: false,
+        defval: null,
+        blankrows: false
+      });
+
+      selectedSheetName = sheetName;
+      logger.warn(`[Parser] No preferred sheet found, using first sheet: "${sheetName}"`);
+    }
+
+    // 🔴 FIX: Check if bestData is valid array
+    if (!Array.isArray(bestData)) {
       throw new Error('Failed to parse Excel sheet - no rows found');
     }
 
-    if (rawData.length === 0) {
+    if (bestData.length === 0) {
       throw new Error('Excel sheet contains no data rows');
     }
 
     // Ensure UTF-8 encoding by re-encoding strings
-    const encodedData = rawData.map(row => {
+    const encodedData = bestData.map(row => {
       const encodedRow = {};
       for (const [key, value] of Object.entries(row)) {
         if (typeof value === 'string') {
@@ -61,7 +116,7 @@ export async function parseXLSX(filePath) {
       return encodedRow;
     });
 
-    logger.info(`Parsed ${encodedData.length} rows from ${sheetName}`);
+    logger.info(`[Parser] ✅ Using sheet "${selectedSheetName}" with ${encodedData.length} rows`);
 
     // Suggest column mapping based on headers
     const headers = Object.keys(encodedData[0] || {});
@@ -70,7 +125,8 @@ export async function parseXLSX(filePath) {
     return {
       raw_rows: encodedData,
       mapping_suggestions,
-      headers
+      headers,
+      selected_sheet: selectedSheetName
     };
   } catch (error) {
     logger.error('XLSX parsing error:', error);
