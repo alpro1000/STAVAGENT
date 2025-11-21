@@ -11,6 +11,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription, normalizeString } from '../services/parser.js';
 import { extractConcretePositions } from '../services/concreteExtractor.js';
 import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge } from '../services/coreAPI.js';
+import { importCache, cacheStatsMiddleware } from '../services/importCache.js';
+import DataPreprocessor from '../services/dataPreprocessor.js';
 import { logger } from '../utils/logger.js';
 import { BRIDGE_TEMPLATE_POSITIONS } from '../constants/bridgeTemplates.js';
 import db from '../db/init.js';
@@ -18,8 +20,9 @@ import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Apply authentication to all upload routes
+// Apply authentication and cache stats middleware
 router.use(requireAuth);
+router.use(cacheStatsMiddleware);
 
 // Configure multer for file upload
 const storage = multer.diskStorage({
@@ -77,8 +80,24 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     logger.info(`Processing upload: ${req.file.originalname} (${import_id})`);
 
+    // 🔍 CHECK CACHE: Is this file already imported?
+    const cachedResult = importCache.get(filePath);
+    if (cachedResult) {
+      logger.info(`[Upload] 💾 Using cached result from previous import`);
+      res.set('X-Cache-Hit', 'true');
+      res.json(cachedResult);
+      return;
+    }
+
     // Parse XLSX - only need raw_rows for local extractor fallback
-    const parseResult = await parseXLSX(filePath);
+    let parseResult = await parseXLSX(filePath);
+
+    // 🧹 PREPROCESS: Clean and normalize data for CORE
+    logger.info(`[Upload] Starting data preprocessing pipeline...`);
+    const preprocessed = DataPreprocessor.preprocess(parseResult.raw_rows);
+    parseResult.raw_rows = preprocessed.rows;  // Use preprocessed rows
+    parseResult.columnMapping = preprocessed.columnMapping;  // Store column detection
+    parseResult.preprocessStats = preprocessed.stats;
 
     // Auto-create bridges in database
     const createdBridges = [];
@@ -375,8 +394,8 @@ router.post('/', upload.single('file'), async (req, res) => {
     const totalPositions = createdBridges.reduce((sum, b) => sum + (b.positions_created || 0), 0);
     const totalFromExcel = createdBridges.reduce((sum, b) => sum + (b.positions_from_excel || 0), 0);
 
-    res.set('Content-Type', 'application/json; charset=utf-8');
-    res.json({
+    // Prepare response object
+    const responseData = {
       import_id,
       filename: req.file.originalname,
       stavba: fileMetadata.stavba || null,
@@ -388,8 +407,20 @@ router.post('/', upload.single('file'), async (req, res) => {
       row_count: parseResult.raw_rows.length,
       status: 'success',
       message: `Created ${createdBridges.length} objects with ${totalPositions} positions (${totalFromExcel} from Excel, ${totalPositions - totalFromExcel} from templates)` +
-               (stavbaProjectId ? ` in project "${fileMetadata.stavba}"` : '')
-    });
+               (stavbaProjectId ? ` in project "${fileMetadata.stavba}"` : ''),
+      // Add preprocessing stats
+      preprocessStats: parseResult.preprocessStats,
+      columnMapping: parseResult.columnMapping
+    };
+
+    // 💾 CACHE the result for future identical uploads
+    const sourceOfProjectsSource = sourceOfProjects === 'core_intelligent_classification' ? 'CORE' :
+                                    sourceOfProjects === 'local_extractor' ? 'LOCAL' : 'TEMPLATE';
+    importCache.set(filePath, responseData, sourceOfProjectsSource);
+    logger.info(`[Upload] ✅ Import successful and cached (source: ${sourceOfProjectsSource})`);
+
+    res.set('Content-Type', 'application/json; charset=utf-8');
+    res.json(responseData);
   } catch (error) {
     logger.error('Upload error:', error);
     res.status(500).json({ error: error.message });
@@ -404,6 +435,40 @@ router.post('/', upload.single('file'), async (req, res) => {
       }
     }
   }
+});
+
+// GET /api/upload/cache/stats - Get cache statistics
+router.get('/cache/stats', (req, res) => {
+  const stats = importCache.getStats();
+  res.json({
+    status: 'success',
+    cache: stats,
+    message: `Cache contains ${stats.size} entries (max ${stats.maxSize})`
+  });
+});
+
+// DELETE /api/upload/cache/clear - Clear all cache
+router.delete('/cache/clear', (req, res) => {
+  const sizeBefore = importCache.getStats().size;
+  importCache.clearAll();
+  logger.info(`[Cache] Cleared cache - was ${sizeBefore} entries`);
+
+  res.json({
+    status: 'success',
+    message: `Cache cleared (was ${sizeBefore} entries)`,
+    cache: importCache.getStats()
+  });
+});
+
+// POST /api/upload/cache/clear/:fileHash - Clear specific cache entry
+router.delete('/cache/clear/:fileHash', (req, res) => {
+  importCache.clear(req.params.fileHash);
+
+  res.json({
+    status: 'success',
+    message: `Cache entry ${req.params.fileHash} cleared`,
+    cache: importCache.getStats()
+  });
 });
 
 export default router;
