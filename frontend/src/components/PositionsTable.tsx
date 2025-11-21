@@ -380,7 +380,6 @@ export default function PositionsTable() {
       )}
 
       {Object.entries(displayGroups)
-        .filter(([_, partPositions]) => partPositions.length > 0)
         .map(([partName, partPositions]) => {
         const isExpanded = expandedParts.has(partName);
 

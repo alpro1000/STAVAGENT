@@ -3,6 +3,7 @@
  */
 
 import { useExports } from '../hooks/useExports';
+import './ExportHistory.css';
 
 interface ExportHistoryProps {
   onClose: () => void;
