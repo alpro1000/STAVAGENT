@@ -1,9 +1,9 @@
 # Monolit-Planner ↔ Concrete-Agent Integration Guide
 
-**Version:** 1.0.0
-**Last Updated:** 2025-11-20
+**Version:** 1.1.0
+**Last Updated:** 2025-11-21
 **Status:** 🟢 PRODUCTION LIVE
-**Integration Type:** Excel Parser + Enrichment Service
+**Integration Type:** Excel Parser + Enrichment Service with Position Endpoints
 
 ---
 
@@ -224,35 +224,88 @@ Response (when completed):
 }
 ```
 
-#### Poll for Parsed Positions
+#### Poll for Parsed Positions (RECOMMENDED)
+
+```http
+GET https://concrete-agent.onrender.com/api/projects/{project_id}/positions?wait_for_completion=true HTTP/1.1
+
+Response when completed:
+{
+  "status": "success",
+  "project_id": "proj_1732065000_abc123def456",
+  "project_name": "Stavba Vinohrady",
+  "positions": [
+    {
+      "code": "121151113",
+      "description": "Beton C30/37",
+      "quantity": 10.5,
+      "unit": "m3",
+      "unit_price": 3850,
+      "enrichment": {
+        "match": "exact",
+        "kros_code": "121151113"
+      }
+    }
+  ],
+  "count": 53,
+  "workflow_status": "completed"
+}
+
+Response if still processing (status=pending):
+{
+  "status": "pending",
+  "project_id": "proj_1732065000_abc123def456",
+  "positions": [],
+  "count": 0,
+  "message": "Positions are still being parsed and enriched",
+  "workflow_status": "processing"
+}
+```
+
+**Query Parameters:**
+- `wait_for_completion` (bool, default=true) - If true, waits up to 30 seconds for processing
+- `project_id` (string, required) - Project ID from upload response
+
+---
+
+### SECONDARY: GET /api/projects/{project_id}/positions
+
+**Get Parsed Positions (with optional waiting)**
+
+This is the **RECOMMENDED endpoint** for Monolit-Planner to retrieve parsed positions.
+
+```http
+GET https://concrete-agent.onrender.com/api/projects/{project_id}/positions?wait_for_completion=true
+```
+
+**Benefits over /api/workflow/a/positions:**
+- ✅ REST-compliant path pattern
+- ✅ Works with standard HTTP client libraries
+- ✅ Optional waiting for completion (no polling needed)
+- ✅ Returns complete position data with enrichment
+
+---
+
+### TERTIARY: GET /api/projects/{project_id}/items
+
+**Alias for /positions endpoint** (for backward compatibility)
+
+Some clients may use 'items' instead of 'positions'. Both endpoints return identical results.
+
+```http
+GET https://concrete-agent.onrender.com/api/projects/{project_id}/items?wait_for_completion=true
+```
+
+---
+
+### LEGACY: GET /api/workflow/a/positions
+
+**Deprecated - Use /api/projects/{project_id}/positions instead**
+
+Old query-parameter style endpoint. Still functional but not recommended for new integrations.
 
 ```http
 GET https://concrete-agent.onrender.com/api/workflow/a/positions?project_id={project_id}
-
-Response:
-{
-  "success": true,
-  "data": {
-    "positions": [
-      {
-        "position_id": "pos_1",
-        "code": "121151113",
-        "description": "Beton C30/37",
-        "quantity": 10.5,
-        "unit": "m3",
-        "enrichment_status": "matched",
-        "confidence_score": 0.95,
-        "unit_price": 3850,
-        "enrichment": {
-          "match": "exact",
-          "kros_code": "121151113",
-          "kros_description": "Beton pro stavby",
-          "price_recommendation": 3850
-        }
-      }
-    ]
-  }
-}
 ```
 
 ---
@@ -311,28 +364,41 @@ async function parseExcelByCORE(filePath, projectName = 'Excel Import') {
 
 async function pollForPositions(projectId, maxWaitTime = 60000) {
   const startTime = Date.now();
-  const pollInterval = 2000; // 2 seconds
 
-  while (Date.now() - startTime < maxWaitTime) {
-    try {
-      const response = await axios.get(
-        `${CORE_API_URL}/api/workflow/a/positions?project_id=${projectId}`,
-        { timeout: 10000 }
+  try {
+    // ✅ NEW: Use /api/projects/{id}/positions endpoint with wait_for_completion
+    // This waits up to 30 seconds for processing and returns all positions
+    const response = await axios.get(
+      `${CORE_API_URL}/api/projects/${projectId}/positions?wait_for_completion=true`,
+      { timeout: 35000 }  // 35s timeout (endpoint waits 30s internally)
+    );
+
+    if (response.data.status === 'success' && response.data.positions?.length > 0) {
+      console.log(`[CORE API] ✅ Got ${response.data.positions.length} positions`);
+      return response.data.positions;
+    }
+
+    // If still pending after waiting, check once more with no wait
+    if (response.data.status === 'pending') {
+      console.warn(`[CORE API] ⚠️ Processing still in progress after 30s`);
+
+      // Try one more time without waiting
+      const finalResponse = await axios.get(
+        `${CORE_API_URL}/api/projects/${projectId}/positions?wait_for_completion=false`,
+        { timeout: 5000 }
       );
 
-      if (response.data.success && response.data.data?.positions?.length > 0) {
-        console.log(`[CORE API] Got ${response.data.data.positions.length} positions`);
-        return response.data.data.positions;
+      if (finalResponse.data.positions?.length > 0) {
+        return finalResponse.data.positions;
       }
-
-      await new Promise(resolve => setTimeout(resolve, pollInterval));
-    } catch (error) {
-      console.warn(`[CORE API] Poll failed, retrying: ${error.message}`);
-      await new Promise(resolve => setTimeout(resolve, pollInterval));
     }
-  }
 
-  throw new Error('CORE API timeout: positions not ready after 60s');
+    throw new Error(`CORE API: No positions found after waiting`);
+
+  } catch (error) {
+    console.error(`[CORE API] Error: ${error.message}`);
+    throw error;
+  }
 }
 
 function convertCOREToMonolitFormat(corePositions) {
