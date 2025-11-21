@@ -93,8 +93,8 @@ class DataPreprocessor {
       popis: /^(popis|description|název|name|item|popis práce|popis položky|text|text položky|poloţka)$/i,
       jednotka: /^(jednotka|mj|unit|измерение|j\.m\.|měrná jednotka)$/i,
       mnozstvi: /^(množství|mnozstvi|qty|quantity|počet|počet ks|počet kusů|počet m3|počet m2|počet m)$/i,
-      cena: /^(cena|price|jednotková cena|jednotková|cena za jednotku|cena/jednotku|cena za m3|jednotková cena za m3)$/i,
-      stavba: /^(stavba|stavby|project|projekt|stavby/projekty)$/i
+      cena: /^(cena|price|jednotková cena|jednotková|cena za jednotku|cena\/jednotku|cena za m3|jednotková cena za m3)$/i,
+      stavba: /^(stavba|stavby|project|projekt|stavby\/projekty)$/i
     };
 
     const detectedColumns = {};
