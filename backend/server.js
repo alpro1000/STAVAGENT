@@ -48,7 +48,8 @@ const PORT = process.env.PORT || 3001;
 const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://monolit-planner-frontend.onrender.com',
+  'https://monolit-planner-frontend.onrender.com', // Production
+  'https://monolit-planner-test.onrender.com',    // Test domain
   process.env.CORS_ORIGIN // Allow custom origin from env
 ].filter(Boolean); // Remove undefined/null values
 
