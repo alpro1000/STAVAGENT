@@ -102,6 +102,7 @@ function parseConcreteRow(row) {
   const popis = getColumnValue(row, ['Popis', 'popis', 'Description', 'Item']);
   const mj = getColumnValue(row, ['MJ', 'mj', 'Unit', 'Jednotka']);
   const mnozstvi = getColumnValue(row, ['Množství', 'Mnozstvi', 'mnozstvi', 'Quantity', 'Qty']);
+  const cena = getColumnValue(row, ['Cena', 'J.cena', 'Jednotková cena', 'Unit Price']);
 
   if (!popis || !mnozstvi) {
     return null;
@@ -127,11 +128,24 @@ function parseConcreteRow(row) {
     }
   }
 
+  // Extract concrete mark (C30/37, C25/30, etc.)
+  let concreteMark = null;
+  const concreteMarkMatch = popis.match(/C\d{2}\/\d{2}/i);
+  if (concreteMarkMatch) {
+    concreteMark = concreteMarkMatch[0];
+  }
+
   // Determine work subtype
   const subtype = determineSubtype(popis, mj);
 
+  // Build part name - prefer concrete mark if found
+  let partName = extractPartName(popis);
+  if (concreteMark) {
+    partName = `Beton ${concreteMark}`;
+  }
+
   const position = {
-    part_name: extractPartName(popis),
+    part_name: partName,
     item_name: popis.trim(),
     subtype: subtype,
     unit: mj ? mj.trim() : (subtype === 'beton' ? 'M3' : 'm2'),
@@ -140,8 +154,17 @@ function parseConcreteRow(row) {
     wage_czk_ph: 398,
     shift_hours: 10,
     days: 0,
-    otskp_code: otskpCode
+    otskp_code: otskpCode,
+    // Additional extracted fields
+    concrete_mark: concreteMark,
+    unit_price: cena ? parseNumber(cena) : null,
+    source: 'LOCAL_EXTRACTOR'
   };
+
+  // Log concrete mark if found
+  if (concreteMark) {
+    logger.info(`[ConcreteExtractor] 🎯 Found concrete mark: ${concreteMark} in "${popis.substring(0, 50)}"`);
+  }
 
   return position;
 }

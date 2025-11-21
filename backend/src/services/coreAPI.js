@@ -313,34 +313,60 @@ export async function parseExcelByCORE(filePath) {
  * @returns {Object} Position in Monolit format
  */
 export function convertCOREToMonolitPosition(corePosition, bridgeId) {
-  const description = corePosition.description || '';
-  const unit = (corePosition.unit || 'M3').toUpperCase();
+  const description = corePosition.description || corePosition.item_name || '';
+  const unit = (corePosition.unit || corePosition.units || 'M3').toUpperCase();
+  const quantity = parseFloat(corePosition.quantity || corePosition.qty || 0) || 0;
 
   // Extract part name from description (before first dash or full text)
   let partName = 'Neznámá část';
   if (description) {
-    const parts = description.split('-');
-    partName = parts[0].trim();
-    if (partName.length < 3) {
-      partName = description.substring(0, 50); // Use first 50 chars if no dash
+    // Try to extract concrete mark (C30/37, C25/30, etc.)
+    const concreteMarkMatch = description.match(/C\d{2}\/\d{2}/i);
+    if (concreteMarkMatch) {
+      partName = `Beton ${concreteMarkMatch[0]}`;
+    } else {
+      const parts = description.split('-');
+      partName = parts[0].trim();
+      if (partName.length < 3) {
+        partName = description.substring(0, 50); // Use first 50 chars if no dash
+      }
     }
   }
 
   // Determine subtype based on unit and description
   const subtype = determineSubtype(description, unit);
 
-  return {
+  // Build position with enrichment data from CORE
+  const position = {
     part_name: partName,
     item_name: description,
     subtype: subtype,
     unit: unit,
-    qty: parseFloat(corePosition.quantity) || 0,
-    crew_size: 4,
-    wage_czk_ph: 398,
-    shift_hours: 10,
-    days: 0,
-    otskp_code: corePosition.code || null
+    qty: quantity,
+    crew_size: corePosition.crew_size || 4,
+    wage_czk_ph: corePosition.wage_czk_ph || 398,
+    shift_hours: corePosition.shift_hours || 10,
+    days: corePosition.days || 0,
+    otskp_code: corePosition.code || corePosition.otskp_code || null,
+    // CORE enrichment data
+    material_type: corePosition.material_type || subtype,
+    confidence_score: corePosition.confidence_score || null,
+    audit_classification: corePosition.audit_classification || corePosition.audit_class || null,
+    // Pricing from CORE
+    unit_price_rts: corePosition.unit_price_rts || null,
+    unit_price_kros: corePosition.unit_price_kros || null,
+    total_price: corePosition.total_price || (quantity * (corePosition.unit_price_rts || 0)),
+    source: 'CORE',
+    enriched: true
   };
+
+  // Log extraction for diagnostics
+  logger.debug(
+    `[CORE Converter] Extracted: ${partName} | qty=${quantity}${unit} | ` +
+    `confidence=${position.confidence_score || 'N/A'} | audit=${position.audit_classification || 'N/A'}`
+  );
+
+  return position;
 }
 
 /**
@@ -368,6 +394,100 @@ function determineSubtype(description, unit) {
 
   // Default to beton
   return 'beton';
+}
+
+/**
+ * Validate position has required fields
+ * @param {Object} position - Position to validate
+ * @returns {boolean} True if position is valid
+ */
+function validatePosition(position) {
+  // Required fields
+  if (!position || typeof position !== 'object') return false;
+  if (!position.item_name || typeof position.item_name !== 'string') return false;
+  if (typeof position.qty !== 'number' || position.qty <= 0) return false;
+  if (!position.unit || typeof position.unit !== 'string') return false;
+
+  return true;
+}
+
+/**
+ * Validate and filter positions array
+ * @param {Array} positions - Array of positions to validate
+ * @returns {Object} { valid: Array, invalid: Array, stats: Object }
+ */
+export function validatePositions(positions) {
+  if (!Array.isArray(positions)) {
+    logger.warn(`[CORE Validator] Input is not an array: ${typeof positions}`);
+    return { valid: [], invalid: [], stats: { total: 0, valid: 0, invalid: 0 } };
+  }
+
+  const valid = [];
+  const invalid = [];
+
+  for (let i = 0; i < positions.length; i++) {
+    const pos = positions[i];
+
+    if (validatePosition(pos)) {
+      valid.push(pos);
+    } else {
+      invalid.push({
+        index: i,
+        position: pos,
+        reason: !pos ? 'Position is null/undefined'
+          : !pos.item_name ? 'Missing item_name'
+          : !pos.qty ? 'Missing or invalid qty'
+          : !pos.unit ? 'Missing unit'
+          : 'Unknown validation error'
+      });
+    }
+  }
+
+  const stats = {
+    total: positions.length,
+    valid: valid.length,
+    invalid: invalid.length,
+    validPercentage: positions.length > 0 ? ((valid.length / positions.length) * 100).toFixed(1) : 0
+  };
+
+  if (invalid.length > 0) {
+    logger.warn(`[CORE Validator] ⚠️ ${invalid.length}/${positions.length} positions failed validation`);
+    invalid.slice(0, 3).forEach(inv => {
+      logger.debug(`[CORE Validator] Invalid pos #${inv.index}: ${inv.reason}`);
+    });
+  } else {
+    logger.info(`[CORE Validator] ✅ All ${valid.length} positions passed validation`);
+  }
+
+  return { valid, invalid, stats };
+}
+
+/**
+ * Enrich position with additional calculated fields
+ * @param {Object} position - Position to enrich
+ * @returns {Object} Enriched position
+ */
+export function enrichPosition(position) {
+  const enriched = { ...position };
+
+  // Calculate total price if we have unit price and quantity
+  if (enriched.unit_price_kros && !enriched.total_price) {
+    enriched.total_price = enriched.qty * enriched.unit_price_kros;
+  }
+
+  // Estimate labor hours if not provided
+  if (!enriched.crew_size) {
+    enriched.crew_size = 4; // Default crew size
+  }
+
+  // Estimate days based on quantity and crew
+  if (enriched.qty && enriched.crew_size && !enriched.days) {
+    // Rough estimate: 1 m³ concrete per person per day
+    const daysEstimate = enriched.qty / enriched.crew_size;
+    enriched.days = Math.ceil(daysEstimate);
+  }
+
+  return enriched;
 }
 
 /**
