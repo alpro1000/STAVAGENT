@@ -46,11 +46,17 @@ const PORT = process.env.PORT || 3001;
 
 // CORS configuration - support multiple origins
 const ALLOWED_ORIGINS = [
+  // Local development
   'http://localhost:5173',
   'http://localhost:3000',
+  // Monolit-Planner domains
   'https://monolit-planner-frontend.onrender.com', // Production
-  'https://monolit-planner-test.onrender.com',    // Test domain
-  process.env.CORS_ORIGIN // Allow custom origin from env
+  'https://monolit-planner-test.onrender.com',    // Test
+  // StavaAgent Portal domains (auth & redirect)
+  'https://stavagent-portal-frontend.onrender.com',
+  'https://stavagent-portal-test.onrender.com',
+  // Custom origin from environment
+  process.env.CORS_ORIGIN
 ].filter(Boolean); // Remove undefined/null values
 
 // Initialize Express
