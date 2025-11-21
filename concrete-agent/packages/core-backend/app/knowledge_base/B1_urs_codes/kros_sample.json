@@ -1,0 +1,176 @@
+{
+  "source": "KROS 4 (sample)",
+  "description": "Sample Czech construction codes from KROS database",
+  "version": "KROS 4",
+  "last_updated": "2025-01-01",
+  "positions": [
+    {
+      "code": "111-01-001",
+      "name": "Výkopy nezapažené",
+      "unit": "m³",
+      "category": "Zemní práce",
+      "description": "Výkopy nezapažené v hornině tř. 1-4",
+      "price_range": {
+        "min": 150,
+        "max": 300,
+        "avg": 220,
+        "currency": "CZK"
+      },
+      "notes": "Cena závisí na vzdálenosti a přístupnosti"
+    },
+    {
+      "code": "111-01-002",
+      "name": "Výkopy zapažené",
+      "unit": "m³",
+      "category": "Zemní práce",
+      "description": "Výkopy zapažené se zabudováním a odstraněním pažení",
+      "price_range": {
+        "min": 280,
+        "max": 450,
+        "avg": 350,
+        "currency": "CZK"
+      },
+      "notes": "Včetně pažení a jeho demontáže"
+    },
+    {
+      "code": "121-01-015",
+      "name": "Betonové konstrukce monolitické",
+      "unit": "m³",
+      "category": "Betonové práce",
+      "description": "Betonové konstrukce monolitické základové desky",
+      "price_range": {
+        "min": 2200,
+        "max": 2800,
+        "avg": 2450,
+        "currency": "CZK"
+      },
+      "notes": "Cena zahrnuje beton C25/30, armaturu a bednění"
+    },
+    {
+      "code": "121-01-020",
+      "name": "Betonové desky tl. přes 200 mm",
+      "unit": "m³",
+      "category": "Betonové práce",
+      "description": "Železobetonové desky tloušťky přes 200 mm",
+      "price_range": {
+        "min": 2500,
+        "max": 3200,
+        "avg": 2800,
+        "currency": "CZK"
+      },
+      "notes": "Pro desky silnější než 200 mm"
+    },
+    {
+      "code": "131-01-001",
+      "name": "Zdivo z cihel pálených",
+      "unit": "m³",
+      "category": "Zednické práce",
+      "description": "Zdivo z cihel pálených plných na MC",
+      "price_range": {
+        "min": 3500,
+        "max": 4500,
+        "avg": 4000,
+        "currency": "CZK"
+      },
+      "notes": "Včetně malty a práce"
+    },
+    {
+      "code": "131-02-001",
+      "name": "Zdivo z tvárnic betonových",
+      "unit": "m³",
+      "category": "Zednické práce",
+      "description": "Zdivo z tvárnic betonových dutých",
+      "price_range": {
+        "min": 2800,
+        "max": 3600,
+        "avg": 3200,
+        "currency": "CZK"
+      },
+      "notes": "Tvárnice 400x200x190 mm"
+    },
+    {
+      "code": "141-01-001",
+      "name": "Omítky vnitřní vápenocementové",
+      "unit": "m²",
+      "category": "Omítky",
+      "description": "Omítky vnitřní vápenocementové hladké",
+      "price_range": {
+        "min": 180,
+        "max": 280,
+        "avg": 220,
+        "currency": "CZK"
+      },
+      "notes": "Včetně přípravy podkladu"
+    },
+    {
+      "code": "151-01-001",
+      "name": "Izolace proti vodě",
+      "unit": "m²",
+      "category": "Izolace",
+      "description": "Izolace proti vodě z asfaltových pásů natavovaných",
+      "price_range": {
+        "min": 280,
+        "max": 450,
+        "avg": 350,
+        "currency": "CZK"
+      },
+      "notes": "2 vrstvy asfaltového pásu"
+    },
+    {
+      "code": "161-01-001",
+      "name": "Podlahy betonové",
+      "unit": "m²",
+      "category": "Podlahy",
+      "description": "Podlahy betonové hladké jednobarevné",
+      "price_range": {
+        "min": 280,
+        "max": 420,
+        "avg": 350,
+        "currency": "CZK"
+      },
+      "notes": "Tloušťka 60-80 mm"
+    },
+    {
+      "code": "171-01-001",
+      "name": "Obklady keramické vnitřní",
+      "unit": "m²",
+      "category": "Obklady",
+      "description": "Obklady vnitřní keramické do 200x200 mm",
+      "price_range": {
+        "min": 450,
+        "max": 650,
+        "avg": 550,
+        "currency": "CZK"
+      },
+      "notes": "Včetně lepidla a spárování"
+    },
+    {
+      "code": "181-01-001",
+      "name": "Střecha plochá",
+      "unit": "m²",
+      "category": "Střechy",
+      "description": "Střecha plochá jednoplášťová",
+      "price_range": {
+        "min": 850,
+        "max": 1200,
+        "avg": 1000,
+        "currency": "CZK"
+      },
+      "notes": "Včetně hydroizolace a spádových klínů"
+    },
+    {
+      "code": "191-01-001",
+      "name": "Venkovní úpravy terén",
+      "unit": "m²",
+      "category": "Terénní úpravy",
+      "description": "Terénní úpravy se zhutněním",
+      "price_range": {
+        "min": 120,
+        "max": 220,
+        "avg": 165,
+        "currency": "CZK"
+      },
+      "notes": "Včetně srovnání a zhutnění"
+    }
+  ]
+}

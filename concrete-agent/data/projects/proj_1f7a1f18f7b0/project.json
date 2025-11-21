@@ -1,0 +1,25 @@
+{
+  "project_id": "proj_1f7a1f18f7b0",
+  "project_name": "Test Security Project",
+  "workflow": "A",
+  "requested_workflow": "A",
+  "selected_workflow": "A",
+  "selection_status": "OK",
+  "uploaded_at": "2025-10-27T20:06:11.150394",
+  "files": [
+    {
+      "file_id": "proj_1f7a1f18f7b0:vykaz_vymer:test_vykaz.xml",
+      "filename": "test_vykaz.xml",
+      "file_type": "vykaz_vymer",
+      "size": 24,
+      "uploaded_at": "2025-10-27T20:06:11.141375"
+    },
+    {
+      "file_id": "proj_1f7a1f18f7b0:vykresy:test_drawing.pdf",
+      "filename": "test_drawing.pdf",
+      "file_type": "vykresy",
+      "size": 20,
+      "uploaded_at": "2025-10-27T20:06:11.150394"
+    }
+  ]
+}

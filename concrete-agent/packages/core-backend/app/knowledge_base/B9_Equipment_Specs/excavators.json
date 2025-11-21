@@ -1,0 +1,273 @@
+{
+  "source": "manufacturers + rental companies + practical experience",
+  "last_updated": "2025-01-07",
+  "note": "Charakteristiky bagrů a rýpadel pro Czech stavby",
+  
+  "excavators": [
+    {
+      "manufacturer": "JCB",
+      "model": "3CX",
+      "type": "backhoe_loader",
+      "weight_t": 8.5,
+      "engine_hp": 109,
+      "bucket_capacity_m3": 0.3,
+      "cycles_per_hour": 60,
+      "productivity_m3_h": 18,
+      "typical_rental_day_czk": 3500,
+      "typical_rental_hour_czk": 500,
+      "fuel_consumption_l_h": 12,
+      "availability": "very_common",
+      "suitable_for": [
+        "malé výkopy",
+        "přípojky",
+        "kabely",
+        "základy rodinných domů",
+        "univerzální práce"
+      ],
+      "note": "Nejběžnější kolové rýpadlo, univerzální použití"
+    },
+    {
+      "manufacturer": "Caterpillar",
+      "model": "320",
+      "type": "crawler_excavator",
+      "weight_t": 20,
+      "engine_hp": 170,
+      "bucket_capacity_m3": 1.0,
+      "cycles_per_hour": 50,
+      "productivity_m3_h": 50,
+      "typical_rental_day_czk": 6500,
+      "typical_rental_hour_czk": 900,
+      "fuel_consumption_l_h": 20,
+      "availability": "common",
+      "suitable_for": [
+        "základy bytových domů",
+        "velké výkopy",
+        "terénní úpravy",
+        "stavby silnic"
+      ],
+      "note": "Standardní pásový bagr pro větší projekty"
+    },
+    {
+      "manufacturer": "Caterpillar",
+      "model": "336",
+      "type": "crawler_excavator",
+      "weight_t": 36,
+      "engine_hp": 313,
+      "bucket_capacity_m3": 2.2,
+      "cycles_per_hour": 45,
+      "productivity_m3_h": 99,
+      "typical_rental_day_czk": 12000,
+      "typical_rental_hour_czk": 1650,
+      "fuel_consumption_l_h": 35,
+      "availability": "less_common",
+      "suitable_for": [
+        "masivní výkopy",
+        "dálnice",
+        "průmyslové stavby",
+        "lomové práce"
+      ],
+      "note": "Velký bagr pro rozsáhlé projekty"
+    },
+    {
+      "manufacturer": "Komatsu",
+      "model": "PC138US",
+      "type": "mini_excavator",
+      "weight_t": 13.8,
+      "engine_hp": 80,
+      "bucket_capacity_m3": 0.5,
+      "cycles_per_hour": 55,
+      "productivity_m3_h": 27,
+      "typical_rental_day_czk": 4500,
+      "typical_rental_hour_czk": 650,
+      "fuel_consumption_l_h": 10,
+      "availability": "common",
+      "suitable_for": [
+        "městské stavby",
+        "stísněné prostory",
+        "rekonstrukce",
+        "zahradní úpravy"
+      ],
+      "note": "Kompaktní bagr pro omezený prostor"
+    },
+    {
+      "manufacturer": "Bobcat",
+      "model": "E85",
+      "type": "compact_excavator",
+      "weight_t": 8.5,
+      "engine_hp": 61,
+      "bucket_capacity_m3": 0.3,
+      "cycles_per_hour": 65,
+      "productivity_m3_h": 19,
+      "typical_rental_day_czk": 3200,
+      "typical_rental_hour_czk": 450,
+      "fuel_consumption_l_h": 8,
+      "availability": "common",
+      "suitable_for": [
+        "velmi stísněné prostory",
+        "průjezdy",
+        "zahrady",
+        "drobné výkopy"
+      ],
+      "note": "Mini bagr pro nejmenší prostory"
+    },
+    {
+      "manufacturer": "Volvo",
+      "model": "EC220E",
+      "type": "crawler_excavator",
+      "weight_t": 22,
+      "engine_hp": 174,
+      "bucket_capacity_m3": 1.1,
+      "cycles_per_hour": 52,
+      "productivity_m3_h": 57,
+      "typical_rental_day_czk": 7200,
+      "typical_rental_hour_czk": 1000,
+      "fuel_consumption_l_h": 22,
+      "availability": "common",
+      "suitable_for": [
+        "standardní výkopy",
+        "průměrné projekty",
+        "univerzální použití"
+      ],
+      "note": "Moderní bagr s nízkou spotřebou"
+    }
+  ],
+  
+  "productivity_factors": {
+    "soil_category": {
+      "1_lehka_pisek": {
+        "factor": 1.0,
+        "description": "Písek, štěrk, sypké zeminy"
+      },
+      "2_stredni_hlina": {
+        "factor": 0.85,
+        "description": "Hlína, jíl lehký, ornice"
+      },
+      "3_tezka_jil": {
+        "factor": 0.70,
+        "description": "Jíl těžký, skalnatá hlína"
+      },
+      "4_skalni": {
+        "factor": 0.50,
+        "description": "Skála, nutné trhací práce"
+      },
+      "5_lomova": {
+        "factor": 0.30,
+        "description": "Tvrdá skála, vyžaduje odstřel"
+      }
+    },
+    
+    "depth": {
+      "do_2m": {
+        "factor": 1.0,
+        "note": "Normální hloubka"
+      },
+      "2_4m": {
+        "factor": 0.90,
+        "note": "Středně hluboký výkop"
+      },
+      "4_6m": {
+        "factor": 0.80,
+        "note": "Hluboký výkop, složitější manipulace"
+      },
+      "nad_6m": {
+        "factor": 0.70,
+        "note": "Velmi hluboký, vyžaduje terasy"
+      }
+    },
+    
+    "working_conditions": {
+      "suchá_půda": 1.0,
+      "vlhká_půda": 0.90,
+      "bahno": 0.70,
+      "pod_vodou": 0.50,
+      "zima_mrzlá": 0.60
+    }
+  },
+  
+  "decision_logic": {
+    "by_volume": {
+      "0-50_m3": "JCB 3CX nebo Bobcat E85",
+      "50-200_m3": "JCB 3CX nebo Komatsu PC138",
+      "200-500_m3": "CAT 320 nebo Volvo EC220",
+      "500-1000_m3": "CAT 320 nebo CAT 336",
+      "1000_m3_plus": "CAT 336 nebo větší"
+    },
+    
+    "by_project_type": {
+      "rodinný_dům": "JCB 3CX (univerzální)",
+      "bytový_dům": "CAT 320 (efektivní)",
+      "průmyslová_stavba": "CAT 336 (velká kapacita)",
+      "městská_rekonstrukce": "Komatsu PC138 nebo Bobcat (kompaktní)",
+      "dálnice": "CAT 336 (masivní objem)"
+    },
+    
+    "by_access": {
+      "volný_přístup": "Jakýkoliv bagr dle objemu",
+      "omezený_přístup": "Kompaktní bagr (Komatsu, Bobcat)",
+      "úzká_ulice": "Mini bagr (Bobcat E85)",
+      "žádný_přístup": "Ruční výkop nebo speciální řešení"
+    }
+  },
+  
+  "cost_calculation_example": {
+    "project": "Základy rodinného domu",
+    "volume_m3": 120,
+    "soil_category": 2,
+    "depth_m": 2.5,
+    
+    "selected_equipment": "JCB 3CX",
+    "base_productivity_m3_h": 18,
+    "factor_soil": 0.85,
+    "factor_depth": 0.90,
+    "adjusted_productivity": 13.77,
+    
+    "calculation": {
+      "hours_needed": 8.7,
+      "days_needed": 1.1,
+      "rental_days": 2,
+      "cost_czk": 7000,
+      "fuel_cost_czk": 2090,
+      "operator_cost_czk": 6400,
+      "total_cost_czk": 15490
+    }
+  },
+  
+  "additional_costs": {
+    "transport": {
+      "jcb_3cx": 2500,
+      "cat_320": 4500,
+      "cat_336": 6500,
+      "note": "Doprava na stavbu a zpět"
+    },
+    
+    "operator": {
+      "day_rate_czk": 3200,
+      "hour_rate_czk": 400,
+      "note": "Zkušený operátor s certifikátem"
+    },
+    
+    "fuel": {
+      "diesel_czk_l": 38,
+      "note": "Aktuální cena nafty 2025"
+    }
+  },
+  
+  "special_attachments": {
+    "standard_bucket": {
+      "included": true,
+      "cost_czk": 0
+    },
+    "rock_breaker": {
+      "rental_day_czk": 1500,
+      "use_case": "Bourání betonu, skály"
+    },
+    "grading_bucket": {
+      "rental_day_czk": 500,
+      "use_case": "Finální úpravy, vyrovnání"
+    },
+    "ripper": {
+      "rental_day_czk": 800,
+      "use_case": "Rozrušení těžké zeminy"
+    }
+  }
+}

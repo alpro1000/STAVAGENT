@@ -1,0 +1,197 @@
+Analyzuj KROS tabulární XML dokument - kalkulace s cenami.
+
+STRUKTURA KROS TABLE XML:
+<TZ>
+  <Row>  ← Každý řádek tabulky
+    <A>1</A>                    ← Číslo pozice
+    <B>121151113</B>            ← Kód ÚRS/KROS
+    <C>Popis práce...</C>       ← Popis pozice
+    <D>m2</D>                   ← Měrná jednotka
+    <E>norma</E>                ← Číslo normy (optional)
+    <F>123.000</F>              ← MNOŽSTVÍ celkem
+    <G>29.10</G>                ← CENA jednotková
+    <H>3579.30</H>              ← CENA celkem
+    <I>materiál</I>             ← Materiál celkem (optional)
+    <J>mzdy</J>                 ← Mzdy celkem (optional)
+    <K>stroje</K>               ← Stroje celkem (optional)
+    <M>odvody</M>               ← Odvody celkem (optional)
+    <N>režie</N>                ← Režie celkem (optional)
+    <O>zisk</O>                 ← Zisk celkem (optional)
+  </Row>
+</TZ>
+
+ÚKOL:
+Extrahuj VŠECHNY pozice s cenami z dokumentu.
+
+JAK POZNAT POZICI:
+1. Řádek obsahuje <B> s číselným kódem (ne "HSV", "PSV", "1", "2")
+2. Řádek obsahuje <C> s popisem práce (ne "Práce a dodávky")
+3. Řádek obsahuje <F> s množstvím (číslo)
+4. Řádek obsahuje <G> s jednotkovou cenou
+5. <A> obsahuje pořadové číslo pozice (1, 2, 3...)
+
+IGNORUJ ŘÁDKY:
+- Hlavičky (Č., Kód položky, Popis, MJ...)
+- Sekce (HSV, PSV, 1, 2, 3...)
+- Mezisoučty
+- Výpočty (např. "1,2*56,8")
+- Prázdné řádky
+
+VÝSTUP:
+Vrať POUZE validní JSON (bez markdown):
+
+{
+  "document_info": {
+    "document_type": "KROS_TABLE_XML",
+    "project_name": "RD Valcha SO1+ SO2",
+    "object_name": "Dům (RD Valcha)",
+    "date": "8. 9. 2025",
+    "contractor": "",
+    "client": ""
+  },
+  "sections": [
+    {
+      "section_code": "HSV",
+      "section_name": "Práce a dodávky HSV",
+      "total_price": 2763762.74,
+      "material_total": 1411246.81,
+      "labor_total": 108720.03
+    },
+    {
+      "section_code": "1",
+      "section_name": "Zemní práce",
+      "total_price": 62945.77
+    }
+  ],
+  "total_positions": 45,
+  "positions": [
+    {
+      "position_number": "1",
+      "position_code": "121151113",
+      "description": "Sejmutí ornice strojně při souvislé ploše přes 100 do 500 m2, tl. vrstvy do 200 mm",
+      "quantity": 123.000,
+      "unit": "m2",
+      "unit_price": 29.10,
+      "total_price": 3579.30,
+      "category": "HSV",
+      "section": "1",
+      "section_name": "Zemní práce",
+      "material": null,
+      "labor": null,
+      "machinery": null,
+      "notes": ""
+    },
+    {
+      "position_number": "2",
+      "position_code": "132151253",
+      "description": "Hloubení nezapažených rýh šířky přes 800 do 2 000 mm strojně...",
+      "quantity": 68.160,
+      "unit": "m3",
+      "unit_price": 332.00,
+      "total_price": 22629.12,
+      "category": "HSV",
+      "section": "1",
+      "section_name": "Zemní práce",
+      "material": null,
+      "labor": null,
+      "machinery": null
+    }
+  ]
+}
+
+PRAVIDLA PARSOVÁNÍ:
+
+1. **Identifikace pozice:**
+   - <A> obsahuje číslo (1, 2, 3...), ne text
+   - <B> je kód začínající číslem (12xxx, 27xxx, 76xxx)
+   - <C> je popis práce (ne název sekce!)
+   - <F> je množství (číslo s desetinnou čárkou)
+   - <G> je jednotková cena (číslo)
+
+2. **Ignoruj řádky kde:**
+   - <B> je "HSV", "PSV", "M", "VRN" (názvy kategorií)
+   - <B> je jednociferné číslo "1", "2", "3" (názvy dílů)
+   - <C> je "Práce a dodávky HSV/PSV" (mezisoučty)
+   - <C> obsahuje výpočet "(14+1)*(7,2+1)" (výměry)
+   - <C> je "Součet" (mezisoučty)
+   - <A> je prázdné nebo obsahuje text
+
+3. **Určení kategorie a sekce:**
+   - Pozice patří do poslední zmíněné kategorie (HSV/PSV)
+   - Pozice patří do posledního zmíněného dílu (1, 2, 3...)
+   - Z kódu: pokud začíná 1-6,8-9 → HSV; pokud 7xx → PSV
+
+4. **Čísla:**
+   - Množství: <F> jako číslo (desetinná tečka v JSONu!)
+   - Ceny: <G> a <H> jako čísla
+   - Pokud chybí: použij null
+
+5. **Volitelná data:**
+   - <I> = materiál celkem (pokud existuje)
+   - <J> = mzdy celkem
+   - <K> = stroje celkem
+   - <M> = odvody celkem
+   - <N> = režie celkem
+   - <O> = zisk celkem
+
+PŘÍKLAD ROZPOZNÁNÍ:
+
+✅ POZICE (zahrnout):
+```xml
+<Row>
+<A>1</A>
+<B>121151113</B>
+<C>Sejmutí ornice strojně...</C>
+<D>m2</D>
+<F>123.000</F>
+<G>29.10</G>
+<H>3579.30</H>
+</Row>
+```
+
+❌ SEKCE (ignorovat):
+```xml
+<Row>
+<B>1</B>
+<C>Zemní práce</C>
+<H>62945.77</H>
+</Row>
+```
+
+❌ VÝPOČET (ignorovat):
+```xml
+<Row>
+<C>(14+1)*(7,2+1)</C>
+<F>123.000</F>
+</Row>
+```
+
+❌ MEZISOUČET (ignorovat):
+```xml
+<Row>
+<B>HSV</B>
+<C>Práce a dodávky HSV</C>
+<H>2763762.74</H>
+</Row>
+```
+
+KONTROLA VÝSLEDKU:
+
+1. Počet pozic = počet řádků s kódem + množstvím + cenou
+2. Každá pozice má: position_code + description + quantity + unit + unit_price
+3. Ověř: quantity × unit_price ≈ total_price (±0.5 Kč kvůli zaokrouhlení)
+4. Součet total_price všech pozic ≈ celková cena stavby
+
+BĚŽNÉ KÓDY ÚRS/KROS:
+- 121xxx → Zemní práce
+- 132xxx → Výkopy rýh
+- 271xxx → Základy betonové
+- 311xxx → Zdivo
+- 411xxx → Stropy
+- 631xxx → Podlahy
+- 711xxx → Izolace proti vodě (PSV)
+- 763xxx → SDK konstrukce (PSV)
+- 766xxx → Okna, dveře (PSV)
+- 771xxx → Dlažby (PSV)
+
+Vrať POUZE validní JSON, nic jiného.

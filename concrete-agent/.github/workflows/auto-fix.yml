@@ -1,0 +1,29 @@
+name: Auto Fix Parser Issues
+
+on:
+  workflow_dispatch:  # Ручной запуск через UI
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Run auto fix
+        run: |
+          # Исправить KROSParser
+          find app/ -name "*.py" -type f -exec sed -i 's/KROSParser(claude_client=[^)]*)/KROSParser()/g' {} \;
+          
+          # Исправить ExcelParser
+          find app/ -name "*.py" -type f -exec sed -i 's/ExcelParser(claude_client=[^)]*)/ExcelParser()/g' {} \;
+          
+          # Исправить PDFParser
+          find app/ -name "*.py" -type f -exec sed -i 's/PDFParser(claude_client=[^)]*)/PDFParser()/g' {} \;
+      
+      - name: Commit changes
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add .
+          git commit -m "fix: Remove claude_client from parsers" || echo "No changes"
+          git push

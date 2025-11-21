@@ -1,0 +1,25 @@
+{
+  "project_id": "proj_eca0cd4a2447",
+  "project_name": "Test Project",
+  "workflow": "A",
+  "requested_workflow": "A",
+  "selected_workflow": "A",
+  "selection_status": "OK",
+  "uploaded_at": "2025-10-27T19:37:41.439538",
+  "files": [
+    {
+      "file_id": "proj_eca0cd4a2447:vykaz_vymer:vykaz.xml",
+      "filename": "vykaz.xml",
+      "file_type": "vykaz_vymer",
+      "size": 15,
+      "uploaded_at": "2025-10-27T19:37:41.429780"
+    },
+    {
+      "file_id": "proj_eca0cd4a2447:vykresy:drawing.pdf",
+      "filename": "drawing.pdf",
+      "file_type": "vykresy",
+      "size": 23,
+      "uploaded_at": "2025-10-27T19:37:41.435688"
+    }
+  ]
+}

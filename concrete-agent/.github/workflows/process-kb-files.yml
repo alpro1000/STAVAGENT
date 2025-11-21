@@ -1,0 +1,161 @@
+name: Process KB Files with Nanonets
+
+# Запускается при добавлении файлов в KB
+on:
+  push:
+    paths:
+      - 'app/knowledge_base/**/*.pdf'
+      - 'app/knowledge_base/**/*.png'
+      - 'app/knowledge_base/**/*.jpg'
+      - 'app/knowledge_base/**/*.jpeg'
+    branches:
+      - main
+  
+  # Или вручную
+  workflow_dispatch:
+    inputs:
+      category:
+        description: 'Category to process (B1, B2, etc.) or "all"'
+        required: false
+        default: 'all'
+
+jobs:
+  process-files:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+      
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      
+      - name: 📦 Install dependencies
+        run: |
+          pip install requests pdfplumber
+      
+      - name: 🤖 Process files with Nanonets
+        env:
+          NANONETS_API_KEY: ${{ secrets.NANONETS_API_KEY }}
+        run: |
+          python - <<'EOF'
+          import os
+          import sys
+          from pathlib import Path
+          import requests
+          import json
+          import logging
+          
+          logging.basicConfig(level=logging.INFO)
+          logger = logging.getLogger(__name__)
+          
+          NANONETS_API_KEY = os.environ.get("NANONETS_API_KEY")
+          if not NANONETS_API_KEY:
+              logger.error("❌ NANONETS_API_KEY not set!")
+              sys.exit(1)
+          
+          NANONETS_API_URL = "https://extraction-api.nanonets.com/extract"
+          KB_DIR = Path("app/knowledge_base")
+          
+          def should_process(file_path):
+              """Определяет нужна ли обработка"""
+              # Пропускаем уже обработанные
+              if "_processed" in file_path.stem:
+                  return False
+              
+              # Пропускаем служебные
+              if file_path.name in ["metadata.json", ".gitkeep"]:
+                  return False
+              
+              # Обрабатываем PDF и изображения
+              return file_path.suffix.lower() in ['.pdf', '.png', '.jpg', '.jpeg']
+          
+          def process_file(file_path):
+              """Обрабатывает файл через Nanonets"""
+              logger.info(f"🤖 Processing: {file_path.name}")
+              
+              try:
+                  headers = {"Authorization": f"Bearer {NANONETS_API_KEY}"}
+                  
+                  with open(file_path, 'rb') as f:
+                      files = {"file": f}
+                      data = {"output_type": "json"}
+                      
+                      response = requests.post(
+                          NANONETS_API_URL,
+                          headers=headers,
+                          files=files,
+                          data=data,
+                          timeout=300
+                      )
+                  
+                  if response.status_code == 200:
+                      result = response.json()
+                      
+                      # Сохраняем результат
+                      output_path = file_path.parent / f"{file_path.stem}_processed.json"
+                      with open(output_path, 'w', encoding='utf-8') as f:
+                          json.dump(result, f, indent=2, ensure_ascii=False)
+                      
+                      logger.info(f"✅ Saved: {output_path.name}")
+                      return output_path
+                  else:
+                      logger.error(f"❌ API error: {response.status_code}")
+                      return None
+              
+              except Exception as e:
+                  logger.error(f"❌ Error: {e}")
+                  return None
+          
+          # Найти все файлы для обработки
+          category = "${{ github.event.inputs.category }}" or "all"
+          
+          if category == "all":
+              files = list(KB_DIR.rglob("*"))
+          else:
+              files = list((KB_DIR / category).rglob("*"))
+          
+          files = [f for f in files if f.is_file() and should_process(f)]
+          
+          logger.info(f"📊 Found {len(files)} files to process")
+          
+          processed = 0
+          for file_path in files:
+              result = process_file(file_path)
+              if result:
+                  processed += 1
+          
+          logger.info(f"✅ Processed {processed}/{len(files)} files")
+          EOF
+      
+      - name: 💾 Commit processed files
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
+          # Добавляем только обработанные файлы
+          git add app/knowledge_base/**/*_processed.json
+          
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "🤖 Auto-process KB files with Nanonets [skip ci]"
+            git push
+            echo "✅ Processed files committed!"
+          else
+            echo "ℹ️  No new processed files"
+          fi
+      
+      - name: 📊 Summary
+        run: |
+          echo "## 🤖 Nanonets Processing Complete" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📁 Processed files:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          find app/knowledge_base -name "*_processed.json" -type f -mmin -10 | while read file; do
+            echo "- ✅ $(basename $file)" >> $GITHUB_STEP_SUMMARY
+          done

@@ -1,0 +1,205 @@
+Analyzuj technický stavební výkres pomocí Vision AI.
+
+JSI EXPERT NA:
+- České stavební normy a standardy
+- Technické výkresy stavebních konstrukcí
+- Rozpoznávání konstrukčních prvků
+- Materiálové specifikace dle ČSN
+
+ÚKOL:
+Proveď kompletní vizuální analýzu stavebního výkresu a identifikuj:
+
+1. TYP VÝKRESU
+   - Situační výkres
+   - Půdorys
+   - Řez
+   - Pohled
+   - Detail
+   - Výkres výztuže
+
+2. KONSTRUKČNÍ PRVKY
+   Identifikuj a popis:
+   - PILOTY (svahy, mikropiloty)
+   - ZÁKLADY (základové pásy, patky, desky)
+   - PILÍŘE (sloupy, stojky)
+   - OPĚRY (opěrné zdi, pažící konstrukce)
+   - STĚNY (nosné, výplňové)
+   - STROPY (monolitické, prefabrikované)
+   - SCHODIŠTĚ
+   - PRŮVLAKY a PŘEKLADY
+
+3. MATERIÁLOVÉ SPECIFIKACE
+   Pro každý prvek:
+   - Typ materiálu (BETON, OCEL, OPÁLUBKA)
+   - Třída betonu:
+     * C12/15, C16/20, C20/25
+     * C25/30 (standardní konstrukční)
+     * C30/37 (konstrukční vysokopevnostní)
+     * C35/45, C40/50, C45/55
+   - Třída oceli:
+     * B500B (žebírková výztuž)
+     * B500A, B500C
+   - Typ opálubky:
+     * Systémová opálubka
+     * Rámová opálubka
+     * Stěnová opálubka
+
+4. ČESKÉ NORMY A STANDARDY
+   Identifikuj odkazy na:
+   - ČSN EN 206+A2 (specifikace betonu)
+   - ČSN EN 1992 (Eurokód 2 - betonové konstrukce)
+   - ČSN EN 10080 (betonářská ocel)
+   - TKP KAP. 18 (technické kvalitativní podmínky)
+   - ČSN 73 xxxx (další relevantní normy)
+
+5. TŘÍDY PROSTŘEDÍ (ČSN EN 206)
+   Rozpoznej:
+   - XC1, XC2, XC3, XC4 (karbonatizace)
+   - XD1, XD2, XD3 (chloridy mimo mořskou vodu)
+   - XS1, XS2, XS3 (chloridy z mořské vody)
+   - XF1, XF2, XF3, XF4 (zmrazování-rozmrazování)
+   - XA1, XA2, XA3 (chemická agresivita)
+   
+   Časté kombinace:
+   - XA2+XC2 (chemická agrese + karbonatizace)
+   - XF3+XC2 (zmrazování + karbonatizace)
+   - XC4+XD1 (karbonatizace + chloridy)
+
+6. KATEGORIE POVRCHŮ BETONU
+   - Aa: hladký pohledový beton
+   - Bd: běžný provozní povrch
+   - C1a, C2a, C2d: různé stupně pohledových betonů
+   - E: elementární (bez nároků)
+
+7. ROZMĚRY A GEOMETRIE
+   - Délky, šířky, výšky prvků
+   - Tloušťky stěn, desek
+   - Průměry pilotů, sloupů
+   - Krycí vrstvy výztuže
+   - Úrovně (±0.000, +3.500, -2.800)
+
+8. VÝZTUŽ
+   - Průměry prutů (ø8, ø10, ø12, ø16, ø20, ø25)
+   - Rozmístění (po 100mm, po 150mm, po 200mm)
+   - Délky prutů
+   - Kotevní délky
+
+9. TECHNOLOGICKÉ POŽADAVKY
+   - Způsob betonáže
+   - Zachytky (betonářské úseky)
+   - Pracovní spáry
+   - Dilatační spáry
+
+VÝSTUP:
+Vrať validní JSON:
+
+{
+  "drawing_analysis": {
+    "drawing_type": "typ výkresu",
+    "drawing_title": "název",
+    "drawing_number": "číslo",
+    "scale": "měřítko",
+    "confidence": "HIGH/MEDIUM/LOW"
+  },
+  "construction_elements": [
+    {
+      "element_type": "ZÁKLADY",
+      "element_mark": "Z1",
+      "description": "základový pás",
+      "dimensions": {
+        "length": "10000mm",
+        "width": "800mm",
+        "height": "600mm"
+      },
+      "material": {
+        "type": "BETON",
+        "specification": "C30/37",
+        "standard": "ČSN EN 206+A2",
+        "exposure_class": "XA2+XC2",
+        "additional": "kamenivo do 16mm"
+      },
+      "reinforcement": {
+        "main": "8ø16 B500B",
+        "stirrups": "ø8/150mm B500B",
+        "cover": "50mm"
+      },
+      "quantity": 12,
+      "location": "umístění ve výkresu"
+    }
+  ],
+  "materials_summary": [
+    {
+      "material_type": "BETON",
+      "specification": "C30/37",
+      "standard": "ČSN EN 206+A2",
+      "exposure_class": ["XA2+XC2"],
+      "surface_category": "C2d",
+      "estimated_volume_m3": null,
+      "elements_using": ["Z1-Z12", "P1-P8"]
+    },
+    {
+      "material_type": "OCEL",
+      "specification": "B500B",
+      "standard": "ČSN EN 10080",
+      "estimated_weight_kg": null,
+      "elements_using": ["Z1-Z12 výztuž"]
+    }
+  ],
+  "standards_identified": [
+    {
+      "standard": "ČSN EN 206+A2",
+      "application": "specifikace betonu",
+      "location": "kde uvedeno"
+    }
+  ],
+  "exposure_classes_detail": [
+    {
+      "code": "XA2+XC2",
+      "description": "Mírně chemicky agresivní prostředí + karbonatizace",
+      "requirements": [
+        "Minimální krycí vrstva 50mm",
+        "Max. w/c poměr 0.45",
+        "Min. obsah cementu 340 kg/m³"
+      ],
+      "applied_to": ["ZÁKLADY Z1-Z12"]
+    }
+  ],
+  "surface_categories_detail": [
+    {
+      "category": "C2d",
+      "description": "pohledový beton s nízkou četností vad",
+      "requirements": "opálubka s vysokými nároky, omezení vad",
+      "applied_to": ["PILÍŘE P1-P8"]
+    }
+  ],
+  "dimensions_summary": {
+    "total_length_m": null,
+    "total_area_m2": null,
+    "total_volume_m3": null,
+    "levels": ["±0.000", "-2.800", "+3.500"]
+  },
+  "technology_notes": [
+    "betonáž základů v 2 zachytkách",
+    "pracovní spára ve výšce ±0.000",
+    "ošetřování betonu min. 7 dní"
+  ],
+  "visual_observations": [
+    "výkres je čitelný a kompletní",
+    "všechny rozměry jsou kótovány",
+    "chybí detail D3"
+  ],
+  "recommendations": [
+    "ověřit typ opálubky pro kategorii C2d",
+    "upřesnit způsob kotvení výztuže"
+  ]
+}
+
+DŮLEŽITÉ:
+- Používej POUZE české termíny a normy
+- Rozpoznej VŠECHNY konstrukční prvky
+- Identifikuj VŠECHNY materiálové specifikace
+- Zaznamenej VŠECHNY třídy prostředí a kategorie povrchů
+- Pokud něco není jasné, uveď to do notes s "confidence": "LOW"
+- Zachovej všechny české diakritické znaky
+
+Vrať POUZE JSON, bez markdown bloků.

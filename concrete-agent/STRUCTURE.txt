@@ -1,0 +1,43 @@
+.
+├── README.md
+├── SETUP.md
+├── STRUCTURE.txt
+├── app
+│   ├── __init__.py
+│   ├── core
+│   │   └── __init__.py
+│   ├── knowledge_base
+│   │   ├── B1_Normy_Standardy
+│   │   ├── B2_Tech_Cards
+│   │   ├── B3_Pricing
+│   │   ├── B4_Historical
+│   │   ├── B5_URS_KROS4
+│   │   ├── B6_RTS
+│   │   ├── B7_Company_Rules
+│   │   ├── B8_Templates
+│   │   └── __init__.py
+│   ├── main.py
+│   ├── models
+│   │   └── __init__.py
+│   ├── prompts
+│   │   ├── claude
+│   │   └── gpt4
+│   ├── services
+│   │   └── __init__.py
+│   └── utils
+│       └── __init__.py
+├── data
+│   ├── processed
+│   ├── raw
+│   └── results
+├── logs
+│   ├── claude_calls
+│   └── gpt4_calls
+├── requirements.txt
+└── web
+    ├── assets
+    └── static
+        ├── css
+        └── js
+
+30 directories, 11 files

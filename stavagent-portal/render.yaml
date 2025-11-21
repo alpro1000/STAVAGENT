@@ -1,0 +1,74 @@
+# StavAgent Portal - Render Deployment Blueprint
+# https://render.com/docs/blueprint-spec
+
+services:
+  # Backend API (Node.js + Express)
+  - type: web
+    name: stavagent-portal-backend
+    env: node
+    plan: free
+    region: oregon  # US West (frankfurt может не работать в Blueprint)
+    buildCommand: npm install && cd backend && npm install
+    startCommand: cd backend && npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_VERSION
+        value: 18.20.4
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      # Database connection (вручную укажи DATABASE_URL после деплоя)
+      - key: DATABASE_URL
+        sync: false
+      # JWT Secret (автоматически сгенерируется)
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRY
+        value: 24h
+      # SMTP (опционально - заполни если нужна отправка email)
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        value: noreply@stavagent.com
+      # CORE API Integration
+      - key: CORE_API_URL
+        value: https://concrete-agent.onrender.com
+      # File paths (Render persistent storage)
+      - key: UPLOAD_DIR
+        value: /opt/render/project/src/backend/uploads
+      - key: EXPORT_DIR
+        value: /opt/render/project/src/backend/exports
+      - key: MAX_FILE_SIZE
+        value: 10485760
+      # CORS (после деплоя frontend, обнови на его URL)
+      - key: CORS_ORIGIN
+        value: "*"
+      # Trust proxy (для rate limiting)
+      - key: RENDER
+        value: "true"
+
+  # Frontend (Static Site - React + Vite)
+  - type: web
+    name: stavagent-portal-frontend
+    env: static
+    buildCommand: npm install && cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    envVars:
+      # API URL (обнови после деплоя backend на его URL)
+      - key: VITE_API_URL
+        value: https://stavagent-portal-backend.onrender.com
+    # SPA routing (все пути → index.html)
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+
+# Database (PostgreSQL)
+# Используется существующая БД - DATABASE_URL нужно добавить вручную в backend env vars

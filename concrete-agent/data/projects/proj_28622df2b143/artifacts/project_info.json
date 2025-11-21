@@ -1,0 +1,32 @@
+{
+  "project_id": "proj_28622df2b143",
+  "project_name": "TXT Dokumentace Test",
+  "workflow": "A",
+  "requested_workflow": "A",
+  "selected_workflow": "A",
+  "selection_status": "OK",
+  "uploaded_at": "2025-10-27T19:15:25.902359",
+  "files": [
+    {
+      "file_id": "proj_28622df2b143:vykaz_vymer:vykaz.xml",
+      "filename": "vykaz.xml",
+      "file_type": "vykaz_vymer",
+      "size": 15,
+      "uploaded_at": "2025-10-27T19:15:25.887982"
+    },
+    {
+      "file_id": "proj_28622df2b143:vykresy:drawing.pdf",
+      "filename": "drawing.pdf",
+      "file_type": "vykresy",
+      "size": 11,
+      "uploaded_at": "2025-10-27T19:15:25.893140"
+    },
+    {
+      "file_id": "proj_28622df2b143:dokumentace:doc.txt",
+      "filename": "doc.txt",
+      "file_type": "dokumentace",
+      "size": 18,
+      "uploaded_at": "2025-10-27T19:15:25.898174"
+    }
+  ]
+}

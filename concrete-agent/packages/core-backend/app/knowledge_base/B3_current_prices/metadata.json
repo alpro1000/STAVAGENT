@@ -1,0 +1,9 @@
+{
+  "category": "B3_current_prices",
+  "last_updated": "2025-10-09",
+  "version": "1.0",
+  "source": "Initial setup",
+  "description": "Current market prices",
+  "files": [],
+  "notes": "Category initialized. Ready for data."
+}

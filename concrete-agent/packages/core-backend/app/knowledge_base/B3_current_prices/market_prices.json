@@ -1,0 +1,81 @@
+{
+  "updated": "2024-12-15",
+  "region": "Praha",
+  "quarter": "Q4_2024",
+  "materials": {
+    "beton": {
+      "C20/25": {
+        "price_per_m3": 2520,
+        "change_vs_q3": "+2.9%",
+        "suppliers": [
+          {
+            "name": "Holcim Czechia",
+            "price": 2520,
+            "distance_km": 22
+          },
+          {
+            "name": "Betonárna Praha Jih",
+            "price": 2480,
+            "distance_km": 18
+          }
+        ],
+        "trend": "rising",
+        "notes": "Зимнее удорожание + инфляция"
+      },
+      "C25/30": {
+        "price_per_m3": 2750,
+        "change_vs_q3": "+2.6%",
+        "suppliers": [
+          {
+            "name": "Holcim Czechia",
+            "price": 2750,
+            "distance_km": 22
+          }
+        ],
+        "trend": "stable"
+      }
+    },
+    "armatura": {
+      "B500B_diameter_8": {
+        "price_per_kg": 26.5,
+        "change_vs_q3": "-1.5%",
+        "trend": "declining"
+      },
+      "B500B_diameter_12": {
+        "price_per_kg": 29.0,
+        "change_vs_q3": "+1.8%",
+        "trend": "stable"
+      },
+      "B500B_diameter_16": {
+        "price_per_kg": 28.0,
+        "change_vs_q3": "0%",
+        "trend": "stable"
+      }
+    },
+    "zdivo": {
+      "porotherm_30_pd": {
+        "price_per_unit": 48.5,
+        "unit": "ks",
+        "change_vs_q3": "+3.2%",
+        "trend": "rising"
+      },
+      "betonove_tvarnice_400": {
+        "price_per_unit": 32.0,
+        "unit": "ks",
+        "change_vs_q3": "+2.0%",
+        "trend": "stable"
+      }
+    }
+  },
+  "equipment_rental": {
+    "cerpadlo_betonu": {
+      "price_per_day": 9000,
+      "change_vs_q3": "+5.9%",
+      "note": "Зимнее повышение"
+    },
+    "jerab_50t": {
+      "price_per_day": 12500,
+      "change_vs_q3": "+4.2%"
+    }
+  }
+}

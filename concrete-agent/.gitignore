@@ -1,0 +1,202 @@
+# Czech Building Audit System - Git Ignore Rules
+
+# ==========================================
+# PYTHON
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv
+virtualenv/
+
+# ==========================================
+# ENVIRONMENT & SECRETS
+# ==========================================
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.test
+
+# Never commit API keys!
+**/secrets.json
+**/credentials.json
+
+# Allow tracked environment files for the frontend app
+!stav-agent/.env
+!stav-agent/.env.production
+
+# ==========================================
+# DATA (Project Files)
+# ==========================================
+# Uploaded project files
+data/raw/*
+!data/raw/.gitkeep
+
+# Processed results
+data/processed/*
+!data/processed/.gitkeep
+
+# AUDIT results
+data/results/*
+!data/results/.gitkeep
+
+# ==========================================
+# LOGS
+# ==========================================
+logs/*.log
+logs/claude_calls/*
+logs/gpt4_calls/*
+
+# Keep structure
+!logs/.gitkeep
+!logs/claude_calls/.gitkeep
+!logs/gpt4_calls/.gitkeep
+
+# ==========================================
+# KNOWLEDGE BASE - COMMERCIAL DATA
+# ==========================================
+# ⚠️ IMPORTANT: These may contain proprietary information!
+
+# Historical projects (confidential client data)
+app/knowledge_base/B4_Historical/projects/*
+!app/knowledge_base/B4_Historical/projects/.gitkeep
+
+# KROS 4 database (commercial license)
+app/knowledge_base/B5_URS_KROS4/kros_full_database.json
+app/knowledge_base/B5_URS_KROS4/kros_export_*.json
+app/knowledge_base/B5_URS_KROS4/kros_export_*.xlsx
+
+# RTS database (commercial license)
+app/knowledge_base/B6_RTS/rts_full_database.json
+app/knowledge_base/B6_RTS/rts_export_*.json
+app/knowledge_base/B6_RTS/rts_export_*.xlsx
+
+# Company-specific rules (internal)
+app/knowledge_base/B7_Company_Rules/internal_*.json
+
+# But keep samples for testing
+!app/knowledge_base/B5_URS_KROS4/kros_sample.json
+!app/knowledge_base/B6_RTS/rts_sample.json
+
+# ==========================================
+# IDE & EDITORS
+# ==========================================
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm / IntelliJ
+.idea/
+*.iml
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*.swn
+*~
+
+# Emacs
+*~
+\#*\#
+.\#*
+
+# ==========================================
+# OS FILES
+# ==========================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ==========================================
+# TESTING
+# ==========================================
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.hypothesis/
+*.cover
+
+# Test results
+test-results/
+junit.xml
+
+# ==========================================
+# DOCUMENTATION (Generated)
+# ==========================================
+docs/_build/
+docs/.buildinfo
+site/
+
+# ==========================================
+# TEMPORARY FILES
+# ==========================================
+*.tmp
+*.bak
+*.swp
+*.cache
+*.pid
+*.seed
+*.log
+
+# Jupyter Notebooks checkpoints
+.ipynb_checkpoints
+
+# ==========================================
+# BUILD & DEPLOYMENT
+# ==========================================
+# Docker
+.dockerignore
+
+# Render.com (if using)
+.render/
+
+# ==========================================
+# MISC
+# ==========================================
+# Backup files
+*.orig
+
+# Package files
+*.tar.gz
+*.zip
+.claude/

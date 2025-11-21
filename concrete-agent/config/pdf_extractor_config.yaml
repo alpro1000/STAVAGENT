@@ -1,0 +1,29 @@
+# PDF extractor pipeline configuration
+pdf_extractor_p1:
+  enabled: true
+  prompt_version: "v2.1"   # values: "legacy" | "v2.1"
+  claude:
+    model: "claude-sonnet-4-20250514"
+    max_tokens: 4000
+    timeout_seconds: 30
+  perplexity:
+    enabled: true
+    timeout_seconds: 10
+    max_lookups_per_doc: 20
+  caching:
+    redis:
+      enabled: true
+      ttl_hours: 24
+    project_json:
+      enabled: true
+      ttl: null
+  ocr:
+    enabled: true
+    languages: ["cs", "en"]
+    max_pages_per_doc: 10
+    timeout_per_page_seconds: 3
+    total_timeout_seconds: 20
+  logging:
+    level: "INFO"
+    format: "json"
+    include_telemetry: true
