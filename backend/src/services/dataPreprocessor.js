@@ -89,17 +89,32 @@ class DataPreprocessor {
     }
 
     const columnPatterns = {
-      kod: /^(kód|kod|code|č\.p\.|čp|číslo položky)$/i,
-      popis: /^(popis|description|název|name|item)$/i,
-      jednotka: /^(jednotka|mj|unit|измерение)$/i,
-      mnozstvi: /^(množství|mnozstvi|qty|quantity|počet)$/i,
-      cena: /^(cena|price|jednotková cena)$/i,
-      stavba: /^(stavba|stavby|project|projekt)$/i
+      kod: /^(kód|kod|code|č\.p\.|čp|číslo položky|číslo|č\.|part number|item code|poloţka)$/i,
+      popis: /^(popis|description|název|name|item|popis práce|popis položky|text|text položky|poloţka)$/i,
+      jednotka: /^(jednotka|mj|unit|измерение|j\.m\.|měrná jednotka)$/i,
+      mnozstvi: /^(množství|mnozstvi|qty|quantity|počet|počet ks|počet kusů|počet m3|počet m2|počet m)$/i,
+      cena: /^(cena|price|jednotková cena|jednotková|cena za jednotku|cena/jednotku|cena za m3|jednotková cena za m3)$/i,
+      stavba: /^(stavba|stavby|project|projekt|stavby/projekty)$/i
     };
 
     const detectedColumns = {};
+    const allHeaders = new Set();
 
-    // Scan first few rows for column headers
+    // Collect all headers from first few rows
+    for (let i = 0; i < Math.min(5, rows.length); i++) {
+      const row = rows[i];
+      for (const key of Object.keys(row)) {
+        allHeaders.add(key);
+      }
+    }
+
+    // Log all headers for debugging
+    if (allHeaders.size > 0) {
+      const headerList = Array.from(allHeaders).join(' | ');
+      logger.info(`[Preprocessor] Found ${allHeaders.size} column headers: ${headerList.substring(0, 150)}${headerList.length > 150 ? '...' : ''}`);
+    }
+
+    // Scan first few rows for column headers with strict pattern matching
     for (let i = 0; i < Math.min(5, rows.length); i++) {
       const row = rows[i];
       for (const [column, pattern] of Object.entries(columnPatterns)) {
@@ -108,11 +123,55 @@ class DataPreprocessor {
         for (const [key, value] of Object.entries(row)) {
           if (pattern.test(key)) {
             detectedColumns[column] = key;
-            logger.info(`[Preprocessor] Detected column: ${column} → "${key}"`);
+            logger.info(`[Preprocessor] ✅ Detected column: ${column} → "${key}"`);
             break;
           }
         }
       }
+    }
+
+    // Fuzzy fallback: if no exact match, try partial matching
+    if (Object.keys(detectedColumns).length === 0 && allHeaders.size > 0) {
+      logger.warn(`[Preprocessor] ⚠️ No exact column matches found, attempting fuzzy matching...`);
+
+      for (const header of allHeaders) {
+        const headerLower = header.toLowerCase();
+
+        // Try partial matching for each column type
+        if (!detectedColumns.kod && (headerLower.includes('kod') || headerLower.includes('číslo') || headerLower.includes('item') || headerLower.includes('č.p'))) {
+          detectedColumns.kod = header;
+          logger.info(`[Preprocessor] 🔍 Fuzzy matched kod: "${header}"`);
+        }
+        if (!detectedColumns.popis && (headerLower.includes('popis') || headerLower.includes('description') || headerLower.includes('název') || headerLower.includes('text'))) {
+          detectedColumns.popis = header;
+          logger.info(`[Preprocessor] 🔍 Fuzzy matched popis: "${header}"`);
+        }
+        if (!detectedColumns.jednotka && (headerLower.includes('jednotka') || headerLower.includes('mj') || headerLower.includes('unit') || headerLower.includes('j.m'))) {
+          detectedColumns.jednotka = header;
+          logger.info(`[Preprocessor] 🔍 Fuzzy matched jednotka: "${header}"`);
+        }
+        if (!detectedColumns.mnozstvi && (headerLower.includes('množství') || headerLower.includes('qty') || headerLower.includes('počet') || headerLower.includes('m3') || headerLower.includes('m2') || headerLower.includes('quantity'))) {
+          detectedColumns.mnozstvi = header;
+          logger.info(`[Preprocessor] 🔍 Fuzzy matched mnozstvi: "${header}"`);
+        }
+        if (!detectedColumns.cena && (headerLower.includes('cena') || headerLower.includes('price') || headerLower.includes('jednotková') || headerLower.includes('jednotková cena'))) {
+          detectedColumns.cena = header;
+          logger.info(`[Preprocessor] 🔍 Fuzzy matched cena: "${header}"`);
+        }
+        if (!detectedColumns.stavba && (headerLower.includes('stavba') || headerLower.includes('projekt'))) {
+          detectedColumns.stavba = header;
+          logger.info(`[Preprocessor] 🔍 Fuzzy matched stavba: "${header}"`);
+        }
+      }
+    }
+
+    const finalCount = Object.keys(detectedColumns).length;
+    if (finalCount > 0) {
+      logger.info(`[Preprocessor] ✅ Column detection successful: ${finalCount} columns detected`);
+      logger.info(`[Preprocessor]   Mapping: ${JSON.stringify(detectedColumns)}`);
+    } else if (allHeaders.size > 0) {
+      logger.warn(`[Preprocessor] ❌ Could not detect any known columns from ${allHeaders.size} available headers`);
+      logger.warn(`[Preprocessor]   Sample headers: ${Array.from(allHeaders).slice(0, 5).join(', ')}`);
     }
 
     return detectedColumns;
@@ -160,14 +219,22 @@ class DataPreprocessor {
     const deduplicated = [];
 
     for (const row of rows) {
-      // Create signature from important columns
+      // Create signature from important columns - check all possible column names
       const signature = [
         row.popis,
         row.Popis,
         row.description,
-        row._popis
+        row.Description,
+        row._popis,
+        row.název,
+        row.Název,
+        row.name,
+        row.Name,
+        row._název,
+        // Look for any column that might contain description
+        Object.values(row).find(v => typeof v === 'string' && v && v.length > 10)
       ]
-        .filter(v => v)
+        .filter(v => v && typeof v === 'string')
         .join('|');
 
       if (signature && seen.has(signature)) {

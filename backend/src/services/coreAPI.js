@@ -60,7 +60,21 @@ export async function parseExcelByCORE(filePath) {
     }
 
     // Log full response for debugging
-    logger.info(`[CORE] Raw response: ${JSON.stringify(response.data).substring(0, 500)}`);
+    logger.info(`[CORE] Raw response keys: ${Object.keys(response.data).join(', ')}`);
+
+    // Log interesting fields from response
+    if (response.data.files_uploaded) {
+      logger.info(`[CORE] Files uploaded: ${JSON.stringify(response.data.files_uploaded)}`);
+    }
+    if (response.data.enrichment_enabled) {
+      logger.info(`[CORE] Enrichment enabled: ${response.data.enrichment_enabled}`);
+    }
+    if (response.data.workflow) {
+      logger.info(`[CORE] Workflow: ${response.data.workflow}`);
+    }
+
+    // Log raw response for reference
+    logger.debug(`[CORE] Full response: ${JSON.stringify(response.data).substring(0, 1000)}`);
 
     // Extract positions from response
     // concrete-agent returns: { success: true, project_id: "...", ... }
@@ -79,6 +93,9 @@ export async function parseExcelByCORE(filePath) {
       // Files might contain parsed content - need to extract positions from them
       const filesArray = response.data.files;
       for (const file of filesArray) {
+        logger.debug(`[CORE] Processing file: ${file.filename || file.file_id}`);
+        logger.debug(`[CORE] File keys: ${Object.keys(file).join(', ')}`);
+
         // Try different property names where positions might be
         if (Array.isArray(file.positions)) {
           positions.push(...file.positions);
@@ -92,9 +109,19 @@ export async function parseExcelByCORE(filePath) {
         } else if (file.parsed_data && Array.isArray(file.parsed_data)) {
           positions.push(...file.parsed_data);
           logger.info(`[CORE] Found ${file.parsed_data.length} parsed_data items`);
+        } else if (file.vykaz_vymer && typeof file.vykaz_vymer === 'object') {
+          // Sometimes data is nested under the field name
+          if (Array.isArray(file.vykaz_vymer.items)) {
+            positions.push(...file.vykaz_vymer.items);
+            logger.info(`[CORE] Found ${file.vykaz_vymer.items.length} items in file.vykaz_vymer.items`);
+          } else if (Array.isArray(file.vykaz_vymer.data)) {
+            positions.push(...file.vykaz_vymer.data);
+            logger.info(`[CORE] Found ${file.vykaz_vymer.data.length} data items in file.vykaz_vymer.data`);
+          }
         } else {
           // Log what's in the file object for debugging
-          logger.info(`[CORE] File object keys: ${Object.keys(file).join(', ')}`);
+          logger.info(`[CORE] File object structure: ${JSON.stringify(file).substring(0, 500)}`);
+          logger.warn(`[CORE] ⚠️ File returned but no positions found in expected locations`);
         }
       }
     } else if (Array.isArray(response.data.items)) {
@@ -116,26 +143,73 @@ export async function parseExcelByCORE(filePath) {
       `(project_id: ${projectId}, positions: ${positions.length})`
     );
 
-    // If no positions found but file was uploaded, CORE might be async
-    // Try to fetch positions using the project_id
+    // If no positions found but file was uploaded, CORE might be async or still processing
+    // Try to fetch positions using the project_id with multiple retry attempts
     if (positions.length === 0 && projectId) {
-      logger.warn(`[CORE] ⚠️ No positions extracted immediately, attempting async fetch...`);
-      try {
-        // Give CORE a moment to process
-        await new Promise(resolve => setTimeout(resolve, 500));
+      logger.warn(`[CORE] ⚠️ No positions extracted immediately, attempting async fetch with retries...`);
 
-        // Try to fetch results using project_id
-        const resultResponse = await axios.get(
-          `${CORE_API_URL}/api/projects/${projectId}/results`,
-          { timeout: 5000 }
-        );
+      // Try multiple endpoints and wait for processing
+      const endpoints = [
+        `/api/projects/${projectId}/results`,
+        `/api/projects/${projectId}/items`,
+        `/api/projects/${projectId}/positions`,
+        `/api/projects/${projectId}/audit/results`
+      ];
 
-        if (resultResponse.data && Array.isArray(resultResponse.data.positions)) {
-          positions = resultResponse.data.positions;
-          logger.info(`[CORE] ✅ Fetched ${positions.length} positions asynchronously`);
+      for (let attempt = 0; attempt < 3; attempt++) {
+        try {
+          // Give CORE more time to process on subsequent attempts
+          const waitTime = 500 + (attempt * 1000); // 500ms, 1500ms, 2500ms
+          logger.info(`[CORE] Waiting ${waitTime}ms before attempt ${attempt + 1}/3...`);
+          await new Promise(resolve => setTimeout(resolve, waitTime));
+
+          // Try each endpoint
+          for (const endpoint of endpoints) {
+            try {
+              logger.debug(`[CORE] Trying endpoint: GET ${endpoint}`);
+              const resultResponse = await axios.get(
+                `${CORE_API_URL}${endpoint}`,
+                { timeout: 5000 }
+              );
+
+              // Check multiple locations in response
+              if (resultResponse.data) {
+                if (Array.isArray(resultResponse.data.positions)) {
+                  positions = resultResponse.data.positions;
+                  logger.info(`[CORE] ✅ Fetched ${positions.length} positions from ${endpoint}`);
+                  break;
+                } else if (Array.isArray(resultResponse.data.items)) {
+                  positions = resultResponse.data.items;
+                  logger.info(`[CORE] ✅ Fetched ${positions.length} items from ${endpoint}`);
+                  break;
+                } else if (Array.isArray(resultResponse.data.results)) {
+                  positions = resultResponse.data.results;
+                  logger.info(`[CORE] ✅ Fetched ${positions.length} results from ${endpoint}`);
+                  break;
+                } else if (Array.isArray(resultResponse.data.data)) {
+                  positions = resultResponse.data.data;
+                  logger.info(`[CORE] ✅ Fetched ${positions.length} data items from ${endpoint}`);
+                  break;
+                } else if (resultResponse.data.processed_at || resultResponse.data.audit_completed_at) {
+                  logger.info(`[CORE] 📊 File processing status from ${endpoint}: ${JSON.stringify(resultResponse.data).substring(0, 200)}`);
+                }
+              }
+            } catch (endpointError) {
+              logger.debug(`[CORE] Endpoint ${endpoint} not available: ${endpointError.message}`);
+            }
+          }
+
+          // If we found positions, stop retrying
+          if (positions.length > 0) {
+            break;
+          }
+        } catch (asyncError) {
+          logger.warn(`[CORE] Async fetch attempt ${attempt + 1} failed: ${asyncError.message}`);
         }
-      } catch (asyncError) {
-        logger.warn(`[CORE] Could not fetch async results: ${asyncError.message}`);
+      }
+
+      if (positions.length === 0) {
+        logger.warn(`[CORE] ⚠️ After 3 retries, CORE still returned 0 positions. File may not contain structured concrete data.`);
       }
     }
 
