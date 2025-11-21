@@ -17,8 +17,19 @@ export async function parseXLSX(filePath) {
       cellStyles: true,
       cellDates: true
     });
+
+    // 🔴 FIX: Check if file has any sheets
+    if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+      throw new Error('Excel file has no sheets or is empty');
+    }
+
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
+
+    // 🔴 FIX: Check if worksheet exists
+    if (!worksheet) {
+      throw new Error(`Sheet "${sheetName}" is empty or invalid`);
+    }
 
     // Convert to JSON with proper string handling
     const rawData = XLSX.utils.sheet_to_json(worksheet, {
@@ -26,6 +37,15 @@ export async function parseXLSX(filePath) {
       defval: null,
       blankrows: false
     });
+
+    // 🔴 FIX: Check if rawData is valid array
+    if (!Array.isArray(rawData)) {
+      throw new Error('Failed to parse Excel sheet - no rows found');
+    }
+
+    if (rawData.length === 0) {
+      throw new Error('Excel sheet contains no data rows');
+    }
 
     // Ensure UTF-8 encoding by re-encoding strings
     const encodedData = rawData.map(row => {
@@ -67,6 +87,25 @@ export async function parseXLSX(filePath) {
  * Сoupis = Budget/list name
  */
 export function extractFileMetadata(rawData) {
+  // 🔴 FIX: Check if rawData is valid array
+  if (!Array.isArray(rawData)) {
+    logger.warn(`[Parser] Invalid input: rawData is not an array`);
+    return {
+      stavba: null,
+      objekt: null,
+      soupis: null
+    };
+  }
+
+  if (rawData.length === 0) {
+    logger.warn(`[Parser] rawData is empty array`);
+    return {
+      stavba: null,
+      objekt: null,
+      soupis: null
+    };
+  }
+
   let metadata = {
     stavba: null,
     objekt: null,
@@ -143,6 +182,12 @@ export function detectObjectTypeFromDescription(description) {
  * Returns mapping of detected columns
  */
 function detectHeaderRow(rawData) {
+  // 🔴 FIX: Check if rawData is valid array
+  if (!Array.isArray(rawData) || rawData.length === 0) {
+    logger.warn(`[Parser] detectHeaderRow: Invalid input`);
+    return null;
+  }
+
   // Check first 5 rows for headers
   for (let i = 0; i < Math.min(5, rawData.length); i++) {
     const row = rawData[i];

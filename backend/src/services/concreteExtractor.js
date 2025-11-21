@@ -12,6 +12,17 @@ import { logger } from '../utils/logger.js';
  * @returns {Array} Array of position objects
  */
 export function extractConcretePositions(rawRows, bridgeId) {
+  // 🔴 FIX: Check if rawRows is valid array
+  if (!Array.isArray(rawRows)) {
+    logger.warn(`[ConcreteExtractor] Invalid input: rawRows is not an array`);
+    return [];
+  }
+
+  if (rawRows.length === 0) {
+    logger.warn(`[ConcreteExtractor] rawRows is empty`);
+    return [];
+  }
+
   const positions = [];
   const normalizedBridgeId = normalizeBridgeCode(bridgeId);
   let foundBridge = false;
