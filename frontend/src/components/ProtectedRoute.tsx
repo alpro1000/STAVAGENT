@@ -15,14 +15,10 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
 
-  // 🚨 TEMPORARY: Auth bypass for calculator testing
-  // TODO: REMOVE THIS BEFORE FINAL DEPLOYMENT!
-  const TEMP_BYPASS_AUTH = true; // ⚠️ Set to false after testing!
-
-  if (TEMP_BYPASS_AUTH) {
-    console.warn('⚠️ DEV MODE: Authentication disabled! This should NEVER be enabled in production.');
-    return <>{children}</>;
-  }
+  // 🔐 Authentication is handled by stavagent-portal
+  // Monolit-Planner is a calculator app that runs AFTER user logs in to portal
+  // NEVER enable authentication here - portal handles it!
+  const TEMP_BYPASS_AUTH = true; // ✅ Always bypass - auth in portal
 
   if (isLoading) {
     // Show loading spinner while checking authentication
