@@ -59,7 +59,8 @@ export async function parseExcelByCORE(filePath) {
       throw new Error(`CORE returned invalid response: ${JSON.stringify(response.data)}`);
     }
 
-    // Log full response for debugging
+    // 🔍 FULL RESPONSE DIAGNOSTICS
+    logger.info(`[CORE] ═══════════════════════════════════════════`);
     logger.info(`[CORE] Raw response keys: ${Object.keys(response.data).join(', ')}`);
 
     // Log interesting fields from response
@@ -73,8 +74,28 @@ export async function parseExcelByCORE(filePath) {
       logger.info(`[CORE] Workflow: ${response.data.workflow}`);
     }
 
+    // Log file structure if present
+    if (response.data.files && Array.isArray(response.data.files)) {
+      logger.info(`[CORE] Files array length: ${response.data.files.length}`);
+      if (response.data.files.length > 0) {
+        logger.info(`[CORE] First file keys: ${Object.keys(response.data.files[0]).join(', ')}`);
+        // Log full structure of first file
+        logger.info(`[CORE] First file structure:`);
+        const firstFile = response.data.files[0];
+        for (const [key, value] of Object.entries(firstFile)) {
+          if (typeof value === 'object' && value !== null) {
+            logger.info(`[CORE]   ${key}: [${Array.isArray(value) ? 'Array:' + value.length : 'Object:' + Object.keys(value).join(',')}]`);
+          } else if (typeof value === 'string' && value.length > 100) {
+            logger.info(`[CORE]   ${key}: "${value.substring(0, 100)}..."`);
+          } else {
+            logger.info(`[CORE]   ${key}: ${JSON.stringify(value)}`);
+          }
+        }
+      }
+    }
+
     // Log raw response for reference
-    logger.debug(`[CORE] Full response: ${JSON.stringify(response.data).substring(0, 1000)}`);
+    logger.debug(`[CORE] Full response: ${JSON.stringify(response.data).substring(0, 2000)}`);
 
     // Extract positions from response
     // concrete-agent returns: { success: true, project_id: "...", ... }
@@ -142,11 +163,13 @@ export async function parseExcelByCORE(filePath) {
       `[CORE] ✅ Successfully parsed Excel file at concrete-agent ` +
       `(project_id: ${projectId}, positions: ${positions.length})`
     );
+    logger.info(`[CORE] ═══════════════════════════════════════════`);
 
     // If no positions found but file was uploaded, CORE might be async or still processing
     // Try to fetch positions using the project_id with multiple retry attempts
     if (positions.length === 0 && projectId) {
       logger.warn(`[CORE] ⚠️ No positions extracted immediately, attempting async fetch with retries...`);
+      logger.warn(`[CORE] CORE парсит файл асинхронно, ждем результаты...`);
 
       // Try multiple endpoints and wait for processing
       const endpoints = [
@@ -166,11 +189,13 @@ export async function parseExcelByCORE(filePath) {
           // Try each endpoint
           for (const endpoint of endpoints) {
             try {
-              logger.debug(`[CORE] Trying endpoint: GET ${endpoint}`);
+              logger.info(`[CORE] 🔍 Trying endpoint: GET ${endpoint}`);
               const resultResponse = await axios.get(
                 `${CORE_API_URL}${endpoint}`,
                 { timeout: 5000 }
               );
+
+              logger.info(`[CORE] Response keys from ${endpoint}: ${Object.keys(resultResponse.data).join(', ')}`);
 
               // Check multiple locations in response
               if (resultResponse.data) {
@@ -191,7 +216,22 @@ export async function parseExcelByCORE(filePath) {
                   logger.info(`[CORE] ✅ Fetched ${positions.length} data items from ${endpoint}`);
                   break;
                 } else if (resultResponse.data.processed_at || resultResponse.data.audit_completed_at) {
-                  logger.info(`[CORE] 📊 File processing status from ${endpoint}: ${JSON.stringify(resultResponse.data).substring(0, 200)}`);
+                  logger.info(`[CORE] 📊 File processing status from ${endpoint}: ${JSON.stringify(resultResponse.data).substring(0, 300)}`);
+                }
+
+                // If response has files, try to extract from them
+                if (resultResponse.data.files && Array.isArray(resultResponse.data.files)) {
+                  logger.info(`[CORE] Found ${resultResponse.data.files.length} files in async response`);
+                  for (const file of resultResponse.data.files) {
+                    if (Array.isArray(file.positions)) {
+                      positions.push(...file.positions);
+                      logger.info(`[CORE] ✅ Extracted ${file.positions.length} positions from file.positions`);
+                    }
+                    if (Array.isArray(file.items)) {
+                      positions.push(...file.items);
+                      logger.info(`[CORE] ✅ Extracted ${file.items.length} items from file.items`);
+                    }
+                  }
                 }
               }
             } catch (endpointError) {
@@ -210,7 +250,26 @@ export async function parseExcelByCORE(filePath) {
 
       if (positions.length === 0) {
         logger.warn(`[CORE] ⚠️ After 3 retries, CORE still returned 0 positions. File may not contain structured concrete data.`);
+        logger.warn(`[CORE] Возможные причины:`);
+        logger.warn(`[CORE]   1. CORE обрабатывает файл (нужно больше времени)`);
+        logger.warn(`[CORE]   2. Файл не содержит структурированные данные о бетоне`);
+        logger.warn(`[CORE]   3. CORE эндпоинты возвращают данные в другом формате`);
       }
+    }
+
+    // If we have positions, log them for diagnostics
+    if (positions.length > 0) {
+      logger.info(`[CORE] ═══════════════════════════════════════════`);
+      logger.info(`[CORE] 🎉 SUCCESS: Extracted ${positions.length} concrete positions`);
+      logger.info(`[CORE] Sample positions:`);
+      for (let i = 0; i < Math.min(3, positions.length); i++) {
+        const pos = positions[i];
+        const summary = typeof pos === 'object'
+          ? `{${Object.keys(pos).join(', ')}}`
+          : `"${String(pos).substring(0, 80)}"`;
+        logger.info(`[CORE]   ${i + 1}. ${summary}`);
+      }
+      logger.info(`[CORE] ═══════════════════════════════════════════`);
     }
 
     return Array.isArray(positions) ? positions : [];
