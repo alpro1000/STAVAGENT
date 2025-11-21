@@ -8,7 +8,7 @@ import { logger } from '../utils/logger.js';
 /**
  * Extract concrete positions from raw Excel rows for a specific bridge
  * @param {Array} rawRows - All rows from Excel file
- * @param {string} bridgeId - Bridge ID (e.g., "SO 241")
+ * @param {string} bridgeId - Bridge ID (e.g., "SO 241") or "SO_AUTO" to auto-detect
  * @returns {Array} Array of position objects
  */
 export function extractConcretePositions(rawRows, bridgeId) {
@@ -24,42 +24,58 @@ export function extractConcretePositions(rawRows, bridgeId) {
   }
 
   const positions = [];
-  const normalizedBridgeId = normalizeBridgeCode(bridgeId);
+  let normalizedBridgeId = normalizeBridgeCode(bridgeId);
   let foundBridge = false;
   let bridgeRows = [];
 
-  // Find all rows belonging to this bridge
-  for (let i = 0; i < rawRows.length; i++) {
-    const row = rawRows[i];
-    const rowText = Object.values(row).join(' ');
-    const soMatch = rowText.match(/SO\s*\d+/i);
+  // AUTO-DETECT mode: If bridgeId is SO_AUTO, extract ALL concrete items without filtering by bridge
+  const autoDetectMode = bridgeId === 'SO_AUTO' || bridgeId === 'SO_AUTO';
 
-    if (soMatch && normalizeBridgeCode(soMatch[0]) === normalizedBridgeId) {
-      foundBridge = true;
-      bridgeRows = [];
-      continue;
-    }
-
-    if (foundBridge) {
-      // Stop when hitting another bridge
-      const hasAnotherSO = Object.values(row).some(val => {
-        if (val && typeof val === 'string') {
-          const match = val.match(/SO\s*\d+/i);
-          if (match && normalizeBridgeCode(match[0]) !== normalizedBridgeId) {
-            return true;
-          }
-        }
-        return false;
-      });
-
-      if (hasAnotherSO) break;
-
+  if (autoDetectMode) {
+    logger.info(`[ConcreteExtractor] 🔍 AUTO-DETECT mode: extracting all concrete items without bridge filtering`);
+    // In auto-detect mode, process ALL rows as concrete data
+    for (const row of rawRows) {
       const hasData = Object.values(row).some(val => val !== null && val !== '');
-      if (hasData) bridgeRows.push(row);
+      if (hasData) {
+        bridgeRows.push(row);
+      }
+    }
+  } else {
+    // SPECIFIC-BRIDGE mode: Filter by bridge ID
+    // Find all rows belonging to this bridge
+    for (let i = 0; i < rawRows.length; i++) {
+      const row = rawRows[i];
+      const rowText = Object.values(row).join(' ');
+      const soMatch = rowText.match(/SO\s*\d+/i);
+
+      if (soMatch && normalizeBridgeCode(soMatch[0]) === normalizedBridgeId) {
+        foundBridge = true;
+        bridgeRows = [];
+        continue;
+      }
+
+      if (foundBridge) {
+        // Stop when hitting another bridge
+        const hasAnotherSO = Object.values(row).some(val => {
+          if (val && typeof val === 'string') {
+            const match = val.match(/SO\s*\d+/i);
+            if (match && normalizeBridgeCode(match[0]) !== normalizedBridgeId) {
+              return true;
+            }
+          }
+          return false;
+        });
+
+        if (hasAnotherSO) break;
+
+        const hasData = Object.values(row).some(val => val !== null && val !== '');
+        if (hasData) bridgeRows.push(row);
+      }
     }
   }
 
-  logger.info(`[ConcreteExtractor] Found ${bridgeRows.length} data rows for bridge ${bridgeId}`);
+  const bridgeLabel = autoDetectMode ? 'auto-detected' : bridgeId;
+  logger.info(`[ConcreteExtractor] Found ${bridgeRows.length} data rows for bridge ${bridgeLabel}`);
 
   // Process each row to extract concrete-related positions
   for (const row of bridgeRows) {
