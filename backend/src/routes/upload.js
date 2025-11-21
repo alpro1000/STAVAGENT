@@ -10,7 +10,7 @@ import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription, normalizeString } from '../services/parser.js';
 import { extractConcretePositions } from '../services/concreteExtractor.js';
-import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge } from '../services/coreAPI.js';
+import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge, validatePositions, enrichPosition } from '../services/coreAPI.js';
 import { importCache, cacheStatsMiddleware } from '../services/importCache.js';
 import DataPreprocessor from '../services/dataPreprocessor.js';
 import { logger } from '../utils/logger.js';
@@ -334,6 +334,21 @@ router.post('/', upload.single('file'), async (req, res) => {
           logger.warn(`[Upload] No positions found for ${objectId}, using templates`);
           positionsToInsert = templatePositions;
           positionsSource = 'templates';
+        }
+
+        // 🔍 VALIDATE POSITIONS BEFORE INSERTION
+        if (positionsToInsert.length > 0) {
+          const validationResult = validatePositions(positionsToInsert);
+          logger.info(`[Upload] Position validation: ${validationResult.stats.valid}/${validationResult.stats.total} valid (${validationResult.stats.validPercentage}%)`);
+
+          if (validationResult.invalid.length > 0) {
+            logger.warn(`[Upload] ⚠️ ${validationResult.invalid.length} positions failed validation, skipping invalid ones`);
+            positionsToInsert = validationResult.valid;
+          }
+
+          // 💪 ENRICH VALID POSITIONS with calculated fields
+          positionsToInsert = positionsToInsert.map(pos => enrichPosition(pos));
+          logger.debug(`[Upload] Enriched ${positionsToInsert.length} positions with calculated fields`);
         }
 
         // Insert all positions using batch insert (MUCH FASTER)
