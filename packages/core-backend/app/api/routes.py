@@ -887,6 +887,91 @@ async def get_project_results(project_id: str):
     )
 
 
+@router.get("/api/projects/{project_id}/positions", response_model=dict)
+async def get_project_positions(project_id: str, wait_for_completion: bool = True):
+    """
+    Get all parsed positions for a project
+
+    Returns the full list of positions extracted from the uploaded file.
+
+    **Query Parameters:**
+    - `wait_for_completion`: If true (default), waits up to 30 seconds for processing to complete
+
+    If positions are still being processed and wait_for_completion=false, returns pending status.
+    """
+    if project_id not in project_store:
+        raise HTTPException(404, f"Project {project_id} not found")
+
+    project = project_store[project_id]
+    status = project.get("status", "unknown")
+
+    # If wait_for_completion is true and project is still processing, wait
+    if wait_for_completion and status in ["uploaded", "processing"]:
+        import asyncio
+        max_wait = 30  # seconds
+        check_interval = 0.5  # seconds
+        elapsed = 0
+
+        while elapsed < max_wait and project.get("status") in ["uploaded", "processing"]:
+            await asyncio.sleep(check_interval)
+            elapsed += check_interval
+            # Refresh project from store
+            if project_id in project_store:
+                project = project_store[project_id]
+                status = project.get("status", "unknown")
+
+    # Try to load positions from cache
+    positions = project.get("positions", [])
+
+    # If no positions in cache, try to load from disk
+    if not positions:
+        try:
+            positions_path = ArtifactPaths.parsed_positions(project_id)
+            if positions_path.exists():
+                with positions_path.open("r", encoding="utf-8") as f:
+                    positions_data = json.load(f)
+                    positions = positions_data.get("items", [])
+        except Exception as e:
+            logger.error(f"Failed to load positions from disk for {project_id}: {e}")
+
+    # If still processing after wait, return pending status
+    status = project.get("status", "unknown")
+    if status in ["uploaded", "processing"] or not positions:
+        return {
+            "status": "pending",
+            "project_id": project_id,
+            "project_name": project.get("project_name", ""),
+            "positions": [],
+            "count": 0,
+            "message": "Positions are still being parsed and enriched",
+            "workflow_status": status
+        }
+
+    return {
+        "status": "success",
+        "project_id": project_id,
+        "project_name": project.get("project_name", ""),
+        "positions": positions,
+        "count": len(positions),
+        "workflow": project.get("workflow", "A"),
+        "enrichment_enabled": project.get("enable_enrichment", False),
+        "green_count": project.get("green_count", 0),
+        "amber_count": project.get("amber_count", 0),
+        "red_count": project.get("red_count", 0),
+        "workflow_status": status
+    }
+
+
+@router.get("/api/projects/{project_id}/items", response_model=dict)
+async def get_project_items(project_id: str):
+    """
+    Alias for /positions endpoint (for backward compatibility)
+
+    Some clients may use 'items' instead of 'positions'
+    """
+    return await get_project_positions(project_id)
+
+
 @router.get("/api/projects", response_model=ProjectListResponse)
 async def list_projects(
     limit: int = Query(default=50, le=100),
