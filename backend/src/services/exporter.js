@@ -53,6 +53,85 @@ function determineMaterialType(subtype, itemName = '') {
 }
 
 /**
+ * Calculate optimal column width based on content
+ * @param {Array} cells - Cells in the column
+ * @param {number} minWidth - Minimum width
+ * @param {number} maxWidth - Maximum width
+ * @returns {number} Optimal width
+ */
+function calculateColumnWidth(cells, minWidth = 10, maxWidth = 60) {
+  let maxLength = minWidth;
+
+  if (!Array.isArray(cells)) {
+    return minWidth;
+  }
+
+  cells.forEach(cell => {
+    if (!cell) return;
+
+    let length = 0;
+    const value = cell.value;
+
+    if (value === null || value === undefined) {
+      length = 0;
+    } else if (typeof value === 'object') {
+      // Formula objects, rich text, etc.
+      if (value.formula) {
+        // Estimate based on formula length, but cap it
+        length = Math.min(value.formula.length, 20);
+      } else if (value.text) {
+        length = String(value.text).length;
+      } else if (value.richText && value.richText.length > 0) {
+        length = value.richText.map(rt => String(rt.text || '').length).reduce((a, b) => a + b, 0);
+      }
+    } else {
+      // Simple value (number, string, boolean, date)
+      length = String(value).length;
+    }
+
+    maxLength = Math.max(maxLength, length);
+  });
+
+  // Add padding for better readability
+  const paddedWidth = maxLength + 2;
+
+  // Ensure we stay within bounds
+  return Math.min(Math.max(paddedWidth, minWidth), maxWidth);
+}
+
+/**
+ * Auto-fit all columns in a worksheet
+ * @param {ExcelJS.Worksheet} sheet - The worksheet to auto-fit
+ * @param {number} minWidth - Minimum column width (default: 10)
+ * @param {number} maxWidth - Maximum column width (default: 60)
+ */
+function autoFitColumns(sheet, minWidth = 10, maxWidth = 60) {
+  if (!sheet || !sheet.columns) {
+    return;
+  }
+
+  sheet.columns.forEach((column, colIndex) => {
+    if (!column) return;
+
+    const cells = [];
+    column.eachCell({ includeEmpty: false }, (cell) => {
+      cells.push(cell);
+    });
+
+    // For header row, also check column header if exists
+    if (sheet.getRow(1)) {
+      const headerCell = sheet.getRow(1).getCell(colIndex + 1);
+      if (headerCell && headerCell.value) {
+        cells.unshift(headerCell);
+      }
+    }
+
+    const optimalWidth = calculateColumnWidth(cells, minWidth, maxWidth);
+    column.width = optimalWidth;
+  });
+}
+
+/**
  * Apply borders to a cell
  */
 const applyBorders = (cell) => {
@@ -156,10 +235,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       });
     });
 
-    // Set column widths for KPI sheet
-    kpiSheet.getColumn(1).width = 40;
-    kpiSheet.getColumn(2).width = 25;
-    kpiSheet.getColumn(3).width = 15;
+    // Auto-fit KPI sheet columns
+    autoFitColumns(kpiSheet, 10, 50);
 
     // ============= SHEET 2: DETAILED POSITIONS =============
     const detailSheet = workbook.addWorksheet('Detaily', {
@@ -385,28 +462,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       totalsRow.getCell(13).numFmt = '#,##0.00';
     }
 
-    // Auto-fit columns based on content
-    detailSheet.columns.forEach((column, index) => {
-      let maxLength = (positionHeaders[index]?.length || 10) + 2;
-
-      column.eachCell({ includeEmpty: false }, (cell) => {
-        let cellLength = 0;
-        const value = cell.value;
-
-        if (value === null || value === undefined) {
-          cellLength = 0;
-        } else if (typeof value === 'object' && value.formula) {
-          // For formulas, estimate based on the header
-          cellLength = (positionHeaders[index]?.length || 10);
-        } else {
-          cellLength = String(value).length;
-        }
-
-        maxLength = Math.max(maxLength, cellLength);
-      });
-
-      column.width = Math.min(maxLength + 2, 50); // Add padding, max 50
-    });
+    // Auto-fit columns based on content (using smart algorithm)
+    autoFitColumns(detailSheet, 12, 50);
 
     // ============= SHEET 3: MATERIALS AGGREGATION =============
     const materialsSheet = workbook.addWorksheet('Materiály', {
@@ -536,13 +593,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       matTotalsRow.getCell(6).numFmt = '#,##0.00';
     }
 
-    // Set column widths for materials sheet
-    materialsSheet.getColumn(1).width = 25;
-    materialsSheet.getColumn(2).width = 12;
-    materialsSheet.getColumn(3).width = 15;
-    materialsSheet.getColumn(4).width = 12;
-    materialsSheet.getColumn(5).width = 15;
-    materialsSheet.getColumn(6).width = 15;
+    // Auto-fit materials sheet columns
+    autoFitColumns(materialsSheet, 12, 50);
 
     // ============= SHEET 4: SCHEDULE / TIMELINE =============
     const scheduleSheet = workbook.addWorksheet('Harmonogram', {
@@ -617,12 +669,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       });
     });
 
-    // Set column widths for schedule sheet
-    scheduleSheet.getColumn(1).width = 25;
-    scheduleSheet.getColumn(2).width = 15;
-    scheduleSheet.getColumn(3).width = 15;
-    scheduleSheet.getColumn(4).width = 15;
-    scheduleSheet.getColumn(5).width = 12;
+    // Auto-fit schedule sheet columns
+    autoFitColumns(scheduleSheet, 12, 50);
 
     // ============= SHEET 5: CHARTS & ANALYTICS =============
     const chartsSheet = workbook.addWorksheet('Grafy', {
@@ -734,10 +782,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
     chartsSheet.addRow(['CELKEM', totalCost]).font = { bold: true };
 
-    // Set column widths for charts sheet
-    chartsSheet.getColumn(1).width = 25;
-    chartsSheet.getColumn(2).width = 20;
-    chartsSheet.getColumn(3).width = 12;
+    // Auto-fit charts sheet columns
+    autoFitColumns(chartsSheet, 10, 50);
 
     // Generate buffer
     const buffer = await workbook.xlsx.writeBuffer();
