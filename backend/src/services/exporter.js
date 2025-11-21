@@ -32,6 +32,27 @@ const formatCurrency = (num, decimals = 2) => {
 };
 
 /**
+ * Determine material type from position subtype and item name
+ */
+function determineMaterialType(subtype, itemName = '') {
+  const text = (itemName || '').toLowerCase();
+
+  // Check subtype first
+  if (subtype === 'beton' || text.includes('beton')) {
+    return 'Beton (m³)';
+  }
+  if (subtype === 'bednění' || text.includes('bedn')) {
+    return 'Bednění (m²)';
+  }
+  if (subtype === 'výztuž' || text.includes('výztuž') || text.includes('ocel')) {
+    return 'Výztuž (t)';
+  }
+
+  // Default
+  return 'Ostatní';
+}
+
+/**
  * Apply borders to a cell
  */
 const applyBorders = (cell) => {
@@ -386,6 +407,337 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
       column.width = Math.min(maxLength + 2, 50); // Add padding, max 50
     });
+
+    // ============= SHEET 3: MATERIALS AGGREGATION =============
+    const materialsSheet = workbook.addWorksheet('Materiály', {
+      views: [{ state: 'frozen', ySplit: 3 }]
+    });
+
+    // Aggregate materials by type and unit
+    const materials = new Map();
+    positions.forEach(pos => {
+      // Determine material type from position
+      const materialType = determineMaterialType(pos.subtype, pos.item_name);
+      const key = `${materialType}|${pos.unit}`;
+
+      if (!materials.has(key)) {
+        materials.set(key, {
+          type: materialType,
+          unit: pos.unit,
+          quantity: 0,
+          positions: [],
+          totalCost: 0
+        });
+      }
+
+      const mat = materials.get(key);
+      mat.quantity += pos.qty || 0;
+      mat.positions.push(pos);
+      mat.totalCost += (pos.kros_total_czk || 0);
+    });
+
+    // Add title rows
+    const matTitleRow = materialsSheet.addRow(['MONOLIT PLANNER — AGREGACE MATERIÁLŮ']);
+    matTitleRow.font = { bold: true, size: 14 };
+    matTitleRow.alignment = { vertical: 'middle', horizontal: 'left' };
+
+    const matSubtitleRow = materialsSheet.addRow([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
+    matSubtitleRow.font = { bold: true, size: 12 };
+
+    materialsSheet.addRow([]); // Empty row
+
+    // Add materials data
+    const materialsHeaders = ['Typ Materiálu', 'Jednotka', 'Množství', 'Počet pozic', 'Jednotková cena', 'Cena celkem'];
+    const matHeaderRow = materialsSheet.addRow(materialsHeaders);
+    matHeaderRow.eachCell((cell) => applyHeaderStyle(cell));
+
+    let matRowCounter = 0;
+    let matFirstDataRow = null;
+    let matLastDataRow = null;
+
+    materials.forEach((mat, key) => {
+      const rowNumber = materialsSheet.lastRow.number + 1;
+      if (matFirstDataRow === null) matFirstDataRow = rowNumber;
+      matLastDataRow = rowNumber;
+      matRowCounter++;
+
+      const unitPrice = mat.positions.length > 0 ? mat.totalCost / mat.quantity : 0;
+
+      const matRow = materialsSheet.addRow([
+        mat.type,
+        mat.unit,
+        mat.quantity,
+        mat.positions.length,
+        unitPrice,
+        mat.totalCost
+      ]);
+
+      matRow.eachCell((cell, colNumber) => {
+        applyBorders(cell);
+
+        if (matRowCounter % 2 === 0) {
+          cell.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FFF9F9F9' }
+          };
+        }
+
+        if (colNumber === 3 || colNumber === 4) {
+          cell.numFmt = '0.00';
+          cell.alignment = { vertical: 'middle', horizontal: 'right' };
+        } else if (colNumber === 5 || colNumber === 6) {
+          cell.numFmt = '#,##0.00';
+          cell.alignment = { vertical: 'middle', horizontal: 'right' };
+        } else {
+          cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        }
+      });
+    });
+
+    // Add materials totals row
+    if (matFirstDataRow !== null && matLastDataRow !== null) {
+      materialsSheet.addRow([]);
+
+      const matTotalsRow = materialsSheet.addRow([
+        'CELKEM / TOTAL',
+        '',
+        null,
+        null,
+        '',
+        null
+      ]);
+
+      matTotalsRow.eachCell((cell, colNumber) => {
+        cell.font = { bold: true, size: 11 };
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'FFE7E6E6' }
+        };
+        applyBorders(cell);
+
+        if (colNumber >= 3 && colNumber <= 6) {
+          cell.alignment = { vertical: 'middle', horizontal: 'right' };
+        } else {
+          cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        }
+      });
+
+      // Add SUM formulas
+      matTotalsRow.getCell(3).value = {
+        formula: `SUM(C${matFirstDataRow}:C${matLastDataRow})`
+      };
+      matTotalsRow.getCell(3).numFmt = '0.00';
+
+      matTotalsRow.getCell(6).value = {
+        formula: `SUM(F${matFirstDataRow}:F${matLastDataRow})`
+      };
+      matTotalsRow.getCell(6).numFmt = '#,##0.00';
+    }
+
+    // Set column widths for materials sheet
+    materialsSheet.getColumn(1).width = 25;
+    materialsSheet.getColumn(2).width = 12;
+    materialsSheet.getColumn(3).width = 15;
+    materialsSheet.getColumn(4).width = 12;
+    materialsSheet.getColumn(5).width = 15;
+    materialsSheet.getColumn(6).width = 15;
+
+    // ============= SHEET 4: SCHEDULE / TIMELINE =============
+    const scheduleSheet = workbook.addWorksheet('Harmonogram', {
+      views: [{ state: 'frozen', ySplit: 3 }]
+    });
+
+    // Add title rows
+    const schedTitleRow = scheduleSheet.addRow(['MONOLIT PLANNER — PRACOVNÍ HARMONOGRAM']);
+    schedTitleRow.font = { bold: true, size: 14 };
+    schedTitleRow.alignment = { vertical: 'middle', horizontal: 'left' };
+
+    const schedSubtitleRow = scheduleSheet.addRow([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
+    schedSubtitleRow.font = { bold: true, size: 12 };
+
+    scheduleSheet.addRow([]); // Empty row
+
+    // Create schedule with work phases
+    const phases = [
+      { name: 'Příprava stavby', duration: 2, color: 'FFE7E6E6' },
+      { name: 'Bednění', duration: 5, color: 'FF4472C4' },
+      { name: 'Betonáž', duration: 3, color: 'FFB4C7E7' },
+      { name: 'Vyztužování', duration: 4, color: 'FFDAE8FC' },
+      { name: 'Dokončovací práce', duration: 3, color: 'FFFFEB9C' }
+    ];
+
+    const scheduleHeaders = ['Fáze', 'Trvání (dny)', 'Začátek', 'Konec', 'Osob'];
+    const schedHeaderRow = scheduleSheet.addRow(scheduleHeaders);
+    schedHeaderRow.eachCell((cell) => applyHeaderStyle(cell));
+
+    let currentDay = 1;
+    let schedFirstDataRow = null;
+    let schedLastDataRow = null;
+
+    // Get average crew size for schedule
+    const avgCrewSize = Math.round(
+      positions.reduce((sum, p) => sum + (p.crew_size || 0), 0) / positions.length || 4
+    );
+
+    phases.forEach((phase, idx) => {
+      const rowNumber = scheduleSheet.lastRow.number + 1;
+      if (schedFirstDataRow === null) schedFirstDataRow = rowNumber;
+      schedLastDataRow = rowNumber;
+
+      const startDay = currentDay;
+      const endDay = currentDay + phase.duration - 1;
+      currentDay = endDay + 1;
+
+      const schedRow = scheduleSheet.addRow([
+        phase.name,
+        phase.duration,
+        `Den ${startDay}`,
+        `Den ${endDay}`,
+        avgCrewSize
+      ]);
+
+      schedRow.eachCell((cell, colNumber) => {
+        applyBorders(cell);
+
+        // Apply phase color to all cells
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: phase.color }
+        };
+
+        if (colNumber === 2 || colNumber === 5) {
+          cell.numFmt = '0';
+          cell.alignment = { vertical: 'middle', horizontal: 'right' };
+        } else {
+          cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        }
+      });
+    });
+
+    // Set column widths for schedule sheet
+    scheduleSheet.getColumn(1).width = 25;
+    scheduleSheet.getColumn(2).width = 15;
+    scheduleSheet.getColumn(3).width = 15;
+    scheduleSheet.getColumn(4).width = 15;
+    scheduleSheet.getColumn(5).width = 12;
+
+    // ============= SHEET 5: CHARTS & ANALYTICS =============
+    const chartsSheet = workbook.addWorksheet('Grafy', {
+      views: [{ state: 'frozen', ySplit: 0 }]
+    });
+
+    // Add title
+    const chartsTitleRow = chartsSheet.addRow(['MONOLIT PLANNER — ANALÝZA A GRAFY']);
+    chartsTitleRow.font = { bold: true, size: 14 };
+    chartsSheet.addRow([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
+    chartsSheet.addRow([]);
+
+    // Budget Distribution (by material type)
+    const budgetData = Array.from(materials.entries()).map(([_, mat]) => ({
+      label: mat.type,
+      value: mat.totalCost
+    }));
+
+    if (budgetData.length > 0) {
+      chartsSheet.addRow(['ROZPOČET PODLE MATERIÁLU']);
+      const budgetHeaderRow = chartsSheet.lastRow;
+      budgetHeaderRow.font = { bold: true, size: 12 };
+
+      // Add budget data table for chart
+      const budgetChartHeaders = ['Materiál', 'Cena (CZK)', '% Podíl'];
+      const budgetChartHeaderRow = chartsSheet.addRow(budgetChartHeaders);
+      budgetChartHeaderRow.eachCell((cell) => applyHeaderStyle(cell));
+
+      const totalBudget = budgetData.reduce((sum, item) => sum + item.value, 0);
+      let budgetDataStartRow = chartsSheet.lastRow.number + 1;
+
+      budgetData.forEach(item => {
+        const percentage = totalBudget > 0 ? (item.value / totalBudget * 100).toFixed(1) : 0;
+        const row = chartsSheet.addRow([item.label, item.value, `${percentage}%`]);
+
+        row.eachCell((cell, colNumber) => {
+          applyBorders(cell);
+          if (colNumber === 2) {
+            cell.numFmt = '#,##0.00';
+            cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          } else {
+            cell.alignment = { vertical: 'middle', horizontal: 'left' };
+          }
+        });
+      });
+
+      chartsSheet.addRow(['CELKEM', totalBudget]).font = { bold: true };
+
+      // Create pie chart
+      const pieChart = {
+        type: 'doughnut',
+        title: 'Rozpočet podle materiálu',
+        series: [{
+          title: new ExcelJS.Worksheet.CellReferenceArray('Grafy', 2, 1, 2 + budgetData.length - 1, 1),
+          val: new ExcelJS.Worksheet.CellReferenceArray('Grafy', 2, 2, 2 + budgetData.length - 1, 2),
+          layout: {
+            manualLayout: {
+              x: 0.15, y: 0.15, w: 0.7, h: 0.7
+            }
+          }
+        }],
+        chartArea: {
+          layoutTarget: 'inner'
+        }
+      };
+
+      chartsSheet.addChart(pieChart);
+    }
+
+    // Add spacing
+    chartsSheet.addRow([]);
+    chartsSheet.addRow([]);
+
+    // Cost breakdown by subtype
+    const costByType = {};
+    positions.forEach(pos => {
+      if (!costByType[pos.subtype]) {
+        costByType[pos.subtype] = 0;
+      }
+      costByType[pos.subtype] += (pos.kros_total_czk || 0);
+    });
+
+    chartsSheet.addRow(['NÁKLADY PODLE TYPU PRACÍ']);
+    const costHeaderRow = chartsSheet.lastRow;
+    costHeaderRow.font = { bold: true, size: 12 };
+
+    const costChartHeaders = ['Typ práce', 'Náklady (CZK)'];
+    const costChartHeaderRow = chartsSheet.addRow(costChartHeaders);
+    costChartHeaderRow.eachCell((cell) => applyHeaderStyle(cell));
+
+    let costDataStartRow = chartsSheet.lastRow.number + 1;
+    let totalCost = 0;
+
+    Object.entries(costByType).forEach(([type, cost]) => {
+      chartsSheet.addRow([type, cost]);
+      totalCost += cost;
+
+      const row = chartsSheet.lastRow;
+      row.eachCell((cell, colNumber) => {
+        applyBorders(cell);
+        if (colNumber === 2) {
+          cell.numFmt = '#,##0.00';
+          cell.alignment = { vertical: 'middle', horizontal: 'right' };
+        } else {
+          cell.alignment = { vertical: 'middle', horizontal: 'left' };
+        }
+      });
+    });
+
+    chartsSheet.addRow(['CELKEM', totalCost]).font = { bold: true };
+
+    // Set column widths for charts sheet
+    chartsSheet.getColumn(1).width = 25;
+    chartsSheet.getColumn(2).width = 20;
+    chartsSheet.getColumn(3).width = 12;
 
     // Generate buffer
     const buffer = await workbook.xlsx.writeBuffer();
