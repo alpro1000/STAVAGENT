@@ -143,36 +143,64 @@ router.post('/', upload.single('file'), async (req, res) => {
           sourceOfProjects = 'core_intelligent_classification';
         } else {
           logger.warn('[Upload] ⚠️ CORE returned positions but identified NO concrete bridges (material_type != "concrete")');
-          // Don't fall back to unreliable M3 detection!
+          // Enable fallback: Try local parser if CORE didn't identify concrete
+          logger.info('[Upload] 🔄 Attempting fallback: local concrete extractor...');
         }
       } else {
         logger.warn('[Upload] ⚠️ CORE returned empty response (no positions parsed)');
-        // Don't fall back to unreliable M3 detection!
+        // Enable fallback: If CORE completely failed, use local parser
+        logger.info('[Upload] 🔄 CORE returned no data, attempting fallback: local concrete extractor...');
       }
     } catch (coreError) {
       logger.error(`[Upload] ❌ CORE parser failed: ${coreError.message}`);
-      logger.error('[Upload] Cannot identify concrete bridges without CORE intelligence');
-      // Don't fall back to unreliable M3 detection!
+      logger.warn('[Upload] 🔄 Attempting fallback: local concrete extractor...');
+      // Enable fallback: Try local parser if CORE crashes
     }
 
-    // VALIDATION: Ensure CORE identified concrete projects
-    if (projectsForImport.length === 0) {
-      logger.warn('[Upload] ⚠️ Import warning: CORE did not identify any concrete projects');
-      logger.info('[Upload] Possible reasons:');
-      logger.info('  1. No concrete items in the file (material_type != "concrete")');
-      logger.info('  2. CORE parser is unavailable');
-      logger.info('  3. File format not recognized by CORE');
+    // FALLBACK: Try local parser if CORE didn't identify projects
+    if (projectsForImport.length === 0 && parseResult.raw_rows && parseResult.raw_rows.length > 0) {
+      logger.info('[Upload] 🔧 FALLBACK: Trying local parser to extract positions...');
 
-      // Allow user to see the warning but don't create projects from unreliable sources
+      try {
+        const localPositions = extractConcretePositions(parseResult.raw_rows, 'SO_AUTO');
+
+        if (localPositions.length > 0) {
+          logger.info(`[Upload] ✅ Local parser found ${localPositions.length} concrete positions`);
+
+          // Create a generic project from local data
+          projectsForImport.push({
+            project_id: 'SO_' + Date.now(),
+            object_name: fileMetadata.stavba || fileMetadata.objekt || ('Bridge_' + Date.now()),
+            object_type: 'bridge',
+            concrete_m3: localPositions.reduce((sum, p) => sum + (p.concrete_m3 || 0), 0),
+            span_length_m: 0,
+            deck_width_m: 0,
+            pd_weeks: 0
+          });
+
+          parsedPositionsFromCORE = localPositions;
+          sourceOfProjects = 'local_extractor';
+          logger.info('[Upload] 🎯 Created project from local parser data');
+        }
+      } catch (localError) {
+        logger.warn(`[Upload] ⚠️ Local parser also failed: ${localError.message}`);
+      }
+    }
+
+    // FINAL CHECK: If still no projects, return error
+    if (projectsForImport.length === 0) {
+      logger.warn('[Upload] ⚠️ Import warning: Neither CORE nor local parser identified any concrete projects');
+      logger.info('[Upload] Possible reasons:');
+      logger.info('  1. No concrete items in the file');
+      logger.info('  2. CORE parser is unavailable');
+      logger.info('  3. File format not recognized');
+
       res.set('Content-Type', 'application/json; charset=utf-8');
       res.json({
         success: false,
         error: 'No concrete projects identified',
         import_id: import_id,
-        message: 'CORE parser did not identify any concrete items in this file. Please verify:' +
-                 '\n- File contains concrete items with concrete specifications (C20/25, C30/37, etc.)' +
-                 '\n- CORE parser service is available' +
-                 '\n- File format is supported',
+        message: 'Neither CORE nor local parser could identify concrete items. Please verify file content.',
         createdProjects: [],
         positionsCreated: 0
       });
@@ -239,14 +267,15 @@ router.post('/', upload.single('file'), async (req, res) => {
         let positionsToInsert = [];
         let positionsSource = 'unknown';
 
-        // PRIORITY 1: If CORE was used for project identification, use CORE positions
+        // PRIORITY 1: Use parsed positions from sourceOfProjects
         if (sourceOfProjects === 'core_intelligent_classification' && parsedPositionsFromCORE.length > 0) {
           logger.info(`[Upload] Using CORE positions (${parsedPositionsFromCORE.length} total)`);
 
-          // Filter positions matching this project
+          // Filter positions matching this project (only for CORE with multiple projects)
           const projectPositions = parsedPositionsFromCORE.filter(pos => {
             // Match by project_id from CORE metadata or by description similarity
             return pos.bridge_id === bridgeId ||
+                   pos.project_id === project.project_id ||
                    (project.object_name && pos.description && pos.description.includes(project.object_name));
           });
 
@@ -258,6 +287,14 @@ router.post('/', upload.single('file'), async (req, res) => {
             positionsSource = 'core_intelligent';
             logger.info(`[Upload] Using ${positionsToInsert.length} positions from CORE for ${objectId}`);
           }
+        }
+
+        // PRIORITY 1b: If local parser was used as fallback, use positions directly
+        if (sourceOfProjects === 'local_extractor' && parsedPositionsFromCORE.length > 0) {
+          logger.info(`[Upload] Using local extractor positions (${parsedPositionsFromCORE.length} total)`);
+          positionsToInsert = parsedPositionsFromCORE;
+          positionsSource = 'local_extractor';
+          logger.info(`[Upload] Using ${positionsToInsert.length} positions from local extractor for ${objectId}`);
         }
 
         // PRIORITY 2: Try local extractor if CORE positions not available
