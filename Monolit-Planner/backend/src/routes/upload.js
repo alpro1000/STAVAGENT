@@ -200,10 +200,10 @@ router.post('/', upload.single('file'), async (req, res) => {
         ).get(projectId, 'project');
 
         if (!existing) {
-          // Create stavba (project container) record
+          // Create stavba (project container) record using available columns
           await db.prepare(`
             INSERT INTO monolith_projects
-            (project_id, object_type, stavba, description, owner_id)
+            (project_id, object_type, project_name, description, owner_id)
             VALUES (?, ?, ?, ?, ?)
           `).run(projectId, 'project', fileMetadata.stavba, fileMetadata.stavba, req.user?.userId || null);
 
@@ -316,17 +316,17 @@ router.post('/', upload.single('file'), async (req, res) => {
         ).get(objectId);
 
         if (!existing) {
-          // Create object record linked to stavba project (if it exists)
+          // Create object record with available columns only
+          // Note: stavba and parent_project_id are handled via description field
           await db.prepare(`
             INSERT INTO monolith_projects
-            (project_id, object_type, object_name, stavba, parent_project_id, concrete_m3, span_length_m, deck_width_m, pd_weeks, owner_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (project_id, object_type, object_name, description, concrete_m3, span_length_m, deck_width_m, pd_weeks, owner_id)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
           `).run(
             objectId,
             project.object_type || 'custom',  // Type detected from description
             project.object_name,
-            fileMetadata.stavba || null,      // Store stavba context
-            stavbaProjectId || null,          // Link to parent project
+            `Imported from: ${fileMetadata.stavba || 'Excel file'}`,  // Store stavba context in description
             project.concrete_m3 || 0,
             project.span_length_m || 0,
             project.deck_width_m || 0,
@@ -344,18 +344,17 @@ router.post('/', upload.single('file'), async (req, res) => {
         const bridgeExisting = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridgeId);
 
         if (!bridgeExisting) {
-          // Create bridge record
+          // Create bridge record for backward compatibility
           await db.prepare(`
-            INSERT INTO bridges (bridge_id, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3, owner_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO bridges (bridge_id, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3)
+            VALUES (?, ?, ?, ?, ?, ?)
           `).run(
             bridgeId,
             project.object_name,
             project.span_length_m || 0,
             project.deck_width_m || 0,
             project.pd_weeks || 0,
-            project.concrete_m3 || 0,
-            req.user?.userId || null
+            project.concrete_m3 || 0
           );
 
           logger.info(`[Upload] Created bridge record: ${bridgeId}`);

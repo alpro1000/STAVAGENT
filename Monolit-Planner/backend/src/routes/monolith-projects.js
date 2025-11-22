@@ -310,7 +310,8 @@ router.post('/', async (req, res) => {
       logger.info(`[CREATE PROJECT] Transaction committed`);
 
       // Fetch created project from PostgreSQL (same connection type we used to create it)
-      const fetchResult = await client.query('SELECT * FROM monolith_projects WHERE project_id = ?', [project_id]);
+      // Use $1 syntax for PostgreSQL (not ? which is for SQLite)
+      const fetchResult = await client.query('SELECT * FROM monolith_projects WHERE project_id = $1', [project_id]);
       const project = fetchResult.rows && fetchResult.rows.length > 0 ? fetchResult.rows[0] : null;
 
       if (!project) {
