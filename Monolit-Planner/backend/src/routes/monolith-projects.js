@@ -250,9 +250,12 @@ router.post('/', async (req, res) => {
       // Create default positions for each template part (to show in manual mode)
       // This makes parts visible in the frontend even before adding specific items
       // Uses centralized position defaults from positionDefaults utility
+      // NOTE: Position creation is optional for monolith-projects due to FK constraint to bridges table
+      // TODO: Refactor to support positions for all object types (not just bridges)
       logger.info(`[CREATE PROJECT] Creating ${templates.length} default positions for manual mode...`);
-      if (templates.length > 0) {
+      if (templates.length > 0 && object_type === 'bridge') {
         try {
+          // Only create positions for bridge type (positions table has FK to bridges)
           // Use utility to create positions with consistent defaults
           const defaultPositions = createDefaultPositions(templates, project_id);
 
@@ -294,14 +297,42 @@ router.post('/', async (req, res) => {
             logger.info(`[CREATE PROJECT] ✓ Created ${templates.length} default positions with unified defaults`);
           }
         } catch (posError) {
-          // Warn but don't fail if positions table has different schema
-          logger.warn(`[CREATE PROJECT] ⚠️  Could not create default positions (may not be critical):`, posError.message);
+          // Non-fatal: position creation failed but project/parts were created
+          logger.warn(`[CREATE PROJECT] ⚠️  Could not create default positions:`, posError.message);
         }
+      } else if (templates.length > 0) {
+        // For non-bridge types, skip position creation (schema limitation)
+        logger.info(`[CREATE PROJECT] ℹ️  Skipped position creation for object_type=${object_type} (currently only supported for bridges)`);
       }
 
       // Commit transaction
       await client.query('COMMIT');
       logger.info(`[CREATE PROJECT] Transaction committed`);
+
+      // Fetch created project from PostgreSQL (same connection type we used to create it)
+      const fetchResult = await client.query('SELECT * FROM monolith_projects WHERE project_id = ?', [project_id]);
+      const project = fetchResult.rows && fetchResult.rows.length > 0 ? fetchResult.rows[0] : null;
+
+      if (!project) {
+        logger.error(`[CREATE PROJECT] ⚠️  Project was created but could not be fetched back`);
+        // Return basic response even if fetch failed
+        return res.status(201).json({
+          project_id,
+          object_type,
+          project_name: project_name || '',
+          object_name: object_name || '',
+          bridge_id: project_id,  // Backward compatibility alias
+          parts_count: templates.length
+        });
+      }
+
+      logger.info(`[CREATE PROJECT] ✅ SUCCESS - Project ${project_id} created with ${templates.length} parts`);
+
+      return res.status(201).json({
+        ...project,
+        bridge_id: project.project_id,  // Backward compatibility alias
+        parts_count: templates.length
+      });
     } catch (txError) {
       if (client) {
         await client.query('ROLLBACK');
@@ -314,19 +345,6 @@ router.post('/', async (req, res) => {
       }
     }
     // ===== TRANSACTION END =====
-
-    // Fetch created project
-    const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
-
-    logger.info(`[CREATE PROJECT] ✅ SUCCESS - Project ${project_id} created with ${templates.length} parts`);
-
-    res.status(201).json({
-      ...project,
-      bridge_id: project.project_id,  // Backward compatibility alias
-      parts_count: templates.length
-    });
-
-    logger.info(`Created monolith project: ${project_id} (${object_type})`);
   } catch (error) {
     logger.error(`[CREATE PROJECT] ❌ FAILED - Error creating project:`, error);
     logger.error(`[CREATE PROJECT] Error stack:`, error.stack);
