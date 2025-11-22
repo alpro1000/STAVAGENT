@@ -308,32 +308,6 @@ router.post('/', async (req, res) => {
       // Commit transaction
       await client.query('COMMIT');
       logger.info(`[CREATE PROJECT] Transaction committed`);
-
-      // Fetch created project from PostgreSQL (same connection type we used to create it)
-      // Use $1 syntax for PostgreSQL (not ? which is for SQLite)
-      const fetchResult = await client.query('SELECT * FROM monolith_projects WHERE project_id = $1', [project_id]);
-      const project = fetchResult.rows && fetchResult.rows.length > 0 ? fetchResult.rows[0] : null;
-
-      if (!project) {
-        logger.error(`[CREATE PROJECT] ⚠️  Project was created but could not be fetched back`);
-        // Return basic response even if fetch failed
-        return res.status(201).json({
-          project_id,
-          object_type,
-          project_name: project_name || '',
-          object_name: object_name || '',
-          bridge_id: project_id,  // Backward compatibility alias
-          parts_count: templates.length
-        });
-      }
-
-      logger.info(`[CREATE PROJECT] ✅ SUCCESS - Project ${project_id} created with ${templates.length} parts`);
-
-      return res.status(201).json({
-        ...project,
-        bridge_id: project.project_id,  // Backward compatibility alias
-        parts_count: templates.length
-      });
     } catch (txError) {
       if (client) {
         await client.query('ROLLBACK');
@@ -346,6 +320,31 @@ router.post('/', async (req, res) => {
       }
     }
     // ===== TRANSACTION END =====
+
+    // Fetch created project AFTER transaction (use SQLite for read-only)
+    // Project was just created in PostgreSQL, now fetching via SQLite for compatibility
+    const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
+
+    if (!project) {
+      logger.error(`[CREATE PROJECT] ⚠️  Project was created but could not be fetched back`);
+      // Return basic response even if fetch failed
+      return res.status(201).json({
+        project_id,
+        object_type,
+        project_name: project_name || '',
+        object_name: object_name || '',
+        bridge_id: project_id,  // Backward compatibility alias
+        parts_count: templates.length
+      });
+    }
+
+    logger.info(`[CREATE PROJECT] ✅ SUCCESS - Project ${project_id} created with ${templates.length} parts`);
+
+    return res.status(201).json({
+      ...project,
+      bridge_id: project.project_id,  // Backward compatibility alias
+      parts_count: templates.length
+    });
   } catch (error) {
     logger.error(`[CREATE PROJECT] ❌ FAILED - Error creating project:`, error);
     logger.error(`[CREATE PROJECT] Error stack:`, error.stack);
