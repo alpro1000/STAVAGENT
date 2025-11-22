@@ -9,6 +9,7 @@ import { logger } from '../utils/logger.js';
 import { createSnapshot } from '../services/snapshot.js';
 import { requireAuth } from '../middleware/auth.js';
 import { BRIDGE_TEMPLATE_POSITIONS } from '../constants/bridgeTemplates.js';
+import { createDefaultPositions } from '../utils/positionDefaults.js';
 
 const router = express.Router();
 
@@ -115,34 +116,35 @@ router.post('/', async (req, res) => {
       ownerId
     );
 
-    // Create template positions with default values (11 parts from audit)
+    // Create template positions with unified default values from utility
+    // Uses positionDefaults for consistent crew_size, wage, shift_hours across all endpoints
     const templatePositions = BRIDGE_TEMPLATE_POSITIONS;
+    const defaultPositions = createDefaultPositions(templatePositions, bridge_id);
 
     const insertPosition = db.prepare(`
       INSERT INTO positions (
         id, bridge_id, part_name, item_name, subtype, unit,
-        qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        qty, qty_m3_helper, crew_size, wage_czk_ph, shift_hours, days, otskp_code
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
     // Use transaction for atomic insert of all template positions
     const insertMany = db.transaction(() => {
-      templatePositions.forEach((template, index) => {
-        // Use UUID-like format with timestamp and index for uniqueness
-        const id = `${bridge_id}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}_${index}`;
+      defaultPositions.forEach((position) => {
         insertPosition.run(
-          id,
-          bridge_id,
-          template.part_name,
-          template.item_name,
-          template.subtype,
-          template.unit,
-          0, // qty - to be filled by user
-          4, // crew_size - default
-          398, // wage_czk_ph - default
-          10, // shift_hours - default
-          0,  // days - to be filled by user
-          null // otskp_code - to be filled by user
+          position.id,
+          position.bridge_id,
+          position.part_name,
+          position.item_name,
+          position.subtype,
+          position.unit,
+          position.qty,
+          position.qty_m3_helper,
+          position.crew_size,
+          position.wage_czk_ph,
+          position.shift_hours,
+          position.days,
+          position.otskp_code
         );
       });
     });

@@ -1,6 +1,77 @@
 /**
  * Upload routes
- * POST /api/upload - Upload XLSX file
+ * POST /api/upload - Upload XLSX file with intelligent Excel import pipeline
+ *
+ * ============================================================================
+ * EXCEL IMPORT PIPELINE ARCHITECTURE
+ * ============================================================================
+ *
+ * Goal: Import XLSX files with intelligent material classification and fallback
+ *       strategy, with CORE API as primary parser.
+ *
+ * PRIORITY ORDER (what gets used for position creation):
+ *
+ * 1. CORE PARSER (PRIMARY - AI-powered, intelligent material_type classification)
+ *    - Sends preprocessed Excel rows to concrete-agent/CORE
+ *    - CORE performs:
+ *      * Czech text normalization
+ *      * Intelligent material_type detection (e.g., "C30/37" → concrete grade)
+ *      * Position extraction and classification
+ *      * Project identification via extractProjectsFromCOREResponse()
+ *    - Use case: Complex Excel files, mixed material types, Czech text
+ *    - Advantage: Handles nuances that local parser can't (grades, standards)
+ *    - Status code: sourceOfProjects = 'core_intelligent_classification'
+ *
+ * 2. LOCAL FALLBACK (FALLBACK - regex-based, simple heuristics)
+ *    - Triggers when:
+ *      * CORE fails (API error, timeout)
+ *      * CORE returns empty response
+ *      * CORE identifies positions but NO concrete (material_type != "concrete")
+ *    - Uses:
+ *      * concreteExtractor.extractConcretePositions() - regex C\d{2}/\d{2} pattern
+ *      * Simple CSV/Excel parsing without AI
+ *    - Status code: sourceOfProjects = 'local_extractor'
+ *    - Limitation: Only detects concrete grades via regex, misses subtle variants
+ *
+ * 3. TEMPLATE POSITIONS (FINAL FALLBACK - predefined structure)
+ *    - Triggers when:
+ *      * Both CORE and local parser find no positions
+ *      * User needs to manually edit a skeleton structure
+ *    - Uses:
+ *      * BRIDGE_TEMPLATE_POSITIONS constant (11 predefined parts)
+ *      * Users then manually add quantities and details
+ *    - Status code: positionsSource = 'templates'
+ *
+ * ============================================================================
+ * DECISION LOGIC
+ * ============================================================================
+ *
+ * File Upload
+ *     ↓
+ * Preprocess & validate
+ *     ↓
+ * Try CORE API (with error handling)
+ *     ↓
+ *     ├─ SUCCESS: CORE returned positions
+ *     │   ├─ CORE found concrete projects? → Use CORE positions
+ *     │   └─ No concrete found? → Try local fallback
+ *     │
+ *     ├─ FAILURE: CORE error/timeout → Try local fallback
+ *     │
+ *     └─ Local fallback found positions? → Use local
+ *        └─ No? → Use templates + require manual editing
+ *
+ * ============================================================================
+ * LOGGING: Look for these prefixes to debug import flow
+ * ============================================================================
+ * [Upload] ✨ - CORE parser starting
+ * [Upload] ✅ - CORE success
+ * [Upload] ⚠️ - CORE issue (not total failure)
+ * [Upload] ❌ - CORE total failure → fallback
+ * [Upload] 🔄 - Attempting fallback
+ * [Upload] 🔧 - Fallback in progress
+ * [Upload] 🎯 - Fallback success
+ * [Upload] 🚀 - Batch insert success
  */
 
 import express from 'express';
@@ -15,6 +86,7 @@ import { importCache, cacheStatsMiddleware } from '../services/importCache.js';
 import DataPreprocessor from '../services/dataPreprocessor.js';
 import { logger } from '../utils/logger.js';
 import { BRIDGE_TEMPLATE_POSITIONS } from '../constants/bridgeTemplates.js';
+import { POSITION_DEFAULTS } from '../utils/positionDefaults.js';
 import db from '../db/init.js';
 import { requireAuth } from '../middleware/auth.js';
 
@@ -352,6 +424,7 @@ router.post('/', upload.single('file'), async (req, res) => {
         }
 
         // Insert all positions using batch insert (MUCH FASTER)
+        // Uses POSITION_DEFAULTS utility to ensure consistency across all creation methods
         if (positionsToInsert.length > 0) {
           const stmt = db.prepare(`
             INSERT INTO positions (
@@ -369,14 +442,14 @@ router.post('/', upload.single('file'), async (req, res) => {
                 bridgeId,
                 pos.part_name,
                 pos.item_name,
-                pos.subtype,
-                pos.unit,
-                pos.qty || 0,
-                pos.crew_size || 4,
-                pos.wage_czk_ph || 398,
-                pos.shift_hours || 10,
-                pos.days || 0,
-                pos.otskp_code || null
+                pos.subtype || POSITION_DEFAULTS.subtype,
+                pos.unit || POSITION_DEFAULTS.unit,
+                pos.qty !== undefined ? pos.qty : POSITION_DEFAULTS.qty,
+                pos.crew_size !== undefined ? pos.crew_size : POSITION_DEFAULTS.crew_size,
+                pos.wage_czk_ph !== undefined ? pos.wage_czk_ph : POSITION_DEFAULTS.wage_czk_ph,
+                pos.shift_hours !== undefined ? pos.shift_hours : POSITION_DEFAULTS.shift_hours,
+                pos.days !== undefined ? pos.days : POSITION_DEFAULTS.days,
+                pos.otskp_code || POSITION_DEFAULTS.otskp_code
               );
             }
           });

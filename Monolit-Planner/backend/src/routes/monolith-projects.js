@@ -15,6 +15,7 @@ import db from '../db/init.js';
 import { getPool } from '../db/postgres.js';
 import { logger } from '../utils/logger.js';
 import { requireAuth } from '../middleware/auth.js';
+import { createDefaultPositions } from '../utils/positionDefaults.js';
 
 const router = express.Router();
 
@@ -134,30 +135,52 @@ router.post('/', async (req, res) => {
       return res.status(409).json({ error: 'Project already exists' });
     }
 
-    // Check if templates exist for this object type (CRITICAL: needed for default parts)
-    logger.info(`[CREATE PROJECT] Checking for templates with object_type: ${object_type}`);
+    // SAFETY CHECK: Verify templates exist for this object type (CRITICAL: needed for default parts)
+    logger.info(`[CREATE PROJECT] 🔍 Checking for templates with object_type: ${object_type}`);
     const templates = await db.prepare(`
       SELECT * FROM part_templates
       WHERE object_type = ? AND is_default = true
       ORDER BY display_order
     `).all(object_type);
 
-    logger.info(`[CREATE PROJECT] Found ${templates?.length || 0} templates for ${object_type}`);
+    const templateCount = templates?.length || 0;
+    logger.info(`[CREATE PROJECT] Found ${templateCount} templates for ${object_type}`);
+
     if (templates && templates.length > 0) {
-      logger.info(`[CREATE PROJECT] Templates: ${templates.map(t => t.part_name).join(', ')}`);
+      logger.debug(`[CREATE PROJECT] Template names: ${templates.map(t => t.part_name).join(', ')}`);
     }
 
+    // SAFETY: Reject project creation if no templates found
     if (!templates || templates.length === 0) {
-      logger.error(`[CREATE PROJECT] ❌ No templates found for object_type: ${object_type}`);
+      logger.error(`[CREATE PROJECT] ❌ SAFETY CHECK FAILED - No templates found for object_type: ${object_type}`);
+      logger.error(`[CREATE PROJECT] ℹ️  Template loading may have failed during startup. Check autoLoadPartTemplatesIfNeeded() logs.`);
+
+      // Try to provide helpful debugging info
+      const allTemplateCount = await db.prepare('SELECT COUNT(*) as count FROM part_templates').get();
+      logger.error(`[CREATE PROJECT] Total templates in database: ${allTemplateCount.count}`);
+
+      const typesCounts = await db.prepare(`
+        SELECT object_type, COUNT(*) as count
+        FROM part_templates
+        GROUP BY object_type
+      `).all();
+      logger.error(`[CREATE PROJECT] Available object types with counts:`, JSON.stringify(typesCounts));
+
       return res.status(503).json({
-        error: `No part templates found for object type '${object_type}'. Please contact administrator to load templates.`,
+        error: `Template loading failed for '${object_type}'. Please contact administrator.`,
         details: {
           object_type,
-          available_templates: 0,
-          required_for_creation: true
+          available_templates: templateCount,
+          total_templates_in_db: allTemplateCount.count,
+          available_types: typesCounts.map(t => ({ type: t.object_type, count: t.count })),
+          required_for_creation: true,
+          suggestion: 'Restart application to trigger template loading, or check server logs for autoLoadPartTemplatesIfNeeded() errors'
         }
       });
     }
+
+    // SAFETY: Log that we passed the template check
+    logger.info(`[CREATE PROJECT] ✅ SAFETY CHECK PASSED - ${templateCount} templates ready for ${object_type}`);
 
     // ===== TRANSACTION START =====
     // Use single PostgreSQL client for atomicity
@@ -222,6 +245,57 @@ router.post('/', async (req, res) => {
 
         await client.query(batchInsertSql, values);
         logger.info(`[CREATE PROJECT] 🚀 Batch inserted ${templates.length} parts successfully`);
+      }
+
+      // Create default positions for each template part (to show in manual mode)
+      // This makes parts visible in the frontend even before adding specific items
+      // Uses centralized position defaults from positionDefaults utility
+      logger.info(`[CREATE PROJECT] Creating ${templates.length} default positions for manual mode...`);
+      if (templates.length > 0) {
+        try {
+          // Use utility to create positions with consistent defaults
+          const defaultPositions = createDefaultPositions(templates, project_id);
+
+          if (!defaultPositions || defaultPositions.length === 0) {
+            logger.warn(`[CREATE PROJECT] ⚠️  createDefaultPositions returned empty array`);
+          } else {
+            // Build batch INSERT statement
+            const positionPlaceholders = defaultPositions.map((_, idx) => {
+              const offset = idx * 11;
+              return `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10}, $${offset + 11})`;
+            }).join(',');
+
+            const positionValues = [];
+            for (const pos of defaultPositions) {
+              positionValues.push(
+                pos.id,
+                pos.bridge_id,
+                pos.part_name,
+                pos.item_name,
+                pos.subtype,
+                pos.unit,
+                pos.qty,
+                pos.qty_m3_helper,
+                pos.crew_size,
+                pos.wage_czk_ph,
+                pos.shift_hours,
+                pos.days
+              );
+            }
+
+            const insertPositionsSql = `
+              INSERT INTO positions (id, bridge_id, part_name, item_name, subtype, unit, qty, qty_m3_helper, crew_size, wage_czk_ph, shift_hours, days)
+              VALUES ${positionPlaceholders}
+              ON CONFLICT (id) DO NOTHING
+            `;
+
+            await client.query(insertPositionsSql, positionValues);
+            logger.info(`[CREATE PROJECT] ✓ Created ${templates.length} default positions with unified defaults`);
+          }
+        } catch (posError) {
+          // Warn but don't fail if positions table has different schema
+          logger.warn(`[CREATE PROJECT] ⚠️  Could not create default positions (may not be critical):`, posError.message);
+        }
       }
 
       // Commit transaction
