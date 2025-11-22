@@ -441,7 +441,7 @@ exportBtn.addEventListener('click', async () => {
     exportBtn.disabled = false;
     exportBtn.textContent = '📥 Stáhnout Excel';
   }
-}
+});
 
 copyBtn.addEventListener('click', () => {
   if (!currentResults) return;
