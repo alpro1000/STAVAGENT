@@ -1,25 +1,66 @@
-# 🏗️ Monolit Planner
+# Monolit-Planner: Monolith Calculator Kiosk
 
-**Full-stack web application for planning and calculating concrete bridge structures in Czech Republic**
+**Status**: ✅ Production-Ready (Phase 4 Complete)
 
-![Version](https://img.shields.io/badge/version-2.0.0-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
-![Status](https://img.shields.io/badge/status-Phase%204%20Complete-brightgreen)
+**Role in StavAgent**: Specialized calculator kiosk for monolithic concrete structure cost estimation. Converts diverse cost units into a unified metric (CZK/m³ of concrete).
+
+**Part of**: [STAVAGENT Monorepo](../../docs/ARCHITECTURE.md)
 
 ---
 
-## 📋 Overview
+## What is Monolit-Planner?
 
-Monolit Planner is a comprehensive planning tool designed for bridge construction projects in the Czech Republic. It enables:
+Monolit-Planner is a **Node.js + React full-stack application** serving as a specialized kiosk within the StavAgent ecosystem. It solves a unique problem: converting construction cost estimates with diverse units (m², kg, ks) into a unified metric for fair comparison.
 
-- **Import XLSX** cost estimates for bridges (SO201, SO202...)
-- **Convert ALL costs to a unified metric: CZK/m³ of concrete** (even if source unit is m², kg, ks...)
-- **Calculate KROS values** with proper rounding (step 50 CZK)
-- **Estimate project duration** in months and weeks based on labor costs
-- **Toggle work mode**: 30 days/month (continuous) or 22 days/month (working days)
-- **Export to XLSX/CSV** for KROS4 integration
-- **Deploy frontend and backend separately** on Render
+**Core Capabilities**:
+- 📊 **Import XLSX cost estimates** for monolithic concrete structures
+- 🔄 **Convert all units to CZK/m³** of concrete element (the universal metric)
+- 💰 **Calculate KROS values** with proper rounding (step 50 CZK)
+- ⏱️ **Estimate project duration** in months and weeks
+- 🔄 **Toggle work mode**: 30 days/month (continuous) or 22 days/month (working days only)
+- 📤 **Export to XLSX/CSV** for KROS4 integration
+- 🔍 **17,904 OTSKP codes**: Czech construction catalog with accent-insensitive search
+- 📱 **Responsive design**: Desktop, tablet, and mobile
+
+**Technologies**:
+- **Backend**: Node.js, Express.js, PostgreSQL (or SQLite)
+- **Frontend**: React 18, TypeScript, Vite, TailwindCSS
+- **State Management**: React Context API, TanStack React Query
+
+---
+
+## Quick Start (Local Development)
+
+### Prerequisites
+
+- Node.js >= 18.0.0
+- npm >= 9.0.0
+- PostgreSQL (production) or SQLite (development)
+
+### Installation
+
+```bash
+# 1. Clone the monorepo
+git clone https://github.com/alpro1000/STAVAGENT.git
+cd STAVAGENT/Monolit-Planner
+
+# 2. Install dependencies
+npm install
+
+# 3. Configure environment variables
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+# Edit the .env files with your settings
+
+# 4. Run in development mode
+npm run dev
+```
+
+### Access
+
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3002
+- **Database** (SQLite by default): `./monolit.db`
 
 ---
 
@@ -641,23 +682,58 @@ MIT License - see [LICENSE](./LICENSE) file
 
 ---
 
-## 📧 Contact
+---
 
-- **Repository**: https://github.com/alpro1000/Monolit-Planner
-- **Issues**: https://github.com/alpro1000/Monolit-Planner/issues
+## Integration with StavAgent
+
+### Portal Integration
+Monolit-Planner receives projects from `stavagent-portal` for calculation:
+- Portal sends project data with positions
+- Monolit calculates and stores results
+- Portal retrieves results for display
+
+### Core Integration (Optional)
+Can use `concrete-agent` for:
+- Advanced Excel parsing (fallback from local parser)
+- Position enrichment with KROS codes
+- Drawing analysis for initial estimations
+
+See [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) for detailed integration specifications.
 
 ---
 
-## 🗺️ Roadmap
+## Documentation Map
 
-- [ ] AI-powered days estimation
-- [ ] Concrete pump cost calculator
-- [ ] Speed analysis (m²/day tracking)
-- [ ] Multi-language support (EN, DE)
-- [ ] PDF report generation
-- [ ] Integration with accounting systems
-- [ ] Mobile app (React Native)
+**System-Level** (at STAVAGENT root):
+- [`/docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md) - System overview (3 services)
+- [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) - Service API contracts
+- [`/docs/LOCAL_SETUP.md`](../../docs/LOCAL_SETUP.md) - Local development setup
+- [`/docs/DEPLOYMENT.md`](../../docs/DEPLOYMENT.md) - Render deployment
+
+**Monolit-Planner Specific** (this service):
+- `docs/CALCULATOR.md` - Calculator logic and formulas (TODO)
+- `docs/DATA_FLOW.md` - Data flow from input to output (TODO)
+- `docs/INTEGRATION.md` - Kiosk integration pattern (TODO)
+- `CHANGELOG.md` - Detailed changelog
+- `claude.md` - Development session notes
 
 ---
 
-**Made with 🏗️ for bridge builders in Czech Republic**
+## What's Next?
+
+1. **Read system overview**: [`/docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md)
+2. **Understand the contract**: [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md)
+3. **Run locally**: Follow "Quick Start" above
+4. **Explore code**: Start in `backend/src/server.js` or `frontend/src/main.tsx`
+5. **View calculations**: Open http://localhost:5173 in your browser
+
+---
+
+## Support
+
+- **System Issues**: Report to [GitHub Issues](https://github.com/alpro1000/STAVAGENT/issues)
+- **Documentation**: See [`/docs`](../../docs) for comprehensive guides
+
+---
+
+**Part of the StavAgent construction management system**
