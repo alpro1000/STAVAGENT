@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import db, { USE_POSTGRES } from './index.js';
 import { normalizeForSearch } from '../utils/text.js';
+import { getAllTemplates, getTemplateSummary } from '../constants/objectTemplates.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -1148,72 +1149,50 @@ async function autoLoadPartTemplatesIfNeeded() {
     const count = await db.prepare('SELECT COUNT(*) as count FROM part_templates').get();
     console.log(`[Part Templates] Current count in database: ${count.count}`);
 
-    // If old templates exist (19 parts from old migration), delete and reload new ones (34 parts)
-    if (count.count > 0 && count.count < 34) {
-      console.log(`[Part Templates] Found old templates (${count.count}). Deleting and reloading with new templates (34)...`);
-      await db.prepare('DELETE FROM part_templates').run();
-      console.log('[Part Templates] Old templates deleted.');
-    } else if (count.count >= 34) {
+    // Get expected count from unified object templates module
+    const templateSummary = getTemplateSummary();
+    const expectedTotal = Object.values(templateSummary).reduce((a, b) => a + b, 0);
+
+    // If templates exist and count matches expected, skip loading
+    if (count.count >= expectedTotal) {
       console.log(`[Part Templates] ✓ Already loaded (${count.count} templates exist)`);
+      console.log('[Part Templates] Summary by type:', templateSummary);
       return;
     }
 
-    console.log('[Part Templates] Loading predefined templates (34 total)...');
+    // If old templates exist (fewer than expected), delete and reload
+    if (count.count > 0 && count.count < expectedTotal) {
+      console.log(`[Part Templates] Found ${count.count} templates. Reloading with unified definitions (${expectedTotal} total)...`);
+      await db.prepare('DELETE FROM part_templates').run();
+      console.log('[Part Templates] Old templates deleted.');
+    }
 
-    const templates = [
-      // BRIDGE templates
-      { object_type: 'bridge', part_name: 'ZÁKLADY', display_order: 1, is_default: 1 },
-      { object_type: 'bridge', part_name: 'OPĚRY', display_order: 2, is_default: 1 },
-      { object_type: 'bridge', part_name: 'SLOUPY', display_order: 3, is_default: 1 },
-      { object_type: 'bridge', part_name: 'PILÍŘE', display_order: 4, is_default: 1 },
-      { object_type: 'bridge', part_name: 'LOŽISKA', display_order: 5, is_default: 1 },
-      { object_type: 'bridge', part_name: 'NOSNÁ KONSTRUKCE', display_order: 6, is_default: 1 },
-      { object_type: 'bridge', part_name: 'MOSTOVKA', display_order: 7, is_default: 1 },
-      { object_type: 'bridge', part_name: 'IZOLACE', display_order: 8, is_default: 1 },
-      { object_type: 'bridge', part_name: 'ŘÍMSY', display_order: 9, is_default: 1 },
-      { object_type: 'bridge', part_name: 'ZÁVĚRNÉ ZÍDKY', display_order: 10, is_default: 1 },
-      { object_type: 'bridge', part_name: 'PŘECHODY', display_order: 11, is_default: 1 },
-      { object_type: 'bridge', part_name: 'SVODIDLA', display_order: 12, is_default: 1 },
+    console.log(`[Part Templates] Loading predefined templates from objectTemplates module (${expectedTotal} total)...`);
 
-      // BUILDING templates
-      { object_type: 'building', part_name: 'ZÁKLADY', display_order: 1, is_default: 1 },
-      { object_type: 'building', part_name: 'SUTERÉN', display_order: 2, is_default: 1 },
-      { object_type: 'building', part_name: 'NOSNÉ ZÍDKY', display_order: 3, is_default: 1 },
-      { object_type: 'building', part_name: 'SLOUPY', display_order: 4, is_default: 1 },
-      { object_type: 'building', part_name: 'STROPY', display_order: 5, is_default: 1 },
-      { object_type: 'building', part_name: 'SCHODIŠTĚ', display_order: 6, is_default: 1 },
-      { object_type: 'building', part_name: 'ATIKA', display_order: 7, is_default: 1 },
-      { object_type: 'building', part_name: 'BALKONY', display_order: 8, is_default: 1 },
+    // Load templates from unified objectTemplates module
+    const templates = getAllTemplates();
 
-      // PARKING templates
-      { object_type: 'parking', part_name: 'ZÁKLADY', display_order: 1, is_default: 1 },
-      { object_type: 'parking', part_name: 'PODKLADNÍ BETON', display_order: 2, is_default: 1 },
-      { object_type: 'parking', part_name: 'RAMPY', display_order: 3, is_default: 1 },
-      { object_type: 'parking', part_name: 'STROPNÍ DESKY', display_order: 4, is_default: 1 },
-      { object_type: 'parking', part_name: 'SLOUPY', display_order: 5, is_default: 1 },
-      { object_type: 'parking', part_name: 'OBVODOVÉ ZÍDKY', display_order: 6, is_default: 1 },
-
-      // ROAD templates
-      { object_type: 'road', part_name: 'ZEMNÍ PRÁCE', display_order: 1, is_default: 1 },
-      { object_type: 'road', part_name: 'PODKLAD', display_order: 2, is_default: 1 },
-      { object_type: 'road', part_name: 'ZÁKLADNÍ VRSTVA', display_order: 3, is_default: 1 },
-      { object_type: 'road', part_name: 'LOŽNÁ VRSTVA', display_order: 4, is_default: 1 },
-      { object_type: 'road', part_name: 'KRYT', display_order: 5, is_default: 1 },
-      { object_type: 'road', part_name: 'KRAJNICE', display_order: 6, is_default: 1 },
-      { object_type: 'road', part_name: 'OBRUBY', display_order: 7, is_default: 1 },
-      { object_type: 'road', part_name: 'ODVODNĚNÍ', display_order: 8, is_default: 1 },
-    ];
+    if (!templates || templates.length === 0) {
+      console.warn('[Part Templates] ⚠️  No templates returned from objectTemplates module!');
+      return;
+    }
 
     // Insert all templates
     let inserted = 0;
     let errors = 0;
     for (const template of templates) {
-      const template_id = `${template.object_type}_${template.part_name}`;
       try {
         await db.prepare(`
-          INSERT INTO part_templates (template_id, object_type, part_name, display_order, is_default)
-          VALUES (?, ?, ?, ?, ?)
-        `).run(template_id, template.object_type, template.part_name, template.display_order, template.is_default);
+          INSERT INTO part_templates (template_id, object_type, part_name, display_order, is_default, description)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `).run(
+          template.template_id,
+          template.object_type,
+          template.part_name,
+          template.display_order,
+          template.is_default,
+          template.description || null
+        );
         inserted++;
         console.log(`[Part Templates]   ✓ Inserted: ${template.object_type}/${template.part_name}`);
       } catch (error) {
