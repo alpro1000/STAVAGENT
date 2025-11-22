@@ -11,6 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { fileURLToPath } from 'url';
 import { parseExcelFile } from '../../services/fileParser.js';
 import { matchUrsItems, generateRelatedItems } from '../../services/ursMatcher.js';
+import { matchUrsItemWithAI, explainMapping, isLLMEnabled } from '../../services/llmClient.js';
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
 
@@ -85,12 +86,35 @@ router.post('/file-upload', upload.single('file'), async (req, res) => {
     const items = [];
     for (let i = 0; i < rows.length; i++) {
       const row = rows[i];
-      const matches = await matchUrsItems(row.description, row.quantity, row.unit);
+      let matches = await matchUrsItems(row.description, row.quantity, row.unit);
+
+      // Apply LLM re-ranking if enabled
+      let usedLLM = false;
+      if (matches.length > 0 && isLLMEnabled()) {
+        logger.debug(`[JOBS] Applying LLM re-ranking for row ${i + 1}`);
+        matches = await matchUrsItemWithAI(row.description, row.quantity, row.unit, matches);
+        usedLLM = true;
+      }
 
       // Select best match
       const bestMatch = matches.length > 0 ? matches[0] : null;
 
       if (bestMatch) {
+        // Generate explanation for best match
+        let explanation = null;
+        try {
+          const explainResult = await explainMapping(row.description, {
+            urs_code: bestMatch.urs_code,
+            urs_name: bestMatch.urs_name,
+            unit: bestMatch.unit || row.unit,
+            description: bestMatch.description
+          });
+          explanation = explainResult?.reason || null;
+        } catch (err) {
+          logger.warn(`[JOBS] Failed to generate explanation for row ${i + 1}: ${err.message}`);
+          explanation = null;
+        }
+
         items.push({
           id: uuidv4(),
           job_id: jobId,
@@ -101,7 +125,8 @@ router.post('/file-upload', upload.single('file'), async (req, res) => {
           unit: bestMatch.unit || row.unit,
           quantity: row.quantity,
           confidence: bestMatch.confidence || 0,
-          source: 'local_match',
+          source: usedLLM ? 'llm_match' : 'local_match',
+          explanation: explanation,
           extra_generated: false
         });
       }
@@ -115,8 +140,8 @@ router.post('/file-upload', upload.single('file'), async (req, res) => {
     for (const item of items) {
       await db.run(
         `INSERT INTO job_items
-         (id, job_id, input_row_id, input_text, urs_code, urs_name, unit, quantity, confidence, source, extra_generated)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+         (id, job_id, input_row_id, input_text, urs_code, urs_name, unit, quantity, confidence, source, explanation, extra_generated)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
           item.id,
           item.job_id,
@@ -128,6 +153,7 @@ router.post('/file-upload', upload.single('file'), async (req, res) => {
           item.quantity,
           item.confidence,
           item.source,
+          item.explanation || null,
           item.extra_generated ? 1 : 0
         ]
       );
@@ -169,15 +195,15 @@ router.post('/file-upload', upload.single('file'), async (req, res) => {
 router.post('/text-match', async (req, res) => {
   const startTime = Date.now();
   try {
-    const { text, quantity = 0, unit = 'ks' } = req.body;
+    const { text, quantity = 0, unit = 'ks', use_llm = true } = req.body;
 
     if (!text || text.trim().length === 0) {
       return res.status(400).json({ error: 'Text is required' });
     }
 
-    logger.info(`[JOBS] Text match: "${text.substring(0, 50)}..."`);
+    logger.info(`[JOBS] Text match: "${text.substring(0, 50)}..." (LLM: ${use_llm && isLLMEnabled() ? 'enabled' : 'disabled'})`);
 
-    // Match URS items
+    // Match URS items (local similarity)
     const matches = await matchUrsItems(text, quantity, unit);
 
     if (matches.length === 0) {
@@ -189,16 +215,39 @@ router.post('/text-match', async (req, res) => {
       });
     }
 
-    // For text-match, return top 3 candidates
-    const candidates = matches.slice(0, 3).map(m => ({
+    // For text-match, use top 5 as candidates for LLM re-ranking
+    let candidates = matches.slice(0, 5);
+
+    // Apply LLM re-ranking if enabled
+    if (use_llm && isLLMEnabled()) {
+      logger.debug(`[JOBS] Applying LLM re-ranking for top ${candidates.length} candidates`);
+      candidates = await matchUrsItemWithAI(text, quantity, unit, candidates);
+    }
+
+    // Return top 3 after re-ranking
+    const topCandidates = candidates.slice(0, 3).map(m => ({
       urs_code: m.urs_code,
       urs_name: m.urs_name,
       unit: m.unit,
-      confidence: m.confidence
+      confidence: m.confidence,
+      match_type: m.match_type || 'local'
     }));
 
+    // Generate explanation for best match
+    let explanation = null;
+    if (topCandidates.length > 0) {
+      const bestMatch = candidates[0];
+      explanation = await explainMapping(text, {
+        urs_code: bestMatch.urs_code,
+        urs_name: bestMatch.urs_name,
+        unit: bestMatch.unit,
+        description: bestMatch.description
+      });
+      logger.debug(`[JOBS] Generated explanation: ${explanation.source}`);
+    }
+
     // Generate related items for best match
-    const bestMatch = matches[0];
+    const bestMatch = candidates[0];
     const mockItems = [{
       urs_code: bestMatch.urs_code,
       urs_name: bestMatch.urs_name,
@@ -208,8 +257,13 @@ router.post('/text-match', async (req, res) => {
 
     const processingTime = Date.now() - startTime;
     res.json({
-      candidates,
+      candidates: topCandidates,
+      best_match: topCandidates.length > 0 ? {
+        ...topCandidates[0],
+        explanation: explanation?.reason || null
+      } : null,
       related_items: relatedItems,
+      llm_enabled: isLLMEnabled(),
       processing_time_ms: processingTime
     });
 
@@ -261,6 +315,7 @@ router.get('/:jobId', async (req, res) => {
         quantity: item.quantity,
         confidence: item.confidence,
         source: item.source,
+        explanation: item.explanation || null,
         extra_generated: Boolean(item.extra_generated)
       }))
     });
