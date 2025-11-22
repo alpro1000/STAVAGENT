@@ -27,13 +27,22 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Log startup info
+logger.info(`[APP] Initializing URS Matcher Service`);
+logger.info(`[APP] Environment: ${process.env.NODE_ENV || 'development'}`);
+logger.info(`[APP] __dirname: ${__dirname}`);
+logger.info(`[APP] Static files path: ${path.join(__dirname, '../../frontend/public')}`);
+
 // ============================================================================
 // MIDDLEWARE
 // ============================================================================
 
 // CORS configuration
+const corsOrigins = (process.env.CORS_ORIGIN || '*').split(',');
+logger.info(`[APP] CORS origins: ${corsOrigins.join(', ')}`);
+
 app.use(cors({
-  origin: (process.env.CORS_ORIGIN || '*').split(','),
+  origin: corsOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
@@ -45,8 +54,19 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Static files (frontend)
 // __dirname = backend/src, so we need to go up 2 levels to reach URS_MATCHER_SERVICE, then into frontend/public
-app.use(express.static(path.join(__dirname, '../../frontend/public')));
+const staticPath = path.join(__dirname, '../../frontend/public');
+logger.info(`[APP] Serving static files from: ${staticPath}`);
+app.use(express.static(staticPath));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+// Log all incoming requests
+app.use((req, res, next) => {
+  logger.info(`[HTTP] ${req.method} ${req.path} - ${req.ip}`);
+  if (Object.keys(req.body).length > 0) {
+    logger.debug(`[HTTP] Request body keys: ${Object.keys(req.body).join(', ')}`);
+  }
+  next();
+});
 
 // Request logging
 app.use(requestLogger);
@@ -65,9 +85,14 @@ app.use('/api/urs-catalog', catalogRouter);
 
 // Serve frontend (SPA fallback)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../../frontend/public/index.html'), (err) => {
+  const indexPath = path.join(__dirname, '../../frontend/public/index.html');
+  logger.info(`[SPA] Fallback route triggered for: ${req.path}`);
+  logger.debug(`[SPA] Sending index.html from: ${indexPath}`);
+
+  res.sendFile(indexPath, (err) => {
     if (err) {
-      res.status(404).json({ error: 'Not Found' });
+      logger.error(`[SPA] Error sending index.html: ${err.message}`);
+      res.status(404).json({ error: 'Not Found', details: err.message });
     }
   });
 });

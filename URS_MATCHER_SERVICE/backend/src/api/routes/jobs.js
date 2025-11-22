@@ -197,16 +197,27 @@ router.post('/text-match', async (req, res) => {
   try {
     const { text, quantity = 0, unit = 'ks', use_llm = true } = req.body;
 
+    logger.debug(`[JOBS/TEXT-MATCH] Request payload: ${JSON.stringify({ text: text?.substring(0, 50), quantity, unit, use_llm })}`);
+
     if (!text || text.trim().length === 0) {
+      logger.warn(`[JOBS/TEXT-MATCH] Empty text provided`);
       return res.status(400).json({ error: 'Text is required' });
     }
 
-    logger.info(`[JOBS] Text match: "${text.substring(0, 50)}..." (LLM: ${use_llm && isLLMEnabled() ? 'enabled' : 'disabled'})`);
+    const lmmEnabled = use_llm && isLLMEnabled();
+    logger.info(`[JOBS/TEXT-MATCH] 🔍 Searching for: "${text.substring(0, 50)}..." (LLM: ${lmmEnabled ? 'enabled' : 'disabled'}, Quantity: ${quantity}, Unit: ${unit})`);
 
-    // Match URS items (local similarity)
+    // Match URS items (local similarity or Perplexity)
+    logger.debug(`[JOBS/TEXT-MATCH] Calling matchUrsItems...`);
     const matches = await matchUrsItems(text, quantity, unit);
 
+    logger.info(`[JOBS/TEXT-MATCH] ✓ Found ${matches.length} matches`);
+    if (matches.length > 0) {
+      logger.debug(`[JOBS/TEXT-MATCH] Top match: ${matches[0]?.urs_code} - ${matches[0]?.urs_name} (confidence: ${matches[0]?.confidence})`);
+    }
+
     if (matches.length === 0) {
+      logger.info(`[JOBS/TEXT-MATCH] No matching ÚRS items found`);
       return res.status(200).json({
         candidates: [],
         related_items: [],

@@ -5,6 +5,28 @@
 
 const API_URL = '/api';
 
+// ============================================================================
+// DEBUG LOGGING
+// ============================================================================
+
+const DEBUG = true;
+
+function debugLog(msg, data = null) {
+  if (DEBUG) {
+    const timestamp = new Date().toLocaleTimeString();
+    console.log(`[${timestamp}] ${msg}`, data || '');
+  }
+}
+
+function debugError(msg, error = null) {
+  const timestamp = new Date().toLocaleTimeString();
+  console.error(`[${timestamp}] ❌ ${msg}`, error || '');
+}
+
+// Log page load
+debugLog('🚀 App.js loaded');
+debugLog(`API_URL: ${API_URL}`);
+
 // DOM Elements
 const fileInput = document.getElementById('fileInput');
 const fileDropZone = document.getElementById('fileDropZone');
@@ -29,15 +51,41 @@ const copyBtn = document.getElementById('copyBtn');
 let currentJobId = null;
 let currentResults = null;
 
+// Verify all DOM elements exist
+debugLog('✓ DOM Elements found:', {
+  fileInput: !!fileInput,
+  fileDropZone: !!fileDropZone,
+  uploadBtn: !!uploadBtn,
+  textInput: !!textInput,
+  quantityInput: !!quantityInput,
+  unitInput: !!unitInput,
+  matchBtn: !!matchBtn,
+  uploadSection: !!uploadSection,
+  resultsSection: !!resultsSection,
+  errorSection: !!errorSection,
+  resultsContainer: !!resultsContainer,
+  resultsTitle: !!resultsTitle,
+  errorMessage: !!errorMessage,
+  backBtn: !!backBtn,
+  errorBackBtn: !!errorBackBtn,
+  exportBtn: !!exportBtn,
+  copyBtn: !!copyBtn
+});
+
 // ============================================================================
 // FILE UPLOAD HANDLING
 // ============================================================================
 
-fileDropZone.addEventListener('click', () => fileInput.click());
+// File drop zone
+fileDropZone.addEventListener('click', () => {
+  debugLog('📁 Drop zone clicked');
+  fileInput.click();
+});
 
 fileDropZone.addEventListener('dragover', (e) => {
   e.preventDefault();
   fileDropZone.classList.add('dragover');
+  debugLog('📁 Drag over');
 });
 
 fileDropZone.addEventListener('dragleave', () => {
@@ -48,37 +96,53 @@ fileDropZone.addEventListener('drop', (e) => {
   e.preventDefault();
   fileDropZone.classList.remove('dragover');
   const files = e.dataTransfer.files;
+  debugLog('📁 Files dropped:', { count: files.length });
   if (files.length > 0) {
     fileInput.files = files;
     updateUploadButton();
   }
 });
 
-fileInput.addEventListener('change', updateUploadButton);
+fileInput.addEventListener('change', () => {
+  debugLog('📁 File selected:', { name: fileInput.files[0]?.name });
+  updateUploadButton();
+});
 
 function updateUploadButton() {
-  uploadBtn.disabled = !fileInput.files || fileInput.files.length === 0;
+  const hasFile = fileInput.files && fileInput.files.length > 0;
+  uploadBtn.disabled = !hasFile;
+  debugLog('📁 Upload button state:', { disabled: uploadBtn.disabled });
 }
 
-uploadBtn.addEventListener('click', uploadFile);
+uploadBtn.addEventListener('click', () => {
+  debugLog('🔵 Upload button clicked');
+  uploadFile();
+});
 
 async function uploadFile() {
+  debugLog('📤 uploadFile() called');
+
   if (!fileInput.files || !fileInput.files[0]) {
+    debugError('No file selected');
     showError('Prosím, vyберите soubor');
     return;
   }
 
   uploadBtn.disabled = true;
   uploadBtn.textContent = 'Načítání...';
+  debugLog('📤 Uploading file:', { name: fileInput.files[0].name, size: fileInput.files[0].size });
 
   try {
     const formData = new FormData();
     formData.append('file', fileInput.files[0]);
 
+    debugLog('📤 Sending POST to:', `${API_URL}/jobs/file-upload`);
     const response = await fetch(`${API_URL}/jobs/file-upload`, {
       method: 'POST',
       body: formData
     });
+
+    debugLog('📤 Response status:', { status: response.status, ok: response.ok });
 
     if (!response.ok) {
       const error = await response.json();
@@ -87,6 +151,7 @@ async function uploadFile() {
 
     const data = await response.json();
     currentJobId = data.job_id;
+    debugLog('📤 Upload successful, job_id:', currentJobId);
 
     showResults();
 
@@ -94,6 +159,7 @@ async function uploadFile() {
     await fetchAndDisplayResults(currentJobId);
 
   } catch (error) {
+    debugError('📤 Upload error:', error);
     showError(`Chyba nahrávání: ${error.message}`);
   } finally {
     uploadBtn.disabled = false;
@@ -105,11 +171,17 @@ async function uploadFile() {
 // TEXT MATCHING
 // ============================================================================
 
-matchBtn.addEventListener('click', matchText);
+matchBtn.addEventListener('click', () => {
+  debugLog('🔵 Match button clicked');
+  matchText();
+});
 
 async function matchText() {
+  debugLog('🔍 matchText() called');
+
   const text = textInput.value.trim();
   if (!text) {
+    debugError('No text entered');
     showError('Prosím, vložte text');
     return;
   }
@@ -117,16 +189,25 @@ async function matchText() {
   matchBtn.disabled = true;
   matchBtn.textContent = 'Hledání...';
 
+  const payload = {
+    text,
+    quantity: parseFloat(quantityInput.value) || 0,
+    unit: unitInput.value || 'ks'
+  };
+
+  debugLog('🔍 Searching for:', payload);
+
   try {
-    const response = await fetch(`${API_URL}/jobs/text-match`, {
+    const url = `${API_URL}/jobs/text-match`;
+    debugLog('🔍 Sending POST to:', url);
+
+    const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        text,
-        quantity: parseFloat(quantityInput.value) || 0,
-        unit: unitInput.value || 'ks'
-      })
+      body: JSON.stringify(payload)
     });
+
+    debugLog('🔍 Response status:', { status: response.status, ok: response.ok });
 
     if (!response.ok) {
       const error = await response.json();
@@ -134,6 +215,7 @@ async function matchText() {
     }
 
     const data = await response.json();
+    debugLog('🔍 Search results received:', { candidates: data.candidates?.length });
     currentResults = data;
 
     resultsTitle.textContent = 'Výsledky vyhledávání';
@@ -141,6 +223,7 @@ async function matchText() {
     displayTextMatchResults(data);
 
   } catch (error) {
+    debugError('🔍 Search error:', error);
     showError(`Chyba hledání: ${error.message}`);
   } finally {
     matchBtn.disabled = false;
@@ -291,26 +374,36 @@ function displayTextMatchResults(data) {
 // ============================================================================
 
 function showUpload() {
+  debugLog('📄 Showing upload section');
   uploadSection.classList.add('active');
   resultsSection.classList.add('hidden');
   errorSection.classList.add('hidden');
 }
 
 function showResults() {
+  debugLog('📋 Showing results section');
   uploadSection.classList.add('hidden');
   resultsSection.classList.remove('hidden');
   errorSection.classList.add('hidden');
 }
 
 function showError(message) {
+  debugError('⚠️ Showing error:', message);
   uploadSection.classList.add('hidden');
   resultsSection.classList.add('hidden');
   errorSection.classList.remove('hidden');
   errorMessage.textContent = message;
 }
 
-backBtn.addEventListener('click', showUpload);
-errorBackBtn.addEventListener('click', showUpload);
+backBtn.addEventListener('click', () => {
+  debugLog('🔙 Back button clicked');
+  showUpload();
+});
+
+errorBackBtn.addEventListener('click', () => {
+  debugLog('🔙 Error back button clicked');
+  showUpload();
+});
 
 // ============================================================================
 // EXPORT FUNCTIONS
@@ -377,5 +470,31 @@ copyBtn.addEventListener('click', () => {
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', () => {
+  debugLog('✅ DOMContentLoaded event fired');
+  debugLog('📄 Document ready, showing upload section');
   showUpload();
+  debugLog('✅ Initialization complete');
+});
+
+// Also log when window loads (redundancy check)
+window.addEventListener('load', () => {
+  debugLog('✅ Window load event fired');
+});
+
+// Global error handler
+window.addEventListener('error', (event) => {
+  debugError('⚠️ Global JS error:', {
+    message: event.message,
+    filename: event.filename,
+    lineno: event.lineno,
+    colno: event.colno,
+    error: event.error?.toString()
+  });
+});
+
+// Global unhandled promise rejection handler
+window.addEventListener('unhandledrejection', (event) => {
+  debugError('⚠️ Unhandled promise rejection:', {
+    reason: event.reason?.toString()
+  });
 });
