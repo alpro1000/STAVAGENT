@@ -1,99 +1,106 @@
-# Concrete Agent 🏗️
+# concrete-agent: Core Backend System
 
-> AI-powered Czech/Slovak construction cost estimation and audit system using Claude AI and GPT-4 Vision
+**Status**: ✅ Production-Ready (Backend) | Legacy Frontend (Not Used)
 
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-009688.svg)](https://fastapi.tiangolo.com)
-[![Tests](https://img.shields.io/badge/tests-65%2F67%20passing-brightgreen.svg)](./tests)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+**Role in StavAgent**: The backend core of the entire system. Handles document parsing, AI-powered analysis, multi-role audit, and construction knowledge base management.
 
-## Overview
+**Part of**: [STAVAGENT Monorepo](../../docs/ARCHITECTURE.md)
 
-Concrete Agent is a production-ready construction management system that automates cost estimation, audit, and resource planning for Czech/Slovak construction projects. The system processes various document formats (XML, Excel, PDF), performs intelligent validation against construction standards databases (KROS, RTS, ČSN), and generates comprehensive technical deliverables.
+---
 
-### Key Features
+## What is concrete-agent?
 
-- 🤖 **Dual Workflow Architecture**: Import existing estimates (Workflow A) or generate from drawings (Workflow B)
-- 🔍 **Intelligent Audit System**: Multi-role expert validation with automatic GREEN/AMBER/RED classification
-- 📊 **Smart Document Parsing**: XML (KROS/OTSKP), Excel, PDF with automatic fallback chains
-- 📚 **Knowledge Base Integration**: 9 construction standards categories (B1-B9) with live enrichment
-- ⚡ **Production-Ready**: Rate limiting, caching, artifact management, comprehensive testing
-- 🌐 **RESTful API**: FastAPI with OpenAPI documentation and async support
+concrete-agent is a **Python FastAPI service** that powers document processing in the StavAgent system:
 
-## Quick Start
+- 📄 **Parse documents**: PDF, Excel, XML, drawings → structured data
+- 🤖 **AI analysis**: Use Claude, GPT-4 Vision, Perplexity for intelligent extraction
+- ✅ **Audit & validate**: Multi-role consensus (4 expert perspectives: SME, Architect, Engineer, Supervisor)
+- 🏗️ **Knowledge base**: 9 categories of Czech construction codes, prices, standards
+- 📊 **Enrich data**: Match positions to KROS/RTS codes with confidence scoring
+- 🔄 **Async processing**: Celery task queue + Redis caching for background jobs
+
+**Technologies**:
+- Framework: FastAPI (Python 3.10+)
+- Database: PostgreSQL (SQLAlchemy 2.0, async)
+- Cache/Queue: Redis, Celery
+- AI: Anthropic Claude, OpenAI GPT-4 Vision, Perplexity API
+- PDF Processing: MinerU, pdfplumber, Claude Vision
+- Data: pandas, openpyxl, xlsxwriter
+
+## Quick Start (Local Development)
 
 ### Prerequisites
 
-- Python 3.10 or higher
-- pip package manager
-- Claude API key (from [Anthropic](https://www.anthropic.com))
-- Optional: OpenAI API key for Workflow B (drawing analysis)
+- Python 3.10+
+- PostgreSQL (or can use in-memory cache for testing)
+- Redis (for task queue and caching)
+- API keys: Anthropic Claude (required), OpenAI (optional for Workflow B)
 
 ### Installation
 
 ```bash
-# Clone the repository
-git clone https://github.com/alpro1000/concrete-agent.git
-cd concrete-agent
+# 1. Clone the monorepo
+git clone https://github.com/alpro1000/STAVAGENT.git
+cd STAVAGENT/concrete-agent
 
-# Create and activate virtual environment
+# 2. Create and activate virtual environment
 python -m venv venv
 source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# Install dependencies
+# 3. Install dependencies
+cd packages/core-backend
 pip install -r requirements.txt
 
-# Configure environment
+# 4. Configure environment
 cp .env.example .env
-# Edit .env and add your API keys
+# Edit .env and add your API keys and database URLs
 ```
 
-### Configuration
-
-Create `.env` file with minimum required settings:
-
-```env
-# Required
-ANTHROPIC_API_KEY=sk-ant-api03-xxxxx
-
-# Optional (for Workflow B)
-OPENAI_API_KEY=sk-xxxxx
-ENABLE_WORKFLOW_B=true
-
-# Optional (for live knowledge base)
-PERPLEXITY_API_KEY=pplx-xxxxx
-ALLOW_WEB_SEARCH=true
-```
-
-See [docs/CONFIG.md](docs/CONFIG.md) for complete configuration reference.
-
-### Running the Application
+### Running the Service
 
 ```bash
-# Development server with hot reload
-uvicorn app.main:app --reload
+# From /concrete-agent/packages/core-backend directory:
+
+# Development server with auto-reload
+python -m uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 
 # Production server
 gunicorn app.main:app -w 4 -k uvicorn.workers.UvicornWorker
 ```
 
-The API will be available at:
-- **API**: http://localhost:8000
-- **Interactive Docs**: http://localhost:8000/docs
-- **Alternative Docs**: http://localhost:8000/redoc
+**API will be available at**:
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+- **OpenAPI JSON**: http://localhost:8000/openapi.json
 
 ### Running Tests
 
 ```bash
-# Run all tests
+# All tests
 pytest
 
-# Run with coverage
+# With coverage report
 pytest --cov=app --cov-report=html
 
-# Run specific test file
+# Specific test file
 pytest tests/test_workflow_a_integration.py -v
 ```
+
+---
+
+## ✅ Important Notes
+
+### Backend is Production-Ready
+The **backend code in this directory is the core of StavAgent** and is fully operational. It MUST remain intact.
+
+### Frontend in This Directory is Legacy
+There is an **old frontend attempt** (`/packages/core-frontend`) in this repository:
+- **Status**: Legacy, not maintained
+- **Production Use**: NO - do not use in production
+- **Actual Frontend**: Use `stavagent-portal` instead
+- **Keep or Delete**: Can be kept for reference but is not part of the production system
+
+---
 
 ## Architecture Overview
 
@@ -124,7 +131,33 @@ The system follows a layered architecture with clear separation of concerns:
 └─────────────────────────────────────────────────────────┘
 ```
 
-See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed architecture documentation.
+---
+
+## Architecture
+
+```
+┌─────────────────────────────────┐
+│  Portal, Mobile, API Clients    │
+└────────────┬────────────────────┘
+             │ HTTP/REST
+┌────────────▼────────────────────┐
+│ concrete-agent (FastAPI)        │
+│ - Parsers                       │
+│ - AI Clients                    │
+│ - Workflows (A & B)             │
+│ - Audit Service                 │
+│ - Knowledge Base                │
+└────────────┬────────────────────┘
+             │
+     ┌───────┴────────┬──────────┐
+     ▼                ▼          ▼
+ PostgreSQL      Redis        File Storage
+ (Database)   (Cache/Queue)   (Projects)
+```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for detailed backend architecture.
+
+---
 
 ## Workflows
 
@@ -320,16 +353,50 @@ OPENAI_API_KEY=sk-xxxxx
 
 For more help, see [GitHub Issues](https://github.com/alpro1000/concrete-agent/issues).
 
-## Documentation
+## Documentation Map
 
-- 📘 [System Design](docs/SYSTEM_DESIGN.md) - Complete technical specification
-- 🏗️ [Architecture](ARCHITECTURE.md) - System architecture and patterns
-- ⚙️ [Configuration](docs/CONFIG.md) - Environment variables and settings
-- 🔌 [API Reference](docs/API.md) - Endpoint documentation
-- 🔄 [Workflows](docs/WORKFLOWS.md) - Detailed workflow guides
-- 🧪 [Testing](docs/TESTS.md) - Testing guide and examples
-- 🤝 [Contributing](docs/CONTRIBUTING.md) - Development guidelines
-- 📝 [CLAUDE.md](CLAUDE.md) - Claude Code integration guide
+**System-Level** (at STAVAGENT root):
+- [`/docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md) - System overview (3 services)
+- [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) - Service API contracts
+- [`/docs/LOCAL_SETUP.md`](../../docs/LOCAL_SETUP.md) - Local development setup
+- [`/docs/DEPLOYMENT.md`](../../docs/DEPLOYMENT.md) - Render deployment
+
+**concrete-agent Specific** (this service):
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) - Detailed backend architecture (read this next)
+- `docs/MODULES.md` - Module breakdown (TODO)
+- `docs/PARSERS.md` - Parser documentation (TODO)
+- `docs/AI_INTEGRATION.md` - AI integration guide (TODO)
+- `docs/WORKFLOWS.md` - Processing workflows (TODO)
+- `docs/KNOWLEDGE_BASE.md` - KB structure (TODO)
+- `docs/API_REFERENCE.md` - REST API endpoints (TODO)
+
+---
+
+## What's Next?
+
+1. **Read system overview**: Start with [`/docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md) to understand how concrete-agent fits into StavAgent
+2. **Understand the contract**: Read [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) to see how this service communicates with portal and kiosks
+3. **Read backend architecture**: See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) for detailed implementation details
+4. **Try the API**: Open http://localhost:8000/docs in your browser after starting the service
+5. **Explore code**: Start in `packages/core-backend/app/main.py` and follow the imports
+
+---
+
+## Integration with Other Services
+
+**Portal calls concrete-agent for**:
+- Document parsing and extraction
+- Multi-role audit and validation
+- Drawing analysis for quantity estimation
+
+**Monolit-Planner can use concrete-agent for**:
+- Advanced Excel parsing (fallback from local parser)
+- Position enrichment with KROS codes
+- Drawing analysis for initial estimations
+
+See [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) for detailed integration specifications.
+
+---
 
 ## License
 
@@ -337,18 +404,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/alpro1000/concrete-agent/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/alpro1000/concrete-agent/discussions)
-
-## Acknowledgments
-
-Built with:
-- [FastAPI](https://fastapi.tiangolo.com/) - Modern Python web framework
-- [Claude AI](https://www.anthropic.com/) - Document parsing and audit
-- [GPT-4 Vision](https://openai.com/) - Drawing analysis
-- [Pydantic](https://pydantic.dev/) - Data validation
-- [Pytest](https://pytest.org/) - Testing framework
+- **System Issues**: Report to [GitHub Issues](https://github.com/alpro1000/STAVAGENT/issues)
+- **Documentation**: See [`/docs`](../../docs) for comprehensive guides
 
 ---
 
-**Made with ❤️ for the construction industry**
+**Part of the StavAgent construction management system**

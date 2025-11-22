@@ -1,153 +1,274 @@
-# 🏛️ StavAgent Portal
+# stavagent-portal: Project Portal & Dispatcher
 
-**StavAgent Portal** - главный вход в систему StavAgent. Портал обеспечивает управление проектами, загрузку файлов, интеграцию с киосками и CORE системой.
+**Status**: ✅ Production-Ready
 
-## 🎯 Назначение
+**Role in StavAgent**: User-facing portal for project lifecycle management and routing to specialized kiosks. This is the primary frontend for end-users.
 
-Портал НЕ является калькулятором, а выполняет роль диспетчера:
+**Part of**: [STAVAGENT Monorepo](../../docs/ARCHITECTURE.md)
 
-- 🔐 Авторизация пользователей
-- 📁 Управление проектами (создание, список, карточка)
-- 📄 Загрузка исходных файлов (ТЗ, смета, чертежи)
-- 🔗 Маршрутизация к киоскам (Monolit, Pump, Formwork...)
-- 🤖 Интеграция с Ядром (Concrete-Agent CORE)
-- 💬 Чат-ассистент StavAgent
+---
 
-## 🗂️ Структура репозитория
+## What is stavagent-portal?
+
+stavagent-portal is a **Node.js + React full-stack application** that serves as the central hub for construction project management:
+
+- 🔐 **User authentication**: Email verification, JWT tokens, password reset
+- 📁 **Project management**: Create, list, view, update projects
+- 📄 **File upload**: Accept construction documents (specs, budgets, drawings)
+- 🔗 **Kiosk routing**: Dispatch projects to specialized calculators (Monolit, Pump, Formwork, etc.)
+- 🤖 **Core integration**: Send files to concrete-agent for analysis and audit
+- 💬 **Chat assistant**: Project-specific assistance (future)
+- 👥 **Admin features**: User management, audit logging
+- 🏗️ **OTSKP catalog**: Search Czech construction codes
+
+**Technologies**:
+- **Backend**: Node.js, Express.js, PostgreSQL (or SQLite)
+- **Frontend**: React 18, TypeScript, Vite, TailwindCSS
+- **State Management**: React Context API, TanStack React Query
+- **Authentication**: JWT tokens, bcrypt password hashing
+
+## Directory Structure
 
 ```
 stavagent-portal/
-├── backend/              # Express API сервер
+├── backend/              # Express.js API server
 │   ├── src/
 │   │   ├── routes/      # API endpoints
-│   │   ├── services/    # Бизнес-логика
+│   │   ├── services/    # Business logic
 │   │   ├── middleware/  # Auth, rate limiting
-│   │   └── db/          # База данных и миграции
+│   │   └── db/          # Database and migrations
 │   └── server.js
 │
 ├── frontend/            # React + TypeScript UI
 │   ├── src/
-│   │   ├── pages/      # Страницы
-│   │   ├── components/ # Компоненты
-│   │   └── context/    # State management
+│   │   ├── pages/      # Page components
+│   │   ├── components/ # Reusable UI components
+│   │   ├── context/    # State management
+│   │   ├── services/   # API client
+│   │   └── hooks/      # Custom React hooks
 │   └── vite.config.ts
 │
-├── shared/              # Общие типы и утилиты
+├── shared/              # Shared types and utilities
 │   └── src/
 │
-└── docs/                # Документация
-    ├── STAVAGENT_CONTRACT.md           # Контракт интеграции
-    ├── PORTAL_ARCHITECTURE.md          # Архитектура портала
-    └── REPOSITORIES_STRUCTURE.md       # Структура репозиториев
+├── docs/                # Service documentation
+│   ├── FEATURES.md      # User-facing features (TODO)
+│   ├── ARCHITECTURE.md  # Backend + frontend architecture (TODO)
+│   ├── API_REFERENCE.md # API endpoints (TODO)
+│   └── INTEGRATION.md   # Portal integrations (TODO)
+│
+└── render.yaml          # Render.com deployment config
 ```
 
-## 🚀 Быстрый старт
+## Quick Start (Local Development)
 
-### Требования
+### Prerequisites
 
 - Node.js >= 18.0.0
 - npm >= 9.0.0
-- PostgreSQL (production) или SQLite (development)
+- PostgreSQL (production) or SQLite (development)
 
-### Установка
+### Installation
 
 ```bash
-# Клонировать репозиторий
-git clone https://github.com/alpro1000/stavagent-portal.git
-cd stavagent-portal
+# 1. Clone the monorepo
+git clone https://github.com/alpro1000/STAVAGENT.git
+cd STAVAGENT/stavagent-portal
 
-# Установить зависимости
+# 2. Install dependencies
 npm install
-npm run install:all
 
-# Настроить environment variables
+# 3. Configure environment variables
 cp backend/.env.example backend/.env
 cp frontend/.env.example frontend/.env
-# Отредактируйте .env файлы
+# Edit the .env files with your settings
 
-# Запустить в режиме разработки
+# 4. Run in development mode
 npm run dev
 ```
 
-### Доступ
+### Access
 
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:3000
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3001
+- **API Docs** (if available): http://localhost:3001/api-docs
 
-## 📋 Основные API endpoints
+## Key Features
 
-### Проекты
-- `POST /api/portal/projects` - Создать проект
-- `GET /api/portal/projects` - Список проектов пользователя
-- `GET /api/portal/projects/:id` - Детали проекта
+### 1. User Management
+- Registration with email verification
+- Login with JWT tokens (24-hour expiry)
+- Password reset functionality
+- Admin user management
 
-### Файлы
-- `POST /api/portal/projects/:id/files` - Загрузить файл
-- `GET /api/portal/projects/:id/files` - Список файлов проекта
-- `GET /api/portal/files/:fileId/download` - Скачать файл
+### 2. Project Management
+- Create projects (bridge, building, road, parking, custom types)
+- List and view projects
+- Update/delete projects
+- Project status tracking
 
-### Киоски
-- `POST /api/portal/projects/:id/kiosks` - Подключить киоск
-- `GET /api/portal/projects/:id/kiosks` - Список киосков проекта
-- `GET /api/portal/projects/:id/kiosks/:type/open` - Открыть киоск
+### 3. File Management
+- Upload construction documents (TZ, budgets, drawings, SMETA)
+- File type classification
+- File storage and retrieval
+- File deletion
 
-### CORE Integration
-- `POST /api/portal/projects/:id/core/submit` - Отправить в CORE
-- `GET /api/portal/projects/:id/core/results` - Получить результаты
-- `POST /api/portal/projects/:id/core/accept-to-kiosk` - Принять в киоск
+### 4. Kiosk Integration
+- Link projects to kiosks (Monolit, Pump, Formwork, etc.)
+- Route projects to calculators
+- Track kiosk processing status
+- Retrieve results from kiosks
 
-## 🏗️ База данных
+### 5. Core Integration
+- Send documents to concrete-agent for analysis
+- Receive audit results (GREEN/AMBER/RED)
+- Store processing IDs for tracking
+- Accept results into kiosks
 
-Portal использует следующие основные таблицы:
+### 6. Admin Panel
+- View system statistics
+- Manage users (create, delete, change roles)
+- Audit logging and activity tracking
+- System health monitoring
 
-- `users` - Пользователи системы
-- `portal_projects` - Проекты
-- `portal_files` - Загруженные файлы
-- `kiosk_links` - Связи с киосками
-- `chat_sessions` - Чат-сессии
-- `chat_messages` - Сообщения чата
+---
 
-Полная схема БД: [docs/PORTAL_ARCHITECTURE.md](docs/PORTAL_ARCHITECTURE.md)
+## Main API Endpoints
 
-## 🔗 Интеграция с другими сервисами
+**Authentication**:
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `POST /api/auth/refresh` - Refresh JWT token
 
-### Киоски
-- **kiosk-monolit** - Калькулятор монолитных работ
-- **kiosk-pump** - Калькулятор насосных работ (планируется)
-- **kiosk-formwork** - Калькулятор опалубки (планируется)
+**Projects**:
+- `POST /api/portal-projects` - Create project
+- `GET /api/portal-projects` - List user's projects
+- `GET /api/portal-projects/:id` - Get project details
+- `PUT /api/portal-projects/:id` - Update project
+- `DELETE /api/portal-projects/:id` - Delete project
 
-### CORE
-- **concrete-agent** - AI система анализа документов и аудита
+**Files**:
+- `POST /api/portal-files` - Upload file
+- `GET /api/portal-files/:projectId` - List project files
+- `GET /api/portal-files/:fileId/download` - Download file
+- `DELETE /api/portal-files/:fileId` - Delete file
 
-Контракт интеграции: [docs/STAVAGENT_CONTRACT.md](docs/STAVAGENT_CONTRACT.md)
+**Kiosk Integration**:
+- `GET /api/kiosk-links/available` - List available kiosks
+- `POST /api/kiosk-links` - Link project to kiosk
+- `GET /api/kiosk-links/:projectId` - Get kiosk links
 
-## 📚 Документация
+**Admin**:
+- `GET /api/admin/users` - List all users
+- `POST /api/admin/users` - Create user
+- `DELETE /api/admin/users/:id` - Delete user
+- `GET /api/admin/audit-logs` - Get audit logs
+- `GET /api/admin/stats` - System statistics
 
-- [STAVAGENT_CONTRACT.md](docs/STAVAGENT_CONTRACT.md) - Контракт интеграции между сервисами
-- [PORTAL_ARCHITECTURE.md](docs/PORTAL_ARCHITECTURE.md) - Детальная архитектура портала
-- [REPOSITORIES_STRUCTURE.md](docs/REPOSITORIES_STRUCTURE.md) - Структура репозиториев системы
+See `docs/API_REFERENCE.md` (TODO) for complete endpoint documentation.
 
-## 🛠️ Разработка
+## Integration with Other Services
 
-### Скрипты
+### Kiosk Integration
+Portal can route projects to specialized kiosks:
+- **Monolit-Planner** - Monolithic concrete structure calculator (implemented)
+- **Pump Kiosk** - Concrete pumping calculator (planned)
+- **Formwork Kiosk** - Scaffolding calculator (planned)
+- **Custom Kiosks** - Extensible architecture for new calculators
+
+See [STAVAGENT_CONTRACT.md](../../docs/STAVAGENT_CONTRACT.md) for kiosk integration specifications.
+
+### Core Integration
+Portal sends documents to concrete-agent for:
+- Intelligent document parsing
+- Multi-role audit and validation
+- Position enrichment with KROS codes
+- Drawing analysis for quantity estimation
+
+See [STAVAGENT_CONTRACT.md](../../docs/STAVAGENT_CONTRACT.md) for core integration specifications.
+
+---
+
+## Development
+
+### Available Scripts
 
 ```bash
-npm run dev              # Запустить backend + frontend
-npm run dev:backend      # Только backend
-npm run dev:frontend     # Только frontend
+# Development
+npm run dev              # Run backend + frontend (all packages)
+npm run dev:backend      # Backend only
+npm run dev:frontend     # Frontend only
 
-npm run build            # Собрать все
-npm run build:backend    # Собрать backend
-npm run build:frontend   # Собрать frontend
-npm run build:shared     # Собрать shared типы
+# Building
+npm run build            # Build all packages
+npm run build:backend    # Build backend
+npm run build:frontend   # Build frontend
+npm run build:shared     # Build shared types
 
-npm test                 # Запустить тесты
+# Testing & Quality
+npm test                 # Run tests
+npm run lint             # Run linter
 ```
 
 ### Tech Stack
 
-**Backend:**
-- Express.js
+**Backend**:
+- Framework: Express.js 4.x
+- Database: PostgreSQL (or SQLite for dev)
+- Auth: JWT, bcrypt
+- File Upload: Multer
+- HTTP Client: Axios
+- Logging: Winston
+
+**Frontend**:
+- Framework: React 18 + TypeScript
+- Build: Vite 5
+- Routing: React Router 7
+- State: React Context API + React Query
+- Styling: TailwindCSS
+- Icons: Lucide React
+
+**Shared**:
+- Types: TypeScript interfaces
+- Formulas: Calculation utilities
+- Constants: System constants
+
+---
+
+## Documentation Map
+
+**System-Level** (at STAVAGENT root):
+- [`/docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md) - System overview (3 services)
+- [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md) - Service API contracts
+- [`/docs/LOCAL_SETUP.md`](../../docs/LOCAL_SETUP.md) - Local development setup
+- [`/docs/DEPLOYMENT.md`](../../docs/DEPLOYMENT.md) - Render deployment
+
+**stavagent-portal Specific** (this service):
+- `docs/FEATURES.md` - User-facing features (TODO)
+- `docs/ARCHITECTURE.md` - Backend + frontend architecture (TODO)
+- `docs/API_REFERENCE.md` - REST API endpoints (TODO)
+- `docs/INTEGRATION.md` - Portal integrations (TODO)
+
+---
+
+## What's Next?
+
+1. **Read system overview**: [`/docs/ARCHITECTURE.md`](../../docs/ARCHITECTURE.md)
+2. **Understand the contract**: [`/docs/STAVAGENT_CONTRACT.md`](../../docs/STAVAGENT_CONTRACT.md)
+3. **Run locally**: Follow "Quick Start" above
+4. **Explore code**: Start in `backend/src/server.js` or `frontend/src/main.tsx`
+5. **Read service docs**: See `docs/` (TODO) for detailed documentation
+
+---
+
+## Support
+
+- **System Issues**: Report to [GitHub Issues](https://github.com/alpro1000/STAVAGENT/issues)
+- **Documentation**: See [`/docs`](../../docs) for comprehensive guides
+
+---
+
+**Part of the StavAgent construction management system**
 - PostgreSQL / SQLite
 - JWT authentication
 - Multer (file uploads)
