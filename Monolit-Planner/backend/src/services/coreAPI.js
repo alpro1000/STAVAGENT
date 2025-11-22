@@ -292,16 +292,60 @@ export async function parseExcelByCORE(filePath) {
     return Array.isArray(positions) ? positions : [];
 
   } catch (error) {
-    if (error.code === 'ECONNREFUSED') {
-      logger.warn(
-        `[CORE] ⚠️ Cannot connect to CORE at ${CORE_API_URL} - ` +
-        'Is CORE service running?'
+    // Enhanced diagnostics for better troubleshooting
+    logger.error(`[CORE] ❌ PARSE ERROR: ${error.message}`);
+
+    // Diagnostic information
+    logger.error(`[CORE] 🔍 DIAGNOSTIC INFO:`);
+    logger.error(`[CORE]   - CORE_API_URL: ${CORE_API_URL}`);
+    logger.error(`[CORE]   - CORE_TIMEOUT: ${CORE_TIMEOUT}ms`);
+    logger.error(`[CORE]   - CORE_ENABLED: ${CORE_ENABLED}`);
+
+    // HTTP Status Code Diagnostics
+    if (error.response) {
+      logger.error(`[CORE]   - HTTP Status: ${error.response.status} ${error.response.statusText}`);
+      logger.error(`[CORE]   - Response Headers: ${JSON.stringify(Object.keys(error.response.headers))}`);
+
+      // Specific handling for common HTTP errors
+      if (error.response.status === 404) {
+        logger.error(`[CORE] 🚨 404 NOT FOUND: The endpoint does not exist at ${CORE_API_URL}/api/upload`);
+        logger.error(`[CORE] Possible issues:`);
+        logger.error(`[CORE]   1. CORE_API_URL environment variable is set to wrong service`);
+        logger.error(`[CORE]   2. concrete-agent deployment doesn't have /api/upload endpoint`);
+        logger.error(`[CORE]   3. Service is deployed but endpoint structure changed`);
+        logger.error(`[CORE] Try checking: POST ${CORE_API_URL}/health or GET ${CORE_API_URL}/`);
+      } else if (error.response.status === 401) {
+        logger.error(`[CORE] 🔐 401 UNAUTHORIZED: CORE requires authentication`);
+        logger.error(`[CORE] Check if authentication headers are needed`);
+      } else if (error.response.status === 500) {
+        logger.error(`[CORE] 💥 500 INTERNAL SERVER ERROR at CORE`);
+        if (error.response.data) {
+          logger.error(`[CORE] Error details: ${JSON.stringify(error.response.data).substring(0, 500)}`);
+        }
+      } else if (error.response.status >= 400) {
+        logger.error(`[CORE] HTTP ${error.response.status}: ${error.response.statusText}`);
+        if (error.response.data) {
+          logger.error(`[CORE] Response body: ${JSON.stringify(error.response.data).substring(0, 500)}`);
+        }
+      }
+    } else if (error.code === 'ECONNREFUSED') {
+      logger.error(
+        `[CORE] 🔌 CONNECTION REFUSED: Cannot connect to ${CORE_API_URL}`
       );
+      logger.error(`[CORE] Possible issues:`);
+      logger.error(`[CORE]   1. CORE service is not running`);
+      logger.error(`[CORE]   2. CORE_API_URL is pointing to non-existent host`);
+      logger.error(`[CORE]   3. Network/firewall issue blocking connection`);
     } else if (error.code === 'ETIMEDOUT') {
-      logger.error(`[CORE] ⏱️ Request timeout after ${CORE_TIMEOUT}ms`);
+      logger.error(`[CORE] ⏱️ REQUEST TIMEOUT after ${CORE_TIMEOUT}ms`);
+      logger.error(`[CORE] CORE at ${CORE_API_URL} is not responding in time`);
+    } else if (error.code === 'ENOTFOUND') {
+      logger.error(`[CORE] 🔍 DNS RESOLUTION FAILED: Cannot find host in ${CORE_API_URL}`);
     } else {
-      logger.error(`[CORE] ❌ Parse failed: ${error.message}`);
+      logger.error(`[CORE] Error code: ${error.code}`);
+      logger.error(`[CORE] Error details: ${JSON.stringify(error.toJSON ? error.toJSON() : error)}`);
     }
+
     throw error;
   }
 }

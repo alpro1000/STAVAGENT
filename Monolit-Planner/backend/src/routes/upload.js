@@ -78,6 +78,7 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription, normalizeString } from '../services/parser.js';
 import { extractConcretePositions } from '../services/concreteExtractor.js';
@@ -563,6 +564,143 @@ router.delete('/cache/clear/:fileHash', (req, res) => {
     message: `Cache entry ${req.params.fileHash} cleared`,
     cache: importCache.getStats()
   });
+});
+
+// ============================================================================
+// DIAGNOSTIC ENDPOINT - Debug CORE API configuration and connectivity
+// ============================================================================
+// GET /api/upload/diagnostics - Show CORE configuration and test connectivity
+router.get('/diagnostics', async (req, res) => {
+  try {
+    const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent.onrender.com';
+    const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT) || 30000;
+    const CORE_ENABLED = process.env.ENABLE_CORE_FALLBACK !== 'false';
+
+    logger.info('[DIAGNOSTICS] Starting CORE configuration diagnostics...');
+
+    const diagnostics = {
+      timestamp: new Date().toISOString(),
+      environment: {
+        CORE_API_URL: CORE_API_URL,
+        CORE_TIMEOUT: CORE_TIMEOUT,
+        CORE_ENABLED: CORE_ENABLED,
+        NODE_ENV: process.env.NODE_ENV,
+      },
+      checks: {
+        connectivity: {
+          status: 'pending',
+          message: 'Testing CORE health endpoint...',
+          endpoint: `${CORE_API_URL}/health`,
+          response: null,
+          error: null
+        },
+        api_root: {
+          status: 'pending',
+          message: 'Testing CORE root endpoint...',
+          endpoint: `${CORE_API_URL}/`,
+          response: null,
+          error: null
+        }
+      }
+    };
+
+    // Test health endpoint
+    try {
+      logger.info(`[DIAGNOSTICS] Testing CORE health endpoint: ${CORE_API_URL}/health`);
+      const healthResponse = await axios.get(`${CORE_API_URL}/health`, {
+        timeout: 5000
+      });
+      diagnostics.checks.connectivity = {
+        status: 'success',
+        message: 'CORE health endpoint is reachable',
+        endpoint: `${CORE_API_URL}/health`,
+        response: {
+          status: healthResponse.status,
+          statusText: healthResponse.statusText,
+          data: healthResponse.data
+        },
+        error: null
+      };
+      logger.info('[DIAGNOSTICS] ✅ Health check passed');
+    } catch (healthError) {
+      diagnostics.checks.connectivity = {
+        status: 'error',
+        message: `Health endpoint failed: ${healthError.message}`,
+        endpoint: `${CORE_API_URL}/health`,
+        response: healthError.response ? {
+          status: healthError.response.status,
+          statusText: healthError.response.statusText
+        } : null,
+        error: {
+          message: healthError.message,
+          code: healthError.code,
+          status: healthError.response?.status
+        }
+      };
+      logger.warn(`[DIAGNOSTICS] ⚠️ Health check failed: ${healthError.message}`);
+    }
+
+    // Test root endpoint
+    try {
+      logger.info(`[DIAGNOSTICS] Testing CORE root endpoint: ${CORE_API_URL}/`);
+      const rootResponse = await axios.get(`${CORE_API_URL}/`, {
+        timeout: 5000
+      });
+      diagnostics.checks.api_root = {
+        status: 'success',
+        message: 'CORE root endpoint is reachable',
+        endpoint: `${CORE_API_URL}/`,
+        response: {
+          status: rootResponse.status,
+          statusText: rootResponse.statusText,
+          data: rootResponse.data
+        },
+        error: null
+      };
+      logger.info('[DIAGNOSTICS] ✅ Root endpoint check passed');
+    } catch (rootError) {
+      diagnostics.checks.api_root = {
+        status: 'error',
+        message: `Root endpoint failed: ${rootError.message}`,
+        endpoint: `${CORE_API_URL}/`,
+        response: rootError.response ? {
+          status: rootError.response.status,
+          statusText: rootError.response.statusText
+        } : null,
+        error: {
+          message: rootError.message,
+          code: rootError.code,
+          status: rootError.response?.status
+        }
+      };
+      logger.warn(`[DIAGNOSTICS] ⚠️ Root endpoint check failed: ${rootError.message}`);
+    }
+
+    // Summary
+    const connectivityOk = diagnostics.checks.connectivity.status === 'success';
+    const rootOk = diagnostics.checks.api_root.status === 'success';
+
+    diagnostics.summary = {
+      core_reachable: connectivityOk || rootOk,
+      recommendation: connectivityOk
+        ? '✅ CORE service is reachable. If Excel uploads still fail, the issue is likely with the /api/upload endpoint or file format.'
+        : rootOk
+        ? '⚠️ Root endpoint works but health check failed. Check CORE service status.'
+        : `🚨 CORE service at ${CORE_API_URL} is not reachable. Check CORE_API_URL configuration.`
+    };
+
+    logger.info('[DIAGNOSTICS] Complete - sending response to client');
+    res.json(diagnostics);
+
+  } catch (error) {
+    logger.error(`[DIAGNOSTICS] Unexpected error: ${error.message}`);
+    res.status(500).json({
+      status: 'error',
+      message: 'Diagnostics failed',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 export default router;
