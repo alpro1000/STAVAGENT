@@ -101,3 +101,63 @@ export function validateAPIKey(apiKey, provider) {
 }
 
 export const PROVIDERS = LLM_PROVIDERS;
+
+// ============================================================================
+// CATALOG MODE CONFIGURATION
+// ============================================================================
+
+const CATALOG_MODES = {
+  LOCAL: 'local',                    // Use local SQLite database
+  PERPLEXITY_ONLY: 'perplexity_only' // Search via Perplexity API only
+};
+
+/**
+ * Get catalog mode from environment
+ * @returns {string} Catalog mode: 'local' or 'perplexity_only'
+ */
+export function getCatalogMode() {
+  const mode = process.env.URS_CATALOG_MODE || CATALOG_MODES.LOCAL;
+
+  if (!Object.values(CATALOG_MODES).includes(mode)) {
+    logger.warn(`[CatalogMode] Invalid URS_CATALOG_MODE: ${mode}. Using 'local'.`);
+    return CATALOG_MODES.LOCAL;
+  }
+
+  logger.info(`[CatalogMode] Using catalog mode: ${mode}`);
+  return mode;
+}
+
+export const CATALOG_MODE = getCatalogMode();
+
+// ============================================================================
+// PERPLEXITY CONFIGURATION
+// ============================================================================
+
+/**
+ * Get Perplexity API configuration
+ * @returns {Object} Perplexity config
+ */
+export function getPerplexityConfig() {
+  const apiKey = process.env.PPLX_API_KEY;
+  const model = process.env.PPLX_MODEL || 'sonar';
+  const timeoutMs = parseInt(process.env.PPLX_TIMEOUT_MS || '30000', 10);
+
+  if (!apiKey) {
+    logger.warn('[PerplexityConfig] No PPLX_API_KEY set. Perplexity features will be disabled.');
+    return {
+      enabled: false,
+      model: model,
+      timeoutMs: timeoutMs
+    };
+  }
+
+  return {
+    enabled: true,
+    apiKey: apiKey,
+    model: model,
+    apiUrl: 'https://api.perplexity.ai/chat/completions',
+    timeoutMs: timeoutMs
+  };
+}
+
+export const PERPLEXITY_CONFIG = getPerplexityConfig();
