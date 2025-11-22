@@ -65,7 +65,7 @@ app.use('/api/urs-catalog', catalogRouter);
 
 // Serve frontend (SPA fallback)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'), (err) => {
+  res.sendFile(path.join(__dirname, '../../frontend/public/index.html'), (err) => {
     if (err) {
       res.status(404).json({ error: 'Not Found' });
     }
