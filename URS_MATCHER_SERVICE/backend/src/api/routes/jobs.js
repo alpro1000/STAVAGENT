@@ -167,6 +167,7 @@ router.post('/file-upload', upload.single('file'), async (req, res) => {
 // ============================================================================
 
 router.post('/text-match', async (req, res) => {
+  const startTime = Date.now();
   try {
     const { text, quantity = 0, unit = 'ks' } = req.body;
 
@@ -183,7 +184,8 @@ router.post('/text-match', async (req, res) => {
       return res.status(200).json({
         candidates: [],
         related_items: [],
-        message: 'No matching ÚRS items found'
+        message: 'No matching ÚRS items found',
+        processing_time_ms: Date.now() - startTime
       });
     }
 
@@ -204,10 +206,11 @@ router.post('/text-match', async (req, res) => {
     }];
     const relatedItems = await generateRelatedItems(mockItems);
 
+    const processingTime = Date.now() - startTime;
     res.json({
       candidates,
       related_items: relatedItems,
-      processing_time_ms: Date.now()
+      processing_time_ms: processingTime
     });
 
   } catch (error) {

@@ -7,8 +7,8 @@
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
-    "test": "jest --coverage",
-    "test:watch": "jest --watch",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --watch",
     "init-db": "node src/db/init.js",
     "lint": "eslint src --fix",
     "format": "prettier --write \"src/**/*.js\""

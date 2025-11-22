@@ -97,3 +97,16 @@ async function seedSampleData(db) {
     // Don't throw, just log warning
   }
 }
+
+// Run initialization when called directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  initializeDatabase()
+    .then(() => {
+      logger.info('[DB] Database initialization complete');
+      process.exit(0);
+    })
+    .catch((error) => {
+      logger.error(`[DB] Fatal error: ${error.message}`);
+      process.exit(1);
+    });
+}
