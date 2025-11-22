@@ -11,11 +11,11 @@
  */
 
 import express from 'express';
-import { v4 as uuidv4 } from 'uuid';
 import db from '../db/init.js';
 import { getPool } from '../db/postgres.js';
 import { logger } from '../utils/logger.js';
 import { requireAuth } from '../middleware/auth.js';
+import { createDefaultPositions } from '../utils/positionDefaults.js';
 
 const router = express.Router();
 
@@ -227,43 +227,51 @@ router.post('/', async (req, res) => {
 
       // Create default positions for each template part (to show in manual mode)
       // This makes parts visible in the frontend even before adding specific items
+      // Uses centralized position defaults from positionDefaults utility
       logger.info(`[CREATE PROJECT] Creating ${templates.length} default positions for manual mode...`);
       if (templates.length > 0) {
-        const positionPlaceholders = templates.map((_, idx) => {
-          const offset = idx * 11;
-          return `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10}, $${offset + 11})`;
-        }).join(',');
-
-        const positionValues = [];
-        for (const template of templates) {
-          const positionId = uuidv4();
-          positionValues.push(
-            positionId,           // id
-            project_id,           // bridge_id
-            template.part_name,   // part_name
-            template.part_name,   // item_name (initially same as part_name)
-            'beton',              // subtype (default material type)
-            'M3',                 // unit (cubic meters)
-            0,                    // qty (starts at 0)
-            null,                 // qty_m3_helper
-            4,                    // crew_size (default)
-            398,                  // wage_czk_ph (default)
-            10,                   // shift_hours (default)
-            0                     // days
-          );
-        }
-
-        const insertPositionsSql = `
-          INSERT INTO positions (id, bridge_id, part_name, item_name, subtype, unit, qty, qty_m3_helper, crew_size, wage_czk_ph, shift_hours, days)
-          VALUES ${positionPlaceholders}
-          ON CONFLICT (id) DO NOTHING
-        `;
-
         try {
-          await client.query(insertPositionsSql, positionValues);
-          logger.info(`[CREATE PROJECT] ✓ Created ${templates.length} default positions for manual mode`);
+          // Use utility to create positions with consistent defaults
+          const defaultPositions = createDefaultPositions(templates, project_id);
+
+          if (!defaultPositions || defaultPositions.length === 0) {
+            logger.warn(`[CREATE PROJECT] ⚠️  createDefaultPositions returned empty array`);
+          } else {
+            // Build batch INSERT statement
+            const positionPlaceholders = defaultPositions.map((_, idx) => {
+              const offset = idx * 11;
+              return `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10}, $${offset + 11})`;
+            }).join(',');
+
+            const positionValues = [];
+            for (const pos of defaultPositions) {
+              positionValues.push(
+                pos.id,
+                pos.bridge_id,
+                pos.part_name,
+                pos.item_name,
+                pos.subtype,
+                pos.unit,
+                pos.qty,
+                pos.qty_m3_helper,
+                pos.crew_size,
+                pos.wage_czk_ph,
+                pos.shift_hours,
+                pos.days
+              );
+            }
+
+            const insertPositionsSql = `
+              INSERT INTO positions (id, bridge_id, part_name, item_name, subtype, unit, qty, qty_m3_helper, crew_size, wage_czk_ph, shift_hours, days)
+              VALUES ${positionPlaceholders}
+              ON CONFLICT (id) DO NOTHING
+            `;
+
+            await client.query(insertPositionsSql, positionValues);
+            logger.info(`[CREATE PROJECT] ✓ Created ${templates.length} default positions with unified defaults`);
+          }
         } catch (posError) {
-          // Warn but don't fail if positions already exist or table has different schema
+          // Warn but don't fail if positions table has different schema
           logger.warn(`[CREATE PROJECT] ⚠️  Could not create default positions (may not be critical):`, posError.message);
         }
       }
