@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URS Matcher Kiosk</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="root" class="app-container">
+    <header class="app-header">
+      <div class="header-content">
+        <h1>🏗️ URS Matcher Kiosk</h1>
+        <p class="subtitle">Automatické vyhledání pozic v katalogu ÚRS</p>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <div id="uploadSection" class="section active">
+        <div class="section-content">
+          <h2>Možnosti zpracování</h2>
+
+          <div class="action-grid">
+            <!-- File Upload -->
+            <div class="action-card">
+              <div class="action-icon">📁</div>
+              <h3>Nahrát soubor</h3>
+              <p>Excel (.xlsx), ODS (.ods) nebo CSV (.csv)</p>
+
+              <div class="file-upload-area" id="fileDropZone">
+                <input type="file" id="fileInput" accept=".xlsx,.xls,.ods,.csv" hidden>
+                <span class="upload-text">Klikněte nebo táhněte soubor sem</span>
+              </div>
+
+              <button class="btn btn-primary" id="uploadBtn" disabled>
+                Nahrát a zpracovat
+              </button>
+            </div>
+
+            <!-- Text Input -->
+            <div class="action-card">
+              <div class="action-icon">✏️</div>
+              <h3>Vložit text ručně</h3>
+              <p>Jedná položka, například: "Beton C25/30 - 25 m3"</p>
+
+              <textarea id="textInput" placeholder="Podkladní beton C25/30 tl. 100 mm pod ZD&#10;Množství: 25 m3&#10;MJ: m3" rows="4"></textarea>
+
+              <div class="text-input-controls">
+                <input type="number" id="quantityInput" placeholder="Množství" value="0" min="0" step="0.1">
+                <input type="text" id="unitInput" placeholder="MJ (m3, m2, ks...)" value="m3">
+              </div>
+
+              <button class="btn btn-primary" id="matchBtn">
+                Vyhledat pozice
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div id="resultsSection" class="section hidden">
+        <div class="section-content">
+          <div class="results-header">
+            <h2 id="resultsTitle">Výsledky hledání</h2>
+            <button class="btn btn-secondary" id="backBtn">← Zpět</button>
+          </div>
+
+          <div id="resultsContainer" class="results-container">
+            <div class="loading">Načítání výsledků...</div>
+          </div>
+
+          <div class="results-actions">
+            <button class="btn btn-success" id="exportBtn">
+              📥 Stáhnout Excel
+            </button>
+            <button class="btn btn-secondary" id="copyBtn">
+              📋 Kopírovat do schránky
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error Section -->
+      <div id="errorSection" class="section hidden">
+        <div class="section-content error-content">
+          <h2>❌ Chyba</h2>
+          <p id="errorMessage"></p>
+          <button class="btn btn-secondary" id="errorBackBtn">
+            ← Zpět na úvod
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="app-footer">
+      <p>URS Matcher Service v1.0 | <a href="/health">Stav systému</a></p>
+    </footer>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>

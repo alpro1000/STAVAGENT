@@ -1,0 +1,50 @@
+{
+  "name": "urs-matcher-service",
+  "version": "0.1.0",
+  "description": "URS Matcher Service - Web kiosk for ÚRS position matching",
+  "main": "src/app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules npx jest --coverage",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules npx jest --watch",
+    "init-db": "node src/db/init.js",
+    "lint": "eslint src --fix",
+    "format": "prettier --write \"src/**/*.js\""
+  },
+  "keywords": [
+    "urs",
+    "construction",
+    "estimating",
+    "czech",
+    "kiosk"
+  ],
+  "author": "STAVAGENT Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "uuid": "^9.0.0",
+    "multer": "^1.4.5-lts.1",
+    "xlsx": "^0.18.5",
+    "sqlite3": "^5.1.6",
+    "sqlite": "^5.0.1",
+    "lodash": "^4.17.21",
+    "winston": "^3.11.0",
+    "joi": "^17.11.0",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.52.0",
+    "prettier": "^3.0.3"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  }
+}
