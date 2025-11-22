@@ -255,8 +255,15 @@ router.post('/', upload.single('file'), async (req, res) => {
       try {
         const localPositions = extractConcretePositions(parseResult.raw_rows, 'SO_AUTO');
 
-        if (localPositions.length > 0) {
-          logger.info(`[Upload] ✅ Local parser found ${localPositions.length} concrete positions`);
+        // IMPROVED FALLBACK: Create project if we have ANY data rows
+        // Even if parser couldn't extract properly-structured positions
+        const hasDataRows = parseResult.raw_rows.some(row =>
+          Object.values(row).some(val => val !== null && val !== '' && val !== undefined)
+        );
+
+        if (localPositions.length > 0 || hasDataRows) {
+          const positionCount = localPositions.length > 0 ? localPositions.length : parseResult.raw_rows.length;
+          logger.info(`[Upload] ✅ Local parser found ${positionCount} potential positions/rows`);
 
           // Create a generic project from local data
           projectsForImport.push({
@@ -269,9 +276,9 @@ router.post('/', upload.single('file'), async (req, res) => {
             pd_weeks: 0
           });
 
-          parsedPositionsFromCORE = localPositions;
+          parsedPositionsFromCORE = localPositions.length > 0 ? localPositions : parseResult.raw_rows;
           sourceOfProjects = 'local_extractor';
-          logger.info('[Upload] 🎯 Created project from local parser data');
+          logger.info(`[Upload] 🎯 Created project from local parser data (${positionCount} rows)`);
         }
       } catch (localError) {
         logger.warn(`[Upload] ⚠️ Local parser also failed: ${localError.message}`);
