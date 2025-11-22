@@ -16,5 +16,7 @@ export default {
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '/tests/'
-  ]
+  ],
+  // Make jest globals available in ES modules
+  injectGlobals: true
 };
