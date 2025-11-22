@@ -260,9 +260,10 @@ router.post('/', async (req, res) => {
             logger.warn(`[CREATE PROJECT] ⚠️  createDefaultPositions returned empty array`);
           } else {
             // Build batch INSERT statement
+            // Note: 12 columns require 12 placeholders per position
             const positionPlaceholders = defaultPositions.map((_, idx) => {
-              const offset = idx * 11;
-              return `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10}, $${offset + 11})`;
+              const offset = idx * 12;  // 12 columns: id, bridge_id, part_name, item_name, subtype, unit, qty, qty_m3_helper, crew_size, wage_czk_ph, shift_hours, days
+              return `($${offset + 1}, $${offset + 2}, $${offset + 3}, $${offset + 4}, $${offset + 5}, $${offset + 6}, $${offset + 7}, $${offset + 8}, $${offset + 9}, $${offset + 10}, $${offset + 11}, $${offset + 12})`;
             }).join(',');
 
             const positionValues = [];
