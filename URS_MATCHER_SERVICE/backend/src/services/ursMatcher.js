@@ -1,0 +1,104 @@
+/**
+ * URS Matcher Service
+ * Matches work descriptions with URS catalog items
+ */
+
+import { getDatabase } from '../db/init.js';
+import { normalizeText } from '../utils/textNormalizer.js';
+import { logger } from '../utils/logger.js';
+
+const CONFIDENCE_THRESHOLDS = {
+  EXACT: 0.95,
+  HIGH: 0.8,
+  MEDIUM: 0.6,
+  LOW: 0.3
+};
+
+export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
+  try {
+    logger.debug(`[URSMatcher] Matching: "${text.substring(0, 50)}..."`);
+
+    const normalized = normalizeText(text);
+    const db = await getDatabase();
+
+    // Get all URS items
+    const items = await db.all('SELECT * FROM urs_items');
+
+    if (items.length === 0) {
+      logger.warn('[URSMatcher] No URS items in database');
+      return [];
+    }
+
+    // Score each item
+    const scored = items.map(item => {
+      const normalizedItem = normalizeText(item.urs_name);
+      const score = calculateSimilarity(normalized, normalizedItem);
+      return {
+        ...item,
+        score,
+        confidence: score > 0.8 ? 0.9 : score
+      };
+    });
+
+    // Sort by score
+    const sorted = scored.sort((a, b) => b.score - a.score);
+
+    // Return top matches
+    return sorted.slice(0, 5).map(item => ({
+      urs_code: item.urs_code,
+      urs_name: item.urs_name,
+      unit: item.unit,
+      description: item.description,
+      confidence: item.confidence
+    }));
+
+  } catch (error) {
+    logger.error(`[URSMatcher] Error: ${error.message}`);
+    return [];
+  }
+}
+
+export async function generateRelatedItems(items) {
+  // TODO: MVP-2 - Implement tech-rules
+  // For now, return empty array
+  return [];
+}
+
+/**
+ * Calculate string similarity using Levenshtein distance
+ */
+function calculateSimilarity(str1, str2) {
+  const longer = str1.length > str2.length ? str1 : str2;
+  const shorter = str1.length > str2.length ? str2 : str1;
+
+  if (longer.length === 0) {
+    return 1.0;
+  }
+
+  const editDistance = getLevenshteinDistance(longer, shorter);
+  return (longer.length - editDistance) / longer.length;
+}
+
+/**
+ * Levenshtein distance calculation
+ */
+function getLevenshteinDistance(s1, s2) {
+  const costs = {};
+  for (let i = 0; i <= s1.length; i++) {
+    let lastValue = i;
+    for (let j = 0; j <= s2.length; j++) {
+      if (i === 0) {
+        costs[j] = j;
+      } else if (j > 0) {
+        let newValue = costs[j - 1];
+        if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
+          newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+        }
+        costs[j - 1] = lastValue;
+        lastValue = newValue;
+      }
+    }
+    if (i > 0) costs[s2.length] = lastValue;
+  }
+  return costs[s2.length];
+}

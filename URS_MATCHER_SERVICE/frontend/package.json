@@ -1,0 +1,17 @@
+{
+  "name": "urs-matcher-frontend",
+  "version": "0.1.0",
+  "description": "URS Matcher Service - Frontend Kiosk UI",
+  "scripts": {
+    "start": "echo 'Frontend served via Nginx in Docker or static HTTP server'",
+    "dev": "python3 -m http.server 3000 --directory public"
+  },
+  "keywords": [
+    "urs",
+    "kiosk",
+    "construction",
+    "czech"
+  ],
+  "author": "STAVAGENT Team",
+  "license": "MIT"
+}

@@ -1,0 +1,87 @@
+version: '3.9'
+
+services:
+  # Backend API
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: urs-matcher-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - DATABASE_URL=file:/app/data/urs_matcher.db
+      - LOG_LEVEL=info
+      - CORS_ORIGIN=http://localhost:3000,http://localhost:3001,http://127.0.0.1:3001
+    volumes:
+      - ./data:/app/data
+      - ./backend/src:/app/src
+    depends_on:
+      - postgres
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - urs-network
+
+  # Frontend (Nginx)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: urs-matcher-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - urs-network
+    environment:
+      - REACT_APP_API_URL=http://backend:3001
+
+  # PostgreSQL (optional, for production)
+  postgres:
+    image: postgres:15-alpine
+    container_name: urs-matcher-postgres
+    environment:
+      POSTGRES_USER: urs_user
+      POSTGRES_PASSWORD: urs_password
+      POSTGRES_DB: urs_matcher
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/db/schema.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    networks:
+      - urs-network
+    # Uncomment to expose for local development
+    # ports:
+    #   - "5432:5432"
+
+  # Optional: pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: urs-matcher-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - urs-network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+
+networks:
+  urs-network:
+    driver: bridge
