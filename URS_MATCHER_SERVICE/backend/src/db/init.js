@@ -22,6 +22,13 @@ export async function initializeDatabase() {
   const filename = dbPath.replace('file:', '');
 
   try {
+    // Create data directory if it doesn't exist (important for Render deployment)
+    const dir = path.dirname(filename);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+      logger.info(`[DB] Created directory: ${dir}`);
+    }
+
     db = await open({
       filename,
       driver: sqlite3.Database
