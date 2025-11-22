@@ -44,7 +44,8 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Static files (frontend)
-app.use(express.static(path.join(__dirname, '../public')));
+// __dirname = backend/src, so we need to go up 2 levels to reach URS_MATCHER_SERVICE, then into frontend/public
+app.use(express.static(path.join(__dirname, '../../frontend/public')));
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 // Request logging
