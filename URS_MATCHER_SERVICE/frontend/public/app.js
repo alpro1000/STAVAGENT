@@ -356,56 +356,72 @@ function displayFileUploadResults(job) {
 }
 
 /**
- * Group items by work type based on URS name keywords
+ * Group items by TŘÍDNÍK classification code
+ * Uses first 2-3 digits of URS code to determine category
  */
 function groupItemsByWorkType(items) {
-  const categories = {
-    'Zdivo a konstrukce': ['zdivo', 'zdi', 'konstrukce', 'svislé'],
-    'Základy': ['základ', 'základov'],
-    'Bednění': ['bednění', 'bedněn'],
-    'Výztuž a armatura': ['výztuž', 'armatur', 'betonář'],
-    'Betony': ['beton', 'žb', 'železobeton'],
-    'Překlady': ['překlad'],
-    'Prostupy': ['prostup'],
-    'Sloupy a pilíře': ['sloup', 'pilíř'],
-    'Stropy': ['strop'],
-    'Izolace': ['izolac', 'hydroizolac'],
-    'Lešení': ['lešen', 'lešení'],
-    'Ostatní': []  // catch-all
-  };
-
   const grouped = {};
 
   items.forEach(item => {
-    const nameLC = (item.urs_name || item.input_text || '').toLowerCase();
+    const ursCode = item.urs_code || '';
 
-    let matched = false;
-    for (const [category, keywords] of Object.entries(categories)) {
-      if (category === 'Ostatní') continue;
+    // Extract prefix (first 2 digits for main category)
+    const prefix = ursCode.substring(0, 2);
 
-      if (keywords.some(kw => nameLC.includes(kw))) {
-        if (!grouped[category]) grouped[category] = [];
-        grouped[category].push(item);
-        matched = true;
-        break;
-      }
+    // Get category name from first occurrence
+    let categoryName = `${prefix} - ${item.urs_name || 'Ostatní'}`;
+
+    // Try to extract general category from URS name
+    // Use first 20 characters as category identifier
+    const shortName = (item.urs_name || item.input_text || 'Ostatní').substring(0, 30);
+
+    // Group by prefix + general category name
+    const category = `${prefix} - ${getCategoryNameFromCode(prefix)}`;
+
+    if (!grouped[category]) {
+      grouped[category] = [];
     }
-
-    // If no match, add to Ostatní
-    if (!matched) {
-      if (!grouped['Ostatní']) grouped['Ostatní'] = [];
-      grouped['Ostatní'].push(item);
-    }
+    grouped[category].push(item);
   });
 
-  // Remove empty categories
-  Object.keys(grouped).forEach(key => {
-    if (grouped[key].length === 0) {
-      delete grouped[key];
-    }
-  });
+  // Sort categories by code prefix
+  const sorted = Object.keys(grouped).sort().reduce((obj, key) => {
+    obj[key] = grouped[key];
+    return obj;
+  }, {});
 
-  return grouped;
+  return sorted;
+}
+
+/**
+ * Get general category name from TŘÍDNÍK code prefix
+ * Basic mapping for common categories - will be enhanced with API call later
+ */
+function getCategoryNameFromCode(prefix) {
+  const commonCategories = {
+    '0': 'Vedlejší náklady',
+    '1': 'Přípravné práce',
+    '2': 'Zakládání',
+    '27': 'Betonové základy',
+    '28': 'Ostatní základy',
+    '3': 'Svislé konstrukce',
+    '31': 'Zdivo',
+    '32': 'Betonové svislé konstrukce',
+    '33': 'Svislé konstrukce',
+    '34': 'Sloupy a pilíře',
+    '4': 'Vodorovné konstrukce',
+    '41': 'Stropy',
+    '42': 'Vodorovné konstrukce',
+    '5': 'Komunikace',
+    '6': 'Úpravy povrchů',
+    '7': 'Klenby a troubý',
+    '8': 'Trubní vedení',
+    '82': 'Kanalizace',
+    '83': 'Vodovod',
+    '9': 'Ostatní konstrukce'
+  };
+
+  return commonCategories[prefix] || 'Ostatní práce';
 }
 
 function displayTextMatchResults(data) {

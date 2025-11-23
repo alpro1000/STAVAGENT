@@ -15,6 +15,7 @@ import { logger } from './utils/logger.js';
 import jobsRouter from './api/routes/jobs.js';
 import catalogRouter from './api/routes/catalog.js';
 import healthRouter from './api/routes/health.js';
+import tridnikRouter from './api/routes/tridnik.js';
 
 // Middleware
 import { errorHandler } from './api/middleware/errorHandler.js';
@@ -82,6 +83,7 @@ app.use('/api/health', healthRouter);
 // API routes
 app.use('/api/jobs', jobsRouter);
 app.use('/api/urs-catalog', catalogRouter);
+app.use('/api/tridnik', tridnikRouter);
 
 // Serve frontend (SPA fallback)
 app.get('*', (req, res) => {
