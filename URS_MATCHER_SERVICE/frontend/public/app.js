@@ -201,11 +201,18 @@ async function matchText() {
     const url = `${API_URL}/jobs/text-match`;
     debugLog('🔍 Sending POST to:', url);
 
+    // Create abort controller for timeout
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+
     const response = await fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     debugLog('🔍 Response status:', { status: response.status, ok: response.ok });
 
@@ -215,7 +222,14 @@ async function matchText() {
     }
 
     const data = await response.json();
-    debugLog('🔍 Search results received:', { candidates: data.candidates?.length });
+    debugLog('🔍 ✓ Raw response data:', data);
+    debugLog('🔍 ✓ Candidates count:', data.candidates?.length || 0);
+    debugLog('🔍 ✓ Related items count:', data.related_items?.length || 0);
+
+    if (data.candidates && data.candidates.length > 0) {
+      debugLog('🔍 ✓ First candidate:', data.candidates[0]);
+    }
+
     currentResults = data;
 
     resultsTitle.textContent = 'Výsledky vyhledávání';
@@ -223,8 +237,13 @@ async function matchText() {
     displayTextMatchResults(data);
 
   } catch (error) {
-    debugError('🔍 Search error:', error);
-    showError(`Chyba hledání: ${error.message}`);
+    if (error.name === 'AbortError') {
+      debugError('🔍 Request timeout after 30 seconds');
+      showError('Časový limit vypršel (30s). Zkuste to prosím znovu.');
+    } else {
+      debugError('🔍 Search error:', error);
+      showError(`Chyba hledání: ${error.message}`);
+    }
   } finally {
     matchBtn.disabled = false;
     matchBtn.textContent = 'Vyhledat pozice';
@@ -323,18 +342,25 @@ function displayFileUploadResults(job) {
 }
 
 function displayTextMatchResults(data) {
+  debugLog('📋 displayTextMatchResults() called with data:', data);
+
   const candidates = data.candidates || [];
   const relatedItems = data.related_items || [];
+
+  debugLog('📋 Processing candidates:', candidates.length);
+  debugLog('📋 Processing related items:', relatedItems.length);
 
   let html = '<div class="text-match-results">';
 
   if (candidates.length > 0) {
+    debugLog('📋 Building table for', candidates.length, 'candidates');
     html += '<h3>🎯 Doporučené pozice ÚRS:</h3>';
     html += '<table class="results-table"><thead><tr>';
     html += '<th>Kód</th><th>Název</th><th>MJ</th><th>Jistota</th>';
     html += '</tr></thead><tbody>';
 
-    candidates.forEach((item) => {
+    candidates.forEach((item, idx) => {
+      debugLog(`📋 Building row ${idx + 1}:`, item);
       const confidenceClass = item.confidence > 0.8
         ? 'confidence-high'
         : 'confidence-medium';
@@ -353,6 +379,7 @@ function displayTextMatchResults(data) {
   }
 
   if (relatedItems.length > 0) {
+    debugLog('📋 Adding related items section');
     html += '<h3>⚙️ Doporučené doplňkové práce:</h3>';
     html += '<ul>';
     relatedItems.forEach((item) => {
@@ -362,11 +389,17 @@ function displayTextMatchResults(data) {
   }
 
   if (candidates.length === 0) {
+    debugLog('📋 No candidates found, showing empty message');
     html += '<p class="loading">Nebyly nalezeny žádné pozice</p>';
   }
 
   html += '</div>';
+
+  debugLog('📋 Setting resultsContainer.innerHTML, container exists:', !!resultsContainer);
+  debugLog('📋 HTML length:', html.length);
+
   resultsContainer.innerHTML = html;
+  debugLog('📋 ✓ Results displayed successfully');
 }
 
 // ============================================================================
