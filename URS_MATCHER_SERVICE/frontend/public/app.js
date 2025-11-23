@@ -278,67 +278,134 @@ function displayFileUploadResults(job) {
     return;
   }
 
-  const table = document.createElement('table');
-  table.className = 'results-table';
-
-  // Header
-  const thead = document.createElement('thead');
-  thead.innerHTML = `
-    <tr>
-      <th>Řádek</th>
-      <th>Vstupní text</th>
-      <th>Kód ÚRS</th>
-      <th>Název</th>
-      <th>MJ</th>
-      <th>Množství</th>
-      <th>Jistota</th>
-      <th>Typ</th>
-    </tr>
-  `;
-  table.appendChild(thead);
-
-  // Body
-  const tbody = document.createElement('tbody');
-  items.forEach((item, idx) => {
-    const row = document.createElement('tr');
-
-    const confidenceClass = item.confidence > 0.8
-      ? 'confidence-high'
-      : item.confidence > 0.5
-        ? 'confidence-medium'
-        : 'confidence-low';
-
-    const typeLabel = item.extra_generated ? '⚠️ Doplňková' : 'Přímá shoda';
-    const typeBadge = item.extra_generated
-      ? `<span class="badge-extra">${typeLabel}</span>`
-      : typeLabel;
-
-    row.innerHTML = `
-      <td>${item.input_row_id}</td>
-      <td><small>${item.input_text.substring(0, 50)}...</small></td>
-      <td><strong>${item.urs_code}</strong></td>
-      <td>${item.urs_name}</td>
-      <td>${item.unit}</td>
-      <td>${item.quantity}</td>
-      <td><span class="confidence-badge ${confidenceClass}">${(item.confidence * 100).toFixed(0)}%</span></td>
-      <td>${typeBadge}</td>
-    `;
-
-    tbody.appendChild(row);
-  });
-  table.appendChild(tbody);
+  // Group items by work type
+  const grouped = groupItemsByWorkType(items);
 
   resultsContainer.innerHTML = '';
-  resultsContainer.appendChild(table);
+
+  // Display each group
+  Object.entries(grouped).forEach(([category, groupItems]) => {
+    // Group header
+    const groupHeader = document.createElement('h3');
+    groupHeader.className = 'group-header';
+    groupHeader.innerHTML = `📂 ${category} <span class="group-count">(${groupItems.length} pozic)</span>`;
+    resultsContainer.appendChild(groupHeader);
+
+    // Group table
+    const table = document.createElement('table');
+    table.className = 'results-table grouped-table';
+
+    // Header
+    const thead = document.createElement('thead');
+    thead.innerHTML = `
+      <tr>
+        <th>Řádek</th>
+        <th>Vstupní text</th>
+        <th>Kód ÚRS</th>
+        <th>Název</th>
+        <th>MJ</th>
+        <th>Množství</th>
+        <th>Jistota</th>
+        <th>Typ</th>
+      </tr>
+    `;
+    table.appendChild(thead);
+
+    // Body
+    const tbody = document.createElement('tbody');
+    groupItems.forEach((item) => {
+      const row = document.createElement('tr');
+
+      const confidenceClass = item.confidence > 0.8
+        ? 'confidence-high'
+        : item.confidence > 0.5
+          ? 'confidence-medium'
+          : 'confidence-low';
+
+      const typeLabel = item.extra_generated ? '⚠️ Doplňková' : 'Přímá shoda';
+      const typeBadge = item.extra_generated
+        ? `<span class="badge-extra">${typeLabel}</span>`
+        : typeLabel;
+
+      row.innerHTML = `
+        <td>${item.input_row_id}</td>
+        <td><small>${item.input_text.substring(0, 50)}...</small></td>
+        <td><strong>${item.urs_code}</strong></td>
+        <td>${item.urs_name}</td>
+        <td>${item.unit}</td>
+        <td>${item.quantity}</td>
+        <td><span class="confidence-badge ${confidenceClass}">${(item.confidence * 100).toFixed(0)}%</span></td>
+        <td>${typeBadge}</td>
+      `;
+
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+
+    resultsContainer.appendChild(table);
+  });
 
   // Summary
   const summary = document.createElement('div');
   summary.className = 'results-summary';
   summary.innerHTML = `
-    <p><strong>Součet:</strong> ${items.length} pozic zpracováno
+    <p><strong>Součet:</strong> ${items.length} pozic zpracováno ve ${Object.keys(grouped).length} kategoriích
     (${items.filter(i => !i.extra_generated).length} přímých, ${items.filter(i => i.extra_generated).length} doplňkových)</p>
   `;
   resultsContainer.appendChild(summary);
+}
+
+/**
+ * Group items by work type based on URS name keywords
+ */
+function groupItemsByWorkType(items) {
+  const categories = {
+    'Zdivo a konstrukce': ['zdivo', 'zdi', 'konstrukce', 'svislé'],
+    'Základy': ['základ', 'základov'],
+    'Bednění': ['bednění', 'bedněn'],
+    'Výztuž a armatura': ['výztuž', 'armatur', 'betonář'],
+    'Betony': ['beton', 'žb', 'železobeton'],
+    'Překlady': ['překlad'],
+    'Prostupy': ['prostup'],
+    'Sloupy a pilíře': ['sloup', 'pilíř'],
+    'Stropy': ['strop'],
+    'Izolace': ['izolac', 'hydroizolac'],
+    'Lešení': ['lešen', 'lešení'],
+    'Ostatní': []  // catch-all
+  };
+
+  const grouped = {};
+
+  items.forEach(item => {
+    const nameLC = (item.urs_name || item.input_text || '').toLowerCase();
+
+    let matched = false;
+    for (const [category, keywords] of Object.entries(categories)) {
+      if (category === 'Ostatní') continue;
+
+      if (keywords.some(kw => nameLC.includes(kw))) {
+        if (!grouped[category]) grouped[category] = [];
+        grouped[category].push(item);
+        matched = true;
+        break;
+      }
+    }
+
+    // If no match, add to Ostatní
+    if (!matched) {
+      if (!grouped['Ostatní']) grouped['Ostatní'] = [];
+      grouped['Ostatní'].push(item);
+    }
+  });
+
+  // Remove empty categories
+  Object.keys(grouped).forEach(key => {
+    if (grouped[key].length === 0) {
+      delete grouped[key];
+    }
+  });
+
+  return grouped;
 }
 
 function displayTextMatchResults(data) {

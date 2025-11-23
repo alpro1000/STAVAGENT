@@ -406,3 +406,35 @@ textarea {
     padding: 0.5rem 0.75rem;
   }
 }
+
+/* Grouped Results */
+.group-header {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.group-header:first-of-type {
+  margin-top: 0;
+}
+
+.group-count {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  font-weight: normal;
+}
+
+.grouped-table {
+  margin-bottom: 2rem;
+}
+
+.grouped-table:last-of-type {
+  margin-bottom: 0;
+}
