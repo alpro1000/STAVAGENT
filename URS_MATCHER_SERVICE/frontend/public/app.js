@@ -409,21 +409,30 @@ function displayTextMatchResults(data) {
 function showUpload() {
   debugLog('📄 Showing upload section');
   uploadSection.classList.add('active');
+  uploadSection.classList.remove('hidden');
+  resultsSection.classList.remove('active');
   resultsSection.classList.add('hidden');
+  errorSection.classList.remove('active');
   errorSection.classList.add('hidden');
 }
 
 function showResults() {
   debugLog('📋 Showing results section');
+  uploadSection.classList.remove('active');
   uploadSection.classList.add('hidden');
+  resultsSection.classList.add('active');
   resultsSection.classList.remove('hidden');
+  errorSection.classList.remove('active');
   errorSection.classList.add('hidden');
 }
 
 function showError(message) {
   debugError('⚠️ Showing error:', message);
+  uploadSection.classList.remove('active');
   uploadSection.classList.add('hidden');
+  resultsSection.classList.remove('active');
   resultsSection.classList.add('hidden');
+  errorSection.classList.add('active');
   errorSection.classList.remove('hidden');
   errorMessage.textContent = message;
 }
