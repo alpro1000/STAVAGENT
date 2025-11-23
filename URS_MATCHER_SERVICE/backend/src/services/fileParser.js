@@ -25,13 +25,48 @@ export async function parseExcelFile(filePath) {
     const rows = [];
     const headers = data[0] || [];
 
+    // Log found headers for debugging
+    logger.info(`[FileParser] Found ${headers.length} columns:`, headers.map(h => h?.toString().trim()).join(', '));
+
     // Find columns
-    const descCol = findColumn(headers, ['popis', 'description', 'název', 'položka']);
-    const qtyCol = findColumn(headers, ['množství', 'quantity', 'mnozstvi', 'qty']);
+    const descCol = findColumn(headers, ['popis', 'description', 'název', 'položka', 'text', 'práce', 'polozka']);
+    const qtyCol = findColumn(headers, ['množství', 'quantity', 'mnozstvi', 'qty', 'pocet']);
     const unitCol = findColumn(headers, ['mj', 'unit', 'jednotka']);
 
+    logger.info(`[FileParser] Column mapping: description=${descCol}, quantity=${qtyCol}, unit=${unitCol}`);
+
     if (descCol === -1) {
-      throw new Error('Could not find description column');
+      // If no description column found, try to use first non-empty column
+      const firstNonEmpty = headers.findIndex(h => h && h.toString().trim().length > 0);
+      if (firstNonEmpty !== -1) {
+        logger.warn(`[FileParser] Description column not found by keywords, using first column (${firstNonEmpty}): "${headers[firstNonEmpty]}"`);
+        const descColFallback = firstNonEmpty;
+
+        // Parse data rows with fallback
+        for (let i = 1; i < data.length; i++) {
+          const row = data[i];
+          if (!row || row.length === 0) continue;
+
+          const description = row[descColFallback]?.toString().trim();
+          if (!description) continue;
+
+          rows.push({
+            description,
+            quantity: parseNumber(row[qtyCol]) || 0,
+            unit: row[unitCol]?.toString().trim() || 'ks'
+          });
+        }
+
+        logger.info(`[FileParser] Successfully parsed ${rows.length} rows (using fallback column)`);
+        return rows;
+      }
+
+      // If still no column found, throw detailed error
+      throw new Error(
+        `Could not find description column. ` +
+        `Expected one of: popis, description, název, položka, text, práce. ` +
+        `Found columns: ${headers.map(h => `"${h}"`).join(', ')}`
+      );
     }
 
     // Parse data rows
