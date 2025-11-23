@@ -17,6 +17,7 @@ let categoriesCache = null;
 
 /**
  * Parse TŘÍDNÍK XML file and build category mapping
+ * Uses Description field for fuller context, falls back to Name if not available
  * Returns: { "0": "Vedlejší rozpočtové náklady", "01": "Průzkumné práce", ... }
  */
 export async function loadTridnik() {
@@ -41,9 +42,14 @@ export async function loadTridnik() {
       items.forEach(item => {
         const id = item.ID?.[0];
         const name = item.Name?.[0];
+        const description = item.Description?.[0];
 
-        if (id && name) {
-          categories[id] = name;
+        if (id) {
+          // Prefer Description for fuller context, fallback to Name
+          const label = description || name;
+          if (label) {
+            categories[id] = label;
+          }
         }
 
         // Recursively process children
