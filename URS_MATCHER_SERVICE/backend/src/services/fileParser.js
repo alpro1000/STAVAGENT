@@ -169,6 +169,14 @@ function parseUnstructuredFile(data) {
  *   "Lešení fasádní" → {description: "Lešení fasádní", quantity: 0, unit: "ks"}
  */
 function parseLineWithRegex(line) {
+  // Normalize Unicode superscripts to regular characters
+  // m² → m2, m³ → m3
+  const normalizedLine = line
+    .replace(/m²/g, 'm2')
+    .replace(/m³/g, 'm3')
+    .replace(/²/g, '2')
+    .replace(/³/g, '3');
+
   // Common Czech construction units (case-insensitive)
   const unitPattern = '(m3|m2|m|ks|kus|kusy|t|kg|g|l|ml|hod|h|den|dny)';
 
@@ -179,7 +187,7 @@ function parseLineWithRegex(line) {
     'i'
   );
 
-  const match = line.match(pattern);
+  const match = normalizedLine.match(pattern);
 
   if (match) {
     const description = match[1].trim();
@@ -191,7 +199,7 @@ function parseLineWithRegex(line) {
 
   // Fallback: if no number found, treat entire line as description
   return {
-    description: line.trim(),
+    description: normalizedLine.trim(),
     quantity: 0,
     unit: 'ks'
   };
