@@ -511,6 +511,54 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
 
       logger.info(`[JOBS] Block analysis completed for: ${blockName}`);
 
+      // Phase 3: Multi-Role validation (if available)
+      try {
+        const { checkMultiRoleAvailability, validateBoqBlock } =
+          await import('../../services/multiRoleClient.js');
+
+        const multiRoleAvailable = await checkMultiRoleAvailability();
+
+        if (multiRoleAvailable) {
+          logger.info(`[JOBS] Running Multi-Role validation for block: ${blockName}`);
+
+          const multiRoleValidation = await validateBoqBlock(boqBlock, projectContext);
+
+          logger.info(`[JOBS] Multi-Role validation completed (completeness: ${multiRoleValidation.completeness_score}%)`);
+
+          // Enhance block analysis with Multi-Role insights
+          blockAnalysis.multi_role_validation = {
+            completeness_score: multiRoleValidation.completeness_score,
+            missing_items: multiRoleValidation.missing_items,
+            warnings: multiRoleValidation.warnings,
+            critical_issues: multiRoleValidation.critical_issues,
+            confidence: multiRoleValidation.confidence,
+            roles_consulted: multiRoleValidation.roles_consulted
+          };
+
+          // Add missing items to global_related_items if not already present
+          if (multiRoleValidation.missing_items.length > 0) {
+            if (!blockAnalysis.global_related_items) {
+              blockAnalysis.global_related_items = [];
+            }
+
+            multiRoleValidation.missing_items.forEach(item => {
+              blockAnalysis.global_related_items.push({
+                urs_code: null,
+                urs_name: item,
+                reason: 'Identified as missing by Multi-Role AI validation',
+                source: 'multi_role_validator'
+              });
+            });
+          }
+
+        } else {
+          logger.info(`[JOBS] Multi-Role API not available, skipping validation`);
+        }
+      } catch (multiRoleError) {
+        logger.warn(`[JOBS] Multi-Role validation failed: ${multiRoleError.message}`);
+        // Continue without Multi-Role validation (graceful degradation)
+      }
+
       blockResults.push({
         block_name: blockName,
         block_id: boqBlock.block_id,
