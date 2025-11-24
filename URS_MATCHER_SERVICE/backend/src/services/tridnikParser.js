@@ -99,7 +99,7 @@ export async function getCategoryForCode(ursCode) {
 }
 
 /**
- * Group items by TŘÍDNÍK categories
+ * Group items by TŘÍDNÍK categories (requires urs_code already assigned)
  */
 export async function groupByTridnik(items) {
   const grouped = {};
@@ -112,6 +112,62 @@ export async function groupByTridnik(items) {
     }
     grouped[category].push(item);
   }
+
+  return grouped;
+}
+
+/**
+ * Group items by work type based on keywords in description
+ * For MVP Фаза 1: Simple keyword-based grouping BEFORE URS code search
+ *
+ * @param {Array} items - Array of work items { description, quantity, unit }
+ * @returns {Object} Grouped items { "Zdivo a svislé konstrukce": [...], "Základy": [...] }
+ */
+export function groupItemsByWorkType(items) {
+  const grouped = {};
+
+  // Define keyword-based groups for MVP
+  const workTypeKeywords = {
+    'Základy': ['základ', 'patk', 'pas', 'pilot', 'podklad'],
+    'Zdivo a svislé konstrukce': ['zdivo', 'zd', 'tvárnic', 'porotherm', 'cihel', 'blok'],
+    'ŽB konstrukce': ['žb', 'železobeton', 'beton', 'betono'],
+    'Bednění': ['bednění', 'bedně'],
+    'Výztuž': ['výztuž', 'ocel', 'armatury'],
+    'Výkopy': ['výkop', 'rýh', 'jáma', 'výkopové'],
+    'Zásypy': ['zásyp', 'násyp', 'hutně'],
+    'Izolace': ['izolac', 'hydroizolac', 'tepel'],
+    'Prostupy': ['prostup', 'otvor', 'průraz'],
+    'Omítky': ['omítk', 'štukov', 'vápenoc'],
+    'Podlahy': ['podlah', 'nášlapn', 'dlažb']
+  };
+
+  for (const item of items) {
+    const desc = item.description.toLowerCase();
+    let matched = false;
+
+    // Try to match description to a work type
+    for (const [workType, keywords] of Object.entries(workTypeKeywords)) {
+      if (keywords.some(keyword => desc.includes(keyword))) {
+        if (!grouped[workType]) {
+          grouped[workType] = [];
+        }
+        grouped[workType].push(item);
+        matched = true;
+        break;
+      }
+    }
+
+    // If no match, put in "Ostatní práce"
+    if (!matched) {
+      const otherGroup = 'Ostatní práce';
+      if (!grouped[otherGroup]) {
+        grouped[otherGroup] = [];
+      }
+      grouped[otherGroup].push(item);
+    }
+  }
+
+  logger.info(`[TŘÍDNÍK] Grouped ${items.length} items into ${Object.keys(grouped).length} work types`);
 
   return grouped;
 }

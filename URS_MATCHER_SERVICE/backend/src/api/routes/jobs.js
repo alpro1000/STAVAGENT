@@ -406,4 +406,149 @@ router.post('/:jobId/export', async (req, res) => {
   }
 });
 
+// ============================================================================
+// POST /api/jobs/block-match
+// Analyze a block of work items with project context
+// MVP: Фаза 1 - ручной project_context input
+// ============================================================================
+
+router.post('/block-match', upload.single('file'), async (req, res) => {
+  let filePath = null;
+
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file provided' });
+    }
+
+    filePath = req.file.path;
+    const jobId = uuidv4();
+
+    // Get project context from request body
+    const projectContext = req.body.project_context
+      ? JSON.parse(req.body.project_context)
+      : {
+          building_type: 'neurčeno',
+          storeys: 0,
+          main_system: [],
+          notes: []
+        };
+
+    logger.info(`[JOBS] Block-match started: ${jobId}`);
+    logger.info(`[JOBS] Project context: ${JSON.stringify(projectContext)}`);
+
+    // Parse the file
+    const rows = await parseExcelFile(filePath);
+    logger.info(`[JOBS] Parsed ${rows.length} rows from ${req.file.originalname}`);
+
+    if (rows.length === 0) {
+      return res.status(400).json({ error: 'No data rows found in file' });
+    }
+
+    // Import TŘÍDNÍK grouping function
+    const { groupItemsByWorkType } = await import('../../services/tridnikParser.js');
+
+    // Group rows by TŘÍDNÍK classification
+    const grouped = groupItemsByWorkType(rows);
+    const blockNames = Object.keys(grouped);
+
+    logger.info(`[JOBS] Grouped into ${blockNames.length} blocks: ${blockNames.join(', ')}`);
+
+    // Save job to database
+    const db = await getDatabase();
+    await db.run(
+      `INSERT INTO jobs (id, filename, status, total_rows, created_at)
+       VALUES (?, ?, ?, ?, datetime('now'))`,
+      [jobId, req.file.originalname, 'processing', rows.length]
+    );
+
+    // Process each block
+    const blockResults = [];
+
+    for (const [blockName, blockRows] of Object.entries(grouped)) {
+      logger.info(`[JOBS] Processing block: ${blockName} (${blockRows.length} rows)`);
+
+      // Prepare block structure
+      const boqBlock = {
+        block_id: blockName.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase(),
+        title: blockName,
+        rows: blockRows.map((row, idx) => ({
+          row_id: idx + 1,
+          group: blockName,
+          raw_text: row.description,
+          level: '1NP', // TODO: Extract from description if available
+          quantity: row.quantity,
+          unit: row.unit
+        }))
+      };
+
+      // Search URS candidates for each row in parallel
+      logger.info(`[JOBS] Searching URS candidates for ${blockRows.length} rows...`);
+
+      const ursCandidatesArray = await Promise.all(
+        blockRows.map(async (row) => {
+          try {
+            const candidates = await matchUrsItems(row.description, row.quantity, row.unit);
+            return candidates.slice(0, 5); // Top 5 candidates
+          } catch (error) {
+            logger.warn(`[JOBS] Failed to find candidates for "${row.description}": ${error.message}`);
+            return [];
+          }
+        })
+      );
+
+      // Convert array to object { row_id: candidates[] }
+      const ursCandidates = {};
+      blockRows.forEach((row, idx) => {
+        ursCandidates[idx + 1] = ursCandidatesArray[idx] || [];
+      });
+
+      logger.info(`[JOBS] Found candidates for ${Object.keys(ursCandidates).length} rows`);
+
+      // Call LLM for block analysis
+      const { analyzeBlock } = await import('../../services/llmClient.js');
+
+      const blockAnalysis = await analyzeBlock(projectContext, boqBlock, ursCandidates);
+
+      logger.info(`[JOBS] Block analysis completed for: ${blockName}`);
+
+      blockResults.push({
+        block_name: blockName,
+        block_id: boqBlock.block_id,
+        rows_count: blockRows.length,
+        analysis: blockAnalysis
+      });
+    }
+
+    // Update job status
+    await db.run(
+      `UPDATE jobs SET status = ?, processed_rows = ? WHERE id = ?`,
+      ['completed', rows.length, jobId]
+    );
+
+    logger.info(`[JOBS] Block-match completed: ${jobId} (${blockResults.length} blocks)`);
+
+    res.status(201).json({
+      job_id: jobId,
+      status: 'completed',
+      filename: req.file.originalname,
+      total_rows: rows.length,
+      blocks_count: blockResults.length,
+      project_context: projectContext,
+      blocks: blockResults,
+      message: 'Block analysis completed successfully'
+    });
+
+  } catch (error) {
+    logger.error(`[JOBS] Block-match error: ${error.message}`);
+    logger.error(error.stack);
+
+    // Clean up uploaded file
+    if (filePath && fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    res.status(400).json({ error: error.message });
+  }
+});
+
 export default router;

@@ -173,6 +173,146 @@ C) VALIDATE_BOQ – ПРОВЕРКА ЛОГИКИ СПИСКА РАБОТ
 }
 \`\`\`
 
+D) BOQ_BLOCK_ANALYSIS – КОНТЕКСТНЫЙ АНАЛИЗ БЛОКА РАБОТ
+Вход:
+- \`project_context_json\` – контекст проекта (тип здания, этажность, основная конструкция, грунты, экспозиция и т.д.)
+- \`boq_block\` – блок работ с группировкой (например, "Svislé konstrukce – zdivo, ŽB stěny, sloupy"):
+  - block_id (идентификатор блока)
+  - title (название блока)
+  - rows[] (строки работ: row_id, group, raw_text, level, quantity, unit)
+- \`urs_candidates\` – для каждой строки (row_id) список из 3-5 кандидатов URS
+
+Контекст проекта (пример):
+\`\`\`json
+{
+  "building_type": "bytový dům",
+  "storeys": 4,
+  "main_system": ["keramické zdivo", "ŽB stěny", "ŽB sloupy"],
+  "soil_type": "F4 (středně ulehlé písky)",
+  "exposure_classes": ["XC3", "XD2"],
+  "notes": ["výška cca 4 NP"]
+}
+\`\`\`
+
+Задача:
+1. **Понять контекст блока:**
+   - Какие конструктивные системы задействованы (zdivo, ŽB stěny, sloupy)?
+   - Какие технологические подсистемы нужны (bednění, výztuž, založení, prostupy)?
+   - Учесть project_context: если bytový dům 4 NP → нужны lešení, если zdivo → ukotvení příček.
+
+2. **Для КАЖДОЙ строки блока (row):**
+   - Выбрать ЛУЧШИЙ URS код из urs_candidates[row_id].
+   - Если кандидатов нет или все сомнительные → urs_code = null + текстовое описание.
+   - Указать: unit, confidence (0-1), reason (опираясь на text + контекст проекта).
+
+3. **Найти сопутствующие работы (related_items) для каждой строки:**
+   - Проверить технологическую цепочку:
+     * ŽB stěny → bednění stěn + výztuž stěn + případné prostupy
+     * Sloupy → bednění sloupů + výztuž sloupů
+     * Keramické zdivo → založení zdiva + věncovky + ukotvení příček
+   - Проверить, есть ли уже эти работы в блоке (не дублировать!).
+   - Предложить ТОЛЬКО обязательные работы (tech_rule).
+
+4. **Сформировать global_related_items для всего блока:**
+   - Что отсутствует на уровне ВСЕГО блока (не привязано к конкретной строке):
+     * lešení (если большой объем работ на высоте > 2.5m)
+     * přesun hmot (если не указан в отдельных позициях)
+     * ochrana konstrukcí (если требуется)
+   - Указать: urs_code (или null), urs_name, reason.
+
+5. **Block summary:**
+   - Перечислить основные системы (main_systems)
+   - Указать потенциально отсутствующие группы работ (potential_missing_work_groups)
+   - Добавить общие замечания (notes)
+
+Выход (строго JSON):
+\`\`\`json
+{
+  "mode": "boq_block_analysis",
+  "block_summary": {
+    "block_id": "SVISLE_KONSTRUKCE",
+    "main_systems": [
+      "keramické nosné zdivo Porotherm",
+      "ŽB nosné stěny C25/30",
+      "ŽB sloupy C30/37"
+    ],
+    "potential_missing_work_groups": [
+      "lešení pro zdivo a ŽB práce",
+      "prostupy v ŽB stěnách pro instalace"
+    ],
+    "notes": [
+      "Kontext projektu: bytový dům 4 NP. Kombinace keramického zdiva a ŽB vyžaduje koordinaci tech. zařízení.",
+      "Pro XD2 exposure ověřit krytí výztuže min 50mm dle ČSN EN 1992."
+    ]
+  },
+  "items": [
+    {
+      "row_id": 1,
+      "selected_urs": {
+        "urs_code": "3112389",
+        "urs_name": "Založení zdiva z broušených cihel",
+        "unit": "m2",
+        "confidence": 0.90,
+        "reason": "Založení broušeného zdiva Porotherm 175mm – odpovídá založení z broušených cihel."
+      },
+      "related_items": [],
+      "notes": []
+    },
+    {
+      "row_id": 3,
+      "selected_urs": {
+        "urs_code": "34135",
+        "urs_name": "Stěny z betonu železového C25/30",
+        "unit": "m3",
+        "confidence": 0.95,
+        "reason": "ŽB nosné stěny C25/30 XC1 – standardní položka pro železobetonové stěny. Pro outdoor změnit na XC3."
+      },
+      "related_items": [
+        {
+          "urs_code": "332351112",
+          "urs_name": "Bednění stěn oboustranné",
+          "unit": "m2",
+          "source": "tech_rule",
+          "reason": "K betonáži ŽB stěn je nutné oboustranné bednění."
+        },
+        {
+          "urs_code": "271354111",
+          "urs_name": "Ocelová betonářská výztuž B500",
+          "unit": "t",
+          "source": "tech_rule",
+          "reason": "ŽB stěny vyžadují výztuž. Odhadovaná spotřeba ~100 kg/m³."
+        }
+      ],
+      "notes": [
+        "⚠️ UPOZORNĚNÍ: XC1 není vhodná třída pro vnější stěny. Pro outdoor použít XC3 dle ČSN EN 206."
+      ]
+    }
+  ],
+  "global_related_items": [
+    {
+      "group": "lešení",
+      "urs_code": null,
+      "urs_name": "Pracovní lešení pro provádění zdiva a ŽB stěn",
+      "reason": "V bloku nejsou položky lešení. Pro bytový dům 4 NP (výška ~12m) je lešení povinné."
+    },
+    {
+      "group": "prostupy",
+      "urs_code": null,
+      "urs_name": "Prostupy instalací v ŽB stěnách",
+      "reason": "Bytový dům vyžaduje prostupy pro rozvody TZB (voda, elektřina, kanalizace). Není zmíněno v bloku."
+    }
+  ]
+}
+\`\`\`
+
+**KLÍČOVÉ ПРИНЦИПЫ для BOQ_BLOCK_ANALYSIS:**
+- Používej project_context pro technicky správná rozhodnutí (např. XC3 pro outdoor, lešení pro výšku >2.5m).
+- NIKDY nevymy šlej URS kódy – vždy vybírej z urs_candidates nebo dej urs_code: null.
+- Pro related_items: POUZE technologicky povinné práce (ne "bylo by hezké mít").
+- Pokud práce už v bloku je (i pod jiným názvem) → NEnavrhuj ji znovu.
+- Pokud si nejsi jist → confidence <0.7 + jasný komentář.
+- notes[] – pro KRITICKÁ upozornění (špatná třída betonu, chybějící norma, bezpečnost).
+
 СТИЛЬ И ЯЗЫК
 - Все názvy prací, popisy a důvody – по-чешски, как в реальных smetách.
 - Структура ответа – строго по ожиданиям вызвавшей функции (match_urs_item, generate_related_items, validate_boq).
@@ -237,5 +377,28 @@ ${JSON.stringify(candidates, null, 2)}
 
 Prosím vyber nejlépe se shodující kód ÚRS ze seznamu výše uvedených kandidátů.
 Vykládej podle schématu A) MATCH_URS_ITEM z systémového promptu.
+Vrať POUZE JSON bez dalšího textu.`;
+}
+
+/**
+ * Create a user message for BOQ_BLOCK_ANALYSIS mode
+ * @param {Object} projectContext - Project context (building type, storeys, systems, etc.)
+ * @param {Object} boqBlock - Block of work items with grouping
+ * @param {Object} ursCandidates - URS candidates for each row (row_id => candidates[])
+ */
+export function createBlockAnalysisPrompt(projectContext, boqBlock, ursCandidates) {
+  return `MODE: BOQ_BLOCK_ANALYSIS
+
+Kontext projektu:
+${JSON.stringify(projectContext, null, 2)}
+
+Blok prací k analýze:
+${JSON.stringify(boqBlock, null, 2)}
+
+URS kandidáti pro každou pozici (row_id → kandidáti):
+${JSON.stringify(ursCandidates, null, 2)}
+
+Prosím proveď komplexní analýzu bloku prací s ohledem na kontext projektu.
+Vykládej podle schématu D) BOQ_BLOCK_ANALYSIS z systémového promptu.
 Vrať POUZE JSON bez dalšího textu.`;
 }
