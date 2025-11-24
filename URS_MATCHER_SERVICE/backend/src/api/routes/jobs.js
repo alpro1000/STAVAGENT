@@ -551,4 +551,93 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
   }
 });
 
+// ============================================================================
+// POST /api/jobs/parse-document
+// Parse document and extract project context using STAVAGENT SmartParser
+// Фаза 2: Auto-context extraction
+// ============================================================================
+
+router.post('/parse-document', upload.single('file'), async (req, res) => {
+  let filePath = null;
+
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file provided' });
+    }
+
+    filePath = req.file.path;
+    const jobId = uuidv4();
+
+    logger.info(`[JOBS] Document parsing started: ${jobId}`);
+    logger.info(`[JOBS] File: ${req.file.originalname}`);
+
+    // Import STAVAGENT client
+    const { parseDocumentWithStavagent, extractProjectContext, checkStavagentAvailability } =
+      await import('../../services/stavagentClient.js');
+
+    // Check if STAVAGENT is available
+    const stavagentAvailable = await checkStavagentAvailability();
+
+    if (!stavagentAvailable) {
+      logger.warn(`[JOBS] STAVAGENT SmartParser not available, using fallback`);
+      return res.status(503).json({
+        error: 'STAVAGENT SmartParser is not available',
+        suggestion: 'Please ensure concrete-agent Python dependencies are installed'
+      });
+    }
+
+    // Parse document using STAVAGENT SmartParser
+    logger.info(`[JOBS] Calling STAVAGENT SmartParser...`);
+    const parsedDocument = await parseDocumentWithStavagent(filePath);
+
+    logger.info(`[JOBS] Document parsed successfully`);
+
+    // Extract project context (building_type, storeys, main_system, etc.)
+    logger.info(`[JOBS] Extracting project context...`);
+    const projectContext = await extractProjectContext(filePath);
+
+    logger.info(`[JOBS] Context extracted: ${JSON.stringify(projectContext)}`);
+
+    // Save to database (optional - for caching)
+    const db = await getDatabase();
+    await db.run(
+      `INSERT INTO jobs (id, filename, status, total_rows, created_at)
+       VALUES (?, ?, ?, ?, datetime('now'))`,
+      [jobId, req.file.originalname, 'completed', 0]
+    );
+
+    res.status(200).json({
+      job_id: jobId,
+      status: 'completed',
+      filename: req.file.originalname,
+      parsed_document: {
+        file_type: parsedDocument.file_type || path.extname(req.file.originalname),
+        pages_count: parsedDocument.metadata?.total_pages || parsedDocument.metadata?.total_sheets || 0,
+        has_tables: parsedDocument.metadata?.has_tables || false
+      },
+      project_context: projectContext,
+      message: 'Document parsed and context extracted successfully'
+    });
+
+    // Clean up uploaded file after successful processing
+    if (filePath && fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+  } catch (error) {
+    logger.error(`[JOBS] Document parsing error: ${error.message}`);
+    logger.error(error.stack);
+
+    // Clean up uploaded file
+    if (filePath && fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    res.status(400).json({
+      error: error.message,
+      details: 'Failed to parse document or extract context'
+    });
+  }
+});
+
 export default router;
