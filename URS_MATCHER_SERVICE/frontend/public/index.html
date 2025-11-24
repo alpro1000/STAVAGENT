@@ -32,9 +32,16 @@
                 <span class="upload-text">Klikněte nebo táhněte soubor sem</span>
               </div>
 
-              <button class="btn btn-primary" id="uploadBtn" disabled>
-                Nahrát a zpracovat
-              </button>
+              <textarea id="projectContextInput" placeholder='Kontext projektu (volitelné, JSON formát):&#10;{"building_type":"bytový dům","storeys":4,"main_system":["Porotherm","ŽB"]}' rows="3"></textarea>
+
+              <div class="action-buttons">
+                <button class="btn btn-primary" id="uploadBtn" disabled>
+                  Nahrát a zpracovat
+                </button>
+                <button class="btn btn-success" id="blockMatchBtn" disabled>
+                  📊 Analyzovat bloky
+                </button>
+              </div>
             </div>
 
             <!-- Text Input -->

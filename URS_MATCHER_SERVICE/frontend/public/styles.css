@@ -438,3 +438,40 @@ textarea {
 .grouped-table:last-of-type {
   margin-bottom: 0;
 }
+
+/* Action Buttons */
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.action-buttons .btn {
+  margin-bottom: 0;
+}
+
+/* Missing Items */
+.missing-items {
+  background: rgba(234, 88, 12, 0.1);
+  border-left: 4px solid var(--warning-color);
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: var(--border-radius);
+}
+
+.missing-items strong {
+  color: var(--warning-color);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.missing-items ul {
+  list-style-position: inside;
+  color: var(--text-secondary);
+  margin: 0;
+  padding: 0;
+}
+
+.missing-items li {
+  margin-bottom: 0.25rem;
+}
