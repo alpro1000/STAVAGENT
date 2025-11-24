@@ -598,6 +598,15 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
 
     logger.info(`[JOBS] Context extracted: ${JSON.stringify(projectContext)}`);
 
+    // Run Document Q&A Flow to fill gaps
+    logger.info(`[JOBS] Running Document Q&A Flow...`);
+    const { runQAFlow } = await import('../../services/documentQAService.js');
+
+    parsedDocument.filename = req.file.originalname; // Add filename for source tracking
+    const qaResults = await runQAFlow(parsedDocument, projectContext);
+
+    logger.info(`[JOBS] Q&A Flow completed: ${qaResults.answered_count} answered, ${qaResults.unanswered_count} need input`);
+
     // Save to database (optional - for caching)
     const db = await getDatabase();
     await db.run(
@@ -616,7 +625,15 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
         has_tables: parsedDocument.metadata?.has_tables || false
       },
       project_context: projectContext,
-      message: 'Document parsed and context extracted successfully'
+      qa_flow: {
+        questions: qaResults.questions,
+        answered_count: qaResults.answered_count,
+        unanswered_count: qaResults.unanswered_count,
+        enhanced_context: qaResults.enhanced_context,
+        requires_user_input: qaResults.requires_user_input,
+        rfi_needed: qaResults.rfi_needed
+      },
+      message: 'Document parsed, context extracted, and Q&A flow completed'
     });
 
     // Clean up uploaded file after successful processing
@@ -637,6 +654,93 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
       error: error.message,
       details: 'Failed to parse document or extract context'
     });
+  }
+});
+
+// ============================================================================
+// POST /api/jobs/:jobId/confirm-qa
+// User confirms or edits Q&A answers before running block-match
+// Фаза 2: Q&A confirmation workflow
+// ============================================================================
+
+router.post('/:jobId/confirm-qa', async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const { confirmed_answers } = req.body;
+
+    if (!confirmed_answers) {
+      return res.status(400).json({ error: 'confirmed_answers is required' });
+    }
+
+    logger.info(`[JOBS] Q&A confirmation for job: ${jobId}`);
+    logger.info(`[JOBS] Received ${Object.keys(confirmed_answers).length} confirmed answers`);
+
+    // Build final project context from confirmed answers
+    const finalContext = {
+      building_type: 'neurčeno',
+      storeys: 0,
+      main_system: [],
+      notes: []
+    };
+
+    Object.entries(confirmed_answers).forEach(([questionId, answer]) => {
+      switch (questionId) {
+        case 'q_building_type':
+          finalContext.building_type = answer.value;
+          break;
+        case 'q_storeys':
+          finalContext.storeys = parseInt(answer.value, 10);
+          break;
+        case 'q_foundation_concrete':
+          finalContext.foundation_concrete = answer.value;
+          break;
+        case 'q_wall_material':
+        case 'q_main_system':
+          if (!finalContext.main_system.includes(answer.value)) {
+            finalContext.main_system.push(answer.value);
+          }
+          break;
+        case 'q_insulation':
+          finalContext.insulation = answer.value;
+          break;
+        case 'q_roofing':
+          finalContext.roofing = answer.value;
+          break;
+      }
+
+      // Add note if user edited the answer
+      if (answer.user_edited) {
+        finalContext.notes.push(`${questionId}: ${answer.note || 'User provided custom value'}`);
+      }
+    });
+
+    logger.info(`[JOBS] Final context built: ${JSON.stringify(finalContext)}`);
+
+    // Save confirmed context to database (optional)
+    const db = await getDatabase();
+    await db.run(
+      `UPDATE jobs SET status = ? WHERE id = ?`,
+      ['ready_for_analysis', jobId]
+    );
+
+    res.status(200).json({
+      job_id: jobId,
+      status: 'ready_for_analysis',
+      final_context: finalContext,
+      message: 'Q&A answers confirmed. Ready for block analysis.',
+      next_step: {
+        action: 'Upload BOQ file for block-match analysis',
+        endpoint: 'POST /api/jobs/block-match',
+        required_fields: {
+          file: 'BOQ Excel file',
+          project_context: finalContext
+        }
+      }
+    });
+
+  } catch (error) {
+    logger.error(`[JOBS] Q&A confirmation error: ${error.message}`);
+    res.status(400).json({ error: error.message });
   }
 });
 

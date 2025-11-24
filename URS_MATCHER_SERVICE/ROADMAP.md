@@ -139,10 +139,11 @@
   - [x] Поддержка Excel (материалы)
   - [x] Endpoint `/api/jobs/parse-document`
 
-- [ ] **Document Q&A Flow интеграция**
-  - [ ] Автоматическая генерация вопросов
-  - [ ] Автоматическое извлечение ответов из документов
-  - [ ] Отображение найденных данных с источниками
+- [x] **Document Q&A Flow интеграция**
+  - [x] Автоматическая генерация вопросов (documentQAService.js)
+  - [x] Автоматическое извлечение ответов из документов (pattern-based MVP)
+  - [x] Endpoint POST /api/jobs/:jobId/confirm-qa для подтверждения ответов
+  - [x] RFI detection (requires_user_input, rfi_needed flags)
 
 - [ ] **Document Validator интеграция**
   - [ ] Проверка полноты загруженных документов
