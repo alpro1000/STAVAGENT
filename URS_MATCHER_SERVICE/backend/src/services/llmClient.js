@@ -326,3 +326,202 @@ export function getLLMInfo() {
     timeoutMs: llmConfig.timeoutMs
   };
 }
+
+/**
+ * Analyze a block of work items with project context
+ * MODE: BOQ_BLOCK_ANALYSIS
+ *
+ * @param {Object} projectContext - Project context (building_type, storeys, main_system, etc.)
+ * @param {Object} boqBlock - Block of work items { block_id, title, rows[] }
+ * @param {Object} ursCandidates - URS candidates for each row { row_id: [candidates...] }
+ * @returns {Promise<Object>} Block analysis result { block_summary, items[], global_related_items[] }
+ */
+export async function analyzeBlock(projectContext, boqBlock, ursCandidates) {
+  try {
+    initializeLLMClient();
+
+    // If no LLM available, return empty analysis
+    if (!llmClient) {
+      logger.warn('[LLMClient] LLM unavailable - cannot perform block analysis');
+      return {
+        mode: 'boq_block_analysis',
+        block_summary: {
+          block_id: boqBlock.block_id,
+          main_systems: [],
+          potential_missing_work_groups: [],
+          notes: ['LLM není dostupný - blok nebyl analyzován']
+        },
+        items: [],
+        global_related_items: [],
+        error: 'LLM not available'
+      };
+    }
+
+    logger.info(`[LLMClient] Analyzing block: "${boqBlock.title || boqBlock.block_id}" (${boqBlock.rows?.length || 0} rows)`);
+
+    // Import prompt creator
+    const { createBlockAnalysisPrompt } = await import('../prompts/ursMatcher.prompt.js');
+
+    // Create prompts
+    const userPrompt = createBlockAnalysisPrompt(projectContext, boqBlock, ursCandidates);
+    const systemPrompt = getSystemPrompt();
+
+    // Call LLM API with extended timeout (block analysis takes longer)
+    const timeoutMs = llmConfig.timeoutMs * 2; // Double timeout for block analysis
+    logger.debug(`[LLMClient] Using extended timeout: ${timeoutMs}ms for block analysis`);
+
+    const response = await callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs);
+
+    // Parse and validate response
+    const parsed = parseBlockAnalysisResponse(response);
+
+    if (!parsed || !parsed.items) {
+      logger.warn('[LLMClient] LLM returned invalid block analysis - returning empty result');
+      return {
+        mode: 'boq_block_analysis',
+        block_summary: {
+          block_id: boqBlock.block_id,
+          main_systems: [],
+          potential_missing_work_groups: [],
+          notes: ['Chyba při analýze bloku - neplatná odpověď z LLM']
+        },
+        items: [],
+        global_related_items: [],
+        error: 'Invalid LLM response'
+      };
+    }
+
+    // Validate that all returned codes exist in candidates (ZERO HALLUCINATION)
+    const validatedItems = validateBlockItemsAgainstCandidates(parsed.items, ursCandidates);
+
+    logger.info(`[LLMClient] Block analysis completed: ${validatedItems.length} items validated`);
+
+    return {
+      mode: 'boq_block_analysis',
+      block_summary: parsed.block_summary || {
+        block_id: boqBlock.block_id,
+        main_systems: [],
+        potential_missing_work_groups: [],
+        notes: []
+      },
+      items: validatedItems,
+      global_related_items: parsed.global_related_items || []
+    };
+
+  } catch (error) {
+    logger.error(`[LLMClient] Error in analyzeBlock: ${error.message}`);
+
+    // Return fallback response
+    return {
+      mode: 'boq_block_analysis',
+      block_summary: {
+        block_id: boqBlock?.block_id || 'unknown',
+        main_systems: [],
+        potential_missing_work_groups: [],
+        notes: [`Chyba při analýze: ${error.message}`]
+      },
+      items: [],
+      global_related_items: [],
+      error: error.message
+    };
+  }
+}
+
+/**
+ * Parse LLM response for BOQ_BLOCK_ANALYSIS mode
+ * Extracts JSON from response (may contain extra text)
+ *
+ * @param {string} response - Raw LLM response
+ * @returns {Object|null} Parsed response with block_summary, items, global_related_items
+ * @private
+ */
+function parseBlockAnalysisResponse(response) {
+  try {
+    // Try to find JSON block in response
+    const jsonMatch = response.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      logger.warn('[LLMClient] No JSON found in block analysis response');
+      return null;
+    }
+
+    const parsed = JSON.parse(jsonMatch[0]);
+
+    // Validate structure
+    if (!parsed.items || !Array.isArray(parsed.items)) {
+      logger.warn('[LLMClient] Invalid block analysis response - missing "items" array');
+      return null;
+    }
+
+    return parsed;
+
+  } catch (error) {
+    logger.error(`[LLMClient] Error parsing block analysis response: ${error.message}`);
+    return null;
+  }
+}
+
+/**
+ * Validate that LLM-returned URS codes in block analysis exist in candidates
+ * ZERO HALLUCINATION: Ensures LLM didn't invent codes
+ *
+ * @param {Array} items - Items returned by LLM (with row_id, selected_urs, related_items)
+ * @param {Object} ursCandidates - Original candidates per row { row_id: [candidates...] }
+ * @returns {Array} Validated items
+ * @private
+ */
+function validateBlockItemsAgainstCandidates(items, ursCandidates) {
+  const validated = [];
+
+  for (const item of items) {
+    const rowId = item.row_id;
+    const selectedUrs = item.selected_urs;
+    const relatedItems = item.related_items || [];
+
+    // Get candidates for this row
+    const rowCandidates = ursCandidates[rowId] || [];
+    const rowCandidateCodes = new Set(rowCandidates.map(c => c.urs_code));
+
+    // Validate selected_urs
+    let validatedSelectedUrs = null;
+    if (selectedUrs && selectedUrs.urs_code) {
+      if (selectedUrs.urs_code === null || rowCandidateCodes.has(selectedUrs.urs_code)) {
+        // Valid: either null (LLM couldn't find match) or exists in candidates
+        validatedSelectedUrs = selectedUrs;
+      } else {
+        logger.warn(`[LLMClient] Row ${rowId}: LLM proposed invalid code ${selectedUrs.urs_code} - setting to null`);
+        validatedSelectedUrs = {
+          urs_code: null,
+          urs_name: `Neplatný kód navržený LLM: ${selectedUrs.urs_code}`,
+          unit: selectedUrs.unit || 'ks',
+          confidence: 0,
+          reason: 'LLM navrhl neexistující kód z katalogu'
+        };
+      }
+    }
+
+    // Validate related_items (allow null codes for suggestions)
+    const validatedRelatedItems = relatedItems.filter(related => {
+      if (related.urs_code === null) {
+        // Suggestion without specific code - OK
+        return true;
+      }
+      // Check if code exists in some row's candidates (relaxed validation)
+      const exists = Object.values(ursCandidates).some(candidates =>
+        candidates.some(c => c.urs_code === related.urs_code)
+      );
+      if (!exists) {
+        logger.warn(`[LLMClient] Row ${rowId}: Invalid related_item code ${related.urs_code} - skipping`);
+      }
+      return exists;
+    });
+
+    validated.push({
+      row_id: rowId,
+      selected_urs: validatedSelectedUrs,
+      related_items: validatedRelatedItems,
+      notes: item.notes || []
+    });
+  }
+
+  return validated;
+}
