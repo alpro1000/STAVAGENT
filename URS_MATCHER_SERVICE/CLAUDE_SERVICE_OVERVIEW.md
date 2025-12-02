@@ -710,9 +710,12 @@ cd STAVAGENT/URS_MATCHER_SERVICE
 cd backend
 npm install
 
-# 3. Создать .env файл с API ключами
+# 3. Создать .env файл с API ключами (DON'T edit in terminal!)
 cp .env.example .env
-nano .env  # Отредактировать с реальными ключами
+# ⚠️  IMPORTANT: Use your IDE to edit .env locally
+# NEVER use 'cat .env' or 'nano .env' - this risks exposing secrets
+# Add your actual API keys only in the local .env file
+# Make sure .env is in .gitignore (never commit secrets!)
 
 # 4. Запустить backend (development)
 npm run dev
@@ -741,30 +744,42 @@ docker-compose up
 
 ## ⚙️ КОНФИГУРАЦИЯ
 
-### .env.example файл
+### .env Configuration (Security Best Practices)
+
+⚠️ **SECURITY CRITICAL**: Use environment variables for all secrets:
 
 ```bash
-# LLM PROVIDER: claude или openai
+# LLM PROVIDER: claude, openai, or perplexity
 LLM_PROVIDER=claude
-LLM_API_KEY=sk-ant-YOUR_KEY
-LLM_MODEL=claude-3-sonnet-20240229
+
+# API Keys - NEVER commit these! Use local .env only
+# Get from https://console.anthropic.com/account/keys
+LLM_API_KEY=REPLACE_WITH_YOUR_CLAUDE_API_KEY
+
+LLM_MODEL=claude-3-5-sonnet-20241022
 LLM_TIMEOUT_MS=30000
 
-# OpenAI (опционально)
-# OPENAI_API_KEY=sk-proj-YOUR_KEY
+# OpenAI (optional)
+# OPENAI_API_KEY=REPLACE_WITH_YOUR_OPENAI_API_KEY
 
-# Perplexity (опционально)
-PPLX_API_KEY=pplx-YOUR_KEY
-PPLX_MODEL=sonar
-PPLX_TIMEOUT_MS=60000
+# Perplexity (optional)
+# PPLX_API_KEY=REPLACE_WITH_YOUR_PPLX_API_KEY
 
-# Node
+# Server
 NODE_ENV=development
 PORT=3001
 
-# CORS
-CORS_ORIGIN=*
+# CORS - ONLY for local development!
+# ⚠️  Production: Use specific domain (e.g., https://yourdomain.com)
+# Development: http://localhost:3000
+CORS_ORIGIN=http://localhost:3000
 ```
+
+📋 **Security Notes:**
+- Never use `CORS_ORIGIN=*` in production
+- `.env` must be in `.gitignore`
+- Always use environment variables in production (not .env files)
+- See "Secrets Management" section below
 
 ### Logging
 
@@ -780,15 +795,106 @@ logger.debug('[SERVICE_NAME] Debug info'); // DEBUG level (если LOG_LEVEL=de
 
 | Переменная | Значение | Обязательна? | Описание |
 |-----------|----------|-------------|---------|
-| LLM_API_KEY | sk-ant-... | ❌ | Claude API ключ |
-| OPENAI_API_KEY | sk-proj-... | ❌ | OpenAI API ключ |
-| PPLX_API_KEY | pplx-... | ❌ | Perplexity API ключ |
-| LLM_PROVIDER | claude\|openai | ❌ | Выбор провайдера |
-| LLM_MODEL | claude-3-sonnet | ❌ | Модель LLM |
+| LLM_API_KEY | [local .env only] | ❌ | Claude API ключ (NEVER in git!) |
+| OPENAI_API_KEY | [local .env only] | ❌ | OpenAI API ключ (NEVER in git!) |
+| PPLX_API_KEY | [local .env only] | ❌ | Perplexity API ключ (NEVER in git!) |
+| LLM_PROVIDER | claude\|openai\|perplexity | ❌ | Выбор провайдера |
+| LLM_MODEL | claude-3-5-sonnet-20241022 | ❌ | Модель LLM |
 | PPLX_MODEL | sonar | ❌ | Модель Perplexity |
 | NODE_ENV | development\|production | ❌ | Окружение |
 | PORT | 3001 | ❌ | Порт сервера |
-| CORS_ORIGIN | * | ❌ | CORS origins |
+| CORS_ORIGIN | http://localhost:3000 | ❌ | CORS origins (specific domains only!) |
+
+---
+
+## 🔐 SECRETS MANAGEMENT & SECURITY
+
+### Where to Store API Keys
+
+⚠️ **CRITICAL SECURITY RULES:**
+
+| ENV | Storage | Method | Security |
+|-----|---------|--------|----------|
+| **Development** | Local `.env` file | Edit with IDE | ✅ Safe (if .gitignored) |
+| **GitHub** | GitHub Secrets | Settings → Secrets → Actions | ✅ Encrypted |
+| **Render.com** | Render Dashboard | Settings → Environment | ✅ Encrypted |
+| **Production** | Managed service | Environment variables | ✅ Safest |
+| **❌ Git repo** | Never commit here | Don't use git | ❌ UNSAFE |
+| **❌ Terminal** | Never type keys | cat/.env, echo | ❌ Exposed in history |
+
+### Setup Instructions
+
+**For Local Development (your laptop):**
+```bash
+# 1. Create .env from template
+cp .env.example .env
+
+# 2. Edit .env with your IDE (VSCode, WebStorm, etc.)
+# Add your real API keys here - this file is git-ignored
+
+# 3. NEVER run these commands (they expose secrets):
+cat .env                  # ❌ Exposes in terminal
+echo $LLM_API_KEY         # ❌ Exposed in shell history
+nano .env                 # ❌ Can be captured by monitoring
+grep LLM_API_KEY .env     # ❌ Shows in terminal
+
+# 4. Verify .env is in .gitignore
+grep ".env" .gitignore    # Should return: .env
+```
+
+**For GitHub Actions (CI/CD):**
+```bash
+# 1. Go to GitHub Repo → Settings → Secrets and variables → Actions
+# 2. Click "New repository secret"
+# 3. Add secrets:
+#    Name: LLM_API_KEY
+#    Value: sk-ant-YOUR_ACTUAL_KEY
+# 4. In workflows, access as: ${{ secrets.LLM_API_KEY }}
+```
+
+**For Render.com (Production Deployment):**
+```bash
+# 1. Go to Render Dashboard → Your Service → Settings
+# 2. Scroll to "Environment"
+# 3. Add variables:
+#    LLM_API_KEY = sk-ant-YOUR_ACTUAL_KEY
+#    CORS_ORIGIN = https://yourdomain.com  # ⚠️ NOT *
+#    NODE_ENV = production
+# 4. Click "Save" - automatically applied on next deploy
+```
+
+### CORS Security Configuration
+
+**Development (localhost only):**
+```
+CORS_ORIGIN=http://localhost:3000
+```
+
+**Production (specific domain only):**
+```
+CORS_ORIGIN=https://yourdomain.com
+```
+
+**Multiple domains (if needed):**
+```
+CORS_ORIGIN=https://app.yourdomain.com,https://admin.yourdomain.com
+```
+
+⚠️ **NEVER use CORS_ORIGIN=\* in production** - allows any website to steal tokens
+
+### .gitignore Verification
+
+Ensure these files are ignored:
+```
+.env                 # Local secrets
+.env.local          # Local overrides
+.env.*.local        # Environment-specific
+node_modules/       # Dependencies
+*.key               # Private keys
+*.pem               # Certificates
+```
+
+Check with: `git check-ignore .env` (should return `.env`)
 
 ---
 
@@ -880,16 +986,22 @@ curl -X POST http://localhost:3001/api/jobs/ABC-123/confirm-qa \
 
 **Решение:**
 ```bash
-# Проверить .env файл
-cat /home/user/STAVAGENT/URS_MATCHER_SERVICE/backend/.env | grep LLM_API_KEY
+# 1. Check if .env file exists in backend directory
+ls -la .env
 
-# Добавить ключ
-nano .env
-# Добавить: LLM_API_KEY=sk-ant-YOUR_KEY
+# 2. If .env doesn't exist, copy from template
+cp .env.example .env
 
-# Перезапустить
+# 3. Edit .env with your IDE (NOT cat or nano - they expose secrets!)
+# Add your actual API keys:
+#   - LLM_API_KEY=your_actual_key_here
+#   - LLM_PROVIDER=claude (or openai)
+
+# 4. Restart the application
 npm run dev
 ```
+
+⚠️ **SECURITY:** Never use `cat .env` or `echo $LLM_API_KEY` - these expose secrets in terminal history!
 
 ### Проблема 2: "STAVAGENT SmartParser not available"
 

@@ -51,7 +51,7 @@ class Settings(BaseSettings):
     # ==========================================
     # AI MODELS
     # ==========================================
-    CLAUDE_MODEL: str = Field(default="claude-sonnet-4-20250514", description="Claude model")
+    CLAUDE_MODEL: str = Field(default="claude-sonnet-4-5-20250929", description="Claude model (Sonnet 4.5 - latest)")
     GPT4_MODEL: str = Field(default="gpt-4-vision-preview", description="GPT-4 model")
     CLAUDE_MAX_TOKENS: int = Field(default=4000, description="Max tokens for Claude")
     GPT4_MAX_TOKENS: int = Field(default=4000, description="Max tokens for GPT-4")

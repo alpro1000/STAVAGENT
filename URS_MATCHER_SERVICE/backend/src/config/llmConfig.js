@@ -16,12 +16,26 @@ const LLM_PROVIDERS = {
  */
 export function getLLMConfig() {
   const provider = process.env.LLM_PROVIDER || 'openai';
-  const apiKey = process.env.LLM_API_KEY || process.env.OPENAI_API_KEY;
-  const model = process.env.LLM_MODEL || 'gpt-4';
+
+  // Determine API key based on provider
+  let apiKey;
+  if (provider.toLowerCase() === 'claude') {
+    apiKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+  } else {
+    apiKey = process.env.LLM_API_KEY || process.env.OPENAI_API_KEY;
+  }
+
+  // Set appropriate default model based on provider
+  let defaultModel = 'gpt-4-turbo';
+  if (provider.toLowerCase() === 'claude') {
+    defaultModel = 'claude-sonnet-4-5-20250929';  // Latest Sonnet 4.5
+  }
+
+  const model = process.env.LLM_MODEL || defaultModel;
   const timeoutMs = parseInt(process.env.LLM_TIMEOUT_MS || '30000', 10);
 
   if (!apiKey) {
-    logger.warn('[LLMConfig] No LLM_API_KEY or OPENAI_API_KEY set. LLM features will be disabled.');
+    logger.warn('[LLMConfig] No API key found for provider %s. Checked: ANTHROPIC_API_KEY, LLM_API_KEY, OPENAI_API_KEY. LLM features will be disabled.', provider);
     return {
       enabled: false,
       provider: provider,
