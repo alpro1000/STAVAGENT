@@ -81,33 +81,40 @@ jobs:
           mkdir -p ${{ env.BACKEND_DIR }}/temp
           echo "✅ Directory structure created"
 
-      - name: 📝 Create .env file
+      - name: 📝 Create .env file with GitHub Secrets
         run: |
-          echo "🔧 Setting up environment variables..."
+          echo "🔧 Setting up environment variables from GitHub Secrets..."
           cat > ${{ env.BACKEND_DIR }}/.env << 'EOF'
           # Concrete Agent Environment Configuration
           APP_ENV=ci
           DEBUG=true
           LOG_LEVEL=INFO
-          
+
           # Server Configuration
           HOST=0.0.0.0
           PORT=${{ env.SERVER_PORT }}
-          
+
           # Database (for CI testing)
           DATABASE_URL=sqlite:///./test.db
-          
-          # API Keys (use secrets in production)
+
+          # API Keys from GitHub Secrets (critical for Claude integration)
+          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY || 'test-key' }}
           OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY || 'test-key' }}
-          
+          PERPLEXITY_API_KEY=${{ secrets.PERPLEXITY_API_KEY || 'test-key' }}
+          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'test-key' }}
+
+          # LLM Configuration
+          LLM_PROVIDER=claude
+          CLAUDE_MODEL=claude-sonnet-4-5-20250929
+
           # Agent Configuration
           AGENT_TIMEOUT=30
           MAX_CONCURRENT_AGENTS=5
-          
+
           # Knowledge Base
           KNOWLEDGE_BASE_PATH=./knowledge_base
           EOF
-          echo "✅ Environment file created"
+          echo "✅ Environment file created with API keys from GitHub Secrets"
 
       - name: 📚 Initialize knowledge base
         run: |

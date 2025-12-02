@@ -36,17 +36,20 @@ jobs:
           fi
           echo "✅ All required secrets are set"
       
-      - name: Create temporary .env for validation
+      - name: Create temporary .env for validation (using GitHub Secrets)
         run: |
           echo "Creating temporary .env for import validation..."
           cat > .env << EOF
-          ANTHROPIC_API_KEY=test-key-for-validation
-          OPENAI_API_KEY=test-key
-          CLAUDE_MODEL=claude-sonnet-4-20250514
+          ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY || 'test-key-for-validation' }}
+          OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY || 'test-key' }}
+          PERPLEXITY_API_KEY=${{ secrets.PERPLEXITY_API_KEY || 'test-key' }}
+          GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY || 'test-key' }}
+          CLAUDE_MODEL=claude-sonnet-4-5-20250929
+          LLM_PROVIDER=claude
           ENABLE_WORKFLOW_A=true
           ENVIRONMENT=development
           EOF
-          echo "✅ Temporary .env created"
+          echo "✅ Temporary .env created with GitHub Secrets"
       
       - name: Install dependencies
         run: |
