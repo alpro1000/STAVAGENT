@@ -12,6 +12,7 @@ import { fileURLToPath } from 'url';
 import { parseExcelFile } from '../../services/fileParser.js';
 import { matchUrsItems, generateRelatedItems } from '../../services/ursMatcher.js';
 import { matchUrsItemWithAI, explainMapping, isLLMEnabled } from '../../services/llmClient.js';
+import { universalMatch, recordUserFeedback } from '../../services/universalMatcher.js';
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
 
@@ -789,6 +790,169 @@ router.post('/:jobId/confirm-qa', async (req, res) => {
   } catch (error) {
     logger.error(`[JOBS] Q&A confirmation error: ${error.message}`);
     res.status(400).json({ error: error.message });
+  }
+});
+
+/**
+ * =====================================================================
+ * UNIVERSAL MATCH ENDPOINT
+ * =====================================================================
+ * POST /api/jobs/universal-match
+ *
+ * Purpose: Match any language construction work description to ÚRS codes
+ * - Detects input language
+ * - Normalizes to technical Czech
+ * - Checks Knowledge Base for fast path
+ * - Falls back to LLM matching if needed
+ * - Returns structured result with explanations
+ *
+ * Request JSON:
+ * {
+ *   "text": "any construction work description (any language)",
+ *   "quantity": 45,                     // optional
+ *   "unit": "m2",                       // optional
+ *   "projectType": "bytový dům",        // optional
+ *   "buildingSystem": "monolitický ŽB", // optional
+ *   "candidateItems": [
+ *     {
+ *       "urs_code": "34135",
+ *       "urs_name": "Stěny z betonu...",
+ *       "unit": "m3",
+ *       "description": "..."
+ *     }
+ *   ]
+ * }
+ *
+ * Response JSON:
+ * {
+ *   "query": { detected_language, normalized_text_cs, quantity, unit },
+ *   "matches": [ { urs_code, urs_name, unit, confidence, role } ],
+ *   "related_items": [ { urs_code, urs_name, unit, reason_cs } ],
+ *   "explanation_cs": "Czech explanation",
+ *   "knowledge_suggestions": [...],
+ *   "status": "ok" | "ambiguous" | "error",
+ *   "notes_cs": "...",
+ *   "execution_time_ms": 1234
+ * }
+ */
+router.post('/universal-match', async (req, res) => {
+  try {
+    const { text, quantity, unit, projectType, buildingSystem, candidateItems } = req.body;
+
+    // Validate required fields
+    if (!text || typeof text !== 'string') {
+      return res.status(400).json({
+        error: 'Missing or invalid "text" field',
+        example: {
+          text: 'betonová deska přehlazená',
+          quantity: 45,
+          unit: 'm2'
+        }
+      });
+    }
+
+    logger.info(`[UNIVERSAL-MATCH] Request: "${text.substring(0, 80)}..."`);
+
+    // Call universal matcher
+    const result = await universalMatch({
+      text,
+      quantity: quantity || null,
+      unit: unit || null,
+      projectType: projectType || null,
+      buildingSystem: buildingSystem || null,
+      candidateItems: candidateItems || []
+    });
+
+    // Return structured result
+    res.status(200).json(result);
+
+    logger.info(
+      `[UNIVERSAL-MATCH] Complete: ${result.matches.length} matches, status=${result.status}`
+    );
+
+  } catch (error) {
+    logger.error(`[UNIVERSAL-MATCH] Error: ${error.message}`);
+    res.status(500).json({
+      error: error.message,
+      status: 'error'
+    });
+  }
+});
+
+/**
+ * =====================================================================
+ * UNIVERSAL MATCH FEEDBACK ENDPOINT
+ * =====================================================================
+ * POST /api/jobs/universal-match/feedback
+ *
+ * Purpose: Record user validation/correction of matches
+ * Stores confirmed mappings in Knowledge Base for future reuse
+ *
+ * Request JSON:
+ * {
+ *   "urs_code": "34135",
+ *   "urs_name": "Stěny z betonu železového",
+ *   "unit": "m3",
+ *   "normalized_text_cs": "stěny z betonu ŽB",
+ *   "detected_language": "cs",
+ *   "project_type": "bytový dům",
+ *   "building_system": "monolitický ŽB",
+ *   "is_correct": true,
+ *   "user_comment": "User validated this match"
+ * }
+ */
+router.post('/universal-match/feedback', async (req, res) => {
+  try {
+    const {
+      urs_code,
+      urs_name,
+      unit,
+      normalized_text_cs,
+      detected_language,
+      project_type,
+      building_system,
+      is_correct,
+      user_comment
+    } = req.body;
+
+    // Validate required fields
+    if (!urs_code || !normalized_text_cs || is_correct === undefined) {
+      return res.status(400).json({
+        error: 'Missing required fields: urs_code, normalized_text_cs, is_correct'
+      });
+    }
+
+    logger.info(
+      `[FEEDBACK] Recording: "${normalized_text_cs}" → ${urs_code} (correct: ${is_correct})`
+    );
+
+    // Record feedback
+    const result = await recordUserFeedback(
+      {}, // matchResult (not used now, but could be expanded)
+      {
+        urs_code,
+        urs_name,
+        unit,
+        normalized_text_cs,
+        detected_language,
+        project_type,
+        building_system,
+        is_correct,
+        user_comment
+      }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: 'Feedback recorded successfully',
+      data: result
+    });
+
+  } catch (error) {
+    logger.error(`[FEEDBACK] Error: ${error.message}`);
+    res.status(500).json({
+      error: error.message
+    });
   }
 });
 
