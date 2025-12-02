@@ -48,8 +48,81 @@ CREATE TABLE IF NOT EXISTS mapping_examples (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- ============================================================================
+-- Knowledge Base: Store confirmed mappings for fast reuse (NEW)
+-- ============================================================================
+-- Purpose: Cache confirmed text-to-URS mappings to avoid redundant LLM calls
+-- and accelerate matching for recurring constructions patterns
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS kb_mappings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  -- Normalized input (Czech technical description)
+  normalized_text_cs TEXT NOT NULL,           -- e.g. "betonova deska prehlazena"
+  language_hint TEXT DEFAULT 'cs',            -- original language: cs, ru, uk, en, de, other
+
+  -- Context (for semantic grouping)
+  context_hash TEXT,                          -- hash(project_type + building_system)
+  project_type TEXT,                          -- e.g. "bytový dům", "rodinný dům", "průmyslová hala"
+  building_system TEXT,                       -- e.g. "monolitický ŽB", "zděné"
+
+  -- Matched URS (must exist in urs_items)
+  urs_code TEXT NOT NULL,
+  urs_name TEXT NOT NULL,
+  unit TEXT NOT NULL,
+
+  -- Confidence and usage tracking
+  confidence REAL DEFAULT 0.8,                -- how confident in this mapping (0-1)
+  usage_count INTEGER DEFAULT 1,              -- how many times this mapping was used/confirmed
+  last_used_at TIMESTAMP,
+
+  -- Data quality
+  validated_by_user INTEGER DEFAULT 0,        -- 1 if manually approved, 0 if auto-learned
+  validation_comment TEXT,
+
+  -- Metadata
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+  -- Unique constraint: same normalized text + context = one mapping
+  UNIQUE(normalized_text_cs, context_hash)
+);
+
+-- Suggested Related Items (complementary works from knowledge base)
+CREATE TABLE IF NOT EXISTS kb_related_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  -- Reference to primary KB mapping
+  kb_mapping_id INTEGER NOT NULL,
+
+  -- Related URS item
+  urs_code TEXT NOT NULL,
+  urs_name TEXT NOT NULL,
+  unit TEXT NOT NULL,
+
+  -- Why is this related?
+  reason_cs TEXT,                             -- Czech explanation
+  relationship_type TEXT,                     -- "complementary", "prerequisite", "sequential"
+  typical_sequence_order INTEGER,             -- 1=first, 2=second, etc.
+
+  -- Confidence
+  co_occurrence_count INTEGER DEFAULT 1,      -- how many times seen together
+
+  FOREIGN KEY (kb_mapping_id) REFERENCES kb_mappings(id),
+  UNIQUE(kb_mapping_id, urs_code)
+);
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_jobs_created ON jobs(created_at);
 CREATE INDEX IF NOT EXISTS idx_job_items_job_id ON job_items(job_id);
 CREATE INDEX IF NOT EXISTS idx_urs_items_code ON urs_items(urs_code);
 CREATE INDEX IF NOT EXISTS idx_urs_items_name ON urs_items(urs_name);
+
+-- Knowledge Base indexes
+CREATE INDEX IF NOT EXISTS idx_kb_normalized_text ON kb_mappings(normalized_text_cs);
+CREATE INDEX IF NOT EXISTS idx_kb_context_hash ON kb_mappings(context_hash);
+CREATE INDEX IF NOT EXISTS idx_kb_urs_code ON kb_mappings(urs_code);
+CREATE INDEX IF NOT EXISTS idx_kb_usage ON kb_mappings(usage_count DESC);
+CREATE INDEX IF NOT EXISTS idx_kb_confidence ON kb_mappings(confidence DESC);
+CREATE INDEX IF NOT EXISTS idx_kb_related_items ON kb_related_items(kb_mapping_id);
+
