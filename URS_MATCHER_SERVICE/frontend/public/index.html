@@ -16,6 +16,7 @@
     </header>
 
     <main class="app-main">
+      <!-- Main Upload Section -->
       <div id="uploadSection" class="section active">
         <div class="section-content">
           <h2>Možnosti zpracování</h2>
@@ -61,8 +62,29 @@
                 Vyhledat pozice
               </button>
             </div>
+
+            <!-- Document Upload (Phase 2) -->
+            <div class="action-card">
+              <div class="action-icon">📄</div>
+              <h3>Nahrát Dokumenty</h3>
+              <p>PDF, XLSX, DWG, JPG a další</p>
+
+              <button class="btn btn-primary" id="openDocUploadBtn">
+                📄 Nahrát Dokumenty
+              </button>
+            </div>
           </div>
         </div>
+      </div>
+
+      <!-- Document Upload Section (Phase 2) -->
+      <div id="docUploadSection" class="section hidden">
+        <div id="documentUploadContainer"></div>
+      </div>
+
+      <!-- Context Editor Section (Phase 2) -->
+      <div id="contextEditorSection" class="section hidden">
+        <div id="contextEditorContainer"></div>
       </div>
 
       <!-- Results Section -->
@@ -84,6 +106,64 @@
             <button class="btn btn-secondary" id="copyBtn">
               📋 Kopírovat do schránky
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phase 3 Advanced Results Section -->
+      <div id="phase3ResultsSection" class="section hidden">
+        <div class="section-content">
+          <div class="results-header">
+            <h2>🤖 Analýza Vícerolí (Phase 3 Advanced)</h2>
+            <button class="btn btn-secondary" id="backFromPhase3Btn">← Zpět</button>
+          </div>
+
+          <!-- Complexity Classification -->
+          <div id="complexitySection" class="info-panel">
+            <h3>📊 Klasifikace Složitosti</h3>
+            <div class="complexity-grid">
+              <div class="complexity-card">
+                <span class="complexity-level" id="complexityLevel"></span>
+                <p id="complexityDescription"></p>
+              </div>
+              <div class="complexity-details">
+                <p>📈 Počet řádků: <span id="rowCount"></span></p>
+                <p>✅ Úplnost dat: <span id="completenessScore"></span>%</p>
+                <p>🔑 Speciální klíčová slova: <span id="specialKeywords"></span></p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Selected Roles -->
+          <div id="rolesSection" class="info-panel">
+            <h3>👥 Vybrané Role Specialistů</h3>
+            <div class="roles-grid" id="rolesGrid">
+              <!-- Generated dynamically -->
+            </div>
+          </div>
+
+          <!-- Conflict Detection -->
+          <div id="conflictSection" class="info-panel" style="display: none;">
+            <h3>⚠️ Detekované Konflikty</h3>
+            <div id="conflictsList" class="conflicts-list">
+              <!-- Generated dynamically -->
+            </div>
+          </div>
+
+          <!-- Analysis Results -->
+          <div id="analysisSection" class="info-panel">
+            <h3>📋 Výsledky Analýzy</h3>
+            <div id="analysisResults" class="analysis-results">
+              <!-- Generated dynamically -->
+            </div>
+          </div>
+
+          <!-- Audit Trail -->
+          <div id="auditSection" class="info-panel" style="display: none;">
+            <h3>📝 Audit Trail</h3>
+            <div id="auditTrail" class="audit-trail">
+              <!-- Generated dynamically -->
+            </div>
           </div>
         </div>
       </div>

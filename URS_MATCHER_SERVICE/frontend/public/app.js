@@ -771,6 +771,281 @@ copyBtn.addEventListener('click', () => {
 });
 
 // ============================================================================
+// PHASE 2: DOCUMENT UPLOAD & CONTEXT EDITOR
+// ============================================================================
+
+// Get Phase 2 DOM elements
+const openDocUploadBtn = document.getElementById('openDocUploadBtn');
+const docUploadSection = document.getElementById('docUploadSection');
+const contextEditorSection = document.getElementById('contextEditorSection');
+const documentUploadContainer = document.getElementById('documentUploadContainer');
+const contextEditorContainer = document.getElementById('contextEditorContainer');
+
+// Open document upload
+openDocUploadBtn?.addEventListener('click', () => {
+  debugLog('📄 Document upload button clicked');
+  loadDocumentUploadComponent();
+});
+
+async function loadDocumentUploadComponent() {
+  try {
+    debugLog('📄 Loading DocumentUpload.html');
+    const response = await fetch('/components/DocumentUpload.html');
+    if (!response.ok) throw new Error('Failed to load component');
+    const html = await response.text();
+    documentUploadContainer.innerHTML = html;
+    showDocUploadSection();
+    debugLog('📄 ✓ DocumentUpload component loaded');
+  } catch (error) {
+    debugError('📄 Failed to load DocumentUpload:', error);
+    showError(`Chyba při načítání komponenty: ${error.message}`);
+  }
+}
+
+async function loadContextEditorComponent() {
+  try {
+    debugLog('🔧 Loading ContextEditor.html');
+    const response = await fetch('/components/ContextEditor.html');
+    if (!response.ok) throw new Error('Failed to load component');
+    const html = await response.text();
+    contextEditorContainer.innerHTML = html;
+    showContextEditorSection();
+    debugLog('🔧 ✓ ContextEditor component loaded');
+  } catch (error) {
+    debugError('🔧 Failed to load ContextEditor:', error);
+    showError(`Chyba při načítání editory: ${error.message}`);
+  }
+}
+
+function showDocUploadSection() {
+  debugLog('📄 Showing document upload section');
+  uploadSection.classList.add('hidden');
+  uploadSection.classList.remove('active');
+  docUploadSection.classList.remove('hidden');
+  docUploadSection.classList.add('active');
+  resultsSection.classList.add('hidden');
+  resultsSection.classList.remove('active');
+  errorSection.classList.add('hidden');
+  errorSection.classList.remove('active');
+}
+
+function showContextEditorSection() {
+  debugLog('🔧 Showing context editor section');
+  uploadSection.classList.add('hidden');
+  uploadSection.classList.remove('active');
+  contextEditorSection.classList.remove('hidden');
+  contextEditorSection.classList.add('active');
+  resultsSection.classList.add('hidden');
+  resultsSection.classList.remove('active');
+  errorSection.classList.add('hidden');
+  errorSection.classList.remove('active');
+}
+
+// ============================================================================
+// PHASE 3: ADVANCED MULTI-ROLE ANALYSIS
+// ============================================================================
+
+const phase3ResultsSection = document.getElementById('phase3ResultsSection');
+const backFromPhase3Btn = document.getElementById('backFromPhase3Btn');
+
+backFromPhase3Btn?.addEventListener('click', () => {
+  debugLog('🔙 Back from Phase 3 Advanced');
+  showUpload();
+});
+
+function showPhase3Results() {
+  debugLog('🤖 Showing Phase 3 Advanced results');
+  uploadSection.classList.add('hidden');
+  uploadSection.classList.remove('active');
+  docUploadSection.classList.add('hidden');
+  docUploadSection.classList.remove('active');
+  contextEditorSection.classList.add('hidden');
+  contextEditorSection.classList.remove('active');
+  resultsSection.classList.add('hidden');
+  resultsSection.classList.remove('active');
+  phase3ResultsSection.classList.remove('hidden');
+  phase3ResultsSection.classList.add('active');
+  errorSection.classList.add('hidden');
+  errorSection.classList.remove('active');
+}
+
+function displayPhase3Results(data) {
+  debugLog('🤖 displayPhase3Results() called with data:', data);
+
+  // Display complexity classification
+  if (data.complexity_classification) {
+    displayComplexityClassification(data.complexity_classification);
+  }
+
+  // Display selected roles
+  if (data.selected_roles) {
+    displaySelectedRoles(data.selected_roles);
+  }
+
+  // Display conflicts if present
+  if (data.conflicts && data.conflicts.length > 0) {
+    displayConflicts(data.conflicts);
+  }
+
+  // Display analysis results
+  if (data.analysis_results) {
+    displayAnalysisResults(data.analysis_results);
+  }
+
+  // Display audit trail if available
+  if (data.audit_trail) {
+    displayAuditTrail(data.audit_trail);
+  }
+
+  showPhase3Results();
+}
+
+function displayComplexityClassification(complexity) {
+  const complexityLevel = document.getElementById('complexityLevel');
+  const complexityDescription = document.getElementById('complexityDescription');
+  const rowCount = document.getElementById('rowCount');
+  const completenessScore = document.getElementById('completenessScore');
+  const specialKeywords = document.getElementById('specialKeywords');
+
+  const levelEmoji = {
+    'SIMPLE': '🟢',
+    'STANDARD': '🟡',
+    'COMPLEX': '🟠',
+    'CREATIVE': '🔴'
+  };
+
+  const levelDescription = {
+    'SIMPLE': 'Jednoduchá - základní párování',
+    'STANDARD': 'Standardní - 3 specialisté',
+    'COMPLEX': 'Složitá - 5 specialistů',
+    'CREATIVE': 'Tvůrčí - všech 6 specialistů'
+  };
+
+  complexityLevel.textContent = `${levelEmoji[complexity.classification] || '?'} ${complexity.classification}`;
+  complexityDescription.textContent = levelDescription[complexity.classification] || 'Neznámá úroveň';
+  rowCount.textContent = complexity.row_count || 0;
+  completenessScore.textContent = (complexity.completeness_score || 0).toFixed(0);
+  specialKeywords.textContent = (complexity.special_keywords || []).join(', ') || 'žádná';
+
+  debugLog('🤖 Complexity classification displayed');
+}
+
+function displaySelectedRoles(roles) {
+  const rolesGrid = document.getElementById('rolesGrid');
+  rolesGrid.innerHTML = '';
+
+  const roleEmojis = {
+    'document_validator': '📋',
+    'structural_engineer': '🏗️',
+    'concrete_specialist': '🧪',
+    'standards_checker': '📏',
+    'tech_rules_engine': '⚙️',
+    'cost_estimator': '💰'
+  };
+
+  const roleNames = {
+    'document_validator': 'Validátor Dokumentů',
+    'structural_engineer': 'Stavbyvedoucí',
+    'concrete_specialist': 'Specialista Betonu',
+    'standards_checker': 'Kontrola Norem',
+    'tech_rules_engine': 'Technologické Pravidla',
+    'cost_estimator': 'Odhad Nákladů'
+  };
+
+  roles.forEach(role => {
+    const roleCard = document.createElement('div');
+    roleCard.className = 'role-card';
+    roleCard.innerHTML = `
+      <div class="role-icon">${roleEmojis[role] || '👤'}</div>
+      <div class="role-name">${roleNames[role] || role}</div>
+      <div class="role-status">✓ Vybráno</div>
+    `;
+    rolesGrid.appendChild(roleCard);
+  });
+
+  debugLog('🤖 Selected roles displayed:', roles);
+}
+
+function displayConflicts(conflicts) {
+  const conflictSection = document.getElementById('conflictSection');
+  const conflictsList = document.getElementById('conflictsList');
+
+  if (!conflicts || conflicts.length === 0) {
+    conflictSection.style.display = 'none';
+    return;
+  }
+
+  conflictSection.style.display = 'block';
+  conflictsList.innerHTML = '';
+
+  const severityEmoji = {
+    'CRITICAL': '🔴',
+    'HIGH': '🟠',
+    'MEDIUM': '🟡',
+    'LOW': '🟢'
+  };
+
+  conflicts.forEach((conflict, idx) => {
+    const conflictDiv = document.createElement('div');
+    conflictDiv.className = `conflict-item conflict-${(conflict.severity || 'MEDIUM').toLowerCase()}`;
+    conflictDiv.innerHTML = `
+      <div class="conflict-header">
+        <span class="severity-badge">${severityEmoji[conflict.severity] || '?'} ${conflict.severity}</span>
+        <span class="conflict-type">${conflict.type}</span>
+      </div>
+      <p class="conflict-description">${conflict.description || 'Žádný popis'}</p>
+      <p class="conflict-resolution"><strong>Řešení:</strong> ${conflict.resolution || 'Čeká na řešení'}</p>
+    `;
+    conflictsList.appendChild(conflictDiv);
+  });
+
+  debugLog('🤖 Conflicts displayed:', conflicts.length);
+}
+
+function displayAnalysisResults(results) {
+  const analysisResults = document.getElementById('analysisResults');
+  analysisResults.innerHTML = '';
+
+  if (!results) return;
+
+  const resultDiv = document.createElement('div');
+  resultDiv.className = 'analysis-content';
+  resultDiv.innerHTML = `
+    <pre>${JSON.stringify(results, null, 2)}</pre>
+  `;
+  analysisResults.appendChild(resultDiv);
+
+  debugLog('🤖 Analysis results displayed');
+}
+
+function displayAuditTrail(auditTrail) {
+  const auditSection = document.getElementById('auditSection');
+  const auditTrailDiv = document.getElementById('auditTrail');
+
+  if (!auditTrail || auditTrail.length === 0) {
+    auditSection.style.display = 'none';
+    return;
+  }
+
+  auditSection.style.display = 'block';
+  auditTrailDiv.innerHTML = '';
+
+  auditTrail.forEach((entry) => {
+    const entryDiv = document.createElement('div');
+    entryDiv.className = 'audit-entry';
+    const timestamp = new Date(entry.timestamp).toLocaleString('cs-CZ');
+    entryDiv.innerHTML = `
+      <div class="audit-time">${timestamp}</div>
+      <div class="audit-action">${entry.action}</div>
+      <div class="audit-details">${entry.details || ''}</div>
+    `;
+    auditTrailDiv.appendChild(entryDiv);
+  });
+
+  debugLog('🤖 Audit trail displayed:', auditTrail.length);
+}
+
+// ============================================================================
 // INITIALIZATION
 // ============================================================================
 
