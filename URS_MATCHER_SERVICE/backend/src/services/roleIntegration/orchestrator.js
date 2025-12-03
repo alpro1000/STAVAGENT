@@ -12,6 +12,7 @@
  */
 
 import { logger } from '../../utils/logger.js';
+import { getRoleTemperature } from './roleTemperatures.js';
 
 export class Orchestrator {
   constructor(multiRoleClient) {
@@ -370,9 +371,11 @@ Respond in JSON:
 }
 `;
 
+    const temperature = getRoleTemperature('structural_engineer', 'load_calculation');
+
     const response = await this.multiRoleClient.askMultiRole(question, {
       context: { boq_block: boqBlock, project_context: projectContext },
-      temperature: 0.3
+      temperature
     });
 
     return this.parseStructuralEngineerResponse(response);
@@ -409,13 +412,15 @@ Respond in JSON:
 }
 `;
 
+    const temperature = getRoleTemperature('concrete_specialist', 'mix_design');
+
     const response = await this.multiRoleClient.askMultiRole(question, {
       context: {
         boq_block: boqBlock,
         project_context: projectContext,
         structural_output: structuralOutput
       },
-      temperature: 0.3
+      temperature
     });
 
     return this.parseConcreteSpecialistResponse(response);
@@ -447,9 +452,11 @@ Respond in JSON:
 }
 `;
 
+    const temperature = getRoleTemperature('standards_checker', 'compliance_check');
+
     const response = await this.multiRoleClient.askMultiRole(question, {
       context: { boq_block: boqBlock, project_context: projectContext },
-      temperature: 0.2
+      temperature
     });
 
     return this.parseStandardsCheckerResponse(response);
