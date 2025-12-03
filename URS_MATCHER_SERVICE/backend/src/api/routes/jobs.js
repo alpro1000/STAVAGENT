@@ -30,6 +30,7 @@ import {
 import { validateDocumentCompleteness, getDocumentRequirements } from '../../services/documentValidatorService.js';
 import { getCachedDocumentParsing, cacheDocumentParsing, initCache } from '../../services/cacheService.js';
 import { validateFileContent } from '../../utils/fileValidator.js';
+import { Orchestrator } from '../../services/roleIntegration/orchestrator.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const router = express.Router();
@@ -80,6 +81,84 @@ const upload = multer({
     }
   }
 });
+
+// ============================================================================
+// HELPER FUNCTIONS FOR PHASE 3 ADVANCED
+// ============================================================================
+
+/**
+ * Detect special keywords in block name that indicate complexity
+ */
+function detectSpecialKeywords(blockName) {
+  const keywords = [
+    'optimization', 'alternative', 'special', 'unusual',
+    'experimental', 'custom', 'innovative', 'beton', 'betonář',
+    'ocel', 'železo', 'konstrukce', 'nosná', 'kritická'
+  ];
+
+  const blockLower = blockName.toLowerCase();
+  return keywords.filter(kw => blockLower.includes(kw));
+}
+
+/**
+ * Format conflicts from orchestrator to frontend format
+ */
+function formatConflicts(orchestratorConflicts) {
+  if (!Array.isArray(orchestratorConflicts)) {
+    return [];
+  }
+
+  return orchestratorConflicts.map(conflict => ({
+    type: conflict.type || 'UNKNOWN',
+    description: conflict.description || 'Nebyl poskytnut popis konfliktu',
+    severity: conflict.severity || 'MEDIUM',
+    resolution: conflict.resolution || 'Čeká na ruční řešení'
+  }));
+}
+
+/**
+ * Create audit trail from orchestrator results
+ */
+function createAuditTrailFromOrchestrator(orchestratorResult, blockName) {
+  const trail = [];
+  const timestamp = new Date().toISOString();
+
+  trail.push({
+    timestamp,
+    action: 'Phase 3 Advanced Analysis Started',
+    details: `Analýza bloku: ${blockName}`
+  });
+
+  trail.push({
+    timestamp: new Date(Date.now() + 100).toISOString(),
+    action: 'Complexity Classification',
+    details: `Klasifikace: ${orchestratorResult.complexity || 'N/A'}`
+  });
+
+  if (orchestratorResult.roles_consulted && orchestratorResult.roles_consulted.length > 0) {
+    trail.push({
+      timestamp: new Date(Date.now() + 200).toISOString(),
+      action: 'Specialist Roles Selected',
+      details: `Vybrané role: ${orchestratorResult.roles_consulted.join(', ')}`
+    });
+  }
+
+  if (orchestratorResult.conflicts && orchestratorResult.conflicts.length > 0) {
+    trail.push({
+      timestamp: new Date(Date.now() + 300).toISOString(),
+      action: 'Conflict Detection',
+      details: `Detekováno ${orchestratorResult.conflicts.length} konflikt(ů)`
+    });
+  }
+
+  trail.push({
+    timestamp: new Date(Date.now() + orchestratorResult.execution_time_ms).toISOString(),
+    action: 'Phase 3 Advanced Analysis Completed',
+    details: `Čas zpracování: ${orchestratorResult.execution_time_ms}ms`
+  });
+
+  return trail;
+}
 
 // ============================================================================
 // POST /api/jobs/file-upload
@@ -585,7 +664,7 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
 
       logger.info(`[JOBS] Block analysis completed for: ${blockName}`);
 
-      // Phase 3: Multi-Role validation (if available)
+      // Phase 3: Multi-Role validation + Advanced Orchestrator (if available)
       try {
         const { checkMultiRoleAvailability, validateBoqBlock } =
           await import('../../services/multiRoleClient.js');
@@ -623,6 +702,35 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
                 source: 'multi_role_validator'
               });
             });
+          }
+
+          // Phase 3 Advanced: Try to run full orchestrator analysis
+          try {
+            logger.info(`[JOBS] Running Phase 3 Advanced Orchestrator for block: ${blockName}`);
+            const multiRoleClient = (await import('../../services/multiRoleClient.js')).default;
+            const orchestrator = new Orchestrator(multiRoleClient);
+            const orchestratorResult = await orchestrator.analyzeBlock(boqBlock, projectContext);
+
+            logger.info(`[JOBS] Phase 3 Advanced analysis completed for: ${blockName}`);
+
+            // Format orchestrator results for frontend
+            blockAnalysis.phase3_advanced = {
+              complexity_classification: {
+                classification: orchestratorResult.complexity,
+                row_count: boqBlock.rows?.length || 0,
+                completeness_score: multiRoleValidation.completeness_score,
+                special_keywords: detectSpecialKeywords(blockName)
+              },
+              selected_roles: orchestratorResult.roles_consulted || [],
+              conflicts: formatConflicts(orchestratorResult.conflicts || []),
+              analysis_results: orchestratorResult,
+              execution_time_ms: orchestratorResult.execution_time_ms,
+              audit_trail: createAuditTrailFromOrchestrator(orchestratorResult, blockName)
+            };
+
+          } catch (orchestratorError) {
+            logger.warn(`[JOBS] Phase 3 Advanced analysis failed (non-critical): ${orchestratorError.message}`);
+            // Graceful degradation: continue with basic multi-role validation
           }
 
         } else {
