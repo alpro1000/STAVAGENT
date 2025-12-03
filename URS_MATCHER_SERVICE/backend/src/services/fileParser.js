@@ -208,7 +208,8 @@ function parseLineWithRegex(line) {
 function findColumn(headers, keywords) {
   for (let i = 0; i < headers.length; i++) {
     const header = headers[i]?.toString().toLowerCase().trim();
-    if (keywords.some(kw => header.includes(kw))) {
+    // Ensure header is a valid string before calling .includes()
+    if (header && typeof header === 'string' && keywords.some(kw => header.includes(kw))) {
       return i;
     }
   }
