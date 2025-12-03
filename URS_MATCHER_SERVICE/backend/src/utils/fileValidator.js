@@ -80,30 +80,19 @@ function getFileExtension(filename) {
  * @returns {Promise<boolean>} True if magic bytes match
  */
 async function checkMagicBytes(filePath, fileType) {
+  const signatures = FILE_SIGNATURES[fileType];
+
+  // Text-based files don't have magic bytes
+  if (!signatures || signatures.length === 0) {
+    return true;
+  }
+
+  let fd;
   try {
-    const signatures = FILE_SIGNATURES[fileType];
-
-    // Text-based files don't have magic bytes
-    if (!signatures || signatures.length === 0) {
-      return true;
-    }
-
     // Read first 8 bytes of file for signature checking
     const buffer = Buffer.alloc(8);
-    const fd = await new Promise((resolve, reject) => {
-      fs.open(filePath, 'r', (err, fileDescriptor) => {
-        if (err) reject(err);
-        else resolve(fileDescriptor);
-      });
-    });
-
-    await new Promise((resolve, reject) => {
-      fs.read(fd, buffer, 0, 8, 0, (err) => {
-        fs.closeSync(fd);
-        if (err) reject(err);
-        else resolve();
-      });
-    });
+    fd = await fs.promises.open(filePath, 'r');
+    await fd.read(buffer, 0, 8, 0);
 
     // Check if file starts with any of the known signatures
     for (const signature of signatures) {
@@ -116,6 +105,11 @@ async function checkMagicBytes(filePath, fileType) {
   } catch (error) {
     logger.error(`[FileValidator] Error checking magic bytes: ${error.message}`);
     return false;
+  } finally {
+    // Ensure file descriptor is always closed
+    if (fd) {
+      await fd.close();
+    }
   }
 }
 

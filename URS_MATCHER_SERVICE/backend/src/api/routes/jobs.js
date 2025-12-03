@@ -721,6 +721,16 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
     const cachedResult = await getCachedDocumentParsing(req.file.originalname, userId, jobId);
     if (cachedResult) {
       logger.info(`[JOBS] Cache HIT - returning cached result for: ${req.file.originalname}`);
+
+      // Clean up the uploaded file as it's not needed (prevents disk space exhaustion)
+      try {
+        await fs.promises.unlink(filePath);
+        logger.debug(`[JOBS] Cleaned up temporary file after cache hit: ${filePath}`);
+      } catch (err) {
+        logger.warn(`[JOBS] Failed to clean up temporary file after cache hit: ${filePath} - ${err.message}`);
+        // Don't fail the request if cleanup fails
+      }
+
       return res.status(200).json({
         job_id: jobId,
         status: 'completed',
