@@ -98,6 +98,21 @@ const upload = multer({
   }
 });
 
+// Separate multer for document uploads (Phase 2)
+const documentUpload = multer({
+  storage,
+  limits: { fileSize: 100 * 1024 * 1024 }, // 100MB for documents
+  fileFilter: (req, file, cb) => {
+    const allowed = ['.pdf', '.docx', '.xlsx', '.xls', '.dwg', '.jpg', '.jpeg', '.png', '.txt', '.doc'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`File type not allowed for document upload: ${ext}`));
+    }
+  }
+});
+
 // ============================================================================
 // HELPER FUNCTIONS FOR PHASE 3 ADVANCED
 // ============================================================================
@@ -1396,7 +1411,7 @@ router.post('/universal-match/feedback', validateFeedback, async (req, res) => {
  * Handles multi-file document uploads with completeness validation
  * Returns document validation results and RFI (Request For Information)
  */
-router.post('/document-upload', upload.array('files', 10), async (req, res) => {
+router.post('/document-upload', documentUpload.array('files', 10), async (req, res) => {
   let uploadedFiles = [];
 
   try {
