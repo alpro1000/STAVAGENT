@@ -454,19 +454,26 @@ export async function clearAllCache(isAdmin = false) {
       await cache.clear();
       logger.warn('[Cache] All in-memory cache cleared (admin)');
     } else {
-      // For Redis, delete only our namespaced keys, not all keys
+      // For Redis, delete only our namespaced keys using SCAN to avoid blocking
       const patterns = Object.values(CACHE_CONFIG).map(c => `${c.prefix}*`);
       let totalDeleted = 0;
 
       for (const pattern of patterns) {
-        const keys = await cache.keys(pattern);
-        if (keys.length > 0) {
-          await Promise.all(keys.map(key => cache.del(key)));
-          totalDeleted += keys.length;
-        }
+        let cursor = 0;
+        do {
+          // Use SCAN instead of KEYS to avoid blocking the Redis server
+          const reply = await cache.scan(cursor, { MATCH: pattern, COUNT: 100 });
+
+          if (reply.keys.length > 0) {
+            await cache.del(...reply.keys);
+            totalDeleted += reply.keys.length;
+          }
+
+          cursor = reply.cursor;
+        } while (cursor !== 0);
       }
 
-      logger.warn(`[Cache] Cleared ${totalDeleted} Redis keys (admin)`);
+      logger.warn(`[Cache] Cleared ${totalDeleted} Redis keys using SCAN (admin)`);
     }
 
     return true;
