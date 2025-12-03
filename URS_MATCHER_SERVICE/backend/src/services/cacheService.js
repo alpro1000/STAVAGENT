@@ -458,7 +458,7 @@ export async function clearAllCache(isAdmin = false) {
       const patterns = Object.values(CACHE_CONFIG).map(c => `${c.prefix}*`);
       let totalDeleted = 0;
 
-      // Collect all keys first, then delete in one batch for efficiency
+      // Collect all keys first
       const keysToDelete = [];
 
       for (const pattern of patterns) {
@@ -471,13 +471,17 @@ export async function clearAllCache(isAdmin = false) {
         } while (cursor !== 0);
       }
 
-      // Delete all collected keys in a single batch operation
+      // Delete keys in batches to avoid "Maximum call stack size exceeded" error
       if (keysToDelete.length > 0) {
-        await cache.del(...keysToDelete);
-        totalDeleted = keysToDelete.length;
+        const batchSize = 1000; // Safe batch size for DEL command
+        for (let i = 0; i < keysToDelete.length; i += batchSize) {
+          const batch = keysToDelete.slice(i, i + batchSize);
+          await cache.del(...batch);
+          totalDeleted += batch.length;
+        }
       }
 
-      logger.warn(`[Cache] Cleared ${totalDeleted} Redis keys using SCAN (admin)`);
+      logger.warn(`[Cache] Cleared ${totalDeleted} Redis keys using SCAN in batches (admin)`);
     }
 
     return true;

@@ -22,6 +22,7 @@ import {
   createFileOperationLog,
   createSecurityEventLog,
   createContextualLogMessage,
+  createAuditLog,
   redactText
 } from '../../utils/loggingHelper.js';
 import { validateDocumentCompleteness, getDocumentRequirements } from '../../services/documentValidatorService.js';
@@ -808,6 +809,30 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
 
     logger.info(`[JOBS] Cache MISS - processing document...`);
 
+    // AUDIT: Log cache miss with user context
+    const cacheMissAudit = createAuditLog({
+      userId: userId,
+      jobId: jobId,
+      action: 'cache_miss',
+      resource: 'document_parsing',
+      status: 'started',
+      ipAddress: req.ip,
+      details: { filename: req.file.originalname }
+    });
+    logger.info(JSON.stringify(cacheMissAudit));
+
+    // AUDIT: Log parsing start
+    const parseStartAudit = createAuditLog({
+      userId: userId,
+      jobId: jobId,
+      action: 'parse_document_start',
+      resource: 'document_parsing',
+      status: 'in_progress',
+      ipAddress: req.ip,
+      details: { filename: req.file.originalname }
+    });
+    logger.info(JSON.stringify(parseStartAudit));
+
     // Import STAVAGENT client
     const { parseDocumentWithStavagent, extractProjectContext, checkStavagentAvailability } =
       await import('../../services/stavagentClient.js');
@@ -851,6 +876,24 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
 
     logger.info(`[JOBS] Document validation: ${documentValidation.completeness_score}% complete`);
 
+    // AUDIT: Log validation outcome with user context
+    const validationAudit = createAuditLog({
+      userId: userId,
+      jobId: jobId,
+      action: 'validate_completeness',
+      resource: 'document_validation',
+      status: 'completed',
+      severity: documentValidation.severity,
+      ipAddress: req.ip,
+      details: {
+        completeness_score: documentValidation.completeness_score,
+        has_critical_rfi: documentValidation.has_critical_rfi,
+        missing_docs_count: documentValidation.missing_documents.length,
+        rfi_items_count: documentValidation.rfi_items.length
+      }
+    });
+    logger.info(JSON.stringify(validationAudit));
+
     // Cache parsing results for future use
     try {
       await cacheDocumentParsing(
@@ -877,6 +920,24 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
        VALUES (?, ?, ?, ?, datetime('now'))`,
       [jobId, req.file.originalname, 'completed', 0]
     );
+
+    // AUDIT: Log parsing finish with success outcome
+    const parseFinishAudit = createAuditLog({
+      userId: userId,
+      jobId: jobId,
+      action: 'parse_document_finish',
+      resource: 'document_parsing',
+      status: 'success',
+      ipAddress: req.ip,
+      details: {
+        filename: req.file.originalname,
+        pages_count: parsedDocument.metadata?.total_pages || parsedDocument.metadata?.total_sheets || 0,
+        qa_answered: qaResults.answered_count,
+        qa_unanswered: qaResults.unanswered_count,
+        completeness_score: documentValidation.completeness_score
+      }
+    });
+    logger.info(JSON.stringify(parseFinishAudit));
 
     res.status(200).json({
       job_id: jobId,
