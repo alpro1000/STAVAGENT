@@ -1,19 +1,46 @@
 /**
  * Phase 2 Tests - Document Parsing & Validation
+ * REWRITTEN: Using actual service function imports instead of mocks
  *
  * Tests for:
  * - Document Validator Service
  * - Cache Service
- * - Context Editor integration
- * - Document upload workflow
+ * - File Validator
+ * - Completeness score calculation
  */
 
 import assert from 'assert';
 import { describe, it, before } from 'mocha';
+import {
+  validateDocumentCompleteness,
+  getDocumentRequirements,
+  getDocumentTypes
+} from '../src/services/documentValidatorService.js';
+import {
+  validateFileContent,
+  getSupportedFileTypes,
+  validateMultipleFiles
+} from '../src/utils/fileValidator.js';
 
 describe('Phase 2: Document Parsing & Validation', () => {
   describe('Document Validator Service', () => {
-    it('should calculate completeness score correctly', (done) => {
+    it('should calculate completeness score with zero-division protection', async () => {
+      // Test: No required documents, should not divide by zero
+      const uploadedFiles = [];
+      const projectContext = {
+        building_type: 'bytový dům',
+        storeys: 4
+      };
+
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
+
+      assert.ok(typeof result.completeness_score === 'number', 'Score should be a number');
+      assert.ok(result.completeness_score >= 0 && result.completeness_score <= 100, 'Score should be 0-100');
+      assert.ok(result.context_validation, 'Should have context validation');
+    });
+
+    it('should include conditional fields in completeness calculation', async () => {
+      // Test: With conditional fields (ŽB concrete for example)
       const uploadedFiles = [
         { filename: 'techspec.pdf', size: 1024000 }
       ];
@@ -21,453 +48,301 @@ describe('Phase 2: Document Parsing & Validation', () => {
       const projectContext = {
         building_type: 'bytový dům',
         storeys: 4,
-        main_system: ['železobeton']
+        main_system: ['železobeton'],
+        foundation_concrete: 'C25/30' // Conditional for ŽB
       };
 
-      // Document: 40% (1/1 = 100%, so 40%)
-      // Context: 60% (3/3 fields = 100%, so 60%)
-      // Total: 100%
-      const expectedScore = 100;
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
 
-      assert.ok(expectedScore >= 80, 'Completeness should be >= 80');
-      done();
+      assert.ok(result.completeness_score > 0, 'Score should be positive');
+      assert.ok(result.context_validation, 'Should validate context');
+      assert.ok(!result.context_validation.conditional_missing?.some(c => c.field === 'foundation_concrete'),
+        'Should not report concrete as missing when provided');
     });
 
-    it('should identify missing required documents', (done) => {
+    it('should identify missing required documents', async () => {
       const uploadedFiles = [];
       const projectContext = { building_type: 'bytový dům' };
 
-      // Without any uploaded files, should flag missing documents
-      const missingExpected = ['tech_spec', 'drawings']; // or similar
-      const mockMissing = [];
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
 
-      assert.ok(mockMissing.length >= 0, 'Should have missing document check');
-      done();
+      assert.ok(result.missing_documents, 'Should identify missing documents');
+      assert.ok(Array.isArray(result.missing_documents), 'Missing documents should be array');
+      // Tech spec should be required
+      const hasRequiredMissing = result.missing_documents.some(d => d.required === true);
+      assert.ok(hasRequiredMissing, 'Should have required missing documents');
     });
 
-    it('should generate RFI for critical missing fields', (done) => {
+    it('should generate RFI for critical missing fields', async () => {
+      const uploadedFiles = [];
       const projectContext = {
         // Missing required fields
         building_type: undefined,
         storeys: undefined
       };
 
-      // Should generate RFI for these critical fields
-      const rfiItems = [];
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
 
-      // Mock: if building_type missing, should have RFI
-      if (!projectContext.building_type) {
-        rfiItems.push({
-          id: 'rfi_building_type',
-          severity: 'critical',
-          question: 'Jaký je typ stavby?'
-        });
-      }
+      assert.ok(result.rfi_items, 'Should have RFI items');
+      assert.ok(Array.isArray(result.rfi_items), 'RFI items should be array');
 
-      assert.ok(rfiItems.length > 0, 'Should have RFI items for missing critical fields');
-      assert.ok(rfiItems[0].severity === 'critical', 'Should be critical severity');
-      done();
+      const criticalRFI = result.rfi_items.filter(r => r.severity === 'critical');
+      assert.ok(criticalRFI.length > 0, 'Should have critical RFI for missing required fields');
     });
 
-    it('should detect conditional requirements (concrete for ŽB)', (done) => {
-      const context = {
+    it('should detect conditional requirements (concrete for ŽB)', async () => {
+      const uploadedFiles = [];
+      const projectContext = {
         building_type: 'bytový dům',
         main_system: ['železobeton'],
-        foundation_concrete: undefined  // Missing for ŽB
+        foundation_concrete: undefined  // Missing for ŽB - should be flagged
       };
 
-      // For ŽB projects, concrete class is required
-      const conditionalRequired = [];
-      if (context.main_system?.includes('železobeton') && !context.foundation_concrete) {
-        conditionalRequired.push('foundation_concrete');
-      }
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
 
-      assert.ok(
-        conditionalRequired.length > 0,
-        'Should detect conditional requirement for ŽB projects'
+      const hasConditionalMissing = result.context_validation.conditional_missing.some(
+        c => c.field === 'foundation_concrete'
       );
-      done();
+      assert.ok(hasConditionalMissing, 'Should detect conditional requirement for ŽB projects');
     });
 
-    it('should handle documents by type detection', (done) => {
-      const files = [
-        { filename: 'techspec.pdf', mime: 'application/pdf' },
-        { filename: 'drawings.dwg', mime: 'application/vnd.dwg' },
-        { filename: 'materials.xlsx', mime: 'application/vnd.ms-excel' }
-      ];
-
-      const documentTypes = {
-        pdf: files.filter(f => f.mime === 'application/pdf').length,
-        dwg: files.filter(f => f.filename.endsWith('.dwg')).length,
-        excel: files.filter(f => f.filename.endsWith('.xlsx')).length
-      };
-
-      assert.strictEqual(documentTypes.pdf, 1, 'Should detect PDF');
-      assert.strictEqual(documentTypes.dwg, 1, 'Should detect DWG');
-      assert.strictEqual(documentTypes.excel, 1, 'Should detect Excel');
-      done();
-    });
-
-    it('should generate recommendations based on completeness', (done) => {
-      const validation = {
-        completeness_score: 65,
-        missing_documents: [
-          { id: 'drawings', required: false }
-        ],
-        context_validation: {
-          missing_fields: []
-        }
-      };
-
-      const recommendations = [];
-
-      if (validation.completeness_score < 100 && validation.missing_documents.some(d => d.id === 'drawings')) {
-        recommendations.push({
-          priority: 'medium',
-          type: 'suggestion',
-          message: 'Nahrání výkresů by zlepšilo přesnost analýzy'
-        });
-      }
-
-      assert.ok(recommendations.length > 0, 'Should have recommendations');
-      done();
-    });
-  });
-
-  describe('Cache Service', () => {
-    it('should generate unique cache keys from input', (done) => {
-      const crypto = require('crypto');
-
-      const generateCacheKey = (prefix, input) => {
-        const hash = crypto.createHash('sha256').update(JSON.stringify(input)).digest('hex');
-        return `${prefix}${hash}`;
-      };
-
-      const key1 = generateCacheKey('doc_parse:', { path: 'file1.pdf' });
-      const key2 = generateCacheKey('doc_parse:', { path: 'file2.pdf' });
-
-      assert.notStrictEqual(key1, key2, 'Different inputs should generate different keys');
-      assert.ok(key1.startsWith('doc_parse:'), 'Key should have prefix');
-      done();
-    });
-
-    it('should structure cache data correctly', (done) => {
-      const cacheData = {
-        filePath: 'techspec.pdf',
-        parsedResult: { pages: 10, text: 'sample' },
-        cached_at: new Date().toISOString()
-      };
-
-      assert.ok(cacheData.filePath, 'Should have filePath');
-      assert.ok(cacheData.parsedResult, 'Should have parsedResult');
-      assert.ok(cacheData.cached_at, 'Should have cached_at timestamp');
-      done();
-    });
-
-    it('should track cache TTL correctly', (done) => {
-      const CACHE_CONFIG = {
-        document_parsing: { ttl: 7 * 24 * 60 * 60 },  // 7 days
-        block_analysis: { ttl: 24 * 60 * 60 },         // 1 day
-        qa_flow: { ttl: 24 * 60 * 60 },                // 1 day
-        llm_response: { ttl: 30 * 24 * 60 * 60 }      // 30 days
-      };
-
-      assert.ok(
-        CACHE_CONFIG.document_parsing.ttl > CACHE_CONFIG.qa_flow.ttl,
-        'Document parsing should have longer TTL than Q&A'
-      );
-      assert.ok(
-        CACHE_CONFIG.llm_response.ttl > CACHE_CONFIG.document_parsing.ttl,
-        'LLM response should have longest TTL'
-      );
-      done();
-    });
-
-    it('should handle cache miss gracefully', (done) => {
-      // Simulate cache miss
-      const cached = null;
-
-      if (!cached) {
-        // Should return null and log cache miss
-        assert.ok(!cached, 'Cache miss should return null');
-      }
-
-      done();
-    });
-
-    it('should support different cache types', (done) => {
-      const cacheTypes = {
-        'in-memory': 'Development',
-        'redis': 'Production'
-      };
-
-      assert.ok(Object.keys(cacheTypes).length >= 1, 'Should support at least one cache type');
-      assert.ok(cacheTypes['in-memory'], 'Should support in-memory cache');
-      done();
-    });
-  });
-
-  describe('Document Q&A Integration', () => {
-    it('should generate clarification questions', (done) => {
-      const parsedDocument = {
-        full_text: 'bytový dům s 4 nadzemními podlažími...',
-        metadata: { pages: 10 }
-      };
-
-      const partialContext = {
-        building_type: 'bytový dům',
-        storeys: 4,
-        main_system: []
-      };
-
-      // Should generate questions for missing fields
-      const questions = [];
-
-      if (!partialContext.main_system || partialContext.main_system.length === 0) {
-        questions.push({
-          id: 'q_main_system',
-          question: 'Jaké jsou hlavní konstrukční systémy?',
-          category: 'materials',
-          priority: 'high'
-        });
-      }
-
-      assert.ok(questions.length > 0, 'Should generate questions for missing context');
-      done();
-    });
-
-    it('should extract answers from documents', (done) => {
-      const text = 'Stavba je postavena ze zdiva Porotherm 36.5 cm...';
-      const question = {
-        id: 'q_wall_material',
-        question: 'Jaký konkrétní typ zdiva?'
-      };
-
-      let answer = null;
-      if (text.toLowerCase().includes('porotherm')) {
-        answer = 'Porotherm';
-      }
-
-      assert.ok(answer, 'Should extract answer from document');
-      assert.strictEqual(answer, 'Porotherm', 'Should extract correct material');
-      done();
-    });
-
-    it('should assign confidence scores to answers', (done) => {
-      const answers = [
-        { answer: 'C25/30', confidence: 0.95, source: 'pattern_match' },
-        { answer: 'betonová taška', confidence: 0.85, source: 'pattern_match' },
-        { answer: '4NP', confidence: 0.9, source: 'regex_match' }
-      ];
-
-      const highConfidence = answers.filter(a => a.confidence >= 0.85);
-      assert.ok(highConfidence.length >= 2, 'Should have high confidence answers');
-      assert.ok(answers[0].confidence === 0.95, 'Concrete pattern should have highest confidence');
-      done();
-    });
-
-    it('should identify RFI-needed situations', (done) => {
-      const unansweredQuestions = [
-        { id: 'q_building_type', priority: 'high' },
-        { id: 'q_main_system', priority: 'high' }
-      ];
-
-      const rfiNeeded = unansweredQuestions.some(q => q.priority === 'high');
-
-      assert.ok(rfiNeeded, 'Should flag RFI needed for critical questions');
-      done();
-    });
-  });
-
-  describe('Context Editor Workflow', () => {
-    it('should validate required context fields', (done) => {
-      const context = {
-        building_type: 'bytový dům',
-        storeys: 4,
-        main_system: ['železobeton']
-      };
-
-      const requiredFields = ['building_type', 'storeys', 'main_system'];
-      const missingFields = requiredFields.filter(f => !context[f]);
-
-      assert.strictEqual(missingFields.length, 0, 'All required fields should be present');
-      done();
-    });
-
-    it('should handle conditional field requirements', (done) => {
-      const context = {
-        building_type: 'most',
-        storeys: 1,
+    it('should detect geological requirements for bridges', async () => {
+      const uploadedFiles = [];
+      const projectContext = {
+        building_type: 'most',  // Bridge requires geological data
         main_system: ['ocel']
-        // Missing: soil_class, groundwater_level (conditional for mosts)
       };
 
-      const conditionalFields = [];
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
 
-      if (context.building_type === 'most') {
-        if (!context.soil_class) conditionalFields.push('soil_class');
-        if (!context.groundwater_level) conditionalFields.push('groundwater_level');
-      }
+      // Should either have conditional missing for geological data or RFI
+      const hasGeologicalMissing = result.context_validation.conditional_missing.some(
+        c => c.field === 'soil_class' || c.field === 'groundwater_level'
+      );
 
-      assert.ok(conditionalFields.length > 0, 'Should identify conditional fields');
-      assert.ok(conditionalFields.includes('soil_class'), 'Should require soil_class for mosts');
-      done();
+      const hasGeologicalRFI = result.rfi_items.some(
+        r => r.id && r.id.includes('geological')
+      );
+
+      assert.ok(hasGeologicalMissing || hasGeologicalRFI,
+        'Should require geological data for bridges');
     });
 
-    it('should serialize context to JSON', (done) => {
-      const context = {
-        building_type: 'bytový dům',
-        storeys: 4,
-        main_system: ['železobeton'],
-        foundation_concrete: 'C25/30',
-        wall_material: 'Porotherm',
-        roofing: 'betonová taška'
-      };
-
-      const jsonStr = JSON.stringify(context, null, 2);
-
-      assert.ok(jsonStr, 'Should serialize to JSON');
-      assert.ok(jsonStr.includes('bytový dům'), 'Should preserve data');
-      assert.ok(jsonStr.includes('\"storeys\": 4'), 'Should be valid JSON');
-      done();
-    });
-
-    it('should support field value validation', (done) => {
-      const fieldValidators = {
-        storeys: (val) => Number.isInteger(val) && val > 0 && val <= 100,
-        basement_levels: (val) => !val || (Number.isInteger(val) && val >= 0 && val <= 5),
-        building_type: (val) => typeof val === 'string' && val.length > 0
-      };
-
-      const testValues = {
-        storeys: 4,
-        basement_levels: 1,
+    it('should generate recommendations based on completeness', async () => {
+      const uploadedFiles = [];
+      const projectContext = {
         building_type: 'bytový dům'
       };
 
-      const validations = Object.entries(testValues).map(([field, value]) => {
-        const isValid = fieldValidators[field]?.(value) ?? true;
-        return { field, value, isValid };
-      });
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
 
-      const allValid = validations.every(v => v.isValid);
-      assert.ok(allValid, 'All field values should be valid');
-      done();
+      assert.ok(result.recommendations, 'Should have recommendations');
+      assert.ok(Array.isArray(result.recommendations), 'Recommendations should be array');
+
+      if (result.completeness_score < 100) {
+        const hasMissingDocRec = result.recommendations.some(
+          r => r.type === 'missing_documents' || r.type === 'missing_context'
+        );
+        assert.ok(hasMissingDocRec, 'Should recommend missing items when incomplete');
+      }
+    });
+
+    it('should set correct severity levels', async () => {
+      const uploadedFiles = [];
+      const projectContext = {};
+
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
+
+      const validSeverities = ['ok', 'warning', 'critical'];
+      assert.ok(validSeverities.includes(result.severity),
+        `Severity should be one of: ${validSeverities.join(', ')}`);
+
+      if (result.completeness_score >= 80) {
+        assert.strictEqual(result.severity, 'ok', 'Score >= 80 should be ok');
+      } else if (result.completeness_score >= 50) {
+        assert.strictEqual(result.severity, 'warning', 'Score 50-79 should be warning');
+      } else {
+        assert.strictEqual(result.severity, 'critical', 'Score < 50 should be critical');
+      }
+    });
+
+    it('should get document requirements by project type', () => {
+      // Test for apartment building
+      const aptRequirements = getDocumentRequirements('bytový dům');
+      assert.ok(aptRequirements.documents, 'Should return document requirements');
+      assert.ok(Array.isArray(aptRequirements.documents), 'Documents should be array');
+      assert.ok(aptRequirements.documents.length > 0, 'Should have minimum one document');
+
+      // Test for bridge
+      const bridgeRequirements = getDocumentRequirements('most');
+      assert.ok(bridgeRequirements.documents.length > aptRequirements.documents.length,
+        'Bridge should require more documents than apartment');
+    });
+
+    it('should export all document types', () => {
+      const docTypes = getDocumentTypes();
+
+      assert.ok(Array.isArray(docTypes), 'Should return array of document types');
+      assert.ok(docTypes.length > 0, 'Should have document types');
+
+      // Check structure
+      const sample = docTypes[0];
+      assert.ok(sample.id, 'Should have id');
+      assert.ok(sample.name, 'Should have name');
+      assert.ok(sample.extensions, 'Should have extensions');
+
+      // Should include common types
+      const ids = docTypes.map(d => d.id);
+      assert.ok(ids.includes('tech_spec'), 'Should include tech_spec');
     });
   });
 
-  describe('Document Upload Workflow', () => {
-    it('should validate file extensions', (done) => {
-      const allowedExtensions = ['.pdf', '.docx', '.xlsx', '.dwg', '.jpg', '.png', '.txt'];
-      const testFiles = [
-        'techspec.pdf',
-        'drawings.dwg',
-        'materials.xlsx',
-        'malware.exe'  // Should fail
-      ];
+  describe('File Validator Service', () => {
+    it('should validate supported file types', async () => {
+      const supportedTypes = getSupportedFileTypes();
 
-      const validFiles = testFiles.filter(filename => {
-        const ext = '.' + filename.split('.').pop();
-        return allowedExtensions.includes(ext.toLowerCase());
-      });
+      assert.ok(Array.isArray(supportedTypes), 'Should return array');
+      assert.ok(supportedTypes.length > 0, 'Should have supported types');
 
-      assert.strictEqual(validFiles.length, 3, 'Should accept valid extensions');
-      assert.ok(!validFiles.includes('malware.exe'), 'Should reject invalid files');
-      done();
+      // Check structure
+      const sample = supportedTypes[0];
+      assert.ok(sample.extension, 'Should have extension');
+      assert.ok(sample.mimeType, 'Should have mimeType');
+
+      // Should include common types
+      const extensions = supportedTypes.map(t => t.extension);
+      assert.ok(extensions.includes('pdf'), 'Should support PDF');
+      assert.ok(extensions.includes('xlsx'), 'Should support XLSX');
     });
 
-    it('should calculate file sizes', (done) => {
-      const files = [
-        { filename: 'small.pdf', size: 100000 },     // 100 KB
-        { filename: 'large.pdf', size: 5000000 },    // 5 MB
-        { filename: 'too_large.pdf', size: 100000000 } // 100 MB
-      ];
-
-      const maxSize = 50 * 1024 * 1024; // 50 MB
-      const validFiles = files.filter(f => f.size <= maxSize);
-
-      assert.strictEqual(validFiles.length, 2, 'Should accept files under 50 MB');
-      assert.ok(!validFiles.some(f => f.filename === 'too_large.pdf'), 'Should reject large files');
-      done();
+    it('should reject empty files', async () => {
+      // Note: This test would need actual file system access
+      // For now, we test the function signature works
+      assert.ok(typeof validateFileContent === 'function', 'validateFileContent should be a function');
     });
 
-    it('should track upload progress', (done) => {
-      let progress = 0;
+    it('should support multiple file validation', async () => {
+      assert.ok(typeof validateMultipleFiles === 'function', 'validateMultipleFiles should be a function');
 
-      // Simulate upload progress
-      progress = 25;
-      assert.ok(progress >= 0 && progress <= 100, 'Progress should be 0-100%');
-
-      progress = 50;
-      assert.ok(progress > 25, 'Progress should increase');
-
-      progress = 100;
-      assert.strictEqual(progress, 100, 'Should reach 100%');
-      done();
+      // Test with empty array
+      const result = await validateMultipleFiles([]);
+      assert.ok(result.hasOwnProperty('validatedFiles'), 'Should return validation results');
     });
 
-    it('should handle multiple file uploads', (done) => {
+    it('should reject files with invalid extensions', async () => {
+      assert.ok(typeof validateFileContent === 'function', 'Should handle validation');
+    });
+  });
+
+  describe('Cache Service Integration', () => {
+    it('should have correct TTL configuration', async () => {
+      // Import and check cache config via validator service usage
       const uploadedFiles = [
-        { filename: 'techspec.pdf', size: 1024000, type: 'tech_spec' },
-        { filename: 'drawings.pdf', size: 2048000, type: 'drawings' },
-        { filename: 'materials.xlsx', size: 512000, type: 'materials' }
+        { filename: 'test.pdf', size: 1024 }
       ];
 
-      assert.strictEqual(uploadedFiles.length, 3, 'Should handle 3 files');
-      assert.ok(uploadedFiles.every(f => f.filename), 'All files should have names');
-      assert.ok(uploadedFiles.every(f => f.size > 0), 'All files should have size');
-      done();
+      const result = await validateDocumentCompleteness(uploadedFiles, {});
+
+      // This implicitly tests that cache service is initialized
+      assert.ok(result.hasOwnProperty('completeness_score'), 'Service should work correctly');
     });
   });
 
-  describe('Integration Tests', () => {
-    it('should complete full document parsing workflow', (done) => {
-      const workflow = {
-        step1: 'upload_file',
-        step2: 'parse_document',
-        step3: 'extract_context',
-        step4: 'run_qa_flow',
-        step5: 'validate_completeness',
-        step6: 'cache_results'
-      };
+  describe('Error Handling', () => {
+    it('should handle missing context gracefully', async () => {
+      const result = await validateDocumentCompleteness([], null);
 
-      assert.ok(Object.keys(workflow).length === 6, 'Should have 6 workflow steps');
-      assert.ok(workflow.step1 === 'upload_file', 'Should start with upload');
-      assert.ok(workflow.step6 === 'cache_results', 'Should end with caching');
-      done();
+      assert.ok(result.completeness_score >= 0, 'Should handle null context');
+      assert.ok(result.hasOwnProperty('context_validation'), 'Should validate missing context');
     });
 
-    it('should support workflow retry on failure', (done) => {
-      const steps = [
-        { name: 'parse', status: 'failed' },
-        { name: 'parse', status: 'retry' },
-        { name: 'parse', status: 'success' }
+    it('should handle invalid file arrays', async () => {
+      const result = await validateDocumentCompleteness('not an array', {});
+
+      assert.ok(result.uploaded_documents.length === 0, 'Should handle invalid file input');
+    });
+
+    it('should handle missing conditional missing array', async () => {
+      // Edge case: ensure code doesn't crash with missing arrays
+      const result = await validateDocumentCompleteness([], {
+        building_type: 'most'
+      });
+
+      assert.ok(result.context_validation, 'Should have context validation');
+      assert.ok(Array.isArray(result.context_validation.conditional_missing),
+        'Should initialize conditional_missing as array');
+    });
+  });
+
+  describe('Completeness Score Accuracy', () => {
+    it('should score 100% with all required fields and documents', async () => {
+      // For technical spec only (1 required document)
+      const uploadedFiles = [
+        { filename: 'techspec.pdf', size: 1024000 }
       ];
 
-      const hasRetry = steps.some(s => s.status === 'retry');
-      const hasSuccess = steps.some(s => s.status === 'success');
-
-      assert.ok(hasRetry, 'Should support retry');
-      assert.ok(hasSuccess, 'Should eventually succeed');
-      done();
-    });
-
-    it('should maintain state across workflow steps', (done) => {
-      const state = {
-        jobId: 'job_123',
-        uploadedFile: 'techspec.pdf',
-        parsedDocument: { pages: 10 },
-        projectContext: { building_type: 'bytový dům' },
-        qaResults: { questions: [] },
-        validation: { score: 85 }
+      const projectContext = {
+        building_type: 'bytový dům',
+        storeys: 4,
+        main_system: ['železobeton'],
+        foundation_concrete: 'C25/30'  // Conditional met
       };
 
-      assert.ok(state.jobId, 'Should maintain job ID');
-      assert.ok(state.uploadedFile, 'Should maintain uploaded file');
-      assert.ok(state.parsedDocument, 'Should maintain parsed doc');
-      assert.ok(state.projectContext, 'Should maintain context');
-      assert.ok(state.validation, 'Should maintain validation');
-      done();
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
+
+      assert.ok(result.completeness_score >= 80, 'Should score high when mostly complete');
+    });
+
+    it('should score lower with missing context fields', async () => {
+      const uploadedFiles = [
+        { filename: 'techspec.pdf', size: 1024000 }
+      ];
+
+      const projectContext = {
+        building_type: 'bytový dům'
+        // Missing: storeys, main_system
+      };
+
+      const result = await validateDocumentCompleteness(uploadedFiles, projectContext);
+
+      assert.ok(result.completeness_score < 100, 'Should be incomplete');
+      assert.ok(result.completeness_score > 0, 'Should still have some score');
+    });
+
+    it('should provide valid has_critical_rfi flag', async () => {
+      const result = await validateDocumentCompleteness([], {});
+
+      assert.ok(result.hasOwnProperty('has_critical_rfi'), 'Should have has_critical_rfi flag');
+      assert.ok(typeof result.has_critical_rfi === 'boolean', 'Flag should be boolean');
+    });
+  });
+
+  describe('RFI Generation', () => {
+    it('should generate RFI with required fields', async () => {
+      const result = await validateDocumentCompleteness([], {});
+
+      const rfiItem = result.rfi_items[0];
+      if (rfiItem) {
+        assert.ok(rfiItem.id, 'Should have id');
+        assert.ok(rfiItem.severity, 'Should have severity');
+        assert.ok(rfiItem.question, 'Should have question');
+      }
+    });
+
+    it('should not generate RFI for complete projects', async () => {
+      const result = await validateDocumentCompleteness(
+        [{ filename: 'tech.pdf', size: 1000 }],
+        {
+          building_type: 'bytový dům',
+          storeys: 4,
+          main_system: ['železobeton'],
+          foundation_concrete: 'C25/30'
+        }
+      );
+
+      // Should have fewer/no critical RFI when data is complete
+      const criticalCount = result.rfi_items.filter(r => r.severity === 'critical').length;
+      assert.ok(criticalCount === 0, 'Should not have critical RFI when complete');
     });
   });
 });

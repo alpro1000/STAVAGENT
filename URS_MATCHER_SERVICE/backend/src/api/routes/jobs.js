@@ -16,9 +16,16 @@ import { universalMatch, recordUserFeedback } from '../../services/universalMatc
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
 import { validateUniversalMatch, validateFeedback } from '../middleware/inputValidation.js';
-import { createSafeUniversalMatchLog, createSafeFeedbackLog } from '../../utils/loggingHelper.js';
+import {
+  createSafeUniversalMatchLog,
+  createSafeFeedbackLog,
+  createFileOperationLog,
+  createSecurityEventLog,
+  createContextualLogMessage
+} from '../../utils/loggingHelper.js';
 import { validateDocumentCompleteness, getDocumentRequirements } from '../../services/documentValidatorService.js';
 import { getCachedDocumentParsing, cacheDocumentParsing, initCache } from '../../services/cacheService.js';
+import { validateFileContent } from '../../utils/fileValidator.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const router = express.Router();
@@ -70,6 +77,48 @@ router.post('/file-upload', upload.single('file'), async (req, res) => {
     const jobId = uuidv4();
 
     logger.info(`[JOBS] File upload started: ${jobId}`);
+
+    // SECURITY: Validate file content matches extension (magic bytes check)
+    const fileValidation = await validateFileContent(filePath, req.file.originalname);
+    if (!fileValidation.valid) {
+      logger.warn(`[JOBS] File validation failed: ${fileValidation.error}`);
+
+      // Log security event
+      const securityLog = createSecurityEventLog({
+        userId: req.user?.id || 'anonymous',
+        eventType: 'invalid_file',
+        severity: 'warning',
+        description: `File validation failed: ${fileValidation.error}`,
+        ipAddress: req.ip,
+        details: { filename: req.file.originalname }
+      });
+      logger.warn(JSON.stringify(securityLog));
+
+      // Clean up uploaded file
+      try {
+        fs.unlinkSync(filePath);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+      return res.status(400).json({
+        error: 'File validation failed',
+        details: fileValidation.error
+      });
+    }
+
+    logger.info(`[JOBS] File validation passed: ${fileValidation.fileType}`);
+
+    // Log successful file upload
+    const fileOpLog = createFileOperationLog({
+      userId: req.user?.id || 'anonymous',
+      jobId: jobId,
+      operation: 'upload',
+      filename: req.file.originalname,
+      fileSize: req.file.size,
+      fileType: fileValidation.fileType,
+      status: 'success'
+    });
+    logger.info(JSON.stringify(fileOpLog));
 
     // Parse the file
     const rows = await parseExcelFile(filePath);
@@ -620,9 +669,77 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
 
     filePath = req.file.path;
     const jobId = uuidv4();
+    const userId = req.user?.id || 'default'; // Extract user ID if available
 
     logger.info(`[JOBS] Document parsing started: ${jobId}`);
     logger.info(`[JOBS] File: ${req.file.originalname}`);
+
+    // SECURITY: Validate file content matches extension (magic bytes check)
+    const fileValidation = await validateFileContent(filePath, req.file.originalname);
+    if (!fileValidation.valid) {
+      logger.warn(`[JOBS] File validation failed: ${fileValidation.error}`);
+
+      // Log security event
+      const securityLog = createSecurityEventLog({
+        userId: userId,
+        eventType: 'invalid_file',
+        severity: 'warning',
+        description: `Document parsing - File validation failed: ${fileValidation.error}`,
+        ipAddress: req.ip,
+        details: { filename: req.file.originalname }
+      });
+      logger.warn(JSON.stringify(securityLog));
+
+      // Clean up uploaded file
+      try {
+        fs.unlinkSync(filePath);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+      return res.status(400).json({
+        error: 'File validation failed',
+        details: fileValidation.error
+      });
+    }
+
+    logger.info(`[JOBS] File validation passed: ${fileValidation.fileType}`);
+
+    // Log successful file upload for document parsing
+    const fileOpLog = createFileOperationLog({
+      userId: userId,
+      jobId: jobId,
+      operation: 'upload',
+      filename: req.file.originalname,
+      fileSize: req.file.size,
+      fileType: fileValidation.fileType,
+      status: 'success'
+    });
+    logger.info(JSON.stringify(fileOpLog));
+
+    // FIXED: Check cache FIRST before expensive processing
+    logger.info(`[JOBS] Checking cache for parsed document...`);
+    const cachedResult = await getCachedDocumentParsing(req.file.originalname, userId, jobId);
+    if (cachedResult) {
+      logger.info(`[JOBS] Cache HIT - returning cached result for: ${req.file.originalname}`);
+      return res.status(200).json({
+        job_id: jobId,
+        status: 'completed',
+        filename: req.file.originalname,
+        from_cache: true,
+        cached_at: new Date().toISOString(),
+        parsed_document: {
+          file_type: cachedResult.parsedDocument?.file_type,
+          pages_count: cachedResult.parsedDocument?.pages_count || 0,
+          has_tables: cachedResult.parsedDocument?.has_tables || false
+        },
+        project_context: cachedResult.projectContext,
+        qa_flow: cachedResult.qaResults,
+        document_validation: cachedResult.documentValidation,
+        message: 'Document parsed from cache'
+      });
+    }
+
+    logger.info(`[JOBS] Cache MISS - processing document...`);
 
     // Import STAVAGENT client
     const { parseDocumentWithStavagent, extractProjectContext, checkStavagentAvailability } =
@@ -669,15 +786,21 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
 
     // Cache parsing results for future use
     try {
-      await cacheDocumentParsing(req.file.originalname, {
-        parsedDocument,
-        projectContext,
-        qaResults,
-        documentValidation
-      });
+      await cacheDocumentParsing(
+        req.file.originalname,
+        {
+          parsedDocument,
+          projectContext,
+          qaResults,
+          documentValidation
+        },
+        userId,
+        jobId
+      );
       logger.debug(`[JOBS] Document parsing cached for future use`);
     } catch (cacheError) {
-      logger.warn(`[JOBS] Failed to cache document: ${cacheError.message}`);
+      logger.error(`[Cache] Failed to cache document (will not affect response): ${cacheError.message}`);
+      // Don't fail the request if cache fails
     }
 
     // Save to database
