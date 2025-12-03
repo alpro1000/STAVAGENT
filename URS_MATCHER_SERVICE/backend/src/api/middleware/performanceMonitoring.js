@@ -5,12 +5,12 @@
  * Attaches timing information to all requests and logs performance metrics
  */
 
-import { logger } from '../utils/logger.js';
+import { logger } from '../../utils/logger.js';
 import {
   startRequestTimer,
   endRequestTimer,
   addTimerMarker
-} from '../services/performanceOptimizer.js';
+} from '../../services/performanceOptimizer.js';
 
 /**
  * Performance monitoring middleware
