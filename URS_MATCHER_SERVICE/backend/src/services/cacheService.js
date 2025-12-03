@@ -471,17 +471,41 @@ export async function clearAllCache(isAdmin = false) {
         } while (cursor !== 0);
       }
 
-      // Delete keys in batches to avoid "Maximum call stack size exceeded" error
+      // Delete keys in batches with error handling
       if (keysToDelete.length > 0) {
         const batchSize = 1000; // Safe batch size for DEL command
+        const deletePromises = [];
+
         for (let i = 0; i < keysToDelete.length; i += batchSize) {
           const batch = keysToDelete.slice(i, i + batchSize);
-          await cache.del(...batch);
-          totalDeleted += batch.length;
+          // Use array instead of spread operator to avoid call stack exceeded
+          const deletePromise = cache.del(batch)
+            .then(result => {
+              totalDeleted += result;
+              logger.debug(`[Cache] Batch delete completed: ${result} keys removed`);
+              return result;
+            })
+            .catch(batchError => {
+              // Log batch-specific errors but continue with other batches
+              const batchStart = i;
+              const batchEnd = Math.min(i + batchSize, keysToDelete.length);
+              logger.error(
+                `[Cache] Failed to delete batch [${batchStart}-${batchEnd}]: ${batchError.message}`
+              );
+              return 0; // Return 0 for this batch if it fails
+            });
+
+          deletePromises.push(deletePromise);
         }
+
+        // Execute all batches in parallel for better performance
+        const batchResults = await Promise.all(deletePromises);
+        totalDeleted = batchResults.reduce((sum, count) => sum + count, 0);
       }
 
-      logger.warn(`[Cache] Cleared ${totalDeleted} Redis keys using SCAN in batches (admin)`);
+      logger.warn(
+        `[Cache] Cleared ${totalDeleted} Redis keys using SCAN with batches (admin) - ${Math.ceil(keysToDelete.length / 1000)} batches`
+      );
     }
 
     return true;
