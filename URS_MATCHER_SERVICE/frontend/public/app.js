@@ -1070,6 +1070,16 @@ function attachDocumentUploadHandlers() {
 
     debugLog('📄 ✓ Document validation results displayed');
   }
+
+  // Add back button handler for document upload section
+  const backFromDocUploadBtn = document.getElementById('backFromDocUploadBtn');
+  if (backFromDocUploadBtn) {
+    backFromDocUploadBtn.addEventListener('click', () => {
+      debugLog('📄 Back button clicked - returning to main menu');
+      showUpload();  // Show main upload section
+      documentUploadContainer.innerHTML = '';  // Clear the component
+    });
+  }
 }
 
 async function loadContextEditorComponent() {
