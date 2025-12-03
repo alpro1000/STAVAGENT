@@ -15,6 +15,8 @@ import { matchUrsItemWithAI, explainMapping, isLLMEnabled } from '../../services
 import { universalMatch, recordUserFeedback } from '../../services/universalMatcher.js';
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
+import { validateUniversalMatch, validateFeedback } from '../middleware/inputValidation.js';
+import { createSafeUniversalMatchLog, createSafeFeedbackLog } from '../../utils/loggingHelper.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const router = express.Router();
@@ -835,23 +837,13 @@ router.post('/:jobId/confirm-qa', async (req, res) => {
  *   "execution_time_ms": 1234
  * }
  */
-router.post('/universal-match', async (req, res) => {
+router.post('/universal-match', validateUniversalMatch, async (req, res) => {
   try {
     const { text, quantity, unit, projectType, buildingSystem, candidateItems } = req.body;
 
-    // Validate required fields
-    if (!text || typeof text !== 'string') {
-      return res.status(400).json({
-        error: 'Missing or invalid "text" field',
-        example: {
-          text: 'betonová deska přehlazená',
-          quantity: 45,
-          unit: 'm2'
-        }
-      });
-    }
-
-    logger.info(`[UNIVERSAL-MATCH] Request: "${text.substring(0, 80)}..."`);
+    // Log with redacted user input
+    const safeLog = createSafeUniversalMatchLog(req.body);
+    logger.info(`[UNIVERSAL-MATCH] Request: ${JSON.stringify(safeLog)}`);
 
     // Call universal matcher
     const result = await universalMatch({
@@ -873,7 +865,7 @@ router.post('/universal-match', async (req, res) => {
   } catch (error) {
     logger.error(`[UNIVERSAL-MATCH] Error: ${error.message}`);
     res.status(500).json({
-      error: error.message,
+      error: 'Invalid request parameters',
       status: 'error'
     });
   }
@@ -901,7 +893,7 @@ router.post('/universal-match', async (req, res) => {
  *   "user_comment": "User validated this match"
  * }
  */
-router.post('/universal-match/feedback', async (req, res) => {
+router.post('/universal-match/feedback', validateFeedback, async (req, res) => {
   try {
     const {
       urs_code,
@@ -915,15 +907,10 @@ router.post('/universal-match/feedback', async (req, res) => {
       user_comment
     } = req.body;
 
-    // Validate required fields
-    if (!urs_code || !normalized_text_cs || is_correct === undefined) {
-      return res.status(400).json({
-        error: 'Missing required fields: urs_code, normalized_text_cs, is_correct'
-      });
-    }
-
+    // Log with redacted user input
+    const safeLog = createSafeFeedbackLog(req.body);
     logger.info(
-      `[FEEDBACK] Recording: "${normalized_text_cs}" → ${urs_code} (correct: ${is_correct})`
+      `[FEEDBACK] Recording: ${JSON.stringify(safeLog)}`
     );
 
     // Record feedback
@@ -951,7 +938,7 @@ router.post('/universal-match/feedback', async (req, res) => {
   } catch (error) {
     logger.error(`[FEEDBACK] Error: ${error.message}`);
     res.status(500).json({
-      error: error.message
+      error: 'Invalid request parameters'
     });
   }
 });
