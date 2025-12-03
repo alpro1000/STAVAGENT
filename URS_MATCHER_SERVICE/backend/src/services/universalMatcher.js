@@ -81,16 +81,19 @@ export async function universalMatch(input) {
       input.buildingSystem
     );
 
-    if (kbHits && kbHits.length > 0 && kbHits[0].confidence >= 0.85) {
+    // Optimized cache hit detection (using find instead of index check)
+    const kbHit = kbHits?.find(hit => hit.confidence >= 0.85);
+    if (kbHit) {
       logger.info(
-        `[UniversalMatcher] KB HIT: confidence=${kbHits[0].confidence} (skipping LLM)`
+        `[UniversalMatcher] KB HIT: confidence=${kbHit.confidence} (skipping LLM)`
       );
 
       return formatResultFromKB(
         input,
         detectedLanguage,
         normalizedCzech,
-        kbHits[0]
+        kbHit,
+        startTime
       );
     }
 
@@ -189,9 +192,11 @@ export async function universalMatch(input) {
 
 /**
  * Format result from Knowledge Base hit (fast path)
+ * Includes execution time and optimized cache hit detection
  */
-async function formatResultFromKB(input, detectedLanguage, normalizedCzech, kbHit) {
+async function formatResultFromKB(input, detectedLanguage, normalizedCzech, kbHit, startTime) {
   const relatedItems = await getRelatedItems(kbHit.id);
+  const executionTime = Date.now() - startTime;
 
   return {
     query: {
@@ -221,24 +226,109 @@ async function formatResultFromKB(input, detectedLanguage, normalizedCzech, kbHi
     knowledge_suggestions: [],
     status: 'ok',
     notes_cs: 'Odpověď pochází ze znalostní báze bez nutnosti LLM.',
-    source: 'knowledge_base'
+    source: 'knowledge_base',
+    execution_time_ms: executionTime
   };
 }
 
 /**
  * Call LLM with universal match prompt
  * Handles both Claude and OpenAI
+ *
+ * Security: Validates response size, schema, and content to prevent:
+ * - Resource exhaustion attacks (huge responses)
+ * - LLM hallucination (invalid data structures)
+ * - Unbounded result sets
  */
 async function callUniversalLLM(prompt) {
   try {
+    // Constants for safety limits
+    const MAX_RESPONSE_SIZE = 50 * 1024;  // 50KB max response
+    const MAX_MATCHES = 10;  // Max number of matches to return
+    const MAX_MATCH_TEXT_LENGTH = 500;  // Max length for urs_name, reason, etc.
+
     // For now, use existing matchUrsItemWithAI which supports Claude
     // In future could add dedicated universal-match LLM call
-    const response = await matchUrsItemWithAI(prompt, [], []);
+    let response = await matchUrsItemWithAI(prompt, [], []);
 
-    // Parse response (should be JSON already)
+    // Handle string responses
     if (typeof response === 'string') {
-      return JSON.parse(response);
+      // Validate response size before parsing
+      if (response.length > MAX_RESPONSE_SIZE) {
+        logger.error(`[UniversalMatcher] Response too large: ${response.length} bytes (max: ${MAX_RESPONSE_SIZE})`);
+        throw new Error('LLM response exceeded maximum allowed size');
+      }
+
+      // Parse JSON
+      try {
+        response = JSON.parse(response);
+      } catch (parseError) {
+        logger.error(`[UniversalMatcher] Invalid JSON from LLM: ${parseError.message}`);
+        throw new Error('LLM returned invalid JSON');
+      }
     }
+
+    // Validate response schema
+    if (!response || typeof response !== 'object') {
+      logger.error(`[UniversalMatcher] Invalid response type: ${typeof response}`);
+      throw new Error('Invalid LLM response type');
+    }
+
+    // Validate matches array
+    if (!Array.isArray(response.matches)) {
+      logger.error(`[UniversalMatcher] Missing or invalid matches array`);
+      throw new Error('LLM response missing matches array');
+    }
+
+    // Limit number of matches
+    if (response.matches.length > MAX_MATCHES) {
+      logger.warn(`[UniversalMatcher] LLM returned ${response.matches.length} matches, limiting to ${MAX_MATCHES}`);
+      response.matches = response.matches.slice(0, MAX_MATCHES);
+    }
+
+    // Validate each match object
+    response.matches = response.matches.filter(match => {
+      // Validate required fields
+      if (!match.urs_code || typeof match.urs_code !== 'string') {
+        logger.warn(`[UniversalMatcher] Invalid match: missing or invalid urs_code`);
+        return false;
+      }
+
+      // Limit text field lengths
+      if (match.urs_name && match.urs_name.length > MAX_MATCH_TEXT_LENGTH) {
+        match.urs_name = match.urs_name.substring(0, MAX_MATCH_TEXT_LENGTH);
+      }
+
+      // Validate confidence is a number between 0 and 1
+      if (typeof match.confidence !== 'number' || match.confidence < 0 || match.confidence > 1) {
+        match.confidence = 0.5; // Default to medium confidence if invalid
+      }
+
+      return true;
+    });
+
+    // Validate related_items if present
+    if (Array.isArray(response.related_items)) {
+      if (response.related_items.length > MAX_MATCHES) {
+        response.related_items = response.related_items.slice(0, MAX_MATCHES);
+      }
+
+      response.related_items = response.related_items.filter(item => {
+        if (item.reason_cs && item.reason_cs.length > MAX_MATCH_TEXT_LENGTH) {
+          item.reason_cs = item.reason_cs.substring(0, MAX_MATCH_TEXT_LENGTH);
+        }
+        return true;
+      });
+    }
+
+    // Validate and truncate explanation
+    if (response.explanation_cs && typeof response.explanation_cs === 'string') {
+      if (response.explanation_cs.length > MAX_MATCH_TEXT_LENGTH * 2) {
+        response.explanation_cs = response.explanation_cs.substring(0, MAX_MATCH_TEXT_LENGTH * 2) + '...';
+      }
+    }
+
+    logger.debug(`[UniversalMatcher] LLM response validated: ${response.matches.length} matches, ${(JSON.stringify(response).length)} bytes`);
 
     return response;
   } catch (error) {
