@@ -287,73 +287,77 @@ export function getModelPricing(model) {
  * @returns {Object} Recommended model config
  */
 export function recommendBestModel(criteria = 'balanced') {
-  const models = Object.entries(MODEL_PRICING);
-
-  let bestModel;
+  let bestModelName = null;
+  let reason = '';
 
   switch(criteria) {
-    case 'cheapest':
-      bestModel = models.reduce((best, [name, info]) => {
+    case 'cheapest': {
+      const models = Object.entries(MODEL_PRICING);
+      bestModelName = models.reduce((best, [name, info]) => {
         if (!best || info.costPerMinute < MODEL_PRICING[best].costPerMinute) {
           return name;
         }
         return best;
       });
-      // Gemini 2.0 Flash is cheapest
-      return {
-        model: 'gemini-2.0-flash',
-        provider: 'gemini',
-        reason: 'Lowest cost ($0.001/min) - ideal for high volume'
-      };
+      const bestInfo = MODEL_PRICING[bestModelName];
+      reason = `Lowest cost ($${bestInfo.costPerMinute}/min) - ideal for high volume`;
+      break;
+    }
 
-    case 'fastest':
-      bestModel = models.reduce((best, [name, info]) => {
+    case 'fastest': {
+      const models = Object.entries(MODEL_PRICING);
+      bestModelName = models.reduce((best, [name, info]) => {
         if (!best || info.speedScore > MODEL_PRICING[best].speedScore) {
           return name;
         }
         return best;
       });
-      return {
-        model: 'gemini-2.0-flash',
-        provider: 'gemini',
-        reason: 'Fastest speed (10/10) with low latency'
-      };
+      const bestInfo = MODEL_PRICING[bestModelName];
+      reason = `Fastest speed (${bestInfo.speedScore}/10) with low latency`;
+      break;
+    }
 
-    case 'best_quality':
-      bestModel = models.reduce((best, [name, info]) => {
+    case 'best_quality': {
+      const models = Object.entries(MODEL_PRICING);
+      bestModelName = models.reduce((best, [name, info]) => {
         if (!best || info.qualityScore > MODEL_PRICING[best].qualityScore) {
           return name;
         }
         return best;
       });
-      return {
-        model: 'claude-sonnet-4-5-20250929',
-        provider: 'claude',
-        reason: 'Best quality (10/10) with excellent performance'
-      };
+      const bestInfo = MODEL_PRICING[bestModelName];
+      reason = `Best quality (${bestInfo.qualityScore}/10) with excellent performance`;
+      break;
+    }
 
     case 'balanced':
-    default:
-      // Balance cost and quality
+    default: {
+      // Balance cost and quality: 50% quality, 30% cost, 20% speed
       const scoreByBalance = (info) =>
         (info.qualityScore * 0.5) +
         ((10 - (info.costPerMinute / 1.5 * 10)) * 0.3) +
         (info.speedScore * 0.2);
 
-      bestModel = models.reduce((best, [name, info]) => {
+      const models = Object.entries(MODEL_PRICING);
+      bestModelName = models.reduce((best, [name, info]) => {
         const score = scoreByBalance(info);
         if (!best || score > scoreByBalance(MODEL_PRICING[best])) {
           return name;
         }
         return best;
       });
-
-      return {
-        model: 'gemini-2.0-flash',
-        provider: 'gemini',
-        reason: 'Optimal balance: fast (10/10), cheap ($0.001/min), good quality (8/10)'
-      };
+      const bestInfo = MODEL_PRICING[bestModelName];
+      reason = `Optimal balance: fast (${bestInfo.speedScore}/10), cheap ($${bestInfo.costPerMinute}/min), quality (${bestInfo.qualityScore}/10)`;
+      break;
+    }
   }
+
+  const bestInfo = MODEL_PRICING[bestModelName];
+  return {
+    model: bestModelName,
+    provider: bestInfo.provider,
+    reason: reason
+  };
 }
 
 /**
