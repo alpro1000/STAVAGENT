@@ -1,5 +1,5 @@
 /**
- * LLM Client Service (Claude / OpenAI)
+ * LLM Client Service (Claude / OpenAI / Gemini)
  * Provides re-ranking and explanations for URS item matching
  * MVP-2: Full implementation with error handling and fallback
  */
@@ -164,8 +164,10 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
   try {
     if (llmClient.provider === 'claude') {
       return await callClaudeAPI(systemPrompt, userPrompt, controller);
+    } else if (llmClient.provider === 'gemini') {
+      return await callGeminiAPI(systemPrompt, userPrompt, controller);
     } else {
-      // OpenAI
+      // OpenAI (default)
       return await callOpenAIAPI(systemPrompt, userPrompt, controller);
     }
   } finally {
@@ -237,6 +239,52 @@ async function callOpenAIAPI(systemPrompt, userPrompt, controller) {
   }
 
   return response.data.choices[0].message.content;
+}
+
+/**
+ * Call Google Gemini API
+ */
+async function callGeminiAPI(systemPrompt, userPrompt, controller) {
+  // Gemini API endpoint format: /v1beta/models/{model}:generateContent?key={apiKey}
+  const apiUrl = `${llmClient.apiUrl}/${llmClient.model}:generateContent?key=${llmClient.apiKey}`;
+
+  const response = await axios.post(
+    apiUrl,
+    {
+      system_instruction: {
+        parts: {
+          text: systemPrompt
+        }
+      },
+      contents: {
+        parts: [
+          {
+            text: userPrompt
+          }
+        ]
+      },
+      generationConfig: {
+        temperature: 0.3,
+        maxOutputTokens: 1024
+      }
+    },
+    {
+      headers: llmClient.headers,
+      timeout: llmConfig.timeoutMs,
+      signal: controller.signal
+    }
+  );
+
+  if (!response.data || !response.data.candidates || response.data.candidates.length === 0) {
+    throw new Error('Invalid Gemini API response');
+  }
+
+  const content = response.data.candidates[0].content;
+  if (!content || !content.parts || content.parts.length === 0) {
+    throw new Error('No content in Gemini response');
+  }
+
+  return content.parts[0].text;
 }
 
 /**
