@@ -17,6 +17,8 @@ import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
 import { validateUniversalMatch, validateFeedback } from '../middleware/inputValidation.js';
 import { createSafeUniversalMatchLog, createSafeFeedbackLog } from '../../utils/loggingHelper.js';
+import { validateDocumentCompleteness, getDocumentRequirements } from '../../services/documentValidatorService.js';
+import { getCachedDocumentParsing, cacheDocumentParsing, initCache } from '../../services/cacheService.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const router = express.Router();
@@ -658,7 +660,27 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
 
     logger.info(`[JOBS] Q&A Flow completed: ${qaResults.answered_count} answered, ${qaResults.unanswered_count} need input`);
 
-    // Save to database (optional - for caching)
+    // Validate document completeness
+    logger.info(`[JOBS] Validating document completeness...`);
+    const uploadedFiles = req.file ? [{ filename: req.file.originalname, size: req.file.size }] : [];
+    const documentValidation = await validateDocumentCompleteness(uploadedFiles, qaResults.enhanced_context);
+
+    logger.info(`[JOBS] Document validation: ${documentValidation.completeness_score}% complete`);
+
+    // Cache parsing results for future use
+    try {
+      await cacheDocumentParsing(req.file.originalname, {
+        parsedDocument,
+        projectContext,
+        qaResults,
+        documentValidation
+      });
+      logger.debug(`[JOBS] Document parsing cached for future use`);
+    } catch (cacheError) {
+      logger.warn(`[JOBS] Failed to cache document: ${cacheError.message}`);
+    }
+
+    // Save to database
     const db = await getDatabase();
     await db.run(
       `INSERT INTO jobs (id, filename, status, total_rows, created_at)
@@ -675,7 +697,7 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
         pages_count: parsedDocument.metadata?.total_pages || parsedDocument.metadata?.total_sheets || 0,
         has_tables: parsedDocument.metadata?.has_tables || false
       },
-      project_context: projectContext,
+      project_context: qaResults.enhanced_context,
       qa_flow: {
         questions: qaResults.questions,
         answered_count: qaResults.answered_count,
@@ -684,7 +706,16 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
         requires_user_input: qaResults.requires_user_input,
         rfi_needed: qaResults.rfi_needed
       },
-      message: 'Document parsed, context extracted, and Q&A flow completed'
+      document_validation: {
+        completeness_score: documentValidation.completeness_score,
+        uploaded_documents: documentValidation.uploaded_documents,
+        missing_documents: documentValidation.missing_documents,
+        context_validation: documentValidation.context_validation,
+        rfi_items: documentValidation.rfi_items,
+        severity: documentValidation.severity,
+        recommendations: documentValidation.recommendations
+      },
+      message: 'Document parsed, context extracted, Q&A flow completed, and validation performed'
     });
 
     // Clean up uploaded file after successful processing
