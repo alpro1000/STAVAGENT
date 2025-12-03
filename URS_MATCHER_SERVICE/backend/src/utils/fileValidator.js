@@ -92,11 +92,12 @@ async function checkMagicBytes(filePath, fileType) {
     // Read first 8 bytes of file for signature checking
     const buffer = Buffer.alloc(8);
     fd = await fs.promises.open(filePath, 'r');
-    await fd.read(buffer, 0, 8, 0);
+    const { bytesRead } = await fd.read(buffer, 0, 8, 0);
 
     // Check if file starts with any of the known signatures
     for (const signature of signatures) {
-      if (buffer.slice(0, signature.length).equals(signature)) {
+      // Only compare if we read enough bytes for this signature
+      if (bytesRead >= signature.length && buffer.slice(0, signature.length).equals(signature)) {
         return true;
       }
     }

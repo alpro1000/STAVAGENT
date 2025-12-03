@@ -21,7 +21,8 @@ import {
   createSafeFeedbackLog,
   createFileOperationLog,
   createSecurityEventLog,
-  createContextualLogMessage
+  createContextualLogMessage,
+  redactText
 } from '../../utils/loggingHelper.js';
 import { validateDocumentCompleteness, getDocumentRequirements } from '../../services/documentValidatorService.js';
 import { getCachedDocumentParsing, cacheDocumentParsing, initCache } from '../../services/cacheService.js';
@@ -34,6 +35,22 @@ const router = express.Router();
 const uploadsDir = path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+/**
+ * SECURITY: Validate file path is confined to uploads directory
+ * Prevents path traversal attacks (e.g., ../../etc/passwd)
+ */
+function validateUploadPath(filePath) {
+  const resolvedPath = path.resolve(filePath);
+  const resolvedUploadsDir = path.resolve(uploadsDir);
+
+  // Check if resolved path is within uploads directory
+  if (!resolvedPath.startsWith(resolvedUploadsDir)) {
+    throw new Error('Invalid file path: path traversal detected');
+  }
+
+  return resolvedPath;
 }
 
 const storage = multer.diskStorage({
@@ -671,8 +688,24 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
     const jobId = uuidv4();
     const userId = req.user?.id || 'default'; // Extract user ID if available
 
+    // SECURITY: Validate file path is confined to uploads directory
+    try {
+      filePath = validateUploadPath(filePath);
+    } catch (pathError) {
+      logger.error(`[SECURITY] Path traversal attempt detected: ${pathError.message}`);
+      const securityLog = createSecurityEventLog({
+        userId: userId,
+        eventType: 'path_traversal',
+        severity: 'critical',
+        description: 'Path traversal attack attempted',
+        ipAddress: req.ip,
+        details: { attempt: req.file.path?.substring(0, 50) } // Redacted for safety
+      });
+      logger.error(JSON.stringify(securityLog));
+      return res.status(400).json({ error: 'Invalid file path' });
+    }
+
     logger.info(`[JOBS] Document parsing started: ${jobId}`);
-    logger.info(`[JOBS] File: ${req.file.originalname}`);
 
     // SECURITY: Validate file content matches extension (magic bytes check)
     const fileValidation = await validateFileContent(filePath, req.file.originalname);
@@ -725,9 +758,33 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
       // Clean up the uploaded file as it's not needed (prevents disk space exhaustion)
       try {
         await fs.promises.unlink(filePath);
-        logger.debug(`[JOBS] Cleaned up temporary file after cache hit: ${filePath}`);
+
+        // Log file cleanup with user context
+        const fileExt = req.file.originalname.split('.').pop()?.toLowerCase() || 'unknown';
+        const fileOpLog = createFileOperationLog({
+          userId: userId,
+          jobId: jobId,
+          operation: 'delete',
+          filename: req.file.originalname,
+          fileSize: req.file.size,
+          fileType: fileExt,
+          status: 'success'
+        });
+        logger.debug(JSON.stringify(fileOpLog));
       } catch (err) {
-        logger.warn(`[JOBS] Failed to clean up temporary file after cache hit: ${filePath} - ${err.message}`);
+        // Log cleanup failure with redacted error details
+        const fileExt = req.file.originalname.split('.').pop()?.toLowerCase() || 'unknown';
+        const fileOpLog = createFileOperationLog({
+          userId: userId,
+          jobId: jobId,
+          operation: 'delete',
+          filename: req.file.originalname,
+          fileSize: req.file.size,
+          fileType: fileExt,
+          status: 'failure',
+          reason: err.code || 'unknown' // Log error code only, not full message
+        });
+        logger.warn(JSON.stringify(fileOpLog));
         // Don't fail the request if cleanup fails
       }
 

@@ -458,19 +458,23 @@ export async function clearAllCache(isAdmin = false) {
       const patterns = Object.values(CACHE_CONFIG).map(c => `${c.prefix}*`);
       let totalDeleted = 0;
 
+      // Collect all keys first, then delete in one batch for efficiency
+      const keysToDelete = [];
+
       for (const pattern of patterns) {
         let cursor = 0;
         do {
           // Use SCAN instead of KEYS to avoid blocking the Redis server
           const reply = await cache.scan(cursor, { MATCH: pattern, COUNT: 100 });
-
-          if (reply.keys.length > 0) {
-            await cache.del(...reply.keys);
-            totalDeleted += reply.keys.length;
-          }
-
+          keysToDelete.push(...reply.keys);
           cursor = reply.cursor;
         } while (cursor !== 0);
+      }
+
+      // Delete all collected keys in a single batch operation
+      if (keysToDelete.length > 0) {
+        await cache.del(...keysToDelete);
+        totalDeleted = keysToDelete.length;
       }
 
       logger.warn(`[Cache] Cleared ${totalDeleted} Redis keys using SCAN (admin)`);
