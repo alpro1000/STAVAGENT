@@ -1335,4 +1335,162 @@ router.post('/universal-match/feedback', validateFeedback, async (req, res) => {
   }
 });
 
+/**
+ * Document Upload Endpoint - Phase 2
+ * POST /api/jobs/document-upload
+ *
+ * Handles multi-file document uploads with completeness validation
+ * Returns document validation results and RFI (Request For Information)
+ */
+router.post('/document-upload', upload.array('files', 10), async (req, res) => {
+  let uploadedFiles = [];
+
+  try {
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ error: 'No files provided' });
+    }
+
+    const jobId = req.body.jobId || uuidv4();
+    const userId = req.user?.id || 'default';
+    let projectContext = {};
+
+    // Parse project context if provided as JSON
+    if (req.body.project_context) {
+      try {
+        projectContext = typeof req.body.project_context === 'string'
+          ? JSON.parse(req.body.project_context)
+          : req.body.project_context;
+      } catch (e) {
+        logger.warn(`[JOBS] Invalid project_context JSON: ${e.message}`);
+      }
+    }
+
+    logger.info(`[DOCUMENT-UPLOAD] Started: ${jobId} with ${req.files.length} files`);
+
+    // Validate each uploaded file
+    for (const file of req.files) {
+      try {
+        // SECURITY: Validate file path
+        let filePath = validateUploadPath(file.path);
+
+        // SECURITY: Validate file content matches extension
+        const fileValidation = await validateFileContent(filePath, file.originalname);
+        if (!fileValidation.valid) {
+          logger.warn(`[DOCUMENT-UPLOAD] File validation failed: ${file.originalname}`);
+          // Clean up invalid file
+          try {
+            fs.unlinkSync(filePath);
+          } catch (e) {
+            // Ignore cleanup errors
+          }
+          continue;
+        }
+
+        uploadedFiles.push({
+          filename: file.originalname,
+          size: file.size,
+          mimetype: file.mimetype,
+          path: filePath,
+          file_type: fileValidation.fileType
+        });
+
+        // Log successful file upload
+        const fileOpLog = createFileOperationLog({
+          userId: userId,
+          jobId: jobId,
+          operation: 'upload',
+          filename: file.originalname,
+          fileSize: file.size,
+          fileType: fileValidation.fileType,
+          status: 'success'
+        });
+        logger.info(JSON.stringify(fileOpLog));
+
+      } catch (error) {
+        logger.error(`[DOCUMENT-UPLOAD] File processing error: ${file.originalname} - ${error.message}`);
+        // Continue processing other files
+      }
+    }
+
+    if (uploadedFiles.length === 0) {
+      return res.status(400).json({
+        error: 'No valid files could be processed',
+        details: 'All uploaded files failed validation'
+      });
+    }
+
+    logger.info(`[DOCUMENT-UPLOAD] Validated ${uploadedFiles.length} files`);
+
+    // Validate document completeness
+    const documentValidation = await validateDocumentCompleteness(
+      uploadedFiles,
+      projectContext
+    );
+
+    logger.info(`[DOCUMENT-UPLOAD] Completeness: ${documentValidation.completeness_score}%`);
+
+    // AUDIT: Log document upload event
+    logAuditEvent(
+      {
+        userId: userId,
+        jobId: jobId,
+        action: 'document_upload',
+        resource: 'documents',
+        status: 'success',
+        ipAddress: req.ip,
+        details: {
+          files_uploaded: uploadedFiles.length,
+          completeness_score: documentValidation.completeness_score,
+          severity: documentValidation.severity
+        }
+      },
+      logger,
+      'info'
+    );
+
+    // Return comprehensive validation results
+    return res.status(200).json({
+      job_id: jobId,
+      status: 'completed',
+      files_uploaded: uploadedFiles.length,
+      uploaded_files: uploadedFiles.map(f => ({
+        name: f.filename,
+        size: f.size,
+        type: f.file_type
+      })),
+      document_validation: {
+        completeness_score: documentValidation.completeness_score,
+        severity: documentValidation.severity,
+        uploaded_documents: documentValidation.uploaded_documents,
+        missing_documents: documentValidation.missing_documents,
+        context_validation: documentValidation.context_validation,
+        rfi_items: documentValidation.rfi_items,
+        recommendations: documentValidation.recommendations
+      },
+      next_steps: documentValidation.completeness_score >= 80
+        ? 'Ready for block-match analysis'
+        : 'Complete missing documents to improve analysis quality'
+    });
+
+  } catch (error) {
+    logger.error(`[DOCUMENT-UPLOAD] Error: ${error.message}`);
+
+    // Clean up any uploaded files on error
+    if (req.files && req.files.length > 0) {
+      req.files.forEach(file => {
+        try {
+          fs.unlinkSync(file.path);
+        } catch (e) {
+          // Ignore cleanup errors
+        }
+      });
+    }
+
+    res.status(500).json({
+      error: 'Document upload failed',
+      details: error.message
+    });
+  }
+});
+
 export default router;
