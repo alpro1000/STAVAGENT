@@ -20,6 +20,10 @@ import tridnikRouter from './api/routes/tridnik.js';
 // Middleware
 import { errorHandler } from './api/middleware/errorHandler.js';
 import { requestLogger } from './api/middleware/requestLogger.js';
+import { performanceMonitoringMiddleware } from './api/middleware/performanceMonitoring.js';
+
+// Services
+import { startCacheCleanupScheduler, stopCacheCleanupScheduler } from './services/cacheCleanupScheduler.js';
 
 // Load environment variables
 dotenv.config();
@@ -72,6 +76,9 @@ app.use((req, res, next) => {
 // Request logging
 app.use(requestLogger);
 
+// Performance monitoring (Phase 4)
+app.use(performanceMonitoringMiddleware);
+
 // ============================================================================
 // ROUTES
 // ============================================================================
@@ -116,16 +123,34 @@ async function startServer() {
     await initializeDatabase();
     logger.info('Database initialized successfully');
 
+    // Start cache cleanup scheduler (Phase 4)
+    logger.info('[SCHEDULER] Starting cache cleanup scheduler...');
+    startCacheCleanupScheduler();
+    logger.info('[SCHEDULER] Cache cleanup scheduler started');
+
     // Start Express server
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       logger.info(`🚀 URS Matcher Service listening on port ${PORT}`);
       logger.info(`📍 Frontend: http://localhost:${PORT}`);
       logger.info(`📍 API: http://localhost:${PORT}/api`);
       logger.info(`📍 Health: http://localhost:${PORT}/health`);
+      logger.info(`📊 Metrics: http://localhost:${PORT}/api/jobs/admin/metrics`);
       logger.info(`🏗️ Environment: ${process.env.NODE_ENV || 'development'}`);
     });
+
+    // Graceful shutdown handler
+    process.on('SIGTERM', () => {
+      logger.info('SIGTERM received, shutting down gracefully...');
+      stopCacheCleanupScheduler();
+      server.close(() => {
+        logger.info('Server closed');
+        process.exit(0);
+      });
+    });
+
   } catch (error) {
     logger.error(`Failed to start server: ${error.message}`);
+    stopCacheCleanupScheduler();
     process.exit(1);
   }
 }
@@ -140,12 +165,6 @@ process.on('unhandledRejection', (reason, promise) => {
 process.on('uncaughtException', (error) => {
   logger.error(`Uncaught Exception:`, error);
   process.exit(1);
-});
-
-// Graceful shutdown
-process.on('SIGTERM', async () => {
-  logger.info('SIGTERM received, shutting down gracefully...');
-  process.exit(0);
 });
 
 // Start the server

@@ -31,6 +31,22 @@ import { validateDocumentCompleteness, getDocumentRequirements } from '../../ser
 import { getCachedDocumentParsing, cacheDocumentParsing, initCache } from '../../services/cacheService.js';
 import { validateFileContent } from '../../utils/fileValidator.js';
 import { Orchestrator } from '../../services/roleIntegration/orchestrator.js';
+import {
+  getCachedBlockAnalysis,
+  setCachedBlockAnalysis,
+  getCacheStats,
+  cleanExpiredEntries
+} from '../../services/orchestratorCacheService.js';
+import {
+  startRequestTimer,
+  addTimerMarker,
+  endRequestTimer,
+  recordRoleExecution,
+  getPerformanceSummary,
+  getDetailedPerformanceReport,
+  getEndpointMetrics,
+  getRoleMetrics
+} from '../../services/performanceOptimizer.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const router = express.Router();
@@ -707,9 +723,43 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
           // Phase 3 Advanced: Try to run full orchestrator analysis
           try {
             logger.info(`[JOBS] Running Phase 3 Advanced Orchestrator for block: ${blockName}`);
-            const multiRoleClient = (await import('../../services/multiRoleClient.js')).default;
-            const orchestrator = new Orchestrator(multiRoleClient);
-            const orchestratorResult = await orchestrator.analyzeBlock(boqBlock, projectContext);
+
+            // Start performance timer for orchestrator
+            const orchestratorTimer = startRequestTimer(`orchestrator-${blockName}`, '/block-match');
+
+            // Check cache FIRST (before expensive analysis)
+            const cachedResult = getCachedBlockAnalysis(boqBlock, projectContext);
+            let orchestratorResult;
+            let fromCache = false;
+
+            if (cachedResult) {
+              logger.info(`[JOBS] 🎯 Cache HIT for block: ${blockName}`);
+              orchestratorResult = cachedResult;
+              fromCache = true;
+              addTimerMarker(orchestratorTimer, 'cache_hit');
+
+            } else {
+              logger.info(`[JOBS] 🔄 Cache MISS for block: ${blockName}, running orchestrator...`);
+              addTimerMarker(orchestratorTimer, 'orchestrator_start');
+
+              const multiRoleClient = (await import('../../services/multiRoleClient.js')).default;
+              const orchestrator = new Orchestrator(multiRoleClient);
+              orchestratorResult = await orchestrator.analyzeBlock(boqBlock, projectContext);
+
+              addTimerMarker(orchestratorTimer, 'orchestrator_complete');
+
+              // Cache the result for future requests
+              const cacheKey = setCachedBlockAnalysis(boqBlock, projectContext, orchestratorResult);
+              logger.info(`[JOBS] ✓ Orchestrator result cached: ${cacheKey}`);
+            }
+
+            // End performance timer
+            const perfMetric = endRequestTimer(orchestratorTimer, {
+              endpoint: '/block-match',
+              block_name: blockName,
+              from_cache: fromCache
+            });
+            logger.info(`[JOBS] Orchestrator execution time: ${perfMetric.duration_ms}ms (cache: ${fromCache})`);
 
             logger.info(`[JOBS] Phase 3 Advanced analysis completed for: ${blockName}`);
 
@@ -725,7 +775,11 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
               conflicts: formatConflicts(orchestratorResult.conflicts || []),
               analysis_results: orchestratorResult,
               execution_time_ms: orchestratorResult.execution_time_ms,
-              audit_trail: createAuditTrailFromOrchestrator(orchestratorResult, blockName)
+              audit_trail: createAuditTrailFromOrchestrator(orchestratorResult, blockName),
+              cache_status: {
+                from_cache: fromCache,
+                cached_at: fromCache ? new Date().toISOString() : null
+              }
             };
 
           } catch (orchestratorError) {
@@ -1488,6 +1542,144 @@ router.post('/document-upload', upload.array('files', 10), async (req, res) => {
 
     res.status(500).json({
       error: 'Document upload failed',
+      details: error.message
+    });
+  }
+});
+
+/**
+ * Admin Metrics Endpoint - Phase 4 Optimization
+ * GET /api/jobs/admin/metrics
+ *
+ * Returns system performance metrics and cache statistics
+ * Protected endpoint (in production, would require authentication)
+ */
+router.get('/admin/metrics', async (req, res) => {
+  try {
+    // Perform cache cleanup before returning stats
+    const cleanedCount = cleanExpiredEntries();
+
+    // Get cache statistics
+    const cacheStats = getCacheStats();
+
+    // Get performance summary
+    const perfSummary = getPerformanceSummary();
+
+    // Get detailed report with bottleneck analysis
+    const detailedReport = getDetailedPerformanceReport();
+
+    logger.info(`[ADMIN] Metrics endpoint called - cache cleaned: ${cleanedCount} entries`);
+
+    return res.status(200).json({
+      timestamp: new Date().toISOString(),
+      cache: {
+        stats: cacheStats,
+        cleanup: {
+          last_run: new Date().toISOString(),
+          entries_cleaned: cleanedCount
+        }
+      },
+      performance: {
+        summary: perfSummary,
+        detailed_report: detailedReport
+      },
+      health: {
+        cache_utilization: `${((cacheStats.valid_entries / cacheStats.max_entries) * 100).toFixed(2)}%`,
+        slow_requests_percentage: perfSummary.slow_requests > 0
+          ? ((perfSummary.slow_requests / perfSummary.requests.total) * 100).toFixed(2) + '%'
+          : '0%',
+        system_status: cacheStats.valid_entries > 0 && perfSummary.requests.total > 0 ? 'healthy' : 'initializing'
+      }
+    });
+
+  } catch (error) {
+    logger.error(`[ADMIN] Metrics endpoint error: ${error.message}`);
+    res.status(500).json({
+      error: 'Failed to retrieve metrics',
+      details: error.message
+    });
+  }
+});
+
+/**
+ * Admin Cache Control Endpoint - Phase 4 Optimization
+ * POST /api/jobs/admin/cache/cleanup
+ *
+ * Manually trigger cache cleanup
+ */
+router.post('/admin/cache/cleanup', async (req, res) => {
+  try {
+    const cleanedCount = cleanExpiredEntries();
+
+    logger.info(`[ADMIN] Manual cache cleanup triggered - removed ${cleanedCount} entries`);
+
+    return res.status(200).json({
+      success: true,
+      message: `Cache cleanup completed`,
+      entries_cleaned: cleanedCount,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    logger.error(`[ADMIN] Cache cleanup error: ${error.message}`);
+    res.status(500).json({
+      error: 'Cache cleanup failed',
+      details: error.message
+    });
+  }
+});
+
+/**
+ * Admin Endpoint Metrics - Phase 4 Optimization
+ * GET /api/jobs/admin/metrics/endpoint/:endpoint
+ *
+ * Get performance metrics for a specific endpoint
+ */
+router.get('/admin/metrics/endpoint/:endpoint', async (req, res) => {
+  try {
+    const endpoint = req.params.endpoint;
+    const metrics = getEndpointMetrics(`/${endpoint}`);
+
+    logger.info(`[ADMIN] Endpoint metrics requested: ${endpoint}`);
+
+    return res.status(200).json({
+      endpoint: endpoint,
+      metrics: metrics,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    logger.error(`[ADMIN] Endpoint metrics error: ${error.message}`);
+    res.status(500).json({
+      error: 'Failed to retrieve endpoint metrics',
+      details: error.message
+    });
+  }
+});
+
+/**
+ * Admin Role Metrics - Phase 4 Optimization
+ * GET /api/jobs/admin/metrics/role/:role
+ *
+ * Get performance metrics for a specific specialist role
+ */
+router.get('/admin/metrics/role/:role', async (req, res) => {
+  try {
+    const role = req.params.role;
+    const metrics = getRoleMetrics(role);
+
+    logger.info(`[ADMIN] Role metrics requested: ${role}`);
+
+    return res.status(200).json({
+      role: role,
+      metrics: metrics,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    logger.error(`[ADMIN] Role metrics error: ${error.message}`);
+    res.status(500).json({
+      error: 'Failed to retrieve role metrics',
       details: error.message
     });
   }
