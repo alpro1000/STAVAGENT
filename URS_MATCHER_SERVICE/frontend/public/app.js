@@ -795,10 +795,280 @@ async function loadDocumentUploadComponent() {
     const html = await response.text();
     documentUploadContainer.innerHTML = html;
     showDocUploadSection();
-    debugLog('📄 ✓ DocumentUpload component loaded');
+
+    // Attach event handlers for document upload
+    attachDocumentUploadHandlers();
+
+    debugLog('📄 ✓ DocumentUpload component loaded with handlers');
   } catch (error) {
     debugError('📄 Failed to load DocumentUpload:', error);
     showError(`Chyba při načítání komponenty: ${error.message}`);
+  }
+}
+
+/**
+ * Attach event handlers for document upload functionality
+ * Handles: drag-drop, file selection, upload, validation display
+ */
+function attachDocumentUploadHandlers() {
+  const dropZone = document.getElementById('drop-zone');
+  const fileInput = document.getElementById('file-input');
+  const uploadBtn = document.getElementById('upload-btn');
+  const clearFilesBtn = document.getElementById('clear-files-btn');
+  const filesList = document.getElementById('files-list');
+  const validationResults = document.getElementById('validation-results');
+
+  let selectedFiles = [];
+
+  // Click to select files
+  if (dropZone) {
+    dropZone.addEventListener('click', () => fileInput?.click());
+  }
+
+  // Drag and drop handlers
+  if (dropZone) {
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('dragover');
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('dragover');
+      const files = Array.from(e.dataTransfer.files);
+      handleFilesSelected(files);
+    });
+  }
+
+  // File input change
+  if (fileInput) {
+    fileInput.addEventListener('change', (e) => {
+      const files = Array.from(e.target.files);
+      handleFilesSelected(files);
+    });
+  }
+
+  // Handle selected files
+  function handleFilesSelected(files) {
+    selectedFiles = files;
+    displayFilesList(files);
+    uploadBtn.disabled = files.length === 0;
+    debugLog(`📄 Selected ${files.length} files for upload`);
+  }
+
+  // Display files in list
+  function displayFilesList(files) {
+    const emptyState = filesList?.querySelector('.empty-state');
+
+    if (emptyState && files.length > 0) {
+      emptyState.remove();
+    }
+
+    const fileItemsHtml = files.map((file, idx) => `
+      <div class="file-item">
+        <div class="file-info">
+          <div class="file-icon">${getFileIcon(file.name)}</div>
+          <div class="file-details">
+            <div class="file-name">${file.name}</div>
+            <div class="file-size">${formatFileSize(file.size)}</div>
+          </div>
+        </div>
+        <button class="file-remove" data-index="${idx}">Smazat</button>
+      </div>
+    `).join('');
+
+    if (filesList) {
+      filesList.innerHTML = fileItemsHtml;
+
+      // Add remove handlers
+      filesList.querySelectorAll('.file-remove').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const idx = parseInt(btn.getAttribute('data-index'));
+          selectedFiles.splice(idx, 1);
+          displayFilesList(selectedFiles);
+          uploadBtn.disabled = selectedFiles.length === 0;
+        });
+      });
+    }
+  }
+
+  // Clear all files
+  if (clearFilesBtn) {
+    clearFilesBtn.addEventListener('click', () => {
+      selectedFiles = [];
+      filesList.innerHTML = '<p class="empty-state">Zatím žádné soubory</p>';
+      uploadBtn.disabled = true;
+      validationResults.style.display = 'none';
+      if (fileInput) fileInput.value = '';
+      debugLog('📄 All files cleared');
+    });
+  }
+
+  // Upload files
+  if (uploadBtn) {
+    uploadBtn.addEventListener('click', async () => {
+      if (selectedFiles.length === 0) return;
+
+      await uploadDocuments(selectedFiles);
+    });
+  }
+
+  // Helper: Get file icon based on extension
+  function getFileIcon(filename) {
+    const ext = filename.split('.').pop().toLowerCase();
+    const icons = {
+      'pdf': '📕',
+      'xlsx': '📊',
+      'xls': '📊',
+      'docx': '📝',
+      'txt': '📄',
+      'dwg': '🏗️',
+      'jpg': '🖼️',
+      'png': '🖼️'
+    };
+    return icons[ext] || '📄';
+  }
+
+  // Helper: Format file size
+  function formatFileSize(bytes) {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return Math.round((bytes / Math.pow(k, i)) * 100) / 100 + ' ' + sizes[i];
+  }
+
+  // Upload documents to backend
+  async function uploadDocuments(files) {
+    const uploadBtn = document.getElementById('upload-btn');
+    const uploadSpinner = document.getElementById('upload-spinner');
+    const progressContainer = document.getElementById('upload-progress');
+    const progressFill = document.getElementById('progress-fill');
+    const progressText = document.getElementById('progress-text');
+
+    try {
+      uploadBtn.disabled = true;
+      if (uploadSpinner) uploadSpinner.style.display = 'inline-block';
+      if (progressContainer) progressContainer.style.display = 'block';
+
+      const formData = new FormData();
+      files.forEach(file => formData.append('files', file));
+
+      // Add project context if available
+      if (currentResults?.project_context) {
+        formData.append('project_context', JSON.stringify(currentResults.project_context));
+      }
+
+      const response = await fetch('/api/jobs/document-upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        throw new Error(`Upload failed: ${response.status}`);
+      }
+
+      const result = await response.json();
+      debugLog('✓ Document upload successful:', result);
+
+      // Display validation results
+      displayDocumentValidation(result.document_validation);
+
+      // Update progress
+      if (progressFill) progressFill.style.width = '100%';
+      if (progressText) progressText.innerHTML = 'Nahrávání: <span>100</span>%';
+
+    } catch (error) {
+      debugError('📄 Document upload error:', error);
+      showError(`Chyba při nahrávání dokumentů: ${error.message}`);
+    } finally {
+      uploadBtn.disabled = false;
+      if (uploadSpinner) uploadSpinner.style.display = 'none';
+      setTimeout(() => {
+        if (progressContainer) progressContainer.style.display = 'none';
+      }, 2000);
+    }
+  }
+
+  // Display validation results
+  function displayDocumentValidation(validation) {
+    const validationResults = document.getElementById('validation-results');
+    const completenessText = document.getElementById('completeness-text');
+    const completenesFill = document.getElementById('completeness-fill');
+    const uploadedDocsList = document.getElementById('uploaded-docs-list');
+    const missingDocsSection = document.getElementById('missing-docs-section');
+    const missingDocsList = document.getElementById('missing-docs-list');
+    const rfiSection = document.getElementById('rfi-section');
+    const rfiList = document.getElementById('rfi-list');
+    const recommendationsSection = document.getElementById('recommendations-section');
+    const recommendationsList = document.getElementById('recommendations-list');
+
+    // Update completeness score
+    if (completenessText) {
+      completenessText.innerHTML = `Úplnost: <span>${validation.completeness_score}</span>%`;
+    }
+    if (completenesFill) {
+      completenesFill.style.width = `${validation.completeness_score}%`;
+    }
+
+    // Display uploaded documents
+    if (uploadedDocsList && validation.uploaded_documents) {
+      uploadedDocsList.innerHTML = validation.uploaded_documents.map(doc => `
+        <div class="doc-card">
+          <div class="doc-icon">✓</div>
+          <div class="doc-name">${doc.name}</div>
+          <div class="doc-count">${doc.count} soubor(y)</div>
+        </div>
+      `).join('');
+    }
+
+    // Display missing documents
+    if (validation.missing_documents && validation.missing_documents.length > 0) {
+      if (missingDocsSection) missingDocsSection.style.display = 'block';
+      if (missingDocsList) {
+        missingDocsList.innerHTML = validation.missing_documents.map(doc => `
+          <div>❌ ${doc.name} (${doc.priority})</div>
+        `).join('');
+      }
+    }
+
+    // Display RFI items
+    if (validation.rfi_items && validation.rfi_items.length > 0) {
+      if (rfiSection) rfiSection.style.display = 'block';
+      if (rfiList) {
+        rfiList.innerHTML = validation.rfi_items.map(rfi => `
+          <div class="rfi-item">
+            <div class="rfi-severity">${rfi.severity}</div>
+            <div class="rfi-question">❓ ${rfi.question}</div>
+            <div class="rfi-description">${rfi.description}</div>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Display recommendations
+    if (validation.recommendations && validation.recommendations.length > 0) {
+      if (recommendationsSection) recommendationsSection.style.display = 'block';
+      if (recommendationsList) {
+        recommendationsList.innerHTML = validation.recommendations.map(rec => `
+          <div class="recommendation ${rec.priority === 'high' ? 'warning' : ''}">
+            💡 ${rec.message}<br>
+            <strong>Akce:</strong> ${rec.action}
+          </div>
+        `).join('');
+      }
+    }
+
+    // Show results section
+    if (validationResults) {
+      validationResults.style.display = 'block';
+    }
+
+    debugLog('📄 ✓ Document validation results displayed');
   }
 }
 
