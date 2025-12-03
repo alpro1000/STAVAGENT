@@ -179,112 +179,172 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
  * Call Claude API (Anthropic)
  */
 async function callClaudeAPI(systemPrompt, userPrompt, controller) {
-  const response = await axios.post(
-    llmClient.apiUrl,
-    {
-      model: llmClient.model,
-      max_tokens: 1024,
-      system: systemPrompt,
-      messages: [
-        {
-          role: 'user',
-          content: userPrompt
-        }
-      ]
-    },
-    {
-      headers: llmClient.headers,
-      timeout: llmConfig.timeoutMs,
-      signal: controller.signal
+  try {
+    const response = await axios.post(
+      llmClient.apiUrl,
+      {
+        model: llmClient.model,
+        max_tokens: 1024,
+        system: systemPrompt,
+        messages: [
+          {
+            role: 'user',
+            content: userPrompt
+          }
+        ]
+      },
+      {
+        headers: llmClient.headers,
+        timeout: llmConfig.timeoutMs,
+        signal: controller.signal
+      }
+    );
+
+    if (!response.data || !response.data.content || response.data.content.length === 0) {
+      logger.error('[LLMClient] Invalid Claude API response - no content', {
+        status: response.status,
+        provider: 'claude',
+        model: llmClient.model
+      });
+      throw new Error('Invalid Claude API response: no content returned');
     }
-  );
 
-  if (!response.data || !response.data.content || response.data.content.length === 0) {
-    throw new Error('Invalid Claude API response');
+    return response.data.content[0].text;
+  } catch (error) {
+    logger.error('[LLMClient] Claude API call failed', {
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      provider: 'claude',
+      model: llmClient.model,
+      message: error.message
+    });
+    throw error;
   }
-
-  return response.data.content[0].text;
 }
 
 /**
  * Call OpenAI API
  */
 async function callOpenAIAPI(systemPrompt, userPrompt, controller) {
-  const response = await axios.post(
-    llmClient.apiUrl,
-    {
-      model: llmClient.model,
-      messages: [
-        {
-          role: 'system',
-          content: systemPrompt
-        },
-        {
-          role: 'user',
-          content: userPrompt
-        }
-      ],
-      temperature: 0.3,  // Lower temperature for more deterministic responses
-      max_tokens: 1024
-    },
-    {
-      headers: llmClient.headers,
-      timeout: llmConfig.timeoutMs,
-      signal: controller.signal
+  try {
+    const response = await axios.post(
+      llmClient.apiUrl,
+      {
+        model: llmClient.model,
+        messages: [
+          {
+            role: 'system',
+            content: systemPrompt
+          },
+          {
+            role: 'user',
+            content: userPrompt
+          }
+        ],
+        temperature: 0.3,  // Lower temperature for more deterministic responses
+        max_tokens: 1024
+      },
+      {
+        headers: llmClient.headers,
+        timeout: llmConfig.timeoutMs,
+        signal: controller.signal
+      }
+    );
+
+    if (!response.data || !response.data.choices || response.data.choices.length === 0) {
+      logger.error('[LLMClient] Invalid OpenAI API response - no choices', {
+        status: response.status,
+        provider: 'openai',
+        model: llmClient.model
+      });
+      throw new Error('Invalid OpenAI API response: no choices in response');
     }
-  );
 
-  if (!response.data || !response.data.choices || response.data.choices.length === 0) {
-    throw new Error('Invalid OpenAI API response');
+    return response.data.choices[0].message.content;
+  } catch (error) {
+    logger.error('[LLMClient] OpenAI API call failed', {
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      provider: 'openai',
+      model: llmClient.model,
+      message: error.message
+    });
+    throw error;
   }
-
-  return response.data.choices[0].message.content;
 }
 
 /**
  * Call Google Gemini API
+ * Note: API key is sent in x-goog-api-key header for security (not in URL)
  */
 async function callGeminiAPI(systemPrompt, userPrompt, controller) {
-  // Gemini API endpoint format: /v1beta/models/{model}:generateContent?key={apiKey}
-  const apiUrl = `${llmClient.apiUrl}/${llmClient.model}:generateContent?key=${llmClient.apiKey}`;
+  // Gemini API endpoint - no key in URL for security
+  const apiUrl = `${llmClient.apiUrl}/${llmClient.model}:generateContent`;
 
-  const response = await axios.post(
-    apiUrl,
-    {
-      system_instruction: {
-        parts: {
-          text: systemPrompt
+  // Create headers with API key in secure header (not URL)
+  const headers = {
+    ...llmClient.headers,
+    'x-goog-api-key': llmClient.apiKey  // Gemini API secure header
+  };
+
+  try {
+    const response = await axios.post(
+      apiUrl,
+      {
+        system_instruction: {
+          parts: {
+            text: systemPrompt
+          }
+        },
+        contents: {
+          parts: [
+            {
+              text: userPrompt
+            }
+          ]
+        },
+        generationConfig: {
+          temperature: 0.3,
+          maxOutputTokens: 1024
         }
       },
-      contents: {
-        parts: [
-          {
-            text: userPrompt
-          }
-        ]
-      },
-      generationConfig: {
-        temperature: 0.3,
-        maxOutputTokens: 1024
+      {
+        headers: headers,
+        timeout: llmConfig.timeoutMs,
+        signal: controller.signal
       }
-    },
-    {
-      headers: llmClient.headers,
-      timeout: llmConfig.timeoutMs,
-      signal: controller.signal
+    );
+
+    if (!response.data || !response.data.candidates || response.data.candidates.length === 0) {
+      logger.error('[LLMClient] Invalid Gemini API response - no candidates', {
+        status: response.status,
+        provider: 'gemini',
+        model: llmClient.model
+      });
+      throw new Error('Invalid Gemini API response: no candidates in response');
     }
-  );
 
-  if (!response.data || !response.data.candidates || response.data.candidates.length === 0) {
-    throw new Error('Invalid Gemini API response');
+    const content = response.data.candidates[0].content;
+    if (!content || !content.parts || content.parts.length === 0) {
+      logger.error('[LLMClient] Invalid Gemini API response - no content', {
+        status: response.status,
+        provider: 'gemini',
+        model: llmClient.model
+      });
+      throw new Error('No content in Gemini response');
+    }
+
+    return content.parts[0].text;
+  } catch (error) {
+    logger.error('[LLMClient] Gemini API call failed', {
+      status: error.response?.status,
+      statusText: error.response?.statusText,
+      provider: 'gemini',
+      model: llmClient.model,
+      message: error.message
+    });
+    throw error;
   }
-
-  const content = response.data.candidates[0].content;
-  if (!content || !content.parts || content.parts.length === 0) {
-    throw new Error('No content in Gemini response');
-  }
-
-  return content.parts[0].text;
 }
 
 /**
