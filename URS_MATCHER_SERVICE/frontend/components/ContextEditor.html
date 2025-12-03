@@ -1,0 +1,503 @@
+<!-- Context Editor Component - Phase 2
+     Edit automatically extracted project context -->
+
+<div id="context-editor-container" class="context-editor">
+  <div class="editor-header">
+    <h2>🔧 Editace Kontextu Projektu</h2>
+    <p class="subtitle">Upravte automaticky extrahované informace nebo vyplňte chybějící údaje</p>
+  </div>
+
+  <!-- Basic Information Section -->
+  <div class="form-section">
+    <h3>📋 Základní Informace</h3>
+
+    <div class="form-group">
+      <label for="building-type">Typ Stavby *</label>
+      <select id="building-type" class="form-control" required>
+        <option value="">-- Vyberte typ stavby --</option>
+        <option value="bytový dům">Bytový dům</option>
+        <option value="rodinný dům">Rodinný dům</option>
+        <option value="most">Most</option>
+        <option value="garáž">Garáž</option>
+        <option value="skladovací hala">Skladovací hala</option>
+        <option value="průmyslová hala">Průmyslová hala</option>
+        <option value="kancelářní budova">Kancelářní budova</option>
+        <option value="jiné">Jiné (prosím popište)</option>
+      </select>
+      <div id="building-type-other" class="hidden-field">
+        <input type="text" id="building-type-custom" class="form-control" placeholder="Popište typ stavby">
+      </div>
+      <p class="field-help">Vyberte nebo napište typ stavby z technického zadání</p>
+    </div>
+
+    <div class="form-group">
+      <label for="storeys">Počet Nadzemních Podlaží *</label>
+      <input type="number" id="storeys" class="form-control" min="1" max="100" placeholder="např. 4">
+      <p class="field-help">Počet nadzemních podlaží (NP) pro budovu</p>
+    </div>
+
+    <div class="form-group">
+      <label for="basement-levels">Počet Podzemních Podlaží</label>
+      <input type="number" id="basement-levels" class="form-control" min="0" max="5" placeholder="0">
+      <p class="field-help">Počet podzemních podlaží (PP), pokud existují</p>
+    </div>
+  </div>
+
+  <!-- Structural Systems Section -->
+  <div class="form-section">
+    <h3>🏗️ Konstrukční Systémy</h3>
+
+    <div class="form-group">
+      <label>Hlavní Konstrukční Systémy *</label>
+      <div class="checkbox-group">
+        <label class="checkbox-item">
+          <input type="checkbox" name="main-system" value="zdivo"> Zdivo
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="main-system" value="železobeton"> Železobeton (ŽB)
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="main-system" value="ocel"> Ocelová konstrukce
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="main-system" value="dřevo"> Dřevo
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="main-system" value="jiné"> Jiné
+        </label>
+      </div>
+      <p class="field-help">Vyberte alle aplikovatelné konstrukční systémy</p>
+    </div>
+
+    <!-- Conditional fields for concrete -->
+    <div id="concrete-fields" class="hidden-section">
+      <div class="form-group">
+        <label for="foundation-concrete">Třída Betonu (Základy)</label>
+        <select id="foundation-concrete" class="form-control">
+          <option value="">-- Vyberte třídu --</option>
+          <option value="C12/15">C12/15</option>
+          <option value="C16/20">C16/20</option>
+          <option value="C20/25">C20/25</option>
+          <option value="C25/30">C25/30</option>
+          <option value="C30/37">C30/37</option>
+          <option value="C35/45">C35/45</option>
+          <option value="C40/50">C40/50</option>
+        </select>
+        <p class="field-help">Třída betonu pro základové konstrukce</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Materials Section -->
+  <div class="form-section">
+    <h3>🧱 Materiály</h3>
+
+    <div class="form-group">
+      <label for="wall-material">Materiál Stěn</label>
+      <select id="wall-material" class="form-control">
+        <option value="">-- Vyberte materiál --</option>
+        <option value="Porotherm">Porotherm</option>
+        <option value="Ytong">Ytong</option>
+        <option value="Cihlářství">Cihlářství</option>
+        <option value="Betonové bloky">Betonové bloky</option>
+        <option value="Železobeton">Železobeton</option>
+        <option value="Jiné">Jiné</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="insulation">Tepelná Izolace</label>
+      <select id="insulation" class="form-control">
+        <option value="">-- Vyberte typ --</option>
+        <option value="EPS">EPS (Polystyren)</option>
+        <option value="XPS">XPS (Extrudovaný polystyren)</option>
+        <option value="Minerální vlna">Minerální vlna</option>
+        <option value="Dřevo">Dřevěné vlákno</option>
+        <option value="Jiné">Jiné</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="roofing">Střešní Krytina</label>
+      <select id="roofing" class="form-control">
+        <option value="">-- Vyberte typ --</option>
+        <option value="Betonová taška">Betonová taška</option>
+        <option value="Plechová střecha">Plechová střecha</option>
+        <option value="Asfaltové pásy">Asfaltové pásy</option>
+        <option value="Živice">Živice</option>
+        <option value="Plochá střecha">Plochá střecha (membrána)</option>
+        <option value="Jiné">Jiné</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Geotechnical Information Section -->
+  <div class="form-section">
+    <h3>🏔️ Geotechnické Podklady</h3>
+
+    <div class="form-group">
+      <label for="soil-class">Třída Zeminy</label>
+      <select id="soil-class" class="form-control">
+        <option value="">-- Vyberte třídu --</option>
+        <option value="I">I - Písek, štěrk bez vody</option>
+        <option value="II">II - Hlína s pískem</option>
+        <option value="III">III - Hlína, jíl</option>
+        <option value="IV">IV - Hlína v masívech</option>
+        <option value="V">V - Pevné horniny rozvolnělé</option>
+        <option value="VI">VI - Pevné horniny</option>
+      </select>
+      <p class="field-help">Z geologického průzkumu</p>
+    </div>
+
+    <div class="form-group">
+      <label for="groundwater-level">Hladina Spodní Vody</label>
+      <select id="groundwater-level" class="form-control">
+        <option value="">-- Vyberte hloubku --</option>
+        <option value="nad_úrovní">Nad úrovní budovy</option>
+        <option value="0-1m">0-1 m pod základovou spárou</option>
+        <option value="1-3m">1-3 m pod základovou spárou</option>
+        <option value="3-5m">3-5 m pod základovou spárou</option>
+        <option value="5m+">Hlouběji než 5 m</option>
+        <option value="bez_vody">Bez vody v profiles</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Additional Notes Section -->
+  <div class="form-section">
+    <h3>📝 Poznámky a Speciální Požadavky</h3>
+
+    <div class="form-group">
+      <label for="special-requirements">Zvláštní Požadavky</label>
+      <textarea id="special-requirements" class="form-control textarea" placeholder="Popište zvláštní požadavky, omezení nebo specifika projektu..."></textarea>
+      <p class="field-help">Např. seismické zatížení, vyšší požadavky na hluk, atd.</p>
+    </div>
+
+    <div class="form-group">
+      <label for="project-notes">Poznámky k Projektu</label>
+      <textarea id="project-notes" class="form-control textarea" placeholder="Jakékoli další informace, které mohou být relevantní..."></textarea>
+    </div>
+  </div>
+
+  <!-- Q&A Questions Section -->
+  <div id="qa-questions-section" class="form-section" style="display: none;">
+    <h3>❓ Otázky z Dokumentace</h3>
+    <div id="qa-items" class="qa-items">
+      <!-- Generated from Q&A Flow -->
+    </div>
+  </div>
+
+  <!-- Form Actions -->
+  <div class="form-actions">
+    <button id="save-context-btn" class="btn btn-primary btn-lg">
+      <span class="spinner" id="save-spinner" style="display: none;">⏳</span>
+      Uložit Kontext
+    </button>
+    <button id="reset-context-btn" class="btn btn-secondary btn-lg">Obnovit Výchozí</button>
+    <button id="preview-context-btn" class="btn btn-secondary btn-lg">Náhled JSON</button>
+  </div>
+
+  <!-- Context Preview Modal -->
+  <div id="preview-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Náhled Kontextu Projektu</h3>
+        <button class="close-btn" onclick="closePreviewModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <pre id="context-preview" class="json-preview"></pre>
+      </div>
+      <div class="modal-footer">
+        <button onclick="closePreviewModal()" class="btn btn-secondary">Zavřít</button>
+        <button id="copy-json-btn" class="btn btn-primary">Kopírovat JSON</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.context-editor {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.editor-header {
+  border-bottom: 2px solid #007bff;
+  padding-bottom: 15px;
+  margin-bottom: 30px;
+}
+
+.editor-header h2 {
+  margin: 0 0 5px 0;
+  color: #333;
+}
+
+.subtitle {
+  color: #666;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+/* Form Sections */
+.form-section {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.form-section h3 {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin: 0 0 15px 0;
+  color: #333;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.checkbox-item input {
+  margin-right: 8px;
+}
+
+/* Field Help Text */
+.field-help {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Hidden Fields -->
+.hidden-field {
+  display: none;
+  margin-top: 10px;
+}
+
+.hidden-field.show {
+  display: block;
+}
+
+.hidden-section {
+  display: none;
+  padding: 15px;
+  background: #f0f7ff;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+  margin: 15px 0;
+}
+
+.hidden-section.show {
+  display: block;
+}
+
+/* Q&A Items */
+.qa-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.qa-item {
+  padding: 15px;
+  background: #f9f9f9;
+  border-left: 4px solid #17a2b8;
+  border-radius: 4px;
+}
+
+.qa-question {
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.qa-answer {
+  padding: 10px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.qa-confidence {
+  font-size: 12px;
+  color: #999;
+  margin-top: 5px;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 1px solid #ddd;
+}
+
+.btn-lg {
+  padding: 12px 24px;
+  font-size: 16px;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
+
+.btn-secondary {
+  background: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background: #5a6268;
+}
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+.json-preview {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  overflow-x: auto;
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  padding: 15px 20px;
+  border-top: 1px solid #ddd;
+  justify-content: flex-end;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .checkbox-group {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+  }
+}
+</style>
