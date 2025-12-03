@@ -335,3 +335,67 @@ export function createSecurityEventLog(options) {
     details
   };
 }
+
+/**
+ * Sanitize data for logging to prevent log injection
+ * SECURITY: Removes newlines and control characters from user-controlled strings
+ *
+ * @param {string} data - Data to sanitize
+ * @returns {string} Sanitized data safe for logging
+ */
+export function sanitizeForLogging(data) {
+  if (typeof data !== 'string') {
+    return String(data);
+  }
+  // Remove newlines, carriage returns, and other control characters
+  return data
+    .replace(/[\r\n\t\x00-\x1F\x7F]/g, '') // Control characters
+    .replace(/"/g, '\\"') // Escape quotes
+    .substring(0, 256); // Limit length to prevent log spam
+}
+
+/**
+ * Log audit event - convenience function combining create + log
+ * SECURITY: Centralizes audit logging with data sanitization
+ *
+ * @param {object} options - Audit log options (same as createAuditLog)
+ * @param {object} logger - Logger instance
+ * @param {string} level - Log level (default: 'info')
+ */
+export function logAuditEvent(options, logger, level = 'info') {
+  // Sanitize potentially user-controlled fields
+  const sanitizedOptions = {
+    ...options,
+    userId: sanitizeForLogging(options.userId),
+    jobId: sanitizeForLogging(options.jobId),
+    details: options.details ? sanitizeDetailsObject(options.details) : null
+  };
+
+  const auditLog = createAuditLog(sanitizedOptions);
+  logger[level](JSON.stringify(auditLog));
+  return auditLog;
+}
+
+/**
+ * Recursively sanitize object details for logging
+ *
+ * @param {object} obj - Object to sanitize
+ * @returns {object} Sanitized object
+ */
+function sanitizeDetailsObject(obj) {
+  if (!obj || typeof obj !== 'object') {
+    return obj;
+  }
+
+  const sanitized = {};
+  for (const [key, value] of Object.entries(obj)) {
+    if (typeof value === 'string') {
+      sanitized[key] = sanitizeForLogging(value);
+    } else if (typeof value === 'object' && value !== null) {
+      sanitized[key] = sanitizeDetailsObject(value);
+    } else {
+      sanitized[key] = value;
+    }
+  }
+  return sanitized;
+}
