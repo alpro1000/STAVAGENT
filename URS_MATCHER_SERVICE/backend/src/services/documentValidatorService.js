@@ -295,6 +295,7 @@ function generateRFI(context, validation) {
 
 /**
  * Calculate overall completeness score
+ * FIXED: Handle zero-division, include conditional fields in calculation
  */
 function calculateCompletenessScore(validation) {
   // Documents: 40% weight
@@ -302,12 +303,24 @@ function calculateCompletenessScore(validation) {
   const requiredDocTypes = Object.values(DOCUMENT_TYPES).filter(d => d.required).length;
   const uploadedDocTypes = validation.uploaded_documents.length;
 
-  const documentScore = (uploadedDocTypes / requiredDocTypes) * 40;
+  // FIXED: Prevent division by zero - if no required documents, give full score
+  const documentScore = requiredDocTypes > 0 ? (uploadedDocTypes / requiredDocTypes) * 40 : 40;
 
   // Context: 60% weight
-  const contextFields = ['building_type', 'storeys', 'main_system'];
-  const completedFields = contextFields.filter(f => validation.context_validation.missing_fields.indexOf(f) === -1);
-  const contextScore = (completedFields / contextFields.length) * 60;
+  // FIXED: Include both required AND conditional fields in calculation
+  const requiredContextFields = VALIDATION_RULES.basic_info.required_fields || ['building_type', 'storeys'];
+  const conditionalFieldCount = validation.context_validation.conditional_missing.length;
+  const totalContextFields = requiredContextFields.length + conditionalFieldCount;
+
+  // Count missing fields: required missing + conditional missing
+  const requiredMissingCount = validation.context_validation.missing_fields.length;
+  const totalMissingCount = requiredMissingCount + conditionalFieldCount;
+  const completedContextFields = totalContextFields - totalMissingCount;
+
+  // FIXED: Prevent division by zero - if no context fields, give full score
+  const contextScore = totalContextFields > 0
+    ? (completedContextFields / totalContextFields) * 60
+    : 60;
 
   validation.completeness_score = Math.round(documentScore + contextScore);
 

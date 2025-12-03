@@ -14,6 +14,7 @@ import crypto from 'crypto';
 
 /**
  * Cache configuration
+ * SECURITY: Updated TTLs and prefixes for multi-tenant isolation
  */
 const CACHE_CONFIG = {
   document_parsing: {
@@ -29,7 +30,7 @@ const CACHE_CONFIG = {
     prefix: 'qa_flow:'
   },
   llm_response: {
-    ttl: 30 * 24 * 60 * 60, // 30 days
+    ttl: 7 * 24 * 60 * 60, // FIXED: 7 days instead of 30 (sensitive data)
     prefix: 'llm_response:'
   },
   perplexity_search: {
@@ -84,9 +85,12 @@ const inMemoryCache = new InMemoryCache();
 
 /**
  * Initialize cache service
- * Attempts to connect to Redis, falls back to in-memory cache
+ * SECURITY: Attempts to connect to Redis, fails hard in production
  */
 export async function initCache() {
+  const env = process.env.NODE_ENV || 'development';
+  const isProduction = env === 'production';
+
   try {
     // Try to import Redis client
     const redis = await import('redis');
@@ -98,17 +102,32 @@ export async function initCache() {
     });
 
     cacheClient.on('error', (err) => {
-      logger.warn(`[Cache] Redis error: ${err.message}, falling back to in-memory cache`);
-      cacheClient = inMemoryCache;
+      logger.error(`[Cache] Redis error: ${err.message}`);
+      if (isProduction) {
+        // Fail hard in production - don't silently degrade
+        throw new Error(`Cache service unavailable in production: ${err.message}`);
+      } else {
+        // Allow fallback only in development
+        logger.warn(`[Cache] Falling back to in-memory cache (development only)`);
+        cacheClient = inMemoryCache;
+      }
     });
 
     await cacheClient.connect();
     logger.info('[Cache] Redis cache initialized successfully');
     return true;
   } catch (error) {
-    logger.warn(`[Cache] Redis not available: ${error.message}, using in-memory cache`);
-    cacheClient = inMemoryCache;
-    return false;
+    logger.error(`[Cache] Failed to initialize cache: ${error.message}`);
+
+    if (isProduction) {
+      // Re-throw in production - don't continue with degraded cache
+      throw new Error(`Cache initialization failed in production: ${error.message}`);
+    } else {
+      // Fallback to in-memory only for development
+      logger.warn(`[Cache] Using in-memory cache (development environment)`);
+      cacheClient = inMemoryCache;
+      return false;
+    }
   }
 }
 
@@ -124,56 +143,82 @@ function getCache() {
 
 /**
  * Generate cache key from input parameters
+ * SECURITY: Includes userId and jobId for multi-tenant isolation
+ *
+ * @param {string} prefix - Cache prefix (from CACHE_CONFIG)
+ * @param {object} input - Input object with stable key ordering
+ * @param {string} userId - User ID for tenant isolation (optional)
+ * @param {string} jobId - Job ID for isolation (optional)
+ * @returns {string} Unique cache key
  */
-function generateCacheKey(prefix, input) {
-  const hash = crypto.createHash('sha256').update(JSON.stringify(input)).digest('hex');
-  return `${prefix}${hash}`;
+function generateCacheKey(prefix, input, userId = 'default', jobId = 'default') {
+  // Normalize input to prevent collision from key ordering
+  const normalized = JSON.stringify(input, Object.keys(input || {}).sort());
+  const contentHash = crypto.createHash('sha256').update(normalized).digest('hex').substring(0, 12);
+
+  // Include user and job in key for multi-tenant isolation
+  return `${prefix}${userId}:${jobId}:${contentHash}`;
 }
 
 /**
  * Cache document parsing results
+ * SECURITY: JSON serialization for Redis compatibility, includes userId/jobId
  */
-export async function cacheDocumentParsing(filePath, parsedResult) {
+export async function cacheDocumentParsing(filePath, parsedResult, userId = 'default', jobId = 'default') {
   try {
-    const key = generateCacheKey(CACHE_CONFIG.document_parsing.prefix, filePath);
+    const key = generateCacheKey(CACHE_CONFIG.document_parsing.prefix, filePath, userId, jobId);
     const cache = getCache();
 
-    await cache.set(
-      key,
-      {
-        filePath,
-        parsedResult,
-        cached_at: new Date().toISOString()
-      },
-      CACHE_CONFIG.document_parsing.ttl
-    );
+    // FIXED: Must serialize to JSON string for Redis
+    const cacheData = JSON.stringify({
+      filePath,
+      parsedResult,
+      cached_at: new Date().toISOString()
+    });
+
+    if (cache === inMemoryCache) {
+      // In-memory cache accepts JSON string
+      await cache.set(key, { data: cacheData }, CACHE_CONFIG.document_parsing.ttl);
+    } else {
+      // Redis requires options object with EX for TTL
+      await cache.set(key, cacheData, { EX: CACHE_CONFIG.document_parsing.ttl });
+    }
 
     logger.debug(`[Cache] Document parsing cached: ${key}`);
     return key;
   } catch (error) {
-    logger.warn(`[Cache] Failed to cache document parsing: ${error.message}`);
+    logger.error(`[Cache] Failed to cache document parsing: ${error.message}`);
     return null;
   }
 }
 
 /**
  * Get cached document parsing
+ * SECURITY: JSON deserialization for Redis compatibility
  */
-export async function getCachedDocumentParsing(filePath) {
+export async function getCachedDocumentParsing(filePath, userId = 'default', jobId = 'default') {
   try {
-    const key = generateCacheKey(CACHE_CONFIG.document_parsing.prefix, filePath);
+    const key = generateCacheKey(CACHE_CONFIG.document_parsing.prefix, filePath, userId, jobId);
     const cache = getCache();
 
-    const cached = await cache.get(key);
-    if (cached) {
+    // FIXED: Must deserialize JSON string from Redis
+    const cachedString = await cache.get(key);
+    if (cachedString) {
       logger.debug(`[Cache] Document parsing cache hit: ${key}`);
-      return cached.parsedResult;
+      try {
+        // Handle both direct objects (in-memory) and JSON strings (Redis)
+        const cached = typeof cachedString === 'string' ? JSON.parse(cachedString) : cachedString.data ? JSON.parse(cachedString.data) : cachedString;
+        return cached.parsedResult;
+      } catch (parseError) {
+        logger.error(`[Cache] Failed to parse cached data: ${parseError.message}`);
+        return null;
+      }
     }
 
     logger.debug(`[Cache] Document parsing cache miss: ${key}`);
     return null;
   } catch (error) {
-    logger.warn(`[Cache] Failed to get cached document: ${error.message}`);
+    logger.error(`[Cache] Failed to get cached document: ${error.message}`);
     return null;
   }
 }
@@ -278,49 +323,65 @@ export async function getCachedQAFlow(documentPath, contextData) {
 
 /**
  * Cache LLM response (for expensive API calls)
+ * SECURITY: Redacts prompts, shorter TTL (7 days), hashes input
  */
-export async function cacheLLMResponse(prompt, llmModel, response) {
+export async function cacheLLMResponse(prompt, llmModel, response, userId = 'default') {
   try {
-    const key = generateCacheKey(CACHE_CONFIG.llm_response.prefix, { prompt, llmModel });
+    // SECURITY: Hash the prompt input, don't store the full prompt
+    const promptHash = crypto.createHash('sha256').update(prompt).digest('hex').substring(0, 8);
+    const key = generateCacheKey(CACHE_CONFIG.llm_response.prefix, { promptHash, llmModel }, userId);
+
     const cache = getCache();
 
-    await cache.set(
-      key,
-      {
-        prompt: prompt.substring(0, 500), // Store truncated prompt
-        llmModel,
-        response,
-        cached_at: new Date().toISOString()
-      },
-      CACHE_CONFIG.llm_response.ttl
-    );
+    // SECURITY: Only store redacted/hashed prompt for audit, not full content
+    const cacheData = JSON.stringify({
+      promptHash,
+      promptLength: prompt.length,
+      llmModel,
+      response,
+      cached_at: new Date().toISOString()
+    });
 
-    logger.debug(`[Cache] LLM response cached: ${key}`);
+    if (cache === inMemoryCache) {
+      await cache.set(key, { data: cacheData }, CACHE_CONFIG.llm_response.ttl);
+    } else {
+      await cache.set(key, cacheData, { EX: CACHE_CONFIG.llm_response.ttl });
+    }
+
+    logger.debug(`[Cache] LLM response cached: ${key} (prompt_len=${prompt.length}, model=${llmModel})`);
     return key;
   } catch (error) {
-    logger.warn(`[Cache] Failed to cache LLM response: ${error.message}`);
+    logger.error(`[Cache] Failed to cache LLM response: ${error.message}`);
     return null;
   }
 }
 
 /**
  * Get cached LLM response
+ * SECURITY: Requires prompt to verify via hash
  */
-export async function getCachedLLMResponse(prompt, llmModel) {
+export async function getCachedLLMResponse(prompt, llmModel, userId = 'default') {
   try {
-    const key = generateCacheKey(CACHE_CONFIG.llm_response.prefix, { prompt, llmModel });
+    const promptHash = crypto.createHash('sha256').update(prompt).digest('hex').substring(0, 8);
+    const key = generateCacheKey(CACHE_CONFIG.llm_response.prefix, { promptHash, llmModel }, userId);
     const cache = getCache();
 
-    const cached = await cache.get(key);
-    if (cached) {
+    const cachedString = await cache.get(key);
+    if (cachedString) {
       logger.debug(`[Cache] LLM response cache hit: ${key}`);
-      return cached.response;
+      try {
+        const cached = typeof cachedString === 'string' ? JSON.parse(cachedString) : JSON.parse(cachedString.data || cachedString);
+        return cached.response;
+      } catch (parseError) {
+        logger.error(`[Cache] Failed to parse cached LLM response: ${parseError.message}`);
+        return null;
+      }
     }
 
     logger.debug(`[Cache] LLM response cache miss: ${key}`);
     return null;
   } catch (error) {
-    logger.warn(`[Cache] Failed to get cached LLM response: ${error.message}`);
+    logger.error(`[Cache] Failed to get cached LLM response: ${error.message}`);
     return null;
   }
 }
@@ -375,23 +436,39 @@ export async function getCachedPerplexitySearch(searchQuery) {
 
 /**
  * Clear all cache
+ * SECURITY: Requires admin authorization to prevent DoS via cache invalidation
+ *
+ * @param {boolean} isAdmin - Must be explicitly true, requires admin context
+ * @returns {Promise<boolean>}
  */
-export async function clearAllCache() {
+export async function clearAllCache(isAdmin = false) {
   try {
+    // SECURITY: Require explicit admin flag to prevent unauthorized cache clearing
+    if (!isAdmin) {
+      logger.warn(`[Cache] Unauthorized cache clear attempt (requires admin)`);
+      throw new Error('Cache clear requires admin authorization');
+    }
+
     const cache = getCache();
     if (cache === inMemoryCache) {
       await cache.clear();
+      logger.warn('[Cache] All in-memory cache cleared (admin)');
     } else {
-      // For Redis, delete all keys with our prefixes
+      // For Redis, delete only our namespaced keys, not all keys
       const patterns = Object.values(CACHE_CONFIG).map(c => `${c.prefix}*`);
+      let totalDeleted = 0;
+
       for (const pattern of patterns) {
         const keys = await cache.keys(pattern);
         if (keys.length > 0) {
           await Promise.all(keys.map(key => cache.del(key)));
+          totalDeleted += keys.length;
         }
       }
+
+      logger.warn(`[Cache] Cleared ${totalDeleted} Redis keys (admin)`);
     }
-    logger.info('[Cache] All cache cleared');
+
     return true;
   } catch (error) {
     logger.error(`[Cache] Failed to clear cache: ${error.message}`);
