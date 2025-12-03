@@ -988,18 +988,176 @@ function displayConflicts(conflicts) {
   conflicts.forEach((conflict, idx) => {
     const conflictDiv = document.createElement('div');
     conflictDiv.className = `conflict-item conflict-${(conflict.severity || 'MEDIUM').toLowerCase()}`;
+    conflictDiv.setAttribute('data-conflict-id', `conflict-${idx}`);
     conflictDiv.innerHTML = `
       <div class="conflict-header">
         <span class="severity-badge">${severityEmoji[conflict.severity] || '?'} ${conflict.severity}</span>
         <span class="conflict-type">${conflict.type}</span>
       </div>
       <p class="conflict-description">${conflict.description || 'Žádný popis'}</p>
-      <p class="conflict-resolution"><strong>Řešení:</strong> ${conflict.resolution || 'Čeká na řešení'}</p>
+
+      <div class="conflict-body">
+        <div class="resolution-section">
+          <strong>🎯 Automatické řešení:</strong>
+          <p class="conflict-resolution">${conflict.resolution || 'Čeká na řešení'}</p>
+        </div>
+
+        ${conflict.reasoning ? `
+          <div class="reasoning-section">
+            <strong>📝 Zdůvodnění:</strong>
+            <p class="conflict-reasoning">${conflict.reasoning}</p>
+          </div>
+        ` : ''}
+
+        ${conflict.alternatives && conflict.alternatives.length > 0 ? `
+          <div class="alternatives-section">
+            <strong>🔄 Alternativy:</strong>
+            <ul class="alternatives-list">
+              ${conflict.alternatives.map(alt => `<li>${alt}</li>`).join('')}
+            </ul>
+          </div>
+        ` : ''}
+      </div>
+
+      <div class="conflict-actions">
+        <button class="conflict-btn accept-btn" data-conflict-id="conflict-${idx}" title="Přijmout automatické řešení">
+          ✓ Přijmout
+        </button>
+        <button class="conflict-btn edit-btn" data-conflict-id="conflict-${idx}" title="Upravit řešení">
+          ✎ Upravit
+        </button>
+        <button class="conflict-btn reject-btn" data-conflict-id="conflict-${idx}" title="Odmítnout a označit ke kontrole">
+          ✗ Odmítnout
+        </button>
+      </div>
     `;
     conflictsList.appendChild(conflictDiv);
   });
 
-  debugLog('🤖 Conflicts displayed:', conflicts.length);
+  // Attach event listeners to conflict buttons
+  attachConflictButtonListeners();
+
+  debugLog('🤖 Enhanced conflicts displayed:', conflicts.length);
+}
+
+/**
+ * Attach event listeners to conflict resolution buttons
+ */
+function attachConflictButtonListeners() {
+  // Accept conflict resolution
+  document.querySelectorAll('.conflict-btn.accept-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const conflictId = this.getAttribute('data-conflict-id');
+      acceptConflictResolution(conflictId);
+    });
+  });
+
+  // Edit conflict resolution
+  document.querySelectorAll('.conflict-btn.edit-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const conflictId = this.getAttribute('data-conflict-id');
+      editConflictResolution(conflictId);
+    });
+  });
+
+  // Reject conflict resolution
+  document.querySelectorAll('.conflict-btn.reject-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const conflictId = this.getAttribute('data-conflict-id');
+      rejectConflictResolution(conflictId);
+    });
+  });
+}
+
+/**
+ * Accept automatic conflict resolution
+ */
+function acceptConflictResolution(conflictId) {
+  const conflictDiv = document.querySelector(`[data-conflict-id="${conflictId}"]`);
+  if (conflictDiv) {
+    conflictDiv.classList.add('conflict-accepted');
+    conflictDiv.classList.remove('conflict-critical', 'conflict-high', 'conflict-medium', 'conflict-low');
+
+    // Update button state
+    const buttons = conflictDiv.querySelectorAll('.conflict-btn');
+    buttons.forEach(btn => btn.disabled = true);
+
+    const acceptBtn = conflictDiv.querySelector('.accept-btn');
+    if (acceptBtn) {
+      acceptBtn.textContent = '✓ Přijato';
+      acceptBtn.style.backgroundColor = '#27ae60';
+    }
+
+    debugLog(`✓ Conflict ${conflictId} accepted`);
+  }
+}
+
+/**
+ * Edit conflict resolution
+ */
+function editConflictResolution(conflictId) {
+  const conflictDiv = document.querySelector(`[data-conflict-id="${conflictId}"]`);
+  if (conflictDiv) {
+    const resolutionDiv = conflictDiv.querySelector('.resolution-section');
+    const resolutionText = conflictDiv.querySelector('.conflict-resolution');
+
+    if (resolutionDiv && resolutionText) {
+      // Create edit form
+      const editForm = document.createElement('div');
+      editForm.className = 'conflict-edit-form';
+      editForm.innerHTML = `
+        <textarea class="edit-resolution-textarea" rows="3">${resolutionText.textContent}</textarea>
+        <div class="edit-actions">
+          <button class="edit-save-btn">💾 Uložit</button>
+          <button class="edit-cancel-btn">✕ Zrušit</button>
+        </div>
+      `;
+
+      resolutionDiv.appendChild(editForm);
+
+      // Attach listeners to edit buttons
+      editForm.querySelector('.edit-save-btn').addEventListener('click', function() {
+        const newResolution = editForm.querySelector('.edit-resolution-textarea').value;
+        resolutionText.textContent = newResolution;
+        editForm.remove();
+        conflictDiv.classList.add('conflict-edited');
+        debugLog(`✎ Conflict ${conflictId} edited: ${newResolution}`);
+      });
+
+      editForm.querySelector('.edit-cancel-btn').addEventListener('click', function() {
+        editForm.remove();
+      });
+    }
+  }
+}
+
+/**
+ * Reject conflict resolution and flag for manual review
+ */
+function rejectConflictResolution(conflictId) {
+  const conflictDiv = document.querySelector(`[data-conflict-id="${conflictId}"]`);
+  if (conflictDiv) {
+    conflictDiv.classList.add('conflict-rejected');
+    conflictDiv.classList.remove('conflict-critical', 'conflict-high', 'conflict-medium', 'conflict-low');
+
+    // Add manual review flag
+    const flagDiv = document.createElement('div');
+    flagDiv.className = 'conflict-flag';
+    flagDiv.innerHTML = '⚠️ Označeno ke kontrole';
+    conflictDiv.insertBefore(flagDiv, conflictDiv.querySelector('.conflict-actions'));
+
+    // Update button state
+    const buttons = conflictDiv.querySelectorAll('.conflict-btn');
+    buttons.forEach(btn => btn.disabled = true);
+
+    const rejectBtn = conflictDiv.querySelector('.reject-btn');
+    if (rejectBtn) {
+      rejectBtn.textContent = '✗ Odmítnuto';
+      rejectBtn.style.backgroundColor = '#e74c3c';
+    }
+
+    debugLog(`✗ Conflict ${conflictId} rejected and flagged for review`);
+  }
 }
 
 function displayAnalysisResults(results) {

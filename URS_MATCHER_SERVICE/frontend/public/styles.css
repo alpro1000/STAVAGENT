@@ -658,6 +658,214 @@ textarea {
   color: var(--text-primary);
 }
 
+/* Enhanced Conflict Resolution UI */
+.conflict-body {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.resolution-section,
+.reasoning-section,
+.alternatives-section {
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: calc(var(--border-radius) / 2);
+}
+
+.resolution-section strong,
+.reasoning-section strong,
+.alternatives-section strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.conflict-reasoning {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-style: italic;
+  margin: 0;
+}
+
+.alternatives-list {
+  list-style: none;
+  padding-left: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.alternatives-list li {
+  margin: 0.25rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.alternatives-list li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+/* Conflict Action Buttons */
+.conflict-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.conflict-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: calc(var(--border-radius) / 2);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.conflict-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.accept-btn {
+  background: #27ae60;
+  color: white;
+  flex: 1.2;
+}
+
+.accept-btn:hover:not(:disabled) {
+  background: #229954;
+  box-shadow: 0 2px 8px rgba(39, 174, 96, 0.3);
+  transform: translateY(-2px);
+}
+
+.edit-btn {
+  background: var(--primary-color);
+  color: white;
+}
+
+.edit-btn:hover:not(:disabled) {
+  background: #1d4ed8;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
+  transform: translateY(-2px);
+}
+
+.reject-btn {
+  background: #e74c3c;
+  color: white;
+  flex: 1.2;
+}
+
+.reject-btn:hover:not(:disabled) {
+  background: #c0392b;
+  box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Edit Form */
+.conflict-edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  padding: 0.75rem;
+  background: rgba(37, 99, 235, 0.05);
+  border-radius: calc(var(--border-radius) / 2);
+  border: 1px solid var(--primary-color);
+}
+
+.edit-resolution-textarea {
+  padding: 0.5rem;
+  border: 1px solid var(--primary-color);
+  border-radius: calc(var(--border-radius) / 2);
+  font-family: inherit;
+  font-size: 0.9rem;
+  resize: vertical;
+  color: var(--text-primary);
+}
+
+.edit-resolution-textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: var(--primary-color);
+}
+
+.edit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-save-btn,
+.edit-cancel-btn {
+  flex: 1;
+  padding: 0.5rem;
+  border: none;
+  border-radius: calc(var(--border-radius) / 2);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.edit-save-btn {
+  background: var(--success-color);
+  color: white;
+}
+
+.edit-save-btn:hover {
+  background: #15803d;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+}
+
+.edit-cancel-btn {
+  background: var(--gray-medium);
+  color: var(--text-primary);
+}
+
+.edit-cancel-btn:hover {
+  background: #9ca3af;
+}
+
+/* Conflict Status Classes */
+.conflict-item.conflict-accepted {
+  border-left-color: var(--success-color);
+  background: rgba(22, 163, 74, 0.1);
+}
+
+.conflict-item.conflict-rejected {
+  border-left-color: #e74c3c;
+  background: rgba(231, 76, 60, 0.1);
+}
+
+.conflict-item.conflict-edited {
+  border-left-color: var(--primary-color);
+  background: rgba(37, 99, 235, 0.05);
+}
+
+/* Manual Review Flag */
+.conflict-flag {
+  padding: 0.75rem;
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: calc(var(--border-radius) / 2);
+  color: #856404;
+  font-weight: 500;
+  margin: 0.75rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 /* Analysis Results */
 .analysis-results {
   background: var(--gray-light);
