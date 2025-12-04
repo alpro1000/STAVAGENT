@@ -20,7 +20,7 @@ import {
   searchLocalCatalog,
   extractCzechKeywords
 } from './knowledgeBase.js';
-import { matchUrsItemWithAI } from './llmClient.js';
+import { matchUrsItemWithAI, getLLMInfo, isLLMEnabled } from './llmClient.js';
 import { createUniversalMatchPrompt, validateCodesAgainstCandidates } from '../prompts/universalMatcher.prompt.js';
 import { searchUrsSite, searchNormsAndStandards } from './perplexityClient.js';
 
@@ -214,13 +214,14 @@ export async function universalMatch(input) {
       }
     }
 
-    // 7. Add execution metadata
+    // 7. Add execution metadata and LLM info
     llmResponse.execution_time_ms = Date.now() - startTime;
     llmResponse.candidate_source = candidateSource;
     llmResponse.candidates_count = candidates.length;
+    llmResponse.llm_info = getLLMInfo();
 
     logger.info(
-      `[UniversalMatcher] Complete: ${llmResponse.matches.length} matches found from ${candidateSource} (${llmResponse.execution_time_ms}ms)`
+      `[UniversalMatcher] Complete: ${llmResponse.matches.length} matches found from ${candidateSource} (${llmResponse.execution_time_ms}ms), LLM: ${llmResponse.llm_info.provider}/${llmResponse.llm_info.model}`
     );
 
     return llmResponse;
@@ -240,7 +241,8 @@ export async function universalMatch(input) {
       knowledge_suggestions: [],
       status: 'error',
       notes_cs: error.message,
-      execution_time_ms: Date.now() - startTime
+      execution_time_ms: Date.now() - startTime,
+      llm_info: getLLMInfo()
     };
   }
 }
@@ -282,7 +284,8 @@ async function formatResultFromKB(input, detectedLanguage, normalizedCzech, kbHi
     status: 'ok',
     notes_cs: 'Odpověď pochází ze znalostní báze bez nutnosti LLM.',
     source: 'knowledge_base',
-    execution_time_ms: executionTime
+    execution_time_ms: executionTime,
+    llm_info: { ...getLLMInfo(), used: false, reason: 'knowledge_base_hit' }
   };
 }
 

@@ -446,6 +446,101 @@ textarea {
   margin-bottom: 0;
 }
 
+/* Phase 3 Inline Panel (in block results) */
+.phase3-panel {
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fe 100%);
+  border: 1px solid #c3d4f7;
+  border-left: 4px solid var(--primary-color);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.phase3-header {
+  font-size: 1rem;
+  color: var(--primary-color);
+  margin-bottom: 0.75rem;
+}
+
+.phase3-complexity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.phase3-complexity .complexity-badge {
+  background: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.phase3-complexity .execution-time {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.phase3-complexity .cache-hit {
+  font-size: 0.8rem;
+  color: var(--success-color);
+  background: #e8f5e9;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.phase3-roles {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+}
+
+.phase3-conflicts {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid #c3d4f7;
+}
+
+.phase3-conflicts .conflict-item {
+  background: white;
+  border-radius: 4px;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+  border-left: 3px solid var(--warning-color);
+}
+
+.phase3-conflicts .conflict-severity {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.15rem 0.4rem;
+  border-radius: 3px;
+  background: var(--warning-color);
+  color: white;
+  margin-right: 0.5rem;
+}
+
+.phase3-conflicts .conflict-type {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.phase3-conflicts .conflict-desc {
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+}
+
+.phase3-conflicts .conflict-resolution {
+  font-size: 0.85rem;
+  color: var(--success-color);
+  margin: 0;
+  border: none;
+  padding: 0;
+}
+
 /* Action Buttons */
 .action-buttons {
   display: grid;

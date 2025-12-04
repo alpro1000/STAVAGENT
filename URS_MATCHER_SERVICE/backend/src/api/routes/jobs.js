@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { fileURLToPath } from 'url';
 import { parseExcelFile } from '../../services/fileParser.js';
 import { matchUrsItems, generateRelatedItems } from '../../services/ursMatcher.js';
-import { matchUrsItemWithAI, explainMapping, isLLMEnabled } from '../../services/llmClient.js';
+import { matchUrsItemWithAI, explainMapping, isLLMEnabled, getLLMInfo } from '../../services/llmClient.js';
 import { universalMatch, recordUserFeedback } from '../../services/universalMatcher.js';
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
@@ -834,6 +834,7 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
       blocks_count: blockResults.length,
       project_context: projectContext,
       blocks: blockResults,
+      llm_info: getLLMInfo(),
       message: 'Block analysis completed successfully'
     });
 
