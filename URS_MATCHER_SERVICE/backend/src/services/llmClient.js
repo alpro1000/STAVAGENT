@@ -7,25 +7,54 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { getSystemPrompt, createMatchUrsItemPrompt } from '../prompts/ursMatcher.prompt.js';
-import { getLLMConfig, createLLMClient } from '../config/llmConfig.js';
+import { getLLMConfig, createLLMClient, getAvailableProviders, getFallbackChain } from '../config/llmConfig.js';
 
 // Global LLM client instance (lazy-loaded)
 let llmClient = null;
 let llmConfig = null;
+let availableProviders = null;
+let fallbackChain = null;
+let currentProviderIndex = 0;
 
 /**
  * Initialize LLM client on first use
+ * Sets up primary provider and fallback chain
  */
 function initializeLLMClient() {
   if (!llmConfig) {
     llmConfig = getLLMConfig();
+    availableProviders = getAvailableProviders();
+    fallbackChain = getFallbackChain(llmConfig.provider);
+
     if (llmConfig.enabled) {
       llmClient = createLLMClient(llmConfig);
       logger.info(`[LLMClient] Initialized with provider: ${llmConfig.provider}, model: ${llmConfig.model}`);
+      logger.info(`[LLMClient] Available providers: ${Object.keys(availableProviders).join(', ')}`);
+      logger.info(`[LLMClient] Fallback chain: ${fallbackChain.join(' → ')}`);
     } else {
-      logger.info('[LLMClient] LLM disabled - using fallback mode for all operations');
+      logger.info('[LLMClient] Primary provider disabled - using fallback mechanism');
     }
   }
+}
+
+/**
+ * Get next available provider from fallback chain
+ * @returns {Object|null} Next provider config or null if none available
+ */
+function getNextProvider() {
+  if (!fallbackChain || currentProviderIndex >= fallbackChain.length) {
+    return null;
+  }
+
+  const providerName = fallbackChain[currentProviderIndex];
+  currentProviderIndex++;
+
+  const provider = availableProviders[providerName];
+  if (provider && provider.enabled) {
+    return createLLMClient(provider);
+  }
+
+  return getNextProvider(); // Try next in chain
 }
 
 /**
@@ -148,30 +177,66 @@ Vrať POUZE odůvodnění, bez jakéhokoli JSON či dalšího textu.`;
 }
 
 /**
- * Call LLM API with timeout protection
- * Supports both Claude and OpenAI APIs
+ * Call LLM API with timeout protection and fallback support
+ * Tries primary provider, then falls back to alternatives if needed
  *
  * @param {string} systemPrompt - System prompt
  * @param {string} userPrompt - User message
  * @param {number} timeoutMs - Request timeout in milliseconds
  * @returns {Promise<string>} LLM response content
- * @throws {Error} on timeout or API error
+ * @throws {Error} if all providers fail
  */
 async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    if (llmClient.provider === 'claude') {
-      return await callClaudeAPI(systemPrompt, userPrompt, controller);
-    } else if (llmClient.provider === 'gemini') {
-      return await callGeminiAPI(systemPrompt, userPrompt, controller);
-    } else {
-      // OpenAI (default)
-      return await callOpenAIAPI(systemPrompt, userPrompt, controller);
+    // Try current (primary) client
+    if (llmClient) {
+      try {
+        return await callLLMProvider(llmClient, systemPrompt, userPrompt, controller);
+      } catch (error) {
+        logger.warn(`[LLMClient] Primary provider ${llmClient.provider} failed: ${error.message}. Trying fallback...`);
+      }
     }
+
+    // Try fallback providers
+    let nextProvider = getNextProvider();
+    while (nextProvider) {
+      try {
+        logger.info(`[LLMClient] Trying fallback provider: ${nextProvider.provider}`);
+        const result = await callLLMProvider(nextProvider, systemPrompt, userPrompt, controller);
+        llmClient = nextProvider; // Update to use this provider going forward
+        logger.info(`[LLMClient] Switched to ${nextProvider.provider} as primary provider`);
+        return result;
+      } catch (error) {
+        logger.warn(`[LLMClient] Fallback provider ${nextProvider.provider} failed: ${error.message}`);
+        nextProvider = getNextProvider();
+      }
+    }
+
+    throw new Error('All LLM providers failed or unavailable');
   } finally {
     clearTimeout(timeout);
+  }
+}
+
+/**
+ * Call specific LLM provider
+ * @param {Object} provider - Provider client configuration
+ * @param {string} systemPrompt - System prompt
+ * @param {string} userPrompt - User message
+ * @param {AbortController} controller - Abort controller for timeout
+ * @returns {Promise<string>} Response from provider
+ */
+async function callLLMProvider(provider, systemPrompt, userPrompt, controller) {
+  if (provider.provider === 'claude') {
+    return await callClaudeAPI(systemPrompt, userPrompt, controller);
+  } else if (provider.provider === 'gemini') {
+    return await callGeminiAPI(systemPrompt, userPrompt, controller);
+  } else {
+    // OpenAI (default)
+    return await callOpenAIAPI(systemPrompt, userPrompt, controller);
   }
 }
 
