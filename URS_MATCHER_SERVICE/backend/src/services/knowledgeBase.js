@@ -388,3 +388,176 @@ export async function exportKnowledgeBase() {
     throw error;
   }
 }
+
+// ============================================================================
+// LOCAL CATALOG SEARCH
+// ============================================================================
+
+/**
+ * Translation map: Russian/Ukrainian construction terms → Czech
+ * Used to extract searchable keywords from multilingual input
+ */
+const CONSTRUCTION_TERMS_MAP = {
+  // Russian → Czech (with declensions)
+  'бетон': 'beton',
+  'бетонный': 'betonový',
+  'бетонная': 'betonová',
+  'бетонную': 'betonovou',
+  'бетона': 'beton',
+  'опалубка': 'bednění',
+  'опалубке': 'bednění',
+  'опалубки': 'bednění',
+  'опалубку': 'bednění',
+  'арматура': 'výztuž',
+  'арматуры': 'výztuž',
+  'арматуру': 'výztuž',
+  'армирование': 'vyztužení',
+  'фундамент': 'základ',
+  'фундамента': 'základ',
+  'фундаменте': 'základ',
+  'стена': 'stěna',
+  'стены': 'stěny',
+  'стен': 'stěna',
+  'стену': 'stěna',
+  'плита': 'deska',
+  'перекрытие': 'strop',
+  'колонна': 'sloup',
+  'балка': 'trám',
+  'кирпич': 'cihla',
+  'кирпичный': 'cihelný',
+  'кладка': 'zdivo',
+  'штукатурка': 'omítka',
+  'изоляция': 'izolace',
+  'гидроизоляция': 'hydroizolace',
+  'теплоизоляция': 'tepelná izolace',
+  'кровля': 'střecha',
+  'крыша': 'střecha',
+  'пол': 'podlaha',
+  'потолок': 'strop',
+  'лестница': 'schodiště',
+  'окно': 'okno',
+  'дверь': 'dveře',
+  'проем': 'otvor',
+  'проступ': 'prostup',
+  'проступы': 'prostup',
+  'проступов': 'prostup',
+  'отверстие': 'otvor',
+  'отверстия': 'otvor',
+  'коммуникации': 'komunikace',
+  'коммуникаций': 'komunikace',
+  'трубопровод': 'potrubí',
+  'канализация': 'kanalizace',
+  'электрика': 'elektroinstalace',
+  'вентиляция': 'vzduchotechnika',
+  'отопление': 'vytápění',
+  'земляные': 'zemní',
+  'выкоп': 'výkop',
+  'засыпка': 'zásyp',
+  'подготовка': 'příprava',
+  'монтаж': 'montáž',
+  'демонтаж': 'demontáž',
+  'устройство': 'provedení',
+  'укладка': 'pokládka',
+  'заливка': 'betonáž',
+  'железобетон': 'železobeton',
+  'жб': 'žb',
+
+  // Ukrainian → Czech (additional)
+  'бетонна': 'betonová',
+  'стіна': 'stěna',
+  'підлога': 'podlaha',
+  'дах': 'střecha',
+  'вікно': 'okno',
+  'двері': 'dveře',
+  'цегла': 'cihla',
+  'арматурa': 'výztuž'
+};
+
+/**
+ * Extract Czech keywords from multilingual text
+ * @param {string} text - Input text (any language)
+ * @returns {string[]} Array of Czech keywords for search
+ */
+export function extractCzechKeywords(text) {
+  if (!text || typeof text !== 'string') return [];
+
+  const lower = text.toLowerCase();
+  const keywords = new Set();
+
+  // 1. Direct translation of known terms
+  for (const [foreign, czech] of Object.entries(CONSTRUCTION_TERMS_MAP)) {
+    if (lower.includes(foreign)) {
+      keywords.add(czech);
+    }
+  }
+
+  // 2. If text is already Czech (has diacritics), extract words
+  if (/[řůěžščďťň]/.test(lower)) {
+    const czechWords = lower.match(/[a-záéíóúýřůěžščďťň]{3,}/g) || [];
+    czechWords.forEach(w => keywords.add(w));
+  }
+
+  // 3. Extract any Latin words longer than 3 chars (might be technical terms)
+  const latinWords = lower.match(/[a-z]{4,}/g) || [];
+  latinWords.forEach(w => {
+    // Filter out common non-technical words
+    if (!['jako', 'nebo', 'také', 'která', 'který', 'které', 'this', 'that', 'with', 'from'].includes(w)) {
+      keywords.add(w);
+    }
+  });
+
+  return Array.from(keywords);
+}
+
+/**
+ * Search local URS catalog by keywords
+ * Returns candidate items for LLM matching
+ *
+ * @param {string} normalizedText - Normalized Czech text
+ * @param {string} originalText - Original input (for keyword extraction)
+ * @param {number} limit - Max results (default 20)
+ * @returns {Promise<Array>} Array of candidate URS items
+ */
+export async function searchLocalCatalog(normalizedText, originalText = '', limit = 20) {
+  try {
+    const db = await getDatabase();
+
+    // Extract keywords from both normalized and original text
+    const keywords = extractCzechKeywords(normalizedText + ' ' + originalText);
+
+    if (keywords.length === 0) {
+      logger.warn('[KB] No searchable keywords extracted');
+      return [];
+    }
+
+    logger.info(`[KB] Searching catalog with keywords: ${keywords.join(', ')}`);
+
+    // Build search query with OR conditions for each keyword
+    const conditions = keywords.map(() => 'urs_name LIKE ?').join(' OR ');
+    const params = keywords.map(k => `%${k}%`);
+    params.push(limit);
+
+    const query = `
+      SELECT urs_code, urs_name, unit, description
+      FROM urs_items
+      WHERE ${conditions}
+      LIMIT ?
+    `;
+
+    const results = await db.all(query, params);
+
+    logger.info(`[KB] Found ${results.length} candidates in local catalog`);
+
+    // Format as candidateItems
+    return results.map(item => ({
+      urs_code: item.urs_code,
+      urs_name: item.urs_name,
+      unit: item.unit,
+      description: item.description || ''
+    }));
+
+  } catch (error) {
+    logger.error(`[KB] Local catalog search failed: ${error.message}`);
+    return [];
+  }
+}

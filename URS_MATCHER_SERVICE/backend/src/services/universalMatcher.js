@@ -16,10 +16,13 @@ import {
   computeContextHash,
   insertMapping,
   getRelatedItems,
-  insertRelatedItem
+  insertRelatedItem,
+  searchLocalCatalog,
+  extractCzechKeywords
 } from './knowledgeBase.js';
 import { matchUrsItemWithAI } from './llmClient.js';
 import { createUniversalMatchPrompt, validateCodesAgainstCandidates } from '../prompts/universalMatcher.prompt.js';
+import { searchUrsSite } from './perplexityClient.js';
 
 /**
  * Detect language of input text
@@ -102,25 +105,52 @@ export async function universalMatch(input) {
     }
 
     // 3. Get candidates for LLM matching
-    const candidates = input.candidateItems || [];
+    let candidates = input.candidateItems || [];
+    let candidateSource = 'provided';
+
+    // AUTO-SEARCH: If no candidates provided, search automatically
     if (candidates.length === 0) {
-      logger.warn('[UniversalMatcher] No candidates provided, returning ambiguous result');
+      logger.info('[UniversalMatcher] No candidates provided, searching automatically...');
+
+      // Step 3a: Search local catalog first (fast)
+      candidates = await searchLocalCatalog(normalizedCzech, input.text, 20);
+      candidateSource = 'local_catalog';
+
+      // Step 3b: If still empty, try Perplexity (slower, but searches urs.cz)
+      if (candidates.length === 0) {
+        logger.info('[UniversalMatcher] Local search empty, trying Perplexity...');
+        try {
+          candidates = await searchUrsSite(normalizedCzech || input.text);
+          candidateSource = 'perplexity_urs_cz';
+        } catch (perplexityError) {
+          logger.warn(`[UniversalMatcher] Perplexity search failed: ${perplexityError.message}`);
+        }
+      }
+
+      logger.info(`[UniversalMatcher] Auto-search found ${candidates.length} candidates from ${candidateSource}`);
+    }
+
+    // If still no candidates after auto-search, return ambiguous
+    if (candidates.length === 0) {
+      logger.warn('[UniversalMatcher] No candidates found even after auto-search');
 
       return {
         query: {
           detected_language: detectedLanguage,
           normalized_text_cs: normalizedCzech,
+          original_text: input.text,
           quantity: input.quantity || null,
           unit: input.unit || null
         },
         matches: [],
         related_items: [],
         explanation_cs:
-          'Bez dostupných kandidátů ÚRS kódů není možné identifikovat správnou pozici. ' +
-          'Prosím, poskytněte seznam dostupných pozic ÚRS katalogu.',
+          'Bohužel se nepodařilo najít odpovídající ÚRS pozice v katalogu. ' +
+          'Zkuste upřesnit popis práce nebo použít technické termíny v češtině.',
         knowledge_suggestions: [],
         status: 'ambiguous',
-        notes_cs: 'Chybí seznam kandidátních ÚRS položek (candidateItems).',
+        notes_cs: 'Automatické vyhledávání nenašlo vhodné kandidáty. Zkuste jiné klíčové slovo.',
+        searched_keywords: extractCzechKeywords(normalizedCzech + ' ' + input.text),
         execution_time_ms: Date.now() - startTime
       };
     }
@@ -167,9 +197,11 @@ export async function universalMatch(input) {
 
     // 7. Add execution metadata
     llmResponse.execution_time_ms = Date.now() - startTime;
+    llmResponse.candidate_source = candidateSource;
+    llmResponse.candidates_count = candidates.length;
 
     logger.info(
-      `[UniversalMatcher] Complete: ${llmResponse.matches.length} matches found (${llmResponse.execution_time_ms}ms)`
+      `[UniversalMatcher] Complete: ${llmResponse.matches.length} matches found from ${candidateSource} (${llmResponse.execution_time_ms}ms)`
     );
 
     return llmResponse;
