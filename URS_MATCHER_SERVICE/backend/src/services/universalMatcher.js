@@ -30,19 +30,22 @@ export function detectLanguage(text) {
 
   const lower = text.toLowerCase();
 
-  // Czech patterns
-  if (/\b(je|jsou|má|mají|byl|byla|bylo|budou|dům|byt|práce|stavba)\b/.test(lower)) {
+  // Czech patterns - check diacritics and common words
+  // Czech has unique characters: ř, ů, ě and combinations with háček/čárka
+  if (/[řůě]/.test(lower) || /\b(je|jsou|má|mají|byl|byla|bylo|budou|dům|byt|práce|stavba|deska|betonová|přehlaz|zdivo|stěna|podlaha)\b/.test(lower)) {
     return 'cs';
   }
 
-  // Russian patterns
-  if (/[а-яА-ЯёЁ]/.test(text)) {
-    return 'ru';
+  // Ukrainian patterns - check BEFORE Russian because they share Cyrillic
+  // Ukrainian has unique: є, і, ї, ґ and word patterns
+  // Note: \b doesn't work with Cyrillic, use space/boundary matching
+  if (/[єіїґ]/.test(text) || /(^|\s)(з|та|що|це|як|від|для|цегли)(\s|$)/i.test(text)) {
+    return 'uk';
   }
 
-  // Ukrainian patterns
-  if (/[єЄиї]/.test(text)) {
-    return 'uk';
+  // Russian patterns - Cyrillic without Ukrainian-specific chars
+  if (/[а-яА-ЯёЁ]/.test(text)) {
+    return 'ru';
   }
 
   // German patterns
