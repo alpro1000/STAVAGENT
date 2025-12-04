@@ -38,8 +38,8 @@ export async function loadTridnik() {
     // Extract categories from XML structure
     const items = result.BuildingInformation?.Classification?.[0]?.System?.[0]?.Items?.[0]?.Item || [];
 
-    function extractCategories(items) {
-      items.forEach(item => {
+    const extractCategories = (itemList) => {
+      itemList.forEach(item => {
         const id = item.ID?.[0];
         const name = item.Name?.[0];
         const description = item.Description?.[0];
@@ -58,7 +58,7 @@ export async function loadTridnik() {
           extractCategories(children);
         }
       });
-    }
+    };
 
     extractCategories(items);
 
@@ -82,7 +82,7 @@ export async function loadTridnik() {
 export async function getCategoryForCode(ursCode) {
   const categories = await loadTridnik();
 
-  if (!ursCode) return 'Ostatní';
+  if (!ursCode) {return 'Ostatní';}
 
   const code = ursCode.toString();
 

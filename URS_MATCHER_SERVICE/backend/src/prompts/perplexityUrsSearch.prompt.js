@@ -64,12 +64,12 @@ Vrať výsledek výhradně jako platný JSON podle výše uvedeného schématu. 
  * @returns {Object|null} Parsed JSON or null if parsing fails
  */
 export function parsePerplexityResponse(responseText) {
-  if (!responseText) return null;
+  if (!responseText) {return null;}
 
   try {
     // Try to find JSON object in the response
     const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return null;
+    if (!jsonMatch) {return null;}
 
     const jsonText = jsonMatch[0];
     return JSON.parse(jsonText);

@@ -87,17 +87,17 @@ export class Orchestrator {
 
     // Factor 1: Number of rows (weight: 0-3)
     const rowCount = boqBlock.rows?.length || 0;
-    if (rowCount === 1) score += 0;
-    else if (rowCount <= 5) score += 1;
-    else if (rowCount <= 15) score += 2;
-    else if (rowCount <= 30) score += 3;
-    else score += 4;
+    if (rowCount === 1) {score += 0;}
+    else if (rowCount <= 5) {score += 1;}
+    else if (rowCount <= 15) {score += 2;}
+    else if (rowCount <= 30) {score += 3;}
+    else {score += 4;}
 
     // Factor 2: Data completeness (weight: 0-2)
     const completeness = this.assessDataCompleteness(boqBlock, projectContext);
-    if (completeness >= 0.8) score += 0;
-    else if (completeness >= 0.6) score += 1;
-    else score += 2;
+    if (completeness >= 0.8) {score += 0;}
+    else if (completeness >= 0.6) {score += 1;}
+    else {score += 2;}
 
     // Factor 3: Block type indicators (weight: 0-2)
     const blockTitle = boqBlock.title?.toLowerCase() || '';
@@ -106,18 +106,18 @@ export class Orchestrator {
       'experimental', 'custom', 'innovative'
     ];
     const hasComplexKeywords = complexKeywords.some(kw => blockTitle.includes(kw));
-    if (hasComplexKeywords) score += 2;
+    if (hasComplexKeywords) {score += 2;}
 
     // Factor 4: Project context richness (weight: 0-1)
     const contextFields = Object.keys(projectContext || {}).length;
-    if (contextFields >= 3) score += 0;  // Rich context = simpler task
-    else score += 1;
+    if (contextFields >= 3) {score += 0;}  // Rich context = simpler task
+    else {score += 1;}
 
     // Determine complexity level with more reasonable thresholds
     // Total score range: 0-9
-    if (score <= 1) return 'SIMPLE';
-    if (score <= 3) return 'STANDARD';
-    if (score <= 6) return 'COMPLEX';
+    if (score <= 1) {return 'SIMPLE';}
+    if (score <= 3) {return 'STANDARD';}
+    if (score <= 6) {return 'COMPLEX';}
     return 'CREATIVE';
   }
 
@@ -128,7 +128,7 @@ export class Orchestrator {
     const boqFields = ['title', 'rows', 'context'];
     const contextFields = projectContext ? Object.keys(projectContext).length : 0;
 
-    const boqCompleteness = boqFields.filter(f => boqBlock[f] != null).length / boqFields.length;
+    const boqCompleteness = boqFields.filter(f => boqBlock[f] !== null && boqBlock[f] !== undefined).length / boqFields.length;
     const contextCompleteness = Math.min(contextFields / 5, 1.0);  // 5 fields = 100%
 
     return (boqCompleteness + contextCompleteness) / 2;
@@ -306,38 +306,38 @@ export class Orchestrator {
 
     // Role-specific invocation
     switch (role) {
-      case 'document_validator':
-        return await this.multiRoleClient.validateBoqBlock(boqBlock, projectContext);
+    case 'document_validator':
+      return await this.multiRoleClient.validateBoqBlock(boqBlock, projectContext);
 
-      case 'structural_engineer':
-        return await this.invokeStructuralEngineer(boqBlock, projectContext);
+    case 'structural_engineer':
+      return await this.invokeStructuralEngineer(boqBlock, projectContext);
 
-      case 'concrete_specialist':
-        return await this.invokeConcreteSpecialist(
-          boqBlock,
-          projectContext,
-          contextChain.structural_engineer_output
-        );
+    case 'concrete_specialist':
+      return await this.invokeConcreteSpecialist(
+        boqBlock,
+        projectContext,
+        contextChain.structural_engineer_output
+      );
 
-      case 'standards_checker':
-        return await this.invokeStandardsChecker(boqBlock, projectContext);
+    case 'standards_checker':
+      return await this.invokeStandardsChecker(boqBlock, projectContext);
 
-      case 'tech_rules_engine':
-        return await this.invokeTechRulesEngine(
-          boqBlock,
-          projectContext,
-          contextChain.structural_engineer_output
-        );
+    case 'tech_rules_engine':
+      return await this.invokeTechRulesEngine(
+        boqBlock,
+        projectContext,
+        contextChain.structural_engineer_output
+      );
 
-      case 'cost_estimator':
-        return await this.invokeCostEstimator(
-          boqBlock,
-          projectContext,
-          contextChain
-        );
+    case 'cost_estimator':
+      return await this.invokeCostEstimator(
+        boqBlock,
+        projectContext,
+        contextChain
+      );
 
-      default:
-        throw new Error(`Unknown role: ${role}`);
+    default:
+      throw new Error(`Unknown role: ${role}`);
     }
   }
 
@@ -587,7 +587,7 @@ Respond in JSON:
       .filter(output => typeof output.confidence === 'number')
       .map(output => output.confidence);
 
-    if (confidences.length === 0) return 0.70;
+    if (confidences.length === 0) {return 0.70;}
 
     return confidences.reduce((a, b) => a + b, 0) / confidences.length;
   }

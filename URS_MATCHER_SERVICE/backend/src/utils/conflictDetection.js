@@ -104,12 +104,12 @@ function detectDurabilityConflicts(roleOutputs) {
       conflicts.push({
         id: 'durability_conflict',
         type: 'DURABILITY_CONFLICT',
-        description: `Durability assessment conflict: Concrete Specialist says adequate, Standards Checker reports deviations`,
+        description: 'Durability assessment conflict: Concrete Specialist says adequate, Standards Checker reports deviations',
         roles_involved: ['concrete_specialist', 'standards_checker'],
         concrete_assessment: concreteSpecialistAssessment,
         standards_status: standardsCompliance,
         severity: 'HIGH',
-        resolution_hint: `Standards Checker has final authority on compliance. Update specifications per their requirements.`,
+        resolution_hint: 'Standards Checker has final authority on compliance. Update specifications per their requirements.',
         confidence: 0.85,
         detected_at: new Date().toISOString()
       });
@@ -148,7 +148,7 @@ function detectExposureClassConflicts(roleOutputs) {
       structural_exposure: structuralExposure,
       concrete_exposure: concreteExposure,
       severity,
-      resolution_hint: `Concrete Specialist is durability authority. Use their assessment unless structural analysis reveals additional environmental factors.`,
+      resolution_hint: 'Concrete Specialist is durability authority. Use their assessment unless structural analysis reveals additional environmental factors.',
       confidence: 0.80,
       detected_at: new Date().toISOString()
     });
@@ -182,7 +182,7 @@ function detectCostConflicts(roleOutputs) {
       budget_limit: budgetConstraint,
       cost_overage_percent: Math.round(((costEstimate - budgetConstraint) / budgetConstraint) * 100),
       severity: 'MEDIUM',
-      resolution_hint: `Safety requirements are non-negotiable. Explore alternative structural systems or materials within safety constraints.`,
+      resolution_hint: 'Safety requirements are non-negotiable. Explore alternative structural systems or materials within safety constraints.',
       confidence: 0.90,
       detected_at: new Date().toISOString()
     });
@@ -205,13 +205,13 @@ function detectStandardsConflicts(roleOutputs) {
     conflicts.push({
       id: 'standards_violation',
       type: 'STANDARDS_VIOLATION',
-      description: `Standards compliance violation detected by Standards Checker`,
+      description: 'Standards compliance violation detected by Standards Checker',
       roles_involved: ['standards_checker'],
       compliance_status: standardsStatus,
       deviations_count: deviations.length,
       deviations: deviations,
       severity: 'CRITICAL',
-      resolution_hint: `Standards violations must be corrected. Return to appropriate specialist (Structural Engineer, Concrete Specialist) for remediation.`,
+      resolution_hint: 'Standards violations must be corrected. Return to appropriate specialist (Structural Engineer, Concrete Specialist) for remediation.',
       confidence: 0.95,
       detected_at: new Date().toISOString()
     });
@@ -241,7 +241,7 @@ function detectTechRulesConflicts(roleOutputs) {
       missing_items: techRulesOutput.missing_items,
       missing_count: missingCount,
       severity,
-      resolution_hint: `Review mandatory items from tech_rules_engine and add missing works to BOQ.`,
+      resolution_hint: 'Review mandatory items from tech_rules_engine and add missing works to BOQ.',
       confidence: techRulesOutput.confidence || 0.85,
       detected_at: new Date().toISOString()
     });
@@ -288,9 +288,9 @@ export function generateConflictSummary(conflicts) {
   const categorized = categorizeConflictsBySeverity(conflicts);
 
   let maxSeverity = 'LOW';
-  if (categorized.CRITICAL.length > 0) maxSeverity = 'CRITICAL';
-  else if (categorized.HIGH.length > 0) maxSeverity = 'HIGH';
-  else if (categorized.MEDIUM.length > 0) maxSeverity = 'MEDIUM';
+  if (categorized.CRITICAL.length > 0) {maxSeverity = 'CRITICAL';}
+  else if (categorized.HIGH.length > 0) {maxSeverity = 'HIGH';}
+  else if (categorized.MEDIUM.length > 0) {maxSeverity = 'MEDIUM';}
 
   return {
     summary: `${conflicts.length} conflict(s) detected`,

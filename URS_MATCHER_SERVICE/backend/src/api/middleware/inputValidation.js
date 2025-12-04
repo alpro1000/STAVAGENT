@@ -10,7 +10,7 @@ export const validateUniversalMatch = (req, res, next) => {
 
   // Text validation (required)
   if (!text || typeof text !== 'string') {
-    logger.warn(`[VALIDATION] Invalid text field in universal-match request`);
+    logger.warn('[VALIDATION] Invalid text field in universal-match request');
     return res.status(400).json({
       error: 'Invalid request parameters',
       details: 'Text field is required and must be a string'
@@ -72,7 +72,7 @@ export const validateUniversalMatch = (req, res, next) => {
 
   // Optional fields validation
   if (req.body.projectType && typeof req.body.projectType !== 'string') {
-    logger.warn(`[VALIDATION] Invalid projectType type`);
+    logger.warn('[VALIDATION] Invalid projectType type');
     return res.status(400).json({
       error: 'Invalid request parameters',
       details: 'projectType must be a string'
@@ -80,7 +80,7 @@ export const validateUniversalMatch = (req, res, next) => {
   }
 
   if (req.body.buildingSystem && typeof req.body.buildingSystem !== 'string') {
-    logger.warn(`[VALIDATION] Invalid buildingSystem type`);
+    logger.warn('[VALIDATION] Invalid buildingSystem type');
     return res.status(400).json({
       error: 'Invalid request parameters',
       details: 'buildingSystem must be a string'
@@ -88,7 +88,7 @@ export const validateUniversalMatch = (req, res, next) => {
   }
 
   if (req.body.candidateItems && !Array.isArray(req.body.candidateItems)) {
-    logger.warn(`[VALIDATION] Invalid candidateItems type`);
+    logger.warn('[VALIDATION] Invalid candidateItems type');
     return res.status(400).json({
       error: 'Invalid request parameters',
       details: 'candidateItems must be an array'
@@ -110,7 +110,7 @@ export const validateFeedback = (req, res, next) => {
 
   // Required fields validation
   if (!urs_code || typeof urs_code !== 'string') {
-    logger.warn(`[VALIDATION] Invalid urs_code in feedback`);
+    logger.warn('[VALIDATION] Invalid urs_code in feedback');
     return res.status(400).json({
       error: 'Invalid request parameters',
       details: 'urs_code is required and must be a string'
@@ -118,7 +118,7 @@ export const validateFeedback = (req, res, next) => {
   }
 
   if (!normalized_text_cs || typeof normalized_text_cs !== 'string') {
-    logger.warn(`[VALIDATION] Invalid normalized_text_cs in feedback`);
+    logger.warn('[VALIDATION] Invalid normalized_text_cs in feedback');
     return res.status(400).json({
       error: 'Invalid request parameters',
       details: 'normalized_text_cs is required and must be a string'
@@ -143,7 +143,7 @@ export const validateFeedback = (req, res, next) => {
 
   // Optional fields validation
   if (urs_name && typeof urs_name !== 'string') {
-    logger.warn(`[VALIDATION] Invalid urs_name type`);
+    logger.warn('[VALIDATION] Invalid urs_name type');
     return res.status(400).json({
       error: 'Invalid request parameters',
       details: 'urs_name must be a string'
@@ -151,7 +151,7 @@ export const validateFeedback = (req, res, next) => {
   }
 
   if (unit && typeof unit !== 'string') {
-    logger.warn(`[VALIDATION] Invalid unit type`);
+    logger.warn('[VALIDATION] Invalid unit type');
     return res.status(400).json({
       error: 'Invalid request parameters',
       details: 'unit must be a string'
@@ -159,7 +159,7 @@ export const validateFeedback = (req, res, next) => {
   }
 
   if (req.body.user_comment && typeof req.body.user_comment !== 'string') {
-    logger.warn(`[VALIDATION] Invalid user_comment type`);
+    logger.warn('[VALIDATION] Invalid user_comment type');
     return res.status(400).json({
       error: 'Invalid request parameters',
       details: 'user_comment must be a string'

@@ -66,7 +66,7 @@ except Exception as e:
 
       try {
         const result = JSON.parse(stdout);
-        logger.info(`[STAVAGENT] Parsing completed successfully`);
+        logger.info('[STAVAGENT] Parsing completed successfully');
         resolve(result);
       } catch (err) {
         logger.error(`[STAVAGENT] Failed to parse JSON response: ${err.message}`);
@@ -172,22 +172,22 @@ function extractMainSystems(parsedDoc) {
   const systems = [];
 
   // Wall systems
-  if (text.includes('porotherm')) systems.push('keramické zdivo Porotherm');
-  else if (text.includes('ytong')) systems.push('keramické zdivo Ytong');
-  else if (text.includes('zdivo')) systems.push('keramické zdivo');
+  if (text.includes('porotherm')) {systems.push('keramické zdivo Porotherm');}
+  else if (text.includes('ytong')) {systems.push('keramické zdivo Ytong');}
+  else if (text.includes('zdivo')) {systems.push('keramické zdivo');}
 
   // Concrete systems
   if (text.includes('železobeton') || text.includes('žb')) {
-    if (text.includes('stěny')) systems.push('ŽB stěny');
-    if (text.includes('sloupy')) systems.push('ŽB sloupy');
-    if (!systems.some(s => s.includes('ŽB'))) systems.push('železobeton');
+    if (text.includes('stěny')) {systems.push('ŽB stěny');}
+    if (text.includes('sloupy')) {systems.push('ŽB sloupy');}
+    if (!systems.some(s => s.includes('ŽB'))) {systems.push('železobeton');}
   }
 
   // Steel
-  if (text.includes('ocelová') || text.includes('steel')) systems.push('ocelová konstrukce');
+  if (text.includes('ocelová') || text.includes('steel')) {systems.push('ocelová konstrukce');}
 
   // Wood
-  if (text.includes('dřevo') || text.includes('timber')) systems.push('dřevěná konstrukce');
+  if (text.includes('dřevo') || text.includes('timber')) {systems.push('dřevěná konstrukce');}
 
   return systems;
 }

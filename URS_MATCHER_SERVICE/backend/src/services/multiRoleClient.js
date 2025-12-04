@@ -51,14 +51,21 @@ export async function askMultiRole(question, options = {}) {
   };
 
   try {
+    // Check if API is available (timeout quickly if not)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout for health check
+
     // Call STAVAGENT Multi-Role API via HTTP
     const response = await fetch(`${STAVAGENT_API_BASE}/api/v1/multi-role/ask`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -76,7 +83,7 @@ export async function askMultiRole(question, options = {}) {
     return result;
 
   } catch (error) {
-    logger.error(`[MULTI-ROLE] Request failed: ${error.message}`);
+    logger.debug(`[MULTI-ROLE] API not available (optional feature): ${error.message}`);
     throw error;
   }
 }
@@ -104,8 +111,8 @@ Project Context:
 
 BOQ Items:
 ${boqBlock.rows.slice(0, 10).map((row, i) =>
-  `${i + 1}. ${row.raw_text} (${row.quantity} ${row.unit})`
-).join('\n')}
+    `${i + 1}. ${row.raw_text} (${row.quantity} ${row.unit})`
+  ).join('\n')}
 ${boqBlock.rows.length > 10 ? `\n... and ${boqBlock.rows.length - 10} more items` : ''}
 
 Check for:
@@ -213,8 +220,8 @@ Work Description: "${workDescription}"
 
 Candidates:
 ${ursCandidates.map((c, i) =>
-  `${i + 1}. ${c.urs_code} - ${c.urs_name} (confidence: ${c.confidence})`
-).join('\n')}
+    `${i + 1}. ${c.urs_code} - ${c.urs_name} (confidence: ${c.confidence})`
+  ).join('\n')}
 
 Project Context:
 - Building Type: ${projectContext.building_type || 'not specified'}
@@ -307,7 +314,7 @@ function extractRelatedItems(answer) {
     const lines = relatedSection[1].split('\n');
     lines.forEach(line => {
       const cleaned = line.replace(/^[-*•]\s*|\d+\.\s*/, '').trim();
-      if (cleaned) related.push(cleaned);
+      if (cleaned) {related.push(cleaned);}
     });
   }
 
@@ -322,7 +329,7 @@ function extractSelectedCode(answer, candidates) {
   if (match) {
     const code = match[1];
     const candidate = candidates.find(c => c.urs_code === code);
-    if (candidate) return candidate;
+    if (candidate) {return candidate;}
   }
 
   // Fallback: return highest confidence candidate

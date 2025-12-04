@@ -92,10 +92,10 @@ function parseStructuredFile(data) {
 
       for (let i = 1; i < data.length; i++) {
         const row = data[i];
-        if (!row || row.length === 0) continue;
+        if (!row || row.length === 0) {continue;}
 
         const description = row[descColFallback]?.toString().trim();
-        if (!description) continue;
+        if (!description) {continue;}
 
         rows.push({
           description,
@@ -109,8 +109,8 @@ function parseStructuredFile(data) {
     }
 
     throw new Error(
-      `Could not find description column. ` +
-      `Expected one of: popis, description, název, položka, text, práce. ` +
+      'Could not find description column. ' +
+      'Expected one of: popis, description, název, položka, text, práce. ' +
       `Found columns: ${headers.map(h => `"${h}"`).join(', ')}`
     );
   }
@@ -118,10 +118,10 @@ function parseStructuredFile(data) {
   // Parse data rows
   for (let i = 1; i < data.length; i++) {
     const row = data[i];
-    if (!row || row.length === 0) continue;
+    if (!row || row.length === 0) {continue;}
 
     const description = row[descCol]?.toString().trim();
-    if (!description) continue;
+    if (!description) {continue;}
 
     rows.push({
       description,
@@ -144,11 +144,11 @@ function parseUnstructuredFile(data) {
 
   for (let i = 0; i < data.length; i++) {
     const row = data[i];
-    if (!row || row.length === 0) continue;
+    if (!row || row.length === 0) {continue;}
 
     // Concatenate all cells in the row into one string
     const line = row.map(cell => cell?.toString().trim()).filter(Boolean).join(' ');
-    if (!line) continue;
+    if (!line) {continue;}
 
     const parsed = parseLineWithRegex(line);
     if (parsed) {
@@ -217,7 +217,7 @@ function findColumn(headers, keywords) {
 }
 
 function parseNumber(value) {
-  if (!value) return 0;
+  if (!value) {return 0;}
   const num = parseFloat(value.toString().replace(',', '.'));
   return isNaN(num) ? 0 : num;
 }

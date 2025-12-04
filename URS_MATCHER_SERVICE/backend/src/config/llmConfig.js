@@ -50,7 +50,7 @@ export function getLLMConfig() {
   }
 
   return {
-    enabled: !!apiKey,
+    enabled: Boolean(apiKey),
     provider: primaryProvider.toLowerCase(),
     apiKey: apiKey,
     model: model,
@@ -182,7 +182,7 @@ export function createLLMClient(config) {
  * @returns {boolean}
  */
 export function validateAPIKey(apiKey, provider) {
-  if (!apiKey) return false;
+  if (!apiKey) {return false;}
 
   if (provider === LLM_PROVIDERS.CLAUDE) {
     // Claude API keys start with 'sk-ant-'
@@ -354,65 +354,65 @@ export function recommendBestModel(criteria = 'balanced') {
   let reason = '';
 
   switch(criteria) {
-    case 'cheapest': {
-      const models = Object.entries(MODEL_PRICING);
-      bestModelName = models.reduce((best, [name, info]) => {
-        if (!best || info.costPerMinute < MODEL_PRICING[best].costPerMinute) {
-          return name;
-        }
-        return best;
-      });
-      const bestInfo = MODEL_PRICING[bestModelName];
-      reason = `Lowest cost ($${bestInfo.costPerMinute}/min) - ideal for high volume`;
-      break;
-    }
+  case 'cheapest': {
+    const models = Object.entries(MODEL_PRICING);
+    bestModelName = models.reduce((best, [name, info]) => {
+      if (!best || info.costPerMinute < MODEL_PRICING[best].costPerMinute) {
+        return name;
+      }
+      return best;
+    });
+    const bestInfo = MODEL_PRICING[bestModelName];
+    reason = `Lowest cost ($${bestInfo.costPerMinute}/min) - ideal for high volume`;
+    break;
+  }
 
-    case 'fastest': {
-      const models = Object.entries(MODEL_PRICING);
-      bestModelName = models.reduce((best, [name, info]) => {
-        if (!best || info.speedScore > MODEL_PRICING[best].speedScore) {
-          return name;
-        }
-        return best;
-      });
-      const bestInfo = MODEL_PRICING[bestModelName];
-      reason = `Fastest speed (${bestInfo.speedScore}/10) with low latency`;
-      break;
-    }
+  case 'fastest': {
+    const models = Object.entries(MODEL_PRICING);
+    bestModelName = models.reduce((best, [name, info]) => {
+      if (!best || info.speedScore > MODEL_PRICING[best].speedScore) {
+        return name;
+      }
+      return best;
+    });
+    const bestInfo = MODEL_PRICING[bestModelName];
+    reason = `Fastest speed (${bestInfo.speedScore}/10) with low latency`;
+    break;
+  }
 
-    case 'best_quality': {
-      const models = Object.entries(MODEL_PRICING);
-      bestModelName = models.reduce((best, [name, info]) => {
-        if (!best || info.qualityScore > MODEL_PRICING[best].qualityScore) {
-          return name;
-        }
-        return best;
-      });
-      const bestInfo = MODEL_PRICING[bestModelName];
-      reason = `Best quality (${bestInfo.qualityScore}/10) with excellent performance`;
-      break;
-    }
+  case 'best_quality': {
+    const models = Object.entries(MODEL_PRICING);
+    bestModelName = models.reduce((best, [name, info]) => {
+      if (!best || info.qualityScore > MODEL_PRICING[best].qualityScore) {
+        return name;
+      }
+      return best;
+    });
+    const bestInfo = MODEL_PRICING[bestModelName];
+    reason = `Best quality (${bestInfo.qualityScore}/10) with excellent performance`;
+    break;
+  }
 
-    case 'balanced':
-    default: {
-      // Balance cost and quality: 50% quality, 30% cost, 20% speed
-      const scoreByBalance = (info) =>
-        (info.qualityScore * 0.5) +
+  case 'balanced':
+  default: {
+    // Balance cost and quality: 50% quality, 30% cost, 20% speed
+    const scoreByBalance = (info) =>
+      (info.qualityScore * 0.5) +
         ((10 - (info.costPerMinute / 1.5 * 10)) * 0.3) +
         (info.speedScore * 0.2);
 
-      const models = Object.entries(MODEL_PRICING);
-      bestModelName = models.reduce((best, [name, info]) => {
-        const score = scoreByBalance(info);
-        if (!best || score > scoreByBalance(MODEL_PRICING[best])) {
-          return name;
-        }
-        return best;
-      });
-      const bestInfo = MODEL_PRICING[bestModelName];
-      reason = `Optimal balance: fast (${bestInfo.speedScore}/10), cheap ($${bestInfo.costPerMinute}/min), quality (${bestInfo.qualityScore}/10)`;
-      break;
-    }
+    const models = Object.entries(MODEL_PRICING);
+    bestModelName = models.reduce((best, [name, info]) => {
+      const score = scoreByBalance(info);
+      if (!best || score > scoreByBalance(MODEL_PRICING[best])) {
+        return name;
+      }
+      return best;
+    });
+    const bestInfo = MODEL_PRICING[bestModelName];
+    reason = `Optimal balance: fast (${bestInfo.speedScore}/10), cheap ($${bestInfo.costPerMinute}/min), quality (${bestInfo.qualityScore}/10)`;
+    break;
+  }
   }
 
   const bestInfo = MODEL_PRICING[bestModelName];

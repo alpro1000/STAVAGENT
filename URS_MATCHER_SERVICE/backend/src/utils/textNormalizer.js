@@ -4,7 +4,7 @@
  */
 
 export function normalizeText(text) {
-  if (!text) return '';
+  if (!text) {return '';}
 
   return text
     .toLowerCase()
@@ -14,7 +14,7 @@ export function normalizeText(text) {
     // Remove extra spaces
     .replace(/\s+/g, ' ')
     // Remove special characters except numbers and Czech letters
-    .replace(/[^a-záčďéěíňóřšťúůýž0-9\s\/\-]/gi, '')
+    .replace(/[^a-záčďéěíňóřšťúůýž0-9\s/-]/gi, '')
     // Remove numbers (keep structural dimensions like C25/30)
     .replace(/\b\d+(?!\/)\b/g, '')
     .trim();

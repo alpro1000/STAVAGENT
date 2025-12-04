@@ -154,97 +154,99 @@ export async function extractAnswer(question, parsedDocument) {
   // Simple pattern-based extraction (MVP)
   // TODO: Replace with Claude-based extraction in Phase 2 full
   switch (question.id) {
-    case 'q_building_type':
-      if (textLower.includes('bytový dům') || textLower.includes('bytový')) {
-        answer = 'bytový dům';
-        confidence = 0.85;
-        excerpt = extractExcerpt(text, 'bytový');
-      } else if (textLower.includes('rodinný dům')) {
-        answer = 'rodinný dům';
-        confidence = 0.85;
-        excerpt = extractExcerpt(text, 'rodinný');
-      } else if (textLower.includes('most')) {
-        answer = 'most';
+  case 'q_building_type':
+    if (textLower.includes('bytový dům') || textLower.includes('bytový')) {
+      answer = 'bytový dům';
+      confidence = 0.85;
+      excerpt = extractExcerpt(text, 'bytový');
+    } else if (textLower.includes('rodinný dům')) {
+      answer = 'rodinný dům';
+      confidence = 0.85;
+      excerpt = extractExcerpt(text, 'rodinný');
+    } else if (textLower.includes('most')) {
+      answer = 'most';
+      confidence = 0.9;
+      excerpt = extractExcerpt(text, 'most');
+    }
+    break;
+
+  case 'q_storeys': {
+    // Look for patterns like "4NP", "5 podlaží", "3-storey"
+    const storeysPatterns = [
+      /(\d+)\s*np/i,
+      /(\d+)\s*nadzemní/i,
+      /(\d+)\s*podlaží/i,
+      /(\d+)\s*storey/i
+    ];
+
+    for (const pattern of storeysPatterns) {
+      const match = text.match(pattern);
+      if (match) {
+        answer = parseInt(match[1], 10);
         confidence = 0.9;
-        excerpt = extractExcerpt(text, 'most');
+        excerpt = match[0];
+        break;
       }
-      break;
+    }
+    break;
+  }
 
-    case 'q_storeys':
-      // Look for patterns like "4NP", "5 podlaží", "3-storey"
-      const storeysPatterns = [
-        /(\d+)\s*np/i,
-        /(\d+)\s*nadzemní/i,
-        /(\d+)\s*podlaží/i,
-        /(\d+)\s*storey/i
-      ];
+  case 'q_foundation_concrete': {
+    // Look for concrete grades
+    const concreteMatch = text.match(/c\s*(\d+)\/(\d+)/i);
+    if (concreteMatch) {
+      answer = `C${concreteMatch[1]}/${concreteMatch[2]}`;
+      confidence = 0.95;
+      excerpt = extractExcerpt(text, concreteMatch[0]);
+    }
+    break;
+  }
 
-      for (const pattern of storeysPatterns) {
-        const match = text.match(pattern);
-        if (match) {
-          answer = parseInt(match[1], 10);
-          confidence = 0.9;
-          excerpt = match[0];
-          break;
-        }
-      }
-      break;
+  case 'q_wall_material':
+    if (textLower.includes('porotherm')) {
+      // Try to get specific Porotherm type
+      const porothermMatch = text.match(/porotherm\s*\d+/i);
+      answer = porothermMatch ? porothermMatch[0] : 'Porotherm';
+      confidence = 0.9;
+      excerpt = extractExcerpt(text, 'porotherm');
+    } else if (textLower.includes('ytong')) {
+      answer = 'Ytong';
+      confidence = 0.9;
+      excerpt = extractExcerpt(text, 'ytong');
+    }
+    break;
 
-    case 'q_foundation_concrete':
-      // Look for concrete grades
-      const concreteMatch = text.match(/c\s*(\d+)\/(\d+)/i);
-      if (concreteMatch) {
-        answer = `C${concreteMatch[1]}/${concreteMatch[2]}`;
-        confidence = 0.95;
-        excerpt = extractExcerpt(text, concreteMatch[0]);
-      }
-      break;
+  case 'q_insulation':
+    if (textLower.includes('polystyren') || textLower.includes('eps')) {
+      answer = 'EPS polystyren';
+      confidence = 0.85;
+      excerpt = extractExcerpt(text, 'polystyren');
+    } else if (textLower.includes('xps')) {
+      answer = 'XPS extrudovaný polystyren';
+      confidence = 0.9;
+      excerpt = extractExcerpt(text, 'xps');
+    } else if (textLower.includes('minerální') && textLower.includes('vlna')) {
+      answer = 'minerální vlna';
+      confidence = 0.85;
+      excerpt = extractExcerpt(text, 'minerální');
+    }
+    break;
 
-    case 'q_wall_material':
-      if (textLower.includes('porotherm')) {
-        // Try to get specific Porotherm type
-        const porothermMatch = text.match(/porotherm\s*\d+/i);
-        answer = porothermMatch ? porothermMatch[0] : 'Porotherm';
-        confidence = 0.9;
-        excerpt = extractExcerpt(text, 'porotherm');
-      } else if (textLower.includes('ytong')) {
-        answer = 'Ytong';
-        confidence = 0.9;
-        excerpt = extractExcerpt(text, 'ytong');
-      }
-      break;
-
-    case 'q_insulation':
-      if (textLower.includes('polystyren') || textLower.includes('eps')) {
-        answer = 'EPS polystyren';
-        confidence = 0.85;
-        excerpt = extractExcerpt(text, 'polystyren');
-      } else if (textLower.includes('xps')) {
-        answer = 'XPS extrudovaný polystyren';
-        confidence = 0.9;
-        excerpt = extractExcerpt(text, 'xps');
-      } else if (textLower.includes('minerální') && textLower.includes('vlna')) {
-        answer = 'minerální vlna';
-        confidence = 0.85;
-        excerpt = extractExcerpt(text, 'minerální');
-      }
-      break;
-
-    case 'q_roofing':
-      if (textLower.includes('betonov') && textLower.includes('taška')) {
-        answer = 'betonová taška';
-        confidence = 0.85;
-        excerpt = extractExcerpt(text, 'taška');
-      } else if (textLower.includes('plech')) {
-        answer = 'plechová střecha';
-        confidence = 0.8;
-        excerpt = extractExcerpt(text, 'plech');
-      } else if (textLower.includes('asfalt')) {
-        answer = 'asfaltové pásy';
-        confidence = 0.85;
-        excerpt = extractExcerpt(text, 'asfalt');
-      }
-      break;
+  case 'q_roofing':
+    if (textLower.includes('betonov') && textLower.includes('taška')) {
+      answer = 'betonová taška';
+      confidence = 0.85;
+      excerpt = extractExcerpt(text, 'taška');
+    } else if (textLower.includes('plech')) {
+      answer = 'plechová střecha';
+      confidence = 0.8;
+      excerpt = extractExcerpt(text, 'plech');
+    } else if (textLower.includes('asfalt')) {
+      answer = 'asfaltové pásy';
+      confidence = 0.85;
+      excerpt = extractExcerpt(text, 'asfalt');
+    }
+    break;
   }
 
   if (answer) {
@@ -275,7 +277,7 @@ function extractExcerpt(text, searchTerm, contextLength = 100) {
   const lowerTerm = searchTerm.toLowerCase();
   const index = lowerText.indexOf(lowerTerm);
 
-  if (index === -1) return null;
+  if (index === -1) {return null;}
 
   const start = Math.max(0, index - contextLength);
   const end = Math.min(text.length, index + searchTerm.length + contextLength);
@@ -283,8 +285,8 @@ function extractExcerpt(text, searchTerm, contextLength = 100) {
   let excerpt = text.substring(start, end).trim();
 
   // Add ellipsis if truncated
-  if (start > 0) excerpt = '...' + excerpt;
-  if (end < text.length) excerpt = excerpt + '...';
+  if (start > 0) {excerpt = '...' + excerpt;}
+  if (end < text.length) {excerpt = excerpt + '...';}
 
   return excerpt;
 }
@@ -327,19 +329,19 @@ export async function runQAFlow(parsedDocument, partialContext) {
 
   answeredQuestions.forEach(q => {
     switch (q.id) {
-      case 'q_building_type':
-        enhancedContext.building_type = q.answer;
-        break;
-      case 'q_storeys':
-        enhancedContext.storeys = q.answer;
-        break;
-      case 'q_foundation_concrete':
-        enhancedContext.foundation_concrete = q.answer;
-        break;
-      case 'q_wall_material':
-        if (!enhancedContext.main_system) enhancedContext.main_system = [];
-        enhancedContext.main_system.push(q.answer);
-        break;
+    case 'q_building_type':
+      enhancedContext.building_type = q.answer;
+      break;
+    case 'q_storeys':
+      enhancedContext.storeys = q.answer;
+      break;
+    case 'q_foundation_concrete':
+      enhancedContext.foundation_concrete = q.answer;
+      break;
+    case 'q_wall_material':
+      if (!enhancedContext.main_system) {enhancedContext.main_system = [];}
+      enhancedContext.main_system.push(q.answer);
+      break;
     }
   });
 

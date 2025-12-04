@@ -68,30 +68,30 @@ Your task is to help identify the correct ÚRS position(s) for a given construct
 You may choose from these items (and ONLY these):
 
 ${candidateItems
-  .map(
-    (item, idx) =>
-      `${idx + 1}. Code: ${item.urs_code}
+    .map(
+      (item, idx) =>
+        `${idx + 1}. Code: ${item.urs_code}
    Name: ${item.urs_name}
    Unit: ${item.unit}
    Description: ${item.description || '(none)'}
 `
-  )
-  .join('\n')}
+    )
+    .join('\n')}
 
 ## KNOWLEDGE BASE HITS (Previous Confirmations)
 
 These are previously validated mappings that can guide your decision:
 
 ${knowledgeBaseHits
-  .map(
-    (hit, idx) =>
-      `${idx + 1}. Text: "${hit.normalized_text_cs}"
+    .map(
+      (hit, idx) =>
+        `${idx + 1}. Text: "${hit.normalized_text_cs}"
    Code: ${hit.urs_code} (confidence: ${hit.confidence})
    Project type: ${hit.project_type || 'any'}
    Used ${hit.usage_count} times
 `
-  )
-  .join('\n') || '(none)'}
+    )
+    .join('\n') || '(none)'}
 
 ## YOUR TASK
 

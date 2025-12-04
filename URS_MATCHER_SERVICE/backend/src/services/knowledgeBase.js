@@ -18,7 +18,7 @@ import crypto from 'crypto';
  * Used to group similar projects (bytový dům, rodinný dům, průmyslová hala)
  */
 export function computeContextHash(projectType, buildingSystem) {
-  if (!projectType && !buildingSystem) return null;
+  if (!projectType && !buildingSystem) {return null;}
 
   const contextStr = `${projectType || ''}|${buildingSystem || ''}`;
   return crypto
@@ -33,7 +33,7 @@ export function computeContextHash(projectType, buildingSystem) {
  * Remove noise, keep key technical terms
  */
 export function normalizeTextToCzech(text) {
-  if (!text) return '';
+  if (!text) {return '';}
 
   // Convert to lowercase
   let normalized = text.toLowerCase().trim();
@@ -164,7 +164,7 @@ export async function insertMapping(
     // Security: Validate that URS code exists in catalog
     // This prevents KB poisoning attacks (injecting fake URS codes)
     const catalogItem = await db.get(
-      `SELECT urs_code FROM urs_items WHERE urs_code = ?`,
+      'SELECT urs_code FROM urs_items WHERE urs_code = ?',
       [ursCode]
     );
 
@@ -293,7 +293,7 @@ export async function getKBStats() {
 
     // Total related items
     const relatedCount = await db.get(
-      `SELECT COUNT(*) as count FROM kb_related_items`
+      'SELECT COUNT(*) as count FROM kb_related_items'
     );
     stats.totalRelatedItems = relatedCount?.count || 0;
 

@@ -33,7 +33,7 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Log startup info
-logger.info(`[APP] Initializing URS Matcher Service`);
+logger.info('[APP] Initializing URS Matcher Service');
 logger.info(`[APP] Environment: ${process.env.NODE_ENV || 'development'}`);
 logger.info(`[APP] __dirname: ${__dirname}`);
 logger.info(`[APP] Static files path: ${path.join(__dirname, '../../frontend/public')}`);
@@ -157,13 +157,13 @@ async function startServer() {
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (reason, promise) => {
-  logger.error(`Unhandled Rejection at:`, promise, `reason:`, reason);
+  logger.error('Unhandled Rejection at:', promise, 'reason:', reason);
   process.exit(1);
 });
 
 // Handle uncaught exceptions
 process.on('uncaughtException', (error) => {
-  logger.error(`Uncaught Exception:`, error);
+  logger.error('Uncaught Exception:', error);
   process.exit(1);
 });
 

@@ -189,7 +189,7 @@ function getLevenshteinDistance(s1, s2) {
         lastValue = newValue;
       }
     }
-    if (i > 0) costs[s2.length] = lastValue;
+    if (i > 0) {costs[s2.length] = lastValue;}
   }
   return costs[s2.length];
 }

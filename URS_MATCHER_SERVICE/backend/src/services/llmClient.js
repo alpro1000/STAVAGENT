@@ -603,6 +603,7 @@ export async function analyzeBlock(projectContext, boqBlock, ursCandidates) {
 /**
  * Parse LLM response for BOQ_BLOCK_ANALYSIS mode
  * Extracts JSON from response (may contain extra text)
+ * Handles common JSON issues: trailing commas, extra whitespace, etc.
  *
  * @param {string} response - Raw LLM response
  * @returns {Object|null} Parsed response with block_summary, items, global_related_items
@@ -610,14 +611,45 @@ export async function analyzeBlock(projectContext, boqBlock, ursCandidates) {
  */
 function parseBlockAnalysisResponse(response) {
   try {
-    // Try to find JSON block in response
-    const jsonMatch = response.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
+    let jsonString = null;
+
+    // Try to extract JSON using a more robust method
+    // Look for opening { and try to find matching closing }
+    const openBrace = response.indexOf('{');
+    if (openBrace === -1) {
       logger.warn('[LLMClient] No JSON found in block analysis response');
       return null;
     }
 
-    const parsed = JSON.parse(jsonMatch[0]);
+    // Start from the first { and try to parse incrementally
+    let depth = 0;
+    let endBrace = -1;
+    for (let i = openBrace; i < response.length; i++) {
+      if (response[i] === '{') {
+        depth++;
+      } else if (response[i] === '}') {
+        depth--;
+        if (depth === 0) {
+          endBrace = i;
+          break;
+        }
+      }
+    }
+
+    if (endBrace === -1) {
+      logger.warn('[LLMClient] Unclosed JSON object in block analysis response');
+      return null;
+    }
+
+    jsonString = response.substring(openBrace, endBrace + 1);
+
+    // Clean up common JSON issues
+    // Remove trailing commas before ] and }
+    jsonString = jsonString.replace(/,\s*([}\]])/g, '$1');
+    // Handle single quotes (convert to double quotes if needed)
+    // But be careful with apostrophes in text
+
+    let parsed = JSON.parse(jsonString);
 
     // Validate structure
     if (!parsed.items || !Array.isArray(parsed.items)) {
@@ -629,6 +661,7 @@ function parseBlockAnalysisResponse(response) {
 
   } catch (error) {
     logger.error(`[LLMClient] Error parsing block analysis response: ${error.message}`);
+    logger.debug(`[LLMClient] Response substring (first 500 chars): ${response.substring(0, 500)}`);
     return null;
   }
 }

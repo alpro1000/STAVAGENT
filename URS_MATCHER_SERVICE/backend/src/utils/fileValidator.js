@@ -127,7 +127,7 @@ export async function validateFileContent(filePath, filename) {
     const ext = getFileExtension(filename);
 
     // Check if file type is supported
-    if (!FILE_SIGNATURES.hasOwnProperty(ext)) {
+    if (!Object.prototype.hasOwnProperty.call(FILE_SIGNATURES, ext)) {
       return {
         valid: false,
         error: `Unsupported file type: .${ext}. Allowed: PDF, DOCX, XLSX, XLS, DWG, JPG, PNG, CSV, TXT, ODS`
