@@ -1,5 +1,6 @@
 import express from 'express';
 import { getDatabase } from '../../db/init.js';
+import { getLLMInfo } from '../../services/llmClient.js';
 
 const router = express.Router();
 
@@ -15,7 +16,8 @@ router.get('/', async (req, res) => {
         status: 'ok',
         service: 'URS Matcher Service',
         timestamp: new Date().toISOString(),
-        database: 'connected'
+        database: 'connected',
+        llm: getLLMInfo()
       });
     }
 
