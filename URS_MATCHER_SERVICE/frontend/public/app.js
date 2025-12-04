@@ -523,13 +523,75 @@ function displayBlockMatchResults(job) {
     debugLog(`📊 Processing block ${blockIdx + 1}:`, block);
 
     const blockName = block.block_name || `Blok ${blockIdx + 1}`;
-    const items = block.items || [];
-    const validation = block.multi_role_validation || {};
+    const analysis = block.analysis || {};
+    const items = analysis.items || block.items || [];
+    const validation = analysis.multi_role_validation || block.multi_role_validation || {};
     const completenessScore = validation.completeness_score || 0;
     const missingItems = validation.missing_items || [];
+    const phase3 = analysis.phase3_advanced || null;
 
     // Block header
     html += `<h3 class="group-header">📂 ${blockName} <span class="group-count">(${items.length} položek, kompletnost ${completenessScore}%)</span></h3>`;
+
+    // Phase 3 Advanced section (if available)
+    if (phase3) {
+      debugLog(`📊 Phase 3 data found for block ${blockIdx + 1}:`, phase3);
+
+      const complexity = phase3.complexity_classification || {};
+      const roles = phase3.selected_roles || [];
+      const conflicts = phase3.conflicts || [];
+
+      // Complexity badge
+      const complexityEmoji = {
+        'SIMPLE': '🟢',
+        'STANDARD': '🟡',
+        'COMPLEX': '🟠',
+        'CREATIVE': '🔴'
+      };
+
+      html += '<div class="phase3-panel">';
+      html += `<div class="phase3-header">🤖 <strong>Multi-Role Analýza</strong></div>`;
+
+      // Complexity
+      if (complexity.classification) {
+        html += `<div class="phase3-complexity">
+          <span class="complexity-badge">${complexityEmoji[complexity.classification] || '⚪'} ${complexity.classification}</span>
+          <span class="execution-time">⏱️ ${phase3.execution_time_ms || 0}ms</span>
+          ${phase3.cache_status?.from_cache ? '<span class="cache-hit">📦 z cache</span>' : ''}
+        </div>`;
+      }
+
+      // Roles consulted
+      if (roles.length > 0) {
+        const roleNames = {
+          'document_validator': '📋 Validátor',
+          'structural_engineer': '🏗️ Statik',
+          'concrete_specialist': '🧪 Betonář',
+          'standards_checker': '📏 Normy',
+          'tech_rules_engine': '⚙️ Tech.pravidla',
+          'cost_estimator': '💰 Rozpočtář'
+        };
+        html += `<div class="phase3-roles">👥 Role: ${roles.map(r => roleNames[r] || r).join(', ')}</div>`;
+      }
+
+      // Conflicts (if any)
+      if (conflicts.length > 0) {
+        html += `<div class="phase3-conflicts">`;
+        html += `<strong>⚠️ Konflikty (${conflicts.length}):</strong>`;
+        conflicts.forEach((conflict, cIdx) => {
+          const severityClass = (conflict.severity || 'MEDIUM').toLowerCase();
+          html += `<div class="conflict-item conflict-${severityClass}">
+            <span class="conflict-severity">${conflict.severity || 'MEDIUM'}</span>
+            <span class="conflict-type">${conflict.type || 'Neznámý'}</span>
+            <p class="conflict-desc">${conflict.description || ''}</p>
+            ${conflict.resolution ? `<p class="conflict-resolution">💡 ${conflict.resolution}</p>` : ''}
+          </div>`;
+        });
+        html += `</div>`;
+      }
+
+      html += '</div>';
+    }
 
     // Items table
     if (items.length > 0) {
