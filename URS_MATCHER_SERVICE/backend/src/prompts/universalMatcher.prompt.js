@@ -24,7 +24,11 @@ export function createUniversalMatchPrompt(input) {
     projectType,
     buildingSystem,
     candidateItems,
-    knowledgeBaseHits
+    knowledgeBaseHits,
+    // NEW: Norms and technical conditions from Perplexity search
+    relevantNorms = [],
+    technicalConditions = [],
+    methodologyNotes = null
   } = input;
 
   return `
@@ -93,6 +97,35 @@ ${knowledgeBaseHits
     )
     .join('\n') || '(none)'}
 
+## RELEVANT CZECH NORMS (ČSN, EN) - USE FOR REASONING!
+
+These norms were found by searching official sources. Reference them in your explanation!
+
+${relevantNorms.length > 0 ? relevantNorms
+    .map(
+      (norm, idx) =>
+        `${idx + 1}. **${norm.code}** - ${norm.name}
+   Relevance: ${norm.relevance || 'related to this work'}
+   Key requirements: ${norm.key_requirements?.join(', ') || 'see norm'}
+   Source: ${norm.url || 'csnonline.cz'}
+`
+    )
+    .join('\n') : '(no specific norms found)'}
+
+## TECHNICAL CONDITIONS
+
+${technicalConditions.length > 0 ? technicalConditions
+    .map(
+      (tc, idx) =>
+        `${idx + 1}. Source: ${tc.source}
+   Content: ${tc.content}
+   URL: ${tc.url || 'podminky.urs.cz'}
+`
+    )
+    .join('\n') : '(no specific technical conditions found)'}
+
+${methodologyNotes ? `## METHODOLOGY NOTES\n${methodologyNotes}` : ''}
+
 ## YOUR TASK
 
 1. **Understand the request:**
@@ -110,10 +143,11 @@ ${knowledgeBaseHits
      * Reasonable interpretation → 0.5-0.7
      * Ambiguous → <0.5
 
-3. **Explain the reasoning:**
+3. **Explain the reasoning (IMPORTANT!):**
    - In Czech, explain WHY you chose these codes
+   - **Reference relevant ČSN/EN norms** if provided above
    - How does the description match the URS item?
-   - What construction technology is involved?
+   - What construction technology is involved according to norms?
    - Why are alternatives relevant?
 
 4. **Suggest related items:**

@@ -218,3 +218,162 @@ export async function searchDonorBills(query) {
   logger.info('[PerplexityClient] Donor bill search will be added in MVP-3');
   return [];
 }
+
+// ============================================================================
+// NORMS AND STANDARDS SEARCH
+// ============================================================================
+
+/**
+ * System prompt for searching Czech construction norms (ČSN, EN)
+ */
+const SYSTEM_PROMPT_NORMS_SEARCH = `Jsi asistent-specialista na české stavební normy a technické podmínky.
+
+TVŮJ ÚKOL:
+- Podle zadaného popisu stavební práce najít relevantní normy ČSN, EN, technické podmínky ÚRS a metodiky.
+- Hledej na webu csnonline.cz, tzb-info.cz, podminky.urs.cz a dalších relevantních zdrojích.
+- Pracuješ jako REŠERŠNÍ AGENT: NEVYMÝŠLÍŠ normy, jenom čteš z nalezených stránek.
+
+DŮLEŽITÉ (ZERO HALLUCINATION):
+- Nesmíš vymýšlet čísla norem.
+- Pokud normu nenajdeš, raději řekni že nevíš.
+- Uveď zdroj odkud jsi informaci vzal.
+
+VÝSTUP – PŘESNÝ JSON:
+{
+  "query": "<kopie vstupního textu>",
+  "norms": [
+    {
+      "code": "ČSN EN 13670",
+      "name": "Provádění betonových konstrukcí",
+      "relevance": "Popisuje požadavky na bednění a prostupy v betonových konstrukcích",
+      "url": "https://...",
+      "key_requirements": ["minimální krytí výztuže", "tolerance otvorů ±10mm"]
+    }
+  ],
+  "technical_conditions": [
+    {
+      "source": "Technické podmínky ÚRS",
+      "content": "Pro prostupy v bednění platí...",
+      "url": "https://podminky.urs.cz/..."
+    }
+  ],
+  "methodology_notes": "Stručné shrnutí jak se práce obvykle provádí podle norem"
+}`;
+
+/**
+ * Search for relevant Czech construction norms (ČSN, EN) and technical conditions
+ * @param {string} inputText - Description of construction work
+ * @returns {Promise<Object>} Object with norms, technical_conditions, methodology_notes
+ */
+export async function searchNormsAndStandards(inputText) {
+  try {
+    if (!PERPLEXITY_CONFIG.enabled) {
+      logger.warn('[Perplexity] API not enabled, skipping norms search');
+      return { norms: [], technical_conditions: [], methodology_notes: null };
+    }
+
+    if (!inputText || inputText.trim().length === 0) {
+      return { norms: [], technical_conditions: [], methodology_notes: null };
+    }
+
+    logger.info(`[Perplexity] Searching norms for: "${inputText.substring(0, 50)}..."`);
+
+    // Queue the request
+    const result = await enqueueRequest(async () => {
+      const userPrompt = `Najdi české stavební normy (ČSN, EN) a technické podmínky pro tuto práci:
+
+"${inputText}"
+
+Zaměř se na:
+1. Jaké normy ČSN/EN se vztahují k této práci
+2. Technické podmínky z podminky.urs.cz
+3. Jak se práce správně provádí podle norem
+
+Vrať výsledek jako platný JSON.`;
+
+      const response = await callPerplexityAPIWithSystemPrompt(userPrompt, SYSTEM_PROMPT_NORMS_SEARCH);
+
+      if (!response) {
+        return { norms: [], technical_conditions: [], methodology_notes: null };
+      }
+
+      // Parse JSON from response
+      try {
+        const jsonMatch = response.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) {
+          return { norms: [], technical_conditions: [], methodology_notes: null };
+        }
+        const parsed = JSON.parse(jsonMatch[0]);
+
+        logger.info(`[Perplexity] Found ${parsed.norms?.length || 0} norms, ${parsed.technical_conditions?.length || 0} tech conditions`);
+
+        return {
+          norms: parsed.norms || [],
+          technical_conditions: parsed.technical_conditions || [],
+          methodology_notes: parsed.methodology_notes || null
+        };
+      } catch (parseError) {
+        logger.warn(`[Perplexity] Failed to parse norms response: ${parseError.message}`);
+        return { norms: [], technical_conditions: [], methodology_notes: null };
+      }
+    });
+
+    return result;
+
+  } catch (error) {
+    logger.error(`[Perplexity] Norms search error: ${error.message}`);
+    return { norms: [], technical_conditions: [], methodology_notes: null };
+  }
+}
+
+/**
+ * Call Perplexity API with custom system prompt
+ */
+async function callPerplexityAPIWithSystemPrompt(userPrompt, systemPrompt, retryCount = 0, maxRetries = 3) {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), PERPLEXITY_CONFIG.timeoutMs);
+
+    const response = await fetch(PERPLEXITY_CONFIG.apiUrl, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${PERPLEXITY_CONFIG.apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: PERPLEXITY_CONFIG.model,
+        messages: [
+          { role: 'system', content: systemPrompt },
+          { role: 'user', content: userPrompt }
+        ],
+        temperature: 0.2
+      }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (response.status === 429 && retryCount < maxRetries) {
+      const backoffMs = Math.pow(2, retryCount) * 1000;
+      logger.warn(`[Perplexity] Rate limited, retrying in ${backoffMs}ms...`);
+      await new Promise(resolve => setTimeout(resolve, backoffMs));
+      return callPerplexityAPIWithSystemPrompt(userPrompt, systemPrompt, retryCount + 1, maxRetries);
+    }
+
+    if (!response.ok) {
+      logger.error(`[Perplexity] API error: ${response.status}`);
+      return null;
+    }
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content || null;
+
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      logger.error(`[Perplexity] Norms search timeout`);
+    } else {
+      logger.error(`[Perplexity] Norms API error: ${error.message}`);
+    }
+    return null;
+  }
+}

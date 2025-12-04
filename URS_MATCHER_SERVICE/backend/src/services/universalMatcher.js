@@ -22,7 +22,7 @@ import {
 } from './knowledgeBase.js';
 import { matchUrsItemWithAI } from './llmClient.js';
 import { createUniversalMatchPrompt, validateCodesAgainstCandidates } from '../prompts/universalMatcher.prompt.js';
-import { searchUrsSite } from './perplexityClient.js';
+import { searchUrsSite, searchNormsAndStandards } from './perplexityClient.js';
 
 /**
  * Detect language of input text
@@ -155,7 +155,18 @@ export async function universalMatch(input) {
       };
     }
 
-    // 4. Call LLM with universal match prompt
+    // 4. Search for relevant norms and technical conditions (parallel with LLM prep)
+    let normsData = { norms: [], technical_conditions: [], methodology_notes: null };
+    try {
+      normsData = await searchNormsAndStandards(normalizedCzech || input.text);
+      if (normsData.norms.length > 0 || normsData.technical_conditions.length > 0) {
+        logger.info(`[UniversalMatcher] Found ${normsData.norms.length} norms, ${normsData.technical_conditions.length} tech conditions`);
+      }
+    } catch (normsError) {
+      logger.warn(`[UniversalMatcher] Norms search failed: ${normsError.message}`);
+    }
+
+    // 5. Call LLM with universal match prompt (including norms!)
     const llmPrompt = createUniversalMatchPrompt({
       originalText: input.text,
       quantity: input.quantity,
@@ -164,10 +175,18 @@ export async function universalMatch(input) {
       projectType: input.projectType,
       buildingSystem: input.buildingSystem,
       candidateItems: candidates,
-      knowledgeBaseHits: kbHits
+      knowledgeBaseHits: kbHits,
+      // NEW: Pass norms and technical conditions to LLM
+      relevantNorms: normsData.norms,
+      technicalConditions: normsData.technical_conditions,
+      methodologyNotes: normsData.methodology_notes
     });
 
     const llmResponse = await callUniversalLLM(llmPrompt);
+
+    // Add norms to response for transparency
+    llmResponse.referenced_norms = normsData.norms;
+    llmResponse.technical_conditions = normsData.technical_conditions;
 
     // 5. Validate LLM response (no code invention!)
     const validationIssues = validateCodesAgainstCandidates(llmResponse, candidates);
