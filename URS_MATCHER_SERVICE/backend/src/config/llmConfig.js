@@ -13,16 +13,17 @@ const LLM_PROVIDERS = {
 
 /**
  * Get LLM configuration from environment
+ * Supports multiple providers with fallback mechanism
  * @returns {Object} LLM configuration object
  */
 export function getLLMConfig() {
-  const provider = process.env.LLM_PROVIDER || 'openai';
+  const primaryProvider = process.env.LLM_PROVIDER || 'gemini';
 
   // Determine API key based on provider
   let apiKey;
-  if (provider.toLowerCase() === 'claude') {
+  if (primaryProvider.toLowerCase() === 'claude') {
     apiKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
-  } else if (provider.toLowerCase() === 'gemini') {
+  } else if (primaryProvider.toLowerCase() === 'gemini') {
     apiKey = process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
   } else {
     apiKey = process.env.LLM_API_KEY || process.env.OPENAI_API_KEY;
@@ -30,9 +31,9 @@ export function getLLMConfig() {
 
   // Set appropriate default model based on provider
   let defaultModel = 'gpt-4-turbo';
-  if (provider.toLowerCase() === 'claude') {
+  if (primaryProvider.toLowerCase() === 'claude') {
     defaultModel = 'claude-sonnet-4-5-20250929';  // Latest Sonnet 4.5
-  } else if (provider.toLowerCase() === 'gemini') {
+  } else if (primaryProvider.toLowerCase() === 'gemini') {
     defaultModel = 'gemini-2.0-flash';  // Latest Gemini 2.0 Flash
   }
 
@@ -40,27 +41,89 @@ export function getLLMConfig() {
   const timeoutMs = parseInt(process.env.LLM_TIMEOUT_MS || '30000', 10);
 
   if (!apiKey) {
-    logger.warn('[LLMConfig] No API key found for provider %s. Checked: ANTHROPIC_API_KEY, GOOGLE_API_KEY, LLM_API_KEY, OPENAI_API_KEY. LLM features will be disabled.', provider);
-    return {
-      enabled: false,
-      provider: provider,
-      model: model,
-      timeoutMs: timeoutMs
-    };
+    logger.warn('[LLMConfig] No API key found for primary provider %s. Checked: ANTHROPIC_API_KEY, GOOGLE_API_KEY, LLM_API_KEY, OPENAI_API_KEY. Fallback providers will be used.', primaryProvider);
   }
 
   // Validate provider
-  if (!Object.values(LLM_PROVIDERS).includes(provider.toLowerCase())) {
-    logger.warn(`[LLMConfig] Invalid LLM_PROVIDER: ${provider}. Using openai.`);
+  if (!Object.values(LLM_PROVIDERS).includes(primaryProvider.toLowerCase())) {
+    logger.warn(`[LLMConfig] Invalid LLM_PROVIDER: ${primaryProvider}. Using gemini.`);
   }
 
   return {
-    enabled: true,
-    provider: provider.toLowerCase(),
+    enabled: !!apiKey,
+    provider: primaryProvider.toLowerCase(),
     apiKey: apiKey,
     model: model,
-    timeoutMs: timeoutMs
+    timeoutMs: timeoutMs,
+    primaryProvider: primaryProvider.toLowerCase()
   };
+}
+
+/**
+ * Get available LLM providers with their configurations
+ * Used for fallback mechanism
+ * @returns {Object} All available providers
+ */
+export function getAvailableProviders() {
+  const providers = {};
+
+  // Check Claude
+  const claudeKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+  if (claudeKey) {
+    providers.claude = {
+      enabled: true,
+      provider: 'claude',
+      apiKey: claudeKey,
+      model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-5-20250929',
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '30000', 10)
+    };
+  }
+
+  // Check Gemini
+  const geminiKey = process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
+  if (geminiKey) {
+    providers.gemini = {
+      enabled: true,
+      provider: 'gemini',
+      apiKey: geminiKey,
+      model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '30000', 10)
+    };
+  }
+
+  // Check OpenAI
+  const openaiKey = process.env.OPENAI_API_KEY || process.env.LLM_API_KEY;
+  if (openaiKey) {
+    providers.openai = {
+      enabled: true,
+      provider: 'openai',
+      apiKey: openaiKey,
+      model: process.env.OPENAI_MODEL || 'gpt-4-turbo',
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '30000', 10)
+    };
+  }
+
+  logger.info('[LLMConfig] Available providers: %s', Object.keys(providers).join(', '));
+  return providers;
+}
+
+/**
+ * Get fallback provider chain
+ * Order of providers to try if primary fails
+ * @param {string} primaryProvider - Primary provider to use first
+ * @returns {Array} Array of provider names in fallback order
+ */
+export function getFallbackChain(primaryProvider = null) {
+  const primary = primaryProvider || process.env.LLM_PROVIDER || 'gemini';
+
+  // Define fallback chains for each provider
+  const chains = {
+    gemini: ['gemini', 'claude', 'openai'],      // Try Gemini, then Claude, then OpenAI
+    claude: ['claude', 'gemini', 'openai'],      // Try Claude, then Gemini, then OpenAI
+    openai: ['openai', 'claude', 'gemini']       // Try OpenAI, then Claude, then Gemini
+  };
+
+  return chains[primary.toLowerCase()] || chains.gemini;
 }
 
 /**
