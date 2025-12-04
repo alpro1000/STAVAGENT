@@ -250,7 +250,7 @@ describe('Security Tests - Logging Security', () => {
     const sensitiveText = 'this is a very sensitive user input';
     const redacted = redactText(sensitiveText);
 
-    assert.strictEqual(redacted, '[34 chars]', 'Should show only length');
+    assert.strictEqual(redacted, '[35 chars]', 'Should show only length');
     assert.strictEqual(redacted.includes(sensitiveText), false, 'Should not expose actual text');
     done();
   });
@@ -305,7 +305,7 @@ describe('Security Tests - Logging Security', () => {
       candidateItems: [{ code: '1' }, { code: '2' }]
     });
 
-    assert.strictEqual(safeLog.text, '[28 chars]', 'Should redact text');
+    assert.strictEqual(safeLog.text, '[25 chars]', 'Should redact text');
     assert.strictEqual(safeLog.projectType, '[redacted]', 'Should redact projectType');
     assert.strictEqual(safeLog.candidateItems, '[2 items]', 'Should show item count');
     done();

@@ -299,12 +299,12 @@ function generateRFI(context, validation) {
  */
 function calculateCompletenessScore(validation) {
   // Documents: 40% weight
-  const totalDocTypes = Object.keys(DOCUMENT_TYPES).length;
   const requiredDocTypes = Object.values(DOCUMENT_TYPES).filter(d => d.required).length;
   const uploadedDocTypes = validation.uploaded_documents.length;
 
-  // FIXED: Prevent division by zero - if no required documents, give full score
-  const documentScore = requiredDocTypes > 0 ? (uploadedDocTypes / requiredDocTypes) * 40 : 40;
+  // FIXED: Prevent division by zero and cap at 40%
+  const documentRatio = requiredDocTypes > 0 ? Math.min(uploadedDocTypes / requiredDocTypes, 1) : 1;
+  const documentScore = documentRatio * 40;
 
   // Context: 60% weight
   // FIXED: Include both required AND conditional fields in calculation
@@ -317,12 +317,14 @@ function calculateCompletenessScore(validation) {
   const totalMissingCount = requiredMissingCount + conditionalFieldCount;
   const completedContextFields = totalContextFields - totalMissingCount;
 
-  // FIXED: Prevent division by zero - if no context fields, give full score
-  const contextScore = totalContextFields > 0
-    ? (completedContextFields / totalContextFields) * 60
-    : 60;
+  // FIXED: Prevent division by zero and cap at 60%
+  const contextRatio = totalContextFields > 0
+    ? Math.min(completedContextFields / totalContextFields, 1)
+    : 1;
+  const contextScore = contextRatio * 60;
 
-  validation.completeness_score = Math.round(documentScore + contextScore);
+  // FIXED: Cap total score at 100
+  validation.completeness_score = Math.min(100, Math.round(documentScore + contextScore));
 
   // Set severity
   if (validation.completeness_score >= 80) {

@@ -56,7 +56,7 @@ export function normalizeTextToCzech(text) {
  */
 export async function searchKnowledgeBase(normalizedText, projectType, buildingSystem) {
   try {
-    const db = getDatabase();
+    const db = await getDatabase();
     const contextHash = computeContextHash(projectType, buildingSystem);
 
     // Validate input length (prevent DoS)
@@ -124,7 +124,7 @@ export async function searchKnowledgeBase(normalizedText, projectType, buildingS
  */
 export async function getRelatedItems(kbMappingId) {
   try {
-    const db = getDatabase();
+    const db = await getDatabase();
 
     const related = await db.all(
       `SELECT * FROM kb_related_items
@@ -158,7 +158,7 @@ export async function insertMapping(
   validatedByUser = false
 ) {
   try {
-    const db = getDatabase();
+    const db = await getDatabase();
     const contextHash = computeContextHash(projectType, buildingSystem);
 
     // Security: Validate that URS code exists in catalog
@@ -237,7 +237,7 @@ export async function insertRelatedItem(
   typicalSequenceOrder = null
 ) {
   try {
-    const db = getDatabase();
+    const db = await getDatabase();
 
     await db.run(
       `INSERT INTO kb_related_items
@@ -271,7 +271,7 @@ export async function insertRelatedItem(
  */
 export async function getKBStats() {
   try {
-    const db = getDatabase();
+    const db = await getDatabase();
 
     const stats = {
       totalMappings: 0,
@@ -338,7 +338,7 @@ export async function getKBStats() {
  */
 export async function cleanupKnowledgeBase(minConfidence = 0.5, minUsageCount = 1) {
   try {
-    const db = getDatabase();
+    const db = await getDatabase();
 
     // Delete low quality, unused mappings
     // Fix: Changed usage_count < ? to usage_count <= ? for correct deletion logic
@@ -365,7 +365,7 @@ export async function cleanupKnowledgeBase(minConfidence = 0.5, minUsageCount = 
  */
 export async function exportKnowledgeBase() {
   try {
-    const db = getDatabase();
+    const db = await getDatabase();
 
     const mappings = await db.all(`
       SELECT * FROM kb_mappings
