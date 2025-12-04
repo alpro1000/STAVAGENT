@@ -10,7 +10,7 @@
  */
 
 import assert from 'assert';
-import { describe, it, before } from 'mocha';
+// Jest test framework (no need to import describe, it, beforeAll - they're global)
 
 // Test helpers
 function makeRequest(method, endpoint, body = null) {
