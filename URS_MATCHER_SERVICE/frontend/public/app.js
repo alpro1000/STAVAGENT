@@ -30,9 +30,8 @@ debugLog(`API_URL: ${API_URL}`);
 // DOM Elements
 const fileInput = document.getElementById('fileInput');
 const fileDropZone = document.getElementById('fileDropZone');
-const uploadBtn = document.getElementById('uploadBtn');
+const processFileBtn = document.getElementById('processFileBtn');
 const projectContextInput = document.getElementById('projectContextInput');
-const blockMatchBtn = document.getElementById('blockMatchBtn');
 const textInput = document.getElementById('textInput');
 const quantityInput = document.getElementById('quantityInput');
 const unitInput = document.getElementById('unitInput');
@@ -57,9 +56,8 @@ let currentResults = null;
 debugLog('✓ DOM Elements found:', {
   fileInput: !!fileInput,
   fileDropZone: !!fileDropZone,
-  uploadBtn: !!uploadBtn,
+  processFileBtn: !!processFileBtn,
   projectContextInput: !!projectContextInput,
-  blockMatchBtn: !!blockMatchBtn,
   textInput: !!textInput,
   quantityInput: !!quantityInput,
   unitInput: !!unitInput,
@@ -114,80 +112,26 @@ fileInput.addEventListener('change', () => {
 
 function updateUploadButton() {
   const hasFile = fileInput.files && fileInput.files.length > 0;
-  uploadBtn.disabled = !hasFile;
-  blockMatchBtn.disabled = !hasFile;
-  debugLog('📁 Upload button state:', { uploadDisabled: uploadBtn.disabled, blockMatchDisabled: blockMatchBtn.disabled });
+  processFileBtn.disabled = !hasFile;
+  debugLog('📁 Process button state:', { disabled: processFileBtn.disabled });
 }
 
-uploadBtn.addEventListener('click', () => {
-  debugLog('🔵 Upload button clicked');
-  uploadFile();
+processFileBtn.addEventListener('click', () => {
+  debugLog('🔵 Process file button clicked');
+  processFile();
 });
 
-blockMatchBtn.addEventListener('click', () => {
-  debugLog('🔵 BlockMatch button clicked');
-  runBlockMatch();
-});
-
-async function uploadFile() {
-  debugLog('📤 uploadFile() called');
+async function processFile() {
+  debugLog('📊 processFile() called');
 
   if (!fileInput.files || !fileInput.files[0]) {
     debugError('No file selected');
-    showError('Prosím, vyберите soubor');
+    showError('Prosím, vyberte soubor');
     return;
   }
 
-  uploadBtn.disabled = true;
-  uploadBtn.textContent = 'Načítání...';
-  debugLog('📤 Uploading file:', { name: fileInput.files[0].name, size: fileInput.files[0].size });
-
-  try {
-    const formData = new FormData();
-    formData.append('file', fileInput.files[0]);
-
-    debugLog('📤 Sending POST to:', `${API_URL}/jobs/file-upload`);
-    const response = await fetch(`${API_URL}/jobs/file-upload`, {
-      method: 'POST',
-      body: formData
-    });
-
-    debugLog('📤 Response status:', { status: response.status, ok: response.ok });
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Chyba při nahrávání souboru');
-    }
-
-    const data = await response.json();
-    currentJobId = data.job_id;
-    debugLog('📤 Upload successful, job_id:', currentJobId);
-
-    showResults();
-
-    // Fetch and display results
-    await fetchAndDisplayResults(currentJobId);
-
-  } catch (error) {
-    debugError('📤 Upload error:', error);
-    showError(`Chyba nahrávání: ${error.message}`);
-  } finally {
-    uploadBtn.disabled = false;
-    uploadBtn.textContent = 'Nahrát a zpracovat';
-  }
-}
-
-async function runBlockMatch() {
-  debugLog('📊 runBlockMatch() called');
-
-  if (!fileInput.files || !fileInput.files[0]) {
-    debugError('No file selected');
-    showError('Prosím, vyberите soubor');
-    return;
-  }
-
-  blockMatchBtn.disabled = true;
-  blockMatchBtn.textContent = 'Analýza...';
+  processFileBtn.disabled = true;
+  processFileBtn.textContent = 'Zpracování...';
   debugLog('📊 Starting block-match with file:', { name: fileInput.files[0].name, size: fileInput.files[0].size });
 
   try {
@@ -220,16 +164,16 @@ async function runBlockMatch() {
     debugLog('📊 Response data:', data);
 
     currentResults = data;
-    resultsTitle.textContent = 'Analýza bloků (block-match)';
+    resultsTitle.textContent = 'Výsledky zpracování';
     showResults();
     displayBlockMatchResults(data);
 
   } catch (error) {
-    debugError('📊 Block-match error:', error);
-    showError(`Chyba analýzy: ${error.message}`);
+    debugError('📊 Process file error:', error);
+    showError(`Chyba zpracování: ${error.message}`);
   } finally {
-    blockMatchBtn.disabled = false;
-    blockMatchBtn.textContent = '📊 Analyzovat bloky';
+    processFileBtn.disabled = false;
+    processFileBtn.textContent = '📊 Zpracovat soubor';
   }
 }
 

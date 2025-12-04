@@ -133,6 +133,13 @@ body {
   font-size: 0.9rem;
 }
 
+.action-hint {
+  font-size: 0.85rem;
+  color: var(--primary-color);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
 /* File Upload Area */
 .file-upload-area {
   border: 2px dashed var(--primary-color);
