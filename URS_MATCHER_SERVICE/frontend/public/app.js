@@ -506,10 +506,17 @@ function displayBlockMatchResults(job) {
 
   let html = '<div class="block-match-results">';
 
+  // LLM info
+  const llmInfo = job.llm_info || {};
+  const llmStatus = llmInfo.enabled
+    ? `✅ ${llmInfo.provider?.toUpperCase() || 'N/A'} / ${llmInfo.model || 'N/A'}`
+    : '❌ Vypnuto (chybí API klíč)';
+
   // Summary section
   html += `<div class="results-summary">
     <p><strong>Job ID:</strong> ${jobId}</p>
     <p><strong>Bloku nalezeno:</strong> ${blocksCount}</p>
+    <p><strong>🤖 LLM Model:</strong> ${llmStatus}</p>
   </div>`;
 
   if (blocks.length === 0) {
