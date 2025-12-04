@@ -51,14 +51,21 @@ export async function askMultiRole(question, options = {}) {
   };
 
   try {
+    // Check if API is available (timeout quickly if not)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout for health check
+
     // Call STAVAGENT Multi-Role API via HTTP
     const response = await fetch(`${STAVAGENT_API_BASE}/api/v1/multi-role/ask`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify(requestBody),
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -76,7 +83,7 @@ export async function askMultiRole(question, options = {}) {
     return result;
 
   } catch (error) {
-    logger.error(`[MULTI-ROLE] Request failed: ${error.message}`);
+    logger.debug(`[MULTI-ROLE] API not available (optional feature): ${error.message}`);
     throw error;
   }
 }
