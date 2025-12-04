@@ -43,8 +43,9 @@ export function detectLanguage(text) {
     return 'uk';
   }
 
-  // Russian patterns - Cyrillic without Ukrainian-specific chars
-  if (/[а-яА-ЯёЁ]/.test(text)) {
+  // Russian patterns - Cyrillic WITHOUT Ukrainian-specific chars
+  // Exclude texts containing Ukrainian unique characters to prevent misclassification
+  if (/[а-яА-ЯёЁ]/.test(text) && !/[єіїґ]/.test(text)) {
     return 'ru';
   }
 
