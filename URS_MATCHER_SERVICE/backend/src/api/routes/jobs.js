@@ -345,7 +345,7 @@ router.post('/file-upload', upload.single('file'), async (req, res) => {
 
     // Update job status
     await db.run(
-      `UPDATE jobs SET status = ?, processed_rows = ? WHERE id = ?`,
+      'UPDATE jobs SET status = ?, processed_rows = ? WHERE id = ?',
       ['completed', items.length, jobId]
     );
 
@@ -384,7 +384,7 @@ router.post('/text-match', async (req, res) => {
     logger.debug(`[JOBS/TEXT-MATCH] Request payload: ${JSON.stringify({ text: text?.substring(0, 50), quantity, unit, use_llm })}`);
 
     if (!text || text.trim().length === 0) {
-      logger.warn(`[JOBS/TEXT-MATCH] Empty text provided`);
+      logger.warn('[JOBS/TEXT-MATCH] Empty text provided');
       return res.status(400).json({ error: 'Text is required' });
     }
 
@@ -392,7 +392,7 @@ router.post('/text-match', async (req, res) => {
     logger.info(`[JOBS/TEXT-MATCH] 🔍 Searching for: "${text.substring(0, 50)}..." (LLM: ${lmmEnabled ? 'enabled' : 'disabled'}, Quantity: ${quantity}, Unit: ${unit})`);
 
     // Match URS items (local similarity or Perplexity)
-    logger.debug(`[JOBS/TEXT-MATCH] Calling matchUrsItems...`);
+    logger.debug('[JOBS/TEXT-MATCH] Calling matchUrsItems...');
     const matches = await matchUrsItems(text, quantity, unit);
 
     logger.info(`[JOBS/TEXT-MATCH] ✓ Found ${matches.length} matches`);
@@ -401,7 +401,7 @@ router.post('/text-match', async (req, res) => {
     }
 
     if (matches.length === 0) {
-      logger.info(`[JOBS/TEXT-MATCH] No matching ÚRS items found`);
+      logger.info('[JOBS/TEXT-MATCH] No matching ÚRS items found');
       return res.status(200).json({
         candidates: [],
         related_items: [],
@@ -480,7 +480,7 @@ router.get('/:jobId', async (req, res) => {
 
     // Get job
     const job = await db.get(
-      `SELECT * FROM jobs WHERE id = ?`,
+      'SELECT * FROM jobs WHERE id = ?',
       [jobId]
     );
 
@@ -490,7 +490,7 @@ router.get('/:jobId', async (req, res) => {
 
     // Get items
     const items = await db.all(
-      `SELECT * FROM job_items WHERE job_id = ? ORDER BY input_row_id`,
+      'SELECT * FROM job_items WHERE job_id = ? ORDER BY input_row_id',
       [jobId]
     );
 
@@ -530,7 +530,7 @@ router.get('/', async (req, res) => {
     const db = await getDatabase();
 
     const jobs = await db.all(
-      `SELECT * FROM jobs ORDER BY created_at DESC LIMIT 50`
+      'SELECT * FROM jobs ORDER BY created_at DESC LIMIT 50'
     );
 
     res.json({
@@ -563,7 +563,7 @@ router.post('/:jobId/export', async (req, res) => {
     const db = await getDatabase();
 
     const job = await db.get(
-      `SELECT * FROM jobs WHERE id = ?`,
+      'SELECT * FROM jobs WHERE id = ?',
       [jobId]
     );
 
@@ -572,7 +572,7 @@ router.post('/:jobId/export', async (req, res) => {
     }
 
     const items = await db.all(
-      `SELECT * FROM job_items WHERE job_id = ?`,
+      'SELECT * FROM job_items WHERE job_id = ?',
       [jobId]
     );
 
@@ -611,11 +611,11 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
     const projectContext = req.body.project_context
       ? JSON.parse(req.body.project_context)
       : {
-          building_type: 'neurčeno',
-          storeys: 0,
-          main_system: [],
-          notes: []
-        };
+        building_type: 'neurčeno',
+        storeys: 0,
+        main_system: [],
+        notes: []
+      };
 
     logger.info(`[JOBS] Block-match started: ${jobId}`);
     logger.info(`[JOBS] Project context: ${JSON.stringify(projectContext)}`);
@@ -803,7 +803,7 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
           }
 
         } else {
-          logger.info(`[JOBS] Multi-Role API not available, skipping validation`);
+          logger.info('[JOBS] Multi-Role API not available, skipping validation');
         }
       } catch (multiRoleError) {
         logger.warn(`[JOBS] Multi-Role validation failed: ${multiRoleError.message}`);
@@ -820,7 +820,7 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
 
     // Update job status
     await db.run(
-      `UPDATE jobs SET status = ?, processed_rows = ? WHERE id = ?`,
+      'UPDATE jobs SET status = ?, processed_rows = ? WHERE id = ?',
       ['completed', rows.length, jobId]
     );
 
@@ -930,7 +930,7 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
     logger.info(JSON.stringify(fileOpLog));
 
     // FIXED: Check cache FIRST before expensive processing
-    logger.info(`[JOBS] Checking cache for parsed document...`);
+    logger.info('[JOBS] Checking cache for parsed document...');
     const cachedResult = await getCachedDocumentParsing(req.file.originalname, userId, jobId);
     if (cachedResult) {
       logger.info(`[JOBS] Cache HIT - returning cached result for: ${req.file.originalname}`);
@@ -986,7 +986,7 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
       });
     }
 
-    logger.info(`[JOBS] Cache MISS - processing document...`);
+    logger.info('[JOBS] Cache MISS - processing document...');
 
     // AUDIT: Log parsing start (triggered by cache miss)
     logAuditEvent(
@@ -1014,7 +1014,7 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
     const stavagentAvailable = await checkStavagentAvailability();
 
     if (!stavagentAvailable) {
-      logger.warn(`[JOBS] STAVAGENT SmartParser not available, using fallback`);
+      logger.warn('[JOBS] STAVAGENT SmartParser not available, using fallback');
       return res.status(503).json({
         error: 'STAVAGENT SmartParser is not available',
         suggestion: 'Please ensure concrete-agent Python dependencies are installed'
@@ -1022,19 +1022,19 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
     }
 
     // Parse document using STAVAGENT SmartParser
-    logger.info(`[JOBS] Calling STAVAGENT SmartParser...`);
+    logger.info('[JOBS] Calling STAVAGENT SmartParser...');
     const parsedDocument = await parseDocumentWithStavagent(filePath);
 
-    logger.info(`[JOBS] Document parsed successfully`);
+    logger.info('[JOBS] Document parsed successfully');
 
     // Extract project context (building_type, storeys, main_system, etc.)
-    logger.info(`[JOBS] Extracting project context...`);
+    logger.info('[JOBS] Extracting project context...');
     const projectContext = await extractProjectContext(filePath);
 
     logger.info(`[JOBS] Context extracted: ${JSON.stringify(projectContext)}`);
 
     // Run Document Q&A Flow to fill gaps
-    logger.info(`[JOBS] Running Document Q&A Flow...`);
+    logger.info('[JOBS] Running Document Q&A Flow...');
     const { runQAFlow } = await import('../../services/documentQAService.js');
 
     parsedDocument.filename = req.file.originalname; // Add filename for source tracking
@@ -1043,7 +1043,7 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
     logger.info(`[JOBS] Q&A Flow completed: ${qaResults.answered_count} answered, ${qaResults.unanswered_count} need input`);
 
     // Validate document completeness
-    logger.info(`[JOBS] Validating document completeness...`);
+    logger.info('[JOBS] Validating document completeness...');
     const uploadedFiles = req.file ? [{ filename: req.file.originalname, size: req.file.size }] : [];
     const documentValidation = await validateDocumentCompleteness(uploadedFiles, qaResults.enhanced_context);
 
@@ -1083,7 +1083,7 @@ router.post('/parse-document', upload.single('file'), async (req, res) => {
         userId,
         jobId
       );
-      logger.debug(`[JOBS] Document parsing cached for future use`);
+      logger.debug('[JOBS] Document parsing cached for future use');
     } catch (cacheError) {
       logger.error(`[Cache] Failed to cache document (will not affect response): ${cacheError.message}`);
       // Don't fail the request if cache fails
@@ -1197,27 +1197,27 @@ router.post('/:jobId/confirm-qa', async (req, res) => {
 
     Object.entries(confirmed_answers).forEach(([questionId, answer]) => {
       switch (questionId) {
-        case 'q_building_type':
-          finalContext.building_type = answer.value;
-          break;
-        case 'q_storeys':
-          finalContext.storeys = parseInt(answer.value, 10);
-          break;
-        case 'q_foundation_concrete':
-          finalContext.foundation_concrete = answer.value;
-          break;
-        case 'q_wall_material':
-        case 'q_main_system':
-          if (!finalContext.main_system.includes(answer.value)) {
-            finalContext.main_system.push(answer.value);
-          }
-          break;
-        case 'q_insulation':
-          finalContext.insulation = answer.value;
-          break;
-        case 'q_roofing':
-          finalContext.roofing = answer.value;
-          break;
+      case 'q_building_type':
+        finalContext.building_type = answer.value;
+        break;
+      case 'q_storeys':
+        finalContext.storeys = parseInt(answer.value, 10);
+        break;
+      case 'q_foundation_concrete':
+        finalContext.foundation_concrete = answer.value;
+        break;
+      case 'q_wall_material':
+      case 'q_main_system':
+        if (!finalContext.main_system.includes(answer.value)) {
+          finalContext.main_system.push(answer.value);
+        }
+        break;
+      case 'q_insulation':
+        finalContext.insulation = answer.value;
+        break;
+      case 'q_roofing':
+        finalContext.roofing = answer.value;
+        break;
       }
 
       // Add note if user edited the answer
@@ -1231,7 +1231,7 @@ router.post('/:jobId/confirm-qa', async (req, res) => {
     // Save confirmed context to database (optional)
     const db = await getDatabase();
     await db.run(
-      `UPDATE jobs SET status = ? WHERE id = ?`,
+      'UPDATE jobs SET status = ? WHERE id = ?',
       ['ready_for_analysis', jobId]
     );
 
@@ -1630,7 +1630,7 @@ router.post('/admin/cache/cleanup', async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: `Cache cleanup completed`,
+      message: 'Cache cleanup completed',
       entries_cleaned: cleanedCount,
       timestamp: new Date().toISOString()
     });

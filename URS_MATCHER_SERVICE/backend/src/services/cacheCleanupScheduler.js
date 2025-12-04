@@ -92,7 +92,7 @@ function performCleanup() {
 
     // Log cleanup results
     logger.info(
-      `[CACHE-CLEANUP] Cleanup completed ` +
+      '[CACHE-CLEANUP] Cleanup completed ' +
       `(removed: ${cleanedCount}, valid: ${stats.valid_entries}, ` +
       `expired: ${stats.expired_entries}, duration: ${duration}ms)`
     );

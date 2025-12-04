@@ -163,7 +163,7 @@ function validateUploadedDocuments(files, validation) {
   Object.entries(uploadedByType).forEach(([docId, uploadedFiles]) => {
     const docType = DOCUMENT_TYPES[docId.toUpperCase()] || Object.values(DOCUMENT_TYPES).find(d => d.id === docId);
 
-    if (!docType) return;
+    if (!docType) {return;}
 
     if (uploadedFiles.length > 0) {
       validation.uploaded_documents.push({

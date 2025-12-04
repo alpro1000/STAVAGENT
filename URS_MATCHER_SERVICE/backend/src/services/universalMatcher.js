@@ -26,7 +26,7 @@ import { createUniversalMatchPrompt, validateCodesAgainstCandidates } from '../p
  * Simple heuristic detection (can be upgraded to ML model)
  */
 export function detectLanguage(text) {
-  if (!text || typeof text !== 'string') return 'other';
+  if (!text || typeof text !== 'string') {return 'other';}
 
   const lower = text.toLowerCase();
 
@@ -100,7 +100,7 @@ export async function universalMatch(input) {
     // 3. Get candidates for LLM matching
     const candidates = input.candidateItems || [];
     if (candidates.length === 0) {
-      logger.warn(`[UniversalMatcher] No candidates provided, returning ambiguous result`);
+      logger.warn('[UniversalMatcher] No candidates provided, returning ambiguous result');
 
       return {
         query: {
@@ -221,7 +221,7 @@ async function formatResultFromKB(input, detectedLanguage, normalizedCzech, kbHi
       unit: r.unit,
       reason_cs: r.reason_cs
     })),
-    explanation_cs: `Tato položka byla identifikována z naší databáze potvrzených mapování ` +
+    explanation_cs: 'Tato položka byla identifikována z naší databáze potvrzených mapování ' +
       `(${kbHit.usage_count}x použito, spolehlivost ${(kbHit.confidence * 100).toFixed(0)}%).`,
     knowledge_suggestions: [],
     status: 'ok',
@@ -276,7 +276,7 @@ async function callUniversalLLM(prompt) {
 
     // Validate matches array
     if (!Array.isArray(response.matches)) {
-      logger.error(`[UniversalMatcher] Missing or invalid matches array`);
+      logger.error('[UniversalMatcher] Missing or invalid matches array');
       throw new Error('LLM response missing matches array');
     }
 
@@ -290,7 +290,7 @@ async function callUniversalLLM(prompt) {
     response.matches = response.matches.filter(match => {
       // Validate required fields
       if (!match.urs_code || typeof match.urs_code !== 'string') {
-        logger.warn(`[UniversalMatcher] Invalid match: missing or invalid urs_code`);
+        logger.warn('[UniversalMatcher] Invalid match: missing or invalid urs_code');
         return false;
       }
 

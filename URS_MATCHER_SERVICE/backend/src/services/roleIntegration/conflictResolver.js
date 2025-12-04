@@ -60,31 +60,31 @@ export class ConflictResolver {
     logger.info(`[CONFLICT-RESOLVER] Resolving: ${conflict.type}`);
 
     switch (conflict.type) {
-      case 'CONCRETE_CLASS_MISMATCH':
-        return this.resolveConcreteClassMismatch(conflict, roleOutputs);
+    case 'CONCRETE_CLASS_MISMATCH':
+      return this.resolveConcreteClassMismatch(conflict, roleOutputs);
 
-      case 'EXPOSURE_CLASS_MISMATCH':
-        return this.resolveExposureClassMismatch(conflict, roleOutputs);
+    case 'EXPOSURE_CLASS_MISMATCH':
+      return this.resolveExposureClassMismatch(conflict, roleOutputs);
 
-      case 'DURABILITY_CONFLICT':
-        return this.resolveDurabilityConflict(conflict, roleOutputs);
+    case 'DURABILITY_CONFLICT':
+      return this.resolveDurabilityConflict(conflict, roleOutputs);
 
-      case 'COST_BUDGET_CONFLICT':
-        return this.resolveCostConflict(conflict, roleOutputs);
+    case 'COST_BUDGET_CONFLICT':
+      return this.resolveCostConflict(conflict, roleOutputs);
 
-      case 'STANDARDS_VIOLATION':
-        return this.resolveStandardsViolation(conflict, roleOutputs);
+    case 'STANDARDS_VIOLATION':
+      return this.resolveStandardsViolation(conflict, roleOutputs);
 
-      case 'MISSING_MANDATORY_WORKS':
-        return this.resolveMissingWorks(conflict, roleOutputs);
+    case 'MISSING_MANDATORY_WORKS':
+      return this.resolveMissingWorks(conflict, roleOutputs);
 
-      default:
-        return {
-          conflict_id: conflict.id,
-          conflict_type: conflict.type,
-          status: 'unknown_conflict_type',
-          requires_manual_review: true
-        };
+    default:
+      return {
+        conflict_id: conflict.id,
+        conflict_type: conflict.type,
+        status: 'unknown_conflict_type',
+        requires_manual_review: true
+      };
     }
   }
 
@@ -144,7 +144,7 @@ export class ConflictResolver {
     const idx2 = this.exposureClassOrder.indexOf(conflict.concrete_exposure);
 
     if (idx1 === -1 || idx2 === -1) {
-      logger.warn(`[CONFLICT-RESOLVER] Invalid exposure class`);
+      logger.warn('[CONFLICT-RESOLVER] Invalid exposure class');
       return {
         conflict_id: conflict.id,
         conflict_type: 'EXPOSURE_CLASS_MISMATCH',
@@ -238,7 +238,7 @@ export class ConflictResolver {
       deviation_id: idx + 1,
       issue: deviation,
       responsible_role: this.determineResponsibleRole(deviation),
-      action: `Correct per ČSN/EN standards`
+      action: 'Correct per ČSN/EN standards'
     }));
 
     return {
@@ -246,7 +246,7 @@ export class ConflictResolver {
       conflict_type: 'STANDARDS_VIOLATION',
       status: 'resolved',
       decision: 'remediate_violations',
-      reasoning: `Standards violations are non-negotiable (hierarchy level 2: CODE_COMPLIANCE). All deviations must be corrected before design can be approved.`,
+      reasoning: 'Standards violations are non-negotiable (hierarchy level 2: CODE_COMPLIANCE). All deviations must be corrected before design can be approved.',
       authority_applied: ['standards_checker'],
       deviations_count: deviations.length,
       remediation_plan: remediationPlan,

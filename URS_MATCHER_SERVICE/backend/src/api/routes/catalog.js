@@ -19,12 +19,12 @@ router.get('/', async (req, res) => {
     let params = [];
 
     if (search && search.trim().length > 0) {
-      query += ` WHERE urs_name LIKE ? OR urs_code LIKE ?`;
+      query += ' WHERE urs_name LIKE ? OR urs_code LIKE ?';
       const searchPattern = `%${search}%`;
       params = [searchPattern, searchPattern];
     }
 
-    query += ` LIMIT ?`;
+    query += ' LIMIT ?';
     params.push(parseInt(limit) || 100);
 
     const items = await db.all(query, params);

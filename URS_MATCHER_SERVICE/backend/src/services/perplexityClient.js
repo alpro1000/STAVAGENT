@@ -130,7 +130,7 @@ async function callPerplexityAPI(userPrompt) {
  * @returns {boolean}
  */
 export function validateUrsCode(code) {
-  if (!code || typeof code !== 'string') return false;
+  if (!code || typeof code !== 'string') {return false;}
   return /^\d{6,9}$/.test(code.trim());
 }
 
@@ -140,7 +140,7 @@ export function validateUrsCode(code) {
  * @returns {boolean}
  */
 export function validateUrsUrl(url) {
-  if (!url || typeof url !== 'string') return false;
+  if (!url || typeof url !== 'string') {return false;}
 
   try {
     const urlObj = new URL(url);

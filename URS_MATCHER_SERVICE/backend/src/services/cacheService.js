@@ -108,7 +108,7 @@ export async function initCache() {
         throw new Error(`Cache service unavailable in production: ${err.message}`);
       } else {
         // Allow fallback only in development
-        logger.warn(`[Cache] Falling back to in-memory cache (development only)`);
+        logger.warn('[Cache] Falling back to in-memory cache (development only)');
         cacheClient = inMemoryCache;
       }
     });
@@ -124,7 +124,7 @@ export async function initCache() {
       throw new Error(`Cache initialization failed in production: ${error.message}`);
     } else {
       // Fallback to in-memory only for development
-      logger.warn(`[Cache] Using in-memory cache (development environment)`);
+      logger.warn('[Cache] Using in-memory cache (development environment)');
       cacheClient = inMemoryCache;
       return false;
     }
@@ -445,7 +445,7 @@ export async function clearAllCache(isAdmin = false) {
   try {
     // SECURITY: Require explicit admin flag to prevent unauthorized cache clearing
     if (!isAdmin) {
-      logger.warn(`[Cache] Unauthorized cache clear attempt (requires admin)`);
+      logger.warn('[Cache] Unauthorized cache clear attempt (requires admin)');
       throw new Error('Cache clear requires admin authorization');
     }
 

@@ -349,7 +349,8 @@ export function sanitizeForLogging(data) {
   }
   // Remove newlines, carriage returns, and other control characters
   return data
-    .replace(/[\r\n\t\x00-\x1F\x7F]/g, '') // Control characters
+    .replace(/[\r\n\t]/g, '') // Remove newlines and tabs
+    .split('').filter(ch => ch.charCodeAt(0) >= 32 && ch.charCodeAt(0) !== 127).join('') // Remove other control chars
     .replace(/"/g, '\\"') // Escape quotes
     .substring(0, 256); // Limit length to prevent log spam
 }

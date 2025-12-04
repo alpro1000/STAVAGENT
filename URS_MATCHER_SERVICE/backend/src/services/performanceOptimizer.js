@@ -65,7 +65,7 @@ export function addTimerMarker(timer, markerName) {
  * @param {Object} options - Additional options
  */
 export function endRequestTimer(timer, options = {}) {
-  if (!timer) return null;
+  if (!timer) {return null;}
 
   const endTime = Date.now();
   const duration = endTime - timer.startTime;
