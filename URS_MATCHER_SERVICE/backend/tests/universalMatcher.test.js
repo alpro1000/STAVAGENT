@@ -5,14 +5,13 @@
 
 import {
   detectLanguage,
-  normalizeTextToCzech,
   universalMatch,
   recordUserFeedback
 } from '../src/services/universalMatcher.js';
 
 import {
   computeContextHash,
-  normalizeTextToCzech as kbNormalize,
+  normalizeTextToCzech,
   searchKnowledgeBase,
   insertMapping
 } from '../src/services/knowledgeBase.js';
