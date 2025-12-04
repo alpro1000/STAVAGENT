@@ -191,10 +191,12 @@ function validateProjectContext(context, validation) {
   if (!context || typeof context !== 'object') {
     validation.context_validation.complete = false;
     validation.context_validation.missing_fields = Object.keys(VALIDATION_RULES.basic_info.required_fields);
+    validation.context_validation.applicable_conditional_count = 0;
     return;
   }
 
   const missingFields = [];
+  let applicableConditionalCount = 0;
 
   // Check basic required fields
   VALIDATION_RULES.basic_info.required_fields.forEach((field) => {
@@ -203,13 +205,16 @@ function validateProjectContext(context, validation) {
     }
   });
 
-  // Check conditional requirements
+  // Check conditional requirements for železobeton
   if (context.main_system && Array.isArray(context.main_system)) {
-    if (context.main_system.includes('železobeton') && !context.foundation_concrete) {
-      validation.context_validation.conditional_missing.push({
-        field: 'foundation_concrete',
-        reason: 'Vyžadováno pro projekty s železobetonem'
-      });
+    if (context.main_system.includes('železobeton')) {
+      applicableConditionalCount++; // foundation_concrete is applicable
+      if (!context.foundation_concrete) {
+        validation.context_validation.conditional_missing.push({
+          field: 'foundation_concrete',
+          reason: 'Vyžadováno pro projekty s železobetonem'
+        });
+      }
     }
   }
 
@@ -219,6 +224,7 @@ function validateProjectContext(context, validation) {
     context.building_type?.includes('podzemný') ||
     context.building_type?.includes('subway')
   ) {
+    applicableConditionalCount += 2; // soil_class and groundwater_level are applicable
     ['soil_class', 'groundwater_level'].forEach((field) => {
       if (!context[field]) {
         validation.context_validation.conditional_missing.push({
@@ -230,6 +236,7 @@ function validateProjectContext(context, validation) {
   }
 
   validation.context_validation.missing_fields = missingFields;
+  validation.context_validation.applicable_conditional_count = applicableConditionalCount;
   validation.context_validation.complete = missingFields.length === 0 && validation.context_validation.conditional_missing.length === 0;
 }
 
@@ -307,14 +314,15 @@ function calculateCompletenessScore(validation) {
   const documentScore = documentRatio * 40;
 
   // Context: 60% weight
-  // FIXED: Include both required AND conditional fields in calculation
+  // FIXED: Include both required AND ALL applicable conditional fields in calculation
   const requiredContextFields = VALIDATION_RULES.basic_info.required_fields || ['building_type', 'storeys'];
-  const conditionalFieldCount = validation.context_validation.conditional_missing.length;
-  const totalContextFields = requiredContextFields.length + conditionalFieldCount;
+  const applicableConditionalCount = validation.context_validation.applicable_conditional_count || 0;
+  const totalContextFields = requiredContextFields.length + applicableConditionalCount;
 
   // Count missing fields: required missing + conditional missing
   const requiredMissingCount = validation.context_validation.missing_fields.length;
-  const totalMissingCount = requiredMissingCount + conditionalFieldCount;
+  const conditionalMissingCount = validation.context_validation.conditional_missing.length;
+  const totalMissingCount = requiredMissingCount + conditionalMissingCount;
   const completedContextFields = totalContextFields - totalMissingCount;
 
   // FIXED: Prevent division by zero and cap at 60%
