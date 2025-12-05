@@ -774,6 +774,7 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
       logger.info(`[JOBS] Block analysis completed for: ${blockName}`);
 
       // Phase 3: Multi-Role validation + Advanced Orchestrator (if available)
+      // Connects to concrete-agent.onrender.com (STAVAGENT Core / Ядро)
       try {
         const { checkMultiRoleAvailability, validateBoqBlock } =
           await import('../../services/multiRoleClient.js');
