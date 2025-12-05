@@ -249,7 +249,7 @@ async function callClaudeAPI(systemPrompt, userPrompt, controller) {
       llmClient.apiUrl,
       {
         model: llmClient.model,
-        max_tokens: 1024,
+        max_tokens: 4096,
         system: systemPrompt,
         messages: [
           {
@@ -307,7 +307,7 @@ async function callOpenAIAPI(systemPrompt, userPrompt, controller) {
           }
         ],
         temperature: 0.3,  // Lower temperature for more deterministic responses
-        max_tokens: 1024
+        max_tokens: 4096
       },
       {
         headers: llmClient.headers,
@@ -370,7 +370,7 @@ async function callGeminiAPI(systemPrompt, userPrompt, controller) {
         },
         generationConfig: {
           temperature: 0.3,
-          maxOutputTokens: 1024
+          maxOutputTokens: 4096
         }
       },
       {
