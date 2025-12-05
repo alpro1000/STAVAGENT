@@ -507,9 +507,10 @@ export function getLLMInfo() {
  * @param {Object} projectContext - Project context (building_type, storeys, main_system, etc.)
  * @param {Object} boqBlock - Block of work items { block_id, title, rows[] }
  * @param {Object} ursCandidates - URS candidates for each row { row_id: [candidates...] }
+ * @param {Object} normsData - Relevant norms { norms[], technical_conditions[], methodology_notes }
  * @returns {Promise<Object>} Block analysis result { block_summary, items[], global_related_items[] }
  */
-export async function analyzeBlock(projectContext, boqBlock, ursCandidates) {
+export async function analyzeBlock(projectContext, boqBlock, ursCandidates, normsData = null) {
   try {
     initializeLLMClient();
 
@@ -535,8 +536,8 @@ export async function analyzeBlock(projectContext, boqBlock, ursCandidates) {
     // Import prompt creator
     const { createBlockAnalysisPrompt } = await import('../prompts/ursMatcher.prompt.js');
 
-    // Create prompts
-    const userPrompt = createBlockAnalysisPrompt(projectContext, boqBlock, ursCandidates);
+    // Create prompts (including norms context)
+    const userPrompt = createBlockAnalysisPrompt(projectContext, boqBlock, ursCandidates, normsData);
     const systemPrompt = getSystemPrompt();
 
     // Call LLM API with extended timeout (block analysis takes longer)

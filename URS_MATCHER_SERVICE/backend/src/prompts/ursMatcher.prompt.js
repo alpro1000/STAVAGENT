@@ -385,8 +385,22 @@ Vrať POUZE JSON bez dalšího textu.`;
  * @param {Object} projectContext - Project context (building type, storeys, systems, etc.)
  * @param {Object} boqBlock - Block of work items with grouping
  * @param {Object} ursCandidates - URS candidates for each row (row_id => candidates[])
+ * @param {Object} normsData - Relevant norms and standards { norms[], technical_conditions[], methodology_notes }
  */
-export function createBlockAnalysisPrompt(projectContext, boqBlock, ursCandidates) {
+export function createBlockAnalysisPrompt(projectContext, boqBlock, ursCandidates, normsData = null) {
+  // Build norms section if available
+  let normsSection = '';
+  if (normsData && (normsData.norms?.length > 0 || normsData.technical_conditions?.length > 0)) {
+    normsSection = `
+Relevantní normy a technické podmínky pro tento blok:
+- ČSN normy: ${normsData.norms?.map(n => `${n.code}: ${n.title}`).join('; ') || 'žádné nalezeny'}
+- Technické podmínky: ${normsData.technical_conditions?.map(tc => tc.title || tc).join('; ') || 'žádné nalezeny'}
+${normsData.methodology_notes ? `- Metodické poznámky: ${normsData.methodology_notes}` : ''}
+
+DŮLEŽITÉ: Při výběru URS kódů a hodnocení zohledni výše uvedené normy!
+`;
+  }
+
   return `MODE: BOQ_BLOCK_ANALYSIS
 
 Kontext projektu:
@@ -397,8 +411,8 @@ ${JSON.stringify(boqBlock, null, 2)}
 
 URS kandidáti pro každou pozici (row_id → kandidáti):
 ${JSON.stringify(ursCandidates, null, 2)}
-
-Prosím proveď komplexní analýzu bloku prací s ohledem na kontext projektu.
+${normsSection}
+Prosím proveď komplexní analýzu bloku prací s ohledem na kontext projektu${normsData ? ' a relevantní normy' : ''}.
 Vykládej podle schématu D) BOQ_BLOCK_ANALYSIS z systémového promptu.
 Vrať POUZE JSON bez dalšího textu.`;
 }
