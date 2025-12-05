@@ -1,6 +1,7 @@
 import express from 'express';
 import { getDatabase } from '../../db/init.js';
 import { getLLMInfo } from '../../services/llmClient.js';
+import { getKBStatus } from '../../services/concreteAgentKB.js';
 
 const router = express.Router();
 
@@ -17,7 +18,8 @@ router.get('/', async (req, res) => {
         service: 'URS Matcher Service',
         timestamp: new Date().toISOString(),
         database: 'connected',
-        llm: getLLMInfo()
+        llm: getLLMInfo(),
+        knowledge_base: getKBStatus()
       });
     }
 

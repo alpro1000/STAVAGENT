@@ -14,6 +14,7 @@ import { matchUrsItems, generateRelatedItems } from '../../services/ursMatcher.j
 import { matchUrsItemWithAI, explainMapping, isLLMEnabled, getLLMInfo } from '../../services/llmClient.js';
 import { universalMatch, recordUserFeedback } from '../../services/universalMatcher.js';
 import { searchNormsAndStandards } from '../../services/perplexityClient.js';
+import { searchKnowledgeBase, getKBStatus } from '../../services/concreteAgentKB.js';
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
 import { validateUniversalMatch, validateFeedback } from '../middleware/inputValidation.js';
@@ -666,15 +667,15 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
         }))
       };
 
-      // Search URS candidates AND norms in parallel
+      // Search URS candidates, norms, AND knowledge base in parallel
       logger.info(`[JOBS] Searching URS candidates for ${blockRows.length} rows...`);
 
       // Create combined search query from all row descriptions for norms search
       const blockDescriptions = blockRows.map(r => r.description).join(', ');
       const normsSearchQuery = `${blockName}: ${blockDescriptions.substring(0, 200)}`;
 
-      // Run URS candidates search AND norms search in parallel
-      const [ursCandidatesArray, normsData] = await Promise.all([
+      // Run URS candidates search, norms search, AND KB search in parallel
+      const [ursCandidatesArray, normsData, kbData] = await Promise.all([
         // URS candidates for each row
         Promise.all(
           blockRows.map(async (row) => {
@@ -687,7 +688,7 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
             }
           })
         ),
-        // Norms and standards search for the entire block
+        // Norms and standards search for the entire block (Perplexity)
         (async () => {
           try {
             const norms = await searchNormsAndStandards(normsSearchQuery);
@@ -699,8 +700,52 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
             logger.warn(`[JOBS] Norms search failed for block "${blockName}": ${error.message}`);
             return { norms: [], technical_conditions: [], methodology_notes: null };
           }
+        })(),
+        // Knowledge Base search (local concrete-agent data)
+        (async () => {
+          try {
+            // Search KB for each row description
+            const kbResults = blockRows.map(row => searchKnowledgeBase(row.description));
+            const combined = {
+              concreteClasses: [],
+              exposureClasses: [],
+              relevantNorms: [],
+              recommendations: []
+            };
+
+            for (const result of kbResults) {
+              if (result.concreteClass) combined.concreteClasses.push(result.concreteClass);
+              combined.exposureClasses.push(...result.exposureClasses);
+              combined.relevantNorms.push(...result.relevantNorms);
+              combined.recommendations.push(...result.recommendations);
+            }
+
+            // Deduplicate
+            combined.exposureClasses = [...new Map(combined.exposureClasses.map(e => [e.class, e])).values()];
+            combined.relevantNorms = [...new Set(combined.relevantNorms)];
+            combined.recommendations = [...new Set(combined.recommendations)];
+
+            if (combined.concreteClasses.length > 0 || combined.exposureClasses.length > 0) {
+              logger.info(`[JOBS] KB found: ${combined.concreteClasses.length} concrete classes, ${combined.exposureClasses.length} exposure classes for block: ${blockName}`);
+            }
+
+            return combined;
+          } catch (error) {
+            logger.warn(`[JOBS] KB search failed for block "${blockName}": ${error.message}`);
+            return { concreteClasses: [], exposureClasses: [], relevantNorms: [], recommendations: [] };
+          }
         })()
       ]);
+
+      // Merge KB norms with Perplexity norms
+      if (kbData.relevantNorms.length > 0) {
+        normsData.norms = normsData.norms || [];
+        for (const norm of kbData.relevantNorms) {
+          if (!normsData.norms.some(n => n.code === norm)) {
+            normsData.norms.push({ code: norm, title: norm, source: 'knowledge_base' });
+          }
+        }
+      }
 
       // Convert array to object { row_id: candidates[] }
       const ursCandidates = {};
@@ -715,9 +760,16 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
 
       const blockAnalysis = await analyzeBlock(projectContext, boqBlock, ursCandidates, normsData);
 
-      // Add norms to block analysis result
+      // Add norms and KB data to block analysis result
       blockAnalysis.referenced_norms = normsData.norms || [];
       blockAnalysis.technical_conditions = normsData.technical_conditions || [];
+
+      // Add knowledge base insights
+      blockAnalysis.knowledge_base = {
+        concrete_classes: kbData.concreteClasses || [],
+        exposure_classes: kbData.exposureClasses || [],
+        recommendations: kbData.recommendations || []
+      };
 
       logger.info(`[JOBS] Block analysis completed for: ${blockName}`);
 
