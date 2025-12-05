@@ -13,6 +13,8 @@ import { parseExcelFile } from '../../services/fileParser.js';
 import { matchUrsItems, generateRelatedItems } from '../../services/ursMatcher.js';
 import { matchUrsItemWithAI, explainMapping, isLLMEnabled, getLLMInfo } from '../../services/llmClient.js';
 import { universalMatch, recordUserFeedback } from '../../services/universalMatcher.js';
+import { searchNormsAndStandards } from '../../services/perplexityClient.js';
+import { searchKnowledgeBase, getKBStatus } from '../../services/concreteAgentKB.js';
 import { getDatabase } from '../../db/init.js';
 import { logger } from '../../utils/logger.js';
 import { validateUniversalMatch, validateFeedback } from '../middleware/inputValidation.js';
@@ -665,20 +667,85 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
         }))
       };
 
-      // Search URS candidates for each row in parallel
+      // Search URS candidates, norms, AND knowledge base in parallel
       logger.info(`[JOBS] Searching URS candidates for ${blockRows.length} rows...`);
 
-      const ursCandidatesArray = await Promise.all(
-        blockRows.map(async (row) => {
+      // Create combined search query from all row descriptions for norms search
+      const blockDescriptions = blockRows.map(r => r.description).join(', ');
+      const normsSearchQuery = `${blockName}: ${blockDescriptions.substring(0, 200)}`;
+
+      // Run URS candidates search, norms search, AND KB search in parallel
+      const [ursCandidatesArray, normsData, kbData] = await Promise.all([
+        // URS candidates for each row
+        Promise.all(
+          blockRows.map(async (row) => {
+            try {
+              const candidates = await matchUrsItems(row.description, row.quantity, row.unit);
+              return candidates.slice(0, 5); // Top 5 candidates
+            } catch (error) {
+              logger.warn(`[JOBS] Failed to find candidates for "${row.description}": ${error.message}`);
+              return [];
+            }
+          })
+        ),
+        // Norms and standards search for the entire block (Perplexity)
+        (async () => {
           try {
-            const candidates = await matchUrsItems(row.description, row.quantity, row.unit);
-            return candidates.slice(0, 5); // Top 5 candidates
+            const norms = await searchNormsAndStandards(normsSearchQuery);
+            if (norms.norms?.length > 0 || norms.technical_conditions?.length > 0) {
+              logger.info(`[JOBS] Found ${norms.norms?.length || 0} norms, ${norms.technical_conditions?.length || 0} tech conditions for block: ${blockName}`);
+            }
+            return norms;
           } catch (error) {
-            logger.warn(`[JOBS] Failed to find candidates for "${row.description}": ${error.message}`);
-            return [];
+            logger.warn(`[JOBS] Norms search failed for block "${blockName}": ${error.message}`);
+            return { norms: [], technical_conditions: [], methodology_notes: null };
           }
-        })
-      );
+        })(),
+        // Knowledge Base search (local concrete-agent data)
+        (async () => {
+          try {
+            // Search KB for each row description
+            const kbResults = blockRows.map(row => searchKnowledgeBase(row.description));
+            const combined = {
+              concreteClasses: [],
+              exposureClasses: [],
+              relevantNorms: [],
+              recommendations: []
+            };
+
+            for (const result of kbResults) {
+              if (result.concreteClass) combined.concreteClasses.push(result.concreteClass);
+              combined.exposureClasses.push(...result.exposureClasses);
+              combined.relevantNorms.push(...result.relevantNorms);
+              combined.recommendations.push(...result.recommendations);
+            }
+
+            // Deduplicate
+            combined.exposureClasses = [...new Map(combined.exposureClasses.map(e => [e.class, e])).values()];
+            combined.relevantNorms = [...new Set(combined.relevantNorms)];
+            combined.recommendations = [...new Set(combined.recommendations)];
+
+            if (combined.concreteClasses.length > 0 || combined.exposureClasses.length > 0) {
+              logger.info(`[JOBS] KB found: ${combined.concreteClasses.length} concrete classes, ${combined.exposureClasses.length} exposure classes for block: ${blockName}`);
+            }
+
+            return combined;
+          } catch (error) {
+            logger.warn(`[JOBS] KB search failed for block "${blockName}": ${error.message}`);
+            return { concreteClasses: [], exposureClasses: [], relevantNorms: [], recommendations: [] };
+          }
+        })()
+      ]);
+
+      // Merge KB norms with Perplexity norms
+      if (kbData.relevantNorms.length > 0) {
+        normsData.norms = normsData.norms || [];
+        for (const norm of kbData.relevantNorms) {
+          if (!normsData.norms.some(n => n.code === norm)) {
+            normsData.norms.push({ code: norm, title: norm, source: 'knowledge_base' });
+          }
+        }
+      }
 
       // Convert array to object { row_id: candidates[] }
       const ursCandidates = {};
@@ -688,10 +755,21 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
 
       logger.info(`[JOBS] Found candidates for ${Object.keys(ursCandidates).length} rows`);
 
-      // Call LLM for block analysis
+      // Call LLM for block analysis (with norms context)
       const { analyzeBlock } = await import('../../services/llmClient.js');
 
-      const blockAnalysis = await analyzeBlock(projectContext, boqBlock, ursCandidates);
+      const blockAnalysis = await analyzeBlock(projectContext, boqBlock, ursCandidates, normsData);
+
+      // Add norms and KB data to block analysis result
+      blockAnalysis.referenced_norms = normsData.norms || [];
+      blockAnalysis.technical_conditions = normsData.technical_conditions || [];
+
+      // Add knowledge base insights
+      blockAnalysis.knowledge_base = {
+        concrete_classes: kbData.concreteClasses || [],
+        exposure_classes: kbData.exposureClasses || [],
+        recommendations: kbData.recommendations || []
+      };
 
       logger.info(`[JOBS] Block analysis completed for: ${blockName}`);
 
