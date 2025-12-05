@@ -19,6 +19,13 @@ const CONFIDENCE_THRESHOLDS = {
 
 export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
   try {
+    // Filter out non-work items before sending to Perplexity
+    const skipReason = shouldSkipText(text);
+    if (skipReason) {
+      logger.debug(`[URSMatcher] Skipping "${text.substring(0, 30)}..." - ${skipReason}`);
+      return [];
+    }
+
     logger.debug(`[URSMatcher] Matching (${CATALOG_MODE}): "${text.substring(0, 50)}..."`);
 
     // Route to appropriate matcher based on catalog mode
@@ -32,6 +39,52 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
     logger.error(`[URSMatcher] Error: ${error.message}`);
     return [];
   }
+}
+
+/**
+ * Check if text should be skipped (not sent to Perplexity)
+ * Returns skip reason or null if should process
+ */
+function shouldSkipText(text) {
+  if (!text || typeof text !== 'string') {
+    return 'empty';
+  }
+
+  const trimmed = text.trim();
+
+  // Too short
+  if (trimmed.length < 5) {
+    return 'too short';
+  }
+
+  // Pure number (like "10", "45.8", "1 234")
+  if (/^[\d\s,.\-]+$/.test(trimmed)) {
+    return 'pure number';
+  }
+
+  // Number with unit only (like "10 m³", "45.8 t", "100 kg")
+  // Must have at least 3 words to be a work description
+  const words = trimmed.split(/\s+/).filter(w => w.length > 0);
+  if (words.length <= 2 && /^\d/.test(trimmed)) {
+    return 'quantity only';
+  }
+
+  // Section headers (like "01 Základy", "02 Nosné konstrukce")
+  if (/^0?\d{1,2}\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ][a-záčďéěíňóřšťúůýž]+$/.test(trimmed)) {
+    return 'section header';
+  }
+
+  // Notes/comments
+  if (/^(pozn\.?|poznámka|note|celk|suma|součet|total)/i.test(trimmed)) {
+    return 'note/comment';
+  }
+
+  // Column headers
+  if (/^(popis|název|mj|jednotka|množství|cena|price)/i.test(trimmed) && words.length <= 3) {
+    return 'column header';
+  }
+
+  return null; // Should process
 }
 
 /**

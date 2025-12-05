@@ -2,6 +2,24 @@ FROM node:18-alpine
 
 WORKDIR /app
 
+# ============================================
+# INSTALL PYTHON FOR concrete-agent INTEGRATION
+# ============================================
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    && ln -sf python3 /usr/bin/python
+
+# Install minimal Python dependencies for concrete-agent
+RUN pip3 install --no-cache-dir --break-system-packages \
+    httpx==0.28.1 \
+    pandas>=2.2.0 \
+    openpyxl>=3.1.0 \
+    pdfplumber>=0.11.0
+
+# ============================================
+# NODE.JS SETUP
+# ============================================
 # Copy package files
 COPY backend/package*.json ./
 
@@ -11,6 +29,12 @@ RUN npm ci --only=production
 # Copy source code
 COPY backend/src ./src
 COPY backend/.env.example ./.env
+
+# ============================================
+# CONCRETE-AGENT INTEGRATION
+# ============================================
+# Copy concrete-agent Python modules (knowledge base + parsers)
+COPY concrete-agent/packages/core-backend/app /app/concrete-agent/packages/core-backend/app
 
 # Create data directory
 RUN mkdir -p ./data

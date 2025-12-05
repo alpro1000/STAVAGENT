@@ -7,13 +7,19 @@
 
 import { spawn } from 'child_process';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { logger } from '../utils/logger.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // Path to STAVAGENT concrete-agent Python scripts
-const STAVAGENT_PYTHON_PATH = path.join(__dirname, '../../../../concrete-agent/packages/core-backend');
+// Supports both local development and Docker deployment
+const DOCKER_PATH = '/app/concrete-agent/packages/core-backend';
+const LOCAL_PATH = path.join(__dirname, '../../../../concrete-agent/packages/core-backend');
+
+// Use Docker path if it exists (production), otherwise local path (development)
+const STAVAGENT_PYTHON_PATH = fs.existsSync(DOCKER_PATH + '/app') ? DOCKER_PATH : LOCAL_PATH;
 
 /**
  * Call STAVAGENT SmartParser via Python subprocess
