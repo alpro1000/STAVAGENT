@@ -182,6 +182,7 @@ Vrať POUZE odůvodnění, bez jakéhokoli JSON či dalšího textu.`;
 /**
  * Call LLM API with timeout protection and fallback support
  * Tries primary provider, then falls back to alternatives if needed
+ * NOTE: Each provider gets its own AbortController to avoid canceling all fallbacks
  *
  * @param {string} systemPrompt - System prompt
  * @param {string} userPrompt - User message
@@ -190,38 +191,43 @@ Vrať POUZE odůvodnění, bez jakéhokoli JSON či dalšího textu.`;
  * @throws {Error} if all providers fail
  */
 async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-  try {
-    // Try current (primary) client
-    if (llmClient) {
+  // Try current (primary) client with its own abort controller
+  if (llmClient) {
+    try {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
       try {
         return await callLLMProvider(llmClient, systemPrompt, userPrompt, controller);
-      } catch (error) {
-        logger.warn(`[LLMClient] Primary provider ${llmClient.provider} failed: ${error.message}. Trying fallback...`);
+      } finally {
+        clearTimeout(timeout);
       }
+    } catch (error) {
+      logger.warn(`[LLMClient] Primary provider ${llmClient.provider} failed: ${error.message}. Trying fallback...`);
     }
+  }
 
-    // Try fallback providers
-    let nextProvider = getNextProvider();
-    while (nextProvider) {
+  // Try fallback providers - each gets its own abort controller
+  let nextProvider = getNextProvider();
+  while (nextProvider) {
+    try {
+      logger.info(`[LLMClient] Trying fallback provider: ${nextProvider.provider}`);
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), timeoutMs);
       try {
-        logger.info(`[LLMClient] Trying fallback provider: ${nextProvider.provider}`);
         const result = await callLLMProvider(nextProvider, systemPrompt, userPrompt, controller);
         llmClient = nextProvider; // Update to use this provider going forward
         logger.info(`[LLMClient] Switched to ${nextProvider.provider} as primary provider`);
         return result;
-      } catch (error) {
-        logger.warn(`[LLMClient] Fallback provider ${nextProvider.provider} failed: ${error.message}`);
-        nextProvider = getNextProvider();
+      } finally {
+        clearTimeout(timeout);
       }
+    } catch (error) {
+      logger.warn(`[LLMClient] Fallback provider ${nextProvider.provider} failed: ${error.message}`);
+      nextProvider = getNextProvider();
     }
-
-    throw new Error('All LLM providers failed or unavailable');
-  } finally {
-    clearTimeout(timeout);
   }
+
+  throw new Error('All LLM providers failed or unavailable');
 }
 
 /**

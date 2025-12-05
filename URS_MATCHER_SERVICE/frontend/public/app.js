@@ -213,7 +213,7 @@ async function matchText() {
 
     // Create abort controller for timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 minute timeout for LLM processing
 
     const response = await fetch(url, {
       method: 'POST',
