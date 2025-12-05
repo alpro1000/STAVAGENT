@@ -38,7 +38,7 @@ export function getLLMConfig() {
   }
 
   const model = process.env.LLM_MODEL || defaultModel;
-  const timeoutMs = parseInt(process.env.LLM_TIMEOUT_MS || '30000', 10);
+  const timeoutMs = parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10);
 
   if (!apiKey) {
     logger.warn('[LLMConfig] No API key found for primary provider %s. Checked: ANTHROPIC_API_KEY, GOOGLE_API_KEY, LLM_API_KEY, OPENAI_API_KEY. Fallback providers will be used.', primaryProvider);
@@ -75,7 +75,7 @@ export function getAvailableProviders() {
       provider: 'claude',
       apiKey: claudeKey,
       model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-5-20250929',
-      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '30000', 10)
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
 
@@ -87,7 +87,7 @@ export function getAvailableProviders() {
       provider: 'gemini',
       apiKey: geminiKey,
       model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
-      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '30000', 10)
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
 
@@ -99,7 +99,7 @@ export function getAvailableProviders() {
       provider: 'openai',
       apiKey: openaiKey,
       model: process.env.OPENAI_MODEL || 'gpt-4-turbo',
-      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '30000', 10)
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
 
@@ -236,7 +236,7 @@ export const CATALOG_MODE = getCatalogMode();
 export function getPerplexityConfig() {
   const apiKey = process.env.PPLX_API_KEY;
   const model = process.env.PPLX_MODEL || 'sonar';
-  const timeoutMs = parseInt(process.env.PPLX_TIMEOUT_MS || '30000', 10);
+  const timeoutMs = parseInt(process.env.PPLX_TIMEOUT_MS || '60000', 10);
 
   if (!apiKey) {
     logger.warn('[PerplexityConfig] No PPLX_API_KEY set. Perplexity features will be disabled.');
