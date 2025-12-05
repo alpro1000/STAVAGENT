@@ -1,25 +1,23 @@
 /**
  * Multi-Role AI Client
- * Фаза 3: Интеграция с STAVAGENT Multi-Role System
+ * Фаза 3: Интеграция с STAVAGENT Multi-Role System (concrete-agent Core)
  *
- * Provides access to 6 specialist AI roles:
+ * Provides access to 6 specialist AI roles via concrete-agent API:
  * - Document Validator
  * - Structural Engineer
  * - Concrete Specialist
  * - Cost Estimator
  * - Standards Checker
  * - Project Manager
+ *
+ * concrete-agent is the CORE of STAVAGENT system.
+ * All kiosks (URS Matcher, Monolit-Planner, etc.) connect to it.
  */
 
-import { spawn } from 'child_process';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { logger } from '../utils/logger.js';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-
-// Path to STAVAGENT concrete-agent Python API
-const STAVAGENT_API_BASE = process.env.STAVAGENT_API_URL || 'http://localhost:8000';
+// Path to concrete-agent Core API (STAVAGENT ЯДРО)
+const STAVAGENT_API_BASE = process.env.STAVAGENT_API_URL || 'https://concrete-agent.onrender.com';
 
 /**
  * Ask question to Multi-Role AI System
@@ -337,3 +335,12 @@ function extractSelectedCode(answer, candidates) {
     curr.confidence > best.confidence ? curr : best
   , candidates[0]);
 }
+
+// Default export for compatibility with Orchestrator
+export default {
+  checkMultiRoleAvailability,
+  askMultiRole,
+  validateBoqBlock,
+  verifyUrsCode,
+  resolveUrsConflict
+};
