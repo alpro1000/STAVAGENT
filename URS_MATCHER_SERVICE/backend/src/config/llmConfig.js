@@ -452,3 +452,99 @@ export function compareModels(model1, model2) {
     }
   };
 }
+
+// ============================================================================
+// TASK-BASED MODEL ROUTING
+// ============================================================================
+
+/**
+ * Task types for model routing
+ */
+const TASK_TYPES = {
+  KEYWORD_GENERATION: 'keyword_generation',  // Fast, cheap - extract keywords
+  TRANSLATION: 'translation',                 // Fast - translate text
+  BLOCK_ANALYSIS: 'block_analysis',           // Quality - analyze work blocks
+  URS_SELECTION: 'urs_selection',             // Quality - select URS codes
+  VALIDATION: 'validation',                   // Different POV - validate results
+  NORMS_INTERPRETATION: 'norms_interpretation' // Quality - interpret standards
+};
+
+/**
+ * Model recommendations per task type
+ * Priority order: [best, fallback1, fallback2]
+ */
+const TASK_MODEL_ROUTING = {
+  [TASK_TYPES.KEYWORD_GENERATION]: {
+    priority: ['gemini', 'openai', 'claude'],
+    reason: 'Fast and cheap for simple extraction',
+    preferModel: 'gemini-2.0-flash'
+  },
+  [TASK_TYPES.TRANSLATION]: {
+    priority: ['gemini', 'claude', 'openai'],
+    reason: 'Fast translation with good quality',
+    preferModel: 'gemini-2.0-flash'
+  },
+  [TASK_TYPES.BLOCK_ANALYSIS]: {
+    priority: ['claude', 'openai', 'gemini'],
+    reason: 'Complex reasoning requires best quality',
+    preferModel: 'claude-sonnet-4-5-20250929'
+  },
+  [TASK_TYPES.URS_SELECTION]: {
+    priority: ['claude', 'openai', 'gemini'],
+    reason: 'Critical decision - needs expert reasoning',
+    preferModel: 'claude-sonnet-4-5-20250929'
+  },
+  [TASK_TYPES.VALIDATION]: {
+    priority: ['openai', 'claude', 'gemini'],
+    reason: 'Different POV for validation',
+    preferModel: 'gpt-4-turbo'
+  },
+  [TASK_TYPES.NORMS_INTERPRETATION]: {
+    priority: ['claude', 'openai', 'gemini'],
+    reason: 'Technical norms require precise understanding',
+    preferModel: 'claude-sonnet-4-5-20250929'
+  }
+};
+
+/**
+ * Get best model configuration for a specific task
+ * @param {string} taskType - Type of task (from TASK_TYPES)
+ * @returns {Object} Model configuration for the task
+ */
+export function getModelForTask(taskType) {
+  const routing = TASK_MODEL_ROUTING[taskType];
+  if (!routing) {
+    logger.warn(`[ModelRouter] Unknown task type: ${taskType}, using default`);
+    return getLLMConfig();
+  }
+
+  const availableProviders = getAvailableProviders();
+
+  // Find first available provider from priority list
+  for (const provider of routing.priority) {
+    if (availableProviders[provider]?.enabled) {
+      const config = availableProviders[provider];
+
+      // Override model if preferred model matches provider
+      if (routing.preferModel && getModelPricing(routing.preferModel)?.provider === provider) {
+        config.model = routing.preferModel;
+      }
+
+      logger.info(`[ModelRouter] Task "${taskType}" → ${provider}/${config.model} (${routing.reason})`);
+      return config;
+    }
+  }
+
+  // Fallback to default config
+  logger.warn(`[ModelRouter] No provider available for task "${taskType}", using default`);
+  return getLLMConfig();
+}
+
+/**
+ * Get all task types
+ */
+export function getTaskTypes() {
+  return TASK_TYPES;
+}
+
+export const TASK_ROUTING = TASK_MODEL_ROUTING;

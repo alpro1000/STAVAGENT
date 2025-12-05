@@ -7,7 +7,10 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { getSystemPrompt, createMatchUrsItemPrompt } from '../prompts/ursMatcher.prompt.js';
-import { getLLMConfig, createLLMClient, getAvailableProviders, getFallbackChain } from '../config/llmConfig.js';
+import { getLLMConfig, createLLMClient, getAvailableProviders, getFallbackChain, getModelForTask, getTaskTypes } from '../config/llmConfig.js';
+
+// Task types for model routing
+const TASKS = getTaskTypes();
 
 // Global LLM client instance (lazy-loaded)
 let llmClient = null;
@@ -239,6 +242,135 @@ async function callLLMProvider(provider, systemPrompt, userPrompt, controller) {
     return await callOpenAIAPI(systemPrompt, userPrompt, controller);
   }
 }
+
+/**
+ * Call LLM with task-based model routing
+ * Automatically selects the best model for the task type
+ *
+ * @param {string} taskType - Type of task (from TASKS)
+ * @param {string} systemPrompt - System prompt
+ * @param {string} userPrompt - User message
+ * @param {number} timeoutMs - Optional custom timeout
+ * @returns {Promise<string>} Response from best available model
+ */
+export async function callLLMForTask(taskType, systemPrompt, userPrompt, timeoutMs = null) {
+  // Get best model for this task
+  const taskConfig = getModelForTask(taskType);
+
+  if (!taskConfig || !taskConfig.enabled) {
+    logger.warn(`[LLMClient] No model available for task "${taskType}"`);
+    throw new Error(`No model available for task: ${taskType}`);
+  }
+
+  // Create temporary client for this task
+  const taskClient = createLLMClient(taskConfig);
+  const effectiveTimeout = timeoutMs || taskConfig.timeoutMs;
+
+  logger.info(`[LLMClient] Task "${taskType}" → ${taskClient.provider}/${taskClient.model}`);
+
+  // Call with task-specific model
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), effectiveTimeout);
+
+  try {
+    if (taskClient.provider === 'claude') {
+      return await callClaudeAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+    } else if (taskClient.provider === 'gemini') {
+      return await callGeminiAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+    } else {
+      return await callOpenAIAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+/**
+ * Call Claude API with specific client config
+ */
+async function callClaudeAPIWithClient(client, systemPrompt, userPrompt, controller) {
+  const response = await axios.post(
+    client.apiUrl || 'https://api.anthropic.com/v1/messages',
+    {
+      model: client.model,
+      max_tokens: 4096,
+      system: systemPrompt,
+      messages: [{ role: 'user', content: userPrompt }]
+    },
+    {
+      headers: client.headers || {
+        'x-api-key': client.apiKey,
+        'anthropic-version': '2023-06-01',
+        'content-type': 'application/json'
+      },
+      timeout: client.timeoutMs,
+      signal: controller.signal
+    }
+  );
+
+  return response.data.content[0].text;
+}
+
+/**
+ * Call Gemini API with specific client config
+ */
+async function callGeminiAPIWithClient(client, systemPrompt, userPrompt, controller) {
+  const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${client.model}:generateContent`;
+  const headers = {
+    'content-type': 'application/json',
+    'x-goog-api-key': client.apiKey
+  };
+
+  const response = await axios.post(
+    apiUrl,
+    {
+      systemInstruction: { parts: [{ text: systemPrompt }] },
+      contents: { parts: [{ text: userPrompt }] },
+      generationConfig: {
+        temperature: 0.3,
+        maxOutputTokens: 4096
+      }
+    },
+    {
+      headers: headers,
+      timeout: client.timeoutMs,
+      signal: controller.signal
+    }
+  );
+
+  return response.data.candidates[0].content.parts[0].text;
+}
+
+/**
+ * Call OpenAI API with specific client config
+ */
+async function callOpenAIAPIWithClient(client, systemPrompt, userPrompt, controller) {
+  const response = await axios.post(
+    client.apiUrl || 'https://api.openai.com/v1/chat/completions',
+    {
+      model: client.model,
+      messages: [
+        { role: 'system', content: systemPrompt },
+        { role: 'user', content: userPrompt }
+      ],
+      temperature: 0.3,
+      max_tokens: 4096
+    },
+    {
+      headers: client.headers || {
+        'authorization': `Bearer ${client.apiKey}`,
+        'content-type': 'application/json'
+      },
+      timeout: client.timeoutMs,
+      signal: controller.signal
+    }
+  );
+
+  return response.data.choices[0].message.content;
+}
+
+// Export task types for external use
+export { TASKS };
 
 /**
  * Call Claude API (Anthropic)
