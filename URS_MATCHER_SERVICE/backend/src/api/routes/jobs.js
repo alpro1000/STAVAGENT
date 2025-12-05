@@ -774,9 +774,10 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
       logger.info(`[JOBS] Block analysis completed for: ${blockName}`);
 
       // Phase 3: Multi-Role validation + Advanced Orchestrator (if available)
+      // Using local Multi-Role implementation (LLM-based, no external API required)
       try {
         const { checkMultiRoleAvailability, validateBoqBlock } =
-          await import('../../services/multiRoleClient.js');
+          await import('../../services/multiRoleLocalClient.js');
 
         const multiRoleAvailable = await checkMultiRoleAvailability();
 
@@ -835,7 +836,7 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
               logger.info(`[JOBS] 🔄 Cache MISS for block: ${blockName}, running orchestrator...`);
               addTimerMarker(orchestratorTimer, 'orchestrator_start');
 
-              const multiRoleClient = (await import('../../services/multiRoleClient.js')).default;
+              const multiRoleClient = (await import('../../services/multiRoleLocalClient.js')).default;
               const orchestrator = new Orchestrator(multiRoleClient);
               orchestratorResult = await orchestrator.analyzeBlock(boqBlock, projectContext);
 
