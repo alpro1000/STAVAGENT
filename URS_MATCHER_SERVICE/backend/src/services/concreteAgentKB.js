@@ -262,6 +262,174 @@ export function getKBStatus() {
       csnStandards: kbCache.csnStandards !== null,
       concreteClasses: Object.keys(kbCache.concreteClasses || {}).length,
       exposureClasses: Object.keys(kbCache.exposureClasses || {}).length
-    }
+    },
+    learned_mappings: getLearnedMappingsCount()
   };
+}
+
+// ============================================================================
+// KNOWLEDGE ACCUMULATION (LEARNING)
+// ============================================================================
+
+// Path for learned mappings (local storage)
+const LEARNED_MAPPINGS_PATH = path.join(__dirname, '../data/learned_mappings.json');
+
+// In-memory cache for learned mappings
+let learnedMappings = null;
+let learnedMappingsLoadedAt = null;
+
+/**
+ * Load learned URS mappings from file
+ */
+function loadLearnedMappings() {
+  if (learnedMappings && learnedMappingsLoadedAt && Date.now() - learnedMappingsLoadedAt < 60000) {
+    return learnedMappings;
+  }
+
+  try {
+    if (fs.existsSync(LEARNED_MAPPINGS_PATH)) {
+      const content = fs.readFileSync(LEARNED_MAPPINGS_PATH, 'utf-8');
+      learnedMappings = JSON.parse(content);
+      learnedMappingsLoadedAt = Date.now();
+      logger.info(`[LearnedKB] Loaded ${Object.keys(learnedMappings).length} learned mappings`);
+    } else {
+      learnedMappings = {};
+      learnedMappingsLoadedAt = Date.now();
+    }
+  } catch (error) {
+    logger.warn(`[LearnedKB] Failed to load learned mappings: ${error.message}`);
+    learnedMappings = {};
+  }
+
+  return learnedMappings;
+}
+
+/**
+ * Save learned mappings to file
+ */
+function saveLearnedMappings() {
+  try {
+    // Ensure data directory exists
+    const dataDir = path.dirname(LEARNED_MAPPINGS_PATH);
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+
+    fs.writeFileSync(LEARNED_MAPPINGS_PATH, JSON.stringify(learnedMappings, null, 2), 'utf-8');
+    logger.info(`[LearnedKB] Saved ${Object.keys(learnedMappings).length} learned mappings`);
+  } catch (error) {
+    logger.error(`[LearnedKB] Failed to save learned mappings: ${error.message}`);
+  }
+}
+
+/**
+ * Get count of learned mappings
+ */
+function getLearnedMappingsCount() {
+  loadLearnedMappings();
+  return Object.keys(learnedMappings || {}).length;
+}
+
+/**
+ * Create a normalized key from work description
+ * @param {string} description - Work description
+ * @returns {string} Normalized key
+ */
+function normalizeForKey(description) {
+  return description
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\s]/gu, '') // Remove special chars but keep letters
+    .replace(/\s+/g, '_')
+    .substring(0, 100);
+}
+
+/**
+ * Learn a confirmed URS mapping
+ * Called when user confirms or validates a mapping
+ *
+ * @param {string} inputDescription - Original work description
+ * @param {Object} ursMapping - Selected URS mapping { urs_code, urs_name, unit, confidence }
+ * @param {string} source - Source of confirmation ('user', 'auto', 'feedback')
+ */
+export function learnMapping(inputDescription, ursMapping, source = 'auto') {
+  loadLearnedMappings();
+
+  const key = normalizeForKey(inputDescription);
+
+  // Check if we already have this mapping
+  const existing = learnedMappings[key];
+
+  if (existing) {
+    // Update usage count and confidence
+    existing.usage_count = (existing.usage_count || 0) + 1;
+    existing.last_used = new Date().toISOString();
+
+    // If same code, increase confidence
+    if (existing.urs_code === ursMapping.urs_code) {
+      existing.confidence = Math.min(0.99, (existing.confidence || 0.7) + 0.05);
+    }
+  } else {
+    // Add new mapping
+    learnedMappings[key] = {
+      input_description: inputDescription,
+      urs_code: ursMapping.urs_code,
+      urs_name: ursMapping.urs_name,
+      unit: ursMapping.unit,
+      confidence: ursMapping.confidence || 0.7,
+      source: source,
+      created_at: new Date().toISOString(),
+      last_used: new Date().toISOString(),
+      usage_count: 1
+    };
+  }
+
+  // Save immediately
+  saveLearnedMappings();
+
+  logger.info(`[LearnedKB] Learned mapping: "${inputDescription.substring(0, 30)}..." → ${ursMapping.urs_code}`);
+}
+
+/**
+ * Look up a work description in learned mappings
+ * Returns cached URS mapping if found with high confidence
+ *
+ * @param {string} description - Work description
+ * @returns {Object|null} Learned mapping or null
+ */
+export function lookupLearnedMapping(description) {
+  loadLearnedMappings();
+
+  const key = normalizeForKey(description);
+  const mapping = learnedMappings[key];
+
+  if (mapping && mapping.confidence >= 0.7) {
+    logger.info(`[LearnedKB] Cache hit: "${description.substring(0, 30)}..." → ${mapping.urs_code} (confidence: ${mapping.confidence})`);
+    return {
+      urs_code: mapping.urs_code,
+      urs_name: mapping.urs_name,
+      unit: mapping.unit,
+      confidence: mapping.confidence,
+      source: 'learned_kb',
+      usage_count: mapping.usage_count
+    };
+  }
+
+  return null;
+}
+
+/**
+ * Get all learned mappings for export/review
+ */
+export function getLearnedMappings() {
+  loadLearnedMappings();
+  return { ...learnedMappings };
+}
+
+/**
+ * Clear learned mappings (for testing/reset)
+ */
+export function clearLearnedMappings() {
+  learnedMappings = {};
+  saveLearnedMappings();
+  logger.info('[LearnedKB] Cleared all learned mappings');
 }

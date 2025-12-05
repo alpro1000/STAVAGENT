@@ -9,6 +9,7 @@ import { normalizeText } from '../utils/textNormalizer.js';
 import { logger } from '../utils/logger.js';
 import { CATALOG_MODE } from '../config/llmConfig.js';
 import { searchUrsSite } from './perplexityClient.js';
+import { lookupLearnedMapping, learnMapping } from './concreteAgentKB.js';
 
 const CONFIDENCE_THRESHOLDS = {
   EXACT: 0.95,
@@ -26,14 +27,29 @@ export async function matchUrsItems(text, quantity = 0, unit = 'ks') {
       return [];
     }
 
+    // Check learned mappings first (knowledge accumulation)
+    const learnedMapping = lookupLearnedMapping(text);
+    if (learnedMapping) {
+      logger.info(`[URSMatcher] Using learned mapping for: "${text.substring(0, 30)}..."`);
+      return [learnedMapping];
+    }
+
     logger.debug(`[URSMatcher] Matching (${CATALOG_MODE}): "${text.substring(0, 50)}..."`);
 
     // Route to appropriate matcher based on catalog mode
+    let results;
     if (CATALOG_MODE === 'perplexity_only') {
-      return await matchUrsItemsPerplexity(text);
+      results = await matchUrsItemsPerplexity(text);
     } else {
-      return await matchUrsItemsLocal(text);
+      results = await matchUrsItemsLocal(text);
     }
+
+    // Auto-learn high-confidence matches
+    if (results.length > 0 && results[0].confidence >= 0.85) {
+      learnMapping(text, results[0], 'auto');
+    }
+
+    return results;
 
   } catch (error) {
     logger.error(`[URSMatcher] Error: ${error.message}`);
