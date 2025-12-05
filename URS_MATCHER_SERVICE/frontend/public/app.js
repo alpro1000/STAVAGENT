@@ -728,8 +728,9 @@ exportBtn.addEventListener('click', async () => {
       });
     }
 
-    // Create download
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    // Create download with UTF-8 BOM for Excel compatibility
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.setAttribute('href', URL.createObjectURL(blob));
     link.setAttribute('download', `urs_results_${new Date().getTime()}.csv`);
