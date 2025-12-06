@@ -1,186 +1,177 @@
-# NEXT SESSION TASKS
+# 📋 ЗАДАНИЕ НА СЛЕДУЮЩУЮ СЕССИЮ
 
-**Created:** 2025-12-06
-**Service:** URS_MATCHER_SERVICE
-**Branch:** `claude/urs-matcher-architecture-012wZshjJSLtv2m62cgd6D1d`
-
----
-
-## Session Summary (Previous)
-
-### Completed Tasks
-- [x] Fixed LLM timeout (30s → 90s) in `llmConfig.js`
-- [x] Fixed AbortController bug in `llmClient.js` (each provider gets own controller)
-- [x] Connected Multi-Role to `https://concrete-agent.onrender.com`
-- [x] Created local Multi-Role fallback (`multiRoleLocalClient.js`)
-- [x] Full repository revision and documentation
-- [x] Created root `CLAUDE.md` with system architecture
-
-### Commits
-```
-1d00228 FIX: Connect Multi-Role to concrete-agent.onrender.com (Core)
-4e11afa FEAT: Add local Multi-Role AI validation (no external API required)
-517fe95 FIX: LLM timeout issues causing empty results on Render
-```
+**Дата создания:** 2025-12-06
+**Ветка:** `claude/urs-matcher-architecture-012wZshjJSLtv2m62cgd6D1d`
+**Сервис:** URS_MATCHER_SERVICE + STAVAGENT System
 
 ---
 
-## Tasks for Next Session
+## 🎯 ГЛАВНАЯ ЗАДАЧА
 
-### Priority 1: Deploy and Verify Fixes
+**Задеплоить исправления на Render и проверить работу URS Matcher с Multi-Role API**
 
-**Goal:** Verify all fixes work on production (Render)
+---
+
+## ✅ ЧТО СДЕЛАНО В ЭТОЙ СЕССИИ
+
+| Коммит | Описание |
+|--------|----------|
+| `517fe95` | FIX: LLM timeout 30s→90s + исправлен баг AbortController |
+| `4e11afa` | FEAT: Локальный Multi-Role fallback (без внешнего API) |
+| `1d00228` | FIX: Multi-Role подключен к concrete-agent.onrender.com |
+| `7789099` | DOCS: Создан CLAUDE.md и NEXT_SESSION.md |
+
+**Исправленные проблемы:**
+1. ❌ LLM timeout был 30s → ✅ Теперь 90s
+2. ❌ AbortController отменял все провайдеры → ✅ Каждый провайдер получает свой controller
+3. ❌ Multi-Role указывал на localhost → ✅ Указывает на `https://concrete-agent.onrender.com`
+
+---
+
+## 📝 ЗАДАЧИ НА СЛЕДУЮЩУЮ СЕССИЮ
+
+### ЗАДАЧА 1: Мерж в main и деплой
+**Приоритет:** 🔴 Критический
 
 ```bash
-# 1. Merge branch to main
+# Шаг 1: Переключиться на main
 git checkout main
+
+# Шаг 2: Замержить ветку
 git merge claude/urs-matcher-architecture-012wZshjJSLtv2m62cgd6D1d
+
+# Шаг 3: Запушить в main
 git push origin main
 
-# 2. Check Render deployment
-# URL: https://urs-matcher-service.onrender.com
-
-# 3. Test with real BOQ file
-# Expected: Blocks with items (not just headers)
+# Шаг 4: Проверить деплой на Render
+# URL: https://urs-matcher-service.onrender.com/health
 ```
 
-**Verification Checklist:**
-- [ ] LLM calls complete without timeout
-- [ ] Fallback chain works (Claude → Gemini → OpenAI)
-- [ ] Multi-Role API calls reach concrete-agent
-- [ ] Results include item details (not just block headers)
+**Ожидаемый результат:** Render автоматически задеплоит новую версию
 
 ---
 
-### Priority 2: Check Multi-Role Integration Logs
+### ЗАДАЧА 2: Проверить логи на Render
+**Приоритет:** 🔴 Критический
 
-**Goal:** Verify Multi-Role API is actually being called
+**Что искать в логах:**
 
-**What to check in Render logs:**
+✅ **Хорошие логи:**
 ```
+[INFO] [LLMClient] Using provider: claude
 [INFO] [JOBS] Multi-Role API available: true
-[INFO] [JOBS] Multi-Role validation result: ...
+[INFO] [JOBS] Block processed with X items
 ```
 
-**If logs show:** `Multi-Role API not available`
-- Check `STAVAGENT_API_URL` environment variable on Render
-- Should be: `https://concrete-agent.onrender.com`
-
----
-
-### Priority 3: Test End-to-End Flow
-
-**Test Scenario:**
-1. Upload real BOQ Excel file (e.g., bridge estimate)
-2. Wait for processing (should be < 2 minutes with 90s timeout)
-3. Verify results:
-   - Blocks have items
-   - Items have URS codes
-   - Confidence scores present
-   - Multi-Role validation applied
-
-**Test Files:**
-- Use Czech construction BOQ (Výkaz výměr)
-- Test with TŘÍDNÍK grouping enabled
-
----
-
-### Priority 4: Performance Optimization (If Needed)
-
-**If timeouts still occur:**
-1. Consider increasing `LLM_TIMEOUT_MS` to 120s
-2. Add request chunking for large BOQ files
-3. Implement progress updates via WebSocket
-
-**If Multi-Role slow:**
-1. Add caching for repeated queries
-2. Consider batch validation instead of per-item
-
----
-
-### Priority 5: Documentation Updates
-
-**Files to update after verification:**
-- [ ] `/URS_MATCHER_SERVICE/DEPLOYMENT.md` - Add production config
-- [ ] `/URS_MATCHER_SERVICE/README.md` - Update with current features
-- [ ] `/CLAUDE.md` - Update status after deployment
-
----
-
-## Known Issues to Monitor
-
-### Issue 1: LLM Provider Availability
-- **Symptom:** All providers fail
-- **Solution:** Check API keys, rate limits
-- **Log pattern:** `All LLM providers failed or unavailable`
-
-### Issue 2: Multi-Role API Unreachable
-- **Symptom:** Validation skipped
-- **Solution:** Check concrete-agent health, network
-- **Log pattern:** `Multi-Role API not available`
-
-### Issue 3: Frontend Timeout
-- **Symptom:** UI shows error before backend completes
-- **Solution:** Frontend timeout is 120s in `app.js`
-- **Location:** `frontend/public/app.js` line with `setTimeout`
-
----
-
-## Architecture Notes for Next Session
-
-### URS_MATCHER_SERVICE Data Flow
+❌ **Плохие логи (если увидишь - проблема):**
 ```
-Upload Excel → Parse → Group by TŘÍDNÍK
-                          │
-                          ▼
-                   For each block:
-                   ┌─────────────────────────────┐
-                   │ 1. Search URS candidates    │
-                   │    (ursMatcher.js)          │
-                   │                             │
-                   │ 2. LLM Re-ranking           │
-                   │    (llmClient.js)           │
-                   │                             │
-                   │ 3. Multi-Role Validation    │
-                   │    (multiRoleClient.js)     │
-                   │    → concrete-agent API     │
-                   └─────────────────────────────┘
-                          │
-                          ▼
-                   Save to SQLite
-                          │
-                          ▼
-                   Return results to Frontend
-```
-
-### Key Files to Remember
-```
-backend/src/config/llmConfig.js     ← Timeout settings
-backend/src/services/llmClient.js   ← LLM fallback chain
-backend/src/services/multiRoleClient.js ← CORE integration
-backend/src/api/routes/jobs.js      ← Main processing logic
+[ERROR] Claude API call failed: timeout of 30000ms exceeded  ← Старый timeout!
+[WARN] All LLM providers failed: canceled                   ← AbortController баг!
+[INFO] Multi-Role API not available                         ← Неправильный URL!
 ```
 
 ---
 
-## Contact Points
+### ЗАДАЧА 3: Тест с реальным файлом
+**Приоритет:** 🟡 Важный
 
-- **concrete-agent CORE:** `https://concrete-agent.onrender.com`
-- **Multi-Role API:** `POST /api/v1/multi-role/ask`
-- **Health check:** `GET /health`
+**Сценарий теста:**
+1. Открыть https://urs-matcher-service.onrender.com
+2. Загрузить Excel файл с чешской сметой (Výkaz výměr)
+3. Дождаться обработки (должно быть < 2 минут)
+4. Проверить результат:
+   - [ ] Есть блоки (TŘÍDNÍK группы)
+   - [ ] Внутри блоков есть позиции с URS кодами
+   - [ ] НЕ пустые блоки (только заголовки без позиций)
 
----
-
-## Session Start Checklist
-
-When starting the next session:
-
-1. [ ] Read `/CLAUDE.md` for full system context
-2. [ ] Check git status and current branch
-3. [ ] Review Render deployment logs
-4. [ ] Check if previous commits are deployed
-5. [ ] Run tests: `npm test` in URS_MATCHER_SERVICE
+**Если результат пустой:**
+- Проверить логи Render
+- Возможно нужно увеличить timeout до 120s
 
 ---
 
-**Good luck with the next session!**
+### ЗАДАЧА 4: Проверить Multi-Role интеграцию
+**Приоритет:** 🟡 Важный
+
+**Тест Multi-Role API:**
+```bash
+# Проверить что concrete-agent доступен
+curl https://concrete-agent.onrender.com/health
+
+# В логах URS Matcher должно быть:
+[INFO] Multi-Role validation for block: ЗЕМЛЯНЫЕ РАБОТЫ
+[INFO] Multi-Role response: {...}
+```
+
+**Если Multi-Role недоступен:**
+1. Проверить `STAVAGENT_API_URL` в Render Environment Variables
+2. Должно быть: `https://concrete-agent.onrender.com`
+
+---
+
+### ЗАДАЧА 5: Обновить документацию (если всё работает)
+**Приоритет:** 🟢 Низкий
+
+После успешного деплоя обновить:
+- [ ] `/URS_MATCHER_SERVICE/README.md` - актуальные features
+- [ ] `/CLAUDE.md` - статус "Deployed and working"
+- [ ] Удалить `/NEXT_SESSION.md` или обновить с новыми задачами
+
+---
+
+## 🔧 КЛЮЧЕВЫЕ ФАЙЛЫ ДЛЯ ОТЛАДКИ
+
+| Файл | Что проверять |
+|------|---------------|
+| `backend/src/config/llmConfig.js` | `LLM_TIMEOUT_MS: 90000` |
+| `backend/src/services/llmClient.js` | Каждый провайдер имеет свой AbortController |
+| `backend/src/services/multiRoleClient.js` | `STAVAGENT_API_BASE = 'https://concrete-agent.onrender.com'` |
+| `backend/src/api/routes/jobs.js` | Импорт из `multiRoleClient.js` (не `multiRoleLocalClient.js`) |
+
+---
+
+## 🌐 PRODUCTION URLs
+
+| Сервис | URL | Health Check |
+|--------|-----|--------------|
+| URS Matcher | https://urs-matcher-service.onrender.com | `/health` |
+| concrete-agent (CORE) | https://concrete-agent.onrender.com | `/health` |
+| Monolit-Planner | https://monolit-planner-frontend.onrender.com | - |
+
+---
+
+## ⚠️ ВОЗМОЖНЫЕ ПРОБЛЕМЫ
+
+### Проблема: Всё ещё timeout
+**Симптом:** `timeout of 90000ms exceeded`
+**Решение:** Увеличить до 120s в `llmConfig.js`:
+```javascript
+const timeoutMs = parseInt(process.env.LLM_TIMEOUT_MS || '120000', 10);
+```
+
+### Проблема: Multi-Role API not available
+**Симптом:** Валидация пропускается
+**Решение:** Добавить в Render Environment:
+```
+STAVAGENT_API_URL=https://concrete-agent.onrender.com
+```
+
+### Проблема: Все LLM провайдеры failed
+**Симптом:** `All LLM providers failed or unavailable`
+**Решение:** Проверить API ключи в Render Environment:
+- `ANTHROPIC_API_KEY`
+- `GOOGLE_AI_KEY`
+- `OPENAI_API_KEY`
+
+---
+
+## 📚 НАЧНИ СЕССИЮ С:
+
+1. **Прочитай `/CLAUDE.md`** - полный контекст системы STAVAGENT
+2. **Проверь git status** - какая ветка, есть ли незакоммиченное
+3. **Проверь Render логи** - что происходило с последнего деплоя
+4. **Запусти тесты** - `cd URS_MATCHER_SERVICE && npm test`
+
+---
+
+**Удачи в следующей сессии! 🚀**
