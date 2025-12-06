@@ -42,6 +42,7 @@ function initializeLLMClient() {
 
 /**
  * Get next available provider from fallback chain
+ * Skips the primary provider (already tried) and returns next available
  * @returns {Object|null} Next provider config or null if none available
  */
 function getNextProvider() {
@@ -51,6 +52,12 @@ function getNextProvider() {
 
   const providerName = fallbackChain[currentProviderIndex];
   currentProviderIndex++;
+
+  // Skip if this is the same as the primary provider (already tried)
+  if (llmConfig && providerName === llmConfig.provider) {
+    logger.debug(`[LLMClient] Skipping ${providerName} - already tried as primary`);
+    return getNextProvider();
+  }
 
   const provider = availableProviders[providerName];
   if (provider && provider.enabled) {
@@ -232,6 +239,9 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
 
 /**
  * Call specific LLM provider
+ * IMPORTANT: Uses the provider-specific client, NOT the global llmClient!
+ * This ensures fallback providers use their own API URLs and models.
+ *
  * @param {Object} provider - Provider client configuration
  * @param {string} systemPrompt - System prompt
  * @param {string} userPrompt - User message
@@ -239,13 +249,14 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
  * @returns {Promise<string>} Response from provider
  */
 async function callLLMProvider(provider, systemPrompt, userPrompt, controller) {
+  // CRITICAL: Use the WithClient versions to ensure correct API URL and model!
   if (provider.provider === 'claude') {
-    return await callClaudeAPI(systemPrompt, userPrompt, controller);
+    return await callClaudeAPIWithClient(provider, systemPrompt, userPrompt, controller);
   } else if (provider.provider === 'gemini') {
-    return await callGeminiAPI(systemPrompt, userPrompt, controller);
+    return await callGeminiAPIWithClient(provider, systemPrompt, userPrompt, controller);
   } else {
     // OpenAI (default)
-    return await callOpenAIAPI(systemPrompt, userPrompt, controller);
+    return await callOpenAIAPIWithClient(provider, systemPrompt, userPrompt, controller);
   }
 }
 

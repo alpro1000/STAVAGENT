@@ -49,9 +49,9 @@ export async function askMultiRole(question, options = {}) {
   };
 
   try {
-    // Check if API is available (timeout quickly if not)
+    // Use AbortController for timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout for health check
+    const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for API call
 
     // Call STAVAGENT Multi-Role API via HTTP
     const response = await fetch(`${STAVAGENT_API_BASE}/api/v1/multi-role/ask`, {
@@ -257,19 +257,36 @@ Provide:
 
 /**
  * Check if STAVAGENT Multi-Role API is available
+ * Uses /health endpoint (not /api/v1/health) as per STAVAGENT API spec
  *
  * @returns {Promise<boolean>} True if available
  */
 export async function checkMultiRoleAvailability() {
   try {
-    const response = await fetch(`${STAVAGENT_API_BASE}/api/v1/health`, {
+    // Use AbortController for timeout (fetch doesn't support timeout option)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout (Render services may need wake-up time)
+
+    const response = await fetch(`${STAVAGENT_API_BASE}/health`, {
       method: 'GET',
-      timeout: 5000
+      signal: controller.signal
     });
 
-    return response.ok;
+    clearTimeout(timeoutId);
+
+    if (response.ok) {
+      logger.info(`[MULTI-ROLE] API available at ${STAVAGENT_API_BASE}`);
+      return true;
+    }
+
+    logger.warn(`[MULTI-ROLE] API returned status ${response.status}`);
+    return false;
   } catch (error) {
-    logger.warn(`[MULTI-ROLE] API not available: ${error.message}`);
+    if (error.name === 'AbortError') {
+      logger.warn(`[MULTI-ROLE] API health check timed out (10s)`);
+    } else {
+      logger.warn(`[MULTI-ROLE] API not available: ${error.message}`);
+    }
     return false;
   }
 }
