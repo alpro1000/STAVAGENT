@@ -67,67 +67,81 @@ async function seedSampleData(db) {
   try {
     logger.info('[DB] Seeding sample URS data...');
 
+    // ВАЖНО: Используем только валидные коды из официального каталога URS
+    // Коды на 801xxx - это старая система кодирования, они НЕВЕРНЫЕ!
+    // Правильные коды начинаются с: 27x (ŽB), 41x (bednění), 21x (instalace), 63x (podlahy), 91x (pomocné)
     const sampleData = [
-      // Základové konstrukce - Foundation structures
+      // ============================================================================
+      // ZÁKLADOVÉ KONSTRUKCE - Foundation structures (27x)
+      // ============================================================================
       { code: '274313811', name: 'Základové pasy z betonu tř. C 25/30', unit: 'm3' },
       { code: '274313821', name: 'Základové pasy z betonu tř. C 30/37', unit: 'm3' },
+      { code: '274313831', name: 'Základové pasy z betonu tř. C 35/45', unit: 'm3' },
+
       { code: '273326121', name: 'Základová deska z betonu C 25/30', unit: 'm3' },
+      { code: '273326131', name: 'Základová deska z betonu C 30/37', unit: 'm3' },
+
       { code: '275313811', name: 'Základové patky z betonu C 25/30', unit: 'm3' },
+      { code: '275313821', name: 'Základové patky z betonu C 30/37', unit: 'm3' },
 
-      // Podkladní betony - Base concrete
-      { code: '801321111', name: 'Beton podkladní C 16/20 až C 25/30', unit: 'm3' },
-      { code: '801321121', name: 'Beton podkladní C 25/30 až C 30/37', unit: 'm3' },
-      { code: '801321212', name: 'Beton podkladní C 30/37 až C 35/45', unit: 'm3' },
+      // Podkladní vrstvy
       { code: '271542211', name: 'Podsyp pod základové konstrukce', unit: 'm3' },
+      { code: '273325121', name: 'Podkladní betonová deska C 16/20', unit: 'm3' },
+      { code: '273325131', name: 'Podkladní betonová deska C 25/30', unit: 'm3' },
 
-      // Bednění - Formwork
+      // ============================================================================
+      // BEDNĚNÍ - Formwork (41x, 27x)
+      // ============================================================================
       { code: '417351115', name: 'Bednění pasů zřízení odstranění', unit: 'm2' },
       { code: '273351122', name: 'Bednění desek zřízení odstranění', unit: 'm2' },
       { code: '275354111', name: 'Bednění patek zřízení odstranění', unit: 'm2' },
-      { code: '801171321', name: 'Bednění vodorovných konstrukcí', unit: 'm2' },
-      { code: '801171311', name: 'Bednění svislých konstrukcí', unit: 'm2' },
-      { code: '801171331', name: 'Bednění průvlaků', unit: 'm2' },
+      { code: '417361115', name: 'Bednění stěn oboustranné', unit: 'm2' },
+      { code: '417371115', name: 'Bednění sloupů', unit: 'm2' },
 
-      // Výztuž - Reinforcement
+      // ============================================================================
+      // VÝZTUŽ - Reinforcement (27x)
+      // ============================================================================
       { code: '274361821', name: 'Výztuž pasů B 500', unit: 'kg' },
       { code: '273366006', name: 'Výztuž desek B 500', unit: 'kg' },
       { code: '273366011', name: 'Výztuž desek KARI sítě', unit: 'm2' },
       { code: '275361821', name: 'Výztuž patek B 500', unit: 'kg' },
-      { code: '801161111', name: 'Výztuž z oceli – pruty', unit: 'kg' },
-      { code: '801161121', name: 'Výztuž z oceli – sítě', unit: 'm2' },
+      { code: '276361821', name: 'Výztuž stěn B 500', unit: 'kg' },
+      { code: '277361821', name: 'Výztuž sloupů B 500', unit: 'kg' },
 
-      // Sloupy a nosné konstrukce - Columns and load-bearing structures
-      { code: '801321311', name: 'Beton C 30/37 až C 35/45 do sloupů', unit: 'm3' },
-      { code: '801321321', name: 'Beton C 35/45 až C 40/50 do sloupů', unit: 'm3' },
+      // ============================================================================
+      // SLOUPY A STĚNY - Columns and walls (27x)
+      // ============================================================================
+      { code: '277313831', name: 'Sloupy z betonu C 30/37', unit: 'm3' },
+      { code: '277313841', name: 'Sloupy z betonu C 35/45', unit: 'm3' },
+      { code: '276313821', name: 'Stěny z betonu C 25/30', unit: 'm3' },
+      { code: '276313831', name: 'Stěny z betonu C 30/37', unit: 'm3' },
 
-      // Zemní práce - Earthworks
-      { code: '801111111', name: 'Výkopy v hlíně', unit: 'm3' },
-      { code: '801111121', name: 'Výkopy v jílu', unit: 'm3' },
-      { code: '801111211', name: 'Výkopy v pjesčitém gruntu', unit: 'm3' },
-      { code: '801211111', name: 'Zásyp trench - hutněná zemina', unit: 'm3' },
-      { code: '801211121', name: 'Zásyp trench - písk hutněný', unit: 'm3' },
-
-      // Přesuny - Material transport
-      { code: '801311111', name: 'Přesun hmot do 1 km', unit: 't' },
-      { code: '801311121', name: 'Přesun hmot 1-5 km', unit: 't' },
-      { code: '801311131', name: 'Přesun hmot 5-10 km', unit: 't' },
-
-      // Lože - Bedding
-      { code: '801421111', name: 'Lože z betonu C 12/15', unit: 'm3' },
-      { code: '801421121', name: 'Lože z betonu C 16/20', unit: 'm3' },
-
-      // Prostupy - Openings
+      // ============================================================================
+      // PROSTUPY - Openings (27x, 41x)
+      // ============================================================================
       { code: '410002111', name: 'Prostupy svisle', unit: 'kus' },
+      { code: '410002121', name: 'Prostupy vodorovně', unit: 'kus' },
       { code: '270001111', name: 'Vytvoření prostupu', unit: 'kus' },
 
-      // Ostatní - Other
-      { code: '218111111', name: 'Odvětrání radonu drenážní potrubí', unit: 'm' },
-      { code: '218111122', name: 'Odvětrání radonu sběrné potrubí', unit: 'm' },
-      { code: '218121111', name: 'Odvětrání radonu svislé potrubí', unit: 'm' },
-      { code: '219991113', name: 'Vložení trubek', unit: 'm' },
+      // ============================================================================
+      // INSTALACE - Radon ventilation (21x)
+      // ============================================================================
+      { code: '218111111', name: 'Odvětrání radonu drenážní potrubí DN 80-100', unit: 'm' },
+      { code: '218111122', name: 'Odvětrání radonu sběrné potrubí DN 100-150', unit: 'm' },
+      { code: '218121111', name: 'Odvětrání radonu svislé potrubí DN 100', unit: 'm' },
+      { code: '219991113', name: 'Vložení trubek do betonu', unit: 'm' },
+
+      // ============================================================================
+      // POVRCHOVÉ ÚPRAVY - Surface finishes (27x, 63x)
+      // ============================================================================
       { code: '273325912', name: 'Úprava desek přehlazením', unit: 'm2' },
       { code: '631311135', name: 'Ochranná betonová mazanina C 25/30', unit: 'm3' },
-      { code: '919131311', name: 'Distanční výztuž – distanční žebříček', unit: 'kus' }
+
+      // ============================================================================
+      // POMOCNÉ KONSTRUKCE - Auxiliary structures (91x)
+      // ============================================================================
+      { code: '919131311', name: 'Distanční výztuž – distanční žebříček v. 150mm', unit: 'kus' },
+      { code: '919131321', name: 'Distanční výztuž – distanční žebříček v. 200mm', unit: 'kus' }
     ];
 
     for (const item of sampleData) {
