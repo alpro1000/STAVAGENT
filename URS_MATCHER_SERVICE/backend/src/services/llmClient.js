@@ -89,14 +89,15 @@ export async function matchUrsItemWithAI(inputText, quantity, unit, candidates) 
   try {
     initializeLLMClient();
 
-    // If no LLM available or no candidates, return candidates as-is
-    // NOTE: Log explicitly so operators can see when LLM is skipped
-    if (!llmClient || !candidates || candidates.length === 0) {
-      if (!llmClient) {
-        logger.warn('[LLMClient] LLM unavailable (no provider configured) - returning unranked candidates');
-      } else {
-        logger.debug('[LLMClient] No candidates provided - returning unchanged');
-      }
+    // Check candidates first (most common early exit)
+    if (!candidates || candidates.length === 0) {
+      logger.debug('[LLMClient] No candidates provided - returning unchanged');
+      return candidates;
+    }
+
+    // Check LLM availability
+    if (!llmClient) {
+      logger.warn('[LLMClient] LLM unavailable (no provider configured) - returning unranked candidates');
       return candidates;
     }
 
@@ -247,8 +248,9 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
       const timeout = setTimeout(() => controller.abort(), timeoutMs);
       try {
         const result = await callLLMProvider(nextProvider, systemPrompt, userPrompt, controller);
-        llmClient = nextProvider; // Update to use this provider going forward
-        logger.info(`[LLMClient] Switched to ${nextProvider.provider} as primary provider`);
+        // NOTE: Do NOT update global llmClient to prevent race conditions
+        // Each request handles its own fallback chain independently
+        logger.info(`[LLMClient] Fallback to ${nextProvider.provider} succeeded for this request`);
         return result;
       } finally {
         clearTimeout(timeout);
