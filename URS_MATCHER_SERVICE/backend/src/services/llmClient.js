@@ -17,7 +17,7 @@ let llmClient = null;
 let llmConfig = null;
 let availableProviders = null;
 let fallbackChain = null;
-let currentProviderIndex = 0;
+// NOTE: Removed global currentProviderIndex to fix race condition with concurrent requests
 
 /**
  * Initialize LLM client on first use
@@ -41,30 +41,37 @@ function initializeLLMClient() {
 }
 
 /**
- * Get next available provider from fallback chain
- * Skips the primary provider (already tried) and returns next available
- * @returns {Object|null} Next provider config or null if none available
+ * Get provider at specific index from fallback chain
+ * Uses iterative approach (no recursion) and per-request index (no global state)
+ *
+ * @param {number} startIndex - Index to start searching from
+ * @param {string|null} skipProvider - Provider name to skip (usually the primary that already failed)
+ * @returns {{provider: Object|null, nextIndex: number}} Provider config and next index to try
  */
-function getNextProvider() {
-  if (!fallbackChain || currentProviderIndex >= fallbackChain.length) {
-    return null;
+function getProviderAtIndex(startIndex, skipProvider = null) {
+  if (!fallbackChain) {
+    return { provider: null, nextIndex: startIndex };
   }
 
-  const providerName = fallbackChain[currentProviderIndex];
-  currentProviderIndex++;
+  // Iterative search (no recursion to prevent stack overflow)
+  let index = startIndex;
+  while (index < fallbackChain.length) {
+    const providerName = fallbackChain[index];
+    index++;
 
-  // Skip if this is the same as the primary provider (already tried)
-  if (llmConfig && providerName === llmConfig.provider) {
-    logger.debug(`[LLMClient] Skipping ${providerName} - already tried as primary`);
-    return getNextProvider();
+    // Skip if this is the provider we're told to skip (already tried)
+    if (skipProvider && providerName === skipProvider) {
+      logger.debug(`[LLMClient] Skipping ${providerName} - already tried as primary`);
+      continue;
+    }
+
+    const provider = availableProviders[providerName];
+    if (provider && provider.enabled) {
+      return { provider: createLLMClient(provider), nextIndex: index };
+    }
   }
 
-  const provider = availableProviders[providerName];
-  if (provider && provider.enabled) {
-    return createLLMClient(provider);
-  }
-
-  return getNextProvider(); // Try next in chain
+  return { provider: null, nextIndex: index };
 }
 
 /**
@@ -83,8 +90,13 @@ export async function matchUrsItemWithAI(inputText, quantity, unit, candidates) 
     initializeLLMClient();
 
     // If no LLM available or no candidates, return candidates as-is
+    // NOTE: Log explicitly so operators can see when LLM is skipped
     if (!llmClient || !candidates || candidates.length === 0) {
-      logger.debug('[LLMClient] LLM unavailable or no candidates - returning unchanged');
+      if (!llmClient) {
+        logger.warn('[LLMClient] LLM unavailable (no provider configured) - returning unranked candidates');
+      } else {
+        logger.debug('[LLMClient] No candidates provided - returning unchanged');
+      }
       return candidates;
     }
 
@@ -117,9 +129,10 @@ export async function matchUrsItemWithAI(inputText, quantity, unit, candidates) 
     return validMatches;
 
   } catch (error) {
+    // IMPORTANT: Log the error prominently so operators know what's happening
     logger.error(`[LLMClient] Error in matchUrsItemWithAI: ${error.message}`);
-    // Fallback: return original candidates unchanged
-    logger.info('[LLMClient] Falling back to original candidates');
+    logger.warn('[LLMClient] Falling back to original candidates due to error');
+    // Return candidates as fallback for graceful degradation
     return candidates;
   }
 }
@@ -189,7 +202,9 @@ Vrať POUZE odůvodnění, bez jakéhokoli JSON či dalšího textu.`;
 /**
  * Call LLM API with timeout protection and fallback support
  * Tries primary provider, then falls back to alternatives if needed
- * NOTE: Each provider gets its own AbortController to avoid canceling all fallbacks
+ *
+ * IMPORTANT: Uses per-request provider index to avoid race conditions with concurrent requests.
+ * Each provider gets its own AbortController to avoid canceling all fallbacks.
  *
  * @param {string} systemPrompt - System prompt
  * @param {string} userPrompt - User message
@@ -198,6 +213,9 @@ Vrať POUZE odůvodnění, bez jakéhokoli JSON či dalšího textu.`;
  * @throws {Error} if all providers fail
  */
 async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
+  // Track which provider failed as primary (to skip in fallback)
+  const primaryProviderName = llmClient?.provider || null;
+
   // Try current (primary) client with its own abort controller
   if (llmClient) {
     try {
@@ -213,9 +231,16 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
     }
   }
 
-  // Try fallback providers - each gets its own abort controller
-  let nextProvider = getNextProvider();
-  while (nextProvider) {
+  // Try fallback providers - per-request index (no global state = no race condition)
+  let currentIndex = 0;
+  while (currentIndex < (fallbackChain?.length || 0)) {
+    const { provider: nextProvider, nextIndex } = getProviderAtIndex(currentIndex, primaryProviderName);
+    currentIndex = nextIndex;
+
+    if (!nextProvider) {
+      break;
+    }
+
     try {
       logger.info(`[LLMClient] Trying fallback provider: ${nextProvider.provider}`);
       const controller = new AbortController();
@@ -230,7 +255,7 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
       }
     } catch (error) {
       logger.warn(`[LLMClient] Fallback provider ${nextProvider.provider} failed: ${error.message}`);
-      nextProvider = getNextProvider();
+      // Loop continues with updated currentIndex
     }
   }
 
