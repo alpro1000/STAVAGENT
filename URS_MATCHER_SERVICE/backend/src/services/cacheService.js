@@ -116,15 +116,9 @@ export async function initCache() {
     });
 
     cacheClient.on('error', (err) => {
-      logger.error(`[Cache] Redis error: ${err.message}`);
-      if (isProduction) {
-        // Fail hard in production if Redis configured but unavailable
-        throw new Error(`Cache service unavailable in production: ${err.message}`);
-      } else {
-        // Allow fallback only in development
-        logger.warn('[Cache] Falling back to in-memory cache (development only)');
-        cacheClient = inMemoryCache;
-      }
+      // The client will attempt to reconnect automatically based on reconnectStrategy.
+      // We should just log the error and not alter the application state or crash the process.
+      logger.error(`[Cache] Redis client error: ${err.message}`);
     });
 
     await cacheClient.connect();
