@@ -811,8 +811,9 @@ function createFallbackBlockAnalysis(boqBlock, ursCandidates) {
     const candidates = ursCandidates[rowId] || [];
 
     if (candidates.length > 0) {
-      // Sort by score (descending) and take top 1
-      const topCandidate = candidates.sort((a, b) => (b.score || 0) - (a.score || 0))[0];
+      // Sort by score (descending) without mutating the original array
+      const sortedCandidates = [...candidates].sort((a, b) => (b.score || 0) - (a.score || 0));
+      const topCandidate = sortedCandidates[0];
 
       items.push({
         row_id: rowId,
@@ -824,7 +825,7 @@ function createFallbackBlockAnalysis(boqBlock, ursCandidates) {
         },
         confidence_score: Math.round((topCandidate.score || 0) * 100) / 100,
         reasoning: `Automatický výběr top kandidáta (score: ${topCandidate.score || 0}). LLM nedostupný.`,
-        alternative_codes: candidates.slice(1, 3).map(c => ({
+        alternative_codes: sortedCandidates.slice(1, 3).map(c => ({
           urs_code: c.urs_code,
           urs_name: c.urs_name,
           score: c.score || 0
