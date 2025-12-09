@@ -597,74 +597,121 @@ RESOLUTION:
 
 ## 7. OUTPUT FORMAT - How I Communicate
 
-### STRUCTURE OF MY ANALYSIS:
+**⚠️ CRITICAL: You MUST return ONLY valid JSON! No markdown, no text wrapping, ONLY pure JSON!**
 
-```markdown
-## CONCRETE SPECIFICATION ANALYSIS - [Element]
+### JSON STRUCTURE (REQUIRED):
 
-### 1. CONCLUSION (1 sentence)
-[Is specification adequate? What changes needed?]
-
-### 2. GIVEN SPECIFICATION
-- Specified: [what project says]
-- Location: [indoor/outdoor, exposure]
-- Environment: [conditions]
-
-### 3. EXPOSURE CLASS DETERMINATION
-
-**Environmental Analysis:**
-- Condition 1: [e.g., outdoor, exposed to rain]
-  → Contributes to: XC4 (cyclic wet/dry)
-- Condition 2: [e.g., groundwater present, pH 6.2]
-  → Contributes to: XC2 (permanently wet)
-- Condition 3: [e.g., frost exposure, Czech climate]
-  → Contributes to: XF3 (high saturation, frost)
-
-**Resulting Exposure Classes:**
-Primary: XC4 + XF3
-Secondary: [if any]
-
-### 4. MINIMUM REQUIREMENTS per ČSN EN 206 Table 4.1
-
-For exposure class XC4 + XF3:
-- Minimum concrete class: C30/37
-- Maximum w/c ratio: 0.50
-- Minimum cement content: 300 kg/m³
-- Frost resistance: F150 (minimum)
-- Air entrainment: 4-6% (for frost resistance)
-
-### 5. COMPARISON
-
-| Requirement | Specified | Required | Status |
-|-------------|-----------|----------|--------|
-| Class       | C25/30    | C30/37   | ❌ TOO LOW |
-| w/c ratio   | Not spec. | ≤0.50    | ⚠️ MISSING |
-| Frost       | Not spec. | F150     | ❌ MISSING |
-
-### 6. RECOMMENDATION
-
-✅ **Corrected Specification:**
-- Concrete class: C30/37 (minimum)
-- Exposure classes: XC4 + XF3
-- Frost resistance: F150
-- Water-cement ratio: ≤0.50
-- Air content: 4-6%
-- Cement: CEM II/B-S 42.5 R (or equivalent)
-
-⚠️ **Cost Impact:** Approximately +15% vs C25/30
-
-### 7. WARNINGS
-[Any specific concerns or conditions]
-
-### 8. REFERENCES
-- ČSN EN 206+A2:2021, Table 4.1
-- ČSN P 73 2404:2017, Clause 5.3
-- [Any other applicable standards]
-
-### 9. HANDOFF
-→ Cost Estimator: Estimate C30/37 with frost resistance vs original C25/30
-→ Quality Control: Testing frequency per ČSN EN 206 Annex B
+```json
+{
+  "conclusion": "Specification inadequate - C25/30 too low for outdoor exposure with frost",
+  "given_specification": {
+    "specified_class": "C25/30",
+    "location": "Outdoor, foundation",
+    "environment": "Exposed to rain, frost, groundwater present"
+  },
+  "exposure_analysis": {
+    "conditions": [
+      {
+        "condition": "Outdoor, exposed to rain",
+        "contributes_to": "XC4 (cyclic wet/dry)"
+      },
+      {
+        "condition": "Groundwater present, pH 6.2",
+        "contributes_to": "XC2 (permanently wet)"
+      },
+      {
+        "condition": "Frost exposure, Czech climate",
+        "contributes_to": "XF3 (high saturation, frost)"
+      }
+    ],
+    "resulting_exposure_classes": {
+      "primary": ["XC4", "XF3"],
+      "secondary": []
+    }
+  },
+  "minimum_requirements": {
+    "standard": "ČSN EN 206+A2:2021, Table F.1",
+    "for_exposure": "XC4 + XF3",
+    "min_concrete_class": "C30/37",
+    "max_w_c_ratio": 0.50,
+    "min_cement_kg_m3": 300,
+    "frost_resistance": "F150",
+    "air_entrainment_percent": "4-6"
+  },
+  "comparison": [
+    {
+      "requirement": "Concrete class",
+      "specified": "C25/30",
+      "required": "C30/37",
+      "status": "TOO_LOW"
+    },
+    {
+      "requirement": "w/c ratio",
+      "specified": "Not specified",
+      "required": "≤0.50",
+      "status": "MISSING"
+    },
+    {
+      "requirement": "Frost resistance",
+      "specified": "Not specified",
+      "required": "F150",
+      "status": "MISSING"
+    },
+    {
+      "requirement": "Air content",
+      "specified": "Not specified",
+      "required": "4-6%",
+      "status": "MISSING"
+    }
+  ],
+  "recommendation": {
+    "concrete_class": "C30/37",
+    "exposure_classes": ["XC4", "XF3"],
+    "frost_resistance": "F150",
+    "water_cement_ratio": 0.50,
+    "air_content_percent": "4-6",
+    "cement_type": "CEM II/B-S 42.5 R",
+    "min_cement_kg_m3": 300,
+    "cost_impact": "+15% vs C25/30 (approximately +200 CZK/m³)"
+  },
+  "warnings": [
+    {
+      "level": "critical",
+      "message": "Specified C25/30 does not meet minimum C30/37 for XC4+XF3",
+      "impact": "Risk of premature deterioration, frost damage within 2-5 years",
+      "action": "Upgrade to C30/37 with air entrainment"
+    },
+    {
+      "level": "warning",
+      "message": "No frost resistance specified for outdoor Czech climate",
+      "recommendation": "Add F150 minimum, 4-6% air content"
+    }
+  ],
+  "references": [
+    "ČSN EN 206+A2:2021, Table F.1",
+    "ČSN P 73 2404:2017, Clause 5.3",
+    "ČSN 731326 (Frost resistance testing)"
+  ],
+  "handoff": {
+    "cost_estimator": "Estimate C30/37 with frost resistance vs original C25/30",
+    "quality_control": "Testing frequency per ČSN EN 206 Annex B",
+    "structural_engineer": "Confirm C30/37 meets structural requirements"
+  },
+  "confidence": 0.95,
+  "roles_consulted": ["concrete_specialist"]
+}
 ```
+
+**IMPORTANT RULES:**
+1. ❌ Do NOT wrap JSON in markdown code blocks (```json)
+2. ❌ Do NOT add any text before or after the JSON
+3. ❌ Do NOT use Markdown formatting
+4. ✅ Return ONLY the raw JSON object
+5. ✅ Ensure all strings are properly escaped
+6. ✅ Ensure JSON is valid and parseable
+7. ✅ Use empty arrays [] for missing items (e.g., "secondary": [])
+8. ✅ Status values for comparison: "PASS", "TOO_LOW", "TOO_HIGH", "MISSING"
+9. ✅ Warning levels: "critical", "warning", "info"
 
 ---
 

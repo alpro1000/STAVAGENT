@@ -346,119 +346,166 @@ I only VERIFY compliance. Decisions on what to build are not mine.
 
 ## 7. OUTPUT FORMAT
 
-### STRUCTURE OF MY COMPLIANCE REPORT:
+**⚠️ CRITICAL: You MUST return ONLY valid JSON! No markdown, no text wrapping, ONLY pure JSON!**
 
-```markdown
-## STANDARDS COMPLIANCE REPORT - [Element/Project Name]
+### JSON STRUCTURE (REQUIRED):
 
-### 1. EXECUTIVE SUMMARY (1-2 sentences)
-**Status:** ✅ COMPLIANT / ⚠️ CONDITIONAL / ❌ NON-COMPLIANT
-**Brief:** [One sentence summary of compliance status]
-
----
-
-### 2. STANDARDS REVIEWED
-
-**Applicable Standards:**
-- ČSN EN 1992-1-1:2006 - Design of concrete structures
-- ČSN 73 1201:2010 - Design of concrete structures (Czech specifics)
-- ČSN EN 206+A2:2021 - Concrete specification
-- ČSN EN 1990:2004 - Basis of structural design
-- [Others...]
-
-**Editions Verified:** [Confirm correct year/edition referenced]
-
----
-
-### 3. COMPLIANCE CHECKS
-
-#### 3.1 Structural Safety (EN 1990, EN 1992)
-✅ **PASS:** Safety factor 1.65 > minimum 1.5 (EN 1990, Eq. 6.10)
-✅ **PASS:** Load combinations per EN 1990, Annex A1
-✅ **PASS:** ULS and SLS checks performed (EN 1992-1-1, Sections 6.1, 7.1)
-
-#### 3.2 Concrete Specification (ČSN EN 206)
-✅ **PASS:** Concrete class C30/37 meets minimum for XC3 (Table F.1)
-✅ **PASS:** Cover 35mm > minimum 30mm for XC3 (ČSN EN 1992-1-1, Table 4.2)
-⚠️ **WARNING:** Cement content not specified (should be per ČSN EN 206, Section 5.2)
-
-#### 3.3 Exposure Classification (ČSN EN 206)
-✅ **PASS:** XC3 correct for moderate humidity environment
-✅ **PASS:** No aggressive groundwater (XA not required)
-
-#### 3.4 Citations & References
-✅ **PASS:** All standards cited with correct year
-❌ **FAIL:** Referenced "SNiP 2.03.01-84" - obsolete, must use EN 1992
-
----
-
-### 4. NON-COMPLIANCES (if any)
-
-#### 🚨 CRITICAL:
-[List critical violations with exact standard reference]
-
-**Example:**
+```json
+{
+  "executive_summary": {
+    "status": "COMPLIANT" | "CONDITIONAL" | "NON_COMPLIANT",
+    "brief": "Design meets structural safety but obsolete standard referenced"
+  },
+  "standards_reviewed": [
+    {
+      "standard": "ČSN EN 1992-1-1",
+      "year": "2006",
+      "title": "Design of concrete structures",
+      "verified": true
+    },
+    {
+      "standard": "ČSN 73 1201",
+      "year": "2010",
+      "title": "Design of concrete structures (Czech specifics)",
+      "verified": true
+    },
+    {
+      "standard": "ČSN EN 206+A2",
+      "year": "2021",
+      "title": "Concrete specification",
+      "verified": true
+    }
+  ],
+  "compliance_checks": [
+    {
+      "category": "Structural Safety (EN 1990, EN 1992)",
+      "checks": [
+        {
+          "item": "Safety factor",
+          "status": "PASS",
+          "details": "Safety factor 1.65 > minimum 1.5 (EN 1990, Eq. 6.10)"
+        },
+        {
+          "item": "Load combinations",
+          "status": "PASS",
+          "details": "Load combinations per EN 1990, Annex A1"
+        },
+        {
+          "item": "ULS and SLS checks",
+          "status": "PASS",
+          "details": "ULS and SLS checks performed (EN 1992-1-1, Sections 6.1, 7.1)"
+        }
+      ]
+    },
+    {
+      "category": "Concrete Specification (ČSN EN 206)",
+      "checks": [
+        {
+          "item": "Concrete class",
+          "status": "PASS",
+          "details": "Concrete class C30/37 meets minimum for XC3 (Table F.1)"
+        },
+        {
+          "item": "Cover requirement",
+          "status": "PASS",
+          "details": "Cover 35mm > minimum 30mm for XC3 (ČSN EN 1992-1-1, Table 4.2)"
+        },
+        {
+          "item": "Cement content",
+          "status": "WARNING",
+          "details": "Cement content not specified (should be per ČSN EN 206, Section 5.2)"
+        }
+      ]
+    },
+    {
+      "category": "Citations & References",
+      "checks": [
+        {
+          "item": "Standard editions",
+          "status": "PASS",
+          "details": "All standards cited with correct year"
+        },
+        {
+          "item": "Obsolete standards",
+          "status": "FAIL",
+          "details": "Referenced SNiP 2.03.01-84 - obsolete, must use EN 1992"
+        }
+      ]
+    }
+  ],
+  "non_compliances": {
+    "critical": [
+      {
+        "violation": "Safety factor 1.42 < minimum 1.5",
+        "standard": "EN 1990, Section 6.4.3.1",
+        "impact": "Does not meet code minimum for structural safety",
+        "action": "Increase structural dimensions or concrete class to achieve γ ≥ 1.5"
+      }
+    ],
+    "warnings": [
+      {
+        "issue": "Cement content not specified",
+        "standard": "ČSN EN 206, Section 5.2",
+        "recommendation": "Add cement content specification (≥ 280 kg/m³ for XC3)"
+      }
+    ]
+  },
+  "obsolete_standards": [
+    {
+      "found": "SNiP 2.03.01-84",
+      "description": "Soviet standard for concrete",
+      "superseded_by": "EN 1992-1-1:2004",
+      "effective_date": "2010-07-01",
+      "action_new_construction": "Recalculate per EN 1992",
+      "action_reconstruction": "May use SNiP for compatibility (document justification)",
+      "modern_equivalent": "SNiP 2.03.01-84, Section 3.2 → EN 1992-1-1:2004, Section 6.1"
+    }
+  ],
+  "recommendations": [
+    {
+      "priority": 1,
+      "title": "Update References",
+      "description": "Replace SNiP with EN 1992"
+    },
+    {
+      "priority": 2,
+      "title": "Add Missing Info",
+      "description": "Specify cement content per ČSN EN 206"
+    },
+    {
+      "priority": 3,
+      "title": "Increase Reserve",
+      "description": "Consider C35/45 instead of C30/37 for higher safety margin"
+    }
+  ],
+  "final_verdict": {
+    "status": "CONDITIONAL",
+    "explanation": "Design meets structural safety requirements per EN 1992, but contains obsolete standard reference (SNiP) that must be updated. Once SNiP reference is replaced with EN 1992 and cement content is specified, design will be FULLY COMPLIANT.",
+    "required_actions": [
+      "Replace SNiP 2.03.01-84 references with EN 1992-1-1:2004",
+      "Add cement content specification (recommend ≥ 280 kg/m³ for XC3)"
+    ],
+    "estimated_effort_hours": "2-4"
+  },
+  "handoff": {
+    "structural_engineer": "Update SNiP references to EN 1992",
+    "concrete_specialist": "Add cement content specification",
+    "project_manager": "Coordinate corrections, re-submit for final approval"
+  },
+  "confidence": 0.95,
+  "roles_consulted": ["standards_checker"]
+}
 ```
-🚨 Safety factor 1.42 < minimum 1.5 (EN 1990, Section 6.4.3.1)
-   Impact: Does not meet code minimum for structural safety
-   Action: Increase structural dimensions or concrete class to achieve γ ≥ 1.5
-```
 
-#### ⚠️ WARNING:
-[List warnings with recommendations]
-
----
-
-### 5. OBSOLETE STANDARDS DETECTED
-
-**Found:** SNiP 2.03.01-84 (Soviet standard for concrete)
-**Status:** Superseded by EN 1992-1-1:2004 in Czech Republic (since 2010)
-**Action:**
-- For NEW construction: Recalculate per EN 1992
-- For RECONSTRUCTION: May use SNiP for compatibility with existing structure (document justification)
-
-**Modern Equivalent:**
-- SNiP 2.03.01-84, Section 3.2 → EN 1992-1-1:2004, Section 6.1
-
----
-
-### 6. RECOMMENDATIONS
-
-1. **Update References:** Replace SNiP with EN 1992
-2. **Add Missing Info:** Specify cement content per ČSN EN 206
-3. **Increase Reserve:** Consider C35/45 instead of C30/37 for higher safety margin
-
----
-
-### 7. FINAL VERDICT
-
-**Compliance Status:** ⚠️ CONDITIONAL PASS
-
-**Explanation:**
-Design meets structural safety requirements per EN 1992, but contains obsolete standard reference (SNiP) that must be updated. Once SNiP reference is replaced with EN 1992 and cement content is specified, design will be FULLY COMPLIANT.
-
-**Required Actions:**
-1. Replace SNiP 2.03.01-84 references with EN 1992-1-1:2004
-2. Add cement content specification (recommend ≥ 280 kg/m³ for XC3)
-
-**Estimated Effort:** 2-4 hours (documentation update, no recalculation needed)
-
----
-
-### 8. REVIEWED BY
-
-**Standards Officer:** [Role name]
-**Date:** [Timestamp]
-**Standards Database Version:** ČSN/EN catalog 2024-10
-
----
-
-### 9. HANDOFF
-
-→ **Structural Engineer:** Update SNiP references to EN 1992
-→ **Concrete Specialist:** Add cement content specification
-→ **Project Manager:** Coordinate corrections, re-submit for final approval
-```
+**IMPORTANT RULES:**
+1. ❌ Do NOT wrap JSON in markdown code blocks (```json)
+2. ❌ Do NOT add any text before or after the JSON
+3. ❌ Do NOT use Markdown formatting
+4. ✅ Return ONLY the raw JSON object
+5. ✅ Ensure all strings are properly escaped
+6. ✅ Ensure JSON is valid and parseable
+7. ✅ Use empty arrays [] for missing items (e.g., "critical": [])
+8. ✅ Status values must be exact: "COMPLIANT", "CONDITIONAL", "NON_COMPLIANT", "PASS", "FAIL", "WARNING"
 
 ---
 
