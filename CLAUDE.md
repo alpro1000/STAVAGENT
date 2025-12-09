@@ -278,22 +278,37 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-06)
+## Current Status (2025-12-09)
 
 ### Recent Commits (URS_MATCHER_SERVICE)
 | Commit | Description |
 |--------|-------------|
-| `1d00228` | FIX: Connect Multi-Role to concrete-agent.onrender.com |
-| `4e11afa` | FEAT: Add local Multi-Role validation (fallback) |
-| `517fe95` | FIX: LLM timeout 30s→90s + AbortController bug |
+| `0662ec8` | PERF: Add failed provider cache to skip known-bad providers |
+| `e2fee86` | FIX: Remove global state mutation in LLM fallback (race condition) |
+| `371c021` | FIX: Improve LLM error visibility and increase timeouts |
+| `774ab93` | FIX: Race condition, stack overflow, and resource leaks in LLM client |
 
-### Known Issues Fixed
-1. **LLM Timeout:** Increased from 30s to 90s
-2. **AbortController Bug:** Each provider now gets its own controller
-3. **Multi-Role Connection:** Changed from localhost to production URL
+### Known Issues Fixed (Session 2025-12-09)
+1. **Race Condition:** Removed global `currentProviderIndex` → per-request index
+2. **Stack Overflow:** Converted recursive `getNextProvider` to iterative `getProviderAtIndex`
+3. **Resource Leaks:** Added `finally` blocks for `clearTimeout`
+4. **Wrong Client in Fallback:** Use `WithClient` versions instead of global `llmClient`
+5. **Global State Mutation:** Don't update global `llmClient` on fallback success
+6. **Performance:** Added failed provider cache (skip known-bad providers for 60s)
+7. **Multi-Role Health:** Fixed endpoint `/api/v1/health` → `/health`
+
+### LLM Client Architecture (llmClient.js)
+```javascript
+// Per-request fallback (no global state = no race conditions)
+Primary Provider → [if fails, cache for 60s] → Fallback Chain
+                                                  ↓
+                                      Skip recently failed providers
+                                                  ↓
+                                      Each provider gets own AbortController
+```
 
 ### Tests
-- URS_MATCHER_SERVICE: 108 tests passing
+- URS_MATCHER_SERVICE: 159 tests passing
 - Monolit-Planner: All tests passing
 - concrete-agent: 87+ tests
 
@@ -411,5 +426,5 @@ REDIS_URL=redis://...
 
 ---
 
-**Last Updated:** 2025-12-06
+**Last Updated:** 2025-12-09
 **Maintained By:** Development Team
