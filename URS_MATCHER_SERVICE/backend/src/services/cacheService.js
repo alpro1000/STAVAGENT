@@ -36,6 +36,10 @@ const CACHE_CONFIG = {
   perplexity_search: {
     ttl: 7 * 24 * 60 * 60, // 7 days
     prefix: 'perplexity:'
+  },
+  provider_failure: {
+    ttl: 60, // 60 seconds - fast failover cache
+    prefix: 'provider_failed:'
   }
 };
 
@@ -538,6 +542,119 @@ export async function getCacheStats() {
   } catch (error) {
     logger.warn(`[Cache] Failed to get cache stats: ${error.message}`);
     return null;
+  }
+}
+
+/**
+ * Mark a provider as failed (for LLM fallback mechanism)
+ * Uses Redis for cross-instance coordination in scaled deployments
+ *
+ * @param {string} providerName - Provider name that failed (e.g., 'claude', 'gemini')
+ * @returns {Promise<boolean>} True if cached successfully
+ */
+export async function markProviderFailed(providerName) {
+  try {
+    const key = `${CACHE_CONFIG.provider_failure.prefix}${providerName}`;
+    const cache = getCache();
+
+    const cacheData = JSON.stringify({
+      providerName,
+      failed_at: new Date().toISOString(),
+      timestamp: Date.now()
+    });
+
+    if (cache === inMemoryCache) {
+      await cache.set(key, { data: cacheData }, CACHE_CONFIG.provider_failure.ttl);
+    } else {
+      await cache.set(key, cacheData, { EX: CACHE_CONFIG.provider_failure.ttl });
+    }
+
+    logger.info(`[Cache] Marked ${providerName} as failed (will skip for ${CACHE_CONFIG.provider_failure.ttl}s)`);
+    return true;
+  } catch (error) {
+    logger.error(`[Cache] Failed to mark provider ${providerName} as failed: ${error.message}`);
+    return false;
+  }
+}
+
+/**
+ * Check if a provider recently failed (for LLM fallback mechanism)
+ * Uses Redis for cross-instance coordination in scaled deployments
+ *
+ * @param {string} providerName - Provider name to check (e.g., 'claude', 'gemini')
+ * @returns {Promise<boolean>} True if provider recently failed and should be skipped
+ */
+export async function isProviderRecentlyFailed(providerName) {
+  try {
+    const key = `${CACHE_CONFIG.provider_failure.prefix}${providerName}`;
+    const cache = getCache();
+
+    const cachedString = await cache.get(key);
+    if (cachedString) {
+      try {
+        const cached = typeof cachedString === 'string'
+          ? JSON.parse(cachedString)
+          : JSON.parse(cachedString.data || cachedString);
+
+        const elapsed = Date.now() - cached.timestamp;
+        logger.debug(`[Cache] Provider ${providerName} failed ${Math.round(elapsed/1000)}s ago`);
+        return true;
+      } catch (parseError) {
+        logger.error(`[Cache] Failed to parse provider failure cache: ${parseError.message}`);
+        return false;
+      }
+    }
+
+    return false;
+  } catch (error) {
+    logger.error(`[Cache] Failed to check provider ${providerName} failure status: ${error.message}`);
+    return false;
+  }
+}
+
+/**
+ * Clear provider failure cache (for testing or manual recovery)
+ *
+ * @param {string} providerName - Optional provider name to clear (if not provided, clears all)
+ * @returns {Promise<boolean>} True if cleared successfully
+ */
+export async function clearProviderFailureCache(providerName = null) {
+  try {
+    const cache = getCache();
+
+    if (providerName) {
+      // Clear specific provider
+      const key = `${CACHE_CONFIG.provider_failure.prefix}${providerName}`;
+      await cache.del(key);
+      logger.info(`[Cache] Cleared failure cache for provider: ${providerName}`);
+    } else {
+      // Clear all provider failures
+      if (cache === inMemoryCache) {
+        // For in-memory, we need to iterate and delete matching keys
+        for (const [key] of cache.store.entries()) {
+          if (key.startsWith(CACHE_CONFIG.provider_failure.prefix)) {
+            await cache.del(key);
+          }
+        }
+      } else {
+        // For Redis, use SCAN to find and delete all provider failure keys
+        const pattern = `${CACHE_CONFIG.provider_failure.prefix}*`;
+        let cursor = 0;
+        do {
+          const reply = await cache.scan(cursor, { MATCH: pattern, COUNT: 100 });
+          if (reply.keys.length > 0) {
+            await cache.del(reply.keys);
+          }
+          cursor = reply.cursor;
+        } while (cursor !== 0);
+      }
+      logger.info('[Cache] Cleared all provider failure caches');
+    }
+
+    return true;
+  } catch (error) {
+    logger.error(`[Cache] Failed to clear provider failure cache: ${error.message}`);
+    return false;
   }
 }
 

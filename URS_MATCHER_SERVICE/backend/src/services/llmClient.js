@@ -8,6 +8,10 @@ import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { getSystemPrompt, createMatchUrsItemPrompt } from '../prompts/ursMatcher.prompt.js';
 import { getLLMConfig, createLLMClient, getAvailableProviders, getFallbackChain, getModelForTask, getTaskTypes } from '../config/llmConfig.js';
+import {
+  markProviderFailed as cacheMarkProviderFailed,
+  isProviderRecentlyFailed as cacheIsProviderRecentlyFailed
+} from './cacheService.js';
 
 // Task types for model routing
 const TASKS = getTaskTypes();
@@ -19,39 +23,33 @@ let availableProviders = null;
 let fallbackChain = null;
 // NOTE: Removed global currentProviderIndex to fix race condition with concurrent requests
 
-// Cache of recently failed providers to avoid repeated timeouts
-// Map: providerName -> timestamp when it failed
-const recentlyFailedProviders = new Map();
-const PROVIDER_FAILURE_CACHE_MS = 60000; // Skip failed providers for 60 seconds
-
 /**
  * Check if a provider recently failed and should be skipped
+ * Uses Redis cache for cross-instance coordination in scaled deployments
  * @param {string} providerName - Provider name to check
- * @returns {boolean} True if provider should be skipped
+ * @returns {Promise<boolean>} True if provider should be skipped
  */
-function isProviderRecentlyFailed(providerName) {
-  const failedAt = recentlyFailedProviders.get(providerName);
-  if (!failedAt) return false;
-
-  const elapsed = Date.now() - failedAt;
-  if (elapsed > PROVIDER_FAILURE_CACHE_MS) {
-    // Cache expired, give provider another chance
-    recentlyFailedProviders.delete(providerName);
-    logger.debug(`[LLMClient] Provider ${providerName} failure cache expired, will retry`);
-    return false;
+async function isProviderRecentlyFailed(providerName) {
+  try {
+    return await cacheIsProviderRecentlyFailed(providerName);
+  } catch (error) {
+    logger.warn(`[LLMClient] Failed to check provider cache: ${error.message}`);
+    return false; // On cache error, allow trying the provider
   }
-
-  logger.debug(`[LLMClient] Skipping ${providerName} - failed ${Math.round(elapsed/1000)}s ago`);
-  return true;
 }
 
 /**
  * Mark a provider as recently failed
+ * Uses Redis cache for cross-instance coordination in scaled deployments
  * @param {string} providerName - Provider name that failed
  */
-function markProviderFailed(providerName) {
-  recentlyFailedProviders.set(providerName, Date.now());
-  logger.info(`[LLMClient] Marked ${providerName} as failed (will skip for ${PROVIDER_FAILURE_CACHE_MS/1000}s)`);
+async function markProviderFailed(providerName) {
+  try {
+    await cacheMarkProviderFailed(providerName);
+  } catch (error) {
+    logger.warn(`[LLMClient] Failed to mark provider as failed in cache: ${error.message}`);
+    // Continue execution even if cache fails
+  }
 }
 
 /**
@@ -254,7 +252,7 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
 
   // Try current (primary) client with its own abort controller
   // BUT skip if it recently failed (performance optimization)
-  if (llmClient && !isProviderRecentlyFailed(llmClient.provider)) {
+  if (llmClient && !(await isProviderRecentlyFailed(llmClient.provider))) {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -266,9 +264,9 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
     } catch (error) {
       logger.warn(`[LLMClient] Primary provider ${llmClient.provider} failed: ${error.message}. Trying fallback...`);
       // Mark as failed so subsequent requests skip it for a while
-      markProviderFailed(llmClient.provider);
+      await markProviderFailed(llmClient.provider);
     }
-  } else if (llmClient && isProviderRecentlyFailed(llmClient.provider)) {
+  } else if (llmClient && (await isProviderRecentlyFailed(llmClient.provider))) {
     logger.info(`[LLMClient] Skipping primary provider ${llmClient.provider} (recently failed), going straight to fallback`);
   }
 
@@ -283,7 +281,7 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
     }
 
     // Skip recently failed providers
-    if (isProviderRecentlyFailed(nextProvider.provider)) {
+    if (await isProviderRecentlyFailed(nextProvider.provider)) {
       continue;
     }
 
@@ -303,7 +301,7 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
     } catch (error) {
       logger.warn(`[LLMClient] Fallback provider ${nextProvider.provider} failed: ${error.message}`);
       // Mark as failed so subsequent requests skip it
-      markProviderFailed(nextProvider.provider);
+      await markProviderFailed(nextProvider.provider);
       // Loop continues with updated currentIndex
     }
   }

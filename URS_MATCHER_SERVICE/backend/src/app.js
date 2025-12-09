@@ -24,6 +24,7 @@ import { performanceMonitoringMiddleware } from './api/middleware/performanceMon
 
 // Services
 import { startCacheCleanupScheduler, stopCacheCleanupScheduler } from './services/cacheCleanupScheduler.js';
+import { initCache, closeCache } from './services/cacheService.js';
 
 // Load environment variables
 dotenv.config();
@@ -123,6 +124,19 @@ async function startServer() {
     await initializeDatabase();
     logger.info('Database initialized successfully');
 
+    // Initialize cache (Redis or in-memory fallback)
+    logger.info('[CACHE] Initializing cache service...');
+    try {
+      await initCache();
+      logger.info('[CACHE] Cache service initialized successfully');
+    } catch (error) {
+      logger.error(`[CACHE] Failed to initialize cache: ${error.message}`);
+      if (process.env.NODE_ENV === 'production') {
+        throw error; // Fail hard in production
+      }
+      logger.warn('[CACHE] Continuing with in-memory cache fallback (development only)');
+    }
+
     // Start cache cleanup scheduler (Phase 4)
     logger.info('[SCHEDULER] Starting cache cleanup scheduler...');
     startCacheCleanupScheduler();
@@ -139,9 +153,10 @@ async function startServer() {
     });
 
     // Graceful shutdown handler
-    process.on('SIGTERM', () => {
+    process.on('SIGTERM', async () => {
       logger.info('SIGTERM received, shutting down gracefully...');
       stopCacheCleanupScheduler();
+      await closeCache();
       server.close(() => {
         logger.info('Server closed');
         process.exit(0);
@@ -151,6 +166,7 @@ async function startServer() {
   } catch (error) {
     logger.error(`Failed to start server: ${error.message}`);
     stopCacheCleanupScheduler();
+    await closeCache();
     process.exit(1);
   }
 }
