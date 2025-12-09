@@ -17,6 +17,8 @@ CREATE TABLE IF NOT EXISTS jobs (
   status TEXT DEFAULT 'processing', -- processing, completed, error
   total_rows INTEGER,
   processed_rows INTEGER,
+  project_context TEXT, -- JSON: building_type, storeys, main_system, notes
+  results_json TEXT, -- JSON: Complete block-match results for Excel export
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
