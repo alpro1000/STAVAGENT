@@ -573,21 +573,52 @@ router.post('/:jobId/export', async (req, res) => {
       return res.status(404).json({ error: 'Job not found' });
     }
 
+    // Check if we have results_json (new block-match format)
+    if (job.results_json) {
+      // Import Excel exporter
+      const { createBlockMatchExcel } = await import('../../utils/excelExporter.js');
+
+      const resultsData = JSON.parse(job.results_json);
+      const excelBuffer = createBlockMatchExcel(resultsData);
+
+      // Send Excel file
+      const filename = `URS_Match_${job.filename.replace(/\.[^.]+$/, '')}_${new Date().toISOString().split('T')[0]}.xlsx`;
+
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Length', excelBuffer.length);
+
+      return res.send(excelBuffer);
+    }
+
+    // Fallback: Old format (job_items table)
     const items = await db.all(
       'SELECT * FROM job_items WHERE job_id = ?',
       [jobId]
     );
 
-    // TODO: Implement export to Excel/CSV
-    // For now, return JSON
-    res.json({
-      message: 'Export functionality coming soon',
-      job_id: jobId,
-      items_count: items.length
+    if (items.length > 0) {
+      const { createJobItemsExcel } = await import('../../utils/excelExporter.js');
+      const excelBuffer = createJobItemsExcel(job, items);
+
+      const filename = `URS_Match_${job.filename.replace(/\.[^.]+$/, '')}_${new Date().toISOString().split('T')[0]}.xlsx`;
+
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Length', excelBuffer.length);
+
+      return res.send(excelBuffer);
+    }
+
+    // No data found
+    return res.status(404).json({
+      error: 'No results found for this job',
+      job_id: jobId
     });
 
   } catch (error) {
     logger.error(`[JOBS] Export error: ${error.message}`);
+    logger.error(error.stack);
     res.status(500).json({ error: error.message });
   }
 });
@@ -639,12 +670,12 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
 
     logger.info(`[JOBS] Grouped into ${blockNames.length} blocks: ${blockNames.join(', ')}`);
 
-    // Save job to database
+    // Save job to database with project context
     const db = await getDatabase();
     await db.run(
-      `INSERT INTO jobs (id, filename, status, total_rows, created_at)
-       VALUES (?, ?, ?, ?, datetime('now'))`,
-      [jobId, req.file.originalname, 'processing', rows.length]
+      `INSERT INTO jobs (id, filename, status, total_rows, project_context, created_at)
+       VALUES (?, ?, ?, ?, ?, datetime('now'))`,
+      [jobId, req.file.originalname, 'processing', rows.length, JSON.stringify(projectContext)]
     );
 
     // Process each block
@@ -897,10 +928,18 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
       });
     }
 
-    // Update job status
+    // Save complete results to database for Excel export
+    const resultsForDB = {
+      filename: req.file.originalname,
+      project_context: projectContext,
+      blocks: blockResults,
+      llm_info: getLLMInfo()
+    };
+
+    // Update job status and save results
     await db.run(
-      'UPDATE jobs SET status = ?, processed_rows = ? WHERE id = ?',
-      ['completed', rows.length, jobId]
+      'UPDATE jobs SET status = ?, processed_rows = ?, results_json = ? WHERE id = ?',
+      ['completed', rows.length, JSON.stringify(resultsForDB), jobId]
     );
 
     logger.info(`[JOBS] Block-match completed: ${jobId} (${blockResults.length} blocks)`);
