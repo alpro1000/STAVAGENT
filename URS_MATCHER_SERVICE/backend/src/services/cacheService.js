@@ -89,17 +89,27 @@ const inMemoryCache = new InMemoryCache();
 
 /**
  * Initialize cache service
- * SECURITY: Attempts to connect to Redis, fails hard in production
+ * Strategy:
+ * - If REDIS_URL not set → use in-memory cache (OK for single instance)
+ * - If REDIS_URL set but connection fails → fail hard in production
  */
 export async function initCache() {
   const env = process.env.NODE_ENV || 'development';
   const isProduction = env === 'production';
+  const redisUrl = process.env.REDIS_URL;
 
+  // If no Redis URL configured, use in-memory cache (single instance deployment)
+  if (!redisUrl) {
+    logger.info('[Cache] REDIS_URL not configured, using in-memory cache (single instance mode)');
+    cacheClient = inMemoryCache;
+    return false;
+  }
+
+  // Redis URL is configured, attempt connection
   try {
-    // Try to import Redis client
     const redis = await import('redis');
     cacheClient = redis.createClient({
-      url: process.env.REDIS_URL || 'redis://localhost:6379',
+      url: redisUrl,
       socket: {
         reconnectStrategy: (retries) => Math.min(retries * 50, 500)
       }
@@ -108,7 +118,7 @@ export async function initCache() {
     cacheClient.on('error', (err) => {
       logger.error(`[Cache] Redis error: ${err.message}`);
       if (isProduction) {
-        // Fail hard in production - don't silently degrade
+        // Fail hard in production if Redis configured but unavailable
         throw new Error(`Cache service unavailable in production: ${err.message}`);
       } else {
         // Allow fallback only in development
@@ -118,14 +128,14 @@ export async function initCache() {
     });
 
     await cacheClient.connect();
-    logger.info('[Cache] Redis cache initialized successfully');
+    logger.info(`[Cache] Redis cache initialized successfully (${redisUrl.split('@')[1] || 'configured'})`);
     return true;
   } catch (error) {
-    logger.error(`[Cache] Failed to initialize cache: ${error.message}`);
+    logger.error(`[Cache] Failed to initialize Redis: ${error.message}`);
 
     if (isProduction) {
-      // Re-throw in production - don't continue with degraded cache
-      throw new Error(`Cache initialization failed in production: ${error.message}`);
+      // Fail hard in production if Redis was configured but failed
+      throw new Error(`Redis connection failed in production (REDIS_URL is set): ${error.message}`);
     } else {
       // Fallback to in-memory only for development
       logger.warn('[Cache] Using in-memory cache (development environment)');
