@@ -126,16 +126,8 @@ async function startServer() {
 
     // Initialize cache (Redis or in-memory fallback)
     logger.info('[CACHE] Initializing cache service...');
-    try {
-      await initCache();
-      logger.info('[CACHE] Cache service initialized successfully');
-    } catch (error) {
-      logger.error(`[CACHE] Failed to initialize cache: ${error.message}`);
-      if (process.env.NODE_ENV === 'production') {
-        throw error; // Fail hard in production
-      }
-      logger.warn('[CACHE] Continuing with in-memory cache fallback (development only)');
-    }
+    await initCache();
+    logger.info('[CACHE] Cache service initialized successfully');
 
     // Start cache cleanup scheduler (Phase 4)
     logger.info('[SCHEDULER] Starting cache cleanup scheduler...');
