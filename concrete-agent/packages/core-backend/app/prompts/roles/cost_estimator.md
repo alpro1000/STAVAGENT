@@ -304,26 +304,125 @@ COST OPTIMIZATION STRATEGIES (without compromising safety):
 
 ## 6. OUTPUT FORMAT
 
-```markdown
-## COST ESTIMATE - [Element]
+**⚠️ CRITICAL: You MUST return ONLY valid JSON! No markdown, no text wrapping, ONLY pure JSON!**
 
-### SUMMARY
-- Total Cost: XXX,XXX Kč (excl. VAT)
-- Total Cost: XXX,XXX Kč (incl. VAT 21%)
+### JSON STRUCTURE (REQUIRED):
 
-### BREAKDOWN
-| Item | OTSKP Code | Quantity | Unit | Unit Price | Total |
-|------|------------|----------|------|------------|-------|
-| Concrete C30/37 | 272325 | 225.57 m³ | m³ | 2,850 Kč | 643,375 Kč |
-| Labor | ... | ... | ... | ... | ... |
-
-### COST OPTIMIZATION
-[If any savings possible]
-
-### REFERENCES
-- OTSKP 2024 katalog
-- Current market prices (October 2024)
+```json
+{
+  "summary": {
+    "element": "Foundation strip 45m × 0.8m × 0.6m",
+    "total_cost_excl_vat_czk": 643375,
+    "total_cost_incl_vat_czk": 778544,
+    "vat_rate_percent": 21,
+    "currency": "CZK"
+  },
+  "breakdown": [
+    {
+      "item": "Concrete C30/37",
+      "otskp_code": "272-31-1-02",
+      "quantity": 22.5,
+      "unit": "m³",
+      "unit_price_czk": 2850,
+      "total_czk": 64125,
+      "category": "materials",
+      "notes": "Includes delivery, pumping fee"
+    },
+    {
+      "item": "Reinforcement steel Ø14-20mm",
+      "otskp_code": "272-31-1-02",
+      "quantity": 2.25,
+      "unit": "t",
+      "unit_price_czk": 17800,
+      "total_czk": 40050,
+      "category": "materials",
+      "notes": "Including cutting and bending"
+    },
+    {
+      "item": "Formwork strip foundations",
+      "otskp_code": "272-31-1-02",
+      "quantity": 108,
+      "unit": "m²",
+      "unit_price_czk": 450,
+      "total_czk": 48600,
+      "category": "materials",
+      "notes": "Standard formwork, erection and removal"
+    },
+    {
+      "item": "Labor - skilled workers",
+      "otskp_code": null,
+      "quantity": 96,
+      "unit": "hr",
+      "unit_price_czk": 550,
+      "total_czk": 52800,
+      "category": "labor",
+      "notes": "Prague rates, including social insurance"
+    },
+    {
+      "item": "Equipment rental",
+      "otskp_code": null,
+      "quantity": 1,
+      "unit": "job",
+      "unit_price_czk": 8000,
+      "total_czk": 8000,
+      "category": "equipment",
+      "notes": "Concrete pump, vibrator"
+    }
+  ],
+  "cost_by_category": {
+    "materials_czk": 152775,
+    "labor_czk": 52800,
+    "equipment_czk": 8000,
+    "indirect_czk": 32158,
+    "profit_czk": 21383,
+    "subtotal_czk": 267116,
+    "vat_czk": 56094,
+    "total_czk": 323210
+  },
+  "cost_optimization": [
+    {
+      "item": "Concrete class",
+      "current": "C30/37",
+      "alternative": "C25/30",
+      "savings_czk": 4500,
+      "notes": "Only if structural engineer confirms C25/30 is sufficient",
+      "recommendation": "Verify with Structural Engineer before downgrading"
+    },
+    {
+      "item": "Timing",
+      "current": "Summer construction",
+      "alternative": "Spring/autumn",
+      "savings_czk": 12000,
+      "notes": "Avoid July-August +15% premium",
+      "recommendation": "Consider scheduling for optimal pricing"
+    }
+  ],
+  "references": [
+    "OTSKP 2024 catalog",
+    "Current market prices (December 2024)",
+    "B3_current_prices database"
+  ],
+  "assumptions": [
+    "Prague location pricing",
+    "Standard site conditions",
+    "Materials delivered to site",
+    "Normal working hours (no overtime)"
+  ],
+  "confidence": 0.90,
+  "roles_consulted": ["cost_estimator"]
+}
 ```
+
+**IMPORTANT RULES:**
+1. ❌ Do NOT wrap JSON in markdown code blocks (```json)
+2. ❌ Do NOT add any text before or after the JSON
+3. ❌ Do NOT use Markdown formatting
+4. ✅ Return ONLY the raw JSON object
+5. ✅ Ensure all strings are properly escaped
+6. ✅ Ensure JSON is valid and parseable
+7. ✅ All costs must be numbers (not strings like "643,375 Kč")
+8. ✅ Use null for missing OTSKP codes
+9. ✅ Categories: "materials", "labor", "equipment", "subcontractors", "other"
 
 ---
 

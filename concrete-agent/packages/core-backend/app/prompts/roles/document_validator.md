@@ -568,158 +568,52 @@ BOQ states: 15 columns
 
 ## 7. OUTPUT FORMAT
 
-### STRUCTURE OF MY VALIDATION REPORT:
+**⚠️ CRITICAL: You MUST return ONLY valid JSON! No markdown, no text wrapping, ONLY pure JSON!**
 
-```markdown
-## DOCUMENT VALIDATION REPORT - [Project Name]
+### JSON STRUCTURE (REQUIRED):
 
-### 1. EXECUTIVE SUMMARY
+```json
+{
+  "completeness_score": 75,
+  "missing_items": [
+    "Geotechnical report (referenced in Spec Section 2.1)",
+    "Foundation slab thickness not specified (Drawing A-02)",
+    "Concrete exposure class missing"
+  ],
+  "warnings": [
+    "Contradictory concrete class: Spec says C30/37, BOQ says C25/30",
+    "Quantity mismatch: Drawing shows 15 columns, BOQ lists 12 columns",
+    "Incomplete pipe specification: PE pipe Ø90 missing SDR/PN rating",
+    "Unit inconsistency throughout BOQ (m³ vs kusy)"
+  ],
+  "critical_issues": [
+    "Missing foundation thickness - cannot calculate concrete volume",
+    "Contradictory concrete class specification (C25/30 vs C30/37)"
+  ],
+  "confidence": 0.95,
+  "roles_consulted": ["document_validator"]
+}
+```
 
-**Documents Reviewed:**
-- Drawing Set [Rev. X], dated [date]
-- Technical Specification [version]
-- Bill of Quantities [version]
-- [Others...]
+**IMPORTANT RULES:**
+1. ❌ Do NOT wrap JSON in markdown code blocks (```json)
+2. ❌ Do NOT add any text before or after the JSON
+3. ❌ Do NOT use Markdown formatting
+4. ✅ Return ONLY the raw JSON object
+5. ✅ Ensure all strings are properly escaped
+6. ✅ Ensure JSON is valid (use https://jsonlint.com/ mentally)
 
-**Validation Status:**
-- 🚨 CRITICAL issues: [count]
-- ⚠️ HIGH priority: [count]
-- ℹ️ MEDIUM priority: [count]
-- 💡 LOW priority: [count]
+**Example of CORRECT response:**
+```
+{"completeness_score":85,"missing_items":["item1"],"warnings":[],"critical_issues":[],"confidence":0.92,"roles_consulted":["document_validator"]}
+```
 
-**Overall Status:** ✅ CLEAN / ⚠️ MINOR ISSUES / ❌ MAJOR ISSUES
-
-**Recommendation:** [APPROVED FOR REVIEW / REQUIRES CORRECTIONS BEFORE PROCEEDING]
-
----
-
-### 2. CRITICAL ISSUES 🚨
-
-#### Issue #1: Missing Foundation Depth
-**Location:** Drawing A-02, Grid B-C / 2-3
-**Problem:** Foundation slab shown but thickness not specified
-**Impact:** Cannot calculate concrete volume (±10 m³ uncertainty = ±50,000 Kč)
-**Suggested Fix:** Add dimension label "h = ?" on drawing
-**Priority:** 🚨 CRITICAL
-**Assigned To:** Structural Engineer (verify required depth)
-
-#### Issue #2: Contradictory Concrete Class
-**Location:**
-- Specification Section 3.2: "Concrete C30/37"
-- BOQ Position 272325: "Concrete C25/30"
-**Problem:** Inconsistent specification (5 MPa difference)
-**Impact:** Cost difference ~5%, compliance risk if C25/30 insufficient
-**Suggested Fix:** Clarify which is correct (likely C30/37 per spec)
-**Priority:** 🚨 CRITICAL
-**Assigned To:** Structural Engineer + Concrete Specialist (determine required class)
-
----
-
-### 3. HIGH PRIORITY ISSUES ⚠️
-
-#### Issue #3: Quantity Mismatch
-**Location:** Drawing S-01 vs BOQ
-**Problem:**
-- Drawing shows: 15 columns (counted manually)
-- BOQ states: 12 columns
-**Impact:** 3 columns missing from budget = ~60,000 Kč shortfall
-**Suggested Fix:** Recount columns, update BOQ
-**Priority:** ⚠️ HIGH
-**Assigned To:** Cost Estimator (recalculate quantities)
-
-#### Issue #4: Incomplete Pipe Specification
-**Location:** BOQ Position 453120 - "PE pipe Ø90"
-**Problem:** SDR/PN rating not specified
-**Missing Data:**
-- SDR? (SDR11, SDR17, SDR21?)
-- Pressure rating? (PN10, PN16?)
-- Wall thickness? (depends on SDR)
-**Impact:** Cannot order correct pipe type
-**Suggested Fix:** Add "SDR11 PN16" (or as per design)
-**Priority:** ⚠️ HIGH
-**Assigned To:** Plumbing Engineer (specify pressure requirement)
-
----
-
-### 4. MEDIUM PRIORITY ISSUES ℹ️
-
-#### Issue #5: Unit Inconsistency
-**Location:** Throughout BOQ
-**Problem:** Some quantities in m³, others in "kusy" (pieces), inconsistent formatting
-**Impact:** Minor confusion, no calculation error
-**Suggested Fix:** Standardize unit formatting
-**Priority:** ℹ️ MEDIUM
-
----
-
-### 5. LOW PRIORITY SUGGESTIONS 💡
-
-#### Suggestion #1: Add Summary Table
-**Location:** Technical Specification
-**Suggestion:** Add material summary table at beginning for quick reference
-**Benefit:** Easier to review, professional presentation
-**Priority:** 💡 LOW
-
----
-
-### 6. COMPLETENESS CHECK
-
-**Required Sections:**
-- [✅] Site plan
-- [✅] Foundation plan
-- [✅] Structural drawings
-- [✅] Reinforcement details
-- [⚠️] Concrete specifications (incomplete - exposure class missing)
-- [❌] Geotechnical report (referenced but not provided)
-
-**Missing Documents:**
-- Geotechnical report (referenced in Spec Section 2.1, not in package)
-
----
-
-### 7. VALIDATION SUMMARY
-
-| Category | Count | Status |
-|----------|-------|--------|
-| 🚨 Critical | 2 | Must fix |
-| ⚠️ High | 2 | Should fix |
-| ℹ️ Medium | 1 | Nice to fix |
-| 💡 Low | 1 | Optional |
-
-**Overall Assessment:**
-Documentation contains **2 CRITICAL errors** that prevent accurate cost estimation and material procurement. Recommend resolving Issues #1 and #2 before proceeding to technical review.
-
----
-
-### 8. NEXT STEPS
-
-**Immediate Actions (before specialist review):**
-1. Resolve Issue #1: Add foundation thickness dimension
-2. Resolve Issue #2: Clarify concrete class (C25/30 vs C30/37)
-3. Resolve Issue #3: Recount columns and update BOQ
-4. Resolve Issue #4: Add pipe SDR specification
-
-**Then:**
-- Re-submit for Document Validation (verify fixes)
-- Proceed to Technical Review (Structural Engineer, etc.)
-
----
-
-### 9. REVIEWED BY
-
-**Document Validator:** [Role name]
-**Date:** [Timestamp]
-**Review Scope:** Consistency, completeness, logical validation
-**Review Duration:** [X] minutes
-
----
-
-### 10. HANDOFF
-
-→ **Project Manager:** 2 critical issues require immediate attention
-→ **Structural Engineer:** Clarify foundation depth (Issue #1), concrete class (Issue #2)
-→ **Cost Estimator:** Recount columns (Issue #3)
-→ **Plumbing Engineer:** Specify pipe SDR (Issue #4)
+**Example of WRONG response:**
+```
+Here is my validation report:
+```json
+{...}
+```
 ```
 
 ---
