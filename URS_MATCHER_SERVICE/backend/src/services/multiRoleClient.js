@@ -49,8 +49,10 @@ export async function askMultiRole(question, options = {}) {
   };
 
   // Use AbortController for timeout
+  // IMPORTANT: Render services need longer timeouts (cold start + actual processing)
+  const MULTI_ROLE_TIMEOUT = parseInt(process.env.MULTI_ROLE_TIMEOUT_MS || '90000', 10); // 90s default
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout for API call
+  const timeoutId = setTimeout(() => controller.abort(), MULTI_ROLE_TIMEOUT);
 
   try {
     // Call STAVAGENT Multi-Role API via HTTP
@@ -79,7 +81,12 @@ export async function askMultiRole(question, options = {}) {
     return result;
 
   } catch (error) {
-    logger.debug(`[MULTI-ROLE] API not available (optional feature): ${error.message}`);
+    // Enhanced error logging with timeout info
+    if (error.name === 'AbortError') {
+      logger.warn(`[MULTI-ROLE] API request aborted after ${MULTI_ROLE_TIMEOUT}ms timeout`);
+    } else {
+      logger.debug(`[MULTI-ROLE] API not available (optional feature): ${error.message}`);
+    }
     throw error;
   } finally {
     // Always clear timeout to prevent resource leak
@@ -264,8 +271,10 @@ Provide:
  */
 export async function checkMultiRoleAvailability() {
   // Use AbortController for timeout (fetch doesn't support timeout option)
+  // IMPORTANT: Render services need 30s+ for cold start (can be sleeping)
+  const HEALTH_CHECK_TIMEOUT = parseInt(process.env.MULTI_ROLE_HEALTH_TIMEOUT_MS || '30000', 10); // 30s default
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout (Render services may need wake-up time)
+  const timeoutId = setTimeout(() => controller.abort(), HEALTH_CHECK_TIMEOUT);
 
   try {
     const response = await fetch(`${STAVAGENT_API_BASE}/health`, {
@@ -282,7 +291,7 @@ export async function checkMultiRoleAvailability() {
     return false;
   } catch (error) {
     if (error.name === 'AbortError') {
-      logger.warn(`[MULTI-ROLE] API health check timed out (10s)`);
+      logger.warn(`[MULTI-ROLE] API health check timed out (${HEALTH_CHECK_TIMEOUT}ms)`);
     } else {
       logger.warn(`[MULTI-ROLE] API not available: ${error.message}`);
     }

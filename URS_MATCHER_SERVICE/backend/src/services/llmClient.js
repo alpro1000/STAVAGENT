@@ -868,11 +868,14 @@ function parseBlockAnalysisResponse(response) {
   try {
     let jsonString = null;
 
+    logger.debug(`[LLMClient] Parsing block analysis response (${response.length} chars)`);
+
     // Try to extract JSON using a more robust method
     // Look for opening { and try to find matching closing }
     const openBrace = response.indexOf('{');
     if (openBrace === -1) {
       logger.warn('[LLMClient] No JSON found in block analysis response');
+      logger.debug(`[LLMClient] Response preview: ${response.substring(0, 200)}`);
       return null;
     }
 
@@ -893,6 +896,8 @@ function parseBlockAnalysisResponse(response) {
 
     if (endBrace === -1) {
       logger.warn('[LLMClient] Unclosed JSON object in block analysis response');
+      logger.debug(`[LLMClient] Partial response (first 500 chars): ${response.substring(0, 500)}`);
+      logger.debug(`[LLMClient] Response length: ${response.length} chars, depth at end: ${depth}`);
       return null;
     }
 
