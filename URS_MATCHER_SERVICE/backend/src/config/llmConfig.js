@@ -30,7 +30,7 @@ export function getLLMConfig() {
   }
 
   // Set appropriate default model based on provider
-  let defaultModel = 'gpt-4-turbo';
+  let defaultModel = 'gpt-4o-mini';  // OpenAI default (66x cheaper than gpt-4-turbo)
   if (primaryProvider.toLowerCase() === 'claude') {
     defaultModel = 'claude-sonnet-4-5-20250929';  // Latest Sonnet 4.5
   } else if (primaryProvider.toLowerCase() === 'gemini') {
@@ -98,7 +98,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'openai',
       apiKey: openaiKey,
-      model: process.env.OPENAI_MODEL || 'gpt-4-turbo',
+      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',  // 66x cheaper than gpt-4-turbo
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
