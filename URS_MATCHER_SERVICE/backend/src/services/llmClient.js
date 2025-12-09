@@ -19,6 +19,41 @@ let availableProviders = null;
 let fallbackChain = null;
 // NOTE: Removed global currentProviderIndex to fix race condition with concurrent requests
 
+// Cache of recently failed providers to avoid repeated timeouts
+// Map: providerName -> timestamp when it failed
+const recentlyFailedProviders = new Map();
+const PROVIDER_FAILURE_CACHE_MS = 60000; // Skip failed providers for 60 seconds
+
+/**
+ * Check if a provider recently failed and should be skipped
+ * @param {string} providerName - Provider name to check
+ * @returns {boolean} True if provider should be skipped
+ */
+function isProviderRecentlyFailed(providerName) {
+  const failedAt = recentlyFailedProviders.get(providerName);
+  if (!failedAt) return false;
+
+  const elapsed = Date.now() - failedAt;
+  if (elapsed > PROVIDER_FAILURE_CACHE_MS) {
+    // Cache expired, give provider another chance
+    recentlyFailedProviders.delete(providerName);
+    logger.debug(`[LLMClient] Provider ${providerName} failure cache expired, will retry`);
+    return false;
+  }
+
+  logger.debug(`[LLMClient] Skipping ${providerName} - failed ${Math.round(elapsed/1000)}s ago`);
+  return true;
+}
+
+/**
+ * Mark a provider as recently failed
+ * @param {string} providerName - Provider name that failed
+ */
+function markProviderFailed(providerName) {
+  recentlyFailedProviders.set(providerName, Date.now());
+  logger.info(`[LLMClient] Marked ${providerName} as failed (will skip for ${PROVIDER_FAILURE_CACHE_MS/1000}s)`);
+}
+
 /**
  * Initialize LLM client on first use
  * Sets up primary provider and fallback chain
@@ -218,7 +253,8 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
   const primaryProviderName = llmClient?.provider || null;
 
   // Try current (primary) client with its own abort controller
-  if (llmClient) {
+  // BUT skip if it recently failed (performance optimization)
+  if (llmClient && !isProviderRecentlyFailed(llmClient.provider)) {
     try {
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -229,7 +265,11 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
       }
     } catch (error) {
       logger.warn(`[LLMClient] Primary provider ${llmClient.provider} failed: ${error.message}. Trying fallback...`);
+      // Mark as failed so subsequent requests skip it for a while
+      markProviderFailed(llmClient.provider);
     }
+  } else if (llmClient && isProviderRecentlyFailed(llmClient.provider)) {
+    logger.info(`[LLMClient] Skipping primary provider ${llmClient.provider} (recently failed), going straight to fallback`);
   }
 
   // Try fallback providers - per-request index (no global state = no race condition)
@@ -240,6 +280,11 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
 
     if (!nextProvider) {
       break;
+    }
+
+    // Skip recently failed providers
+    if (isProviderRecentlyFailed(nextProvider.provider)) {
+      continue;
     }
 
     try {
@@ -257,6 +302,8 @@ async function callLLMWithTimeout(systemPrompt, userPrompt, timeoutMs) {
       }
     } catch (error) {
       logger.warn(`[LLMClient] Fallback provider ${nextProvider.provider} failed: ${error.message}`);
+      // Mark as failed so subsequent requests skip it
+      markProviderFailed(nextProvider.provider);
       // Loop continues with updated currentIndex
     }
   }
