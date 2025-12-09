@@ -90,8 +90,13 @@ export async function matchUrsItemWithAI(inputText, quantity, unit, candidates) 
     initializeLLMClient();
 
     // If no LLM available or no candidates, return candidates as-is
+    // NOTE: Log explicitly so operators can see when LLM is skipped
     if (!llmClient || !candidates || candidates.length === 0) {
-      logger.debug('[LLMClient] LLM unavailable or no candidates - returning unchanged');
+      if (!llmClient) {
+        logger.warn('[LLMClient] LLM unavailable (no provider configured) - returning unranked candidates');
+      } else {
+        logger.debug('[LLMClient] No candidates provided - returning unchanged');
+      }
       return candidates;
     }
 
@@ -124,9 +129,10 @@ export async function matchUrsItemWithAI(inputText, quantity, unit, candidates) 
     return validMatches;
 
   } catch (error) {
+    // IMPORTANT: Log the error prominently so operators know what's happening
     logger.error(`[LLMClient] Error in matchUrsItemWithAI: ${error.message}`);
-    // Fallback: return original candidates unchanged
-    logger.info('[LLMClient] Falling back to original candidates');
+    logger.warn('[LLMClient] Falling back to original candidates due to error');
+    // Return candidates as fallback for graceful degradation
     return candidates;
   }
 }
