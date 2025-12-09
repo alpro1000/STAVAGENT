@@ -46,11 +46,22 @@ function isProviderRecentlyFailed(providerName) {
 }
 
 /**
- * Mark a provider as recently failed
+ * Mark a provider as recently failed and clean up expired entries
+ * Proactively cleans the cache to prevent memory leaks
  * @param {string} providerName - Provider name that failed
  */
 function markProviderFailed(providerName) {
-  recentlyFailedProviders.set(providerName, Date.now());
+  const now = Date.now();
+
+  // Proactively clean up expired entries to prevent memory leaks
+  for (const [p, failedAt] of recentlyFailedProviders.entries()) {
+    if (now - failedAt > PROVIDER_FAILURE_CACHE_MS) {
+      recentlyFailedProviders.delete(p);
+      logger.debug(`[LLMClient] Cleaned up expired cache entry for ${p}`);
+    }
+  }
+
+  recentlyFailedProviders.set(providerName, now);
   logger.info(`[LLMClient] Marked ${providerName} as failed (will skip for ${PROVIDER_FAILURE_CACHE_MS/1000}s)`);
 }
 
