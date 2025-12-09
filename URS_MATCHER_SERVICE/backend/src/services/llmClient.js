@@ -735,21 +735,10 @@ export async function analyzeBlock(projectContext, boqBlock, ursCandidates, norm
   try {
     initializeLLMClient();
 
-    // If no LLM available, return empty analysis
+    // If no LLM available, return fallback with top candidates
     if (!llmClient) {
-      logger.warn('[LLMClient] LLM unavailable - cannot perform block analysis');
-      return {
-        mode: 'boq_block_analysis',
-        block_summary: {
-          block_id: boqBlock.block_id,
-          main_systems: [],
-          potential_missing_work_groups: [],
-          notes: ['LLM není dostupný - blok nebyl analyzován']
-        },
-        items: [],
-        global_related_items: [],
-        error: 'LLM not available'
-      };
+      logger.warn('[LLMClient] LLM unavailable - returning top candidates as fallback');
+      return createFallbackBlockAnalysis(boqBlock, ursCandidates);
     }
 
     logger.info(`[LLMClient] Analyzing block: "${boqBlock.title || boqBlock.block_id}" (${boqBlock.rows?.length || 0} rows)`);
@@ -771,19 +760,8 @@ export async function analyzeBlock(projectContext, boqBlock, ursCandidates, norm
     const parsed = parseBlockAnalysisResponse(response);
 
     if (!parsed || !parsed.items) {
-      logger.warn('[LLMClient] LLM returned invalid block analysis - returning empty result');
-      return {
-        mode: 'boq_block_analysis',
-        block_summary: {
-          block_id: boqBlock.block_id,
-          main_systems: [],
-          potential_missing_work_groups: [],
-          notes: ['Chyba při analýze bloku - neplatná odpověď z LLM']
-        },
-        items: [],
-        global_related_items: [],
-        error: 'Invalid LLM response'
-      };
+      logger.warn('[LLMClient] LLM returned invalid block analysis - returning fallback');
+      return createFallbackBlockAnalysis(boqBlock, ursCandidates);
     }
 
     // Validate that all returned codes exist in candidates (ZERO HALLUCINATION)
@@ -806,20 +784,74 @@ export async function analyzeBlock(projectContext, boqBlock, ursCandidates, norm
   } catch (error) {
     logger.error(`[LLMClient] Error in analyzeBlock: ${error.message}`);
 
-    // Return fallback response
-    return {
-      mode: 'boq_block_analysis',
-      block_summary: {
-        block_id: boqBlock?.block_id || 'unknown',
-        main_systems: [],
-        potential_missing_work_groups: [],
-        notes: [`Chyba při analýze: ${error.message}`]
-      },
-      items: [],
-      global_related_items: [],
-      error: error.message
-    };
+    // Return fallback response with top candidates instead of empty
+    logger.warn('[LLMClient] Returning fallback analysis with top candidates');
+    return createFallbackBlockAnalysis(boqBlock, ursCandidates);
   }
+}
+
+/**
+ * Create fallback block analysis when LLM is unavailable
+ * Returns top candidate for each row based on fuzzy matching scores
+ *
+ * @param {Object} boqBlock - BOQ block data
+ * @param {Object} ursCandidates - URS candidates for each row
+ * @returns {Object} Fallback analysis result
+ * @private
+ */
+function createFallbackBlockAnalysis(boqBlock, ursCandidates) {
+  logger.info(`[LLMClient] Creating fallback analysis for ${boqBlock.rows?.length || 0} rows`);
+
+  const items = [];
+  const rows = boqBlock.rows || [];
+
+  // For each row, select top candidate (highest score)
+  rows.forEach((row, idx) => {
+    const rowId = row.row_id || idx + 1;
+    const candidates = ursCandidates[rowId] || [];
+
+    if (candidates.length > 0) {
+      // Sort by score (descending) and take top 1
+      const topCandidate = candidates.sort((a, b) => (b.score || 0) - (a.score || 0))[0];
+
+      items.push({
+        row_id: rowId,
+        input_text: row.raw_text || row.description || '',
+        selected_urs: {
+          urs_code: topCandidate.urs_code,
+          urs_name: topCandidate.urs_name,
+          unit: topCandidate.unit
+        },
+        confidence_score: Math.round((topCandidate.score || 0) * 100) / 100,
+        reasoning: `Automatický výběr top kandidáta (score: ${topCandidate.score || 0}). LLM nedostupný.`,
+        alternative_codes: candidates.slice(1, 3).map(c => ({
+          urs_code: c.urs_code,
+          urs_name: c.urs_name,
+          score: c.score || 0
+        }))
+      });
+    } else {
+      logger.warn(`[LLMClient] No candidates for row ${rowId}, skipping`);
+    }
+  });
+
+  logger.info(`[LLMClient] Fallback analysis created: ${items.length} items from ${rows.length} rows`);
+
+  return {
+    mode: 'boq_block_analysis',
+    block_summary: {
+      block_id: boqBlock.block_id,
+      main_systems: [],
+      potential_missing_work_groups: [],
+      notes: [
+        'LLM není dostupný - použity top kandidáti z fuzzy matchingu',
+        `Analyzováno ${items.length} z ${rows.length} řádků`
+      ]
+    },
+    items: items,
+    global_related_items: [],
+    fallback_mode: true
+  };
 }
 
 /**
