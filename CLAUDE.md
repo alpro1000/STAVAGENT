@@ -2,9 +2,11 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.0
-**Last Updated:** 2025-12-06
+**Version:** 1.0.1
+**Last Updated:** 2025-12-10
 **Repository:** STAVAGENT (Monorepo)
+
+**⭐ NEW (2025-12-10):** Gemini Integration - 40-250x cost savings for Multi-Role API
 
 ---
 
@@ -278,9 +280,23 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-09)
+## Current Status (2025-12-10)
 
-### Recent Commits (URS_MATCHER_SERVICE)
+### 💰 CRITICAL: Gemini Integration (2025-12-10)
+**Cost Optimization:** Integrated Google Gemini as primary LLM for Multi-Role API.
+- **Savings:** 40-250x cheaper ($0.00 FREE vs $0.10-0.50 per request)
+- **Status:** ✅ Implementation complete, ⏳ Awaiting production verification
+- **See:** NEXT_SESSION.md and concrete-agent/GEMINI_SETUP.md
+
+### Recent Commits (concrete-agent - 2025-12-10)
+| Commit | Description | Impact |
+|--------|-------------|--------|
+| `b012bb2` | FEAT: Add Gemini support for Multi-Role API (40x cost savings) | 💰 Solves credit exhaustion |
+| `a9316db` | FIX: Update Multi-Role prompts to return JSON instead of Markdown | Fixes parsing errors |
+| `1164eec` | FIX: Remove invalid 801xxx URS codes from catalog | Fixes wrong URS matching |
+| `c627e54` | FEAT: Implement Excel export and fix URS catalog | Fixes empty exports |
+
+### Recent Commits (URS_MATCHER_SERVICE - 2025-12-09)
 | Commit | Description |
 |--------|-------------|
 | `0662ec8` | PERF: Add failed provider cache to skip known-bad providers |
@@ -288,7 +304,7 @@ Content-Type: application/json
 | `371c021` | FIX: Improve LLM error visibility and increase timeouts |
 | `774ab93` | FIX: Race condition, stack overflow, and resource leaks in LLM client |
 
-### Known Issues Fixed (Session 2025-12-09)
+### Known Issues Fixed (Session 2025-12-09 - URS_MATCHER_SERVICE)
 1. **Race Condition:** Removed global `currentProviderIndex` → per-request index
 2. **Stack Overflow:** Converted recursive `getNextProvider` to iterative `getProviderAtIndex`
 3. **Resource Leaks:** Added `finally` blocks for `clearTimeout`
@@ -418,7 +434,17 @@ CORS_ORIGIN=https://monolit-planner-frontend.onrender.com
 
 ### concrete-agent
 ```env
+# Claude API (expensive - $0.10-0.50 per Multi-Role request)
 ANTHROPIC_API_KEY=sk-ant-...
+
+# ⭐ NEW: Gemini API (FREE - 1500 req/day, or $0.002 per request paid)
+GOOGLE_API_KEY=your-gemini-key-here
+GEMINI_MODEL=gemini-2.0-flash-exp
+
+# ⭐ NEW: Multi-Role LLM: "gemini" (default), "claude", "auto" (Gemini + Claude fallback)
+MULTI_ROLE_LLM=gemini
+
+# Other APIs
 OPENAI_API_KEY=sk-...
 DATABASE_URL=postgresql+asyncpg://...
 REDIS_URL=redis://...
@@ -426,5 +452,21 @@ REDIS_URL=redis://...
 
 ---
 
-**Last Updated:** 2025-12-09
+**Last Updated:** 2025-12-10
 **Maintained By:** Development Team
+
+---
+
+## 📖 Session Documentation
+
+**Current Session (2025-12-10):** See `/NEXT_SESSION.md` for:
+- Gemini integration summary
+- Verification checklist
+- Production deployment status
+- Cost savings analysis (40-250x)
+
+**Gemini Setup Guide:** See `concrete-agent/GEMINI_SETUP.md` for:
+- Complete setup instructions (4 steps)
+- LLM configuration modes (gemini, claude, auto)
+- Troubleshooting guide
+- Production deployment checklist
