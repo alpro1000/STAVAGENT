@@ -104,13 +104,14 @@ async function parseExcel(filePath) {
 }
 
 // ============================================================================
-// MAP COLUMNS
+// MAP COLUMNS (OPTIMIZED)
 // ============================================================================
 
-function normalizeHeaders(record) {
-  const normalized = {};
+// Determine header mapping once per import (calculated from first record)
+function getHeaderMapping(record) {
+  const headerMap = {};
+  const recordKeys = Object.keys(record);
 
-  // Column mapping (flexible naming)
   const fieldMap = {
     code: ['code', 'kód', 'urs_code', 'Code', 'ÚRS kód', 'catalog_code'],
     name: ['name', 'název', 'urs_name', 'Description', 'Název', 'Item Name'],
@@ -123,23 +124,35 @@ function normalizeHeaders(record) {
   // Try to find matching headers (case-insensitive)
   for (const [target, sources] of Object.entries(fieldMap)) {
     for (const source of sources) {
-      const key = Object.keys(record).find(k => k.toLowerCase().trim() === source.toLowerCase());
+      const key = recordKeys.find(k => k.toLowerCase().trim() === source.toLowerCase());
       if (key) {
-        normalized[target] = record[key];
+        headerMap[target] = key;
         break;
       }
     }
   }
 
   // Validate required fields
-  if (!normalized.code) {
-    throw new Error(`Cannot find 'code' column. Available columns: ${Object.keys(record).join(', ')}`);
+  if (!headerMap.code) {
+    throw new Error(`Cannot find 'code' column. Available columns: ${recordKeys.join(', ')}`);
   }
-  if (!normalized.name) {
+  if (!headerMap.name) {
     throw new Error(`Cannot find 'name' column`);
   }
-  if (!normalized.unit) {
-    normalized.unit = 'ks';  // Default to 'ks' if missing
+  if (!headerMap.unit) {
+    throw new Error(`Cannot find 'unit' column. Available columns: ${recordKeys.join(', ')}`);
+  }
+
+  return headerMap;
+}
+
+// Normalize a single record using pre-determined header mapping
+function normalizeRecord(record, headerMap) {
+  const normalized = {};
+
+  // Map fields using pre-determined header mapping
+  for (const [target, sourceKey] of Object.entries(headerMap)) {
+    normalized[target] = record[sourceKey];
   }
 
   // Auto-extract section code if missing
@@ -173,6 +186,13 @@ async function importIntoDB(records, options = {}) {
       log('Truncated');
     }
 
+    // OPTIMIZATION: Determine header mapping once from first record
+    if (records.length === 0) {
+      throw new Error('No records to import');
+    }
+    const headerMap = getHeaderMapping(records[0]);
+    log(`Detected header mapping: code="${headerMap.code}", name="${headerMap.name}", unit="${headerMap.unit}"`);
+
     // Statistics
     let successCount = 0;
     let skipCount = 0;
@@ -188,7 +208,7 @@ async function importIntoDB(records, options = {}) {
       try {
         for (const record of batch) {
           try {
-            const normalized = normalizeHeaders(record);
+            const normalized = normalizeRecord(record, headerMap);
 
             // Validate code format
             if (!normalized.code || normalized.code.trim().length === 0) {

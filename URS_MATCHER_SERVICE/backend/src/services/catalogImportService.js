@@ -132,22 +132,34 @@ class CatalogVersionManager {
     const db = await getDatabase();
 
     try {
-      // Mark as approved
-      await db.run(
-        `UPDATE catalog_versions
-         SET status = 'approved', approved_at = datetime('now'), approved_by = ?, approval_notes = ?
-         WHERE version_id = ?`,
-        [process.env.IMPORT_APPROVER || 'automated', approverNotes, versionId]
-      );
+      // Wrap all updates in atomic transaction to prevent inconsistent state
+      await db.exec('BEGIN TRANSACTION');
+      try {
+        // Mark as approved
+        await db.run(
+          `UPDATE catalog_versions
+           SET status = 'approved', approved_at = datetime('now'), approved_by = ?, approval_notes = ?
+           WHERE version_id = ?`,
+          [process.env.IMPORT_APPROVER || 'automated', approverNotes, versionId]
+        );
 
-      // Activate (switch to this version)
-      await db.run(
-        `UPDATE catalog_versions SET status = 'inactive' WHERE status = 'active'`
-      );
-      await db.run(
-        `UPDATE catalog_versions SET status = 'active', activated_at = datetime('now') WHERE version_id = ?`,
-        [versionId]
-      );
+        // Deactivate the current active version
+        await db.run(
+          `UPDATE catalog_versions SET status = 'inactive' WHERE status = 'active'`
+        );
+
+        // Activate the new version
+        await db.run(
+          `UPDATE catalog_versions SET status = 'active', activated_at = datetime('now') WHERE version_id = ?`,
+          [versionId]
+        );
+
+        await db.exec('COMMIT');
+      } catch (transactionError) {
+        await db.exec('ROLLBACK');
+        logger.error(`[VERSION] Transaction failed during approval: ${transactionError.message}`);
+        throw transactionError;
+      }
 
       logger.info(`[VERSION] Approved and activated: ${versionId}`);
       await auditLog.log('catalog_version_activated', { versionId });
@@ -428,17 +440,10 @@ export async function importFromLicensedSource(sourceConfig) {
         stats: result.stats
       });
 
-      // Auto-approve after timeout if no human approval
-      setTimeout(async () => {
-        const version = await db.get(
-          'SELECT status FROM catalog_versions WHERE version_id = ?',
-          [versionId]
-        );
-        if (version?.status === 'pending') {
-          logger.warn(`[IMPORT-SERVICE] Auto-approving version after timeout: ${versionId}`);
-          await versionManager.approveVersion(versionId, 'Auto-approved after timeout');
-        }
-      }, IMPORT_CONFIG.APPROVAL_TIMEOUT_HOURS * 60 * 60 * 1000);
+      // Note: Auto-approval is handled by the persistent scheduled job in scheduledImportService.js
+      // This ensures approval continues even if the application restarts.
+      // The job runs every 5 minutes and checks for pending versions that have exceeded
+      // the APPROVAL_TIMEOUT_HOURS threshold.
 
       return {
         versionId,

@@ -7,6 +7,7 @@
  * 4. Определять, нужна ли Perplexity помощь (confidence < 0.7)
  */
 
+import crypto from 'crypto';
 import { getDatabase } from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { normalizeText } from '../utils/textNormalizer.js';
@@ -285,15 +286,8 @@ function buildContextHash(projectContext) {
     main_system: projectContext.main_system?.sort().join(',') || ''
   });
 
-  // Simple hash function
-  let hash = 0;
-  for (let i = 0; i < contextStr.length; i++) {
-    const char = contextStr.charCodeAt(i);
-    hash = ((hash << 5) - hash) + char;
-    hash = hash & hash; // Convert to 32bit integer
-  }
-
-  return Math.abs(hash).toString(16);
+  // Use cryptographic hash to avoid collisions
+  return crypto.createHash('sha256').update(contextStr).digest('hex');
 }
 
 // ============================================================================
