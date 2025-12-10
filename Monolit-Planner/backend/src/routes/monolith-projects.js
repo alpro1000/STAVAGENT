@@ -12,7 +12,6 @@
 
 import express from 'express';
 import db from '../db/init.js';
-import { getPool } from '../db/postgres.js';
 import { logger } from '../utils/logger.js';
 import { requireAuth } from '../middleware/auth.js';
 import { createDefaultPositions } from '../utils/positionDefaults.js';
@@ -77,12 +76,9 @@ router.get('/', async (req, res) => {
 
 /**
  * POST /api/monolith-projects
- * Create new project with parts (using transaction for PostgreSQL)
+ * Create new project with parts (using unified transaction interface)
  */
 router.post('/', async (req, res) => {
-  // PostgreSQL client for transaction
-  let client = null;
-
   try {
     const ownerId = req.user.userId;
     const {
@@ -183,11 +179,9 @@ router.post('/', async (req, res) => {
     logger.info(`[CREATE PROJECT] ✅ SAFETY CHECK PASSED - ${templateCount} templates ready for ${object_type}`);
 
     // ===== TRANSACTION START =====
-    // Use single PostgreSQL client for atomicity
-    try {
-      const pool = getPool();
-      client = await pool.connect();
-      await client.query('BEGIN');
+    // Use unified db.transaction() interface for atomicity
+    // Works with both SQLite (development) and PostgreSQL (production)
+    await db.transaction(async (client) => {
       logger.info(`[CREATE PROJECT] Transaction started`);
 
       // Convert SQLite ? placeholders to PostgreSQL $1, $2, etc.
@@ -305,24 +299,12 @@ router.post('/', async (req, res) => {
         logger.info(`[CREATE PROJECT] ℹ️  Skipped position creation for object_type=${object_type} (currently only supported for bridges)`);
       }
 
-      // Commit transaction
-      await client.query('COMMIT');
       logger.info(`[CREATE PROJECT] Transaction committed`);
-    } catch (txError) {
-      if (client) {
-        await client.query('ROLLBACK');
-        logger.error(`[CREATE PROJECT] Transaction rolled back due to error`);
-      }
-      throw txError;
-    } finally {
-      if (client) {
-        client.release();
-      }
-    }
+    })(); // db.transaction() handles BEGIN/COMMIT/ROLLBACK automatically
     // ===== TRANSACTION END =====
 
-    // Fetch created project AFTER transaction (use SQLite for read-only)
-    // Project was just created in PostgreSQL, now fetching via SQLite for compatibility
+    // Fetch created project AFTER transaction
+    // Using unified db interface (automatically selects SQLite or PostgreSQL)
     const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
 
     if (!project) {
