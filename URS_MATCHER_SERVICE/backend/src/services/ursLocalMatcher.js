@@ -125,10 +125,10 @@ async function lookupCachedMapping(normalizedTextCs, projectContext = {}) {
 }
 
 // ============================================================================
-// HELPER: Search in local URS catalog
+// HELPER: Search in local URS catalog (optimized with section_code)
 // ============================================================================
 
-async function searchLocalCatalog(normalizedTextCs) {
+async function searchLocalCatalog(normalizedTextCs, sectionCodeHint = null) {
   try {
     const db = await getDatabase();
 
@@ -138,13 +138,22 @@ async function searchLocalCatalog(normalizedTextCs) {
       .split(/\s+/)
       .filter(t => t.length > 2);
 
-    logger.debug(`[URS-LOCAL] Search terms: ${searchTerms.join(', ')}`);
+    logger.debug(`[URS-LOCAL] Search terms: ${searchTerms.join(', ')}${sectionCodeHint ? ` (hint: ${sectionCodeHint})` : ''}`);
 
-    // 1️⃣ TRY EXACT MATCH
-    const exactMatch = await db.get(
-      'SELECT * FROM urs_items WHERE LOWER(urs_name) = ? LIMIT 1',
-      [normalizedTextCs.toLowerCase()]
-    );
+    // 1️⃣ TRY EXACT MATCH (optionally filtered by section)
+    let exactMatch;
+    if (sectionCodeHint) {
+      exactMatch = await db.get(
+        'SELECT * FROM urs_items WHERE LOWER(urs_name) = ? AND section_code = ? LIMIT 1',
+        [normalizedTextCs.toLowerCase(), sectionCodeHint]
+      );
+    }
+    if (!exactMatch) {
+      exactMatch = await db.get(
+        'SELECT * FROM urs_items WHERE LOWER(urs_name) = ? LIMIT 1',
+        [normalizedTextCs.toLowerCase()]
+      );
+    }
 
     if (exactMatch) {
       logger.debug('[URS-LOCAL] Found EXACT match');
@@ -153,18 +162,33 @@ async function searchLocalCatalog(normalizedTextCs) {
         urs_name: exactMatch.urs_name,
         unit: exactMatch.unit,
         description: exactMatch.description,
+        section_code: exactMatch.section_code,
         confidence: CONFIDENCE_THRESHOLDS.EXACT_MATCH,
         match_type: 'exact'
       }];
     }
 
-    // 2️⃣ SEARCH BY SUBSTRING + SIMILARITY
-    const candidates = await db.all(
-      `SELECT * FROM urs_items
-       WHERE urs_name LIKE ? OR urs_name LIKE ?
-       LIMIT 10`,
-      [`%${searchTerms[0]}%`, `%${searchTerms[searchTerms.length - 1]}%`]
-    );
+    // 2️⃣ SEARCH BY SUBSTRING + SIMILARITY (optionally filtered by section)
+    let candidates;
+    if (sectionCodeHint) {
+      candidates = await db.all(
+        `SELECT * FROM urs_items
+         WHERE section_code = ?
+         AND (urs_name LIKE ? OR urs_name LIKE ? OR description LIKE ?)
+         LIMIT 15`,
+        [sectionCodeHint, `%${searchTerms[0]}%`, `%${searchTerms[searchTerms.length - 1]}%`, `%${searchTerms[0]}%`]
+      );
+    }
+
+    if (!candidates || candidates.length === 0) {
+      // Fallback: search without section hint
+      candidates = await db.all(
+        `SELECT * FROM urs_items
+         WHERE urs_name LIKE ? OR urs_name LIKE ? OR description LIKE ?
+         LIMIT 15`,
+        [`%${searchTerms[0]}%`, `%${searchTerms[searchTerms.length - 1]}%`, `%${searchTerms[0]}%`]
+      );
+    }
 
     if (candidates.length === 0) {
       logger.debug('[URS-LOCAL] No substring matches found');
@@ -183,6 +207,7 @@ async function searchLocalCatalog(normalizedTextCs) {
         urs_name: item.urs_name,
         unit: item.unit,
         description: item.description,
+        section_code: item.section_code,
         confidence: Math.min(confidence, CONFIDENCE_THRESHOLDS.HIGH),
         match_type: 'similarity'
       };

@@ -1,14 +1,27 @@
 -- URS Matcher Service Database Schema
 
--- URS Items Catalog
+-- ============================================================================
+-- URS Items Catalog (Full)
+-- Purpose: Complete ÚRS code catalog (normally imported from official source)
+-- ============================================================================
 CREATE TABLE IF NOT EXISTS urs_items (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  urs_code TEXT UNIQUE NOT NULL,
-  urs_name TEXT NOT NULL,
-  unit TEXT NOT NULL,
-  description TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  urs_code TEXT UNIQUE NOT NULL,              -- e.g. '3112389'
+  urs_name TEXT NOT NULL,                     -- e.g. 'Základové pasy z betonu C25/30'
+  unit TEXT NOT NULL,                         -- MJ: m, m2, m3, ks, t, etc.
+  description TEXT,                           -- Longer description if available
+  section_code TEXT,                          -- Třídník prefix, e.g. '31', '32', '27'
+  category_path TEXT,                         -- Hierarchy path, e.g. '3 > 31 > Zdivo'
+  is_imported INTEGER DEFAULT 0,              -- 1 = from official catalog, 0 = sample/manual
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Indexes for fast lookup and filtering by section
+CREATE INDEX IF NOT EXISTS idx_urs_code ON urs_items(urs_code);
+CREATE INDEX IF NOT EXISTS idx_urs_name ON urs_items(urs_name);
+CREATE INDEX IF NOT EXISTS idx_urs_section_code ON urs_items(section_code);
+CREATE INDEX IF NOT EXISTS idx_urs_is_imported ON urs_items(is_imported);
 
 -- Jobs (uploaded files or text matches)
 CREATE TABLE IF NOT EXISTS jobs (
@@ -117,8 +130,6 @@ CREATE TABLE IF NOT EXISTS kb_related_items (
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_jobs_created ON jobs(created_at);
 CREATE INDEX IF NOT EXISTS idx_job_items_job_id ON job_items(job_id);
-CREATE INDEX IF NOT EXISTS idx_urs_items_code ON urs_items(urs_code);
-CREATE INDEX IF NOT EXISTS idx_urs_items_name ON urs_items(urs_name);
 
 -- Knowledge Base indexes
 CREATE INDEX IF NOT EXISTS idx_kb_normalized_text ON kb_mappings(normalized_text_cs);
