@@ -719,25 +719,12 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
       chartsSheet.addRow(['CELKEM', totalBudget]).font = { bold: true };
 
-      // Create pie chart
-      const pieChart = {
-        type: 'doughnut',
-        title: 'Rozpočet podle materiálu',
-        series: [{
-          title: new ExcelJS.Worksheet.CellReferenceArray('Grafy', 2, 1, 2 + budgetData.length - 1, 1),
-          val: new ExcelJS.Worksheet.CellReferenceArray('Grafy', 2, 2, 2 + budgetData.length - 1, 2),
-          layout: {
-            manualLayout: {
-              x: 0.15, y: 0.15, w: 0.7, h: 0.7
-            }
-          }
-        }],
-        chartArea: {
-          layoutTarget: 'inner'
-        }
-      };
+      // TODO: ExcelJS chart API is complex and needs proper implementation
+      // For now, we skip chart creation and provide data tables instead
+      // Charts can be added manually in Excel using the data provided
 
-      chartsSheet.addChart(pieChart);
+      // NOTE: ExcelJS.Worksheet.CellReferenceArray doesn't exist in current API
+      // Users can create charts manually in Excel from the data tables provided
     }
 
     // Add spacing
