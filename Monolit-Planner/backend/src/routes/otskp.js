@@ -336,7 +336,7 @@ router.post('/import', async (req, res) => {
     // For PostgreSQL: use async/await to properly await each insert
     if (db.isSqlite) {
       // SQLite: synchronous transaction (atomic - all or nothing)
-      const insertMany = db.transaction((items) => {
+      const insertMany = db.transaction((client, items) => {
         for (const item of items) {
           insertStmt.run(
             item.code,
@@ -351,7 +351,7 @@ router.post('/import', async (req, res) => {
       insertMany(items);
     } else {
       // PostgreSQL: async transaction (must await each insert)
-      const insertMany = db.transaction(async (items) => {
+      const insertMany = db.transaction(async (client, items) => {
         for (const item of items) {
           await insertStmt.run(
             item.code,

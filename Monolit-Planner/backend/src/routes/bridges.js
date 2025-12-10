@@ -129,7 +129,7 @@ router.post('/', async (req, res) => {
     `);
 
     // Use transaction for atomic insert of all template positions
-    const insertMany = db.transaction(() => {
+    const insertMany = db.transaction((client) => {
       defaultPositions.forEach((position) => {
         insertPosition.run(
           position.id,
