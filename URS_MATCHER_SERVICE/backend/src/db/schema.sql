@@ -139,3 +139,54 @@ CREATE INDEX IF NOT EXISTS idx_kb_usage ON kb_mappings(usage_count DESC);
 CREATE INDEX IF NOT EXISTS idx_kb_confidence ON kb_mappings(confidence DESC);
 CREATE INDEX IF NOT EXISTS idx_kb_related_items ON kb_related_items(kb_mapping_id);
 
+-- ============================================================================
+-- CATALOG VERSIONING & MANAGEMENT (NEW)
+-- ============================================================================
+-- Track all catalog imports with versions, status, validation, and rollback capability
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS catalog_versions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  version_id TEXT UNIQUE NOT NULL,       -- e.g. 'catalog_1702200000000'
+  source TEXT NOT NULL,                  -- 'local_file', 's3_bucket', 'api_endpoint', etc.
+  source_info TEXT,                      -- JSON with source details (file path, URL, etc.)
+
+  -- Status workflow
+  status TEXT DEFAULT 'pending',         -- pending, approved, active, inactive, rejected, archived
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  approved_at TIMESTAMP,
+  approved_by TEXT,                      -- User who approved
+  approval_notes TEXT,                   -- Why approved/rejected
+  activated_at TIMESTAMP,                -- When version became active
+  rejection_reason TEXT,
+
+  -- Import statistics
+  stats TEXT,                            -- JSON: {total, skipped, duplicates, bySection, ...}
+  validation_score INTEGER,              -- 0-100 quality score
+  validation_details TEXT,               -- JSON: {valid, errors, warnings, ...}
+
+  -- Metadata
+  imported_codes_count INTEGER,          -- Total codes imported
+  section_coverage TEXT,                 -- JSON: {"27": 1200, "31": 850, ...}
+  archive_path TEXT,                     -- Path to archived copy if archived
+
+  UNIQUE(version_id)
+);
+
+-- Audit log for all catalog operations
+CREATE TABLE IF NOT EXISTS catalog_audit_log (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  action TEXT NOT NULL,                  -- import_started, import_completed, version_approved, etc.
+  details TEXT,                          -- JSON with detailed info
+  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  user_id TEXT,                          -- Who triggered the action
+  ip_address TEXT                        -- For security audit
+);
+
+-- Index for efficient queries
+CREATE INDEX IF NOT EXISTS idx_catalog_versions_status ON catalog_versions(status);
+CREATE INDEX IF NOT EXISTS idx_catalog_versions_created ON catalog_versions(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_catalog_versions_active ON catalog_versions(status) WHERE status = 'active';
+CREATE INDEX IF NOT EXISTS idx_catalog_audit_action ON catalog_audit_log(action);
+CREATE INDEX IF NOT EXISTS idx_catalog_audit_timestamp ON catalog_audit_log(timestamp DESC);
+
