@@ -146,8 +146,9 @@ async function seedSampleData(db) {
 
     for (const item of sampleData) {
       await db.run(
-        'INSERT INTO urs_items (urs_code, urs_name, unit) VALUES (?, ?, ?)',
-        [item.code, item.name, item.unit]
+        `INSERT INTO urs_items (urs_code, urs_name, unit, section_code, is_imported, created_at, updated_at)
+         VALUES (?, ?, ?, ?, 0, datetime('now'), datetime('now'))`,
+        [item.code, item.name, item.unit, item.section || '27']
       );
     }
 
