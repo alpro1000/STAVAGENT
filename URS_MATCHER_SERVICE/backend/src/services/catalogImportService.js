@@ -581,4 +581,7 @@ export const importService = {
   }
 };
 
+// Export classes for use in other services (e.g., scheduledImportService.js)
+export { CatalogVersionManager, CatalogAuditLog };
+
 export default importService;
