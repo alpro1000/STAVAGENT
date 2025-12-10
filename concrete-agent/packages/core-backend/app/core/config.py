@@ -44,6 +44,7 @@ class Settings(BaseSettings):
     # API KEYS
     # ==========================================
     ANTHROPIC_API_KEY: str = Field(default="", description="Anthropic Claude API key")
+    GOOGLE_API_KEY: str = Field(default="", description="Google AI API key (Gemini)")
     OPENAI_API_KEY: str = Field(default="", description="OpenAI API key (optional)")
     PERPLEXITY_API_KEY: str = Field(default="", description="Perplexity API key for live KB")
     NANONETS_API_KEY: str = Field(default="", description="Nanonets API key for document processing")
@@ -52,9 +53,13 @@ class Settings(BaseSettings):
     # AI MODELS
     # ==========================================
     CLAUDE_MODEL: str = Field(default="claude-sonnet-4-5-20250929", description="Claude model (Sonnet 4.5 - latest)")
+    GEMINI_MODEL: str = Field(default="gemini-2.0-flash-exp", description="Gemini model (2.0 Flash - FREE, fastest)")
     GPT4_MODEL: str = Field(default="gpt-4-vision-preview", description="GPT-4 model")
     CLAUDE_MAX_TOKENS: int = Field(default=4000, description="Max tokens for Claude")
     GPT4_MAX_TOKENS: int = Field(default=4000, description="Max tokens for GPT-4")
+
+    # Multi-Role LLM selection: "claude", "gemini", "auto" (Gemini with Claude fallback)
+    MULTI_ROLE_LLM: str = Field(default="gemini", description="LLM for Multi-Role: claude, gemini, auto")
     
     # ==========================================
     # WORKFLOW FEATURE FLAGS

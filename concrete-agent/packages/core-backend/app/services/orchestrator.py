@@ -29,6 +29,13 @@ from app.services.task_classifier import (
 from app.core.claude_client import ClaudeClient
 from app.core.config import settings
 
+# Try to import Gemini client (may not be available)
+try:
+    from app.core.gemini_client import GeminiClient
+    GEMINI_AVAILABLE = True
+except ImportError:
+    GEMINI_AVAILABLE = False
+
 
 # ============================================================================
 # DATA STRUCTURES
@@ -108,7 +115,49 @@ class MultiRoleOrchestrator:
         self.prompts_dir = Path(__file__).parent.parent / "prompts" / "roles"
         self.role_outputs: List[RoleOutput] = []
         self.conflicts: List[Conflict] = []
-        self.claude_client = ClaudeClient()
+
+        # Select LLM client based on MULTI_ROLE_LLM setting
+        multi_role_llm = getattr(settings, 'MULTI_ROLE_LLM', 'gemini').lower()
+
+        if multi_role_llm == "gemini":
+            if not GEMINI_AVAILABLE:
+                print("⚠️  Gemini requested but not available, falling back to Claude")
+                self.llm_client = ClaudeClient()
+                self.llm_name = "claude"
+            else:
+                try:
+                    self.llm_client = GeminiClient()
+                    self.llm_name = "gemini"
+                    print(f"✅ Using Gemini for Multi-Role ({self.llm_client.model_name})")
+                except Exception as e:
+                    print(f"⚠️  Gemini failed to initialize: {e}, falling back to Claude")
+                    self.llm_client = ClaudeClient()
+                    self.llm_name = "claude"
+
+        elif multi_role_llm == "auto":
+            # Auto = Try Gemini first, fallback to Claude if it fails
+            if GEMINI_AVAILABLE:
+                try:
+                    self.llm_client = GeminiClient()
+                    self.llm_name = "gemini"
+                    self.fallback_client = ClaudeClient()
+                    print(f"✅ Using Gemini with Claude fallback for Multi-Role")
+                except Exception:
+                    self.llm_client = ClaudeClient()
+                    self.llm_name = "claude"
+                    self.fallback_client = None
+            else:
+                self.llm_client = ClaudeClient()
+                self.llm_name = "claude"
+                self.fallback_client = None
+
+        else:  # "claude" or anything else
+            self.llm_client = ClaudeClient()
+            self.llm_name = "claude"
+            print("✅ Using Claude for Multi-Role")
+
+        # For backwards compatibility
+        self.claude_client = self.llm_client
 
     def execute(
         self,
@@ -226,11 +275,11 @@ class MultiRoleOrchestrator:
             context=context,
         )
 
-        # Call Claude API
+        # Call LLM API (with fallback if available)
         start_time = datetime.now()
 
         try:
-            response = self.claude_client.call(
+            response = self.llm_client.call(
                 prompt=full_prompt,
                 system_prompt=None,  # Role prompt is included in user message
                 temperature=role_invocation.temperature,
@@ -248,9 +297,33 @@ class MultiRoleOrchestrator:
             tokens_used = len(content) // 4
 
         except Exception as e:
-            print(f"   ❌ Error invoking {role_invocation.role.value}: {e}")
-            content = f"[ERROR: Failed to invoke role: {str(e)}]"
-            tokens_used = 0
+            print(f"   ❌ Error invoking {role_invocation.role.value} with {self.llm_name}: {e}")
+
+            # Try fallback client if available (auto mode)
+            if hasattr(self, 'fallback_client') and self.fallback_client is not None:
+                print(f"   🔄 Trying fallback to Claude...")
+                try:
+                    response = self.fallback_client.call(
+                        prompt=full_prompt,
+                        system_prompt=None,
+                        temperature=role_invocation.temperature,
+                    )
+
+                    if "raw_text" in response:
+                        content = response["raw_text"]
+                    else:
+                        content = str(response)
+
+                    tokens_used = len(content) // 4
+                    print(f"   ✅ Fallback to Claude succeeded")
+
+                except Exception as fallback_error:
+                    print(f"   ❌ Fallback also failed: {fallback_error}")
+                    content = f"[ERROR: Failed to invoke role with {self.llm_name} and fallback: {str(e)}]"
+                    tokens_used = 0
+            else:
+                content = f"[ERROR: Failed to invoke role: {str(e)}]"
+                tokens_used = 0
 
         # Parse output for warnings and critical issues
         warnings, critical_issues = self._parse_warnings_and_issues(content)

@@ -17,6 +17,9 @@ gunicorn>=23.0.0
 # Anthropic Claude API
 anthropic==0.40.0
 
+# Google Gemini API (FREE alternative - 1500 req/day)
+google-generativeai==0.8.3
+
 # OpenAI GPT-4 Vision (optional for Workflow B)
 openai==1.54.3
 
