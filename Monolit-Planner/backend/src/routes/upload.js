@@ -441,7 +441,7 @@ router.post('/', upload.single('file'), async (req, res) => {
           `);
 
           // Use transaction for batch insert
-          const insertMany = db.transaction((positions) => {
+          const insertMany = db.transaction((client, positions) => {
             for (const pos of positions) {
               const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
               stmt.run(

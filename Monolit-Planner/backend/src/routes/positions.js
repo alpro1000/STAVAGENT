@@ -183,7 +183,7 @@ router.post('/', async (req, res) => {
       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `);
 
-    const insertMany = db.transaction(async (positions) => {
+    const insertMany = db.transaction(async (client, positions) => {
       for (const pos of positions) {
         const id = pos.id || uuidv4();
         await insertStmt.run(
@@ -272,7 +272,7 @@ router.put('/', async (req, res) => {
     }));
     logger.info(`Updates preview: ${JSON.stringify(previewUpdates)}`);
 
-    const updateMany = db.transaction(async (updates, bridgeId) => {
+    const updateMany = db.transaction(async (client, updates, bridgeId) => {
       for (const update of updates) {
         const { id, ...fields } = update;
 
