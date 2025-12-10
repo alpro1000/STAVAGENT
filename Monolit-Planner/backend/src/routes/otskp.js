@@ -327,16 +327,17 @@ router.post('/import', async (req, res) => {
 
     // Insert new codes
     console.log('[OTSKP Import] Inserting', items.length, 'codes...');
-    const insertStmt = db.prepare(`
-      INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `);
 
     // For SQLite: keep transaction synchronous (atomic)
     // For PostgreSQL: use async/await to properly await each insert
     if (db.isSqlite) {
       // SQLite: synchronous transaction (atomic - all or nothing)
       const insertMany = db.transaction((client, items) => {
+        const insertStmt = client.prepare(`
+          INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `);
+
         for (const item of items) {
           insertStmt.run(
             item.code,
@@ -352,6 +353,11 @@ router.post('/import', async (req, res) => {
     } else {
       // PostgreSQL: async transaction (must await each insert)
       const insertMany = db.transaction(async (client, items) => {
+        const insertStmt = client.prepare(`
+          INSERT INTO otskp_codes (code, name, unit, unit_price, specification, search_name)
+          VALUES (?, ?, ?, ?, ?, ?)
+        `);
+
         for (const item of items) {
           await insertStmt.run(
             item.code,
