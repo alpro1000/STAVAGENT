@@ -24,13 +24,29 @@ if (USE_POSTGRES) {
   db = {
     prepare: postgres.prepare,
     exec: postgres.exec,
-    // Transaction for PostgreSQL: simplified - just execute callback
-    // Each statement is auto-committed (PostgreSQL default)
-    // TODO: Implement proper transaction support with client passing
-    transaction: (callback) => callback,
+    // Transaction for PostgreSQL: proper implementation with BEGIN/COMMIT/ROLLBACK
+    // Returns a function that executes callback within a transaction
+    transaction: (callback) => {
+      return async (...args) => {
+        const pool = postgres.getPool();
+        const client = await pool.connect();
+        try {
+          await client.query('BEGIN');
+          const result = await callback(client, ...args);
+          await client.query('COMMIT');
+          return result;
+        } catch (error) {
+          await client.query('ROLLBACK');
+          throw error;
+        } finally {
+          client.release();
+        }
+      };
+    },
     pragma: postgres.pragma,
     isPostgres: true,
-    isSqlite: false
+    isSqlite: false,
+    getPool: postgres.getPool  // Expose pool for direct access if needed
   };
 } else {
   console.log('[Database] Using SQLite (development mode)');
