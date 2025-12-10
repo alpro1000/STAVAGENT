@@ -25,6 +25,7 @@ import { performanceMonitoringMiddleware } from './api/middleware/performanceMon
 // Services
 import { startCacheCleanupScheduler, stopCacheCleanupScheduler } from './services/cacheCleanupScheduler.js';
 import { initCache, closeCache } from './services/cacheService.js';
+import { initializeScheduledJobs } from './services/scheduledImportService.js';
 
 // Load environment variables
 dotenv.config();
@@ -120,43 +121,86 @@ app.use(errorHandler);
 async function startServer() {
   try {
     // Initialize database
-    logger.info('Initializing database...');
+    logger.info('[DB] 🔄 Initializing database...');
     await initializeDatabase();
-    logger.info('Database initialized successfully');
+    logger.info('[DB] ✅ Database initialized and ready');
+    logger.info('[DB] Status: Database connection established and all tables created');
 
     // Initialize cache (Redis or in-memory fallback)
-    logger.info('[CACHE] Initializing cache service...');
+    logger.info('[CACHE] 🔄 Initializing cache service...');
     await initCache();
-    logger.info('[CACHE] Cache service initialized successfully');
+    logger.info('[CACHE] ✅ Cache service initialized successfully');
 
     // Start cache cleanup scheduler (Phase 4)
-    logger.info('[SCHEDULER] Starting cache cleanup scheduler...');
+    logger.info('[SCHEDULER] 🔄 Starting cache cleanup scheduler...');
     startCacheCleanupScheduler();
-    logger.info('[SCHEDULER] Cache cleanup scheduler started');
+    logger.info('[SCHEDULER] ✅ Cache cleanup scheduler started');
+
+    // Initialize scheduled catalog import jobs (auto-approval, cleanup, health checks)
+    logger.info('[SCHEDULED-JOBS] 🔄 Initializing scheduled catalog import jobs...');
+    let scheduledJobs;
+    try {
+      scheduledJobs = initializeScheduledJobs();
+      logger.info('[SCHEDULED-JOBS] ✅ All scheduled jobs initialized and running');
+    } catch (jobsError) {
+      logger.error(`[SCHEDULED-JOBS] ⚠️  Failed to initialize scheduled jobs: ${jobsError.message}`);
+      logger.warn('[SCHEDULED-JOBS] Service will continue without scheduled jobs. Manual approvals required.');
+      scheduledJobs = null;
+    }
 
     // Start Express server
     const server = app.listen(PORT, () => {
-      logger.info(`🚀 URS Matcher Service listening on port ${PORT}`);
-      logger.info(`📍 Frontend: http://localhost:${PORT}`);
-      logger.info(`📍 API: http://localhost:${PORT}/api`);
-      logger.info(`📍 Health: http://localhost:${PORT}/health`);
-      logger.info(`📊 Metrics: http://localhost:${PORT}/api/jobs/admin/metrics`);
-      logger.info(`🏗️ Environment: ${process.env.NODE_ENV || 'development'}`);
+      logger.info(`\n${'='.repeat(70)}`);
+      logger.info(`🚀 URS Matcher Service is RUNNING`);
+      logger.info(`${'='.repeat(70)}`);
+      logger.info(`📍 Frontend:       http://localhost:${PORT}`);
+      logger.info(`📍 API:            http://localhost:${PORT}/api`);
+      logger.info(`📍 Health:         http://localhost:${PORT}/health`);
+      logger.info(`📊 Metrics:        http://localhost:${PORT}/api/jobs/admin/metrics`);
+      logger.info(`📦 Catalog Import: http://localhost:${PORT}/api/catalog/status`);
+      logger.info(`🏗️  Environment:    ${process.env.NODE_ENV || 'development'}`);
+      logger.info(`${'='.repeat(70)}\n`);
     });
 
     // Graceful shutdown handler
     process.on('SIGTERM', async () => {
-      logger.info('SIGTERM received, shutting down gracefully...');
+      logger.info('\n[SHUTDOWN] SIGTERM received, shutting down gracefully...');
+
+      // Stop scheduled jobs
+      if (scheduledJobs) {
+        logger.info('[SHUTDOWN] Stopping scheduled import jobs...');
+        scheduledJobs.stop();
+        logger.info('[SHUTDOWN] ✅ Scheduled jobs stopped');
+      }
+
+      // Stop cache cleanup scheduler
+      logger.info('[SHUTDOWN] Stopping cache cleanup scheduler...');
       stopCacheCleanupScheduler();
+      logger.info('[SHUTDOWN] ✅ Cache cleanup scheduler stopped');
+
+      // Close cache
+      logger.info('[SHUTDOWN] Closing cache connections...');
       await closeCache();
+      logger.info('[SHUTDOWN] ✅ Cache closed');
+
+      // Close server
+      logger.info('[SHUTDOWN] Closing HTTP server...');
       server.close(() => {
-        logger.info('Server closed');
+        logger.info('[SHUTDOWN] ✅ Server closed');
+        logger.info('Goodbye! 👋\n');
         process.exit(0);
       });
+
+      // Force exit after 10 seconds if graceful shutdown hangs
+      setTimeout(() => {
+        logger.error('[SHUTDOWN] ❌ Graceful shutdown timeout, forcing exit');
+        process.exit(1);
+      }, 10000);
     });
 
   } catch (error) {
     logger.error(`Failed to start server: ${error.message}`);
+    logger.error(`Stack: ${error.stack}`);
     stopCacheCleanupScheduler();
     await closeCache();
     process.exit(1);
