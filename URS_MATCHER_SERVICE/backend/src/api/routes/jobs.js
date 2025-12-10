@@ -1819,4 +1819,292 @@ router.get('/admin/metrics/role/:role', async (req, res) => {
   }
 });
 
+// ============================================================================
+// POST /api/jobs/block-match-fast (NEW OPTIMIZED ENDPOINT)
+// ============================================================================
+// Optimized block matching WITHOUT Multi-Role orchestrator
+// Uses: Gemini classification → Local DB search → Perplexity selection (queue-based)
+// ============================================================================
+
+router.post('/block-match-fast', upload.single('file'), async (req, res) => {
+  let filePath = null;
+  const jobStartTime = Date.now();
+
+  try {
+    // 1️⃣ VALIDATE INPUT
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file provided' });
+    }
+
+    filePath = req.file.path;
+    const jobId = uuidv4();
+    const logPrefix = `[BLOCK-MATCH-FAST]`;
+
+    logger.info(`${logPrefix} Job ${jobId} started`);
+
+    // Parse project context
+    let projectContext = {
+      building_type: 'neurčeno',
+      storeys: 0,
+      main_system: [],
+      notes: []
+    };
+
+    if (req.body.project_context) {
+      try {
+        projectContext = typeof req.body.project_context === 'string'
+          ? JSON.parse(req.body.project_context)
+          : req.body.project_context;
+      } catch (e) {
+        logger.warn(`${logPrefix} Invalid project context, using defaults`);
+      }
+    }
+
+    // 2️⃣ PARSE FILE
+    const parseStartTime = Date.now();
+    const rows = await parseExcelFile(filePath);
+    const parseDuration = Date.now() - parseStartTime;
+
+    logger.info(`${logPrefix} Parsed ${rows.length} rows in ${parseDuration}ms`);
+
+    if (rows.length === 0) {
+      return res.status(400).json({ error: 'No data rows found in file' });
+    }
+
+    // Save job to database
+    const db = await getDatabase();
+    await db.run(
+      `INSERT INTO jobs (id, filename, status, total_rows, project_context, created_at)
+       VALUES (?, ?, ?, ?, ?, datetime('now'))`,
+      [jobId, req.file.originalname, 'processing', rows.length, JSON.stringify(projectContext)]
+    );
+
+    // 3️⃣ CLASSIFY BOQ WITH GEMINI (20s timeout, with fallback)
+    const classifyStartTime = Date.now();
+    logger.info(`${logPrefix} Classifying rows with Gemini...`);
+
+    const { classifyBoqWithGemini } = await import('../../services/geminiBlockClassifier.js');
+    const classificationResult = await classifyBoqWithGemini(rows, projectContext);
+    const classifyDuration = Date.now() - classifyStartTime;
+
+    logger.info(`${logPrefix} Classification done: ${classificationResult.blocks.length} blocks in ${classifyDuration}ms (source: ${classificationResult.stats.source})`);
+
+    // 4️⃣ PROCESS EACH BLOCK
+    const blockResults = [];
+    const perplexityQueue = [];
+
+    for (const block of classificationResult.blocks) {
+      logger.info(`${logPrefix} Processing block: ${block.block_name} (${block.rows.length} rows)`);
+
+      const blockStartTime = Date.now();
+      const blockAnalysis = {
+        block_name: block.block_name,
+        block_id: block.block_name.replace(/[^a-zA-Z0-9]/g, '_').toUpperCase(),
+        rows_count: block.rows.length,
+        tridnik_prefix: block.tridnik_prefix,
+        items: []
+      };
+
+      // Process each row in block
+      for (const row of block.rows) {
+        try {
+          const { matchRowToUrs, saveToCache } = await import('../../services/ursLocalMatcher.js');
+
+          // Try local matching FIRST (fast path)
+          const localResult = await matchRowToUrs(row.normalized_text_cs, projectContext);
+
+          if (localResult.candidates.length > 0) {
+            const bestCandidate = localResult.candidates[0];
+
+            // Check if we need Perplexity help
+            if (localResult.needs_perplexity) {
+              logger.debug(`${logPrefix} Low confidence (${bestCandidate.confidence}) - queuing for Perplexity`);
+
+              // Queue for Perplexity selection
+              perplexityQueue.push({
+                row_id: row.original_index,
+                normalized_text_cs: row.normalized_text_cs,
+                candidates: localResult.candidates,
+                projectContext: projectContext,
+                callback: (selectedResult) => {
+                  // Save result to block after Perplexity processing
+                  blockAnalysis.items.push({
+                    row_id: row.original_index,
+                    input_text: row.normalized_text_cs,
+                    urs_code: selectedResult.urs_code,
+                    urs_name: selectedResult.urs_name,
+                    unit: selectedResult.unit,
+                    quantity: row.quantity,
+                    confidence: selectedResult.confidence,
+                    source: selectedResult.source,
+                    explanation_cs: selectedResult.explanation_cs,
+                    related_items: selectedResult.related_items || []
+                  });
+                }
+              });
+            } else {
+              // High confidence - save directly
+              logger.debug(`${logPrefix} High confidence (${bestCandidate.confidence}) - using local match`);
+
+              // Save to cache
+              await saveToCache(row.normalized_text_cs, bestCandidate.urs_code, bestCandidate.urs_name, bestCandidate.unit, projectContext, bestCandidate.confidence);
+
+              blockAnalysis.items.push({
+                row_id: row.original_index,
+                input_text: row.normalized_text_cs,
+                urs_code: bestCandidate.urs_code,
+                urs_name: bestCandidate.urs_name,
+                unit: bestCandidate.unit,
+                quantity: row.quantity,
+                confidence: bestCandidate.confidence,
+                source: 'local_match',
+                explanation_cs: 'Vysoká shoda v lokální databázi',
+                related_items: []
+              });
+            }
+          } else {
+            logger.warn(`${logPrefix} No local candidates found for: "${row.normalized_text_cs.substring(0, 30)}..."`);
+
+            blockAnalysis.items.push({
+              row_id: row.original_index,
+              input_text: row.normalized_text_cs,
+              urs_code: null,
+              urs_name: 'Nenalezeno',
+              unit: row.unit,
+              quantity: row.quantity,
+              confidence: 0,
+              source: 'not_found',
+              explanation_cs: 'Práce se nepodařilo identifikovat',
+              related_items: []
+            });
+          }
+
+        } catch (rowError) {
+          logger.warn(`${logPrefix} Error processing row ${row.original_index}: ${rowError.message}`);
+
+          blockAnalysis.items.push({
+            row_id: row.original_index,
+            input_text: row.normalized_text_cs,
+            urs_code: null,
+            urs_name: 'Chyba',
+            unit: row.unit,
+            quantity: row.quantity,
+            confidence: 0,
+            source: 'error',
+            explanation_cs: rowError.message,
+            related_items: []
+          });
+        }
+      }
+
+      blockResults.push(blockAnalysis);
+      const blockDuration = Date.now() - blockStartTime;
+      logger.info(`${logPrefix} Block "${block.block_name}" done in ${blockDuration}ms`);
+    }
+
+    // 5️⃣ PROCESS PERPLEXITY QUEUE (SEQUENTIAL!)
+    if (perplexityQueue.length > 0) {
+      logger.info(`${logPrefix} Processing Perplexity queue: ${perplexityQueue.length} items (sequential)`);
+
+      const { selectBestCandidate } = await import('../../services/perplexityClient.js');
+
+      for (let i = 0; i < perplexityQueue.length; i++) {
+        const queueItem = perplexityQueue[i];
+        const queueItemStart = Date.now();
+
+        try {
+          logger.debug(`${logPrefix} Perplexity queue [${i + 1}/${perplexityQueue.length}]: Processing row ${queueItem.row_id}`);
+
+          const selectedResult = await selectBestCandidate(queueItem.normalized_text_cs, queueItem.candidates, queueItem.projectContext);
+
+          if (selectedResult) {
+            // Save to cache
+            const { saveToCache } = await import('../../services/ursLocalMatcher.js');
+            await saveToCache(queueItem.normalized_text_cs, selectedResult.urs_code, selectedResult.urs_name, selectedResult.unit, queueItem.projectContext, selectedResult.confidence);
+
+            // Call the callback to save result
+            queueItem.callback(selectedResult);
+
+            logger.debug(`${logPrefix} Perplexity selected: ${selectedResult.urs_code} (${selectedResult.confidence})`);
+          } else {
+            logger.warn(`${logPrefix} Perplexity returned null for row ${queueItem.row_id}`);
+          }
+
+        } catch (perplexityError) {
+          logger.error(`${logPrefix} Perplexity error for row ${queueItem.row_id}: ${perplexityError.message}`);
+        }
+
+        const queueItemDuration = Date.now() - queueItemStart;
+        logger.debug(`${logPrefix} Perplexity queue item completed in ${queueItemDuration}ms`);
+
+        // Small delay between Perplexity requests (rate limiting)
+        if (i < perplexityQueue.length - 1) {
+          await new Promise(r => setTimeout(r, 500));
+        }
+      }
+
+      logger.info(`${logPrefix} Perplexity queue processing complete`);
+    }
+
+    // 6️⃣ SAVE RESULTS & UPDATE JOB
+    const resultsForDB = {
+      filename: req.file.originalname,
+      project_context: projectContext,
+      blocks: blockResults,
+      stats: {
+        total_rows: rows.length,
+        total_blocks: blockResults.length,
+        items_matched: blockResults.reduce((sum, b) => sum + b.items.length, 0),
+        perplexity_queue_processed: perplexityQueue.length,
+        execution_time_ms: Date.now() - jobStartTime
+      }
+    };
+
+    // Update job in database
+    await db.run(
+      'UPDATE jobs SET status = ?, processed_rows = ?, results_json = ? WHERE id = ?',
+      ['completed', rows.length, JSON.stringify(resultsForDB), jobId]
+    );
+
+    const totalDuration = Date.now() - jobStartTime;
+    logger.info(`${logPrefix} Job ${jobId} COMPLETE in ${totalDuration}ms`);
+
+    // 7️⃣ RETURN RESPONSE
+    res.status(201).json({
+      job_id: jobId,
+      status: 'completed',
+      filename: req.file.originalname,
+      total_rows: rows.length,
+      blocks_count: blockResults.length,
+      blocks: blockResults,
+      project_context: projectContext,
+      stats: {
+        classification_time_ms: classifyDuration,
+        total_execution_time_ms: totalDuration,
+        perplexity_items: perplexityQueue.length,
+        classification_source: classificationResult.stats.source
+      },
+      message: 'Block matching completed (optimized pipeline without Multi-Role)'
+    });
+
+  } catch (error) {
+    logger.error(`[BLOCK-MATCH-FAST] Error: ${error.message}`);
+    logger.error(error.stack);
+
+    // Clean up
+    if (filePath && fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+    }
+
+    res.status(500).json({
+      error: error.message,
+      details: 'Block-match-fast processing failed'
+    });
+  }
+});
+
 export default router;
