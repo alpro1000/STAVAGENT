@@ -16,6 +16,46 @@ import {
   insertMapping
 } from '../src/services/knowledgeBase.js';
 
+import { getDatabase } from '../src/db/init.js';
+
+// ============================================================================
+// TEST SETUP - Insert test URS codes
+// ============================================================================
+
+beforeAll(async () => {
+  try {
+    const db = await getDatabase();
+    // Insert test URS codes for tests
+    const testCodes = [
+      {
+        urs_code: '314821',
+        urs_name: 'Stěny z betonu železového',
+        unit: 'm3',
+        section_code: '31',
+        description: 'Betonové stěny'
+      },
+      {
+        urs_code: '314822',
+        urs_name: 'Založení zdiva z broušených cihel',
+        unit: 'm2',
+        section_code: '31',
+        description: 'Cihelné zdivo'
+      }
+    ];
+
+    for (const code of testCodes) {
+      await db.run(
+        `INSERT OR REPLACE INTO urs_items (urs_code, urs_name, unit, section_code, description, is_imported, created_at, updated_at)
+         VALUES (?, ?, ?, ?, ?, 1, datetime('now'), datetime('now'))`,
+        [code.urs_code, code.urs_name, code.unit, code.section_code, code.description]
+      );
+    }
+  } catch (error) {
+    console.warn('Warning: Failed to insert test URS codes:', error.message);
+    // Continue with tests even if setup fails
+  }
+});
+
 // ============================================================================
 // LANGUAGE DETECTION TESTS
 // ============================================================================
@@ -135,7 +175,7 @@ describe('Knowledge Base Operations', () => {
       'cs',
       'bytový dům',
       'monolitický ŽB',
-      '801321111',
+      '314821',
       'Stěny z betonu železového',
       'm3',
       0.9,
@@ -166,16 +206,18 @@ describe('Knowledge Base Operations', () => {
 describe('Universal Matcher', () => {
   const candidateItems = [
     {
-      urs_code: '801321111',
+      urs_code: '314821',
       urs_name: 'Stěny z betonu železového',
       unit: 'm3',
-      description: 'Betonové stěny'
+      description: 'Betonové stěny',
+      section_code: '31'
     },
     {
-      urs_code: '801321121',
+      urs_code: '314822',
       urs_name: 'Založení zdiva z broušených cihel',
       unit: 'm2',
-      description: 'Cihelné zdivo'
+      description: 'Cihelné zdivo',
+      section_code: '31'
     }
   ];
 
@@ -326,7 +368,7 @@ describe('User Feedback', () => {
     const result = await recordUserFeedback(
       {},
       {
-        urs_code: '801321111',
+        urs_code: '314821',
         urs_name: 'Stěny z betonu železového',
         unit: 'm3',
         normalized_text_cs: 'betonová deska',
@@ -334,7 +376,8 @@ describe('User Feedback', () => {
         project_type: 'bytový dům',
         building_system: 'monolitický ŽB',
         is_correct: true,
-        user_comment: 'Correct match'
+        user_comment: 'Correct match',
+        section_code: '31'
       }
     );
 
@@ -345,14 +388,15 @@ describe('User Feedback', () => {
     const result = await recordUserFeedback(
       {},
       {
-        urs_code: '801321111',
+        urs_code: '314821',
         urs_name: 'Stěny z betonu železového',
         unit: 'm3',
         normalized_text_cs: 'betonová deska',
         detected_language: 'cs',
         project_type: 'bytový dům',
         is_correct: false,
-        user_comment: 'Wrong code'
+        user_comment: 'Wrong code',
+        section_code: '31'
       }
     );
 
@@ -392,7 +436,7 @@ describe('Edge Cases', () => {
       text: longText,
       candidateItems: [
         {
-          urs_code: '801321111',
+          urs_code: '314821',
           urs_name: 'Stěny z betonu',
           unit: 'm3'
         }
@@ -408,7 +452,7 @@ describe('Edge Cases', () => {
       text: 'Betonová deska (sloupová základová deska) - 200x150mm',
       candidateItems: [
         {
-          urs_code: '801321111',
+          urs_code: '314821',
           urs_name: 'Stěny z betonu',
           unit: 'm3'
         }
@@ -421,12 +465,12 @@ describe('Edge Cases', () => {
   test('handles duplicate candidateItems gracefully', async () => {
     const duplicates = [
       {
-        urs_code: '801321111',
+        urs_code: '314821',
         urs_name: 'Stěny z betonu',
         unit: 'm3'
       },
       {
-        urs_code: '801321111',
+        urs_code: '314821',
         urs_name: 'Stěny z betonu',
         unit: 'm3'
       }
@@ -456,7 +500,7 @@ describe('Full Integration Flow', () => {
       buildingSystem: 'monolitický ŽB',
       candidateItems: [
         {
-          urs_code: '801321111',
+          urs_code: '314821',
           urs_name: 'Stěny z betonu železového',
           unit: 'm3'
         }
@@ -494,7 +538,7 @@ describe('Full Integration Flow', () => {
       buildingSystem: 'zděné',
       candidateItems: [
         {
-          urs_code: '801321121',
+          urs_code: '314822',
           urs_name: 'Založení zdiva z broušených cihel',
           unit: 'm2'
         }

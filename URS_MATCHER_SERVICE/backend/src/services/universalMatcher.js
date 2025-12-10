@@ -184,6 +184,15 @@ export async function universalMatch(input) {
 
     const llmResponse = await callUniversalLLM(llmPrompt);
 
+    // Ensure query object exists with detected language
+    if (!llmResponse.query) {
+      llmResponse.query = {};
+    }
+    llmResponse.query.detected_language = detectedLanguage;
+    llmResponse.query.normalized_text_cs = normalizedCzech;
+    if (input.quantity !== undefined) llmResponse.query.quantity = input.quantity;
+    if (input.unit !== undefined) llmResponse.query.unit = input.unit;
+
     // Add norms to response for transparency
     llmResponse.referenced_norms = normsData.norms;
     llmResponse.technical_conditions = normsData.technical_conditions;
