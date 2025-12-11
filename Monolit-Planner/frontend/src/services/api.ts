@@ -75,7 +75,7 @@ const RETRY_DELAY = 2000; // 2 seconds base delay
 // Helper: delay with exponential backoff
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Retry logic for 429 errors + 401 redirect
+// Retry logic for 429 errors (no auth - kiosk mode)
 api.interceptors.response.use(
   response => {
     console.log(`[API] Response ${response.status}:`, response.data);
@@ -87,17 +87,8 @@ api.interceptors.response.use(
 
     console.error(`[API] Error:`, status, error.message);
 
-    // Handle 401 Unauthorized - redirect to login
-    if (status === 401) {
-      console.warn('[API] 401 Unauthorized - redirecting to login');
-      localStorage.removeItem('auth_token');
-
-      // Only redirect if not already on login page
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
-      }
-      return Promise.reject(error);
-    }
+    // NO AUTH REDIRECT - kiosk mode doesn't use authentication
+    // 401 errors are logged but not redirected
 
     // Retry on 429 (Too Many Requests) with exponential backoff
     if (status === 429 && config && !config.__retryCount) {
@@ -132,10 +123,10 @@ export const bridgesAPI = {
     return data;
   },
 
-  create: async (params: { bridge_id: string; project_name?: string; object_name?: string; description?: string }): Promise<void> => {
-    // Map bridge_id to project_id (VARIANT 1: simple object creation)
+  create: async (params: { project_id?: string; bridge_id?: string; project_name?: string; object_name?: string; description?: string }): Promise<void> => {
+    // VARIANT 1: Accept both project_id and bridge_id for backward compatibility
     const monolithParams = {
-      project_id: params.bridge_id,
+      project_id: params.project_id || params.bridge_id,  // Accept both!
       project_name: params.project_name,
       object_name: params.object_name,
       description: params.description

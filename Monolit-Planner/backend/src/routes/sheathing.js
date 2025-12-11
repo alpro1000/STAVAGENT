@@ -1,5 +1,5 @@
 /**
- * Sheathing Routes
+ * Sheathing Routes - NO AUTH (Kiosk Mode)
  * API endpoints for formwork/sheathing captures (захватки) with checkerboard method calculations
  *
  * GET    /api/sheathing/:project_id              - Get all captures for project
@@ -13,29 +13,27 @@
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
-import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Apply authentication to all routes
-router.use(requireAuth);
+// NO AUTH REQUIRED - This is a public kiosk application
+// Authentication is handled at the portal level (stavagent-portal)
 
 /**
  * GET /api/sheathing/:project_id
- * Get all captures for a project
+ * Get all captures for a project (no auth - kiosk mode)
  */
 router.get('/:project_id', async (req, res) => {
   try {
     const { project_id } = req.params;
-    const ownerId = req.user.userId;
 
-    // Verify project ownership
+    // Verify project exists (no ownership check - kiosk mode)
     const project = await db.prepare(
-      'SELECT project_id FROM monolith_projects WHERE project_id = ? AND owner_id = ?'
-    ).get(project_id, ownerId);
+      'SELECT project_id FROM monolith_projects WHERE project_id = ?'
+    ).get(project_id);
 
     if (!project) {
-      return res.status(404).json({ error: 'Project not found or access denied' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     // Get all captures
@@ -54,11 +52,10 @@ router.get('/:project_id', async (req, res) => {
 
 /**
  * POST /api/sheathing
- * Create new capture
+ * Create new capture (no auth - kiosk mode)
  */
 router.post('/', async (req, res) => {
   try {
-    const ownerId = req.user.userId;
     const {
       project_id,
       part_name,
@@ -83,13 +80,13 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'length_m and width_m must be numbers' });
     }
 
-    // Verify project ownership
+    // Verify project exists (no ownership check - kiosk mode)
     const project = await db.prepare(
-      'SELECT project_id FROM monolith_projects WHERE project_id = ? AND owner_id = ?'
-    ).get(project_id, ownerId);
+      'SELECT project_id FROM monolith_projects WHERE project_id = ?'
+    ).get(project_id);
 
     if (!project) {
-      return res.status(404).json({ error: 'Project not found or access denied' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     // Calculate area
@@ -153,12 +150,11 @@ router.post('/', async (req, res) => {
 
 /**
  * PUT /api/sheathing/:capture_id
- * Update capture
+ * Update capture (no auth - kiosk mode)
  */
 router.put('/:capture_id', async (req, res) => {
   try {
     const { capture_id } = req.params;
-    const ownerId = req.user.userId;
     const {
       part_name,
       length_m,
@@ -173,15 +169,13 @@ router.put('/:capture_id', async (req, res) => {
       concrete_class
     } = req.body;
 
-    // Get capture and verify ownership
-    const capture = await db.prepare(`
-      SELECT sc.* FROM sheathing_captures sc
-      JOIN monolith_projects mp ON sc.project_id = mp.project_id
-      WHERE sc.capture_id = ? AND mp.owner_id = ?
-    `).get(capture_id, ownerId);
+    // Get capture (no ownership check - kiosk mode)
+    const capture = await db.prepare(
+      'SELECT * FROM sheathing_captures WHERE capture_id = ?'
+    ).get(capture_id);
 
     if (!capture) {
-      return res.status(404).json({ error: 'Capture not found or access denied' });
+      return res.status(404).json({ error: 'Capture not found' });
     }
 
     // Calculate new area if dimensions changed
@@ -278,22 +272,19 @@ router.put('/:capture_id', async (req, res) => {
 
 /**
  * DELETE /api/sheathing/:capture_id
- * Delete capture
+ * Delete capture (no auth - kiosk mode)
  */
 router.delete('/:capture_id', async (req, res) => {
   try {
     const { capture_id } = req.params;
-    const ownerId = req.user.userId;
 
-    // Get capture and verify ownership
-    const capture = await db.prepare(`
-      SELECT sc.* FROM sheathing_captures sc
-      JOIN monolith_projects mp ON sc.project_id = mp.project_id
-      WHERE sc.capture_id = ? AND mp.owner_id = ?
-    `).get(capture_id, ownerId);
+    // Get capture (no ownership check - kiosk mode)
+    const capture = await db.prepare(
+      'SELECT * FROM sheathing_captures WHERE capture_id = ?'
+    ).get(capture_id);
 
     if (!capture) {
-      return res.status(404).json({ error: 'Capture not found or access denied' });
+      return res.status(404).json({ error: 'Capture not found' });
     }
 
     // Delete
@@ -309,20 +300,19 @@ router.delete('/:capture_id', async (req, res) => {
 
 /**
  * GET /api/sheathing/:project_id/config
- * Get project config for sheathing calculations
+ * Get project config for sheathing calculations (no auth - kiosk mode)
  */
 router.get('/:project_id/config', async (req, res) => {
   try {
     const { project_id } = req.params;
-    const ownerId = req.user.userId;
 
-    // Verify project ownership
+    // Verify project exists (no ownership check - kiosk mode)
     const project = await db.prepare(
-      'SELECT project_id FROM monolith_projects WHERE project_id = ? AND owner_id = ?'
-    ).get(project_id, ownerId);
+      'SELECT project_id FROM monolith_projects WHERE project_id = ?'
+    ).get(project_id);
 
     if (!project) {
-      return res.status(404).json({ error: 'Project not found or access denied' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     // Get or create config
@@ -353,12 +343,11 @@ router.get('/:project_id/config', async (req, res) => {
 
 /**
  * POST /api/sheathing/:project_id/config
- * Update project config
+ * Update project config (no auth - kiosk mode)
  */
 router.post('/:project_id/config', async (req, res) => {
   try {
     const { project_id } = req.params;
-    const ownerId = req.user.userId;
     const {
       default_assembly_norm_ph_m2,
       default_concrete_curing_days,
@@ -369,13 +358,13 @@ router.post('/:project_id/config', async (req, res) => {
       days_per_month
     } = req.body;
 
-    // Verify project ownership
+    // Verify project exists (no ownership check - kiosk mode)
     const project = await db.prepare(
-      'SELECT project_id FROM monolith_projects WHERE project_id = ? AND owner_id = ?'
-    ).get(project_id, ownerId);
+      'SELECT project_id FROM monolith_projects WHERE project_id = ?'
+    ).get(project_id);
 
     if (!project) {
-      return res.status(404).json({ error: 'Project not found or access denied' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     // Get existing config

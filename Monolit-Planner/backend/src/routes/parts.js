@@ -1,5 +1,5 @@
 /**
- * Parts routes
+ * Parts routes - NO AUTH (Kiosk Mode)
  * Part templates and parts management API
  *
  * GET    /api/part-templates              - Get all templates or by type (query param)
@@ -13,11 +13,13 @@ import express from 'express';
 import { randomUUID } from 'crypto';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
-import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// ===================== PART TEMPLATES (NO AUTH REQUIRED) =====================
+// NO AUTH REQUIRED - This is a public kiosk application
+// Authentication is handled at the portal level (stavagent-portal)
+
+// ===================== PART TEMPLATES =====================
 
 /**
  * GET /api/parts/templates
@@ -39,32 +41,26 @@ router.get('/templates', async (req, res) => {
   }
 });
 
-// ===================== PROTECTED ROUTES (AUTH REQUIRED) =====================
-
-// Apply authentication to remaining routes
-router.use(requireAuth);
+// ===================== PARTS CRUD =====================
 
 /**
  * GET /api/parts/list/:projectId
- * Get all parts for a project
+ * Get all parts for a project (no auth - kiosk mode)
  */
 router.get('/list/:projectId', async (req, res) => {
   try {
     const { projectId } = req.params;
-    const ownerId = req.user.userId;
 
-    // Verify project ownership
+    // Verify project exists (no ownership check - kiosk mode)
     const project = await db.prepare(`
-      SELECT project_id FROM monolith_projects WHERE project_id = ? AND owner_id = ?
-    `).get(projectId, ownerId);
+      SELECT project_id FROM monolith_projects WHERE project_id = ?
+    `).get(projectId);
 
     if (!project) {
-      return res.status(404).json({ error: 'Project not found or access denied' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     // Get all parts for this project
-    // Note: positions are still linked to legacy bridges table, not monolith_projects
-    // So we count by part_name only (architectural issue to fix in Phase 2)
     const parts = await db.prepare(`
       SELECT
         p.part_id,
@@ -90,25 +86,24 @@ router.get('/list/:projectId', async (req, res) => {
 
 /**
  * POST /api/parts
- * Create new part for a project
+ * Create new part for a project (no auth - kiosk mode)
  */
 router.post('/', async (req, res) => {
   try {
     const { project_id, part_name, is_predefined } = req.body;
-    const ownerId = req.user.userId;
 
     // Validation
     if (!project_id || !part_name) {
       return res.status(400).json({ error: 'project_id and part_name are required' });
     }
 
-    // Verify project ownership
+    // Verify project exists (no ownership check - kiosk mode)
     const project = await db.prepare(`
-      SELECT project_id FROM monolith_projects WHERE project_id = ? AND owner_id = ?
-    `).get(project_id, ownerId);
+      SELECT project_id FROM monolith_projects WHERE project_id = ?
+    `).get(project_id);
 
     if (!project) {
-      return res.status(404).json({ error: 'Project not found or access denied' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     // Generate part ID using UUID for collision-free uniqueness
@@ -137,23 +132,18 @@ router.post('/', async (req, res) => {
 
 /**
  * PUT /api/parts/:partId
- * Update part
+ * Update part (no auth - kiosk mode)
  */
 router.put('/:partId', async (req, res) => {
   try {
     const { partId } = req.params;
     const { part_name } = req.body;
-    const ownerId = req.user.userId;
 
-    // Get part and verify ownership
-    const part = await db.prepare(`
-      SELECT p.* FROM parts p
-      JOIN monolith_projects mp ON p.project_id = mp.project_id
-      WHERE p.part_id = ? AND mp.owner_id = ?
-    `).get(partId, ownerId);
+    // Get part (no ownership check - kiosk mode)
+    const part = await db.prepare('SELECT * FROM parts WHERE part_id = ?').get(partId);
 
     if (!part) {
-      return res.status(404).json({ error: 'Part not found or access denied' });
+      return res.status(404).json({ error: 'Part not found' });
     }
 
     // Check if part_name is being changed
@@ -207,22 +197,17 @@ router.put('/:partId', async (req, res) => {
 
 /**
  * DELETE /api/parts/:partId
- * Delete part
+ * Delete part (no auth - kiosk mode)
  */
 router.delete('/:partId', async (req, res) => {
   try {
     const { partId } = req.params;
-    const ownerId = req.user.userId;
 
-    // Get part and verify ownership
-    const part = await db.prepare(`
-      SELECT p.* FROM parts p
-      JOIN monolith_projects mp ON p.project_id = mp.project_id
-      WHERE p.part_id = ? AND mp.owner_id = ?
-    `).get(partId, ownerId);
+    // Get part (no ownership check - kiosk mode)
+    const part = await db.prepare('SELECT * FROM parts WHERE part_id = ?').get(partId);
 
     if (!part) {
-      return res.status(404).json({ error: 'Part not found or access denied' });
+      return res.status(404).json({ error: 'Part not found' });
     }
 
     // Delete part
