@@ -41,10 +41,9 @@ export async function workflowAStart(filePath, metadata = {}) {
 
     form.append('file', fs.createReadStream(filePath));
 
-    // Add metadata if provided
+    // Add metadata if provided (VARIANT 1 - no object_type)
     if (metadata.projectId) form.append('project_id', metadata.projectId);
     if (metadata.projectName) form.append('project_name', metadata.projectName);
-    if (metadata.objectType) form.append('object_type', metadata.objectType);
 
     const response = await fetch(`${CONCRETE_AGENT_URL}/workflow-a/start`, {
       method: 'POST',
@@ -93,9 +92,8 @@ export async function workflowBStart(filePath, metadata = {}) {
 
     form.append('file', fs.createReadStream(filePath));
 
-    // Add metadata
+    // Add metadata (VARIANT 1 - no object_type)
     if (metadata.projectId) form.append('project_id', metadata.projectId);
-    if (metadata.objectType) form.append('object_type', metadata.objectType);
     if (metadata.skipOcr) form.append('skip_ocr', metadata.skipOcr);
 
     const response = await fetch(`${CONCRETE_AGENT_URL}/workflow-b/start`, {

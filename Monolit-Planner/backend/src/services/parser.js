@@ -205,17 +205,12 @@ export function extractFileMetadata(rawData) {
 }
 
 /**
- * Detect object type from description text
- * DO NOT use SO code for type detection - SO is just an ID!
+ * DEPRECATED: detectObjectTypeFromDescription()
  *
- * Type determined from keywords in description:
- * - "MOST" / "most" → bridge
- * - "TUNEL" / "tunnel" → tunnel
- * - "BUDOVA" / "building" → building
- * - "NASYPOV" / "embankment" → embankment
- * - "RETENCI" / "retaining" → retaining_wall
- * - "PARKOV" / "parking" → parking
- * - "SILNIC" / "road" → road
+ * This function is no longer used in VARIANT 1 (Single Universal Object Type).
+ * Users describe their project type in the object_name field instead.
+ *
+ * Keeping function for backward compatibility, but it's not called from extractProjectsFromCOREResponse.
  */
 export function detectObjectTypeFromDescription(description) {
   if (!description) return 'custom';
@@ -391,16 +386,16 @@ function suggestMapping(headers) {
 /**
  * Extract projects from CORE parser response
  * Uses intelligent material_type classification to identify concrete positions
- * Then determines object type from description (not from SO code!)
+ * VARIANT 1: Single universal object type - user describes what they're building in object_name
  *
  * CORE parser returns positions with:
  * - material_type: "concrete" | "reinforcement" | "masonry" | "insulation" | "other"
- * - description: full text with type keywords (MOST, TUNEL, BUDOVA, etc.)
+ * - description: full text describing the work
  * - quantity: volume in units
  * - validation: GREEN | AMBER | RED
  * - confidence_score: 0.0-1.0
  *
- * Returns projects/objects with proper type classification
+ * Returns projects with universal fields only
  */
 export function extractProjectsFromCOREResponse(corePositions) {
   if (!Array.isArray(corePositions) || corePositions.length === 0) {
@@ -443,19 +438,12 @@ export function extractProjectsFromCOREResponse(corePositions) {
     const project_id = normalizeString(description);
     const concrete_m3 = quantity;
 
-    // Detect object type from description (not from SO code!)
-    const object_type = detectObjectTypeFromDescription(description);
-
     // Check for duplicate project_id (from different descriptions)
     if (!projects.find(p => p.project_id === project_id)) {
       projects.push({
         project_id: project_id,
-        object_name: description,           // Full description from CORE
-        object_type: object_type,           // Detected from description keywords
+        object_name: description,           // Full description from CORE - user describes type here
         concrete_m3: concrete_m3,           // Quantity from CORE
-        span_length_m: 0,
-        deck_width_m: 0,
-        pd_weeks: 0,
         // Store CORE metadata for traceability
         core_code: pos.code,
         core_material_type: pos.material_type,
@@ -467,7 +455,7 @@ export function extractProjectsFromCOREResponse(corePositions) {
 
       logger.info(
         `[Parser] Created project from CORE concrete: ${project_id} ` +
-        `(type: ${object_type}, ${concrete_m3} m³, ${pos.audit}, conf: ${pos.enrichment?.confidence_score || 'N/A'})`
+        `(${concrete_m3} m³, ${pos.audit}, conf: ${pos.enrichment?.confidence_score || 'N/A'})`
       );
     }
   });

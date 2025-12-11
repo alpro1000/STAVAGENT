@@ -5,12 +5,12 @@
 import axios from 'axios';
 import { Position, HeaderKPI, Bridge, ProjectConfig, SnapshotListItem, Snapshot, OtskpCode, OtskpSearchResult } from '@stavagent/monolit-shared';
 
-// ============ MonolithProject Types ============
+// ============ MonolithProject Types - VARIANT 1 (Universal Object Type) ============
+// All projects are universal. Users describe the type in object_name (e.g., "Мост через реку").
 interface MonolithProject {
   project_id: string;
-  object_type: 'bridge' | 'building' | 'parking' | 'road' | 'custom';
   project_name?: string;
-  object_name: string;
+  object_name: string;  // User describes type here (e.g., "Мост", "Budova", "Parkoviště")
   owner_id: number;
   created_at: string;
   updated_at: string;
@@ -19,17 +19,11 @@ interface MonolithProject {
   sum_kros_czk: number;
   description?: string;
   status: 'active' | 'completed' | 'archived';
-  // Type-specific fields
-  span_length_m?: number;
-  deck_width_m?: number;
-  pd_weeks?: number;
-  building_area_m2?: number;
-  building_floors?: number;
-  road_length_km?: number;
-  road_width_m?: number;
   parts_count?: number;
   parts?: Part[];
   templates?: PartTemplate[];
+  // Backward compatibility alias
+  bridge_id?: string;
 }
 
 interface Part {
@@ -44,7 +38,6 @@ interface Part {
 
 interface PartTemplate {
   template_id: string;
-  object_type: string;
   part_name: string;
   display_order: number;
   is_default: boolean;
@@ -139,16 +132,13 @@ export const bridgesAPI = {
     return data;
   },
 
-  create: async (params: { bridge_id: string; project_name?: string; object_name?: string; span_length_m?: number; deck_width_m?: number; pd_weeks?: number }): Promise<void> => {
-    // Map bridge_id to project_id and bridge params to monolith params
+  create: async (params: { bridge_id: string; project_name?: string; object_name?: string; description?: string }): Promise<void> => {
+    // Map bridge_id to project_id (VARIANT 1: simple object creation)
     const monolithParams = {
       project_id: params.bridge_id,
-      object_type: 'bridge',
-      project_name: params.project_name || '',
-      object_name: params.object_name || '',
-      span_length_m: params.span_length_m,
-      deck_width_m: params.deck_width_m,
-      pd_weeks: params.pd_weeks
+      project_name: params.project_name,
+      object_name: params.object_name,
+      description: params.description
     };
     await api.post('/api/monolith-projects', monolithParams);
   },
@@ -192,18 +182,11 @@ export const monolithProjectsAPI = {
 
   create: async (params: {
     project_id: string;
-    object_type: 'bridge' | 'building' | 'parking' | 'road' | 'custom';
     project_name?: string;
     object_name?: string;
     description?: string;
-    span_length_m?: number;
-    deck_width_m?: number;
-    pd_weeks?: number;
-    building_area_m2?: number;
-    building_floors?: number;
-    road_length_km?: number;
-    road_width_m?: number;
   }): Promise<MonolithProject> => {
+    // VARIANT 1: Simple object creation - no object_type or type-specific fields
     const { data } = await api.post('/api/monolith-projects', params);
     return data;
   },

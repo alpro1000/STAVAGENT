@@ -15,36 +15,23 @@ router.use(requireAuth);
 
 /**
  * GET /api/debug/templates
- * Check part templates in database
+ * Check universal part templates in database (VARIANT 1 - no type-specific templates)
  */
 router.get('/templates', async (req, res) => {
   try {
-    // Get all templates
+    // Get all universal templates
     const allTemplates = await db.prepare(`
-      SELECT * FROM part_templates ORDER BY object_type, display_order
+      SELECT * FROM part_templates ORDER BY display_order
     `).all();
-
-    // Count by type
-    const bridgeTemplates = allTemplates.filter(t => t.object_type === 'bridge');
-    const buildingTemplates = allTemplates.filter(t => t.object_type === 'building');
-    const parkingTemplates = allTemplates.filter(t => t.object_type === 'parking');
-    const roadTemplates = allTemplates.filter(t => t.object_type === 'road');
 
     res.json({
       success: true,
       summary: {
         total: allTemplates.length,
-        bridge: bridgeTemplates.length,
-        building: buildingTemplates.length,
-        parking: parkingTemplates.length,
-        road: roadTemplates.length
+        universal: allTemplates.length
       },
-      templates: {
-        bridge: bridgeTemplates,
-        building: buildingTemplates,
-        parking: parkingTemplates,
-        road: roadTemplates
-      },
+      templates: allTemplates,
+      note: 'VARIANT 1: All templates are universal (not type-specific)',
       auth: {
         userId: req.user?.userId,
         email: req.user?.email,

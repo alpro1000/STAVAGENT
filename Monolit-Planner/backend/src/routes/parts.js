@@ -21,24 +21,16 @@ const router = express.Router();
 
 /**
  * GET /api/parts/templates
- * Get all part templates, optionally filtered by type
- * Query params: type (optional)
+ * Get all universal part templates (VARIANT 1 - no type-specific filtering)
+ * Query params: type (deprecated, kept for backward compatibility but ignored)
  */
 router.get('/templates', async (req, res) => {
   try {
-    const { type } = req.query;
+    // VARIANT 1: Get universal templates only (not type-specific)
+    // Note: 'type' query param is deprecated and ignored
+    const query = 'SELECT * FROM part_templates ORDER BY display_order';
 
-    let query = 'SELECT * FROM part_templates';
-    const params = [];
-
-    if (type) {
-      query += ' WHERE object_type = ?';
-      params.push(type);
-    }
-
-    query += ' ORDER BY object_type, display_order';
-
-    const templates = await db.prepare(query).all(...params);
+    const templates = await db.prepare(query).all();
 
     res.json(templates);
   } catch (error) {

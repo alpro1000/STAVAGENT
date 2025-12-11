@@ -409,11 +409,6 @@ router.get('/stats', requireAuth, adminOnly, async (req, res) => {
 
     // Get project statistics
     const totalProjects = await db.prepare('SELECT COUNT(*) as count FROM monolith_projects').get();
-    const projectsByType = await db.prepare(`
-      SELECT object_type, COUNT(*) as count
-      FROM monolith_projects
-      GROUP BY object_type
-    `).all();
 
     // Get recent activity
     const recentUsers = await db.prepare(`
@@ -434,8 +429,7 @@ router.get('/stats', requireAuth, adminOnly, async (req, res) => {
           verified: verifiedUsers.count
         },
         projects: {
-          total: totalProjects.count,
-          by_type: projectsByType
+          total: totalProjects.count
         },
         recent_users: recentUsers
       }

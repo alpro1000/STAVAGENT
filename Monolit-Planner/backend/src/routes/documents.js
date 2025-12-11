@@ -168,7 +168,7 @@ router.get('/:id', requireAuth, async (req, res) => {
 
     // Get document
     const document = await db.prepare(`
-      SELECT d.*, p.object_name, p.object_type
+      SELECT d.*, p.object_name
       FROM documents d
       JOIN monolith_projects p ON d.project_id = p.project_id
       WHERE d.id = ? AND d.user_id = ?
@@ -188,7 +188,6 @@ router.get('/:id', requireAuth, async (req, res) => {
         id: document.id,
         project_id: document.project_id,
         project_name: document.object_name,
-        project_type: document.object_type,
         filename: document.original_filename,
         size: document.file_size,
         type: document.file_type,
