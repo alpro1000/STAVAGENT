@@ -51,7 +51,12 @@ if (USE_POSTGRES) {
               return result.rows[0] || null;
             },
             run: async (...params) => {
-              const result = await client.query(convertedSql, params);
+              let finalSql = convertedSql;
+              // Automatically add 'RETURNING id' to get the last inserted ID from an INSERT statement
+              if (/^\s*INSERT/i.test(finalSql) && !/RETURNING/i.test(finalSql)) {
+                finalSql += ' RETURNING id';
+              }
+              const result = await client.query(finalSql, params);
               return {
                 changes: result.rowCount,
                 lastID: result.rows[0]?.id || null
