@@ -53,15 +53,8 @@ router.post('/register', async (req, res) => {
       VALUES (?, ?, ?, 'user', false)
     `).run(email, passwordHash, name);
 
-    // For SQLite, lastID is directly available
-    // For PostgreSQL, we need to get the inserted row
-    let userId;
-    if (db.isSqlite) {
-      userId = result.lastID;
-    } else {
-      const user = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
-      userId = user.id;
-    }
+    // lastID now works for both SQLite and PostgreSQL (RETURNING id added automatically)
+    const userId = result.lastID;
 
     // Generate verification token (unique per user)
     const tokenString = randomUUID();
@@ -485,13 +478,8 @@ router.post('/create-admin-if-first', async (req, res) => {
       VALUES (?, ?, ?, 'admin', true, ?)
     `).run(email, passwordHash, name, new Date().toISOString());
 
-    let userId;
-    if (db.isSqlite) {
-      userId = result.lastID;
-    } else {
-      const user = await db.prepare('SELECT id FROM users WHERE email = ?').get(email);
-      userId = user.id;
-    }
+    // lastID now works for both SQLite and PostgreSQL (RETURNING id added automatically)
+    const userId = result.lastID;
 
     logger.warn(`⚠️ FIRST ADMIN CREATED: ${email} (ID: ${userId}) - This endpoint is now disabled`);
 
