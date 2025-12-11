@@ -893,9 +893,7 @@ async function initSqliteSchema() {
     CREATE INDEX IF NOT EXISTS idx_bridges_status ON bridges(status);
     CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
     CREATE INDEX IF NOT EXISTS idx_monolith_projects_owner ON monolith_projects(owner_id);
-    CREATE INDEX IF NOT EXISTS idx_monolith_projects_type ON monolith_projects(object_type);
     CREATE INDEX IF NOT EXISTS idx_monolith_projects_status ON monolith_projects(status);
-    CREATE INDEX IF NOT EXISTS idx_part_templates_type ON part_templates(object_type);
     CREATE INDEX IF NOT EXISTS idx_parts_project ON parts(project_id);
     CREATE INDEX IF NOT EXISTS idx_documents_project ON documents(project_id);
     CREATE INDEX IF NOT EXISTS idx_documents_user ON documents(user_id);
@@ -938,18 +936,18 @@ async function initSqliteSchema() {
   ];
 
   const insertTemplate = db.prepare(`
-    INSERT OR IGNORE INTO part_templates (template_id, object_type, part_name, display_order, is_default, description)
-    VALUES (?, ?, ?, ?, ?, ?)
+    INSERT OR IGNORE INTO part_templates (template_id, part_name, display_order, is_default, description)
+    VALUES (?, ?, ?, ?, ?)
   `);
 
   const insertManyTemplates = db.transaction((templates) => {
     for (const tpl of templates) {
-      insertTemplate.run(tpl.template_id, tpl.object_type, tpl.part_name, tpl.display_order, tpl.is_default, tpl.description);
+      insertTemplate.run(tpl.template_id, tpl.part_name, tpl.display_order, tpl.is_default, tpl.description);
     }
   });
 
   insertManyTemplates(partTemplates);
-  console.log('[MIGRATION] Seeded part templates for all construction types');
+  console.log('[MIGRATION] Seeded part templates (universal for all object types)');
 
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
@@ -1175,25 +1173,24 @@ async function autoLoadPartTemplatesIfNeeded() {
     for (const template of templates) {
       try {
         await db.prepare(`
-          INSERT INTO part_templates (template_id, object_type, part_name, display_order, is_default, description)
-          VALUES (?, ?, ?, ?, ?, ?)
+          INSERT INTO part_templates (template_id, part_name, display_order, is_default, description)
+          VALUES (?, ?, ?, ?, ?)
         `).run(
           template.template_id,
-          template.object_type,
           template.part_name,
           template.display_order,
           template.is_default,
           template.description || null
         );
         inserted++;
-        console.log(`[Part Templates]   ✓ Inserted: ${template.object_type}/${template.part_name}`);
+        console.log(`[Part Templates]   ✓ Inserted: ${template.part_name}`);
       } catch (error) {
         // Ignore duplicates
         if (error.message?.includes('UNIQUE constraint') || error.code?.includes('23505')) {
-          console.log(`[Part Templates]   ⊘ Duplicate skipped: ${template.object_type}/${template.part_name}`);
+          console.log(`[Part Templates]   ⊘ Duplicate skipped: ${template.part_name}`);
         } else {
           errors++;
-          console.error(`[Part Templates]   ✗ Error inserting ${template.object_type}/${template.part_name}:`, error.message);
+          console.error(`[Part Templates]   ✗ Error inserting ${template.part_name}:`, error.message);
         }
       }
     }
@@ -1205,17 +1202,12 @@ async function autoLoadPartTemplatesIfNeeded() {
     console.log(`[Part Templates] ✅ Successfully loaded ${inserted} templates`);
 
     // Show summary
-    const summary = await db.prepare(`
-      SELECT object_type, COUNT(*) as count
-      FROM part_templates
-      GROUP BY object_type
-      ORDER BY object_type
-    `).all();
+    const count = await db.prepare(`
+      SELECT COUNT(*) as total FROM part_templates
+    `).get();
 
-    console.log('[Part Templates] Summary by type:');
-    summary.forEach(s => {
-      console.log(`  - ${s.object_type}: ${s.count} parts`);
-    });
+    console.log('[Part Templates] Summary:');
+    console.log(`  - Universal templates: ${count.total} parts`);
 
   } catch (error) {
     console.error('[Part Templates] ⚠️  Error during auto-load:', error.message);
