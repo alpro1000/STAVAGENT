@@ -103,7 +103,7 @@ export default function AdminStats({ stats, loading, onRefresh }: AdminStatsProp
         />
       </div>
 
-      {/* Projects by Type */}
+      {/* Projects Info */}
       <div style={{
         background: 'white',
         border: '1px solid #e2e8f0',
@@ -112,45 +112,20 @@ export default function AdminStats({ stats, loading, onRefresh }: AdminStatsProp
         marginBottom: '32px'
       }}>
         <h3 style={{ marginBottom: '16px', fontSize: '16px', fontWeight: '600' }}>
-          Projekty dle typu
+          Informace o projektech
         </h3>
 
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-          gap: '16px'
+          color: '#718096',
+          fontSize: '14px',
+          lineHeight: '1.6'
         }}>
-          {projects?.by_type && projects.by_type.length > 0 ? (
-            projects.by_type.map((item: any) => (
-              <div key={item.object_type} style={{
-                padding: '16px',
-                background: '#f7fafc',
-                borderRadius: '6px',
-                border: '1px solid #e2e8f0',
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  fontSize: '12px',
-                  color: '#718096',
-                  marginBottom: '8px',
-                  textTransform: 'capitalize'
-                }}>
-                  {item.object_type}
-                </div>
-                <div style={{
-                  fontSize: '20px',
-                  fontWeight: 'bold',
-                  color: '#667eea'
-                }}>
-                  {item.count}
-                </div>
-              </div>
-            ))
-          ) : (
-            <div style={{ color: '#718096', gridColumn: '1 / -1' }}>
-              Žádné projekty
-            </div>
-          )}
+          <p>
+            ✨ <strong>VARIANT 1:</strong> Všechny projekty jsou nyní univerzální. Uživatelé popisují typ projektu v poli "Popis objektu" (most, budova, parkoviště, atd.).
+          </p>
+          <p style={{ marginTop: '12px', color: '#4a5568' }}>
+            Celkem projektů: <strong style={{ color: '#667eea', fontSize: '18px' }}>{projects?.total || 0}</strong>
+          </p>
         </div>
       </div>
 

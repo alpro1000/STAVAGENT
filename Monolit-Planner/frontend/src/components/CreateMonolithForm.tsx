@@ -1,12 +1,11 @@
 /**
- * CreateMonolithForm - Universal form for creating all construction object types
- * Supports: bridge, building, parking, road, custom
- * User inputs: object_type, project_id, object_name, type-specific metadata
+ * CreateMonolithForm - VARIANT 1 (Single Object Type)
+ * Simple universal form for creating all object types
+ * User describes type in the object_name field (e.g., "Мост через реку", "Офисное здание")
  */
 
 import { useState } from 'react';
-import { createMonolithProject } from '../services/api';
-import ObjectTypeSelector from './ObjectTypeSelector';
+import { useBridges } from '../hooks/useBridges';
 
 interface CreateMonolithFormProps {
   onSuccess: (project_id: string) => void;
@@ -14,26 +13,14 @@ interface CreateMonolithFormProps {
 }
 
 export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonolithFormProps) {
-  const [objectType, setObjectType] = useState('bridge');
+  const [projectId, setProjectId] = useState('');
   const [projectName, setProjectName] = useState('');
   const [objectName, setObjectName] = useState('');
-  const [projectId, setProjectId] = useState('');
-
-  // Bridge-specific fields
-  const [spanLength, setSpanLength] = useState('');
-  const [deckWidth, setDeckWidth] = useState('');
-  const [pdWeeks, setPdWeeks] = useState('');
-
-  // Building-specific fields
-  const [buildingArea, setBuildingArea] = useState('');
-  const [buildingFloors, setBuildingFloors] = useState('');
-
-  // Road-specific fields
-  const [roadLength, setRoadLength] = useState('');
-  const [roadWidth, setRoadWidth] = useState('');
+  const [description, setDescription] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const { createBridge } = useBridges();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,18 +34,12 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
     setIsSubmitting(true);
 
     try {
-      await createMonolithProject({
+      // VARIANT 1: Simple object creation - user describes type in object_name
+      await createBridge({
         project_id: projectId.trim(),
-        object_type: objectType as 'bridge' | 'building' | 'parking' | 'road' | 'custom',
         project_name: projectName.trim() || undefined,
         object_name: objectName.trim() || projectId.trim(),
-        span_length_m: spanLength ? parseFloat(spanLength) : undefined,
-        deck_width_m: deckWidth ? parseFloat(deckWidth) : undefined,
-        pd_weeks: pdWeeks ? parseFloat(pdWeeks) : undefined,
-        building_area_m2: buildingArea ? parseFloat(buildingArea) : undefined,
-        building_floors: buildingFloors ? parseInt(buildingFloors) : undefined,
-        road_length_km: roadLength ? parseFloat(roadLength) : undefined,
-        road_width_m: roadWidth ? parseFloat(roadWidth) : undefined,
+        description: description.trim() || undefined
       });
 
       onSuccess(projectId.trim());
@@ -69,31 +50,9 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
     }
   };
 
-  const getTitle = () => {
-    const titles = {
-      bridge: '🌉 Vytvořit nový most',
-      building: '🏢 Vytvořit novou budovu',
-      parking: '🅿️ Vytvořit nové parkoviště',
-      road: '🛣️ Vytvořit novou komunikaci',
-      custom: '📦 Vytvořit nový objekt'
-    };
-    return titles[objectType as keyof typeof titles] || 'Vytvořit nový objekt';
-  };
-
-  const getPlaceholder = () => {
-    const placeholders = {
-      bridge: 'např: SO201, SO202...',
-      building: 'např: BD001, BD002...',
-      parking: 'např: PK001, PK002...',
-      road: 'např: RD001, RD002...',
-      custom: 'např: OBJ001, OBJ002...'
-    };
-    return placeholders[objectType as keyof typeof placeholders] || 'např: OBJ001';
-  };
-
   return (
     <div className="create-monolith-form">
-      <h2>{getTitle()}</h2>
+      <h2>➕ Vytvořit nový objekt</h2>
 
       {error && (
         <div className="error-message">
@@ -102,13 +61,6 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
       )}
 
       <form onSubmit={handleSubmit}>
-        {/* Object Type Selector */}
-        <ObjectTypeSelector
-          value={objectType}
-          onChange={setObjectType}
-          disabled={isSubmitting}
-        />
-
         {/* Project ID (required) */}
         <div className="form-row">
           <label>
@@ -117,11 +69,14 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
               type="text"
               value={projectId}
               onChange={(e) => setProjectId(e.target.value)}
-              placeholder={getPlaceholder()}
+              placeholder="např: SO201, SO202..."
               required
               disabled={isSubmitting}
               autoFocus
             />
+            <small style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
+              Jedinečný identifikátor projektu
+            </small>
           </label>
         </div>
 
@@ -136,154 +91,43 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
               placeholder="např: D6 Žalmanov – Knínice"
               disabled={isSubmitting}
             />
-            <small style={{ color: '#666', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
-              Název projektu - ke kterému patří více objektů
+            <small style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
+              Název nadřazeného projektu (opcionálně)
             </small>
           </label>
         </div>
 
-        {/* Object Name */}
+        {/* Object Name - user describes type here */}
         <div className="form-row">
           <label>
-            Název objektu (Object Name)
+            Popis objektu *
             <input
               type="text"
               value={objectName}
               onChange={(e) => setObjectName(e.target.value)}
-              placeholder={getPlaceholder()}
+              placeholder="např: Mост через реку, Ofisní budova, Parkoviště..."
               disabled={isSubmitting}
             />
-            <small style={{ color: '#666', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
-              Popis objektu (opcionálně, pokud ne, použije se Project ID)
+            <small style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
+              Popis co přesně budujete (mост, budova, parkoviště, komunikace, atd.)
             </small>
           </label>
         </div>
 
-        {/* Bridge-specific fields */}
-        {objectType === 'bridge' && (
-          <>
-            <div className="form-row">
-              <label>
-                Délka rozpětí mostu (m)
-                <input
-                  type="number"
-                  value={spanLength}
-                  onChange={(e) => setSpanLength(e.target.value)}
-                  placeholder="45.0"
-                  step="0.1"
-                  disabled={isSubmitting}
-                />
-              </label>
-            </div>
-            <div className="form-row">
-              <label>
-                Šířka mostovky (m)
-                <input
-                  type="number"
-                  value={deckWidth}
-                  onChange={(e) => setDeckWidth(e.target.value)}
-                  placeholder="12.5"
-                  step="0.1"
-                  disabled={isSubmitting}
-                />
-              </label>
-            </div>
-            <div className="form-row">
-              <label>
-                Doba realizace (týdny)
-                <input
-                  type="number"
-                  value={pdWeeks}
-                  onChange={(e) => setPdWeeks(e.target.value)}
-                  placeholder="26"
-                  step="0.5"
-                  disabled={isSubmitting}
-                />
-              </label>
-            </div>
-          </>
-        )}
-
-        {/* Building-specific fields */}
-        {objectType === 'building' && (
-          <>
-            <div className="form-row">
-              <label>
-                Plocha budovy (m²)
-                <input
-                  type="number"
-                  value={buildingArea}
-                  onChange={(e) => setBuildingArea(e.target.value)}
-                  placeholder="2500.0"
-                  step="0.1"
-                  disabled={isSubmitting}
-                />
-              </label>
-            </div>
-            <div className="form-row">
-              <label>
-                Počet podlaží
-                <input
-                  type="number"
-                  value={buildingFloors}
-                  onChange={(e) => setBuildingFloors(e.target.value)}
-                  placeholder="5"
-                  step="1"
-                  disabled={isSubmitting}
-                />
-              </label>
-            </div>
-          </>
-        )}
-
-        {/* Parking-specific fields */}
-        {objectType === 'parking' && (
-          <div className="form-row">
-            <label>
-              Plocha parkoviště (m²)
-              <input
-                type="number"
-                value={buildingArea}
-                onChange={(e) => setBuildingArea(e.target.value)}
-                placeholder="3500.0"
-                step="0.1"
-                disabled={isSubmitting}
-              />
-            </label>
-          </div>
-        )}
-
-        {/* Road-specific fields */}
-        {objectType === 'road' && (
-          <>
-            <div className="form-row">
-              <label>
-                Délka komunikace (km)
-                <input
-                  type="number"
-                  value={roadLength}
-                  onChange={(e) => setRoadLength(e.target.value)}
-                  placeholder="15.5"
-                  step="0.1"
-                  disabled={isSubmitting}
-                />
-              </label>
-            </div>
-            <div className="form-row">
-              <label>
-                Šířka komunikace (m)
-                <input
-                  type="number"
-                  value={roadWidth}
-                  onChange={(e) => setRoadWidth(e.target.value)}
-                  placeholder="7.0"
-                  step="0.1"
-                  disabled={isSubmitting}
-                />
-              </label>
-            </div>
-          </>
-        )}
+        {/* Description */}
+        <div className="form-row">
+          <label>
+            Poznámka
+            <textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Další informace o projektu..."
+              disabled={isSubmitting}
+              rows={3}
+              style={{ fontFamily: 'monospace', resize: 'vertical' }}
+            />
+          </label>
+        </div>
 
         {/* Form buttons */}
         <div className="form-buttons">
@@ -306,6 +150,118 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
           )}
         </div>
       </form>
+
+      <style>{`
+        .create-monolith-form {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 2rem;
+          background: var(--bg-secondary);
+          border-radius: 8px;
+          box-shadow: var(--shadow-lg);
+        }
+
+        .create-monolith-form h2 {
+          margin-bottom: 1.5rem;
+          color: var(--text-primary);
+          font-size: 1.5rem;
+        }
+
+        .form-row {
+          margin-bottom: 1.5rem;
+        }
+
+        .form-row label {
+          display: block;
+          font-weight: 500;
+          margin-bottom: 0.5rem;
+          color: var(--text-primary);
+          font-size: 0.9rem;
+        }
+
+        .form-row input,
+        .form-row textarea {
+          width: 100%;
+          padding: 0.75rem;
+          border: 2px solid var(--input-border);
+          border-radius: 4px;
+          font-size: 1rem;
+          transition: border-color 0.2s;
+          background: var(--input-bg);
+          color: var(--text-primary);
+        }
+
+        .form-row input:focus,
+        .form-row textarea:focus {
+          outline: none;
+          border-color: var(--input-focus);
+          box-shadow: 0 0 0 3px rgba(255, 112, 67, 0.2);
+        }
+
+        .form-row input:disabled,
+        .form-row textarea:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          background: var(--bg-tertiary);
+        }
+
+        .error-message {
+          padding: 1rem;
+          background: rgba(244, 67, 54, 0.1);
+          border: 1px solid rgba(244, 67, 54, 0.3);
+          border-radius: 4px;
+          color: var(--color-error);
+          margin-bottom: 1rem;
+          font-weight: 500;
+        }
+
+        .form-buttons {
+          display: flex;
+          gap: 1rem;
+          margin-top: 2rem;
+        }
+
+        .form-buttons .btn-primary,
+        .form-buttons .btn-secondary {
+          flex: 1;
+          padding: 0.75rem 1.5rem;
+          border: none;
+          border-radius: 6px;
+          font-size: 1rem;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+
+        .form-buttons .btn-primary {
+          background: var(--color-success);
+          color: var(--bg-secondary);
+        }
+
+        .form-buttons .btn-primary:hover:not(:disabled) {
+          background: var(--accent-hover);
+          transform: translateY(-2px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .form-buttons .btn-secondary {
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+          border: 1px solid var(--border-default);
+        }
+
+        .form-buttons .btn-secondary:hover:not(:disabled) {
+          background: var(--bg-dark);
+          transform: translateY(-2px);
+        }
+
+        .form-buttons .btn-primary:disabled,
+        .form-buttons .btn-secondary:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+          transform: none;
+        }
+      `}</style>
     </div>
   );
 }

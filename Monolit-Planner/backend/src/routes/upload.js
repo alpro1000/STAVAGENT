@@ -81,7 +81,7 @@ import fs from 'fs';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription, normalizeString } from '../services/parser.js';
-import { extractConcretePositions } from '../services/concreteExtractor.js';
+import { extractConcretePositions, convertRawRowsToPositions } from '../services/concreteExtractor.js';
 import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge, validatePositions, enrichPosition } from '../services/coreAPI.js';
 import { importCache, cacheStatsMiddleware } from '../services/importCache.js';
 import DataPreprocessor from '../services/dataPreprocessor.js';
@@ -197,16 +197,16 @@ router.post('/', upload.single('file'), async (req, res) => {
       try {
         // Check if stavba project already exists
         const existing = await db.prepare(
-          'SELECT project_id FROM monolith_projects WHERE project_id = ? AND object_type = ?'
-        ).get(projectId, 'project');
+          'SELECT project_id FROM monolith_projects WHERE project_id = ?'
+        ).get(projectId);
 
         if (!existing) {
-          // Create stavba (project container) record using available columns
+          // Create stavba (project container) record
           await db.prepare(`
             INSERT INTO monolith_projects
-            (project_id, object_type, project_name, description, owner_id)
-            VALUES (?, ?, ?, ?, ?)
-          `).run(projectId, 'project', fileMetadata.stavba, fileMetadata.stavba, req.user?.userId || null);
+            (project_id, project_name, description, owner_id)
+            VALUES (?, ?, ?, ?)
+          `).run(projectId, fileMetadata.stavba, fileMetadata.stavba, req.user?.userId || null);
 
           logger.info(`[Upload] Created stavba project: ${projectId} ("${fileMetadata.stavba}")`);
         } else {
@@ -266,20 +266,23 @@ router.post('/', upload.single('file'), async (req, res) => {
           const positionCount = localPositions.length > 0 ? localPositions.length : parseResult.raw_rows.length;
           logger.info(`[Upload] ✅ Local parser found ${positionCount} potential positions/rows`);
 
-          // Create a generic project from local data
+          // Create a generic project from local data (VARIANT 1: simple objects)
           projectsForImport.push({
             project_id: 'SO_' + Date.now(),
-            object_name: fileMetadata.stavba || fileMetadata.objekt || ('Bridge_' + Date.now()),
-            object_type: 'bridge',
-            concrete_m3: localPositions.reduce((sum, p) => sum + (p.concrete_m3 || 0), 0),
-            span_length_m: 0,
-            deck_width_m: 0,
-            pd_weeks: 0
+            object_name: fileMetadata.stavba || fileMetadata.objekt || ('Project_' + Date.now()),
+            concrete_m3: localPositions.reduce((sum, p) => sum + (p.concrete_m3 || 0), 0)
           });
 
-          parsedPositionsFromCORE = localPositions.length > 0 ? localPositions : parseResult.raw_rows;
+          // If concreteExtractor found nothing, convert raw rows to positions (fallback)
+          if (localPositions.length === 0 && hasDataRows) {
+            logger.info(`[Upload] 🔄 ConcreteExtractor found 0 positions, converting raw rows...`);
+            parsedPositionsFromCORE = convertRawRowsToPositions(parseResult.raw_rows);
+          } else {
+            parsedPositionsFromCORE = localPositions;
+          }
+
           sourceOfProjects = 'local_extractor';
-          logger.info(`[Upload] 🎯 Created project from local parser data (${positionCount} rows)`);
+          logger.info(`[Upload] 🎯 Created project from local parser data (${parsedPositionsFromCORE.length} positions)`);
         }
       } catch (localError) {
         logger.warn(`[Upload] ⚠️ Local parser also failed: ${localError.message}`);
@@ -317,25 +320,21 @@ router.post('/', upload.single('file'), async (req, res) => {
         ).get(objectId);
 
         if (!existing) {
-          // Create object record with available columns only
-          // Note: stavba and parent_project_id are handled via description field
+          // Create object record - VARIANT 1: simple universal objects
+          // User describes type in object_name field
           await db.prepare(`
             INSERT INTO monolith_projects
-            (project_id, object_type, object_name, description, concrete_m3, span_length_m, deck_width_m, pd_weeks, owner_id)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            (project_id, object_name, description, concrete_m3, owner_id)
+            VALUES (?, ?, ?, ?, ?)
           `).run(
             objectId,
-            project.object_type || 'custom',  // Type detected from description
             project.object_name,
-            `Imported from: ${fileMetadata.stavba || 'Excel file'}`,  // Store stavba context in description
+            `Imported from: ${fileMetadata.stavba || 'Excel file'}`,
             project.concrete_m3 || 0,
-            project.span_length_m || 0,
-            project.deck_width_m || 0,
-            project.pd_weeks || 0,
             req.user?.userId || null
           );
 
-          logger.info(`[Upload] Created object: ${objectId} (type: ${project.object_type}, ${project.concrete_m3} m³)`);
+          logger.info(`[Upload] Created object: ${objectId} (${project.concrete_m3} m³)`);
         } else {
           logger.info(`[Upload] Object already exists: ${objectId}`);
         }
@@ -467,18 +466,17 @@ router.post('/', upload.single('file'), async (req, res) => {
 
         logger.info(
           `[Upload] Created ${positionsToInsert.length} positions for ${objectId} ` +
-          `(type: ${project.object_type}, source: ${positionsSource})`
+          `(source: ${positionsSource})`
         );
 
         createdBridges.push({
           bridge_id: bridgeId,
           object_name: project.object_name,
-          object_type: project.object_type,
           concrete_m3: project.concrete_m3 || 0,
           positions_created: positionsToInsert.length,
           positions_from_excel: extractedPositionsCount,
           positions_source: positionsSource,
-          parent_project: stavbaProjectId || null  // Include hierarchy info
+          parent_project: stavbaProjectId || null
         });
       } catch (error) {
         logger.error(`Error creating project ${project.project_id}:`, error);

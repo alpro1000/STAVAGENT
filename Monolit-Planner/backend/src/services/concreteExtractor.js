@@ -311,4 +311,55 @@ function normalizeBridgeCode(code) {
   return code.trim().replace(/\s+/g, ' ').toUpperCase();
 }
 
+/**
+ * Convert raw Excel rows to positions when column detection fails
+ * This is a last-resort fallback to ensure we have minimum required fields
+ */
+export function convertRawRowsToPositions(rawRows) {
+  logger.info(`[ConcreteExtractor] Converting ${rawRows.length} raw rows to positions (fallback mode)`);
+
+  const positions = [];
+
+  for (let i = 0; i < rawRows.length; i++) {
+    const row = rawRows[i];
+    const values = Object.values(row).filter(v => v !== null && v !== '' && v !== undefined);
+
+    if (values.length === 0) continue; // Skip empty rows
+
+    // Use first value as item_name (description)
+    const item_name = String(values[0]).trim();
+    if (item_name.length < 2) continue;
+
+    // Try to find a numeric value for quantity
+    let qty = 1;
+    for (const val of values) {
+      const num = parseNumber(val);
+      if (num > 0) {
+        qty = num;
+        break;
+      }
+    }
+
+    const position = {
+      part_name: 'Položka',
+      item_name: item_name,
+      subtype: 'beton',
+      unit: 'm3',
+      qty: qty,
+      crew_size: 4,
+      wage_czk_ph: 398,
+      shift_hours: 10,
+      days: 0,
+      otskp_code: null,
+      source: 'FALLBACK_RAW_ROWS'
+    };
+
+    positions.push(position);
+    logger.info(`[ConcreteExtractor] [FALLBACK] Row ${i}: "${item_name}" = ${qty} m3`);
+  }
+
+  logger.info(`[ConcreteExtractor] Created ${positions.length} positions from raw rows`);
+  return positions;
+}
+
 export { parseNumber };

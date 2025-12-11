@@ -762,11 +762,11 @@ async function initSqliteSchema() {
     console.log(`[MIGRATION] Backfilled search_name for ${rows.length} OTSKP codes`);
   }
 
-  // MonolithProjects table (universal object for all construction types)
+  // MonolithProjects table (simple universal object for all construction types)
+  // VARIANT 1: Single object type - user describes type in object_name
   db.exec(`
     CREATE TABLE IF NOT EXISTS monolith_projects (
       project_id TEXT PRIMARY KEY,
-      object_type TEXT NOT NULL DEFAULT 'custom',
       project_name TEXT,
       object_name TEXT NOT NULL DEFAULT '',
       owner_id INTEGER NOT NULL,
@@ -775,24 +775,16 @@ async function initSqliteSchema() {
       element_count INTEGER DEFAULT 0,
       concrete_m3 REAL DEFAULT 0,
       sum_kros_czk REAL DEFAULT 0,
-      span_length_m REAL,
-      deck_width_m REAL,
-      pd_weeks REAL,
-      building_area_m2 REAL,
-      building_floors INTEGER,
-      road_length_km REAL,
-      road_width_m REAL,
       description TEXT,
       status TEXT DEFAULT 'active',
       FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
     );
   `);
 
-  // Part Templates table (predefined parts for each construction type)
+  // Part Templates table (universal parts for all object types)
   db.exec(`
     CREATE TABLE IF NOT EXISTS part_templates (
       template_id TEXT PRIMARY KEY,
-      object_type TEXT NOT NULL,
       part_name TEXT NOT NULL,
       display_order INTEGER DEFAULT 0,
       is_default INTEGER DEFAULT 1,
