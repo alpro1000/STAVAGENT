@@ -28,6 +28,12 @@ services:
         value: /opt/render/project/backend/exports
       - key: CORS_ORIGIN
         value: "https://monolit-planner-frontend.onrender.com"
+      - key: CORE_API_URL
+        value: "https://concrete-agent.onrender.com"
+      - key: CORE_TIMEOUT
+        value: "30000"
+      - key: ENABLE_CORE_FALLBACK
+        value: "true"
     healthCheckPath: /health
 
   # Frontend (Static Site)

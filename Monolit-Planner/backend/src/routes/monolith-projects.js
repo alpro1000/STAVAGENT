@@ -212,6 +212,26 @@ router.post('/', async (req, res) => {
       ]);
       logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
 
+      // Create corresponding bridge record for FK constraint satisfaction (if type is bridge)
+      // This ensures positions table can reference bridge_id
+      if (object_type === 'bridge') {
+        logger.info(`[CREATE PROJECT] Creating bridge record for FK constraint...`);
+        const insertBridgeSql = `
+          INSERT INTO bridges (bridge_id, object_name, span_length_m, deck_width_m, pd_weeks, owner_id)
+          VALUES ($1, $2, $3, $4, $5, $6)
+        `;
+
+        await client.query(insertBridgeSql, [
+          project_id,
+          object_name || '',
+          span_length_m || null,
+          deck_width_m || null,
+          pd_weeks || null,
+          ownerId
+        ]);
+        logger.info(`[CREATE PROJECT] ✓ Bridge record created for FK satisfaction`);
+      }
+
       // Create default parts from templates (in same transaction)
       logger.info(`[CREATE PROJECT] Creating ${templates.length} default parts...`);
       const insertPartSql = `

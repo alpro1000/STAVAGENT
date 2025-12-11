@@ -5,7 +5,7 @@
  */
 
 import { useState } from 'react';
-import { createMonolithProject } from '../services/api';
+import { useBridges } from '../hooks/useBridges';
 import ObjectTypeSelector from './ObjectTypeSelector';
 
 interface CreateMonolithFormProps {
@@ -34,6 +34,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const { createBridge } = useBridges();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -47,7 +48,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
     setIsSubmitting(true);
 
     try {
-      await createMonolithProject({
+      await createBridge({
         project_id: projectId.trim(),
         object_type: objectType as 'bridge' | 'building' | 'parking' | 'road' | 'custom',
         project_name: projectName.trim() || undefined,

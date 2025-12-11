@@ -81,7 +81,7 @@ import fs from 'fs';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription, normalizeString } from '../services/parser.js';
-import { extractConcretePositions } from '../services/concreteExtractor.js';
+import { extractConcretePositions, convertRawRowsToPositions } from '../services/concreteExtractor.js';
 import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge, validatePositions, enrichPosition } from '../services/coreAPI.js';
 import { importCache, cacheStatsMiddleware } from '../services/importCache.js';
 import DataPreprocessor from '../services/dataPreprocessor.js';
@@ -277,9 +277,16 @@ router.post('/', upload.single('file'), async (req, res) => {
             pd_weeks: 0
           });
 
-          parsedPositionsFromCORE = localPositions.length > 0 ? localPositions : parseResult.raw_rows;
+          // If concreteExtractor found nothing, convert raw rows to positions (fallback)
+          if (localPositions.length === 0 && hasDataRows) {
+            logger.info(`[Upload] 🔄 ConcreteExtractor found 0 positions, converting raw rows...`);
+            parsedPositionsFromCORE = convertRawRowsToPositions(parseResult.raw_rows);
+          } else {
+            parsedPositionsFromCORE = localPositions;
+          }
+
           sourceOfProjects = 'local_extractor';
-          logger.info(`[Upload] 🎯 Created project from local parser data (${positionCount} rows)`);
+          logger.info(`[Upload] 🎯 Created project from local parser data (${parsedPositionsFromCORE.length} positions)`);
         }
       } catch (localError) {
         logger.warn(`[Upload] ⚠️ Local parser also failed: ${localError.message}`);

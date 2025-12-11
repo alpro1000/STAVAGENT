@@ -33,6 +33,19 @@ export function useBridges() {
     }
   }, [query.data, setBridges]);
 
+  // Mutation: Create new bridge (with auto-refetch on success)
+  const createMutation = useMutation({
+    mutationFn: (params: any) => {
+      return bridgesAPI.create(params);
+    },
+    onSuccess: () => {
+      // Invalidate and refetch bridges list immediately after creation
+      // This ensures the new bridge appears in the sidebar right away
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+      queryClient.refetchQueries({ queryKey: ['bridges'] });
+    }
+  });
+
   // Mutation: Update bridge status
   const statusMutation = useMutation({
     mutationFn: ({ bridgeId, status }: { bridgeId: string; status: 'active' | 'completed' | 'archived' }) => {
@@ -65,6 +78,9 @@ export function useBridges() {
 
   return {
     ...query,
+    createBridge: async (params: any) => {
+      return await createMutation.mutateAsync(params);
+    },
     updateBridgeStatus: async (bridgeId: string, status: 'active' | 'completed' | 'archived') => {
       await statusMutation.mutateAsync({ bridgeId, status });
     },
@@ -74,6 +90,6 @@ export function useBridges() {
     deleteBridge: async (bridgeId: string) => {
       await deleteMutation.mutateAsync(bridgeId);
     },
-    isLoading: query.isLoading || statusMutation.isPending || deleteMutation.isPending || completeMutation.isPending
+    isLoading: query.isLoading || createMutation.isPending || statusMutation.isPending || deleteMutation.isPending || completeMutation.isPending
   };
 }
