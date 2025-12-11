@@ -86,7 +86,12 @@ export function prepare(sql) {
     },
 
     run: async (...params) => {
-      const result = await query(convertedSql, params);
+      let finalSql = convertedSql;
+      // Automatically add 'RETURNING id' to get the last inserted ID from an INSERT statement
+      if (/^\s*INSERT/i.test(finalSql) && !/RETURNING/i.test(finalSql)) {
+        finalSql += ' RETURNING id';
+      }
+      const result = await query(finalSql, params);
       return {
         changes: result.rowCount,
         lastID: result.rows[0]?.id || null
