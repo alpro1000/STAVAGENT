@@ -141,6 +141,16 @@ router.post('/', async (req, res) => {
       );
       logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
 
+      // VARIANT 1: Create corresponding bridge entry for FK constraint compatibility
+      // The positions table still references bridges(bridge_id), so we need this entry
+      // This is a legacy compatibility layer that will be removed when positions table is refactored
+      logger.info(`[CREATE PROJECT] Creating bridge entry for FK compatibility...`);
+      await db.prepare(`
+        INSERT OR IGNORE INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
+        VALUES (?, ?, ?, ?)
+      `).run(project_id, project_id, object_name || project_id, 'universal');
+      logger.info(`[CREATE PROJECT] ✓ Bridge entry created (FK compatibility)`);
+
       // Create default parts from templates
       logger.info(`[CREATE PROJECT] Creating ${templates.length} default parts...`);
       if (templates.length > 0) {

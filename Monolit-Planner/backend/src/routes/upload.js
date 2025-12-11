@@ -209,6 +209,13 @@ router.post('/', upload.single('file'), async (req, res) => {
           `).run(projectId, fileMetadata.stavba, fileMetadata.stavba, req.user?.userId || null);
 
           logger.info(`[Upload] Created stavba project: ${projectId} ("${fileMetadata.stavba}")`);
+
+          // VARIANT 1: Create bridge entry for FK constraint compatibility
+          await db.prepare(`
+            INSERT OR IGNORE INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
+            VALUES (?, ?, ?, ?)
+          `).run(projectId, projectId, fileMetadata.stavba || projectId, 'universal');
+          logger.info(`[Upload] Created bridge entry (FK compatibility): ${projectId}`);
         } else {
           logger.info(`[Upload] Stavba project already exists: ${projectId}`);
         }
@@ -335,29 +342,21 @@ router.post('/', upload.single('file'), async (req, res) => {
           );
 
           logger.info(`[Upload] Created object: ${objectId} (${project.concrete_m3} m³)`);
+
+          // VARIANT 1: Create bridge entry for FK constraint compatibility
+          // Using universal type, no type-specific fields
+          await db.prepare(`
+            INSERT OR IGNORE INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
+            VALUES (?, ?, ?, ?)
+          `).run(
+            objectId,
+            objectId,
+            project.object_name,
+            'universal'
+          );
+          logger.info(`[Upload] Created bridge entry (FK compatibility): ${objectId}`);
         } else {
           logger.info(`[Upload] Object already exists: ${objectId}`);
-        }
-
-        // Also create/update bridges table for backward compatibility
-        const bridgeId = objectId;  // Use same ID for now
-        const bridgeExisting = await db.prepare('SELECT bridge_id FROM bridges WHERE bridge_id = ?').get(bridgeId);
-
-        if (!bridgeExisting) {
-          // Create bridge record for backward compatibility
-          await db.prepare(`
-            INSERT INTO bridges (bridge_id, object_name, span_length_m, deck_width_m, pd_weeks, concrete_m3)
-            VALUES (?, ?, ?, ?, ?, ?)
-          `).run(
-            bridgeId,
-            project.object_name,
-            project.span_length_m || 0,
-            project.deck_width_m || 0,
-            project.pd_weeks || 0,
-            project.concrete_m3 || 0
-          );
-
-          logger.info(`[Upload] Created bridge record: ${bridgeId}`);
         }
 
         // Extract positions with intelligent fallback chain
