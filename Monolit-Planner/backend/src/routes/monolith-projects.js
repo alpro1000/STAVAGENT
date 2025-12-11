@@ -147,10 +147,10 @@ router.post('/', async (req, res) => {
       logger.info(`[CREATE PROJECT] Creating bridge entry for FK compatibility...`);
       try {
         await db.prepare(`
-          INSERT INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
-          VALUES (?, ?, ?, ?)
+          INSERT INTO bridges (bridge_id, object_name)
+          VALUES (?, ?)
           ON CONFLICT (bridge_id) DO NOTHING
-        `).run(project_id, project_id, object_name || project_id, 'universal');
+        `).run(project_id, object_name || project_id);
         logger.info(`[CREATE PROJECT] ✓ Bridge entry created (FK compatibility)`);
       } catch (bridgeError) {
         // Non-fatal: bridge entry creation failed but project was created
