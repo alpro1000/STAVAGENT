@@ -158,31 +158,57 @@ router.post('/', async (req, res) => {
       }
 
       // Create default parts from templates
-      logger.info(`[CREATE PROJECT] Creating ${templates.length} default parts...`);
+      // VARIANT 1: Deduplicate templates by part_name to avoid duplicate key errors
+      logger.info(`[CREATE PROJECT] Creating default parts from templates...`);
       if (templates.length > 0) {
-        for (const template of templates) {
-          const partId = `${project_id}_${template.part_name}`;
-          await db.prepare(`
-            INSERT INTO parts (part_id, project_id, part_name, is_predefined)
-            VALUES (?, ?, ?, ?)
-          `).run(partId, project_id, template.part_name, 1);
+        // Deduplicate templates by part_name
+        const seenPartNames = new Set();
+        const uniqueTemplates = templates.filter(t => {
+          if (seenPartNames.has(t.part_name)) {
+            logger.debug(`[CREATE PROJECT] Skipping duplicate template: ${t.part_name}`);
+            return false;
+          }
+          seenPartNames.add(t.part_name);
+          return true;
+        });
+
+        logger.info(`[CREATE PROJECT] Creating ${uniqueTemplates.length} unique parts (${templates.length} - ${templates.length - uniqueTemplates.length} duplicates)`);
+
+        try {
+          for (const template of uniqueTemplates) {
+            const partId = `${project_id}_${template.part_name}`;
+            logger.debug(`[CREATE PROJECT] Inserting part: ${partId}`);
+
+            await db.prepare(`
+              INSERT INTO parts (part_id, project_id, part_name, is_predefined)
+              VALUES (?, ?, ?, ?)
+              ON CONFLICT (part_id) DO NOTHING
+            `).run(partId, project_id, template.part_name, 1);
+          }
+          logger.info(`[CREATE PROJECT] ✓ Created ${uniqueTemplates.length} parts successfully`);
+        } catch (partsError) {
+          logger.error(`[CREATE PROJECT] ❌ Failed to create parts:`, partsError.message);
+          throw partsError; // Re-throw to rollback transaction
         }
-        logger.info(`[CREATE PROJECT] ✓ Created ${templates.length} parts successfully`);
       }
 
       // Create default positions for each template part
-      logger.info(`[CREATE PROJECT] Creating ${templates.length} default positions...`);
-      if (templates.length > 0) {
+      logger.info(`[CREATE PROJECT] Creating default positions from unique templates...`);
+      if (uniqueTemplates && uniqueTemplates.length > 0) {
         try {
-          const defaultPositions = createDefaultPositions(templates, project_id);
+          const defaultPositions = createDefaultPositions(uniqueTemplates, project_id);
 
           if (defaultPositions && defaultPositions.length > 0) {
+            logger.info(`[CREATE PROJECT] Inserting ${defaultPositions.length} default positions`);
             for (const pos of defaultPositions) {
+              logger.debug(`[CREATE PROJECT] Position: ${pos.id} (part: ${pos.part_name}, qty: ${pos.qty})`);
+
               await db.prepare(`
                 INSERT INTO positions (
                   id, bridge_id, part_name, item_name, subtype, unit,
                   qty, crew_size, wage_czk_ph, shift_hours, days
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                ON CONFLICT (id) DO NOTHING
               `).run(
                 pos.id,
                 pos.bridge_id,
@@ -198,10 +224,13 @@ router.post('/', async (req, res) => {
               );
             }
             logger.info(`[CREATE PROJECT] ✓ Created ${defaultPositions.length} default positions`);
+          } else {
+            logger.warn(`[CREATE PROJECT] ⚠️  No default positions were generated from templates`);
           }
         } catch (posError) {
           // Non-fatal: position creation failed but project/parts were created
-          logger.warn(`[CREATE PROJECT] ⚠️  Could not create default positions:`, posError.message);
+          logger.error(`[CREATE PROJECT] ❌ Position creation error (non-fatal):`, posError.message);
+          logger.error(`[CREATE PROJECT] Stack:`, posError.stack);
         }
       }
 
