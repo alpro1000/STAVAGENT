@@ -263,7 +263,7 @@ router.post('/:bridge_id/complete', async (req, res) => {
     };
 
     // VARIANT B: Delete ALL existing snapshots (full replacement)
-    const deleteResult = db.prepare('DELETE FROM snapshots WHERE bridge_id = ?').run(bridge_id);
+    const deleteResult = await db.prepare('DELETE FROM snapshots WHERE bridge_id = ?').run(bridge_id);
     logger.info(`Deleted ${deleteResult.changes} existing snapshots for bridge ${bridge_id}`);
 
     // Create ONE final snapshot with is_final=true
