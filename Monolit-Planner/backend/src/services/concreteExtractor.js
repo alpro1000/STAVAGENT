@@ -378,12 +378,15 @@ export function convertRawRowsToPositions(rawRows) {
 }
 
 /**
- * Extract ONLY concrete items (m3) from sheet data
- * This is the PRIMARY extraction method for multi-sheet import
+ * Extract ONLY concrete items by searching for concrete GRADE pattern
+ * This is the SIMPLEST and most reliable method
  *
- * Looks for:
- * - Unit = m3, m³, M3
- * - Keywords: beton, betonová, C30/37, etc.
+ * Searches for concrete grades in ANY cell:
+ * - Ordinary concrete: C8/10, C12/15, C16/20, C20/25, C25/30, C30/37, C35/45...C100/115
+ * - Lightweight concrete: LC8/9, LC12/13, LC16/18...LC80/88
+ * - UHPC: C110, C120, C130...C170
+ *
+ * Pattern variations: C30/37, C 30/37, C30 / 37, c30/37
  *
  * @param {Array} rawRows - Raw rows from Excel sheet
  * @returns {Array} Array of concrete positions with volume
@@ -397,56 +400,102 @@ export function extractConcreteOnlyM3(rawRows) {
   const concreteItems = [];
   let totalConcreteVolume = 0;
 
-  logger.info(`[ConcreteExtractor] extractConcreteOnlyM3: Processing ${rawRows.length} rows`);
+  logger.info(`[ConcreteExtractor] 🔍 Searching for concrete grades in ${rawRows.length} rows...`);
 
-  // First, detect column structure
-  const columnMap = detectConcreteColumns(rawRows);
-  logger.info(`[ConcreteExtractor] Detected columns: ${JSON.stringify(columnMap)}`);
+  // Regex patterns for concrete grades (handles spaces between numbers)
+  // Matches: C30/37, C 30/37, C30 / 37, c30/37, LC25/28, etc.
+  const gradePatterns = [
+    /\b[LC]?\s*C\s*(\d{1,3})\s*\/\s*(\d{1,3})\b/i,  // C30/37, LC25/28, C 30 / 37
+    /\b[LC]?\s*C\s*(1[1-7]0)\b/i,                     // UHPC: C110, C120...C170
+  ];
+
+  // First pass: find which columns contain description and quantity
+  const columnInfo = detectColumnsForConcrete(rawRows);
+  logger.info(`[ConcreteExtractor] Column detection: desc="${columnInfo.descColumn}", qty="${columnInfo.qtyColumn}", unit="${columnInfo.unitColumn}"`);
 
   for (let i = 0; i < rawRows.length; i++) {
     const row = rawRows[i];
 
     try {
-      // Get values using detected columns or fallback to search
-      let popis = getColumnValueSmart(row, columnMap.popis) ||
-                  getColumnValue(row, ['Popis', 'popis', 'Description', 'Název', 'Item', 'Text']);
-      let mj = getColumnValueSmart(row, columnMap.mj) ||
-               getColumnValue(row, ['MJ', 'mj', 'Unit', 'Jednotka', 'j.']);
-      let mnozstvi = getColumnValueSmart(row, columnMap.mnozstvi) ||
-                     getColumnValue(row, ['Množství', 'Mnozstvi', 'mnozstvi', 'Quantity', 'Qty', 'Počet', 'Celkem']);
+      // Search ALL cells in row for concrete grade
+      let foundGrade = null;
+      let descriptionCell = null;
 
-      if (!popis || !mj) continue;
+      // Check each cell for concrete grade
+      for (const [key, value] of Object.entries(row)) {
+        if (value === null || value === undefined) continue;
 
-      const unit = String(mj).trim().toLowerCase();
-      const description = String(popis).trim();
+        const cellText = String(value).trim();
+        if (cellText.length < 3) continue;
 
-      // STRICT: Only M3 units (concrete volume)
-      const isM3Unit = unit === 'm3' || unit === 'm³' || unit === 'm 3' || unit === 'm³';
-      if (!isM3Unit) continue;
-
-      // Parse quantity
-      const qty = parseNumber(mnozstvi);
-      if (qty <= 0) continue;
-
-      // Check if description looks like concrete work
-      const isConcreteDescription = isConcreteText(description);
-      if (!isConcreteDescription) {
-        // Log skipped m3 items for debugging
-        logger.debug(`[ConcreteExtractor] Skipping non-concrete m3 item: "${description.substring(0, 50)}"`);
-        continue;
+        // Try to match concrete grade
+        for (const pattern of gradePatterns) {
+          const match = cellText.match(pattern);
+          if (match) {
+            // Found concrete grade!
+            if (match[2]) {
+              // Standard grade: C30/37
+              foundGrade = `C${match[1]}/${match[2]}`;
+            } else {
+              // UHPC: C110
+              foundGrade = `C${match[1]}`;
+            }
+            descriptionCell = cellText;
+            break;
+          }
+        }
+        if (foundGrade) break;
       }
 
-      // Extract concrete grade (C30/37, C25/30, etc.)
-      let concreteGrade = null;
-      const gradeMatch = description.match(/C\s*(\d{2})\/(\d{2})/i);
-      if (gradeMatch) {
-        concreteGrade = `C${gradeMatch[1]}/${gradeMatch[2]}`;
+      if (!foundGrade || !descriptionCell) continue;
+
+      // Get quantity from detected column or search for M3 value
+      let qty = 0;
+      let unit = 'M3';
+
+      // Try detected quantity column first
+      if (columnInfo.qtyColumn && row[columnInfo.qtyColumn] !== undefined) {
+        qty = parseNumber(row[columnInfo.qtyColumn]);
+      }
+
+      // If no qty found, search for numeric value in row
+      if (qty <= 0) {
+        for (const [key, value] of Object.entries(row)) {
+          if (value === null || value === undefined) continue;
+
+          // Skip the description cell
+          if (String(value) === descriptionCell) continue;
+
+          // Check if this looks like a quantity (positive number)
+          const num = parseNumber(value);
+          if (num > 0 && num < 100000) {
+            // Also check if there's a unit cell nearby with M3
+            const unitValue = columnInfo.unitColumn ? row[columnInfo.unitColumn] : null;
+            if (unitValue) {
+              const unitStr = String(unitValue).toLowerCase().trim();
+              if (unitStr === 'm3' || unitStr === 'm³' || unitStr === 'm 3') {
+                qty = num;
+                break;
+              }
+            }
+            // If no unit column but number looks reasonable for concrete volume
+            if (num >= 0.1 && num <= 10000) {
+              qty = num;
+            }
+          }
+        }
+      }
+
+      // Skip if no quantity found
+      if (qty <= 0) {
+        logger.debug(`[ConcreteExtractor] Found grade ${foundGrade} but no quantity in row ${i}`);
+        continue;
       }
 
       // Create position
       const position = {
-        part_name: concreteGrade ? `Beton ${concreteGrade}` : extractPartName(description),
-        item_name: description,
+        part_name: `Beton ${foundGrade}`,
+        item_name: descriptionCell,
         subtype: 'beton',
         unit: 'M3',
         qty: qty,
@@ -455,119 +504,75 @@ export function extractConcreteOnlyM3(rawRows) {
         wage_czk_ph: 398,
         shift_hours: 10,
         days: 0,
-        concrete_grade: concreteGrade,
-        source: 'SHEET_CONCRETE_EXTRACTOR'
+        concrete_grade: foundGrade,
+        source: 'GRADE_SEARCH'
       };
 
       concreteItems.push(position);
       totalConcreteVolume += qty;
 
-      logger.info(`[ConcreteExtractor] ✅ Found concrete: "${description.substring(0, 40)}..." = ${qty} m³ ${concreteGrade || ''}`);
+      logger.info(`[ConcreteExtractor] ✅ Found: ${foundGrade} | ${qty.toFixed(2)} m³ | "${descriptionCell.substring(0, 50)}..."`);
 
     } catch (error) {
       logger.debug(`[ConcreteExtractor] Error processing row ${i}: ${error.message}`);
     }
   }
 
-  logger.info(`[ConcreteExtractor] extractConcreteOnlyM3: Found ${concreteItems.length} concrete items, total ${totalConcreteVolume.toFixed(2)} m³`);
+  logger.info(`[ConcreteExtractor] 📊 Result: ${concreteItems.length} concrete items, total ${totalConcreteVolume.toFixed(2)} m³`);
 
   return concreteItems;
 }
 
 /**
- * Check if text description is concrete-related
+ * Detect columns for description, quantity, and unit
  */
-function isConcreteText(text) {
-  if (!text) return false;
-
-  const lower = text.toLowerCase();
-
-  // Concrete keywords (Czech)
-  const concreteKeywords = [
-    'beton', 'betón', 'betonová', 'betonové', 'betonový',
-    'železobeton', 'žb ', 'žb-', 'železobetonová', 'železobetonové',
-    'monolitick', 'monolitická', 'monolitické',
-    'c25', 'c30', 'c35', 'c40', 'c45', 'c50',  // Concrete grades
-    'xc1', 'xc2', 'xc3', 'xc4', 'xf1', 'xf2', 'xf3', 'xf4', // Exposure classes
-    'základová', 'základové', 'základ',
-    'pilota', 'piloty', 'pilíř', 'pilíře',
-    'deska', 'deskový', 'desková',
-    'nosná', 'nosné', 'nosník', 'trám', 'trámu',
-    'opěra', 'opěry', 'křídlo', 'křídla',
-    'rims', 'římsa', 'rimsy',
-    'most', 'mostu', 'mostní', 'mostovka'
-  ];
-
-  // Check for any concrete keyword
-  for (const keyword of concreteKeywords) {
-    if (lower.includes(keyword)) {
-      return true;
-    }
-  }
-
-  // Check for concrete grade pattern
-  if (/c\s*\d{2}\/\d{2}/i.test(text)) {
-    return true;
-  }
-
-  return false;
-}
-
-/**
- * Detect column positions from first few rows
- */
-function detectConcreteColumns(rows) {
-  const columnMap = {
-    popis: null,
-    mj: null,
-    mnozstvi: null
+function detectColumnsForConcrete(rows) {
+  const result = {
+    descColumn: null,
+    qtyColumn: null,
+    unitColumn: null
   };
 
-  // Look at first 10 rows for header-like patterns
-  for (let i = 0; i < Math.min(10, rows.length); i++) {
+  // Look at first 15 rows for headers
+  for (let i = 0; i < Math.min(15, rows.length); i++) {
     const row = rows[i];
-    const keys = Object.keys(row);
 
-    for (const key of keys) {
-      const lowerKey = key.toLowerCase();
-      const value = row[key];
-      const lowerValue = value ? String(value).toLowerCase() : '';
+    for (const [key, value] of Object.entries(row)) {
+      if (!value) continue;
 
-      // Detect description column
-      if (lowerKey.includes('popis') || lowerKey.includes('nazev') ||
-          lowerKey.includes('description') || lowerKey.includes('item') ||
-          lowerValue === 'popis' || lowerValue === 'název') {
-        columnMap.popis = key;
+      const cellText = String(value).toLowerCase().trim();
+      const keyLower = key.toLowerCase();
+
+      // Description column
+      if (!result.descColumn) {
+        if (cellText === 'popis' || cellText === 'název' || cellText === 'název položky' ||
+            cellText === 'description' || cellText === 'item' || cellText === 'text' ||
+            keyLower.includes('popis') || keyLower.includes('nazev') || keyLower.includes('název')) {
+          result.descColumn = key;
+        }
       }
 
-      // Detect unit column
-      if (lowerKey.includes('mj') || lowerKey === 'mj' ||
-          lowerKey.includes('jednotka') || lowerKey.includes('unit') ||
-          lowerValue === 'mj' || lowerValue === 'jednotka') {
-        columnMap.mj = key;
+      // Quantity column
+      if (!result.qtyColumn) {
+        if (cellText === 'množství' || cellText === 'mnozstvi' || cellText === 'qty' ||
+            cellText === 'quantity' || cellText === 'počet' || cellText === 'celkem' ||
+            keyLower.includes('množství') || keyLower.includes('mnozstvi') ||
+            keyLower.includes('množstv') || keyLower.includes('celkem')) {
+          result.qtyColumn = key;
+        }
       }
 
-      // Detect quantity column
-      if (lowerKey.includes('množství') || lowerKey.includes('mnozstvi') ||
-          lowerKey.includes('quantity') || lowerKey.includes('qty') ||
-          lowerKey.includes('celkem') || lowerKey.includes('počet') ||
-          lowerValue === 'množství' || lowerValue === 'počet') {
-        columnMap.mnozstvi = key;
+      // Unit column
+      if (!result.unitColumn) {
+        if (cellText === 'mj' || cellText === 'jednotka' || cellText === 'unit' || cellText === 'j.' ||
+            keyLower === 'mj' || keyLower.includes('jednotka')) {
+          result.unitColumn = key;
+        }
       }
     }
   }
 
-  return columnMap;
-}
-
-/**
- * Get column value using smart detection
- */
-function getColumnValueSmart(row, columnKey) {
-  if (!columnKey || !row) return null;
-  return row[columnKey] !== undefined && row[columnKey] !== null && row[columnKey] !== ''
-    ? row[columnKey]
-    : null;
+  return result;
 }
 
 export { parseNumber };
