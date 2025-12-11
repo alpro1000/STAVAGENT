@@ -405,13 +405,9 @@ export function extractConcreteOnlyM3(rawRows) {
   // Regex patterns for concrete grades (handles spaces between numbers)
   // Matches: C30/37, C 30/37, C30 / 37, c30/37, LC25/28, etc.
   const gradePatterns = [
-    /\b[LC]?\s*C\s*(\d{1,3})\s*\/\s*(\d{1,3})\b/i,  // C30/37, LC25/28, C 30 / 37
-    /\b[LC]?\s*C\s*(1[1-7]0)\b/i,                     // UHPC: C110, C120...C170
+    /[LC]?\s*C\s*(\d{1,3})\s*\/\s*(\d{1,3})/i,  // C30/37, LC25/28, C 30 / 37
+    /[LC]?\s*C\s*(1[1-7]0)\b/i,                   // UHPC: C110, C120...C170
   ];
-
-  // First pass: find which columns contain description and quantity
-  const columnInfo = detectColumnsForConcrete(rawRows);
-  logger.info(`[ConcreteExtractor] Column detection: desc="${columnInfo.descColumn}", qty="${columnInfo.qtyColumn}", unit="${columnInfo.unitColumn}"`);
 
   for (let i = 0; i < rawRows.length; i++) {
     const row = rawRows[i];
@@ -420,13 +416,17 @@ export function extractConcreteOnlyM3(rawRows) {
       // Search ALL cells in row for concrete grade
       let foundGrade = null;
       let descriptionCell = null;
+      let descriptionKey = null;
+
+      // Collect all values with their keys for analysis
+      const entries = Object.entries(row);
 
       // Check each cell for concrete grade
-      for (const [key, value] of Object.entries(row)) {
+      for (const [key, value] of entries) {
         if (value === null || value === undefined) continue;
 
         const cellText = String(value).trim();
-        if (cellText.length < 3) continue;
+        if (cellText.length < 5) continue; // Grade pattern needs at least 5 chars like "C8/10"
 
         // Try to match concrete grade
         for (const pattern of gradePatterns) {
@@ -441,6 +441,7 @@ export function extractConcreteOnlyM3(rawRows) {
               foundGrade = `C${match[1]}`;
             }
             descriptionCell = cellText;
+            descriptionKey = key;
             break;
           }
         }
@@ -449,39 +450,55 @@ export function extractConcreteOnlyM3(rawRows) {
 
       if (!foundGrade || !descriptionCell) continue;
 
-      // Get quantity from detected column or search for M3 value
+      // IMPROVED QUANTITY DETECTION:
+      // Strategy: Find M3 cell first, then look for number in same row
       let qty = 0;
-      let unit = 'M3';
+      let foundM3Cell = false;
+      let numbersInRow = [];
 
-      // Try detected quantity column first
-      if (columnInfo.qtyColumn && row[columnInfo.qtyColumn] !== undefined) {
-        qty = parseNumber(row[columnInfo.qtyColumn]);
+      for (const [key, value] of entries) {
+        if (value === null || value === undefined) continue;
+        if (key === descriptionKey) continue; // Skip description cell
+
+        const cellStr = String(value).trim().toLowerCase();
+
+        // Check if this is the M3 unit cell
+        if (cellStr === 'm3' || cellStr === 'm³' || cellStr === 'm 3') {
+          foundM3Cell = true;
+          continue;
+        }
+
+        // Collect all numbers in the row
+        const num = parseNumber(value);
+        if (num > 0) {
+          numbersInRow.push({ key, value, num });
+        }
       }
 
-      // If no qty found, search for numeric value in row
-      if (qty <= 0) {
-        for (const [key, value] of Object.entries(row)) {
-          if (value === null || value === undefined) continue;
+      // If we found M3 cell, look for the quantity
+      // Prefer numbers > 5 (to skip row numbers like 1,2,3,4)
+      // and < 100000 (reasonable concrete volume)
+      if (foundM3Cell && numbersInRow.length > 0) {
+        // Sort by number size descending - larger numbers are more likely quantities
+        numbersInRow.sort((a, b) => b.num - a.num);
 
-          // Skip the description cell
-          if (String(value) === descriptionCell) continue;
+        // Find the best candidate for quantity
+        for (const item of numbersInRow) {
+          // Skip very small numbers (likely row numbers or codes)
+          if (item.num >= 0.1 && item.num <= 50000) {
+            qty = item.num;
+            break;
+          }
+        }
+      }
 
-          // Check if this looks like a quantity (positive number)
-          const num = parseNumber(value);
-          if (num > 0 && num < 100000) {
-            // Also check if there's a unit cell nearby with M3
-            const unitValue = columnInfo.unitColumn ? row[columnInfo.unitColumn] : null;
-            if (unitValue) {
-              const unitStr = String(unitValue).toLowerCase().trim();
-              if (unitStr === 'm3' || unitStr === 'm³' || unitStr === 'm 3') {
-                qty = num;
-                break;
-              }
-            }
-            // If no unit column but number looks reasonable for concrete volume
-            if (num >= 0.1 && num <= 10000) {
-              qty = num;
-            }
+      // Fallback: If no M3 cell found but we have numbers, take the largest reasonable one
+      if (qty <= 0 && numbersInRow.length > 0) {
+        numbersInRow.sort((a, b) => b.num - a.num);
+        for (const item of numbersInRow) {
+          if (item.num >= 1 && item.num <= 50000) {
+            qty = item.num;
+            break;
           }
         }
       }
@@ -521,58 +538,6 @@ export function extractConcreteOnlyM3(rawRows) {
   logger.info(`[ConcreteExtractor] 📊 Result: ${concreteItems.length} concrete items, total ${totalConcreteVolume.toFixed(2)} m³`);
 
   return concreteItems;
-}
-
-/**
- * Detect columns for description, quantity, and unit
- */
-function detectColumnsForConcrete(rows) {
-  const result = {
-    descColumn: null,
-    qtyColumn: null,
-    unitColumn: null
-  };
-
-  // Look at first 15 rows for headers
-  for (let i = 0; i < Math.min(15, rows.length); i++) {
-    const row = rows[i];
-
-    for (const [key, value] of Object.entries(row)) {
-      if (!value) continue;
-
-      const cellText = String(value).toLowerCase().trim();
-      const keyLower = key.toLowerCase();
-
-      // Description column
-      if (!result.descColumn) {
-        if (cellText === 'popis' || cellText === 'název' || cellText === 'název položky' ||
-            cellText === 'description' || cellText === 'item' || cellText === 'text' ||
-            keyLower.includes('popis') || keyLower.includes('nazev') || keyLower.includes('název')) {
-          result.descColumn = key;
-        }
-      }
-
-      // Quantity column
-      if (!result.qtyColumn) {
-        if (cellText === 'množství' || cellText === 'mnozstvi' || cellText === 'qty' ||
-            cellText === 'quantity' || cellText === 'počet' || cellText === 'celkem' ||
-            keyLower.includes('množství') || keyLower.includes('mnozstvi') ||
-            keyLower.includes('množstv') || keyLower.includes('celkem')) {
-          result.qtyColumn = key;
-        }
-      }
-
-      // Unit column
-      if (!result.unitColumn) {
-        if (cellText === 'mj' || cellText === 'jednotka' || cellText === 'unit' || cellText === 'j.' ||
-            keyLower === 'mj' || keyLower.includes('jednotka')) {
-          result.unitColumn = key;
-        }
-      }
-    }
-  }
-
-  return result;
 }
 
 export { parseNumber };
