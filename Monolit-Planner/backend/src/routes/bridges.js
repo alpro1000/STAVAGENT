@@ -121,15 +121,15 @@ router.post('/', async (req, res) => {
     const templatePositions = BRIDGE_TEMPLATE_POSITIONS;
     const defaultPositions = createDefaultPositions(templatePositions, bridge_id);
 
-    const insertPosition = db.prepare(`
-      INSERT INTO positions (
-        id, bridge_id, part_name, item_name, subtype, unit,
-        qty, qty_m3_helper, crew_size, wage_czk_ph, shift_hours, days, otskp_code
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
     // Use transaction for atomic insert of all template positions
     const insertMany = db.transaction((client) => {
+      const insertPosition = client.prepare(`
+        INSERT INTO positions (
+          id, bridge_id, part_name, item_name, subtype, unit,
+          qty, qty_m3_helper, crew_size, wage_czk_ph, shift_hours, days, otskp_code
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+
       defaultPositions.forEach((position) => {
         insertPosition.run(
           position.id,

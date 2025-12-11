@@ -30,6 +30,36 @@ if (USE_POSTGRES) {
       return async (...args) => {
         const pool = postgres.getPool();
         const client = await pool.connect();
+
+        // Add prepare() method to client for use within transaction
+        // This ensures all queries use the SAME connection (within transaction)
+        client.prepare = (sql) => {
+          // Convert SQLite ? placeholders to PostgreSQL $1, $2, etc.
+          let paramIndex = 0;
+          const convertedSql = sql.replace(/\?/g, () => {
+            paramIndex++;
+            return `$${paramIndex}`;
+          });
+
+          return {
+            all: async (...params) => {
+              const result = await client.query(convertedSql, params);
+              return result.rows;
+            },
+            get: async (...params) => {
+              const result = await client.query(convertedSql, params);
+              return result.rows[0] || null;
+            },
+            run: async (...params) => {
+              const result = await client.query(convertedSql, params);
+              return {
+                changes: result.rowCount,
+                lastID: result.rows[0]?.id || null
+              };
+            }
+          };
+        };
+
         try {
           await client.query('BEGIN');
           const result = await callback(client, ...args);

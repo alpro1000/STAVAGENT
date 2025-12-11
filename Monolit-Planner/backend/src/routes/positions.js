@@ -176,14 +176,14 @@ router.post('/', async (req, res) => {
       await db.prepare('INSERT INTO bridges (bridge_id) VALUES (?)').run(bridge_id);
     }
 
-    const insertStmt = db.prepare(`
-      INSERT INTO positions (
-        id, bridge_id, part_name, item_name, subtype, unit, qty, qty_m3_helper,
-        crew_size, wage_czk_ph, shift_hours, days, otskp_code
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
     const insertMany = db.transaction(async (client, positions) => {
+      const insertStmt = client.prepare(`
+        INSERT INTO positions (
+          id, bridge_id, part_name, item_name, subtype, unit, qty, qty_m3_helper,
+          crew_size, wage_czk_ph, shift_hours, days, otskp_code
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `);
+
       for (const pos of positions) {
         const id = pos.id || uuidv4();
         await insertStmt.run(
@@ -310,7 +310,7 @@ router.put('/', async (req, res) => {
 
         logger.info(`  Updating position id=${id}: ${fieldNames.join(', ')}`);
 
-        const stmt = db.prepare(sql);
+        const stmt = client.prepare(sql);
         const result = await stmt.run(...values);
 
         if (result.changes === 0) {

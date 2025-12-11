@@ -433,15 +433,15 @@ router.post('/', upload.single('file'), async (req, res) => {
         // Insert all positions using batch insert (MUCH FASTER)
         // Uses POSITION_DEFAULTS utility to ensure consistency across all creation methods
         if (positionsToInsert.length > 0) {
-          const stmt = db.prepare(`
-            INSERT INTO positions (
-              id, bridge_id, part_name, item_name, subtype, unit,
-              qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-          `);
-
           // Use transaction for batch insert
           const insertMany = db.transaction((client, positions) => {
+            const stmt = client.prepare(`
+              INSERT INTO positions (
+                id, bridge_id, part_name, item_name, subtype, unit,
+                qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
+              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `);
+
             for (const pos of positions) {
               const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
               stmt.run(
