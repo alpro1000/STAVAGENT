@@ -211,11 +211,16 @@ router.post('/', upload.single('file'), async (req, res) => {
           logger.info(`[Upload] Created stavba project: ${projectId} ("${fileMetadata.stavba}")`);
 
           // VARIANT 1: Create bridge entry for FK constraint compatibility
-          await db.prepare(`
-            INSERT OR IGNORE INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
-            VALUES (?, ?, ?, ?)
-          `).run(projectId, projectId, fileMetadata.stavba || projectId, 'universal');
-          logger.info(`[Upload] Created bridge entry (FK compatibility): ${projectId}`);
+          try {
+            await db.prepare(`
+              INSERT INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
+              VALUES (?, ?, ?, ?)
+              ON CONFLICT (bridge_id) DO NOTHING
+            `).run(projectId, projectId, fileMetadata.stavba || projectId, 'universal');
+            logger.info(`[Upload] Created bridge entry (FK compatibility): ${projectId}`);
+          } catch (bridgeError) {
+            logger.warn(`[Upload] Could not create bridge entry for stavba (non-fatal):`, bridgeError.message);
+          }
         } else {
           logger.info(`[Upload] Stavba project already exists: ${projectId}`);
         }
@@ -345,16 +350,21 @@ router.post('/', upload.single('file'), async (req, res) => {
 
           // VARIANT 1: Create bridge entry for FK constraint compatibility
           // Using universal type, no type-specific fields
-          await db.prepare(`
-            INSERT OR IGNORE INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
-            VALUES (?, ?, ?, ?)
-          `).run(
-            objectId,
-            objectId,
-            project.object_name,
-            'universal'
-          );
-          logger.info(`[Upload] Created bridge entry (FK compatibility): ${objectId}`);
+          try {
+            await db.prepare(`
+              INSERT INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
+              VALUES (?, ?, ?, ?)
+              ON CONFLICT (bridge_id) DO NOTHING
+            `).run(
+              objectId,
+              objectId,
+              project.object_name,
+              'universal'
+            );
+            logger.info(`[Upload] Created bridge entry (FK compatibility): ${objectId}`);
+          } catch (bridgeError) {
+            logger.warn(`[Upload] Could not create bridge entry for object (non-fatal):`, bridgeError.message);
+          }
         } else {
           logger.info(`[Upload] Object already exists: ${objectId}`);
         }
