@@ -13,22 +13,20 @@
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
-import { requireAuth } from '../middleware/auth.js';
 import { createDefaultPositions } from '../utils/positionDefaults.js';
 
 const router = express.Router();
 
-// Apply authentication to all routes
-router.use(requireAuth);
+// NO AUTH REQUIRED - This is a public kiosk application
+// Authentication is handled at the portal level (stavagent-portal)
 
 /**
  * GET /api/monolith-projects
- * List all projects for current user
+ * List all projects (no auth filtering - kiosk mode)
  * Query params: status (optional)
  */
 router.get('/', async (req, res) => {
   try {
-    const ownerId = req.user.userId;
     const { status } = req.query;
 
     let query = `
@@ -47,13 +45,12 @@ router.get('/', async (req, res) => {
         COUNT(DISTINCT p.part_id) as parts_count
       FROM monolith_projects mp
       LEFT JOIN parts p ON mp.project_id = p.project_id
-      WHERE mp.owner_id = ?
     `;
 
-    const params = [ownerId];
+    const params = [];
 
     if (status) {
-      query += ` AND mp.status = ?`;
+      query += ` WHERE mp.status = ?`;
       params.push(status);
     }
 
@@ -82,7 +79,8 @@ router.get('/', async (req, res) => {
  */
 router.post('/', async (req, res) => {
   try {
-    const ownerId = req.user.userId;
+    // No auth - use default owner_id (kiosk mode)
+    const ownerId = req.user?.userId || 1;
     const {
       project_id,
       project_name,
@@ -91,7 +89,7 @@ router.post('/', async (req, res) => {
     } = req.body;
 
     logger.info(`[CREATE PROJECT] Starting creation for project_id: ${project_id}`);
-    logger.info(`[CREATE PROJECT] Owner ID: ${ownerId}, User: ${req.user?.email || 'unknown'}`);
+    logger.info(`[CREATE PROJECT] Owner ID: ${ownerId} (kiosk mode)`);
 
     // Validation
     if (!project_id) {
@@ -160,18 +158,19 @@ router.post('/', async (req, res) => {
       // Create default parts from templates
       // VARIANT 1: Deduplicate templates by part_name to avoid duplicate key errors
       logger.info(`[CREATE PROJECT] Creating default parts from templates...`);
-      if (templates.length > 0) {
-        // Deduplicate templates by part_name
-        const seenPartNames = new Set();
-        const uniqueTemplates = templates.filter(t => {
-          if (seenPartNames.has(t.part_name)) {
-            logger.debug(`[CREATE PROJECT] Skipping duplicate template: ${t.part_name}`);
-            return false;
-          }
-          seenPartNames.add(t.part_name);
-          return true;
-        });
 
+      // Deduplicate templates by part_name (moved outside if block for proper scoping)
+      const seenPartNames = new Set();
+      const uniqueTemplates = templates.filter(t => {
+        if (seenPartNames.has(t.part_name)) {
+          logger.debug(`[CREATE PROJECT] Skipping duplicate template: ${t.part_name}`);
+          return false;
+        }
+        seenPartNames.add(t.part_name);
+        return true;
+      });
+
+      if (uniqueTemplates.length > 0) {
         logger.info(`[CREATE PROJECT] Creating ${uniqueTemplates.length} unique parts (${templates.length} - ${templates.length - uniqueTemplates.length} duplicates)`);
 
         try {
@@ -194,7 +193,7 @@ router.post('/', async (req, res) => {
 
       // Create default positions for each template part
       logger.info(`[CREATE PROJECT] Creating default positions from unique templates...`);
-      if (uniqueTemplates && uniqueTemplates.length > 0) {
+      if (uniqueTemplates.length > 0) {
         try {
           const defaultPositions = createDefaultPositions(uniqueTemplates, project_id);
 
@@ -265,20 +264,19 @@ router.post('/', async (req, res) => {
 
 /**
  * GET /api/monolith-projects/:id
- * Get project details with all parts
+ * Get project details with all parts (no auth - kiosk mode)
  */
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const ownerId = req.user.userId;
 
-    // Get project (check ownership)
+    // Get project (no ownership check - kiosk mode)
     const project = await db.prepare(`
-      SELECT * FROM monolith_projects WHERE project_id = ? AND owner_id = ?
-    `).get(id, ownerId);
+      SELECT * FROM monolith_projects WHERE project_id = ?
+    `).get(id);
 
     if (!project) {
-      return res.status(404).json({ error: 'Project not found or access denied' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     // Get all parts for this project
@@ -299,20 +297,19 @@ router.get('/:id', async (req, res) => {
 
 /**
  * PUT /api/monolith-projects/:id
- * Update project
+ * Update project (no auth - kiosk mode)
  */
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const ownerId = req.user.userId;
 
-    // Check ownership
+    // Check project exists (no ownership check - kiosk mode)
     const project = await db.prepare(`
-      SELECT * FROM monolith_projects WHERE project_id = ? AND owner_id = ?
-    `).get(id, ownerId);
+      SELECT * FROM monolith_projects WHERE project_id = ?
+    `).get(id);
 
     if (!project) {
-      return res.status(404).json({ error: 'Project not found or access denied' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     const {
@@ -377,20 +374,19 @@ router.put('/:id', async (req, res) => {
 
 /**
  * DELETE /api/monolith-projects/:id
- * Delete project (and all related parts)
+ * Delete project (and all related parts) - no auth (kiosk mode)
  */
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const ownerId = req.user.userId;
 
-    // Check ownership
+    // Check project exists (no ownership check - kiosk mode)
     const project = await db.prepare(`
-      SELECT * FROM monolith_projects WHERE project_id = ? AND owner_id = ?
-    `).get(id, ownerId);
+      SELECT * FROM monolith_projects WHERE project_id = ?
+    `).get(id);
 
     if (!project) {
-      return res.status(404).json({ error: 'Project not found or access denied' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     // Delete project (parts will be deleted by CASCADE)

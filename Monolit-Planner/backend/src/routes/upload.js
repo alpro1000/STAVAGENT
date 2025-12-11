@@ -89,12 +89,11 @@ import { logger } from '../utils/logger.js';
 import { BRIDGE_TEMPLATE_POSITIONS } from '../constants/bridgeTemplates.js';
 import { POSITION_DEFAULTS } from '../utils/positionDefaults.js';
 import db from '../db/init.js';
-import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Apply authentication and cache stats middleware
-router.use(requireAuth);
+// NO AUTH REQUIRED - This is a public kiosk application
+// Authentication is handled at the portal level (stavagent-portal)
 router.use(cacheStatsMiddleware);
 
 // Configure multer for file upload

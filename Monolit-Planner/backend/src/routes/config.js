@@ -1,18 +1,19 @@
 /**
- * Config routes
+ * Config routes - NO AUTH (Kiosk Mode)
  * GET/POST /api/config - Project configuration
  */
 
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
-import { requireAuth } from '../middleware/auth.js';
-import { adminOnly } from '../middleware/adminOnly.js';
 
 const router = express.Router();
 
-// GET config - PROTECTED: requires authentication (any authenticated user can read)
-router.get('/', requireAuth, async (req, res) => {
+// NO AUTH REQUIRED - This is a public kiosk application
+// Authentication is handled at the portal level (stavagent-portal)
+
+// GET config - PUBLIC (kiosk mode)
+router.get('/', async (req, res) => {
   try {
     const config = await db.prepare(`
       SELECT feature_flags, defaults, days_per_month_mode
@@ -39,9 +40,8 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
-// POST config (update) - PROTECTED: requires authentication + admin role
-// Phase 3: Config updates now require admin permissions
-router.post('/', requireAuth, adminOnly, async (req, res) => {
+// POST config (update) - PUBLIC (kiosk mode)
+router.post('/', async (req, res) => {
   try {
     const { feature_flags, defaults, days_per_month_mode } = req.body;
 
