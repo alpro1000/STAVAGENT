@@ -266,10 +266,25 @@ function determineSubtype(popis, mj) {
  * Extract part name from description
  */
 function extractPartName(popis) {
-  if (!popis) return 'Neznámá část';
-  const parts = popis.split('-');
-  const partName = parts[0].trim();
-  return partName.length > 0 ? partName : 'Neznámá část';
+  if (!popis) return 'Beton';
+
+  const text = String(popis).trim();
+
+  // Split by common separators
+  const parts = text.split(/[-–,;]/);
+  if (parts.length > 0) {
+    const firstPart = parts[0].trim();
+    if (firstPart.length > 3 && firstPart.length < 50) {
+      return firstPart;
+    }
+  }
+
+  // Truncate if too long
+  if (text.length > 50) {
+    return text.substring(0, 47) + '...';
+  }
+
+  return text || 'Beton';
 }
 
 /**
@@ -360,6 +375,199 @@ export function convertRawRowsToPositions(rawRows) {
 
   logger.info(`[ConcreteExtractor] Created ${positions.length} positions from raw rows`);
   return positions;
+}
+
+/**
+ * Extract ONLY concrete items (m3) from sheet data
+ * This is the PRIMARY extraction method for multi-sheet import
+ *
+ * Looks for:
+ * - Unit = m3, m³, M3
+ * - Keywords: beton, betonová, C30/37, etc.
+ *
+ * @param {Array} rawRows - Raw rows from Excel sheet
+ * @returns {Array} Array of concrete positions with volume
+ */
+export function extractConcreteOnlyM3(rawRows) {
+  if (!Array.isArray(rawRows) || rawRows.length === 0) {
+    logger.warn(`[ConcreteExtractor] extractConcreteOnlyM3: Empty input`);
+    return [];
+  }
+
+  const concreteItems = [];
+  let totalConcreteVolume = 0;
+
+  logger.info(`[ConcreteExtractor] extractConcreteOnlyM3: Processing ${rawRows.length} rows`);
+
+  // First, detect column structure
+  const columnMap = detectConcreteColumns(rawRows);
+  logger.info(`[ConcreteExtractor] Detected columns: ${JSON.stringify(columnMap)}`);
+
+  for (let i = 0; i < rawRows.length; i++) {
+    const row = rawRows[i];
+
+    try {
+      // Get values using detected columns or fallback to search
+      let popis = getColumnValueSmart(row, columnMap.popis) ||
+                  getColumnValue(row, ['Popis', 'popis', 'Description', 'Název', 'Item', 'Text']);
+      let mj = getColumnValueSmart(row, columnMap.mj) ||
+               getColumnValue(row, ['MJ', 'mj', 'Unit', 'Jednotka', 'j.']);
+      let mnozstvi = getColumnValueSmart(row, columnMap.mnozstvi) ||
+                     getColumnValue(row, ['Množství', 'Mnozstvi', 'mnozstvi', 'Quantity', 'Qty', 'Počet', 'Celkem']);
+
+      if (!popis || !mj) continue;
+
+      const unit = String(mj).trim().toLowerCase();
+      const description = String(popis).trim();
+
+      // STRICT: Only M3 units (concrete volume)
+      const isM3Unit = unit === 'm3' || unit === 'm³' || unit === 'm 3' || unit === 'm³';
+      if (!isM3Unit) continue;
+
+      // Parse quantity
+      const qty = parseNumber(mnozstvi);
+      if (qty <= 0) continue;
+
+      // Check if description looks like concrete work
+      const isConcreteDescription = isConcreteText(description);
+      if (!isConcreteDescription) {
+        // Log skipped m3 items for debugging
+        logger.debug(`[ConcreteExtractor] Skipping non-concrete m3 item: "${description.substring(0, 50)}"`);
+        continue;
+      }
+
+      // Extract concrete grade (C30/37, C25/30, etc.)
+      let concreteGrade = null;
+      const gradeMatch = description.match(/C\s*(\d{2})\/(\d{2})/i);
+      if (gradeMatch) {
+        concreteGrade = `C${gradeMatch[1]}/${gradeMatch[2]}`;
+      }
+
+      // Create position
+      const position = {
+        part_name: concreteGrade ? `Beton ${concreteGrade}` : extractPartName(description),
+        item_name: description,
+        subtype: 'beton',
+        unit: 'M3',
+        qty: qty,
+        concrete_m3: qty,
+        crew_size: 4,
+        wage_czk_ph: 398,
+        shift_hours: 10,
+        days: 0,
+        concrete_grade: concreteGrade,
+        source: 'SHEET_CONCRETE_EXTRACTOR'
+      };
+
+      concreteItems.push(position);
+      totalConcreteVolume += qty;
+
+      logger.info(`[ConcreteExtractor] ✅ Found concrete: "${description.substring(0, 40)}..." = ${qty} m³ ${concreteGrade || ''}`);
+
+    } catch (error) {
+      logger.debug(`[ConcreteExtractor] Error processing row ${i}: ${error.message}`);
+    }
+  }
+
+  logger.info(`[ConcreteExtractor] extractConcreteOnlyM3: Found ${concreteItems.length} concrete items, total ${totalConcreteVolume.toFixed(2)} m³`);
+
+  return concreteItems;
+}
+
+/**
+ * Check if text description is concrete-related
+ */
+function isConcreteText(text) {
+  if (!text) return false;
+
+  const lower = text.toLowerCase();
+
+  // Concrete keywords (Czech)
+  const concreteKeywords = [
+    'beton', 'betón', 'betonová', 'betonové', 'betonový',
+    'železobeton', 'žb ', 'žb-', 'železobetonová', 'železobetonové',
+    'monolitick', 'monolitická', 'monolitické',
+    'c25', 'c30', 'c35', 'c40', 'c45', 'c50',  // Concrete grades
+    'xc1', 'xc2', 'xc3', 'xc4', 'xf1', 'xf2', 'xf3', 'xf4', // Exposure classes
+    'základová', 'základové', 'základ',
+    'pilota', 'piloty', 'pilíř', 'pilíře',
+    'deska', 'deskový', 'desková',
+    'nosná', 'nosné', 'nosník', 'trám', 'trámu',
+    'opěra', 'opěry', 'křídlo', 'křídla',
+    'rims', 'římsa', 'rimsy',
+    'most', 'mostu', 'mostní', 'mostovka'
+  ];
+
+  // Check for any concrete keyword
+  for (const keyword of concreteKeywords) {
+    if (lower.includes(keyword)) {
+      return true;
+    }
+  }
+
+  // Check for concrete grade pattern
+  if (/c\s*\d{2}\/\d{2}/i.test(text)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Detect column positions from first few rows
+ */
+function detectConcreteColumns(rows) {
+  const columnMap = {
+    popis: null,
+    mj: null,
+    mnozstvi: null
+  };
+
+  // Look at first 10 rows for header-like patterns
+  for (let i = 0; i < Math.min(10, rows.length); i++) {
+    const row = rows[i];
+    const keys = Object.keys(row);
+
+    for (const key of keys) {
+      const lowerKey = key.toLowerCase();
+      const value = row[key];
+      const lowerValue = value ? String(value).toLowerCase() : '';
+
+      // Detect description column
+      if (lowerKey.includes('popis') || lowerKey.includes('nazev') ||
+          lowerKey.includes('description') || lowerKey.includes('item') ||
+          lowerValue === 'popis' || lowerValue === 'název') {
+        columnMap.popis = key;
+      }
+
+      // Detect unit column
+      if (lowerKey.includes('mj') || lowerKey === 'mj' ||
+          lowerKey.includes('jednotka') || lowerKey.includes('unit') ||
+          lowerValue === 'mj' || lowerValue === 'jednotka') {
+        columnMap.mj = key;
+      }
+
+      // Detect quantity column
+      if (lowerKey.includes('množství') || lowerKey.includes('mnozstvi') ||
+          lowerKey.includes('quantity') || lowerKey.includes('qty') ||
+          lowerKey.includes('celkem') || lowerKey.includes('počet') ||
+          lowerValue === 'množství' || lowerValue === 'počet') {
+        columnMap.mnozstvi = key;
+      }
+    }
+  }
+
+  return columnMap;
+}
+
+/**
+ * Get column value using smart detection
+ */
+function getColumnValueSmart(row, columnKey) {
+  if (!columnKey || !row) return null;
+  return row[columnKey] !== undefined && row[columnKey] !== null && row[columnKey] !== ''
+    ? row[columnKey]
+    : null;
 }
 
 export { parseNumber };
