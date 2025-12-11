@@ -87,14 +87,21 @@ export function prepare(sql) {
 
     run: async (...params) => {
       let finalSql = convertedSql;
-      // Automatically add 'RETURNING id' to get the last inserted ID from an INSERT statement
+      // Automatically add 'RETURNING *' to get all columns from INSERT
+      // We'll extract the primary key intelligently (id, *_id, or first column)
       if (/^\s*INSERT/i.test(finalSql) && !/RETURNING/i.test(finalSql)) {
-        finalSql += ' RETURNING id';
+        finalSql += ' RETURNING *';
       }
       const result = await query(finalSql, params);
+      const row = result.rows[0];
+      // Find PK: 'id' field, or field ending with '_id', or first value
+      const lastID = row?.id ??
+                     Object.entries(row || {}).find(([k]) => k.endsWith('_id'))?.[1] ??
+                     Object.values(row || {})[0] ??
+                     null;
       return {
         changes: result.rowCount,
-        lastID: result.rows[0]?.id || null
+        lastID
       };
     }
   };
