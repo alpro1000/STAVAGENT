@@ -1202,12 +1202,12 @@ async function autoLoadPartTemplatesIfNeeded() {
     console.log(`[Part Templates] ✅ Successfully loaded ${inserted} templates`);
 
     // Show summary
-    const count = await db.prepare(`
+    const totalCount = await db.prepare(`
       SELECT COUNT(*) as total FROM part_templates
     `).get();
 
     console.log('[Part Templates] Summary:');
-    console.log(`  - Universal templates: ${count.total} parts`);
+    console.log(`  - Universal templates: ${totalCount.total} parts`);
 
   } catch (error) {
     console.error('[Part Templates] ⚠️  Error during auto-load:', error.message);
