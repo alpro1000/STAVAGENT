@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.1
-**Last Updated:** 2025-12-10
+**Version:** 1.0.2
+**Last Updated:** 2025-12-11
 **Repository:** STAVAGENT (Monorepo)
 
-**⭐ NEW (2025-12-10):** Gemini Integration - 40-250x cost savings for Multi-Role API
+**⭐ NEW (2025-12-11):** VARIANT 1 Architecture Migration - Monolit-Planner Kiosk Simplified
+**⭐ PREVIOUS (2025-12-10):** Gemini Integration - 40-250x cost savings for Multi-Role API
 
 ---
 
@@ -187,6 +188,15 @@ estimated_months = sum_kros_total_czk /
 - `frontend/src/components/PositionsTable.tsx` - Main table
 - `CLAUDE.MD` - Detailed kiosk documentation (v4.3.8)
 
+**⭐ VARIANT 1 Architecture (2025-12-11):**
+- **Simplified to Single Universal Object Type** - Users describe project type in `object_name` field
+- **Database Schema:** Removed type-specific columns (span_length_m, deck_width_m, building_area_m2, etc.)
+- **Form Simplified:** 4-field creation form (projectId, projectName, objectName, description)
+- **No Type Selector:** Removed ObjectTypeSelector component entirely
+- **API Unified:** All routes treat objects identically
+- **Code Reduction:** ~35% complexity reduction (550 → 360 lines in monolith-projects.js)
+- **Status:** ⚠️ Backend complete, Frontend caching issue blocking UI display (see NEXT_SESSION.md)
+
 ---
 
 ### 4. URS_MATCHER_SERVICE (Kiosk)
@@ -280,21 +290,32 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-10)
+## Current Status (2025-12-11)
 
-### 💰 CRITICAL: Gemini Integration (2025-12-10)
+### ⚠️ CRITICAL: Monolit-Planner VARIANT 1 Migration (2025-12-11)
+**Architecture Simplification:** Migrated from multi-type system to single universal object type.
+- **Database:** Simplified schema (removed type-specific columns)
+- **Code Reduction:** ~35% complexity reduction (550 → 360 lines)
+- **Status:** ✅ Backend complete, ❌ Frontend caching issue blocking UI
+- **Issue:** Old form still displaying despite code being correct
+- **See:** NEXT_SESSION.md for detailed caching fix instructions
+
+### Recent Commits (Monolit-Planner - 2025-12-11)
+| Commit | Description | Impact |
+|--------|-------------|--------|
+| `8336782` | FIX: Fix SyntaxError - duplicate const count declaration | 🔴 Critical startup blocker |
+| `bcacdc4` | FIX: Remove undefined column references (42703 errors) | 🔴 PostgreSQL compatibility |
+| `c3b3c62` | FIX: Fix undefined bridgeId variable + bridge schema | 🔴 ReferenceError + SQL errors |
+| `032c28b` | FIX: Deduplicate templates (duplicate key errors) | 🟡 Data integrity |
+| `1895e0d` | FIX: PostgreSQL-compatible ON CONFLICT syntax | 🔴 Database compatibility |
+| `12552a2` | FIX: Add bridge entries for FK compatibility | 🔴 FK constraint violations |
+| `4311d69` | REFACTOR: Migrate to VARIANT 1 | ✅ Architecture overhaul |
+
+### Previous Session Status (2025-12-10): Gemini Integration
 **Cost Optimization:** Integrated Google Gemini as primary LLM for Multi-Role API.
 - **Savings:** 40-250x cheaper ($0.00 FREE vs $0.10-0.50 per request)
 - **Status:** ✅ Implementation complete, ⏳ Awaiting production verification
-- **See:** NEXT_SESSION.md and concrete-agent/GEMINI_SETUP.md
-
-### Recent Commits (concrete-agent - 2025-12-10)
-| Commit | Description | Impact |
-|--------|-------------|--------|
-| `b012bb2` | FEAT: Add Gemini support for Multi-Role API (40x cost savings) | 💰 Solves credit exhaustion |
-| `a9316db` | FIX: Update Multi-Role prompts to return JSON instead of Markdown | Fixes parsing errors |
-| `1164eec` | FIX: Remove invalid 801xxx URS codes from catalog | Fixes wrong URS matching |
-| `c627e54` | FEAT: Implement Excel export and fix URS catalog | Fixes empty exports |
+- **See:** concrete-agent/GEMINI_SETUP.md
 
 ### Recent Commits (URS_MATCHER_SERVICE - 2025-12-09)
 | Commit | Description |
