@@ -213,10 +213,10 @@ router.post('/', upload.single('file'), async (req, res) => {
           // VARIANT 1: Create bridge entry for FK constraint compatibility
           try {
             await db.prepare(`
-              INSERT INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
-              VALUES (?, ?, ?, ?)
+              INSERT INTO bridges (bridge_id, object_name)
+              VALUES (?, ?)
               ON CONFLICT (bridge_id) DO NOTHING
-            `).run(projectId, projectId, fileMetadata.stavba || projectId, 'universal');
+            `).run(projectId, fileMetadata.stavba || projectId);
             logger.info(`[Upload] Created bridge entry (FK compatibility): ${projectId}`);
           } catch (bridgeError) {
             logger.warn(`[Upload] Could not create bridge entry for stavba (non-fatal):`, bridgeError.message);
@@ -325,6 +325,7 @@ router.post('/', upload.single('file'), async (req, res) => {
       try {
         // Create object-level record in monolith_projects with hierarchy
         const objectId = project.project_id;
+        const bridgeId = objectId;  // VARIANT 1: Use same ID for bridge compatibility
 
         // Check if object already exists
         const existing = await db.prepare(
@@ -352,15 +353,10 @@ router.post('/', upload.single('file'), async (req, res) => {
           // Using universal type, no type-specific fields
           try {
             await db.prepare(`
-              INSERT INTO bridges (bridge_id, project_id, bridge_name, bridge_type)
-              VALUES (?, ?, ?, ?)
+              INSERT INTO bridges (bridge_id, object_name)
+              VALUES (?, ?)
               ON CONFLICT (bridge_id) DO NOTHING
-            `).run(
-              objectId,
-              objectId,
-              project.object_name,
-              'universal'
-            );
+            `).run(objectId, project.object_name);
             logger.info(`[Upload] Created bridge entry (FK compatibility): ${objectId}`);
           } catch (bridgeError) {
             logger.warn(`[Upload] Could not create bridge entry for object (non-fatal):`, bridgeError.message);
