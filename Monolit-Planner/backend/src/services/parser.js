@@ -470,6 +470,132 @@ export function extractProjectsFromCOREResponse(corePositions) {
 }
 
 /**
+ * Parse ALL sheets from Excel file
+ * Returns an array of sheets, each with its data and extracted bridge info
+ * Used for multi-bridge import where each sheet = one bridge (MOST)
+ */
+export async function parseAllSheets(filePath) {
+  try {
+    const workbook = XLSX.readFile(filePath, {
+      cellFormula: true,
+      cellStyles: true,
+      cellDates: true
+    });
+
+    if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+      throw new Error('Excel file has no sheets or is empty');
+    }
+
+    logger.info(`[Parser] parseAllSheets: Found ${workbook.SheetNames.length} sheets`);
+
+    const sheets = [];
+
+    for (const sheetName of workbook.SheetNames) {
+      try {
+        // Skip summary/recap sheets
+        if (/rekapitul|souhrn|summary|obsah|content/i.test(sheetName)) {
+          logger.info(`[Parser] Skipping summary sheet: "${sheetName}"`);
+          continue;
+        }
+
+        const worksheet = workbook.Sheets[sheetName];
+        if (!worksheet) continue;
+
+        const rawData = XLSX.utils.sheet_to_json(worksheet, {
+          raw: false,
+          defval: null,
+          blankrows: false
+        });
+
+        if (!Array.isArray(rawData) || rawData.length === 0) {
+          logger.debug(`[Parser] Sheet "${sheetName}" is empty`);
+          continue;
+        }
+
+        // Filter out mostly empty rows
+        const dataRows = rawData.filter(row => {
+          const values = Object.values(row).filter(v => v !== null && v !== '');
+          return values.length > 0;
+        });
+
+        if (dataRows.length < 5) {
+          logger.debug(`[Parser] Sheet "${sheetName}" has too few data rows (${dataRows.length})`);
+          continue;
+        }
+
+        // Extract bridge info from sheet name
+        // Format: "201 - MOST PŘES BIOKORIDO..." or "SO 201 - MOST..."
+        const bridgeInfo = extractBridgeFromSheetName(sheetName);
+
+        // UTF-8 encoding
+        const encodedData = dataRows.map(row => {
+          const encodedRow = {};
+          for (const [key, value] of Object.entries(row)) {
+            encodedRow[key] = typeof value === 'string' ? String(value) : value;
+          }
+          return encodedRow;
+        });
+
+        sheets.push({
+          sheetName: sheetName,
+          bridgeId: bridgeInfo.bridgeId,
+          bridgeName: bridgeInfo.bridgeName,
+          rawRows: encodedData,
+          rowCount: encodedData.length
+        });
+
+        logger.info(`[Parser] Sheet "${sheetName}" → Bridge: ${bridgeInfo.bridgeId} "${bridgeInfo.bridgeName}" (${encodedData.length} rows)`);
+
+      } catch (sheetError) {
+        logger.warn(`[Parser] Error parsing sheet "${sheetName}": ${sheetError.message}`);
+      }
+    }
+
+    logger.info(`[Parser] parseAllSheets: Extracted ${sheets.length} bridge sheets`);
+    return sheets;
+
+  } catch (error) {
+    logger.error('parseAllSheets error:', error);
+    throw new Error(`Failed to parse all sheets: ${error.message}`);
+  }
+}
+
+/**
+ * Extract bridge ID and name from sheet name
+ * Examples:
+ *   "201 - MOST PŘES BIOKORIDO..." → { bridgeId: "SO201", bridgeName: "MOST PŘES BIOKORIDO..." }
+ *   "SO 204 - MOST PŘES SILNICI III/1211" → { bridgeId: "SO204", bridgeName: "MOST PŘES SILNICI III/1211" }
+ */
+export function extractBridgeFromSheetName(sheetName) {
+  // Try to match patterns like "201 - MOST..." or "SO 201 - MOST..."
+  const patterns = [
+    /^SO\s*(\d+)\s*[-–]\s*(.+)$/i,           // "SO 201 - MOST..."
+    /^(\d{3})\s*[-–]\s*(.+)$/i,               // "201 - MOST..."
+    /^(\d+)\s*[-–]\s*(.+)$/i,                 // "12 - SOMETHING..."
+    /^SO\s*(\d+)\s*$/i,                       // "SO 201"
+    /^(\d{3})$/,                              // "201"
+  ];
+
+  for (const pattern of patterns) {
+    const match = sheetName.match(pattern);
+    if (match) {
+      const number = match[1];
+      const name = match[2] ? match[2].trim() : sheetName;
+      return {
+        bridgeId: `SO${number}`,
+        bridgeName: name || `Object ${number}`
+      };
+    }
+  }
+
+  // Fallback: use sheet name as-is
+  return {
+    bridgeId: normalizeString(sheetName).toUpperCase(),
+    bridgeName: sheetName
+  };
+}
+
+/**
  * Parse number from Czech/EU format (comma as decimal separator)
  */
 export function parseNumber(value) {
