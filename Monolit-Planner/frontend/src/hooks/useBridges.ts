@@ -16,8 +16,8 @@ export function useBridges() {
     queryFn: async () => {
       return await bridgesAPI.getAll();
     },
-    staleTime: 10 * 60 * 1000, // Cache for 10 minutes - no refetch unless stale
-    refetchOnMount: false, // CRITICAL: Never refetch on mount
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnMount: true, // Fetch on mount if data is stale (ensures initial load)
     refetchOnWindowFocus: false, // Don't refetch when window regains focus
     // refetchOnReconnect defaults to true - important for recovering from network issues
     retry: 3, // Retry failed requests 3 times
