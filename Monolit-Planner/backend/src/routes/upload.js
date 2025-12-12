@@ -198,19 +198,19 @@ router.post('/', upload.single('file'), async (req, res) => {
       stavbaProjectId = normalizeString(fileMetadata.stavba);
 
       try {
-        const existing = db.prepare(
+        const existing = await db.prepare(
           'SELECT project_id FROM monolith_projects WHERE project_id = ?'
         ).get(stavbaProjectId);
 
         if (!existing) {
-          db.prepare(`
+          await db.prepare(`
             INSERT INTO monolith_projects
             (project_id, project_name, description, owner_id)
             VALUES (?, ?, ?, ?)
           `).run(stavbaProjectId, fileMetadata.stavba, fileMetadata.stavba, 1);
 
           // Create bridge entry for FK compatibility
-          db.prepare(`
+          await db.prepare(`
             INSERT INTO bridges (bridge_id, object_name)
             VALUES (?, ?)
             ON CONFLICT (bridge_id) DO NOTHING
@@ -247,20 +247,20 @@ router.post('/', upload.single('file'), async (req, res) => {
           continue;
         }
 
-        // Check if bridge already exists
-        const existingBridge = db.prepare(
+        // Check if bridge already exists (await for PostgreSQL compatibility)
+        const existingBridge = await db.prepare(
           'SELECT bridge_id FROM bridges WHERE bridge_id = ?'
         ).get(bridgeId);
 
         if (!existingBridge) {
           // Create bridge record
-          db.prepare(`
+          await db.prepare(`
             INSERT INTO bridges (bridge_id, object_name, concrete_m3)
             VALUES (?, ?, ?)
           `).run(bridgeId, bridgeName, totalConcreteM3);
 
           // Create monolith_projects record
-          db.prepare(`
+          await db.prepare(`
             INSERT INTO monolith_projects
             (project_id, object_name, description, concrete_m3, owner_id)
             VALUES (?, ?, ?, ?, ?)
@@ -270,7 +270,7 @@ router.post('/', upload.single('file'), async (req, res) => {
           logger.info(`[Upload] ✅ Created bridge: ${bridgeId} "${bridgeName}" (${totalConcreteM3.toFixed(2)} m³)`);
         } else {
           // Update existing bridge concrete volume
-          db.prepare(`
+          await db.prepare(`
             UPDATE bridges SET concrete_m3 = ? WHERE bridge_id = ?
           `).run(totalConcreteM3, bridgeId);
 
