@@ -567,31 +567,62 @@ export async function parseAllSheets(filePath) {
  *   "SO 204 - MOST PŘES SILNICI III/1211" → { bridgeId: "SO204", bridgeName: "MOST PŘES SILNICI III/1211" }
  */
 export function extractBridgeFromSheetName(sheetName) {
-  // Try to match patterns like "201 - MOST..." or "SO 201 - MOST..."
-  const patterns = [
+  // PRIORITY 1: Compound IDs like "SO 12-23-01" or "SO 11-30-01.1" (NO name after)
+  // These are NOT bridges (mosty), they're generic construction objects
+  const compoundMatch = sheetName.match(/^SO\s*(\d+[-–][\d\-–\.]+)\s*$/i);
+  if (compoundMatch) {
+    const fullId = compoundMatch[1].replace(/\s+/g, '').replace(/–/g, '-');
+    return {
+      bridgeId: `SO${fullId}`,
+      bridgeName: sheetName.trim()
+    };
+  }
+
+  // PRIORITY 2: Bridge format "SO 201 - MOST..." or "201 - MOST..."
+  const bridgePatterns = [
     /^SO\s*(\d+)\s*[-–]\s*(.+)$/i,           // "SO 201 - MOST..."
     /^(\d{3})\s*[-–]\s*(.+)$/i,               // "201 - MOST..."
     /^(\d+)\s*[-–]\s*(.+)$/i,                 // "12 - SOMETHING..."
-    /^SO\s*(\d+)\s*$/i,                       // "SO 201"
-    /^(\d{3})$/,                              // "201"
   ];
 
-  for (const pattern of patterns) {
+  for (const pattern of bridgePatterns) {
     const match = sheetName.match(pattern);
     if (match) {
       const number = match[1];
       const name = match[2] ? match[2].trim() : sheetName;
-      return {
-        bridgeId: `SO${number}`,
-        bridgeName: name || `Object ${number}`
-      };
+      // Only use this if the name looks like a real name (has letters)
+      if (name && /[a-zA-Zá-žÁ-Ž]/.test(name)) {
+        return {
+          bridgeId: `SO${number}`,
+          bridgeName: name
+        };
+      }
     }
   }
 
-  // Fallback: use sheet name as-is
+  // PRIORITY 3: Simple SO + number
+  const simpleMatch = sheetName.match(/^SO\s*(\d+)\s*$/i);
+  if (simpleMatch) {
+    return {
+      bridgeId: `SO${simpleMatch[1]}`,
+      bridgeName: sheetName.trim()
+    };
+  }
+
+  // PRIORITY 4: Just a 3-digit number
+  const numMatch = sheetName.match(/^(\d{3})$/);
+  if (numMatch) {
+    return {
+      bridgeId: `SO${numMatch[1]}`,
+      bridgeName: `Object ${numMatch[1]}`
+    };
+  }
+
+  // FALLBACK: Use normalized sheet name as ID
+  const normalized = sheetName.trim().replace(/\s+/g, '_').replace(/[^\w\-\.]/g, '');
   return {
-    bridgeId: normalizeString(sheetName).toUpperCase(),
-    bridgeName: sheetName
+    bridgeId: normalized.toUpperCase() || `SHEET_${Date.now()}`,
+    bridgeName: sheetName.trim()
   };
 }
 
