@@ -450,17 +450,29 @@ export function extractConcreteOnlyM3(rawRows) {
 
       if (!foundGrade || !descriptionCell) continue;
 
-      // IMPROVED QUANTITY DETECTION:
-      // Strategy: Find M3 cell first, then look for number in same row
+      // FIXED QUANTITY DETECTION:
+      // 1. First try to find "Množství" column specifically
+      // 2. Look for M3 unit cell as hint
+      // 3. Prefer reasonable volume values (not OTSKP codes or prices)
       let qty = 0;
       let foundM3Cell = false;
+      let quantityColumnKey = null;
       let numbersInRow = [];
 
+      // First pass: identify column types and collect numbers
       for (const [key, value] of entries) {
         if (value === null || value === undefined) continue;
         if (key === descriptionKey) continue; // Skip description cell
 
         const cellStr = String(value).trim().toLowerCase();
+        const keyLower = key.toLowerCase();
+
+        // Check if this is the quantity column by header name
+        if (keyLower.includes('množství') || keyLower.includes('mnozstvi') ||
+            keyLower.includes('qty') || keyLower.includes('quantity') ||
+            keyLower.includes('objem') || keyLower.includes('počet')) {
+          quantityColumnKey = key;
+        }
 
         // Check if this is the M3 unit cell
         if (cellStr === 'm3' || cellStr === 'm³' || cellStr === 'm 3') {
@@ -468,38 +480,69 @@ export function extractConcreteOnlyM3(rawRows) {
           continue;
         }
 
-        // Collect all numbers in the row
+        // Collect numbers (excluding likely OTSKP codes)
         const num = parseNumber(value);
         if (num > 0) {
-          numbersInRow.push({ key, value, num });
+          // Check if this looks like an OTSKP code (5-6 digit integer)
+          const isLikelyOTSKPCode = Number.isInteger(num) && num >= 10000 && num <= 999999;
+          // Check if this looks like a price (round number > 100, often ending in 00)
+          const isLikelyPrice = num >= 100 && (num % 10 === 0 || num >= 1000);
+
+          numbersInRow.push({
+            key,
+            value,
+            num,
+            isLikelyOTSKPCode,
+            isLikelyPrice,
+            isQuantityColumn: key === quantityColumnKey
+          });
         }
       }
 
-      // If we found M3 cell, look for the quantity
-      // Prefer numbers > 5 (to skip row numbers like 1,2,3,4)
-      // and < 100000 (reasonable concrete volume)
-      if (foundM3Cell && numbersInRow.length > 0) {
-        // Sort by number size descending - larger numbers are more likely quantities
-        numbersInRow.sort((a, b) => b.num - a.num);
-
-        // Find the best candidate for quantity
-        for (const item of numbersInRow) {
-          // Skip very small numbers (likely row numbers or codes)
-          if (item.num >= 0.1 && item.num <= 50000) {
-            qty = item.num;
-            break;
-          }
+      // Strategy 1: If we found the quantity column, use it
+      if (quantityColumnKey) {
+        const qtyEntry = numbersInRow.find(item => item.isQuantityColumn);
+        if (qtyEntry && qtyEntry.num > 0 && qtyEntry.num <= 50000) {
+          qty = qtyEntry.num;
         }
       }
 
-      // Fallback: If no M3 cell found but we have numbers, take the largest reasonable one
+      // Strategy 2: If M3 cell found, look for reasonable volume near it
+      if (qty <= 0 && foundM3Cell && numbersInRow.length > 0) {
+        // Filter out OTSKP codes and likely prices
+        const candidates = numbersInRow.filter(item =>
+          !item.isLikelyOTSKPCode &&
+          item.num >= 0.1 &&
+          item.num <= 10000 // Reasonable max volume for a single concrete item
+        );
+
+        if (candidates.length > 0) {
+          // Prefer smaller reasonable numbers (volumes) over larger ones (prices)
+          candidates.sort((a, b) => {
+            // If one is from quantity column, prefer it
+            if (a.isQuantityColumn !== b.isQuantityColumn) {
+              return a.isQuantityColumn ? -1 : 1;
+            }
+            // Otherwise prefer numbers in "middle" range (1-1000) typical for volumes
+            const aScore = (a.num >= 1 && a.num <= 1000) ? 0 : 1;
+            const bScore = (b.num >= 1 && b.num <= 1000) ? 0 : 1;
+            if (aScore !== bScore) return aScore - bScore;
+            // Finally sort by value
+            return a.num - b.num;
+          });
+          qty = candidates[0].num;
+        }
+      }
+
+      // Strategy 3: Last fallback - take first reasonable number
       if (qty <= 0 && numbersInRow.length > 0) {
-        numbersInRow.sort((a, b) => b.num - a.num);
-        for (const item of numbersInRow) {
-          if (item.num >= 1 && item.num <= 50000) {
-            qty = item.num;
-            break;
-          }
+        const candidate = numbersInRow.find(item =>
+          !item.isLikelyOTSKPCode &&
+          item.num >= 0.1 &&
+          item.num <= 5000
+        );
+        if (candidate) {
+          qty = candidate.num;
         }
       }
 
