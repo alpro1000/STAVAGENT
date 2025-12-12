@@ -278,37 +278,80 @@ router.post('/', upload.single('file'), async (req, res) => {
         }
 
         // Insert concrete positions using batch insert
+        // Handle both SQLite (sync) and PostgreSQL (async) transaction modes
         if (concretePositions.length > 0) {
-          const insertMany = db.transaction((positions) => {
-            // First delete existing positions for this bridge
-            db.prepare('DELETE FROM positions WHERE bridge_id = ?').run(bridgeId);
+          if (db.isPostgres) {
+            // PostgreSQL: Use pool directly for explicit transaction control
+            // (db.transaction wrapper passes client as first arg which breaks SQLite-style callbacks)
+            const pool = db.getPool();
+            const client = await pool.connect();
+            try {
+              await client.query('BEGIN');
 
-            const stmt = db.prepare(`
-              INSERT INTO positions (
-                id, bridge_id, part_name, item_name, subtype, unit,
-                qty, crew_size, wage_czk_ph, shift_hours, days
-              ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            `);
+              // Delete existing positions
+              await client.query('DELETE FROM positions WHERE bridge_id = $1', [bridgeId]);
 
-            for (const pos of positions) {
-              const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-              stmt.run(
-                id,
-                bridgeId,
-                pos.part_name || 'Beton',
-                pos.item_name || 'Betonová směs',
-                pos.subtype || 'beton',
-                pos.unit || 'M3',
-                pos.qty || 0,
-                pos.crew_size || POSITION_DEFAULTS.crew_size,
-                pos.wage_czk_ph || POSITION_DEFAULTS.wage_czk_ph,
-                pos.shift_hours || POSITION_DEFAULTS.shift_hours,
-                pos.days || POSITION_DEFAULTS.days
-              );
+              // Insert new positions
+              for (const pos of concretePositions) {
+                const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                await client.query(`
+                  INSERT INTO positions (
+                    id, bridge_id, part_name, item_name, subtype, unit,
+                    qty, crew_size, wage_czk_ph, shift_hours, days
+                  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+                `, [
+                  id, bridgeId,
+                  pos.part_name || 'Beton',
+                  pos.item_name || 'Betonová směs',
+                  pos.subtype || 'beton',
+                  pos.unit || 'M3',
+                  pos.qty || 0,
+                  pos.crew_size || POSITION_DEFAULTS.crew_size,
+                  pos.wage_czk_ph || POSITION_DEFAULTS.wage_czk_ph,
+                  pos.shift_hours || POSITION_DEFAULTS.shift_hours,
+                  pos.days || POSITION_DEFAULTS.days
+                ]);
+              }
+
+              await client.query('COMMIT');
+            } catch (err) {
+              await client.query('ROLLBACK');
+              throw err;
+            } finally {
+              client.release();
             }
-          });
+          } else {
+            // SQLite: Use synchronous transaction
+            const insertMany = db.transaction((positions) => {
+              db.prepare('DELETE FROM positions WHERE bridge_id = ?').run(bridgeId);
 
-          insertMany(concretePositions);
+              const stmt = db.prepare(`
+                INSERT INTO positions (
+                  id, bridge_id, part_name, item_name, subtype, unit,
+                  qty, crew_size, wage_czk_ph, shift_hours, days
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+              `);
+
+              for (const pos of positions) {
+                const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                stmt.run(
+                  id, bridgeId,
+                  pos.part_name || 'Beton',
+                  pos.item_name || 'Betonová směs',
+                  pos.subtype || 'beton',
+                  pos.unit || 'M3',
+                  pos.qty || 0,
+                  pos.crew_size || POSITION_DEFAULTS.crew_size,
+                  pos.wage_czk_ph || POSITION_DEFAULTS.wage_czk_ph,
+                  pos.shift_hours || POSITION_DEFAULTS.shift_hours,
+                  pos.days || POSITION_DEFAULTS.days
+                );
+              }
+            });
+
+            insertMany(concretePositions);
+          }
+
           logger.info(`[Upload] 🚀 Inserted ${concretePositions.length} concrete positions for ${bridgeId}`);
         }
 
