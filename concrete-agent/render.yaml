@@ -86,16 +86,7 @@ services:
         value: 3.11.9
     
     healthCheckPath: /
+    # Auto-deploy only when concrete-agent files change
+    autoDeploy: false
 
-  # Frontend Node.js Server
-  - type: web
-    name: stav-agent
-    env: node
-    region: frankfurt
-    buildCommand: cd stav-agent && npm install && npm run build
-    startCommand: cd stav-agent && npm start
-    envVars:
-      - key: VITE_API_URL
-        value: https://concrete-agent.onrender.com
-      - key: NODE_ENV
-        value: production
+# NOTE: Frontend is in stavagent-portal/ with its own render.yaml
