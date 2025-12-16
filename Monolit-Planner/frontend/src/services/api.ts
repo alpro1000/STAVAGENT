@@ -167,7 +167,7 @@ export const monolithProjectsAPI = {
   },
 
   getOne: async (projectId: string): Promise<MonolithProject> => {
-    const { data } = await api.get(`/api/monolith-projects/${projectId}`);
+    const { data } = await api.get(`/api/monolith-projects/${encodeURIComponent(projectId)}`);
     return data;
   },
 
@@ -183,16 +183,16 @@ export const monolithProjectsAPI = {
   },
 
   update: async (projectId: string, params: Partial<MonolithProject>): Promise<MonolithProject> => {
-    const { data } = await api.put(`/api/monolith-projects/${projectId}`, params);
+    const { data } = await api.put(`/api/monolith-projects/${encodeURIComponent(projectId)}`, params);
     return data;
   },
 
   updateStatus: async (projectId: string, status: 'active' | 'completed' | 'archived'): Promise<void> => {
-    await api.patch(`/api/monolith-projects/${projectId}/status`, { status });
+    await api.patch(`/api/monolith-projects/${encodeURIComponent(projectId)}/status`, { status });
   },
 
   delete: async (projectId: string): Promise<void> => {
-    await api.delete(`/api/monolith-projects/${projectId}`);
+    await api.delete(`/api/monolith-projects/${encodeURIComponent(projectId)}`);
   },
 
   searchByType: async (type: string): Promise<MonolithProject[]> => {
