@@ -21,6 +21,19 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
-    sourcemap: true
+    sourcemap: true,
+    // Cache busting: ensure unique filenames on each build
+    rollupOptions: {
+      output: {
+        // Include content hash in filenames for cache busting
+        entryFileNames: 'assets/[name]-[hash].js',
+        chunkFileNames: 'assets/[name]-[hash].js',
+        assetFileNames: 'assets/[name]-[hash].[ext]'
+      }
+    }
+  },
+  // Define build timestamp for debugging cache issues
+  define: {
+    __BUILD_TIMESTAMP__: JSON.stringify(new Date().toISOString())
   }
 });
