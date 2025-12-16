@@ -119,7 +119,7 @@ export const bridgesAPI = {
   },
 
   getOne: async (bridgeId: string): Promise<Bridge> => {
-    const { data } = await api.get(`/api/monolith-projects/${bridgeId}`);
+    const { data } = await api.get(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`);
     return data;
   },
 
@@ -135,23 +135,23 @@ export const bridgesAPI = {
   },
 
   update: async (bridgeId: string, params: Partial<Bridge>): Promise<void> => {
-    await api.put(`/api/monolith-projects/${bridgeId}`, params);
+    await api.put(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`, params);
   },
 
   updateStatus: async (bridgeId: string, status: 'active' | 'completed' | 'archived'): Promise<void> => {
     // Use PUT to update status (no dedicated PATCH endpoint)
-    await api.put(`/api/monolith-projects/${bridgeId}`, { status });
+    await api.put(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`, { status });
   },
 
   complete: async (bridgeId: string, params?: { created_by?: string; description?: string }): Promise<{ success: boolean; final_snapshot_id: string; snapshots_deleted: number }> => {
     // Complete is now handled through updateStatus + snapshot system
     // For now, just update status to completed
-    await api.put(`/api/monolith-projects/${bridgeId}`, { status: 'completed', ...params });
+    await api.put(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`, { status: 'completed', ...params });
     return { success: true, final_snapshot_id: '', snapshots_deleted: 0 };
   },
 
   delete: async (bridgeId: string): Promise<void> => {
-    await api.delete(`/api/monolith-projects/${bridgeId}`);
+    await api.delete(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`);
   }
 };
 
