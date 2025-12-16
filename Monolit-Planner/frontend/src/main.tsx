@@ -4,6 +4,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import './styles/global.css';
 
+// Build timestamp for cache debugging (injected by Vite)
+declare const __BUILD_TIMESTAMP__: string;
+console.log(`[Monolit Planner] Build: ${typeof __BUILD_TIMESTAMP__ !== 'undefined' ? __BUILD_TIMESTAMP__ : 'dev'}`);
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
