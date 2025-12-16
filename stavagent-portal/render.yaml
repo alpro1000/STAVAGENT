@@ -7,10 +7,12 @@ services:
     name: stavagent-portal-backend
     env: node
     plan: free
-    region: oregon  # US West (frankfurt может не работать в Blueprint)
+    region: oregon
+    rootDir: stavagent-portal
     buildCommand: npm install && cd backend && npm install
     startCommand: cd backend && npm start
     healthCheckPath: /health
+    autoDeploy: false  # Disable auto-deploy to prevent unwanted redeploys
     envVars:
       - key: NODE_VERSION
         value: 18.20.4
@@ -58,8 +60,10 @@ services:
   - type: web
     name: stavagent-portal-frontend
     env: static
+    rootDir: stavagent-portal
     buildCommand: npm install && cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
+    autoDeploy: false  # Disable auto-deploy
     envVars:
       # API URL (обнови после деплоя backend на его URL)
       - key: VITE_API_URL
