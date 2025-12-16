@@ -517,32 +517,64 @@ export function extractConcreteOnlyM3(rawRows) {
         );
 
         if (candidates.length > 0) {
-          // Prefer smaller reasonable numbers (volumes) over larger ones (prices)
-          candidates.sort((a, b) => {
-            // If one is from quantity column, prefer it
-            if (a.isQuantityColumn !== b.isQuantityColumn) {
-              return a.isQuantityColumn ? -1 : 1;
-            }
-            // Otherwise prefer numbers in "middle" range (1-1000) typical for volumes
-            const aScore = (a.num >= 1 && a.num <= 1000) ? 0 : 1;
-            const bScore = (b.num >= 1 && b.num <= 1000) ? 0 : 1;
-            if (aScore !== bScore) return aScore - bScore;
-            // Finally sort by value
-            return a.num - b.num;
+          // Score each candidate - higher score = more likely to be quantity
+          candidates.forEach(item => {
+            let score = 0;
+
+            // Prefer quantity column
+            if (item.isQuantityColumn) score += 100;
+
+            // Prefer numbers with decimals (7.838 vs 3.00)
+            const decimalPlaces = (String(item.num).split('.')[1] || '').length;
+            if (decimalPlaces >= 2) score += 50;  // 7.838 has 3 decimals
+            if (decimalPlaces >= 1) score += 20;  // has at least 1 decimal
+
+            // Penalize round integers (likely row numbers or codes)
+            if (Number.isInteger(item.num)) score -= 30;
+
+            // Prefer numbers in typical volume range (5-500 m³)
+            if (item.num >= 5 && item.num <= 500) score += 25;
+            if (item.num >= 1 && item.num <= 1000) score += 10;
+
+            // Penalize very small numbers (likely row numbers: 1, 2, 3...)
+            if (item.num < 5 && Number.isInteger(item.num)) score -= 40;
+
+            // Penalize likely prices (round numbers > 100)
+            if (item.isLikelyPrice) score -= 20;
+
+            item.score = score;
           });
+
+          // Sort by score descending (highest score first)
+          candidates.sort((a, b) => b.score - a.score);
           qty = candidates[0].num;
+
+          // Debug log
+          logger.debug(`[ConcreteExtractor] Candidates: ${candidates.map(c => `${c.num}(s:${c.score})`).join(', ')}`);
         }
       }
 
-      // Strategy 3: Last fallback - take first reasonable number
+      // Strategy 3: Last fallback - take first reasonable number with decimals
       if (qty <= 0 && numbersInRow.length > 0) {
-        const candidate = numbersInRow.find(item =>
+        // Prefer numbers with decimals
+        const withDecimals = numbersInRow.find(item =>
           !item.isLikelyOTSKPCode &&
+          !Number.isInteger(item.num) &&
           item.num >= 0.1 &&
           item.num <= 5000
         );
-        if (candidate) {
-          qty = candidate.num;
+        if (withDecimals) {
+          qty = withDecimals.num;
+        } else {
+          // Last resort - any reasonable number
+          const candidate = numbersInRow.find(item =>
+            !item.isLikelyOTSKPCode &&
+            item.num >= 0.1 &&
+            item.num <= 5000
+          );
+          if (candidate) {
+            qty = candidate.num;
+          }
         }
       }
 
