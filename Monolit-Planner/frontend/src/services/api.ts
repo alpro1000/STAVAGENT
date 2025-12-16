@@ -119,7 +119,7 @@ export const bridgesAPI = {
   },
 
   getOne: async (bridgeId: string): Promise<Bridge> => {
-    const { data } = await api.get(`/api/monolith-projects/${bridgeId}`);
+    const { data } = await api.get(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`);
     return data;
   },
 
@@ -135,23 +135,23 @@ export const bridgesAPI = {
   },
 
   update: async (bridgeId: string, params: Partial<Bridge>): Promise<void> => {
-    await api.put(`/api/monolith-projects/${bridgeId}`, params);
+    await api.put(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`, params);
   },
 
   updateStatus: async (bridgeId: string, status: 'active' | 'completed' | 'archived'): Promise<void> => {
     // Use PUT to update status (no dedicated PATCH endpoint)
-    await api.put(`/api/monolith-projects/${bridgeId}`, { status });
+    await api.put(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`, { status });
   },
 
   complete: async (bridgeId: string, params?: { created_by?: string; description?: string }): Promise<{ success: boolean; final_snapshot_id: string; snapshots_deleted: number }> => {
     // Complete is now handled through updateStatus + snapshot system
     // For now, just update status to completed
-    await api.put(`/api/monolith-projects/${bridgeId}`, { status: 'completed', ...params });
+    await api.put(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`, { status: 'completed', ...params });
     return { success: true, final_snapshot_id: '', snapshots_deleted: 0 };
   },
 
   delete: async (bridgeId: string): Promise<void> => {
-    await api.delete(`/api/monolith-projects/${bridgeId}`);
+    await api.delete(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`);
   }
 };
 
@@ -167,7 +167,7 @@ export const monolithProjectsAPI = {
   },
 
   getOne: async (projectId: string): Promise<MonolithProject> => {
-    const { data } = await api.get(`/api/monolith-projects/${projectId}`);
+    const { data } = await api.get(`/api/monolith-projects/${encodeURIComponent(projectId)}`);
     return data;
   },
 
@@ -183,16 +183,16 @@ export const monolithProjectsAPI = {
   },
 
   update: async (projectId: string, params: Partial<MonolithProject>): Promise<MonolithProject> => {
-    const { data } = await api.put(`/api/monolith-projects/${projectId}`, params);
+    const { data } = await api.put(`/api/monolith-projects/${encodeURIComponent(projectId)}`, params);
     return data;
   },
 
   updateStatus: async (projectId: string, status: 'active' | 'completed' | 'archived'): Promise<void> => {
-    await api.patch(`/api/monolith-projects/${projectId}/status`, { status });
+    await api.patch(`/api/monolith-projects/${encodeURIComponent(projectId)}/status`, { status });
   },
 
   delete: async (projectId: string): Promise<void> => {
-    await api.delete(`/api/monolith-projects/${projectId}`);
+    await api.delete(`/api/monolith-projects/${encodeURIComponent(projectId)}`);
   },
 
   searchByType: async (type: string): Promise<MonolithProject[]> => {

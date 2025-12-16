@@ -26,8 +26,16 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
     e.preventDefault();
     setError('');
 
-    if (!projectId.trim()) {
+    const trimmedId = projectId.trim();
+
+    if (!trimmedId) {
       setError('Číslo projektu je povinné');
+      return;
+    }
+
+    // Validate project_id - no slashes or special URL characters
+    if (/[\/\\?#%]/.test(trimmedId)) {
+      setError('Číslo projektu nesmí obsahovat znaky: / \\ ? # %');
       return;
     }
 
@@ -36,13 +44,13 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
     try {
       // VARIANT 1: Simple object creation - user describes type in object_name
       await createBridge({
-        project_id: projectId.trim(),
+        project_id: trimmedId,
         project_name: projectName.trim() || undefined,
-        object_name: objectName.trim() || projectId.trim(),
+        object_name: objectName.trim() || trimmedId,
         description: description.trim() || undefined
       });
 
-      onSuccess(projectId.trim());
+      onSuccess(trimmedId);
     } catch (err: any) {
       setError(err.response?.data?.error || err.message || 'Chyba při vytváření objektu');
     } finally {
