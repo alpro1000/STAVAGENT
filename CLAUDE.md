@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.2
-**Last Updated:** 2025-12-11
+**Version:** 1.0.3
+**Last Updated:** 2025-12-16
 **Repository:** STAVAGENT (Monorepo)
 
-**⭐ NEW (2025-12-11):** VARIANT 1 Architecture Migration - Monolit-Planner Kiosk Simplified
+**⭐ NEW (2025-12-16):** Excel Import Fixes - PostgreSQL compatibility, quantity detection scoring system
+**⭐ PREVIOUS (2025-12-11):** VARIANT 1 Architecture Migration - Monolit-Planner Kiosk Simplified
 **⭐ PREVIOUS (2025-12-10):** Gemini Integration - 40-250x cost savings for Multi-Role API
 
 ---
@@ -290,26 +291,54 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-11)
+## Current Status (2025-12-16)
 
-### ⚠️ CRITICAL: Monolit-Planner VARIANT 1 Migration (2025-12-11)
+### ✅ COMPLETED: Excel Import Fixes (2025-12-16)
+**Multi-sheet Excel import fully working with PostgreSQL.**
+
+**Fixes Applied:**
+1. **PostgreSQL Transaction Signature** - `db.transaction()` passes `(client, ...args)`, split handling for PostgreSQL/SQLite
+2. **useBridges Initial Load** - Changed `refetchOnMount: false` → `true` to load bridges on app start
+3. **PostgreSQL Async/Await** - Added `await` to all `db.prepare()` operations
+4. **OTSKP Codes Filter** - Exclude 5-6 digit integers (OTSKP codes like 43131) from volume detection
+5. **Bridge ID Extraction** - Compound IDs like "SO 12-23-01" now extracted as full ID, not truncated
+6. **Quantity Scoring System** - Prefer decimals (7.838) over integers (3.00) with scoring algorithm
+
+**Scoring System for Quantity Detection (`concreteExtractor.js`):**
+```javascript
+let score = 0;
+if (isQuantityColumn) score += 100;      // Column named "quantity/množství"
+if (decimalPlaces >= 2) score += 50;     // 7.838 has 3 decimals = +50
+if (decimalPlaces >= 1) score += 20;     // Any decimal = +20
+if (Number.isInteger(num)) score -= 30;  // Integers penalized
+if (num >= 5 && num <= 500) score += 25; // Typical concrete volume range
+if (num < 5 && isInteger) score -= 40;   // Small integers likely not volumes
+if (isLikelyPrice) score -= 20;          // Price-like numbers excluded
+```
+
+### Recent Commits (Monolit-Planner - 2025-12-16)
+| Commit | Description | Impact |
+|--------|-------------|--------|
+| `bda9740` | FIX: Quantity detection - use scoring system instead of sorting | ✅ Volume detection accuracy |
+| `79c329b` | FIX: Bridge ID extraction - use full compound ID | ✅ Sheet name parsing |
+| `b0fc8ca` | FIX: Quantity extraction - exclude OTSKP codes and prices | ✅ Filter false positives |
+| `435723a` | FIX: PostgreSQL async - add await to db.prepare() | ✅ FK constraint fixes |
+| `79587df` | FIX: useBridges - refetchOnMount: true | ✅ Initial data loading |
+| `74e86a9` | FIX: PostgreSQL transaction signature | ✅ Transaction handling |
+
+### claude-mem Plugin Installed (2025-12-16)
+**Persistent memory across sessions.**
+- **Location:** `/home/user/claude-mem/`
+- **Worker:** Running on http://localhost:37777
+- **Database:** `~/.claude-mem/claude-mem.db`
+- **Hooks:** Configured in `~/.claude/settings.json`
+- **Status:** ✅ Installed and running
+
+### Previous Session Status (2025-12-11): VARIANT 1 Migration
 **Architecture Simplification:** Migrated from multi-type system to single universal object type.
 - **Database:** Simplified schema (removed type-specific columns)
 - **Code Reduction:** ~35% complexity reduction (550 → 360 lines)
-- **Status:** ✅ Backend complete, ❌ Frontend caching issue blocking UI
-- **Issue:** Old form still displaying despite code being correct
-- **See:** NEXT_SESSION.md for detailed caching fix instructions
-
-### Recent Commits (Monolit-Planner - 2025-12-11)
-| Commit | Description | Impact |
-|--------|-------------|--------|
-| `8336782` | FIX: Fix SyntaxError - duplicate const count declaration | 🔴 Critical startup blocker |
-| `bcacdc4` | FIX: Remove undefined column references (42703 errors) | 🔴 PostgreSQL compatibility |
-| `c3b3c62` | FIX: Fix undefined bridgeId variable + bridge schema | 🔴 ReferenceError + SQL errors |
-| `032c28b` | FIX: Deduplicate templates (duplicate key errors) | 🟡 Data integrity |
-| `1895e0d` | FIX: PostgreSQL-compatible ON CONFLICT syntax | 🔴 Database compatibility |
-| `12552a2` | FIX: Add bridge entries for FK compatibility | 🔴 FK constraint violations |
-| `4311d69` | REFACTOR: Migrate to VARIANT 1 | ✅ Architecture overhaul |
+- **Status:** ✅ Complete and deployed
 
 ### Previous Session Status (2025-12-10): Gemini Integration
 **Cost Optimization:** Integrated Google Gemini as primary LLM for Multi-Role API.
@@ -473,21 +502,19 @@ REDIS_URL=redis://...
 
 ---
 
-**Last Updated:** 2025-12-10
+**Last Updated:** 2025-12-16
 **Maintained By:** Development Team
 
 ---
 
 ## 📖 Session Documentation
 
-**Current Session (2025-12-10):** See `/NEXT_SESSION.md` for:
-- Gemini integration summary
-- Verification checklist
-- Production deployment status
-- Cost savings analysis (40-250x)
+**Current Session (2025-12-16):** See `/NEXT_SESSION.md` for:
+- Excel import fixes summary
+- PostgreSQL compatibility details
+- Quantity scoring system explanation
+- claude-mem plugin setup
 
-**Gemini Setup Guide:** See `concrete-agent/GEMINI_SETUP.md` for:
-- Complete setup instructions (4 steps)
-- LLM configuration modes (gemini, claude, auto)
-- Troubleshooting guide
-- Production deployment checklist
+**Previous Sessions:**
+- **2025-12-11:** VARIANT 1 Architecture Migration
+- **2025-12-10:** Gemini Integration (see `concrete-agent/GEMINI_SETUP.md`)
