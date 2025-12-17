@@ -2,13 +2,13 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.3
-**Last Updated:** 2025-12-16
+**Version:** 1.0.4
+**Last Updated:** 2025-12-17
 **Repository:** STAVAGENT (Monorepo)
 
-**⭐ NEW (2025-12-16):** Excel Import Fixes - PostgreSQL compatibility, quantity detection scoring system
+**⭐ NEW (2025-12-17):** Repository Cleanup + Render.yaml Fixes + URL Encoding for Project IDs
+**⭐ PREVIOUS (2025-12-16):** Excel Import Fixes - PostgreSQL compatibility, quantity detection scoring system
 **⭐ PREVIOUS (2025-12-11):** VARIANT 1 Architecture Migration - Monolit-Planner Kiosk Simplified
-**⭐ PREVIOUS (2025-12-10):** Gemini Integration - 40-250x cost savings for Multi-Role API
 
 ---
 
@@ -291,7 +291,43 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-16)
+## Current Status (2025-12-17)
+
+### ⚠️ IN PROGRESS: Monolit-Planner Stability (2025-12-17)
+**Service working but unstable. Frontend sometimes shows stale UI.**
+
+**Session Work Completed:**
+1. **Repository Cleanup** - Deleted 130+ obsolete markdown files from all services
+2. **Render.yaml Fixes** - Added `autoDeploy: false` and `rootDir` to all services to prevent cascading deploys
+3. **Created URS_MATCHER_SERVICE/render.yaml** - Was missing, causing deploy issues
+4. **URL Encoding Fix** - Added `encodeURIComponent()` to all API calls in `api.ts` (both `bridgesAPI` and `monolithProjectsAPI`)
+5. **Input Validation** - Added regex validation in `CreateMonolithForm.tsx` to reject `/\?#%` characters in project IDs
+6. **Cache-Busting** - Added `_headers` file, meta tags, and vite content hashing
+
+**Key Files Modified:**
+- `Monolit-Planner/frontend/public/_headers` - Render.com cache headers
+- `Monolit-Planner/frontend/index.html` - Meta cache-control tags
+- `Monolit-Planner/frontend/vite.config.ts` - Content hashing + build timestamp
+- `Monolit-Planner/frontend/src/services/api.ts` - `encodeURIComponent()` for all routes
+- `Monolit-Planner/frontend/src/components/CreateMonolithForm.tsx` - Input validation
+- `Monolit-Planner/render.yaml` - autoDeploy: false, rootDir
+- `URS_MATCHER_SERVICE/render.yaml` - Created (was missing)
+- `concrete-agent/render.yaml` - autoDeploy: false, rootDir
+- `stavagent-portal/render.yaml` - autoDeploy: false
+
+**Commits (2025-12-17):**
+| Commit | Description |
+|--------|-------------|
+| `177f557` | FIX: Handle slashes in project IDs to prevent 404 errors |
+| `d56ba81` | CLEANUP: Remove 130 obsolete files and fix render.yaml configs |
+| `46b40e4` | FIX: Add cache-busting for frontend to resolve stale UI issue |
+
+**Known Issues (Unresolved):**
+- ⚠️ Service still unstable - intermittent issues
+- ⚠️ Frontend may show stale UI - requires manual redeploy on Render
+- ⚠️ autoDeploy disabled - manual deploy required after code changes
+
+---
 
 ### ✅ COMPLETED: Excel Import Fixes (2025-12-16)
 **Multi-sheet Excel import fully working with PostgreSQL.**
@@ -509,12 +545,13 @@ REDIS_URL=redis://...
 
 ## 📖 Session Documentation
 
-**Current Session (2025-12-16):** See `/NEXT_SESSION.md` for:
-- Excel import fixes summary
-- PostgreSQL compatibility details
-- Quantity scoring system explanation
-- claude-mem plugin setup
+**Current Session (2025-12-17):** See `/NEXT_SESSION.md` for:
+- Monolit-Planner stability issues
+- Repository cleanup details
+- Render.yaml configuration changes
+- URL encoding fix for special characters
 
 **Previous Sessions:**
+- **2025-12-16:** Excel Import Fixes, PostgreSQL compatibility, claude-mem plugin
 - **2025-12-11:** VARIANT 1 Architecture Migration
 - **2025-12-10:** Gemini Integration (see `concrete-agent/GEMINI_SETUP.md`)
