@@ -1,136 +1,150 @@
-# NEXT_SESSION.md - Monolit-Planner Stability Issues
+# NEXT_SESSION.md - Session Summary 2025-12-17
 
 **Date:** 2025-12-17
-**Status:** ⚠️ Service Working But Unstable
-**Branch:** `claude/read-context-files-5RH5X` (merged to main via PR #121)
+**Status:** ✅ Session Complete
+**Branch:** `claude/cleanup-deployment-config-yOT4N`
 
 ---
 
 ## Session Summary
 
-### What Was Done
+### 1. PostgreSQL Connection Timeout Analysis
 
-1. **Repository Cleanup**
-   - Deleted 130+ obsolete markdown files from root, URS_MATCHER_SERVICE, Monolit-Planner, concrete-agent
-   - Removed empty `concrete-agent/stav-agent/` directory
-   - Removed orphan `stav-agent` service from concrete-agent/render.yaml
-
-2. **Render.yaml Fixes**
-   - Added `autoDeploy: false` to ALL services (prevents cascading deploys)
-   - Added `rootDir` to all services for proper monorepo isolation
-   - Created missing `URS_MATCHER_SERVICE/render.yaml`
-
-3. **Cache-Busting for Frontend**
-   - Created `Monolit-Planner/frontend/public/_headers` with Render.com cache headers
-   - Added meta cache-control tags to `index.html`
-   - Added content hashing in `vite.config.ts` (rollupOptions)
-   - Added build timestamp logging in `main.tsx`
-
-4. **URL Encoding Fix for Project IDs**
-   - Added `encodeURIComponent()` to ALL routes in `api.ts`:
-     - `bridgesAPI.getOne`, `update`, `delete`, `updateStatus`, `complete`
-     - `monolithProjectsAPI.getOne`, `update`, `delete`
-   - Added input validation in `CreateMonolithForm.tsx` to reject `/\?#%` characters
-
----
-
-## Known Issues (Unresolved)
-
-### 1. Service Instability
-**Symptom:** Service works but sometimes becomes unresponsive or shows stale data.
-**Possible Causes:**
-- Render.com free tier cold starts
-- Database connection pool issues
-- React Query cache not invalidating properly
-
-**Investigation Needed:**
-- Check Render.com logs for errors
-- Monitor API response times
-- Review React Query configuration in `useBridges.ts`
-
-### 2. Frontend Shows Stale UI
-**Symptom:** After deploy, some users still see old UI (e.g., ObjectTypeSelector that was removed).
-**Fixes Applied:** Cache-busting headers, meta tags, content hashing
-**Status:** May still occur - requires manual browser cache clear or incognito mode
-
-### 3. autoDeploy Disabled
-**Impact:** Code changes require manual deploy on Render.com
-**Reason:** Prevented URS_MATCHER_SERVICE from redeploying when Monolit-Planner changed
-**Action Required:** After each merge to main, manually deploy affected services
-
----
-
-## Files Modified This Session
-
+**Issue Reported:**
 ```
-Monolit-Planner/
-├── frontend/
-│   ├── public/_headers          # NEW - Render.com cache headers
-│   ├── index.html               # MODIFIED - meta cache tags
-│   ├── vite.config.ts           # MODIFIED - content hashing
-│   └── src/
-│       ├── main.tsx             # MODIFIED - build timestamp
-│       ├── services/api.ts      # MODIFIED - encodeURIComponent
-│       └── components/
-│           └── CreateMonolithForm.tsx  # MODIFIED - input validation
-└── render.yaml                  # MODIFIED - autoDeploy: false
-
-URS_MATCHER_SERVICE/
-└── render.yaml                  # NEW - was missing
-
-concrete-agent/
-└── render.yaml                  # MODIFIED - autoDeploy: false, removed stav-agent
-
-stavagent-portal/
-└── render.yaml                  # MODIFIED - autoDeploy: false
+Error: Connection terminated due to connection timeout
+    at pg-pool/index.js:45:11
+    cause: Error: Connection terminated unexpectedly
 ```
 
+**Root Cause:** Render.com free tier PostgreSQL "sleeps" after ~15 minutes of inactivity.
+
+**Analysis:**
+| Factor | Description |
+|--------|-------------|
+| Free tier limits | Database "sleeps", first connection is slow |
+| No retry logic | pg-pool not configured for reconnection |
+| No graceful handling | Unhandled error crashes the app |
+| Double cold start | Backend AND PostgreSQL can be "cold" |
+
+**Solution Options (for when paid tier is purchased):**
+1. Increase connection timeout in pg-pool
+2. Add retry logic for initial connection
+3. Configure keepalive
+4. Wrap errors in try-catch
+5. **Paid tier** (only 100% solution)
+
+**Status:** ⏸️ Waiting for paid tier upgrade
+
 ---
 
-## Commits This Session
+### 2. claude-mem Plugin Installation
 
+**Status:** ✅ Successfully installed and running
+
+**Installation Details:**
+| Component | Location/Value |
+|-----------|----------------|
+| Version | 7.3.4 |
+| Repository | `~/claude-mem/` |
+| Marketplace | `~/.claude/plugins/marketplaces/thedotmack/` |
+| Database | `~/.claude-mem/claude-mem.db` |
+| Worker | http://localhost:37777 (PID varies) |
+| Viewer UI | http://localhost:37777 |
+
+**Hooks Configured:**
+- `SessionStart` - Load context from previous sessions
+- `UserPromptSubmit` - Record user prompts
+- `PostToolUse` - Save tool usage observations
+- `Stop` - Generate session summary
+- `SessionEnd` - Cleanup and persist data
+
+**Worker Management Commands:**
+```bash
+# Check status
+cd ~/.claude/plugins/marketplaces/thedotmack
+bun plugin/scripts/worker-cli.js status
+
+# Restart worker
+bun plugin/scripts/worker-cli.js restart
+
+# View logs
+bun plugin/scripts/worker-cli.js logs
+# or
+tail -f ~/.claude-mem/logs/worker-$(date +%Y-%m-%d).log
+```
+
+**Note:** Memory will accumulate automatically. Hooks activate on next Claude Code session start.
+
+---
+
+## Previous Session Work (2025-12-17 morning)
+
+**Completed:**
+1. Repository Cleanup - 130+ obsolete files deleted
+2. Render.yaml Fixes - autoDeploy: false, rootDir added
+3. URS_MATCHER_SERVICE/render.yaml created
+4. URL Encoding Fix - encodeURIComponent() added
+5. Input Validation - /\?#% characters rejected
+6. Cache-Busting - _headers, meta tags, vite hashing
+
+**Commits:**
 | Hash | Message |
 |------|---------|
-| `177f557` | FIX: Handle slashes in project IDs to prevent 404 errors |
-| `d56ba81` | CLEANUP: Remove 130 obsolete files and fix render.yaml configs |
-| `46b40e4` | FIX: Add cache-busting for frontend to resolve stale UI issue |
+| `177f557` | FIX: Handle slashes in project IDs |
+| `d56ba81` | CLEANUP: Remove 130 obsolete files |
+| `46b40e4` | FIX: Add cache-busting for frontend |
 
 ---
 
-## Next Steps for Stability
+## Known Issues
 
-1. **Monitor Render.com Logs**
-   - Check for timeout errors
-   - Look for database connection issues
-   - Watch for memory limits
+### 1. PostgreSQL Timeout on Free Tier
+- **Impact:** Service crashes after DB inactivity
+- **Workaround:** None (requires paid tier or code changes)
+- **Fix:** Waiting for tier upgrade
 
-2. **Review React Query Configuration**
-   - Check `staleTime` and `cacheTime` settings
-   - Ensure `refetchOnMount: true` is set where needed
-   - Consider adding `refetchOnWindowFocus`
-
-3. **Database Connection Pooling**
-   - PostgreSQL connection pool may need tuning
-   - Check for connection leaks
-
-4. **Consider Upgrading Render Tier**
-   - Free tier has cold starts (30+ seconds)
-   - Paid tier keeps services warm
+### 2. autoDeploy Disabled
+- **Impact:** Manual deploy required after merges
+- **Reason:** Prevent cascading deploys across services
+- **Action:** Use Render.com dashboard to deploy
 
 ---
 
-## Quick Commands
+## For Next Session
 
+### If Upgrading to Paid Tier:
+1. Implement PostgreSQL retry logic in `Monolit-Planner/backend/src/db/postgres.js`
+2. Add connection keepalive settings
+3. Consider re-enabling autoDeploy for critical services
+
+### If Continuing on Free Tier:
+1. Document workarounds for cold start issues
+2. Consider implementing health check endpoints with DB warming
+3. Add graceful error handling to prevent crashes
+
+---
+
+## Quick Reference
+
+**claude-mem Status Check:**
 ```bash
-# Manual deploy on Render (via CLI if gh available)
-# Or use Render.com dashboard → Service → Manual Deploy
-
-# Check service health
-curl https://monolit-planner-api.onrender.com/health
-
-# View recent logs (requires Render CLI)
-render logs --service monolit-planner-api --tail 100
+curl -s http://localhost:37777/api/health
+# Expected: {"status":"ok"}
 ```
+
+**Monolit-Planner API Health:**
+```bash
+curl -s https://monolit-planner-api.onrender.com/health
+```
+
+**Production URLs:**
+| Service | URL |
+|---------|-----|
+| Monolit Frontend | https://monolit-planner-frontend.onrender.com |
+| Monolit API | https://monolit-planner-api.onrender.com |
+| concrete-agent | https://concrete-agent.onrender.com |
+| URS Matcher | https://urs-matcher-service.onrender.com |
 
 ---
 
