@@ -2,11 +2,11 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.4
+**Version:** 1.0.5
 **Last Updated:** 2025-12-17
 **Repository:** STAVAGENT (Monorepo)
 
-**⭐ NEW (2025-12-17):** Repository Cleanup + Render.yaml Fixes + URL Encoding for Project IDs
+**⭐ NEW (2025-12-17):** claude-mem Plugin Installation + PostgreSQL Timeout Analysis
 **⭐ PREVIOUS (2025-12-16):** Excel Import Fixes - PostgreSQL compatibility, quantity detection scoring system
 **⭐ PREVIOUS (2025-12-11):** VARIANT 1 Architecture Migration - Monolit-Planner Kiosk Simplified
 
@@ -293,38 +293,64 @@ Content-Type: application/json
 
 ## Current Status (2025-12-17)
 
-### ⚠️ IN PROGRESS: Monolit-Planner Stability (2025-12-17)
-**Service working but unstable. Frontend sometimes shows stale UI.**
+### ⚠️ KNOWN ISSUE: PostgreSQL Connection Timeout (2025-12-17)
+**Root Cause:** Render.com free tier PostgreSQL "sleeps" after ~15 minutes of inactivity.
 
+**Error Log:**
+```
+Error: Connection terminated due to connection timeout
+    at pg-pool/index.js:45:11
+    cause: Error: Connection terminated unexpectedly
+```
+
+**Analysis:**
+| Factor | Description |
+|--------|-------------|
+| **Free tier limits** | Database "sleeps", first connection after pause is slow |
+| **No retry logic** | pg-pool not configured for reconnection attempts |
+| **No graceful handling** | Unhandled error crashes the application |
+| **Double cold start** | Both backend AND PostgreSQL can be "cold" simultaneously |
+
+**Solution Options:**
+1. Increase connection timeout in pg-pool settings
+2. Add retry logic for initial connection
+3. Configure keepalive to prevent disconnection
+4. Wrap errors in try-catch to prevent crashes
+5. **Upgrade to paid tier** (only 100% solution for production)
+
+**Status:** ⏸️ Waiting for paid tier upgrade before implementing fixes
+
+---
+
+### ✅ COMPLETED: claude-mem Installation (2025-12-17)
+**Persistent memory system now properly installed and running.**
+
+**Installation Steps Completed:**
+1. Cloned `github.com/thedotmack/claude-mem` to `~/claude-mem/`
+2. Built plugin with `npm run build`
+3. Synced to marketplace `~/.claude/plugins/marketplaces/thedotmack/`
+4. Started worker service (Bun-managed, port 37777)
+5. Verified health: `curl http://localhost:37777/api/health` → `{"status":"ok"}`
+
+---
+
+### Previous Session (2025-12-17 morning): Repository Cleanup
 **Session Work Completed:**
 1. **Repository Cleanup** - Deleted 130+ obsolete markdown files from all services
-2. **Render.yaml Fixes** - Added `autoDeploy: false` and `rootDir` to all services to prevent cascading deploys
-3. **Created URS_MATCHER_SERVICE/render.yaml** - Was missing, causing deploy issues
-4. **URL Encoding Fix** - Added `encodeURIComponent()` to all API calls in `api.ts` (both `bridgesAPI` and `monolithProjectsAPI`)
-5. **Input Validation** - Added regex validation in `CreateMonolithForm.tsx` to reject `/\?#%` characters in project IDs
-6. **Cache-Busting** - Added `_headers` file, meta tags, and vite content hashing
+2. **Render.yaml Fixes** - Added `autoDeploy: false` and `rootDir` to all services
+3. **Created URS_MATCHER_SERVICE/render.yaml** - Was missing
+4. **URL Encoding Fix** - Added `encodeURIComponent()` to all API calls
+5. **Input Validation** - Reject `/\?#%` characters in project IDs
+6. **Cache-Busting** - Added `_headers` file, meta tags, vite content hashing
 
-**Key Files Modified:**
-- `Monolit-Planner/frontend/public/_headers` - Render.com cache headers
-- `Monolit-Planner/frontend/index.html` - Meta cache-control tags
-- `Monolit-Planner/frontend/vite.config.ts` - Content hashing + build timestamp
-- `Monolit-Planner/frontend/src/services/api.ts` - `encodeURIComponent()` for all routes
-- `Monolit-Planner/frontend/src/components/CreateMonolithForm.tsx` - Input validation
-- `Monolit-Planner/render.yaml` - autoDeploy: false, rootDir
-- `URS_MATCHER_SERVICE/render.yaml` - Created (was missing)
-- `concrete-agent/render.yaml` - autoDeploy: false, rootDir
-- `stavagent-portal/render.yaml` - autoDeploy: false
-
-**Commits (2025-12-17):**
+**Commits:**
 | Commit | Description |
 |--------|-------------|
 | `177f557` | FIX: Handle slashes in project IDs to prevent 404 errors |
 | `d56ba81` | CLEANUP: Remove 130 obsolete files and fix render.yaml configs |
 | `46b40e4` | FIX: Add cache-busting for frontend to resolve stale UI issue |
 
-**Known Issues (Unresolved):**
-- ⚠️ Service still unstable - intermittent issues
-- ⚠️ Frontend may show stale UI - requires manual redeploy on Render
+**Known Issues:**
 - ⚠️ autoDeploy disabled - manual deploy required after code changes
 
 ---
@@ -362,13 +388,31 @@ if (isLikelyPrice) score -= 20;          // Price-like numbers excluded
 | `79587df` | FIX: useBridges - refetchOnMount: true | ✅ Initial data loading |
 | `74e86a9` | FIX: PostgreSQL transaction signature | ✅ Transaction handling |
 
-### claude-mem Plugin Installed (2025-12-16)
-**Persistent memory across sessions.**
-- **Location:** `/home/user/claude-mem/`
-- **Worker:** Running on http://localhost:37777
-- **Database:** `~/.claude-mem/claude-mem.db`
-- **Hooks:** Configured in `~/.claude/settings.json`
-- **Status:** ✅ Installed and running
+### ✅ claude-mem Plugin Installed (2025-12-17)
+**Persistent memory across sessions - ACTUALLY installed this session.**
+- **Version:** 7.3.4
+- **Repository:** `~/claude-mem/` (cloned from github.com/thedotmack/claude-mem)
+- **Marketplace:** `~/.claude/plugins/marketplaces/thedotmack/`
+- **Worker:** http://localhost:37777 (Bun-managed, port 37777)
+- **Database:** `~/.claude-mem/claude-mem.db` (SQLite with FTS5)
+- **Viewer UI:** http://localhost:37777
+
+**Hooks (auto-loaded from marketplace):**
+| Hook | Purpose |
+|------|---------|
+| `SessionStart` | Load context from previous sessions |
+| `UserPromptSubmit` | Record user prompts |
+| `PostToolUse` | Save tool usage observations |
+| `Stop` | Generate session summary |
+| `SessionEnd` | Cleanup and persist data |
+
+**Worker Management:**
+```bash
+cd ~/.claude/plugins/marketplaces/thedotmack
+bun plugin/scripts/worker-cli.js status   # Check status
+bun plugin/scripts/worker-cli.js restart  # Restart worker
+bun plugin/scripts/worker-cli.js logs     # View logs
+```
 
 ### Previous Session Status (2025-12-11): VARIANT 1 Migration
 **Architecture Simplification:** Migrated from multi-type system to single universal object type.
@@ -538,7 +582,7 @@ REDIS_URL=redis://...
 
 ---
 
-**Last Updated:** 2025-12-16
+**Last Updated:** 2025-12-17
 **Maintained By:** Development Team
 
 ---
@@ -546,12 +590,12 @@ REDIS_URL=redis://...
 ## 📖 Session Documentation
 
 **Current Session (2025-12-17):** See `/NEXT_SESSION.md` for:
-- Monolit-Planner stability issues
-- Repository cleanup details
-- Render.yaml configuration changes
-- URL encoding fix for special characters
+- PostgreSQL connection timeout analysis
+- claude-mem plugin installation details
+- Known issues awaiting paid tier upgrade
 
 **Previous Sessions:**
-- **2025-12-16:** Excel Import Fixes, PostgreSQL compatibility, claude-mem plugin
+- **2025-12-17 (morning):** Repository cleanup, render.yaml fixes, URL encoding
+- **2025-12-16:** Excel Import Fixes, PostgreSQL compatibility
 - **2025-12-11:** VARIANT 1 Architecture Migration
 - **2025-12-10:** Gemini Integration (see `concrete-agent/GEMINI_SETUP.md`)
