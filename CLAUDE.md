@@ -388,31 +388,22 @@ if (isLikelyPrice) score -= 20;          // Price-like numbers excluded
 | `79587df` | FIX: useBridges - refetchOnMount: true | ✅ Initial data loading |
 | `74e86a9` | FIX: PostgreSQL transaction signature | ✅ Transaction handling |
 
-### ✅ claude-mem Plugin Installed (2025-12-17)
-**Persistent memory across sessions - ACTUALLY installed this session.**
-- **Version:** 7.3.4
-- **Repository:** `~/claude-mem/` (cloned from github.com/thedotmack/claude-mem)
-- **Marketplace:** `~/.claude/plugins/marketplaces/thedotmack/`
-- **Worker:** http://localhost:37777 (Bun-managed, port 37777)
-- **Database:** `~/.claude-mem/claude-mem.db` (SQLite with FTS5)
-- **Viewer UI:** http://localhost:37777
+### claude-mem Plugin (2025-12-17)
+**Persistent memory across sessions via hooks (no worker needed).**
+- **Installation:** `npm install -g claude-mem` (global)
+- **Hooks Directory:** `~/.claude-mem/hooks/`
+- **Database:** `~/.claude-mem/` (SQLite + Chroma vector store)
+- **Settings:** `~/.claude/settings.json` (4 hooks configured)
 
-**Hooks (auto-loaded from marketplace):**
+**Configured Hooks:**
 | Hook | Purpose |
 |------|---------|
-| `SessionStart` | Load context from previous sessions |
-| `UserPromptSubmit` | Record user prompts |
-| `PostToolUse` | Save tool usage observations |
-| `Stop` | Generate session summary |
-| `SessionEnd` | Cleanup and persist data |
+| SessionStart | Load context at session start |
+| Stop | Save memory on session end |
+| UserPromptSubmit | Process user input |
+| PostToolUse | Process after tool use |
 
-**Worker Management:**
-```bash
-cd ~/.claude/plugins/marketplaces/thedotmack
-bun plugin/scripts/worker-cli.js status   # Check status
-bun plugin/scripts/worker-cli.js restart  # Restart worker
-bun plugin/scripts/worker-cli.js logs     # View logs
-```
+**Status:** ✅ Hooks-based (auto-starts with Claude Code)
 
 ### Previous Session Status (2025-12-11): VARIANT 1 Migration
 **Architecture Simplification:** Migrated from multi-type system to single universal object type.
@@ -595,7 +586,7 @@ REDIS_URL=redis://...
 - Known issues awaiting paid tier upgrade
 
 **Previous Sessions:**
-- **2025-12-17 (morning):** Repository cleanup, render.yaml fixes, URL encoding
+- **2025-12-17:** Repository cleanup, render.yaml fixes, URL encoding, claude-mem hooks reinstallation
 - **2025-12-16:** Excel Import Fixes, PostgreSQL compatibility
 - **2025-12-11:** VARIANT 1 Architecture Migration
 - **2025-12-10:** Gemini Integration (see `concrete-agent/GEMINI_SETUP.md`)
