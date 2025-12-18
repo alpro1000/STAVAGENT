@@ -105,7 +105,10 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   };
 
   const icon = SUBTYPE_ICONS[position.subtype as keyof typeof SUBTYPE_ICONS] || '📋';
-  const displayLabel = SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
+  // For "jiné" (custom work), use item_name as display label instead of generic "Jiné"
+  const displayLabel = position.subtype === 'jiné' && position.item_name
+    ? position.item_name
+    : SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
 
   return (
     <>

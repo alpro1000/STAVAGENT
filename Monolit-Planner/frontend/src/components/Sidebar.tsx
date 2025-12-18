@@ -124,11 +124,21 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
     setExpandedProjects(newExpanded);
   };
 
-  // Expand all projects by default on first load
+  // Expand all projects by default, including NEW projects after import
   useEffect(() => {
     const projectNames = Object.keys(bridgesByProject);
-    if (expandedProjects.size === 0 && projectNames.length > 0) {
-      setExpandedProjects(new Set(projectNames));
+    if (projectNames.length > 0) {
+      // Find projects that aren't expanded yet (new projects from import)
+      const newProjects = projectNames.filter(name => !expandedProjects.has(name));
+
+      if (newProjects.length > 0 || expandedProjects.size === 0) {
+        // Add new projects to expanded set (keep existing expanded state)
+        setExpandedProjects(prev => {
+          const updated = new Set(prev);
+          projectNames.forEach(name => updated.add(name));
+          return updated;
+        });
+      }
     }
   }, [bridges, statusFilter]); // Зависимость от bridges и statusFilter, не от bridgesByProject!
 
