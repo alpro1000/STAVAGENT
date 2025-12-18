@@ -48,29 +48,48 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
       console.log('[Upload] Response:', result);
 
-      // Refetch bridges after upload
-      await refetchBridges();
-
-      // ✅ AGGRESSIVE CACHE INVALIDATION
-      // Invalidate ALL caches to force complete refresh
-      await queryClient.refetchQueries({ queryKey: ['bridges'] });
-      queryClient.invalidateQueries({ queryKey: ['positions'] });
-
-      // Optional: Force refetch of positions if a bridge is selected
-      if (selectedBridge) {
-        console.log('[Upload] Refetching positions for bridge:', selectedBridge);
-        await queryClient.refetchQueries({
-          queryKey: ['positions', selectedBridge]
-        });
-      }
-
       // Calculate total positions from all imported bridges
       const totalPositions = result.bridges?.reduce((sum: number, b: any) => sum + (b.positions_count || 0), 0) || 0;
 
-      // Auto-select the first imported bridge so user sees the result immediately
-      if (result.bridges?.length > 0 && !selectedBridge) {
+      // ✅ FIX: Immediately update bridges from upload response
+      // This avoids waiting for refetch which might timeout
+      if (result.bridges?.length > 0) {
+        // Convert upload response to Bridge format and merge with existing
+        const importedBridges = result.bridges.map((b: any) => ({
+          bridge_id: b.bridge_id,
+          project_name: b.project_name || result.project_name || 'Import',
+          object_name: b.object_name || b.bridge_id,
+          element_count: b.positions_count || 0,
+          concrete_m3: b.concrete_m3 || 0,
+          sum_kros_czk: 0,
+          status: 'active' as const,
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        }));
+
+        // Merge with existing bridges (avoid duplicates)
+        const existingIds = new Set(bridges.map(b => b.bridge_id));
+        const newBridges = importedBridges.filter((b: any) => !existingIds.has(b.bridge_id));
+
+        if (newBridges.length > 0) {
+          // Update context immediately with new bridges
+          const updatedBridges = [...bridges, ...newBridges];
+          // Force re-render by updating query cache directly
+          queryClient.setQueryData(['bridges'], updatedBridges);
+          console.log('[Upload] Added', newBridges.length, 'new bridges to sidebar');
+        }
+
+        // Auto-select the first imported bridge
         setSelectedBridge(result.bridges[0].bridge_id);
       }
+
+      // Invalidate positions cache
+      queryClient.invalidateQueries({ queryKey: ['positions'] });
+
+      // Background refetch (non-blocking) - don't await
+      refetchBridges().catch(err => {
+        console.warn('[Upload] Background refetch failed:', err.message);
+      });
 
       alert(`✅ Import úspěšný! Nalezeno ${result.bridges?.length || 0} objektů s ${totalPositions} pozicemi.`);
     } catch (error: any) {
