@@ -438,6 +438,7 @@ export default function PositionsTable() {
                       <th className="col-cena-hod" title="Hodinová sazba v CZK (EDITABLE)">Kč/h</th>
                       <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">Hod./den</th>
                       <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Dny</th>
+                      <th className="col-rychlost" title="Norma rychlosti v MJ/hod (EDITABLE). Zadejte normu → přepočítá dny. Nebo zadejte dny → norma se vypočítá zpětně.">MJ/h</th>
                       <th className="col-hod-celkem" title="Celkový počet hodin = Počet × Hod./den × Dny">Celk.hod.</th>
                       <th className="col-kc-celkem" title="Celková cena v CZK = Celk.hod. × Kč/h">Celk.Kč</th>
                       <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Celk.Kč ÷ Objem betonu">
@@ -456,7 +457,7 @@ export default function PositionsTable() {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={isLocked ? 15 : 14} style={{
+                          <td colSpan={isLocked ? 16 : 15} style={{
                             textAlign: 'center',
                             padding: '20px',
                             color: 'var(--text-secondary)',

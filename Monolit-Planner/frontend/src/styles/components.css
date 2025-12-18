@@ -1128,8 +1128,8 @@ button:disabled {
 }
 
 .col-podtyp {
-  width: 140px;
-  min-width: 140px;
+  width: 110px;
+  min-width: 110px;
 }
 
 .col-mj {
@@ -1160,6 +1160,11 @@ button:disabled {
 .col-den {
   width: 45px;
   min-width: 45px;
+}
+
+.col-rychlost {
+  width: 55px;
+  min-width: 55px;
 }
 
 .col-hod-celkem {
