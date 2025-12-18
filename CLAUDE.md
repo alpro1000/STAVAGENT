@@ -2,13 +2,13 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.5
-**Last Updated:** 2025-12-17
+**Version:** 1.0.6
+**Last Updated:** 2025-12-18
 **Repository:** STAVAGENT (Monorepo)
 
-**⭐ NEW (2025-12-17):** claude-mem Plugin Installation + PostgreSQL Timeout Analysis
+**⭐ NEW (2025-12-18):** Monolit Planner UI Fixes - Sidebar import refresh + Custom work name display
+**⭐ PREVIOUS (2025-12-17):** claude-mem Plugin Installation + PostgreSQL Timeout Analysis
 **⭐ PREVIOUS (2025-12-16):** Excel Import Fixes - PostgreSQL compatibility, quantity detection scoring system
-**⭐ PREVIOUS (2025-12-11):** VARIANT 1 Architecture Migration - Monolit-Planner Kiosk Simplified
 
 ---
 
@@ -355,6 +355,28 @@ Error: Connection terminated due to connection timeout
 
 ---
 
+### ✅ COMPLETED: Monolit Planner UI Fixes (2025-12-18)
+**Two frontend bugs fixed:**
+
+**Bug 1: Sidebar не показывает импортированные мосты**
+- **Причина:** `Sidebar.tsx` - новые проекты не раскрывались автоматически
+- **Исправление:** Авто-раскрытие новых проектов + авто-выбор первого импортированного моста
+
+**Bug 2: Custom work "Jiné" показывает "Jiné" вместо пользовательского названия**
+- **Причина:** `PositionRow.tsx` всегда использовал `SUBTYPE_LABELS['jiné']`
+- **Исправление:** Для `subtype === 'jiné'` используется `position.item_name`
+
+**Изменённые файлы:**
+| Файл | Изменение |
+|------|-----------|
+| `Header.tsx` | Auto-select первого импортированного моста, fix alert message |
+| `PositionRow.tsx` | Показ item_name для "jiné" вместо generic label |
+| `Sidebar.tsx` | Авто-раскрытие новых проектов после импорта |
+
+**Commit:** `c050914` FIX: Monolit Planner - sidebar import refresh + custom work name display
+
+---
+
 ### ✅ COMPLETED: Excel Import Fixes (2025-12-16)
 **Multi-sheet Excel import fully working with PostgreSQL.**
 
@@ -573,19 +595,19 @@ REDIS_URL=redis://...
 
 ---
 
-**Last Updated:** 2025-12-17
+**Last Updated:** 2025-12-18
 **Maintained By:** Development Team
 
 ---
 
 ## 📖 Session Documentation
 
-**Current Session (2025-12-17):** See `/NEXT_SESSION.md` for:
-- PostgreSQL connection timeout analysis
-- claude-mem plugin installation details
-- Known issues awaiting paid tier upgrade
+**Current Session (2025-12-18):** See `/NEXT_SESSION.md` for:
+- Monolit Planner UI fixes (sidebar refresh, custom work name)
+- Testing instructions for the fixes
 
 **Previous Sessions:**
+- **2025-12-18:** Monolit Planner UI fixes (sidebar import refresh, custom work name)
 - **2025-12-17:** Repository cleanup, render.yaml fixes, URL encoding, claude-mem hooks reinstallation
 - **2025-12-16:** Excel Import Fixes, PostgreSQL compatibility
 - **2025-12-11:** VARIANT 1 Architecture Migration
