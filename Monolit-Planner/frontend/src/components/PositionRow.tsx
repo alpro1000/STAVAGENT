@@ -223,6 +223,35 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         />
       </td>
 
+      {/* Speed (MJ/day) - Editable, bidirectional with days */}
+      <td className="cell-input col-rychlost">
+        <input
+          type="number"
+          step="0.1"
+          min="0"
+          className="input-cell"
+          value={
+            // Calculate speed = qty / days (if days > 0)
+            getValue('days') > 0
+              ? (getValue('qty') / getValue('days')).toFixed(2)
+              : ''
+          }
+          onChange={(e) => {
+            const speed = parseFloat(e.target.value) || 0;
+            if (speed > 0) {
+              // Recalculate days = qty / speed
+              const qty = getValue('qty');
+              const newDays = qty / speed;
+              handleFieldChange('days', Math.max(0, parseFloat(newDays.toFixed(2))));
+            }
+          }}
+          onBlur={handleBlur}
+          disabled={isLocked}
+          placeholder="—"
+          title={`Rychlost práce (${position.unit}/den). Změna automaticky přepočítá dny.`}
+        />
+      </td>
+
       {/* COMPUTED CELLS - Readonly (gray) */}
 
       {/* Labor hours */}
