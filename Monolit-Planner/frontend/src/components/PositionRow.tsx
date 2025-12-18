@@ -223,32 +223,43 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         />
       </td>
 
-      {/* Speed (MJ/day) - Editable, bidirectional with days */}
+      {/* Speed (MJ/hour) - Editable, bidirectional with days */}
+      {/* Formula: speed = qty / labor_hours (MJ/hod) - standard construction norm */}
       <td className="cell-input col-rychlost">
         <input
           type="number"
-          step="0.1"
+          step="0.01"
           min="0"
           className="input-cell"
           value={
-            // Calculate speed = qty / days (if days > 0)
-            getValue('days') > 0
-              ? (getValue('qty') / getValue('days')).toFixed(2)
+            // Calculate speed = qty / labor_hours (if labor_hours > 0)
+            // labor_hours = crew_size × shift_hours × days
+            (position.labor_hours && position.labor_hours > 0)
+              ? (getValue('qty') / position.labor_hours).toFixed(3)
               : ''
           }
           onChange={(e) => {
-            const speed = parseFloat(e.target.value) || 0;
-            if (speed > 0) {
-              // Recalculate days = qty / speed
+            const speedPerHour = parseFloat(e.target.value) || 0;
+            if (speedPerHour > 0) {
+              // Recalculate: labor_hours = qty / speed
+              // Then: days = labor_hours / (crew_size × shift_hours)
               const qty = getValue('qty');
-              const newDays = qty / speed;
-              handleFieldChange('days', Math.max(0, parseFloat(newDays.toFixed(2))));
+              const crewSize = getValue('crew_size');
+              const shiftHours = getValue('shift_hours');
+
+              const laborHoursNeeded = qty / speedPerHour;
+              const hoursPerDay = crewSize * shiftHours;
+
+              if (hoursPerDay > 0) {
+                const newDays = laborHoursNeeded / hoursPerDay;
+                handleFieldChange('days', Math.max(0, parseFloat(newDays.toFixed(2))));
+              }
             }
           }}
           onBlur={handleBlur}
           disabled={isLocked}
           placeholder="—"
-          title={`Rychlost práce (${position.unit}/den). Změna automaticky přepočítá dny.`}
+          title={`Norma rychlosti (${position.unit}/hod). Zadejte normu → automaticky se přepočítají dny. Nebo zadejte dny → norma se vypočítá zpětně.`}
         />
       </td>
 
