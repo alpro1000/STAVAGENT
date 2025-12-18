@@ -20,7 +20,7 @@ interface HeaderProps {
 }
 
 export default function Header({ isDark, toggleTheme }: HeaderProps) {
-  const { selectedBridge, setSelectedBridge, bridges } = useAppContext();
+  const { selectedBridge, setSelectedBridge, bridges, setBridges } = useAppContext();
   const { refetch: refetchBridges } = useBridges();
   const { saveXLSX, isSaving } = useExports();
   const queryClient = useQueryClient();
@@ -74,8 +74,13 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         if (newBridges.length > 0) {
           // Update context immediately with new bridges
           const updatedBridges = [...bridges, ...newBridges];
-          // Force re-render by updating query cache directly
+
+          // ✅ FIX: Update BOTH context AND query cache
+          // Context update triggers immediate sidebar re-render
+          setBridges(updatedBridges);
+          // Query cache update ensures consistency with React Query
           queryClient.setQueryData(['bridges'], updatedBridges);
+
           console.log('[Upload] Added', newBridges.length, 'new bridges to sidebar');
         }
 
