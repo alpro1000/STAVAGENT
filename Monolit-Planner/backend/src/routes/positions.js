@@ -13,6 +13,16 @@ import { extractPartName } from '../utils/text.js';
 const router = express.Router();
 
 /**
+ * Whitelist of allowed field names for SQL updates
+ * Prevents SQL injection through field name manipulation
+ */
+const ALLOWED_UPDATE_FIELDS = new Set([
+  'part_name', 'item_name', 'subtype', 'unit', 'qty', 'qty_m3_helper',
+  'crew_size', 'wage_czk_ph', 'shift_hours', 'days', 'otskp_code',
+  'concrete_m3', 'cost_czk', 'metadata', 'position_number'
+]);
+
+/**
  * Template positions with correct part_name -> item_name mappings
  * Used to find the correct part_name when item_name is updated
  */
@@ -88,9 +98,15 @@ router.get('/', async (req, res) => {
       WHERE id = 1
     `).get();
 
+    let defaults = {};
+    try {
+      defaults = configRow?.defaults ? JSON.parse(configRow.defaults) : {};
+    } catch (e) {
+      logger.warn('Failed to parse config defaults, using empty object:', e.message);
+    }
     const config = {
-      defaults: JSON.parse(configRow.defaults),
-      days_per_month_mode: configRow.days_per_month_mode
+      defaults,
+      days_per_month_mode: configRow?.days_per_month_mode || 30
     };
 
     // Calculate all derived fields
@@ -214,9 +230,15 @@ router.post('/', async (req, res) => {
     const configRow = await db.prepare(`
       SELECT defaults, days_per_month_mode FROM project_config WHERE id = 1
     `).get();
+    let defaults = {};
+    try {
+      defaults = configRow?.defaults ? JSON.parse(configRow.defaults) : {};
+    } catch (e) {
+      logger.warn('Failed to parse config defaults:', e.message);
+    }
     const config = {
-      defaults: JSON.parse(configRow.defaults),
-      days_per_month_mode: configRow.days_per_month_mode
+      defaults,
+      days_per_month_mode: configRow?.days_per_month_mode || 30
     };
 
     const calculatedPositions = calculatePositions(positions, config);
@@ -288,12 +310,19 @@ router.put('/', async (req, res) => {
         }
 
         // Build SQL dynamically for each update
-        const fieldNames = Object.keys(fields);
+        // Filter to only allowed fields (SQL injection prevention)
+        const fieldNames = Object.keys(fields).filter(f => ALLOWED_UPDATE_FIELDS.has(f));
+
+        // Log if any fields were rejected
+        const rejectedFields = Object.keys(fields).filter(f => !ALLOWED_UPDATE_FIELDS.has(f));
+        if (rejectedFields.length > 0) {
+          logger.warn(`  ⚠️ Rejected non-whitelisted fields: ${rejectedFields.join(', ')}`);
+        }
 
         // If there are no fields to update, skip this update
         // (only updated_at will be set by the DEFAULT in the UPDATE statement)
         if (fieldNames.length === 0) {
-          logger.warn(`  ⚠️ No fields to update for position id=${id}, skipping`);
+          logger.warn(`  ⚠️ No valid fields to update for position id=${id}, skipping`);
           continue;
         }
 
@@ -306,7 +335,8 @@ router.put('/', async (req, res) => {
           WHERE id = ? AND bridge_id = ?
         `;
 
-        const values = [...Object.values(fields), id, bridgeId];
+        // Only include values for whitelisted fields (in same order as fieldNames)
+        const values = [...fieldNames.map(f => fields[f]), id, bridgeId];
 
         logger.info(`  Updating position id=${id}: ${fieldNames.join(', ')}`);
 
@@ -330,9 +360,15 @@ router.put('/', async (req, res) => {
     const configRow = await db.prepare(`
       SELECT defaults, days_per_month_mode FROM project_config WHERE id = 1
     `).get();
+    let defaults = {};
+    try {
+      defaults = configRow?.defaults ? JSON.parse(configRow.defaults) : {};
+    } catch (e) {
+      logger.warn('Failed to parse config defaults:', e.message);
+    }
     const config = {
-      defaults: JSON.parse(configRow.defaults),
-      days_per_month_mode: configRow.days_per_month_mode
+      defaults,
+      days_per_month_mode: configRow?.days_per_month_mode || 30
     };
 
     const calculatedPositions = calculatePositions(positions, config);
