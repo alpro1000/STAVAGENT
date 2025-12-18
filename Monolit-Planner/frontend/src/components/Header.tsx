@@ -64,7 +64,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         });
       }
 
-      alert(`✅ Import úspěšný! Nalezeno ${result.bridges.length} objektů s ${result.row_count} řádky.`);
+      // Calculate total positions from all imported bridges
+      const totalPositions = result.bridges?.reduce((sum: number, b: any) => sum + (b.positions_count || 0), 0) || 0;
+
+      // Auto-select the first imported bridge so user sees the result immediately
+      if (result.bridges?.length > 0 && !selectedBridge) {
+        setSelectedBridge(result.bridges[0].bridge_id);
+      }
+
+      alert(`✅ Import úspěšný! Nalezeno ${result.bridges?.length || 0} objektů s ${totalPositions} pozicemi.`);
     } catch (error: any) {
       alert(`❌ Nahrání selhalo: ${error.message}`);
     } finally {
