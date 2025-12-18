@@ -1,151 +1,157 @@
-# NEXT_SESSION.md - Session Summary 2025-12-17
+# NEXT_SESSION.md - Session Summary 2025-12-18
 
-**Date:** 2025-12-17
+**Date:** 2025-12-18
 **Status:** ✅ Session Complete
-**Branch:** `claude/cleanup-deployment-config-yOT4N`
+**Branch:** `claude/update-docs-install-LIXHA`
 
 ---
 
 ## Session Summary
 
-### 1. PostgreSQL Connection Timeout Analysis
+### ✅ Monolit Planner UI Fixes
 
-**Issue Reported:**
+**Две проблемы исправлены:**
+
+#### Bug 1: Sidebar не показывает импортированные мосты после XLSX импорта
+
+**Симптомы:**
+- После импорта XLSX файла мосты создаются на бэкенде (виден в логах)
+- Но в сайдбаре они не появляются без перезагрузки страницы
+
+**Причина:**
+- `Sidebar.tsx:128-133` - `useEffect` раскрывал проекты только когда `expandedProjects.size === 0`
+- Новые проекты от импорта не добавлялись в `expandedProjects`
+
+**Исправление:**
+```tsx
+// Sidebar.tsx:127-143 - Теперь добавляет ВСЕ новые проекты
+useEffect(() => {
+  const projectNames = Object.keys(bridgesByProject);
+  if (projectNames.length > 0) {
+    const newProjects = projectNames.filter(name => !expandedProjects.has(name));
+    if (newProjects.length > 0 || expandedProjects.size === 0) {
+      setExpandedProjects(prev => {
+        const updated = new Set(prev);
+        projectNames.forEach(name => updated.add(name));
+        return updated;
+      });
+    }
+  }
+}, [bridges, statusFilter]);
 ```
-Error: Connection terminated due to connection timeout
-    at pg-pool/index.js:45:11
-    cause: Error: Connection terminated unexpectedly
-```
 
-**Root Cause:** Render.com free tier PostgreSQL "sleeps" after ~15 minutes of inactivity.
-
-**Analysis:**
-| Factor | Description |
-|--------|-------------|
-| Free tier limits | Database "sleeps", first connection is slow |
-| No retry logic | pg-pool not configured for reconnection |
-| No graceful handling | Unhandled error crashes the app |
-| Double cold start | Backend AND PostgreSQL can be "cold" |
-
-**Solution Options (for when paid tier is purchased):**
-1. Increase connection timeout in pg-pool
-2. Add retry logic for initial connection
-3. Configure keepalive
-4. Wrap errors in try-catch
-5. **Paid tier** (only 100% solution)
-
-**Status:** ⏸️ Waiting for paid tier upgrade
+**Дополнительно в Header.tsx:**
+- Auto-select первого импортированного моста если ничего не выбрано
+- Исправлен alert: `result.row_count` (не существует) → `positions_count`
 
 ---
 
-### 2. claude-mem Plugin Installation
+#### Bug 2: Custom work "Jiné" показывает "Jiné" вместо пользовательского названия
 
-**Status:** ✅ Successfully installed and running
+**Симптомы:**
+- Пользователь вводит своё название работы в `custom-work-input`
+- В таблице всё равно показывается "Jiné" вместо введённого текста
 
-**Installation Details:**
-| Component | Location/Value |
-|-----------|----------------|
-| Version | 7.3.4 |
-| Repository | `~/claude-mem/` |
-| Marketplace | `~/.claude/plugins/marketplaces/thedotmack/` |
-| Database | `~/.claude-mem/claude-mem.db` |
-| Worker | http://localhost:37777 (PID varies) |
-| Viewer UI | http://localhost:37777 |
+**Причина:**
+- `PositionRow.tsx:108` всегда использовал `SUBTYPE_LABELS['jiné']` → "Jiné"
+- `position.item_name` с пользовательским названием игнорировался
 
-**Hooks Configured:**
-- `SessionStart` - Load context from previous sessions
-- `UserPromptSubmit` - Record user prompts
-- `PostToolUse` - Save tool usage observations
-- `Stop` - Generate session summary
-- `SessionEnd` - Cleanup and persist data
+**Исправление:**
+```tsx
+// PositionRow.tsx:107-111
+const displayLabel = position.subtype === 'jiné' && position.item_name
+  ? position.item_name  // Пользовательское название
+  : SUBTYPE_LABELS[position.subtype] || position.subtype;
+```
 
-**Worker Management Commands:**
+---
+
+## Изменённые файлы
+
+| Файл | Строки | Изменение |
+|------|--------|-----------|
+| `Header.tsx` | 67-75 | Auto-select + fix alert message |
+| `PositionRow.tsx` | 107-111 | Custom work name display |
+| `Sidebar.tsx` | 127-143 | Auto-expand new projects |
+
+**Commit:** `c050914` FIX: Monolit Planner - sidebar import refresh + custom work name display
+
+---
+
+## Тестирование
+
+### Тест 1: Импорт XLSX
+1. Открыть https://monolit-planner-frontend.onrender.com/
+2. Нажать "💾 Nahrát XLSX" и загрузить Excel файл с мостами
+3. **Ожидаемый результат:**
+   - Alert показывает количество объектов и позиций
+   - Новые проекты автоматически раскрываются в сайдбаре
+   - Первый мост автоматически выбирается
+   - Данные отображаются в таблице
+
+### Тест 2: Custom work "Jiné"
+1. Выбрать мост и часть конструкции
+2. Нажать "➕ Přidat řádek"
+3. Выбрать "Jiné (vlastní práce)"
+4. Ввести своё название работы (например "Kontrola betonu")
+5. **Ожидаемый результат:**
+   - В колонке "Práce" показывается "Kontrola betonu"
+   - НЕ показывается generic "Jiné"
+
+---
+
+## Known Issues (Ожидают решения)
+
+### 1. PostgreSQL Timeout на Free Tier
+- **Статус:** ⏸️ Ожидает upgrade до paid tier
+- **Impact:** Сервис падает после 15 минут неактивности БД
+- **Solution:** Retry logic + keepalive (после upgrade)
+
+### 2. autoDeploy отключён
+- **Статус:** По дизайну
+- **Action:** Manual deploy через Render.com dashboard
+
+### 3. TypeScript ошибки в сборке
+- **Файлы:** `VerifyEmailPage.tsx`, `api.ts` (axios types)
+- **Impact:** Build fails, но dev работает
+- **Solution:** Установить `@types/axios`, fix any types
+
+---
+
+## Для следующей сессии
+
+### Приоритет 1: Проверить деплой
 ```bash
-# Check status
-cd ~/.claude/plugins/marketplaces/thedotmack
-bun plugin/scripts/worker-cli.js status
-
-# Restart worker
-bun plugin/scripts/worker-cli.js restart
-
-# View logs
-bun plugin/scripts/worker-cli.js logs
-# or
-tail -f ~/.claude-mem/logs/worker-$(date +%Y-%m-%d).log
+# После merge PR, вручную задеплоить:
+# Render.com → monolit-planner-frontend → Manual Deploy
 ```
 
-**Note:** Memory will accumulate automatically. Hooks activate on next Claude Code session start.
+### Приоритет 2: TypeScript cleanup
+- Исправить ошибки в `VerifyEmailPage.tsx`
+- Добавить proper types вместо `any`
+- Установить недостающие @types packages
+
+### Приоритет 3: Проверить UX
+- Протестировать импорт на production
+- Проверить custom work сохранение/загрузку
+- Убедиться что данные персистятся после reload
 
 ---
 
-## Previous Session Work (2025-12-17 morning)
+## Quick Commands
 
-**Completed:**
-1. Repository Cleanup - 130+ obsolete files deleted
-2. Render.yaml Fixes - autoDeploy: false, rootDir added
-3. URS_MATCHER_SERVICE/render.yaml created
-4. URL Encoding Fix - encodeURIComponent() added
-5. Input Validation - /\?#% characters rejected
-6. Cache-Busting - _headers, meta tags, vite hashing
-
-**Commits:**
-| Hash | Message |
-|------|---------|
-| `177f557` | FIX: Handle slashes in project IDs |
-| `d56ba81` | CLEANUP: Remove 130 obsolete files |
-| `46b40e4` | FIX: Add cache-busting for frontend |
-
----
-
-## Known Issues
-
-### 1. PostgreSQL Timeout on Free Tier
-- **Impact:** Service crashes after DB inactivity
-- **Workaround:** None (requires paid tier or code changes)
-- **Fix:** Waiting for tier upgrade
-
-### 2. autoDeploy Disabled
-- **Impact:** Manual deploy required after merges
-- **Reason:** Prevent cascading deploys across services
-- **Action:** Use Render.com dashboard to deploy
-
----
-
-## For Next Session
-
-### If Upgrading to Paid Tier:
-1. Implement PostgreSQL retry logic in `Monolit-Planner/backend/src/db/postgres.js`
-2. Add connection keepalive settings
-3. Consider re-enabling autoDeploy for critical services
-
-### If Continuing on Free Tier:
-1. Document workarounds for cold start issues
-2. Consider implementing health check endpoints with DB warming
-3. Add graceful error handling to prevent crashes
-
----
-
-## Quick Reference
-
-**claude-mem Status Check:**
 ```bash
-curl -s http://localhost:37777/api/health
-# Expected: {"status":"ok"}
-```
-
-**Monolit-Planner API Health:**
-```bash
+# Проверить статус production
 curl -s https://monolit-planner-api.onrender.com/health
-```
 
-**Production URLs:**
-| Service | URL |
-|---------|-----|
-| Monolit Frontend | https://monolit-planner-frontend.onrender.com |
-| Monolit API | https://monolit-planner-api.onrender.com |
-| concrete-agent | https://concrete-agent.onrender.com |
-| URS Matcher | https://urs-matcher-service.onrender.com |
+# Локальная разработка
+cd Monolit-Planner
+npm install
+cd shared && npm run build && cd ..
+cd backend && npm run dev &
+cd ../frontend && npm run dev
+```
 
 ---
 
-**Last Updated:** 2025-12-17
+**Last Updated:** 2025-12-18
