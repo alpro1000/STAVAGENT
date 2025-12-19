@@ -585,8 +585,15 @@ export function extractConcreteOnlyM3(rawRows) {
       }
 
       // Create position
+      // IMPORTANT: part_name should be unique per concrete element to create separate sections
+      // Use truncated description as part_name, NOT "Beton C30/37" which groups all same-grade items together
+      let partName = descriptionCell;
+      if (partName.length > 60) {
+        partName = partName.substring(0, 57) + '...';
+      }
+
       const position = {
-        part_name: `Beton ${foundGrade}`,
+        part_name: partName,  // Unique per item - creates separate section in UI
         item_name: descriptionCell,
         subtype: 'beton',
         unit: 'M3',
