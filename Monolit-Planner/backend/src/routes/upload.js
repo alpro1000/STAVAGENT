@@ -253,11 +253,11 @@ router.post('/', upload.single('file'), async (req, res) => {
         ).get(bridgeId);
 
         if (!existingBridge) {
-          // Create bridge record
+          // Create bridge record with status='active' and project_name for proper sidebar display
           await db.prepare(`
-            INSERT INTO bridges (bridge_id, object_name, concrete_m3)
-            VALUES (?, ?, ?)
-          `).run(bridgeId, bridgeName, totalConcreteM3);
+            INSERT INTO bridges (bridge_id, object_name, concrete_m3, status, project_name)
+            VALUES (?, ?, ?, 'active', ?)
+          `).run(bridgeId, bridgeName, totalConcreteM3, fileMetadata.stavba || 'Import');
 
           // Create monolith_projects record
           await db.prepare(`
@@ -357,11 +357,13 @@ router.post('/', upload.single('file'), async (req, res) => {
 
         createdBridges.push({
           bridge_id: bridgeId,
+          project_name: fileMetadata.stavba || 'Import',  // Include project_name for frontend sidebar
           object_name: bridgeName,
           sheet_name: sheet.sheetName,
           concrete_m3: totalConcreteM3,
           positions_count: concretePositions.length,
-          positions_source: 'sheet_concrete_extractor'
+          positions_source: 'sheet_concrete_extractor',
+          status: 'active'  // Include status for frontend filtering
         });
 
       } catch (sheetError) {
