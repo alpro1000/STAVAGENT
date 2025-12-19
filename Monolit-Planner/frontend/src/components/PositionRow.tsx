@@ -232,11 +232,19 @@ export default function PositionRow({ position, isLocked = false }: Props) {
           min="0"
           className="input-cell"
           value={
-            // Calculate speed = qty / labor_hours (if labor_hours > 0)
-            // labor_hours = crew_size × shift_hours × days
-            (position.labor_hours && position.labor_hours > 0)
-              ? (getValue('qty') / position.labor_hours).toFixed(3)
-              : ''
+            // Calculate speed from CURRENT values (including edited ones)
+            // speed = qty / labor_hours, where labor_hours = crew_size × shift_hours × days
+            (() => {
+              const qty = getValue('qty');
+              const crewSize = getValue('crew_size');
+              const shiftHours = getValue('shift_hours');
+              const days = getValue('days');
+              const laborHours = crewSize * shiftHours * days;
+              if (laborHours > 0 && qty > 0) {
+                return parseFloat((qty / laborHours).toFixed(3));
+              }
+              return '';
+            })()
           }
           onChange={(e) => {
             const speedPerHour = parseFloat(e.target.value) || 0;
@@ -252,7 +260,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
 
               if (hoursPerDay > 0) {
                 const newDays = laborHoursNeeded / hoursPerDay;
-                handleFieldChange('days', Math.max(0, parseFloat(newDays.toFixed(2))));
+                handleFieldChange('days', Math.max(0.5, parseFloat(newDays.toFixed(1))));
               }
             }
           }}
