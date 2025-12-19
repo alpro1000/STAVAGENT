@@ -259,13 +259,16 @@ router.post('/', upload.single('file'), async (req, res) => {
             VALUES (?, ?, ?, 'active', ?)
           `).run(bridgeId, bridgeName, totalConcreteM3, fileMetadata.stavba || 'Import');
 
-          // Create monolith_projects record
+          // Create monolith_projects record with project_name and status for sidebar display
           await db.prepare(`
             INSERT INTO monolith_projects
-            (project_id, object_name, description, concrete_m3, owner_id)
-            VALUES (?, ?, ?, ?, ?)
-            ON CONFLICT (project_id) DO UPDATE SET concrete_m3 = excluded.concrete_m3
-          `).run(bridgeId, bridgeName, `Imported from: ${sheet.sheetName}`, totalConcreteM3, 1);
+            (project_id, project_name, object_name, description, concrete_m3, owner_id, status)
+            VALUES (?, ?, ?, ?, ?, ?, 'active')
+            ON CONFLICT (project_id) DO UPDATE SET
+              concrete_m3 = excluded.concrete_m3,
+              project_name = COALESCE(excluded.project_name, monolith_projects.project_name),
+              status = COALESCE(monolith_projects.status, 'active')
+          `).run(bridgeId, fileMetadata.stavba || 'Import', bridgeName, `Imported from: ${sheet.sheetName}`, totalConcreteM3, 1);
 
           logger.info(`[Upload] ✅ Created bridge: ${bridgeId} "${bridgeName}" (${totalConcreteM3.toFixed(2)} m³)`);
         } else {
