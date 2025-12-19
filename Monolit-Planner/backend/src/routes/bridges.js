@@ -7,8 +7,8 @@ import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { createSnapshot } from '../services/snapshot.js';
-import { BRIDGE_TEMPLATE_POSITIONS } from '../constants/bridgeTemplates.js';
-import { createDefaultPositions } from '../utils/positionDefaults.js';
+// NOTE: BRIDGE_TEMPLATE_POSITIONS and createDefaultPositions removed
+// Templates only used during Excel import (parser-driven)
 
 const router = express.Router();
 
@@ -81,7 +81,9 @@ router.get('/:bridge_id', async (req, res) => {
   }
 });
 
-// POST create new bridge manually (no auth - kiosk mode)
+// POST create new EMPTY bridge manually (no auth - kiosk mode)
+// User adds parts manually via "🏗️ Přidat část konstrukce"
+// Templates only used during Excel import (parser-driven)
 router.post('/', async (req, res) => {
   try {
     const { bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks } = req.body;
@@ -97,13 +99,13 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: `Bridge ${bridge_id} already exists` });
     }
 
-    // Insert new bridge with default owner_id
+    // Insert new EMPTY bridge (no templates)
     await db.prepare(`
-      INSERT INTO bridges (bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks, owner_id)
-      VALUES (?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO bridges (bridge_id, project_name, object_name, span_length_m, deck_width_m, pd_weeks, owner_id, status)
+      VALUES (?, ?, ?, ?, ?, ?, ?, 'active')
     `).run(
       bridge_id,
-      project_name || null,
+      project_name || 'Manual',
       object_name || bridge_id,
       span_length_m || null,
       deck_width_m || null,
@@ -111,41 +113,7 @@ router.post('/', async (req, res) => {
       ownerId
     );
 
-    // Create template positions with unified default values from utility
-    const templatePositions = BRIDGE_TEMPLATE_POSITIONS;
-    const defaultPositions = createDefaultPositions(templatePositions, bridge_id);
-
-    // Use transaction for atomic insert of all template positions
-    const insertMany = db.transaction((client) => {
-      const insertPosition = client.prepare(`
-        INSERT INTO positions (
-          id, bridge_id, part_name, item_name, subtype, unit,
-          qty, qty_m3_helper, crew_size, wage_czk_ph, shift_hours, days, otskp_code
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `);
-
-      defaultPositions.forEach((position) => {
-        insertPosition.run(
-          position.id,
-          position.bridge_id,
-          position.part_name,
-          position.item_name,
-          position.subtype,
-          position.unit,
-          position.qty,
-          position.qty_m3_helper,
-          position.crew_size,
-          position.wage_czk_ph,
-          position.shift_hours,
-          position.days,
-          position.otskp_code
-        );
-      });
-    });
-
-    insertMany();
-
-    logger.info(`Created new bridge: ${bridge_id} (${object_name}) with ${templatePositions.length} template positions`);
+    logger.info(`Created new empty bridge: ${bridge_id} (${object_name}) - add parts manually`);
     res.json({ success: true, bridge_id, object_name });
   } catch (error) {
     logger.error('Error creating bridge:', error);
