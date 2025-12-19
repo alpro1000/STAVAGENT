@@ -13,7 +13,7 @@
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
-import { createDefaultPositions } from '../utils/positionDefaults.js';
+// NOTE: createDefaultPositions removed - templates only used during Excel import (parser-driven)
 
 const router = express.Router();
 
@@ -67,7 +67,9 @@ router.get('/', async (req, res) => {
 
 /**
  * POST /api/monolith-projects
- * Create new project with default parts
+ * Create new EMPTY project (no templates auto-loaded)
+ * User adds parts manually via "🏗️ Přidat část konstrukce"
+ * Templates are only used during Excel import (parser-driven)
  *
  * Request body:
  * {
@@ -103,139 +105,39 @@ router.post('/', async (req, res) => {
       return res.status(409).json({ error: 'Project already exists' });
     }
 
-    // Get default templates (universal, not type-specific)
-    logger.info(`[CREATE PROJECT] 🔍 Loading default part templates...`);
-    const templates = await db.prepare(`
-      SELECT * FROM part_templates
-      WHERE is_default = true
-      ORDER BY display_order
-    `).all();
+    // ===== CREATE EMPTY PROJECT (no templates) =====
+    logger.info(`[CREATE PROJECT] Creating empty project (no templates)...`);
 
-    const templateCount = templates?.length || 0;
-    logger.info(`[CREATE PROJECT] Found ${templateCount} default templates`);
+    // Create project
+    const insertProjectSql = `
+      INSERT INTO monolith_projects (
+        project_id, project_name, object_name, owner_id, description
+      ) VALUES (?, ?, ?, ?, ?)
+    `;
 
-    if (templates && templates.length > 0) {
-      logger.debug(`[CREATE PROJECT] Template names: ${templates.map(t => t.part_name).join(', ')}`);
+    await db.prepare(insertProjectSql).run(
+      project_id,
+      project_name || '',
+      object_name || '',
+      ownerId,
+      description || ''
+    );
+    logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
+
+    // Create corresponding bridge entry for FK constraint compatibility
+    // The positions table still references bridges(bridge_id), so we need this entry
+    logger.info(`[CREATE PROJECT] Creating bridge entry for FK compatibility...`);
+    try {
+      await db.prepare(`
+        INSERT INTO bridges (bridge_id, object_name, status, project_name)
+        VALUES (?, ?, 'active', ?)
+        ON CONFLICT (bridge_id) DO NOTHING
+      `).run(project_id, object_name || project_id, project_name || 'Manual');
+      logger.info(`[CREATE PROJECT] ✓ Bridge entry created (FK compatibility)`);
+    } catch (bridgeError) {
+      // Non-fatal: bridge entry creation failed but project was created
+      logger.warn(`[CREATE PROJECT] ⚠️  Could not create bridge entry (non-fatal):`, bridgeError.message);
     }
-
-    // ===== TRANSACTION START =====
-    await db.transaction(async (client) => {
-      logger.info(`[CREATE PROJECT] Transaction started`);
-
-      // Create project
-      const insertProjectSql = `
-        INSERT INTO monolith_projects (
-          project_id, project_name, object_name, owner_id, description
-        ) VALUES (?, ?, ?, ?, ?)
-      `;
-
-      logger.info(`[CREATE PROJECT] Creating project in database...`);
-      await db.prepare(insertProjectSql).run(
-        project_id,
-        project_name || '',
-        object_name || '',
-        ownerId,
-        description || ''
-      );
-      logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
-
-      // VARIANT 1: Create corresponding bridge entry for FK constraint compatibility
-      // The positions table still references bridges(bridge_id), so we need this entry
-      // This is a legacy compatibility layer that will be removed when positions table is refactored
-      logger.info(`[CREATE PROJECT] Creating bridge entry for FK compatibility...`);
-      try {
-        await db.prepare(`
-          INSERT INTO bridges (bridge_id, object_name)
-          VALUES (?, ?)
-          ON CONFLICT (bridge_id) DO NOTHING
-        `).run(project_id, object_name || project_id);
-        logger.info(`[CREATE PROJECT] ✓ Bridge entry created (FK compatibility)`);
-      } catch (bridgeError) {
-        // Non-fatal: bridge entry creation failed but project was created
-        logger.warn(`[CREATE PROJECT] ⚠️  Could not create bridge entry (non-fatal):`, bridgeError.message);
-      }
-
-      // Create default parts from templates
-      // VARIANT 1: Deduplicate templates by part_name to avoid duplicate key errors
-      logger.info(`[CREATE PROJECT] Creating default parts from templates...`);
-
-      // Deduplicate templates by part_name (moved outside if block for proper scoping)
-      const seenPartNames = new Set();
-      const uniqueTemplates = templates.filter(t => {
-        if (seenPartNames.has(t.part_name)) {
-          logger.debug(`[CREATE PROJECT] Skipping duplicate template: ${t.part_name}`);
-          return false;
-        }
-        seenPartNames.add(t.part_name);
-        return true;
-      });
-
-      if (uniqueTemplates.length > 0) {
-        logger.info(`[CREATE PROJECT] Creating ${uniqueTemplates.length} unique parts (${templates.length} - ${templates.length - uniqueTemplates.length} duplicates)`);
-
-        try {
-          for (const template of uniqueTemplates) {
-            const partId = `${project_id}_${template.part_name}`;
-            logger.debug(`[CREATE PROJECT] Inserting part: ${partId}`);
-
-            await db.prepare(`
-              INSERT INTO parts (part_id, project_id, part_name, is_predefined)
-              VALUES (?, ?, ?, ?)
-              ON CONFLICT (part_id) DO NOTHING
-            `).run(partId, project_id, template.part_name, 1);
-          }
-          logger.info(`[CREATE PROJECT] ✓ Created ${uniqueTemplates.length} parts successfully`);
-        } catch (partsError) {
-          logger.error(`[CREATE PROJECT] ❌ Failed to create parts:`, partsError.message);
-          throw partsError; // Re-throw to rollback transaction
-        }
-      }
-
-      // Create default positions for each template part
-      logger.info(`[CREATE PROJECT] Creating default positions from unique templates...`);
-      if (uniqueTemplates.length > 0) {
-        try {
-          const defaultPositions = createDefaultPositions(uniqueTemplates, project_id);
-
-          if (defaultPositions && defaultPositions.length > 0) {
-            logger.info(`[CREATE PROJECT] Inserting ${defaultPositions.length} default positions`);
-            for (const pos of defaultPositions) {
-              logger.debug(`[CREATE PROJECT] Position: ${pos.id} (part: ${pos.part_name}, qty: ${pos.qty})`);
-
-              await db.prepare(`
-                INSERT INTO positions (
-                  id, bridge_id, part_name, item_name, subtype, unit,
-                  qty, crew_size, wage_czk_ph, shift_hours, days
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT (id) DO NOTHING
-              `).run(
-                pos.id,
-                pos.bridge_id,
-                pos.part_name,
-                pos.item_name,
-                pos.subtype,
-                pos.unit,
-                pos.qty,
-                pos.crew_size,
-                pos.wage_czk_ph,
-                pos.shift_hours,
-                pos.days
-              );
-            }
-            logger.info(`[CREATE PROJECT] ✓ Created ${defaultPositions.length} default positions`);
-          } else {
-            logger.warn(`[CREATE PROJECT] ⚠️  No default positions were generated from templates`);
-          }
-        } catch (posError) {
-          // Non-fatal: position creation failed but project/parts were created
-          logger.error(`[CREATE PROJECT] ❌ Position creation error (non-fatal):`, posError.message);
-          logger.error(`[CREATE PROJECT] Stack:`, posError.stack);
-        }
-      }
-
-      logger.info(`[CREATE PROJECT] Transaction committed`);
-    })(); // db.transaction() handles BEGIN/COMMIT/ROLLBACK automatically
-    // ===== TRANSACTION END =====
 
     // Fetch created project
     const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
@@ -250,7 +152,7 @@ router.post('/', async (req, res) => {
       });
     }
 
-    logger.info(`[CREATE PROJECT] ✅ SUCCESS - Project ${project_id} created with ${templateCount} parts`);
+    logger.info(`[CREATE PROJECT] ✅ SUCCESS - Empty project ${project_id} created (add parts manually)`);
 
     return res.status(201).json({
       ...project,
