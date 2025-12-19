@@ -313,7 +313,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         const speed = laborHours > 0 ? (pos.qty || 0) / laborHours : 0;
 
         const rowData = [
-          pos.subtype,           // A: Podtyp
+          pos.subtype === 'jiné' ? (pos.item_name || 'jiné') : pos.subtype,  // A: Podtyp (custom name for "jiné")
           pos.unit,              // B: MJ
           pos.qty,               // C: Množství
           pos.crew_size,         // D: Lidi
