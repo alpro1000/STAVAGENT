@@ -17,6 +17,15 @@ export function usePositions(bridgeId: string | null) {
   // Note: bridgeId may be null initially, before user selects a bridge
   // This is normal and not an error condition
 
+  // CRITICAL FIX: Clear positions when bridge changes to avoid showing stale data
+  // This ensures the UI shows loading state while fetching new positions
+  useEffect(() => {
+    // When bridgeId changes, clear current positions immediately
+    // New positions will be set when query.data arrives
+    setPositions([]);
+    setHeaderKPI(null);
+  }, [bridgeId, setPositions, setHeaderKPI]);
+
   const query = useQuery({
     queryKey: ['positions', bridgeId, showOnlyRFI],
     queryFn: async () => {
@@ -27,8 +36,8 @@ export function usePositions(bridgeId: string | null) {
       return await positionsAPI.getForBridge(bridgeId, !showOnlyRFI);
     },
     enabled: !!bridgeId,
-    staleTime: 10 * 60 * 1000, // Cache for 10 minutes - reduced API load
-    refetchOnMount: false, // Don't refetch when component remounts
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes (reduced from 10)
+    refetchOnMount: true, // ALWAYS refetch when component remounts to get fresh data
     refetchOnWindowFocus: false, // Don't refetch when window regains focus
     // refetchOnReconnect defaults to true - important for recovering from network issues
     retry: 3, // Retry failed requests 3 times
@@ -36,7 +45,7 @@ export function usePositions(bridgeId: string | null) {
     gcTime: 30 * 60 * 1000 // Keep in cache for 30 minutes before garbage collection
   });
 
-  // Sync context with query data
+  // Sync context with query data when it arrives
   useEffect(() => {
     if (query.data) {
       setPositions(query.data.positions);
