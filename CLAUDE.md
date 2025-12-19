@@ -2,13 +2,13 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.6
-**Last Updated:** 2025-12-18
+**Version:** 1.0.7
+**Last Updated:** 2025-12-19
 **Repository:** STAVAGENT (Monorepo)
 
-**⭐ NEW (2025-12-18):** Monolit Planner UI Fixes - Sidebar import refresh + Custom work name display
+**⭐ NEW (2025-12-19):** Security fixes (SQL injection, JSON.parse) + Speed column (MJ/h) for Monolit Planner
+**⭐ PREVIOUS (2025-12-18):** Monolit Planner UI Fixes - Sidebar import refresh + Custom work name display
 **⭐ PREVIOUS (2025-12-17):** claude-mem Plugin Installation + PostgreSQL Timeout Analysis
-**⭐ PREVIOUS (2025-12-16):** Excel Import Fixes - PostgreSQL compatibility, quantity detection scoring system
 
 ---
 
@@ -291,7 +291,35 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-17)
+## Current Status (2025-12-19)
+
+### ✅ COMPLETED: Security Fixes + Speed Column (2025-12-19)
+**Branch:** `claude/fix-sidebar-custom-work-hbtGl` (готов к merge)
+
+**Security Fixes:**
+| Проблема | Файл | Исправление |
+|----------|------|-------------|
+| SQL Injection | `positions.js:19-23` | Whitelist `ALLOWED_UPDATE_FIELDS` |
+| JSON.parse crash | `positions.js:101-106, 233-238, 363-368` | try/catch с fallback |
+
+**New Feature: Speed Column (MJ/h)**
+- Колонка "MJ/h" между "Dny" и "Celk.hod."
+- Формула: `Rychlost = Množství / Celkové_hodiny`
+- Двунаправленный расчёт: ввёл норму → пересчёт дней, ввёл дни → расчёт нормы
+
+**Commits:**
+| Commit | Description |
+|--------|-------------|
+| `3a84cb1` | SEC: SQL injection fix + JSON.parse try/catch |
+| `3df7183` | FEAT: Add speed column (MJ/h) |
+| `2fb938b` | FIX: Change speed to MJ/hour (standard norm) |
+
+**Обсуждённые идеи (не реализованы):**
+- Дизайн "Digital Concrete / Brutal-Neumo" — спецификация готова
+- LLM интеграция — AI подсказка норм (флаг `FF_AI_DAYS_SUGGEST` есть)
+- Мобильная версия — рекомендация PWA + dashboard
+
+---
 
 ### ⚠️ KNOWN ISSUE: PostgreSQL Connection Timeout (2025-12-17)
 **Root Cause:** Render.com free tier PostgreSQL "sleeps" after ~15 minutes of inactivity.
@@ -602,11 +630,13 @@ REDIS_URL=redis://...
 
 ## 📖 Session Documentation
 
-**Current Session (2025-12-18):** See `/NEXT_SESSION.md` for:
-- Monolit Planner UI fixes (sidebar refresh, custom work name)
-- Testing instructions for the fixes
+**Current Session (2025-12-19):** See `/NEXT_SESSION.md` for:
+- Security fixes (SQL injection, JSON.parse)
+- Speed column (MJ/h) for Monolit Planner
+- Обсуждённые идеи: Brutal-Neumo дизайн, LLM интеграция, мобильная версия
 
 **Previous Sessions:**
+- **2025-12-19:** Security fixes + Speed column (MJ/h) + дизайн/LLM/mobile обсуждение
 - **2025-12-18:** Monolit Planner UI fixes (sidebar import refresh, custom work name)
 - **2025-12-17:** Repository cleanup, render.yaml fixes, URL encoding, claude-mem hooks reinstallation
 - **2025-12-16:** Excel Import Fixes, PostgreSQL compatibility
