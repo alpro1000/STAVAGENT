@@ -252,6 +252,10 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       groupedPositions[pos.part_name].push(pos);
     });
 
+    // Column layout:
+    // A: Podtyp, B: MJ, C: Množství, D: Lidi, E: Kč/hod, F: Hod/den, G: Dny
+    // H: MJ/h (speed formula), I: Hod celkem (formula), J: Kč celkem (formula)
+    // K: Kč/m³, L: Objem m³, M: KROS JC, N: KROS celkem (formula), O: RFI
     const positionHeaders = [
       'Podtyp',
       'MJ',
@@ -259,7 +263,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       'Lidi',
       'Kč/hod',
       'Hod/den',
-      'Den',
+      'Dny',
+      'MJ/h',        // NEW: Speed column (qty / labor_hours)
       'Hod celkem',
       'Kč celkem',
       'Kč/m³ ⭐',
@@ -298,23 +303,31 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       });
 
       // Data rows with formulas
+      // Column indices (1-based):
+      // A=1:Podtyp, B=2:MJ, C=3:Množství, D=4:Lidi, E=5:Kč/hod, F=6:Hod/den, G=7:Dny
+      // H=8:MJ/h, I=9:Hod celkem, J=10:Kč celkem, K=11:Kč/m³, L=12:Objem m³
+      // M=13:KROS JC, N=14:KROS celkem, O=15:RFI
       partPositions.forEach((pos, posIndex) => {
         const rowNumber = detailSheet.lastRow.number + 1;
+        const laborHours = (pos.crew_size || 0) * (pos.shift_hours || 0) * (pos.days || 0);
+        const speed = laborHours > 0 ? (pos.qty || 0) / laborHours : 0;
+
         const rowData = [
-          pos.subtype,
-          pos.unit,
-          pos.qty,  // Column C: Quantity (raw value, not formatted)
-          pos.crew_size,  // Column D: Crew size
-          pos.wage_czk_ph,  // Column E: Wage per hour
-          pos.shift_hours,  // Column F: Shift hours
-          pos.days,  // Column G: Days
-          null,  // Column H: Labor hours (will be formula)
-          null,  // Column I: Cost CZK (will be formula)
-          pos.unit_cost_on_m3,  // Column J: Unit cost on m3
-          pos.concrete_m3,  // Column K: Concrete volume m³ (CRITICAL for KROS formula)
-          pos.kros_unit_czk,  // Column L: KROS unit
-          null,  // Column M: KROS total (will be formula)
-          pos.has_rfi ? (pos.rfi_message || '⚠️ RFI') : ''  // Column N: RFI
+          pos.subtype,           // A: Podtyp
+          pos.unit,              // B: MJ
+          pos.qty,               // C: Množství
+          pos.crew_size,         // D: Lidi
+          pos.wage_czk_ph,       // E: Kč/hod
+          pos.shift_hours,       // F: Hod/den
+          pos.days,              // G: Dny
+          null,                  // H: MJ/h (formula)
+          null,                  // I: Hod celkem (formula)
+          null,                  // J: Kč celkem (formula)
+          pos.unit_cost_on_m3,   // K: Kč/m³
+          pos.concrete_m3,       // L: Objem m³
+          pos.kros_unit_czk,     // M: KROS JC
+          null,                  // N: KROS celkem (formula)
+          pos.has_rfi ? (pos.rfi_message || '⚠️ RFI') : ''  // O: RFI
         ];
 
         const dataRow = detailSheet.addRow(rowData);
@@ -341,49 +354,62 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
           // Format numbers with proper alignment and number format
           if (colNumber === 3) {
-            // Quantity column - format as number with 2 decimals
+            // C: Množství - 2 decimals
             cell.numFmt = '0.00';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
           } else if (colNumber === 4) {
-            // Crew size - integer
+            // D: Lidi - integer
             cell.numFmt = '0';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 5 || colNumber === 10 || colNumber === 12) {
-            // Wage, unit cost on m3, KROS unit - currency format
+          } else if (colNumber === 5 || colNumber === 11 || colNumber === 13) {
+            // E: Kč/hod, K: Kč/m³, M: KROS JC - currency format
             cell.numFmt = '#,##0.00';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 6 || colNumber === 7 || colNumber === 8 || colNumber === 9 || colNumber === 11) {
-            // Hours, days, labor hours, cost, concrete volume - number format
+          } else if (colNumber === 6 || colNumber === 7 || colNumber === 12) {
+            // F: Hod/den, G: Dny, L: Objem m³ - 2 decimals
             cell.numFmt = '0.00';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 13) {
-            // KROS total - currency format
+          } else if (colNumber === 8) {
+            // H: MJ/h (speed) - 3 decimals for precision
+            cell.numFmt = '0.000';
+            cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          } else if (colNumber === 9 || colNumber === 10) {
+            // I: Hod celkem, J: Kč celkem - 2 decimals
+            cell.numFmt = '0.00';
+            cell.alignment = { vertical: 'middle', horizontal: 'right' };
+          } else if (colNumber === 14) {
+            // N: KROS celkem - currency format
             cell.numFmt = '#,##0.00';
             cell.alignment = { vertical: 'middle', horizontal: 'right' };
           } else {
-            // Text columns
+            // Text columns (A, B, O)
             cell.alignment = { vertical: 'middle', horizontal: 'left' };
           }
         });
 
         // Add formulas for calculated columns
-        // H: Labor hours = D * F * G (crew_size * shift_hours * days)
+        // H: MJ/h (speed) = C / I (qty / labor_hours), with error handling for div/0
         dataRow.getCell(8).value = {
-          formula: `D${rowNumber}*F${rowNumber}*G${rowNumber}`,
-          result: pos.crew_size * pos.shift_hours * pos.days
+          formula: `IF(I${rowNumber}>0,C${rowNumber}/I${rowNumber},0)`,
+          result: speed
         };
 
-        // I: Cost CZK = E * H (wage_czk_ph * labor_hours)
+        // I: Hod celkem = D * F * G (crew_size * shift_hours * days)
         dataRow.getCell(9).value = {
-          formula: `E${rowNumber}*H${rowNumber}`,
-          result: pos.wage_czk_ph * (pos.crew_size * pos.shift_hours * pos.days)
+          formula: `D${rowNumber}*F${rowNumber}*G${rowNumber}`,
+          result: laborHours
         };
 
-        // M: KROS total = L * K (kros_unit_czk * concrete_m3) - CRITICAL FIX!
-        // This is the correct formula from calculateKrosTotalCZK in formulas.ts
-        dataRow.getCell(13).value = {
-          formula: `L${rowNumber}*K${rowNumber}`,
-          result: pos.kros_unit_czk * pos.concrete_m3
+        // J: Kč celkem = E * I (wage_czk_ph * labor_hours)
+        dataRow.getCell(10).value = {
+          formula: `E${rowNumber}*I${rowNumber}`,
+          result: (pos.wage_czk_ph || 0) * laborHours
+        };
+
+        // N: KROS celkem = M * L (kros_unit_czk * concrete_m3)
+        dataRow.getCell(14).value = {
+          formula: `M${rowNumber}*L${rowNumber}`,
+          result: (pos.kros_unit_czk || 0) * (pos.concrete_m3 || 0)
         };
 
         // Highlight RFI rows
@@ -403,24 +429,27 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     });
 
     // Add totals row
+    // Column layout: A:Podtyp, B:MJ, C:Množství, D:Lidi, E:Kč/hod, F:Hod/den, G:Dny
+    // H:MJ/h, I:Hod celkem, J:Kč celkem, K:Kč/m³, L:Objem m³, M:KROS JC, N:KROS celkem, O:RFI
     if (firstDataRow !== null && lastDataRow !== null) {
       detailSheet.addRow([]); // Empty row before totals
 
       const totalsRow = detailSheet.addRow([
-        'CELKEM / TOTAL', // Column A
-        '', // Column B
-        null, // Column C: Sum qty (if needed)
-        '', // Column D
-        '', // Column E
-        '', // Column F
-        '', // Column G
-        null, // Column H: Sum labor hours
-        null, // Column I: Sum cost CZK
-        '', // Column J
-        '', // Column K: (concrete_m3 - not summed)
-        '', // Column L
-        null, // Column M: Sum KROS total
-        ''  // Column N: RFI
+        'CELKEM / TOTAL', // A
+        '',               // B
+        null,             // C: Sum qty
+        '',               // D
+        '',               // E
+        '',               // F
+        '',               // G
+        '',               // H: MJ/h (average would need special formula)
+        null,             // I: Sum labor hours
+        null,             // J: Sum cost CZK
+        '',               // K
+        null,             // L: Sum concrete m³
+        '',               // M
+        null,             // N: Sum KROS total
+        ''                // O: RFI
       ]);
 
       const totalRowNumber = totalsRow.number;
@@ -435,7 +464,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         };
         applyBorders(cell);
 
-        if (colNumber >= 3 && colNumber <= 13) {
+        if (colNumber >= 3 && colNumber <= 14) {
           cell.alignment = { vertical: 'middle', horizontal: 'right' };
         } else {
           cell.alignment = { vertical: 'middle', horizontal: 'left' };
@@ -443,23 +472,35 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       });
 
       // Add SUM formulas for totals row
-      // H: Sum of labor hours
-      totalsRow.getCell(8).value = {
-        formula: `SUM(H${firstDataRow}:H${lastDataRow})`
+      // C: Sum of qty
+      totalsRow.getCell(3).value = {
+        formula: `SUM(C${firstDataRow}:C${lastDataRow})`
       };
-      totalsRow.getCell(8).numFmt = '0.00';
+      totalsRow.getCell(3).numFmt = '0.00';
 
-      // I: Sum of cost CZK
+      // I: Sum of labor hours
       totalsRow.getCell(9).value = {
         formula: `SUM(I${firstDataRow}:I${lastDataRow})`
       };
-      totalsRow.getCell(9).numFmt = '#,##0.00';
+      totalsRow.getCell(9).numFmt = '0.00';
 
-      // M: Sum of KROS total (CRITICAL FIX: using correct column M instead of L)
-      totalsRow.getCell(13).value = {
-        formula: `SUM(M${firstDataRow}:M${lastDataRow})`
+      // J: Sum of cost CZK
+      totalsRow.getCell(10).value = {
+        formula: `SUM(J${firstDataRow}:J${lastDataRow})`
       };
-      totalsRow.getCell(13).numFmt = '#,##0.00';
+      totalsRow.getCell(10).numFmt = '#,##0.00';
+
+      // L: Sum of concrete m³
+      totalsRow.getCell(12).value = {
+        formula: `SUM(L${firstDataRow}:L${lastDataRow})`
+      };
+      totalsRow.getCell(12).numFmt = '0.00';
+
+      // N: Sum of KROS total
+      totalsRow.getCell(14).value = {
+        formula: `SUM(N${firstDataRow}:N${lastDataRow})`
+      };
+      totalsRow.getCell(14).numFmt = '#,##0.00';
     }
 
     // Auto-fit columns based on content (using smart algorithm)
