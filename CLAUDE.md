@@ -2,13 +2,13 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.7
-**Last Updated:** 2025-12-19
+**Version:** 1.0.8
+**Last Updated:** 2025-12-23
 **Repository:** STAVAGENT (Monorepo)
 
-**⭐ NEW (2025-12-19):** Security fixes (SQL injection, JSON.parse) + Speed column (MJ/h) for Monolit Planner
-**⭐ PREVIOUS (2025-12-18):** Monolit Planner UI Fixes - Sidebar import refresh + Custom work name display
-**⭐ PREVIOUS (2025-12-17):** claude-mem Plugin Installation + PostgreSQL Timeout Analysis
+**NEW (2025-12-23):** Import/Bridge switch fix + Template auto-loading removed + Excel export fix + Speed column live recalculation
+**PREVIOUS (2025-12-19):** Security fixes (SQL injection, JSON.parse) + Speed column (MJ/h) for Monolit Planner
+**PREVIOUS (2025-12-18):** Monolit Planner UI Fixes - Sidebar import refresh + Custom work name display
 
 ---
 
@@ -291,28 +291,50 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-19)
+## Current Status (2025-12-23)
+
+### ✅ COMPLETED: Import/Bridge Switch Fix + Multiple Improvements (2025-12-23)
+**Branch:** `claude/update-docs-merge-IttbI`
+
+**Fixes Applied:**
+
+| Commit | Description |
+|--------|-------------|
+| `c99ac46` | FEAT: Remove template auto-loading on manual project/bridge creation |
+| `be1ebdd` | FIX: Excel export - show custom name for 'jiné' instead of generic label |
+| `ca7c9cb` | FIX: Speed (MJ/h) now editable with live recalculation |
+| `e87ad10` | FIX: Import + bridge switch issue - positions now load correctly |
+
+**Key Changes:**
+
+1. **Template Auto-loading Removed:**
+   - Manual project creation now creates empty projects
+   - Templates only used during Excel import (parser-driven)
+   - Code reduction: -180 lines across `monolith-projects.js` and `bridges.js`
+
+2. **Import/Bridge Switch Fix (Critical):**
+   - Added `project_name` and `status` to `monolith_projects` INSERT
+   - Added useEffect to clear positions when bridge changes
+   - Changed `refetchOnMount: false` → `true` in usePositions
+   - Reduced staleTime from 10min to 5min
+
+3. **Excel Export Fix:**
+   - Custom work "jiné" now shows user-entered name instead of generic "jiné"
+
+4. **Speed Column Live Recalculation:**
+   - Speed now calculates from CURRENT edited values, not stale server data
+   - Bidirectional: edit speed → days recalculate, edit days → speed recalculates
+
+---
 
 ### ✅ COMPLETED: Security Fixes + Speed Column (2025-12-19)
-**Branch:** `claude/fix-sidebar-custom-work-hbtGl` (готов к merge)
+**Branch:** `claude/fix-sidebar-custom-work-hbtGl` (merged)
 
 **Security Fixes:**
 | Проблема | Файл | Исправление |
 |----------|------|-------------|
 | SQL Injection | `positions.js:19-23` | Whitelist `ALLOWED_UPDATE_FIELDS` |
 | JSON.parse crash | `positions.js:101-106, 233-238, 363-368` | try/catch с fallback |
-
-**New Feature: Speed Column (MJ/h)**
-- Колонка "MJ/h" между "Dny" и "Celk.hod."
-- Формула: `Rychlost = Množství / Celkové_hodiny`
-- Двунаправленный расчёт: ввёл норму → пересчёт дней, ввёл дни → расчёт нормы
-
-**Commits:**
-| Commit | Description |
-|--------|-------------|
-| `3a84cb1` | SEC: SQL injection fix + JSON.parse try/catch |
-| `3df7183` | FEAT: Add speed column (MJ/h) |
-| `2fb938b` | FIX: Change speed to MJ/hour (standard norm) |
 
 **Обсуждённые идеи (не реализованы):**
 - Дизайн "Digital Concrete / Brutal-Neumo" — спецификация готова
@@ -630,12 +652,14 @@ REDIS_URL=redis://...
 
 ## 📖 Session Documentation
 
-**Current Session (2025-12-19):** See `/NEXT_SESSION.md` for:
-- Security fixes (SQL injection, JSON.parse)
-- Speed column (MJ/h) for Monolit Planner
-- Обсуждённые идеи: Brutal-Neumo дизайн, LLM интеграция, мобильная версия
+**Current Session (2025-12-23):** See `/NEXT_SESSION.md` for:
+- Import/Bridge switch fix (critical bug)
+- Template auto-loading removed on manual creation
+- Excel export fix for "jiné" custom names
+- Speed column (MJ/h) live recalculation
 
 **Previous Sessions:**
+- **2025-12-23:** Import/Bridge switch fix + Template removal + Excel export fix + Speed live recalc
 - **2025-12-19:** Security fixes + Speed column (MJ/h) + дизайн/LLM/mobile обсуждение
 - **2025-12-18:** Monolit Planner UI fixes (sidebar import refresh, custom work name)
 - **2025-12-17:** Repository cleanup, render.yaml fixes, URL encoding, claude-mem hooks reinstallation
