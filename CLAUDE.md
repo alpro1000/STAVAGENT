@@ -2,13 +2,13 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.8
-**Last Updated:** 2025-12-23
+**Version:** 1.0.9
+**Last Updated:** 2025-12-25
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2025-12-23):** Import/Bridge switch fix + Template auto-loading removed + Excel export fix + Speed column live recalculation
+**NEW (2025-12-25):** Git Hooks (Husky) + Production build fixes (TypeScript + prepare script)
+**PREVIOUS (2025-12-23):** Import/Bridge switch fix + Template auto-loading removed + Excel export fix + Speed column live recalculation
 **PREVIOUS (2025-12-19):** Security fixes (SQL injection, JSON.parse) + Speed column (MJ/h) for Monolit Planner
-**PREVIOUS (2025-12-18):** Monolit Planner UI Fixes - Sidebar import refresh + Custom work name display
 
 ---
 
@@ -291,7 +291,48 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-23)
+## Current Status (2025-12-25)
+
+### ✅ COMPLETED: Git Hooks Implementation + Production Build Fixes (2025-12-25)
+**Branch:** `claude/fix-import-bridge-excel-5qHJV`
+
+**Commits:**
+
+| Commit | Description |
+|--------|-------------|
+| `a1ba4ff` | FEAT: Add pre-commit hooks with husky for automated testing |
+| `a47a538` | FIX: Make pre-push hook POSIX-compatible and run only critical tests |
+| `8a7f020` | FIX: Production build errors - Husky prepare script and TypeScript test types |
+
+**Key Changes:**
+
+1. **Husky Git Hooks:**
+   - Installed husky v9.1.7 for automated testing
+   - Pre-commit hook runs 34 critical formula tests (~470ms)
+   - Pre-push hook validates branch naming + runs tests
+   - POSIX-compatible (uses `case` instead of `[[]]`)
+   - Backend integration tests deferred (require test database)
+
+2. **Production Build Fixes:**
+   - Fixed husky prepare script: `"husky || true"` (was failing in production)
+   - Fixed TypeScript errors: 14 type assertions changed to `as unknown as Position`
+   - TypeScript compilation now succeeds
+   - Production builds no longer fail
+
+**Testing:**
+- ✅ 34/34 critical formula tests passing
+- ✅ Pre-commit hook working correctly
+- ✅ Pre-push hook working correctly
+- ✅ Ready for production deployment
+
+**Files:**
+- `.husky/pre-commit` - Pre-commit hook
+- `.husky/pre-push` - Pre-push hook
+- `package.json` - Root monorepo config (prepare script fixed)
+- `Monolit-Planner/package.json` - Prepare script fixed
+- `Monolit-Planner/shared/src/formulas.test.ts` - Type assertions fixed
+
+---
 
 ### ✅ COMPLETED: Import/Bridge Switch Fix + Multiple Improvements (2025-12-23)
 **Branch:** `claude/update-docs-merge-IttbI`
