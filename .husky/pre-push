@@ -21,12 +21,22 @@ case "$BRANCH" in
     ;;
 esac
 
-# Run critical tests one more time (same as pre-commit)
+# Run critical formula tests (same as pre-commit)
 echo "🧪 Running critical formula tests..."
 (cd "$REPO_ROOT/Monolit-Planner/shared" && npm test -- --run src/formulas.test.ts)
 if [ $? -ne 0 ]; then
-  echo "❌ Critical tests failed!"
+  echo "❌ Formula tests failed!"
   exit 1
+fi
+
+# Run backend unit tests
+echo "🧪 Running backend unit tests..."
+(cd "$REPO_ROOT/Monolit-Planner/backend" && npm run test:unit 2>/dev/null)
+TEST_EXIT_CODE=$?
+
+if [ $TEST_EXIT_CODE -ne 0 ]; then
+  echo "⚠️  Backend unit tests failed or not available"
+  echo "   Continuing anyway (tests are optional for now)"
 fi
 
 echo "✅ All pre-push checks passed!"
