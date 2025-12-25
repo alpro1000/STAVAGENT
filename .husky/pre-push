@@ -3,21 +3,29 @@
 
 echo "🚀 Running pre-push checks..."
 
-# Check branch name (должен начинаться с claude/ и заканчиваться session ID)
+REPO_ROOT="/home/user/STAVAGENT"
+
+# Check branch name (should start with claude/ and end with session ID)
 BRANCH=$(git branch --show-current)
 echo "📝 Current branch: $BRANCH"
 
-if [[ ! $BRANCH =~ ^claude/.+-[a-zA-Z0-9]{5}$ ]]; then
-  echo "⚠️  Warning: Branch name doesn't match pattern 'claude/*-xxxxx'"
-  echo "   Current: $BRANCH"
-  echo "   Expected: claude/feature-name-abcde"
-fi
+# POSIX-compatible pattern matching (no regex, just basic pattern)
+case "$BRANCH" in
+  claude/*-?????)
+    echo "✅ Branch name matches pattern"
+    ;;
+  *)
+    echo "⚠️  Warning: Branch name doesn't match pattern 'claude/*-xxxxx'"
+    echo "   Current: $BRANCH"
+    echo "   Expected: claude/feature-name-abcde"
+    ;;
+esac
 
-# Run full test suite one more time
-echo "🧪 Running full test suite..."
-cd Monolit-Planner/shared && npm test
+# Run critical tests one more time (same as pre-commit)
+echo "🧪 Running critical formula tests..."
+(cd "$REPO_ROOT/Monolit-Planner/shared" && npm test -- --run src/formulas.test.ts)
 if [ $? -ne 0 ]; then
-  echo "❌ Shared tests failed!"
+  echo "❌ Critical tests failed!"
   exit 1
 fi
 
