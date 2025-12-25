@@ -12,7 +12,6 @@ import { dirname, join } from 'path';
 import fs from 'fs';
 
 // Routes
-import authRoutes from './src/routes/auth.js';
 import uploadRoutes from './src/routes/upload.js';
 import positionsRoutes from './src/routes/positions.js';
 import bridgesRoutes from './src/routes/bridges.js';
@@ -23,7 +22,6 @@ import mappingRoutes from './src/routes/mapping.js';
 import configRoutes from './src/routes/config.js';
 import snapshotsRoutes from './src/routes/snapshots.js';
 import otskpRoutes from './src/routes/otskp.js';
-import adminRoutes from './src/routes/admin.js';
 import documentsRoutes from './src/routes/documents.js';
 import sheathingRoutes from './src/routes/sheathing.js';
 import debugRoutes from './src/routes/debug.js';
@@ -35,7 +33,6 @@ import { logger } from './src/utils/logger.js';
 import { schedulePeriodicCleanup } from './src/utils/fileCleanup.js';
 
 // Middleware
-import { requireAuth } from './src/middleware/auth.js';
 import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter } from './src/middleware/rateLimiter.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -127,13 +124,6 @@ app.get('/health', (req, res) => {
 });
 
 // API Routes
-// Auth routes (no auth required for login/register)
-app.use('/api/auth', authLimiter, authRoutes);
-
-// Admin routes (requires authentication + admin role)
-app.use('/api/admin', adminRoutes);
-
-// Protected routes (authentication will be applied within each route handler)
 app.use('/api/upload', uploadLimiter, uploadRoutes);
 app.use('/api/positions', positionsRoutes);
 app.use('/api/bridges', bridgesRoutes);
@@ -146,7 +136,14 @@ app.use('/api/snapshots', snapshotsRoutes);
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
 app.use('/api/documents', uploadLimiter, documentsRoutes);
 app.use('/api/sheathing', sheathingRoutes);
-app.use('/api/debug', debugRoutes); // 🚨 DEBUG ONLY - disable in production
+
+// DEBUG routes - ONLY enabled in development
+if (process.env.NODE_ENV !== 'production') {
+  app.use('/api/debug', debugRoutes);
+  logger.info('🐛 DEBUG routes enabled (development mode)');
+} else {
+  logger.info('🔒 DEBUG routes disabled (production mode)');
+}
 
 // 404 handler
 app.use((req, res) => {

@@ -16,7 +16,6 @@ import { randomUUID } from 'crypto';
 import path from 'path';
 import fs from 'fs';
 import db from '../db/init.js';
-import { requireAuth } from '../middleware/auth.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
 import { logger } from '../utils/logger.js';
 
@@ -69,7 +68,7 @@ const upload = multer({
  * POST /api/documents/upload
  * Upload file and start analysis with CORE Engine
  */
-router.post('/upload', requireAuth, upload.single('file'), async (req, res) => {
+router.post('/upload', upload.single('file'), async (req, res) => {
   const documentId = randomUUID();
 
   try {
@@ -78,7 +77,7 @@ router.post('/upload', requireAuth, upload.single('file'), async (req, res) => {
     }
 
     const { project_id, analysis_type } = req.body;
-    const userId = req.user.id;
+    const userId = 1; // Kiosk mode - no auth
 
     // Validate project exists and user owns it
     if (!project_id) {
@@ -141,7 +140,7 @@ router.post('/upload', requireAuth, upload.single('file'), async (req, res) => {
   } catch (error) {
     logger.error('[Documents] Upload error', {
       error: error.message,
-      userId: req.user.id
+      userId: 1
     });
 
     // Clean up uploaded file if there was an error
@@ -161,10 +160,10 @@ router.post('/upload', requireAuth, upload.single('file'), async (req, res) => {
  * GET /api/documents/:id
  * Get document details and current analysis status
  */
-router.get('/:id', requireAuth, async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = req.user.id;
+    const userId = 1; // Kiosk mode - no auth
 
     // Get document
     const document = await db.prepare(`
@@ -219,10 +218,10 @@ router.get('/:id', requireAuth, async (req, res) => {
  * GET /api/documents/:id/analysis
  * Get detailed analysis results
  */
-router.get('/:id/analysis', requireAuth, async (req, res) => {
+router.get('/:id/analysis', async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = req.user.id;
+    const userId = 1; // Kiosk mode - no auth
 
     // Verify user owns the document
     const document = await db.prepare(`
@@ -269,10 +268,10 @@ router.get('/:id/analysis', requireAuth, async (req, res) => {
  * POST /api/documents/:id/confirm
  * User confirms analysis, create work list from results
  */
-router.post('/:id/confirm', requireAuth, async (req, res) => {
+router.post('/:id/confirm', async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = req.user.id;
+    const userId = 1; // Kiosk mode - no auth
     const { title, description } = req.body;
 
     // Verify user owns the document
@@ -353,10 +352,10 @@ router.post('/:id/confirm', requireAuth, async (req, res) => {
  * DELETE /api/documents/:id
  * Delete document and associated analysis
  */
-router.delete('/:id', requireAuth, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const userId = req.user.id;
+    const userId = 1; // Kiosk mode - no auth
 
     // Get document
     const document = await db.prepare(`
@@ -393,10 +392,10 @@ router.delete('/:id', requireAuth, async (req, res) => {
  * GET /api/documents
  * List documents for a project
  */
-router.get('/', requireAuth, async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     const { project_id } = req.query;
-    const userId = req.user.id;
+    const userId = 1; // Kiosk mode - no auth
 
     if (!project_id) {
       return res.status(400).json({ error: 'project_id query parameter is required' });
