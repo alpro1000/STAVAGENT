@@ -1,0 +1,28 @@
+#!/bin/sh
+# Husky pre-commit hook - Run tests before commit
+
+echo "🔍 Running pre-commit checks..."
+
+REPO_ROOT="/home/user/STAVAGENT"
+
+# Run tests in shared package (critical formulas) - ONLY CRITICAL TESTS
+echo "📊 Testing shared formulas (critical business logic)..."
+(cd "$REPO_ROOT/Monolit-Planner/shared" && npm test -- --run src/formulas.test.ts)
+SHARED_EXIT=$?
+
+# Backend integration tests skipped (require test database setup)
+# TODO: Add backend tests when test database is configured
+
+# Check exit codes
+if [ $SHARED_EXIT -ne 0 ]; then
+  echo ""
+  echo "❌ Critical formula tests failed!"
+  echo "   Fix formulas.test.ts before committing."
+  echo "   Run: cd Monolit-Planner/shared && npm test"
+  echo ""
+  echo "To bypass (use sparingly): git commit --no-verify"
+  exit 1
+fi
+
+echo "✅ All critical tests passed!"
+exit 0
