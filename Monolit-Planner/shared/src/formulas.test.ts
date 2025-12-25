@@ -137,7 +137,7 @@ describe('Weighted Average', () => {
       crew_size: 10,
       concrete_m3: 100,
       wage_czk_ph: 200
-    } as Position,
+    } as unknown as Position,
     {
       position_id: '2',
       bridge_id: 'test',
@@ -146,7 +146,7 @@ describe('Weighted Average', () => {
       crew_size: 5,
       concrete_m3: 50,
       wage_czk_ph: 180
-    } as Position
+    } as unknown as Position
   ];
 
   it('should calculate weighted average crew size', () => {
@@ -176,7 +176,7 @@ describe('Weighted Average', () => {
         crew_size: 999,
         concrete_m3: 0,  // Zero weight - should be skipped
         wage_czk_ph: 999
-      } as Position
+      } as unknown as Position
     ];
 
     const avg = calculateWeightedAverage(positionsWithZero, 'crew_size');
@@ -192,21 +192,21 @@ describe('findConcreteVolumeForPart', () => {
       part_name: 'Opěra 1',
       subtype: 'beton',
       qty: 100
-    } as Position,
+    } as unknown as Position,
     {
       position_id: '2',
       bridge_id: 'SO-01',
       part_name: 'Opěra 1',
       subtype: 'bednění',
       qty: 200
-    } as Position,
+    } as unknown as Position,
     {
       position_id: '3',
       bridge_id: 'SO-02',
       part_name: 'Opěra 2',
       subtype: 'beton',
       qty: 150
-    } as Position
+    } as unknown as Position
   ];
 
   it('should find concrete volume for matching bridge and part', () => {
@@ -238,7 +238,7 @@ describe('calculatePositionFields', () => {
       shift_hours: 8,
       days: 5,
       wage_czk_ph: 200
-    } as Position;
+    } as unknown as Position;
 
     const result = calculatePositionFields(position, [position]);
 
@@ -263,7 +263,7 @@ describe('calculatePositionFields', () => {
       shift_hours: 8,
       days: 5,
       wage_czk_ph: 200
-    } as Position;
+    } as unknown as Position;
 
     const bedeniPosition: Position = {
       position_id: '2',
@@ -276,7 +276,7 @@ describe('calculatePositionFields', () => {
       shift_hours: 8,
       days: 10,
       wage_czk_ph: 180
-    } as Position;
+    } as unknown as Position;
 
     const result = calculatePositionFields(bedeniPosition, [betonPosition, bedeniPosition]);
 
@@ -300,7 +300,7 @@ describe('calculatePositionFields', () => {
       shift_hours: 8,
       days: 5,
       wage_czk_ph: 200
-    } as Position;
+    } as unknown as Position;
 
     const result = calculatePositionFields(position, [position]);
 
@@ -319,7 +319,7 @@ describe('calculatePositionFields', () => {
       shift_hours: 8,
       days: 0,           // Zero days!
       wage_czk_ph: 200
-    } as Position;
+    } as unknown as Position;
 
     const result = calculatePositionFields(position, [position]);
 
@@ -338,7 +338,7 @@ describe('calculatePositionFields', () => {
       shift_hours: 8,
       days: 5,
       wage_czk_ph: 200
-    } as Position;
+    } as unknown as Position;
 
     const result = calculatePositionFields(
       position,
@@ -363,7 +363,7 @@ describe('calculateHeaderKPI', () => {
       crew_size: 10,
       wage_czk_ph: 200,
       shift_hours: 8
-    } as Position,
+    } as unknown as Position,
     {
       position_id: '2',
       bridge_id: 'SO-01',
@@ -375,7 +375,7 @@ describe('calculateHeaderKPI', () => {
       crew_size: 5,
       wage_czk_ph: 180,
       shift_hours: 8
-    } as Position
+    } as unknown as Position
   ];
 
   it('should calculate complete KPI', () => {

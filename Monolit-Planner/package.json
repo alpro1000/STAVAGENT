@@ -17,7 +17,7 @@
     "build:frontend": "cd frontend && npm run build",
     "test": "npm run test --workspaces",
     "install:all": "npm install && npm install --workspaces",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
