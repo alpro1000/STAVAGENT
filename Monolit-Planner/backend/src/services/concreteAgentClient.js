@@ -13,6 +13,7 @@ import FormData from 'form-data';
 import fs from 'fs';
 import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from '../utils/logger.js';
 
 // Note: fetch is available natively in Node.js 18+
 
@@ -30,7 +31,7 @@ const WORKFLOW_VERSION = 'v1';
  */
 export async function workflowAStart(filePath, metadata = {}) {
   try {
-    console.log(`[ConcreteAgent] Workflow A: Starting analysis of file: ${filePath}`);
+    logger.info(`[ConcreteAgent] Workflow A: Starting analysis of file: ${filePath}`);
 
     const form = new FormData();
 
@@ -58,7 +59,7 @@ export async function workflowAStart(filePath, metadata = {}) {
     }
 
     const result = await response.json();
-    console.log(`[ConcreteAgent] Workflow A: Successfully parsed document`);
+    logger.info(`[ConcreteAgent] Workflow A: Successfully parsed document`);
 
     return {
       status: 'success',
@@ -69,7 +70,7 @@ export async function workflowAStart(filePath, metadata = {}) {
     };
 
   } catch (error) {
-    console.error('[ConcreteAgent] Workflow A Error:', error.message);
+    logger.error('[ConcreteAgent] Workflow A Error:', error.message);
     throw new Error(`Workflow A failed: ${error.message}`);
   }
 }
@@ -81,7 +82,7 @@ export async function workflowAStart(filePath, metadata = {}) {
  */
 export async function workflowBStart(filePath, metadata = {}) {
   try {
-    console.log(`[ConcreteAgent] Workflow B: Analyzing drawings from file: ${filePath}`);
+    logger.info(`[ConcreteAgent] Workflow B: Analyzing drawings from file: ${filePath}`);
 
     const form = new FormData();
 
@@ -109,7 +110,7 @@ export async function workflowBStart(filePath, metadata = {}) {
     }
 
     const result = await response.json();
-    console.log(`[ConcreteAgent] Workflow B: Successfully analyzed drawings`);
+    logger.info(`[ConcreteAgent] Workflow B: Successfully analyzed drawings`);
 
     return {
       status: 'success',
@@ -120,7 +121,7 @@ export async function workflowBStart(filePath, metadata = {}) {
     };
 
   } catch (error) {
-    console.error('[ConcreteAgent] Workflow B Error:', error.message);
+    logger.error('[ConcreteAgent] Workflow B Error:', error.message);
     throw new Error(`Workflow B failed: ${error.message}`);
   }
 }
@@ -133,7 +134,7 @@ export async function workflowBStart(filePath, metadata = {}) {
  */
 export async function performAudit(workflowId, analysisData = {}, roles = ['architect', 'foreman', 'estimator']) {
   try {
-    console.log(`[ConcreteAgent] Performing multi-role audit for workflow: ${workflowId}`);
+    logger.info(`[ConcreteAgent] Performing multi-role audit for workflow: ${workflowId}`);
 
     const response = await fetch(`${CONCRETE_AGENT_URL}/workflow-a/audit`, {
       method: 'POST',
@@ -152,7 +153,7 @@ export async function performAudit(workflowId, analysisData = {}, roles = ['arch
     }
 
     const result = await response.json();
-    console.log(`[ConcreteAgent] Audit completed successfully`);
+    logger.info(`[ConcreteAgent] Audit completed successfully`);
 
     return {
       status: 'success',
@@ -162,7 +163,7 @@ export async function performAudit(workflowId, analysisData = {}, roles = ['arch
     };
 
   } catch (error) {
-    console.error('[ConcreteAgent] Audit Error:', error.message);
+    logger.error('[ConcreteAgent] Audit Error:', error.message);
     throw new Error(`Audit failed: ${error.message}`);
   }
 }
@@ -174,7 +175,7 @@ export async function performAudit(workflowId, analysisData = {}, roles = ['arch
  */
 export async function enrichWithAI(workflowId, analysisData = {}, provider = 'claude') {
   try {
-    console.log(`[ConcreteAgent] Enriching analysis with ${provider} AI...`);
+    logger.info(`[ConcreteAgent] Enriching analysis with ${provider} AI...`);
 
     const response = await fetch(`${CONCRETE_AGENT_URL}/workflow-a/enrich`, {
       method: 'POST',
@@ -193,7 +194,7 @@ export async function enrichWithAI(workflowId, analysisData = {}, provider = 'cl
     }
 
     const result = await response.json();
-    console.log(`[ConcreteAgent] AI enrichment completed`);
+    logger.info(`[ConcreteAgent] AI enrichment completed`);
 
     return {
       status: 'success',
@@ -202,7 +203,7 @@ export async function enrichWithAI(workflowId, analysisData = {}, provider = 'cl
     };
 
   } catch (error) {
-    console.error('[ConcreteAgent] Enrichment Error:', error.message);
+    logger.error('[ConcreteAgent] Enrichment Error:', error.message);
     // Non-fatal error - continue without enrichment
     return {
       status: 'warning',
@@ -219,7 +220,7 @@ export async function enrichWithAI(workflowId, analysisData = {}, provider = 'cl
  */
 export async function searchKnowledgeBase(query, category = null) {
   try {
-    console.log(`[ConcreteAgent] Searching KB for: ${query}`);
+    logger.info(`[ConcreteAgent] Searching KB for: ${query}`);
 
     const url = new URL(`${CONCRETE_AGENT_URL}/kb/search`);
     url.searchParams.append('query', query);
@@ -244,7 +245,7 @@ export async function searchKnowledgeBase(query, category = null) {
     };
 
   } catch (error) {
-    console.error('[ConcreteAgent] KB Search Error:', error.message);
+    logger.error('[ConcreteAgent] KB Search Error:', error.message);
     throw new Error(`KB search failed: ${error.message}`);
   }
 }
@@ -257,7 +258,7 @@ export async function searchKnowledgeBase(query, category = null) {
  */
 export async function calculateBridge(params = {}) {
   try {
-    console.log(`[ConcreteAgent] Calculating bridge resources...`);
+    logger.info(`[ConcreteAgent] Calculating bridge resources...`);
 
     const response = await fetch(`${CONCRETE_AGENT_URL}/calculate/bridge`, {
       method: 'POST',
@@ -279,7 +280,7 @@ export async function calculateBridge(params = {}) {
     };
 
   } catch (error) {
-    console.error('[ConcreteAgent] Bridge Calculation Error:', error.message);
+    logger.error('[ConcreteAgent] Bridge Calculation Error:', error.message);
     throw new Error(`Calculation failed: ${error.message}`);
   }
 }
@@ -290,7 +291,7 @@ export async function calculateBridge(params = {}) {
  */
 export async function calculateBuilding(params = {}) {
   try {
-    console.log(`[ConcreteAgent] Calculating building resources...`);
+    logger.info(`[ConcreteAgent] Calculating building resources...`);
 
     const response = await fetch(`${CONCRETE_AGENT_URL}/calculate/building`, {
       method: 'POST',
@@ -312,7 +313,7 @@ export async function calculateBuilding(params = {}) {
     };
 
   } catch (error) {
-    console.error('[ConcreteAgent] Building Calculation Error:', error.message);
+    logger.error('[ConcreteAgent] Building Calculation Error:', error.message);
     throw new Error(`Calculation failed: ${error.message}`);
   }
 }
@@ -331,7 +332,7 @@ export async function healthCheck() {
 
     return response.ok;
   } catch (error) {
-    console.warn('[ConcreteAgent] Health check failed:', error.message);
+    logger.warn('[ConcreteAgent] Health check failed:', error.message);
     return false;
   }
 }
@@ -354,7 +355,7 @@ export async function getServiceInfo() {
     const result = await response.json();
     return result;
   } catch (error) {
-    console.warn('[ConcreteAgent] Could not get service info:', error.message);
+    logger.warn('[ConcreteAgent] Could not get service info:', error.message);
     return null;
   }
 }
