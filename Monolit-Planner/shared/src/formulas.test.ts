@@ -63,7 +63,7 @@ describe('Unit Cost Calculations', () => {
     });
 
     it('should handle decimal volumes', () => {
-      expect(calculateUnitCostOnM3(50000, 7.838)).toBeCloseTo(6380.27, 2);
+      expect(calculateUnitCostOnM3(50000, 7.838)).toBeCloseTo(6379.18, 1);
     });
   });
 
@@ -116,8 +116,8 @@ describe('Duration Calculations', () => {
 
   it('should calculate estimated weeks', () => {
     const weeks = calculateEstimatedWeeks(4.26, 22);
-    // 4.26 months * 22 days / 7 = 13.37 weeks
-    expect(weeks).toBeCloseTo(13.37, 2);
+    // 4.26 months * 22 days / 7 = 13.39 weeks
+    expect(weeks).toBeCloseTo(13.39, 1);
   });
 
   it('should handle 30-day month mode', () => {

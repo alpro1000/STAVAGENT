@@ -1,0 +1,33 @@
+#!/bin/sh
+# Husky pre-push hook - Final checks before push
+
+echo "🚀 Running pre-push checks..."
+
+REPO_ROOT="/home/user/STAVAGENT"
+
+# Check branch name (should start with claude/ and end with session ID)
+BRANCH=$(git branch --show-current)
+echo "📝 Current branch: $BRANCH"
+
+# POSIX-compatible pattern matching (no regex, just basic pattern)
+case "$BRANCH" in
+  claude/*-?????)
+    echo "✅ Branch name matches pattern"
+    ;;
+  *)
+    echo "⚠️  Warning: Branch name doesn't match pattern 'claude/*-xxxxx'"
+    echo "   Current: $BRANCH"
+    echo "   Expected: claude/feature-name-abcde"
+    ;;
+esac
+
+# Run critical tests one more time (same as pre-commit)
+echo "🧪 Running critical formula tests..."
+(cd "$REPO_ROOT/Monolit-Planner/shared" && npm test -- --run src/formulas.test.ts)
+if [ $? -ne 0 ]; then
+  echo "❌ Critical tests failed!"
+  exit 1
+fi
+
+echo "✅ All pre-push checks passed!"
+exit 0
