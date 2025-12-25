@@ -47,7 +47,9 @@ interface PartTemplate {
 
 const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
-console.log('[API Service] Initializing with API_URL:', API_URL);
+if (import.meta.env.DEV) {
+  console.log('[API Service] Initializing with API_URL:', API_URL);
+}
 
 const api = axios.create({
   baseURL: API_URL,
@@ -64,7 +66,9 @@ api.interceptors.request.use(request => {
     request.headers.Authorization = `Bearer ${token}`;
   }
 
-  console.log(`[API] ${request.method?.toUpperCase()} ${request.url}`, request.params);
+  if (import.meta.env.DEV) {
+    console.log(`[API] ${request.method?.toUpperCase()} ${request.url}`, request.params);
+  }
   return request;
 });
 
@@ -78,7 +82,9 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 // Retry logic for 429 errors (no auth - kiosk mode)
 api.interceptors.response.use(
   response => {
-    console.log(`[API] Response ${response.status}:`, response.data);
+    if (import.meta.env.DEV) {
+      console.log(`[API] Response ${response.status}:`, response.data);
+    }
     return response;
   },
   async error => {
@@ -99,9 +105,11 @@ api.interceptors.response.use(
       config.__retryCount += 1;
       const retryDelay = RETRY_DELAY * Math.pow(2, config.__retryCount - 1);
 
-      console.warn(
-        `[API] 429 Rate Limited. Retry ${config.__retryCount}/${MAX_RETRIES} after ${retryDelay}ms`
-      );
+      if (import.meta.env.DEV) {
+        console.warn(
+          `[API] 429 Rate Limited. Retry ${config.__retryCount}/${MAX_RETRIES} after ${retryDelay}ms`
+        );
+      }
 
       await delay(retryDelay);
       return api.request(config);

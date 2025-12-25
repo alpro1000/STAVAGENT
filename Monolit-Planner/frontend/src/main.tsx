@@ -6,7 +6,9 @@ import './styles/global.css';
 
 // Build timestamp for cache debugging (injected by Vite)
 declare const __BUILD_TIMESTAMP__: string;
-console.log(`[Monolit Planner] Build: ${typeof __BUILD_TIMESTAMP__ !== 'undefined' ? __BUILD_TIMESTAMP__ : 'dev'}`);
+if (import.meta.env.DEV) {
+  console.log(`[Monolit Planner] Build: ${typeof __BUILD_TIMESTAMP__ !== 'undefined' ? __BUILD_TIMESTAMP__ : 'dev'}`);
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {

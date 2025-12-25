@@ -445,7 +445,7 @@ router.get('/', async (req, res) => {
  */
 async function analyzeDocumentAsync(documentId, projectId, filePath, analysisType, userId) {
   try {
-    console.log(`[Analyzer] Starting analysis for document: ${documentId}`);
+    logger.info(`[Analyzer] Starting analysis for document: ${documentId}`);
 
     // Determine which workflow to use
     const isDrawing = filePath.toLowerCase().endsWith('.pdf') ||
@@ -494,10 +494,10 @@ async function analyzeDocumentAsync(documentId, projectId, filePath, analysisTyp
       'completed'
     );
 
-    console.log(`[Analyzer] Analysis completed for document: ${documentId}`);
+    logger.info(`[Analyzer] Analysis completed for document: ${documentId}`);
 
   } catch (error) {
-    console.error(`[Analyzer] Error analyzing document ${documentId}:`, error.message);
+    logger.error(`[Analyzer] Error analyzing document ${documentId}:`, error.message);
 
     try {
       // Update document with error status
@@ -520,7 +520,7 @@ async function analyzeDocumentAsync(documentId, projectId, filePath, analysisTyp
         error.message
       );
     } catch (dbError) {
-      console.error('[Analyzer] Could not update database:', dbError.message);
+      logger.error('[Analyzer] Could not update database:', dbError.message);
     }
   }
 }

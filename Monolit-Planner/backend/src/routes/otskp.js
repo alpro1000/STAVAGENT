@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import db from '../db/init.js';
 import { normalizeForSearch, normalizeCode } from '../utils/text.js';
+import { logger } from '../utils/logger.js';
 
 const router = express.Router();
 const __filename = fileURLToPath(import.meta.url);
@@ -85,10 +86,10 @@ router.get('/search', async (req, res) => {
   try {
     const { q, limit = 20 } = req.query;
 
-    console.log('[OTSKP Search] Received request:', { q, limit });
+    logger.info('[OTSKP Search] Received request:', { q, limit });
 
     if (!q || q.trim().length < 2) {
-      console.log('[OTSKP Search] Query too short:', q);
+      logger.info('[OTSKP Search] Query too short:', q);
       return res.status(400).json({
         error: 'Search query must be at least 2 characters'
       });
@@ -100,7 +101,7 @@ router.get('/search', async (req, res) => {
     const normalizedQuery = normalizeForSearch(searchQuery);
     const normalizedCode = normalizeCode(searchQuery);
 
-    console.log('[OTSKP Search] Searching for:', {
+    logger.info('[OTSKP Search] Searching for:', {
       searchQuery,
       searchQueryUpper,
       normalizedQuery,
@@ -145,12 +146,12 @@ router.get('/search', async (req, res) => {
     params.push(namePattern);         // name match
     params.push(searchLimit);         // LIMIT
 
-    console.log('[OTSKP Search] SQL:', sql.replace(/\s+/g, ' ').trim());
-    console.log('[OTSKP Search] Params:', params);
+    logger.info('[OTSKP Search] SQL:', sql.replace(/\s+/g, ' ').trim());
+    logger.info('[OTSKP Search] Params:', params);
 
     const results = await db.prepare(sql).all(...params);
 
-    console.log('[OTSKP Search] Found results:', results.length);
+    logger.info('[OTSKP Search] Found results:', results.length);
     res.json({
       query: searchQuery,
       count: results.length,
@@ -158,7 +159,7 @@ router.get('/search', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('[OTSKP Search] Error:', error);
+    logger.error('[OTSKP Search] Error:', error);
     res.status(500).json({ error: 'Failed to search OTSKP codes' });
   }
 });
@@ -176,7 +177,7 @@ router.get('/count', async (req, res) => {
       message: result.count === 0 ? 'No OTSKP codes loaded. Use POST /api/otskp/import to load them.' : 'OTSKP codes available'
     });
   } catch (error) {
-    console.error('Error getting OTSKP count:', error);
+    logger.error('Error getting OTSKP count:', error);
     res.status(500).json({ error: 'Failed to get OTSKP count' });
   }
 });
@@ -212,7 +213,7 @@ router.get('/stats/summary', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error fetching OTSKP stats:', error);
+    logger.error('Error fetching OTSKP stats:', error);
     res.status(500).json({ error: 'Failed to fetch OTSKP stats' });
   }
 });
@@ -239,7 +240,7 @@ router.get('/:code', async (req, res) => {
     res.json(result);
 
   } catch (error) {
-    console.error('Error fetching OTSKP code:', error);
+    logger.error('Error fetching OTSKP code:', error);
     res.status(500).json({ error: 'Failed to fetch OTSKP code' });
   }
 });
@@ -255,20 +256,20 @@ router.post('/import', async (req, res) => {
     const expectedToken = process.env.OTSKP_IMPORT_TOKEN;
 
     if (!expectedToken) {
-      console.error('[OTSKP Import] Missing OTSKP_IMPORT_TOKEN environment variable');
+      logger.error('[OTSKP Import] Missing OTSKP_IMPORT_TOKEN environment variable');
       return res.status(401).json({ error: 'OTSKP import endpoint not configured. Set OTSKP_IMPORT_TOKEN environment variable.' });
     }
 
     const token = req.headers['x-import-token'];
 
     if (!token || token !== expectedToken) {
-      console.log('[OTSKP Import] Unauthorized import attempt with token:', token ? 'provided but invalid' : 'missing');
+      logger.info('[OTSKP Import] Unauthorized import attempt with token:', token ? 'provided but invalid' : 'missing');
       return res.status(401).json({ error: 'Unauthorized - invalid or missing X-Import-Token header' });
     }
 
-    console.log('[OTSKP Import] Starting import...');
-    console.log('[OTSKP Import] __dirname:', __dirname);
-    console.log('[OTSKP Import] process.cwd():', process.cwd());
+    logger.info('[OTSKP Import] Starting import...');
+    logger.info('[OTSKP Import] __dirname:', __dirname);
+    logger.info('[OTSKP Import] process.cwd():', process.cwd());
 
     // Find OTSKP XML file
     const possiblePaths = [
@@ -280,33 +281,33 @@ router.post('/import', async (req, res) => {
       '/home/2025_03 OTSKP.xml'                            // Alternative Render path
     ];
 
-    console.log('[OTSKP Import] Checking paths:', possiblePaths);
+    logger.info('[OTSKP Import] Checking paths:', possiblePaths);
 
     let xmlPath = null;
     let xmlContent = null;
     const checkedPaths = [];
 
     for (const p of possiblePaths) {
-      console.log(`[OTSKP Import] Checking path: ${p}`);
+      logger.info(`[OTSKP Import] Checking path: ${p}`);
       checkedPaths.push({ path: p, exists: fs.existsSync(p) });
 
       if (fs.existsSync(p)) {
         xmlPath = p;
-        console.log('[OTSKP Import] ✓ Found OTSKP XML at:', p);
+        logger.info('[OTSKP Import] ✓ Found OTSKP XML at:', p);
         try {
           xmlContent = fs.readFileSync(p, 'utf-8');
-          console.log('[OTSKP Import] ✓ Read file size:', (xmlContent.length / 1024 / 1024).toFixed(2), 'MB');
+          logger.info('[OTSKP Import] ✓ Read file size:', (xmlContent.length / 1024 / 1024).toFixed(2), 'MB');
           break;
         } catch (err) {
-          console.error('[OTSKP Import] Error reading file at', p, ':', err.message);
+          logger.error('[OTSKP Import] Error reading file at', p, ':', err.message);
           checkedPaths[checkedPaths.length - 1].error = err.message;
         }
       }
     }
 
     if (!xmlContent) {
-      console.error('[OTSKP Import] OTSKP XML file not found in any location');
-      console.error('[OTSKP Import] Paths checked:', JSON.stringify(checkedPaths, null, 2));
+      logger.error('[OTSKP Import] OTSKP XML file not found in any location');
+      logger.error('[OTSKP Import] Paths checked:', JSON.stringify(checkedPaths, null, 2));
       return res.status(404).json({
         error: 'OTSKP XML file not found. Make sure the file is deployed with the application.',
         tried: checkedPaths,
@@ -317,16 +318,16 @@ router.post('/import', async (req, res) => {
     }
 
     // Parse XML
-    console.log('[OTSKP Import] Parsing XML...');
+    logger.info('[OTSKP Import] Parsing XML...');
     const { items, validCount, invalidCount, errors } = parseOtskpXml(xmlContent);
-    console.log('[OTSKP Import] Parsed:', { validCount, invalidCount, total: items.length });
+    logger.info('[OTSKP Import] Parsed:', { validCount, invalidCount, total: items.length });
 
     // Clear existing codes
-    console.log('[OTSKP Import] Clearing existing codes...');
+    logger.info('[OTSKP Import] Clearing existing codes...');
     await db.prepare('DELETE FROM otskp_codes').run();
 
     // Insert new codes
-    console.log('[OTSKP Import] Inserting', items.length, 'codes...');
+    logger.info('[OTSKP Import] Inserting', items.length, 'codes...');
 
     // For SQLite: keep transaction synchronous (atomic)
     // For PostgreSQL: use async/await to properly await each insert
@@ -383,7 +384,7 @@ router.post('/import', async (req, res) => {
       FROM otskp_codes
     `).get();
 
-    console.log('[OTSKP Import] Verification:', verifyStats);
+    logger.info('[OTSKP Import] Verification:', verifyStats);
 
     res.json({
       success: true,
@@ -403,7 +404,7 @@ router.post('/import', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('[OTSKP Import] Error:', error);
+    logger.error('[OTSKP Import] Error:', error);
     res.status(500).json({ error: 'Failed to import OTSKP codes', details: error.message });
   }
 });

@@ -46,7 +46,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     try {
       const result = await uploadAPI.uploadXLSX(file);
 
-      console.log('[Upload] Response:', result);
+      if (import.meta.env.DEV) console.log('[Upload] Response:', result);
 
       // Calculate total positions from all imported bridges
       const totalPositions = result.bridges?.reduce((sum: number, b: any) => sum + (b.positions_count || 0), 0) || 0;
@@ -81,7 +81,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           // Query cache update ensures consistency with React Query
           queryClient.setQueryData(['bridges'], updatedBridges);
 
-          console.log('[Upload] Added', newBridges.length, 'new bridges to sidebar');
+          if (import.meta.env.DEV) console.log('[Upload] Added', newBridges.length, 'new bridges to sidebar');
         }
 
         // Auto-select the first imported bridge
@@ -93,7 +93,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
       // Background refetch (non-blocking) - don't await
       refetchBridges().catch(err => {
-        console.warn('[Upload] Background refetch failed:', err.message);
+        if (import.meta.env.DEV) console.warn('[Upload] Background refetch failed:', err.message);
       });
 
       alert(`✅ Import úspěšný! Nalezeno ${result.bridges?.length || 0} objektů s ${totalPositions} pozicemi.`);
