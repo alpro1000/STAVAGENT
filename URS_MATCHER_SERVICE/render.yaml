@@ -19,7 +19,7 @@ services:
     autoDeploy: false  # Disable auto-deploy - deploy manually or via GitHub Actions
     envVars:
       - key: NODE_VERSION
-        value: 18.20.4
+        value: 20.11.0
       - key: NODE_ENV
         value: production
       - key: PORT
