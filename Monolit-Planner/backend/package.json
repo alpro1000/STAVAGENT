@@ -12,8 +12,12 @@
     "start": "node server.js",
     "build": "echo 'No build needed for Node.js'",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:unit": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.js",
+    "test:integration": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.integration.config.js",
+    "test:all": "npm run test:unit && npm run test:integration",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
-    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "test:coverage:all": "npm run test:coverage && NODE_OPTIONS=--experimental-vm-modules jest --config jest.integration.config.js --coverage"
   },
   "dependencies": {
     "@stavagent/monolit-shared": "file:../shared",
