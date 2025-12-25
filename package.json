@@ -5,7 +5,7 @@
   "description": "STAVAGENT Monorepo - Multi-service construction planning system",
   "scripts": {
     "test": "npm run test --workspaces",
-    "prepare": "husky"
+    "prepare": "husky || true"
   },
   "workspaces": [
     "Monolit-Planner/backend",
