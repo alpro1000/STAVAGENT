@@ -11,7 +11,9 @@
     "prestart": "npm run prepare:shared",
     "start": "node server.js",
     "build": "echo 'No build needed for Node.js'",
-    "test": "echo 'Tests not implemented yet'"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage"
   },
   "dependencies": {
     "@stavagent/monolit-shared": "file:../shared",
@@ -32,7 +34,11 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "@types/jest": "^30.0.0",
+    "@types/supertest": "^6.0.3",
+    "jest": "^30.2.0",
+    "nodemon": "^3.0.2",
+    "supertest": "^7.1.4"
   },
   "engines": {
     "node": ">=18.0.0 <19.0.0",
