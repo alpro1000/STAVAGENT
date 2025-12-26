@@ -61,8 +61,8 @@ services:
     name: stavagent-portal-frontend
     env: static
     rootDir: stavagent-portal
-    buildCommand: npm install && cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist
+    buildCommand: cd stavagent-portal && npm install && cd frontend && npm install && npm run build
+    staticPublishPath: stavagent-portal/frontend/dist
     autoDeploy: false  # Disable auto-deploy
     envVars:
       # API URL (обнови после деплоя backend на его URL)
