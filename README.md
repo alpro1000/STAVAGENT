@@ -14,14 +14,15 @@
 
 ---
 
-## 📋 Текущий статус (2025-12-25)
+## 📋 Текущий статус (2025-12-26)
 
 - ✅ **Testing**: 37+ integration tests готовы
 - ✅ **CI/CD**: GitHub Actions работает (6 jobs)
 - ✅ **Production**: Backend + Frontend развёрнуты на Render
 - ✅ **Git Hooks**: Pre-commit + Pre-push настроены
-- 🔴 **Node.js 18.20.4 EOL** - нужен апгрейд до 20.x
-- 🔴 **4 npm vulnerabilities** - требуют исправления
+- ✅ **Node.js 20.11.0** - обновлён с 18.20.4 (EOL)
+- ✅ **npm vulnerabilities** - 1/2 исправлено (jws ✅, xlsx ⚠️ no fix)
+- 🟢 **Time Norms Design** - готов к реализации (4-6 часов)
 
 ---
 
@@ -36,15 +37,18 @@
 
 ---
 
-## 🎯 Приоритетные задачи (2-3 часа)
+## 🎯 Приоритетные задачи (4-6 часов)
 
-1. **Update Node.js** - 18.20.4 → 20.x (EOL warning)
-2. **Fix npm vulnerabilities** - 4 уязвимости (2 moderate, 2 high)
-3. Re-enable npm cache в CI (~2min speedup)
-4. Add dependency review workflow
-5. Fix integration tests ES module mocking
+1. **✅ DONE: Update Node.js** - 18.20.4 → 20.11.0 (LTS)
+2. **✅ DONE: Fix npm vulnerabilities** - jws fixed, xlsx documented
+3. **🟢 READY: Implement Time Norms Automation** - AI-powered work duration estimates
+   - Design complete (8 pages)
+   - Backend service + API endpoint + Frontend UI
+   - Leverages concrete-agent Multi-Role API + KROS/RTS norms
+4. Re-enable npm cache в CI (~2min speedup) - optional
+5. Fix integration tests ES module mocking - optional
 
-**Детали:** см. [SESSION_START.md](SESSION_START.md) → готовые команды для копирования
+**Детали:** см. [NEXT_SESSION.md](NEXT_SESSION.md) → готовые команды для копирования
 
 ---
 
@@ -149,10 +153,12 @@ cd Monolit-Planner/backend && npm run test:all
 
 ---
 
-**Версия:** 1.0.10
-**Последнее обновление:** 2025-12-25
-**Текущая ветка:** `claude/setup-integration-tests-1EPUi`
-**Последний коммит:** `1155391` DOCS: Add session start guide
+**Версия:** 1.0.11
+**Последнее обновление:** 2025-12-26
+**Текущая ветка:** `claude/add-project-documentation-LowCg`
+**Последние коммиты:**
+- `e967324` FIX: Remove npm cache from test-coverage workflow
+- `75cd282` SECURITY: Upgrade Node.js 18.20.4 → 20.11.0 + npm vulnerabilities fix
 
 ---
 
