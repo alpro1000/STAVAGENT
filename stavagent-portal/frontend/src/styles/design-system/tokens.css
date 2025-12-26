@@ -1,0 +1,107 @@
+/**
+ * Digital Concrete Design System - Tokens
+ * Brutalist Neumorphism ("Цифровой бетон")
+ *
+ * Version: 1.0.0
+ * Date: 2025-12-26
+ */
+
+:root {
+  /* ========================================
+     ПОВЕРХНОСТИ (SURFACES)
+     ======================================== */
+  --app-bg-concrete: #C9CBCD;      /* Фон приложения */
+  --panel-bg-concrete: #CFD1D3;    /* Панели, кнопки, карточки */
+  --panel-bg-dark: #B8BABC;        /* Тёмные панели, сайдбар */
+  --input-bg: #D5D7D9;             /* Поля ввода */
+
+  /* ========================================
+     ТЕКСТ (TEXT)
+     ======================================== */
+  --text-primary: #2F3133;         /* Основной текст */
+  --text-secondary: #5A5D60;       /* Вторичный текст */
+  --text-disabled: #8A8D90;        /* Отключённый */
+
+  /* ========================================
+     АКЦЕНТ (ACCENT)
+     ======================================== */
+  --brand-orange: #FF9F1C;         /* Главный акцент, CTA */
+  --brand-orange-hover: #FFB347;   /* Hover состояние */
+  --brand-orange-active: #E88A00;  /* Active состояние */
+
+  /* ========================================
+     СТАТУСЫ (STATUS)
+     ======================================== */
+  --status-success: #4CAF50;
+  --status-warning: #FFC107;
+  --status-error: #F44336;
+  --status-info: #2196F3;
+
+  /* ========================================
+     ТЕНИ (SHADOWS)
+     Источник света: верхний левый угол
+     ======================================== */
+  --shadow-dark: #A6A8AB;          /* Тень справа-снизу */
+  --shadow-light: #F0F2F4;         /* Блик слева-сверху */
+
+  /* ========================================
+     ELEVATION (выпуклые состояния)
+     ======================================== */
+  --elevation-low: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
+  --elevation-medium: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
+  --elevation-high: 8px 8px 16px var(--shadow-dark), -8px -8px 16px var(--shadow-light);
+
+  /* ========================================
+     DEPRESSION (вдавленные состояния)
+     ======================================== */
+  --depressed-inset: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
+  --depressed-deep: inset 5px 5px 10px var(--shadow-dark), inset -5px -5px 10px var(--shadow-light);
+
+  /* ========================================
+     РАЗМЕРЫ (SIZES)
+     ======================================== */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-round: 50%;
+
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+
+  /* ========================================
+     ПЕРЕХОДЫ (TRANSITIONS)
+     ======================================== */
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.25s ease-out;
+  --transition-slow: 0.4s ease-out;
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+body {
+  background: var(--app-bg-concrete);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Accessibility: Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0s;
+    --transition-normal: 0s;
+    --transition-slow: 0s;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
