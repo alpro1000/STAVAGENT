@@ -1,0 +1,319 @@
+/**
+ * Digital Concrete Design System - Components
+ * Базовые компоненты с БЭМ нейминг конвенцией
+ *
+ * Prefix: .c- (component)
+ * Modifiers: --modifier
+ * Elements: __element
+ */
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+.c-btn {
+  background: var(--panel-bg-concrete);
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-low);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 20px;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px; /* Touch target */
+}
+
+.c-btn:hover {
+  transform: scale(1.02);
+  box-shadow: var(--elevation-medium);
+}
+
+.c-btn:active {
+  box-shadow: var(--depressed-inset);
+  transform: translateY(1px);
+}
+
+.c-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.c-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--elevation-low), 0 0 0 2px var(--brand-orange);
+}
+
+/* Button Modifiers */
+.c-btn--primary {
+  color: var(--brand-orange);
+  font-weight: 600;
+}
+
+.c-btn--success {
+  color: var(--status-success);
+}
+
+.c-btn--danger {
+  color: var(--status-error);
+}
+
+.c-btn--sm {
+  padding: 6px 12px;
+  font-size: 12px;
+  min-height: 32px;
+}
+
+.c-btn--lg {
+  padding: 14px 28px;
+  font-size: 16px;
+  min-height: 52px;
+}
+
+/* ========================================
+   INPUTS
+   ======================================== */
+.c-input {
+  background: var(--input-bg);
+  border: none;
+  border-radius: var(--radius-md);
+  box-shadow: var(--depressed-inset);
+  color: var(--text-primary);
+  font-size: 14px;
+  padding: 10px 16px;
+  width: 100%;
+  min-height: 44px;
+  transition: box-shadow var(--transition-fast);
+}
+
+.c-input::placeholder {
+  color: var(--text-secondary);
+}
+
+.c-input:focus {
+  outline: none;
+  box-shadow: var(--depressed-inset), 0 0 0 2px var(--brand-orange);
+}
+
+.c-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.c-input--error {
+  box-shadow: var(--depressed-inset), 0 0 0 2px var(--status-error);
+}
+
+/* ========================================
+   PANELS / CARDS
+   ======================================== */
+.c-panel {
+  background: var(--panel-bg-concrete);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-medium);
+  padding: var(--space-lg);
+}
+
+.c-panel--inset {
+  background: var(--input-bg);
+  box-shadow: var(--depressed-inset);
+}
+
+.c-panel--dark {
+  background: var(--panel-bg-dark);
+}
+
+/* Card with hover effect */
+.c-card {
+  background: var(--panel-bg-concrete);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--elevation-low);
+  padding: var(--space-lg);
+  transition: box-shadow var(--transition-normal), transform var(--transition-normal);
+  cursor: pointer;
+}
+
+.c-card:hover {
+  box-shadow: var(--elevation-high);
+  transform: translateY(-2px);
+}
+
+.c-card:active {
+  transform: translateY(0);
+}
+
+/* ========================================
+   TABS
+   ======================================== */
+.c-tabs {
+  background: var(--panel-bg-dark);
+  border-radius: var(--radius-md);
+  box-shadow: var(--depressed-inset);
+  padding: 4px;
+  display: flex;
+  gap: 4px;
+}
+
+.c-tab {
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  transition: all var(--transition-fast);
+  flex: 1;
+}
+
+.c-tab:hover {
+  color: var(--text-primary);
+}
+
+.c-tab.is-active {
+  background: var(--panel-bg-concrete);
+  box-shadow: var(--elevation-low);
+  color: var(--brand-orange);
+}
+
+/* ========================================
+   BADGES
+   ======================================== */
+.c-badge {
+  background: var(--panel-bg-concrete);
+  border-radius: var(--radius-md);
+  box-shadow: var(--elevation-low);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.c-badge--success {
+  color: var(--status-success);
+}
+
+.c-badge--warning {
+  color: var(--status-warning);
+}
+
+.c-badge--error {
+  color: var(--status-error);
+}
+
+.c-badge--info {
+  color: var(--status-info);
+}
+
+.c-badge--orange {
+  color: var(--brand-orange);
+}
+
+/* ========================================
+   HEADER
+   ======================================== */
+.c-header {
+  background: var(--panel-bg-concrete);
+  box-shadow: var(--elevation-medium);
+  padding: var(--space-lg) var(--space-xl);
+}
+
+.c-header__title {
+  color: var(--text-primary);
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.c-header__subtitle {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin: 4px 0 0;
+}
+
+/* ========================================
+   CONTAINER
+   ======================================== */
+.c-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+.c-container--wide {
+  max-width: 1600px;
+}
+
+/* ========================================
+   GRID
+   ======================================== */
+.c-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.c-grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.c-grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.c-grid--4 {
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+/* ========================================
+   UTILITIES
+   ======================================== */
+.u-text-orange {
+  color: var(--brand-orange);
+}
+
+.u-text-secondary {
+  color: var(--text-secondary);
+}
+
+.u-text-bold {
+  font-weight: 700;
+}
+
+.u-flex {
+  display: flex;
+}
+
+.u-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.u-gap-sm {
+  gap: var(--space-sm);
+}
+
+.u-gap-md {
+  gap: var(--space-md);
+}
+
+.u-gap-lg {
+  gap: var(--space-lg);
+}
+
+.u-mt-sm { margin-top: var(--space-sm); }
+.u-mt-md { margin-top: var(--space-md); }
+.u-mt-lg { margin-top: var(--space-lg); }
+
+.u-mb-sm { margin-bottom: var(--space-sm); }
+.u-mb-md { margin-bottom: var(--space-md); }
+.u-mb-lg { margin-bottom: var(--space-lg); }
