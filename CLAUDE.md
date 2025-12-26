@@ -2,13 +2,13 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.0.9
-**Last Updated:** 2025-12-25
+**Version:** 1.1.0
+**Last Updated:** 2025-12-26
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2025-12-25):** Git Hooks (Husky) + Production build fixes (TypeScript + prepare script)
+**NEW (2025-12-26):** Time Norms Automation (AI-powered days estimation) + Portal Services Hub + Digital Concrete Design System
+**PREVIOUS (2025-12-25):** Git Hooks (Husky) + Production build fixes (TypeScript + prepare script)
 **PREVIOUS (2025-12-23):** Import/Bridge switch fix + Template auto-loading removed + Excel export fix + Speed column live recalculation
-**PREVIOUS (2025-12-19):** Security fixes (SQL injection, JSON.parse) + Speed column (MJ/h) for Monolit Planner
 
 ---
 
@@ -122,9 +122,11 @@ concrete-agent/
 - User authentication (JWT tokens)
 - Project lifecycle management
 - File upload and storage
+- **Portal Services Hub (NEW 2025-12-26)** - Unified landing page displaying 6 kiosks
 - Kiosk routing (Monolit, URS Matcher, future kiosks)
 - Chat assistant (StavAgent)
 - CORE integration for audit results
+- **Digital Concrete Design System (NEW 2025-12-26)** - Brutalist Neumorphism UI/UX
 
 **Database Tables:**
 ```sql
@@ -150,6 +152,24 @@ POST /api/portal/chat/sessions         ← Start chat
 - `backend/src/routes/portal-projects.js` - Project management
 - `backend/src/routes/auth.js` - Authentication
 - `docs/PORTAL_ARCHITECTURE.md` - Detailed architecture
+
+**Portal Services Hub (NEW 2025-12-26):**
+```
+6 Kiosks Displayed:
+🪨 Monolit Planner (Active) - Concrete cost calculator
+🔍 URS Matcher (Active) - AI-powered BOQ matching
+⚙️ Pump Module (Coming Soon) - Pumping logistics
+📦 Formwork Calculator (Coming Soon) - Formwork optimization
+🚜 Earthwork Planner (Coming Soon) - Excavation planning
+🛠️ Rebar Optimizer (Coming Soon) - Reinforcement optimization
+```
+
+**Digital Concrete Design System:**
+- Philosophy: Brutalist Neumorphism ("Элементы интерфейса = бетонные блоки")
+- Monochrome palette + orange accent (#FF9F1C)
+- Physical interaction: buttons press inward on click
+- BEM naming: `.c-btn`, `.c-panel`, `.c-card`, `.c-input`
+- Files: `/DESIGN_SYSTEM.md`, `tokens.css`, `components.css`
 
 ---
 
@@ -185,9 +205,28 @@ estimated_months = sum_kros_total_czk /
 
 **Key Files:**
 - `shared/src/formulas.ts` - All calculation formulas
-- `backend/src/routes/positions.js` - Position CRUD
+- `backend/src/routes/positions.js` - Position CRUD + Time Norms API
+- `backend/src/services/timeNormsService.js` - **AI days estimation (NEW 2025-12-26)**
 - `frontend/src/components/PositionsTable.tsx` - Main table
 - `CLAUDE.MD` - Detailed kiosk documentation (v4.3.8)
+
+**⭐ Time Norms Automation (NEW 2025-12-26):**
+- **Feature:** AI-powered work duration estimation
+- **API:** `POST /api/positions/:id/suggest-days`
+- **UI:** Sparkles button (✨) next to days field → tooltip with AI reasoning
+- **Data Sources:** KROS/RTS/ČSN norms from concrete-agent Knowledge Base
+- **Feature Flag:** `FF_AI_DAYS_SUGGEST: true` (enabled by default)
+- **Fallback:** Empirical calculations if AI unavailable
+- **Response Example:**
+  ```json
+  {
+    "success": true,
+    "suggested_days": 6,
+    "reasoning": "Pro betonování 100 m³ s partou 4 lidí...",
+    "confidence": 92,
+    "data_source": "KROS norma B4.3.1"
+  }
+  ```
 
 **⭐ VARIANT 1 Architecture (2025-12-11):**
 - **Simplified to Single Universal Object Type** - Users describe project type in `object_name` field
@@ -291,7 +330,85 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-25)
+## Current Status (2025-12-26)
+
+### ✅ COMPLETED: Time Norms Automation + Portal Services Hub (2025-12-26)
+
+**Branches:**
+- `claude/implement-time-norms-automation-qx8Wm` (Time Norms)
+- `claude/add-portal-services-qx8Wm` (Portal + Design System)
+
+**Commits:**
+
+| Commit | Description |
+|--------|-------------|
+| `a787070` | FEAT: Add Portal Services Hub + Digital Concrete Design System |
+| `80e724e` | FIX: Add feature flag check to AI suggestion button |
+| `9279263` | FEAT: Implement Time Norms Automation with AI-powered days suggestion |
+
+**Key Changes:**
+
+#### 1. Time Norms Automation (4 hours)
+**Problem:** Users didn't know how many days to enter for different work types.
+
+**Solution:** AI-powered work duration estimation using concrete-agent Multi-Role API.
+
+**Implementation:**
+- Backend service: `Monolit-Planner/backend/src/services/timeNormsService.js` (350 lines)
+- API endpoint: `POST /api/positions/:id/suggest-days`
+- Frontend UI: Sparkles button (✨) with AI tooltip showing reasoning + confidence
+- Feature flag: `FF_AI_DAYS_SUGGEST: true` (enabled by default)
+- Data sources: KROS/RTS/ČSN norms from Knowledge Base
+- Fallback: Empirical calculations if AI unavailable
+- Dependency added: `lucide-react` for Sparkles icon
+
+**User Flow:**
+```
+User enters qty → Clicks ✨ → Backend calls concrete-agent (1-2s)
+→ Tooltip shows: "6 дней (KROS норма B4.3.1, 92% jistota)"
+→ Days field auto-fills → User accepts or adjusts
+```
+
+**Testing:**
+- ✅ 68/68 tests passing
+- ✅ Manual testing: concrete, formwork, reinforcement scenarios
+- ✅ Fallback working when AI unavailable
+
+#### 2. Portal Services Hub + Design System (3 hours)
+**Problem:** No unified landing page showing all STAVAGENT services.
+
+**Solution:** Portal Services Hub with Digital Concrete design system.
+
+**Implementation:**
+- Design System: `/DESIGN_SYSTEM.md` (8 pages, 332 lines)
+- CSS Files: `tokens.css` (120 lines) + `components.css` (320 lines)
+- ServiceCard component: `ServiceCard.tsx` (112 lines)
+- PortalPage rewrite: `PortalPage.tsx` (397 lines)
+- Import in `main.tsx`: tokens → components → global CSS
+
+**Portal Services (6 Kiosks):**
+- 🪨 Monolit Planner (Active)
+- 🔍 URS Matcher (Active)
+- ⚙️ Pump Module (Coming Soon)
+- 📦 Formwork Calculator (Coming Soon)
+- 🚜 Earthwork Planner (Coming Soon)
+- 🛠️ Rebar Optimizer (Coming Soon)
+
+**Design System: "Digital Concrete" (Brutalist Neumorphism)**
+- Monochrome palette + orange accent (#FF9F1C)
+- Physical interaction: buttons press inward on click
+- Neumorphic shadows (elevation + depression)
+- BEM naming: `.c-btn`, `.c-panel`, `.c-card`, `.c-input`
+
+**Files:**
+- `DESIGN_SYSTEM.md` - Complete design system documentation
+- `stavagent-portal/frontend/src/styles/design-system/tokens.css`
+- `stavagent-portal/frontend/src/styles/design-system/components.css`
+- `stavagent-portal/frontend/src/components/portal/ServiceCard.tsx`
+- `stavagent-portal/frontend/src/pages/PortalPage.tsx`
+- `Monolit-Planner/backend/src/services/timeNormsService.js`
+
+---
 
 ### ✅ COMPLETED: Git Hooks Implementation + Production Build Fixes (2025-12-25)
 **Branch:** `claude/fix-import-bridge-excel-5qHJV`
@@ -693,13 +810,14 @@ REDIS_URL=redis://...
 
 ## 📖 Session Documentation
 
-**Current Session (2025-12-23):** See `/NEXT_SESSION.md` for:
-- Import/Bridge switch fix (critical bug)
-- Template auto-loading removed on manual creation
-- Excel export fix for "jiné" custom names
-- Speed column (MJ/h) live recalculation
+**Current Session (2025-12-26):** See `/NEXT_SESSION.md` for:
+- Time Norms Automation (AI-powered days estimation with KROS/RTS/ČSN norms)
+- Portal Services Hub (6 kiosks: 2 active, 4 coming soon)
+- Digital Concrete Design System (Brutalist Neumorphism)
+- 3 commits, 11 files created/modified, 7 hours
 
 **Previous Sessions:**
+- **2025-12-25:** Git Hooks (Husky) + Production build fixes (TypeScript + prepare script)
 - **2025-12-23:** Import/Bridge switch fix + Template removal + Excel export fix + Speed live recalc
 - **2025-12-19:** Security fixes + Speed column (MJ/h) + дизайн/LLM/mobile обсуждение
 - **2025-12-18:** Monolit Planner UI fixes (sidebar import refresh, custom work name)
