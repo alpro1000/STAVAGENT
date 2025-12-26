@@ -100,7 +100,7 @@ async function initPostgresSchema() {
   const configExists = await db.prepare('SELECT id FROM project_config WHERE id = 1').get();
   if (!configExists) {
     const defaultFeatureFlags = JSON.stringify({
-      FF_AI_DAYS_SUGGEST: false,
+      FF_AI_DAYS_SUGGEST: true,  // ✅ AI-powered days estimation (Time Norms Automation)
       FF_PUMP_MODULE: false,
       FF_ADVANCED_METRICS: false,
       FF_DARK_MODE: false,
@@ -687,7 +687,7 @@ async function initSqliteSchema() {
   const configExists = db.prepare('SELECT id FROM project_config WHERE id = 1').get();
   if (!configExists) {
     const defaultFeatureFlags = JSON.stringify({
-      FF_AI_DAYS_SUGGEST: false,
+      FF_AI_DAYS_SUGGEST: true,  // ✅ AI-powered days estimation (Time Norms Automation)
       FF_PUMP_MODULE: false,
       FF_ADVANCED_METRICS: false,
       FF_DARK_MODE: false,
