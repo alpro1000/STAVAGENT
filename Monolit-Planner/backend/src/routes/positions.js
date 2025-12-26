@@ -9,6 +9,7 @@ import db from '../db/init.js';
 import { calculatePositions, calculateKPI } from '../services/calculator.js';
 import { logger } from '../utils/logger.js';
 import { extractPartName } from '../utils/text.js';
+import { suggestDays } from '../services/timeNormsService.js';
 
 const router = express.Router();
 
@@ -407,6 +408,55 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     logger.error('Error deleting position:', error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/positions/:id/suggest-days
+ * AI-powered days suggestion using concrete-agent Multi-Role API
+ *
+ * Returns suggested duration based on:
+ * - Work type (beton, bednění, výztuž, jiné)
+ * - Quantity and unit
+ * - Crew size and shift hours
+ * - Official construction norms (KROS, RTS, ČSN)
+ */
+router.post('/:id/suggest-days', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    logger.info(`[API] Requesting time norms suggestion for position ${id}`);
+
+    // Get position from database
+    const position = await db.prepare(
+      'SELECT * FROM positions WHERE id = ?'
+    ).get(id);
+
+    if (!position) {
+      return res.status(404).json({ error: 'Position not found' });
+    }
+
+    // Validate required fields
+    if (!position.qty || position.qty <= 0) {
+      return res.status(400).json({
+        error: 'Invalid quantity',
+        message: 'Position must have a valid quantity > 0'
+      });
+    }
+
+    // Call AI service
+    const suggestion = await suggestDays(position);
+
+    logger.info(`[API] Time norms suggestion completed for position ${id}: ${suggestion.suggested_days} days`);
+
+    res.json(suggestion);
+
+  } catch (error) {
+    logger.error('[API] Error suggesting days:', error);
+    res.status(500).json({
+      error: 'Failed to suggest days',
+      message: error.message
+    });
   }
 });
 
