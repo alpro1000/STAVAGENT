@@ -6,6 +6,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Position, SUBTYPE_ICONS, SUBTYPE_LABELS } from '@stavagent/monolit-shared';
 import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
+import { useConfig } from '../hooks/useConfig';
 import FormulaDetailsModal from './FormulaDetailsModal';
 import { Sparkles } from 'lucide-react';
 
@@ -28,6 +29,7 @@ interface Props {
 export default function PositionRow({ position, isLocked = false }: Props) {
   const { selectedBridge } = useAppContext();
   const { updatePositions, deletePosition, isUpdating } = usePositions(selectedBridge);
+  const { data: config } = useConfig(); // Get feature flags from config
 
   const [editedFields, setEditedFields] = useState<Partial<Position>>({});
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
@@ -38,6 +40,9 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   const [loadingSuggestion, setLoadingSuggestion] = useState(false);
   const [suggestion, setSuggestion] = useState<DaysSuggestion | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+
+  // Check if AI Days Suggestion feature is enabled
+  const isAiDaysSuggestEnabled = config?.feature_flags?.FF_AI_DAYS_SUGGEST ?? false;
 
   const handleFieldChange = (field: keyof Position, value: any) => {
     if (isLocked) return;
@@ -285,32 +290,34 @@ export default function PositionRow({ position, isLocked = false }: Props) {
             style={{ flex: 1 }}
           />
 
-          {/* AI Suggestion Button */}
-          <button
-            onClick={handleSuggestDays}
-            disabled={isLocked || loadingSuggestion || !position.qty}
-            className="ai-suggest-button"
-            title="AI návrh norem času (KROS/RTS/ČSN)"
-            style={{
-              background: loadingSuggestion ? '#666' : '#4CAF50',
-              border: 'none',
-              borderRadius: '4px',
-              padding: '4px 6px',
-              cursor: isLocked || loadingSuggestion ? 'not-allowed' : 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: '28px',
-              height: '28px',
-              opacity: isLocked || !position.qty ? 0.5 : 1,
-              transition: 'all 0.2s'
-            }}
-          >
-            <Sparkles size={16} color="white" />
-          </button>
+          {/* AI Suggestion Button - Only show if feature flag enabled */}
+          {isAiDaysSuggestEnabled && (
+            <button
+              onClick={handleSuggestDays}
+              disabled={isLocked || loadingSuggestion || !position.qty}
+              className="ai-suggest-button"
+              title="AI návrh norem času (KROS/RTS/ČSN)"
+              style={{
+                background: loadingSuggestion ? '#666' : '#4CAF50',
+                border: 'none',
+                borderRadius: '4px',
+                padding: '4px 6px',
+                cursor: isLocked || loadingSuggestion ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                minWidth: '28px',
+                height: '28px',
+                opacity: isLocked || !position.qty ? 0.5 : 1,
+                transition: 'all 0.2s'
+              }}
+            >
+              <Sparkles size={16} color="white" />
+            </button>
+          )}
 
           {/* AI Suggestion Tooltip */}
-          {showTooltip && suggestion && (
+          {isAiDaysSuggestEnabled && showTooltip && suggestion && (
             <div
               className="ai-suggestion-tooltip"
               style={{
