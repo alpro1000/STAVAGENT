@@ -217,20 +217,36 @@ export default function PortalPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--app-bg-concrete)' }}>
+    <div style={{
+      minHeight: '100vh',
+      minHeight: '100dvh', // Dynamic viewport height for mobile
+      background: 'var(--app-bg-concrete)',
+      display: 'flex',
+      flexDirection: 'column',
+      overflowY: 'auto',
+      overflowX: 'hidden',
+      WebkitOverflowScrolling: 'touch' // Smooth scrolling on iOS
+    }}>
       {/* Header */}
       <div className="c-header">
         <div className="c-container">
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <div>
-              <h1 className="c-header__title">🏗️ StavAgent Portal</h1>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '16px'
+          }}>
+            <div style={{ flex: '1 1 auto', minWidth: '200px' }}>
+              <h1 className="c-header__title">🏗️ Stavební platforma pro služby a projekty</h1>
               <p className="c-header__subtitle">
-                Centrální centrum pro všechny stavební služby a projekty
+                Centrální centrum pro všechny služby a projekty
               </p>
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
               className="c-btn c-btn--primary"
+              style={{ flexShrink: 0 }}
             >
               <Plus size={20} />
               Nový projekt
@@ -239,7 +255,13 @@ export default function PortalPage() {
         </div>
       </div>
 
-      <div className="c-container" style={{ paddingTop: '32px', paddingBottom: '32px' }}>
+      <div className="c-container" style={{
+        paddingTop: '32px',
+        paddingBottom: '32px',
+        flex: 1,
+        width: '100%',
+        overflowY: 'auto'
+      }}>
         {/* Available Services Section */}
         <section style={{ marginBottom: '48px' }}>
           <div style={{ marginBottom: '24px' }}>
@@ -300,7 +322,14 @@ export default function PortalPage() {
 
         {/* Projects Section */}
         <section>
-          <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <div style={{
+            marginBottom: '24px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '16px'
+          }}>
             <div>
               <h2 style={{
                 fontSize: '24px',
@@ -318,6 +347,7 @@ export default function PortalPage() {
               <button
                 onClick={() => setShowCreateModal(true)}
                 className="c-btn c-btn--sm c-btn--primary"
+                style={{ flexShrink: 0 }}
               >
                 <Plus size={16} />
                 Přidat projekt
