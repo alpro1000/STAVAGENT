@@ -238,9 +238,9 @@ export default function PortalPage() {
             gap: '16px'
           }}>
             <div style={{ flex: '1 1 auto', minWidth: '200px' }}>
-              <h1 className="c-header__title">🏗️ Stavební platforma pro služby a projekty</h1>
+              <h1 className="c-header__title">🏗️ StavAgent Portal</h1>
               <p className="c-header__subtitle">
-                Centrální centrum pro všechny služby a projekty
+                Stavební platforma pro služby a projekty
               </p>
             </div>
             <button
