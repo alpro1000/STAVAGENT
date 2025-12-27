@@ -2,18 +2,18 @@
   <!-- Background circle (concrete) -->
   <circle cx="60" cy="60" r="55" fill="#CFD1D3" stroke="#A8AAAC" stroke-width="2"/>
 
-  <!-- Letter "S" made of concrete blocks -->
+  <!-- Letter "S" made of concrete blocks (ПРАВИЛЬНАЯ ОРИЕНТАЦИЯ) -->
   <!-- Top horizontal bar -->
   <rect x="35" y="30" width="50" height="12" fill="#5A5D60" rx="1"/>
 
-  <!-- Top-middle vertical bar (right side) -->
-  <rect x="73" y="30" width="12" height="28" fill="#6B6E71" rx="1"/>
+  <!-- Top-LEFT vertical bar (исправлено с right на left) -->
+  <rect x="35" y="30" width="12" height="28" fill="#6B6E71" rx="1"/>
 
   <!-- Middle horizontal bar (ACCENT - Orange) -->
   <rect x="35" y="46" width="50" height="12" fill="#FF9F1C" rx="1"/>
 
-  <!-- Bottom-middle vertical bar (left side) -->
-  <rect x="35" y="58" width="12" height="28" fill="#6B6E71" rx="1"/>
+  <!-- Bottom-RIGHT vertical bar (исправлено с left на right) -->
+  <rect x="73" y="58" width="12" height="28" fill="#6B6E71" rx="1"/>
 
   <!-- Bottom horizontal bar -->
   <rect x="35" y="74" width="50" height="12" fill="#5A5D60" rx="1"/>

@@ -229,15 +229,17 @@
 
 .c-header__title {
   color: var(--text-primary);
-  font-size: 28px;
+  font-size: 36px;
   font-weight: 700;
   margin: 0;
+  line-height: 1.2;
 }
 
 .c-header__subtitle {
   color: var(--text-secondary);
-  font-size: 14px;
-  margin: 4px 0 0;
+  font-size: 16px;
+  margin: 6px 0 0;
+  line-height: 1.4;
 }
 
 /* ========================================
@@ -298,8 +300,8 @@
 
   /* Logo responsive на мобильных */
   img[alt="StavAgent Logo"] {
-    width: 32px !important;
-    height: 38px !important;
+    width: 40px !important;
+    height: 40px !important;
   }
 
   .c-container {
