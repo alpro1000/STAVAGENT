@@ -25,11 +25,11 @@ export default function ServiceCard({ service }: ServiceCardProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
-        return <span className="c-badge c-badge--success">Active</span>;
+        return <span className="c-badge c-badge--success">Aktivní</span>;
       case 'beta':
         return <span className="c-badge c-badge--warning">Beta</span>;
       case 'coming_soon':
-        return <span className="c-badge c-badge--info">Coming Soon</span>;
+        return <span className="c-badge c-badge--info">Připravujeme</span>;
       default:
         return null;
     }
