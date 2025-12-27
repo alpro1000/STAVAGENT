@@ -218,8 +218,7 @@ export default function PortalPage() {
 
   return (
     <div style={{
-      minHeight: '100vh',
-      minHeight: '100dvh', // Dynamic viewport height for mobile
+      minHeight: 'min(100vh, 100dvh)', // Support both standard and dynamic viewport height
       background: 'var(--app-bg-concrete)',
       display: 'flex',
       flexDirection: 'column',
