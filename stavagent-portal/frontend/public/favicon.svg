@@ -2,18 +2,18 @@
   <!-- Background -->
   <rect width="32" height="32" rx="6" fill="#CFD1D3"/>
 
-  <!-- Letter "S" simplified -->
+  <!-- Letter "S" simplified (ПРАВИЛЬНАЯ ОРИЕНТАЦИЯ) -->
   <!-- Top bar -->
   <rect x="8" y="7" width="16" height="4" fill="#5A5D60" rx="0.5"/>
 
-  <!-- Top-right vertical -->
-  <rect x="20" y="7" width="4" height="9" fill="#6B6E71" rx="0.5"/>
+  <!-- Top-LEFT vertical (исправлено) -->
+  <rect x="8" y="7" width="4" height="9" fill="#6B6E71" rx="0.5"/>
 
   <!-- Middle bar (ORANGE ACCENT) -->
   <rect x="8" y="12" width="16" height="4" fill="#FF9F1C" rx="0.5"/>
 
-  <!-- Bottom-left vertical -->
-  <rect x="8" y="16" width="4" height="9" fill="#6B6E71" rx="0.5"/>
+  <!-- Bottom-RIGHT vertical (исправлено) -->
+  <rect x="20" y="16" width="4" height="9" fill="#6B6E71" rx="0.5"/>
 
   <!-- Bottom bar -->
   <rect x="8" y="21" width="16" height="4" fill="#5A5D60" rx="0.5"/>
