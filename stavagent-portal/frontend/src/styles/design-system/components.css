@@ -296,6 +296,12 @@
     display: none; /* Скрываем подзаголовок на маленьких экранах */
   }
 
+  /* Logo responsive на мобильных */
+  img[alt="StavAgent Logo"] {
+    width: 32px !important;
+    height: 38px !important;
+  }
+
   .c-container {
     padding-left: var(--space-md);
     padding-right: var(--space-md);
