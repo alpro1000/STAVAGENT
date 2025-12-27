@@ -236,11 +236,18 @@ export default function PortalPage() {
             flexWrap: 'wrap',
             gap: '16px'
           }}>
-            <div style={{ flex: '1 1 auto', minWidth: '200px' }}>
-              <h1 className="c-header__title">🏗️ StavAgent Portal</h1>
-              <p className="c-header__subtitle">
-                Stavební platforma pro služby a projekty
-              </p>
+            <div style={{ flex: '1 1 auto', minWidth: '200px', display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <img
+                src="/assets/logo.svg"
+                alt="StavAgent Logo"
+                style={{ width: '40px', height: '48px', flexShrink: 0 }}
+              />
+              <div>
+                <h1 className="c-header__title">StavAgent Portal</h1>
+                <p className="c-header__subtitle">
+                  Stavební platforma pro služby a projekty
+                </p>
+              </div>
             </div>
             <button
               onClick={() => setShowCreateModal(true)}
