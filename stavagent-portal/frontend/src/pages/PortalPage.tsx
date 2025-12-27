@@ -43,61 +43,61 @@ interface Service {
   tags?: string[];
 }
 
-// Available STAVAGENT Services
+// Dostupné služby STAVAGENT
 const SERVICES: Service[] = [
   {
     id: 'monolit-planner',
     name: 'Monolit Planner',
-    description: 'Calculate costs for monolithic concrete structures. Convert all costs to CZK/m³ metric with KROS rounding.',
+    description: 'Výpočet nákladů na monolitické betonové konstrukce. Převod všech nákladů na metriku Kč/m³ se zaokrouhlením KROS.',
     icon: '🪨',
     url: 'https://monolit-planner-frontend.onrender.com',
     status: 'active',
-    tags: ['Concrete', 'KROS', 'Bridge', 'Building']
+    tags: ['Beton', 'KROS', 'Most', 'Budova']
   },
   {
     id: 'urs-matcher',
     name: 'URS Matcher',
-    description: 'Match BOQ descriptions to URS codes using AI. 4-phase architecture with Multi-Role validation.',
+    description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
     icon: '🔍',
     url: 'https://urs-matcher-service.onrender.com',
     status: 'active',
-    tags: ['BOQ', 'URS', 'AI Matching']
+    tags: ['Výkaz výměr', 'URS', 'AI párování']
   },
   {
     id: 'pump-module',
-    name: 'Pump Module',
-    description: 'Calculate pumping costs and logistics for concrete delivery. Coming soon!',
+    name: 'Modul čerpání',
+    description: 'Výpočet nákladů a logistiky čerpání betonu. Připravujeme!',
     icon: '⚙️',
     url: '#',
     status: 'coming_soon',
-    tags: ['Pumping', 'Logistics']
+    tags: ['Čerpání', 'Logistika']
   },
   {
     id: 'formwork-calculator',
-    name: 'Formwork Calculator',
-    description: 'Specialized calculator for formwork systems. Optimize material usage and costs.',
+    name: 'Kalkulačka bednění',
+    description: 'Specializovaná kalkulačka pro bednící systémy. Optimalizace spotřeby materiálu a nákladů.',
     icon: '📦',
     url: '#',
     status: 'coming_soon',
-    tags: ['Formwork', 'Optimization']
+    tags: ['Bednění', 'Optimalizace']
   },
   {
     id: 'earthwork-planner',
-    name: 'Earthwork Planner',
-    description: 'Plan and estimate earthwork operations. Calculate volumes and equipment needs.',
+    name: 'Plánovač zemních prací',
+    description: 'Plánování a odhad zemních prací. Výpočet objemů a potřeby techniky.',
     icon: '🚜',
     url: '#',
     status: 'coming_soon',
-    tags: ['Earthwork', 'Excavation']
+    tags: ['Zemní práce', 'Výkopy']
   },
   {
     id: 'rebar-optimizer',
-    name: 'Rebar Optimizer',
-    description: 'Optimize reinforcement layouts and calculate cutting lists to minimize waste.',
+    name: 'Optimalizátor výztuže',
+    description: 'Optimalizace rozmístění výztuže a výpočet řezných plánů pro minimalizaci odpadu.',
     icon: '🛠️',
     url: '#',
     status: 'coming_soon',
-    tags: ['Reinforcement', 'Optimization']
+    tags: ['Výztuž', 'Optimalizace']
   }
 ];
 
@@ -210,7 +210,7 @@ export default function PortalPage() {
             animation: 'spin 1s linear infinite',
             margin: '0 auto'
           }} />
-          <p style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>Loading...</p>
+          <p style={{ marginTop: '16px', color: 'var(--text-secondary)' }}>Načítání...</p>
         </div>
       </div>
     );
@@ -225,7 +225,7 @@ export default function PortalPage() {
             <div>
               <h1 className="c-header__title">🏗️ StavAgent Portal</h1>
               <p className="c-header__subtitle">
-                Central hub for all construction services and projects
+                Centrální centrum pro všechny stavební služby a projekty
               </p>
             </div>
             <button
@@ -233,7 +233,7 @@ export default function PortalPage() {
               className="c-btn c-btn--primary"
             >
               <Plus size={20} />
-              New Project
+              Nový projekt
             </button>
           </div>
         </div>
@@ -249,10 +249,10 @@ export default function PortalPage() {
               color: 'var(--text-primary)',
               marginBottom: '8px'
             }}>
-              📊 Available Services
+              📊 Dostupné služby
             </h2>
             <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-              Choose a service to start working. Each kiosk is specialized for specific construction tasks.
+              Vyberte službu pro zahájení práce. Každý kiosek je specializovaný pro konkrétní stavební úkoly.
             </p>
           </div>
 
@@ -272,7 +272,7 @@ export default function PortalPage() {
                 {projects.length}
               </div>
               <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-                Total Projects
+                Celkem projektů
               </div>
             </div>
 
@@ -282,7 +282,7 @@ export default function PortalPage() {
                 {projects.filter(p => p.core_status === 'completed').length}
               </div>
               <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-                Analyzed
+                Analyzováno
               </div>
             </div>
 
@@ -292,7 +292,7 @@ export default function PortalPage() {
                 0
               </div>
               <div style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-                With Chat
+                S chatem
               </div>
             </div>
           </div>
@@ -308,10 +308,10 @@ export default function PortalPage() {
                 color: 'var(--text-primary)',
                 marginBottom: '8px'
               }}>
-                📁 Your Projects
+                📁 Vaše projekty
               </h2>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-                Manage your construction projects and files
+                Spravujte své stavební projekty a soubory
               </p>
             </div>
             {projects.length > 0 && (
@@ -320,7 +320,7 @@ export default function PortalPage() {
                 className="c-btn c-btn--sm c-btn--primary"
               >
                 <Plus size={16} />
-                Add Project
+                Přidat projekt
               </button>
             )}
           </div>
@@ -340,17 +340,17 @@ export default function PortalPage() {
             <div className="c-panel c-panel--inset" style={{ textAlign: 'center', padding: '48px 24px' }}>
               <FileText size={48} style={{ color: 'var(--text-secondary)', margin: '0 auto 16px' }} />
               <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                No projects yet
+                Zatím žádné projekty
               </h3>
               <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                Get started by creating your first project
+                Začněte vytvořením prvního projektu
               </p>
               <button
                 onClick={() => setShowCreateModal(true)}
                 className="c-btn c-btn--primary"
               >
                 <Plus size={20} />
-                Create First Project
+                Vytvořit první projekt
               </button>
             </div>
           ) : (
