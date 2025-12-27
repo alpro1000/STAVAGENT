@@ -273,6 +273,71 @@
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
 }
 
+/* Mobile responsive - все grid превращаются в 1 колонку на телефонах */
+@media (max-width: 768px) {
+  .c-grid--2,
+  .c-grid--3,
+  .c-grid--4 {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+
+  .c-header {
+    padding: var(--space-md);
+  }
+
+  .c-header__title {
+    font-size: 16px !important;
+    line-height: 1.3;
+  }
+
+  .c-header__subtitle {
+    font-size: 11px !important;
+    display: none; /* Скрываем подзаголовок на маленьких экранах */
+  }
+
+  .c-container {
+    padding-left: var(--space-md);
+    padding-right: var(--space-md);
+  }
+
+  .c-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .c-btn--sm {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .c-card {
+    min-height: auto !important;
+  }
+
+  .c-panel {
+    padding: var(--space-md);
+  }
+}
+
+/* Extra small screens - для очень маленьких телефонов */
+@media (max-width: 480px) {
+  .c-header__title {
+    font-size: 14px !important;
+  }
+
+  .c-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  /* Иконки в кнопках на маленьких экранах */
+  .c-btn svg {
+    width: 14px;
+    height: 14px;
+  }
+}
+
 /* ========================================
    UTILITIES
    ======================================== */
