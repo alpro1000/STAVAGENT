@@ -18,6 +18,7 @@ import ProjectCard from '../components/portal/ProjectCard';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
 import ServiceCard from '../components/portal/ServiceCard';
+import ProjectAudit from '../components/portal/ProjectAudit';
 import ThemeToggle from '../components/ThemeToggle';
 
 interface PortalProject {
@@ -47,6 +48,15 @@ interface Service {
 // Dostupné služby STAVAGENT
 const SERVICES: Service[] = [
   {
+    id: 'project-audit',
+    name: 'Audit projektu',
+    description: 'Kompletní AI audit výkazu výměr. Multi-Role analýza (6 specialistů) → klasifikace GREEN/AMBER/RED → shrnutí + doporučení.',
+    icon: '🔍',
+    url: '#audit', // Special URL for internal action
+    status: 'active',
+    tags: ['AI Audit', 'Multi-Role', 'Workflow C', 'Rychlý']
+  },
+  {
     id: 'monolit-planner',
     name: 'Monolit Planner',
     description: 'Výpočet nákladů na monolitické betonové konstrukce. Převod všech nákladů na metriku Kč/m³ se zaokrouhlením KROS.',
@@ -59,7 +69,7 @@ const SERVICES: Service[] = [
     id: 'urs-matcher',
     name: 'URS Matcher',
     description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
-    icon: '🔍',
+    icon: '🔎',
     url: 'https://urs-matcher-service.onrender.com',
     status: 'active',
     tags: ['Výkaz výměr', 'URS', 'AI párování']
@@ -109,6 +119,7 @@ export default function PortalPage() {
   const [error, setError] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<PortalProject | null>(null);
+  const [showAuditModal, setShowAuditModal] = useState(false);
 
   // Load projects on mount
   useEffect(() => {
@@ -287,7 +298,11 @@ export default function PortalPage() {
 
           <div className="c-grid c-grid--3">
             {SERVICES.map(service => (
-              <ServiceCard key={service.id} service={service} />
+              <ServiceCard
+                key={service.id}
+                service={service}
+                onClick={service.id === 'project-audit' ? () => setShowAuditModal(true) : undefined}
+              />
             ))}
           </div>
         </section>
@@ -420,6 +435,11 @@ export default function PortalPage() {
           onClose={() => setShowCreateModal(false)}
           onCreate={handleCreateProject}
         />
+      )}
+
+      {/* Project Audit Modal */}
+      {showAuditModal && (
+        <ProjectAudit onClose={() => setShowAuditModal(false)} />
       )}
 
       {/* Theme Toggle */}
