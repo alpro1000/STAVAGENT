@@ -49,6 +49,58 @@ const errorBackBtn = document.getElementById('errorBackBtn');
 const exportBtn = document.getElementById('exportBtn');
 const copyBtn = document.getElementById('copyBtn');
 
+// Theme Toggle Elements
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const themeText = document.getElementById('themeText');
+
+// ============================================================================
+// THEME TOGGLE (Digital Concrete Design System v2.0)
+// ============================================================================
+
+function initTheme() {
+  // Load saved theme or use system preference
+  const savedTheme = localStorage.getItem('urs-matcher-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+  setTheme(initialTheme);
+  debugLog(`🎨 Theme initialized: ${initialTheme}`);
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('urs-matcher-theme', theme);
+
+  // Update button UI
+  if (theme === 'dark') {
+    themeIcon.textContent = '☀️';
+    themeText.textContent = 'Světlý režim';
+  } else {
+    themeIcon.textContent = '🌙';
+    themeText.textContent = 'Tmavý režim';
+  }
+
+  debugLog(`🎨 Theme switched to: ${theme}`);
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  setTheme(newTheme);
+}
+
+// Theme Toggle Event Listener
+if (themeToggle) {
+  themeToggle.addEventListener('click', toggleTheme);
+  debugLog('✅ Theme toggle button initialized');
+} else {
+  debugError('⚠️ Theme toggle button not found!');
+}
+
+// Initialize theme on load
+initTheme();
+
 let currentJobId = null;
 let currentResults = null;
 
