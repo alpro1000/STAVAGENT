@@ -18,6 +18,7 @@ import ProjectCard from '../components/portal/ProjectCard';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
 import ServiceCard from '../components/portal/ServiceCard';
+import ThemeToggle from '../components/ThemeToggle';
 
 interface PortalProject {
   portal_project_id: string;
@@ -420,6 +421,9 @@ export default function PortalPage() {
           onCreate={handleCreateProject}
         />
       )}
+
+      {/* Theme Toggle */}
+      <ThemeToggle />
 
       {/* Spinner Animation */}
       <style>{`
