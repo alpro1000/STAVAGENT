@@ -41,12 +41,23 @@
 
               <textarea id="projectContextInput" placeholder='Kontext projektu (volitelné, JSON formát):&#10;{"building_type":"bytový dům","storeys":4,"main_system":["Porotherm","ŽB"]}' rows="3"></textarea>
 
+              <!-- Processing Mode Selection -->
+              <div class="processing-mode">
+                <label class="mode-toggle">
+                  <input type="checkbox" id="advancedModeCheckbox">
+                  <span class="mode-label">
+                    <strong>Rozšířený režim</strong>
+                    <span class="mode-description">Multi-Role AI validace (pomalejší, pro složité TZ a dokumentaci)</span>
+                  </span>
+                </label>
+              </div>
+
               <div class="action-buttons">
                 <button class="btn btn-primary" id="processFileBtn" disabled>
                   📊 Zpracovat soubor
                 </button>
               </div>
-              <p class="action-hint">💡 Vyplňte kontext projektu pro rozšířenou analýzu s multi-role validací</p>
+              <p class="action-hint" id="processingHint">⚡ Rychlý režim: optimalizovaný pайплайн (Gemini + Local DB + Perplexity)</p>
             </div>
 
             <!-- Text Input -->

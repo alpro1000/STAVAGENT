@@ -211,6 +211,58 @@
   gap: var(--space-sm);
 }
 
+/* Processing Mode Toggle */
+.processing-mode {
+  margin: var(--space-md) 0;
+  padding: var(--space-md);
+  background: var(--panel-clean);
+  border: 1px solid var(--edge-light);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-button);
+}
+
+.mode-toggle {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  cursor: pointer;
+  user-select: none;
+}
+
+.mode-toggle input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  margin-top: 2px;
+  flex-shrink: 0;
+  accent-color: var(--accent-orange);
+}
+
+.mode-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.mode-label strong {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mode-description {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.mode-toggle:hover .mode-label strong {
+  color: var(--accent-orange);
+  text-shadow: 0 0 10px var(--accent-orange-glow);
+  transition: all var(--transition-fast);
+}
+
 /* ============================================
    BUTTONS (using design system)
    ============================================ */

@@ -54,6 +54,10 @@ const themeToggle = document.getElementById('themeToggle');
 const themeIcon = document.getElementById('themeIcon');
 const themeText = document.getElementById('themeText');
 
+// Processing Mode Elements
+const advancedModeCheckbox = document.getElementById('advancedModeCheckbox');
+const processingHint = document.getElementById('processingHint');
+
 // ============================================================================
 // THEME TOGGLE (Digital Concrete Design System v2.0)
 // ============================================================================
@@ -100,6 +104,50 @@ if (themeToggle) {
 
 // Initialize theme on load
 initTheme();
+
+// ============================================================================
+// PROCESSING MODE TOGGLE
+// ============================================================================
+
+function initProcessingMode() {
+  // Load saved mode preference
+  const savedMode = localStorage.getItem('urs-matcher-advanced-mode');
+  const isAdvanced = savedMode === 'true';
+
+  if (advancedModeCheckbox) {
+    advancedModeCheckbox.checked = isAdvanced;
+    updateProcessingHint(isAdvanced);
+    debugLog(`🔧 Processing mode initialized: ${isAdvanced ? 'Advanced' : 'Fast'}`);
+  }
+}
+
+function updateProcessingHint(isAdvanced) {
+  if (!processingHint) return;
+
+  if (isAdvanced) {
+    processingHint.innerHTML = '🧠 <strong>Rozšířený režim:</strong> Multi-Role AI validace (pomalejší, pro složité TZ a dokumentaci)';
+    processingHint.style.color = 'var(--accent-orange)';
+  } else {
+    processingHint.innerHTML = '⚡ <strong>Rychlý režim:</strong> optimalizovaný pайплайн (Gemini + Local DB + Perplexity)';
+    processingHint.style.color = 'var(--text-secondary)';
+  }
+}
+
+// Processing Mode Change Event Listener
+if (advancedModeCheckbox) {
+  advancedModeCheckbox.addEventListener('change', (e) => {
+    const isAdvanced = e.target.checked;
+    localStorage.setItem('urs-matcher-advanced-mode', isAdvanced);
+    updateProcessingHint(isAdvanced);
+    debugLog(`🔧 Processing mode changed to: ${isAdvanced ? 'Advanced' : 'Fast'}`);
+  });
+  debugLog('✅ Processing mode toggle initialized');
+} else {
+  debugError('⚠️ Processing mode checkbox not found!');
+}
+
+// Initialize processing mode on load
+initProcessingMode();
 
 let currentJobId = null;
 let currentResults = null;
@@ -197,8 +245,14 @@ async function processFile() {
       debugLog('📊 No project context provided');
     }
 
-    debugLog('📊 Sending POST to:', `${API_URL}/jobs/block-match`);
-    const response = await fetch(`${API_URL}/jobs/block-match`, {
+    // Choose endpoint based on processing mode
+    const isAdvancedMode = advancedModeCheckbox && advancedModeCheckbox.checked;
+    const endpoint = isAdvancedMode ? '/jobs/block-match' : '/jobs/block-match-fast';
+
+    debugLog(`📊 Processing mode: ${isAdvancedMode ? 'Advanced (Multi-Role)' : 'Fast (Optimized)'}`);
+    debugLog('📊 Sending POST to:', `${API_URL}${endpoint}`);
+
+    const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'POST',
       body: formData
     });
