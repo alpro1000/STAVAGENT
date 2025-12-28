@@ -19,6 +19,7 @@ import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
 import ServiceCard from '../components/portal/ServiceCard';
 import ProjectAudit from '../components/portal/ProjectAudit';
+import ProjectDocuments from '../components/portal/ProjectDocuments';
 import ThemeToggle from '../components/ThemeToggle';
 
 interface PortalProject {
@@ -55,6 +56,15 @@ const SERVICES: Service[] = [
     url: '#audit', // Special URL for internal action
     status: 'active',
     tags: ['AI Audit', 'Multi-Role', 'Workflow C', 'Rychlý']
+  },
+  {
+    id: 'document-accumulator',
+    name: 'Akumulace dokumentů',
+    description: 'Nahrávejte soubory postupně, propojte složky projektu. Pozadí zpracovává, hash-cache přeskakuje nezměněné. LLM souhrn z VŠECH dokumentů.',
+    icon: '📁',
+    url: '#documents', // Special URL for internal action
+    status: 'active',
+    tags: ['Inkrementální', 'Složky', 'Souhrn', 'Background']
   },
   {
     id: 'monolit-planner',
@@ -120,6 +130,9 @@ export default function PortalPage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<PortalProject | null>(null);
   const [showAuditModal, setShowAuditModal] = useState(false);
+  const [showDocumentsModal, setShowDocumentsModal] = useState(false);
+  const [documentsProjectId, setDocumentsProjectId] = useState<string>('');
+  const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
 
   // Load projects on mount
   useEffect(() => {
@@ -301,7 +314,16 @@ export default function PortalPage() {
               <ServiceCard
                 key={service.id}
                 service={service}
-                onClick={service.id === 'project-audit' ? () => setShowAuditModal(true) : undefined}
+                onClick={
+                  service.id === 'project-audit' ? () => setShowAuditModal(true) :
+                  service.id === 'document-accumulator' ? () => {
+                    // For document accumulator, create a new project ID or use existing
+                    const newProjectId = `doc-${Date.now()}`;
+                    setDocumentsProjectId(newProjectId);
+                    setDocumentsProjectName('Nový projekt');
+                    setShowDocumentsModal(true);
+                  } : undefined
+                }
               />
             ))}
           </div>
@@ -440,6 +462,15 @@ export default function PortalPage() {
       {/* Project Audit Modal */}
       {showAuditModal && (
         <ProjectAudit onClose={() => setShowAuditModal(false)} />
+      )}
+
+      {/* Project Documents Modal */}
+      {showDocumentsModal && (
+        <ProjectDocuments
+          projectId={documentsProjectId}
+          projectName={documentsProjectName}
+          onClose={() => setShowDocumentsModal(false)}
+        />
       )}
 
       {/* Theme Toggle */}
