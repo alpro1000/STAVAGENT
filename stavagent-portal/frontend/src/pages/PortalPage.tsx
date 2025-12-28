@@ -18,6 +18,8 @@ import ProjectCard from '../components/portal/ProjectCard';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
 import ServiceCard from '../components/portal/ServiceCard';
+import ProjectAudit from '../components/portal/ProjectAudit';
+import ProjectDocuments from '../components/portal/ProjectDocuments';
 import ThemeToggle from '../components/ThemeToggle';
 
 interface PortalProject {
@@ -47,6 +49,24 @@ interface Service {
 // Dostupné služby STAVAGENT
 const SERVICES: Service[] = [
   {
+    id: 'project-audit',
+    name: 'Audit projektu',
+    description: 'Kompletní AI audit výkazu výměr. Multi-Role analýza (6 specialistů) → klasifikace GREEN/AMBER/RED → shrnutí + doporučení.',
+    icon: '🔍',
+    url: '#audit', // Special URL for internal action
+    status: 'active',
+    tags: ['AI Audit', 'Multi-Role', 'Workflow C', 'Rychlý']
+  },
+  {
+    id: 'document-accumulator',
+    name: 'Akumulace dokumentů',
+    description: 'Nahrávejte soubory postupně, propojte složky projektu. Pozadí zpracovává, hash-cache přeskakuje nezměněné. LLM souhrn z VŠECH dokumentů.',
+    icon: '📁',
+    url: '#documents', // Special URL for internal action
+    status: 'active',
+    tags: ['Inkrementální', 'Složky', 'Souhrn', 'Background']
+  },
+  {
     id: 'monolit-planner',
     name: 'Monolit Planner',
     description: 'Výpočet nákladů na monolitické betonové konstrukce. Převod všech nákladů na metriku Kč/m³ se zaokrouhlením KROS.',
@@ -59,7 +79,7 @@ const SERVICES: Service[] = [
     id: 'urs-matcher',
     name: 'URS Matcher',
     description: 'Párování popisů výkazů výměr s kódy URS pomocí AI. 4-fázová architektura s Multi-Role validací.',
-    icon: '🔍',
+    icon: '🔎',
     url: 'https://urs-matcher-service.onrender.com',
     status: 'active',
     tags: ['Výkaz výměr', 'URS', 'AI párování']
@@ -109,6 +129,10 @@ export default function PortalPage() {
   const [error, setError] = useState<string | null>(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedProject, setSelectedProject] = useState<PortalProject | null>(null);
+  const [showAuditModal, setShowAuditModal] = useState(false);
+  const [showDocumentsModal, setShowDocumentsModal] = useState(false);
+  const [documentsProjectId, setDocumentsProjectId] = useState<string>('');
+  const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
 
   // Load projects on mount
   useEffect(() => {
@@ -287,7 +311,20 @@ export default function PortalPage() {
 
           <div className="c-grid c-grid--3">
             {SERVICES.map(service => (
-              <ServiceCard key={service.id} service={service} />
+              <ServiceCard
+                key={service.id}
+                service={service}
+                onClick={
+                  service.id === 'project-audit' ? () => setShowAuditModal(true) :
+                  service.id === 'document-accumulator' ? () => {
+                    // For document accumulator, create a new project ID or use existing
+                    const newProjectId = `doc-${Date.now()}`;
+                    setDocumentsProjectId(newProjectId);
+                    setDocumentsProjectName('Nový projekt');
+                    setShowDocumentsModal(true);
+                  } : undefined
+                }
+              />
             ))}
           </div>
         </section>
@@ -419,6 +456,20 @@ export default function PortalPage() {
         <CreateProjectModal
           onClose={() => setShowCreateModal(false)}
           onCreate={handleCreateProject}
+        />
+      )}
+
+      {/* Project Audit Modal */}
+      {showAuditModal && (
+        <ProjectAudit onClose={() => setShowAuditModal(false)} />
+      )}
+
+      {/* Project Documents Modal */}
+      {showDocumentsModal && (
+        <ProjectDocuments
+          projectId={documentsProjectId}
+          projectName={documentsProjectName}
+          onClose={() => setShowDocumentsModal(false)}
         />
       )}
 

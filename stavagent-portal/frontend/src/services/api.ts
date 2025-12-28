@@ -516,6 +516,183 @@ export const adminAPI = {
   }
 };
 
+// ============ Workflow C Types ============
+export interface WorkflowCPosition {
+  code?: string;
+  description: string;
+  quantity?: number;
+  unit?: string;
+  unit_price?: number;
+  total_price?: number;
+}
+
+export interface WorkflowCRequest {
+  project_id: string;
+  project_name: string;
+  positions: WorkflowCPosition[];
+  generate_summary?: boolean;
+  use_parallel?: boolean;
+  language?: 'cs' | 'en' | 'sk';
+}
+
+export interface WorkflowCResult {
+  success: boolean;
+  project_id: string;
+  project_name: string;
+  positions_count: number;
+  audit_classification: 'GREEN' | 'AMBER' | 'RED' | 'UNKNOWN';
+  audit_confidence: number;
+  critical_issues: string[];
+  warnings: string[];
+  summary?: {
+    executive_summary?: string;
+    key_findings?: string[];
+    recommendations?: string[];
+  };
+  total_duration_seconds: number;
+  stage_durations: Record<string, number>;
+  multi_role_speedup?: number;
+}
+
+export interface WorkflowCProgress {
+  project_id: string;
+  current_stage: string;
+  progress_percentage: number;
+  stages_completed: string[];
+  duration_seconds: number;
+  error?: string;
+}
+
+// Workflow C API (concrete-agent CORE)
+const CORE_API_URL = (import.meta as any).env?.VITE_CORE_API_URL || 'https://concrete-agent.onrender.com';
+
+export const workflowCAPI = {
+  /**
+   * Execute Workflow C with pre-parsed positions
+   */
+  execute: async (request: WorkflowCRequest): Promise<WorkflowCResult> => {
+    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/execute`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        project_id: request.project_id,
+        project_name: request.project_name,
+        positions: request.positions,
+        generate_summary: request.generate_summary ?? true,
+        use_parallel: request.use_parallel ?? true,
+        language: request.language ?? 'cs',
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+      throw new Error(error.detail || `Workflow C failed: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Upload file and execute Workflow C
+   */
+  uploadAndExecute: async (
+    file: File,
+    projectId: string,
+    projectName: string,
+    options?: {
+      generate_summary?: boolean;
+      use_parallel?: boolean;
+      language?: 'cs' | 'en' | 'sk';
+    }
+  ): Promise<WorkflowCResult> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('project_id', projectId);
+    formData.append('project_name', projectName);
+    formData.append('generate_summary', String(options?.generate_summary ?? true));
+    formData.append('use_parallel', String(options?.use_parallel ?? true));
+    formData.append('language', options?.language ?? 'cs');
+
+    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/upload`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+      throw new Error(error.detail || `Workflow C upload failed: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Execute Workflow C asynchronously (returns immediately)
+   */
+  executeAsync: async (request: WorkflowCRequest): Promise<{ project_id: string; status: string; status_url: string; result_url: string }> => {
+    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/execute-async`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        project_id: request.project_id,
+        project_name: request.project_name,
+        positions: request.positions,
+        generate_summary: request.generate_summary ?? true,
+        use_parallel: request.use_parallel ?? true,
+        language: request.language ?? 'cs',
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+      throw new Error(error.detail || `Workflow C async failed: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Get workflow progress
+   */
+  getProgress: async (projectId: string): Promise<WorkflowCProgress> => {
+    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/${projectId}/status`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to get progress: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Get workflow result
+   */
+  getResult: async (projectId: string): Promise<WorkflowCResult> => {
+    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/${projectId}/result`);
+
+    if (!response.ok) {
+      if (response.status === 202) {
+        throw new Error('Workflow still in progress');
+      }
+      throw new Error(`Failed to get result: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Health check
+   */
+  health: async (): Promise<{ status: string; version: string }> => {
+    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/health`);
+    return response.json();
+  },
+};
+
 // Helper exports for convenience
 export const createBridge = bridgesAPI.create;
 export const deleteBridge = bridgesAPI.delete;
