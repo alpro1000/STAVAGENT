@@ -579,3 +579,397 @@ class TestFullWorkflow:
         assert conflict.conflict_type == ConflictType.CONCRETE_CLASS
         assert conflict.winner == Role.CONCRETE_SPECIALIST  # Stricter wins
         assert "C30/37" in conflict.resolution
+
+
+# ============================================================================
+# PARALLEL EXECUTION TESTS (v2.0 - 2025-12-28)
+# ============================================================================
+
+from app.services.orchestrator import (
+    PerformanceMetrics,
+    PARALLEL_ROLES,
+    FIRST_ROLES,
+    LAST_ROLES,
+    execute_multi_role_sequential,
+)
+
+
+class TestPerformanceMetricsDataStructure:
+    """Test PerformanceMetrics dataclass"""
+
+    def test_performance_metrics_creation(self):
+        """Test PerformanceMetrics dataclass"""
+        metrics = PerformanceMetrics(
+            total_time_ms=15000,
+            stage_times={"first": 5000, "parallel": 8000, "last": 2000},
+            role_times={"structural_engineer": 4000, "concrete_specialist": 5000},
+            parallel_speedup=2.5,
+            roles_executed=3,
+            tokens_total=450,
+        )
+
+        assert metrics.total_time_ms == 15000
+        assert metrics.parallel_speedup == 2.5
+        assert len(metrics.stage_times) == 3
+        assert metrics.roles_executed == 3
+
+    def test_final_output_with_performance(self):
+        """Test FinalOutput with performance metrics"""
+        metrics = PerformanceMetrics(
+            total_time_ms=12000,
+            stage_times={"parallel": 10000, "last": 2000},
+            role_times={"structural_engineer": 5000, "concrete_specialist": 6000},
+            parallel_speedup=1.8,
+            roles_executed=2,
+            tokens_total=300,
+        )
+
+        output = FinalOutput(
+            answer="Test answer",
+            complexity=TaskComplexity.STANDARD,
+            roles_consulted=[Role.STRUCTURAL_ENGINEER, Role.CONCRETE_SPECIALIST],
+            conflicts=[],
+            warnings=[],
+            critical_issues=[],
+            total_tokens=300,
+            execution_time_seconds=12.0,
+            confidence=0.9,
+            performance=metrics,
+        )
+
+        assert output.performance is not None
+        assert output.performance.parallel_speedup == 1.8
+        assert output.execution_time_seconds == 12.0
+
+
+class TestRoleGrouping:
+    """Test role grouping for parallel execution"""
+
+    def test_group_roles_basic(self):
+        """Test basic role grouping"""
+        orchestrator = MultiRoleOrchestrator()
+
+        roles = [
+            RoleInvocation(role=Role.DOCUMENT_VALIDATOR, temperature=0.2, priority=0),
+            RoleInvocation(role=Role.STRUCTURAL_ENGINEER, temperature=0.3, priority=1),
+            RoleInvocation(role=Role.CONCRETE_SPECIALIST, temperature=0.3, priority=2),
+            RoleInvocation(role=Role.STANDARDS_CHECKER, temperature=0.2, priority=3),
+        ]
+
+        first, parallel, last = orchestrator._group_roles_for_parallel(roles)
+
+        assert len(first) == 1
+        assert first[0].role == Role.DOCUMENT_VALIDATOR
+
+        assert len(parallel) == 2
+        parallel_roles = {r.role for r in parallel}
+        assert Role.STRUCTURAL_ENGINEER in parallel_roles
+        assert Role.CONCRETE_SPECIALIST in parallel_roles
+
+        assert len(last) == 1
+        assert last[0].role == Role.STANDARDS_CHECKER
+
+    def test_group_roles_no_first(self):
+        """Test grouping when no Document Validator"""
+        orchestrator = MultiRoleOrchestrator()
+
+        roles = [
+            RoleInvocation(role=Role.STRUCTURAL_ENGINEER, temperature=0.3, priority=0),
+            RoleInvocation(role=Role.COST_ESTIMATOR, temperature=0.2, priority=1),
+        ]
+
+        first, parallel, last = orchestrator._group_roles_for_parallel(roles)
+
+        assert len(first) == 0
+        assert len(parallel) == 2
+        assert len(last) == 0
+
+    def test_group_roles_no_parallel(self):
+        """Test grouping when only first and last"""
+        orchestrator = MultiRoleOrchestrator()
+
+        roles = [
+            RoleInvocation(role=Role.DOCUMENT_VALIDATOR, temperature=0.2, priority=0),
+            RoleInvocation(role=Role.STANDARDS_CHECKER, temperature=0.2, priority=1),
+        ]
+
+        first, parallel, last = orchestrator._group_roles_for_parallel(roles)
+
+        assert len(first) == 1
+        assert len(parallel) == 0
+        assert len(last) == 1
+
+    def test_role_constants(self):
+        """Test role grouping constants are correctly defined"""
+        assert Role.DOCUMENT_VALIDATOR in FIRST_ROLES
+        assert Role.STANDARDS_CHECKER in LAST_ROLES
+        assert Role.STRUCTURAL_ENGINEER in PARALLEL_ROLES
+        assert Role.CONCRETE_SPECIALIST in PARALLEL_ROLES
+        assert Role.COST_ESTIMATOR in PARALLEL_ROLES
+
+
+class TestParallelExecution:
+    """Test parallel execution functionality"""
+
+    @patch('app.services.orchestrator.ClaudeClient')
+    def test_execute_parallel_basic(self, mock_claude_class):
+        """Test basic parallel execution"""
+        mock_claude_instance = Mock()
+        mock_claude_instance.call.return_value = {
+            "raw_text": "Test response"
+        }
+        mock_claude_class.return_value = mock_claude_instance
+
+        orchestrator = MultiRoleOrchestrator()
+
+        classification = TaskClassification(
+            complexity=TaskComplexity.STANDARD,
+            domains=[Domain.CALCULATION],
+            roles=[
+                RoleInvocation(role=Role.STRUCTURAL_ENGINEER, temperature=0.3, priority=0),
+                RoleInvocation(role=Role.CONCRETE_SPECIALIST, temperature=0.3, priority=1),
+            ],
+            requires_rfi=False,
+            missing_data=[],
+            confidence=0.85,
+        )
+
+        result = orchestrator.execute_parallel(
+            user_question="Test question",
+            classification=classification,
+        )
+
+        assert isinstance(result, FinalOutput)
+        assert result.performance is not None
+        assert result.performance.roles_executed == 2
+        assert "execution_mode" in result.metadata
+        assert result.metadata["execution_mode"] == "parallel"
+
+    @patch('app.services.orchestrator.ClaudeClient')
+    def test_execute_parallel_with_all_stages(self, mock_claude_class):
+        """Test parallel execution with all three stages"""
+        mock_claude_instance = Mock()
+        mock_claude_instance.call.side_effect = [
+            {"raw_text": "Document validated"},  # First
+            {"raw_text": "Structural analysis done"},  # Parallel
+            {"raw_text": "Concrete spec ready"},  # Parallel
+            {"raw_text": "Standards compliant"},  # Last
+        ]
+        mock_claude_class.return_value = mock_claude_instance
+
+        orchestrator = MultiRoleOrchestrator()
+
+        classification = TaskClassification(
+            complexity=TaskComplexity.COMPLEX,
+            domains=[Domain.VALIDATION],
+            roles=[
+                RoleInvocation(role=Role.DOCUMENT_VALIDATOR, temperature=0.2, priority=0),
+                RoleInvocation(role=Role.STRUCTURAL_ENGINEER, temperature=0.3, priority=1),
+                RoleInvocation(role=Role.CONCRETE_SPECIALIST, temperature=0.3, priority=2),
+                RoleInvocation(role=Role.STANDARDS_CHECKER, temperature=0.2, priority=3),
+            ],
+            requires_rfi=False,
+            missing_data=[],
+            confidence=0.8,
+        )
+
+        result = orchestrator.execute_parallel(
+            user_question="Validate my project",
+            classification=classification,
+        )
+
+        assert len(result.roles_consulted) == 4
+        assert result.performance is not None
+        assert "first" in result.performance.stage_times
+        assert "parallel" in result.performance.stage_times
+        assert "last" in result.performance.stage_times
+
+    @patch('app.services.orchestrator.ClaudeClient')
+    def test_parallel_speedup_calculated(self, mock_claude_class):
+        """Test that parallel speedup is calculated correctly"""
+        mock_claude_instance = Mock()
+        mock_claude_instance.call.return_value = {"raw_text": "Response"}
+        mock_claude_class.return_value = mock_claude_instance
+
+        orchestrator = MultiRoleOrchestrator()
+
+        classification = TaskClassification(
+            complexity=TaskComplexity.STANDARD,
+            domains=[Domain.CALCULATION],
+            roles=[
+                RoleInvocation(role=Role.STRUCTURAL_ENGINEER, temperature=0.3, priority=0),
+                RoleInvocation(role=Role.CONCRETE_SPECIALIST, temperature=0.3, priority=1),
+                RoleInvocation(role=Role.COST_ESTIMATOR, temperature=0.2, priority=2),
+            ],
+            requires_rfi=False,
+            missing_data=[],
+            confidence=0.85,
+        )
+
+        result = orchestrator.execute_parallel(
+            user_question="Calculate costs",
+            classification=classification,
+        )
+
+        assert result.performance is not None
+        # With 3 parallel roles, speedup should be > 1.0
+        assert result.performance.parallel_speedup >= 1.0
+        assert result.performance.roles_executed == 3
+
+
+class TestConvenienceFunctionParallel:
+    """Test convenience function with parallel parameter"""
+
+    @patch('app.services.orchestrator.ClaudeClient')
+    def test_execute_multi_role_default_parallel(self, mock_claude_class):
+        """Test execute_multi_role uses parallel by default"""
+        mock_claude_instance = Mock()
+        mock_claude_instance.call.return_value = {"raw_text": "Response"}
+        mock_claude_class.return_value = mock_claude_instance
+
+        classification = TaskClassification(
+            complexity=TaskComplexity.SIMPLE,
+            domains=[Domain.CODES],
+            roles=[
+                RoleInvocation(role=Role.COST_ESTIMATOR, temperature=0.1, priority=0)
+            ],
+            requires_rfi=False,
+            missing_data=[],
+            confidence=0.9,
+        )
+
+        result = execute_multi_role(
+            user_question="Test",
+            classification=classification,
+        )
+
+        # Default parallel=True, so performance should be present
+        assert result.performance is not None
+        assert result.metadata.get("execution_mode") == "parallel"
+
+    @patch('app.services.orchestrator.ClaudeClient')
+    def test_execute_multi_role_sequential_explicit(self, mock_claude_class):
+        """Test execute_multi_role with parallel=False"""
+        mock_claude_instance = Mock()
+        mock_claude_instance.call.return_value = {"raw_text": "Response"}
+        mock_claude_class.return_value = mock_claude_instance
+
+        classification = TaskClassification(
+            complexity=TaskComplexity.SIMPLE,
+            domains=[Domain.CODES],
+            roles=[
+                RoleInvocation(role=Role.COST_ESTIMATOR, temperature=0.1, priority=0)
+            ],
+            requires_rfi=False,
+            missing_data=[],
+            confidence=0.9,
+        )
+
+        result = execute_multi_role(
+            user_question="Test",
+            classification=classification,
+            parallel=False,
+        )
+
+        # Sequential mode, no performance metrics
+        assert result.performance is None
+
+    @patch('app.services.orchestrator.ClaudeClient')
+    def test_execute_multi_role_sequential_function(self, mock_claude_class):
+        """Test execute_multi_role_sequential function"""
+        mock_claude_instance = Mock()
+        mock_claude_instance.call.return_value = {"raw_text": "Response"}
+        mock_claude_class.return_value = mock_claude_instance
+
+        classification = TaskClassification(
+            complexity=TaskComplexity.SIMPLE,
+            domains=[Domain.CODES],
+            roles=[
+                RoleInvocation(role=Role.COST_ESTIMATOR, temperature=0.1, priority=0)
+            ],
+            requires_rfi=False,
+            missing_data=[],
+            confidence=0.9,
+        )
+
+        result = execute_multi_role_sequential(
+            user_question="Test",
+            classification=classification,
+        )
+
+        # Sequential mode
+        assert result.performance is None
+
+
+class TestParallelExecutionEdgeCases:
+    """Test edge cases in parallel execution"""
+
+    @patch('app.services.orchestrator.ClaudeClient')
+    def test_single_role_parallel(self, mock_claude_class):
+        """Test parallel execution with single role"""
+        mock_claude_instance = Mock()
+        mock_claude_instance.call.return_value = {"raw_text": "Response"}
+        mock_claude_class.return_value = mock_claude_instance
+
+        orchestrator = MultiRoleOrchestrator()
+
+        classification = TaskClassification(
+            complexity=TaskComplexity.SIMPLE,
+            domains=[Domain.CODES],
+            roles=[
+                RoleInvocation(role=Role.COST_ESTIMATOR, temperature=0.1, priority=0)
+            ],
+            requires_rfi=False,
+            missing_data=[],
+            confidence=0.9,
+        )
+
+        result = orchestrator.execute_parallel(
+            user_question="Single role",
+            classification=classification,
+        )
+
+        assert result.performance is not None
+        assert result.performance.roles_executed == 1
+        # Speedup should be ~1.0 for single role
+        assert result.performance.parallel_speedup >= 0.9
+
+    @patch('app.services.orchestrator.ClaudeClient')
+    def test_parallel_with_error_recovery(self, mock_claude_class):
+        """Test parallel execution handles errors gracefully"""
+        mock_claude_instance = Mock()
+        # First call succeeds, second fails
+        mock_claude_instance.call.side_effect = [
+            {"raw_text": "Success"},
+            Exception("API Error"),
+        ]
+        mock_claude_class.return_value = mock_claude_instance
+
+        orchestrator = MultiRoleOrchestrator()
+
+        classification = TaskClassification(
+            complexity=TaskComplexity.STANDARD,
+            domains=[Domain.CALCULATION],
+            roles=[
+                RoleInvocation(role=Role.STRUCTURAL_ENGINEER, temperature=0.3, priority=0),
+                RoleInvocation(role=Role.CONCRETE_SPECIALIST, temperature=0.3, priority=1),
+            ],
+            requires_rfi=False,
+            missing_data=[],
+            confidence=0.85,
+        )
+
+        # Should not raise, should handle error gracefully
+        result = orchestrator.execute_parallel(
+            user_question="Test error handling",
+            classification=classification,
+        )
+
+        assert result is not None
+        assert result.performance.roles_executed == 2
+        # One role should have error content
+        error_outputs = [
+            o for o in orchestrator.role_outputs
+            if "ERROR" in o.content
+        ]
+        assert len(error_outputs) == 1
