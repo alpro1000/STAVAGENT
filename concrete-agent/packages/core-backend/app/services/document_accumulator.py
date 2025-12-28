@@ -200,6 +200,33 @@ class BackgroundTask:
         }
 
 
+@dataclass
+class ProjectVersion:
+    """A snapshot of project state at a point in time."""
+    version_id: str
+    project_id: str
+    version_number: int  # Auto-incrementing version number
+    created_at: datetime
+    summary: Dict[str, Any]  # The generated summary
+    positions_count: int
+    files_count: int
+    file_versions: Dict[str, str]  # file_id -> hash at this version
+    metadata: Dict[str, Any] = field(default_factory=dict)  # User notes, tags, etc.
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            'version_id': self.version_id,
+            'project_id': self.project_id,
+            'version_number': self.version_number,
+            'created_at': self.created_at.isoformat(),
+            'summary': self.summary,
+            'positions_count': self.positions_count,
+            'files_count': self.files_count,
+            'file_versions': self.file_versions,
+            'metadata': self.metadata,
+        }
+
+
 class DocumentAccumulator:
     """
     Main service for document accumulation and background processing.
@@ -242,6 +269,7 @@ class DocumentAccumulator:
         self._folders: Dict[str, FolderLink] = {}
         self._caches: Dict[str, ProjectCache] = {}
         self._tasks: Dict[str, BackgroundTask] = {}
+        self._versions: Dict[str, List[ProjectVersion]] = {}  # project_id -> list of versions
 
         # Background task queue
         self._task_queue: asyncio.Queue = asyncio.Queue()
@@ -596,13 +624,18 @@ class DocumentAccumulator:
         cache.cache_valid = True
         cache.updated_at = datetime.utcnow()
 
+        # Create version snapshot
+        version = self._create_version_snapshot(project_id, summary, cache)
+
         task.result = {
             'summary': summary,
             'positions_count': len(cache.aggregated_positions),
             'files_count': len(cache.file_versions),
+            'version_id': version.version_id,
+            'version_number': version.version_number,
         }
         task.progress = 1.0
-        task.message = "Summary generated"
+        task.message = f"Summary generated (version {version.version_number})"
 
     async def _update_cache_with_file(self, file: ProjectFile):
         """Update project cache with parsed file data."""
@@ -673,6 +706,68 @@ class DocumentAccumulator:
             if file.project_id == project_id and file.file_path == file_path:
                 return file
         return None
+
+    def _create_version_snapshot(
+        self,
+        project_id: str,
+        summary: Dict[str, Any],
+        cache: ProjectCache,
+    ) -> ProjectVersion:
+        """Create a version snapshot of the current project state."""
+        if project_id not in self._versions:
+            self._versions[project_id] = []
+
+        # Auto-increment version number
+        version_number = len(self._versions[project_id]) + 1
+
+        version = ProjectVersion(
+            version_id=str(uuid.uuid4()),
+            project_id=project_id,
+            version_number=version_number,
+            created_at=datetime.utcnow(),
+            summary=summary,
+            positions_count=len(cache.aggregated_positions),
+            files_count=len(cache.file_versions),
+            file_versions=cache.file_versions.copy(),  # Deep copy
+            metadata={},
+        )
+
+        self._versions[project_id].append(version)
+        logger.info(f"Created version snapshot {version_number} for project {project_id}")
+
+        return version
+
+    def _compare_summaries(
+        self,
+        from_summary: Dict[str, Any],
+        to_summary: Dict[str, Any],
+    ) -> Dict[str, Any]:
+        """Compare two summaries and return differences."""
+        comparison = {
+            'executive_summary_changed': from_summary.get('executive_summary') != to_summary.get('executive_summary'),
+            'key_findings_delta': [],
+            'recommendations_delta': [],
+        }
+
+        # Compare key findings
+        from_findings = set(from_summary.get('key_findings', []))
+        to_findings = set(to_summary.get('key_findings', []))
+
+        comparison['key_findings_delta'] = {
+            'added': list(to_findings - from_findings),
+            'removed': list(from_findings - to_findings),
+        }
+
+        # Compare recommendations
+        from_recommendations = set(from_summary.get('recommendations', []))
+        to_recommendations = set(to_summary.get('recommendations', []))
+
+        comparison['recommendations_delta'] = {
+            'added': list(to_recommendations - from_recommendations),
+            'removed': list(from_recommendations - to_recommendations),
+        }
+
+        return comparison
 
     # ==================== Public API ====================
 
@@ -858,6 +953,151 @@ class DocumentAccumulator:
             'active_tasks': [t.to_dict() for t in active_tasks],
             'has_pending_work': len(active_tasks) > 0 or any(f.status == FileStatus.PENDING for f in files),
         }
+
+    def get_project_versions(self, project_id: str) -> List[ProjectVersion]:
+        """Get all versions for a project, sorted by version number (newest first)."""
+        versions = self._versions.get(project_id, [])
+        return sorted(versions, key=lambda v: v.version_number, reverse=True)
+
+    def get_version(self, project_id: str, version_id: str) -> Optional[ProjectVersion]:
+        """Get a specific version by ID."""
+        versions = self._versions.get(project_id, [])
+        for version in versions:
+            if version.version_id == version_id:
+                return version
+        return None
+
+    def compare_versions(
+        self,
+        project_id: str,
+        from_version_id: str,
+        to_version_id: str,
+    ) -> Dict[str, Any]:
+        """
+        Compare two versions of a project.
+
+        Returns:
+            - files_added: List of file IDs added
+            - files_removed: List of file IDs removed
+            - files_modified: List of file IDs with changed hashes
+            - positions_delta: Change in positions count
+            - cost_delta: Change in cost (if available)
+            - summary_comparison: Diff of summaries
+        """
+        from_version = self.get_version(project_id, from_version_id)
+        to_version = self.get_version(project_id, to_version_id)
+
+        if not from_version or not to_version:
+            raise ValueError("One or both versions not found")
+
+        # Compare file versions
+        from_files = set(from_version.file_versions.keys())
+        to_files = set(to_version.file_versions.keys())
+
+        files_added = list(to_files - from_files)
+        files_removed = list(from_files - to_files)
+        files_modified = [
+            file_id for file_id in (from_files & to_files)
+            if from_version.file_versions[file_id] != to_version.file_versions[file_id]
+        ]
+
+        # Compare positions count
+        positions_delta = to_version.positions_count - from_version.positions_count
+
+        # Compare summaries
+        summary_comparison = self._compare_summaries(
+            from_version.summary,
+            to_version.summary,
+        )
+
+        # Extract cost if available
+        from_cost = from_version.summary.get('cost_analysis', {}).get('total_cost')
+        to_cost = to_version.summary.get('cost_analysis', {}).get('total_cost')
+        cost_delta = (to_cost - from_cost) if (from_cost and to_cost) else None
+
+        # Get risk assessment change
+        from_risk = from_version.summary.get('risk_assessment', 'UNKNOWN')
+        to_risk = to_version.summary.get('risk_assessment', 'UNKNOWN')
+
+        return {
+            'from_version': {
+                'version_id': from_version.version_id,
+                'version_number': from_version.version_number,
+                'created_at': from_version.created_at.isoformat(),
+                'positions_count': from_version.positions_count,
+                'files_count': from_version.files_count,
+            },
+            'to_version': {
+                'version_id': to_version.version_id,
+                'version_number': to_version.version_number,
+                'created_at': to_version.created_at.isoformat(),
+                'positions_count': to_version.positions_count,
+                'files_count': to_version.files_count,
+            },
+            'files_added': files_added,
+            'files_removed': files_removed,
+            'files_modified': files_modified,
+            'positions_delta': positions_delta,
+            'cost_delta': cost_delta,
+            'risk_change': f"{from_risk} → {to_risk}" if from_risk != to_risk else f"{from_risk} (unchanged)",
+            'summary_comparison': summary_comparison,
+        }
+
+    def export_to_excel(self, project_id: str, project_name: str) -> bytes:
+        """Export project data to Excel."""
+        from app.services.export_service import get_export_service
+
+        cache = self.get_project_cache(project_id)
+        if not cache:
+            raise ValueError("No data available for export")
+
+        export_service = get_export_service()
+        return export_service.export_to_excel(
+            project_name=project_name,
+            positions=cache.aggregated_positions,
+            summary=cache.last_summary,
+        )
+
+    def export_summary_to_pdf(
+        self,
+        project_id: str,
+        project_name: str,
+        version_id: Optional[str] = None,
+    ) -> bytes:
+        """Export project summary to PDF. Optionally specify a version."""
+        from app.services.export_service import get_export_service
+
+        summary = None
+        metadata = {}
+
+        if version_id:
+            # Export specific version
+            version = self.get_version(project_id, version_id)
+            if not version:
+                raise ValueError(f"Version {version_id} not found")
+            summary = version.summary
+            metadata = {
+                'version_number': version.version_number,
+                'positions_count': version.positions_count,
+                'created_at': version.created_at.isoformat(),
+            }
+        else:
+            # Export current summary
+            cache = self.get_project_cache(project_id)
+            if not cache or not cache.last_summary:
+                raise ValueError("No summary available for export")
+            summary = cache.last_summary
+            metadata = {
+                'positions_count': len(cache.aggregated_positions),
+                'files_count': len(cache.file_versions),
+            }
+
+        export_service = get_export_service()
+        return export_service.export_summary_to_pdf(
+            project_name=project_name,
+            summary=summary,
+            metadata=metadata,
+        )
 
     # ==================== Subscriptions ====================
 

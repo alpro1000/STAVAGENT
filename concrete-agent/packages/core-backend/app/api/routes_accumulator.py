@@ -522,3 +522,157 @@ async def full_pipeline(
         "message": f"Full pipeline started with {len(tasks)} tasks",
         "stages": ["scan", "parse", "summary"],
     }
+
+
+# ==================== Version Management ====================
+
+@router.get("/projects/{project_id}/versions")
+async def get_project_versions(project_id: str):
+    """Get all versions of a project."""
+    await ensure_accumulator_started()
+    accumulator = get_accumulator()
+
+    versions = accumulator.get_project_versions(project_id)
+
+    return {
+        "project_id": project_id,
+        "versions": [v.to_dict() for v in versions],
+        "total": len(versions),
+    }
+
+
+@router.get("/projects/{project_id}/versions/{version_id}")
+async def get_version_detail(project_id: str, version_id: str):
+    """Get details of a specific version."""
+    await ensure_accumulator_started()
+    accumulator = get_accumulator()
+
+    version = accumulator.get_version(project_id, version_id)
+    if not version:
+        raise HTTPException(status_code=404, detail="Version not found")
+
+    return version.to_dict()
+
+
+@router.get("/projects/{project_id}/compare")
+async def compare_versions(
+    project_id: str,
+    from_version: str,
+    to_version: str,
+):
+    """
+    Compare two versions of a project.
+
+    Query params:
+        from_version: Source version ID
+        to_version: Target version ID
+
+    Returns detailed comparison including file changes and summary diffs.
+    """
+    await ensure_accumulator_started()
+    accumulator = get_accumulator()
+
+    try:
+        comparison = accumulator.compare_versions(
+            project_id=project_id,
+            from_version_id=from_version,
+            to_version_id=to_version,
+        )
+
+        return {
+            "project_id": project_id,
+            "comparison": comparison,
+        }
+
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+# ==================== Export Endpoints ====================
+
+from fastapi.responses import StreamingResponse
+
+
+@router.get("/projects/{project_id}/export/excel")
+async def export_to_excel(
+    project_id: str,
+    project_name: str = "Project",
+):
+    """
+    Export project data to Excel file.
+
+    Returns Excel file with:
+    - Summary sheet (project info, key findings, recommendations)
+    - Positions sheet (all positions with source file tracking)
+    """
+    await ensure_accumulator_started()
+    accumulator = get_accumulator()
+
+    try:
+        excel_bytes = accumulator.export_to_excel(
+            project_id=project_id,
+            project_name=project_name,
+        )
+
+        return StreamingResponse(
+            io.BytesIO(excel_bytes),
+            media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            headers={
+                "Content-Disposition": f'attachment; filename="{project_name}_export.xlsx"'
+            },
+        )
+
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@router.get("/projects/{project_id}/export/pdf")
+async def export_summary_to_pdf(
+    project_id: str,
+    project_name: str = "Project",
+    version_id: Optional[str] = None,
+):
+    """
+    Export project summary to PDF file.
+
+    Query params:
+        version_id (optional): Export specific version instead of current summary
+
+    Returns PDF file with:
+    - Project info
+    - Executive summary
+    - Key findings
+    - Recommendations
+    - Risk assessment
+    - Cost analysis
+    """
+    await ensure_accumulator_started()
+    accumulator = get_accumulator()
+
+    try:
+        pdf_bytes = accumulator.export_summary_to_pdf(
+            project_id=project_id,
+            project_name=project_name,
+            version_id=version_id,
+        )
+
+        filename = f"{project_name}_summary.pdf"
+        if version_id:
+            version = accumulator.get_version(project_id, version_id)
+            if version:
+                filename = f"{project_name}_v{version.version_number}.pdf"
+
+        return StreamingResponse(
+            io.BytesIO(pdf_bytes),
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f'attachment; filename="{filename}"'
+            },
+        )
+
+    except ImportError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))

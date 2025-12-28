@@ -29,6 +29,11 @@ import {
   Clock,
   Database,
   Sparkles,
+  History,
+  Download,
+  FileSpreadsheet,
+  FileType,
+  GitCompare,
 } from 'lucide-react';
 
 // Types
@@ -74,6 +79,47 @@ interface ProjectCache {
   summary_generated_at?: string;
 }
 
+interface ProjectVersion {
+  version_id: string;
+  version_number: number;
+  created_at: string;
+  summary: any;
+  positions_count: number;
+  files_count: number;
+}
+
+interface VersionComparison {
+  from_version: {
+    version_id: string;
+    version_number: number;
+    created_at: string;
+    positions_count: number;
+  };
+  to_version: {
+    version_id: string;
+    version_number: number;
+    created_at: string;
+    positions_count: number;
+  };
+  files_added: string[];
+  files_removed: string[];
+  files_modified: string[];
+  positions_delta: number;
+  cost_delta?: number;
+  risk_change: string;
+  summary_comparison: {
+    executive_summary_changed: boolean;
+    key_findings_delta: {
+      added: string[];
+      removed: string[];
+    };
+    recommendations_delta: {
+      added: string[];
+      removed: string[];
+    };
+  };
+}
+
 interface ProjectStatus {
   project_id: string;
   files: {
@@ -114,6 +160,14 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
   const [folderPath, setFolderPath] = useState('');
   const [generatingSummary, setGeneratingSummary] = useState(false);
   const [language, setLanguage] = useState<'cs' | 'en' | 'sk'>('cs');
+
+  // Version management states
+  const [versions, setVersions] = useState<ProjectVersion[]>([]);
+  const [showVersions, setShowVersions] = useState(false);
+  const [showComparison, setShowComparison] = useState(false);
+  const [fromVersion, setFromVersion] = useState<string>('');
+  const [toVersion, setToVersion] = useState<string>('');
+  const [comparison, setComparison] = useState<VersionComparison | null>(null);
 
   const wsRef = useRef<WebSocket | null>(null);
   const pollIntervalRef = useRef<number | null>(null);
@@ -191,6 +245,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
 
   useEffect(() => {
     loadData();
+    loadVersions();
     connectWebSocket();
 
     return () => {
@@ -321,6 +376,97 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
       await loadData();
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to start pipeline');
+    }
+  };
+
+  // Load versions
+  const loadVersions = async () => {
+    try {
+      const response = await fetch(`${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/versions`);
+      if (response.ok) {
+        const data = await response.json();
+        setVersions(data.versions || []);
+      }
+    } catch (err) {
+      console.error('Failed to load versions:', err);
+    }
+  };
+
+  // Compare versions
+  const handleCompareVersions = async () => {
+    if (!fromVersion || !toVersion) {
+      setError('Vyberte obě verze pro srovnání');
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/compare?from_version=${fromVersion}&to_version=${toVersion}`
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setComparison(data.comparison);
+        setShowComparison(true);
+      } else {
+        throw new Error('Failed to compare versions');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to compare versions');
+    }
+  };
+
+  // Export to Excel
+  const handleExportExcel = async () => {
+    try {
+      const response = await fetch(
+        `${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/export/excel?project_name=${encodeURIComponent(projectName)}`
+      );
+
+      if (!response.ok) {
+        throw new Error('Export failed');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${projectName}_export.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to export to Excel');
+    }
+  };
+
+  // Export to PDF
+  const handleExportPDF = async (versionId?: string) => {
+    try {
+      let url = `${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/export/pdf?project_name=${encodeURIComponent(projectName)}`;
+      if (versionId) {
+        url += `&version_id=${versionId}`;
+      }
+
+      const response = await fetch(url);
+
+      if (!response.ok) {
+        throw new Error('Export failed');
+      }
+
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = versionId
+        ? `${projectName}_v${versions.find(v => v.version_id === versionId)?.version_number || 'X'}.pdf`
+        : `${projectName}_summary.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(downloadUrl);
+      document.body.removeChild(a);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to export to PDF');
     }
   };
 
@@ -676,13 +822,207 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
           )}
         </div>
 
+        {/* Export Section */}
+        {status?.cache?.positions_count && status.cache.positions_count > 0 && (
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '12px' }}>
+              Export dat
+            </h4>
+            <div style={{ display: 'flex', gap: '8px' }}>
+              <button onClick={handleExportExcel} className="c-btn c-btn--sm">
+                <FileSpreadsheet size={14} />
+                Excel (.xlsx)
+              </button>
+              <button onClick={() => handleExportPDF()} className="c-btn c-btn--sm">
+                <FileType size={14} />
+                PDF (Souhrn)
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Versions Section */}
+        {versions.length > 0 && (
+          <div style={{ marginBottom: '20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <h4 style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', margin: 0 }}>
+                Historie verzí ({versions.length})
+              </h4>
+              <button
+                onClick={() => setShowVersions(!showVersions)}
+                className="c-btn c-btn--sm"
+              >
+                <History size={14} />
+                {showVersions ? 'Skrýt' : 'Zobrazit'}
+              </button>
+            </div>
+
+            {showVersions && (
+              <div className="c-panel c-panel--inset" style={{ maxHeight: '300px', overflow: 'auto' }}>
+                <table style={{ width: '100%', fontSize: '13px' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
+                      <th style={{ padding: '8px', textAlign: 'left' }}>Verze</th>
+                      <th style={{ padding: '8px', textAlign: 'left' }}>Datum</th>
+                      <th style={{ padding: '8px', textAlign: 'right' }}>Pozice</th>
+                      <th style={{ padding: '8px', textAlign: 'right' }}>Soubory</th>
+                      <th style={{ padding: '8px', textAlign: 'center' }}>Akce</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {versions.map((v) => (
+                      <tr key={v.version_id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                        <td style={{ padding: '8px', fontWeight: 600 }}>v{v.version_number}</td>
+                        <td style={{ padding: '8px', color: 'var(--text-secondary)' }}>
+                          {new Date(v.created_at).toLocaleString('cs-CZ')}
+                        </td>
+                        <td style={{ padding: '8px', textAlign: 'right' }}>{v.positions_count}</td>
+                        <td style={{ padding: '8px', textAlign: 'right' }}>{v.files_count}</td>
+                        <td style={{ padding: '8px', textAlign: 'center' }}>
+                          <button
+                            onClick={() => handleExportPDF(v.version_id)}
+                            className="c-btn c-btn--sm"
+                            style={{ fontSize: '11px', padding: '4px 8px' }}
+                          >
+                            <Download size={12} />
+                            PDF
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+                {/* Version Comparison */}
+                {versions.length >= 2 && (
+                  <div style={{ marginTop: '16px', paddingTop: '16px', borderTop: '1px solid var(--border-color)' }}>
+                    <h5 style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px' }}>
+                      Porovnat verze
+                    </h5>
+                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                      <select
+                        value={fromVersion}
+                        onChange={(e) => setFromVersion(e.target.value)}
+                        className="c-input"
+                        style={{ padding: '4px 8px', fontSize: '12px', flex: 1 }}
+                      >
+                        <option value="">Vyberte verzi...</option>
+                        {versions.map((v) => (
+                          <option key={v.version_id} value={v.version_id}>
+                            v{v.version_number} ({new Date(v.created_at).toLocaleDateString('cs-CZ')})
+                          </option>
+                        ))}
+                      </select>
+                      <span style={{ color: 'var(--text-secondary)' }}>→</span>
+                      <select
+                        value={toVersion}
+                        onChange={(e) => setToVersion(e.target.value)}
+                        className="c-input"
+                        style={{ padding: '4px 8px', fontSize: '12px', flex: 1 }}
+                      >
+                        <option value="">Vyberte verzi...</option>
+                        {versions.map((v) => (
+                          <option key={v.version_id} value={v.version_id}>
+                            v{v.version_number} ({new Date(v.created_at).toLocaleDateString('cs-CZ')})
+                          </option>
+                        ))}
+                      </select>
+                      <button
+                        onClick={handleCompareVersions}
+                        disabled={!fromVersion || !toVersion}
+                        className="c-btn c-btn--sm c-btn--primary"
+                      >
+                        <GitCompare size={14} />
+                        Porovnat
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Comparison Results */}
+            {showComparison && comparison && (
+              <div className="c-panel c-panel--inset" style={{ marginTop: '12px', background: 'var(--surface-base)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                  <h5 style={{ fontSize: '13px', fontWeight: 600, margin: 0 }}>
+                    Porovnání verzí v{comparison.from_version.version_number} → v{comparison.to_version.version_number}
+                  </h5>
+                  <button onClick={() => setShowComparison(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                    <X size={16} />
+                  </button>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '12px' }}>
+                  <div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>Změna pozic:</div>
+                    <div style={{ fontSize: '16px', fontWeight: 600, color: comparison.positions_delta >= 0 ? 'var(--status-success)' : 'var(--status-error)' }}>
+                      {comparison.positions_delta >= 0 ? '+' : ''}{comparison.positions_delta}
+                    </div>
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '11px', color: 'var(--text-secondary)', marginBottom: '4px' }}>Změna rizika:</div>
+                    <div style={{ fontSize: '13px', fontWeight: 600 }}>{comparison.risk_change}</div>
+                  </div>
+                </div>
+
+                {comparison.files_added.length > 0 && (
+                  <div style={{ marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--status-success)', marginBottom: '4px' }}>
+                      ✓ Přidané soubory ({comparison.files_added.length})
+                    </div>
+                  </div>
+                )}
+
+                {comparison.files_removed.length > 0 && (
+                  <div style={{ marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--status-error)', marginBottom: '4px' }}>
+                      ✗ Odebrané soubory ({comparison.files_removed.length})
+                    </div>
+                  </div>
+                )}
+
+                {comparison.files_modified.length > 0 && (
+                  <div style={{ marginBottom: '8px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--brand-orange)', marginBottom: '4px' }}>
+                      ⟳ Změněné soubory ({comparison.files_modified.length})
+                    </div>
+                  </div>
+                )}
+
+                {comparison.summary_comparison.key_findings_delta.added.length > 0 && (
+                  <div style={{ marginTop: '12px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Nová zjištění:</div>
+                    <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '12px' }}>
+                      {comparison.summary_comparison.key_findings_delta.added.map((f, i) => (
+                        <li key={i} style={{ color: 'var(--status-success)' }}>+ {f}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {comparison.summary_comparison.recommendations_delta.added.length > 0 && (
+                  <div style={{ marginTop: '12px' }}>
+                    <div style={{ fontSize: '12px', fontWeight: 600, marginBottom: '4px' }}>Nová doporučení:</div>
+                    <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '12px' }}>
+                      {comparison.summary_comparison.recommendations_delta.added.map((r, i) => (
+                        <li key={i} style={{ color: 'var(--status-success)' }}>+ {r}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Actions */}
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
           <button onClick={handleFullPipeline} className="c-btn c-btn--primary">
             <Zap size={16} />
             Kompletní pipeline
           </button>
-          <button onClick={loadData} className="c-btn">
+          <button onClick={() => { loadData(); loadVersions(); }} className="c-btn">
             <RefreshCw size={16} />
             Obnovit
           </button>
