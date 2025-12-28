@@ -769,6 +769,91 @@ Logo displayed in Portal header next to title:
 
 ---
 
+### Fix 9: Logo Redesign - Digital Concrete "S" ✅
+
+**Commit:** `1f26392` - FEAT: Přidání zlatého kompasového loga StavAgent
+
+**Problem:** Previous logo (compass with Fibonacci spiral) couldn't be generated from user's file
+
+**Solution:** Created custom minimalist logo matching Digital Concrete design system
+
+**Logo Design - Letter "S" from Concrete Blocks:**
+
+#### Visual Structure:
+```
+┌─────────────────┐  ← Top horizontal bar (dark gray)
+│                 │
+├──┐              │  ← Top-right vertical bar (medium gray)
+   │              │
+   └──────────────┤  ← Middle bar (ORANGE ACCENT #FF9F1C)
+                  │
+   ┌──────────────┘  ← Bottom-left vertical bar (medium gray)
+   │
+   └─────────────────┘  ← Bottom horizontal bar (dark gray)
+```
+
+#### Design Elements:
+- **Background**: Circular concrete surface (#CFD1D3) with border
+- **Letter "S"**: Made of 5 rectangular blocks (construction beams)
+- **Color Scheme**:
+  - Dark gray blocks: #5A5D60 (top/bottom bars)
+  - Medium gray blocks: #6B6E71 (vertical bars)
+  - Orange accent: #FF9F1C (middle bar - brand color)
+- **Details**: Rivets/bolts at corners (#4A4D50)
+- **Texture**: Grid lines for concrete effect (opacity: 0.2-0.3)
+
+#### Technical:
+- Main logo: 120×120px (circular)
+- Favicon: 32×32px (square with rounded corners)
+- Style: Brutalism + Minimalism
+- Matches Design System perfectly
+
+---
+
+### Fix 10: Logo Orientation Fix + Header Text Size Increase ✅
+
+**Commit:** `a58738e` - FIX: Исправление логотипа S (зеркальность) + увеличение текста заголовка
+
+**Problem:** Letter "S" was mirrored (top bend right, bottom bend left - incorrect)
+
+**Solution:** Fixed orientation + increased header text size
+
+#### Part 1: Logo Orientation Fix
+**Previous (incorrect):**
+- Top: horizontal bar + top-RIGHT vertical bar ❌
+- Bottom: horizontal bar + bottom-LEFT vertical bar ❌
+- Result: Mirrored "S"
+
+**Fixed (correct):**
+- Top: horizontal bar + top-LEFT vertical bar ✅
+- Bottom: horizontal bar + bottom-RIGHT vertical bar ✅
+- Result: Proper "S" shape
+
+#### Part 2: Header Text Size Increase
+**Desktop (>768px):**
+- Title: 28px → **36px** (+29% larger)
+- Subtitle: 14px → **16px** (+14% larger)
+- Logo: 40×48px → **55×55px** (square)
+- Gap: 12px → 16px
+
+**Mobile (<768px):**
+- Title: 16px (unchanged)
+- Subtitle: 11px (hidden on small screens)
+- Logo: 32×38px → **40×40px** (square)
+
+**Typography improvements:**
+- Added `line-height: 1.2` for title
+- Added `line-height: 1.4` for subtitle
+- Better readability and visual hierarchy
+
+**Files Modified:**
+- `stavagent-portal/frontend/public/assets/logo.svg`
+- `stavagent-portal/frontend/public/favicon.svg`
+- `stavagent-portal/frontend/src/styles/design-system/components.css`
+- `stavagent-portal/frontend/src/pages/PortalPage.tsx`
+
+---
+
 ## 📊 Continuation Session Summary (2025-12-27)
 
 | Fix | Time | Status | Commit | Files |
@@ -780,19 +865,25 @@ Logo displayed in Portal header next to title:
 | Title/subtitle fix | 15 min | ✅ Complete | 46eb0e0, 834e9fa | PortalPage.tsx |
 | Mobile responsive | 40 min | ✅ Complete | 46eb0e0 | PortalPage.tsx, components.css |
 | TypeScript build error | 10 min | ✅ Complete | c334a6d | PortalPage.tsx |
-| Logo update | 50 min | ✅ Complete | db1a53c | logo.svg, favicon.svg |
-| **TOTAL** | **~4 hours** | **All Complete** | **8 commits** | **10 files** |
+| Logo design (compass attempt) | 50 min | ✅ Complete | db1a53c | logo.svg, favicon.svg |
+| Logo redesign (Digital Concrete S) | 35 min | ✅ Complete | 1f26392 | logo.svg, favicon.svg |
+| Logo orientation fix + header text size | 25 min | ✅ Complete | a58738e | logo.svg, favicon.svg, components.css, PortalPage.tsx |
+| **TOTAL** | **~5 hours** | **All Complete** | **10 commits** | **12 files** |
 
 **Key Achievements:**
 - ✅ Portal successfully deployed to Render.com
 - ✅ Design system visible on production
 - ✅ Complete Czech localization
 - ✅ Mobile-responsive layout
-- ✅ Professional logo matching technical specification
+- ✅ Custom logo in Digital Concrete style (letter "S" from concrete blocks)
+- ✅ Larger, more readable header text (36px title, 16px subtitle)
 - ✅ All build/deployment issues resolved
 
 **All Commits (2025-12-27):**
 ```
+a58738e - FIX: Исправление логотипа S (зеркальность) + увеличение текста заголовка
+1f26392 - FEAT: Přidání zlatého kompasového loga StavAgent
+a3aaae3 - DOCS: Update NEXT_SESSION.md with continuation session (2025-12-27)
 db1a53c - FEAT: Update logo to match technical specification - compass A-shape with Fibonacci spiral
 c334a6d - FIX: TypeScript build error - duplicate minHeight property
 834e9fa - FIX: Oprava názvů - Title: StavAgent Portal, Subtitle: Stavební platforma
