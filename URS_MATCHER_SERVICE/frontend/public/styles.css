@@ -19,6 +19,18 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+/* Prevent overflow on all elements */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
 }
 
 /* Header */
@@ -398,6 +410,36 @@ input[type="number"] {
   margin-bottom: var(--space-xl);
   min-height: 400px;
   box-shadow: var(--shadow-inset);
+  overflow-x: auto; /* Allow horizontal scroll for wide content */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Tables (if present in results) */
+.results-container table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 600px; /* Minimum width for table readability */
+}
+
+.results-container table th,
+.results-container table td {
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  border-bottom: 1px solid var(--edge-light);
+}
+
+.results-container table th {
+  background: var(--panel-clean);
+  font-weight: 600;
+  color: var(--text-primary);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.results-container table td {
+  color: var(--text-secondary);
 }
 
 .results-actions {
@@ -609,13 +651,15 @@ input[type="number"] {
 /* ============================================
    RESPONSIVE
    ============================================ */
+
+/* Tablet and below (768px) */
 @media (max-width: 768px) {
   .app-header {
     padding: var(--space-xl) var(--space-md);
   }
 
   .header-content h1 {
-    font-size: 28px;
+    font-size: 26px;
   }
 
   .subtitle {
@@ -625,8 +669,18 @@ input[type="number"] {
   .c-theme-toggle {
     top: var(--space-sm);
     right: var(--space-sm);
-    padding: 6px 12px;
+    padding: 8px 12px;
     font-size: 12px;
+    gap: 6px;
+  }
+
+  .c-theme-toggle span {
+    display: none; /* Hide text, show only icon */
+  }
+
+  .c-theme-toggle::after {
+    content: attr(aria-label);
+    font-size: 0;
   }
 
   .app-main {
@@ -637,11 +691,53 @@ input[type="number"] {
     padding: var(--space-lg);
   }
 
+  .section-content h2 {
+    font-size: 20px;
+  }
+
   .action-grid {
     grid-template-columns: 1fr;
     gap: var(--space-md);
   }
 
+  .action-card {
+    padding: var(--space-lg);
+  }
+
+  .action-card h3 {
+    font-size: 16px;
+  }
+
+  /* Text Input Controls - Stack vertically on tablets */
+  .text-input-controls {
+    grid-template-columns: 1fr;
+  }
+
+  /* Processing Mode - Better layout */
+  .processing-mode {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .mode-label strong {
+    font-size: 13px;
+  }
+
+  .mode-description {
+    font-size: 11px;
+  }
+
+  /* Buttons - Better touch targets */
+  .btn {
+    min-height: 48px;
+    padding: 14px 20px;
+    font-size: 15px;
+  }
+
+  .action-buttons {
+    gap: var(--space-md);
+  }
+
+  /* Results Section */
   .complexity-grid {
     grid-template-columns: 1fr;
   }
@@ -649,14 +745,307 @@ input[type="number"] {
   .results-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: var(--space-sm);
+  }
+
+  #resultsTitle {
+    font-size: 20px;
   }
 
   .results-actions {
     width: 100%;
-    justify-content: stretch;
+    flex-direction: column;
   }
 
   .results-actions .btn {
-    flex: 1;
+    width: 100%;
+  }
+
+  .roles-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+}
+
+/* Mobile phones (480px and below) */
+@media (max-width: 480px) {
+  .app-header {
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  .header-content h1 {
+    font-size: 22px;
+    margin-bottom: var(--space-xs);
+  }
+
+  .header-content h1::before {
+    content: '🏗️\A'; /* Line break after emoji */
+    white-space: pre;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .c-theme-toggle {
+    top: var(--space-xs);
+    right: var(--space-xs);
+    padding: 6px 10px;
+    font-size: 18px; /* Larger emoji for easier tapping */
+    min-width: 40px;
+    min-height: 40px;
+    justify-content: center;
+  }
+
+  .app-main {
+    padding: var(--space-md) var(--space-sm);
+  }
+
+  .section-content {
+    padding: var(--space-md);
+    border-radius: var(--radius-lg);
+  }
+
+  .section-content h2 {
+    font-size: 18px;
+    margin-bottom: var(--space-lg);
+  }
+
+  .action-card {
+    padding: var(--space-md);
+  }
+
+  .action-icon {
+    font-size: 40px;
+    margin-bottom: var(--space-xs);
+  }
+
+  .action-card h3 {
+    font-size: 15px;
+  }
+
+  .action-card p {
+    font-size: 13px;
+  }
+
+  /* File Upload Area - Smaller on mobile */
+  .file-upload-area {
+    padding: var(--space-lg);
+  }
+
+  .upload-text {
+    font-size: 13px;
+  }
+
+  /* Textarea and Inputs - Full width, better touch */
+  textarea {
+    font-size: 15px; /* Prevent iOS zoom */
+    min-height: 100px;
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    font-size: 15px; /* Prevent iOS zoom */
+    min-height: 48px;
+  }
+
+  /* Processing Mode - Compact layout */
+  .processing-mode {
+    padding: var(--space-sm);
+    margin: var(--space-sm) 0;
+  }
+
+  .mode-toggle {
+    gap: var(--space-xs);
+  }
+
+  .mode-toggle input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+
+  .mode-label strong {
+    font-size: 12px;
+  }
+
+  .mode-description {
+    font-size: 10px;
+    line-height: 1.3;
+  }
+
+  .action-hint {
+    font-size: 11px;
+    margin-top: var(--space-xs);
+  }
+
+  /* Buttons - Full width, larger touch targets */
+  .btn {
+    width: 100%;
+    min-height: 52px;
+    padding: 16px 20px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .action-buttons {
+    gap: var(--space-sm);
+  }
+
+  /* Results Section - Compact */
+  .results-container {
+    padding: var(--space-md);
+    min-height: 300px;
+  }
+
+  .results-header {
+    margin-bottom: var(--space-lg);
+  }
+
+  #resultsTitle {
+    font-size: 18px;
+  }
+
+  .results-actions {
+    gap: var(--space-sm);
+  }
+
+  /* Tables on mobile - Better readability */
+  .results-container table {
+    font-size: 12px;
+    min-width: 500px;
+  }
+
+  .results-container table th,
+  .results-container table td {
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .result-item {
+    padding: var(--space-md);
+    margin-bottom: var(--space-sm);
+  }
+
+  .result-item h4 {
+    font-size: 14px;
+  }
+
+  .result-item p {
+    font-size: 13px;
+  }
+
+  .result-code {
+    font-size: 14px;
+  }
+
+  /* Info Panels - Compact */
+  .info-panel {
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
+  }
+
+  .info-panel h3 {
+    font-size: 16px;
+    margin-bottom: var(--space-md);
+  }
+
+  .complexity-level {
+    font-size: 28px;
+  }
+
+  .complexity-details p {
+    font-size: 13px;
+  }
+
+  .roles-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+
+  .role-card {
+    padding: var(--space-sm);
+  }
+
+  .role-card .role-icon {
+    font-size: 28px;
+    margin-bottom: var(--space-xs);
+  }
+
+  .role-card .role-name {
+    font-size: 13px;
+  }
+
+  /* Footer - Compact */
+  .app-footer {
+    padding: var(--space-md) var(--space-sm);
+    font-size: 12px;
+  }
+
+  /* Error Section */
+  .error-content {
+    padding: var(--space-lg);
+  }
+
+  .error-content h2 {
+    font-size: 24px;
+    margin-bottom: var(--space-md);
+  }
+
+  #errorMessage {
+    padding: var(--space-md);
+    margin: var(--space-md) 0;
+    font-size: 14px;
+  }
+}
+
+/* Very small phones (360px and below) */
+@media (max-width: 360px) {
+  .header-content h1 {
+    font-size: 20px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+  }
+
+  .action-icon {
+    font-size: 36px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 14px 16px;
+  }
+
+  .section-content h2 {
+    font-size: 16px;
+  }
+}
+
+/* Landscape mode fixes for mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .app-header {
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .header-content h1 {
+    font-size: 24px;
+  }
+
+  .header-content h1::before {
+    content: '🏗️ '; /* Inline emoji in landscape */
+  }
+
+  .c-theme-toggle {
+    top: var(--space-xs);
+    right: var(--space-xs);
+    padding: 6px 10px;
+  }
+
+  .app-main {
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  /* Keep action grid single column in landscape for better readability */
+  .action-grid {
+    grid-template-columns: 1fr;
   }
 }
