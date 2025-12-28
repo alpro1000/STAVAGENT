@@ -1,1230 +1,533 @@
-# Next Session Tasks
+# NEXT SESSION: Implementation Phase
 
-**Last Updated:** 2025-12-27
-**Current Branch:** `claude/add-time-norms-portal-evi5n`
-**Previous Branches:**
-- `claude/implement-time-norms-automation-qx8Wm` (Time Norms)
-- `claude/add-portal-services-qx8Wm` (Portal + Design System)
-**Status:** ✅ Time Norms Automation Complete + Portal Design System Complete + Portal Deployment Fixes + Logo Update
+**Date:** 2025-12-28+
+**Branch:** `claude/update-documentation-logo-fixes-gHv9C` (or new feature branch)
+**Status:** Ready to Start Implementation
 
 ---
 
-## 🎉 What We Accomplished This Session (2025-12-26)
+## 📋 COMMAND FOR NEXT SESSION
 
-### 1. ✅ Time Norms Automation Implementation (4 hours)
-
-**Branch:** `claude/implement-time-norms-automation-qx8Wm`
-
-**Problem:** Users didn't know how many days to enter for different work types in Monolit Planner.
-
-**Solution:** AI-powered days estimation using concrete-agent Multi-Role API with official Czech construction norms (KROS/RTS/ČSN).
-
-#### Phase 1: Backend Service ✅
-**File Created:** `Monolit-Planner/backend/src/services/timeNormsService.js`
-
-**Key Functions:**
-```javascript
-export async function suggestDays(position) {
-  // 1. Build question in Czech based on work type
-  const question = buildQuestion(position);
-
-  // 2. Call concrete-agent Multi-Role API with 90s timeout
-  const response = await fetch(`${CORE_API_URL}/api/v1/multi-role/ask`, {
-    method: 'POST',
-    body: JSON.stringify({
-      question, context,
-      enable_kb: true,        // Knowledge Base (KROS/RTS/ČSN)
-      enable_perplexity: false,
-      use_cache: true         // 24h cache for repeated requests
-    }),
-    signal: AbortSignal.timeout(90000)  // Render cold start tolerance
-  });
-
-  // 3. Parse AI response (regex extraction)
-  const suggestion = parseSuggestion(response.data.answer, position);
-
-  // 4. Return structured response
-  return {
-    success: true,
-    suggested_days: suggestion.days,
-    reasoning: suggestion.reasoning,
-    confidence: suggestion.confidence,
-    data_source: suggestion.data_source
-  };
-}
 ```
-
-**Work Type Questions:**
-- **beton** (concrete): "Kolik dní bude trvat betonování {qty} {unit}..."
-- **bednění** (formwork): "Kolik dní bude trvat montáž a demontáž bednění..."
-- **výztuž** (reinforcement): "Kolik dní bude trvat pokládka a svázání výztuže..."
-
-**Fallback System:**
-```javascript
-function calculateFallbackDays(position) {
-  const rates = {
-    'beton': 1.5,     // 1.5 person-hours per m³
-    'bednění': 0.8,   // 0.8 person-hours per m²
-    'výztuž': 0.005,  // 0.005 person-hours per kg
-  };
-  // Calculate: total_ph = qty * rate
-  // Convert to days: days = total_ph / (crew_size * shift_hours)
-  return { days, reasoning: 'Odhad na základě empirických hodnot...' };
-}
-```
-
-#### Phase 2: API Endpoint ✅
-**File Modified:** `Monolit-Planner/backend/src/routes/positions.js`
-
-**New Endpoint:**
-```javascript
-POST /api/positions/:id/suggest-days
-
-// Request: (no body, uses position ID from URL)
-// Response:
-{
-  "success": true,
-  "suggested_days": 6,
-  "reasoning": "Pro betonování 100 m³ s partou 4 lidí...",
-  "confidence": 92,
-  "data_source": "KROS norma B4.3.1",
-  "model_used": "gemini-2.0-flash-exp"
-}
-```
-
-**Validation:**
-- ✅ Position must exist
-- ✅ Quantity must be > 0
-- ✅ Returns 400 if invalid
-
-#### Phase 3: Frontend UI ✅
-**File Modified:** `Monolit-Planner/frontend/src/components/PositionRow.tsx`
-
-**New Dependency Installed:** `lucide-react` (for Sparkles icon)
-
-**UI Elements Added:**
-```tsx
-// 1. AI Suggestion Button
-<button onClick={handleSuggestDays} className="ai-suggest-button">
-  <Sparkles size={16} color="white" />
-</button>
-
-// 2. Loading State
-{loadingSuggestion && <span>Loading...</span>}
-
-// 3. Tooltip with Reasoning
-{showTooltip && suggestion && (
-  <div className="ai-tooltip">
-    <strong>AI návrh: {suggestion.suggested_days} dní</strong>
-    <p>{suggestion.reasoning}</p>
-    <small>Zdroj: {suggestion.data_source} (Jistota: {suggestion.confidence}%)</small>
-  </div>
-)}
-```
-
-**Feature Flag Check:**
-```typescript
-const { data: config } = useConfig();
-const isAiDaysSuggestEnabled = config?.feature_flags?.FF_AI_DAYS_SUGGEST ?? false;
-
-// Only show button if feature enabled
-{isAiDaysSuggestEnabled && (
-  <button onClick={handleSuggestDays}>...</button>
-)}
-```
-
-**User Flow:**
-1. User enters quantity (qty)
-2. Clicks Sparkles button (✨)
-3. Backend calls concrete-agent Multi-Role API (1-2s)
-4. Tooltip shows: reasoning + confidence + data source
-5. Days field auto-fills with suggestion
-6. User can accept or manually adjust
-
-#### Phase 4: Feature Flag Activation ✅
-
-**Files Modified:**
-- `Monolit-Planner/backend/src/db/migrations.js` (PostgreSQL + SQLite)
-- `Monolit-Planner/shared/src/constants.ts`
-
-**Change:**
-```javascript
-FF_AI_DAYS_SUGGEST: true,  // ✅ AI-powered days estimation (was: false)
-```
-
-**Control:**
-- Default: Enabled for all users
-- Admin can disable via API: `POST /api/config`
-- Can be toggled without code changes
-
-#### Testing Results ✅
-
-**Test Coverage:**
-- ✅ 68/68 tests passing (all Monolit-Planner tests)
-- ✅ Backend service unit tests
-- ✅ API endpoint validation tests
-- ✅ Frontend component rendering tests
-
-**Manual Testing:**
-| Scenario | Input | Expected | Actual | Status |
-|----------|-------|----------|--------|--------|
-| Concrete work | 100 m³, 4 workers, 10h shifts | 5-7 days from KROS | 6 days (KROS B4.3.1, 92%) | ✅ PASS |
-| Formwork | 150 m², 3 workers | 8-10 days from RTS | 9 days (RTS tech card, 88%) | ✅ PASS |
-| Reinforcement | 5000 kg, 2 workers | 3-4 days | 4 days (B4 benchmark, 85%) | ✅ PASS |
-| Invalid qty | 0 m³ | Error 400 | "Invalid quantity" | ✅ PASS |
-| AI unavailable | Any | Fallback calculation | Empirical estimate | ✅ PASS |
-
-**Commits:**
-- `9279263` - FEAT: Implement Time Norms Automation with AI-powered days suggestion
-- `80e724e` - FIX: Add feature flag check to AI suggestion button
-
----
-
-### 2. ✅ Portal Services Hub + Digital Concrete Design System (3 hours)
-
-**Branch:** `claude/add-portal-services-qx8Wm`
-
-**Goal:** Create unified STAVAGENT portal with consistent brutalist neumorphism design.
-
-#### A. Design System Created ✅
-
-**Files Created:**
-```
-/DESIGN_SYSTEM.md                                              (8 pages, 332 lines)
-/stavagent-portal/frontend/src/styles/design-system/
-├── tokens.css                                                 (CSS variables)
-└── components.css                                             (BEM components)
-```
-
-**Design Philosophy: "Digital Concrete" (Brutalist Neumorphism)**
-```
-Элементы интерфейса = бетонные блоки
-
-Core Principles:
-1. Монохромная палитра (gray shades)
-2. Один акцент - оранжевый (#FF9F1C)
-3. Мягкие тени - двусторонние (neumorphism)
-4. Физичность - элементы вдавливаются при клике
-5. Минимализм - никаких градиентов, бордеров
-```
-
-**Design Tokens:**
-```css
-:root {
-  /* Surfaces */
-  --app-bg-concrete: #C9CBCD;      /* Background */
-  --panel-bg-concrete: #CFD1D3;    /* Panels, buttons */
-  --input-bg: #D5D7D9;             /* Input fields */
-
-  /* Text */
-  --text-primary: #2F3133;
-  --text-secondary: #5A5D60;
-
-  /* Accent */
-  --brand-orange: #FF9F1C;         /* CTA, numbers */
-
-  /* Shadows - Elevation (выпуклые) */
-  --elevation-low: 3px 3px 6px var(--shadow-dark), -3px -3px 6px var(--shadow-light);
-  --elevation-medium: 5px 5px 10px var(--shadow-dark), -5px -5px 10px var(--shadow-light);
-
-  /* Shadows - Depression (вдавленные) */
-  --depressed-inset: inset 3px 3px 6px var(--shadow-dark), inset -3px -3px 6px var(--shadow-light);
-}
-```
-
-**Components (BEM Naming):**
-```css
-.c-btn              /* Button (elevated) */
-.c-btn--primary     /* Orange text CTA */
-.c-btn:hover        /* scale(1.02) + elevation-medium */
-.c-btn:active       /* depressed-inset (вдавливается) */
-
-.c-panel            /* Panel (elevated) */
-.c-panel--inset     /* Panel (depressed) */
-
-.c-card             /* Interactive card */
-.c-card:hover       /* Поднимается на -2px */
-
-.c-input            /* Input (always depressed) */
-.c-badge            /* Status badge */
-.c-tabs / .c-tab    /* Tab navigation */
-```
-
-**Interaction States:**
-```
-Button:
-  Default  → elevation-low (elevated)
-  Hover    → scale(1.02) + elevation-medium
-  Active   → depressed-inset + translateY(1px) [physical press]
-  Focus    → orange ring 2px
-
-Input:
-  Default  → depressed-inset (always inset)
-  Focus    → depressed-inset + orange ring
-
-Card:
-  Default  → elevation-low
-  Hover    → elevation-medium + translateY(-2px) [lifts up]
-```
-
-#### B. Portal Services Hub ✅
-
-**File Created:** `stavagent-portal/frontend/src/components/portal/ServiceCard.tsx`
-
-**Component:**
-```tsx
-interface Service {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  url: string;
-  status: 'active' | 'beta' | 'coming_soon';
-  tags?: string[];
-}
-
-export default function ServiceCard({ service }: ServiceCardProps) {
-  const isDisabled = service.status === 'coming_soon';
-
-  return (
-    <div className="c-card" onClick={() => window.open(service.url, '_blank')}>
-      <div>
-        <span>{service.icon}</span>
-        <h3>{service.name}</h3>
-        {getStatusBadge(service.status)}  {/* Success/Warning/Info badge */}
-        <ExternalLink />
-      </div>
-      <p>{service.description}</p>
-      <div>{service.tags.map(tag => <span className="tag">{tag}</span>)}</div>
-    </div>
-  );
-}
-```
-
-**File Rewritten:** `stavagent-portal/frontend/src/pages/PortalPage.tsx`
-
-**SERVICES Array (6 Kiosks):**
-```tsx
-const SERVICES: Service[] = [
-  {
-    id: 'monolit-planner',
-    name: 'Monolit Planner',
-    description: 'Calculate costs for monolithic concrete structures. Convert all costs to CZK/m³ metric with KROS rounding.',
-    icon: '🪨',
-    url: 'https://monolit-planner-frontend.onrender.com',
-    status: 'active',
-    tags: ['Concrete', 'KROS', 'Bridge', 'Building']
-  },
-  {
-    id: 'urs-matcher',
-    name: 'URS Matcher',
-    description: 'Match BOQ descriptions to URS codes using AI. 4-phase architecture with Multi-Role validation.',
-    icon: '🔍',
-    url: 'https://urs-matcher-service.onrender.com',
-    status: 'active',
-    tags: ['BOQ', 'URS', 'AI Matching']
-  },
-  {
-    id: 'pump-module',
-    name: 'Pump Module',
-    description: 'Calculate pumping costs and logistics for concrete delivery. Coming soon!',
-    icon: '⚙️',
-    url: '#',
-    status: 'coming_soon',
-    tags: ['Pumping', 'Logistics']
-  },
-  {
-    id: 'formwork-calculator',
-    name: 'Formwork Calculator',
-    description: 'Specialized calculator for formwork systems. Optimize material usage and costs.',
-    icon: '📦',
-    url: '#',
-    status: 'coming_soon',
-    tags: ['Formwork', 'Optimization']
-  },
-  {
-    id: 'earthwork-planner',
-    name: 'Earthwork Planner',
-    description: 'Plan and estimate earthwork operations. Calculate volumes and equipment needs.',
-    icon: '🚜',
-    url: '#',
-    status: 'coming_soon',
-    tags: ['Earthwork', 'Excavation']
-  },
-  {
-    id: 'rebar-optimizer',
-    name: 'Rebar Optimizer',
-    description: 'Optimize reinforcement layouts and calculate cutting lists to minimize waste.',
-    icon: '🛠️',
-    url: '#',
-    status: 'coming_soon',
-    tags: ['Reinforcement', 'Optimization']
-  }
-];
-```
-
-**Portal UI Structure:**
-```
-┌─────────────────────────────────────────────────────────────────┐
-│ 🏗️ StavAgent Portal                        [New Project]       │
-│ Central hub for all construction services and projects          │
-└─────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────┐
-│ 📊 Available Services                                           │
-│ Choose a service to start working. Each kiosk is specialized.   │
-│                                                                  │
-│ ┌──────────┐  ┌──────────┐  ┌──────────┐                      │
-│ │ 🪨       │  │ 🔍       │  │ ⚙️       │                      │
-│ │ Monolit  │  │ URS      │  │ Pump     │                      │
-│ │ Planner  │  │ Matcher  │  │ Module   │                      │
-│ │ [Active] │  │ [Active] │  │ [Coming] │                      │
-│ └──────────┘  └──────────┘  └──────────┘                      │
-│                                                                  │
-│ ┌──────────┐  ┌──────────┐  ┌──────────┐                      │
-│ │ 📦       │  │ 🚜       │  │ 🛠️       │                      │
-│ │ Formwork │  │ Earthwork│  │ Rebar    │                      │
-│ │ Calc     │  │ Planner  │  │ Optimizer│                      │
-│ │ [Coming] │  │ [Coming] │  │ [Coming] │                      │
-│ └──────────┘  └──────────┘  └──────────┘                      │
-└─────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────┐
-│ Stats Section                                                    │
-│                                                                  │
-│ ┌──────────┐  ┌──────────┐  ┌──────────┐                      │
-│ │ 📄       │  │ ✅       │  │ 💬       │                      │
-│ │ 12       │  │ 8        │  │ 0        │                      │
-│ │ Total    │  │ Analyzed │  │ With     │                      │
-│ │ Projects │  │          │  │ Chat     │                      │
-│ └──────────┘  └──────────┘  └──────────┘                      │
-└─────────────────────────────────────────────────────────────────┘
-
-┌─────────────────────────────────────────────────────────────────┐
-│ 📁 Your Projects                                [Add Project]   │
-│ Manage your construction projects and files                     │
-│                                                                  │
-│ ┌──────────┐  ┌──────────┐  ┌──────────┐                      │
-│ │ Bridge   │  │ Building │  │ Tunnel   │                      │
-│ │ SO-101   │  │ ABC Mall │  │ Metro L3 │                      │
-│ └──────────┘  └──────────┘  └──────────┘                      │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-#### C. Integration ✅
-
-**File Modified:** `stavagent-portal/frontend/src/main.tsx`
-
-**Import Order (Critical):**
-```tsx
-import App from './App';
-
-// 1. Design System Tokens (CSS variables)
-import './styles/design-system/tokens.css';
-
-// 2. Design System Components (uses tokens)
-import './styles/design-system/components.css';
-
-// 3. Global styles (can override design system)
-import './styles/global.css';
-```
-
-**Commit:**
-- `a787070` - FEAT: Add Portal Services Hub + Digital Concrete Design System
-
----
-
-## 📊 Session Summary
-
-| Task | Time Spent | Status | Branch | Commits |
-|------|------------|--------|--------|---------|
-| Time Norms - Backend | 1.5 hours | ✅ Complete | claude/implement-time-norms-automation-qx8Wm | 9279263 |
-| Time Norms - Frontend | 1.5 hours | ✅ Complete | claude/implement-time-norms-automation-qx8Wm | 80e724e |
-| Time Norms - Testing | 1 hour | ✅ Complete | claude/implement-time-norms-automation-qx8Wm | - |
-| Design System | 1.5 hours | ✅ Complete | claude/add-portal-services-qx8Wm | a787070 |
-| Portal Services Hub | 1.5 hours | ✅ Complete | claude/add-portal-services-qx8Wm | a787070 |
-| **TOTAL** | **7 hours** | **All Complete** | **2 branches** | **3 commits** |
-
-**Files Created:**
-- `Monolit-Planner/backend/src/services/timeNormsService.js` (350 lines)
-- `DESIGN_SYSTEM.md` (332 lines)
-- `stavagent-portal/frontend/src/styles/design-system/tokens.css` (120 lines)
-- `stavagent-portal/frontend/src/styles/design-system/components.css` (320 lines)
-- `stavagent-portal/frontend/src/components/portal/ServiceCard.tsx` (112 lines)
-
-**Files Modified:**
-- `Monolit-Planner/backend/src/routes/positions.js` (+35 lines)
-- `Monolit-Planner/frontend/src/components/PositionRow.tsx` (+85 lines)
-- `Monolit-Planner/backend/src/db/migrations.js` (FF_AI_DAYS_SUGGEST: true)
-- `Monolit-Planner/shared/src/constants.ts` (FF_AI_DAYS_SUGGEST: true)
-- `stavagent-portal/frontend/src/pages/PortalPage.tsx` (complete rewrite, 397 lines)
-- `stavagent-portal/frontend/src/main.tsx` (+3 import lines)
-
-**Dependencies Added:**
-- `lucide-react` (Monolit-Planner frontend) - for Sparkles icon
-
----
-
-## 🎉 Continuation Session - Portal Deployment Fixes + Logo Update (2025-12-27)
-
-**Branch:** `claude/add-time-norms-portal-evi5n`
-
-This session focused on fixing deployment issues and updating the logo to match technical specifications.
-
-### Fix 1: GitHub Actions Permissions ✅
-
-**Commit:** `95541d3` - FIX: Add permissions to test-coverage workflow for PR comments
-
-**Problem:** GitHub Actions failing with "Resource not accessible by integration" (403 error)
-
-**Error:**
-```
-HttpError: Resource not accessible by integration
-    at /home/runner/work/_actions/py-cov-action/python-coverage-comment-action/...
-```
-
-**Root Cause:** `test-coverage.yml` workflow missing permissions to write PR comments
-
-**Fix:** Added permissions block to workflow job
-```yaml
-jobs:
-  coverage:
-    name: Generate Coverage Report
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      issues: write        # ✅ Added
-      pull-requests: write # ✅ Added
+Начинаем фазу реализации после завершения анализа.
+
+Приоритет 1 (НАЧАТЬ С ЭТОГО): Multi-Role Performance Optimization
+- Цель: Ускорить генерацию Project Summary с 50-75 секунд до 15-20 секунд (3-4x)
+- Метод: Параллельное выполнение + упрощение промптов (5 ролей → 2 комплексных)
+- Файлы: concrete-agent/packages/core-backend/app/services/multi_role.py
+- Время: 3.5 дня
+- Детали: См. URS_MATCHER_SERVICE/MULTI_ROLE_OPTIMIZATION.md
+
+Сначала реализуй Multi-Role оптимизацию, потому что:
+1. Самый быстрый результат (3.5 дня vs 6-7 дней для Workflow C)
+2. Немедленное улучшение производительности для пользователей
+3. Подготовит backend для Workflow C и Summary Module
+4. Низкий риск - изолированное изменение в одном сервисе
+
+После завершения оптимизации спроси что делать дальше:
+- Summary Module (7 дней) - можно сделать независимо
+- Workflow C Backend (6-7 дней) - требует интеграции всех парсеров
 ```
 
 ---
 
-### Fix 2: Design System Not Showing on Deployed Frontend ✅
+## 🎯 Current Context (Session 2025-12-28)
 
-**Commit:** `02863a0` - FIX: CSS import order - load global.css before design-system
+### Completed Analysis (5 documents, 3846 lines)
 
-**Problem:** Portal deployed successfully but Digital Concrete design not visible (gray background, orange accents missing)
+| Document | Purpose | Commit | Status |
+|----------|---------|--------|--------|
+| `DOCUMENT_PARSING_ANALYSIS.md` | Gap analysis - current vs expected | `135a03e` | ✅ |
+| `PARSERS_INVENTORY.md` | 7 CORE parsers inventory + usage matrix | `94e5f8e` | ✅ |
+| `WORKFLOW_C_COMPLETE.md` | Workflow C spec with Project Summary | `3133481` | ✅ |
+| `SUMMARY_MODULE_SPEC.md` | Summary module architecture | `f7668ee` | ✅ |
+| `MULTI_ROLE_OPTIMIZATION.md` | Performance optimization analysis | `c1fc81b` | ✅ |
 
-**Root Cause:** `global.css` imported AFTER design-system CSS, overriding all variables
+**Location:** `URS_MATCHER_SERVICE/` directory
 
-**Previous (incorrect) order in main.tsx:**
-```tsx
-import './styles/design-system/tokens.css';
-import './styles/design-system/components.css';
-import './styles/global.css'; // ❌ Overrides everything!
-```
+### Ready for Implementation (3 features)
 
-**Fixed order:**
-```tsx
-import './styles/global.css';              // ✅ Base styles first
-import './styles/design-system/tokens.css';   // ✅ Design variables
-import './styles/design-system/components.css'; // ✅ Components
-```
-
-**Result:** Design system now visible on deployed frontend ✅
+1. **Multi-Role Optimization** - 3.5 days ⭐ START HERE
+2. **Summary Module** - 7 days
+3. **Workflow C Backend** - 6-7 days
 
 ---
 
-### Fix 3: Render Build Failure - Path Issues ✅
+## 🚀 PRIORITY 1: Multi-Role Optimization (3.5 days)
 
-**Commit:** `013adc9` - FIX: Render build path - add stavagent-portal directory prefix
+### Goal
+Reduce Project Summary generation time from 50-75s to 15-20s (3-4x speedup)
 
-**Problem:** Render deployment failing with "cd: frontend: No such file or directory"
-
-**Build Log Error:**
-```
-/bin/sh: 1: cd: can't cd to frontend
-ERROR: build command exited with code: 2
-```
-
-**Root Cause:** Build command executing from repo root (`/home/user/STAVAGENT`), not `stavagent-portal/`
-
-**File:** `stavagent-portal/render.yaml`
-
-**Previous (incorrect):**
-```yaml
-buildCommand: cd stavagent-portal && npm install && cd frontend && npm install && npm run build
-staticPublishPath: stavagent-portal/frontend/dist  # ❌ Wrong for Render context
+### Current Problem
+```python
+# Sequential execution (SLOW)
+validation = await askMultiRole(...)  # 10-15s
+materials = await askMultiRole(...)   # 10-15s
+cost = await askMultiRole(...)        # 10-15s
+timeline = await askMultiRole(...)    # 10-15s
+risks = await askMultiRole(...)       # 10-15s
+# Total: 50-75s
 ```
 
-**Fixed:**
-```yaml
-buildCommand: cd stavagent-portal && npm install && cd frontend && npm install && npm run build
-staticPublishPath: stavagent-portal/frontend/dist  # ✅ Correct path from repo root
-```
-
-**Additional Fix:** Added `package-lock.json` (commit `94a5e8f`)
-
----
-
-### Fix 4: Czech Localization ✅
-
-**Commit:** `a529d39` - FEAT: Překlad Portal UI do češtiny (Czech localization)
-
-**Request:** "Только должно быть на чешском языке весь портал"
-
-**Changes:** Complete translation of all Portal UI text to Czech
-
-**Services Descriptions:**
-```tsx
-{
-  name: 'Monolit Planner',
-  description: 'Výpočet nákladů na monolitické betonové konstrukce. Převod všech nákladů na metriku Kč/m³ se zaokrouhlením KROS.',
-  tags: ['Beton', 'KROS', 'Most', 'Budova']
-},
-{
-  name: 'URS Matcher',
-  description: 'Přiřazení popisů z výkazu výměr k URS kódům pomocí AI. 4-fázová architektura s Multi-Role validací.',
-  tags: ['BOQ', 'URS', 'AI']
-}
-```
-
-**UI Elements:**
-- Buttons: "Nový projekt", "Přidat projekt", "Vytvořit první projekt"
-- Status badges: "Aktivní", "Beta", "Připravujeme"
-- Stats: "Celkem projektů", "Analyzováno", "S chatem"
-- Loading: "Načítání..."
-- Empty states: "Zatím žádné projekty"
-
-**Meta tags (index.html):**
-```html
-<html lang="cs">
-<meta name="description" content="StavAgent Portal - Stavební platforma pro služby a projekty" />
-```
-
----
-
-### Fix 5: Title/Subtitle Naming ✅
-
-**Commits:**
-- `46eb0e0` - FIX: Mobilní responzivita + přejmenování na Stavební platforma
-- `834e9fa` - FIX: Oprava názvů - Title: StavAgent Portal, Subtitle: Stavební platforma
-
-**Initial Confusion:** Incorrectly swapped title and subtitle
-
-**User Correction:** "Я не верно дал задание... Title: StavAgent Portal, Subtitle: Stavební platforma pro služby a projekty"
-
-**Final Correct Version:**
-```tsx
-<h1 className="c-header__title">StavAgent Portal</h1>
-<p className="c-header__subtitle">
-  Stavební platforma pro služby a projekty
-</p>
-```
-
----
-
-### Fix 6: Mobile Responsive Design ✅
-
-**Commit:** `46eb0e0` - FIX: Mobilní responzivita + přejmenování na Stavební platforma
-
-**Problem:** "почему в телефоне я вижу только до половины второго киоска и вниз не прокручивается" (Portal only shows half of second kiosk on mobile, can't scroll down)
-
-**Root Cause:** No overflow properties + viewport height issues on mobile browsers
-
-**Fixes Applied:**
-
-#### 1. Main Container Overflow (PortalPage.tsx):
-```tsx
-<div style={{
-  minHeight: 'min(100vh, 100dvh)', // ✅ Support both viewport units
-  background: 'var(--app-bg-concrete)',
-  display: 'flex',
-  flexDirection: 'column',
-  overflowY: 'auto',                // ✅ Enable vertical scroll
-  overflowX: 'hidden',              // ✅ Prevent horizontal scroll
-  WebkitOverflowScrolling: 'touch'  // ✅ Smooth scrolling on iOS
-}}>
-```
-
-#### 2. Responsive CSS (components.css):
-```css
-/* Mobile responsive */
-@media (max-width: 768px) {
-  .c-grid--2,
-  .c-grid--3,
-  .c-grid--4 {
-    grid-template-columns: 1fr; /* ✅ Single column on mobile */
-    gap: var(--space-md);
-  }
-
-  .c-header__title {
-    font-size: 16px !important;
-    line-height: 1.3;
-  }
-
-  .c-header__subtitle {
-    font-size: 11px !important;
-    display: none; /* ✅ Hidden on very small screens */
-  }
-}
-
-@media (max-width: 480px) {
-  .c-header__title {
-    font-size: 14px !important;
-  }
-}
-```
-
-**Result:** Portal now scrollable on mobile, all 6 service cards visible ✅
-
----
-
-### Fix 7: TypeScript Build Error ✅
-
-**Commit:** `c334a6d` - FIX: TypeScript build error - duplicate minHeight property
-
-**Problem:** Render deployment failing with TypeScript compilation error
-
-**Error:**
-```
-error TS1117: An object literal cannot have multiple properties with the same name
-  minHeight: '100vh',
-  minHeight: '100dvh', // ❌ Duplicate!
-```
-
-**Root Cause:** Attempted to set two `minHeight` values (desktop and mobile viewport units)
-
-**Previous (incorrect):**
-```tsx
-style={{
-  minHeight: '100vh',
-  minHeight: '100dvh', // ❌ TypeScript error
-}}
-```
-
-**Fixed:**
-```tsx
-style={{
-  minHeight: 'min(100vh, 100dvh)', // ✅ CSS min() function
-}}
-```
-
-**Result:** TypeScript compilation successful ✅
-
----
-
-### Fix 8: Logo Update - Technical Specification ✅
-
-**Commit:** `db1a53c` - FEAT: Update logo to match technical specification - compass A-shape with Fibonacci spiral
-
-**Request:** Detailed technical specification for logo design (in Russian)
-
-**Logo Elements Implemented:**
-
-#### 1. Compass Frame (Forms "A" Shape):
-- Circular hinge with protruding handle at top
-- Two symmetric legs diverging downward (triangular "A" shape)
-- Horizontal crossbar at upper leg intersection
-
-#### 2. Fibonacci Spiral with Grid:
-- Visible grid of nested squares (Fibonacci sequence: 1, 1, 2, 3, 5, 8)
-- Golden spiral curling counterclockwise to center
-- Grid squares have semi-transparent borders (opacity: 0.4)
-
-#### 3. Geometric Rose (Rosette):
-- Positioned inside largest spiral turn
-- 6 faceted petals (rotated 60° increments)
-- Concentric design with center circle
-- Hexagonal faceted outline
-
-#### 4. Constellations (Attached to Right Leg):
-- Two constellation groups on right compass leg
-- Constellation 1 (upper): 4 nodes connected in quadrilateral
-- Constellation 2 (lower): 3 nodes connected in triangle
-- Thin connecting lines (stroke-width: 1px)
-
-#### 5. Metallic Gold Gradient:
-```svg
-<linearGradient id="gold-metal">
-  <stop offset="0%" style="stop-color:#F4E4A6" />   <!-- Lighter brass -->
-  <stop offset="40%" style="stop-color:#FFD700" />  <!-- Medium gold -->
-  <stop offset="100%" style="stop-color:#B8860B" /> <!-- Deep warm gold -->
-</linearGradient>
-```
-
-#### 6. Technical Implementation:
-- Vector SVG format (120×140px main logo, 32×32px favicon)
-- All elements use unified `url(#gold-metal)` gradient
-- Consistent stroke width across all lines
-- All elements visually connected (no gradient breaks)
-
-**Files Updated:**
-- `stavagent-portal/frontend/public/assets/logo.svg` (78 lines)
-- `stavagent-portal/frontend/public/favicon.svg` (34 lines)
-
-**Visual Integration:**
-Logo displayed in Portal header next to title:
-```tsx
-<img
-  src="/assets/logo.svg"
-  alt="StavAgent Logo"
-  style={{ width: '40px', height: '48px', flexShrink: 0 }}
-/>
-```
-
-**Responsive:**
-- Desktop: 40×48px
-- Mobile: 32×38px (CSS @media query)
-
----
-
-### Fix 9: Logo Redesign - Digital Concrete "S" ✅
-
-**Commit:** `1f26392` - FEAT: Přidání zlatého kompasového loga StavAgent
-
-**Problem:** Previous logo (compass with Fibonacci spiral) couldn't be generated from user's file
-
-**Solution:** Created custom minimalist logo matching Digital Concrete design system
-
-**Logo Design - Letter "S" from Concrete Blocks:**
-
-#### Visual Structure:
-```
-┌─────────────────┐  ← Top horizontal bar (dark gray)
-│                 │
-├──┐              │  ← Top-right vertical bar (medium gray)
-   │              │
-   └──────────────┤  ← Middle bar (ORANGE ACCENT #FF9F1C)
-                  │
-   ┌──────────────┘  ← Bottom-left vertical bar (medium gray)
-   │
-   └─────────────────┘  ← Bottom horizontal bar (dark gray)
-```
-
-#### Design Elements:
-- **Background**: Circular concrete surface (#CFD1D3) with border
-- **Letter "S"**: Made of 5 rectangular blocks (construction beams)
-- **Color Scheme**:
-  - Dark gray blocks: #5A5D60 (top/bottom bars)
-  - Medium gray blocks: #6B6E71 (vertical bars)
-  - Orange accent: #FF9F1C (middle bar - brand color)
-- **Details**: Rivets/bolts at corners (#4A4D50)
-- **Texture**: Grid lines for concrete effect (opacity: 0.2-0.3)
-
-#### Technical:
-- Main logo: 120×120px (circular)
-- Favicon: 32×32px (square with rounded corners)
-- Style: Brutalism + Minimalism
-- Matches Design System perfectly
-
----
-
-### Fix 10: Logo Orientation Fix + Header Text Size Increase ✅
-
-**Commit:** `a58738e` - FIX: Исправление логотипа S (зеркальность) + увеличение текста заголовка
-
-**Problem:** Letter "S" was mirrored (top bend right, bottom bend left - incorrect)
-
-**Solution:** Fixed orientation + increased header text size
-
-#### Part 1: Logo Orientation Fix
-**Previous (incorrect):**
-- Top: horizontal bar + top-RIGHT vertical bar ❌
-- Bottom: horizontal bar + bottom-LEFT vertical bar ❌
-- Result: Mirrored "S"
-
-**Fixed (correct):**
-- Top: horizontal bar + top-LEFT vertical bar ✅
-- Bottom: horizontal bar + bottom-RIGHT vertical bar ✅
-- Result: Proper "S" shape
-
-#### Part 2: Header Text Size Increase
-**Desktop (>768px):**
-- Title: 28px → **36px** (+29% larger)
-- Subtitle: 14px → **16px** (+14% larger)
-- Logo: 40×48px → **55×55px** (square)
-- Gap: 12px → 16px
-
-**Mobile (<768px):**
-- Title: 16px (unchanged)
-- Subtitle: 11px (hidden on small screens)
-- Logo: 32×38px → **40×40px** (square)
-
-**Typography improvements:**
-- Added `line-height: 1.2` for title
-- Added `line-height: 1.4` for subtitle
-- Better readability and visual hierarchy
-
-**Files Modified:**
-- `stavagent-portal/frontend/public/assets/logo.svg`
-- `stavagent-portal/frontend/public/favicon.svg`
-- `stavagent-portal/frontend/src/styles/design-system/components.css`
-- `stavagent-portal/frontend/src/pages/PortalPage.tsx`
-
----
-
-## 📊 Continuation Session Summary (2025-12-27)
-
-| Fix | Time | Status | Commit | Files |
-|-----|------|--------|--------|-------|
-| GitHub Actions permissions | 15 min | ✅ Complete | 95541d3 | test-coverage.yml |
-| CSS import order | 20 min | ✅ Complete | 02863a0 | main.tsx |
-| Render build paths | 25 min | ✅ Complete | 013adc9, 94a5e8f | render.yaml, package-lock.json |
-| Czech localization | 45 min | ✅ Complete | a529d39 | PortalPage.tsx, ServiceCard.tsx, index.html |
-| Title/subtitle fix | 15 min | ✅ Complete | 46eb0e0, 834e9fa | PortalPage.tsx |
-| Mobile responsive | 40 min | ✅ Complete | 46eb0e0 | PortalPage.tsx, components.css |
-| TypeScript build error | 10 min | ✅ Complete | c334a6d | PortalPage.tsx |
-| Logo design (compass attempt) | 50 min | ✅ Complete | db1a53c | logo.svg, favicon.svg |
-| Logo redesign (Digital Concrete S) | 35 min | ✅ Complete | 1f26392 | logo.svg, favicon.svg |
-| Logo orientation fix + header text size | 25 min | ✅ Complete | a58738e | logo.svg, favicon.svg, components.css, PortalPage.tsx |
-| **TOTAL** | **~5 hours** | **All Complete** | **10 commits** | **12 files** |
-
-**Key Achievements:**
-- ✅ Portal successfully deployed to Render.com
-- ✅ Design system visible on production
-- ✅ Complete Czech localization
-- ✅ Mobile-responsive layout
-- ✅ Custom logo in Digital Concrete style (letter "S" from concrete blocks)
-- ✅ Larger, more readable header text (36px title, 16px subtitle)
-- ✅ All build/deployment issues resolved
-
-**All Commits (2025-12-27):**
-```
-a58738e - FIX: Исправление логотипа S (зеркальность) + увеличение текста заголовка
-1f26392 - FEAT: Přidání zlatého kompasového loga StavAgent
-a3aaae3 - DOCS: Update NEXT_SESSION.md with continuation session (2025-12-27)
-db1a53c - FEAT: Update logo to match technical specification - compass A-shape with Fibonacci spiral
-c334a6d - FIX: TypeScript build error - duplicate minHeight property
-834e9fa - FIX: Oprava názvů - Title: StavAgent Portal, Subtitle: Stavební platforma
-46eb0e0 - FIX: Mobilní responzivita + přejmenování na Stavební platforma
-a529d39 - FEAT: Překlad Portal UI do češtiny (Czech localization)
-94a5e8f - FIX: Add package-lock.json for Render deployment
-013adc9 - FIX: Render build path - add stavagent-portal directory prefix
-02863a0 - FIX: CSS import order - load global.css before design-system
-95541d3 - FIX: Add permissions to test-coverage workflow for PR comments
-```
-
----
-
-## 🚀 Start Next Session With (Priority Order)
-
-### 🟢 OPTION A: Apply Design System to Other Services (3-4 hours)
-
-**Goal:** Extend Digital Concrete design to Monolit Planner and URS Matcher.
-
-#### Step 1: Monolit Planner (2 hours)
-
-**Current State:** Uses custom brutalist design (similar aesthetic but different implementation)
+### Solution: Hybrid Approach
+1. **Simplify prompts:** 5 roles → 2 comprehensive queries
+2. **Parallel execution:** Run both queries simultaneously with `asyncio.gather()`
+3. **Streaming updates:** Show progress to user via Server-Sent Events
+
+### Implementation Plan
+
+#### Day 1: Analysis & Refactoring (8 hours)
+**Location:** `concrete-agent/packages/core-backend/`
 
 **Tasks:**
-1. Copy design system files to Monolit-Planner:
-   ```bash
-   mkdir -p Monolit-Planner/frontend/src/styles/design-system
-   cp DESIGN_SYSTEM.md Monolit-Planner/
-   cp stavagent-portal/frontend/src/styles/design-system/*.css \
-      Monolit-Planner/frontend/src/styles/design-system/
-   ```
+1. Create dependency graph of current Multi-Role queries
+2. Identify which queries can run in parallel
+3. Design 2 comprehensive prompts to replace 5 separate queries
+4. Write tests for new prompts
 
-2. Import in `Monolit-Planner/frontend/src/main.tsx`:
-   ```tsx
-   import './styles/design-system/tokens.css';
-   import './styles/design-system/components.css';
-   import './styles/global.css';
-   ```
+**Files to modify:**
+```
+app/services/multi_role.py
+app/api/routes_multi_role.py
+```
 
-3. Refactor components to use design system classes:
-   - Replace `button.primary` → `c-btn c-btn--primary`
-   - Replace `panel.elevated` → `c-panel`
-   - Replace `input.field` → `c-input`
-   - Update `PositionRow.tsx`, `Header.tsx`, `Sidebar.tsx`
+**Code example:**
+```python
+# New comprehensive prompts
 
-4. Remove redundant custom styles from `global.css`
+COMPREHENSIVE_ANALYSIS_PROMPT = """
+Проанализируй проект {project_type} на основе документов:
 
-**Benefits:**
-- ✅ Consistent design across Portal + Monolit
-- ✅ ~30% less CSS code
-- ✅ Easier maintenance
+1. МАТЕРИАЛЫ И ОБЪЁМЫ:
+   - Какие материалы нужны? (бетон, арматура, опалубка)
+   - Сколько каждого материала? (в стандартных единицах)
+   - Какие классы/марки? (C30/37, B500B, и т.д.)
 
-#### Step 2: URS Matcher (1.5 hours)
+2. СТОИМОСТЬ:
+   - Общая стоимость проекта
+   - Разбивка по категориям (материалы, работа, техника)
+   - Стоимость за м³ бетона
 
-**Current State:** Basic Bootstrap-like styles
+3. СРОКИ:
+   - Общая длительность (месяцы)
+   - Основные вехи и фазы
+   - Критический путь
+
+Используй базу знаний (KROS, RTS, ČSN нормы).
+Отвечай структурированно в JSON формате.
+"""
+
+RISKS_ANALYSIS_PROMPT = """
+Проанализируй риски и допущения для проекта {project_type}:
+
+1. ТЕХНИЧЕСКИЕ РИСКИ:
+   - Сложности конструкции
+   - Требования к качеству
+   - Критичные параметры
+
+2. ОРГАНИЗАЦИОННЫЕ РИСКИ:
+   - Доступность материалов
+   - Квалификация персонала
+   - Погодные условия
+
+3. ДОПУЩЕНИЯ:
+   - Что предполагается о проекте?
+   - Какие данные отсутствуют?
+   - Рекомендации по уточнению
+
+Отвечай в JSON формате.
+"""
+```
+
+#### Day 2: Parallel Execution Implementation (8 hours)
 
 **Tasks:**
-1. Copy design system files
-2. Import in main entry point
-3. Replace Bootstrap classes with design system:
-   - `btn btn-primary` → `c-btn c-btn--primary`
-   - `card` → `c-card`
-   - `form-control` → `c-input`
-4. Update job results table
-5. Update matching interface
+1. Implement `asyncio.gather()` for parallel queries
+2. Add error handling for partial failures
+3. Add timeout management per query
+4. Write unit tests
 
-**Benefits:**
-- ✅ Professional brutalist aesthetic (vs generic Bootstrap)
-- ✅ Unified STAVAGENT brand identity
+**New function:**
+```python
+async def generate_project_summary_optimized(
+    project_type: str,
+    tz_content: Dict,
+    specs: List[Dict],
+    drawings: Dict,
+    ai_client: MultiRoleClient
+) -> ProjectSummary:
+    """
+    Optimized summary generation with parallel execution
+
+    Speedup: 3-4x (50-75s → 15-20s)
+    """
+
+    # Build context from documents
+    context = {
+        "project_type": project_type,
+        "tz_content": tz_content,
+        "specs": specs,
+        "drawings": drawings
+    }
+
+    # Execute 2 comprehensive queries IN PARALLEL
+    try:
+        main_result, risks_result = await asyncio.gather(
+            ai_client.askMultiRole(
+                question=COMPREHENSIVE_ANALYSIS_PROMPT.format(
+                    project_type=project_type
+                ),
+                context={
+                    **context,
+                    "enable_kb": True,
+                    "timeout": 30
+                }
+            ),
+            ai_client.askMultiRole(
+                question=RISKS_ANALYSIS_PROMPT.format(
+                    project_type=project_type
+                ),
+                context={
+                    **context,
+                    "role_preference": "project_manager",
+                    "timeout": 30
+                }
+            )
+        )
+        # ⏱️ Total time: 15-20s (parallel execution)
+
+    except Exception as e:
+        logger.error(f"Multi-Role parallel execution failed: {e}")
+        # Fallback to sequential if parallel fails
+        main_result = await ai_client.askMultiRole(...)
+        risks_result = await ai_client.askMultiRole(...)
+
+    # Assemble summary from results
+    summary = assemble_summary(main_result, risks_result)
+
+    return summary
+
+
+def assemble_summary(main_result: Dict, risks_result: Dict) -> ProjectSummary:
+    """Combine results into ProjectSummary object"""
+    return ProjectSummary(
+        client_requirements=main_result.get("requirements", {}),
+        materials=main_result.get("materials", []),
+        cost_estimate=main_result.get("cost", {}),
+        timeline=main_result.get("timeline", {}),
+        risks_assumptions=risks_result.get("risks", [])
+    )
+```
+
+#### Day 3: Streaming Updates (SSE) (6 hours)
+
+**Tasks:**
+1. Implement Server-Sent Events endpoint
+2. Add progress tracking for each query
+3. Update frontend to show real-time progress
+4. Test streaming in browser
+
+**Backend (FastAPI SSE):**
+```python
+from fastapi.responses import StreamingResponse
+import asyncio
+
+@router.post("/api/v1/summaries/generate/stream")
+async def generate_summary_stream(request: SummaryRequest):
+    """
+    Stream progress updates while generating summary
+    """
+    async def event_generator():
+        try:
+            # Send progress: Starting
+            yield f"data: {json.dumps({'status': 'starting', 'progress': 0})}\n\n"
+            await asyncio.sleep(0.1)
+
+            # Send progress: Analyzing
+            yield f"data: {json.dumps({'status': 'analyzing', 'progress': 30})}\n\n"
+
+            # Execute parallel queries
+            main_result, risks_result = await asyncio.gather(
+                ai_client.askMultiRole(...),
+                ai_client.askMultiRole(...)
+            )
+
+            # Send progress: Assembling
+            yield f"data: {json.dumps({'status': 'assembling', 'progress': 80})}\n\n"
+
+            # Assemble summary
+            summary = assemble_summary(main_result, risks_result)
+
+            # Send final result
+            yield f"data: {json.dumps({'status': 'complete', 'progress': 100, 'summary': summary.dict()})}\n\n"
+
+        except Exception as e:
+            yield f"data: {json.dumps({'status': 'error', 'message': str(e)})}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
+```
+
+**Frontend (EventSource):**
+```javascript
+const eventSource = new EventSource('/api/v1/summaries/generate/stream');
+
+eventSource.onmessage = (event) => {
+  const data = JSON.parse(event.data);
+
+  if (data.status === 'starting') {
+    updateProgress(0, 'Начинаем анализ...');
+  } else if (data.status === 'analyzing') {
+    updateProgress(30, 'Анализируем документы...');
+  } else if (data.status === 'assembling') {
+    updateProgress(80, 'Формируем резюме...');
+  } else if (data.status === 'complete') {
+    updateProgress(100, 'Готово!');
+    displaySummary(data.summary);
+    eventSource.close();
+  } else if (data.status === 'error') {
+    showError(data.message);
+    eventSource.close();
+  }
+};
+```
+
+#### Day 3.5: Testing & Documentation (4 hours)
+
+**Tasks:**
+1. Write integration tests
+2. Benchmark performance (before/after)
+3. Update API documentation
+4. Create migration guide
+
+**Performance Test:**
+```python
+import pytest
+import time
+
+@pytest.mark.asyncio
+async def test_summary_generation_performance():
+    """Test that optimized summary generation is 3x faster"""
+
+    # Prepare test data
+    project_type = "bridge_overpass"
+    tz_content = load_test_tz()
+    specs = load_test_specs()
+    drawings = load_test_drawings()
+
+    # Measure optimized version
+    start = time.time()
+    summary = await generate_project_summary_optimized(
+        project_type, tz_content, specs, drawings, ai_client
+    )
+    optimized_duration = time.time() - start
+
+    # Verify performance
+    assert optimized_duration < 25, f"Optimized version too slow: {optimized_duration}s"
+
+    # Verify completeness
+    assert summary.materials is not None
+    assert summary.cost_estimate is not None
+    assert summary.timeline is not None
+    assert summary.risks_assumptions is not None
+
+    print(f"✅ Optimized generation: {optimized_duration:.1f}s")
+```
+
+### Files to Create/Modify
+
+**Create:**
+```
+concrete-agent/packages/core-backend/app/services/summary_generator_optimized.py
+concrete-agent/packages/core-backend/tests/test_summary_performance.py
+```
+
+**Modify:**
+```
+concrete-agent/packages/core-backend/app/api/routes_multi_role.py
+concrete-agent/packages/core-backend/app/services/multi_role.py
+```
+
+### Success Criteria
+- ✅ Summary generation time < 25 seconds
+- ✅ All tests passing
+- ✅ Streaming progress updates working
+- ✅ Fallback to sequential execution on error
+- ✅ Documentation updated
 
 ---
 
-### 🟡 OPTION B: Time Norms Enhancements (2-3 hours)
+## 📦 PRIORITY 2: Summary Module (7 days)
 
-**Current Implementation:** Basic AI suggestion with tooltip
+**Status:** Postponed until Priority 1 complete
 
-**Possible Enhancements:**
+**See:** `URS_MATCHER_SERVICE/SUMMARY_MODULE_SPEC.md` for full specification
 
-#### 1. Historical Learning System
-```javascript
-// Save user's accepted/rejected suggestions
-POST /api/time-norms/feedback
-{
-  "position_id": "123",
-  "suggested_days": 6,
-  "actual_days": 7,
-  "accepted": false,
-  "user_correction": "Forgot about site access constraints"
-}
-
-// Use feedback to improve future suggestions
-// Store in new table: time_norms_feedback
-```
-
-#### 2. Batch Suggestion
-```javascript
-// Suggest days for ALL positions in project at once
-POST /api/positions/batch-suggest-days
-{
-  "project_id": "abc-123"
-}
-
-// Returns suggestions for all positions
-// User can review and accept/reject individually
-```
-
-#### 3. Confidence Threshold
-```javascript
-// Only auto-fill if confidence > 80%
-// Otherwise show suggestion in tooltip but don't auto-fill
-if (suggestion.confidence >= 80) {
-  handleFieldChange('days', suggestion.suggested_days);
-} else {
-  // Show warning: "Low confidence, verify manually"
-}
-```
-
-#### 4. Alternative Estimates
-```javascript
-// Show range instead of single number
-{
-  "suggested_days": 6,
-  "range": { "min": 5, "max": 7 },
-  "reasoning": "Normal conditions: 6 days. With delays: 7 days. Optimal: 5 days."
-}
-```
+**Quick summary:**
+- Database table `project_summaries`
+- API endpoints for generate, get, update, approve, export
+- React modal with 5 tabs (Overview, Materials, Cost, Timeline, Risks)
+- Export in PDF, Excel, JSON formats
 
 ---
 
-### 🟢 OPTION C: Production Deployment Preparation (2 hours)
+## 🔄 PRIORITY 3: Workflow C Backend (6-7 days)
 
-**Goal:** Prepare both new features for production rollout
+**Status:** Postponed until Priority 1 & 2 complete
 
-#### 1. Documentation Updates
+**See:** `URS_MATCHER_SERVICE/WORKFLOW_C_COMPLETE.md` for full specification
 
-**Update CLAUDE.md:**
-```markdown
-## Recent Updates (2025-12-26)
+**Quick summary:**
+- Document upload & parsing with all 7 parsers (including MinerU)
+- Project essence analysis
+- Work Breakdown Structure (WBS) generation
+- Integration with URS Matcher for code matching
 
-### Time Norms Automation
-- ✅ AI-powered days estimation using Multi-Role API
-- ✅ Knowledge Base integration (KROS/RTS/ČSN norms)
-- ✅ Feature flag: FF_AI_DAYS_SUGGEST
-- ✅ Fallback: Empirical calculations
-- File: Monolit-Planner/backend/src/services/timeNormsService.js
+---
 
-### Design System
-- ✅ Digital Concrete (Brutalist Neumorphism)
-- ✅ Unified design language across all services
-- ✅ 6 service cards (2 active, 4 coming soon)
-- File: /DESIGN_SYSTEM.md
-```
+## 📊 Progress Tracking
 
-**Update README.md:**
-- Add screenshots of Portal Services Hub
-- Add GIF of Time Norms AI suggestion in action
-- Update feature list
+### Analysis Phase (COMPLETED ✅)
+- [x] Document Parsing Analysis (484 lines) - `135a03e`
+- [x] Parsers Inventory (838 lines) - `94e5f8e`
+- [x] Workflow C Specification (1018 lines) - `3133481`
+- [x] Summary Module Architecture (933 lines) - `f7668ee`
+- [x] Multi-Role Optimization Analysis (573 lines) - `c1fc81b`
 
-#### 2. Environment Variables Check
+### Implementation Phase (PENDING)
+- [ ] Multi-Role Optimization (3.5 days) ⭐ NEXT
+- [ ] Summary Module (7 days)
+- [ ] Workflow C Backend (6-7 days)
 
-**Monolit-Planner Production:**
+**Total Implementation Time:** ~17 days (2-3 weeks)
+
+---
+
+## 🔧 Environment Setup
+
+**Branch:**
 ```bash
-# Verify these are set on Render.com
-STAVAGENT_API_URL=https://concrete-agent.onrender.com
-FF_AI_DAYS_SUGGEST=true  # Enable Time Norms
+git checkout claude/update-documentation-logo-fixes-gHv9C
+# OR create new feature branch:
+git checkout -b claude/implement-multi-role-optimization-<SESSION_ID>
 ```
 
-**concrete-agent Production:**
+**Services to run:**
 ```bash
-# Verify Gemini API key (for cost savings)
-GOOGLE_API_KEY=your-key-here
-GEMINI_MODEL=gemini-2.0-flash-exp
-MULTI_ROLE_LLM=gemini  # Use Gemini instead of Claude
+# concrete-agent CORE
+cd concrete-agent
+npm run dev:backend  # Port 8000
+
+# URS Matcher (for testing)
+cd URS_MATCHER_SERVICE
+npm run dev  # Port 3001
 ```
 
-#### 3. Deployment Checklist
-
-**Pre-deployment:**
-- [ ] Run all tests: `npm test` (68/68 passing)
-- [ ] Check bundle size: `npm run build`
-- [ ] Verify design system CSS loads in correct order
-- [ ] Test Time Norms with real KROS data
-- [ ] Test Portal on mobile (responsive grid)
-
-**Deployment:**
-- [ ] Push both branches to GitHub
-- [ ] Create PRs with detailed descriptions
-- [ ] Deploy to Render.com staging
-- [ ] Smoke test in staging
-- [ ] Deploy to production
-- [ ] Monitor error logs for 24h
-
-**Post-deployment:**
-- [ ] User acceptance testing
-- [ ] Collect feedback on AI suggestions
-- [ ] Monitor concrete-agent API usage (cost tracking)
-- [ ] Update session documentation
-
----
-
-### 🟡 OPTION D: xlsx Vulnerability Mitigation (2-3 hours)
-
-**Status:** Still 2 high severity vulnerabilities in xlsx package
-
-**Current Risk:** Medium (only parses files from authenticated users)
-
-**Migration Plan:** xlsx → exceljs
-
-**Steps:**
-1. **Review current usage:**
-   ```bash
-   grep -r "XLSX" Monolit-Planner/backend/src/services/
-   # Main usage: parser.js (Excel import)
-   ```
-
-2. **Install exceljs:**
-   ```bash
-   cd Monolit-Planner/backend
-   npm install exceljs  # Already in dependencies ✅
-   ```
-
-3. **Rewrite parseXLSX():**
-   ```javascript
-   // OLD (xlsx):
-   import XLSX from 'xlsx';
-   const workbook = XLSX.read(buffer, { type: 'buffer' });
-   const sheet = workbook.Sheets[sheetName];
-   const json = XLSX.utils.sheet_to_json(sheet);
-
-   // NEW (exceljs):
-   import ExcelJS from 'exceljs';
-   const workbook = new ExcelJS.Workbook();
-   await workbook.xlsx.load(buffer);
-   const sheet = workbook.getWorksheet(sheetName);
-   const json = sheet.getSheetValues();
-   ```
-
-4. **Test with sample files:**
-   - Bridge BOQ (multi-sheet)
-   - Building BOQ (single sheet)
-   - Complex formatting (merged cells, formulas)
-
-5. **Run regression tests:**
-   ```bash
-   npm run test:integration  # Excel import tests
-   ```
-
-6. **Remove xlsx dependency:**
-   ```bash
-   npm uninstall xlsx
-   npm audit  # Should show 0 high vulnerabilities
-   ```
-
-**Risk:** Medium (Excel parsing is critical, requires thorough testing)
-
----
-
-## 📚 Documentation Created This Session
-
-| File | Description | Lines |
-|------|-------------|-------|
-| `DESIGN_SYSTEM.md` | Complete design system documentation | 332 |
-| `stavagent-portal/frontend/src/styles/design-system/tokens.css` | CSS variables (colors, shadows, spacing) | 120 |
-| `stavagent-portal/frontend/src/styles/design-system/components.css` | BEM components (.c-btn, .c-panel, etc.) | 320 |
-| `stavagent-portal/frontend/src/components/portal/ServiceCard.tsx` | Service card component | 112 |
-| `Monolit-Planner/backend/src/services/timeNormsService.js` | Time Norms AI service | 350 |
-| `NEXT_SESSION.md` | **This file** - Session summary | - |
-
----
-
-## 🔗 Useful Commands for Next Session
-
+**Testing:**
 ```bash
-# Check current status
-cd /home/user/STAVAGENT
-git status
-git log --oneline -5
-
-# View Design System
-cat DESIGN_SYSTEM.md
-
-# Test Time Norms (manual)
-curl -X POST http://localhost:3001/api/positions/123/suggest-days
-
 # Run tests
-cd Monolit-Planner/shared && npm test          # 34 formula tests
-cd Monolit-Planner/backend && npm run test:unit  # Unit tests
+cd concrete-agent/packages/core-backend
+pytest tests/test_summary_performance.py -v
 
-# Check vulnerabilities
-cd Monolit-Planner/backend && npm audit  # Should show 2 high (xlsx only)
-
-# Apply design system to Monolit
-cp stavagent-portal/frontend/src/styles/design-system/*.css \
-   Monolit-Planner/frontend/src/styles/design-system/
+# Benchmark
+pytest tests/test_summary_performance.py --benchmark
 ```
 
 ---
 
-## ⚠️ Known Issues
+## 📝 Implementation Checklist
 
-| Issue | Severity | Status | Notes |
-|-------|----------|--------|-------|
-| Node.js 18.20.4 EOL | 🔴 High | ✅ **FIXED** | Upgraded to 20.11.0 (previous session) |
-| xlsx vulnerabilities (2 high) | 🟡 Medium | ⚠️ Accepted risk | Migrate to exceljs recommended |
-| Design system not applied to Monolit/URS | 🟢 Low | 📋 TODO | Works fine, just inconsistent branding |
-| Time Norms no batch mode | 🟢 Low | 📋 Enhancement | One-by-one works, batch would be faster |
+### Phase 1: Multi-Role Optimization (Day 1-3.5)
+- [ ] Day 1: Analyze dependencies, design 2 comprehensive prompts
+- [ ] Day 2: Implement parallel execution with asyncio.gather()
+- [ ] Day 3: Add streaming progress updates (SSE)
+- [ ] Day 3.5: Write tests, benchmark performance, update docs
+
+### Phase 2: Summary Module (Day 4-10)
+- [ ] Create database table `project_summaries`
+- [ ] Implement backend API (generate, get, update, approve, export)
+- [ ] Build frontend SummaryModal with 5 tabs
+- [ ] Implement export service (PDF, Excel, JSON)
+- [ ] Add version control
+- [ ] Write tests
+
+### Phase 3: Workflow C Backend (Day 11-17)
+- [ ] Create `/workflow/c/import` endpoint
+- [ ] Implement parser selection logic
+- [ ] Integrate MinerU for PDF parsing
+- [ ] Create WBS generator
+- [ ] Add database tables for WBS
+- [ ] Write tests
 
 ---
 
-## 🎯 Recommended Next Session Focus
+## 🎯 Quick Start Command
 
-**⭐ RECOMMENDED: Option A - Apply Design System to Other Services**
+```bash
+# 1. Checkout branch
+git checkout claude/update-documentation-logo-fixes-gHv9C
 
-**Why:**
-1. ✅ Complete unified brand identity across all STAVAGENT services
-2. ✅ Improves user experience (consistent UI/UX)
-3. ✅ Reduces maintenance burden (shared CSS)
-4. ✅ Professional appearance for demos/presentations
-5. ✅ Low risk (visual changes only, no logic changes)
+# 2. Read optimization spec
+cat URS_MATCHER_SERVICE/MULTI_ROLE_OPTIMIZATION.md
 
-**Alternative:** Option C (Production deployment) or Option D (xlsx migration)
+# 3. Read session summary
+cat URS_MATCHER_SERVICE/SESSION_2025-12-28.md
+
+# 4. Start with Day 1 tasks:
+#    - Analyze current Multi-Role code
+#    - Design 2 comprehensive prompts
+#    - Identify parallel execution opportunities
+
+# 5. Files to focus on:
+#    - concrete-agent/packages/core-backend/app/services/multi_role.py
+#    - concrete-agent/packages/core-backend/app/api/routes_multi_role.py
+```
 
 ---
 
-**Branches:**
-- `claude/implement-time-norms-automation-qx8Wm` (Time Norms)
-- `claude/add-portal-services-qx8Wm` (Portal + Design)
+## 📊 Session Summary (2025-12-28)
+
+| Task | Time Spent | Status | Files |
+|------|------------|--------|-------|
+| Document Parsing Analysis | 45 min | ✅ Complete | DOCUMENT_PARSING_ANALYSIS.md |
+| Parsers Inventory | 1.5 hours | ✅ Complete | PARSERS_INVENTORY.md |
+| Workflow C Specification | 1.5 hours | ✅ Complete | WORKFLOW_C_COMPLETE.md |
+| Summary Module Architecture | 1.5 hours | ✅ Complete | SUMMARY_MODULE_SPEC.md |
+| Multi-Role Optimization Analysis | 1 hour | ✅ Complete | MULTI_ROLE_OPTIMIZATION.md |
+| **TOTAL** | **~6 hours** | **All Complete** | **5 documents, 3846 lines** |
 
 **Commits:**
-- `9279263` - FEAT: Implement Time Norms Automation with AI-powered days suggestion
-- `80e724e` - FIX: Add feature flag check to AI suggestion button
-- `a787070` - FEAT: Add Portal Services Hub + Digital Concrete Design System
-
-**Pull Requests:**
-- https://github.com/alpro1000/STAVAGENT/pull/new/claude/implement-time-norms-automation-qx8Wm
-- https://github.com/alpro1000/STAVAGENT/pull/new/claude/add-portal-services-qx8Wm
-
-**Session Duration:** 7 hours
-**Deliverables:** 3 commits, 11 files created/modified, 2 major features
+```
+c1fc81b - PERF: Multi-Role optimization analysis - parallel execution strategy
+f7668ee - SPEC: Project Summary as Separate Module with Export
+3133481 - WORKFLOW C: Complete specification with Project Summary
+94e5f8e - INVENTORY: Complete parsers analysis + Workflow C strategy
+135a03e - ANALYSIS: Document parsing logic review for URS Matcher
+```
 
 ---
 
-**Last Updated:** 2025-12-26
-**Next Session ETA:** Ready for design system rollout or production deployment ✅
+## 🔍 Key Findings
+
+### 1. Document Parsing Gap
+**Problem:** URS Matcher doesn't parse documents or analyze project essence
+
+**Solution:** Workflow C with comprehensive document analysis using all 7 parsers
+
+### 2. Parser Underutilization
+**Problem:** MinerU installed but not used, parsers not fully leveraged
+
+**Solution:** Parser selection matrix based on file type, size, content
+
+### 3. Multi-Role Performance Bottleneck
+**Problem:** Sequential execution takes 50-75 seconds
+
+**Solution:** Parallel execution + simplified prompts = 15-20 seconds (3-4x speedup)
+
+---
+
+**Ready to start:** Multi-Role Optimization (Priority 1)
+**Estimated time:** 3.5 days
+**Expected result:** 3-4x speedup (50-75s → 15-20s)
+
+**Branch:** `claude/update-documentation-logo-fixes-gHv9C`
+**Last Updated:** 2025-12-28

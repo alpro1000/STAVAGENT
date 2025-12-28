@@ -803,20 +803,23 @@ REDIS_URL=redis://...
 
 ---
 
-**Last Updated:** 2025-12-18
+**Last Updated:** 2025-12-28
 **Maintained By:** Development Team
 
 ---
 
 ## 📖 Session Documentation
 
-**Current Session (2025-12-26):** See `/NEXT_SESSION.md` for:
-- Time Norms Automation (AI-powered days estimation with KROS/RTS/ČSN norms)
-- Portal Services Hub (6 kiosks: 2 active, 4 coming soon)
-- Digital Concrete Design System (Brutalist Neumorphism)
-- 3 commits, 11 files created/modified, 7 hours
+**Current Session (2025-12-28):** See `/NEXT_SESSION.md` and `URS_MATCHER_SERVICE/SESSION_2025-12-28.md` for:
+- Document Parsing Architecture Analysis (484 lines)
+- Parsers Inventory - All 7 CORE parsers including MinerU (838 lines)
+- Workflow C Complete Specification with Project Summary (1018 lines)
+- Summary Module Architecture - Separate saveable entity (933 lines)
+- Multi-Role Performance Optimization - 3-4x speedup (573 lines)
+- 5 commits, 5 documents created (3846 lines total), 6 hours
 
 **Previous Sessions:**
+- **2025-12-26:** Time Norms Automation + Portal Services Hub + Digital Concrete Design System
 - **2025-12-25:** Git Hooks (Husky) + Production build fixes (TypeScript + prepare script)
 - **2025-12-23:** Import/Bridge switch fix + Template removal + Excel export fix + Speed live recalc
 - **2025-12-19:** Security fixes + Speed column (MJ/h) + дизайн/LLM/mobile обсуждение
