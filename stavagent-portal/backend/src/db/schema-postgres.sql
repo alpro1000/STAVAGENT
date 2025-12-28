@@ -149,27 +149,6 @@ CREATE TABLE IF NOT EXISTS monolith_projects (
   status VARCHAR(50) DEFAULT 'active'
 );
 
--- Part Templates table (predefined parts for each construction type)
-CREATE TABLE IF NOT EXISTS part_templates (
-  template_id VARCHAR(255) PRIMARY KEY,
-  object_type VARCHAR(50) NOT NULL,
-  part_name VARCHAR(255) NOT NULL,
-  display_order INTEGER DEFAULT 0,
-  is_default BOOLEAN DEFAULT TRUE,
-  description TEXT,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Parts table (actual parts for each project)
-CREATE TABLE IF NOT EXISTS parts (
-  part_id VARCHAR(255) PRIMARY KEY,
-  project_id VARCHAR(255) NOT NULL REFERENCES monolith_projects(project_id) ON DELETE CASCADE,
-  part_name VARCHAR(255) NOT NULL,
-  is_predefined BOOLEAN DEFAULT FALSE,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 -- Audit logs table (Phase 3: Admin Panel & Audit Logging)
 CREATE TABLE IF NOT EXISTS audit_logs (
   id VARCHAR(255) PRIMARY KEY,
@@ -265,8 +244,6 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_owner ON monolith_projects(owner_id);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_type ON monolith_projects(object_type);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_status ON monolith_projects(status);
-CREATE INDEX IF NOT EXISTS idx_part_templates_type ON part_templates(object_type);
-CREATE INDEX IF NOT EXISTS idx_parts_project ON parts(project_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_admin ON audit_logs(admin_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
@@ -287,25 +264,3 @@ CREATE INDEX IF NOT EXISTS idx_chat_sessions_user ON chat_sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_chat_messages_session ON chat_messages(session_id);
 CREATE INDEX IF NOT EXISTS idx_chat_messages_created ON chat_messages(created_at DESC);
 
--- Seed part templates for all construction types
-INSERT INTO part_templates (template_id, object_type, part_name, display_order, is_default, description) VALUES
-  ('bridge_ZÁKLADY', 'bridge', 'ZÁKLADY', 1, TRUE, 'Hloubkové a plošné založení'),
-  ('bridge_OPĚRY', 'bridge', 'OPĚRY', 2, TRUE, 'Koncové opěry/krajní podpory'),
-  ('bridge_PILÍŘE', 'bridge', 'PILÍŘE', 3, TRUE, 'Mezipolí/středové pilíře'),
-  ('bridge_KLENBY', 'bridge', 'KLENBY', 4, TRUE, 'Rozpětná pole/pěšinka'),
-  ('bridge_ŘÍMSY', 'bridge', 'ŘÍMSY', 5, TRUE, 'Římsové profily a ochranné prvky'),
-  ('building_ZÁKLADY', 'building', 'ZÁKLADY', 1, TRUE, 'Hloubkové a plošné základy'),
-  ('building_SLOUPY', 'building', 'SLOUPY', 2, TRUE, 'Nosné sloupy'),
-  ('building_STĚNY', 'building', 'STĚNY', 3, TRUE, 'Nosné a obvodové stěny'),
-  ('building_STROPY', 'building', 'STROPY', 4, TRUE, 'Stropní desky a konstrukce'),
-  ('building_SCHODIŠTĚ', 'building', 'SCHODIŠTĚ', 5, FALSE, 'Schodiště a výtahové šachty'),
-  ('parking_ZÁKLADY', 'parking', 'ZÁKLADY', 1, TRUE, 'Hloubkové založení'),
-  ('parking_SLOUPY', 'parking', 'SLOUPY', 2, TRUE, 'Nosné sloupy'),
-  ('parking_STĚNY', 'parking', 'STĚNY', 3, TRUE, 'Obvodové a nosné stěny'),
-  ('parking_STROPY', 'parking', 'STROPY', 4, TRUE, 'Stropní platformy'),
-  ('parking_RAMPY', 'parking', 'RAMPY', 5, TRUE, 'Sjezdové rampy a komunikace'),
-  ('road_ZÁKLADY', 'road', 'ZÁKLADY', 1, TRUE, 'Zemní těleso/podklad'),
-  ('road_PODBASE', 'road', 'PODBASE', 2, TRUE, 'Podkladní stabilizační vrstva'),
-  ('road_ASFALT', 'road', 'ASFALT', 3, TRUE, 'Asfaltobetonová vrstva'),
-  ('road_DRENÁŽ', 'road', 'DRENÁŽ', 4, TRUE, 'Drenážní systém')
-ON CONFLICT (template_id) DO NOTHING;
