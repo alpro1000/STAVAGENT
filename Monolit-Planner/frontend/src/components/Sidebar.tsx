@@ -1,13 +1,14 @@
 /**
- * Sidebar component - Collapsible with Modern Animations
+ * Sidebar component - Collapsible with Modern Animations + Resizable
  * Features:
  * - Smooth collapse/expand with cubic-bezier easing
  * - Hover tooltips for collapsed state
  * - Enhanced visual feedback
  * - Keyboard shortcut: Ctrl+B / Cmd+B
+ * - Resizable width via drag handle
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
@@ -17,6 +18,11 @@ interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
+
+const MIN_WIDTH = 200;
+const MAX_WIDTH = 500;
+const DEFAULT_WIDTH = 280;
+const STORAGE_KEY = 'monolit-sidebar-width';
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
@@ -28,7 +34,50 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('active');
   const [bridgeToDelete, setBridgeToDelete] = useState<typeof bridges[0] | null>(null);
 
+  // Resizable sidebar state
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
+  });
+  const [isResizing, setIsResizing] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
+
   const bridgeCount = bridges.length;
+
+  // Handle resize drag
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+  }, []);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isResizing) return;
+    const newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, e.clientX));
+    setSidebarWidth(newWidth);
+  }, [isResizing]);
+
+  const handleMouseUp = useCallback(() => {
+    if (isResizing) {
+      setIsResizing(false);
+      localStorage.setItem(STORAGE_KEY, sidebarWidth.toString());
+    }
+  }, [isResizing, sidebarWidth]);
+
+  // Attach global mouse listeners for resize
+  useEffect(() => {
+    if (isResizing) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'ew-resize';
+      document.body.style.userSelect = 'none';
+    }
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isResizing, handleMouseMove, handleMouseUp]);
 
   const handleBridgeHover = (bridgeId: string, e: React.MouseEvent<HTMLLIElement>) => {
     if (!isOpen) {
@@ -143,7 +192,20 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   }, [bridges, statusFilter]); // Зависимость от bridges и statusFilter, не от bridgesByProject!
 
   return (
-    <aside className={`c-panel sidebar ${isOpen ? 'open' : 'collapsed'}`} style={{ borderRadius: 0, padding: 0, borderTop: 'none' }}>
+    <aside
+      ref={sidebarRef}
+      className={`c-panel sidebar ${isOpen ? 'open' : 'collapsed'}`}
+      style={{
+        borderRadius: 0,
+        padding: 0,
+        borderTop: 'none',
+        width: isOpen ? `${sidebarWidth}px` : '70px',
+        minWidth: isOpen ? `${MIN_WIDTH}px` : '70px',
+        maxWidth: isOpen ? `${MAX_WIDTH}px` : '70px',
+        transition: isResizing ? 'none' : 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        position: 'relative'
+      }}
+    >
       <button
         className="c-btn sidebar-toggle"
         onClick={onToggle}
@@ -152,6 +214,36 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       >
         {isOpen ? '◀' : '▶'}
       </button>
+
+      {/* Resize Handle */}
+      {isOpen && (
+        <div
+          className="sidebar-resize-handle"
+          onMouseDown={handleMouseDown}
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '6px',
+            height: '100%',
+            cursor: 'ew-resize',
+            background: isResizing ? 'var(--accent-orange)' : 'transparent',
+            transition: 'background 0.2s',
+            zIndex: 20
+          }}
+          onMouseEnter={(e) => {
+            if (!isResizing) {
+              (e.target as HTMLElement).style.background = 'var(--accent-orange)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isResizing) {
+              (e.target as HTMLElement).style.background = 'transparent';
+            }
+          }}
+          title="Táhněte pro změnu šířky"
+        />
+      )}
 
       {/* Collapsed state indicator */}
       {!isOpen && bridgeCount > 0 && (
@@ -162,7 +254,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       )}
 
       {isOpen && (
-        <div className="sidebar-content" style={{ padding: 'var(--space-md)' }}>
+        <div className="sidebar-content" style={{ padding: 'var(--space-md)', paddingRight: 'var(--space-lg)' }}>
           <div className="sidebar-section">
             <h3 className="c-section-title">
               <span>🏗️</span> Mosty
@@ -218,7 +310,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                       >
                         <span className="project-toggle">{isExpanded ? '▼' : '▶'}</span>
                         <span className="project-icon">📁</span>
-                        <span className="project-name">{projectName}</span>
+                        <span className="project-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{projectName}</span>
                         <span className="project-count">{bridgeCount}</span>
                       </div>
 
@@ -234,9 +326,9 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                               onMouseLeave={() => setHoveredBridgeId(null)}
                               title={`${bridge.object_name || bridge.bridge_id} (${bridge.element_count} prvků)`}
                             >
-                              <div className="bridge-info">
-                                <span className="bridge-name">{bridge.object_name || bridge.bridge_id}</span>
-                                <span className="bridge-id">{bridge.bridge_id}</span>
+                              <div className="bridge-info" style={{ overflow: 'hidden' }}>
+                                <span className="bridge-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{bridge.object_name || bridge.bridge_id}</span>
+                                <span className="bridge-id" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{bridge.bridge_id}</span>
                               </div>
                               <div className="bridge-actions">
                                 <span className="bridge-badge">{bridge.element_count}</span>
