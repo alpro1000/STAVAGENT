@@ -117,7 +117,9 @@ export default function NewPartModal({ onSelect, onCancel }: Props) {
           box-shadow: var(--shadow-xl);
           animation: slideUp 0.3s ease;
           max-height: 90vh;
-          overflow-y: auto;
+          overflow: visible;
+          display: flex;
+          flex-direction: column;
         }
 
         @keyframes slideUp {
@@ -149,6 +151,11 @@ export default function NewPartModal({ onSelect, onCancel }: Props) {
           display: flex;
           flex-direction: column;
           gap: 0.5rem;
+        }
+
+        /* Expand OTSKP autocomplete to full width inside modal */
+        .new-part-section .otskp-autocomplete-container {
+          max-width: 100%;
         }
 
         .new-part-label {
