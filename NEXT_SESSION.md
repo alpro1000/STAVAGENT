@@ -2,7 +2,67 @@
 
 **Last Updated:** 2025-12-28
 **Current Branch:** `claude/optimize-multi-role-audit-84a4u`
-**Status:** ✅ Document Accumulator Enhanced (Version Tracking + Export) COMPLETE
+**Status:** ⚠️ **REQUIRES DEPLOYMENT** - Backend not deployed with Workflow C
+
+---
+
+## ⚠️ CRITICAL: Backend Deployment Required
+
+### Issue Discovered
+
+The "Audit projektu" (Workflow C) feature is returning **404 Not Found** because:
+- ✅ Code is complete and committed (commits `8f6c67d`, `16dbd08`)
+- ✅ Routes are correctly configured (`/api/v1/workflow/c/*`)
+- ❌ **Backend NOT deployed** - `autoDeploy: false` in `render.yaml`
+
+### Fix Applied (Commit `f5f70de`)
+
+Updated `concrete-agent/render.yaml`:
+```yaml
+services:
+  - type: web
+    name: concrete-agent
+    rootDir: concrete-agent/packages/core-backend  # ← ADDED
+```
+
+### 🚀 Deployment Instructions
+
+**Option 1: Manual Deploy via Render Dashboard**
+1. Go to https://dashboard.render.com
+2. Select service: **concrete-agent**
+3. Click **"Manual Deploy"** → **"Deploy latest commit"**
+4. Wait 3-5 minutes for deployment
+5. Test: `curl https://concrete-agent.onrender.com/api/v1/workflow/c/health`
+
+**Option 2: Enable Auto-Deploy (Future)**
+1. Edit `concrete-agent/render.yaml`
+2. Change `autoDeploy: false` → `autoDeploy: true`
+3. Commit and push
+4. Future pushes will auto-deploy
+
+### Testing After Deployment
+
+```bash
+# 1. Check health endpoint
+curl https://concrete-agent.onrender.com/api/v1/workflow/c/health
+
+# Expected response:
+{
+  "status": "healthy",
+  "system": "workflow-c",
+  "version": "1.0.0",
+  "features": {
+    "parallel_execution": true,
+    "summary_generation": true,
+    "file_upload": true
+  }
+}
+
+# 2. Test Audit projektu in Portal
+# → Upload Excel file
+# → Should complete without 404 error
+# → Show GREEN/AMBER/RED classification
+```
 
 ---
 
@@ -17,7 +77,8 @@
 | Excel Export | ✅ Complete | `5ef2c2e` | +180 |
 | PDF Export | ✅ Complete | `5ef2c2e` | +150 |
 | Portal UI Enhancement | ✅ Complete | `5ef2c2e` | +200 |
-| **TOTAL** | **1 commit** | | **~1047 lines** |
+| Fix Workflow C Deployment | ✅ Complete | `f5f70de` | +1 |
+| **TOTAL** | **3 commits** | | **~1131 lines** |
 
 ---
 
