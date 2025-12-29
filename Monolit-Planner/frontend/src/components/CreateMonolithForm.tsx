@@ -2,24 +2,30 @@
  * CreateMonolithForm - VARIANT 1 (Single Object Type)
  * Simple universal form for creating all object types
  * User describes type in the object_name field (e.g., "Мост через реку", "Офисное здание")
+ *
+ * TERMINOLOGY:
+ * - Stavba (Project) = project_name = группа объектов ("D6 Žalmanov – Knínice")
+ * - Objekt = bridge_id + object_name = конкретный объект ("SO201", "Most přes řeku")
  */
 
 import { useState, useMemo } from 'react';
 import { useBridges } from '../hooks/useBridges';
 
 interface CreateMonolithFormProps {
-  onSuccess: (project_id: string) => void;
+  onSuccess: (bridgeId: string) => void;
   onCancel?: () => void;
 }
 
 export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonolithFormProps) {
   // Get bridges directly from query (not context) to ensure fresh data
   const { data: bridges = [], createBridge } = useBridges();
-  const [projectId, setProjectId] = useState('');
-  const [projectName, setProjectName] = useState('');
-  const [selectedProject, setSelectedProject] = useState('');
-  const [objectName, setObjectName] = useState('');
-  const [description, setDescription] = useState('');
+
+  // Form state - clear naming
+  const [bridgeId, setBridgeId] = useState('');           // ID объекта (SO201, SO202)
+  const [selectedProject, setSelectedProject] = useState(''); // Выбранный существующий проект
+  const [newProjectName, setNewProjectName] = useState('');   // Новое название проекта
+  const [objectName, setObjectName] = useState('');           // Описание объекта
+  const [description, setDescription] = useState('');         // Доп. заметки
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -36,19 +42,17 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
   }, [bridges]);
 
   // Determine final project name
-  const getFinalProjectName = () => {
+  const getFinalProjectName = (): string | undefined => {
     if (selectedProject && selectedProject !== '__new__') {
       return selectedProject;
     }
-    return projectName.trim() || undefined;
+    return newProjectName.trim() || undefined;
   };
 
   const handleProjectSelectChange = (value: string) => {
     setSelectedProject(value);
-    if (value && value !== '__new__') {
-      setProjectName(value);
-    } else {
-      setProjectName('');
+    if (value !== '__new__') {
+      setNewProjectName('');
     }
   };
 
@@ -56,31 +60,31 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
     e.preventDefault();
     setError('');
 
-    const trimmedId = projectId.trim();
+    const trimmedBridgeId = bridgeId.trim();
 
-    if (!trimmedId) {
-      setError('Číslo projektu je povinné');
+    if (!trimmedBridgeId) {
+      setError('Číslo objektu je povinné');
       return;
     }
 
-    // Validate project_id - no slashes or special URL characters
-    if (/[\/\\?#%]/.test(trimmedId)) {
-      setError('Číslo projektu nesmí obsahovat znaky: / \\ ? # %');
+    // Validate bridge_id - no slashes or special URL characters
+    if (/[\/\\?#%]/.test(trimmedBridgeId)) {
+      setError('Číslo objektu nesmí obsahovat znaky: / \\ ? # %');
       return;
     }
 
     setIsSubmitting(true);
 
     try {
-      // VARIANT 1: Simple object creation - user describes type in object_name
+      // API expects project_id (historical naming), but it's actually bridge_id
       await createBridge({
-        project_id: trimmedId,
+        project_id: trimmedBridgeId,
         project_name: getFinalProjectName(),
-        object_name: objectName.trim() || trimmedId,
+        object_name: objectName.trim() || trimmedBridgeId,
         description: description.trim() || undefined
       });
 
-      onSuccess(trimmedId);
+      onSuccess(trimmedBridgeId);
     } catch (err: any) {
       setError(err.response?.data?.error || err.message || 'Chyba při vytváření objektu');
     } finally {
@@ -99,30 +103,10 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
       )}
 
       <form onSubmit={handleSubmit}>
-        {/* Project ID (required) */}
+        {/* 1. Stavba (Project) - Select existing or create new - FIRST */}
         <div className="u-mb-lg">
           <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
-            Číslo objektu (Object ID) *
-          </label>
-          <input
-            type="text"
-            className="c-input c-input--code"
-            value={projectId}
-            onChange={(e) => setProjectId(e.target.value)}
-            placeholder="např: SO201, SO202..."
-            required
-            disabled={isSubmitting}
-            autoFocus
-          />
-          <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
-            Jedinečný identifikátor objektu
-          </small>
-        </div>
-
-        {/* Project Name - Select existing or create new */}
-        <div className="u-mb-lg">
-          <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
-            Stavba (Project)
+            📁 Stavba (Project)
           </label>
 
           {existingProjects.length > 0 ? (
@@ -134,28 +118,28 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
                 disabled={isSubmitting}
                 style={{ width: '100%', marginBottom: 'var(--space-sm)' }}
               >
-                <option value="">-- Vyberte existující projekt --</option>
+                <option value="">-- Vyberte stavbu nebo vytvořte novou --</option>
                 {existingProjects.map(project => (
                   <option key={project} value={project}>
                     📁 {project}
                   </option>
                 ))}
-                <option value="__new__">➕ Vytvořit nový projekt...</option>
+                <option value="__new__">➕ Nová stavba...</option>
               </select>
 
               {selectedProject === '__new__' && (
                 <input
                   type="text"
                   className="c-input"
-                  value={projectName}
-                  onChange={(e) => setProjectName(e.target.value)}
-                  placeholder="Název nového projektu..."
+                  value={newProjectName}
+                  onChange={(e) => setNewProjectName(e.target.value)}
+                  placeholder="Název nové stavby..."
                   disabled={isSubmitting}
                 />
               )}
 
               <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
-                Vyberte existující projekt nebo vytvořte nový
+                Stavba = skupina objektů (např. "D6 Žalmanov – Knínice")
               </small>
             </>
           ) : (
@@ -163,48 +147,68 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
               <input
                 type="text"
                 className="c-input"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
+                value={newProjectName}
+                onChange={(e) => setNewProjectName(e.target.value)}
                 placeholder="např: D6 Žalmanov – Knínice"
                 disabled={isSubmitting}
               />
               <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
-                Název nadřazeného projektu (opcionálně)
+                Stavba = skupina objektů (volitelné)
               </small>
             </>
           )}
         </div>
 
-        {/* Object Name - user describes type here */}
+        {/* 2. Číslo objektu (Bridge ID) - SECOND */}
         <div className="u-mb-lg">
           <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
-            Popis objektu
+            🏗️ Číslo objektu *
+          </label>
+          <input
+            type="text"
+            className="c-input c-input--code"
+            value={bridgeId}
+            onChange={(e) => setBridgeId(e.target.value)}
+            placeholder="např: SO201, SO202, SO301..."
+            required
+            disabled={isSubmitting}
+            autoFocus
+          />
+          <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
+            Jedinečný identifikátor objektu v rámci stavby
+          </small>
+        </div>
+
+        {/* 3. Popis objektu (Object Name) - THIRD */}
+        <div className="u-mb-lg">
+          <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
+            📝 Popis objektu
           </label>
           <input
             type="text"
             className="c-input"
             value={objectName}
             onChange={(e) => setObjectName(e.target.value)}
-            placeholder="např: Most přes řeku, Kancelářská budova, Parkoviště..."
+            placeholder="např: Most přes řeku, Opěra 1, Pilíř P2..."
             disabled={isSubmitting}
           />
           <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
-            Popis co přesně budujete (most, budova, parkoviště, komunikace, atd.)
+            Krátký popis co stavíte (most, pilíř, opěra, budova...)
           </small>
         </div>
 
-        {/* Description */}
+        {/* 4. Poznámka (Description) - FOURTH */}
         <div className="u-mb-lg">
           <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
-            Poznámka
+            💬 Poznámka
           </label>
           <textarea
             className="c-input"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            placeholder="Další informace o projektu..."
+            placeholder="Další informace..."
             disabled={isSubmitting}
-            rows={3}
+            rows={2}
             style={{ fontFamily: 'var(--font-mono)', resize: 'vertical' }}
           />
         </div>
