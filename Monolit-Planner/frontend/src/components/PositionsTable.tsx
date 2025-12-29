@@ -326,23 +326,19 @@ export default function PositionsTable() {
 
   if (!selectedBridge) {
     return (
-      <div className="positions-container">
-        <div className="empty-state">
-          <div className="empty-state-icon">🏗️</div>
-          <h3>Vyberte most</h3>
-          <p>Vyberte most ze seznamu vlevo nebo nahrajte XLSX soubor</p>
-        </div>
+      <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-lg)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
+        <div style={{ fontSize: '64px', opacity: 0.5 }}>🏗️</div>
+        <h3 className="u-text-bold" style={{ margin: 0, fontSize: 'var(--font-size-xl)' }}>Vyberte most</h3>
+        <p className="u-text-muted">Vyberte most ze seznamu vlevo nebo nahrajte XLSX soubor</p>
       </div>
     );
   }
 
   if (isLoading) {
     return (
-      <div className="positions-container">
-        <div style={{ textAlign: 'center', padding: '64px' }}>
-          <div className="spinner"></div>
-          <p className="text-muted" style={{ marginTop: '16px' }}>Načítání pozic...</p>
-        </div>
+      <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
+        <div className="spinner"></div>
+        <p className="u-text-muted">Načítání pozic...</p>
       </div>
     );
   }
@@ -356,13 +352,9 @@ export default function PositionsTable() {
       <SnapshotBadge />
 
       {/* Add New Part Button */}
-      <div style={{
-        padding: '16px',
-        borderBottom: '1px solid var(--border-light)',
-        background: 'var(--bg-secondary)'
-      }}>
+      <div className="c-panel--inset u-p-md u-mb-md" style={{ borderRadius: 'var(--radius-md)' }}>
         <button
-          className="btn-add-part"
+          className="c-btn c-btn--primary"
           onClick={() => setShowNewPartModal(true)}
           disabled={isLocked}
           title={isLocked ? 'Nelze přidat část - snapshot je zamčen' : 'Přidat novou část konstrukce s OTSKP kódem'}
@@ -384,14 +376,18 @@ export default function PositionsTable() {
         const isExpanded = expandedParts.has(partName);
 
         return (
-          <div key={partName} className="part-card">
-            <div className="part-header" onClick={() => togglePart(partName)}>
-              <span>{partPositions[0]?.item_name || partName}</span>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <span>{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
+          <div key={partName} className="c-panel u-mb-md" style={{ padding: 0, overflow: 'hidden' }}>
+            <div
+              className="u-flex-between u-p-md"
+              onClick={() => togglePart(partName)}
+              style={{ cursor: 'pointer', background: 'var(--data-surface-alt)' }}
+            >
+              <span className="u-text-bold">{partPositions[0]?.item_name || partName}</span>
+              <div className="u-flex u-gap-md" style={{ alignItems: 'center' }}>
+                <span className="u-text-muted">{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
                 {!isLocked && (
                   <button
-                    className="btn-delete-part"
+                    className="c-btn c-btn--sm c-btn--danger"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDeletePart(partName);
@@ -425,9 +421,9 @@ export default function PositionsTable() {
                 />
 
                 {/* Unified Table Wrapper - Synchronized header and body widths */}
-                <div className="table-wrapper">
+                <div className="c-table-wrapper" style={{ margin: 'var(--space-md)', borderRadius: 'var(--radius-md)' }}>
                   {/* Header Table - Sticky with synchronized width */}
-                  <table className="positions-table">
+                  <table className="c-table positions-table">
                     <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
@@ -471,13 +467,9 @@ export default function PositionsTable() {
                   </table>
                 </div>
 
-                <div style={{
-                  padding: '16px',
-                  borderTop: '1px solid var(--border-light)',
-                  background: 'var(--bg-tertiary)'
-                }}>
+                <div className="u-p-md" style={{ background: 'var(--panel-inset)' }}>
                   <button
-                    className="btn-create"
+                    className="c-btn c-btn--primary c-btn--sm"
                     onClick={() => handleAddRow(partName)}
                     disabled={isLocked}
                     title={isLocked ? 'Nelze přidat řádek - snapshot je zamčen' : 'Přidat nový řádek'}

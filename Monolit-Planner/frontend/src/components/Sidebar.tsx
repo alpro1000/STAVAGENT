@@ -143,11 +143,12 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   }, [bridges, statusFilter]); // Зависимость от bridges и statusFilter, не от bridgesByProject!
 
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
+    <aside className={`c-panel sidebar ${isOpen ? 'open' : 'collapsed'}`} style={{ borderRadius: 0, padding: 0, borderTop: 'none' }}>
       <button
-        className="sidebar-toggle"
+        className="c-btn sidebar-toggle"
         onClick={onToggle}
         title={isOpen ? 'Skrýt (Ctrl+B)' : `Zobrazit seznam (Ctrl+B) • ${bridgeCount} mostů`}
+        style={{ position: 'absolute', top: '10px', right: '-12px', zIndex: 10, minHeight: '32px', padding: '6px 10px' }}
       >
         {isOpen ? '◀' : '▶'}
       </button>
@@ -156,35 +157,35 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       {!isOpen && bridgeCount > 0 && (
         <div className="sidebar-collapsed-indicator">
           <div className="collapsed-icon">🏗️</div>
-          <div className="collapsed-badge">{bridgeCount}</div>
+          <div className="c-badge c-badge--orange">{bridgeCount}</div>
         </div>
       )}
 
       {isOpen && (
-        <div className="sidebar-content">
+        <div className="sidebar-content" style={{ padding: 'var(--space-md)' }}>
           <div className="sidebar-section">
-            <h3 className="sidebar-heading">
+            <h3 className="c-section-title">
               <span>🏗️</span> Mosty
             </h3>
 
             {/* Status Filter Tabs */}
-            <div className="status-filter-tabs">
+            <div className="c-tabs" style={{ marginBottom: 'var(--space-md)' }}>
               <button
-                className={`filter-tab ${statusFilter === 'active' ? 'active' : ''}`}
+                className={`c-tab ${statusFilter === 'active' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('active')}
                 title="Zobrazit aktivní mosty"
               >
                 🚧 Aktivní
               </button>
               <button
-                className={`filter-tab ${statusFilter === 'completed' ? 'active' : ''}`}
+                className={`c-tab ${statusFilter === 'completed' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('completed')}
                 title="Zobrazit dokončené mosty"
               >
-                ✅ Dokončené
+                ✅ Hotové
               </button>
               <button
-                className={`filter-tab ${statusFilter === 'all' ? 'active' : ''}`}
+                className={`c-tab ${statusFilter === 'all' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('all')}
                 title="Zobrazit všechny mosty"
               >
@@ -294,35 +295,36 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
             )}
           </div>
 
-          <div className="sidebar-section">
-            <h3 className="sidebar-heading">
+          <div className="sidebar-section u-mt-lg">
+            <h3 className="c-section-title">
               <span>🔍</span> Filtry
             </h3>
 
-            <label className="sidebar-checkbox" title="Zobrazit pouze řádky s problémy (varovná oznámení)">
+            <label className="u-flex u-gap-sm" style={{ cursor: 'pointer', alignItems: 'center' }} title="Zobrazit pouze řádky s problémy (varovná oznámení)">
               <input
                 type="checkbox"
                 checked={showOnlyRFI}
                 onChange={(e) => setShowOnlyRFI(e.target.checked)}
+                style={{ width: '18px', height: '18px' }}
               />
-              <span className="checkbox-label">⚠️ Jen problémy</span>
+              <span style={{ color: 'var(--text-secondary)' }}>⚠️ Jen problémy</span>
             </label>
           </div>
 
-          <div className="sidebar-section">
-            <h3 className="sidebar-heading">
+          <div className="sidebar-section u-mt-lg">
+            <h3 className="c-section-title">
               <span>🔧</span> Nástroje
             </h3>
-            <div className="sidebar-tools">
+            <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap' }}>
               <button
-                className="tool-button"
+                className="c-btn c-btn--sm"
                 onClick={() => setShowHistoryModal(true)}
                 disabled={!selectedBridge}
                 title={selectedBridge ? 'Zobrazit historii snapshots' : 'Nejprve vyberte most'}
               >
                 📊 Historie
               </button>
-              <button className="tool-button" disabled title="Připravujeme">
+              <button className="c-btn c-btn--sm" disabled title="Připravujeme">
                 ⚙️ Nastavení
               </button>
             </div>

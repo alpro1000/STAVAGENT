@@ -182,106 +182,110 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   };
 
   return (
-    <header className="header">
-      <div
-        className="header-logo"
-        onClick={handleLogoClick}
-        style={{ cursor: 'pointer' }}
-        title="Obnovit aplikaci (F5)"
-      >
-        <span className="header-icon">🏗️</span>
-        <h1>Monolit Planner</h1>
-      </div>
-
-      <div className="header-controls">
-        <button
-          className="btn-theme-toggle"
-          onClick={toggleTheme}
-          title={isDark ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
+    <header className="c-header">
+      <div className="c-container u-flex-between" style={{ maxWidth: 'none', width: '100%' }}>
+        <div
+          className="u-flex u-gap-md"
+          onClick={handleLogoClick}
+          style={{ cursor: 'pointer', alignItems: 'center' }}
+          title="Obnovit aplikaci (F5)"
         >
-          {isDark ? '☀️' : '🌙'}
-        </button>
+          <span style={{ fontSize: '28px' }}>🏗️</span>
+          <h1 className="c-header__title" style={{ fontSize: '20px' }}>Monolit Planner</h1>
+        </div>
 
-        <button
-          className="btn-create"
-          onClick={() => setShowCreateForm(true)}
-          title="Vytvořit nový objekt s prázdnými pozicemi"
-        >
-          ➕ Nový objekt
-        </button>
+        <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap', alignItems: 'center' }}>
+          <button
+            className="c-btn"
+            onClick={toggleTheme}
+            title={isDark ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
+            style={{ minWidth: '44px', padding: '10px' }}
+          >
+            {isDark ? '☀️' : '🌙'}
+          </button>
 
-        <select
-          className="bridge-selector"
-          value={selectedBridge || ''}
-          onChange={handleBridgeChange}
-        >
-          <option value="">Vyberte objekt...</option>
-          {bridges.map((bridge) => (
-            <option key={bridge.bridge_id} value={bridge.bridge_id}>
-              {bridge.object_name || bridge.bridge_id} - {bridge.bridge_id} ({bridge.element_count} prvků)
-            </option>
-          ))}
-        </select>
+          <button
+            className="c-btn c-btn--primary"
+            onClick={() => setShowCreateForm(true)}
+            title="Vytvořit nový objekt s prázdnými pozicemi"
+          >
+            ➕ Nový objekt
+          </button>
 
-        <button
-          className="btn-secondary"
-          onClick={() => setShowEditForm(true)}
-          disabled={!selectedBridge}
-          title="Upravit název a metadata objektu"
-        >
-          ✏️ Upravit objekt
-        </button>
+          <select
+            className="c-select"
+            value={selectedBridge || ''}
+            onChange={handleBridgeChange}
+            style={{ minWidth: '220px' }}
+          >
+            <option value="">Vyberte objekt...</option>
+            {bridges.map((bridge) => (
+              <option key={bridge.bridge_id} value={bridge.bridge_id}>
+                {bridge.object_name || bridge.bridge_id} - {bridge.bridge_id} ({bridge.element_count} prvků)
+              </option>
+            ))}
+          </select>
 
-        <button
-          className="btn-secondary"
-          onClick={handleUploadClick}
-          disabled={isUploading}
-          title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi objektů'}
-        >
-          {isUploading ? (
-            <>
-              <span className="upload-spinner"></span>
-              Načítání...
-            </>
-          ) : (
-            <>💾 Nahrát XLSX</>
-          )}
-        </button>
+          <button
+            className="c-btn"
+            onClick={() => setShowEditForm(true)}
+            disabled={!selectedBridge}
+            title="Upravit název a metadata objektu"
+          >
+            ✏️ Upravit
+          </button>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".xlsx,.xls"
-          style={{ display: 'none' }}
-          onChange={handleFileUpload}
-        />
+          <button
+            className="c-btn"
+            onClick={handleUploadClick}
+            disabled={isUploading}
+            title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi objektů'}
+          >
+            {isUploading ? (
+              <>
+                <span className="upload-spinner"></span>
+                Načítání...
+              </>
+            ) : (
+              <>💾 Nahrát XLSX</>
+            )}
+          </button>
 
-        <button
-          className="btn-success"
-          onClick={handleExport}
-          disabled={!selectedBridge}
-          title="Exportovat aktuální pozice do Excel souboru"
-        >
-          📥 Export XLSX
-        </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".xlsx,.xls"
+            style={{ display: 'none' }}
+            onChange={handleFileUpload}
+          />
 
-        <button
-          className="btn-success"
-          onClick={handleSaveToServer}
-          disabled={!selectedBridge || isSaving}
-          title="Uložit export na server"
-        >
-          💾 {isSaving ? 'Ukládám...' : 'Uložit na server'}
-        </button>
+          <button
+            className="c-btn c-btn--success"
+            onClick={handleExport}
+            disabled={!selectedBridge}
+            title="Exportovat aktuální pozice do Excel souboru"
+          >
+            📥 Export XLSX
+          </button>
 
-        <button
-          className="btn-secondary"
-          onClick={() => setShowExportHistory(true)}
-          title="Zobrazit historii exportů"
-        >
-          📋 Historie exportů
-        </button>
+          <button
+            className="c-btn c-btn--success"
+            onClick={handleSaveToServer}
+            disabled={!selectedBridge || isSaving}
+            title="Uložit export na server"
+          >
+            💾 {isSaving ? 'Ukládám...' : 'Uložit'}
+          </button>
 
+          <button
+            className="c-btn"
+            onClick={() => setShowExportHistory(true)}
+            title="Zobrazit historii exportů"
+          >
+            📋 Historie
+          </button>
+
+        </div>
       </div>
 
       {/* Modal for Create Monolith Form */}

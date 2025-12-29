@@ -112,6 +112,50 @@
   --transition-fast: 0.15s ease-out;
   --transition-normal: 0.25s ease-out;
   --transition-slow: 0.4s ease-out;
+
+  /* ============================================
+     BACKWARD COMPATIBILITY ALIASES
+     Maps old Monolit-Planner variables to new design system
+     ============================================ */
+
+  /* Backgrounds */
+  --bg-primary: var(--bg-textured);
+  --bg-secondary: var(--panel-clean);
+  --bg-tertiary: var(--panel-inset);
+  --bg-dark: var(--panel-clean-end);
+
+  /* Text */
+  --text-inverse: #ffffff;
+
+  /* Accents */
+  --accent-primary: var(--accent-orange);
+  --accent-hover: #E68A00;
+
+  /* Colors */
+  --color-success: var(--status-success);
+  --color-warning: var(--status-warning);
+  --color-error: var(--status-error);
+  --color-info: var(--status-info);
+
+  /* Borders */
+  --border-default: var(--edge-dark);
+  --border-light: var(--edge-light);
+  --input-border: var(--edge-dark);
+  --input-focus: var(--accent-orange);
+  --input-bg: var(--data-surface);
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: var(--shadow-button);
+  --shadow-lg: var(--shadow-panel);
+
+  /* Font sizes */
+  --font-size-sm: 12px;
+  --font-size-base: 14px;
+  --font-size-lg: 16px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
 }
 
 /* ============================================
@@ -181,6 +225,15 @@
   --edge-light: rgba(255, 255, 255, 0.08);
   --edge-dark: rgba(0, 0, 0, 0.2);
   --divider: rgba(255, 255, 255, 0.06);
+
+  /* === BACKWARD COMPATIBILITY (Dark) === */
+  --bg-primary: var(--bg-textured);
+  --bg-secondary: var(--panel-clean);
+  --bg-tertiary: var(--panel-inset);
+  --bg-dark: var(--panel-clean-end);
+  --border-default: var(--edge-dark);
+  --border-light: var(--edge-light);
+  --input-bg: var(--data-surface);
 }
 
 /* ============================================
