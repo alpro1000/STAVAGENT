@@ -412,44 +412,116 @@ pip install openpyxl reportlab
 
 ---
 
-## 🟢 Next Session Options
+## 🚨 PRIORITY: Testing Required (Next Session)
 
-### OPTION A: Production Deployment (2 hours)
-- Install dependencies (openpyxl, reportlab)
-- Deploy concrete-agent to Render
-- Deploy stavagent-portal to Render
-- Test all endpoints in production
-- Test WebSocket for real-time updates
-- Verify Excel/PDF downloads work
+### ⚠️ CRITICAL: Test Deployed Features
 
-### OPTION B: Database Migration for Versions (3 hours)
+**Backend deployed successfully but requires user testing:**
+
+#### 1. Test Workflow C (Audit projektu) - 15 minutes
+```bash
+# 1. Open Portal UI
+https://stav-agent.onrender.com
+
+# 2. Click "🔍 Audit projektu"
+# 3. Upload Excel file with výkaz výměr
+# 4. Wait for progress bar (15-30 seconds)
+# 5. Verify result: GREEN/AMBER/RED classification
+
+# Expected behavior:
+✅ No 404 error
+✅ Progress bar shows stages (parsing → validating → enriching → auditing)
+✅ Result displays classification + critical issues + warnings
+✅ Summary shows key findings + recommendations
+```
+
+#### 2. Test Document Accumulator Features - 30 minutes
+```bash
+# Test version tracking:
+1. Open "📁 Akumulace dokumentů"
+2. Upload 2-3 files
+3. Click "Generovat souhrn" → v1 created
+4. Upload 1 more file
+5. Click "Generovat souhrn" → v2 created
+6. Verify "Historie verzí" table shows v1, v2
+
+# Test version comparison:
+1. Select v1 and v2 from dropdowns
+2. Click "Porovnat"
+3. Verify diff shows:
+   - Files added/removed/modified
+   - Positions delta
+   - Risk change
+   - Summary changes
+
+# Test Excel export:
+1. Click "📊 Exportovat do Excel"
+2. Download file
+3. Open in Excel
+4. Verify 2 sheets: "Souhrn" + "Pozice"
+
+# Test PDF export:
+1. Click "📄 Exportovat do PDF"
+2. Download file
+3. Open in PDF viewer
+4. Verify color-coded risk assessment
+```
+
+#### 3. Report Bugs if Found
+- Screenshot error messages
+- Check browser console (F12 → Console tab)
+- Note exact steps to reproduce
+- Check network tab for API errors
+
+---
+
+## 🟢 Future Enhancement Options
+
+### OPTION A: Database Migration for Versions (3 hours)
 - Replace in-memory `_versions` with PostgreSQL table
 - Create `project_versions` table schema
 - Add CRUD operations for versions
 - Migrate comparison logic to work with DB
 - Add pagination for version list (if > 50 versions)
 
-### OPTION C: Enhanced Comparison Features (2 hours)
+### OPTION B: Enhanced Comparison Features (2 hours)
 - Add visual diff for executive summary (highlight changed sentences)
 - Add percentage changes (positions: +12.5%, cost: +14.6%)
 - Add trend analysis (last 3 versions)
 - Export comparison results to PDF
 
-### OPTION D: Google Drive / SharePoint Integration (4 hours)
+### OPTION C: Google Drive / SharePoint Integration (4 hours)
 - Implement Google Drive API for folder linking
 - Implement SharePoint API for enterprise users
 - Auto-sync on file changes (watch mode)
 - Background polling for cloud storage
 
+### OPTION D: Portal UI/UX Improvements (2 hours)
+- Add loading skeletons for better perceived performance
+- Improve error messages (user-friendly Czech text)
+- Add keyboard shortcuts (Ctrl+S to save, etc.)
+- Mobile responsive design improvements
+
 ---
 
 ## 📈 Session Statistics
 
-**Duration:** ~3 hours
-**Commits:** 1
-**Files Changed:** 4 (1 new, 3 modified)
-**Lines Added:** ~1047
-**Features Implemented:** 5 major features
+**Date:** 2025-12-29
+**Duration:** ~1.5 hours (continued from previous session)
+**Branch:** `claude/optimize-multi-role-audit-84a4u`
+**Commits:** 4 total (1 feature + 1 fix + 2 docs)
+  - `5ef2c2e` - Document Accumulator enhancements
+  - `f5f70de` - Workflow C deployment fix
+  - `153fc3f` - Deployment instructions
+  - `73dc90e` - CLAUDE.md update
+**Files Changed:** 5 (1 new, 4 modified)
+**Lines Added:** ~1131
+**Features Implemented:**
+  - Version Tracking (auto-snapshots)
+  - Version Comparison (detailed diff)
+  - Excel Export (openpyxl)
+  - PDF Export (reportlab)
+  - Deployment Fix (render.yaml rootDir)
 
 ---
 
