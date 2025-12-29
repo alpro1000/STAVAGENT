@@ -4,7 +4,7 @@
  * User describes type in the object_name field (e.g., "Мост через реку", "Офисное здание")
  */
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useBridges } from '../hooks/useBridges';
 
 interface CreateMonolithFormProps {
@@ -13,14 +13,44 @@ interface CreateMonolithFormProps {
 }
 
 export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonolithFormProps) {
+  // Get bridges directly from query (not context) to ensure fresh data
+  const { data: bridges = [], createBridge } = useBridges();
   const [projectId, setProjectId] = useState('');
   const [projectName, setProjectName] = useState('');
+  const [selectedProject, setSelectedProject] = useState('');
   const [objectName, setObjectName] = useState('');
   const [description, setDescription] = useState('');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const { createBridge } = useBridges();
+
+  // Extract unique project names from existing bridges
+  const existingProjects = useMemo(() => {
+    const projects = new Map<string, string>();
+    bridges.forEach(bridge => {
+      if (bridge.project_name) {
+        projects.set(bridge.project_name, bridge.project_name);
+      }
+    });
+    return Array.from(projects.values()).sort();
+  }, [bridges]);
+
+  // Determine final project name
+  const getFinalProjectName = () => {
+    if (selectedProject && selectedProject !== '__new__') {
+      return selectedProject;
+    }
+    return projectName.trim() || undefined;
+  };
+
+  const handleProjectSelectChange = (value: string) => {
+    setSelectedProject(value);
+    if (value && value !== '__new__') {
+      setProjectName(value);
+    } else {
+      setProjectName('');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +75,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
       // VARIANT 1: Simple object creation - user describes type in object_name
       await createBridge({
         project_id: trimmedId,
-        project_name: projectName.trim() || undefined,
+        project_name: getFinalProjectName(),
         object_name: objectName.trim() || trimmedId,
         description: description.trim() || undefined
       });
@@ -72,7 +102,7 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
         {/* Project ID (required) */}
         <div className="u-mb-lg">
           <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
-            Číslo projektu (Project ID) *
+            Číslo objektu (Object ID) *
           </label>
           <input
             type="text"
@@ -85,39 +115,77 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
             autoFocus
           />
           <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
-            Jedinečný identifikátor projektu
+            Jedinečný identifikátor objektu
           </small>
         </div>
 
-        {/* Project Name */}
+        {/* Project Name - Select existing or create new */}
         <div className="u-mb-lg">
           <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
-            Stavba (Project Name)
+            Stavba (Project)
           </label>
-          <input
-            type="text"
-            className="c-input"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            placeholder="např: D6 Žalmanov – Knínice"
-            disabled={isSubmitting}
-          />
-          <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
-            Název nadřazeného projektu (opcionálně)
-          </small>
+
+          {existingProjects.length > 0 ? (
+            <>
+              <select
+                className="c-select"
+                value={selectedProject}
+                onChange={(e) => handleProjectSelectChange(e.target.value)}
+                disabled={isSubmitting}
+                style={{ width: '100%', marginBottom: 'var(--space-sm)' }}
+              >
+                <option value="">-- Vyberte existující projekt --</option>
+                {existingProjects.map(project => (
+                  <option key={project} value={project}>
+                    📁 {project}
+                  </option>
+                ))}
+                <option value="__new__">➕ Vytvořit nový projekt...</option>
+              </select>
+
+              {selectedProject === '__new__' && (
+                <input
+                  type="text"
+                  className="c-input"
+                  value={projectName}
+                  onChange={(e) => setProjectName(e.target.value)}
+                  placeholder="Název nového projektu..."
+                  disabled={isSubmitting}
+                />
+              )}
+
+              <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                Vyberte existující projekt nebo vytvořte nový
+              </small>
+            </>
+          ) : (
+            <>
+              <input
+                type="text"
+                className="c-input"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                placeholder="např: D6 Žalmanov – Knínice"
+                disabled={isSubmitting}
+              />
+              <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
+                Název nadřazeného projektu (opcionálně)
+              </small>
+            </>
+          )}
         </div>
 
         {/* Object Name - user describes type here */}
         <div className="u-mb-lg">
           <label className="u-text-bold u-mb-sm" style={{ display: 'block', fontSize: 'var(--font-size-sm)' }}>
-            Popis objektu *
+            Popis objektu
           </label>
           <input
             type="text"
             className="c-input"
             value={objectName}
             onChange={(e) => setObjectName(e.target.value)}
-            placeholder="např: Most přes řeku, Ofisní budova, Parkoviště..."
+            placeholder="např: Most přes řeku, Kancelářská budova, Parkoviště..."
             disabled={isSubmitting}
           />
           <small className="u-text-muted" style={{ fontSize: '12px', marginTop: '4px', display: 'block' }}>
