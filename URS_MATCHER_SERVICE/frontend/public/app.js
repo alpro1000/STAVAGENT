@@ -128,7 +128,7 @@ function updateProcessingHint(isAdvanced) {
     processingHint.innerHTML = '🧠 <strong>Rozšířený režim:</strong> Multi-Role AI validace (pomalejší, pro složité TZ a dokumentaci)';
     processingHint.style.color = 'var(--accent-orange)';
   } else {
-    processingHint.innerHTML = '⚡ <strong>Rychlý režim:</strong> optimalizovaný pайплайн (Gemini + Local DB + Perplexity)';
+    processingHint.innerHTML = '⚡ <strong>Rychlý režim:</strong> optimalizovaný pipeline (Gemini + Local DB + Perplexity)';
     processingHint.style.color = 'var(--text-secondary)';
   }
 }
