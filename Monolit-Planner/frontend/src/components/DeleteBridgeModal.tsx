@@ -27,14 +27,14 @@ export default function DeleteBridgeModal({ bridge, isOpen, onConfirm, onCancel,
     <div className="modal-overlay" onClick={onCancel}>
       <div className="modal-content delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header delete-header">
-          <h2>⚠️ Smazat most?</h2>
+          <h2>⚠️ Smazat objekt?</h2>
           <button className="btn-close" onClick={onCancel} title="Zavřít">✕</button>
         </div>
 
         <div className="modal-body">
           <div className="delete-warning">
             <p className="delete-main-text">
-              Opravdu chcete smazat most <strong>"{bridge.bridge_id}"</strong>?
+              Opravdu chcete smazat objekt <strong>„{bridge.bridge_id}"</strong>?
             </p>
             {bridge.object_name && (
               <p className="delete-sub-text">
@@ -46,7 +46,7 @@ export default function DeleteBridgeModal({ bridge, isOpen, onConfirm, onCancel,
           <div className="delete-impacts">
             <p className="delete-impacts-title">Tato akce smaže:</p>
             <ul className="delete-impacts-list">
-              <li>✓ Most "{bridge.bridge_id}"</li>
+              <li>✓ Objekt „{bridge.bridge_id}"</li>
               {bridge.element_count !== undefined && (
                 <li>✓ Všechny pozice ({bridge.element_count} ks)</li>
               )}

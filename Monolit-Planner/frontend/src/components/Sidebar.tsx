@@ -158,7 +158,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       }
     } catch (error) {
       console.error('Failed to delete bridge:', error);
-      alert('Chyba při mazání mostu');
+      alert('Chyba při mazání objektu');
     }
   };
 
@@ -209,7 +209,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       <button
         className="c-btn sidebar-toggle"
         onClick={onToggle}
-        title={isOpen ? 'Skrýt (Ctrl+B)' : `Zobrazit seznam (Ctrl+B) • ${bridgeCount} mostů`}
+        title={isOpen ? 'Skrýt (Ctrl+B)' : `Zobrazit seznam (Ctrl+B) • ${bridgeCount} objektů`}
         style={{ position: 'absolute', top: '10px', right: '-12px', zIndex: 10, minHeight: '32px', padding: '6px 10px' }}
       >
         {isOpen ? '◀' : '▶'}
@@ -257,7 +257,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         <div className="sidebar-content" style={{ padding: 'var(--space-md)', paddingRight: 'var(--space-lg)' }}>
           <div className="sidebar-section">
             <h3 className="c-section-title">
-              <span>🏗️</span> Mosty
+              <span>🏗️</span> Objekty
             </h3>
 
             {/* Status Filter Tabs */}
@@ -265,21 +265,21 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
               <button
                 className={`c-tab ${statusFilter === 'active' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('active')}
-                title="Zobrazit aktivní mosty"
+                title="Zobrazit aktivní objekty"
               >
                 🚧 Aktivní
               </button>
               <button
                 className={`c-tab ${statusFilter === 'completed' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('completed')}
-                title="Zobrazit dokončené mosty"
+                title="Zobrazit dokončené objekty"
               >
                 ✅ Hotové
               </button>
               <button
                 className={`c-tab ${statusFilter === 'all' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('all')}
-                title="Zobrazit všechny mosty"
+                title="Zobrazit všechny objekty"
               >
                 📋 Vše
               </button>
@@ -287,12 +287,12 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
             {bridges.length === 0 ? (
               <div className="sidebar-empty">
-                <p>Žádné mosty.</p>
+                <p>Žádné objekty.</p>
                 <p className="text-muted">Vytvořte nový nebo nahrajte XLSX.</p>
               </div>
             ) : filteredBridges.length === 0 ? (
               <div className="sidebar-empty">
-                <p>Žádné mosty v této kategorii.</p>
+                <p>Žádné objekty v této kategorii.</p>
               </div>
             ) : (
               <div className="project-list">
@@ -306,7 +306,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                       <div
                         className="project-header"
                         onClick={() => toggleProject(projectName)}
-                        title={`${projectName} (${bridgeCount} mostů)`}
+                        title={`${projectName} (${bridgeCount} objektů)`}
                       >
                         <span className="project-toggle">{isExpanded ? '▼' : '▶'}</span>
                         <span className="project-icon">📁</span>
@@ -345,7 +345,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                                 <button
                                   className="bridge-action-btn btn-delete"
                                   onClick={(e) => handleDeleteClick(e, bridge)}
-                                  title="Smazat most"
+                                  title="Smazat objekt"
                                   disabled={isLoading}
                                 >
                                   🗑️
@@ -412,7 +412,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 className="c-btn c-btn--sm"
                 onClick={() => setShowHistoryModal(true)}
                 disabled={!selectedBridge}
-                title={selectedBridge ? 'Zobrazit historii snapshots' : 'Nejprve vyberte most'}
+                title={selectedBridge ? 'Zobrazit historii snapshots' : 'Nejprve vyberte objekt'}
               >
                 📊 Historie
               </button>
