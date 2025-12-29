@@ -52,7 +52,7 @@ export default function ExportHistory({ onClose }: ExportHistoryProps) {
             <table className="exports-table">
               <thead>
                 <tr>
-                  <th>Most</th>
+                  <th>Objekt</th>
                   <th>Čas vytvoření</th>
                   <th>Velikost</th>
                   <th>Akce</th>

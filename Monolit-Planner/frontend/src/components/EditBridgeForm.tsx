@@ -51,7 +51,7 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
 
       onSuccess();
     } catch (err: any) {
-      setError(err.response?.data?.error || err.message || 'Chyba při aktualizaci mostu');
+      setError(err.response?.data?.error || err.message || 'Chyba při aktualizaci objektu');
     } finally {
       setIsSubmitting(false);
     }
@@ -59,7 +59,7 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
 
   return (
     <div className="edit-bridge-form">
-      <h2>✏️ Upravit most: {bridge.bridge_id}</h2>
+      <h2>✏️ Upravit objekt: {bridge.bridge_id}</h2>
 
       <form onSubmit={handleSubmit}>
         <div className="form-row">
@@ -74,7 +74,7 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
               autoFocus
             />
             <small style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
-              Název projektu - ke kterému patří více mostů
+              Název stavby – ke které patří více objektů
             </small>
           </label>
         </div>
@@ -90,7 +90,7 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
               disabled={isSubmitting}
             />
             <small style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginTop: '4px', display: 'block' }}>
-              Název конкретного моста (опционально, по умолчанию = Bridge ID)
+              Název konkrétního objektu (volitelné, výchozí = ID objektu)
             </small>
           </label>
         </div>
@@ -164,7 +164,7 @@ export default function EditBridgeForm({ bridge, onSuccess, onCancel }: EditBrid
             type="submit"
             disabled={isSubmitting}
             className="btn-primary"
-            title="Uložit změny v názvu a parametrech mostu"
+            title="Uložit změny v názvu a parametrech objektu"
           >
             {isSubmitting ? 'Ukládání...' : '💾 Uložit změny'}
           </button>

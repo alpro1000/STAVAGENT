@@ -328,8 +328,8 @@ export default function PositionsTable() {
     return (
       <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-lg)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
         <div style={{ fontSize: '64px', opacity: 0.5 }}>🏗️</div>
-        <h3 className="u-text-bold" style={{ margin: 0, fontSize: 'var(--font-size-xl)' }}>Vyberte most</h3>
-        <p className="u-text-muted">Vyberte most ze seznamu vlevo nebo nahrajte XLSX soubor</p>
+        <h3 className="u-text-bold" style={{ margin: 0, fontSize: 'var(--font-size-xl)' }}>Vyberte objekt</h3>
+        <p className="u-text-muted">Vyberte objekt ze seznamu vlevo nebo nahrajte XLSX soubor</p>
       </div>
     );
   }
@@ -459,7 +459,7 @@ export default function PositionsTable() {
                             color: 'var(--text-secondary)',
                             fontStyle: 'italic'
                           }}>
-                            Zatім žádné řádky. Klikněte na "➕ Přidat řádek" níže.
+                            Zatím žádné řádky. Klikněte na „➕ Přidat řádek" níže.
                           </td>
                         </tr>
                       )}

@@ -14,7 +14,7 @@ export default function KPIPanel() {
     return (
       <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-xl)' }}>
         <div style={{ fontSize: '48px', opacity: 0.6 }}>📊</div>
-        <p className="u-text-muted">Vyberte most pro zobrazení KPI</p>
+        <p className="u-text-muted">Vyberte objekt pro zobrazení KPI</p>
       </div>
     );
   }
