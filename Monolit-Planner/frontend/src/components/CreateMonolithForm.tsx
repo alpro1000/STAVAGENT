@@ -6,7 +6,6 @@
 
 import { useState, useMemo } from 'react';
 import { useBridges } from '../hooks/useBridges';
-import { useAppContext } from '../context/AppContext';
 
 interface CreateMonolithFormProps {
   onSuccess: (project_id: string) => void;
@@ -14,7 +13,8 @@ interface CreateMonolithFormProps {
 }
 
 export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonolithFormProps) {
-  const { bridges } = useAppContext();
+  // Get bridges directly from query (not context) to ensure fresh data
+  const { data: bridges = [], createBridge } = useBridges();
   const [projectId, setProjectId] = useState('');
   const [projectName, setProjectName] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
@@ -23,7 +23,6 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
-  const { createBridge } = useBridges();
 
   // Extract unique project names from existing bridges
   const existingProjects = useMemo(() => {
