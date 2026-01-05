@@ -354,10 +354,16 @@ export default function PositionsTable() {
       {/* Add New Part Button */}
       <div className="c-panel--inset u-p-md u-mb-md" style={{ borderRadius: 'var(--radius-md)' }}>
         <button
-          className="c-btn c-btn--primary"
+          className="c-btn"
           onClick={() => setShowNewPartModal(true)}
           disabled={isLocked}
           title={isLocked ? 'Nelze přidat část - snapshot je zamčen' : 'Přidat novou část konstrukce s OTSKP kódem'}
+          style={{
+            background: 'var(--accent-orange, #FF9F1C)',
+            color: '#1a1a1a',
+            fontWeight: 600,
+            border: 'none'
+          }}
         >
           🏗️ Přidat část konstrukce
         </button>
