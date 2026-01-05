@@ -359,8 +359,11 @@ router.post('/:fileId/analyze', async (req, res) => {
     }
 
     console.log(`[PortalFiles] Analyzing file ${fileId} with Workflow ${workflow || 'A'}`);
+    console.log(`[PortalFiles] Note: Multi-Role audit and AI enrichment are NOT part of file analysis workflow`);
 
     // Call CORE based on workflow type
+    // WARNING: performAudit() and enrichWithAI() have been removed (2025-12-10)
+    // Multi-Role validation is not needed for file upload/analysis
     let coreResult;
     if (workflow === 'B') {
       coreResult = await concreteAgent.workflowBStart(file.file_path, {

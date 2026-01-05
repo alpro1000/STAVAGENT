@@ -2,13 +2,13 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.1.0
-**Last Updated:** 2025-12-26
+**Version:** 1.3.0
+**Last Updated:** 2025-12-29
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2025-12-26):** Time Norms Automation (AI-powered days estimation) + Portal Services Hub + Digital Concrete Design System
-**PREVIOUS (2025-12-25):** Git Hooks (Husky) + Production build fixes (TypeScript + prepare script)
-**PREVIOUS (2025-12-23):** Import/Bridge switch fix + Template auto-loading removed + Excel export fix + Speed column live recalculation
+**NEW (2025-12-29):** Document Accumulator Enhanced (Version Tracking + Comparison + Excel/PDF Export) + Workflow C Deployment Fix
+**PREVIOUS (2025-12-28):** Multi-Role Parallel Execution (3-4x speedup) + Workflow C (end-to-end pipeline) + Document Accumulator (incremental analysis)
+**PREVIOUS (2025-12-26):** Time Norms Automation (AI-powered days estimation) + Portal Services Hub + Digital Concrete Design System
 
 ---
 
@@ -86,11 +86,33 @@ STAVAGENT/
 
 **API Endpoints:**
 ```
-POST /api/v1/multi-role/ask     ← Multi-Role AI validation
-POST /api/upload                 ← File upload and parsing
-POST /workflow/a/import          ← Workflow A processing
-POST /workflow/b/analyze_drawing ← Drawing analysis
-GET  /health                     ← Health check
+POST /api/v1/multi-role/ask         ← Multi-Role AI validation (parallel execution)
+POST /api/upload                     ← File upload and parsing
+POST /workflow/a/import              ← Workflow A processing
+POST /workflow/b/analyze_drawing     ← Drawing analysis
+GET  /health                         ← Health check
+
+# NEW (2025-12-28): Workflow C - Complete Pipeline
+POST /api/v1/workflow/c/execute      ← Execute with positions
+POST /api/v1/workflow/c/upload       ← Upload file + execute
+POST /api/v1/workflow/c/execute-async ← Async execution
+GET  /api/v1/workflow/c/{id}/status  ← Get progress
+GET  /api/v1/workflow/c/{id}/result  ← Get final result
+
+# NEW (2025-12-28): Document Accumulator
+POST /api/v1/accumulator/folders     ← Add folder (background scan)
+POST /api/v1/accumulator/files/upload ← Upload file
+POST /api/v1/accumulator/parse-all   ← Parse pending files
+POST /api/v1/accumulator/generate-summary ← LLM summary
+GET  /api/v1/accumulator/projects/{id}/status ← Project status
+WS   /api/v1/accumulator/ws/{id}     ← WebSocket progress
+
+# NEW (2025-12-29): Document Accumulator - Version Tracking & Export
+GET  /api/v1/accumulator/projects/{id}/versions ← Get all versions
+GET  /api/v1/accumulator/projects/{id}/versions/{version_id} ← Get specific version
+GET  /api/v1/accumulator/projects/{id}/compare?from=X&to=Y ← Compare versions
+GET  /api/v1/accumulator/projects/{id}/export/excel ← Export to Excel
+GET  /api/v1/accumulator/projects/{id}/export/pdf ← Export to PDF
 ```
 
 **Monorepo Structure:**
@@ -106,6 +128,11 @@ concrete-agent/
 **Key Files:**
 - `packages/core-backend/app/api/routes_multi_role.py` - Multi-Role API
 - `packages/core-backend/app/services/multi_role.py` - Multi-Role logic
+- `packages/core-backend/app/services/orchestrator.py` - Parallel execution (NEW 2025-12-28)
+- `packages/core-backend/app/services/workflow_c.py` - Workflow C pipeline (NEW 2025-12-28)
+- `packages/core-backend/app/services/summary_generator.py` - Summary generation (NEW 2025-12-28)
+- `packages/core-backend/app/services/document_accumulator.py` - Background processing + Version tracking (NEW 2025-12-28)
+- `packages/core-backend/app/services/export_service.py` - Excel/PDF export (NEW 2025-12-29)
 - `packages/core-backend/app/core/config.py` - Configuration
 
 ---
@@ -153,16 +180,26 @@ POST /api/portal/chat/sessions         ← Start chat
 - `backend/src/routes/auth.js` - Authentication
 - `docs/PORTAL_ARCHITECTURE.md` - Detailed architecture
 
-**Portal Services Hub (NEW 2025-12-26):**
+**Portal Services Hub (Updated 2025-12-29):**
 ```
-6 Kiosks Displayed:
+8 Services Displayed:
+🔍 Audit projektu (Active) - AI audit výkazu výměr (Workflow C)
+📁 Akumulace dokumentů (Active) - Incremental analysis + Version tracking + Export
 🪨 Monolit Planner (Active) - Concrete cost calculator
-🔍 URS Matcher (Active) - AI-powered BOQ matching
+🔎 URS Matcher (Active) - AI-powered BOQ matching
 ⚙️ Pump Module (Coming Soon) - Pumping logistics
 📦 Formwork Calculator (Coming Soon) - Formwork optimization
 🚜 Earthwork Planner (Coming Soon) - Excavation planning
 🛠️ Rebar Optimizer (Coming Soon) - Reinforcement optimization
 ```
+
+**New UI Components:**
+- `ProjectAudit.tsx` - Workflow C UI (file upload → audit → GREEN/AMBER/RED results)
+- `ProjectDocuments.tsx` - Document Accumulator UI:
+  - Incremental file upload with background processing
+  - Auto-generated summary (Multi-Role AI)
+  - Version tracking and comparison (NEW 2025-12-29)
+  - Excel/PDF export (NEW 2025-12-29)
 
 **Digital Concrete Design System:**
 - Philosophy: Brutalist Neumorphism ("Элементы интерфейса = бетонные блоки")
@@ -330,7 +367,54 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-26)
+## Current Status (2025-12-29)
+
+### ✅ COMPLETED: Document Accumulator Enhanced + Workflow C Deployment Fix (2025-12-29)
+
+**Branch:** `claude/optimize-multi-role-audit-84a4u`
+
+**Commits:**
+
+| Commit | Description |
+|--------|-------------|
+| `5ef2c2e` | FEAT: Add version tracking, comparison, and export to Document Accumulator |
+| `f5f70de` | FIX: Add rootDir to concrete-agent render.yaml for correct deployment path |
+| `153fc3f` | DOCS: Add deployment instructions for Workflow C 404 fix |
+
+**Key Changes:**
+
+#### 1. Document Accumulator Enhancements (~1047 lines)
+**Problem:** Document Accumulator lacked version history, comparison, and export capabilities.
+
+**Solution:** Complete version tracking system with comparison and professional export.
+
+**Implementation:**
+- Version Tracking: Auto-snapshots on every summary generation
+- Version Comparison: Detailed diff (files added/removed/modified, cost delta, risk changes)
+- Excel Export: Professional formatting with Summary + Positions sheets (openpyxl)
+- PDF Export: Color-coded risk assessment with reportlab
+- API Endpoints: 5 new endpoints for versions, comparison, and export
+- Frontend UI: Version history table, comparison panel, export buttons
+
+**Files:**
+- `packages/core-backend/app/services/export_service.py` (NEW - 330 lines)
+- `packages/core-backend/app/services/document_accumulator.py` (+150 lines)
+- `packages/core-backend/app/api/routes_accumulator.py` (+154 lines)
+- `stavagent-portal/frontend/src/components/portal/ProjectDocuments.tsx` (+200 lines)
+
+#### 2. Workflow C Deployment Fix
+**Problem:** "Audit projektu" returned 404 Not Found - backend not deployed.
+
+**Root Cause:** `autoDeploy: false` in render.yaml + missing `rootDir`
+
+**Solution:**
+- Added `rootDir: concrete-agent/packages/core-backend` to render.yaml
+- Manual deployment triggered on Render
+- Backend successfully deployed with Workflow C routes
+
+**Status:** ✅ Backend live at https://concrete-agent.onrender.com
+
+---
 
 ### ✅ COMPLETED: Time Norms Automation + Portal Services Hub (2025-12-26)
 

@@ -8,6 +8,7 @@ services:
     env: python
     region: frankfurt  # Ближе к Чехии
     plan: starter  # Можно начать с free
+    rootDir: concrete-agent/packages/core-backend
     buildCommand: pip install --no-cache-dir -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
@@ -86,7 +87,7 @@ services:
         value: 3.11.9
     
     healthCheckPath: /
-    # Auto-deploy only when concrete-agent files change
-    autoDeploy: false
+    # Auto-deploy when concrete-agent files change
+    autoDeploy: true
 
 # NOTE: Frontend is in stavagent-portal/ with its own render.yaml

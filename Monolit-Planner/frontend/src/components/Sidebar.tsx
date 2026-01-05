@@ -1,13 +1,14 @@
 /**
- * Sidebar component - Collapsible with Modern Animations
+ * Sidebar component - Collapsible with Modern Animations + Resizable
  * Features:
  * - Smooth collapse/expand with cubic-bezier easing
  * - Hover tooltips for collapsed state
  * - Enhanced visual feedback
  * - Keyboard shortcut: Ctrl+B / Cmd+B
+ * - Resizable width via drag handle
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
@@ -17,6 +18,11 @@ interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
+
+const MIN_WIDTH = 200;
+const MAX_WIDTH = 500;
+const DEFAULT_WIDTH = 280;
+const STORAGE_KEY = 'monolit-sidebar-width';
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
@@ -28,7 +34,50 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('active');
   const [bridgeToDelete, setBridgeToDelete] = useState<typeof bridges[0] | null>(null);
 
+  // Resizable sidebar state
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
+  });
+  const [isResizing, setIsResizing] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
+
   const bridgeCount = bridges.length;
+
+  // Handle resize drag
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+  }, []);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isResizing) return;
+    const newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, e.clientX));
+    setSidebarWidth(newWidth);
+  }, [isResizing]);
+
+  const handleMouseUp = useCallback(() => {
+    if (isResizing) {
+      setIsResizing(false);
+      localStorage.setItem(STORAGE_KEY, sidebarWidth.toString());
+    }
+  }, [isResizing, sidebarWidth]);
+
+  // Attach global mouse listeners for resize
+  useEffect(() => {
+    if (isResizing) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'ew-resize';
+      document.body.style.userSelect = 'none';
+    }
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isResizing, handleMouseMove, handleMouseUp]);
 
   const handleBridgeHover = (bridgeId: string, e: React.MouseEvent<HTMLLIElement>) => {
     if (!isOpen) {
@@ -109,7 +158,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       }
     } catch (error) {
       console.error('Failed to delete bridge:', error);
-      alert('Chyba při mazání mostu');
+      alert('Chyba při mazání objektu');
     }
   };
 
@@ -143,50 +192,94 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   }, [bridges, statusFilter]); // Зависимость от bridges и statusFilter, не от bridgesByProject!
 
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
+    <aside
+      ref={sidebarRef}
+      className={`c-panel sidebar ${isOpen ? 'open' : 'collapsed'}`}
+      style={{
+        borderRadius: 0,
+        padding: 0,
+        borderTop: 'none',
+        width: isOpen ? `${sidebarWidth}px` : '70px',
+        minWidth: isOpen ? `${MIN_WIDTH}px` : '70px',
+        maxWidth: isOpen ? `${MAX_WIDTH}px` : '70px',
+        transition: isResizing ? 'none' : 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        position: 'relative'
+      }}
+    >
       <button
-        className="sidebar-toggle"
+        className="c-btn sidebar-toggle"
         onClick={onToggle}
-        title={isOpen ? 'Skrýt (Ctrl+B)' : `Zobrazit seznam (Ctrl+B) • ${bridgeCount} mostů`}
+        title={isOpen ? 'Skrýt (Ctrl+B)' : `Zobrazit seznam (Ctrl+B) • ${bridgeCount} objektů`}
+        style={{ position: 'absolute', top: '10px', right: '-12px', zIndex: 10, minHeight: '32px', padding: '6px 10px' }}
       >
         {isOpen ? '◀' : '▶'}
       </button>
+
+      {/* Resize Handle */}
+      {isOpen && (
+        <div
+          className="sidebar-resize-handle"
+          onMouseDown={handleMouseDown}
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '6px',
+            height: '100%',
+            cursor: 'ew-resize',
+            background: isResizing ? 'var(--accent-orange)' : 'transparent',
+            transition: 'background 0.2s',
+            zIndex: 20
+          }}
+          onMouseEnter={(e) => {
+            if (!isResizing) {
+              (e.target as HTMLElement).style.background = 'var(--accent-orange)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isResizing) {
+              (e.target as HTMLElement).style.background = 'transparent';
+            }
+          }}
+          title="Táhněte pro změnu šířky"
+        />
+      )}
 
       {/* Collapsed state indicator */}
       {!isOpen && bridgeCount > 0 && (
         <div className="sidebar-collapsed-indicator">
           <div className="collapsed-icon">🏗️</div>
-          <div className="collapsed-badge">{bridgeCount}</div>
+          <div className="c-badge c-badge--orange">{bridgeCount}</div>
         </div>
       )}
 
       {isOpen && (
-        <div className="sidebar-content">
+        <div className="sidebar-content" style={{ padding: 'var(--space-md)', paddingRight: 'var(--space-lg)' }}>
           <div className="sidebar-section">
-            <h3 className="sidebar-heading">
-              <span>🏗️</span> Mosty
+            <h3 className="c-section-title">
+              <span>🏗️</span> Objekty
             </h3>
 
             {/* Status Filter Tabs */}
-            <div className="status-filter-tabs">
+            <div className="c-tabs" style={{ marginBottom: 'var(--space-md)' }}>
               <button
-                className={`filter-tab ${statusFilter === 'active' ? 'active' : ''}`}
+                className={`c-tab ${statusFilter === 'active' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('active')}
-                title="Zobrazit aktivní mosty"
+                title="Zobrazit aktivní objekty"
               >
                 🚧 Aktivní
               </button>
               <button
-                className={`filter-tab ${statusFilter === 'completed' ? 'active' : ''}`}
+                className={`c-tab ${statusFilter === 'completed' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('completed')}
-                title="Zobrazit dokončené mosty"
+                title="Zobrazit dokončené objekty"
               >
-                ✅ Dokončené
+                ✅ Hotové
               </button>
               <button
-                className={`filter-tab ${statusFilter === 'all' ? 'active' : ''}`}
+                className={`c-tab ${statusFilter === 'all' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('all')}
-                title="Zobrazit všechny mosty"
+                title="Zobrazit všechny objekty"
               >
                 📋 Vše
               </button>
@@ -194,12 +287,12 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
             {bridges.length === 0 ? (
               <div className="sidebar-empty">
-                <p>Žádné mosty.</p>
+                <p>Žádné objekty.</p>
                 <p className="text-muted">Vytvořte nový nebo nahrajte XLSX.</p>
               </div>
             ) : filteredBridges.length === 0 ? (
               <div className="sidebar-empty">
-                <p>Žádné mosty v této kategorii.</p>
+                <p>Žádné objekty v této kategorii.</p>
               </div>
             ) : (
               <div className="project-list">
@@ -213,11 +306,11 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                       <div
                         className="project-header"
                         onClick={() => toggleProject(projectName)}
-                        title={`${projectName} (${bridgeCount} mostů)`}
+                        title={`${projectName} (${bridgeCount} objektů)`}
                       >
                         <span className="project-toggle">{isExpanded ? '▼' : '▶'}</span>
                         <span className="project-icon">📁</span>
-                        <span className="project-name">{projectName}</span>
+                        <span className="project-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{projectName}</span>
                         <span className="project-count">{bridgeCount}</span>
                       </div>
 
@@ -233,9 +326,9 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                               onMouseLeave={() => setHoveredBridgeId(null)}
                               title={`${bridge.object_name || bridge.bridge_id} (${bridge.element_count} prvků)`}
                             >
-                              <div className="bridge-info">
-                                <span className="bridge-name">{bridge.object_name || bridge.bridge_id}</span>
-                                <span className="bridge-id">{bridge.bridge_id}</span>
+                              <div className="bridge-info" style={{ overflow: 'hidden' }}>
+                                <span className="bridge-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{bridge.object_name || bridge.bridge_id}</span>
+                                <span className="bridge-id" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{bridge.bridge_id}</span>
                               </div>
                               <div className="bridge-actions">
                                 <span className="bridge-badge">{bridge.element_count}</span>
@@ -252,7 +345,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                                 <button
                                   className="bridge-action-btn btn-delete"
                                   onClick={(e) => handleDeleteClick(e, bridge)}
-                                  title="Smazat most"
+                                  title="Smazat objekt"
                                   disabled={isLoading}
                                 >
                                   🗑️
@@ -294,35 +387,36 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
             )}
           </div>
 
-          <div className="sidebar-section">
-            <h3 className="sidebar-heading">
+          <div className="sidebar-section u-mt-lg">
+            <h3 className="c-section-title">
               <span>🔍</span> Filtry
             </h3>
 
-            <label className="sidebar-checkbox" title="Zobrazit pouze řádky s problémy (varovná oznámení)">
+            <label className="u-flex u-gap-sm" style={{ cursor: 'pointer', alignItems: 'center' }} title="Zobrazit pouze řádky s problémy (varovná oznámení)">
               <input
                 type="checkbox"
                 checked={showOnlyRFI}
                 onChange={(e) => setShowOnlyRFI(e.target.checked)}
+                style={{ width: '18px', height: '18px' }}
               />
-              <span className="checkbox-label">⚠️ Jen problémy</span>
+              <span style={{ color: 'var(--text-secondary)' }}>⚠️ Jen problémy</span>
             </label>
           </div>
 
-          <div className="sidebar-section">
-            <h3 className="sidebar-heading">
+          <div className="sidebar-section u-mt-lg">
+            <h3 className="c-section-title">
               <span>🔧</span> Nástroje
             </h3>
-            <div className="sidebar-tools">
+            <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap' }}>
               <button
-                className="tool-button"
+                className="c-btn c-btn--sm"
                 onClick={() => setShowHistoryModal(true)}
                 disabled={!selectedBridge}
-                title={selectedBridge ? 'Zobrazit historii snapshots' : 'Nejprve vyberte most'}
+                title={selectedBridge ? 'Zobrazit historii snapshots' : 'Nejprve vyberte objekt'}
               >
                 📊 Historie
               </button>
-              <button className="tool-button" disabled title="Připravujeme">
+              <button className="c-btn c-btn--sm" disabled title="Připravujeme">
                 ⚙️ Nastavení
               </button>
             </div>

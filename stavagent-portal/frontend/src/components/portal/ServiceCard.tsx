@@ -19,9 +19,10 @@ interface Service {
 
 interface ServiceCardProps {
   service: Service;
+  onClick?: () => void; // Optional custom click handler
 }
 
-export default function ServiceCard({ service }: ServiceCardProps) {
+export default function ServiceCard({ service, onClick }: ServiceCardProps) {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'active':
@@ -36,11 +37,22 @@ export default function ServiceCard({ service }: ServiceCardProps) {
   };
 
   const isDisabled = service.status === 'coming_soon';
+  const isInternal = service.url.startsWith('#');
 
   const handleClick = () => {
-    if (!isDisabled) {
-      window.open(service.url, '_blank', 'noopener,noreferrer');
+    if (isDisabled) return;
+
+    // Use custom onClick if provided
+    if (onClick) {
+      onClick();
+      return;
     }
+
+    // For internal links, don't open new tab
+    if (isInternal) return;
+
+    // Default: open external link
+    window.open(service.url, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -67,7 +79,7 @@ export default function ServiceCard({ service }: ServiceCardProps) {
             {getStatusBadge(service.status)}
           </div>
         </div>
-        {!isDisabled && (
+        {!isDisabled && !isInternal && (
           <ExternalLink
             size={20}
             style={{ color: 'var(--brand-orange)', flexShrink: 0 }}

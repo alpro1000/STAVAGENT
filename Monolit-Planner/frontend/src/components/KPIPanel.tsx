@@ -12,9 +12,9 @@ export default function KPIPanel() {
 
   if (!selectedBridge || !headerKPI) {
     return (
-      <div className="kpi-float-card empty-state-kpi">
-        <div className="kpi-empty-icon">📊</div>
-        <p className="kpi-empty-text">Vyberte most pro zobrazení KPI</p>
+      <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-xl)' }}>
+        <div style={{ fontSize: '48px', opacity: 0.6 }}>📊</div>
+        <p className="u-text-muted">Vyberte objekt pro zobrazení KPI</p>
       </div>
     );
   }
@@ -28,23 +28,23 @@ export default function KPIPanel() {
   const isLocked = activeSnapshot !== null;
 
   return (
-    <div className="kpi-float-card">
-      <div className="kpi-header">
-        <div className="kpi-title-section">
-          <h2 className="kpi-bridge-title">
+    <div className="c-panel" style={{ marginBottom: 'var(--space-lg)' }}>
+      <div className="u-flex-between u-mb-md" style={{ flexWrap: 'wrap', gap: 'var(--space-md)' }}>
+        <div>
+          <h2 className="u-text-orange u-text-bold" style={{ fontSize: 'var(--font-size-xl)', margin: 0 }}>
             🏗️ {selectedBridge}
           </h2>
-          <p className="kpi-metadata">
+          <p className="u-text-muted" style={{ fontSize: 'var(--font-size-sm)', marginTop: '4px' }}>
             {headerKPI.span_length_m && `Délka: ${headerKPI.span_length_m}m`}
             {headerKPI.deck_width_m && ` | Šířka: ${headerKPI.deck_width_m}m`}
             {headerKPI.pd_weeks && ` | PD: ${headerKPI.pd_weeks} týdnů`}
           </p>
         </div>
 
-        <div className="kpi-header-controls">
+        <div className="u-flex u-gap-sm" style={{ alignItems: 'center' }}>
           <DaysPerMonthToggle />
           <button
-            className={`btn-lock-kpi ${isLocked ? 'locked' : 'unlocked'}`}
+            className={`c-btn ${isLocked ? 'c-btn--success' : 'c-btn--primary'}`}
             onClick={handleCreateSnapshot}
             disabled={isCreating || isLocked}
             title={isLocked ? "Data jsou zafixována (snapshot vytvořen)" : "Zafixovat aktuální stav (vytvořit snapshot)"}

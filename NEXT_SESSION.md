@@ -68,6 +68,11 @@ timeline = await askMultiRole(...)    # 10-15s
 risks = await askMultiRole(...)       # 10-15s
 # Total: 50-75s
 ```
+Sheet 1: Souhrn
+  - Project name, export date
+  - Executive summary (wrapped text)
+  - Key findings (bullet list)
+  - Recommendations (bullet list)
 
 ### Solution: Hybrid Approach
 1. **Simplify prompts:** 5 roles → 2 comprehensive queries
@@ -332,6 +337,16 @@ async def test_summary_generation_performance():
 
     print(f"✅ Optimized generation: {optimized_duration:.1f}s")
 ```
+concrete-agent/packages/core-backend/app/services/document_accumulator.py (+150 lines)
+  - ProjectVersion dataclass
+  - _versions storage Dict[str, List[ProjectVersion]]
+  - _create_version_snapshot() method
+  - _compare_summaries() method
+  - get_project_versions() method
+  - get_version() method
+  - compare_versions() method
+  - export_to_excel() method
+  - export_summary_to_pdf() method
 
 ### Files to Create/Modify
 
@@ -432,7 +447,11 @@ pytest tests/test_summary_performance.py -v
 pytest tests/test_summary_performance.py --benchmark
 ```
 
----
+**Version Tracking:**
+- Triggered automatically in `_execute_generate_summary()`
+- No manual intervention needed
+- Versions stored in-memory (`_versions` dict)
+- **Production:** Replace with database storage
 
 ## 📝 Implementation Checklist
 
