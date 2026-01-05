@@ -91,10 +91,14 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       // Invalidate positions cache
       queryClient.invalidateQueries({ queryKey: ['positions'] });
 
-      // Background refetch (non-blocking) - don't await
-      refetchBridges().catch(err => {
-        if (import.meta.env.DEV) console.warn('[Upload] Background refetch failed:', err.message);
-      });
+      // ✅ FIX: Delay refetch to allow database to commit
+      // Don't refetch immediately - data is already in context from upload response
+      // Background refetch after 2 seconds to sync with database
+      setTimeout(() => {
+        refetchBridges().catch(err => {
+          if (import.meta.env.DEV) console.warn('[Upload] Background refetch failed:', err.message);
+        });
+      }, 2000);
 
       alert(`✅ Import úspěšný! Nalezeno ${result.bridges?.length || 0} objektů s ${totalPositions} pozicemi.`);
     } catch (error: any) {
