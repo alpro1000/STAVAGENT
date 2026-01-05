@@ -128,91 +128,24 @@ export async function workflowBStart(filePath, metadata = {}) {
 }
 
 /**
- * Multi-role Audit
- * Used for: Validating analysis from different expert perspectives
- * Roles: Architect, Foreman, Estimator
- * Returns: Validation results and suggestions
+ * REMOVED: performAudit() (2025-12-10)
+ *
+ * Multi-role audit was not used in the file upload workflow and has been removed.
+ * If Multi-Role validation is needed in the future, add it as a separate, explicit endpoint
+ * with proper opt-in mechanism to avoid unintended calls.
+ *
+ * See: ANALYSIS_FILE_UPLOAD_LOGIC.md for details
  */
-export async function performAudit(workflowId, analysisData = {}, roles = ['architect', 'foreman', 'estimator']) {
-  try {
-    console.log(`[ConcreteAgent] Performing multi-role audit for workflow: ${workflowId}`);
-
-    const response = await fetch(`${CONCRETE_AGENT_URL}/workflow-a/audit`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        workflow_id: workflowId,
-        analysis: analysisData,
-        roles: roles
-      }),
-      timeout: CONCRETE_AGENT_TIMEOUT
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Audit failed: ${response.status} ${errorText}`);
-    }
-
-    const result = await response.json();
-    console.log(`[ConcreteAgent] Audit completed successfully`);
-
-    return {
-      status: 'success',
-      audit_results: result.audit_results || {},
-      issues: result.issues || [],
-      suggestions: result.suggestions || {}
-    };
-
-  } catch (error) {
-    console.error('[ConcreteAgent] Audit Error:', error.message);
-    throw new Error(`Audit failed: ${error.message}`);
-  }
-}
 
 /**
- * AI Enrichment
- * Used for: Enriching analysis with AI insights using Claude, GPT-4, or Perplexity
- * Returns: Enhanced positions with improved descriptions, codes, classifications
+ * REMOVED: enrichWithAI() (2025-12-10)
+ *
+ * AI enrichment was not used in the file upload workflow and has been removed.
+ * If AI enrichment is needed in the future, add it as a separate, explicit endpoint
+ * with proper opt-in mechanism to avoid unintended calls.
+ *
+ * See: ANALYSIS_FILE_UPLOAD_LOGIC.md for details
  */
-export async function enrichWithAI(workflowId, analysisData = {}, provider = 'claude') {
-  try {
-    console.log(`[ConcreteAgent] Enriching analysis with ${provider} AI...`);
-
-    const response = await fetch(`${CONCRETE_AGENT_URL}/workflow-a/enrich`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        workflow_id: workflowId,
-        analysis: analysisData,
-        provider: provider
-      }),
-      timeout: CONCRETE_AGENT_TIMEOUT
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Enrichment failed: ${response.status} ${errorText}`);
-    }
-
-    const result = await response.json();
-    console.log(`[ConcreteAgent] AI enrichment completed`);
-
-    return {
-      status: 'success',
-      enriched_positions: result.enriched_positions || [],
-      ai_suggestions: result.ai_suggestions || {}
-    };
-
-  } catch (error) {
-    console.error('[ConcreteAgent] Enrichment Error:', error.message);
-    // Non-fatal error - continue without enrichment
-    return {
-      status: 'warning',
-      error: error.message,
-      enriched_positions: []
-    };
-  }
-}
 
 /**
  * Knowledge Base Search
@@ -364,8 +297,8 @@ export async function getServiceInfo() {
 export default {
   workflowAStart,
   workflowBStart,
-  performAudit,
-  enrichWithAI,
+  // performAudit removed 2025-12-10 (Multi-Role not part of file upload workflow)
+  // enrichWithAI removed 2025-12-10 (AI enrichment not part of file upload workflow)
   searchKnowledgeBase,
   calculateBridge,
   calculateBuilding,
