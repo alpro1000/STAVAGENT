@@ -343,7 +343,10 @@ router.post('/:id/send-to-core', async (req, res) => {
     const firstFile = filesResult.rows[0];
 
     console.log(`[PortalProjects] Sending project ${id} to CORE via file: ${firstFile.file_name}`);
+    console.log(`[PortalProjects] Note: Using Workflow A (document parsing only). Multi-Role audit disabled.`);
 
+    // WARNING: performAudit() and enrichWithAI() have been removed (2025-12-10)
+    // Multi-Role validation is not part of the send-to-core workflow
     const coreResult = await concreteAgent.workflowAStart(firstFile.file_path, {
       projectId: id,
       projectName: project.project_name,
