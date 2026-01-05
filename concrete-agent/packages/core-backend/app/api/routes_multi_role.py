@@ -22,10 +22,12 @@ from typing import Dict, Any, Optional, List
 from pathlib import Path
 
 from fastapi import APIRouter, HTTPException, BackgroundTasks
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
 
 from app.services.task_classifier import classify_task, TaskClassification
 from app.services.orchestrator import execute_multi_role, FinalOutput
+from app.services.orchestrator_hybrid import HybridMultiRoleOrchestrator
 from app.core.config import settings
 from app.core.kb_loader import KnowledgeBaseLoader
 
@@ -762,6 +764,122 @@ async def ask_question(request: AskRequest) -> AskResponse:
     except Exception as e:
         logger.error(f"❌ Multi-role error: {str(e)}", exc_info=True)
         raise HTTPException(500, f"Multi-role system error: {str(e)}")
+
+
+@router.post("/ask-stream")
+async def ask_stream(request: AskRequest):
+    """
+    Ask a question and get real-time progress via Server-Sent Events (SSE)
+
+    This endpoint streams progress events for the hybrid multi-role analysis:
+    - query_started: When a query begins
+    - query_completed: When a query finishes
+    - completed: Final result
+
+    Events are sent in SSE format:
+    ```
+    data: {"event": "query_started", "query": "comprehensive_analysis"}
+
+    data: {"event": "query_completed", "query": "comprehensive_analysis", "time_ms": 8500}
+
+    data: {"event": "completed", "result": {...}}
+    ```
+
+    Example usage (JavaScript):
+    ```javascript
+    const eventSource = new EventSource('/api/v1/multi-role/ask-stream');
+
+    eventSource.addEventListener('message', (e) => {
+        const data = JSON.parse(e.data);
+        console.log('Event:', data.event);
+    });
+    ```
+
+    Args:
+        request: AskRequest with question and optional context
+
+    Returns:
+        StreamingResponse with text/event-stream content type
+    """
+    try:
+        logger.info(f"📡 SSE request: {request.question[:50]}...")
+
+        # Create hybrid orchestrator
+        orchestrator = HybridMultiRoleOrchestrator()
+
+        # Prepare context (simplified for hybrid approach)
+        positions = request.context.get("positions") if request.context else None
+        specifications = request.context.get("specifications") if request.context else None
+
+        async def event_generator():
+            """Generate SSE events from orchestrator progress"""
+            try:
+                async for progress_event in orchestrator.execute_hybrid_analysis_with_progress(
+                    project_description=request.question,
+                    positions=positions,
+                    specifications=specifications
+                ):
+                    # Convert HybridFinalOutput to dict if needed
+                    if progress_event.get("event") == "completed":
+                        result = progress_event.get("result")
+                        if result and hasattr(result, '__dict__'):
+                            # Convert dataclass to dict
+                            result_dict = {
+                                "project_summary": result.project_summary,
+                                "exposure_analysis": result.exposure_analysis,
+                                "structural_analysis": result.structural_analysis,
+                                "final_specification": result.final_specification,
+                                "materials_breakdown": result.materials_breakdown,
+                                "cost_summary": result.cost_summary,
+                                "compliance_status": result.compliance_status,
+                                "standards_checked": result.standards_checked,
+                                "compliance_checks": result.compliance_checks,
+                                "risks_identified": result.risks_identified,
+                                "document_issues": result.document_issues,
+                                "rfi_items": result.rfi_items,
+                                "warnings": result.warnings,
+                                "recommendations": result.recommendations,
+                                "confidence": result.confidence,
+                                "assumptions": result.assumptions,
+                                "execution_time_seconds": result.execution_time_seconds,
+                                "performance": {
+                                    "total_time_ms": result.performance.total_time_ms,
+                                    "query_times": result.performance.query_times,
+                                    "parallel_efficiency": result.performance.parallel_efficiency,
+                                    "tokens_total": result.performance.tokens_total,
+                                    "queries_successful": result.performance.queries_successful,
+                                    "queries_failed": result.performance.queries_failed
+                                }
+                            }
+                            progress_event["result"] = result_dict
+
+                    # Send SSE event
+                    event_data = json.dumps(progress_event)
+                    yield f"data: {event_data}\n\n"
+
+            except Exception as e:
+                # Send error event
+                error_event = {
+                    "event": "error",
+                    "message": str(e),
+                    "timestamp": datetime.now(timezone.utc).isoformat()
+                }
+                yield f"data: {json.dumps(error_event)}\n\n"
+                logger.error(f"❌ SSE stream error: {e}", exc_info=True)
+
+        return StreamingResponse(
+            event_generator(),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                "X-Accel-Buffering": "no"  # Disable nginx buffering
+            }
+        )
+
+    except Exception as e:
+        logger.error(f"❌ SSE endpoint error: {str(e)}", exc_info=True)
+        raise HTTPException(500, f"SSE stream error: {str(e)}")
 
 
 @router.post("/feedback", response_model=FeedbackResponse)
