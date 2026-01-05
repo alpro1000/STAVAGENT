@@ -122,7 +122,7 @@ export default function DocumentUploadPage() {
       const response = await fetch('/api/documents/upload', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         },
         body: formData
       });
@@ -172,7 +172,7 @@ export default function DocumentUploadPage() {
       try {
         const response = await fetch(`/api/documents/${documentId}`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
           }
         });
 
@@ -223,7 +223,7 @@ export default function DocumentUploadPage() {
       const response = await fetch(`/api/documents/${currentDocument.id}/confirm`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -267,7 +267,7 @@ export default function DocumentUploadPage() {
       const response = await fetch(`/api/documents/${currentDocument.id}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         }
       });
 
