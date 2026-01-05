@@ -87,7 +87,7 @@ services:
         value: 3.11.9
     
     healthCheckPath: /
-    # Auto-deploy only when concrete-agent files change
-    autoDeploy: false
+    # Auto-deploy when concrete-agent files change
+    autoDeploy: true
 
 # NOTE: Frontend is in stavagent-portal/ with its own render.yaml
