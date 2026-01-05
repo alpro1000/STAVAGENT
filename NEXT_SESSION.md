@@ -1,186 +1,72 @@
-# Next Session Tasks
+# NEXT SESSION: Implementation Phase
 
-**Last Updated:** 2025-12-28
-**Current Branch:** `claude/optimize-multi-role-audit-84a4u`
-**Status:** ⚠️ **REQUIRES DEPLOYMENT** - Backend not deployed with Workflow C
+**Date:** 2025-12-28+
+**Branch:** `claude/update-documentation-logo-fixes-gHv9C` (or new feature branch)
+**Status:** Ready to Start Implementation
 
 ---
 
-## ⚠️ CRITICAL: Backend Deployment Required
+## 📋 COMMAND FOR NEXT SESSION
 
-### Issue Discovered
-
-The "Audit projektu" (Workflow C) feature is returning **404 Not Found** because:
-- ✅ Code is complete and committed (commits `8f6c67d`, `16dbd08`)
-- ✅ Routes are correctly configured (`/api/v1/workflow/c/*`)
-- ❌ **Backend NOT deployed** - `autoDeploy: false` in `render.yaml`
-
-### Fix Applied (Commit `f5f70de`)
-
-Updated `concrete-agent/render.yaml`:
-```yaml
-services:
-  - type: web
-    name: concrete-agent
-    rootDir: concrete-agent/packages/core-backend  # ← ADDED
 ```
+Начинаем фазу реализации после завершения анализа.
 
-### 🚀 Deployment Instructions
+Приоритет 1 (НАЧАТЬ С ЭТОГО): Multi-Role Performance Optimization
+- Цель: Ускорить генерацию Project Summary с 50-75 секунд до 15-20 секунд (3-4x)
+- Метод: Параллельное выполнение + упрощение промптов (5 ролей → 2 комплексных)
+- Файлы: concrete-agent/packages/core-backend/app/services/multi_role.py
+- Время: 3.5 дня
+- Детали: См. URS_MATCHER_SERVICE/MULTI_ROLE_OPTIMIZATION.md
 
-**Option 1: Manual Deploy via Render Dashboard**
-1. Go to https://dashboard.render.com
-2. Select service: **concrete-agent**
-3. Click **"Manual Deploy"** → **"Deploy latest commit"**
-4. Wait 3-5 minutes for deployment
-5. Test: `curl https://concrete-agent.onrender.com/api/v1/workflow/c/health`
+Сначала реализуй Multi-Role оптимизацию, потому что:
+1. Самый быстрый результат (3.5 дня vs 6-7 дней для Workflow C)
+2. Немедленное улучшение производительности для пользователей
+3. Подготовит backend для Workflow C и Summary Module
+4. Низкий риск - изолированное изменение в одном сервисе
 
-**Option 2: Enable Auto-Deploy (Future)**
-1. Edit `concrete-agent/render.yaml`
-2. Change `autoDeploy: false` → `autoDeploy: true`
-3. Commit and push
-4. Future pushes will auto-deploy
-
-### Testing After Deployment
-
-```bash
-# 1. Check health endpoint
-curl https://concrete-agent.onrender.com/api/v1/workflow/c/health
-
-# Expected response:
-{
-  "status": "healthy",
-  "system": "workflow-c",
-  "version": "1.0.0",
-  "features": {
-    "parallel_execution": true,
-    "summary_generation": true,
-    "file_upload": true
-  }
-}
-
-# 2. Test Audit projektu in Portal
-# → Upload Excel file
-# → Should complete without 404 error
-# → Show GREEN/AMBER/RED classification
+После завершения оптимизации спроси что делать дальше:
+- Summary Module (7 дней) - можно сделать независимо
+- Workflow C Backend (6-7 дней) - требует интеграции всех парсеров
 ```
 
 ---
 
-## 🎉 What We Accomplished This Session (2025-12-28)
+## 🎯 Current Context (Session 2025-12-28)
 
-### Session Overview
+### Completed Analysis (5 documents, 3846 lines)
 
-| Task | Status | Commit | Lines Added |
-|------|--------|--------|-------------|
-| Version Tracking & Snapshots | ✅ Complete | `5ef2c2e` | +400 |
-| Version Comparison | ✅ Complete | `5ef2c2e` | +200 |
-| Excel Export | ✅ Complete | `5ef2c2e` | +180 |
-| PDF Export | ✅ Complete | `5ef2c2e` | +150 |
-| Portal UI Enhancement | ✅ Complete | `5ef2c2e` | +200 |
-| Fix Workflow C Deployment | ✅ Complete | `f5f70de` | +1 |
-| **TOTAL** | **3 commits** | | **~1131 lines** |
+| Document | Purpose | Commit | Status |
+|----------|---------|--------|--------|
+| `DOCUMENT_PARSING_ANALYSIS.md` | Gap analysis - current vs expected | `135a03e` | ✅ |
+| `PARSERS_INVENTORY.md` | 7 CORE parsers inventory + usage matrix | `94e5f8e` | ✅ |
+| `WORKFLOW_C_COMPLETE.md` | Workflow C spec with Project Summary | `3133481` | ✅ |
+| `SUMMARY_MODULE_SPEC.md` | Summary module architecture | `f7668ee` | ✅ |
+| `MULTI_ROLE_OPTIMIZATION.md` | Performance optimization analysis | `c1fc81b` | ✅ |
+
+**Location:** `URS_MATCHER_SERVICE/` directory
+
+### Ready for Implementation (3 features)
+
+1. **Multi-Role Optimization** - 3.5 days ⭐ START HERE
+2. **Summary Module** - 7 days
+3. **Workflow C Backend** - 6-7 days
 
 ---
 
-### ✅ Document Accumulator Enhancements (Commit: `5ef2c2e`)
+## 🚀 PRIORITY 1: Multi-Role Optimization (3.5 days)
 
-**Goal:** Add version tracking, comparison, and export functionality to Document Accumulator
+### Goal
+Reduce Project Summary generation time from 50-75s to 15-20s (3-4x speedup)
 
-**Implemented Features:**
-
-#### 1. Version Tracking & Snapshots
-
-**What it does:**
-- Auto-creates snapshot (ProjectVersion) every time a summary is generated
-- Stores complete project state: summary, positions count, files count, file hashes
-- Maintains version history with timestamps
-- Each version gets auto-incrementing version number (v1, v2, v3...)
-
-**Implementation:**
+### Current Problem
 ```python
-# New dataclass
-@dataclass
-class ProjectVersion:
-    version_id: str
-    version_number: int  # Auto-incrementing
-    created_at: datetime
-    summary: Dict[str, Any]  # Full summary snapshot
-    positions_count: int
-    files_count: int
-    file_versions: Dict[str, str]  # file_id -> hash
-    metadata: Dict[str, Any]
-```
-
-**Workflow:**
-```
-User clicks "Generovat souhrn"
-  ↓
-Summary Generator runs (Multi-Role AI)
-  ↓
-Summary saved to cache.last_summary
-  ↓
-_create_version_snapshot() called
-  ↓
-ProjectVersion created with current state
-  ↓
-Version appended to _versions[project_id]
-  ↓
-User can now compare versions!
-```
-
----
-
-#### 2. Version Comparison
-
-**What it does:**
-- Compare any two versions side-by-side
-- Show detailed diff: files added/removed/modified
-- Track positions delta, cost delta, risk changes
-- Highlight changes in key findings and recommendations
-
-**Comparison Output:**
-```json
-{
-  "from_version": {
-    "version_number": 1,
-    "positions_count": 120,
-    "files_count": 5
-  },
-  "to_version": {
-    "version_number": 2,
-    "positions_count": 135,
-    "files_count": 7
-  },
-  "files_added": ["file_6.xlsx", "file_7.pdf"],
-  "files_removed": [],
-  "files_modified": ["file_1.xlsx"],
-  "positions_delta": +15,
-  "cost_delta": +250000,
-  "risk_change": "MEDIUM → HIGH",
-  "summary_comparison": {
-    "key_findings_delta": {
-      "added": ["New risk: missing geological report"],
-      "removed": []
-    },
-    "recommendations_delta": {
-      "added": ["Request geological survey"],
-      "removed": []
-    }
-  }
-}
-```
-
----
-
-#### 3. Excel Export
-
-**What it does:**
-- Export all project data to Excel (.xlsx)
-- Two sheets: Summary + Positions
-- Professional formatting with colors and borders
-- Source file tracking for each position
-
-**Excel Structure:**
+# Sequential execution (SLOW)
+validation = await askMultiRole(...)  # 10-15s
+materials = await askMultiRole(...)   # 10-15s
+cost = await askMultiRole(...)        # 10-15s
+timeline = await askMultiRole(...)    # 10-15s
+risks = await askMultiRole(...)       # 10-15s
+# Total: 50-75s
 ```
 Sheet 1: Souhrn
   - Project name, export date
@@ -188,124 +74,268 @@ Sheet 1: Souhrn
   - Key findings (bullet list)
   - Recommendations (bullet list)
 
-Sheet 2: Pozice
-  - Headers with orange background
-  - Columns: #, Název, Množství, Jednotka, Cena/MJ, Celkem, Zdrojový soubor
-  - Auto-width columns
-  - All positions with source file tracking
+### Solution: Hybrid Approach
+1. **Simplify prompts:** 5 roles → 2 comprehensive queries
+2. **Parallel execution:** Run both queries simultaneously with `asyncio.gather()`
+3. **Streaming updates:** Show progress to user via Server-Sent Events
+
+### Implementation Plan
+
+#### Day 1: Analysis & Refactoring (8 hours)
+**Location:** `concrete-agent/packages/core-backend/`
+
+**Tasks:**
+1. Create dependency graph of current Multi-Role queries
+2. Identify which queries can run in parallel
+3. Design 2 comprehensive prompts to replace 5 separate queries
+4. Write tests for new prompts
+
+**Files to modify:**
+```
+app/services/multi_role.py
+app/api/routes_multi_role.py
 ```
 
-**Dependencies:** `openpyxl`
+**Code example:**
+```python
+# New comprehensive prompts
 
----
+COMPREHENSIVE_ANALYSIS_PROMPT = """
+Проанализируй проект {project_type} на основе документов:
 
-#### 4. PDF Export
+1. МАТЕРИАЛЫ И ОБЪЁМЫ:
+   - Какие материалы нужны? (бетон, арматура, опалубка)
+   - Сколько каждого материала? (в стандартных единицах)
+   - Какие классы/марки? (C30/37, B500B, и т.д.)
 
-**What it does:**
-- Export project summary to PDF
-- Can export current summary OR specific version
-- Professional formatting with reportlab
-- Color-coded risk assessment (green/orange/red)
+2. СТОИМОСТЬ:
+   - Общая стоимость проекта
+   - Разбивка по категориям (материалы, работа, техника)
+   - Стоимость за м³ бетона
 
-**PDF Structure:**
-```
-Page 1:
-  - Title: "SOUHRN PROJEKTU" (orange)
-  - Project info table (name, date, version, positions count)
-  - Executive Summary paragraph
-  - Key Findings (bullet list)
-  - Recommendations (bullet list)
-  - Risk Assessment (color-coded: LOW=green, MEDIUM=orange, HIGH=red)
-  - Cost Analysis table (total, labor, material)
-```
+3. СРОКИ:
+   - Общая длительность (месяцы)
+   - Основные вехи и фазы
+   - Критический путь
 
-**Dependencies:** `reportlab`
+Используй базу знаний (KROS, RTS, ČSN нормы).
+Отвечай структурированно в JSON формате.
+"""
 
----
+RISKS_ANALYSIS_PROMPT = """
+Проанализируй риски и допущения для проекта {project_type}:
 
-#### 5. API Endpoints
+1. ТЕХНИЧЕСКИЕ РИСКИ:
+   - Сложности конструкции
+   - Требования к качеству
+   - Критичные параметры
 
-**New endpoints added to routes_accumulator.py:**
+2. ОРГАНИЗАЦИОННЫЕ РИСКИ:
+   - Доступность материалов
+   - Квалификация персонала
+   - Погодные условия
 
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/projects/{id}/versions` | GET | List all versions (newest first) |
-| `/projects/{id}/versions/{version_id}` | GET | Get specific version details |
-| `/projects/{id}/compare?from=X&to=Y` | GET | Compare two versions |
-| `/projects/{id}/export/excel` | GET | Export to Excel (download) |
-| `/projects/{id}/export/pdf` | GET | Export summary to PDF (download) |
-| `/projects/{id}/export/pdf?version_id=X` | GET | Export specific version to PDF |
+3. ДОПУЩЕНИЯ:
+   - Что предполагается о проекте?
+   - Какие данные отсутствуют?
+   - Рекомендации по уточнению
 
-**Example Usage:**
-```bash
-# List versions
-curl https://concrete-agent.onrender.com/api/v1/accumulator/projects/proj-123/versions
-
-# Compare versions
-curl "https://concrete-agent.onrender.com/api/v1/accumulator/projects/proj-123/compare?from_version=v1-id&to_version=v2-id"
-
-# Export to Excel
-curl "https://concrete-agent.onrender.com/api/v1/accumulator/projects/proj-123/export/excel?project_name=My%20Project" --output export.xlsx
-
-# Export to PDF
-curl "https://concrete-agent.onrender.com/api/v1/accumulator/projects/proj-123/export/pdf?project_name=My%20Project" --output summary.pdf
+Отвечай в JSON формате.
+"""
 ```
 
----
+#### Day 2: Parallel Execution Implementation (8 hours)
 
-#### 6. Portal UI Enhancements
+**Tasks:**
+1. Implement `asyncio.gather()` for parallel queries
+2. Add error handling for partial failures
+3. Add timeout management per query
+4. Write unit tests
 
-**New UI Sections in ProjectDocuments.tsx:**
+**New function:**
+```python
+async def generate_project_summary_optimized(
+    project_type: str,
+    tz_content: Dict,
+    specs: List[Dict],
+    drawings: Dict,
+    ai_client: MultiRoleClient
+) -> ProjectSummary:
+    """
+    Optimized summary generation with parallel execution
 
-**A. Export Section**
-- Buttons: "Excel (.xlsx)", "PDF (Souhrn)"
-- Only shown when positions_count > 0
-- Click → Download starts automatically
+    Speedup: 3-4x (50-75s → 15-20s)
+    """
 
-**B. Version History Section**
-- Show/Hide toggle button
-- Table with columns: Verze, Datum, Pozice, Soubory, Akce
-- Each row has "PDF" download button for that version
-- Professional table styling with borders
+    # Build context from documents
+    context = {
+        "project_type": project_type,
+        "tz_content": tz_content,
+        "specs": specs,
+        "drawings": drawings
+    }
 
-**C. Version Comparison UI**
-- Two dropdowns: select "from" and "to" versions
-- "Porovnat" button to trigger comparison
-- Results panel showing:
-  - Positions delta (green/red)
-  - Risk change
-  - Files added (green checkmark)
-  - Files removed (red X)
-  - Files modified (orange arrow)
-  - New findings (green "+")
-  - New recommendations (green "+")
+    # Execute 2 comprehensive queries IN PARALLEL
+    try:
+        main_result, risks_result = await asyncio.gather(
+            ai_client.askMultiRole(
+                question=COMPREHENSIVE_ANALYSIS_PROMPT.format(
+                    project_type=project_type
+                ),
+                context={
+                    **context,
+                    "enable_kb": True,
+                    "timeout": 30
+                }
+            ),
+            ai_client.askMultiRole(
+                question=RISKS_ANALYSIS_PROMPT.format(
+                    project_type=project_type
+                ),
+                context={
+                    **context,
+                    "role_preference": "project_manager",
+                    "timeout": 30
+                }
+            )
+        )
+        # ⏱️ Total time: 15-20s (parallel execution)
 
-**User Flow:**
+    except Exception as e:
+        logger.error(f"Multi-Role parallel execution failed: {e}")
+        # Fallback to sequential if parallel fails
+        main_result = await ai_client.askMultiRole(...)
+        risks_result = await ai_client.askMultiRole(...)
+
+    # Assemble summary from results
+    summary = assemble_summary(main_result, risks_result)
+
+    return summary
+
+
+def assemble_summary(main_result: Dict, risks_result: Dict) -> ProjectSummary:
+    """Combine results into ProjectSummary object"""
+    return ProjectSummary(
+        client_requirements=main_result.get("requirements", {}),
+        materials=main_result.get("materials", []),
+        cost_estimate=main_result.get("cost", {}),
+        timeline=main_result.get("timeline", {}),
+        risks_assumptions=risks_result.get("risks", [])
+    )
 ```
-1. User generates summary → Version v1 created
-2. User adds more files → Parses them
-3. User generates summary again → Version v2 created
-4. User clicks "Historie verzí" → Table shows v1, v2
-5. User selects v1 and v2 → Clicks "Porovnat"
-6. UI shows diff: +15 positions, 2 files added, 1 file modified
-7. User clicks "Excel (.xlsx)" → Downloads full export
-8. User clicks PDF button on v2 row → Downloads v2 summary as PDF
+
+#### Day 3: Streaming Updates (SSE) (6 hours)
+
+**Tasks:**
+1. Implement Server-Sent Events endpoint
+2. Add progress tracking for each query
+3. Update frontend to show real-time progress
+4. Test streaming in browser
+
+**Backend (FastAPI SSE):**
+```python
+from fastapi.responses import StreamingResponse
+import asyncio
+
+@router.post("/api/v1/summaries/generate/stream")
+async def generate_summary_stream(request: SummaryRequest):
+    """
+    Stream progress updates while generating summary
+    """
+    async def event_generator():
+        try:
+            # Send progress: Starting
+            yield f"data: {json.dumps({'status': 'starting', 'progress': 0})}\n\n"
+            await asyncio.sleep(0.1)
+
+            # Send progress: Analyzing
+            yield f"data: {json.dumps({'status': 'analyzing', 'progress': 30})}\n\n"
+
+            # Execute parallel queries
+            main_result, risks_result = await asyncio.gather(
+                ai_client.askMultiRole(...),
+                ai_client.askMultiRole(...)
+            )
+
+            # Send progress: Assembling
+            yield f"data: {json.dumps({'status': 'assembling', 'progress': 80})}\n\n"
+
+            # Assemble summary
+            summary = assemble_summary(main_result, risks_result)
+
+            # Send final result
+            yield f"data: {json.dumps({'status': 'complete', 'progress': 100, 'summary': summary.dict()})}\n\n"
+
+        except Exception as e:
+            yield f"data: {json.dumps({'status': 'error', 'message': str(e)})}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
 ```
 
----
+**Frontend (EventSource):**
+```javascript
+const eventSource = new EventSource('/api/v1/summaries/generate/stream');
 
-## 📊 Technical Details
+eventSource.onmessage = (event) => {
+  const data = JSON.parse(event.data);
 
-**Files Created (1 new file):**
+  if (data.status === 'starting') {
+    updateProgress(0, 'Начинаем анализ...');
+  } else if (data.status === 'analyzing') {
+    updateProgress(30, 'Анализируем документы...');
+  } else if (data.status === 'assembling') {
+    updateProgress(80, 'Формируем резюме...');
+  } else if (data.status === 'complete') {
+    updateProgress(100, 'Готово!');
+    displaySummary(data.summary);
+    eventSource.close();
+  } else if (data.status === 'error') {
+    showError(data.message);
+    eventSource.close();
+  }
+};
 ```
-concrete-agent/packages/core-backend/app/services/export_service.py (330 lines)
-  - ExportService class
-  - export_to_excel() method
-  - export_summary_to_pdf() method
-  - Singleton pattern: get_export_service()
-```
 
-**Files Modified (3 files):**
+#### Day 3.5: Testing & Documentation (4 hours)
+
+**Tasks:**
+1. Write integration tests
+2. Benchmark performance (before/after)
+3. Update API documentation
+4. Create migration guide
+
+**Performance Test:**
+```python
+import pytest
+import time
+
+@pytest.mark.asyncio
+async def test_summary_generation_performance():
+    """Test that optimized summary generation is 3x faster"""
+
+    # Prepare test data
+    project_type = "bridge_overpass"
+    tz_content = load_test_tz()
+    specs = load_test_specs()
+    drawings = load_test_drawings()
+
+    # Measure optimized version
+    start = time.time()
+    summary = await generate_project_summary_optimized(
+        project_type, tz_content, specs, drawings, ai_client
+    )
+    optimized_duration = time.time() - start
+
+    # Verify performance
+    assert optimized_duration < 25, f"Optimized version too slow: {optimized_duration}s"
+
+    # Verify completeness
+    assert summary.materials is not None
+    assert summary.cost_estimate is not None
+    assert summary.timeline is not None
+    assert summary.risks_assumptions is not None
+
+    print(f"✅ Optimized generation: {optimized_duration:.1f}s")
 ```
 concrete-agent/packages/core-backend/app/services/document_accumulator.py (+150 lines)
   - ProjectVersion dataclass
@@ -318,85 +348,104 @@ concrete-agent/packages/core-backend/app/services/document_accumulator.py (+150 
   - export_to_excel() method
   - export_summary_to_pdf() method
 
-concrete-agent/packages/core-backend/app/api/routes_accumulator.py (+154 lines)
-  - GET /projects/{id}/versions
-  - GET /projects/{id}/versions/{version_id}
-  - GET /projects/{id}/compare
-  - GET /projects/{id}/export/excel (StreamingResponse)
-  - GET /projects/{id}/export/pdf (StreamingResponse)
+### Files to Create/Modify
 
-stavagent-portal/frontend/src/components/portal/ProjectDocuments.tsx (+200 lines)
-  - ProjectVersion, VersionComparison interfaces
-  - States: versions, showVersions, showComparison, fromVersion, toVersion, comparison
-  - loadVersions() function
-  - handleCompareVersions() function
-  - handleExportExcel() function
-  - handleExportPDF(versionId?) function
-  - Export Section UI (2 buttons)
-  - Version History Section UI (table + comparison)
-  - Comparison Results UI (diff panel)
+**Create:**
+```
+concrete-agent/packages/core-backend/app/services/summary_generator_optimized.py
+concrete-agent/packages/core-backend/tests/test_summary_performance.py
 ```
 
-**Total Lines Added:** ~1047
+**Modify:**
+```
+concrete-agent/packages/core-backend/app/api/routes_multi_role.py
+concrete-agent/packages/core-backend/app/services/multi_role.py
+```
+
+### Success Criteria
+- ✅ Summary generation time < 25 seconds
+- ✅ All tests passing
+- ✅ Streaming progress updates working
+- ✅ Fallback to sequential execution on error
+- ✅ Documentation updated
 
 ---
 
-## 🚀 Use Cases
+## 📦 PRIORITY 2: Summary Module (7 days)
 
-### Use Case 1: Project Evolution Tracking
-```
-Client sends revision 1 of project → v1 (120 positions, MEDIUM risk)
-Client sends revision 2 with changes → v2 (135 positions, HIGH risk)
-Project manager compares v1 → v2:
-  - Sees +15 positions (+12.5%)
-  - Risk increased MEDIUM → HIGH
-  - New finding: "Missing geological report"
-  - Cost increased by +250,000 CZK
-Decision: Request geological survey before proceeding
-```
+**Status:** Postponed until Priority 1 complete
 
-### Use Case 2: Compliance Audit Trail
-```
-Auditor asks: "What changed between March and April versions?"
-User selects v3 (March) and v5 (April)
-Comparison shows:
-  - 3 files added (new structural drawings)
-  - 2 files modified (updated BOQ)
-  - 8 new positions
-  - New recommendation: "Increase concrete strength from C30/37 to C35/45"
-Auditor exports v5 PDF for documentation
-```
+**See:** `URS_MATCHER_SERVICE/SUMMARY_MODULE_SPEC.md` for full specification
 
-### Use Case 3: Client Reporting
-```
-Client meeting scheduled
-User clicks "Excel (.xlsx)" → Gets full export with:
-  - Summary sheet: Project overview, findings, recommendations
-  - Positions sheet: All 135 positions with source file tracking
-User presents Excel in meeting
-Client requests PDF summary for board
-User clicks "PDF (Souhrn)" → Exports professional PDF report
-```
+**Quick summary:**
+- Database table `project_summaries`
+- API endpoints for generate, get, update, approve, export
+- React modal with 5 tabs (Overview, Materials, Cost, Timeline, Risks)
+- Export in PDF, Excel, JSON formats
 
 ---
 
-## ⚠️ Dependencies
+## 🔄 PRIORITY 3: Workflow C Backend (6-7 days)
 
-**Python packages required (add to requirements.txt):**
-```txt
-openpyxl>=3.1.0  # Excel export
-reportlab>=4.0.0  # PDF export
-```
+**Status:** Postponed until Priority 1 & 2 complete
 
-**Install:**
+**See:** `URS_MATCHER_SERVICE/WORKFLOW_C_COMPLETE.md` for full specification
+
+**Quick summary:**
+- Document upload & parsing with all 7 parsers (including MinerU)
+- Project essence analysis
+- Work Breakdown Structure (WBS) generation
+- Integration with URS Matcher for code matching
+
+---
+
+## 📊 Progress Tracking
+
+### Analysis Phase (COMPLETED ✅)
+- [x] Document Parsing Analysis (484 lines) - `135a03e`
+- [x] Parsers Inventory (838 lines) - `94e5f8e`
+- [x] Workflow C Specification (1018 lines) - `3133481`
+- [x] Summary Module Architecture (933 lines) - `f7668ee`
+- [x] Multi-Role Optimization Analysis (573 lines) - `c1fc81b`
+
+### Implementation Phase (PENDING)
+- [ ] Multi-Role Optimization (3.5 days) ⭐ NEXT
+- [ ] Summary Module (7 days)
+- [ ] Workflow C Backend (6-7 days)
+
+**Total Implementation Time:** ~17 days (2-3 weeks)
+
+---
+
+## 🔧 Environment Setup
+
+**Branch:**
 ```bash
-cd concrete-agent/packages/core-backend
-pip install openpyxl reportlab
+git checkout claude/update-documentation-logo-fixes-gHv9C
+# OR create new feature branch:
+git checkout -b claude/implement-multi-role-optimization-<SESSION_ID>
 ```
 
----
+**Services to run:**
+```bash
+# concrete-agent CORE
+cd concrete-agent
+npm run dev:backend  # Port 8000
 
-## 🔗 Integration Points
+# URS Matcher (for testing)
+cd URS_MATCHER_SERVICE
+npm run dev  # Port 3001
+```
+
+**Testing:**
+```bash
+# Run tests
+cd concrete-agent/packages/core-backend
+pytest tests/test_summary_performance.py -v
+
+# Benchmark
+pytest tests/test_summary_performance.py --benchmark
+```
 
 **Version Tracking:**
 - Triggered automatically in `_execute_generate_summary()`
@@ -404,142 +453,100 @@ pip install openpyxl reportlab
 - Versions stored in-memory (`_versions` dict)
 - **Production:** Replace with database storage
 
-**Export Service:**
-- Lazy-loaded via `get_export_service()`
-- Uses DocumentAccumulator data (cache.aggregated_positions)
-- Returns bytes (Excel/PDF)
-- FastAPI StreamingResponse for file download
+## 📝 Implementation Checklist
+
+### Phase 1: Multi-Role Optimization (Day 1-3.5)
+- [ ] Day 1: Analyze dependencies, design 2 comprehensive prompts
+- [ ] Day 2: Implement parallel execution with asyncio.gather()
+- [ ] Day 3: Add streaming progress updates (SSE)
+- [ ] Day 3.5: Write tests, benchmark performance, update docs
+
+### Phase 2: Summary Module (Day 4-10)
+- [ ] Create database table `project_summaries`
+- [ ] Implement backend API (generate, get, update, approve, export)
+- [ ] Build frontend SummaryModal with 5 tabs
+- [ ] Implement export service (PDF, Excel, JSON)
+- [ ] Add version control
+- [ ] Write tests
+
+### Phase 3: Workflow C Backend (Day 11-17)
+- [ ] Create `/workflow/c/import` endpoint
+- [ ] Implement parser selection logic
+- [ ] Integrate MinerU for PDF parsing
+- [ ] Create WBS generator
+- [ ] Add database tables for WBS
+- [ ] Write tests
 
 ---
 
-## 🚨 PRIORITY: Testing Required (Next Session)
+## 🎯 Quick Start Command
 
-### ⚠️ CRITICAL: Test Deployed Features
-
-**Backend deployed successfully but requires user testing:**
-
-#### 1. Test Workflow C (Audit projektu) - 15 minutes
 ```bash
-# 1. Open Portal UI
-https://stav-agent.onrender.com
+# 1. Checkout branch
+git checkout claude/update-documentation-logo-fixes-gHv9C
 
-# 2. Click "🔍 Audit projektu"
-# 3. Upload Excel file with výkaz výměr
-# 4. Wait for progress bar (15-30 seconds)
-# 5. Verify result: GREEN/AMBER/RED classification
+# 2. Read optimization spec
+cat URS_MATCHER_SERVICE/MULTI_ROLE_OPTIMIZATION.md
 
-# Expected behavior:
-✅ No 404 error
-✅ Progress bar shows stages (parsing → validating → enriching → auditing)
-✅ Result displays classification + critical issues + warnings
-✅ Summary shows key findings + recommendations
+# 3. Read session summary
+cat URS_MATCHER_SERVICE/SESSION_2025-12-28.md
+
+# 4. Start with Day 1 tasks:
+#    - Analyze current Multi-Role code
+#    - Design 2 comprehensive prompts
+#    - Identify parallel execution opportunities
+
+# 5. Files to focus on:
+#    - concrete-agent/packages/core-backend/app/services/multi_role.py
+#    - concrete-agent/packages/core-backend/app/api/routes_multi_role.py
 ```
 
-#### 2. Test Document Accumulator Features - 30 minutes
-```bash
-# Test version tracking:
-1. Open "📁 Akumulace dokumentů"
-2. Upload 2-3 files
-3. Click "Generovat souhrn" → v1 created
-4. Upload 1 more file
-5. Click "Generovat souhrn" → v2 created
-6. Verify "Historie verzí" table shows v1, v2
+---
 
-# Test version comparison:
-1. Select v1 and v2 from dropdowns
-2. Click "Porovnat"
-3. Verify diff shows:
-   - Files added/removed/modified
-   - Positions delta
-   - Risk change
-   - Summary changes
+## 📊 Session Summary (2025-12-28)
 
-# Test Excel export:
-1. Click "📊 Exportovat do Excel"
-2. Download file
-3. Open in Excel
-4. Verify 2 sheets: "Souhrn" + "Pozice"
+| Task | Time Spent | Status | Files |
+|------|------------|--------|-------|
+| Document Parsing Analysis | 45 min | ✅ Complete | DOCUMENT_PARSING_ANALYSIS.md |
+| Parsers Inventory | 1.5 hours | ✅ Complete | PARSERS_INVENTORY.md |
+| Workflow C Specification | 1.5 hours | ✅ Complete | WORKFLOW_C_COMPLETE.md |
+| Summary Module Architecture | 1.5 hours | ✅ Complete | SUMMARY_MODULE_SPEC.md |
+| Multi-Role Optimization Analysis | 1 hour | ✅ Complete | MULTI_ROLE_OPTIMIZATION.md |
+| **TOTAL** | **~6 hours** | **All Complete** | **5 documents, 3846 lines** |
 
-# Test PDF export:
-1. Click "📄 Exportovat do PDF"
-2. Download file
-3. Open in PDF viewer
-4. Verify color-coded risk assessment
+**Commits:**
+```
+c1fc81b - PERF: Multi-Role optimization analysis - parallel execution strategy
+f7668ee - SPEC: Project Summary as Separate Module with Export
+3133481 - WORKFLOW C: Complete specification with Project Summary
+94e5f8e - INVENTORY: Complete parsers analysis + Workflow C strategy
+135a03e - ANALYSIS: Document parsing logic review for URS Matcher
 ```
 
-#### 3. Report Bugs if Found
-- Screenshot error messages
-- Check browser console (F12 → Console tab)
-- Note exact steps to reproduce
-- Check network tab for API errors
+---
+
+## 🔍 Key Findings
+
+### 1. Document Parsing Gap
+**Problem:** URS Matcher doesn't parse documents or analyze project essence
+
+**Solution:** Workflow C with comprehensive document analysis using all 7 parsers
+
+### 2. Parser Underutilization
+**Problem:** MinerU installed but not used, parsers not fully leveraged
+
+**Solution:** Parser selection matrix based on file type, size, content
+
+### 3. Multi-Role Performance Bottleneck
+**Problem:** Sequential execution takes 50-75 seconds
+
+**Solution:** Parallel execution + simplified prompts = 15-20 seconds (3-4x speedup)
 
 ---
 
-## 🟢 Future Enhancement Options
+**Ready to start:** Multi-Role Optimization (Priority 1)
+**Estimated time:** 3.5 days
+**Expected result:** 3-4x speedup (50-75s → 15-20s)
 
-### OPTION A: Database Migration for Versions (3 hours)
-- Replace in-memory `_versions` with PostgreSQL table
-- Create `project_versions` table schema
-- Add CRUD operations for versions
-- Migrate comparison logic to work with DB
-- Add pagination for version list (if > 50 versions)
-
-### OPTION B: Enhanced Comparison Features (2 hours)
-- Add visual diff for executive summary (highlight changed sentences)
-- Add percentage changes (positions: +12.5%, cost: +14.6%)
-- Add trend analysis (last 3 versions)
-- Export comparison results to PDF
-
-### OPTION C: Google Drive / SharePoint Integration (4 hours)
-- Implement Google Drive API for folder linking
-- Implement SharePoint API for enterprise users
-- Auto-sync on file changes (watch mode)
-- Background polling for cloud storage
-
-### OPTION D: Portal UI/UX Improvements (2 hours)
-- Add loading skeletons for better perceived performance
-- Improve error messages (user-friendly Czech text)
-- Add keyboard shortcuts (Ctrl+S to save, etc.)
-- Mobile responsive design improvements
-
----
-
-## 📈 Session Statistics
-
-**Date:** 2025-12-29
-**Duration:** ~1.5 hours (continued from previous session)
-**Branch:** `claude/optimize-multi-role-audit-84a4u`
-**Commits:** 4 total (1 feature + 1 fix + 2 docs)
-  - `5ef2c2e` - Document Accumulator enhancements
-  - `f5f70de` - Workflow C deployment fix
-  - `153fc3f` - Deployment instructions
-  - `73dc90e` - CLAUDE.md update
-**Files Changed:** 5 (1 new, 4 modified)
-**Lines Added:** ~1131
-**Features Implemented:**
-  - Version Tracking (auto-snapshots)
-  - Version Comparison (detailed diff)
-  - Excel Export (openpyxl)
-  - PDF Export (reportlab)
-  - Deployment Fix (render.yaml rootDir)
-
----
-
-## ✅ Testing Checklist (for next session)
-
-- [ ] Test version snapshot creation after summary generation
-- [ ] Test version history display in Portal UI
-- [ ] Test version comparison (select v1 and v2, verify diff)
-- [ ] Test Excel export (download and open in Excel)
-- [ ] Test PDF export (download and open in PDF reader)
-- [ ] Test export of specific version (select v2, download PDF)
-- [ ] Test error handling (no versions, no data, API failures)
-- [ ] Test with large projects (100+ positions, 10+ files)
-- [ ] Test with multiple versions (v1-v10)
-- [ ] Performance test: comparison with large file counts
-
----
-
+**Branch:** `claude/update-documentation-logo-fixes-gHv9C`
 **Last Updated:** 2025-12-28
-**Session Status:** ✅ Ready for Testing & Deployment
-**Branch:** `claude/optimize-multi-role-audit-84a4u`
