@@ -82,7 +82,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card kpi-card-success">
           <div className="kpi-card-label">
-            <span>⏱️</span> Měsíce (výpočet)
+            <span>⏱️</span> Měsíce
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.estimated_months, 1)}
@@ -92,7 +92,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>📆</span> Týdny (výpočet)
+            <span>📆</span> Týdny
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.estimated_weeks, 1)}
@@ -103,7 +103,7 @@ export default function KPIPanel() {
         {/* ROW 2: Averages */}
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>👥</span> Průměr: lidi
+            <span>👥</span> Lidé (Ø)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.avg_crew_size, 1)}
@@ -113,7 +113,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>💵</span> Průměr: Kč/hod
+            <span>💵</span> Kč/hod (Ø)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.avg_wage_czk_ph, 0)}
@@ -123,7 +123,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>⏰</span> Průměr: hod/den
+            <span>⏰</span> Hod/den (Ø)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.avg_shift_hours, 1)}
