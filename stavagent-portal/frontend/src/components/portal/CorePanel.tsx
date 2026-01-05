@@ -51,7 +51,7 @@ export default function CorePanel({ project, onClose, onRefresh }: CorePanelProp
       setLoading(true);
       const response = await fetch(`/api/portal-projects/${project.portal_project_id}/files`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         }
       });
 
@@ -84,7 +84,7 @@ export default function CorePanel({ project, onClose, onRefresh }: CorePanelProp
       const response = await fetch(`/api/portal-projects/${project.portal_project_id}/send-to-core`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         }
       });
 

@@ -144,7 +144,7 @@ export default function PortalPage() {
       setLoading(true);
       const response = await fetch('/api/portal-projects', {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         }
       });
 
@@ -172,7 +172,7 @@ export default function PortalPage() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         },
         body: JSON.stringify(projectData)
       });
@@ -198,7 +198,7 @@ export default function PortalPage() {
       const response = await fetch(`/api/portal-projects/${projectId}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         }
       });
 
