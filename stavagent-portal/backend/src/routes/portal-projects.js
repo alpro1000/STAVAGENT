@@ -33,6 +33,16 @@ router.use(requireAuth);
 router.get('/', async (req, res) => {
   try {
     const userId = req.user.userId;
+
+    // 🚨 DEV MODE: Return empty array if PostgreSQL not available
+    if (process.env.DISABLE_AUTH === 'true') {
+      console.warn('[DEV MODE] Returning empty projects list (PostgreSQL not available)');
+      return res.json({
+        success: true,
+        projects: []
+      });
+    }
+
     const pool = getPool();
 
     const result = await pool.query(
@@ -78,9 +88,6 @@ router.get('/', async (req, res) => {
  * - description: string
  */
 router.post('/', async (req, res) => {
-  const pool = getPool();
-  const client = await pool.connect();
-
   try {
     const userId = req.user.userId;
     const { project_name, project_type, description } = req.body;
@@ -94,6 +101,32 @@ router.post('/', async (req, res) => {
     }
 
     const portal_project_id = `proj_${uuidv4()}`;
+
+    // 🚨 DEV MODE: Return mock project if PostgreSQL not available
+    if (process.env.DISABLE_AUTH === 'true') {
+      const mockProject = {
+        portal_project_id,
+        project_name,
+        project_type: project_type || 'custom',
+        description: description || '',
+        owner_id: userId,
+        core_status: 'not_sent',
+        core_project_id: null,
+        core_audit_result: null,
+        core_last_sync: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+
+      console.log(`[DEV MODE] Mock project created: ${portal_project_id} (${project_name})`);
+      return res.status(201).json({
+        success: true,
+        project: mockProject
+      });
+    }
+
+    const pool = getPool();
+    const client = await pool.connect();
 
     await client.query('BEGIN');
 
@@ -114,6 +147,7 @@ router.post('/', async (req, res) => {
     );
 
     await client.query('COMMIT');
+    client.release();
 
     console.log(`[PortalProjects] Created project: ${portal_project_id} (${project_name})`);
 
@@ -123,14 +157,11 @@ router.post('/', async (req, res) => {
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
     console.error('[PortalProjects] Error creating project:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to create project'
     });
-  } finally {
-    client.release();
   }
 });
 
