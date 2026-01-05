@@ -297,6 +297,148 @@ class HybridMultiRoleOrchestrator:
                 error=error_msg
             )
 
+    async def execute_hybrid_analysis_with_progress(
+        self,
+        project_description: str,
+        positions: Optional[List[Dict[str, Any]]] = None,
+        specifications: Optional[Dict[str, Any]] = None
+    ):
+        """
+        Execute hybrid multi-role analysis with progress events (for SSE)
+
+        Yields progress events:
+        - {"event": "started", "timestamp": ...}
+        - {"event": "query_started", "query": "comprehensive_analysis"}
+        - {"event": "query_completed", "query": "comprehensive_analysis", "time_ms": 8500}
+        - {"event": "completed", "result": HybridFinalOutput}
+
+        Args:
+            project_description: Main project description
+            positions: List of positions (BOQ items)
+            specifications: Project specifications
+
+        Yields:
+            Dict with progress events
+        """
+        start_time = time.time()
+
+        # Event: Started
+        yield {
+            "event": "started",
+            "timestamp": datetime.now().isoformat(),
+            "message": "Starting hybrid multi-role analysis"
+        }
+
+        logger.info("🚀 Starting hybrid multi-role analysis with progress tracking")
+
+        # Prepare user context
+        user_context = self._prepare_user_context(
+            project_description, positions, specifications
+        )
+
+        # Event: Context prepared
+        yield {
+            "event": "context_prepared",
+            "timestamp": datetime.now().isoformat()
+        }
+
+        # Create tasks for both queries
+        comprehensive_task = asyncio.create_task(
+            self._execute_hybrid_query(
+                HybridQueryType.COMPREHENSIVE_ANALYSIS,
+                user_context,
+                temperature=0.3
+            )
+        )
+
+        compliance_task = asyncio.create_task(
+            self._execute_hybrid_query(
+                HybridQueryType.COMPLIANCE_RISKS,
+                user_context,
+                temperature=0.2
+            )
+        )
+
+        # Event: Queries started
+        yield {
+            "event": "query_started",
+            "query": "comprehensive_analysis",
+            "timestamp": datetime.now().isoformat()
+        }
+        yield {
+            "event": "query_started",
+            "query": "compliance_risks",
+            "timestamp": datetime.now().isoformat()
+        }
+
+        # Wait for tasks to complete and emit events
+        results = []
+        for task, query_name in [
+            (comprehensive_task, "comprehensive_analysis"),
+            (compliance_task, "compliance_risks")
+        ]:
+            try:
+                result = await task
+                results.append(result)
+
+                # Event: Query completed
+                yield {
+                    "event": "query_completed",
+                    "query": query_name,
+                    "time_ms": result.execution_time_ms,
+                    "success": result.error is None,
+                    "timestamp": datetime.now().isoformat()
+                }
+            except Exception as e:
+                results.append(None)
+                yield {
+                    "event": "query_failed",
+                    "query": query_name,
+                    "error": str(e),
+                    "timestamp": datetime.now().isoformat()
+                }
+
+        total_time_ms = int((time.time() - start_time) * 1000)
+
+        # Extract results
+        comprehensive_result = results[0] if len(results) > 0 and isinstance(results[0], HybridQueryResult) else None
+        compliance_result = results[1] if len(results) > 1 and isinstance(results[1], HybridQueryResult) else None
+
+        # Check for failures
+        queries_successful = sum(1 for r in results if isinstance(r, HybridQueryResult) and not r.error)
+        queries_failed = 2 - queries_successful
+
+        if queries_failed == 2:
+            yield {
+                "event": "error",
+                "message": "All hybrid queries failed",
+                "timestamp": datetime.now().isoformat()
+            }
+            raise RuntimeError("All hybrid queries failed")
+
+        # Event: Merging results
+        yield {
+            "event": "merging",
+            "timestamp": datetime.now().isoformat()
+        }
+
+        # Merge results
+        final_output = self._merge_hybrid_results(
+            comprehensive_result,
+            compliance_result,
+            total_time_ms
+        )
+
+        # Event: Completed
+        yield {
+            "event": "completed",
+            "result": final_output,
+            "total_time_ms": total_time_ms,
+            "timestamp": datetime.now().isoformat()
+        }
+
+        logger.info(f"✅ Hybrid analysis complete with progress: {total_time_ms}ms")
+
     async def execute_hybrid_analysis(
         self,
         project_description: str,
