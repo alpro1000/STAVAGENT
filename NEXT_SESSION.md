@@ -271,6 +271,9 @@ async def generate_summary_stream(request: SummaryRequest):
 
     return StreamingResponse(event_generator(), media_type="text/event-stream")
 ```
+src/components/PositionsTable.tsx
+  - Removed overflow:hidden from part panels
+  - Added orange styling to "Přidat část konstrukce" button
 
 **Frontend (EventSource):**
 ```javascript
@@ -447,11 +450,7 @@ pytest tests/test_summary_performance.py -v
 pytest tests/test_summary_performance.py --benchmark
 ```
 
-**Version Tracking:**
-- Triggered automatically in `_execute_generate_summary()`
-- No manual intervention needed
-- Versions stored in-memory (`_versions` dict)
-- **Production:** Replace with database storage
+### Manual Deploy Instructions (concrete-agent)
 
 ## 📝 Implementation Checklist
 
