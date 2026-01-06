@@ -27,9 +27,19 @@ export function useBridges() {
 
   // Update context when query.data changes
   // Use useEffect to prevent infinite render loops
+  // ✅ FIX: Only update if query returns MORE bridges than current
+  // This prevents race condition where stale refetch overwrites fresh import data
   useEffect(() => {
     if (query.data) {
-      setBridges(query.data);
+      setBridges(prevBridges => {
+        // If refetch returns fewer bridges, keep current data
+        // This happens when database hasn't committed yet but refetch already ran
+        if (prevBridges.length > query.data.length) {
+          console.warn('[useBridges] Ignoring stale refetch data:', query.data.length, 'vs current:', prevBridges.length);
+          return prevBridges;
+        }
+        return query.data;
+      });
     }
   }, [query.data, setBridges]);
 

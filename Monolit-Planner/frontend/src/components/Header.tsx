@@ -91,14 +91,12 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       // Invalidate positions cache
       queryClient.invalidateQueries({ queryKey: ['positions'] });
 
-      // ✅ FIX: Delay refetch to allow database to commit
-      // Don't refetch immediately - data is already in context from upload response
-      // Background refetch after 2 seconds to sync with database
-      setTimeout(() => {
-        refetchBridges().catch(err => {
-          if (import.meta.env.DEV) console.warn('[Upload] Background refetch failed:', err.message);
-        });
-      }, 2000);
+      // ✅ FIX: DON'T do automatic refetch after import!
+      // Data is already in context from upload response.
+      // Refetch was causing race condition: if database hadn't committed yet,
+      // refetch would return old data and overwrite the new bridges.
+      // User can refresh page manually if needed.
+      if (import.meta.env.DEV) console.log('[Upload] Skipping refetch - data already in context');
 
       alert(`✅ Import úspěšný! Nalezeno ${result.bridges?.length || 0} objektů s ${totalPositions} pozicemi.`);
     } catch (error: any) {
