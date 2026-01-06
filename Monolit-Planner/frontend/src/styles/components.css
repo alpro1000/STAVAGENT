@@ -1534,6 +1534,7 @@ button:disabled {
   border: 1px solid var(--border-default);
   border-radius: 6px;
   min-height: auto;
+  min-width: 0; /* Prevent card expansion - critical for nowrap */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -1610,6 +1611,9 @@ button:disabled {
   align-items: center;
   gap: 4px;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%; /* Ensure ellipsis works */
 }
 
 .kpi-card-value {
@@ -1618,6 +1622,10 @@ button:disabled {
   font-family: var(--font-mono);
   line-height: 1.2;
   margin: 0;
+  white-space: nowrap;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
 }
 
 .kpi-card-unit {
@@ -1625,6 +1633,15 @@ button:disabled {
   font-weight: 500;
   margin-left: 2px;
   opacity: 0.85;
+  white-space: nowrap;
+}
+
+/* Special styling for mode value (longer text like "30 dní/měsíc") */
+.kpi-mode-value {
+  font-size: 1.1rem; /* Slightly smaller to fit */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kpi-formula {
