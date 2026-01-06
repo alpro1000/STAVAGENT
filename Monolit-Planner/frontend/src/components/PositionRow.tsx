@@ -174,6 +174,29 @@ export default function PositionRow({ position, isLocked = false }: Props) {
     return typeof value === 'number' ? value : 0;
   };
 
+  // Compute derived values locally so they update immediately when user edits
+  const qty = getValue('qty');
+  const crewSize = getValue('crew_size');
+  const shiftHours = getValue('shift_hours');
+  const days = getValue('days');
+  const wageCzkPh = getValue('wage_czk_ph');
+  const concreteM3 = position.concrete_m3 || 0;
+
+  // Compute labor_hours locally: crew_size × shift_hours × days
+  const computedLaborHours = crewSize * shiftHours * days;
+
+  // Compute cost_czk locally: labor_hours × wage_czk_ph
+  const computedCostCzk = computedLaborHours * wageCzkPh;
+
+  // Compute unit_cost_on_m3 locally: cost_czk / concrete_m3
+  const computedUnitCostOnM3 = concreteM3 > 0 ? computedCostCzk / concreteM3 : 0;
+
+  // Compute KROS unit: ceil(unit_cost_on_m3 / 50) × 50
+  const computedKrosUnitCzk = Math.ceil(computedUnitCostOnM3 / 50) * 50;
+
+  // Compute KROS total: kros_unit_czk × concrete_m3
+  const computedKrosTotalCzk = computedKrosUnitCzk * concreteM3;
+
   const icon = SUBTYPE_ICONS[position.subtype as keyof typeof SUBTYPE_ICONS] || '📋';
   // For "jiné" (custom work), use item_name as display label instead of generic "Jiné"
   const displayLabel = position.subtype === 'jiné' && position.item_name
@@ -440,19 +463,19 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         />
       </td>
 
-      {/* COMPUTED CELLS - Readonly (gray) */}
+      {/* COMPUTED CELLS - Readonly (gray) - Using locally computed values for instant update */}
 
       {/* Labor hours */}
       <td className="cell-computed col-hod-celkem">
-        <div className="computed-cell" title={`${formatNumber(position.labor_hours, 1)} hod (= crew_size × shift_hours × days)`}>
-          {formatNumber(position.labor_hours, 1)}
+        <div className="computed-cell" title={`${formatNumber(computedLaborHours, 1)} hod (= ${crewSize} × ${shiftHours} × ${days})`}>
+          {formatNumber(computedLaborHours, 1)}
         </div>
       </td>
 
       {/* Cost CZK */}
       <td className="cell-computed col-kc-celkem">
-        <div className="computed-cell" title={`${formatNumber(position.cost_czk, 2)} CZK (= labor_hours × wage_czk_ph)`}>
-          {formatNumber(position.cost_czk, 2)}
+        <div className="computed-cell" title={`${formatNumber(computedCostCzk, 2)} CZK (= ${formatNumber(computedLaborHours, 1)} × ${wageCzkPh})`}>
+          {formatNumber(computedCostCzk, 2)}
         </div>
       </td>
 
@@ -462,9 +485,9 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-kros-key col-kc-m3">
         <div
           className={`kros-cell kros-key ${position.has_rfi ? 'warning' : ''}`}
-          title={`${formatNumber(position.unit_cost_on_m3, 2)} CZK/m³ ⭐ (= ${formatNumber(position.cost_czk, 2)} / ${position.concrete_m3})`}
+          title={`${formatNumber(computedUnitCostOnM3, 2)} CZK/m³ ⭐ (= ${formatNumber(computedCostCzk, 2)} / ${concreteM3})`}
         >
-          {formatNumber(position.unit_cost_on_m3, 2)}
+          {formatNumber(computedUnitCostOnM3, 2)}
         </div>
       </td>
 
@@ -472,9 +495,9 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-kros col-kros-jc">
         <div
           className="kros-cell"
-          title={`${formatNumber(position.kros_unit_czk, 0)} CZK (= ceil(${formatNumber(position.unit_cost_on_m3, 2)} / 50) × 50)`}
+          title={`${formatNumber(computedKrosUnitCzk, 0)} CZK (= ceil(${formatNumber(computedUnitCostOnM3, 2)} / 50) × 50)`}
         >
-          {formatNumber(position.kros_unit_czk, 0)}
+          {formatNumber(computedKrosUnitCzk, 0)}
         </div>
       </td>
 
@@ -482,9 +505,9 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-kros col-kros-celkem">
         <div
           className="kros-cell"
-          title={`${formatNumber(position.kros_total_czk, 2)} CZK (= ${formatNumber(position.kros_unit_czk, 0)} × ${position.concrete_m3})`}
+          title={`${formatNumber(computedKrosTotalCzk, 2)} CZK (= ${formatNumber(computedKrosUnitCzk, 0)} × ${concreteM3})`}
         >
-          {formatNumber(position.kros_total_czk, 2)}
+          {formatNumber(computedKrosTotalCzk, 2)}
         </div>
       </td>
 
