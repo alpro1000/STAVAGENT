@@ -213,7 +213,11 @@ tail -f /tmp/portal-frontend.log &
 
 ---
 
-## 📦 COMMITS READY FOR PR
+    return StreamingResponse(event_generator(), media_type="text/event-stream")
+```
+src/components/PositionsTable.tsx
+  - Removed overflow:hidden from part panels
+  - Added orange styling to "Přidat část konstrukce" button
 
 **Branch:** `claude/project-dropdown-sidebar-PXV4X`
 
@@ -348,10 +352,31 @@ stavagent-portal/frontend/src/components/portal/CorePanel.tsx
 **Impact:** Users cannot create projects in Portal
 **Next Step:** Debug with DevTools as outlined above
 
-### 2. concrete-agent Memory Issue (Acknowledged)
-**Status:** ⏸️ Known, not addressed
-**Impact:** CORE service unavailable on Render.com free tier
-**Options:** Upgrade plan ($7/month) or optimize memory usage
+### Manual Deploy Instructions (concrete-agent)
+
+## 📝 Implementation Checklist
+
+### Phase 1: Multi-Role Optimization (Day 1-3.5)
+- [ ] Day 1: Analyze dependencies, design 2 comprehensive prompts
+- [ ] Day 2: Implement parallel execution with asyncio.gather()
+- [ ] Day 3: Add streaming progress updates (SSE)
+- [ ] Day 3.5: Write tests, benchmark performance, update docs
+
+### Phase 2: Summary Module (Day 4-10)
+- [ ] Create database table `project_summaries`
+- [ ] Implement backend API (generate, get, update, approve, export)
+- [ ] Build frontend SummaryModal with 5 tabs
+- [ ] Implement export service (PDF, Excel, JSON)
+- [ ] Add version control
+- [ ] Write tests
+
+### Phase 3: Workflow C Backend (Day 11-17)
+- [ ] Create `/workflow/c/import` endpoint
+- [ ] Implement parser selection logic
+- [ ] Integrate MinerU for PDF parsing
+- [ ] Create WBS generator
+- [ ] Add database tables for WBS
+- [ ] Write tests
 
 ---
 
