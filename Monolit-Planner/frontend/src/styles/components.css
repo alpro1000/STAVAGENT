@@ -1529,17 +1529,17 @@ button:disabled {
 }
 
 .kpi-card {
-  padding: 10px 8px;
+  padding: 12px 10px;
   background: var(--bg-tertiary);
   border: 1px solid var(--border-default);
   border-radius: 6px;
   min-height: auto;
   min-width: 0; /* Prevent card expansion - critical for nowrap */
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  gap: 6px;
+  flex-direction: row; /* Horizontal layout: label + value on same line */
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
   transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
@@ -1602,22 +1602,23 @@ button:disabled {
 }
 
 .kpi-card-label {
-  font-size: var(--font-size-base);
+  font-size: 0.95rem; /* Slightly larger for horizontal layout */
   font-weight: 600;
   letter-spacing: 0.2px;
   margin: 0;
-  opacity: 0.95;
+  opacity: 0.9;
   display: flex;
   align-items: center;
   gap: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  width: 100%; /* Ensure ellipsis works */
+  flex-shrink: 1; /* Allow label to shrink if needed */
+  min-width: 0; /* Enable text-overflow ellipsis */
 }
 
 .kpi-card-value {
-  font-size: var(--font-size-lg);
+  font-size: 1.25rem; /* Larger for horizontal layout - more prominent */
   font-weight: 700;
   font-family: var(--font-mono);
   line-height: 1.2;
@@ -1626,10 +1627,11 @@ button:disabled {
   display: flex;
   align-items: baseline;
   gap: 4px;
+  flex-shrink: 0; /* Don't shrink the value - keep it full size */
 }
 
 .kpi-card-unit {
-  font-size: var(--font-size-sm);
+  font-size: 0.9rem; /* Slightly larger to match bigger value */
   font-weight: 500;
   margin-left: 2px;
   opacity: 0.85;
@@ -1638,10 +1640,12 @@ button:disabled {
 
 /* Special styling for mode value (longer text like "30 dní/měsíc") */
 .kpi-mode-value {
-  font-size: 1.1rem; /* Slightly smaller to fit */
+  font-size: 1.15rem; /* Match the larger value size */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  font-weight: 700;
+  font-family: var(--font-mono);
 }
 
 .kpi-formula {
