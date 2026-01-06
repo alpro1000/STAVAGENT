@@ -41,6 +41,10 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   const [suggestion, setSuggestion] = useState<DaysSuggestion | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
 
+  // Speed (MJ/h) manual input state - allows user to type speed and recalculate days
+  const [speedInput, setSpeedInput] = useState<string>('');
+  const [isEditingSpeed, setIsEditingSpeed] = useState(false);
+
   // Check if AI Days Suggestion feature is enabled
   const isAiDaysSuggestEnabled = config?.feature_flags?.FF_AI_DAYS_SUGGEST ?? false;
 
@@ -386,9 +390,8 @@ export default function PositionRow({ position, isLocked = false }: Props) {
           min="0"
           className="input-cell"
           value={
-            // Calculate speed from CURRENT values (including edited ones)
-            // speed = qty / labor_hours, where labor_hours = crew_size × shift_hours × days
-            (() => {
+            // When editing, show user's input; otherwise show calculated value
+            isEditingSpeed ? speedInput : (() => {
               const qty = getValue('qty');
               const crewSize = getValue('crew_size');
               const shiftHours = getValue('shift_hours');
@@ -400,11 +403,20 @@ export default function PositionRow({ position, isLocked = false }: Props) {
               return '';
             })()
           }
+          onFocus={(e) => {
+            // Start editing - capture current calculated value
+            setIsEditingSpeed(true);
+            const currentValue = e.target.value;
+            setSpeedInput(currentValue);
+          }}
           onChange={(e) => {
+            // While editing, just update local state (don't recalculate yet)
+            setSpeedInput(e.target.value);
+          }}
+          onBlur={(e) => {
+            // On blur - recalculate days from entered speed
             const speedPerHour = parseFloat(e.target.value) || 0;
             if (speedPerHour > 0) {
-              // Recalculate: labor_hours = qty / speed
-              // Then: days = labor_hours / (crew_size × shift_hours)
               const qty = getValue('qty');
               const crewSize = getValue('crew_size');
               const shiftHours = getValue('shift_hours');
@@ -417,8 +429,11 @@ export default function PositionRow({ position, isLocked = false }: Props) {
                 handleFieldChange('days', Math.max(0.5, parseFloat(newDays.toFixed(1))));
               }
             }
+            // Exit editing mode - will show calculated value again
+            setIsEditingSpeed(false);
+            setSpeedInput('');
+            handleBlur();
           }}
-          onBlur={handleBlur}
           disabled={isLocked}
           placeholder="—"
           title={`Norma rychlosti (${position.unit}/hod). Zadejte normu → automaticky se přepočítají dny. Nebo zadejte dny → norma se vypočítá zpětně.`}
