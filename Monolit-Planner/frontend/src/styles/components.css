@@ -1101,12 +1101,12 @@ button:disabled {
 }
 
 .positions-table td {
-  padding: 10px 8px; /* Increased from 8px 6px for better spacing */
+  padding: 6px 4px; /* Reduced padding since inputs have their own padding */
   border-bottom: 1px solid var(--border-light);
   vertical-align: middle;
   background: inherit;
-  height: auto;
-  min-height: 40px; /* Increased from 36px to accommodate larger inputs */
+  height: 44px; /* Fixed height for consistent row sizing */
+  min-height: 44px; /* Increased to match larger inputs (36px + margins) */
   box-sizing: border-box;
   display: table-cell;
 }
@@ -1252,13 +1252,14 @@ button:disabled {
   background: var(--input-bg);
   border: 1px solid var(--input-border);
   color: var(--text-primary);
-  padding: 6px 8px; /* Increased from 4px 6px */
-  border-radius: 2px;
-  font-size: 14px; /* Increased from 12px */
+  padding: 8px 10px; /* Increased for better visibility */
+  border-radius: 3px;
+  font-size: 15px; /* Increased from 14px for better visibility */
+  font-weight: 600; /* Bold numbers for better readability */
   font-family: var(--font-mono);
   box-sizing: border-box;
-  height: 32px; /* Increased from 24px */
-  min-height: 32px;
+  height: 36px; /* Increased from 32px */
+  min-height: 36px;
 }
 
 .positions-table input:focus,
@@ -1284,14 +1285,16 @@ button:disabled {
 .computed-cell {
   width: 100%;
   max-width: 100%;
-  padding: 6px 8px; /* Increased from 2px 4px */
+  padding: 8px 10px; /* Match input padding */
   background: rgba(100, 130, 160, 0.06);
   border: none;
   border-radius: 0;
   font-family: var(--font-mono);
-  font-size: 14px; /* Increased from 12px */
-  font-weight: 500;
+  font-size: 15px; /* Match input font-size */
+  font-weight: 600; /* Bold for better readability */
   color: var(--text-secondary);
+  height: 36px; /* Match input height */
+  line-height: 20px; /* Center text vertically */
   text-align: right;
   white-space: nowrap;
   overflow: hidden;
@@ -1307,16 +1310,18 @@ button:disabled {
 .kros-cell {
   width: 100%;
   max-width: 100%;
-  padding: 6px 8px; /* Increased from 2px 4px */
+  padding: 8px 10px; /* Match input padding */
   background: rgba(90, 138, 90, 0.08);
   border: none;
   border-radius: 0;
   font-family: var(--font-mono);
-  font-size: 14px; /* Increased from 12px */
-  font-weight: 600;
+  font-size: 15px; /* Match input font-size */
+  font-weight: 700; /* Extra bold for KROS values */
   color: var(--color-success);
   text-align: right;
   white-space: nowrap;
+  height: 36px; /* Match input height */
+  line-height: 20px; /* Center text vertically */
   overflow: hidden;
   text-overflow: ellipsis;
   box-sizing: border-box;
