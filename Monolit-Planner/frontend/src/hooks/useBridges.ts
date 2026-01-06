@@ -86,6 +86,16 @@ export function useBridges() {
     }
   });
 
+  // Mutation: Delete entire project (all bridges with same project_name)
+  const deleteProjectMutation = useMutation({
+    mutationFn: (projectName: string) => {
+      return bridgesAPI.deleteByProjectName(projectName);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+    }
+  });
+
   return {
     ...query,
     createBridge: async (params: any) => {
@@ -100,6 +110,9 @@ export function useBridges() {
     deleteBridge: async (bridgeId: string) => {
       await deleteMutation.mutateAsync(bridgeId);
     },
-    isLoading: query.isLoading || createMutation.isPending || statusMutation.isPending || deleteMutation.isPending || completeMutation.isPending
+    deleteProject: async (projectName: string) => {
+      return await deleteProjectMutation.mutateAsync(projectName);
+    },
+    isLoading: query.isLoading || createMutation.isPending || statusMutation.isPending || deleteMutation.isPending || completeMutation.isPending || deleteProjectMutation.isPending
   };
 }

@@ -160,6 +160,11 @@ export const bridgesAPI = {
 
   delete: async (bridgeId: string): Promise<void> => {
     await api.delete(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`);
+  },
+
+  deleteByProjectName: async (projectName: string): Promise<{ deleted_count: number; deleted_ids: string[] }> => {
+    const { data } = await api.delete(`/api/monolith-projects/by-project-name/${encodeURIComponent(projectName)}`);
+    return data;
   }
 };
 

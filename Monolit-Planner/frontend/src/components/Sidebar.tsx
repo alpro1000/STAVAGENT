@@ -13,6 +13,7 @@ import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
 import DeleteBridgeModal from './DeleteBridgeModal';
+import DeleteProjectModal from './DeleteProjectModal';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -26,13 +27,14 @@ const STORAGE_KEY = 'monolit-sidebar-width';
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
-  const { completeBridge, deleteBridge, isLoading } = useBridges();
+  const { completeBridge, deleteBridge, deleteProject, isLoading } = useBridges();
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [hoveredBridgeId, setHoveredBridgeId] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('active');
   const [bridgeToDelete, setBridgeToDelete] = useState<typeof bridges[0] | null>(null);
+  const [projectToDelete, setProjectToDelete] = useState<{ name: string; count: number } | null>(null);
 
   // Resizable sidebar state
   const [sidebarWidth, setSidebarWidth] = useState(() => {
@@ -159,6 +161,35 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
     } catch (error) {
       console.error('Failed to delete bridge:', error);
       alert('Chyba při mazání objektu');
+    }
+  };
+
+  // Handle project delete click (open modal)
+  const handleDeleteProjectClick = (e: React.MouseEvent, projectName: string, objectCount: number) => {
+    e.stopPropagation();
+    setProjectToDelete({ name: projectName, count: objectCount });
+  };
+
+  // Confirm project delete (called from modal)
+  const confirmDeleteProject = async () => {
+    if (!projectToDelete) return;
+
+    try {
+      const result = await deleteProject(projectToDelete.name);
+      setProjectToDelete(null);
+
+      // Clear selection if the selected bridge was in the deleted project
+      if (selectedBridge) {
+        const deletedIds = result.deleted_ids || [];
+        if (deletedIds.includes(selectedBridge)) {
+          setSelectedBridge(null);
+        }
+      }
+
+      alert(`✅ Projekt smazán!\n\nSmazáno objektů: ${result.deleted_count}`);
+    } catch (error) {
+      console.error('Failed to delete project:', error);
+      alert('Chyba při mazání projektu');
     }
   };
 
@@ -310,8 +341,17 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                       >
                         <span className="project-toggle">{isExpanded ? '▼' : '▶'}</span>
                         <span className="project-icon">📁</span>
-                        <span className="project-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{projectName}</span>
+                        <span className="project-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{projectName}</span>
                         <span className="project-count">{bridgeCount}</span>
+                        <button
+                          className="bridge-action-btn btn-delete"
+                          onClick={(e) => handleDeleteProjectClick(e, projectName, bridgeCount)}
+                          title="Smazat celý projekt"
+                          disabled={isLoading}
+                          style={{ marginLeft: '4px' }}
+                        >
+                          🗑️
+                        </button>
                       </div>
 
                       {/* Bridge List (shown when expanded) */}
@@ -430,6 +470,14 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         isOpen={!!bridgeToDelete}
         onConfirm={confirmDelete}
         onCancel={() => setBridgeToDelete(null)}
+        isDeleting={isLoading}
+      />
+      <DeleteProjectModal
+        projectName={projectToDelete?.name || null}
+        objectCount={projectToDelete?.count || 0}
+        isOpen={!!projectToDelete}
+        onConfirm={confirmDeleteProject}
+        onCancel={() => setProjectToDelete(null)}
         isDeleting={isLoading}
       />
     </aside>
