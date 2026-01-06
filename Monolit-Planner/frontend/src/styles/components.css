@@ -1133,8 +1133,8 @@ button:disabled {
 }
 
 .col-mj {
-  width: 50px;
-  min-width: 50px;
+  width: 45px; /* Reduced from 50px - short values like "M3" */
+  min-width: 45px;
 }
 
 .col-mnozstvi {
@@ -1148,8 +1148,8 @@ button:disabled {
 }
 
 .col-cena-hod {
-  width: 60px;
-  min-width: 60px;
+  width: 50px; /* Reduced from 60px - values like "398" fit easily */
+  min-width: 50px;
 }
 
 .col-hod-den {
@@ -1173,13 +1173,13 @@ button:disabled {
 }
 
 .col-kc-celkem {
-  width: 70px;
-  min-width: 70px;
+  width: 75px; /* Increased from 70px - more space for larger totals */
+  min-width: 75px;
 }
 
 .col-kc-m3 {
-  width: 85px;
-  min-width: 85px;
+  width: 90px; /* Increased from 85px - more space for cost per m³ */
+  min-width: 90px;
 }
 
 .col-kros-jc {
@@ -1188,8 +1188,8 @@ button:disabled {
 }
 
 .col-kros-celkem {
-  width: 85px;
-  min-width: 85px;
+  width: 90px; /* Increased from 85px - more space for KROS totals */
+  min-width: 90px;
 }
 
 .col-rfi {
