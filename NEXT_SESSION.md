@@ -1,552 +1,397 @@
-# NEXT SESSION: Implementation Phase
+# NEXT SESSION: Portal Debugging + PR Creation
 
-**Date:** 2025-12-28+
-**Branch:** `claude/update-documentation-logo-fixes-gHv9C` (or new feature branch)
-**Status:** Ready to Start Implementation
-
----
-
-## 📋 COMMAND FOR NEXT SESSION
-
-```
-Начинаем фазу реализации после завершения анализа.
-
-Приоритет 1 (НАЧАТЬ С ЭТОГО): Multi-Role Performance Optimization
-- Цель: Ускорить генерацию Project Summary с 50-75 секунд до 15-20 секунд (3-4x)
-- Метод: Параллельное выполнение + упрощение промптов (5 ролей → 2 комплексных)
-- Файлы: concrete-agent/packages/core-backend/app/services/multi_role.py
-- Время: 3.5 дня
-- Детали: См. URS_MATCHER_SERVICE/MULTI_ROLE_OPTIMIZATION.md
-
-Сначала реализуй Multi-Role оптимизацию, потому что:
-1. Самый быстрый результат (3.5 дня vs 6-7 дней для Workflow C)
-2. Немедленное улучшение производительности для пользователей
-3. Подготовит backend для Workflow C и Summary Module
-4. Низкий риск - изолированное изменение в одном сервисе
-
-После завершения оптимизации спроси что делать дальше:
-- Summary Module (7 дней) - можно сделать независимо
-- Workflow C Backend (6-7 дней) - требует интеграции всех парсеров
-```
+**Date:** 2026-01-06+
+**Branch:** `claude/project-dropdown-sidebar-PXV4X`
+**Status:** ⚠️ Portal Issue Unresolved, UX Improvements Complete
 
 ---
 
-## 🎯 Current Context (Session 2025-12-28)
+## 🚨 CRITICAL ISSUE - START HERE
 
-### Completed Analysis (5 documents, 3846 lines)
+### Portal Project Creation STILL NOT WORKING
 
-| Document | Purpose | Commit | Status |
-|----------|---------|--------|--------|
-| `DOCUMENT_PARSING_ANALYSIS.md` | Gap analysis - current vs expected | `135a03e` | ✅ |
-| `PARSERS_INVENTORY.md` | 7 CORE parsers inventory + usage matrix | `94e5f8e` | ✅ |
-| `WORKFLOW_C_COMPLETE.md` | Workflow C spec with Project Summary | `3133481` | ✅ |
-| `SUMMARY_MODULE_SPEC.md` | Summary module architecture | `f7668ee` | ✅ |
-| `MULTI_ROLE_OPTIMIZATION.md` | Performance optimization analysis | `c1fc81b` | ✅ |
+**Status:** ❌ UNRESOLVED - Requires immediate debugging
 
-**Location:** `URS_MATCHER_SERVICE/` directory
+**User Report:** "ПО ПРЕЖНЕМУ ЕСТЬ ОШИБКА ПРИ СОЗДАНИИ НОВОГО ПРОЕКТА В ПОРТАЛЕ"
 
-### Ready for Implementation (3 features)
+**Error Message:** "Unexpected token '<', '<!DOCTYPE ...' is not valid JSON"
 
-1. **Multi-Role Optimization** - 3.5 days ⭐ START HERE
-2. **Summary Module** - 7 days
-3. **Workflow C Backend** - 6-7 days
+**What Was Tried (Session 2026-01-06):**
+- ✅ Fixed localStorage key: 'token' → 'auth_token' (3 files)
+- ✅ Added DEV MODE bypass in portal-projects.js
+- ✅ Created .env file with DISABLE_AUTH=true
+- ✅ Installed dotenv package
+- ✅ Added dotenv.config() to server.js
+- ✅ Restarted backend (port 3001) and frontend (port 5173)
+- ✅ Verified API working via curl: `{"success":true,"projects":[]}`
+- ✅ CORS configured for localhost:5173
+
+**Services Running:**
+```bash
+# Backend
+Port: 3001
+Status: ✅ Running
+Logs: /tmp/portal-backend.log
+DEV MODE: Active (DISABLE_AUTH=true)
+
+# Frontend
+Port: 5173
+Status: ✅ Running
+Logs: /tmp/portal-frontend.log
+```
+
+**Possible Causes:**
+1. **Browser cache** - Old frontend code still loaded in browser
+2. **Frontend not hot-reloading** - Vite dev server might need restart
+3. **API route mismatch** - Frontend might be calling wrong endpoint
+4. **CORS origin mismatch** - Despite configuration, might have issue
+5. **React state issue** - Component not updating after API call
+6. **Network routing** - Request not reaching backend
 
 ---
 
-## 🚀 PRIORITY 1: Multi-Role Optimization (3.5 days)
+## 📋 DEBUGGING STEPS FOR NEXT SESSION
 
-### Goal
-Reduce Project Summary generation time from 50-75s to 15-20s (3-4x speedup)
+### Step 1: Clear Browser Cache (5 min)
+```bash
+# Hard refresh in browser
+Ctrl+Shift+R (Windows/Linux)
+Cmd+Shift+R (Mac)
 
-### Current Problem
-```python
-# Sequential execution (SLOW)
-validation = await askMultiRole(...)  # 10-15s
-materials = await askMultiRole(...)   # 10-15s
-cost = await askMultiRole(...)        # 10-15s
-timeline = await askMultiRole(...)    # 10-15s
-risks = await askMultiRole(...)       # 10-15s
-# Total: 50-75s
-```
-Sheet 1: Souhrn
-  - Project name, export date
-  - Executive summary (wrapped text)
-  - Key findings (bullet list)
-  - Recommendations (bullet list)
-
-### Solution: Hybrid Approach
-1. **Simplify prompts:** 5 roles → 2 comprehensive queries
-2. **Parallel execution:** Run both queries simultaneously with `asyncio.gather()`
-3. **Streaming updates:** Show progress to user via Server-Sent Events
-
-### Implementation Plan
-
-#### Day 1: Analysis & Refactoring (8 hours)
-**Location:** `concrete-agent/packages/core-backend/`
-
-**Tasks:**
-1. Create dependency graph of current Multi-Role queries
-2. Identify which queries can run in parallel
-3. Design 2 comprehensive prompts to replace 5 separate queries
-4. Write tests for new prompts
-
-**Files to modify:**
-```
-app/services/multi_role.py
-app/api/routes_multi_role.py
+# OR clear cache completely in DevTools
+# F12 → Network → "Disable cache" checkbox
+# F12 → Application → Clear storage → "Clear site data"
 ```
 
-**Code example:**
-```python
-# New comprehensive prompts
+### Step 2: Check Browser DevTools (10 min)
+```bash
+# Open DevTools (F12)
 
-COMPREHENSIVE_ANALYSIS_PROMPT = """
-Проанализируй проект {project_type} на основе документов:
+# 1. Console tab
+#    - Look for errors
+#    - Look for localStorage: localStorage.getItem('auth_token')
 
-1. МАТЕРИАЛЫ И ОБЪЁМЫ:
-   - Какие материалы нужны? (бетон, арматура, опалубка)
-   - Сколько каждого материала? (в стандартных единицах)
-   - Какие классы/марки? (C30/37, B500B, и т.д.)
+# 2. Network tab
+#    - Click "+ Nowy projekt" button
+#    - Find the POST request
+#    - Check request URL: should be http://localhost:5173/api/portal-projects
+#    - Check request headers: Authorization, Content-Type
+#    - Check request payload: project_name, project_type
+#    - Check response: status code, headers, body
 
-2. СТОИМОСТЬ:
-   - Общая стоимость проекта
-   - Разбивка по категориям (материалы, работа, техника)
-   - Стоимость за м³ бетона
-
-3. СРОКИ:
-   - Общая длительность (месяцы)
-   - Основные вехи и фазы
-   - Критический путь
-
-Используй базу знаний (KROS, RTS, ČSN нормы).
-Отвечай структурированно в JSON формате.
-"""
-
-RISKS_ANALYSIS_PROMPT = """
-Проанализируй риски и допущения для проекта {project_type}:
-
-1. ТЕХНИЧЕСКИЕ РИСКИ:
-   - Сложности конструкции
-   - Требования к качеству
-   - Критичные параметры
-
-2. ОРГАНИЗАЦИОННЫЕ РИСКИ:
-   - Доступность материалов
-   - Квалификация персонала
-   - Погодные условия
-
-3. ДОПУЩЕНИЯ:
-   - Что предполагается о проекте?
-   - Какие данные отсутствуют?
-   - Рекомендации по уточнению
-
-Отвечай в JSON формате.
-"""
+# 3. Application tab
+#    - Check localStorage has 'auth_token' (not 'token')
 ```
 
-#### Day 2: Parallel Execution Implementation (8 hours)
+### Step 3: Test API Directly (10 min)
+```bash
+# Test GET endpoint
+curl -X GET http://localhost:3001/api/portal-projects \
+  -H "Content-Type: application/json" \
+  -v
 
-**Tasks:**
-1. Implement `asyncio.gather()` for parallel queries
-2. Add error handling for partial failures
-3. Add timeout management per query
-4. Write unit tests
+# Expected: {"success":true,"projects":[]}
 
-**New function:**
-```python
-async def generate_project_summary_optimized(
-    project_type: str,
-    tz_content: Dict,
-    specs: List[Dict],
-    drawings: Dict,
-    ai_client: MultiRoleClient
-) -> ProjectSummary:
-    """
-    Optimized summary generation with parallel execution
+# Test POST endpoint
+curl -X POST http://localhost:3001/api/portal-projects \
+  -H "Content-Type: application/json" \
+  -d '{"project_name":"Test Project","project_type":"custom"}' \
+  -v
 
-    Speedup: 3-4x (50-75s → 15-20s)
-    """
-
-    # Build context from documents
-    context = {
-        "project_type": project_type,
-        "tz_content": tz_content,
-        "specs": specs,
-        "drawings": drawings
-    }
-
-    # Execute 2 comprehensive queries IN PARALLEL
-    try:
-        main_result, risks_result = await asyncio.gather(
-            ai_client.askMultiRole(
-                question=COMPREHENSIVE_ANALYSIS_PROMPT.format(
-                    project_type=project_type
-                ),
-                context={
-                    **context,
-                    "enable_kb": True,
-                    "timeout": 30
-                }
-            ),
-            ai_client.askMultiRole(
-                question=RISKS_ANALYSIS_PROMPT.format(
-                    project_type=project_type
-                ),
-                context={
-                    **context,
-                    "role_preference": "project_manager",
-                    "timeout": 30
-                }
-            )
-        )
-        # ⏱️ Total time: 15-20s (parallel execution)
-
-    except Exception as e:
-        logger.error(f"Multi-Role parallel execution failed: {e}")
-        # Fallback to sequential if parallel fails
-        main_result = await ai_client.askMultiRole(...)
-        risks_result = await ai_client.askMultiRole(...)
-
-    # Assemble summary from results
-    summary = assemble_summary(main_result, risks_result)
-
-    return summary
-
-
-def assemble_summary(main_result: Dict, risks_result: Dict) -> ProjectSummary:
-    """Combine results into ProjectSummary object"""
-    return ProjectSummary(
-        client_requirements=main_result.get("requirements", {}),
-        materials=main_result.get("materials", []),
-        cost_estimate=main_result.get("cost", {}),
-        timeline=main_result.get("timeline", {}),
-        risks_assumptions=risks_result.get("risks", [])
-    )
+# Expected: {"success":true,"project":{...}}
 ```
 
-#### Day 3: Streaming Updates (SSE) (6 hours)
+### Step 4: Check Frontend Proxy (10 min)
+```bash
+# Check if Vite proxy is configured correctly
+cat stavagent-portal/frontend/vite.config.ts
 
-**Tasks:**
-1. Implement Server-Sent Events endpoint
-2. Add progress tracking for each query
-3. Update frontend to show real-time progress
-4. Test streaming in browser
+# Should have:
+# server: {
+#   proxy: {
+#     '/api': 'http://localhost:3001'
+#   }
+# }
 
-**Backend (FastAPI SSE):**
-```python
-from fastapi.responses import StreamingResponse
-import asyncio
-
-@router.post("/api/v1/summaries/generate/stream")
-async def generate_summary_stream(request: SummaryRequest):
-    """
-    Stream progress updates while generating summary
-    """
-    async def event_generator():
-        try:
-            # Send progress: Starting
-            yield f"data: {json.dumps({'status': 'starting', 'progress': 0})}\n\n"
-            await asyncio.sleep(0.1)
-
-            # Send progress: Analyzing
-            yield f"data: {json.dumps({'status': 'analyzing', 'progress': 30})}\n\n"
-
-            # Execute parallel queries
-            main_result, risks_result = await asyncio.gather(
-                ai_client.askMultiRole(...),
-                ai_client.askMultiRole(...)
-            )
-
-            # Send progress: Assembling
-            yield f"data: {json.dumps({'status': 'assembling', 'progress': 80})}\n\n"
-
-            # Assemble summary
-            summary = assemble_summary(main_result, risks_result)
-
-            # Send final result
-            yield f"data: {json.dumps({'status': 'complete', 'progress': 100, 'summary': summary.dict()})}\n\n"
-
-        except Exception as e:
-            yield f"data: {json.dumps({'status': 'error', 'message': str(e)})}\n\n"
-
-    return StreamingResponse(event_generator(), media_type="text/event-stream")
+# If not, frontend is calling http://localhost:5173/api/portal-projects
+# which should proxy to http://localhost:3001/api/portal-projects
 ```
 
-**Frontend (EventSource):**
+### Step 5: Add Logging (15 min)
 ```javascript
-const eventSource = new EventSource('/api/v1/summaries/generate/stream');
+// stavagent-portal/backend/src/routes/portal-projects.js
 
-eventSource.onmessage = (event) => {
-  const data = JSON.parse(event.data);
+router.post('/', async (req, res) => {
+  console.log('📥 POST /api/portal-projects received');
+  console.log('📦 Body:', req.body);
+  console.log('👤 User:', req.user);
+  console.log('🔒 DISABLE_AUTH:', process.env.DISABLE_AUTH);
 
-  if (data.status === 'starting') {
-    updateProgress(0, 'Начинаем анализ...');
-  } else if (data.status === 'analyzing') {
-    updateProgress(30, 'Анализируем документы...');
-  } else if (data.status === 'assembling') {
-    updateProgress(80, 'Формируем резюме...');
-  } else if (data.status === 'complete') {
-    updateProgress(100, 'Готово!');
-    displaySummary(data.summary);
-    eventSource.close();
-  } else if (data.status === 'error') {
-    showError(data.message);
-    eventSource.close();
+  try {
+    // ... existing code
+  } catch (error) {
+    console.error('❌ Error:', error);
+    // ... existing error handling
   }
-};
+});
 ```
 
-#### Day 3.5: Testing & Documentation (4 hours)
-
-**Tasks:**
-1. Write integration tests
-2. Benchmark performance (before/after)
-3. Update API documentation
-4. Create migration guide
-
-**Performance Test:**
-```python
-import pytest
-import time
-
-@pytest.mark.asyncio
-async def test_summary_generation_performance():
-    """Test that optimized summary generation is 3x faster"""
-
-    # Prepare test data
-    project_type = "bridge_overpass"
-    tz_content = load_test_tz()
-    specs = load_test_specs()
-    drawings = load_test_drawings()
-
-    # Measure optimized version
-    start = time.time()
-    summary = await generate_project_summary_optimized(
-        project_type, tz_content, specs, drawings, ai_client
-    )
-    optimized_duration = time.time() - start
-
-    # Verify performance
-    assert optimized_duration < 25, f"Optimized version too slow: {optimized_duration}s"
-
-    # Verify completeness
-    assert summary.materials is not None
-    assert summary.cost_estimate is not None
-    assert summary.timeline is not None
-    assert summary.risks_assumptions is not None
-
-    print(f"✅ Optimized generation: {optimized_duration:.1f}s")
-```
-concrete-agent/packages/core-backend/app/services/document_accumulator.py (+150 lines)
-  - ProjectVersion dataclass
-  - _versions storage Dict[str, List[ProjectVersion]]
-  - _create_version_snapshot() method
-  - _compare_summaries() method
-  - get_project_versions() method
-  - get_version() method
-  - compare_versions() method
-  - export_to_excel() method
-  - export_summary_to_pdf() method
-
-### Files to Create/Modify
-
-**Create:**
-```
-concrete-agent/packages/core-backend/app/services/summary_generator_optimized.py
-concrete-agent/packages/core-backend/tests/test_summary_performance.py
-```
-
-**Modify:**
-```
-concrete-agent/packages/core-backend/app/api/routes_multi_role.py
-concrete-agent/packages/core-backend/app/services/multi_role.py
-```
-
-### Success Criteria
-- ✅ Summary generation time < 25 seconds
-- ✅ All tests passing
-- ✅ Streaming progress updates working
-- ✅ Fallback to sequential execution on error
-- ✅ Documentation updated
-
----
-
-## 📦 PRIORITY 2: Summary Module (7 days)
-
-**Status:** Postponed until Priority 1 complete
-
-**See:** `URS_MATCHER_SERVICE/SUMMARY_MODULE_SPEC.md` for full specification
-
-**Quick summary:**
-- Database table `project_summaries`
-- API endpoints for generate, get, update, approve, export
-- React modal with 5 tabs (Overview, Materials, Cost, Timeline, Risks)
-- Export in PDF, Excel, JSON formats
-
----
-
-## 🔄 PRIORITY 3: Workflow C Backend (6-7 days)
-
-**Status:** Postponed until Priority 1 & 2 complete
-
-**See:** `URS_MATCHER_SERVICE/WORKFLOW_C_COMPLETE.md` for full specification
-
-**Quick summary:**
-- Document upload & parsing with all 7 parsers (including MinerU)
-- Project essence analysis
-- Work Breakdown Structure (WBS) generation
-- Integration with URS Matcher for code matching
-
----
-
-## 📊 Progress Tracking
-
-### Analysis Phase (COMPLETED ✅)
-- [x] Document Parsing Analysis (484 lines) - `135a03e`
-- [x] Parsers Inventory (838 lines) - `94e5f8e`
-- [x] Workflow C Specification (1018 lines) - `3133481`
-- [x] Summary Module Architecture (933 lines) - `f7668ee`
-- [x] Multi-Role Optimization Analysis (573 lines) - `c1fc81b`
-
-### Implementation Phase (PENDING)
-- [ ] Multi-Role Optimization (3.5 days) ⭐ NEXT
-- [ ] Summary Module (7 days)
-- [ ] Workflow C Backend (6-7 days)
-
-**Total Implementation Time:** ~17 days (2-3 weeks)
-
----
-
-## 🔧 Environment Setup
-
-**Branch:**
+### Step 6: Restart Services with Fresh Logs (10 min)
 ```bash
-git checkout claude/update-documentation-logo-fixes-gHv9C
-# OR create new feature branch:
-git checkout -b claude/implement-multi-role-optimization-<SESSION_ID>
+# Kill all processes
+pkill -f "node.*stavagent-portal"
+pkill -f "vite.*stavagent-portal"
+
+# Clear logs
+rm /tmp/portal-backend.log /tmp/portal-frontend.log
+
+# Restart backend
+cd stavagent-portal/backend
+nohup npm run dev > /tmp/portal-backend.log 2>&1 &
+
+# Restart frontend
+cd stavagent-portal/frontend
+nohup npm run dev > /tmp/portal-frontend.log 2>&1 &
+
+# Wait 10 seconds for startup
+sleep 10
+
+# Check logs
+tail -f /tmp/portal-backend.log &
+tail -f /tmp/portal-frontend.log &
+
+# Try creating project in browser
+# Watch logs for incoming requests
 ```
 
-**Services to run:**
+---
+
+## ✅ COMPLETED IN SESSION 2026-01-06
+
+### 1. Portal Services Startup
+- ✅ Backend running on port 3001
+- ✅ Frontend running on port 5173
+- ✅ DEV MODE active
+- ✅ API endpoint verified via curl
+- ⚠️ Project creation still not working in browser
+
+### 2. Monolit Planner UX Improvements (COMPLETE)
+
+**9 commits, ~5 files modified, 2 hours**
+
+#### KPI Panel Improvements
+- ✅ Formula section: font 10px → 12px, padding increased
+- ✅ KPI cards: fonts increased (labels 13px, values 16px, units 11px)
+- ✅ Labels shortened: "Měsíce (výpočet)" → "Měsíce", etc.
+- ✅ Overflow prevention: min-width: 0, ellipsis added
+- ✅ **Horizontal layout**: Changed from vertical to horizontal (label + value on same line)
+  - Saves vertical space
+  - Allows larger fonts (values now 1.25rem ~20px)
+  - Better visual hierarchy
+
+#### Table Improvements
+- ✅ Input font: 12px → 14px (+17%)
+- ✅ Input height: 24px → 32px (+33%)
+- ✅ Input padding: 4px 6px → 6px 8px
+- ✅ Computed cell font: 12px → 14px
+- ✅ Computed cell padding: 2px 4px → 6px 8px (+100%)
+- ✅ KROS cell font: 12px → 14px
+- ✅ KROS cell padding: 2px 4px → 6px 8px
+- ✅ Table cell padding: 8px 6px → 10px 8px
+- ✅ Table cell min-height: 36px → 40px
+
+#### Column Width Optimization
+- ✅ Reduced narrow columns:
+  - col-mj (unit): 50px → 45px (-5px)
+  - col-cena-hod (hourly rate): 60px → 50px (-10px)
+- ✅ Increased important columns:
+  - col-kc-celkem (total cost): 70px → 75px (+5px)
+  - col-kc-m3 (cost per m³): 85px → 90px (+5px)
+  - col-kros-celkem (KROS total): 85px → 90px (+5px)
+
+**Result:** Better balance, improved readability, optimal space usage
+
+---
+
+## 📦 COMMITS READY FOR PR
+
+**Branch:** `claude/project-dropdown-sidebar-PXV4X`
+
+**Commits (9 total):**
+```
+2312bd4 - UX: Optimize table column widths - reduce narrow cols, increase important cols
+0f17768 - UX: Increase table cell and input sizes for better readability
+a5459a4 - UX: Change KPI cards to horizontal layout - label + value on same line
+885925d - UX: Prevent KPI card expansion - add min-width:0 and ellipsis for overflow
+0d7b99c - UX: Improve formula section readability - increase font size and padding
+2956668 - UX: Improve KPI panel readability - bigger fonts and shorter labels
+435bed1 - DEPS: Add dotenv package to portal backend
+77a8484 - FIX: Portal project creation - add DEV MODE support + fix auth token keys
+d7b8904 - FIX: Portal - use correct 'auth_token' localStorage key for all API calls
+```
+
+**Changes Summary:**
+- 6 UX improvements (Monolit Planner)
+- 3 Portal fixes (DEV MODE, auth tokens, dotenv)
+- ~5 files modified
+- ~100+ lines changed (net)
+
+**Ready for PR:** ⚠️ YES for Monolit changes, NO for Portal (issue unresolved)
+
+---
+
+## 🎯 PRIORITIES FOR NEXT SESSION
+
+### Priority 1: Fix Portal Project Creation (URGENT)
+**Time:** 1-2 hours
+**Steps:** Follow debugging steps above
+
+**Success Criteria:**
+- ✅ User can create new project in Portal
+- ✅ No "Unexpected token '<'" error
+- ✅ Projects list updates after creation
+- ✅ Backend receives and processes POST request
+- ✅ Frontend displays success message
+
+### Priority 2: Create PR for UX Improvements
+**Time:** 30 min
+**Includes:** Monolit Planner improvements (9 commits)
+
+**PR Title:** "UX: Monolit Planner readability improvements - KPI panel horizontal layout + larger inputs"
+
+**PR Description:**
+```markdown
+## Summary
+- Improved KPI panel readability with horizontal layout (label + value on same line)
+- Increased table cell and input sizes for better readability
+- Optimized column widths (reduced narrow columns, increased important ones)
+
+## Changes
+- KPI cards: Changed to horizontal layout, saves vertical space
+- KPI fonts: Increased by 15-30% (labels 13px, values 20px)
+- Table inputs: Increased by 17% font size, 33% height
+- Column widths: Redistributed 15px from narrow to important columns
+
+## Test Plan
+- [ ] Open Monolit Planner
+- [ ] Create or select bridge project
+- [ ] Verify KPI panel displays horizontally
+- [ ] Verify all fonts are larger and readable
+- [ ] Verify table cells are taller with larger text
+- [ ] Verify column widths are balanced
+```
+
+### Priority 3: Test on Different Screen Sizes
+**Time:** 30 min
+**Test:** KPI horizontal layout on mobile, tablet, desktop
+
+---
+
+## 📝 FILES MODIFIED IN SESSION
+
+### Monolit Planner
+```
+Monolit-Planner/frontend/src/styles/components.css
+  - KPI panel styles (horizontal layout, overflow prevention)
+  - Table cell styles (increased sizes)
+  - Column width optimization
+
+Monolit-Planner/frontend/src/components/KPIPanel.tsx
+  - Shortened label text
+```
+
+### Portal (DEV MODE - Still Not Working)
+```
+stavagent-portal/backend/.env (created)
+  - DISABLE_AUTH=true
+  - Other dev settings
+
+stavagent-portal/backend/package.json
+  - Added dotenv dependency
+
+stavagent-portal/backend/server.js
+  - Added dotenv.config()
+
+stavagent-portal/backend/src/routes/portal-projects.js
+  - Added DEV MODE bypass
+
+stavagent-portal/frontend/src/pages/PortalPage.tsx
+  - Fixed localStorage key: 'token' → 'auth_token'
+
+stavagent-portal/frontend/src/pages/DocumentUploadPage.tsx
+  - Fixed localStorage key: 'token' → 'auth_token'
+
+stavagent-portal/frontend/src/components/portal/CorePanel.tsx
+  - Fixed localStorage key: 'token' → 'auth_token'
+```
+
+---
+
+## 📊 SESSION STATISTICS
+
+| Metric | Value |
+|--------|-------|
+| Session Duration | ~3 hours |
+| Commits | 9 |
+| Files Modified | ~8 |
+| Lines Changed | ~150+ (net) |
+| Features Added | 0 |
+| Bugs Fixed | 1 partial (Portal startup), 1 unresolved (Portal creation) |
+| UX Improvements | 6 (Monolit Planner) |
+
+---
+
+## 🔍 KNOWN ISSUES
+
+### 1. Portal Project Creation (CRITICAL - UNRESOLVED)
+**Status:** ❌ Not Working
+**Impact:** Users cannot create projects in Portal
+**Next Step:** Debug with DevTools as outlined above
+
+### 2. concrete-agent Memory Issue (Acknowledged)
+**Status:** ⏸️ Known, not addressed
+**Impact:** CORE service unavailable on Render.com free tier
+**Options:** Upgrade plan ($7/month) or optimize memory usage
+
+---
+
+## 🚀 QUICK START FOR NEXT SESSION
+
 ```bash
-# concrete-agent CORE
-cd concrete-agent
-npm run dev:backend  # Port 8000
+# 1. Read session summary
+cat SESSION_2026-01-06.md
 
-# URS Matcher (for testing)
-cd URS_MATCHER_SERVICE
-npm run dev  # Port 3001
-```
+# 2. Check if Portal services still running
+lsof -i :3001  # Backend
+lsof -i :5173  # Frontend
 
-**Testing:**
-```bash
-# Run tests
-cd concrete-agent/packages/core-backend
-pytest tests/test_summary_performance.py -v
+# 3. If not running, restart
+cd stavagent-portal/backend
+nohup npm run dev > /tmp/portal-backend.log 2>&1 &
 
-# Benchmark
-pytest tests/test_summary_performance.py --benchmark
-```
+cd stavagent-portal/frontend
+nohup npm run dev > /tmp/portal-frontend.log 2>&1 &
 
-**Version Tracking:**
-- Triggered automatically in `_execute_generate_summary()`
-- No manual intervention needed
-- Versions stored in-memory (`_versions` dict)
-- **Production:** Replace with database storage
+# 4. Open browser with DevTools
+# http://localhost:5173
+# F12 → Network tab
+# Try creating project and watch request/response
 
-## 📝 Implementation Checklist
-
-### Phase 1: Multi-Role Optimization (Day 1-3.5)
-- [ ] Day 1: Analyze dependencies, design 2 comprehensive prompts
-- [ ] Day 2: Implement parallel execution with asyncio.gather()
-- [ ] Day 3: Add streaming progress updates (SSE)
-- [ ] Day 3.5: Write tests, benchmark performance, update docs
-
-### Phase 2: Summary Module (Day 4-10)
-- [ ] Create database table `project_summaries`
-- [ ] Implement backend API (generate, get, update, approve, export)
-- [ ] Build frontend SummaryModal with 5 tabs
-- [ ] Implement export service (PDF, Excel, JSON)
-- [ ] Add version control
-- [ ] Write tests
-
-### Phase 3: Workflow C Backend (Day 11-17)
-- [ ] Create `/workflow/c/import` endpoint
-- [ ] Implement parser selection logic
-- [ ] Integrate MinerU for PDF parsing
-- [ ] Create WBS generator
-- [ ] Add database tables for WBS
-- [ ] Write tests
-
----
-
-## 🎯 Quick Start Command
-
-```bash
-# 1. Checkout branch
-git checkout claude/update-documentation-logo-fixes-gHv9C
-
-# 2. Read optimization spec
-cat URS_MATCHER_SERVICE/MULTI_ROLE_OPTIMIZATION.md
-
-# 3. Read session summary
-cat URS_MATCHER_SERVICE/SESSION_2025-12-28.md
-
-# 4. Start with Day 1 tasks:
-#    - Analyze current Multi-Role code
-#    - Design 2 comprehensive prompts
-#    - Identify parallel execution opportunities
-
-# 5. Files to focus on:
-#    - concrete-agent/packages/core-backend/app/services/multi_role.py
-#    - concrete-agent/packages/core-backend/app/api/routes_multi_role.py
+# 5. If issue found, fix and test
+# 6. Once fixed, create PR for UX improvements
 ```
 
 ---
 
-## 📊 Session Summary (2025-12-28)
+## 📚 DOCUMENTATION UPDATED
 
-| Task | Time Spent | Status | Files |
-|------|------------|--------|-------|
-| Document Parsing Analysis | 45 min | ✅ Complete | DOCUMENT_PARSING_ANALYSIS.md |
-| Parsers Inventory | 1.5 hours | ✅ Complete | PARSERS_INVENTORY.md |
-| Workflow C Specification | 1.5 hours | ✅ Complete | WORKFLOW_C_COMPLETE.md |
-| Summary Module Architecture | 1.5 hours | ✅ Complete | SUMMARY_MODULE_SPEC.md |
-| Multi-Role Optimization Analysis | 1 hour | ✅ Complete | MULTI_ROLE_OPTIMIZATION.md |
-| **TOTAL** | **~6 hours** | **All Complete** | **5 documents, 3846 lines** |
-
-**Commits:**
-```
-c1fc81b - PERF: Multi-Role optimization analysis - parallel execution strategy
-f7668ee - SPEC: Project Summary as Separate Module with Export
-3133481 - WORKFLOW C: Complete specification with Project Summary
-94e5f8e - INVENTORY: Complete parsers analysis + Workflow C strategy
-135a03e - ANALYSIS: Document parsing logic review for URS Matcher
-```
+- ✅ SESSION_2026-01-06.md (session summary)
+- ✅ NEXT_SESSION.md (this file)
+- ⏳ CLAUDE.md (needs update with session reference)
 
 ---
 
-## 🔍 Key Findings
-
-### 1. Document Parsing Gap
-**Problem:** URS Matcher doesn't parse documents or analyze project essence
-
-**Solution:** Workflow C with comprehensive document analysis using all 7 parsers
-
-### 2. Parser Underutilization
-**Problem:** MinerU installed but not used, parsers not fully leveraged
-
-**Solution:** Parser selection matrix based on file type, size, content
-
-### 3. Multi-Role Performance Bottleneck
-**Problem:** Sequential execution takes 50-75 seconds
-
-**Solution:** Parallel execution + simplified prompts = 15-20 seconds (3-4x speedup)
-
----
-
-**Ready to start:** Multi-Role Optimization (Priority 1)
-**Estimated time:** 3.5 days
-**Expected result:** 3-4x speedup (50-75s → 15-20s)
-
-**Branch:** `claude/update-documentation-logo-fixes-gHv9C`
-**Last Updated:** 2025-12-28
+**Session Date:** 2026-01-06
+**Last Updated:** 2026-01-06
+**Branch:** `claude/project-dropdown-sidebar-PXV4X`
+**Status:** Portal issue unresolved, UX improvements complete
