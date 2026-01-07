@@ -267,7 +267,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
           position: 'absolute',
           top: '10px',
           right: '-24px', // Increased from -12px for better visibility
-          zIndex: 10,
+          zIndex: 30, // Must be higher than resize handle (zIndex: 20)
           minHeight: '32px',
           padding: '6px 10px',
           background: 'var(--accent-orange)',
