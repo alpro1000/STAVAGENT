@@ -452,15 +452,20 @@ export function extractConcreteOnlyM3(rawRows) {
 
       // FIXED QUANTITY DETECTION:
       // 1. First try to find "Množství" column specifically
-      // 2. Look for M3 unit cell as hint
+      // 2. Look for M3 unit cell as hint - quantity should be in ADJACENT column
       // 3. Prefer reasonable volume values (not OTSKP codes or prices)
       let qty = 0;
       let foundM3Cell = false;
+      let m3CellKey = null;
       let quantityColumnKey = null;
       let numbersInRow = [];
 
+      // Get column order for position-based detection
+      const columnKeys = entries.map(e => e[0]);
+
       // First pass: identify column types and collect numbers
-      for (const [key, value] of entries) {
+      for (let colIdx = 0; colIdx < entries.length; colIdx++) {
+        const [key, value] = entries[colIdx];
         if (value === null || value === undefined) continue;
         if (key === descriptionKey) continue; // Skip description cell
 
@@ -477,6 +482,7 @@ export function extractConcreteOnlyM3(rawRows) {
         // Check if this is the M3 unit cell
         if (cellStr === 'm3' || cellStr === 'm³' || cellStr === 'm 3') {
           foundM3Cell = true;
+          m3CellKey = key;
           continue;
         }
 
@@ -485,13 +491,15 @@ export function extractConcreteOnlyM3(rawRows) {
         if (num > 0) {
           // Check if this looks like an OTSKP code (5-6 digit integer)
           const isLikelyOTSKPCode = Number.isInteger(num) && num >= 10000 && num <= 999999;
-          // Check if this looks like a price (round number > 100, often ending in 00)
-          const isLikelyPrice = num >= 100 && (num % 10 === 0 || num >= 1000);
+          // Check if this looks like a price - must be large AND round
+          // (more conservative check: only flag as price if > 500 AND divisible by 100)
+          const isLikelyPrice = num >= 500 && num % 100 === 0;
 
           numbersInRow.push({
             key,
             value,
             num,
+            colIdx,
             isLikelyOTSKPCode,
             isLikelyPrice,
             isQuantityColumn: key === quantityColumnKey
@@ -504,12 +512,30 @@ export function extractConcreteOnlyM3(rawRows) {
         const qtyEntry = numbersInRow.find(item => item.isQuantityColumn);
         if (qtyEntry && qtyEntry.num > 0 && qtyEntry.num <= 50000) {
           qty = qtyEntry.num;
+          logger.debug(`[ConcreteExtractor] Strategy 1: Found qty ${qty} in named column "${quantityColumnKey}"`);
         }
       }
 
-      // Strategy 2: If M3 cell found, look for reasonable volume near it
+      // Strategy 1.5: If M3 cell found, check the column IMMEDIATELY BEFORE it
+      // Typical Excel layout: ... | Množství | MJ | J.cena | ...
+      //                       ... |   7.838  | M3 | 3500   | ...
+      // So quantity is usually in the column BEFORE M3, not after!
+      if (qty <= 0 && foundM3Cell && m3CellKey) {
+        const m3ColIdx = columnKeys.indexOf(m3CellKey);
+        if (m3ColIdx > 0) {
+          // Check column BEFORE M3
+          const prevColKey = columnKeys[m3ColIdx - 1];
+          const prevEntry = numbersInRow.find(item => item.key === prevColKey);
+          if (prevEntry && prevEntry.num > 0 && prevEntry.num <= 10000 && !prevEntry.isLikelyOTSKPCode) {
+            qty = prevEntry.num;
+            logger.debug(`[ConcreteExtractor] Strategy 1.5: Found qty ${qty} in column BEFORE M3 ("${prevColKey}")`);
+          }
+        }
+      }
+
+      // Strategy 2: If M3 cell found, look for reasonable volume using scoring
       if (qty <= 0 && foundM3Cell && numbersInRow.length > 0) {
-        // Filter out OTSKP codes and likely prices
+        // Filter out OTSKP codes
         const candidates = numbersInRow.filter(item =>
           !item.isLikelyOTSKPCode &&
           item.num >= 0.1 &&
@@ -517,6 +543,9 @@ export function extractConcreteOnlyM3(rawRows) {
         );
 
         if (candidates.length > 0) {
+          // Find M3 column index for position scoring
+          const m3ColIdx = m3CellKey ? columnKeys.indexOf(m3CellKey) : -1;
+
           // Score each candidate - higher score = more likely to be quantity
           candidates.forEach(item => {
             let score = 0;
@@ -524,23 +553,31 @@ export function extractConcreteOnlyM3(rawRows) {
             // Prefer quantity column
             if (item.isQuantityColumn) score += 100;
 
+            // POSITION BONUS: Prefer columns near M3 (within 2 columns)
+            if (m3ColIdx >= 0) {
+              const distance = Math.abs(item.colIdx - m3ColIdx);
+              if (distance === 1) score += 60;  // Adjacent to M3 - very likely quantity!
+              else if (distance === 2) score += 30;
+              else if (distance > 4) score -= 20; // Far from M3 - less likely
+            }
+
             // Prefer numbers with decimals (7.838 vs 3.00)
             const decimalPlaces = (String(item.num).split('.')[1] || '').length;
-            if (decimalPlaces >= 2) score += 50;  // 7.838 has 3 decimals
-            if (decimalPlaces >= 1) score += 20;  // has at least 1 decimal
+            if (decimalPlaces >= 2) score += 30;  // Reduced from 50
+            if (decimalPlaces >= 1) score += 15;  // Reduced from 20
 
-            // Penalize round integers (likely row numbers or codes)
-            if (Number.isInteger(item.num)) score -= 30;
+            // Small penalty for round integers (but not too harsh - concrete can be round!)
+            if (Number.isInteger(item.num)) score -= 10; // Reduced from -30
 
             // Prefer numbers in typical volume range (5-500 m³)
             if (item.num >= 5 && item.num <= 500) score += 25;
             if (item.num >= 1 && item.num <= 1000) score += 10;
 
-            // Penalize very small numbers (likely row numbers: 1, 2, 3...)
-            if (item.num < 5 && Number.isInteger(item.num)) score -= 40;
+            // Penalize very small integers (1, 2, 3 - likely row numbers)
+            if (item.num < 5 && Number.isInteger(item.num)) score -= 50;
 
-            // Penalize likely prices (round numbers > 100)
-            if (item.isLikelyPrice) score -= 20;
+            // Penalize likely prices
+            if (item.isLikelyPrice) score -= 40;
 
             item.score = score;
           });
@@ -550,7 +587,7 @@ export function extractConcreteOnlyM3(rawRows) {
           qty = candidates[0].num;
 
           // Debug log
-          logger.debug(`[ConcreteExtractor] Candidates: ${candidates.map(c => `${c.num}(s:${c.score})`).join(', ')}`);
+          logger.info(`[ConcreteExtractor] Strategy 2 candidates: ${candidates.slice(0, 5).map(c => `${c.num}(s:${c.score},col:${c.key})`).join(', ')}`);
         }
       }
 
