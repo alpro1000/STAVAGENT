@@ -47,10 +47,10 @@ const colors = {
 };
 
 // ============================================
-// PRECISE COLUMN WIDTHS
+// PRECISE COLUMN WIDTHS (Detaily sheet)
 // ============================================
 const columnWidths = {
-  A: 28,   // Podtyp
+  A: 14,   // Podtyp (was 28, reduced to match CSS max-width ~100px)
   B: 6,    // MJ
   C: 12,   // Množství
   D: 6,    // Lidí
@@ -312,55 +312,81 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     // CRITICAL: Enable formula calculation on file open
     workbook.calcProperties.fullCalcOnLoad = true;
 
-    // ============= SHEET 1: KPI SUMMARY =============
+    // ============= SHEET 1: KPI SUMMARY (Slate Style) =============
     const kpiSheet = workbook.addWorksheet('KPI', {
-      views: [{ state: 'frozen', ySplit: 2 }] // Freeze first 2 rows
+      views: [{ state: 'frozen', ySplit: 2 }]
     });
 
-    const kpiData = [
-      ['MONOLIT PLANNER — ZPRÁVA O PROJEKTU'],
-      [`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`],
-      [],
-      ['=== PARAMETRY OBJEKTU ==='],
-      ['Délka nosné konstrukce:', formatNumber(header_kpi.span_length_m), 'm'],
-      ['Šířka nosné konstrukce:', formatNumber(header_kpi.deck_width_m), 'm'],
-      ['Předpokládaná doba realizace:', formatNumber(header_kpi.pd_weeks), 'týdnů'],
-      [],
-      ['=== KLÍČOVÉ METRIKY PROJEKTU ==='],
-      ['Σ Objem betonu:', formatNumber(header_kpi.sum_concrete_m3), 'm³'],
-      ['Σ Cena (KROS):', formatCurrency(header_kpi.sum_kros_total_czk), 'CZK'],
-      ['Jednotková cena:', formatCurrency(header_kpi.project_unit_cost_czk_per_m3), 'CZK/m³'],
-      [],
-      ['=== REŽIM PRÁCE ==='],
-      ['Režim:', header_kpi.days_per_month === 30 ? '30 dní/měsíc [spojitá stavba]' : '22 dní/měsíc [pracovní dny]'],
-      ['Odhadovaná doba trvání:', `${formatNumber(header_kpi.estimated_months)} měsíců | ${formatNumber(header_kpi.estimated_weeks)} týdnů`],
-      [],
-      ['=== PRŮMĚRNÉ HODNOTY ==='],
-      ['Průměrná velikost party:', formatNumber(header_kpi.avg_crew_size), 'osob'],
-      ['Průměrná hodinová sazba:', formatCurrency(header_kpi.avg_wage_czk_ph), 'CZK/hod'],
-      ['Průměrný počet hodin za den:', formatNumber(header_kpi.avg_shift_hours), 'hod']
+    // Set column widths for KPI sheet
+    kpiSheet.getColumn('A').width = 30;
+    kpiSheet.getColumn('B').width = 15;
+    kpiSheet.getColumn('C').width = 12;
+
+    // Title row
+    const kpiTitleRow = kpiSheet.addRow(['MONOLIT PLANNER — ZPRÁVA O PROJEKTU']);
+    kpiTitleRow.font = { name: 'Calibri', bold: true, size: 14, color: { argb: colors.textPrimary } };
+    kpiTitleRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: colors.headerBg } };
+    kpiSheet.mergeCells(1, 1, 1, 3);
+
+    // Subtitle row
+    const kpiSubRow = kpiSheet.addRow([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
+    kpiSubRow.font = { name: 'Calibri', bold: true, size: 11, color: { argb: colors.textSecondary } };
+    kpiSheet.mergeCells(2, 1, 2, 3);
+
+    kpiSheet.addRow([]); // Empty row
+
+    // KPI sections with Slate styling
+    const kpiSections = [
+      { title: 'PARAMETRY OBJEKTU', data: [
+        ['Délka nosné konstrukce', formatNumber(header_kpi.span_length_m), 'm'],
+        ['Šířka nosné konstrukce', formatNumber(header_kpi.deck_width_m), 'm'],
+        ['Předpokládaná doba realizace', formatNumber(header_kpi.pd_weeks), 'týdnů']
+      ]},
+      { title: 'KLÍČOVÉ METRIKY PROJEKTU', data: [
+        ['Σ Objem betonu', formatNumber(header_kpi.sum_concrete_m3), 'm³'],
+        ['Σ Cena (KROS)', formatCurrency(header_kpi.sum_kros_total_czk), 'CZK'],
+        ['Jednotková cena', formatCurrency(header_kpi.project_unit_cost_czk_per_m3), 'CZK/m³']
+      ]},
+      { title: 'REŽIM PRÁCE', data: [
+        ['Režim', header_kpi.days_per_month === 30 ? '30 dní/měsíc' : '22 dní/měsíc', header_kpi.days_per_month === 30 ? '[spojitá stavba]' : '[pracovní dny]'],
+        ['Odhadovaná doba trvání', `${formatNumber(header_kpi.estimated_months)} měsíců`, `${formatNumber(header_kpi.estimated_weeks)} týdnů`]
+      ]},
+      { title: 'PRŮMĚRNÉ HODNOTY', data: [
+        ['Průměrná velikost party', formatNumber(header_kpi.avg_crew_size), 'osob'],
+        ['Průměrná hodinová sazba', formatCurrency(header_kpi.avg_wage_czk_ph), 'CZK/hod'],
+        ['Průměrný počet hodin za den', formatNumber(header_kpi.avg_shift_hours), 'hod']
+      ]}
     ];
 
-    // Add KPI data to sheet
-    kpiData.forEach((row, rowIndex) => {
-      const excelRow = kpiSheet.addRow(row);
+    kpiSections.forEach((section, sectionIdx) => {
+      // Section header with left accent border
+      const sectionRow = kpiSheet.addRow([section.title]);
+      applyGroupHeaderStyle(sectionRow.getCell(1));
+      kpiSheet.mergeCells(sectionRow.number, 1, sectionRow.number, 3);
 
-      // Style first two rows (title)
-      if (rowIndex === 0 || rowIndex === 1) {
-        excelRow.font = { bold: true, size: 14 };
-        excelRow.alignment = { vertical: 'middle', horizontal: 'left' };
-      }
+      // Section data rows
+      section.data.forEach((dataRow, dataIdx) => {
+        const row = kpiSheet.addRow(dataRow);
+        applyDataRowStyle(row, dataIdx % 2 === 0);
 
-      // Apply borders to all cells with content
-      excelRow.eachCell((cell) => {
-        if (cell.value) {
-          applyBorders(cell);
-        }
+        // First column - left align label
+        row.getCell(1).alignment = { vertical: 'center', horizontal: 'left' };
+        row.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
+
+        // Second column - right align value
+        row.getCell(2).alignment = { vertical: 'center', horizontal: 'right' };
+        row.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
+
+        // Third column - muted unit
+        row.getCell(3).alignment = { vertical: 'center', horizontal: 'left' };
+        row.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
       });
-    });
 
-    // Auto-fit KPI sheet columns
-    autoFitColumns(kpiSheet, 15, 60);
+      // Empty row between sections (except last)
+      if (sectionIdx < kpiSections.length - 1) {
+        kpiSheet.addRow([]);
+      }
+    });
 
     // ============= SHEET 2: DETAILED POSITIONS =============
     const detailSheet = workbook.addWorksheet('Detaily', {
@@ -578,11 +604,29 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       detailSheet.addRow([]);
     });
 
-    // Add totals row
+    // Add totals row with CALCULATED result values
     // Column layout: A:Podtyp, B:MJ, C:Množství, D:Lidi, E:Kč/hod, F:Hod/den, G:Dny
     // H:MJ/h, I:Hod celkem, J:Kč celkem, K:Kč/m³, L:Objem m³, M:KROS JC, N:KROS celkem, O:RFI
     if (firstDataRow !== null && lastDataRow !== null) {
       detailSheet.addRow([]); // Empty row before totals
+
+      // Calculate totals from positions data
+      const totals = {
+        qty: positions.reduce((sum, p) => sum + (p.qty || 0), 0),
+        laborHours: positions.reduce((sum, p) => sum + ((p.crew_size || 0) * (p.shift_hours || 0) * (p.days || 0)), 0),
+        costCzk: positions.reduce((sum, p) => {
+          const hours = (p.crew_size || 0) * (p.shift_hours || 0) * (p.days || 0);
+          return sum + ((p.wage_czk_ph || 0) * hours);
+        }, 0),
+        concreteM3: positions.reduce((sum, p) => sum + (p.concrete_m3 || 0), 0),
+        krosTotal: positions.reduce((sum, p) => {
+          const hours = (p.crew_size || 0) * (p.shift_hours || 0) * (p.days || 0);
+          const costCzk = (p.wage_czk_ph || 0) * hours;
+          const unitCost = (p.concrete_m3 || 0) > 0 ? costCzk / (p.concrete_m3 || 0) : 0;
+          const krosUnit = unitCost > 0 ? Math.ceil(unitCost / 50) * 50 : 0;
+          return sum + (krosUnit * (p.concrete_m3 || 0));
+        }, 0)
+      };
 
       const totalsRow = detailSheet.addRow([
         'CELKEM / TOTAL', // A
@@ -592,7 +636,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         '',               // E
         '',               // F
         '',               // G
-        '',               // H: MJ/h (average would need special formula)
+        '',               // H: MJ/h
         null,             // I: Sum labor hours
         null,             // J: Sum cost CZK
         '',               // K
@@ -602,44 +646,42 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         ''                // O: RFI
       ]);
 
-      const totalRowNumber = totalsRow.number;
-
       // Apply Slate total row styling (double top border, bold, Slate 50 bg)
       applyTotalRowStyle(totalsRow);
 
-      // Add SUM formulas for totals row (with result=0 to ensure Excel shows formula)
+      // Add SUM formulas with CALCULATED result values
       // C: Sum of qty
       totalsRow.getCell(3).value = {
         formula: `SUM(C${firstDataRow}:C${lastDataRow})`,
-        result: 0
+        result: totals.qty
       };
       totalsRow.getCell(3).numFmt = '0.00';
 
       // I: Sum of labor hours
       totalsRow.getCell(9).value = {
         formula: `SUM(I${firstDataRow}:I${lastDataRow})`,
-        result: 0
+        result: totals.laborHours
       };
       totalsRow.getCell(9).numFmt = '0.00';
 
       // J: Sum of cost CZK
       totalsRow.getCell(10).value = {
         formula: `SUM(J${firstDataRow}:J${lastDataRow})`,
-        result: 0
+        result: totals.costCzk
       };
       totalsRow.getCell(10).numFmt = '#,##0.00';
 
       // L: Sum of concrete m³
       totalsRow.getCell(12).value = {
         formula: `SUM(L${firstDataRow}:L${lastDataRow})`,
-        result: 0
+        result: totals.concreteM3
       };
       totalsRow.getCell(12).numFmt = '0.00';
 
       // N: Sum of KROS total
       totalsRow.getCell(14).value = {
         formula: `SUM(N${firstDataRow}:N${lastDataRow})`,
-        result: 0
+        result: totals.krosTotal
       };
       totalsRow.getCell(14).numFmt = '#,##0.00';
     }
@@ -647,15 +689,22 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     // Apply precise column widths per specification
     applyPreciseColumnWidths(detailSheet);
 
-    // ============= SHEET 3: MATERIALS AGGREGATION =============
+    // ============= SHEET 3: MATERIALS AGGREGATION (Slate Style) =============
     const materialsSheet = workbook.addWorksheet('Materiály', {
-      views: [{ state: 'frozen', ySplit: 3 }]
+      views: [{ state: 'frozen', ySplit: 4 }]
     });
+
+    // Set column widths for materials sheet
+    materialsSheet.getColumn('A').width = 20;
+    materialsSheet.getColumn('B').width = 10;
+    materialsSheet.getColumn('C').width = 12;
+    materialsSheet.getColumn('D').width = 12;
+    materialsSheet.getColumn('E').width = 14;
+    materialsSheet.getColumn('F').width = 14;
 
     // Aggregate materials by type and unit
     const materials = new Map();
     positions.forEach(pos => {
-      // Determine material type from position
       const materialType = determineMaterialType(pos.subtype, pos.item_name);
       const key = `${materialType}|${pos.unit}`;
 
@@ -675,32 +724,44 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       mat.totalCost += (pos.kros_total_czk || 0);
     });
 
-    // Add title rows
+    // Title row with Slate style
     const matTitleRow = materialsSheet.addRow(['MONOLIT PLANNER — AGREGACE MATERIÁLŮ']);
-    matTitleRow.font = { bold: true, size: 14 };
-    matTitleRow.alignment = { vertical: 'middle', horizontal: 'left' };
+    matTitleRow.font = { name: 'Calibri', bold: true, size: 14, color: { argb: colors.textPrimary } };
+    matTitleRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: colors.headerBg } };
+    materialsSheet.mergeCells(1, 1, 1, 6);
 
     const matSubtitleRow = materialsSheet.addRow([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
-    matSubtitleRow.font = { bold: true, size: 12 };
+    matSubtitleRow.font = { name: 'Calibri', bold: true, size: 11, color: { argb: colors.textSecondary } };
+    materialsSheet.mergeCells(2, 1, 2, 6);
 
     materialsSheet.addRow([]); // Empty row
 
-    // Add materials data
-    const materialsHeaders = ['Typ Materiálu', 'Jednotka', 'Množství', 'Počet pozic', 'Jednotková cena', 'Cena celkem'];
+    // Headers with Slate style
+    const materialsHeaders = ['Typ Materiálu', 'Jednotka', 'Množství', 'Počet pozic', 'Jedn. cena', 'Cena celkem'];
     const matHeaderRow = materialsSheet.addRow(materialsHeaders);
-    matHeaderRow.eachCell((cell) => applyHeaderStyle(cell));
+    matHeaderRow.eachCell((cell, colNumber) => {
+      applyHeaderStyle(cell);
+      if (colNumber === 1 || colNumber === 2) {
+        cell.alignment = { vertical: 'center', horizontal: 'left' };
+      }
+    });
 
     let matRowCounter = 0;
     let matFirstDataRow = null;
     let matLastDataRow = null;
 
-    materials.forEach((mat, key) => {
+    // Calculate totals while iterating
+    let matTotals = { quantity: 0, totalCost: 0 };
+
+    materials.forEach((mat) => {
       const rowNumber = materialsSheet.lastRow.number + 1;
       if (matFirstDataRow === null) matFirstDataRow = rowNumber;
       matLastDataRow = rowNumber;
       matRowCounter++;
 
-      const unitPrice = mat.positions.length > 0 ? mat.totalCost / mat.quantity : 0;
+      const unitPrice = mat.quantity > 0 ? mat.totalCost / mat.quantity : 0;
+      matTotals.quantity += mat.quantity;
+      matTotals.totalCost += mat.totalCost;
 
       const matRow = materialsSheet.addRow([
         mat.type,
@@ -711,120 +772,103 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         mat.totalCost
       ]);
 
-      matRow.eachCell((cell, colNumber) => {
-        applyBorders(cell);
+      // Apply Slate data row style
+      applyDataRowStyle(matRow, matRowCounter % 2 === 0);
 
-        if (matRowCounter % 2 === 0) {
-          cell.fill = {
-            type: 'pattern',
-            pattern: 'solid',
-            fgColor: { argb: 'FFF9F9F9' }
-          };
-        }
+      // Semantic styling for columns
+      matRow.getCell(1).alignment = { vertical: 'center', horizontal: 'left' };
+      matRow.getCell(2).alignment = { vertical: 'center', horizontal: 'left' };
+      matRow.getCell(2).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
 
-        if (colNumber === 3 || colNumber === 4) {
-          cell.numFmt = '0.00';
-          cell.alignment = { vertical: 'middle', horizontal: 'right' };
-        } else if (colNumber === 5 || colNumber === 6) {
-          cell.numFmt = '#,##0.00';
-          cell.alignment = { vertical: 'middle', horizontal: 'right' };
-        } else {
-          cell.alignment = { vertical: 'middle', horizontal: 'left' };
-        }
-      });
+      matRow.getCell(3).numFmt = '0.00';
+      matRow.getCell(3).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
+
+      matRow.getCell(4).numFmt = '0';
+      matRow.getCell(5).numFmt = '#,##0.00';
+      matRow.getCell(6).numFmt = '#,##0.00';
+      matRow.getCell(6).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
     });
 
-    // Add materials totals row
+    // Add materials totals row with Slate style and CALCULATED values
     if (matFirstDataRow !== null && matLastDataRow !== null) {
       materialsSheet.addRow([]);
 
       const matTotalsRow = materialsSheet.addRow([
-        'CELKEM / TOTAL',
-        '',
-        null,
-        null,
-        '',
-        null
+        'CELKEM / TOTAL', '', null, null, '', null
       ]);
 
-      matTotalsRow.eachCell((cell, colNumber) => {
-        cell.font = { bold: true, size: 11 };
-        cell.fill = {
-          type: 'pattern',
-          pattern: 'solid',
-          fgColor: { argb: 'FFE7E6E6' }
-        };
-        applyBorders(cell);
+      applyTotalRowStyle(matTotalsRow);
 
-        if (colNumber >= 3 && colNumber <= 6) {
-          cell.alignment = { vertical: 'middle', horizontal: 'right' };
-        } else {
-          cell.alignment = { vertical: 'middle', horizontal: 'left' };
-        }
-      });
-
-      // Add SUM formulas (with result=0 to ensure Excel shows formula)
+      // C: Sum of qty with calculated result
       matTotalsRow.getCell(3).value = {
         formula: `SUM(C${matFirstDataRow}:C${matLastDataRow})`,
-        result: 0
+        result: matTotals.quantity
       };
       matTotalsRow.getCell(3).numFmt = '0.00';
 
+      // F: Sum of total cost with calculated result
       matTotalsRow.getCell(6).value = {
         formula: `SUM(F${matFirstDataRow}:F${matLastDataRow})`,
-        result: 0
+        result: matTotals.totalCost
       };
       matTotalsRow.getCell(6).numFmt = '#,##0.00';
     }
 
-    // Auto-fit materials sheet columns
-    autoFitColumns(materialsSheet, 15, 60);
-
-    // ============= SHEET 4: SCHEDULE / TIMELINE =============
+    // ============= SHEET 4: SCHEDULE / TIMELINE (Slate Style) =============
     const scheduleSheet = workbook.addWorksheet('Harmonogram', {
-      views: [{ state: 'frozen', ySplit: 3 }]
+      views: [{ state: 'frozen', ySplit: 4 }]
     });
 
-    // Add title rows
+    // Set column widths for schedule sheet
+    scheduleSheet.getColumn('A').width = 22;
+    scheduleSheet.getColumn('B').width = 12;
+    scheduleSheet.getColumn('C').width = 12;
+    scheduleSheet.getColumn('D').width = 12;
+    scheduleSheet.getColumn('E').width = 10;
+
+    // Title row with Slate style
     const schedTitleRow = scheduleSheet.addRow(['MONOLIT PLANNER — PRACOVNÍ HARMONOGRAM']);
-    schedTitleRow.font = { bold: true, size: 14 };
-    schedTitleRow.alignment = { vertical: 'middle', horizontal: 'left' };
+    schedTitleRow.font = { name: 'Calibri', bold: true, size: 14, color: { argb: colors.textPrimary } };
+    schedTitleRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: colors.headerBg } };
+    scheduleSheet.mergeCells(1, 1, 1, 5);
 
     const schedSubtitleRow = scheduleSheet.addRow([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
-    schedSubtitleRow.font = { bold: true, size: 12 };
+    schedSubtitleRow.font = { name: 'Calibri', bold: true, size: 11, color: { argb: colors.textSecondary } };
+    scheduleSheet.mergeCells(2, 1, 2, 5);
 
     scheduleSheet.addRow([]); // Empty row
 
-    // Create schedule with work phases
+    // Phase colors using Slate palette
     const phases = [
-      { name: 'Příprava stavby', duration: 2, color: 'FFE7E6E6' },
-      { name: 'Bednění', duration: 5, color: 'FF4472C4' },
-      { name: 'Betonáž', duration: 3, color: 'FFB4C7E7' },
-      { name: 'Vyztužování', duration: 4, color: 'FFDAE8FC' },
-      { name: 'Dokončovací práce', duration: 3, color: 'FFFFEB9C' }
+      { name: 'Příprava stavby', duration: 2, color: colors.sectionBg },
+      { name: 'Bednění', duration: 5, color: 'FFE2E8F0' },          // Slate 200
+      { name: 'Betonáž', duration: 3, color: 'FFD1FAE5' },          // Emerald 100 (positive)
+      { name: 'Vyztužování', duration: 4, color: 'FFCBD5E1' },      // Slate 300
+      { name: 'Dokončovací práce', duration: 3, color: 'FFFEF3C7' } // Amber 100 (warning)
     ];
 
     const scheduleHeaders = ['Fáze', 'Trvání (dny)', 'Začátek', 'Konec', 'Osob'];
     const schedHeaderRow = scheduleSheet.addRow(scheduleHeaders);
-    schedHeaderRow.eachCell((cell) => applyHeaderStyle(cell));
+    schedHeaderRow.eachCell((cell, colNumber) => {
+      applyHeaderStyle(cell);
+      if (colNumber === 1) {
+        cell.alignment = { vertical: 'center', horizontal: 'left' };
+      }
+    });
 
     let currentDay = 1;
-    let schedFirstDataRow = null;
-    let schedLastDataRow = null;
+    let totalDuration = 0;
 
     // Get average crew size for schedule
     const avgCrewSize = Math.round(
-      positions.reduce((sum, p) => sum + (p.crew_size || 0), 0) / positions.length || 4
+      positions.reduce((sum, p) => sum + (p.crew_size || 0), 0) / Math.max(positions.length, 1) || 4
     );
 
     phases.forEach((phase, idx) => {
-      const rowNumber = scheduleSheet.lastRow.number + 1;
-      if (schedFirstDataRow === null) schedFirstDataRow = rowNumber;
-      schedLastDataRow = rowNumber;
-
       const startDay = currentDay;
       const endDay = currentDay + phase.duration - 1;
       currentDay = endDay + 1;
+      totalDuration += phase.duration;
 
       const schedRow = scheduleSheet.addRow([
         phase.name,
@@ -836,35 +880,44 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
       schedRow.eachCell((cell, colNumber) => {
         applyBorders(cell);
+        cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: phase.color } };
+        cell.font = { name: 'Calibri', size: 10, color: { argb: colors.textPrimary } };
 
-        // Apply phase color to all cells
-        cell.fill = {
-          type: 'pattern',
-          pattern: 'solid',
-          fgColor: { argb: phase.color }
-        };
-
-        if (colNumber === 2 || colNumber === 5) {
-          cell.numFmt = '0';
-          cell.alignment = { vertical: 'middle', horizontal: 'right' };
+        if (colNumber === 1) {
+          cell.alignment = { vertical: 'center', horizontal: 'left' };
+          cell.font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
         } else {
-          cell.alignment = { vertical: 'middle', horizontal: 'left' };
+          cell.alignment = { vertical: 'center', horizontal: 'right' };
         }
       });
     });
 
-    // Auto-fit schedule sheet columns
-    autoFitColumns(scheduleSheet, 15, 60);
+    // Total row
+    scheduleSheet.addRow([]);
+    const schedTotalRow = scheduleSheet.addRow(['CELKEM', totalDuration, '', '', '']);
+    applyTotalRowStyle(schedTotalRow);
+    schedTotalRow.getCell(2).numFmt = '0';
 
-    // ============= SHEET 5: CHARTS & ANALYTICS =============
+    // ============= SHEET 5: CHARTS & ANALYTICS (Slate Style) =============
     const chartsSheet = workbook.addWorksheet('Grafy', {
-      views: [{ state: 'frozen', ySplit: 0 }]
+      views: [{ state: 'frozen', ySplit: 2 }]
     });
 
-    // Add title
+    // Set column widths
+    chartsSheet.getColumn('A').width = 20;
+    chartsSheet.getColumn('B').width = 14;
+    chartsSheet.getColumn('C').width = 12;
+
+    // Title row with Slate style
     const chartsTitleRow = chartsSheet.addRow(['MONOLIT PLANNER — ANALÝZA A GRAFY']);
-    chartsTitleRow.font = { bold: true, size: 14 };
-    chartsSheet.addRow([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
+    chartsTitleRow.font = { name: 'Calibri', bold: true, size: 14, color: { argb: colors.textPrimary } };
+    chartsTitleRow.getCell(1).fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: colors.headerBg } };
+    chartsSheet.mergeCells(1, 1, 1, 3);
+
+    const chartsSubRow = chartsSheet.addRow([`Most: ${bridge_id} | Datum: ${new Date().toLocaleDateString('cs-CZ')}`]);
+    chartsSubRow.font = { name: 'Calibri', bold: true, size: 11, color: { argb: colors.textSecondary } };
+    chartsSheet.mergeCells(2, 1, 2, 3);
+
     chartsSheet.addRow([]);
 
     // Budget Distribution (by material type)
@@ -874,87 +927,84 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     }));
 
     if (budgetData.length > 0) {
-      chartsSheet.addRow(['ROZPOČET PODLE MATERIÁLU']);
-      const budgetHeaderRow = chartsSheet.lastRow;
-      budgetHeaderRow.font = { bold: true, size: 12 };
+      // Section header
+      const budgetSectionRow = chartsSheet.addRow(['ROZPOČET PODLE MATERIÁLU']);
+      applyGroupHeaderStyle(budgetSectionRow.getCell(1));
+      chartsSheet.mergeCells(budgetSectionRow.number, 1, budgetSectionRow.number, 3);
 
-      // Add budget data table for chart
+      // Table headers
       const budgetChartHeaders = ['Materiál', 'Cena (CZK)', '% Podíl'];
       const budgetChartHeaderRow = chartsSheet.addRow(budgetChartHeaders);
-      budgetChartHeaderRow.eachCell((cell) => applyHeaderStyle(cell));
+      budgetChartHeaderRow.eachCell((cell, colNumber) => {
+        applyHeaderStyle(cell);
+        if (colNumber === 1) cell.alignment = { vertical: 'center', horizontal: 'left' };
+      });
 
       const totalBudget = budgetData.reduce((sum, item) => sum + item.value, 0);
-      let budgetDataStartRow = chartsSheet.lastRow.number + 1;
+      let budgetRowCounter = 0;
 
       budgetData.forEach(item => {
+        budgetRowCounter++;
         const percentage = totalBudget > 0 ? (item.value / totalBudget * 100).toFixed(1) : 0;
         const row = chartsSheet.addRow([item.label, item.value, `${percentage}%`]);
 
-        row.eachCell((cell, colNumber) => {
-          applyBorders(cell);
-          if (colNumber === 2) {
-            cell.numFmt = '#,##0.00';
-            cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else {
-            cell.alignment = { vertical: 'middle', horizontal: 'left' };
-          }
-        });
+        applyDataRowStyle(row, budgetRowCounter % 2 === 0);
+        row.getCell(1).alignment = { vertical: 'center', horizontal: 'left' };
+        row.getCell(2).numFmt = '#,##0.00';
+        row.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
+        row.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.positive } };
       });
 
-      chartsSheet.addRow(['CELKEM', totalBudget]).font = { bold: true };
-
-      // TODO: ExcelJS chart API is complex and needs proper implementation
-      // For now, we skip chart creation and provide data tables instead
-      // Charts can be added manually in Excel using the data provided
-
-      // NOTE: ExcelJS.Worksheet.CellReferenceArray doesn't exist in current API
-      // Users can create charts manually in Excel from the data tables provided
+      // Total row
+      const budgetTotalRow = chartsSheet.addRow(['CELKEM', totalBudget, '100%']);
+      applyTotalRowStyle(budgetTotalRow);
+      budgetTotalRow.getCell(2).numFmt = '#,##0.00';
     }
 
-    // Add spacing
     chartsSheet.addRow([]);
     chartsSheet.addRow([]);
 
     // Cost breakdown by subtype
     const costByType = {};
     positions.forEach(pos => {
-      if (!costByType[pos.subtype]) {
-        costByType[pos.subtype] = 0;
+      const typeName = pos.subtype === 'jiné' ? (pos.item_name || 'jiné') : pos.subtype;
+      if (!costByType[typeName]) {
+        costByType[typeName] = 0;
       }
-      costByType[pos.subtype] += (pos.kros_total_czk || 0);
+      costByType[typeName] += (pos.kros_total_czk || 0);
     });
 
-    chartsSheet.addRow(['NÁKLADY PODLE TYPU PRACÍ']);
-    const costHeaderRow = chartsSheet.lastRow;
-    costHeaderRow.font = { bold: true, size: 12 };
+    // Section header
+    const costSectionRow = chartsSheet.addRow(['NÁKLADY PODLE TYPU PRACÍ']);
+    applyGroupHeaderStyle(costSectionRow.getCell(1));
+    chartsSheet.mergeCells(costSectionRow.number, 1, costSectionRow.number, 2);
 
+    // Table headers
     const costChartHeaders = ['Typ práce', 'Náklady (CZK)'];
     const costChartHeaderRow = chartsSheet.addRow(costChartHeaders);
-    costChartHeaderRow.eachCell((cell) => applyHeaderStyle(cell));
-
-    let costDataStartRow = chartsSheet.lastRow.number + 1;
-    let totalCost = 0;
-
-    Object.entries(costByType).forEach(([type, cost]) => {
-      chartsSheet.addRow([type, cost]);
-      totalCost += cost;
-
-      const row = chartsSheet.lastRow;
-      row.eachCell((cell, colNumber) => {
-        applyBorders(cell);
-        if (colNumber === 2) {
-          cell.numFmt = '#,##0.00';
-          cell.alignment = { vertical: 'middle', horizontal: 'right' };
-        } else {
-          cell.alignment = { vertical: 'middle', horizontal: 'left' };
-        }
-      });
+    costChartHeaderRow.eachCell((cell, colNumber) => {
+      applyHeaderStyle(cell);
+      if (colNumber === 1) cell.alignment = { vertical: 'center', horizontal: 'left' };
     });
 
-    chartsSheet.addRow(['CELKEM', totalCost]).font = { bold: true };
+    let totalCostChart = 0;
+    let costRowCounter = 0;
 
-    // Auto-fit charts sheet columns
-    autoFitColumns(chartsSheet, 15, 60);
+    Object.entries(costByType).forEach(([type, cost]) => {
+      costRowCounter++;
+      totalCostChart += cost;
+
+      const row = chartsSheet.addRow([type, cost]);
+      applyDataRowStyle(row, costRowCounter % 2 === 0);
+      row.getCell(1).alignment = { vertical: 'center', horizontal: 'left' };
+      row.getCell(2).numFmt = '#,##0.00';
+      row.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
+    });
+
+    // Total row
+    const costTotalRow = chartsSheet.addRow(['CELKEM', totalCostChart]);
+    applyTotalRowStyle(costTotalRow);
+    costTotalRow.getCell(2).numFmt = '#,##0.00';
 
     // Generate buffer
     const buffer = await workbook.xlsx.writeBuffer();
