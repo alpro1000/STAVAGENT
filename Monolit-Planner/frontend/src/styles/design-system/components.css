@@ -142,7 +142,7 @@
 .c-input--number,
 .c-input--code {
   font-family: var(--font-mono);
-  font-size: 15px;
+  font-size: 14px; /* VARIANT A: Standard body size */
   font-weight: 500;
   font-variant-numeric: tabular-nums;
 }

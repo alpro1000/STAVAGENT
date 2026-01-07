@@ -23,7 +23,7 @@ interface SidebarProps {
 
 const MIN_WIDTH = 180;
 const MAX_WIDTH = 400;
-const DEFAULT_WIDTH = 220;
+const DEFAULT_WIDTH = 200;
 const STORAGE_KEY = 'monolit-sidebar-width';
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {

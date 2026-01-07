@@ -33,9 +33,9 @@
   /* Neutral emphasis - for quantities, totals */
   --color-emphasis: var(--slate-900);
 
-  /* ===== TYPOGRAPHY SIZES ===== */
-  --num-lg: 0.9375rem;  /* 15px - totals */
-  --num-md: 0.8125rem;  /* 13px - default */
+  /* ===== TYPOGRAPHY SIZES (VARIANT A) ===== */
+  --num-lg: 1rem;       /* 16px - totals */
+  --num-md: 0.875rem;   /* 14px - default (STANDARD body) */
   --num-sm: 0.75rem;    /* 12px - muted */
 }
 
@@ -237,7 +237,7 @@
 /* A: Podtyp - flexible name column */
 .col-podtyp {
   width: auto;
-  min-width: 80px;
+  min-width: 60px;
 }
 
 /* B: MJ - unit */
