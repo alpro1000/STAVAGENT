@@ -20,6 +20,53 @@ if (!fs.existsSync(EXPORTS_DIR)) {
   logger.info(`Created exports directory: ${EXPORTS_DIR}`);
 }
 
+// ============================================
+// SLATE COLOR PALETTE (Excel ARGB format)
+// ============================================
+const colors = {
+  // Backgrounds
+  headerBg: 'FFF8FAFC',      // Slate 50
+  sectionBg: 'FFF1F5F9',     // Slate 100
+  rowEvenBg: 'FFFFFFFF',     // White
+  rowOddBg: 'FFFAFAFA',      // Near white
+  totalBg: 'FFF8FAFC',       // Slate 50
+
+  // Borders
+  borderLight: 'FFE2E8F0',   // Slate 200
+  borderMedium: 'FFCBD5E1',  // Slate 300
+  sectionAccent: 'FF94A3B8', // Slate 400 (left border)
+
+  // Text
+  textPrimary: 'FF0F172A',   // Slate 900
+  textSecondary: 'FF475569', // Slate 600
+  textMuted: 'FF94A3B8',     // Slate 400
+
+  // Accents
+  positive: 'FF059669',      // Emerald - days, KPI
+  warning: 'FFD97706',       // Amber - warnings
+};
+
+// ============================================
+// PRECISE COLUMN WIDTHS
+// ============================================
+const columnWidths = {
+  A: 28,   // Podtyp
+  B: 6,    // MJ
+  C: 12,   // Množství
+  D: 6,    // Lidí
+  E: 10,   // Kč/hod
+  F: 9,    // Hod/den
+  G: 7,    // Dny
+  H: 10,   // MJ/h
+  I: 10,   // Hod celkem
+  J: 12,   // Kč celkem
+  K: 11,   // Kč/m³
+  L: 11,   // Objem m³
+  M: 10,   // KROS JC
+  N: 13,   // KROS celkem
+  O: 8,    // RFI
+};
+
 // Format helpers
 const formatNumber = (num, decimals = 2) => {
   if (num === undefined || num === null || isNaN(num)) return '0';
@@ -132,50 +179,124 @@ function autoFitColumns(sheet, minWidth = 10, maxWidth = 60) {
 }
 
 /**
- * Apply borders to a cell
+ * Apply borders to a cell - Slate minimal style
  */
 const applyBorders = (cell) => {
   cell.border = {
-    top: { style: 'thin', color: { argb: 'FF000000' } },
-    left: { style: 'thin', color: { argb: 'FF000000' } },
-    bottom: { style: 'thin', color: { argb: 'FF000000' } },
-    right: { style: 'thin', color: { argb: 'FF000000' } }
+    bottom: { style: 'thin', color: { argb: colors.borderLight } }
   };
 };
 
 /**
- * Apply header style (dark blue background, white bold text)
+ * Apply Slate header style (Slate 50 bg, Slate 600 text, medium bottom border)
  */
 const applyHeaderStyle = (cell) => {
   cell.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: 'FF4472C4' } // Dark blue
+    fgColor: { argb: colors.headerBg }
   };
   cell.font = {
+    name: 'Calibri',
+    size: 9,
     bold: true,
-    color: { argb: 'FFFFFFFF' }, // White
-    size: 11
+    color: { argb: colors.textSecondary }
   };
-  cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
-  applyBorders(cell);
+  cell.alignment = { vertical: 'center', horizontal: 'right' };
+  cell.border = {
+    bottom: { style: 'medium', color: { argb: colors.borderMedium } }
+  };
 };
 
 /**
- * Apply group header style (light gray background, bold text)
+ * Apply section row style (Slate 100 bg, left accent border)
  */
 const applyGroupHeaderStyle = (cell) => {
   cell.fill = {
     type: 'pattern',
     pattern: 'solid',
-    fgColor: { argb: 'FFE7E6E6' } // Light gray
+    fgColor: { argb: colors.sectionBg }
   };
   cell.font = {
+    name: 'Calibri',
+    size: 10,
     bold: true,
-    size: 11
+    color: { argb: colors.textPrimary }
   };
-  cell.alignment = { vertical: 'middle', horizontal: 'left' };
-  applyBorders(cell);
+  cell.alignment = { vertical: 'center', horizontal: 'left' };
+  cell.border = {
+    left: { style: 'thick', color: { argb: colors.sectionAccent } },
+    bottom: { style: 'thin', color: { argb: colors.borderLight } }
+  };
+};
+
+/**
+ * Apply precise column widths from specification
+ */
+const applyPreciseColumnWidths = (sheet) => {
+  Object.entries(columnWidths).forEach(([col, width]) => {
+    sheet.getColumn(col).width = width;
+  });
+};
+
+/**
+ * Apply data row style (Slate 600 text, minimal borders)
+ */
+const applyDataRowStyle = (row, isEven = false) => {
+  row.eachCell({ includeEmpty: true }, (cell, colNumber) => {
+    // Background - alternating rows
+    cell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: isEven ? colors.rowEvenBg : colors.rowOddBg }
+    };
+
+    // Font and alignment
+    cell.font = {
+      name: 'Calibri',
+      size: 10,
+      color: { argb: colors.textSecondary }
+    };
+    cell.alignment = { vertical: 'center', horizontal: 'right' };
+
+    // Border
+    applyBorders(cell);
+  });
+
+  // First column (Podtyp) - left align, primary text
+  row.getCell(1).alignment = { vertical: 'center', horizontal: 'left' };
+  row.getCell(1).font = {
+    name: 'Calibri',
+    size: 10,
+    bold: true,
+    color: { argb: colors.textPrimary }
+  };
+};
+
+/**
+ * Apply total row style (double top border, bold)
+ */
+const applyTotalRowStyle = (row) => {
+  row.eachCell({ includeEmpty: true }, (cell) => {
+    cell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: colors.totalBg }
+    };
+    cell.font = {
+      name: 'Calibri',
+      size: 11,
+      bold: true,
+      color: { argb: colors.textPrimary }
+    };
+    cell.alignment = { vertical: 'center', horizontal: 'right' };
+    cell.border = {
+      top: { style: 'double', color: { argb: colors.borderMedium } }
+    };
+  });
+
+  // First column - left align, extra bold
+  row.getCell(1).alignment = { vertical: 'center', horizontal: 'left' };
 };
 
 /**
@@ -289,8 +410,12 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
     // ============= ADD SINGLE HEADER ROW (before all parts) =============
     const headerRow = detailSheet.addRow(positionHeaders);
-    headerRow.eachCell((cell) => {
+    headerRow.eachCell((cell, colNumber) => {
       applyHeaderStyle(cell);
+      // First column (Podtyp) - left align
+      if (colNumber === 1) {
+        cell.alignment = { vertical: 'center', horizontal: 'left' };
+      }
     });
 
     // Track data row ranges for totals row
@@ -342,53 +467,61 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         lastDataRow = rowNumber;
         rowCounter++;
 
-        // Apply borders and alignment to all cells
-        dataRow.eachCell((cell, colNumber) => {
-          applyBorders(cell);
+        // Apply Slate data row style (alternating backgrounds)
+        applyDataRowStyle(dataRow, rowCounter % 2 === 0);
 
-          // Apply zebra striping (alternate background colors for data rows)
-          if (rowCounter % 2 === 0) {
-            cell.fill = {
-              type: 'pattern',
-              pattern: 'solid',
-              fgColor: { argb: 'FFF9F9F9' } // Very light gray
-            };
-          }
+        // Apply number formats to cells
+        dataRow.getCell(3).numFmt = '0.00';    // C: Množství
+        dataRow.getCell(4).numFmt = '0';       // D: Lidi
+        dataRow.getCell(5).numFmt = '#,##0.00'; // E: Kč/hod
+        dataRow.getCell(6).numFmt = '0.00';    // F: Hod/den
+        dataRow.getCell(7).numFmt = '0.00';    // G: Dny
+        dataRow.getCell(8).numFmt = '0.000';   // H: MJ/h
+        dataRow.getCell(9).numFmt = '0.00';    // I: Hod celkem
+        dataRow.getCell(10).numFmt = '0.00';   // J: Kč celkem
+        dataRow.getCell(11).numFmt = '#,##0.00'; // K: Kč/m³
+        dataRow.getCell(12).numFmt = '0.00';   // L: Objem m³
+        dataRow.getCell(13).numFmt = '#,##0.00'; // M: KROS JC
+        dataRow.getCell(14).numFmt = '#,##0.00'; // N: KROS celkem
 
-          // Format numbers with proper alignment and number format
-          if (colNumber === 3) {
-            // C: Množství - 2 decimals
-            cell.numFmt = '0.00';
-            cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 4) {
-            // D: Lidi - integer
-            cell.numFmt = '0';
-            cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 5 || colNumber === 11 || colNumber === 13) {
-            // E: Kč/hod, K: Kč/m³, M: KROS JC - currency format
-            cell.numFmt = '#,##0.00';
-            cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 6 || colNumber === 7 || colNumber === 12) {
-            // F: Hod/den, G: Dny, L: Objem m³ - 2 decimals
-            cell.numFmt = '0.00';
-            cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 8) {
-            // H: MJ/h (speed) - 3 decimals for precision
-            cell.numFmt = '0.000';
-            cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 9 || colNumber === 10) {
-            // I: Hod celkem, J: Kč celkem - 2 decimals
-            cell.numFmt = '0.00';
-            cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else if (colNumber === 14) {
-            // N: KROS celkem - currency format
-            cell.numFmt = '#,##0.00';
-            cell.alignment = { vertical: 'middle', horizontal: 'right' };
-          } else {
-            // Text columns (A, B, O)
-            cell.alignment = { vertical: 'middle', horizontal: 'left' };
-          }
-        });
+        // Apply semantic colors (after base styling)
+        // C: Množství - bold primary
+        dataRow.getCell(3).font = {
+          name: 'Calibri',
+          size: 10,
+          bold: true,
+          color: { argb: colors.textPrimary }
+        };
+
+        // G: Dny - green bold (positive)
+        dataRow.getCell(7).font = {
+          name: 'Calibri',
+          size: 10,
+          bold: true,
+          color: { argb: colors.positive }
+        };
+
+        // K: Kč/m³ - green medium (positive KPI)
+        dataRow.getCell(11).font = {
+          name: 'Calibri',
+          size: 10,
+          color: { argb: colors.positive }
+        };
+
+        // M: KROS JC - muted
+        dataRow.getCell(13).font = {
+          name: 'Calibri',
+          size: 10,
+          color: { argb: colors.textMuted }
+        };
+
+        // N: KROS celkem - bold primary
+        dataRow.getCell(14).font = {
+          name: 'Calibri',
+          size: 10,
+          bold: true,
+          color: { argb: colors.textPrimary }
+        };
 
         // Add formulas for calculated columns
         // H: MJ/h (speed) = C / I (qty / labor_hours), with error handling for div/0
@@ -471,22 +604,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
       const totalRowNumber = totalsRow.number;
 
-      // Apply totals row styling
-      totalsRow.eachCell((cell, colNumber) => {
-        cell.font = { bold: true, size: 11 };
-        cell.fill = {
-          type: 'pattern',
-          pattern: 'solid',
-          fgColor: { argb: 'FFE7E6E6' } // Light gray
-        };
-        applyBorders(cell);
-
-        if (colNumber >= 3 && colNumber <= 14) {
-          cell.alignment = { vertical: 'middle', horizontal: 'right' };
-        } else {
-          cell.alignment = { vertical: 'middle', horizontal: 'left' };
-        }
-      });
+      // Apply Slate total row styling (double top border, bold, Slate 50 bg)
+      applyTotalRowStyle(totalsRow);
 
       // Add SUM formulas for totals row (with result=0 to ensure Excel shows formula)
       // C: Sum of qty
@@ -525,9 +644,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       totalsRow.getCell(14).numFmt = '#,##0.00';
     }
 
-    // Auto-fit columns based on content (using smart algorithm)
-    // Increased minWidth from 12 to 15 for better readability
-    autoFitColumns(detailSheet, 15, 60);
+    // Apply precise column widths per specification
+    applyPreciseColumnWidths(detailSheet);
 
     // ============= SHEET 3: MATERIALS AGGREGATION =============
     const materialsSheet = workbook.addWorksheet('Materiály', {
