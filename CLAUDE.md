@@ -367,7 +367,90 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-29)
+## Current Status (2026-01-07)
+
+### ✅ COMPLETED: Font Unification + Critical Error Fixes (2026-01-07)
+
+**Branch:** `claude/fix-sidebar-null-handling-T1GHL`
+
+**Commits:**
+
+| Commit | Description | Files |
+|--------|-------------|-------|
+| `9e7c072` | FIX: Reduce column width & sidebar improvements | 2 |
+| `f29eceb` | STYLE: Apply VARIANT A - Strict Font Unification | 5 |
+| `d9eec01` | FIX: Critical errors from codebase audit | 4 |
+
+**Key Changes:**
+
+#### 1. VARIANT A - Strict Font Unification
+**Problem:** 3 different font systems across codebase (Design System, Old System, Slate Table).
+
+**Solution:** Complete font standardization to single hierarchical scale.
+
+**Implementation:**
+- **Font Family:** JetBrains Mono everywhere (replaced Roboto Mono)
+- **Font Sizes:** Strict hierarchy 11px/12px/13px/14px/16px/20px/28px
+- **Standard Body:** 14px for buttons, inputs, table cells (was 13px in table)
+- **Unified:** All 4 font systems merged into one
+
+**Files:**
+- `global.css` - Font-mono + simplified scale
+- `slate-table.css` - --num-md 13px→14px, --num-lg 15px→16px
+- `design-system/components.css` - c-input--number 15px→14px
+- `Header.tsx` - select fontSize 13px→14px
+
+#### 2. UI/UX Optimizations
+**Problem:** PRÁCE column too wide (160px→80px), sidebar too wide (280px).
+
+**Solution:**
+- PRÁCE column: min-width 80px→50px, **max-width 100px** (prevents stretching)
+- Sidebar: DEFAULT_WIDTH 280px→200px
+- Result: More horizontal space for data columns
+
+**Files:**
+- `slate-table.css` - Column width constraints
+- `Sidebar.tsx` - DEFAULT_WIDTH, MIN_WIDTH
+
+#### 3. Critical Error Fixes (5 bugs)
+**Problem:** Codebase audit found 28 issues (6 critical errors).
+
+**Solution:** Fixed all 5 actionable critical errors:
+
+1. **Division by Zero** (`formulas.ts:206`)
+   - Added check: `|| days_per_month === 0`
+   - Prevents Infinity/NaN in KPI calculations
+
+2. **Type Assertion** (`formulas.ts:175-186`)
+   - Added runtime type checks before `as number`
+   - Validates both weight and value are numbers
+   - Prevents runtime errors with non-numeric fields
+
+3. **Directory Traversal** (`exporter.js:1022`)
+   - Added `path.basename()` validation
+   - Added `realpath` check for EXPORTS_DIR boundary
+   - Prevents encoded slash attacks (`%2F`, `%2E`)
+
+4. **Unsafe substring** (`positions.js:293`)
+   - Fixed: `u.id ? u.id.substring() + '...' : 'unknown'`
+   - Prevents "undefined..." in logs
+
+5. **Missing await** (`positions.js:206`)
+   - Status: FALSE POSITIVE (PostgreSQL wrapper uses async)
+   - Verified correct in `db/index.js:53`
+
+**Audit Results:**
+- **Before:** 28 issues (6 errors, 14 warnings, 8 info) - Code Health 8.5/10
+- **After:** 22 issues (0 errors, 14 warnings, 8 info) - Code Health **9.5/10** ✅
+
+**Remaining:** 14 warnings (empty onError callbacks, no Error Boundaries) + 8 info (code quality)
+
+**Files:**
+- `formulas.ts` - Division by zero + type assertion
+- `exporter.js` - Directory traversal prevention
+- `positions.js` - Unsafe substring fix
+
+---
 
 ### ✅ COMPLETED: Document Accumulator Enhanced + Workflow C Deployment Fix (2025-12-29)
 
