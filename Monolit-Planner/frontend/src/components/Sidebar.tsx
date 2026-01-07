@@ -263,7 +263,20 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         className="c-btn sidebar-toggle"
         onClick={onToggle}
         title={isOpen ? 'Skrýt (Ctrl+B)' : `Zobrazit seznam (Ctrl+B) • ${bridgeCount} objektů`}
-        style={{ position: 'absolute', top: '10px', right: '-12px', zIndex: 10, minHeight: '32px', padding: '6px 10px' }}
+        style={{
+          position: 'absolute',
+          top: '10px',
+          right: '-24px', // Increased from -12px for better visibility
+          zIndex: 10,
+          minHeight: '32px',
+          padding: '6px 10px',
+          background: 'var(--accent-orange)',
+          color: '#1a1a1a',
+          border: 'none',
+          borderRadius: '0 6px 6px 0',
+          boxShadow: '2px 2px 8px rgba(0, 0, 0, 0.2)',
+          fontWeight: 'bold'
+        }}
       >
         {isOpen ? '◀' : '▶'}
       </button>
