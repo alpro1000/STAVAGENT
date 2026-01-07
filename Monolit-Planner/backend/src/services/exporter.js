@@ -328,7 +328,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
           null,                  // J: Kč celkem (formula)
           null,                  // K: Kč/m³ (formula: J/L)
           pos.concrete_m3,       // L: Objem m³
-          pos.kros_unit_czk,     // M: KROS JC
+          null,                  // M: KROS JC (formula: CEILING)
           null,                  // N: KROS celkem (formula)
           pos.has_rfi ? (pos.rfi_message || '⚠️ RFI') : ''  // O: RFI
         ];
@@ -416,10 +416,17 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
           result: unitCostPerM3
         };
 
+        // M: KROS JC = CEILING(Kč/m³, 50) - round up to nearest 50 CZK
+        const krosUnitCzk = unitCostPerM3 > 0 ? Math.ceil(unitCostPerM3 / 50) * 50 : 0;
+        dataRow.getCell(13).value = {
+          formula: `CEILING(K${rowNumber},50)`,
+          result: krosUnitCzk
+        };
+
         // N: KROS celkem = M * L (kros_unit_czk * concrete_m3)
         dataRow.getCell(14).value = {
           formula: `M${rowNumber}*L${rowNumber}`,
-          result: (pos.kros_unit_czk || 0) * (pos.concrete_m3 || 0)
+          result: krosUnitCzk * (pos.concrete_m3 || 0)
         };
 
         // Highlight RFI rows
