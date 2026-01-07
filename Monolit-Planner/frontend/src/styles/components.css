@@ -1133,48 +1133,48 @@ button:disabled {
 }
 
 .col-mj {
-  width: 42px; /* Reduced from 45px - short values like "M3" */
-  min-width: 42px;
-}
-
-.col-mnozstvi {
-  width: 50px; /* Reduced from 55px */
-  min-width: 50px;
-}
-
-.col-lidi {
-  width: 45px; /* Reduced from 50px */
-  min-width: 45px;
-}
-
-.col-cena-hod {
-  width: 48px; /* Reduced from 50px */
+  width: 48px; /* Increased from 42px - values like "M3" need space */
   min-width: 48px;
 }
 
+.col-mnozstvi {
+  width: 58px; /* Increased from 50px - values like "28.28" need space */
+  min-width: 58px;
+}
+
+.col-lidi {
+  width: 48px; /* Increased from 45px - values like "4" need space */
+  min-width: 48px;
+}
+
+.col-cena-hod {
+  width: 52px; /* Increased from 48px - values like "398" need space */
+  min-width: 52px;
+}
+
 .col-hod-den {
-  width: 45px; /* Reduced from 50px */
-  min-width: 45px;
+  width: 50px; /* Increased from 45px - values like "10" need space */
+  min-width: 50px;
 }
 
 .col-den {
-  width: 42px; /* Reduced from 45px */
-  min-width: 42px;
+  width: 50px; /* Increased from 42px - values like "0.5" need space */
+  min-width: 50px;
 }
 
 .col-rychlost {
-  width: 50px; /* Reduced from 55px */
-  min-width: 50px;
+  width: 58px; /* Increased from 50px - values like "1.414" need space */
+  min-width: 58px;
 }
 
 .col-hod-celkem {
-  width: 50px; /* Reduced from 55px */
-  min-width: 50px;
+  width: 55px; /* Increased from 50px - values like "20,0" need space */
+  min-width: 55px;
 }
 
 .col-kc-celkem {
-  width: 68px; /* Reduced from 75px */
-  min-width: 68px;
+  width: 75px; /* Increased from 68px - values like "7 960,00" need space */
+  min-width: 75px;
 }
 
 .col-kc-m3 {
