@@ -234,11 +234,11 @@
   text-align: center;
 }
 
-/* A: Podtyp - flexible name column */
+/* A: Podtyp (PRÁCE) - work type name */
 .col-podtyp {
-  width: auto;
-  min-width: 50px;
-  max-width: 100px; /* Prevent excessive stretching */
+  width: 80px !important;
+  min-width: 80px;
+  max-width: 80px;
 }
 
 /* B: MJ - unit */
