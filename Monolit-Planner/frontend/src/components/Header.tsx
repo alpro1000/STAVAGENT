@@ -212,7 +212,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             title="Vytvořit nový objekt s prázdnými pozicemi"
             style={{ padding: '6px 10px' }}
           >
-            ➕ Nový
+            ➕ Nový objekt
           </button>
 
           <select
@@ -236,7 +236,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             title="Upravit název a metadata objektu"
             style={{ padding: '6px 8px' }}
           >
-            ✏️
+            ✏️ Upravit
           </button>
 
           <button
@@ -252,7 +252,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
                 Načítání...
               </>
             ) : (
-              <>💾 XLSX</>
+              <>💾 Nahrát XLSX</>
             )}
           </button>
 
@@ -271,7 +271,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             title="Exportovat aktuální pozice do Excel souboru"
             style={{ padding: '6px 8px' }}
           >
-            📥
+            📥 Export XLSX
           </button>
 
           <button
@@ -281,7 +281,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             title="Uložit export na server"
             style={{ padding: '6px 10px' }}
           >
-            💾 {isSaving ? '...' : 'Uložit'}
+            💾 {isSaving ? 'Ukládám...' : 'Uložit'}
           </button>
 
           <button
@@ -290,7 +290,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             title="Zobrazit historii exportů"
             style={{ padding: '6px 8px' }}
           >
-            📋
+            📋 Historie
           </button>
 
         </div>
