@@ -219,7 +219,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             className="c-select"
             value={selectedBridge || ''}
             onChange={handleBridgeChange}
-            style={{ minWidth: '150px', maxWidth: '250px', fontSize: '13px' }}
+            style={{ minWidth: '150px', maxWidth: '250px', fontSize: '14px' }}
           >
             <option value="">Vyberte objekt...</option>
             {bridges.map((bridge) => (
