@@ -637,9 +637,20 @@ button:disabled {
   border-color: var(--accent-success);
 }
 
+.bridge-action-btn.btn-add:hover {
+  background: var(--accent-orange);
+  border-color: var(--accent-orange);
+}
+
 .bridge-action-btn.btn-delete:hover {
   background: var(--accent-danger);
   border-color: var(--accent-danger);
+}
+
+/* Action buttons in project header - always visible */
+.project-header .bridge-action-btn {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Sidebar Tools */
