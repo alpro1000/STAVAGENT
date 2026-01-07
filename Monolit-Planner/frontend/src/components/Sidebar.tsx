@@ -21,9 +21,9 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
-const MIN_WIDTH = 200;
-const MAX_WIDTH = 500;
-const DEFAULT_WIDTH = 280;
+const MIN_WIDTH = 180;
+const MAX_WIDTH = 400;
+const DEFAULT_WIDTH = 220;
 const STORAGE_KEY = 'monolit-sidebar-width';
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
@@ -320,7 +320,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       )}
 
       {isOpen && (
-        <div className="sidebar-content" style={{ padding: 'var(--space-md)', paddingRight: 'var(--space-lg)' }}>
+        <div className="sidebar-content" style={{ padding: 'var(--space-md)', paddingRight: 'var(--space-lg)', overflowX: 'hidden', overflowY: 'auto' }}>
           <div className="sidebar-section">
             <h3 className="c-section-title">
               <span>🏗️</span> Objekty
