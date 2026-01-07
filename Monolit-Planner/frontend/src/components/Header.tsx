@@ -196,12 +196,12 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           <h1 className="c-header__title" style={{ fontSize: '20px' }}>Monolit Planner</h1>
         </div>
 
-        <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap', alignItems: 'center' }}>
+        <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap', alignItems: 'center', gap: '6px' }}>
           <button
             className="c-btn"
             onClick={toggleTheme}
             title={isDark ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
-            style={{ minWidth: '44px', padding: '10px' }}
+            style={{ minWidth: '36px', padding: '6px' }}
           >
             {isDark ? '☀️' : '🌙'}
           </button>
@@ -210,15 +210,16 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             className="c-btn c-btn--primary"
             onClick={() => setShowCreateForm(true)}
             title="Vytvořit nový objekt s prázdnými pozicemi"
+            style={{ padding: '6px 10px' }}
           >
-            ➕ Nový objekt
+            ➕ Nový
           </button>
 
           <select
             className="c-select"
             value={selectedBridge || ''}
             onChange={handleBridgeChange}
-            style={{ minWidth: '220px' }}
+            style={{ minWidth: '150px', maxWidth: '250px', fontSize: '13px' }}
           >
             <option value="">Vyberte objekt...</option>
             {bridges.map((bridge) => (
@@ -233,8 +234,9 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             onClick={() => setShowEditForm(true)}
             disabled={!selectedBridge}
             title="Upravit název a metadata objektu"
+            style={{ padding: '6px 8px' }}
           >
-            ✏️ Upravit
+            ✏️
           </button>
 
           <button
@@ -242,6 +244,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             onClick={handleUploadClick}
             disabled={isUploading}
             title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi objektů'}
+            style={{ padding: '6px 10px' }}
           >
             {isUploading ? (
               <>
@@ -249,7 +252,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
                 Načítání...
               </>
             ) : (
-              <>💾 Nahrát XLSX</>
+              <>💾 XLSX</>
             )}
           </button>
 
@@ -266,8 +269,9 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             onClick={handleExport}
             disabled={!selectedBridge}
             title="Exportovat aktuální pozice do Excel souboru"
+            style={{ padding: '6px 8px' }}
           >
-            📥 Export XLSX
+            📥
           </button>
 
           <button
@@ -275,16 +279,18 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             onClick={handleSaveToServer}
             disabled={!selectedBridge || isSaving}
             title="Uložit export na server"
+            style={{ padding: '6px 10px' }}
           >
-            💾 {isSaving ? 'Ukládám...' : 'Uložit'}
+            💾 {isSaving ? '...' : 'Uložit'}
           </button>
 
           <button
             className="c-btn"
             onClick={() => setShowExportHistory(true)}
             title="Zobrazit historii exportů"
+            style={{ padding: '6px 8px' }}
           >
-            📋 Historie
+            📋
           </button>
 
         </div>
