@@ -1,14 +1,14 @@
 /**
- * Sidebar component - Collapsible with Modern Animations + Resizable
+ * Sidebar component - Collapsible with Modern Animations
  * Features:
  * - Smooth collapse/expand with cubic-bezier easing
  * - Hover tooltips for collapsed state
  * - Enhanced visual feedback
  * - Keyboard shortcut: Ctrl+B / Cmd+B
- * - Resizable width via drag handle
+ * - Fixed width: 220px (simplified from resizable)
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
@@ -21,10 +21,7 @@ interface SidebarProps {
   onToggle: () => void;
 }
 
-const MIN_WIDTH = 180;
-const MAX_WIDTH = 400;
-const DEFAULT_WIDTH = 200;
-const STORAGE_KEY = 'monolit-sidebar-width';
+const SIDEBAR_WIDTH = 220;
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
@@ -39,50 +36,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const [showAddObjectModal, setShowAddObjectModal] = useState(false);
   const [selectedProjectForAdd, setSelectedProjectForAdd] = useState<string | null>(null);
 
-  // Resizable sidebar state
-  const [sidebarWidth, setSidebarWidth] = useState(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
-  });
-  const [isResizing, setIsResizing] = useState(false);
-  const sidebarRef = useRef<HTMLElement>(null);
-
   const bridgeCount = bridges.length;
-
-  // Handle resize drag
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsResizing(true);
-  }, []);
-
-  const handleMouseMove = useCallback((e: MouseEvent) => {
-    if (!isResizing) return;
-    const newWidth = Math.min(MAX_WIDTH, Math.max(MIN_WIDTH, e.clientX));
-    setSidebarWidth(newWidth);
-  }, [isResizing]);
-
-  const handleMouseUp = useCallback(() => {
-    if (isResizing) {
-      setIsResizing(false);
-      localStorage.setItem(STORAGE_KEY, sidebarWidth.toString());
-    }
-  }, [isResizing, sidebarWidth]);
-
-  // Attach global mouse listeners for resize
-  useEffect(() => {
-    if (isResizing) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      document.body.style.cursor = 'ew-resize';
-      document.body.style.userSelect = 'none';
-    }
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.body.style.cursor = '';
-      document.body.style.userSelect = '';
-    };
-  }, [isResizing, handleMouseMove, handleMouseUp]);
 
   const handleBridgeHover = (bridgeId: string, e: React.MouseEvent<HTMLLIElement>) => {
     if (!isOpen) {
@@ -246,16 +200,13 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
   return (
     <aside
-      ref={sidebarRef}
       className={`c-panel sidebar ${isOpen ? 'open' : 'collapsed'}`}
       style={{
         borderRadius: 0,
         padding: 0,
         borderTop: 'none',
-        width: isOpen ? `${sidebarWidth}px` : '70px',
-        minWidth: isOpen ? `${MIN_WIDTH}px` : '70px',
-        maxWidth: isOpen ? `${MAX_WIDTH}px` : '70px',
-        transition: isResizing ? 'none' : 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        width: isOpen ? `${SIDEBAR_WIDTH}px` : '70px',
+        transition: 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         position: 'relative'
       }}
     >
@@ -266,8 +217,8 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         style={{
           position: 'absolute',
           top: '10px',
-          right: '-24px', // Increased from -12px for better visibility
-          zIndex: 30, // Must be higher than resize handle (zIndex: 20)
+          right: '-12px',
+          zIndex: 10,
           minHeight: '32px',
           padding: '6px 10px',
           background: 'var(--accent-orange)',
@@ -280,36 +231,6 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       >
         {isOpen ? '◀' : '▶'}
       </button>
-
-      {/* Resize Handle */}
-      {isOpen && (
-        <div
-          className="sidebar-resize-handle"
-          onMouseDown={handleMouseDown}
-          style={{
-            position: 'absolute',
-            top: 0,
-            right: 0,
-            width: '6px',
-            height: '100%',
-            cursor: 'ew-resize',
-            background: isResizing ? 'var(--accent-orange)' : 'transparent',
-            transition: 'background 0.2s',
-            zIndex: 20
-          }}
-          onMouseEnter={(e) => {
-            if (!isResizing) {
-              (e.target as HTMLElement).style.background = 'var(--accent-orange)';
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!isResizing) {
-              (e.target as HTMLElement).style.background = 'transparent';
-            }
-          }}
-          title="Táhněte pro změnu šířky"
-        />
-      )}
 
       {/* Collapsed state indicator */}
       {!isOpen && bridgeCount > 0 && (
