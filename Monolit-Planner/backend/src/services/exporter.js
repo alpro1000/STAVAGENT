@@ -236,7 +236,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     });
 
     // Auto-fit KPI sheet columns
-    autoFitColumns(kpiSheet, 10, 50);
+    autoFitColumns(kpiSheet, 15, 60);
 
     // ============= SHEET 2: DETAILED POSITIONS =============
     const detailSheet = workbook.addWorksheet('Detaily', {
@@ -284,6 +284,12 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
     detailSheet.addRow([]); // Empty row
 
+    // ============= ADD SINGLE HEADER ROW (before all parts) =============
+    const headerRow = detailSheet.addRow(positionHeaders);
+    headerRow.eachCell((cell) => {
+      applyHeaderStyle(cell);
+    });
+
     // Track data row ranges for totals row
     let firstDataRow = null;
     let lastDataRow = null;
@@ -291,16 +297,10 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
     // Add each part group
     Object.entries(groupedPositions).forEach(([partName, partPositions]) => {
-      // Part name header
+      // Part name header (no column headers - they're above)
       const partHeaderRow = detailSheet.addRow([`=== ${partName} ===`]);
       applyGroupHeaderStyle(partHeaderRow.getCell(1));
       detailSheet.mergeCells(partHeaderRow.number, 1, partHeaderRow.number, positionHeaders.length);
-
-      // Column headers
-      const headerRow = detailSheet.addRow(positionHeaders);
-      headerRow.eachCell((cell) => {
-        applyHeaderStyle(cell);
-      });
 
       // Data rows with formulas
       // Column indices (1-based):
@@ -323,7 +323,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
           null,                  // H: MJ/h (formula)
           null,                  // I: Hod celkem (formula)
           null,                  // J: Kč celkem (formula)
-          pos.unit_cost_on_m3,   // K: Kč/m³
+          null,                  // K: Kč/m³ (formula: J/L)
           pos.concrete_m3,       // L: Objem m³
           pos.kros_unit_czk,     // M: KROS JC
           null,                  // N: KROS celkem (formula)
@@ -404,6 +404,13 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         dataRow.getCell(10).value = {
           formula: `E${rowNumber}*I${rowNumber}`,
           result: (pos.wage_czk_ph || 0) * laborHours
+        };
+
+        // K: Kč/m³ ⭐ = J / L (cost_czk / concrete_m3), with error handling for div/0
+        const unitCostPerM3 = (pos.concrete_m3 || 0) > 0 ? ((pos.wage_czk_ph || 0) * laborHours) / (pos.concrete_m3 || 0) : 0;
+        dataRow.getCell(11).value = {
+          formula: `IF(L${rowNumber}>0,J${rowNumber}/L${rowNumber},0)`,
+          result: unitCostPerM3
         };
 
         // N: KROS celkem = M * L (kros_unit_czk * concrete_m3)
@@ -504,7 +511,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     }
 
     // Auto-fit columns based on content (using smart algorithm)
-    autoFitColumns(detailSheet, 12, 50);
+    // Increased minWidth from 12 to 15 for better readability
+    autoFitColumns(detailSheet, 15, 60);
 
     // ============= SHEET 3: MATERIALS AGGREGATION =============
     const materialsSheet = workbook.addWorksheet('Materiály', {
@@ -635,7 +643,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     }
 
     // Auto-fit materials sheet columns
-    autoFitColumns(materialsSheet, 12, 50);
+    autoFitColumns(materialsSheet, 15, 60);
 
     // ============= SHEET 4: SCHEDULE / TIMELINE =============
     const scheduleSheet = workbook.addWorksheet('Harmonogram', {
@@ -711,7 +719,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     });
 
     // Auto-fit schedule sheet columns
-    autoFitColumns(scheduleSheet, 12, 50);
+    autoFitColumns(scheduleSheet, 15, 60);
 
     // ============= SHEET 5: CHARTS & ANALYTICS =============
     const chartsSheet = workbook.addWorksheet('Grafy', {
@@ -811,7 +819,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     chartsSheet.addRow(['CELKEM', totalCost]).font = { bold: true };
 
     // Auto-fit charts sheet columns
-    autoFitColumns(chartsSheet, 10, 50);
+    autoFitColumns(chartsSheet, 15, 60);
 
     // Generate buffer
     const buffer = await workbook.xlsx.writeBuffer();
