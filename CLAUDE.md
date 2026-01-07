@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.0
-**Last Updated:** 2025-12-29
+**Version:** 1.3.1
+**Last Updated:** 2026-01-07
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2025-12-29):** Document Accumulator Enhanced (Version Tracking + Comparison + Excel/PDF Export) + Workflow C Deployment Fix
+**NEW (2026-01-07):** Slate Minimal Design System (Web UI + Excel Export) - 7 commits, 919 lines, complete styling overhaul
+**PREVIOUS (2025-12-29):** Document Accumulator Enhanced (Version Tracking + Comparison + Excel/PDF Export) + Workflow C Deployment Fix
 **PREVIOUS (2025-12-28):** Multi-Role Parallel Execution (3-4x speedup) + Workflow C (end-to-end pipeline) + Document Accumulator (incremental analysis)
 **PREVIOUS (2025-12-26):** Time Norms Automation (AI-powered days estimation) + Portal Services Hub + Digital Concrete Design System
 
@@ -367,7 +368,132 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2025-12-29)
+## Current Status (2026-01-07)
+
+### ✅ COMPLETED: Slate Minimal Design System Implementation (2026-01-07)
+
+**Branch:** `claude/cleanup-session-files-iCP0L`
+
+**Commits:**
+
+| Commit | Description |
+|--------|-------------|
+| `dfbc455` | FIX: Sidebar toggle button z-index - prevent resize handle overlap |
+| `c9b13b0` | FIX: Handle 'Bez projektu' (NULL project_name) deletion correctly |
+| `84c93f1` | STYLE: Implement Slate minimal table design |
+| `07de681` | FIX: Excel formulas not displaying - add calcProperties and result values |
+| `7e359f7` | REFACTOR: Implement precise color system & column widths per spec |
+| `cc52855` | FIX: Add KROS JC CEILING formula to Excel export |
+| `f033557` | STYLE: Apply Slate color system to Excel export |
+
+**Key Changes:**
+
+#### 1. Sidebar Toggle Button Visibility Fix
+**Problem:** Button hidden behind resize handle (z-index 10 vs resize handle z-index 20).
+
+**Solution:**
+- Increased button z-index from 10 to 30
+- Moved button position: `right: -12px → -24px`
+- Added orange background and shadow for better visibility
+
+**Files:** `Monolit-Planner/frontend/src/components/Sidebar.tsx`
+
+#### 2. Delete Project NULL Handling Fix
+**Problem:** 404 error when deleting projects named "Bez projektu" (which have NULL project_name in DB).
+
+**Solution:**
+```javascript
+const isNullProject = projectName === 'Bez projektu';
+if (isNullProject) {
+  projectsToDelete = await db.prepare(`
+    SELECT project_id FROM monolith_projects WHERE project_name IS NULL
+  `).all();
+}
+```
+
+**Files:** `Monolit-Planner/backend/src/routes/monolith-projects.js`
+
+#### 3. Slate Minimal Table Design (Web UI) - 593 lines
+**Created:** `/frontend/src/styles/slate-table.css`
+
+**Features:**
+- **Tailwind Slate Color Palette:** 10 shades (slate-50 to slate-900)
+- **Semantic Colors:** Emerald 600 (positive), Amber 600 (warning), Sky 600 (info)
+- **Precise Column Widths:** Fixed layout with exact pixel widths for all 15 columns
+- **Typography:** `font-variant-numeric: tabular-nums` for perfect number alignment
+- **Semantic Column Colors:**
+  - Days (Dny): Bold Emerald 600 (green - positive metric)
+  - KPI (Kč/m³): Emerald 600 (green - key performance indicator)
+  - KROS JC: Slate 400 (muted - reference data)
+  - Quantity, KROS celkem: Bold Slate 900 (emphasis)
+
+**Files:**
+- `Monolit-Planner/frontend/src/styles/slate-table.css` (NEW - 593 lines)
+- `Monolit-Planner/frontend/src/main.tsx` (import added)
+
+#### 4. Excel Formulas Display Fix
+**Problem:** Formulas exported but not visible/recalculating in Excel.
+
+**Solution:**
+1. Added `workbook.calcProperties.fullCalcOnLoad = true`
+2. Added `result: 0` field to all SUM formulas in totals row
+
+```javascript
+workbook.calcProperties.fullCalcOnLoad = true;
+
+totalsRow.getCell(3).value = {
+  formula: `SUM(C${firstDataRow}:C${lastDataRow})`,
+  result: 0  // Required for Excel to recognize formula
+};
+```
+
+**Files:** `Monolit-Planner/backend/src/services/exporter.js`
+
+#### 5. Precise Color System & Column Widths
+**Updated:** `slate-table.css` with exact hex values and widths per specification.
+
+**Changes:**
+- Exact hex colors from Tailwind Slate palette
+- `table-layout: fixed` for precise width control
+- `!important` rules for all column widths
+- Semantic colors for specific columns
+
+#### 6. KROS JC Formula in Excel Export
+**Problem:** KROS JC column exported as static number from database.
+
+**Solution:** Added CEILING formula to Excel export:
+```javascript
+const krosUnitCzk = unitCostPerM3 > 0 ? Math.ceil(unitCostPerM3 / 50) * 50 : 0;
+dataRow.getCell(13).value = {
+  formula: `CEILING(K${rowNumber},50)`,
+  result: krosUnitCzk
+};
+```
+
+#### 7. Slate Color System - Excel Export (~280 lines)
+**Complete Excel styling matching web UI design.**
+
+**Implementation:**
+- **Color Palette:** Excel ARGB format (23-47 lines)
+- **Column Widths:** Precise widths for all 15 columns (49-68 lines)
+- **Style Functions:** (193-300 lines)
+  - `applyHeaderStyle()` - Slate 50 bg, Slate 600 text, medium border
+  - `applyGroupHeaderStyle()` - Slate 100 bg, thick left accent border
+  - `applyDataRowStyle()` - Alternating white/near-white backgrounds
+  - `applyTotalRowStyle()` - Double top border, Slate 50 bg, bold
+  - `applyPreciseColumnWidths()` - Apply exact column widths
+- **Semantic Colors Applied:** (467-524 lines)
+  - Množství (C): Bold Slate 900
+  - Dny (G): Bold Emerald 600 (green)
+  - Kč/m³ (K): Emerald 600 (green KPI)
+  - KROS JC (M): Slate 400 (muted)
+  - KROS celkem (N): Bold Slate 900
+
+**Files:** `Monolit-Planner/backend/src/services/exporter.js` (280 lines modified)
+
+**Status:** ✅ Complete - Web UI and Excel export now share identical Slate design system
+
+---
 
 ### ✅ COMPLETED: Document Accumulator Enhanced + Workflow C Deployment Fix (2025-12-29)
 
@@ -887,22 +1013,27 @@ REDIS_URL=redis://...
 
 ---
 
-**Last Updated:** 2025-12-28
+**Last Updated:** 2026-01-07
 **Maintained By:** Development Team
 
 ---
 
 ## 📖 Session Documentation
 
-**Current Session (2025-12-28):** See `/NEXT_SESSION.md` and `URS_MATCHER_SERVICE/SESSION_2025-12-28.md` for:
-- Document Parsing Architecture Analysis (484 lines)
-- Parsers Inventory - All 7 CORE parsers including MinerU (838 lines)
-- Workflow C Complete Specification with Project Summary (1018 lines)
-- Summary Module Architecture - Separate saveable entity (933 lines)
-- Multi-Role Performance Optimization - 3-4x speedup (573 lines)
-- 5 commits, 5 documents created (3846 lines total), 6 hours
+**Current Session (2026-01-07):** See `/NEXT_SESSION.md` and `/SESSION_2026-01-07.md` for:
+- Slate Minimal Design System (Web UI + Excel Export)
+- 7 commits, 5 files modified (919 lines total)
+- Sidebar toggle button z-index fix
+- Delete project NULL handling fix
+- Complete Slate color palette (10 shades + semantic colors)
+- Precise column widths with fixed layout
+- Excel export styling matching web UI
+- Formulas display fix + KROS JC CEILING formula
+- Duration: ~4 hours
 
 **Previous Sessions:**
+- **2025-12-29:** Document Accumulator Enhanced (Version Tracking + Comparison + Excel/PDF Export) + Workflow C Deployment Fix
+- **2025-12-28:** Document Parsing Architecture + Workflow C + Summary Module + Multi-Role Performance (3-4x speedup)
 - **2025-12-26:** Time Norms Automation + Portal Services Hub + Digital Concrete Design System
 - **2025-12-25:** Git Hooks (Husky) + Production build fixes (TypeScript + prepare script)
 - **2025-12-23:** Import/Bridge switch fix + Template removal + Excel export fix + Speed live recalc
