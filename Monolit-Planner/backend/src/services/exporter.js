@@ -188,6 +188,9 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     workbook.creator = 'Monolit Planner';
     workbook.created = new Date();
 
+    // CRITICAL: Enable formula calculation on file open
+    workbook.calcProperties.fullCalcOnLoad = true;
+
     // ============= SHEET 1: KPI SUMMARY =============
     const kpiSheet = workbook.addWorksheet('KPI', {
       views: [{ state: 'frozen', ySplit: 2 }] // Freeze first 2 rows
@@ -478,34 +481,39 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         }
       });
 
-      // Add SUM formulas for totals row
+      // Add SUM formulas for totals row (with result=0 to ensure Excel shows formula)
       // C: Sum of qty
       totalsRow.getCell(3).value = {
-        formula: `SUM(C${firstDataRow}:C${lastDataRow})`
+        formula: `SUM(C${firstDataRow}:C${lastDataRow})`,
+        result: 0
       };
       totalsRow.getCell(3).numFmt = '0.00';
 
       // I: Sum of labor hours
       totalsRow.getCell(9).value = {
-        formula: `SUM(I${firstDataRow}:I${lastDataRow})`
+        formula: `SUM(I${firstDataRow}:I${lastDataRow})`,
+        result: 0
       };
       totalsRow.getCell(9).numFmt = '0.00';
 
       // J: Sum of cost CZK
       totalsRow.getCell(10).value = {
-        formula: `SUM(J${firstDataRow}:J${lastDataRow})`
+        formula: `SUM(J${firstDataRow}:J${lastDataRow})`,
+        result: 0
       };
       totalsRow.getCell(10).numFmt = '#,##0.00';
 
       // L: Sum of concrete m³
       totalsRow.getCell(12).value = {
-        formula: `SUM(L${firstDataRow}:L${lastDataRow})`
+        formula: `SUM(L${firstDataRow}:L${lastDataRow})`,
+        result: 0
       };
       totalsRow.getCell(12).numFmt = '0.00';
 
       // N: Sum of KROS total
       totalsRow.getCell(14).value = {
-        formula: `SUM(N${firstDataRow}:N${lastDataRow})`
+        formula: `SUM(N${firstDataRow}:N${lastDataRow})`,
+        result: 0
       };
       totalsRow.getCell(14).numFmt = '#,##0.00';
     }
@@ -630,14 +638,16 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         }
       });
 
-      // Add SUM formulas
+      // Add SUM formulas (with result=0 to ensure Excel shows formula)
       matTotalsRow.getCell(3).value = {
-        formula: `SUM(C${matFirstDataRow}:C${matLastDataRow})`
+        formula: `SUM(C${matFirstDataRow}:C${matLastDataRow})`,
+        result: 0
       };
       matTotalsRow.getCell(3).numFmt = '0.00';
 
       matTotalsRow.getCell(6).value = {
-        formula: `SUM(F${matFirstDataRow}:F${matLastDataRow})`
+        formula: `SUM(F${matFirstDataRow}:F${matLastDataRow})`,
+        result: 0
       };
       matTotalsRow.getCell(6).numFmt = '#,##0.00';
     }
