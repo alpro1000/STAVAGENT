@@ -237,7 +237,7 @@ button:disabled {
    ============================================ */
 
 .sidebar {
-  width: 240px;
+  width: 220px; /* Synced with SIDEBAR_WIDTH in Sidebar.tsx */
   background: var(--bg-secondary);
   border-right: 1px solid var(--border-default);
   overflow-y: auto;
@@ -245,12 +245,12 @@ button:disabled {
   flex-direction: column;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  /* No box-shadow - clean edge against content */
 }
 
 .sidebar.collapsed {
   width: 70px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  /* No box-shadow - clean edge */
 }
 
 .sidebar.collapsed .sidebar-content {
