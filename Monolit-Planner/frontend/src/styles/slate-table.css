@@ -237,7 +237,7 @@
 /* A: Podtyp - flexible name column */
 .col-podtyp {
   width: auto;
-  min-width: 160px;
+  min-width: 80px;
 }
 
 /* B: MJ - unit */
