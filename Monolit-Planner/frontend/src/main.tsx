@@ -10,6 +10,9 @@ import './styles/design-system/components.css';
 // App-specific styles (may override design system)
 import './styles/global.css';
 
+// Slate Minimal Table Design (overrides)
+import './styles/slate-table.css';
+
 // Build timestamp for cache debugging (injected by Vite)
 declare const __BUILD_TIMESTAMP__: string;
 if (import.meta.env.DEV) {
