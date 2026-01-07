@@ -1,4 +1,4 @@
-# NEXT SESSION: Post-Font Unification & Error Fixes
+# NEXT SESSION: Post-Slate Design & Font Unification
 
 **Date:** 2026-01-08
 **Branch:** `claude/fix-sidebar-null-handling-T1GHL` (ready to merge)
@@ -8,17 +8,50 @@
 
 ## 📊 Previous Session Summary: 2026-01-07
 
-### Commits
+**Two sequential work sessions completed on 2026-01-07:**
 
-| Commit | Description | Files |
-|--------|-------------|-------|
-| `9e7c072` | FIX: Reduce column width & sidebar improvements | 2 |
-| `f29eceb` | STYLE: Apply VARIANT A - Strict Font Unification | 5 |
-| `d9eec01` | FIX: Critical errors from codebase audit | 4 |
+### Session 1: Slate Minimal Design System (Morning)
+**Branch:** `claude/cleanup-session-files-iCP0L`
 
-### Key Changes
+| Commit | Description |
+|--------|-------------|
+| `dfbc455` | FIX: Sidebar toggle button z-index - prevent resize handle overlap |
+| `c9b13b0` | FIX: Handle 'Bez projektu' (NULL project_name) deletion correctly |
+| `84c93f1` | STYLE: Implement Slate minimal table design |
+| `07de681` | FIX: Excel formulas not displaying - add calcProperties and result values |
+| `7e359f7` | REFACTOR: Implement precise color system & column widths per spec |
+| `cc52855` | FIX: Add KROS JC CEILING formula to Excel export |
+| `f033557` | STYLE: Apply Slate color system to Excel export |
 
-#### 1. ✅ VARIANT A - Strict Font Unification
+**Key Achievements:**
+- ✅ Slate color system (Web UI + Excel export)
+- ✅ Sidebar toggle button visibility fix
+- ✅ NULL project deletion handling
+- ✅ Excel formula display fix
+- ✅ KROS JC formula implementation
+
+### Session 2: Font Unification + Critical Error Fixes (Afternoon)
+**Branch:** `claude/fix-sidebar-null-handling-T1GHL`
+
+| Commit | Description |
+|--------|-------------|
+| `9e7c072` | FIX: Reduce column width & sidebar improvements |
+| `f29eceb` | STYLE: Apply VARIANT A - Strict Font Unification |
+| `d9eec01` | FIX: Critical errors from codebase audit |
+| `afb416d` | DOCS: Session 2026-01-07 summary |
+
+**Key Achievements:**
+- ✅ VARIANT A font unification (14px standard body, JetBrains Mono)
+- ✅ Column width optimization (PRÁCE 50-100px, max-width constraint)
+- ✅ Sidebar optimization (200px default)
+- ✅ 5 critical errors fixed (division by zero, type assertion, directory traversal, unsafe substring)
+- ✅ Code Health: 8.5/10 → **9.5/10** ✅
+
+---
+
+## 📝 Detailed Changes
+
+### 1. ✅ VARIANT A - Strict Font Unification
 **Problem:** 3 different font systems (Design System, Old System, Slate Table)
 
 **Solution:**
@@ -33,7 +66,7 @@
 - `design-system/components.css` - c-input--number 15px→14px
 - `Header.tsx` - select fontSize 13px→14px
 
-#### 2. ✅ Column Width & Sidebar Optimization
+### 2. ✅ Column Width & Sidebar Optimization
 **Problem:** PRÁCE column too wide (160px), sidebar too wide (280px)
 
 **Solution:**
@@ -42,7 +75,7 @@
 
 **Result:** More space for data columns.
 
-#### 3. ✅ Critical Error Fixes (5 bugs)
+### 3. ✅ Critical Error Fixes (5 bugs)
 
 **Error #1: Division by Zero** - `formulas.ts:206`
 ```typescript
@@ -91,7 +124,7 @@ Prevents "undefined..." in logs.
 - **Verified:** See `db/index.js:53` for async implementation
 - **No changes needed**
 
-#### 4. ✅ Codebase Audit Complete
+### 4. ✅ Codebase Audit Complete
 
 **Audit Results:**
 - **Total Issues Found:** 28 (6 errors, 14 warnings, 8 info)
@@ -102,7 +135,26 @@ Prevents "undefined..." in logs.
 - 14 warnings (empty onError callbacks, no Error Boundaries)
 - 8 info (code quality improvements)
 
-**Detailed Report:** See `Monolit-Planner/SESSION_2026-01-07.md`
+**Detailed Report:** See `Monolit-Planner/SESSION_2026-01-07.md` (572 lines)
+
+---
+
+## 📁 Files Changed (Combined Sessions)
+
+| File | Change | Lines |
+|------|--------|-------|
+| `frontend/src/components/Sidebar.tsx` | Sidebar toggle z-index fix + DEFAULT_WIDTH | ~20 |
+| `frontend/src/components/Header.tsx` | Select fontSize 13px→14px | 1 |
+| `frontend/src/styles/slate-table.css` | NEW: Slate design + font sizes | 593 |
+| `frontend/src/styles/global.css` | Font-mono + simplified scale | 15 |
+| `frontend/src/styles/design-system/components.css` | c-input--number font-size | 1 |
+| `frontend/src/main.tsx` | Import slate-table.css | 1 |
+| `backend/src/routes/monolith-projects.js` | NULL project_name deletion | 30 |
+| `backend/src/services/exporter.js` | Excel formulas + Slate styling + security fix | 310 |
+| `backend/src/routes/positions.js` | Unsafe substring fix | 1 |
+| `shared/src/formulas.ts` | Division by zero + type assertion | 25 |
+
+**Total:** ~997 lines changed across 10 files
 
 ---
 
@@ -123,6 +175,11 @@ Prevents "undefined..." in logs.
 8. Add JSDoc documentation
 9. Process TODO comments (12 occurrences)
 
+### Production Testing:
+- Verify Workflow C on production (concrete-agent.onrender.com)
+- Test delete project feature on production
+- Test Excel export with Slate styling
+
 ---
 
 ## 📋 Manual Testing Required
@@ -139,6 +196,9 @@ localStorage.removeItem('monolit-sidebar-width')
 - [ ] Table fonts: 14px everywhere
 - [ ] PRÁCE column: 50-100px width
 - [ ] Sidebar: 200px default width
+- [ ] Sidebar toggle button visible
+- [ ] Delete "Bez projektu" works
+- [ ] Excel export with Slate colors
 - [ ] Export file download (security fix)
 - [ ] KPI calculations (edge case: days_per_month=0)
 
@@ -146,15 +206,15 @@ localStorage.removeItem('monolit-sidebar-width')
 
 ## 📊 Session Statistics (2026-01-07)
 
-| Metric | Value |
-|--------|-------|
-| Duration | ~2 hours |
-| Commits | 3 |
-| Files Changed | 11 |
-| Lines Added | 85 |
-| Lines Removed | 58 |
-| Critical Errors Fixed | 5 |
-| Code Health | 9.5/10 |
+| Metric | Session 1 (Slate) | Session 2 (Font) | Total |
+|--------|-------------------|------------------|-------|
+| Duration | ~3 hours | ~2 hours | ~5 hours |
+| Commits | 7 | 4 | 11 |
+| Files Changed | 5 | 10 | 11 |
+| Lines Added | ~850 | ~147 | ~997 |
+| Lines Removed | ~50 | ~58 | ~108 |
+| Critical Errors Fixed | 2 | 5 | 7 |
+| Code Health | 8.5/10 | 9.5/10 | 9.5/10 |
 
 ---
 
@@ -181,10 +241,14 @@ cd ../frontend && npm run dev # Port 5173
 ## 📊 Project Status
 
 ### ✅ Completed (Session 2026-01-07)
+- [x] Slate minimal design system (Web + Excel)
 - [x] VARIANT A font unification
 - [x] Column width & sidebar optimization
 - [x] 5 critical errors fixed
 - [x] Codebase audit complete (9.5/10)
+- [x] Sidebar toggle button visibility fix
+- [x] NULL project deletion handling
+- [x] Excel formula display fix
 
 ### ✅ Completed (Session 2026-01-06)
 - [x] Speed (MJ/h) editable
@@ -201,5 +265,16 @@ cd ../frontend && npm run dev # Port 5173
 
 ---
 
-**Last Updated:** 2026-01-07
+## 📚 Related Documentation
+
+- **Session Summary:** `/Monolit-Planner/SESSION_2026-01-07.md` (572 lines)
+- **Design System:** `/Monolit-Planner/frontend/src/styles/slate-table.css` (full spec in comments)
+- **Excel Export:** `/Monolit-Planner/backend/src/services/exporter.js`
+- **Sidebar:** `/Monolit-Planner/frontend/src/components/Sidebar.tsx`
+- **Delete Project:** `/Monolit-Planner/backend/src/routes/monolith-projects.js`
+
+---
+
+**Last Updated:** 2026-01-07 (Session End)
 **Current Branch:** `claude/fix-sidebar-null-handling-T1GHL`
+**Previous Session:** 2026-01-06 (Security Audit, UX Improvements, Delete Project)
