@@ -8,15 +8,16 @@
  * - Objekt = bridge_id + object_name = конкретный объект ("SO201", "Most přes řeku")
  */
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useBridges } from '../hooks/useBridges';
 
 interface CreateMonolithFormProps {
   onSuccess: (bridgeId: string) => void;
   onCancel?: () => void;
+  preselectedProject?: string; // If set, the form will create object in this project
 }
 
-export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonolithFormProps) {
+export default function CreateMonolithForm({ onSuccess, onCancel, preselectedProject }: CreateMonolithFormProps) {
   // Get bridges directly from query (not context) to ensure fresh data
   const { data: bridges = [], createBridge } = useBridges();
 
@@ -29,6 +30,13 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
+
+  // Auto-select preselected project on mount
+  useEffect(() => {
+    if (preselectedProject) {
+      setSelectedProject(preselectedProject);
+    }
+  }, [preselectedProject]);
 
   // Extract unique project names from existing bridges
   const existingProjects = useMemo(() => {
@@ -94,7 +102,9 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
 
   return (
     <div className="c-panel" style={{ maxWidth: '600px', margin: '0 auto' }}>
-      <h2 className="u-text-orange u-mb-lg" style={{ fontSize: 'var(--font-size-xl)' }}>➕ Vytvořit nový objekt</h2>
+      <h2 className="u-text-orange u-mb-lg" style={{ fontSize: 'var(--font-size-xl)' }}>
+        ➕ {preselectedProject ? 'Přidat objekt do projektu' : 'Vytvořit nový objekt'}
+      </h2>
 
       {error && (
         <div className="c-badge--error u-mb-md" style={{ padding: 'var(--space-md)', display: 'block', background: 'rgba(244, 67, 54, 0.1)' }}>
@@ -109,7 +119,22 @@ export default function CreateMonolithForm({ onSuccess, onCancel }: CreateMonoli
             📁 Stavba (Project)
           </label>
 
-          {existingProjects.length > 0 ? (
+          {preselectedProject ? (
+            // Read-only mode - project is preselected
+            <div
+              className="c-input"
+              style={{
+                backgroundColor: 'var(--bg-tertiary)',
+                color: 'var(--text-secondary)',
+                cursor: 'not-allowed',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}
+            >
+              📁 {preselectedProject}
+            </div>
+          ) : existingProjects.length > 0 ? (
             <>
               <select
                 className="c-select"

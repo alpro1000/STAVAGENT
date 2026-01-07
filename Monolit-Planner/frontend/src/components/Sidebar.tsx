@@ -14,6 +14,7 @@ import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
 import DeleteBridgeModal from './DeleteBridgeModal';
 import DeleteProjectModal from './DeleteProjectModal';
+import CreateMonolithForm from './CreateMonolithForm';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -27,7 +28,7 @@ const STORAGE_KEY = 'monolit-sidebar-width';
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
-  const { completeBridge, deleteBridge, deleteProject, isLoading } = useBridges();
+  const { completeBridge, deleteBridge, deleteProject, refetch: refetchBridges, isLoading } = useBridges();
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [hoveredBridgeId, setHoveredBridgeId] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
@@ -35,6 +36,8 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('active');
   const [bridgeToDelete, setBridgeToDelete] = useState<typeof bridges[0] | null>(null);
   const [projectToDelete, setProjectToDelete] = useState<{ name: string; count: number } | null>(null);
+  const [showAddObjectModal, setShowAddObjectModal] = useState(false);
+  const [selectedProjectForAdd, setSelectedProjectForAdd] = useState<string | null>(null);
 
   // Resizable sidebar state
   const [sidebarWidth, setSidebarWidth] = useState(() => {
@@ -193,6 +196,25 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
     }
   };
 
+  // Handle "Add Object to Project" click
+  const handleAddObjectClick = (e: React.MouseEvent, projectName: string) => {
+    e.stopPropagation();
+    setSelectedProjectForAdd(projectName);
+    setShowAddObjectModal(true);
+  };
+
+  // Handle object creation success
+  const handleObjectCreated = async (bridgeId: string) => {
+    setShowAddObjectModal(false);
+    setSelectedProjectForAdd(null);
+
+    // Refetch bridges to update sidebar
+    await refetchBridges();
+
+    // Select the new bridge
+    setSelectedBridge(bridgeId);
+  };
+
   // Toggle project expansion
   const toggleProject = (projectName: string) => {
     const newExpanded = new Set(expandedProjects);
@@ -344,6 +366,15 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                         <span className="project-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{projectName}</span>
                         <span className="project-count">{bridgeCount}</span>
                         <button
+                          className="bridge-action-btn btn-add"
+                          onClick={(e) => handleAddObjectClick(e, projectName)}
+                          title="Přidat objekt do tohoto projektu"
+                          disabled={isLoading}
+                          style={{ marginLeft: '4px' }}
+                        >
+                          ➕
+                        </button>
+                        <button
                           className="bridge-action-btn btn-delete"
                           onClick={(e) => handleDeleteProjectClick(e, projectName, bridgeCount)}
                           title="Smazat celý projekt"
@@ -480,6 +511,19 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         onCancel={() => setProjectToDelete(null)}
         isDeleting={isLoading}
       />
+
+      {/* Modal for adding object to project */}
+      {showAddObjectModal && selectedProjectForAdd && (
+        <div className="modal-overlay" onClick={() => setShowAddObjectModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <CreateMonolithForm
+              preselectedProject={selectedProjectForAdd}
+              onSuccess={handleObjectCreated}
+              onCancel={() => setShowAddObjectModal(false)}
+            />
+          </div>
+        </div>
+      )}
     </aside>
   );
 }
