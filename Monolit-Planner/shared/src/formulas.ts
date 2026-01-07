@@ -172,11 +172,19 @@ export function calculateWeightedAverage(
   field: keyof Position,
   weightField: 'concrete_m3' = 'concrete_m3'
 ): number {
-  const validPositions = positions.filter(p =>
-    p[weightField] !== undefined &&
-    p[weightField] !== 0 &&
-    p[field] !== undefined
-  );
+  const validPositions = positions.filter(p => {
+    const weight = p[weightField];
+    const value = p[field];
+
+    // Type safety: ensure both weight and value are numbers
+    return (
+      typeof weight === 'number' &&
+      typeof value === 'number' &&
+      weight !== 0 &&
+      !isNaN(weight) &&
+      !isNaN(value)
+    );
+  });
 
   if (validPositions.length === 0) return 0;
 
@@ -201,7 +209,9 @@ export function calculateEstimatedMonths(
   days_per_month: number
 ): number {
   const cost_per_day = avg_crew_size * avg_wage_czk_ph * avg_shift_hours;
-  if (cost_per_day === 0) return 0;
+
+  // Prevent division by zero
+  if (cost_per_day === 0 || days_per_month === 0) return 0;
 
   const total_days = sum_kros_total_czk / cost_per_day;
   return total_days / days_per_month;

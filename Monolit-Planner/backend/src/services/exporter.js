@@ -1019,15 +1019,21 @@ export function getExportsList() {
 export function getExportFile(filename) {
   try {
     // Security: prevent directory traversal
-    if (filename.includes('..') || filename.includes('/')) {
+    // Use path.basename to strip any directory components
+    const safeName = path.basename(filename);
+
+    // Double-check: reject if original filename differs from basename
+    // This catches encoded slashes (%2F), double dots, etc.
+    if (safeName !== filename || filename.includes('..')) {
       throw new Error('Invalid filename');
     }
 
-    const filepath = path.join(EXPORTS_DIR, filename);
+    const filepath = path.join(EXPORTS_DIR, safeName);
 
-    // Verify file exists
-    if (!fs.existsSync(filepath)) {
-      throw new Error('File not found');
+    // Verify file exists and is within EXPORTS_DIR
+    const realPath = fs.realpathSync(filepath);
+    if (!realPath.startsWith(path.resolve(EXPORTS_DIR))) {
+      throw new Error('Invalid file path');
     }
 
     return fs.readFileSync(filepath);
