@@ -1,30 +1,46 @@
 /**
- * Slate Minimal Table Design
- * Based on Tailwind Slate colors
- * Philosophy: Clean, readable, professional
+ * Slate Minimal Table Design - Precise Specification
+ * Color system: Tailwind Slate + Semantic accents
+ * Column widths: Fixed layout for perfect alignment
+ * Typography: Tabular nums for data integrity
  */
 
 :root {
-  /* Slate Scale */
-  --slate-50: #f8fafc;
-  --slate-100: #f1f5f9;
-  --slate-200: #e2e8f0;
-  --slate-300: #cbd5e1;
-  --slate-400: #94a3b8;
-  --slate-500: #64748b;
-  --slate-600: #475569;
-  --slate-700: #334155;
-  --slate-800: #1e293b;
-  --slate-900: #0f172a;
+  /* ===== SLATE SCALE ===== */
+  --slate-50: #f8fafc;   /* Page background */
+  --slate-100: #f1f5f9;  /* Hover states, tab container */
+  --slate-200: #e2e8f0;  /* Borders, dividers */
+  --slate-300: #cbd5e1;  /* Section left-border */
+  --slate-400: #94a3b8;  /* Muted text, icons */
+  --slate-500: #64748b;  /* Secondary text */
+  --slate-600: #475569;  /* Labels */
+  --slate-700: #334155;  /* Section tag text */
+  --slate-800: #1e293b;  /* Strong text */
+  --slate-900: #0f172a;  /* Primary text, headings */
 
-  /* Data Accents */
-  --accent-positive: #059669;
-  --accent-warning: #d97706;
-  --accent-info: #0284c7;
+  /* ===== SEMANTIC COLORS ===== */
+  /* Positive/Success - for KPI highlights, days, positive metrics */
+  --color-positive: #059669;        /* Emerald 600 */
+  --color-positive-soft: #d1fae5;   /* Emerald 100 - optional bg */
+
+  /* Warning - for alerts, low values, attention items */
+  --color-warning: #d97706;         /* Amber 600 */
+  --color-warning-soft: #fef3c7;    /* Amber 100 - optional bg */
+
+  /* Info - for links, interactive elements */
+  --color-info: #0284c7;            /* Sky 600 */
+
+  /* Neutral emphasis - for quantities, totals */
+  --color-emphasis: var(--slate-900);
+
+  /* ===== TYPOGRAPHY SIZES ===== */
+  --num-lg: 0.9375rem;  /* 15px - totals */
+  --num-md: 0.8125rem;  /* 13px - default */
+  --num-sm: 0.75rem;    /* 12px - muted */
 }
 
 /* ============================================
-   POSITIONS TABLE - Slate Minimal
+   POSITIONS CONTAINER
    ============================================ */
 
 .positions-container {
@@ -55,7 +71,10 @@
   font-size: 14px;
 }
 
-/* Card Container */
+/* ============================================
+   PART CARD
+   ============================================ */
+
 .part-card {
   background: #ffffff;
   border: 1px solid var(--slate-200);
@@ -79,7 +98,7 @@
   cursor: pointer;
   user-select: none;
   border-bottom: 1px solid var(--slate-200);
-  border-left: 4px solid var(--slate-400);
+  border-left: 4px solid var(--slate-300); /* Section left border */
   transition: all 0.1s ease;
 }
 
@@ -105,7 +124,10 @@
   background: #c82333;
 }
 
-/* Part Header Container */
+/* ============================================
+   PART HEADER CONTAINER
+   ============================================ */
+
 .part-header-container {
   background: var(--slate-50);
   border-bottom: 1px solid var(--slate-200);
@@ -140,27 +162,38 @@
 
 .part-name-input:focus {
   outline: none;
-  border-color: var(--accent-info);
+  border-color: var(--color-info);
   box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.1);
 }
 
-/* Table Wrapper */
+/* ============================================
+   TABLE WRAPPER - HORIZONTAL SCROLL
+   ============================================ */
+
 .table-wrapper {
   overflow-x: auto;
   overflow-y: visible;
   background: #ffffff;
+  -webkit-overflow-scrolling: touch;
 }
 
-/* Positions Table */
+/* ============================================
+   POSITIONS TABLE - FIXED LAYOUT
+   ============================================ */
+
 .positions-table {
   width: 100%;
+  min-width: 1100px; /* Prevent squishing on narrow screens */
   border-collapse: collapse;
-  font-size: 13px;
+  font-size: var(--num-md); /* 13px */
   background: #ffffff;
-  table-layout: fixed;
+  table-layout: fixed; /* CRITICAL: Enables precise column widths */
 }
 
-/* Table Header */
+/* ============================================
+   TABLE HEADER
+   ============================================ */
+
 .positions-table thead {
   position: sticky;
   top: 0;
@@ -170,26 +203,136 @@
 
 .positions-table th {
   background: var(--slate-50);
-  color: var(--slate-600);
+  color: var(--slate-500); /* Secondary text for headers */
   font-weight: 600;
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.04em;
   padding: 12px 12px;
-  text-align: right;
+  text-align: right; /* All headers right-aligned for numbers */
   border-bottom: 1px solid var(--slate-200);
   white-space: nowrap;
 }
 
 .positions-table th:first-child {
-  text-align: left;
+  text-align: left; /* First column (name) left-aligned */
 }
 
 .positions-table th:last-child {
   border-right: none;
 }
 
-/* Table Body */
+/* ============================================
+   PRECISE COLUMN WIDTHS
+   ============================================ */
+
+/* Lock indicator (if present) */
+.lock-col,
+.lock-indicator {
+  width: 36px !important;
+  min-width: 36px;
+  text-align: center;
+}
+
+/* A: Podtyp - flexible name column */
+.col-podtyp {
+  width: auto;
+  min-width: 160px;
+}
+
+/* B: MJ - unit */
+.col-mj {
+  width: 48px !important;
+  min-width: 48px;
+}
+
+/* C: Množství - quantity */
+.col-mnozstvi {
+  width: 80px !important;
+  min-width: 80px;
+}
+
+/* D: Lidí - people count */
+.col-lidi {
+  width: 48px !important;
+  min-width: 48px;
+}
+
+/* E: Kč/hod - hourly rate */
+.col-cena-hod {
+  width: 72px !important;
+  min-width: 72px;
+}
+
+/* F: Hod/den - hours per day */
+.col-hod-den {
+  width: 64px !important;
+  min-width: 64px;
+}
+
+/* G: Dny - days */
+.col-den {
+  width: 56px !important;
+  min-width: 56px;
+}
+
+/* H: MJ/h - speed */
+.col-rychlost {
+  width: 72px !important;
+  min-width: 72px;
+}
+
+/* I: Hod celkem - total hours */
+.col-hod-celkem {
+  width: 72px !important;
+  min-width: 72px;
+}
+
+/* J: Kč celkem - total cost */
+.col-kc-celkem {
+  width: 88px !important;
+  min-width: 88px;
+}
+
+/* K: Kč/m³ ⭐ - KPI metric */
+.col-kc-m3 {
+  width: 80px !important;
+  min-width: 80px;
+}
+
+/* L: Objem m³ - volume (hidden in current design) */
+/* Not used - volume stored in PartHeader */
+
+/* M: KROS JC - KROS unit */
+.col-kros-jc {
+  width: 72px !important;
+  min-width: 72px;
+}
+
+/* N: KROS celkem - KROS total */
+.col-kros-celkem {
+  width: 96px !important;
+  min-width: 96px;
+}
+
+/* O: RFI - warning indicator */
+.col-rfi {
+  width: 45px !important;
+  min-width: 45px;
+  text-align: center;
+}
+
+/* Actions column */
+.col-akce {
+  width: 75px !important;
+  min-width: 75px;
+  text-align: center;
+}
+
+/* ============================================
+   TABLE BODY
+   ============================================ */
+
 .positions-table tbody tr {
   border-bottom: 1px solid var(--slate-100);
   transition: background 0.1s ease;
@@ -203,55 +346,97 @@
   padding: 12px 12px;
   text-align: right;
   white-space: nowrap;
-  font-variant-numeric: tabular-nums;
-  color: var(--slate-600);
+  font-variant-numeric: tabular-nums; /* CRITICAL: Perfect number alignment */
+  color: var(--slate-600); /* Body text */
   vertical-align: middle;
-  font-size: 13px;
+  font-size: var(--num-md); /* 13px */
 }
 
 .positions-table td:first-child {
   text-align: left;
   font-weight: 500;
-  color: var(--slate-900);
+  color: var(--slate-900); /* Primary text for names */
 }
 
-/* Column-specific styles */
-.col-mj {
+/* ============================================
+   SEMANTIC COLUMN COLORS
+   ============================================ */
+
+/* Unit (MJ) - muted, uppercase */
+.positions-table .col-mj {
   color: var(--slate-400);
-  font-size: 11px;
+  font-size: var(--num-sm); /* 12px */
   text-transform: uppercase;
 }
 
-.col-quantity {
+/* Quantity - emphasis */
+.positions-table .col-mnozstvi {
   font-weight: 600;
-  color: var(--slate-900);
+  color: var(--color-emphasis);
 }
 
-.col-days {
+/* Days - positive green */
+.positions-table .col-den {
   font-weight: 600;
-  color: var(--accent-positive);
+  color: var(--color-positive);
 }
 
-.col-cost {
+/* Cost columns - emphasis */
+.positions-table .col-kc-celkem {
   font-weight: 600;
-  color: var(--slate-900);
+  color: var(--color-emphasis);
 }
 
-.col-kpi {
-  color: var(--accent-positive);
+/* KPI metric (Kč/m³) - positive green, medium weight */
+.positions-table .col-kc-m3 {
+  color: var(--color-positive);
   font-weight: 500;
 }
 
-.col-muted {
+/* KROS JC - muted reference */
+.positions-table .col-kros-jc {
   color: var(--slate-400);
 }
 
-.col-total {
+/* KROS total - bold emphasis */
+.positions-table .col-kros-celkem {
   font-weight: 600;
-  color: var(--slate-900);
+  color: var(--color-emphasis);
 }
 
-/* Inputs */
+/* Warning indicator with dot */
+.positions-table .col-rfi .warning::before,
+.kpi-value.warning::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  background: var(--color-warning);
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+
+.num-lg {
+  font-size: var(--num-lg);
+  font-weight: 700;
+}
+
+.num-md {
+  font-size: var(--num-md);
+}
+
+.num-sm {
+  font-size: var(--num-sm);
+}
+
+/* ============================================
+   INPUTS
+   ============================================ */
+
 .positions-table input,
 .positions-table select {
   width: 100%;
@@ -260,7 +445,7 @@
   color: var(--slate-900);
   padding: 6px 8px;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: var(--num-md);
   font-weight: 500;
   font-family: inherit;
   font-variant-numeric: tabular-nums;
@@ -270,7 +455,7 @@
 .positions-table input:focus,
 .positions-table select:focus {
   outline: none;
-  border-color: var(--accent-info);
+  border-color: var(--color-info);
   box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.1);
 }
 
@@ -281,110 +466,24 @@
   cursor: not-allowed;
 }
 
-/* Computed Cells */
+/* ============================================
+   COMPUTED CELLS (READ-ONLY)
+   ============================================ */
+
 .cell-computed,
 .computed-cell {
   background: var(--slate-50);
   color: var(--slate-700);
   font-weight: 500;
   font-variant-numeric: tabular-nums;
+  padding: 6px 8px;
+  border-radius: 4px;
 }
 
-/* FIXED COLUMN WIDTHS */
-.lock-col,
-.lock-indicator {
-  width: 36px;
-  min-width: 36px;
-  text-align: center;
-}
+/* ============================================
+   ACTION BUTTONS
+   ============================================ */
 
-.col-podtyp {
-  width: 95px;
-  min-width: 95px;
-}
-
-.col-mj {
-  width: 48px;
-  min-width: 48px;
-}
-
-.col-mnozstvi {
-  width: 58px;
-  min-width: 58px;
-}
-
-.col-lidi {
-  width: 48px;
-  min-width: 48px;
-}
-
-.col-cena-hod {
-  width: 52px;
-  min-width: 52px;
-}
-
-.col-hod-den {
-  width: 50px;
-  min-width: 50px;
-}
-
-.col-den {
-  width: 50px;
-  min-width: 50px;
-}
-
-.col-rychlost {
-  width: 58px;
-  min-width: 58px;
-}
-
-.col-hod-celkem {
-  width: 55px;
-  min-width: 55px;
-}
-
-.col-kc-celkem {
-  width: 75px;
-  min-width: 75px;
-}
-
-.col-kc-m3 {
-  width: 80px;
-  min-width: 80px;
-}
-
-.col-kros-jc {
-  width: 62px;
-  min-width: 62px;
-}
-
-.col-kros-celkem {
-  width: 80px;
-  min-width: 80px;
-}
-
-.col-rfi {
-  width: 45px;
-  min-width: 45px;
-  text-align: center;
-}
-
-.col-akce {
-  width: 75px;
-  min-width: 75px;
-  text-align: center;
-}
-
-/* Lock Indicator */
-.lock-indicator {
-  width: 40px;
-  text-align: center;
-  padding: 8px !important;
-  font-size: 16px;
-  opacity: 0.5;
-}
-
-/* Action Buttons */
 .btn-delete-position {
   background: transparent;
   color: var(--slate-400);
@@ -413,16 +512,19 @@
 }
 
 .btn-rfi:hover {
-  background: #fef3c7;
-  color: #d97706;
+  background: var(--color-warning-soft);
+  color: var(--color-warning);
 }
 
 .btn-rfi.has-rfi {
-  color: var(--accent-warning);
-  background: #fef3c7;
+  color: var(--color-warning);
+  background: var(--color-warning-soft);
 }
 
-/* Row States */
+/* ============================================
+   ROW STATES
+   ============================================ */
+
 .table-row.error td {
   background: #fee2e2 !important;
   border-left: 3px solid #dc2626;
@@ -431,10 +533,13 @@
 .table-row.saving td {
   opacity: 0.8;
   background: rgba(2, 132, 199, 0.05) !important;
-  border-left: 3px solid var(--accent-info);
+  border-left: 3px solid var(--color-info);
 }
 
-/* Scrollbar */
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+
 .table-wrapper::-webkit-scrollbar {
   height: 10px;
 }
@@ -451,4 +556,37 @@
 
 .table-wrapper::-webkit-scrollbar-thumb:hover {
   background: var(--slate-400);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1200px) {
+  .positions-table td,
+  .positions-table th {
+    padding: 8px 10px;
+  }
+}
+
+/* ============================================
+   TOTAL ROW (if used)
+   ============================================ */
+
+.total-row td {
+  background: #ffffff;
+  font-weight: 600;
+  padding: 16px 12px;
+  color: var(--slate-900);
+  box-shadow: inset 0 2px 0 var(--slate-200); /* Top shadow instead of border */
+}
+
+.total-row td:first-child {
+  font-weight: 700;
+}
+
+.total-main {
+  font-size: var(--num-lg);
+  font-weight: 700;
+  color: var(--slate-900);
 }
