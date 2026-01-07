@@ -290,7 +290,7 @@ router.put('/', async (req, res) => {
     logger.info(`📝 PUT /api/positions: bridge_id=${bridge_id}, ${updates.length} updates`);
     // Log all updates (up to 5 for readability)
     const previewUpdates = updates.slice(0, 5).map(u => ({
-      id: u.id?.substring(0, 20) + '...' || 'unknown',
+      id: u.id ? u.id.substring(0, 20) + '...' : 'unknown',
       fields: Object.keys(u).filter(k => k !== 'id').join(', ')
     }));
     logger.info(`Updates preview: ${JSON.stringify(previewUpdates)}`);
