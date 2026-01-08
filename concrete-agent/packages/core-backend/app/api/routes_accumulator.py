@@ -591,6 +591,9 @@ async def compare_versions(
 # ==================== Export Endpoints ====================
 
 from fastapi.responses import StreamingResponse
+import io
+
+from app.services.document_summarizer import DocumentSummarizer, DocumentLanguage
 
 
 @router.get("/projects/{project_id}/export/excel")
@@ -676,3 +679,144 @@ async def export_summary_to_pdf(
         raise HTTPException(status_code=500, detail=str(e))
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+
+# ==================== Document Summarization (Structured Extraction) ====================
+
+class SummarizeRequest(BaseModel):
+    """Request to summarize document content."""
+    content: str = Field(..., description="Text content extracted from document")
+    file_name: str = Field(..., description="Original file name")
+    language: str = Field(default="cs", description="Language: cs, en, sk")
+
+
+@router.post("/summarize")
+async def summarize_document_content(request: SummarizeRequest):
+    """
+    Extract structured summary from document content.
+
+    Unlike generate-summary (audit-focused), this endpoint extracts:
+    - Project info (name, location, type, investor)
+    - Work items (all positions with quantities)
+    - Key quantities (total concrete, reinforcement, formwork)
+    - Timeline (start, end, milestones)
+    - Requirements (standards, environmental, safety)
+
+    Returns structured JSON for immediate use in UI.
+    """
+    try:
+        summarizer = DocumentSummarizer()
+
+        # Map language string to enum
+        lang = DocumentLanguage.CZECH
+        if request.language == "en":
+            lang = DocumentLanguage.ENGLISH
+        elif request.language == "sk":
+            lang = DocumentLanguage.SLOVAK
+
+        summary = await summarizer.summarize_document(
+            content=request.content,
+            file_name=request.file_name,
+            language=lang,
+        )
+
+        return {
+            "success": True,
+            **summary.to_dict(),
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to summarize document: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/summarize/file")
+async def summarize_uploaded_file(
+    file: UploadFile = File(...),
+    language: str = Form(default="cs"),
+):
+    """
+    Upload and summarize a document file.
+
+    Accepts PDF, Excel (XLSX, XLS), or DOCX files.
+    Parses the file and extracts structured summary.
+
+    Returns:
+    - project_info: Project identification
+    - work_items: All work positions with quantities
+    - quantities: Summary totals (concrete, reinforcement, formwork)
+    - timeline: Start, end, milestones
+    - requirements: Standards and requirements
+    """
+    try:
+        # Read file content
+        content = await file.read()
+        file_name = file.filename or "unknown"
+
+        # Determine file type and parse
+        ext = Path(file_name).suffix.lower()
+
+        # Import parsers
+        from app.parsers.smart_parser import SmartParser
+        parser = SmartParser()
+
+        # Save to temp file for parsing
+        temp_dir = Path(tempfile.gettempdir()) / "stavagent_summarize"
+        temp_dir.mkdir(parents=True, exist_ok=True)
+        temp_path = temp_dir / file_name
+
+        with open(temp_path, "wb") as f:
+            f.write(content)
+
+        try:
+            # Parse document
+            parsed_result = await parser.parse(str(temp_path), project_id="temp")
+
+            # Extract text content for summarization
+            if ext in ['.pdf']:
+                text_content = parsed_result.get("raw_text", "")
+                if not text_content:
+                    # Build text from positions
+                    positions = parsed_result.get("positions", [])
+                    text_content = "\n".join([
+                        f"{p.get('description', '')} - {p.get('quantity', '')} {p.get('unit', '')}"
+                        for p in positions
+                    ])
+            elif ext in ['.xlsx', '.xls']:
+                # Excel: combine all row data
+                positions = parsed_result.get("positions", [])
+                text_content = "\n".join([
+                    f"{p.get('code', '')} {p.get('description', '')} - {p.get('quantity', '')} {p.get('unit', '')} - {p.get('unit_price', '')} CZK"
+                    for p in positions
+                ])
+            else:
+                text_content = str(parsed_result)
+
+            # Summarize
+            summarizer = DocumentSummarizer()
+
+            lang = DocumentLanguage.CZECH
+            if language == "en":
+                lang = DocumentLanguage.ENGLISH
+            elif language == "sk":
+                lang = DocumentLanguage.SLOVAK
+
+            summary = await summarizer.summarize_document(
+                content=text_content,
+                file_name=file_name,
+                language=lang,
+            )
+
+            return {
+                "success": True,
+                **summary.to_dict(),
+            }
+
+        finally:
+            # Cleanup temp file
+            if temp_path.exists():
+                temp_path.unlink()
+
+    except Exception as e:
+        logger.error(f"Failed to summarize file: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
