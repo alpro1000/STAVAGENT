@@ -6,6 +6,7 @@
 
 import { useState, useEffect } from 'react';
 import OtskpAutocomplete from './OtskpAutocomplete';
+import { otskpAPI } from '../services/api';
 
 interface Props {
   itemName?: string;
@@ -56,6 +57,25 @@ export default function PartHeader({
   useEffect(() => {
     setLocalCatalogUnit(catalogUnit);
   }, [catalogUnit]);
+
+  // Fetch catalog price when OTSKP code exists but price is not loaded
+  useEffect(() => {
+    const fetchCatalogPrice = async () => {
+      if (otskpCode && !localCatalogPrice) {
+        try {
+          const otskpData = await otskpAPI.getByCode(otskpCode);
+          if (otskpData?.unit_price) {
+            setLocalCatalogPrice(otskpData.unit_price);
+            setLocalCatalogUnit(otskpData.unit);
+          }
+        } catch (error) {
+          // Code not found in catalog - that's okay
+          console.debug(`OTSKP code ${otskpCode} not found in catalog`);
+        }
+      }
+    };
+    fetchCatalogPrice();
+  }, [otskpCode, localCatalogPrice]);
 
   const handleNameBlur = () => {
     if (editedName !== itemName) {
