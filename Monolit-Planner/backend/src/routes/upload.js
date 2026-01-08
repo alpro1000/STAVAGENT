@@ -301,8 +301,8 @@ router.post('/', upload.single('file'), async (req, res) => {
                 await client.query(`
                   INSERT INTO positions (
                     id, bridge_id, part_name, item_name, subtype, unit,
-                    qty, crew_size, wage_czk_ph, shift_hours, days
-                  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+                    qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
+                  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
                 `, [
                   id, bridgeId,
                   pos.part_name || 'Beton',
@@ -313,7 +313,8 @@ router.post('/', upload.single('file'), async (req, res) => {
                   pos.crew_size || POSITION_DEFAULTS.crew_size,
                   pos.wage_czk_ph || POSITION_DEFAULTS.wage_czk_ph,
                   pos.shift_hours || POSITION_DEFAULTS.shift_hours,
-                  pos.days || POSITION_DEFAULTS.days
+                  pos.days || POSITION_DEFAULTS.days,
+                  pos.otskp_code || null  // ✅ Add OTSKP code
                 ]);
               }
 
@@ -332,8 +333,8 @@ router.post('/', upload.single('file'), async (req, res) => {
               const stmt = db.prepare(`
                 INSERT INTO positions (
                   id, bridge_id, part_name, item_name, subtype, unit,
-                  qty, crew_size, wage_czk_ph, shift_hours, days
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
               `);
 
               for (const pos of positions) {
@@ -348,7 +349,8 @@ router.post('/', upload.single('file'), async (req, res) => {
                   pos.crew_size || POSITION_DEFAULTS.crew_size,
                   pos.wage_czk_ph || POSITION_DEFAULTS.wage_czk_ph,
                   pos.shift_hours || POSITION_DEFAULTS.shift_hours,
-                  pos.days || POSITION_DEFAULTS.days
+                  pos.days || POSITION_DEFAULTS.days,
+                  pos.otskp_code || null  // ✅ Add OTSKP code
                 );
               }
             });
