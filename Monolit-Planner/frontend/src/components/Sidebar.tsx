@@ -312,10 +312,11 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         style={{
           position: 'absolute',
           top: '10px',
-          right: '-24px',
+          right: '-36px',
           zIndex: 30,
           minHeight: '32px',
-          padding: '6px 10px',
+          minWidth: '36px',
+          padding: '6px 12px',
           background: 'var(--accent-orange)',
           color: '#1a1a1a',
           border: 'none',
