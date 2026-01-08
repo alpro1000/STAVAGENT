@@ -629,6 +629,35 @@ export function extractConcreteOnlyM3(rawRows) {
         partName = partName.substring(0, 57) + '...';
       }
 
+      // Extract OTSKP code from "Kód" column or any cell with 5-6 digit code
+      let otskpCode = null;
+      for (const [key, value] of entries) {
+        if (value === null || value === undefined) continue;
+
+        const keyLower = key.toLowerCase();
+        const cellStr = String(value).trim();
+
+        // Check if this is the "Kód" column
+        if (keyLower.includes('kód') || keyLower.includes('kod') || keyLower === 'code') {
+          const match = cellStr.match(/\b(\d{5,6})\b/);
+          if (match) {
+            otskpCode = match[1];
+            break;
+          }
+        }
+
+        // Also check for standalone 5-6 digit numbers that look like OTSKP codes
+        // OTSKP codes typically start with 1-9 and are NOT in description cell
+        if (key !== descriptionKey && /^\d{5,6}$/.test(cellStr)) {
+          const num = parseInt(cellStr, 10);
+          // Valid OTSKP codes are typically 100000-999999 (6 digits) or 10000-99999 (5 digits)
+          if (num >= 10000 && num <= 999999) {
+            otskpCode = cellStr;
+            // Don't break - prefer "Kód" column match if found later
+          }
+        }
+      }
+
       const position = {
         part_name: partName,  // Unique per item - creates separate section in UI
         item_name: descriptionCell,
@@ -640,6 +669,7 @@ export function extractConcreteOnlyM3(rawRows) {
         wage_czk_ph: 398,
         shift_hours: 10,
         days: 0,
+        otskp_code: otskpCode,  // ✅ Add OTSKP code
         concrete_grade: foundGrade,
         source: 'GRADE_SEARCH'
       };
@@ -647,7 +677,9 @@ export function extractConcreteOnlyM3(rawRows) {
       concreteItems.push(position);
       totalConcreteVolume += qty;
 
-      logger.info(`[ConcreteExtractor] ✅ Found: ${foundGrade} | ${qty.toFixed(2)} m³ | "${descriptionCell.substring(0, 50)}..."`);
+      // Log with OTSKP code if found
+      const otskpInfo = otskpCode ? ` | OTSKP: ${otskpCode}` : '';
+      logger.info(`[ConcreteExtractor] ✅ Found: ${foundGrade} | ${qty.toFixed(2)} m³${otskpInfo} | "${descriptionCell.substring(0, 50)}..."`);
 
     } catch (error) {
       logger.debug(`[ConcreteExtractor] Error processing row ${i}: ${error.message}`);
