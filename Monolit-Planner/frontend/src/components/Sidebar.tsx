@@ -43,8 +43,19 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const sidebarRef = useRef<HTMLElement>(null);
   const [isResizing, setIsResizing] = useState(false);
   const [sidebarWidth, setSidebarWidth] = useState(() => {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? parseInt(saved, 10) : DEFAULT_WIDTH;
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = parseInt(saved, 10);
+        // Validate: must be a number within bounds
+        if (!isNaN(parsed) && parsed >= MIN_WIDTH && parsed <= MAX_WIDTH) {
+          return parsed;
+        }
+      }
+    } catch {
+      // localStorage unavailable (e.g., private browsing)
+    }
+    return DEFAULT_WIDTH;
   });
 
   const bridgeCount = bridges.length;
@@ -61,7 +72,11 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
     const newWidth = e.clientX;
     if (newWidth >= MIN_WIDTH && newWidth <= MAX_WIDTH) {
       setSidebarWidth(newWidth);
-      localStorage.setItem(STORAGE_KEY, String(newWidth));
+      try {
+        localStorage.setItem(STORAGE_KEY, String(newWidth));
+      } catch {
+        // localStorage unavailable - width won't persist but UI still works
+      }
     }
   }, [isResizing]);
 
