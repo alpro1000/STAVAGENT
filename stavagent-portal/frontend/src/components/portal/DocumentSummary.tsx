@@ -84,7 +84,7 @@ interface DocumentSummaryProps {
 // API base URL
 const CORE_API_URL = (import.meta as any).env?.VITE_CORE_API_URL || 'https://concrete-agent.onrender.com';
 
-export default function DocumentSummary({ projectId, onClose }: DocumentSummaryProps) {
+export default function DocumentSummary({ projectId: _projectId, onClose }: DocumentSummaryProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
