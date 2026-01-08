@@ -20,6 +20,7 @@ import CorePanel from '../components/portal/CorePanel';
 import ServiceCard from '../components/portal/ServiceCard';
 import ProjectAudit from '../components/portal/ProjectAudit';
 import ProjectDocuments from '../components/portal/ProjectDocuments';
+import DocumentSummary from '../components/portal/DocumentSummary';
 import ThemeToggle from '../components/ThemeToggle';
 
 interface PortalProject {
@@ -65,6 +66,15 @@ const SERVICES: Service[] = [
     url: '#documents', // Special URL for internal action
     status: 'active',
     tags: ['Inkrementální', 'Složky', 'Souhrn', 'Background']
+  },
+  {
+    id: 'document-summary',
+    name: 'Shrnutí dokumentu',
+    description: 'Jednorázová extrakce strukturovaných dat z dokumentu (PDF, Excel). Projekt, položky, objemy, harmonogram, požadavky → JSON.',
+    icon: '📋',
+    url: '#summary', // Special URL for internal action
+    status: 'active',
+    tags: ['Extrakce', 'One-shot', 'Strukturované data', 'LLM']
   },
   {
     id: 'monolit-planner',
@@ -131,6 +141,7 @@ export default function PortalPage() {
   const [selectedProject, setSelectedProject] = useState<PortalProject | null>(null);
   const [showAuditModal, setShowAuditModal] = useState(false);
   const [showDocumentsModal, setShowDocumentsModal] = useState(false);
+  const [showDocumentSummaryModal, setShowDocumentSummaryModal] = useState(false);
   const [documentsProjectId, setDocumentsProjectId] = useState<string>('');
   const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
 
@@ -322,7 +333,9 @@ export default function PortalPage() {
                     setDocumentsProjectId(newProjectId);
                     setDocumentsProjectName('Nový projekt');
                     setShowDocumentsModal(true);
-                  } : undefined
+                  } :
+                  service.id === 'document-summary' ? () => setShowDocumentSummaryModal(true) :
+                  undefined
                 }
               />
             ))}
@@ -471,6 +484,31 @@ export default function PortalPage() {
           projectName={documentsProjectName}
           onClose={() => setShowDocumentsModal(false)}
         />
+      )}
+
+      {/* Document Summary Modal */}
+      {showDocumentSummaryModal && (
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0, 0, 0, 0.7)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '24px',
+          }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setShowDocumentSummaryModal(false);
+            }
+          }}
+        >
+          <div style={{ maxWidth: '900px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
+            <DocumentSummary onClose={() => setShowDocumentSummaryModal(false)} />
+          </div>
+        </div>
       )}
 
       {/* Theme Toggle */}
