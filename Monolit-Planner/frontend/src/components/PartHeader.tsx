@@ -14,6 +14,7 @@ interface Props {
   otskpCode?: string;
   catalogPrice?: number;
   catalogUnit?: string;
+  partTotalKrosCzk?: number;  // Sum of KROS total for all positions in this part
   onItemNameUpdate: (itemName: string) => void;
   onBetonQuantityUpdate: (quantity: number) => void;
   onOtskpCodeAndNameUpdate: (code: string, name: string, unitPrice?: number, unit?: string) => void;
@@ -26,11 +27,16 @@ export default function PartHeader({
   otskpCode,
   catalogPrice,
   catalogUnit,
+  partTotalKrosCzk,
   onItemNameUpdate,
   onBetonQuantityUpdate,
   onOtskpCodeAndNameUpdate,
   isLocked
 }: Props) {
+  // Calculate Kč/m³ for this part (for comparison with catalog)
+  const calculatedPricePerM3 = betonQuantity > 0 && partTotalKrosCzk
+    ? partTotalKrosCzk / betonQuantity
+    : undefined;
   const [editedName, setEditedName] = useState(itemName || '');
   const [editedBeton, setEditedBeton] = useState(betonQuantity.toString());
   const [editedOtskp, setEditedOtskp] = useState(otskpCode || '');
@@ -178,6 +184,34 @@ export default function PartHeader({
             ) : (
               <span style={{ color: 'var(--text-tertiary)', fontStyle: 'italic' }}>
                 Vyberte OTSKP kód
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Calculated Kč/m³ for this part (for comparison) */}
+        <div className="concrete-param">
+          <label>⭐ Kč/m³ (výpočet):</label>
+          <div className="calculated-price-display" style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '6px 10px',
+            background: calculatedPricePerM3 ? 'var(--status-info-bg, #e3f2fd)' : 'var(--panel-inset)',
+            borderRadius: 'var(--radius-sm)',
+            minWidth: '140px',
+            border: '1px solid var(--border-default)'
+          }}>
+            {calculatedPricePerM3 ? (
+              <span style={{
+                fontWeight: 600,
+                color: 'var(--status-info, #1565c0)',
+                fontVariantNumeric: 'tabular-nums'
+              }}>
+                {calculatedPricePerM3.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč/m³
+              </span>
+            ) : (
+              <span style={{ color: 'var(--text-tertiary)', fontStyle: 'italic' }}>
+                —
               </span>
             )}
           </div>

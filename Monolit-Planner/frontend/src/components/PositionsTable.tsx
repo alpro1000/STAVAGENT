@@ -415,6 +415,7 @@ export default function PositionsTable() {
                     .filter(p => p.subtype === 'beton')
                     .reduce((sum, p) => sum + (p.qty || 0), 0)}
                   otskpCode={partPositions[0]?.otskp_code || ''}
+                  partTotalKrosCzk={partPositions.reduce((sum, p) => sum + (p.kros_total_czk || 0), 0)}
                   onItemNameUpdate={(newName) =>
                     handleItemNameUpdate(partName, newName)
                   }
