@@ -7,8 +7,11 @@ import { useCreateSnapshot } from '../hooks/useCreateSnapshot';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 
 export default function KPIPanel() {
-  const { headerKPI, selectedBridge, daysPerMonth, activeSnapshot } = useAppContext();
+  const { headerKPI, selectedBridge, bridges, daysPerMonth, activeSnapshot } = useAppContext();
   const { handleCreateSnapshot, isCreating } = useCreateSnapshot();
+
+  // Get full bridge data for display
+  const currentBridge = bridges.find(b => b.bridge_id === selectedBridge);
 
   if (!selectedBridge || !headerKPI) {
     return (
@@ -34,8 +37,19 @@ export default function KPIPanel() {
           <h2 className="u-text-orange u-text-bold" style={{ fontSize: 'var(--font-size-xl)', margin: 0 }}>
             🏗️ {selectedBridge}
           </h2>
+          {currentBridge && (
+            <p className="u-text-bold" style={{ fontSize: 'var(--font-size-base)', marginTop: '4px', color: 'var(--text-primary)' }}>
+              {currentBridge.object_name}
+            </p>
+          )}
+          {currentBridge?.project_name && (
+            <p style={{ fontSize: 'var(--font-size-sm)', marginTop: '2px', color: 'var(--text-secondary)' }}>
+              📁 {currentBridge.project_name}
+            </p>
+          )}
           <p className="u-text-muted" style={{ fontSize: 'var(--font-size-sm)', marginTop: '4px' }}>
-            {headerKPI.span_length_m && `Délka: ${headerKPI.span_length_m}m`}
+            {headerKPI.sum_concrete_m3 > 0 && `🧱 Beton: ${formatNumber(headerKPI.sum_concrete_m3)} m³`}
+            {headerKPI.span_length_m && ` | Délka: ${headerKPI.span_length_m}m`}
             {headerKPI.deck_width_m && ` | Šířka: ${headerKPI.deck_width_m}m`}
             {headerKPI.pd_weeks && ` | PD: ${headerKPI.pd_weeks} týdnů`}
           </p>

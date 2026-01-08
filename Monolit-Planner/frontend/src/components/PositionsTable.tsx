@@ -95,8 +95,9 @@ export default function PositionsTable() {
   };
 
   // Handle OTSKP code AND name update together (prevent race condition)
-  const handleOtskpCodeAndNameUpdate = (partName: string, newOtskpCode: string, newItemName: string) => {
+  const handleOtskpCodeAndNameUpdate = (partName: string, newOtskpCode: string, newItemName: string, _unitPrice?: number, _unit?: string) => {
     // Update BOTH otskp_code and item_name for all positions in this part
+    // Note: unitPrice and unit are passed for UI display but not stored in database
     const partPositions = positions.filter(p => p.part_name === partName);
 
     if (partPositions.length === 0) return;
@@ -420,8 +421,8 @@ export default function PositionsTable() {
                   onBetonQuantityUpdate={(newQuantity) =>
                     handleBetonQuantityUpdate(partName, newQuantity)
                   }
-                  onOtskpCodeAndNameUpdate={(code, name) =>
-                    handleOtskpCodeAndNameUpdate(partName, code, name)
+                  onOtskpCodeAndNameUpdate={(code, name, unitPrice, unit) =>
+                    handleOtskpCodeAndNameUpdate(partName, code, name, unitPrice, unit)
                   }
                   isLocked={isLocked}
                 />

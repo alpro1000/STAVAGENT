@@ -312,7 +312,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         style={{
           position: 'absolute',
           top: '10px',
-          right: '-36px',
+          right: '-2px',
           zIndex: 30,
           minHeight: '32px',
           minWidth: '36px',

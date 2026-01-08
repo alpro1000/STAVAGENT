@@ -11,9 +11,11 @@ interface Props {
   itemName?: string;
   betonQuantity: number;
   otskpCode?: string;
+  catalogPrice?: number;
+  catalogUnit?: string;
   onItemNameUpdate: (itemName: string) => void;
   onBetonQuantityUpdate: (quantity: number) => void;
-  onOtskpCodeAndNameUpdate: (code: string, name: string) => void;
+  onOtskpCodeAndNameUpdate: (code: string, name: string, unitPrice?: number, unit?: string) => void;
   isLocked: boolean;
 }
 
@@ -21,6 +23,8 @@ export default function PartHeader({
   itemName,
   betonQuantity,
   otskpCode,
+  catalogPrice,
+  catalogUnit,
   onItemNameUpdate,
   onBetonQuantityUpdate,
   onOtskpCodeAndNameUpdate,
@@ -29,6 +33,8 @@ export default function PartHeader({
   const [editedName, setEditedName] = useState(itemName || '');
   const [editedBeton, setEditedBeton] = useState(betonQuantity.toString());
   const [editedOtskp, setEditedOtskp] = useState(otskpCode || '');
+  const [localCatalogPrice, setLocalCatalogPrice] = useState<number | undefined>(catalogPrice);
+  const [localCatalogUnit, setLocalCatalogUnit] = useState<string | undefined>(catalogUnit);
 
   // Sync state when props change (two-way binding)
   useEffect(() => {
@@ -42,6 +48,14 @@ export default function PartHeader({
   useEffect(() => {
     setEditedOtskp(otskpCode || '');
   }, [otskpCode]);
+
+  useEffect(() => {
+    setLocalCatalogPrice(catalogPrice);
+  }, [catalogPrice]);
+
+  useEffect(() => {
+    setLocalCatalogUnit(catalogUnit);
+  }, [catalogUnit]);
 
   const handleNameBlur = () => {
     if (editedName !== itemName) {
@@ -61,12 +75,17 @@ export default function PartHeader({
     setEditedBeton(e.target.value);
   };
 
-  const handleOtskpSelect = (code: string, name: string) => {
+  const handleOtskpSelect = (code: string, name: string, unitPrice?: number, unit?: string) => {
     setEditedOtskp(code);
+    // Update local catalog price immediately for UI feedback
+    if (unitPrice !== undefined) {
+      setLocalCatalogPrice(unitPrice);
+      setLocalCatalogUnit(unit);
+    }
     // Don't update editedName locally - let API response update it via useEffect
     // This prevents the "flash" where it shows new name then reverts to old
     // Update BOTH code and name in a SINGLE API call to avoid race condition
-    onOtskpCodeAndNameUpdate(code, name);
+    onOtskpCodeAndNameUpdate(code, name, unitPrice, unit);
   };
 
   return (
@@ -114,6 +133,34 @@ export default function PartHeader({
             onSelect={handleOtskpSelect}
             disabled={isLocked}
           />
+        </div>
+
+        {/* Catalog Price (read-only display) */}
+        <div className="concrete-param">
+          <label>Cena dle katalogu:</label>
+          <div className="catalog-price-display" style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '6px 10px',
+            background: localCatalogPrice ? 'var(--status-success-bg, #e8f5e9)' : 'var(--panel-inset)',
+            borderRadius: 'var(--radius-sm)',
+            minWidth: '140px',
+            border: '1px solid var(--border-default)'
+          }}>
+            {localCatalogPrice ? (
+              <span style={{
+                fontWeight: 600,
+                color: 'var(--status-success, #2e7d32)',
+                fontVariantNumeric: 'tabular-nums'
+              }}>
+                {localCatalogPrice.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč/{localCatalogUnit || 'MJ'}
+              </span>
+            ) : (
+              <span style={{ color: 'var(--text-tertiary)', fontStyle: 'italic' }}>
+                Vyberte OTSKP kód
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </div>
