@@ -9,7 +9,7 @@ import type { OtskpCode } from '../../../shared/src/types';
 
 interface Props {
   value: string;
-  onSelect: (code: string, name: string) => void;
+  onSelect: (code: string, name: string, unitPrice?: number, unit?: string) => void;
   disabled?: boolean;
 }
 
@@ -69,7 +69,7 @@ export default function OtskpAutocomplete({ value, onSelect, disabled }: Props) 
   }, [searchQuery]);
 
   const handleSelect = (item: OtskpCode) => {
-    onSelect(item.code, item.name);
+    onSelect(item.code, item.name, item.unit_price, item.unit);
     setSearchQuery(item.code); // Show the selected code in the input
     setIsOpen(false);
     setResults([]);
