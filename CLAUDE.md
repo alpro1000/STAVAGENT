@@ -2,14 +2,14 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.1
-**Last Updated:** 2026-01-07
+**Version:** 1.3.2
+**Last Updated:** 2026-01-08
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2026-01-07):** Slate Minimal Design System (Web UI + Excel Export) - 7 commits, 919 lines, complete styling overhaul
+**NEW (2026-01-08):** PartHeader OTSKP Catalog Price + Calculated Kč/m³ Comparison + Object Info Display
+**PREVIOUS (2026-01-07):** Slate Minimal Design System (Web UI + Excel Export) - 7 commits, 919 lines, complete styling overhaul
 **PREVIOUS (2025-12-29):** Document Accumulator Enhanced (Version Tracking + Comparison + Excel/PDF Export) + Workflow C Deployment Fix
 **PREVIOUS (2025-12-28):** Multi-Role Parallel Execution (3-4x speedup) + Workflow C (end-to-end pipeline) + Document Accumulator (incremental analysis)
-**PREVIOUS (2025-12-26):** Time Norms Automation (AI-powered days estimation) + Portal Services Hub + Digital Concrete Design System
 
 ---
 
@@ -368,7 +368,68 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2026-01-07)
+## Current Status (2026-01-08)
+
+### ✅ COMPLETED: OTSKP Catalog Price & Object Info Display (2026-01-08)
+
+**Branch:** `claude/resolve-merge-conflicts-96zgf`
+
+**Commits:**
+
+| Commit | Description |
+|--------|-------------|
+| `1d6521a` | FEAT: Add calculated Kč/m³ field for comparison with catalog price |
+| `1f6cbff` | FIX: Load OTSKP catalog price on component mount |
+| `47b1514` | FEAT: Add object info display + OTSKP catalog price field |
+| `c448395` | FIX: Sidebar toggle button fully visible (right: -36px → -2px) |
+
+**Key Changes:**
+
+#### 1. Object Info Display in KPIPanel
+**Problem:** Header only showed bridge_id (e.g., "SO 12-20-01"), no other object details.
+
+**Solution:** Added display of:
+- `object_name` - Full object name
+- `project_name` - Project folder name (with 📁 icon)
+- `sum_concrete_m3` - Total concrete volume (with 🧱 icon)
+
+**Files:** `Monolit-Planner/frontend/src/components/KPIPanel.tsx`
+
+#### 2. OTSKP Catalog Price Field
+**Problem:** No way to see catalog price when OTSKP code is selected.
+
+**Solution:** Added "Cena dle katalogu" field in PartHeader:
+- Green background when price loaded
+- Shows price from OTSKP catalog (e.g., `13 886,89 Kč/M3`)
+- Auto-loads price on component mount if OTSKP code exists
+- Updates immediately when selecting new code from dropdown
+
+**Files:**
+- `Monolit-Planner/frontend/src/components/PartHeader.tsx`
+- `Monolit-Planner/frontend/src/components/OtskpAutocomplete.tsx`
+
+#### 3. Calculated Kč/m³ for Comparison
+**Problem:** No way to compare calculated price with catalog price.
+
+**Solution:** Added "⭐ Kč/m³ (výpočet)" field:
+- Blue background for calculated values
+- Formula: `partTotalKrosCzk / betonQuantity`
+- Allows direct comparison:
+  - 📗 **Katalog:** `4 856,37 Kč/M3` (official price)
+  - 📘 **Výpočet:** `5 120,00 Kč/m³` (your calculation)
+
+**Files:**
+- `Monolit-Planner/frontend/src/components/PartHeader.tsx`
+- `Monolit-Planner/frontend/src/components/PositionsTable.tsx`
+
+#### 4. Sidebar Toggle Button Fix
+**Problem:** Button barely visible (only orange stripe due to `right: -24px`).
+
+**Solution:** Changed to `right: -2px` for full button visibility.
+
+**Files:** `Monolit-Planner/frontend/src/components/Sidebar.tsx`
+
+---
 
 ### ✅ COMPLETED: Slate Minimal Design System Implementation (2026-01-07 morning)
 
@@ -1108,18 +1169,16 @@ REDIS_URL=redis://...
 
 ## 📖 Session Documentation
 
-**Current Session (2026-01-07):** See `/NEXT_SESSION.md` and `/SESSION_2026-01-07.md` for:
-- Slate Minimal Design System (Web UI + Excel Export)
-- 7 commits, 5 files modified (919 lines total)
-- Sidebar toggle button z-index fix
-- Delete project NULL handling fix
-- Complete Slate color palette (10 shades + semantic colors)
-- Precise column widths with fixed layout
-- Excel export styling matching web UI
-- Formulas display fix + KROS JC CEILING formula
-- Duration: ~4 hours
+**Current Session (2026-01-08):**
+- OTSKP Catalog Price display in PartHeader
+- Calculated Kč/m³ field for comparison with catalog
+- Object info display in KPIPanel (object_name, project_name, sum_concrete_m3)
+- Sidebar toggle button fix (right: -2px)
+- 4 commits, 5 files modified
+- Duration: ~2 hours
 
 **Previous Sessions:**
+- **2026-01-07:** Slate Minimal Design System (Web UI + Excel Export) - 7 commits, 919 lines
 - **2025-12-29:** Document Accumulator Enhanced (Version Tracking + Comparison + Excel/PDF Export) + Workflow C Deployment Fix
 - **2025-12-28:** Document Parsing Architecture + Workflow C + Summary Module + Multi-Role Performance (3-4x speedup)
 - **2025-12-26:** Time Norms Automation + Portal Services Hub + Digital Concrete Design System
