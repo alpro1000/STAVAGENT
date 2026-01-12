@@ -15,12 +15,12 @@ interface ProtectedRouteProps {
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
   const { isAuthenticated, isLoading } = useAuth();
 
-  // DEV MODE: Auth bypass via environment variable (ONLY for local development)
-  // NEVER set VITE_DISABLE_AUTH=true in production!
-  const devBypassAuth = import.meta.env.VITE_DISABLE_AUTH === 'true';
+  // 🔓 AUTH DISABLED: For development/testing
+  // Change to false when you want to enable login/password
+  const DISABLE_AUTH = import.meta.env.VITE_DISABLE_AUTH === 'true';
 
-  if (devBypassAuth) {
-    console.warn('⚠️ DEV MODE: Authentication disabled via VITE_DISABLE_AUTH! This should NEVER be enabled in production.');
+  if (DISABLE_AUTH) {
+    console.info('ℹ️  Authentication disabled (development mode)');
     return <>{children}</>;
   }
 
