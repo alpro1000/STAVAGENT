@@ -770,7 +770,8 @@ async def summarize_uploaded_file(
 
         try:
             # Parse document
-            parsed_result = await parser.parse(str(temp_path), project_id="temp")
+            # NOTE: parse() is sync, not async - and expects Path object, not str
+            parsed_result = parser.parse(temp_path, project_id="temp")
 
             # Extract text content for summarization
             if ext in ['.pdf']:
