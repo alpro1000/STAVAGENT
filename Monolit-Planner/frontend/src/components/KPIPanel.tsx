@@ -33,26 +33,25 @@ export default function KPIPanel() {
   return (
     <div className="c-panel" style={{ marginBottom: 'var(--space-lg)' }}>
       <div className="u-flex-between u-mb-md" style={{ flexWrap: 'wrap', gap: 'var(--space-md)' }}>
-        <div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)', flexWrap: 'wrap' }}>
           <h2 className="u-text-orange u-text-bold" style={{ fontSize: 'var(--font-size-xl)', margin: 0 }}>
             🏗️ {selectedBridge}
           </h2>
           {currentBridge && (
-            <p className="u-text-bold" style={{ fontSize: 'var(--font-size-base)', marginTop: '4px', color: 'var(--text-primary)' }}>
+            <span className="u-text-bold" style={{ fontSize: 'var(--font-size-base)', color: 'var(--text-primary)' }}>
               {currentBridge.object_name}
-            </p>
+            </span>
           )}
           {currentBridge?.project_name && (
-            <p style={{ fontSize: 'var(--font-size-sm)', marginTop: '2px', color: 'var(--text-secondary)' }}>
-              📁 {currentBridge.project_name}
-            </p>
+            <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--text-secondary)' }}>
+              | 📁 {currentBridge.project_name}
+            </span>
           )}
-          <p className="u-text-muted" style={{ fontSize: 'var(--font-size-sm)', marginTop: '4px' }}>
-            {headerKPI.sum_concrete_m3 > 0 && `🧱 Beton: ${formatNumber(headerKPI.sum_concrete_m3)} m³`}
-            {headerKPI.span_length_m && ` | Délka: ${headerKPI.span_length_m}m`}
-            {headerKPI.deck_width_m && ` | Šířka: ${headerKPI.deck_width_m}m`}
-            {headerKPI.pd_weeks && ` | PD: ${headerKPI.pd_weeks} týdnů`}
-          </p>
+          {headerKPI.sum_concrete_m3 > 0 && (
+            <span className="u-text-muted" style={{ fontSize: 'var(--font-size-sm)' }}>
+              | 🧱 {formatNumber(headerKPI.sum_concrete_m3)} m³
+            </span>
+          )}
         </div>
 
         <div className="u-flex u-gap-sm" style={{ alignItems: 'center' }}>
