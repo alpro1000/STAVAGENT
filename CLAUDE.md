@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.2
-**Last Updated:** 2026-01-08
+**Version:** 1.3.3
+**Last Updated:** 2026-01-12
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2026-01-08):** PartHeader OTSKP Catalog Price + Calculated Kč/m³ Comparison + Object Info Display
+**NEW (2026-01-12):** OTSKP Import Fix + KPI Header Compact + WorkTypeSelector + Project Deletion Fix
+**PREVIOUS (2026-01-08):** PartHeader OTSKP Catalog Price + Calculated Kč/m³ Comparison + Object Info Display
 **PREVIOUS (2026-01-07):** Slate Minimal Design System (Web UI + Excel Export) - 7 commits, 919 lines, complete styling overhaul
 **PREVIOUS (2025-12-29):** Document Accumulator Enhanced (Version Tracking + Comparison + Excel/PDF Export) + Workflow C Deployment Fix
 **PREVIOUS (2025-12-28):** Multi-Role Parallel Execution (3-4x speedup) + Workflow C (end-to-end pipeline) + Document Accumulator (incremental analysis)
@@ -368,7 +369,66 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2026-01-08)
+## Current Status (2026-01-12)
+
+### ✅ COMPLETED: Excel Import + UI/UX Improvements + Project Deletion Fix (2026-01-12)
+
+**Branch:** `claude/add-price-comparison-I1tFe`
+
+**Commits:**
+
+| Commit | Description |
+|--------|-------------|
+| `2ac4251` | FIX: Extract and save OTSKP code during Excel import |
+| `b1450af` | STYLE: Compact KPI header - single line layout |
+| `68ff508` | FIX: Hide Betonování from work type selector |
+| `2b9b985` | FIX: Project deletion - route order and sidebar refresh |
+
+**Key Changes:**
+
+#### 1. OTSKP Code Import Fix
+**Problem:** OTSKP codes were not saved when importing Excel files. Function `extractConcreteOnlyM3()` didn't extract codes, INSERT didn't include `otskp_code` field.
+
+**Solution:**
+- Added OTSKP extraction in `extractConcreteOnlyM3()`: searches "Kód" column and 5-6 digit codes
+- Updated INSERT in `upload.js` for PostgreSQL and SQLite with `otskp_code` field
+- Added logging to show extracted codes
+
+**Files:**
+- `Monolit-Planner/backend/src/services/concreteExtractor.js`
+- `Monolit-Planner/backend/src/routes/upload.js`
+
+#### 2. Compact KPI Header
+**Problem:** KPI header took too much vertical space (3 lines).
+
+**Solution:** Combined all info into single horizontal line:
+```
+🏗️ SO203 | MOST PŘES BIOKORIDO... | 📁 Import | 🧱 1 209,70 m³
+```
+
+**Files:** `Monolit-Planner/frontend/src/components/KPIPanel.tsx`
+
+#### 3. Hide Betonování from WorkTypeSelector
+**Problem:** User could add duplicate Betonování (auto-created with each part), which couldn't be deleted.
+
+**Solution:** Hid "Betonování" button from work type selector. Users can still add: Bednění, Výztuž, Oboustranné bednění, Jiné.
+
+**Files:** `Monolit-Planner/frontend/src/components/WorkTypeSelector.tsx`
+
+#### 4. Project Deletion Fix
+**Problem:**
+- 404 error when deleting projects - route `/by-project-name/:projectName` was AFTER `/:id`
+- Sidebar didn't refresh after deletion
+
+**Solution:**
+- Moved `/by-project-name` route BEFORE `/:id` route
+- Added `refetchBridges()` after `confirmDelete()` and `confirmDeleteProject()`
+
+**Files:**
+- `Monolit-Planner/backend/src/routes/monolith-projects.js`
+- `Monolit-Planner/frontend/src/components/Sidebar.tsx`
+
+---
 
 ### ✅ COMPLETED: OTSKP Catalog Price & Object Info Display (2026-01-08)
 
@@ -1162,22 +1222,23 @@ REDIS_URL=redis://...
 
 ---
 
-**Last Updated:** 2026-01-07
+**Last Updated:** 2026-01-12
 **Maintained By:** Development Team
 
 ---
 
 ## 📖 Session Documentation
 
-**Current Session (2026-01-08):**
-- OTSKP Catalog Price display in PartHeader
-- Calculated Kč/m³ field for comparison with catalog
-- Object info display in KPIPanel (object_name, project_name, sum_concrete_m3)
-- Sidebar toggle button fix (right: -2px)
-- 4 commits, 5 files modified
+**Current Session (2026-01-12):**
+- OTSKP code extraction during Excel import (was not being saved)
+- Compact KPI header - single line layout (saves vertical space)
+- Hide Betonování from work type selector (prevents duplicates)
+- Project deletion fix - route order + sidebar refresh
+- 4 commits, 6 files modified
 - Duration: ~2 hours
 
 **Previous Sessions:**
+- **2026-01-08:** OTSKP Catalog Price display + Calculated Kč/m³ comparison + Object info in KPIPanel - 4 commits
 - **2026-01-07:** Slate Minimal Design System (Web UI + Excel Export) - 7 commits, 919 lines
 - **2025-12-29:** Document Accumulator Enhanced (Version Tracking + Comparison + Excel/PDF Export) + Workflow C Deployment Fix
 - **2025-12-28:** Document Parsing Architecture + Workflow C + Summary Module + Multi-Role Performance (3-4x speedup)
