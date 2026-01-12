@@ -94,8 +94,11 @@ app.use(cors({
   credentials: true
 }));
 
-// Logging
-app.use(morgan('combined', { stream: { write: msg => logger.info(msg.trim()) } }));
+// Logging (exclude healthcheck requests from logs)
+app.use(morgan('combined', {
+  skip: (req, res) => req.path === '/healthcheck',
+  stream: { write: msg => logger.info(msg.trim()) }
+}));
 
 // Rate limiting - apply to all routes by default
 app.use(apiLimiter);
@@ -121,6 +124,27 @@ app.get('/health', (req, res) => {
     uptime: process.uptime(),
     version: '1.0.0'
   });
+});
+
+// Keep-Alive healthcheck (with secret key protection)
+app.get('/healthcheck', (req, res) => {
+  const keepAliveKey = process.env.KEEP_ALIVE_KEY;
+
+  // If no key configured, disable endpoint
+  if (!keepAliveKey) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+
+  // Validate X-Keep-Alive-Key header
+  const providedKey = req.headers['x-keep-alive-key'];
+
+  if (providedKey !== keepAliveKey) {
+    // Return 404 to hide endpoint existence
+    return res.status(404).json({ error: 'Not found' });
+  }
+
+  // Return minimal response (no DB queries)
+  res.json({ status: 'alive', service: 'stavagent-portal' });
 });
 
 // API Routes
