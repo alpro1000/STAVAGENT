@@ -32,7 +32,7 @@ from app.services.document_accumulator import (
 logger = logging.getLogger(__name__)
 
 router = APIRouter(
-    prefix="/accumulator",
+    prefix="/api/v1/accumulator",
     tags=["Document Accumulator"],
 )
 
