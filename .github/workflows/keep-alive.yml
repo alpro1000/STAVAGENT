@@ -1,0 +1,67 @@
+name: Keep-Alive Services
+
+on:
+  schedule:
+    # Run every 14 minutes (cron format: minute hour day month day-of-week)
+    - cron: '*/14 * * * *'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  keep-alive:
+    name: Ping Services to Prevent Sleep
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        service:
+          - name: concrete-agent
+            url: https://concrete-agent.onrender.com/healthcheck
+          - name: monolit-planner
+            url: https://monolit-planner-api.onrender.com/healthcheck
+          - name: stavagent-portal
+            url: https://stav-agent.onrender.com/healthcheck
+
+    steps:
+      - name: Ping ${{ matrix.service.name }}
+        run: |
+          echo "🔄 Pinging ${{ matrix.service.name }}..."
+
+          # Retry configuration
+          MAX_RETRIES=3
+          RETRY_DELAY=10
+          SUCCESS=false
+
+          for i in $(seq 1 $MAX_RETRIES); do
+            echo "Attempt $i of $MAX_RETRIES..."
+
+            # Make request with secret key header
+            HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+              -H "X-Keep-Alive-Key: ${{ secrets.KEEP_ALIVE_KEY }}" \
+              -m 30 \
+              "${{ matrix.service.url }}")
+
+            if [ "$HTTP_CODE" = "200" ]; then
+              echo "✅ ${{ matrix.service.name }} responded with 200 OK"
+              SUCCESS=true
+              break
+            else
+              echo "⚠️  Received HTTP $HTTP_CODE (expected 200)"
+              if [ $i -lt $MAX_RETRIES ]; then
+                echo "⏳ Waiting ${RETRY_DELAY}s before retry..."
+                sleep $RETRY_DELAY
+              fi
+            fi
+          done
+
+          if [ "$SUCCESS" = "false" ]; then
+            echo "❌ Failed to wake ${{ matrix.service.name }} after $MAX_RETRIES attempts"
+            exit 1
+          fi
+        env:
+          # Use GitHub Secrets for sensitive data
+          KEEP_ALIVE_KEY: ${{ secrets.KEEP_ALIVE_KEY }}
+
+      - name: Report Status
+        if: always()
+        run: |
+          echo "📊 Keep-Alive Status for ${{ matrix.service.name }}: ${{ job.status }}"

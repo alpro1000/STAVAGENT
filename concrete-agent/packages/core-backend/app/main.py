@@ -4,7 +4,7 @@ Czech Building Audit System
 """
 import logging
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
@@ -37,6 +37,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Middleware to exclude /healthcheck from access logs
+@app.middleware("http")
+async def filter_healthcheck_logs(request: Request, call_next):
+    """Exclude /healthcheck requests from access logs."""
+    if request.url.path == "/healthcheck":
+        # Temporarily disable logger for this request
+        import logging
+        logging.getLogger("uvicorn.access").disabled = True
+        response = await call_next(request)
+        logging.getLogger("uvicorn.access").disabled = False
+        return response
+    return await call_next(request)
 
 # Include API routes
 app.include_router(api_router)
@@ -120,6 +133,33 @@ async def root():
 @app.head("/health")
 async def health_check():
     return {"status": "healthy"}
+
+
+@app.get("/healthcheck")
+@app.head("/healthcheck")
+async def keep_alive_healthcheck(request: Request):
+    """
+    Lightweight healthcheck endpoint for Keep-Alive system.
+
+    Validates X-Keep-Alive-Key header to prevent unauthorized access.
+    This endpoint is designed to prevent server sleep on free-tier hosting (Render/Fly.io).
+    """
+    # Get the Keep-Alive key from environment
+    keep_alive_key = os.getenv("KEEP_ALIVE_KEY")
+
+    # If no key is configured, disable this endpoint
+    if not keep_alive_key:
+        raise HTTPException(status_code=404, detail="Not found")
+
+    # Validate the X-Keep-Alive-Key header
+    provided_key = request.headers.get("X-Keep-Alive-Key")
+
+    if provided_key != keep_alive_key:
+        # Return 404 instead of 403 to hide endpoint existence
+        raise HTTPException(status_code=404, detail="Not found")
+
+    # Return minimal response (no DB queries, no heavy processing)
+    return {"status": "alive", "service": "concrete-agent"}
 
 
 if __name__ == "__main__":
