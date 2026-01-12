@@ -165,6 +165,81 @@ router.post('/', async (req, res) => {
 });
 
 /**
+ * DELETE /api/monolith-projects/by-project-name/:projectName
+ * Delete ALL projects with matching project_name (group deletion)
+ * This deletes an entire "project folder" in the sidebar
+ *
+ * IMPORTANT: This route MUST be defined BEFORE /:id to avoid conflicts!
+ *
+ * Special case: "Bez projektu" maps to NULL project_name in DB
+ */
+router.delete('/by-project-name/:projectName', async (req, res) => {
+  try {
+    const projectName = decodeURIComponent(req.params.projectName);
+
+    logger.info(`[DELETE PROJECT] Deleting all objects with project_name: "${projectName}"`);
+
+    // Special handling: "Bez projektu" in UI means NULL in DB
+    const isNullProject = projectName === 'Bez projektu';
+
+    // Find all projects with this project_name (or NULL if "Bez projektu")
+    let projectsToDelete;
+    if (isNullProject) {
+      projectsToDelete = await db.prepare(`
+        SELECT project_id FROM monolith_projects WHERE project_name IS NULL
+      `).all();
+    } else {
+      projectsToDelete = await db.prepare(`
+        SELECT project_id FROM monolith_projects WHERE project_name = ?
+      `).all(projectName);
+    }
+
+    if (projectsToDelete.length === 0) {
+      return res.status(404).json({ error: 'No projects found with this project_name' });
+    }
+
+    const projectIds = projectsToDelete.map(p => p.project_id);
+    logger.info(`[DELETE PROJECT] Found ${projectIds.length} objects to delete: ${projectIds.join(', ')}`);
+
+    // Delete from monolith_projects (positions will be deleted by CASCADE)
+    let deleteProjectsResult;
+    if (isNullProject) {
+      deleteProjectsResult = await db.prepare(`
+        DELETE FROM monolith_projects WHERE project_name IS NULL
+      `).run();
+    } else {
+      deleteProjectsResult = await db.prepare(`
+        DELETE FROM monolith_projects WHERE project_name = ?
+      `).run(projectName);
+    }
+
+    // Also delete from bridges table (for FK compatibility)
+    let deleteBridgesResult;
+    if (isNullProject) {
+      deleteBridgesResult = await db.prepare(`
+        DELETE FROM bridges WHERE project_name IS NULL
+      `).run();
+    } else {
+      deleteBridgesResult = await db.prepare(`
+        DELETE FROM bridges WHERE project_name = ?
+      `).run(projectName);
+    }
+
+    logger.info(`[DELETE PROJECT] ✓ Deleted ${deleteProjectsResult.changes} from monolith_projects, ${deleteBridgesResult.changes} from bridges`);
+
+    res.json({
+      success: true,
+      message: `Deleted ${projectIds.length} objects from project "${projectName}"`,
+      deleted_count: projectIds.length,
+      deleted_ids: projectIds
+    });
+  } catch (error) {
+    logger.error('[DELETE PROJECT] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
  * GET /api/monolith-projects/:id
  * Get project details with all parts (no auth - kiosk mode)
  */
@@ -298,79 +373,6 @@ router.delete('/:id', async (req, res) => {
     logger.info(`Deleted monolith project: ${id}`);
   } catch (error) {
     logger.error('Error deleting monolith project:', error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-/**
- * DELETE /api/monolith-projects/by-project-name/:projectName
- * Delete ALL projects with matching project_name (group deletion)
- * This deletes an entire "project folder" in the sidebar
- *
- * Special case: "Bez projektu" maps to NULL project_name in DB
- */
-router.delete('/by-project-name/:projectName', async (req, res) => {
-  try {
-    const projectName = decodeURIComponent(req.params.projectName);
-
-    logger.info(`[DELETE PROJECT] Deleting all objects with project_name: "${projectName}"`);
-
-    // Special handling: "Bez projektu" in UI means NULL in DB
-    const isNullProject = projectName === 'Bez projektu';
-
-    // Find all projects with this project_name (or NULL if "Bez projektu")
-    let projectsToDelete;
-    if (isNullProject) {
-      projectsToDelete = await db.prepare(`
-        SELECT project_id FROM monolith_projects WHERE project_name IS NULL
-      `).all();
-    } else {
-      projectsToDelete = await db.prepare(`
-        SELECT project_id FROM monolith_projects WHERE project_name = ?
-      `).all(projectName);
-    }
-
-    if (projectsToDelete.length === 0) {
-      return res.status(404).json({ error: 'No projects found with this project_name' });
-    }
-
-    const projectIds = projectsToDelete.map(p => p.project_id);
-    logger.info(`[DELETE PROJECT] Found ${projectIds.length} objects to delete: ${projectIds.join(', ')}`);
-
-    // Delete from monolith_projects (positions will be deleted by CASCADE)
-    let deleteProjectsResult;
-    if (isNullProject) {
-      deleteProjectsResult = await db.prepare(`
-        DELETE FROM monolith_projects WHERE project_name IS NULL
-      `).run();
-    } else {
-      deleteProjectsResult = await db.prepare(`
-        DELETE FROM monolith_projects WHERE project_name = ?
-      `).run(projectName);
-    }
-
-    // Also delete from bridges table (for FK compatibility)
-    let deleteBridgesResult;
-    if (isNullProject) {
-      deleteBridgesResult = await db.prepare(`
-        DELETE FROM bridges WHERE project_name IS NULL
-      `).run();
-    } else {
-      deleteBridgesResult = await db.prepare(`
-        DELETE FROM bridges WHERE project_name = ?
-      `).run(projectName);
-    }
-
-    logger.info(`[DELETE PROJECT] ✓ Deleted ${deleteProjectsResult.changes} from monolith_projects, ${deleteBridgesResult.changes} from bridges`);
-
-    res.json({
-      success: true,
-      message: `Deleted ${projectIds.length} objects from project "${projectName}"`,
-      deleted_count: projectIds.length,
-      deleted_ids: projectIds
-    });
-  } catch (error) {
-    logger.error('[DELETE PROJECT] Error:', error);
     res.status(500).json({ error: error.message });
   }
 });
