@@ -178,6 +178,10 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       if (selectedBridge === bridgeToDelete.bridge_id) {
         setSelectedBridge(null);
       }
+
+      // Refetch bridges to update sidebar immediately
+      await refetchBridges();
+
     } catch (error) {
       console.error('Failed to delete bridge:', error);
       alert('Chyba při mazání objektu');
@@ -206,7 +210,9 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         }
       }
 
-      alert(`✅ Projekt smazán!\n\nSmazáno objektů: ${result.deleted_count}`);
+      // Refetch bridges to update sidebar immediately
+      await refetchBridges();
+
     } catch (error) {
       console.error('Failed to delete project:', error);
       alert('Chyba při mazání projektu');
