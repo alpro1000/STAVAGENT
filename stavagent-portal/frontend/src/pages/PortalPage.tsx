@@ -500,12 +500,16 @@ export default function PortalPage() {
             padding: '24px',
           }}
           onClick={(e) => {
+            e.stopPropagation();
             if (e.target === e.currentTarget) {
               setShowDocumentSummaryModal(false);
             }
           }}
         >
-          <div style={{ maxWidth: '900px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
+          <div
+            style={{ maxWidth: '900px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}
+            onClick={(e) => e.stopPropagation()}
+          >
             <DocumentSummary onClose={() => setShowDocumentSummaryModal(false)} />
           </div>
         </div>
