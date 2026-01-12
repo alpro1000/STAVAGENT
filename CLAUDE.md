@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.3
+**Version:** 1.3.4
 **Last Updated:** 2026-01-12
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2026-01-12):** OTSKP Import Fix + KPI Header Compact + WorkTypeSelector + Project Deletion Fix
+**NEW (2026-01-12):** Document Accumulator API Fix + Keep-Alive System (Render Free Tier)
+**PREVIOUS (2026-01-12):** OTSKP Import Fix + KPI Header Compact + WorkTypeSelector + Project Deletion Fix
 **PREVIOUS (2026-01-08):** PartHeader OTSKP Catalog Price + Calculated Kč/m³ Comparison + Object Info Display
 **PREVIOUS (2026-01-07):** Slate Minimal Design System (Web UI + Excel Export) - 7 commits, 919 lines, complete styling overhaul
 **PREVIOUS (2025-12-29):** Document Accumulator Enhanced (Version Tracking + Comparison + Excel/PDF Export) + Workflow C Deployment Fix
@@ -371,7 +372,86 @@ Content-Type: application/json
 
 ## Current Status (2026-01-12)
 
-### ✅ COMPLETED: Excel Import + UI/UX Improvements + Project Deletion Fix (2026-01-12)
+### ✅ COMPLETED: Document Accumulator API Fix + Keep-Alive System (2026-01-12 - Part 2)
+
+**Branch:** `claude/fix-excel-import-kpi-JFqYB`
+
+**Commits:**
+
+| Commit | Description |
+|--------|-------------|
+| `8662772` | FIX: Document Accumulator API path - add /api/v1 prefix to router |
+| `a20480a` | FEAT: Add Keep-Alive system to prevent Render Free Tier sleep |
+
+**Key Changes:**
+
+#### 1. Document Accumulator API Path Fix
+**Problem:** Frontend calling `/api/v1/accumulator/summarize/file` but backend router had prefix `/accumulator` (missing `/api/v1`).
+
+**Solution:**
+- Changed router prefix from `/accumulator` to `/api/v1/accumulator` in `routes_accumulator.py`
+- Aligned with other routers (multi-role, summary, workflow-c all use `/api/v1/` prefix)
+- Fixed 404 errors in Document Summary feature
+
+**Files:** `concrete-agent/packages/core-backend/app/api/routes_accumulator.py`
+
+#### 2. Keep-Alive System for Render Free Tier
+**Problem:** Services sleep after 15 minutes of inactivity on Render Free Tier, causing 30+ second cold starts.
+
+**Solution:** Implemented professional Keep-Alive system with security features:
+
+**Architecture:**
+```
+GitHub Actions (cron: */14 * * * *)
+    ↓
+    Ping /healthcheck with X-Keep-Alive-Key header
+    ↓
+┌─────────────────┬─────────────────┬─────────────────┐
+│ concrete-agent  │ monolit-planner │ stavagent-portal│
+│ (FastAPI)       │ (Express)       │ (Express)       │
+└─────────────────┴─────────────────┴─────────────────┘
+```
+
+**Security Features:**
+- Secret key authentication via `X-Keep-Alive-Key` header
+- Returns 404 (not 403) to hide endpoint existence
+- Endpoint disabled if `KEEP_ALIVE_KEY` env var not set
+
+**Reliability Features:**
+- Retry logic: 3 attempts with 10-second delays
+- Handles cold-start scenarios (first ping may timeout)
+- 30-second timeout per request
+
+**Clean Logs:**
+- Express: `morgan` skip filter for `/healthcheck` path
+- FastAPI: Custom middleware to disable `uvicorn.access` logger
+- GitHub Actions: Silent curl (`-s` flag)
+
+**Files:**
+- `.github/workflows/keep-alive.yml` - GitHub Actions workflow (67 lines)
+- `KEEP_ALIVE_SETUP.md` - Comprehensive setup guide (460 lines)
+- `concrete-agent/packages/core-backend/app/main.py` - FastAPI endpoint + middleware
+- `Monolit-Planner/backend/server.js` - Express endpoint + morgan filter
+- `stavagent-portal/backend/server.js` - Express endpoint + morgan filter
+
+**Setup Required:**
+1. Generate random secret key: `openssl rand -base64 32`
+2. Add `KEEP_ALIVE_KEY` to GitHub Secrets
+3. Add `KEEP_ALIVE_KEY` to Render Environment Variables (all 3 services)
+4. Redeploy services
+5. Enable workflow in GitHub Actions
+
+**Benefits:**
+- Services stay warm 24/7 on Render Free Tier
+- Zero cost (GitHub Actions free tier: 2,000 min/month, usage: ~1,440 min/month)
+- No more 30-second cold starts
+- Professional security (secret key protection)
+
+**Documentation:** See `KEEP_ALIVE_SETUP.md` for detailed setup instructions.
+
+---
+
+### ✅ COMPLETED: Excel Import + UI/UX Improvements + Project Deletion Fix (2026-01-12 - Part 1)
 
 **Branch:** `claude/add-price-comparison-I1tFe`
 
@@ -1229,7 +1309,17 @@ REDIS_URL=redis://...
 
 ## 📖 Session Documentation
 
-**Current Session (2026-01-12):**
+**Current Session (2026-01-12 - Part 2):**
+- Document Accumulator API path fix (/api/v1/accumulator prefix)
+- Keep-Alive system for Render Free Tier (prevent sleep after 15min)
+  - Secure /healthcheck endpoints with X-Keep-Alive-Key authentication
+  - GitHub Actions workflow (ping every 14 minutes, retry logic)
+  - Log filtering (exclude healthcheck from access logs)
+  - Comprehensive setup guide (KEEP_ALIVE_SETUP.md, 460 lines)
+- 2 commits, 620 lines added
+- Duration: ~1.5 hours
+
+**Previous Session (2026-01-12 - Part 1):**
 - OTSKP code extraction during Excel import (was not being saved)
 - Compact KPI header - single line layout (saves vertical space)
 - Hide Betonování from work type selector (prevents duplicates)
