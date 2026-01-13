@@ -7,7 +7,7 @@ Critical fixes + New features:
 - Save to project functionality in Document Summary
 - Google Drive integration (Desktop Sync ready, **API OAuth2 Complete**)
 
-## Changes (12 commits)
+## Changes (13 commits)
 
 ### 1. Document Accumulator API Fix (8662772)
 - Fixed API path mismatch: added `/api/v1` prefix to router
@@ -103,6 +103,35 @@ Critical fixes + New features:
 - Setup instructions and key generation commands
 - **Benefits:** Clear setup guide for deployment
 
+### 13. Google Drive Frontend Integration (8725009) ⭐⭐⭐ DAY 2 COMPLETE
+- Complete user-facing Google Drive integration in Document Summary
+- OAuth2 Authentication Flow:
+  - "Připojit Google Drive" button
+  - OAuth2 popup window (600x700) with postMessage communication
+  - Auto-loads folders after successful auth
+  - Error handling with user-friendly messages
+- Google Drive Folder Selector:
+  - Dropdown populated from backend API
+  - Displays user's folder structure
+  - Enabled only after authorization
+- Upload to Google Drive:
+  - "Nahrát do Drive" button
+  - Progress tracking with loading spinner
+  - Success feedback (green checkmark, 3 seconds)
+  - Integrates with existing file analysis
+- State Management:
+  - 5 new state variables for auth, folders, upload status
+  - Clean separation from project save functionality
+- UI/UX Features:
+  - Visual separator between features
+  - Digital Concrete design system compliance
+  - Disabled states during operations
+  - Auto-close popup on success/error
+- Backend Error Callback:
+  - Added postMessage for error scenarios
+  - Auto-close after 5 seconds
+- **Benefits:** Users can now upload analyzed documents directly to Google Drive
+
 ## Testing
 
 All changes tested locally:
@@ -145,7 +174,7 @@ None - all changes backward compatible.
 
 **stavagent-portal:**
 - `frontend/src/pages/PortalPage.tsx`
-- `frontend/src/components/portal/DocumentSummary.tsx` ⭐ (save to project)
+- `frontend/src/components/portal/DocumentSummary.tsx` ⭐⭐ (save to project + Google Drive)
 - `frontend/src/components/ProtectedRoute.tsx`
 - `frontend/.env.production`, `.env.example`
 - `frontend/SECURITY.md`
@@ -180,7 +209,9 @@ openssl rand -base64 32
 # Add to Render Environment (all 3 services): KEEP_ALIVE_KEY
 ```
 
-### 2. Setup Google Drive Integration (NEW)
+### 2. Setup Google Drive Integration (NEW) ⭐ Days 1-2 Complete
+
+**Status:** Backend + Frontend Ready for Production Testing
 
 **Manual setup required (15 min):**
 
@@ -188,7 +219,9 @@ openssl rand -base64 32
 2. Enable Google Drive API
 3. Configure OAuth2 consent screen (External, add test users)
 4. Create OAuth2 credentials (Web application)
-5. Add redirect URI: `https://concrete-agent.onrender.com/api/v1/google/callback`
+5. Add redirect URIs:
+   - `https://concrete-agent.onrender.com/api/v1/google/callback`
+   - `http://localhost:8000/api/v1/google/callback` (for local testing)
 6. Generate encryption keys:
    ```bash
    openssl rand -base64 32  # GOOGLE_CREDENTIALS_ENCRYPTION_KEY
@@ -202,4 +235,14 @@ openssl rand -base64 32
    - GOOGLE_WEBHOOK_SECRET_KEY
    - PUBLIC_URL=https://concrete-agent.onrender.com
 
-**Documentation:** See `concrete-agent/packages/core-backend/.env.example` for details.
+**Testing (After Setup):**
+1. Open Document Summary in Portal
+2. Click "Připojit Google Drive"
+3. Authorize in popup → Should see success message
+4. Select folder from dropdown
+5. Click "Nahrát do Drive" → Should upload successfully
+
+**Documentation:**
+- Setup: `concrete-agent/packages/core-backend/.env.example`
+- Architecture: `docs/GOOGLE_DRIVE_API_ARCHITECTURE.md`
+- Session Summary: `SESSION_2026-01-13_GOOGLE_DRIVE_DAY1.md`
