@@ -18,6 +18,7 @@ from app.api.routes_multi_role import router as multi_role_router
 from app.api.routes_summary import router as summary_router
 from app.api.routes_workflow_c import router as workflow_c_router
 from app.api.routes_accumulator import router as accumulator_router
+from app.api.routes_google import router as google_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -34,5 +35,6 @@ api_router.include_router(multi_role_router)      # /api/v1/multi-role/*
 api_router.include_router(summary_router)         # /api/v1/summary/*
 api_router.include_router(workflow_c_router)      # /api/v1/workflow/c/*
 api_router.include_router(accumulator_router)     # /api/v1/accumulator/* (Document Accumulator)
+api_router.include_router(google_router)          # /api/v1/google/* (Google Drive Integration)
 
 __all__ = ["api_router"]
