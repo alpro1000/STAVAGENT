@@ -12,7 +12,7 @@
  * Version: 1.0.0 (2026-01-08)
  */
 
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
   Upload,
   FileText,

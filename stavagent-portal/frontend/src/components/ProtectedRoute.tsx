@@ -17,7 +17,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
 
   // 🔓 AUTH DISABLED: For development/testing
   // Change to false when you want to enable login/password
-  const DISABLE_AUTH = import.meta.env.VITE_DISABLE_AUTH === 'true';
+  const DISABLE_AUTH = (import.meta as any).env?.VITE_DISABLE_AUTH === 'true';
 
   if (DISABLE_AUTH) {
     console.info('ℹ️  Authentication disabled (development mode)');
