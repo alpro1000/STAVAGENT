@@ -29,6 +29,7 @@ import {
   Download,
   X,
   FileSpreadsheet,
+  Database,
 } from 'lucide-react';
 
 // Types
@@ -91,11 +92,40 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   const [summary, setSummary] = useState<DocumentSummaryData | null>(null);
   const [language, setLanguage] = useState<'cs' | 'en' | 'sk'>('cs');
 
+  // Save to project state
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState<string>('');
+  const [availableProjects, setAvailableProjects] = useState<Array<{id: string, name: string}>>([]);
+
+  // Load available projects
+  useEffect(() => {
+    const loadProjects = async () => {
+      try {
+        const portalApiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+        const response = await fetch(`${portalApiUrl}/api/portal/projects`);
+        if (response.ok) {
+          const projects = await response.json();
+          setAvailableProjects(projects.map((p: any) => ({
+            id: p.portal_project_id || p.id,
+            name: p.project_name || 'Unnamed'
+          })));
+        }
+      } catch (err) {
+        console.error('Failed to load projects:', err);
+      }
+    };
+    loadProjects();
+  }, []);
+
   // Handle file upload
   const handleFileUpload = useCallback(async (file: File) => {
     setIsUploading(true);
     setError(null);
     setSummary(null);
+    setSaveSuccess(false);
+    setUploadedFile(file); // Save file for later
 
     try {
       const formData = new FormData();
@@ -154,6 +184,46 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       handleFileUpload(files[0]);
     }
   }, [handleFileUpload]);
+
+  // Save to project
+  const handleSaveToProject = useCallback(async () => {
+    if (!uploadedFile || !selectedProjectId) {
+      alert('Vyberte projekt před uložením');
+      return;
+    }
+
+    setIsSaving(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('project_id', selectedProjectId);
+      formData.append('file', uploadedFile);
+
+      const response = await fetch(`${CORE_API_URL}/api/v1/accumulator/files/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.detail || `HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSaveSuccess(true);
+        setTimeout(() => setSaveSuccess(false), 3000);
+      } else {
+        throw new Error('Save failed');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Save failed');
+    } finally {
+      setIsSaving(false);
+    }
+  }, [uploadedFile, selectedProjectId]);
 
   // Export to CSV
   const exportToCsv = useCallback(() => {
@@ -294,13 +364,57 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
               <span style={{ color: 'var(--text-tertiary)' }}>|</span>
               <span>Spolehlivost: {(summary.metadata.confidence * 100).toFixed(0)}%</span>
             </div>
-            <div style={{ display: 'flex', gap: '8px' }}>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              {/* Project selector and save button */}
+              <select
+                value={selectedProjectId}
+                onChange={(e) => setSelectedProjectId(e.target.value)}
+                className="c-input"
+                style={{ minWidth: '200px' }}
+                disabled={isSaving}
+              >
+                <option value="">Vyberte projekt...</option>
+                {availableProjects.map((project) => (
+                  <option key={project.id} value={project.id}>
+                    {project.name}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                onClick={handleSaveToProject}
+                className="c-btn c-btn--primary"
+                style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                disabled={!selectedProjectId || isSaving}
+              >
+                {isSaving ? (
+                  <>
+                    <Loader2 size={16} className="spin" />
+                    Ukládám...
+                  </>
+                ) : saveSuccess ? (
+                  <>
+                    <CheckCircle size={16} />
+                    Uloženo!
+                  </>
+                ) : (
+                  <>
+                    <Database size={16} />
+                    Uložit do projektu
+                  </>
+                )}
+              </button>
+
               <button onClick={exportToCsv} className="c-btn c-btn--secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Download size={16} />
                 Export CSV
               </button>
               <button
-                onClick={() => setSummary(null)}
+                onClick={() => {
+                  setSummary(null);
+                  setUploadedFile(null);
+                  setSaveSuccess(false);
+                }}
                 className="c-btn c-btn--ghost"
               >
                 Nový dokument
