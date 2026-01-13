@@ -24,6 +24,20 @@ google-generativeai==0.8.3
 openai==1.54.3
 
 # ==========================================
+# GOOGLE DRIVE API (Day 1: OAuth2 Integration)
+# ==========================================
+# OAuth2 authentication
+google-auth==2.25.2
+google-auth-oauthlib==1.2.0
+google-auth-httplib2==0.2.0
+
+# Google Drive API client
+google-api-python-client==2.110.0
+
+# Credential encryption
+cryptography==41.0.7
+
+# ==========================================
 # PDF PARSING (MinerU - FREE alternative)
 # ==========================================
 # MinerU for high-quality PDF extraction (FREE, local)
