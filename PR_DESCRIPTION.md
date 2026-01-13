@@ -5,9 +5,9 @@ Critical fixes + New features:
 - Document Accumulator API path fix (500 error)
 - Keep-Alive system (prevent Render Free Tier sleep)
 - Save to project functionality in Document Summary
-- Google Drive integration (Desktop Sync ready, API architecture designed)
+- Google Drive integration (Desktop Sync ready, **API OAuth2 Complete**)
 
-## Changes (9 commits)
+## Changes (12 commits)
 
 ### 1. Document Accumulator API Fix (8662772)
 - Fixed API path mismatch: added `/api/v1` prefix to router
@@ -67,6 +67,42 @@ Critical fixes + New features:
 - Testing strategy + monitoring metrics
 - **Benefits:** Ready-to-implement direct Google Drive API integration
 
+### 10. TypeScript Build Errors Fix (67ab029) 🔧 HOTFIX
+- Fixed missing `useEffect` import in DocumentSummary.tsx
+- Fixed `import.meta.env` type assertion in ProtectedRoute.tsx
+- **Fixes:** Build failures on Render deployment
+
+### 11. Google Drive OAuth2 Backend (4fc0abd) ⭐⭐⭐ DAY 1 COMPLETE
+- Backend service: `google_drive_service.py` (600+ lines)
+  - OAuth2 authentication flow with CSRF protection
+  - Credential encryption with Fernet
+  - Automatic token refresh
+  - File upload/download methods
+  - Folder listing
+  - Webhook setup for monitoring
+- API routes: `routes_google.py` (400+ lines)
+  - GET  /api/v1/google/auth - Initiate OAuth2
+  - GET  /api/v1/google/callback - Beautiful callback UI
+  - GET  /api/v1/google/folders - List Drive folders
+  - POST /api/v1/google/upload - Upload files to Drive
+  - POST /api/v1/google/webhook - Receive change notifications
+  - POST /api/v1/google/setup-watch - Setup folder monitoring
+- Database migrations: `003_google_drive_tables.sql` (100+ lines)
+  - google_credentials table (encrypted OAuth tokens)
+  - google_webhooks table (folder monitoring)
+- Dependencies: google-auth, google-api-python-client, cryptography
+- **Benefits:** Full OAuth2 backend ready for production
+
+### 12. Google Drive Environment Variables (0353b0f) 📝 DOCS
+- Created `.env.example` with Google Drive configuration
+- Documentation for all required environment variables:
+  - GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET
+  - GOOGLE_OAUTH_REDIRECT_URI
+  - GOOGLE_CREDENTIALS_ENCRYPTION_KEY
+  - GOOGLE_WEBHOOK_SECRET_KEY
+- Setup instructions and key generation commands
+- **Benefits:** Clear setup guide for deployment
+
 ## Testing
 
 All changes tested locally:
@@ -94,6 +130,13 @@ None - all changes backward compatible.
 
 **concrete-agent:**
 - `packages/core-backend/app/api/routes_accumulator.py`
+- `packages/core-backend/app/api/routes_google.py` ⭐ NEW (Google Drive API)
+- `packages/core-backend/app/api/__init__.py` (registered google_router)
+- `packages/core-backend/app/services/google_drive_service.py` ⭐ NEW (OAuth2 service)
+- `packages/core-backend/app/core/database.py` ⭐ NEW (DB helper)
+- `packages/core-backend/migrations/003_google_drive_tables.sql` ⭐ NEW (DB schema)
+- `packages/core-backend/requirements.txt` (added Google Drive deps)
+- `packages/core-backend/.env.example` ⭐ NEW (environment variables)
 - `packages/core-backend/app/main.py`
 - `render.yaml` (autoDeploy: true)
 
@@ -127,4 +170,36 @@ None - all changes backward compatible.
 
 Services will auto-deploy (concrete-agent has `autoDeploy: true`).
 
-Then configure Keep-Alive secrets as described above.
+### 1. Configure Keep-Alive Secrets
+
+```bash
+# Generate key
+openssl rand -base64 32
+
+# Add to GitHub Secrets: KEEP_ALIVE_KEY
+# Add to Render Environment (all 3 services): KEEP_ALIVE_KEY
+```
+
+### 2. Setup Google Drive Integration (NEW)
+
+**Manual setup required (15 min):**
+
+1. Create Google Cloud Project: https://console.cloud.google.com/
+2. Enable Google Drive API
+3. Configure OAuth2 consent screen (External, add test users)
+4. Create OAuth2 credentials (Web application)
+5. Add redirect URI: `https://concrete-agent.onrender.com/api/v1/google/callback`
+6. Generate encryption keys:
+   ```bash
+   openssl rand -base64 32  # GOOGLE_CREDENTIALS_ENCRYPTION_KEY
+   openssl rand -hex 32     # GOOGLE_WEBHOOK_SECRET_KEY
+   ```
+7. Add to Render Environment (concrete-agent):
+   - GOOGLE_CLIENT_ID
+   - GOOGLE_CLIENT_SECRET
+   - GOOGLE_OAUTH_REDIRECT_URI
+   - GOOGLE_CREDENTIALS_ENCRYPTION_KEY
+   - GOOGLE_WEBHOOK_SECRET_KEY
+   - PUBLIC_URL=https://concrete-agent.onrender.com
+
+**Documentation:** See `concrete-agent/packages/core-backend/.env.example` for details.
