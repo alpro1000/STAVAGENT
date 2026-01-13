@@ -1,9 +1,13 @@
-# FIX: Document Accumulator API + Keep-Alive system + Auth configuration
+# FIX: Document Accumulator API + Keep-Alive + Save to Project + Google Drive Integration
 
 ## Summary
-Critical fixes for Document Accumulator + Keep-Alive system implementation + Authentication configuration.
+Critical fixes + New features:
+- Document Accumulator API path fix (500 error)
+- Keep-Alive system (prevent Render Free Tier sleep)
+- Save to project functionality in Document Summary
+- Google Drive integration (Desktop Sync ready, API architecture designed)
 
-## Changes (6 commits)
+## Changes (9 commits)
 
 ### 1. Document Accumulator API Fix (8662772)
 - Fixed API path mismatch: added `/api/v1` prefix to router
@@ -36,6 +40,32 @@ Critical fixes for Document Accumulator + Keep-Alive system implementation + Aut
 ### 6. Auth Bypass Re-enabled (d912fb9)
 - Re-enabled auth bypass for development (по запросу пользователя)
 - Changed console.warn → console.info (less scary message)
+
+### 7. Save to Project Feature (504564f) ⭐ NEW
+- Added "Uložit do projektu" button in Document Summary
+- Project selector dropdown with auto-load from Portal API
+- Save functionality via `/api/v1/accumulator/files/upload`
+- Visual feedback: loading spinner + success checkmark (3s)
+- Seamless integration with "Akumulace dokumentů"
+- **Benefits:** Files analyzed in Summary can now be saved to projects
+
+### 8. Google Drive Integration Guide (f8c2d62) ⭐ NEW
+- Comprehensive guide: `GOOGLE_DRIVE_SETUP.md` (800+ lines)
+- 3 integration methods documented:
+  - ✅ Desktop Sync (ready to use NOW!)
+  - ✅ Manual Export (works now)
+  - 🚧 API Integration (3-day implementation plan)
+- Step-by-step setup for Desktop Sync
+- Troubleshooting guide + comparison table
+- **Benefits:** Users can sync Google Drive folders today
+
+### 9. Google Drive API Architecture (2395e4b) ⭐ NEW
+- Technical specification: `docs/GOOGLE_DRIVE_API_ARCHITECTURE.md` (1200+ lines)
+- Complete 3-day implementation plan (OAuth2 → Upload → Webhooks)
+- Full code examples (backend service, API routes, React frontend)
+- Security best practices (encryption, OAuth scopes, webhook verification)
+- Testing strategy + monitoring metrics
+- **Benefits:** Ready-to-implement direct Google Drive API integration
 
 ## Testing
 
@@ -72,6 +102,7 @@ None - all changes backward compatible.
 
 **stavagent-portal:**
 - `frontend/src/pages/PortalPage.tsx`
+- `frontend/src/components/portal/DocumentSummary.tsx` ⭐ (save to project)
 - `frontend/src/components/ProtectedRoute.tsx`
 - `frontend/.env.production`, `.env.example`
 - `frontend/SECURITY.md`
@@ -79,7 +110,10 @@ None - all changes backward compatible.
 
 **root:**
 - `.github/workflows/keep-alive.yml`
-- `KEEP_ALIVE_SETUP.md`
+- `KEEP_ALIVE_SETUP.md` ⭐ (Keep-Alive setup guide)
+- `GOOGLE_DRIVE_SETUP.md` ⭐ (Google Drive user guide)
+- `docs/GOOGLE_DRIVE_API_ARCHITECTURE.md` ⭐ (API technical spec)
+- `PR_DESCRIPTION.md` ⭐ (this file)
 - `CLAUDE.md`
 
 ## How to Create PR
