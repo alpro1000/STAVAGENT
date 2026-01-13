@@ -30,6 +30,8 @@ import {
   X,
   FileSpreadsheet,
   Database,
+  Cloud,
+  Folder,
 } from 'lucide-react';
 
 // Types
@@ -98,6 +100,17 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState<string>('');
   const [availableProjects, setAvailableProjects] = useState<Array<{id: string, name: string}>>([]);
+
+  // Google Drive state
+  const [googleAuth, setGoogleAuth] = useState({
+    isAuthorized: false,
+    isLoading: false,
+    userId: 'user_default' // TODO: Get from user session
+  });
+  const [googleFolders, setGoogleFolders] = useState<Array<{id: string, name: string}>>([]);
+  const [selectedGoogleFolder, setSelectedGoogleFolder] = useState<string>('');
+  const [isUploadingToDrive, setIsUploadingToDrive] = useState(false);
+  const [driveUploadSuccess, setDriveUploadSuccess] = useState(false);
 
   // Load available projects
   useEffect(() => {
@@ -224,6 +237,121 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       setIsSaving(false);
     }
   }, [uploadedFile, selectedProjectId]);
+
+  // Google Drive - OAuth2 authentication
+  const handleGoogleAuth = useCallback(async () => {
+    setGoogleAuth(prev => ({ ...prev, isLoading: true }));
+    setError(null);
+
+    try {
+      // Open OAuth2 popup
+      const authUrl = `${CORE_API_URL}/api/v1/google/auth?user_id=${googleAuth.userId}`;
+      const popup = window.open(
+        authUrl,
+        'GoogleDriveAuth',
+        'width=600,height=700,left=200,top=100'
+      );
+
+      // Listen for OAuth2 callback
+      const handleMessage = async (event: MessageEvent) => {
+        // Verify origin for security
+        if (event.origin !== new URL(CORE_API_URL).origin) return;
+
+        if (event.data.type === 'google_auth_success') {
+          setGoogleAuth(prev => ({ ...prev, isAuthorized: true, isLoading: false }));
+
+          // Load folders after successful auth
+          await loadGoogleFolders(googleAuth.userId);
+
+          // Remove listener
+          window.removeEventListener('message', handleMessage);
+
+          // Close popup if still open
+          if (popup && !popup.closed) {
+            popup.close();
+          }
+        } else if (event.data.type === 'google_auth_error') {
+          setError(`Autorizace selhala: ${event.data.error}`);
+          setGoogleAuth(prev => ({ ...prev, isLoading: false }));
+          window.removeEventListener('message', handleMessage);
+        }
+      };
+
+      window.addEventListener('message', handleMessage);
+
+      // Handle popup closed without auth
+      const checkPopupClosed = setInterval(() => {
+        if (popup && popup.closed) {
+          clearInterval(checkPopupClosed);
+          if (!googleAuth.isAuthorized) {
+            setGoogleAuth(prev => ({ ...prev, isLoading: false }));
+          }
+          window.removeEventListener('message', handleMessage);
+        }
+      }, 500);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Autorizace selhala');
+      setGoogleAuth(prev => ({ ...prev, isLoading: false }));
+    }
+  }, [googleAuth.userId, googleAuth.isAuthorized]);
+
+  // Google Drive - Load folders
+  const loadGoogleFolders = useCallback(async (userId: string) => {
+    try {
+      const response = await fetch(`${CORE_API_URL}/api/v1/google/folders?user_id=${userId}`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const folders = await response.json();
+      setGoogleFolders(folders);
+    } catch (err) {
+      console.error('Failed to load Google Drive folders:', err);
+      setError('Nepodařilo se načíst složky z Google Drive');
+    }
+  }, []);
+
+  // Google Drive - Upload file
+  const handleUploadToDrive = useCallback(async () => {
+    if (!uploadedFile || !selectedGoogleFolder) {
+      alert('Vyberte složku Google Drive před nahráním');
+      return;
+    }
+
+    setIsUploadingToDrive(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('user_id', googleAuth.userId);
+      formData.append('folder_id', selectedGoogleFolder);
+      formData.append('file', uploadedFile);
+
+      const response = await fetch(`${CORE_API_URL}/api/v1/google/upload`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.detail || `HTTP ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setDriveUploadSuccess(true);
+        setTimeout(() => setDriveUploadSuccess(false), 3000);
+      } else {
+        throw new Error('Nahrání do Google Drive selhalo');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Nahrání do Google Drive selhalo');
+    } finally {
+      setIsUploadingToDrive(false);
+    }
+  }, [uploadedFile, selectedGoogleFolder, googleAuth.userId]);
 
   // Export to CSV
   const exportToCsv = useCallback(() => {
@@ -404,6 +532,71 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                   </>
                 )}
               </button>
+
+              {/* Google Drive Integration */}
+              <div style={{ borderLeft: '1px solid var(--border-default)', height: '32px' }} />
+
+              {!googleAuth.isAuthorized ? (
+                <button
+                  onClick={handleGoogleAuth}
+                  className="c-btn c-btn--secondary"
+                  style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                  disabled={googleAuth.isLoading}
+                >
+                  {googleAuth.isLoading ? (
+                    <>
+                      <Loader2 size={16} className="spin" />
+                      Autorizuji...
+                    </>
+                  ) : (
+                    <>
+                      <Cloud size={16} />
+                      Připojit Google Drive
+                    </>
+                  )}
+                </button>
+              ) : (
+                <>
+                  <select
+                    value={selectedGoogleFolder}
+                    onChange={(e) => setSelectedGoogleFolder(e.target.value)}
+                    className="c-input"
+                    style={{ minWidth: '180px' }}
+                    disabled={isUploadingToDrive || googleFolders.length === 0}
+                  >
+                    <option value="">Vyberte složku Drive...</option>
+                    {googleFolders.map((folder) => (
+                      <option key={folder.id} value={folder.id}>
+                        {folder.name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <button
+                    onClick={handleUploadToDrive}
+                    className="c-btn c-btn--secondary"
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px' }}
+                    disabled={!selectedGoogleFolder || isUploadingToDrive}
+                  >
+                    {isUploadingToDrive ? (
+                      <>
+                        <Loader2 size={16} className="spin" />
+                        Nahrávám...
+                      </>
+                    ) : driveUploadSuccess ? (
+                      <>
+                        <CheckCircle size={16} />
+                        Nahráno!
+                      </>
+                    ) : (
+                      <>
+                        <Cloud size={16} />
+                        Nahrát do Drive
+                      </>
+                    )}
+                  </button>
+                </>
+              )}
 
               <button onClick={exportToCsv} className="c-btn c-btn--secondary" style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Download size={16} />

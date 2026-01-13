@@ -208,6 +208,7 @@ async def google_callback(
 
     except ValueError as e:
         logger.error(f"OAuth callback error: {e}")
+        error_msg = str(e)
         return HTMLResponse(
             content=f"""
             <!DOCTYPE html>
@@ -237,9 +238,23 @@ async def google_callback(
             <body>
                 <div class="error">
                     <h1>❌ Autorizace selhala</h1>
-                    <p>Error: {str(e)}</p>
+                    <p>Error: {error_msg}</p>
                     <p>Zavřete toto okno a zkuste to znovu.</p>
                 </div>
+                <script>
+                    // Notify parent window about error
+                    if (window.opener) {{
+                        window.opener.postMessage({{
+                            type: 'google_auth_error',
+                            error: '{error_msg}'
+                        }}, '*');
+                    }}
+
+                    // Auto-close after 5 seconds
+                    setTimeout(() => {{
+                        window.close();
+                    }}, 5000);
+                </script>
             </body>
             </html>
             """,
