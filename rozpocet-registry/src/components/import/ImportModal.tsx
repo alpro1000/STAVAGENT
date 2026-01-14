@@ -8,11 +8,14 @@ import { v4 as uuidv4 } from 'uuid';
 import { Modal } from '../ui/Modal';
 import { FileUploader } from './FileUploader';
 import { TemplateSelector } from '../templates/TemplateSelector';
+import { ConfigEditor } from '../config/ConfigEditor';
 import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/parser/excelParser';
 import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
+import { defaultImportConfig } from '../../config/defaultConfig';
 import type { Project } from '../../types';
 import type { ImportTemplate } from '../../types/template';
+import type { ImportConfig } from '../../types/config';
 import { AlertCircle, Loader2, CheckCircle } from 'lucide-react';
 
 interface ImportModalProps {
@@ -20,10 +23,10 @@ interface ImportModalProps {
   onClose: () => void;
 }
 
-type Step = 'upload' | 'template' | 'sheet' | 'parsing' | 'success';
+type Step = 'upload' | 'template' | 'custom-config' | 'sheet' | 'parsing' | 'success';
 
 export function ImportModal({ isOpen, onClose }: ImportModalProps) {
-  const { addProject } = useRegistryStore();
+  const { addProject, addTemplate } = useRegistryStore();
 
   const [step, setStep] = useState<Step>('upload');
   const [file, setFile] = useState<File | null>(null);
@@ -34,6 +37,15 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
   const [error, setError] = useState<string | null>(null);
   const [warnings, setWarnings] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Custom template creation state
+  const [customTemplateName, setCustomTemplateName] = useState('');
+  const [customTemplateDescription, setCustomTemplateDescription] = useState('');
+  const [customConfig, setCustomConfig] = useState<Partial<ImportConfig>>({
+    ...defaultImportConfig,
+    sheetName: sheetNames[0] || '',
+    sheetIndex: 0,
+  });
 
   const handleFileSelect = async (selectedFile: File) => {
     setError(null);
@@ -65,6 +77,53 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
 
   const handleTemplateConfirm = () => {
     setStep('sheet');
+  };
+
+  const handleCreateCustomTemplate = () => {
+    // Initialize custom config with default values
+    setCustomConfig({
+      ...defaultImportConfig,
+      sheetName: sheetNames[0] || '',
+      sheetIndex: 0,
+    });
+    setCustomTemplateName('');
+    setCustomTemplateDescription('');
+    setStep('custom-config');
+  };
+
+  const handleSaveCustomTemplate = () => {
+    // Validate
+    if (!customTemplateName.trim()) {
+      setError('Zadejte název šablony');
+      return;
+    }
+
+    // Create new template
+    const newTemplate: ImportTemplate = {
+      metadata: {
+        id: `custom-${uuidv4()}`,
+        name: customTemplateName.trim(),
+        type: 'custom',
+        description: customTemplateDescription.trim() || 'Vlastní šablona',
+        icon: '✏️',
+        createdAt: new Date(),
+      },
+      config: customConfig as ImportConfig,
+      isBuiltIn: false,
+      canEdit: true,
+      canDelete: true,
+    };
+
+    // Add to store
+    addTemplate(newTemplate);
+
+    // Select this template and go to sheet selection
+    setSelectedTemplate(newTemplate);
+    setStep('sheet');
+  };
+
+  const handleCancelCustomTemplate = () => {
+    setStep('template');
   };
 
   const handleImport = async () => {
@@ -160,7 +219,8 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
             <TemplateSelector
               selectedTemplate={selectedTemplate}
               onSelectTemplate={handleTemplateSelect}
-              showCreateButton={false}
+              showCreateButton={true}
+              onCreateCustom={handleCreateCustomTemplate}
             />
 
             <div className="flex gap-3 justify-end">
@@ -172,6 +232,72 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                 className="btn btn-primary"
               >
                 Pokračovat
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Custom template configuration */}
+        {step === 'custom-config' && (
+          <div className="space-y-6">
+            <div>
+              <p className="text-sm text-[var(--text-secondary)] mb-2">
+                Soubor: <span className="font-semibold text-[var(--text-primary)]">{file?.name}</span>
+              </p>
+            </div>
+
+            {/* Template Name & Description */}
+            <div className="space-y-4 p-4 bg-[var(--data-surface)] rounded-lg border border-[var(--divider)]">
+              <div>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                  Název šablony <span className="text-[var(--accent-orange)]">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={customTemplateName}
+                  onChange={(e) => setCustomTemplateName(e.target.value)}
+                  placeholder="Např. Můj vlastní formát"
+                  className="w-full px-3 py-2 bg-[var(--panel-clean)] border border-[var(--divider)]
+                           rounded text-[var(--text-primary)]
+                           focus:outline-none focus:ring-2 focus:ring-[var(--accent-orange)]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
+                  Popis (volitelné)
+                </label>
+                <input
+                  type="text"
+                  value={customTemplateDescription}
+                  onChange={(e) => setCustomTemplateDescription(e.target.value)}
+                  placeholder="Krátký popis šablony"
+                  className="w-full px-3 py-2 bg-[var(--panel-clean)] border border-[var(--divider)]
+                           rounded text-[var(--text-primary)]
+                           focus:outline-none focus:ring-2 focus:ring-[var(--accent-orange)]"
+                />
+              </div>
+            </div>
+
+            {/* Config Editor */}
+            <ConfigEditor
+              config={customConfig}
+              onChange={setCustomConfig}
+              showMetadata={true}
+              sheetNames={sheetNames}
+            />
+
+            {/* Actions */}
+            <div className="flex gap-3 justify-end">
+              <button onClick={handleCancelCustomTemplate} className="btn btn-secondary">
+                Zrušit
+              </button>
+              <button
+                onClick={handleSaveCustomTemplate}
+                disabled={!customTemplateName.trim()}
+                className="btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Uložit a použít
               </button>
             </div>
           </div>
