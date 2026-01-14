@@ -157,9 +157,9 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       formData.append('file', file);
       formData.append('language', language);
 
-      // Fetch with timeout (30 seconds)
+      // Fetch with timeout (120 seconds for large documents)
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      const timeoutId = setTimeout(() => controller.abort(), 120000);
 
       const response = await fetch(`${CORE_API_URL}/api/v1/accumulator/summarize/file`, {
         method: 'POST',
@@ -199,7 +199,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
       if (err instanceof Error) {
         if (err.name === 'AbortError') {
-          errorMessage = 'Zpracování trvá příliš dlouho (timeout 30s). Zkuste menší soubor nebo jednodušší dokument.';
+          errorMessage = 'Zpracování trvá příliš dlouho (timeout 120s). Zkuste menší soubor nebo jednodušší dokument.';
         } else {
           errorMessage = err.message;
         }
