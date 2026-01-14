@@ -7,12 +7,12 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type {
   Project,
-  ImportTemplate,
   SavedFilter,
   ParsedItem,
   ProjectStats,
 } from '../types';
-import { DEFAULT_TEMPLATES } from '../types/config';
+import type { ImportTemplate } from '../types/template';
+import { PREDEFINED_TEMPLATES } from '../config/templates';
 import { DEFAULT_GROUPS } from '../utils/constants';
 
 interface RegistryState {
@@ -78,7 +78,7 @@ export const useRegistryStore = create<RegistryState>()(
       // Начальное состояние
       projects: [],
       selectedProjectId: null,
-      templates: [...DEFAULT_TEMPLATES],
+      templates: [...PREDEFINED_TEMPLATES],
       savedFilters: [],
       customGroups: [],
 
@@ -156,7 +156,7 @@ export const useRegistryStore = create<RegistryState>()(
 
       removeTemplate: (templateId) => {
         set((state) => ({
-          templates: state.templates.filter((t) => t.id !== templateId),
+          templates: state.templates.filter((t) => t.metadata.id !== templateId),
         }));
       },
 

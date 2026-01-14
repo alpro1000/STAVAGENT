@@ -6,5 +6,6 @@
 export * from './item';
 export * from './project';
 export * from './config';
+export * from './template';
 export * from './search';
 export * from './export';

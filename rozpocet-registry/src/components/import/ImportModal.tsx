@@ -7,9 +7,12 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal } from '../ui/Modal';
 import { FileUploader } from './FileUploader';
+import { TemplateSelector } from '../templates/TemplateSelector';
 import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/parser/excelParser';
 import { useRegistryStore } from '../../stores/registryStore';
+import { getDefaultTemplate } from '../../config/templates';
 import type { Project } from '../../types';
+import type { ImportTemplate } from '../../types/template';
 import { AlertCircle, Loader2, CheckCircle } from 'lucide-react';
 
 interface ImportModalProps {
@@ -17,16 +20,17 @@ interface ImportModalProps {
   onClose: () => void;
 }
 
-type Step = 'upload' | 'sheet' | 'parsing' | 'success';
+type Step = 'upload' | 'template' | 'sheet' | 'parsing' | 'success';
 
 export function ImportModal({ isOpen, onClose }: ImportModalProps) {
-  const { addProject, templates } = useRegistryStore();
+  const { addProject } = useRegistryStore();
 
   const [step, setStep] = useState<Step>('upload');
   const [file, setFile] = useState<File | null>(null);
   const [workbook, setWorkbook] = useState<any>(null);
   const [sheetNames, setSheetNames] = useState<string[]>([]);
   const [selectedSheet, setSelectedSheet] = useState<string>('');
+  const [selectedTemplate, setSelectedTemplate] = useState<ImportTemplate>(getDefaultTemplate());
   const [error, setError] = useState<string | null>(null);
   const [warnings, setWarnings] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -47,7 +51,7 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
       setWorkbook(wb);
       setSheetNames(sheets);
       setSelectedSheet(sheets[0]);
-      setStep('sheet');
+      setStep('template'); // Changed from 'sheet' to add template selection step
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba při čtení souboru');
     } finally {
@@ -55,20 +59,26 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
     }
   };
 
+  const handleTemplateSelect = (template: ImportTemplate) => {
+    setSelectedTemplate(template);
+  };
+
+  const handleTemplateConfirm = () => {
+    setStep('sheet');
+  };
+
   const handleImport = async () => {
-    if (!file || !workbook || !selectedSheet) return;
+    if (!file || !workbook || !selectedSheet || !selectedTemplate) return;
 
     setError(null);
     setIsLoading(true);
 
     try {
-      // Použijeme první šablonu (ÚRS standard)
-      const template = templates[0];
       const projectId = uuidv4();
 
       const result = await parseExcelSheet(workbook, {
         config: {
-          ...template.config,
+          ...selectedTemplate.config,
           sheetName: selectedSheet,
         },
         fileName: file.name,
@@ -87,7 +97,7 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         importedAt: new Date(),
         metadata: result.metadata,
         config: {
-          ...template.config,
+          ...selectedTemplate.config,
           sheetName: selectedSheet,
         },
         items: result.items,
@@ -113,6 +123,7 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
     setWorkbook(null);
     setSheetNames([]);
     setSelectedSheet('');
+    setSelectedTemplate(getDefaultTemplate());
     setError(null);
     setWarnings([]);
     onClose();
@@ -134,6 +145,35 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                 <span>Načítání souboru...</span>
               </div>
             )}
+          </div>
+        )}
+
+        {/* Template selection */}
+        {step === 'template' && (
+          <div className="space-y-6">
+            <div>
+              <p className="text-sm text-[var(--text-secondary)] mb-2">
+                Soubor: <span className="font-semibold text-[var(--text-primary)]">{file?.name}</span>
+              </p>
+            </div>
+
+            <TemplateSelector
+              selectedTemplate={selectedTemplate}
+              onSelectTemplate={handleTemplateSelect}
+              showCreateButton={false}
+            />
+
+            <div className="flex gap-3 justify-end">
+              <button onClick={() => setStep('upload')} className="btn btn-secondary">
+                Zpět
+              </button>
+              <button
+                onClick={handleTemplateConfirm}
+                className="btn btn-primary"
+              >
+                Pokračovat
+              </button>
+            </div>
           </div>
         )}
 
@@ -166,15 +206,15 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
 
             <div className="card bg-bg-tertiary">
               <p className="text-sm text-text-secondary">
-                <strong>Šablona:</strong> ÚRS standard
+                <strong>Šablona:</strong> {selectedTemplate.metadata.icon} {selectedTemplate.metadata.name}
               </p>
               <p className="text-xs text-text-muted mt-1">
-                Pozice se začnou číst od řádku 10. Metadata budou načtena z buněk B2, B3, C5, A1.
+                {selectedTemplate.metadata.description}
               </p>
             </div>
 
             <div className="flex gap-3 justify-end">
-              <button onClick={() => setStep('upload')} className="btn btn-secondary">
+              <button onClick={() => setStep('template')} className="btn btn-secondary">
                 Zpět
               </button>
               <button
