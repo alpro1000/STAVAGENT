@@ -11,6 +11,7 @@ import { TemplateSelector } from '../templates/TemplateSelector';
 import { ConfigEditor } from '../config/ConfigEditor';
 import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/parser/excelParser';
 import { detectExcelStructure, type DetectionResult } from '../../services/autoDetect/structureDetector';
+import { classifyItems, applyClassifications } from '../../services/classification/classificationService';
 import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
@@ -51,6 +52,9 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
   // Auto-detection state
   const [detectionResults, setDetectionResults] = useState<DetectionResult[] | null>(null);
   const [isDetecting, setIsDetecting] = useState(false);
+
+  // Auto-classification state
+  const [autoClassify, setAutoClassify] = useState(true); // enabled by default
 
   const handleFileSelect = async (selectedFile: File) => {
     setError(null);
@@ -175,7 +179,29 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         setWarnings(result.warnings);
       }
 
+      // Auto-classification (if enabled)
+      let classificationResult;
+      if (autoClassify) {
+        classificationResult = classifyItems(result.items, {
+          overwrite: false, // Don't overwrite existing classifications
+          minConfidence: 50, // Only apply if 50%+ confidence
+        });
+
+        // Apply classifications
+        const classifications = new Map<string, any>();
+        for (const res of classificationResult.results) {
+          if (res.suggestedSkupina && res.confidence >= 50) {
+            classifications.set(res.itemId, res.suggestedSkupina);
+          }
+        }
+        applyClassifications(result.items, classifications);
+      }
+
       // Vytvoříme projekt
+      const classifiedItems = autoClassify
+        ? result.items.filter(item => item.skupina !== null).length
+        : 0;
+
       const project: Project = {
         id: projectId,
         fileName: file.name,
@@ -189,7 +215,7 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         items: result.items,
         stats: {
           totalItems: result.items.length,
-          classifiedItems: 0,
+          classifiedItems,
           totalCena: result.items.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0),
         },
       };
@@ -466,6 +492,26 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
               <p className="text-xs text-text-muted mt-1">
                 {selectedTemplate.metadata.description}
               </p>
+            </div>
+
+            {/* Auto-classification option */}
+            <div className="flex items-start gap-3 p-4 bg-[var(--data-surface)] rounded-lg border border-[var(--divider)]">
+              <input
+                type="checkbox"
+                id="auto-classify"
+                checked={autoClassify}
+                onChange={(e) => setAutoClassify(e.target.checked)}
+                className="mt-1 w-4 h-4 text-[var(--accent-orange)] bg-[var(--panel-clean)]
+                         border-[var(--divider)] rounded focus:ring-2 focus:ring-[var(--accent-orange)]"
+              />
+              <label htmlFor="auto-classify" className="flex-1 cursor-pointer">
+                <div className="text-sm font-medium text-[var(--text-primary)] mb-1">
+                  ✨ Automaticky klasifikovat položky
+                </div>
+                <div className="text-xs text-[var(--text-secondary)]">
+                  Použije regex pravidla pro automatické přiřazení skupin podle popisu položek
+                </div>
+              </label>
             </div>
 
             <div className="flex gap-3 justify-end">
