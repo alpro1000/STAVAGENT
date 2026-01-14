@@ -1,108 +1,155 @@
+/* Import Digital Concrete Design System v2.0 */
+@import './styles/tokens.css';
+
 /* Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Digital Concrete / Brutalist Neumorphism Design System */
-@layer base {
-  :root {
-    /* Colors */
-    --bg-primary: #1a1a1a;
-    --bg-secondary: #242424;
-    --bg-tertiary: #2d2d2d;
-    --accent-primary: #f59e0b;
-    --accent-secondary: #3b82f6;
-    --accent-success: #22c55e;
-    --accent-warning: #ef4444;
-    --text-primary: #f5f5f5;
-    --text-secondary: #a3a3a3;
-    --text-muted: #737373;
-    --border-color: #404040;
-    --border-accent: #525252;
-
-    /* Fonts */
-    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
-    --font-sans: 'Inter', -apple-system, sans-serif;
-
-    /* Shadows */
-    --shadow-up: -4px -4px 8px rgba(45, 45, 45, 0.5), 4px 4px 8px rgba(0, 0, 0, 0.5);
-    --shadow-down: inset -2px -2px 4px rgba(45, 45, 45, 0.5), inset 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
-
-  * {
-    @apply border-border-color;
-  }
-
-  body {
-    @apply bg-bg-primary text-text-primary font-sans;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    font-feature-settings: 'kern' 1, 'liga' 1;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  code {
-    @apply font-mono;
-  }
-}
+/* ============================================
+   COMPONENT ADAPTATIONS FOR REGISTRY
+   ============================================ */
 
 @layer components {
-  /* Button base */
+  /* Button base (adapted for new tokens) */
   .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-all duration-150;
-    @apply focus:outline-none focus:ring-2 focus:ring-accent-primary;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--accent-orange);
+    outline-offset: 2px;
   }
 
   .btn-primary {
-    @apply bg-accent-primary text-bg-primary;
-    @apply hover:bg-amber-600 active:shadow-neuro-down;
+    background: var(--accent-orange);
+    color: var(--panel-clean);
+    box-shadow: var(--shadow-button);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-inset);
   }
 
   .btn-secondary {
-    @apply bg-bg-tertiary text-text-primary border border-border-accent;
-    @apply hover:border-accent-primary active:shadow-neuro-down;
+    background: var(--panel-clean);
+    color: var(--text-primary);
+    border: 1px solid var(--edge-light);
+    box-shadow: var(--shadow-button);
   }
 
-  /* Input base */
+  .btn-secondary:hover {
+    border-color: var(--accent-orange);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-inset);
+  }
+
+  /* Input base (using new tokens) */
   .input {
-    @apply w-full px-3 py-2 bg-bg-secondary border border-border-color rounded-lg;
-    @apply text-text-primary placeholder:text-text-muted;
-    @apply focus:border-accent-primary focus:outline-none;
-    @apply transition-colors duration-150;
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--data-surface);
+    border: 1px solid var(--edge-light);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    transition: all var(--transition-fast);
   }
 
-  /* Card base */
+  .input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 3px var(--accent-orange-glow);
+  }
+
+  /* Card base (Level 2: Clean Panels) */
   .card {
-    @apply bg-bg-secondary border border-border-color rounded-lg p-4;
-    box-shadow: var(--shadow-up);
+    background: var(--panel-clean);
+    border: 1px solid var(--edge-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-panel);
   }
 
-  /* Table base */
+  /* Table base (Level 3: Data Surfaces) */
   .table {
-    @apply w-full border-collapse;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--data-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
   }
 
   .table th {
-    @apply bg-bg-tertiary px-4 py-2 text-left text-sm font-semibold text-text-secondary;
-    @apply border-b border-border-accent;
+    background: var(--panel-clean);
+    padding: var(--space-md);
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--divider);
+    font-family: var(--font-body);
   }
 
   .table td {
-    @apply px-4 py-2 text-sm;
-    @apply border-b border-border-color;
+    padding: var(--space-md);
+    font-size: 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--divider);
+    font-family: var(--font-body);
   }
 
   .table tbody tr {
-    @apply hover:bg-bg-tertiary transition-colors;
+    transition: background-color var(--transition-fast);
+  }
+
+  .table tbody tr:hover {
+    background: var(--data-surface-alt);
+  }
+
+  .table tbody tr:nth-child(even) {
+    background: var(--data-surface-alt);
+  }
+
+  /* Select input (for skupina dropdown) */
+  select.input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234A4D50' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-sm) center;
+    padding-right: var(--space-xl);
+    cursor: pointer;
   }
 }
 
 @layer utilities {
+  /* Scrollbar styling */
   .scrollbar-thin {
     scrollbar-width: thin;
-    scrollbar-color: var(--border-accent) var(--bg-secondary);
+    scrollbar-color: var(--text-muted) var(--panel-clean);
   }
 
   .scrollbar-thin::-webkit-scrollbar {
@@ -111,15 +158,77 @@
   }
 
   .scrollbar-thin::-webkit-scrollbar-track {
-    background: var(--bg-secondary);
+    background: var(--panel-clean);
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: var(--border-accent);
-    border-radius: 4px;
+    background: var(--text-muted);
+    border-radius: var(--radius-sm);
   }
 
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-primary);
+    background: var(--accent-orange);
   }
+
+  /* Text utilities for code */
+  .text-code {
+    font-family: var(--font-mono);
+    color: var(--text-code);
+    font-size: 13px;
+  }
+
+  /* Shadow utilities */
+  .shadow-panel {
+    box-shadow: var(--shadow-panel);
+  }
+
+  .shadow-button {
+    box-shadow: var(--shadow-button);
+  }
+
+  .shadow-inset {
+    box-shadow: var(--shadow-inset);
+  }
+}
+
+/* ============================================
+   CUSTOM ADAPTATIONS
+   ============================================ */
+
+/* Orange accent compatibility */
+.bg-accent-primary {
+  background-color: var(--accent-orange);
+}
+
+.text-accent-primary {
+  color: var(--accent-orange);
+}
+
+.border-accent-primary {
+  border-color: var(--accent-orange);
+}
+
+/* Status colors */
+.text-success {
+  color: var(--status-success);
+}
+
+.text-warning {
+  color: var(--status-warning);
+}
+
+.text-error {
+  color: var(--status-error);
+}
+
+.bg-success {
+  background-color: var(--status-success);
+}
+
+.bg-warning {
+  background-color: var(--status-warning);
+}
+
+.bg-error {
+  background-color: var(--status-error);
 }
