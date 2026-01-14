@@ -10,13 +10,14 @@ import { FileUploader } from './FileUploader';
 import { TemplateSelector } from '../templates/TemplateSelector';
 import { ConfigEditor } from '../config/ConfigEditor';
 import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/parser/excelParser';
+import { detectExcelStructure, type DetectionResult } from '../../services/autoDetect/structureDetector';
 import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
 import type { Project } from '../../types';
 import type { ImportTemplate } from '../../types/template';
 import type { ImportConfig } from '../../types/config';
-import { AlertCircle, Loader2, CheckCircle } from 'lucide-react';
+import { AlertCircle, Loader2, CheckCircle, Sparkles } from 'lucide-react';
 
 interface ImportModalProps {
   isOpen: boolean;
@@ -46,6 +47,10 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
     sheetName: sheetNames[0] || '',
     sheetIndex: 0,
   });
+
+  // Auto-detection state
+  const [detectionResults, setDetectionResults] = useState<DetectionResult[] | null>(null);
+  const [isDetecting, setIsDetecting] = useState(false);
 
   const handleFileSelect = async (selectedFile: File) => {
     setError(null);
@@ -124,6 +129,28 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
 
   const handleCancelCustomTemplate = () => {
     setStep('template');
+  };
+
+  const handleAutoDetect = async () => {
+    if (!workbook) return;
+
+    setIsDetecting(true);
+    setError(null);
+
+    try {
+      const results = await detectExcelStructure(workbook, selectedSheet || sheetNames[0]);
+      setDetectionResults(results);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Chyba při auto-detekci');
+    } finally {
+      setIsDetecting(false);
+    }
+  };
+
+  const handleApplyDetectedTemplate = (result: DetectionResult) => {
+    // Select the detected template
+    setSelectedTemplate(result.template);
+    setDetectionResults(null); // Close detection results
   };
 
   const handleImport = async () => {
@@ -215,6 +242,108 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                 Soubor: <span className="font-semibold text-[var(--text-primary)]">{file?.name}</span>
               </p>
             </div>
+
+            {/* Auto-Detect Button */}
+            <button
+              onClick={handleAutoDetect}
+              disabled={isDetecting}
+              className="w-full py-3 px-4 bg-[var(--accent-orange)] hover:bg-[var(--accent-orange)]/90
+                       text-white rounded-lg transition-all font-medium
+                       disabled:opacity-50 disabled:cursor-not-allowed
+                       flex items-center justify-center gap-2"
+            >
+              {isDetecting ? (
+                <>
+                  <Loader2 size={20} className="animate-spin" />
+                  <span>Analyzuji strukturu...</span>
+                </>
+              ) : (
+                <>
+                  <Sparkles size={20} />
+                  <span>🔍 Automaticky určit šablonu</span>
+                </>
+              )}
+            </button>
+
+            {/* Detection Results */}
+            {detectionResults && detectionResults.length > 0 && (
+              <div className="space-y-4 p-4 bg-[var(--data-surface)] rounded-lg border-2 border-[var(--accent-orange)]">
+                <div>
+                  <h4 className="text-sm font-semibold text-[var(--text-primary)] mb-2">
+                    Výsledky auto-detekce
+                  </h4>
+                  <p className="text-xs text-[var(--text-secondary)]">
+                    Klikněte na šablonu pro výběr
+                  </p>
+                </div>
+
+                <div className="space-y-2">
+                  {detectionResults.slice(0, 3).map((result) => (
+                    <button
+                      key={result.template.metadata.id}
+                      onClick={() => handleApplyDetectedTemplate(result)}
+                      className={`w-full p-3 rounded-lg border-2 transition-all text-left
+                        ${
+                          result.confidence === 'high'
+                            ? 'border-green-500 bg-green-50 hover:bg-green-100'
+                            : result.confidence === 'medium'
+                            ? 'border-yellow-500 bg-yellow-50 hover:bg-yellow-100'
+                            : 'border-gray-400 bg-gray-50 hover:bg-gray-100'
+                        }`}
+                    >
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl">{result.template.metadata.icon}</span>
+                          <span className="font-semibold text-[var(--text-primary)]">
+                            {result.template.metadata.name}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span
+                            className={`text-sm font-bold ${
+                              result.confidence === 'high'
+                                ? 'text-green-600'
+                                : result.confidence === 'medium'
+                                ? 'text-yellow-600'
+                                : 'text-gray-600'
+                            }`}
+                          >
+                            {result.matchScore}%
+                          </span>
+                          <span
+                            className={`text-xs px-2 py-1 rounded ${
+                              result.confidence === 'high'
+                                ? 'bg-green-200 text-green-800'
+                                : result.confidence === 'medium'
+                                ? 'bg-yellow-200 text-yellow-800'
+                                : 'bg-gray-200 text-gray-800'
+                            }`}
+                          >
+                            {result.confidence === 'high'
+                              ? 'Vysoká shoda'
+                              : result.confidence === 'medium'
+                              ? 'Střední shoda'
+                              : 'Nízká shoda'}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-xs text-[var(--text-secondary)] space-y-1">
+                        {result.reasoning.slice(0, 3).map((reason, idx) => (
+                          <div key={idx}>{reason}</div>
+                        ))}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setDetectionResults(null)}
+                  className="text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                >
+                  Zavřít výsledky
+                </button>
+              </div>
+            )}
 
             <TemplateSelector
               selectedTemplate={selectedTemplate}
