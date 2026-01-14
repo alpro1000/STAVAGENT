@@ -3,8 +3,8 @@
  * Project-related type definitions
  */
 
-import { ParsedItem } from './item';
-import { ImportConfig } from './config';
+import type { ParsedItem } from './item';
+import type { ImportConfig } from './config';
 
 export interface ProjectMetadata {
   projectNumber: string;       // "SO 201-1"

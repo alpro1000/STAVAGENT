@@ -3,7 +3,7 @@
  * Search-related type definitions
  */
 
-import { ParsedItem } from './item';
+import type { ParsedItem } from './item';
 
 export interface SearchQuery {
   text?: string;              // полнотекстовый поиск
