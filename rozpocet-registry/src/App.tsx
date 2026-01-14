@@ -6,21 +6,57 @@
 import { useState } from 'react';
 import { ImportModal } from './components/import/ImportModal';
 import { ItemsTable } from './components/items/ItemsTable';
+import { SearchBar } from './components/search/SearchBar';
+import { SearchResults } from './components/search/SearchResults';
 import { useRegistryStore } from './stores/registryStore';
-import { Trash2, FileSpreadsheet } from 'lucide-react';
+import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
+import { exportAndDownload } from './services/export/excelExportService';
+import { Trash2, FileSpreadsheet, Download } from 'lucide-react';
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const { projects, selectedProjectId, setSelectedProject, removeProject } = useRegistryStore();
 
+  // Search state
+  const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+
   const selectedProject = projects.find(p => p.id === selectedProjectId);
+
+  const handleSearch = (query: string, filters: SearchFilters) => {
+    setIsSearching(true);
+    const results = searchProjects(projects, query, filters);
+    setSearchResults(results);
+    setIsSearching(false);
+  };
+
+  const handleClearSearch = () => {
+    setSearchResults([]);
+  };
+
+  const handleSelectSearchResult = (result: SearchResultItem) => {
+    // Navigate to project and select item
+    setSelectedProject(result.project.id);
+    setSearchResults([]);
+    // TODO: Scroll to item in table
+  };
+
+  const handleExport = () => {
+    if (!selectedProject) return;
+    exportAndDownload(selectedProject, {
+      includeMetadata: true,
+      includeSummary: true,
+      groupBySkupina: true,
+      addHyperlinks: true,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-bg-primary">
       {/* Header */}
       <header className="border-b border-border-color bg-bg-secondary">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
               <div className="text-2xl">🏗️</div>
               <div>
@@ -33,6 +69,16 @@ function App() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              {selectedProject && (
+                <button
+                  onClick={handleExport}
+                  className="btn btn-secondary text-sm flex items-center gap-2"
+                  title="Exportovat projekt do Excel s hyperlinky"
+                >
+                  <Download size={16} />
+                  Export Excel
+                </button>
+              )}
               <button
                 onClick={() => setIsImportModalOpen(true)}
                 className="btn btn-primary text-sm"
@@ -41,12 +87,34 @@ function App() {
               </button>
             </div>
           </div>
+
+          {/* Search bar (show when projects exist) */}
+          {projects.length > 0 && (
+            <SearchBar
+              onSearch={handleSearch}
+              onClear={handleClearSearch}
+              placeholder="Hledat v projektech... (kód, popis, skupina)"
+              showFilters={true}
+            />
+          )}
         </div>
       </header>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <div className="grid gap-6">
+          {/* Search Results */}
+          {searchResults.length > 0 && (
+            <div className="card">
+              <h2 className="text-lg font-semibold mb-4">Výsledky vyhledávání</h2>
+              <SearchResults
+                results={searchResults}
+                onSelectItem={handleSelectSearchResult}
+                isLoading={isSearching}
+              />
+            </div>
+          )}
+
           {projects.length === 0 ? (
             // Welcome screen
             <>
