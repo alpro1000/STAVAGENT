@@ -132,6 +132,18 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     loadProjects();
   }, []);
 
+  // ESC key handler for closing modal
+  useEffect(() => {
+    const handleEscKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && onClose && !isUploading) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleEscKey);
+    return () => window.removeEventListener('keydown', handleEscKey);
+  }, [onClose, isUploading]);
+
   // Handle file upload
   const handleFileUpload = useCallback(async (file: File) => {
     setIsUploading(true);
@@ -145,14 +157,34 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       formData.append('file', file);
       formData.append('language', language);
 
+      // Fetch with timeout (30 seconds)
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+
       const response = await fetch(`${CORE_API_URL}/api/v1/accumulator/summarize/file`, {
         method: 'POST',
         body: formData,
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => null);
-        throw new Error(errorData?.detail || `HTTP ${response.status}`);
+
+        // Better error messages based on status code
+        let errorMessage = errorData?.detail || `HTTP ${response.status}`;
+        if (response.status === 404) {
+          errorMessage = 'API endpoint nenalezen. Zkontrolujte, zda je backend spuštěn.';
+        } else if (response.status === 500) {
+          errorMessage = 'Chyba serveru při zpracování souboru. Zkuste jiný formát.';
+        } else if (response.status === 413) {
+          errorMessage = 'Soubor je příliš velký (max 100 MB).';
+        } else if (response.status === 0) {
+          errorMessage = 'Nelze spojit se serverem. Zkontrolujte připojení k internetu.';
+        }
+
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
@@ -160,10 +192,21 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       if (data.success) {
         setSummary(data);
       } else {
-        throw new Error('Extraction failed');
+        throw new Error('Extrakce dat selhala. Zkuste jiný dokument.');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      let errorMessage = 'Neznámá chyba při zpracování';
+
+      if (err instanceof Error) {
+        if (err.name === 'AbortError') {
+          errorMessage = 'Zpracování trvá příliš dlouho (timeout 30s). Zkuste menší soubor nebo jednodušší dokument.';
+        } else {
+          errorMessage = err.message;
+        }
+      }
+
+      setError(errorMessage);
+      console.error('Document upload error:', err);
     } finally {
       setIsUploading(false);
     }
@@ -474,10 +517,32 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       )}
 
       {/* Error message */}
-      {error && (
-        <div className="c-alert c-alert--error" style={{ marginTop: '16px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <AlertTriangle size={20} />
-          <span>{error}</span>
+      {error && !summary && (
+        <div className="c-alert c-alert--error" style={{ marginTop: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+            <AlertTriangle size={20} />
+            <span style={{ fontWeight: 600 }}>Chyba při zpracování</span>
+          </div>
+          <p style={{ margin: '0 0 12px', fontSize: '14px' }}>{error}</p>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button
+              onClick={() => {
+                setError(null);
+                setUploadedFile(null);
+              }}
+              className="c-btn c-btn--primary c-btn--sm"
+            >
+              Zkusit znovu
+            </button>
+            {onClose && (
+              <button
+                onClick={onClose}
+                className="c-btn c-btn--ghost c-btn--sm"
+              >
+                Zavřít
+              </button>
+            )}
+          </div>
         </div>
       )}
 
