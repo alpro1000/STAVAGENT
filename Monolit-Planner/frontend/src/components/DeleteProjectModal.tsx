@@ -25,7 +25,7 @@ export default function DeleteProjectModal({
   if (!isOpen || !projectName) return null;
 
   const modalContent = (
-    <div className="modal-overlay" onClick={onCancel}>
+    <div className="modal-overlay">
       <div className="modal-content delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header delete-header">
           <h2>⚠️ Smazat celý projekt?</h2>

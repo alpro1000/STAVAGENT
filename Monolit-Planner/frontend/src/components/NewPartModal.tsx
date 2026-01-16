@@ -31,8 +31,15 @@ export default function NewPartModal({ onSelect, onCancel }: Props) {
   };
 
   return (
-    <div className="new-part-modal-overlay" onClick={onCancel}>
+    <div className="new-part-modal-overlay">
       <div className="new-part-modal" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="new-part-modal-close"
+          onClick={onCancel}
+          title="Zavřít"
+        >
+          ✕
+        </button>
         <h3 className="new-part-title">Přidat novou část konstrukce</h3>
 
         <div className="new-part-content">
@@ -131,6 +138,36 @@ export default function NewPartModal({ onSelect, onCancel }: Props) {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+
+        .new-part-modal-close {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+          font-size: 20px;
+          line-height: 1;
+          cursor: pointer;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .new-part-modal-close:hover {
+          background: var(--color-error);
+          color: white;
+          transform: scale(1.1);
+        }
+
+        .new-part-modal-close:active {
+          transform: scale(0.95);
         }
 
         .new-part-title {

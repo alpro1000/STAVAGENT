@@ -107,7 +107,7 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
   if (!isOpen) return null;
 
   const modalContent = (
-    <div className="modal-overlay" onClick={onClose}>
+    <div className="modal-overlay">
       <div className="modal-content history-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h2 className="modal-title">📊 Historie Snapshots</h2>

@@ -298,8 +298,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
       {/* Modal for Create Monolith Form */}
       {showCreateForm && (
-        <div className="modal-overlay" onClick={() => setShowCreateForm(false)}>
+        <div className="modal-overlay">
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowCreateForm(false)}
+              title="Zavřít"
+            >
+              ✕
+            </button>
             <CreateMonolithForm
               onSuccess={handleCreateSuccess}
               onCancel={() => setShowCreateForm(false)}
@@ -310,8 +317,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
       {/* Modal for Export History */}
       {showExportHistory && (
-        <div className="modal-overlay" onClick={() => setShowExportHistory(false)}>
+        <div className="modal-overlay">
           <div className="modal-content-large" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowExportHistory(false)}
+              title="Zavřít"
+            >
+              ✕
+            </button>
             <ExportHistory onClose={() => setShowExportHistory(false)} />
           </div>
         </div>
@@ -319,8 +333,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
       {/* Modal for Edit Bridge Form */}
       {showEditForm && selectedBridge && (
-        <div className="modal-overlay" onClick={() => setShowEditForm(false)}>
+        <div className="modal-overlay">
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowEditForm(false)}
+              title="Zavřít"
+            >
+              ✕
+            </button>
             <EditBridgeForm
               bridge={bridges.find(b => b.bridge_id === selectedBridge)!}
               onSuccess={handleEditSuccess}
@@ -353,6 +374,37 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           to {
             transform: rotate(360deg);
           }
+        }
+
+        /* Modal close button (X) */
+        .modal-close-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+          font-size: 20px;
+          line-height: 1;
+          cursor: pointer;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .modal-close-btn:hover {
+          background: var(--color-error);
+          color: white;
+          transform: scale(1.1);
+        }
+
+        .modal-close-btn:active {
+          transform: scale(0.95);
         }
       `}</style>
     </header>

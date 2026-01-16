@@ -24,7 +24,7 @@ export default function DeleteBridgeModal({ bridge, isOpen, onConfirm, onCancel,
   if (!isOpen || !bridge) return null;
 
   const modalContent = (
-    <div className="modal-overlay" onClick={onCancel}>
+    <div className="modal-overlay">
       <div className="modal-content delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header delete-header">
           <h2>⚠️ Smazat objekt?</h2>
