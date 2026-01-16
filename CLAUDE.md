@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.5
-**Last Updated:** 2026-01-14
+**Version:** 1.3.6
+**Last Updated:** 2026-01-16
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2026-01-13-14):** Google Drive Integration Complete (Day 1 + Day 2) + Auth Fix + All 8 PRs Merged ✅
+**NEW (2026-01-16):** Rozpočet Registry - Phase 6 & 7 Complete (Multi-Project Search + Excel Export) ✅
+**PREVIOUS (2026-01-13-14):** Google Drive Integration Complete (Day 1 + Day 2) + Auth Fix + All 8 PRs Merged ✅
 **PREVIOUS (2026-01-12):** Document Accumulator API Fix + Keep-Alive System (Render Free Tier)
 **PREVIOUS (2026-01-12):** OTSKP Import Fix + KPI Header Compact + WorkTypeSelector + Project Deletion Fix
 **PREVIOUS (2026-01-08):** PartHeader OTSKP Catalog Price + Calculated Kč/m³ Comparison + Object Info Display
@@ -23,6 +24,7 @@ STAVAGENT/
 ├── stavagent-portal/      ← Portal (Dispatcher) - Node.js
 ├── Monolit-Planner/       ← Kiosk (Concrete Calculator) - Node.js
 ├── URS_MATCHER_SERVICE/   ← Kiosk (URS Matching) - Node.js
+├── rozpocet-registry/     ← Standalone Tool (BOQ Management) - React + Vite
 └── docs/                  ← System-level documentation
 ```
 
@@ -63,7 +65,7 @@ STAVAGENT/
 
 ---
 
-## 4 Services - Detailed Description
+## 5 Services - Detailed Description
 
 ### 1. concrete-agent (CORE / ЯДРО)
 
@@ -321,6 +323,139 @@ POST ${STAVAGENT_API_BASE}/api/v1/multi-role/ask
 - `backend/src/services/multiRoleClient.js` - CORE integration
 - `backend/src/services/ursMatcher.js` - URS matching logic
 - `backend/src/api/routes/jobs.js` - Job processing
+
+---
+
+### 5. rozpocet-registry (Standalone Tool)
+
+**Location:** `/rozpocet-registry`
+**Technology:** React 18, TypeScript 5.3, Vite 7
+**Platform:** Browser-only (No Backend)
+**Port (Dev):** 5173
+
+**Purpose:** Standalone browser-based Bill of Quantities (BOQ) management and analysis tool with Excel import/export capabilities.
+
+**Key Capabilities:**
+- **Excel Import System:**
+  - 3 predefined templates (ÚRS, OTSKP/KROS, RTS)
+  - Custom template configuration with visual editor
+  - Auto-detection of Excel structure with match scoring
+  - Multi-sheet parsing with SheetJS
+- **Auto-Classification:**
+  - 32 work groups with regex-based classification
+  - Priority system (HIGH/MEDIUM/LOW)
+  - Bulk classification with confidence scoring
+- **Multi-Project Search:**
+  - Fuzzy search with Fuse.js across all projects
+  - Advanced filters (skupina, price range, classification)
+  - Match highlighting with character-level precision
+- **Excel Export:**
+  - 3-sheet workbook (Položky, Souhrn, Metadata)
+  - Clickable HYPERLINK formulas to browser items
+  - Statistics and group distribution
+
+**Technology Stack:**
+- **Frontend:** React 18 + TypeScript 5.3
+- **Build Tool:** Vite 7.x (lightning-fast HMR)
+- **State Management:** Zustand with localStorage persistence
+- **Excel Processing:** SheetJS (xlsx library)
+- **Search Engine:** Fuse.js 7.0 (fuzzy search)
+- **Styling:** Tailwind CSS 3 + Digital Concrete Design System v2.0
+- **Icons:** Lucide React
+
+**Design System:**
+- Philosophy: Digital Concrete / Brutalist Neumorphism
+- 3-level surface hierarchy (textured bg → clean panels → data surfaces)
+- Monochrome palette + orange accent (#FF9F1C)
+- Typography: JetBrains Mono (tabular numbers)
+
+**Architecture:**
+```
+Browser Only (No Backend)
+         ↓
+┌────────────────────────────┐
+│   React 18 + TypeScript    │
+├────────────────────────────┤
+│  Zustand Store             │ ← State + localStorage
+├────────────────────────────┤
+│  SheetJS (xlsx)            │ ← Excel parsing/export
+│  Fuse.js                   │ ← Fuzzy search
+├────────────────────────────┤
+│  localStorage              │ ← Persistence layer
+└────────────────────────────┘
+```
+
+**Key Features:**
+
+1. **Phase 1: Design System** (commit: ec1baa4)
+   - Digital Concrete v2.0 design tokens
+   - Brutalist neumorphism components
+   - 3-level surface hierarchy
+
+2. **Phase 2: Template Selector** (commit: e7c12c5)
+   - 3 predefined import templates
+   - Template preview with metadata
+   - Template-based Excel parsing
+
+3. **Phase 3: Custom Templates** (commit: b85f0b9)
+   - Visual ConfigEditor (370 lines)
+   - Column letter inputs (A-Z)
+   - Metadata cell configuration
+   - Custom template save/load
+
+4. **Phase 4: Auto-Detection** (commit: a61a5c0)
+   - Structure detector (330 lines)
+   - Keyword matching engine
+   - Code pattern detection (ÚRS/OTSKP/RTS)
+   - Confidence scoring (HIGH/MEDIUM/LOW)
+
+5. **Phase 5: Auto-Classification** (commit: 76733d6)
+   - 32 work groups with regex rules
+   - Priority system (100/50-90/10-30)
+   - Bulk classification service
+   - Classification statistics
+
+6. **Phase 6: Multi-Project Search** (commit: d61ae73)
+   - Fuse.js fuzzy search integration
+   - Weighted search keys (kod: 40%, popis: 30%)
+   - Advanced filters (project, skupina, price, classification)
+   - Match highlighting with indices
+
+7. **Phase 7: Excel Export** (commit: d61ae73)
+   - 3-sheet workbook generation
+   - HYPERLINK formulas for traceability
+   - Statistics sheet (counts, totals, groups)
+   - Metadata export (project info, dates)
+
+**Bundle Size:**
+- Production: 759.52 KB (uncompressed)
+- Gzipped: 244.16 KB
+- CSS: 23.37 kB
+
+**Development Commands:**
+```bash
+cd rozpocet-registry
+npm install
+npm run dev          # Start Vite dev server on :5173
+npm run build        # Production build
+npm run preview      # Preview production build
+npm run lint         # ESLint check
+```
+
+**Key Files:**
+- `src/App.tsx` - Main application with routing
+- `src/store/projectStore.ts` - Zustand store with persistence
+- `src/services/parser/excelParser.ts` - Excel parsing logic
+- `src/services/search/searchService.ts` - Fuse.js search integration
+- `src/services/export/excelExportService.ts` - Excel export with hyperlinks
+- `src/services/classification/classificationService.ts` - Auto-classification engine
+- `src/components/config/ConfigEditor.tsx` - Visual template editor
+
+**Status:** ✅ Production-ready (All 7 phases complete)
+
+**Documentation:**
+- `SESSION_2026-01-16_PHASE6_7.md` - Phase 6 & 7 implementation details
+- `README.md` - User guide and feature overview
 
 ---
 
@@ -1522,7 +1657,29 @@ REDIS_URL=redis://...
 
 ## 📖 Session Documentation
 
-**Current Session (2026-01-14):**
+**Current Session (2026-01-16):**
+- **Rozpočet Registry - Phase 6 & 7 Complete**
+  - Multi-Project Search with Fuse.js fuzzy matching
+  - Advanced filters (skupina, price range, classification)
+  - Match highlighting with character-level precision
+  - Excel export with HYPERLINK formulas (3 sheets)
+  - Statistics and metadata export
+- **Implementation:**
+  - searchService.ts (209 lines) - Fuse.js integration
+  - SearchBar.tsx (220 lines) - Search UI with filters
+  - SearchResults.tsx (172 lines) - Results with highlighting
+  - excelExportService.ts (260 lines) - Excel export with hyperlinks
+  - App.tsx integration (+50 lines)
+- **Technical Challenges:**
+  - Fixed TypeScript readonly tuple errors (Fuse.js types)
+  - Fixed namespace vs type import issues
+  - Build successful: 759.52 KB → 244.16 KB gzipped
+- **Commits:** 1 (d61ae73)
+- **Documentation:** SESSION_2026-01-16_PHASE6_7.md (comprehensive summary)
+- **Status:** All 7 phases complete, production-ready ✅
+- Duration: ~1.5 hours
+
+**Previous Session (2026-01-14):**
 - **Authentication Fix** - Production portal access restored
   - Added `VITE_DISABLE_AUTH=true` to `.env.production`
   - Fixed: Users blocked at login screen with no credentials
