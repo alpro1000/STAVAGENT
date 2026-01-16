@@ -234,11 +234,11 @@
   text-align: center;
 }
 
-/* A: Podtyp (PRÁCE) - work type name */
+/* A: Podtyp (PRÁCE) - work type name - RESIZABLE */
 .col-podtyp {
-  width: 80px !important;
-  min-width: 80px;
-  max-width: 80px;
+  width: var(--work-column-width, 150px) !important;
+  min-width: var(--work-column-width, 150px);
+  max-width: var(--work-column-width, 150px);
 }
 
 /* B: MJ - unit */
