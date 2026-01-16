@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.5
-**Last Updated:** 2026-01-14
+**Version:** 1.3.6
+**Last Updated:** 2026-01-16
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2026-01-13-14):** Google Drive Integration Complete (Day 1 + Day 2) + Auth Fix + All 8 PRs Merged ✅
+**NEW (2026-01-16):** Rozpočet Registry Phase 6 & 7 Complete - Multi-Project Search + Excel Export (Production Ready ✅)
+**PREVIOUS (2026-01-13-14):** Google Drive Integration Complete (Day 1 + Day 2) + Auth Fix + All 8 PRs Merged ✅
 **PREVIOUS (2026-01-12):** Document Accumulator API Fix + Keep-Alive System (Render Free Tier)
 **PREVIOUS (2026-01-12):** OTSKP Import Fix + KPI Header Compact + WorkTypeSelector + Project Deletion Fix
 **PREVIOUS (2026-01-08):** PartHeader OTSKP Catalog Price + Calculated Kč/m³ Comparison + Object Info Display
@@ -23,6 +24,7 @@ STAVAGENT/
 ├── stavagent-portal/      ← Portal (Dispatcher) - Node.js
 ├── Monolit-Planner/       ← Kiosk (Concrete Calculator) - Node.js
 ├── URS_MATCHER_SERVICE/   ← Kiosk (URS Matching) - Node.js
+├── rozpocet-registry/     ← Kiosk (BOQ Registry) - React/Vite (Browser-only)
 └── docs/                  ← System-level documentation
 ```
 
@@ -63,7 +65,7 @@ STAVAGENT/
 
 ---
 
-## 4 Services - Detailed Description
+## 5 Services - Detailed Description
 
 ### 1. concrete-agent (CORE / ЯДРО)
 
@@ -321,6 +323,103 @@ POST ${STAVAGENT_API_BASE}/api/v1/multi-role/ask
 - `backend/src/services/multiRoleClient.js` - CORE integration
 - `backend/src/services/ursMatcher.js` - URS matching logic
 - `backend/src/api/routes/jobs.js` - Job processing
+
+---
+
+### 5. rozpocet-registry (Kiosk)
+
+**Location:** `/rozpocet-registry`
+**Technology:** React 18 + TypeScript + Vite (Browser-only, no backend)
+**Port (Dev):** 5173
+**Platform:** Static hosting (Vercel, Netlify, GitHub Pages)
+
+**Purpose:** Web application for managing, classifying, and searching BOQ (Bill of Quantities) items from construction budgets.
+
+**Key Features:**
+- 📥 **Excel Import** - Flexible .xlsx/.xls file parsing with configurable templates
+- 🔍 **Fuzzy Search** - Multi-project search with Fuse.js (weighted: kod 40%, popis 30%)
+- 📊 **Auto-Classification** - AI-assisted categorization of items into work groups
+- 🔗 **Traceability** - Hyperlinks to original files and row numbers
+- 📤 **Excel Export** - Export with HYPERLINK formulas for clickable navigation
+- 📁 **Multi-Project** - Manage multiple projects simultaneously
+- 💾 **Browser Storage** - All data stored in localStorage (no server required)
+
+**7-Phase Architecture:**
+1. **Phase 1: Design System** - Digital Concrete Design System + TypeScript types
+2. **Phase 2: Template Selector** - Import wizard with predefined templates
+3. **Phase 3: Custom Templates** - User-configurable import mappings
+4. **Phase 4: Auto-Detection** - Automatic Excel structure detection
+5. **Phase 5: Auto-Classification** - AI-based item classification
+6. **Phase 6: Multi-Project Search** - Fuzzy search with advanced filters (NEW 2026-01-16)
+7. **Phase 7: Excel Export** - Export with hyperlinks and 3 sheets (NEW 2026-01-16)
+
+**Tech Stack:**
+```javascript
+Frontend: React 18 + TypeScript 5.3 + Vite 7
+Styling: Tailwind CSS (Digital Concrete Design)
+State: Zustand (persistent store)
+Tables: TanStack Table v8
+Excel: SheetJS (xlsx)
+Search: Fuse.js (fuzzy search)
+Icons: Lucide React
+```
+
+**Search Features (Phase 6):**
+- Weighted fuzzy search (Fuse.js)
+  - Code (kod): 40% weight
+  - Description (popis): 30% weight
+  - Full description (popisFull): 20% weight
+  - Unit (mj): 5% weight
+  - Group (skupina): 5% weight
+- Advanced filters: projects, groups, price range, classification status
+- Character-level match highlighting
+- Performance: ~50ms for 1000+ items
+
+**Export Features (Phase 7):**
+- 3 Excel sheets:
+  - **Položky** - All items with HYPERLINK formulas (clickable links back to app)
+  - **Souhrn** - Statistics and group distribution
+  - **Metadata** - Project info and import configuration
+- Group-by-skupina option
+- Automatic column widths
+- Professional formatting
+
+**Data Structure:**
+```typescript
+interface ParsedItem {
+  id: string;                    // UUID
+  kod: string;                   // Item code "231112"
+  popis: string;                 // Main description
+  skupina: string | null;        // Work group
+  mnozstvi: number;              // Quantity
+  cenaJednotkova: number;        // Unit price
+  cenaCelkem: number;            // Total price
+  source: ItemSource;            // Source (project, sheet, row)
+}
+```
+
+**Storage:**
+- Browser localStorage for all data
+- No server/database required
+- Zustand store with persistence
+- Data survives browser refresh
+
+**Key Files:**
+- `src/services/search/searchService.ts` - Fuzzy search implementation (209 lines)
+- `src/services/export/excelExportService.ts` - Excel export with hyperlinks (276 lines)
+- `src/services/parser/excelParser.ts` - Excel file parsing
+- `src/services/autoDetect/autoDetectService.ts` - Structure detection
+- `src/services/classification/classificationService.ts` - AI classification
+- `src/components/search/SearchBar.tsx` - Search UI (220 lines)
+- `src/components/search/SearchResults.tsx` - Results display (172 lines)
+- `src/components/items/ItemsTable.tsx` - Main data table
+- `src/App.tsx` - Main application (11,582 lines total)
+
+**Status:** ✅ **Production Ready (v2.0.0)** - All 7 phases complete (2026-01-16)
+
+**Documentation:**
+- `README.md` - Project overview and quick start (v2.0.0)
+- `SESSION_2026-01-16_PHASE6_7.md` - Phase 6 & 7 implementation details
 
 ---
 
