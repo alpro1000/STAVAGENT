@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.6
+**Version:** 1.3.7
 **Last Updated:** 2026-01-16
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2026-01-16):** Rozpočet Registry Phase 6 & 7 Complete - Multi-Project Search + Excel Export (Production Ready ✅)
+**NEW (2026-01-16 Part 2):** Monolit Planner UX Improvements - Modal fixes + Editable work names + Resizable columns (5 commits) ✅
+**NEW (2026-01-16 Part 1):** Rozpočet Registry Phase 6 & 7 Complete - Multi-Project Search + Excel Export (Production Ready ✅)
 **PREVIOUS (2026-01-13-14):** Google Drive Integration Complete (Day 1 + Day 2) + Auth Fix + All 8 PRs Merged ✅
 **PREVIOUS (2026-01-12):** Document Accumulator API Fix + Keep-Alive System (Render Free Tier)
 **PREVIOUS (2026-01-12):** OTSKP Import Fix + KPI Header Compact + WorkTypeSelector + Project Deletion Fix
@@ -469,7 +470,105 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2026-01-14)
+## Current Status (2026-01-16)
+
+### ✅ COMPLETED: Monolit Planner UX Improvements (2026-01-16 Part 2)
+
+**Branch:** `claude/add-fuzzy-search-oKCKp`
+
+**Status:** ✅ **PRODUCTION READY** - All improvements deployed
+
+**Summary:**
+- Modal windows - close only on X button (prevent accidental closing)
+- Editable work names with pencil icon ✏️
+- Resizable "Práce" column (80-400px)
+- Fixed work type names (Bednění, Výztuž, Betonování)
+
+**Key Commits:**
+
+| Commit | Description | Status |
+|--------|-------------|--------|
+| `8bad06c` | FIX: Use work type names instead of 'Nová práce' | ✅ Merged |
+| `3b5b60c` | FEAT: Fix work name editing + add resizable work column | ✅ Merged |
+| `d2c8a00` | REFACTOR: Restore original work names + add edit pencil icon | ✅ Merged |
+| `d18fdb4` | FEAT: Modal improvements + editable work names | ✅ Merged |
+| `9216f7d` | Merge branch 'main' into claude/add-fuzzy-search-oKCKp | ✅ Merged |
+
+**Key Changes:**
+
+#### 1. Modal Windows - Close Only on X Button
+**Problem:** Modals closed accidentally when clicking outside
+
+**Solution:**
+- Removed `onClick` from modal overlays
+- Added close buttons (✕) where missing
+- 9 modals affected: CreateMonolithForm, EditBridgeForm, ExportHistory, NewPartModal, DeleteBridgeModal, DeleteProjectModal, FormulaDetailsModal, HistoryModal, CustomWorkModal
+
+**Files:** 8 components modified
+
+#### 2. Editable Work Names
+**Problem:** Cannot edit work names like "Bednění" → "Bednění-1фаза"
+
+**Solution:**
+- Pencil icon ✏️ appears on hover
+- Click pencil → edit mode with input field
+- Save ✓ / Cancel ✕ buttons
+- Keyboard shortcuts: Enter (save), Escape (cancel)
+- Can revert to default by clearing custom name
+
+**User Flow:**
+```
+📦 Bednění → hover → ✏️ appears
+Click ✏️ → input field with "Bednění"
+Edit to "Bednění-1фаза" → click ✓
+Result: 📦 Bednění-1фаза
+```
+
+**Files:** PositionRow.tsx
+
+#### 3. Resizable "Práce" Column
+**Problem:** Fixed 80px width, long names truncated
+
+**Solution:**
+- Drag handle on right edge of column header
+- Resize range: 80px - 400px (default 150px)
+- Visual feedback: gray → orange when dragging
+- Cursor changes to col-resize (⇔)
+- Other columns auto-adjust
+
+**Implementation:**
+- CSS variable `--work-column-width`
+- Mouse event handlers for drag
+- Synchronized header + body rows
+
+**Files:** PositionsTable.tsx, slate-table.css
+
+#### 4. Fixed Work Type Names
+**CRITICAL FIX:** Wrong names when adding work
+
+**Before:**
+- Add Bednění → showed "Nová práce" ❌
+- Create new part → Betonování showed "ZÁKLADY ZE ŽELEZOBETONU..." ❌
+
+**After:**
+- Add Bednění → shows "Bednění" ✅
+- Create new part → Betonování shows "Betonování" ✅
+
+**Solution:** Use `SUBTYPE_LABELS` dictionary instead of hardcoded strings
+
+**Files:** PositionsTable.tsx
+
+**Documentation:**
+- `SESSION_2026-01-16_MODAL_WORK_NAMES.md` - Detailed session summary (900+ lines)
+- `CLAUDE.md` v1.3.7 - Updated with session info
+
+**Total Changes:**
+- Files modified: 10
+- Lines added: ~285
+- Lines removed: ~45
+- Backend changes: None (frontend only)
+
+---
 
 ### ✅ COMPLETED: Google Drive Integration + Auth Fix (2026-01-13-14)
 
