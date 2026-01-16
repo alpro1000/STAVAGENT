@@ -29,6 +29,10 @@ export default function PositionsTable() {
   const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
 
+  // Resizable column state
+  const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
+  const [isResizing, setIsResizing] = useState(false);
+
   // Group positions by part_name and sort each group (beton first, then others)
   const groupedPositions = useMemo(() => {
     const groups: Record<string, Position[]> = {};
@@ -159,6 +163,30 @@ export default function PositionsTable() {
       newExpanded.add(partName);
     }
     setExpandedParts(newExpanded);
+  };
+
+  // Resizable column handlers
+  const handleResizeStart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+
+    const startX = e.clientX;
+    const startWidth = workColumnWidth;
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const deltaX = moveEvent.clientX - startX;
+      const newWidth = Math.max(80, Math.min(400, startWidth + deltaX)); // Min 80px, max 400px
+      setWorkColumnWidth(newWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
   };
 
   // Handle adding new row to a part - show work type selector first
@@ -429,13 +457,50 @@ export default function PositionsTable() {
                 />
 
                 {/* Unified Table Wrapper - Synchronized header and body widths */}
-                <div className="c-table-wrapper" style={{ margin: 'var(--space-md)', borderRadius: 'var(--radius-md)' }}>
+                <div
+                  className="c-table-wrapper"
+                  style={{
+                    margin: 'var(--space-md)',
+                    borderRadius: 'var(--radius-md)',
+                    '--work-column-width': `${workColumnWidth}px`
+                  } as React.CSSProperties}
+                >
                   {/* Header Table - Sticky with synchronized width */}
                   <table className="c-table positions-table">
                     <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
-                      <th className="col-podtyp" title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Práce</th>
+                      <th
+                        className="col-podtyp"
+                        title="Typ práce: beton, bednění, výztuž, oboustranné, jiné"
+                        style={{
+                          width: `${workColumnWidth}px`,
+                          minWidth: `${workColumnWidth}px`,
+                          maxWidth: `${workColumnWidth}px`,
+                          position: 'relative'
+                        }}
+                      >
+                        Práce
+                        <div
+                          className="column-resizer"
+                          onMouseDown={handleResizeStart}
+                          style={{
+                            position: 'absolute',
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            width: '4px',
+                            cursor: 'col-resize',
+                            background: isResizing ? 'var(--accent-orange, #FF9F1C)' : 'transparent',
+                            transition: 'background 0.2s ease',
+                            zIndex: 10
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'var(--border-hover, #ccc)'}
+                          onMouseLeave={(e) => {
+                            if (!isResizing) e.currentTarget.style.background = 'transparent';
+                          }}
+                        />
+                      </th>
                       <th className="col-mj" title="Měrná jednotka: m³, m², kg">MJ</th>
                       <th className="col-mnozstvi" title="Množství v měrných jednotkách (EDITABLE)">Množ.</th>
                       <th className="col-lidi" title="Počet lidí v partě (EDITABLE)">Počet</th>

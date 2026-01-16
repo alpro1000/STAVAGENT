@@ -203,24 +203,37 @@ export default function PositionRow({ position, isLocked = false }: Props) {
 
   const icon = SUBTYPE_ICONS[position.subtype as keyof typeof SUBTYPE_ICONS] || '📋';
 
-  // For "jiné" (custom work), use item_name as display label instead of generic "Jiné"
-  const displayLabel = position.subtype === 'jiné' && position.item_name
-    ? position.item_name
-    : SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
+  // Get default label from subtype
+  const defaultLabel = SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
+
+  // Display custom name if set, otherwise show default
+  const displayLabel = position.item_name || defaultLabel;
 
   // Start editing work name
   const handleStartEditWorkName = () => {
     if (isLocked) return;
-    setWorkNameInput(position.item_name || displayLabel);
+    // Always start with default label for editing
+    setWorkNameInput(position.item_name || defaultLabel);
     setIsEditingWorkName(true);
   };
 
   // Save edited work name
   const handleSaveWorkName = () => {
-    if (workNameInput.trim() && workNameInput !== position.item_name) {
-      handleFieldChange('item_name', workNameInput.trim());
+    const trimmedInput = workNameInput.trim();
+
+    // If empty or same as default → clear custom name (revert to default)
+    if (!trimmedInput || trimmedInput === defaultLabel) {
+      if (position.item_name) {
+        // Clear item_name to revert to default
+        handleFieldChange('item_name', null);
+      }
+    } else if (trimmedInput !== position.item_name) {
+      // Save custom name only if different
+      handleFieldChange('item_name', trimmedInput);
     }
+
     setIsEditingWorkName(false);
+    setWorkNameInput('');
   };
 
   // Cancel editing work name
