@@ -10,6 +10,7 @@ import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
 import { positionsAPI } from '../services/api';
 import type { Position, Subtype, Unit } from '@stavagent/monolit-shared';
+import { SUBTYPE_LABELS } from '@stavagent/monolit-shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
@@ -209,11 +210,14 @@ export default function PositionsTable() {
     }
 
     try {
+      // Get default name from subtype (e.g., "Betonování", "Bednění", "Výztuž")
+      const defaultName = SUBTYPE_LABELS[subtype] || subtype;
+
       const newPosition: Partial<Position> = {
         id: uuidv4(),
         bridge_id: selectedBridge,
         part_name: selectedPartForAdd,
-        item_name: 'Nová práce',
+        item_name: defaultName,
         subtype: subtype,
         unit: unit,
         qty: 0,
@@ -313,7 +317,7 @@ export default function PositionsTable() {
         id: uuidv4(),
         bridge_id: selectedBridge,
         part_name: partName,
-        item_name: partName, // Use OTSKP name as item name
+        item_name: SUBTYPE_LABELS['beton'] || 'Betonování', // Use subtype name, not part name
         otskp_code: otskpCode,
         subtype: 'beton', // First position is always beton (concrete volume)
         unit: 'M3',
