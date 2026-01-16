@@ -198,10 +198,15 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   const computedKrosTotalCzk = computedKrosUnitCzk * concreteM3;
 
   const icon = SUBTYPE_ICONS[position.subtype as keyof typeof SUBTYPE_ICONS] || '📋';
-  // For "jiné" (custom work), use item_name as display label instead of generic "Jiné"
-  const displayLabel = position.subtype === 'jiné' && position.item_name
-    ? position.item_name
-    : SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
+
+  // Get display value for item_name - use custom name if set, otherwise use default label
+  const getItemNameValue = (): string => {
+    if (editedFields.item_name !== undefined) {
+      return editedFields.item_name;
+    }
+    // If item_name exists in DB, use it; otherwise use the default label
+    return position.item_name || SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
+  };
 
   return (
     <>
@@ -209,11 +214,25 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       {/* Locked indicator */}
       {isLocked && <td className="lock-indicator col-lock">🔒</td>}
 
-      {/* Subtype with icon */}
+      {/* Subtype with icon - EDITABLE NAME */}
       <td className="cell-subtype col-podtyp">
         <div className="subtype-cell">
           <span className="subtype-icon">{icon}</span>
-          <span className="subtype-label" title={`Internal: ${position.subtype}`}>{displayLabel}</span>
+          <input
+            type="text"
+            className="input-cell input-work-name"
+            value={getItemNameValue()}
+            onChange={(e) => handleFieldChange('item_name', e.target.value)}
+            onBlur={handleBlur}
+            disabled={isLocked}
+            placeholder={SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype}
+            title={`Upravit název práce (původní: ${SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype})`}
+            style={{
+              width: '100%',
+              minWidth: '150px',
+              fontWeight: 500
+            }}
+          />
         </div>
       </td>
 
