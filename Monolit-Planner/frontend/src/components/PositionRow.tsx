@@ -45,6 +45,10 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   const [speedInput, setSpeedInput] = useState<string>('');
   const [isEditingSpeed, setIsEditingSpeed] = useState(false);
 
+  // Work name editing state
+  const [isEditingWorkName, setIsEditingWorkName] = useState(false);
+  const [workNameInput, setWorkNameInput] = useState('');
+
   // Check if AI Days Suggestion feature is enabled
   const isAiDaysSuggestEnabled = config?.feature_flags?.FF_AI_DAYS_SUGGEST ?? false;
 
@@ -199,13 +203,30 @@ export default function PositionRow({ position, isLocked = false }: Props) {
 
   const icon = SUBTYPE_ICONS[position.subtype as keyof typeof SUBTYPE_ICONS] || '📋';
 
-  // Get display value for item_name - use custom name if set, otherwise use default label
-  const getItemNameValue = (): string => {
-    if (editedFields.item_name !== undefined) {
-      return editedFields.item_name;
+  // For "jiné" (custom work), use item_name as display label instead of generic "Jiné"
+  const displayLabel = position.subtype === 'jiné' && position.item_name
+    ? position.item_name
+    : SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
+
+  // Start editing work name
+  const handleStartEditWorkName = () => {
+    if (isLocked) return;
+    setWorkNameInput(position.item_name || displayLabel);
+    setIsEditingWorkName(true);
+  };
+
+  // Save edited work name
+  const handleSaveWorkName = () => {
+    if (workNameInput.trim() && workNameInput !== position.item_name) {
+      handleFieldChange('item_name', workNameInput.trim());
     }
-    // If item_name exists in DB, use it; otherwise use the default label
-    return position.item_name || SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
+    setIsEditingWorkName(false);
+  };
+
+  // Cancel editing work name
+  const handleCancelEditWorkName = () => {
+    setIsEditingWorkName(false);
+    setWorkNameInput('');
   };
 
   return (
@@ -218,21 +239,91 @@ export default function PositionRow({ position, isLocked = false }: Props) {
       <td className="cell-subtype col-podtyp">
         <div className="subtype-cell">
           <span className="subtype-icon">{icon}</span>
-          <input
-            type="text"
-            className="input-cell input-work-name"
-            value={getItemNameValue()}
-            onChange={(e) => handleFieldChange('item_name', e.target.value)}
-            onBlur={handleBlur}
-            disabled={isLocked}
-            placeholder={SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype}
-            title={`Upravit název práce (původní: ${SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype})`}
-            style={{
-              width: '100%',
-              minWidth: '150px',
-              fontWeight: 500
-            }}
-          />
+          {isEditingWorkName ? (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', width: '100%' }}>
+              <input
+                type="text"
+                className="input-cell"
+                value={workNameInput}
+                onChange={(e) => setWorkNameInput(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') handleSaveWorkName();
+                  if (e.key === 'Escape') handleCancelEditWorkName();
+                }}
+                autoFocus
+                style={{ flex: 1, minWidth: '120px' }}
+                placeholder={displayLabel}
+              />
+              <button
+                onClick={handleSaveWorkName}
+                className="btn-save-work-name"
+                title="Uložit"
+                style={{
+                  padding: '2px 6px',
+                  fontSize: '12px',
+                  background: 'var(--color-success)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '3px',
+                  cursor: 'pointer'
+                }}
+              >
+                ✓
+              </button>
+              <button
+                onClick={handleCancelEditWorkName}
+                className="btn-cancel-work-name"
+                title="Zrušit"
+                style={{
+                  padding: '2px 6px',
+                  fontSize: '12px',
+                  background: 'var(--bg-tertiary)',
+                  color: 'var(--text-primary)',
+                  border: '1px solid var(--border-default)',
+                  borderRadius: '3px',
+                  cursor: 'pointer'
+                }}
+              >
+                ✕
+              </button>
+            </div>
+          ) : (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', width: '100%' }}>
+              <span className="subtype-label" title={`Internal: ${position.subtype}`}>
+                {displayLabel}
+              </span>
+              {!isLocked && (
+                <button
+                  onClick={handleStartEditWorkName}
+                  className="btn-edit-work-name"
+                  title="Upravit název práce"
+                  style={{
+                    padding: '2px 6px',
+                    fontSize: '11px',
+                    background: 'transparent',
+                    color: 'var(--text-secondary)',
+                    border: '1px solid transparent',
+                    borderRadius: '3px',
+                    cursor: 'pointer',
+                    opacity: 0.5,
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.borderColor = 'var(--border-default)';
+                    e.currentTarget.style.background = 'var(--bg-tertiary)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.opacity = '0.5';
+                    e.currentTarget.style.borderColor = 'transparent';
+                    e.currentTarget.style.background = 'transparent';
+                  }}
+                >
+                  ✏️
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </td>
 
