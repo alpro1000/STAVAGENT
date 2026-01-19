@@ -68,15 +68,18 @@ export default function CreateMonolithForm({ onSuccess, onCancel, preselectedPro
     e.preventDefault();
     setError('');
 
-    const trimmedBridgeId = bridgeId.trim();
+    // CRITICAL: Remove ALL spaces from bridge_id (not just trim edges)
+    // This ensures consistency with Excel import parser which also removes spaces
+    // "SO 13-20-01" → "SO13-20-01"
+    const normalizedBridgeId = bridgeId.trim().replace(/\s+/g, '');
 
-    if (!trimmedBridgeId) {
+    if (!normalizedBridgeId) {
       setError('Číslo objektu je povinné');
       return;
     }
 
     // Validate bridge_id - no slashes or special URL characters
-    if (/[\/\\?#%]/.test(trimmedBridgeId)) {
+    if (/[\/\\?#%]/.test(normalizedBridgeId)) {
       setError('Číslo objektu nesmí obsahovat znaky: / \\ ? # %');
       return;
     }
@@ -86,13 +89,13 @@ export default function CreateMonolithForm({ onSuccess, onCancel, preselectedPro
     try {
       // API expects project_id (historical naming), but it's actually bridge_id
       await createBridge({
-        project_id: trimmedBridgeId,
+        project_id: normalizedBridgeId,
         project_name: getFinalProjectName(),
-        object_name: objectName.trim() || trimmedBridgeId,
+        object_name: objectName.trim() || normalizedBridgeId,
         description: description.trim() || undefined
       });
 
-      onSuccess(trimmedBridgeId);
+      onSuccess(normalizedBridgeId);
     } catch (err: any) {
       setError(err.response?.data?.error || err.message || 'Chyba při vytváření objektu');
     } finally {
