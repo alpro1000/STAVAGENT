@@ -83,9 +83,9 @@ export default function PositionsTable() {
     updatePositions(updates);
   };
 
-  // Handle item name update from PartHeader
-  const handleItemNameUpdate = (partName: string, newItemName: string) => {
-    // Update item_name for all positions in this part
+  // Handle part name update from PartHeader
+  const handleItemNameUpdate = (partName: string, newPartName: string) => {
+    // Update part_name for all positions in this part
     const partPositions = positions.filter(p => p.part_name === partName);
 
     if (partPositions.length === 0) return;
@@ -93,15 +93,15 @@ export default function PositionsTable() {
     // IMPORTANT: Only send editable fields!
     const updates = partPositions.map(pos => ({
       id: pos.id,
-      item_name: newItemName
+      part_name: newPartName
     }));
 
     updatePositions(updates);
   };
 
   // Handle OTSKP code AND name update together (prevent race condition)
-  const handleOtskpCodeAndNameUpdate = (partName: string, newOtskpCode: string, newItemName: string, _unitPrice?: number, _unit?: string) => {
-    // Update BOTH otskp_code and item_name for all positions in this part
+  const handleOtskpCodeAndNameUpdate = (partName: string, newOtskpCode: string, newPartName: string, _unitPrice?: number, _unit?: string) => {
+    // Update BOTH otskp_code and part_name for all positions in this part
     // Note: unitPrice and unit are passed for UI display but not stored in database
     const partPositions = positions.filter(p => p.part_name === partName);
 
@@ -111,7 +111,7 @@ export default function PositionsTable() {
     const updates = partPositions.map(pos => ({
       id: pos.id,
       otskp_code: newOtskpCode,
-      item_name: newItemName
+      part_name: newPartName
     }));
 
     updatePositions(updates);
@@ -442,7 +442,7 @@ export default function PositionsTable() {
             {isExpanded && (
               <>
                 <PartHeader
-                  itemName={partPositions[0]?.item_name || ''}
+                  itemName={partPositions[0]?.part_name || ''}
                   betonQuantity={partPositions
                     .filter(p => p.subtype === 'beton')
                     .reduce((sum, p) => sum + (p.qty || 0), 0)}
