@@ -286,6 +286,8 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    logger.info(`[PUT PROJECT] Updating project with ID: "${id}"`);
+    logger.info(`[PUT PROJECT] Update payload:`, req.body);
 
     // Check project exists (no ownership check - kiosk mode)
     const project = await db.prepare(`
@@ -293,8 +295,16 @@ router.put('/:id', async (req, res) => {
     `).get(id);
 
     if (!project) {
+      logger.warn(`[PUT PROJECT] Project not found with ID: "${id}"`);
+      // Log all existing project IDs for debugging
+      const allProjects = await db.prepare(`
+        SELECT project_id FROM monolith_projects LIMIT 20
+      `).all();
+      logger.info(`[PUT PROJECT] Existing projects: ${allProjects.map(p => p.project_id).join(', ')}`);
       return res.status(404).json({ error: 'Project not found' });
     }
+
+    logger.info(`[PUT PROJECT] Found project: ${project.project_id}, current status: ${project.status}`);
 
     const {
       project_name,
@@ -345,11 +355,12 @@ router.put('/:id', async (req, res) => {
 
     const updated = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(id);
 
+    logger.info(`[PUT PROJECT] ✓ Successfully updated project: ${id}, new status: ${updated.status}`);
+
     res.json({
       ...updated,
       bridge_id: updated.project_id
     });
-    logger.info(`Updated monolith project: ${id}`);
   } catch (error) {
     logger.error('Error updating monolith project:', error);
     res.status(500).json({ error: error.message });
