@@ -232,11 +232,11 @@ export default function PositionRow({ position, isLocked = false }: Props) {
     const trimmedInput = workNameInput.trim();
 
     // Determine new value for item_name
-    let newItemName: string | null;
+    let newItemName: string | undefined;
 
     // If empty or same as default → clear custom name (revert to default)
     if (!trimmedInput || trimmedInput === defaultLabel) {
-      newItemName = null;  // Clear custom name
+      newItemName = undefined;  // Clear custom name
     } else if (trimmedInput !== position.item_name) {
       newItemName = trimmedInput;  // Save custom name
     } else {
