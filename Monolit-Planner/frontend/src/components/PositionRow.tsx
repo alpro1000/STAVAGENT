@@ -231,22 +231,33 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   const handleSaveWorkName = () => {
     const trimmedInput = workNameInput.trim();
 
+    // Determine new value for item_name
+    let newItemName: string | null;
+
     // If empty or same as default → clear custom name (revert to default)
     if (!trimmedInput || trimmedInput === defaultLabel) {
-      if (position.item_name) {
-        // Clear item_name to revert to default
-        handleFieldChange('item_name', null);
-      }
+      newItemName = null;  // Clear custom name
     } else if (trimmedInput !== position.item_name) {
-      // Save custom name only if different
-      handleFieldChange('item_name', trimmedInput);
+      newItemName = trimmedInput;  // Save custom name
+    } else {
+      // No change - exit early
+      setIsEditingWorkName(false);
+      setWorkNameInput('');
+      return;
     }
 
+    // Close editing UI
     setIsEditingWorkName(false);
     setWorkNameInput('');
 
-    // CRITICAL: Save changes to server
-    handleBlur();
+    // CRITICAL: Send update DIRECTLY to server, bypassing editedFields
+    // (setState is async, so handleBlur would see old empty editedFields)
+    updatePositions([
+      {
+        id: position.id,
+        item_name: newItemName
+      }
+    ]);
   };
 
   // Cancel editing work name
