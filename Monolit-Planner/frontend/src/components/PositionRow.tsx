@@ -206,12 +206,22 @@ export default function PositionRow({ position, isLocked = false }: Props) {
   // Get default label from subtype
   const defaultLabel = SUBTYPE_LABELS[position.subtype as keyof typeof SUBTYPE_LABELS] || position.subtype;
 
-  // Display custom name if set, otherwise show default
-  const displayLabel = position.item_name || defaultLabel;
+  // For 'beton' always show default label (ignore item_name from Excel import)
+  // For other subtypes, display custom name if set, otherwise show default
+  const displayLabel = position.subtype === 'beton'
+    ? defaultLabel
+    : (position.item_name || defaultLabel);
 
   // Start editing work name
   const handleStartEditWorkName = () => {
     if (isLocked) return;
+
+    // Prevent editing 'beton' name - it must always be "Betonování"
+    if (position.subtype === 'beton') {
+      alert('❌ Nelze upravit název "Betonování"\n\nTato řádka má pevně stanovený název, který nelze měnit.');
+      return;
+    }
+
     // Always start with default label for editing
     setWorkNameInput(position.item_name || defaultLabel);
     setIsEditingWorkName(true);
@@ -234,6 +244,9 @@ export default function PositionRow({ position, isLocked = false }: Props) {
 
     setIsEditingWorkName(false);
     setWorkNameInput('');
+
+    // CRITICAL: Save changes to server
+    handleBlur();
   };
 
   // Cancel editing work name
@@ -305,7 +318,7 @@ export default function PositionRow({ position, isLocked = false }: Props) {
               <span className="subtype-label" title={`Internal: ${position.subtype}`}>
                 {displayLabel}
               </span>
-              {!isLocked && (
+              {!isLocked && position.subtype !== 'beton' && (
                 <button
                   onClick={handleStartEditWorkName}
                   className="btn-edit-work-name"
