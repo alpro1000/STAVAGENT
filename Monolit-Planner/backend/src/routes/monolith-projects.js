@@ -246,6 +246,7 @@ router.delete('/by-project-name/:projectName', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    logger.info(`[GET PROJECT] Requesting project with ID: "${id}"`);
 
     // Get project (no ownership check - kiosk mode)
     const project = await db.prepare(`
@@ -253,6 +254,12 @@ router.get('/:id', async (req, res) => {
     `).get(id);
 
     if (!project) {
+      logger.warn(`[GET PROJECT] Project not found with ID: "${id}"`);
+      // Log all existing project IDs for debugging
+      const allProjects = await db.prepare(`
+        SELECT project_id FROM monolith_projects LIMIT 20
+      `).all();
+      logger.info(`[GET PROJECT] Existing projects: ${allProjects.map(p => p.project_id).join(', ')}`);
       return res.status(404).json({ error: 'Project not found' });
     }
 
