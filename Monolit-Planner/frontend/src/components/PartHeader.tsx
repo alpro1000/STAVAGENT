@@ -9,26 +9,26 @@ import OtskpAutocomplete from './OtskpAutocomplete';
 import { otskpAPI } from '../services/api';
 
 interface Props {
-  itemName?: string;
+  partName?: string;  // Name of the construction part (from OTSKP)
   betonQuantity: number;
   otskpCode?: string;
   catalogPrice?: number;
   catalogUnit?: string;
   partTotalKrosCzk?: number;  // Sum of KROS total for all positions in this part
-  onItemNameUpdate: (itemName: string) => void;
+  onPartNameUpdate: (partName: string) => void;  // Update part_name for all positions
   onBetonQuantityUpdate: (quantity: number) => void;
   onOtskpCodeAndNameUpdate: (code: string, name: string, unitPrice?: number, unit?: string) => void;
   isLocked: boolean;
 }
 
 export default function PartHeader({
-  itemName,
+  partName,
   betonQuantity,
   otskpCode,
   catalogPrice,
   catalogUnit,
   partTotalKrosCzk,
-  onItemNameUpdate,
+  onPartNameUpdate,
   onBetonQuantityUpdate,
   onOtskpCodeAndNameUpdate,
   isLocked
@@ -37,7 +37,7 @@ export default function PartHeader({
   const calculatedPricePerM3 = betonQuantity > 0 && partTotalKrosCzk
     ? partTotalKrosCzk / betonQuantity
     : undefined;
-  const [editedName, setEditedName] = useState(itemName || '');
+  const [editedName, setEditedName] = useState(partName || '');
   const [editedBeton, setEditedBeton] = useState(betonQuantity.toString());
   const [editedOtskp, setEditedOtskp] = useState(otskpCode || '');
   const [localCatalogPrice, setLocalCatalogPrice] = useState<number | undefined>(catalogPrice);
@@ -45,8 +45,8 @@ export default function PartHeader({
 
   // Sync state when props change (two-way binding)
   useEffect(() => {
-    setEditedName(itemName || '');
-  }, [itemName]);
+    setEditedName(partName || '');
+  }, [partName]);
 
   useEffect(() => {
     setEditedBeton(betonQuantity.toString());
@@ -84,8 +84,8 @@ export default function PartHeader({
   }, [otskpCode, localCatalogPrice]);
 
   const handleNameBlur = () => {
-    if (editedName !== itemName) {
-      onItemNameUpdate(editedName);
+    if (editedName !== partName) {
+      onPartNameUpdate(editedName);
     }
   };
 

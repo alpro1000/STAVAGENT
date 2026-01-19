@@ -84,9 +84,10 @@ export default function PositionsTable() {
   };
 
   // Handle part name update from PartHeader
-  const handleItemNameUpdate = (partName: string, newPartName: string) => {
+  // This updates the part_name field for ALL positions in this construction part
+  const handlePartNameUpdate = (oldPartName: string, newPartName: string) => {
     // Update part_name for all positions in this part
-    const partPositions = positions.filter(p => p.part_name === partName);
+    const partPositions = positions.filter(p => p.part_name === oldPartName);
 
     if (partPositions.length === 0) return;
 
@@ -442,14 +443,14 @@ export default function PositionsTable() {
             {isExpanded && (
               <>
                 <PartHeader
-                  itemName={partPositions[0]?.part_name || ''}
+                  partName={partPositions[0]?.part_name || ''}
                   betonQuantity={partPositions
                     .filter(p => p.subtype === 'beton')
                     .reduce((sum, p) => sum + (p.qty || 0), 0)}
                   otskpCode={partPositions[0]?.otskp_code || ''}
                   partTotalKrosCzk={partPositions.reduce((sum, p) => sum + (p.kros_total_czk || 0), 0)}
-                  onItemNameUpdate={(newName) =>
-                    handleItemNameUpdate(partName, newName)
+                  onPartNameUpdate={(newName) =>
+                    handlePartNameUpdate(partName, newName)
                   }
                   onBetonQuantityUpdate={(newQuantity) =>
                     handleBetonQuantityUpdate(partName, newQuantity)
