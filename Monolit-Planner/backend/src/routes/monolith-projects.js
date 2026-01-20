@@ -368,6 +368,53 @@ router.put('/:id', async (req, res) => {
 });
 
 /**
+ * GET /api/monolith-projects/debug/database
+ * TEMPORARY: Debug endpoint to check database contents
+ */
+router.get('/debug/database', async (req, res) => {
+  try {
+    logger.info('[DEBUG] Checking database contents...');
+
+    // Get all projects with ALL columns
+    const projects = await db.prepare(`
+      SELECT * FROM monolith_projects ORDER BY created_at DESC LIMIT 100
+    `).all();
+
+    // Get all positions count
+    const positionsCount = await db.prepare(`
+      SELECT COUNT(*) as count FROM positions
+    `).get();
+
+    // Get all bridges (old table)
+    const bridges = await db.prepare(`
+      SELECT * FROM bridges ORDER BY created_at DESC LIMIT 100
+    `).all();
+
+    logger.info(`[DEBUG] Found ${projects.length} projects in monolith_projects`);
+    logger.info(`[DEBUG] Found ${positionsCount.count} positions`);
+    logger.info(`[DEBUG] Found ${bridges.length} bridges in old table`);
+
+    res.json({
+      monolith_projects: {
+        count: projects.length,
+        data: projects
+      },
+      positions: {
+        count: positionsCount.count
+      },
+      bridges: {
+        count: bridges.length,
+        data: bridges
+      },
+      message: 'Database debug info - this endpoint will be removed after diagnosis'
+    });
+  } catch (error) {
+    logger.error('[DEBUG] Error checking database:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
+/**
  * DELETE /api/monolith-projects/:id
  * Delete project (and all related parts) - no auth (kiosk mode)
  */
