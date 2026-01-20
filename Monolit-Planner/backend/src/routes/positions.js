@@ -420,6 +420,8 @@ router.delete('/:id', async (req, res) => {
  * - Quantity and unit
  * - Crew size and shift hours
  * - Official construction norms (KROS, RTS, ČSN)
+ *
+ * ENHANCED (2026-01-20): Stores suggestion in position_suggestions table for audit trail
  */
 router.post('/:id/suggest-days', async (req, res) => {
   const { id } = req.params;
@@ -448,6 +450,32 @@ router.post('/:id/suggest-days', async (req, res) => {
     const suggestion = await suggestDays(position);
 
     logger.info(`[API] Time norms suggestion completed for position ${id}: ${suggestion.suggested_days} days`);
+
+    // Store suggestion in position_suggestions table for audit trail
+    const suggestionId = uuidv4();
+    try {
+      await db.prepare(`
+        INSERT INTO position_suggestions (
+          id, position_id, suggested_days, suggested_by,
+          normset_id, norm_source, assumptions_log, confidence,
+          status, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+      `).run(
+        suggestionId,
+        id,
+        suggestion.suggested_days,
+        'MULTI_ROLE_AI',
+        'norm_urs_2024', // Default normset (ÚRS 2024)
+        suggestion.norm_source || 'AI Multi-Role',
+        suggestion.reasoning || '',
+        suggestion.confidence || 0.8,
+        'pending'
+      );
+      logger.info(`[Audit] Stored suggestion ${suggestionId} for position ${id}`);
+    } catch (auditError) {
+      // Don't fail the request if audit logging fails
+      logger.warn(`[Audit] Failed to store suggestion: ${auditError.message}`);
+    }
 
     res.json(suggestion);
 
