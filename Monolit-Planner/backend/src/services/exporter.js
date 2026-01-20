@@ -79,6 +79,36 @@ const formatCurrency = (num, decimals = 2) => {
 };
 
 /**
+ * Subtype labels - same as frontend (from shared/constants.ts)
+ */
+const SUBTYPE_LABELS = {
+  'beton': 'Betonování',
+  'bednění': 'Bednění',
+  'oboustranné (opěry)': 'Oboustranné (opěry)',
+  'oboustranné (křídla)': 'Oboustranné (křídla)',
+  'oboustranné (závěrné zídky)': 'Oboustranné (závěrné zídky)',
+  'výztuž': 'Výztuž',
+  'jiné': 'Jiné'
+};
+
+/**
+ * Get work name for display in Excel (same logic as frontend)
+ * For 'beton': always use default label (ignore item_name from Excel import)
+ * For other subtypes: use custom name if set, otherwise show default
+ */
+function getWorkName(position) {
+  const defaultLabel = SUBTYPE_LABELS[position.subtype] || position.subtype;
+
+  // For 'beton' always use default label (ignore item_name with Excel description)
+  if (position.subtype === 'beton') {
+    return defaultLabel;
+  }
+
+  // For others, use custom name if set, otherwise default
+  return position.item_name || defaultLabel;
+}
+
+/**
  * Determine material type from position subtype and item name
  */
 function determineMaterialType(subtype, itemName = '') {
@@ -467,7 +497,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         const speed = laborHours > 0 ? (pos.qty || 0) / laborHours : 0;
 
         const rowData = [
-          pos.item_name || pos.subtype,  // A: Podtyp (use custom name if saved, otherwise subtype)
+          getWorkName(pos),  // A: Podtyp (custom name or default label)
           pos.unit,              // B: MJ
           pos.qty,               // C: Množství
           pos.crew_size,         // D: Lidi
@@ -705,12 +735,12 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     // Aggregate materials by work name (custom names from frontend)
     const materials = new Map();
     positions.forEach(pos => {
-      const workName = pos.item_name || pos.subtype;  // Use custom name saved by user
+      const workName = getWorkName(pos);  // Use same logic as Detaily sheet
       const key = `${workName}|${pos.unit}`;
 
       if (!materials.has(key)) {
         materials.set(key, {
-          type: workName,  // Use custom work name instead of generic material type
+          type: workName,  // Use work name (for 'beton' = 'Betonování', for others = custom or default)
           unit: pos.unit,
           quantity: 0,
           positions: [],
@@ -967,7 +997,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     // Cost breakdown by subtype
     const costByType = {};
     positions.forEach(pos => {
-      const typeName = pos.item_name || pos.subtype;
+      const typeName = getWorkName(pos);  // Use same logic as Detaily sheet
       if (!costByType[typeName]) {
         costByType[typeName] = 0;
       }
