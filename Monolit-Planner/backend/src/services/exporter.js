@@ -467,7 +467,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         const speed = laborHours > 0 ? (pos.qty || 0) / laborHours : 0;
 
         const rowData = [
-          pos.subtype === 'jiné' ? (pos.item_name || 'jiné') : pos.subtype,  // A: Podtyp (custom name for "jiné")
+          pos.item_name || pos.subtype,  // A: Podtyp (use custom name if saved, otherwise subtype)
           pos.unit,              // B: MJ
           pos.qty,               // C: Množství
           pos.crew_size,         // D: Lidi
@@ -650,12 +650,12 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       applyTotalRowStyle(totalsRow);
 
       // Add SUM formulas with CALCULATED result values
-      // C: Sum of qty
-      totalsRow.getCell(3).value = {
-        formula: `SUM(C${firstDataRow}:C${lastDataRow})`,
-        result: totals.qty
-      };
-      totalsRow.getCell(3).numFmt = '0.00';
+      // C: Sum of qty - REMOVED per user request (no total needed in column C)
+      // totalsRow.getCell(3).value = {
+      //   formula: `SUM(C${firstDataRow}:C${lastDataRow})`,
+      //   result: totals.qty
+      // };
+      // totalsRow.getCell(3).numFmt = '0.00';
 
       // I: Sum of labor hours
       totalsRow.getCell(9).value = {
@@ -671,12 +671,12 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       };
       totalsRow.getCell(10).numFmt = '#,##0.00';
 
-      // L: Sum of concrete m³
-      totalsRow.getCell(12).value = {
-        formula: `SUM(L${firstDataRow}:L${lastDataRow})`,
-        result: totals.concreteM3
-      };
-      totalsRow.getCell(12).numFmt = '0.00';
+      // L: Sum of concrete m³ - REMOVED per user request (no total needed in column L)
+      // totalsRow.getCell(12).value = {
+      //   formula: `SUM(L${firstDataRow}:L${lastDataRow})`,
+      //   result: totals.concreteM3
+      // };
+      // totalsRow.getCell(12).numFmt = '0.00';
 
       // N: Sum of KROS total
       totalsRow.getCell(14).value = {
@@ -702,15 +702,15 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     materialsSheet.getColumn('E').width = 14;
     materialsSheet.getColumn('F').width = 14;
 
-    // Aggregate materials by type and unit
+    // Aggregate materials by work name (custom names from frontend)
     const materials = new Map();
     positions.forEach(pos => {
-      const materialType = determineMaterialType(pos.subtype, pos.item_name);
-      const key = `${materialType}|${pos.unit}`;
+      const workName = pos.item_name || pos.subtype;  // Use custom name saved by user
+      const key = `${workName}|${pos.unit}`;
 
       if (!materials.has(key)) {
         materials.set(key, {
-          type: materialType,
+          type: workName,  // Use custom work name instead of generic material type
           unit: pos.unit,
           quantity: 0,
           positions: [],
@@ -799,12 +799,12 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
       applyTotalRowStyle(matTotalsRow);
 
-      // C: Sum of qty with calculated result
-      matTotalsRow.getCell(3).value = {
-        formula: `SUM(C${matFirstDataRow}:C${matLastDataRow})`,
-        result: matTotals.quantity
-      };
-      matTotalsRow.getCell(3).numFmt = '0.00';
+      // C: Sum of qty - REMOVED per user request (no total needed in column C)
+      // matTotalsRow.getCell(3).value = {
+      //   formula: `SUM(C${matFirstDataRow}:C${matLastDataRow})`,
+      //   result: matTotals.quantity
+      // };
+      // matTotalsRow.getCell(3).numFmt = '0.00';
 
       // F: Sum of total cost with calculated result
       matTotalsRow.getCell(6).value = {
@@ -967,7 +967,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     // Cost breakdown by subtype
     const costByType = {};
     positions.forEach(pos => {
-      const typeName = pos.subtype === 'jiné' ? (pos.item_name || 'jiné') : pos.subtype;
+      const typeName = pos.item_name || pos.subtype;
       if (!costByType[typeName]) {
         costByType[typeName] = 0;
       }
