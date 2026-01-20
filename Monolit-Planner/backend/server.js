@@ -25,6 +25,7 @@ import otskpRoutes from './src/routes/otskp.js';
 import documentsRoutes from './src/routes/documents.js';
 import sheathingRoutes from './src/routes/sheathing.js';
 import debugRoutes from './src/routes/debug.js';
+import suggestionsRoutes from './src/routes/suggestions.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -160,6 +161,7 @@ app.use('/api/snapshots', snapshotsRoutes);
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
 app.use('/api/documents', uploadLimiter, documentsRoutes);
 app.use('/api/sheathing', sheathingRoutes);
+app.use('/api/suggestions', suggestionsRoutes);
 
 // DEBUG routes - ONLY enabled in development
 if (process.env.NODE_ENV !== 'production') {
