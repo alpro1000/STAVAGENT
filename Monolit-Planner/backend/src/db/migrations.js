@@ -134,6 +134,9 @@ async function initPostgresSchema() {
   // Run Phase 4 migrations (document upload and analysis)
   await runPhase4Migrations();
 
+  // Run Phase 5 migration (migrate bridges → monolith_projects)
+  await runPhase5Migration();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 
@@ -433,6 +436,97 @@ async function runPhase4Migrations() {
   } catch (error) {
     console.error('[PostgreSQL Migrations] Error during Phase 4 migrations:', error);
     // Don't fail startup if migrations fail
+  }
+}
+
+/**
+ * Migration Phase 5 - Migrate data from bridges to monolith_projects
+ * This fixes the issue where old data was in 'bridges' table but API reads from 'monolith_projects'
+ */
+async function runPhase5Migration() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 5 migration (bridges → monolith_projects)...');
+
+    // Check if migration is needed
+    const bridgesCount = await db.prepare('SELECT COUNT(*) as count FROM bridges').get();
+    const projectsCount = await db.prepare('SELECT COUNT(*) as count FROM monolith_projects').get();
+
+    console.log(`[Migration 005] Current state: bridges=${bridgesCount.count}, monolith_projects=${projectsCount.count}`);
+
+    if (bridgesCount.count === 0) {
+      console.log('[Migration 005] ℹ️  No data in bridges table, skipping migration');
+      return;
+    }
+
+    if (projectsCount.count >= bridgesCount.count) {
+      console.log('[Migration 005] ✓ Migration already completed (monolith_projects has all data)');
+      return;
+    }
+
+    console.log(`[Migration 005] Migrating ${bridgesCount.count - projectsCount.count} records...`);
+
+    // Execute migration SQL
+    await db.exec(`
+      INSERT INTO monolith_projects (
+        project_id,
+        project_name,
+        object_name,
+        element_count,
+        concrete_m3,
+        sum_kros_czk,
+        span_length_m,
+        deck_width_m,
+        pd_weeks,
+        status,
+        owner_id,
+        created_at,
+        updated_at,
+        object_type
+      )
+      SELECT
+        bridge_id as project_id,
+        project_name,
+        object_name,
+        element_count,
+        concrete_m3,
+        sum_kros_czk,
+        span_length_m,
+        deck_width_m,
+        pd_weeks,
+        COALESCE(status, 'active') as status,
+        COALESCE(owner_id, 1) as owner_id,
+        created_at,
+        updated_at,
+        'custom' as object_type
+      FROM bridges
+      WHERE bridge_id NOT IN (SELECT project_id FROM monolith_projects);
+    `);
+
+    // Verify results
+    const newProjectsCount = await db.prepare('SELECT COUNT(*) as count FROM monolith_projects').get();
+    const migratedCount = newProjectsCount.count - projectsCount.count;
+
+    console.log(`[Migration 005] ✅ Successfully migrated ${migratedCount} records`);
+    console.log(`[Migration 005] Total projects now: ${newProjectsCount.count}`);
+
+    // Show sample migrated data
+    const samples = await db.prepare(`
+      SELECT project_id, object_name, concrete_m3
+      FROM monolith_projects
+      ORDER BY created_at DESC
+      LIMIT 5
+    `).all();
+
+    console.log('[Migration 005] Sample migrated projects:');
+    samples.forEach(p => {
+      console.log(`  - ${p.project_id}: "${p.object_name}" (${p.concrete_m3 || 0} m³)`);
+    });
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 5 migration completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 5 migration:', error);
+    // Log error but don't fail startup - let app try to run
+    console.error('[Migration 005] ⚠️  Migration failed, but continuing startup...');
   }
 }
 
