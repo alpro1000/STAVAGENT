@@ -417,27 +417,71 @@ router.get('/debug/database', async (req, res) => {
 /**
  * DELETE /api/monolith-projects/:id
  * Delete project (and all related parts) - no auth (kiosk mode)
+ *
+ * IMPORTANT: Deletes from BOTH tables (bridges + monolith_projects)
+ * because positions are still FK-linked to bridges table
  */
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Check project exists (no ownership check - kiosk mode)
+    logger.info(`[DELETE PROJECT] Deleting project: ${id}`);
+
+    // Check project exists in monolith_projects
     const project = await db.prepare(`
       SELECT * FROM monolith_projects WHERE project_id = ?
     `).get(id);
 
-    if (!project) {
+    // Check if exists in old bridges table too
+    const bridge = await db.prepare(`
+      SELECT * FROM bridges WHERE bridge_id = ?
+    `).get(id);
+
+    if (!project && !bridge) {
+      logger.warn(`[DELETE PROJECT] Project not found: ${id}`);
       return res.status(404).json({ error: 'Project not found' });
     }
 
-    // Delete project (parts will be deleted by CASCADE)
-    await db.prepare('DELETE FROM monolith_projects WHERE project_id = ?').run(id);
+    // Count positions that will be deleted
+    const positionsCount = await db.prepare(`
+      SELECT COUNT(*) as count FROM positions WHERE bridge_id = ?
+    `).get(id);
 
-    res.json({ message: 'Project deleted successfully' });
-    logger.info(`Deleted monolith project: ${id}`);
+    logger.info(`[DELETE PROJECT] Will delete ${positionsCount.count} positions for project ${id}`);
+
+    // Delete from bridges FIRST (CASCADE will delete positions automatically)
+    if (bridge) {
+      await db.prepare('DELETE FROM bridges WHERE bridge_id = ?').run(id);
+      logger.info(`[DELETE PROJECT] ✓ Deleted from bridges table (and ${positionsCount.count} positions via CASCADE)`);
+    }
+
+    // Delete from monolith_projects (CASCADE will delete parts)
+    if (project) {
+      await db.prepare('DELETE FROM monolith_projects WHERE project_id = ?').run(id);
+      logger.info(`[DELETE PROJECT] ✓ Deleted from monolith_projects table (and parts via CASCADE)`);
+    }
+
+    // Verify deletion
+    const remainingPositions = await db.prepare(`
+      SELECT COUNT(*) as count FROM positions WHERE bridge_id = ?
+    `).get(id);
+
+    if (remainingPositions.count > 0) {
+      logger.warn(`[DELETE PROJECT] ⚠️  ${remainingPositions.count} positions still remain!`);
+    }
+
+    logger.info(`[DELETE PROJECT] ✅ Successfully deleted project: ${id}`);
+
+    res.json({
+      message: 'Project deleted successfully',
+      deleted: {
+        project: true,
+        bridge: !!bridge,
+        positions_count: positionsCount.count
+      }
+    });
   } catch (error) {
-    logger.error('Error deleting monolith project:', error);
+    logger.error('[DELETE PROJECT] Error deleting project:', error);
     res.status(500).json({ error: error.message });
   }
 });
