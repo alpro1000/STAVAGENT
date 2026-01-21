@@ -97,10 +97,10 @@ const SERVICES: Service[] = [
   {
     id: 'rozpocet-registry',
     name: 'Registr Rozpočtů',
-    description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
+    description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky. ⚠️ Vyžaduje deployment na Render.',
     icon: '📊',
     url: 'https://rozpocet-registry.onrender.com',
-    status: 'beta',
+    status: 'coming_soon',  // Changed from 'beta' - service not deployed on Render yet
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },
   {
