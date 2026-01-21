@@ -27,6 +27,44 @@ const router = express.Router();
 router.use(requireAuth);
 
 /**
+ * GET /api/portal-projects/by-kiosk/:kioskType/:kioskProjectId
+ * Find portal project by kiosk reference (reverse lookup)
+ * NOTE: Must be defined BEFORE /:id to avoid route conflicts
+ */
+router.get('/by-kiosk/:kioskType/:kioskProjectId', async (req, res) => {
+  try {
+    const { kioskType, kioskProjectId } = req.params;
+    const pool = getPool();
+
+    const result = await pool.query(
+      `SELECT pp.* FROM portal_projects pp
+       JOIN kiosk_links kl ON pp.portal_project_id = kl.portal_project_id
+       WHERE kl.kiosk_type = $1 AND kl.kiosk_project_id = $2`,
+      [kioskType, kioskProjectId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No portal project found for this kiosk reference'
+      });
+    }
+
+    res.json({
+      success: true,
+      project: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('[PortalProjects] Error in reverse lookup:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to find portal project'
+    });
+  }
+});
+
+/**
  * GET /api/portal-projects
  * List all portal projects for current user
  */
@@ -514,6 +552,253 @@ router.get('/:id/kiosks', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch kiosk links'
+    });
+  }
+});
+
+/**
+ * GET /api/portal-projects/:id/unified
+ * Get unified project view with data from all linked kiosks
+ *
+ * Returns:
+ * - portal: Portal project data
+ * - files: Uploaded files
+ * - kiosks: Array of kiosk data with their project details
+ * - summary: Aggregated metrics from all kiosks
+ */
+router.get('/:id/unified', async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { id } = req.params;
+    const pool = getPool();
+
+    // 1. Get portal project
+    const projectResult = await pool.query(
+      `SELECT * FROM portal_projects
+       WHERE portal_project_id = $1 AND owner_id = $2`,
+      [id, userId]
+    );
+
+    if (projectResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Project not found'
+      });
+    }
+
+    const project = projectResult.rows[0];
+
+    // 2. Get files
+    const filesResult = await pool.query(
+      `SELECT * FROM portal_files WHERE portal_project_id = $1 ORDER BY uploaded_at DESC`,
+      [id]
+    );
+
+    // 3. Get kiosk links
+    const kiosksResult = await pool.query(
+      `SELECT * FROM kiosk_links WHERE portal_project_id = $1 ORDER BY created_at DESC`,
+      [id]
+    );
+
+    // 4. Fetch data from each kiosk (async)
+    const kioskDataPromises = kiosksResult.rows.map(async (link) => {
+      try {
+        const kioskData = await fetchKioskData(link.kiosk_type, link.kiosk_project_id);
+        return {
+          kiosk_type: link.kiosk_type,
+          kiosk_project_id: link.kiosk_project_id,
+          status: link.status,
+          last_sync: link.last_sync,
+          data: kioskData,
+          error: null
+        };
+      } catch (error) {
+        return {
+          kiosk_type: link.kiosk_type,
+          kiosk_project_id: link.kiosk_project_id,
+          status: 'error',
+          last_sync: link.last_sync,
+          data: null,
+          error: error.message
+        };
+      }
+    });
+
+    const kioskData = await Promise.all(kioskDataPromises);
+
+    // 5. Calculate summary metrics
+    const summary = calculateUnifiedSummary(kioskData);
+
+    console.log(`[PortalProjects] Unified view for ${id}: ${kioskData.length} kiosks`);
+
+    res.json({
+      success: true,
+      portal: project,
+      files: filesResult.rows,
+      kiosks: kioskData,
+      summary
+    });
+
+  } catch (error) {
+    console.error('[PortalProjects] Error fetching unified view:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch unified project view'
+    });
+  }
+});
+
+/**
+ * Fetch data from a specific kiosk service
+ */
+async function fetchKioskData(kioskType, kioskProjectId) {
+  const kioskUrls = {
+    'monolit': process.env.MONOLIT_API_URL || 'https://monolit-planner-api.onrender.com',
+    'urs_matcher': process.env.URS_MATCHER_API_URL || 'https://urs-matcher-service.onrender.com',
+    'r0': process.env.MONOLIT_API_URL || 'https://monolit-planner-api.onrender.com'
+  };
+
+  const baseUrl = kioskUrls[kioskType];
+  if (!baseUrl) {
+    throw new Error(`Unknown kiosk type: ${kioskType}`);
+  }
+
+  let endpoint;
+  switch (kioskType) {
+    case 'monolit':
+      endpoint = `${baseUrl}/api/monolith-projects/${kioskProjectId}`;
+      break;
+    case 'r0':
+      endpoint = `${baseUrl}/api/r0/projects/${kioskProjectId}`;
+      break;
+    case 'urs_matcher':
+      endpoint = `${baseUrl}/api/jobs/${kioskProjectId}`;
+      break;
+    default:
+      throw new Error(`Unsupported kiosk type: ${kioskType}`);
+  }
+
+  const response = await fetch(endpoint, {
+    headers: { 'Content-Type': 'application/json' },
+    timeout: 10000
+  });
+
+  if (!response.ok) {
+    throw new Error(`Kiosk returned ${response.status}`);
+  }
+
+  return await response.json();
+}
+
+/**
+ * Calculate unified summary from all kiosk data
+ */
+function calculateUnifiedSummary(kioskData) {
+  const summary = {
+    total_kiosks: kioskData.length,
+    active_kiosks: kioskData.filter(k => k.status === 'active' && k.data).length,
+    error_kiosks: kioskData.filter(k => k.error).length,
+    metrics: {
+      total_concrete_m3: 0,
+      total_cost_czk: 0,
+      total_elements: 0,
+      urs_matched_items: 0
+    }
+  };
+
+  for (const kiosk of kioskData) {
+    if (!kiosk.data) continue;
+
+    switch (kiosk.kiosk_type) {
+      case 'monolit':
+        if (kiosk.data.project) {
+          summary.metrics.total_concrete_m3 += kiosk.data.project.concrete_m3 || 0;
+          summary.metrics.total_cost_czk += kiosk.data.project.sum_kros_czk || 0;
+          summary.metrics.total_elements += kiosk.data.project.element_count || 0;
+        }
+        break;
+
+      case 'r0':
+        if (kiosk.data.project) {
+          // R0 aggregates from captures
+          const elements = kiosk.data.elements || [];
+          summary.metrics.total_concrete_m3 += elements.reduce((sum, el) => sum + (el.volume_m3 || 0), 0);
+          summary.metrics.total_elements += elements.length;
+        }
+        break;
+
+      case 'urs_matcher':
+        if (kiosk.data.job || kiosk.data) {
+          const job = kiosk.data.job || kiosk.data;
+          summary.metrics.urs_matched_items += job.processed_rows || 0;
+        }
+        break;
+    }
+  }
+
+  return summary;
+}
+
+/**
+ * POST /api/portal-projects/:id/link-kiosk
+ * Link a kiosk project to this portal project
+ *
+ * Body:
+ * - kiosk_type: 'monolit' | 'urs_matcher' | 'r0' | 'rozpocet'
+ * - kiosk_project_id: string (ID in the kiosk's system)
+ */
+router.post('/:id/link-kiosk', async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { id } = req.params;
+    const { kiosk_type, kiosk_project_id } = req.body;
+
+    if (!kiosk_type || !kiosk_project_id) {
+      return res.status(400).json({
+        success: false,
+        error: 'kiosk_type and kiosk_project_id are required'
+      });
+    }
+
+    const pool = getPool();
+
+    // Check project ownership
+    const projectCheck = await pool.query(
+      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
+      [id, userId]
+    );
+
+    if (projectCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Project not found'
+      });
+    }
+
+    const link_id = `link_${uuidv4()}`;
+
+    // Insert or update kiosk link (upsert)
+    const result = await pool.query(
+      `INSERT INTO kiosk_links (link_id, portal_project_id, kiosk_type, kiosk_project_id, status, created_at, last_sync)
+       VALUES ($1, $2, $3, $4, 'active', NOW(), NOW())
+       ON CONFLICT (portal_project_id, kiosk_type)
+       DO UPDATE SET kiosk_project_id = $4, status = 'active', last_sync = NOW()
+       RETURNING *`,
+      [link_id, id, kiosk_type, kiosk_project_id]
+    );
+
+    console.log(`[PortalProjects] Linked kiosk ${kiosk_type}:${kiosk_project_id} to project ${id}`);
+
+    res.json({
+      success: true,
+      link: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('[PortalProjects] Error linking kiosk:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to link kiosk'
     });
   }
 });

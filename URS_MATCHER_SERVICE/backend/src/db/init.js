@@ -42,6 +42,9 @@ export async function initializeDatabase() {
 
     logger.info('[DB] Schema initialized');
 
+    // Run migrations for existing databases
+    await runMigrations(db);
+
     // Seed sample data if empty
     const count = await db.get('SELECT COUNT(*) as count FROM urs_items');
     if (count.count === 0) {
@@ -61,6 +64,37 @@ export async function getDatabase() {
     await initializeDatabase();
   }
   return db;
+}
+
+/**
+ * Run migrations for existing databases
+ * Adds new columns that may not exist in older installations
+ */
+async function runMigrations(db) {
+  try {
+    logger.info('[DB] Running migrations...');
+
+    // Migration 1: Add portal_project_id to jobs table (for unified Portal linking)
+    try {
+      const columns = await db.all("PRAGMA table_info(jobs)");
+      const hasPortalProjectId = columns.some(col => col.name === 'portal_project_id');
+
+      if (!hasPortalProjectId) {
+        await db.exec("ALTER TABLE jobs ADD COLUMN portal_project_id TEXT");
+        await db.exec("CREATE INDEX IF NOT EXISTS idx_jobs_portal_project ON jobs(portal_project_id)");
+        logger.info('[DB] ✓ Migration 1: Added portal_project_id to jobs table');
+      } else {
+        logger.info('[DB] ✓ Migration 1: portal_project_id already exists');
+      }
+    } catch (error) {
+      logger.warn(`[DB] Migration 1 error: ${error.message}`);
+    }
+
+    logger.info('[DB] Migrations completed');
+  } catch (error) {
+    logger.error(`[DB] Migrations error: ${error.message}`);
+    // Don't throw - continue with startup
+  }
 }
 
 async function seedSampleData(db) {
