@@ -2,12 +2,13 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.7
-**Last Updated:** 2026-01-16
+**Version:** 1.3.8
+**Last Updated:** 2026-01-21
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2026-01-16 Part 2):** Monolit Planner UX Improvements - Modal fixes + Editable work names + Resizable columns (5 commits) ✅
-**NEW (2026-01-16 Part 1):** Rozpočet Registry Phase 6 & 7 Complete - Multi-Project Search + Excel Export (Production Ready ✅)
+**NEW (2026-01-21):** Portal Integration + AI Suggestion Enablement - Audit trail + Feature flag tools (6 commits) ⏳ Awaiting user SQL execution
+**PREVIOUS (2026-01-16 Part 2):** Monolit Planner UX Improvements - Modal fixes + Editable work names + Resizable columns (5 commits) ✅
+**PREVIOUS (2026-01-16 Part 1):** Rozpočet Registry Phase 6 & 7 Complete - Multi-Project Search + Excel Export (Production Ready ✅)
 **PREVIOUS (2026-01-13-14):** Google Drive Integration Complete (Day 1 + Day 2) + Auth Fix + All 8 PRs Merged ✅
 **PREVIOUS (2026-01-12):** Document Accumulator API Fix + Keep-Alive System (Render Free Tier)
 **PREVIOUS (2026-01-12):** OTSKP Import Fix + KPI Header Compact + WorkTypeSelector + Project Deletion Fix
@@ -470,7 +471,117 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2026-01-16)
+## Current Status (2026-01-21)
+
+### ⏳ IN PROGRESS: Portal Integration + AI Suggestion Enablement (2026-01-21)
+
+**Branch:** `claude/create-onboarding-guide-E4wrx`
+
+**Status:** ✅ Code complete, ⏳ Awaiting user SQL execution
+
+**Summary:**
+Enhanced AI suggestions with audit trail. Discovered AI button (✨) exists since Dec 2025 but hidden by disabled feature flag. Created 5 automatic tools to enable it.
+
+**Key Changes:**
+
+| Component | Description | Status |
+|-----------|-------------|--------|
+| Backend Audit Trail | position_suggestions table logging | ✅ Complete |
+| Migration 007 | portal_project_id + normsets + position_suggestions | ✅ Created |
+| Migration 008 | Enable FF_AI_DAYS_SUGGEST feature flag | ✅ Created |
+| Automatic Tools | 5 tools (HTML, bash, node.js, SQL, docs) | ✅ Complete |
+| Feature Flag | FF_AI_DAYS_SUGGEST enabled in database | ⏳ Pending |
+| UI Button | ✨ Sparkles button visible | ⏳ Pending |
+
+**Key Commits:**
+
+| Commit | Description | Files | Lines |
+|--------|-------------|-------|-------|
+| `5f44a4a` | Portal integration backend (Migration 007 + API) | 3 | +611 |
+| `64d6a0c` | Refactor: enhance AI suggestions with audit trail | 3 | +28/-386 |
+| `abe3ea5` | Migration 008: Enable AI suggestion feature flag | 1 | +47 |
+| `47eadc5` | Add automatic tools to enable AI button | 3 | +697 |
+| `ce30dc9` | Add Russian instructions for enabling AI button | 1 | +79 |
+| `e602ec9` | Add step-by-step SQL fix for empty project_config | 2 | +168 |
+
+**Total:** 6 commits, 13 files, ~1630 lines added
+
+**Architecture:**
+
+**Before:**
+```
+User clicks ✨ → AI suggestion → Display in UI
+```
+
+**After:**
+```
+User clicks ✨ → AI suggestion → Display in UI
+                              ↓
+                    Save to position_suggestions
+                         (audit trail)
+```
+
+**Database Schema Changes:**
+```sql
+-- Migration 007
+CREATE TABLE normsets (id, name, source_tag, rebar_h_per_t, ...);
+  -- 4 seed datasets: ÚRS 2024, RTS 2023, KROS 2024, Internal
+
+CREATE TABLE position_suggestions (
+  id, position_id, suggested_days, suggested_by,
+  normset_id, norm_source, assumptions_log, confidence,
+  status, user_decision_days, user_note
+);
+
+ALTER TABLE bridges ADD COLUMN portal_project_id TEXT;
+ALTER TABLE monolith_projects ADD COLUMN portal_project_id TEXT;
+```
+
+**Root Cause Analysis:**
+
+Feature flag `FF_AI_DAYS_SUGGEST` controls button visibility:
+```javascript
+// PositionRow.tsx:53
+const isAiDaysSuggestEnabled = config?.feature_flags?.FF_AI_DAYS_SUGGEST ?? false;
+
+// Line 468-491
+{isAiDaysSuggestEnabled && (
+  <button className="ai-suggest-button">
+    <Sparkles size={16} color="white" />
+  </button>
+)}
+```
+
+**Problem:** `project_config` table empty → API returns empty response → flag defaults to `false` → button hidden
+
+**Solution:** Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in PostgreSQL to create config and enable flag
+
+**Automatic Tools Created:**
+
+1. **ENABLE_AI_BUTTON.html** - Browser-based automatic enabler with UI
+2. **enable-ai-button.sh** - Bash script with retry logic
+3. **scripts/enable-ai-suggestion.js** - Node.js migration runner
+4. **БЫСТРОЕ_РЕШЕНИЕ.sql** - SQL script for Render Dashboard ⭐ (ACTIVE)
+5. **ИНСТРУКЦИЯ_RENDER.txt** - Step-by-step guide in Russian
+
+**User Action Required:**
+```
+1. Open Render Dashboard → monolit-db → Shell
+2. Execute: psql -U monolit_user -d monolit_planner
+3. Copy-paste SQL from БЫСТРОЕ_РЕШЕНИЕ.sql
+4. Refresh Monolit Planner frontend
+5. Verify ✨ button appears in "Dny" column
+```
+
+**Documentation:**
+- `SESSION_2026-01-21_PORTAL_INTEGRATION.md` - Complete session summary (550+ lines)
+- `NEXT_SESSION.md` - Starter commands for next session (350+ lines)
+- `БЫСТРОЕ_РЕШЕНИЕ.sql` - SQL fix (47 lines)
+- `ИНСТРУКЦИЯ_RENDER.txt` - User guide (168 lines)
+
+**Next Session:** Verify feature flag enabled → Test AI suggestion → Create PR
+
+---
 
 ### ✅ COMPLETED: Monolit Planner UX Improvements (2026-01-16 Part 2)
 
