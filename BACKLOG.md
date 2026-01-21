@@ -128,29 +128,9 @@ cd ../shared && npm audit fix
 
 ---
 
-### 7. rozpocet-registry Deployment
-
-**Status:** ⏳ Not deployed
-**Service:** rozpocet-registry
-**Impact:** Link in Portal doesn't work
-
-**Problem:** Service configured with `autoDeploy: false`, never manually deployed on Render. Portal shows as "Beta" but returns 403 error.
-
-**Current Workaround:** Changed status from `beta` to `coming_soon` in PortalPage.tsx
-
-**Tasks:**
-- [ ] Create new Static Site service in Render Dashboard
-- [ ] Deploy manually from `rozpocet-registry` folder
-- [ ] Verify `https://rozpocet-registry.onrender.com` is accessible
-- [ ] Change status back to `beta` or `active` in PortalPage.tsx
-
-**Alternative:** Deploy to Vercel/Netlify (free static hosting)
-
----
-
 ## 🟡 Medium Priority
 
-### 8. URS Matcher - Phase 2: Document Parsing
+### 7. URS Matcher - Phase 2: Document Parsing
 
 **Status:** 🔄 In Progress (partially complete)
 **Service:** URS_MATCHER_SERVICE
@@ -170,7 +150,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 9. URS Matcher - Phase 3: Multi-Role System
+### 8. URS Matcher - Phase 3: Multi-Role System
 
 **Status:** 🔄 In Progress (MVP complete)
 **Service:** URS_MATCHER_SERVICE
@@ -190,7 +170,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 10. CI/CD Improvements
+### 9. CI/CD Improvements
 
 **Status:** ⏳ Not started
 **Service:** All services
@@ -205,7 +185,7 @@ cd ../shared && npm audit fix
 
 ## 🟢 Low Priority / Future
 
-### 11. URS Matcher - Phase 4: Optimization
+### 10. URS Matcher - Phase 4: Optimization
 
 **Status:** ⏳ Planned
 **Service:** URS_MATCHER_SERVICE
@@ -222,7 +202,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 12. Integration Tests - Vitest Migration
+### 11. Integration Tests - Vitest Migration
 
 **Status:** ⏳ Planned
 **Service:** Monolit-Planner
@@ -236,7 +216,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 13. Document Accumulator - Production Fixes
+### 12. Document Accumulator - Production Fixes
 
 **Status:** ⏳ Identified but not started
 **Service:** concrete-agent
@@ -253,7 +233,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 14. Security Audit Follow-up
+### 13. Security Audit Follow-up
 
 **Status:** ⏳ Some items fixed, some pending
 **Service:** All services
@@ -287,12 +267,12 @@ docs/archive/
 | Priority | Items | Impact |
 |----------|-------|--------|
 | 🔴 Immediate | 4 | User action needed |
-| 🟠 High | 3 | Security + Deployment |
+| 🟠 High | 2 | Security |
 | 🟡 Medium | 3 | Features |
 | 🟢 Low | 4 | Optimization |
 
 ---
 
-**Total Pending Items:** 14
-**Next Critical Path:** AI Suggestion SQL → Node.js update → npm audit → rozpocet-registry deployment
+**Total Pending Items:** 13
+**Next Critical Path:** AI Suggestion SQL → Node.js update → npm audit
 
