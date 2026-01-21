@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚀 Enable AI Suggestion Button</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 600px;
+      width: 100%;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+      color: #1a202c;
+    }
+
+    .subtitle {
+      color: #718096;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+
+    .status {
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .status.loading {
+      background: #fef5e7;
+      color: #d68910;
+      border: 2px solid #f9e79f;
+    }
+
+    .status.success {
+      background: #d4edda;
+      color: #155724;
+      border: 2px solid #c3e6cb;
+    }
+
+    .status.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 2px solid #f5c6cb;
+    }
+
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(0, 0, 0, 0.1);
+      border-top-color: #d68910;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .log {
+      background: #f7fafc;
+      border-radius: 8px;
+      padding: 20px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #2d3748;
+    }
+
+    .log-entry {
+      margin-bottom: 8px;
+    }
+
+    .log-entry.success { color: #22543d; }
+    .log-entry.error { color: #742a2a; }
+    .log-entry.info { color: #2c5282; }
+
+    .btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .next-steps {
+      background: #e6fffa;
+      border-left: 4px solid #38b2ac;
+      padding: 16px;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+
+    .next-steps h3 {
+      color: #234e52;
+      margin-bottom: 12px;
+      font-size: 18px;
+    }
+
+    .next-steps ol {
+      margin-left: 20px;
+      color: #2c7a7b;
+    }
+
+    .next-steps li {
+      margin-bottom: 8px;
+    }
+
+    .sparkles {
+      display: inline-block;
+      animation: sparkle 2s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      50% { transform: scale(1.2) rotate(180deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🚀 Enable AI Suggestion</h1>
+    <p class="subtitle">Автоматическое включение кнопки ✨ в Monolit Planner</p>
+
+    <div id="status" class="status loading" style="display: none;">
+      <div class="spinner"></div>
+      <span id="status-text">Initializing...</span>
+    </div>
+
+    <div class="log" id="log"></div>
+
+    <button class="btn" id="enable-btn" onclick="enableAISuggestion()">
+      ✨ Включить AI Suggestion Button
+    </button>
+
+    <div class="next-steps" id="next-steps" style="display: none;">
+      <h3>🎉 Готово! Что дальше:</h3>
+      <ol>
+        <li>Открой <a href="https://monolit-planner-frontend.onrender.com" target="_blank">Monolit Planner</a></li>
+        <li>Нажми <strong>Ctrl+Shift+R</strong> (жесткая перезагрузка)</li>
+        <li>Открой любой проект с позициями</li>
+        <li>В колонке "Dny" увидишь зелёную кнопку <span class="sparkles">✨</span></li>
+      </ol>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'https://monolit-planner-api.onrender.com';
+    const MAX_RETRIES = 5;
+    const RETRY_DELAY = 10000; // 10 seconds
+
+    function log(message, type = 'info') {
+      const logDiv = document.getElementById('log');
+      const entry = document.createElement('div');
+      entry.className = `log-entry ${type}`;
+
+      const timestamp = new Date().toLocaleTimeString('cs-CZ');
+      const icon = type === 'success' ? '✅' : type === 'error' ? '❌' : '📝';
+
+      entry.textContent = `[${timestamp}] ${icon} ${message}`;
+      logDiv.appendChild(entry);
+      logDiv.scrollTop = logDiv.scrollHeight;
+    }
+
+    function showStatus(text, type = 'loading') {
+      const status = document.getElementById('status');
+      const statusText = document.getElementById('status-text');
+
+      status.className = `status ${type}`;
+      status.style.display = 'flex';
+      statusText.textContent = text;
+    }
+
+    function hideStatus() {
+      document.getElementById('status').style.display = 'none';
+    }
+
+    async function checkHealth() {
+      try {
+        const response = await fetch(`${API_URL}/health`, {
+          method: 'GET',
+          signal: AbortSignal.timeout(30000)
+        });
+
+        return response.ok;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    async function enableFeatureFlag() {
+      const response = await fetch(`${API_URL}/api/config`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          feature_flags: {
+            FF_AI_DAYS_SUGGEST: true,
+            FF_PUMP_MODULE: false,
+            FF_ADVANCED_METRICS: false,
+            FF_DARK_MODE: false,
+            FF_SPEED_ANALYSIS: false
+          }
+        }),
+        signal: AbortSignal.timeout(30000)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      return await response.json();
+    }
+
+    async function verifyFlag() {
+      const response = await fetch(`${API_URL}/api/config`, {
+        method: 'GET',
+        signal: AbortSignal.timeout(30000)
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return data.feature_flags?.FF_AI_DAYS_SUGGEST === true;
+    }
+
+    async function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function enableAISuggestion() {
+      const btn = document.getElementById('enable-btn');
+      btn.disabled = true;
+      document.getElementById('log').innerHTML = '';
+      document.getElementById('next-steps').style.display = 'none';
+
+      log('Starting AI Suggestion enabler...', 'info');
+
+      for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+        log(`Attempt ${attempt} of ${MAX_RETRIES}`, 'info');
+        showStatus(`Attempt ${attempt}/${MAX_RETRIES}: Checking API...`, 'loading');
+
+        // Check if API is awake
+        const isAwake = await checkHealth();
+
+        if (isAwake) {
+          log('API is awake and healthy', 'success');
+
+          try {
+            // Enable feature flag
+            showStatus('Enabling FF_AI_DAYS_SUGGEST...', 'loading');
+            log('Sending POST /api/config request...', 'info');
+
+            const result = await enableFeatureFlag();
+            log('Feature flag enabled successfully!', 'success');
+
+            // Verify
+            showStatus('Verifying changes...', 'loading');
+            log('Verifying configuration...', 'info');
+
+            const isEnabled = await verifyFlag();
+
+            if (isEnabled) {
+              log('✨ FF_AI_DAYS_SUGGEST is ENABLED', 'success');
+              showStatus('✅ Success! AI Suggestion button is now enabled', 'success');
+
+              document.getElementById('next-steps').style.display = 'block';
+              btn.textContent = '✅ Successfully Enabled';
+              return;
+            } else {
+              log('Verification failed - flag not enabled', 'error');
+            }
+
+          } catch (error) {
+            log(`Error: ${error.message}`, 'error');
+          }
+
+        } else {
+          log('API is sleeping (Render Free Tier cold start)', 'info');
+          log('Waking up API...', 'info');
+
+          // Wake up API by calling health endpoint
+          try {
+            await fetch(`${API_URL}/health`, {
+              signal: AbortSignal.timeout(60000)
+            });
+          } catch (e) {
+            // Ignore errors, just trying to wake it up
+          }
+        }
+
+        // Wait before retry
+        if (attempt < MAX_RETRIES) {
+          showStatus(`Waiting ${RETRY_DELAY / 1000} seconds before retry...`, 'loading');
+          log(`Waiting ${RETRY_DELAY / 1000} seconds...`, 'info');
+          await sleep(RETRY_DELAY);
+        }
+      }
+
+      // Failed after all retries
+      log(`Failed after ${MAX_RETRIES} attempts`, 'error');
+      showStatus('❌ Failed - See manual instructions below', 'error');
+      btn.disabled = false;
+      btn.textContent = '🔄 Retry';
+
+      log('', 'info');
+      log('MANUAL ALTERNATIVE:', 'info');
+      log('1. Open browser console (F12)', 'info');
+      log('2. Paste and run this code:', 'info');
+      log(`fetch('${API_URL}/api/config', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({feature_flags:{FF_AI_DAYS_SUGGEST:true}})}).then(r=>r.json()).then(console.log)`, 'info');
+    }
+
+    // Auto-start on page load
+    window.addEventListener('load', () => {
+      log('Ready! Click button to start.', 'success');
+    });
+  </script>
+</body>
+</html>
