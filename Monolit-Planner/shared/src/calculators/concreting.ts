@@ -12,7 +12,7 @@
  *   exceeds_continuous_window = pour_hours > max_continuous_hours
  */
 
-import type { ConcretingCalculatorParams, ConcretingCalculatorResult } from './types';
+import type { ConcretingCalculatorParams, ConcretingCalculatorResult } from './types.js';
 
 /**
  * Calculate concreting parameters with pump

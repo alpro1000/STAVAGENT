@@ -12,7 +12,7 @@
  *   4. Find bottlenecks
  */
 
-import type { Task, ScheduleEntry, Resources, Calendar } from '../calculators/types';
+import type { Task, ScheduleEntry, Resources, Calendar } from '../calculators/types.js';
 
 /**
  * Resource availability tracker

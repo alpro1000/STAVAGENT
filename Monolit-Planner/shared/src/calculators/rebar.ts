@@ -8,7 +8,7 @@
  *   cost_labor = labor_hours × wage_czk_h
  */
 
-import type { RebarCalculatorParams, RebarCalculatorResult } from './types';
+import type { RebarCalculatorParams, RebarCalculatorResult } from './types.js';
 
 /**
  * Calculate rebar work parameters

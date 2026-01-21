@@ -137,6 +137,9 @@ async function initPostgresSchema() {
   // Run Phase 5 migration (migrate bridges → monolith_projects)
   await runPhase5Migration();
 
+  // Run Phase 6 migration (R0 Deterministic Core tables)
+  await runPhase6R0Migrations();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 
@@ -527,6 +530,396 @@ async function runPhase5Migration() {
     console.error('[PostgreSQL Migrations] Error during Phase 5 migration:', error);
     // Log error but don't fail startup - let app try to run
     console.error('[Migration 005] ⚠️  Migration failed, but continuing startup...');
+  }
+}
+
+/**
+ * Migration Phase 6 - R0 Deterministic Core Tables
+ * Creates all tables needed for the R0 calculation engine:
+ * - r0_projects: R0 projects with parameters
+ * - elements: Construction elements (slab, wall, beam, footing, column)
+ * - normsets: Production norms from ÚRS, RTS, KROS, Internal
+ * - captures: Takts for grouping elements
+ * - tasks: Generated tasks for each capture
+ * - schedule: Calculated schedule entries
+ * - cost_breakdown: Cost traceability
+ * - bottlenecks: Resource bottleneck detection
+ */
+async function runPhase6R0Migrations() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 6 migrations (R0 Deterministic Core)...');
+
+    // 1. Create r0_projects table
+    try {
+      console.log('[Migration 006] Creating r0_projects table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS r0_projects (
+          id VARCHAR(255) PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          description TEXT,
+
+          -- Work parameters
+          shift_hours REAL NOT NULL DEFAULT 10,
+          time_utilization_k REAL NOT NULL DEFAULT 0.85,
+          days_per_month INTEGER NOT NULL DEFAULT 22,
+
+          -- Link to monolith_projects (optional)
+          monolith_project_id VARCHAR(255),
+
+          -- Metadata
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+      console.log('[Migration 006] ✓ r0_projects table created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 006] Error creating r0_projects:', error);
+      } else {
+        console.log('[Migration 006] ✓ r0_projects table already exists');
+      }
+    }
+
+    // 2. Create elements table
+    try {
+      console.log('[Migration 006] Creating elements table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS elements (
+          id VARCHAR(255) PRIMARY KEY,
+          r0_project_id VARCHAR(255) NOT NULL,
+          name VARCHAR(255) NOT NULL,
+          element_type VARCHAR(50) NOT NULL,
+
+          -- Dimensions
+          length_m REAL,
+          width_m REAL,
+          height_m REAL,
+          thickness_m REAL,
+
+          -- Calculated quantities
+          volume_m3 REAL NOT NULL DEFAULT 0,
+          area_m2 REAL,
+          perimeter_m REAL,
+
+          -- Material properties
+          concrete_class VARCHAR(50),
+          rebar_kg_m3 REAL DEFAULT 100,
+
+          -- Display order
+          display_order INTEGER DEFAULT 0,
+
+          -- Metadata
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+          FOREIGN KEY (r0_project_id) REFERENCES r0_projects(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration 006] ✓ elements table created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 006] Error creating elements:', error);
+      } else {
+        console.log('[Migration 006] ✓ elements table already exists');
+      }
+    }
+
+    // 3. Create normsets table (production norms)
+    try {
+      console.log('[Migration 006] Creating normsets table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS normsets (
+          id VARCHAR(255) PRIMARY KEY,
+          name VARCHAR(255) NOT NULL,
+          source_tag VARCHAR(50) NOT NULL,
+
+          -- Rebar norms
+          rebar_h_per_t REAL NOT NULL,
+          rebar_crew_size INTEGER DEFAULT 4,
+
+          -- Formwork norms
+          formwork_h_per_m2 REAL NOT NULL,
+          formwork_crew_size INTEGER DEFAULT 3,
+          stripping_h_per_m2 REAL,
+
+          -- Concreting norms
+          concreting_h_per_m3 REAL NOT NULL,
+          concreting_crew_size INTEGER DEFAULT 4,
+          curing_days INTEGER DEFAULT 3,
+
+          -- Move/clean norms
+          move_clean_h_per_cycle REAL DEFAULT 2,
+
+          -- Labor costs
+          labor_cost_czk_h REAL DEFAULT 450,
+          machine_cost_czk_h REAL DEFAULT 800,
+
+          -- Confidence and metadata
+          confidence REAL DEFAULT 0.9,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+      console.log('[Migration 006] ✓ normsets table created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 006] Error creating normsets:', error);
+      } else {
+        console.log('[Migration 006] ✓ normsets table already exists');
+      }
+    }
+
+    // 4. Seed normsets with default data
+    try {
+      console.log('[Migration 006] Seeding normsets with default data...');
+      const normsetCount = await db.prepare('SELECT COUNT(*) as count FROM normsets').get();
+
+      if (normsetCount.count === 0) {
+        await db.exec(`
+          INSERT INTO normsets (id, name, source_tag, rebar_h_per_t, rebar_crew_size, formwork_h_per_m2, formwork_crew_size, stripping_h_per_m2, concreting_h_per_m3, concreting_crew_size, curing_days, move_clean_h_per_cycle, labor_cost_czk_h, machine_cost_czk_h, confidence)
+          VALUES
+            ('urs2024', 'ÚRS 2024', 'URS', 16.0, 4, 1.2, 3, 0.4, 0.8, 4, 3, 2.0, 450, 800, 0.95),
+            ('rts2023', 'RTS 2023', 'RTS', 18.0, 4, 1.5, 3, 0.5, 1.0, 4, 3, 2.5, 420, 750, 0.90),
+            ('kros2024', 'KROS 2024', 'KROS', 15.0, 4, 1.0, 3, 0.35, 0.7, 4, 3, 1.8, 480, 850, 0.92),
+            ('internal', 'Internal', 'INTERNAL', 14.0, 4, 0.9, 3, 0.3, 0.6, 4, 2, 1.5, 500, 900, 0.85);
+        `);
+        console.log('[Migration 006] ✓ Seeded 4 normsets');
+      } else {
+        console.log('[Migration 006] ✓ Normsets already seeded');
+      }
+    } catch (error) {
+      console.error('[Migration 006] Error seeding normsets:', error);
+    }
+
+    // 5. Create captures table (takts)
+    try {
+      console.log('[Migration 006] Creating captures table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS captures (
+          id VARCHAR(255) PRIMARY KEY,
+          r0_project_id VARCHAR(255) NOT NULL,
+          name VARCHAR(255) NOT NULL,
+
+          -- Capture parameters
+          sequence INTEGER NOT NULL,
+          element_id VARCHAR(255),
+
+          -- Volume for this capture
+          volume_m3 REAL NOT NULL DEFAULT 0,
+          formwork_m2 REAL DEFAULT 0,
+          rebar_t REAL DEFAULT 0,
+
+          -- Selected normset
+          normset_id VARCHAR(255) DEFAULT 'urs2024',
+
+          -- Metadata
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+          FOREIGN KEY (r0_project_id) REFERENCES r0_projects(id) ON DELETE CASCADE,
+          FOREIGN KEY (element_id) REFERENCES elements(id) ON DELETE SET NULL,
+          FOREIGN KEY (normset_id) REFERENCES normsets(id) ON DELETE SET NULL
+        );
+      `);
+      console.log('[Migration 006] ✓ captures table created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 006] Error creating captures:', error);
+      } else {
+        console.log('[Migration 006] ✓ captures table already exists');
+      }
+    }
+
+    // 6. Create tasks table (generated tasks)
+    try {
+      console.log('[Migration 006] Creating tasks table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS tasks (
+          id VARCHAR(255) PRIMARY KEY,
+          capture_id VARCHAR(255) NOT NULL,
+
+          -- Task info
+          type VARCHAR(50) NOT NULL,
+          sequence INTEGER NOT NULL,
+          description VARCHAR(500),
+
+          -- Duration and resources
+          duration_days REAL NOT NULL DEFAULT 0,
+          labor_hours REAL NOT NULL DEFAULT 0,
+          crew_size INTEGER DEFAULT 4,
+
+          -- Costs (calculated)
+          cost_labor REAL DEFAULT 0,
+          cost_machine REAL DEFAULT 0,
+
+          -- Dependencies
+          depends_on TEXT,
+
+          -- Traceability
+          source_tag VARCHAR(50),
+          confidence REAL DEFAULT 0.9,
+          assumptions_log TEXT,
+
+          -- Metadata
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+          FOREIGN KEY (capture_id) REFERENCES captures(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration 006] ✓ tasks table created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 006] Error creating tasks:', error);
+      } else {
+        console.log('[Migration 006] ✓ tasks table already exists');
+      }
+    }
+
+    // 7. Create schedule table
+    try {
+      console.log('[Migration 006] Creating schedule table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS schedule (
+          id VARCHAR(255) PRIMARY KEY,
+          r0_project_id VARCHAR(255) NOT NULL,
+          task_id VARCHAR(255) NOT NULL,
+
+          -- Timing
+          start_day REAL NOT NULL,
+          end_day REAL NOT NULL,
+
+          -- Critical path
+          is_critical BOOLEAN DEFAULT FALSE,
+          slack_days REAL DEFAULT 0,
+
+          -- Resource assignment
+          resource_id VARCHAR(255),
+          resource_utilization REAL DEFAULT 1.0,
+
+          -- Metadata
+          calculated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+          FOREIGN KEY (r0_project_id) REFERENCES r0_projects(id) ON DELETE CASCADE,
+          FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration 006] ✓ schedule table created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 006] Error creating schedule:', error);
+      } else {
+        console.log('[Migration 006] ✓ schedule table already exists');
+      }
+    }
+
+    // 8. Create cost_breakdown table
+    try {
+      console.log('[Migration 006] Creating cost_breakdown table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS cost_breakdown (
+          id VARCHAR(255) PRIMARY KEY,
+          r0_project_id VARCHAR(255) NOT NULL,
+          task_id VARCHAR(255),
+
+          -- Cost category
+          category VARCHAR(50) NOT NULL,
+          subcategory VARCHAR(100),
+
+          -- Amounts
+          amount_czk REAL NOT NULL DEFAULT 0,
+          quantity REAL,
+          unit VARCHAR(20),
+          unit_price REAL,
+
+          -- Traceability
+          source_tag VARCHAR(50),
+          formula_used TEXT,
+          assumptions_log TEXT,
+
+          -- Metadata
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+          FOREIGN KEY (r0_project_id) REFERENCES r0_projects(id) ON DELETE CASCADE,
+          FOREIGN KEY (task_id) REFERENCES tasks(id) ON DELETE SET NULL
+        );
+      `);
+      console.log('[Migration 006] ✓ cost_breakdown table created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 006] Error creating cost_breakdown:', error);
+      } else {
+        console.log('[Migration 006] ✓ cost_breakdown table already exists');
+      }
+    }
+
+    // 9. Create bottlenecks table
+    try {
+      console.log('[Migration 006] Creating bottlenecks table...');
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS bottlenecks (
+          id VARCHAR(255) PRIMARY KEY,
+          r0_project_id VARCHAR(255) NOT NULL,
+
+          -- Bottleneck info
+          resource_type VARCHAR(50) NOT NULL,
+          resource_id VARCHAR(255),
+
+          -- Period
+          start_day REAL NOT NULL,
+          end_day REAL NOT NULL,
+
+          -- Severity
+          severity VARCHAR(20) NOT NULL,
+          overload_percent REAL,
+
+          -- Suggestion
+          suggestion TEXT,
+
+          -- Metadata
+          detected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+          FOREIGN KEY (r0_project_id) REFERENCES r0_projects(id) ON DELETE CASCADE
+        );
+      `);
+      console.log('[Migration 006] ✓ bottlenecks table created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 006] Error creating bottlenecks:', error);
+      } else {
+        console.log('[Migration 006] ✓ bottlenecks table already exists');
+      }
+    }
+
+    // 10. Create indexes for R0 tables
+    try {
+      console.log('[Migration 006] Creating indexes for R0 tables...');
+      await db.exec(`
+        CREATE INDEX IF NOT EXISTS idx_elements_r0_project ON elements(r0_project_id);
+        CREATE INDEX IF NOT EXISTS idx_elements_type ON elements(element_type);
+        CREATE INDEX IF NOT EXISTS idx_captures_r0_project ON captures(r0_project_id);
+        CREATE INDEX IF NOT EXISTS idx_captures_sequence ON captures(sequence);
+        CREATE INDEX IF NOT EXISTS idx_tasks_capture ON tasks(capture_id);
+        CREATE INDEX IF NOT EXISTS idx_tasks_type ON tasks(type);
+        CREATE INDEX IF NOT EXISTS idx_schedule_r0_project ON schedule(r0_project_id);
+        CREATE INDEX IF NOT EXISTS idx_schedule_task ON schedule(task_id);
+        CREATE INDEX IF NOT EXISTS idx_schedule_critical ON schedule(is_critical);
+        CREATE INDEX IF NOT EXISTS idx_cost_breakdown_project ON cost_breakdown(r0_project_id);
+        CREATE INDEX IF NOT EXISTS idx_cost_breakdown_category ON cost_breakdown(category);
+        CREATE INDEX IF NOT EXISTS idx_bottlenecks_project ON bottlenecks(r0_project_id);
+        CREATE INDEX IF NOT EXISTS idx_bottlenecks_severity ON bottlenecks(severity);
+      `);
+      console.log('[Migration 006] ✓ R0 indexes created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 006] Error creating indexes:', error);
+      } else {
+        console.log('[Migration 006] ✓ R0 indexes already exist');
+      }
+    }
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 6 R0 migrations completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 6 migrations:', error);
+    console.error('[Migration 006] ⚠️  R0 migration failed, but continuing startup...');
   }
 }
 
