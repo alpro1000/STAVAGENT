@@ -203,7 +203,8 @@ CREATE TABLE IF NOT EXISTS kiosk_links (
   status VARCHAR(50) DEFAULT 'active',
   handshake_data TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  last_sync TIMESTAMP
+  last_sync TIMESTAMP,
+  UNIQUE(portal_project_id, kiosk_type)
 );
 
 -- Chat sessions table (chat sessions for each project)
