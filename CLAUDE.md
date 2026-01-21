@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.8
+**Version:** 1.3.9
 **Last Updated:** 2026-01-21
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2026-01-21):** Portal Integration + AI Suggestion Enablement - Audit trail + Feature flag tools (6 commits) ⏳ Awaiting user SQL execution
+**NEW (2026-01-21 Part 2):** R0 Deterministic Core + Unified Project Architecture - Portal aggregates all kiosks (5 commits) ⏳ PR Ready
+**PREVIOUS (2026-01-21 Part 1):** Portal Integration + AI Suggestion Enablement - Audit trail + Feature flag tools (6 commits) ⏳ Awaiting user SQL execution
 **PREVIOUS (2026-01-16 Part 2):** Monolit Planner UX Improvements - Modal fixes + Editable work names + Resizable columns (5 commits) ✅
 **PREVIOUS (2026-01-16 Part 1):** Rozpočet Registry Phase 6 & 7 Complete - Multi-Project Search + Excel Export (Production Ready ✅)
 **PREVIOUS (2026-01-13-14):** Google Drive Integration Complete (Day 1 + Day 2) + Auth Fix + All 8 PRs Merged ✅
@@ -473,7 +474,65 @@ Content-Type: application/json
 
 ## Current Status (2026-01-21)
 
-### ⏳ IN PROGRESS: Portal Integration + AI Suggestion Enablement (2026-01-21)
+### ⏳ IN PROGRESS: R0 Deterministic Core + Unified Project Architecture (2026-01-21 Part 2)
+
+**Branch:** `claude/portal-audit-improvements-8F2Co`
+
+**Status:** ✅ Code complete, ⏳ PR ready for merge
+
+**Summary:**
+Implemented R0 Deterministic Core calculators and unified project architecture. Portal now serves as central registry linking all kiosk projects.
+
+**Key Changes:**
+
+| Component | Description | Status |
+|-----------|-------------|--------|
+| R0 API | `/api/r0/projects`, `/api/r0/elements`, `/api/r0/captures` | ✅ Complete |
+| R0 UI | React components for R0 calculations | ✅ Complete |
+| R0 Migrations | PostgreSQL with portal_project_id | ✅ Complete |
+| Portal Unified API | `/api/portal-projects/:id/unified` | ✅ Complete |
+| Kiosk Linking | `/api/portal-projects/:id/link-kiosk` | ✅ Complete |
+| Reverse Lookup | `/api/portal-projects/by-kiosk/:type/:id` | ✅ Complete |
+
+**Key Commits:**
+
+| Commit | Description |
+|--------|-------------|
+| `16561a4` | FEAT: Add R0 Deterministic Core API + Portal services update |
+| `6e6ae7e` | FEAT: Add R0 Deterministic Core UI components |
+| `df74e25` | FEAT: Add Phase 6 R0 auto-migrations for PostgreSQL |
+| `1635e1c` | FIX: Add .js extensions to ESM imports for Node.js compatibility |
+| `6b1c137` | FEAT: Unified project architecture across all kiosks |
+
+**Total:** 5 commits, 4 files, +326 lines
+
+**Architecture:**
+```
+Portal (Central Registry)
+  ↓ unified API
+  ├── Monolit Planner (portal_project_id in monolith_projects)
+  ├── R0 Calculators (portal_project_id in r0_projects)
+  └── URS Matcher (portal_project_id in jobs)
+```
+
+**New Portal API Endpoints:**
+```
+GET  /api/portal-projects/:id/unified      - Aggregated data from all linked kiosks
+POST /api/portal-projects/:id/link-kiosk   - Link kiosk project to portal
+GET  /api/portal-projects/by-kiosk/:t/:id  - Reverse lookup by kiosk reference
+```
+
+**Unified Summary Metrics:**
+- `total_concrete_m3` - Sum from Monolit + R0
+- `total_cost_czk` - Total cost from Monolit
+- `total_elements` - Element count across kiosks
+- `urs_matched_items` - Matched items from URS Matcher
+
+**PR URL:** `https://github.com/alpro1000/STAVAGENT/compare/main...claude/portal-audit-improvements-8F2Co`
+
+---
+
+### ⏳ AWAITING: Portal Integration + AI Suggestion Enablement (2026-01-21 Part 1)
 
 **Branch:** `claude/create-onboarding-guide-E4wrx`
 
