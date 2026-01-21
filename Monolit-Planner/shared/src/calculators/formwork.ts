@@ -21,7 +21,7 @@
  * NOTE: cost_rental calculated in Schedule Engine based on actual calendar!
  */
 
-import type { FormworkCalculatorParams, FormworkCalculatorResult } from './types';
+import type { FormworkCalculatorParams, FormworkCalculatorResult } from './types.js';
 
 /**
  * Calculate formwork parameters

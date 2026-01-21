@@ -4,4 +4,4 @@
  * Export scheduling engine
  */
 
-export * from './engine';
+export * from './engine.js';
