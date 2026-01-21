@@ -99,8 +99,8 @@ const SERVICES: Service[] = [
     name: 'Registr Rozpočtů',
     description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
     icon: '📊',
-    url: 'https://rozpocet-registry.onrender.com',
-    status: 'beta',
+    url: 'https://stavagent-backend-2w7w.vercel.app',
+    status: 'active',
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },
   {
