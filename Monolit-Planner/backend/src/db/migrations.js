@@ -566,6 +566,9 @@ async function runPhase6R0Migrations() {
           -- Link to monolith_projects (optional)
           monolith_project_id VARCHAR(255),
 
+          -- ⭐ UNIFIED: Link to Portal project
+          portal_project_id VARCHAR(255),
+
           -- Metadata
           created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
           updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -893,6 +896,7 @@ async function runPhase6R0Migrations() {
     try {
       console.log('[Migration 006] Creating indexes for R0 tables...');
       await db.exec(`
+        CREATE INDEX IF NOT EXISTS idx_r0_projects_portal ON r0_projects(portal_project_id);
         CREATE INDEX IF NOT EXISTS idx_elements_r0_project ON elements(r0_project_id);
         CREATE INDEX IF NOT EXISTS idx_elements_type ON elements(element_type);
         CREATE INDEX IF NOT EXISTS idx_captures_r0_project ON captures(r0_project_id);

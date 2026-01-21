@@ -32,6 +32,8 @@ CREATE TABLE IF NOT EXISTS jobs (
   processed_rows INTEGER,
   project_context TEXT, -- JSON: building_type, storeys, main_system, notes
   results_json TEXT, -- JSON: Complete block-match results for Excel export
+  -- ⭐ UNIFIED: Link to Portal project (for cross-service data sharing)
+  portal_project_id TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -129,6 +131,7 @@ CREATE TABLE IF NOT EXISTS kb_related_items (
 
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_jobs_created ON jobs(created_at);
+CREATE INDEX IF NOT EXISTS idx_jobs_portal_project ON jobs(portal_project_id);
 CREATE INDEX IF NOT EXISTS idx_job_items_job_id ON job_items(job_id);
 
 -- Knowledge Base indexes
