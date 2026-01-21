@@ -95,6 +95,24 @@ const SERVICES: Service[] = [
     tags: ['Výkaz výměr', 'URS', 'AI párování']
   },
   {
+    id: 'rozpocet-registry',
+    name: 'Registr Rozpočtů',
+    description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
+    icon: '📊',
+    url: 'https://rozpocet-registry.onrender.com',
+    status: 'beta',
+    tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
+  },
+  {
+    id: 'r0-calculators',
+    name: 'R0 Kalkulátory',
+    description: 'Detérministické jádro: výpočet výztuže, bednění, betonáže. Scheduling Engine s kritickou cestou. AI-prořab navrhuje, jádro počítá.',
+    icon: '🧮',
+    url: 'https://monolit-planner-frontend.onrender.com/r0',
+    status: 'beta',
+    tags: ['Deterministické', 'Scheduling', 'AI-prořab', 'Traceability']
+  },
+  {
     id: 'pump-module',
     name: 'Modul čerpání',
     description: 'Výpočet nákladů a logistiky čerpání betonu. Připravujeme!',
