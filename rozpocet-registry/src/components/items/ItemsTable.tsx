@@ -242,7 +242,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, setItemSkupina, allGroups]
+    [projectId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar]
   );
 
   const table = useReactTable({

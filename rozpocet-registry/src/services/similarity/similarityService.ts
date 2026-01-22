@@ -67,7 +67,7 @@ export function findSimilarItems(
     .map((result) => ({
       item: result.item,
       score: result.score || 0,
-      matchedFields: result.matches?.map((m) => m.key) || [],
+      matchedFields: result.matches?.map((m) => m.key).filter((key): key is string => key !== undefined) || [],
     }));
 }
 
