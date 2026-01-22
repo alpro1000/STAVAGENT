@@ -12,7 +12,7 @@ import { AIPanel } from './components/ai/AIPanel';
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload } from './services/export/excelExportService';
-import { Trash2, FileSpreadsheet, Download, Brain } from 'lucide-react';
+import { Trash2, FileSpreadsheet, Download } from 'lucide-react';
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
