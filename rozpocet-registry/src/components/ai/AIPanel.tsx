@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { Sparkles, Loader2, Brain, Layers, Search, Download, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sparkles, Loader2, Brain, Layers, ChevronDown, ChevronUp } from 'lucide-react';
 import { classifyItems, groupItems, type GroupResult } from '../../services/ai';
 import { useRegistryStore } from '../../stores/registryStore';
 import type { ParsedItem } from '../../types/item';
