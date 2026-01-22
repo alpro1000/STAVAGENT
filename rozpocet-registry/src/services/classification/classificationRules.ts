@@ -99,60 +99,51 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
   },
 
   // ==================== BETON ====================
+  // ⭐ PRIORITA 1: Rozlišení monolitický / prefabrikát (VELMI VYSOKÁ)
   {
-    skupina: 'Beton - mostovka',
+    skupina: 'Beton - monolitický',
     patterns: [
-      /mostovka/i,
-      /deska mostu/i,
-      /vozovka/i,
-      /mostní deska/i,
-    ],
-    priority: 100,
-    keywords: ['mostovka', 'deska mostu', 'mostní deska'],
-  },
-  {
-    skupina: 'Beton - nosná konstrukce',
-    patterns: [
-      /nosn(á|é) konstrukce/i,
-      /nosník/i,
-      /trám/i,
-      /sloup/i,
-      /pilíř/i,
-      /oblouk/i,
-    ],
-    priority: 90,
-    keywords: ['nosná konstrukce', 'nosník', 'sloup', 'pilíř'],
-  },
-  {
-    skupina: 'Beton - spodní stavba',
-    patterns: [
-      /spodní stavba/i,
-      /patka/i,
-      /opora/i,
-    ],
-    priority: 80,
-    keywords: ['spodní stavba', 'opora', 'patka'],
-  },
-  {
-    skupina: 'Beton - základy',
-    patterns: [
-      /beton.*základ/i,
-      /základový beton/i,
-    ],
-    priority: 80,
-    keywords: ['beton základy', 'základový beton'],
-  },
-  {
-    skupina: 'Beton - ostatní',
-    patterns: [
-      /beton/i,
+      /monolit/i,
+      /monolitick[ýá]/i,
       /betonáž/i,
       /betonování/i,
+      /in[\s-]?situ/i,
+      /lití betonu/i,
+      /čerstvý beton/i,
+      /ukládání betonu/i,
+    ],
+    priority: 120, // VELMI VYSOKÁ - musí být před ostatními betonovými skupinami
+    keywords: ['monolitický', 'betonáž', 'betonování', 'in-situ', 'lití betonu'],
+  },
+  {
+    skupina: 'Beton - prefabrikát',
+    patterns: [
+      /prefabrikát/i,
+      /prefabrikovan[ýá]/i,
+      /předem vyroben[ýá]/i,
+      /prefabricated/i,
+      /precast/i,
+      /montáž.*panel/i,
+      /montáž.*dílc/i,
+      /osazení.*panel/i,
+      /osazení.*dílc/i,
+      /montovaný/i,
+      /dílcová konstrukce/i,
+    ],
+    priority: 120, // VELMI VYSOKÁ - musí být před ostatními betonovými skupinami
+    keywords: ['prefabrikát', 'prefabrikovaný', 'montáž', 'dílce', 'precast'],
+  },
+
+  // ⭐ Если не распознано как монолит/префабрикат - общий бетон (низкий приоритет)
+  {
+    skupina: 'Beton - monolitický',
+    patterns: [
+      /beton/i,
       /betono/i,
       /\bC\d{2}\/\d{2}/i, // C20/25, C30/37
     ],
     priority: 30,
-    keywords: ['beton', 'betonáž', 'C20/25'],
+    keywords: ['beton', 'C20/25'],
   },
 
   // ==================== VÝZTUŽ ====================

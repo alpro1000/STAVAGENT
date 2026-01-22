@@ -16,11 +16,8 @@ export const DEFAULT_GROUPS = [
   'Štětovnice',
 
   // Betonové práce
-  'Beton - základy',
-  'Beton - spodní stavba',
-  'Beton - nosná konstrukce',
-  'Beton - mostovka',
-  'Beton - ostatní',
+  'Beton - monolitický',
+  'Beton - prefabrikát',
 
   // Výztuž
   'Výztuž',
@@ -55,6 +52,7 @@ export const DEFAULT_GROUPS = [
 export type WorkGroup = typeof DEFAULT_GROUPS[number];
 
 export const CLASSIFICATION_PRIORITY = {
+  VERY_HIGH: 120,
   HIGH: 100,
   MEDIUM: 50,
   LOW: 10,

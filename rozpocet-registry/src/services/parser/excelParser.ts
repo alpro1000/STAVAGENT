@@ -66,6 +66,27 @@ function extractMetadata(
 }
 
 /**
+ * Проверяет, является ли строка заголовком таблицы (шапкой)
+ */
+function isHeaderRow(value: string): boolean {
+  if (!value) return false;
+
+  const trimmed = value.trim().toLowerCase();
+
+  // Список типичных заголовков
+  const headerKeywords = [
+    'kód', 'kod', 'číslo', 'cislo', 'položka', 'polozka',
+    'popis', 'název', 'nazev', 'description',
+    'množství', 'mnozstvi', 'quantity',
+    'cena', 'price', 'kč',
+    'mj', 'm.j.', 'jednotka', 'unit',
+    'celkem', 'total', 'součet', 'soucet',
+  ];
+
+  return headerKeywords.some(keyword => trimmed === keyword);
+}
+
+/**
  * Проверяет, является ли строка новой позицией (по коду)
  */
 function isItemCode(value: string): boolean {
@@ -73,19 +94,22 @@ function isItemCode(value: string): boolean {
 
   const trimmed = value.trim();
 
+  // ⚠️ Исключаем заголовки таблицы
+  if (isHeaderRow(trimmed)) return false;
+
   // Коды ÚRS: 6+ цифр (231112)
-  if (/^\d{6,}/.test(trimmed)) return true;
+  if (/^\d{6,}$/.test(trimmed)) return true;
 
   // Коды ÚRS: может быть с точками (23.11.12)
-  if (/^\d{2,3}\.\d{2,3}\.\d{2,3}/.test(trimmed)) return true;
+  if (/^\d{2,3}\.\d{2,3}\.\d{2,3}$/.test(trimmed)) return true;
 
   // Коды OTSKP: буква + 5+ цифр (A12345)
-  if (/^[A-Z]\d{5,}/.test(trimmed)) return true;
+  if (/^[A-Z]\d{5,}$/.test(trimmed)) return true;
 
   // Коды RTS: формат XXX-YYY (123-456)
-  if (/^\d{3,4}-\d{3,4}/.test(trimmed)) return true;
+  if (/^\d{3,4}-\d{3,4}$/.test(trimmed)) return true;
 
-  // Общий формат: начинается с 3+ цифр
+  // Общий формат: начинается с 3+ цифр (но не только цифры типа "1", "2", "3")
   if (/^\d{3,}/.test(trimmed)) return true;
 
   return false;
@@ -112,16 +136,40 @@ void _isFlexibleItem;
 
 /**
  * Автоопределение строки начала данных
+ * ⚠️ Используется только если dataStartRow = 1 (значение по умолчанию)
  */
 function autoDetectDataStartRow(
   sheet: XLSX.WorkSheet,
-  config: ImportConfig
+  config: ImportConfig,
+  userConfiguredStartRow: boolean
 ): number {
+  // ⭐ Если пользователь явно указал строку начала - НЕ переопределяем её!
+  if (userConfiguredStartRow && config.dataStartRow > 1) {
+    return config.dataStartRow;
+  }
+
   const range = XLSX.utils.decode_range(sheet['!ref'] || 'A1');
   const kodCol = colToNum(config.columns.kod);
 
-  // Ищем первую строку с кодом позиции
-  for (let row = 0; row <= Math.min(range.e.r, 50); row++) {
+  // Пропускаем возможные заголовки
+  let headerRowFound = -1;
+
+  // Ищем строку с заголовками
+  for (let row = 0; row <= Math.min(range.e.r, 20); row++) {
+    const cell = sheet[XLSX.utils.encode_cell({ r: row, c: kodCol })];
+    const value = cell?.v?.toString().trim() || '';
+
+    if (isHeaderRow(value)) {
+      headerRowFound = row;
+      break;
+    }
+  }
+
+  // Если нашли шапку, начинаем со следующей строки
+  const searchStartRow = headerRowFound >= 0 ? headerRowFound + 1 : 0;
+
+  // Ищем первую строку с кодом позиции ПОСЛЕ шапки
+  for (let row = searchStartRow; row <= Math.min(range.e.r, 50); row++) {
     const cell = sheet[XLSX.utils.encode_cell({ r: row, c: kodCol })];
     const value = cell?.v?.toString().trim() || '';
 
@@ -159,14 +207,16 @@ function parseItems(
   };
 
   // Попытка автоопределения
-  const detectedStartRow = autoDetectDataStartRow(sheet, config);
+  // ⭐ Определяем, указал ли пользователь dataStartRow вручную (> 1)
+  const userConfiguredStartRow = config.dataStartRow > 1;
+  const detectedStartRow = autoDetectDataStartRow(sheet, config, userConfiguredStartRow);
   const actualStartRow = detectedStartRow - 1; // 0-based
 
   // Гибкий режим: парсить все строки с контентом
   const flexibleMode = config.flexibleMode ?? false;
 
-  debugInfo.push(`Konfigurace: dataStartRow = ${config.dataStartRow}`);
-  debugInfo.push(`Auto-detect: dataStartRow = ${detectedStartRow}`);
+  debugInfo.push(`Konfigurace: dataStartRow = ${config.dataStartRow} ${userConfiguredStartRow ? '✅ (uživatel)' : '⚙️ (výchozí)'}`);
+  debugInfo.push(`Auto-detect: dataStartRow = ${detectedStartRow} ${userConfiguredStartRow ? '🚫 (přeskočeno)' : '✅ (použito)'}`);
   debugInfo.push(`Celkem řádků v listu: ${range.e.r + 1}`);
   debugInfo.push(`Kontrola řádků ${actualStartRow + 1} až ${range.e.r + 1}`);
   debugInfo.push(`Režim: ${flexibleMode ? '🔓 FLEXIBILNÍ (všechny řádky)' : '🔒 Standardní (podle kódů)'}`);
