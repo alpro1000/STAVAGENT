@@ -18,11 +18,6 @@ export const DEFAULT_GROUPS = [
   // Betonové práce
   'Beton - monolitický',
   'Beton - prefabrikát',
-  'Beton - základy',
-  'Beton - spodní stavba',
-  'Beton - nosná konstrukce',
-  'Beton - mostovka',
-  'Beton - ostatní',
 
   // Výztuž
   'Výztuž',

@@ -3,18 +3,23 @@
  * Tabulka položek s podporou třídění a výběru
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
+  getGroupedRowModel,
+  getExpandedRowModel,
   flexRender,
   createColumnHelper,
   type SortingState,
+  type GroupingState,
+  type ExpandedState,
 } from '@tanstack/react-table';
-import { ChevronUp, ChevronDown } from 'lucide-react';
+import { ChevronUp, ChevronDown, Sparkles, FolderOpen, Folder } from 'lucide-react';
 import type { ParsedItem } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
+import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
 
 interface ItemsTableProps {
   items: ParsedItem[];
@@ -35,8 +40,50 @@ export function ItemsTable({
   sorting: externalSorting,
   onSortingChange: externalOnSortingChange,
 }: ItemsTableProps) {
-  const { setItemSkupina, getAllGroups } = useRegistryStore();
+  const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina } = useRegistryStore();
   const allGroups = getAllGroups();
+  const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
+  const [grouping, setGrouping] = useState<GroupingState>([]);
+  const [expanded, setExpanded] = useState<ExpandedState>({});
+  const [groupBySkupina, setGroupBySkupina] = useState(false);
+
+  // Применить группу к похожим позициям
+  const applyToSimilar = (sourceItem: ParsedItem) => {
+    if (!sourceItem.skupina) return;
+
+    setApplyingToSimilar(sourceItem.id);
+
+    // Находим похожие позиции
+    const suggestions = autoAssignSimilarItems(sourceItem, items, 70);
+
+    if (suggestions.length > 0) {
+      // Применяем группу ко всем похожим
+      const updates = suggestions.map((s) => ({
+        itemId: s.itemId,
+        skupina: s.suggestedSkupina,
+      }));
+
+      bulkSetSkupina(projectId, updates);
+
+      // Показываем уведомление
+      alert(`Группа "${sourceItem.skupina}" применена к ${suggestions.length} похожим позициям`);
+    } else {
+      alert('Похожие позиции не найдены');
+    }
+
+    setApplyingToSimilar(null);
+  };
+
+  // Переключение группировки
+  const toggleGrouping = () => {
+    if (groupBySkupina) {
+      setGrouping([]);
+      setGroupBySkupina(false);
+    } else {
+      setGrouping(['skupina']);
+      setGroupBySkupina(true);
+    }
+  };
 
   const [sorting, setSorting] = useMemo(
     () => [externalSorting || [], externalOnSortingChange || (() => {})],
@@ -141,24 +188,57 @@ export function ItemsTable({
         cell: (info) => {
           const item = info.row.original;
           const currentSkupina = info.getValue();
+          const datalistId = `skupina-datalist-${item.id}`;
+          const isApplying = applyingToSimilar === item.id;
+
+          const handleSkupinaChange = (value: string) => {
+            const trimmedValue = value.trim();
+            if (!trimmedValue) {
+              setItemSkupina(projectId, item.id, null!);
+              return;
+            }
+
+            // Добавляем новую группу если её нет в списке
+            if (!allGroups.includes(trimmedValue)) {
+              addCustomGroup(trimmedValue);
+            }
+
+            setItemSkupina(projectId, item.id, trimmedValue);
+          };
 
           return (
-            <select
-              value={currentSkupina || ''}
-              onChange={(e) => setItemSkupina(projectId, item.id, e.target.value || null!)}
-              className="text-sm bg-bg-tertiary border border-border-color rounded px-2 py-1
-                         focus:border-accent-primary focus:outline-none w-full"
-            >
-              <option value="">-- Vyberte skupinu --</option>
-              {allGroups.map((group) => (
-                <option key={group} value={group}>
-                  {group}
-                </option>
-              ))}
-            </select>
+            <div className="flex items-center gap-1">
+              <div className="relative flex-1">
+                <input
+                  type="text"
+                  list={datalistId}
+                  value={currentSkupina || ''}
+                  onChange={(e) => handleSkupinaChange(e.target.value)}
+                  onBlur={(e) => handleSkupinaChange(e.target.value)}
+                  placeholder="Zadejte nebo vyberte"
+                  className="text-sm bg-bg-tertiary border border-border-color rounded px-2 py-1
+                             focus:border-accent-primary focus:outline-none w-full"
+                />
+                <datalist id={datalistId}>
+                  {allGroups.map((group) => (
+                    <option key={group} value={group} />
+                  ))}
+                </datalist>
+              </div>
+              {currentSkupina && (
+                <button
+                  onClick={() => applyToSimilar(item)}
+                  disabled={isApplying}
+                  title="Применить к похожим позициям"
+                  className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
+                >
+                  <Sparkles size={16} className="text-accent-primary" />
+                </button>
+              )}
+            </div>
           );
         },
-        size: 180,
+        size: 240,
         enableSorting: true,
       }),
     ],
@@ -170,6 +250,8 @@ export function ItemsTable({
     columns,
     state: {
       sorting,
+      grouping,
+      expanded,
       rowSelection: Object.fromEntries(
         Array.from(selectedIds).map((id) => [
           items.findIndex((item) => item.id === id),
@@ -178,8 +260,12 @@ export function ItemsTable({
       ),
     },
     onSortingChange: setSorting as any,
+    onGroupingChange: setGrouping,
+    onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    getGroupedRowModel: getGroupedRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     enableRowSelection: true,
     onRowSelectionChange: (updater) => {
       if (!onSelectionChange) return;
@@ -217,6 +303,21 @@ export function ItemsTable({
 
   return (
     <div className="card overflow-hidden">
+      {/* Toolbar */}
+      <div className="border-b border-border-color px-4 py-2 flex items-center gap-2">
+        <button
+          onClick={toggleGrouping}
+          className={`px-3 py-1 text-sm rounded flex items-center gap-2 transition-colors ${
+            groupBySkupina
+              ? 'bg-accent-primary text-white'
+              : 'bg-bg-secondary hover:bg-bg-tertiary'
+          }`}
+        >
+          {groupBySkupina ? <FolderOpen size={16} /> : <Folder size={16} />}
+          {groupBySkupina ? 'Skupiny zapnuty' : 'Seskupit podle skupiny'}
+        </button>
+      </div>
+
       <div className="overflow-x-auto scrollbar-thin">
         <table className="table">
           <thead>
@@ -255,15 +356,44 @@ export function ItemsTable({
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </td>
-                ))}
-              </tr>
-            ))}
+            {table.getRowModel().rows.map((row) => {
+              if (row.getIsGrouped()) {
+                // Группированная строка
+                return (
+                  <tr key={row.id} className="bg-bg-secondary font-medium">
+                    <td colSpan={row.getVisibleCells().length}>
+                      <button
+                        onClick={row.getToggleExpandedHandler()}
+                        className="flex items-center gap-2 px-2 py-1 hover:bg-bg-tertiary transition-colors w-full text-left"
+                      >
+                        {row.getIsExpanded() ? (
+                          <ChevronDown size={16} />
+                        ) : (
+                          <ChevronUp size={16} />
+                        )}
+                        <span className="text-accent-primary">
+                          {row.groupingValue || '(Bez skupiny)'}
+                        </span>
+                        <span className="text-text-secondary text-sm">
+                          ({row.subRows.length} položek)
+                        </span>
+                      </button>
+                    </td>
+                  </tr>
+                );
+              }
+
+              // Обычная строка
+              return (
+                <tr key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <td key={cell.id}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </td>
+                  ))}
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
