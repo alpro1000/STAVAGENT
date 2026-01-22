@@ -18,14 +18,15 @@ import { defaultImportConfig } from '../../config/defaultConfig';
 import type { Project } from '../../types';
 import type { ImportTemplate } from '../../types/template';
 import type { ImportConfig } from '../../types/config';
-import { AlertCircle, Loader2, CheckCircle, Sparkles } from 'lucide-react';
+import { AlertCircle, Loader2, CheckCircle, Sparkles, Table } from 'lucide-react';
+import { RawExcelViewer } from './RawExcelViewer';
 
 interface ImportModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-type Step = 'upload' | 'template' | 'custom-config' | 'sheet' | 'parsing' | 'success';
+type Step = 'upload' | 'template' | 'custom-config' | 'sheet' | 'parsing' | 'raw-view' | 'success';
 
 export function ImportModal({ isOpen, onClose }: ImportModalProps) {
   const { addProject, addTemplate } = useRegistryStore();
@@ -378,6 +379,27 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
               onCreateCustom={handleCreateCustomTemplate}
             />
 
+            {/* Raw View Option */}
+            <div className="p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-semibold text-purple-300 mb-1">
+                    📊 Problém s importem?
+                  </h4>
+                  <p className="text-xs text-text-secondary">
+                    Zobrazit soubor jako tabulku a ručně namapovat sloupce
+                  </p>
+                </div>
+                <button
+                  onClick={() => setStep('raw-view')}
+                  className="btn btn-secondary text-sm flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white border-0"
+                >
+                  <Table size={16} />
+                  Raw data
+                </button>
+              </div>
+            </div>
+
             <div className="flex gap-3 justify-end">
               <button onClick={() => setStep('upload')} className="btn btn-secondary">
                 Zpět
@@ -389,6 +411,67 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                 Pokračovat
               </button>
             </div>
+          </div>
+        )}
+
+        {/* Raw Excel View */}
+        {step === 'raw-view' && workbook && (
+          <div className="space-y-4">
+            <div>
+              <p className="text-sm text-text-secondary mb-2">
+                Soubor: <span className="font-semibold text-text-primary">{file?.name}</span>
+              </p>
+              <p className="text-xs text-text-muted">
+                Prohlédněte si data a namapujte sloupce ručně
+              </p>
+            </div>
+
+            <RawExcelViewer
+              workbook={workbook}
+              onColumnMapping={(mapping) => {
+                // Create a flexible template with the mapping
+                const flexibleConfig: ImportConfig = {
+                  templateName: 'Raw Import',
+                  sheetName: selectedSheet || sheetNames[0],
+                  sheetIndex: 0,
+                  dataStartRow: mapping.dataStartRow,
+                  columns: {
+                    kod: mapping.kod,
+                    popis: mapping.popis,
+                    mj: mapping.mj,
+                    mnozstvi: mapping.mnozstvi,
+                    cenaJednotkova: mapping.cenaJednotkova,
+                    cenaCelkem: mapping.cenaCelkem,
+                  },
+                  metadataCells: {},
+                  flexibleMode: true,
+                };
+                setSelectedTemplate({
+                  metadata: {
+                    id: 'raw-import',
+                    name: 'Raw Import',
+                    type: 'raw',
+                    description: 'Manuální mapování',
+                    icon: '📊',
+                  },
+                  config: flexibleConfig,
+                  isBuiltIn: false,
+                  canEdit: false,
+                  canDelete: false,
+                });
+                setStep('sheet');
+              }}
+              onDetectedType={(detected) => {
+                console.log('Detected file type:', detected);
+              }}
+            />
+
+            <button
+              onClick={() => setStep('template')}
+              className="btn btn-secondary"
+            >
+              Zpět k šablonám
+            </button>
           </div>
         )}
 
