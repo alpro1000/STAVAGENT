@@ -27,6 +27,7 @@ export interface ImportConfig {
   sheetIndex: number;          // индекс листа (0-based)
   metadataCells: MetadataCells;
   columns: ColumnMapping;
+  flexibleMode?: boolean;      // гибкий режим: парсить ВСЕ строки, даже без стандартных кодов
 }
 
 // NOTE: ImportTemplate definition moved to ./template.ts
