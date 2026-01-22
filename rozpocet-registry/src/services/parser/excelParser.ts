@@ -94,8 +94,9 @@ function isItemCode(value: string): boolean {
 /**
  * Проверяет, является ли строка потенциально позицией (гибкий режим)
  * Парсит строку если есть хоть какой-то текст в ключевых колонках
+ * (Reserved for future use - flexible mode check is done inline)
  */
-function isFlexibleItem(row: XLSX.WorkSheet, rowNum: number, colIndices: Record<string, number>): boolean {
+function _isFlexibleItem(row: XLSX.WorkSheet, rowNum: number, colIndices: Record<string, number>): boolean {
   // Проверяем есть ли хоть какой-то контент
   const kodCell = row[XLSX.utils.encode_cell({ r: rowNum, c: colIndices.kod })];
   const popisCell = row[XLSX.utils.encode_cell({ r: rowNum, c: colIndices.popis })];
@@ -106,6 +107,8 @@ function isFlexibleItem(row: XLSX.WorkSheet, rowNum: number, colIndices: Record<
   // Если есть код ИЛИ описание — считаем позицией
   return kodValue.length > 0 || popisValue.length > 0;
 }
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+void _isFlexibleItem;
 
 /**
  * Автоопределение строки начала данных

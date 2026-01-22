@@ -19,6 +19,7 @@ interface RegistryState {
   // Данные
   projects: Project[];
   selectedProjectId: string | null;
+  items: Record<string, ParsedItem[]>; // All items by projectId
 
   // Шаблоны импорта
   templates: ImportTemplate[];
@@ -39,6 +40,7 @@ interface RegistryState {
   // Действия с items
   setItemSkupina: (projectId: string, itemId: string, skupina: string) => void;
   bulkSetSkupina: (projectId: string, updates: Array<{ itemId: string; skupina: string }>) => void;
+  setItems: (projectId: string, items: ParsedItem[]) => void;
 
   // Действия с шаблонами
   addTemplate: (template: ImportTemplate) => void;
@@ -78,6 +80,7 @@ export const useRegistryStore = create<RegistryState>()(
       // Начальное состояние
       projects: [],
       selectedProjectId: null,
+      items: {},
       templates: [...PREDEFINED_TEMPLATES],
       savedFilters: [],
       customGroups: [],
@@ -87,16 +90,24 @@ export const useRegistryStore = create<RegistryState>()(
         set((state) => ({
           projects: [...state.projects, project],
           selectedProjectId: project.id,
+          items: {
+            ...state.items,
+            [project.id]: project.items,
+          },
         }));
         get().updateProjectStats(project.id);
       },
 
       removeProject: (projectId) => {
-        set((state) => ({
-          projects: state.projects.filter((p) => p.id !== projectId),
-          selectedProjectId:
-            state.selectedProjectId === projectId ? null : state.selectedProjectId,
-        }));
+        set((state) => {
+          const { [projectId]: _, ...restItems } = state.items;
+          return {
+            projects: state.projects.filter((p) => p.id !== projectId),
+            items: restItems,
+            selectedProjectId:
+              state.selectedProjectId === projectId ? null : state.selectedProjectId,
+          };
+        });
       },
 
       updateProject: (projectId, updates) => {
@@ -146,6 +157,20 @@ export const useRegistryStore = create<RegistryState>()(
               ),
             };
           }),
+        }));
+        get().updateProjectStats(projectId);
+      },
+
+      setItems: (projectId, items) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return { ...p, items };
+          }),
+          items: {
+            ...state.items,
+            [projectId]: items,
+          },
         }));
         get().updateProjectStats(projectId);
       },

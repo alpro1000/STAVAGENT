@@ -9,7 +9,7 @@ import type { ImportConfig } from './config';
 /**
  * Predefined template types
  */
-export type TemplateType = 'urs-standard' | 'otskp' | 'rts' | 'custom';
+export type TemplateType = 'urs-standard' | 'otskp' | 'rts' | 'custom' | 'flexible' | 'svodny' | 'raw';
 
 /**
  * Template metadata

@@ -9,13 +9,15 @@ import { ItemsTable } from './components/items/ItemsTable';
 import { SearchBar } from './components/search/SearchBar';
 import { SearchResults } from './components/search/SearchResults';
 import { AIPanel } from './components/ai/AIPanel';
+import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload } from './services/export/excelExportService';
-import { Trash2, FileSpreadsheet, Download } from 'lucide-react';
+import { Trash2, FileSpreadsheet, Download, Package } from 'lucide-react';
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isPriceRequestOpen, setIsPriceRequestOpen] = useState(false);
   const { projects, selectedProjectId, setSelectedProject, removeProject } = useRegistryStore();
 
   // Search state
@@ -73,6 +75,16 @@ function App() {
               </div>
             </div>
             <div className="flex items-center gap-4">
+              {projects.length > 0 && (
+                <button
+                  onClick={() => setIsPriceRequestOpen(true)}
+                  className="btn btn-secondary text-sm flex items-center gap-2"
+                  title="Vytvořit poptávku cen pro dodavatele"
+                >
+                  <Package size={16} />
+                  Poptávka cen
+                </button>
+              )}
               {selectedProject && (
                 <button
                   onClick={handleExport}
@@ -304,6 +316,12 @@ function App() {
       <ImportModal
         isOpen={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}
+      />
+
+      {/* Price Request Panel */}
+      <PriceRequestPanel
+        isOpen={isPriceRequestOpen}
+        onClose={() => setIsPriceRequestOpen(false)}
       />
     </div>
   );

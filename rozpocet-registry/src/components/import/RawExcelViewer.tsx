@@ -6,7 +6,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import * as XLSX from 'xlsx';
-import { ChevronDown, ChevronRight, Sparkles, Check, Loader2 } from 'lucide-react';
+import { Sparkles, Check, Loader2 } from 'lucide-react';
 
 interface RawExcelViewerProps {
   workbook: XLSX.WorkBook;
@@ -136,7 +136,6 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
   const [selectedColumns, setSelectedColumns] = useState<Partial<ColumnMapping>>({});
   const [isDetecting, setIsDetecting] = useState(true);
   const [detectedType, setDetectedType] = useState<DetectedFileType | null>(null);
-  const [expandedSheets, setExpandedSheets] = useState<Set<string>>(new Set([workbook.SheetNames[0]]));
 
   // Convert sheet to 2D array
   const sheetData = useMemo(() => {
@@ -173,15 +172,6 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
 
     setIsDetecting(false);
   }, [sheetData, onDetectedType]);
-
-  // Handle column click for mapping
-  const handleColumnClick = (colIndex: number, field: keyof ColumnMapping) => {
-    const colLetter = colToLetter(colIndex);
-    setSelectedColumns(prev => ({
-      ...prev,
-      [field]: colLetter
-    }));
-  };
 
   // Apply mapping
   const handleApplyMapping = () => {
