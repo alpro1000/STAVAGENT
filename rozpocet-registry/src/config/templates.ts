@@ -104,12 +104,80 @@ export const TEMPLATE_RTS: ImportTemplate = {
 };
 
 /**
+ * Flexible Template - parses ALL rows
+ * For unknown/non-standard Excel formats
+ */
+export const TEMPLATE_FLEXIBLE: ImportTemplate = {
+  metadata: {
+    id: 'template-flexible',
+    name: '🔓 Flexibilní (vše)',
+    type: 'flexible',
+    description: 'Importuje VŠECHNY řádky bez ohledu na formát kódů. Použijte pro nestandardní soubory.',
+    icon: '🔓',
+  },
+  config: {
+    ...defaultImportConfig,
+    templateName: 'Flexibilní',
+    sheetName: '',
+    sheetIndex: 0,
+    columns: {
+      kod: 'A',
+      popis: 'B',
+      mj: 'C',
+      mnozstvi: 'D',
+      cenaJednotkova: 'E',
+      cenaCelkem: 'F',
+    },
+    dataStartRow: 1,      // Start from row 1 (no header assumed)
+    flexibleMode: true,   // ← KEY: парсить ВСЕ строки
+  },
+  isBuiltIn: true,
+  canEdit: false,
+  canDelete: false,
+};
+
+/**
+ * Svodný (Summary) Template - for summary/aggregation files
+ * Often have different structure
+ */
+export const TEMPLATE_SVODNY: ImportTemplate = {
+  metadata: {
+    id: 'template-svodny',
+    name: 'Svodný rozpočet',
+    type: 'svodny',
+    description: 'Svodné/souhrnné rozpočty s rekapitulací. Flexibilní import.',
+    icon: '📊',
+  },
+  config: {
+    ...defaultImportConfig,
+    templateName: 'Svodný rozpočet',
+    sheetName: '',
+    sheetIndex: 0,
+    columns: {
+      kod: 'A',
+      popis: 'B',
+      mj: 'C',
+      mnozstvi: 'D',
+      cenaJednotkova: 'E',
+      cenaCelkem: 'F',
+    },
+    dataStartRow: 2,
+    flexibleMode: true,
+  },
+  isBuiltIn: true,
+  canEdit: false,
+  canDelete: false,
+};
+
+/**
  * All predefined templates
  */
 export const PREDEFINED_TEMPLATES: ImportTemplate[] = [
   TEMPLATE_URS_STANDARD,
   TEMPLATE_OTSKP,
   TEMPLATE_RTS,
+  TEMPLATE_FLEXIBLE,
+  TEMPLATE_SVODNY,
 ];
 
 /**

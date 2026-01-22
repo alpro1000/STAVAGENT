@@ -92,6 +92,22 @@ function isItemCode(value: string): boolean {
 }
 
 /**
+ * Проверяет, является ли строка потенциально позицией (гибкий режим)
+ * Парсит строку если есть хоть какой-то текст в ключевых колонках
+ */
+function isFlexibleItem(row: XLSX.WorkSheet, rowNum: number, colIndices: Record<string, number>): boolean {
+  // Проверяем есть ли хоть какой-то контент
+  const kodCell = row[XLSX.utils.encode_cell({ r: rowNum, c: colIndices.kod })];
+  const popisCell = row[XLSX.utils.encode_cell({ r: rowNum, c: colIndices.popis })];
+
+  const kodValue = kodCell?.v?.toString().trim() || '';
+  const popisValue = popisCell?.v?.toString().trim() || '';
+
+  // Если есть код ИЛИ описание — считаем позицией
+  return kodValue.length > 0 || popisValue.length > 0;
+}
+
+/**
  * Автоопределение строки начала данных
  */
 function autoDetectDataStartRow(
@@ -143,22 +159,32 @@ function parseItems(
   const detectedStartRow = autoDetectDataStartRow(sheet, config);
   const actualStartRow = detectedStartRow - 1; // 0-based
 
+  // Гибкий режим: парсить все строки с контентом
+  const flexibleMode = config.flexibleMode ?? false;
+
   debugInfo.push(`Konfigurace: dataStartRow = ${config.dataStartRow}`);
   debugInfo.push(`Auto-detect: dataStartRow = ${detectedStartRow}`);
   debugInfo.push(`Celkem řádků v listu: ${range.e.r + 1}`);
   debugInfo.push(`Kontrola řádků ${actualStartRow + 1} až ${range.e.r + 1}`);
+  debugInfo.push(`Režim: ${flexibleMode ? '🔓 FLEXIBILNÍ (všechny řádky)' : '🔒 Standardní (podle kódů)'}`);
 
   let codesFound: string[] = [];
 
-  // Начинаем с auto-detected строки
-  for (let row = actualStartRow; row <= range.e.r; row++) {
+  // Начинаем с auto-detected строки (или с 1 в гибком режиме)
+  const startRow = flexibleMode ? Math.max(0, config.dataStartRow - 1) : actualStartRow;
+
+  for (let row = startRow; row <= range.e.r; row++) {
     const kodCell = sheet[XLSX.utils.encode_cell({ r: row, c: colIndices.kod })];
     const popisCell = sheet[XLSX.utils.encode_cell({ r: row, c: colIndices.popis })];
 
     const kodValue = kodCell?.v?.toString().trim() || '';
     const popisValue = popisCell?.v?.toString().trim() || '';
 
-    const isNewItem = isItemCode(kodValue);
+    // В гибком режиме - каждая строка с контентом это позиция
+    // В стандартном режиме - только строки с кодами
+    const isNewItem = flexibleMode
+      ? (kodValue.length > 0 || popisValue.length > 0)
+      : isItemCode(kodValue);
 
     if (isNewItem) {
       // Сохраняем код для debug
