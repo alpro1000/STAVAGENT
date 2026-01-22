@@ -76,6 +76,7 @@ export function ItemsTable({
           </span>
         ),
         size: 100,
+        enableSorting: true,
       }),
 
       // Popis
@@ -87,6 +88,7 @@ export function ItemsTable({
           </div>
         ),
         size: 300,
+        enableSorting: true,
       }),
 
       // MJ
@@ -96,6 +98,7 @@ export function ItemsTable({
           <span className="text-sm text-text-secondary">{info.getValue()}</span>
         ),
         size: 60,
+        enableSorting: true,
       }),
 
       // Množství
@@ -110,6 +113,8 @@ export function ItemsTable({
           );
         },
         size: 100,
+        enableSorting: true,
+        sortingFn: 'basic', // Числовая сортировка
       }),
 
       // Cena celkem
@@ -126,6 +131,8 @@ export function ItemsTable({
           );
         },
         size: 120,
+        enableSorting: true,
+        sortingFn: 'basic', // Числовая сортировка
       }),
 
       // Skupina
@@ -152,6 +159,7 @@ export function ItemsTable({
           );
         },
         size: 180,
+        enableSorting: true,
       }),
     ],
     [projectId, setItemSkupina, allGroups]
@@ -219,9 +227,12 @@ export function ItemsTable({
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
                     className={`
-                      ${header.column.getCanSort() ? 'cursor-pointer select-none' : ''}
+                      ${header.column.getCanSort()
+                        ? 'cursor-pointer select-none hover:bg-bg-secondary transition-colors'
+                        : ''}
                     `}
                     style={{ width: header.getSize() }}
+                    title={header.column.getCanSort() ? 'Klikněte pro seřazení' : undefined}
                   >
                     <div className="flex items-center gap-2">
                       {flexRender(

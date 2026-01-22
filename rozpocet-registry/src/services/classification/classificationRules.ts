@@ -99,6 +99,42 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
   },
 
   // ==================== BETON ====================
+  // ⭐ PRIORITA 1: Rozlišení monolitický / prefabrikát (VELMI VYSOKÁ)
+  {
+    skupina: 'Beton - monolitický',
+    patterns: [
+      /monolit/i,
+      /monolitick[ýá]/i,
+      /betonáž/i,
+      /betonování/i,
+      /in[\s-]?situ/i,
+      /lití betonu/i,
+      /čerstvý beton/i,
+      /ukládání betonu/i,
+    ],
+    priority: 120, // VELMI VYSOKÁ - musí být před ostatními betonovými skupinami
+    keywords: ['monolitický', 'betonáž', 'betonování', 'in-situ', 'lití betonu'],
+  },
+  {
+    skupina: 'Beton - prefabrikát',
+    patterns: [
+      /prefabrikát/i,
+      /prefabrikovan[ýá]/i,
+      /předem vyroben[ýá]/i,
+      /prefabricated/i,
+      /precast/i,
+      /montáž.*panel/i,
+      /montáž.*dílc/i,
+      /osazení.*panel/i,
+      /osazení.*dílc/i,
+      /montovaný/i,
+      /dílcová konstrukce/i,
+    ],
+    priority: 120, // VELMI VYSOKÁ - musí být před ostatními betonovými skupinami
+    keywords: ['prefabrikát', 'prefabrikovaný', 'montáž', 'dílce', 'precast'],
+  },
+
+  // ⭐ PRIORITA 2: Specifický typ konstrukce (pokud není rozlišeno monolit/prefabrikát)
   {
     skupina: 'Beton - mostovka',
     patterns: [
