@@ -38,7 +38,7 @@ interface RegistryState {
 
   // Действия с items
   setItemSkupina: (projectId: string, itemId: string, skupina: string) => void;
-  bulkSetSkupina: (projectId: string, itemIds: string[], skupina: string) => void;
+  bulkSetSkupina: (projectId: string, updates: Array<{ itemId: string; skupina: string }>) => void;
 
   // Действия с шаблонами
   addTemplate: (template: ImportTemplate) => void;
@@ -132,14 +132,17 @@ export const useRegistryStore = create<RegistryState>()(
         get().updateProjectStats(projectId);
       },
 
-      bulkSetSkupina: (projectId, itemIds, skupina) => {
+      bulkSetSkupina: (projectId, updates) => {
+        const updateMap = new Map(updates.map(u => [u.itemId, u.skupina]));
         set((state) => ({
           projects: state.projects.map((p) => {
             if (p.id !== projectId) return p;
             return {
               ...p,
               items: p.items.map((item) =>
-                itemIds.includes(item.id) ? { ...item, skupina } : item
+                updateMap.has(item.id)
+                  ? { ...item, skupina: updateMap.get(item.id)! }
+                  : item
               ),
             };
           }),
