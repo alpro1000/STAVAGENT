@@ -8,10 +8,11 @@ import { ImportModal } from './components/import/ImportModal';
 import { ItemsTable } from './components/items/ItemsTable';
 import { SearchBar } from './components/search/SearchBar';
 import { SearchResults } from './components/search/SearchResults';
+import { AIPanel } from './components/ai/AIPanel';
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload } from './services/export/excelExportService';
-import { Trash2, FileSpreadsheet, Download } from 'lucide-react';
+import { Trash2, FileSpreadsheet, Download, Brain } from 'lucide-react';
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -20,6 +21,9 @@ function App() {
   // Search state
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Selected items for AI operations
+  const [selectedItemIds, setSelectedItemIds] = useState<Set<string>>(new Set());
 
   const selectedProject = projects.find(p => p.id === selectedProjectId);
 
@@ -255,7 +259,7 @@ function App() {
 
               {/* Selected Project Items */}
               {selectedProject && (
-                <div>
+                <div className="space-y-4">
                   <div className="mb-4">
                     <h2 className="text-lg font-semibold">
                       {selectedProject.metadata.projectName || selectedProject.fileName}
@@ -267,9 +271,18 @@ function App() {
                     )}
                   </div>
 
+                  {/* AI Panel */}
+                  <AIPanel
+                    items={selectedProject.items}
+                    projectId={selectedProject.id}
+                    selectedItemIds={Array.from(selectedItemIds)}
+                  />
+
                   <ItemsTable
                     items={selectedProject.items}
                     projectId={selectedProject.id}
+                    selectedIds={selectedItemIds}
+                    onSelectionChange={setSelectedItemIds}
                   />
                 </div>
               )}
