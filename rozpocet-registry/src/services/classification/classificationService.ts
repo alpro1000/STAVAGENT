@@ -170,6 +170,54 @@ export function applyClassifications(
 }
 
 /**
+ * Apply classifications with cascade to description rows
+ * When main item (with kod) gets classified, all following description rows
+ * (without kod) get the same group automatically
+ */
+export function applyClassificationsWithCascade(
+  items: ParsedItem[],
+  classifications: Map<string, WorkGroup>
+): number {
+  let applied = 0;
+
+  // Sort items by source.rowStart to process in order
+  const sortedItems = [...items].sort((a, b) =>
+    a.source.rowStart - b.source.rowStart
+  );
+
+  // Track last classified item with kod (main item)
+  let lastMainItemSkupina: WorkGroup | null = null;
+
+  for (const item of sortedItems) {
+    const hasCode = item.kod && item.kod.trim().length > 0;
+
+    if (hasCode) {
+      // This is a main item - check if it has classification
+      const suggested = classifications.get(item.id);
+
+      if (suggested) {
+        item.skupina = suggested;
+        item.skupinaSuggested = suggested;
+        lastMainItemSkupina = suggested;
+        applied++;
+      } else {
+        // Reset cascade if main item has no classification
+        lastMainItemSkupina = null;
+      }
+    } else {
+      // This is a description row - cascade from last main item
+      if (lastMainItemSkupina) {
+        item.skupina = lastMainItemSkupina;
+        item.skupinaSuggested = lastMainItemSkupina;
+        applied++;
+      }
+    }
+  }
+
+  return applied;
+}
+
+/**
  * Get classification statistics
  */
 export function getClassificationStats(items: ParsedItem[]): {

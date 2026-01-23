@@ -11,7 +11,7 @@ import { TemplateSelector } from '../templates/TemplateSelector';
 import { ConfigEditor } from '../config/ConfigEditor';
 import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/parser/excelParser';
 import { detectExcelStructure, type DetectionResult } from '../../services/autoDetect/structureDetector';
-import { classifyItems, applyClassifications } from '../../services/classification/classificationService';
+import { classifyItems, applyClassificationsWithCascade } from '../../services/classification/classificationService';
 import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
@@ -199,19 +199,26 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
       // Auto-classification (if enabled)
       let classificationResult;
       if (autoClassify) {
-        classificationResult = classifyItems(result.items, {
+        // ⭐ Classify ONLY main items (with kod), not description rows
+        const mainItems = result.items.filter(item =>
+          item.kod && item.kod.trim().length > 0
+        );
+
+        classificationResult = classifyItems(mainItems, {
           overwrite: false, // Don't overwrite existing classifications
           minConfidence: 50, // Only apply if 50%+ confidence
         });
 
-        // Apply classifications
+        // Apply classifications with cascade to description rows
         const classifications = new Map<string, any>();
         for (const res of classificationResult.results) {
           if (res.suggestedSkupina && res.confidence >= 50) {
             classifications.set(res.itemId, res.suggestedSkupina);
           }
         }
-        applyClassifications(result.items, classifications);
+
+        // ⭐ Use cascade function - applies group to main item AND description rows
+        applyClassificationsWithCascade(result.items, classifications);
       }
 
       // Vytvoříme projekt
