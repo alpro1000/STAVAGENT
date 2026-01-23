@@ -1,0 +1,157 @@
+/**
+ * Skupina Autocomplete Component
+ * Autocomplete s vyhledáváním pro výběr/vytvoření skupiny
+ */
+
+import { useState, useRef, useEffect } from 'react';
+import { Search, Plus } from 'lucide-react';
+
+interface SkupinaAutocompleteProps {
+  value: string | null;
+  onChange: (value: string | null) => void;
+  allGroups: string[];
+  onAddGroup: (group: string) => void;
+}
+
+export function SkupinaAutocomplete({
+  value,
+  onChange,
+  allGroups,
+  onAddGroup,
+}: SkupinaAutocompleteProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Фильтрованные группы
+  const filteredGroups = allGroups.filter((group) =>
+    group.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  // Проверка, существует ли введенное значение
+  const isNewGroup = searchTerm.trim() && !allGroups.includes(searchTerm.trim());
+
+  // Закрытие при клике вне
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node) &&
+        !inputRef.current?.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelect = (group: string) => {
+    onChange(group);
+    setSearchTerm('');
+    setIsOpen(false);
+  };
+
+  const handleAddNewGroup = () => {
+    const trimmed = searchTerm.trim();
+    if (trimmed) {
+      onAddGroup(trimmed);
+      onChange(trimmed);
+      setSearchTerm('');
+      setIsOpen(false);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+    setIsOpen(true);
+  };
+
+  const handleFocus = () => {
+    setIsOpen(true);
+    setSearchTerm('');
+  };
+
+  const handleClear = () => {
+    onChange(null);
+    setSearchTerm('');
+    inputRef.current?.focus();
+  };
+
+  return (
+    <div className="relative">
+      {/* Input */}
+      <div className="relative">
+        <input
+          ref={inputRef}
+          type="text"
+          value={isOpen ? searchTerm : value || ''}
+          onChange={handleInputChange}
+          onFocus={handleFocus}
+          placeholder="Hledat nebo vytvořit..."
+          className="text-sm bg-bg-tertiary border border-border-color rounded px-2 py-1 pl-8 pr-6
+                     focus:border-accent-primary focus:outline-none w-full"
+        />
+        <Search
+          size={14}
+          className="absolute left-2 top-1/2 -translate-y-1/2 text-text-secondary"
+        />
+        {value && !isOpen && (
+          <button
+            onClick={handleClear}
+            className="absolute right-2 top-1/2 -translate-y-1/2 text-text-secondary hover:text-error transition-colors"
+            title="Vymazat"
+          >
+            ✕
+          </button>
+        )}
+      </div>
+
+      {/* Dropdown */}
+      {isOpen && (
+        <div
+          ref={dropdownRef}
+          className="absolute z-50 mt-1 w-full bg-panel-clean border border-edge-light rounded-lg shadow-lg max-h-60 overflow-y-auto"
+        >
+          {/* Отфильтрованные группы */}
+          {filteredGroups.length > 0 ? (
+            <div className="py-1">
+              {filteredGroups.map((group) => (
+                <button
+                  key={group}
+                  onClick={() => handleSelect(group)}
+                  className="w-full px-3 py-2 text-left text-sm hover:bg-bg-secondary transition-colors flex items-center justify-between group"
+                >
+                  <span className="text-text-primary">{group}</span>
+                  {value === group && (
+                    <span className="text-accent-primary">✓</span>
+                  )}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="px-3 py-2 text-sm text-text-secondary">
+              Žádné skupiny nenalezeny
+            </div>
+          )}
+
+          {/* Создать новую группу */}
+          {isNewGroup && (
+            <>
+              <div className="border-t border-divider" />
+              <button
+                onClick={handleAddNewGroup}
+                className="w-full px-3 py-2 text-left text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 text-accent-primary font-medium"
+              >
+                <Plus size={16} />
+                <span>Vytvořit: "{searchTerm.trim()}"</span>
+              </button>
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

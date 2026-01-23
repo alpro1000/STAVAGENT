@@ -20,6 +20,8 @@ import { ChevronUp, ChevronDown, Sparkles, FolderOpen, Folder } from 'lucide-rea
 import type { ParsedItem } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
+import { AlertModal } from '../common/Modal';
+import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 
 interface ItemsTableProps {
   items: ParsedItem[];
@@ -47,6 +49,19 @@ export function ItemsTable({
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const [groupBySkupina, setGroupBySkupina] = useState(false);
 
+  // Модальное окно для уведомлений
+  const [alertModal, setAlertModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    variant: 'info' | 'success' | 'warning' | 'error';
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    variant: 'info',
+  });
+
   // Применить группу к похожим позициям
   const applyToSimilar = (sourceItem: ParsedItem) => {
     if (!sourceItem.skupina) return;
@@ -66,9 +81,19 @@ export function ItemsTable({
       bulkSetSkupina(projectId, updates);
 
       // Показываем уведомление
-      alert(`Группа "${sourceItem.skupina}" применена к ${suggestions.length} похожим позициям`);
+      setAlertModal({
+        isOpen: true,
+        title: 'Skupina aplikována',
+        message: `Skupina "${sourceItem.skupina}" byla úspěšně aplikována na ${suggestions.length} podobných položek.`,
+        variant: 'success',
+      });
     } else {
-      alert('Похожие позиции не найдены');
+      setAlertModal({
+        isOpen: true,
+        title: 'Nenalezeny podobné položky',
+        message: 'Pro tuto položku nebyly nalezeny žádné podobné položky s dostatečnou shodou (min. 70%).',
+        variant: 'info',
+      });
     }
 
     setApplyingToSimilar(null);
@@ -188,48 +213,29 @@ export function ItemsTable({
         cell: (info) => {
           const item = info.row.original;
           const currentSkupina = info.getValue();
-          const datalistId = `skupina-datalist-${item.id}`;
           const isApplying = applyingToSimilar === item.id;
-
-          const handleSkupinaChange = (value: string) => {
-            const trimmedValue = value.trim();
-            if (!trimmedValue) {
-              setItemSkupina(projectId, item.id, null!);
-              return;
-            }
-
-            // Добавляем новую группу если её нет в списке
-            if (!allGroups.includes(trimmedValue)) {
-              addCustomGroup(trimmedValue);
-            }
-
-            setItemSkupina(projectId, item.id, trimmedValue);
-          };
 
           return (
             <div className="flex items-center gap-1">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  list={datalistId}
-                  value={currentSkupina || ''}
-                  onChange={(e) => handleSkupinaChange(e.target.value)}
-                  onBlur={(e) => handleSkupinaChange(e.target.value)}
-                  placeholder="Zadejte nebo vyberte"
-                  className="text-sm bg-bg-tertiary border border-border-color rounded px-2 py-1
-                             focus:border-accent-primary focus:outline-none w-full"
+              <div className="flex-1">
+                <SkupinaAutocomplete
+                  value={currentSkupina}
+                  onChange={(value) => {
+                    if (value === null) {
+                      setItemSkupina(projectId, item.id, null!);
+                    } else {
+                      setItemSkupina(projectId, item.id, value);
+                    }
+                  }}
+                  allGroups={allGroups}
+                  onAddGroup={addCustomGroup}
                 />
-                <datalist id={datalistId}>
-                  {allGroups.map((group) => (
-                    <option key={group} value={group} />
-                  ))}
-                </datalist>
               </div>
               {currentSkupina && (
                 <button
                   onClick={() => applyToSimilar(item)}
                   disabled={isApplying}
-                  title="Применить к похожим позициям"
+                  title="Aplikovat na podobné položky"
                   className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
                 >
                   <Sparkles size={16} className="text-accent-primary" />
@@ -409,6 +415,15 @@ export function ItemsTable({
           </p>
         )}
       </div>
+
+      {/* Alert Modal */}
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+        title={alertModal.title}
+        message={alertModal.message}
+        variant={alertModal.variant}
+      />
     </div>
   );
 }
