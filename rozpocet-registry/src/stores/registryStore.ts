@@ -132,10 +132,42 @@ export const useRegistryStore = create<RegistryState>()(
         set((state) => ({
           projects: state.projects.map((p) => {
             if (p.id !== projectId) return p;
+
+            // Находим целевой item
+            const targetItem = p.items.find(item => item.id === itemId);
+            if (!targetItem) return p;
+
+            // Каскадное применение к строкам описания:
+            // Если у targetItem есть код, применяем группу к последующим items без кода
+            const hasCode = targetItem.kod && targetItem.kod.trim().length > 0;
+            const idsToUpdate = new Set([itemId]);
+
+            if (hasCode) {
+              // Сортируем items по source.rowStart
+              const sortedItems = [...p.items].sort((a, b) =>
+                a.source.rowStart - b.source.rowStart
+              );
+
+              // Находим индекс целевого item
+              const targetIndex = sortedItems.findIndex(item => item.id === itemId);
+
+              // Берём все последующие items до следующего с кодом
+              for (let i = targetIndex + 1; i < sortedItems.length; i++) {
+                const nextItem = sortedItems[i];
+                const nextHasCode = nextItem.kod && nextItem.kod.trim().length > 0;
+
+                // Если встретили item с кодом - останавливаемся
+                if (nextHasCode) break;
+
+                // Добавляем item без кода в список для обновления
+                idsToUpdate.add(nextItem.id);
+              }
+            }
+
             return {
               ...p,
               items: p.items.map((item) =>
-                item.id === itemId ? { ...item, skupina } : item
+                idsToUpdate.has(item.id) ? { ...item, skupina } : item
               ),
             };
           }),

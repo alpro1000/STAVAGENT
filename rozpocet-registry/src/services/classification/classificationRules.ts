@@ -135,15 +135,17 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
   },
 
   // ⭐ Если не распознано как монолит/префабрикат - общий бетон (низкий приоритет)
+  // Исключаем транспорт, dodání, doprava
   {
     skupina: 'Beton - monolitický',
     patterns: [
-      /beton/i,
-      /betono/i,
-      /\bC\d{2}\/\d{2}/i, // C20/25, C30/37
+      /(?!.*transport)(?!.*dodání)(?!.*doprava).*beton/i, // beton БЕЗ transport/dodání/doprava
+      /\bC\d{2}\/\d{2}/i, // C20/25, C30/37 - всегда монолит
+      /konstrukce.*beton/i, // конструкция из бетона
+      /beton.*konstrukce/i, // бетонная конструкция
     ],
     priority: 30,
-    keywords: ['beton', 'C20/25'],
+    keywords: ['beton', 'C20/25', 'konstrukce'],
   },
 
   // ==================== VÝZTUŽ ====================

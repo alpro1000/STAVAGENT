@@ -42,7 +42,7 @@ export function ItemsTable({
   sorting: externalSorting,
   onSortingChange: externalOnSortingChange,
 }: ItemsTableProps) {
-  const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina } = useRegistryStore();
+  const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina, getProject } = useRegistryStore();
   const allGroups = getAllGroups();
   const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
   const [grouping, setGrouping] = useState<GroupingState>([]);
@@ -68,8 +68,12 @@ export function ItemsTable({
 
     setApplyingToSimilar(sourceItem.id);
 
-    // Находим похожие позиции
-    const suggestions = autoAssignSimilarItems(sourceItem, items, 70);
+    // Получаем полный массив items из проекта (без фильтров)
+    const project = getProject(projectId);
+    const allProjectItems = project?.items || items;
+
+    // Находим похожие позиции с пониженными порогами для лучшего результата
+    const suggestions = autoAssignSimilarItems(sourceItem, allProjectItems, 60);
 
     if (suggestions.length > 0) {
       // Применяем группу ко всем похожим
@@ -91,7 +95,7 @@ export function ItemsTable({
       setAlertModal({
         isOpen: true,
         title: 'Nenalezeny podobné položky',
-        message: 'Pro tuto položku nebyly nalezeny žádné podobné položky s dostatečnou shodou (min. 70%).',
+        message: 'Pro tuto položku nebyly nalezeny žádné podobné položky s dostatečnou shodou (min. 60%).',
         variant: 'info',
       });
     }
