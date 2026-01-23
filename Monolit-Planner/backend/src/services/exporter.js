@@ -852,25 +852,6 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     });
     kpiSheet.addRow([]);
 
-    // Section 4: PRŮMĚRNÉ HODNOTY (static)
-    const avgSectionRow = kpiSheet.addRow(['PRŮMĚRNÉ HODNOTY']);
-    applyGroupHeaderStyle(avgSectionRow.getCell(1));
-    kpiSheet.mergeCells(avgSectionRow.number, 1, avgSectionRow.number, 3);
-
-    const avgData = [
-      ['Průměrná velikost party', formatNumber(header_kpi.avg_crew_size), 'osob'],
-      ['Průměrná hodinová sazba', formatCurrency(header_kpi.avg_wage_czk_ph), 'CZK/hod'],
-      ['Průměrný počet hodin za den', formatNumber(header_kpi.avg_shift_hours), 'hod']
-    ];
-    avgData.forEach((dataRow, idx) => {
-      const row = kpiSheet.addRow(dataRow);
-      applyDataRowStyle(row, idx % 2 === 0);
-      row.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
-      row.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
-      row.getCell(2).alignment = { horizontal: 'right' };
-      row.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
-    });
-
     // ============= SHEET 3: MATERIALS AGGREGATION (with formulas referencing Detaily) =============
     const materialsSheet = workbook.addWorksheet('Materiály', {
       views: [{ state: 'frozen', ySplit: 5 }]
