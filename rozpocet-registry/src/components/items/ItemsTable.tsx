@@ -110,10 +110,12 @@ export function ItemsTable({
     }
   };
 
-  const [sorting, setSorting] = useMemo(
-    () => [externalSorting || [], externalOnSortingChange || (() => {})],
-    [externalSorting, externalOnSortingChange]
-  );
+  // Внутренний стейт для сортировки (если внешний не передан)
+  const [internalSorting, setInternalSorting] = useState<SortingState>([]);
+
+  // Используем внешний или внутренний стейт
+  const sorting = externalSorting || internalSorting;
+  const setSorting = externalOnSortingChange || setInternalSorting;
 
   const columns = useMemo(
     () => [
@@ -265,7 +267,7 @@ export function ItemsTable({
         ])
       ),
     },
-    onSortingChange: setSorting as any,
+    onSortingChange: setSorting,
     onGroupingChange: setGrouping,
     onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
@@ -378,7 +380,7 @@ export function ItemsTable({
                           <ChevronUp size={16} />
                         )}
                         <span className="text-accent-primary">
-                          {row.groupingValue || '(Bez skupiny)'}
+                          {String(row.groupingValue || '(Bez skupiny)')}
                         </span>
                         <span className="text-text-secondary text-sm">
                           ({row.subRows.length} položek)
