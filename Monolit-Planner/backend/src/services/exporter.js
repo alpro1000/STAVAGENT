@@ -745,15 +745,16 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     krosTotalRow.getCell(2).alignment = { horizontal: 'right' };
     krosTotalRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
 
-    // Jednotková cena - formula: KROS / objem
+    // Jednotková cena - formula: divide KPI rows (KROS / objem) in same sheet
     const unitCostRowNumber = kpiSheet.lastRow.number + 1;
     const unitCostRow = kpiSheet.addRow(['Jednotková cena', null, 'CZK/m³']);
     applyDataRowStyle(unitCostRow, true);
     unitCostRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
-    unitCostRow.getCell(2).value = detailTotalsRow ? {
-      formula: `IF(Detaily!L${detailTotalsRow}>0,Detaily!N${detailTotalsRow}/Detaily!L${detailTotalsRow},0)`,
+    // Formula: Σ Cena (KROS) / Σ Objem betonu (from KPI sheet rows, not Detaily)
+    unitCostRow.getCell(2).value = {
+      formula: `IF(B${concreteVolumeRow.number}>0,B${krosTotalRow.number}/B${concreteVolumeRow.number},0)`,
       result: header_kpi.project_unit_cost_czk_per_m3 || 0
-    } : (header_kpi.project_unit_cost_czk_per_m3 || 0);
+    };
     unitCostRow.getCell(2).numFmt = '#,##0.00';
     unitCostRow.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.positive } };
     unitCostRow.getCell(2).alignment = { horizontal: 'right' };
@@ -838,18 +839,33 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     applyGroupHeaderStyle(workSectionRow.getCell(1));
     kpiSheet.mergeCells(workSectionRow.number, 1, workSectionRow.number, 3);
 
-    const workData = [
-      ['Režim', header_kpi.days_per_month === 30 ? '30 dní/měsíc' : '22 dní/měsíc', header_kpi.days_per_month === 30 ? '[spojitá stavba]' : '[pracovní dny]'],
-      ['Odhadovaná doba trvání', `${formatNumber(header_kpi.estimated_months)} měsíců`, `${formatNumber(header_kpi.estimated_weeks)} týdnů`]
-    ];
-    workData.forEach((dataRow, idx) => {
-      const row = kpiSheet.addRow(dataRow);
-      applyDataRowStyle(row, idx % 2 === 0);
-      row.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
-      row.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
-      row.getCell(2).alignment = { horizontal: 'right' };
-      row.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
-    });
+    // Režim práce
+    const regimeRow = kpiSheet.addRow(['Režim', header_kpi.days_per_month === 30 ? '30 dní/měsíc' : '22 dní/měsíc', header_kpi.days_per_month === 30 ? '[spojitá stavba]' : '[pracovní dny]']);
+    applyDataRowStyle(regimeRow, true);
+    regimeRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
+    regimeRow.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
+    regimeRow.getCell(2).alignment = { horizontal: 'right' };
+    regimeRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
+
+    // Odhadovaná doba trvání - formulas for automatic calculation
+    const durationRow = kpiSheet.addRow(['Odhadovaná doba trvání', null, null]);
+    applyDataRowStyle(durationRow, false);
+    durationRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
+
+    // Column B: Months = Σ Pracovní dny / days_per_month
+    durationRow.getCell(2).value = {
+      formula: `ROUND(B${workDaysRow.number}/${header_kpi.days_per_month},1)&" měsíců"`,
+      result: `${formatNumber(header_kpi.estimated_months)} měsíců`
+    };
+    durationRow.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
+    durationRow.getCell(2).alignment = { horizontal: 'right' };
+
+    // Column C: Weeks = Σ Pracovní dny / 7
+    durationRow.getCell(3).value = {
+      formula: `ROUND(B${workDaysRow.number}/7,1)&" týdnů"`,
+      result: `${formatNumber(header_kpi.estimated_weeks)} týdnů`
+    };
+    durationRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
     kpiSheet.addRow([]);
 
     // ============= SHEET 3: MATERIALS AGGREGATION (with formulas referencing Detaily) =============
@@ -924,7 +940,15 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     // Track material row numbers for Charts sheet formulas
     const materialRowMap = new Map(); // type -> row number
 
-    materials.forEach((mat) => {
+    // Convert Map to Array and sort: Betonování first, then others
+    const materialsArray = Array.from(materials.values());
+    materialsArray.sort((a, b) => {
+      if (a.type === 'Betonování' && b.type !== 'Betonování') return -1;
+      if (a.type !== 'Betonování' && b.type === 'Betonování') return 1;
+      return 0; // Keep original order for other materials
+    });
+
+    materialsArray.forEach((mat) => {
       const rowNumber = materialsSheet.lastRow.number + 1;
       if (matFirstDataRow === null) matFirstDataRow = rowNumber;
       matLastDataRow = rowNumber;
