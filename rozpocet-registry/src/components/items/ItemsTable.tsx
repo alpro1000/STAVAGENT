@@ -115,7 +115,16 @@ export function ItemsTable({
 
   // Используем внешний или внутренний стейт
   const sorting = externalSorting || internalSorting;
-  const setSorting = externalOnSortingChange || setInternalSorting;
+
+  // Wrapper для правильной обработки Updater<SortingState>
+  const handleSortingChange = (updater: any) => {
+    if (externalOnSortingChange) {
+      const newSorting = typeof updater === 'function' ? updater(sorting) : updater;
+      externalOnSortingChange(newSorting);
+    } else {
+      setInternalSorting(updater);
+    }
+  };
 
   const columns = useMemo(
     () => [
@@ -267,7 +276,7 @@ export function ItemsTable({
         ])
       ),
     },
-    onSortingChange: setSorting,
+    onSortingChange: handleSortingChange,
     onGroupingChange: setGrouping,
     onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
