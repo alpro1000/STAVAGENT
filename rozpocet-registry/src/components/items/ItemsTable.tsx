@@ -21,6 +21,7 @@ import type { ParsedItem } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
 import { AlertModal } from '../common/Modal';
+import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 
 interface ItemsTableProps {
   items: ParsedItem[];
@@ -212,48 +213,29 @@ export function ItemsTable({
         cell: (info) => {
           const item = info.row.original;
           const currentSkupina = info.getValue();
-          const datalistId = `skupina-datalist-${item.id}`;
           const isApplying = applyingToSimilar === item.id;
-
-          const handleSkupinaChange = (value: string) => {
-            const trimmedValue = value.trim();
-            if (!trimmedValue) {
-              setItemSkupina(projectId, item.id, null!);
-              return;
-            }
-
-            // Добавляем новую группу если её нет в списке
-            if (!allGroups.includes(trimmedValue)) {
-              addCustomGroup(trimmedValue);
-            }
-
-            setItemSkupina(projectId, item.id, trimmedValue);
-          };
 
           return (
             <div className="flex items-center gap-1">
-              <div className="relative flex-1">
-                <input
-                  type="text"
-                  list={datalistId}
-                  value={currentSkupina || ''}
-                  onChange={(e) => handleSkupinaChange(e.target.value)}
-                  onBlur={(e) => handleSkupinaChange(e.target.value)}
-                  placeholder="Zadejte nebo vyberte"
-                  className="text-sm bg-bg-tertiary border border-border-color rounded px-2 py-1
-                             focus:border-accent-primary focus:outline-none w-full"
+              <div className="flex-1">
+                <SkupinaAutocomplete
+                  value={currentSkupina}
+                  onChange={(value) => {
+                    if (value === null) {
+                      setItemSkupina(projectId, item.id, null!);
+                    } else {
+                      setItemSkupina(projectId, item.id, value);
+                    }
+                  }}
+                  allGroups={allGroups}
+                  onAddGroup={addCustomGroup}
                 />
-                <datalist id={datalistId}>
-                  {allGroups.map((group) => (
-                    <option key={group} value={group} />
-                  ))}
-                </datalist>
               </div>
               {currentSkupina && (
                 <button
                   onClick={() => applyToSimilar(item)}
                   disabled={isApplying}
-                  title="Применить к похожим позициям"
+                  title="Aplikovat na podobné položky"
                   className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
                 >
                   <Sparkles size={16} className="text-accent-primary" />

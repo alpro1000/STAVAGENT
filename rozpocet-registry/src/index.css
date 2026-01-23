@@ -324,3 +324,12 @@
 .bg-bg-secondary {
   background-color: var(--data-surface-alt);
 }
+
+/* Autocomplete bg colors */
+.bg-bg-tertiary {
+  background-color: var(--data-surface);
+}
+
+.border-border-color {
+  border-color: var(--edge-light);
+}
