@@ -20,6 +20,7 @@ import { ChevronUp, ChevronDown, Sparkles, FolderOpen, Folder } from 'lucide-rea
 import type { ParsedItem } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
+import { AlertModal } from '../common/Modal';
 
 interface ItemsTableProps {
   items: ParsedItem[];
@@ -47,6 +48,19 @@ export function ItemsTable({
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const [groupBySkupina, setGroupBySkupina] = useState(false);
 
+  // Модальное окно для уведомлений
+  const [alertModal, setAlertModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    message: string;
+    variant: 'info' | 'success' | 'warning' | 'error';
+  }>({
+    isOpen: false,
+    title: '',
+    message: '',
+    variant: 'info',
+  });
+
   // Применить группу к похожим позициям
   const applyToSimilar = (sourceItem: ParsedItem) => {
     if (!sourceItem.skupina) return;
@@ -66,9 +80,19 @@ export function ItemsTable({
       bulkSetSkupina(projectId, updates);
 
       // Показываем уведомление
-      alert(`Группа "${sourceItem.skupina}" применена к ${suggestions.length} похожим позициям`);
+      setAlertModal({
+        isOpen: true,
+        title: 'Skupina aplikována',
+        message: `Skupina "${sourceItem.skupina}" byla úspěšně aplikována na ${suggestions.length} podobných položek.`,
+        variant: 'success',
+      });
     } else {
-      alert('Похожие позиции не найдены');
+      setAlertModal({
+        isOpen: true,
+        title: 'Nenalezeny podobné položky',
+        message: 'Pro tuto položku nebyly nalezeny žádné podobné položky s dostatečnou shodou (min. 70%).',
+        variant: 'info',
+      });
     }
 
     setApplyingToSimilar(null);
@@ -409,6 +433,15 @@ export function ItemsTable({
           </p>
         )}
       </div>
+
+      {/* Alert Modal */}
+      <AlertModal
+        isOpen={alertModal.isOpen}
+        onClose={() => setAlertModal({ ...alertModal, isOpen: false })}
+        title={alertModal.title}
+        message={alertModal.message}
+        variant={alertModal.variant}
+      />
     </div>
   );
 }
