@@ -49,25 +49,29 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
     return Object.values(items).flat();
   }, [items]);
 
-  // Get unique groups
+  // Get items from selected projects (or all if none selected)
+  const projectItems = useMemo(() => {
+    if (selectedProjects.length === 0) {
+      return allItems;
+    }
+    return allItems.filter(item =>
+      selectedProjects.includes(item.source.projectId)
+    );
+  }, [allItems, selectedProjects]);
+
+  // Get unique groups from selected projects only
   const availableGroups = useMemo(() => {
     const groups = new Set<string>();
-    allItems.forEach(item => {
+    projectItems.forEach(item => {
       if (item.skupina) groups.add(item.skupina);
     });
     return Array.from(groups).sort();
-  }, [allItems]);
+  }, [projectItems]);
 
   // Filter items based on search and filters
   const filteredItems = useMemo(() => {
-    let result = allItems;
-
-    // Filter by projects
-    if (selectedProjects.length > 0) {
-      result = result.filter(item =>
-        selectedProjects.includes(item.source.projectId)
-      );
-    }
+    // Start with projectItems (already filtered by selected projects)
+    let result = projectItems;
 
     // Filter by groups
     if (selectedGroups.length > 0) {
@@ -88,12 +92,20 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
     }
 
     return result;
-  }, [allItems, selectedProjects, selectedGroups, searchQuery]);
+  }, [projectItems, selectedGroups, searchQuery]);
 
-  // Create report from filtered items
+  // Create report from filtered items (only work items - with kod AND mnozstvi)
   const handleCreateReport = () => {
+    // Filter only work items (exclude description rows)
+    const workItems = filteredItems.filter(item => {
+      const hasKod = item.kod && item.kod.trim().length > 0;
+      const hasQuantityOrPrice = (item.mnozstvi !== null && item.mnozstvi !== 0) ||
+                                  (item.cenaJednotkova !== null && item.cenaJednotkova !== 0);
+      return hasKod && hasQuantityOrPrice;
+    });
+
     const newReport = createPriceRequestReport(
-      filteredItems,
+      workItems,
       searchQuery || 'Všechny položky',
       projects
     );
