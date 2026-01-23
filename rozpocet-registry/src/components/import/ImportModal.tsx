@@ -69,10 +69,26 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         throw new Error('Soubor neobsahuje žádné listy.');
       }
 
+      // Фильтруем ненужные листы (Рекапитуляция и др.)
+      const filteredSheets = sheets.filter(sheetName => {
+        const normalized = sheetName.toLowerCase().trim();
+        // Исключаем листы с рекапитуляцией, титульным листом и др.
+        return !normalized.includes('рекапитуляц') &&
+               !normalized.includes('rekapitulac') &&
+               !normalized.includes('титул') &&
+               !normalized.includes('titul') &&
+               !normalized.includes('obsah') &&
+               !normalized.includes('содержани');
+      });
+
+      if (filteredSheets.length === 0) {
+        throw new Error('После фильтрации не осталось ни одного подходящего листа.');
+      }
+
       setFile(selectedFile);
       setWorkbook(wb);
-      setSheetNames(sheets);
-      setSelectedSheet(sheets[0]);
+      setSheetNames(filteredSheets);
+      setSelectedSheet(filteredSheets[0]);
       setStep('template'); // Changed from 'sheet' to add template selection step
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba při čtení souboru');

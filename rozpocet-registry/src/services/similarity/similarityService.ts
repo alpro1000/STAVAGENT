@@ -156,8 +156,8 @@ export function autoAssignSimilarItems(
 
   // Находим похожие позиции
   const similarItems = findSimilarItems(sourceItem, allItems, {
-    threshold: 0.3, // Более строгий порог
-    maxResults: 20,
+    threshold: 0.5, // Менее строгий порог (было 0.3) - находит больше похожих
+    maxResults: 50, // Увеличено с 20 до 50
     includeUnclassified: true, // Ищем среди неклассифицированных
   });
 
