@@ -369,6 +369,17 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       groupedPositions[pos.part_name].push(pos);
     });
 
+    // ⭐ Sort positions within each group: Betonování FIRST, then others
+    Object.keys(groupedPositions).forEach(partName => {
+      groupedPositions[partName].sort((a, b) => {
+        // Betonování (subtype = "beton") always first
+        if (a.subtype === 'beton' && b.subtype !== 'beton') return -1;
+        if (a.subtype !== 'beton' && b.subtype === 'beton') return 1;
+        // Others keep original order
+        return 0;
+      });
+    });
+
     // Column layout:
     // A: Podtyp, B: MJ, C: Množství, D: Lidi, E: Kč/hod, F: Hod/den, G: Dny
     // H: MJ/h (speed formula), I: Hod celkem (formula), J: Kč celkem (formula)
@@ -596,7 +607,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       const totalsRow = detailSheet.addRow([
         'CELKEM / TOTAL', // A
         '',               // B
-        null,             // C: Sum qty (formula)
+        '',               // C: ❌ NO SUM (different units - m², m³, etc.)
         '',               // D
         '',               // E
         '',               // F
@@ -605,7 +616,7 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
         null,             // I: Sum labor hours (formula)
         null,             // J: Sum cost CZK (formula)
         '',               // K
-        null,             // L: Sum concrete m³ (formula)
+        '',               // L: ❌ NO SUM (repeated concrete_m3 for all works)
         '',               // M
         null,             // N: Sum KROS total (formula)
         ''                // O: RFI
@@ -616,12 +627,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       // Apply Slate total row styling (double top border, bold, Slate 50 bg)
       applyTotalRowStyle(totalsRow);
 
-      // C: Sum of qty
-      totalsRow.getCell(3).value = {
-        formula: `SUM(C${firstDataRow}:C${lastDataRow})`,
-        result: totals.qty
-      };
-      totalsRow.getCell(3).numFmt = '0.00';
+      // ❌ C: No sum (different units - m², m³, kg, etc.)
+      // Removed SUM formula for column C
 
       // G: Sum of days
       totalsRow.getCell(7).value = {
@@ -644,12 +651,8 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
       };
       totalsRow.getCell(10).numFmt = '#,##0.00';
 
-      // L: Sum of concrete m³
-      totalsRow.getCell(12).value = {
-        formula: `SUM(L${firstDataRow}:L${lastDataRow})`,
-        result: totals.concreteM3
-      };
-      totalsRow.getCell(12).numFmt = '0.00';
+      // ❌ L: No sum (repeated concrete_m3 for KROS calculation convenience)
+      // Removed SUM formula for column L
 
       // N: Sum of KROS total
       totalsRow.getCell(14).value = {
@@ -716,12 +719,12 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
     applyGroupHeaderStyle(metricsSectionRow.getCell(1));
     kpiSheet.mergeCells(metricsSectionRow.number, 1, metricsSectionRow.number, 3);
 
-    // Σ Objem betonu - formula referencing Detaily totals row, column L
+    // Σ Objem betonu - SUMIF formula to sum only Betonování positions from column L
     const concreteVolumeRow = kpiSheet.addRow(['Σ Objem betonu', null, 'm³']);
     applyDataRowStyle(concreteVolumeRow, true);
     concreteVolumeRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
-    concreteVolumeRow.getCell(2).value = detailTotalsRow ? {
-      formula: `Detaily!L${detailTotalsRow}`,
+    concreteVolumeRow.getCell(2).value = (firstDataRow && lastDataRow) ? {
+      formula: `SUMIF(Detaily!A${firstDataRow}:A${lastDataRow},"Betonování",Detaily!L${firstDataRow}:L${lastDataRow})`,
       result: header_kpi.sum_concrete_m3 || 0
     } : (header_kpi.sum_concrete_m3 || 0);
     concreteVolumeRow.getCell(2).numFmt = '0.00';
@@ -784,7 +787,53 @@ export async function exportToXLSX(positions, header_kpi, bridge_id, saveToServe
 
     kpiSheet.addRow([]);
 
-    // Section 3: REŽIM PRÁCE (static)
+    // Section 3: PRŮMĚRNÉ HODNOTY (average values with formulas)
+    const avgSectionRow = kpiSheet.addRow(['PRŮMĚRNÉ HODNOTY']);
+    applyGroupHeaderStyle(avgSectionRow.getCell(1));
+    kpiSheet.mergeCells(avgSectionRow.number, 1, avgSectionRow.number, 3);
+
+    // Průměrná velikost party - AVERAGE of column D (Lidi)
+    const avgCrewSizeRow = kpiSheet.addRow(['Průměrná velikost party', null, 'lidí']);
+    applyDataRowStyle(avgCrewSizeRow, true);
+    avgCrewSizeRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
+    avgCrewSizeRow.getCell(2).value = (firstDataRow && lastDataRow) ? {
+      formula: `AVERAGE(Detaily!D${firstDataRow}:D${lastDataRow})`,
+      result: positions.length > 0 ? positions.reduce((sum, p) => sum + (p.crew_size || 0), 0) / positions.length : 0
+    } : 0;
+    avgCrewSizeRow.getCell(2).numFmt = '0.00';
+    avgCrewSizeRow.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
+    avgCrewSizeRow.getCell(2).alignment = { horizontal: 'right' };
+    avgCrewSizeRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
+
+    // Průměrná hodinová sazba - AVERAGE of column E (Kč/hod)
+    const avgWageRow = kpiSheet.addRow(['Průměrná hodinová sazba', null, 'Kč/hod']);
+    applyDataRowStyle(avgWageRow, false);
+    avgWageRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
+    avgWageRow.getCell(2).value = (firstDataRow && lastDataRow) ? {
+      formula: `AVERAGE(Detaily!E${firstDataRow}:E${lastDataRow})`,
+      result: positions.length > 0 ? positions.reduce((sum, p) => sum + (p.wage_czk_ph || 0), 0) / positions.length : 0
+    } : 0;
+    avgWageRow.getCell(2).numFmt = '#,##0.00';
+    avgWageRow.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
+    avgWageRow.getCell(2).alignment = { horizontal: 'right' };
+    avgWageRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
+
+    // Průměrný počet hodin za den - AVERAGE of column F (Hod/den)
+    const avgShiftHoursRow = kpiSheet.addRow(['Průměrný počet hodin za den', null, 'hod/den']);
+    applyDataRowStyle(avgShiftHoursRow, true);
+    avgShiftHoursRow.getCell(1).font = { name: 'Calibri', size: 10, color: { argb: colors.textSecondary } };
+    avgShiftHoursRow.getCell(2).value = (firstDataRow && lastDataRow) ? {
+      formula: `AVERAGE(Detaily!F${firstDataRow}:F${lastDataRow})`,
+      result: positions.length > 0 ? positions.reduce((sum, p) => sum + (p.shift_hours || 0), 0) / positions.length : 0
+    } : 0;
+    avgShiftHoursRow.getCell(2).numFmt = '0.00';
+    avgShiftHoursRow.getCell(2).font = { name: 'Calibri', size: 10, bold: true, color: { argb: colors.textPrimary } };
+    avgShiftHoursRow.getCell(2).alignment = { horizontal: 'right' };
+    avgShiftHoursRow.getCell(3).font = { name: 'Calibri', size: 10, color: { argb: colors.textMuted } };
+
+    kpiSheet.addRow([]);
+
+    // Section 4: REŽIM PRÁCE (static)
     const workSectionRow = kpiSheet.addRow(['REŽIM PRÁCE']);
     applyGroupHeaderStyle(workSectionRow.getCell(1));
     kpiSheet.mergeCells(workSectionRow.number, 1, workSectionRow.number, 3);
