@@ -27,7 +27,24 @@ function App() {
   // Selected items for AI operations
   const [selectedItemIds, setSelectedItemIds] = useState<Set<string>>(new Set());
 
+  // Filter state - show only work items (hide descriptions)
+  const [showOnlyWorkItems, setShowOnlyWorkItems] = useState(false);
+
   const selectedProject = projects.find(p => p.id === selectedProjectId);
+
+  // Filter items based on showOnlyWorkItems flag
+  const getFilteredItems = () => {
+    if (!selectedProject) return [];
+    if (!showOnlyWorkItems) return selectedProject.items;
+
+    // Work items have kod AND (mnozstvi OR cenaJednotkova)
+    return selectedProject.items.filter(item => {
+      const hasKod = item.kod && item.kod.trim().length > 0;
+      const hasQuantityOrPrice = (item.mnozstvi !== null && item.mnozstvi !== 0) ||
+                                  (item.cenaJednotkova !== null && item.cenaJednotkova !== 0);
+      return hasKod && hasQuantityOrPrice;
+    });
+  };
 
   const handleSearch = (query: string, filters: SearchFilters) => {
     setIsSearching(true);
@@ -290,8 +307,33 @@ function App() {
                     selectedItemIds={Array.from(selectedItemIds)}
                   />
 
+                  {/* Filter Controls */}
+                  <div className="flex items-center gap-3 p-3 bg-bg-secondary rounded-lg border border-border-color">
+                    <input
+                      type="checkbox"
+                      id="show-only-work"
+                      checked={showOnlyWorkItems}
+                      onChange={(e) => setShowOnlyWorkItems(e.target.checked)}
+                      className="w-4 h-4 text-accent-primary bg-panel-clean border-border-color rounded
+                                 focus:ring-2 focus:ring-accent-primary cursor-pointer"
+                    />
+                    <label htmlFor="show-only-work" className="flex-1 cursor-pointer select-none">
+                      <div className="text-sm font-medium text-text-primary">
+                        📋 Zobrazit pouze pracovní položky
+                      </div>
+                      <div className="text-xs text-text-secondary">
+                        Skrýt popisné řádky (zobrazí se pouze položky s kódem a množstvím)
+                      </div>
+                    </label>
+                    {showOnlyWorkItems && (
+                      <span className="px-2 py-1 text-xs bg-accent-primary text-white rounded">
+                        {getFilteredItems().length} / {selectedProject.items.length}
+                      </span>
+                    )}
+                  </div>
+
                   <ItemsTable
-                    items={selectedProject.items}
+                    items={getFilteredItems()}
                     projectId={selectedProject.id}
                     selectedIds={selectedItemIds}
                     onSelectionChange={setSelectedItemIds}
