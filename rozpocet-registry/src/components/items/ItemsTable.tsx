@@ -114,6 +114,17 @@ export function ItemsTable({
     }
   };
 
+  // Get only assigned groups from current project items (not all 40+ predefined)
+  const assignedGroups = useMemo(() => {
+    const groups = new Set<string>();
+    items.forEach(item => {
+      if (item.skupina) {
+        groups.add(item.skupina);
+      }
+    });
+    return Array.from(groups).sort();
+  }, [items]);
+
   // Внутренний стейт для сортировки (если внешний не передан)
   const [internalSorting, setInternalSorting] = useState<SortingState>([]);
 
@@ -224,7 +235,25 @@ export function ItemsTable({
 
       // Skupina
       columnHelper.accessor('skupina', {
-        header: 'Skupina',
+        header: () => (
+          <div className="flex items-center gap-2">
+            <span>Skupina</span>
+            {assignedGroups.length > 0 && (
+              <button
+                onClick={toggleGrouping}
+                className={`px-2 py-1 text-xs rounded flex items-center gap-1 transition-colors ${
+                  groupBySkupina
+                    ? 'bg-accent-primary text-white'
+                    : 'bg-bg-secondary hover:bg-bg-tertiary'
+                }`}
+                title={groupBySkupina ? 'Zrušit seskupení' : 'Seskupit podle skupiny'}
+              >
+                {groupBySkupina ? <FolderOpen size={14} /> : <Folder size={14} />}
+                <span>{assignedGroups.length}</span>
+              </button>
+            )}
+          </div>
+        ),
         cell: (info) => {
           const item = info.row.original;
           const currentSkupina = info.getValue();
@@ -263,7 +292,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar]
+    [projectId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, assignedGroups, groupBySkupina, toggleGrouping]
   );
 
   const table = useReactTable({
@@ -324,21 +353,6 @@ export function ItemsTable({
 
   return (
     <div className="card overflow-hidden">
-      {/* Toolbar */}
-      <div className="border-b border-border-color px-4 py-2 flex items-center gap-2">
-        <button
-          onClick={toggleGrouping}
-          className={`px-3 py-1 text-sm rounded flex items-center gap-2 transition-colors ${
-            groupBySkupina
-              ? 'bg-accent-primary text-white'
-              : 'bg-bg-secondary hover:bg-bg-tertiary'
-          }`}
-        >
-          {groupBySkupina ? <FolderOpen size={16} /> : <Folder size={16} />}
-          {groupBySkupina ? 'Skupiny zapnuty' : 'Seskupit podle skupiny'}
-        </button>
-      </div>
-
       <div className="overflow-x-auto scrollbar-thin">
         <table className="table">
           <thead>
