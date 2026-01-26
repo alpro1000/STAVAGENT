@@ -39,7 +39,7 @@ function App() {
   const [showOnlyWorkItems, setShowOnlyWorkItems] = useState(false);
 
   const selectedProject = projects.find(p => p.id === selectedProjectId);
-  const selectedSheet = selectedProject && selectedSheetId
+  const selectedSheet = selectedProject && selectedProjectId && selectedSheetId
     ? getSheet(selectedProjectId, selectedSheetId)
     : null;
 

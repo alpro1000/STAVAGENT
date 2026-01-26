@@ -5,8 +5,26 @@
  */
 
 import * as XLSX from 'xlsx';
-import type { Project } from '../../types/project';
+import type { SheetStats } from '../../types/project';
+import type { ProjectMetadata } from '../../types/project';
+import type { ImportConfig } from '../../types/config';
 import type { ParsedItem } from '../../types/item';
+
+/**
+ * Exportable project (compatibility type for export)
+ * This represents either a Sheet or a Project-like object with sheet data
+ */
+export interface ExportableProject {
+  id: string;
+  fileName: string;
+  projectName?: string;
+  filePath: string;
+  importedAt: Date;
+  items: ParsedItem[];
+  stats: SheetStats;
+  metadata: ProjectMetadata;
+  config: ImportConfig;
+}
 
 /**
  * Export options
@@ -22,7 +40,7 @@ export interface ExportOptions {
  * Export project to Excel with hyperlinks
  */
 export function exportProjectToExcel(
-  project: Project,
+  project: ExportableProject,
   options: ExportOptions = {}
 ): ArrayBuffer {
   const {
@@ -62,7 +80,7 @@ export function exportProjectToExcel(
  * Create items sheet with hyperlinks
  */
 function createItemsSheet(
-  project: Project,
+  project: ExportableProject,
   groupBySkupina: boolean,
   addHyperlinks: boolean
 ): XLSX.WorkSheet {
@@ -152,7 +170,7 @@ function createItemsSheet(
 /**
  * Create summary sheet
  */
-function createSummarySheet(project: Project): XLSX.WorkSheet {
+function createSummarySheet(project: ExportableProject): XLSX.WorkSheet {
   const data: any[][] = [];
 
   // Project info
@@ -187,7 +205,7 @@ function createSummarySheet(project: Project): XLSX.WorkSheet {
 /**
  * Create metadata sheet
  */
-function createMetadataSheet(project: Project): XLSX.WorkSheet {
+function createMetadataSheet(project: ExportableProject): XLSX.WorkSheet {
   const data: any[][] = [];
 
   data.push(['Metadata projektu', '']);
@@ -266,7 +284,7 @@ export function downloadExcel(
  * Export and download in one call
  */
 export function exportAndDownload(
-  project: Project,
+  project: ExportableProject,
   options?: ExportOptions
 ): void {
   const arrayBuffer = exportProjectToExcel(project, options);

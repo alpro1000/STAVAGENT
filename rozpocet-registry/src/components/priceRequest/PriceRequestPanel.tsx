@@ -23,7 +23,7 @@ interface PriceRequestPanelProps {
 }
 
 export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
-  const { projects, bulkSetSkupina } = useRegistryStore();
+  const { projects } = useRegistryStore();
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
