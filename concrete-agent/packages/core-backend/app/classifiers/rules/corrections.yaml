@@ -1,0 +1,14 @@
+version: 1.0.0
+corrections:
+- text: TEST VÝZTUŽ KOTEVNÍ
+  wrong_group: VYZTUŽ
+  correct_group: KOTVENI
+  scope: global
+  keyword: test
+  created_at: '2026-01-26T07:47:40.152521'
+- text: TEST VÝZTUŽ KOTEVNÍ
+  wrong_group: VYZTUŽ
+  correct_group: KOTVENI
+  scope: global
+  keyword: test
+  created_at: '2026-01-26T07:48:02.064914'
