@@ -215,7 +215,6 @@ export const useRegistryStore = create<RegistryState>()(
         }));
         get().updateSheetStats(projectId, sheetId);
       },
-      },
 
       // Apply skupina to ALL sheets with same kod across ALL projects
       setItemSkupinaGlobal: (itemKod, skupina) => {

@@ -23,7 +23,7 @@ interface PriceRequestPanelProps {
 }
 
 export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
-  const { projects, items } = useRegistryStore();
+  const { projects, bulkSetSkupina } = useRegistryStore();
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -44,10 +44,16 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
   // Report state
   const [report, setReport] = useState<PriceRequestReport | null>(null);
 
-  // Get all items from all projects
+  // Get all items from all sheets in all projects
   const allItems = useMemo(() => {
-    return Object.values(items).flat();
-  }, [items]);
+    const items: ParsedItem[] = [];
+    projects.forEach(project => {
+      project.sheets.forEach(sheet => {
+        items.push(...sheet.items);
+      });
+    });
+    return items;
+  }, [projects]);
 
   // Get items from selected projects (or all if none selected)
   const projectItems = useMemo(() => {
@@ -161,19 +167,26 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
     // Apply to all items and update store
     const updatedItems = applyImportedPrices(allItems, importResult);
 
-    // Group by project and update
-    const itemsByProject = new Map<string, ParsedItem[]>();
+    // Group by (projectId, sheetName) and update
+    const itemsBySheet = new Map<string, ParsedItem[]>();
     updatedItems.forEach(item => {
-      const projectId = item.source.projectId;
-      if (!itemsByProject.has(projectId)) {
-        itemsByProject.set(projectId, []);
+      const key = `${item.source.projectId}|${item.source.sheetName}`;
+      if (!itemsBySheet.has(key)) {
+        itemsBySheet.set(key, []);
       }
-      itemsByProject.get(projectId)!.push(item);
+      itemsBySheet.get(key)!.push(item);
     });
 
-    // Update store for each project
-    itemsByProject.forEach((projectItems, projectId) => {
-      useRegistryStore.getState().setItems(projectId, projectItems);
+    // Update store for each sheet
+    const store = useRegistryStore.getState();
+    itemsBySheet.forEach((sheetItems, key) => {
+      const [projectId, sheetName] = key.split('|');
+      // Find the sheet by projectId and sheetName
+      const project = projects.find(p => p.id === projectId);
+      const sheet = project?.sheets.find(s => s.name === sheetName);
+      if (sheet) {
+        store.setItems(projectId, sheet.id, sheetItems);
+      }
     });
 
     setImportResult(null);
@@ -253,7 +266,7 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
                           : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
                       }`}
                     >
-                      {project.metadata.projectName || project.fileName}
+                      {project.projectName}
                     </button>
                   ))}
                 </div>

@@ -361,6 +361,7 @@ function App() {
                   <AIPanel
                     items={selectedSheet.items}
                     projectId={selectedProject.id}
+                    sheetId={selectedSheet.id}
                     selectedItemIds={Array.from(selectedItemIds)}
                   />
 
