@@ -18,7 +18,15 @@ import { Trash2, FileSpreadsheet, Download, Package } from 'lucide-react';
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isPriceRequestOpen, setIsPriceRequestOpen] = useState(false);
-  const { projects, selectedProjectId, setSelectedProject, removeProject } = useRegistryStore();
+  const {
+    projects,
+    selectedProjectId,
+    selectedSheetId,
+    setSelectedProject,
+    setSelectedSheet,
+    removeProject,
+    getSheet,
+  } = useRegistryStore();
 
   // Search state
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
@@ -31,14 +39,17 @@ function App() {
   const [showOnlyWorkItems, setShowOnlyWorkItems] = useState(false);
 
   const selectedProject = projects.find(p => p.id === selectedProjectId);
+  const selectedSheet = selectedProject && selectedProjectId && selectedSheetId
+    ? getSheet(selectedProjectId, selectedSheetId)
+    : null;
 
   // Filter items based on showOnlyWorkItems flag
   const getFilteredItems = () => {
-    if (!selectedProject) return [];
-    if (!showOnlyWorkItems) return selectedProject.items;
+    if (!selectedSheet) return [];
+    if (!showOnlyWorkItems) return selectedSheet.items;
 
     // Work items have kod AND (mnozstvi OR cenaJednotkova)
-    return selectedProject.items.filter(item => {
+    return selectedSheet.items.filter(item => {
       const hasKod = item.kod && item.kod.trim().length > 0;
       const hasQuantityOrPrice = (item.mnozstvi !== null && item.mnozstvi !== 0) ||
                                   (item.cenaJednotkova !== null && item.cenaJednotkova !== 0);
@@ -65,8 +76,16 @@ function App() {
   };
 
   const handleExport = () => {
-    if (!selectedProject) return;
-    exportAndDownload(selectedProject, {
+    if (!selectedProject || !selectedSheet) return;
+    // Create a temporary project-like object with only the selected sheet's data
+    const sheetAsProject = {
+      ...selectedProject,
+      items: selectedSheet.items,
+      stats: selectedSheet.stats,
+      metadata: selectedSheet.metadata,
+      config: selectedSheet.config,
+    };
+    exportAndDownload(sheetAsProject, {
       includeMetadata: true,
       includeSummary: true,
       groupBySkupina: true,
@@ -249,7 +268,7 @@ function App() {
                   </button>
                 </div>
 
-                {/* Tabs */}
+                {/* Project Tabs */}
                 <div className="flex items-center gap-2 overflow-x-auto pb-2">
                   {projects.map((project) => (
                     <div
@@ -265,13 +284,16 @@ function App() {
                       onClick={() => setSelectedProject(project.id)}
                     >
                       <FileSpreadsheet size={16} className="text-accent-primary flex-shrink-0" />
-                      <span className="text-sm font-medium max-w-[200px] truncate" title={project.metadata.sheetName || project.fileName}>
-                        {project.metadata.sheetName || project.fileName}
+                      <span className="text-sm font-medium max-w-[200px] truncate" title={project.projectName}>
+                        {project.projectName}
+                      </span>
+                      <span className="text-xs text-text-muted ml-1">
+                        ({project.sheets.length} {project.sheets.length === 1 ? 'list' : 'listy'})
                       </span>
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          if (window.confirm(`Opravdu smazat projekt "${project.metadata.sheetName || project.fileName}"?`)) {
+                          if (window.confirm(`Opravdu smazat projekt "${project.projectName}"?`)) {
                             removeProject(project.id);
                           }
                         }}
@@ -285,25 +307,61 @@ function App() {
                 </div>
               </div>
 
+              {/* Sheet Tabs (horizontal scrollable) */}
+              {selectedProject && selectedProject.sheets.length > 0 && (
+                <div className="mb-4">
+                  <h3 className="text-sm font-medium text-text-secondary mb-2">
+                    Listy projektu:
+                  </h3>
+                  <div className="flex items-center gap-2 overflow-x-auto pb-2 max-w-full">
+                    {selectedProject.sheets.map((sheet) => (
+                      <div
+                        key={sheet.id}
+                        className={`
+                          flex items-center gap-2 px-3 py-2 rounded-lg border transition-all cursor-pointer
+                          whitespace-nowrap min-w-fit
+                          ${selectedSheetId === sheet.id
+                            ? 'border-accent-orange bg-accent-orange/10 text-text-primary font-medium'
+                            : 'border-border-color hover:border-accent-orange/50 bg-bg-secondary text-text-secondary'
+                          }
+                        `}
+                        onClick={() => setSelectedSheet(selectedProjectId, sheet.id)}
+                      >
+                        <span className="text-sm" title={sheet.name}>
+                          {sheet.name}
+                        </span>
+                        <span className="text-xs text-text-muted">
+                          ({sheet.stats.totalItems} položek)
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-              {/* Selected Project Items */}
-              {selectedProject && (
+
+              {/* Selected Sheet Items */}
+              {selectedProject && selectedSheet && (
                 <div className="space-y-4">
                   <div className="mb-4">
                     <h2 className="text-lg font-semibold">
-                      {selectedProject.metadata.projectName || selectedProject.fileName}
+                      {selectedProject.projectName}
                     </h2>
-                    {selectedProject.metadata.oddil && (
+                    <p className="text-sm text-text-secondary">
+                      List: {selectedSheet.name}
+                    </p>
+                    {selectedSheet.metadata.oddil && (
                       <p className="text-sm text-text-secondary">
-                        Oddíl: {selectedProject.metadata.oddil}
+                        Oddíl: {selectedSheet.metadata.oddil}
                       </p>
                     )}
                   </div>
 
                   {/* AI Panel */}
                   <AIPanel
-                    items={selectedProject.items}
+                    items={selectedSheet.items}
                     projectId={selectedProject.id}
+                    sheetId={selectedSheet.id}
                     selectedItemIds={Array.from(selectedItemIds)}
                   />
 
@@ -327,7 +385,7 @@ function App() {
                     </label>
                     {showOnlyWorkItems && (
                       <span className="px-2 py-1 text-xs bg-accent-primary text-white rounded">
-                        {getFilteredItems().length} / {selectedProject.items.length}
+                        {getFilteredItems().length} / {selectedSheet.items.length}
                       </span>
                     )}
                   </div>
@@ -335,9 +393,19 @@ function App() {
                   <ItemsTable
                     items={getFilteredItems()}
                     projectId={selectedProject.id}
+                    sheetId={selectedSheet.id}
                     selectedIds={selectedItemIds}
                     onSelectionChange={setSelectedItemIds}
                   />
+                </div>
+              )}
+
+              {/* No sheet selected message */}
+              {selectedProject && !selectedSheet && (
+                <div className="card text-center py-8">
+                  <p className="text-text-secondary">
+                    Vyberte list pro zobrazení položek
+                  </p>
                 </div>
               )}
             </>

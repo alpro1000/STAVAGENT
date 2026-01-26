@@ -1,0 +1,368 @@
+# Default Classification Rules for Construction Works
+# Version: 1.0.0
+# Last Updated: 2026-01-26
+
+version: "1.0.0"
+
+groups:
+  # ========================================
+  # ZEMNÍ PRÁCE (Earthworks)
+  # ========================================
+  ZEMNI_PRACE:
+    name: "ZEMNI_PRACE"
+    include:
+      # Excavation
+      - "výkop"
+      - "výkopy"
+      - "odkop"
+      - "odkopávky"
+      - "prokopávky"
+      - "rýha"
+      - "rýhy"
+      - "hloubení"
+      - "jáma"
+      - "jam"
+      # Backfill
+      - "zásyp"
+      - "násyp"
+      - "hutnění"
+      - "zhutnění"
+      # Support
+      - "pažení"
+      - "zapaž"
+      - "čerpání vody"
+      - "odvodnění"
+      - "odvodňování"
+      # Other
+      - "skrývka"
+      - "planýrování"
+      - "výměna zeminy"
+      - "odvoz zeminy"
+      - "terénní úpravy"
+    exclude:
+      - "pilot"
+      - "mikropilot"
+      - "vrt"
+    boost_units:
+      - "m3"
+      - "m³"
+      - "m2"
+      - "m²"
+    subtypes:
+      HLOUBENI:
+        - "hloubení"
+        - "jáma"
+        - "jam"
+        - "výkop"
+        - "rýha"
+      PAZENI:
+        - "pažení"
+        - "zapaž"
+      ODVODNENI:
+        - "čerpání vody"
+        - "odvodnění"
+        - "odvodňování"
+      ZASYPANI:
+        - "zásyp"
+        - "násyp"
+        - "hutnění"
+        - "zhutnění"
+
+  # ========================================
+  # BETON MONOLITICKÝ (Cast-in-place concrete)
+  # ========================================
+  BETON_MONOLIT:
+    name: "BETON_MONOLIT"
+    include:
+      - "betonáž"
+      - "monolit"
+      - "zřízení"
+      - "zhotovení"
+      - "ukládka betonu"
+      - "železobeton"
+      - "železobetonová konstrukce"
+      - "rámová konstrukce"
+      - "mostní konstrukce"
+      - "stropní deska"
+      - "základová deska"
+      - "sloupy"
+      - "pilíře"
+      - "opěrná zeď"
+    exclude:
+      - "z dílců"
+      - "prefabrik"
+      - "montáž dílců"
+      - "osazení dílců"
+      - "obrubník"
+      - "tvárnice"
+    boost_units:
+      - "m3"
+      - "m³"
+    boost_codes:
+      - "C30/37"
+      - "C35/45"
+      - "C40/50"
+      - "C25/30"
+      - "C20/25"
+      - "C16/20"
+      - "C12/15"
+    subtypes:
+      ZELEZOBETON:
+        - "železobeton"
+        - "C30/37"
+        - "C35/45"
+        - "C40/50"
+      PROSTY_BETON:
+        - "prostý beton"
+        - "podkladní"
+        - "výplňové"
+        - "C12/15"
+        - "C16/20"
+        - "C25/30"
+
+  # ========================================
+  # BETON PREFABRIKOVANÝ (Precast concrete)
+  # ========================================
+  BETON_PREFAB:
+    name: "BETON_PREFAB"
+    include:
+      - "z dílců"
+      - "prefabrik"
+      - "montáž dílců"
+      - "osazení dílců"
+      - "obrubník"
+      - "obrubníky"
+      - "obruby"
+      - "tvárnice"
+      - "žlab"
+      - "žlaby"
+      - "skruž"
+      - "šachta"
+      - "dílec"
+      - "prvky"
+      - "panel"
+      - "tvarovka"
+      - "prefa"
+      - "betonové dílce"
+      - "betonových obrubníků"
+      - "prefabrikované prvky"
+    priority_over:
+      - "BETON_MONOLIT"
+      - "KOMUNIKACE"
+    boost_units:
+      - "ks"
+      - "m"
+      - "m2"
+      - "m²"
+
+  # ========================================
+  # VÝZTUŽ (Reinforcement)
+  # ========================================
+  VYZTUŽ:
+    name: "VYZTUŽ"
+    include:
+      - "výztuž"
+      - "armatura"
+      - "pruty"
+      - "kari"
+      - "kari síť"
+      - "třmínky"
+      - "roxor"
+      - "B500"
+      - "B500B"
+      - "betonářská ocel"
+      - "výztužné pruty"
+    exclude:
+      - "kotva"
+      - "kotvy"
+      - "kotvení"
+      - "předpětí"
+      - "lana"
+      - "kabely"
+      - "injektáž"
+    boost_units:
+      - "kg"
+      - "t"
+    subtypes:
+      PRUTY:
+        - "pruty"
+        - "prut"
+        - "výztužné pruty"
+      SITE:
+        - "kari"
+        - "síť"
+        - "roxor"
+
+  # ========================================
+  # KOTVENÍ (Anchoring)
+  # ========================================
+  KOTVENI:
+    name: "KOTVENI"
+    include:
+      - "kotva"
+      - "kotvy"
+      - "kotvení"
+      - "injektáž"
+      - "injektované kotvy"
+      - "vrt"
+      - "vrty"
+      - "pramen"
+      - "hlava kotvy"
+      - "napínání kotvy"
+      - "trvalé kotvy"
+      - "tyčové kotvy"
+      - "lanové kotvy"
+    exclude:
+      - "výztuž"
+      - "kari"
+      - "roxor"
+      - "betonářská ocel"
+    boost_units:
+      - "ks"
+      - "m"
+    priority_over:
+      - "VYZTUŽ"
+    subtypes:
+      TYCOVE:
+        - "tyčové"
+        - "tyč"
+      LANOVE:
+        - "lanové"
+        - "lano"
+        - "pramen"
+
+  # ========================================
+  # BEDNĚNÍ (Formwork)
+  # ========================================
+  BEDNENI:
+    name: "BEDNENI"
+    include:
+      - "bednění"
+      - "odbednění"
+      - "systémové bednění"
+      - "zřízení bednění"
+      - "obednění"
+      - "podepření"
+      - "lešení"
+    boost_units:
+      - "m2"
+      - "m²"
+    subtypes:
+      SYSTEMOVE:
+        - "systémové"
+        - "systém"
+      TVAROVE:
+        - "tvarové"
+        - "obloukové"
+
+  # ========================================
+  # PILOTY (Piles)
+  # ========================================
+  PILOTY:
+    name: "PILOTY"
+    include:
+      - "pilota"
+      - "piloty"
+      - "mikropilota"
+      - "mikropiloty"
+      - "vrtání pilot"
+      - "vrtané piloty"
+      - "betonování pilot"
+      - "velkoprůměrové piloty"
+    boost_units:
+      - "m"
+      - "ks"
+    subtypes:
+      VRTANE:
+        - "vrtané"
+        - "vrtání"
+      MIKRO:
+        - "mikropilota"
+        - "mikropiloty"
+
+  # ========================================
+  # IZOLACE (Insulation/Waterproofing)
+  # ========================================
+  IZOLACE:
+    name: "IZOLACE"
+    include:
+      - "izolace"
+      - "hydroizolace"
+      - "parozábrana"
+      - "geotextilie"
+      - "fólie"
+      - "asfaltový pás"
+      - "nátěr"
+      - "penetrace"
+      - "vodotěsná membrána"
+    boost_units:
+      - "m2"
+      - "m²"
+    subtypes:
+      HYDRO:
+        - "hydroizolace"
+        - "vodotěsná"
+      TEPELNA:
+        - "tepelná izolace"
+        - "polystyren"
+
+  # ========================================
+  # KOMUNIKACE (Roads/Pavements)
+  # ========================================
+  KOMUNIKACE:
+    name: "KOMUNIKACE"
+    include:
+      - "komunikace"
+      - "vozovka"
+      - "asfalt"
+      - "obruby"
+      - "chodník"
+      - "dlažba"
+      - "kryty komunikací"
+      - "podkladní vrstva"
+      - "ložná vrstva"
+    boost_units:
+      - "m2"
+      - "m²"
+      - "t"
+    subtypes:
+      ASFALT:
+        - "asfalt"
+        - "kryty komunikací"
+      DLAZBA:
+        - "dlažba"
+        - "zámková dlažba"
+
+  # ========================================
+  # DOPRAVA (Transportation/Hauling)
+  # ========================================
+  DOPRAVA:
+    name: "DOPRAVA"
+    include:
+      - "doprava betonu"
+      - "dovoz betonu"
+      - "čerpání betonu"
+      - "transport"
+      - "přeprava"
+      - "odvoz"
+      - "dovoz"
+      - "nákladní auto"
+      - "autodomíchávač"
+      - "autočerpadlo"
+    exclude:
+      - "beton"  # Avoid matching "beton" alone
+    boost_units:
+      - "m3"
+      - "m³"
+      - "t"
+      - "hod"
+    priority_over:
+      - "BETON_MONOLIT"
+    subtypes:
+      BETON:
+        - "doprava betonu"
+        - "autodomíchávač"
+        - "autočerpadlo"
+      ZEMINA:
+        - "odvoz zeminy"
+        - "dovoz zeminy"

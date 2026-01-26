@@ -71,31 +71,34 @@ export function searchProjects(
       continue;
     }
 
-    for (const item of project.items) {
-      // Apply skupina filter
-      if (filters?.skupiny && filters.skupiny.length > 0) {
-        if (!item.skupina || !filters.skupiny.includes(item.skupina)) {
+    // Loop through all sheets in project
+    for (const sheet of project.sheets) {
+      for (const item of sheet.items) {
+        // Apply skupina filter
+        if (filters?.skupiny && filters.skupiny.length > 0) {
+          if (!item.skupina || !filters.skupiny.includes(item.skupina)) {
+            continue;
+          }
+        }
+
+        // Apply hasSkupina filter
+        if (filters?.hasSkupina !== undefined) {
+          const itemHasSkupina = item.skupina !== null;
+          if (filters.hasSkupina !== itemHasSkupina) {
+            continue;
+          }
+        }
+
+        // Apply price filters
+        if (filters?.minCena !== undefined && (item.cenaCelkem || 0) < filters.minCena) {
           continue;
         }
-      }
-
-      // Apply hasSkupina filter
-      if (filters?.hasSkupina !== undefined) {
-        const itemHasSkupina = item.skupina !== null;
-        if (filters.hasSkupina !== itemHasSkupina) {
+        if (filters?.maxCena !== undefined && (item.cenaCelkem || 0) > filters.maxCena) {
           continue;
         }
-      }
 
-      // Apply price filters
-      if (filters?.minCena !== undefined && (item.cenaCelkem || 0) < filters.minCena) {
-        continue;
+        allItems.push({ item, project });
       }
-      if (filters?.maxCena !== undefined && (item.cenaCelkem || 0) > filters.maxCena) {
-        continue;
-      }
-
-      allItems.push({ item, project });
     }
   }
 
@@ -144,9 +147,11 @@ export function getSearchSuggestions(projects: Project[]): string[] {
 
   // Collect all groups
   for (const project of projects) {
-    for (const item of project.items) {
-      if (item.skupina) {
-        suggestions.add(item.skupina);
+    for (const sheet of project.sheets) {
+      for (const item of sheet.items) {
+        if (item.skupina) {
+          suggestions.add(item.skupina);
+        }
       }
     }
   }

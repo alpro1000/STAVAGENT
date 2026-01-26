@@ -12,10 +12,11 @@ import type { ParsedItem } from '../../types/item';
 interface AIPanelProps {
   items: ParsedItem[];
   projectId: string;
+  sheetId: string;
   selectedItemIds?: string[];
 }
 
-export function AIPanel({ items, projectId, selectedItemIds = [] }: AIPanelProps) {
+export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIPanelProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isClassifying, setIsClassifying] = useState(false);
   const [isGrouping, setIsGrouping] = useState(false);
@@ -46,7 +47,7 @@ export function AIPanel({ items, projectId, selectedItemIds = [] }: AIPanelProps
           skupina: r.skupina
         }));
 
-        bulkSetSkupina(projectId, updates);
+        bulkSetSkupina(projectId, sheetId, updates);
         setLastAction(`Klasifikováno ${updates.length} položek (${response.source})`);
       } else {
         setError(response.error || 'Classification failed');
@@ -86,7 +87,7 @@ export function AIPanel({ items, projectId, selectedItemIds = [] }: AIPanelProps
       itemId: id,
       skupina: group.groupName
     }));
-    bulkSetSkupina(projectId, updates);
+    bulkSetSkupina(projectId, sheetId, updates);
     setLastAction(`Aplikována skupina "${group.groupName}" na ${updates.length} položek`);
   };
 
@@ -99,7 +100,7 @@ export function AIPanel({ items, projectId, selectedItemIds = [] }: AIPanelProps
         skupina: group.groupName
       }))
     );
-    bulkSetSkupina(projectId, allUpdates);
+    bulkSetSkupina(projectId, sheetId, allUpdates);
     setGroupingResult(null);
     setLastAction(`Aplikováno ${groupingResult.length} skupin na ${allUpdates.length} položek`);
   };
