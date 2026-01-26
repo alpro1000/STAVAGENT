@@ -235,56 +235,56 @@ function App() {
           ) : (
             // Projects view
             <>
-              {/* Project List */}
-              <div className="card">
-                <h2 className="text-lg font-semibold mb-4">
-                  Projekty ({projects.length})
-                </h2>
-                <div className="grid gap-2">
+              {/* Project Tabs - Horizontal navigation */}
+              <div className="mb-4">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="text-lg font-semibold">
+                    Projekty ({projects.length})
+                  </h2>
+                  <button
+                    className="btn btn-primary"
+                    onClick={() => setIsImportModalOpen(true)}
+                  >
+                    📁 Přidat projekt
+                  </button>
+                </div>
+
+                {/* Tabs */}
+                <div className="flex items-center gap-2 overflow-x-auto pb-2">
                   {projects.map((project) => (
                     <div
                       key={project.id}
                       className={`
-                        p-3 rounded-lg border transition-all cursor-pointer
+                        relative flex items-center gap-2 px-4 py-2 rounded-t-lg border-b-2 transition-all cursor-pointer
+                        whitespace-nowrap min-w-fit
                         ${selectedProjectId === project.id
-                          ? 'border-accent-primary bg-accent-primary/10'
-                          : 'border-border-color hover:border-accent-primary/50'
+                          ? 'border-accent-primary bg-accent-primary/10 text-text-primary'
+                          : 'border-transparent hover:border-accent-primary/50 bg-bg-secondary text-text-secondary'
                         }
                       `}
                       onClick={() => setSelectedProject(project.id)}
                     >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <FileSpreadsheet size={20} className="text-accent-primary" />
-                          <div>
-                            <p className="font-semibold text-sm">
-                              {project.metadata.projectNumber || project.fileName}
-                            </p>
-                            <p className="text-xs text-text-muted">
-                              {project.stats.totalItems} položek
-                              {' • '}
-                              {project.stats.classifiedItems} klasifikovaných
-                              {' • '}
-                              {project.stats.totalCena.toLocaleString('cs-CZ')} Kč
-                            </p>
-                          </div>
-                        </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (confirm('Opravdu smazat tento projekt?')) {
-                              removeProject(project.id);
-                            }
-                          }}
-                          className="p-2 hover:bg-accent-warning/10 rounded transition-colors"
-                        >
-                          <Trash2 size={16} className="text-accent-warning" />
-                        </button>
-                      </div>
+                      <FileSpreadsheet size={16} className="text-accent-primary flex-shrink-0" />
+                      <span className="text-sm font-medium max-w-[200px] truncate" title={project.metadata.sheetName || project.fileName}>
+                        {project.metadata.sheetName || project.fileName}
+                      </span>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (window.confirm(`Opravdu smazat projekt "${project.metadata.sheetName || project.fileName}"?`)) {
+                            removeProject(project.id);
+                          }
+                        }}
+                        className="ml-1 p-1 hover:bg-red-500/20 rounded transition-colors flex-shrink-0"
+                        title="Smazat projekt"
+                      >
+                        <Trash2 size={14} className="text-red-500" />
+                      </button>
                     </div>
                   ))}
                 </div>
               </div>
+
 
               {/* Selected Project Items */}
               {selectedProject && (

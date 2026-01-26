@@ -39,6 +39,7 @@ interface RegistryState {
 
   // Действия с items
   setItemSkupina: (projectId: string, itemId: string, skupina: string) => void;
+  setItemSkupinaGlobal: (itemKod: string, skupina: string) => void; // Apply to ALL projects with same kod
   bulkSetSkupina: (projectId: string, updates: Array<{ itemId: string; skupina: string }>) => void;
   setItems: (projectId: string, items: ParsedItem[]) => void;
 
@@ -173,6 +174,50 @@ export const useRegistryStore = create<RegistryState>()(
           }),
         }));
         get().updateProjectStats(projectId);
+      },
+
+      // Apply skupina to ALL items with same kod across ALL projects
+      setItemSkupinaGlobal: (itemKod, skupina) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            // For each project, find items with matching kod
+            const sortedItems = [...p.items].sort((a, b) =>
+              a.source.rowStart - b.source.rowStart
+            );
+
+            const idsToUpdate = new Set<string>();
+
+            // Find all items with matching kod
+            sortedItems.forEach((item, index) => {
+              const hasCode = item.kod && item.kod.trim().length > 0;
+
+              if (hasCode && item.kod === itemKod) {
+                // Add main item
+                idsToUpdate.add(item.id);
+
+                // Add following description rows (without kod)
+                for (let i = index + 1; i < sortedItems.length; i++) {
+                  const nextItem = sortedItems[i];
+                  const nextHasCode = nextItem.kod && nextItem.kod.trim().length > 0;
+
+                  if (nextHasCode) break; // Stop at next main item
+                  idsToUpdate.add(nextItem.id);
+                }
+              }
+            });
+
+            // Update items
+            return {
+              ...p,
+              items: p.items.map((item) =>
+                idsToUpdate.has(item.id) ? { ...item, skupina } : item
+              ),
+            };
+          }),
+        }));
+
+        // Update stats for all affected projects
+        state.projects.forEach(p => get().updateProjectStats(p.id));
       },
 
       bulkSetSkupina: (projectId, updates) => {
