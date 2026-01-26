@@ -2,11 +2,12 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 1.3.9
-**Last Updated:** 2026-01-21
+**Version:** 1.4.0
+**Last Updated:** 2026-01-26
 **Repository:** STAVAGENT (Monorepo)
 
-**NEW (2026-01-21 Part 2):** R0 Deterministic Core + Unified Project Architecture - Portal aggregates all kiosks (5 commits) ⏳ PR Ready
+**NEW (2026-01-26):** Rozpočet Registry Classification System Migration - Rule-based classifier with uppercase codes (2 commits) ✅ Complete
+**PREVIOUS (2026-01-21 Part 2):** R0 Deterministic Core + Unified Project Architecture - Portal aggregates all kiosks (5 commits) ⏳ PR Ready
 **PREVIOUS (2026-01-21 Part 1):** Portal Integration + AI Suggestion Enablement - Audit trail + Feature flag tools (6 commits) ⏳ Awaiting user SQL execution
 **PREVIOUS (2026-01-16 Part 2):** Monolit Planner UX Improvements - Modal fixes + Editable work names + Resizable columns (5 commits) ✅
 **PREVIOUS (2026-01-16 Part 1):** Rozpočet Registry Phase 6 & 7 Complete - Multi-Project Search + Excel Export (Production Ready ✅)
@@ -352,7 +353,7 @@ POST ${STAVAGENT_API_BASE}/api/v1/multi-role/ask
 2. **Phase 2: Template Selector** - Import wizard with predefined templates
 3. **Phase 3: Custom Templates** - User-configurable import mappings
 4. **Phase 4: Auto-Detection** - Automatic Excel structure detection
-5. **Phase 5: Auto-Classification** - AI-based item classification
+5. **Phase 5: Auto-Classification** - Rule-based item classification (NEW 2026-01-26)
 6. **Phase 6: Multi-Project Search** - Fuzzy search with advanced filters (NEW 2026-01-16)
 7. **Phase 7: Excel Export** - Export with hyperlinks and 3 sheets (NEW 2026-01-16)
 
@@ -387,6 +388,20 @@ Icons: Lucide React
 - Automatic column widths
 - Professional formatting
 
+**Classification System (Phase 5 - NEW 2026-01-26):**
+- **Rule-based Classifier** - Deterministic pattern matching (migrated from Python YAML)
+- **10 Work Groups** - Uppercase codes (ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA)
+- **Scoring Algorithm:**
+  - +1.0 for each include match (keywords like "vykop", "betonaz", "kotvy")
+  - -2.0 for each exclude match (strong penalty)
+  - +0.5 for unit boost (m³, kg, etc.)
+  - +0.3 for priority conflicts (KOTVENI > VYZTUŽ, BETON_PREFAB > BETON_MONOLIT)
+- **Diacritics Normalization** - Remove accents for matching (výkop → vykop)
+- **Evidence Trail** - Shows 2-4 matched keywords proving classification
+- **Confidence Scoring** - Formula: `min(100, (score / 2.0) * 100)`
+- **Priority Resolution** - Conflict resolution with bonuses
+- **Version:** 2.0.0 (synchronized with concrete-agent Python classifier)
+
 **Data Structure:**
 ```typescript
 interface ParsedItem {
@@ -412,16 +427,19 @@ interface ParsedItem {
 - `src/services/export/excelExportService.ts` - Excel export with hyperlinks (276 lines)
 - `src/services/parser/excelParser.ts` - Excel file parsing
 - `src/services/autoDetect/autoDetectService.ts` - Structure detection
-- `src/services/classification/classificationService.ts` - AI classification
+- `src/services/classification/classificationService.ts` - Classification wrapper
+- `src/services/classification/classificationRules.ts` - Rule-based classifier (336 lines, NEW 2026-01-26)
+- `src/utils/constants.ts` - Work group definitions (10 groups, NEW 2026-01-26)
 - `src/components/search/SearchBar.tsx` - Search UI (220 lines)
 - `src/components/search/SearchResults.tsx` - Results display (172 lines)
 - `src/components/items/ItemsTable.tsx` - Main data table
 - `src/App.tsx` - Main application (11,582 lines total)
 
-**Status:** ✅ **Production Ready (v2.0.0)** - All 7 phases complete (2026-01-16)
+**Status:** ✅ **Production Ready (v2.1.0)** - All 7 phases complete + Classification 2.0.0 (2026-01-26)
 
 **Documentation:**
-- `README.md` - Project overview and quick start (v2.0.0)
+- `README.md` - Project overview and quick start (v2.1.0)
+- `SESSION_2026-01-26_CLASSIFICATION_MIGRATION.md` - Classification system migration (1200+ lines)
 - `SESSION_2026-01-16_PHASE6_7.md` - Phase 6 & 7 implementation details
 
 ---
@@ -472,7 +490,62 @@ Content-Type: application/json
 
 ---
 
-## Current Status (2026-01-21)
+## Current Status (2026-01-26)
+
+### ✅ COMPLETED: Rozpočet Registry Classification Migration (2026-01-26)
+
+**Branch:** `claude/review-session-notes-4I53w`
+
+**Status:** ✅ Complete, ✅ Pushed to remote
+
+**Summary:**
+Complete migration of classification system from old Czech work group names (25 groups) to new rule-based system with uppercase codes (10 groups), matching Python YAML classifier in concrete-agent.
+
+**Key Changes:**
+
+| Component | Description | Status |
+|-----------|-------------|--------|
+| Work Groups | 25 Czech names → 10 uppercase codes | ✅ Complete |
+| Classification Rules | Complete rewrite (336 lines) with scoring algorithm | ✅ Complete |
+| Diacritics Normalization | Remove accents for matching (výkop → vykop) | ✅ Complete |
+| Priority Resolution | KOTVENI > VYZTUŽ, BETON_PREFAB > BETON_MONOLIT | ✅ Complete |
+| Evidence Trail | Show 2-4 matched keywords | ✅ Complete |
+| Horizontal Scrolling | Fix infinite tab expansion | ✅ Complete |
+
+**Key Commits:**
+
+| Commit | Description | Status |
+|--------|-------------|--------|
+| `19c29ff` | FEAT: Migrate classification to rule-based system with uppercase codes | ✅ Pushed |
+| `a6c084f` | FIX: Prevent infinite horizontal expansion of project/sheet tabs | ✅ Pushed |
+
+**Total:** 2 commits, 2 files rewritten, 1 file patched, ~370 lines modified
+
+**10 Work Groups (NEW):**
+```
+ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI,
+BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA
+```
+
+**Scoring Algorithm:**
+- +1.0 for each include match (keywords like "vykop", "betonaz", "kotvy")
+- -2.0 for each exclude match (strong penalty)
+- +0.5 for unit boost (m³, kg, etc.)
+- +0.3 for priority conflicts
+
+**Files Modified:**
+- `src/utils/constants.ts` (28 lines, complete rewrite)
+- `src/services/classification/classificationRules.ts` (336 lines, complete rewrite)
+- `src/App.tsx` (+6 lines, horizontal scrolling fix)
+
+**Documentation:**
+- `SESSION_2026-01-26_CLASSIFICATION_MIGRATION.md` (1200+ lines)
+
+**Build:** ✅ TypeScript compilation successful, 11.09s
+
+**Version:** rozpocet-registry v2.1.0 (Classification 2.0.0)
+
+---
 
 ### ⏳ IN PROGRESS: R0 Deterministic Core + Unified Project Architecture (2026-01-21 Part 2)
 
@@ -1890,7 +1963,24 @@ REDIS_URL=redis://...
 
 ## 📖 Session Documentation
 
-**Current Session (2026-01-14):**
+**Current Session (2026-01-26):**
+- **Classification System Migration** - Rule-based classifier with uppercase codes
+  - Migrated from 25 Czech work group names → 10 uppercase codes
+  - Complete rewrite of classificationRules.ts (336 lines)
+  - Scoring algorithm: +1.0 include, -2.0 exclude, +0.5 unit boost, +0.3 priority
+  - Diacritics normalization for matching (výkop → vykop)
+  - Evidence trail with matched keywords
+  - Priority resolution (KOTVENI > VYZTUŽ, BETON_PREFAB > BETON_MONOLIT)
+- **UI Horizontal Scrolling Fix** - Tabs no longer expand screen infinitely
+  - Fixed project tabs and sheet tabs with proper CSS container pattern
+  - `overflow-hidden` wrapper + `overflow-x-auto` inner div + `flex-shrink-0` items
+- **Files:** constants.ts (rewrite), classificationRules.ts (rewrite), App.tsx (+6 lines)
+- **Commits:** 2 (19c29ff, a6c084f)
+- **Documentation:** SESSION_2026-01-26_CLASSIFICATION_MIGRATION.md (1200+ lines)
+- **Build:** ✅ TypeScript successful (11.09s)
+- Duration: ~2 hours
+
+**Previous Session (2026-01-14):**
 - **Authentication Fix** - Production portal access restored
   - Added `VITE_DISABLE_AUTH=true` to `.env.production`
   - Fixed: Users blocked at login screen with no credentials
