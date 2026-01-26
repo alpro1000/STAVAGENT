@@ -1,403 +1,335 @@
 /**
- * Classification Rules
+ * Classification Rules - Rule-based Classifier
+ * Version: 2.0.0 (2026-01-26)
  *
- * Phase 5: Regex-based automatic classification rules for work groups
+ * Migrated from Python classifier (concrete-agent/classifiers/rules/default_rules.yaml)
+ *
+ * Scoring algorithm:
+ * +1.0 for each include match
+ * -2.0 for each exclude match (strong penalty)
+ * +0.5 for unit boost
+ * +0.3 for priority_over bonus
  */
 
 import type { WorkGroup } from '../../utils/constants';
 
 /**
- * Classification rule with regex pattern and priority
+ * Classification rule with keywords, exclusions, and priorities
  */
 export interface ClassificationRule {
   skupina: WorkGroup;
-  patterns: RegExp[];
-  priority: number;  // Higher priority = matched first
-  keywords: string[]; // For display/debugging
+  include: string[];      // Keywords to match (OR logic)
+  exclude: string[];      // Keywords to reject (strong penalty)
+  boostUnits: string[];   // Units that boost confidence
+  priority: number;       // Base priority
+  priorityOver: WorkGroup[]; // Groups this rule has priority over
 }
 
 /**
- * All classification rules sorted by priority (HIGH → LOW)
+ * Remove diacritics for matching (á→a, ě→e, etc.)
+ */
+function removeDiacritics(text: string): string {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+/**
+ * All classification rules (10 work groups)
+ * Sorted by priority during classification
  */
 export const CLASSIFICATION_RULES: ClassificationRule[] = [
   // ==================== ZEMNÍ PRÁCE ====================
   {
-    skupina: 'Výkopy',
-    patterns: [
-      /výkop/i,
-      /hloubení/i,
-      /odtěžení/i,
-      /bagr/i,
-      /excavation/i,
+    skupina: 'ZEMNI_PRACE',
+    include: [
+      'vykop', 'vykopy', 'odkop', 'odkopavky', 'prokopavky',
+      'ryha', 'ryhy', 'hloubeni', 'jama', 'jam',
+      'zasyp', 'nasyp', 'hutneni', 'zhutneni',
+      'pazeni', 'zapaz', 'cerpani vody', 'odvodneni', 'odvod human: ',
+      'skryvka', 'planyrovani', 'vymena zeminy', 'odvoz zeminy', 'terenn upravy',
     ],
+    exclude: ['pilot', 'mikropilot', 'vrt'],
+    boostUnits: ['m3', 'm³', 'm2', 'm²'],
     priority: 100,
-    keywords: ['výkop', 'hloubení', 'odtěžení', 'bagr'],
-  },
-  {
-    skupina: 'Násypy',
-    patterns: [
-      /násyp/i,
-      /zásyp/i,
-      /navážka/i,
-      /hutně(ní|ný)/i,
-      /zhutně(ní|ný)/i,
-    ],
-    priority: 100,
-    keywords: ['násyp', 'zásyp', 'navážka', 'hutnění'],
-  },
-  {
-    skupina: 'Zemní práce',
-    patterns: [
-      /zemní práce/i,
-      /terén/i,
-      /skrývka/i,
-      /ornice/i,
-    ],
-    priority: 50,
-    keywords: ['zemní práce', 'terén', 'skrývka'],
+    priorityOver: [],
   },
 
-  // ==================== ZÁKLADY ====================
+  // ==================== BETON MONOLITICKÝ ====================
   {
-    skupina: 'Piloty',
-    patterns: [
-      /pilota/i,
-      /piloty/i,
-      /vrtané piloty/i,
-      /pilot[aěy]/i,
+    skupina: 'BETON_MONOLIT',
+    include: [
+      'betonaz', 'monolit', 'zrizeni', 'zhotoveni',
+      'ukladka betonu', 'zelezobeton', 'zelezobetonova konstrukce',
+      'ramova konstrukce', 'mostni konstrukce', 'stropni deska',
+      'zakladova deska', 'sloupy', 'pilire', 'operna zed',
     ],
+    exclude: [
+      'z dilcu', 'prefabrik', 'montaz dilcu', 'osazeni dilcu',
+      'obrubnik', 'tvarnice',
+    ],
+    boostUnits: ['m3', 'm³'],
     priority: 100,
-    keywords: ['pilota', 'piloty', 'vrtané piloty'],
-  },
-  {
-    skupina: 'Mikropiloty',
-    patterns: [
-      /mikropilot/i,
-    ],
-    priority: 100,
-    keywords: ['mikropiloty'],
-  },
-  {
-    skupina: 'Štětovnice',
-    patterns: [
-      /štětovnice/i,
-      /štětovnicové stěn/i,
-    ],
-    priority: 100,
-    keywords: ['štětovnice'],
-  },
-  {
-    skupina: 'Základy',
-    patterns: [
-      /základ/i,
-      /základová deska/i,
-      /základový pás/i,
-      /podklad/i,
-    ],
-    priority: 50,
-    keywords: ['základy', 'základová deska', 'podklad'],
+    priorityOver: [],
   },
 
-  // ==================== BETON ====================
-  // ⭐ PRIORITA 1: Rozlišení monolitický / prefabrikát (VELMI VYSOKÁ)
+  // ==================== BETON PREFABRIKÁT ====================
   {
-    skupina: 'Beton - monolitický',
-    patterns: [
-      /monolit/i,
-      /monolitick[ýá]/i,
-      /betonáž/i,
-      /betonování/i,
-      /in[\s-]?situ/i,
-      /lití betonu/i,
-      /čerstvý beton/i,
-      /ukládání betonu/i,
+    skupina: 'BETON_PREFAB',
+    include: [
+      'z dilcu', 'prefabrik', 'montaz dilcu', 'osazeni dilcu',
+      'obrubnik', 'obrubniky', 'obruby',
+      'tvarnice', 'zlab', 'zlaby',
+      'skruz', 'sachta', 'dilec', 'prvky', 'panel', 'tvarovka', 'prefa',
+      'betonove dilce', 'betonovych obrubniku', 'prefabrikovane prvky',
     ],
-    priority: 120, // VELMI VYSOKÁ - musí být před ostatními betonovými skupinami
-    keywords: ['monolitický', 'betonáž', 'betonování', 'in-situ', 'lití betonu'],
-  },
-  {
-    skupina: 'Beton - prefabrikát',
-    patterns: [
-      /prefabrikát/i,
-      /prefabrikovan[ýá]/i,
-      /předem vyroben[ýá]/i,
-      /prefabricated/i,
-      /precast/i,
-      /montáž.*panel/i,
-      /montáž.*dílc/i,
-      /osazení.*panel/i,
-      /osazení.*dílc/i,
-      /montovaný/i,
-      /dílcová konstrukce/i,
-    ],
-    priority: 120, // VELMI VYSOKÁ - musí být před ostatními betonovými skupinami
-    keywords: ['prefabrikát', 'prefabrikovaný', 'montáž', 'dílce', 'precast'],
-  },
-
-  // ⭐ Если не распознано как монолит/префабрикат - общий бетон (низкий приоритет)
-  // Исключаем транспорт, dodání, doprava
-  {
-    skupina: 'Beton - monolitický',
-    patterns: [
-      /(?!.*transport)(?!.*dodání)(?!.*doprava).*beton/i, // beton БЕЗ transport/dodání/doprava
-      /\bC\d{2}\/\d{2}/i, // C20/25, C30/37 - всегда монолит
-      /konstrukce.*beton/i, // конструкция из бетона
-      /beton.*konstrukce/i, // бетонная конструкция
-    ],
-    priority: 30,
-    keywords: ['beton', 'C20/25', 'konstrukce'],
+    exclude: [],
+    boostUnits: ['ks', 'm', 'm2', 'm²'],
+    priority: 100,
+    priorityOver: ['BETON_MONOLIT', 'KOMUNIKACE'], // Priority over monolith and roads
   },
 
   // ==================== VÝZTUŽ ====================
   {
-    skupina: 'Předpínací výztuž',
-    patterns: [
-      /předpín/i,
-      /předepnutí/i,
-      /předepínací/i,
-      /kabel/i,
+    skupina: 'VYZTUŽ',
+    include: [
+      'vyztuz', 'armatura', 'pruty', 'kari', 'kari sit',
+      'trminky', 'roxor', 'b500', 'b500b',
+      'betonarska ocel', 'vyztuzne pruty',
     ],
+    exclude: [
+      'kotva', 'kotvy', 'kotveni', 'predpeti',
+      'lana', 'kabely', 'injektaz',
+    ],
+    boostUnits: ['kg', 't'],
     priority: 100,
-    keywords: ['předpínací', 'předepnutí', 'kabely'],
+    priorityOver: [],
   },
+
+  // ==================== KOTVENÍ ====================
   {
-    skupina: 'Výztuž',
-    patterns: [
-      /výztuž/i,
-      /ocel/i,
-      /betonářská ocel/i,
-      /armatury/i,
-      /\bB\d{3}/i, // B500, B500B
+    skupina: 'KOTVENI',
+    include: [
+      'kotva', 'kotvy', 'kotveni', 'injektaz', 'injektovane kotvy',
+      'vrt', 'vrty', 'pramen', 'hlava kotvy', 'napinani kotvy',
+      'trvale kotvy', 'tycove kotvy', 'lanove kotvy',
     ],
-    priority: 50,
-    keywords: ['výztuž', 'ocel', 'armatury', 'B500'],
+    exclude: ['vyztuz', 'kari', 'roxor', 'betonarska ocel'],
+    boostUnits: ['ks', 'm'],
+    priority: 120, // VERY HIGH - priority over VYZTUŽ
+    priorityOver: ['VYZTUŽ'],
   },
 
   // ==================== BEDNĚNÍ ====================
   {
-    skupina: 'Bednění',
-    patterns: [
-      /bedně(ní|t)/i,
-      /bednění/i,
-      /deskování/i,
-      /odbednění/i,
+    skupina: 'BEDNENI',
+    include: [
+      'bedneni', 'odbedneni', 'systemove bedneni',
+      'zrizeni bedneni', 'obedneni', 'podepreni', 'leseni',
     ],
+    exclude: [],
+    boostUnits: ['m2', 'm²'],
     priority: 80,
-    keywords: ['bednění', 'deskování', 'odbednění'],
+    priorityOver: [],
   },
 
-  // ==================== MOSTNÍ PRVKY ====================
+  // ==================== PILOTY ====================
   {
-    skupina: 'Mostní ložiska',
-    patterns: [
-      /ložisko/i,
-      /mostní ložisko/i,
+    skupina: 'PILOTY',
+    include: [
+      'pilota', 'piloty', 'mikropilota', 'mikropiloty',
+      'vrtani pilot', 'vrtane piloty', 'betonovani pilot',
+      'velkoprumerove piloty',
     ],
+    exclude: [],
+    boostUnits: ['m', 'ks'],
     priority: 100,
-    keywords: ['ložisko', 'mostní ložisko'],
-  },
-  {
-    skupina: 'Mostní závěry',
-    patterns: [
-      /závěr/i,
-      /mostní závěr/i,
-      /dilatační závěr/i,
-    ],
-    priority: 100,
-    keywords: ['závěr', 'mostní závěr', 'dilatační'],
-  },
-  {
-    skupina: 'Mostní odvodňovače',
-    patterns: [
-      /odvod/i,
-      /odvodňovač/i,
-      /drenáž/i,
-    ],
-    priority: 100,
-    keywords: ['odvodňovač', 'odvodnění', 'drenáž'],
-  },
-  {
-    skupina: 'Zábradlí',
-    patterns: [
-      /zábradlí/i,
-      /madlo/i,
-      /sloupek/i,
-    ],
-    priority: 100,
-    keywords: ['zábradlí', 'madlo', 'sloupek'],
-  },
-  {
-    skupina: 'Svodidla',
-    patterns: [
-      /svodidl/i,
-      /záchytné svodidlo/i,
-      /ocelové svodidlo/i,
-    ],
-    priority: 100,
-    keywords: ['svodidla', 'záchytné svodidlo'],
-  },
-  {
-    skupina: 'Římsy',
-    patterns: [
-      /říms/i,
-      /římsa/i,
-    ],
-    priority: 100,
-    keywords: ['římsa', 'římsy'],
+    priorityOver: [],
   },
 
   // ==================== IZOLACE ====================
   {
-    skupina: 'Hydroizolace',
-    patterns: [
-      /hydroizolace/i,
-      /vodotěsn/i,
-      /hydroizolační fólie/i,
+    skupina: 'IZOLACE',
+    include: [
+      'izolace', 'hydroizolace', 'parozabrana',
+      'geotextilie', 'folie', 'asfaltovy pas',
+      'nater', 'penetrace', 'vodotesna membrana',
     ],
+    exclude: [],
+    boostUnits: ['m2', 'm²'],
     priority: 100,
-    keywords: ['hydroizolace', 'vodotěsnost', 'fólie'],
+    priorityOver: [],
   },
+
+  // ==================== KOMUNIKACE ====================
   {
-    skupina: 'Izolace',
-    patterns: [
-      /izolace/i,
-      /zateplení/i,
-      /tepelná izolace/i,
+    skupina: 'KOMUNIKACE',
+    include: [
+      'komunikace', 'vozovka', 'asfalt', 'obruby',
+      'chodnik', 'dlazba', 'kryty komunikaci',
+      'podkladni vrstva', 'lozna vrstva',
     ],
+    exclude: [],
+    boostUnits: ['m2', 'm²', 't'],
     priority: 50,
-    keywords: ['izolace', 'zateplení'],
+    priorityOver: [],
   },
 
-  // ==================== ZKOUŠKY ====================
+  // ==================== DOPRAVA ====================
   {
-    skupina: 'Geodézie',
-    patterns: [
-      /geodézie/i,
-      /zaměření/i,
-      /vytyčení/i,
-      /geodet/i,
+    skupina: 'DOPRAVA',
+    include: [
+      'doprava betonu', 'dovoz betonu', 'cerpani betonu',
+      'transport', 'preprava', 'odvoz', 'dovoz',
+      'nakladni auto', 'autodomichavac', 'autocerpadlo',
     ],
+    exclude: ['beton'], // Avoid matching standalone "beton"
+    boostUnits: ['m3', 'm³', 't', 'hod'],
     priority: 100,
-    keywords: ['geodézie', 'zaměření', 'vytyčení'],
-  },
-  {
-    skupina: 'Zkoušky',
-    patterns: [
-      /zkoušk/i,
-      /zkouše(ní|t)/i,
-      /zkušební/i,
-      /laborator/i,
-    ],
-    priority: 80,
-    keywords: ['zkoušky', 'zkušební', 'laboratoř'],
-  },
-
-  // ==================== OSTATNÍ ====================
-  {
-    skupina: 'Demolice',
-    patterns: [
-      /demoli/i,
-      /bourání/i,
-      /odstranění/i,
-      /rozebírání/i,
-    ],
-    priority: 90,
-    keywords: ['demolice', 'bourání', 'odstranění'],
-  },
-  {
-    skupina: 'Přeložky IS',
-    patterns: [
-      /přeložk/i,
-      /inženýrské sítě/i,
-      /přesun sítí/i,
-    ],
-    priority: 90,
-    keywords: ['přeložky', 'inženýrské sítě'],
-  },
-  {
-    skupina: 'Dopravní značení',
-    patterns: [
-      /dopravní značení/i,
-      /značka/i,
-      /vodorovné značení/i,
-      /svislé značení/i,
-    ],
-    priority: 90,
-    keywords: ['dopravní značení', 'značky'],
-  },
-  {
-    skupina: 'Ostatní',
-    patterns: [
-      /ostatní/i,
-      /jiné/i,
-      /různé/i,
-    ],
-    priority: 10,
-    keywords: ['ostatní', 'jiné', 'různé'],
+    priorityOver: ['BETON_MONOLIT'],
   },
 ];
+
+/**
+ * Calculate score for a single rule
+ */
+function calculateScore(
+  normalizedText: string,
+  rule: ClassificationRule,
+  unit: string | null
+): { score: number; evidence: string[] } {
+  let score = 0;
+  const evidence: string[] = [];
+
+  // +1.0 for each include match
+  for (const keyword of rule.include) {
+    if (normalizedText.includes(keyword)) {
+      score += 1.0;
+      evidence.push(keyword);
+    }
+  }
+
+  // -2.0 for each exclude match (strong penalty)
+  for (const keyword of rule.exclude) {
+    if (normalizedText.includes(keyword)) {
+      score -= 2.0;
+    }
+  }
+
+  // +0.5 for unit boost
+  if (unit && rule.boostUnits.includes(unit)) {
+    score += 0.5;
+  }
+
+  return { score, evidence };
+}
+
+/**
+ * Apply priority_over bonuses
+ */
+function applyPriorityBonus(
+  scores: Map<WorkGroup, number>,
+  rule: ClassificationRule
+): number {
+  let bonus = 0;
+
+  if (rule.priorityOver.length > 0 && scores.get(rule.skupina)! > 0) {
+    for (const targetGroup of rule.priorityOver) {
+      const targetScore = scores.get(targetGroup) || 0;
+      if (targetScore > 0) {
+        bonus += 0.3; // +0.3 for each priority conflict
+      }
+    }
+  }
+
+  return bonus;
+}
 
 /**
  * Classify single item by description
  * Returns best matching group or null
  */
-export function classifyItem(popisFull: string): WorkGroup | null {
+export function classifyItem(popisFull: string, unit: string | null = null): WorkGroup | null {
   if (!popisFull) return null;
 
-  // Try rules in priority order (highest first)
-  const sortedRules = [...CLASSIFICATION_RULES].sort((a, b) => b.priority - a.priority);
+  const normalizedText = removeDiacritics(popisFull);
+  const scores = new Map<WorkGroup, number>();
+  const evidenceMap = new Map<WorkGroup, string[]>();
 
-  for (const rule of sortedRules) {
-    for (const pattern of rule.patterns) {
-      if (pattern.test(popisFull)) {
-        return rule.skupina;
-      }
+  // Calculate base scores for all rules
+  for (const rule of CLASSIFICATION_RULES) {
+    const { score, evidence } = calculateScore(normalizedText, rule, unit);
+    scores.set(rule.skupina, score);
+    evidenceMap.set(rule.skupina, evidence);
+  }
+
+  // Apply priority bonuses
+  for (const rule of CLASSIFICATION_RULES) {
+    const bonus = applyPriorityBonus(scores, rule);
+    if (bonus > 0) {
+      const currentScore = scores.get(rule.skupina)!;
+      scores.set(rule.skupina, currentScore + bonus);
     }
   }
 
-  return null;
+  // Find best match (highest score > 0)
+  let bestGroup: WorkGroup | null = null;
+  let bestScore = 0;
+
+  for (const [skupina, score] of scores.entries()) {
+    if (score > bestScore) {
+      bestScore = score;
+      bestGroup = skupina;
+    }
+  }
+
+  return bestScore > 0 ? bestGroup : null;
 }
 
 /**
  * Get all matching groups with confidence scores
  * Returns array sorted by confidence (best first)
  */
-export function classifyItemWithConfidence(popisFull: string): Array<{
+export function classifyItemWithConfidence(
+  popisFull: string,
+  unit: string | null = null
+): Array<{
   skupina: WorkGroup;
   confidence: number; // 0-100
   matchedKeywords: string[];
 }> {
   if (!popisFull) return [];
 
-  const matches: Array<{
+  const normalizedText = removeDiacritics(popisFull);
+  const results: Array<{
     skupina: WorkGroup;
     confidence: number;
     matchedKeywords: string[];
   }> = [];
 
   for (const rule of CLASSIFICATION_RULES) {
-    let matchCount = 0;
-    const matchedKeywords: string[] = [];
+    const { score, evidence } = calculateScore(normalizedText, rule, unit);
 
-    for (let i = 0; i < rule.patterns.length; i++) {
-      if (rule.patterns[i].test(popisFull)) {
-        matchCount++;
-        matchedKeywords.push(rule.keywords[i] || rule.keywords[0]);
-      }
-    }
+    if (score > 0) {
+      // Apply priority bonus
+      let finalScore = score;
+      const scores = new Map<WorkGroup, number>();
+      scores.set(rule.skupina, score);
+      const bonus = applyPriorityBonus(scores, rule);
+      finalScore += bonus;
 
-    if (matchCount > 0) {
-      // Confidence = (matchCount / totalPatterns) * priority
-      const confidence = Math.min(100, (matchCount / rule.patterns.length) * (rule.priority / 100) * 100);
+      // Confidence formula: min(100, (score / 2.0) * 100)
+      const confidence = Math.min(100, (finalScore / 2.0) * 100);
 
-      matches.push({
+      results.push({
         skupina: rule.skupina,
         confidence: Math.round(confidence),
-        matchedKeywords,
+        matchedKeywords: evidence.slice(0, 4), // First 4 matches
       });
     }
   }
 
   // Sort by confidence (highest first)
-  return matches.sort((a, b) => b.confidence - a.confidence);
+  return results.sort((a, b) => b.confidence - a.confidence);
 }
