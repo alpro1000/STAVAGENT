@@ -217,7 +217,7 @@ export const useRegistryStore = create<RegistryState>()(
         }));
 
         // Update stats for all affected projects
-        state.projects.forEach(p => get().updateProjectStats(p.id));
+        get().projects.forEach(p => get().updateProjectStats(p.id));
       },
 
       bulkSetSkupina: (projectId, updates) => {
