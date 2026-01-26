@@ -269,41 +269,43 @@ function App() {
                 </div>
 
                 {/* Project Tabs */}
-                <div className="flex items-center gap-2 overflow-x-auto pb-2">
-                  {projects.map((project) => (
-                    <div
-                      key={project.id}
-                      className={`
-                        relative flex items-center gap-2 px-4 py-2 rounded-t-lg border-b-2 transition-all cursor-pointer
-                        whitespace-nowrap min-w-fit
-                        ${selectedProjectId === project.id
-                          ? 'border-accent-primary bg-accent-primary/10 text-text-primary'
-                          : 'border-transparent hover:border-accent-primary/50 bg-bg-secondary text-text-secondary'
-                        }
-                      `}
-                      onClick={() => setSelectedProject(project.id)}
-                    >
-                      <FileSpreadsheet size={16} className="text-accent-primary flex-shrink-0" />
-                      <span className="text-sm font-medium max-w-[200px] truncate" title={project.projectName}>
-                        {project.projectName}
-                      </span>
-                      <span className="text-xs text-text-muted ml-1">
-                        ({project.sheets.length} {project.sheets.length === 1 ? 'list' : 'listy'})
-                      </span>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          if (window.confirm(`Opravdu smazat projekt "${project.projectName}"?`)) {
-                            removeProject(project.id);
+                <div className="w-full overflow-hidden">
+                  <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                    {projects.map((project) => (
+                      <div
+                        key={project.id}
+                        className={`
+                          relative flex items-center gap-2 px-4 py-2 rounded-t-lg border-b-2 transition-all cursor-pointer
+                          whitespace-nowrap flex-shrink-0
+                          ${selectedProjectId === project.id
+                            ? 'border-accent-primary bg-accent-primary/10 text-text-primary'
+                            : 'border-transparent hover:border-accent-primary/50 bg-bg-secondary text-text-secondary'
                           }
-                        }}
-                        className="ml-1 p-1 hover:bg-red-500/20 rounded transition-colors flex-shrink-0"
-                        title="Smazat projekt"
+                        `}
+                        onClick={() => setSelectedProject(project.id)}
                       >
-                        <Trash2 size={14} className="text-red-500" />
-                      </button>
-                    </div>
-                  ))}
+                        <FileSpreadsheet size={16} className="text-accent-primary flex-shrink-0" />
+                        <span className="text-sm font-medium max-w-[200px] truncate" title={project.projectName}>
+                          {project.projectName}
+                        </span>
+                        <span className="text-xs text-text-muted ml-1">
+                          ({project.sheets.length} {project.sheets.length === 1 ? 'list' : 'listy'})
+                        </span>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (window.confirm(`Opravdu smazat projekt "${project.projectName}"?`)) {
+                              removeProject(project.id);
+                            }
+                          }}
+                          className="ml-1 p-1 hover:bg-red-500/20 rounded transition-colors flex-shrink-0"
+                          title="Smazat projekt"
+                        >
+                          <Trash2 size={14} className="text-red-500" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -313,28 +315,31 @@ function App() {
                   <h3 className="text-sm font-medium text-text-secondary mb-2">
                     Listy projektu:
                   </h3>
-                  <div className="flex items-center gap-2 overflow-x-auto pb-2 max-w-full">
-                    {selectedProject.sheets.map((sheet) => (
-                      <div
-                        key={sheet.id}
-                        className={`
-                          flex items-center gap-2 px-3 py-2 rounded-lg border transition-all cursor-pointer
-                          whitespace-nowrap min-w-fit
-                          ${selectedSheetId === sheet.id
-                            ? 'border-accent-orange bg-accent-orange/10 text-text-primary font-medium'
-                            : 'border-border-color hover:border-accent-orange/50 bg-bg-secondary text-text-secondary'
-                          }
-                        `}
-                        onClick={() => setSelectedSheet(selectedProjectId, sheet.id)}
-                      >
-                        <span className="text-sm" title={sheet.name}>
-                          {sheet.name}
-                        </span>
-                        <span className="text-xs text-text-muted">
-                          ({sheet.stats.totalItems} položek)
-                        </span>
-                      </div>
-                    ))}
+                  {/* Fixed width container to prevent infinite expansion */}
+                  <div className="w-full overflow-hidden">
+                    <div className="flex items-center gap-2 overflow-x-auto pb-2">
+                      {selectedProject.sheets.map((sheet) => (
+                        <div
+                          key={sheet.id}
+                          className={`
+                            flex items-center gap-2 px-3 py-2 rounded-lg border transition-all cursor-pointer
+                            whitespace-nowrap flex-shrink-0
+                            ${selectedSheetId === sheet.id
+                              ? 'border-accent-orange bg-accent-orange/10 text-text-primary font-medium'
+                              : 'border-border-color hover:border-accent-orange/50 bg-bg-secondary text-text-secondary'
+                            }
+                          `}
+                          onClick={() => setSelectedSheet(selectedProjectId, sheet.id)}
+                        >
+                          <span className="text-sm" title={sheet.name}>
+                            {sheet.name}
+                          </span>
+                          <span className="text-xs text-text-muted">
+                            ({sheet.stats.totalItems} položek)
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
