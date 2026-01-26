@@ -16,7 +16,7 @@ import {
   type GroupingState,
   type ExpandedState,
 } from '@tanstack/react-table';
-import { ChevronUp, ChevronDown, Sparkles, FolderOpen, Folder } from 'lucide-react';
+import { ChevronUp, ChevronDown, Sparkles, Globe, FolderOpen, Folder } from 'lucide-react';
 import type { ParsedItem } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -42,9 +42,10 @@ export function ItemsTable({
   sorting: externalSorting,
   onSortingChange: externalOnSortingChange,
 }: ItemsTableProps) {
-  const { setItemSkupina, getAllGroups, addCustomGroup, bulkSetSkupina, getProject } = useRegistryStore();
+  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject } = useRegistryStore();
   const allGroups = getAllGroups();
   const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
+  const [applyingGlobal, setApplyingGlobal] = useState<string | null>(null);
   const [grouping, setGrouping] = useState<GroupingState>([]);
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const [groupBySkupina, setGroupBySkupina] = useState(false);
@@ -101,6 +102,31 @@ export function ItemsTable({
     }
 
     setApplyingToSimilar(null);
+  };
+
+  // Применить группу ко ВСЕМ листам (all projects) с таким же кодом
+  const applyToAllSheets = (sourceItem: ParsedItem) => {
+    if (!sourceItem.skupina || !sourceItem.kod) return;
+
+    setApplyingGlobal(sourceItem.id);
+
+    const itemKod = sourceItem.kod.trim();
+    const skupina = sourceItem.skupina;
+
+    // Apply to all projects with same kod
+    setItemSkupinaGlobal(itemKod, skupina);
+
+    // Show success notification
+    setAlertModal({
+      isOpen: true,
+      title: 'Skupina aplikována globálně',
+      message: `Skupina "${skupina}" byla aplikována na všechny položky s kódem "${itemKod}" napříč všemi importovanými listy.`,
+      variant: 'success',
+    });
+
+    setTimeout(() => {
+      setApplyingGlobal(null);
+    }, 1000);
   };
 
   // Переключение группировки
@@ -275,15 +301,25 @@ export function ItemsTable({
                   onAddGroup={addCustomGroup}
                 />
               </div>
-              {currentSkupina && (
-                <button
-                  onClick={() => applyToSimilar(item)}
-                  disabled={isApplying}
-                  title="Aplikovat na podobné položky"
-                  className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
-                >
-                  <Sparkles size={16} className="text-accent-primary" />
-                </button>
+              {currentSkupina && item.kod && (
+                <>
+                  <button
+                    onClick={() => applyToSimilar(item)}
+                    disabled={isApplying}
+                    title="Aplikovat na podobné položky v tomto listu"
+                    className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
+                  >
+                    <Sparkles size={16} className="text-accent-primary" />
+                  </button>
+                  <button
+                    onClick={() => applyToAllSheets(item)}
+                    disabled={applyingGlobal === item.id}
+                    title="Aplikovat na VŠECHNY listy se stejným kódem"
+                    className="p-1 rounded hover:bg-blue-500/20 transition-colors disabled:opacity-50"
+                  >
+                    <Globe size={16} className="text-blue-500" />
+                  </button>
+                </>
               )}
             </div>
           );
@@ -292,7 +328,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, assignedGroups, groupBySkupina, toggleGrouping]
+    [projectId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, assignedGroups, groupBySkupina, toggleGrouping]
   );
 
   const table = useReactTable({

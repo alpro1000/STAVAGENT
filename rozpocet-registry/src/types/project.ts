@@ -11,6 +11,7 @@ export interface ProjectMetadata {
   projectName: string;         // "Most přes Vltavu"
   oddil: string;               // "Spodní stavba"
   stavba: string;              // "D35 Opatovice"
+  sheetName?: string;          // Excel sheet name (for multi-sheet imports)
   custom: Record<string, string>; // дополнительные поля
 }
 

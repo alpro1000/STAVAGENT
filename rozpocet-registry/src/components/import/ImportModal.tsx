@@ -41,6 +41,11 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
   const [warnings, setWarnings] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  // Multiple sheets import
+  const [importMode, setImportMode] = useState<'single' | 'multiple'>('single');
+  const [selectedSheets, setSelectedSheets] = useState<string[]>([]);
+  const [applyTemplateToAll, setApplyTemplateToAll] = useState(true); // Apply same template to all sheets
+
   // Custom template creation state
   const [customTemplateName, setCustomTemplateName] = useState('');
   const [customTemplateDescription, setCustomTemplateDescription] = useState('');
@@ -248,6 +253,105 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
       setStep('success');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba při parsování');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Import multiple sheets at once
+  const handleImportMultiple = async () => {
+    if (!file || !workbook || selectedSheets.length === 0 || !selectedTemplate) return;
+
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      let successCount = 0;
+      let errorCount = 0;
+      const allWarnings: string[] = [];
+
+      for (const sheetName of selectedSheets) {
+        try {
+          const projectId = uuidv4();
+
+          const result = await parseExcelSheet(workbook, {
+            config: {
+              ...selectedTemplate.config,
+              sheetName,
+            },
+            fileName: file.name,
+            projectId,
+          });
+
+          if (result.warnings.length > 0) {
+            allWarnings.push(...result.warnings.map(w => `[${sheetName}] ${w}`));
+          }
+
+          // Auto-classification (if enabled)
+          if (autoClassify) {
+            const mainItems = result.items.filter(item =>
+              item.kod && item.kod.trim().length > 0
+            );
+
+            const classificationResult = classifyItems(mainItems, {
+              overwrite: false,
+              minConfidence: 50,
+            });
+
+            const classifications = new Map<string, any>();
+            for (const res of classificationResult.results) {
+              if (res.suggestedSkupina && res.confidence >= 50) {
+                classifications.set(res.itemId, res.suggestedSkupina);
+              }
+            }
+
+            applyClassificationsWithCascade(result.items, classifications);
+          }
+
+          const classifiedItems = autoClassify
+            ? result.items.filter(item => item.skupina !== null).length
+            : 0;
+
+          const project: Project = {
+            id: projectId,
+            fileName: file.name,
+            filePath: '',
+            importedAt: new Date(),
+            metadata: {
+              ...result.metadata,
+              sheetName, // Store sheet name in metadata
+            },
+            config: {
+              ...selectedTemplate.config,
+              sheetName,
+            },
+            items: result.items,
+            stats: {
+              totalItems: result.items.length,
+              classifiedItems,
+              totalCena: result.items.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0),
+            },
+          };
+
+          addProject(project);
+          successCount++;
+        } catch (sheetErr) {
+          errorCount++;
+          allWarnings.push(`[${sheetName}] Chyba: ${sheetErr instanceof Error ? sheetErr.message : 'Neznámá chyba'}`);
+        }
+      }
+
+      if (allWarnings.length > 0) {
+        setWarnings(allWarnings);
+      }
+
+      if (errorCount > 0) {
+        setError(`Importováno ${successCount} listů, ${errorCount} selhalo. Zkontrolujte varování níže.`);
+      }
+
+      setStep('success');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Chyba při hromadném importu');
     } finally {
       setIsLoading(false);
     }
@@ -572,24 +676,126 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                 Soubor: <span className="font-semibold text-text-primary">{file?.name}</span>
               </p>
               <p className="text-sm text-text-secondary">
-                Nalezeno {sheetNames.length} listů. Vyberte list pro import:
+                Nalezeno {sheetNames.length} listů.
               </p>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium mb-2">Vyberte list:</label>
-              <select
-                value={selectedSheet}
-                onChange={(e) => setSelectedSheet(e.target.value)}
-                className="input"
-              >
-                {sheetNames.map((name) => (
-                  <option key={name} value={name}>
-                    {name}
-                  </option>
-                ))}
-              </select>
+            {/* Import mode selection */}
+            <div className="p-4 bg-[var(--data-surface)] rounded-lg border border-[var(--divider)]">
+              <label className="block text-sm font-medium mb-3">Režim importu:</label>
+              <div className="space-y-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    checked={importMode === 'single'}
+                    onChange={() => {
+                      setImportMode('single');
+                      setSelectedSheets([]);
+                    }}
+                    className="w-4 h-4 text-[var(--accent-orange)]"
+                  />
+                  <span className="text-sm text-[var(--text-primary)]">
+                    📄 Importovat jeden list
+                  </span>
+                </label>
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    checked={importMode === 'multiple'}
+                    onChange={() => {
+                      setImportMode('multiple');
+                      setSelectedSheet('');
+                      setSelectedSheets(sheetNames); // Select all by default
+                    }}
+                    className="w-4 h-4 text-[var(--accent-orange)]"
+                  />
+                  <span className="text-sm text-[var(--text-primary)]">
+                    📚 Importovat více listů najednou ({sheetNames.length})
+                  </span>
+                </label>
+              </div>
             </div>
+
+            {/* Single sheet selection */}
+            {importMode === 'single' && (
+              <div>
+                <label className="block text-sm font-medium mb-2">Vyberte list:</label>
+                <select
+                  value={selectedSheet}
+                  onChange={(e) => setSelectedSheet(e.target.value)}
+                  className="input"
+                >
+                  {sheetNames.map((name) => (
+                    <option key={name} value={name}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Multiple sheets selection */}
+            {importMode === 'multiple' && (
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-sm font-medium">
+                    Vyberte listy ({selectedSheets.length}/{sheetNames.length}):
+                  </label>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => setSelectedSheets(sheetNames)}
+                      className="text-xs text-[var(--accent-orange)] hover:underline"
+                    >
+                      Vybrat vše
+                    </button>
+                    <button
+                      onClick={() => setSelectedSheets([])}
+                      className="text-xs text-[var(--text-muted)] hover:underline"
+                    >
+                      Zrušit výběr
+                    </button>
+                  </div>
+                </div>
+                <div className="max-h-64 overflow-y-auto p-4 bg-[var(--panel-clean)] rounded border border-[var(--divider)] space-y-2">
+                  {sheetNames.map((name) => (
+                    <label key={name} className="flex items-center gap-2 cursor-pointer hover:bg-[var(--bg-secondary)] p-2 rounded">
+                      <input
+                        type="checkbox"
+                        checked={selectedSheets.includes(name)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedSheets([...selectedSheets, name]);
+                          } else {
+                            setSelectedSheets(selectedSheets.filter(s => s !== name));
+                          }
+                        }}
+                        className="w-4 h-4 text-[var(--accent-orange)]"
+                      />
+                      <span className="text-sm text-[var(--text-primary)]">{name}</span>
+                    </label>
+                  ))}
+                </div>
+
+                {/* Apply template to all sheets */}
+                <div className="flex items-start gap-3 p-3 bg-blue-500/10 rounded border border-blue-500/30">
+                  <input
+                    type="checkbox"
+                    id="apply-template-all"
+                    checked={applyTemplateToAll}
+                    onChange={(e) => setApplyTemplateToAll(e.target.checked)}
+                    className="mt-1 w-4 h-4 text-blue-500"
+                  />
+                  <label htmlFor="apply-template-all" className="flex-1 cursor-pointer">
+                    <div className="text-sm font-medium text-blue-300">
+                      ⚙️ Použít tuto konfiguraci pro všechny vybrané listy
+                    </div>
+                    <div className="text-xs text-blue-200 mt-1">
+                      Šablona "{selectedTemplate.metadata.name}" bude použita pro všech {selectedSheets.length} listů
+                    </div>
+                  </label>
+                </div>
+              </div>
+            )}
 
             <div className="card bg-bg-tertiary">
               <p className="text-sm text-text-secondary">
@@ -625,12 +831,18 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
                 Zpět
               </button>
               <button
-                onClick={handleImport}
-                disabled={isLoading}
-                className="btn btn-primary flex items-center gap-2"
+                onClick={importMode === 'single' ? handleImport : handleImportMultiple}
+                disabled={
+                  isLoading ||
+                  (importMode === 'single' && !selectedSheet) ||
+                  (importMode === 'multiple' && selectedSheets.length === 0)
+                }
+                className="btn btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isLoading && <Loader2 size={16} className="animate-spin" />}
-                Importovat
+                {importMode === 'single'
+                  ? 'Importovat'
+                  : `Importovat ${selectedSheets.length} listů`}
               </button>
             </div>
           </div>
