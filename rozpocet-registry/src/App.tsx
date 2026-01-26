@@ -154,7 +154,7 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-primary">
+    <div className="min-h-screen bg-bg-primary overflow-x-hidden">
       {/* Header */}
       <header className="border-b border-border-color bg-bg-secondary">
         <div className="container mx-auto px-4 py-4">
