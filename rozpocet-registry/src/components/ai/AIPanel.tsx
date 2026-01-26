@@ -1,11 +1,12 @@
 /**
  * AI Panel Component
- * Provides AI-powered operations for BOQ items
+ * Provides rule-based classification operations for BOQ items
+ * Uses local classificationService (no external API required)
  */
 
 import { useState } from 'react';
-import { Sparkles, Loader2, Brain, Layers, ChevronDown, ChevronUp } from 'lucide-react';
-import { classifyItems, groupItems, type GroupResult } from '../../services/ai';
+import { Sparkles, Loader2, ChevronDown, ChevronUp, BarChart3 } from 'lucide-react';
+import { classifyItems as classifyItemsLocal } from '../../services/classification/classificationService';
 import { useRegistryStore } from '../../stores/registryStore';
 import type { ParsedItem } from '../../types/item';
 
@@ -19,10 +20,14 @@ interface AIPanelProps {
 export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIPanelProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isClassifying, setIsClassifying] = useState(false);
-  const [isGrouping, setIsGrouping] = useState(false);
-  const [groupingResult, setGroupingResult] = useState<GroupResult[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [lastAction, setLastAction] = useState<string | null>(null);
+  const [classificationStats, setClassificationStats] = useState<{
+    classified: number;
+    skipped: number;
+    total: number;
+    groupCounts: Record<string, number>;
+  } | null>(null);
 
   const { bulkSetSkupina } = useRegistryStore();
 
@@ -30,80 +35,87 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     ? items.filter(item => selectedItemIds.includes(item.id))
     : items;
 
-  const handleClassify = async () => {
+  const handleClassify = () => {
     if (itemsToProcess.length === 0) return;
 
     setIsClassifying(true);
     setError(null);
     setLastAction(null);
+    setClassificationStats(null);
 
     try {
-      const response = await classifyItems(itemsToProcess);
+      // Use local rule-based classifier (synchronous, no API call)
+      const result = classifyItemsLocal(itemsToProcess, { overwrite: true });
 
-      if (response.success && response.results) {
-        // Apply classifications to store
-        const updates = response.results.map(r => ({
-          itemId: r.id,
-          skupina: r.skupina
-        }));
+      if (result.classified > 0) {
+        // Build updates with cascade to description rows
+        const updates: Array<{ itemId: string; skupina: string }> = [];
 
-        bulkSetSkupina(projectId, sheetId, updates);
-        setLastAction(`Klasifikováno ${updates.length} položek (${response.source})`);
+        // Sort items by row position for cascade logic
+        const sortedItems = [...items].sort((a, b) =>
+          a.source.rowStart - b.source.rowStart
+        );
+
+        // Create a map of classifications from the result
+        const classificationMap = new Map<string, string>();
+        for (const r of result.results) {
+          if (r.wasClassified && r.suggestedSkupina) {
+            classificationMap.set(r.itemId, r.suggestedSkupina);
+          }
+        }
+
+        // Apply with cascade: when a main item (with kod) is classified,
+        // all following description rows (without kod) get the same group
+        let lastMainItemSkupina: string | null = null;
+
+        for (const item of sortedItems) {
+          const hasCode = item.kod && item.kod.trim().length > 0;
+
+          if (hasCode) {
+            const skupina = classificationMap.get(item.id);
+            if (skupina) {
+              updates.push({ itemId: item.id, skupina });
+              lastMainItemSkupina = skupina;
+            } else {
+              // Item was not classified (already had a group or low confidence)
+              lastMainItemSkupina = null;
+            }
+          } else {
+            // Description row - cascade from last classified main item
+            if (lastMainItemSkupina) {
+              updates.push({ itemId: item.id, skupina: lastMainItemSkupina });
+            }
+          }
+        }
+
+        // Apply all at once
+        if (updates.length > 0) {
+          bulkSetSkupina(projectId, sheetId, updates);
+        }
+
+        setClassificationStats({
+          classified: result.classified,
+          skipped: result.unclassified,
+          total: result.totalItems,
+          groupCounts: result.groupCounts,
+        });
+
+        setLastAction(
+          `Klasifikováno ${result.classified} z ${result.totalItems} položek (${updates.length} celkem s kaskádou)`
+        );
       } else {
-        setError(response.error || 'Classification failed');
+        setLastAction('Žádné položky nebyly klasifikovány (chybí klíčová slova v popisech)');
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(err instanceof Error ? err.message : 'Chyba při klasifikaci');
     } finally {
       setIsClassifying(false);
     }
   };
 
-  const handleGroup = async (groupBy: 'similarity' | 'function' | 'material' | 'location') => {
-    if (itemsToProcess.length === 0) return;
-
-    setIsGrouping(true);
-    setError(null);
-    setGroupingResult(null);
-
-    try {
-      const response = await groupItems(itemsToProcess, groupBy);
-
-      if (response.success && response.groups) {
-        setGroupingResult(response.groups);
-        setLastAction(`Seskupeno do ${response.groups.length} skupin (${response.source})`);
-      } else {
-        setError(response.error || 'Grouping failed');
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setIsGrouping(false);
-    }
-  };
-
-  const handleApplyGroup = (group: GroupResult) => {
-    const updates = group.itemIds.map(id => ({
-      itemId: id,
-      skupina: group.groupName
-    }));
-    bulkSetSkupina(projectId, sheetId, updates);
-    setLastAction(`Aplikována skupina "${group.groupName}" na ${updates.length} položek`);
-  };
-
-  const handleApplyAllGroups = () => {
-    if (!groupingResult) return;
-
-    const allUpdates = groupingResult.flatMap(group =>
-      group.itemIds.map(id => ({
-        itemId: id,
-        skupina: group.groupName
-      }))
-    );
-    bulkSetSkupina(projectId, sheetId, allUpdates);
-    setGroupingResult(null);
-    setLastAction(`Aplikováno ${groupingResult.length} skupin na ${allUpdates.length} položek`);
-  };
+  // Count current classification status
+  const classifiedCount = items.filter(i => i.skupina).length;
+  const unclassifiedCount = items.length - classifiedCount;
 
   return (
     <div className="card bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-purple-500/30">
@@ -113,12 +125,12 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">
-          <Brain className="text-purple-400" size={20} />
-          <h3 className="font-semibold text-purple-300">AI Asistent</h3>
+          <BarChart3 className="text-purple-400" size={20} />
+          <h3 className="font-semibold text-purple-300">Automatická klasifikace</h3>
           <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">
             {selectedItemIds.length > 0
               ? `${selectedItemIds.length} vybráno`
-              : `${items.length} položek`
+              : `${classifiedCount}/${items.length} klasifikováno`
             }
           </span>
         </div>
@@ -127,7 +139,19 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
       {isExpanded && (
         <div className="mt-4 space-y-4">
-          {/* Action Buttons */}
+          {/* Current status */}
+          <div className="flex items-center gap-4 text-sm">
+            <span className="text-text-secondary">
+              Klasifikováno: <strong className="text-green-400">{classifiedCount}</strong>
+            </span>
+            {unclassifiedCount > 0 && (
+              <span className="text-text-secondary">
+                Bez skupiny: <strong className="text-yellow-400">{unclassifiedCount}</strong>
+              </span>
+            )}
+          </div>
+
+          {/* Action Button */}
           <div className="flex flex-wrap gap-2">
             <button
               onClick={handleClassify}
@@ -139,49 +163,11 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
               ) : (
                 <Sparkles size={16} />
               )}
-              AI Klasifikace
+              Klasifikovat položky
             </button>
-
-            <div className="relative group">
-              <button
-                disabled={isGrouping || itemsToProcess.length === 0}
-                className="btn btn-secondary text-sm flex items-center gap-2"
-              >
-                {isGrouping ? (
-                  <Loader2 size={16} className="animate-spin" />
-                ) : (
-                  <Layers size={16} />
-                )}
-                AI Seskupení
-                <ChevronDown size={14} />
-              </button>
-              <div className="absolute top-full left-0 mt-1 bg-bg-secondary border border-border-color rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 min-w-[200px]">
-                <button
-                  onClick={() => handleGroup('similarity')}
-                  className="w-full px-4 py-2 text-left text-sm hover:bg-bg-tertiary"
-                >
-                  Podle podobnosti
-                </button>
-                <button
-                  onClick={() => handleGroup('function')}
-                  className="w-full px-4 py-2 text-left text-sm hover:bg-bg-tertiary"
-                >
-                  Podle funkce
-                </button>
-                <button
-                  onClick={() => handleGroup('material')}
-                  className="w-full px-4 py-2 text-left text-sm hover:bg-bg-tertiary"
-                >
-                  Podle materiálu
-                </button>
-                <button
-                  onClick={() => handleGroup('location')}
-                  className="w-full px-4 py-2 text-left text-sm hover:bg-bg-tertiary"
-                >
-                  Podle umístění
-                </button>
-              </div>
-            </div>
+            <span className="text-xs text-text-muted self-center">
+              Lokální pravidlový klasifikátor (10 skupin prací)
+            </span>
           </div>
 
           {/* Status */}
@@ -197,48 +183,30 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
             </div>
           )}
 
-          {/* Grouping Results */}
-          {groupingResult && (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <h4 className="font-medium text-sm">Navrhované skupiny:</h4>
-                <button
-                  onClick={handleApplyAllGroups}
-                  className="btn btn-primary text-xs py-1"
-                >
-                  Aplikovat vše
-                </button>
-              </div>
-              <div className="max-h-60 overflow-y-auto space-y-2">
-                {groupingResult.map((group, i) => (
-                  <div
-                    key={i}
-                    className="bg-bg-tertiary p-3 rounded-lg border border-border-color"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <p className="font-medium text-sm">{group.groupName}</p>
-                        <p className="text-xs text-text-secondary">{group.groupDescription}</p>
-                        <p className="text-xs text-text-muted mt-1">
-                          {group.itemCount} položek • {group.totalCena.toLocaleString('cs-CZ')} Kč
-                        </p>
-                      </div>
-                      <button
-                        onClick={() => handleApplyGroup(group)}
-                        className="btn btn-secondary text-xs py-1 px-2"
-                      >
-                        Aplikovat
-                      </button>
+          {/* Classification Stats */}
+          {classificationStats && Object.keys(classificationStats.groupCounts).length > 0 && (
+            <div className="space-y-2">
+              <h4 className="font-medium text-sm text-text-secondary">Rozřazení do skupin:</h4>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                {Object.entries(classificationStats.groupCounts)
+                  .sort(([, a], [, b]) => b - a)
+                  .map(([group, count]) => (
+                    <div
+                      key={group}
+                      className="bg-bg-tertiary px-3 py-2 rounded-lg border border-border-color text-sm"
+                    >
+                      <span className="font-medium text-accent-primary">{group}</span>
+                      <span className="text-text-muted ml-2">({count})</span>
                     </div>
-                  </div>
-                ))}
+                  ))}
               </div>
             </div>
           )}
 
           {/* Info */}
           <p className="text-xs text-text-muted">
-            AI využívá concrete-agent Multi-Role API pro inteligentní klasifikaci a seskupování položek.
+            Pravidlový klasifikátor na základě klíčových slov v popisu.
+            Skupiny: ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA.
           </p>
         </div>
       )}
