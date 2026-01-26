@@ -390,9 +390,10 @@ export function ItemsTable({
   }
 
   return (
-    <div className="card overflow-hidden">
-      <div className="overflow-x-auto scrollbar-thin">
-        <table className="table">
+    <div className="w-full overflow-hidden">
+      <div className="card">
+        <div className="overflow-x-auto scrollbar-thin">
+          <table className="table">
           <thead>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
@@ -491,6 +492,7 @@ export function ItemsTable({
         message={alertModal.message}
         variant={alertModal.variant}
       />
+      </div>
     </div>
   );
 }

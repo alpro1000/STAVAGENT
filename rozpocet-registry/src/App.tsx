@@ -3,7 +3,7 @@
  * Registr Rozpočtů - система парсинга и агрегации строительных смет
  */
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { ImportModal } from './components/import/ImportModal';
 import { ItemsTable } from './components/items/ItemsTable';
 import { SearchBar } from './components/search/SearchBar';
@@ -13,7 +13,7 @@ import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload } from './services/export/excelExportService';
-import { Trash2, FileSpreadsheet, Download, Package } from 'lucide-react';
+import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from 'lucide-react';
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -37,6 +37,66 @@ function App() {
 
   // Filter state - show only work items (hide descriptions)
   const [showOnlyWorkItems, setShowOnlyWorkItems] = useState(false);
+
+  // Refs for horizontal scrolling (Excel-style navigation)
+  const projectTabsScrollRef = useRef<HTMLDivElement>(null);
+  const sheetTabsScrollRef = useRef<HTMLDivElement>(null);
+
+  // Excel-style navigation functions for PROJECT tabs
+  const scrollProjectTabsToStart = () => {
+    if (projectTabsScrollRef.current) {
+      projectTabsScrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  };
+
+  const scrollProjectTabsLeft = () => {
+    if (projectTabsScrollRef.current) {
+      const scrollAmount = 200; // Scroll by ~1 tab width
+      projectTabsScrollRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const scrollProjectTabsRight = () => {
+    if (projectTabsScrollRef.current) {
+      const scrollAmount = 200; // Scroll by ~1 tab width
+      projectTabsScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const scrollProjectTabsToEnd = () => {
+    if (projectTabsScrollRef.current) {
+      const maxScroll = projectTabsScrollRef.current.scrollWidth - projectTabsScrollRef.current.clientWidth;
+      projectTabsScrollRef.current.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    }
+  };
+
+  // Excel-style navigation functions for SHEET tabs
+  const scrollSheetTabsToStart = () => {
+    if (sheetTabsScrollRef.current) {
+      sheetTabsScrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
+    }
+  };
+
+  const scrollSheetTabsLeft = () => {
+    if (sheetTabsScrollRef.current) {
+      const scrollAmount = 200; // Scroll by ~1 tab width
+      sheetTabsScrollRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const scrollSheetTabsRight = () => {
+    if (sheetTabsScrollRef.current) {
+      const scrollAmount = 200; // Scroll by ~1 tab width
+      sheetTabsScrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const scrollSheetTabsToEnd = () => {
+    if (sheetTabsScrollRef.current) {
+      const maxScroll = sheetTabsScrollRef.current.scrollWidth - sheetTabsScrollRef.current.clientWidth;
+      sheetTabsScrollRef.current.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    }
+  };
 
   const selectedProject = projects.find(p => p.id === selectedProjectId);
   const selectedSheet = selectedProject && selectedProjectId && selectedSheetId
@@ -268,78 +328,164 @@ function App() {
                   </button>
                 </div>
 
-                {/* Project Tabs */}
-                <div className="w-full overflow-hidden">
-                  <div className="flex items-center gap-2 overflow-x-auto pb-2">
-                    {projects.map((project) => (
-                      <div
-                        key={project.id}
-                        className={`
-                          relative flex items-center gap-2 px-4 py-2 rounded-t-lg border-b-2 transition-all cursor-pointer
-                          whitespace-nowrap flex-shrink-0
-                          ${selectedProjectId === project.id
-                            ? 'border-accent-primary bg-accent-primary/10 text-text-primary'
-                            : 'border-transparent hover:border-accent-primary/50 bg-bg-secondary text-text-secondary'
-                          }
-                        `}
-                        onClick={() => setSelectedProject(project.id)}
-                      >
-                        <FileSpreadsheet size={16} className="text-accent-primary flex-shrink-0" />
-                        <span className="text-sm font-medium max-w-[200px] truncate" title={project.projectName}>
-                          {project.projectName}
-                        </span>
-                        <span className="text-xs text-text-muted ml-1">
-                          ({project.sheets.length} {project.sheets.length === 1 ? 'list' : 'listy'})
-                        </span>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            if (window.confirm(`Opravdu smazat projekt "${project.projectName}"?`)) {
-                              removeProject(project.id);
+                {/* Project Tabs (Excel-style navigation) */}
+                <div className="flex items-center gap-2">
+                  {/* Navigation: Start */}
+                  <button
+                    onClick={scrollProjectTabsToStart}
+                    className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
+                    title="Přejít na začátek"
+                  >
+                    <ChevronsLeft size={16} className="text-text-secondary" />
+                  </button>
+
+                  {/* Navigation: Left */}
+                  <button
+                    onClick={scrollProjectTabsLeft}
+                    className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
+                    title="Posunout vlevo"
+                  >
+                    <ChevronLeft size={16} className="text-text-secondary" />
+                  </button>
+
+                  {/* Scrollable Tabs Container */}
+                  <div className="flex-1 overflow-hidden">
+                    <div
+                      ref={projectTabsScrollRef}
+                      className="flex items-center gap-2 overflow-x-hidden pb-2"
+                      style={{ scrollbarWidth: 'none' }} // Hide scrollbar
+                    >
+                      {projects.map((project) => (
+                        <div
+                          key={project.id}
+                          className={`
+                            relative flex items-center gap-2 px-4 py-2 rounded-t-lg border-b-2 transition-all cursor-pointer
+                            whitespace-nowrap flex-shrink-0
+                            ${selectedProjectId === project.id
+                              ? 'border-accent-primary bg-accent-primary/10 text-text-primary'
+                              : 'border-transparent hover:border-accent-primary/50 bg-bg-secondary text-text-secondary'
                             }
-                          }}
-                          className="ml-1 p-1 hover:bg-red-500/20 rounded transition-colors flex-shrink-0"
-                          title="Smazat projekt"
+                          `}
+                          onClick={() => setSelectedProject(project.id)}
                         >
-                          <Trash2 size={14} className="text-red-500" />
-                        </button>
-                      </div>
-                    ))}
+                          <FileSpreadsheet size={16} className="text-accent-primary flex-shrink-0" />
+                          <span className="text-sm font-medium max-w-[200px] truncate" title={project.projectName}>
+                            {project.projectName}
+                          </span>
+                          <span className="text-xs text-text-muted ml-1">
+                            ({project.sheets.length} {project.sheets.length === 1 ? 'list' : 'listy'})
+                          </span>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (window.confirm(`Opravdu smazat projekt "${project.projectName}"?`)) {
+                                removeProject(project.id);
+                              }
+                            }}
+                            className="ml-1 p-1 hover:bg-red-500/20 rounded transition-colors flex-shrink-0"
+                            title="Smazat projekt"
+                          >
+                            <Trash2 size={14} className="text-red-500" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
                   </div>
+
+                  {/* Navigation: Right */}
+                  <button
+                    onClick={scrollProjectTabsRight}
+                    className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
+                    title="Posunout vpravo"
+                  >
+                    <ChevronRight size={16} className="text-text-secondary" />
+                  </button>
+
+                  {/* Navigation: End */}
+                  <button
+                    onClick={scrollProjectTabsToEnd}
+                    className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
+                    title="Přejít na konec"
+                  >
+                    <ChevronsRight size={16} className="text-text-secondary" />
+                  </button>
                 </div>
               </div>
 
-              {/* Sheet Tabs (horizontal scrollable) */}
+              {/* Sheet Tabs (Excel-style navigation) */}
               {selectedProject && selectedProject.sheets.length > 0 && (
                 <div className="mb-4">
                   <h3 className="text-sm font-medium text-text-secondary mb-2">
                     Listy projektu:
                   </h3>
-                  {/* Fixed width container to prevent infinite expansion */}
-                  <div className="w-full overflow-hidden">
-                    <div className="flex items-center gap-2 overflow-x-auto pb-2">
-                      {selectedProject.sheets.map((sheet) => (
-                        <div
-                          key={sheet.id}
-                          className={`
-                            flex items-center gap-2 px-3 py-2 rounded-lg border transition-all cursor-pointer
-                            whitespace-nowrap flex-shrink-0
-                            ${selectedSheetId === sheet.id
-                              ? 'border-accent-orange bg-accent-orange/10 text-text-primary font-medium'
-                              : 'border-border-color hover:border-accent-orange/50 bg-bg-secondary text-text-secondary'
-                            }
-                          `}
-                          onClick={() => setSelectedSheet(selectedProjectId, sheet.id)}
-                        >
-                          <span className="text-sm" title={sheet.name}>
-                            {sheet.name}
-                          </span>
-                          <span className="text-xs text-text-muted">
-                            ({sheet.stats.totalItems} položek)
-                          </span>
-                        </div>
-                      ))}
+                  {/* Excel-style navigation: ◀◀ ◀ [tabs] ▶ ▶▶ */}
+                  <div className="flex items-center gap-2">
+                    {/* Navigation: Start */}
+                    <button
+                      onClick={scrollSheetTabsToStart}
+                      className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
+                      title="Přejít na začátek"
+                    >
+                      <ChevronsLeft size={16} className="text-text-secondary" />
+                    </button>
+
+                    {/* Navigation: Left */}
+                    <button
+                      onClick={scrollSheetTabsLeft}
+                      className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
+                      title="Posunout vlevo"
+                    >
+                      <ChevronLeft size={16} className="text-text-secondary" />
+                    </button>
+
+                    {/* Scrollable Tabs Container */}
+                    <div className="flex-1 overflow-hidden">
+                      <div
+                        ref={sheetTabsScrollRef}
+                        className="flex items-center gap-2 overflow-x-hidden pb-2"
+                        style={{ scrollbarWidth: 'none' }} // Hide scrollbar
+                      >
+                        {selectedProject.sheets.map((sheet) => (
+                          <div
+                            key={sheet.id}
+                            className={`
+                              flex items-center gap-2 px-3 py-2 rounded-lg border transition-all cursor-pointer
+                              whitespace-nowrap flex-shrink-0
+                              ${selectedSheetId === sheet.id
+                                ? 'border-accent-orange bg-accent-orange/10 text-text-primary font-medium'
+                                : 'border-border-color hover:border-accent-orange/50 bg-bg-secondary text-text-secondary'
+                              }
+                            `}
+                            onClick={() => setSelectedSheet(selectedProjectId, sheet.id)}
+                          >
+                            <span className="text-sm" title={sheet.name}>
+                              {sheet.name}
+                            </span>
+                            <span className="text-xs text-text-muted">
+                              ({sheet.stats.totalItems} položek)
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
+
+                    {/* Navigation: Right */}
+                    <button
+                      onClick={scrollSheetTabsRight}
+                      className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
+                      title="Posunout vpravo"
+                    >
+                      <ChevronRight size={16} className="text-text-secondary" />
+                    </button>
+
+                    {/* Navigation: End */}
+                    <button
+                      onClick={scrollSheetTabsToEnd}
+                      className="p-2 rounded border border-border-color bg-panel-clean hover:border-accent-orange hover:bg-accent-orange/10 transition-all flex-shrink-0"
+                      title="Přejít na konec"
+                    >
+                      <ChevronsRight size={16} className="text-text-secondary" />
+                    </button>
                   </div>
                 </div>
               )}

@@ -96,11 +96,13 @@
   /* Table base (Level 3: Data Surfaces) */
   .table {
     width: 100%;
+    table-layout: auto; /* Allow natural column widths based on content */
     border-collapse: separate;
     border-spacing: 0;
     background: var(--data-surface);
     border-radius: var(--radius-md);
     overflow: hidden;
+    min-width: max-content; /* Prevent table from shrinking below content width */
   }
 
   .table th {
