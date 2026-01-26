@@ -7,9 +7,10 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type {
   Project,
+  Sheet,
   SavedFilter,
   ParsedItem,
-  ProjectStats,
+  SheetStats,
 } from '../types';
 import type { ImportTemplate } from '../types/template';
 import { PREDEFINED_TEMPLATES } from '../config/templates';
@@ -17,9 +18,9 @@ import { DEFAULT_GROUPS } from '../utils/constants';
 
 interface RegistryState {
   // Данные
-  projects: Project[];
-  selectedProjectId: string | null;
-  items: Record<string, ParsedItem[]>; // All items by projectId
+  projects: Project[];               // Projects with sheets hierarchy
+  selectedProjectId: string | null;  // Currently selected project
+  selectedSheetId: string | null;    // Currently selected sheet within project
 
   // Шаблоны импорта
   templates: ImportTemplate[];
@@ -33,15 +34,21 @@ interface RegistryState {
   // Действия с проектами
   addProject: (project: Project) => void;
   removeProject: (projectId: string) => void;
-  updateProject: (projectId: string, updates: Partial<Project>) => void;
+  updateProject: (projectId: string, updates: Partial<Omit<Project, 'sheets'>>) => void;
   setSelectedProject: (projectId: string | null) => void;
   getProject: (projectId: string) => Project | undefined;
 
-  // Действия с items
-  setItemSkupina: (projectId: string, itemId: string, skupina: string) => void;
-  setItemSkupinaGlobal: (itemKod: string, skupina: string) => void; // Apply to ALL projects with same kod
-  bulkSetSkupina: (projectId: string, updates: Array<{ itemId: string; skupina: string }>) => void;
-  setItems: (projectId: string, items: ParsedItem[]) => void;
+  // Действия с листами
+  addSheet: (projectId: string, sheet: Sheet) => void;
+  removeSheet: (projectId: string, sheetId: string) => void;
+  setSelectedSheet: (projectId: string | null, sheetId: string | null) => void;
+  getSheet: (projectId: string, sheetId: string) => Sheet | undefined;
+
+  // Действия с items (теперь на уровне листа)
+  setItemSkupina: (projectId: string, sheetId: string, itemId: string, skupina: string) => void;
+  setItemSkupinaGlobal: (itemKod: string, skupina: string) => void; // Apply to ALL sheets with same kod
+  bulkSetSkupina: (projectId: string, sheetId: string, updates: Array<{ itemId: string; skupina: string }>) => void;
+  setItems: (projectId: string, sheetId: string, items: ParsedItem[]) => void;
 
   // Действия с шаблонами
   addTemplate: (template: ImportTemplate) => void;
@@ -57,13 +64,13 @@ interface RegistryState {
   getAllGroups: () => string[];
 
   // Статистика
-  updateProjectStats: (projectId: string) => void;
+  updateSheetStats: (projectId: string, sheetId: string) => void;
 }
 
 /**
- * Вычисляет статистику проекта
+ * Вычисляет статистику листа
  */
-function calculateStats(items: ParsedItem[]): ProjectStats {
+function calculateSheetStats(items: ParsedItem[]): SheetStats {
   const totalItems = items.length;
   const classifiedItems = items.filter(item => item.skupina !== null).length;
   const totalCena = items.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0);
@@ -81,7 +88,7 @@ export const useRegistryStore = create<RegistryState>()(
       // Начальное состояние
       projects: [],
       selectedProjectId: null,
-      items: {},
+      selectedSheetId: null,
       templates: [...PREDEFINED_TEMPLATES],
       savedFilters: [],
       customGroups: [],
@@ -91,24 +98,19 @@ export const useRegistryStore = create<RegistryState>()(
         set((state) => ({
           projects: [...state.projects, project],
           selectedProjectId: project.id,
-          items: {
-            ...state.items,
-            [project.id]: project.items,
-          },
+          // Select first sheet if available
+          selectedSheetId: project.sheets.length > 0 ? project.sheets[0].id : null,
         }));
-        get().updateProjectStats(project.id);
       },
 
       removeProject: (projectId) => {
-        set((state) => {
-          const { [projectId]: _, ...restItems } = state.items;
-          return {
-            projects: state.projects.filter((p) => p.id !== projectId),
-            items: restItems,
-            selectedProjectId:
-              state.selectedProjectId === projectId ? null : state.selectedProjectId,
-          };
-        });
+        set((state) => ({
+          projects: state.projects.filter((p) => p.id !== projectId),
+          selectedProjectId:
+            state.selectedProjectId === projectId ? null : state.selectedProjectId,
+          selectedSheetId:
+            state.selectedProjectId === projectId ? null : state.selectedSheetId,
+        }));
       },
 
       updateProject: (projectId, updates) => {
@@ -117,139 +119,188 @@ export const useRegistryStore = create<RegistryState>()(
             p.id === projectId ? { ...p, ...updates } : p
           ),
         }));
-        get().updateProjectStats(projectId);
       },
 
       setSelectedProject: (projectId) => {
-        set({ selectedProjectId: projectId });
+        const project = get().projects.find(p => p.id === projectId);
+        set({
+          selectedProjectId: projectId,
+          // Auto-select first sheet
+          selectedSheetId: project && project.sheets.length > 0 ? project.sheets[0].id : null,
+        });
       },
 
       getProject: (projectId) => {
         return get().projects.find((p) => p.id === projectId);
       },
 
-      // Items
-      setItemSkupina: (projectId, itemId, skupina) => {
+      // Листы
+      addSheet: (projectId, sheet) => {
+        set((state) => ({
+          projects: state.projects.map((p) =>
+            p.id === projectId
+              ? { ...p, sheets: [...p.sheets, sheet] }
+              : p
+          ),
+        }));
+      },
+
+      removeSheet: (projectId, sheetId) => {
+        set((state) => ({
+          projects: state.projects.map((p) =>
+            p.id === projectId
+              ? { ...p, sheets: p.sheets.filter(s => s.id !== sheetId) }
+              : p
+          ),
+          selectedSheetId:
+            state.selectedSheetId === sheetId ? null : state.selectedSheetId,
+        }));
+      },
+
+      setSelectedSheet: (projectId, sheetId) => {
+        set({
+          selectedProjectId: projectId,
+          selectedSheetId: sheetId,
+        });
+      },
+
+      getSheet: (projectId, sheetId) => {
+        const project = get().projects.find(p => p.id === projectId);
+        return project?.sheets.find(s => s.id === sheetId);
+      },
+
+      // Items (работа на уровне листа)
+      setItemSkupina: (projectId, sheetId, itemId, skupina) => {
         set((state) => ({
           projects: state.projects.map((p) => {
             if (p.id !== projectId) return p;
 
-            // Находим целевой item
-            const targetItem = p.items.find(item => item.id === itemId);
-            if (!targetItem) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
 
-            // Каскадное применение к строкам описания:
-            // Если у targetItem есть код, применяем группу к последующим items без кода
-            const hasCode = targetItem.kod && targetItem.kod.trim().length > 0;
-            const idsToUpdate = new Set([itemId]);
+                // Находим целевой item
+                const targetItem = sheet.items.find(item => item.id === itemId);
+                if (!targetItem) return sheet;
 
-            if (hasCode) {
-              // Сортируем items по source.rowStart
-              const sortedItems = [...p.items].sort((a, b) =>
+                // Каскадное применение к строкам описания
+                const hasCode = targetItem.kod && targetItem.kod.trim().length > 0;
+                const idsToUpdate = new Set([itemId]);
+
+                if (hasCode) {
+                  const sortedItems = [...sheet.items].sort((a, b) =>
+                    a.source.rowStart - b.source.rowStart
+                  );
+
+                  const targetIndex = sortedItems.findIndex(item => item.id === itemId);
+
+                  for (let i = targetIndex + 1; i < sortedItems.length; i++) {
+                    const nextItem = sortedItems[i];
+                    const nextHasCode = nextItem.kod && nextItem.kod.trim().length > 0;
+                    if (nextHasCode) break;
+                    idsToUpdate.add(nextItem.id);
+                  }
+                }
+
+                return {
+                  ...sheet,
+                  items: sheet.items.map((item) =>
+                    idsToUpdate.has(item.id) ? { ...item, skupina } : item
+                  ),
+                };
+              }),
+            };
+          }),
+        }));
+        get().updateSheetStats(projectId, sheetId);
+      },
+      },
+
+      // Apply skupina to ALL sheets with same kod across ALL projects
+      setItemSkupinaGlobal: (itemKod, skupina) => {
+        set((state) => ({
+          projects: state.projects.map((p) => ({
+            ...p,
+            sheets: p.sheets.map((sheet) => {
+              const sortedItems = [...sheet.items].sort((a, b) =>
                 a.source.rowStart - b.source.rowStart
               );
 
-              // Находим индекс целевого item
-              const targetIndex = sortedItems.findIndex(item => item.id === itemId);
+              const idsToUpdate = new Set<string>();
 
-              // Берём все последующие items до следующего с кодом
-              for (let i = targetIndex + 1; i < sortedItems.length; i++) {
-                const nextItem = sortedItems[i];
-                const nextHasCode = nextItem.kod && nextItem.kod.trim().length > 0;
+              // Find all items with matching kod
+              sortedItems.forEach((item, index) => {
+                const hasCode = item.kod && item.kod.trim().length > 0;
 
-                // Если встретили item с кодом - останавливаемся
-                if (nextHasCode) break;
+                if (hasCode && item.kod === itemKod) {
+                  idsToUpdate.add(item.id);
 
-                // Добавляем item без кода в список для обновления
-                idsToUpdate.add(nextItem.id);
-              }
-            }
-
-            return {
-              ...p,
-              items: p.items.map((item) =>
-                idsToUpdate.has(item.id) ? { ...item, skupina } : item
-              ),
-            };
-          }),
-        }));
-        get().updateProjectStats(projectId);
-      },
-
-      // Apply skupina to ALL items with same kod across ALL projects
-      setItemSkupinaGlobal: (itemKod, skupina) => {
-        set((state) => ({
-          projects: state.projects.map((p) => {
-            // For each project, find items with matching kod
-            const sortedItems = [...p.items].sort((a, b) =>
-              a.source.rowStart - b.source.rowStart
-            );
-
-            const idsToUpdate = new Set<string>();
-
-            // Find all items with matching kod
-            sortedItems.forEach((item, index) => {
-              const hasCode = item.kod && item.kod.trim().length > 0;
-
-              if (hasCode && item.kod === itemKod) {
-                // Add main item
-                idsToUpdate.add(item.id);
-
-                // Add following description rows (without kod)
-                for (let i = index + 1; i < sortedItems.length; i++) {
-                  const nextItem = sortedItems[i];
-                  const nextHasCode = nextItem.kod && nextItem.kod.trim().length > 0;
-
-                  if (nextHasCode) break; // Stop at next main item
-                  idsToUpdate.add(nextItem.id);
+                  // Add following description rows
+                  for (let i = index + 1; i < sortedItems.length; i++) {
+                    const nextItem = sortedItems[i];
+                    const nextHasCode = nextItem.kod && nextItem.kod.trim().length > 0;
+                    if (nextHasCode) break;
+                    idsToUpdate.add(nextItem.id);
+                  }
                 }
-              }
-            });
+              });
 
-            // Update items
-            return {
-              ...p,
-              items: p.items.map((item) =>
-                idsToUpdate.has(item.id) ? { ...item, skupina } : item
-              ),
-            };
-          }),
+              // Update items
+              return {
+                ...sheet,
+                items: sheet.items.map((item) =>
+                  idsToUpdate.has(item.id) ? { ...item, skupina } : item
+                ),
+              };
+            }),
+          })),
         }));
 
-        // Update stats for all affected projects
-        get().projects.forEach(p => get().updateProjectStats(p.id));
+        // Update stats for all affected sheets
+        get().projects.forEach(p =>
+          p.sheets.forEach(s => get().updateSheetStats(p.id, s.id))
+        );
       },
 
-      bulkSetSkupina: (projectId, updates) => {
+      bulkSetSkupina: (projectId, sheetId, updates) => {
         const updateMap = new Map(updates.map(u => [u.itemId, u.skupina]));
         set((state) => ({
           projects: state.projects.map((p) => {
             if (p.id !== projectId) return p;
             return {
               ...p,
-              items: p.items.map((item) =>
-                updateMap.has(item.id)
-                  ? { ...item, skupina: updateMap.get(item.id)! }
-                  : item
-              ),
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+                return {
+                  ...sheet,
+                  items: sheet.items.map((item) =>
+                    updateMap.has(item.id)
+                      ? { ...item, skupina: updateMap.get(item.id)! }
+                      : item
+                  ),
+                };
+              }),
             };
           }),
         }));
-        get().updateProjectStats(projectId);
+        get().updateSheetStats(projectId, sheetId);
       },
 
-      setItems: (projectId, items) => {
+      setItems: (projectId, sheetId, items) => {
         set((state) => ({
           projects: state.projects.map((p) => {
             if (p.id !== projectId) return p;
-            return { ...p, items };
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+                return { ...sheet, items };
+              }),
+            };
           }),
-          items: {
-            ...state.items,
-            [projectId]: items,
-          },
         }));
-        get().updateProjectStats(projectId);
+        get().updateSheetStats(projectId, sheetId);
       },
 
       // Шаблоны
@@ -300,13 +351,19 @@ export const useRegistryStore = create<RegistryState>()(
       },
 
       // Статистика
-      updateProjectStats: (projectId) => {
+      updateSheetStats: (projectId, sheetId) => {
         set((state) => ({
           projects: state.projects.map((p) => {
             if (p.id !== projectId) return p;
             return {
               ...p,
-              stats: calculateStats(p.items),
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+                return {
+                  ...sheet,
+                  stats: calculateSheetStats(sheet.items),
+                };
+              }),
             };
           }),
         }));
