@@ -26,6 +26,7 @@ import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 interface ItemsTableProps {
   items: ParsedItem[];
   projectId: string;
+  sheetId: string;
   selectedIds?: Set<string>;
   onSelectionChange?: (ids: Set<string>) => void;
   sorting?: SortingState;
@@ -37,12 +38,13 @@ const columnHelper = createColumnHelper<ParsedItem>();
 export function ItemsTable({
   items,
   projectId,
+  sheetId,
   selectedIds = new Set(),
   onSelectionChange,
   sorting: externalSorting,
   onSortingChange: externalOnSortingChange,
 }: ItemsTableProps) {
-  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject } = useRegistryStore();
+  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getSheet } = useRegistryStore();
   const allGroups = getAllGroups();
   const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
   const [applyingGlobal, setApplyingGlobal] = useState<string | null>(null);
@@ -69,12 +71,12 @@ export function ItemsTable({
 
     setApplyingToSimilar(sourceItem.id);
 
-    // Получаем полный массив items из проекта (без фильтров)
-    const project = getProject(projectId);
-    const allProjectItems = project?.items || items;
+    // Получаем полный массив items из листа (без фильтров)
+    const sheet = getSheet(projectId, sheetId);
+    const allSheetItems = sheet?.items || items;
 
     // Находим похожие позиции с пониженными порогами для лучшего результата
-    const suggestions = autoAssignSimilarItems(sourceItem, allProjectItems, 60);
+    const suggestions = autoAssignSimilarItems(sourceItem, allSheetItems, 60);
 
     if (suggestions.length > 0) {
       // Применяем группу ко всем похожим
@@ -83,7 +85,7 @@ export function ItemsTable({
         skupina: s.suggestedSkupina,
       }));
 
-      bulkSetSkupina(projectId, updates);
+      bulkSetSkupina(projectId, sheetId, updates);
 
       // Показываем уведомление
       setAlertModal({
@@ -292,9 +294,9 @@ export function ItemsTable({
                   value={currentSkupina}
                   onChange={(value) => {
                     if (value === null) {
-                      setItemSkupina(projectId, item.id, null!);
+                      setItemSkupina(projectId, sheetId, item.id, null!);
                     } else {
-                      setItemSkupina(projectId, item.id, value);
+                      setItemSkupina(projectId, sheetId, item.id, value);
                     }
                   }}
                   allGroups={allGroups}
@@ -328,7 +330,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, assignedGroups, groupBySkupina, toggleGrouping]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, assignedGroups, groupBySkupina, toggleGrouping]
   );
 
   const table = useReactTable({

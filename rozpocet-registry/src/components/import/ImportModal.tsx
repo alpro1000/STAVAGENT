@@ -15,7 +15,7 @@ import { classifyItems, applyClassificationsWithCascade } from '../../services/c
 import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
-import type { Project } from '../../types';
+import type { Project, Sheet } from '../../types';
 import type { ImportTemplate } from '../../types/template';
 import type { ImportConfig } from '../../types/config';
 import { AlertCircle, Loader2, CheckCircle, Sparkles, Table } from 'lucide-react';
@@ -187,6 +187,7 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
 
     try {
       const projectId = uuidv4();
+      const sheetId = uuidv4();
 
       const result = await parseExcelSheet(workbook, {
         config: {
@@ -226,27 +227,37 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         applyClassificationsWithCascade(result.items, classifications);
       }
 
-      // Vytvoříme projekt
+      // Create sheet with items
       const classifiedItems = autoClassify
         ? result.items.filter(item => item.skupina !== null).length
         : 0;
 
-      const project: Project = {
-        id: projectId,
-        fileName: file.name,
-        filePath: '', // Browser-only, path nebude použit
-        importedAt: new Date(),
-        metadata: result.metadata,
-        config: {
-          ...selectedTemplate.config,
-          sheetName: selectedSheet,
-        },
+      const sheet: Sheet = {
+        id: sheetId,
+        name: selectedSheet,
+        projectId,
         items: result.items,
         stats: {
           totalItems: result.items.length,
           classifiedItems,
           totalCena: result.items.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0),
         },
+        metadata: result.metadata,
+        config: {
+          ...selectedTemplate.config,
+          sheetName: selectedSheet,
+        },
+      };
+
+      // Create project with single sheet
+      const projectName = file.name.replace(/\.(xlsx?|xls)$/i, '');
+      const project: Project = {
+        id: projectId,
+        fileName: file.name,
+        projectName,
+        filePath: '', // Browser-only, path nebude použit
+        importedAt: new Date(),
+        sheets: [sheet],
       };
 
       addProject(project);
@@ -266,13 +277,15 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
     setIsLoading(true);
 
     try {
-      let successCount = 0;
-      let errorCount = 0;
+      const projectId = uuidv4(); // ONE project for all sheets
+      const sheets: Sheet[] = [];
       const allWarnings: string[] = [];
+      let errorCount = 0;
 
+      // Process each sheet
       for (const sheetName of selectedSheets) {
         try {
-          const projectId = uuidv4();
+          const sheetId = uuidv4();
 
           const result = await parseExcelSheet(workbook, {
             config: {
@@ -312,11 +325,17 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
             ? result.items.filter(item => item.skupina !== null).length
             : 0;
 
-          const project: Project = {
-            id: projectId,
-            fileName: file.name,
-            filePath: '',
-            importedAt: new Date(),
+          // Create sheet object
+          const sheet: Sheet = {
+            id: sheetId,
+            name: sheetName,
+            projectId,
+            items: result.items,
+            stats: {
+              totalItems: result.items.length,
+              classifiedItems,
+              totalCena: result.items.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0),
+            },
             metadata: {
               ...result.metadata,
               sheetName, // Store sheet name in metadata
@@ -325,16 +344,9 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
               ...selectedTemplate.config,
               sheetName,
             },
-            items: result.items,
-            stats: {
-              totalItems: result.items.length,
-              classifiedItems,
-              totalCena: result.items.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0),
-            },
           };
 
-          addProject(project);
-          successCount++;
+          sheets.push(sheet);
         } catch (sheetErr) {
           errorCount++;
           allWarnings.push(`[${sheetName}] Chyba: ${sheetErr instanceof Error ? sheetErr.message : 'Neznámá chyba'}`);
@@ -346,9 +358,21 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
       }
 
       if (errorCount > 0) {
-        setError(`Importováno ${successCount} listů, ${errorCount} selhalo. Zkontrolujte varování níže.`);
+        setError(`Importováno ${sheets.length} listů, ${errorCount} selhalo. Zkontrolujte varování níže.`);
       }
 
+      // Create ONE project with all sheets
+      const projectName = file.name.replace(/\.(xlsx?|xls)$/i, '');
+      const project: Project = {
+        id: projectId,
+        fileName: file.name,
+        projectName,
+        filePath: '',
+        importedAt: new Date(),
+        sheets,
+      };
+
+      addProject(project); // Single call
       setStep('success');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba při hromadném importu');
