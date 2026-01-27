@@ -6,10 +6,11 @@
  * - Inline skupina editing via autocomplete
  * - Bulk apply skupina to all/selected results
  * - Highlighted matched text
+ * - Expandable detail rows showing ALL rozpočet data (description, metadata, source)
  */
 
-import { useState, useMemo, Fragment } from 'react';
-import { CheckSquare, Square, AlertTriangle, ChevronDown, ChevronRight } from 'lucide-react';
+import { useState, useMemo, useCallback, Fragment } from 'react';
+import { CheckSquare, Square, AlertTriangle, ChevronDown, ChevronRight, Info } from 'lucide-react';
 import type { SearchResultItem } from '../../services/search/searchService';
 import { highlightMatches } from '../../services/search/searchService';
 import { useRegistryStore } from '../../stores/registryStore';
@@ -271,11 +272,36 @@ function SearchResultRow({
   // Check if the match was found only in popisFull (i.e. in detail lines, not in main popis)
   const matchInDetailOnly = !popisMatch && !!popisFullMatch;
 
-  // Find sheet name
+  // Find parent sheet for metadata
   const sheet = project.sheets.find(s =>
     s.items.some(i => i.id === item.id)
   );
   const sheetName = sheet?.name || item.source?.sheetName || '';
+  const metadata = sheet?.metadata;
+
+  // Check if there is any extra data to show in expanded view
+  const hasMetadata = !!(
+    item.cenaJednotkova ||
+    metadata?.oddil ||
+    metadata?.stavba ||
+    metadata?.projectNumber ||
+    item.skupinaSuggested ||
+    item.source?.rowStart ||
+    item.source?.cellRef
+  );
+  // Always expandable: detail lines OR metadata available
+  const isExpandable = hasDetail || hasMetadata;
+
+  const toggleExpand = useCallback(() => {
+    if (isExpandable) setExpanded(prev => !prev);
+  }, [isExpandable]);
+
+  const handleExpandKeyDown = useCallback((e: React.KeyboardEvent) => {
+    if ((e.key === 'Enter' || e.key === ' ') && isExpandable) {
+      e.preventDefault();
+      setExpanded(prev => !prev);
+    }
+  }, [isExpandable]);
 
   const rowBg = isAlt ? 'bg-[var(--data-surface-alt)]' : 'bg-[var(--data-surface)]';
 
@@ -314,12 +340,15 @@ function SearchResultRow({
         {/* Popis (main line only) + expand toggle */}
         <td className="px-3 py-2 text-text-primary max-w-[400px]">
           <div className="flex items-start gap-1.5">
-            {/* Expand/collapse button */}
-            {hasDetail && (
+            {/* Expand/collapse button — always shown if expandable */}
+            {isExpandable && (
               <button
-                onClick={() => setExpanded(!expanded)}
+                onClick={toggleExpand}
+                onKeyDown={handleExpandKeyDown}
                 className="flex-shrink-0 mt-0.5 p-0.5 rounded hover:bg-[var(--panel-inset)] text-text-muted hover:text-text-primary transition-colors"
-                title={expanded ? 'Sbalit popis' : 'Rozbalit popis'}
+                title={expanded ? 'Sbalit detail' : 'Rozbalit detail'}
+                aria-expanded={expanded}
+                aria-label={expanded ? 'Sbalit detail položky' : 'Rozbalit detail položky'}
               >
                 {expanded
                   ? <ChevronDown size={14} />
@@ -342,7 +371,7 @@ function SearchResultRow({
                   onClick={() => setExpanded(true)}
                   className="text-xs text-orange-500 mt-0.5 hover:underline"
                 >
-                  shoda v popisu - klikněte pro zobrazení
+                  shoda v popisu — klikněte pro zobrazení
                 </button>
               )}
               {/* Detail count when collapsed */}
@@ -352,6 +381,16 @@ function SearchResultRow({
                   className="text-xs text-text-muted mt-0.5 hover:text-text-secondary"
                 >
                   +{item.popisDetail.length} řádků popisu
+                </button>
+              )}
+              {/* Metadata hint when collapsed (no detail lines but has metadata) */}
+              {!hasDetail && hasMetadata && !expanded && (
+                <button
+                  onClick={() => setExpanded(true)}
+                  className="text-xs text-text-muted mt-0.5 hover:text-text-secondary flex items-center gap-1"
+                >
+                  <Info size={10} />
+                  zobrazit detail
                 </button>
               )}
             </div>
@@ -400,30 +439,98 @@ function SearchResultRow({
         </td>
       </tr>
 
-      {/* Expanded detail rows */}
-      {expanded && hasDetail && (
+      {/* Expanded detail panel — full description + metadata */}
+      {expanded && isExpandable && (
         <tr className={`${rowBg} border-b border-[var(--divider)]`}>
-          <td colSpan={totalCols} className="px-3 py-0 pb-2">
-            <div className="ml-10 pl-3 border-l-2 border-orange-300 py-2 space-y-1">
-              {item.popisDetail.map((line, i) => {
-                // Check if this detail line contains the search match
-                const isMatchLine = popisFullMatch && line.length > 0 &&
-                  item.popisFull.includes(line);
-                return (
-                  <div key={i} className={`text-xs ${isMatchLine ? 'text-text-primary' : 'text-text-secondary'}`}>
-                    {popisFullMatch && isMatchLine ? (
-                      <HighlightedTextInLine text={line} fullText={item.popisFull} indices={popisFullMatch.indices} />
-                    ) : (
-                      line
-                    )}
+          <td colSpan={totalCols} className="px-3 py-0 pb-3">
+            <div className="ml-10 pl-3 border-l-2 border-orange-300 py-2 space-y-3">
+              {/* Full description lines */}
+              {hasDetail && (
+                <div className="space-y-1">
+                  <div className="text-xs font-semibold text-text-secondary uppercase tracking-wide mb-1">
+                    Plný popis
                   </div>
-                );
-              })}
+                  {item.popisDetail.map((line, i) => {
+                    const isMatchLine = popisFullMatch && line.length > 0 &&
+                      item.popisFull.includes(line);
+                    return (
+                      <div key={i} className={`text-xs ${isMatchLine ? 'text-text-primary' : 'text-text-secondary'}`}>
+                        {popisFullMatch && isMatchLine ? (
+                          <HighlightedTextInLine text={line} fullText={item.popisFull} indices={popisFullMatch.indices} />
+                        ) : (
+                          line
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* Metadata grid */}
+              {hasMetadata && (
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-1.5 text-xs">
+                  {item.cenaJednotkova != null && (
+                    <MetadataField
+                      label="Cena/MJ"
+                      value={`${item.cenaJednotkova.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč/${item.mj || 'j.'}`}
+                    />
+                  )}
+                  {metadata?.oddil && (
+                    <MetadataField label="Oddíl" value={metadata.oddil} />
+                  )}
+                  {metadata?.stavba && (
+                    <MetadataField label="Stavba" value={metadata.stavba} />
+                  )}
+                  {metadata?.projectNumber && (
+                    <MetadataField label="Číslo projektu" value={metadata.projectNumber} />
+                  )}
+                  {item.source?.rowStart != null && (
+                    <MetadataField
+                      label="Řádky"
+                      value={item.source.rowEnd > item.source.rowStart
+                        ? `${item.source.rowStart}–${item.source.rowEnd}`
+                        : `${item.source.rowStart}`}
+                    />
+                  )}
+                  {item.source?.cellRef && (
+                    <MetadataField label="Buňka" value={item.source.cellRef} />
+                  )}
+                  {item.skupinaSuggested && item.skupinaSuggested !== item.skupina && (
+                    <MetadataField
+                      label="AI návrh skupiny"
+                      value={item.skupinaSuggested}
+                      highlight
+                    />
+                  )}
+                </div>
+              )}
             </div>
           </td>
         </tr>
       )}
     </Fragment>
+  );
+}
+
+/**
+ * Metadata field for expanded detail row
+ */
+function MetadataField({
+  label,
+  value,
+  highlight = false,
+}: {
+  label: string;
+  value: string;
+  highlight?: boolean;
+}) {
+  return (
+    <div className="flex flex-col">
+      <span className="text-text-muted text-[10px] uppercase tracking-wider">{label}</span>
+      <span className={`font-medium ${highlight ? 'text-orange-600' : 'text-text-primary'}`}>
+        {value}
+      </span>
+    </div>
   );
 }
 
