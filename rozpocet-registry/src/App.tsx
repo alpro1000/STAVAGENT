@@ -214,7 +214,7 @@ function App() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="grid gap-6">
+        <div className="grid gap-6 min-w-0">
           {/* Search Results */}
           {searchResults.length > 0 && (
             <div className="card">
@@ -315,7 +315,7 @@ function App() {
             // Projects view
             <>
               {/* Project Tabs - Horizontal navigation */}
-              <div className="mb-4">
+              <div className="mb-4 min-w-0">
                 <div className="flex items-center justify-between mb-3">
                   <h2 className="text-lg font-semibold">
                     Projekty ({projects.length})
@@ -329,7 +329,7 @@ function App() {
                 </div>
 
                 {/* Project Tabs (Excel-style navigation) */}
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 min-w-0">
                   {/* Navigation: Start */}
                   <button
                     onClick={scrollProjectTabsToStart}
@@ -349,10 +349,10 @@ function App() {
                   </button>
 
                   {/* Scrollable Tabs Container */}
-                  <div className="flex-1 overflow-hidden">
+                  <div className="flex-1 overflow-hidden min-w-0">
                     <div
                       ref={projectTabsScrollRef}
-                      className="flex items-center gap-2 overflow-x-hidden pb-2"
+                      className="flex items-center gap-2 overflow-x-auto pb-2"
                       style={{ scrollbarWidth: 'none' }} // Hide scrollbar
                     >
                       {projects.map((project) => (
@@ -414,12 +414,12 @@ function App() {
 
               {/* Sheet Tabs (Excel-style navigation) */}
               {selectedProject && selectedProject.sheets.length > 0 && (
-                <div className="mb-4">
+                <div className="mb-4 min-w-0">
                   <h3 className="text-sm font-medium text-text-secondary mb-2">
                     Listy projektu:
                   </h3>
                   {/* Excel-style navigation: ◀◀ ◀ [tabs] ▶ ▶▶ */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
                     {/* Navigation: Start */}
                     <button
                       onClick={scrollSheetTabsToStart}
@@ -439,10 +439,10 @@ function App() {
                     </button>
 
                     {/* Scrollable Tabs Container */}
-                    <div className="flex-1 overflow-hidden">
+                    <div className="flex-1 overflow-hidden min-w-0">
                       <div
                         ref={sheetTabsScrollRef}
-                        className="flex items-center gap-2 overflow-x-hidden pb-2"
+                        className="flex items-center gap-2 overflow-x-auto pb-2"
                         style={{ scrollbarWidth: 'none' }} // Hide scrollbar
                       >
                         {selectedProject.sheets.map((sheet) => (
