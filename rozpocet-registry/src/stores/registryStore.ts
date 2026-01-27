@@ -31,6 +31,7 @@ interface RegistryState {
 
   // Пользовательские группы
   customGroups: string[];
+  hiddenDefaultGroups: string[]; // Default groups that were renamed/deleted (hidden from list)
 
   // Действия с проектами
   addProject: (project: Project) => void;
@@ -96,6 +97,7 @@ export const useRegistryStore = create<RegistryState>()(
       templates: [...PREDEFINED_TEMPLATES],
       savedFilters: [],
       customGroups: [],
+      hiddenDefaultGroups: [],
 
       // Проекты
       addProject: (project) => {
@@ -349,8 +351,11 @@ export const useRegistryStore = create<RegistryState>()(
       },
 
       getAllGroups: () => {
-        const { customGroups } = get();
-        return [...DEFAULT_GROUPS, ...customGroups];
+        const { customGroups, hiddenDefaultGroups } = get();
+        const visibleDefaults = (DEFAULT_GROUPS as unknown as string[]).filter(
+          g => !hiddenDefaultGroups.includes(g)
+        );
+        return [...visibleDefaults, ...customGroups];
       },
 
       renameGroup: (oldName, newName) => {
@@ -375,18 +380,29 @@ export const useRegistryStore = create<RegistryState>()(
             })),
           }));
 
-          // Update customGroups: remove old, add new (if not already default/custom)
+          // Track hidden default groups (so old default name doesn't reappear)
+          const isOldDefault = (DEFAULT_GROUPS as unknown as string[]).includes(oldName);
+          let hiddenDefaultGroups = [...state.hiddenDefaultGroups];
+          if (isOldDefault && !hiddenDefaultGroups.includes(oldName)) {
+            hiddenDefaultGroups.push(oldName);
+          }
+
+          // Update customGroups: remove old, add new (if not already a visible default/custom)
           let customGroups = [...state.customGroups];
           const oldIdx = customGroups.indexOf(oldName);
           if (oldIdx >= 0) {
             customGroups.splice(oldIdx, 1);
           }
-          const allExisting = [...DEFAULT_GROUPS as unknown as string[], ...customGroups];
+          // Check if new name is a visible default (not hidden)
+          const visibleDefaults = (DEFAULT_GROUPS as unknown as string[]).filter(
+            g => !hiddenDefaultGroups.includes(g)
+          );
+          const allExisting = [...visibleDefaults, ...customGroups];
           if (!allExisting.includes(trimmed)) {
             customGroups.push(trimmed);
           }
 
-          return { projects, customGroups };
+          return { projects, customGroups, hiddenDefaultGroups };
         });
 
         // Update stats
@@ -419,7 +435,14 @@ export const useRegistryStore = create<RegistryState>()(
           // Remove from customGroups
           const customGroups = state.customGroups.filter((g) => g !== group);
 
-          return { projects, customGroups };
+          // Track hidden default groups (so deleted default doesn't reappear)
+          const isDefault = (DEFAULT_GROUPS as unknown as string[]).includes(group);
+          let hiddenDefaultGroups = [...state.hiddenDefaultGroups];
+          if (isDefault && !hiddenDefaultGroups.includes(group)) {
+            hiddenDefaultGroups.push(group);
+          }
+
+          return { projects, customGroups, hiddenDefaultGroups };
         });
 
         // Update stats

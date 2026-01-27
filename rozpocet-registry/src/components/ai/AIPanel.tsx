@@ -127,16 +127,16 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
   };
 
   return (
-    <div className="card bg-gradient-to-r from-purple-900/20 to-blue-900/20 border-purple-500/30">
+    <div className="card" style={{ borderLeft: '3px solid var(--accent-orange)' }}>
       {/* Header */}
       <div
         className="flex items-center justify-between cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">
-          <Sparkles className="text-purple-400" size={20} />
-          <h3 className="font-semibold text-purple-300">Automatická klasifikace</h3>
-          <span className="text-xs bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded">
+          <Sparkles className="text-accent-primary" size={20} />
+          <h3 className="font-semibold text-text-primary">Automatická klasifikace</h3>
+          <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-medium">
             {selectedItemIds.length > 0
               ? `${selectedItemIds.length} vybráno`
               : `${classifiedCount}/${items.length} klasifikováno`
@@ -175,7 +175,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
             <button
               onClick={() => handleClassify(false)}
               disabled={isClassifying || itemsToProcess.length === 0 || unclassifiedCount === 0}
-              className="btn btn-primary text-sm flex items-center gap-2 bg-purple-600 hover:bg-purple-700 disabled:opacity-50"
+              className="btn btn-primary text-sm flex items-center gap-2 disabled:opacity-50"
               title="Klasifikuje pouze položky bez přiřazené skupiny"
             >
               {isClassifying ? (
@@ -239,7 +239,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
           {/* Info */}
           <p className="text-xs text-text-muted">
-            11 skupin: ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA, LOZISKA.
+            11 skupin: ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA, LOŽISKA.
             Priorita: PILOTY &gt; vše ostatní pokud popis obsahuje &quot;pilot&quot;.
           </p>
         </div>

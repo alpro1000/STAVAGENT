@@ -363,8 +363,8 @@ function App() {
                             relative flex items-center gap-2 px-4 py-2 rounded-t-lg border-b-2 transition-all cursor-pointer
                             whitespace-nowrap flex-shrink-0
                             ${selectedProjectId === project.id
-                              ? 'border-accent-primary bg-accent-primary/10 text-text-primary'
-                              : 'border-transparent hover:border-accent-primary/50 bg-bg-secondary text-text-secondary'
+                              ? 'border-accent-primary bg-white/80 text-text-primary font-semibold'
+                              : 'border-gray-400 hover:border-accent-primary bg-white/60 text-text-primary'
                             }
                           `}
                           onClick={() => setSelectedProject(project.id)}
@@ -453,8 +453,8 @@ function App() {
                               flex items-center gap-2 px-3 py-2 rounded-lg border transition-all cursor-pointer
                               whitespace-nowrap flex-shrink-0
                               ${selectedSheetId === sheet.id
-                                ? 'border-accent-orange bg-accent-orange/10 text-text-primary font-medium'
-                                : 'border-border-color hover:border-accent-orange/50 bg-bg-secondary text-text-secondary'
+                                ? 'border-accent-orange bg-white/80 text-text-primary font-medium'
+                                : 'border-gray-400 hover:border-accent-orange bg-white/60 text-text-primary'
                               }
                             `}
                             onClick={() => setSelectedSheet(selectedProjectId, sheet.id)}

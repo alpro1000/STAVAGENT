@@ -15,7 +15,7 @@ export const DEFAULT_GROUPS = [
   'IZOLACE',            // Insulation (hydroizolace, geotextilie, fólie, nátěry)
   'KOMUNIKACE',         // Roads (vozovka, asfalt, chodník, dlažba)
   'DOPRAVA',            // Transportation (doprava betonu, odvoz zeminy)
-  'LOZISKA',            // Bearings (ložisko, ložiska, kalotové, kyvné)
+  'LOŽISKA',            // Bearings (ložisko, ložiska, kalotové, kyvné)
 ] as const;
 
 export type WorkGroup = typeof DEFAULT_GROUPS[number];
