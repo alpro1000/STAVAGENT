@@ -327,6 +327,11 @@
   background-color: var(--data-surface-alt);
 }
 
+/* Panel-level opaque background (for dropdowns, popovers) */
+.bg-bg-primary {
+  background-color: var(--panel-clean);
+}
+
 /* Autocomplete bg colors */
 .bg-bg-tertiary {
   background-color: var(--data-surface);
