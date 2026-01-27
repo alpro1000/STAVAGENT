@@ -170,7 +170,7 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
     priority: 200, // Absolute priority over all other groups
     priorityOver: [
       'BETON_MONOLIT', 'ZEMNI_PRACE', 'VYZTUŽ', 'KOTVENI',
-      'BEDNENI', 'DOPRAVA', 'IZOLACE', 'LOZISKA',
+      'BEDNENI', 'DOPRAVA', 'IZOLACE', 'LOŽISKA',
     ],
   },
 
@@ -220,7 +220,7 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
   // ==================== LOŽISKA ====================
   // Bridge bearings (kalotová, kyvná, všesměrná)
   {
-    skupina: 'LOZISKA',
+    skupina: 'LOŽISKA',
     include: [
       'lozisko', 'loziska', 'lozisek',
       'kalotove lozisko', 'kalotova loziska',

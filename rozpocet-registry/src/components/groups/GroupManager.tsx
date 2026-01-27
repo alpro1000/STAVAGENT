@@ -102,16 +102,16 @@ export function GroupManager() {
   const newGroupDuplicate = newGroupValue.trim() ? isDuplicate(newGroupValue.trim()) : false;
 
   return (
-    <div className="card bg-gradient-to-r from-slate-900/20 to-gray-900/20 border-slate-500/30">
+    <div className="card" style={{ borderLeft: '3px solid var(--text-muted)' }}>
       {/* Header */}
       <div
         className="flex items-center justify-between cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
         <div className="flex items-center gap-2">
-          <Settings className="text-slate-400" size={20} />
-          <h3 className="font-semibold text-slate-300">Správa skupin</h3>
-          <span className="text-xs bg-slate-500/20 text-slate-300 px-2 py-0.5 rounded">
+          <Settings className="text-text-secondary" size={20} />
+          <h3 className="font-semibold text-text-primary">Správa skupin</h3>
+          <span className="text-xs bg-gray-200 text-text-secondary px-2 py-0.5 rounded">
             {allGroups.length} skupin · {totalItems} položek
           </span>
         </div>
