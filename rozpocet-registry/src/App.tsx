@@ -453,16 +453,17 @@ function App() {
                               flex items-center gap-2 px-3 py-2 rounded-lg border transition-all cursor-pointer
                               whitespace-nowrap flex-shrink-0
                               ${selectedSheetId === sheet.id
-                                ? 'border-accent-orange bg-white/80 text-text-primary font-medium'
+                                ? 'text-white font-medium shadow-md'
                                 : 'border-gray-400 hover:border-accent-orange bg-white/60 text-text-primary'
                               }
                             `}
+                            style={selectedSheetId === sheet.id ? { background: 'var(--accent-orange)', borderColor: 'var(--accent-orange)' } : undefined}
                             onClick={() => setSelectedSheet(selectedProjectId, sheet.id)}
                           >
                             <span className="text-sm" title={sheet.name}>
                               {sheet.name}
                             </span>
-                            <span className="text-xs text-text-muted">
+                            <span className={`text-xs ${selectedSheetId === sheet.id ? 'text-white/80' : 'text-text-muted'}`}>
                               ({sheet.stats.totalItems} položek)
                             </span>
                           </div>
