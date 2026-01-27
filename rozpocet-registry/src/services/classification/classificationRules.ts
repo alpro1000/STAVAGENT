@@ -42,7 +42,7 @@ function removeDiacritics(text: string): string {
 }
 
 /**
- * All classification rules (10 work groups)
+ * All classification rules (11 work groups)
  * Sorted by priority during classification
  */
 export const CLASSIFICATION_RULES: ClassificationRule[] = [
@@ -84,6 +84,8 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
       'pilot', 'mikropilot',   // PILOTY takes absolute priority
       'bedneni', 'odbedneni',  // BEDNENI takes priority
       'izolace', 'hydroizolace', 'geotextilie', // IZOLACE takes priority
+      'nater', 'natery', 'penetrace', // Coatings → IZOLACE, not BETON
+      'lozisko', 'loziska',   // Bearings → LOZISKA
       'doprava betonu', 'dovoz betonu', 'cerpani betonu', 'preprava betonu',
     ],
     boostUnits: ['m3', 'm³'],
@@ -118,6 +120,7 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
     exclude: [
       'kotva', 'kotvy', 'kotveni', 'predpeti',
       'lana', 'kabely', 'injektaz',
+      'pilot', 'mikropilot', // PILOTY takes absolute priority
     ],
     boostUnits: ['kg', 't'],
     priority: 100,
@@ -167,7 +170,7 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
     priority: 200, // Absolute priority over all other groups
     priorityOver: [
       'BETON_MONOLIT', 'ZEMNI_PRACE', 'VYZTUŽ', 'KOTVENI',
-      'BEDNENI', 'DOPRAVA', 'IZOLACE',
+      'BEDNENI', 'DOPRAVA', 'IZOLACE', 'LOZISKA',
     ],
   },
 
@@ -212,6 +215,25 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
     boostUnits: ['m3', 'm³', 't', 'hod'],
     priority: 100,
     priorityOver: ['BETON_MONOLIT'],
+  },
+
+  // ==================== LOŽISKA ====================
+  // Bridge bearings (kalotová, kyvná, všesměrná)
+  {
+    skupina: 'LOZISKA',
+    include: [
+      'lozisko', 'loziska', 'lozisek',
+      'kalotove lozisko', 'kalotova loziska',
+      'kyvne lozisko', 'kyvna loziska',
+      'vsesmerne', 'jednosmerne',
+      'neopyritove lozisko',
+      'elastomerove lozisko', 'elastomerova loziska',
+      'hrncove lozisko', 'hrncova loziska',
+    ],
+    exclude: [],
+    boostUnits: ['ks'],
+    priority: 120, // Higher than generic groups
+    priorityOver: ['BETON_MONOLIT', 'BETON_PREFAB'],
   },
 ];
 
