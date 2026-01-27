@@ -3,7 +3,8 @@
  * Autocomplete s vyhledáváním pro výběr/vytvoření skupiny
  */
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { Search, Plus } from 'lucide-react';
 
 interface SkupinaAutocompleteProps {
@@ -23,6 +24,20 @@ export function SkupinaAutocomplete({
   const [searchTerm, setSearchTerm] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number; openUp: boolean } | null>(null);
+
+  // Recalculate dropdown position when open
+  const updatePosition = useCallback(() => {
+    if (!inputRef.current) return;
+    const rect = inputRef.current.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const openUp = spaceBelow < 260;
+    setDropdownPos({ top: openUp ? rect.top : rect.bottom, left: rect.left, width: rect.width, openUp });
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) updatePosition();
+  }, [isOpen, updatePosition]);
 
   // Фильтрованные группы
   const filteredGroups = allGroups.filter((group) =>
@@ -115,11 +130,20 @@ export function SkupinaAutocomplete({
         )}
       </div>
 
-      {/* Dropdown */}
-      {isOpen && (
+      {/* Dropdown - rendered via portal to escape overflow:hidden */}
+      {isOpen && dropdownPos && createPortal(
         <div
           ref={dropdownRef}
-          className="absolute z-50 mt-1 w-full bg-panel-clean border border-edge-light rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          className="bg-panel-clean border border-edge-light rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          style={{
+            position: 'fixed',
+            left: dropdownPos.left,
+            width: dropdownPos.width,
+            zIndex: 9999,
+            ...(dropdownPos.openUp
+              ? { bottom: window.innerHeight - dropdownPos.top + 4 }
+              : { top: dropdownPos.top + 4 }),
+          }}
         >
           {/* Отфильтрованные группы */}
           {filteredGroups.length > 0 ? (
@@ -162,7 +186,8 @@ export function SkupinaAutocomplete({
               )}
             </>
           )}
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );
