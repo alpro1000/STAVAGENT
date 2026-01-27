@@ -4,7 +4,7 @@
  * Import supplier responses and match prices back to original items
  */
 
-import * as XLSX from 'xlsx';
+import XLSX from 'xlsx-js-style';
 import type { ParsedItem } from '../../types/item';
 import type { Project } from '../../types/project';
 
@@ -83,8 +83,60 @@ export function createPriceRequestReport(
   };
 }
 
+/** Header style: dark blue background with white bold text */
+const HEADER_STYLE = {
+  font: { bold: true, color: { rgb: 'FFFFFF' }, sz: 11 },
+  fill: { fgColor: { rgb: '2F5496' } },
+  alignment: { horizontal: 'center' as const, vertical: 'center' as const },
+  border: {
+    top: { style: 'thin' as const, color: { rgb: '1F3864' } },
+    bottom: { style: 'thin' as const, color: { rgb: '1F3864' } },
+    left: { style: 'thin' as const, color: { rgb: '1F3864' } },
+    right: { style: 'thin' as const, color: { rgb: '1F3864' } },
+  },
+};
+
+/** Sum row style: bold with top border */
+const SUM_STYLE = {
+  font: { bold: true, sz: 11 },
+  fill: { fgColor: { rgb: 'D6E4F0' } },
+  border: {
+    top: { style: 'medium' as const, color: { rgb: '2F5496' } },
+    bottom: { style: 'medium' as const, color: { rgb: '2F5496' } },
+    left: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
+    right: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
+  },
+  numFmt: '#,##0.00',
+};
+
+/** Number format for price cells */
+const PRICE_STYLE = {
+  numFmt: '#,##0.00',
+  alignment: { horizontal: 'right' as const },
+  border: {
+    top: { style: 'thin' as const, color: { rgb: 'D9D9D9' } },
+    bottom: { style: 'thin' as const, color: { rgb: 'D9D9D9' } },
+    left: { style: 'thin' as const, color: { rgb: 'D9D9D9' } },
+    right: { style: 'thin' as const, color: { rgb: 'D9D9D9' } },
+  },
+};
+
+/** Default cell border */
+const CELL_STYLE = {
+  border: {
+    top: { style: 'thin' as const, color: { rgb: 'D9D9D9' } },
+    bottom: { style: 'thin' as const, color: { rgb: 'D9D9D9' } },
+    left: { style: 'thin' as const, color: { rgb: 'D9D9D9' } },
+    right: { style: 'thin' as const, color: { rgb: 'D9D9D9' } },
+  },
+};
+
+/** Alternating row fill */
+const ALT_ROW_FILL = { fgColor: { rgb: 'F2F7FB' } };
+
 /**
  * Export price request to Excel file
+ * Features: formulas (cena = množství × jednotková), SUM, AutoFilter, styled header
  */
 export function exportPriceRequest(
   report: PriceRequestReport,
@@ -102,15 +154,15 @@ export function exportPriceRequest(
 
   const workbook = XLSX.utils.book_new();
 
-  // Sheet 1: Items (Price Request)
+  // === Sheet 1: Items (Price Request) ===
   const headers = [
     'Č.',
     'Kód',
     'Popis',
     'MJ',
     'Množství',
-    'Cena jednotková (Kč)', // Supplier fills
-    'Cena celkem (Kč)',     // Calculated or filled
+    'Cena jednotková (Kč)',
+    'Cena celkem (Kč)',
   ];
 
   if (includeSkupina) {
@@ -121,9 +173,9 @@ export function exportPriceRequest(
     headers.push('Zdroj (Soubor)', 'List', 'Řádek');
   }
 
-  // Hidden column for ID (for reverse import matching)
   headers.push('_ID');
 
+  // Build data rows (header only - data cells set manually for formulas + styles)
   const data: (string | number | null)[][] = [headers];
 
   report.items.forEach((item, index) => {
@@ -133,8 +185,8 @@ export function exportPriceRequest(
       item.popisFull || item.popis,
       item.mj,
       item.mnozstvi,
-      null, // Empty - supplier fills unit price
-      null, // Empty - supplier fills or formula calculates
+      null, // Supplier fills unit price
+      null, // Will be replaced with formula
     ];
 
     if (includeSkupina) {
@@ -145,12 +197,117 @@ export function exportPriceRequest(
       row.push(item.sourceProject, item.sourceSheet, item.sourceRow);
     }
 
-    row.push(item.id); // Hidden ID for matching
-
+    row.push(item.id);
     data.push(row);
   });
 
+  // Add SUM row at bottom
+  const sumRow: (string | number | null)[] = [
+    null, null, null, null, null, null, null, // placeholder for formula
+  ];
+  if (includeSkupina) sumRow.push(null);
+  if (includeSourceInfo) { sumRow.push(null); sumRow.push(null); sumRow.push(null); }
+  sumRow.push(null);
+  data.push(sumRow);
+
   const wsItems = XLSX.utils.aoa_to_sheet(data);
+
+  // Column letters helper
+  const colLetter = (idx: number): string => {
+    let s = '';
+    let n = idx;
+    while (n >= 0) {
+      s = String.fromCharCode(65 + (n % 26)) + s;
+      n = Math.floor(n / 26) - 1;
+    }
+    return s;
+  };
+
+  // Find column indices for key columns
+  const colMnozstvi = 4; // E (0-indexed)
+  const colCenaJednotkova = 5; // F
+  const colCenaCelkem = 6; // G
+
+  const mnozstviCol = colLetter(colMnozstvi); // E
+  const cenaJedCol = colLetter(colCenaJednotkova); // F
+  const cenaCelCol = colLetter(colCenaCelkem); // G
+
+  // Apply formula to each data row: Cena celkem = Množství × Cena jednotková
+  for (let r = 1; r <= report.items.length; r++) {
+    const excelRow = r + 1; // Excel rows are 1-indexed, header is row 1
+    const cellRef = `${cenaCelCol}${excelRow}`;
+    wsItems[cellRef] = {
+      t: 'n',
+      f: `IF(${cenaJedCol}${excelRow}="","",${mnozstviCol}${excelRow}*${cenaJedCol}${excelRow})`,
+      s: { ...PRICE_STYLE, ...(r % 2 === 0 ? { fill: ALT_ROW_FILL } : {}) },
+    };
+  }
+
+  // Add SUM formula at bottom
+  const sumExcelRow = report.items.length + 2;
+  const sumCellRef = `${cenaCelCol}${sumExcelRow}`;
+  wsItems[sumCellRef] = {
+    t: 'n',
+    f: `SUM(${cenaCelCol}2:${cenaCelCol}${sumExcelRow - 1})`,
+    s: SUM_STYLE,
+  };
+
+  // Also add "CELKEM" label
+  const sumLabelRef = `C${sumExcelRow}`;
+  wsItems[sumLabelRef] = {
+    t: 's',
+    v: 'CELKEM',
+    s: { font: { bold: true, sz: 11 }, alignment: { horizontal: 'right' } },
+  };
+
+  // SUM for Cena jednotková too
+  const sumJedRef = `${cenaJedCol}${sumExcelRow}`;
+  wsItems[sumJedRef] = {
+    t: 'n',
+    f: `SUM(${cenaJedCol}2:${cenaJedCol}${sumExcelRow - 1})`,
+    s: SUM_STYLE,
+  };
+
+  // Style header row
+  for (let c = 0; c < headers.length; c++) {
+    const cellRef = `${colLetter(c)}1`;
+    if (wsItems[cellRef]) {
+      wsItems[cellRef].s = HEADER_STYLE;
+    }
+  }
+
+  // Style data cells (borders + alternating fill + price format)
+  for (let r = 1; r <= report.items.length; r++) {
+    const excelRow = r + 1;
+    const isAlt = r % 2 === 0;
+    for (let c = 0; c < headers.length; c++) {
+      const cellRef = `${colLetter(c)}${excelRow}`;
+      if (!wsItems[cellRef]) {
+        wsItems[cellRef] = { t: 'z', v: null };
+      }
+      const isPriceCol = c === colCenaJednotkova || c === colCenaCelkem;
+      const isQtyCol = c === colMnozstvi;
+      wsItems[cellRef].s = {
+        ...CELL_STYLE,
+        ...(isAlt ? { fill: ALT_ROW_FILL } : {}),
+        ...((isPriceCol || isQtyCol) ? { numFmt: '#,##0.00', alignment: { horizontal: 'right' as const } } : {}),
+      };
+    }
+  }
+
+  // Add SUM row style for remaining cells
+  for (let c = 0; c < headers.length; c++) {
+    const cellRef = `${colLetter(c)}${sumExcelRow}`;
+    if (!wsItems[cellRef]) {
+      wsItems[cellRef] = { t: 'z', v: null };
+    }
+    if (!wsItems[cellRef].s) {
+      wsItems[cellRef].s = {
+        fill: { fgColor: { rgb: 'D6E4F0' } },
+        border: SUM_STYLE.border,
+      };
+    }
+  }
 
   // Set column widths
   wsItems['!cols'] = [
@@ -159,25 +316,33 @@ export function exportPriceRequest(
     { wch: 50 },  // Popis
     { wch: 6 },   // MJ
     { wch: 12 },  // Množství
-    { wch: 15 },  // Cena jednotková
-    { wch: 15 },  // Cena celkem
+    { wch: 20 },  // Cena jednotková
+    { wch: 20 },  // Cena celkem
   ];
 
   if (includeSkupina) {
-    wsItems['!cols'].push({ wch: 20 }); // Skupina
+    wsItems['!cols'].push({ wch: 20 });
   }
 
   if (includeSourceInfo) {
-    wsItems['!cols'].push({ wch: 25 }); // Soubor
-    wsItems['!cols'].push({ wch: 20 }); // List
-    wsItems['!cols'].push({ wch: 8 });  // Řádek
+    wsItems['!cols'].push({ wch: 25 }, { wch: 20 }, { wch: 8 });
   }
 
-  wsItems['!cols'].push({ wch: 0, hidden: true }); // Hidden ID
+  wsItems['!cols'].push({ wch: 0, hidden: true }); // Hidden _ID
+
+  // Freeze header row
+  wsItems['!freeze'] = { xSplit: 0, ySplit: 1 };
+
+  // AutoFilter on all columns (header row through last data row)
+  const lastCol = colLetter(headers.length - 2); // Exclude hidden _ID from filter
+  wsItems['!autofilter'] = { ref: `A1:${lastCol}${report.items.length + 1}` };
+
+  // Row height for header
+  wsItems['!rows'] = [{ hpx: 28 }];
 
   XLSX.utils.book_append_sheet(workbook, wsItems, 'Poptávka');
 
-  // Sheet 2: Info
+  // === Sheet 2: Info ===
   const infoData = [
     ['POPTÁVKA CEN'],
     [''],
@@ -196,16 +361,25 @@ export function exportPriceRequest(
     [''],
     ['INSTRUKCE PRO DODAVATELE:'],
     ['1. Vyplňte sloupec "Cena jednotková (Kč)" pro každou položku'],
-    ['2. Sloupec "Cena celkem" se vypočítá automaticky nebo vyplňte ručně'],
+    ['2. Sloupec "Cena celkem" se vypočítá automaticky (Množství × Cena jednotková)'],
     ['3. Neměňte ostatní sloupce (Kód, Popis, MJ, Množství, _ID)'],
     ['4. Soubor uložte a pošlete zpět'],
   ];
 
   const wsInfo = XLSX.utils.aoa_to_sheet(infoData);
   wsInfo['!cols'] = [{ wch: 20 }, { wch: 50 }];
+
+  // Style info header
+  if (wsInfo['A1']) {
+    wsInfo['A1'].s = { font: { bold: true, sz: 14, color: { rgb: '2F5496' } } };
+  }
+  if (wsInfo['A16']) {
+    wsInfo['A16'].s = { font: { bold: true, sz: 11, color: { rgb: '2F5496' } } };
+  }
+
   XLSX.utils.book_append_sheet(workbook, wsInfo, 'Info');
 
-  // Sheet 3: Summary by Group (if groups exist)
+  // === Sheet 3: Summary by Group ===
   if (report.groups.length > 0) {
     const groupSummary: (string | number)[][] = [
       ['Skupina', 'Počet položek', 'Celkové množství'],
@@ -230,6 +404,15 @@ export function exportPriceRequest(
 
     const wsSummary = XLSX.utils.aoa_to_sheet(groupSummary);
     wsSummary['!cols'] = [{ wch: 30 }, { wch: 15 }, { wch: 20 }];
+
+    // Style summary header
+    for (let c = 0; c < 3; c++) {
+      const ref = `${colLetter(c)}1`;
+      if (wsSummary[ref]) {
+        wsSummary[ref].s = HEADER_STYLE;
+      }
+    }
+
     XLSX.utils.book_append_sheet(workbook, wsSummary, 'Souhrn');
   }
 
