@@ -1,6 +1,6 @@
 /**
  * Classification Rules - Rule-based Classifier
- * Version: 2.0.0 (2026-01-26)
+ * Version: 2.1.0 (2026-01-27)
  *
  * Migrated from Python classifier (concrete-agent/classifiers/rules/default_rules.yaml)
  *
@@ -8,7 +8,13 @@
  * +1.0 for each include match
  * -2.0 for each exclude match (strong penalty)
  * +0.5 for unit boost
- * +0.3 for priority_over bonus
+ * +0.3 for priority_over bonus (normal groups)
+ * +2.0 for priority_over bonus (absolute-priority groups, priority >= 200)
+ *
+ * Priority rules:
+ * - PILOTY has absolute priority (200) over all other groups
+ * - Any mention of "pilot" → PILOTY, even with beton/zkouška
+ * - BETON_MONOLIT excludes pilot, bedneni, izolace, doprava terms
  */
 
 import type { WorkGroup } from '../../utils/constants';
@@ -47,8 +53,10 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
       'vykop', 'vykopy', 'odkop', 'odkopavky', 'prokopavky',
       'ryha', 'ryhy', 'hloubeni', 'jama', 'jam',
       'zasyp', 'nasyp', 'hutneni', 'zhutneni',
-      'pazeni', 'zapaz', 'cerpani vody', 'odvodneni', 'odvod human: ',
-      'skryvka', 'planyrovani', 'vymena zeminy', 'odvoz zeminy', 'terenn upravy',
+      'pazeni', 'zapaz', 'cerpani vody', 'odvodneni',
+      'skryvka', 'planyrovani', 'vymena zeminy', 'odvoz zeminy', 'terenni upravy',
+      'ornice', 'rozprostreni', 'sejmuti ornice', 'rozprostirka',
+      'zemina', 'zeminy', 'tereni upravy',
     ],
     exclude: ['pilot', 'mikropilot', 'vrt'],
     boostUnits: ['m3', 'm³', 'm2', 'm²'],
@@ -60,14 +68,23 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
   {
     skupina: 'BETON_MONOLIT',
     include: [
+      'beton', 'betonu', 'betonovy', 'betonova', 'betonove',
       'betonaz', 'monolit', 'zrizeni', 'zhotoveni',
-      'ukladka betonu', 'zelezobeton', 'zelezobetonova konstrukce',
+      'ukladka betonu', 'zelezobeton', 'zelezovy beton', 'zelezoveho betonu',
+      'zelezobetonova konstrukce',
       'ramova konstrukce', 'mostni konstrukce', 'stropni deska',
       'zakladova deska', 'sloupy', 'pilire', 'operna zed',
+      'mostni opery', 'kridla',
+      // Concrete grades (e.g. C30/37, C25/30)
+      'c20', 'c25', 'c30', 'c35', 'c40', 'c45', 'c50',
     ],
     exclude: [
       'z dilcu', 'prefabrik', 'montaz dilcu', 'osazeni dilcu',
       'obrubnik', 'tvarnice',
+      'pilot', 'mikropilot',   // PILOTY takes absolute priority
+      'bedneni', 'odbedneni',  // BEDNENI takes priority
+      'izolace', 'hydroizolace', 'geotextilie', // IZOLACE takes priority
+      'doprava betonu', 'dovoz betonu', 'cerpani betonu', 'preprava betonu',
     ],
     boostUnits: ['m3', 'm³'],
     priority: 100,
@@ -135,17 +152,23 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
   },
 
   // ==================== PILOTY ====================
+  // ABSOLUTE PRIORITY: Any mention of "pilot" → PILOTY, even with beton/zkouška
   {
     skupina: 'PILOTY',
     include: [
-      'pilota', 'piloty', 'mikropilota', 'mikropiloty',
+      'pilot', 'pilota', 'piloty', 'pilotovy', 'pilotovani', 'pilotaz',
+      'mikropilot', 'mikropilota', 'mikropiloty',
       'vrtani pilot', 'vrtane piloty', 'betonovani pilot',
-      'velkoprumerove piloty',
+      'velkoprumerove piloty', 'velkoprumerovy',
+      'zkousky pilot', 'zkouska pilot',
     ],
     exclude: [],
     boostUnits: ['m', 'ks'],
-    priority: 100,
-    priorityOver: [],
+    priority: 200, // Absolute priority over all other groups
+    priorityOver: [
+      'BETON_MONOLIT', 'ZEMNI_PRACE', 'VYZTUŽ', 'KOTVENI',
+      'BEDNENI', 'DOPRAVA', 'IZOLACE',
+    ],
   },
 
   // ==================== IZOLACE ====================
@@ -180,11 +203,12 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
   {
     skupina: 'DOPRAVA',
     include: [
-      'doprava betonu', 'dovoz betonu', 'cerpani betonu',
+      'doprava betonu', 'dovoz betonu', 'cerpani betonu', 'preprava betonu',
       'transport', 'preprava', 'odvoz', 'dovoz',
       'nakladni auto', 'autodomichavac', 'autocerpadlo',
+      'doprava zeminy', 'odvoz zeminy', 'odvoz suti',
     ],
-    exclude: ['beton'], // Avoid matching standalone "beton"
+    exclude: ['pilot', 'mikropilot'], // PILOTY takes absolute priority
     boostUnits: ['m3', 'm³', 't', 'hod'],
     priority: 100,
     priorityOver: ['BETON_MONOLIT'],
@@ -227,6 +251,8 @@ function calculateScore(
 
 /**
  * Apply priority_over bonuses
+ * Groups with priority >= 200 get aggressive bonus (+2.0 per conflict)
+ * Normal groups get standard bonus (+0.3 per conflict)
  */
 function applyPriorityBonus(
   scores: Map<WorkGroup, number>,
@@ -235,10 +261,13 @@ function applyPriorityBonus(
   let bonus = 0;
 
   if (rule.priorityOver.length > 0 && scores.get(rule.skupina)! > 0) {
+    // Absolute-priority groups (priority >= 200) get strong bonus
+    const bonusPerConflict = rule.priority >= 200 ? 2.0 : 0.3;
+
     for (const targetGroup of rule.priorityOver) {
       const targetScore = scores.get(targetGroup) || 0;
       if (targetScore > 0) {
-        bonus += 0.3; // +0.3 for each priority conflict
+        bonus += bonusPerConflict;
       }
     }
   }

@@ -20,6 +20,7 @@ export const DEFAULT_GROUPS = [
 export type WorkGroup = typeof DEFAULT_GROUPS[number];
 
 export const CLASSIFICATION_PRIORITY = {
+  ABSOLUTE: 200,   // Overrides all other groups (PILOTY)
   VERY_HIGH: 120,  // For conflict resolution (KOTVENI vs VYZTUŽ)
   HIGH: 100,
   MEDIUM: 50,
