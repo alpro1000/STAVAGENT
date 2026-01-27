@@ -8,8 +8,8 @@
  * - Highlighted matched text
  */
 
-import { useState, useMemo } from 'react';
-import { CheckSquare, Square, AlertTriangle } from 'lucide-react';
+import { useState, useMemo, Fragment } from 'react';
+import { CheckSquare, Square, AlertTriangle, ChevronDown, ChevronRight } from 'lucide-react';
 import type { SearchResultItem } from '../../services/search/searchService';
 import { highlightMatches } from '../../services/search/searchService';
 import { useRegistryStore } from '../../stores/registryStore';
@@ -260,17 +260,16 @@ function SearchResultRow({
   isAlt,
 }: SearchResultRowProps) {
   const { item, project, matches } = result;
+  const [expanded, setExpanded] = useState(false);
 
   const kodMatch = matches.find(m => m.key === 'kod');
   const popisMatch = matches.find(m => m.key === 'popis');
   const popisFullMatch = matches.find(m => m.key === 'popisFull');
-  const bestPopisMatch = popisMatch || popisFullMatch;
 
-  // Show full description (popisFull if available, else popis)
-  const displayText = item.popisFull || item.popis;
-  const displayMatch = bestPopisMatch
-    ? { ...bestPopisMatch, key: 'display' }
-    : null;
+  const hasDetail = item.popisDetail && item.popisDetail.length > 0;
+
+  // Check if the match was found only in popisFull (i.e. in detail lines, not in main popis)
+  const matchInDetailOnly = !popisMatch && !!popisFullMatch;
 
   // Find sheet name
   const sheet = project.sheets.find(s =>
@@ -278,89 +277,205 @@ function SearchResultRow({
   );
   const sheetName = sheet?.name || item.source?.sheetName || '';
 
+  const rowBg = isAlt ? 'bg-[var(--data-surface-alt)]' : 'bg-[var(--data-surface)]';
+
+  // Total columns count for the detail row colspan
+  const totalCols = 8;
+
   return (
-    <tr
-      className={`border-b border-[var(--divider)] hover:bg-[var(--panel-clean)] transition-colors ${
-        isAlt ? 'bg-[var(--data-surface-alt)]' : 'bg-[var(--data-surface)]'
-      }`}
-    >
-      {/* Checkbox */}
-      <td className="px-2 py-2 text-center">
-        <button onClick={onToggle} className="text-text-muted hover:text-text-primary">
-          {isSelected
-            ? <CheckSquare size={16} className="text-accent-primary" />
-            : <Square size={16} />
-          }
-        </button>
-      </td>
+    <Fragment>
+      {/* Main position row */}
+      <tr className={`border-b border-[var(--divider)] hover:bg-[var(--panel-clean)] transition-colors ${rowBg}`}>
+        {/* Checkbox */}
+        <td className="px-2 py-2 text-center">
+          <button onClick={onToggle} className="text-text-muted hover:text-text-primary">
+            {isSelected
+              ? <CheckSquare size={16} className="text-accent-primary" />
+              : <Square size={16} />
+            }
+          </button>
+        </td>
 
-      {/* Kód */}
-      <td className="px-3 py-2">
-        <button
-          onClick={onNavigate}
-          className="font-mono font-semibold text-text-primary hover:text-accent-primary transition-colors"
-          title="Přejít na položku"
-        >
-          {kodMatch ? (
-            <HighlightedText text={item.kod} indices={kodMatch.indices} />
-          ) : (
-            item.kod
-          )}
-        </button>
-      </td>
+        {/* Kód */}
+        <td className="px-3 py-2">
+          <button
+            onClick={onNavigate}
+            className="font-mono font-semibold text-text-primary hover:text-accent-primary transition-colors"
+            title="Přejít na položku"
+          >
+            {kodMatch ? (
+              <HighlightedText text={item.kod} indices={kodMatch.indices} />
+            ) : (
+              item.kod
+            )}
+          </button>
+        </td>
 
-      {/* Popis (full) */}
-      <td className="px-3 py-2 text-text-primary max-w-[400px]">
-        <div className="line-clamp-3" title={displayText}>
-          {displayMatch ? (
-            <HighlightedText text={displayText} indices={displayMatch.indices} />
-          ) : (
-            displayText
-          )}
-        </div>
-      </td>
+        {/* Popis (main line only) + expand toggle */}
+        <td className="px-3 py-2 text-text-primary max-w-[400px]">
+          <div className="flex items-start gap-1.5">
+            {/* Expand/collapse button */}
+            {hasDetail && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="flex-shrink-0 mt-0.5 p-0.5 rounded hover:bg-[var(--panel-inset)] text-text-muted hover:text-text-primary transition-colors"
+                title={expanded ? 'Sbalit popis' : 'Rozbalit popis'}
+              >
+                {expanded
+                  ? <ChevronDown size={14} />
+                  : <ChevronRight size={14} />
+                }
+              </button>
+            )}
+            <div className="min-w-0">
+              {/* Main popis line - always shown */}
+              <div className="text-sm font-medium" title={item.popis}>
+                {popisMatch ? (
+                  <HighlightedText text={item.popis} indices={popisMatch.indices} />
+                ) : (
+                  item.popis
+                )}
+              </div>
+              {/* Hint that match is in detail */}
+              {matchInDetailOnly && !expanded && (
+                <button
+                  onClick={() => setExpanded(true)}
+                  className="text-xs text-orange-500 mt-0.5 hover:underline"
+                >
+                  shoda v popisu - klikněte pro zobrazení
+                </button>
+              )}
+              {/* Detail count when collapsed */}
+              {hasDetail && !expanded && !matchInDetailOnly && (
+                <button
+                  onClick={() => setExpanded(true)}
+                  className="text-xs text-text-muted mt-0.5 hover:text-text-secondary"
+                >
+                  +{item.popisDetail.length} řádků popisu
+                </button>
+              )}
+            </div>
+          </div>
+        </td>
 
-      {/* MJ */}
-      <td className="px-3 py-2 text-center text-text-secondary whitespace-nowrap">
-        {item.mj}
-      </td>
+        {/* MJ */}
+        <td className="px-3 py-2 text-center text-text-secondary whitespace-nowrap">
+          {item.mj}
+        </td>
 
-      {/* Množství */}
-      <td className="px-3 py-2 text-right font-mono text-text-primary whitespace-nowrap">
-        {item.mnozstvi ?? '-'}
-      </td>
+        {/* Množství */}
+        <td className="px-3 py-2 text-right font-mono text-text-primary whitespace-nowrap">
+          {item.mnozstvi ?? '-'}
+        </td>
 
-      {/* Cena celkem */}
-      <td className="px-3 py-2 text-right font-mono text-text-primary whitespace-nowrap">
-        {item.cenaCelkem != null ? `${item.cenaCelkem.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč` : '-'}
-      </td>
+        {/* Cena celkem */}
+        <td className="px-3 py-2 text-right font-mono text-text-primary whitespace-nowrap">
+          {item.cenaCelkem != null ? `${item.cenaCelkem.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč` : '-'}
+        </td>
 
-      {/* Skupina (editable) */}
-      <td className="px-3 py-2">
-        <div className="w-full min-w-[180px]">
-          <SkupinaAutocomplete
-            value={item.skupina}
-            onChange={onSkupinaChange}
-            allGroups={allGroups}
-            onAddGroup={onAddGroup}
-          />
-        </div>
-      </td>
+        {/* Skupina (editable) */}
+        <td className="px-3 py-2">
+          <div className="w-full min-w-[180px]">
+            <SkupinaAutocomplete
+              value={item.skupina}
+              onChange={onSkupinaChange}
+              allGroups={allGroups}
+              onAddGroup={onAddGroup}
+            />
+          </div>
+        </td>
 
-      {/* Zdroj (project / sheet) */}
-      <td className="px-3 py-2 text-xs text-text-muted whitespace-nowrap">
-        <div className="flex flex-col">
-          <span className="font-medium text-text-secondary truncate max-w-[180px]" title={project.fileName}>
-            {project.fileName}
-          </span>
-          {sheetName && (
-            <span className="text-text-muted truncate max-w-[180px]" title={sheetName}>
-              {sheetName}
+        {/* Zdroj (project / sheet) */}
+        <td className="px-3 py-2 text-xs text-text-muted whitespace-nowrap">
+          <div className="flex flex-col">
+            <span className="font-medium text-text-secondary truncate max-w-[180px]" title={project.fileName}>
+              {project.fileName}
             </span>
-          )}
-        </div>
-      </td>
-    </tr>
+            {sheetName && (
+              <span className="text-text-muted truncate max-w-[180px]" title={sheetName}>
+                {sheetName}
+              </span>
+            )}
+          </div>
+        </td>
+      </tr>
+
+      {/* Expanded detail rows */}
+      {expanded && hasDetail && (
+        <tr className={`${rowBg} border-b border-[var(--divider)]`}>
+          <td colSpan={totalCols} className="px-3 py-0 pb-2">
+            <div className="ml-10 pl-3 border-l-2 border-orange-300 py-2 space-y-1">
+              {item.popisDetail.map((line, i) => {
+                // Check if this detail line contains the search match
+                const isMatchLine = popisFullMatch && line.length > 0 &&
+                  item.popisFull.includes(line);
+                return (
+                  <div key={i} className={`text-xs ${isMatchLine ? 'text-text-primary' : 'text-text-secondary'}`}>
+                    {popisFullMatch && isMatchLine ? (
+                      <HighlightedTextInLine text={line} fullText={item.popisFull} indices={popisFullMatch.indices} />
+                    ) : (
+                      line
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </td>
+        </tr>
+      )}
+    </Fragment>
+  );
+}
+
+/**
+ * Highlight matching text within a detail line by mapping indices from popisFull to the line
+ */
+function HighlightedTextInLine({
+  text,
+  fullText,
+  indices,
+}: {
+  text: string;
+  fullText: string;
+  indices: readonly [number, number][];
+}) {
+  // Find where this line starts in the full text
+  const lineStart = fullText.indexOf(text);
+  if (lineStart === -1) {
+    return <>{text}</>;
+  }
+  const lineEnd = lineStart + text.length;
+
+  // Map full-text indices to line-local indices
+  const localIndices: [number, number][] = [];
+  for (const [start, end] of indices) {
+    // Check for overlap with this line
+    if (end >= lineStart && start < lineEnd) {
+      const localStart = Math.max(0, start - lineStart);
+      const localEnd = Math.min(text.length - 1, end - lineStart);
+      if (localStart <= localEnd) {
+        localIndices.push([localStart, localEnd]);
+      }
+    }
+  }
+
+  if (localIndices.length === 0) {
+    return <>{text}</>;
+  }
+
+  const segments = highlightMatches(text, localIndices);
+  return (
+    <>
+      {segments.map((segment, idx) =>
+        segment.highlight ? (
+          <mark key={idx} className="bg-orange-200 text-text-primary font-semibold rounded-sm px-0.5">
+            {segment.text}
+          </mark>
+        ) : (
+          <span key={idx}>{segment.text}</span>
+        )
+      )}
+    </>
   );
 }
 
