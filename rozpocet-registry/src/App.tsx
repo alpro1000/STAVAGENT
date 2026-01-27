@@ -9,6 +9,7 @@ import { ItemsTable } from './components/items/ItemsTable';
 import { SearchBar } from './components/search/SearchBar';
 import { SearchResults } from './components/search/SearchResults';
 import { AIPanel } from './components/ai/AIPanel';
+import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
@@ -515,6 +516,9 @@ function App() {
                     sheetId={selectedSheet.id}
                     selectedItemIds={Array.from(selectedItemIds)}
                   />
+
+                  {/* Group Manager */}
+                  <GroupManager />
 
                   {/* Filter Controls */}
                   <div className="flex items-center gap-3 p-3 bg-bg-secondary rounded-lg border border-border-color">
