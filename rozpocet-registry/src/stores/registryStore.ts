@@ -4,7 +4,7 @@
  */
 
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
 import type {
   Project,
   Sheet,
@@ -15,6 +15,7 @@ import type {
 import type { ImportTemplate } from '../types/template';
 import { PREDEFINED_TEMPLATES } from '../config/templates';
 import { DEFAULT_GROUPS } from '../utils/constants';
+import { idbStorage } from './idbStorage';
 
 interface RegistryState {
   // Данные
@@ -371,6 +372,7 @@ export const useRegistryStore = create<RegistryState>()(
     {
       name: 'rozpocet-registry-storage',
       version: 1,
+      storage: createJSONStorage(() => idbStorage),
     }
   )
 );
