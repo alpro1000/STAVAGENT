@@ -239,7 +239,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
           {/* Info */}
           <p className="text-xs text-text-muted">
-            10 skupin: ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA.
+            11 skupin: ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA, LOZISKA.
             Priorita: PILOTY &gt; vše ostatní pokud popis obsahuje &quot;pilot&quot;.
           </p>
         </div>

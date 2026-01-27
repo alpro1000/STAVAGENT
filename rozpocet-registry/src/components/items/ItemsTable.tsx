@@ -1,22 +1,18 @@
 /**
  * ItemsTable Component
- * Tabulka položek s podporou třídění a výběru
+ * Tabulka položek s podporou třídění, výběru a filtrování podle skupiny
  */
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useRef, useEffect } from 'react';
 import {
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
-  getGroupedRowModel,
-  getExpandedRowModel,
   flexRender,
   createColumnHelper,
   type SortingState,
-  type GroupingState,
-  type ExpandedState,
 } from '@tanstack/react-table';
-import { ChevronUp, ChevronDown, Sparkles, Globe, FolderOpen, Folder } from 'lucide-react';
+import { ChevronUp, ChevronDown, Sparkles, Globe, Filter, Check } from 'lucide-react';
 import type { ParsedItem } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -35,6 +31,9 @@ interface ItemsTableProps {
 
 const columnHelper = createColumnHelper<ParsedItem>();
 
+/** Label for items with no skupina assigned */
+const NO_GROUP_LABEL = '(Bez skupiny)';
+
 export function ItemsTable({
   items,
   projectId,
@@ -48,9 +47,23 @@ export function ItemsTable({
   const allGroups = getAllGroups();
   const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
   const [applyingGlobal, setApplyingGlobal] = useState<string | null>(null);
-  const [grouping, setGrouping] = useState<GroupingState>([]);
-  const [expanded, setExpanded] = useState<ExpandedState>({});
-  const [groupBySkupina, setGroupBySkupina] = useState(false);
+
+  // Excel-style filter state
+  const [filterGroups, setFilterGroups] = useState<Set<string>>(new Set()); // empty = show all
+  const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const filterDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    if (!showFilterDropdown) return;
+    const handleClickOutside = (e: MouseEvent) => {
+      if (filterDropdownRef.current && !filterDropdownRef.current.contains(e.target as Node)) {
+        setShowFilterDropdown(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showFilterDropdown]);
 
   // Модальное окно для уведомлений
   const [alertModal, setAlertModal] = useState<{
@@ -64,6 +77,54 @@ export function ItemsTable({
     message: '',
     variant: 'info',
   });
+
+  // Get groups present in current items with counts
+  const groupStats = useMemo(() => {
+    const counts = new Map<string, number>();
+    items.forEach(item => {
+      const key = item.skupina || '';
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+    // Sort: named groups first (alphabetically), then empty group last
+    const entries = Array.from(counts.entries()).sort((a, b) => {
+      if (a[0] === '' && b[0] !== '') return 1;
+      if (a[0] !== '' && b[0] === '') return -1;
+      return a[0].localeCompare(b[0]);
+    });
+    return entries;
+  }, [items]);
+
+  const isFilterActive = filterGroups.size > 0;
+
+  // Filter items based on selected groups
+  const filteredItems = useMemo(() => {
+    if (filterGroups.size === 0) return items;
+    return items.filter(item => {
+      const skupina = item.skupina || '';
+      return filterGroups.has(skupina);
+    });
+  }, [items, filterGroups]);
+
+  const toggleGroupFilter = (group: string) => {
+    setFilterGroups(prev => {
+      const next = new Set(prev);
+      if (next.has(group)) {
+        next.delete(group);
+      } else {
+        next.add(group);
+      }
+      return next;
+    });
+  };
+
+  const selectAllGroups = () => {
+    // Select all = clear filter (show everything)
+    setFilterGroups(new Set());
+  };
+
+  const selectOnlyGroup = (group: string) => {
+    setFilterGroups(new Set([group]));
+  };
 
   // Применить группу к похожим позициям
   const applyToSimilar = (sourceItem: ParsedItem) => {
@@ -130,28 +191,6 @@ export function ItemsTable({
       setApplyingGlobal(null);
     }, 1000);
   };
-
-  // Переключение группировки
-  const toggleGrouping = () => {
-    if (groupBySkupina) {
-      setGrouping([]);
-      setGroupBySkupina(false);
-    } else {
-      setGrouping(['skupina']);
-      setGroupBySkupina(true);
-    }
-  };
-
-  // Get only assigned groups from current project items (not all 40+ predefined)
-  const assignedGroups = useMemo(() => {
-    const groups = new Set<string>();
-    items.forEach(item => {
-      if (item.skupina) {
-        groups.add(item.skupina);
-      }
-    });
-    return Array.from(groups).sort();
-  }, [items]);
 
   // Внутренний стейт для сортировки (если внешний не передан)
   const [internalSorting, setInternalSorting] = useState<SortingState>([]);
@@ -266,19 +305,95 @@ export function ItemsTable({
         header: () => (
           <div className="flex items-center gap-2">
             <span>Skupina</span>
-            {assignedGroups.length > 0 && (
-              <button
-                onClick={toggleGrouping}
-                className={`px-2 py-1 text-xs rounded flex items-center gap-1 transition-colors ${
-                  groupBySkupina
-                    ? 'bg-accent-primary text-white'
-                    : 'bg-bg-secondary hover:bg-bg-tertiary'
-                }`}
-                title={groupBySkupina ? 'Zrušit seskupení' : 'Seskupit podle skupiny'}
-              >
-                {groupBySkupina ? <FolderOpen size={14} /> : <Folder size={14} />}
-                <span>{assignedGroups.length}</span>
-              </button>
+            {groupStats.length > 0 && (
+              <div className="relative" ref={filterDropdownRef}>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowFilterDropdown(!showFilterDropdown);
+                  }}
+                  className={`px-2 py-1 text-xs rounded flex items-center gap-1 transition-colors ${
+                    isFilterActive
+                      ? 'bg-accent-primary text-white'
+                      : 'bg-bg-secondary hover:bg-bg-tertiary'
+                  }`}
+                  title="Filtr podle skupiny"
+                >
+                  <Filter size={14} />
+                  {isFilterActive && (
+                    <span>{filterGroups.size}/{groupStats.length}</span>
+                  )}
+                </button>
+
+                {/* Excel-style filter dropdown */}
+                {showFilterDropdown && (
+                  <div
+                    className="absolute right-0 top-full mt-1 bg-bg-primary border border-border-color rounded-lg shadow-xl z-50 min-w-[220px] max-h-[320px] overflow-y-auto"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {/* Select all / Clear */}
+                    <div className="border-b border-border-color px-3 py-2 flex items-center gap-2">
+                      <button
+                        onClick={selectAllGroups}
+                        className="text-xs text-accent-primary hover:underline"
+                      >
+                        Zobrazit vše
+                      </button>
+                      <span className="text-text-muted text-xs">
+                        ({items.length} položek)
+                      </span>
+                    </div>
+
+                    {/* Group checkboxes */}
+                    <div className="py-1">
+                      {groupStats.map(([group, count]) => {
+                        const label = group || NO_GROUP_LABEL;
+                        const isChecked = filterGroups.size === 0 || filterGroups.has(group);
+                        return (
+                          <div
+                            key={group}
+                            className="flex items-center gap-2 px-3 py-1.5 hover:bg-bg-secondary cursor-pointer text-sm"
+                            onClick={() => toggleGroupFilter(group)}
+                          >
+                            <div className={`w-4 h-4 rounded border flex items-center justify-center flex-shrink-0 ${
+                              isChecked
+                                ? 'bg-accent-primary border-accent-primary'
+                                : 'border-border-color'
+                            }`}>
+                              {isChecked && <Check size={12} className="text-white" />}
+                            </div>
+                            <span className={`flex-1 truncate ${group ? 'font-medium text-accent-primary' : 'text-text-muted italic'}`}>
+                              {label}
+                            </span>
+                            <span className="text-text-muted text-xs flex-shrink-0">
+                              {count}
+                            </span>
+                            {group && (
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  selectOnlyGroup(group);
+                                }}
+                                className="text-[10px] text-text-muted hover:text-accent-primary px-1"
+                                title={`Zobrazit pouze ${label}`}
+                              >
+                                pouze
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    {/* Footer with count */}
+                    {isFilterActive && (
+                      <div className="border-t border-border-color px-3 py-2 text-xs text-text-muted">
+                        Zobrazeno {filteredItems.length} z {items.length} položek
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         ),
@@ -330,30 +445,24 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, assignedGroups, groupBySkupina, toggleGrouping]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length]
   );
 
   const table = useReactTable({
-    data: items,
+    data: filteredItems,
     columns,
     state: {
       sorting,
-      grouping,
-      expanded,
       rowSelection: Object.fromEntries(
         Array.from(selectedIds).map((id) => [
-          items.findIndex((item) => item.id === id),
+          filteredItems.findIndex((item) => item.id === id),
           true,
         ])
       ),
     },
     onSortingChange: handleSortingChange,
-    onGroupingChange: setGrouping,
-    onExpandedChange: setExpanded,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    getGroupedRowModel: getGroupedRowModel(),
-    getExpandedRowModel: getExpandedRowModel(),
     enableRowSelection: true,
     onRowSelectionChange: (updater) => {
       if (!onSelectionChange) return;
@@ -363,7 +472,7 @@ export function ItemsTable({
           ? updater(
               Object.fromEntries(
                 Array.from(selectedIds).map((id) => [
-                  items.findIndex((item) => item.id === id),
+                  filteredItems.findIndex((item) => item.id === id),
                   true,
                 ])
               )
@@ -373,7 +482,7 @@ export function ItemsTable({
       const newSelectedIds = new Set(
         Object.keys(newSelection)
           .filter((key) => newSelection[key])
-          .map((key) => items[parseInt(key)]?.id)
+          .map((key) => filteredItems[parseInt(key)]?.id)
           .filter(Boolean)
       );
 
@@ -430,44 +539,15 @@ export function ItemsTable({
             ))}
           </thead>
           <tbody>
-            {table.getRowModel().rows.map((row) => {
-              if (row.getIsGrouped()) {
-                // Группированная строка
-                return (
-                  <tr key={row.id} className="bg-bg-secondary font-medium">
-                    <td colSpan={row.getVisibleCells().length}>
-                      <button
-                        onClick={row.getToggleExpandedHandler()}
-                        className="flex items-center gap-2 px-2 py-1 hover:bg-bg-tertiary transition-colors w-full text-left"
-                      >
-                        {row.getIsExpanded() ? (
-                          <ChevronDown size={16} />
-                        ) : (
-                          <ChevronUp size={16} />
-                        )}
-                        <span className="text-accent-primary">
-                          {String(row.groupingValue || '(Bez skupiny)')}
-                        </span>
-                        <span className="text-text-secondary text-sm">
-                          ({row.subRows.length} položek)
-                        </span>
-                      </button>
-                    </td>
-                  </tr>
-                );
-              }
-
-              // Обычная строка
-              return (
-                <tr key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    </td>
-                  ))}
-                </tr>
-              );
-            })}
+            {table.getRowModel().rows.map((row) => (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>
@@ -475,7 +555,10 @@ export function ItemsTable({
       {/* Footer */}
       <div className="border-t border-border-color px-4 py-3 flex items-center justify-between">
         <p className="text-sm text-text-secondary">
-          Zobrazeno {items.length} položek
+          {isFilterActive
+            ? `Zobrazeno ${filteredItems.length} z ${items.length} položek (filtr aktivní)`
+            : `Zobrazeno ${items.length} položek`
+          }
         </p>
         {selectedIds.size > 0 && (
           <p className="text-sm font-medium text-accent-primary">
