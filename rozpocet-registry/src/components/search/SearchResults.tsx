@@ -1,11 +1,19 @@
 /**
  * Search Results Component
  *
- * Phase 6: Display search results with highlighting
+ * Table-based search results with:
+ * - Full item info (kod, full popis, MJ, množství, cena, skupina)
+ * - Inline skupina editing via autocomplete
+ * - Bulk apply skupina to all/selected results
+ * - Highlighted matched text
  */
 
+import { useState, useMemo } from 'react';
+import { CheckSquare, Square, AlertTriangle } from 'lucide-react';
 import type { SearchResultItem } from '../../services/search/searchService';
 import { highlightMatches } from '../../services/search/searchService';
+import { useRegistryStore } from '../../stores/registryStore';
+import { SkupinaAutocomplete } from '../items/SkupinaAutocomplete';
 
 interface SearchResultsProps {
   results: SearchResultItem[];
@@ -18,10 +26,30 @@ export function SearchResults({
   onSelectItem,
   isLoading = false,
 }: SearchResultsProps) {
+  const { setItemSkupina, getAllGroups, addCustomGroup } = useRegistryStore();
+  const allGroups = getAllGroups();
+
+  // Selection state for bulk actions
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [bulkSkupina, setBulkSkupina] = useState<string | null>(null);
+  const [bulkApplied, setBulkApplied] = useState<string | null>(null);
+
+  // Count by skupina status
+  const stats = useMemo(() => {
+    const withGroup = results.filter(r => r.item.skupina).length;
+    const withoutGroup = results.length - withGroup;
+    const groups = new Map<string, number>();
+    results.forEach(r => {
+      const g = r.item.skupina || '(Bez skupiny)';
+      groups.set(g, (groups.get(g) || 0) + 1);
+    });
+    return { withGroup, withoutGroup, groups };
+  }, [results]);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-12">
-        <div className="text-[var(--text-secondary)]">Hledání...</div>
+        <div className="text-text-secondary">Hledání...</div>
       </div>
     );
   }
@@ -30,114 +58,309 @@ export function SearchResults({
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <div className="text-4xl mb-4">🔍</div>
-        <div className="text-[var(--text-primary)] font-medium mb-1">
-          Žádné výsledky
-        </div>
-        <div className="text-sm text-[var(--text-secondary)]">
-          Zkuste změnit hledaný výraz nebo filtry
-        </div>
+        <div className="text-text-primary font-medium mb-1">Žádné výsledky</div>
+        <div className="text-sm text-text-secondary">Zkuste změnit hledaný výraz nebo filtry</div>
       </div>
     );
   }
 
+  // Selection helpers
+  const allSelected = selectedIds.size === results.length && results.length > 0;
+  const someSelected = selectedIds.size > 0;
+
+  const toggleAll = () => {
+    if (allSelected) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(results.map(r => r.item.id)));
+    }
+  };
+
+  const toggleItem = (id: string) => {
+    const next = new Set(selectedIds);
+    if (next.has(id)) {
+      next.delete(id);
+    } else {
+      next.add(id);
+    }
+    setSelectedIds(next);
+  };
+
+  // Bulk apply skupina
+  const handleBulkApply = () => {
+    if (!bulkSkupina) return;
+    const targets = someSelected
+      ? results.filter(r => selectedIds.has(r.item.id))
+      : results;
+
+    for (const r of targets) {
+      const sheetId = r.item.source?.sheetName || '';
+      // Find the correct sheet ID by matching sheet name within the project
+      const project = r.project;
+      const sheet = project.sheets.find(s => s.name === sheetId) || project.sheets[0];
+      if (sheet) {
+        setItemSkupina(project.id, sheet.id, r.item.id, bulkSkupina);
+      }
+    }
+
+    setBulkApplied(`Přiřazeno "${bulkSkupina}" → ${targets.length} položek`);
+    setTimeout(() => setBulkApplied(null), 4000);
+  };
+
+  // Inline skupina change for single item
+  const handleSkupinaChange = (result: SearchResultItem, skupina: string | null) => {
+    if (!skupina) return;
+    const project = result.project;
+    const sheet = project.sheets.find(s =>
+      s.items.some(i => i.id === result.item.id)
+    ) || project.sheets[0];
+    if (sheet) {
+      setItemSkupina(project.id, sheet.id, result.item.id, skupina);
+    }
+  };
+
   return (
-    <div className="space-y-4">
-      {/* Results count */}
-      <div className="text-sm text-[var(--text-secondary)]">
-        Nalezeno <span className="font-semibold text-[var(--text-primary)]">{results.length}</span> výsledků
+    <div className="space-y-3">
+      {/* Summary bar */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="flex items-center gap-3 text-sm">
+          <span className="text-text-secondary">
+            Nalezeno <span className="font-semibold text-text-primary">{results.length}</span> položek
+          </span>
+          <span className="text-text-muted">|</span>
+          <span className="text-green-600 font-medium">{stats.withGroup} klasifikováno</span>
+          {stats.withoutGroup > 0 && (
+            <span className="text-orange-500 font-medium">{stats.withoutGroup} bez skupiny</span>
+          )}
+        </div>
+
+        {/* Group distribution chips */}
+        <div className="flex items-center gap-1 flex-wrap">
+          {Array.from(stats.groups.entries()).map(([g, count]) => (
+            <span
+              key={g}
+              className={`text-xs px-2 py-0.5 rounded font-medium ${
+                g === '(Bez skupiny)'
+                  ? 'bg-orange-100 text-orange-700'
+                  : 'bg-blue-100 text-blue-700'
+              }`}
+            >
+              {g}: {count}
+            </span>
+          ))}
+        </div>
       </div>
 
-      {/* Results list */}
-      <div className="space-y-2">
-        {results.map((result, idx) => (
-          <SearchResultCard
-            key={`${result.project.id}-${result.item.id}-${idx}`}
-            result={result}
-            onClick={() => onSelectItem(result)}
+      {/* Bulk action bar */}
+      <div className="flex items-center gap-3 p-3 bg-[var(--data-surface)] rounded-lg border border-[var(--divider)]">
+        <button
+          onClick={toggleAll}
+          className="flex items-center gap-2 text-sm text-text-secondary hover:text-text-primary transition-colors"
+        >
+          {allSelected ? <CheckSquare size={18} className="text-accent-primary" /> : <Square size={18} />}
+          {someSelected ? `${selectedIds.size} vybráno` : 'Vybrat vše'}
+        </button>
+
+        <span className="text-text-muted">|</span>
+
+        <span className="text-sm text-text-secondary whitespace-nowrap">Přiřadit skupinu:</span>
+        <div className="w-56">
+          <SkupinaAutocomplete
+            value={bulkSkupina}
+            onChange={setBulkSkupina}
+            allGroups={allGroups}
+            onAddGroup={addCustomGroup}
           />
-        ))}
+        </div>
+
+        <button
+          onClick={handleBulkApply}
+          disabled={!bulkSkupina}
+          className="btn btn-primary text-sm px-4 py-1.5 disabled:opacity-40"
+        >
+          {someSelected ? `Přiřadit (${selectedIds.size})` : `Přiřadit všem (${results.length})`}
+        </button>
+
+        {bulkApplied && (
+          <span className="text-sm text-green-600 font-medium">{bulkApplied}</span>
+        )}
+      </div>
+
+      {/* Warning */}
+      <div className="flex items-center gap-2 text-xs text-text-muted px-1">
+        <AlertTriangle size={14} className="text-orange-400 flex-shrink-0" />
+        <span>Zkontrolujte výsledky - hledání může zahrnout i nepřesné shody. Skupinu lze změnit u každé položky jednotlivě.</span>
+      </div>
+
+      {/* Results table */}
+      <div className="overflow-x-auto rounded-lg border border-[var(--divider)]">
+        <table className="w-full text-sm">
+          <thead>
+            <tr className="bg-[var(--panel-clean)] border-b border-[var(--divider)]">
+              <th className="w-10 px-2 py-2.5 text-center">
+                <button onClick={toggleAll} className="text-text-muted hover:text-text-primary">
+                  {allSelected
+                    ? <CheckSquare size={16} className="text-accent-primary" />
+                    : <Square size={16} />
+                  }
+                </button>
+              </th>
+              <th className="px-3 py-2.5 text-left font-semibold text-text-primary whitespace-nowrap">Kód</th>
+              <th className="px-3 py-2.5 text-left font-semibold text-text-primary">Popis</th>
+              <th className="px-3 py-2.5 text-center font-semibold text-text-primary whitespace-nowrap">MJ</th>
+              <th className="px-3 py-2.5 text-right font-semibold text-text-primary whitespace-nowrap">Množství</th>
+              <th className="px-3 py-2.5 text-right font-semibold text-text-primary whitespace-nowrap">Cena celkem</th>
+              <th className="px-3 py-2.5 text-left font-semibold text-text-primary whitespace-nowrap min-w-[200px]">Skupina</th>
+              <th className="px-3 py-2.5 text-left font-semibold text-text-primary whitespace-nowrap">Zdroj</th>
+            </tr>
+          </thead>
+          <tbody>
+            {results.map((result, idx) => (
+              <SearchResultRow
+                key={`${result.project.id}-${result.item.id}-${idx}`}
+                result={result}
+                isSelected={selectedIds.has(result.item.id)}
+                onToggle={() => toggleItem(result.item.id)}
+                onNavigate={() => onSelectItem(result)}
+                onSkupinaChange={(s) => handleSkupinaChange(result, s)}
+                allGroups={allGroups}
+                onAddGroup={addCustomGroup}
+                isAlt={idx % 2 === 1}
+              />
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
 }
 
 /**
- * Single search result card
+ * Single search result row
  */
-interface SearchResultCardProps {
+interface SearchResultRowProps {
   result: SearchResultItem;
-  onClick: () => void;
+  isSelected: boolean;
+  onToggle: () => void;
+  onNavigate: () => void;
+  onSkupinaChange: (skupina: string | null) => void;
+  allGroups: string[];
+  onAddGroup: (g: string) => void;
+  isAlt: boolean;
 }
 
-function SearchResultCard({ result, onClick }: SearchResultCardProps) {
+function SearchResultRow({
+  result,
+  isSelected,
+  onToggle,
+  onNavigate,
+  onSkupinaChange,
+  allGroups,
+  onAddGroup,
+  isAlt,
+}: SearchResultRowProps) {
   const { item, project, matches } = result;
 
-  // Get highlighted text for main fields
   const kodMatch = matches.find(m => m.key === 'kod');
   const popisMatch = matches.find(m => m.key === 'popis');
+  const popisFullMatch = matches.find(m => m.key === 'popisFull');
+  const bestPopisMatch = popisMatch || popisFullMatch;
+
+  // Show full description (popisFull if available, else popis)
+  const displayText = item.popisFull || item.popis;
+  const displayMatch = bestPopisMatch
+    ? { ...bestPopisMatch, key: 'display' }
+    : null;
+
+  // Find sheet name
+  const sheet = project.sheets.find(s =>
+    s.items.some(i => i.id === item.id)
+  );
+  const sheetName = sheet?.name || item.source?.sheetName || '';
 
   return (
-    <button
-      onClick={onClick}
-      className="w-full p-4 bg-[var(--data-surface)] hover:bg-[var(--panel-clean)]
-               border border-[var(--divider)] rounded-lg
-               transition-all text-left group"
+    <tr
+      className={`border-b border-[var(--divider)] hover:bg-[var(--panel-clean)] transition-colors ${
+        isAlt ? 'bg-[var(--data-surface-alt)]' : 'bg-[var(--data-surface)]'
+      }`}
     >
-      {/* Header */}
-      <div className="flex items-start justify-between mb-2">
-        <div className="flex items-center gap-2">
-          {/* Code */}
-          <span className="font-mono font-semibold text-[var(--text-primary)]">
-            {kodMatch ? (
-              <HighlightedText text={item.kod} indices={kodMatch.indices} />
-            ) : (
-              item.kod
-            )}
-          </span>
+      {/* Checkbox */}
+      <td className="px-2 py-2 text-center">
+        <button onClick={onToggle} className="text-text-muted hover:text-text-primary">
+          {isSelected
+            ? <CheckSquare size={16} className="text-accent-primary" />
+            : <Square size={16} />
+          }
+        </button>
+      </td>
 
-          {/* Group badge */}
-          {item.skupina && (
-            <span
-              className="text-xs px-2 py-1 bg-[var(--accent-orange)]/10
-                       text-[var(--accent-orange)] rounded"
-            >
-              {item.skupina}
+      {/* Kód */}
+      <td className="px-3 py-2">
+        <button
+          onClick={onNavigate}
+          className="font-mono font-semibold text-text-primary hover:text-accent-primary transition-colors"
+          title="Přejít na položku"
+        >
+          {kodMatch ? (
+            <HighlightedText text={item.kod} indices={kodMatch.indices} />
+          ) : (
+            item.kod
+          )}
+        </button>
+      </td>
+
+      {/* Popis (full) */}
+      <td className="px-3 py-2 text-text-primary max-w-[400px]">
+        <div className="line-clamp-3" title={displayText}>
+          {displayMatch ? (
+            <HighlightedText text={displayText} indices={displayMatch.indices} />
+          ) : (
+            displayText
+          )}
+        </div>
+      </td>
+
+      {/* MJ */}
+      <td className="px-3 py-2 text-center text-text-secondary whitespace-nowrap">
+        {item.mj}
+      </td>
+
+      {/* Množství */}
+      <td className="px-3 py-2 text-right font-mono text-text-primary whitespace-nowrap">
+        {item.mnozstvi ?? '-'}
+      </td>
+
+      {/* Cena celkem */}
+      <td className="px-3 py-2 text-right font-mono text-text-primary whitespace-nowrap">
+        {item.cenaCelkem != null ? `${item.cenaCelkem.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč` : '-'}
+      </td>
+
+      {/* Skupina (editable) */}
+      <td className="px-3 py-2">
+        <div className="w-full min-w-[180px]">
+          <SkupinaAutocomplete
+            value={item.skupina}
+            onChange={onSkupinaChange}
+            allGroups={allGroups}
+            onAddGroup={onAddGroup}
+          />
+        </div>
+      </td>
+
+      {/* Zdroj (project / sheet) */}
+      <td className="px-3 py-2 text-xs text-text-muted whitespace-nowrap">
+        <div className="flex flex-col">
+          <span className="font-medium text-text-secondary truncate max-w-[180px]" title={project.fileName}>
+            {project.fileName}
+          </span>
+          {sheetName && (
+            <span className="text-text-muted truncate max-w-[180px]" title={sheetName}>
+              {sheetName}
             </span>
           )}
         </div>
-
-        {/* Project name */}
-        <span className="text-xs text-[var(--text-muted)] truncate max-w-[200px]">
-          📁 {project.fileName}
-        </span>
-      </div>
-
-      {/* Description */}
-      <div className="text-sm text-[var(--text-primary)] mb-2">
-        {popisMatch ? (
-          <HighlightedText text={item.popis} indices={popisMatch.indices} />
-        ) : (
-          item.popis
-        )}
-      </div>
-
-      {/* Footer */}
-      <div className="flex items-center gap-4 text-xs text-[var(--text-secondary)]">
-        <span>
-          <span className="font-semibold">{item.mnozstvi}</span> {item.mj}
-        </span>
-        {item.cenaCelkem && (
-          <span>
-            <span className="font-semibold">{item.cenaCelkem.toFixed(2)}</span> Kč
-          </span>
-        )}
-        {item.cenaJednotkova && (
-          <span className="text-[var(--text-muted)]">
-            ({item.cenaJednotkova.toFixed(2)} Kč/{item.mj})
-          </span>
-        )}
-      </div>
-    </button>
+      </td>
+    </tr>
   );
 }
 
@@ -158,7 +381,7 @@ function HighlightedText({ text, indices }: HighlightedTextProps) {
         segment.highlight ? (
           <mark
             key={idx}
-            className="bg-[var(--accent-orange)]/30 text-[var(--text-primary)] font-semibold"
+            className="bg-orange-200 text-text-primary font-semibold rounded-sm px-0.5"
           >
             {segment.text}
           </mark>
