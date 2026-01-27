@@ -328,7 +328,8 @@ export function ItemsTable({
                 {/* Excel-style filter dropdown */}
                 {showFilterDropdown && (
                   <div
-                    className="absolute right-0 top-full mt-1 bg-bg-primary border border-border-color rounded-lg shadow-xl z-50 min-w-[220px] max-h-[320px] overflow-y-auto"
+                    className="absolute right-0 top-full mt-1 bg-bg-primary border-2 border-border-color rounded-lg z-50 min-w-[240px] max-h-[340px] overflow-y-auto"
+                    style={{ boxShadow: '0 8px 30px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.2)' }}
                     onClick={(e) => e.stopPropagation()}
                   >
                     {/* Select all / Clear */}
