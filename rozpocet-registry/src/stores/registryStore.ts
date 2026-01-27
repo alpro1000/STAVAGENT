@@ -63,6 +63,9 @@ interface RegistryState {
   addCustomGroup: (group: string) => void;
   removeCustomGroup: (group: string) => void;
   getAllGroups: () => string[];
+  renameGroup: (oldName: string, newName: string) => number; // returns affected items count
+  deleteGroup: (group: string) => number; // returns affected items count
+  getGroupItemCounts: () => Map<string, number>; // group → item count across all projects
 
   // Статистика
   updateSheetStats: (projectId: string, sheetId: string) => void;
@@ -348,6 +351,97 @@ export const useRegistryStore = create<RegistryState>()(
       getAllGroups: () => {
         const { customGroups } = get();
         return [...DEFAULT_GROUPS, ...customGroups];
+      },
+
+      renameGroup: (oldName, newName) => {
+        const trimmed = newName.trim();
+        if (!trimmed || oldName === trimmed) return 0;
+
+        let affected = 0;
+
+        set((state) => {
+          // Update all items across all projects/sheets
+          const projects = state.projects.map((p) => ({
+            ...p,
+            sheets: p.sheets.map((sheet) => ({
+              ...sheet,
+              items: sheet.items.map((item) => {
+                if (item.skupina === oldName) {
+                  affected++;
+                  return { ...item, skupina: trimmed };
+                }
+                return item;
+              }),
+            })),
+          }));
+
+          // Update customGroups: remove old, add new (if not already default/custom)
+          let customGroups = [...state.customGroups];
+          const oldIdx = customGroups.indexOf(oldName);
+          if (oldIdx >= 0) {
+            customGroups.splice(oldIdx, 1);
+          }
+          const allExisting = [...DEFAULT_GROUPS as unknown as string[], ...customGroups];
+          if (!allExisting.includes(trimmed)) {
+            customGroups.push(trimmed);
+          }
+
+          return { projects, customGroups };
+        });
+
+        // Update stats
+        get().projects.forEach(p =>
+          p.sheets.forEach(s => get().updateSheetStats(p.id, s.id))
+        );
+
+        return affected;
+      },
+
+      deleteGroup: (group) => {
+        let affected = 0;
+
+        set((state) => {
+          // Clear skupina from all items that use this group
+          const projects = state.projects.map((p) => ({
+            ...p,
+            sheets: p.sheets.map((sheet) => ({
+              ...sheet,
+              items: sheet.items.map((item) => {
+                if (item.skupina === group) {
+                  affected++;
+                  return { ...item, skupina: null };
+                }
+                return item;
+              }),
+            })),
+          }));
+
+          // Remove from customGroups
+          const customGroups = state.customGroups.filter((g) => g !== group);
+
+          return { projects, customGroups };
+        });
+
+        // Update stats
+        get().projects.forEach(p =>
+          p.sheets.forEach(s => get().updateSheetStats(p.id, s.id))
+        );
+
+        return affected;
+      },
+
+      getGroupItemCounts: () => {
+        const counts = new Map<string, number>();
+        get().projects.forEach(p =>
+          p.sheets.forEach(s =>
+            s.items.forEach(item => {
+              if (item.skupina) {
+                counts.set(item.skupina, (counts.get(item.skupina) || 0) + 1);
+              }
+            })
+          )
+        );
+        return counts;
       },
 
       // Статистика

@@ -29,8 +29,14 @@ export function SkupinaAutocomplete({
     group.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Проверка, существует ли введенное значение
-  const isNewGroup = searchTerm.trim() && !allGroups.includes(searchTerm.trim());
+  // Check if entered value is a new (not yet existing) group
+  const trimmedSearch = searchTerm.trim();
+  const exactMatch = trimmedSearch ? allGroups.includes(trimmedSearch) : false;
+  const caseInsensitiveMatch = trimmedSearch
+    ? allGroups.find(g => g.toUpperCase() === trimmedSearch.toUpperCase())
+    : null;
+  const isNewGroup = trimmedSearch && !exactMatch;
+  const isDuplicate = isNewGroup && caseInsensitiveMatch !== null;
 
   // Закрытие при клике вне
   useEffect(() => {
@@ -141,13 +147,19 @@ export function SkupinaAutocomplete({
           {isNewGroup && (
             <>
               <div className="border-t border-divider" />
-              <button
-                onClick={handleAddNewGroup}
-                className="w-full px-3 py-2 text-left text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 text-accent-primary font-medium"
-              >
-                <Plus size={16} />
-                <span>Vytvořit: "{searchTerm.trim()}"</span>
-              </button>
+              {isDuplicate ? (
+                <div className="px-3 py-2 text-sm text-yellow-500 flex items-center gap-2">
+                  <span>⚠ Podobná skupina existuje: &quot;{caseInsensitiveMatch}&quot;</span>
+                </div>
+              ) : (
+                <button
+                  onClick={handleAddNewGroup}
+                  className="w-full px-3 py-2 text-left text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 text-accent-primary font-medium"
+                >
+                  <Plus size={16} />
+                  <span>Vytvořit: &quot;{searchTerm.trim()}&quot;</span>
+                </button>
+              )}
             </>
           )}
         </div>
