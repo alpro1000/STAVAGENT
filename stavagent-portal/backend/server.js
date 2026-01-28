@@ -49,13 +49,14 @@ const __dirname = dirname(__filename);
 const PORT = process.env.PORT || 3001;
 
 // CORS configuration - support multiple origins
-const ALLOWED_ORIGINS = [
+// Deduplicate CORS origins (CORS_ORIGIN env may overlap with hardcoded entries)
+const ALLOWED_ORIGINS = [...new Set([
   'http://localhost:5173',
   'http://localhost:3000',
   'https://monolit-planner-frontend.onrender.com',
   'https://stavagent-portal-frontend.onrender.com',
-  process.env.CORS_ORIGIN // Allow custom origin from env
-].filter(Boolean); // Remove undefined/null values
+  process.env.CORS_ORIGIN, // Allow custom origin from env
+].filter(Boolean))];
 
 // Initialize Express
 const app = express();

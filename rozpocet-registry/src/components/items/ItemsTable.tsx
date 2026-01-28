@@ -232,6 +232,22 @@ export function ItemsTable({
         size: 40,
       }),
 
+      // Poř. (BOQ line number)
+      columnHelper.accessor('boqLineNumber', {
+        header: 'Poř.',
+        cell: (info) => {
+          const value = info.getValue();
+          return value ? (
+            <span className="font-mono text-xs text-text-muted tabular-nums">
+              {value}
+            </span>
+          ) : null;
+        },
+        size: 50,
+        enableSorting: true,
+        sortingFn: 'basic',
+      }),
+
       // Kód
       columnHelper.accessor('kod', {
         header: 'Kód',

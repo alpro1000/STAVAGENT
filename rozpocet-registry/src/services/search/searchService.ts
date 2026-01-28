@@ -40,9 +40,10 @@ const FUSE_OPTIONS: IFuseOptions<ParsedItem> = {
   keys: [
     { name: 'kod', weight: 0.4 },           // Code - highest weight
     { name: 'popis', weight: 0.3 },         // Description
-    { name: 'popisFull', weight: 0.2 },     // Full description
+    { name: 'popisFull', weight: 0.15 },    // Full description
     { name: 'mj', weight: 0.05 },           // Unit
     { name: 'skupina', weight: 0.05 },      // Group
+    { name: 'boqLineNumber', weight: 0.05 }, // BOQ line number
   ],
   threshold: 0.4,              // 0-1, lower = more strict
   includeScore: true,

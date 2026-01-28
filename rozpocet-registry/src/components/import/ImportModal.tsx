@@ -12,6 +12,7 @@ import { ConfigEditor } from '../config/ConfigEditor';
 import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/parser/excelParser';
 import { detectExcelStructure, type DetectionResult } from '../../services/autoDetect/structureDetector';
 import { classifyItems, applyClassificationsWithCascade } from '../../services/classification/classificationService';
+import { classifyRows } from '../../services/classification/rowClassificationService';
 import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
@@ -227,20 +228,24 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         applyClassificationsWithCascade(result.items, classifications);
       }
 
+      // Row classification: assign rowRole, parentItemId, boqLineNumber
+      const rowClassification = classifyRows(result.items);
+      const classifiedRowItems = rowClassification.items;
+
       // Create sheet with items
       const classifiedItems = autoClassify
-        ? result.items.filter(item => item.skupina !== null).length
+        ? classifiedRowItems.filter(item => item.skupina !== null).length
         : 0;
 
       const sheet: Sheet = {
         id: sheetId,
         name: selectedSheet,
         projectId,
-        items: result.items,
+        items: classifiedRowItems,
         stats: {
-          totalItems: result.items.length,
+          totalItems: classifiedRowItems.length,
           classifiedItems,
-          totalCena: result.items.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0),
+          totalCena: classifiedRowItems.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0),
         },
         metadata: result.metadata,
         config: {
@@ -321,8 +326,12 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
             applyClassificationsWithCascade(result.items, classifications);
           }
 
+          // Row classification: assign rowRole, parentItemId, boqLineNumber
+          const rowClassification = classifyRows(result.items);
+          const classifiedRowItems = rowClassification.items;
+
           const classifiedItems = autoClassify
-            ? result.items.filter(item => item.skupina !== null).length
+            ? classifiedRowItems.filter(item => item.skupina !== null).length
             : 0;
 
           // Create sheet object
@@ -330,11 +339,11 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
             id: sheetId,
             name: sheetName,
             projectId,
-            items: result.items,
+            items: classifiedRowItems,
             stats: {
-              totalItems: result.items.length,
+              totalItems: classifiedRowItems.length,
               classifiedItems,
-              totalCena: result.items.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0),
+              totalCena: classifiedRowItems.reduce((sum, item) => sum + (item.cenaCelkem || 0), 0),
             },
             metadata: {
               ...result.metadata,
