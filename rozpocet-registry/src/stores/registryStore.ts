@@ -279,7 +279,6 @@ export const useRegistryStore = create<RegistryState>()(
       },
 
       bulkSetSkupina: (projectId, sheetId, updates) => {
-        const updateMap = new Map(updates.map(u => [u.itemId, u.skupina]));
         set((state) => ({
           projects: state.projects.map((p) => {
             if (p.id !== projectId) return p;
@@ -287,6 +286,47 @@ export const useRegistryStore = create<RegistryState>()(
               ...p,
               sheets: p.sheets.map((sheet) => {
                 if (sheet.id !== sheetId) return sheet;
+
+                // Start with initial updates
+                const updateMap = new Map(updates.map(u => [u.itemId, u.skupina]));
+
+                // Sort items by row position for cascade logic
+                const sortedItems = [...sheet.items].sort((a, b) =>
+                  a.source.rowStart - b.source.rowStart
+                );
+
+                // For each update, check if it's a main/section item and cascade to subordinates
+                updates.forEach(({ itemId, skupina }) => {
+                  const item = sortedItems.find(i => i.id === itemId);
+                  if (!item) return;
+
+                  // Check if this is a main/section item
+                  const isMain = item.rowRole
+                    ? (item.rowRole === 'main' || item.rowRole === 'section')
+                    : (item.kod ? isMainCodeExported(item.kod) : false);
+
+                  if (isMain) {
+                    // Find item index
+                    const itemIndex = sortedItems.findIndex(i => i.id === itemId);
+                    if (itemIndex === -1) return;
+
+                    // Cascade to following subordinate rows
+                    for (let i = itemIndex + 1; i < sortedItems.length; i++) {
+                      const nextItem = sortedItems[i];
+
+                      // Check if next item is main/section (stop cascade)
+                      const isNextMain = nextItem.rowRole
+                        ? nextItem.rowRole === 'main' || nextItem.rowRole === 'section'
+                        : (nextItem.kod ? isMainCodeExported(nextItem.kod) : false);
+
+                      if (isNextMain) break;
+
+                      // Add subordinate to update map
+                      updateMap.set(nextItem.id, skupina);
+                    }
+                  }
+                });
+
                 return {
                   ...sheet,
                   items: sheet.items.map((item) =>
