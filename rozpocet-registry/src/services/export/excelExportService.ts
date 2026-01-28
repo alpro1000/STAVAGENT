@@ -1,14 +1,18 @@
 /**
- * Excel Export Service with Hyperlinks
+ * Excel Export Service with Hyperlinks and Formatting
  *
- * Phase 7: Export project to Excel with clickable hyperlinks
+ * Phase 7+: Export project to Excel with clickable hyperlinks,
+ * styled headers, and multi-sheet project export.
+ *
+ * Uses xlsx-js-style for cell formatting (header colors, row highlights).
  */
 
-import * as XLSX from 'xlsx';
+import * as XLSX from 'xlsx-js-style';
 import type { SheetStats } from '../../types/project';
 import type { ProjectMetadata } from '../../types/project';
 import type { ImportConfig } from '../../types/config';
 import type { ParsedItem } from '../../types/item';
+import type { Project } from '../../types/project';
 
 /**
  * Exportable project (compatibility type for export)
@@ -31,13 +35,64 @@ export interface ExportableProject {
  */
 export interface ExportOptions {
   includeMetadata?: boolean;    // Include project metadata sheet
-  includeSummary?: boolean;      // Include summary statistics
-  groupBySkupina?: boolean;      // Group items by work group
-  addHyperlinks?: boolean;       // Add hyperlinks to items (default true)
+  includeSummary?: boolean;     // Include summary statistics
+  groupBySkupina?: boolean;     // Group items by work group
+  addHyperlinks?: boolean;      // Add hyperlinks to items (default true)
 }
 
+/* ============================================
+   STYLING CONSTANTS
+   Matching Price Request Panel (Tailwind slate palette)
+   ============================================ */
+
+// Header row: slate-100 background with bold dark text
+const HEADER_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'E2E8F0' } },  // slate-200
+  font: { bold: true, color: { rgb: '1E293B' }, name: 'Calibri', sz: 11 },  // slate-800
+  border: {
+    bottom: { style: 'thin', color: { rgb: '94A3B8' } },  // slate-400
+    right: { style: 'thin', color: { rgb: 'CBD5E1' } },   // slate-300
+  },
+  alignment: { vertical: 'center', wrapText: false },
+};
+
+// Code row (items with kod): very light slate tint
+const CODE_ROW_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'F1F5F9' } },  // slate-100
+  font: { name: 'Calibri', sz: 10, color: { rgb: '1E293B' } },
+  border: {
+    bottom: { style: 'thin', color: { rgb: 'E2E8F0' } },  // slate-200
+  },
+};
+
+// Description row (no kod): white background
+const DESC_ROW_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'FFFFFF' } },
+  font: { name: 'Calibri', sz: 10, color: { rgb: '475569' } },  // slate-600
+  border: {
+    bottom: { style: 'thin', color: { rgb: 'F1F5F9' } },  // very light
+  },
+};
+
+// Group separator row
+const GROUP_HEADER_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'CBD5E1' } },  // slate-300
+  font: { bold: true, name: 'Calibri', sz: 10, color: { rgb: '334155' } },  // slate-700
+  border: {
+    bottom: { style: 'thin', color: { rgb: '94A3B8' } },
+    top: { style: 'thin', color: { rgb: '94A3B8' } },
+  },
+};
+
+// Numeric cell alignment
+const NUM_ALIGN: XLSX.CellStyle['alignment'] = { horizontal: 'right', vertical: 'center' };
+
+/* ============================================
+   SINGLE SHEET EXPORT (existing behavior, now with styling)
+   ============================================ */
+
 /**
- * Export project to Excel with hyperlinks
+ * Export single sheet to Excel with styling
  */
 export function exportProjectToExcel(
   project: ExportableProject,
@@ -50,11 +105,10 @@ export function exportProjectToExcel(
     addHyperlinks = true,
   } = options;
 
-  // Create workbook
   const workbook = XLSX.utils.book_new();
 
   // Add items sheet
-  const itemsSheet = createItemsSheet(project, groupBySkupina, addHyperlinks);
+  const itemsSheet = createStyledItemsSheet(project.items, project.id, groupBySkupina, addHyperlinks);
   XLSX.utils.book_append_sheet(workbook, itemsSheet, 'Položky');
 
   // Add summary sheet
@@ -69,62 +123,103 @@ export function exportProjectToExcel(
     XLSX.utils.book_append_sheet(workbook, metadataSheet, 'Metadata');
   }
 
-  // Write to array buffer
-  return XLSX.write(workbook, {
-    type: 'array',
-    bookType: 'xlsx',
-  });
+  return XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
+}
+
+/* ============================================
+   FULL PROJECT EXPORT (all sheets)
+   ============================================ */
+
+/**
+ * Export entire project with all sheets to Excel.
+ * Each source sheet becomes a worksheet named after the original.
+ */
+export function exportFullProjectToExcel(
+  project: Project,
+  options: ExportOptions = {}
+): ArrayBuffer {
+  const {
+    groupBySkupina = true,
+    addHyperlinks = true,
+  } = options;
+
+  const workbook = XLSX.utils.book_new();
+
+  for (const sheet of project.sheets) {
+    // Sanitize sheet name for Excel (max 31 chars, no special chars)
+    const sheetName = sanitizeSheetName(sheet.name, workbook);
+    const ws = createStyledItemsSheet(sheet.items, project.id, groupBySkupina, addHyperlinks);
+    XLSX.utils.book_append_sheet(workbook, ws, sheetName);
+  }
+
+  return XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
 }
 
 /**
- * Create items sheet with hyperlinks
+ * Sanitize sheet name for Excel compatibility.
+ * Excel limits: 31 chars, no []:*?/\ characters, no duplicates.
  */
-function createItemsSheet(
-  project: ExportableProject,
+function sanitizeSheetName(name: string, workbook: XLSX.WorkBook): string {
+  // Remove invalid characters
+  let safe = name.replace(/[[\]:*?/\\]/g, '-').trim();
+  // Truncate to 31 chars
+  if (safe.length > 31) safe = safe.substring(0, 31);
+  // Ensure no empty name
+  if (!safe) safe = 'List';
+
+  // Deduplicate: if name already exists in workbook, add suffix
+  const existingNames = new Set((workbook.SheetNames || []).map(n => n.toLowerCase()));
+  if (existingNames.has(safe.toLowerCase())) {
+    const base = safe.substring(0, 28); // leave room for suffix
+    let idx = 2;
+    while (existingNames.has(`${base} (${idx})`.toLowerCase())) idx++;
+    safe = `${base} (${idx})`;
+  }
+
+  return safe;
+}
+
+/* ============================================
+   STYLED ITEMS SHEET BUILDER
+   ============================================ */
+
+/**
+ * Create a styled items worksheet with header formatting and row highlights.
+ */
+function createStyledItemsSheet(
+  items: ParsedItem[],
+  projectId: string,
   groupBySkupina: boolean,
   addHyperlinks: boolean
 ): XLSX.WorkSheet {
-  const items = groupBySkupina
-    ? groupItemsBySkupina(project.items)
-    : project.items;
+  const sortedItems = groupBySkupina ? groupItemsBySkupina(items) : items;
 
-  // Create data array
+  // Build data array
   const data: any[][] = [];
+  const headers = [
+    'Kód', 'Popis', 'MJ', 'Množství',
+    'Cena jednotková', 'Cena celkem', 'Skupina',
+    ...(addHyperlinks ? ['Odkaz'] : []),
+  ];
+  data.push(headers);
 
-  // Header row
-  data.push([
-    'Kód',
-    'Popis',
-    'MJ',
-    'Množství',
-    'Cena jednotková',
-    'Cena celkem',
-    'Skupina',
-    addHyperlinks ? 'Odkaz' : null,
-  ].filter(Boolean));
+  // Track row types for styling: 'header' | 'group' | 'code' | 'desc'
+  const rowTypes: string[] = ['header'];
 
-  // Data rows
   let currentGroup: string | null = null;
 
-  for (const item of items) {
-    // Add group header if grouped
+  for (const item of sortedItems) {
+    // Group separator
     if (groupBySkupina && item.skupina !== currentGroup) {
       currentGroup = item.skupina;
-
-      // Group header row (merged cell)
-      data.push([
-        '',
-        `=== ${currentGroup || 'Bez skupiny'} ===`,
-        '',
-        '',
-        '',
-        '',
-        '',
-        addHyperlinks ? '' : null,
-      ].filter(Boolean));
+      const groupRow = ['', `=== ${currentGroup || 'Bez skupiny'} ===`, '', '', '', '', ''];
+      if (addHyperlinks) groupRow.push('');
+      data.push(groupRow);
+      rowTypes.push('group');
     }
 
     // Item row
+    const isCodeRow = item.kod && item.kod.trim().length > 0;
     const row: any[] = [
       item.kod,
       item.popis,
@@ -135,57 +230,95 @@ function createItemsSheet(
       item.skupina || '',
     ];
 
-    // Add hyperlink if enabled
     if (addHyperlinks) {
-      // Create hyperlink to item in browser
-      // Format: =HYPERLINK("https://app.url/#/project/xxx/item/yyy", "Otevřít")
-      const itemUrl = `${window.location.origin}${window.location.pathname}#/project/${project.id}/item/${item.id}`;
-      row.push({
-        f: `HYPERLINK("${itemUrl}", "Otevřít")`,
-        v: 'Otevřít',
-      });
+      const itemUrl = `${window.location.origin}${window.location.pathname}#/project/${projectId}/item/${item.id}`;
+      row.push({ f: `HYPERLINK("${itemUrl}", "Otevřít")`, v: 'Otevřít' });
     }
 
     data.push(row);
+    rowTypes.push(isCodeRow ? 'code' : 'desc');
   }
 
-  // Create worksheet
+  // Create worksheet from data
   const ws = XLSX.utils.aoa_to_sheet(data);
 
-  // Set column widths
+  // Apply column widths
   ws['!cols'] = [
     { wch: 12 },  // Kód
     { wch: 50 },  // Popis
     { wch: 8 },   // MJ
     { wch: 12 },  // Množství
-    { wch: 15 },  // Cena jedn.
-    { wch: 15 },  // Cena celkem
+    { wch: 16 },  // Cena jedn.
+    { wch: 16 },  // Cena celkem
     { wch: 20 },  // Skupina
-    { wch: 10 },  // Odkaz
+    ...(addHyperlinks ? [{ wch: 10 }] : []),
   ];
+
+  // Apply styling to each cell
+  const colCount = headers.length;
+  for (let r = 0; r < data.length; r++) {
+    const rowType = rowTypes[r];
+    for (let c = 0; c < colCount; c++) {
+      const cellRef = XLSX.utils.encode_cell({ r, c });
+      const cell = ws[cellRef];
+      if (!cell) continue;
+
+      // Base style based on row type
+      let style: XLSX.CellStyle;
+      switch (rowType) {
+        case 'header':
+          style = { ...HEADER_STYLE };
+          break;
+        case 'group':
+          style = { ...GROUP_HEADER_STYLE };
+          break;
+        case 'code':
+          style = { ...CODE_ROW_STYLE };
+          break;
+        default:
+          style = { ...DESC_ROW_STYLE };
+      }
+
+      // Right-align numeric columns (Množství=3, Cena jedn.=4, Cena celkem=5)
+      if (c >= 3 && c <= 5 && rowType !== 'header') {
+        style.alignment = { ...style.alignment, ...NUM_ALIGN };
+      }
+
+      // Number format for price columns
+      if ((c === 4 || c === 5) && rowType !== 'header' && rowType !== 'group') {
+        cell.z = '#,##0.00';
+      }
+
+      cell.s = style;
+    }
+  }
+
+  // Freeze header row
+  ws['!freeze'] = { xSplit: 0, ySplit: 1 };
+
+  // Auto-filter on header
+  ws['!autofilter'] = { ref: XLSX.utils.encode_range({ s: { r: 0, c: 0 }, e: { r: 0, c: colCount - 1 } }) };
 
   return ws;
 }
 
-/**
- * Create summary sheet
- */
+/* ============================================
+   SUMMARY & METADATA SHEETS (unchanged logic, with basic styling)
+   ============================================ */
+
 function createSummarySheet(project: ExportableProject): XLSX.WorkSheet {
   const data: any[][] = [];
 
-  // Project info
   data.push(['Projekt', project.fileName]);
   data.push(['Importováno', new Date(project.importedAt).toLocaleString('cs-CZ')]);
   data.push(['']);
 
-  // Statistics
   data.push(['Celkem položek', project.stats.totalItems]);
   data.push(['Klasifikováno', project.stats.classifiedItems]);
   data.push(['Neklasifikováno', project.stats.totalItems - project.stats.classifiedItems]);
   data.push(['Celková cena', project.stats.totalCena.toFixed(2) + ' Kč']);
   data.push(['']);
 
-  // Group distribution
   data.push(['Rozdělení podle skupin', '']);
   data.push(['Skupina', 'Počet položek']);
 
@@ -199,19 +332,27 @@ function createSummarySheet(project: ExportableProject): XLSX.WorkSheet {
     data.push([group, count]);
   }
 
-  return XLSX.utils.aoa_to_sheet(data);
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  ws['!cols'] = [{ wch: 25 }, { wch: 30 }];
+
+  // Style summary headers
+  const labelStyle: XLSX.CellStyle = {
+    font: { bold: true, name: 'Calibri', sz: 10, color: { rgb: '334155' } },
+  };
+  for (let r = 0; r < data.length; r++) {
+    const cellRef = XLSX.utils.encode_cell({ r, c: 0 });
+    if (ws[cellRef]) ws[cellRef].s = labelStyle;
+  }
+
+  return ws;
 }
 
-/**
- * Create metadata sheet
- */
 function createMetadataSheet(project: ExportableProject): XLSX.WorkSheet {
   const data: any[][] = [];
 
   data.push(['Metadata projektu', '']);
   data.push(['']);
 
-  // Project metadata
   if (project.metadata.projectNumber) {
     data.push(['Číslo projektu', project.metadata.projectNumber]);
   }
@@ -226,36 +367,33 @@ function createMetadataSheet(project: ExportableProject): XLSX.WorkSheet {
   }
 
   data.push(['']);
-
-  // Import config
   data.push(['Konfigurace importu', '']);
   data.push(['Šablona', project.config.templateName]);
   data.push(['List', project.config.sheetName]);
   data.push(['Řádek začátku', project.config.dataStartRow]);
 
-  return XLSX.utils.aoa_to_sheet(data);
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  ws['!cols'] = [{ wch: 20 }, { wch: 40 }];
+  return ws;
 }
 
-/**
- * Group items by skupina
- */
+/* ============================================
+   HELPERS
+   ============================================ */
+
 function groupItemsBySkupina(items: ParsedItem[]): ParsedItem[] {
   const grouped: Record<string, ParsedItem[]> = {};
 
   for (const item of items) {
     const group = item.skupina || '';
-    if (!grouped[group]) {
-      grouped[group] = [];
-    }
+    if (!grouped[group]) grouped[group] = [];
     grouped[group].push(item);
   }
 
-  // Flatten back to array (grouped)
   const result: ParsedItem[] = [];
   for (const group of Object.keys(grouped).sort()) {
     result.push(...grouped[group]);
   }
-
   return result;
 }
 
@@ -269,7 +407,6 @@ export function downloadExcel(
   const blob = new Blob([arrayBuffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
-
   const url = URL.createObjectURL(blob);
   const link = document.createElement('a');
   link.href = url;
@@ -281,7 +418,7 @@ export function downloadExcel(
 }
 
 /**
- * Export and download in one call
+ * Export single sheet and download
  */
 export function exportAndDownload(
   project: ExportableProject,
@@ -289,5 +426,17 @@ export function exportAndDownload(
 ): void {
   const arrayBuffer = exportProjectToExcel(project, options);
   const fileName = `${project.fileName.replace(/\.[^.]+$/, '')}_export.xlsx`;
+  downloadExcel(arrayBuffer, fileName);
+}
+
+/**
+ * Export full project (all sheets) and download
+ */
+export function exportFullProjectAndDownload(
+  project: Project,
+  options?: ExportOptions
+): void {
+  const arrayBuffer = exportFullProjectToExcel(project, options);
+  const fileName = `${project.fileName.replace(/\.[^.]+$/, '')}_full_export.xlsx`;
   downloadExcel(arrayBuffer, fileName);
 }
