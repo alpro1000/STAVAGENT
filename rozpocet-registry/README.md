@@ -1,8 +1,9 @@
 # 🏗️ Registr Rozpočtů (Rozpočet Registry)
 
-**Verze:** 2.0.0
+**Verze:** 2.1.0
 **Status:** ✅ Production Ready
 **Projekt:** STAVAGENT Ecosystem
+**Last Updated:** 2026-01-28
 
 ---
 
@@ -36,8 +37,14 @@ Kompletní nástroj pro zpracování rozpočtů s pokročilými funkcemi:
 
 ### 📊 Automatická klasifikace
 - AI-asistované třídění položek do skupin
-- Kategorie: Základové konstrukce, Svislé konstrukce, Vodorovné konstrukce, atd.
+- 10 standardních skupin (ZEMNI_PRACE, BETON_MONOLIT, KOTVENI, atd.)
 - Přehled neklasifikovaných položek
+
+### 🏷️ Row Classification (v2.1.0)
+- **Main rows:** Položky s kódem (URS 6+ číslic, OTSKP, RTS, 3+ číslic)
+- **Subordinate rows:** Poznámky, výpočty, VV řádky pod main položkou
+- **Section rows:** Díl/oddíl hlavičky (kód 0-99, bez množství, bez ceny)
+- Kaskádové přiřazení skupin respektuje sekce
 
 ### 🔗 Traceability
 - Hyperlinky na původní soubory
@@ -108,13 +115,14 @@ npm run build
 
 ### Tech Stack
 
-- **Frontend:** React 18 + TypeScript 5.3 + Vite 7
+- **Frontend:** React 19 + TypeScript 5.9 + Vite 7.3
 - **Styling:** Tailwind CSS (Digital Concrete Design System)
-- **State:** Zustand (persistent store)
+- **State:** Zustand 5 (persistent store, 376+ lines)
 - **Tables:** TanStack Table v8
 - **Excel:** SheetJS (xlsx)
 - **Search:** Fuse.js (fuzzy search)
 - **Icons:** Lucide React
+- **Storage:** localStorage + IndexedDB (idb)
 
 ### Struktura projektu
 
@@ -130,8 +138,10 @@ rozpocet-registry/
 │   │   │   └── excelParser.ts
 │   │   ├── autoDetect/     # Structure detection (Phase 4)
 │   │   │   └── autoDetectService.ts
-│   │   └── classification/ # AI classification (Phase 5)
-│   │       └── classificationService.ts
+│   │   └── classification/ # Classification (Phase 5 + Row Roles)
+│   │       ├── classificationService.ts      # Work group classifier
+│   │       ├── classificationRules.ts        # Rule-based scoring (336 lines)
+│   │       └── rowClassificationService.ts   # Row role classifier (355 lines)
 │   ├── components/         # React components
 │   │   ├── search/         # Search UI (Phase 6)
 │   │   │   ├── SearchBar.tsx
@@ -147,7 +157,7 @@ rozpocet-registry/
 │   │   │   └── TemplateManager.tsx
 │   │   └── ui/             # Reusable UI components
 │   ├── stores/             # Zustand state management
-│   │   └── useProjectStore.ts
+│   │   └── registryStore.ts    # Persistent store (376 lines)
 │   ├── types/              # TypeScript types (Phase 1)
 │   │   ├── item.ts
 │   │   ├── project.ts
@@ -603,8 +613,8 @@ dist/assets/index-[hash].css    5.86 kB   │ gzip: 23.37 kB
 ## 👥 Autoři
 
 **Vývoj:** Claude (Anthropic AI)
-**Datum:** 2026-01-08 až 2026-01-16
-**Verze:** 2.0.0 Production Ready ✅
+**Datum:** 2026-01-08 až 2026-01-28
+**Verze:** 2.1.0 Production Ready ✅
 
 ---
 
@@ -616,16 +626,17 @@ dist/assets/index-[hash].css    5.86 kB   │ gzip: 23.37 kB
 
 ## 🎉 Status
 
-**Rozpočet Registry v2.0.0 je připraven pro produkci!**
+**Rozpočet Registry v2.1.0 je připraven pro produkci!**
 
-Všech 7 fází dokončeno:
+Všech 7 fází + Row Classification dokončeno:
 - ✅ Phase 1: Design System
 - ✅ Phase 2: Template Selector
 - ✅ Phase 3: Custom Templates
 - ✅ Phase 4: Auto-Detection
-- ✅ Phase 5: Auto-Classification
+- ✅ Phase 5: Auto-Classification (10 work groups)
 - ✅ Phase 6: Multi-Project Search
 - ✅ Phase 7: Excel Export
+- ✅ Phase 8: Row Classification (main/subordinate/section roles)
 
 **Aplikace je plně funkční a připravená k nasazení.**
 
