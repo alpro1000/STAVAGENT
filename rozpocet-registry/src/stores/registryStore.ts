@@ -345,10 +345,12 @@ export const useRegistryStore = create<RegistryState>()(
 
       // Группы
       addCustomGroup: (group) => {
+        const trimmed = group.trim();
+        if (!trimmed) return; // Игнорируем пустые строки
         set((state) => {
-          if (state.customGroups.includes(group)) return state;
+          if (state.customGroups.includes(trimmed)) return state;
           return {
-            customGroups: [...state.customGroups, group],
+            customGroups: [...state.customGroups, trimmed],
           };
         });
       },
@@ -364,7 +366,10 @@ export const useRegistryStore = create<RegistryState>()(
         const visibleDefaults = (DEFAULT_GROUPS as unknown as string[]).filter(
           g => !hiddenDefaultGroups.includes(g)
         );
-        return [...visibleDefaults, ...customGroups];
+        // Фильтруем пустые строки из обоих списков
+        const validDefaults = visibleDefaults.filter(g => g && g.trim().length > 0);
+        const validCustom = customGroups.filter(g => g && g.trim().length > 0);
+        return [...validDefaults, ...validCustom];
       },
 
       renameGroup: (oldName, newName) => {

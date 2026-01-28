@@ -39,16 +39,17 @@ export function SkupinaAutocomplete({
     if (isOpen) updatePosition();
   }, [isOpen, updatePosition]);
 
-  // Фильтрованные группы
-  const filteredGroups = allGroups.filter((group) =>
+  // Фильтрованные группы (исключаем пустые строки)
+  const validGroups = allGroups.filter((group) => group && group.trim().length > 0);
+  const filteredGroups = validGroups.filter((group) =>
     group.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Check if entered value is a new (not yet existing) group
   const trimmedSearch = searchTerm.trim();
-  const exactMatch = trimmedSearch ? allGroups.includes(trimmedSearch) : false;
+  const exactMatch = trimmedSearch ? validGroups.includes(trimmedSearch) : false;
   const caseInsensitiveMatch = trimmedSearch
-    ? allGroups.find(g => g.toUpperCase() === trimmedSearch.toUpperCase())
+    ? validGroups.find(g => g.toUpperCase() === trimmedSearch.toUpperCase())
     : null;
   const isNewGroup = trimmedSearch && !exactMatch;
   const isDuplicate = isNewGroup && caseInsensitiveMatch !== null;
