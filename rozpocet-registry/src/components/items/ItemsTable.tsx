@@ -136,13 +136,8 @@ export function ItemsTable({
   // Compute visible items: combines skupina filter, showOnlyWorkItems, and collapse/expand
   const visibleItems = useMemo(() => {
     return filteredItems.filter(item => {
-      // Subordinate rows: show only when their parent is expanded
-      if (item.rowRole === 'subordinate' && item.parentItemId) {
-        return expandedMainIds.has(item.parentItemId);
-      }
-
-      // Non-subordinate rows in showOnlyWorkItems mode:
-      // show only main/section items (NOT subordinate rows)
+      // showOnlyWorkItems filter FIRST (highest priority)
+      // When enabled, show ONLY main/section items, hide ALL subordinates
       if (showOnlyWorkItems) {
         // Use rowRole if available
         const isMainRow = item.rowRole
@@ -160,6 +155,11 @@ export function ItemsTable({
           (item.mnozstvi !== null && item.mnozstvi !== 0) ||
           (item.cenaJednotkova !== null && item.cenaJednotkova !== 0);
         return hasKod && hasQuantityOrPrice;
+      }
+
+      // Subordinate rows: show only when their parent is expanded (only when showOnlyWorkItems is OFF)
+      if (item.rowRole === 'subordinate' && item.parentItemId) {
+        return expandedMainIds.has(item.parentItemId);
       }
 
       return true;
