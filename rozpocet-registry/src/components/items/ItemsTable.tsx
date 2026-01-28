@@ -27,6 +27,7 @@ interface ItemsTableProps {
   onSelectionChange?: (ids: Set<string>) => void;
   sorting?: SortingState;
   onSortingChange?: (sorting: SortingState) => void;
+  showOnlyWorkItems?: boolean;
 }
 
 const columnHelper = createColumnHelper<ParsedItem>();
@@ -42,6 +43,7 @@ export function ItemsTable({
   onSelectionChange,
   sorting: externalSorting,
   onSortingChange: externalOnSortingChange,
+  showOnlyWorkItems = false,
 }: ItemsTableProps) {
   const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getSheet } = useRegistryStore();
   const allGroups = getAllGroups();
@@ -120,28 +122,42 @@ export function ItemsTable({
     });
   };
 
-  // Count subordinate rows per main item
+  // Count subordinate rows per main item (always from ALL items, not group-filtered)
   const subordinateCounts = useMemo(() => {
     const counts = new Map<string, number>();
-    filteredItems.forEach(item => {
+    items.forEach(item => {
       if (item.rowRole === 'subordinate' && item.parentItemId) {
         counts.set(item.parentItemId, (counts.get(item.parentItemId) || 0) + 1);
       }
     });
     return counts;
-  }, [filteredItems]);
+  }, [items]);
 
-  // Hide subordinate rows unless their parent is expanded
+  // Compute visible items: combines skupina filter, showOnlyWorkItems, and collapse/expand
   const visibleItems = useMemo(() => {
     return filteredItems.filter(item => {
+      // Subordinate rows: show only when their parent is expanded
       if (item.rowRole === 'subordinate' && item.parentItemId) {
         return expandedMainIds.has(item.parentItemId);
       }
+
+      // Non-subordinate rows in showOnlyWorkItems mode:
+      // show only items with kod AND (quantity OR unit price)
+      if (showOnlyWorkItems) {
+        const hasKod = item.kod && item.kod.trim().length > 0;
+        const hasQuantityOrPrice =
+          (item.mnozstvi !== null && item.mnozstvi !== 0) ||
+          (item.cenaJednotkova !== null && item.cenaJednotkova !== 0);
+        return hasKod && hasQuantityOrPrice;
+      }
+
       return true;
     });
-  }, [filteredItems, expandedMainIds]);
+  }, [filteredItems, expandedMainIds, showOnlyWorkItems]);
 
-  const hiddenSubordinateCount = filteredItems.length - visibleItems.length;
+  const hiddenSubordinateCount = items.filter(
+    item => item.rowRole === 'subordinate' && item.parentItemId && !expandedMainIds.has(item.parentItemId)
+  ).length;
 
   const toggleGroupFilter = (group: string) => {
     setFilterGroups(prev => {

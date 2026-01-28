@@ -587,11 +587,12 @@ function App() {
                   </div>
 
                   <ItemsTable
-                    items={getFilteredItems()}
+                    items={selectedSheet.items}
                     projectId={selectedProject.id}
                     sheetId={selectedSheet.id}
                     selectedIds={selectedItemIds}
                     onSelectionChange={setSelectedItemIds}
+                    showOnlyWorkItems={showOnlyWorkItems}
                   />
                 </div>
               )}
