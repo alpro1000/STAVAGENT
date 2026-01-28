@@ -3,14 +3,43 @@
  * Provides rule-based classification operations for BOQ items
  * Uses local classificationService (no external API required)
  *
- * UX: Button assigns work groups (skupina) to items based on keywords
- * in the item description. Results are applied directly to the table.
+ * IMPORTANT CLASSIFICATION RULES:
+ * - Classifies ONLY main/section items (rowRole === 'main' or 'section')
+ * - Subordinate rows (PP, PSC, VV, A195, B5, etc.) are NEVER classified directly
+ * - Subordinate descriptions are used as CONTEXT for understanding the main item
+ * - Skupina is assigned ONLY to main items, subordinates inherit via cascade
+ * - Uses isMainCodeExported() to correctly identify main codes vs sub-indices
+ *
+ * SYSTEM PROMPT (for future LLM integration):
+ *
+ * You classify ONLY the main BOQ item (main row) into a "Skupina" (work group).
+ * You are given: (1) main row description and (2) subordinate rows (PP/PSC/VV/A195/B5)
+ * as context only. Subordinate rows may contain quantity calculations, notes, formulas,
+ * and total lines. They are NOT separate positions.
+ *
+ * Rules:
+ * - Use subordinate rows ONLY to better understand the main item's materials and work type
+ * - Return Skupina ONLY for the main row. Never assign Skupina to subordinate rows
+ * - If information is insufficient or confidence is low, return "unknown" or empty value
+ *   with confidence=low, so the system preserves the old Skupina
+ * - Never conclude "main position" solely based on presence of a value in the "code" column
+ *
+ * Response format (strict):
+ * skupina: <one short label or "unknown">
+ * confidence: high|medium|low
+ * reason: <max 1 sentence, no long explanation>
+ *
+ * END SYSTEM PROMPT
+ *
+ * UX: Button assigns work groups (skupina) to main items based on keywords
+ * in the item description + subordinate context. Results cascade to subordinates.
  */
 
 import { useState } from 'react';
 import { Sparkles, Loader2, ChevronDown, ChevronUp, RotateCcw, Zap } from 'lucide-react';
 import { classifyItems as classifyItemsLocal } from '../../services/classification/classificationService';
 import { useRegistryStore } from '../../stores/registryStore';
+import { isMainCodeExported } from '../../services/classification/rowClassificationService';
 import type { ParsedItem } from '../../types/item';
 
 interface AIPanelProps {
@@ -38,12 +67,35 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     ? items.filter(item => selectedItemIds.includes(item.id))
     : items;
 
-  // Count current classification status
-  const classifiedCount = items.filter(i => i.skupina).length;
-  const unclassifiedCount = items.length - classifiedCount;
+  // Count current classification status (ONLY for main/section items)
+  const mainItemsCount = items.filter(i => {
+    const isMain = i.rowRole
+      ? (i.rowRole === 'main' || i.rowRole === 'section')
+      : (i.kod ? isMainCodeExported(i.kod) : false);
+    return isMain;
+  }).length;
+
+  const classifiedMainCount = items.filter(i => {
+    const isMain = i.rowRole
+      ? (i.rowRole === 'main' || i.rowRole === 'section')
+      : (i.kod ? isMainCodeExported(i.kod) : false);
+    return isMain && i.skupina;
+  }).length;
+
+  const unclassifiedMainCount = mainItemsCount - classifiedMainCount;
 
   const handleClassify = (overwrite: boolean) => {
     if (itemsToProcess.length === 0) return;
+
+    // Confirmation for overwrite mode
+    if (overwrite) {
+      const confirmed = window.confirm(
+        'Opravdu chcete překlasifikovat všechny položky?\n\n' +
+        'Tato akce přepíše existující skupiny u všech položek.\n' +
+        'Pokračovat?'
+      );
+      if (!confirmed) return;
+    }
 
     setIsClassifying(true);
     setError(null);
@@ -51,17 +103,71 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     setClassificationStats(null);
 
     try {
-      // Use local rule-based classifier (synchronous, no API call)
-      const result = classifyItemsLocal(itemsToProcess, { overwrite });
+      // Sort items by row position for correct parent-child relationships
+      const sortedItems = [...items].sort((a, b) =>
+        a.source.rowStart - b.source.rowStart
+      );
+
+      // Step 1: Filter ONLY main/section items for classification
+      // Subordinate rows will get skupina via cascade, not direct classification
+      const mainItems: ParsedItem[] = [];
+      const itemToSubordinatesMap = new Map<string, ParsedItem[]>();
+
+      for (let i = 0; i < sortedItems.length; i++) {
+        const item = sortedItems[i];
+
+        // Determine if this is a main/section item using rowRole or code check
+        const isMain = item.rowRole
+          ? (item.rowRole === 'main' || item.rowRole === 'section')
+          : (item.kod ? isMainCodeExported(item.kod) : false);
+
+        if (isMain) {
+          mainItems.push(item);
+
+          // Collect subordinate items following this main item (for context)
+          const subordinates: ParsedItem[] = [];
+          for (let j = i + 1; j < sortedItems.length; j++) {
+            const nextItem = sortedItems[j];
+
+            // Check if next item is also main/section (stop collecting)
+            const isNextMain = nextItem.rowRole
+              ? (nextItem.rowRole === 'main' || nextItem.rowRole === 'section')
+              : (nextItem.kod ? isMainCodeExported(nextItem.kod) : false);
+
+            if (isNextMain) break;
+
+            // This is a subordinate item
+            subordinates.push(nextItem);
+          }
+
+          itemToSubordinatesMap.set(item.id, subordinates);
+        }
+      }
+
+      // Step 2: Classify ONLY main items (with subordinate context)
+      // Create enriched items with context from subordinates
+      const mainItemsWithContext = mainItems.map(mainItem => {
+        const subordinates = itemToSubordinatesMap.get(mainItem.id) || [];
+        const subordinateContext = subordinates
+          .map(sub => sub.popis || '')
+          .filter(p => p.trim().length > 0)
+          .join(' | ');
+
+        return {
+          ...mainItem,
+          // Add subordinate descriptions as context (but don't change popis)
+          popisFull: subordinateContext
+            ? `${mainItem.popisFull || mainItem.popis} [Kontext: ${subordinateContext}]`
+            : (mainItem.popisFull || mainItem.popis),
+        };
+      });
+
+      // Classify only main items
+      const result = classifyItemsLocal(mainItemsWithContext, { overwrite });
 
       if (result.classified > 0) {
-        // Build updates with cascade to description rows
+        // Build updates with cascade to subordinate rows
         const updates: Array<{ itemId: string; skupina: string }> = [];
-
-        // Sort items by row position for cascade logic
-        const sortedItems = [...items].sort((a, b) =>
-          a.source.rowStart - b.source.rowStart
-        );
 
         // Create a map of classifications from the result
         const classificationMap = new Map<string, string>();
@@ -71,33 +177,22 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           }
         }
 
-        // Apply with cascade: when a main/section item is classified,
-        // all following subordinate rows get the same group
-        let lastMainItemSkupina: string | null = null;
+        // Apply classifications to main items and cascade to subordinates
+        for (const mainItem of mainItems) {
+          const skupina = classificationMap.get(mainItem.id);
+          if (skupina) {
+            // Add main item
+            updates.push({ itemId: mainItem.id, skupina });
 
-        for (const item of sortedItems) {
-          // Determine if this is a main/section item (not subordinate)
-          const isMainRow = item.rowRole
-            ? (item.rowRole === 'main' || item.rowRole === 'section')
-            : (item.kod && item.kod.trim().length > 0);
-
-          if (isMainRow) {
-            const skupina = classificationMap.get(item.id);
-            if (skupina) {
-              updates.push({ itemId: item.id, skupina });
-              lastMainItemSkupina = skupina;
-            } else {
-              lastMainItemSkupina = null;
-            }
-          } else {
-            // Subordinate row - cascade from last classified main item
-            if (lastMainItemSkupina) {
-              updates.push({ itemId: item.id, skupina: lastMainItemSkupina });
+            // Cascade to all subordinates of this main item
+            const subordinates = itemToSubordinatesMap.get(mainItem.id) || [];
+            for (const sub of subordinates) {
+              updates.push({ itemId: sub.id, skupina });
             }
           }
         }
 
-        // Apply all at once
+        // Apply all at once (bulkSetSkupina will also cascade, so we're double-safe)
         if (updates.length > 0) {
           bulkSetSkupina(projectId, sheetId, updates);
         }
@@ -111,15 +206,16 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
         const mode = overwrite ? 'Překlasifikováno' : 'Klasifikováno';
         setLastAction(
-          `${mode} ${result.classified} z ${result.totalItems} položek → skupiny přiřazeny do tabulky (${updates.length} řádků celkem s kaskádou)`
+          `${mode} ${result.classified} hlavních položek (z ${result.totalItems} celkem) → ` +
+          `skupiny přiřazeny do tabulky (${updates.length} řádků celkem s kaskádou k podřízeným řádkům)`
         );
       } else {
         setLastAction(
           overwrite
-            ? 'Žádné položky nebyly klasifikovány (chybí klíčová slova v popisech)'
-            : unclassifiedCount === 0
-              ? 'Všechny položky již mají přiřazenou skupinu'
-              : 'Žádné nové položky nebyly klasifikovány (chybí klíčová slova v popisech)'
+            ? 'Žádné hlavní položky nebyly klasifikovány (chybí klíčová slova v popisech)'
+            : unclassifiedMainCount === 0
+              ? 'Všechny hlavní položky již mají přiřazenou skupinu'
+              : 'Žádné nové hlavní položky nebyly klasifikovány (chybí klíčová slova v popisech)'
         );
       }
     } catch (err) {
@@ -142,7 +238,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-medium">
             {selectedItemIds.length > 0
               ? `${selectedItemIds.length} vybráno`
-              : `${classifiedCount}/${items.length} klasifikováno`
+              : `${classifiedMainCount}/${mainItemsCount} hlavních položek`
             }
           </span>
         </div>
@@ -154,21 +250,22 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           {/* Explanation */}
           <p className="text-sm text-text-secondary">
             Automaticky přiřadí <strong>skupinu prací</strong> (např. BETON_MONOLIT, PILOTY, ZEMNI_PRACE)
-            {' '}každé položce podle klíčových slov v popisu. Výsledek se zapíše přímo do sloupce &quot;Skupina&quot; v tabulce.
+            {' '}pouze <strong>hlavním položkám</strong> podle klíčových slov v popisu. Podřízené řádky (PP/PSC/VV/...)
+            {' '}se použijí jako kontext a automaticky zdědí skupinu od hlavní položky.
           </p>
 
           {/* Current status bar */}
           <div className="flex items-center gap-4 text-sm">
             <span className="text-text-secondary">
-              Se skupinou: <strong className="text-green-400">{classifiedCount}</strong>
+              Hlavní položky se skupinou: <strong className="text-green-400">{classifiedMainCount}</strong>
             </span>
-            {unclassifiedCount > 0 && (
+            {unclassifiedMainCount > 0 && (
               <span className="text-text-secondary">
-                Bez skupiny: <strong className="text-yellow-400">{unclassifiedCount}</strong>
+                Bez skupiny: <strong className="text-yellow-400">{unclassifiedMainCount}</strong>
               </span>
             )}
             <span className="text-text-muted">
-              / {items.length} celkem
+              / {mainItemsCount} hlavních celkem ({items.length} všech řádků)
             </span>
           </div>
 
@@ -177,16 +274,16 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
             {/* Primary: classify only empty */}
             <button
               onClick={() => handleClassify(false)}
-              disabled={isClassifying || itemsToProcess.length === 0 || unclassifiedCount === 0}
+              disabled={isClassifying || itemsToProcess.length === 0 || unclassifiedMainCount === 0}
               className="btn btn-primary text-sm flex items-center gap-2 disabled:opacity-50"
-              title="Klasifikuje pouze položky bez přiřazené skupiny"
+              title="Klasifikuje pouze hlavní položky bez přiřazené skupiny. Podřízené řádky (PP/PSC/VV) se použijí jako kontext a automaticky zdědí skupinu."
             >
               {isClassifying ? (
                 <Loader2 size={16} className="animate-spin" />
               ) : (
                 <Zap size={16} />
               )}
-              Klasifikovat prázdné ({unclassifiedCount})
+              Klasifikovat prázdné ({unclassifiedMainCount})
             </button>
 
             {/* Secondary: re-classify all */}
@@ -194,7 +291,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
               onClick={() => handleClassify(true)}
               disabled={isClassifying || itemsToProcess.length === 0}
               className="btn text-sm flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-gray-200 disabled:opacity-50"
-              title="Přepíše všechny skupiny - znovu klasifikuje celý list"
+              title="Překlasifikuje všechny hlavní položky (vyžaduje potvrzení). Podřízené řádky automaticky zdědí novou skupinu."
             >
               <RotateCcw size={14} />
               Překlasifikovat vše
@@ -242,8 +339,9 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
           {/* Info */}
           <p className="text-xs text-text-muted">
-            11 skupin: ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA, LOŽISKA.
-            Priorita: PILOTY &gt; vše ostatní pokud popis obsahuje &quot;pilot&quot;.
+            Klasifikace probíhá pouze pro <strong>hlavní položky</strong> (řádky s kódy URS/OTSKP/RTS).
+            Podřízené řádky (PP/PSC/VV/A195/B5) se použijí jako kontext a automaticky zdědí skupinu.
+            {' '}11 skupin: ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA, LOŽISKA.
           </p>
         </div>
       )}
