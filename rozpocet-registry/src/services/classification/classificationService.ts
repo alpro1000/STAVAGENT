@@ -171,8 +171,9 @@ export function applyClassifications(
 
 /**
  * Apply classifications with cascade to description rows
- * When main item (with kod) gets classified, all following description rows
- * (without kod) get the same group automatically
+ * When main item (with kod) gets classified, all following subordinate rows
+ * get the same group automatically.
+ * Uses rowRole when available (from classifyRows), falls back to hasCode heuristic.
  */
 export function applyClassificationsWithCascade(
   items: ParsedItem[],
@@ -185,13 +186,20 @@ export function applyClassificationsWithCascade(
     a.source.rowStart - b.source.rowStart
   );
 
-  // Track last classified item with kod (main item)
+  // Track last classified main item's skupina
   let lastMainItemSkupina: WorkGroup | null = null;
 
   for (const item of sortedItems) {
-    const hasCode = item.kod && item.kod.trim().length > 0;
+    // Determine if this is a main item using rowRole (preferred) or hasCode fallback
+    const isMain = item.rowRole
+      ? item.rowRole === 'main'
+      : (item.kod != null && item.kod.trim().length > 0);
 
-    if (hasCode) {
+    const isSubordinate = item.rowRole
+      ? item.rowRole === 'subordinate'
+      : !(item.kod != null && item.kod.trim().length > 0);
+
+    if (isMain) {
       // This is a main item - check if it has classification
       const suggested = classifications.get(item.id);
 
@@ -204,14 +212,15 @@ export function applyClassificationsWithCascade(
         // Reset cascade if main item has no classification
         lastMainItemSkupina = null;
       }
-    } else {
-      // This is a description row - cascade from last main item
+    } else if (isSubordinate) {
+      // This is a subordinate/description row - cascade from last main item
       if (lastMainItemSkupina) {
         item.skupina = lastMainItemSkupina;
         item.skupinaSuggested = lastMainItemSkupina;
         applied++;
       }
     }
+    // Section headers and unknown rows: don't cascade, don't reset
   }
 
   return applied;

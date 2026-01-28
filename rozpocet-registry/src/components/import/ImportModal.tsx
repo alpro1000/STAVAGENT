@@ -203,20 +203,23 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         setWarnings(result.warnings);
       }
 
+      // Row classification FIRST: assign rowRole, parentItemId, boqLineNumber
+      // (must run before cascade so cascade can use rowRole)
+      const rowClassification = classifyRows(result.items);
+      const classifiedRowItems = rowClassification.items;
+
       // Auto-classification (if enabled)
-      let classificationResult;
       if (autoClassify) {
-        // ⭐ Classify ONLY main items (with kod), not description rows
-        const mainItems = result.items.filter(item =>
+        // Classify ONLY main items (with kod), not description rows
+        const mainItems = classifiedRowItems.filter(item =>
           item.kod && item.kod.trim().length > 0
         );
 
-        classificationResult = classifyItems(mainItems, {
-          overwrite: false, // Don't overwrite existing classifications
-          minConfidence: 50, // Only apply if 50%+ confidence
+        const classificationResult = classifyItems(mainItems, {
+          overwrite: false,
+          minConfidence: 50,
         });
 
-        // Apply classifications with cascade to description rows
         const classifications = new Map<string, any>();
         for (const res of classificationResult.results) {
           if (res.suggestedSkupina && res.confidence >= 50) {
@@ -224,13 +227,9 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
           }
         }
 
-        // ⭐ Use cascade function - applies group to main item AND description rows
-        applyClassificationsWithCascade(result.items, classifications);
+        // Cascade uses rowRole to propagate skupina to ALL subordinates
+        applyClassificationsWithCascade(classifiedRowItems, classifications);
       }
-
-      // Row classification: assign rowRole, parentItemId, boqLineNumber
-      const rowClassification = classifyRows(result.items);
-      const classifiedRowItems = rowClassification.items;
 
       // Create sheet with items
       const classifiedItems = autoClassify
@@ -305,9 +304,13 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
             allWarnings.push(...result.warnings.map(w => `[${sheetName}] ${w}`));
           }
 
+          // Row classification FIRST (so cascade can use rowRole)
+          const rowClassification = classifyRows(result.items);
+          const classifiedRowItems = rowClassification.items;
+
           // Auto-classification (if enabled)
           if (autoClassify) {
-            const mainItems = result.items.filter(item =>
+            const mainItems = classifiedRowItems.filter(item =>
               item.kod && item.kod.trim().length > 0
             );
 
@@ -323,12 +326,8 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
               }
             }
 
-            applyClassificationsWithCascade(result.items, classifications);
+            applyClassificationsWithCascade(classifiedRowItems, classifications);
           }
-
-          // Row classification: assign rowRole, parentItemId, boqLineNumber
-          const rowClassification = classifyRows(result.items);
-          const classifiedRowItems = rowClassification.items;
 
           const classifiedItems = autoClassify
             ? classifiedRowItems.filter(item => item.skupina !== null).length
