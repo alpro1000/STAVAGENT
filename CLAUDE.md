@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-01-28 | rozpocet-registry | Work items filter fix + Filter priority reordering | ✅ Pushed |
 | 2026-01-28 | rozpocet-registry | Skupina UX improvements + Similarity search 3x optimization | ✅ Pushed |
 | 2026-01-28 | rozpocet-registry | Row classification: díl/section detection + cascade uses rowRole | ✅ Pushed |
 | 2026-01-26 | rozpocet-registry | Excel-style tab navigation + table horizontal overflow fix | ✅ Merged (PR #303) |
