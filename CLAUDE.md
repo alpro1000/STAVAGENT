@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-01-28 | rozpocet-registry | AI classification: main-only with subordinate context + confirmation | ✅ Pushed |
 | 2026-01-28 | rozpocet-registry | Sparkles cascade fix: bulkSetSkupina now applies to subordinates | ✅ Pushed |
 | 2026-01-28 | rozpocet-registry | Cascade logic fallback fix for subordinate rows with codes | ✅ Pushed |
 | 2026-01-28 | rozpocet-registry | Work items filter fix + Filter priority reordering | ✅ Pushed |
