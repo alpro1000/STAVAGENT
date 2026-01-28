@@ -95,6 +95,45 @@ export function SkupinaAutocomplete({
     setSearchTerm('');
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Enter: create new group or select first match
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const trimmed = searchTerm.trim();
+
+      if (!trimmed) return;
+
+      // If there's an exact match, select it
+      if (exactMatch) {
+        handleSelect(trimmed);
+        return;
+      }
+
+      // If it's a case-insensitive duplicate, select the existing one
+      if (caseInsensitiveMatch) {
+        handleSelect(caseInsensitiveMatch);
+        return;
+      }
+
+      // If there's a single filtered result, select it
+      if (filteredGroups.length === 1) {
+        handleSelect(filteredGroups[0]);
+        return;
+      }
+
+      // Otherwise, create new group
+      if (isNewGroup && !isDuplicate) {
+        handleAddNewGroup();
+      }
+    }
+
+    // Escape: close dropdown
+    if (e.key === 'Escape') {
+      setIsOpen(false);
+      setSearchTerm('');
+    }
+  };
+
   const handleClear = () => {
     onChange(null);
     setSearchTerm('');
@@ -111,7 +150,8 @@ export function SkupinaAutocomplete({
           value={isOpen ? searchTerm : value || ''}
           onChange={handleInputChange}
           onFocus={handleFocus}
-          placeholder="Hledat nebo vytvořit..."
+          onKeyDown={handleKeyDown}
+          placeholder="Hledat nebo vytvořit (Enter pro uložení)..."
           className="text-sm bg-bg-tertiary border border-border-color rounded px-2 py-1 pl-8 pr-6
                      focus:border-accent-primary focus:outline-none w-full"
         />
@@ -182,6 +222,7 @@ export function SkupinaAutocomplete({
                 >
                   <Plus size={16} />
                   <span>Vytvořit: &quot;{searchTerm.trim()}&quot;</span>
+                  <span className="ml-auto text-xs text-text-muted opacity-70">Enter</span>
                 </button>
               )}
             </>
