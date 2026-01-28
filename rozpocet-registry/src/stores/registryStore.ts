@@ -192,7 +192,7 @@ export const useRegistryStore = create<RegistryState>()(
 
                 // Каскадное применение: uses rowRole when available
                 const isTargetMain = targetItem.rowRole
-                  ? targetItem.rowRole === 'main'
+                  ? (targetItem.rowRole === 'main' || targetItem.rowRole === 'section')
                   : (targetItem.kod && targetItem.kod.trim().length > 0);
                 const idsToUpdate = new Set([itemId]);
 
@@ -242,7 +242,7 @@ export const useRegistryStore = create<RegistryState>()(
               // Find all items with matching kod
               sortedItems.forEach((item, index) => {
                 const isMain = item.rowRole
-                  ? item.rowRole === 'main'
+                  ? (item.rowRole === 'main' || item.rowRole === 'section')
                   : (item.kod && item.kod.trim().length > 0);
 
                 if (isMain && item.kod === itemKod) {
