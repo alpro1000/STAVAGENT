@@ -327,9 +327,9 @@
   background-color: var(--data-surface-alt);
 }
 
-/* Panel-level opaque background (for dropdowns, popovers) */
+/* App-level background (~8% darker than panels for depth) */
 .bg-bg-primary {
-  background-color: var(--panel-clean);
+  background-color: var(--app-bg);
 }
 
 /* Autocomplete bg colors */
