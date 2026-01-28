@@ -14,6 +14,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, FileText, Activity, MessageSquare } from 'lucide-react';
+import { API_URL } from '../services/api';
 import ProjectCard from '../components/portal/ProjectCard';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
@@ -171,7 +172,7 @@ export default function PortalPage() {
   const loadProjects = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/portal-projects', {
+      const response = await fetch(`${API_URL}/api/portal-projects`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         }
@@ -197,7 +198,7 @@ export default function PortalPage() {
     description?: string;
   }) => {
     try {
-      const response = await fetch('/api/portal-projects', {
+      const response = await fetch(`${API_URL}/api/portal-projects`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -224,7 +225,7 @@ export default function PortalPage() {
     }
 
     try {
-      const response = await fetch(`/api/portal-projects/${projectId}`, {
+      const response = await fetch(`${API_URL}/api/portal-projects/${projectId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
