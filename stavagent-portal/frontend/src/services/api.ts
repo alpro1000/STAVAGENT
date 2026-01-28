@@ -52,7 +52,7 @@ interface PartTemplate {
   created_at: string;
 }
 
-const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+export const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
 console.log('[API Service] Initializing with API_URL:', API_URL);
 

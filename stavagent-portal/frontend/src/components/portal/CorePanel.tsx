@@ -10,6 +10,7 @@
 
 import { useState, useEffect } from 'react';
 import { X, Send, FileText, CheckCircle, AlertTriangle, XCircle, RefreshCw, Upload } from 'lucide-react';
+import { API_URL } from '../../services/api';
 
 interface PortalProject {
   portal_project_id: string;
@@ -49,7 +50,7 @@ export default function CorePanel({ project, onClose, onRefresh }: CorePanelProp
   const loadFiles = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`/api/portal-projects/${project.portal_project_id}/files`, {
+      const response = await fetch(`${API_URL}/api/portal-projects/${project.portal_project_id}/files`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         }
@@ -81,7 +82,7 @@ export default function CorePanel({ project, onClose, onRefresh }: CorePanelProp
 
     try {
       setSending(true);
-      const response = await fetch(`/api/portal-projects/${project.portal_project_id}/send-to-core`, {
+      const response = await fetch(`${API_URL}/api/portal-projects/${project.portal_project_id}/send-to-core`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('auth_token')}`

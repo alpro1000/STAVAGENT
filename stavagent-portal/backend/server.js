@@ -53,6 +53,7 @@ const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:3000',
   'https://monolit-planner-frontend.onrender.com',
+  'https://stavagent-portal-frontend.onrender.com',
   process.env.CORS_ORIGIN // Allow custom origin from env
 ].filter(Boolean); // Remove undefined/null values
 
