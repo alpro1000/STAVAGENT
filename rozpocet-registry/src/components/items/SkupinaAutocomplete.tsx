@@ -50,9 +50,9 @@ export function SkupinaAutocomplete({
   const exactMatch = trimmedSearch ? validGroups.includes(trimmedSearch) : false;
   const caseInsensitiveMatch = trimmedSearch
     ? validGroups.find(g => g.toUpperCase() === trimmedSearch.toUpperCase())
-    : null;
+    : undefined;
   const isNewGroup = trimmedSearch && !exactMatch;
-  const isDuplicate = isNewGroup && caseInsensitiveMatch !== null;
+  const isDuplicate = isNewGroup && caseInsensitiveMatch != null; // Use != to check both null and undefined
 
   // Закрытие при клике вне
   useEffect(() => {
