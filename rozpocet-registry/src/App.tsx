@@ -112,8 +112,20 @@ function App() {
     if (!selectedSheet) return [];
     if (!showOnlyWorkItems) return selectedSheet.items;
 
-    // Work items have kod AND (mnozstvi OR cenaJednotkova)
+    // Work items = main or section items (NOT subordinate rows)
+    // Use rowRole if available, otherwise fallback to old logic
     return selectedSheet.items.filter(item => {
+      // Primary check: rowRole (main or section = work items, subordinate = skip)
+      const isMainRow = item.rowRole
+        ? (item.rowRole === 'main' || item.rowRole === 'section')
+        : null;
+
+      // If rowRole is defined, use it
+      if (isMainRow !== null) {
+        return isMainRow;
+      }
+
+      // Fallback for items without rowRole: old logic (kod + quantity check)
       const hasKod = item.kod && item.kod.trim().length > 0;
       const hasQuantityOrPrice = (item.mnozstvi !== null && item.mnozstvi !== 0) ||
                                   (item.cenaJednotkova !== null && item.cenaJednotkova !== 0);

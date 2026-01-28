@@ -142,8 +142,19 @@ export function ItemsTable({
       }
 
       // Non-subordinate rows in showOnlyWorkItems mode:
-      // show only items with kod AND (quantity OR unit price)
+      // show only main/section items (NOT subordinate rows)
       if (showOnlyWorkItems) {
+        // Use rowRole if available
+        const isMainRow = item.rowRole
+          ? (item.rowRole === 'main' || item.rowRole === 'section')
+          : null;
+
+        // If rowRole is defined, use it
+        if (isMainRow !== null) {
+          return isMainRow;
+        }
+
+        // Fallback for items without rowRole: old logic (kod + quantity check)
         const hasKod = item.kod && item.kod.trim().length > 0;
         const hasQuantityOrPrice =
           (item.mnozstvi !== null && item.mnozstvi !== 0) ||

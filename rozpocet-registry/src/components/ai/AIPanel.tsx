@@ -71,14 +71,17 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           }
         }
 
-        // Apply with cascade: when a main item (with kod) is classified,
-        // all following description rows (without kod) get the same group
+        // Apply with cascade: when a main/section item is classified,
+        // all following subordinate rows get the same group
         let lastMainItemSkupina: string | null = null;
 
         for (const item of sortedItems) {
-          const hasCode = item.kod && item.kod.trim().length > 0;
+          // Determine if this is a main/section item (not subordinate)
+          const isMainRow = item.rowRole
+            ? (item.rowRole === 'main' || item.rowRole === 'section')
+            : (item.kod && item.kod.trim().length > 0);
 
-          if (hasCode) {
+          if (isMainRow) {
             const skupina = classificationMap.get(item.id);
             if (skupina) {
               updates.push({ itemId: item.id, skupina });
@@ -87,7 +90,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
               lastMainItemSkupina = null;
             }
           } else {
-            // Description row - cascade from last classified main item
+            // Subordinate row - cascade from last classified main item
             if (lastMainItemSkupina) {
               updates.push({ itemId: item.id, skupina: lastMainItemSkupina });
             }

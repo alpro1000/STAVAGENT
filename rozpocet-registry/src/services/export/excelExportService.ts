@@ -218,8 +218,11 @@ function createStyledItemsSheet(
       rowTypes.push('group');
     }
 
-    // Item row
-    const isCodeRow = item.kod && item.kod.trim().length > 0;
+    // Item row - determine if it's a main/section row (not subordinate/description)
+    // Use rowRole if available, otherwise fallback to old logic (kod presence)
+    const isMainRow = item.rowRole
+      ? (item.rowRole === 'main' || item.rowRole === 'section')
+      : (item.kod && item.kod.trim().length > 0);
     const row: any[] = [
       item.kod,
       item.popis,
@@ -236,7 +239,7 @@ function createStyledItemsSheet(
     }
 
     data.push(row);
-    rowTypes.push(isCodeRow ? 'code' : 'desc');
+    rowTypes.push(isMainRow ? 'code' : 'desc');
   }
 
   // Create worksheet from data

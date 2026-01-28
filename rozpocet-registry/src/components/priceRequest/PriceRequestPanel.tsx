@@ -100,10 +100,22 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
     return result;
   }, [projectItems, selectedGroups, searchQuery]);
 
-  // Create report from filtered items (only work items - with kod AND mnozstvi)
+  // Create report from filtered items (only main/section work items - NOT subordinate rows)
   const handleCreateReport = () => {
-    // Filter only work items (exclude description rows)
+    // Filter only main/section items (exclude subordinate/description rows)
+    // Use rowRole if available, otherwise fallback to old logic (kod + quantity)
     const workItems = filteredItems.filter(item => {
+      // Primary check: rowRole (main or section = work items, subordinate = skip)
+      const isMainRow = item.rowRole
+        ? (item.rowRole === 'main' || item.rowRole === 'section')
+        : null;
+
+      // If rowRole is defined, use it
+      if (isMainRow !== null) {
+        return isMainRow;
+      }
+
+      // Fallback for items without rowRole: old logic (kod + quantity check)
       const hasKod = item.kod && item.kod.trim().length > 0;
       const hasQuantityOrPrice = (item.mnozstvi !== null && item.mnozstvi !== 0) ||
                                   (item.cenaJednotkova !== null && item.cenaJednotkova !== 0);
