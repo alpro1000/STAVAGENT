@@ -75,6 +75,9 @@ const SECTION_PATTERNS = [
   /^[IVX]+\.\s+/i,                                // Roman numerals "I. ", "IV. "
 ];
 
+/** Díl/section ordinal: 1-2 digit number (0, 1, 2, ... 99) used as section code */
+const DIL_ORDINAL = /^\d{1,2}$/;
+
 /** Calculation indicators: contains math or quantity expressions */
 const CALC_INDICATORS = [
   /\d+[\*×x]\d+/i,       // multiplication: 5*3, 5×3, 5x3
@@ -123,6 +126,34 @@ function isSectionHeader(popis: string): boolean {
   if (!popis) return false;
   const trimmed = popis.trim();
   return SECTION_PATTERNS.some(pattern => pattern.test(trimmed));
+}
+
+/**
+ * Check if a row is a díl/section header based on:
+ * - Small ordinal number as kod (0, 1, 2, ... 99)
+ * - No množství (quantity) or množství is 0/null
+ * - Has a text description (popis)
+ * - Typically has only cenaCelkem (total price), not unit price
+ */
+function isDilSection(item: ParsedItem): boolean {
+  const kod = item.kod?.trim() || '';
+  const popis = item.popis?.trim() || '';
+
+  // Must have a small ordinal code (0-99)
+  if (!DIL_ORDINAL.test(kod)) return false;
+
+  // Must have description text
+  if (!popis) return false;
+
+  // Should not have quantity (or quantity is 0)
+  const hasQuantity = item.mnozstvi !== null && item.mnozstvi !== 0;
+  if (hasQuantity) return false;
+
+  // Should not have unit price (díl headers don't have unit prices)
+  const hasUnitPrice = item.cenaJednotkova !== null && item.cenaJednotkova !== 0;
+  if (hasUnitPrice) return false;
+
+  return true;
 }
 
 /**
@@ -288,6 +319,12 @@ export function classifyRows(items: ParsedItem[]): ClassificationResult {
     }
     // 3. Check for section header (no code, distinctive text pattern)
     else if (!kod && isSectionHeader(popis)) {
+      role = 'section';
+      currentMainId = null; // Section breaks parent chain
+      sectionCount++;
+    }
+    // 3b. Check for díl/section with ordinal code (0, 1, 2, ... 99) and no quantity
+    else if (isDilSection(item)) {
       role = 'section';
       currentMainId = null; // Section breaks parent chain
       sectionCount++;

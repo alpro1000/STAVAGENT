@@ -190,11 +190,13 @@ export const useRegistryStore = create<RegistryState>()(
                 const targetItem = sheet.items.find(item => item.id === itemId);
                 if (!targetItem) return sheet;
 
-                // Каскадное применение к строкам описания
-                const hasCode = targetItem.kod && targetItem.kod.trim().length > 0;
+                // Каскадное применение: uses rowRole when available
+                const isTargetMain = targetItem.rowRole
+                  ? targetItem.rowRole === 'main'
+                  : (targetItem.kod && targetItem.kod.trim().length > 0);
                 const idsToUpdate = new Set([itemId]);
 
-                if (hasCode) {
+                if (isTargetMain) {
                   const sortedItems = [...sheet.items].sort((a, b) =>
                     a.source.rowStart - b.source.rowStart
                   );
@@ -203,8 +205,11 @@ export const useRegistryStore = create<RegistryState>()(
 
                   for (let i = targetIndex + 1; i < sortedItems.length; i++) {
                     const nextItem = sortedItems[i];
-                    const nextHasCode = nextItem.kod && nextItem.kod.trim().length > 0;
-                    if (nextHasCode) break;
+                    // Use rowRole to determine if next row is subordinate
+                    const isNextMain = nextItem.rowRole
+                      ? nextItem.rowRole === 'main' || nextItem.rowRole === 'section'
+                      : (nextItem.kod && nextItem.kod.trim().length > 0);
+                    if (isNextMain) break;
                     idsToUpdate.add(nextItem.id);
                   }
                 }
@@ -236,16 +241,20 @@ export const useRegistryStore = create<RegistryState>()(
 
               // Find all items with matching kod
               sortedItems.forEach((item, index) => {
-                const hasCode = item.kod && item.kod.trim().length > 0;
+                const isMain = item.rowRole
+                  ? item.rowRole === 'main'
+                  : (item.kod && item.kod.trim().length > 0);
 
-                if (hasCode && item.kod === itemKod) {
+                if (isMain && item.kod === itemKod) {
                   idsToUpdate.add(item.id);
 
-                  // Add following description rows
+                  // Add following subordinate rows (using rowRole)
                   for (let i = index + 1; i < sortedItems.length; i++) {
                     const nextItem = sortedItems[i];
-                    const nextHasCode = nextItem.kod && nextItem.kod.trim().length > 0;
-                    if (nextHasCode) break;
+                    const isNextMain = nextItem.rowRole
+                      ? nextItem.rowRole === 'main' || nextItem.rowRole === 'section'
+                      : (nextItem.kod && nextItem.kod.trim().length > 0);
+                    if (isNextMain) break;
                     idsToUpdate.add(nextItem.id);
                   }
                 }
