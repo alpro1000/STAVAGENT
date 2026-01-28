@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-01-28 | rozpocet-registry | Row classification: díl/section detection + cascade uses rowRole | ✅ Pushed |
 | 2026-01-26 | rozpocet-registry | Excel-style tab navigation + table horizontal overflow fix | ✅ Merged (PR #303) |
 | 2026-01-26 | rozpocet-registry | Classification system migration to rule-based uppercase codes | ✅ Merged (PR #301) |
 | 2026-01-26 | rozpocet-registry | Project → Sheets hierarchy refactoring | ✅ Merged (PR #299) |
