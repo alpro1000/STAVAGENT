@@ -387,3 +387,32 @@ export function classifyRows(items: ParsedItem[]): ClassificationResult {
     },
   };
 }
+
+/* ============================================
+   EXPORTED HELPER FUNCTIONS
+   (for use in cascade logic and other services)
+   ============================================ */
+
+/**
+ * Check if a code string represents a recognized main item code.
+ * Exported for use in cascade logic and filtering.
+ */
+export function isMainCodeExported(kod: string): boolean {
+  return isMainCode(kod);
+}
+
+/**
+ * Check if the code looks like a sub-index (A195, B5, etc.)
+ * Exported for use in cascade logic and filtering.
+ */
+export function isSubIndexExported(kod: string): boolean {
+  return isSubIndex(kod);
+}
+
+/**
+ * Check if the description text looks like a section header.
+ * Exported for use in filtering and display logic.
+ */
+export function isSectionHeaderExported(popis: string): boolean {
+  return isSectionHeader(popis);
+}

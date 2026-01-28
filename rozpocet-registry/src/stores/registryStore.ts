@@ -16,6 +16,7 @@ import type { ImportTemplate } from '../types/template';
 import { PREDEFINED_TEMPLATES } from '../config/templates';
 import { DEFAULT_GROUPS } from '../utils/constants';
 import { idbStorage } from './idbStorage';
+import { isMainCodeExported } from '../services/classification/rowClassificationService';
 
 interface RegistryState {
   // Данные
@@ -193,7 +194,7 @@ export const useRegistryStore = create<RegistryState>()(
                 // Каскадное применение: uses rowRole when available
                 const isTargetMain = targetItem.rowRole
                   ? (targetItem.rowRole === 'main' || targetItem.rowRole === 'section')
-                  : (targetItem.kod && targetItem.kod.trim().length > 0);
+                  : (targetItem.kod ? isMainCodeExported(targetItem.kod) : false);
                 const idsToUpdate = new Set([itemId]);
 
                 if (isTargetMain) {
@@ -208,7 +209,7 @@ export const useRegistryStore = create<RegistryState>()(
                     // Use rowRole to determine if next row is subordinate
                     const isNextMain = nextItem.rowRole
                       ? nextItem.rowRole === 'main' || nextItem.rowRole === 'section'
-                      : (nextItem.kod && nextItem.kod.trim().length > 0);
+                      : (nextItem.kod ? isMainCodeExported(nextItem.kod) : false);
                     if (isNextMain) break;
                     idsToUpdate.add(nextItem.id);
                   }
@@ -243,7 +244,7 @@ export const useRegistryStore = create<RegistryState>()(
               sortedItems.forEach((item, index) => {
                 const isMain = item.rowRole
                   ? (item.rowRole === 'main' || item.rowRole === 'section')
-                  : (item.kod && item.kod.trim().length > 0);
+                  : (item.kod ? isMainCodeExported(item.kod) : false);
 
                 if (isMain && item.kod === itemKod) {
                   idsToUpdate.add(item.id);
@@ -253,7 +254,7 @@ export const useRegistryStore = create<RegistryState>()(
                     const nextItem = sortedItems[i];
                     const isNextMain = nextItem.rowRole
                       ? nextItem.rowRole === 'main' || nextItem.rowRole === 'section'
-                      : (nextItem.kod && nextItem.kod.trim().length > 0);
+                      : (nextItem.kod ? isMainCodeExported(nextItem.kod) : false);
                     if (isNextMain) break;
                     idsToUpdate.add(nextItem.id);
                   }
