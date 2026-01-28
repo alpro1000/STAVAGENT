@@ -55,6 +55,9 @@ services:
       # Trust proxy (для rate limiting)
       - key: RENDER
         value: "true"
+      # Auth bypass (frontend has VITE_DISABLE_AUTH=true, backend must match)
+      - key: DISABLE_AUTH
+        value: "true"
 
   # Frontend (Static Site - React + Vite)
   - type: web
@@ -68,6 +71,9 @@ services:
       # API URL (обнови после деплоя backend на его URL)
       - key: VITE_API_URL
         value: https://stavagent-portal-backend.onrender.com
+      # Auth disabled (matches backend DISABLE_AUTH=true)
+      - key: VITE_DISABLE_AUTH
+        value: "true"
     # SPA routing (все пути → index.html)
     routes:
       - type: rewrite
