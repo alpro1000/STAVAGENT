@@ -12,7 +12,7 @@ import {
   createColumnHelper,
   type SortingState,
 } from '@tanstack/react-table';
-import { ChevronUp, ChevronDown, Sparkles, Globe, Filter, Check } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check } from 'lucide-react';
 import type { ParsedItem } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -104,6 +104,44 @@ export function ItemsTable({
       return filterGroups.has(skupina);
     });
   }, [items, filterGroups]);
+
+  // Collapse/expand state for subordinate rows (collapsed by default)
+  const [expandedMainIds, setExpandedMainIds] = useState<Set<string>>(new Set());
+
+  const toggleExpanded = (mainId: string) => {
+    setExpandedMainIds(prev => {
+      const next = new Set(prev);
+      if (next.has(mainId)) {
+        next.delete(mainId);
+      } else {
+        next.add(mainId);
+      }
+      return next;
+    });
+  };
+
+  // Count subordinate rows per main item
+  const subordinateCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    filteredItems.forEach(item => {
+      if (item.rowRole === 'subordinate' && item.parentItemId) {
+        counts.set(item.parentItemId, (counts.get(item.parentItemId) || 0) + 1);
+      }
+    });
+    return counts;
+  }, [filteredItems]);
+
+  // Hide subordinate rows unless their parent is expanded
+  const visibleItems = useMemo(() => {
+    return filteredItems.filter(item => {
+      if (item.rowRole === 'subordinate' && item.parentItemId) {
+        return expandedMainIds.has(item.parentItemId);
+      }
+      return true;
+    });
+  }, [filteredItems, expandedMainIds]);
+
+  const hiddenSubordinateCount = filteredItems.length - visibleItems.length;
 
   const toggleGroupFilter = (group: string) => {
     setFilterGroups(prev => {
@@ -232,18 +270,45 @@ export function ItemsTable({
         size: 40,
       }),
 
-      // Poř. (BOQ line number)
+      // Poř. (BOQ line number + expand/collapse toggle)
       columnHelper.accessor('boqLineNumber', {
         header: 'Poř.',
         cell: (info) => {
+          const item = info.row.original;
           const value = info.getValue();
+          const subCount = subordinateCounts.get(item.id) || 0;
+          const isExpanded = expandedMainIds.has(item.id);
+
+          // Main row with subordinates — show toggle
+          if (item.rowRole === 'main' && subCount > 0) {
+            return (
+              <button
+                onClick={(e) => { e.stopPropagation(); toggleExpanded(item.id); }}
+                className="flex items-center gap-0.5 font-mono text-xs tabular-nums hover:text-accent-primary transition-colors"
+                title={isExpanded ? 'Sbalit podřízené řádky' : `Rozbalit ${subCount} podřízených řádků`}
+              >
+                {isExpanded
+                  ? <ChevronDown size={14} className="text-text-muted flex-shrink-0" />
+                  : <ChevronRight size={14} className="text-text-muted flex-shrink-0" />}
+                <span className="text-text-muted">{value}</span>
+                <span className="text-text-muted opacity-60 text-[10px] ml-0.5">+{subCount}</span>
+              </button>
+            );
+          }
+
+          // Subordinate row — indent marker
+          if (item.rowRole === 'subordinate') {
+            return <span className="pl-4 text-xs text-text-muted select-none">↳</span>;
+          }
+
+          // Main row without subordinates, section, or unknown
           return value ? (
-            <span className="font-mono text-xs text-text-muted tabular-nums">
+            <span className="font-mono text-xs text-text-muted tabular-nums pl-4">
               {value}
             </span>
           ) : null;
         },
-        size: 50,
+        size: 70,
         enableSorting: true,
         sortingFn: 'basic',
       }),
@@ -462,17 +527,17 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded]
   );
 
   const table = useReactTable({
-    data: filteredItems,
+    data: visibleItems,
     columns,
     state: {
       sorting,
       rowSelection: Object.fromEntries(
         Array.from(selectedIds).map((id) => [
-          filteredItems.findIndex((item) => item.id === id),
+          visibleItems.findIndex((item) => item.id === id),
           true,
         ])
       ),
@@ -489,7 +554,7 @@ export function ItemsTable({
           ? updater(
               Object.fromEntries(
                 Array.from(selectedIds).map((id) => [
-                  filteredItems.findIndex((item) => item.id === id),
+                  visibleItems.findIndex((item) => item.id === id),
                   true,
                 ])
               )
@@ -499,7 +564,7 @@ export function ItemsTable({
       const newSelectedIds = new Set(
         Object.keys(newSelection)
           .filter((key) => newSelection[key])
-          .map((key) => filteredItems[parseInt(key)]?.id)
+          .map((key) => visibleItems[parseInt(key)]?.id)
           .filter(Boolean)
       );
 
@@ -557,7 +622,10 @@ export function ItemsTable({
           </thead>
           <tbody>
             {table.getRowModel().rows.map((row) => (
-              <tr key={row.id}>
+              <tr
+                key={row.id}
+                className={row.original.rowRole === 'subordinate' ? 'opacity-70' : ''}
+              >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id}>
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -573,9 +641,14 @@ export function ItemsTable({
       <div className="border-t border-border-color px-4 py-3 flex items-center justify-between">
         <p className="text-sm text-text-secondary">
           {isFilterActive
-            ? `Zobrazeno ${filteredItems.length} z ${items.length} položek (filtr aktivní)`
-            : `Zobrazeno ${items.length} položek`
+            ? `Zobrazeno ${visibleItems.length} z ${items.length} položek (filtr aktivní)`
+            : `Zobrazeno ${visibleItems.length} z ${items.length} položek`
           }
+          {hiddenSubordinateCount > 0 && (
+            <span className="text-text-muted ml-1">
+              ({hiddenSubordinateCount} podřízených skryto)
+            </span>
+          )}
         </p>
         {selectedIds.size > 0 && (
           <p className="text-sm font-medium text-accent-primary">
