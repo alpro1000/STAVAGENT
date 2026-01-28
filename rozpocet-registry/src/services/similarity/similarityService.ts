@@ -144,7 +144,7 @@ export function suggestSkupinaFromSimilar(
 export function autoAssignSimilarItems(
   sourceItem: ParsedItem, // Позиция, которой назначили группу
   allItems: ParsedItem[],
-  minConfidence: number = 70 // Минимальная уверенность для автоназначения
+  minConfidence: number = 40 // Минимальная уверенность для автоназначения (снижено с 70 до 40)
 ): Array<{
   itemId: string;
   suggestedSkupina: string;
@@ -156,7 +156,7 @@ export function autoAssignSimilarItems(
 
   // Находим похожие позиции
   const similarItems = findSimilarItems(sourceItem, allItems, {
-    threshold: 0.5, // Менее строгий порог (было 0.3) - находит больше похожих
+    threshold: 0.65, // Более мягкий порог (было 0.5) - находит больше похожих
     maxResults: 50, // Увеличено с 20 до 50
     includeUnclassified: true, // Ищем среди неклассифицированных
   });
@@ -167,13 +167,16 @@ export function autoAssignSimilarItems(
       // Пропускаем уже классифицированные
       if (similar.item.skupina) return false;
 
-      // Вычисляем уверенность (инвертируем score)
-      const confidence = Math.round((1 - similar.score) * 100);
+      // Улучшенная формула уверенности с нелинейным масштабированием
+      // При score=0.0 (идеальное совпадение) → confidence=100%
+      // При score=0.5 (среднее) → confidence=75%
+      // При score=0.65 (порог) → confidence=52%
+      const confidence = Math.round(Math.pow(1 - similar.score, 0.7) * 100);
       return confidence >= minConfidence;
     })
     .map((similar) => ({
       itemId: similar.item.id,
       suggestedSkupina: sourceItem.skupina!,
-      confidence: Math.round((1 - similar.score) * 100),
+      confidence: Math.round(Math.pow(1 - similar.score, 0.7) * 100),
     }));
 }
