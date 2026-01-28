@@ -3,7 +3,7 @@
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
 **Version:** 2.0.0
-**Last Updated:** 2026-01-26
+**Last Updated:** 2026-01-28
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-01-28 | rozpocet-registry | Skupina UX improvements + Similarity search 3x optimization | ✅ Pushed |
 | 2026-01-28 | rozpocet-registry | Row classification: díl/section detection + cascade uses rowRole | ✅ Pushed |
 | 2026-01-26 | rozpocet-registry | Excel-style tab navigation + table horizontal overflow fix | ✅ Merged (PR #303) |
 | 2026-01-26 | rozpocet-registry | Classification system migration to rule-based uppercase codes | ✅ Merged (PR #301) |

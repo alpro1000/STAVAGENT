@@ -45,7 +45,7 @@ export function ItemsTable({
   onSortingChange: externalOnSortingChange,
   showOnlyWorkItems = false,
 }: ItemsTableProps) {
-  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getSheet } = useRegistryStore();
+  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject } = useRegistryStore();
   const allGroups = getAllGroups();
   const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
   const [applyingGlobal, setApplyingGlobal] = useState<string | null>(null);
@@ -180,40 +180,59 @@ export function ItemsTable({
     setFilterGroups(new Set([group]));
   };
 
-  // Применить группу к похожим позициям
+  // Применить группу к похожим позициям во ВСЕХ листах проекта
   const applyToSimilar = (sourceItem: ParsedItem) => {
     if (!sourceItem.skupina) return;
 
     setApplyingToSimilar(sourceItem.id);
 
-    // Получаем полный массив items из листа (без фильтров)
-    const sheet = getSheet(projectId, sheetId);
-    const allSheetItems = sheet?.items || items;
+    // Получаем весь проект
+    const project = getProject(projectId);
+    if (!project) {
+      setApplyingToSimilar(null);
+      return;
+    }
 
-    // Находим похожие позиции с оптимизированными порогами для лучшего результата
-    const suggestions = autoAssignSimilarItems(sourceItem, allSheetItems, 40);
+    // Проходим по всем листам проекта и ищем похожие элементы
+    let totalSuggestions = 0;
+    let totalConfidence = 0;
+    const sheetStats: Array<{ sheetName: string; count: number }> = [];
 
-    if (suggestions.length > 0) {
-      // Применяем группу ко всем похожим
-      const updates = suggestions.map((s) => ({
-        itemId: s.itemId,
-        skupina: s.suggestedSkupina,
-      }));
+    project.sheets.forEach((sheet) => {
+      // Находим похожие позиции в этом листе
+      const suggestions = autoAssignSimilarItems(sourceItem, sheet.items, 40);
 
-      bulkSetSkupina(projectId, sheetId, updates);
+      if (suggestions.length > 0) {
+        // Применяем группу ко всем похожим в этом листе
+        const updates = suggestions.map((s) => ({
+          itemId: s.itemId,
+          skupina: s.suggestedSkupina,
+        }));
 
-      // Показываем уведомление
+        bulkSetSkupina(projectId, sheet.id, updates);
+
+        // Собираем статистику
+        totalSuggestions += suggestions.length;
+        totalConfidence += suggestions.reduce((acc, s) => acc + s.confidence, 0);
+        sheetStats.push({ sheetName: sheet.name, count: suggestions.length });
+      }
+    });
+
+    if (totalSuggestions > 0) {
+      const avgConfidence = Math.round(totalConfidence / totalSuggestions);
+      const sheetList = sheetStats.map(s => `${s.sheetName} (${s.count})`).join(', ');
+
       setAlertModal({
         isOpen: true,
-        title: 'Skupina aplikována',
-        message: `Skupina "${sourceItem.skupina}" byla úspěšně aplikována na ${suggestions.length} podobných položek (průměrná shoda ${Math.round(suggestions.reduce((acc, s) => acc + s.confidence, 0) / suggestions.length)}%).`,
+        title: 'Skupina aplikována v celém projektu',
+        message: `Skupina "${sourceItem.skupina}" byla úspěšně aplikována na ${totalSuggestions} podobných položek (průměrná shoda ${avgConfidence}%).\n\nListy: ${sheetList}`,
         variant: 'success',
       });
     } else {
       setAlertModal({
         isOpen: true,
         title: 'Nenalezeny podobné položky',
-        message: 'Pro tuto položku nebyly nalezeny žádné podobné položky s dostatečnou shodou (min. 40%).',
+        message: 'Pro tuto položku nebyly nalezeny žádné podobné položky s dostatečnou shodou (min. 40%) v žádném listu projektu.',
         variant: 'info',
       });
     }
@@ -521,7 +540,7 @@ export function ItemsTable({
                   <button
                     onClick={() => applyToSimilar(item)}
                     disabled={isApplying}
-                    title="Aplikovat na podobné položky v tomto listu"
+                    title="Aplikovat na podobné položky v celém projektu (všechny listy)"
                     className="p-1 rounded hover:bg-bg-secondary transition-colors disabled:opacity-50"
                   >
                     <Sparkles size={16} className="text-accent-primary" />
