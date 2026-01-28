@@ -13,8 +13,8 @@ import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
-import { exportAndDownload } from './services/export/excelExportService';
-import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from 'lucide-react';
+import { exportAndDownload, exportFullProjectAndDownload } from './services/export/excelExportService';
+import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown } from 'lucide-react';
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -38,6 +38,9 @@ function App() {
 
   // Filter state - show only work items (hide descriptions)
   const [showOnlyWorkItems, setShowOnlyWorkItems] = useState(false);
+
+  // Export dropdown state
+  const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
 
   // Refs for horizontal scrolling (Excel-style navigation)
   const projectTabsScrollRef = useRef<HTMLDivElement>(null);
@@ -136,9 +139,9 @@ function App() {
     // TODO: Scroll to item in table
   };
 
-  const handleExport = () => {
+  const handleExportSheet = () => {
     if (!selectedProject || !selectedSheet) return;
-    // Create a temporary project-like object with only the selected sheet's data
+    setIsExportMenuOpen(false);
     const sheetAsProject = {
       ...selectedProject,
       items: selectedSheet.items,
@@ -149,6 +152,15 @@ function App() {
     exportAndDownload(sheetAsProject, {
       includeMetadata: true,
       includeSummary: true,
+      groupBySkupina: true,
+      addHyperlinks: true,
+    });
+  };
+
+  const handleExportProject = () => {
+    if (!selectedProject) return;
+    setIsExportMenuOpen(false);
+    exportFullProjectAndDownload(selectedProject, {
       groupBySkupina: true,
       addHyperlinks: true,
     });
@@ -183,14 +195,42 @@ function App() {
                 </button>
               )}
               {selectedProject && (
-                <button
-                  onClick={handleExport}
-                  className="btn btn-secondary text-sm flex items-center gap-2"
-                  title="Exportovat projekt do Excel s hyperlinky"
-                >
-                  <Download size={16} />
-                  Export Excel
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}
+                    onBlur={() => setTimeout(() => setIsExportMenuOpen(false), 150)}
+                    className="btn btn-secondary text-sm flex items-center gap-2"
+                    title="Exportovat do Excel"
+                  >
+                    <Download size={16} />
+                    Export Excel
+                    <ChevronDown size={14} />
+                  </button>
+                  {isExportMenuOpen && (
+                    <div className="absolute right-0 top-full mt-1 bg-panel-clean border border-edge-light rounded-lg shadow-panel z-50 min-w-[200px] overflow-hidden">
+                      <button
+                        onMouseDown={(e) => { e.preventDefault(); handleExportSheet(); }}
+                        disabled={!selectedSheet}
+                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        <FileSpreadsheet size={14} />
+                        Export list
+                        {selectedSheet && (
+                          <span className="text-xs text-text-muted ml-auto">({selectedSheet.name})</span>
+                        )}
+                      </button>
+                      <div className="border-t border-divider" />
+                      <button
+                        onMouseDown={(e) => { e.preventDefault(); handleExportProject(); }}
+                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2"
+                      >
+                        <Download size={14} />
+                        Export projekt
+                        <span className="text-xs text-text-muted ml-auto">({selectedProject.sheets.length} {selectedProject.sheets.length === 1 ? 'list' : 'listy'})</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
               )}
               <button
                 onClick={() => setIsImportModalOpen(true)}
