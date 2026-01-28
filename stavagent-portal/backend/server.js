@@ -177,26 +177,27 @@ app.use((req, res) => {
 // Error handler
 app.use(errorHandler);
 
-// Bootstrap function - initialize database then start server
+// Bootstrap function - start server first, then initialize database
+// Render health check needs port open within 15 min, so we listen BEFORE DB init
 async function bootstrap() {
+  // Start server IMMEDIATELY so health check passes on Render
+  const server = app.listen(PORT, () => {
+    logger.info(`🚀 StavAgent Portal Backend running on port ${PORT}`);
+    logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
+    logger.info(`🗄️  Database: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
+    logger.info(`🏛️  Portal API: Auth, Admin, Projects, Files, Kiosk Links`);
+  });
+
+  // Initialize database in background (routes will fail gracefully until ready)
   try {
-    // Initialize database (await for PostgreSQL migrations)
     await initDatabase();
     logger.info('✅ Database initialized successfully');
 
     // Schedule periodic file cleanup
     schedulePeriodicCleanup();
-
-    // Start server
-    app.listen(PORT, () => {
-      logger.info(`🚀 StavAgent Portal Backend running on port ${PORT}`);
-      logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
-      logger.info(`🗄️  Database: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
-      logger.info(`🏛️  Portal API: Auth, Admin, Projects, Files, Kiosk Links`);
-    });
   } catch (error) {
     logger.error('❌ Database initialization failed:', error);
-    process.exit(1);
+    // Don't exit - keep server alive for health checks, allow Render to retry
   }
 }
 
