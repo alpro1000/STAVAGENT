@@ -56,6 +56,15 @@ const GENERIC_CODE = /^\d{3,}/;
 /** Sub-index pattern: letter + 1-3 digits (A195, B5, C12) — subordinate repeat */
 const SUB_INDEX = /^[A-Z]\d{1,3}$/;
 
+/** VV (Výkaz výměr) / PP / PSC explicit markers — always subordinate */
+const VV_MARKERS = /^(VV|PP|PSC|VRN)$/i;
+
+/** Multiplication with decimals in description: 15,200*0,030 or 5.2*0.06 */
+const DECIMAL_MULTIPLICATION = /\d+[,\.]\d+\s*\*\s*\d+[,\.]\d+/;
+
+/** Summary/total quantity keywords */
+const SUMMARY_KEYWORDS = /celkov[éá]\s+množstv[ií]/i;
+
 /** Section header patterns: "Díl:", "HSV", "PSV", "Oddíl", numbered sections like "1.", "2." */
 const SECTION_PATTERNS = [
   /^díl\s*[:\.]/i,
@@ -181,8 +190,14 @@ function determineConfidence(
   }
 
   if (role === 'subordinate') {
+    // VV/PP/PSC markers are explicit
+    if (VV_MARKERS.test((item.kod || '').trim())) return 'high';
     // Sub-index is clear
     if (isSubIndex(item.kod || '')) return 'high';
+    // Decimal multiplication is clear VV pattern
+    if (DECIMAL_MULTIPLICATION.test(item.popis || '')) return 'high';
+    // Summary keyword is clear
+    if (SUMMARY_KEYWORDS.test(item.popis || '')) return 'high';
     // Note with no data is clear
     if (isNoteRow(item)) return 'high';
     // Calculation with explicit patterns is clear
@@ -238,8 +253,22 @@ export function classifyRows(items: ParsedItem[]): ClassificationResult {
     let parentItemId: string | null = null;
     let boqLineNumber: number | null = null;
 
+    // 0. Check for explicit VV/PP/PSC/VRN markers — always subordinate
+    if (VV_MARKERS.test(kod)) {
+      role = 'subordinate';
+      subordinateType = 'other';
+      parentItemId = currentMainId;
+      subCount++;
+    }
+    // 0b. Check if description is VV-like (decimal multiplication or summary keyword)
+    else if (!kod && currentMainId && (DECIMAL_MULTIPLICATION.test(popis) || SUMMARY_KEYWORDS.test(popis))) {
+      role = 'subordinate';
+      subordinateType = 'calculation';
+      parentItemId = currentMainId;
+      subCount++;
+    }
     // 1. Check if it's a recognized main code
-    if (isMainCode(kod)) {
+    else if (isMainCode(kod)) {
       role = 'main';
       boqCounter++;
       boqLineNumber = boqCounter;
