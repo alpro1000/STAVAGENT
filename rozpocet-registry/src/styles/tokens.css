@@ -27,6 +27,9 @@
   --bg-gradient-start: #C4C6C9;
   --bg-gradient-end: #A8AAAD;
 
+  /* App Background (between Level 1 and Level 2, ~8% darker than panels) */
+  --app-bg: #D7D8D9;
+
   /* Level 2: Clean Panels */
   --panel-clean: #EAEBEC;
   --panel-clean-end: #DCDEE0;
@@ -48,7 +51,7 @@
   --accent-orange-strong: rgba(255, 159, 28, 0.7);
 
   /* Legacy aliases (for backward compatibility) */
-  --app-bg-concrete: var(--bg-textured);
+  --app-bg-concrete: var(--app-bg);
   --brand-orange: var(--accent-orange);
   --panel-bg-concrete: var(--panel-clean);
 
@@ -69,7 +72,7 @@
 
   /* === SHADOWS (Light theme - drop shadows) === */
   --shadow-panel:
-    10px 10px 25px rgba(80, 83, 87, 0.45),
+    10px 10px 25px rgba(80, 83, 87, 0.50),
     -4px -4px 12px rgba(255, 255, 255, 0.6);
 
   --shadow-button:
@@ -125,6 +128,9 @@
   --bg-textured: #1A1C1E;
   --bg-gradient-start: #2A2D30;
   --bg-gradient-end: #1A1C1E;
+
+  /* App Background (between Level 1 and Level 2) */
+  --app-bg: #282C30;
 
   /* Level 2: Dark Panels */
   --panel-clean: #32363A;
