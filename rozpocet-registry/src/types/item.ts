@@ -27,6 +27,14 @@ export interface ParsedItem {
   skupina: string | null;        // назначенная группа
   skupinaSuggested: string | null; // AI-подсказка группы
 
+  // Row classification (additive, backward compatible)
+  rowRole?: 'main' | 'subordinate' | 'section' | 'unknown';
+  subordinateType?: 'repeat' | 'note' | 'calculation' | 'other';
+  parentItemId?: string | null;  // ID of parent main item (for subordinate rows)
+  boqLineNumber?: number | null; // Sequential BOQ line number (main items only)
+  classificationConfidence?: 'high' | 'medium' | 'low';
+  classificationWarnings?: string[];
+
   // Трассировка источника
   source: ItemSource;
 }
