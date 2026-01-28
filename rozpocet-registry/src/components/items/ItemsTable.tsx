@@ -190,8 +190,8 @@ export function ItemsTable({
     const sheet = getSheet(projectId, sheetId);
     const allSheetItems = sheet?.items || items;
 
-    // Находим похожие позиции с пониженными порогами для лучшего результата
-    const suggestions = autoAssignSimilarItems(sourceItem, allSheetItems, 60);
+    // Находим похожие позиции с оптимизированными порогами для лучшего результата
+    const suggestions = autoAssignSimilarItems(sourceItem, allSheetItems, 40);
 
     if (suggestions.length > 0) {
       // Применяем группу ко всем похожим
@@ -206,14 +206,14 @@ export function ItemsTable({
       setAlertModal({
         isOpen: true,
         title: 'Skupina aplikována',
-        message: `Skupina "${sourceItem.skupina}" byla úspěšně aplikována na ${suggestions.length} podobných položek.`,
+        message: `Skupina "${sourceItem.skupina}" byla úspěšně aplikována na ${suggestions.length} podobných položek (průměrná shoda ${Math.round(suggestions.reduce((acc, s) => acc + s.confidence, 0) / suggestions.length)}%).`,
         variant: 'success',
       });
     } else {
       setAlertModal({
         isOpen: true,
         title: 'Nenalezeny podobné položky',
-        message: 'Pro tuto položku nebyly nalezeny žádné podobné položky s dostatečnou shodou (min. 60%).',
+        message: 'Pro tuto položku nebyly nalezeny žádné podobné položky s dostatečnou shodou (min. 40%).',
         variant: 'info',
       });
     }
