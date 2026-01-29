@@ -1,43 +1,22 @@
 /**
- * AI Panel Component
- * Provides rule-based classification operations for BOQ items
- * Uses local classificationService (no external API required)
+ * AI Panel Component - AI-powered classification with AI on/off toggle
+ * Integrates with AI Agent (api/agent/) for smart classification
  *
- * IMPORTANT CLASSIFICATION RULES:
+ * FEATURES:
+ * - AI Mode: cache → rules → memory → Gemini
+ * - Rules-only Mode: deterministic keyword matching (no AI costs)
+ * - Learns from user corrections (Memory Store)
+ * - Confidence indicators (high/medium/low)
+ * - Source tracking (rule/memory/gemini/cache)
+ *
+ * CLASSIFICATION RULES:
  * - Classifies ONLY main/section items (rowRole === 'main' or 'section')
- * - Subordinate rows (PP, PSC, VV, A195, B5, etc.) are NEVER classified directly
- * - Subordinate descriptions are used as CONTEXT for understanding the main item
- * - Skupina is assigned ONLY to main items, subordinates inherit via cascade
- * - Uses isMainCodeExported() to correctly identify main codes vs sub-indices
- *
- * SYSTEM PROMPT (for future LLM integration):
- *
- * You classify ONLY the main BOQ item (main row) into a "Skupina" (work group).
- * You are given: (1) main row description and (2) subordinate rows (PP/PSC/VV/A195/B5)
- * as context only. Subordinate rows may contain quantity calculations, notes, formulas,
- * and total lines. They are NOT separate positions.
- *
- * Rules:
- * - Use subordinate rows ONLY to better understand the main item's materials and work type
- * - Return Skupina ONLY for the main row. Never assign Skupina to subordinate rows
- * - If information is insufficient or confidence is low, return "unknown" or empty value
- *   with confidence=low, so the system preserves the old Skupina
- * - Never conclude "main position" solely based on presence of a value in the "code" column
- *
- * Response format (strict):
- * skupina: <one short label or "unknown">
- * confidence: high|medium|low
- * reason: <max 1 sentence, no long explanation>
- *
- * END SYSTEM PROMPT
- *
- * UX: Button assigns work groups (skupina) to main items based on keywords
- * in the item description + subordinate context. Results cascade to subordinates.
+ * - Subordinate rows (PP, PSC, VV, A195, B5) used as CONTEXT only
+ * - Skupina cascades to subordinates automatically
  */
 
 import { useState } from 'react';
-import { Sparkles, Loader2, ChevronDown, ChevronUp, RotateCcw, Zap } from 'lucide-react';
-import { classifyItems as classifyItemsLocal } from '../../services/classification/classificationService';
+import { Sparkles, Loader2, ChevronDown, ChevronUp, Zap, Power } from 'lucide-react';
 import { useRegistryStore } from '../../stores/registryStore';
 import { isMainCodeExported } from '../../services/classification/rowClassificationService';
 import type { ParsedItem } from '../../types/item';
@@ -49,16 +28,35 @@ interface AIPanelProps {
   selectedItemIds?: string[];
 }
 
+interface ClassificationResult {
+  itemId: string;
+  skupina: string;
+  confidence: 'high' | 'medium' | 'low';
+  confidenceScore: number;
+  reasoning: string;
+  source: 'rule' | 'memory' | 'gemini' | 'cache';
+  modelUsed?: string;
+  action?: 'updated' | 'kept';
+}
+
 export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIPanelProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [isClassifying, setIsClassifying] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [lastAction, setLastAction] = useState<string | null>(null);
+  const [aiEnabled, setAiEnabled] = useState(true); // AI toggle state
   const [classificationStats, setClassificationStats] = useState<{
     classified: number;
-    skipped: number;
-    total: number;
-    groupCounts: Record<string, number>;
+    changed: number;
+    unchanged: number;
+    unknown: number;
+    keptExisting?: number;
+    stats: {
+      total: number;
+      bySource: Record<string, number>;
+      byConfidence: Record<string, number>;
+      unknown: number;
+    };
   } | null>(null);
 
   const { bulkSetSkupina } = useRegistryStore();
@@ -84,18 +82,11 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
   const unclassifiedMainCount = mainItemsCount - classifiedMainCount;
 
-  const handleClassify = (overwrite: boolean) => {
+  /**
+   * Classify empty items (Klasifikovat prázdné)
+   */
+  const handleClassifyEmpty = async () => {
     if (itemsToProcess.length === 0) return;
-
-    // Confirmation for overwrite mode
-    if (overwrite) {
-      const confirmed = window.confirm(
-        'Opravdu chcete překlasifikovat všechny položky?\n\n' +
-        'Tato akce přepíše existující skupiny u všech položek.\n' +
-        'Pokračovat?'
-      );
-      if (!confirmed) return;
-    }
 
     setIsClassifying(true);
     setError(null);
@@ -103,122 +94,136 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     setClassificationStats(null);
 
     try {
-      // Sort items by row position for correct parent-child relationships
-      const sortedItems = [...items].sort((a, b) =>
-        a.source.rowStart - b.source.rowStart
-      );
+      console.log('[AIPanel] Classifying empty items...', { aiEnabled });
 
-      // Step 1: Filter ONLY main/section items for classification
-      // Subordinate rows will get skupina via cascade, not direct classification
-      const mainItems: ParsedItem[] = [];
-      const itemToSubordinatesMap = new Map<string, ParsedItem[]>();
-
-      for (let i = 0; i < sortedItems.length; i++) {
-        const item = sortedItems[i];
-
-        // Determine if this is a main/section item using rowRole or code check
-        const isMain = item.rowRole
-          ? (item.rowRole === 'main' || item.rowRole === 'section')
-          : (item.kod ? isMainCodeExported(item.kod) : false);
-
-        if (isMain) {
-          mainItems.push(item);
-
-          // Collect subordinate items following this main item (for context)
-          const subordinates: ParsedItem[] = [];
-          for (let j = i + 1; j < sortedItems.length; j++) {
-            const nextItem = sortedItems[j];
-
-            // Check if next item is also main/section (stop collecting)
-            const isNextMain = nextItem.rowRole
-              ? (nextItem.rowRole === 'main' || nextItem.rowRole === 'section')
-              : (nextItem.kod ? isMainCodeExported(nextItem.kod) : false);
-
-            if (isNextMain) break;
-
-            // This is a subordinate item
-            subordinates.push(nextItem);
-          }
-
-          itemToSubordinatesMap.set(item.id, subordinates);
-        }
-      }
-
-      // Step 2: Classify ONLY main items (with subordinate context)
-      // Create enriched items with context from subordinates
-      const mainItemsWithContext = mainItems.map(mainItem => {
-        const subordinates = itemToSubordinatesMap.get(mainItem.id) || [];
-        const subordinateContext = subordinates
-          .map(sub => sub.popis || '')
-          .filter(p => p.trim().length > 0)
-          .join(' | ');
-
-        return {
-          ...mainItem,
-          // Add subordinate descriptions as context (but don't change popis)
-          popisFull: subordinateContext
-            ? `${mainItem.popisFull || mainItem.popis} [Kontext: ${subordinateContext}]`
-            : (mainItem.popisFull || mainItem.popis),
-        };
+      const response = await fetch('/api/classify-empty', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          projectId,
+          sheetId,
+          items: itemsToProcess,
+          aiEnabled,
+        }),
       });
 
-      // Classify only main items
-      const result = classifyItemsLocal(mainItemsWithContext, { overwrite });
+      if (!response.ok) {
+        throw new Error(`Classification failed: ${response.statusText}`);
+      }
 
-      if (result.classified > 0) {
-        // Build updates with cascade to subordinate rows
-        const updates: Array<{ itemId: string; skupina: string }> = [];
+      const data = await response.json();
 
-        // Create a map of classifications from the result
-        const classificationMap = new Map<string, string>();
-        for (const r of result.results) {
-          if (r.wasClassified && r.suggestedSkupina) {
-            classificationMap.set(r.itemId, r.suggestedSkupina);
-          }
-        }
+      if (data.success) {
+        // Apply classifications
+        const updates = data.results.map((r: ClassificationResult) => ({
+          itemId: r.itemId,
+          skupina: r.skupina,
+        }));
 
-        // Apply classifications to main items and cascade to subordinates
-        for (const mainItem of mainItems) {
-          const skupina = classificationMap.get(mainItem.id);
-          if (skupina) {
-            // Add main item
-            updates.push({ itemId: mainItem.id, skupina });
-
-            // Cascade to all subordinates of this main item
-            const subordinates = itemToSubordinatesMap.get(mainItem.id) || [];
-            for (const sub of subordinates) {
-              updates.push({ itemId: sub.id, skupina });
-            }
-          }
-        }
-
-        // Apply all at once (bulkSetSkupina will also cascade, so we're double-safe)
         if (updates.length > 0) {
           bulkSetSkupina(projectId, sheetId, updates);
         }
 
         setClassificationStats({
-          classified: result.classified,
-          skipped: result.unclassified,
-          total: result.totalItems,
-          groupCounts: result.groupCounts,
+          classified: data.changed,
+          changed: data.changed,
+          unchanged: data.unchanged,
+          unknown: data.unknown,
+          stats: data.stats,
         });
 
-        const mode = overwrite ? 'Překlasifikováno' : 'Klasifikováno';
+        const modeText = aiEnabled ? 'AI + Rules' : 'Rules only';
         setLastAction(
-          `${mode} ${result.classified} hlavních položek (z ${result.totalItems} celkem) → ` +
-          `skupiny přiřazeny do tabulky (${updates.length} řádků celkem s kaskádou k podřízeným řádkům)`
+          `Klasifikováno ${data.changed} prázdných položek (${modeText})`
         );
       } else {
-        setLastAction(
-          overwrite
-            ? 'Žádné hlavní položky nebyly klasifikovány (chybí klíčová slova v popisech)'
-            : unclassifiedMainCount === 0
-              ? 'Všechny hlavní položky již mají přiřazenou skupinu'
-              : 'Žádné nové hlavní položky nebyly klasifikovány (chybí klíčová slova v popisech)'
-        );
+        throw new Error(data.message || 'Classification failed');
       }
     } catch (err) {
+      console.error('[AIPanel] Classification error:', err);
+      setError(err instanceof Error ? err.message : 'Chyba při klasifikaci');
+    } finally {
+      setIsClassifying(false);
+    }
+  };
+
+  /**
+   * Re-classify all items (Překlasifikovat vše)
+   */
+  const handleClassifyAll = async () => {
+    if (itemsToProcess.length === 0) return;
+
+    // Confirmation
+    const confirmed = window.confirm(
+      'Opravdu chcete překlasifikovat všechny položky?\n\n' +
+      'Tato akce přepíše existující skupiny u položek s vysokou jistotou.\n' +
+      'Položky s nízkou jistotou zůstanou beze změny.\n' +
+      'Pokračovat?'
+    );
+    if (!confirmed) return;
+
+    setIsClassifying(true);
+    setError(null);
+    setLastAction(null);
+    setClassificationStats(null);
+
+    try {
+      console.log('[AIPanel] Re-classifying all items...', { aiEnabled });
+
+      const response = await fetch('/api/classify-all', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          projectId,
+          sheetId,
+          items: itemsToProcess,
+          forceUpdate: false,
+          aiEnabled,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Classification failed: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        // Apply classifications (filter out 'kept' actions)
+        const updates = data.results
+          .filter((r: ClassificationResult) => r.action !== 'kept')
+          .map((r: ClassificationResult) => ({
+            itemId: r.itemId,
+            skupina: r.skupina,
+          }));
+
+        if (updates.length > 0) {
+          bulkSetSkupina(projectId, sheetId, updates);
+        }
+
+        setClassificationStats({
+          classified: data.changed,
+          changed: data.changed,
+          unchanged: data.unchanged,
+          unknown: data.unknown,
+          keptExisting: data.keptExisting,
+          stats: data.stats,
+        });
+
+        const modeText = aiEnabled ? 'AI + Rules' : 'Rules only';
+        setLastAction(
+          `Překlasifikováno ${data.changed} položek, ` +
+          `${data.keptExisting} ponecháno (${modeText})`
+        );
+      } else {
+        throw new Error(data.message || 'Classification failed');
+      }
+    } catch (err) {
+      console.error('[AIPanel] Classification error:', err);
       setError(err instanceof Error ? err.message : 'Chyba při klasifikaci');
     } finally {
       setIsClassifying(false);
@@ -234,115 +239,163 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
       >
         <div className="flex items-center gap-2">
           <Sparkles className="text-accent-primary" size={20} />
-          <h3 className="font-semibold text-text-primary">Automatická klasifikace</h3>
+          <h3 className="font-semibold text-text-primary">AI Klasifikace</h3>
           <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-medium">
             {selectedItemIds.length > 0
               ? `${selectedItemIds.length} vybráno`
               : `${classifiedMainCount}/${mainItemsCount} hlavních položek`
             }
           </span>
+          {aiEnabled ? (
+            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium flex items-center gap-1">
+              <Zap size={12} /> AI ON
+            </span>
+          ) : (
+            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-medium">
+              Rules only
+            </span>
+          )}
         </div>
         {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
       </div>
 
       {isExpanded && (
         <div className="mt-4 space-y-4">
-          {/* Explanation */}
-          <p className="text-sm text-text-secondary">
-            Automaticky přiřadí <strong>skupinu prací</strong> (např. BETON_MONOLIT, PILOTY, ZEMNÍ_PRACE)
-            {' '}pouze <strong>hlavním položkám</strong> podle klíčových slov v popisu. Podřízené řádky (PP/PSC/VV/...)
-            {' '}se použijí jako kontext a automaticky zdědí skupinu od hlavní položky.
-          </p>
-
-          {/* Current status bar */}
-          <div className="flex items-center gap-4 text-sm">
-            <span className="text-text-secondary">
-              Hlavní položky se skupinou: <strong className="text-green-400">{classifiedMainCount}</strong>
-            </span>
-            {unclassifiedMainCount > 0 && (
-              <span className="text-text-secondary">
-                Bez skupiny: <strong className="text-yellow-400">{unclassifiedMainCount}</strong>
-              </span>
-            )}
-            <span className="text-text-muted">
-              / {mainItemsCount} hlavních celkem ({items.length} všech řádků)
-            </span>
+          {/* AI Toggle */}
+          <div className="flex items-center gap-3 p-3 bg-bg-secondary rounded border border-border-color">
+            <Power size={16} className={aiEnabled ? 'text-green-500' : 'text-gray-400'} />
+            <div className="flex-1">
+              <div className="text-sm font-medium text-text-primary">
+                AI Mode {aiEnabled ? 'Zapnuto' : 'Vypnuto'}
+              </div>
+              <div className="text-xs text-text-muted mt-0.5">
+                {aiEnabled
+                  ? 'Používá Gemini AI + Memory + Rules (vyšší přesnost, vyžaduje API key)'
+                  : 'Pouze Rules (bez AI, bez nákladů, deterministický)'}
+              </div>
+            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setAiEnabled(!aiEnabled);
+              }}
+              className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
+                aiEnabled
+                  ? 'bg-green-500 text-white hover:bg-green-600'
+                  : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+              }`}
+            >
+              {aiEnabled ? 'ON' : 'OFF'}
+            </button>
           </div>
 
-          {/* Action Buttons */}
-          <div className="flex flex-wrap gap-2">
-            {/* Primary: classify only empty */}
+          {/* Info */}
+          <div className="text-sm text-text-muted space-y-1">
+            <p className="font-medium text-text-primary">Jak to funguje:</p>
+            <ul className="list-disc list-inside space-y-0.5 text-xs">
+              <li><strong>Klasifikuje POUZE</strong> hlavní položky (s kódy URS/OTSKP)</li>
+              <li>Podřízené řádky (PP/PSC/VV) = <strong>kontext</strong> pro AI</li>
+              <li>Skupina se <strong>kaskáduje</strong> na podřízené řádky automaticky</li>
+              {aiEnabled && (
+                <>
+                  <li><strong>AI strategie:</strong> Cache → Rules → Memory → Gemini</li>
+                  <li><strong>Učení:</strong> Pamatuje si vaše ruční úpravy</li>
+                </>
+              )}
+              {!aiEnabled && (
+                <li><strong>Rules:</strong> Deterministická klasifikace podle klíčových slov</li>
+              )}
+            </ul>
+          </div>
+
+          {/* Buttons */}
+          <div className="grid grid-cols-2 gap-3">
             <button
-              onClick={() => handleClassify(false)}
-              disabled={isClassifying || itemsToProcess.length === 0 || unclassifiedMainCount === 0}
-              className="btn btn-primary text-sm flex items-center gap-2 disabled:opacity-50"
-              title="Klasifikuje pouze hlavní položky bez přiřazené skupiny. Podřízené řádky (PP/PSC/VV) se použijí jako kontext a automaticky zdědí skupinu."
+              onClick={handleClassifyEmpty}
+              disabled={isClassifying || unclassifiedMainCount === 0}
+              className="btn-primary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isClassifying ? (
-                <Loader2 size={16} className="animate-spin" />
+                <>
+                  <Loader2 className="animate-spin" size={16} />
+                  <span>Klasifikuji...</span>
+                </>
               ) : (
-                <Zap size={16} />
+                <>
+                  <Sparkles size={16} />
+                  <span>Klasifikovat prázdné</span>
+                </>
               )}
-              Klasifikovat prázdné ({unclassifiedMainCount})
             </button>
 
-            {/* Secondary: re-classify all */}
             <button
-              onClick={() => handleClassify(true)}
-              disabled={isClassifying || itemsToProcess.length === 0}
-              className="btn text-sm flex items-center gap-2 bg-gray-700 hover:bg-gray-600 text-gray-200 disabled:opacity-50"
-              title="Překlasifikuje všechny hlavní položky (vyžaduje potvrzení). Podřízené řádky automaticky zdědí novou skupinu."
+              onClick={handleClassifyAll}
+              disabled={isClassifying || mainItemsCount === 0}
+              className="btn-secondary flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <RotateCcw size={14} />
-              Překlasifikovat vše
+              {isClassifying ? (
+                <>
+                  <Loader2 className="animate-spin" size={16} />
+                  <span>Klasifikuji...</span>
+                </>
+              ) : (
+                <>
+                  <Zap size={16} />
+                  <span>Překlasifikovat vše</span>
+                </>
+              )}
             </button>
           </div>
 
-          {/* Error */}
-          {error && (
-            <div className="text-sm text-red-400 bg-red-900/20 px-3 py-2 rounded">
-              {error}
+          {/* Stats */}
+          {classificationStats && (
+            <div className="p-3 bg-green-50 border border-green-200 rounded text-sm">
+              <div className="font-medium text-green-900 mb-2">✓ Klasifikace dokončena</div>
+              <div className="grid grid-cols-2 gap-2 text-xs text-green-800">
+                <div>Změněno: <strong>{classificationStats.changed}</strong></div>
+                <div>Nezměněno: <strong>{classificationStats.unchanged}</strong></div>
+                {classificationStats.keptExisting !== undefined && (
+                  <div>Ponecháno: <strong>{classificationStats.keptExisting}</strong></div>
+                )}
+                <div>Unknown: <strong>{classificationStats.unknown}</strong></div>
+              </div>
+
+              {/* Source breakdown */}
+              {classificationStats.stats && (
+                <div className="mt-2 pt-2 border-t border-green-300">
+                  <div className="text-xs text-green-700">
+                    Zdroje:{' '}
+                    {Object.entries(classificationStats.stats.bySource).map(([source, count]) => (
+                      <span key={source} className="mr-2">
+                        {source}: <strong>{count}</strong>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
-          {/* Success message */}
-          {lastAction && !error && (
-            <div className="text-sm text-green-400 bg-green-900/20 px-3 py-2 rounded">
+          {/* Last Action */}
+          {lastAction && !classificationStats && (
+            <div className="text-sm text-text-muted italic bg-bg-secondary p-2 rounded">
               {lastAction}
             </div>
           )}
 
-          {/* Classification Stats */}
-          {classificationStats && Object.keys(classificationStats.groupCounts).length > 0 && (
-            <div className="space-y-2">
-              <h4 className="font-medium text-sm text-text-secondary">Přiřazené skupiny:</h4>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-                {Object.entries(classificationStats.groupCounts)
-                  .sort(([, a], [, b]) => b - a)
-                  .map(([group, count]) => (
-                    <div
-                      key={group}
-                      className="bg-bg-tertiary px-3 py-1.5 rounded border border-border-color text-sm flex items-center justify-between"
-                    >
-                      <span className="font-medium text-accent-primary">{group}</span>
-                      <span className="text-text-muted">{count}x</span>
-                    </div>
-                  ))}
-              </div>
-              {classificationStats.skipped > 0 && (
-                <p className="text-xs text-text-muted">
-                  {classificationStats.skipped} položek nerozpoznáno (lze přiřadit ručně ve sloupci &quot;Skupina&quot;)
-                </p>
-              )}
+          {/* Error */}
+          {error && (
+            <div className="p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
+              <strong>Chyba:</strong> {error}
             </div>
           )}
 
-          {/* Info */}
-          <p className="text-xs text-text-muted">
-            Klasifikace probíhá pouze pro <strong>hlavní položky</strong> (řádky s kódy URS/OTSKP/RTS).
-            Podřízené řádky (PP/PSC/VV/A195/B5) se použijí jako kontext a automaticky zdědí skupinu.
-            {' '}11 skupin: ZEMNÍ_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENÍ, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA, LOŽISKA.
-          </p>
+          {/* Warning if AI disabled */}
+          {!aiEnabled && (
+            <div className="p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800">
+              ⚠️ AI režim vypnut. Používá se pouze deterministická klasifikace podle klíčových slov.
+            </div>
+          )}
         </div>
       )}
     </div>

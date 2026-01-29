@@ -7,11 +7,16 @@ import type { VercelRequest, VercelResponse } from '@vercel/node';
 import type { ParsedItem } from './agent/types';
 import { buildRowPack, extractSubordinates } from './agent/rowpack';
 import { classifyBatch, getClassificationStats } from './agent/orchestrator';
+import { classifyBatchRulesOnly } from './agent/classify-rules-only';
+
+// Feature flag: Enable/disable AI (Gemini)
+const AI_ENABLED = process.env.AI_ENABLED !== 'false'; // Default: true
 
 interface ClassifyEmptyRequest {
   projectId: string;
   sheetId: string;
   items: ParsedItem[];
+  aiEnabled?: boolean; // Override from client
 }
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
@@ -25,13 +30,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   try {
-    const { projectId, sheetId, items } = req.body as ClassifyEmptyRequest;
+    const { projectId, sheetId, items, aiEnabled } = req.body as ClassifyEmptyRequest;
 
     if (!projectId || !sheetId || !items || !Array.isArray(items)) {
       return res.status(400).json({ error: 'projectId, sheetId, and items are required' });
     }
 
-    console.log(`[classify-empty] Processing ${items.length} items for project ${projectId}`);
+    // Determine if AI should be used
+    const useAI = aiEnabled !== undefined ? aiEnabled : AI_ENABLED;
+
+    console.log(`[classify-empty] Processing ${items.length} items for project ${projectId} (AI: ${useAI ? 'ON' : 'OFF'})`);
 
     // Filter MAIN items with empty skupina
     const mainItems = items.filter(item => {
@@ -64,19 +72,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
     }
 
-    // Build rowpacks for main items
-    const rowpacks = mainItems.map(mainItem => {
-      const subordinates = extractSubordinates(mainItem, items);
-      return buildRowPack(mainItem, subordinates);
-    });
+    // Classify items (with or without AI)
+    let results;
 
-    // Classify in batch
-    const results = await classifyBatch(rowpacks, {
-      maxConcurrent: 5,
-      onProgress: (completed, total) => {
-        console.log(`[classify-empty] Progress: ${completed}/${total}`);
-      },
-    });
+    if (useAI) {
+      // Build rowpacks for main items
+      const rowpacks = mainItems.map(mainItem => {
+        const subordinates = extractSubordinates(mainItem, items);
+        return buildRowPack(mainItem, subordinates);
+      });
+
+      // Classify in batch (AI enabled: cache → rules → memory → gemini)
+      results = await classifyBatch(rowpacks, {
+        maxConcurrent: 5,
+        onProgress: (completed, total) => {
+          console.log(`[classify-empty] Progress: ${completed}/${total}`);
+        },
+      });
+    } else {
+      // Rules-only classification (AI disabled)
+      console.log(`[classify-empty] AI disabled - using rules-only classification`);
+      results = classifyBatchRulesOnly(items).filter(r => {
+        // Filter to only include items that were in mainItems
+        return mainItems.some(m => m.id === r.itemId);
+      });
+    }
 
     // Build response with updated items
     const itemUpdates = new Map();
@@ -102,6 +122,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       changed: results.length,
       unchanged: items.length - mainItems.length,
       unknown: stats.unknown,
+      aiEnabled: useAI,
       stats,
       results: Array.from(itemUpdates.entries()).map(([itemId, update]) => ({
         itemId,
