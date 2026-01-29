@@ -407,10 +407,21 @@ export const useRegistryStore = create<RegistryState>()(
         const visibleDefaults = (DEFAULT_GROUPS as unknown as string[]).filter(
           g => !hiddenDefaultGroups.includes(g)
         );
-        // Фильтруем пустые строки из обоих списков
-        const validDefaults = visibleDefaults.filter(g => g && g.trim().length > 0);
-        const validCustom = customGroups.filter(g => g && g.trim().length > 0);
-        return [...validDefaults, ...validCustom];
+
+        // Also include groups that are actually used in the data
+        const itemCounts = get().getGroupItemCounts();
+        const usedGroups = Array.from(itemCounts.keys());
+
+        // Combine all groups (remove duplicates via Set)
+        const allGroupsSet = new Set<string>([
+          ...visibleDefaults,
+          ...customGroups,
+          ...usedGroups,
+        ]);
+
+        // Filter out empty strings and sort
+        const validGroups = Array.from(allGroupsSet).filter(g => g && g.trim().length > 0);
+        return validGroups.sort();
       },
 
       renameGroup: (oldName, newName) => {

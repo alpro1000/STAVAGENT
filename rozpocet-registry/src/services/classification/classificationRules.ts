@@ -48,7 +48,7 @@ function removeDiacritics(text: string): string {
 export const CLASSIFICATION_RULES: ClassificationRule[] = [
   // ==================== ZEMNÍ PRÁCE ====================
   {
-    skupina: 'ZEMNI_PRACE',
+    skupina: 'ZEMNÍ_PRACE',
     include: [
       'vykop', 'vykopy', 'odkop', 'odkopavky', 'prokopavky',
       'ryha', 'ryhy', 'hloubeni', 'jama', 'jam',
@@ -129,7 +129,7 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
 
   // ==================== KOTVENÍ ====================
   {
-    skupina: 'KOTVENI',
+    skupina: 'KOTVENÍ',
     include: [
       'kotva', 'kotvy', 'kotveni', 'injektaz', 'injektovane kotvy',
       'vrt', 'vrty', 'pramen', 'hlava kotvy', 'napinani kotvy',
@@ -169,7 +169,7 @@ export const CLASSIFICATION_RULES: ClassificationRule[] = [
     boostUnits: ['m', 'ks'],
     priority: 200, // Absolute priority over all other groups
     priorityOver: [
-      'BETON_MONOLIT', 'ZEMNI_PRACE', 'VYZTUŽ', 'KOTVENI',
+      'BETON_MONOLIT', 'ZEMNÍ_PRACE', 'VYZTUŽ', 'KOTVENÍ',
       'BEDNENI', 'DOPRAVA', 'IZOLACE', 'LOŽISKA',
     ],
   },
