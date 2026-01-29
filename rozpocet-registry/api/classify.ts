@@ -1,6 +1,12 @@
 /**
  * AI Classification API - Vercel Serverless Function
  * Proxies to concrete-agent Multi-Role API for intelligent BOQ classification
+ *
+ * CLASSIFICATION RULES:
+ * - Classifies ONLY main items (items with rowRole='main' or 'section')
+ * - Subordinate items (PP/PSC/VV/A195/B5) provided as CONTEXT only
+ * - Skupina assigned only to main items, subordinates inherit via cascade
+ * - Returns model name and source for debugging
  */
 
 import type { VercelRequest, VercelResponse } from '@vercel/node';
@@ -16,6 +22,10 @@ interface ClassifyRequest {
     mj?: string;
     mnozstvi?: number;
     cenaJednotkova?: number;
+    rowRole?: 'main' | 'section' | 'subordinate' | 'unknown';
+    subordinates?: Array<{
+      popis: string;
+    }>;
   }>;
   mode?: 'single' | 'batch';
 }
@@ -57,29 +67,51 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(400).json({ error: 'Items array is required' });
     }
 
-    // Build context for Multi-Role AI
-    const itemDescriptions = items.map((item, i) =>
-      `${i + 1}. [${item.kod}] ${item.popisFull || item.popis} (${item.mj || '?'})`
-    ).join('\n');
+    console.log(`[AI Classification] 🚀 Starting classification for ${items.length} items (mode: ${mode})`);
 
-    const prompt = `Klasifikuj následující položky stavebního rozpočtu do pracovních skupin.
+    // Build context for Multi-Role AI
+    const itemDescriptions = items.map((item, i) => {
+      let desc = `${i + 1}. [${item.kod}] ${item.popisFull || item.popis} (${item.mj || '?'})`;
+
+      // Add subordinate context if available
+      if (item.subordinates && item.subordinates.length > 0) {
+        const subContext = item.subordinates
+          .map(sub => sub.popis)
+          .filter(p => p && p.trim().length > 0)
+          .join(' | ');
+        if (subContext) {
+          desc += `\n   Kontext podřízených řádků: ${subContext}`;
+        }
+      }
+
+      return desc;
+    }).join('\n\n');
+
+    const prompt = `INSTRUKCE: Klasifikuj POUZE HLAVNÍ POLOŽKY stavebního rozpočtu do pracovních skupin.
+
+DŮLEŽITÉ PRAVIDLA:
+- Klasifikuj POUZE hlavní položky (s kódy URS/OTSKP/RTS)
+- Podřízené řádky (PP/PSC/VV/A195/B5) jsou uvedeny jako KONTEXT pro lepší pochopení hlavní položky
+- Podřízené řádky NIKDY neklasifikuj samostatně
+- Pokud nemáš dostatečnou jistotu, vrať "unknown" a confidence=low
+- Nikdy nerozhoduj pouze na základě přítomnosti kódu v řádku
 
 Dostupné skupiny:
 ${WORK_GROUPS.join(', ')}
 
-Položky k klasifikaci:
+Hlavní položky k klasifikaci (s kontextem podřízených řádků):
 ${itemDescriptions}
 
-Pro každou položku vrať:
-- číslo položky
-- navrhovaná skupina
-- jistota (0-100%)
-- krátké zdůvodnění
+Pro každou HLAVNÍ položku vrať:
+- index: číslo položky (1-based)
+- skupina: navrhovaná skupina nebo "unknown"
+- confidence: jistota 0-100 (high=80+, medium=50-79, low=0-49)
+- reasoning: krátké zdůvodnění (max 1 věta)
 
 Odpověz ve formátu JSON:
 {
   "classifications": [
-    {"index": 1, "skupina": "Beton-mostovka", "confidence": 95, "reasoning": "Betonová mostovka C30/37"}
+    {"index": 1, "skupina": "Beton-mostovka", "confidence": 95, "reasoning": "Betonová mostovka C30/37, kontext potvrzuje materiál"}
   ]
 }`;
 
@@ -101,22 +133,28 @@ Odpověz ve formátu JSON:
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Multi-Role API error:', errorText);
+      console.error('[AI Classification] Multi-Role API error:', response.status, errorText);
 
       // Fallback to rule-based classification if AI fails
       const fallbackResults = items.map(item => classifyByRules(item));
+      console.log(`[AI Classification] ❌ AI failed, using fallback rules for ${items.length} items`);
+
       return res.status(200).json({
         success: true,
         results: fallbackResults,
         source: 'fallback_rules',
+        model: 'rule-based',
         warning: 'AI unavailable, used rule-based classification'
       });
     }
 
     const aiResponse = await response.json();
+    const modelUsed = aiResponse.model || aiResponse.metadata?.model || 'unknown';
+    console.log(`[AI Classification] ✅ AI model used: ${modelUsed} for ${items.length} items`);
 
     // Parse AI response
     let classifications: ClassifyResult[] = [];
+    let parseSuccess = false;
 
     try {
       // Extract JSON from AI response
@@ -131,11 +169,16 @@ Odpověz ve formátu JSON:
           confidence: c.confidence || 80,
           reasoning: c.reasoning || ''
         }));
+        parseSuccess = true;
+        console.log(`[AI Classification] ✅ Parsed ${classifications.length} classifications from AI response`);
+      } else {
+        console.warn('[AI Classification] ⚠️ No JSON found in AI response, using fallback');
       }
     } catch (parseError) {
-      console.error('Failed to parse AI response:', parseError);
+      console.error('[AI Classification] ❌ Failed to parse AI response:', parseError);
       // Use fallback
       classifications = items.map(item => classifyByRules(item));
+      console.log(`[AI Classification] Using fallback rules for all ${items.length} items`);
     }
 
     // Ensure all items have classifications
@@ -147,18 +190,22 @@ Odpověz ve formátu JSON:
       return classifyByRules(item);
     });
 
+    const finalSource = parseSuccess ? 'ai_multi_role' : 'fallback_rules_partial';
+    console.log(`[AI Classification] 📊 Final results: ${results.length} items, source: ${finalSource}, model: ${modelUsed}`);
+
     return res.status(200).json({
       success: true,
       results,
-      source: 'ai_multi_role',
-      model: aiResponse.model || 'unknown'
+      source: finalSource,
+      model: modelUsed
     });
 
   } catch (error) {
-    console.error('Classification error:', error);
+    console.error('[AI Classification] ❌ Fatal error:', error);
     return res.status(500).json({
       error: 'Classification failed',
-      message: error instanceof Error ? error.message : 'Unknown error'
+      message: error instanceof Error ? error.message : 'Unknown error',
+      source: 'error'
     });
   }
 }
