@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-01-29 | rozpocet-registry | AI Agent + AI on/off toggle: Full autonomous classification system | ✅ Pushed |
 | 2026-01-29 | rozpocet-registry | Section header detection fix: numbered items no longer misclassified | ✅ Pushed |
 | 2026-01-29 | rozpocet-registry | AI API improvements: subordinate context + model logging | ✅ Pushed |
 | 2026-01-28 | rozpocet-registry | AI classification: main-only with subordinate context + confirmation | ✅ Pushed |
@@ -360,6 +361,10 @@ Timeouts: LLM 90s, Perplexity 60s
 - **Multi-Sheet Import** - Import multiple sheets per file, organized as Project → Sheets hierarchy
 - **Excel-style Tab Navigation** - Project tabs + Sheet tabs with horizontal scrolling
 - **Auto-Classification** - Rule-based classification into 10 work groups (uppercase codes)
+- **AI Agent** - Autonomous classification system with AI on/off toggle
+  - AI Mode: Cache → Rules → Memory → Gemini (learning system)
+  - Rules-only Mode: Deterministic classification (no AI costs)
+  - Learns from user corrections (Memory Store)
 - **AI Classification Panel** - AI-assisted classification with cascading to description rows
 - **Similarity Search** - Sparkles button for similar item matching
 - **Fuzzy Search** - Multi-project search with Fuse.js (weighted: kod 40%, popis 30%)
@@ -433,6 +438,19 @@ DOPRAVA        - Transport (doprava betonu, odvoz zeminy)
 **Application Structure:**
 ```
 rozpocet-registry/
+├── api/                           (Vercel Serverless Functions)
+│   ├── ai-agent.ts                (Unified AI endpoint)
+│   ├── agent/                     (AI Agent modules)
+│   │   ├── types.ts               (Shared TypeScript interfaces)
+│   │   ├── rowpack.ts             (RowPack Builder)
+│   │   ├── rules.ts               (Rules Layer - 11 classification rules)
+│   │   ├── memory.ts              (Memory Store - learning from corrections)
+│   │   ├── gemini.ts              (Gemini Connector)
+│   │   ├── orchestrator.ts        (Decision Orchestrator)
+│   │   ├── classify-rules-only.ts (Rules-only service)
+│   │   └── README.md              (AI Agent documentation - 727 lines)
+│   ├── group.ts                   (Group management API)
+│   └── search.ts                  (Search API)
 ├── src/
 │   ├── App.tsx                    (591 lines - main application)
 │   ├── stores/
@@ -445,7 +463,7 @@ rozpocet-registry/
 │   │   ├── export.ts              (Export types)
 │   │   └── config.ts              (Config types)
 │   ├── components/
-│   │   ├── ai/AIPanel.tsx         (AI classification panel)
+│   │   ├── ai/AIPanel.tsx         (AI classification panel with toggle)
 │   │   ├── items/ItemsTable.tsx   (Main data table)
 │   │   ├── items/SkupinaAutocomplete.tsx (Work group autocomplete)
 │   │   ├── search/SearchBar.tsx   (Fuzzy search UI)
@@ -468,7 +486,7 @@ rozpocet-registry/
 │   │   ├── similarity/            (Similarity matching)
 │   │   └── priceRequest/          (Price request service)
 │   ├── utils/
-│   │   └── constants.ts           (10 work group definitions)
+│   │   └── constants.ts           (11 work group definitions)
 │   └── config/                    (App configuration)
 ├── vite.config.ts
 ├── tailwind.config.js
