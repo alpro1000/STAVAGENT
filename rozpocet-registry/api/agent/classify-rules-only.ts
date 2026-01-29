@@ -3,9 +3,9 @@
  * Used when AI is disabled or unavailable
  */
 
-import type { ParsedItem, ClassificationResult } from './agent/types';
-import { buildRowPack, extractSubordinates } from './agent/rowpack';
-import { classifyByRules } from './agent/rules';
+import type { ParsedItem, ClassificationResult } from './types.js';
+import { buildRowPack, extractSubordinates } from './rowpack.js';
+import { classifyByRules } from './rules.js';
 
 /**
  * Classify items using rules only (no Gemini, no Memory)

@@ -3,7 +3,7 @@
  * Combines MAIN item + CHILD items (subordinates) into single context
  */
 
-import type { ParsedItem, RowPack } from './types';
+import type { ParsedItem, RowPack } from './types.js';
 import * as crypto from 'crypto';
 
 const MAX_CHILD_TEXT_LENGTH = 6000; // Limit to avoid huge prompts

@@ -3,7 +3,7 @@
  * Synced with src/services/classification/classificationRules.ts
  */
 
-import type { RowPack, RuleMatch } from './types';
+import type { RowPack, RuleMatch } from './types.js';
 
 interface ClassificationRule {
   skupina: string;

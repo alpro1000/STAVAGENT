@@ -96,12 +96,13 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     try {
       console.log('[AIPanel] Classifying empty items...', { aiEnabled });
 
-      const response = await fetch('/api/classify-empty', {
+      const response = await fetch('/api/ai-agent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          operation: 'classify-empty',
           projectId,
           sheetId,
           items: itemsToProcess,
@@ -172,12 +173,13 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     try {
       console.log('[AIPanel] Re-classifying all items...', { aiEnabled });
 
-      const response = await fetch('/api/classify-all', {
+      const response = await fetch('/api/ai-agent', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          operation: 'classify-all',
           projectId,
           sheetId,
           items: itemsToProcess,

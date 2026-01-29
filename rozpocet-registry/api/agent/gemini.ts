@@ -3,7 +3,7 @@
  * Structured prompts for BOQ classification
  */
 
-import type { GeminiRequest, GeminiResponse, MemoryExample } from './types';
+import type { GeminiRequest, GeminiResponse, MemoryExample } from './types.js';
 
 const GEMINI_API_KEY = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
 const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash-exp';

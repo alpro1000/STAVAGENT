@@ -3,11 +3,11 @@
  * Priority: Cache → Rules → Memory → Gemini
  */
 
-import type { RowPack, ClassificationResult, MemoryExample } from './types';
-import { classifyByRules, getAllowedSkupiny } from './rules';
-import { checkCache, retrieveSimilarExamples } from './memory';
-import { classifyWithGemini, confidenceToScore } from './gemini';
-import { ALLOWED_SKUPINY } from './types';
+import type { RowPack, ClassificationResult, MemoryExample } from './types.js';
+import { classifyByRules, getAllowedSkupiny } from './rules.js';
+import { checkCache, retrieveSimilarExamples } from './memory.js';
+import { classifyWithGemini, confidenceToScore } from './gemini.js';
+import { ALLOWED_SKUPINY } from './types.js';
 
 /**
  * Main classification orchestrator

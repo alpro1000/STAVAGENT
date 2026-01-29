@@ -7,7 +7,7 @@
  * Production version should use persistent storage.
  */
 
-import type { MemoryExample, RowPack } from './types';
+import type { MemoryExample, RowPack } from './types.js';
 
 // Temporary in-memory store (resets on function cold start)
 const memoryStore: Map<string, MemoryExample[]> = new Map();
