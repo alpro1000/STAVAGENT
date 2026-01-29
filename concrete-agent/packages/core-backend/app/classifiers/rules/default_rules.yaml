@@ -9,7 +9,7 @@ groups:
   # ZEMNÍ PRÁCE (Earthworks)
   # ========================================
   ZEMNI_PRACE:
-    name: "ZEMNI_PRACE"
+    name: "ZEMNÍ_PRACE"
     include:
       # Excavation
       - "výkop"
@@ -197,7 +197,7 @@ groups:
   # KOTVENÍ (Anchoring)
   # ========================================
   KOTVENI:
-    name: "KOTVENI"
+    name: "KOTVENÍ"
     include:
       - "kotva"
       - "kotvy"
@@ -212,6 +212,7 @@ groups:
       - "trvalé kotvy"
       - "tyčové kotvy"
       - "lanové kotvy"
+      - "KOVOVÉ KONSTRUKCE PRO KOTVENÍ ŘÍMSY"
     exclude:
       - "výztuž"
       - "kari"
@@ -235,7 +236,7 @@ groups:
   # BEDNĚNÍ (Formwork)
   # ========================================
   BEDNENI:
-    name: "BEDNENI"
+    name: "BEDNĚNÍ"
     include:
       - "bednění"
       - "odbednění"
