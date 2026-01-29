@@ -249,7 +249,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
         <div className="mt-4 space-y-4">
           {/* Explanation */}
           <p className="text-sm text-text-secondary">
-            Automaticky přiřadí <strong>skupinu prací</strong> (např. BETON_MONOLIT, PILOTY, ZEMNI_PRACE)
+            Automaticky přiřadí <strong>skupinu prací</strong> (např. BETON_MONOLIT, PILOTY, ZEMNÍ_PRACE)
             {' '}pouze <strong>hlavním položkám</strong> podle klíčových slov v popisu. Podřízené řádky (PP/PSC/VV/...)
             {' '}se použijí jako kontext a automaticky zdědí skupinu od hlavní položky.
           </p>
@@ -341,7 +341,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           <p className="text-xs text-text-muted">
             Klasifikace probíhá pouze pro <strong>hlavní položky</strong> (řádky s kódy URS/OTSKP/RTS).
             Podřízené řádky (PP/PSC/VV/A195/B5) se použijí jako kontext a automaticky zdědí skupinu.
-            {' '}11 skupin: ZEMNI_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENI, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA, LOŽISKA.
+            {' '}11 skupin: ZEMNÍ_PRACE, BETON_MONOLIT, BETON_PREFAB, VYZTUŽ, KOTVENÍ, BEDNENI, PILOTY, IZOLACE, KOMUNIKACE, DOPRAVA, LOŽISKA.
           </p>
         </div>
       )}

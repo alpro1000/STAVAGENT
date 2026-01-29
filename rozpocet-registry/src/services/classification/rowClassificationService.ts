@@ -65,15 +65,20 @@ const DECIMAL_MULTIPLICATION = /\d+[,\.]\d+\s*\*\s*\d+[,\.]\d+/;
 /** Summary/total quantity keywords */
 const SUMMARY_KEYWORDS = /celkov[éá]\s+množstv[ií]/i;
 
-/** Section header patterns: "Díl:", "HSV", "PSV", "Oddíl", numbered sections like "1.", "2." */
+/** Section header patterns: "Díl:", "HSV", "PSV", "Oddíl", numbered sections like "1. Zemní práce" */
 const SECTION_PATTERNS = [
   /^díl\s*[:\.]/i,
   /^oddíl\s*[:\.]/i,
   /^(HSV|PSV|MON|VRN|ON)\b/i,
   /^(práce\s+HSV|práce\s+PSV)/i,
-  /^\d{1,2}\s*[\.\)]\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/,  // "1. Zemní práce"
   /^[IVX]+\.\s+/i,                                // Roman numerals "I. ", "IV. "
 ];
+
+/** Numbered section pattern - for additional validation in isSectionHeader */
+const NUMBERED_SECTION = /^\d{1,2}\s*[\.\)]\s+[A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]/;
+
+/** Section keywords - true section headers usually contain these words */
+const SECTION_KEYWORDS = /práce|díl|část|oddíl|konstrukce|výztuž|beton|izolace|základy|zemní/i;
 
 /** Díl/section ordinal: 1-2 digit number (0, 1, 2, ... 99) used as section code */
 const DIL_ORDINAL = /^\d{1,2}$/;
@@ -121,11 +126,36 @@ function isSubIndex(kod: string): boolean {
 
 /**
  * Check if the description text looks like a section header.
+ * Section headers are short, structural labels (not long descriptive text).
+ *
+ * TRUE section examples:
+ * - "Díl 1 - Zemní práce"
+ * - "HSV - Hlavní stavební výroba"
+ * - "1. Betonové konstrukce"
+ *
+ * FALSE section examples (subordinate items):
+ * - "1. Položka obsahuje betonovou směs C30/37 s ..."
+ * - "1. Doprava a uložení betonu ..."
+ * - Long descriptive text with numbered points
  */
 function isSectionHeader(popis: string): boolean {
   if (!popis) return false;
   const trimmed = popis.trim();
-  return SECTION_PATTERNS.some(pattern => pattern.test(trimmed));
+
+  // Quick check: standard section patterns (Díl, HSV, PSV, roman numerals)
+  if (SECTION_PATTERNS.some(pattern => pattern.test(trimmed))) {
+    return true;
+  }
+
+  // Additional check: numbered sections like "1. Zemní práce"
+  // Only if it matches numbered pattern AND is short AND contains section keywords
+  if (NUMBERED_SECTION.test(trimmed)) {
+    const isShort = trimmed.length <= 100; // Section headers are typically short
+    const hasKeywords = SECTION_KEYWORDS.test(trimmed);
+    return isShort && hasKeywords;
+  }
+
+  return false;
 }
 
 /**
