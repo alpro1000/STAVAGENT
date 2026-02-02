@@ -535,15 +535,42 @@ export function ItemsTable({
               <div className="flex-1">
                 <SkupinaAutocomplete
                   value={currentSkupina}
-                  onChange={(value) => {
+                  onChange={async (value, shouldLearn = false) => {
                     if (value === null) {
                       setItemSkupina(projectId, sheetId, item.id, null!);
                     } else {
                       setItemSkupina(projectId, sheetId, item.id, value);
+
+                      // If user wants to remember this classification
+                      if (shouldLearn) {
+                        try {
+                          console.log('[ItemsTable] Recording correction for learning:', item.id, value);
+
+                          await fetch('/api/ai-agent', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                              operation: 'record-correction',
+                              projectId,
+                              sheetId,
+                              itemId: item.id,
+                              newSkupina: value,
+                              allItems: items,
+                            }),
+                          });
+
+                          console.log('[ItemsTable] ✓ Correction recorded successfully');
+                        } catch (error) {
+                          console.error('[ItemsTable] Failed to record correction:', error);
+                          // Don't block the UI - correction was already applied
+                        }
+                      }
                     }
                   }}
                   allGroups={allGroups}
                   onAddGroup={addCustomGroup}
+                  itemId={item.id}
+                  enableLearning={true}
                 />
               </div>
               {currentSkupina && item.kod && (

@@ -1,17 +1,21 @@
 /**
  * Skupina Autocomplete Component
  * Autocomplete s vyhledáváním pro výběr/vytvoření skupiny
+ * + Optional learning: "Zapamнить для похожих позиций"
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
-import { Search, Plus } from 'lucide-react';
+import { Search, Plus, Brain } from 'lucide-react';
 
 interface SkupinaAutocompleteProps {
   value: string | null;
-  onChange: (value: string | null) => void;
+  onChange: (value: string | null, shouldLearn?: boolean) => void;
   allGroups: string[];
   onAddGroup: (group: string) => void;
+  // Optional: for learning
+  itemId?: string;
+  enableLearning?: boolean;
 }
 
 export function SkupinaAutocomplete({
@@ -19,9 +23,12 @@ export function SkupinaAutocomplete({
   onChange,
   allGroups,
   onAddGroup,
+  itemId,
+  enableLearning = false,
 }: SkupinaAutocompleteProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [shouldLearn, setShouldLearn] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [dropdownPos, setDropdownPos] = useState<{ top: number; left: number; width: number; openUp: boolean } | null>(null);
@@ -31,7 +38,7 @@ export function SkupinaAutocomplete({
     if (!inputRef.current) return;
     const rect = inputRef.current.getBoundingClientRect();
     const spaceBelow = window.innerHeight - rect.bottom;
-    const openUp = spaceBelow < 260;
+    const openUp = spaceBelow < 300; // Increased for checkbox
     setDropdownPos({ top: openUp ? rect.top : rect.bottom, left: rect.left, width: rect.width, openUp });
   }, []);
 
@@ -52,7 +59,7 @@ export function SkupinaAutocomplete({
     ? validGroups.find(g => g.toUpperCase() === trimmedSearch.toUpperCase())
     : undefined;
   const isNewGroup = trimmedSearch && !exactMatch;
-  const isDuplicate = isNewGroup && caseInsensitiveMatch != null; // Use != to check both null and undefined
+  const isDuplicate = isNewGroup && caseInsensitiveMatch != null;
 
   // Закрытие при клике вне
   useEffect(() => {
@@ -71,18 +78,20 @@ export function SkupinaAutocomplete({
   }, []);
 
   const handleSelect = (group: string) => {
-    onChange(group);
+    onChange(group, shouldLearn);
     setSearchTerm('');
     setIsOpen(false);
+    setShouldLearn(false); // Reset after use
   };
 
   const handleAddNewGroup = () => {
     const trimmed = searchTerm.trim();
     if (trimmed) {
       onAddGroup(trimmed);
-      onChange(trimmed);
+      onChange(trimmed, shouldLearn);
       setSearchTerm('');
       setIsOpen(false);
+      setShouldLearn(false);
     }
   };
 
@@ -136,7 +145,7 @@ export function SkupinaAutocomplete({
   };
 
   const handleClear = () => {
-    onChange(null);
+    onChange(null, false);
     setSearchTerm('');
     inputRef.current?.focus();
   };
@@ -175,7 +184,7 @@ export function SkupinaAutocomplete({
       {isOpen && dropdownPos && createPortal(
         <div
           ref={dropdownRef}
-          className="bg-panel-clean border border-edge-light rounded-lg shadow-lg max-h-60 overflow-y-auto"
+          className="bg-panel-clean border border-edge-light rounded-lg shadow-lg max-h-72 overflow-y-auto"
           style={{
             position: 'fixed',
             left: dropdownPos.left,
@@ -186,6 +195,30 @@ export function SkupinaAutocomplete({
               : { top: dropdownPos.top + 4 }),
           }}
         >
+          {/* Learning Checkbox (if enabled) */}
+          {enableLearning && itemId && (
+            <div
+              className="px-3 py-2 border-b border-border-color bg-bg-secondary/50"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <label className="flex items-center gap-2 cursor-pointer text-xs">
+                <input
+                  type="checkbox"
+                  checked={shouldLearn}
+                  onChange={(e) => setShouldLearn(e.target.checked)}
+                  className="rounded border-border-color text-accent-primary focus:ring-accent-primary"
+                />
+                <Brain size={14} className="text-accent-primary" />
+                <span className="text-text-primary">
+                  💡 Zapamatovat pro podobné pozice
+                </span>
+              </label>
+              <div className="text-[10px] text-text-muted mt-0.5 ml-6">
+                AI si zapamatuje toto rozhodnutí a použije ho příště
+              </div>
+            </div>
+          )}
+
           {/* Отфильтрованные группы */}
           {filteredGroups.length > 0 ? (
             <div className="py-1">
@@ -197,36 +230,35 @@ export function SkupinaAutocomplete({
                 >
                   <span className="text-text-primary">{group}</span>
                   {value === group && (
-                    <span className="text-accent-primary">✓</span>
+                    <span className="text-xs text-accent-primary">✓</span>
                   )}
                 </button>
               ))}
             </div>
           ) : (
-            <div className="px-3 py-2 text-sm text-text-secondary">
-              Žádné skupiny nenalezeny
+            <div className="px-3 py-2 text-xs text-text-muted">
+              Žádné shody. {isNewGroup && !isDuplicate && 'Stiskněte Enter pro vytvoření nové skupiny.'}
             </div>
           )}
 
-          {/* Создать новую группу */}
+          {/* Create new group button */}
           {isNewGroup && (
-            <>
-              <div className="border-t border-divider" />
+            <div className="border-t border-border-color p-2">
               {isDuplicate ? (
-                <div className="px-3 py-2 text-sm text-yellow-500 flex items-center gap-2">
-                  <span>⚠ Podobná skupina existuje: &quot;{caseInsensitiveMatch}&quot;</span>
+                <div className="text-xs text-yellow-600 px-2 py-1">
+                  ⚠️ Skupina &quot;{caseInsensitiveMatch}&quot; už existuje (jiná velikost písmen)
                 </div>
               ) : (
                 <button
                   onClick={handleAddNewGroup}
-                  className="w-full px-3 py-2 text-left text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 text-accent-primary font-medium"
+                  className="w-full px-3 py-2 text-left text-sm hover:bg-green-50 transition-colors
+                             flex items-center gap-2 text-green-700 font-medium rounded"
                 >
-                  <Plus size={16} />
-                  <span>Vytvořit: &quot;{searchTerm.trim()}&quot;</span>
-                  <span className="ml-auto text-xs text-text-muted opacity-70">Enter</span>
+                  <Plus size={14} />
+                  <span>Vytvořit &quot;{trimmedSearch}&quot;</span>
                 </button>
               )}
-            </>
+            </div>
           )}
         </div>,
         document.body
