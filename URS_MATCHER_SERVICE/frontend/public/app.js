@@ -806,9 +806,28 @@ exportBtn.addEventListener('click', async () => {
 
     let csv = '';
     let items = currentResults.items || [];
+    const candidates = currentResults.candidates || [];
+    const relatedItems = currentResults.related_items || [];
 
+    // Handle text-match results (manual input)
+    if (candidates.length > 0) {
+      csv = 'Typ,Kód ÚRS,Název,MJ,Jistota (%),Důvod\n';
+
+      // Main candidates
+      candidates.forEach((item) => {
+        const confidence = ((item.confidence || 0) * 100).toFixed(0);
+        csv += `"Hlavní","${item.urs_code || ''}","${item.urs_name || ''}","${item.unit || ''}","${confidence}","${item.reason || ''}"\n`;
+      });
+
+      // Related items
+      if (relatedItems.length > 0) {
+        relatedItems.forEach((item) => {
+          csv += `"Doplňková","${item.urs_code || ''}","${item.urs_name || ''}","${item.unit || ''}","","${item.reason || ''}"\n`;
+        });
+      }
+    }
     // Handle block-match results (blocks instead of items)
-    if (!items.length && currentResults.blocks) {
+    else if (!items.length && currentResults.blocks) {
       csv = 'Blok,Řádek,Vstupní text,Kód ÚRS,Název,MJ\n';
       currentResults.blocks.forEach((block) => {
         const blockName = block.block_name || '';
@@ -822,7 +841,7 @@ exportBtn.addEventListener('click', async () => {
         });
       });
     } else {
-      // Handle text-match results (regular items)
+      // Handle regular file upload results
       csv = 'Řádek,Vstupní text,Kód ÚRS,Název,MJ,Množství,Jistota,Typ\n';
       items.forEach((item) => {
         const type = item.extra_generated ? 'Doplňková' : 'Přímá';
@@ -853,27 +872,65 @@ copyBtn.addEventListener('click', () => {
   if (!currentResults) return;
 
   try {
-    let text = 'Výsledky hledání ÚRS\n\n';
-    const items = currentResults.items || [];
+    let text = 'Výsledky hledání ÚRS\n';
+    text += '═'.repeat(60) + '\n\n';
 
+    const items = currentResults.items || [];
+    const candidates = currentResults.candidates || [];
+    const relatedItems = currentResults.related_items || [];
+
+    // Handle text-match results (manual input)
+    if (candidates.length > 0) {
+      text += '🎯 DOPORUČENÉ POZICE ÚRS:\n';
+      text += '─'.repeat(60) + '\n';
+
+      candidates.forEach((item, idx) => {
+        const confidence = ((item.confidence || 0) * 100).toFixed(0);
+        text += `${idx + 1}. ${item.urs_code || ''} | ${item.urs_name || ''}\n`;
+        text += `   MJ: ${item.unit || ''} | Jistota: ${confidence}%\n`;
+        if (item.reason) {
+          text += `   Důvod: ${item.reason}\n`;
+        }
+        text += '\n';
+      });
+
+      if (relatedItems.length > 0) {
+        text += '\n⚙️ DOPORUČENÉ DOPLŇKOVÉ PRÁCE:\n';
+        text += '─'.repeat(60) + '\n';
+
+        relatedItems.forEach((item, idx) => {
+          text += `${idx + 1}. ${item.urs_code || ''} | ${item.urs_name || ''}\n`;
+          text += `   MJ: ${item.unit || ''}\n`;
+          if (item.reason) {
+            text += `   Důvod: ${item.reason}\n`;
+          }
+          text += '\n';
+        });
+      }
+    }
     // Handle block-match results (blocks instead of items)
-    if (!items.length && currentResults.blocks) {
+    else if (!items.length && currentResults.blocks) {
       currentResults.blocks.forEach((block) => {
         text += `📂 ${block.block_name}\n`;
+        text += '─'.repeat(60) + '\n';
         (block.items || []).forEach((item) => {
           const ursCode = item.selected_urs?.urs_code || '';
           const ursName = item.selected_urs?.urs_name || '';
           const unit = item.selected_urs?.unit || '';
-          text += `  ${ursCode} | ${ursName} | ${unit}\n`;
+          text += `  • ${ursCode} | ${ursName} | ${unit}\n`;
         });
         text += '\n';
       });
     } else {
-      // Handle text-match results (regular items)
-      items.forEach((item) => {
-        text += `${item.urs_code} | ${item.urs_name} | ${item.unit} | ${item.quantity}\n`;
+      // Handle regular file upload results
+      items.forEach((item, idx) => {
+        text += `${idx + 1}. ${item.urs_code} | ${item.urs_name}\n`;
+        text += `   MJ: ${item.unit} | Množství: ${item.quantity}\n\n`;
       });
     }
+
+    text += '─'.repeat(60) + '\n';
+    text += `Vygenerováno: ${new Date().toLocaleString('cs-CZ')}\n`;
 
     navigator.clipboard.writeText(text).then(() => {
       copyBtn.textContent = '✓ Zkopírováno';
