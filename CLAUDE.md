@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.0.0
-**Last Updated:** 2026-01-28
+**Version:** 2.0.1
+**Last Updated:** 2026-01-29
 **Repository:** STAVAGENT (Monorepo)
 
 ---
