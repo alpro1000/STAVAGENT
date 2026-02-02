@@ -12,8 +12,7 @@
  */
 
 import { logger } from '../../utils/logger.js';
-import { callLLM } from '../llmClient.js';
-import { getModelForTask, getTaskTypes } from '../../config/llmConfig.js';
+import { callLLM } from './batchLLMClient.js';
 
 // ============================================================================
 // MAIN SPLIT FUNCTION
@@ -36,9 +35,7 @@ export async function split(normalized, maxSubWorks = 5) {
     // Build LLM prompt
     const prompt = buildSplitPrompt(normalized, maxSubWorks);
 
-    // Get Gemini model config (cheapest option)
-    const modelConfig = getModelForTask(getTaskTypes().KEYWORD_GENERATION);
-    logger.info(`[WorkSplitter] Using model: ${modelConfig.provider}/${modelConfig.model}`);
+    logger.info(`[WorkSplitter] Calling LLM for work splitting`);
 
     // Call LLM
     const llmStartTime = Date.now();
@@ -50,8 +47,9 @@ export async function split(normalized, maxSubWorks = 5) {
         }
       ],
       maxTokens: 1500,
-      temperature: 0.2  // Low temperature for consistency
-    }, modelConfig);
+      temperature: 0.2,  // Low temperature for consistency
+      taskType: 'KEYWORD_GENERATION'  // Use cheapest model (Gemini)
+    });
     const llmElapsed = Date.now() - llmStartTime;
 
     logger.debug(`[WorkSplitter] LLM response: ${llmResponse.content}`);
