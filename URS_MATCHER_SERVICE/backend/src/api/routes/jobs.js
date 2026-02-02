@@ -31,6 +31,7 @@ import {
 } from '../../utils/loggingHelper.js';
 import { validateDocumentCompleteness, getDocumentRequirements } from '../../services/documentValidatorService.js';
 import { getCachedDocumentParsing, cacheDocumentParsing, initCache } from '../../services/cacheService.js';
+import { extractWorksFromDocument } from '../../services/documentExtractionService.js';
 import { validateFileContent } from '../../utils/fileValidator.js';
 import { Orchestrator } from '../../services/roleIntegration/orchestrator.js';
 import {
@@ -96,6 +97,21 @@ const upload = multer({
       cb(null, true);
     } else {
       cb(new Error(`File type not allowed: ${ext}`));
+    }
+  }
+});
+
+// Document extraction multer (PDF, DOCX)
+const uploadDocument = multer({
+  storage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+  fileFilter: (req, file, cb) => {
+    const allowed = ['.pdf', '.docx', '.doc'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`File type not allowed for document extraction: ${ext}`));
     }
   }
 });
@@ -1676,6 +1692,128 @@ router.post('/document-upload', documentUpload.array('files', 10), async (req, r
 
     res.status(500).json({
       error: 'Document upload failed',
+      details: error.message
+    });
+  }
+});
+
+/**
+ * Document Work Extraction Endpoint
+ * POST /api/jobs/document-extract
+ *
+ * Extracts work descriptions from PDF/DOCX document and matches to URS codes
+ * Pipeline: MinerU → LLM → TSKP → Deduplication → Batch URS Matching
+ */
+router.post('/document-extract', uploadDocument.single('file'), async (req, res) => {
+  let filePath;
+
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file provided' });
+    }
+
+    const jobId = uuidv4();
+    const userId = req.user?.id || 'default';
+
+    // SECURITY: Validate file path
+    filePath = validateUploadPath(req.file.path);
+
+    // SECURITY: Validate file content matches extension
+    const fileValidation = await validateFileContent(filePath, req.file.originalname);
+    if (!fileValidation.valid) {
+      logger.warn(`[DOC-EXTRACT] File validation failed: ${req.file.originalname}`);
+
+      // Clean up invalid file
+      try {
+        fs.unlinkSync(filePath);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+
+      return res.status(400).json({
+        error: 'File validation failed',
+        details: 'File content does not match extension or is invalid'
+      });
+    }
+
+    logger.info(`[DOC-EXTRACT] Started: ${jobId} with file: ${req.file.originalname}`);
+
+    // Log file upload
+    const fileOpLog = createFileOperationLog({
+      userId: userId,
+      jobId: jobId,
+      operation: 'document_extract_upload',
+      filename: req.file.originalname,
+      fileSize: req.file.size,
+      fileType: fileValidation.fileType,
+      status: 'success'
+    });
+    logger.info(JSON.stringify(fileOpLog));
+
+    // Extract works from document
+    logger.info(`[DOC-EXTRACT] Starting work extraction...`);
+    const extractionResult = await extractWorksFromDocument(filePath);
+
+    logger.info(`[DOC-EXTRACT] ✓ Extracted ${extractionResult.works.length} works in ${extractionResult.sections.length} sections`);
+
+    // Clean up uploaded file
+    try {
+      fs.unlinkSync(filePath);
+      logger.info(`[DOC-EXTRACT] Cleaned up: ${filePath}`);
+    } catch (e) {
+      logger.warn(`[DOC-EXTRACT] Cleanup failed: ${e.message}`);
+    }
+
+    // AUDIT: Log extraction event
+    logAuditEvent(
+      {
+        userId: userId,
+        jobId: jobId,
+        action: 'document_extract',
+        resource: 'works',
+        status: 'success',
+        ipAddress: req.ip,
+        details: {
+          filename: req.file.originalname,
+          works_extracted: extractionResult.works.length,
+          sections: extractionResult.sections.length,
+          tskp_matched: extractionResult.stats.tskp_matched
+        }
+      },
+      logger,
+      'info'
+    );
+
+    // Return extraction results
+    return res.status(200).json({
+      job_id: jobId,
+      status: 'completed',
+      filename: req.file.originalname,
+      extraction: {
+        works: extractionResult.works,
+        sections: extractionResult.sections,
+        stats: extractionResult.stats,
+        metadata: extractionResult.metadata
+      },
+      next_steps: 'Use extracted works for batch URS matching',
+      message: `Successfully extracted ${extractionResult.works.length} works from document`
+    });
+
+  } catch (error) {
+    logger.error(`[DOC-EXTRACT] Error: ${error.message}`);
+    logger.error(error.stack);
+
+    // Clean up file on error
+    if (filePath && fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+    }
+
+    res.status(500).json({
+      error: 'Document extraction failed',
       details: error.message
     });
   }

@@ -1241,7 +1241,227 @@ function attachDocumentUploadHandlers() {
       validationResults.style.display = 'block';
     }
 
+    // Show extraction button if documents were uploaded successfully
+    const extractionActions = document.getElementById('extraction-actions');
+    if (extractionActions && validation.uploaded_documents && validation.uploaded_documents.length > 0) {
+      extractionActions.style.display = 'block';
+
+      // Store uploaded files for extraction (from selectedFiles closure)
+      window.uploadedDocumentFiles = selectedFiles;
+
+      // Attach extraction handler
+      const extractWorksBtn = document.getElementById('extract-works-btn');
+      if (extractWorksBtn) {
+        extractWorksBtn.onclick = handleDocumentExtraction;
+      }
+    }
+
     debugLog('📄 ✓ Document validation results displayed');
+  }
+
+  // Handle document extraction
+  async function handleDocumentExtraction() {
+    const extractWorksBtn = document.getElementById('extract-works-btn');
+    const extractSpinner = document.getElementById('extract-spinner');
+
+    if (!window.uploadedDocumentFiles || window.uploadedDocumentFiles.length === 0) {
+      showError('Nejprve nahrajte dokumenty');
+      return;
+    }
+
+    try {
+      // Use first PDF/DOCX file for extraction
+      const documentFile = window.uploadedDocumentFiles.find(f =>
+        f.name.match(/\.(pdf|docx|doc)$/i)
+      );
+
+      if (!documentFile) {
+        showError('Nenalezen žádný PDF nebo DOCX dokument pro extrakci');
+        return;
+      }
+
+      extractWorksBtn.disabled = true;
+      if (extractSpinner) extractSpinner.style.display = 'inline-block';
+
+      debugLog(`🔬 Starting extraction for: ${documentFile.name}`);
+
+      // Create FormData with file
+      const formData = new FormData();
+      formData.append('file', documentFile);
+
+      // Call extraction API
+      const response = await fetch('/api/jobs/document-extract', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.details || errorData.error || 'Extraction failed');
+      }
+
+      const result = await response.json();
+      debugLog('✓ Document extraction successful:', result);
+
+      // Display extracted works
+      displayExtractedWorks(result.extraction);
+
+    } catch (error) {
+      debugError('🔬 Document extraction error:', error);
+      showError(`Chyba při extrakci prací: ${error.message}`);
+    } finally {
+      extractWorksBtn.disabled = false;
+      if (extractSpinner) extractSpinner.style.display = 'none';
+    }
+  }
+
+  // Display extracted works
+  function displayExtractedWorks(extraction) {
+    const extractionResults = document.getElementById('extraction-results');
+    const worksCount = document.getElementById('works-count');
+    const sectionsCount = document.getElementById('sections-count');
+    const tskpMatched = document.getElementById('tskp-matched');
+    const worksBySection = document.getElementById('works-by-section');
+
+    // Update stats
+    if (worksCount) worksCount.textContent = extraction.stats.after_deduplication || 0;
+    if (sectionsCount) sectionsCount.textContent = extraction.stats.sections_count || 0;
+    if (tskpMatched) tskpMatched.textContent = extraction.stats.tskp_matched || 0;
+
+    // Display works by section
+    if (worksBySection && extraction.sections) {
+      worksBySection.innerHTML = extraction.sections.map(section => {
+        const confidenceBadge = (confidence) => {
+          if (confidence >= 0.7) return '<span class="confidence-badge confidence-high">VYSOKÁ</span>';
+          if (confidence >= 0.4) return '<span class="confidence-badge confidence-medium">STŘEDNÍ</span>';
+          return '<span class="confidence-badge confidence-low">NÍZKÁ</span>';
+        };
+
+        return `
+          <div class="work-section">
+            <div class="section-header">
+              <span>${section.name}</span>
+              <span class="section-count">${section.count} prací</span>
+            </div>
+            <table class="works-table">
+              <thead>
+                <tr>
+                  <th>Název Práce</th>
+                  <th>TSKP Kód</th>
+                  <th>Kategorie</th>
+                  <th>Jednotka</th>
+                  <th>Množství</th>
+                  <th>Jistota</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${section.works.map(work => `
+                  <tr>
+                    <td>${work.name || ''}</td>
+                    <td>
+                      ${work.tskp_code
+                        ? `<span class="tskp-code">${work.tskp_code}</span>`
+                        : '<span class="tskp-missing">—</span>'
+                      }
+                    </td>
+                    <td>${work.category || '—'}</td>
+                    <td>${work.unit || '—'}</td>
+                    <td>${work.quantity !== null ? work.quantity : '—'}</td>
+                    <td>${work.tskp_code ? confidenceBadge(work.tskp_confidence) : '—'}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Show results section
+    if (extractionResults) {
+      extractionResults.style.display = 'block';
+    }
+
+    // Store extraction results globally for export
+    window.extractedWorks = extraction;
+
+    // Attach export handlers
+    const exportExcelBtn = document.getElementById('export-works-excel');
+    const sendToBatchBtn = document.getElementById('send-to-batch');
+
+    if (exportExcelBtn) {
+      exportExcelBtn.onclick = exportWorksToExcel;
+    }
+
+    if (sendToBatchBtn) {
+      sendToBatchBtn.onclick = sendWorksToBatch;
+    }
+
+    debugLog('🔬 ✓ Extracted works displayed');
+  }
+
+  // Export works to Excel
+  function exportWorksToExcel() {
+    if (!window.extractedWorks) {
+      showError('Nejsou k dispozici žádná data pro export');
+      return;
+    }
+
+    // Create CSV
+    let csv = 'Sekce,Název Práce,TSKP Kód,Kategorie,Jednotka,Množství,Jistota\n';
+
+    window.extractedWorks.sections.forEach(section => {
+      section.works.forEach(work => {
+        const confidence = work.tskp_confidence
+          ? (work.tskp_confidence * 100).toFixed(0) + '%'
+          : '';
+
+        csv += `"${section.name}","${work.name || ''}","${work.tskp_code || ''}","${work.category || ''}","${work.unit || ''}","${work.quantity !== null ? work.quantity : ''}","${confidence}"\n`;
+      });
+    });
+
+    // Download CSV with UTF-8 BOM for Excel
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `extracted_works_${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+
+    debugLog('📥 ✓ Works exported to Excel');
+  }
+
+  // Send works to batch processor
+  function sendWorksToBatch() {
+    if (!window.extractedWorks) {
+      showError('Nejsou k dispozici žádná data');
+      return;
+    }
+
+    // Prepare batch input text
+    const batchText = window.extractedWorks.works.map(work => {
+      return `${work.name} ${work.unit ? `[${work.unit}]` : ''}`;
+    }).join('\n');
+
+    // Store in sessionStorage
+    sessionStorage.setItem('batchInputText', batchText);
+
+    // Switch to batch section
+    const batchTextInput = document.getElementById('batchTextInput');
+    if (batchTextInput) {
+      batchTextInput.value = batchText;
+    }
+
+    // Navigate to batch section
+    const openBatchBtn = document.getElementById('openBatchBtn');
+    if (openBatchBtn) {
+      openBatchBtn.click();
+      debugLog('📋 ✓ Works sent to batch processor');
+    } else {
+      showError('Batch procesor není k dispozici');
+    }
   }
 
   // Add back button handler for document upload section
