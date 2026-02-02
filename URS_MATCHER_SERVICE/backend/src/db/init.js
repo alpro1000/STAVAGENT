@@ -90,6 +90,86 @@ async function runMigrations(db) {
       logger.warn(`[DB] Migration 1 error: ${error.message}`);
     }
 
+    // Migration 2: Create batch tables (for Batch URS Matcher)
+    try {
+      const tables = await db.all("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('batch_jobs', 'batch_items', 'batch_cache')");
+      const hasBatchTables = tables.length === 3;
+
+      if (!hasBatchTables) {
+        // batch_jobs
+        await db.exec(`
+          CREATE TABLE IF NOT EXISTS batch_jobs (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            status TEXT NOT NULL CHECK(status IN ('queued', 'running', 'paused', 'completed', 'failed')),
+            settings TEXT NOT NULL,
+            total_items INTEGER DEFAULT 0,
+            processed_items INTEGER DEFAULT 0,
+            error_count INTEGER DEFAULT 0,
+            needs_review_count INTEGER DEFAULT 0,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            started_at DATETIME,
+            completed_at DATETIME,
+            error_message TEXT,
+            portal_project_id TEXT
+          );
+        `);
+
+        // batch_items
+        await db.exec(`
+          CREATE TABLE IF NOT EXISTS batch_items (
+            id TEXT PRIMARY KEY,
+            batch_id TEXT NOT NULL REFERENCES batch_jobs(id) ON DELETE CASCADE,
+            line_no INTEGER,
+            original_text TEXT NOT NULL,
+            context TEXT,
+            normalized_text TEXT,
+            detected_type TEXT CHECK(detected_type IN ('SINGLE', 'COMPOSITE', 'UNKNOWN')),
+            status TEXT NOT NULL CHECK(status IN ('queued', 'parsed', 'split', 'retrieved', 'ranked', 'done', 'error', 'needs_review')),
+            sub_works TEXT,
+            results TEXT,
+            error_message TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+          );
+        `);
+
+        // batch_cache
+        await db.exec(`
+          CREATE TABLE IF NOT EXISTS batch_cache (
+            id TEXT PRIMARY KEY,
+            cache_key TEXT NOT NULL UNIQUE,
+            stage TEXT NOT NULL CHECK(stage IN ('split', 'retrieve', 'rerank')),
+            result TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            expires_at DATETIME,
+            hit_count INTEGER DEFAULT 0,
+            last_accessed_at DATETIME
+          );
+        `);
+
+        // Indexes
+        await db.exec(`
+          CREATE INDEX IF NOT EXISTS idx_batch_jobs_status ON batch_jobs(status);
+          CREATE INDEX IF NOT EXISTS idx_batch_jobs_created ON batch_jobs(created_at DESC);
+          CREATE INDEX IF NOT EXISTS idx_batch_jobs_portal_project ON batch_jobs(portal_project_id);
+          CREATE INDEX IF NOT EXISTS idx_batch_items_batch_id ON batch_items(batch_id);
+          CREATE INDEX IF NOT EXISTS idx_batch_items_status ON batch_items(status);
+          CREATE INDEX IF NOT EXISTS idx_batch_items_batch_status ON batch_items(batch_id, status);
+          CREATE INDEX IF NOT EXISTS idx_batch_cache_key ON batch_cache(cache_key);
+          CREATE INDEX IF NOT EXISTS idx_batch_cache_expires ON batch_cache(expires_at);
+          CREATE INDEX IF NOT EXISTS idx_batch_cache_stage ON batch_cache(stage);
+        `);
+
+        logger.info('[DB] ✓ Migration 2: Created batch tables (batch_jobs, batch_items, batch_cache)');
+      } else {
+        logger.info('[DB] ✓ Migration 2: Batch tables already exist');
+      }
+    } catch (error) {
+      logger.warn(`[DB] Migration 2 error: ${error.message}`);
+    }
+
     logger.info('[DB] Migrations completed');
   } catch (error) {
     logger.error(`[DB] Migrations error: ${error.message}`);
