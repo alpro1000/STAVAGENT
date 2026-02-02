@@ -13,7 +13,7 @@
  */
 
 import { logger } from '../../utils/logger.js';
-import { searchPerplexity } from '../perplexityClient.js';
+import { searchUrsSite } from '../perplexityClient.js';
 
 // ============================================================================
 // MAIN RETRIEVAL FUNCTION
@@ -242,32 +242,20 @@ function buildDeepQuery(subWork) {
  */
 async function searchURS(query) {
   try {
-    // Build Perplexity prompt
-    const prompt = `Find ÚRS (Cenové soustavy) codes for this construction work: "${query}"
+    // Call searchUrsSite (it builds the prompt internally)
+    const candidates = await searchUrsSite(query);
 
-Search the online ÚRS catalogs (http://katalogy.ckait.cz or similar) and return:
-- ÚRS code (9-digit number, e.g., "274313811")
-- ÚRS name (Czech name of the work item)
-- Unit (MJ: m, m2, m3, kg, ks, t)
-- Short snippet (1 sentence from description)
-
-Return 5-10 relevant items in this format:
-CODE | NAME | UNIT | SNIPPET
-
-Example:
-274313811 | Základové pasy z betonu tř. C 25/30 | m3 | Betonáž základových pasů z betonu pevnostní třídy C 25/30
-273326121 | Základová deska z betonu C 25/30 | m3 | Zřízení základové desky včetně uložení výztuže`;
-
-    // Call Perplexity
-    const response = await searchPerplexity(prompt);
-
-    // Parse response into candidates
-    const candidates = parsePerplexityResponse(response, query);
-
-    return candidates;
+    // searchUrsSite already returns structured candidates
+    // Add searchQuery field to each candidate
+    return candidates.map(c => ({
+      ...c,
+      code: c.urs_code || c.code,
+      name: c.urs_name || c.name,
+      searchQuery: query
+    }));
 
   } catch (error) {
-    logger.warn(`[CandidateRetriever] Perplexity search failed: ${error.message}`);
+    logger.warn(`[CandidateRetriever] URS search failed: ${error.message}`);
     return [];
   }
 }
