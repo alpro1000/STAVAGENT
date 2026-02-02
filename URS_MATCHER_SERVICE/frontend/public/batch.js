@@ -3,6 +3,9 @@
  * Handles batch processing UI and API communication
  */
 
+(function() {
+'use strict';
+
 // ============================================================================
 // DOM ELEMENTS
 // ============================================================================
@@ -445,3 +448,5 @@ if (batchExportBtn) {
 }
 
 debugLog('✅ Batch module loaded');
+
+})();
