@@ -1049,3 +1049,191 @@ input[type="number"] {
     grid-template-columns: 1fr;
   }
 }
+
+/* ============================================================================
+   BATCH MODE STYLES
+   ============================================================================ */
+
+.batch-input-area {
+  background: var(--bg-secondary);
+  padding: var(--space-lg);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--space-lg);
+}
+
+.batch-input-area h3,
+.batch-input-area h4 {
+  margin-top: 0;
+  margin-bottom: var(--space-md);
+  color: var(--text-primary);
+}
+
+#batchTextInput {
+  width: 100%;
+  min-height: 200px;
+  padding: var(--space-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-family: monospace;
+  font-size: 14px;
+  resize: vertical;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  margin-bottom: var(--space-md);
+}
+
+.batch-settings {
+  margin: var(--space-lg) 0;
+}
+
+.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-md);
+}
+
+.settings-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  font-weight: 500;
+}
+
+.settings-grid select {
+  padding: var(--space-sm);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.batch-actions {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-lg);
+}
+
+/* Progress */
+.batch-progress {
+  background: var(--bg-secondary);
+  padding: var(--space-lg);
+  border-radius: var(--border-radius);
+  margin-bottom: var(--space-lg);
+}
+
+.progress-bar-container {
+  width: 100%;
+  height: 30px;
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  margin: var(--space-md) 0;
+  border: 1px solid var(--border-color);
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+  transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 600;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  margin: var(--space-sm) 0;
+  color: var(--text-primary);
+}
+
+.progress-details {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 14px;
+}
+
+.progress-details span {
+  margin: 0 var(--space-md);
+}
+
+/* Results Table */
+.batch-results {
+  background: var(--bg-secondary);
+  padding: var(--space-lg);
+  border-radius: var(--border-radius);
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin: var(--space-md) 0;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  background: var(--bg-primary);
+  border-radius: var(--border-radius);
+}
+
+.results-table th {
+  background: var(--accent-primary);
+  color: white;
+  padding: var(--space-md);
+  text-align: left;
+  font-weight: 600;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.results-table td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.results-table tr:hover {
+  background: var(--bg-secondary);
+}
+
+.results-table tr.high-confidence {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.results-table tr.low-confidence {
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.results-table tr.error-row {
+  background: rgba(244, 67, 54, 0.1);
+}
+
+.confidence-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.confidence-badge.high {
+  background: #4CAF50;
+  color: white;
+}
+
+.confidence-badge.medium {
+  background: #FF9800;
+  color: white;
+}
+
+.confidence-badge.low {
+  background: #FFC107;
+  color: black;
+}

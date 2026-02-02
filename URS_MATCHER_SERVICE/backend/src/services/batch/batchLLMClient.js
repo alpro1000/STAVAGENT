@@ -11,7 +11,8 @@
  */
 
 import { logger } from '../../utils/logger.js';
-import { callLLMForTask, getTaskTypes } from '../llmClient.js';
+import { callLLMForTask } from '../llmClient.js';
+import { getTaskTypes } from '../../config/llmConfig.js';
 
 const TASKS = getTaskTypes();
 

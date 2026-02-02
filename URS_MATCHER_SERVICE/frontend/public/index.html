@@ -88,6 +88,17 @@
                 📄 Nahrát Dokumenty
               </button>
             </div>
+
+            <!-- Batch Mode (NEW) -->
+            <div class="action-card">
+              <div class="action-icon">📋</div>
+              <h3>Dávkové zpracování</h3>
+              <p>Seznam pozic → automatické vyhledání ÚRS kódů</p>
+
+              <button class="btn btn-primary" id="openBatchBtn">
+                📋 Dávkový režim
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -100,6 +111,97 @@
       <!-- Context Editor Section (Phase 2) -->
       <div id="contextEditorSection" class="section hidden">
         <div id="contextEditorContainer"></div>
+      </div>
+
+      <!-- Batch Mode Section (NEW) -->
+      <div id="batchSection" class="section hidden">
+        <div class="section-content">
+          <div class="results-header">
+            <h2>📋 Dávkové zpracování</h2>
+            <button class="btn btn-secondary" id="backFromBatchBtn">← Zpět</button>
+          </div>
+
+          <!-- Input Area -->
+          <div class="batch-input-area">
+            <h3>Vstup</h3>
+            <textarea id="batchTextInput" placeholder="Vložte seznam pozic (každá na novém řádku):&#10;Výkop stavební jámy kat. 3&#10;Beton C 25/30 vč. doprava&#10;Výztuž B 500" rows="10"></textarea>
+
+            <!-- Settings -->
+            <div class="batch-settings">
+              <h4>Nastavení</h4>
+              <div class="settings-grid">
+                <label>
+                  Kandidátů na práci:
+                  <select id="batchCandidatesPerWork">
+                    <option value="3">3</option>
+                    <option value="4" selected>4</option>
+                    <option value="5">5</option>
+                  </select>
+                </label>
+                <label>
+                  Hloubka hledání:
+                  <select id="batchSearchDepth">
+                    <option value="quick">Rychlá</option>
+                    <option value="normal" selected>Normální</option>
+                    <option value="deep">Hluboká</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="batch-actions">
+              <button class="btn btn-primary" id="batchStartBtn">
+                🚀 Spustit zpracování
+              </button>
+              <button class="btn btn-secondary" id="batchPauseBtn" disabled>
+                ⏸️ Pozastavit
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Area -->
+          <div class="batch-progress" id="batchProgressArea" style="display: none;">
+            <h3>Průběh zpracování</h3>
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="batchProgressBar" style="width: 0%;"></div>
+            </div>
+            <p class="progress-text" id="batchProgressText">0 / 0 (0%)</p>
+            <p class="progress-details">
+              <span id="batchNeedsReview">⚠️ Kontrola: 0</span> |
+              <span id="batchErrors">❌ Chyby: 0</span>
+            </p>
+          </div>
+
+          <!-- Results Table -->
+          <div class="batch-results" id="batchResultsArea" style="display: none;">
+            <h3>Výsledky</h3>
+            <div class="table-wrapper">
+              <table class="results-table" id="batchResultsTable">
+                <thead>
+                  <tr>
+                    <th>№</th>
+                    <th>Původní text</th>
+                    <th>Typ</th>
+                    <th>ÚRS Kód</th>
+                    <th>Název</th>
+                    <th>Skóre</th>
+                    <th>Jistota</th>
+                    <th>Kontrola</th>
+                  </tr>
+                </thead>
+                <tbody id="batchResultsBody">
+                  <!-- Results will be inserted here -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="results-actions">
+              <button class="btn btn-success" id="batchExportBtn">
+                📥 Stáhnout Excel
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Results Section -->
@@ -201,5 +303,6 @@
   </div>
 
   <script src="/app.js"></script>
+  <script src="/batch.js"></script>
 </body>
 </html>
