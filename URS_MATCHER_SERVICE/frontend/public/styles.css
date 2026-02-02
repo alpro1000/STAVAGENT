@@ -275,6 +275,92 @@ html, body {
   transition: all var(--transition-fast);
 }
 
+/* Processing Mode Selector (Radio Buttons) */
+.processing-mode-selector {
+  margin: var(--space-md) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.mode-option {
+  display: block;
+  cursor: pointer;
+  position: relative;
+}
+
+.mode-option input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.mode-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+  background: var(--panel-clean);
+  border: 2px solid var(--edge-light);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-button);
+}
+
+.mode-option input[type="radio"]:checked + .mode-card {
+  border-color: var(--accent-orange);
+  background: var(--panel-clean-end);
+  box-shadow: 0 0 0 3px rgba(255, 159, 28, 0.1),
+              var(--shadow-hover);
+}
+
+.mode-option:hover .mode-card {
+  border-color: var(--accent-orange);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+
+.mode-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.mode-icon {
+  font-size: 1.2em;
+  flex-shrink: 0;
+}
+
+.mode-timing {
+  margin-left: auto;
+  font-size: 0.85em;
+  color: var(--text-muted);
+  font-weight: normal;
+  background: var(--bg-primary);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--edge-light);
+}
+
+.mode-card .mode-description {
+  color: var(--text-secondary);
+  font-size: 0.85em;
+  line-height: 1.5;
+  margin-left: calc(1.2em + var(--space-sm)); /* Align with text after icon */
+}
+
+.mode-option input[type="radio"]:checked + .mode-card .mode-header {
+  color: var(--accent-orange);
+}
+
+.mode-option input[type="radio"]:checked + .mode-card .mode-timing {
+  background: var(--accent-orange);
+  color: white;
+  border-color: var(--accent-orange);
+}
+
 /* ============================================
    BUTTONS (using design system)
    ============================================ */
