@@ -193,3 +193,93 @@ CREATE INDEX IF NOT EXISTS idx_catalog_versions_active ON catalog_versions(statu
 CREATE INDEX IF NOT EXISTS idx_catalog_audit_action ON catalog_audit_log(action);
 CREATE INDEX IF NOT EXISTS idx_catalog_audit_timestamp ON catalog_audit_log(timestamp DESC);
 
+-- ============================================================================
+-- BATCH URS MATCHER (NEW - 2026-02-02)
+-- ============================================================================
+-- Purpose: Support batch processing of BOQ lists with composite work detection
+-- ============================================================================
+
+-- Batch Jobs: Top-level batch processing jobs
+CREATE TABLE IF NOT EXISTS batch_jobs (
+  id TEXT PRIMARY KEY,                                  -- UUID
+  name TEXT NOT NULL,                                   -- User-friendly name
+  status TEXT NOT NULL CHECK(status IN ('queued', 'running', 'paused', 'completed', 'failed')),
+  settings TEXT NOT NULL,                               -- JSON: {candidatesPerWork, maxSubWorks, searchDepth, language}
+
+  -- Progress tracking
+  total_items INTEGER DEFAULT 0,
+  processed_items INTEGER DEFAULT 0,
+  error_count INTEGER DEFAULT 0,
+  needs_review_count INTEGER DEFAULT 0,
+
+  -- Timing
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  started_at DATETIME,
+  completed_at DATETIME,
+
+  -- Error handling
+  error_message TEXT,
+
+  -- Link to portal project (optional)
+  portal_project_id TEXT
+);
+
+-- Batch Items: Individual positions within a batch job
+CREATE TABLE IF NOT EXISTS batch_items (
+  id TEXT PRIMARY KEY,                                  -- UUID
+  batch_id TEXT NOT NULL REFERENCES batch_jobs(id) ON DELETE CASCADE,
+
+  -- Input data
+  line_no INTEGER,                                      -- Original line number (if any)
+  original_text TEXT NOT NULL,                          -- Raw position text
+  context TEXT,                                         -- JSON: {parentText, previousRows, subordinates}
+
+  -- Processing results
+  normalized_text TEXT,                                 -- Cleaned text
+  detected_type TEXT CHECK(detected_type IN ('SINGLE', 'COMPOSITE', 'UNKNOWN')),
+  status TEXT NOT NULL CHECK(status IN ('queued', 'parsed', 'split', 'retrieved', 'ranked', 'done', 'error', 'needs_review')),
+
+  -- Results
+  sub_works TEXT,                                       -- JSON: [{index, text, operation, keywords, features}]
+  results TEXT,                                         -- JSON: [{subWork, candidates: [{rank, code, name, unit, score, confidence, reason, evidence, needsReview, source}]}]
+
+  -- Error handling
+  error_message TEXT,
+
+  -- Timing
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Batch Cache: Cache API results to avoid duplicate calls
+CREATE TABLE IF NOT EXISTS batch_cache (
+  id TEXT PRIMARY KEY,                                  -- UUID
+  cache_key TEXT NOT NULL UNIQUE,                       -- Hash of (input + settings)
+  stage TEXT NOT NULL CHECK(stage IN ('split', 'retrieve', 'rerank')),
+
+  -- Cached result
+  result TEXT NOT NULL,                                 -- JSON result
+
+  -- Metadata
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  expires_at DATETIME,                                  -- NULL = never expires
+
+  -- Usage tracking
+  hit_count INTEGER DEFAULT 0,
+  last_accessed_at DATETIME
+);
+
+-- Indexes for batch tables
+CREATE INDEX IF NOT EXISTS idx_batch_jobs_status ON batch_jobs(status);
+CREATE INDEX IF NOT EXISTS idx_batch_jobs_created ON batch_jobs(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_batch_jobs_portal_project ON batch_jobs(portal_project_id);
+
+CREATE INDEX IF NOT EXISTS idx_batch_items_batch_id ON batch_items(batch_id);
+CREATE INDEX IF NOT EXISTS idx_batch_items_status ON batch_items(status);
+CREATE INDEX IF NOT EXISTS idx_batch_items_batch_status ON batch_items(batch_id, status);
+
+CREATE INDEX IF NOT EXISTS idx_batch_cache_key ON batch_cache(cache_key);
+CREATE INDEX IF NOT EXISTS idx_batch_cache_expires ON batch_cache(expires_at);
+CREATE INDEX IF NOT EXISTS idx_batch_cache_stage ON batch_cache(stage);
+
