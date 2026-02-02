@@ -15,8 +15,7 @@
  */
 
 import { logger } from '../../utils/logger.js';
-import { callLLM } from '../llmClient.js';
-import { getModelForTask, getTaskTypes } from '../../config/llmConfig.js';
+import { callLLM } from './batchLLMClient.js';
 
 // ============================================================================
 // MAIN RERANKING FUNCTION
@@ -54,9 +53,7 @@ export async function rerank(subWork, candidates, topN = 4) {
     // Build LLM prompt
     const prompt = buildRerankPrompt(subWork, candidates, topN);
 
-    // Get Gemini model config
-    const modelConfig = getModelForTask(getTaskTypes().URS_SELECTION);
-    logger.info(`[CandidateReranker] Using model: ${modelConfig.provider}/${modelConfig.model}`);
+    logger.info(`[CandidateReranker] Calling LLM for candidate reranking`);
 
     // Call LLM
     const llmStartTime = Date.now();
@@ -68,8 +65,9 @@ export async function rerank(subWork, candidates, topN = 4) {
         }
       ],
       maxTokens: 2000,
-      temperature: 0.1  // Very low temperature for consistency
-    }, modelConfig);
+      temperature: 0.1,  // Very low temperature for consistency
+      taskType: 'URS_SELECTION'  // Use cheapest model (Gemini)
+    });
     const llmElapsed = Date.now() - llmStartTime;
 
     logger.debug(`[CandidateReranker] LLM response: ${llmResponse.content}`);
