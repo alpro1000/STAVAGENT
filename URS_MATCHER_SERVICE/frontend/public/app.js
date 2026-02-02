@@ -31,7 +31,6 @@ debugLog(`API_URL: ${API_URL}`);
 const fileInput = document.getElementById('fileInput');
 const fileDropZone = document.getElementById('fileDropZone');
 const processFileBtn = document.getElementById('processFileBtn');
-const projectContextInput = document.getElementById('projectContextInput');
 const textInput = document.getElementById('textInput');
 const quantityInput = document.getElementById('quantityInput');
 const unitInput = document.getElementById('unitInput');
@@ -55,8 +54,8 @@ const themeIcon = document.getElementById('themeIcon');
 const themeText = document.getElementById('themeText');
 
 // Processing Mode Elements
-const advancedModeCheckbox = document.getElementById('advancedModeCheckbox');
-const processingHint = document.getElementById('processingHint');
+const fastModeRadio = document.getElementById('fastModeRadio');
+const advancedModeRadio = document.getElementById('advancedModeRadio');
 
 // ============================================================================
 // THEME TOGGLE (Digital Concrete Design System v2.0)
@@ -114,36 +113,39 @@ function initProcessingMode() {
   const savedMode = localStorage.getItem('urs-matcher-advanced-mode');
   const isAdvanced = savedMode === 'true';
 
-  if (advancedModeCheckbox) {
-    advancedModeCheckbox.checked = isAdvanced;
-    updateProcessingHint(isAdvanced);
+  if (fastModeRadio && advancedModeRadio) {
+    if (isAdvanced) {
+      advancedModeRadio.checked = true;
+    } else {
+      fastModeRadio.checked = true;
+    }
     debugLog(`🔧 Processing mode initialized: ${isAdvanced ? 'Advanced' : 'Fast'}`);
   }
 }
 
-function updateProcessingHint(isAdvanced) {
-  if (!processingHint) return;
-
-  if (isAdvanced) {
-    processingHint.innerHTML = '🧠 <strong>Rozšířený režim:</strong> Multi-Role AI validace (pomalejší, pro složité TZ a dokumentaci)';
-    processingHint.style.color = 'var(--accent-orange)';
-  } else {
-    processingHint.innerHTML = '⚡ <strong>Rychlý režim:</strong> optimalizovaný pipeline (Gemini + Local DB + Perplexity)';
-    processingHint.style.color = 'var(--text-secondary)';
-  }
+// Processing Mode Change Event Listeners
+if (fastModeRadio) {
+  fastModeRadio.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      localStorage.setItem('urs-matcher-advanced-mode', 'false');
+      debugLog('🔧 Processing mode changed to: Fast');
+    }
+  });
 }
 
-// Processing Mode Change Event Listener
-if (advancedModeCheckbox) {
-  advancedModeCheckbox.addEventListener('change', (e) => {
-    const isAdvanced = e.target.checked;
-    localStorage.setItem('urs-matcher-advanced-mode', isAdvanced);
-    updateProcessingHint(isAdvanced);
-    debugLog(`🔧 Processing mode changed to: ${isAdvanced ? 'Advanced' : 'Fast'}`);
+if (advancedModeRadio) {
+  advancedModeRadio.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      localStorage.setItem('urs-matcher-advanced-mode', 'true');
+      debugLog('🔧 Processing mode changed to: Advanced');
+    }
   });
+}
+
+if (fastModeRadio && advancedModeRadio) {
   debugLog('✅ Processing mode toggle initialized');
 } else {
-  debugError('⚠️ Processing mode checkbox not found!');
+  debugError('⚠️ Processing mode radio buttons not found!');
 }
 
 // Initialize processing mode on load
@@ -157,7 +159,8 @@ debugLog('✓ DOM Elements found:', {
   fileInput: !!fileInput,
   fileDropZone: !!fileDropZone,
   processFileBtn: !!processFileBtn,
-  projectContextInput: !!projectContextInput,
+  fastModeRadio: !!fastModeRadio,
+  advancedModeRadio: !!advancedModeRadio,
   textInput: !!textInput,
   quantityInput: !!quantityInput,
   unitInput: !!unitInput,
@@ -238,15 +241,8 @@ async function processFile() {
     const formData = new FormData();
     formData.append('file', fileInput.files[0]);
 
-    if (projectContextInput.value.trim()) {
-      formData.append('project_context', projectContextInput.value.trim());
-      debugLog('📊 Project context provided:', projectContextInput.value.trim());
-    } else {
-      debugLog('📊 No project context provided');
-    }
-
     // Choose endpoint based on processing mode
-    const isAdvancedMode = advancedModeCheckbox && advancedModeCheckbox.checked;
+    const isAdvancedMode = advancedModeRadio && advancedModeRadio.checked;
     const endpoint = isAdvancedMode ? '/jobs/block-match' : '/jobs/block-match-fast';
 
     debugLog(`📊 Processing mode: ${isAdvancedMode ? 'Advanced (Multi-Role)' : 'Fast (Optimized)'}`);

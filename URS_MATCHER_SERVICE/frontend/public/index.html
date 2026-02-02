@@ -39,15 +39,39 @@
                 <span class="upload-text">Klikněte nebo táhněte soubor sem</span>
               </div>
 
-              <textarea id="projectContextInput" placeholder='Kontext projektu (volitelné, JSON formát):&#10;{"building_type":"bytový dům","storeys":4,"main_system":["Porotherm","ŽB"]}' rows="3"></textarea>
-
               <!-- Processing Mode Selection -->
-              <div class="processing-mode">
-                <label class="mode-toggle">
-                  <input type="checkbox" id="advancedModeCheckbox">
-                  <span class="mode-label">
-                    <strong>Rozšířený režim</strong>
-                    <span class="mode-description">Multi-Role AI validace (pomalejší, pro složité TZ a dokumentaci)</span>
+              <div class="processing-mode-selector">
+                <h4 style="margin: 1rem 0 0.5rem; font-size: 0.9rem; color: var(--text-muted);">Režim zpracování:</h4>
+
+                <label class="mode-option">
+                  <input type="radio" name="processingMode" id="fastModeRadio" value="fast" checked>
+                  <span class="mode-card">
+                    <span class="mode-header">
+                      <span class="mode-icon">⚡</span>
+                      <strong>Rychlý režim</strong>
+                      <span class="mode-timing">~2-3 min</span>
+                    </span>
+                    <span class="mode-description">
+                      Optimalizovaný pipeline pro běžné BOQ listy
+                      <br>• Gemini AI + Lokální databáze + Perplexity
+                      <br>• Doporučeno pro většinu souborů
+                    </span>
+                  </span>
+                </label>
+
+                <label class="mode-option">
+                  <input type="radio" name="processingMode" id="advancedModeRadio" value="advanced">
+                  <span class="mode-card">
+                    <span class="mode-header">
+                      <span class="mode-icon">🧠</span>
+                      <strong>Rozšířený režim</strong>
+                      <span class="mode-timing">~5-10 min</span>
+                    </span>
+                    <span class="mode-description">
+                      Multi-Role AI validace (6 expertních rolí)
+                      <br>• Hluboká analýza + ČSN kontrola
+                      <br>• Pro složité TZ, dokumentaci, nestandartní formáty
+                    </span>
                   </span>
                 </label>
               </div>
@@ -57,7 +81,6 @@
                   📊 Zpracovat soubor
                 </button>
               </div>
-              <p class="action-hint" id="processingHint">⚡ Rychlý režim: optimalizovaný pipeline (Gemini + Local DB + Perplexity)</p>
             </div>
 
             <!-- Text Input -->
