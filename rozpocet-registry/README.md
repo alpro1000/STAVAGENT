@@ -3,7 +3,7 @@
 **Verze:** 2.1.0
 **Status:** ✅ Production Ready
 **Projekt:** STAVAGENT Ecosystem
-**Last Updated:** 2026-01-28
+**Last Updated:** 2026-01-29
 
 ---
 
@@ -37,8 +37,24 @@ Kompletní nástroj pro zpracování rozpočtů s pokročilými funkcemi:
 
 ### 📊 Automatická klasifikace
 - AI-asistované třídění položek do skupin
-- 10 standardních skupin (ZEMNI_PRACE, BETON_MONOLIT, KOTVENI, atd.)
+- 10 standardních skupin (ZEMNÍ_PRACE, BETON_MONOLIT, KOTVENÍ, atd.)
 - Přehled neklasifikovaných položek
+
+### 🤖 AI Agent (v2.1.0)
+- **Autonomní klasifikační systém** - Nezávislý na concrete-agent
+- **Multi-Layer Decision Pipeline:**
+  - Cache → Rules → Memory → Gemini
+  - 4 zdroje klasifikace (rule/memory/gemini/cache)
+- **AI On/Off Toggle:**
+  - AI Mode: Gemini + Memory + Rules (vyšší přesnost)
+  - Rules-only Mode: Deterministická klasifikace (bez nákladů)
+- **Learning System:**
+  - Checkbox "💡 Zapamatovat pro podobné pozice"
+  - Explicitní souhlas uživatele (ne automatické učení)
+  - Memory Store pro potvrzené vzory
+- **Operace:**
+  - "Klasifikovat prázdné" - Jen prázdné položky
+  - "Překlasifikovat vše" - Všechny položky (s potvrzením)
 
 ### 🏷️ Row Classification (v2.1.0)
 - **Main rows:** Položky s kódem (URS 6+ číslic, OTSKP, RTS, 3+ číslic)
@@ -128,6 +144,19 @@ npm run build
 
 ```
 rozpocet-registry/
+├── api/                    # Vercel Serverless Functions (NEW in v2.1.0)
+│   ├── ai-agent.ts         # Unified AI endpoint
+│   ├── agent/              # AI Agent modules
+│   │   ├── types.ts        # TypeScript interfaces
+│   │   ├── rowpack.ts      # RowPack Builder (main + subordinate context)
+│   │   ├── rules.ts        # Rules Layer (11 classification rules)
+│   │   ├── memory.ts       # Memory Store (learning system)
+│   │   ├── gemini.ts       # Gemini Connector (direct API)
+│   │   ├── orchestrator.ts # Decision Orchestrator (4-layer pipeline)
+│   │   ├── classify-rules-only.ts # Rules-only service
+│   │   └── README.md       # AI Agent documentation (727 lines)
+│   ├── group.ts            # Group management API
+│   └── search.ts           # Search API
 ├── src/
 │   ├── services/           # Business logic
 │   │   ├── search/         # Fuzzy search (Phase 6)
@@ -394,6 +423,52 @@ Filozofie designu: "Elementy rozhraní = betonové bloky"
 
 ---
 
+### ✅ Fáze 8: AI Agent (Complete)
+- [x] Autonomní AI agent (nezávislý na concrete-agent)
+- [x] Multi-layer decision pipeline (Cache → Rules → Memory → Gemini)
+- [x] AI on/off toggle (cost control)
+- [x] Rules-only mode (deterministická klasifikace)
+- [x] Learning system s explicitním souhlasem (checkbox)
+- [x] Memory Store (in-memory Phase 1)
+- [x] RowPack Builder (main + subordinate context)
+- [x] Gemini direct integration
+- [x] Vercel serverless functions
+- [x] Unified endpoint (classify-empty, classify-all, record-correction)
+
+**Datum:** 2026-01-29
+**Commits:** 8dfc512, 6294b1a, 6c9592e, c57df5d, 63e0ea7
+
+**Klíčové soubory:**
+- `api/ai-agent.ts` (317 řádků - unified endpoint)
+- `api/agent/orchestrator.ts` (225 řádků - decision coordinator)
+- `api/agent/rules.ts` (207 řádků - 11 classification rules)
+- `api/agent/memory.ts` (177 řádků - learning system)
+- `api/agent/gemini.ts` (214 řádků - Gemini connector)
+- `api/agent/rowpack.ts` (170 řádků - context builder)
+- `api/agent/README.md` (727 řádků - documentation)
+- `src/components/ai/AIPanel.tsx` (404 řádků - full rewrite)
+- `src/components/items/SkupinaAutocomplete.tsx` (+learning checkbox)
+
+**Decision Flow:**
+```
+User Action → AI Enabled?
+              ├─ YES → Cache → Rules → Memory → Gemini
+              └─ NO  → Rules Only (deterministic)
+```
+
+**Learning System:**
+- Checkbox: "💡 Zapamatovat pro podobné pozice"
+- User explicitly chooses when to teach AI
+- Prevents pollution with temporary/experimental decisions
+
+**Statistics:**
+- Total: 2,214 lines of new code (agent modules)
+- +2,643 insertions, -718 deletions (overall)
+- Build time: 11.84s
+- Vercel functions: 13 (under limit)
+
+---
+
 ## 📈 Budoucí vylepšení (v2.1+)
 
 ### Performance
@@ -504,14 +579,26 @@ npm run deploy
 
 ## ⚙️ Konfigurace
 
-### Environment Variables (Nepovinné)
+### Environment Variables
 
 ```bash
-# .env.production
+# .env.production (Vercel)
+
+# AI Agent (NEW in v2.1.0)
+GOOGLE_API_KEY=your_gemini_api_key_here  # Required for AI mode
+AI_ENABLED=true                           # Global AI toggle (default: true)
+GEMINI_MODEL=gemini-2.0-flash-exp         # Gemini model (default)
+
+# App Config (Optional)
 VITE_APP_TITLE=Rozpočet Registry
-VITE_APP_VERSION=2.0.0
-VITE_MAX_FILE_SIZE=10485760  # 10 MB
+VITE_APP_VERSION=2.1.0
+VITE_MAX_FILE_SIZE=10485760               # 10 MB
 ```
+
+**AI Agent Notes:**
+- `GOOGLE_API_KEY` is required for AI mode (Gemini classification)
+- Without API key: falls back to Rules-only mode (deterministic)
+- Users can override with AI toggle in UI (even if API key is set)
 
 ### Browser Storage
 
@@ -628,7 +715,7 @@ dist/assets/index-[hash].css    5.86 kB   │ gzip: 23.37 kB
 
 **Rozpočet Registry v2.1.0 je připraven pro produkci!**
 
-Všech 7 fází + Row Classification dokončeno:
+Všech 8 fází dokončeno:
 - ✅ Phase 1: Design System
 - ✅ Phase 2: Template Selector
 - ✅ Phase 3: Custom Templates
@@ -636,7 +723,13 @@ Všech 7 fází + Row Classification dokončeno:
 - ✅ Phase 5: Auto-Classification (10 work groups)
 - ✅ Phase 6: Multi-Project Search
 - ✅ Phase 7: Excel Export
-- ✅ Phase 8: Row Classification (main/subordinate/section roles)
+- ✅ Phase 8: AI Agent (autonomous classification + learning system)
+
+**Bonusy:**
+- ✅ Row Classification (main/subordinate/section roles)
+- ✅ AI On/Off Toggle (cost control)
+- ✅ Learning System with explicit consent
+- ✅ Memory Store (in-memory Phase 1)
 
 **Aplikace je plně funkční a připravená k nasazení.**
 
