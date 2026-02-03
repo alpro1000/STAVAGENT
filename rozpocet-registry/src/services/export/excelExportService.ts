@@ -65,10 +65,10 @@ const CODE_ROW_STYLE: XLSX.CellStyle = {
   },
 };
 
-// Description row (no kod): white background
+// Description row (subordinate/no kod): light gray background with italic text
 const DESC_ROW_STYLE: XLSX.CellStyle = {
-  fill: { fgColor: { rgb: 'FFFFFF' } },
-  font: { name: 'Calibri', sz: 10, color: { rgb: '475569' } },  // slate-600
+  fill: { fgColor: { rgb: 'F8FAFC' } },  // slate-50
+  font: { name: 'Calibri', sz: 10, color: { rgb: '64748B' }, italic: true },  // slate-500, italic
   border: {
     bottom: { style: 'thin', color: { rgb: 'F1F5F9' } },  // very light
   },
@@ -206,6 +206,9 @@ function createStyledItemsSheet(
   // Track row types for styling: 'header' | 'group' | 'code' | 'desc'
   const rowTypes: string[] = ['header'];
 
+  // Track outline levels for Excel grouping (collapsible rows)
+  const outlineLevels: number[] = [0]; // header = level 0 (no grouping)
+
   let currentGroup: string | null = null;
 
   for (const item of sortedItems) {
@@ -216,16 +219,21 @@ function createStyledItemsSheet(
       if (addHyperlinks) groupRow.push('');
       data.push(groupRow);
       rowTypes.push('group');
+      outlineLevels.push(0); // group headers are not grouped
     }
 
-    // Item row - determine if it's a main/section row (not subordinate/description)
+    // Item row - determine if it's a main/section/subordinate row
     // Use rowRole if available, otherwise fallback to old logic (kod presence)
-    const isMainRow = item.rowRole
-      ? (item.rowRole === 'main' || item.rowRole === 'section')
-      : (item.kod && item.kod.trim().length > 0);
+    const rowRole = item.rowRole || (item.kod && item.kod.trim().length > 0 ? 'main' : 'subordinate');
+    const isMainRow = rowRole === 'main' || rowRole === 'section';
+    const isSubordinate = rowRole === 'subordinate';
+
+    // Add visual indent for subordinate rows in the Popis column
+    const popisText = isSubordinate ? `  ↳ ${item.popis}` : item.popis;
+
     const row: any[] = [
       item.kod,
-      item.popis,
+      popisText,
       item.mj,
       item.mnozstvi,
       item.cenaJednotkova,
@@ -239,7 +247,15 @@ function createStyledItemsSheet(
     }
 
     data.push(row);
-    rowTypes.push(isMainRow ? 'code' : 'desc');
+
+    // Set row type for styling
+    if (isSubordinate) {
+      rowTypes.push('desc'); // subordinate = description style
+      outlineLevels.push(2); // subordinate rows = outline level 2 (grouped under main)
+    } else {
+      rowTypes.push('code'); // main/section = code style
+      outlineLevels.push(1); // main rows = outline level 1
+    }
   }
 
   // Create worksheet from data
@@ -256,6 +272,21 @@ function createStyledItemsSheet(
     { wch: 20 },  // Skupina
     ...(addHyperlinks ? [{ wch: 10 }] : []),
   ];
+
+  // Apply row grouping (Excel outline levels)
+  // This creates collapsible groups with +/- buttons on the left
+  ws['!rows'] = outlineLevels.map((level, idx) => {
+    if (level === 0) {
+      // Header or group separator - no outline
+      return {};
+    } else if (level === 1) {
+      // Main row - level 1 (visible by default)
+      return { level: 0 }; // level 0 means no indent, but can have children
+    } else {
+      // Subordinate row - level 2 (grouped under main, hidden by default)
+      return { level: 1, hidden: true }; // level 1 means indent 1 level (under parent)
+    }
+  });
 
   // Apply styling to each cell
   const colCount = headers.length;
