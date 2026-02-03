@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
-**Last Updated:** 2026-02-03 (09:00 UTC)
-**Current Branch:** `claude/test-pdf-extraction-7MpQt`
-**Last Session:** Deployment Timeout Fixes + Document Extraction Testing
+**Last Updated:** 2026-02-03 (11:30 UTC)
+**Current Branch:** `claude/update-deployment-docs-cSIO1`
+**Last Session:** Rozpočet Registry UX Fixes (Excel Export + Modal Colors)
 
 ---
 
@@ -17,9 +17,10 @@ git status
 git log --oneline -5
 
 # Pull latest changes
-git pull origin claude/test-pdf-extraction-7MpQt
+git pull origin claude/update-deployment-docs-cSIO1
 
 # Start development (choose service)
+cd rozpocet-registry && npm run dev                  # Rozpočet Registry (Vite)
 cd URS_MATCHER_SERVICE/backend && npm run dev        # URS Matcher backend
 cd URS_MATCHER_SERVICE/frontend && npm run dev       # URS Matcher frontend
 cd Monolit-Planner/backend && npm run dev            # Monolit backend
@@ -31,23 +32,37 @@ cd concrete-agent && npm run dev:backend             # CORE backend
 
 ## 📋 Recent Work (2026-02-03)
 
-### ✅ LATEST: Deployment Timeout Fixes (09:00 UTC)
+### ✅ LATEST: Rozpočet Registry UX Fixes (11:30 UTC)
 
 **Problems Fixed:**
-1. **Redis Connection Hang** - Deployment timeout (15+ minutes) due to Redis connection without timeout
-2. **MinerU Parsing Timeout** - 2-minute timeout insufficient for cold start + large PDF parsing
+1. **Excel Export Grouping** - Price Request export grouped by Skupina instead of main → subordinates
+2. **Modal Colors** - "Attach to Parent" modal used pure black instead of corporate slate palette
 
 **Solutions:**
-- `6d1ca88` - FIX: Add Redis connection timeout (10s) + fallback to in-memory cache
-- `08c43bd` - FIX: Increase MinerU timeout to 5 minutes for cold start + large PDFs
+- `c54238a` - FIX: Excel export grouping - main items → subordinates structure
+- `a210e55` - STYLE: Modal colors - use Digital Concrete slate palette
 
 **Files changed:**
-- `URS_MATCHER_SERVICE/backend/src/services/cacheService.js` (+27 -11)
-- `URS_MATCHER_SERVICE/backend/src/services/documentExtractionService.js` (+9 -2)
+- `rozpocet-registry/src/services/priceRequest/priceRequestService.ts` (+87 -93)
+- `rozpocet-registry/src/components/items/RowActionsCell.tsx` (+6 -6)
 
-**Status:** ✅ Pushed, awaiting Render deployment (2-3 minutes)
+**Status:** ✅ Pushed to `claude/update-deployment-docs-cSIO1`
 
-**Details:** See `DEPLOYMENT_FIX_2026-02-03.md`
+**Details:** See `docs/archive/completed-sessions/SESSION_2026-02-03_ROZPOCET_UX_FIXES.md`
+
+---
+
+### ✅ Completed Earlier Today: Deployment Timeout Fixes
+
+**What was fixed:**
+- Redis connection hang (10s timeout + fallback)
+- MinerU parsing timeout (2min → 5min)
+
+**Commits:**
+- `6d1ca88` - FIX: Add Redis connection timeout
+- `08c43bd` - FIX: Increase MinerU timeout to 5 minutes
+
+**Session Summary:** See `docs/archive/completed-sessions/DEPLOYMENT_FIX_2026-02-03.md`
 
 ---
 
@@ -56,13 +71,7 @@ cd concrete-agent && npm run dev:backend             # CORE backend
 **What was built:**
 - Full pipeline: PDF → MinerU → LLM → TSKP → Deduplication → Batch
 - Backend: `documentExtractionService.js` (520 lines)
-- Frontend: Extraction UI with stats cards and confidence badges
-- Export to Excel + Send to Batch integration
-
-**Commits:**
-- `714b306` - FEAT: Add Document Work Extraction Pipeline
-- `b76de3a` - FIX: Document extraction service import error
-- `b4a2cc7` - FIX: Use correct Workflow C endpoint for document parsing
+- Frontend: Extraction UI with stats cards
 
 **Session Summary:** See `docs/archive/completed-sessions/SESSION_2026-02-03_DOCUMENT_EXTRACTION.md`
 
@@ -70,146 +79,165 @@ cd concrete-agent && npm run dev:backend             # CORE backend
 
 ## 🎯 Next Tasks (Priority Order)
 
-### 1. Test Document Extraction (High Priority)
+### 1. Test Rozpočet Registry Changes (High Priority)
+- [ ] Deploy to Vercel (rozpocet-registry is static)
+- [ ] Test Excel export with real data (Poptávka)
+- [ ] Verify main items have +/- collapse buttons
+- [ ] Verify subordinates are indented and hidden by default
+- [ ] Test modal colors on different screens
+- [ ] Verify no Skupina group headers appear
+
+### 2. Merge or Create PR
+- [ ] Review changes in `claude/update-deployment-docs-cSIO1`
+- [ ] Create PR if needed
+- [ ] Merge to main branch
+
+### 3. Document Extraction Testing (Next Priority)
 - [ ] Test with real PDF documents (sample: `203_01_Techn zprava.pdf`)
 - [ ] Verify MinerU parsing works correctly
 - [ ] Check LLM extraction produces valid structured data
 - [ ] Test TSKP matching accuracy
 - [ ] Verify deduplication (85% threshold)
-- [ ] Test Excel export (UTF-8 BOM encoding)
-- [ ] Test "Send to Batch" integration
 
-### 2. Monitor Performance
+### 4. Monitor Performance
 - [ ] Check MinerU response times (target: <2 min)
 - [ ] Monitor LLM extraction times (target: <90s)
 - [ ] Check memory usage for large PDFs
-- [ ] Analyze TSKP matching performance
-
-### 3. Edge Case Testing
-- [ ] Empty PDF (no works found)
-- [ ] Large PDF (>10MB, 100+ pages)
-- [ ] Non-Czech documents (language detection)
-- [ ] Malformed Excel files
-- [ ] Network timeout scenarios
-
-### 4. Optimization (If Needed)
-- [ ] Add caching for parsed documents (by file hash)
-- [ ] Parallel LLM calls for large work lists
-- [ ] Batch TSKP matching (instead of sequential)
-- [ ] Progressive UI updates (stream results)
 
 ### 5. Documentation Updates
-- [ ] Update `CLAUDE.md` with Document Extraction section
-- [ ] Update `URS_MATCHER_SERVICE/README.md`
-- [ ] Add API documentation for `/api/jobs/document-extract`
-- [ ] Create user guide for "Nahrát Dokumenty" workflow
+- [ ] Update `CLAUDE.md` Recent Activity table
+- [ ] Update `rozpocet-registry/README.md` if needed
 
 ---
 
 ## 🔧 Known Issues
 
-### ✅ All Fixed (2026-02-03 09:00 UTC)
-✅ Redis connection hang → Fixed with 10s timeout + fallback
-✅ MinerU parsing timeout → Fixed with 5-minute timeout
-✅ Import error resolved (llmClient named exports)
-✅ API endpoint error resolved (Workflow C)
+### ✅ All Fixed (2026-02-03)
+✅ Excel export grouping → Fixed with hierarchy structure
+✅ Modal colors → Fixed with slate palette
+✅ Redis connection hang → Fixed with 10s timeout
+✅ MinerU parsing timeout → Fixed with 5min timeout
 
-### ⚠️ Performance Considerations
-- **Cold Start:** concrete-agent may take 30-60s to wake up (Render Free tier)
-- **First PDF parse:** May take 2-4 minutes (cold start + parsing)
-- **Subsequent parses:** 1-2 minutes (warm instance)
-- **Keep-Alive:** GitHub Actions cron runs every 14 minutes to prevent sleep
+### 💡 Potential Enhancements
+- Czech label mapping for work groups (UX)
+- Data migration for users with old group names in localStorage
+- Caching for TSKP matches in Price Request
+- Progressive UI updates for document extraction
 
 ---
 
 ## 🏗️ Architecture Context
 
-### Document Extraction Flow
+### Rozpočet Registry - Excel Export (Price Request)
+
+**New Structure:**
 ```
-User uploads PDF/DOCX
-    ↓
-Frontend: DocumentUpload.html → "🔬 Extrahovat Práce" button
-    ↓
-POST /api/jobs/document-extract (jobs.js)
-    ↓
-documentExtractionService.js:
-    1. parseDocumentWithMinerU() → concrete-agent Workflow C
-    2. extractWorksWithLLM() → LLM with JSON/free-form fallback
-    3. matchToTSKP() → tskpParserService (64,737 items)
-    4. deduplicateWorks() → 85% Levenshtein similarity
-    5. groupBySection() → Construction sections
-    ↓
-Return structured results with stats
-    ↓
-Frontend: displayExtractedWorks() → Render UI
-    ↓
-User actions:
-    - Export to Excel (CSV with UTF-8 BOM)
-    - Send to Batch processor
+Main item 1 (+ collapse button, Excel outline level 0)
+  ├─ ↳ Subordinate 1.1 (hidden, Excel outline level 1)
+  └─ ↳ Subordinate 1.2 (hidden, Excel outline level 1)
+Main item 2 (+ collapse button, Excel outline level 0)
+  ├─ ↳ Subordinate 2.1 (hidden, Excel outline level 1)
+  └─ ↳ Subordinate 2.2 (hidden, Excel outline level 1)
+SUM row
 ```
 
-### Integration Points
-1. **concrete-agent** - `/api/v1/workflow/c/upload`
-   - MinerU parser (magic-pdf)
-   - Document text extraction
-   - Requires: project_id, project_name, generate_summary, use_parallel, language
+**Outline Levels Mapping:**
+- Level 0: Header/SUM row (always visible, no outline)
+- Level 1: Main items (outline level 0, can have children, visible)
+- Level 2: Subordinates (outline level 1, hidden by default, indented)
 
-2. **llmClient** - `callLLMForTask(TASKS.BLOCK_ANALYSIS, ...)`
-   - Task-based model routing
-   - Fallback chain: Gemini → Claude → OpenAI
-   - 90s timeout
+**Key Code:**
+```typescript
+wsItems['!rows'] = outlineLevels.map((level, idx) => {
+  if (idx === 0) return { hpx: 28 };        // Header
+  else if (level === 0) return { hpx: 22 }; // SUM
+  else if (level === 1) return { level: 0, hpx: 20 }; // Main
+  else if (level === 2) return { level: 1, hidden: true, hpx: 20 }; // Sub
+  return {};
+});
+```
 
-3. **tskpParserService** - `search(searchText, limit)`
-   - TSKP classifier (64,737 work items)
-   - Confidence scoring (exact match, name match, word match, fuzzy)
-   - Returns: tskp_code, name, confidence, parent_code
+### Modal - Digital Concrete Colors
+
+**Palette:**
+- Backdrop: `#020617` (slate-950, 100% opaque)
+- Modal border: `border-slate-900` (#0f172a)
+- Header: `bg-slate-900` (#0f172a)
+- Header border: `border-slate-700` (#334155)
+- Content: `bg-slate-100` (#f1f5f9)
+
+**Z-index Layering:**
+- Backdrop: `z-[99998]`
+- Modal: `z-[99999]`
+- Header: `z-[100000]`
+
+**Positioning:**
+```typescript
+style={{
+  transform: 'translate(-50%, -50%)',
+  left: '50%',
+  top: '50%'
+}}
+```
 
 ---
 
 ## 📝 Important Notes
 
 ### Deployment
-- **Branch:** `claude/test-pdf-extraction-7MpQt`
+- **Branch:** `claude/update-deployment-docs-cSIO1`
 - **Must start with:** `claude/`
 - **Must end with:** matching session ID
-- **Push command:** `git push -u origin claude/test-pdf-extraction-7MpQt`
+- **Push command:** `git push -u origin claude/update-deployment-docs-cSIO1`
 
 ### Git Retry Logic
 - **Fetch/Pull/Push failures:** Retry up to 4 times with exponential backoff (2s, 4s, 8s, 16s)
 - **Network errors only:** Don't retry permission errors
 
-### Testing
-- Use real PDF: `203_01_Techn zprava.pdf` (4.3MB)
-- Expected: 40-50 work items extracted
-- Expected sections: Zemní práce, Základy, Nosné konstrukce, Izolace, Komunikace, Doprava
+### Testing Rozpočet Registry
+```bash
+cd /home/user/STAVAGENT/rozpocet-registry
+npm install
+npm run dev     # Start Vite on :5173
+npm run build   # Production build
+```
+
+### Build Verification
+```bash
+cd /home/user/STAVAGENT/rozpocet-registry
+npx vite build
+# Expected: ✓ Built in ~11s, 1771 modules
+```
 
 ---
 
 ## 🔍 Debug Commands
 
 ```bash
-# Check URS Matcher logs
-cd /home/user/STAVAGENT/URS_MATCHER_SERVICE/backend
+# Check rozpočet-registry
+cd /home/user/STAVAGENT/rozpocet-registry
 npm run dev
+# Open: http://localhost:5173
 
-# Check concrete-agent logs (if needed)
-cd /home/user/STAVAGENT/concrete-agent
-npm run dev:backend
+# Test Excel export locally
+# 1. Import items with main/subordinate structure
+# 2. Use search to filter items
+# 3. Click "Vytvořit poptávku"
+# 4. Download Excel file
+# 5. Open in Excel/LibreOffice
+# 6. Verify +/- buttons appear next to main items
+# 7. Click + to expand subordinates
 
-# Test API endpoint directly
-curl -X POST http://localhost:3001/api/jobs/document-extract \
-  -F "file=@/path/to/document.pdf" \
-  -H "Content-Type: multipart/form-data"
+# Check modal styling
+# 1. Filter to show subordinate items
+# 2. Click Link2 icon (Připojit k hlavní položce)
+# 3. Verify backdrop is slate-950 (dark gray, not black)
+# 4. Verify modal border is slate-900
+# 5. Verify header is slate-900
+# 6. Verify modal is centered
 
-# Check TSKP parser
-cd /home/user/STAVAGENT/URS_MATCHER_SERVICE/backend
-node -e "
-  const tskp = require('./src/services/tskpParserService.js').default;
-  tskp.load().then(() => {
-    const results = tskp.search('výkop stavební jámy', 5);
-    console.log(JSON.stringify(results, null, 2));
-  });
-"
+# Git log
+git log --oneline --graph -10
 ```
 
 ---
@@ -217,7 +245,7 @@ node -e "
 ## 📚 Documentation Files
 
 ### Main Documentation
-- `CLAUDE.md` - System overview (v2.0.1)
+- `CLAUDE.md` - System overview (v2.0.2)
 - `NEXT_SESSION.md` - **THIS FILE** - Quick start for next session
 - `BACKLOG.md` - Pending tasks and priorities
 - `README.md` - Project overview (Russian)
@@ -229,7 +257,9 @@ node -e "
 - `URS_MATCHER_SERVICE/README.md` - URS Matcher
 
 ### Session Archives
-- `docs/archive/completed-sessions/SESSION_2026-02-03_DOCUMENT_EXTRACTION.md` - Latest session
+- `docs/archive/completed-sessions/SESSION_2026-02-03_ROZPOCET_UX_FIXES.md` - **Latest session**
+- `docs/archive/completed-sessions/DEPLOYMENT_FIX_2026-02-03.md`
+- `docs/archive/completed-sessions/SESSION_2026-02-03_DOCUMENT_EXTRACTION.md`
 - Previous sessions in same directory
 
 ---
@@ -250,32 +280,48 @@ node -e "
 ## 🎓 Context for Claude
 
 ### What Just Happened (Latest Session)
-**Fixed critical deployment issues:**
-1. ✅ **Redis connection hang** - Added 10s timeout + Promise.race + fallback to in-memory cache
-2. ✅ **MinerU parsing timeout** - Increased from 2 minutes to 5 minutes for cold start + large PDFs
 
-**Previous Work:**
-Complete Document Work Extraction Pipeline implementation (PDF → MinerU → LLM → TSKP → Batch)
+**Fixed two UX issues in rozpočet-registry:**
+
+1. ✅ **Excel export grouping** - Changed Price Request export from Skupina-based grouping to hierarchy-based (main items → subordinates). Now main items show with +/- collapse buttons, subordinates are indented with "  ↳ " marker and hidden by default.
+
+2. ✅ **Modal colors** - Updated "Attach to Parent" modal to use Digital Concrete corporate slate palette instead of pure black. Backdrop now uses slate-950 (#020617), modal border and header use slate-900, while maintaining 100% opacity and correct z-index layering.
+
+**User Requirements:**
+- User provided screenshot showing Excel export with Skupina group headers (wrong structure)
+- User wanted main items → subordinates (like regular Excel export)
+- User requested corporate color scheme (slate palette) instead of pure black
+- Layer issue was already fixed (100% opacity, z-index correct), just needed color update
+
+**Files Modified:**
+- `rozpocet-registry/src/services/priceRequest/priceRequestService.ts` - Excel export hierarchy
+- `rozpocet-registry/src/components/items/RowActionsCell.tsx` - Modal colors
 
 ### Key Technical Decisions
-- **Redis timeout strategy:** 10s connection timeout + graceful fallback (no crash)
-- **MinerU timeout:** 5 minutes (300000ms) for cold start + parsing
-- **Workflow C endpoint** (`/api/v1/workflow/c/upload`) - Requires project_id, project_name, etc.
-- **JSON + Free-form fallback** - Handles both structured and unstructured LLM responses
-- **85% similarity threshold** - Balance between accuracy and deduplication
+
+**Excel Export:**
+- Outline levels: 0 (header/SUM), 1 (main items), 2 (subordinates)
+- Main items: Excel outline level 0, can have children, visible
+- Subordinates: Excel outline level 1, hidden by default, indented
+- Removed Skupina group headers completely
+
+**Modal Colors:**
+- Backdrop: `#020617` (slate-950) - still 100% opaque
+- Border/Header: `slate-900` (#0f172a)
+- Borders: `slate-700` (#334155)
+- Z-index preserved: z-[99998], z-[99999], z-[100000]
 
 ### Current State
-- ✅ All deployment fixes committed and pushed
-- ✅ Awaiting Render deployment (2-3 minutes)
-- ✅ Document extraction pipeline complete
-- ⏳ Production testing pending
+- ✅ Both fixes committed and pushed
+- ✅ Build verified (TypeScript compilation successful)
+- ✅ Branch: `claude/update-deployment-docs-cSIO1`
+- ⏳ Testing in production pending
 
 ### Next Actions
-1. **Verify deployment** - Check URS service starts successfully
-2. **Test PDF extraction** - Use `203_01_Techn zprava.pdf` (4.3 MB)
-3. **Monitor performance** - Measure cold start vs warm times
-4. **Edge case testing** - Large files, non-Czech docs, network issues
-5. **Optimization** - Cache, parallelization if needed
+1. **Deploy to Vercel** - rozpocet-registry is static hosting
+2. **Test Excel export** - Verify main items have +/- buttons, subordinates hidden
+3. **Test modal colors** - Verify slate palette on different screens
+4. **Create PR or merge** - If testing successful
 
 ---
 

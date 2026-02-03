@@ -12,6 +12,8 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-02-03 | rozpocet-registry | Modal colors - use Digital Concrete slate palette | ✅ Pushed |
+| 2026-02-03 | rozpocet-registry | Excel export grouping - main items → subordinates structure | ✅ Pushed |
 | 2026-02-03 | URS_MATCHER_SERVICE | Document Work Extraction Pipeline: PDF → MinerU → LLM → TSKP → Batch | ✅ Pushed |
 | 2026-01-29 | rozpocet-registry | AI Agent + AI on/off toggle: Full autonomous classification system | ✅ Pushed |
 | 2026-01-29 | rozpocet-registry | Section header detection fix: numbered items no longer misclassified | ✅ Pushed |
