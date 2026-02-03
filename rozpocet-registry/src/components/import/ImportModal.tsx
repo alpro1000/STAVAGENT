@@ -3,7 +3,7 @@
  * Modal pro import Excel souborů
  */
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ResizableModal } from '../ui/ResizableModal';
 import { FileUploader } from './FileUploader';
@@ -15,6 +15,7 @@ import { classifyRows } from '../../services/classification/rowClassificationSer
 import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
+import { storeOriginalFile } from '../../services/originalFileStore';
 import type { Project, Sheet } from '../../types';
 import type { ImportTemplate } from '../../types/template';
 import type { ImportConfig } from '../../types/config';
@@ -62,11 +63,18 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
   // Auto-classification state
   const [autoClassify, setAutoClassify] = useState(true); // enabled by default
 
+  // Store original file data for "return to original" export
+  const originalFileData = useRef<ArrayBuffer | null>(null);
+
   const handleFileSelect = async (selectedFile: File) => {
     setError(null);
     setIsLoading(true);
 
     try {
+      // Store original file data for "return to original" export
+      const fileBuffer = await selectedFile.arrayBuffer();
+      originalFileData.current = fileBuffer;
+
       const wb = await readExcelFile(selectedFile);
       const sheets = getSheetNames(wb);
 
@@ -245,6 +253,14 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
       };
 
       addProject(project);
+
+      // Store original file in IndexedDB for "return to original" export
+      if (originalFileData.current) {
+        storeOriginalFile(projectId, file.name, originalFileData.current).catch(err => {
+          console.error('Failed to store original file:', err);
+        });
+      }
+
       setStep('success');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba při parsování');
@@ -361,6 +377,14 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
       };
 
       addProject(project); // Single call
+
+      // Store original file in IndexedDB for "return to original" export
+      if (originalFileData.current) {
+        storeOriginalFile(projectId, file.name, originalFileData.current).catch(err => {
+          console.error('Failed to store original file:', err);
+        });
+      }
+
       setStep('success');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Chyba při hromadném importu');
