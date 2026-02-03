@@ -13,21 +13,21 @@
 
 /* Тонкий скроллбар для ячейки - очень светлый и тонкий */
 .cell-scrollable::-webkit-scrollbar {
-  height: 3px;
+  height: 2px;
 }
 
 .cell-scrollable::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.01);
-  border-radius: 2px;
+  background: transparent;
+  border-radius: 1px;
 }
 
 .cell-scrollable::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.08);
-  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.04);
+  border-radius: 1px;
 }
 
 .cell-scrollable::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.15);
+  background: rgba(0, 0, 0, 0.08);
 }
 
 /* Для ячейки с кодом - меньшая ширина */
@@ -39,19 +39,58 @@
 }
 
 .cell-scrollable-kod::-webkit-scrollbar {
-  height: 4px;
+  height: 2px;
 }
 
 .cell-scrollable-kod::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.02);
-  border-radius: 2px;
+  background: transparent;
+  border-radius: 1px;
 }
 
 .cell-scrollable-kod::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 1px;
 }
 
 .cell-scrollable-kod::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Тонкий скролл для таблицы */
+.scrollbar-thin::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 2px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+/* Resizable columns */
+.resizable-th {
+  position: relative;
+}
+
+.resize-handle {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+}
+
+.resize-handle:hover,
+.resize-handle.resizing {
+  background: rgba(255, 159, 28, 0.5);
 }

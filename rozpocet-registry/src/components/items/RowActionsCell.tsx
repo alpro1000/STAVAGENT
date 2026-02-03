@@ -9,7 +9,7 @@
  */
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { Trash2, MoveUp, MoveDown, Link2, X, GripVertical } from 'lucide-react';
+import { MoveUp, MoveDown, Link2, X, GripVertical } from 'lucide-react';
 import type { ParsedItem } from '../../types/item';
 import { useRegistryStore } from '../../stores/registryStore';
 
@@ -20,28 +20,10 @@ interface RowActionsCellProps {
   allItems: ParsedItem[]; // Needed for parent selection
 }
 
-type RowRole = 'main' | 'subordinate' | 'section' | 'unknown';
-
-const ROLE_LABELS: Record<RowRole, string> = {
-  main: 'Hlavní',
-  subordinate: 'Podřízený',
-  section: 'Sekce',
-  unknown: 'Neznámý',
-};
-
-const ROLE_ICONS: Record<RowRole, string> = {
-  main: '📋',
-  subordinate: '↳',
-  section: '📑',
-  unknown: '❓',
-};
-
 export function RowActionsCell({ item, projectId, sheetId, allItems }: RowActionsCellProps) {
-  const { deleteItem, updateItemRole, updateItemParent, moveItemUp, moveItemDown } = useRegistryStore();
+  const { updateItemParent, moveItemUp, moveItemDown } = useRegistryStore();
 
-  const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showParentMenu, setShowParentMenu] = useState(false);
-  const roleMenuRef = useRef<HTMLDivElement>(null);
 
   // Modal resize state
   const [modalSize, setModalSize] = useState({ width: 550, height: 500 });
@@ -85,35 +67,12 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
     };
   }, [isResizing]);
 
-  // Close role menu on outside click (NOT parent modal - that closes only on X)
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (roleMenuRef.current && !roleMenuRef.current.contains(e.target as Node)) {
-        setShowRoleMenu(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
   const currentRole = item.rowRole || 'unknown';
 
   // Get potential parents (only main items)
   const potentialParents = allItems.filter(
     (i) => i.rowRole === 'main' && i.id !== item.id
   );
-
-  const handleDelete = () => {
-    if (confirm(`Opravdu chcete smazat položku "${item.popis || item.kod}"?`)) {
-      deleteItem(projectId, sheetId, item.id);
-    }
-  };
-
-  const handleChangeRole = (newRole: RowRole) => {
-    updateItemRole(projectId, sheetId, item.id, newRole);
-    setShowRoleMenu(false);
-  };
 
   const handleAttachToParent = (parentId: string | null) => {
     updateItemParent(projectId, sheetId, item.id, parentId);
@@ -129,74 +88,21 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
   };
 
   return (
-    <div className="flex items-center gap-0.5">
-      {/* Delete button - compact */}
-      <button
-        onClick={handleDelete}
-        title="Smazat položku"
-        className="p-0.5 rounded hover:bg-red-500/20 transition-colors text-red-500"
-      >
-        <Trash2 size={12} />
-      </button>
-
-      {/* Role dropdown - compact */}
-      <div className="relative" ref={roleMenuRef}>
-        <button
-          onClick={() => setShowRoleMenu(!showRoleMenu)}
-          title="Změnit roli"
-          className="px-1 py-0.5 text-xs rounded hover:bg-bg-secondary transition-colors flex items-center gap-0.5"
-        >
-          <span className="text-[10px]">{ROLE_ICONS[currentRole]}</span>
-          <span className="text-[9px] text-text-muted">{ROLE_LABELS[currentRole].slice(0, 3)}</span>
-        </button>
-
-        {showRoleMenu && (
-          <div
-            className="absolute left-0 top-full mt-1 border-2 rounded z-[99999] min-w-[140px] overflow-hidden"
-            style={{
-              boxShadow: '0 8px 24px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)',
-              backgroundColor: '#2d3139', // Digital Concrete panel bg
-              borderColor: '#3e4348',
-            }}
-          >
-            {(Object.keys(ROLE_LABELS) as RowRole[]).map((role) => (
-              <button
-                key={role}
-                onClick={() => handleChangeRole(role)}
-                className="w-full px-3 py-2 text-left text-sm flex items-center gap-2 transition-colors font-bold"
-                style={{
-                  backgroundColor: role === currentRole ? '#FF9F1C' : 'transparent',
-                  color: role === currentRole ? '#1a1d21' : '#f5f6f7',
-                }}
-                onMouseEnter={(e) => {
-                  if (role !== currentRole) e.currentTarget.style.backgroundColor = '#3e4348';
-                }}
-                onMouseLeave={(e) => {
-                  if (role !== currentRole) e.currentTarget.style.backgroundColor = 'transparent';
-                }}
-              >
-                <span>{ROLE_ICONS[role]}</span>
-                <span>{ROLE_LABELS[role]}</span>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Move up/down buttons - compact */}
+    <div className="flex items-center gap-0">
+      {/* Move up/down buttons - compact, left-aligned */}
       <button
         onClick={handleMoveUp}
         title="Přesunout nahoru"
         className="p-0.5 rounded hover:bg-bg-secondary transition-colors text-text-muted"
       >
-        <MoveUp size={12} />
+        <MoveUp size={11} />
       </button>
       <button
         onClick={handleMoveDown}
         title="Přesunout dolů"
         className="p-0.5 rounded hover:bg-bg-secondary transition-colors text-text-muted"
       >
-        <MoveDown size={12} />
+        <MoveDown size={11} />
       </button>
 
       {/* Attach to parent button (only for subordinate rows) - compact */}
