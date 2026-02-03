@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Modal } from '../ui/Modal';
+import { ResizableModal } from '../ui/ResizableModal';
 import { FileUploader } from './FileUploader';
 import { ConfigEditor } from '../config/ConfigEditor';
 import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/parser/excelParser';
@@ -401,7 +401,15 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} title="Import rozpočtu" size="lg">
+    <ResizableModal
+      isOpen={isOpen}
+      onClose={handleClose}
+      title="Import rozpočtu"
+      defaultWidth={1200}
+      defaultHeight={800}
+      minWidth={800}
+      minHeight={600}
+    >
       <div className="space-y-6">
         {/* Upload step */}
         {step === 'upload' && (
@@ -938,6 +946,6 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
           </div>
         )}
       </div>
-    </Modal>
+    </ResizableModal>
   );
 }
