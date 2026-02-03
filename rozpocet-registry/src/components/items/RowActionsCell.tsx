@@ -162,68 +162,74 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
 
           {showParentMenu && (
             <>
-              {/* Backdrop - очень темный непрозрачный (95%) */}
+              {/* Backdrop - МАКСИМАЛЬНЫЙ z-index */}
               <div
-                className="fixed inset-0 bg-slate-900/95 z-40"
+                className="fixed inset-0 bg-slate-900/95 z-[9998]"
                 onClick={() => setShowParentMenu(false)}
               />
 
-              {/* Modal panel - Digital Concrete style, ближе к краю */}
+              {/* Modal panel - Digital Concrete, по центру справа */}
               <div
-                className="fixed right-8 top-1/2 -translate-y-1/2 bg-slate-100 border-4 border-slate-800 rounded-none z-50 w-[520px] max-h-[650px] overflow-y-auto"
-                style={{ boxShadow: '8px 8px 0 rgba(0,0,0,0.3), 0 20px 60px rgba(0,0,0,0.7)' }}
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 border-4 border-slate-800 rounded-none z-[9999] w-[550px] max-h-[680px] overflow-y-auto"
+                style={{ boxShadow: '12px 12px 0 rgba(0,0,0,0.4), 0 24px 72px rgba(0,0,0,0.8)' }}
               >
-                {/* Header - Digital Concrete темный серый */}
-                <div className="sticky top-0 bg-slate-800 text-white px-5 py-4 z-10 border-b-4 border-slate-900">
-                  <h3 className="font-black text-base uppercase tracking-wide">🔗 Připojit k hlavní položce</h3>
-                  <p className="text-xs text-slate-300 mt-1 font-medium">Vyberte hlavní položku pro připojení podřízeného řádku</p>
+                {/* Header - Digital Concrete */}
+                <div className="sticky top-0 bg-slate-900 text-white px-6 py-4 z-[10000] border-b-4 border-black">
+                  <h3 className="font-black text-lg uppercase tracking-widest">🔗 Připojit k položce</h3>
+                  <p className="text-xs text-slate-400 mt-2 font-semibold uppercase tracking-wide">Vyberte hlavní položku pro připojení</p>
                 </div>
 
-                {/* Content - непрозрачный светло-серый фон */}
-                <div className="p-4 bg-slate-100">
+                {/* Content - светло-серый непрозрачный */}
+                <div className="p-5 bg-slate-100">
                   {/* Option to detach (no parent) */}
                   <button
                     onClick={() => handleAttachToParent(null)}
-                    className={`w-full px-5 py-4 text-left text-sm transition-all rounded-none mb-3 font-medium ${
+                    className={`w-full px-6 py-5 text-left transition-all rounded-none mb-3 border-4 ${
                       !item.parentItemId
-                        ? 'bg-orange-500 border-4 border-orange-600 text-white font-bold shadow-[4px_4px_0_rgba(0,0,0,0.2)]'
-                        : 'border-4 border-slate-400 bg-white hover:bg-slate-50 hover:border-slate-500'
+                        ? 'bg-orange-500 border-orange-700 text-white font-black shadow-[6px_6px_0_rgba(0,0,0,0.3)] uppercase tracking-wide'
+                        : 'border-slate-500 bg-white hover:bg-slate-50 hover:border-slate-700 hover:shadow-[4px_4px_0_rgba(0,0,0,0.1)]'
                     }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <span className="text-xl">🔓</span>
-                      <span className="text-sm uppercase tracking-wide">(Žádný rodič - odpojit)</span>
+                    <div className="flex items-center gap-4">
+                      <span className="text-2xl">🔓</span>
+                      <span className={`text-sm font-bold uppercase tracking-wide ${!item.parentItemId ? 'text-white' : 'text-slate-700'}`}>
+                        (Žádný rodič - odpojit)
+                      </span>
                     </div>
                   </button>
 
                   {/* List of potential parents */}
                   {potentialParents.length > 0 ? (
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       {potentialParents.map((parent) => (
                         <button
                           key={parent.id}
                           onClick={() => handleAttachToParent(parent.id)}
-                          className={`w-full px-5 py-4 text-left text-sm transition-all rounded-none ${
+                          className={`w-full px-6 py-5 text-left transition-all rounded-none border-4 ${
                             item.parentItemId === parent.id
-                              ? 'bg-orange-500 border-4 border-orange-600 text-white font-bold shadow-[4px_4px_0_rgba(0,0,0,0.2)]'
-                              : 'border-4 border-slate-400 bg-white hover:bg-slate-50 hover:border-slate-600'
+                              ? 'bg-orange-500 border-orange-700 text-white font-black shadow-[6px_6px_0_rgba(0,0,0,0.3)]'
+                              : 'border-slate-500 bg-white hover:bg-slate-50 hover:border-slate-700 hover:shadow-[4px_4px_0_rgba(0,0,0,0.1)]'
                           }`}
                         >
                           <div className="flex flex-col gap-2">
                             <div className="flex items-center gap-3">
-                              <span className="font-mono text-xs bg-slate-900 text-white px-3 py-1 font-black uppercase">{parent.boqLineNumber || '—'}</span>
-                              <span className="font-black text-base tracking-tight">{parent.kod}</span>
+                              <span className="font-mono text-xs bg-black text-white px-3 py-1.5 font-black uppercase tracking-wider border-2 border-slate-700">
+                                {parent.boqLineNumber || '—'}
+                              </span>
+                              <span className={`font-black text-lg tracking-tight ${
+                                item.parentItemId === parent.id ? 'text-white' : 'text-slate-900'
+                              }`}>{parent.kod}</span>
                             </div>
-                            <span className={`text-xs leading-tight font-semibold ${
-                              item.parentItemId === parent.id ? 'text-white' : 'text-slate-800'
+                            <span className={`text-sm leading-snug font-bold ${
+                              item.parentItemId === parent.id ? 'text-white' : 'text-slate-700'
                             }`}>{parent.popis}</span>
                           </div>
                         </button>
                       ))}
                     </div>
                   ) : (
-                    <div className="px-5 py-10 text-center text-sm font-bold bg-slate-200 rounded-none border-4 border-slate-400 text-slate-700 uppercase tracking-wide">
-                      Žádné hlavní položky nebyly nalezeny
+                    <div className="px-6 py-12 text-center text-sm font-black bg-slate-300 rounded-none border-4 border-slate-500 text-slate-800 uppercase tracking-widest shadow-[4px_4px_0_rgba(0,0,0,0.2)]">
+                      Žádné hlavní položky
                     </div>
                   )}
                 </div>
