@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
-**Last Updated:** 2026-02-03
-**Current Branch:** `claude/stavagent-development-Gc1zm`
-**Last Session:** Document Work Extraction Pipeline
+**Last Updated:** 2026-02-03 (09:00 UTC)
+**Current Branch:** `claude/test-pdf-extraction-7MpQt`
+**Last Session:** Deployment Timeout Fixes + Document Extraction Testing
 
 ---
 
@@ -17,7 +17,7 @@ git status
 git log --oneline -5
 
 # Pull latest changes
-git pull origin claude/stavagent-development-Gc1zm
+git pull origin claude/test-pdf-extraction-7MpQt
 
 # Start development (choose service)
 cd URS_MATCHER_SERVICE/backend && npm run dev        # URS Matcher backend
@@ -31,7 +31,27 @@ cd concrete-agent && npm run dev:backend             # CORE backend
 
 ## 📋 Recent Work (2026-02-03)
 
-### ✅ Completed: Document Work Extraction Pipeline
+### ✅ LATEST: Deployment Timeout Fixes (09:00 UTC)
+
+**Problems Fixed:**
+1. **Redis Connection Hang** - Deployment timeout (15+ minutes) due to Redis connection without timeout
+2. **MinerU Parsing Timeout** - 2-minute timeout insufficient for cold start + large PDF parsing
+
+**Solutions:**
+- `6d1ca88` - FIX: Add Redis connection timeout (10s) + fallback to in-memory cache
+- `08c43bd` - FIX: Increase MinerU timeout to 5 minutes for cold start + large PDFs
+
+**Files changed:**
+- `URS_MATCHER_SERVICE/backend/src/services/cacheService.js` (+27 -11)
+- `URS_MATCHER_SERVICE/backend/src/services/documentExtractionService.js` (+9 -2)
+
+**Status:** ✅ Pushed, awaiting Render deployment (2-3 minutes)
+
+**Details:** See `DEPLOYMENT_FIX_2026-02-03.md`
+
+---
+
+### ✅ Completed Earlier: Document Work Extraction Pipeline
 
 **What was built:**
 - Full pipeline: PDF → MinerU → LLM → TSKP → Deduplication → Batch
@@ -39,18 +59,10 @@ cd concrete-agent && npm run dev:backend             # CORE backend
 - Frontend: Extraction UI with stats cards and confidence badges
 - Export to Excel + Send to Batch integration
 
-**Files changed:**
-- `URS_MATCHER_SERVICE/backend/src/services/documentExtractionService.js` (NEW)
-- `URS_MATCHER_SERVICE/backend/src/api/routes/jobs.js` (+129 lines)
-- `URS_MATCHER_SERVICE/frontend/public/components/DocumentUpload.html` (+156 lines)
-- `URS_MATCHER_SERVICE/frontend/public/app.js` (+204 lines)
-
 **Commits:**
 - `714b306` - FEAT: Add Document Work Extraction Pipeline
 - `b76de3a` - FIX: Document extraction service import error
 - `b4a2cc7` - FIX: Use correct Workflow C endpoint for document parsing
-
-**Status:** ✅ Deployed to production
 
 **Session Summary:** See `docs/archive/completed-sessions/SESSION_2026-02-03_DOCUMENT_EXTRACTION.md`
 
@@ -96,10 +108,17 @@ cd concrete-agent && npm run dev:backend             # CORE backend
 
 ## 🔧 Known Issues
 
-### None Currently
-✅ All deployment errors fixed
+### ✅ All Fixed (2026-02-03 09:00 UTC)
+✅ Redis connection hang → Fixed with 10s timeout + fallback
+✅ MinerU parsing timeout → Fixed with 5-minute timeout
 ✅ Import error resolved (llmClient named exports)
 ✅ API endpoint error resolved (Workflow C)
+
+### ⚠️ Performance Considerations
+- **Cold Start:** concrete-agent may take 30-60s to wake up (Render Free tier)
+- **First PDF parse:** May take 2-4 minutes (cold start + parsing)
+- **Subsequent parses:** 1-2 minutes (warm instance)
+- **Keep-Alive:** GitHub Actions cron runs every 14 minutes to prevent sleep
 
 ---
 
@@ -150,10 +169,10 @@ User actions:
 ## 📝 Important Notes
 
 ### Deployment
-- **Branch:** `claude/stavagent-development-Gc1zm`
+- **Branch:** `claude/test-pdf-extraction-7MpQt`
 - **Must start with:** `claude/`
 - **Must end with:** matching session ID
-- **Push command:** `git push -u origin claude/stavagent-development-Gc1zm`
+- **Push command:** `git push -u origin claude/test-pdf-extraction-7MpQt`
 
 ### Git Retry Logic
 - **Fetch/Pull/Push failures:** Retry up to 4 times with exponential backoff (2s, 4s, 8s, 16s)
@@ -230,33 +249,33 @@ node -e "
 
 ## 🎓 Context for Claude
 
-### What Just Happened
-We successfully implemented a complete Document Work Extraction Pipeline for the URS Matcher service. The system can now:
-1. Accept PDF/DOCX uploads
-2. Parse with MinerU (via concrete-agent Workflow C)
-3. Extract work descriptions using LLM
-4. Match to TSKP codes (64,737 items)
-5. Deduplicate similar works (85% threshold)
-6. Display results grouped by sections
-7. Export to Excel or send to Batch processor
+### What Just Happened (Latest Session)
+**Fixed critical deployment issues:**
+1. ✅ **Redis connection hang** - Added 10s timeout + Promise.race + fallback to in-memory cache
+2. ✅ **MinerU parsing timeout** - Increased from 2 minutes to 5 minutes for cold start + large PDFs
+
+**Previous Work:**
+Complete Document Work Extraction Pipeline implementation (PDF → MinerU → LLM → TSKP → Batch)
 
 ### Key Technical Decisions
+- **Redis timeout strategy:** 10s connection timeout + graceful fallback (no crash)
+- **MinerU timeout:** 5 minutes (300000ms) for cold start + parsing
 - **Workflow C endpoint** (`/api/v1/workflow/c/upload`) - Requires project_id, project_name, etc.
 - **JSON + Free-form fallback** - Handles both structured and unstructured LLM responses
 - **85% similarity threshold** - Balance between accuracy and deduplication
-- **callLLMForTask** - Named export from llmClient.js (not default)
 
 ### Current State
-- ✅ All code committed and pushed
-- ✅ Deployed to production
-- ✅ No known bugs
-- ⏳ Awaiting real-world testing
+- ✅ All deployment fixes committed and pushed
+- ✅ Awaiting Render deployment (2-3 minutes)
+- ✅ Document extraction pipeline complete
+- ⏳ Production testing pending
 
 ### Next Actions
-1. Test with real PDF documents
-2. Monitor performance metrics
-3. Gather user feedback
-4. Optimize if needed
+1. **Verify deployment** - Check URS service starts successfully
+2. **Test PDF extraction** - Use `203_01_Techn zprava.pdf` (4.3 MB)
+3. **Monitor performance** - Measure cold start vs warm times
+4. **Edge case testing** - Large files, non-Czech docs, network issues
+5. **Optimization** - Cache, parallelization if needed
 
 ---
 
