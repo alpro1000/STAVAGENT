@@ -8,8 +8,8 @@
  * - Připojit k... (выбор родителя)
  */
 
-import { useState, useRef, useEffect } from 'react';
-import { Trash2, MoveUp, MoveDown, Link2 } from 'lucide-react';
+import { useState, useRef, useEffect, useCallback } from 'react';
+import { Trash2, MoveUp, MoveDown, Link2, X, GripVertical } from 'lucide-react';
 import type { ParsedItem } from '../../types/item';
 import { useRegistryStore } from '../../stores/registryStore';
 
@@ -42,16 +42,54 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
   const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showParentMenu, setShowParentMenu] = useState(false);
   const roleMenuRef = useRef<HTMLDivElement>(null);
-  const parentMenuRef = useRef<HTMLDivElement>(null);
 
-  // Close menus on outside click
+  // Modal resize state
+  const [modalSize, setModalSize] = useState({ width: 550, height: 500 });
+  const [isResizing, setIsResizing] = useState(false);
+  const resizeRef = useRef({ startX: 0, startY: 0, startWidth: 550, startHeight: 500 });
+
+  // Handle resize
+  const handleResizeStart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsResizing(true);
+    resizeRef.current = {
+      startX: e.clientX,
+      startY: e.clientY,
+      startWidth: modalSize.width,
+      startHeight: modalSize.height,
+    };
+  }, [modalSize]);
+
+  useEffect(() => {
+    if (!isResizing) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const deltaX = e.clientX - resizeRef.current.startX;
+      const deltaY = e.clientY - resizeRef.current.startY;
+      setModalSize({
+        width: Math.max(400, Math.min(900, resizeRef.current.startWidth + deltaX)),
+        height: Math.max(300, Math.min(800, resizeRef.current.startHeight + deltaY)),
+      });
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+  }, [isResizing]);
+
+  // Close role menu on outside click (NOT parent modal - that closes only on X)
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (roleMenuRef.current && !roleMenuRef.current.contains(e.target as Node)) {
         setShowRoleMenu(false);
-      }
-      if (parentMenuRef.current && !parentMenuRef.current.contains(e.target as Node)) {
-        setShowParentMenu(false);
       }
     };
 
@@ -91,39 +129,45 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
   };
 
   return (
-    <div className="flex items-center gap-1">
-      {/* Delete button */}
+    <div className="flex items-center gap-0.5">
+      {/* Delete button - compact */}
       <button
         onClick={handleDelete}
         title="Smazat položku"
-        className="p-1 rounded hover:bg-red-500/20 transition-colors text-red-500"
+        className="p-0.5 rounded hover:bg-red-500/20 transition-colors text-red-500"
       >
-        <Trash2 size={14} />
+        <Trash2 size={12} />
       </button>
 
-      {/* Role dropdown */}
+      {/* Role dropdown - compact */}
       <div className="relative" ref={roleMenuRef}>
         <button
           onClick={() => setShowRoleMenu(!showRoleMenu)}
           title="Změnit roli"
-          className="px-2 py-1 text-xs rounded hover:bg-bg-secondary transition-colors flex items-center gap-1"
+          className="px-1 py-0.5 text-xs rounded hover:bg-bg-secondary transition-colors flex items-center gap-0.5"
         >
-          <span>{ROLE_ICONS[currentRole]}</span>
-          <span className="text-[10px] text-text-muted">{ROLE_LABELS[currentRole]}</span>
+          <span className="text-[10px]">{ROLE_ICONS[currentRole]}</span>
+          <span className="text-[9px] text-text-muted">{ROLE_LABELS[currentRole].slice(0, 3)}</span>
         </button>
 
         {showRoleMenu && (
           <div
-            className="absolute left-0 top-full mt-1 bg-bg-primary border-2 border-border-color rounded-lg z-50 min-w-[140px]"
-            style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.25)' }}
+            className="absolute left-0 top-full mt-1 border-2 border-slate-700 rounded-lg z-[99999] min-w-[140px] overflow-hidden"
+            style={{
+              boxShadow: '0 8px 24px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)',
+              backgroundColor: '#1e293b', // slate-800 - fully opaque
+            }}
           >
             {(Object.keys(ROLE_LABELS) as RowRole[]).map((role) => (
               <button
                 key={role}
                 onClick={() => handleChangeRole(role)}
-                className={`w-full px-3 py-2 text-left text-sm flex items-center gap-2 hover:bg-bg-secondary transition-colors ${
-                  role === currentRole ? 'bg-accent-primary/10 text-accent-primary font-semibold' : ''
+                className={`w-full px-3 py-2 text-left text-sm flex items-center gap-2 transition-colors ${
+                  role === currentRole
+                    ? 'bg-orange-500 text-white font-semibold'
+                    : 'text-slate-200 hover:bg-slate-700'
                 }`}
+                style={{ backgroundColor: role === currentRole ? '#f97316' : undefined }}
               >
                 <span>{ROLE_ICONS[role]}</span>
                 <span>{ROLE_LABELS[role]}</span>
@@ -133,60 +177,82 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
         )}
       </div>
 
-      {/* Move up/down buttons */}
+      {/* Move up/down buttons - compact */}
       <button
         onClick={handleMoveUp}
         title="Přesunout nahoru"
-        className="p-1 rounded hover:bg-bg-secondary transition-colors text-text-muted"
+        className="p-0.5 rounded hover:bg-bg-secondary transition-colors text-text-muted"
       >
-        <MoveUp size={14} />
+        <MoveUp size={12} />
       </button>
       <button
         onClick={handleMoveDown}
         title="Přesunout dolů"
-        className="p-1 rounded hover:bg-bg-secondary transition-colors text-text-muted"
+        className="p-0.5 rounded hover:bg-bg-secondary transition-colors text-text-muted"
       >
-        <MoveDown size={14} />
+        <MoveDown size={12} />
       </button>
 
-      {/* Attach to parent button (only for subordinate rows) */}
+      {/* Attach to parent button (only for subordinate rows) - compact */}
       {currentRole === 'subordinate' && (
-        <div className="relative" ref={parentMenuRef}>
+        <div className="relative">
           <button
             onClick={() => setShowParentMenu(!showParentMenu)}
             title="Připojit k hlavní položce"
-            className="p-1 rounded hover:bg-blue-500/20 transition-colors text-blue-500"
+            className="p-0.5 rounded hover:bg-blue-500/20 transition-colors text-blue-500"
           >
-            <Link2 size={14} />
+            <Link2 size={12} />
           </button>
 
           {showParentMenu && (
             <>
-              {/* Backdrop - ПОЛНОСТЬЮ НЕПРОЗРАЧНЫЙ - SLATE-950 */}
+              {/* Backdrop - ПОЛНОСТЬЮ НЕПРОЗРАЧНЫЙ - SLATE-950, НЕ закрывается по клику */}
               <div
-                className="fixed inset-0 bg-slate-950 z-[99998]"
-                style={{ backgroundColor: '#020617' }}
-                onClick={() => setShowParentMenu(false)}
+                className="fixed inset-0 z-[99998]"
+                style={{ backgroundColor: '#020617' }} // slate-950 fully opaque
               />
 
-              {/* Modal panel - Digital Concrete, ТОЧНО ПО ЦЕНТРУ */}
+              {/* Modal panel - Digital Concrete, ЦЕНТР, ИЗМЕНЯЕМЫЙ РАЗМЕР */}
               <div
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 border-4 border-slate-900 rounded-none z-[99999] w-[550px] max-h-[680px] overflow-y-auto"
+                className="fixed border-4 border-slate-800 z-[99999] flex flex-col"
                 style={{
-                  boxShadow: '12px 12px 0 rgba(0,0,0,0.5), 0 24px 72px rgba(0,0,0,0.9)',
-                  transform: 'translate(-50%, -50%)',
                   left: '50%',
-                  top: '50%'
+                  top: '50%',
+                  transform: 'translate(-50%, -50%)',
+                  width: `${modalSize.width}px`,
+                  height: `${modalSize.height}px`,
+                  minWidth: '400px',
+                  minHeight: '300px',
+                  maxWidth: '900px',
+                  maxHeight: '800px',
+                  boxShadow: '12px 12px 0 rgba(0,0,0,0.5), 0 24px 72px rgba(0,0,0,0.9)',
+                  backgroundColor: '#0f172a', // slate-900 base
                 }}
               >
-                {/* Header - Digital Concrete SLATE-900 */}
-                <div className="sticky top-0 bg-slate-900 text-white px-6 py-4 z-[100000] border-b-4 border-slate-700">
-                  <h3 className="font-black text-lg uppercase tracking-widest">🔗 PŘIPOJIT K POLOŽCE</h3>
-                  <p className="text-xs text-slate-400 mt-2 font-bold uppercase tracking-wide">Vyberte hlavní položku pro připojení</p>
+                {/* Header - SLATE-900 с кнопкой X */}
+                <div
+                  className="flex items-center justify-between px-6 py-4 border-b-4 border-slate-700 flex-shrink-0"
+                  style={{ backgroundColor: '#0f172a' }}
+                >
+                  <div>
+                    <h3 className="font-black text-lg uppercase tracking-widest text-white">🔗 PŘIPOJIT K POLOŽCE</h3>
+                    <p className="text-xs text-slate-400 mt-1 font-bold uppercase tracking-wide">Vyberte hlavní položku pro připojení</p>
+                  </div>
+                  {/* Close button X */}
+                  <button
+                    onClick={() => setShowParentMenu(false)}
+                    className="p-2 rounded-lg hover:bg-slate-700 transition-colors text-slate-400 hover:text-white"
+                    title="Zavřít"
+                  >
+                    <X size={24} strokeWidth={3} />
+                  </button>
                 </div>
 
-                {/* Content - светло-серый ПОЛНОСТЬЮ непрозрачный */}
-                <div className="p-5 bg-slate-100" style={{ backgroundColor: '#f1f5f9' }}>
+                {/* Content - светло-серый ПОЛНОСТЬЮ непрозрачный, прокручиваемый */}
+                <div
+                  className="flex-1 overflow-y-auto p-5"
+                  style={{ backgroundColor: '#f1f5f9' }} // slate-100
+                >
                   {/* Option to detach (no parent) */}
                   <button
                     onClick={() => handleAttachToParent(null)}
@@ -238,6 +304,16 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                       ŽÁDNÉ HLAVNÍ POLOŽKY
                     </div>
                   )}
+                </div>
+
+                {/* Resize handle - нижний правый угол */}
+                <div
+                  className="absolute bottom-0 right-0 w-6 h-6 cursor-se-resize flex items-center justify-center"
+                  style={{ backgroundColor: '#334155' }} // slate-700
+                  onMouseDown={handleResizeStart}
+                  title="Změnit velikost"
+                >
+                  <GripVertical size={14} className="text-slate-400 rotate-45" />
                 </div>
               </div>
             </>
