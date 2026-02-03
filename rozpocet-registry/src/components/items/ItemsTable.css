@@ -11,23 +11,23 @@
   display: block;
 }
 
-/* Тонкий скроллбар для ячейки - менее контрастный */
+/* Тонкий скроллбар для ячейки - очень светлый и тонкий */
 .cell-scrollable::-webkit-scrollbar {
-  height: 5px;
+  height: 3px;
 }
 
 .cell-scrollable::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.02);
-  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.01);
+  border-radius: 2px;
 }
 
 .cell-scrollable::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 2px;
 }
 
 .cell-scrollable::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.15);
 }
 
 /* Для ячейки с кодом - меньшая ширина */

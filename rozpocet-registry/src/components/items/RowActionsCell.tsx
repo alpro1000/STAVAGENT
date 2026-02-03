@@ -162,34 +162,35 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
 
           {showParentMenu && (
             <>
-              {/* Backdrop */}
+              {/* Backdrop - непрозрачный темный */}
               <div
-                className="fixed inset-0 bg-black/30 z-40"
+                className="fixed inset-0 bg-black/70 z-40"
                 onClick={() => setShowParentMenu(false)}
               />
 
-              {/* Modal panel on the right */}
+              {/* Modal panel on the right - белый непрозрачный фон */}
               <div
-                className="fixed right-4 top-1/2 -translate-y-1/2 bg-white border-2 border-slate-300 rounded-lg shadow-2xl z-50 w-[500px] max-h-[600px] overflow-y-auto"
+                className="fixed right-4 top-1/2 -translate-y-1/2 bg-white border-4 border-slate-700 rounded-lg z-50 w-[480px] max-h-[600px] overflow-y-auto"
+                style={{ boxShadow: '0 12px 48px rgba(0,0,0,0.5)' }}
               >
-                {/* Header */}
-                <div className="sticky top-0 bg-blue-50 border-b-2 border-blue-200 px-4 py-3 z-10">
-                  <h3 className="font-semibold text-blue-900 text-sm">Připojit k hlavní položce</h3>
-                  <p className="text-xs text-slate-600 mt-1">Vyberte hlavní položku pro připojení podřízeného řádku</p>
+                {/* Header - темный синий */}
+                <div className="sticky top-0 bg-blue-700 text-white px-4 py-3 z-10 border-b-2 border-blue-900">
+                  <h3 className="font-bold text-sm">🔗 Připojit k hlavní položce</h3>
+                  <p className="text-xs opacity-90 mt-1">Vyberte hlavní položku pro připojení podřízeného řádku</p>
                 </div>
 
-                {/* Content */}
-                <div className="p-2">
+                {/* Content - белый непрозрачный фон */}
+                <div className="p-3 bg-white">
                   {/* Option to detach (no parent) */}
                   <button
                     onClick={() => handleAttachToParent(null)}
-                    className={`w-full px-4 py-3 text-left text-sm hover:bg-slate-100 transition-colors rounded-lg mb-2 ${
-                      !item.parentItemId ? 'bg-orange-100 border-2 border-orange-400 text-orange-900 font-semibold' : 'border-2 border-transparent'
+                    className={`w-full px-4 py-3 text-left text-sm hover:bg-orange-50 transition-colors rounded-lg mb-2 ${
+                      !item.parentItemId ? 'bg-orange-100 border-2 border-orange-500 text-orange-900 font-semibold shadow-sm' : 'border-2 border-slate-300 bg-slate-50'
                     }`}
                   >
                     <div className="flex items-center gap-2">
                       <span className="text-lg">🔓</span>
-                      <em className="text-sm">(Žádný rodič - odpojit)</em>
+                      <span className="font-medium text-sm">(Žádný rodič - odpojit)</span>
                     </div>
                   </button>
 
@@ -200,22 +201,24 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                         <button
                           key={parent.id}
                           onClick={() => handleAttachToParent(parent.id)}
-                          className={`w-full px-4 py-3 text-left text-sm hover:bg-slate-100 transition-colors rounded-lg ${
-                            item.parentItemId === parent.id ? 'bg-blue-100 border-2 border-blue-400 text-blue-900 font-semibold' : 'border-2 border-transparent'
+                          className={`w-full px-4 py-3 text-left text-sm transition-colors rounded-lg ${
+                            item.parentItemId === parent.id
+                              ? 'bg-blue-100 border-2 border-blue-600 text-blue-900 font-semibold shadow-md'
+                              : 'border-2 border-slate-300 bg-white hover:bg-blue-50 hover:border-blue-400'
                           }`}
                         >
                           <div className="flex flex-col gap-1">
                             <div className="flex items-center gap-2">
-                              <span className="font-mono text-xs bg-slate-200 px-2 py-0.5 rounded text-slate-700">{parent.boqLineNumber || '—'}</span>
-                              <span className="font-bold text-sm text-slate-800">{parent.kod}</span>
+                              <span className="font-mono text-xs bg-slate-800 text-white px-2 py-0.5 rounded font-bold">{parent.boqLineNumber || '—'}</span>
+                              <span className="font-bold text-sm text-slate-900">{parent.kod}</span>
                             </div>
-                            <span className="text-xs text-slate-600 leading-tight">{parent.popis}</span>
+                            <span className="text-xs text-slate-800 leading-tight font-medium">{parent.popis}</span>
                           </div>
                         </button>
                       ))}
                     </div>
                   ) : (
-                    <div className="px-4 py-8 text-center text-sm text-slate-500 italic bg-slate-50 rounded-lg">
+                    <div className="px-4 py-8 text-center text-sm text-slate-600 font-medium bg-slate-100 rounded-lg border-2 border-slate-300">
                       Žádné hlavní položky nebyly nalezeny
                     </div>
                   )}

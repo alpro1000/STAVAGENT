@@ -316,7 +316,7 @@ export function ItemsTable({
             className="cursor-pointer"
           />
         ),
-        size: 30,
+        size: 25,
       }),
 
       // Actions (delete, change role, reorder, attach)
@@ -331,7 +331,7 @@ export function ItemsTable({
             allItems={items}
           />
         ),
-        size: 120,
+        size: 95,
       }),
 
       // Poř. (BOQ line number + expand/collapse toggle)
@@ -425,6 +425,24 @@ export function ItemsTable({
         size: 100,
         enableSorting: true,
         sortingFn: 'basic', // Числовая сортировка
+      }),
+
+      // Cena jednotková
+      columnHelper.accessor('cenaJednotkova', {
+        header: 'Cena',
+        cell: (info) => {
+          const value = info.getValue();
+          return (
+            <span className="text-sm font-medium tabular-nums">
+              {value !== null
+                ? `${value.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč`
+                : '-'}
+            </span>
+          );
+        },
+        size: 100,
+        enableSorting: true,
+        sortingFn: 'basic',
       }),
 
       // Cena celkem
