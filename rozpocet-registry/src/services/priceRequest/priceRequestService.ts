@@ -131,9 +131,6 @@ const CELL_STYLE = {
   },
 };
 
-/** Alternating row fill */
-const ALT_ROW_FILL = { fgColor: { rgb: 'F2F7FB' } };
-
 /**
  * Export price request to Excel file
  * Features: formulas (cena = množství × jednotková), SUM, AutoFilter, styled header
