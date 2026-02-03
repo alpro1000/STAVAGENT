@@ -13,8 +13,8 @@ import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
-import { exportAndDownload, exportFullProjectAndDownload } from './services/export/excelExportService';
-import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown } from 'lucide-react';
+import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
+import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw } from 'lucide-react';
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -41,6 +41,9 @@ function App() {
 
   // Export dropdown state
   const [isExportMenuOpen, setIsExportMenuOpen] = useState(false);
+
+  // Original file availability for "return to original" export
+  const [hasOriginalFile, setHasOriginalFile] = useState(false);
 
   // Refs for horizontal scrolling (Excel-style navigation)
   const projectTabsScrollRef = useRef<HTMLDivElement>(null);
@@ -178,6 +181,37 @@ function App() {
     });
   };
 
+  // Check if original file is available when project changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const checkOriginalFile = async () => {
+    if (selectedProject) {
+      const available = await canExportToOriginal(selectedProject.id);
+      setHasOriginalFile(available);
+    } else {
+      setHasOriginalFile(false);
+    }
+  };
+
+  // Run check when selected project changes (called manually after import)
+  // Using a simple approach: check when opening the export menu
+  const handleOpenExportMenu = async () => {
+    setIsExportMenuOpen(!isExportMenuOpen);
+    if (!isExportMenuOpen && selectedProject) {
+      checkOriginalFile();
+    }
+  };
+
+  const handleExportToOriginal = async () => {
+    if (!selectedProject) return;
+    setIsExportMenuOpen(false);
+    const result = await exportToOriginalFile(selectedProject);
+    if (!result.success) {
+      // Show error - for now just log it
+      console.error('Export to original failed:', result.errors);
+      alert(`Chyba: ${result.errors.join('\n')}`);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-bg-primary overflow-x-hidden">
       {/* Header */}
@@ -209,8 +243,8 @@ function App() {
               {selectedProject && (
                 <div className="relative">
                   <button
-                    onClick={() => setIsExportMenuOpen(!isExportMenuOpen)}
-                    onBlur={() => setTimeout(() => setIsExportMenuOpen(false), 150)}
+                    onClick={handleOpenExportMenu}
+                    onBlur={() => setTimeout(() => setIsExportMenuOpen(false), 200)}
                     className="btn btn-secondary text-sm flex items-center gap-2"
                     title="Exportovat do Excel"
                   >
@@ -219,7 +253,7 @@ function App() {
                     <ChevronDown size={14} />
                   </button>
                   {isExportMenuOpen && (
-                    <div className="absolute right-0 top-full mt-1 bg-panel-clean border border-edge-light rounded-lg shadow-panel z-50 min-w-[200px] overflow-hidden">
+                    <div className="absolute right-0 top-full mt-1 bg-panel-clean border border-edge-light rounded-lg shadow-panel z-50 min-w-[240px] overflow-hidden">
                       <button
                         onMouseDown={(e) => { e.preventDefault(); handleExportSheet(); }}
                         disabled={!selectedSheet}
@@ -239,6 +273,17 @@ function App() {
                         <Download size={14} />
                         Export projekt
                         <span className="text-xs text-text-muted ml-auto">({selectedProject.sheets.length} {selectedProject.sheets.length === 1 ? 'list' : 'listy'})</span>
+                      </button>
+                      <div className="border-t border-divider" />
+                      <button
+                        onMouseDown={(e) => { e.preventDefault(); handleExportToOriginal(); }}
+                        disabled={!hasOriginalFile}
+                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                        title={hasOriginalFile ? 'Zapsat ceny zpět do originálního souboru' : 'Originální soubor není k dispozici'}
+                      >
+                        <RotateCcw size={14} />
+                        Vrátit do původního
+                        <span className="text-xs text-text-muted ml-auto">(ceny)</span>
                       </button>
                     </div>
                   )}

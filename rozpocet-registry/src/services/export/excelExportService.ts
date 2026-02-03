@@ -13,6 +13,7 @@ import type { ProjectMetadata } from '../../types/project';
 import type { ImportConfig } from '../../types/config';
 import type { ParsedItem } from '../../types/item';
 import type { Project } from '../../types/project';
+import { getOriginalFile } from '../originalFileStore';
 
 /**
  * Exportable project (compatibility type for export)
@@ -71,16 +72,6 @@ const DESC_ROW_STYLE: XLSX.CellStyle = {
   font: { name: 'Calibri', sz: 10, color: { rgb: '64748B' }, italic: true },  // slate-500, italic
   border: {
     bottom: { style: 'thin', color: { rgb: 'F1F5F9' } },  // very light
-  },
-};
-
-// Group separator row
-const GROUP_HEADER_STYLE: XLSX.CellStyle = {
-  fill: { fgColor: { rgb: 'CBD5E1' } },  // slate-300
-  font: { bold: true, name: 'Calibri', sz: 10, color: { rgb: '334155' } },  // slate-700
-  border: {
-    bottom: { style: 'thin', color: { rgb: '94A3B8' } },
-    top: { style: 'thin', color: { rgb: '94A3B8' } },
   },
 };
 
@@ -185,43 +176,40 @@ function sanitizeSheetName(name: string, workbook: XLSX.WorkBook): string {
 
 /**
  * Create a styled items worksheet with header formatting and row highlights.
+ *
+ * V2: Items are kept in ORIGINAL ORDER (by boqLineNumber), no group separators.
+ * Skupina is just a regular column. Users can sort/filter in Excel as needed.
  */
 function createStyledItemsSheet(
   items: ParsedItem[],
   projectId: string,
-  groupBySkupina: boolean,
+  _groupBySkupina: boolean, // DEPRECATED: always keep original order now
   addHyperlinks: boolean
 ): XLSX.WorkSheet {
-  const sortedItems = groupBySkupina ? groupItemsBySkupina(items) : items;
+  // Sort by boqLineNumber to preserve original file order
+  const sortedItems = [...items].sort((a, b) => {
+    const aNum = a.boqLineNumber ?? a.source?.rowStart ?? 999999;
+    const bNum = b.boqLineNumber ?? b.source?.rowStart ?? 999999;
+    return aNum - bNum;
+  });
 
   // Build data array
   const data: any[][] = [];
   const headers = [
+    'Poř.', // Original row number
     'Kód', 'Popis', 'MJ', 'Množství',
     'Cena jednotková', 'Cena celkem', 'Skupina',
     ...(addHyperlinks ? ['Odkaz'] : []),
   ];
   data.push(headers);
 
-  // Track row types for styling: 'header' | 'group' | 'code' | 'desc'
+  // Track row types for styling: 'header' | 'code' | 'desc'
   const rowTypes: string[] = ['header'];
 
   // Track outline levels for Excel grouping (collapsible rows)
   const outlineLevels: number[] = [0]; // header = level 0 (no grouping)
 
-  let currentGroup: string | null = null;
-
   for (const item of sortedItems) {
-    // Group separator
-    if (groupBySkupina && item.skupina !== currentGroup) {
-      currentGroup = item.skupina;
-      const groupRow = ['', `=== ${currentGroup || 'Bez skupiny'} ===`, '', '', '', '', ''];
-      if (addHyperlinks) groupRow.push('');
-      data.push(groupRow);
-      rowTypes.push('group');
-      outlineLevels.push(0); // group headers are not grouped
-    }
-
     // Item row - determine if it's a main/section/subordinate row
     // Use rowRole if available, otherwise fallback to old logic (kod presence)
     const rowRole = item.rowRole || (item.kod && item.kod.trim().length > 0 ? 'main' : 'subordinate');
@@ -231,6 +219,7 @@ function createStyledItemsSheet(
     const popisText = isSubordinate ? `  ↳ ${item.popis}` : item.popis;
 
     const row: any[] = [
+      item.boqLineNumber ?? '', // Original row number
       item.kod,
       popisText,
       item.mj,
@@ -260,8 +249,9 @@ function createStyledItemsSheet(
   // Create worksheet from data
   const ws = XLSX.utils.aoa_to_sheet(data);
 
-  // Apply column widths
+  // Apply column widths (added Poř. column at index 0)
   ws['!cols'] = [
+    { wch: 6 },   // Poř. (original row number)
     { wch: 12 },  // Kód
     { wch: 50 },  // Popis
     { wch: 8 },   // MJ
@@ -302,14 +292,11 @@ function createStyledItemsSheet(
       const cell = ws[cellRef];
       if (!cell) continue;
 
-      // Base style based on row type
+      // Base style based on row type: 'header' | 'code' | 'desc'
       let style: XLSX.CellStyle;
       switch (rowType) {
         case 'header':
           style = { ...HEADER_STYLE };
-          break;
-        case 'group':
-          style = { ...GROUP_HEADER_STYLE };
           break;
         case 'code':
           style = { ...CODE_ROW_STYLE };
@@ -318,13 +305,13 @@ function createStyledItemsSheet(
           style = { ...DESC_ROW_STYLE };
       }
 
-      // Right-align numeric columns (Množství=3, Cena jedn.=4, Cena celkem=5)
-      if (c >= 3 && c <= 5 && rowType !== 'header') {
+      // Right-align numeric columns (Poř.=0, Množství=4, Cena jedn.=5, Cena celkem=6)
+      if ((c === 0 || (c >= 4 && c <= 6)) && rowType !== 'header') {
         style.alignment = { ...style.alignment, ...NUM_ALIGN };
       }
 
       // Number format for price columns
-      if ((c === 4 || c === 5) && rowType !== 'header' && rowType !== 'group') {
+      if ((c === 5 || c === 6) && rowType !== 'header') {
         cell.z = '#,##0.00';
       }
 
@@ -420,22 +407,6 @@ function createMetadataSheet(project: ExportableProject): XLSX.WorkSheet {
    HELPERS
    ============================================ */
 
-function groupItemsBySkupina(items: ParsedItem[]): ParsedItem[] {
-  const grouped: Record<string, ParsedItem[]> = {};
-
-  for (const item of items) {
-    const group = item.skupina || '';
-    if (!grouped[group]) grouped[group] = [];
-    grouped[group].push(item);
-  }
-
-  const result: ParsedItem[] = [];
-  for (const group of Object.keys(grouped).sort()) {
-    result.push(...grouped[group]);
-  }
-  return result;
-}
-
 /**
  * Download exported file
  */
@@ -478,4 +449,150 @@ export function exportFullProjectAndDownload(
   const arrayBuffer = exportFullProjectToExcel(project, options);
   const fileName = `${project.fileName.replace(/\.[^.]+$/, '')}_full_export.xlsx`;
   downloadExcel(arrayBuffer, fileName);
+}
+
+/* ============================================
+   RETURN TO ORIGINAL FILE EXPORT
+   Write prices back to original file preserving structure
+   ============================================ */
+
+export interface ReturnToOriginalOptions {
+  /** Column letter for unit price (e.g. 'F') - if empty, will not update */
+  cenaJednotkovaCol?: string;
+  /** Column letter for total price (e.g. 'G') - if empty, will not update */
+  cenaCelkemCol?: string;
+}
+
+export interface ReturnToOriginalResult {
+  success: boolean;
+  updatedRows: number;
+  totalRows: number;
+  errors: string[];
+}
+
+/**
+ * Convert column letter to 0-based index (A=0, B=1, ..., Z=25, AA=26, etc.)
+ */
+function colLetterToIndex(col: string): number {
+  let result = 0;
+  for (let i = 0; i < col.length; i++) {
+    result = result * 26 + (col.charCodeAt(i) - 64);
+  }
+  return result - 1;
+}
+
+/**
+ * Export prices back to original file.
+ * Only updates cenaJednotkova and cenaCelkem columns, preserving all other data.
+ *
+ * @param project - Project with updated prices
+ * @param options - Column mappings for price columns
+ * @returns Result with counts and any errors
+ */
+export async function exportToOriginalFile(
+  project: Project,
+  options: ReturnToOriginalOptions = {}
+): Promise<ReturnToOriginalResult> {
+  const result: ReturnToOriginalResult = {
+    success: false,
+    updatedRows: 0,
+    totalRows: 0,
+    errors: [],
+  };
+
+  // Get original file from IndexedDB
+  const originalFile = await getOriginalFile(project.id);
+  if (!originalFile) {
+    result.errors.push('Originální soubor nebyl nalezen. Soubor musí být importován znovu.');
+    return result;
+  }
+
+  try {
+    // Read original workbook
+    const workbook = XLSX.read(originalFile.fileData, { type: 'array' });
+
+    // Build a map of boqLineNumber → prices from all sheets
+    const priceMap = new Map<string, { sheetName: string; row: number; cenaJed: number | null; cenaCel: number | null }>();
+
+    for (const sheet of project.sheets) {
+      for (const item of sheet.items) {
+        if (item.boqLineNumber !== undefined && item.boqLineNumber !== null) {
+          const key = `${sheet.name}:${item.boqLineNumber}`;
+          priceMap.set(key, {
+            sheetName: sheet.name,
+            row: item.boqLineNumber,
+            cenaJed: item.cenaJednotkova,
+            cenaCel: item.cenaCelkem,
+          });
+          result.totalRows++;
+        }
+      }
+    }
+
+    // Get column indices from first sheet's config (or use provided options)
+    const firstSheet = project.sheets[0];
+    const config = firstSheet?.config;
+
+    const cenaJedCol = options.cenaJednotkovaCol || config?.columns?.cenaJednotkova || '';
+    const cenaCelCol = options.cenaCelkemCol || config?.columns?.cenaCelkem || '';
+
+    if (!cenaJedCol && !cenaCelCol) {
+      result.errors.push('Nebyly nalezeny sloupce pro ceny. Zkontrolujte konfiguraci importu.');
+      return result;
+    }
+
+    const cenaJedColIdx = cenaJedCol ? colLetterToIndex(cenaJedCol.toUpperCase()) : -1;
+    const cenaCelColIdx = cenaCelCol ? colLetterToIndex(cenaCelCol.toUpperCase()) : -1;
+
+    // Update each sheet in the workbook
+    for (const sheetName of workbook.SheetNames) {
+      const ws = workbook.Sheets[sheetName];
+      if (!ws) continue;
+
+      // Get the range of the sheet
+      const range = XLSX.utils.decode_range(ws['!ref'] || 'A1');
+
+      // Iterate through rows and update prices
+      for (let row = 0; row <= range.e.r; row++) {
+        const excelRow = row + 1; // 1-based for boqLineNumber
+        const key = `${sheetName}:${excelRow}`;
+        const priceData = priceMap.get(key);
+
+        if (priceData) {
+          // Update cenaJednotkova
+          if (cenaJedColIdx >= 0 && priceData.cenaJed !== null) {
+            const cellRef = XLSX.utils.encode_cell({ r: row, c: cenaJedColIdx });
+            ws[cellRef] = { t: 'n', v: priceData.cenaJed };
+          }
+
+          // Update cenaCelkem
+          if (cenaCelColIdx >= 0 && priceData.cenaCel !== null) {
+            const cellRef = XLSX.utils.encode_cell({ r: row, c: cenaCelColIdx });
+            ws[cellRef] = { t: 'n', v: priceData.cenaCel };
+          }
+
+          result.updatedRows++;
+        }
+      }
+    }
+
+    // Write and download
+    const arrayBuffer = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
+    const fileName = originalFile.fileName.replace(/\.[^.]+$/, '') + '_s_cenami.xlsx';
+    downloadExcel(arrayBuffer, fileName);
+
+    result.success = true;
+  } catch (err) {
+    result.errors.push(`Chyba při zpracování souboru: ${err instanceof Error ? err.message : String(err)}`);
+  }
+
+  return result;
+}
+
+/**
+ * Check if original file is available for export
+ */
+export async function canExportToOriginal(projectId: string): Promise<boolean> {
+  const originalFile = await getOriginalFile(projectId);
+  return !!originalFile;
 }

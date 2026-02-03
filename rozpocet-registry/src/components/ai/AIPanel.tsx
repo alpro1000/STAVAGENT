@@ -13,6 +13,8 @@
  * - Classifies ONLY main/section items (rowRole === 'main' or 'section')
  * - Subordinate rows (PP, PSC, VV, A195, B5) used as CONTEXT only
  * - Skupina cascades to subordinates automatically
+ *
+ * LIGHT THEME - легкий читаемый стиль
  */
 
 import { useState } from 'react';
@@ -38,6 +40,23 @@ interface ClassificationResult {
   modelUsed?: string;
   action?: 'updated' | 'kept';
 }
+
+// Light theme colors
+const LIGHT = {
+  panelBg: '#FFFFFF',
+  panelBgAlt: '#F5F6F7',
+  headerBg: '#EAEBEC',
+  border: '#D0D2D4',
+  borderLight: '#E5E7EB',
+  text: '#1A1C1E',
+  textMuted: '#6B7280',
+  accent: '#FF9F1C',
+  accentDark: '#E68A00',
+  success: '#10B981',
+  error: '#EF4444',
+  errorBg: '#FEF2F2',
+  warningBg: '#FFFBEB',
+};
 
 export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIPanelProps) {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -243,8 +262,8 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           <Sparkles className="text-accent-primary" size={20} />
           <h3 className="font-semibold text-text-primary">AI Klasifikace</h3>
           <span
-            className="text-xs px-2 py-0.5 rounded font-bold uppercase tracking-wide"
-            style={{ backgroundColor: '#3e4348', color: '#f5f6f7' }}
+            className="text-xs px-2 py-0.5 rounded font-semibold"
+            style={{ backgroundColor: LIGHT.headerBg, color: LIGHT.text }}
           >
             {selectedItemIds.length > 0
               ? `${selectedItemIds.length} vybráno`
@@ -253,15 +272,15 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           </span>
           {aiEnabled ? (
             <span
-              className="text-xs px-2 py-0.5 rounded font-bold uppercase tracking-wide flex items-center gap-1"
-              style={{ backgroundColor: '#FF9F1C', color: '#1a1d21' }}
+              className="text-xs px-2 py-0.5 rounded font-bold flex items-center gap-1"
+              style={{ backgroundColor: LIGHT.accent, color: '#ffffff' }}
             >
               <Zap size={12} /> AI ON
             </span>
           ) : (
             <span
-              className="text-xs px-2 py-0.5 rounded font-bold uppercase tracking-wide"
-              style={{ backgroundColor: '#2d3139', color: '#8a9199' }}
+              className="text-xs px-2 py-0.5 rounded font-semibold"
+              style={{ backgroundColor: LIGHT.headerBg, color: LIGHT.textMuted }}
             >
               Rules only
             </span>
@@ -274,15 +293,15 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
         <div className="mt-4 space-y-4">
           {/* AI Toggle */}
           <div
-            className="flex items-center gap-3 p-3 rounded border-2"
-            style={{ backgroundColor: '#2d3139', borderColor: '#3e4348' }}
+            className="flex items-center gap-3 p-3 rounded-lg border"
+            style={{ backgroundColor: LIGHT.panelBgAlt, borderColor: LIGHT.border }}
           >
-            <Power size={16} style={{ color: aiEnabled ? '#FF9F1C' : '#8a9199' }} />
+            <Power size={16} style={{ color: aiEnabled ? LIGHT.accent : LIGHT.textMuted }} />
             <div className="flex-1">
-              <div className="text-sm font-medium text-text-primary">
+              <div className="text-sm font-medium" style={{ color: LIGHT.text }}>
                 AI Mode {aiEnabled ? 'Zapnuto' : 'Vypnuto'}
               </div>
-              <div className="text-xs text-text-muted mt-0.5">
+              <div className="text-xs mt-0.5" style={{ color: LIGHT.textMuted }}>
                 {aiEnabled
                   ? 'Používá Gemini AI + Memory + Rules (vyšší přesnost, vyžaduje API key)'
                   : 'Pouze Rules (bez AI, bez nákladů, deterministický)'}
@@ -293,10 +312,10 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
                 e.stopPropagation();
                 setAiEnabled(!aiEnabled);
               }}
-              className="px-3 py-1.5 rounded text-sm font-black uppercase tracking-wide transition-colors"
+              className="px-3 py-1.5 rounded text-sm font-bold transition-colors"
               style={{
-                backgroundColor: aiEnabled ? '#FF9F1C' : '#3e4348',
-                color: aiEnabled ? '#1a1d21' : '#8a9199',
+                backgroundColor: aiEnabled ? LIGHT.accent : LIGHT.headerBg,
+                color: aiEnabled ? '#ffffff' : LIGHT.textMuted,
               }}
             >
               {aiEnabled ? 'ON' : 'OFF'}
@@ -304,8 +323,8 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           </div>
 
           {/* Info */}
-          <div className="text-sm text-text-muted space-y-1">
-            <p className="font-medium text-text-primary">Jak to funguje:</p>
+          <div className="text-sm space-y-1" style={{ color: LIGHT.textMuted }}>
+            <p className="font-medium" style={{ color: LIGHT.text }}>Jak to funguje:</p>
             <ul className="list-disc list-inside space-y-0.5 text-xs">
               <li><strong>Klasifikuje POUZE</strong> hlavní položky (s kódy URS/OTSKP)</li>
               <li>Podřízené řádky (PP/PSC/VV) = <strong>kontext</strong> pro AI</li>
@@ -364,13 +383,13 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           {/* Stats */}
           {classificationStats && (
             <div
-              className="p-3 rounded border-2 text-sm"
-              style={{ backgroundColor: '#2d3139', borderColor: '#FF9F1C' }}
+              className="p-3 rounded-lg border text-sm"
+              style={{ backgroundColor: '#ECFDF5', borderColor: LIGHT.success }}
             >
-              <div className="font-black mb-2 uppercase tracking-wide" style={{ color: '#FF9F1C' }}>
+              <div className="font-bold mb-2 flex items-center gap-2" style={{ color: LIGHT.success }}>
                 ✓ Klasifikace dokončena
               </div>
-              <div className="grid grid-cols-2 gap-2 text-xs" style={{ color: '#f5f6f7' }}>
+              <div className="grid grid-cols-2 gap-2 text-xs" style={{ color: LIGHT.text }}>
                 <div>Změněno: <strong>{classificationStats.changed}</strong></div>
                 <div>Nezměněno: <strong>{classificationStats.unchanged}</strong></div>
                 {classificationStats.keptExisting !== undefined && (
@@ -381,12 +400,12 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
               {/* Source breakdown */}
               {classificationStats.stats && (
-                <div className="mt-2 pt-2" style={{ borderTop: '1px solid #3e4348' }}>
-                  <div className="text-xs" style={{ color: '#8a9199' }}>
+                <div className="mt-2 pt-2" style={{ borderTop: `1px solid ${LIGHT.border}` }}>
+                  <div className="text-xs" style={{ color: LIGHT.textMuted }}>
                     Zdroje:{' '}
                     {Object.entries(classificationStats.stats.bySource).map(([source, count]) => (
                       <span key={source} className="mr-2">
-                        {source}: <strong style={{ color: '#f5f6f7' }}>{count}</strong>
+                        {source}: <strong style={{ color: LIGHT.text }}>{count}</strong>
                       </span>
                     ))}
                   </div>
@@ -397,7 +416,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
           {/* Last Action */}
           {lastAction && !classificationStats && (
-            <div className="text-sm text-text-muted italic bg-bg-secondary p-2 rounded">
+            <div className="text-sm italic p-2 rounded" style={{ backgroundColor: LIGHT.panelBgAlt, color: LIGHT.textMuted }}>
               {lastAction}
             </div>
           )}
@@ -405,18 +424,19 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
           {/* Error */}
           {error && (
             <div
-              className="p-3 rounded border-2 text-sm"
-              style={{ backgroundColor: '#2d3139', borderColor: '#ef4444', color: '#fca5a5' }}
+              className="p-3 rounded-lg border text-sm"
+              style={{ backgroundColor: LIGHT.errorBg, borderColor: LIGHT.error }}
             >
-              <strong style={{ color: '#ef4444' }}>Chyba:</strong> {error}
+              <strong style={{ color: LIGHT.error }}>Chyba:</strong>{' '}
+              <span style={{ color: LIGHT.text }}>{error}</span>
             </div>
           )}
 
           {/* Warning if AI disabled */}
           {!aiEnabled && (
             <div
-              className="p-2 rounded border-2 text-xs"
-              style={{ backgroundColor: '#2d3139', borderColor: '#3e4348', color: '#8a9199' }}
+              className="p-2 rounded-lg border text-xs"
+              style={{ backgroundColor: LIGHT.warningBg, borderColor: '#F59E0B', color: '#92400E' }}
             >
               ⚠️ AI režim vypnut. Používá se pouze deterministická klasifikace podle klíčových slov.
             </div>
