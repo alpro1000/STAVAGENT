@@ -162,38 +162,44 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
 
           {showParentMenu && (
             <>
-              {/* Backdrop - МАКСИМАЛЬНЫЙ z-index */}
+              {/* Backdrop - ПОЛНОСТЬЮ НЕПРОЗРАЧНЫЙ */}
               <div
-                className="fixed inset-0 bg-slate-900/95 z-[9998]"
+                className="fixed inset-0 bg-slate-950 z-[99998]"
+                style={{ backgroundColor: '#0a0a0a' }}
                 onClick={() => setShowParentMenu(false)}
               />
 
-              {/* Modal panel - Digital Concrete, по центру справа */}
+              {/* Modal panel - Digital Concrete, ТОЧНО ПО ЦЕНТРУ */}
               <div
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 border-4 border-slate-800 rounded-none z-[9999] w-[550px] max-h-[680px] overflow-y-auto"
-                style={{ boxShadow: '12px 12px 0 rgba(0,0,0,0.4), 0 24px 72px rgba(0,0,0,0.8)' }}
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 border-4 border-black rounded-none z-[99999] w-[550px] max-h-[680px] overflow-y-auto"
+                style={{
+                  boxShadow: '12px 12px 0 rgba(0,0,0,0.5), 0 24px 72px rgba(0,0,0,0.9)',
+                  transform: 'translate(-50%, -50%)',
+                  left: '50%',
+                  top: '50%'
+                }}
               >
-                {/* Header - Digital Concrete */}
-                <div className="sticky top-0 bg-slate-900 text-white px-6 py-4 z-[10000] border-b-4 border-black">
-                  <h3 className="font-black text-lg uppercase tracking-widest">🔗 Připojit k položce</h3>
-                  <p className="text-xs text-slate-400 mt-2 font-semibold uppercase tracking-wide">Vyberte hlavní položku pro připojení</p>
+                {/* Header - Digital Concrete BLACK */}
+                <div className="sticky top-0 bg-black text-white px-6 py-4 z-[100000] border-b-4 border-slate-800">
+                  <h3 className="font-black text-lg uppercase tracking-widest">🔗 PŘIPOJIT K POLOŽCE</h3>
+                  <p className="text-xs text-slate-400 mt-2 font-bold uppercase tracking-wide">Vyberte hlavní položku pro připojení</p>
                 </div>
 
-                {/* Content - светло-серый непрозрачный */}
-                <div className="p-5 bg-slate-100">
+                {/* Content - светло-серый ПОЛНОСТЬЮ непрозрачный */}
+                <div className="p-5 bg-slate-100" style={{ backgroundColor: '#f1f5f9' }}>
                   {/* Option to detach (no parent) */}
                   <button
                     onClick={() => handleAttachToParent(null)}
                     className={`w-full px-6 py-5 text-left transition-all rounded-none mb-3 border-4 ${
                       !item.parentItemId
                         ? 'bg-orange-500 border-orange-700 text-white font-black shadow-[6px_6px_0_rgba(0,0,0,0.3)] uppercase tracking-wide'
-                        : 'border-slate-500 bg-white hover:bg-slate-50 hover:border-slate-700 hover:shadow-[4px_4px_0_rgba(0,0,0,0.1)]'
+                        : 'border-slate-600 bg-white hover:bg-slate-50 hover:border-slate-800 hover:shadow-[4px_4px_0_rgba(0,0,0,0.1)]'
                     }`}
                   >
                     <div className="flex items-center gap-4">
                       <span className="text-2xl">🔓</span>
-                      <span className={`text-sm font-bold uppercase tracking-wide ${!item.parentItemId ? 'text-white' : 'text-slate-700'}`}>
-                        (Žádný rodič - odpojit)
+                      <span className={`text-sm font-black uppercase tracking-wide ${!item.parentItemId ? 'text-white' : 'text-slate-800'}`}>
+                        (ŽÁDNÝ RODIČ - ODPOJIT)
                       </span>
                     </div>
                   </button>
@@ -208,12 +214,12 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                           className={`w-full px-6 py-5 text-left transition-all rounded-none border-4 ${
                             item.parentItemId === parent.id
                               ? 'bg-orange-500 border-orange-700 text-white font-black shadow-[6px_6px_0_rgba(0,0,0,0.3)]'
-                              : 'border-slate-500 bg-white hover:bg-slate-50 hover:border-slate-700 hover:shadow-[4px_4px_0_rgba(0,0,0,0.1)]'
+                              : 'border-slate-600 bg-white hover:bg-slate-50 hover:border-slate-800 hover:shadow-[4px_4px_0_rgba(0,0,0,0.1)]'
                           }`}
                         >
                           <div className="flex flex-col gap-2">
                             <div className="flex items-center gap-3">
-                              <span className="font-mono text-xs bg-black text-white px-3 py-1.5 font-black uppercase tracking-wider border-2 border-slate-700">
+                              <span className="font-mono text-xs bg-black text-white px-3 py-1.5 font-black uppercase tracking-wider border-2 border-slate-800">
                                 {parent.boqLineNumber || '—'}
                               </span>
                               <span className={`font-black text-lg tracking-tight ${
@@ -221,15 +227,15 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                               }`}>{parent.kod}</span>
                             </div>
                             <span className={`text-sm leading-snug font-bold ${
-                              item.parentItemId === parent.id ? 'text-white' : 'text-slate-700'
+                              item.parentItemId === parent.id ? 'text-white' : 'text-slate-800'
                             }`}>{parent.popis}</span>
                           </div>
                         </button>
                       ))}
                     </div>
                   ) : (
-                    <div className="px-6 py-12 text-center text-sm font-black bg-slate-300 rounded-none border-4 border-slate-500 text-slate-800 uppercase tracking-widest shadow-[4px_4px_0_rgba(0,0,0,0.2)]">
-                      Žádné hlavní položky
+                    <div className="px-6 py-12 text-center text-sm font-black bg-slate-300 rounded-none border-4 border-slate-600 text-slate-900 uppercase tracking-widest shadow-[4px_4px_0_rgba(0,0,0,0.2)]">
+                      ŽÁDNÉ HLAVNÍ POLOŽKY
                     </div>
                   )}
                 </div>
