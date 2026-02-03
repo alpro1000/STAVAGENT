@@ -175,31 +175,73 @@ export function exportPriceRequest(
 
   headers.push('_ID');
 
-  // Build data rows (header only - data cells set manually for formulas + styles)
+  // Build data rows with grouping by skupina
   const data: (string | number | null)[][] = [headers];
+  const outlineLevels: number[] = [0]; // Track outline levels (0 = header)
+  const groupHeaderRows: number[] = []; // Track which rows are group headers
 
-  report.items.forEach((item, index) => {
-    const row: (string | number | null)[] = [
-      index + 1,
-      item.kod,
-      item.popisFull || item.popis,
-      item.mj,
-      item.mnozstvi,
-      null, // Supplier fills unit price
-      null, // Will be replaced with formula
+  // Group items by skupina
+  const itemsByGroup = new Map<string, PriceRequestItem[]>();
+  for (const item of report.items) {
+    const group = item.skupina || 'Nezařazeno';
+    if (!itemsByGroup.has(group)) {
+      itemsByGroup.set(group, []);
+    }
+    itemsByGroup.get(group)!.push(item);
+  }
+
+  // Sort groups alphabetically
+  const sortedGroups = Array.from(itemsByGroup.keys()).sort();
+
+  let globalIndex = 0;
+
+  for (const skupina of sortedGroups) {
+    const items = itemsByGroup.get(skupina)!;
+
+    // Add group header row
+    const groupHeaderRow: (string | number | null)[] = [
+      null,
+      null,
+      `▼ ${skupina} (${items.length} položek)`,
+      null,
+      null,
+      null,
+      null,
     ];
+    if (includeSkupina) groupHeaderRow.push(skupina);
+    if (includeSourceInfo) { groupHeaderRow.push(null); groupHeaderRow.push(null); groupHeaderRow.push(null); }
+    groupHeaderRow.push(null);
 
-    if (includeSkupina) {
-      row.push(item.skupina || '');
+    data.push(groupHeaderRow);
+    outlineLevels.push(0); // Group header = level 0 (not indented)
+    groupHeaderRows.push(data.length - 1); // Remember this row index for styling
+
+    // Add items in this group
+    for (const item of items) {
+      globalIndex++;
+      const row: (string | number | null)[] = [
+        globalIndex,
+        item.kod,
+        item.popisFull || item.popis,
+        item.mj,
+        item.mnozstvi,
+        null, // Supplier fills unit price
+        null, // Will be replaced with formula
+      ];
+
+      if (includeSkupina) {
+        row.push(item.skupina || '');
+      }
+
+      if (includeSourceInfo) {
+        row.push(item.sourceProject, item.sourceSheet, item.sourceRow);
+      }
+
+      row.push(item.id);
+      data.push(row);
+      outlineLevels.push(2); // Item rows = level 2 (will become level 1 in Excel)
     }
-
-    if (includeSourceInfo) {
-      row.push(item.sourceProject, item.sourceSheet, item.sourceRow);
-    }
-
-    row.push(item.id);
-    data.push(row);
-  });
+  }
 
   // Add SUM row at bottom
   const sumRow: (string | number | null)[] = [
@@ -209,6 +251,7 @@ export function exportPriceRequest(
   if (includeSourceInfo) { sumRow.push(null); sumRow.push(null); sumRow.push(null); }
   sumRow.push(null);
   data.push(sumRow);
+  outlineLevels.push(0); // SUM row = level 0
 
   const wsItems = XLSX.utils.aoa_to_sheet(data);
 
@@ -232,23 +275,68 @@ export function exportPriceRequest(
   const cenaJedCol = colLetter(colCenaJednotkova); // F
   const cenaCelCol = colLetter(colCenaCelkem); // G
 
-  // Apply formula to each data row: Cena celkem = Množství × Cena jednotková
-  for (let r = 1; r <= report.items.length; r++) {
-    const excelRow = r + 1; // Excel rows are 1-indexed, header is row 1
-    const cellRef = `${cenaCelCol}${excelRow}`;
-    wsItems[cellRef] = {
-      t: 'n',
-      f: `IF(${cenaJedCol}${excelRow}="","",${mnozstviCol}${excelRow}*${cenaJedCol}${excelRow})`,
-      s: { ...PRICE_STYLE, ...(r % 2 === 0 ? { fill: ALT_ROW_FILL } : {}) },
-    };
+  // Group header style
+  const GROUP_HEADER_STYLE = {
+    font: { bold: true, sz: 11, color: { rgb: '2F5496' } },
+    fill: { fgColor: { rgb: 'E7F3FF' } },
+    alignment: { horizontal: 'left' as const, vertical: 'center' as const },
+    border: {
+      top: { style: 'medium' as const, color: { rgb: '2F5496' } },
+      bottom: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
+      left: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
+      right: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
+    },
+  };
+
+  // Apply formulas and styles to each row
+  const sumExcelRow = data.length; // Last row is SUM
+  const dataRowRanges: string[] = []; // Track ranges for SUM formula
+
+  for (let r = 1; r < data.length - 1; r++) {
+    // Skip header (r=0) and SUM row (last)
+    const excelRow = r + 1; // Excel rows are 1-indexed
+    const isGroupHeader = groupHeaderRows.includes(r);
+
+    if (isGroupHeader) {
+      // Style group header row
+      for (let c = 0; c < headers.length; c++) {
+        const cellRef = `${colLetter(c)}${excelRow}`;
+        if (!wsItems[cellRef]) {
+          wsItems[cellRef] = { t: 'z', v: null };
+        }
+        wsItems[cellRef].s = GROUP_HEADER_STYLE;
+      }
+    } else {
+      // Data row: apply formula and style
+      const cellRef = `${cenaCelCol}${excelRow}`;
+      wsItems[cellRef] = {
+        t: 'n',
+        f: `IF(${cenaJedCol}${excelRow}="","",${mnozstviCol}${excelRow}*${cenaJedCol}${excelRow})`,
+        s: PRICE_STYLE,
+      };
+      dataRowRanges.push(`${cenaCelCol}${excelRow}`);
+
+      // Style all cells in data row
+      for (let c = 0; c < headers.length; c++) {
+        const cellRef = `${colLetter(c)}${excelRow}`;
+        if (!wsItems[cellRef]) {
+          wsItems[cellRef] = { t: 'z', v: null };
+        }
+        const isPriceCol = c === colCenaJednotkova || c === colCenaCelkem;
+        const isQtyCol = c === colMnozstvi;
+        wsItems[cellRef].s = {
+          ...CELL_STYLE,
+          ...((isPriceCol || isQtyCol) ? { numFmt: '#,##0.00', alignment: { horizontal: 'right' as const } } : {}),
+        };
+      }
+    }
   }
 
   // Add SUM formula at bottom
-  const sumExcelRow = report.items.length + 2;
   const sumCellRef = `${cenaCelCol}${sumExcelRow}`;
   wsItems[sumCellRef] = {
     t: 'n',
-    f: `SUM(${cenaCelCol}2:${cenaCelCol}${sumExcelRow - 1})`,
+    f: `SUM(${dataRowRanges.join(',')})`,
     s: SUM_STYLE,
   };
 
@@ -262,9 +350,10 @@ export function exportPriceRequest(
 
   // SUM for Cena jednotková too
   const sumJedRef = `${cenaJedCol}${sumExcelRow}`;
+  const jedDataRanges = dataRowRanges.map(ref => ref.replace(cenaCelCol, cenaJedCol));
   wsItems[sumJedRef] = {
     t: 'n',
-    f: `SUM(${cenaJedCol}2:${cenaJedCol}${sumExcelRow - 1})`,
+    f: `SUM(${jedDataRanges.join(',')})`,
     s: SUM_STYLE,
   };
 
@@ -273,25 +362,6 @@ export function exportPriceRequest(
     const cellRef = `${colLetter(c)}1`;
     if (wsItems[cellRef]) {
       wsItems[cellRef].s = HEADER_STYLE;
-    }
-  }
-
-  // Style data cells (borders + alternating fill + price format)
-  for (let r = 1; r <= report.items.length; r++) {
-    const excelRow = r + 1;
-    const isAlt = r % 2 === 0;
-    for (let c = 0; c < headers.length; c++) {
-      const cellRef = `${colLetter(c)}${excelRow}`;
-      if (!wsItems[cellRef]) {
-        wsItems[cellRef] = { t: 'z', v: null };
-      }
-      const isPriceCol = c === colCenaJednotkova || c === colCenaCelkem;
-      const isQtyCol = c === colMnozstvi;
-      wsItems[cellRef].s = {
-        ...CELL_STYLE,
-        ...(isAlt ? { fill: ALT_ROW_FILL } : {}),
-        ...((isPriceCol || isQtyCol) ? { numFmt: '#,##0.00', alignment: { horizontal: 'right' as const } } : {}),
-      };
     }
   }
 
@@ -335,10 +405,23 @@ export function exportPriceRequest(
 
   // AutoFilter on all columns (header row through last data row)
   const lastCol = colLetter(headers.length - 2); // Exclude hidden _ID from filter
-  wsItems['!autofilter'] = { ref: `A1:${lastCol}${report.items.length + 1}` };
+  wsItems['!autofilter'] = { ref: `A1:${lastCol}${data.length - 1}` };
 
-  // Row height for header
-  wsItems['!rows'] = [{ hpx: 28 }];
+  // Set outline levels for Excel grouping (+/- buttons)
+  // outlineLevels: 0 = header/group header, 2 = data rows (will become level 1)
+  wsItems['!rows'] = outlineLevels.map((level, idx) => {
+    if (idx === 0) {
+      // Header row: just set height
+      return { hpx: 28 };
+    } else if (level === 0) {
+      // Group header or SUM row: no outline, normal height
+      return { hpx: 22 };
+    } else if (level === 2) {
+      // Data row: outline level 1 (indented under group header)
+      return { level: 1, hidden: false, hpx: 20 };
+    }
+    return {};
+  });
 
   XLSX.utils.book_append_sheet(workbook, wsItems, 'Poptávka');
 

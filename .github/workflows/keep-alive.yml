@@ -18,8 +18,10 @@ jobs:
             url: https://concrete-agent.onrender.com/healthcheck
           - name: monolit-planner
             url: https://monolit-planner-api.onrender.com/healthcheck
-          - name: stavagent-portal
-            url: https://stav-agent.onrender.com/healthcheck
+          - name: stavagent-portal-backend
+            url: https://stavagent-portal-backend.onrender.com/health
+          - name: urs-matcher-service
+            url: https://urs-matcher-service.onrender.com/health
 
     steps:
       - name: Ping ${{ matrix.service.name }}
