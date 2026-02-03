@@ -1,0 +1,207 @@
+/**
+ * Row Actions Cell Component
+ *
+ * Управление строками таблицы:
+ * - Удалить позицию (🗑️)
+ * - Изменить роль (Hlavní / Podřízený / Sekce)
+ * - Переместить вверх/вниз (↑↓)
+ * - Připojit k... (выбор родителя)
+ */
+
+import { useState, useRef, useEffect } from 'react';
+import { Trash2, MoveUp, MoveDown, Link2 } from 'lucide-react';
+import type { ParsedItem } from '../../types/item';
+import { useRegistryStore } from '../../stores/registryStore';
+
+interface RowActionsCellProps {
+  item: ParsedItem;
+  projectId: string;
+  sheetId: string;
+  allItems: ParsedItem[]; // Needed for parent selection
+}
+
+type RowRole = 'main' | 'subordinate' | 'section' | 'unknown';
+
+const ROLE_LABELS: Record<RowRole, string> = {
+  main: 'Hlavní',
+  subordinate: 'Podřízený',
+  section: 'Sekce',
+  unknown: 'Neznámý',
+};
+
+const ROLE_ICONS: Record<RowRole, string> = {
+  main: '📋',
+  subordinate: '↳',
+  section: '📑',
+  unknown: '❓',
+};
+
+export function RowActionsCell({ item, projectId, sheetId, allItems }: RowActionsCellProps) {
+  const { deleteItem, updateItemRole, updateItemParent, moveItemUp, moveItemDown } = useRegistryStore();
+
+  const [showRoleMenu, setShowRoleMenu] = useState(false);
+  const [showParentMenu, setShowParentMenu] = useState(false);
+  const roleMenuRef = useRef<HTMLDivElement>(null);
+  const parentMenuRef = useRef<HTMLDivElement>(null);
+
+  // Close menus on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (roleMenuRef.current && !roleMenuRef.current.contains(e.target as Node)) {
+        setShowRoleMenu(false);
+      }
+      if (parentMenuRef.current && !parentMenuRef.current.contains(e.target as Node)) {
+        setShowParentMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const currentRole = item.rowRole || 'unknown';
+
+  // Get potential parents (only main items)
+  const potentialParents = allItems.filter(
+    (i) => i.rowRole === 'main' && i.id !== item.id
+  );
+
+  const handleDelete = () => {
+    if (confirm(`Opravdu chcete smazat položku "${item.popis || item.kod}"?`)) {
+      deleteItem(projectId, sheetId, item.id);
+    }
+  };
+
+  const handleChangeRole = (newRole: RowRole) => {
+    updateItemRole(projectId, sheetId, item.id, newRole);
+    setShowRoleMenu(false);
+  };
+
+  const handleAttachToParent = (parentId: string | null) => {
+    updateItemParent(projectId, sheetId, item.id, parentId);
+    setShowParentMenu(false);
+  };
+
+  const handleMoveUp = () => {
+    moveItemUp(projectId, sheetId, item.id);
+  };
+
+  const handleMoveDown = () => {
+    moveItemDown(projectId, sheetId, item.id);
+  };
+
+  return (
+    <div className="flex items-center gap-1">
+      {/* Delete button */}
+      <button
+        onClick={handleDelete}
+        title="Smazat položku"
+        className="p-1 rounded hover:bg-red-500/20 transition-colors text-red-500"
+      >
+        <Trash2 size={14} />
+      </button>
+
+      {/* Role dropdown */}
+      <div className="relative" ref={roleMenuRef}>
+        <button
+          onClick={() => setShowRoleMenu(!showRoleMenu)}
+          title="Změnit roli"
+          className="px-2 py-1 text-xs rounded hover:bg-bg-secondary transition-colors flex items-center gap-1"
+        >
+          <span>{ROLE_ICONS[currentRole]}</span>
+          <span className="text-[10px] text-text-muted">{ROLE_LABELS[currentRole]}</span>
+        </button>
+
+        {showRoleMenu && (
+          <div
+            className="absolute left-0 top-full mt-1 bg-bg-primary border-2 border-border-color rounded-lg z-50 min-w-[140px]"
+            style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.25)' }}
+          >
+            {(Object.keys(ROLE_LABELS) as RowRole[]).map((role) => (
+              <button
+                key={role}
+                onClick={() => handleChangeRole(role)}
+                className={`w-full px-3 py-2 text-left text-sm flex items-center gap-2 hover:bg-bg-secondary transition-colors ${
+                  role === currentRole ? 'bg-accent-primary/10 text-accent-primary font-semibold' : ''
+                }`}
+              >
+                <span>{ROLE_ICONS[role]}</span>
+                <span>{ROLE_LABELS[role]}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Move up/down buttons */}
+      <button
+        onClick={handleMoveUp}
+        title="Přesunout nahoru"
+        className="p-1 rounded hover:bg-bg-secondary transition-colors text-text-muted"
+      >
+        <MoveUp size={14} />
+      </button>
+      <button
+        onClick={handleMoveDown}
+        title="Přesunout dolů"
+        className="p-1 rounded hover:bg-bg-secondary transition-colors text-text-muted"
+      >
+        <MoveDown size={14} />
+      </button>
+
+      {/* Attach to parent button (only for subordinate rows) */}
+      {currentRole === 'subordinate' && (
+        <div className="relative" ref={parentMenuRef}>
+          <button
+            onClick={() => setShowParentMenu(!showParentMenu)}
+            title="Připojit k hlavní položce"
+            className="p-1 rounded hover:bg-blue-500/20 transition-colors text-blue-500"
+          >
+            <Link2 size={14} />
+          </button>
+
+          {showParentMenu && (
+            <div
+              className="absolute right-0 top-full mt-1 bg-bg-primary border-2 border-border-color rounded-lg z-50 min-w-[250px] max-h-[300px] overflow-y-auto"
+              style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.25)' }}
+            >
+              {/* Option to detach (no parent) */}
+              <button
+                onClick={() => handleAttachToParent(null)}
+                className={`w-full px-3 py-2 text-left text-sm hover:bg-bg-secondary transition-colors ${
+                  !item.parentItemId ? 'bg-accent-primary/10 text-accent-primary font-semibold' : ''
+                }`}
+              >
+                <em>(Žádný rodič)</em>
+              </button>
+
+              {/* List of potential parents */}
+              {potentialParents.length > 0 ? (
+                potentialParents.map((parent) => (
+                  <button
+                    key={parent.id}
+                    onClick={() => handleAttachToParent(parent.id)}
+                    className={`w-full px-3 py-2 text-left text-sm hover:bg-bg-secondary transition-colors ${
+                      item.parentItemId === parent.id ? 'bg-accent-primary/10 text-accent-primary font-semibold' : ''
+                    }`}
+                    title={parent.popis || ''}
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-xs text-text-muted">{parent.boqLineNumber}</span>
+                      <span className="font-semibold text-xs">{parent.kod}</span>
+                      <span className="truncate text-xs">{parent.popis}</span>
+                    </div>
+                  </button>
+                ))
+              ) : (
+                <div className="px-3 py-2 text-sm text-text-muted italic">
+                  Žádné hlavní položky
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}

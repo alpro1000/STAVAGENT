@@ -18,13 +18,12 @@ import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
 import { AlertModal } from '../common/Modal';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
+import { RowActionsCell } from './RowActionsCell';
 
 interface ItemsTableProps {
   items: ParsedItem[];
   projectId: string;
   sheetId: string;
-  selectedIds?: Set<string>;
-  onSelectionChange?: (ids: Set<string>) => void;
   sorting?: SortingState;
   onSortingChange?: (sorting: SortingState) => void;
   showOnlyWorkItems?: boolean;
@@ -39,8 +38,6 @@ export function ItemsTable({
   items,
   projectId,
   sheetId,
-  selectedIds = new Set(),
-  onSelectionChange,
   sorting: externalSorting,
   onSortingChange: externalOnSortingChange,
   showOnlyWorkItems = false,
@@ -294,26 +291,19 @@ export function ItemsTable({
 
   const columns = useMemo(
     () => [
-      // Checkbox
+      // Actions (delete, change role, reorder, attach)
       columnHelper.display({
-        id: 'select',
-        header: ({ table }) => (
-          <input
-            type="checkbox"
-            checked={table.getIsAllRowsSelected()}
-            onChange={table.getToggleAllRowsSelectedHandler()}
-            className="cursor-pointer"
-          />
-        ),
+        id: 'actions',
+        header: '⚙️',
         cell: ({ row }) => (
-          <input
-            type="checkbox"
-            checked={row.getIsSelected()}
-            onChange={row.getToggleSelectedHandler()}
-            className="cursor-pointer"
+          <RowActionsCell
+            item={row.original}
+            projectId={projectId}
+            sheetId={sheetId}
+            allItems={items}
           />
         ),
-        size: 40,
+        size: 160,
       }),
 
       // Poř. (BOQ line number + expand/collapse toggle)
@@ -608,41 +598,10 @@ export function ItemsTable({
     columns,
     state: {
       sorting,
-      rowSelection: Object.fromEntries(
-        Array.from(selectedIds).map((id) => [
-          visibleItems.findIndex((item) => item.id === id),
-          true,
-        ])
-      ),
     },
     onSortingChange: handleSortingChange,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    enableRowSelection: true,
-    onRowSelectionChange: (updater) => {
-      if (!onSelectionChange) return;
-
-      const newSelection =
-        typeof updater === 'function'
-          ? updater(
-              Object.fromEntries(
-                Array.from(selectedIds).map((id) => [
-                  visibleItems.findIndex((item) => item.id === id),
-                  true,
-                ])
-              )
-            )
-          : updater;
-
-      const newSelectedIds = new Set(
-        Object.keys(newSelection)
-          .filter((key) => newSelection[key])
-          .map((key) => visibleItems[parseInt(key)]?.id)
-          .filter(Boolean)
-      );
-
-      onSelectionChange(newSelectedIds);
-    },
   });
 
   if (items.length === 0) {

@@ -7,7 +7,6 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Modal } from '../ui/Modal';
 import { FileUploader } from './FileUploader';
-import { TemplateSelector } from '../templates/TemplateSelector';
 import { ConfigEditor } from '../config/ConfigEditor';
 import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/parser/excelParser';
 import { detectExcelStructure, type DetectionResult } from '../../services/autoDetect/structureDetector';
@@ -427,28 +426,70 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
               <p className="text-sm text-[var(--text-secondary)] mb-2">
                 Soubor: <span className="font-semibold text-[var(--text-primary)]">{file?.name}</span>
               </p>
+              <p className="text-base text-[var(--text-primary)] font-semibold mt-4">
+                Vyberte způsob mapování sloupců:
+              </p>
+            </div>
+
+            {/* Primary Action: Raw Data Mapping */}
+            <button
+              onClick={() => setStep('raw-view')}
+              className="w-full py-6 px-6 bg-[var(--accent-orange)] hover:bg-[var(--accent-orange)]/90
+                       text-white rounded-lg transition-all
+                       flex items-center justify-between group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="text-4xl">📊</div>
+                <div className="text-left">
+                  <div className="text-lg font-bold mb-1">
+                    Raw Data - Namapovat ručně
+                  </div>
+                  <div className="text-sm text-white/90">
+                    Zobrazit tabulku a určit sloupce ručně (doporučeno pro nestandardní soubory)
+                  </div>
+                </div>
+              </div>
+              <div className="text-2xl group-hover:translate-x-1 transition-transform">
+                →
+              </div>
+            </button>
+
+            {/* Divider */}
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-[var(--divider)]"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-4 bg-[var(--bg-primary)] text-[var(--text-muted)]">
+                  nebo
+                </span>
+              </div>
             </div>
 
             {/* Auto-Detect Button */}
             <button
               onClick={handleAutoDetect}
               disabled={isDetecting}
-              className="w-full py-3 px-4 bg-[var(--accent-orange)] hover:bg-[var(--accent-orange)]/90
-                       text-white rounded-lg transition-all font-medium
+              className="w-full py-5 px-6 bg-[var(--data-surface)] hover:bg-[var(--panel-clean)]
+                       border-2 border-[var(--divider)] hover:border-[var(--accent-orange)]
+                       rounded-lg transition-all
                        disabled:opacity-50 disabled:cursor-not-allowed
-                       flex items-center justify-center gap-2"
+                       flex items-center justify-between group"
             >
-              {isDetecting ? (
-                <>
-                  <Loader2 size={20} className="animate-spin" />
-                  <span>Analyzuji strukturu...</span>
-                </>
-              ) : (
-                <>
-                  <Sparkles size={20} />
-                  <span>🔍 Automaticky určit šablonu</span>
-                </>
-              )}
+              <div className="flex items-center gap-4">
+                <div className="text-3xl">
+                  {isDetecting ? '⏳' : '🔍'}
+                </div>
+                <div className="text-left">
+                  <div className="text-base font-bold text-[var(--text-primary)] mb-1">
+                    {isDetecting ? 'Analyzuji strukturu...' : 'Automaticky určit šablonu'}
+                  </div>
+                  <div className="text-sm text-[var(--text-secondary)]">
+                    AI detekce struktury Excel souboru
+                  </div>
+                </div>
+              </div>
+              {isDetecting && <Loader2 size={24} className="animate-spin text-[var(--accent-orange)]" />}
             </button>
 
             {/* Detection Results */}
@@ -531,43 +572,9 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
               </div>
             )}
 
-            <TemplateSelector
-              selectedTemplate={selectedTemplate}
-              onSelectTemplate={handleTemplateSelect}
-              showCreateButton={true}
-              onCreateCustom={handleCreateCustomTemplate}
-            />
-
-            {/* Raw View Option */}
-            <div className="p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 className="text-sm font-semibold text-purple-300 mb-1">
-                    📊 Problém s importem?
-                  </h4>
-                  <p className="text-xs text-text-secondary">
-                    Zobrazit soubor jako tabulku a ručně namapovat sloupce
-                  </p>
-                </div>
-                <button
-                  onClick={() => setStep('raw-view')}
-                  className="btn btn-secondary text-sm flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white border-0"
-                >
-                  <Table size={16} />
-                  Raw data
-                </button>
-              </div>
-            </div>
-
-            <div className="flex gap-3 justify-end">
+            <div className="flex gap-3 justify-end pt-4 border-t border-[var(--divider)]">
               <button onClick={() => setStep('upload')} className="btn btn-secondary">
-                Zpět
-              </button>
-              <button
-                onClick={handleTemplateConfirm}
-                className="btn btn-primary"
-              >
-                Pokračovat
+                ← Zpět
               </button>
             </div>
           </div>
