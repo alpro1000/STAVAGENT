@@ -44,6 +44,9 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
   // Report state
   const [report, setReport] = useState<PriceRequestReport | null>(null);
 
+  // Group expand/collapse state
+  const [collapsedGroups, setCollapsedGroups] = useState<Set<string>>(new Set());
+
   // Get all items from all sheets in all projects
   const allItems = useMemo(() => {
     const items: ParsedItem[] = [];
@@ -99,6 +102,33 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
 
     return result;
   }, [projectItems, selectedGroups, searchQuery]);
+
+  // Group filtered items by skupina
+  const groupedItems = useMemo(() => {
+    const groups = new Map<string, ParsedItem[]>();
+    for (const item of filteredItems) {
+      const group = item.skupina || 'Nezařazeno';
+      if (!groups.has(group)) {
+        groups.set(group, []);
+      }
+      groups.get(group)!.push(item);
+    }
+    // Sort groups alphabetically
+    return new Map(Array.from(groups.entries()).sort((a, b) => a[0].localeCompare(b[0])));
+  }, [filteredItems]);
+
+  // Toggle group collapse
+  const toggleGroupCollapse = (group: string) => {
+    setCollapsedGroups(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(group)) {
+        newSet.delete(group);
+      } else {
+        newSet.add(group);
+      }
+      return newSet;
+    });
+  };
 
   // Create report from filtered items (only main/section work items - NOT subordinate rows)
   const handleCreateReport = () => {
@@ -310,7 +340,7 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             {/* Results count */}
             <div className="flex items-center justify-between p-3 bg-slate-100 rounded-lg">
               <span className="text-slate-600">
-                Nalezeno: <strong>{filteredItems.length}</strong> položek
+                Nalezeno: <strong>{filteredItems.length}</strong> položek v <strong>{groupedItems.size}</strong> skupinách
               </span>
               <button
                 onClick={handleCreateReport}
@@ -321,6 +351,58 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
                 Vytvořit poptávku
               </button>
             </div>
+
+            {/* Grouped Items Preview */}
+            {filteredItems.length > 0 && (
+              <div className="space-y-2">
+                <h4 className="text-sm font-medium text-slate-700">Náhled položek:</h4>
+                <div className="max-h-96 overflow-y-auto space-y-2 border border-slate-200 rounded-lg p-2 bg-white">
+                  {Array.from(groupedItems.entries()).map(([skupina, items]) => {
+                    const isCollapsed = collapsedGroups.has(skupina);
+                    return (
+                      <div key={skupina} className="border border-slate-200 rounded-lg overflow-hidden">
+                        {/* Group Header */}
+                        <button
+                          onClick={() => toggleGroupCollapse(skupina)}
+                          className="w-full flex items-center justify-between p-3 bg-blue-50 hover:bg-blue-100 transition-colors text-left"
+                        >
+                          <div className="flex items-center gap-2">
+                            <span className="text-lg font-semibold text-blue-700">
+                              {isCollapsed ? '▶' : '▼'}
+                            </span>
+                            <span className="font-medium text-slate-800">{skupina}</span>
+                            <span className="text-sm text-slate-500">({items.length} položek)</span>
+                          </div>
+                          <span className="text-xs text-slate-500">
+                            {isCollapsed ? 'Rozbalit' : 'Sbalit'}
+                          </span>
+                        </button>
+
+                        {/* Group Items */}
+                        {!isCollapsed && (
+                          <div className="divide-y divide-slate-100">
+                            {items.slice(0, 5).map((item) => (
+                              <div key={item.id} className="p-2 pl-8 text-sm hover:bg-slate-50">
+                                <div className="flex items-start gap-2">
+                                  <span className="font-mono text-slate-600 min-w-[80px]">{item.kod}</span>
+                                  <span className="text-slate-700 flex-1">{item.popis}</span>
+                                  <span className="text-slate-500 text-xs">{item.mnozstvi} {item.mj}</span>
+                                </div>
+                              </div>
+                            ))}
+                            {items.length > 5 && (
+                              <div className="p-2 pl-8 text-xs text-slate-500 italic">
+                                ... a dalších {items.length - 5} položek
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Report Preview */}
