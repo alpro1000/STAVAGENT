@@ -316,7 +316,7 @@ export function ItemsTable({
             className="cursor-pointer"
           />
         ),
-        size: 40,
+        size: 30,
       }),
 
       // Actions (delete, change role, reorder, attach)
@@ -331,7 +331,7 @@ export function ItemsTable({
             allItems={items}
           />
         ),
-        size: 160,
+        size: 120,
       }),
 
       // Poř. (BOQ line number + expand/collapse toggle)

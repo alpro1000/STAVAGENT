@@ -11,23 +11,23 @@
   display: block;
 }
 
-/* Тонкий скроллбар для ячейки */
+/* Тонкий скроллбар для ячейки - менее контрастный */
 .cell-scrollable::-webkit-scrollbar {
-  height: 6px;
+  height: 5px;
 }
 
 .cell-scrollable::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: rgba(0, 0, 0, 0.02);
   border-radius: 3px;
 }
 
 .cell-scrollable::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 3px;
 }
 
 .cell-scrollable::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.25);
 }
 
 /* Для ячейки с кодом - меньшая ширина */
@@ -43,15 +43,15 @@
 }
 
 .cell-scrollable-kod::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+  background: rgba(0, 0, 0, 0.02);
   border-radius: 2px;
 }
 
 .cell-scrollable-kod::-webkit-scrollbar-thumb {
-  background: var(--text-muted);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 2px;
 }
 
 .cell-scrollable-kod::-webkit-scrollbar-thumb:hover {
-  background: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.25);
 }

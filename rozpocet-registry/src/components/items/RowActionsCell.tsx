@@ -161,44 +161,67 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
           </button>
 
           {showParentMenu && (
-            <div
-              className="absolute right-0 top-full mt-1 bg-bg-primary border-2 border-border-color rounded-lg z-50 min-w-[250px] max-h-[300px] overflow-y-auto"
-              style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.25)' }}
-            >
-              {/* Option to detach (no parent) */}
-              <button
-                onClick={() => handleAttachToParent(null)}
-                className={`w-full px-3 py-2 text-left text-sm hover:bg-bg-secondary transition-colors ${
-                  !item.parentItemId ? 'bg-accent-primary/10 text-accent-primary font-semibold' : ''
-                }`}
-              >
-                <em>(Žádný rodič)</em>
-              </button>
+            <>
+              {/* Backdrop */}
+              <div
+                className="fixed inset-0 bg-black/30 z-40"
+                onClick={() => setShowParentMenu(false)}
+              />
 
-              {/* List of potential parents */}
-              {potentialParents.length > 0 ? (
-                potentialParents.map((parent) => (
+              {/* Modal panel on the right */}
+              <div
+                className="fixed right-4 top-1/2 -translate-y-1/2 bg-white border-2 border-slate-300 rounded-lg shadow-2xl z-50 w-[500px] max-h-[600px] overflow-y-auto"
+              >
+                {/* Header */}
+                <div className="sticky top-0 bg-blue-50 border-b-2 border-blue-200 px-4 py-3 z-10">
+                  <h3 className="font-semibold text-blue-900 text-sm">Připojit k hlavní položce</h3>
+                  <p className="text-xs text-slate-600 mt-1">Vyberte hlavní položku pro připojení podřízeného řádku</p>
+                </div>
+
+                {/* Content */}
+                <div className="p-2">
+                  {/* Option to detach (no parent) */}
                   <button
-                    key={parent.id}
-                    onClick={() => handleAttachToParent(parent.id)}
-                    className={`w-full px-3 py-2 text-left text-sm hover:bg-bg-secondary transition-colors ${
-                      item.parentItemId === parent.id ? 'bg-accent-primary/10 text-accent-primary font-semibold' : ''
+                    onClick={() => handleAttachToParent(null)}
+                    className={`w-full px-4 py-3 text-left text-sm hover:bg-slate-100 transition-colors rounded-lg mb-2 ${
+                      !item.parentItemId ? 'bg-orange-100 border-2 border-orange-400 text-orange-900 font-semibold' : 'border-2 border-transparent'
                     }`}
-                    title={parent.popis || ''}
                   >
                     <div className="flex items-center gap-2">
-                      <span className="font-mono text-xs text-text-muted">{parent.boqLineNumber}</span>
-                      <span className="font-semibold text-xs">{parent.kod}</span>
-                      <span className="truncate text-xs">{parent.popis}</span>
+                      <span className="text-lg">🔓</span>
+                      <em className="text-sm">(Žádný rodič - odpojit)</em>
                     </div>
                   </button>
-                ))
-              ) : (
-                <div className="px-3 py-2 text-sm text-text-muted italic">
-                  Žádné hlavní položky
+
+                  {/* List of potential parents */}
+                  {potentialParents.length > 0 ? (
+                    <div className="space-y-1">
+                      {potentialParents.map((parent) => (
+                        <button
+                          key={parent.id}
+                          onClick={() => handleAttachToParent(parent.id)}
+                          className={`w-full px-4 py-3 text-left text-sm hover:bg-slate-100 transition-colors rounded-lg ${
+                            item.parentItemId === parent.id ? 'bg-blue-100 border-2 border-blue-400 text-blue-900 font-semibold' : 'border-2 border-transparent'
+                          }`}
+                        >
+                          <div className="flex flex-col gap-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-xs bg-slate-200 px-2 py-0.5 rounded text-slate-700">{parent.boqLineNumber || '—'}</span>
+                              <span className="font-bold text-sm text-slate-800">{parent.kod}</span>
+                            </div>
+                            <span className="text-xs text-slate-600 leading-tight">{parent.popis}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="px-4 py-8 text-center text-sm text-slate-500 italic bg-slate-50 rounded-lg">
+                      Žádné hlavní položky nebyly nalezeny
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
+              </div>
+            </>
           )}
         </div>
       )}
