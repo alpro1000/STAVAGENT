@@ -760,7 +760,6 @@ export function ItemsTable({
       {/* Bulk Actions Bar */}
       <BulkActionsBar
         selectedIds={selectedIds}
-        items={items}
         projectId={projectId}
         sheetId={sheetId}
         onClearSelection={() => onSelectionChange?.(new Set())}
