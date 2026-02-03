@@ -37,8 +37,15 @@ async function parseDocumentWithMinerU(filePath) {
       contentType: 'application/pdf'
     });
 
+    // Add required form fields for Workflow C
+    formData.append('project_id', `doc-extract-${Date.now()}`);
+    formData.append('project_name', 'Document Work Extraction');
+    formData.append('generate_summary', 'false'); // We don't need LLM summary
+    formData.append('use_parallel', 'false');
+    formData.append('language', 'cs');
+
     const response = await axios.post(
-      `${CONCRETE_AGENT_URL}/api/upload`,
+      `${CONCRETE_AGENT_URL}/api/v1/workflow/c/upload`,
       formData,
       {
         headers: formData.getHeaders(),
@@ -46,23 +53,30 @@ async function parseDocumentWithMinerU(filePath) {
       }
     );
 
-    if (!response.data || !response.data.data) {
+    if (!response.data || !response.data.result) {
       throw new Error('Invalid response from concrete-agent');
     }
 
-    const data = response.data.data;
+    const result = response.data.result;
 
-    logger.info(`[DocExtract] ✓ Parsed by MinerU: ${data.total_positions || 0} positions found`);
+    logger.info(`[DocExtract] ✓ Parsed by MinerU: ${result.positions_count || 0} positions found`);
 
     return {
-      fullText: data.full_text || '',
-      positions: data.positions || [],
-      sections: data.sections || [],
-      metadata: data.metadata || {}
+      fullText: result.full_text || '',
+      positions: result.positions || [],
+      sections: result.sections || [],
+      metadata: result.metadata || {}
     };
 
   } catch (error) {
     logger.error(`[DocExtract] MinerU parsing failed: ${error.message}`);
+
+    // Log response data for debugging
+    if (error.response) {
+      logger.error(`[DocExtract] Response status: ${error.response.status}`);
+      logger.error(`[DocExtract] Response data: ${JSON.stringify(error.response.data)}`);
+    }
+
     throw new Error(`Failed to parse document: ${error.message}`);
   }
 }
