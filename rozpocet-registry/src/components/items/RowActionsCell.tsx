@@ -20,10 +20,28 @@ interface RowActionsCellProps {
   allItems: ParsedItem[]; // Needed for parent selection
 }
 
-export function RowActionsCell({ item, projectId, sheetId, allItems }: RowActionsCellProps) {
-  const { updateItemParent, moveItemUp, moveItemDown } = useRegistryStore();
+type RowRole = 'main' | 'subordinate' | 'section' | 'unknown';
 
+const ROLE_LABELS: Record<RowRole, string> = {
+  main: 'Hlavní',
+  subordinate: 'Podřízený',
+  section: 'Sekce',
+  unknown: 'Neznámý',
+};
+
+const ROLE_ICONS: Record<RowRole, string> = {
+  main: '📋',
+  subordinate: '↳',
+  section: '📑',
+  unknown: '❓',
+};
+
+export function RowActionsCell({ item, projectId, sheetId, allItems }: RowActionsCellProps) {
+  const { updateItemRole, updateItemParent, moveItemUp, moveItemDown } = useRegistryStore();
+
+  const [showRoleMenu, setShowRoleMenu] = useState(false);
   const [showParentMenu, setShowParentMenu] = useState(false);
+  const roleMenuRef = useRef<HTMLDivElement>(null);
 
   // Modal resize state
   const [modalSize, setModalSize] = useState({ width: 550, height: 500 });
@@ -67,12 +85,29 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
     };
   }, [isResizing]);
 
-  const currentRole = item.rowRole || 'unknown';
+  // Close role menu on outside click
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (roleMenuRef.current && !roleMenuRef.current.contains(e.target as Node)) {
+        setShowRoleMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const currentRole = (item.rowRole || 'unknown') as RowRole;
 
   // Get potential parents (only main items)
   const potentialParents = allItems.filter(
     (i) => i.rowRole === 'main' && i.id !== item.id
   );
+
+  const handleChangeRole = (newRole: RowRole) => {
+    updateItemRole(projectId, sheetId, item.id, newRole);
+    setShowRoleMenu(false);
+  };
 
   const handleAttachToParent = (parentId: string | null) => {
     updateItemParent(projectId, sheetId, item.id, parentId);
@@ -104,6 +139,57 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
       >
         <MoveDown size={11} />
       </button>
+
+      {/* Role dropdown - compact */}
+      <div className="relative" ref={roleMenuRef}>
+        <button
+          onClick={() => setShowRoleMenu(!showRoleMenu)}
+          title={`Role: ${ROLE_LABELS[currentRole]}`}
+          className="px-1 py-0.5 rounded text-xs font-medium transition-colors flex items-center gap-0.5"
+          style={{
+            backgroundColor: showRoleMenu ? '#3e4348' : 'transparent',
+            color: '#8a9199',
+          }}
+        >
+          <span className="text-[10px]">{ROLE_ICONS[currentRole]}</span>
+        </button>
+
+        {showRoleMenu && (
+          <div
+            className="absolute left-0 top-full mt-1 py-1 min-w-[120px] border-2 z-50"
+            style={{
+              backgroundColor: '#2d3139',
+              borderColor: '#3e4348',
+              boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+            }}
+          >
+            {(['main', 'subordinate', 'section'] as RowRole[]).map((role) => (
+              <button
+                key={role}
+                onClick={() => handleChangeRole(role)}
+                className="w-full px-3 py-1.5 text-left text-xs font-medium flex items-center gap-2 transition-colors"
+                style={{
+                  backgroundColor: currentRole === role ? '#FF9F1C' : 'transparent',
+                  color: currentRole === role ? '#ffffff' : '#f5f6f7',
+                }}
+                onMouseEnter={(e) => {
+                  if (currentRole !== role) {
+                    e.currentTarget.style.backgroundColor = '#3e4348';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (currentRole !== role) {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                  }
+                }}
+              >
+                <span>{ROLE_ICONS[role]}</span>
+                <span>{ROLE_LABELS[role]}</span>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Attach to parent button (only for subordinate rows) - compact */}
       {currentRole === 'subordinate' && (
