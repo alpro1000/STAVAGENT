@@ -317,9 +317,10 @@ export function ItemsTable({
           />
         ),
         size: 20,
+        enableResizing: false,
       }),
 
-      // Actions (delete, change role, reorder, attach) - компактный
+      // Actions (reorder, attach) - compact, moved left
       columnHelper.display({
         id: 'actions',
         header: '',
@@ -331,10 +332,11 @@ export function ItemsTable({
             allItems={items}
           />
         ),
-        size: 85,
+        size: 40,
+        enableResizing: false,
       }),
 
-      // Poř. (BOQ line number + expand/collapse toggle)
+      // Poř. (BOQ line number + expand/collapse toggle) - moved left
       columnHelper.accessor('boqLineNumber', {
         header: 'Poř.',
         cell: (info) => {
@@ -352,27 +354,29 @@ export function ItemsTable({
                 title={isExpanded ? 'Sbalit podřízené řádky' : `Rozbalit ${subCount} podřízených řádků`}
               >
                 {isExpanded
-                  ? <ChevronDown size={14} className="text-text-muted flex-shrink-0" />
-                  : <ChevronRight size={14} className="text-text-muted flex-shrink-0" />}
-                <span className="text-text-muted">{value}</span>
-                <span className="text-text-muted opacity-60 text-[10px] ml-0.5">+{subCount}</span>
+                  ? <ChevronDown size={12} className="text-text-muted flex-shrink-0" />
+                  : <ChevronRight size={12} className="text-text-muted flex-shrink-0" />}
+                <span className="text-text-muted text-[11px]">{value}</span>
+                <span className="text-text-muted opacity-60 text-[9px]">+{subCount}</span>
               </button>
             );
           }
 
           // Subordinate row — indent marker
           if (item.rowRole === 'subordinate') {
-            return <span className="pl-4 text-xs text-text-muted select-none">↳</span>;
+            return <span className="pl-2 text-[10px] text-text-muted select-none">↳</span>;
           }
 
           // Main row without subordinates, section, or unknown
           return value ? (
-            <span className="font-mono text-xs text-text-muted tabular-nums pl-4">
+            <span className="font-mono text-[11px] text-text-muted tabular-nums pl-2">
               {value}
             </span>
           ) : null;
         },
-        size: 70,
+        size: 50,
+        minSize: 40,
+        maxSize: 100,
         enableSorting: true,
         sortingFn: 'basic',
       }),
@@ -385,7 +389,9 @@ export function ItemsTable({
             {info.getValue()}
           </div>
         ),
-        size: 100,
+        size: 90,
+        minSize: 60,
+        maxSize: 200,
         enableSorting: true,
       }),
 
@@ -398,6 +404,8 @@ export function ItemsTable({
           </div>
         ),
         size: 300,
+        minSize: 150,
+        maxSize: 600,
         enableSorting: true,
       }),
 
@@ -407,7 +415,9 @@ export function ItemsTable({
         cell: (info) => (
           <span className="text-sm text-text-secondary">{info.getValue()}</span>
         ),
-        size: 60,
+        size: 50,
+        minSize: 35,
+        maxSize: 80,
         enableSorting: true,
       }),
 
@@ -422,9 +432,11 @@ export function ItemsTable({
             </span>
           );
         },
-        size: 100,
+        size: 80,
+        minSize: 60,
+        maxSize: 150,
         enableSorting: true,
-        sortingFn: 'basic', // Числовая сортировка
+        sortingFn: 'basic',
       }),
 
       // Cena jednotková
@@ -440,7 +452,9 @@ export function ItemsTable({
             </span>
           );
         },
-        size: 100,
+        size: 90,
+        minSize: 70,
+        maxSize: 150,
         enableSorting: true,
         sortingFn: 'basic',
       }),
@@ -458,9 +472,11 @@ export function ItemsTable({
             </span>
           );
         },
-        size: 120,
+        size: 100,
+        minSize: 80,
+        maxSize: 180,
         enableSorting: true,
-        sortingFn: 'basic', // Числовая сортировка
+        sortingFn: 'basic',
       }),
 
       // Skupina
@@ -632,7 +648,9 @@ export function ItemsTable({
             </div>
           );
         },
-        size: 240,
+        size: 200,
+        minSize: 120,
+        maxSize: 350,
         enableSorting: true,
       }),
     ],
@@ -642,6 +660,7 @@ export function ItemsTable({
   const table = useReactTable({
     data: visibleItems,
     columns,
+    columnResizeMode: 'onChange',
     state: {
       sorting,
       rowSelection: Object.fromEntries(
@@ -655,6 +674,7 @@ export function ItemsTable({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     enableRowSelection: true,
+    enableColumnResizing: true,
     onRowSelectionChange: (updater) => {
       if (!onSelectionChange) return;
 
@@ -700,16 +720,16 @@ export function ItemsTable({
                 {headerGroup.headers.map((header) => (
                   <th
                     key={header.id}
-                    onClick={header.column.getToggleSortingHandler()}
-                    className={`
-                      ${header.column.getCanSort()
+                    onClick={header.column.getCanSort() ? header.column.getToggleSortingHandler() : undefined}
+                    className={`resizable-th ${
+                      header.column.getCanSort()
                         ? 'cursor-pointer select-none hover:bg-bg-secondary transition-colors'
-                        : ''}
-                    `}
-                    style={{ width: header.getSize() }}
+                        : ''
+                    }`}
+                    style={{ width: header.getSize(), position: 'relative' }}
                     title={header.column.getCanSort() ? 'Klikněte pro seřazení' : undefined}
                   >
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext()
@@ -717,13 +737,21 @@ export function ItemsTable({
                       {header.column.getIsSorted() && (
                         <span className="text-accent-primary">
                           {header.column.getIsSorted() === 'asc' ? (
-                            <ChevronUp size={16} />
+                            <ChevronUp size={14} />
                           ) : (
-                            <ChevronDown size={16} />
+                            <ChevronDown size={14} />
                           )}
                         </span>
                       )}
                     </div>
+                    {header.column.getCanResize() && (
+                      <div
+                        onMouseDown={header.getResizeHandler()}
+                        onTouchStart={header.getResizeHandler()}
+                        className={`resize-handle ${header.column.getIsResizing() ? 'resizing' : ''}`}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                    )}
                   </th>
                 ))}
               </tr>

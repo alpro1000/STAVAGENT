@@ -431,29 +431,30 @@ export function exportPriceRequest(
 
   // Set outline levels for Excel grouping (+/- buttons)
   // outlineLevels: 0 = header/SUM, 1 = main items, 2 = subordinate items
+  // Excel outline: level property controls grouping depth
   wsItems['!rows'] = outlineLevels.map((level, idx) => {
     if (idx === 0) {
-      // Header row: just set height
+      // Header row: just set height, no outline
       return { hpx: 28 };
     } else if (level === 0) {
       // SUM row: no outline, normal height
       return { hpx: 22 };
     } else if (level === 1) {
-      // Main item: outline level 0 (visible, no grouping indent)
+      // Main item: level 0 (visible, can have children)
       return { level: 0, hpx: 20 };
     } else if (level === 2) {
-      // Subordinate item: outline level 1 (grouped under parent, hidden by default)
+      // Subordinate item: level 1 (grouped under main, hidden by default)
       return { level: 1, hidden: true, hpx: 20 };
     }
     return {};
   });
 
   // Enable outline/grouping settings for the sheet
-  // summaryBelow: true = summary rows (main items) are BELOW detail rows
-  // summaryBelow: false = summary rows (main items) are ABOVE detail rows (our case)
+  // above: true = summary rows (main items) are ABOVE detail rows
+  // left: true = outline buttons on the left side
   wsItems['!outline'] = { above: true, left: true };
 
-  // Also set sheet properties to ensure outline is enabled
+  // Set sheet outline properties
   if (!wsItems['!sheetProtection']) {
     wsItems['!sheetProtection'] = {};
   }
