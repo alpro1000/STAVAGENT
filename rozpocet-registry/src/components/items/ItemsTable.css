@@ -1,0 +1,57 @@
+/**
+ * ItemsTable Styles
+ * Горизонтальная прокрутка для длинных текстов в ячейках
+ */
+
+/* Ячейка с прокруткой */
+.cell-scrollable {
+  max-width: 400px; /* Максимальная ширина ячейки */
+  overflow-x: auto;
+  white-space: nowrap;
+  display: block;
+}
+
+/* Тонкий скроллбар для ячейки */
+.cell-scrollable::-webkit-scrollbar {
+  height: 6px;
+}
+
+.cell-scrollable::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 3px;
+}
+
+.cell-scrollable::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 3px;
+}
+
+.cell-scrollable::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Для ячейки с кодом - меньшая ширина */
+.cell-scrollable-kod {
+  max-width: 150px;
+  overflow-x: auto;
+  white-space: nowrap;
+  display: block;
+}
+
+.cell-scrollable-kod::-webkit-scrollbar {
+  height: 4px;
+}
+
+.cell-scrollable-kod::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-radius: 2px;
+}
+
+.cell-scrollable-kod::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 2px;
+}
+
+.cell-scrollable-kod::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}

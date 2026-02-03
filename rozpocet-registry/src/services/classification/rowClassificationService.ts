@@ -227,6 +227,27 @@ function isNoteRow(item: ParsedItem): boolean {
 }
 
 /**
+ * Check if a row has complete data (MJ + quantity + price).
+ * Items with complete data should be treated as main items,
+ * even if the code doesn't match standard patterns (e.g., "Pol1").
+ *
+ * Complete data means:
+ * - Has MJ (unit of measure)
+ * - Has quantity (množství > 0)
+ * - Has at least one price field (unit price OR total price)
+ */
+function hasCompleteData(item: ParsedItem): boolean {
+  const hasMJ = Boolean(item.mj && item.mj.trim());
+  const hasQuantity = item.mnozstvi !== null && item.mnozstvi > 0;
+  const hasPrice = (
+    (item.cenaJednotkova !== null && item.cenaJednotkova > 0) ||
+    (item.cenaCelkem !== null && item.cenaCelkem > 0)
+  );
+
+  return hasMJ && hasQuantity && hasPrice;
+}
+
+/**
  * Determine confidence level based on classification signals.
  */
 function determineConfidence(
@@ -241,6 +262,10 @@ function determineConfidence(
     }
     // Dotted or generic → medium
     if (URS_DOTTED.test(kod) || GENERIC_CODE.test(kod)) {
+      return 'medium';
+    }
+    // Has complete data (MJ + quantity + price) but non-standard code → medium
+    if (hasCompleteData(item)) {
       return 'medium';
     }
     return 'low';
@@ -328,7 +353,16 @@ export function classifyRows(items: ParsedItem[]): ClassificationResult {
       parentItemId = currentMainId;
       subCount++;
     }
-    // 1. Check if it's a recognized main code
+    // 1a. NEW: If row has KOD + complete data (MJ + množství + price) → main
+    // This handles non-standard codes like "Pol1" that have full BOQ data
+    else if (kod && hasCompleteData(item)) {
+      role = 'main';
+      boqCounter++;
+      boqLineNumber = boqCounter;
+      currentMainId = item.id;
+      mainCount++;
+    }
+    // 1b. Check if it's a recognized main code (standard patterns)
     else if (isMainCode(kod)) {
       role = 'main';
       boqCounter++;

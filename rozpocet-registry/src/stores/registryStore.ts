@@ -53,6 +53,13 @@ interface RegistryState {
   bulkSetSkupina: (projectId: string, sheetId: string, updates: Array<{ itemId: string; skupina: string }>) => void;
   setItems: (projectId: string, sheetId: string, items: ParsedItem[]) => void;
 
+  // Управление строками
+  deleteItem: (projectId: string, sheetId: string, itemId: string) => void;
+  updateItemRole: (projectId: string, sheetId: string, itemId: string, role: 'main' | 'subordinate' | 'section' | 'unknown') => void;
+  updateItemParent: (projectId: string, sheetId: string, itemId: string, parentId: string | null) => void;
+  moveItemUp: (projectId: string, sheetId: string, itemId: string) => void;
+  moveItemDown: (projectId: string, sheetId: string, itemId: string) => void;
+
   // Действия с шаблонами
   addTemplate: (template: ImportTemplate) => void;
   removeTemplate: (templateId: string) => void;
@@ -531,6 +538,119 @@ export const useRegistryStore = create<RegistryState>()(
           )
         );
         return counts;
+      },
+
+      // Управление строками
+      deleteItem: (projectId, sheetId, itemId) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+                return {
+                  ...sheet,
+                  items: sheet.items.filter((item) => item.id !== itemId),
+                };
+              }),
+            };
+          }),
+        }));
+        // Update stats after deletion
+        get().updateSheetStats(projectId, sheetId);
+      },
+
+      updateItemRole: (projectId, sheetId, itemId, role) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+                return {
+                  ...sheet,
+                  items: sheet.items.map((item) => {
+                    if (item.id !== itemId) return item;
+                    return { ...item, rowRole: role };
+                  }),
+                };
+              }),
+            };
+          }),
+        }));
+      },
+
+      updateItemParent: (projectId, sheetId, itemId, parentId) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+                return {
+                  ...sheet,
+                  items: sheet.items.map((item) => {
+                    if (item.id !== itemId) return item;
+                    return { ...item, parentItemId: parentId };
+                  }),
+                };
+              }),
+            };
+          }),
+        }));
+      },
+
+      moveItemUp: (projectId, sheetId, itemId) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+
+                const items = [...sheet.items];
+                const index = items.findIndex((item) => item.id === itemId);
+
+                // Can't move first item up
+                if (index <= 0) return sheet;
+
+                // Swap with previous item
+                [items[index - 1], items[index]] = [items[index], items[index - 1]];
+
+                return { ...sheet, items };
+              }),
+            };
+          }),
+        }));
+      },
+
+      moveItemDown: (projectId, sheetId, itemId) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+
+                const items = [...sheet.items];
+                const index = items.findIndex((item) => item.id === itemId);
+
+                // Can't move last item down
+                if (index < 0 || index >= items.length - 1) return sheet;
+
+                // Swap with next item
+                [items[index], items[index + 1]] = [items[index + 1], items[index]];
+
+                return { ...sheet, items };
+              }),
+            };
+          }),
+        }));
       },
 
       // Статистика

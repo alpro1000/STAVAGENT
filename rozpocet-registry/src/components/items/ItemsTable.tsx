@@ -18,6 +18,9 @@ import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
 import { AlertModal } from '../common/Modal';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
+import { RowActionsCell } from './RowActionsCell';
+import { BulkActionsBar } from './BulkActionsBar';
+import './ItemsTable.css';
 
 interface ItemsTableProps {
   items: ParsedItem[];
@@ -294,7 +297,7 @@ export function ItemsTable({
 
   const columns = useMemo(
     () => [
-      // Checkbox
+      // Checkbox (для массовых операций)
       columnHelper.display({
         id: 'select',
         header: ({ table }) => (
@@ -314,6 +317,21 @@ export function ItemsTable({
           />
         ),
         size: 40,
+      }),
+
+      // Actions (delete, change role, reorder, attach)
+      columnHelper.display({
+        id: 'actions',
+        header: '⚙️',
+        cell: ({ row }) => (
+          <RowActionsCell
+            item={row.original}
+            projectId={projectId}
+            sheetId={sheetId}
+            allItems={items}
+          />
+        ),
+        size: 160,
       }),
 
       // Poř. (BOQ line number + expand/collapse toggle)
@@ -363,9 +381,9 @@ export function ItemsTable({
       columnHelper.accessor('kod', {
         header: 'Kód',
         cell: (info) => (
-          <span className="font-mono text-sm font-semibold">
+          <div className="cell-scrollable-kod font-mono text-sm font-semibold">
             {info.getValue()}
-          </span>
+          </div>
         ),
         size: 100,
         enableSorting: true,
@@ -375,8 +393,8 @@ export function ItemsTable({
       columnHelper.accessor('popis', {
         header: 'Popis',
         cell: (info) => (
-          <div className="max-w-md">
-            <p className="truncate text-sm">{info.getValue()}</p>
+          <div className="cell-scrollable text-sm">
+            {info.getValue()}
           </div>
         ),
         size: 300,
@@ -737,6 +755,15 @@ export function ItemsTable({
         title={alertModal.title}
         message={alertModal.message}
         variant={alertModal.variant}
+      />
+
+      {/* Bulk Actions Bar */}
+      <BulkActionsBar
+        selectedIds={selectedIds}
+        items={items}
+        projectId={projectId}
+        sheetId={sheetId}
+        onClearSelection={() => onSelectionChange?.(new Set())}
       />
       </div>
     </div>
