@@ -225,7 +225,6 @@ function createStyledItemsSheet(
     // Item row - determine if it's a main/section/subordinate row
     // Use rowRole if available, otherwise fallback to old logic (kod presence)
     const rowRole = item.rowRole || (item.kod && item.kod.trim().length > 0 ? 'main' : 'subordinate');
-    const isMainRow = rowRole === 'main' || rowRole === 'section';
     const isSubordinate = rowRole === 'subordinate';
 
     // Add visual indent for subordinate rows in the Popis column
@@ -275,7 +274,7 @@ function createStyledItemsSheet(
 
   // Apply row grouping (Excel outline levels)
   // This creates collapsible groups with +/- buttons on the left
-  ws['!rows'] = outlineLevels.map((level, idx) => {
+  ws['!rows'] = outlineLevels.map((level) => {
     if (level === 0) {
       // Header or group separator - no outline
       return {};

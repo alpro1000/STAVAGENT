@@ -5,13 +5,11 @@
 
 import { useState } from 'react';
 import { Trash2, Tag, X } from 'lucide-react';
-import type { ParsedItem } from '../../types/item';
 import { useRegistryStore } from '../../stores/registryStore';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 
 interface BulkActionsBarProps {
   selectedIds: Set<string>;
-  items: ParsedItem[];
   projectId: string;
   sheetId: string;
   onClearSelection: () => void;
@@ -19,7 +17,6 @@ interface BulkActionsBarProps {
 
 export function BulkActionsBar({
   selectedIds,
-  items,
   projectId,
   sheetId,
   onClearSelection,
