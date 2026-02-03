@@ -1,6 +1,8 @@
 /**
  * PriceRequestPanel
  * UI for creating price requests, exporting, and importing supplier responses
+ *
+ * LIGHT THEME - легкий читаемый стиль
  */
 
 import React, { useState, useMemo, useRef } from 'react';
@@ -16,6 +18,25 @@ import {
   type ReverseImportResult,
 } from '../../services/priceRequest/priceRequestService';
 import type { ParsedItem } from '../../types/item';
+
+// Light theme colors
+const LIGHT = {
+  panelBg: '#FFFFFF',
+  panelBgAlt: '#F5F6F7',
+  headerBg: '#EAEBEC',
+  border: '#D0D2D4',
+  borderLight: '#E5E7EB',
+  text: '#1A1C1E',
+  textMuted: '#6B7280',
+  accent: '#FF9F1C',
+  accentDark: '#E68A00',
+  success: '#10B981',
+  successBg: '#ECFDF5',
+  error: '#EF4444',
+  errorBg: '#FEF2F2',
+  backdrop: 'rgba(0, 0, 0, 0.4)',
+  shadow: '0 25px 50px rgba(0, 0, 0, 0.25)',
+};
 
 interface PriceRequestPanelProps {
   isOpen: boolean;
@@ -256,59 +277,59 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50" style={{ backgroundColor: '#1a1d21' }}>
+    <div className="fixed inset-0 flex items-center justify-center z-50" style={{ backgroundColor: LIGHT.backdrop }}>
       <div
-        className="w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col border-4"
+        className="w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col rounded-xl border"
         style={{
-          backgroundColor: '#2d3139',
-          borderColor: '#3e4348',
-          boxShadow: '8px 8px 0 rgba(0,0,0,0.4), 0 16px 48px rgba(0,0,0,0.6)',
+          backgroundColor: LIGHT.panelBg,
+          borderColor: LIGHT.border,
+          boxShadow: LIGHT.shadow,
         }}
       >
         {/* Header */}
         <div
-          className="flex items-center justify-between p-4 border-b-4"
-          style={{ backgroundColor: '#2d3139', borderColor: '#3e4348' }}
+          className="flex items-center justify-between p-4 border-b"
+          style={{ backgroundColor: LIGHT.headerBg, borderColor: LIGHT.border }}
         >
           <div className="flex items-center gap-3">
-            <Package className="w-6 h-6" style={{ color: '#FF9F1C' }} />
-            <h2 className="text-xl font-black uppercase tracking-widest" style={{ color: '#f5f6f7' }}>
+            <Package className="w-6 h-6" style={{ color: LIGHT.accent }} />
+            <h2 className="text-xl font-bold" style={{ color: LIGHT.text }}>
               Poptávka cen
             </h2>
           </div>
           <button
             onClick={onClose}
             className="p-2 rounded-lg transition-colors"
-            style={{ color: '#8a9199' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3e4348'}
+            style={{ color: LIGHT.textMuted }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = LIGHT.panelBgAlt}
             onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <X className="w-5 h-5" strokeWidth={3} />
+            <X className="w-5 h-5" strokeWidth={2} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-auto p-4 space-y-6" style={{ backgroundColor: '#f5f6f7' }}>
+        <div className="flex-1 overflow-auto p-4 space-y-6" style={{ backgroundColor: LIGHT.panelBgAlt }}>
           {/* Search & Filters */}
           <div className="space-y-4">
-            <h3 className="font-black uppercase tracking-wide flex items-center gap-2" style={{ color: '#1a1d21' }}>
+            <h3 className="font-semibold flex items-center gap-2" style={{ color: LIGHT.text }}>
               <Filter className="w-4 h-4" />
               Vyhledat a filtrovat položky
             </h3>
 
             {/* Search input */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: '#8a9199' }} />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: LIGHT.textMuted }} />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Hledat: beton, výztuž, kámen, izolace..."
-                className="w-full pl-10 pr-4 py-3 border-2 focus:outline-none"
+                className="w-full pl-10 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
                 style={{
-                  backgroundColor: '#ffffff',
-                  borderColor: '#3e4348',
-                  color: '#1a1d21',
+                  backgroundColor: LIGHT.panelBg,
+                  borderColor: LIGHT.border,
+                  color: LIGHT.text,
                 }}
               />
             </div>
@@ -316,7 +337,7 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             {/* Project filter */}
             {projects.length > 0 && (
               <div>
-                <label className="block text-sm font-bold uppercase tracking-wide mb-2" style={{ color: '#1a1d21' }}>
+                <label className="block text-sm font-medium mb-2" style={{ color: LIGHT.text }}>
                   Projekty:
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -324,11 +345,11 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
                     <button
                       key={project.id}
                       onClick={() => toggleProject(project.id)}
-                      className="px-3 py-1 text-sm font-bold uppercase tracking-wide transition-colors border-2"
+                      className="px-3 py-1.5 text-sm font-medium transition-colors rounded-lg border"
                       style={{
-                        backgroundColor: selectedProjects.includes(project.id) ? '#FF9F1C' : '#ffffff',
-                        borderColor: selectedProjects.includes(project.id) ? '#e68a00' : '#3e4348',
-                        color: selectedProjects.includes(project.id) ? '#1a1d21' : '#1a1d21',
+                        backgroundColor: selectedProjects.includes(project.id) ? LIGHT.accent : LIGHT.panelBg,
+                        borderColor: selectedProjects.includes(project.id) ? LIGHT.accentDark : LIGHT.border,
+                        color: selectedProjects.includes(project.id) ? '#ffffff' : LIGHT.text,
                       }}
                     >
                       {project.projectName}
@@ -341,7 +362,7 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             {/* Group filter */}
             {availableGroups.length > 0 && (
               <div>
-                <label className="block text-sm font-bold uppercase tracking-wide mb-2" style={{ color: '#1a1d21' }}>
+                <label className="block text-sm font-medium mb-2" style={{ color: LIGHT.text }}>
                   Skupiny:
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -349,11 +370,11 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
                     <button
                       key={group}
                       onClick={() => toggleGroup(group)}
-                      className="px-3 py-1 text-sm font-bold uppercase tracking-wide transition-colors border-2"
+                      className="px-3 py-1.5 text-sm font-medium transition-colors rounded-lg border"
                       style={{
-                        backgroundColor: selectedGroups.includes(group) ? '#FF9F1C' : '#ffffff',
-                        borderColor: selectedGroups.includes(group) ? '#e68a00' : '#3e4348',
-                        color: selectedGroups.includes(group) ? '#1a1d21' : '#1a1d21',
+                        backgroundColor: selectedGroups.includes(group) ? LIGHT.accent : LIGHT.panelBg,
+                        borderColor: selectedGroups.includes(group) ? LIGHT.accentDark : LIGHT.border,
+                        color: selectedGroups.includes(group) ? '#ffffff' : LIGHT.text,
                       }}
                     >
                       {group}
@@ -365,22 +386,20 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
 
             {/* Results count */}
             <div
-              className="flex items-center justify-between p-3 border-2"
-              style={{ backgroundColor: '#2d3139', borderColor: '#3e4348' }}
+              className="flex items-center justify-between p-3 rounded-lg border"
+              style={{ backgroundColor: LIGHT.panelBg, borderColor: LIGHT.border }}
             >
-              <span style={{ color: '#f5f6f7' }}>
-                Nalezeno: <strong style={{ color: '#FF9F1C' }}>{filteredItems.length}</strong> položek v{' '}
-                <strong style={{ color: '#FF9F1C' }}>{groupedItems.size}</strong> skupinách
+              <span style={{ color: LIGHT.text }}>
+                Nalezeno: <strong style={{ color: LIGHT.accent }}>{filteredItems.length}</strong> položek v{' '}
+                <strong style={{ color: LIGHT.accent }}>{groupedItems.size}</strong> skupinách
               </span>
               <button
                 onClick={handleCreateReport}
                 disabled={filteredItems.length === 0}
-                className="px-4 py-2 font-black uppercase tracking-wide disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 border-2"
+                className="px-4 py-2 font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 rounded-lg"
                 style={{
-                  backgroundColor: '#FF9F1C',
-                  borderColor: '#e68a00',
-                  color: '#1a1d21',
-                  boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+                  backgroundColor: LIGHT.accent,
+                  color: '#ffffff',
                 }}
               >
                 <FileSpreadsheet className="w-4 h-4" />
@@ -391,56 +410,56 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             {/* Grouped Items Preview */}
             {filteredItems.length > 0 && (
               <div className="space-y-2">
-                <h4 className="text-sm font-bold uppercase tracking-wide" style={{ color: '#1a1d21' }}>
+                <h4 className="text-sm font-medium" style={{ color: LIGHT.text }}>
                   Náhled položek:
                 </h4>
                 <div
-                  className="max-h-96 overflow-y-auto space-y-2 border-2 p-2"
-                  style={{ backgroundColor: '#ffffff', borderColor: '#3e4348' }}
+                  className="max-h-96 overflow-y-auto space-y-2 border rounded-lg p-2"
+                  style={{ backgroundColor: LIGHT.panelBg, borderColor: LIGHT.border }}
                 >
                   {Array.from(groupedItems.entries()).map(([skupina, items]) => {
                     const isCollapsed = collapsedGroups.has(skupina);
                     return (
                       <div
                         key={skupina}
-                        className="border-2 overflow-hidden"
-                        style={{ borderColor: '#3e4348' }}
+                        className="border rounded-lg overflow-hidden"
+                        style={{ borderColor: LIGHT.border }}
                       >
                         {/* Group Header */}
                         <button
                           onClick={() => toggleGroupCollapse(skupina)}
                           className="w-full flex items-center justify-between p-3 transition-colors text-left"
-                          style={{ backgroundColor: '#2d3139' }}
+                          style={{ backgroundColor: LIGHT.headerBg }}
                         >
                           <div className="flex items-center gap-2">
-                            <span className="text-lg font-black" style={{ color: '#FF9F1C' }}>
+                            <span className="text-lg font-bold" style={{ color: LIGHT.accent }}>
                               {isCollapsed ? '▶' : '▼'}
                             </span>
-                            <span className="font-bold" style={{ color: '#f5f6f7' }}>{skupina}</span>
-                            <span className="text-sm" style={{ color: '#8a9199' }}>
+                            <span className="font-semibold" style={{ color: LIGHT.text }}>{skupina}</span>
+                            <span className="text-sm" style={{ color: LIGHT.textMuted }}>
                               ({items.length} položek)
                             </span>
                           </div>
-                          <span className="text-xs" style={{ color: '#8a9199' }}>
+                          <span className="text-xs" style={{ color: LIGHT.textMuted }}>
                             {isCollapsed ? 'Rozbalit' : 'Sbalit'}
                           </span>
                         </button>
 
                         {/* Group Items */}
                         {!isCollapsed && (
-                          <div style={{ borderTop: '1px solid #3e4348' }}>
+                          <div style={{ borderTop: `1px solid ${LIGHT.border}` }}>
                             {items.slice(0, 5).map((item) => (
                               <div
                                 key={item.id}
                                 className="p-2 pl-8 text-sm"
-                                style={{ backgroundColor: '#f5f6f7', borderBottom: '1px solid #e5e7eb' }}
+                                style={{ backgroundColor: LIGHT.panelBg, borderBottom: `1px solid ${LIGHT.borderLight}` }}
                               >
                                 <div className="flex items-start gap-2">
-                                  <span className="font-mono min-w-[80px]" style={{ color: '#3e4348' }}>
+                                  <span className="font-mono min-w-[80px]" style={{ color: LIGHT.textMuted }}>
                                     {item.kod}
                                   </span>
-                                  <span className="flex-1" style={{ color: '#1a1d21' }}>{item.popis}</span>
-                                  <span className="text-xs" style={{ color: '#8a9199' }}>
+                                  <span className="flex-1" style={{ color: LIGHT.text }}>{item.popis}</span>
+                                  <span className="text-xs" style={{ color: LIGHT.textMuted }}>
                                     {item.mnozstvi} {item.mj}
                                   </span>
                                 </div>
@@ -449,7 +468,7 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
                             {items.length > 5 && (
                               <div
                                 className="p-2 pl-8 text-xs italic"
-                                style={{ color: '#8a9199', backgroundColor: '#f5f6f7' }}
+                                style={{ color: LIGHT.textMuted, backgroundColor: LIGHT.panelBg }}
                               >
                                 ... a dalších {items.length - 5} položek
                               </div>
@@ -466,49 +485,49 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
 
           {/* Report Preview */}
           {report && (
-            <div className="space-y-4 pt-4" style={{ borderTop: '2px solid #3e4348' }}>
-              <h3 className="font-black uppercase tracking-wide" style={{ color: '#1a1d21' }}>
+            <div className="space-y-4 pt-4" style={{ borderTop: `1px solid ${LIGHT.border}` }}>
+              <h3 className="font-semibold" style={{ color: LIGHT.text }}>
                 Náhled poptávky
               </h3>
 
               <div
-                className="grid grid-cols-2 gap-4 p-4 border-2"
-                style={{ backgroundColor: '#2d3139', borderColor: '#FF9F1C' }}
+                className="grid grid-cols-2 gap-4 p-4 rounded-lg border"
+                style={{ backgroundColor: LIGHT.panelBg, borderColor: LIGHT.accent }}
               >
                 <div>
-                  <span className="text-sm" style={{ color: '#8a9199' }}>Položek:</span>
-                  <strong className="ml-2" style={{ color: '#FF9F1C' }}>{report.totalItems}</strong>
+                  <span className="text-sm" style={{ color: LIGHT.textMuted }}>Položek:</span>
+                  <strong className="ml-2" style={{ color: LIGHT.accent }}>{report.totalItems}</strong>
                 </div>
                 <div>
-                  <span className="text-sm" style={{ color: '#8a9199' }}>Hledaný výraz:</span>
-                  <strong className="ml-2" style={{ color: '#FF9F1C' }}>{report.searchQuery}</strong>
+                  <span className="text-sm" style={{ color: LIGHT.textMuted }}>Hledaný výraz:</span>
+                  <strong className="ml-2" style={{ color: LIGHT.accent }}>{report.searchQuery}</strong>
                 </div>
                 <div>
-                  <span className="text-sm" style={{ color: '#8a9199' }}>Projekty:</span>
-                  <strong className="ml-2" style={{ color: '#FF9F1C' }}>{report.projects.join(', ') || 'Všechny'}</strong>
+                  <span className="text-sm" style={{ color: LIGHT.textMuted }}>Projekty:</span>
+                  <strong className="ml-2" style={{ color: LIGHT.accent }}>{report.projects.join(', ') || 'Všechny'}</strong>
                 </div>
                 <div>
-                  <span className="text-sm" style={{ color: '#8a9199' }}>Skupiny:</span>
-                  <strong className="ml-2" style={{ color: '#FF9F1C' }}>{report.groups.join(', ') || 'Všechny'}</strong>
+                  <span className="text-sm" style={{ color: LIGHT.textMuted }}>Skupiny:</span>
+                  <strong className="ml-2" style={{ color: LIGHT.accent }}>{report.groups.join(', ') || 'Všechny'}</strong>
                 </div>
               </div>
 
               {/* Export options */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-bold uppercase tracking-wide mb-1" style={{ color: '#1a1d21' }}>
+                  <label className="block text-sm font-medium mb-1" style={{ color: LIGHT.text }}>
                     Název poptávky:
                   </label>
                   <input
                     type="text"
                     value={exportTitle}
                     onChange={(e) => setExportTitle(e.target.value)}
-                    className="w-full px-3 py-2 border-2"
-                    style={{ backgroundColor: '#ffffff', borderColor: '#3e4348', color: '#1a1d21' }}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    style={{ backgroundColor: LIGHT.panelBg, borderColor: LIGHT.border, color: LIGHT.text }}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-bold uppercase tracking-wide mb-1" style={{ color: '#1a1d21' }}>
+                  <label className="block text-sm font-medium mb-1" style={{ color: LIGHT.text }}>
                     Dodavatel:
                   </label>
                   <input
@@ -516,14 +535,14 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
                     value={supplierName}
                     onChange={(e) => setSupplierName(e.target.value)}
                     placeholder="Název dodavatele"
-                    className="w-full px-3 py-2 border-2"
-                    style={{ backgroundColor: '#ffffff', borderColor: '#3e4348', color: '#1a1d21' }}
+                    className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400"
+                    style={{ backgroundColor: LIGHT.panelBg, borderColor: LIGHT.border, color: LIGHT.text }}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-bold uppercase tracking-wide mb-1" style={{ color: '#1a1d21' }}>
+                <label className="block text-sm font-medium mb-1" style={{ color: LIGHT.text }}>
                   Poznámky:
                 </label>
                 <textarea
@@ -531,17 +550,18 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
                   placeholder="Poznámky pro dodavatele..."
-                  className="w-full px-3 py-2 border-2 resize-none"
-                  style={{ backgroundColor: '#ffffff', borderColor: '#3e4348', color: '#1a1d21' }}
+                  className="w-full px-3 py-2 border rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-orange-400"
+                  style={{ backgroundColor: LIGHT.panelBg, borderColor: LIGHT.border, color: LIGHT.text }}
                 />
               </div>
 
               <div className="flex items-center gap-4">
-                <label className="flex items-center gap-2 text-sm" style={{ color: '#1a1d21' }}>
+                <label className="flex items-center gap-2 text-sm" style={{ color: LIGHT.text }}>
                   <input
                     type="checkbox"
                     checked={includeSourceInfo}
                     onChange={(e) => setIncludeSourceInfo(e.target.checked)}
+                    className="w-4 h-4"
                   />
                   Zahrnout zdroj (soubor, list, řádek)
                 </label>
@@ -549,12 +569,10 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
 
               <button
                 onClick={handleExport}
-                className="w-full px-4 py-3 flex items-center justify-center gap-2 font-black uppercase tracking-wide border-2"
+                className="w-full px-4 py-3 flex items-center justify-center gap-2 font-semibold rounded-lg"
                 style={{
-                  backgroundColor: '#FF9F1C',
-                  borderColor: '#e68a00',
-                  color: '#1a1d21',
-                  boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+                  backgroundColor: LIGHT.accent,
+                  color: '#ffffff',
                 }}
               >
                 <Download className="w-5 h-5" />
@@ -564,13 +582,13 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
           )}
 
           {/* Reverse Import Section */}
-          <div className="space-y-4 pt-4" style={{ borderTop: '2px solid #3e4348' }}>
-            <h3 className="font-black uppercase tracking-wide flex items-center gap-2" style={{ color: '#1a1d21' }}>
+          <div className="space-y-4 pt-4" style={{ borderTop: `1px solid ${LIGHT.border}` }}>
+            <h3 className="font-semibold flex items-center gap-2" style={{ color: LIGHT.text }}>
               <Upload className="w-4 h-4" />
               Zpětný import cen od dodavatele
             </h3>
 
-            <p className="text-sm" style={{ color: '#8a9199' }}>
+            <p className="text-sm" style={{ color: LIGHT.textMuted }}>
               Nahrajte vyplněný soubor od dodavatele. Ceny budou automaticky spárovány s položkami.
             </p>
 
@@ -585,8 +603,8 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={isImporting}
-              className="px-4 py-2 border-2 border-dashed transition-colors flex items-center gap-2 font-bold"
-              style={{ borderColor: '#3e4348', color: '#1a1d21', backgroundColor: '#ffffff' }}
+              className="px-4 py-2 border-2 border-dashed transition-colors flex items-center gap-2 font-medium rounded-lg"
+              style={{ borderColor: LIGHT.border, color: LIGHT.text, backgroundColor: LIGHT.panelBg }}
             >
               <Upload className="w-5 h-5" />
               {isImporting ? 'Importuji...' : 'Nahrát vyplněný soubor'}
@@ -595,30 +613,28 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             {/* Import result */}
             {importResult && (
               <div
-                className="p-4 border-2"
+                className="p-4 rounded-lg border"
                 style={{
-                  backgroundColor: '#2d3139',
-                  borderColor: importResult.success ? '#FF9F1C' : '#ef4444',
+                  backgroundColor: importResult.success ? LIGHT.successBg : LIGHT.errorBg,
+                  borderColor: importResult.success ? LIGHT.success : LIGHT.error,
                 }}
               >
                 {importResult.success ? (
                   <>
-                    <div className="flex items-center gap-2 font-black mb-2" style={{ color: '#FF9F1C' }}>
+                    <div className="flex items-center gap-2 font-semibold mb-2" style={{ color: LIGHT.success }}>
                       <Check className="w-5 h-5" />
                       Import úspěšný
                     </div>
-                    <div className="text-sm space-y-1" style={{ color: '#f5f6f7' }}>
-                      <p>Spárováno: <strong style={{ color: '#FF9F1C' }}>{importResult.matchedItems}</strong> položek s cenami</p>
+                    <div className="text-sm space-y-1" style={{ color: LIGHT.text }}>
+                      <p>Spárováno: <strong style={{ color: LIGHT.success }}>{importResult.matchedItems}</strong> položek s cenami</p>
                       <p>Bez ceny: <strong>{importResult.unmatchedItems}</strong> položek</p>
                     </div>
                     <button
                       onClick={handleApplyPrices}
-                      className="mt-3 px-4 py-2 flex items-center gap-2 font-black uppercase tracking-wide border-2"
+                      className="mt-3 px-4 py-2 flex items-center gap-2 font-semibold rounded-lg"
                       style={{
-                        backgroundColor: '#FF9F1C',
-                        borderColor: '#e68a00',
-                        color: '#1a1d21',
-                        boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+                        backgroundColor: LIGHT.success,
+                        color: '#ffffff',
                       }}
                     >
                       <Check className="w-4 h-4" />
@@ -627,11 +643,11 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
                   </>
                 ) : (
                   <>
-                    <div className="flex items-center gap-2 font-black mb-2" style={{ color: '#ef4444' }}>
+                    <div className="flex items-center gap-2 font-semibold mb-2" style={{ color: LIGHT.error }}>
                       <AlertCircle className="w-5 h-5" />
                       Chyba importu
                     </div>
-                    <ul className="text-sm list-disc list-inside" style={{ color: '#fca5a5' }}>
+                    <ul className="text-sm list-disc list-inside" style={{ color: LIGHT.text }}>
                       {importResult.errors.map((error, i) => (
                         <li key={i}>{error}</li>
                       ))}
@@ -645,15 +661,15 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
 
         {/* Footer */}
         <div
-          className="p-4 border-t-4 flex justify-end"
-          style={{ backgroundColor: '#2d3139', borderColor: '#3e4348' }}
+          className="p-4 border-t flex justify-end"
+          style={{ backgroundColor: LIGHT.headerBg, borderColor: LIGHT.border }}
         >
           <button
             onClick={onClose}
-            className="px-4 py-2 transition-colors font-bold uppercase tracking-wide border-2"
-            style={{ borderColor: '#3e4348', color: '#f5f6f7', backgroundColor: 'transparent' }}
-            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3e4348'}
-            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+            className="px-4 py-2 transition-colors font-medium rounded-lg border"
+            style={{ borderColor: LIGHT.border, color: LIGHT.text, backgroundColor: LIGHT.panelBg }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = LIGHT.panelBgAlt}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = LIGHT.panelBg}
           >
             Zavřít
           </button>
