@@ -16,7 +16,7 @@ import FormData from 'form-data';
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import tskpParserService from './tskpParserService.js';
-import llmClient from './llmClient.js';
+import { callLLMForTask, TASKS } from './llmClient.js';
 
 const CONCRETE_AGENT_URL = process.env.STAVAGENT_API_URL || 'https://concrete-agent.onrender.com';
 const SIMILARITY_THRESHOLD = 0.85; // 85% similarity for deduplication
@@ -74,16 +74,22 @@ async function extractWorksWithLLM(fullText, existingPositions = []) {
   try {
     logger.info(`[DocExtract] Extracting works with LLM...`);
 
-    // Build prompt
-    const prompt = buildExtractionPrompt(fullText, existingPositions);
+    // Build prompts
+    const systemPrompt = 'Jsi expert na analýzu stavebních dokumentů a extrakci pracovních položek z technických zadání a výkresové dokumentace.';
+    const userPrompt = buildExtractionPrompt(fullText, existingPositions);
 
     // Try structured JSON first, fallback to free-form
     let extractedWorks;
 
     try {
       // Attempt structured JSON response
-      const jsonPrompt = prompt + '\n\nВАЖНО: Ответь ТОЛЬКО валидным JSON массивом, без дополнительного текста.';
-      const response = await llmClient.ask(jsonPrompt);
+      const jsonUserPrompt = userPrompt + '\n\nVÁŽNO: Odpověz POUZE validním JSON massivem, bez jakéhokoli dalšího textu.';
+      const response = await callLLMForTask(
+        TASKS.BLOCK_ANALYSIS,
+        systemPrompt,
+        jsonUserPrompt,
+        90000 // 90s timeout
+      );
       extractedWorks = parseStructuredResponse(response);
 
       logger.info(`[DocExtract] ✓ Extracted ${extractedWorks.length} works (structured)`);
@@ -91,7 +97,12 @@ async function extractWorksWithLLM(fullText, existingPositions = []) {
       logger.warn(`[DocExtract] JSON parsing failed, trying free-form: ${jsonError.message}`);
 
       // Fallback to free-form parsing
-      const response = await llmClient.ask(prompt);
+      const response = await callLLMForTask(
+        TASKS.BLOCK_ANALYSIS,
+        systemPrompt,
+        userPrompt,
+        90000 // 90s timeout
+      );
       extractedWorks = parseFreeFormResponse(response);
 
       logger.info(`[DocExtract] ✓ Extracted ${extractedWorks.length} works (free-form)`);
