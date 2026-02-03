@@ -287,6 +287,12 @@ function createStyledItemsSheet(
     }
   });
 
+  // CRITICAL: Enable outline/grouping settings for the sheet
+  // Without this, Excel won't show +/- buttons for row grouping!
+  // above: true = summary rows (main items) are ABOVE detail rows
+  // left: true = group symbols (+/-) appear on the LEFT side
+  ws['!outline'] = { above: true, left: true };
+
   // Apply styling to each cell
   const colCount = headers.length;
   for (let r = 0; r < data.length; r++) {

@@ -206,15 +206,15 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
 
           {showParentMenu && (
             <>
-              {/* Backdrop - ПОЛНОСТЬЮ НЕПРОЗРАЧНЫЙ - SLATE-950, НЕ закрывается по клику */}
+              {/* Backdrop - Digital Concrete темно-серый, НЕ закрывается по клику */}
               <div
                 className="fixed inset-0 z-[99998]"
-                style={{ backgroundColor: '#020617' }} // slate-950 fully opaque
+                style={{ backgroundColor: '#1a1d21' }} // Digital Concrete dark gray - fully opaque
               />
 
               {/* Modal panel - Digital Concrete, ЦЕНТР, ИЗМЕНЯЕМЫЙ РАЗМЕР */}
               <div
-                className="fixed border-4 border-slate-800 z-[99999] flex flex-col"
+                className="fixed border-4 z-[99999] flex flex-col"
                 style={{
                   left: '50%',
                   top: '50%',
@@ -225,46 +225,52 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                   minHeight: '300px',
                   maxWidth: '900px',
                   maxHeight: '800px',
-                  boxShadow: '12px 12px 0 rgba(0,0,0,0.5), 0 24px 72px rgba(0,0,0,0.9)',
-                  backgroundColor: '#0f172a', // slate-900 base
+                  boxShadow: '8px 8px 0 rgba(0,0,0,0.4), 0 16px 48px rgba(0,0,0,0.6)',
+                  backgroundColor: '#2d3139', // Digital Concrete panel bg
+                  borderColor: '#3e4348', // Digital Concrete border
                 }}
               >
-                {/* Header - SLATE-900 с кнопкой X */}
+                {/* Header - Digital Concrete с кнопкой X */}
                 <div
-                  className="flex items-center justify-between px-6 py-4 border-b-4 border-slate-700 flex-shrink-0"
-                  style={{ backgroundColor: '#0f172a' }}
+                  className="flex items-center justify-between px-6 py-4 border-b-4 flex-shrink-0"
+                  style={{ backgroundColor: '#2d3139', borderColor: '#3e4348' }}
                 >
                   <div>
-                    <h3 className="font-black text-lg uppercase tracking-widest text-white">🔗 PŘIPOJIT K POLOŽCE</h3>
-                    <p className="text-xs text-slate-400 mt-1 font-bold uppercase tracking-wide">Vyberte hlavní položku pro připojení</p>
+                    <h3 className="font-black text-lg uppercase tracking-widest" style={{ color: '#f5f6f7' }}>🔗 PŘIPOJIT K POLOŽCE</h3>
+                    <p className="text-xs mt-1 font-bold uppercase tracking-wide" style={{ color: '#8a9199' }}>Vyberte hlavní položku pro připojení</p>
                   </div>
                   {/* Close button X */}
                   <button
                     onClick={() => setShowParentMenu(false)}
-                    className="p-2 rounded-lg hover:bg-slate-700 transition-colors text-slate-400 hover:text-white"
+                    className="p-2 rounded-lg transition-colors"
+                    style={{ color: '#8a9199' }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3e4348'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                     title="Zavřít"
                   >
                     <X size={24} strokeWidth={3} />
                   </button>
                 </div>
 
-                {/* Content - светло-серый ПОЛНОСТЬЮ непрозрачный, прокручиваемый */}
+                {/* Content - Digital Concrete светлый фон, прокручиваемый */}
                 <div
                   className="flex-1 overflow-y-auto p-5"
-                  style={{ backgroundColor: '#f1f5f9' }} // slate-100
+                  style={{ backgroundColor: '#f5f6f7' }} // Digital Concrete data surface
                 >
                   {/* Option to detach (no parent) */}
                   <button
                     onClick={() => handleAttachToParent(null)}
-                    className={`w-full px-6 py-5 text-left transition-all rounded-none mb-3 border-4 ${
-                      !item.parentItemId
-                        ? 'bg-orange-500 border-orange-700 text-white font-black shadow-[6px_6px_0_rgba(0,0,0,0.3)] uppercase tracking-wide'
-                        : 'border-slate-600 bg-white hover:bg-slate-50 hover:border-slate-800 hover:shadow-[4px_4px_0_rgba(0,0,0,0.1)]'
-                    }`}
+                    className="w-full px-6 py-5 text-left transition-all rounded-none mb-3 border-4"
+                    style={{
+                      backgroundColor: !item.parentItemId ? '#FF9F1C' : '#ffffff',
+                      borderColor: !item.parentItemId ? '#e68a00' : '#3e4348',
+                      color: !item.parentItemId ? '#ffffff' : '#1a1d21',
+                      boxShadow: !item.parentItemId ? '6px 6px 0 rgba(0,0,0,0.3)' : 'none',
+                    }}
                   >
                     <div className="flex items-center gap-4">
                       <span className="text-2xl">🔓</span>
-                      <span className={`text-sm font-black uppercase tracking-wide ${!item.parentItemId ? 'text-white' : 'text-slate-800'}`}>
+                      <span className="text-sm font-black uppercase tracking-wide">
                         (ŽÁDNÝ RODIČ - ODPOJIT)
                       </span>
                     </div>
@@ -273,34 +279,54 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                   {/* List of potential parents */}
                   {potentialParents.length > 0 ? (
                     <div className="space-y-3">
-                      {potentialParents.map((parent) => (
-                        <button
-                          key={parent.id}
-                          onClick={() => handleAttachToParent(parent.id)}
-                          className={`w-full px-6 py-5 text-left transition-all rounded-none border-4 ${
-                            item.parentItemId === parent.id
-                              ? 'bg-orange-500 border-orange-700 text-white font-black shadow-[6px_6px_0_rgba(0,0,0,0.3)]'
-                              : 'border-slate-600 bg-white hover:bg-slate-50 hover:border-slate-800 hover:shadow-[4px_4px_0_rgba(0,0,0,0.1)]'
-                          }`}
-                        >
-                          <div className="flex flex-col gap-2">
-                            <div className="flex items-center gap-3">
-                              <span className="font-mono text-xs bg-slate-900 text-white px-3 py-1.5 font-black uppercase tracking-wider border-2 border-slate-700">
-                                {parent.boqLineNumber || '—'}
+                      {potentialParents.map((parent) => {
+                        const isSelected = item.parentItemId === parent.id;
+                        return (
+                          <button
+                            key={parent.id}
+                            onClick={() => handleAttachToParent(parent.id)}
+                            className="w-full px-6 py-5 text-left transition-all rounded-none border-4"
+                            style={{
+                              backgroundColor: isSelected ? '#FF9F1C' : '#ffffff',
+                              borderColor: isSelected ? '#e68a00' : '#3e4348',
+                              color: isSelected ? '#ffffff' : '#1a1d21',
+                              boxShadow: isSelected ? '6px 6px 0 rgba(0,0,0,0.3)' : 'none',
+                            }}
+                          >
+                            <div className="flex flex-col gap-2">
+                              <div className="flex items-center gap-3">
+                                <span
+                                  className="font-mono text-xs px-3 py-1.5 font-black uppercase tracking-wider border-2"
+                                  style={{
+                                    backgroundColor: '#2d3139',
+                                    color: '#f5f6f7',
+                                    borderColor: '#3e4348'
+                                  }}
+                                >
+                                  {parent.boqLineNumber || '—'}
+                                </span>
+                                <span className="font-black text-lg tracking-tight">
+                                  {parent.kod}
+                                </span>
+                              </div>
+                              <span className="text-sm leading-snug font-bold">
+                                {parent.popis}
                               </span>
-                              <span className={`font-black text-lg tracking-tight ${
-                                item.parentItemId === parent.id ? 'text-white' : 'text-slate-900'
-                              }`}>{parent.kod}</span>
                             </div>
-                            <span className={`text-sm leading-snug font-bold ${
-                              item.parentItemId === parent.id ? 'text-white' : 'text-slate-800'
-                            }`}>{parent.popis}</span>
-                          </div>
-                        </button>
-                      ))}
+                          </button>
+                        );
+                      })}
                     </div>
                   ) : (
-                    <div className="px-6 py-12 text-center text-sm font-black bg-slate-300 rounded-none border-4 border-slate-600 text-slate-900 uppercase tracking-widest shadow-[4px_4px_0_rgba(0,0,0,0.2)]">
+                    <div
+                      className="px-6 py-12 text-center text-sm font-black rounded-none border-4 uppercase tracking-widest"
+                      style={{
+                        backgroundColor: '#e5e7eb',
+                        borderColor: '#3e4348',
+                        color: '#1a1d21',
+                        boxShadow: '4px 4px 0 rgba(0,0,0,0.2)',
+                      }}
+                    >
                       ŽÁDNÉ HLAVNÍ POLOŽKY
                     </div>
                   )}
@@ -309,11 +335,11 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                 {/* Resize handle - нижний правый угол */}
                 <div
                   className="absolute bottom-0 right-0 w-6 h-6 cursor-se-resize flex items-center justify-center"
-                  style={{ backgroundColor: '#334155' }} // slate-700
+                  style={{ backgroundColor: '#3e4348' }}
                   onMouseDown={handleResizeStart}
                   title="Změnit velikost"
                 >
-                  <GripVertical size={14} className="text-slate-400 rotate-45" />
+                  <GripVertical size={14} style={{ color: '#8a9199' }} className="rotate-45" />
                 </div>
               </div>
             </>
