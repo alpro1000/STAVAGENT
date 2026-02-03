@@ -19,11 +19,15 @@ import { autoAssignSimilarItems } from '../../services/similarity/similarityServ
 import { AlertModal } from '../common/Modal';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 import { RowActionsCell } from './RowActionsCell';
+import { BulkActionsBar } from './BulkActionsBar';
+import './ItemsTable.css';
 
 interface ItemsTableProps {
   items: ParsedItem[];
   projectId: string;
   sheetId: string;
+  selectedIds?: Set<string>;
+  onSelectionChange?: (ids: Set<string>) => void;
   sorting?: SortingState;
   onSortingChange?: (sorting: SortingState) => void;
   showOnlyWorkItems?: boolean;
@@ -38,6 +42,8 @@ export function ItemsTable({
   items,
   projectId,
   sheetId,
+  selectedIds = new Set(),
+  onSelectionChange,
   sorting: externalSorting,
   onSortingChange: externalOnSortingChange,
   showOnlyWorkItems = false,
@@ -291,6 +297,28 @@ export function ItemsTable({
 
   const columns = useMemo(
     () => [
+      // Checkbox (для массовых операций)
+      columnHelper.display({
+        id: 'select',
+        header: ({ table }) => (
+          <input
+            type="checkbox"
+            checked={table.getIsAllRowsSelected()}
+            onChange={table.getToggleAllRowsSelectedHandler()}
+            className="cursor-pointer"
+          />
+        ),
+        cell: ({ row }) => (
+          <input
+            type="checkbox"
+            checked={row.getIsSelected()}
+            onChange={row.getToggleSelectedHandler()}
+            className="cursor-pointer"
+          />
+        ),
+        size: 40,
+      }),
+
       // Actions (delete, change role, reorder, attach)
       columnHelper.display({
         id: 'actions',
@@ -353,9 +381,9 @@ export function ItemsTable({
       columnHelper.accessor('kod', {
         header: 'Kód',
         cell: (info) => (
-          <span className="font-mono text-sm font-semibold">
+          <div className="cell-scrollable-kod font-mono text-sm font-semibold">
             {info.getValue()}
-          </span>
+          </div>
         ),
         size: 100,
         enableSorting: true,
@@ -365,8 +393,8 @@ export function ItemsTable({
       columnHelper.accessor('popis', {
         header: 'Popis',
         cell: (info) => (
-          <div className="max-w-md">
-            <p className="truncate text-sm">{info.getValue()}</p>
+          <div className="cell-scrollable text-sm">
+            {info.getValue()}
           </div>
         ),
         size: 300,
@@ -598,10 +626,41 @@ export function ItemsTable({
     columns,
     state: {
       sorting,
+      rowSelection: Object.fromEntries(
+        Array.from(selectedIds).map((id) => [
+          visibleItems.findIndex((item) => item.id === id),
+          true,
+        ])
+      ),
     },
     onSortingChange: handleSortingChange,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    enableRowSelection: true,
+    onRowSelectionChange: (updater) => {
+      if (!onSelectionChange) return;
+
+      const newSelection =
+        typeof updater === 'function'
+          ? updater(
+              Object.fromEntries(
+                Array.from(selectedIds).map((id) => [
+                  visibleItems.findIndex((item) => item.id === id),
+                  true,
+                ])
+              )
+            )
+          : updater;
+
+      const newSelectedIds = new Set(
+        Object.keys(newSelection)
+          .filter((key) => newSelection[key])
+          .map((key) => visibleItems[parseInt(key)]?.id)
+          .filter(Boolean)
+      );
+
+      onSelectionChange(newSelectedIds);
+    },
   });
 
   if (items.length === 0) {
@@ -696,6 +755,15 @@ export function ItemsTable({
         title={alertModal.title}
         message={alertModal.message}
         variant={alertModal.variant}
+      />
+
+      {/* Bulk Actions Bar */}
+      <BulkActionsBar
+        selectedIds={selectedIds}
+        items={items}
+        projectId={projectId}
+        sheetId={sheetId}
+        onClearSelection={() => onSelectionChange?.(new Set())}
       />
       </div>
     </div>
