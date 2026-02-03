@@ -162,16 +162,16 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
 
           {showParentMenu && (
             <>
-              {/* Backdrop - ПОЛНОСТЬЮ НЕПРОЗРАЧНЫЙ */}
+              {/* Backdrop - ПОЛНОСТЬЮ НЕПРОЗРАЧНЫЙ - SLATE-950 */}
               <div
                 className="fixed inset-0 bg-slate-950 z-[99998]"
-                style={{ backgroundColor: '#0a0a0a' }}
+                style={{ backgroundColor: '#020617' }}
                 onClick={() => setShowParentMenu(false)}
               />
 
               {/* Modal panel - Digital Concrete, ТОЧНО ПО ЦЕНТРУ */}
               <div
-                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 border-4 border-black rounded-none z-[99999] w-[550px] max-h-[680px] overflow-y-auto"
+                className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-100 border-4 border-slate-900 rounded-none z-[99999] w-[550px] max-h-[680px] overflow-y-auto"
                 style={{
                   boxShadow: '12px 12px 0 rgba(0,0,0,0.5), 0 24px 72px rgba(0,0,0,0.9)',
                   transform: 'translate(-50%, -50%)',
@@ -179,8 +179,8 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                   top: '50%'
                 }}
               >
-                {/* Header - Digital Concrete BLACK */}
-                <div className="sticky top-0 bg-black text-white px-6 py-4 z-[100000] border-b-4 border-slate-800">
+                {/* Header - Digital Concrete SLATE-900 */}
+                <div className="sticky top-0 bg-slate-900 text-white px-6 py-4 z-[100000] border-b-4 border-slate-700">
                   <h3 className="font-black text-lg uppercase tracking-widest">🔗 PŘIPOJIT K POLOŽCE</h3>
                   <p className="text-xs text-slate-400 mt-2 font-bold uppercase tracking-wide">Vyberte hlavní položku pro připojení</p>
                 </div>
@@ -219,7 +219,7 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
                         >
                           <div className="flex flex-col gap-2">
                             <div className="flex items-center gap-3">
-                              <span className="font-mono text-xs bg-black text-white px-3 py-1.5 font-black uppercase tracking-wider border-2 border-slate-800">
+                              <span className="font-mono text-xs bg-slate-900 text-white px-3 py-1.5 font-black uppercase tracking-wider border-2 border-slate-700">
                                 {parent.boqLineNumber || '—'}
                               </span>
                               <span className={`font-black text-lg tracking-tight ${
