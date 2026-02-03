@@ -18,7 +18,7 @@ import { defaultImportConfig } from '../../config/defaultConfig';
 import type { Project, Sheet } from '../../types';
 import type { ImportTemplate } from '../../types/template';
 import type { ImportConfig } from '../../types/config';
-import { AlertCircle, Loader2, CheckCircle, Sparkles, Table } from 'lucide-react';
+import { AlertCircle, Loader2, CheckCircle } from 'lucide-react';
 import { RawExcelViewer } from './RawExcelViewer';
 
 interface ImportModalProps {
@@ -102,25 +102,6 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
     }
   };
 
-  const handleTemplateSelect = (template: ImportTemplate) => {
-    setSelectedTemplate(template);
-  };
-
-  const handleTemplateConfirm = () => {
-    setStep('sheet');
-  };
-
-  const handleCreateCustomTemplate = () => {
-    // Initialize custom config with default values
-    setCustomConfig({
-      ...defaultImportConfig,
-      sheetName: sheetNames[0] || '',
-      sheetIndex: 0,
-    });
-    setCustomTemplateName('');
-    setCustomTemplateDescription('');
-    setStep('custom-config');
-  };
 
   const handleSaveCustomTemplate = () => {
     // Validate
