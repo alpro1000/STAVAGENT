@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.0.1
-**Last Updated:** 2026-01-29
+**Version:** 2.0.2
+**Last Updated:** 2026-02-03
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-02-03 | URS_MATCHER_SERVICE | Document Work Extraction Pipeline: PDF → MinerU → LLM → TSKP → Batch | ✅ Pushed |
 | 2026-01-29 | rozpocet-registry | AI Agent + AI on/off toggle: Full autonomous classification system | ✅ Pushed |
 | 2026-01-29 | rozpocet-registry | Section header detection fix: numbered items no longer misclassified | ✅ Pushed |
 | 2026-01-29 | rozpocet-registry | AI API improvements: subordinate context + model logging | ✅ Pushed |
@@ -329,6 +330,22 @@ Monolit-Planner/
 3. **Knowledge Base** - Integration with concrete-agent Multi-Role API
 4. **Learning System** - Knowledge accumulation
 
+**NEW: Document Work Extraction Pipeline (2026-02-03)**
+Complete pipeline for extracting work descriptions from PDF/DOCX documents:
+```
+PDF/DOCX → MinerU (Workflow C) → LLM Extraction → TSKP Matching → Deduplication → Batch URS Matching
+```
+
+Features:
+- Upload PDF/DOCX documents via "Nahrát Dokumenty" block
+- MinerU parsing via concrete-agent Workflow C API
+- LLM work extraction (JSON structured + free-form fallback)
+- TSKP code matching (64,737 classifier items)
+- Deduplication (85% Levenshtein similarity)
+- Display by construction sections (Zemní práce, Základy, etc.)
+- Export to Excel (CSV with UTF-8 BOM)
+- Send to Batch processor integration
+
 **LLM Fallback Chain:**
 ```
 Primary (env) → Claude → Gemini → OpenAI
@@ -337,11 +354,15 @@ Timeouts: LLM 90s, Perplexity 60s
 ```
 
 **Key Files:**
+- `backend/src/services/documentExtractionService.js` - Document extraction pipeline (520 lines)
+- `backend/src/services/tskpParserService.js` - TSKP classifier (307 lines, 64,737 items)
 - `backend/src/config/llmConfig.js` - LLM configuration
 - `backend/src/services/llmClient.js` - LLM client with per-request fallback
 - `backend/src/services/multiRoleClient.js` - CORE integration
 - `backend/src/services/ursMatcher.js` - URS matching logic
-- `backend/src/api/routes/jobs.js` - Job processing
+- `backend/src/api/routes/jobs.js` - Job processing (includes document-extract endpoint)
+- `frontend/public/components/DocumentUpload.html` - Extraction UI with stats cards
+- `frontend/public/app.js` - Extraction handlers and display logic
 - Tests: 159 tests passing
 
 ---
