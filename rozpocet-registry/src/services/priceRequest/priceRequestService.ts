@@ -23,6 +23,9 @@ export interface PriceRequestItem {
   sourceSheet: string;
   sourceRow: number;
   skupina: string | null;
+  // Hierarchy:
+  rowRole?: 'main' | 'subordinate' | 'section' | 'unknown';
+  parentItemId?: string | null;
 }
 
 export interface PriceRequestExportOptions {
@@ -66,6 +69,8 @@ export function createPriceRequestReport(
     sourceSheet: item.source.sheetName,
     sourceRow: item.source.rowStart,
     skupina: item.skupina,
+    rowRole: item.rowRole,
+    parentItemId: item.parentItemId,
   }));
 
   const uniqueProjects = [...new Set(items.map(i => i.source.fileName))];
@@ -172,71 +177,82 @@ export function exportPriceRequest(
 
   headers.push('_ID');
 
-  // Build data rows with grouping by skupina
+  // Build data rows with grouping by main items → subordinates
   const data: (string | number | null)[][] = [headers];
   const outlineLevels: number[] = [0]; // Track outline levels (0 = header)
-  const groupHeaderRows: number[] = []; // Track which rows are group headers
 
-  // Group items by skupina
-  const itemsByGroup = new Map<string, PriceRequestItem[]>();
-  for (const item of report.items) {
-    const group = item.skupina || 'Nezařazeno';
-    if (!itemsByGroup.has(group)) {
-      itemsByGroup.set(group, []);
+  // Separate main and subordinate items
+  const mainItems = report.items.filter(item => {
+    const role = item.rowRole || (item.kod && item.kod.trim().length > 0 ? 'main' : 'subordinate');
+    return role === 'main' || role === 'section';
+  });
+
+  const subordinatesByParent = new Map<string, PriceRequestItem[]>();
+  report.items.forEach(item => {
+    const role = item.rowRole || (item.kod && item.kod.trim().length > 0 ? 'main' : 'subordinate');
+    if (role === 'subordinate' && item.parentItemId) {
+      if (!subordinatesByParent.has(item.parentItemId)) {
+        subordinatesByParent.set(item.parentItemId, []);
+      }
+      subordinatesByParent.get(item.parentItemId)!.push(item);
     }
-    itemsByGroup.get(group)!.push(item);
-  }
-
-  // Sort groups alphabetically
-  const sortedGroups = Array.from(itemsByGroup.keys()).sort();
+  });
 
   let globalIndex = 0;
 
-  for (const skupina of sortedGroups) {
-    const items = itemsByGroup.get(skupina)!;
+  // Export main items with their subordinates
+  for (const mainItem of mainItems) {
+    globalIndex++;
 
-    // Add group header row
-    const groupHeaderRow: (string | number | null)[] = [
-      null,
-      null,
-      `▼ ${skupina} (${items.length} položek)`,
-      null,
-      null,
-      null,
-      null,
+    // Main item row
+    const mainRow: (string | number | null)[] = [
+      globalIndex,
+      mainItem.kod,
+      mainItem.popisFull || mainItem.popis,
+      mainItem.mj,
+      mainItem.mnozstvi,
+      null, // Supplier fills unit price
+      null, // Will be replaced with formula
     ];
-    if (includeSkupina) groupHeaderRow.push(skupina);
-    if (includeSourceInfo) { groupHeaderRow.push(null); groupHeaderRow.push(null); groupHeaderRow.push(null); }
-    groupHeaderRow.push(null);
 
-    data.push(groupHeaderRow);
-    outlineLevels.push(0); // Group header = level 0 (not indented)
-    groupHeaderRows.push(data.length - 1); // Remember this row index for styling
+    if (includeSkupina) {
+      mainRow.push(mainItem.skupina || '');
+    }
 
-    // Add items in this group
-    for (const item of items) {
+    if (includeSourceInfo) {
+      mainRow.push(mainItem.sourceProject, mainItem.sourceSheet, mainItem.sourceRow);
+    }
+
+    mainRow.push(mainItem.id);
+    data.push(mainRow);
+    outlineLevels.push(1); // Main row = level 1 (can have children)
+
+    // Add subordinate items
+    const subordinates = subordinatesByParent.get(mainItem.id) || [];
+    for (const subItem of subordinates) {
       globalIndex++;
-      const row: (string | number | null)[] = [
+
+      const subRow: (string | number | null)[] = [
         globalIndex,
-        item.kod,
-        item.popisFull || item.popis,
-        item.mj,
-        item.mnozstvi,
+        subItem.kod || '',
+        `  ↳ ${subItem.popisFull || subItem.popis}`, // Add indent marker
+        subItem.mj,
+        subItem.mnozstvi,
         null, // Supplier fills unit price
         null, // Will be replaced with formula
       ];
 
       if (includeSkupina) {
-        row.push(item.skupina || '');
+        subRow.push(subItem.skupina || '');
       }
 
       if (includeSourceInfo) {
-        row.push(item.sourceProject, item.sourceSheet, item.sourceRow);
+        subRow.push(subItem.sourceProject, subItem.sourceSheet, subItem.sourceRow);
       }
 
-      row.push(item.id);
-      data.push(row);
-      outlineLevels.push(2); // Item rows = level 2 (will become level 1 in Excel)
+      subRow.push(subItem.id);
+      data.push(subRow);
+      outlineLevels.push(2); // Subordinate row = level 2 (child, hidden by default)
     }
   }
 
@@ -272,19 +288,6 @@ export function exportPriceRequest(
   const cenaJedCol = colLetter(colCenaJednotkova); // F
   const cenaCelCol = colLetter(colCenaCelkem); // G
 
-  // Group header style
-  const GROUP_HEADER_STYLE = {
-    font: { bold: true, sz: 11, color: { rgb: '2F5496' } },
-    fill: { fgColor: { rgb: 'E7F3FF' } },
-    alignment: { horizontal: 'left' as const, vertical: 'center' as const },
-    border: {
-      top: { style: 'medium' as const, color: { rgb: '2F5496' } },
-      bottom: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
-      left: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
-      right: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
-    },
-  };
-
   // Apply formulas and styles to each row
   const sumExcelRow = data.length; // Last row is SUM
   const dataRowRanges: string[] = []; // Track ranges for SUM formula
@@ -292,40 +295,28 @@ export function exportPriceRequest(
   for (let r = 1; r < data.length - 1; r++) {
     // Skip header (r=0) and SUM row (last)
     const excelRow = r + 1; // Excel rows are 1-indexed
-    const isGroupHeader = groupHeaderRows.includes(r);
 
-    if (isGroupHeader) {
-      // Style group header row
-      for (let c = 0; c < headers.length; c++) {
-        const cellRef = `${colLetter(c)}${excelRow}`;
-        if (!wsItems[cellRef]) {
-          wsItems[cellRef] = { t: 'z', v: null };
-        }
-        wsItems[cellRef].s = GROUP_HEADER_STYLE;
+    // Data row: apply formula and style
+    const cellRef = `${cenaCelCol}${excelRow}`;
+    wsItems[cellRef] = {
+      t: 'n',
+      f: `IF(${cenaJedCol}${excelRow}="","",${mnozstviCol}${excelRow}*${cenaJedCol}${excelRow})`,
+      s: PRICE_STYLE,
+    };
+    dataRowRanges.push(`${cenaCelCol}${excelRow}`);
+
+    // Style all cells in data row
+    for (let c = 0; c < headers.length; c++) {
+      const cellRef = `${colLetter(c)}${excelRow}`;
+      if (!wsItems[cellRef]) {
+        wsItems[cellRef] = { t: 'z', v: null };
       }
-    } else {
-      // Data row: apply formula and style
-      const cellRef = `${cenaCelCol}${excelRow}`;
-      wsItems[cellRef] = {
-        t: 'n',
-        f: `IF(${cenaJedCol}${excelRow}="","",${mnozstviCol}${excelRow}*${cenaJedCol}${excelRow})`,
-        s: PRICE_STYLE,
+      const isPriceCol = c === colCenaJednotkova || c === colCenaCelkem;
+      const isQtyCol = c === colMnozstvi;
+      wsItems[cellRef].s = {
+        ...CELL_STYLE,
+        ...((isPriceCol || isQtyCol) ? { numFmt: '#,##0.00', alignment: { horizontal: 'right' as const } } : {}),
       };
-      dataRowRanges.push(`${cenaCelCol}${excelRow}`);
-
-      // Style all cells in data row
-      for (let c = 0; c < headers.length; c++) {
-        const cellRef = `${colLetter(c)}${excelRow}`;
-        if (!wsItems[cellRef]) {
-          wsItems[cellRef] = { t: 'z', v: null };
-        }
-        const isPriceCol = c === colCenaJednotkova || c === colCenaCelkem;
-        const isQtyCol = c === colMnozstvi;
-        wsItems[cellRef].s = {
-          ...CELL_STYLE,
-          ...((isPriceCol || isQtyCol) ? { numFmt: '#,##0.00', alignment: { horizontal: 'right' as const } } : {}),
-        };
-      }
     }
   }
 
@@ -405,17 +396,20 @@ export function exportPriceRequest(
   wsItems['!autofilter'] = { ref: `A1:${lastCol}${data.length - 1}` };
 
   // Set outline levels for Excel grouping (+/- buttons)
-  // outlineLevels: 0 = header/group header, 2 = data rows (will become level 1)
+  // outlineLevels: 0 = header/SUM, 1 = main items, 2 = subordinate items
   wsItems['!rows'] = outlineLevels.map((level, idx) => {
     if (idx === 0) {
       // Header row: just set height
       return { hpx: 28 };
     } else if (level === 0) {
-      // Group header or SUM row: no outline, normal height
+      // SUM row: no outline, normal height
       return { hpx: 22 };
+    } else if (level === 1) {
+      // Main item: outline level 0 (no indent, can have children)
+      return { level: 0, hpx: 20 };
     } else if (level === 2) {
-      // Data row: outline level 1 (indented under group header)
-      return { level: 1, hidden: false, hpx: 20 };
+      // Subordinate item: outline level 1 (indented under main item, hidden by default)
+      return { level: 1, hidden: true, hpx: 20 };
     }
     return {};
   });
