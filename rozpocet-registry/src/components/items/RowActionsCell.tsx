@@ -152,22 +152,28 @@ export function RowActionsCell({ item, projectId, sheetId, allItems }: RowAction
 
         {showRoleMenu && (
           <div
-            className="absolute left-0 top-full mt-1 border-2 border-slate-700 rounded-lg z-[99999] min-w-[140px] overflow-hidden"
+            className="absolute left-0 top-full mt-1 border-2 rounded z-[99999] min-w-[140px] overflow-hidden"
             style={{
               boxShadow: '0 8px 24px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)',
-              backgroundColor: '#1e293b', // slate-800 - fully opaque
+              backgroundColor: '#2d3139', // Digital Concrete panel bg
+              borderColor: '#3e4348',
             }}
           >
             {(Object.keys(ROLE_LABELS) as RowRole[]).map((role) => (
               <button
                 key={role}
                 onClick={() => handleChangeRole(role)}
-                className={`w-full px-3 py-2 text-left text-sm flex items-center gap-2 transition-colors ${
-                  role === currentRole
-                    ? 'bg-orange-500 text-white font-semibold'
-                    : 'text-slate-200 hover:bg-slate-700'
-                }`}
-                style={{ backgroundColor: role === currentRole ? '#f97316' : undefined }}
+                className="w-full px-3 py-2 text-left text-sm flex items-center gap-2 transition-colors font-bold"
+                style={{
+                  backgroundColor: role === currentRole ? '#FF9F1C' : 'transparent',
+                  color: role === currentRole ? '#1a1d21' : '#f5f6f7',
+                }}
+                onMouseEnter={(e) => {
+                  if (role !== currentRole) e.currentTarget.style.backgroundColor = '#3e4348';
+                }}
+                onMouseLeave={(e) => {
+                  if (role !== currentRole) e.currentTarget.style.backgroundColor = 'transparent';
+                }}
               >
                 <span>{ROLE_ICONS[role]}</span>
                 <span>{ROLE_LABELS[role]}</span>

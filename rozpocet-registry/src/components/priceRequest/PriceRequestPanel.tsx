@@ -256,57 +256,80 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+    <div className="fixed inset-0 flex items-center justify-center z-50" style={{ backgroundColor: '#1a1d21' }}>
+      <div
+        className="w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col border-4"
+        style={{
+          backgroundColor: '#2d3139',
+          borderColor: '#3e4348',
+          boxShadow: '8px 8px 0 rgba(0,0,0,0.4), 0 16px 48px rgba(0,0,0,0.6)',
+        }}
+      >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b bg-slate-50">
+        <div
+          className="flex items-center justify-between p-4 border-b-4"
+          style={{ backgroundColor: '#2d3139', borderColor: '#3e4348' }}
+        >
           <div className="flex items-center gap-3">
-            <Package className="w-6 h-6 text-orange-500" />
-            <h2 className="text-xl font-semibold text-slate-800">Poptávka cen</h2>
+            <Package className="w-6 h-6" style={{ color: '#FF9F1C' }} />
+            <h2 className="text-xl font-black uppercase tracking-widest" style={{ color: '#f5f6f7' }}>
+              Poptávka cen
+            </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-slate-200 rounded-lg transition-colors"
+            className="p-2 rounded-lg transition-colors"
+            style={{ color: '#8a9199' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3e4348'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
-            <X className="w-5 h-5" />
+            <X className="w-5 h-5" strokeWidth={3} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="flex-1 overflow-auto p-4 space-y-6">
+        <div className="flex-1 overflow-auto p-4 space-y-6" style={{ backgroundColor: '#f5f6f7' }}>
           {/* Search & Filters */}
           <div className="space-y-4">
-            <h3 className="font-medium text-slate-700 flex items-center gap-2">
+            <h3 className="font-black uppercase tracking-wide flex items-center gap-2" style={{ color: '#1a1d21' }}>
               <Filter className="w-4 h-4" />
               Vyhledat a filtrovat položky
             </h3>
 
             {/* Search input */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: '#8a9199' }} />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Hledat: beton, výztuž, kámen, izolace..."
-                className="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+                className="w-full pl-10 pr-4 py-3 border-2 focus:outline-none"
+                style={{
+                  backgroundColor: '#ffffff',
+                  borderColor: '#3e4348',
+                  color: '#1a1d21',
+                }}
               />
             </div>
 
             {/* Project filter */}
             {projects.length > 0 && (
               <div>
-                <label className="block text-sm text-slate-600 mb-2">Projekty:</label>
+                <label className="block text-sm font-bold uppercase tracking-wide mb-2" style={{ color: '#1a1d21' }}>
+                  Projekty:
+                </label>
                 <div className="flex flex-wrap gap-2">
                   {projects.map(project => (
                     <button
                       key={project.id}
                       onClick={() => toggleProject(project.id)}
-                      className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                        selectedProjects.includes(project.id)
-                          ? 'bg-orange-500 text-white'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                      }`}
+                      className="px-3 py-1 text-sm font-bold uppercase tracking-wide transition-colors border-2"
+                      style={{
+                        backgroundColor: selectedProjects.includes(project.id) ? '#FF9F1C' : '#ffffff',
+                        borderColor: selectedProjects.includes(project.id) ? '#e68a00' : '#3e4348',
+                        color: selectedProjects.includes(project.id) ? '#1a1d21' : '#1a1d21',
+                      }}
                     >
                       {project.projectName}
                     </button>
@@ -318,17 +341,20 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             {/* Group filter */}
             {availableGroups.length > 0 && (
               <div>
-                <label className="block text-sm text-slate-600 mb-2">Skupiny:</label>
+                <label className="block text-sm font-bold uppercase tracking-wide mb-2" style={{ color: '#1a1d21' }}>
+                  Skupiny:
+                </label>
                 <div className="flex flex-wrap gap-2">
                   {availableGroups.map(group => (
                     <button
                       key={group}
                       onClick={() => toggleGroup(group)}
-                      className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                        selectedGroups.includes(group)
-                          ? 'bg-blue-500 text-white'
-                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                      }`}
+                      className="px-3 py-1 text-sm font-bold uppercase tracking-wide transition-colors border-2"
+                      style={{
+                        backgroundColor: selectedGroups.includes(group) ? '#FF9F1C' : '#ffffff',
+                        borderColor: selectedGroups.includes(group) ? '#e68a00' : '#3e4348',
+                        color: selectedGroups.includes(group) ? '#1a1d21' : '#1a1d21',
+                      }}
                     >
                       {group}
                     </button>
@@ -338,14 +364,24 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             )}
 
             {/* Results count */}
-            <div className="flex items-center justify-between p-3 bg-slate-100 rounded-lg">
-              <span className="text-slate-600">
-                Nalezeno: <strong>{filteredItems.length}</strong> položek v <strong>{groupedItems.size}</strong> skupinách
+            <div
+              className="flex items-center justify-between p-3 border-2"
+              style={{ backgroundColor: '#2d3139', borderColor: '#3e4348' }}
+            >
+              <span style={{ color: '#f5f6f7' }}>
+                Nalezeno: <strong style={{ color: '#FF9F1C' }}>{filteredItems.length}</strong> položek v{' '}
+                <strong style={{ color: '#FF9F1C' }}>{groupedItems.size}</strong> skupinách
               </span>
               <button
                 onClick={handleCreateReport}
                 disabled={filteredItems.length === 0}
-                className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                className="px-4 py-2 font-black uppercase tracking-wide disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2 border-2"
+                style={{
+                  backgroundColor: '#FF9F1C',
+                  borderColor: '#e68a00',
+                  color: '#1a1d21',
+                  boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+                }}
               >
                 <FileSpreadsheet className="w-4 h-4" />
                 Vytvořit poptávku
@@ -355,43 +391,66 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             {/* Grouped Items Preview */}
             {filteredItems.length > 0 && (
               <div className="space-y-2">
-                <h4 className="text-sm font-medium text-slate-700">Náhled položek:</h4>
-                <div className="max-h-96 overflow-y-auto space-y-2 border border-slate-200 rounded-lg p-2 bg-white">
+                <h4 className="text-sm font-bold uppercase tracking-wide" style={{ color: '#1a1d21' }}>
+                  Náhled položek:
+                </h4>
+                <div
+                  className="max-h-96 overflow-y-auto space-y-2 border-2 p-2"
+                  style={{ backgroundColor: '#ffffff', borderColor: '#3e4348' }}
+                >
                   {Array.from(groupedItems.entries()).map(([skupina, items]) => {
                     const isCollapsed = collapsedGroups.has(skupina);
                     return (
-                      <div key={skupina} className="border border-slate-200 rounded-lg overflow-hidden">
+                      <div
+                        key={skupina}
+                        className="border-2 overflow-hidden"
+                        style={{ borderColor: '#3e4348' }}
+                      >
                         {/* Group Header */}
                         <button
                           onClick={() => toggleGroupCollapse(skupina)}
-                          className="w-full flex items-center justify-between p-3 bg-blue-50 hover:bg-blue-100 transition-colors text-left"
+                          className="w-full flex items-center justify-between p-3 transition-colors text-left"
+                          style={{ backgroundColor: '#2d3139' }}
                         >
                           <div className="flex items-center gap-2">
-                            <span className="text-lg font-semibold text-blue-700">
+                            <span className="text-lg font-black" style={{ color: '#FF9F1C' }}>
                               {isCollapsed ? '▶' : '▼'}
                             </span>
-                            <span className="font-medium text-slate-800">{skupina}</span>
-                            <span className="text-sm text-slate-500">({items.length} položek)</span>
+                            <span className="font-bold" style={{ color: '#f5f6f7' }}>{skupina}</span>
+                            <span className="text-sm" style={{ color: '#8a9199' }}>
+                              ({items.length} položek)
+                            </span>
                           </div>
-                          <span className="text-xs text-slate-500">
+                          <span className="text-xs" style={{ color: '#8a9199' }}>
                             {isCollapsed ? 'Rozbalit' : 'Sbalit'}
                           </span>
                         </button>
 
                         {/* Group Items */}
                         {!isCollapsed && (
-                          <div className="divide-y divide-slate-100">
+                          <div style={{ borderTop: '1px solid #3e4348' }}>
                             {items.slice(0, 5).map((item) => (
-                              <div key={item.id} className="p-2 pl-8 text-sm hover:bg-slate-50">
+                              <div
+                                key={item.id}
+                                className="p-2 pl-8 text-sm"
+                                style={{ backgroundColor: '#f5f6f7', borderBottom: '1px solid #e5e7eb' }}
+                              >
                                 <div className="flex items-start gap-2">
-                                  <span className="font-mono text-slate-600 min-w-[80px]">{item.kod}</span>
-                                  <span className="text-slate-700 flex-1">{item.popis}</span>
-                                  <span className="text-slate-500 text-xs">{item.mnozstvi} {item.mj}</span>
+                                  <span className="font-mono min-w-[80px]" style={{ color: '#3e4348' }}>
+                                    {item.kod}
+                                  </span>
+                                  <span className="flex-1" style={{ color: '#1a1d21' }}>{item.popis}</span>
+                                  <span className="text-xs" style={{ color: '#8a9199' }}>
+                                    {item.mnozstvi} {item.mj}
+                                  </span>
                                 </div>
                               </div>
                             ))}
                             {items.length > 5 && (
-                              <div className="p-2 pl-8 text-xs text-slate-500 italic">
+                              <div
+                                className="p-2 pl-8 text-xs italic"
+                                style={{ color: '#8a9199', backgroundColor: '#f5f6f7' }}
+                              >
                                 ... a dalších {items.length - 5} položek
                               </div>
                             )}
@@ -407,69 +466,82 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
 
           {/* Report Preview */}
           {report && (
-            <div className="space-y-4 border-t pt-4">
-              <h3 className="font-medium text-slate-700">Náhled poptávky</h3>
+            <div className="space-y-4 pt-4" style={{ borderTop: '2px solid #3e4348' }}>
+              <h3 className="font-black uppercase tracking-wide" style={{ color: '#1a1d21' }}>
+                Náhled poptávky
+              </h3>
 
-              <div className="grid grid-cols-2 gap-4 p-4 bg-green-50 rounded-lg border border-green-200">
+              <div
+                className="grid grid-cols-2 gap-4 p-4 border-2"
+                style={{ backgroundColor: '#2d3139', borderColor: '#FF9F1C' }}
+              >
                 <div>
-                  <span className="text-sm text-slate-600">Položek:</span>
-                  <strong className="ml-2 text-green-700">{report.totalItems}</strong>
+                  <span className="text-sm" style={{ color: '#8a9199' }}>Položek:</span>
+                  <strong className="ml-2" style={{ color: '#FF9F1C' }}>{report.totalItems}</strong>
                 </div>
                 <div>
-                  <span className="text-sm text-slate-600">Hledaný výraz:</span>
-                  <strong className="ml-2 text-green-700">{report.searchQuery}</strong>
+                  <span className="text-sm" style={{ color: '#8a9199' }}>Hledaný výraz:</span>
+                  <strong className="ml-2" style={{ color: '#FF9F1C' }}>{report.searchQuery}</strong>
                 </div>
                 <div>
-                  <span className="text-sm text-slate-600">Projekty:</span>
-                  <strong className="ml-2 text-green-700">{report.projects.join(', ') || 'Všechny'}</strong>
+                  <span className="text-sm" style={{ color: '#8a9199' }}>Projekty:</span>
+                  <strong className="ml-2" style={{ color: '#FF9F1C' }}>{report.projects.join(', ') || 'Všechny'}</strong>
                 </div>
                 <div>
-                  <span className="text-sm text-slate-600">Skupiny:</span>
-                  <strong className="ml-2 text-green-700">{report.groups.join(', ') || 'Všechny'}</strong>
+                  <span className="text-sm" style={{ color: '#8a9199' }}>Skupiny:</span>
+                  <strong className="ml-2" style={{ color: '#FF9F1C' }}>{report.groups.join(', ') || 'Všechny'}</strong>
                 </div>
               </div>
 
               {/* Export options */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm text-slate-600 mb-1">Název poptávky:</label>
+                  <label className="block text-sm font-bold uppercase tracking-wide mb-1" style={{ color: '#1a1d21' }}>
+                    Název poptávky:
+                  </label>
                   <input
                     type="text"
                     value={exportTitle}
                     onChange={(e) => setExportTitle(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg"
+                    className="w-full px-3 py-2 border-2"
+                    style={{ backgroundColor: '#ffffff', borderColor: '#3e4348', color: '#1a1d21' }}
                   />
                 </div>
                 <div>
-                  <label className="block text-sm text-slate-600 mb-1">Dodavatel:</label>
+                  <label className="block text-sm font-bold uppercase tracking-wide mb-1" style={{ color: '#1a1d21' }}>
+                    Dodavatel:
+                  </label>
                   <input
                     type="text"
                     value={supplierName}
                     onChange={(e) => setSupplierName(e.target.value)}
                     placeholder="Název dodavatele"
-                    className="w-full px-3 py-2 border rounded-lg"
+                    className="w-full px-3 py-2 border-2"
+                    style={{ backgroundColor: '#ffffff', borderColor: '#3e4348', color: '#1a1d21' }}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm text-slate-600 mb-1">Poznámky:</label>
+                <label className="block text-sm font-bold uppercase tracking-wide mb-1" style={{ color: '#1a1d21' }}>
+                  Poznámky:
+                </label>
                 <textarea
                   value={notes}
                   onChange={(e) => setNotes(e.target.value)}
                   rows={2}
                   placeholder="Poznámky pro dodavatele..."
-                  className="w-full px-3 py-2 border rounded-lg resize-none"
+                  className="w-full px-3 py-2 border-2 resize-none"
+                  style={{ backgroundColor: '#ffffff', borderColor: '#3e4348', color: '#1a1d21' }}
                 />
               </div>
 
               <div className="flex items-center gap-4">
-                <label className="flex items-center gap-2 text-sm text-slate-600">
+                <label className="flex items-center gap-2 text-sm" style={{ color: '#1a1d21' }}>
                   <input
                     type="checkbox"
                     checked={includeSourceInfo}
                     onChange={(e) => setIncludeSourceInfo(e.target.checked)}
-                    className="rounded"
                   />
                   Zahrnout zdroj (soubor, list, řádek)
                 </label>
@@ -477,7 +549,13 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
 
               <button
                 onClick={handleExport}
-                className="w-full px-4 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center justify-center gap-2 font-medium"
+                className="w-full px-4 py-3 flex items-center justify-center gap-2 font-black uppercase tracking-wide border-2"
+                style={{
+                  backgroundColor: '#FF9F1C',
+                  borderColor: '#e68a00',
+                  color: '#1a1d21',
+                  boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+                }}
               >
                 <Download className="w-5 h-5" />
                 Stáhnout Excel pro dodavatele
@@ -486,13 +564,13 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
           )}
 
           {/* Reverse Import Section */}
-          <div className="space-y-4 border-t pt-4">
-            <h3 className="font-medium text-slate-700 flex items-center gap-2">
+          <div className="space-y-4 pt-4" style={{ borderTop: '2px solid #3e4348' }}>
+            <h3 className="font-black uppercase tracking-wide flex items-center gap-2" style={{ color: '#1a1d21' }}>
               <Upload className="w-4 h-4" />
               Zpětný import cen od dodavatele
             </h3>
 
-            <p className="text-sm text-slate-600">
+            <p className="text-sm" style={{ color: '#8a9199' }}>
               Nahrajte vyplněný soubor od dodavatele. Ceny budou automaticky spárovány s položkami.
             </p>
 
@@ -507,7 +585,8 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={isImporting}
-              className="px-4 py-2 border-2 border-dashed border-slate-300 rounded-lg hover:border-orange-500 hover:bg-orange-50 transition-colors flex items-center gap-2 text-slate-600"
+              className="px-4 py-2 border-2 border-dashed transition-colors flex items-center gap-2 font-bold"
+              style={{ borderColor: '#3e4348', color: '#1a1d21', backgroundColor: '#ffffff' }}
             >
               <Upload className="w-5 h-5" />
               {isImporting ? 'Importuji...' : 'Nahrát vyplněný soubor'}
@@ -515,22 +594,32 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
 
             {/* Import result */}
             {importResult && (
-              <div className={`p-4 rounded-lg ${
-                importResult.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'
-              }`}>
+              <div
+                className="p-4 border-2"
+                style={{
+                  backgroundColor: '#2d3139',
+                  borderColor: importResult.success ? '#FF9F1C' : '#ef4444',
+                }}
+              >
                 {importResult.success ? (
                   <>
-                    <div className="flex items-center gap-2 text-green-700 font-medium mb-2">
+                    <div className="flex items-center gap-2 font-black mb-2" style={{ color: '#FF9F1C' }}>
                       <Check className="w-5 h-5" />
                       Import úspěšný
                     </div>
-                    <div className="text-sm text-slate-600 space-y-1">
-                      <p>Spárováno: <strong>{importResult.matchedItems}</strong> položek s cenami</p>
+                    <div className="text-sm space-y-1" style={{ color: '#f5f6f7' }}>
+                      <p>Spárováno: <strong style={{ color: '#FF9F1C' }}>{importResult.matchedItems}</strong> položek s cenami</p>
                       <p>Bez ceny: <strong>{importResult.unmatchedItems}</strong> položek</p>
                     </div>
                     <button
                       onClick={handleApplyPrices}
-                      className="mt-3 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 flex items-center gap-2"
+                      className="mt-3 px-4 py-2 flex items-center gap-2 font-black uppercase tracking-wide border-2"
+                      style={{
+                        backgroundColor: '#FF9F1C',
+                        borderColor: '#e68a00',
+                        color: '#1a1d21',
+                        boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+                      }}
                     >
                       <Check className="w-4 h-4" />
                       Aplikovat ceny ({importResult.matchedItems})
@@ -538,11 +627,11 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
                   </>
                 ) : (
                   <>
-                    <div className="flex items-center gap-2 text-red-700 font-medium mb-2">
+                    <div className="flex items-center gap-2 font-black mb-2" style={{ color: '#ef4444' }}>
                       <AlertCircle className="w-5 h-5" />
                       Chyba importu
                     </div>
-                    <ul className="text-sm text-red-600 list-disc list-inside">
+                    <ul className="text-sm list-disc list-inside" style={{ color: '#fca5a5' }}>
                       {importResult.errors.map((error, i) => (
                         <li key={i}>{error}</li>
                       ))}
@@ -555,10 +644,16 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t bg-slate-50 flex justify-end">
+        <div
+          className="p-4 border-t-4 flex justify-end"
+          style={{ backgroundColor: '#2d3139', borderColor: '#3e4348' }}
+        >
           <button
             onClick={onClose}
-            className="px-4 py-2 text-slate-600 hover:bg-slate-200 rounded-lg transition-colors"
+            className="px-4 py-2 transition-colors font-bold uppercase tracking-wide border-2"
+            style={{ borderColor: '#3e4348', color: '#f5f6f7', backgroundColor: 'transparent' }}
+            onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#3e4348'}
+            onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
           >
             Zavřít
           </button>

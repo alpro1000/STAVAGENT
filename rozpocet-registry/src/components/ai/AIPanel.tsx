@@ -242,18 +242,27 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
         <div className="flex items-center gap-2">
           <Sparkles className="text-accent-primary" size={20} />
           <h3 className="font-semibold text-text-primary">AI Klasifikace</h3>
-          <span className="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded font-medium">
+          <span
+            className="text-xs px-2 py-0.5 rounded font-bold uppercase tracking-wide"
+            style={{ backgroundColor: '#3e4348', color: '#f5f6f7' }}
+          >
             {selectedItemIds.length > 0
               ? `${selectedItemIds.length} vybráno`
               : `${classifiedMainCount}/${mainItemsCount} hlavních položek`
             }
           </span>
           {aiEnabled ? (
-            <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded font-medium flex items-center gap-1">
+            <span
+              className="text-xs px-2 py-0.5 rounded font-bold uppercase tracking-wide flex items-center gap-1"
+              style={{ backgroundColor: '#FF9F1C', color: '#1a1d21' }}
+            >
               <Zap size={12} /> AI ON
             </span>
           ) : (
-            <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded font-medium">
+            <span
+              className="text-xs px-2 py-0.5 rounded font-bold uppercase tracking-wide"
+              style={{ backgroundColor: '#2d3139', color: '#8a9199' }}
+            >
               Rules only
             </span>
           )}
@@ -264,8 +273,11 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
       {isExpanded && (
         <div className="mt-4 space-y-4">
           {/* AI Toggle */}
-          <div className="flex items-center gap-3 p-3 bg-bg-secondary rounded border border-border-color">
-            <Power size={16} className={aiEnabled ? 'text-green-500' : 'text-gray-400'} />
+          <div
+            className="flex items-center gap-3 p-3 rounded border-2"
+            style={{ backgroundColor: '#2d3139', borderColor: '#3e4348' }}
+          >
+            <Power size={16} style={{ color: aiEnabled ? '#FF9F1C' : '#8a9199' }} />
             <div className="flex-1">
               <div className="text-sm font-medium text-text-primary">
                 AI Mode {aiEnabled ? 'Zapnuto' : 'Vypnuto'}
@@ -281,11 +293,11 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
                 e.stopPropagation();
                 setAiEnabled(!aiEnabled);
               }}
-              className={`px-3 py-1.5 rounded text-sm font-medium transition-colors ${
-                aiEnabled
-                  ? 'bg-green-500 text-white hover:bg-green-600'
-                  : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-              }`}
+              className="px-3 py-1.5 rounded text-sm font-black uppercase tracking-wide transition-colors"
+              style={{
+                backgroundColor: aiEnabled ? '#FF9F1C' : '#3e4348',
+                color: aiEnabled ? '#1a1d21' : '#8a9199',
+              }}
             >
               {aiEnabled ? 'ON' : 'OFF'}
             </button>
@@ -351,9 +363,14 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
           {/* Stats */}
           {classificationStats && (
-            <div className="p-3 bg-green-50 border border-green-200 rounded text-sm">
-              <div className="font-medium text-green-900 mb-2">✓ Klasifikace dokončena</div>
-              <div className="grid grid-cols-2 gap-2 text-xs text-green-800">
+            <div
+              className="p-3 rounded border-2 text-sm"
+              style={{ backgroundColor: '#2d3139', borderColor: '#FF9F1C' }}
+            >
+              <div className="font-black mb-2 uppercase tracking-wide" style={{ color: '#FF9F1C' }}>
+                ✓ Klasifikace dokončena
+              </div>
+              <div className="grid grid-cols-2 gap-2 text-xs" style={{ color: '#f5f6f7' }}>
                 <div>Změněno: <strong>{classificationStats.changed}</strong></div>
                 <div>Nezměněno: <strong>{classificationStats.unchanged}</strong></div>
                 {classificationStats.keptExisting !== undefined && (
@@ -364,12 +381,12 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
               {/* Source breakdown */}
               {classificationStats.stats && (
-                <div className="mt-2 pt-2 border-t border-green-300">
-                  <div className="text-xs text-green-700">
+                <div className="mt-2 pt-2" style={{ borderTop: '1px solid #3e4348' }}>
+                  <div className="text-xs" style={{ color: '#8a9199' }}>
                     Zdroje:{' '}
                     {Object.entries(classificationStats.stats.bySource).map(([source, count]) => (
                       <span key={source} className="mr-2">
-                        {source}: <strong>{count}</strong>
+                        {source}: <strong style={{ color: '#f5f6f7' }}>{count}</strong>
                       </span>
                     ))}
                   </div>
@@ -387,14 +404,20 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
 
           {/* Error */}
           {error && (
-            <div className="p-3 bg-red-50 border border-red-200 rounded text-sm text-red-800">
-              <strong>Chyba:</strong> {error}
+            <div
+              className="p-3 rounded border-2 text-sm"
+              style={{ backgroundColor: '#2d3139', borderColor: '#ef4444', color: '#fca5a5' }}
+            >
+              <strong style={{ color: '#ef4444' }}>Chyba:</strong> {error}
             </div>
           )}
 
           {/* Warning if AI disabled */}
           {!aiEnabled && (
-            <div className="p-2 bg-yellow-50 border border-yellow-200 rounded text-xs text-yellow-800">
+            <div
+              className="p-2 rounded border-2 text-xs"
+              style={{ backgroundColor: '#2d3139', borderColor: '#3e4348', color: '#8a9199' }}
+            >
               ⚠️ AI režim vypnut. Používá se pouze deterministická klasifikace podle klíčových slov.
             </div>
           )}
