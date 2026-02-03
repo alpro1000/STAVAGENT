@@ -188,13 +188,20 @@ export function exportPriceRequest(
   });
 
   const subordinatesByParent = new Map<string, PriceRequestItem[]>();
+  const orphanSubordinates: PriceRequestItem[] = []; // Subordinates without parent
+
   report.items.forEach(item => {
     const role = item.rowRole || (item.kod && item.kod.trim().length > 0 ? 'main' : 'subordinate');
-    if (role === 'subordinate' && item.parentItemId) {
-      if (!subordinatesByParent.has(item.parentItemId)) {
-        subordinatesByParent.set(item.parentItemId, []);
+    if (role === 'subordinate') {
+      if (item.parentItemId) {
+        if (!subordinatesByParent.has(item.parentItemId)) {
+          subordinatesByParent.set(item.parentItemId, []);
+        }
+        subordinatesByParent.get(item.parentItemId)!.push(item);
+      } else {
+        // Orphan subordinate (no parent assigned)
+        orphanSubordinates.push(item);
       }
-      subordinatesByParent.get(item.parentItemId)!.push(item);
     }
   });
 
@@ -254,6 +261,33 @@ export function exportPriceRequest(
       data.push(subRow);
       outlineLevels.push(2); // Subordinate row = level 2 (child, hidden by default)
     }
+  }
+
+  // Add orphan subordinates (subordinates without parent) at the end
+  for (const orphan of orphanSubordinates) {
+    globalIndex++;
+
+    const orphanRow: (string | number | null)[] = [
+      globalIndex,
+      orphan.kod || '',
+      `  ↳ ${orphan.popisFull || orphan.popis}`, // Add indent marker
+      orphan.mj,
+      orphan.mnozstvi,
+      null, // Supplier fills unit price
+      null, // Will be replaced with formula
+    ];
+
+    if (includeSkupina) {
+      orphanRow.push(orphan.skupina || '');
+    }
+
+    if (includeSourceInfo) {
+      orphanRow.push(orphan.sourceProject, orphan.sourceSheet, orphan.sourceRow);
+    }
+
+    orphanRow.push(orphan.id);
+    data.push(orphanRow);
+    outlineLevels.push(1); // Orphan = level 1 (visible, as it has no parent to group under)
   }
 
   // Add SUM row at bottom
@@ -405,14 +439,24 @@ export function exportPriceRequest(
       // SUM row: no outline, normal height
       return { hpx: 22 };
     } else if (level === 1) {
-      // Main item: outline level 0 (no indent, can have children)
+      // Main item: outline level 0 (visible, no grouping indent)
       return { level: 0, hpx: 20 };
     } else if (level === 2) {
-      // Subordinate item: outline level 1 (indented under main item, hidden by default)
+      // Subordinate item: outline level 1 (grouped under parent, hidden by default)
       return { level: 1, hidden: true, hpx: 20 };
     }
     return {};
   });
+
+  // Enable outline/grouping settings for the sheet
+  // summaryBelow: true = summary rows (main items) are BELOW detail rows
+  // summaryBelow: false = summary rows (main items) are ABOVE detail rows (our case)
+  wsItems['!outline'] = { above: true, left: true };
+
+  // Also set sheet properties to ensure outline is enabled
+  if (!wsItems['!sheetProtection']) {
+    wsItems['!sheetProtection'] = {};
+  }
 
   XLSX.utils.book_append_sheet(workbook, wsItems, 'Poptávka');
 
