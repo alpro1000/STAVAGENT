@@ -20,11 +20,13 @@ import { callLLMForTask, TASKS } from './llmClient.js';
 
 const CONCRETE_AGENT_URL = process.env.STAVAGENT_API_URL || 'https://concrete-agent.onrender.com';
 const SIMILARITY_THRESHOLD = 0.85; // 85% similarity for deduplication
+const MINERU_TIMEOUT_MS = 300000; // 5 minutes for cold start + large PDF parsing
 
 /**
  * Upload document to concrete-agent for MinerU parsing
  */
 async function parseDocumentWithMinerU(filePath) {
+  const startTime = Date.now();
   try {
     logger.info(`[DocExtract] Uploading to concrete-agent: ${filePath}`);
 
@@ -44,12 +46,16 @@ async function parseDocumentWithMinerU(filePath) {
     formData.append('use_parallel', 'false');
     formData.append('language', 'cs');
 
+    logger.info(`[DocExtract] Calling concrete-agent (timeout: ${MINERU_TIMEOUT_MS / 1000}s for cold start + parsing)...`);
+
     const response = await axios.post(
       `${CONCRETE_AGENT_URL}/api/v1/workflow/c/upload`,
       formData,
       {
         headers: formData.getHeaders(),
-        timeout: 120000 // 2 minutes
+        timeout: MINERU_TIMEOUT_MS, // 5 minutes for cold start + large PDF
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity
       }
     );
 
@@ -58,8 +64,9 @@ async function parseDocumentWithMinerU(filePath) {
     }
 
     const result = response.data.result;
+    const duration = ((Date.now() - startTime) / 1000).toFixed(1);
 
-    logger.info(`[DocExtract] ✓ Parsed by MinerU: ${result.positions_count || 0} positions found`);
+    logger.info(`[DocExtract] ✓ Parsed by MinerU in ${duration}s: ${result.positions_count || 0} positions found`);
 
     return {
       fullText: result.full_text || '',
