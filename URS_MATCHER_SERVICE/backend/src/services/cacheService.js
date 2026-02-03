@@ -91,7 +91,8 @@ const inMemoryCache = new InMemoryCache();
  * Initialize cache service
  * Strategy:
  * - If REDIS_URL not set → use in-memory cache (OK for single instance)
- * - If REDIS_URL set but connection fails → fail hard in production
+ * - If REDIS_URL set → attempt connection with 10s timeout
+ * - If connection fails or times out → fallback to in-memory cache (resilient startup)
  */
 export async function initCache() {
   const env = process.env.NODE_ENV || 'development';
@@ -111,7 +112,8 @@ export async function initCache() {
     cacheClient = redis.createClient({
       url: redisUrl,
       socket: {
-        reconnectStrategy: (retries) => Math.min(retries * 50, 500)
+        reconnectStrategy: (retries) => Math.min(retries * 50, 500),
+        connectTimeout: 10000 // 10 seconds connection timeout
       }
     });
 
@@ -121,21 +123,35 @@ export async function initCache() {
       logger.error(`[Cache] Redis client error: ${err.message}`);
     });
 
-    await cacheClient.connect();
+    // Add connection timeout to prevent deployment hanging
+    const connectTimeout = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error('Redis connection timeout after 10s')), 10000);
+    });
+
+    await Promise.race([
+      cacheClient.connect(),
+      connectTimeout
+    ]);
+
     logger.info(`[Cache] Redis cache initialized successfully (${redisUrl.split('@')[1] || 'configured'})`);
     return true;
   } catch (error) {
     logger.error(`[Cache] Failed to initialize Redis: ${error.message}`);
 
-    if (isProduction) {
-      // Fail hard in production if Redis was configured but failed
-      throw new Error(`Redis connection failed in production (REDIS_URL is set): ${error.message}`);
-    } else {
-      // Fallback to in-memory only for development
-      logger.warn('[Cache] Using in-memory cache (development environment)');
-      cacheClient = inMemoryCache;
-      return false;
+    // Cleanup failed client if it exists
+    if (cacheClient && cacheClient !== inMemoryCache) {
+      try {
+        await cacheClient.quit();
+      } catch (quitError) {
+        logger.debug(`[Cache] Failed to quit Redis client: ${quitError.message}`);
+      }
     }
+
+    // Fallback to in-memory cache (production will run single instance)
+    logger.warn(`[Cache] Using in-memory cache as fallback (${env} environment)`);
+    logger.warn('[Cache] Single instance mode - cache will not be shared across instances');
+    cacheClient = inMemoryCache;
+    return false;
   }
 }
 
