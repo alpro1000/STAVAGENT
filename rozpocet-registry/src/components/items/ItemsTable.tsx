@@ -297,7 +297,7 @@ export function ItemsTable({
 
   const columns = useMemo(
     () => [
-      // Checkbox (для массовых операций)
+      // Checkbox (для массовых операций) - компактный
       columnHelper.display({
         id: 'select',
         header: ({ table }) => (
@@ -305,7 +305,7 @@ export function ItemsTable({
             type="checkbox"
             checked={table.getIsAllRowsSelected()}
             onChange={table.getToggleAllRowsSelectedHandler()}
-            className="cursor-pointer"
+            className="cursor-pointer w-3 h-3"
           />
         ),
         cell: ({ row }) => (
@@ -313,16 +313,16 @@ export function ItemsTable({
             type="checkbox"
             checked={row.getIsSelected()}
             onChange={row.getToggleSelectedHandler()}
-            className="cursor-pointer"
+            className="cursor-pointer w-3 h-3"
           />
         ),
-        size: 25,
+        size: 20,
       }),
 
-      // Actions (delete, change role, reorder, attach)
+      // Actions (delete, change role, reorder, attach) - компактный
       columnHelper.display({
         id: 'actions',
-        header: '⚙️',
+        header: '',
         cell: ({ row }) => (
           <RowActionsCell
             item={row.original}
@@ -331,7 +331,7 @@ export function ItemsTable({
             allItems={items}
           />
         ),
-        size: 95,
+        size: 85,
       }),
 
       // Poř. (BOQ line number + expand/collapse toggle)
