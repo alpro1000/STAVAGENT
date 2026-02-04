@@ -53,6 +53,22 @@ cd concrete-agent && npm run dev:backend             # CORE backend
 
 ## Recent Work (2026-02-04)
 
+### Сессия 3: Portal Project Creation Fix
+**Commit:**
+```
+0e64fad FIX: Portal project creation error when PostgreSQL not available
+```
+
+**Проблема:** Portal выдавал ошибку "PostgreSQL pool not initialized" при создании проекта в режиме SQLite.
+
+**Решение:** Добавлен `safeGetPool()` helper в `portal-projects.js`:
+- Проверяет `USE_POSTGRES` перед вызовом `getPool()`
+- Возвращает mock данные когда PostgreSQL не настроен
+- Добавляет `_warning` поле в ответ API
+
+**Файлы изменены:**
+- `stavagent-portal/backend/src/routes/portal-projects.js`
+
 ### Сессия 1: Excel Export Fixes + Import Preview
 - Subordinate inheritance
 - Collapsible rows в Excel
