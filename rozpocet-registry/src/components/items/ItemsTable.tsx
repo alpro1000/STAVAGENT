@@ -22,6 +22,47 @@ import { RowActionsCell } from './RowActionsCell';
 import { BulkActionsBar } from './BulkActionsBar';
 import './ItemsTable.css';
 
+/** Editable price cell with local state to prevent cursor jumping */
+function EditablePriceCell({
+  value,
+  onChange,
+}: {
+  value: number | null;
+  onChange: (newPrice: number) => void;
+}) {
+  const [localValue, setLocalValue] = useState<string>(
+    value !== null ? String(value) : ''
+  );
+
+  // Sync local state when external value changes (e.g., from undo/redo)
+  useEffect(() => {
+    setLocalValue(value !== null ? String(value) : '');
+  }, [value]);
+
+  return (
+    <input
+      type="number"
+      step="0.01"
+      min="0"
+      value={localValue}
+      onChange={(e) => setLocalValue(e.target.value)}
+      onBlur={() => {
+        const newPrice = parseFloat(localValue) || 0;
+        if (newPrice !== value) {
+          onChange(newPrice);
+        }
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.currentTarget.blur();
+        }
+      }}
+      className="w-full bg-bg-secondary/50 rounded border border-transparent hover:border-border-color focus:border-accent-primary focus:bg-bg-primary focus:outline-none text-sm font-medium tabular-nums text-right px-2 py-0.5 transition-colors"
+      placeholder="-"
+    />
+  );
+}
+
 interface ItemsTableProps {
   items: ParsedItem[];
   projectId: string;
@@ -441,47 +482,39 @@ export function ItemsTable({
 
       // Cena jednotková (editable)
       columnHelper.accessor('cenaJednotkova', {
-        header: 'Cena',
+        header: 'Cena jedn.',
         cell: (info) => {
           const value = info.getValue();
           const item = info.row.original;
           return (
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              value={value ?? ''}
-              onChange={(e) => {
-                const newPrice = parseFloat(e.target.value) || 0;
-                updateItemPrice(projectId, sheetId, item.id, newPrice);
-              }}
-              className="w-full bg-transparent border-0 border-b border-transparent hover:border-border-color focus:border-accent-primary focus:outline-none text-sm font-medium tabular-nums text-right px-1 py-0.5 transition-colors"
-              placeholder="-"
+            <EditablePriceCell
+              value={value}
+              onChange={(newPrice) => updateItemPrice(projectId, sheetId, item.id, newPrice)}
             />
           );
         },
-        size: 90,
-        minSize: 70,
-        maxSize: 150,
+        size: 110,
+        minSize: 90,
+        maxSize: 160,
         enableSorting: true,
         sortingFn: 'basic',
       }),
 
-      // Cena celkem
+      // Cena celkem (auto-calculated)
       columnHelper.accessor('cenaCelkem', {
-        header: 'Cena celkem',
+        header: 'Celkem',
         cell: (info) => {
           const value = info.getValue();
           return (
-            <span className="text-sm font-semibold tabular-nums">
+            <span className="text-sm font-semibold tabular-nums whitespace-nowrap">
               {value !== null
                 ? `${value.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč`
                 : '-'}
             </span>
           );
         },
-        size: 100,
-        minSize: 80,
+        size: 120,
+        minSize: 100,
         maxSize: 180,
         enableSorting: true,
         sortingFn: 'basic',
