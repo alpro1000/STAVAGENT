@@ -75,6 +75,16 @@ const DESC_ROW_STYLE: XLSX.CellStyle = {
   },
 };
 
+// Section row (díl/section header): darker background with bold text
+const SECTION_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'CBD5E1' } },  // slate-300
+  font: { bold: true, name: 'Calibri', sz: 11, color: { rgb: '1E293B' } },  // slate-800, bold
+  border: {
+    top: { style: 'thin', color: { rgb: '94A3B8' } },     // slate-400
+    bottom: { style: 'thin', color: { rgb: '94A3B8' } },  // slate-400
+  },
+};
+
 // Numeric cell alignment
 const NUM_ALIGN: XLSX.CellStyle['alignment'] = { horizontal: 'right', vertical: 'center' };
 
@@ -177,8 +187,11 @@ function sanitizeSheetName(name: string, workbook: XLSX.WorkBook): string {
 /**
  * Create a styled items worksheet with header formatting and row highlights.
  *
- * V2: Items are kept in ORIGINAL ORDER (by boqLineNumber), no group separators.
+ * V2: Items are kept in ORIGINAL ORDER (by source.rowStart), no group separators.
  * Skupina is just a regular column. Users can sort/filter in Excel as needed.
+ *
+ * V3: Subordinate rows INHERIT skupina from their parent main item.
+ * Section headers are preserved with their original names.
  */
 function createStyledItemsSheet(
   items: ParsedItem[],
@@ -186,24 +199,36 @@ function createStyledItemsSheet(
   _groupBySkupina: boolean, // DEPRECATED: always keep original order now
   addHyperlinks: boolean
 ): XLSX.WorkSheet {
-  // Sort by boqLineNumber to preserve original file order
+  // Sort by source.rowStart to preserve EXACT original file order
+  // (boqLineNumber is only assigned to main items, not subordinates)
   const sortedItems = [...items].sort((a, b) => {
-    const aNum = a.boqLineNumber ?? a.source?.rowStart ?? 999999;
-    const bNum = b.boqLineNumber ?? b.source?.rowStart ?? 999999;
-    return aNum - bNum;
+    const aRow = a.source?.rowStart ?? 999999;
+    const bRow = b.source?.rowStart ?? 999999;
+    return aRow - bRow;
   });
+
+  // Build parent skupina map for inheritance
+  // Subordinates should inherit skupina from their parent main item
+  const parentSkupinaMap = new Map<string, string>();
+  for (const item of sortedItems) {
+    if (item.rowRole === 'main' || (item.kod && item.kod.trim().length > 0 && item.rowRole !== 'subordinate')) {
+      if (item.id && item.skupina) {
+        parentSkupinaMap.set(item.id, item.skupina);
+      }
+    }
+  }
 
   // Build data array
   const data: any[][] = [];
   const headers = [
-    'Poř.', // Original row number
+    'Poř.', // Original row number (from source file)
     'Kód', 'Popis', 'MJ', 'Množství',
     'Cena jednotková', 'Cena celkem', 'Skupina',
     ...(addHyperlinks ? ['Odkaz'] : []),
   ];
   data.push(headers);
 
-  // Track row types for styling: 'header' | 'code' | 'desc'
+  // Track row types for styling: 'header' | 'code' | 'desc' | 'section'
   const rowTypes: string[] = ['header'];
 
   // Track outline levels for Excel grouping (collapsible rows)
@@ -214,19 +239,34 @@ function createStyledItemsSheet(
     // Use rowRole if available, otherwise fallback to old logic (kod presence)
     const rowRole = item.rowRole || (item.kod && item.kod.trim().length > 0 ? 'main' : 'subordinate');
     const isSubordinate = rowRole === 'subordinate';
+    const isSection = rowRole === 'section';
 
     // Add visual indent for subordinate rows in the Popis column
     const popisText = isSubordinate ? `  ↳ ${item.popis}` : item.popis;
 
+    // Determine skupina for this row:
+    // - Section rows: show "SEKCE" or empty (they are structural, not work items)
+    // - Subordinate rows: INHERIT from parent main item
+    // - Main rows: use their own skupina
+    let displaySkupina: string;
+    if (isSection) {
+      displaySkupina = 'SEKCE';
+    } else if (isSubordinate && item.parentItemId) {
+      // Inherit from parent
+      displaySkupina = parentSkupinaMap.get(item.parentItemId) || item.skupina || '';
+    } else {
+      displaySkupina = item.skupina || '';
+    }
+
     const row: any[] = [
-      item.boqLineNumber ?? '', // Original row number
+      item.source?.rowStart ?? '', // Original row number from source file
       item.kod,
       popisText,
       item.mj,
       item.mnozstvi,
       item.cenaJednotkova,
       item.cenaCelkem,
-      item.skupina || '',
+      displaySkupina,
     ];
 
     if (addHyperlinks) {
@@ -237,11 +277,14 @@ function createStyledItemsSheet(
     data.push(row);
 
     // Set row type for styling
-    if (isSubordinate) {
+    if (isSection) {
+      rowTypes.push('section'); // section = special styling
+      outlineLevels.push(0); // sections are not grouped
+    } else if (isSubordinate) {
       rowTypes.push('desc'); // subordinate = description style
       outlineLevels.push(2); // subordinate rows = outline level 2 (grouped under main)
     } else {
-      rowTypes.push('code'); // main/section = code style
+      rowTypes.push('code'); // main = code style
       outlineLevels.push(1); // main rows = outline level 1
     }
   }
@@ -264,16 +307,18 @@ function createStyledItemsSheet(
 
   // Apply row grouping (Excel outline levels)
   // This creates collapsible groups with +/- buttons on the left
+  // NOTE: Do NOT set hidden: true - it hides rows permanently.
+  // Excel will handle visibility based on outline level when user clicks +/-
   ws['!rows'] = outlineLevels.map((level) => {
     if (level === 0) {
-      // Header or group separator - no outline
+      // Header or section - no outline
       return {};
     } else if (level === 1) {
-      // Main row - level 1 (visible by default)
-      return { level: 0 }; // level 0 means no indent, but can have children
+      // Main row - level 0 (visible, parent of subordinates)
+      return { level: 0 };
     } else {
-      // Subordinate row - level 2 (grouped under main, hidden by default)
-      return { level: 1, hidden: true }; // level 1 means indent 1 level (under parent)
+      // Subordinate row - level 1 (grouped under main, visible but collapsible)
+      return { level: 1 };
     }
   });
 
@@ -292,21 +337,26 @@ function createStyledItemsSheet(
       const cell = ws[cellRef];
       if (!cell) continue;
 
-      // Base style based on row type: 'header' | 'code' | 'desc'
+      // Base style based on row type: 'header' | 'code' | 'desc' | 'section'
       let style: XLSX.CellStyle;
       switch (rowType) {
         case 'header':
           style = { ...HEADER_STYLE };
           break;
+        case 'section':
+          style = { ...SECTION_STYLE };
+          break;
         case 'code':
           style = { ...CODE_ROW_STYLE };
           break;
+        case 'desc':
         default:
           style = { ...DESC_ROW_STYLE };
       }
 
       // Right-align numeric columns (Poř.=0, Množství=4, Cena jedn.=5, Cena celkem=6)
-      if ((c === 0 || (c >= 4 && c <= 6)) && rowType !== 'header') {
+      // Skip for section rows (they usually don't have numeric data)
+      if ((c === 0 || (c >= 4 && c <= 6)) && rowType !== 'header' && rowType !== 'section') {
         style.alignment = { ...style.alignment, ...NUM_ALIGN };
       }
 
