@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
 **Last Updated:** 2026-02-04
-**Current Branch:** `claude/test-excel-modal-fixes-kmKsz`
-**Last Session:** Rozpočet Registry - Excel Export Fixes + Import Preview Improvements
+**Current Branch:** `claude/update-main-branch-ZYDrg`
+**Last Session:** Rozpočet Registry - Price Editing + Kiosk Unification Audit
 
 ---
 
@@ -30,186 +30,182 @@ cd concrete-agent && npm run dev:backend             # CORE backend
 
 ---
 
+## ВАЖНО: Активный план унификации
+
+### Документация по плану:
+- **`docs/UNIFICATION_PLAN.md`** — Полный план реализации (читать первым!)
+- **`docs/UNIFIED_DATA_MODEL.ts`** — TypeScript типы для всех kiosks
+- **`CLAUDE.md`** — Главная документация системы
+
+### Текущая фаза: Фаза 1 — Базовая связность
+
+**Следующая задача:**
+```
+1.1 Добавить portalProjectId в rozpocet-registry
+
+Файлы для изменения:
+- src/types/project.ts — добавить поле portalProjectId?: string
+- src/stores/registryStore.ts — методы linkToPortal(), unlinkFromPortal()
+- UI компонент для отображения связи с Portal
+```
+
+---
+
 ## Recent Work (2026-02-04)
 
-### LATEST: Rozpočet Registry Excel Improvements
+### Сессия 1: Excel Export Fixes + Import Preview
+- Subordinate inheritance
+- Collapsible rows в Excel
+- Import preview improvements
 
-**Session Focus:** Fixed multiple Excel export issues + Import preview improvements
+### Сессия 2: Price Editing + Unification Audit
 
-**Commits (9 total):**
+**Commits:**
 ```
-8d4bdc6 FIX: Import preview - larger table, auto-scroll to data rows
-02d95ce FIX: Export to original file + yellow input cells + price formulas
-c23b54b FEAT: Yellow highlight for input cells + price formulas in exports
-4c7dbfb STYLE: Added light tint styling for main rows in Poptávka export
-a1f282d FIX: Poptávka export now includes subordinate rows for collapsible grouping
-928618b FIX: Improved Excel row grouping for collapsible subordinate rows
-0d58356 FIX: Excel export - subordinate skupina inheritance + section handling
-90e64c7 STYLE: Light theme for AIPanel and PriceRequestPanel
-26024e9 STYLE: Light theme for RowActionsCell dropdowns and modals
+94518d8 FEAT: Section rows - hide price/skupina, show section totals
+1aa4a1f FIX: Hide number input spinner arrows
+da252ce FIX: Increase padding for price input to show all decimals
+33b6aa7 FIX: Price input shows 2 decimal places + wider columns
+16ec745 FEAT: Auto-fit width for price columns based on data
+d8a6244 FIX: Price input - local state prevents cursor jump + lighter styling
+94a9614 FEAT: Editable unit price with auto-recalculation + thinner scrollbar
 ```
+
+**Функции добавлены:**
+1. Редактируемая цена (cenaJednotkova) с авто-пересчётом cenaCelkem
+2. Скрытие spinner-стрелок в number input
+3. Авто-ширина столбцов цен по данным
+4. Секции: скрыты цена/skupina, показана сумма секции
+
+**Аудит kiosks завершён:**
+- Проанализированы все 5 сервисов
+- Выявлены несоответствия в именовании
+- Создан план унификации
 
 ---
 
-## Problems Fixed
+## Архитектура унификации (напоминание)
 
-### 1. Full Excel Export Issues
-- **Subordinate rows wrong skupina** - Now inherit from parent via `parentSkupinaMap`
-- **Section names (SEKCE) missing** - Added `SECTION_STYLE` for section rows
-- **Sorting broken** - Fixed to use `source.rowStart` instead of `boqLineNumber`
-
-### 2. Poptávka Export Issues
-- **Collapsible rows (+/-) not working** - Fixed by:
-  - Removing `hidden: true` (was hiding rows permanently)
-  - Adding both `level` and `outlineLevel` properties
-  - Adding `!sheetFormat` and `!sheetViews` settings
-- **Subordinate rows completely missing** - Fixed `handleCreateReport()` in PriceRequestPanel.tsx which was explicitly filtering them out
-- **Visual styling** - Added main row tint (light blue #E8F4FD) and sub row tint (light gray #FAFAFA)
-
-### 3. Input Cells Styling
-- **Yellow highlight** - Added `INPUT_CELL_STYLE` (#FFFDE7) for "Cena jednotková" column
-- **Price formulas** - Added `=Množství×Cena_jednotková` formula in "Cena celkem" column
-
-### 4. Export to Original File
-- **File corruption** - Fixed by preserving cell properties when updating:
-  ```typescript
-  ws[cellRef] = {
-    ...existingCell,  // Preserve existing properties
-    t: 'n',
-    v: newValue,
-    w: undefined,     // Clear cached value
-  };
-  ```
-- Added `cellStyles: true` option for read/write operations
-
-### 5. Import Preview
-- **Large headers problem** - When file has large header, couldn't see data rows
-- **Solutions:**
-  - Increased preview rows: 100 → 150
-  - Increased table height: 400px → 600px
-  - Auto-scroll to data start row when detected
-  - Added "Přejít na data" button for manual navigation
-  - Enhanced data row highlighting (green + ring)
-
----
-
-## Key Files Modified
-
-### excelExportService.ts
-- `parentSkupinaMap` for subordinate inheritance
-- `SECTION_STYLE` for section rows
-- Sorting by `source.rowStart`
-- Formula for Cena celkem column
-- `exportToOriginalFile()` - preserve cell properties
-
-### priceRequestService.ts
-- `MAIN_ROW_STYLE` (light blue #E8F4FD)
-- `SUB_ROW_STYLE` (light gray #FAFAFA)
-- `INPUT_CELL_STYLE` (yellow #FFFDE7)
-- Row grouping: `level`, `outlineLevel`, `!sheetFormat`, `!sheetViews`
-- Subordinate inheritance via `parentSkupinaMap`
-
-### PriceRequestPanel.tsx
-- `handleCreateReport()` - now includes subordinates for main items:
-  ```typescript
-  const subordinatesForMainItems = allItems.filter(item => {
-    if (item.rowRole !== 'subordinate') return false;
-    return item.parentItemId && mainItemIds.has(item.parentItemId);
-  });
-  ```
-
-### RawExcelViewer.tsx
-- Preview rows: 100 → 150
-- Table height: 400px → 600px
-- Auto-scroll to data row
-- "Přejít na data" button
-- Enhanced row highlighting
-
----
-
-## Service Status
-
-| Service | Status | Notes |
-|---------|--------|-------|
-| rozpocet-registry | ✅ Ready | All fixes committed and pushed |
-| concrete-agent | ✅ Running | CORE backend |
-| URS_MATCHER_SERVICE | ✅ Running | Document extraction ready |
-| Monolit-Planner | ✅ Running | Kiosk |
-
----
-
-## Technical Context for Claude
-
-### Excel Row Grouping (xlsx-js-style)
-```typescript
-// Required for collapsible rows:
-row.level = 1;           // Group level
-row.outlineLevel = 1;    // Alternative property
-// Do NOT use hidden: true (hides rows permanently)
-
-// Required sheet settings:
-ws['!outline'] = { above: false, left: false };
-ws['!sheetFormat'] = { outlineLevelRow: 1 };
-ws['!sheetViews'] = [{ showOutlineSymbols: true }];
+```
+Portal (Hub) — portalProjectId (UUID)
+    │
+    ├── Monolit-Planner
+    │   └── project_id / bridge_id (строка "SO201")
+    │
+    ├── URS_MATCHER
+    │   └── jobs.id (UUID) + portal_project_id ✅
+    │
+    ├── rozpocet-registry
+    │   └── projectId (UUID) — НЕТ portal связи ❌
+    │
+    └── concrete-agent (CORE)
+        └── project_id (UUID)
 ```
 
-### Subordinate Inheritance Pattern
-```typescript
-// Build parent map
-const parentSkupinaMap = new Map<string, string>();
-items.filter(i => i.rowRole === 'main').forEach(item => {
-  parentSkupinaMap.set(item.id, item.skupina || '');
-});
+### Маппинг полей позиций:
 
-// Inherit for subordinates
-const skupina = item.rowRole === 'subordinate' && item.parentItemId
-  ? parentSkupinaMap.get(item.parentItemId) || item.skupina
-  : item.skupina;
+| Unified | Registry | Monolit | URS |
+|---------|----------|---------|-----|
+| code | kod | otskp_code | urs_code |
+| description | popis | item_name | urs_name |
+| quantity | mnozstvi | qty | quantity |
+| unit | mj | unit | unit |
+| unitPrice | cenaJednotkova | unit_cost_native | - |
+| totalPrice | cenaCelkem | kros_total_czk | - |
+| category | skupina | subtype | - |
+
+---
+
+## Key Files for Unification
+
+### Registry (rozpocet-registry)
+```
+src/types/project.ts          — Project interface
+src/stores/registryStore.ts   — Zustand store (376 строк)
+src/types/item.ts             — ParsedItem interface
 ```
 
-### Cell Preservation Pattern
-```typescript
-// Read with style preservation
-const workbook = XLSX.read(data, {
-  type: 'array',
-  cellStyles: true,
-  cellNF: true,
-  cellFormula: true,
-});
+### Monolit (Monolit-Planner)
+```
+shared/src/types.ts                          — Position, Bridge interfaces
+backend/src/routes/monolith-projects.js      — Project API
+backend/src/routes/positions.js              — Positions API
+backend/src/db/schema-postgres.sql           — DB schema
+```
 
-// Update preserving properties
-ws[cellRef] = {
-  ...existingCell,
-  t: 'n',
-  v: newValue,
-  w: undefined,
-};
+### URS (URS_MATCHER_SERVICE)
+```
+backend/src/models/                    — Job, Match models
+backend/src/api/routes/jobs.js         — Jobs API
+```
 
-// Write with style preservation
-XLSX.write(workbook, { type: 'array', bookType: 'xlsx', cellStyles: true });
+### Portal (stavagent-portal)
+```
+backend/src/routes/kiosk-links.js      — Kiosk linking API
+backend/src/routes/portal-projects.js  — Projects API
 ```
 
 ---
 
-## Next Session Tasks (Potential)
+## TOV (Ведомость ресурсов) — Будущая фаза
 
-1. **Test all export scenarios**
-   - Full Excel export with subordinates
-   - Poptávka export with collapsible rows
-   - Export to original file
+### Структура компонентов (Фаза 3):
+```
+src/components/tov/
+├── TOVButton.tsx           # Кнопка [📊] возле позиции
+├── TOVModal.tsx            # Модальное окно с вкладками
+├── LaborTab.tsx            # Вкладка: Люди (норм-часы)
+├── MachineryTab.tsx        # Вкладка: Механизмы (маш-часы)
+├── MaterialsTab.tsx        # Вкладка: Материалы
+└── TOVSummary.tsx          # Итоги
+```
 
-2. **Import preview testing**
-   - Files with large headers (10+ rows)
-   - Auto-scroll verification
-
-3. **Performance optimization**
-   - Large file exports (1000+ items)
-   - Memory usage monitoring
-
-4. **UX improvements**
-   - Export progress indicator
-   - Better error messages
+### Интеграция с калькуляторами:
+- Материалы → Monolit-Planner (бетон, арматура)
+- Техника → Machinery Calculator (будущее)
+- Труд → Labor Calculator (будущее)
 
 ---
 
-**Ready for next session!**
+## Чеклист задач
+
+### Фаза 1: Базовая связность
+- [ ] Registry: добавить portalProjectId
+- [ ] Monolit: API endpoint для Portal link
+- [ ] URS: endpoint экспорта в Registry
+
+### Фаза 2: API синхронизации
+- [ ] Registry serverless API
+- [ ] Маппинг функции
+
+### Фаза 3: TOV UI
+- [ ] TOVButton + TOVModal
+- [ ] Вкладки ресурсов
+- [ ] Store расширение
+
+### Фаза 4: Интеграция
+- [ ] Monolit → Registry
+- [ ] Registry → Monolit
+- [ ] URS → Registry
+
+---
+
+## Service URLs
+
+| Service | URL |
+|---------|-----|
+| Portal | https://stav-agent.onrender.com |
+| Monolit API | https://monolit-planner-api.onrender.com |
+| URS | https://urs-matcher-service.onrender.com |
+| CORE | https://concrete-agent.onrender.com |
+
+---
+
+**При старте сессии:**
+1. Прочитай `CLAUDE.md`
+2. Прочитай `docs/UNIFICATION_PLAN.md`
+3. Продолжай с текущей фазы
+
+---
+
+*Ready for next session!*
