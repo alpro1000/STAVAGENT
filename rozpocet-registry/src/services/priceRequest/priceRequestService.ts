@@ -160,6 +160,19 @@ const SUB_ROW_STYLE = {
   },
 };
 
+/** Input cell style: light yellow to indicate "fill me" */
+const INPUT_CELL_STYLE = {
+  fill: { fgColor: { rgb: 'FFFDE7' } }, // Very light yellow (Material Yellow 50)
+  border: {
+    top: { style: 'thin' as const, color: { rgb: 'FFE082' } },
+    bottom: { style: 'thin' as const, color: { rgb: 'FFE082' } },
+    left: { style: 'thin' as const, color: { rgb: 'FFE082' } },
+    right: { style: 'thin' as const, color: { rgb: 'FFE082' } },
+  },
+  numFmt: '#,##0.00',
+  alignment: { horizontal: 'right' as const },
+};
+
 /**
  * Export price request to Excel file
  * Features: formulas (cena = množství × jednotková), SUM, AutoFilter, styled header
@@ -383,12 +396,18 @@ export function exportPriceRequest(
       if (!wsItems[cellRef]) {
         wsItems[cellRef] = { t: 'z', v: null };
       }
-      const isPriceCol = c === colCenaJednotkova || c === colCenaCelkem;
-      const isQtyCol = c === colMnozstvi;
-      wsItems[cellRef].s = {
-        ...baseStyle,
-        ...((isPriceCol || isQtyCol) ? { numFmt: '#,##0.00', alignment: { horizontal: 'right' as const } } : {}),
-      };
+
+      // Special styling for "Cena jednotková" column - light yellow to indicate input needed
+      if (c === colCenaJednotkova) {
+        wsItems[cellRef].s = INPUT_CELL_STYLE;
+      } else {
+        const isPriceCol = c === colCenaCelkem;
+        const isQtyCol = c === colMnozstvi;
+        wsItems[cellRef].s = {
+          ...baseStyle,
+          ...((isPriceCol || isQtyCol) ? { numFmt: '#,##0.00', alignment: { horizontal: 'right' as const } } : {}),
+        };
+      }
     }
   }
 
