@@ -4,9 +4,9 @@
  * Allows column selection and auto-detection of file type
  */
 
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import * as XLSX from 'xlsx';
-import { Sparkles, Check, Loader2 } from 'lucide-react';
+import { Sparkles, Check, Loader2, ArrowDown } from 'lucide-react';
 
 interface RawExcelViewerProps {
   workbook: XLSX.WorkBook;
@@ -136,6 +136,8 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
   const [selectedColumns, setSelectedColumns] = useState<Partial<ColumnMapping>>({});
   const [isDetecting, setIsDetecting] = useState(true);
   const [detectedType, setDetectedType] = useState<DetectedFileType | null>(null);
+  const tableContainerRef = useRef<HTMLDivElement>(null);
+  const dataRowRef = useRef<HTMLTableRowElement>(null);
 
   // Convert sheet to 2D array
   const sheetData = useMemo(() => {
@@ -145,7 +147,7 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
     const range = XLSX.utils.decode_range(sheet['!ref'] || 'A1');
     const data: string[][] = [];
 
-    for (let row = 0; row <= Math.min(range.e.r, 100); row++) { // Limit to 100 rows for preview
+    for (let row = 0; row <= Math.min(range.e.r, 150); row++) { // Limit to 150 rows for preview
       const rowData: string[] = [];
       for (let col = 0; col <= range.e.c; col++) {
         const cell = sheet[XLSX.utils.encode_cell({ r: row, c: col })];
@@ -156,6 +158,16 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
 
     return data;
   }, [workbook, selectedSheet]);
+
+  // Scroll to data row function
+  const scrollToDataRow = () => {
+    if (dataRowRef.current && tableContainerRef.current) {
+      dataRowRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  };
 
   // Auto-detect on mount
   useEffect(() => {
@@ -171,6 +183,13 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
     setSelectedColumns(autoMapping);
 
     setIsDetecting(false);
+
+    // Auto-scroll to data row after detection (small delay for render)
+    if (autoMapping.dataStartRow && autoMapping.dataStartRow > 5) {
+      setTimeout(() => {
+        scrollToDataRow();
+      }, 100);
+    }
   }, [sheetData, onDetectedType]);
 
   // Apply mapping
@@ -269,9 +288,20 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
         </div>
       </div>
 
+      {/* Jump to data button - show when header is large */}
+      {selectedColumns.dataStartRow && selectedColumns.dataStartRow > 5 && (
+        <button
+          onClick={scrollToDataRow}
+          className="flex items-center gap-2 px-3 py-1.5 text-sm bg-green-500/20 text-green-300 border border-green-500/50 rounded-lg hover:bg-green-500/30 transition-colors"
+        >
+          <ArrowDown size={14} />
+          Přejít na data (řádek {selectedColumns.dataStartRow})
+        </button>
+      )}
+
       {/* Raw Table View */}
       <div className="border border-border-color rounded-lg overflow-hidden">
-        <div className="overflow-x-auto max-h-[400px] overflow-y-auto">
+        <div ref={tableContainerRef} className="overflow-x-auto max-h-[600px] overflow-y-auto">
           <table className="w-full text-xs font-mono">
             <thead className="bg-bg-tertiary sticky top-0">
               <tr>
@@ -301,11 +331,14 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
               </tr>
             </thead>
             <tbody>
-              {sheetData.map((row, rowIdx) => (
+              {sheetData.map((row, rowIdx) => {
+                const isDataStartRow = rowIdx + 1 === selectedColumns.dataStartRow;
+                return (
                 <tr
                   key={rowIdx}
+                  ref={isDataStartRow ? dataRowRef : undefined}
                   className={`border-t border-border-color hover:bg-bg-tertiary ${
-                    rowIdx + 1 === selectedColumns.dataStartRow ? 'bg-green-500/10' : ''
+                    isDataStartRow ? 'bg-green-500/20 ring-2 ring-green-500/50 ring-inset' : ''
                   }`}
                 >
                   <td className="px-2 py-1 text-text-muted border-r border-border-color text-center">
@@ -325,7 +358,8 @@ export function RawExcelViewer({ workbook, onColumnMapping, onDetectedType }: Ra
                     </td>
                   ))}
                 </tr>
-              ))}
+              );
+              })}
             </tbody>
           </table>
         </div>
