@@ -19,7 +19,24 @@ import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { requireAuth } from '../middleware/auth.js';
 import { getPool } from '../db/postgres.js';
+import { USE_POSTGRES } from '../db/index.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
+
+/**
+ * Helper to safely get PostgreSQL pool
+ * Returns null if PostgreSQL is not configured
+ */
+function safeGetPool() {
+  if (!USE_POSTGRES) {
+    return null;
+  }
+  try {
+    return getPool();
+  } catch (error) {
+    console.error('[PortalProjects] Failed to get database pool:', error.message);
+    return null;
+  }
+}
 
 const router = express.Router();
 
@@ -34,7 +51,13 @@ router.use(requireAuth);
 router.get('/by-kiosk/:kioskType/:kioskProjectId', async (req, res) => {
   try {
     const { kioskType, kioskProjectId } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     const result = await pool.query(
       `SELECT pp.* FROM portal_projects pp
@@ -72,16 +95,17 @@ router.get('/', async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    // 🚨 DEV MODE: Return empty array if PostgreSQL not available
-    if (process.env.DISABLE_AUTH === 'true') {
-      console.warn('[DEV MODE] Returning empty projects list (PostgreSQL not available)');
+    // Check if PostgreSQL is available
+    const pool = safeGetPool();
+    if (!pool) {
+      // Return empty array if PostgreSQL not available (dev mode or misconfigured)
+      console.warn('[PortalProjects] PostgreSQL not available, returning empty projects list');
       return res.json({
         success: true,
-        projects: []
+        projects: [],
+        _warning: 'Database not configured - running in mock mode'
       });
     }
-
-    const pool = getPool();
 
     const result = await pool.query(
       `SELECT
@@ -140,8 +164,10 @@ router.post('/', async (req, res) => {
 
     const portal_project_id = `proj_${uuidv4()}`;
 
-    // 🚨 DEV MODE: Return mock project if PostgreSQL not available
-    if (process.env.DISABLE_AUTH === 'true') {
+    // Check if PostgreSQL is available
+    const pool = safeGetPool();
+    if (!pool) {
+      // Return mock project if PostgreSQL not available (dev mode or misconfigured)
       const mockProject = {
         portal_project_id,
         project_name,
@@ -156,14 +182,13 @@ router.post('/', async (req, res) => {
         updated_at: new Date().toISOString()
       };
 
-      console.log(`[DEV MODE] Mock project created: ${portal_project_id} (${project_name})`);
+      console.log(`[PortalProjects] Mock project created (no DB): ${portal_project_id} (${project_name})`);
       return res.status(201).json({
         success: true,
-        project: mockProject
+        project: mockProject,
+        _warning: 'Database not configured - project not persisted'
       });
     }
-
-    const pool = getPool();
     const client = await pool.connect();
 
     await client.query('BEGIN');
@@ -211,7 +236,13 @@ router.get('/:id', async (req, res) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     const result = await pool.query(
       `SELECT * FROM portal_projects
@@ -254,7 +285,13 @@ router.put('/:id', async (req, res) => {
     const userId = req.user.userId;
     const { id } = req.params;
     const { project_name, project_type, description } = req.body;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     // Check ownership
     const checkResult = await pool.query(
@@ -330,7 +367,13 @@ router.delete('/:id', async (req, res) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     const result = await pool.query(
       `DELETE FROM portal_projects
@@ -370,7 +413,13 @@ router.delete('/:id', async (req, res) => {
  * Currently uses Workflow A (document parsing).
  */
 router.post('/:id/send-to-core', async (req, res) => {
-  const pool = getPool();
+  const pool = safeGetPool();
+  if (!pool) {
+    return res.status(503).json({
+      success: false,
+      error: 'Database not available'
+    });
+  }
   const client = await pool.connect();
 
   try {
@@ -476,7 +525,13 @@ router.get('/:id/files', async (req, res) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     // Check project ownership
     const projectCheck = await pool.query(
@@ -520,7 +575,13 @@ router.get('/:id/kiosks', async (req, res) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     // Check project ownership
     const projectCheck = await pool.query(
@@ -570,7 +631,13 @@ router.get('/:id/unified', async (req, res) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     // 1. Get portal project
     const projectResult = await pool.query(
@@ -760,7 +827,13 @@ router.post('/:id/link-kiosk', async (req, res) => {
       });
     }
 
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     // Check project ownership
     const projectCheck = await pool.query(
