@@ -65,7 +65,7 @@ function EditablePriceCell({
           e.currentTarget.blur();
         }
       }}
-      className="w-full bg-bg-secondary/40 rounded border border-transparent hover:border-border-color focus:border-accent-primary focus:bg-bg-primary focus:outline-none text-sm font-medium tabular-nums text-right pl-2 pr-3 py-0.5 transition-colors"
+      className="w-full bg-bg-secondary/40 rounded border border-transparent hover:border-border-color focus:border-accent-primary focus:bg-bg-primary focus:outline-none text-sm font-medium tabular-nums text-right pl-2 pr-3 py-0.5 transition-colors [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
       placeholder="0.00"
     />
   );
