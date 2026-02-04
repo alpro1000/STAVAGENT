@@ -52,6 +52,7 @@ interface RegistryState {
   setItemSkupinaGlobal: (itemKod: string, skupina: string) => void; // Apply to ALL sheets with same kod
   bulkSetSkupina: (projectId: string, sheetId: string, updates: Array<{ itemId: string; skupina: string }>) => void;
   setItems: (projectId: string, sheetId: string, items: ParsedItem[]) => void;
+  updateItemPrice: (projectId: string, sheetId: string, itemId: string, cenaJednotkova: number) => void;
 
   // Управление строками
   deleteItem: (projectId: string, sheetId: string, itemId: string) => void;
@@ -358,6 +359,32 @@ export const useRegistryStore = create<RegistryState>()(
               sheets: p.sheets.map((sheet) => {
                 if (sheet.id !== sheetId) return sheet;
                 return { ...sheet, items };
+              }),
+            };
+          }),
+        }));
+        get().updateSheetStats(projectId, sheetId);
+      },
+
+      // Update item price and recalculate cenaCelkem
+      updateItemPrice: (projectId, sheetId, itemId, cenaJednotkova) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+                return {
+                  ...sheet,
+                  items: sheet.items.map((item) => {
+                    if (item.id !== itemId) return item;
+                    // Recalculate cenaCelkem = mnozstvi * cenaJednotkova
+                    const mnozstvi = item.mnozstvi ?? 0;
+                    const cenaCelkem = mnozstvi * cenaJednotkova;
+                    return { ...item, cenaJednotkova, cenaCelkem };
+                  }),
+                };
               }),
             };
           }),
