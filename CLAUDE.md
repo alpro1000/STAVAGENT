@@ -12,6 +12,8 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-02-04 | stavagent-portal | Portal project creation fix: safeGetPool() for SQLite mode | ✅ Pushed |
+| 2026-02-04 | rozpocet-registry | Price editing: editable cenaJednotkova, section totals, spinner hide | ✅ Pushed |
 | 2026-02-04 | rozpocet-registry | Excel Export Fixes: subordinate inheritance, collapsible rows, input cells styling | ✅ Pushed |
 | 2026-02-04 | rozpocet-registry | Import Preview: larger table (600px), auto-scroll to data rows, jump button | ✅ Pushed |
 | 2026-02-03 | rozpocet-registry | Modal colors + Excel export grouping (main → subordinates) | ✅ Merged |
@@ -796,6 +798,7 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
+| 2026-02-04 | stavagent-portal + rozpocet-registry | Portal fix (safeGetPool), Price editing, Section totals, Excel export fixes, Import preview, Unification audit | 10+ |
 | 2026-01-26 | rozpocet-registry | Classification migration, multi-sheet import, Project→Sheets refactoring, AI panel, Excel-style tabs, tab navigation, autocomplete, modal, price request, export improvements | 20+ |
 | 2026-01-21 | Portal + Monolit | R0 Deterministic Core, Unified Architecture, AI suggestion audit trail | 11 |
 | 2026-01-16 | rozpocet-registry + Monolit | Phase 6+7 (search+export), Modal fixes, Editable work names, Resizable columns | 9 |
@@ -815,5 +818,5 @@ rozpocet-registry/
 
 ---
 
-**Last Updated:** 2026-01-26
+**Last Updated:** 2026-02-04
 **Maintained By:** Development Team
