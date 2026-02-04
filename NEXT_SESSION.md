@@ -2,40 +2,71 @@
 
 **Last Updated:** 2026-02-04
 **Current Branch:** `claude/update-main-branch-ZYDrg`
-**Last Session:** Rozpočet Registry - Price Editing + Kiosk Unification Audit
+**Last Session:** Portal Fix + Unification Audit
 
 ---
 
 ## Quick Start Commands
 
 ```bash
-# Current working directory
 cd /home/user/STAVAGENT
-
-# Check branch and status
 git status
 git log --oneline -10
 
-# Pull latest changes
-git pull origin main
-
-# Start development (rozpocet-registry)
-cd rozpocet-registry && npm run dev     # Vite on :5173
-
-# Other services (if needed)
-cd URS_MATCHER_SERVICE/backend && npm run dev        # URS Matcher
-cd Monolit-Planner/backend && npm run dev            # Monolit backend
-cd concrete-agent && npm run dev:backend             # CORE backend
+# Start development
+cd stavagent-portal/backend && npm run dev   # Portal API :3001
+cd rozpocet-registry && npm run dev          # Registry :5173
+cd Monolit-Planner/backend && npm run dev    # Monolit API :3001
+cd URS_MATCHER_SERVICE && npm run dev        # URS :3001
 ```
+
+---
+
+## Сессия 2026-02-04: Резюме
+
+### Что сделано:
+
+| # | Задача | Статус |
+|---|--------|--------|
+| 1 | **Portal fix:** `safeGetPool()` для SQLite режима | ✅ |
+| 2 | **Registry:** Редактируемая цена + авто-пересчёт суммы | ✅ |
+| 3 | **Registry:** Секции — скрыта цена/skupina, показана сумма | ✅ |
+| 4 | **Registry:** Excel export fixes (collapsible, styling) | ✅ |
+| 5 | **Аудит:** Проанализированы все 5 kiosks | ✅ |
+| 6 | **Документация:** `docs/UNIFICATION_PLAN.md` создан | ✅ |
+
+### Коммиты (2026-02-04):
+```
+018535f DOCS: Update NEXT_SESSION.md with Portal fix session info
+0e64fad FIX: Portal project creation error when PostgreSQL not available
+94518d8 FEAT: Section rows - hide price/skupina, show section totals
+1aa4a1f FIX: Hide number input spinner arrows
+...и ещё 5 коммитов для price editing
+```
+
+### Ключевой фикс Portal:
+
+**Проблема:** Ошибка "PostgreSQL pool not initialized" при создании проекта без DATABASE_URL
+
+**Решение:** Добавлен `safeGetPool()` в `portal-projects.js`:
+```javascript
+function safeGetPool() {
+  if (!USE_POSTGRES) return null;
+  try { return getPool(); }
+  catch (error) { return null; }
+}
+```
+
+Теперь API возвращает mock данные с `_warning` полем когда БД недоступна.
 
 ---
 
 ## ВАЖНО: Активный план унификации
 
-### Документация по плану:
-- **`docs/UNIFICATION_PLAN.md`** — Полный план реализации (читать первым!)
-- **`docs/UNIFIED_DATA_MODEL.ts`** — TypeScript типы для всех kiosks
-- **`CLAUDE.md`** — Главная документация системы
+### Документация:
+- **`docs/UNIFICATION_PLAN.md`** — Полный план (700 строк)
+- **`docs/UNIFIED_DATA_MODEL.ts`** — TypeScript типы
+- **`CLAUDE.md`** — Главная документация
 
 ### Текущая фаза: Фаза 1 — Базовая связность
 
@@ -43,82 +74,33 @@ cd concrete-agent && npm run dev:backend             # CORE backend
 ```
 1.1 Добавить portalProjectId в rozpocet-registry
 
-Файлы для изменения:
-- src/types/project.ts — добавить поле portalProjectId?: string
-- src/stores/registryStore.ts — методы linkToPortal(), unlinkFromPortal()
-- UI компонент для отображения связи с Portal
+Файлы:
+- src/types/project.ts         → portalProjectId?: string
+- src/stores/registryStore.ts  → linkToPortal(), unlinkFromPortal()
+- Новый UI компонент           → отображение связи с Portal
 ```
 
 ---
 
-## Recent Work (2026-02-04)
-
-### Сессия 3: Portal Project Creation Fix
-**Commit:**
-```
-0e64fad FIX: Portal project creation error when PostgreSQL not available
-```
-
-**Проблема:** Portal выдавал ошибку "PostgreSQL pool not initialized" при создании проекта в режиме SQLite.
-
-**Решение:** Добавлен `safeGetPool()` helper в `portal-projects.js`:
-- Проверяет `USE_POSTGRES` перед вызовом `getPool()`
-- Возвращает mock данные когда PostgreSQL не настроен
-- Добавляет `_warning` поле в ответ API
-
-**Файлы изменены:**
-- `stavagent-portal/backend/src/routes/portal-projects.js`
-
-### Сессия 1: Excel Export Fixes + Import Preview
-- Subordinate inheritance
-- Collapsible rows в Excel
-- Import preview improvements
-
-### Сессия 2: Price Editing + Unification Audit
-
-**Commits:**
-```
-94518d8 FEAT: Section rows - hide price/skupina, show section totals
-1aa4a1f FIX: Hide number input spinner arrows
-da252ce FIX: Increase padding for price input to show all decimals
-33b6aa7 FIX: Price input shows 2 decimal places + wider columns
-16ec745 FEAT: Auto-fit width for price columns based on data
-d8a6244 FIX: Price input - local state prevents cursor jump + lighter styling
-94a9614 FEAT: Editable unit price with auto-recalculation + thinner scrollbar
-```
-
-**Функции добавлены:**
-1. Редактируемая цена (cenaJednotkova) с авто-пересчётом cenaCelkem
-2. Скрытие spinner-стрелок в number input
-3. Авто-ширина столбцов цен по данным
-4. Секции: скрыты цена/skupina, показана сумма секции
-
-**Аудит kiosks завершён:**
-- Проанализированы все 5 сервисов
-- Выявлены несоответствия в именовании
-- Создан план унификации
-
----
-
-## Архитектура унификации (напоминание)
+## Архитектура унификации
 
 ```
 Portal (Hub) — portalProjectId (UUID)
     │
     ├── Monolit-Planner
-    │   └── project_id / bridge_id (строка "SO201")
+    │   └── project_id (строка "SO201") — ⚠️ Нужен portal link
     │
     ├── URS_MATCHER
-    │   └── jobs.id (UUID) + portal_project_id ✅
+    │   └── portal_project_id ✅ Уже есть
     │
     ├── rozpocet-registry
-    │   └── projectId (UUID) — НЕТ portal связи ❌
+    │   └── projectId (UUID) — ❌ НЕТ portal связи
     │
     └── concrete-agent (CORE)
         └── project_id (UUID)
 ```
 
-### Маппинг полей позиций:
+### Маппинг полей:
 
 | Unified | Registry | Monolit | URS |
 |---------|----------|---------|-----|
@@ -132,76 +114,24 @@ Portal (Hub) — portalProjectId (UUID)
 
 ---
 
-## Key Files for Unification
-
-### Registry (rozpocet-registry)
-```
-src/types/project.ts          — Project interface
-src/stores/registryStore.ts   — Zustand store (376 строк)
-src/types/item.ts             — ParsedItem interface
-```
-
-### Monolit (Monolit-Planner)
-```
-shared/src/types.ts                          — Position, Bridge interfaces
-backend/src/routes/monolith-projects.js      — Project API
-backend/src/routes/positions.js              — Positions API
-backend/src/db/schema-postgres.sql           — DB schema
-```
-
-### URS (URS_MATCHER_SERVICE)
-```
-backend/src/models/                    — Job, Match models
-backend/src/api/routes/jobs.js         — Jobs API
-```
-
-### Portal (stavagent-portal)
-```
-backend/src/routes/kiosk-links.js      — Kiosk linking API
-backend/src/routes/portal-projects.js  — Projects API
-```
-
----
-
-## TOV (Ведомость ресурсов) — Будущая фаза
-
-### Структура компонентов (Фаза 3):
-```
-src/components/tov/
-├── TOVButton.tsx           # Кнопка [📊] возле позиции
-├── TOVModal.tsx            # Модальное окно с вкладками
-├── LaborTab.tsx            # Вкладка: Люди (норм-часы)
-├── MachineryTab.tsx        # Вкладка: Механизмы (маш-часы)
-├── MaterialsTab.tsx        # Вкладка: Материалы
-└── TOVSummary.tsx          # Итоги
-```
-
-### Интеграция с калькуляторами:
-- Материалы → Monolit-Planner (бетон, арматура)
-- Техника → Machinery Calculator (будущее)
-- Труд → Labor Calculator (будущее)
-
----
-
 ## Чеклист задач
 
 ### Фаза 1: Базовая связность
-- [ ] Registry: добавить portalProjectId
+- [ ] Registry: добавить `portalProjectId`
 - [ ] Monolit: API endpoint для Portal link
 - [ ] URS: endpoint экспорта в Registry
 
 ### Фаза 2: API синхронизации
-- [ ] Registry serverless API
-- [ ] Маппинг функции
+- [ ] Registry serverless API (`/api/sync/*`)
+- [ ] Маппинг функции (`mapToUnified()`)
 
 ### Фаза 3: TOV UI
-- [ ] TOVButton + TOVModal
-- [ ] Вкладки ресурсов
+- [ ] `TOVButton` + `TOVModal`
+- [ ] Вкладки: Люди | Механизмы | Материалы
 - [ ] Store расширение
 
-### Фаза 4: Интеграция
-- [ ] Monolit → Registry
-- [ ] Registry → Monolit
+### Фаза 4: Интеграция калькуляторов
+- [ ] Monolit ↔ Registry
 - [ ] URS → Registry
 
 ---
@@ -217,11 +147,33 @@ src/components/tov/
 
 ---
 
+## Key Files
+
+### Portal (stavagent-portal)
+```
+backend/src/routes/portal-projects.js  ← Исправлен (safeGetPool)
+backend/src/routes/kiosk-links.js      ← Связи с kiosks
+backend/src/db/schema-postgres.sql     ← Схема БД
+```
+
+### Registry (rozpocet-registry)
+```
+src/types/project.ts                   ← Project interface
+src/stores/registryStore.ts            ← Zustand store
+src/components/items/ItemsTable.tsx    ← Таблица позиций
+```
+
+### Monolit (Monolit-Planner)
+```
+shared/src/types.ts                    ← Position types
+backend/src/routes/monolith-projects.js← API проектов
+```
+
+---
+
 **При старте сессии:**
 1. Прочитай `CLAUDE.md`
 2. Прочитай `docs/UNIFICATION_PLAN.md`
-3. Продолжай с текущей фазы
-
----
+3. Продолжай с Фазы 1.1
 
 *Ready for next session!*
