@@ -336,6 +336,34 @@ export function ItemsTable({
     }
   };
 
+  // Auto-calculate optimal column widths for price columns based on data
+  const priceColumnWidths = useMemo(() => {
+    const formatPrice = (val: number | null) =>
+      val !== null ? `${val.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč` : '-';
+
+    // Find max formatted string lengths
+    let maxCenaJedn = 0;
+    let maxCenaCelkem = 0;
+
+    items.forEach((item) => {
+      const cenaJednStr = formatPrice(item.cenaJednotkova);
+      const cenaCelkemStr = formatPrice(item.cenaCelkem);
+      maxCenaJedn = Math.max(maxCenaJedn, cenaJednStr.length);
+      maxCenaCelkem = Math.max(maxCenaCelkem, cenaCelkemStr.length);
+    });
+
+    // ~8px per character for tabular-nums font + padding (24px)
+    const charWidth = 8;
+    const padding = 24;
+    const minWidth = 80;
+    const maxWidth = 180;
+
+    return {
+      cenaJednotkova: Math.min(maxWidth, Math.max(minWidth, maxCenaJedn * charWidth + padding)),
+      cenaCelkem: Math.min(maxWidth, Math.max(minWidth, maxCenaCelkem * charWidth + padding)),
+    };
+  }, [items]);
+
   const columns = useMemo(
     () => [
       // Checkbox (для массовых операций) - компактный
@@ -480,7 +508,7 @@ export function ItemsTable({
         sortingFn: 'basic',
       }),
 
-      // Cena jednotková (editable)
+      // Cena jednotková (editable, auto-width)
       columnHelper.accessor('cenaJednotkova', {
         header: 'Cena jedn.',
         cell: (info) => {
@@ -493,14 +521,14 @@ export function ItemsTable({
             />
           );
         },
-        size: 110,
-        minSize: 90,
-        maxSize: 160,
+        size: priceColumnWidths.cenaJednotkova,
+        minSize: 80,
+        maxSize: 180,
         enableSorting: true,
         sortingFn: 'basic',
       }),
 
-      // Cena celkem (auto-calculated)
+      // Cena celkem (auto-calculated, auto-width)
       columnHelper.accessor('cenaCelkem', {
         header: 'Celkem',
         cell: (info) => {
@@ -513,8 +541,8 @@ export function ItemsTable({
             </span>
           );
         },
-        size: 120,
-        minSize: 100,
+        size: priceColumnWidths.cenaCelkem,
+        minSize: 80,
         maxSize: 180,
         enableSorting: true,
         sortingFn: 'basic',
@@ -695,7 +723,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths]
   );
 
   const table = useReactTable({
