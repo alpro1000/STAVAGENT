@@ -30,14 +30,19 @@ function EditablePriceCell({
   value: number | null;
   onChange: (newPrice: number) => void;
 }) {
-  const [localValue, setLocalValue] = useState<string>(
-    value !== null ? String(value) : ''
-  );
+  // Format with 2 decimal places for display
+  const formatValue = (v: number | null) =>
+    v !== null ? v.toFixed(2) : '';
+
+  const [localValue, setLocalValue] = useState<string>(formatValue(value));
+  const [isFocused, setIsFocused] = useState(false);
 
   // Sync local state when external value changes (e.g., from undo/redo)
   useEffect(() => {
-    setLocalValue(value !== null ? String(value) : '');
-  }, [value]);
+    if (!isFocused) {
+      setLocalValue(formatValue(value));
+    }
+  }, [value, isFocused]);
 
   return (
     <input
@@ -46,8 +51,11 @@ function EditablePriceCell({
       min="0"
       value={localValue}
       onChange={(e) => setLocalValue(e.target.value)}
+      onFocus={() => setIsFocused(true)}
       onBlur={() => {
+        setIsFocused(false);
         const newPrice = parseFloat(localValue) || 0;
+        setLocalValue(newPrice.toFixed(2)); // Format on blur
         if (newPrice !== value) {
           onChange(newPrice);
         }
@@ -57,8 +65,8 @@ function EditablePriceCell({
           e.currentTarget.blur();
         }
       }}
-      className="w-full bg-bg-secondary/50 rounded border border-transparent hover:border-border-color focus:border-accent-primary focus:bg-bg-primary focus:outline-none text-sm font-medium tabular-nums text-right px-2 py-0.5 transition-colors"
-      placeholder="-"
+      className="w-full bg-bg-secondary/40 rounded border border-transparent hover:border-border-color focus:border-accent-primary focus:bg-bg-primary focus:outline-none text-sm font-medium tabular-nums text-right px-2 py-0.5 transition-colors"
+      placeholder="0.00"
     />
   );
 }
@@ -338,7 +346,11 @@ export function ItemsTable({
 
   // Auto-calculate optimal column widths for price columns based on data
   const priceColumnWidths = useMemo(() => {
-    const formatPrice = (val: number | null) =>
+    // Format for input field (just number with 2 decimals)
+    const formatInput = (val: number | null) =>
+      val !== null ? val.toFixed(2) : '0.00';
+    // Format for display (with locale and Kč)
+    const formatDisplay = (val: number | null) =>
       val !== null ? `${val.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč` : '-';
 
     // Find max formatted string lengths
@@ -346,21 +358,20 @@ export function ItemsTable({
     let maxCenaCelkem = 0;
 
     items.forEach((item) => {
-      const cenaJednStr = formatPrice(item.cenaJednotkova);
-      const cenaCelkemStr = formatPrice(item.cenaCelkem);
+      const cenaJednStr = formatInput(item.cenaJednotkova);
+      const cenaCelkemStr = formatDisplay(item.cenaCelkem);
       maxCenaJedn = Math.max(maxCenaJedn, cenaJednStr.length);
       maxCenaCelkem = Math.max(maxCenaCelkem, cenaCelkemStr.length);
     });
 
-    // ~8px per character for tabular-nums font + padding (24px)
-    const charWidth = 8;
-    const padding = 24;
-    const minWidth = 80;
-    const maxWidth = 180;
+    // ~9px per character for tabular-nums font + padding (32px for input, 28px for display)
+    const charWidth = 9;
+    const minWidth = 100;
+    const maxWidth = 200;
 
     return {
-      cenaJednotkova: Math.min(maxWidth, Math.max(minWidth, maxCenaJedn * charWidth + padding)),
-      cenaCelkem: Math.min(maxWidth, Math.max(minWidth, maxCenaCelkem * charWidth + padding)),
+      cenaJednotkova: Math.min(maxWidth, Math.max(minWidth, maxCenaJedn * charWidth + 36)),
+      cenaCelkem: Math.min(maxWidth, Math.max(minWidth, maxCenaCelkem * charWidth + 28)),
     };
   }, [items]);
 
@@ -522,8 +533,8 @@ export function ItemsTable({
           );
         },
         size: priceColumnWidths.cenaJednotkova,
-        minSize: 80,
-        maxSize: 180,
+        minSize: 100,
+        maxSize: 200,
         enableSorting: true,
         sortingFn: 'basic',
       }),
@@ -542,8 +553,8 @@ export function ItemsTable({
           );
         },
         size: priceColumnWidths.cenaCelkem,
-        minSize: 80,
-        maxSize: 180,
+        minSize: 100,
+        maxSize: 200,
         enableSorting: true,
         sortingFn: 'basic',
       }),
