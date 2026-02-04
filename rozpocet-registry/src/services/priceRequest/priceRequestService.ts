@@ -435,6 +435,8 @@ export function exportPriceRequest(
   // outlineLevels: 0 = header/SUM, 1 = main items, 2 = subordinate items
   // Excel outline: level property controls grouping depth
   // IMPORTANT: Do NOT set hidden: true - it hides rows permanently instead of making them collapsible!
+  //
+  // Using BOTH 'level' and 'outlineLevel' for maximum compatibility with different Excel versions
   wsItems['!rows'] = outlineLevels.map((level, idx) => {
     if (idx === 0) {
       // Header row: just set height, no outline
@@ -443,20 +445,33 @@ export function exportPriceRequest(
       // SUM row: no outline, normal height
       return { hpx: 22 };
     } else if (level === 1) {
-      // Main item: level 0 (visible, parent of subordinates)
-      return { level: 0, hpx: 20 };
+      // Main item: no outline (summary row)
+      // Main items don't have an outline level - they are the "parents"
+      return { hpx: 20 };
     } else if (level === 2) {
-      // Subordinate item: level 1 (grouped under main, visible but collapsible)
+      // Subordinate item: outline level 1 (grouped under main, collapsible)
       // User can click +/- in Excel to expand/collapse
-      return { level: 1, hpx: 20 };
+      return { level: 1, outlineLevel: 1, hidden: false, hpx: 20 };
     }
     return {};
   });
+
+  // Set sheet format with max outline level
+  wsItems['!sheetFormat'] = {
+    outlineLevelRow: 1, // Max row outline level used in this sheet
+  };
 
   // Enable outline/grouping settings for the sheet
   // above: true = summary rows (main items) are ABOVE detail rows (subordinates below main)
   // left: true = outline buttons (+/-) on the left side
   wsItems['!outline'] = { above: true, left: true };
+
+  // Set sheet views to show outline symbols (+/- buttons)
+  wsItems['!sheetViews'] = [{
+    showOutlineSymbols: true,
+    showGridLines: true,
+    showRowColHeaders: true,
+  }];
 
   // Set sheet outline properties
   if (!wsItems['!sheetProtection']) {

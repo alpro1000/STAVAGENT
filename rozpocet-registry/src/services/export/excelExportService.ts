@@ -308,25 +308,37 @@ function createStyledItemsSheet(
   // Apply row grouping (Excel outline levels)
   // This creates collapsible groups with +/- buttons on the left
   // NOTE: Do NOT set hidden: true - it hides rows permanently.
-  // Excel will handle visibility based on outline level when user clicks +/-
+  // Using BOTH 'level' and 'outlineLevel' for maximum compatibility
   ws['!rows'] = outlineLevels.map((level) => {
     if (level === 0) {
       // Header or section - no outline
       return {};
     } else if (level === 1) {
-      // Main row - level 0 (visible, parent of subordinates)
-      return { level: 0 };
+      // Main row - no outline level (parent/summary row)
+      return {};
     } else {
-      // Subordinate row - level 1 (grouped under main, visible but collapsible)
-      return { level: 1 };
+      // Subordinate row - outline level 1 (grouped under main, collapsible)
+      return { level: 1, outlineLevel: 1, hidden: false };
     }
   });
+
+  // Set sheet format with max outline level
+  ws['!sheetFormat'] = {
+    outlineLevelRow: 1, // Max row outline level used in this sheet
+  };
 
   // CRITICAL: Enable outline/grouping settings for the sheet
   // Without this, Excel won't show +/- buttons for row grouping!
   // above: true = summary rows (main items) are ABOVE detail rows
   // left: true = group symbols (+/-) appear on the LEFT side
   ws['!outline'] = { above: true, left: true };
+
+  // Set sheet views to show outline symbols (+/- buttons)
+  ws['!sheetViews'] = [{
+    showOutlineSymbols: true,
+    showGridLines: true,
+    showRowColHeaders: true,
+  }];
 
   // Apply styling to each cell
   const colCount = headers.length;
