@@ -22,6 +22,47 @@ import { RowActionsCell } from './RowActionsCell';
 import { BulkActionsBar } from './BulkActionsBar';
 import './ItemsTable.css';
 
+/** Editable price cell with local state to prevent cursor jumping */
+function EditablePriceCell({
+  value,
+  onChange,
+}: {
+  value: number | null;
+  onChange: (newPrice: number) => void;
+}) {
+  const [localValue, setLocalValue] = useState<string>(
+    value !== null ? String(value) : ''
+  );
+
+  // Sync local state when external value changes (e.g., from undo/redo)
+  useEffect(() => {
+    setLocalValue(value !== null ? String(value) : '');
+  }, [value]);
+
+  return (
+    <input
+      type="number"
+      step="0.01"
+      min="0"
+      value={localValue}
+      onChange={(e) => setLocalValue(e.target.value)}
+      onBlur={() => {
+        const newPrice = parseFloat(localValue) || 0;
+        if (newPrice !== value) {
+          onChange(newPrice);
+        }
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') {
+          e.currentTarget.blur();
+        }
+      }}
+      className="w-full bg-bg-secondary/50 rounded border border-transparent hover:border-border-color focus:border-accent-primary focus:bg-bg-primary focus:outline-none text-sm font-medium tabular-nums text-right px-2 py-0.5 transition-colors"
+      placeholder="-"
+    />
+  );
+}
+
 interface ItemsTableProps {
   items: ParsedItem[];
   projectId: string;
@@ -295,6 +336,34 @@ export function ItemsTable({
     }
   };
 
+  // Auto-calculate optimal column widths for price columns based on data
+  const priceColumnWidths = useMemo(() => {
+    const formatPrice = (val: number | null) =>
+      val !== null ? `${val.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč` : '-';
+
+    // Find max formatted string lengths
+    let maxCenaJedn = 0;
+    let maxCenaCelkem = 0;
+
+    items.forEach((item) => {
+      const cenaJednStr = formatPrice(item.cenaJednotkova);
+      const cenaCelkemStr = formatPrice(item.cenaCelkem);
+      maxCenaJedn = Math.max(maxCenaJedn, cenaJednStr.length);
+      maxCenaCelkem = Math.max(maxCenaCelkem, cenaCelkemStr.length);
+    });
+
+    // ~8px per character for tabular-nums font + padding (24px)
+    const charWidth = 8;
+    const padding = 24;
+    const minWidth = 80;
+    const maxWidth = 180;
+
+    return {
+      cenaJednotkova: Math.min(maxWidth, Math.max(minWidth, maxCenaJedn * charWidth + padding)),
+      cenaCelkem: Math.min(maxWidth, Math.max(minWidth, maxCenaCelkem * charWidth + padding)),
+    };
+  }, [items]);
+
   const columns = useMemo(
     () => [
       // Checkbox (для массовых операций) - компактный
@@ -439,48 +508,40 @@ export function ItemsTable({
         sortingFn: 'basic',
       }),
 
-      // Cena jednotková (editable)
+      // Cena jednotková (editable, auto-width)
       columnHelper.accessor('cenaJednotkova', {
-        header: 'Cena',
+        header: 'Cena jedn.',
         cell: (info) => {
           const value = info.getValue();
           const item = info.row.original;
           return (
-            <input
-              type="number"
-              step="0.01"
-              min="0"
-              value={value ?? ''}
-              onChange={(e) => {
-                const newPrice = parseFloat(e.target.value) || 0;
-                updateItemPrice(projectId, sheetId, item.id, newPrice);
-              }}
-              className="w-full bg-transparent border-0 border-b border-transparent hover:border-border-color focus:border-accent-primary focus:outline-none text-sm font-medium tabular-nums text-right px-1 py-0.5 transition-colors"
-              placeholder="-"
+            <EditablePriceCell
+              value={value}
+              onChange={(newPrice) => updateItemPrice(projectId, sheetId, item.id, newPrice)}
             />
           );
         },
-        size: 90,
-        minSize: 70,
-        maxSize: 150,
+        size: priceColumnWidths.cenaJednotkova,
+        minSize: 80,
+        maxSize: 180,
         enableSorting: true,
         sortingFn: 'basic',
       }),
 
-      // Cena celkem
+      // Cena celkem (auto-calculated, auto-width)
       columnHelper.accessor('cenaCelkem', {
-        header: 'Cena celkem',
+        header: 'Celkem',
         cell: (info) => {
           const value = info.getValue();
           return (
-            <span className="text-sm font-semibold tabular-nums">
+            <span className="text-sm font-semibold tabular-nums whitespace-nowrap">
               {value !== null
                 ? `${value.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč`
                 : '-'}
             </span>
           );
         },
-        size: 100,
+        size: priceColumnWidths.cenaCelkem,
         minSize: 80,
         maxSize: 180,
         enableSorting: true,
@@ -662,7 +723,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths]
   );
 
   const table = useReactTable({
