@@ -151,12 +151,12 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
     });
   };
 
-  // Create report from filtered items (only main/section work items - NOT subordinate rows)
+  // Create report from filtered items
+  // Include main/section items AND their subordinates for proper grouping
   const handleCreateReport = () => {
-    // Filter only main/section items (exclude subordinate/description rows)
-    // Use rowRole if available, otherwise fallback to old logic (kod + quantity)
-    const workItems = filteredItems.filter(item => {
-      // Primary check: rowRole (main or section = work items, subordinate = skip)
+    // Step 1: Find all main/section items (the "work items" with codes)
+    const mainItems = filteredItems.filter(item => {
+      // Primary check: rowRole (main or section = work items)
       const isMainRow = item.rowRole
         ? (item.rowRole === 'main' || item.rowRole === 'section')
         : null;
@@ -173,8 +173,22 @@ export function PriceRequestPanel({ isOpen, onClose }: PriceRequestPanelProps) {
       return hasKod && hasQuantityOrPrice;
     });
 
+    // Step 2: Collect IDs of main items
+    const mainItemIds = new Set(mainItems.map(item => item.id));
+
+    // Step 3: Find ALL subordinates from allItems that belong to these main items
+    // (subordinates might not be in filteredItems if they don't match the search query)
+    const subordinatesForMainItems = allItems.filter(item => {
+      if (item.rowRole !== 'subordinate') return false;
+      // Include if parent is in our main items list
+      return item.parentItemId && mainItemIds.has(item.parentItemId);
+    });
+
+    // Step 4: Combine main items + their subordinates
+    const workItemsWithSubordinates = [...mainItems, ...subordinatesForMainItems];
+
     const newReport = createPriceRequestReport(
-      workItems,
+      workItemsWithSubordinates,
       searchQuery || 'Všechny položky',
       projects
     );
