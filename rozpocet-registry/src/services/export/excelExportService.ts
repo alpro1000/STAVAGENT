@@ -588,19 +588,32 @@ export async function exportToOriginalFile(
   }
 
   try {
-    // Read original workbook
-    const workbook = XLSX.read(originalFile.fileData, { type: 'array' });
+    // Read original workbook - use cellStyles: true to preserve formatting
+    const workbook = XLSX.read(originalFile.fileData, {
+      type: 'array',
+      cellStyles: true,
+      cellNF: true,  // Preserve number formats
+      cellFormula: true,  // Preserve formulas
+    });
 
-    // Build a map of boqLineNumber → prices from all sheets
-    const priceMap = new Map<string, { sheetName: string; row: number; cenaJed: number | null; cenaCel: number | null }>();
+    // Build a map of source.rowStart → prices from all sheets
+    // Use source.rowStart instead of boqLineNumber (which is only for main items)
+    const priceMap = new Map<string, {
+      sheetName: string;
+      row: number;
+      cenaJed: number | null;
+      cenaCel: number | null;
+    }>();
 
     for (const sheet of project.sheets) {
       for (const item of sheet.items) {
-        if (item.boqLineNumber !== undefined && item.boqLineNumber !== null) {
-          const key = `${sheet.name}:${item.boqLineNumber}`;
+        // Use source.rowStart as the row identifier (1-based Excel row number)
+        const rowNum = item.source?.rowStart;
+        if (rowNum !== undefined && rowNum !== null) {
+          const key = `${sheet.name}:${rowNum}`;
           priceMap.set(key, {
             sheetName: sheet.name,
-            row: item.boqLineNumber,
+            row: rowNum,
             cenaJed: item.cenaJednotkova,
             cenaCel: item.cenaCelkem,
           });
@@ -630,25 +643,39 @@ export async function exportToOriginalFile(
       if (!ws) continue;
 
       // Get the range of the sheet
-      const range = XLSX.utils.decode_range(ws['!ref'] || 'A1');
+      const ref = ws['!ref'];
+      if (!ref) continue;
+      const range = XLSX.utils.decode_range(ref);
 
       // Iterate through rows and update prices
       for (let row = 0; row <= range.e.r; row++) {
-        const excelRow = row + 1; // 1-based for boqLineNumber
+        const excelRow = row + 1; // 1-based Excel row number
         const key = `${sheetName}:${excelRow}`;
         const priceData = priceMap.get(key);
 
         if (priceData) {
-          // Update cenaJednotkova
+          // Update cenaJednotkova - preserve existing cell properties
           if (cenaJedColIdx >= 0 && priceData.cenaJed !== null) {
             const cellRef = XLSX.utils.encode_cell({ r: row, c: cenaJedColIdx });
-            ws[cellRef] = { t: 'n', v: priceData.cenaJed };
+            const existingCell = ws[cellRef] || {};
+            ws[cellRef] = {
+              ...existingCell,  // Preserve existing properties (style, etc.)
+              t: 'n',
+              v: priceData.cenaJed,
+              w: undefined,  // Clear cached formatted value so Excel recalculates
+            };
           }
 
-          // Update cenaCelkem
+          // Update cenaCelkem - preserve existing cell properties
           if (cenaCelColIdx >= 0 && priceData.cenaCel !== null) {
             const cellRef = XLSX.utils.encode_cell({ r: row, c: cenaCelColIdx });
-            ws[cellRef] = { t: 'n', v: priceData.cenaCel };
+            const existingCell = ws[cellRef] || {};
+            ws[cellRef] = {
+              ...existingCell,  // Preserve existing properties (style, etc.)
+              t: 'n',
+              v: priceData.cenaCel,
+              w: undefined,  // Clear cached formatted value so Excel recalculates
+            };
           }
 
           result.updatedRows++;
@@ -656,8 +683,12 @@ export async function exportToOriginalFile(
       }
     }
 
-    // Write and download
-    const arrayBuffer = XLSX.write(workbook, { type: 'array', bookType: 'xlsx' });
+    // Write and download - preserve styles
+    const arrayBuffer = XLSX.write(workbook, {
+      type: 'array',
+      bookType: 'xlsx',
+      cellStyles: true,  // Preserve cell styles
+    });
     const fileName = originalFile.fileName.replace(/\.[^.]+$/, '') + '_s_cenami.xlsx';
     downloadExcel(arrayBuffer, fileName);
 
