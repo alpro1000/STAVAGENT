@@ -11,6 +11,7 @@ import type {
   SavedFilter,
   ParsedItem,
   SheetStats,
+  PortalLink,
 } from '../types';
 import type { ImportTemplate } from '../types/template';
 import { PREDEFINED_TEMPLATES } from '../config/templates';
@@ -40,6 +41,12 @@ interface RegistryState {
   updateProject: (projectId: string, updates: Partial<Omit<Project, 'sheets'>>) => void;
   setSelectedProject: (projectId: string | null) => void;
   getProject: (projectId: string) => Project | undefined;
+
+  // Portal integration
+  linkToPortal: (projectId: string, portalProjectId: string, portalProjectName?: string) => void;
+  unlinkFromPortal: (projectId: string) => void;
+  updatePortalSyncTime: (projectId: string) => void;
+  getLinkedProjects: () => Project[];  // projects with Portal links
 
   // Действия с листами
   addSheet: (projectId: string, sheet: Sheet) => void;
@@ -147,6 +154,49 @@ export const useRegistryStore = create<RegistryState>()(
 
       getProject: (projectId) => {
         return get().projects.find((p) => p.id === projectId);
+      },
+
+      // Portal integration
+      linkToPortal: (projectId, portalProjectId, portalProjectName) => {
+        const portalLink: PortalLink = {
+          portalProjectId,
+          linkedAt: new Date(),
+          portalProjectName,
+          lastSyncedAt: new Date(),
+        };
+
+        set((state) => ({
+          projects: state.projects.map((p) =>
+            p.id === projectId ? { ...p, portalLink } : p
+          ),
+        }));
+      },
+
+      unlinkFromPortal: (projectId) => {
+        set((state) => ({
+          projects: state.projects.map((p) =>
+            p.id === projectId ? { ...p, portalLink: undefined } : p
+          ),
+        }));
+      },
+
+      updatePortalSyncTime: (projectId) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId || !p.portalLink) return p;
+            return {
+              ...p,
+              portalLink: {
+                ...p.portalLink,
+                lastSyncedAt: new Date(),
+              },
+            };
+          }),
+        }));
+      },
+
+      getLinkedProjects: () => {
+        return get().projects.filter((p) => p.portalLink !== undefined);
       },
 
       // Листы
