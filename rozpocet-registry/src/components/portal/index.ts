@@ -1,0 +1,1 @@
+export { PortalLinkBadge } from './PortalLinkBadge';

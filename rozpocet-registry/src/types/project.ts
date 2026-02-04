@@ -42,6 +42,16 @@ export interface Sheet {
 }
 
 /**
+ * Portal link status - connection to stavagent-portal
+ */
+export interface PortalLink {
+  portalProjectId: string;       // UUID from Portal
+  linkedAt: Date;                // when linked
+  portalProjectName?: string;    // optional cached Portal project name
+  lastSyncedAt?: Date;           // last sync timestamp
+}
+
+/**
  * Project - container for multiple sheets from same Excel file
  */
 export interface Project {
@@ -52,4 +62,7 @@ export interface Project {
   importedAt: Date;              // дата импорта
 
   sheets: Sheet[];               // массив листов проекта
+
+  // Portal integration (optional)
+  portalLink?: PortalLink;       // connection to stavagent-portal
 }

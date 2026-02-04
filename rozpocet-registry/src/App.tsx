@@ -11,6 +11,7 @@ import { SearchResults } from './components/search/SearchResults';
 import { AIPanel } from './components/ai/AIPanel';
 import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
+import { PortalLinkBadge } from './components/portal/PortalLinkBadge';
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
@@ -470,6 +471,8 @@ function App() {
                           <span className="text-sm font-medium max-w-[200px] truncate" title={project.projectName}>
                             {project.projectName}
                           </span>
+                          {/* Portal Link Badge (compact mode in tabs) */}
+                          <PortalLinkBadge project={project} compact />
                           <span className="text-xs text-text-muted ml-1">
                             ({project.sheets.length} {project.sheets.length === 1 ? 'list' : 'listy'})
                           </span>
@@ -594,9 +597,13 @@ function App() {
               {selectedProject && selectedSheet && (
                 <div className="space-y-4">
                   <div className="mb-4">
-                    <h2 className="text-lg font-semibold">
-                      {selectedProject.projectName}
-                    </h2>
+                    <div className="flex items-center gap-3 mb-1">
+                      <h2 className="text-lg font-semibold">
+                        {selectedProject.projectName}
+                      </h2>
+                      {/* Portal Link Badge (full mode) */}
+                      <PortalLinkBadge project={selectedProject} />
+                    </div>
                     <p className="text-sm text-text-secondary">
                       List: {selectedSheet.name}
                     </p>
