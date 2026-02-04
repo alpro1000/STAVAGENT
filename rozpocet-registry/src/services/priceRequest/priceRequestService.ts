@@ -136,6 +136,30 @@ const CELL_STYLE = {
   },
 };
 
+/** Main row style: light blue tint to stand out from subordinates */
+const MAIN_ROW_STYLE = {
+  font: { bold: true, sz: 11, color: { rgb: '1E3A5F' } },
+  fill: { fgColor: { rgb: 'E8F4FD' } }, // Very light blue tint
+  border: {
+    top: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
+    bottom: { style: 'thin' as const, color: { rgb: '9DC3E6' } },
+    left: { style: 'thin' as const, color: { rgb: 'B8D4E8' } },
+    right: { style: 'thin' as const, color: { rgb: 'B8D4E8' } },
+  },
+};
+
+/** Subordinate row style: lighter, indented appearance */
+const SUB_ROW_STYLE = {
+  font: { sz: 10, color: { rgb: '555555' }, italic: true },
+  fill: { fgColor: { rgb: 'FAFAFA' } }, // Very light gray
+  border: {
+    top: { style: 'thin' as const, color: { rgb: 'E5E5E5' } },
+    bottom: { style: 'thin' as const, color: { rgb: 'E5E5E5' } },
+    left: { style: 'thin' as const, color: { rgb: 'E5E5E5' } },
+    right: { style: 'thin' as const, color: { rgb: 'E5E5E5' } },
+  },
+};
+
 /**
  * Export price request to Excel file
  * Features: formulas (cena = množství × jednotková), SUM, AutoFilter, styled header
@@ -332,16 +356,28 @@ export function exportPriceRequest(
     // Skip header (r=0) and SUM row (last)
     const excelRow = r + 1; // Excel rows are 1-indexed
 
+    // Determine if this is a main row or subordinate row
+    // outlineLevels: 0=header/sum, 1=main, 2=subordinate
+    const rowLevel = outlineLevels[r];
+    const isMainRow = rowLevel === 1;
+    const isSubRow = rowLevel === 2;
+
     // Data row: apply formula and style
     const cellRef = `${cenaCelCol}${excelRow}`;
     wsItems[cellRef] = {
       t: 'n',
       f: `IF(${cenaJedCol}${excelRow}="","",${mnozstviCol}${excelRow}*${cenaJedCol}${excelRow})`,
-      s: PRICE_STYLE,
+      s: {
+        ...(isMainRow ? MAIN_ROW_STYLE : isSubRow ? SUB_ROW_STYLE : PRICE_STYLE),
+        numFmt: '#,##0.00',
+        alignment: { horizontal: 'right' as const },
+      },
     };
     dataRowRanges.push(`${cenaCelCol}${excelRow}`);
 
-    // Style all cells in data row
+    // Style all cells in data row based on row type (main vs subordinate)
+    const baseStyle = isMainRow ? MAIN_ROW_STYLE : isSubRow ? SUB_ROW_STYLE : CELL_STYLE;
+
     for (let c = 0; c < headers.length; c++) {
       const cellRef = `${colLetter(c)}${excelRow}`;
       if (!wsItems[cellRef]) {
@@ -350,7 +386,7 @@ export function exportPriceRequest(
       const isPriceCol = c === colCenaJednotkova || c === colCenaCelkem;
       const isQtyCol = c === colMnozstvi;
       wsItems[cellRef].s = {
-        ...CELL_STYLE,
+        ...baseStyle,
         ...((isPriceCol || isQtyCol) ? { numFmt: '#,##0.00', alignment: { horizontal: 'right' as const } } : {}),
       };
     }
