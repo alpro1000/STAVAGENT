@@ -381,6 +381,24 @@ function createStyledItemsSheet(
     }
   }
 
+  // Add formulas for "Cena celkem" column (G = E × F)
+  // Formula: =IF(F{row}="","",E{row}*F{row})
+  // Column indices: Množství=4 (E), Cena jedn.=5 (F), Cena celkem=6 (G)
+  for (let r = 1; r < data.length; r++) {
+    const excelRow = r + 1; // Excel rows are 1-indexed
+    const cellRef = XLSX.utils.encode_cell({ r, c: 6 }); // Column G (Cena celkem)
+    const existingCell = ws[cellRef];
+    const existingStyle = existingCell?.s;
+
+    // Add formula while preserving existing style
+    ws[cellRef] = {
+      t: 'n',
+      f: `IF(F${excelRow}="","",E${excelRow}*F${excelRow})`,
+      s: existingStyle,
+      z: '#,##0.00',
+    };
+  }
+
   // Freeze header row
   ws['!freeze'] = { xSplit: 0, ySplit: 1 };
 
