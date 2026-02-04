@@ -48,7 +48,7 @@ export function ItemsTable({
   onSortingChange: externalOnSortingChange,
   showOnlyWorkItems = false,
 }: ItemsTableProps) {
-  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject } = useRegistryStore();
+  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice } = useRegistryStore();
   const allGroups = getAllGroups();
   const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
   const [applyingGlobal, setApplyingGlobal] = useState<string | null>(null);
@@ -439,17 +439,25 @@ export function ItemsTable({
         sortingFn: 'basic',
       }),
 
-      // Cena jednotková
+      // Cena jednotková (editable)
       columnHelper.accessor('cenaJednotkova', {
         header: 'Cena',
         cell: (info) => {
           const value = info.getValue();
+          const item = info.row.original;
           return (
-            <span className="text-sm font-medium tabular-nums">
-              {value !== null
-                ? `${value.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč`
-                : '-'}
-            </span>
+            <input
+              type="number"
+              step="0.01"
+              min="0"
+              value={value ?? ''}
+              onChange={(e) => {
+                const newPrice = parseFloat(e.target.value) || 0;
+                updateItemPrice(projectId, sheetId, item.id, newPrice);
+              }}
+              className="w-full bg-transparent border-0 border-b border-transparent hover:border-border-color focus:border-accent-primary focus:outline-none text-sm font-medium tabular-nums text-right px-1 py-0.5 transition-colors"
+              placeholder="-"
+            />
           );
         },
         size: 90,
@@ -654,7 +662,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice]
   );
 
   const table = useReactTable({

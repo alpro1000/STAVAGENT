@@ -13,7 +13,7 @@
 
 /* Тонкий скроллбар для ячейки - очень светлый и тонкий */
 .cell-scrollable::-webkit-scrollbar {
-  height: 2px;
+  height: 1px;
 }
 
 .cell-scrollable::-webkit-scrollbar-track {
@@ -39,7 +39,7 @@
 }
 
 .cell-scrollable-kod::-webkit-scrollbar {
-  height: 2px;
+  height: 1px;
 }
 
 .cell-scrollable-kod::-webkit-scrollbar-track {
