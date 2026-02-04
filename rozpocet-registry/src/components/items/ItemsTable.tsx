@@ -65,7 +65,7 @@ function EditablePriceCell({
           e.currentTarget.blur();
         }
       }}
-      className="w-full bg-bg-secondary/40 rounded border border-transparent hover:border-border-color focus:border-accent-primary focus:bg-bg-primary focus:outline-none text-sm font-medium tabular-nums text-right px-2 py-0.5 transition-colors"
+      className="w-full bg-bg-secondary/40 rounded border border-transparent hover:border-border-color focus:border-accent-primary focus:bg-bg-primary focus:outline-none text-sm font-medium tabular-nums text-right pl-2 pr-3 py-0.5 transition-colors"
       placeholder="0.00"
     />
   );
@@ -364,14 +364,14 @@ export function ItemsTable({
       maxCenaCelkem = Math.max(maxCenaCelkem, cenaCelkemStr.length);
     });
 
-    // ~9px per character for tabular-nums font + padding (32px for input, 28px for display)
+    // ~9px per character for tabular-nums font + extra padding for input field
     const charWidth = 9;
-    const minWidth = 100;
-    const maxWidth = 200;
+    const minWidth = 110;
+    const maxWidth = 220;
 
     return {
-      cenaJednotkova: Math.min(maxWidth, Math.max(minWidth, maxCenaJedn * charWidth + 36)),
-      cenaCelkem: Math.min(maxWidth, Math.max(minWidth, maxCenaCelkem * charWidth + 28)),
+      cenaJednotkova: Math.min(maxWidth, Math.max(minWidth, maxCenaJedn * charWidth + 48)),
+      cenaCelkem: Math.min(maxWidth, Math.max(minWidth, maxCenaCelkem * charWidth + 32)),
     };
   }, [items]);
 
@@ -533,8 +533,8 @@ export function ItemsTable({
           );
         },
         size: priceColumnWidths.cenaJednotkova,
-        minSize: 100,
-        maxSize: 200,
+        minSize: 110,
+        maxSize: 220,
         enableSorting: true,
         sortingFn: 'basic',
       }),
@@ -553,8 +553,8 @@ export function ItemsTable({
           );
         },
         size: priceColumnWidths.cenaCelkem,
-        minSize: 100,
-        maxSize: 200,
+        minSize: 110,
+        maxSize: 220,
         enableSorting: true,
         sortingFn: 'basic',
       }),
