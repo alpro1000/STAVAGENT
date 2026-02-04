@@ -185,6 +185,24 @@ export function ItemsTable({
     return counts;
   }, [items]);
 
+  // Calculate section totals (sum of all main items in each section)
+  const sectionTotals = useMemo(() => {
+    const totals = new Map<string, number>();
+    let currentSectionId: string | null = null;
+
+    items.forEach(item => {
+      if (item.rowRole === 'section') {
+        currentSectionId = item.id;
+        totals.set(item.id, 0);
+      } else if (item.rowRole === 'main' && currentSectionId) {
+        const currentTotal = totals.get(currentSectionId) || 0;
+        totals.set(currentSectionId, currentTotal + (item.cenaCelkem || 0));
+      }
+    });
+
+    return totals;
+  }, [items]);
+
   // Compute visible items: combines skupina filter, showOnlyWorkItems, and collapse/expand
   const visibleItems = useMemo(() => {
     return filteredItems.filter(item => {
@@ -519,12 +537,16 @@ export function ItemsTable({
         sortingFn: 'basic',
       }),
 
-      // Cena jednotková (editable, auto-width)
+      // Cena jednotková (editable, auto-width) - hidden for sections
       columnHelper.accessor('cenaJednotkova', {
         header: 'Cena jedn.',
         cell: (info) => {
           const value = info.getValue();
           const item = info.row.original;
+          // Hide price input for section rows
+          if (item.rowRole === 'section') {
+            return null;
+          }
           return (
             <EditablePriceCell
               value={value}
@@ -539,10 +561,23 @@ export function ItemsTable({
         sortingFn: 'basic',
       }),
 
-      // Cena celkem (auto-calculated, auto-width)
+      // Cena celkem (auto-calculated, auto-width) - shows section total for sections
       columnHelper.accessor('cenaCelkem', {
         header: 'Celkem',
         cell: (info) => {
+          const item = info.row.original;
+          // For sections, show the calculated section total
+          if (item.rowRole === 'section') {
+            const sectionTotal = sectionTotals.get(item.id);
+            if (sectionTotal && sectionTotal > 0) {
+              return (
+                <span className="text-sm font-bold tabular-nums whitespace-nowrap text-accent-primary">
+                  {sectionTotal.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč
+                </span>
+              );
+            }
+            return null;
+          }
           const value = info.getValue();
           return (
             <span className="text-sm font-semibold tabular-nums whitespace-nowrap">
@@ -659,6 +694,10 @@ export function ItemsTable({
         ),
         cell: (info) => {
           const item = info.row.original;
+          // Hide skupina selector for section rows
+          if (item.rowRole === 'section') {
+            return null;
+          }
           const currentSkupina = info.getValue();
           const isApplying = applyingToSimilar === item.id;
 
@@ -734,7 +773,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals]
   );
 
   const table = useReactTable({
