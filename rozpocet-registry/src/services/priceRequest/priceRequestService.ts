@@ -235,6 +235,7 @@ export function exportPriceRequest(
     outlineLevels.push(1); // Main row = level 1 (can have children)
 
     // Add subordinate items
+    // Subordinates INHERIT skupina from their parent main item
     const subordinates = subordinatesByParent.get(mainItem.id) || [];
     for (const subItem of subordinates) {
       globalIndex++;
@@ -250,7 +251,8 @@ export function exportPriceRequest(
       ];
 
       if (includeSkupina) {
-        subRow.push(subItem.skupina || '');
+        // Subordinates inherit skupina from their parent main item
+        subRow.push(mainItem.skupina || subItem.skupina || '');
       }
 
       if (includeSourceInfo) {
@@ -432,6 +434,7 @@ export function exportPriceRequest(
   // Set outline levels for Excel grouping (+/- buttons)
   // outlineLevels: 0 = header/SUM, 1 = main items, 2 = subordinate items
   // Excel outline: level property controls grouping depth
+  // IMPORTANT: Do NOT set hidden: true - it hides rows permanently instead of making them collapsible!
   wsItems['!rows'] = outlineLevels.map((level, idx) => {
     if (idx === 0) {
       // Header row: just set height, no outline
@@ -440,18 +443,19 @@ export function exportPriceRequest(
       // SUM row: no outline, normal height
       return { hpx: 22 };
     } else if (level === 1) {
-      // Main item: level 0 (visible, can have children)
+      // Main item: level 0 (visible, parent of subordinates)
       return { level: 0, hpx: 20 };
     } else if (level === 2) {
-      // Subordinate item: level 1 (grouped under main, hidden by default)
-      return { level: 1, hidden: true, hpx: 20 };
+      // Subordinate item: level 1 (grouped under main, visible but collapsible)
+      // User can click +/- in Excel to expand/collapse
+      return { level: 1, hpx: 20 };
     }
     return {};
   });
 
   // Enable outline/grouping settings for the sheet
-  // above: true = summary rows (main items) are ABOVE detail rows
-  // left: true = outline buttons on the left side
+  // above: true = summary rows (main items) are ABOVE detail rows (subordinates below main)
+  // left: true = outline buttons (+/-) on the left side
   wsItems['!outline'] = { above: true, left: true };
 
   // Set sheet outline properties
