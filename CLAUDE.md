@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.0.2
-**Last Updated:** 2026-02-03
+**Version:** 2.0.3
+**Last Updated:** 2026-02-04
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,8 +12,9 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
-| 2026-02-03 | rozpocet-registry | Modal colors - use Digital Concrete slate palette | ✅ Pushed |
-| 2026-02-03 | rozpocet-registry | Excel export grouping - main items → subordinates structure | ✅ Pushed |
+| 2026-02-04 | rozpocet-registry | Excel Export Fixes: subordinate inheritance, collapsible rows, input cells styling | ✅ Pushed |
+| 2026-02-04 | rozpocet-registry | Import Preview: larger table (600px), auto-scroll to data rows, jump button | ✅ Pushed |
+| 2026-02-03 | rozpocet-registry | Modal colors + Excel export grouping (main → subordinates) | ✅ Merged |
 | 2026-02-03 | URS_MATCHER_SERVICE | Document Work Extraction Pipeline: PDF → MinerU → LLM → TSKP → Batch | ✅ Pushed |
 | 2026-01-29 | rozpocet-registry | AI Agent + AI on/off toggle: Full autonomous classification system | ✅ Pushed |
 | 2026-01-29 | rozpocet-registry | Section header detection fix: numbered items no longer misclassified | ✅ Pushed |

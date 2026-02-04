@@ -1,12 +1,12 @@
 # Next Session - Quick Start
 
-**Last Updated:** 2026-02-03 (11:30 UTC)
-**Current Branch:** `claude/update-deployment-docs-cSIO1`
-**Last Session:** Rozpočet Registry UX Fixes (Excel Export + Modal Colors)
+**Last Updated:** 2026-02-04
+**Current Branch:** `claude/test-excel-modal-fixes-kmKsz`
+**Last Session:** Rozpočet Registry - Excel Export Fixes + Import Preview Improvements
 
 ---
 
-## 🚀 Quick Start Commands
+## Quick Start Commands
 
 ```bash
 # Current working directory
@@ -14,315 +14,202 @@ cd /home/user/STAVAGENT
 
 # Check branch and status
 git status
-git log --oneline -5
+git log --oneline -10
 
 # Pull latest changes
-git pull origin claude/update-deployment-docs-cSIO1
+git pull origin main
 
-# Start development (choose service)
-cd rozpocet-registry && npm run dev                  # Rozpočet Registry (Vite)
-cd URS_MATCHER_SERVICE/backend && npm run dev        # URS Matcher backend
-cd URS_MATCHER_SERVICE/frontend && npm run dev       # URS Matcher frontend
+# Start development (rozpocet-registry)
+cd rozpocet-registry && npm run dev     # Vite on :5173
+
+# Other services (if needed)
+cd URS_MATCHER_SERVICE/backend && npm run dev        # URS Matcher
 cd Monolit-Planner/backend && npm run dev            # Monolit backend
-cd Monolit-Planner/frontend && npm run dev           # Monolit frontend
 cd concrete-agent && npm run dev:backend             # CORE backend
 ```
 
 ---
 
-## 📋 Recent Work (2026-02-03)
+## Recent Work (2026-02-04)
 
-### ✅ LATEST: Rozpočet Registry UX Fixes (11:30 UTC)
+### LATEST: Rozpočet Registry Excel Improvements
 
-**Problems Fixed:**
-1. **Excel Export Grouping** - Price Request export grouped by Skupina instead of main → subordinates
-2. **Modal Colors** - "Attach to Parent" modal used pure black instead of corporate slate palette
+**Session Focus:** Fixed multiple Excel export issues + Import preview improvements
 
-**Solutions:**
-- `c54238a` - FIX: Excel export grouping - main items → subordinates structure
-- `a210e55` - STYLE: Modal colors - use Digital Concrete slate palette
-
-**Files changed:**
-- `rozpocet-registry/src/services/priceRequest/priceRequestService.ts` (+87 -93)
-- `rozpocet-registry/src/components/items/RowActionsCell.tsx` (+6 -6)
-
-**Status:** ✅ Pushed to `claude/update-deployment-docs-cSIO1`
-
-**Details:** See `docs/archive/completed-sessions/SESSION_2026-02-03_ROZPOCET_UX_FIXES.md`
-
----
-
-### ✅ Completed Earlier Today: Deployment Timeout Fixes
-
-**What was fixed:**
-- Redis connection hang (10s timeout + fallback)
-- MinerU parsing timeout (2min → 5min)
-
-**Commits:**
-- `6d1ca88` - FIX: Add Redis connection timeout
-- `08c43bd` - FIX: Increase MinerU timeout to 5 minutes
-
-**Session Summary:** See `docs/archive/completed-sessions/DEPLOYMENT_FIX_2026-02-03.md`
-
----
-
-### ✅ Completed Earlier: Document Work Extraction Pipeline
-
-**What was built:**
-- Full pipeline: PDF → MinerU → LLM → TSKP → Deduplication → Batch
-- Backend: `documentExtractionService.js` (520 lines)
-- Frontend: Extraction UI with stats cards
-
-**Session Summary:** See `docs/archive/completed-sessions/SESSION_2026-02-03_DOCUMENT_EXTRACTION.md`
-
----
-
-## 🎯 Next Tasks (Priority Order)
-
-### 1. Test Rozpočet Registry Changes (High Priority)
-- [ ] Deploy to Vercel (rozpocet-registry is static)
-- [ ] Test Excel export with real data (Poptávka)
-- [ ] Verify main items have +/- collapse buttons
-- [ ] Verify subordinates are indented and hidden by default
-- [ ] Test modal colors on different screens
-- [ ] Verify no Skupina group headers appear
-
-### 2. Merge or Create PR
-- [ ] Review changes in `claude/update-deployment-docs-cSIO1`
-- [ ] Create PR if needed
-- [ ] Merge to main branch
-
-### 3. Document Extraction Testing (Next Priority)
-- [ ] Test with real PDF documents (sample: `203_01_Techn zprava.pdf`)
-- [ ] Verify MinerU parsing works correctly
-- [ ] Check LLM extraction produces valid structured data
-- [ ] Test TSKP matching accuracy
-- [ ] Verify deduplication (85% threshold)
-
-### 4. Monitor Performance
-- [ ] Check MinerU response times (target: <2 min)
-- [ ] Monitor LLM extraction times (target: <90s)
-- [ ] Check memory usage for large PDFs
-
-### 5. Documentation Updates
-- [ ] Update `CLAUDE.md` Recent Activity table
-- [ ] Update `rozpocet-registry/README.md` if needed
-
----
-
-## 🔧 Known Issues
-
-### ✅ All Fixed (2026-02-03)
-✅ Excel export grouping → Fixed with hierarchy structure
-✅ Modal colors → Fixed with slate palette
-✅ Redis connection hang → Fixed with 10s timeout
-✅ MinerU parsing timeout → Fixed with 5min timeout
-
-### 💡 Potential Enhancements
-- Czech label mapping for work groups (UX)
-- Data migration for users with old group names in localStorage
-- Caching for TSKP matches in Price Request
-- Progressive UI updates for document extraction
-
----
-
-## 🏗️ Architecture Context
-
-### Rozpočet Registry - Excel Export (Price Request)
-
-**New Structure:**
+**Commits (9 total):**
 ```
-Main item 1 (+ collapse button, Excel outline level 0)
-  ├─ ↳ Subordinate 1.1 (hidden, Excel outline level 1)
-  └─ ↳ Subordinate 1.2 (hidden, Excel outline level 1)
-Main item 2 (+ collapse button, Excel outline level 0)
-  ├─ ↳ Subordinate 2.1 (hidden, Excel outline level 1)
-  └─ ↳ Subordinate 2.2 (hidden, Excel outline level 1)
-SUM row
+8d4bdc6 FIX: Import preview - larger table, auto-scroll to data rows
+02d95ce FIX: Export to original file + yellow input cells + price formulas
+c23b54b FEAT: Yellow highlight for input cells + price formulas in exports
+4c7dbfb STYLE: Added light tint styling for main rows in Poptávka export
+a1f282d FIX: Poptávka export now includes subordinate rows for collapsible grouping
+928618b FIX: Improved Excel row grouping for collapsible subordinate rows
+0d58356 FIX: Excel export - subordinate skupina inheritance + section handling
+90e64c7 STYLE: Light theme for AIPanel and PriceRequestPanel
+26024e9 STYLE: Light theme for RowActionsCell dropdowns and modals
 ```
 
-**Outline Levels Mapping:**
-- Level 0: Header/SUM row (always visible, no outline)
-- Level 1: Main items (outline level 0, can have children, visible)
-- Level 2: Subordinates (outline level 1, hidden by default, indented)
+---
 
-**Key Code:**
+## Problems Fixed
+
+### 1. Full Excel Export Issues
+- **Subordinate rows wrong skupina** - Now inherit from parent via `parentSkupinaMap`
+- **Section names (SEKCE) missing** - Added `SECTION_STYLE` for section rows
+- **Sorting broken** - Fixed to use `source.rowStart` instead of `boqLineNumber`
+
+### 2. Poptávka Export Issues
+- **Collapsible rows (+/-) not working** - Fixed by:
+  - Removing `hidden: true` (was hiding rows permanently)
+  - Adding both `level` and `outlineLevel` properties
+  - Adding `!sheetFormat` and `!sheetViews` settings
+- **Subordinate rows completely missing** - Fixed `handleCreateReport()` in PriceRequestPanel.tsx which was explicitly filtering them out
+- **Visual styling** - Added main row tint (light blue #E8F4FD) and sub row tint (light gray #FAFAFA)
+
+### 3. Input Cells Styling
+- **Yellow highlight** - Added `INPUT_CELL_STYLE` (#FFFDE7) for "Cena jednotková" column
+- **Price formulas** - Added `=Množství×Cena_jednotková` formula in "Cena celkem" column
+
+### 4. Export to Original File
+- **File corruption** - Fixed by preserving cell properties when updating:
+  ```typescript
+  ws[cellRef] = {
+    ...existingCell,  // Preserve existing properties
+    t: 'n',
+    v: newValue,
+    w: undefined,     // Clear cached value
+  };
+  ```
+- Added `cellStyles: true` option for read/write operations
+
+### 5. Import Preview
+- **Large headers problem** - When file has large header, couldn't see data rows
+- **Solutions:**
+  - Increased preview rows: 100 → 150
+  - Increased table height: 400px → 600px
+  - Auto-scroll to data start row when detected
+  - Added "Přejít na data" button for manual navigation
+  - Enhanced data row highlighting (green + ring)
+
+---
+
+## Key Files Modified
+
+### excelExportService.ts
+- `parentSkupinaMap` for subordinate inheritance
+- `SECTION_STYLE` for section rows
+- Sorting by `source.rowStart`
+- Formula for Cena celkem column
+- `exportToOriginalFile()` - preserve cell properties
+
+### priceRequestService.ts
+- `MAIN_ROW_STYLE` (light blue #E8F4FD)
+- `SUB_ROW_STYLE` (light gray #FAFAFA)
+- `INPUT_CELL_STYLE` (yellow #FFFDE7)
+- Row grouping: `level`, `outlineLevel`, `!sheetFormat`, `!sheetViews`
+- Subordinate inheritance via `parentSkupinaMap`
+
+### PriceRequestPanel.tsx
+- `handleCreateReport()` - now includes subordinates for main items:
+  ```typescript
+  const subordinatesForMainItems = allItems.filter(item => {
+    if (item.rowRole !== 'subordinate') return false;
+    return item.parentItemId && mainItemIds.has(item.parentItemId);
+  });
+  ```
+
+### RawExcelViewer.tsx
+- Preview rows: 100 → 150
+- Table height: 400px → 600px
+- Auto-scroll to data row
+- "Přejít na data" button
+- Enhanced row highlighting
+
+---
+
+## Service Status
+
+| Service | Status | Notes |
+|---------|--------|-------|
+| rozpocet-registry | ✅ Ready | All fixes committed and pushed |
+| concrete-agent | ✅ Running | CORE backend |
+| URS_MATCHER_SERVICE | ✅ Running | Document extraction ready |
+| Monolit-Planner | ✅ Running | Kiosk |
+
+---
+
+## Technical Context for Claude
+
+### Excel Row Grouping (xlsx-js-style)
 ```typescript
-wsItems['!rows'] = outlineLevels.map((level, idx) => {
-  if (idx === 0) return { hpx: 28 };        // Header
-  else if (level === 0) return { hpx: 22 }; // SUM
-  else if (level === 1) return { level: 0, hpx: 20 }; // Main
-  else if (level === 2) return { level: 1, hidden: true, hpx: 20 }; // Sub
-  return {};
+// Required for collapsible rows:
+row.level = 1;           // Group level
+row.outlineLevel = 1;    // Alternative property
+// Do NOT use hidden: true (hides rows permanently)
+
+// Required sheet settings:
+ws['!outline'] = { above: false, left: false };
+ws['!sheetFormat'] = { outlineLevelRow: 1 };
+ws['!sheetViews'] = [{ showOutlineSymbols: true }];
+```
+
+### Subordinate Inheritance Pattern
+```typescript
+// Build parent map
+const parentSkupinaMap = new Map<string, string>();
+items.filter(i => i.rowRole === 'main').forEach(item => {
+  parentSkupinaMap.set(item.id, item.skupina || '');
 });
+
+// Inherit for subordinates
+const skupina = item.rowRole === 'subordinate' && item.parentItemId
+  ? parentSkupinaMap.get(item.parentItemId) || item.skupina
+  : item.skupina;
 ```
 
-### Modal - Digital Concrete Colors
-
-**Palette:**
-- Backdrop: `#020617` (slate-950, 100% opaque)
-- Modal border: `border-slate-900` (#0f172a)
-- Header: `bg-slate-900` (#0f172a)
-- Header border: `border-slate-700` (#334155)
-- Content: `bg-slate-100` (#f1f5f9)
-
-**Z-index Layering:**
-- Backdrop: `z-[99998]`
-- Modal: `z-[99999]`
-- Header: `z-[100000]`
-
-**Positioning:**
+### Cell Preservation Pattern
 ```typescript
-style={{
-  transform: 'translate(-50%, -50%)',
-  left: '50%',
-  top: '50%'
-}}
+// Read with style preservation
+const workbook = XLSX.read(data, {
+  type: 'array',
+  cellStyles: true,
+  cellNF: true,
+  cellFormula: true,
+});
+
+// Update preserving properties
+ws[cellRef] = {
+  ...existingCell,
+  t: 'n',
+  v: newValue,
+  w: undefined,
+};
+
+// Write with style preservation
+XLSX.write(workbook, { type: 'array', bookType: 'xlsx', cellStyles: true });
 ```
 
 ---
 
-## 📝 Important Notes
+## Next Session Tasks (Potential)
 
-### Deployment
-- **Branch:** `claude/update-deployment-docs-cSIO1`
-- **Must start with:** `claude/`
-- **Must end with:** matching session ID
-- **Push command:** `git push -u origin claude/update-deployment-docs-cSIO1`
+1. **Test all export scenarios**
+   - Full Excel export with subordinates
+   - Poptávka export with collapsible rows
+   - Export to original file
 
-### Git Retry Logic
-- **Fetch/Pull/Push failures:** Retry up to 4 times with exponential backoff (2s, 4s, 8s, 16s)
-- **Network errors only:** Don't retry permission errors
+2. **Import preview testing**
+   - Files with large headers (10+ rows)
+   - Auto-scroll verification
 
-### Testing Rozpočet Registry
-```bash
-cd /home/user/STAVAGENT/rozpocet-registry
-npm install
-npm run dev     # Start Vite on :5173
-npm run build   # Production build
-```
+3. **Performance optimization**
+   - Large file exports (1000+ items)
+   - Memory usage monitoring
 
-### Build Verification
-```bash
-cd /home/user/STAVAGENT/rozpocet-registry
-npx vite build
-# Expected: ✓ Built in ~11s, 1771 modules
-```
+4. **UX improvements**
+   - Export progress indicator
+   - Better error messages
 
 ---
 
-## 🔍 Debug Commands
-
-```bash
-# Check rozpočet-registry
-cd /home/user/STAVAGENT/rozpocet-registry
-npm run dev
-# Open: http://localhost:5173
-
-# Test Excel export locally
-# 1. Import items with main/subordinate structure
-# 2. Use search to filter items
-# 3. Click "Vytvořit poptávku"
-# 4. Download Excel file
-# 5. Open in Excel/LibreOffice
-# 6. Verify +/- buttons appear next to main items
-# 7. Click + to expand subordinates
-
-# Check modal styling
-# 1. Filter to show subordinate items
-# 2. Click Link2 icon (Připojit k hlavní položce)
-# 3. Verify backdrop is slate-950 (dark gray, not black)
-# 4. Verify modal border is slate-900
-# 5. Verify header is slate-900
-# 6. Verify modal is centered
-
-# Git log
-git log --oneline --graph -10
-```
-
----
-
-## 📚 Documentation Files
-
-### Main Documentation
-- `CLAUDE.md` - System overview (v2.0.2)
-- `NEXT_SESSION.md` - **THIS FILE** - Quick start for next session
-- `BACKLOG.md` - Pending tasks and priorities
-- `README.md` - Project overview (Russian)
-
-### Service Documentation
-- `concrete-agent/CLAUDE.md` - CORE system (v2.4.1)
-- `Monolit-Planner/CLAUDE.MD` - Monolit kiosk (v4.3.8)
-- `rozpocet-registry/README.md` - BOQ Registry (v2.1.0)
-- `URS_MATCHER_SERVICE/README.md` - URS Matcher
-
-### Session Archives
-- `docs/archive/completed-sessions/SESSION_2026-02-03_ROZPOCET_UX_FIXES.md` - **Latest session**
-- `docs/archive/completed-sessions/DEPLOYMENT_FIX_2026-02-03.md`
-- `docs/archive/completed-sessions/SESSION_2026-02-03_DOCUMENT_EXTRACTION.md`
-- Previous sessions in same directory
-
----
-
-## 🚦 Service Status
-
-| Service | Status | URL | Port (Dev) |
-|---------|--------|-----|------------|
-| concrete-agent | ✅ Running | https://concrete-agent.onrender.com | 8000 |
-| stavagent-portal | ✅ Running | https://stav-agent.onrender.com | 3001 |
-| Monolit-Planner API | ✅ Running | https://monolit-planner-api.onrender.com | 3001 |
-| Monolit-Planner Frontend | ✅ Running | https://monolit-planner-frontend.onrender.com | 5173 |
-| URS_MATCHER_SERVICE | ✅ Running | https://urs-matcher-service.onrender.com | 3001 (BE), 3000 (FE) |
-| rozpocet-registry | ✅ Static | Vercel | 5173 |
-
----
-
-## 🎓 Context for Claude
-
-### What Just Happened (Latest Session)
-
-**Fixed two UX issues in rozpočet-registry:**
-
-1. ✅ **Excel export grouping** - Changed Price Request export from Skupina-based grouping to hierarchy-based (main items → subordinates). Now main items show with +/- collapse buttons, subordinates are indented with "  ↳ " marker and hidden by default.
-
-2. ✅ **Modal colors** - Updated "Attach to Parent" modal to use Digital Concrete corporate slate palette instead of pure black. Backdrop now uses slate-950 (#020617), modal border and header use slate-900, while maintaining 100% opacity and correct z-index layering.
-
-**User Requirements:**
-- User provided screenshot showing Excel export with Skupina group headers (wrong structure)
-- User wanted main items → subordinates (like regular Excel export)
-- User requested corporate color scheme (slate palette) instead of pure black
-- Layer issue was already fixed (100% opacity, z-index correct), just needed color update
-
-**Files Modified:**
-- `rozpocet-registry/src/services/priceRequest/priceRequestService.ts` - Excel export hierarchy
-- `rozpocet-registry/src/components/items/RowActionsCell.tsx` - Modal colors
-
-### Key Technical Decisions
-
-**Excel Export:**
-- Outline levels: 0 (header/SUM), 1 (main items), 2 (subordinates)
-- Main items: Excel outline level 0, can have children, visible
-- Subordinates: Excel outline level 1, hidden by default, indented
-- Removed Skupina group headers completely
-
-**Modal Colors:**
-- Backdrop: `#020617` (slate-950) - still 100% opaque
-- Border/Header: `slate-900` (#0f172a)
-- Borders: `slate-700` (#334155)
-- Z-index preserved: z-[99998], z-[99999], z-[100000]
-
-### Current State
-- ✅ Both fixes committed and pushed
-- ✅ Build verified (TypeScript compilation successful)
-- ✅ Branch: `claude/update-deployment-docs-cSIO1`
-- ⏳ Testing in production pending
-
-### Next Actions
-1. **Deploy to Vercel** - rozpocet-registry is static hosting
-2. **Test Excel export** - Verify main items have +/- buttons, subordinates hidden
-3. **Test modal colors** - Verify slate palette on different screens
-4. **Create PR or merge** - If testing successful
-
----
-
-**Ready for next session!** 🚀
+**Ready for next session!**
