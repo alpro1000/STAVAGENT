@@ -89,6 +89,10 @@ export interface Bridge {
   status?: 'active' | 'completed' | 'archived';  // Bridge lifecycle status
   created_at?: string;
   updated_at?: string;
+
+  // Portal Integration (Phase 7)
+  portal_project_id?: string;     // UUID from stavagent-portal (links to unified project)
+  portal_linked_at?: string;      // ISO timestamp when linked to Portal
 }
 
 export interface MappingProfile {

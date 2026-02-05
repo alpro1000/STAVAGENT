@@ -140,6 +140,9 @@ async function initPostgresSchema() {
   // Run Phase 6 migration (R0 Deterministic Core tables)
   await runPhase6R0Migrations();
 
+  // Run Phase 7 migration (Portal Integration for monolith_projects)
+  await runPhase7PortalIntegration();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 
@@ -928,6 +931,69 @@ async function runPhase6R0Migrations() {
 }
 
 /**
+ * Migration Phase 7 - Portal Integration
+ * Adds portal_project_id to monolith_projects for linking to stavagent-portal
+ * This enables data synchronization between Monolit-Planner and other kiosks
+ */
+async function runPhase7PortalIntegration() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 7 migration (Portal Integration)...');
+
+    // Add portal_project_id column to monolith_projects
+    try {
+      console.log('[Migration 007] Adding portal_project_id to monolith_projects...');
+      await db.exec(`
+        ALTER TABLE monolith_projects
+        ADD COLUMN IF NOT EXISTS portal_project_id VARCHAR(255);
+      `);
+      console.log('[Migration 007] ✓ portal_project_id column added');
+    } catch (error) {
+      if (!error.message.includes('already exists') && !error.message.includes('column')) {
+        console.error('[Migration 007] Error adding portal_project_id:', error);
+      } else {
+        console.log('[Migration 007] ✓ portal_project_id column already exists');
+      }
+    }
+
+    // Add portal_linked_at timestamp column
+    try {
+      console.log('[Migration 007] Adding portal_linked_at to monolith_projects...');
+      await db.exec(`
+        ALTER TABLE monolith_projects
+        ADD COLUMN IF NOT EXISTS portal_linked_at TIMESTAMP;
+      `);
+      console.log('[Migration 007] ✓ portal_linked_at column added');
+    } catch (error) {
+      if (!error.message.includes('already exists') && !error.message.includes('column')) {
+        console.error('[Migration 007] Error adding portal_linked_at:', error);
+      } else {
+        console.log('[Migration 007] ✓ portal_linked_at column already exists');
+      }
+    }
+
+    // Create index for portal_project_id
+    try {
+      console.log('[Migration 007] Creating index for portal_project_id...');
+      await db.exec(`
+        CREATE INDEX IF NOT EXISTS idx_monolith_projects_portal ON monolith_projects(portal_project_id);
+      `);
+      console.log('[Migration 007] ✓ Portal index created');
+    } catch (error) {
+      if (!error.message.includes('already exists')) {
+        console.error('[Migration 007] Error creating index:', error);
+      } else {
+        console.log('[Migration 007] ✓ Portal index already exists');
+      }
+    }
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 7 Portal Integration completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 7 migration:', error);
+    console.error('[Migration 007] ⚠️  Portal migration failed, but continuing startup...');
+  }
+}
+
+/**
  * Initialize SQLite schema (existing logic from init.js)
  */
 async function initSqliteSchema() {
@@ -1484,6 +1550,21 @@ async function applySqliteMigrations() {
   const hasOtskpCode = posColumns.some(col => col.name === 'otskp_code');
   if (!hasOtskpCode) {
     db.exec("ALTER TABLE positions ADD COLUMN otskp_code TEXT");
+  }
+
+  // Phase 7: Portal Integration columns for monolith_projects (SQLite)
+  const mpColumns = db.prepare("PRAGMA table_info(monolith_projects)").all();
+
+  const hasPortalProjectId = mpColumns.some(col => col.name === 'portal_project_id');
+  if (!hasPortalProjectId) {
+    db.exec("ALTER TABLE monolith_projects ADD COLUMN portal_project_id TEXT");
+    console.log('[MIGRATION] Added portal_project_id column to monolith_projects table');
+  }
+
+  const hasPortalLinkedAt = mpColumns.some(col => col.name === 'portal_linked_at');
+  if (!hasPortalLinkedAt) {
+    db.exec("ALTER TABLE monolith_projects ADD COLUMN portal_linked_at TEXT");
+    console.log('[MIGRATION] Added portal_linked_at column to monolith_projects table');
   }
 }
 
