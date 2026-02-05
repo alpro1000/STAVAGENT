@@ -8,6 +8,10 @@
  * GET    /api/monolith-projects/:id          - Get project details
  * PUT    /api/monolith-projects/:id          - Update project
  * DELETE /api/monolith-projects/:id          - Delete project
+ *
+ * Portal Integration (Phase 7):
+ * POST   /api/monolith-projects/:id/link-portal   - Link to Portal
+ * DELETE /api/monolith-projects/:id/link-portal   - Unlink from Portal
  */
 
 import express from 'express';
@@ -411,6 +415,108 @@ router.get('/debug/database', async (req, res) => {
   } catch (error) {
     logger.error('[DEBUG] Error checking database:', error);
     res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
+/**
+ * POST /api/monolith-projects/:id/link-portal
+ * Link project to stavagent-portal
+ * Body: { portal_project_id: string }
+ */
+router.post('/:id/link-portal', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { portal_project_id } = req.body;
+
+    logger.info(`[LINK PORTAL] Linking project ${id} to Portal ${portal_project_id}`);
+
+    if (!portal_project_id) {
+      return res.status(400).json({ error: 'portal_project_id is required' });
+    }
+
+    // Check project exists
+    const project = await db.prepare(`
+      SELECT project_id FROM monolith_projects WHERE project_id = ?
+    `).get(id);
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    // Update project with portal link
+    await db.prepare(`
+      UPDATE monolith_projects SET
+        portal_project_id = ?,
+        portal_linked_at = CURRENT_TIMESTAMP,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE project_id = ?
+    `).run(portal_project_id, id);
+
+    const updated = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(id);
+
+    logger.info(`[LINK PORTAL] ✅ Successfully linked project ${id} to Portal ${portal_project_id}`);
+
+    res.json({
+      success: true,
+      message: 'Project linked to Portal',
+      project: {
+        ...updated,
+        bridge_id: updated.project_id
+      }
+    });
+  } catch (error) {
+    logger.error('[LINK PORTAL] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/monolith-projects/:id/link-portal
+ * Unlink project from stavagent-portal
+ */
+router.delete('/:id/link-portal', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    logger.info(`[UNLINK PORTAL] Unlinking project ${id} from Portal`);
+
+    // Check project exists
+    const project = await db.prepare(`
+      SELECT project_id, portal_project_id FROM monolith_projects WHERE project_id = ?
+    `).get(id);
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    if (!project.portal_project_id) {
+      return res.status(400).json({ error: 'Project is not linked to Portal' });
+    }
+
+    // Remove portal link
+    await db.prepare(`
+      UPDATE monolith_projects SET
+        portal_project_id = NULL,
+        portal_linked_at = NULL,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE project_id = ?
+    `).run(id);
+
+    const updated = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(id);
+
+    logger.info(`[UNLINK PORTAL] ✅ Successfully unlinked project ${id} from Portal`);
+
+    res.json({
+      success: true,
+      message: 'Project unlinked from Portal',
+      project: {
+        ...updated,
+        bridge_id: updated.project_id
+      }
+    });
+  } catch (error) {
+    logger.error('[UNLINK PORTAL] Error:', error);
+    res.status(500).json({ error: error.message });
   }
 });
 
