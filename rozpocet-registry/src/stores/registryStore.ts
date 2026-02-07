@@ -12,6 +12,7 @@ import type {
   ParsedItem,
   SheetStats,
   PortalLink,
+  TOVData,
 } from '../types';
 import type { ImportTemplate } from '../types/template';
 import { PREDEFINED_TEMPLATES } from '../config/templates';
@@ -34,6 +35,9 @@ interface RegistryState {
   // Пользовательские группы
   customGroups: string[];
   hiddenDefaultGroups: string[]; // Default groups that were renamed/deleted (hidden from list)
+
+  // TOV Data (Resource Breakdown)
+  tovData: Record<string, TOVData>;  // itemId → TOVData
 
   // Действия с проектами
   addProject: (project: Project) => void;
@@ -86,6 +90,12 @@ interface RegistryState {
 
   // Статистика
   updateSheetStats: (projectId: string, sheetId: string) => void;
+
+  // TOV Actions
+  setItemTOV: (itemId: string, data: TOVData) => void;
+  getItemTOV: (itemId: string) => TOVData | undefined;
+  removeItemTOV: (itemId: string) => void;
+  hasItemTOV: (itemId: string) => boolean;
 }
 
 /**
@@ -114,6 +124,7 @@ export const useRegistryStore = create<RegistryState>()(
       savedFilters: [],
       customGroups: [],
       hiddenDefaultGroups: [],
+      tovData: {},
 
       // Проекты
       addProject: (project) => {
@@ -747,6 +758,31 @@ export const useRegistryStore = create<RegistryState>()(
             };
           }),
         }));
+      },
+
+      // TOV Actions
+      setItemTOV: (itemId, data) => {
+        set((state) => ({
+          tovData: {
+            ...state.tovData,
+            [itemId]: data,
+          },
+        }));
+      },
+
+      getItemTOV: (itemId) => {
+        return get().tovData[itemId];
+      },
+
+      removeItemTOV: (itemId) => {
+        set((state) => {
+          const { [itemId]: _, ...rest } = state.tovData;
+          return { tovData: rest };
+        });
+      },
+
+      hasItemTOV: (itemId) => {
+        return itemId in get().tovData;
       },
     }),
     {

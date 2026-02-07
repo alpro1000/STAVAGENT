@@ -2245,4 +2245,236 @@ router.post('/block-match-fast', upload.single('file'), async (req, res) => {
   }
 });
 
+// ============================================================================
+// PORTAL INTEGRATION ENDPOINTS (Phase 1.3 - Unification)
+// ============================================================================
+
+/**
+ * POST /api/jobs/:jobId/link-portal
+ * Link a job to stavagent-portal
+ * Body: { portal_project_id: string }
+ */
+router.post('/:jobId/link-portal', async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const { portal_project_id } = req.body;
+
+    logger.info(`[LINK PORTAL] Linking job ${jobId} to Portal ${portal_project_id}`);
+
+    if (!portal_project_id) {
+      return res.status(400).json({ error: 'portal_project_id is required' });
+    }
+
+    const db = await getDatabase();
+
+    // Check job exists
+    const job = await db.get('SELECT id FROM jobs WHERE id = ?', [jobId]);
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    // Update job with portal link
+    await db.run(
+      'UPDATE jobs SET portal_project_id = ? WHERE id = ?',
+      [portal_project_id, jobId]
+    );
+
+    const updated = await db.get('SELECT * FROM jobs WHERE id = ?', [jobId]);
+
+    logger.info(`[LINK PORTAL] ✅ Successfully linked job ${jobId} to Portal ${portal_project_id}`);
+
+    res.json({
+      success: true,
+      message: 'Job linked to Portal',
+      job: {
+        id: updated.id,
+        filename: updated.filename,
+        status: updated.status,
+        portal_project_id: updated.portal_project_id
+      }
+    });
+  } catch (error) {
+    logger.error(`[LINK PORTAL] Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/jobs/:jobId/link-portal
+ * Unlink a job from stavagent-portal
+ */
+router.delete('/:jobId/link-portal', async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    logger.info(`[UNLINK PORTAL] Unlinking job ${jobId} from Portal`);
+
+    const db = await getDatabase();
+
+    // Check job exists
+    const job = await db.get('SELECT id, portal_project_id FROM jobs WHERE id = ?', [jobId]);
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    if (!job.portal_project_id) {
+      return res.status(400).json({ error: 'Job is not linked to Portal' });
+    }
+
+    // Remove portal link
+    await db.run(
+      'UPDATE jobs SET portal_project_id = NULL WHERE id = ?',
+      [jobId]
+    );
+
+    logger.info(`[UNLINK PORTAL] ✅ Successfully unlinked job ${jobId} from Portal`);
+
+    res.json({
+      success: true,
+      message: 'Job unlinked from Portal',
+      job_id: jobId
+    });
+  } catch (error) {
+    logger.error(`[UNLINK PORTAL] Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/jobs/by-portal/:portalProjectId
+ * Get all jobs linked to a specific Portal project
+ */
+router.get('/by-portal/:portalProjectId', async (req, res) => {
+  try {
+    const { portalProjectId } = req.params;
+
+    logger.info(`[BY PORTAL] Fetching jobs for Portal project ${portalProjectId}`);
+
+    const db = await getDatabase();
+
+    const jobs = await db.all(
+      'SELECT * FROM jobs WHERE portal_project_id = ? ORDER BY created_at DESC',
+      [portalProjectId]
+    );
+
+    res.json({
+      portal_project_id: portalProjectId,
+      count: jobs.length,
+      jobs: jobs.map(job => ({
+        id: job.id,
+        filename: job.filename,
+        status: job.status,
+        created_at: job.created_at,
+        total_rows: job.total_rows,
+        processed_rows: job.processed_rows
+      }))
+    });
+  } catch (error) {
+    logger.error(`[BY PORTAL] Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/jobs/:jobId/export-to-registry
+ * Export job results in format compatible with rozpocet-registry
+ * Returns items in ParsedItem format for import into Registry
+ */
+router.post('/:jobId/export-to-registry', async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    logger.info(`[EXPORT TO REGISTRY] Exporting job ${jobId} for Registry import`);
+
+    const db = await getDatabase();
+
+    // Get job
+    const job = await db.get('SELECT * FROM jobs WHERE id = ?', [jobId]);
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    // Check if we have results_json (block-match format)
+    if (job.results_json) {
+      const resultsData = JSON.parse(job.results_json);
+
+      // Convert to Registry format
+      const registryItems = [];
+
+      for (const block of resultsData.blocks || []) {
+        for (const item of block.items || block.analysis?.mapped_items || []) {
+          registryItems.push({
+            id: item.row_id?.toString() || uuidv4(),
+            kod: item.urs_code || '',
+            popis: item.input_text || item.urs_name || '',
+            mnozstvi: item.quantity || 0,
+            jednotka: item.unit || 'ks',
+            cenaJednotkova: 0,  // Registry will fill this from OTSKP
+            cenaCelkem: 0,
+            skupina: null,     // Registry will classify this
+            source: {
+              type: 'urs_matcher',
+              jobId: job.id,
+              blockName: block.block_name || block.block_id,
+              confidence: item.confidence || 0,
+              explanation: item.explanation_cs || item.explanation || null
+            }
+          });
+        }
+      }
+
+      logger.info(`[EXPORT TO REGISTRY] ✅ Exported ${registryItems.length} items from block-match results`);
+
+      return res.json({
+        success: true,
+        job_id: job.id,
+        filename: job.filename,
+        portal_project_id: job.portal_project_id,
+        items_count: registryItems.length,
+        items: registryItems,
+        message: 'Ready for Registry import'
+      });
+    }
+
+    // Fallback: job_items table (old format)
+    const items = await db.all(
+      'SELECT * FROM job_items WHERE job_id = ? ORDER BY input_row_id',
+      [jobId]
+    );
+
+    const registryItems = items.map(item => ({
+      id: item.id,
+      kod: item.urs_code || '',
+      popis: item.input_text || item.urs_name || '',
+      mnozstvi: item.quantity || 0,
+      jednotka: item.unit || 'ks',
+      cenaJednotkova: 0,
+      cenaCelkem: 0,
+      skupina: null,
+      source: {
+        type: 'urs_matcher',
+        jobId: job.id,
+        confidence: item.confidence || 0,
+        explanation: item.explanation || null
+      }
+    }));
+
+    logger.info(`[EXPORT TO REGISTRY] ✅ Exported ${registryItems.length} items from job_items`);
+
+    res.json({
+      success: true,
+      job_id: job.id,
+      filename: job.filename,
+      portal_project_id: job.portal_project_id,
+      items_count: registryItems.length,
+      items: registryItems,
+      message: 'Ready for Registry import'
+    });
+
+  } catch (error) {
+    logger.error(`[EXPORT TO REGISTRY] Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;
