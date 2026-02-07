@@ -13,13 +13,14 @@ import {
   type SortingState,
 } from '@tanstack/react-table';
 import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check } from 'lucide-react';
-import type { ParsedItem } from '../../types';
+import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
 import { AlertModal } from '../common/Modal';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 import { RowActionsCell } from './RowActionsCell';
 import { BulkActionsBar } from './BulkActionsBar';
+import { TOVButton, TOVModal } from '../tov';
 import './ItemsTable.css';
 
 /** Editable price cell with local state to prevent cursor jumping */
@@ -97,7 +98,10 @@ export function ItemsTable({
   onSortingChange: externalOnSortingChange,
   showOnlyWorkItems = false,
 }: ItemsTableProps) {
-  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice } = useRegistryStore();
+  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV } = useRegistryStore();
+
+  // TOV modal state
+  const [tovModalItem, setTovModalItem] = useState<ParsedItem | null>(null);
   const allGroups = getAllGroups();
   const [applyingToSimilar, setApplyingToSimilar] = useState<string | null>(null);
   const [applyingGlobal, setApplyingGlobal] = useState<string | null>(null);
@@ -431,6 +435,28 @@ export function ItemsTable({
           />
         ),
         size: 40,
+        enableResizing: false,
+      }),
+
+      // TOV (Resource Breakdown) button
+      columnHelper.display({
+        id: 'tov',
+        header: '',
+        cell: ({ row }) => {
+          const item = row.original;
+          // Only show TOV button for main items (not sections or subordinates)
+          if (item.rowRole === 'section' || item.rowRole === 'subordinate') {
+            return null;
+          }
+          return (
+            <TOVButton
+              itemId={item.id}
+              hasData={hasItemTOV(item.id)}
+              onClick={() => setTovModalItem(item)}
+            />
+          );
+        },
+        size: 32,
         enableResizing: false,
       }),
 
@@ -773,7 +799,7 @@ export function ItemsTable({
         enableSorting: true,
       }),
     ],
-    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals]
+    [projectId, sheetId, setItemSkupina, allGroups, addCustomGroup, applyToSimilar, applyingToSimilar, applyToAllSheets, applyingGlobal, groupStats, isFilterActive, filterGroups, showFilterDropdown, filteredItems.length, items.length, subordinateCounts, expandedMainIds, toggleExpanded, updateItemPrice, priceColumnWidths, sectionTotals, hasItemTOV, setTovModalItem]
   );
 
   const table = useReactTable({
@@ -929,6 +955,17 @@ export function ItemsTable({
         sheetId={sheetId}
         onClearSelection={() => onSelectionChange?.(new Set())}
       />
+
+      {/* TOV Modal */}
+      {tovModalItem && (
+        <TOVModal
+          isOpen={true}
+          onClose={() => setTovModalItem(null)}
+          item={tovModalItem}
+          tovData={getItemTOV(tovModalItem.id)}
+          onSave={(data: TOVData) => setItemTOV(tovModalItem.id, data)}
+        />
+      )}
       </div>
     </div>
   );
