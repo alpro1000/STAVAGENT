@@ -1,10 +1,10 @@
 /**
- * TOV Components - Resource Breakdown (Ведомость ресурсов)
+ * TOV Components - Rozpis zdrojů (Resource Breakdown)
  *
  * Components for managing position-level resource breakdown:
- * - Labor (трудовые ресурсы)
- * - Machinery (механизмы)
- * - Materials (материалы)
+ * - Pracovní síly (labor resources)
+ * - Mechanizace (machinery)
+ * - Materiály (materials)
  */
 
 export { TOVButton } from './TOVButton';

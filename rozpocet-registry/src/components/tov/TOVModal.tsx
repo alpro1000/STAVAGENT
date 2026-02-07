@@ -1,8 +1,8 @@
 /**
  * TOVModal Component
  *
- * Modal dialog for viewing and editing resource breakdown (TOV - Ведомость ресурсов).
- * Contains three tabs: Labor, Machinery, Materials.
+ * Modal dialog for viewing and editing resource breakdown (TOV - Rozpis zdrojů).
+ * Contains three tabs: Pracovní síly, Mechanizace, Materiály.
  *
  * @see docs/UNIFICATION_PLAN.md - Phase 3
  */
@@ -120,7 +120,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave }: TOVModalPro
           <div className="flex-1 min-w-0">
             <h2 className="text-lg font-semibold text-text-primary flex items-center gap-2">
               <Calculator size={20} className="text-accent-primary shrink-0" />
-              Ведомость ресурсов (TOV)
+              Rozpis zdrojů (TOV)
             </h2>
             <p className="text-sm text-text-secondary mt-1 truncate">
               <span className="font-mono font-medium">{item.kod}</span>

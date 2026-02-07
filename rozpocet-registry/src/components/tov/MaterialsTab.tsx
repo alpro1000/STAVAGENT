@@ -1,7 +1,7 @@
 /**
  * MaterialsTab Component
  *
- * Tab for managing material resources (материалы).
+ * Tab for managing material resources (materiály).
  * Shows table of materials with name, quantity, unit, price.
  */
 

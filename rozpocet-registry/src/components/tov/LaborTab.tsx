@@ -1,7 +1,7 @@
 /**
  * LaborTab Component
  *
- * Tab for managing labor resources (трудовые ресурсы).
+ * Tab for managing labor resources (pracovní síly).
  * Shows table of workers with profession, count, hours, norm-hours.
  */
 
