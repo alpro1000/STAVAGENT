@@ -117,49 +117,114 @@ export async function groupByTridnik(items) {
 }
 
 /**
- * Group items by work type based on keywords in description
- * For MVP Фаза 1: Simple keyword-based grouping BEFORE URS code search
+ * TSKP Main Categories mapping (from TŘÍDNÍK STAVEBNÍCH KONSTRUKCÍ A PRACÍ)
+ * Level 1 categories with expanded keywords for better matching
+ */
+const TSKP_CATEGORIES = {
+  '1': {
+    name: 'Zemní práce',
+    keywords: ['výkop', 'rýh', 'jáma', 'hlouben', 'odkop', 'zasypá', 'zásyp', 'násyp', 'hutn', 'zemina', 'terén', 'skrývk', 'svahová', 'odvoz']
+  },
+  '2': {
+    name: 'Zakládání',
+    keywords: ['základ', 'patk', 'pas', 'pilot', 'podklad', 'štěrkop', 'beton základ', 'základová', 'mikropil', 'vrtan']
+  },
+  '3': {
+    name: 'Svislé konstrukce',
+    keywords: ['zdivo', 'zd', 'tvárnic', 'porotherm', 'cihel', 'blok', 'příčk', 'stěn', 'sloup', 'pilíř', 'komín']
+  },
+  '4': {
+    name: 'Vodorovné konstrukce',
+    keywords: ['strop', 'deska', 'průvlak', 'překlad', 'věnec', 'schodiště', 'schod', 'rampa', 'podest', 'balkon', 'konzol']
+  },
+  '5': {
+    name: 'Komunikace',
+    keywords: ['komunikac', 'vozovka', 'chodník', 'dlažba', 'obrubn', 'asfalt', 'cest', 'parkoviště', 'silnic']
+  },
+  '6': {
+    name: 'Úpravy povrchů',
+    keywords: ['omítk', 'štukov', 'stěrk', 'obklad', 'malb', 'nátěr', 'povrch', 'fasád', 'zateplení', 'polystyren', 'izolace tepel']
+  },
+  '7': {
+    name: 'Podlahy a podlahové konstrukce',
+    keywords: ['podlah', 'nášlapn', 'mazanin', 'potěr', 'anhydrit', 'laminát', 'vinyl', 'koberec', 'plovouc']
+  },
+  '8': {
+    name: 'Trubní vedení',
+    keywords: ['potrub', 'kanalizac', 'vodovod', 'plynovod', 'trubk', 'šacht', 'vpust', 'žlab', 'drenáž']
+  },
+  '9': {
+    name: 'Ostatní konstrukce a práce',
+    keywords: ['lešen', 'ochran', 'demolic', 'bourac', 'přesun', 'doprav', 'příprav', 'úklid', 'zajišt']
+  },
+  // ŽB konstrukce (special - spans across multiple TSKP categories)
+  'ZB': {
+    name: 'ŽB konstrukce',
+    keywords: ['žb', 'železobeton', 'beton', 'betono', 'armokoš', 'bednění', 'výztuž', 'ocel armat', 'kari', 'prut']
+  },
+  // Izolace (also spans multiple categories)
+  'IZ': {
+    name: 'Izolace',
+    keywords: ['izolac', 'hydroizolac', 'separace', 'fólie', 'asfaltov', 'geotextil', 'PE fólie']
+  }
+};
+
+/**
+ * Group items by work type based on TSKP classifier
+ * Uses TŘÍDNÍK STAVEBNÍCH KONSTRUKCÍ A PRACÍ categories
  *
  * @param {Array} items - Array of work items { description, quantity, unit }
- * @returns {Object} Grouped items { "Zdivo a svislé konstrukce": [...], "Základy": [...] }
+ * @returns {Object} Grouped items by TSKP category
  */
 export function groupItemsByWorkType(items) {
   const grouped = {};
 
-  // Define keyword-based groups for MVP
-  const workTypeKeywords = {
-    'Základy': ['základ', 'patk', 'pas', 'pilot', 'podklad'],
-    'Zdivo a svislé konstrukce': ['zdivo', 'zd', 'tvárnic', 'porotherm', 'cihel', 'blok'],
-    'ŽB konstrukce': ['žb', 'železobeton', 'beton', 'betono'],
-    'Bednění': ['bednění', 'bedně'],
-    'Výztuž': ['výztuž', 'ocel', 'armatury'],
-    'Výkopy': ['výkop', 'rýh', 'jáma', 'výkopové'],
-    'Zásypy': ['zásyp', 'násyp', 'hutně'],
-    'Izolace': ['izolac', 'hydroizolac', 'tepel'],
-    'Prostupy': ['prostup', 'otvor', 'průraz'],
-    'Omítky': ['omítk', 'štukov', 'vápenoc'],
-    'Podlahy': ['podlah', 'nášlapn', 'dlažb']
-  };
-
   for (const item of items) {
-    const desc = item.description.toLowerCase();
+    const desc = (item.description || '').toLowerCase();
     let matched = false;
+    let bestMatch = null;
+    let bestScore = 0;
 
-    // Try to match description to a work type
-    for (const [workType, keywords] of Object.entries(workTypeKeywords)) {
-      if (keywords.some(keyword => desc.includes(keyword))) {
-        if (!grouped[workType]) {
-          grouped[workType] = [];
+    // Skip empty descriptions
+    if (!desc || desc.length < 3) {
+      const otherGroup = '9 - Ostatní';
+      if (!grouped[otherGroup]) {
+        grouped[otherGroup] = [];
+      }
+      grouped[otherGroup].push(item);
+      continue;
+    }
+
+    // Score each category based on keyword matches
+    for (const [code, category] of Object.entries(TSKP_CATEGORIES)) {
+      let score = 0;
+
+      for (const keyword of category.keywords) {
+        if (desc.includes(keyword)) {
+          // Weight by keyword specificity (longer keywords = more specific)
+          score += 1 + (keyword.length / 10);
         }
-        grouped[workType].push(item);
-        matched = true;
-        break;
+      }
+
+      if (score > bestScore) {
+        bestScore = score;
+        bestMatch = { code, name: category.name };
       }
     }
 
-    // If no match, put in "Ostatní práce"
+    // Threshold for matching (at least one meaningful keyword)
+    if (bestMatch && bestScore >= 1) {
+      const groupName = `${bestMatch.code} - ${bestMatch.name}`;
+      if (!grouped[groupName]) {
+        grouped[groupName] = [];
+      }
+      grouped[groupName].push(item);
+      matched = true;
+    }
+
+    // If no match, put in "Ostatní"
     if (!matched) {
-      const otherGroup = 'Ostatní práce';
+      const otherGroup = '9 - Ostatní';
       if (!grouped[otherGroup]) {
         grouped[otherGroup] = [];
       }
@@ -167,7 +232,19 @@ export function groupItemsByWorkType(items) {
     }
   }
 
-  logger.info(`[TŘÍDNÍK] Grouped ${items.length} items into ${Object.keys(grouped).length} work types`);
+  // Sort groups by TSKP code
+  const sortedGrouped = {};
+  const sortedKeys = Object.keys(grouped).sort((a, b) => {
+    const codeA = a.split(' - ')[0];
+    const codeB = b.split(' - ')[0];
+    return codeA.localeCompare(codeB);
+  });
 
-  return grouped;
+  for (const key of sortedKeys) {
+    sortedGrouped[key] = grouped[key];
+  }
+
+  logger.info(`[TŘÍDNÍK] Grouped ${items.length} items into ${Object.keys(sortedGrouped).length} TSKP categories`);
+
+  return sortedGrouped;
 }
