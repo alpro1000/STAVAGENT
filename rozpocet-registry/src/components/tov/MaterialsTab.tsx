@@ -65,9 +65,8 @@ export function MaterialsTab({ resources, onChange, itemQuantity }: MaterialsTab
     onChange(resources.filter(r => r.id !== id));
   };
 
-  const openInMonolit = (material: MaterialResource) => {
-    const url = `https://monolit-planner-frontend.onrender.com/calculate?material=${encodeURIComponent(material.name)}&quantity=${material.quantity}&unit=${material.unit}`;
-    window.open(url, '_blank');
+  const openInMonolit = () => {
+    window.open('https://monolit-planner-frontend.onrender.com', '_blank');
   };
 
   const totalCost = resources.reduce((sum, r) => sum + (r.totalCost || 0), 0);
@@ -134,9 +133,9 @@ export function MaterialsTab({ resources, onChange, itemQuantity }: MaterialsTab
                     {/* Link to Monolit for concrete materials */}
                     {resource.name.toLowerCase().includes('beton') && (
                       <button
-                        onClick={() => openInMonolit(resource)}
+                        onClick={openInMonolit}
                         className="p-1 text-blue-500 hover:bg-blue-500/10 rounded transition-colors"
-                        title="Kalkulovat v Monolit"
+                        title="Otevřít Monolit Planner"
                       >
                         <ExternalLink size={14} />
                       </button>
