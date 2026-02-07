@@ -16,6 +16,8 @@ import { useRegistryStore } from '../../stores/registryStore';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
 import { storeOriginalFile } from '../../services/originalFileStore';
+import { saveProjectMapping } from '../../services/excel/mappingStore';
+import { createProjectMapping } from '../../services/excel/excelMapper';
 import type { Project, Sheet } from '../../types';
 import type { ImportTemplate } from '../../types/template';
 import type { ImportConfig } from '../../types/config';
@@ -259,6 +261,16 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         storeOriginalFile(projectId, file.name, originalFileData.current).catch(err => {
           console.error('Failed to store original file:', err);
         });
+
+        // Save project mapping for patch-based export
+        try {
+          const mapping = createProjectMapping(originalFileData.current, projectId, selectedSheet);
+          await saveProjectMapping(mapping);
+          console.log(`[Import] Saved mapping for project ${projectId}`);
+        } catch (mappingErr) {
+          console.error('Failed to save project mapping:', mappingErr);
+          // Non-critical, continue
+        }
       }
 
       setStep('success');
@@ -383,6 +395,16 @@ export function ImportModal({ isOpen, onClose }: ImportModalProps) {
         storeOriginalFile(projectId, file.name, originalFileData.current).catch(err => {
           console.error('Failed to store original file:', err);
         });
+
+        // Save project mapping for patch-based export (use first sheet for column detection)
+        try {
+          const mapping = createProjectMapping(originalFileData.current, projectId, selectedSheets[0]);
+          await saveProjectMapping(mapping);
+          console.log(`[Import] Saved mapping for project ${projectId} (multi-sheet)`);
+        } catch (mappingErr) {
+          console.error('Failed to save project mapping:', mappingErr);
+          // Non-critical, continue
+        }
       }
 
       setStep('success');
