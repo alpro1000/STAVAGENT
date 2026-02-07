@@ -47,6 +47,7 @@ const backBtn = document.getElementById('backBtn');
 const errorBackBtn = document.getElementById('errorBackBtn');
 const exportBtn = document.getElementById('exportBtn');
 const copyBtn = document.getElementById('copyBtn');
+const exportToRegistryBtn = document.getElementById('exportToRegistryBtn');
 
 // Theme Toggle Elements
 const themeToggle = document.getElementById('themeToggle');
@@ -940,6 +941,155 @@ copyBtn.addEventListener('click', () => {
     });
   } catch (error) {
     alert(`Chyba: ${error.message}`);
+  }
+});
+
+// ============================================================================
+// EXPORT TO REGISTRY
+// ============================================================================
+
+exportToRegistryBtn?.addEventListener('click', async () => {
+  if (!currentResults) {
+    alert('Žádné výsledky k exportu');
+    return;
+  }
+
+  try {
+    exportToRegistryBtn.disabled = true;
+    exportToRegistryBtn.textContent = 'Odesílání...';
+    debugLog('📤 Starting export to Registry');
+
+    // Map results to unified format
+    const positions = [];
+
+    // Handle block-match results
+    if (currentResults.blocks && currentResults.blocks.length > 0) {
+      currentResults.blocks.forEach((block, blockIdx) => {
+        const items = block.analysis?.items || block.items || [];
+        items.forEach((item, itemIdx) => {
+          const ursCode = item.selected_urs?.urs_code || '';
+          const ursName = item.selected_urs?.urs_name || '';
+          const unit = item.selected_urs?.unit || '';
+
+          if (ursCode) {
+            positions.push({
+              id: `urs-${blockIdx}-${itemIdx}-${Date.now()}`,
+              sourceKiosk: 'urs-matcher',
+              code: ursCode,
+              description: ursName || item.input_text || '',
+              quantity: item.quantity || null,
+              unit: unit,
+              unitPrice: null,
+              totalPrice: null,
+              workGroup: null,
+              metadata: {
+                inputText: item.input_text || '',
+                blockName: block.block_name || '',
+                confidence: item.confidence || null,
+                rowId: item.row_id || null
+              }
+            });
+          }
+        });
+      });
+    }
+
+    // Handle text-match results (candidates)
+    if (currentResults.candidates && currentResults.candidates.length > 0) {
+      currentResults.candidates.forEach((candidate, idx) => {
+        positions.push({
+          id: `urs-cand-${idx}-${Date.now()}`,
+          sourceKiosk: 'urs-matcher',
+          code: candidate.urs_code || '',
+          description: candidate.urs_name || '',
+          quantity: currentResults.quantity || null,
+          unit: candidate.unit || currentResults.unit || '',
+          unitPrice: null,
+          totalPrice: null,
+          workGroup: null,
+          metadata: {
+            confidence: candidate.confidence || null,
+            reason: candidate.reason || ''
+          }
+        });
+      });
+    }
+
+    // Handle file upload results (items array)
+    if (currentResults.items && currentResults.items.length > 0) {
+      currentResults.items.forEach((item, idx) => {
+        positions.push({
+          id: `urs-item-${idx}-${Date.now()}`,
+          sourceKiosk: 'urs-matcher',
+          code: item.urs_code || '',
+          description: item.urs_name || '',
+          quantity: item.quantity || null,
+          unit: item.unit || '',
+          unitPrice: null,
+          totalPrice: null,
+          workGroup: null,
+          metadata: {
+            inputText: item.input_text || '',
+            inputRowId: item.input_row_id || null,
+            confidence: item.confidence || null,
+            extraGenerated: item.extra_generated || false
+          }
+        });
+      });
+    }
+
+    if (positions.length === 0) {
+      alert('Žádné pozice k exportu');
+      return;
+    }
+
+    debugLog(`📤 Exporting ${positions.length} positions to Registry`);
+
+    // Send to Registry
+    const response = await fetch('https://rozpocet-registry.vercel.app/api/sync?action=import-positions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        positions,
+        sourceKiosk: 'urs-matcher',
+        projectName: `URS Import ${new Date().toLocaleDateString('cs-CZ')}`,
+        metadata: {
+          jobId: currentJobId || null,
+          exportedAt: new Date().toISOString()
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `HTTP ${response.status}`);
+    }
+
+    const result = await response.json();
+    debugLog('📤 ✓ Export to Registry successful:', result);
+
+    // Show success
+    exportToRegistryBtn.textContent = '✓ Exportováno!';
+    setTimeout(() => {
+      exportToRegistryBtn.textContent = '📤 Export do Registry';
+      exportToRegistryBtn.disabled = false;
+    }, 2000);
+
+    // Optionally open Registry in new tab
+    if (result.projectId) {
+      const openRegistry = confirm(`Export úspěšný! Otevřít Registry s ${positions.length} položkami?`);
+      if (openRegistry) {
+        window.open(`https://rozpocet-registry.vercel.app/?project=${result.projectId}`, '_blank');
+      }
+    }
+
+  } catch (error) {
+    debugError('📤 Export to Registry error:', error);
+    alert(`Chyba při exportu do Registry: ${error.message}`);
+    exportToRegistryBtn.disabled = false;
+    exportToRegistryBtn.textContent = '📤 Export do Registry';
   }
 });
 

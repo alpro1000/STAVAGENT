@@ -382,62 +382,44 @@ hasItemTOV: (itemId: string) => boolean;
 
 ---
 
-### Фаза 4: Интеграция калькуляторов (3-4 недели)
+### Фаза 4: Интеграция калькуляторов ✅ ЗАВЕРШЕНА (2026-02-07)
 
-**Цель:** Двусторонняя связь с Monolit и будущими калькуляторами
+**Цель:** Двусторонняя связь с Monolit и URS Matcher
 
-#### 4.1 Monolit → Registry
+#### 4.1 Monolit → Registry ✅
 
-```typescript
-// В Monolit: кнопка "Экспорт в Registry"
-async function exportToRegistry(positions: Position[]) {
-  const unified = positions.map(mapToUnified);
+**Реализовано:**
+- Кнопка "📤 Export do Registry" в Header
+- Маппинг позиций в UnifiedPosition формат
+- POST запрос к Registry API sync endpoint
+- Confirmation dialog при успешном экспорте
 
-  await fetch(`${REGISTRY_API}/sync/import-positions`, {
-    method: 'POST',
-    body: JSON.stringify({
-      portalProjectId: currentPortalProjectId,
-      positions: unified,
-      source: 'monolit'
-    })
-  });
-}
-```
+**Файлы:**
+- `Monolit-Planner/frontend/src/components/Header.tsx`
 
-#### 4.2 Registry → Monolit
+#### 4.2 Registry → Monolit ✅
 
-```typescript
-// В Registry: при открытии TOV материала "Бетон"
-function calculateInMonolit(material: MaterialResource) {
-  // 1. Открыть Monolit с параметрами
-  // 2. Monolit рассчитывает
-  // 3. Результат возвращается через postMessage или callback URL
-}
-```
+**Реализовано:**
+- Link to Monolit в MaterialsTab для бетонных материалов
+- Открытие Monolit с параметрами через URL
 
-#### 4.3 URS → Registry
+**Файлы:**
+- `rozpocet-registry/src/components/tov/MaterialsTab.tsx`
 
-```typescript
-// В URS: после матчинга
-async function exportMatchesToRegistry(matches: URSMatch[]) {
-  const unified = matches.map(m => ({
-    code: m.urs_code,
-    description: m.urs_name,
-    confidence: m.confidence,
-    sourceKiosk: 'urs',
-    // ...
-  }));
+#### 4.3 URS → Registry ✅
 
-  await fetch(`${REGISTRY_API}/sync/import-positions`, {
-    method: 'POST',
-    body: JSON.stringify({
-      portalProjectId,
-      positions: unified,
-      source: 'urs'
-    })
-  });
-}
-```
+**Реализовано:**
+- Кнопка "📤 Export do Registry" в results section
+- Обработка всех типов результатов:
+  - block-match results (blocks → positions)
+  - text-match results (candidates → positions)
+  - file upload results (items → positions)
+- POST запрос к Registry API sync endpoint
+- Confirmation dialog с возможностью открыть Registry
+
+**Файлы:**
+- `URS_MATCHER_SERVICE/frontend/public/index.html` (button)
+- `URS_MATCHER_SERVICE/frontend/public/app.js` (handler)
 
 ---
 
@@ -588,79 +570,88 @@ interface KioskMessage {
 
 ## 8. Чеклист задач
 
-### Фаза 1: Базовая связность
+### Фаза 1: Базовая связность ✅
 
-- [ ] **Registry: portalProjectId**
-  - [ ] Добавить поле в Project type
-  - [ ] Обновить registryStore
-  - [ ] UI для отображения
-  - [ ] Тесты
+- [x] **Registry: portalProjectId**
+  - [x] Добавить поле в Project type
+  - [x] Обновить registryStore
+  - [x] UI для отображения
+  - [x] Тесты
 
-- [ ] **Monolit: Portal link**
-  - [ ] API endpoint для связи
-  - [ ] UI индикатор
-  - [ ] Тесты
+- [x] **Monolit: Portal link**
+  - [x] API endpoint для связи
+  - [x] UI индикатор
+  - [x] Тесты
 
-- [ ] **URS: Export endpoint**
-  - [ ] POST /api/jobs/:id/export-to-registry
-  - [ ] Маппинг в UnifiedPosition
-  - [ ] Тесты
+- [x] **URS: Export endpoint**
+  - [x] POST /api/jobs/:id/export-to-registry
+  - [x] Маппинг в UnifiedPosition
+  - [x] Тесты
 
-### Фаза 2: API синхронизации
+### Фаза 2: API синхронизации ✅
 
-- [ ] **Registry Serverless**
-  - [ ] POST /api/sync/import-positions
-  - [ ] GET /api/sync/export-positions
-  - [ ] POST /api/sync/link-portal
-  - [ ] Авторизация
+- [x] **Registry Serverless**
+  - [x] POST /api/sync?action=import-positions
+  - [x] POST /api/sync?action=export-positions
+  - [x] POST /api/sync?action=link-portal
+  - [ ] Авторизация (будущее)
 
-- [ ] **Маппинг функции**
-  - [ ] mapToUnified() в Registry
-  - [ ] mapToUnified() в Monolit
-  - [ ] mapToUnified() в URS
-  - [ ] mapFromUnified() везде
+- [x] **Маппинг функции**
+  - [x] mapToUnified() в Registry
+  - [x] mapToUnified() в Monolit
+  - [x] mapToUnified() в URS
+  - [x] mapFromUnified() везде
 
-### Фаза 3: TOV UI
+### Фаза 3: TOV UI ✅
 
-- [ ] **Компоненты**
-  - [ ] TOVButton
-  - [ ] TOVModal
-  - [ ] LaborTab
-  - [ ] MachineryTab
-  - [ ] MaterialsTab
+- [x] **Компоненты**
+  - [x] TOVButton
+  - [x] TOVModal
+  - [x] LaborTab
+  - [x] MachineryTab
+  - [x] MaterialsTab
+  - [x] TOVSummary
 
-- [ ] **Store**
-  - [ ] tovData Map
-  - [ ] CRUD actions
-  - [ ] Persistence
+- [x] **Store**
+  - [x] tovData Map
+  - [x] CRUD actions
+  - [x] Persistence
 
-### Фаза 4: Интеграция
+### Фаза 4: Интеграция ✅
 
-- [ ] **Monolit → Registry**
-  - [ ] Кнопка экспорта
-  - [ ] API вызов
-  - [ ] Обработка ответа
+- [x] **Monolit → Registry**
+  - [x] Кнопка экспорта
+  - [x] API вызов
+  - [x] Обработка ответа
 
-- [ ] **Registry → Monolit**
-  - [ ] Кнопка "Калькулировать"
-  - [ ] Передача параметров
-  - [ ] Получение результата
+- [x] **Registry → Monolit**
+  - [x] Кнопка "Калькулировать" (в MaterialsTab)
+  - [x] Передача параметров через URL
+  - [ ] Получение результата (будущее)
 
-- [ ] **URS → Registry**
-  - [ ] Кнопка экспорта
-  - [ ] Bulk export
-  - [ ] Статус синхронизации
+- [x] **URS → Registry**
+  - [x] Кнопка экспорта
+  - [x] Bulk export (all result types)
+  - [x] Confirmation dialog
+
+### Фаза 5: Будущие калькуляторы (ongoing)
+
+- [ ] **Machinery Calculator**
+- [ ] **Labor Calculator**
+- [ ] **Material Calculator**
 
 ---
 
 ## Следующие шаги
 
-1. **Начать с Фазы 1.1** — добавить `portalProjectId` в Registry
-2. Создать `UNIFIED_DATA_MODEL.ts` с TypeScript интерфейсами
-3. Реализовать базовый TOV UI без калькуляторов
-4. Добавить API синхронизации
-5. Интегрировать калькуляторы
+1. ~~**Фаза 1:** Базовая связность~~ ✅
+2. ~~**Фаза 2:** API синхронизации~~ ✅
+3. ~~**Фаза 3:** TOV UI~~ ✅
+4. ~~**Фаза 4:** Интеграция калькуляторов~~ ✅
+5. **Фаза 5:** Будущие калькуляторы (по запросу)
+6. **Тестирование:** End-to-end тесты синхронизации
+7. **Авторизация:** Добавить Bearer token для API
 
 ---
 
-*Документ обновляется по мере реализации. Последнее обновление: 2026-02-04*
+*Документ обновляется по мере реализации. Последнее обновление: 2026-02-07*

@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
-import { exportAPI, uploadAPI } from '../services/api';
+import { exportAPI, uploadAPI, positionsAPI } from '../services/api';
 import CreateMonolithForm from './CreateMonolithForm';
 import EditBridgeForm from './EditBridgeForm';
 import ExportHistory from './ExportHistory';
@@ -29,6 +29,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showExportHistory, setShowExportHistory] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isExportingToRegistry, setIsExportingToRegistry] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -148,6 +149,67 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       });
     } catch (error: any) {
       alert(`Chyba při ukládání: ${error.message}`);
+    }
+  };
+
+  const handleExportToRegistry = async () => {
+    if (!selectedBridge) {
+      alert('Nejdříve vyberte objekt');
+      return;
+    }
+
+    setIsExportingToRegistry(true);
+    try {
+      // Fetch positions for the selected bridge
+      const result = await positionsAPI.getForBridge(selectedBridge);
+      const positions = result.positions;
+
+      // Map positions to unified format
+      const unifiedPositions = positions.map((pos: any) => ({
+        id: pos.id || crypto.randomUUID(),
+        portalProjectId: '', // Will be set by Registry
+        sourceKiosk: 'monolit',
+        sourceItemId: pos.id,
+        code: pos.otskp_code || null,
+        description: pos.item_name || '',
+        quantity: pos.qty || null,
+        unit: pos.unit || null,
+        unitPrice: pos.unit_cost_native || null,
+        totalPrice: pos.kros_total_czk || null,
+        category: pos.subtype || null,
+        rowRole: 'main',
+        confidence: null,
+        matchSource: 'monolit',
+        source: {
+          fileName: selectedBridge,
+          importedAt: new Date().toISOString(),
+        },
+      }));
+
+      // Export to Registry sync API
+      const response = await fetch('https://rozpocet-registry.vercel.app/api/sync?action=import-positions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          portalProjectId: crypto.randomUUID(), // Generate new or use existing
+          positions: unifiedPositions,
+          source: 'monolit',
+          mergeStrategy: 'append',
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Export failed: ${response.statusText}`);
+      }
+
+      const exportResult = await response.json();
+      alert(`✅ Export do Registry úspěšný!\nExportováno: ${exportResult.imported || positions.length} pozic`);
+
+    } catch (error: any) {
+      console.error('[Export to Registry] Error:', error);
+      alert(`❌ Export do Registry selhal: ${error.message}`);
+    } finally {
+      setIsExportingToRegistry(false);
     }
   };
 
@@ -272,6 +334,16 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
             style={{ padding: '6px 8px' }}
           >
             📥 Export XLSX
+          </button>
+
+          <button
+            className="c-btn"
+            onClick={handleExportToRegistry}
+            disabled={!selectedBridge || isExportingToRegistry}
+            title="Exportovat pozice do Rozpočet Registry"
+            style={{ padding: '6px 8px', background: 'var(--color-info, #3b82f6)' }}
+          >
+            {isExportingToRegistry ? '⏳ Exportuji...' : '📤 → Registry'}
           </button>
 
           <button
