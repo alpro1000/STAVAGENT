@@ -15,6 +15,7 @@
  */
 
 import { logger } from '../utils/logger.js';
+import { getRuntimeModel, getAvailableProviders } from '../config/llmConfig.js';
 
 // ============================================================================
 // CONSTANTS
@@ -258,19 +259,39 @@ async function callGeminiWithTimeout(prompt, timeoutMs) {
   const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
   try {
-    // Import Gemini client dynamically
-    const { default: genai } = await import('google-generativeai');
+    // Get runtime-selected model configuration
+    const runtimeModel = getRuntimeModel();
+    const availableProviders = getAvailableProviders();
 
-    // Check if Gemini is available
-    const apiKey = process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY;
+    // Determine which model and API key to use
+    let apiKey;
+    let modelName;
+
+    // Check if runtime model is Gemini - use it
+    if (runtimeModel.isRuntimeSelected && runtimeModel.provider === 'gemini') {
+      apiKey = availableProviders.gemini?.apiKey;
+      modelName = runtimeModel.model;
+      logger.info(`[GEMINI-CLASSIFIER] Using runtime-selected model: ${modelName}`);
+    } else if (availableProviders.gemini?.enabled) {
+      // Fall back to Gemini from available providers
+      apiKey = availableProviders.gemini.apiKey;
+      modelName = availableProviders.gemini.model;
+      logger.debug(`[GEMINI-CLASSIFIER] Using default Gemini model: ${modelName}`);
+    } else {
+      // Last resort: environment variables
+      apiKey = process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY;
+      modelName = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+    }
+
     if (!apiKey) {
       throw new Error('GOOGLE_API_KEY not set');
     }
 
+    // Import Gemini client dynamically
+    const { default: genai } = await import('google-generativeai');
+
     genai.configure({ apiKey });
-    const model = genai.getGenerativeModel({
-      model: process.env.GEMINI_MODEL || 'gemini-2.0-flash-exp'
-    });
+    const model = genai.getGenerativeModel({ model: modelName });
 
     // Call Gemini
     const response = await model.generateContent(prompt);
@@ -280,7 +301,7 @@ async function callGeminiWithTimeout(prompt, timeoutMs) {
       throw new Error('Gemini returned empty response');
     }
 
-    logger.debug(`[GEMINI-CLASSIFIER] Gemini responded: ${text.length} chars`);
+    logger.debug(`[GEMINI-CLASSIFIER] Gemini (${modelName}) responded: ${text.length} chars`);
 
     return text;
 

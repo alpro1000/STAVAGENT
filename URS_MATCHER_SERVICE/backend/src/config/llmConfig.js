@@ -21,6 +21,24 @@ const LLM_PROVIDERS = {
  * @returns {Object} LLM configuration object
  */
 export function getLLMConfig() {
+  // CHECK RUNTIME SELECTED MODEL FIRST (from UI selection)
+  if (runtimeSelectedModel && runtimeSelectedProvider) {
+    const apiKey = getApiKeyForProvider(runtimeSelectedProvider);
+    if (apiKey) {
+      logger.debug(`[LLMConfig] Using runtime selected model: ${runtimeSelectedModel} (${runtimeSelectedProvider})`);
+      return {
+        enabled: true,
+        provider: runtimeSelectedProvider,
+        apiKey: apiKey,
+        model: runtimeSelectedModel,
+        timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10),
+        primaryProvider: runtimeSelectedProvider,
+        isRuntimeSelected: true
+      };
+    }
+  }
+
+  // Fall back to environment configuration
   const primaryProvider = process.env.LLM_PROVIDER || 'gemini';
 
   // Determine API key based on provider
@@ -76,8 +94,33 @@ export function getLLMConfig() {
     apiKey: apiKey,
     model: model,
     timeoutMs: timeoutMs,
-    primaryProvider: primaryProvider.toLowerCase()
+    primaryProvider: primaryProvider.toLowerCase(),
+    isRuntimeSelected: false
   };
+}
+
+/**
+ * Get API key for a specific provider
+ */
+function getApiKeyForProvider(provider) {
+  switch (provider) {
+  case 'claude':
+    return process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+  case 'gemini':
+    return process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
+  case 'deepseek':
+    return process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
+  case 'grok':
+    return process.env.XAI_API_KEY || process.env.LLM_API_KEY;
+  case 'qwen':
+    return process.env.DASHSCOPE_API_KEY || process.env.LLM_API_KEY;
+  case 'glm':
+    return process.env.ZHIPU_API_KEY || process.env.LLM_API_KEY;
+  case 'openai':
+    return process.env.OPENAI_API_KEY || process.env.LLM_API_KEY;
+  default:
+    return process.env.LLM_API_KEY;
+  }
 }
 
 /**
@@ -888,6 +931,9 @@ export function setRuntimeModel(modelId) {
 
   logger.info(`[LLMConfig] Runtime model set to: ${modelId} (${pricing.provider})`);
 
+  // Notify listeners about model change (so they can reset caches)
+  notifyModelChange();
+
   return {
     success: true,
     model: modelId,
@@ -956,5 +1002,42 @@ export function resetRuntimeModel() {
   runtimeSelectedModel = null;
   runtimeSelectedProvider = null;
   logger.info('[LLMConfig] Runtime model reset to default');
+
+  // Notify listeners about model change
+  notifyModelChange();
+
   return getRuntimeModel();
+}
+
+// ============================================================================
+// MODEL CHANGE NOTIFICATION SYSTEM
+// ============================================================================
+
+/**
+ * Listeners for model changes (used by llmClient to reset cache)
+ */
+const modelChangeListeners = [];
+
+/**
+ * Register a listener for model changes
+ * @param {Function} callback - Function to call when model changes
+ */
+export function onModelChange(callback) {
+  if (typeof callback === 'function') {
+    modelChangeListeners.push(callback);
+  }
+}
+
+/**
+ * Notify all listeners about model change
+ */
+function notifyModelChange() {
+  const currentModel = getRuntimeModel();
+  for (const listener of modelChangeListeners) {
+    try {
+      listener(currentModel);
+    } catch (error) {
+      logger.warn(`[LLMConfig] Model change listener error: ${error.message}`);
+    }
+  }
 }
