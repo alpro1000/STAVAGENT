@@ -23,32 +23,55 @@ import { logger } from '../utils/logger.js';
 const GEMINI_CLASSIFICATION_TIMEOUT = 20000; // 20s timeout (strict!)
 const GEMINI_MAX_ROWS_PER_CHUNK = 50; // Не отправлять > 50 строк за раз
 
-// Mappings для автоматической классификации (fallback)
+// Mappings для автоматической классификации (fallback) - aligned with TSKP categories
 const TRIDNIK_KEYWORDS = {
-  // 27x - Betonové konstrukce
-  '27x': ['beton', 'betonu', 'žb', 'železobeton', 'železobetonový', 'deska', 'pas', 'paska', 'patka', 'sloup', 'stěna', 'monolitický'],
+  // 1 - Zemní práce
+  '1x': ['výkop', 'rýh', 'jáma', 'hlouben', 'odkop', 'zásyp', 'násyp', 'hutn', 'zemina', 'terén', 'skrývk', 'svahová', 'odvoz', 'pažení', 'přemísť'],
+
+  // 2 - Zakládání
+  '2x': ['základ', 'patk', 'pas', 'pilot', 'podklad', 'štěrkop', 'beton základ', 'základová', 'mikropil', 'vrtan'],
+
+  // 27x - Betonové konstrukce (ŽB)
+  '27x': ['beton', 'betonu', 'žb', 'železobeton', 'železobetonový', 'deska', 'sloup', 'stěna', 'monolitický', 'betonová'],
 
   // 31x, 32x - Zdivo
   '31x': ['zdivo', 'cihl', 'tvárnic', 'blok', 'tvárnice', 'keramick', 'porotherm', 'pevný', 'kern', 'kvádr'],
   '32x': ['porotherm', 'airbeton', 'vápenopísek', 'lehčený', 'střešní', 'keramický'],
 
-  // 41x, 42x - Bednění
+  // 34x - Stropy, příčky
+  '34x': ['strop', 'průvlak', 'překlad', 'věnec', 'příčk', 'příčka'],
+
+  // 4 - Vodorovné konstrukce
+  '4x': ['schodiště', 'schod', 'rampa', 'podest', 'balkon', 'konzol'],
+
+  // 41x, 42x - Bednění, lešení
   '41x': ['bednění', 'bedně', 'bednaž', 'bednáž', 'formwork', 'desky', 'trámky', 'lepenkový'],
-  '42x': ['lešení', 'lešení', 'skele', 'kotvení', 'příchytné'],
+  '42x': ['lešení', 'skele', 'kotvení', 'příchytné'],
 
   // 43x - Výztuž
-  '43x': ['výztuž', 'výztužn', 'armatur', 'ocel', 'prut', 'pruty', 'drát', 'sítě', 'kari', 'sí'],
+  '43x': ['výztuž', 'výztužn', 'armatur', 'ocel prut', 'pruty', 'drát', 'sítě', 'kari', 'sí'],
 
-  // 61x, 63x - Povrchové úpravy, podlahy
-  '61x': ['omítka', 'omítnutí', 'tynk', 'nezávěsná', 'podhled'],
-  '63x': ['podlaha', 'podlahy', 'anhydrit', 'mazanina', 'betonáž', 'vyrovnávací', 'ochranná'],
+  // 5 - Komunikace
+  '5x': ['komunikac', 'vozovka', 'chodník', 'dlažba', 'obrubn', 'asfalt', 'cest', 'parkoviště', 'silnic'],
 
-  // 21x, 22x - Instalace
-  '21x': ['odvětrání', 'radon', 'drenáž', 'potrubí', 'kanalizace', 'voda', 'elektro', 'vent'],
-  '22x': ['topení', 'kotel', 'radiátor', 'rozvod', 'topná'],
+  // 6 - Úpravy povrchů
+  '6x': ['omítk', 'štukov', 'stěrk', 'obklad', 'malb', 'nátěr', 'povrch', 'fasád', 'zateplení', 'polystyren'],
 
-  // 27x - Základy
-  '27xx': ['základy', 'základy', 'základ', 'základová', 'základové', 'podloží', 'podsyp', 'betonáž základů']
+  // 63x - Podlahy
+  '63x': ['podlaha', 'podlahy', 'anhydrit', 'mazanina', 'betonáž', 'vyrovnávací', 'ochranná', 'plovouc', 'vinyl', 'laminát'],
+
+  // 71x, 72x - Izolace
+  '7x': ['izolac', 'hydroizolac', 'separace', 'fólie', 'asfaltov', 'geotextil', 'PE fólie', 'tepelná'],
+
+  // 8 - Trubní vedení
+  '8x': ['potrub', 'kanalizac', 'vodovod', 'plynovod', 'trubk', 'šacht', 'vpust', 'žlab', 'drenáž'],
+
+  // 9 - Ostatní
+  '9x': ['lešen', 'ochran', 'demolic', 'bourac', 'přesun', 'doprav', 'příprav', 'úklid', 'zajišt'],
+
+  // 21x, 22x - Instalace (additional)
+  '21x': ['odvětrání', 'radon', 'voda', 'elektro', 'vent'],
+  '22x': ['topení', 'kotel', 'radiátor', 'rozvod', 'topná']
 };
 
 // ============================================================================
@@ -187,13 +210,24 @@ POKYNY:
 3. NORMALIZUJ text každé položky na technickou češtinu (bez zbytečných slov)
 4. VRAŤ POUZE validní JSON (bez markdown, bez textu kolem)
 
-Třídníky:
-- 27x = Betonové konstrukce
-- 31x, 32x = Zdivo
-- 41x, 42x = Bednění, lešení
-- 43x = Výztuž
-- 61x, 63x = Povrchy, podlahy
-- 21x, 22x = Instalace
+TŘÍDNÍK (TSKP - Třídník stavebních konstrukcí a prací):
+- 1 = Zemní práce (výkopy, zásypy, pažení)
+- 2 = Zakládání (základy, piloty, podklady)
+- 3 = Svislé konstrukce (zdivo, příčky, sloupy)
+  - 27x = Betonové konstrukce (ŽB)
+  - 31x = Zdivo nosné
+  - 32x = Zdivo nenosné
+- 4 = Vodorovné konstrukce (stropy, překlady, schodiště)
+  - 41x = Bednění
+  - 42x = Lešení
+  - 43x = Výztuž
+- 5 = Komunikace (vozovky, chodníky, dlažby)
+- 6 = Úpravy povrchů (omítky, obklady, podlahy)
+  - 61x = Povrchové úpravy
+  - 63x = Podlahy
+- 7 = Izolace (hydroizolace, tepelné izolace)
+- 8 = Trubní vedení (kanalizace, vodovod)
+- 9 = Ostatní konstrukce (demolice, přesuny)
 
 RESPONSE FORMAT (POUZE JSON):
 {
@@ -381,19 +415,46 @@ function normalizeTextLocally(text) {
 
 function getBlockNameFromTridnik(prefix) {
   const tridnikMap = {
+    // TSKP Level 1 categories
+    '1': 'Zemní práce',
+    '2': 'Zakládání',
+    '3': 'Svislé konstrukce',
+    '4': 'Vodorovné konstrukce',
+    '5': 'Komunikace',
+    '6': 'Úpravy povrchů',
+    '7': 'Izolace',
+    '8': 'Trubní vedení',
+    '9': 'Ostatní konstrukce',
+
+    // URS-specific subcategories
     '27': 'Betonové konstrukce',
-    '31': 'Zdivo 1',
-    '32': 'Zdivo 2',
+    '31': 'Zdivo nosné',
+    '32': 'Zdivo nenosné',
+    '34': 'Stropy a překlady',
     '41': 'Bednění',
     '42': 'Lešení',
     '43': 'Výztuž',
-    '61': 'Povrchy',
+    '61': 'Povrchové úpravy',
     '63': 'Podlahy',
+    '71': 'Hydroizolace',
+    '72': 'Tepelné izolace',
     '21': 'Instalace voda',
-    '22': 'Topení'
+    '22': 'Topení',
+    'XX': 'Ostatní'
   };
 
-  return tridnikMap[prefix] || `Třídník ${prefix}`;
+  // Try exact match first
+  if (tridnikMap[prefix]) {
+    return tridnikMap[prefix];
+  }
+
+  // Try first digit for TSKP level 1
+  const firstDigit = prefix.charAt(0);
+  if (tridnikMap[firstDigit]) {
+    return tridnikMap[firstDigit];
+  }
+
+  return `Třídník ${prefix}`;
 }
 
 // ============================================================================
