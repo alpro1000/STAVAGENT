@@ -9,11 +9,22 @@
 <body>
   <div id="root" class="app-container">
     <header class="app-header">
-      <!-- Theme Toggle Button -->
-      <button id="themeToggle" class="c-theme-toggle" aria-label="Toggle theme">
-        <span id="themeIcon">🌙</span>
-        <span id="themeText">Tmavý režim</span>
-      </button>
+      <div class="header-controls">
+        <!-- Theme Toggle Button -->
+        <button id="themeToggle" class="c-theme-toggle" aria-label="Toggle theme">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Tmavý režim</span>
+        </button>
+
+        <!-- Model Selector -->
+        <div class="model-selector" id="modelSelector">
+          <label for="modelSelect" class="model-label">🤖 Model:</label>
+          <select id="modelSelect" class="model-select">
+            <option value="">Načítám...</option>
+          </select>
+          <span id="modelStatus" class="model-status"></span>
+        </div>
+      </div>
 
       <div class="header-content">
         <h1>URS Matcher Kiosk</h1>

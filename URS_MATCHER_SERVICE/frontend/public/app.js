@@ -106,6 +106,214 @@ if (themeToggle) {
 initTheme();
 
 // ============================================================================
+// MODEL SELECTOR
+// ============================================================================
+
+const modelSelect = document.getElementById('modelSelect');
+const modelStatus = document.getElementById('modelStatus');
+
+/**
+ * Load available models from the API
+ */
+async function loadModels() {
+  debugLog('🤖 Loading models...');
+
+  try {
+    const response = await fetch(`${API_URL}/settings/models`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    debugLog('🤖 Models loaded:', data);
+
+    if (!data.success || !data.models) {
+      throw new Error('Invalid response format');
+    }
+
+    // Populate the select dropdown
+    modelSelect.innerHTML = '';
+
+    // Group models by provider
+    const modelsByProvider = {};
+    data.models.forEach(model => {
+      const provider = model.provider || 'other';
+      if (!modelsByProvider[provider]) {
+        modelsByProvider[provider] = [];
+      }
+      modelsByProvider[provider].push(model);
+    });
+
+    // Add models to select, grouped by provider
+    Object.entries(modelsByProvider).forEach(([provider, models]) => {
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = formatProviderName(provider);
+
+      models.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model.id;
+        option.textContent = model.name;
+        option.disabled = !model.available;
+
+        // Mark current model as selected
+        if (data.currentModel && model.id === data.currentModel.model) {
+          option.selected = true;
+        }
+
+        // Add pricing info as data attribute
+        if (model.pricing) {
+          option.dataset.pricing = model.pricing.tier || 'standard';
+        }
+
+        optgroup.appendChild(option);
+      });
+
+      modelSelect.appendChild(optgroup);
+    });
+
+    // Update status badge
+    updateModelStatus(data.currentModel);
+
+    debugLog('🤖 Model selector populated with', data.models.length, 'models');
+
+  } catch (error) {
+    debugError('🤖 Failed to load models:', error);
+    modelSelect.innerHTML = '<option value="">Chyba načítání</option>';
+    updateModelStatus({ error: true });
+  }
+}
+
+/**
+ * Format provider name for display
+ */
+function formatProviderName(provider) {
+  const names = {
+    'claude': 'Anthropic Claude',
+    'openai': 'OpenAI',
+    'gemini': 'Google Gemini',
+    'deepseek': 'DeepSeek',
+    'grok': 'xAI Grok',
+    'qwen': 'Alibaba Qwen',
+    'glm': 'Zhipu GLM'
+  };
+  return names[provider] || provider.charAt(0).toUpperCase() + provider.slice(1);
+}
+
+/**
+ * Update the model status badge
+ */
+function updateModelStatus(currentModel) {
+  if (!modelStatus) return;
+
+  if (currentModel?.error) {
+    modelStatus.textContent = 'Chyba';
+    modelStatus.className = 'model-status error';
+    return;
+  }
+
+  if (!currentModel) {
+    modelStatus.textContent = '';
+    return;
+  }
+
+  // Determine pricing tier based on model
+  const modelId = currentModel.model || '';
+  let tier = 'standard';
+  let label = '';
+
+  // Free tier models
+  if (modelId.includes('glm-4-flash') || modelId.includes('glm-4-free')) {
+    tier = 'free';
+    label = 'ZDARMA';
+  }
+  // Cheap tier models
+  else if (modelId.includes('deepseek') || modelId.includes('qwen') || modelId.includes('gemini-flash')) {
+    tier = 'cheap';
+    label = 'Levný';
+  }
+  // Premium tier models
+  else if (modelId.includes('claude') || modelId.includes('gpt-4') || modelId.includes('opus')) {
+    tier = 'premium';
+    label = 'Premium';
+  }
+  else {
+    tier = 'cheap';
+    label = 'Aktivní';
+  }
+
+  modelStatus.textContent = label;
+  modelStatus.className = `model-status ${tier}`;
+}
+
+/**
+ * Handle model selection change
+ */
+async function handleModelChange(event) {
+  const selectedModel = event.target.value;
+
+  if (!selectedModel) return;
+
+  debugLog('🤖 Changing model to:', selectedModel);
+
+  // Disable select during update
+  modelSelect.disabled = true;
+
+  try {
+    const response = await fetch(`${API_URL}/settings/model`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ model: selectedModel })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || 'Failed to set model');
+    }
+
+    debugLog('🤖 Model changed successfully:', data);
+
+    // Update status badge
+    updateModelStatus(data);
+
+    // Save preference to localStorage
+    localStorage.setItem('urs-matcher-model', selectedModel);
+
+  } catch (error) {
+    debugError('🤖 Failed to change model:', error);
+
+    // Revert to previous selection
+    const savedModel = localStorage.getItem('urs-matcher-model');
+    if (savedModel && savedModel !== selectedModel) {
+      modelSelect.value = savedModel;
+    }
+
+    // Show error briefly
+    modelStatus.textContent = 'Chyba!';
+    modelStatus.className = 'model-status error';
+
+    setTimeout(() => {
+      loadModels(); // Reload to get correct state
+    }, 2000);
+
+  } finally {
+    modelSelect.disabled = false;
+  }
+}
+
+// Initialize model selector
+if (modelSelect) {
+  modelSelect.addEventListener('change', handleModelChange);
+  loadModels();
+  debugLog('✅ Model selector initialized');
+} else {
+  debugError('⚠️ Model selector element not found!');
+}
+
+// ============================================================================
 // PROCESSING MODE TOGGLE
 // ============================================================================
 

@@ -23,7 +23,10 @@ const SIMILARITY_THRESHOLD = 0.85; // 85% similarity for deduplication
 const MINERU_TIMEOUT_MS = 300000; // 5 minutes for cold start + large PDF parsing
 
 /**
- * Upload document to concrete-agent for MinerU parsing
+ * Upload document to concrete-agent for parsing
+ *
+ * Note: Workflow C returns audit results, not raw text.
+ * We extract text from position descriptions for LLM processing.
  */
 async function parseDocumentWithMinerU(filePath) {
   const startTime = Date.now();
@@ -42,7 +45,7 @@ async function parseDocumentWithMinerU(filePath) {
     // Add required form fields for Workflow C
     formData.append('project_id', `doc-extract-${Date.now()}`);
     formData.append('project_name', 'Document Work Extraction');
-    formData.append('generate_summary', 'false'); // We don't need LLM summary
+    formData.append('generate_summary', 'true'); // Get summary for text extraction
     formData.append('use_parallel', 'false');
     formData.append('language', 'cs');
 
@@ -59,24 +62,78 @@ async function parseDocumentWithMinerU(filePath) {
       }
     );
 
-    if (!response.data || !response.data.result) {
-      throw new Error('Invalid response from concrete-agent');
+    // Workflow C returns WorkflowResultResponse directly (no 'result' wrapper)
+    const data = response.data;
+
+    if (!data || !data.success) {
+      const errorMsg = data?.critical_issues?.[0] || 'Unknown error from concrete-agent';
+      throw new Error(errorMsg);
     }
 
-    const result = response.data.result;
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+    logger.info(`[DocExtract] ✓ Parsed in ${duration}s: ${data.positions_count || 0} positions found`);
 
-    logger.info(`[DocExtract] ✓ Parsed by MinerU in ${duration}s: ${result.positions_count || 0} positions found`);
+    // Extract text from summary or build from position descriptions
+    let fullText = '';
+
+    // Try to get text from summary
+    if (data.summary) {
+      if (data.summary.executive_summary) {
+        fullText += data.summary.executive_summary + '\n\n';
+      }
+      if (data.summary.scope_summary) {
+        fullText += data.summary.scope_summary + '\n\n';
+      }
+      if (data.summary.position_summaries && Array.isArray(data.summary.position_summaries)) {
+        fullText += data.summary.position_summaries.map(p =>
+          `${p.code || ''} ${p.description || ''} ${p.quantity || ''} ${p.unit || ''}`
+        ).join('\n');
+      }
+    }
+
+    // If no summary text, build from critical_issues and warnings
+    if (!fullText.trim()) {
+      const texts = [];
+      if (data.critical_issues && data.critical_issues.length > 0) {
+        texts.push('KRITICKÉ PROBLÉMY:\n' + data.critical_issues.join('\n'));
+      }
+      if (data.warnings && data.warnings.length > 0) {
+        texts.push('VAROVÁNÍ:\n' + data.warnings.join('\n'));
+      }
+      fullText = texts.join('\n\n');
+    }
+
+    // Build positions from summary if available
+    const positions = [];
+    if (data.summary?.position_summaries) {
+      for (const pos of data.summary.position_summaries) {
+        positions.push({
+          code: pos.code || '',
+          description: pos.description || '',
+          quantity: pos.quantity || null,
+          unit: pos.unit || '',
+          unit_price: pos.unit_price || null,
+          total_price: pos.total_price || null
+        });
+      }
+    }
+
+    logger.info(`[DocExtract] Extracted ${fullText.length} chars of text, ${positions.length} positions`);
 
     return {
-      fullText: result.full_text || '',
-      positions: result.positions || [],
-      sections: result.sections || [],
-      metadata: result.metadata || {}
+      fullText: fullText,
+      positions: positions,
+      sections: [],
+      metadata: {
+        audit_classification: data.audit_classification,
+        audit_confidence: data.audit_confidence,
+        positions_count: data.positions_count,
+        duration_seconds: data.total_duration_seconds
+      }
     };
 
   } catch (error) {
-    logger.error(`[DocExtract] MinerU parsing failed: ${error.message}`);
+    logger.error(`[DocExtract] Parsing failed: ${error.message}`);
 
     // Log response data for debugging
     if (error.response) {
@@ -425,17 +482,34 @@ export async function extractWorksFromDocument(filePath) {
   try {
     logger.info(`[DocExtract] Starting extraction pipeline: ${filePath}`);
 
-    // 1. Parse with MinerU
+    // 1. Parse with concrete-agent Workflow C
     const parsedData = await parseDocumentWithMinerU(filePath);
 
-    // 2. Extract works with LLM
-    const extractedWorks = await extractWorksWithLLM(
-      parsedData.fullText,
-      parsedData.positions
-    );
+    let extractedWorks = [];
+
+    // 2. If we have positions directly from Workflow C, use them
+    if (parsedData.positions && parsedData.positions.length > 0) {
+      logger.info(`[DocExtract] Using ${parsedData.positions.length} positions from Workflow C`);
+
+      extractedWorks = parsedData.positions.map(pos => ({
+        name: pos.description || '',
+        category: '',
+        unit: pos.unit || '',
+        quantity: pos.quantity || null,
+        section: 'Obecné práce'
+      }));
+    }
+    // 3. If we have text but no positions, extract with LLM
+    else if (parsedData.fullText && parsedData.fullText.trim().length > 0) {
+      logger.info(`[DocExtract] Extracting works from text with LLM...`);
+      extractedWorks = await extractWorksWithLLM(
+        parsedData.fullText,
+        parsedData.positions
+      );
+    }
 
     if (extractedWorks.length === 0) {
-      throw new Error('No works extracted from document');
+      throw new Error('Žádné práce nebyly extrahovány z dokumentu. Zkontrolujte, že dokument obsahuje strukturované položky.');
     }
 
     // 3. Match to TSKP codes
