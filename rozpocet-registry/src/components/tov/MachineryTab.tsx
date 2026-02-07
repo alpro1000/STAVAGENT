@@ -1,7 +1,7 @@
 /**
  * MachineryTab Component
  *
- * Tab for managing machinery resources (механизмы).
+ * Tab for managing machinery resources (mechanizace).
  * Shows table of equipment with type, count, hours, machine-hours.
  */
 

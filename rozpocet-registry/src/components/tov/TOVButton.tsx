@@ -2,7 +2,7 @@
  * TOVButton Component
  *
  * A button that appears next to each position in the ItemsTable.
- * Opens the TOV (Ведомость ресурсов / Resource Breakdown) modal.
+ * Opens the TOV (Rozpis zdrojů / Resource Breakdown) modal.
  */
 
 import { BarChart3 } from 'lucide-react';
@@ -25,7 +25,7 @@ export function TOVButton({ hasData, onClick }: TOVButtonProps) {
           ? 'bg-accent-primary/20 text-accent-primary hover:bg-accent-primary/30'
           : 'hover:bg-bg-secondary text-text-muted hover:text-text-secondary'
       }`}
-      title={hasData ? 'Zobrazit ведомость ресурсов' : 'Přidat ресурсы'}
+      title={hasData ? 'Zobrazit rozpis zdrojů' : 'Přidat zdroje'}
     >
       <BarChart3 size={16} />
     </button>
