@@ -964,6 +964,17 @@ export function ItemsTable({
           item={tovModalItem}
           tovData={getItemTOV(tovModalItem.id)}
           onSave={(data: TOVData) => setItemTOV(tovModalItem.id, data)}
+          onApplyPrice={(itemId, unitPrice, _totalPrice) => {
+            // Apply calculated TOV price to item's cenaJednotkova
+            updateItemPrice(projectId, sheetId, itemId, unitPrice);
+            // Show success notification
+            setAlertModal({
+              isOpen: true,
+              title: 'Cena aplikována',
+              message: `Jednotková cena ${unitPrice.toFixed(2)} Kč byla aplikována na pozici.`,
+              variant: 'success',
+            });
+          }}
         />
       )}
       </div>
