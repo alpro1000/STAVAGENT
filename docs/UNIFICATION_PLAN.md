@@ -280,135 +280,105 @@ interface MaterialResource {
 
 ## 5. Фазы реализации
 
-### Фаза 1: Базовая связность (1-2 недели)
+### Фаза 1: Базовая связность ✅ ЗАВЕРШЕНА (2026-02-07)
 
 **Цель:** Добавить `portalProjectId` во все kiosks
 
-#### 1.1 rozpocet-registry
-- [ ] Добавить `portalProjectId` в тип `Project`
-- [ ] Добавить поле в `registryStore.ts`
-- [ ] UI для ввода/отображения Portal ID
-- [ ] Сохранение в localStorage
+#### 1.1 rozpocet-registry ✅
+- [x] Добавить `portalProjectId` в тип `Project` (PortalLink interface)
+- [x] Добавить поле в `registryStore.ts` (linkToPortal, unlinkFromPortal)
+- [x] UI для ввода/отображения Portal ID (PortalLinkBadge component)
+- [x] Сохранение в localStorage (Zustand persist)
 
 **Файлы:**
 - `src/types/project.ts`
 - `src/stores/registryStore.ts`
-- `src/components/projects/ProjectHeader.tsx`
+- `src/components/portal/PortalLinkBadge.tsx`
 
-#### 1.2 Monolit-Planner
-- [ ] Добавить `portal_project_id` в API responses
-- [ ] Endpoint для связывания с Portal
-- [ ] UI индикатор связи
+#### 1.2 Monolit-Planner ✅
+- [x] Добавить `portal_project_id` в API responses
+- [x] Endpoint для связывания с Portal (POST/DELETE /:id/link-portal)
+- [x] GET /by-portal/:portalProjectId endpoint
 
 **Файлы:**
 - `backend/src/routes/monolith-projects.js`
-- `frontend/src/components/ProjectHeader.tsx`
 
-#### 1.3 URS_MATCHER
-- [ ] Использовать существующее поле `portal_project_id`
-- [ ] Endpoint для экспорта в Registry
+#### 1.3 URS_MATCHER ✅
+- [x] Использовать существующее поле `portal_project_id`
+- [x] Endpoint для экспорта в Registry (POST /:jobId/export-to-registry)
+- [x] Link/unlink endpoints (POST/DELETE /:jobId/link-portal)
 
 **Файлы:**
 - `backend/src/api/routes/jobs.js`
 
 ---
 
-### Фаза 2: API синхронизации (2-3 недели)
+### Фаза 2: API синхронизации ✅ ЗАВЕРШЕНА (2026-02-07)
 
 **Цель:** Двусторонний обмен данными между kiosks
 
-#### 2.1 Registry API (Vercel Serverless)
+#### 2.1 Registry API (Vercel Serverless) ✅
 ```
-POST /api/sync/import-positions
+POST /api/sync/import-positions ✅
   Body: { portalProjectId, positions: UnifiedPosition[] }
 
-GET /api/sync/export-positions
+GET/POST /api/sync/export-positions ✅
   Query: ?portalProjectId=xxx
   Response: UnifiedPosition[]
 
-POST /api/sync/link-portal
+POST /api/sync/link-portal ✅
   Body: { portalProjectId, registryProjectId }
 ```
 
-#### 2.2 Portal Aggregation API
-```
-GET /api/portal-projects/:id/unified
-  Response: {
-    project: UnifiedProject,
-    positions: UnifiedPosition[],
-    kiosks: {
-      monolit: { status, lastSync, positionCount },
-      urs: { status, lastSync, matchCount },
-      registry: { status, lastSync, itemCount }
-    }
-  }
-```
+#### 2.2 Unified Types ✅
+- `src/types/unified.ts` - UnifiedPosition, UnifiedProject, TOVData, etc.
+- Full TypeScript interfaces for inter-kiosk communication
 
-#### 2.3 Маппинг функции
+#### 2.3 Маппинг функции ✅
 
-Каждый kiosk должен иметь:
 ```typescript
-// В каждом kiosk
-function mapToUnified(localItem: LocalType): UnifiedPosition { }
-function mapFromUnified(unified: UnifiedPosition): LocalType { }
+// Registry: src/services/sync/unifiedMapper.ts
+mapItemToUnified(item: ParsedItem): UnifiedPosition
+mapUnifiedToItem(unified: UnifiedPosition): ParsedItem
+mapProjectToUnified(project: Project): UnifiedPosition[]
+mergePositions(existing, incoming, strategy): MergeResult
 ```
 
 ---
 
-### Фаза 3: TOV UI (2-3 недели)
+### Фаза 3: TOV UI ✅ ЗАВЕРШЕНА (2026-02-07)
 
 **Цель:** Интерфейс для ведомости ресурсов в Registry
 
-#### 3.1 Компоненты
+#### 3.1 Компоненты ✅
 
 ```
 src/components/tov/
-├── TOVButton.tsx           # Кнопка [📊] возле позиции
-├── TOVModal.tsx            # Модальное окно
-├── TOVTabs.tsx             # Вкладки: Люди | Механизмы | Материалы
-├── LaborTab.tsx            # Таблица трудовых ресурсов
-├── MachineryTab.tsx        # Таблица механизмов
-├── MaterialsTab.tsx        # Таблица материалов
-├── ResourceRow.tsx         # Строка ресурса (редактируемая)
-├── CalcLink.tsx            # Ссылка на калькулятор
-└── TOVSummary.tsx          # Итоги по категориям
+├── TOVButton.tsx           ✅ Кнопка [📊] возле позиции
+├── TOVModal.tsx            ✅ Модальное окно с вкладками
+├── LaborTab.tsx            ✅ Таблица трудовых ресурсов
+├── MachineryTab.tsx        ✅ Таблица механизмов
+├── MaterialsTab.tsx        ✅ Таблица материалов (с Monolit link)
+├── TOVSummary.tsx          ✅ Итоги по категориям
+└── index.ts                ✅ Экспорт компонентов
 ```
 
-#### 3.2 Store расширение
+#### 3.2 Store расширение ✅
 
 ```typescript
-// В registryStore.ts добавить:
-interface RegistryState {
-  // ... существующее ...
-
-  // TOV данные
-  tovData: Map<string, TOVData>;  // itemId → TOVData
-
-  // TOV actions
-  setItemTOV: (itemId: string, tov: TOVData) => void;
-  addLaborResource: (itemId: string, resource: LaborResource) => void;
-  addMachineryResource: (itemId: string, resource: MachineryResource) => void;
-  addMaterialResource: (itemId: string, resource: MaterialResource) => void;
-  removeResource: (itemId: string, resourceType: string, resourceId: string) => void;
-}
+// В registryStore.ts добавлено:
+tovData: Record<string, TOVData>;  // itemId → TOVData
+setItemTOV: (itemId: string, data: TOVData) => void;
+getItemTOV: (itemId: string) => TOVData | undefined;
+removeItemTOV: (itemId: string) => void;
+hasItemTOV: (itemId: string) => boolean;
 ```
 
-#### 3.3 Интеграция с калькуляторами
+#### 3.3 Интеграция с калькуляторами ✅
 
-```typescript
-// Кнопка "Рассчитать в Monolit"
-function openMonolitCalculator(material: MaterialResource) {
-  const params = new URLSearchParams({
-    portalProjectId: currentProject.portalProjectId,
-    returnTo: 'registry',
-    material: material.name,
-    quantity: material.quantity.toString(),
-    unit: material.unit
-  });
-
-  window.open(`${MONOLIT_URL}/calculate?${params}`, '_blank');
-}
-```
+- Link to Monolit calculator in MaterialsTab
+- Quick-add buttons for common Czech construction resources
+- Auto-calculation of norm-hours, machine-hours, costs
 
 ---
 
