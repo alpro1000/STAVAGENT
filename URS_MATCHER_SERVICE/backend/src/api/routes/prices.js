@@ -25,9 +25,21 @@ import {
   comparePrices,
   getPricesForProject,
   importPricesFromFile,
+  findDekPrice,
+  searchDekMaterials,
+  getDekProduct,
+  findConcretePrice,
+  compareConcreteSupplierPrices,
+  getConcretePriceList,
+  calculateDeliveryCost,
+  getConcreteClasses,
+  getConcreteSuppliers,
   PRICE_SOURCES,
   MATERIAL_CATEGORIES,
-  DEFAULT_PRICES
+  DEFAULT_PRICES,
+  DEK_CATEGORIES,
+  CONCRETE_SUPPLIERS,
+  CONCRETE_CLASSES
 } from '../../services/prices/priceService.js';
 import {
   savePrice,
@@ -446,6 +458,267 @@ router.get('/sources', (req, res) => {
 router.get('/categories', (req, res) => {
   res.json({
     categories: MATERIAL_CATEGORIES
+  });
+});
+
+// ============================================================================
+// DEK.CZ ENDPOINTS
+// ============================================================================
+
+/**
+ * GET /api/prices/dek/find
+ * Find material price on DEK.cz
+ *
+ * Query params:
+ * - product: Product name
+ * - category: Optional DEK category
+ */
+router.get('/dek/find', async (req, res) => {
+  try {
+    const { product, category } = req.query;
+
+    if (!product) {
+      return res.status(400).json({
+        error: 'Missing required parameter: product'
+      });
+    }
+
+    logger.info(`[PricesAPI] Searching DEK price: ${product}`);
+
+    const result = await findDekPrice(product, { category });
+
+    res.json({
+      found: !!result,
+      product,
+      ...result
+    });
+
+  } catch (error) {
+    logger.error(`[PricesAPI] DEK search error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/prices/dek/catalog/:category
+ * Search DEK catalog by category
+ */
+router.get('/dek/catalog/:category', async (req, res) => {
+  try {
+    const { category } = req.params;
+    const { subcategory, limit } = req.query;
+
+    logger.info(`[PricesAPI] Searching DEK catalog: ${category}`);
+
+    const products = await searchDekMaterials(category, {
+      subcategory,
+      limit: parseInt(limit) || 20
+    });
+
+    res.json({
+      category,
+      products,
+      count: products.length
+    });
+
+  } catch (error) {
+    logger.error(`[PricesAPI] DEK catalog error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/prices/dek/product/:articleNumber
+ * Lookup specific DEK product
+ */
+router.get('/dek/product/:articleNumber', async (req, res) => {
+  try {
+    const { articleNumber } = req.params;
+
+    logger.info(`[PricesAPI] Looking up DEK product: ${articleNumber}`);
+
+    const product = await getDekProduct(articleNumber);
+
+    res.json({
+      found: !!product,
+      ...product
+    });
+
+  } catch (error) {
+    logger.error(`[PricesAPI] DEK product lookup error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/prices/dek/categories
+ * Get DEK material categories
+ */
+router.get('/dek/categories', (req, res) => {
+  res.json({
+    categories: DEK_CATEGORIES
+  });
+});
+
+// ============================================================================
+// CONCRETE (BETONÁRNY) ENDPOINTS
+// ============================================================================
+
+/**
+ * GET /api/prices/concrete/find
+ * Find concrete price
+ *
+ * Query params:
+ * - class: Concrete class (e.g., "C25/30")
+ * - region: Optional region (default: Praha)
+ * - supplier: Optional supplier ID
+ * - projectId: Optional project ID for commercial offer priority
+ */
+router.get('/concrete/find', async (req, res) => {
+  try {
+    const { class: concreteClass, region, supplier, projectId } = req.query;
+
+    if (!concreteClass) {
+      return res.status(400).json({
+        error: 'Missing required parameter: class',
+        example: 'class=C25/30'
+      });
+    }
+
+    logger.info(`[PricesAPI] Finding concrete price: ${concreteClass}`);
+
+    const result = await findConcretePrice(concreteClass, {
+      region: region || 'Praha',
+      supplier,
+      projectId
+    });
+
+    res.json(result);
+
+  } catch (error) {
+    logger.error(`[PricesAPI] Concrete price error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/prices/concrete/compare
+ * Compare concrete prices across suppliers
+ *
+ * Query params:
+ * - class: Concrete class
+ * - region: Optional region
+ */
+router.get('/concrete/compare', async (req, res) => {
+  try {
+    const { class: concreteClass, region } = req.query;
+
+    if (!concreteClass) {
+      return res.status(400).json({
+        error: 'Missing required parameter: class'
+      });
+    }
+
+    logger.info(`[PricesAPI] Comparing concrete suppliers: ${concreteClass}`);
+
+    const comparison = await compareConcreteSupplierPrices(
+      concreteClass,
+      region || 'Praha'
+    );
+
+    res.json(comparison);
+
+  } catch (error) {
+    logger.error(`[PricesAPI] Concrete comparison error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/prices/concrete/supplier/:supplierId
+ * Get price list from specific supplier
+ *
+ * Query params:
+ * - region: Optional region
+ */
+router.get('/concrete/supplier/:supplierId', async (req, res) => {
+  try {
+    const { supplierId } = req.params;
+    const { region } = req.query;
+
+    logger.info(`[PricesAPI] Getting price list from: ${supplierId}`);
+
+    const priceList = await getConcretePriceList(
+      supplierId,
+      region || 'Praha'
+    );
+
+    res.json({
+      supplierId,
+      supplier: CONCRETE_SUPPLIERS[supplierId.toUpperCase()]?.name,
+      region: region || 'Praha',
+      prices: priceList
+    });
+
+  } catch (error) {
+    logger.error(`[PricesAPI] Supplier price list error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/prices/concrete/delivery
+ * Calculate delivery cost
+ *
+ * Body:
+ * - distance: Distance in km
+ * - volume: Volume in m³
+ */
+router.post('/concrete/delivery', (req, res) => {
+  try {
+    const { distance, volume } = req.body;
+
+    if (distance === undefined || volume === undefined) {
+      return res.status(400).json({
+        error: 'Missing required parameters',
+        required: ['distance', 'volume']
+      });
+    }
+
+    const cost = calculateDeliveryCost(
+      parseFloat(distance),
+      parseFloat(volume)
+    );
+
+    res.json({
+      distance,
+      volume,
+      ...cost
+    });
+
+  } catch (error) {
+    logger.error(`[PricesAPI] Delivery cost error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/prices/concrete/classes
+ * Get all concrete classes with typical prices
+ */
+router.get('/concrete/classes', (req, res) => {
+  res.json({
+    classes: getConcreteClasses()
+  });
+});
+
+/**
+ * GET /api/prices/concrete/suppliers
+ * Get all concrete suppliers
+ */
+router.get('/concrete/suppliers', (req, res) => {
+  res.json({
+    suppliers: getConcreteSuppliers()
   });
 });
 

@@ -29,6 +29,20 @@ import {
   getSource,
   getSourcesForCategory
 } from './priceSources.js';
+import {
+  searchDekPrice,
+  searchDekCatalog,
+  lookupDekProduct,
+  DEK_CATEGORIES
+} from './dekParser.js';
+import {
+  searchConcretePrice,
+  getSupplierPriceList,
+  compareConcreteSuppliers,
+  estimateDeliveryCost,
+  CONCRETE_SUPPLIERS,
+  CONCRETE_CLASSES
+} from './concreteSupplierParser.js';
 
 // ============================================================================
 // INITIALIZATION
@@ -366,13 +380,205 @@ export async function importPricesFromFile(prices) {
 }
 
 // ============================================================================
+// DEK.CZ MATERIALS
+// ============================================================================
+
+/**
+ * Find material price on DEK.cz
+ *
+ * @param {string} productName - Product name
+ * @param {Object} options - Search options
+ */
+export async function findDekPrice(productName, options = {}) {
+  await initPriceService();
+
+  logger.info(`[PriceService] Searching DEK price: ${productName}`);
+
+  const result = await searchDekPrice(productName, options);
+
+  if (result) {
+    // Save to database for caching
+    await savePrice({
+      category: options.category || 'zdivo',
+      materialCode: productName,
+      price: result.price,
+      unit: result.unit,
+      source: 'dek.cz',
+      sourceUrl: result.sourceUrl,
+      supplier: 'DEK a.s.'
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Search DEK catalog by category
+ */
+export async function searchDekMaterials(categoryId, options = {}) {
+  await initPriceService();
+  return searchDekCatalog(categoryId, options);
+}
+
+/**
+ * Lookup specific DEK product
+ */
+export async function getDekProduct(articleNumber) {
+  await initPriceService();
+  return lookupDekProduct(articleNumber);
+}
+
+// ============================================================================
+// CONCRETE (BETONÁRNY)
+// ============================================================================
+
+/**
+ * Find concrete price
+ *
+ * @param {string} concreteClass - Concrete class (e.g., "C25/30")
+ * @param {Object} options - Search options
+ */
+export async function findConcretePrice(concreteClass, options = {}) {
+  await initPriceService();
+
+  const { region = 'Praha', supplier = null, projectId = null } = options;
+
+  logger.info(`[PriceService] Finding concrete price: ${concreteClass} in ${region}`);
+
+  // 1. Check for commercial offer first
+  if (projectId) {
+    const offers = await getProjectOffers(projectId);
+    for (const offer of offers) {
+      const item = offer.items?.find(i =>
+        i.category === 'beton' &&
+        (i.materialCode === concreteClass || i.description?.includes(concreteClass))
+      );
+
+      if (item) {
+        return {
+          found: true,
+          concreteClass,
+          price: item.price,
+          unit: 'm³',
+          source: 'commercial_offer',
+          supplier: offer.supplier,
+          validUntil: offer.validUntil,
+          priority: 1
+        };
+      }
+    }
+  }
+
+  // 2. Check database cache
+  const cachedPrice = await getPrice('beton', concreteClass, {
+    region,
+    useDefault: false
+  });
+
+  if (cachedPrice && cachedPrice.source !== 'default_experience') {
+    const age = Date.now() - new Date(cachedPrice.fetchedAt || 0).getTime();
+    if (age < 7 * 24 * 60 * 60 * 1000) { // Less than 7 days old
+      return {
+        found: true,
+        ...cachedPrice,
+        priority: 2
+      };
+    }
+  }
+
+  // 3. Search on web
+  const webPrice = await searchConcretePrice(concreteClass, {
+    region,
+    supplier
+  });
+
+  if (webPrice && webPrice.price > 0) {
+    // Save to database
+    await savePrice({
+      category: 'beton',
+      materialCode: concreteClass,
+      price: webPrice.price,
+      unit: 'm³',
+      source: 'web_search',
+      sourceUrl: webPrice.sourceUrl,
+      supplier: webPrice.supplier,
+      region
+    });
+
+    return {
+      found: true,
+      ...webPrice,
+      priority: 2.5
+    };
+  }
+
+  // 4. Fallback to typical prices
+  const classInfo = CONCRETE_CLASSES[concreteClass];
+  if (classInfo) {
+    return {
+      found: true,
+      concreteClass,
+      price: classInfo.typical_price,
+      unit: 'm³',
+      description: classInfo.description,
+      use: classInfo.use,
+      source: 'typical_price',
+      note: 'Orientační cena, doporučujeme ověřit u dodavatele',
+      priority: 4
+    };
+  }
+
+  return { found: false, concreteClass };
+}
+
+/**
+ * Compare concrete suppliers
+ */
+export async function compareConcreteSupplierPrices(concreteClass, region = 'Praha') {
+  await initPriceService();
+  return compareConcreteSuppliers(concreteClass, region);
+}
+
+/**
+ * Get concrete supplier price list
+ */
+export async function getConcretePriceList(supplierId, region = 'Praha') {
+  await initPriceService();
+  return getSupplierPriceList(supplierId, region);
+}
+
+/**
+ * Calculate concrete delivery cost
+ */
+export function calculateDeliveryCost(distance, volume) {
+  return estimateDeliveryCost(distance, volume);
+}
+
+/**
+ * Get all concrete classes with typical prices
+ */
+export function getConcreteClasses() {
+  return CONCRETE_CLASSES;
+}
+
+/**
+ * Get all concrete suppliers
+ */
+export function getConcreteSuppliers() {
+  return CONCRETE_SUPPLIERS;
+}
+
+// ============================================================================
 // EXPORTS
 // ============================================================================
 
 export {
   PRICE_SOURCES,
   MATERIAL_CATEGORIES,
-  DEFAULT_PRICES
+  DEFAULT_PRICES,
+  DEK_CATEGORIES,
+  CONCRETE_SUPPLIERS,
+  CONCRETE_CLASSES
 };
 
 export default {
@@ -384,6 +590,21 @@ export default {
   comparePrices,
   getPricesForProject,
   importPricesFromFile,
+  // DEK
+  findDekPrice,
+  searchDekMaterials,
+  getDekProduct,
+  // Concrete
+  findConcretePrice,
+  compareConcreteSupplierPrices,
+  getConcretePriceList,
+  calculateDeliveryCost,
+  getConcreteClasses,
+  getConcreteSuppliers,
+  // Constants
   PRICE_SOURCES,
-  MATERIAL_CATEGORIES
+  MATERIAL_CATEGORIES,
+  DEK_CATEGORIES,
+  CONCRETE_SUPPLIERS,
+  CONCRETE_CLASSES
 };
