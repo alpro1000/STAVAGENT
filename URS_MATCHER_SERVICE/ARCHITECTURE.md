@@ -124,12 +124,11 @@ backend/src/services/
 │   ├── laborParser.js             # Труд (ставки)
 │   └── pricelistImporter.js       # PDF/Excel прайсы
 │
-├── norms/                         # База норм (NEW)
-│   ├── csnDatabase.js             # ČSN нормы
-│   ├── gostDatabase.js            # ГОСТ (опционально)
-│   ├── ursNorms.js                # Нормы из URS
-│   ├── productionRates.js         # Нормы выработки
-│   └── normsSearch.js             # Поиск по нормам
+├── norms/                         # База норм (IMPLEMENTED)
+│   ├── webSearchClient.js         # Web Search (Brave + Tavily)
+│   ├── normParser.js              # Парсер и нормализация ČSN/EN
+│   ├── knowledgeBase.js           # База знаний (JSON + индексы)
+│   └── normsService.js            # Оркестратор поиска и хранения
 │
 ├── technology/                    # Технологические расчеты (NEW)
 │   ├── formworkCalculator.js      # Расчет опалубки
@@ -186,13 +185,25 @@ POST /api/prices/import            → Импорт прайса PDF/Excel
 GET  /api/prices/search            → Поиск по ценам
 ```
 
-### Нормы и Стандарты
+### Нормы и Стандарты (IMPLEMENTED)
 
 ```
-GET  /api/norms/search             → Поиск по нормам
-GET  /api/norms/csn/:code          → ČSN норма по коду
-GET  /api/norms/production/:work   → Норма выработки
+GET  /api/norms/search?q=          → Поиск норм (Web + KB)
+GET  /api/norms/code/:code         → Норма по коду (ČSN EN 13670)
+GET  /api/norms/laws?topic=        → Поиск законов (stavební povolení)
+POST /api/norms/for-work           → Нормы для вида работ
+POST /api/norms/for-project        → Нормы для проекта
+GET  /api/norms/categories         → Категории ČSN (27, 73, ...)
+GET  /api/norms/types              → Типы норм (ČSN, EN, Vyhláška)
+GET  /api/norms/sources            → Доверенные источники
+GET  /api/norms/stats              → Статистика базы знаний
+POST /api/norms/import             → Импорт норм
+POST /api/norms/rebuild-index      → Перестроить индекс
 ```
+
+**Web Search интеграция:**
+- Brave Search API (2000 запросов/месяц бесплатно)
+- Tavily API (извлечение контента, advanced search)
 
 ### Настройки LLM
 
@@ -224,16 +235,18 @@ GET  /api/settings/providers       → Провайдеры
 - [x] API endpoints (/api/project-analysis/*)
 - [x] Типы задач (concrete_phases, formwork, schedule, etc.)
 
-### Фаза 4: База Цен (PENDING)
+### Фаза 4: База Норм ✅ ЗАВЕРШЕНА
+- [x] Web Search (Brave + Tavily)
+- [x] Парсер ČSN/EN норм
+- [x] Нормализация в машиночитаемый JSON
+- [x] База знаний с индексацией
+- [x] API поиска норм (/api/norms/*)
+
+### Фаза 5: База Цен (PENDING)
 - [ ] Структура таблиц цен
 - [ ] Парсер цен на бетон
 - [ ] Импорт PDF прайсов
 - [ ] API поиска цен
-
-### Фаза 5: База Норм (PENDING)
-- [ ] Интеграция ČSN
-- [ ] Нормы выработки
-- [ ] API поиска норм
 
 ### Фаза 6: Технологические Расчеты (PENDING)
 - [ ] Калькулятор опалубки
