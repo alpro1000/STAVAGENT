@@ -18,6 +18,7 @@ import healthRouter from './api/routes/health.js';
 import tridnikRouter from './api/routes/tridnik.js';
 import batchRouter from './api/routes/batch.js';
 import settingsRouter from './api/routes/settings.js';
+import projectAnalysisRouter from './api/routes/projectAnalysis.js';
 
 // Middleware
 import { errorHandler } from './api/middleware/errorHandler.js';
@@ -97,6 +98,7 @@ app.use('/api/urs-catalog', catalogRouter);
 app.use('/api/tridnik', tridnikRouter);
 app.use('/api/batch', batchRouter);
 app.use('/api/settings', settingsRouter);
+app.use('/api/project-analysis', projectAnalysisRouter);
 
 // Serve frontend (SPA fallback)
 app.get('*', (req, res) => {
