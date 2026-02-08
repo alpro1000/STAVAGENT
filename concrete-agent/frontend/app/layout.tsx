@@ -23,6 +23,16 @@ export const metadata: Metadata = {
     "analýza výkresů",
     "STAVAGENT",
   ],
+  metadataBase: new URL("https://stavagent.cz"),
+  openGraph: {
+    title: "STAVAGENT — Inteligentní analýza stavební dokumentace",
+    description:
+      "Okamžitá kontrola souladu s ČSN a stavebními předpisy. AI asistent pro české stavebnictví.",
+    url: "https://stavagent.cz",
+    siteName: "STAVAGENT",
+    locale: "cs_CZ",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
