@@ -1,6 +1,6 @@
-import Link from "next/link";
 import { FileSearch, ShieldCheck, Zap, ArrowRight, Building2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
+const PORTAL_URL = "https://stav-agent.onrender.com";
 
 /* -------------------------------------------------------------------------- */
 /*  Feature card data                                                          */
@@ -56,9 +56,13 @@ export default function LandingPage() {
             </span>
           </div>
 
-          <Button asChild size="sm" variant="outline">
-            <Link href="/projects">Přihlásit se</Link>
-          </Button>
+          <a
+            href={PORTAL_URL}
+            className="inline-flex items-center gap-1.5 rounded-md border border-border/60 px-3 py-1.5 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          >
+            Otevřít Portál
+            <ArrowRight className="size-3.5" aria-hidden="true" />
+          </a>
         </div>
       </nav>
 
@@ -95,8 +99,8 @@ export default function LandingPage() {
 
           {/* CTA */}
           <div className="animate-fade-in-up animation-delay-300 mt-10">
-            <Link
-              href="/projects"
+            <a
+              href={PORTAL_URL}
               className="animate-pulse-glow inline-flex items-center gap-2.5 rounded-lg px-8 py-4 text-base font-bold text-white transition-all hover:scale-[1.03] active:scale-[0.98]"
               style={{
                 backgroundColor: "var(--brand-orange)",
@@ -105,7 +109,7 @@ export default function LandingPage() {
             >
               Vstoupit do Portálu
               <ArrowRight className="size-5" aria-hidden="true" />
-            </Link>
+            </a>
           </div>
 
           {/* Social proof */}
