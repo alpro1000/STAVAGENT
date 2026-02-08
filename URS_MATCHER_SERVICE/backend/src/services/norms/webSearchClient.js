@@ -344,6 +344,9 @@ function normalizeUrl(url) {
   }
 }
 
+// Named exports
+export { TRUSTED_SOURCES };
+
 export default {
   searchWithBrave,
   searchWithTavily,
