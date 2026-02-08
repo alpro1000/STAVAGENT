@@ -23,7 +23,7 @@
   "author": "STAVAGENT Team",
   "license": "MIT",
   "dependencies": {
-    "axios": "^1.13.2",
+    "axios": "^1.13.5",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "exceljs": "^4.4.0",

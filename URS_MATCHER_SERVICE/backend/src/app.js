@@ -21,6 +21,7 @@ import settingsRouter from './api/routes/settings.js';
 import projectAnalysisRouter from './api/routes/projectAnalysis.js';
 import normsRouter from './api/routes/norms.js';
 import pricesRouter from './api/routes/prices.js';
+import technologyRouter from './api/routes/technology.js';
 
 // Middleware
 import { errorHandler } from './api/middleware/errorHandler.js';
@@ -103,6 +104,7 @@ app.use('/api/settings', settingsRouter);
 app.use('/api/project-analysis', projectAnalysisRouter);
 app.use('/api/norms', normsRouter);
 app.use('/api/prices', pricesRouter);
+app.use('/api/technology', technologyRouter);
 
 // Serve frontend (SPA fallback)
 app.get('*', (req, res) => {

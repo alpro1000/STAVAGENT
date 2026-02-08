@@ -370,6 +370,10 @@ function deduplicateResults(results) {
 // EXPORTS
 // ============================================================================
 
+// Named re-exports for constants (used by routes)
+export { CSN_CATEGORIES, NORM_TYPES } from './normParser.js';
+export { TRUSTED_SOURCES } from './webSearchClient.js';
+
 export default {
   initNormsService,
   findNorms,
@@ -379,9 +383,5 @@ export default {
   getNormsForWork,
   importNorms,
   getKBStatistics,
-  rebuildKBIndex,
-  // Re-export useful constants
-  CSN_CATEGORIES,
-  NORM_TYPES,
-  TRUSTED_SOURCES
+  rebuildKBIndex
 };

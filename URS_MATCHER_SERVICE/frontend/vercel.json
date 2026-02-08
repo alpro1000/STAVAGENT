@@ -1,0 +1,25 @@
+{
+  "buildCommand": null,
+  "outputDirectory": "public",
+  "installCommand": "echo 'No install needed - static site'",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://urs-matcher-service.onrender.com/api/:path*"
+    },
+    {
+      "source": "/health",
+      "destination": "https://urs-matcher-service.onrender.com/health"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    }
+  ]
+}
