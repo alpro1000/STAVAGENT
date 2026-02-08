@@ -7,7 +7,7 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { getSystemPrompt, createMatchUrsItemPrompt } from '../prompts/ursMatcher.prompt.js';
-import { getLLMConfig, createLLMClient, getAvailableProviders, getFallbackChain, getModelForTask, getTaskTypes } from '../config/llmConfig.js';
+import { getLLMConfig, createLLMClient, getAvailableProviders, getFallbackChain, getModelForTask, getTaskTypes, onModelChange } from '../config/llmConfig.js';
 import {
   markProviderFailed as cacheMarkProviderFailed,
   isProviderRecentlyFailed as cacheIsProviderRecentlyFailed
@@ -22,6 +22,21 @@ let llmConfig = null;
 let availableProviders = null;
 let fallbackChain = null;
 // NOTE: Removed global currentProviderIndex to fix race condition with concurrent requests
+
+/**
+ * Reset LLM client cache when model changes
+ * Called by llmConfig when user selects a different model
+ */
+function resetLLMClientCache(newModelInfo) {
+  logger.info(`[LLMClient] Model changed to ${newModelInfo.model} (${newModelInfo.provider}) - resetting cache`);
+  llmClient = null;
+  llmConfig = null;
+  availableProviders = null;
+  fallbackChain = null;
+}
+
+// Register for model change notifications
+onModelChange(resetLLMClientCache);
 
 /**
  * Check if a provider recently failed and should be skipped
