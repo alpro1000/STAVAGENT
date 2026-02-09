@@ -12,32 +12,16 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-02-09 | Monolit + Registry | Inter-kiosk data transfer via postMessage (Monolit → Registry) | ✅ Pushed |
+| 2026-02-09 | rozpocet-registry | Export-to-original rewrite: JSZip direct XML patching (no XLSX.write) | ✅ Pushed |
+| 2026-02-09 | stavagent-portal | Public landing page for stavagent.cz (no auth) | ✅ Pushed |
+| 2026-02-09 | stavagent-portal | CORS whitelist: Vercel domains + preview regex | ✅ Pushed |
+| 2026-02-09 | stavagent-portal | Portal loading timeout (8s) + graceful fallback | ✅ Pushed |
+| 2026-02-09 | All | Vercel domain migration: URLs updated across all services | ✅ Pushed |
 | 2026-02-04 | stavagent-portal | Portal project creation fix: safeGetPool() for SQLite mode | ✅ Pushed |
 | 2026-02-04 | rozpocet-registry | Price editing: editable cenaJednotkova, section totals, spinner hide | ✅ Pushed |
 | 2026-02-04 | rozpocet-registry | Excel Export Fixes: subordinate inheritance, collapsible rows, input cells styling | ✅ Pushed |
 | 2026-02-04 | rozpocet-registry | Import Preview: larger table (600px), auto-scroll to data rows, jump button | ✅ Pushed |
-| 2026-02-03 | rozpocet-registry | Modal colors + Excel export grouping (main → subordinates) | ✅ Merged |
-| 2026-02-03 | URS_MATCHER_SERVICE | Document Work Extraction Pipeline: PDF → MinerU → LLM → TSKP → Batch | ✅ Pushed |
-| 2026-01-29 | rozpocet-registry | AI Agent + AI on/off toggle: Full autonomous classification system | ✅ Pushed |
-| 2026-01-29 | rozpocet-registry | Section header detection fix: numbered items no longer misclassified | ✅ Pushed |
-| 2026-01-29 | rozpocet-registry | AI API improvements: subordinate context + model logging | ✅ Pushed |
-| 2026-01-28 | rozpocet-registry | AI classification: main-only with subordinate context + confirmation | ✅ Pushed |
-| 2026-01-28 | rozpocet-registry | Sparkles cascade fix: bulkSetSkupina now applies to subordinates | ✅ Pushed |
-| 2026-01-28 | rozpocet-registry | Cascade logic fallback fix for subordinate rows with codes | ✅ Pushed |
-| 2026-01-28 | rozpocet-registry | Work items filter fix + Filter priority reordering | ✅ Pushed |
-| 2026-01-28 | rozpocet-registry | Skupina UX improvements + Similarity search 3x optimization | ✅ Pushed |
-| 2026-01-28 | rozpocet-registry | Row classification: díl/section detection + cascade uses rowRole | ✅ Pushed |
-| 2026-01-26 | rozpocet-registry | Excel-style tab navigation + table horizontal overflow fix | ✅ Merged (PR #303) |
-| 2026-01-26 | rozpocet-registry | Classification system migration to rule-based uppercase codes | ✅ Merged (PR #301) |
-| 2026-01-26 | rozpocet-registry | Project → Sheets hierarchy refactoring | ✅ Merged (PR #299) |
-| 2026-01-26 | rozpocet-registry | Multi-sheet import + Project tabs + Global skupina | ✅ Merged (PR #298) |
-| 2026-01-26 | rozpocet-registry | AI classification cascading, filters, similarity search | ✅ Merged (PR #295-297) |
-| 2026-01-26 | rozpocet-registry | Excel export KPI formulas, Autocomplete, Modal component | ✅ Merged (PR #290-294) |
-| 2026-01-21 | Portal + Kiosks | R0 Deterministic Core + Unified Project Architecture | ⏳ PR Ready |
-| 2026-01-21 | Monolit-Planner | AI Suggestion audit trail + feature flag enablement | ⏳ Awaiting user SQL |
-| 2026-01-16 | Monolit-Planner | Modal fixes + Editable work names + Resizable columns | ✅ Merged |
-| 2026-01-16 | rozpocet-registry | Phase 6 & 7: Multi-Project Search + Excel Export | ✅ Merged |
-| 2026-01-13-14 | concrete-agent | Google Drive Integration (Day 1 + Day 2) + Auth Fix | ✅ All 8 PRs Merged |
 
 ---
 
