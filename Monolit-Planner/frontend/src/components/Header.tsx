@@ -167,7 +167,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       // Map positions to unified format
       const unifiedPositions = positions.map((pos: any) => ({
         id: pos.id || crypto.randomUUID(),
-        portalProjectId: '', // Will be set by Registry
+        portalProjectId: '',
         sourceKiosk: 'monolit',
         sourceItemId: pos.id,
         code: pos.otskp_code || null,
@@ -186,24 +186,33 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         },
       }));
 
-      // Export to Registry sync API
-      const response = await fetch('https://stavagent-backend-ktwx.vercel.app/api/sync?action=import-positions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          portalProjectId: crypto.randomUUID(), // Generate new or use existing
-          positions: unifiedPositions,
-          source: 'monolit',
-          mergeStrategy: 'append',
-        }),
-      });
+      // Open Registry and send positions via postMessage (direct browser transfer)
+      const registryUrl = 'https://stavagent-backend-ktwx.vercel.app';
+      const registryWindow = window.open(`${registryUrl}?source=monolit`, '_blank');
 
-      if (!response.ok) {
-        throw new Error(`Export failed: ${response.statusText}`);
+      if (!registryWindow) {
+        throw new Error('Nelze otevřít Registry. Povolte vyskakovací okna.');
       }
 
-      const exportResult = await response.json();
-      alert(`✅ Export do Registry úspěšný!\nExportováno: ${exportResult.imported || positions.length} pozic`);
+      // Wait for Registry to signal it's ready, then send data
+      const sendData = (event: MessageEvent) => {
+        if (event.data?.type === 'registry-ready') {
+          registryWindow.postMessage({
+            type: 'import-positions',
+            positions: unifiedPositions,
+            source: 'monolit',
+            projectName: selectedBridge,
+          }, registryUrl);
+          window.removeEventListener('message', sendData);
+          alert(`✅ Export do Registry úspěšný!\nExportováno: ${positions.length} pozic`);
+        }
+      };
+      window.addEventListener('message', sendData);
+
+      // Timeout — if Registry doesn't respond in 15s, clean up
+      setTimeout(() => {
+        window.removeEventListener('message', sendData);
+      }, 15000);
 
     } catch (error: any) {
       console.error('[Export to Registry] Error:', error);

@@ -3,7 +3,7 @@
  * Registr Rozpočtů - система парсинга и агрегации строительных смет
  */
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ImportModal } from './components/import/ImportModal';
 import { ItemsTable } from './components/items/ItemsTable';
 import { SearchBar } from './components/search/SearchBar';
@@ -15,6 +15,7 @@ import { PortalLinkBadge } from './components/portal/PortalLinkBadge';
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
+import { mapUnifiedToItems } from './services/sync/unifiedMapper';
 import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw } from 'lucide-react';
 
 function App() {
@@ -27,12 +28,82 @@ function App() {
     setSelectedProject,
     setSelectedSheet,
     removeProject,
+    addProject,
     getSheet,
   } = useRegistryStore();
 
   // Search state
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+
+  // ── INTER-KIOSK IMPORT via postMessage ──
+  // When opened from Monolit-Planner (or other kiosk), receive positions
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get('source');
+
+    if (source && window.opener) {
+      // Tell opener we're ready to receive data
+      window.opener.postMessage({ type: 'registry-ready' }, '*');
+    }
+
+    const handler = (event: MessageEvent) => {
+      if (event.data?.type !== 'import-positions') return;
+
+      const { positions, projectName, source: kioskSource } = event.data;
+      if (!positions || !Array.isArray(positions) || positions.length === 0) return;
+
+      // Convert unified positions to Registry items
+      const projectId = crypto.randomUUID();
+      const sheetId = crypto.randomUUID();
+      const items = mapUnifiedToItems(positions, projectId, `${kioskSource || 'import'}`);
+
+      // Create a new project in the store
+      const newProject = {
+        id: projectId,
+        fileName: `${projectName || kioskSource || 'Import'}.xlsx`,
+        projectName: projectName || `Import z ${kioskSource || 'kiosku'}`,
+        filePath: '',
+        importedAt: new Date(),
+        sheets: [{
+          id: sheetId,
+          name: kioskSource || 'Import',
+          projectId,
+          items,
+          stats: {
+            totalItems: items.length,
+            classifiedItems: items.filter(i => i.skupina).length,
+            totalCena: items.reduce((s, i) => s + (i.cenaCelkem ?? 0), 0),
+          },
+          metadata: {
+            projectNumber: '',
+            projectName: projectName || '',
+            oddil: '',
+            stavba: '',
+            custom: {},
+          },
+          config: {
+            templateName: 'kiosk-import',
+            columns: { kod: 'A', popis: 'B', mj: 'C', mnozstvi: 'D', cenaJednotkova: 'E', cenaCelkem: 'F' },
+            dataStartRow: 1,
+            sheetName: kioskSource || 'Import',
+            sheetIndex: 0,
+            metadataCells: {},
+          },
+        }],
+      };
+
+      addProject(newProject);
+
+      // Clean URL params
+      window.history.replaceState({}, '', window.location.pathname);
+
+      alert(`✅ Importováno ${items.length} pozic z ${kioskSource || 'kiosku'}`);
+    };
+
+    window.addEventListener('message', handler);
+    return () => window.removeEventListener('message', handler);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Selected items for AI operations
   const [selectedItemIds, setSelectedItemIds] = useState<Set<string>>(new Set());
