@@ -16,6 +16,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import AdminDashboard from './pages/AdminDashboard';
 import DocumentUploadPage from './pages/DocumentUploadPage';
 import PortalPage from './pages/PortalPage';
+import LandingPage from './pages/LandingPage';
 import './styles/components.css';
 
 // Create QueryClient instance
@@ -41,16 +42,20 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
 
+            {/* Public landing page */}
+            <Route path="/" element={<LandingPage />} />
+
+            {/* Portal - public (no auth required) */}
+            <Route path="/portal" element={<PortalPage />} />
+
             {/* Protected routes */}
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
             <Route path="/change-password" element={<ProtectedRoute><ChangePasswordPage /></ProtectedRoute>} />
-            <Route path="/portal" element={<ProtectedRoute><PortalPage /></ProtectedRoute>} />
             <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
             <Route path="/projects/:projectId/upload-document" element={<ProtectedRoute><DocumentUploadPage /></ProtectedRoute>} />
 
-            {/* Default redirect to Portal (main entry point) */}
-            <Route path="/" element={<Navigate to="/portal" replace />} />
-            <Route path="*" element={<Navigate to="/portal" replace />} />
+            {/* Catch-all → landing */}
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </BrowserRouter>
       </AuthProvider>
