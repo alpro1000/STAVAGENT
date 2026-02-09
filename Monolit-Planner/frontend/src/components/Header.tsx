@@ -187,7 +187,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       }));
 
       // Export to Registry sync API
-      const response = await fetch('https://rozpocet-registry.vercel.app/api/sync?action=import-positions', {
+      const response = await fetch('https://stavagent-backend-ktwx.vercel.app/api/sync?action=import-positions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
