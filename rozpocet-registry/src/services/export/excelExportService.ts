@@ -533,8 +533,13 @@ export function exportFullProjectAndDownload(
 
 /* ============================================
    RETURN TO ORIGINAL FILE EXPORT
-   Write prices back to original file preserving structure
+   Direct ZIP/XML patching — preserves ALL original formatting,
+   formulas, charts, images, macros, etc.
+   Only writes cenaJednotkova into the original cells.
+   Formulas in cenaCelkem recalculate automatically.
    ============================================ */
+
+import JSZip from 'jszip';
 
 export interface ReturnToOriginalOptions {
   /** Column letter for unit price (e.g. 'F') - if empty, will not update */
@@ -550,24 +555,118 @@ export interface ReturnToOriginalResult {
   errors: string[];
 }
 
+const SPREADSHEET_NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main';
+
 /**
- * Convert column letter to 0-based index (A=0, B=1, ..., Z=25, AA=26, etc.)
+ * Parse workbook.xml + rels to map sheet names → worksheet file paths
  */
-function colLetterToIndex(col: string): number {
-  let result = 0;
-  for (let i = 0; i < col.length; i++) {
-    result = result * 26 + (col.charCodeAt(i) - 64);
+function parseSheetMapping(workbookXml: string, relsXml: string): Map<string, string> {
+  const parser = new DOMParser();
+  const mapping = new Map<string, string>();
+
+  // Parse workbook.xml to get sheet name → rId
+  const wbDoc = parser.parseFromString(workbookXml, 'application/xml');
+  const sheets = wbDoc.getElementsByTagNameNS(SPREADSHEET_NS, 'sheet');
+  const nameToRid = new Map<string, string>();
+  for (let i = 0; i < sheets.length; i++) {
+    const name = sheets[i].getAttribute('name') || '';
+    const rId = sheets[i].getAttributeNS(
+      'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
+      'id'
+    ) || sheets[i].getAttribute('r:id') || '';
+    if (name && rId) {
+      nameToRid.set(name, rId);
+    }
   }
-  return result - 1;
+
+  // Parse rels to get rId → file path
+  const relsDoc = parser.parseFromString(relsXml, 'application/xml');
+  const rels = relsDoc.getElementsByTagName('Relationship');
+  const ridToPath = new Map<string, string>();
+  for (let i = 0; i < rels.length; i++) {
+    const id = rels[i].getAttribute('Id') || '';
+    const target = rels[i].getAttribute('Target') || '';
+    if (id && target) {
+      ridToPath.set(id, target);
+    }
+  }
+
+  // Combine: sheet name → file path
+  for (const [name, rId] of nameToRid) {
+    const path = ridToPath.get(rId);
+    if (path) {
+      mapping.set(name, path);
+    }
+  }
+
+  return mapping;
 }
 
 /**
- * Export prices back to original file.
- * Only updates cenaJednotkova and cenaCelkem columns, preserving all other data.
+ * Patch a single cell value in sheet XML document.
+ * Sets the cell to a numeric value, removing any shared string type.
+ * Preserves style (s attribute) and everything else.
+ */
+function patchCellInDoc(
+  doc: Document,
+  cellRef: string,
+  value: number,
+  rowNum: number
+): boolean {
+  // Find all <c> elements and match by r attribute
+  const cells = doc.getElementsByTagNameNS(SPREADSHEET_NS, 'c');
+  for (let i = 0; i < cells.length; i++) {
+    const cell = cells[i];
+    if (cell.getAttribute('r') === cellRef) {
+      // Found existing cell — update value
+      // Remove shared string type (t="s") so it becomes number
+      if (cell.getAttribute('t') === 's' || cell.getAttribute('t') === 'str') {
+        cell.removeAttribute('t');
+      }
+
+      // Remove formula <f> element if exists (we're setting a plain value)
+      const fElems = cell.getElementsByTagNameNS(SPREADSHEET_NS, 'f');
+      while (fElems.length > 0) {
+        cell.removeChild(fElems[0]);
+      }
+
+      // Find or create <v> element
+      let vElem = cell.getElementsByTagNameNS(SPREADSHEET_NS, 'v')[0];
+      if (!vElem) {
+        vElem = doc.createElementNS(SPREADSHEET_NS, 'v');
+        cell.appendChild(vElem);
+      }
+      vElem.textContent = String(value);
+      return true;
+    }
+  }
+
+  // Cell doesn't exist — find the row and add it
+  const rows = doc.getElementsByTagNameNS(SPREADSHEET_NS, 'row');
+  for (let i = 0; i < rows.length; i++) {
+    if (rows[i].getAttribute('r') === String(rowNum)) {
+      const newCell = doc.createElementNS(SPREADSHEET_NS, 'c');
+      newCell.setAttribute('r', cellRef);
+      const vElem = doc.createElementNS(SPREADSHEET_NS, 'v');
+      vElem.textContent = String(value);
+      newCell.appendChild(vElem);
+      rows[i].appendChild(newCell);
+      return true;
+    }
+  }
+
+  return false; // Row not found
+}
+
+/**
+ * Export prices back to original file using direct ZIP/XML patching.
  *
- * @param project - Project with updated prices
- * @param options - Column mappings for price columns
- * @returns Result with counts and any errors
+ * ELEGANT APPROACH:
+ * - Opens the .xlsx as a ZIP archive (JSZip)
+ * - Patches ONLY the cenaJednotkova cells in the sheet XML
+ * - Does NOT touch cenaCelkem — formulas recalculate automatically
+ * - Preserves ALL formatting, merged cells, charts, images, macros, etc.
+ * - No XLSX.read()/XLSX.write() cycle that would destroy the file
  */
 export async function exportToOriginalFile(
   project: Project,
@@ -580,7 +679,7 @@ export async function exportToOriginalFile(
     errors: [],
   };
 
-  // Get original file from IndexedDB
+  // 1. Get original file from IndexedDB
   const originalFile = await getOriginalFile(project.id);
   if (!originalFile) {
     result.errors.push('Originální soubor nebyl nalezen. Soubor musí být importován znovu.');
@@ -588,109 +687,107 @@ export async function exportToOriginalFile(
   }
 
   try {
-    // Read original workbook - use cellStyles: true to preserve formatting
-    const workbook = XLSX.read(originalFile.fileData, {
-      type: 'array',
-      cellStyles: true,
-      cellNF: true,  // Preserve number formats
-      cellFormula: true,  // Preserve formulas
-    });
+    // 2. Open .xlsx as ZIP
+    const zip = await JSZip.loadAsync(originalFile.fileData);
 
-    // Build a map of source.rowStart → prices from all sheets
-    // Use source.rowStart instead of boqLineNumber (which is only for main items)
-    const priceMap = new Map<string, {
-      sheetName: string;
-      row: number;
-      cenaJed: number | null;
-      cenaCel: number | null;
-    }>();
-
-    for (const sheet of project.sheets) {
-      for (const item of sheet.items) {
-        // Use source.rowStart as the row identifier (1-based Excel row number)
-        const rowNum = item.source?.rowStart;
-        if (rowNum !== undefined && rowNum !== null) {
-          const key = `${sheet.name}:${rowNum}`;
-          priceMap.set(key, {
-            sheetName: sheet.name,
-            row: rowNum,
-            cenaJed: item.cenaJednotkova,
-            cenaCel: item.cenaCelkem,
-          });
-          result.totalRows++;
-        }
-      }
+    // 3. Read workbook structure
+    const workbookFile = zip.file('xl/workbook.xml');
+    const relsFile = zip.file('xl/_rels/workbook.xml.rels');
+    if (!workbookFile || !relsFile) {
+      result.errors.push('Neplatný formát souboru xlsx.');
+      return result;
     }
+    const workbookXml = await workbookFile.async('string');
+    const relsXml = await relsFile.async('string');
+    const sheetMap = parseSheetMapping(workbookXml, relsXml);
 
-    // Get column indices from first sheet's config (or use provided options)
+    // 4. Determine which column to patch
     const firstSheet = project.sheets[0];
     const config = firstSheet?.config;
-
     const cenaJedCol = options.cenaJednotkovaCol || config?.columns?.cenaJednotkova || '';
-    const cenaCelCol = options.cenaCelkemCol || config?.columns?.cenaCelkem || '';
 
-    if (!cenaJedCol && !cenaCelCol) {
-      result.errors.push('Nebyly nalezeny sloupce pro ceny. Zkontrolujte konfiguraci importu.');
+    if (!cenaJedCol) {
+      result.errors.push('Nebyl nalezen sloupec pro cenu jednotkovou. Zkontrolujte konfiguraci importu.');
       return result;
     }
 
-    const cenaJedColIdx = cenaJedCol ? colLetterToIndex(cenaJedCol.toUpperCase()) : -1;
-    const cenaCelColIdx = cenaCelCol ? colLetterToIndex(cenaCelCol.toUpperCase()) : -1;
+    const cenaJedColLetter = cenaJedCol.toUpperCase();
 
-    // Update each sheet in the workbook
-    for (const sheetName of workbook.SheetNames) {
-      const ws = workbook.Sheets[sheetName];
-      if (!ws) continue;
-
-      // Get the range of the sheet
-      const ref = ws['!ref'];
-      if (!ref) continue;
-      const range = XLSX.utils.decode_range(ref);
-
-      // Iterate through rows and update prices
-      for (let row = 0; row <= range.e.r; row++) {
-        const excelRow = row + 1; // 1-based Excel row number
-        const key = `${sheetName}:${excelRow}`;
-        const priceData = priceMap.get(key);
-
-        if (priceData) {
-          // Update cenaJednotkova - preserve existing cell properties
-          if (cenaJedColIdx >= 0 && priceData.cenaJed !== null) {
-            const cellRef = XLSX.utils.encode_cell({ r: row, c: cenaJedColIdx });
-            const existingCell = ws[cellRef] || {};
-            ws[cellRef] = {
-              ...existingCell,  // Preserve existing properties (style, etc.)
-              t: 'n',
-              v: priceData.cenaJed,
-              w: undefined,  // Clear cached formatted value so Excel recalculates
-            };
-          }
-
-          // Update cenaCelkem - preserve existing cell properties
-          if (cenaCelColIdx >= 0 && priceData.cenaCel !== null) {
-            const cellRef = XLSX.utils.encode_cell({ r: row, c: cenaCelColIdx });
-            const existingCell = ws[cellRef] || {};
-            ws[cellRef] = {
-              ...existingCell,  // Preserve existing properties (style, etc.)
-              t: 'n',
-              v: priceData.cenaCel,
-              w: undefined,  // Clear cached formatted value so Excel recalculates
-            };
-          }
-
-          result.updatedRows++;
+    // 5. Build price map: sheetName → [{row, price}]
+    const pricesBySheet = new Map<string, Array<{ row: number; price: number }>>();
+    for (const sheet of project.sheets) {
+      const prices: Array<{ row: number; price: number }> = [];
+      for (const item of sheet.items) {
+        const rowNum = item.source?.rowStart;
+        if (rowNum != null && item.cenaJednotkova != null && item.cenaJednotkova > 0) {
+          prices.push({ row: rowNum, price: item.cenaJednotkova });
+          result.totalRows++;
         }
+      }
+      if (prices.length > 0) {
+        pricesBySheet.set(sheet.name, prices);
       }
     }
 
-    // Write and download - preserve styles
-    const arrayBuffer = XLSX.write(workbook, {
-      type: 'array',
-      bookType: 'xlsx',
-      cellStyles: true,  // Preserve cell styles
+    // 6. Patch each sheet XML
+    const parser = new DOMParser();
+    const serializer = new XMLSerializer();
+
+    for (const [sheetName, prices] of pricesBySheet) {
+      const sheetPath = sheetMap.get(sheetName);
+      if (!sheetPath) {
+        result.errors.push(`List "${sheetName}" nebyl nalezen v souboru.`);
+        continue;
+      }
+
+      const fullPath = `xl/${sheetPath}`;
+      const sheetFile = zip.file(fullPath);
+      if (!sheetFile) {
+        result.errors.push(`Soubor ${sheetPath} nenalezen v archivu.`);
+        continue;
+      }
+
+      const sheetXml = await sheetFile.async('string');
+      const doc = parser.parseFromString(sheetXml, 'application/xml');
+
+      // Check for parse errors
+      const parseError = doc.getElementsByTagName('parsererror');
+      if (parseError.length > 0) {
+        result.errors.push(`Chyba parsování XML listu "${sheetName}".`);
+        continue;
+      }
+
+      // Patch each price cell
+      for (const { row, price } of prices) {
+        const cellRef = `${cenaJedColLetter}${row}`;
+        const patched = patchCellInDoc(doc, cellRef, price, row);
+        if (patched) {
+          result.updatedRows++;
+        }
+      }
+
+      // Serialize back and save to ZIP
+      const patchedXml = serializer.serializeToString(doc);
+      zip.file(fullPath, patchedXml);
+    }
+
+    // 7. Generate modified ZIP and download
+    const blob = await zip.generateAsync({
+      type: 'blob',
+      mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      compression: 'DEFLATE',
+      compressionOptions: { level: 6 },
     });
+
     const fileName = originalFile.fileName.replace(/\.[^.]+$/, '') + '_s_cenami.xlsx';
-    downloadExcel(arrayBuffer, fileName);
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 
     result.success = true;
   } catch (err) {
