@@ -55,8 +55,12 @@ const ALLOWED_ORIGINS = [...new Set([
   'http://localhost:3000',
   'https://monolit-planner-frontend.onrender.com',
   'https://stavagent-portal-frontend.onrender.com',
+  'https://stavagent-backend.vercel.app',
   process.env.CORS_ORIGIN, // Allow custom origin from env
 ].filter(Boolean))];
+
+// Also allow Vercel preview deployments (*.vercel.app)
+const VERCEL_PREVIEW_REGEX = /^https:\/\/stavagent-backend[a-z0-9-]*\.vercel\.app$/;
 
 // Initialize Express
 const app = express();
@@ -86,7 +90,7 @@ app.use(cors({
       return callback(null, true);
     }
 
-    if (ALLOWED_ORIGINS.includes(origin)) {
+    if (ALLOWED_ORIGINS.includes(origin) || VERCEL_PREVIEW_REGEX.test(origin)) {
       callback(null, true);
     } else {
       logger.warn(`CORS blocked origin: ${origin}`);
