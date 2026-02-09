@@ -266,8 +266,7 @@ input:disabled, select:disabled, textarea:disabled {
 #root {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
 }
 
 .app {
@@ -277,8 +276,4 @@ input:disabled, select:disabled, textarea:disabled {
   width: 100%;
 }
 
-/* Убираем все излишние анимации, кроме необходимых спиннеров */
-*:not(.upload-spinner):not(.upload-spinner *), *::before:not(.upload-spinner *), *::after:not(.upload-spinner *) {
-  animation-duration: 0.1s !important;
-  animation-delay: 0s !important;
-}
+/* Spinner animation preserved (see .spinner class above) */
