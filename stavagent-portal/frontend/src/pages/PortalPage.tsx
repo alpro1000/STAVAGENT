@@ -172,11 +172,17 @@ export default function PortalPage() {
   const loadProjects = async () => {
     try {
       setLoading(true);
+      // Timeout 8s — if backend is sleeping or unreachable, show page anyway
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+
       const response = await fetch(`${API_URL}/api/portal-projects`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-        }
+        },
+        signal: controller.signal,
       });
+      clearTimeout(timeout);
 
       if (!response.ok) {
         throw new Error('Failed to load projects');
@@ -186,7 +192,13 @@ export default function PortalPage() {
       setProjects(data.projects || []);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load projects');
+      // Don't show error for abort/network failures — just show empty state
+      if (err instanceof DOMException && err.name === 'AbortError') {
+        setError(null);
+      } else {
+        setError(null); // Silently fail — show services without projects
+      }
+      setProjects([]);
     } finally {
       setLoading(false);
     }
