@@ -191,33 +191,43 @@ router.post('/', async (req, res) => {
     }
     const client = await pool.connect();
 
-    await client.query('BEGIN');
+    try {
+      await client.query('BEGIN');
 
-    // Create portal project
-    const result = await client.query(
-      `INSERT INTO portal_projects (
-        portal_project_id,
-        project_name,
-        project_type,
-        description,
-        owner_id,
-        core_status,
-        created_at,
-        updated_at
-      ) VALUES ($1, $2, $3, $4, $5, 'not_sent', NOW(), NOW())
-      RETURNING *`,
-      [portal_project_id, project_name, project_type || 'custom', description || '', userId]
-    );
+      // Create portal project
+      const result = await client.query(
+        `INSERT INTO portal_projects (
+          portal_project_id,
+          project_name,
+          project_type,
+          description,
+          owner_id,
+          core_status,
+          created_at,
+          updated_at
+        ) VALUES ($1, $2, $3, $4, $5, 'not_sent', NOW(), NOW())
+        RETURNING *`,
+        [portal_project_id, project_name, project_type || 'custom', description || '', userId]
+      );
 
-    await client.query('COMMIT');
-    client.release();
+      await client.query('COMMIT');
 
-    console.log(`[PortalProjects] Created project: ${portal_project_id} (${project_name})`);
+      console.log(`[PortalProjects] Created project: ${portal_project_id} (${project_name})`);
 
-    res.status(201).json({
-      success: true,
-      project: result.rows[0]
-    });
+      res.status(201).json({
+        success: true,
+        project: result.rows[0]
+      });
+    } catch (dbError) {
+      await client.query('ROLLBACK').catch(() => {});
+      console.error('[PortalProjects] DB error creating project:', dbError);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create project'
+      });
+    } finally {
+      client.release();
+    }
 
   } catch (error) {
     console.error('[PortalProjects] Error creating project:', error);
@@ -434,6 +444,7 @@ router.post('/:id/send-to-core', async (req, res) => {
     );
 
     if (projectResult.rows.length === 0) {
+      client.release();
       return res.status(404).json({
         success: false,
         error: 'Project not found'
@@ -451,6 +462,7 @@ router.post('/:id/send-to-core', async (req, res) => {
     );
 
     if (filesResult.rows.length === 0) {
+      client.release();
       return res.status(400).json({
         success: false,
         error: 'No files uploaded for this project'
