@@ -452,6 +452,39 @@ export function getPerplexityConfig() {
 export const PERPLEXITY_CONFIG = getPerplexityConfig();
 
 // ============================================================================
+// BRAVE SEARCH CONFIGURATION
+// ============================================================================
+
+/**
+ * Get Brave Search API configuration
+ * Brave Search can supplement or replace Perplexity for URS catalog search
+ * @returns {Object} Brave config
+ */
+export function getBraveSearchConfig() {
+  const apiKey = process.env.BRAVE_API_KEY;
+  const timeoutMs = parseInt(process.env.BRAVE_TIMEOUT_MS || '15000', 10);
+
+  if (!apiKey) {
+    logger.info('[BraveConfig] No BRAVE_API_KEY set. Brave Search fallback will be disabled.');
+    return {
+      enabled: false,
+      timeoutMs: timeoutMs
+    };
+  }
+
+  logger.info(`[BraveConfig] Brave Search ENABLED: timeout=${timeoutMs}ms, key=${apiKey.substring(0, 8)}...`);
+
+  return {
+    enabled: true,
+    apiKey: apiKey,
+    apiUrl: 'https://api.search.brave.com/res/v1/web/search',
+    timeoutMs: timeoutMs
+  };
+}
+
+export const BRAVE_SEARCH_CONFIG = getBraveSearchConfig();
+
+// ============================================================================
 // MODEL PRICING & COST COMPARISON
 // ============================================================================
 

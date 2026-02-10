@@ -1,10 +1,11 @@
 /**
  * Candidate Retriever Service
- * Searches online ÚRS catalog via Perplexity API
+ * Searches online ÚRS catalog via Perplexity API + Brave Search fallback
  *
  * Purpose:
  * - Generate 2-4 search queries for each subwork
- * - Call Perplexity API to search online ÚRS catalog
+ * - Call Perplexity API to search online ÚRS catalog (primary)
+ * - Fallback to Brave Search if Perplexity returns 0 results
  * - Extract ÚRS codes, names, units from results
  * - Deduplicate candidates
  * - Return top 10-30 candidates per subwork
@@ -14,6 +15,7 @@
 
 import { logger } from '../../utils/logger.js';
 import { searchUrsSite } from '../perplexityClient.js';
+import { searchUrsSiteViaBrave } from '../braveSearchClient.js';
 
 // ============================================================================
 // MAIN RETRIEVAL FUNCTION
@@ -252,17 +254,42 @@ function buildDeepQuery(subWork) {
  */
 async function searchURS(query) {
   try {
-    // Call searchUrsSite (it builds the prompt internally)
+    // PRIMARY: Call Perplexity (AI-powered search with structured extraction)
     const candidates = await searchUrsSite(query);
 
     // searchUrsSite already returns structured candidates
     // Add searchQuery field to each candidate
-    return candidates.map(c => ({
+    const mapped = candidates.map(c => ({
       ...c,
       code: c.urs_code || c.code,
       name: c.urs_name || c.name,
-      searchQuery: query
+      searchQuery: query,
+      source: c.source || 'perplexity'
     }));
+
+    // If Perplexity returned results, use them
+    if (mapped.length > 0) {
+      return mapped;
+    }
+
+    // FALLBACK: Try Brave Search when Perplexity returns 0 candidates
+    logger.info(`[CandidateRetriever] Perplexity returned 0 candidates, trying Brave Search fallback for: "${query}"`);
+
+    const braveCandidates = await searchUrsSiteViaBrave(query);
+
+    if (braveCandidates.length > 0) {
+      logger.info(`[CandidateRetriever] Brave Search found ${braveCandidates.length} candidates (fallback)`);
+      return braveCandidates.map(c => ({
+        ...c,
+        code: c.urs_code || c.code,
+        name: c.urs_name || c.name,
+        searchQuery: query,
+        source: 'brave_search'
+      }));
+    }
+
+    logger.warn(`[CandidateRetriever] Both Perplexity and Brave returned 0 candidates for: "${query}"`);
+    return [];
 
   } catch (error) {
     logger.warn(`[CandidateRetriever] URS search failed: ${error.message}`);
