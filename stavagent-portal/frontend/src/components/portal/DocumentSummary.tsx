@@ -109,7 +109,9 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
           }
         });
         if (response.ok) {
-          const projects = await response.json();
+          const data = await response.json();
+          // Handle both array and object response formats
+          const projects = Array.isArray(data) ? data : (data.projects || []);
           setAvailableProjects(projects.map((p: any) => ({
             id: p.portal_project_id || p.id,
             name: p.project_name || 'Unnamed'
