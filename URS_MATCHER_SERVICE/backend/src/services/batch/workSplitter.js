@@ -145,21 +145,53 @@ ${JSON.stringify(markers, null, 2)}
 1. SINGLE = one distinct work operation (e.g., "Výkop jámy kat. 3")
 2. COMPOSITE = 2-${maxSubWorks} separate works (e.g., "Výkop + odvoz + zásyp")
 3. Common composite markers:
-   - "včetně" / "vč." (including)
+   - "včetně" / "vč." (including) — ALWAYS indicates composite
    - "+" (plus)
-   - "komplet" (complete/all)
+   - "komplet" / "kompletní" (complete/all)
    - "dodávka a montáž" (supply and installation)
    - "demontáž a montáž" (demolition and installation)
-   - "se vším" (with everything)
-   - Multiple operations: "výkop + odvoz + zásyp + hutnění"
+   - "se vším" / "s příslušenstvím" (with everything)
+   - "pod nátěr" / "pod obklad" (preparation for next work = 2 works)
+   - Comma-separated different work types (e.g., "opravy omítek, praskliny")
+   - "z X%" = quantity modifier, NOT a separate work (keep with parent)
 
-4. If COMPOSITE, split into distinct subworks with:
+4. IMPORTANT: Look for HIDDEN composite items:
+   - "opravy omítek vč. odstranění nesoudržné omítky" = 2 works (repair + removal)
+   - "pod nátěr" = implies preparation + painting = extra work
+   - Items listing multiple defects = each defect type is separate work
+
+5. If COMPOSITE, split into distinct subworks with:
    - index (1, 2, 3...)
-   - text (short description)
-   - operation (excavation, transport, backfill, etc.)
-   - keywords (3-5 Czech/English keywords for search)
+   - text (short Czech description for URS catalog search)
+   - operation (see full list below)
+   - keywords (3-5 Czech keywords + 1-2 English for catalog search)
 
-5. Max ${maxSubWorks} subworks - if more, return confidence=low
+6. Max ${maxSubWorks} subworks - if more, return confidence=low
+
+**OPERATION TYPES (full list):**
+- excavation (výkop, hloubení)
+- demolition (demontáž, bourání)
+- removal (odstranění, otlučení, seškrabání)
+- transport (doprava, odvoz, přesun)
+- backfill (zásyp, zasypání, navážka)
+- compaction (hutnění, zhutňování)
+- concreting (betonáž, beton)
+- formwork (bednění)
+- reinforcement (výztuž, armatura)
+- waterproofing (hydroizolace, izolace)
+- plastering (omítka, omítání)
+- plaster_repair (oprava omítky, lokální oprava)
+- painting (nátěr, malba, penetrace)
+- tiling (obklad, dlažba)
+- installation (montáž, osazení)
+- cleaning (čištění, očištění, otryskání)
+- surface_preparation (příprava podkladu, penetrace, reprofilace)
+- masonry (zdivo, zdění)
+- insulation (zateplení, polystyren, tepelná izolace)
+- roofing (střecha, krytina)
+- piping (potrubí, kanalizace)
+- paving (dlažba vozovky, asfalt, chodník)
+- other (jiné)
 
 **OUTPUT FORMAT (JSON only, no markdown):**
 {
@@ -167,9 +199,9 @@ ${JSON.stringify(markers, null, 2)}
   "subWorks": [
     {
       "index": 1,
-      "text": "Short Czech description",
-      "operation": "excavation|transport|concreting|formwork|reinforcement|etc.",
-      "keywords": ["keyword1", "keyword2", "keyword3"]
+      "text": "Short Czech description for URS search",
+      "operation": "one of the operation types above",
+      "keywords": ["Czech keyword1", "Czech keyword2", "English keyword"]
     }
   ],
   "reasoning": "Short explanation (1-2 sentences in English)",
@@ -207,7 +239,7 @@ Output:
       "index": 2,
       "text": "Odvoz na skládku",
       "operation": "transport",
-      "keywords": ["odvoz", "transport", "doprava", "skládka", "removal"]
+      "keywords": ["odvoz", "transport", "doprava", "skládka"]
     },
     {
       "index": 3,
@@ -245,6 +277,74 @@ Output:
     }
   ],
   "reasoning": "Concrete work + transport indicated by 'vč. doprava'",
+  "confidence": "high"
+}
+
+Input: "Lokální opravy omítek, praskliny - vč. odstranění nesoudržné omítky (pod nátěr) z 5%"
+Output:
+{
+  "detectedType": "COMPOSITE",
+  "subWorks": [
+    {
+      "index": 1,
+      "text": "Lokální opravy omítek vnitřních stěn",
+      "operation": "plaster_repair",
+      "keywords": ["oprava omítky", "lokální oprava", "omítka", "plaster repair"]
+    },
+    {
+      "index": 2,
+      "text": "Vyspravení prasklin ve stěnách",
+      "operation": "plaster_repair",
+      "keywords": ["prasklina", "tmelení prasklin", "oprava prasklin", "crack repair"]
+    },
+    {
+      "index": 3,
+      "text": "Odstranění nesoudržné omítky otlučením",
+      "operation": "removal",
+      "keywords": ["odstranění omítky", "otlučení omítky", "nesoudržná omítka", "plaster removal"]
+    },
+    {
+      "index": 4,
+      "text": "Penetrace podkladu pod nátěr",
+      "operation": "surface_preparation",
+      "keywords": ["penetrace", "příprava podkladu", "pod nátěr", "primer"]
+    }
+  ],
+  "reasoning": "Four works: plaster repair, crack repair, loose plaster removal ('vč. odstranění'), surface prep ('pod nátěr'). 'z 5%' is quantity modifier, not separate work.",
+  "confidence": "high"
+}
+
+Input: "Dodávka a montáž ocelových zábradlí vč. kotvení a nátěru"
+Output:
+{
+  "detectedType": "COMPOSITE",
+  "subWorks": [
+    {
+      "index": 1,
+      "text": "Dodávka ocelového zábradlí",
+      "operation": "other",
+      "keywords": ["dodávka", "zábradlí", "ocelové", "steel railing", "supply"]
+    },
+    {
+      "index": 2,
+      "text": "Montáž ocelového zábradlí",
+      "operation": "installation",
+      "keywords": ["montáž", "zábradlí", "osazení", "installation", "railing"]
+    },
+    {
+      "index": 3,
+      "text": "Kotvení zábradlí do betonu",
+      "operation": "installation",
+      "keywords": ["kotvení", "kotvy", "beton", "anchoring"]
+    },
+    {
+      "index": 4,
+      "text": "Nátěr ocelového zábradlí",
+      "operation": "painting",
+      "keywords": ["nátěr", "barva", "antikorozní", "painting", "coating"]
+    }
+  ],
+  "reasoning": "Supply+installation ('dodávka a montáž'), plus anchoring and painting ('vč. kotvení a nátěru')",
   "confidence": "high"
 }
 
