@@ -61,7 +61,8 @@ async function processRequest(queueEntry) {
 export async function searchUrsSite(inputText) {
   try {
     if (!PERPLEXITY_CONFIG.enabled) {
-      logger.warn('[Perplexity] API not enabled, returning empty result');
+      logger.warn('[Perplexity] API not enabled (PPLX_API_KEY missing?), returning empty result');
+      logger.warn('[Perplexity] Set PPLX_API_KEY environment variable to enable Perplexity search');
       return [];
     }
 
@@ -83,6 +84,7 @@ export async function searchUrsSite(inputText) {
 
       if (!parsed || !parsed.candidates || !Array.isArray(parsed.candidates)) {
         logger.warn('[Perplexity] Invalid response format or no candidates found');
+        logger.warn(`[Perplexity] Raw response (first 300 chars): ${response ? response.substring(0, 300) : 'null'}`);
         return [];
       }
 
@@ -163,7 +165,16 @@ async function callPerplexityAPI(userPrompt, retryCount = 0, maxRetries = 3) {
     }
 
     if (!response.ok) {
+      // Read error body for better diagnostics
+      let errorBody = '';
+      try {
+        errorBody = await response.text();
+      } catch (e) {
+        errorBody = '(could not read error body)';
+      }
       logger.error(`[Perplexity] HTTP ${response.status}: ${response.statusText}`);
+      logger.error(`[Perplexity] Error body: ${errorBody.substring(0, 500)}`);
+      logger.error(`[Perplexity] Model: ${PERPLEXITY_CONFIG.model}, API URL: ${PERPLEXITY_CONFIG.apiUrl}`);
       return null;
     }
 

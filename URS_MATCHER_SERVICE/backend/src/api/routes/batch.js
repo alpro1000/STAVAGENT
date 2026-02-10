@@ -332,6 +332,100 @@ router.get('/:id/export/xlsx', async (req, res) => {
 });
 
 // ============================================================================
+// GET /api/batch/diagnostics
+// Diagnostic endpoint to test Perplexity + LLM connectivity
+// ============================================================================
+
+router.get('/diagnostics', async (req, res) => {
+  const startTime = Date.now();
+
+  try {
+    logger.info('[BatchAPI] GET /api/batch/diagnostics');
+
+    // Import configs
+    const { PERPLEXITY_CONFIG, CATALOG_MODE, getAvailableProviders, getTaskTypes } = await import('../../config/llmConfig.js');
+    const { searchUrsSite } = await import('../../services/perplexityClient.js');
+
+    const diagnostics = {
+      timestamp: new Date().toISOString(),
+      perplexity: {
+        enabled: PERPLEXITY_CONFIG.enabled,
+        model: PERPLEXITY_CONFIG.model,
+        apiUrl: PERPLEXITY_CONFIG.apiUrl,
+        timeoutMs: PERPLEXITY_CONFIG.timeoutMs,
+        hasApiKey: !!PERPLEXITY_CONFIG.apiKey,
+        apiKeyPrefix: PERPLEXITY_CONFIG.apiKey ? PERPLEXITY_CONFIG.apiKey.substring(0, 8) + '...' : 'NOT SET'
+      },
+      catalogMode: CATALOG_MODE,
+      llmProviders: {},
+      taskRouting: getTaskTypes(),
+      testResults: {}
+    };
+
+    // Check available providers
+    const providers = getAvailableProviders();
+    for (const [name, config] of Object.entries(providers)) {
+      diagnostics.llmProviders[name] = {
+        enabled: config.enabled,
+        model: config.model,
+        hasApiKey: !!config.apiKey
+      };
+    }
+
+    // Test Perplexity with a simple query (if enabled)
+    if (PERPLEXITY_CONFIG.enabled) {
+      try {
+        const testQuery = 'beton C25/30 základová deska';
+        logger.info(`[BatchAPI] Testing Perplexity with: "${testQuery}"`);
+
+        const testStartTime = Date.now();
+        const testResult = await searchUrsSite(testQuery);
+        const testElapsed = Date.now() - testStartTime;
+
+        diagnostics.testResults.perplexity = {
+          status: testResult.length > 0 ? 'OK' : 'EMPTY_RESULT',
+          candidatesFound: testResult.length,
+          timeMs: testElapsed,
+          query: testQuery,
+          firstCandidate: testResult.length > 0 ? {
+            code: testResult[0].code,
+            name: testResult[0].name
+          } : null
+        };
+      } catch (error) {
+        diagnostics.testResults.perplexity = {
+          status: 'ERROR',
+          error: error.message,
+          timeMs: Date.now() - startTime
+        };
+      }
+    } else {
+      diagnostics.testResults.perplexity = {
+        status: 'DISABLED',
+        reason: 'PPLX_API_KEY not set'
+      };
+    }
+
+    const elapsed = Date.now() - startTime;
+
+    return res.status(200).json({
+      success: true,
+      data: diagnostics,
+      timing: { totalMs: elapsed }
+    });
+
+  } catch (error) {
+    const elapsed = Date.now() - startTime;
+    logger.error(`[BatchAPI] Diagnostics error: ${error.message}`);
+
+    return res.status(500).json({
+      error: error.message,
+      timing: { totalMs: elapsed }
+    });
+  }
+});
+
+// ============================================================================
 // EXPORTS
 // ============================================================================
 

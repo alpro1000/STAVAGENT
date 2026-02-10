@@ -478,17 +478,34 @@ async function processPosition(batchId, itemId, settings) {
       // Store result
       results.push({
         subWork: subWork,
-        candidates: rerankResult.topCandidates
+        candidates: rerankResult.topCandidates,
+        retrievalFailed: retrieveResult.error ? true : false,
+        retrievalError: retrieveResult.error || null
       });
     }
 
     // ========================================================================
     // STEP 4: UPDATE RESULTS
     // ========================================================================
-    const needsReview = results.some(r =>
+
+    // Check if ANY subwork has candidates with needsReview or low confidence
+    const hasLowConfidence = results.some(r =>
       r.candidates.some(c => c.needsReview || c.confidence === 'low')
     );
 
+    // CRITICAL: If ALL subworks have 0 candidates, mark as needs_review
+    // This catches the case where Perplexity/retrieve fails silently
+    const allEmpty = results.every(r => !r.candidates || r.candidates.length === 0);
+    const hasRetrievalError = results.some(r => r.retrievalFailed);
+
+    if (allEmpty) {
+      logger.warn(`[BatchProcessor] Item ${itemId}: ALL subworks returned 0 candidates - marking needs_review`);
+    }
+    if (hasRetrievalError) {
+      logger.warn(`[BatchProcessor] Item ${itemId}: Retrieval errors detected - marking needs_review`);
+    }
+
+    const needsReview = hasLowConfidence || allEmpty || hasRetrievalError;
     const finalStatus = needsReview ? 'needs_review' : 'done';
 
     await db.run(
