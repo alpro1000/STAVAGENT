@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.0.3
-**Last Updated:** 2026-02-04
+**Version:** 2.0.4
+**Last Updated:** 2026-02-10
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,8 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-02-10 | stavagent-portal | Portal production fixes: timeout 300s, CORS, file input modal, API endpoint | ✅ Pushed |
+| 2026-02-10 | URS_MATCHER_SERVICE | Batch processing diagnosis: identified Perplexity API requirement (2-API architecture) | 📋 Analysis |
 | 2026-02-09 | Monolit + Registry | Inter-kiosk data transfer via postMessage (Monolit → Registry) | ✅ Pushed |
 | 2026-02-09 | rozpocet-registry | Export-to-original rewrite: JSZip direct XML patching (no XLSX.write) | ✅ Pushed |
 | 2026-02-09 | stavagent-portal | Public landing page for stavagent.cz (no auth) | ✅ Pushed |
