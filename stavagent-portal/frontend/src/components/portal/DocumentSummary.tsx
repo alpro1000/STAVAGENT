@@ -102,7 +102,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     const loadProjects = async () => {
       try {
         const portalApiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
-        const response = await fetch(`${portalApiUrl}/api/portal/projects`);
+        const response = await fetch(`${portalApiUrl}/api/portal-projects`);
         if (response.ok) {
           const projects = await response.json();
           setAvailableProjects(projects.map((p: any) => ({
@@ -146,9 +146,9 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
         formData.append('preferred_model', selectedModel);
       }
 
-      // Fetch with timeout (120 seconds for large documents)
+      // Fetch with timeout (5 minutes for large documents - 46+ pages)
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 120000);
+      const timeoutId = setTimeout(() => controller.abort(), 300000); // 5 minutes
 
       const response = await fetch(`${CORE_API_URL}/api/v1/passport/generate`, {
         method: 'POST',
@@ -188,7 +188,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
       if (err instanceof Error) {
         if (err.name === 'AbortError') {
-          errorMessage = 'Zpracování trvá příliš dlouho (timeout 120s). Zkuste menší soubor nebo jednodušší dokument.';
+          errorMessage = 'Zpracování trvá příliš dlouho (timeout 5 minut). Zkuste menší soubor nebo kontaktujte administrátora.';
         } else {
           errorMessage = err.message;
         }

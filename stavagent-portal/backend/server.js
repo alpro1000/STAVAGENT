@@ -56,6 +56,8 @@ const ALLOWED_ORIGINS = [...new Set([
   'https://monolit-planner-frontend.onrender.com',
   'https://stavagent-portal-frontend.onrender.com',
   'https://stavagent-backend.vercel.app',
+  'https://www.stavagent.cz',           // Production domain
+  'https://stavagent.cz',               // Alternative domain (without www)
   process.env.CORS_ORIGIN, // Allow custom origin from env
 ].filter(Boolean))];
 
