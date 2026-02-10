@@ -71,6 +71,14 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   const [selectedModel, setSelectedModel] = useState<AIModelType>('gemini');
   const [enableAiEnrichment, setEnableAiEnrichment] = useState(true);
 
+  // File input ref
+  const fileInputRef = useCallback((node: HTMLInputElement | null) => {
+    if (node) {
+      // Store ref without using useState to avoid re-renders
+      (window as any).__fileInputRef = node;
+    }
+  }, []);
+
   // Save to project state
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [isSaving, setIsSaving] = useState(false);
@@ -220,7 +228,17 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     if (files && files.length > 0) {
       handleFileUpload(files[0]);
     }
+    // Reset input value to allow re-uploading the same file
+    e.target.value = '';
   }, [handleFileUpload]);
+
+  // Trigger file input click
+  const handleUploadClick = useCallback(() => {
+    const fileInput = (window as any).__fileInputRef;
+    if (fileInput) {
+      fileInput.click();
+    }
+  }, []);
 
   // Save to project
   const handleSaveToProject = useCallback(async () => {
@@ -514,6 +532,15 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
         </div>
       )}
 
+      {/* Hidden file input */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept=".pdf,.xlsx,.xls,.docx"
+        onChange={handleFileSelect}
+        style={{ display: 'none' }}
+      />
+
       {/* Upload area */}
       {!passportData && (
         <div
@@ -526,9 +553,9 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
             borderRadius: '8px',
             padding: '48px',
             textAlign: 'center',
-            cursor: 'pointer',
             backgroundColor: isDragOver ? 'var(--bg-tertiary)' : 'var(--bg-secondary)',
             transition: 'all 0.2s ease',
+            position: 'relative',
           }}
         >
           {isUploading ? (
@@ -543,25 +570,19 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                 Přetáhněte dokument sem
               </p>
               <p style={{ margin: '0 0 16px', color: 'var(--text-secondary)', fontSize: '14px' }}>
-                nebo klikněte pro výběr souboru
+                nebo klikněte na tlačítko níže
               </p>
+              <button
+                onClick={handleUploadClick}
+                className="c-btn c-btn--primary"
+                style={{ marginBottom: '16px' }}
+              >
+                <Upload size={16} style={{ marginRight: '8px' }} />
+                Vybrat soubor
+              </button>
               <p style={{ margin: 0, color: 'var(--text-tertiary)', fontSize: '13px' }}>
                 Podporované formáty: PDF, XLSX, XLS, DOCX
               </p>
-              <input
-                type="file"
-                accept=".pdf,.xlsx,.xls,.docx"
-                onChange={handleFileSelect}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  opacity: 0,
-                  cursor: 'pointer',
-                }}
-              />
             </>
           )}
         </div>
