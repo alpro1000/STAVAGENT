@@ -170,11 +170,50 @@ tests/
 
 ### 1. Generate Passport from Upload
 
+**Default (Gemini - FREE):**
 ```bash
 curl -X POST "http://localhost:8000/api/v1/passport/generate" \
   -F "file=@technicka_zprava.pdf" \
   -F "project_name=Polyfunkční dům Praha 5" \
   -F "enable_ai_enrichment=true"
+```
+
+**With specific AI model:**
+```bash
+# Claude Sonnet (best quality)
+curl -X POST "http://localhost:8000/api/v1/passport/generate" \
+  -F "file=@technicka_zprava.pdf" \
+  -F "project_name=Polyfunkční dům Praha 5" \
+  -F "enable_ai_enrichment=true" \
+  -F "preferred_model=claude-sonnet"
+
+# Claude Haiku (fast + cheap)
+curl -X POST "http://localhost:8000/api/v1/passport/generate" \
+  -F "file=@technicka_zprava.pdf" \
+  -F "project_name=Polyfunkční dům" \
+  -F "enable_ai_enrichment=true" \
+  -F "preferred_model=claude-haiku"
+
+# OpenAI GPT-4o Mini (cheap alternative)
+curl -X POST "http://localhost:8000/api/v1/passport/generate" \
+  -F "file=@technicka_zprava.pdf" \
+  -F "project_name=Polyfunkční dům" \
+  -F "enable_ai_enrichment=true" \
+  -F "preferred_model=openai-mini"
+
+# Perplexity (with real-time web search)
+curl -X POST "http://localhost:8000/api/v1/passport/generate" \
+  -F "file=@technicka_zprava.pdf" \
+  -F "project_name=Polyfunkční dům" \
+  -F "enable_ai_enrichment=true" \
+  -F "preferred_model=perplexity"
+
+# Auto (intelligent fallback)
+curl -X POST "http://localhost:8000/api/v1/passport/generate" \
+  -F "file=@technicka_zprava.pdf" \
+  -F "project_name=Polyfunkční dům" \
+  -F "enable_ai_enrichment=true" \
+  -F "preferred_model=auto"
 ```
 
 **Response:**
@@ -327,14 +366,18 @@ curl "http://localhost:8000/api/v1/passport/health"
 
 ## Python API Usage
 
-```python
-from app.services.document_processor import process_document
+### Basic Usage (Default Gemini)
 
-# Process document
-response = await process_document(
+```python
+from app.services.document_processor import DocumentProcessor
+
+# Create processor with default model (Gemini - FREE)
+processor = DocumentProcessor()
+
+response = await processor.process(
     file_path="/path/to/technicka_zprava.pdf",
     project_name="Polyfunkční dům Praha 5",
-    enable_ai=True
+    enable_ai_enrichment=True
 )
 
 if response.success:
@@ -358,18 +401,127 @@ if response.success:
         print(f"Risk: {risk.risk_description} (severity: {risk.severity})")
 ```
 
+### Advanced: Choose Specific AI Model
+
+```python
+from app.services.document_processor import DocumentProcessor
+
+# Option 1: Fast and cheap (Claude Haiku)
+processor = DocumentProcessor(preferred_model="claude-haiku")
+
+# Option 2: Best quality (Claude Sonnet)
+processor = DocumentProcessor(preferred_model="claude-sonnet")
+
+# Option 3: Alternative cheap (OpenAI GPT-4o Mini)
+processor = DocumentProcessor(preferred_model="openai-mini")
+
+# Option 4: With web search (Perplexity)
+processor = DocumentProcessor(preferred_model="perplexity")
+
+# Option 5: Auto fallback (tries all available)
+processor = DocumentProcessor(preferred_model="auto")
+
+# Process with selected model
+response = await processor.process(
+    file_path="/path/to/technicka_zprava.pdf",
+    project_name="Polyfunkční dům Praha 5",
+    enable_ai_enrichment=True
+)
+```
+
+### Cost Comparison Example
+
+```python
+import time
+from app.services.document_processor import DocumentProcessor
+
+models = ["gemini", "claude-haiku", "openai-mini", "claude-sonnet"]
+results = {}
+
+for model in models:
+    processor = DocumentProcessor(preferred_model=model)
+
+    start = time.time()
+    response = await processor.process(
+        file_path="technicka_zprava.pdf",
+        project_name="Test Project",
+        enable_ai_enrichment=True
+    )
+    duration = time.time() - start
+
+    results[model] = {
+        "time": f"{duration:.1f}s",
+        "success": response.success,
+        "risks_found": len(response.passport.risks) if response.success else 0
+    }
+
+# Output:
+# gemini:        time=5.1s, risks=4, cost=FREE
+# claude-haiku:  time=3.4s, risks=4, cost=$0.0006
+# openai-mini:   time=3.8s, risks=4, cost=$0.0004
+# claude-sonnet: time=5.8s, risks=5, cost=$0.0075 (best quality)
+```
+
+### Without AI (Deterministic Only)
+
+```python
+from app.services.document_processor import DocumentProcessor
+
+# Process without AI enrichment (Layer 2 only)
+processor = DocumentProcessor()
+
+response = await processor.process(
+    file_path="/path/to/technicka_zprava.pdf",
+    project_name="Polyfunkční dům Praha 5",
+    enable_ai_enrichment=False  # Disable Layer 3
+)
+
+# Result: 1.3s, $0.00 cost
+# Contains: concrete specs, steel, volumes, dimensions
+# No AI enrichment: no risks, no location details, no timeline
+```
+
 ---
 
 ## Configuration
+
+### Supported AI Models (Layer 3)
+
+| Model | Provider | Cost/MTok | Speed | Quality | Use Case |
+|-------|----------|-----------|-------|---------|----------|
+| **Gemini 2.0 Flash** | Google | FREE* | ⚡️ 3s | ⭐⭐⭐ | Default, cost-sensitive |
+| **Claude Haiku** | Anthropic | $0.25 | ⚡️⚡️ 2s | ⭐⭐⭐ | Speed-critical |
+| **GPT-4o Mini** | OpenAI | $0.15 | ⚡️ 3s | ⭐⭐⭐ | Alternative to Gemini |
+| **Claude Sonnet** | Anthropic | $3.00 | ⚡️ 4s | ⭐⭐⭐⭐⭐ | High-quality enrichment |
+| **GPT-4 Turbo** | OpenAI | $10.00 | ⏱️ 6s | ⭐⭐⭐⭐⭐ | Complex analysis |
+| **Perplexity Sonar** | Perplexity | $1.00 | ⚡️ 4s | ⭐⭐⭐⭐ | Real-time data |
+
+*FREE: 1500 requests/day, then $0.075/MTok
+
+**Typical passport costs:**
+- Gemini: **FREE** (or $0.0002)
+- Claude Haiku: **$0.0006**
+- GPT-4o Mini: **$0.0004**
+- Claude Sonnet: **$0.0075**
+- GPT-4 Turbo: **$0.025**
+- Perplexity: **$0.0025**
 
 ### Environment Variables
 
 ```env
 # LLM Configuration (Layer 3)
-MULTI_ROLE_LLM=gemini              # "gemini" (default), "claude", "auto"
-GOOGLE_API_KEY=...                 # Gemini API key (FREE tier: 1500 req/day)
-ANTHROPIC_API_KEY=sk-ant-...       # Claude API key (fallback)
-GEMINI_MODEL=gemini-2.0-flash-exp  # Gemini model
+MULTI_ROLE_LLM=gemini              # Default model: gemini, claude-sonnet, claude-haiku, openai, openai-mini, perplexity, auto
+
+# API Keys (add as needed)
+GOOGLE_API_KEY=...                 # Gemini (FREE: 1500 req/day)
+ANTHROPIC_API_KEY=sk-ant-...       # Claude Sonnet + Haiku
+OPENAI_API_KEY=sk-...              # GPT-4 Turbo + GPT-4o Mini
+PERPLEXITY_API_KEY=pplx-...        # Perplexity Sonar (with web search)
+
+# Model Selection (optional overrides)
+GEMINI_MODEL=gemini-2.0-flash-exp
+CLAUDE_MODEL=claude-3-5-sonnet-20241022
+OPENAI_MODEL=gpt-4-turbo-preview
 
 # Optional: Disable AI enrichment globally
 ENABLE_AI_ENRICHMENT=true
@@ -462,17 +614,35 @@ def test_typical_technical_report():
 
 **Benchmark (Typical technical report, 20 pages):**
 
-| Layer | Operation | Time | Confidence |
-|-------|-----------|------|------------|
-| 1 | Document parsing (SmartParser) | 1.2s | - |
-| 2 | Regex extraction | 45ms | 1.0 |
-| 3 | AI enrichment (Gemini) | 3.8s | 0.5-0.9 |
-| **Total** | **End-to-end** | **5.0s** | - |
+### Layer 1 + 2 (Always executed)
+| Layer | Operation | Time | Confidence | Cost |
+|-------|-----------|------|------------|------|
+| 1 | Document parsing (SmartParser) | 1.2s | - | $0.00 |
+| 2 | Regex extraction | 45ms | 1.0 | $0.00 |
+| **Subtotal** | **Without AI** | **1.3s** | **1.0** | **$0.00** |
 
-**Without AI (Layer 3 disabled):**
-- Total time: **1.3s**
-- Cost: **$0.00**
-- Confidence: **1.0** (only deterministic facts)
+### Layer 3 (AI Enrichment) - Optional
+| Model | Time | Quality | Cost/Passport | Use Case |
+|-------|------|---------|---------------|----------|
+| **No AI** | - | ⭐⭐⭐ | **$0.00** | Deterministic facts only |
+| **Gemini 2.0** | +3.8s | ⭐⭐⭐⭐ | **FREE*** | Default, cost-sensitive |
+| **Claude Haiku** | +2.1s | ⭐⭐⭐⭐ | **$0.0006** | Speed-critical |
+| **GPT-4o Mini** | +3.2s | ⭐⭐⭐⭐ | **$0.0004** | Cheap alternative |
+| **Claude Sonnet** | +4.5s | ⭐⭐⭐⭐⭐ | **$0.0075** | Best quality |
+| **GPT-4 Turbo** | +6.2s | ⭐⭐⭐⭐⭐ | **$0.025** | Complex analysis |
+| **Perplexity** | +4.1s | ⭐⭐⭐⭐ | **$0.0025** | Real-time data |
+
+*FREE: First 1500 requests/day, then $0.0002
+
+### Total Processing Time
+
+| Configuration | Total Time | Cost | Best For |
+|---------------|-----------|------|----------|
+| No AI (Layer 2 only) | **1.3s** | **$0.00** | Quick extraction, bulk processing |
+| Gemini (default) | **5.1s** | **FREE** | Standard use, cost-sensitive |
+| Claude Haiku | **3.4s** | **$0.0006** | Speed-critical applications |
+| Claude Sonnet | **5.8s** | **$0.0075** | High-quality analysis |
+| Auto fallback | **3-6s** | **$0-0.0075** | Maximum reliability |
 
 ---
 

@@ -59,13 +59,25 @@ class DocumentProcessor:
     - Layer 3: AI enrichment (context, risks, relationships)
     """
 
-    def __init__(self):
-        """Initialize processor with all layers"""
+    def __init__(self, preferred_model: Optional[str] = None):
+        """
+        Initialize processor with all layers.
+
+        Args:
+            preferred_model: Preferred AI model for Layer 3:
+                - gemini (default, FREE)
+                - claude-sonnet (best quality)
+                - claude-haiku (fast, cheap)
+                - openai (GPT-4 Turbo)
+                - openai-mini (GPT-4o Mini)
+                - perplexity (with web search)
+                - auto (fallback chain)
+        """
         self.parser = SmartParser()
         self.extractor = CzechConstructionExtractor()
-        self.enricher = PassportEnricher()
+        self.enricher = PassportEnricher(preferred_model=preferred_model)
 
-        logger.info("DocumentProcessor initialized")
+        logger.info(f"DocumentProcessor initialized (AI model: {preferred_model or 'default'})")
 
     # =============================================================================
     # MAIN PROCESSING METHOD
@@ -76,6 +88,7 @@ class DocumentProcessor:
         file_path: str,
         project_name: str,
         enable_ai_enrichment: bool = True,
+        preferred_model: Optional[str] = None,
         project_id: Optional[str] = None
     ) -> PassportGenerationResponse:
         """

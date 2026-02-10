@@ -28,6 +28,8 @@ import logging
 from typing import Dict, Any, List, Optional
 from anthropic import Anthropic
 import google.generativeai as genai
+from openai import OpenAI
+import httpx
 
 from app.core.config import settings
 from app.models.passport_schema import (
@@ -46,7 +48,23 @@ class PassportEnricher:
     """
     Enriches project passport using LLM.
 
-    Uses Gemini by default (cheap), falls back to Claude if needed.
+    Supports multiple AI models with intelligent fallback:
+
+    | Model | Provider | Cost | Speed | Quality | Use Case |
+    |-------|----------|------|-------|---------|----------|
+    | Gemini 2.0 Flash | Google | FREE* | Fast (3s) | Good | Default, cost-sensitive |
+    | Claude Haiku | Anthropic | $0.25/MTok | Very Fast (2s) | Good | Speed-critical |
+    | GPT-4o Mini | OpenAI | $0.15/MTok | Fast (3s) | Good | Alternative to Gemini |
+    | Claude Sonnet | Anthropic | $3/MTok | Medium (4s) | Excellent | High-quality enrichment |
+    | GPT-4 Turbo | OpenAI | $10/MTok | Slow (6s) | Excellent | Complex analysis |
+    | Perplexity | Perplexity | $1/MTok | Medium (4s) | Good+Web | Real-time data needed |
+
+    *FREE: 1500 requests/day, then $0.075/MTok
+
+    Typical passport enrichment:
+    - Input: ~2K tokens (document summary)
+    - Output: ~500 tokens (enrichments)
+    - Total: ~2.5K tokens = $0.0075 (Claude Sonnet) or FREE (Gemini)
     """
 
     # =============================================================================
@@ -136,25 +154,74 @@ PŘÍKLADY RIZIK:
 
 VRAŤ POUZE JSON, žádný další text před ani za."""
 
+    # Model configurations
     GEMINI_MODEL = "gemini-2.0-flash-exp"
     CLAUDE_MODEL = "claude-3-5-sonnet-20241022"
+    CLAUDE_HAIKU_MODEL = "claude-3-5-haiku-20241022"
+    OPENAI_MODEL = "gpt-4-turbo-preview"
+    OPENAI_MINI_MODEL = "gpt-4o-mini"
+    PERPLEXITY_MODEL = "llama-3.1-sonar-large-128k-online"
 
-    def __init__(self):
-        """Initialize enricher with LLM clients"""
-        self.use_gemini = settings.MULTI_ROLE_LLM == "gemini"
+    def __init__(self, preferred_model: Optional[str] = None):
+        """
+        Initialize enricher with LLM clients.
 
-        if self.use_gemini and settings.GOOGLE_API_KEY:
-            genai.configure(api_key=settings.GOOGLE_API_KEY)
-            self.gemini_model = genai.GenerativeModel(self.GEMINI_MODEL)
-            logger.info(f"Initialized Gemini: {self.GEMINI_MODEL}")
-        else:
-            self.gemini_model = None
+        Args:
+            preferred_model: Preferred model to use. Options:
+                - "gemini" (default, FREE)
+                - "claude-sonnet" (most capable, expensive)
+                - "claude-haiku" (fast, cheap)
+                - "openai" (GPT-4 Turbo)
+                - "openai-mini" (GPT-4o Mini, cheap)
+                - "perplexity" (with web search)
+                - "auto" (fallback chain)
+        """
+        self.preferred_model = preferred_model or settings.MULTI_ROLE_LLM or "gemini"
 
+        # Initialize all available clients
+        self.gemini_model = None
+        self.claude_client = None
+        self.openai_client = None
+        self.perplexity_available = False
+
+        # Gemini (FREE)
+        if settings.GOOGLE_API_KEY:
+            try:
+                genai.configure(api_key=settings.GOOGLE_API_KEY)
+                self.gemini_model = genai.GenerativeModel(self.GEMINI_MODEL)
+                logger.info(f"✅ Gemini initialized: {self.GEMINI_MODEL}")
+            except Exception as e:
+                logger.warning(f"Failed to initialize Gemini: {e}")
+
+        # Claude (Anthropic)
         if settings.ANTHROPIC_API_KEY:
-            self.claude_client = Anthropic(api_key=settings.ANTHROPIC_API_KEY)
-            logger.info(f"Initialized Claude: {self.CLAUDE_MODEL}")
-        else:
-            self.claude_client = None
+            try:
+                self.claude_client = Anthropic(api_key=settings.ANTHROPIC_API_KEY)
+                logger.info(f"✅ Claude initialized: {self.CLAUDE_MODEL}")
+            except Exception as e:
+                logger.warning(f"Failed to initialize Claude: {e}")
+
+        # OpenAI
+        if hasattr(settings, 'OPENAI_API_KEY') and settings.OPENAI_API_KEY:
+            try:
+                self.openai_client = OpenAI(api_key=settings.OPENAI_API_KEY)
+                logger.info(f"✅ OpenAI initialized: {self.OPENAI_MODEL}")
+            except Exception as e:
+                logger.warning(f"Failed to initialize OpenAI: {e}")
+
+        # Perplexity
+        if hasattr(settings, 'PERPLEXITY_API_KEY') and settings.PERPLEXITY_API_KEY:
+            self.perplexity_available = True
+            logger.info(f"✅ Perplexity initialized: {self.PERPLEXITY_MODEL}")
+
+        # Log available models
+        available = []
+        if self.gemini_model: available.append("Gemini")
+        if self.claude_client: available.append("Claude")
+        if self.openai_client: available.append("OpenAI")
+        if self.perplexity_available: available.append("Perplexity")
+
+        logger.info(f"Available LLM providers: {', '.join(available) if available else 'None'}")
 
     # =============================================================================
     # MAIN ENRICHMENT METHOD
@@ -219,46 +286,129 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
 
     async def _call_llm(self, prompt: str) -> Optional[Dict[str, Any]]:
         """
-        Call LLM with fallback chain: Gemini → Claude
+        Call LLM with intelligent fallback chain based on preferred model.
 
-        Returns parsed JSON or None if failed
+        Fallback order:
+        - Preferred model → Gemini → Claude → OpenAI → Perplexity
+
+        Returns parsed JSON or None if all failed
         """
-        # Try Gemini first (cheap, fast)
-        if self.gemini_model:
-            try:
-                logger.info("Calling Gemini for enrichment")
-                response = self.gemini_model.generate_content(
-                    prompt,
-                    generation_config={
-                        'temperature': 0.3,  # Low temp for factual extraction
-                        'max_output_tokens': 2048,
-                    }
-                )
+        # Determine call order based on preference
+        call_order = self._get_call_order()
 
-                if response and response.text:
-                    return self._parse_json_response(response.text)
+        for provider_name in call_order:
+            try:
+                logger.info(f"Calling {provider_name} for enrichment")
+                result = None
+
+                if provider_name == "Gemini" and self.gemini_model:
+                    result = await self._call_gemini(prompt)
+                elif provider_name == "Claude Sonnet" and self.claude_client:
+                    result = await self._call_claude(prompt, self.CLAUDE_MODEL)
+                elif provider_name == "Claude Haiku" and self.claude_client:
+                    result = await self._call_claude(prompt, self.CLAUDE_HAIKU_MODEL)
+                elif provider_name == "OpenAI" and self.openai_client:
+                    result = await self._call_openai(prompt, self.OPENAI_MODEL)
+                elif provider_name == "OpenAI Mini" and self.openai_client:
+                    result = await self._call_openai(prompt, self.OPENAI_MINI_MODEL)
+                elif provider_name == "Perplexity" and self.perplexity_available:
+                    result = await self._call_perplexity(prompt)
+
+                if result:
+                    logger.info(f"✅ {provider_name} enrichment successful")
+                    return result
 
             except Exception as e:
-                logger.error(f"Gemini enrichment failed: {e}")
-
-        # Fallback to Claude
-        if self.claude_client:
-            try:
-                logger.info("Calling Claude for enrichment (fallback)")
-                response = self.claude_client.messages.create(
-                    model=self.CLAUDE_MODEL,
-                    max_tokens=2048,
-                    temperature=0.3,
-                    messages=[{"role": "user", "content": prompt}]
-                )
-
-                if response and response.content:
-                    return self._parse_json_response(response.content[0].text)
-
-            except Exception as e:
-                logger.error(f"Claude enrichment failed: {e}")
+                logger.warning(f"{provider_name} enrichment failed: {e}")
+                continue
 
         logger.error("All LLM providers failed")
+        return None
+
+    def _get_call_order(self) -> List[str]:
+        """Get LLM call order based on preferred model"""
+        # Map preference to call order
+        orders = {
+            "gemini": ["Gemini", "Claude Haiku", "OpenAI Mini", "Claude Sonnet", "OpenAI"],
+            "claude-sonnet": ["Claude Sonnet", "Gemini", "OpenAI", "Claude Haiku"],
+            "claude-haiku": ["Claude Haiku", "Gemini", "OpenAI Mini", "Claude Sonnet"],
+            "openai": ["OpenAI", "Gemini", "Claude Sonnet", "Claude Haiku"],
+            "openai-mini": ["OpenAI Mini", "Gemini", "Claude Haiku", "OpenAI"],
+            "perplexity": ["Perplexity", "Gemini", "Claude Sonnet", "OpenAI"],
+            "auto": ["Gemini", "Claude Haiku", "OpenAI Mini", "Claude Sonnet", "OpenAI", "Perplexity"]
+        }
+
+        return orders.get(self.preferred_model, orders["gemini"])
+
+    async def _call_gemini(self, prompt: str) -> Optional[Dict[str, Any]]:
+        """Call Gemini API"""
+        response = self.gemini_model.generate_content(
+            prompt,
+            generation_config={
+                'temperature': 0.3,
+                'max_output_tokens': 2048,
+            }
+        )
+
+        if response and response.text:
+            return self._parse_json_response(response.text)
+        return None
+
+    async def _call_claude(self, prompt: str, model: str) -> Optional[Dict[str, Any]]:
+        """Call Claude API"""
+        response = self.claude_client.messages.create(
+            model=model,
+            max_tokens=2048,
+            temperature=0.3,
+            messages=[{"role": "user", "content": prompt}]
+        )
+
+        if response and response.content:
+            return self._parse_json_response(response.content[0].text)
+        return None
+
+    async def _call_openai(self, prompt: str, model: str) -> Optional[Dict[str, Any]]:
+        """Call OpenAI API"""
+        response = self.openai_client.chat.completions.create(
+            model=model,
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.3,
+            max_tokens=2048,
+            response_format={"type": "json_object"}
+        )
+
+        if response and response.choices:
+            text = response.choices[0].message.content
+            return self._parse_json_response(text)
+        return None
+
+    async def _call_perplexity(self, prompt: str) -> Optional[Dict[str, Any]]:
+        """Call Perplexity API (with web search capabilities)"""
+        perplexity_key = getattr(settings, 'PERPLEXITY_API_KEY', None)
+        if not perplexity_key:
+            return None
+
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            response = await client.post(
+                "https://api.perplexity.ai/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {perplexity_key}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": self.PERPLEXITY_MODEL,
+                    "messages": [{"role": "user", "content": prompt}],
+                    "temperature": 0.3,
+                    "max_tokens": 2048
+                }
+            )
+
+            if response.status_code == 200:
+                data = response.json()
+                if data.get("choices"):
+                    text = data["choices"][0]["message"]["content"]
+                    return self._parse_json_response(text)
+
         return None
 
     def _parse_json_response(self, text: str) -> Optional[Dict[str, Any]]:
