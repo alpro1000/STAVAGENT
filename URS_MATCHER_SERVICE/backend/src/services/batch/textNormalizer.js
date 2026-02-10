@@ -30,7 +30,16 @@ const COMPOSITE_MARKERS = {
   WITH_DISPOSAL: /\b(vč\.|včetně)\s+(likvidac[e|í]|skládka|skládku|odstranění)\b/i,
 
   // Multiple operations
-  MULTIPLE_OPS: /\b(výkop|hloubení)\s*\+\s*(odvoz|přesun)\s*\+\s*(zásyp|hutnění)/i
+  MULTIPLE_OPS: /\b(výkop|hloubení)\s*\+\s*(odvoz|přesun)\s*\+\s*(zásyp|hutnění)/i,
+
+  // Preparation for next work (implies 2 works: prep + the next work)
+  PREP_FOR_NEXT: /\b(pod\s+nátěr|pod\s+obklad|pod\s+malbu|pod\s+dlažbu|pod\s+omítku)\b/i,
+
+  // Comma-separated different work types (e.g., "opravy omítek, praskliny")
+  COMMA_SEPARATED: /,\s*\b(oprav|odstranění|montáž|demontáž|nátěr|malb|čištění|prasklin|trhliny)\b/i,
+
+  // Repair + removal pattern (very common in renovation BOQs)
+  REPAIR_AND_REMOVE: /\b(oprav[ay]?)\b.*\b(odstranění|otlučení|seškrabání)\b/i
 };
 
 /** Patterns to remove (noise) */
@@ -240,7 +249,15 @@ function extractFeatures(text) {
  * @returns {string|null} Operation type
  */
 function extractOperation(text) {
+  // Order matters: more specific patterns first to avoid false matches
   const operations = {
+    // Repair/restoration (must be before demolition to catch "odstranění omítky")
+    plaster_repair: /\b(oprav[ay]?\s+omít|lokální\s+oprav|vyspraven|reprofilace)\b/i,
+    removal: /\b(otlučení|seškrabání|odstranění\s+(nesoudržn|omít|nátěr|obklad))\b/i,
+    surface_preparation: /\b(penetrace|příprava\s+podkladu|pod\s+nátěr|pod\s+obklad|reprofilace)\b/i,
+    cleaning: /\b(čištění|očištění|otryskání|odmašt|omytí|tlakové\s+čištění)\b/i,
+
+    // Standard construction operations
     excavation: /\b(výkop|hloubení|kopání|těžba)\b/i,
     demolition: /\b(demontáž|odstranění|bourání|demolice)\b/i,
     installation: /\b(montáž|osazení|instalace|položení)\b/i,
@@ -250,9 +267,17 @@ function extractOperation(text) {
     transport: /\b(doprava|odvoz|přesun|přemístění)\b/i,
     backfill: /\b(zásyp|zasypání|navážka)\b/i,
     compaction: /\b(hutnění|zhutněn|zhutňování)\b/i,
+
+    // Finishing operations
     waterproofing: /\b(hydroizolace|izolace|hydroizolační)\b/i,
-    plastering: /\b(omítka|omítání|přehlazení)\b/i,
-    painting: /\b(nátěr|malování|barvení)\b/i
+    insulation: /\b(zateplení|polystyren|tepelná\s+izolace|minerální\s+vata)\b/i,
+    plastering: /\b(omítka|omítání|přehlazení|omítk)\b/i,
+    painting: /\b(nátěr|malování|barvení|malba|lakování)\b/i,
+    tiling: /\b(obklad|dlažba|obkládání|dlaždice)\b/i,
+    masonry: /\b(zdivo|zdění|vyzdívka|příčka)\b/i,
+    roofing: /\b(střecha|krytina|pokrývač|klempíř)\b/i,
+    piping: /\b(potrubí|kanalizace|vodovodní|odpad)\b/i,
+    paving: /\b(asfalt|vozovka|chodník|dlažba\s+vozovk)\b/i
   };
 
   for (const [type, pattern] of Object.entries(operations)) {
@@ -387,6 +412,21 @@ function detectCompositeMarkers(text) {
     markers.hasComposite = true;
     markers.hasMultipleOps = true;
     markers.detectedMarkers.push('multiple_ops');
+  }
+
+  if (COMPOSITE_MARKERS.PREP_FOR_NEXT.test(text)) {
+    markers.hasComposite = true;
+    markers.detectedMarkers.push('prep_for_next');
+  }
+
+  if (COMPOSITE_MARKERS.COMMA_SEPARATED.test(text)) {
+    markers.hasComposite = true;
+    markers.detectedMarkers.push('comma_separated');
+  }
+
+  if (COMPOSITE_MARKERS.REPAIR_AND_REMOVE.test(text)) {
+    markers.hasComposite = true;
+    markers.detectedMarkers.push('repair_and_remove');
   }
 
   return markers;

@@ -128,127 +128,126 @@ export async function split(normalized, maxSubWorks = 5) {
 function buildSplitPrompt(normalized, maxSubWorks) {
   const { normalizedText, features, markers } = normalized;
 
-  return `You are a construction BOQ (Bill of Quantities) expert analyzing Czech technical descriptions.
+  return `You are a Czech construction quantity surveyor (rozpočtář) who works with the ÚRS catalog (podminky.urs.cz).
 
-**TASK:** Determine if this position contains SINGLE work or COMPOSITE works (multiple works in one description).
+═══════════════════════════════════════════════════════════════
+CORE PRINCIPLE — "ONE URS CODE = ONE ATOMIC OPERATION"
+═══════════════════════════════════════════════════════════════
+
+In the ÚRS catalog every code describes exactly ONE atomic operation:
+  • ONE action (pour, dig, remove, install, paint, etc.)
+  • on ONE material/object (concrete, plaster, pipe, railing, etc.)
+  • measured in ONE unit (m³, m², kg, ks, m, etc.)
+
+If a BOQ position describes MULTIPLE such operations → it is COMPOSITE
+and must be split so that each subwork can be found separately.
+
+═══════════════════════════════════════════════════════════════
+YOUR TASK
+═══════════════════════════════════════════════════════════════
+
+Analyze this BOQ position and determine: SINGLE or COMPOSITE?
+If COMPOSITE → split into ${maxSubWorks} or fewer searchable subworks.
 
 **INPUT:**
 Text: "${normalizedText}"
+Features: ${JSON.stringify(features)}
+Markers: ${JSON.stringify(markers)}
 
-Features:
-${JSON.stringify(features, null, 2)}
+═══════════════════════════════════════════════════════════════
+DECISION FRAMEWORK (apply in order)
+═══════════════════════════════════════════════════════════════
 
-Detected markers:
-${JSON.stringify(markers, null, 2)}
+ASK YOURSELF: "How many separate ÚRS codes would a quantity surveyor need?"
 
-**RULES:**
-1. SINGLE = one distinct work operation (e.g., "Výkop jámy kat. 3")
-2. COMPOSITE = 2-${maxSubWorks} separate works (e.g., "Výkop + odvoz + zásyp")
-3. Common composite markers:
-   - "včetně" / "vč." (including)
-   - "+" (plus)
-   - "komplet" (complete/all)
-   - "dodávka a montáž" (supply and installation)
-   - "demontáž a montáž" (demolition and installation)
-   - "se vším" (with everything)
-   - Multiple operations: "výkop + odvoz + zásyp + hutnění"
+Step 1 — CHECK SIGNAL WORDS (if any found → COMPOSITE):
+  • "včetně" / "vč." → the included item is ALWAYS a separate code
+  • "+" → each part is separate
+  • "dodávka a montáž" → supply + installation = at least 2 codes
+  • "komplet" / "kompletní" / "se vším" → multiple hidden works
+  • "a" connecting different operations → e.g., "bourání a odvoz" = 2 codes
 
-4. If COMPOSITE, split into distinct subworks with:
-   - index (1, 2, 3...)
-   - text (short description)
-   - operation (excavation, transport, backfill, etc.)
-   - keywords (3-5 Czech/English keywords for search)
+Step 2 — CHECK FOR HIDDEN WORKS:
+  • "pod nátěr/obklad/dlažbu" → implies surface preparation = extra code
+  • Comma-separated different defects → "praskliny, trhliny, dutiny" = may be same code
+  • Comma-separated different operations → "opravy, odstranění" = different codes
+  • "z X%" → quantity modifier, NOT a separate work
 
-5. Max ${maxSubWorks} subworks - if more, return confidence=low
+Step 3 — THINK ABOUT WHAT'S IMPLIED:
+  • Removal work? → usually needs disposal/transport too
+  • Installation? → usually separate from supply (dodávka)
+  • Surface prep? → usually separate from the final coat/layer
+  • Anchoring/fixing? → usually separate from the main element
 
-**OUTPUT FORMAT (JSON only, no markdown):**
+Step 4 — DO NOT OVER-SPLIT:
+  • Same action on same material = ONE subwork (not two)
+  • Quantity modifiers (z 5%, tl. 30mm, kat. 3) belong to parent
+  • Adjectives (vnitřní, vnější, lokální) are descriptors, not separate works
+  • If unsure, keep as SINGLE with confidence=medium
+
+═══════════════════════════════════════════════════════════════
+SUBWORK FORMAT
+═══════════════════════════════════════════════════════════════
+
+Each subwork MUST be independently searchable in the ÚRS catalog:
+  • text: Short Czech description as a quantity surveyor would search
+    (e.g., "Odstranění omítky vnitřních stěn otlučením")
+  • operation: One of these types:
+    excavation | demolition | removal | transport | backfill | compaction |
+    concreting | formwork | reinforcement | waterproofing | insulation |
+    plastering | plaster_repair | painting | tiling | installation |
+    cleaning | surface_preparation | masonry | roofing | piping | paving |
+    supply | anchoring | other
+  • keywords: 3-5 Czech terms a surveyor would use to search ÚRS catalog
+    (use professional terms: "otlučení omítky" not "sundání omítky")
+
+═══════════════════════════════════════════════════════════════
+OUTPUT — JSON only, no markdown, no explanation outside JSON
+═══════════════════════════════════════════════════════════════
+
 {
   "detectedType": "SINGLE" | "COMPOSITE",
   "subWorks": [
     {
       "index": 1,
-      "text": "Short Czech description",
-      "operation": "excavation|transport|concreting|formwork|reinforcement|etc.",
-      "keywords": ["keyword1", "keyword2", "keyword3"]
+      "text": "Czech description for ÚRS search",
+      "operation": "operation_type",
+      "keywords": ["professional", "Czech", "terms", "for", "search"]
     }
   ],
-  "reasoning": "Short explanation (1-2 sentences in English)",
+  "reasoning": "Why split this way (1-2 sentences, English)",
   "confidence": "high" | "medium" | "low"
 }
 
-**EXAMPLES:**
+═══════════════════════════════════════════════════════════════
+EXAMPLES (diverse domains)
+═══════════════════════════════════════════════════════════════
 
 Input: "Výkop stavební jámy kat. 3"
-Output:
-{
-  "detectedType": "SINGLE",
-  "subWorks": [{
-    "index": 1,
-    "text": "Výkop stavební jámy kat. 3",
-    "operation": "excavation",
-    "keywords": ["výkop", "jáma", "kategorie 3", "excavation", "pit"]
-  }],
-  "reasoning": "Single excavation work, no composite markers",
-  "confidence": "high"
-}
-
-Input: "Výkop jámy + odvoz na skládku 10km + zásyp + hutnění"
-Output:
-{
-  "detectedType": "COMPOSITE",
-  "subWorks": [
-    {
-      "index": 1,
-      "text": "Výkop jámy",
-      "operation": "excavation",
-      "keywords": ["výkop", "jáma", "excavation", "pit"]
-    },
-    {
-      "index": 2,
-      "text": "Odvoz na skládku",
-      "operation": "transport",
-      "keywords": ["odvoz", "transport", "doprava", "skládka", "removal"]
-    },
-    {
-      "index": 3,
-      "text": "Zásyp jámy",
-      "operation": "backfill",
-      "keywords": ["zásyp", "backfill", "zasypání"]
-    },
-    {
-      "index": 4,
-      "text": "Hutnění zásypu",
-      "operation": "compaction",
-      "keywords": ["hutnění", "compaction", "zhutňování"]
-    }
-  ],
-  "reasoning": "Four distinct operations connected by '+' marker",
-  "confidence": "high"
-}
+→ SINGLE: one atomic operation (excavation of pit, category 3)
+{"detectedType":"SINGLE","subWorks":[{"index":1,"text":"Výkop stavební jámy v hornině třídy 3","operation":"excavation","keywords":["výkop","stavební jáma","hornina","třída 3","hloubení"]}],"reasoning":"Single excavation, 'kat. 3' is a qualifier not separate work","confidence":"high"}
 
 Input: "Beton C 25/30 vč. doprava do 10km"
-Output:
-{
-  "detectedType": "COMPOSITE",
-  "subWorks": [
-    {
-      "index": 1,
-      "text": "Betonáž C 25/30",
-      "operation": "concreting",
-      "keywords": ["beton", "C 25/30", "betonáž", "concrete"]
-    },
-    {
-      "index": 2,
-      "text": "Doprava betonu do 10km",
-      "operation": "transport",
-      "keywords": ["doprava", "transport", "delivery", "beton"]
-    }
-  ],
-  "reasoning": "Concrete work + transport indicated by 'vč. doprava'",
-  "confidence": "high"
-}
+→ COMPOSITE: concreting + transport (signal: "vč.")
+{"detectedType":"COMPOSITE","subWorks":[{"index":1,"text":"Betonáž základových konstrukcí z betonu C 25/30","operation":"concreting","keywords":["betonáž","beton","C 25/30","základy","monolitický"]},{"index":2,"text":"Přeprava betonové směsi do 10km","operation":"transport","keywords":["přeprava","doprava betonu","autodomíchávač","betonová směs"]}],"reasoning":"Concrete + transport, 'vč.' signals separate URS code for transport","confidence":"high"}
 
-Now analyze the input above and respond with JSON only.`;
+Input: "Lokální opravy omítek, praskliny - vč. odstranění nesoudržné omítky (pod nátěr) z 5%"
+→ COMPOSITE: 4 works hidden (repair + crack fill + removal + surface prep)
+{"detectedType":"COMPOSITE","subWorks":[{"index":1,"text":"Oprava vápenné omítky stěn v rozsahu do 10%","operation":"plaster_repair","keywords":["oprava omítky","lokální oprava","omítka stěn","vysprávka"]},{"index":2,"text":"Vyspravení prasklin ve stěnách tmelením","operation":"plaster_repair","keywords":["prasklina","tmelení","vyspravení","trhlina","oprava"]},{"index":3,"text":"Odstranění nesoudržné omítky otlučením","operation":"removal","keywords":["odstranění omítky","otlučení","nesoudržná omítka","bourání omítky"]},{"index":4,"text":"Penetrace podkladu pod nátěr","operation":"surface_preparation","keywords":["penetrace","příprava podkladu","nátěr","základní nátěr","primer"]}],"reasoning":"4 distinct URS codes: plaster repair, crack fill, plaster removal ('vč. odstranění'), surface prep ('pod nátěr'). 'z 5%' is quantity.","confidence":"high"}
+
+Input: "Dodávka a montáž ocelových zábradlí vč. kotvení a nátěru"
+→ COMPOSITE: supply + install + anchoring + painting
+{"detectedType":"COMPOSITE","subWorks":[{"index":1,"text":"Dodávka ocelového zábradlí","operation":"supply","keywords":["dodávka","zábradlí","ocelové zábradlí","materiál"]},{"index":2,"text":"Montáž ocelového zábradlí","operation":"installation","keywords":["montáž","zábradlí","osazení","ocelová konstrukce"]},{"index":3,"text":"Kotvení ocelového zábradlí chemickými kotvami","operation":"anchoring","keywords":["kotvení","kotvy","chemická kotva","ocelová konstrukce"]},{"index":4,"text":"Antikorozní nátěr ocelového zábradlí","operation":"painting","keywords":["nátěr","antikorozní","barva","ocelová konstrukce","zábradlí"]}],"reasoning":"Supply + installation ('dodávka a montáž'), plus separate anchoring and painting ('vč. kotvení a nátěru')","confidence":"high"}
+
+Input: "Výkop rýhy šíře do 60cm, hl. 0.8m"
+→ SINGLE: one operation with dimension qualifiers
+{"detectedType":"SINGLE","subWorks":[{"index":1,"text":"Výkop rýhy šířky do 60cm hloubky do 100cm","operation":"excavation","keywords":["výkop","rýha","šířka 60cm","hloubka","hloubení rýhy"]}],"reasoning":"Single excavation with dimension qualifiers (width, depth)","confidence":"high"}
+
+Input: "Zateplení fasády EPS 100mm vč. lepení, hmoždinkování, stěrkování se síťkou a finální omítky"
+→ COMPOSITE: 4 operations
+{"detectedType":"COMPOSITE","subWorks":[{"index":1,"text":"Zateplení fasády deskami EPS tloušťky 100mm lepením","operation":"insulation","keywords":["zateplení","EPS","fasáda","lepení desek","kontaktní zateplení"]},{"index":2,"text":"Kotvení zateplovacího systému hmoždinkami","operation":"anchoring","keywords":["hmoždinkování","talířové hmoždinky","kotvení zateplení","ETICS"]},{"index":3,"text":"Stěrková hmota se síťovinou na zateplovací systém","operation":"surface_preparation","keywords":["stěrkování","výztužná síťka","armovací vrstva","stěrka ETICS"]},{"index":4,"text":"Finální tenkovrstvá omítka fasády","operation":"plastering","keywords":["omítka fasády","tenkovrstvá omítka","silikátová omítka","fasádní omítka"]}],"reasoning":"ETICS system has 4 distinct URS codes: insulation boards, anchoring, reinforcement mesh layer, and final render. 'vč.' signals each is separate.","confidence":"high"}
+
+Now analyze the input and respond with JSON only.`;
 }
 
 // ============================================================================
