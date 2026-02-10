@@ -343,8 +343,9 @@ router.get('/diagnostics', async (req, res) => {
     logger.info('[BatchAPI] GET /api/batch/diagnostics');
 
     // Import configs
-    const { PERPLEXITY_CONFIG, CATALOG_MODE, getAvailableProviders, getTaskTypes } = await import('../../config/llmConfig.js');
+    const { PERPLEXITY_CONFIG, BRAVE_SEARCH_CONFIG, CATALOG_MODE, getAvailableProviders, getTaskTypes } = await import('../../config/llmConfig.js');
     const { searchUrsSite } = await import('../../services/perplexityClient.js');
+    const { searchUrsSiteViaBrave } = await import('../../services/braveSearchClient.js');
 
     const diagnostics = {
       timestamp: new Date().toISOString(),
@@ -355,6 +356,14 @@ router.get('/diagnostics', async (req, res) => {
         timeoutMs: PERPLEXITY_CONFIG.timeoutMs,
         hasApiKey: !!PERPLEXITY_CONFIG.apiKey,
         apiKeyPrefix: PERPLEXITY_CONFIG.apiKey ? PERPLEXITY_CONFIG.apiKey.substring(0, 8) + '...' : 'NOT SET'
+      },
+      braveSearch: {
+        enabled: BRAVE_SEARCH_CONFIG.enabled,
+        apiUrl: BRAVE_SEARCH_CONFIG.apiUrl,
+        timeoutMs: BRAVE_SEARCH_CONFIG.timeoutMs,
+        hasApiKey: !!BRAVE_SEARCH_CONFIG.apiKey,
+        apiKeyPrefix: BRAVE_SEARCH_CONFIG.apiKey ? BRAVE_SEARCH_CONFIG.apiKey.substring(0, 8) + '...' : 'NOT SET',
+        role: 'Fallback for Perplexity when it returns 0 candidates'
       },
       catalogMode: CATALOG_MODE,
       llmProviders: {},
@@ -403,6 +412,41 @@ router.get('/diagnostics', async (req, res) => {
       diagnostics.testResults.perplexity = {
         status: 'DISABLED',
         reason: 'PPLX_API_KEY not set'
+      };
+    }
+
+    // Test Brave Search (if enabled)
+    if (BRAVE_SEARCH_CONFIG.enabled) {
+      try {
+        const testQuery = 'beton základová deska';
+        logger.info(`[BatchAPI] Testing Brave Search with: "${testQuery}"`);
+
+        const testStartTime = Date.now();
+        const testResult = await searchUrsSiteViaBrave(testQuery);
+        const testElapsed = Date.now() - testStartTime;
+
+        diagnostics.testResults.braveSearch = {
+          status: testResult.length > 0 ? 'OK' : 'EMPTY_RESULT',
+          candidatesFound: testResult.length,
+          timeMs: testElapsed,
+          query: testQuery,
+          firstCandidate: testResult.length > 0 ? {
+            code: testResult[0].code,
+            name: testResult[0].name,
+            url: testResult[0].url
+          } : null
+        };
+      } catch (error) {
+        diagnostics.testResults.braveSearch = {
+          status: 'ERROR',
+          error: error.message,
+          timeMs: Date.now() - startTime
+        };
+      }
+    } else {
+      diagnostics.testResults.braveSearch = {
+        status: 'DISABLED',
+        reason: 'BRAVE_API_KEY not set'
       };
     }
 
