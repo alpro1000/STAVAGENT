@@ -36,13 +36,24 @@ export async function rerank(subWork, candidates, topN = 4) {
     logger.info(`[CandidateReranker] Candidates: ${candidates.length}`);
     logger.debug(`[CandidateReranker] Top N: ${topN}`);
 
-    // Handle empty candidates
+    // Handle empty candidates - return with needsReview flag
     if (!candidates || candidates.length === 0) {
-      logger.warn('[CandidateReranker] No candidates provided');
+      logger.warn('[CandidateReranker] No candidates provided - marking as needs_review');
       return {
         subWork: subWork,
-        topCandidates: [],
-        reasoning: 'No candidates found in search',
+        topCandidates: [{
+          rank: 1,
+          code: 'UNKNOWN',
+          name: 'No candidates from search',
+          unit: '',
+          score: 0,
+          confidence: 'low',
+          reason: 'Perplexity search returned no candidates. Check API key validity or try different search terms.',
+          evidence: '',
+          needsReview: true,
+          source: 'no_candidates'
+        }],
+        reasoning: 'No candidates found in search - Perplexity API may be failing or no matching items exist',
         timing: {
           totalMs: Date.now() - startTime,
           llmMs: 0

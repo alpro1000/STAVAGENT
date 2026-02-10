@@ -433,6 +433,13 @@ export function getPerplexityConfig() {
     };
   }
 
+  // Validate API key format
+  if (!apiKey.startsWith('pplx-')) {
+    logger.warn(`[PerplexityConfig] PPLX_API_KEY does not start with "pplx-" (starts with "${apiKey.substring(0, 4)}..."). This may cause 401 errors.`);
+  }
+
+  logger.info(`[PerplexityConfig] Perplexity ENABLED: model=${model}, timeout=${timeoutMs}ms, key=${apiKey.substring(0, 8)}...`);
+
   return {
     enabled: true,
     apiKey: apiKey,

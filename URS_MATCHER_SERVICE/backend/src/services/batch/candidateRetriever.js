@@ -73,11 +73,21 @@ export async function retrieve(subWork, searchDepth = 'normal') {
     const elapsed = Date.now() - startTime;
     timings.totalMs = elapsed;
 
+    // DIAGNOSTIC: Log when all queries returned 0 candidates
+    if (topCandidates.length === 0 && queries.length > 0) {
+      logger.warn(`[CandidateRetriever] WARNING: All ${queries.length} queries returned 0 candidates for "${subWork.text}"`);
+      logger.warn(`[CandidateRetriever] This likely means Perplexity API is failing silently. Check PPLX_API_KEY validity and Render logs for [Perplexity] errors.`);
+    }
+
     const result = {
       subWork: subWork,
       candidates: topCandidates,
       queriesUsed: queries,
-      timing: timings
+      timing: timings,
+      // Flag retrieval failure when enabled but got 0 results from all queries
+      error: (topCandidates.length === 0 && queries.length > 0)
+        ? 'All search queries returned 0 candidates - Perplexity may be failing'
+        : undefined
     };
 
     logger.info(`[CandidateRetriever] Result: ${topCandidates.length} candidates, ${elapsed}ms total`);
