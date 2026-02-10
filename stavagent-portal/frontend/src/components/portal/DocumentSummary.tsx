@@ -102,13 +102,21 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     const loadProjects = async () => {
       try {
         const portalApiUrl = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
-        const response = await fetch(`${portalApiUrl}/api/portal-projects`);
+        const response = await fetch(`${portalApiUrl}/api/portal-projects`, {
+          credentials: 'include',  // Include cookies for authentication
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        });
         if (response.ok) {
           const projects = await response.json();
           setAvailableProjects(projects.map((p: any) => ({
             id: p.portal_project_id || p.id,
             name: p.project_name || 'Unnamed'
           })));
+        } else if (response.status === 401) {
+          console.warn('[DocumentSummary] Authentication required - projects list disabled');
+          // Don't show error if auth is disabled in production
         }
       } catch (err) {
         console.error('Failed to load projects:', err);
