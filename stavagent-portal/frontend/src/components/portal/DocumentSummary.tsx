@@ -50,8 +50,8 @@ import type {
   PassportGenerationResponse,
   ProjectPassport,
   AIModelType,
-  AI_MODEL_OPTIONS,
 } from '../../types/passport';
+import { AI_MODEL_OPTIONS } from '../../types/passport';
 
 interface DocumentSummaryProps {
   projectId?: string;
