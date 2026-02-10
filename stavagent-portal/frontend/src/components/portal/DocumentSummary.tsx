@@ -1,15 +1,20 @@
 /**
- * Document Summary Component
+ * Document Summary Component - Project Passport System
  *
- * Extract structured information from construction documents:
- * - Project info (name, location, type, investor)
- * - Work items (all positions with quantities)
- * - Key quantities (total concrete, reinforcement, formwork)
- * - Timeline (start, end, milestones)
- * - Requirements (standards, environmental, safety)
+ * 3-Layer Hybrid Architecture for Czech Construction Documents:
+ * - Layer 1: MinerU/SmartParser (document structure)
+ * - Layer 2: Regex extraction (deterministic facts, confidence = 1.0)
+ * - Layer 3: AI enrichment (context, risks, confidence = 0.5-0.9)
+ *
+ * Extract structured information:
+ * - Concrete specifications (C30/37 XC4 XD1)
+ * - Reinforcement (B500B, tonnage)
+ * - Building dimensions (floors, height, area)
+ * - Special requirements (Bílá vana, Pohledový beton)
+ * - AI enrichment (risks, location, timeline)
  *
  * Design: Digital Concrete (Brutalist Neumorphism)
- * Version: 1.0.0 (2026-01-08)
+ * Version: 2.0.0 (2026-02-10) - Project Passport Integration
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -32,52 +37,21 @@ import {
   Database,
   Cloud,
   Folder,
+  Zap,
+  Shield,
+  Ruler,
+  AlertCircle,
+  TrendingUp,
+  Users,
 } from 'lucide-react';
 
-// Types
-interface WorkItem {
-  type: string;
-  quantity: number;
-  unit: string;
-  note: string;
-  source_row?: number;
-}
-
-interface ProjectInfo {
-  name: string;
-  location: string;
-  type: string;
-  investor: string;
-  object_id: string;
-}
-
-interface KeyQuantities {
-  total_concrete_m3: number;
-  total_reinforcement_t: number;
-  total_formwork_m2: number;
-  estimated_cost_czk?: number;
-}
-
-interface Timeline {
-  start: string | null;
-  end: string | null;
-  milestones: string[];
-}
-
-interface DocumentSummaryData {
-  project_info: ProjectInfo;
-  work_items: WorkItem[];
-  quantities: KeyQuantities;
-  timeline: Timeline;
-  requirements: string[];
-  metadata: {
-    source_file: string;
-    extracted_at: string;
-    extraction_time_seconds: number;
-    confidence: number;
-    language: string;
-  };
-}
+// Import Passport types
+import type {
+  PassportGenerationResponse,
+  ProjectPassport,
+  AIModelType,
+  AI_MODEL_OPTIONS,
+} from '../../types/passport';
 
 interface DocumentSummaryProps {
   projectId?: string;
@@ -91,8 +65,11 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   const [isUploading, setIsUploading] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [summary, setSummary] = useState<DocumentSummaryData | null>(null);
-  const [language, setLanguage] = useState<'cs' | 'en' | 'sk'>('cs');
+  const [passportData, setPassportData] = useState<PassportGenerationResponse | null>(null);
+
+  // AI Model Selection
+  const [selectedModel, setSelectedModel] = useState<AIModelType>('gemini');
+  const [enableAiEnrichment, setEnableAiEnrichment] = useState(true);
 
   // Save to project state
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
@@ -144,24 +121,28 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     return () => window.removeEventListener('keydown', handleEscKey);
   }, [onClose, isUploading]);
 
-  // Handle file upload
+  // Handle file upload - NEW: Project Passport API
   const handleFileUpload = useCallback(async (file: File) => {
     setIsUploading(true);
     setError(null);
-    setSummary(null);
+    setPassportData(null);
     setSaveSuccess(false);
     setUploadedFile(file); // Save file for later
 
     try {
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('language', language);
+      formData.append('project_name', file.name.replace(/\.[^/.]+$/, '')); // Remove extension
+      formData.append('enable_ai_enrichment', enableAiEnrichment.toString());
+      if (enableAiEnrichment) {
+        formData.append('preferred_model', selectedModel);
+      }
 
       // Fetch with timeout (120 seconds for large documents)
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 120000);
 
-      const response = await fetch(`${CORE_API_URL}/api/v1/accumulator/summarize/file`, {
+      const response = await fetch(`${CORE_API_URL}/api/v1/passport/generate`, {
         method: 'POST',
         body: formData,
         signal: controller.signal,
@@ -175,7 +156,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
         // Better error messages based on status code
         let errorMessage = errorData?.detail || `HTTP ${response.status}`;
         if (response.status === 404) {
-          errorMessage = 'API endpoint nenalezen. Zkontrolujte, zda je backend spuštěn.';
+          errorMessage = 'API endpoint nenalezen. Zkontrolujte, zda je concrete-agent spuštěn.';
         } else if (response.status === 500) {
           errorMessage = 'Chyba serveru při zpracování souboru. Zkuste jiný formát.';
         } else if (response.status === 413) {
@@ -187,12 +168,12 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
         throw new Error(errorMessage);
       }
 
-      const data = await response.json();
+      const data: PassportGenerationResponse = await response.json();
 
       if (data.success) {
-        setSummary(data);
+        setPassportData(data);
       } else {
-        throw new Error('Extrakce dat selhala. Zkuste jiný dokument.');
+        throw new Error('Generování pasportu selhalo. Zkuste jiný dokument.');
       }
     } catch (err) {
       let errorMessage = 'Neznámá chyba při zpracování';
@@ -206,11 +187,11 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       }
 
       setError(errorMessage);
-      console.error('Document upload error:', err);
+      console.error('Passport generation error:', err);
     } finally {
       setIsUploading(false);
     }
-  }, [language]);
+  }, [selectedModel, enableAiEnrichment]);
 
   // Drag and drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -396,28 +377,52 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     }
   }, [uploadedFile, selectedGoogleFolder, googleAuth.userId]);
 
-  // Export to CSV
+  // Export to CSV - NEW: Export passport data
   const exportToCsv = useCallback(() => {
-    if (!summary) return;
+    if (!passportData) return;
 
-    const rows = summary.work_items.map(item => [
-      item.type,
-      item.quantity,
-      item.unit,
-      item.note,
-    ]);
+    const { passport } = passportData;
+    const rows: string[][] = [];
 
-    const header = ['Typ práce', 'Množství', 'MJ', 'Poznámky'];
-    const csv = [header, ...rows].map(row => row.join(';')).join('\n');
+    // Concrete specifications
+    rows.push(['=== SPECIFIKACE BETONU ===']);
+    passport.concrete_specifications.forEach(spec => {
+      rows.push([
+        spec.concrete_class,
+        spec.exposure_classes.join(' '),
+        spec.volume_m3?.toString() || '-',
+        spec.special_properties.join(', '),
+      ]);
+    });
 
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    // Reinforcement
+    rows.push([], ['=== VÝZTUŽ ===']);
+    passport.reinforcement.forEach(steel => {
+      rows.push([
+        steel.steel_grade,
+        `${steel.tonnage_t || '-'} t`,
+        steel.bar_diameters.join(', '),
+      ]);
+    });
+
+    // Special requirements
+    if (passport.special_requirements.length > 0) {
+      rows.push([], ['=== SPECIÁLNÍ POŽADAVKY ===']);
+      passport.special_requirements.forEach(req => {
+        rows.push([req.requirement_type, req.description, req.standard || '-']);
+      });
+    }
+
+    const csv = rows.map(row => row.join(';')).join('\n');
+
+    const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' }); // UTF-8 BOM
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${summary.project_info.name || 'summary'}_work_items.csv`;
+    a.download = `${passport.project_name || 'passport'}_export.csv`;
     a.click();
     URL.revokeObjectURL(url);
-  }, [summary]);
+  }, [passportData]);
 
   // Format number with Czech locale
   const formatNumber = (value: number | undefined | null, decimals = 2): string => {
@@ -441,20 +446,9 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <h2 style={{ margin: 0, fontSize: '20px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
           <FileSpreadsheet size={24} />
-          Shrnutí dokumentu
+          Pasport projektu
         </h2>
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          {/* Language selector */}
-          <select
-            value={language}
-            onChange={(e) => setLanguage(e.target.value as 'cs' | 'en' | 'sk')}
-            className="c-input"
-            style={{ width: '80px' }}
-          >
-            <option value="cs">CZ</option>
-            <option value="en">EN</option>
-            <option value="sk">SK</option>
-          </select>
           {onClose && (
             <button onClick={onClose} className="c-btn c-btn--ghost" style={{ padding: '8px' }}>
               <X size={20} />
@@ -463,8 +457,65 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
         </div>
       </div>
 
+      {/* AI Configuration Panel - Only show before upload */}
+      {!passportData && !isUploading && (
+        <div className="c-panel" style={{ padding: '16px', marginBottom: '24px', backgroundColor: 'var(--bg-secondary)' }}>
+          <h3 style={{ margin: '0 0 16px', fontSize: '14px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Zap size={16} />
+            Konfigurace AI obohacení
+          </h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {/* Enable AI toggle */}
+            <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
+              <input
+                type="checkbox"
+                checked={enableAiEnrichment}
+                onChange={(e) => setEnableAiEnrichment(e.target.checked)}
+                style={{ width: '16px', height: '16px' }}
+              />
+              <span style={{ fontSize: '14px' }}>Povolit AI obohacení (rizika, lokace, časový plán)</span>
+            </label>
+
+            {/* Model selection */}
+            {enableAiEnrichment && (
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <label style={{ fontSize: '14px', color: 'var(--text-secondary)', minWidth: '100px' }}>
+                  AI Model:
+                </label>
+                <select
+                  value={selectedModel}
+                  onChange={(e) => setSelectedModel(e.target.value as AIModelType)}
+                  className="c-input"
+                  style={{ flex: 1, maxWidth: '300px' }}
+                >
+                  {AI_MODEL_OPTIONS.map(model => (
+                    <option key={model.id} value={model.id}>
+                      {model.name} - {model.cost_per_passport} ({model.speed})
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {/* Model description */}
+            {enableAiEnrichment && (
+              <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
+                {AI_MODEL_OPTIONS.find(m => m.id === selectedModel)?.description}
+              </div>
+            )}
+
+            {/* Disable AI info */}
+            {!enableAiEnrichment && (
+              <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
+                ⚡ Pouze deterministická extrakce (Regex) - ZDARMA, 100% přesnost pro technické údaje
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Upload area */}
-      {!summary && (
+      {!passportData && (
         <div
           className={`c-upload-zone ${isDragOver ? 'c-upload-zone--active' : ''}`}
           onDragOver={handleDragOver}
@@ -517,7 +568,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       )}
 
       {/* Error message */}
-      {error && !summary && (
+      {error && !passportData && (
         <div className="c-alert c-alert--error" style={{ marginTop: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
             <AlertTriangle size={20} />
@@ -546,16 +597,27 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
         </div>
       )}
 
-      {/* Summary display */}
-      {summary && (
+      {/* Passport display */}
+      {passportData && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
           {/* Action bar */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '14px', flexWrap: 'wrap' }}>
               <CheckCircle size={20} style={{ color: 'var(--success)' }} />
-              <span>Extrahováno za {summary.metadata.extraction_time_seconds.toFixed(2)}s</span>
+              <span>Vygenerováno za {passportData.metadata.processing_time_seconds.toFixed(2)}s</span>
               <span style={{ color: 'var(--text-tertiary)' }}>|</span>
-              <span>Spolehlivost: {(summary.metadata.confidence * 100).toFixed(0)}%</span>
+              <span>Spolehlivost: {(passportData.metadata.total_confidence * 100).toFixed(0)}%</span>
+              <span style={{ color: 'var(--text-tertiary)' }}>|</span>
+              <span>{passportData.statistics.deterministic_fields} deterministických polí</span>
+              {passportData.statistics.ai_enriched_fields > 0 && (
+                <>
+                  <span style={{ color: 'var(--text-tertiary)' }}>|</span>
+                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <Zap size={14} style={{ color: 'var(--accent-primary)' }} />
+                    {passportData.statistics.ai_enriched_fields} AI obohacení ({passportData.metadata.ai_model_used})
+                  </span>
+                </>
+              )}
             </div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
               {/* Project selector and save button */}
@@ -669,7 +731,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
               </button>
               <button
                 onClick={() => {
-                  setSummary(null);
+                  setPassportData(null);
                   setUploadedFile(null);
                   setSaveSuccess(false);
                 }}
@@ -680,167 +742,338 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
             </div>
           </div>
 
-          {/* Project Info Card */}
-          <div className="c-card">
+          {/* Statistics Overview */}
+          <div className="c-card" style={{ backgroundColor: 'var(--bg-secondary)' }}>
             <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Building2 size={20} />
-              Přehled projektu
+              <TrendingUp size={20} />
+              Shrnutí pasportu
             </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-              <div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '16px' }}>
+              <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
                 <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Název projektu</div>
-                <div style={{ fontWeight: 500 }}>{summary.project_info.name || '-'}</div>
+                <div style={{ fontWeight: 600, fontSize: '18px' }}>{passportData.passport.project_name}</div>
               </div>
-              <div>
-                <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <MapPin size={12} /> Lokalita
-                </div>
-                <div style={{ fontWeight: 500 }}>{summary.project_info.location || '-'}</div>
-              </div>
-              <div>
-                <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Typ stavby</div>
-                <div style={{ fontWeight: 500 }}>{summary.project_info.type || '-'}</div>
-              </div>
-              <div>
-                <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                  <User size={12} /> Investor
-                </div>
-                <div style={{ fontWeight: 500 }}>{summary.project_info.investor || '-'}</div>
-              </div>
-              {summary.project_info.object_id && (
-                <div>
-                  <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Hash size={12} /> ID objektu
-                  </div>
-                  <div style={{ fontWeight: 500 }}>{summary.project_info.object_id}</div>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Key Quantities Card */}
-          <div className="c-card">
-            <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Boxes size={20} />
-              Klíčové objemy
-            </h3>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px' }}>
-              <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '8px' }}>
+              <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
                 <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Beton celkem</div>
                 <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--accent-primary)' }}>
-                  {formatNumber(summary.quantities.total_concrete_m3)} <span style={{ fontSize: '14px', fontWeight: 400 }}>m³</span>
+                  {formatNumber(passportData.statistics.total_concrete_m3)} <span style={{ fontSize: '14px', fontWeight: 400 }}>m³</span>
                 </div>
               </div>
-              <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '8px' }}>
+              <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
                 <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Výztuž celkem</div>
                 <div style={{ fontSize: '24px', fontWeight: 600, color: 'var(--accent-secondary)' }}>
-                  {formatNumber(summary.quantities.total_reinforcement_t)} <span style={{ fontSize: '14px', fontWeight: 400 }}>t</span>
+                  {formatNumber(passportData.statistics.total_reinforcement_t)} <span style={{ fontSize: '14px', fontWeight: 400 }}>t</span>
                 </div>
               </div>
-              <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Bednění celkem</div>
+              <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
+                <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Třídy betonu</div>
                 <div style={{ fontSize: '24px', fontWeight: 600 }}>
-                  {formatNumber(summary.quantities.total_formwork_m2)} <span style={{ fontSize: '14px', fontWeight: 400 }}>m²</span>
+                  {passportData.statistics.unique_concrete_classes}
                 </div>
               </div>
-              {summary.quantities.estimated_cost_czk && (
-                <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-tertiary)', borderRadius: '8px' }}>
-                  <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Odhadovaná cena</div>
-                  <div style={{ fontSize: '24px', fontWeight: 600 }}>
-                    {formatNumber(summary.quantities.estimated_cost_czk, 0)} <span style={{ fontSize: '14px', fontWeight: 400 }}>CZK</span>
-                  </div>
+              <div className="c-stat-box" style={{ padding: '16px', backgroundColor: 'var(--bg-primary)', borderRadius: '8px' }}>
+                <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Ocelové třídy</div>
+                <div style={{ fontSize: '24px', fontWeight: 600 }}>
+                  {passportData.statistics.unique_steel_grades}
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
-          {/* Work Items Table */}
-          <div className="c-card">
-            <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <ClipboardList size={20} />
-              Rozsah prací ({summary.work_items.length} položek)
-            </h3>
-            <div style={{ overflowX: 'auto' }}>
-              <table className="c-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                <thead>
-                  <tr>
-                    <th style={{ textAlign: 'left', padding: '12px 8px', borderBottom: '2px solid var(--border-default)' }}>Typ práce</th>
-                    <th style={{ textAlign: 'right', padding: '12px 8px', borderBottom: '2px solid var(--border-default)' }}>Množství</th>
-                    <th style={{ textAlign: 'left', padding: '12px 8px', borderBottom: '2px solid var(--border-default)' }}>MJ</th>
-                    <th style={{ textAlign: 'left', padding: '12px 8px', borderBottom: '2px solid var(--border-default)' }}>Poznámky</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {summary.work_items.map((item, index) => (
-                    <tr key={index} style={{ backgroundColor: index % 2 === 0 ? 'transparent' : 'var(--bg-secondary)' }}>
-                      <td style={{ padding: '10px 8px', borderBottom: '1px solid var(--border-subtle)' }}>{item.type}</td>
-                      <td style={{ padding: '10px 8px', borderBottom: '1px solid var(--border-subtle)', textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
-                        {formatNumber(item.quantity)}
-                      </td>
-                      <td style={{ padding: '10px 8px', borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}>{item.unit}</td>
-                      <td style={{ padding: '10px 8px', borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-tertiary)', fontSize: '13px' }}>{item.note || '-'}</td>
-                    </tr>
-                  ))}
-                  {summary.work_items.length === 0 && (
-                    <tr>
-                      <td colSpan={4} style={{ padding: '24px', textAlign: 'center', color: 'var(--text-tertiary)' }}>
-                        Žádné pracovní položky nebyly extrahovány
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          {/* Timeline Card */}
-          {(summary.timeline.start || summary.timeline.end || summary.timeline.milestones.length > 0) && (
+          {/* Concrete Specifications Card */}
+          {passportData.passport.concrete_specifications.length > 0 && (
             <div className="c-card">
               <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Calendar size={20} />
-                Harmonogram
+                <Boxes size={20} />
+                Specifikace betonu ({passportData.passport.concrete_specifications.length})
               </h3>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px', marginBottom: summary.timeline.milestones.length > 0 ? '16px' : 0 }}>
-                <div>
-                  <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Zahájení</div>
-                  <div style={{ fontWeight: 500 }}>{formatDate(summary.timeline.start)}</div>
-                </div>
-                <div>
-                  <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Dokončení</div>
-                  <div style={{ fontWeight: 500 }}>{formatDate(summary.timeline.end)}</div>
-                </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {passportData.passport.concrete_specifications.map((spec, index) => (
+                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', borderLeft: '3px solid var(--accent-primary)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
+                      <div style={{ fontWeight: 600, fontSize: '16px' }}>{spec.concrete_class}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                        Spolehlivost: {(spec.confidence * 100).toFixed(0)}%
+                      </div>
+                    </div>
+                    {spec.exposure_classes.length > 0 && (
+                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                        <strong>Expozice:</strong> {spec.exposure_classes.join(', ')}
+                      </div>
+                    )}
+                    {spec.volume_m3 !== null && (
+                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                        <strong>Objem:</strong> {formatNumber(spec.volume_m3)} m³
+                      </div>
+                    )}
+                    {spec.special_properties.length > 0 && (
+                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                        <strong>Vlastnosti:</strong> {spec.special_properties.join(', ')}
+                      </div>
+                    )}
+                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px', fontStyle: 'italic' }}>
+                      {spec.source_text}
+                    </div>
+                  </div>
+                ))}
               </div>
-              {summary.timeline.milestones.length > 0 && (
+            </div>
+          )}
+
+          {/* Reinforcement Card */}
+          {passportData.passport.reinforcement.length > 0 && (
+            <div className="c-card">
+              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Shield size={20} />
+                Výztuž ({passportData.passport.reinforcement.length})
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {passportData.passport.reinforcement.map((steel, index) => (
+                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', borderLeft: '3px solid var(--accent-secondary)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
+                      <div style={{ fontWeight: 600, fontSize: '16px' }}>{steel.steel_grade}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                        Spolehlivost: {(steel.confidence * 100).toFixed(0)}%
+                      </div>
+                    </div>
+                    {steel.tonnage_t !== null && (
+                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                        <strong>Hmotnost:</strong> {formatNumber(steel.tonnage_t)} t
+                      </div>
+                    )}
+                    {steel.bar_diameters.length > 0 && (
+                      <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                        <strong>Průměry:</strong> {steel.bar_diameters.join(', ')}
+                      </div>
+                    )}
+                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px', fontStyle: 'italic' }}>
+                      {steel.source_text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Building Dimensions Card */}
+          {passportData.passport.dimensions && (
+            <div className="c-card">
+              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Ruler size={20} />
+                Rozměry objektu
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px' }}>
+                {passportData.passport.dimensions.floors_above_ground !== null && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Nadzemní podlaží</div>
+                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{passportData.passport.dimensions.floors_above_ground} NP</div>
+                  </div>
+                )}
+                {passportData.passport.dimensions.floors_underground !== null && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Podzemní podlaží</div>
+                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{passportData.passport.dimensions.floors_underground} PP</div>
+                  </div>
+                )}
+                {passportData.passport.dimensions.height_m !== null && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Výška</div>
+                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{formatNumber(passportData.passport.dimensions.height_m)} m</div>
+                  </div>
+                )}
+                {passportData.passport.dimensions.length_m !== null && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Délka</div>
+                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{formatNumber(passportData.passport.dimensions.length_m)} m</div>
+                  </div>
+                )}
+                {passportData.passport.dimensions.width_m !== null && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Šířka</div>
+                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{formatNumber(passportData.passport.dimensions.width_m)} m</div>
+                  </div>
+                )}
+                {passportData.passport.dimensions.built_up_area_m2 !== null && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Zastavěná plocha</div>
+                    <div style={{ fontWeight: 500, fontSize: '18px' }}>{formatNumber(passportData.passport.dimensions.built_up_area_m2)} m²</div>
+                  </div>
+                )}
+              </div>
+              <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                Spolehlivost: {(passportData.passport.dimensions.confidence * 100).toFixed(0)}%
+              </div>
+            </div>
+          )}
+
+          {/* Special Requirements Card */}
+          {passportData.passport.special_requirements.length > 0 && (
+            <div className="c-card">
+              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <AlertCircle size={20} />
+                Speciální požadavky ({passportData.passport.special_requirements.length})
+              </h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {passportData.passport.special_requirements.map((req, index) => (
+                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', borderLeft: '3px solid #FF9F1C' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '6px' }}>
+                      <div style={{ fontWeight: 600 }}>{req.requirement_type}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                        Spolehlivost: {(req.confidence * 100).toFixed(0)}%
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '14px', marginBottom: '6px' }}>{req.description}</div>
+                    {req.standard && (
+                      <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                        <strong>Norma:</strong> {req.standard}
+                      </div>
+                    )}
+                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px', fontStyle: 'italic' }}>
+                      {req.source_text}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* AI Enrichment: Risks */}
+          {passportData.passport.risks.length > 0 && (
+            <div className="c-card" style={{ borderTop: '2px solid var(--accent-primary)' }}>
+              <h3 style={{ margin: '0 0 8px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Zap size={20} style={{ color: 'var(--accent-primary)' }} />
+                Hodnocení rizik (AI obohacení)
+              </h3>
+              <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginBottom: '16px' }}>
+                Generováno pomocí {passportData.metadata.ai_model_used}
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {passportData.passport.risks.map((risk, index) => (
+                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', borderLeft: `3px solid ${risk.severity === 'High' ? '#EF4444' : risk.severity === 'Medium' ? '#F59E0B' : '#10B981'}` }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '6px' }}>
+                      <div style={{ fontWeight: 600 }}>{risk.risk_category} - {risk.severity}</div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                        Spolehlivost: {(risk.confidence * 100).toFixed(0)}%
+                      </div>
+                    </div>
+                    <div style={{ fontSize: '14px', marginBottom: '6px' }}>{risk.description}</div>
+                    <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                      <strong>Zmírnění:</strong> {risk.mitigation}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* AI Enrichment: Location */}
+          {passportData.passport.location && (
+            <div className="c-card" style={{ borderTop: '2px solid var(--accent-primary)' }}>
+              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <MapPin size={20} />
+                Lokace (AI obohacení)
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                {passportData.passport.location.city && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Město</div>
+                    <div style={{ fontWeight: 500 }}>{passportData.passport.location.city}</div>
+                  </div>
+                )}
+                {passportData.passport.location.region && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Kraj</div>
+                    <div style={{ fontWeight: 500 }}>{passportData.passport.location.region}</div>
+                  </div>
+                )}
+                {passportData.passport.location.address && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Adresa</div>
+                    <div style={{ fontWeight: 500 }}>{passportData.passport.location.address}</div>
+                  </div>
+                )}
+                {passportData.passport.location.coordinates && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Souřadnice</div>
+                    <div style={{ fontWeight: 500 }}>{passportData.passport.location.coordinates}</div>
+                  </div>
+                )}
+              </div>
+              <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                Spolehlivost: {(passportData.passport.location.confidence * 100).toFixed(0)}%
+              </div>
+            </div>
+          )}
+
+          {/* AI Enrichment: Timeline */}
+          {passportData.passport.timeline && (
+            <div className="c-card" style={{ borderTop: '2px solid var(--accent-primary)' }}>
+              <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Calendar size={20} />
+                Harmonogram (AI obohacení)
+              </h3>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '16px', marginBottom: '16px' }}>
+                {passportData.passport.timeline.start_date && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Zahájení</div>
+                    <div style={{ fontWeight: 500 }}>{formatDate(passportData.passport.timeline.start_date)}</div>
+                  </div>
+                )}
+                {passportData.passport.timeline.end_date && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Dokončení</div>
+                    <div style={{ fontWeight: 500 }}>{formatDate(passportData.passport.timeline.end_date)}</div>
+                  </div>
+                )}
+                {passportData.passport.timeline.duration_months !== null && (
+                  <div>
+                    <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '4px' }}>Délka trvání</div>
+                    <div style={{ fontWeight: 500 }}>{passportData.passport.timeline.duration_months} měsíců</div>
+                  </div>
+                )}
+              </div>
+              {passportData.passport.timeline.critical_milestones.length > 0 && (
                 <div>
-                  <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '8px' }}>Milníky</div>
+                  <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', marginBottom: '8px' }}>Kritické milníky</div>
                   <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                    {summary.timeline.milestones.map((milestone, index) => (
+                    {passportData.passport.timeline.critical_milestones.map((milestone, index) => (
                       <li key={index} style={{ marginBottom: '4px' }}>{milestone}</li>
                     ))}
                   </ul>
                 </div>
               )}
+              <div style={{ marginTop: '12px', fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                Spolehlivost: {(passportData.passport.timeline.confidence * 100).toFixed(0)}%
+              </div>
             </div>
           )}
 
-          {/* Requirements Card */}
-          {summary.requirements.length > 0 && (
-            <div className="c-card">
+          {/* AI Enrichment: Stakeholders */}
+          {passportData.passport.stakeholders.length > 0 && (
+            <div className="c-card" style={{ borderTop: '2px solid var(--accent-primary)' }}>
               <h3 style={{ margin: '0 0 16px', fontSize: '16px', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <FileText size={20} />
-                Požadavky a normy
+                <Users size={20} />
+                Zúčastněné strany (AI obohacení)
               </h3>
-              <ul style={{ margin: 0, paddingLeft: '20px' }}>
-                {summary.requirements.map((req, index) => (
-                  <li key={index} style={{ marginBottom: '6px' }}>{req}</li>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                {passportData.passport.stakeholders.map((stakeholder, index) => (
+                  <div key={index} style={{ padding: '12px', backgroundColor: 'var(--bg-secondary)', borderRadius: '6px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <div style={{ fontWeight: 600 }}>{stakeholder.name}</div>
+                      <div style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{stakeholder.role}</div>
+                    </div>
+                    <div style={{ fontSize: '12px', color: 'var(--text-tertiary)' }}>
+                      Spolehlivost: {(stakeholder.confidence * 100).toFixed(0)}%
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           )}
 
           {/* Metadata */}
           <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', textAlign: 'right' }}>
-            Soubor: {summary.metadata.source_file} | Extrahováno: {new Date(summary.metadata.extracted_at).toLocaleString('cs-CZ')}
+            Soubor: {passportData.metadata.file_name} | ID: {passportData.passport.passport_id} | Vygenerováno: {new Date(passportData.passport.generated_at).toLocaleString('cs-CZ')}
           </div>
         </div>
       )}
