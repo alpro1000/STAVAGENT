@@ -29,6 +29,7 @@ import { split } from './workSplitter.js';
 import { retrieve } from './candidateRetriever.js';
 import { rerank } from './candidateReranker.js';
 import * as batchCache from './batchCache.js';
+import tskpParserService from '../tskpParserService.js';
 
 // ============================================================================
 // CONSTANTS
@@ -418,6 +419,19 @@ async function processPosition(batchId, itemId, settings) {
     logger.debug(`[BatchProcessor] Item ${itemId}: Normalized`);
 
     // ========================================================================
+    // STEP 1.5: TSKP CLASSIFICATION (section routing)
+    // ========================================================================
+    let tskpClassification = null;
+    try {
+      tskpClassification = tskpParserService.classifyToSection(normalized.normalizedText);
+      if (tskpClassification.sectionCode) {
+        logger.info(`[BatchProcessor] Item ${itemId}: TSKP section ${tskpClassification.sectionCode} "${tskpClassification.sectionName}" (conf: ${tskpClassification.confidence.toFixed(2)})`);
+      }
+    } catch (classifyError) {
+      logger.warn(`[BatchProcessor] Item ${itemId}: TSKP classification failed: ${classifyError.message}`);
+    }
+
+    // ========================================================================
     // STEP 2: SPLIT (SINGLE/COMPOSITE)
     // ========================================================================
     await updateItemStatus(itemId, 'split');
@@ -457,7 +471,7 @@ async function processPosition(batchId, itemId, settings) {
       let retrieveResult = await batchCache.get(retrieveCacheKey, 'retrieve');
 
       if (!retrieveResult) {
-        retrieveResult = await retrieve(subWork, settings.searchDepth || 'normal');
+        retrieveResult = await retrieve(subWork, settings.searchDepth || 'normal', { catalog: settings.catalog || 'urs' });
         await batchCache.set(retrieveCacheKey, 'retrieve', retrieveResult);
       } else {
         logger.info(`[BatchProcessor] Item ${itemId}: Retrieve result from cache`);
@@ -514,6 +528,16 @@ async function processPosition(batchId, itemId, settings) {
 
     const needsReview = hasLowConfidence || allEmpty || hasRetrievalError;
     const finalStatus = needsReview ? 'needs_review' : 'done';
+
+    // Attach TSKP classification to each result entry
+    for (const r of results) {
+      r.tskpClassification = tskpClassification ? {
+        sectionCode: tskpClassification.sectionCode,
+        sectionName: tskpClassification.sectionName,
+        confidence: tskpClassification.confidence,
+        mainCategory: tskpClassification.mainCategory
+      } : null;
+    }
 
     await db.run(
       `UPDATE batch_items SET status = ?, results = ?, updated_at = datetime('now') WHERE id = ?`,
