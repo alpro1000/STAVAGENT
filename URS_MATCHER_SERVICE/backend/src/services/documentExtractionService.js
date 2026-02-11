@@ -21,101 +21,116 @@ import { callLLMForTask, TASKS } from './llmClient.js';
 
 const CONCRETE_AGENT_URL = process.env.STAVAGENT_API_URL || 'https://concrete-agent.onrender.com';
 const SIMILARITY_THRESHOLD = 0.85; // 85% similarity for deduplication
-const MINERU_TIMEOUT_MS = 300000; // 5 minutes for cold start + large PDF parsing
+const PARSE_TIMEOUT_MS = 120000; // 2 minutes (lightweight parse, not full Workflow C)
 
 /**
- * Upload document to concrete-agent for parsing
+ * Upload document to concrete-agent for LIGHTWEIGHT parsing.
  *
- * Note: Workflow C returns audit results, not raw text.
- * We extract text from position descriptions for LLM processing.
+ * Uses /api/upload with auto_start_audit=false, generate_summary=false
+ * to avoid the heavy Multi-Role AI pipeline that crashes 512MB servers.
+ *
+ * Memory: ~100MB (vs 500-750MB for full Workflow C)
  */
-async function parseDocumentWithMinerU(filePath) {
+async function parseDocumentWithConcreteAgent(filePath) {
   const startTime = Date.now();
   try {
-    logger.info(`[DocExtract] Uploading to concrete-agent: ${filePath}`);
+    logger.info(`[DocExtract] Uploading to concrete-agent (lightweight parse): ${filePath}`);
 
-    const formData = new FormData();
     const fileBuffer = await fs.readFile(filePath);
     const fileName = path.basename(filePath);
+    const formData = new FormData();
 
-    formData.append('file', fileBuffer, {
+    // Use /api/upload with parse-only mode (no audit, no summary)
+    formData.append('vykaz_vymer', fileBuffer, {
       filename: fileName,
-      contentType: 'application/pdf'
+      contentType: fileName.endsWith('.pdf') ? 'application/pdf' : 'application/octet-stream'
     });
+    formData.append('project_name', `doc-extract-${Date.now()}`);
+    formData.append('workflow', 'A');
+    formData.append('auto_start_audit', 'false');      // Skip Multi-Role AI (saves ~250MB)
+    formData.append('generate_summary', 'false');       // Skip summary (saves ~100MB)
+    formData.append('enable_enrichment', 'false');      // Skip enrichment (saves ~50MB)
 
-    // Add required form fields for Workflow C
-    formData.append('project_id', `doc-extract-${Date.now()}`);
-    formData.append('project_name', 'Document Work Extraction');
-    formData.append('generate_summary', 'true'); // Get summary for text extraction
-    formData.append('use_parallel', 'false');
-    formData.append('language', 'cs');
-
-    logger.info(`[DocExtract] Calling concrete-agent (timeout: ${MINERU_TIMEOUT_MS / 1000}s for cold start + parsing)...`);
+    logger.info(`[DocExtract] Calling /api/upload (parse-only, timeout: ${PARSE_TIMEOUT_MS / 1000}s)...`);
 
     const response = await axios.post(
-      `${CONCRETE_AGENT_URL}/api/v1/workflow/c/upload`,
+      `${CONCRETE_AGENT_URL}/api/upload`,
       formData,
       {
         headers: formData.getHeaders(),
-        timeout: MINERU_TIMEOUT_MS, // 5 minutes for cold start + large PDF
+        timeout: PARSE_TIMEOUT_MS,
         maxContentLength: Infinity,
         maxBodyLength: Infinity
       }
     );
 
-    // Workflow C returns WorkflowResultResponse directly (no 'result' wrapper)
     const data = response.data;
 
-    if (!data || !data.success) {
-      const errorMsg = data?.critical_issues?.[0] || 'Unknown error from concrete-agent';
-      throw new Error(errorMsg);
+    if (!data || !data.project_id) {
+      throw new Error(data?.error || 'Neplatná odpověď z concrete-agent');
     }
 
     const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-    logger.info(`[DocExtract] ✓ Parsed in ${duration}s: ${data.positions_count || 0} positions found`);
+    const posCount = data.positions_total || data.positions_raw || 0;
+    logger.info(`[DocExtract] ✓ Parsed in ${duration}s: project_id=${data.project_id}, ${posCount} positions`);
 
-    // Extract text from summary or build from position descriptions
+    // Build positions from response
+    const positions = [];
     let fullText = '';
 
-    // Try to get text from summary
-    if (data.summary) {
-      if (data.summary.executive_summary) {
-        fullText += data.summary.executive_summary + '\n\n';
-      }
-      if (data.summary.scope_summary) {
-        fullText += data.summary.scope_summary + '\n\n';
-      }
-      if (data.summary.position_summaries && Array.isArray(data.summary.position_summaries)) {
-        fullText += data.summary.position_summaries.map(p =>
-          `${p.code || ''} ${p.description || ''} ${p.quantity || ''} ${p.unit || ''}`
-        ).join('\n');
-      }
-    }
-
-    // If no summary text, build from critical_issues and warnings
-    if (!fullText.trim()) {
-      const texts = [];
-      if (data.critical_issues && data.critical_issues.length > 0) {
-        texts.push('KRITICKÉ PROBLÉMY:\n' + data.critical_issues.join('\n'));
-      }
-      if (data.warnings && data.warnings.length > 0) {
-        texts.push('VAROVÁNÍ:\n' + data.warnings.join('\n'));
-      }
-      fullText = texts.join('\n\n');
-    }
-
-    // Build positions from summary if available
-    const positions = [];
-    if (data.summary?.position_summaries) {
-      for (const pos of data.summary.position_summaries) {
+    // If response contains parsed positions directly
+    if (data.positions && Array.isArray(data.positions)) {
+      for (const pos of data.positions) {
         positions.push({
-          code: pos.code || '',
-          description: pos.description || '',
+          code: pos.code || pos.urs_code || '',
+          description: pos.description || pos.name || pos.text || '',
           quantity: pos.quantity || null,
           unit: pos.unit || '',
           unit_price: pos.unit_price || null,
           total_price: pos.total_price || null
         });
+      }
+      fullText = positions.map(p =>
+        `${p.code} ${p.description} ${p.quantity || ''} ${p.unit}`
+      ).join('\n');
+    }
+
+    // If the server returned message/status but no positions yet,
+    // try to fetch the parsed data from the project endpoint
+    if (positions.length === 0 && data.project_id) {
+      logger.info(`[DocExtract] No positions in upload response, fetching project data...`);
+      try {
+        const projectResponse = await axios.get(
+          `${CONCRETE_AGENT_URL}/api/project/${data.project_id}`,
+          { timeout: 30000 }
+        );
+        const projectData = projectResponse.data;
+        if (projectData?.positions && Array.isArray(projectData.positions)) {
+          for (const pos of projectData.positions) {
+            positions.push({
+              code: pos.code || pos.urs_code || '',
+              description: pos.description || pos.name || pos.text || '',
+              quantity: pos.quantity || null,
+              unit: pos.unit || '',
+              unit_price: pos.unit_price || null,
+              total_price: pos.total_price || null
+            });
+          }
+          fullText = positions.map(p =>
+            `${p.code} ${p.description} ${p.quantity || ''} ${p.unit}`
+          ).join('\n');
+        }
+
+        // If still no positions, get file text from diagnostics or message
+        if (positions.length === 0) {
+          fullText = projectData?.message || data?.message || '';
+          if (projectData?.diagnostics) {
+            fullText += '\n' + JSON.stringify(projectData.diagnostics);
+          }
+        }
+      } catch (fetchError) {
+        logger.warn(`[DocExtract] Could not fetch project data: ${fetchError.message}`);
+        fullText = data?.message || '';
       }
     }
 
@@ -126,27 +141,30 @@ async function parseDocumentWithMinerU(filePath) {
       positions: positions,
       sections: [],
       metadata: {
-        audit_classification: data.audit_classification,
-        audit_confidence: data.audit_confidence,
-        positions_count: data.positions_count,
-        duration_seconds: data.total_duration_seconds
+        project_id: data.project_id,
+        positions_count: posCount,
+        duration_seconds: parseFloat(duration),
+        parse_mode: 'lightweight'
       }
     };
 
   } catch (error) {
     logger.error(`[DocExtract] Parsing failed: ${error.message}`);
 
-    // Log response data for debugging
     if (error.response) {
       logger.error(`[DocExtract] Response status: ${error.response.status}`);
-      logger.error(`[DocExtract] Response data: ${JSON.stringify(error.response.data)}`);
+      logger.error(`[DocExtract] Response data: ${JSON.stringify(error.response.data)?.substring(0, 500)}`);
     }
 
     const err = new Error(`Parsing failed: ${error.message}`);
-    err.stage = 'mineru_parsing';
-    err.suggestion = error.code === 'ECONNABORTED'
-      ? 'Dokument je příliš velký nebo server není dostupný. Zkuste menší soubor (max 20 MB).'
-      : 'Zkontrolujte, že soubor je platný PDF/DOCX s textovou vrstvou.';
+    err.stage = 'document_parsing';
+    if (error.code === 'ECONNABORTED') {
+      err.suggestion = 'Server concrete-agent neodpovídá. Možná se spouští (cold start ~30s). Zkuste za minutu znovu.';
+    } else if (error.response?.status === 502 || error.response?.status === 503) {
+      err.suggestion = 'Server concrete-agent je momentálně nedostupný nebo přetížený (512MB RAM limit). Zkuste za 2 minuty.';
+    } else {
+      err.suggestion = 'Zkontrolujte, že soubor je platný PDF/DOCX s textovou vrstvou.';
+    }
     throw err;
   }
 }
@@ -448,7 +466,7 @@ export async function extractWorksFromDocument(filePath) {
 
     // 1. Parse with concrete-agent Workflow C
     pipelineStage = 'mineru_parsing';
-    const parsedData = await parseDocumentWithMinerU(filePath);
+    const parsedData = await parseDocumentWithConcreteAgent(filePath);
 
     let extractedWorks = [];
 
