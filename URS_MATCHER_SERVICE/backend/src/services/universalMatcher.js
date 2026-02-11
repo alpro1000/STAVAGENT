@@ -20,7 +20,7 @@ import {
   searchLocalCatalog,
   extractCzechKeywords
 } from './knowledgeBase.js';
-import { matchUrsItemWithAI, getLLMInfo, isLLMEnabled } from './llmClient.js';
+import { matchUrsItemWithAI, getLLMInfo, isLLMEnabled, callLLMForTask } from './llmClient.js';
 import { createUniversalMatchPrompt, validateCodesAgainstCandidates } from '../prompts/universalMatcher.prompt.js';
 import { searchUrsSite, searchNormsAndStandards } from './perplexityClient.js';
 
@@ -314,9 +314,13 @@ async function callUniversalLLM(prompt) {
     const MAX_MATCHES = 10;  // Max number of matches to return
     const MAX_MATCH_TEXT_LENGTH = 500;  // Max length for urs_name, reason, etc.
 
-    // For now, use existing matchUrsItemWithAI which supports Claude
-    // In future could add dedicated universal-match LLM call
-    let response = await matchUrsItemWithAI(prompt, [], []);
+    // Use callLLMForTask for URS_SELECTION task (routes to best model for this task)
+    let response = await callLLMForTask(
+      'URS_SELECTION',
+      'You are a Czech construction ÚRS code matching expert. Return valid JSON only.',
+      prompt,
+      90000
+    );
 
     // Handle string responses
     if (typeof response === 'string') {
@@ -453,24 +457,3 @@ export async function recordUserFeedback(matchResult, userConfirmation) {
   }
 }
 
-/**
- * Suggest related items for a confirmed match
- * Used to build complementary work suggestions
- */
-export async function suggestRelatedWorks(matchedKBMappingId, candidateItems) {
-  try {
-    // This would be called after user confirms a match
-    // Use LLM to suggest which related items make sense
-    // Then store in kb_related_items
-
-    logger.debug(
-      `[RelatedWorks] Suggesting related items for KB mapping ${matchedKBMappingId}`
-    );
-
-    // For now: return empty (would need LLM call to suggest)
-    return [];
-  } catch (error) {
-    logger.error(`[RelatedWorks] Failed: ${error.message}`);
-    throw error;
-  }
-}

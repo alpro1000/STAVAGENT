@@ -297,75 +297,8 @@ async function searchURS(query) {
   }
 }
 
-/**
- * Parse Perplexity response into structured candidates
- * @param {string} response - Perplexity text response
- * @param {string} query - Original query
- * @returns {Array<Object>} Candidates
- */
-function parsePerplexityResponse(response, query) {
-  const candidates = [];
-
-  try {
-    // Split by lines
-    const lines = response.split('\n');
-
-    for (const line of lines) {
-      // Match format: CODE | NAME | UNIT | SNIPPET
-      const match = line.match(/^(\d{9})\s*\|\s*([^\|]+)\s*\|\s*([^\|]+)\s*\|\s*(.+)$/);
-
-      if (match) {
-        const [, code, name, unit, snippet] = match;
-
-        candidates.push({
-          code: code.trim(),
-          name: name.trim(),
-          unit: unit.trim(),
-          snippet: snippet.trim(),
-          source: 'perplexity',
-          searchQuery: query
-        });
-      } else {
-        // Try alternative formats (more lenient)
-        const codeMatch = line.match(/(\d{9})/);
-        if (codeMatch) {
-          // Extract code, try to extract name after it
-          const code = codeMatch[1];
-          const afterCode = line.substring(line.indexOf(code) + code.length);
-          const nameMatch = afterCode.match(/\s*[-–—:|\s]+\s*([^()\d]{10,})/);
-
-          if (nameMatch) {
-            candidates.push({
-              code: code,
-              name: nameMatch[1].trim(),
-              unit: extractUnit(afterCode),
-              snippet: afterCode.substring(0, 100).trim(),
-              source: 'perplexity',
-              searchQuery: query
-            });
-          }
-        }
-      }
-    }
-
-    logger.debug(`[CandidateRetriever] Parsed ${candidates.length} candidates from Perplexity response`);
-
-  } catch (error) {
-    logger.warn(`[CandidateRetriever] Parse error: ${error.message}`);
-  }
-
-  return candidates;
-}
-
-/**
- * Extract unit from text
- * @param {string} text - Text to search
- * @returns {string} Unit or empty string
- */
-function extractUnit(text) {
-  const unitMatch = text.match(/\b(m3|m2|m|kg|t|ks|kus|hod|soubor)\b/i);
-  return unitMatch ? unitMatch[1].toLowerCase() : '';
-}
+// NOTE: parsePerplexityResponse and extractUnit removed (dead code - actual parsing
+// happens inside perplexityClient.js, this was an unused local copy)
 
 // ============================================================================
 // DEDUPLICATION

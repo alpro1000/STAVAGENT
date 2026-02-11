@@ -116,7 +116,7 @@ export async function searchUrsSite(inputText) {
  * @param {number} maxRetries - Maximum retry attempts (default: 3)
  * @returns {Promise<string|null>} Response text or null
  */
-async function callPerplexityAPI(userPrompt, retryCount = 0, maxRetries = 3) {
+async function callPerplexityAPI(userPrompt, retryCount = 0, maxRetries = 3, systemPrompt = null) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), PERPLEXITY_CONFIG.timeoutMs);
@@ -132,7 +132,7 @@ async function callPerplexityAPI(userPrompt, retryCount = 0, maxRetries = 3) {
         messages: [
           {
             role: 'system',
-            content: SYSTEM_PROMPT_URS_SEARCH
+            content: systemPrompt || SYSTEM_PROMPT_URS_SEARCH
           },
           {
             role: 'user',
@@ -157,7 +157,7 @@ async function callPerplexityAPI(userPrompt, retryCount = 0, maxRetries = 3) {
         await new Promise(resolve => setTimeout(resolve, delayMs));
 
         // Recursive retry
-        return callPerplexityAPI(userPrompt, retryCount + 1, maxRetries);
+        return callPerplexityAPI(userPrompt, retryCount + 1, maxRetries, systemPrompt);
       } else {
         logger.error(`[Perplexity] Rate limited (429) - max retries exceeded (${maxRetries})`);
         return null;
@@ -224,11 +224,7 @@ export function validateUrsUrl(url) {
   }
 }
 
-export async function searchDonorBills(query) {
-  // TODO: MVP-3 - Search for donor estimates
-  logger.info('[PerplexityClient] Donor bill search will be added in MVP-3');
-  return [];
-}
+// NOTE: searchDonorBills removed (dead code, was MVP-3 stub)
 
 // ============================================================================
 // NORMS AND STANDARDS SEARCH
@@ -302,7 +298,7 @@ Zaměř se na:
 
 Vrať výsledek jako platný JSON.`;
 
-      const response = await callPerplexityAPIWithSystemPrompt(userPrompt, SYSTEM_PROMPT_NORMS_SEARCH);
+      const response = await callPerplexityAPI(userPrompt, 0, 3, SYSTEM_PROMPT_NORMS_SEARCH);
 
       if (!response) {
         return { norms: [], technical_conditions: [], methodology_notes: null };
@@ -337,66 +333,15 @@ Vrať výsledek jako platný JSON.`;
   }
 }
 
-/**
- * Call Perplexity API with custom system prompt
- */
-async function callPerplexityAPIWithSystemPrompt(userPrompt, systemPrompt, retryCount = 0, maxRetries = 3) {
-  try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), PERPLEXITY_CONFIG.timeoutMs);
-
-    const response = await fetch(PERPLEXITY_CONFIG.apiUrl, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${PERPLEXITY_CONFIG.apiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: PERPLEXITY_CONFIG.model,
-        messages: [
-          { role: 'system', content: systemPrompt },
-          { role: 'user', content: userPrompt }
-        ],
-        temperature: 0.2
-      }),
-      signal: controller.signal
-    });
-
-    clearTimeout(timeoutId);
-
-    if (response.status === 429 && retryCount < maxRetries) {
-      const backoffMs = Math.pow(2, retryCount) * 1000;
-      logger.warn(`[Perplexity] Rate limited, retrying in ${backoffMs}ms...`);
-      await new Promise(resolve => setTimeout(resolve, backoffMs));
-      return callPerplexityAPIWithSystemPrompt(userPrompt, systemPrompt, retryCount + 1, maxRetries);
-    }
-
-    if (!response.ok) {
-      logger.error(`[Perplexity] API error: ${response.status}`);
-      return null;
-    }
-
-    const data = await response.json();
-    return data.choices?.[0]?.message?.content || null;
-
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      logger.error(`[Perplexity] Norms search timeout`);
-    } else {
-      logger.error(`[Perplexity] Norms API error: ${error.message}`);
-    }
-    return null;
-  }
-}
+// NOTE: callPerplexityAPIWithSystemPrompt merged into callPerplexityAPI (4th param: systemPrompt)
 
 // ============================================================================
 // NEW ROLE: SELECT BEST CANDIDATE FROM LIST (Phase 2 Optimization)
 // ============================================================================
 
 /**
- * NEW: Help select the best URS code from a list of local candidates
- * This is the optimized approach - Perplexity doesn't search for codes,
- * it helps select/rank from locally-found candidates
+ * Select the best URS code from a list of local candidates using Perplexity
+ * Used by block-match-advanced endpoint in jobs.js (dynamic import)
  *
  * @param {string} normalizedTextCs - Normalized Czech description
  * @param {Array} candidates - Array of { urs_code, urs_name, unit }
@@ -407,7 +352,6 @@ export async function selectBestCandidate(normalizedTextCs, candidates, projectC
   try {
     if (!PERPLEXITY_CONFIG.enabled) {
       logger.warn('[Perplexity] API not enabled, cannot rank candidates');
-      // Return first candidate as fallback
       return candidates.length > 0 ? {
         urs_code: candidates[0].urs_code,
         urs_name: candidates[0].urs_name,
@@ -425,170 +369,67 @@ export async function selectBestCandidate(normalizedTextCs, candidates, projectC
 
     logger.info(`[Perplexity] Selecting best from ${candidates.length} candidates for: "${normalizedTextCs.substring(0, 50)}..."`);
 
-    // Queue the request
     const result = await enqueueRequest(async () => {
-      const userPrompt = buildCandidateSelectionPrompt(normalizedTextCs, candidates, projectContext);
+      const candidatesText = candidates
+        .map((c, idx) => `${idx + 1}. ${c.urs_code} - ${c.urs_name} (MJ: ${c.unit})`)
+        .join('\n');
 
-      const systemPrompt = `Jsi expert na českou ÚRS katalogizaci a stavební technologie.
+      const userPrompt = `Pracovní popis: "${normalizedTextCs}"
+Typ budovy: ${projectContext.building_type || 'neurčeno'}
+Konstrukční systém: ${projectContext.main_system?.join(', ') || 'neurčeno'}
 
-TVŮJ ÚKOL:
-Vybrat NEJLEPŠÍ kód ÚRS ze seznamu kandidátů pro daný popis práce.
+KANDIDÁTI:
+${candidatesText}
 
-DŮLEŽITÉ:
-- NIKDY nevymýšlíš nové kódy - jenom vybíráš ze seznamu!
-- Zvažuješ technologické aspekty a stavební praxi
-- Vrátíš POUZE platný JSON bez textu kolem`;
+Vyber JEDNOHO nejlepšího kandidáta. Vrať POUZE JSON:
+{"selected_code":"XXXXXXX","selected_name":"...","unit":"m3","confidence":0.95,"explanation_cs":"...","related_items":[]}`;
 
-      const response = await callPerplexityAPIWithSystemPrompt(userPrompt, systemPrompt);
+      const systemPrompt = `Jsi expert na českou ÚRS katalogizaci. Vybíráš NEJLEPŠÍ kód ze seznamu. NIKDY nevymýšlíš nové kódy. Vrať POUZE platný JSON.`;
+
+      const response = await callPerplexityAPI(userPrompt, 0, 3, systemPrompt);
 
       if (!response) {
-        logger.warn('[Perplexity] Empty response, using first candidate');
-        return {
-          urs_code: candidates[0].urs_code,
-          urs_name: candidates[0].urs_name,
-          unit: candidates[0].unit,
-          explanation_cs: 'Vybrán první kandidát (Perplexity chyba)',
-          related_items: [],
-          source: 'fallback_error'
-        };
+        return candidates.length > 0 ? {
+          urs_code: candidates[0].urs_code, urs_name: candidates[0].urs_name,
+          unit: candidates[0].unit, explanation_cs: 'Vybrán první kandidát (Perplexity chyba)',
+          related_items: [], source: 'fallback_error'
+        } : null;
       }
 
       // Parse JSON response
-      const parsed = parseCandidateSelectionResponse(response, candidates);
-      logger.info(`[Perplexity] Selected: ${parsed.urs_code} with confidence ${parsed.confidence}`);
-
-      return parsed;
+      try {
+        const jsonMatch = response.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) {
+          return { urs_code: candidates[0].urs_code, urs_name: candidates[0].urs_name,
+            unit: candidates[0].unit, explanation_cs: 'Fallback', related_items: [], source: 'fallback_parse_error' };
+        }
+        const parsed = JSON.parse(jsonMatch[0]);
+        const validCandidate = candidates.find(c => c.urs_code === parsed.selected_code);
+        return {
+          urs_code: parsed.selected_code || candidates[0].urs_code,
+          urs_name: parsed.selected_name || validCandidate?.urs_name || candidates[0].urs_name,
+          unit: parsed.unit || validCandidate?.unit || candidates[0].unit,
+          confidence: parsed.confidence || 0.85,
+          explanation_cs: parsed.explanation_cs || 'Bez zdůvodnění',
+          related_items: parsed.related_items || [],
+          source: 'perplexity_selection'
+        };
+      } catch (parseError) {
+        logger.error(`[Perplexity] Parse selection error: ${parseError.message}`);
+        return { urs_code: candidates[0].urs_code, urs_name: candidates[0].urs_name,
+          unit: candidates[0].unit, explanation_cs: `Parse error: ${parseError.message}`,
+          related_items: [], source: 'fallback_error' };
+      }
     });
 
     return result;
 
   } catch (error) {
     logger.error(`[Perplexity] Candidate selection error: ${error.message}`);
-    // Graceful fallback
     return candidates && candidates.length > 0 ? {
-      urs_code: candidates[0].urs_code,
-      urs_name: candidates[0].urs_name,
-      unit: candidates[0].unit,
-      explanation_cs: `Chyba při výběru (${error.message}), vybrán první kandidát`,
-      related_items: [],
-      source: 'error_fallback'
+      urs_code: candidates[0].urs_code, urs_name: candidates[0].urs_name,
+      unit: candidates[0].unit, explanation_cs: `Chyba: ${error.message}`,
+      related_items: [], source: 'error_fallback'
     } : null;
-  }
-}
-
-// ============================================================================
-// HELPER: Build prompt for candidate selection
-// ============================================================================
-
-function buildCandidateSelectionPrompt(normalizedTextCs, candidates, projectContext) {
-  const candidatesText = candidates
-    .map((c, idx) => `${idx + 1}. ${c.urs_code} - ${c.urs_name} (MJ: ${c.unit})`)
-    .join('\n');
-
-  return `Pracovní popis (normalizovaný): "${normalizedTextCs}"
-
-KONTEXT PROJEKTU:
-- Typ budovy: ${projectContext.building_type || 'neurčeno'}
-- Počet NP: ${projectContext.storeys || 0}
-- Konstrukční systém: ${projectContext.main_system?.join(', ') || 'neurčeno'}
-
-KANDIDÁTI Z LOKÁLNÍ DATABÁZE:
-${candidatesText}
-
-TVŮJ ÚKOL:
-1. Vyber JEDNOHO nejlepšího kandidáta (jen jeden!)
-2. Zdůvodni volbu na základě:
-   - Technologické shodnosti s popisem práce
-   - Souladu s kontextem projektu
-   - Stavební praxe a normy
-3. Najdi typicky související práce (tech-rules)
-4. Vrať POUZE validní JSON
-
-RESPONSE (POUZE JSON):
-{
-  "selected_code": "XXXXXXX",
-  "selected_name": "Název práce",
-  "unit": "m3",
-  "confidence": 0.95,
-  "explanation_cs": "Detailní zdůvodnění proč je tato volba správná",
-  "related_items": [
-    {
-      "urs_code": "XXXXXXX",
-      "urs_name": "Související práce",
-      "unit": "m2",
-      "reason_cs": "Obvykle součástí, protože..."
-    }
-  ],
-  "key_norms": ["ČSN EN 13670", "ČSN 73 0213"],
-  "typical_constraints": ["Minimální krytí 40mm", "Tolerance ±10mm"]
-}`;
-}
-
-// ============================================================================
-// HELPER: Parse candidate selection response
-// ============================================================================
-
-function parseCandidateSelectionResponse(responseText, originalCandidates) {
-  try {
-    // Try to extract JSON
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      logger.warn('[Perplexity] Could not extract JSON from response');
-      // Return first candidate as fallback
-      return {
-        urs_code: originalCandidates[0].urs_code,
-        urs_name: originalCandidates[0].urs_name,
-        unit: originalCandidates[0].unit,
-        explanation_cs: 'Fallback na první kandidáta',
-        related_items: [],
-        source: 'fallback_parse_error'
-      };
-    }
-
-    const parsed = JSON.parse(jsonMatch[0]);
-
-    // Validate that selected_code is in original candidates
-    const validCandidate = originalCandidates.find(c => c.urs_code === parsed.selected_code);
-    if (!validCandidate) {
-      logger.warn(`[Perplexity] Selected code ${parsed.selected_code} not in original candidates`);
-      // Return first candidate as fallback
-      return {
-        urs_code: originalCandidates[0].urs_code,
-        urs_name: originalCandidates[0].urs_name,
-        unit: originalCandidates[0].unit,
-        explanation_cs: `Vybraný kód nebyl v seznamu, fallback na první`,
-        related_items: parsed.related_items || [],
-        source: 'fallback_invalid_code'
-      };
-    }
-
-    return {
-      urs_code: parsed.selected_code,
-      urs_name: parsed.selected_name || validCandidate.urs_name,
-      unit: parsed.unit || validCandidate.unit,
-      confidence: parsed.confidence || 0.85,
-      explanation_cs: parsed.explanation_cs || 'Bez zdůvodnění',
-      related_items: (parsed.related_items || []).map(item => ({
-        urs_code: item.urs_code,
-        urs_name: item.urs_name,
-        unit: item.unit,
-        reason_cs: item.reason_cs
-      })),
-      key_norms: parsed.key_norms || [],
-      typical_constraints: parsed.typical_constraints || [],
-      source: 'perplexity_selection'
-    };
-
-  } catch (error) {
-    logger.error(`[Perplexity] Parse selection error: ${error.message}`);
-    // Return first candidate as fallback
-    return {
-      urs_code: originalCandidates[0].urs_code,
-      urs_name: originalCandidates[0].urs_name,
-      unit: originalCandidates[0].unit,
-      explanation_cs: `Chyba při parsování odpovědi: ${error.message}`,
-      related_items: [],
-      source: 'fallback_error'
-    };
   }
 }

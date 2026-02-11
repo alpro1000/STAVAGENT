@@ -26,8 +26,8 @@ const COMPOSITE_MARKERS = {
   COMPLETE: /\b(komplet|kompletní|se\s+vším|s\s+příslušenstvím)\b/i,
 
   // Transport markers (very common)
-  WITH_TRANSPORT: /\b(vč\.|včetně)\s+(doprav[a|y|ou]|odvoz[u]?|přesun[u]?)\b/i,
-  WITH_DISPOSAL: /\b(vč\.|včetně)\s+(likvidac[e|í]|skládka|skládku|odstranění)\b/i,
+  WITH_TRANSPORT: /\b(vč\.|včetně)\s+(doprav[ayou]|odvoz[u]?|přesun[u]?)\b/i,
+  WITH_DISPOSAL: /\b(vč\.|včetně)\s+(likvidac[eí]|skládka|skládku|odstranění)\b/i,
 
   // Multiple operations
   MULTIPLE_OPS: /\b(výkop|hloubení)\s*\+\s*(odvoz|přesun)\s*\+\s*(zásyp|hutnění)/i,
