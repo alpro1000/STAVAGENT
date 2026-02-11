@@ -1706,9 +1706,22 @@ router.post('/document-extract', uploadDocument.single('file'), async (req, res)
       }
     }
 
+    const STAGE_LABELS = {
+      'init': 'Inicializace',
+      'mineru_parsing': 'Analýza dokumentu (MinerU)',
+      'work_extraction': 'Extrakce pozic',
+      'llm_extraction': 'LLM extrakce prací',
+      'tskp_matching': 'TSKP klasifikace',
+      'deduplication': 'Deduplikace',
+      'grouping': 'Seskupení do sekcí'
+    };
+
     res.status(500).json({
       error: 'Document extraction failed',
-      details: error.message
+      details: error.message,
+      stage: error.stage || 'unknown',
+      stageLabel: STAGE_LABELS[error.stage] || 'Neznámá fáze',
+      suggestion: error.suggestion || 'Zkuste soubor nahrát znovu nebo použijte jiný formát.'
     });
   }
 });

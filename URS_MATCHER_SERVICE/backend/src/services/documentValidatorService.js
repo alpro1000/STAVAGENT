@@ -1,9 +1,9 @@
 /**
  * Document Validator Service
- * Фаза 2: Проверка полноты загруженных документов
+ * Phase 2: Ověření úplnosti nahraných dokumentů
  *
- * Определяет, какие документы необходимы для анализа и какие отсутствуют
- * Генерирует RFI (Request For Information) для недостающих данных
+ * Určuje, které dokumenty jsou potřebné pro analýzu a které chybí
+ * Generuje RFI (Request For Information) pro chybějící data
  */
 
 import { logger } from '../utils/logger.js';
@@ -14,43 +14,43 @@ import { logger } from '../utils/logger.js';
 const DOCUMENT_TYPES = {
   TECH_SPEC: {
     id: 'tech_spec',
-    name: 'Техническое задание',
+    name: 'Technické zadání',
     extensions: ['.pdf', '.docx', '.txt'],
     required: true,
     priority: 'critical',
-    description: 'Основной документ с описанием объекта и требованиями'
+    description: 'Hlavní dokument s popisem objektu a požadavky'
   },
   DRAWINGS: {
     id: 'drawings',
-    name: 'Чертежи',
+    name: 'Výkresy',
     extensions: ['.pdf', '.dwg', '.jpg', '.png'],
     required: false,
     priority: 'high',
-    description: 'Архитектурные или конструктивные чертежи'
+    description: 'Architektonické nebo konstrukční výkresy'
   },
   MATERIALS: {
     id: 'materials',
-    name: 'Спецификация материалов',
+    name: 'Specifikace materiálů',
     extensions: ['.xlsx', '.xls', '.pdf'],
     required: false,
     priority: 'high',
-    description: 'Список материалов и их характеристик'
+    description: 'Seznam materiálů a jejich charakteristik'
   },
   GEOLOGICAL: {
     id: 'geological',
-    name: 'Геологический отчет',
+    name: 'Geologický průzkum',
     extensions: ['.pdf', '.txt'],
     required: false,
     priority: 'medium',
-    description: 'Информация о почвенных условиях и грунтах'
+    description: 'Informace o půdních podmínkách a zeminách'
   },
   STANDARDS: {
     id: 'standards',
-    name: 'Применяемые стандарты',
+    name: 'Aplikované normy',
     extensions: ['.pdf', '.docx', '.txt'],
     required: false,
     priority: 'medium',
-    description: 'ЧСН, ГОСТ, ТСН применяемые к проекту'
+    description: 'ČSN, EN normy aplikované na projekt'
   }
 };
 
@@ -61,21 +61,21 @@ const VALIDATION_RULES = {
   basic_info: {
     required_fields: ['building_type', 'storeys'],
     missing_fields: [],
-    description: 'Базовая информация о проекте'
+    description: 'Základní informace o projektu'
   },
   structure_info: {
     required_fields: ['main_system'],
     conditional: {
-      condition: (ctx) => ctx.main_system && ctx.main_system.includes('железобетон'),
+      condition: (ctx) => ctx.main_system && ctx.main_system.includes('železobeton'),
       required_then: ['foundation_concrete'],
-      description: 'Для проектов ЖБ нужна информация о классе бетона'
+      description: 'Pro ŽB projekty je potřeba informace o třídě betonu'
     }
   },
   geological_info: {
     conditional: {
-      condition: (ctx) => ctx.building_type === 'most' || ctx.building_type.includes('подземный'),
+      condition: (ctx) => ctx.building_type === 'most' || ctx.building_type?.includes('podzemní'),
       required_then: ['soil_class', 'groundwater_level'],
-      description: 'Для мостов и подземных объектов нужны геологические данные'
+      description: 'Pro mosty a podzemní stavby jsou potřeba geologická data'
     }
   }
 };

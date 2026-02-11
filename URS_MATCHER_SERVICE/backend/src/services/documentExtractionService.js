@@ -142,7 +142,12 @@ async function parseDocumentWithMinerU(filePath) {
       logger.error(`[DocExtract] Response data: ${JSON.stringify(error.response.data)}`);
     }
 
-    throw new Error(`Failed to parse document: ${error.message}`);
+    const err = new Error(`Parsing failed: ${error.message}`);
+    err.stage = 'mineru_parsing';
+    err.suggestion = error.code === 'ECONNABORTED'
+      ? 'Dokument je příliš velký nebo server není dostupný. Zkuste menší soubor (max 20 MB).'
+      : 'Zkontrolujte, že soubor je platný PDF/DOCX s textovou vrstvou.';
+    throw err;
   }
 }
 
@@ -437,15 +442,18 @@ function deduplicateWorks(works, threshold = SIMILARITY_THRESHOLD) {
  * Main orchestrator: Extract works from document
  */
 export async function extractWorksFromDocument(filePath) {
+  let pipelineStage = 'init';
   try {
     logger.info(`[DocExtract] Starting extraction pipeline: ${filePath}`);
 
     // 1. Parse with concrete-agent Workflow C
+    pipelineStage = 'mineru_parsing';
     const parsedData = await parseDocumentWithMinerU(filePath);
 
     let extractedWorks = [];
 
     // 2. If we have positions directly from Workflow C, use them
+    pipelineStage = 'work_extraction';
     if (parsedData.positions && parsedData.positions.length > 0) {
       logger.info(`[DocExtract] Using ${parsedData.positions.length} positions from Workflow C`);
 
@@ -459,6 +467,7 @@ export async function extractWorksFromDocument(filePath) {
     }
     // 3. If we have text but no positions, extract with LLM
     else if (parsedData.fullText && parsedData.fullText.trim().length > 0) {
+      pipelineStage = 'llm_extraction';
       logger.info(`[DocExtract] Extracting works from text with LLM...`);
       extractedWorks = await extractWorksWithLLM(
         parsedData.fullText,
@@ -467,16 +476,22 @@ export async function extractWorksFromDocument(filePath) {
     }
 
     if (extractedWorks.length === 0) {
-      throw new Error('Žádné práce nebyly extrahovány z dokumentu. Zkontrolujte, že dokument obsahuje strukturované položky.');
+      const err = new Error('Žádné práce nebyly extrahovány z dokumentu. Zkontrolujte, že dokument obsahuje strukturované položky.');
+      err.stage = pipelineStage;
+      err.suggestion = 'Zkuste jiný formát souboru (PDF s textovou vrstvou) nebo soubor s jasně strukturovaným seznamem prací.';
+      throw err;
     }
 
-    // 3. Match to TSKP codes
+    // 4. Match to TSKP codes
+    pipelineStage = 'tskp_matching';
     const worksWithTSKP = await matchToTSKP(extractedWorks);
 
-    // 4. Deduplicate (85% threshold)
+    // 5. Deduplicate (85% threshold)
+    pipelineStage = 'deduplication';
     const uniqueWorks = deduplicateWorks(worksWithTSKP, SIMILARITY_THRESHOLD);
 
-    // 5. Group by section
+    // 6. Group by section
+    pipelineStage = 'grouping';
     const sections = groupBySection(uniqueWorks);
 
     logger.info(`[DocExtract] ✅ Extraction complete: ${uniqueWorks.length} unique works in ${sections.length} sections`);
@@ -494,7 +509,9 @@ export async function extractWorksFromDocument(filePath) {
     };
 
   } catch (error) {
-    logger.error(`[DocExtract] Pipeline failed: ${error.message}`);
+    logger.error(`[DocExtract] Pipeline failed at stage "${pipelineStage}": ${error.message}`);
+    // Attach pipeline stage info to error for frontend
+    if (!error.stage) error.stage = pipelineStage;
     throw error;
   }
 }

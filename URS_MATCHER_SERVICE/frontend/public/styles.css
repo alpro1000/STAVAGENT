@@ -1454,3 +1454,50 @@ input[type="number"] {
   background: #FFC107;
   color: black;
 }
+
+/* TSKP Section Badge */
+.tskp-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: #E3F2FD;
+  color: #1565C0;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: help;
+}
+
+.tskp-missing {
+  color: #999;
+}
+
+/* Source Badge */
+.source-badge {
+  display: inline-block;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.65rem;
+  font-weight: 500;
+  margin-left: 4px;
+  text-transform: uppercase;
+}
+
+.source-badge.source-perplexity {
+  background: #E8EAF6;
+  color: #283593;
+}
+
+.source-badge.source-brave_search {
+  background: #FFF3E0;
+  color: #E65100;
+}
+
+.source-badge.source-otskp {
+  background: #E8F5E9;
+  color: #2E7D32;
+}
+
+.source-badge.source-local {
+  background: #F3E5F5;
+  color: #6A1B9A;
+}
