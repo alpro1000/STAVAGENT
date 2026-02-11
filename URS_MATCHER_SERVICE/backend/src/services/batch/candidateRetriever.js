@@ -16,27 +16,54 @@
 import { logger } from '../../utils/logger.js';
 import { searchUrsSite } from '../perplexityClient.js';
 import { searchUrsSiteViaBrave } from '../braveSearchClient.js';
+import otskpCatalogService from '../otskpCatalogService.js';
+import tskpParserService from '../tskpParserService.js';
 
 // ============================================================================
 // MAIN RETRIEVAL FUNCTION
 // ============================================================================
 
 /**
- * Retrieve ÚRS candidates for subwork
+ * Retrieve candidates for subwork from selected catalog
  * @param {Object} subWork - Subwork to search
  * @param {string} searchDepth - 'quick' | 'normal' | 'deep'
+ * @param {Object} [options] - Additional options
+ * @param {string} [options.catalog='urs'] - Catalog mode: 'urs', 'otskp', or 'both'
  * @returns {Object} Retrieval result
  */
-export async function retrieve(subWork, searchDepth = 'normal') {
+export async function retrieve(subWork, searchDepth = 'normal', options = {}) {
   const startTime = Date.now();
+  const catalog = options.catalog || 'urs';
 
   try {
-    logger.info(`[CandidateRetriever] Subwork: "${subWork.text}"`);
+    logger.info(`[CandidateRetriever] Subwork: "${subWork.text}" (catalog: ${catalog})`);
     logger.debug(`[CandidateRetriever] Operation: ${subWork.operation}`);
     logger.debug(`[CandidateRetriever] Keywords: ${JSON.stringify(subWork.keywords)}`);
     logger.debug(`[CandidateRetriever] Search depth: ${searchDepth}`);
 
-    // Step 1: Generate search queries
+    // OTSKP catalog: local search (fast, no API calls)
+    if (catalog === 'otskp' || catalog === 'both') {
+      const otskpCandidates = await searchOTSKPCatalog(subWork);
+      if (otskpCandidates.length > 0 && catalog === 'otskp') {
+        const elapsed = Date.now() - startTime;
+        logger.info(`[CandidateRetriever] OTSKP: ${otskpCandidates.length} candidates in ${elapsed}ms`);
+        return {
+          subWork,
+          candidates: otskpCandidates.slice(0, 30),
+          queriesUsed: [`OTSKP local: ${subWork.text}`],
+          timing: { totalMs: elapsed },
+          catalog: 'otskp'
+        };
+      }
+
+      // In 'both' mode, OTSKP results will be merged with ÚRS results below
+      if (catalog === 'both' && otskpCandidates.length > 0) {
+        // We'll merge these after the ÚRS search
+        subWork._otskpCandidates = otskpCandidates;
+      }
+    }
+
+    // Step 1: Generate search queries (for ÚRS search)
     const queries = generateSearchQueries(subWork, searchDepth);
     logger.info(`[CandidateRetriever] Generated ${queries.length} queries`);
 
@@ -65,7 +92,14 @@ export async function retrieve(subWork, searchDepth = 'normal') {
       }
     }
 
-    // Step 3: Deduplicate by ÚRS code
+    // Step 2.5: Merge OTSKP candidates if in 'both' mode
+    if (subWork._otskpCandidates) {
+      allCandidates.push(...subWork._otskpCandidates);
+      delete subWork._otskpCandidates;
+      logger.info(`[CandidateRetriever] Merged OTSKP candidates, total: ${allCandidates.length}`);
+    }
+
+    // Step 3: Deduplicate by code
     const deduplicated = deduplicateCandidates(allCandidates);
     logger.info(`[CandidateRetriever] Deduplicated: ${allCandidates.length} → ${deduplicated.length}`);
 
@@ -297,74 +331,77 @@ async function searchURS(query) {
   }
 }
 
+// NOTE: parsePerplexityResponse and extractUnit removed (dead code - actual parsing
+// happens inside perplexityClient.js, this was an unused local copy)
+
+// ============================================================================
+// OTSKP LOCAL SEARCH
+// ============================================================================
+
 /**
- * Parse Perplexity response into structured candidates
- * @param {string} response - Perplexity text response
- * @param {string} query - Original query
- * @returns {Array<Object>} Candidates
+ * Search OTSKP catalog locally for a subwork
+ * Uses TSKP classification to narrow down search to relevant section
+ *
+ * @param {Object} subWork - Subwork with text, keywords, operation
+ * @returns {Promise<Array>} OTSKP candidates in standard format
  */
-function parsePerplexityResponse(response, query) {
-  const candidates = [];
-
+async function searchOTSKPCatalog(subWork) {
   try {
-    // Split by lines
-    const lines = response.split('\n');
+    await otskpCatalogService.load();
 
-    for (const line of lines) {
-      // Match format: CODE | NAME | UNIT | SNIPPET
-      const match = line.match(/^(\d{9})\s*\|\s*([^\|]+)\s*\|\s*([^\|]+)\s*\|\s*(.+)$/);
+    if (otskpCatalogService.items.size === 0) {
+      logger.warn('[CandidateRetriever] OTSKP catalog not loaded, skipping');
+      return [];
+    }
 
-      if (match) {
-        const [, code, name, unit, snippet] = match;
+    // Classify to TSKP section for targeted search
+    const classification = tskpParserService.classifyToSection(subWork.text);
+    const sectionPrefix = classification.sectionCode ? classification.sectionCode.substring(0, 1) : null;
 
-        candidates.push({
-          code: code.trim(),
-          name: name.trim(),
-          unit: unit.trim(),
-          snippet: snippet.trim(),
-          source: 'perplexity',
-          searchQuery: query
-        });
-      } else {
-        // Try alternative formats (more lenient)
-        const codeMatch = line.match(/(\d{9})/);
-        if (codeMatch) {
-          // Extract code, try to extract name after it
-          const code = codeMatch[1];
-          const afterCode = line.substring(line.indexOf(code) + code.length);
-          const nameMatch = afterCode.match(/\s*[-–—:|\s]+\s*([^()\d]{10,})/);
+    logger.debug(`[CandidateRetriever] OTSKP search, section prefix: ${sectionPrefix || 'all'}`);
 
-          if (nameMatch) {
-            candidates.push({
-              code: code,
-              name: nameMatch[1].trim(),
-              unit: extractUnit(afterCode),
-              snippet: afterCode.substring(0, 100).trim(),
-              source: 'perplexity',
-              searchQuery: query
-            });
-          }
+    // Search OTSKP with section context
+    const results = otskpCatalogService.search(subWork.text, {
+      sectionPrefix,
+      limit: 15,
+      minConfidence: 0.25
+    });
+
+    // Also search by keywords if we have them
+    if (subWork.keywords && subWork.keywords.length > 0) {
+      const keywordQuery = subWork.keywords.join(' ');
+      const keywordResults = otskpCatalogService.search(keywordQuery, {
+        sectionPrefix,
+        limit: 10,
+        minConfidence: 0.3
+      });
+
+      // Merge, avoiding duplicates
+      const seenCodes = new Set(results.map(r => r.code));
+      for (const kr of keywordResults) {
+        if (!seenCodes.has(kr.code)) {
+          results.push(kr);
+          seenCodes.add(kr.code);
         }
       }
     }
 
-    logger.debug(`[CandidateRetriever] Parsed ${candidates.length} candidates from Perplexity response`);
+    // Convert to standard candidate format
+    return results.map(r => ({
+      code: r.code,
+      name: r.name,
+      unit: r.unit,
+      price: r.price,
+      confidence: r.confidence,
+      source: 'otskp',
+      searchQuery: subWork.text,
+      tskpSection: sectionPrefix
+    }));
 
   } catch (error) {
-    logger.warn(`[CandidateRetriever] Parse error: ${error.message}`);
+    logger.error(`[CandidateRetriever] OTSKP search error: ${error.message}`);
+    return [];
   }
-
-  return candidates;
-}
-
-/**
- * Extract unit from text
- * @param {string} text - Text to search
- * @returns {string} Unit or empty string
- */
-function extractUnit(text) {
-  const unitMatch = text.match(/\b(m3|m2|m|kg|t|ks|kus|hod|soubor)\b/i);
-  return unitMatch ? unitMatch[1].toLowerCase() : '';
 }
 
 // ============================================================================

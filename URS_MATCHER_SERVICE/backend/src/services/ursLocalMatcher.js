@@ -11,6 +11,7 @@ import crypto from 'crypto';
 import { getDatabase } from '../db/init.js';
 import { logger } from '../utils/logger.js';
 import { normalizeText } from '../utils/textNormalizer.js';
+import { calculateSimilarity } from '../utils/similarity.js';
 
 const CONFIDENCE_THRESHOLDS = {
   CACHED_APPROVED: 0.98,      // Пользователь утвердил - уверенность 98%
@@ -227,44 +228,7 @@ async function searchLocalCatalog(normalizedTextCs, sectionCodeHint = null) {
   }
 }
 
-// ============================================================================
-// HELPER: Calculate similarity between two strings (Levenshtein-like)
-// ============================================================================
-
-function calculateSimilarity(str1, str2) {
-  const s1 = str1.toLowerCase().trim();
-  const s2 = str2.toLowerCase().trim();
-
-  // Exact match
-  if (s1 === s2) return 1.0;
-
-  // Calculate Levenshtein distance
-  const len1 = s1.length;
-  const len2 = s2.length;
-  const maxLen = Math.max(len1, len2);
-
-  let distance = 0;
-  const dp = Array(len2 + 1).fill(0).map(() => Array(len1 + 1).fill(0));
-
-  for (let i = 0; i <= len1; i++) dp[0][i] = i;
-  for (let j = 0; j <= len2; j++) dp[j][0] = j;
-
-  for (let j = 1; j <= len2; j++) {
-    for (let i = 1; i <= len1; i++) {
-      const cost = s1[i - 1] === s2[j - 1] ? 0 : 1;
-      dp[j][i] = Math.min(
-        dp[j][i - 1] + 1,    // deletion
-        dp[j - 1][i] + 1,    // insertion
-        dp[j - 1][i - 1] + cost // substitution
-      );
-    }
-  }
-
-  distance = dp[len2][len1];
-  const similarity = 1 - (distance / maxLen);
-
-  return Math.max(similarity, 0);
-}
+// NOTE: calculateSimilarity moved to utils/similarity.js
 
 // ============================================================================
 // HELPER: Check if candidate matches all search terms

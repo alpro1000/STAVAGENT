@@ -7,6 +7,7 @@
 import { getDatabase } from '../db/init.js';
 import { normalizeText } from '../utils/textNormalizer.js';
 import { logger } from '../utils/logger.js';
+import { calculateSimilarity } from '../utils/similarity.js';
 import { CATALOG_MODE } from '../config/llmConfig.js';
 import { searchUrsSite } from './perplexityClient.js';
 import { lookupLearnedMapping, learnMapping } from './concreteAgentKB.js';
@@ -224,41 +225,4 @@ export async function generateRelatedItems(items) {
   }
 }
 
-/**
- * Calculate string similarity using Levenshtein distance
- */
-function calculateSimilarity(str1, str2) {
-  const longer = str1.length > str2.length ? str1 : str2;
-  const shorter = str1.length > str2.length ? str2 : str1;
-
-  if (longer.length === 0) {
-    return 1.0;
-  }
-
-  const editDistance = getLevenshteinDistance(longer, shorter);
-  return (longer.length - editDistance) / longer.length;
-}
-
-/**
- * Levenshtein distance calculation
- */
-function getLevenshteinDistance(s1, s2) {
-  const costs = {};
-  for (let i = 0; i <= s1.length; i++) {
-    let lastValue = i;
-    for (let j = 0; j <= s2.length; j++) {
-      if (i === 0) {
-        costs[j] = j;
-      } else if (j > 0) {
-        let newValue = costs[j - 1];
-        if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
-          newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
-        }
-        costs[j - 1] = lastValue;
-        lastValue = newValue;
-      }
-    }
-    if (i > 0) {costs[s2.length] = lastValue;}
-  }
-  return costs[s2.length];
-}
+// NOTE: calculateSimilarity and getLevenshteinDistance moved to utils/similarity.js

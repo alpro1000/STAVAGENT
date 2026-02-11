@@ -655,7 +655,7 @@ export function recommendBestModel(criteria = 'balanced') {
         return name;
       }
       return best;
-    });
+    }, null);
     const bestInfo = MODEL_PRICING[bestModelName];
     reason = `Lowest cost ($${bestInfo.costPerMinute}/min) - ideal for high volume`;
     break;
@@ -668,7 +668,7 @@ export function recommendBestModel(criteria = 'balanced') {
         return name;
       }
       return best;
-    });
+    }, null);
     const bestInfo = MODEL_PRICING[bestModelName];
     reason = `Fastest speed (${bestInfo.speedScore}/10) with low latency`;
     break;
@@ -681,7 +681,7 @@ export function recommendBestModel(criteria = 'balanced') {
         return name;
       }
       return best;
-    });
+    }, null);
     const bestInfo = MODEL_PRICING[bestModelName];
     reason = `Best quality (${bestInfo.qualityScore}/10) with excellent performance`;
     break;
@@ -702,7 +702,7 @@ export function recommendBestModel(criteria = 'balanced') {
         return name;
       }
       return best;
-    });
+    }, null);
     const bestInfo = MODEL_PRICING[bestModelName];
     reason = `Optimal balance: fast (${bestInfo.speedScore}/10), cheap ($${bestInfo.costPerMinute}/min), quality (${bestInfo.qualityScore}/10)`;
     break;

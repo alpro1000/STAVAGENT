@@ -341,6 +341,13 @@ async function processBatch(batchId, settings) {
   // Process items in parallel with controlled concurrency
   await pMap(items, async (item) => {
     try {
+      // Check if job was paused before processing each item
+      const currentJob = await db.get(`SELECT status FROM batch_jobs WHERE id = ?`, [batchId]);
+      if (currentJob && currentJob.status === 'paused') {
+        logger.info(`[BatchProcessor] Job ${batchId} paused, skipping item ${item.id}`);
+        return;
+      }
+
       await processPosition(batchId, item.id, settings);
 
       // Update processed count
