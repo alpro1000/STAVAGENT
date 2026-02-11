@@ -1655,7 +1655,18 @@ function attachDocumentUploadHandlers() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.details || errorData.error || 'Extraction failed');
+        // Build structured error with pipeline stage info
+        const stageLabel = errorData.stageLabel || '';
+        const suggestion = errorData.suggestion || '';
+        const detail = errorData.details || errorData.error || 'Extraction failed';
+        let errorMsg = detail;
+        if (stageLabel) {
+          errorMsg = `${detail}\n\nFáze: ${stageLabel}`;
+        }
+        if (suggestion) {
+          errorMsg += `\nDoporučení: ${suggestion}`;
+        }
+        throw new Error(errorMsg);
       }
 
       const result = await response.json();
@@ -1666,7 +1677,7 @@ function attachDocumentUploadHandlers() {
 
     } catch (error) {
       debugError('🔬 Document extraction error:', error);
-      showError(`Chyba při extrakci prací: ${error.message}`);
+      showError(`Chyba při extrakci prací:\n${error.message}`);
     } finally {
       extractWorksBtn.disabled = false;
       if (extractSpinner) extractSpinner.style.display = 'none';

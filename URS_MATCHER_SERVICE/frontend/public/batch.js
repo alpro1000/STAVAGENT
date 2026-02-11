@@ -18,6 +18,7 @@ const uploadSection = document.getElementById('uploadSection');
 const batchTextInput = document.getElementById('batchTextInput');
 const batchCandidatesPerWork = document.getElementById('batchCandidatesPerWork');
 const batchSearchDepth = document.getElementById('batchSearchDepth');
+const batchCatalog = document.getElementById('batchCatalog');
 const batchStartBtn = document.getElementById('batchStartBtn');
 const batchPauseBtn = document.getElementById('batchPauseBtn');
 const batchExportBtn = document.getElementById('batchExportBtn');
@@ -123,6 +124,7 @@ async function startBatch() {
       candidatesPerWork: parseInt(batchCandidatesPerWork.value),
       maxSubWorks: 5,
       searchDepth: batchSearchDepth.value,
+      catalog: batchCatalog ? batchCatalog.value : 'urs',
       language: 'cs'
     };
 
@@ -345,6 +347,12 @@ function displayResults(results) {
     // Get results
     const itemResults = item.results || [];
 
+    // Extract TSKP classification from first result
+    const tskp = (itemResults[0] && itemResults[0].tskpClassification) || null;
+    const tskpLabel = tskp && tskp.sectionCode
+      ? `<span class="tskp-badge" title="${escapeHtml(tskp.sectionName || '')}">${tskp.sectionCode}</span>`
+      : '<span class="tskp-missing">—</span>';
+
     if (itemResults.length === 0) {
       // No results - show error row
       const row = document.createElement('tr');
@@ -352,12 +360,14 @@ function displayResults(results) {
       row.innerHTML = `
         <td>${lineNo}</td>
         <td>${escapeHtml(originalText)}</td>
+        <td>${tskpLabel}</td>
         <td>${detectedType}</td>
         <td colspan="5">${item.errorMessage || 'Žádné výsledky'}</td>
       `;
       batchResultsBody.appendChild(row);
     } else {
       // Show candidates
+      let isFirstRow = true;
       for (const result of itemResults) {
         const subWork = result.subWork || {};
         const candidates = result.candidates || [];
@@ -373,12 +383,17 @@ function displayResults(results) {
             rowClass = 'low-confidence';
           }
 
+          const sourceLabel = candidate.source
+            ? `<span class="source-badge source-${candidate.source}">${candidate.source}</span>`
+            : '';
+
           row.className = rowClass;
           row.innerHTML = `
             <td>${lineNo}</td>
             <td>${escapeHtml(originalText)}</td>
+            <td>${isFirstRow ? tskpLabel : ''}</td>
             <td>${detectedType}</td>
-            <td>${candidate.code || ''}</td>
+            <td>${candidate.code || ''} ${sourceLabel}</td>
             <td>${escapeHtml(candidate.name || '')}</td>
             <td>${candidate.score || 0}</td>
             <td>
@@ -388,6 +403,7 @@ function displayResults(results) {
           `;
 
           batchResultsBody.appendChild(row);
+          isFirstRow = false;
         }
       }
     }
