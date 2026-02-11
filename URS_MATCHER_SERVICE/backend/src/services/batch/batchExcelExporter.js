@@ -88,7 +88,10 @@ async function createMatchesSheet(workbook, batchData) {
     { header: 'Confidence', key: 'confidence', width: 12 },
     { header: 'Needs Review', key: 'needsReview', width: 14 },
     { header: 'Reason', key: 'reason', width: 50 },
-    { header: 'Evidence', key: 'evidence', width: 40 }
+    { header: 'Evidence', key: 'evidence', width: 40 },
+    { header: 'TSKP Section', key: 'tskpSection', width: 20 },
+    { header: 'TSKP Name', key: 'tskpName', width: 35 },
+    { header: 'Source', key: 'source', width: 12 }
   ];
 
   // ========================================================================
@@ -120,6 +123,7 @@ async function createMatchesSheet(workbook, batchData) {
 
     if (results.length === 0) {
       // No results - add one row with error/status
+      const tskp0 = (results[0] && results[0].tskpClassification) || null;
       sheet.addRow({
         lineNo: lineNo,
         originalText: originalText,
@@ -134,7 +138,10 @@ async function createMatchesSheet(workbook, batchData) {
         confidence: 'low',
         needsReview: 'YES',
         reason: item.errorMessage || 'Processing failed',
-        evidence: ''
+        evidence: '',
+        tskpSection: tskp0?.sectionCode || '',
+        tskpName: tskp0?.sectionName || '',
+        source: ''
       });
 
       // Color error rows red
@@ -151,6 +158,7 @@ async function createMatchesSheet(workbook, batchData) {
       for (const result of results) {
         const subWork = result.subWork || {};
         const candidates = result.candidates || [];
+        const tskp = result.tskpClassification || null;
 
         for (const candidate of candidates) {
           sheet.addRow({
@@ -167,7 +175,10 @@ async function createMatchesSheet(workbook, batchData) {
             confidence: candidate.confidence || 'low',
             needsReview: candidate.needsReview ? 'YES' : 'NO',
             reason: candidate.reason || '',
-            evidence: candidate.evidence || ''
+            evidence: candidate.evidence || '',
+            tskpSection: tskp?.sectionCode || '',
+            tskpName: tskp?.sectionName || '',
+            source: candidate.source || ''
           });
 
           const row = sheet.getRow(rowIndex);

@@ -59,7 +59,8 @@ router.post('/create', async (req, res) => {
       candidatesPerWork: 4,
       maxSubWorks: 5,
       searchDepth: 'normal',
-      language: 'cs'
+      language: 'cs',
+      catalog: 'urs'          // 'urs' | 'otskp' | 'both'
     };
 
     const mergedSettings = { ...defaultSettings, ...settings };
