@@ -9,6 +9,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { logger } from '../utils/logger.js';
+import { calculateSimilarity } from '../utils/similarity.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -180,59 +181,126 @@ class TSKPParserService {
       score += (matchedWords / searchWords.length) * 0.5;
     }
 
-    // 4. Fuzzy matching (простая версия - можно улучшить)
-    const similarity = this._simpleSimilarity(searchText, work.name.toLowerCase());
+    // 4. Fuzzy matching (shared Levenshtein from utils/similarity.js)
+    const similarity = calculateSimilarity(searchText, work.name.toLowerCase());
     score += similarity * 0.3;
 
     return Math.min(score, 1.0);
   }
 
-  /**
-   * Простая мера схожести строк (Levenshtein distance normalized)
-   * @private
-   */
-  _simpleSimilarity(str1, str2) {
-    const longer = str1.length > str2.length ? str1 : str2;
-    const shorter = str1.length > str2.length ? str2 : str1;
-
-    if (longer.length === 0) {
-      return 1.0;
-    }
-
-    const distance = this._levenshteinDistance(longer, shorter);
-    return (longer.length - distance) / longer.length;
-  }
+  // NOTE: _simpleSimilarity and _levenshteinDistance replaced by shared utils/similarity.js
 
   /**
-   * Levenshtein distance
-   * @private
+   * Classify a work description to a TSKP section (tree routing).
+   * 2-level decision:
+   *   Level 1: Match to main category (1-digit code: "1"="Zemní práce", etc.)
+   *   Level 2: Match to subcategory within the selected main category (2-3 digit codes)
+   *
+   * @param {string} text - Work description
+   * @returns {Object} Classification result with section path
    */
-  _levenshteinDistance(str1, str2) {
-    const matrix = [];
-
-    for (let i = 0; i <= str2.length; i++) {
-      matrix[i] = [i];
+  classifyToSection(text) {
+    if (!this.loaded || this.flatIndex.size === 0) {
+      return { sectionCode: null, sectionName: null, sectionPath: [], confidence: 0, bestItem: null };
     }
 
-    for (let j = 0; j <= str1.length; j++) {
-      matrix[0][j] = j;
+    const normalized = text.toLowerCase().trim();
+
+    // LEVEL 1: Match to main category (1-digit codes)
+    const mainCategories = [];
+    for (const [code, work] of this.flatIndex.entries()) {
+      if (code.length === 1) {
+        const score = this._calculateConfidence(normalized, work);
+        mainCategories.push({ code, name: work.name, score });
+      }
+    }
+    mainCategories.sort((a, b) => b.score - a.score);
+
+    if (mainCategories.length === 0 || mainCategories[0].score < 0.1) {
+      return { sectionCode: null, sectionName: null, sectionPath: [], confidence: 0, bestItem: null };
     }
 
-    for (let i = 1; i <= str2.length; i++) {
-      for (let j = 1; j <= str1.length; j++) {
-        if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
-          matrix[i][j] = matrix[i - 1][j - 1];
-        } else {
-          matrix[i][j] = Math.min(
-            matrix[i - 1][j - 1] + 1,
-            matrix[i][j - 1] + 1,
-            matrix[i - 1][j] + 1
-          );
+    const bestMain = mainCategories[0];
+
+    // LEVEL 2: Search within the selected main category subtree
+    const subcategories = [];
+    for (const [code, work] of this.flatIndex.entries()) {
+      if (code.startsWith(bestMain.code) && code.length >= 2 && code.length <= 4) {
+        const score = this._calculateConfidence(normalized, work);
+        if (score > 0.2) {
+          subcategories.push({ code, name: work.name, score, depth: code.length });
+        }
+      }
+    }
+    subcategories.sort((a, b) => b.score - a.score);
+
+    // Build section path from best subcategory
+    const bestSub = subcategories[0] || null;
+    const sectionPath = [{ code: bestMain.code, name: bestMain.name }];
+
+    if (bestSub) {
+      // Add intermediate path elements
+      for (let len = 2; len <= bestSub.code.length; len++) {
+        const pathCode = bestSub.code.substring(0, len);
+        const pathItem = this.flatIndex.get(pathCode);
+        if (pathItem) {
+          sectionPath.push({ code: pathCode, name: pathItem.name });
         }
       }
     }
 
-    return matrix[str2.length][str1.length];
+    // Find best specific match (deepest level) for the work within this section
+    let bestItem = null;
+    let bestItemScore = 0;
+    for (const [code, work] of this.flatIndex.entries()) {
+      if (code.startsWith(bestMain.code) && code.length >= 3) {
+        const score = this._calculateConfidence(normalized, work);
+        if (score > bestItemScore) {
+          bestItemScore = score;
+          bestItem = { code, name: work.name, description: work.description, confidence: score };
+        }
+      }
+    }
+
+    const sectionCode = bestSub ? bestSub.code : bestMain.code;
+    const sectionName = bestSub ? bestSub.name : bestMain.name;
+
+    return {
+      sectionCode,
+      sectionName,
+      sectionPath,
+      confidence: bestSub ? bestSub.score : bestMain.score,
+      bestItem,
+      mainCategory: { code: bestMain.code, name: bestMain.name, score: bestMain.score },
+      alternativeCategories: mainCategories.slice(1, 3).map(c => ({ code: c.code, name: c.name, score: c.score }))
+    };
+  }
+
+  /**
+   * Get the hierarchical tree for a section (all children)
+   * @param {string} sectionCode - Section code prefix
+   * @param {number} [maxDepth=3] - Max depth from section root
+   * @returns {Array} Tree items
+   */
+  getSectionTree(sectionCode, maxDepth = 3) {
+    if (!this.loaded) return [];
+
+    const results = [];
+    const baseLen = sectionCode.length;
+
+    for (const [code, work] of this.flatIndex.entries()) {
+      if (code.startsWith(sectionCode) && code.length <= baseLen + maxDepth) {
+        results.push({
+          code,
+          name: work.name,
+          description: work.description,
+          depth: code.length - baseLen,
+          parent: work.parent
+        });
+      }
+    }
+
+    return results.sort((a, b) => a.code.localeCompare(b.code));
   }
 
   /**
