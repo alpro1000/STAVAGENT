@@ -63,22 +63,6 @@ HEADER_ALIASES: Dict[str, set[str]] = {
     },
 }
 
-# Additional explicit mappings for complex Czech headers (normalized keys)
-# Use normalized header keys (see _normalise_header_key)
-CZECH_HEADER_MAPPING: Dict[str, str] = {
-    # multi-line 'rozhled' header observed in logs (maps to description)
-    _normalise_header_key(
-        "Délka rozhledu předepsaná (m)\nDélka rozhledu dosažená (m)\nRozhled. Délka předepsaná (m)\n- od začátku trati *\n- od konce trati *\nRozhled. Délka dosažená (m)\n- od začátku trati *\n- od konce trati *"
-    ): "description",
-
-    # common Czech headers
-    _normalise_header_key("Položka"): "description",
-    _normalise_header_key("Množství"): "quantity",
-    _normalise_header_key("Jednotka"): "unit",
-    _normalise_header_key("Jednotková cena"): "unit_price",
-    _normalise_header_key("Cena celkem"): "total_price",
-}
-
 
 CODE_PATTERN = re.compile(r"^\d{4,6}(?:[.\-][A-Z0-9])?$")
 SECTION_PREFIX = re.compile(r"^(?:\d+[.)]?|[IVXLCDM]+\.)\s+")
@@ -110,6 +94,23 @@ def _normalise_header_key(value: str) -> str:
     text = _strip_diacritics(text)
     text = re.sub(r"[^a-z0-9]+", " ", text)
     return re.sub(r"\s+", " ", text).strip()
+
+
+# Additional explicit mappings for complex Czech headers (normalized keys)
+# Use normalized header keys (see _normalise_header_key)
+CZECH_HEADER_MAPPING: Dict[str, str] = {
+    # multi-line 'rozhled' header observed in logs (maps to description)
+    _normalise_header_key(
+        "Délka rozhledu předepsaná (m)\nDélka rozhledu dosažená (m)\nRozhled. Délka předepsaná (m)\n- od začátku trati *\n- od konce trati *\nRozhled. Délka dosažená (m)\n- od začátku trati *\n- od konce trati *"
+    ): "description",
+
+    # common Czech headers
+    _normalise_header_key("Položka"): "description",
+    _normalise_header_key("Množství"): "quantity",
+    _normalise_header_key("Jednotka"): "unit",
+    _normalise_header_key("Jednotková cena"): "unit_price",
+    _normalise_header_key("Cena celkem"): "total_price",
+}
 
 
 def _coerce_to_text(value: Any) -> str:
@@ -506,6 +507,12 @@ class OTSKPEstimateNormalizer:
         normalized = _normalise_header_key(str(header))
         if not normalized:
             return None
+        # First check explicit Czech mapping for complex headers
+        mapped = CZECH_HEADER_MAPPING.get(normalized)
+        if mapped:
+            return mapped
+
+        # Fallback to alias lookup
         return self.alias_lookup.get(normalized)
 
     @staticmethod
