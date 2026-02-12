@@ -155,7 +155,7 @@ PŘÍKLADY RIZIK:
 VRAŤ POUZE JSON, žádný další text před ani za."""
 
     # Model configurations
-    GEMINI_MODEL = "gemini-2.0-flash-exp"
+    GEMINI_MODEL = "gemini-2.0-flash"  # Note: gemini-2.0-flash-exp is deprecated, use stable version
     CLAUDE_MODEL = "claude-3-5-sonnet-20241022"
     CLAUDE_HAIKU_MODEL = "claude-3-5-haiku-20241022"
     OPENAI_MODEL = "gpt-4-turbo-preview"
@@ -188,8 +188,18 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         if settings.GOOGLE_API_KEY:
             try:
                 genai.configure(api_key=settings.GOOGLE_API_KEY)
-                self.gemini_model = genai.GenerativeModel(self.GEMINI_MODEL)
-                logger.info(f"✅ Gemini initialized: {self.GEMINI_MODEL}")
+                # Try primary model, fallback to stable versions if not available
+                for model_to_try in [self.GEMINI_MODEL, "gemini-1.5-flash", "gemini-1.5-pro"]:
+                    try:
+                        self.gemini_model = genai.GenerativeModel(model_to_try)
+                        logger.info(f"✅ Gemini initialized: {model_to_try}")
+                        break
+                    except Exception as model_error:
+                        logger.debug(f"Model {model_to_try} not available: {model_error}")
+                        continue
+                
+                if not self.gemini_model:
+                    logger.warning("No Gemini model available (tried 2.0-flash, 1.5-flash, 1.5-pro)")
             except Exception as e:
                 logger.warning(f"Failed to initialize Gemini: {e}")
 
@@ -204,8 +214,28 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         # OpenAI
         if hasattr(settings, 'OPENAI_API_KEY') and settings.OPENAI_API_KEY:
             try:
-                self.openai_client = OpenAI(api_key=settings.OPENAI_API_KEY)
+                # OpenAI SDK v1.3+ uses http_client for proxy configuration
+                # NOT the deprecated 'proxies' parameter
+                init_kwargs = {"api_key": settings.OPENAI_API_KEY}
+                
+                # Support HTTP/HTTPS proxy if configured
+                http_proxy = getattr(settings, 'HTTP_PROXY', None) or getattr(settings, 'HTTPS_PROXY', None)
+                if http_proxy:
+                    try:
+                        import httpx
+                        http_client = httpx.Client(proxies=http_proxy)
+                        init_kwargs["http_client"] = http_client
+                        logger.info(f"🔗 OpenAI configured with proxy: {http_proxy}")
+                    except ImportError:
+                        logger.warning("httpx not available for proxy support")
+                
+                self.openai_client = OpenAI(**init_kwargs)
                 logger.info(f"✅ OpenAI initialized: {self.OPENAI_MODEL}")
+            except TypeError as e:
+                if "proxies" in str(e):
+                    logger.error("❌ OpenAI SDK version mismatch: 'proxies' parameter is deprecated. Use http_client instead or upgrade to OpenAI SDK >= 1.3")
+                else:
+                    logger.warning(f"Failed to initialize OpenAI: {e}")
             except Exception as e:
                 logger.warning(f"Failed to initialize OpenAI: {e}")
 

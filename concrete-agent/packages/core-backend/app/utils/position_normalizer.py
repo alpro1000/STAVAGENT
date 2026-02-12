@@ -63,6 +63,22 @@ HEADER_ALIASES: Dict[str, set[str]] = {
     },
 }
 
+# Additional explicit mappings for complex Czech headers (normalized keys)
+# Use normalized header keys (see _normalise_header_key)
+CZECH_HEADER_MAPPING: Dict[str, str] = {
+    # multi-line 'rozhled' header observed in logs (maps to description)
+    _normalise_header_key(
+        "Délka rozhledu předepsaná (m)\nDélka rozhledu dosažená (m)\nRozhled. Délka předepsaná (m)\n- od začátku trati *\n- od konce trati *\nRozhled. Délka dosažená (m)\n- od začátku trati *\n- od konce trati *"
+    ): "description",
+
+    # common Czech headers
+    _normalise_header_key("Položka"): "description",
+    _normalise_header_key("Množství"): "quantity",
+    _normalise_header_key("Jednotka"): "unit",
+    _normalise_header_key("Jednotková cena"): "unit_price",
+    _normalise_header_key("Cena celkem"): "total_price",
+}
+
 
 CODE_PATTERN = re.compile(r"^\d{4,6}(?:[.\-][A-Z0-9])?$")
 SECTION_PREFIX = re.compile(r"^(?:\d+[.)]?|[IVXLCDM]+\.)\s+")

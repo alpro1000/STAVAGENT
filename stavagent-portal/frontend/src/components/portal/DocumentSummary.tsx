@@ -635,7 +635,14 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '14px', flexWrap: 'wrap' }}>
               <CheckCircle size={20} style={{ color: 'var(--success)' }} />
-              <span>Vygenerováno za {passportData.metadata.processing_time_seconds.toFixed(2)}s</span>
+              <span>
+                Vygenerováno za {
+                  (() => {
+                    const t = passportData?.metadata?.processing_time_seconds;
+                    return (typeof t === 'number') ? `${t.toFixed(2)}s` : '—';
+                  })()
+                }
+              </span>
               <span style={{ color: 'var(--text-tertiary)' }}>|</span>
               <span>Spolehlivost: {(passportData.metadata.total_confidence * 100).toFixed(0)}%</span>
               <span style={{ color: 'var(--text-tertiary)' }}>|</span>
