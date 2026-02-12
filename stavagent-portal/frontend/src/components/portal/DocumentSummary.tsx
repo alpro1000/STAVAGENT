@@ -644,7 +644,12 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                 }
               </span>
               <span style={{ color: 'var(--text-tertiary)' }}>|</span>
-              <span>Spolehlivost: {(passportData.metadata.total_confidence * 100).toFixed(0)}%</span>
+              <span>
+                Spolehlivost: {(() => {
+                  const conf = passportData?.metadata?.total_confidence;
+                  return (typeof conf === 'number') ? `${(conf * 100).toFixed(0)}%` : '—%';
+                })()}
+              </span>
               <span style={{ color: 'var(--text-tertiary)' }}>|</span>
               <span>{passportData.statistics.deterministic_fields} deterministických polí</span>
               {passportData.statistics.ai_enriched_fields > 0 && (
@@ -652,7 +657,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                   <span style={{ color: 'var(--text-tertiary)' }}>|</span>
                   <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Zap size={14} style={{ color: 'var(--accent-primary)' }} />
-                    {passportData.statistics.ai_enriched_fields} AI obohacení ({passportData.metadata.ai_model_used})
+                    {passportData.statistics.ai_enriched_fields} AI obohacení ({passportData?.metadata?.ai_model_used || 'unknown'})
                   </span>
                 </>
               )}
@@ -983,7 +988,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                 Hodnocení rizik (AI obohacení)
               </h3>
               <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginBottom: '16px' }}>
-                Generováno pomocí {passportData.metadata.ai_model_used}
+                Generováno pomocí {passportData?.metadata?.ai_model_used || 'unknown'}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                 {passportData.passport.risks.map((risk, index) => (
@@ -1111,7 +1116,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
           {/* Metadata */}
           <div style={{ color: 'var(--text-tertiary)', fontSize: '12px', textAlign: 'right' }}>
-            Soubor: {passportData.metadata.file_name} | ID: {passportData.passport.passport_id} | Vygenerováno: {new Date(passportData.passport.generated_at).toLocaleString('cs-CZ')}
+            Soubor: {passportData?.metadata?.file_name || '—'} | ID: {passportData.passport.passport_id} | Vygenerováno: {new Date(passportData.passport.generated_at).toLocaleString('cs-CZ')}
           </div>
         </div>
       )}
