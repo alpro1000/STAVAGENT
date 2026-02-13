@@ -31,6 +31,7 @@ import portalFilesRoutes from './src/routes/portal-files.js';
 import kioskLinksRoutes from './src/routes/kiosk-links.js';
 import otskpRoutes from './src/routes/otskp.js';
 import debugRoutes from './src/routes/debug.js';
+import integrationRoutes from './src/routes/integration.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -169,6 +170,9 @@ app.use('/api/kiosk-links', kioskLinksRoutes);
 
 // OTSKP reference (shared across all kiosks)
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
+
+// Integration routes (Monolit ↔ Registry sync)
+app.use('/api/integration', integrationRoutes);
 
 // Debug routes (disable in production)
 app.use('/api/debug', debugRoutes);

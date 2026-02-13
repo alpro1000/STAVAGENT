@@ -41,6 +41,13 @@ function App() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const source = params.get('source');
+    const portalProjectId = params.get('portal_project');
+
+    // Load from Portal if portal_project param exists
+    if (portalProjectId) {
+      loadFromPortal(portalProjectId);
+      return;
+    }
 
     if (source && window.opener) {
       // Tell opener we're ready to receive data
@@ -104,6 +111,68 @@ function App() {
     window.addEventListener('message', handler);
     return () => window.removeEventListener('message', handler);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Load project from Portal
+  const loadFromPortal = async (portalProjectId: string) => {
+    try {
+      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
+      const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portalProjectId}`, {
+        credentials: 'include'
+      });
+
+      if (!response.ok) throw new Error('Failed to load from Portal');
+      
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || 'Failed to load project');
+
+      const portalProject = data.project;
+
+      // Convert Portal format to Registry format
+      const newProject = {
+        id: portalProject.id,
+        fileName: `${portalProject.name}.xlsx`,
+        projectName: portalProject.name,
+        filePath: '',
+        importedAt: new Date(),
+        sheets: portalProject.sheets.map((sheet: any) => ({
+          id: crypto.randomUUID(),
+          name: sheet.name,
+          projectId: portalProject.id,
+          items: sheet.items,
+          stats: {
+            totalItems: sheet.items.length,
+            classifiedItems: sheet.items.filter((i: any) => i.skupina).length,
+            totalCena: sheet.items.reduce((s: number, i: any) => s + (i.cenaCelkem ?? 0), 0),
+          },
+          metadata: {
+            projectNumber: '',
+            projectName: portalProject.name,
+            oddil: '',
+            stavba: '',
+            custom: {},
+          },
+          config: {
+            templateName: 'portal-import',
+            columns: { kod: 'A', popis: 'B', mj: 'C', mnozstvi: 'D', cenaJednotkova: 'E', cenaCelkem: 'F' },
+            dataStartRow: 1,
+            sheetName: sheet.name,
+            sheetIndex: 0,
+            metadataCells: {},
+          },
+        })),
+      };
+
+      addProject(newProject);
+
+      // Clean URL params
+      window.history.replaceState({}, '', window.location.pathname);
+
+      alert(`✅ Načteno z Portal: ${portalProject.sheets.length} objektů`);
+    } catch (error) {
+      console.error('[Portal Import] Error:', error);
+      alert(`❌ Načtení z Portal selhalo: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
 
   // Selected items for AI operations
   const [selectedItemIds, setSelectedItemIds] = useState<Set<string>>(new Set());

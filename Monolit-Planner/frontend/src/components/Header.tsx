@@ -160,59 +160,53 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
     setIsExportingToRegistry(true);
     try {
-      // Fetch positions for the selected bridge
-      const result = await positionsAPI.getForBridge(selectedBridge);
-      const positions = result.positions;
+      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
+      const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
 
-      // Map positions to unified format
-      const unifiedPositions = positions.map((pos: any) => ({
-        id: pos.id || crypto.randomUUID(),
-        portalProjectId: '',
-        sourceKiosk: 'monolit',
-        sourceItemId: pos.id,
-        code: pos.otskp_code || null,
-        description: pos.item_name || '',
-        quantity: pos.qty || null,
-        unit: pos.unit || null,
-        unitPrice: pos.unit_cost_native || null,
-        totalPrice: pos.kros_total_czk || null,
-        category: pos.subtype || null,
-        rowRole: 'main',
-        confidence: null,
-        matchSource: 'monolit',
-        source: {
-          fileName: selectedBridge,
-          importedAt: new Date().toISOString(),
-        },
+      // Fetch full project data
+      const projectData = await fetch(`/api/monolith-projects/${selectedBridge}`);
+      if (!projectData.ok) throw new Error('Failed to fetch project data');
+      
+      const { project, parts } = await projectData.json();
+
+      // Map to Portal format with TOV data
+      const objects = parts.map((part: any) => ({
+        code: part.part_name || 'SO 000',
+        name: `Objekt ${part.part_name}`,
+        positions: (part.positions || []).map((pos: any) => ({
+          monolit_id: pos.id,
+          kod: pos.otskp_code || '',
+          popis: pos.item_name || part.part_name,
+          mnozstvi: pos.qty || 0,
+          mj: pos.unit || '',
+          tov: {
+            labor: mapPositionToLabor(pos),
+            machinery: [],
+            materials: mapPositionToMaterials(part, pos)
+          }
+        }))
       }));
 
-      // Open Registry and send positions via postMessage (direct browser transfer)
-      const registryUrl = 'https://stavagent-backend-ktwx.vercel.app';
-      const registryWindow = window.open(`${registryUrl}?source=monolit`, '_blank');
+      // Import to Portal
+      const response = await fetch(`${PORTAL_API}/api/integration/import-from-monolit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          project_name: project.project_name || selectedBridge,
+          monolit_project_id: selectedBridge,
+          objects
+        })
+      });
 
-      if (!registryWindow) {
-        throw new Error('Nelze otevřít Registry. Povolte vyskakovací okna.');
-      }
-
-      // Wait for Registry to signal it's ready, then send data
-      const sendData = (event: MessageEvent) => {
-        if (event.data?.type === 'registry-ready') {
-          registryWindow.postMessage({
-            type: 'import-positions',
-            positions: unifiedPositions,
-            source: 'monolit',
-            projectName: selectedBridge,
-          }, registryUrl);
-          window.removeEventListener('message', sendData);
-          alert(`✅ Export do Registry úspěšný!\nExportováno: ${positions.length} pozic`);
-        }
-      };
-      window.addEventListener('message', sendData);
-
-      // Timeout — if Registry doesn't respond in 15s, clean up
-      setTimeout(() => {
-        window.removeEventListener('message', sendData);
-      }, 15000);
+      if (!response.ok) throw new Error('Failed to import to Portal');
+      
+      const result = await response.json();
+      
+      // Open Registry with portal project
+      window.open(`${REGISTRY_URL}?portal_project=${result.portal_project_id}`, '_blank');
+      
+      alert(`✅ Export do Registry úspěšný!\nExportováno: ${objects.length} objektů`);
 
     } catch (error: any) {
       console.error('[Export to Registry] Error:', error);
@@ -220,6 +214,62 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     } finally {
       setIsExportingToRegistry(false);
     }
+  };
+
+  // Helper: Map Monolit position to Labor TOV
+  const mapPositionToLabor = (pos: any) => {
+    const labor = [];
+    if (pos.subtype === 'beton') {
+      labor.push({
+        id: `labor_${pos.id}_beton`,
+        name: 'Betonář',
+        count: pos.crew_size || 0,
+        hours: pos.shift_hours || 0,
+        normHours: pos.labor_hours || 0,
+        hourlyRate: pos.wage_czk_ph || 0,
+        totalCost: pos.cost_czk || 0
+      });
+    }
+    if (pos.subtype === 'bednění') {
+      labor.push({
+        id: `labor_${pos.id}_bednar`,
+        name: 'Tesař / Bednář',
+        count: pos.crew_size || 0,
+        hours: pos.shift_hours || 0,
+        normHours: pos.labor_hours || 0,
+        hourlyRate: pos.wage_czk_ph || 0,
+        totalCost: pos.cost_czk || 0
+      });
+    }
+    if (pos.subtype === 'výztuž') {
+      labor.push({
+        id: `labor_${pos.id}_zelezar`,
+        name: 'Železář',
+        count: pos.crew_size || 0,
+        hours: pos.shift_hours || 0,
+        normHours: pos.labor_hours || 0,
+        hourlyRate: pos.wage_czk_ph || 0,
+        totalCost: pos.cost_czk || 0
+      });
+    }
+    return labor;
+  };
+
+  // Helper: Map Monolit position to Materials TOV
+  const mapPositionToMaterials = (part: any, pos: any) => {
+    const materials = [];
+    const concreteMatch = part.part_name?.match(/C\d+\/\d+/);
+    if (concreteMatch && pos.concrete_m3) {
+      materials.push({
+        id: `material_${pos.id}_beton`,
+        name: `Beton ${concreteMatch[0]}`,
+        quantity: pos.concrete_m3,
+        unit: 'm³',
+        unitPrice: 0,
+        totalCost: 0
+      });
+    }
+    return materials;
   };
 
   const handleCreateSuccess = async (bridge_id: string) => {
