@@ -37,25 +37,35 @@ function safeGetPool() {
  * - objects: Array<{ code, name, positions[] }>
  */
 router.post('/import-from-monolit', async (req, res) => {
+  console.log('[Integration] POST /import-from-monolit - Request received');
+  console.log('[Integration] Body:', JSON.stringify(req.body).substring(0, 200));
+  
   const pool = safeGetPool();
   if (!pool) {
+    console.error('[Integration] Database pool not available');
     return res.status(503).json({ success: false, error: 'Database not available' });
   }
 
-  const client = await pool.connect();
+  let client;
   try {
+    client = await pool.connect();
+    console.log('[Integration] Database client connected');
+    
     const { portal_project_id, project_name, monolit_project_id, objects } = req.body;
 
     if (!project_name || !objects || !Array.isArray(objects)) {
+      console.error('[Integration] Invalid request body:', { project_name, objects: Array.isArray(objects) });
       return res.status(400).json({ success: false, error: 'Invalid request body' });
     }
 
     await client.query('BEGIN');
+    console.log('[Integration] Transaction started');
 
     // Create or get portal project
     let projectId = portal_project_id;
     if (!projectId) {
       projectId = `proj_${uuidv4()}`;
+      console.log('[Integration] Creating new project:', projectId);
       await client.query(
         `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
          VALUES ($1, $2, 'monolit', 1, NOW(), NOW())`,
@@ -64,6 +74,7 @@ router.post('/import-from-monolit', async (req, res) => {
     }
 
     // Link to Monolit kiosk
+    console.log('[Integration] Creating kiosk link');
     await client.query(
       `INSERT INTO kiosk_links (link_id, portal_project_id, kiosk_type, kiosk_project_id, status, created_at, last_sync)
        VALUES ($1, $2, 'monolit', $3, 'active', NOW(), NOW())
@@ -72,6 +83,7 @@ router.post('/import-from-monolit', async (req, res) => {
     );
 
     // Import objects and positions
+    console.log('[Integration] Importing', objects.length, 'objects');
     for (const obj of objects) {
       const objectId = `obj_${uuidv4()}`;
       await client.query(
@@ -104,8 +116,7 @@ router.post('/import-from-monolit', async (req, res) => {
     }
 
     await client.query('COMMIT');
-
-    console.log(`[Integration] Imported from Monolit: ${projectId} (${objects.length} objects)`);
+    console.log('[Integration] Transaction committed successfully');
 
     res.json({
       success: true,
@@ -114,11 +125,12 @@ router.post('/import-from-monolit', async (req, res) => {
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('[Integration] Error importing from Monolit:', error);
-    res.status(500).json({ success: false, error: 'Failed to import from Monolit' });
+    if (client) await client.query('ROLLBACK');
+    console.error('[Integration] Error importing from Monolit:', error.message);
+    console.error('[Integration] Stack:', error.stack);
+    res.status(500).json({ success: false, error: error.message });
   } finally {
-    client.release();
+    if (client) client.release();
   }
 });
 
