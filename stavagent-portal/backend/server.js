@@ -55,12 +55,13 @@ const ALLOWED_ORIGINS = [...new Set([
   'http://localhost:5173',
   'http://localhost:3000',
   'https://monolit-planner-frontend.onrender.com',
+  'https://monolit-planner-frontend.vercel.app',
   'https://stavagent-portal-frontend.onrender.com',
   'https://stavagent-backend.vercel.app',
-  'https://www.stavagent.cz',           // Production domain
-  'https://stavagent.cz',               // Alternative domain (without www)
-  'https://rozpocet-registry.vercel.app', // Registry
-  process.env.CORS_ORIGIN, // Allow custom origin from env
+  'https://www.stavagent.cz',
+  'https://stavagent.cz',
+  'https://rozpocet-registry.vercel.app',
+  process.env.CORS_ORIGIN,
 ].filter(Boolean))];
 
 // Also allow Vercel preview deployments (*.vercel.app)
