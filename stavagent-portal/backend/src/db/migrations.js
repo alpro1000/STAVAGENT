@@ -138,9 +138,6 @@ async function initPostgresSchema() {
 
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
-
-  // Auto-load part templates if database is empty
-  await autoLoadPartTemplatesIfNeeded();
 }
 
 /**
