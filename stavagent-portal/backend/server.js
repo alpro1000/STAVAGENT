@@ -59,8 +59,9 @@ const ALLOWED_ORIGINS = [...new Set([
   'https://stavagent-backend.vercel.app',
   'https://www.stavagent.cz',           // Production domain
   'https://stavagent.cz',               // Alternative domain (without www)
+  'https://rozpocet-registry.vercel.app', // Registry
   process.env.CORS_ORIGIN, // Allow custom origin from env
-].filter(Boolean))];
+].filter(Boolean))]);
 
 // Also allow Vercel preview deployments (*.vercel.app)
 const VERCEL_PREVIEW_REGEX = /^https:\/\/stavagent-backend[a-z0-9-]*\.vercel\.app$/;
@@ -171,7 +172,7 @@ app.use('/api/kiosk-links', kioskLinksRoutes);
 // OTSKP reference (shared across all kiosks)
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
 
-// Integration routes (Monolit ↔ Registry sync)
+// Integration routes (Monolit ↔ Registry sync) - NO AUTH REQUIRED
 app.use('/api/integration', integrationRoutes);
 
 // Debug routes (disable in production)

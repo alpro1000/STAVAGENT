@@ -23,7 +23,8 @@ function safeGetPool() {
   }
 }
 
-router.use(requireAuth);
+// Integration API is PUBLIC - no auth required for cross-kiosk communication
+// Kiosks (Monolit, Registry) sync data without user authentication
 
 /**
  * POST /api/integration/import-from-monolit
@@ -43,7 +44,6 @@ router.post('/import-from-monolit', async (req, res) => {
 
   const client = await pool.connect();
   try {
-    const userId = req.user.userId;
     const { portal_project_id, project_name, monolit_project_id, objects } = req.body;
 
     if (!project_name || !objects || !Array.isArray(objects)) {
@@ -58,8 +58,8 @@ router.post('/import-from-monolit', async (req, res) => {
       projectId = `proj_${uuidv4()}`;
       await client.query(
         `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
-         VALUES ($1, $2, 'monolit', $3, NOW(), NOW())`,
-        [projectId, project_name, userId]
+         VALUES ($1, $2, 'monolit', 1, NOW(), NOW())`,
+        [projectId, project_name]
       );
     }
 
@@ -137,13 +137,12 @@ router.get('/for-registry/:portal_project_id', async (req, res) => {
   }
 
   try {
-    const userId = req.user.userId;
     const { portal_project_id } = req.params;
 
-    // Check ownership
+    // Get project (no auth check)
     const projectResult = await pool.query(
-      'SELECT * FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
-      [portal_project_id, userId]
+      'SELECT * FROM portal_projects WHERE portal_project_id = $1',
+      [portal_project_id]
     );
 
     if (projectResult.rows.length === 0) {
@@ -223,17 +222,16 @@ router.post('/sync-tov', async (req, res) => {
 
   const client = await pool.connect();
   try {
-    const userId = req.user.userId;
     const { portal_project_id, updates } = req.body;
 
     if (!portal_project_id || !updates || !Array.isArray(updates)) {
       return res.status(400).json({ success: false, error: 'Invalid request body' });
     }
 
-    // Check ownership
+    // Check project exists (no auth check)
     const projectCheck = await client.query(
-      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
-      [portal_project_id, userId]
+      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1',
+      [portal_project_id]
     );
 
     if (projectCheck.rows.length === 0) {
