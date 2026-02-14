@@ -163,26 +163,37 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
       const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
 
-      // Fetch full project data
-      const projectData = await fetch(`/api/monolith-projects/${selectedBridge}`);
-      if (!projectData.ok) throw new Error('Failed to fetch project data');
-      
-      const { project, parts } = await projectData.json();
+      // Fetch project data
+      const projectRes = await fetch(`/api/monolith-projects/${selectedBridge}`);
+      if (!projectRes.ok) throw new Error('Failed to fetch project');
+      const { project, parts } = await projectRes.json();
+
+      // Fetch positions for this project
+      const positionsRes = await positionsAPI.getPositions(selectedBridge);
+      const positions = positionsRes.positions || [];
+
+      // Group positions by part_name
+      const positionsByPart = positions.reduce((acc: any, pos: any) => {
+        const partName = pos.part_name || 'Bez části';
+        if (!acc[partName]) acc[partName] = [];
+        acc[partName].push(pos);
+        return acc;
+      }, {});
 
       // Map to Portal format with TOV data
-      const objects = parts.map((part: any) => ({
-        code: part.part_name || 'SO 000',
-        name: `Objekt ${part.part_name}`,
-        positions: (part.positions || []).map((pos: any) => ({
+      const objects = Object.entries(positionsByPart).map(([partName, partPositions]: [string, any]) => ({
+        code: partName,
+        name: `Objekt ${partName}`,
+        positions: partPositions.map((pos: any) => ({
           monolit_id: pos.id,
           kod: pos.otskp_code || '',
-          popis: pos.item_name || part.part_name,
+          popis: pos.item_name || partName,
           mnozstvi: pos.qty || 0,
           mj: pos.unit || '',
           tov: {
             labor: mapPositionToLabor(pos),
             machinery: [],
-            materials: mapPositionToMaterials(part, pos)
+            materials: mapPositionToMaterials(partName, pos)
           }
         }))
       }));
@@ -191,7 +202,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       const response = await fetch(`${PORTAL_API}/api/integration/import-from-monolit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           project_name: project.project_name || selectedBridge,
           monolit_project_id: selectedBridge,
@@ -201,15 +211,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
       if (!response.ok) {
         const text = await response.text();
-        console.error('[Export] Portal response:', text);
-        throw new Error(`Portal API error: ${response.status} ${response.statusText}`);
+        console.error('[Export to Registry] Portal response:', text);
+        throw new Error(`Portal API error: ${response.status}`);
       }
       
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
         const text = await response.text();
-        console.error('[Export] Non-JSON response:', text.substring(0, 200));
-        throw new Error('Portal returned HTML instead of JSON. Check CORS and authentication.');
+        console.error('[Export to Registry] Non-JSON response:', text.substring(0, 200));
+        throw new Error('Portal returned HTML instead of JSON');
       }
       
       const result = await response.json();
