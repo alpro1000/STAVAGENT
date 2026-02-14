@@ -169,7 +169,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       const { project, parts } = await projectRes.json();
 
       // Fetch positions for this project
-      const positionsRes = await positionsAPI.getPositions(selectedBridge);
+      const positionsRes = await positionsAPI.getForBridge(selectedBridge);
       const positions = positionsRes.positions || [];
 
       // Group positions by part_name
