@@ -199,7 +199,18 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         })
       });
 
-      if (!response.ok) throw new Error('Failed to import to Portal');
+      if (!response.ok) {
+        const text = await response.text();
+        console.error('[Export] Portal response:', text);
+        throw new Error(`Portal API error: ${response.status} ${response.statusText}`);
+      }
+      
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await response.text();
+        console.error('[Export] Non-JSON response:', text.substring(0, 200));
+        throw new Error('Portal returned HTML instead of JSON. Check CORS and authentication.');
+      }
       
       const result = await response.json();
       
