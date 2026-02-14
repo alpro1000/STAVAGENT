@@ -61,7 +61,7 @@ const ALLOWED_ORIGINS = [...new Set([
   'https://stavagent.cz',               // Alternative domain (without www)
   'https://rozpocet-registry.vercel.app', // Registry
   process.env.CORS_ORIGIN, // Allow custom origin from env
-].filter(Boolean))]);
+].filter(Boolean))];
 
 // Also allow Vercel preview deployments (*.vercel.app)
 const VERCEL_PREVIEW_REGEX = /^https:\/\/stavagent-backend[a-z0-9-]*\.vercel\.app$/;
