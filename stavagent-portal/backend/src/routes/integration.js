@@ -86,13 +86,15 @@ router.post('/import-from-monolit', async (req, res) => {
     console.log('[Integration] Importing', objects.length, 'objects');
     for (const obj of objects) {
       const objectId = `obj_${uuidv4()}`;
-      await client.query(
+      const objResult = await client.query(
         `INSERT INTO portal_objects (object_id, portal_project_id, object_code, object_name, created_at, updated_at)
          VALUES ($1, $2, $3, $4, NOW(), NOW())
          ON CONFLICT (portal_project_id, object_code) DO UPDATE SET object_name = $4, updated_at = NOW()
          RETURNING object_id`,
         [objectId, projectId, obj.code, obj.name]
       );
+
+      const dbObjectId = objResult.rows[0].object_id;
 
       // Import positions with TOV data
       for (const pos of obj.positions || []) {
@@ -105,7 +107,7 @@ router.post('/import-from-monolit', async (req, res) => {
             created_at, updated_at
           ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'monolit', NOW(), NOW(), NOW())`,
           [
-            positionId, objectId, pos.kod || '', pos.popis, pos.mnozstvi || 0, pos.mj || '',
+            positionId, dbObjectId, pos.kod || '', pos.popis, pos.mnozstvi || 0, pos.mj || '',
             JSON.stringify(pos.tov?.labor || []),
             JSON.stringify(pos.tov?.machinery || []),
             JSON.stringify(pos.tov?.materials || []),

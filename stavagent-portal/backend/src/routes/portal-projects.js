@@ -117,7 +117,11 @@ router.post('/create-from-kiosk', async (req, res) => {
       });
 
     } catch (dbError) {
-      await client.query('ROLLBACK');
+      try {
+        await client.query('ROLLBACK');
+      } catch (rollbackError) {
+        console.error('[PortalProjects] Rollback error:', rollbackError);
+      }
       console.error('[PortalProjects] DB error creating from kiosk:', dbError);
       res.status(500).json({
         success: false,
