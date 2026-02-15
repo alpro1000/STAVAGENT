@@ -12,7 +12,7 @@ import { AIPanel } from './components/ai/AIPanel';
 import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { PortalLinkBadge } from './components/portal/PortalLinkBadge';
-import { useRegistryStore } from './stores/registryStore';
+import { useRegistryStoreAPI } from './stores/registryStoreAPI';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
@@ -30,7 +30,7 @@ function App() {
     removeProject,
     addProject,
     getSheet,
-  } = useRegistryStore();
+  } = useRegistryStoreAPI();
 
   // Search state
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
