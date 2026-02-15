@@ -134,12 +134,34 @@ export const bridgesAPI = {
   create: async (params: { project_id?: string; bridge_id?: string; project_name?: string; object_name?: string; description?: string }): Promise<void> => {
     // VARIANT 1: Accept both project_id and bridge_id for backward compatibility
     const monolithParams = {
-      project_id: params.project_id || params.bridge_id,  // Accept both!
+      project_id: params.project_id || params.bridge_id,
       project_name: params.project_name,
       object_name: params.object_name,
       description: params.description
     };
+    
+    // Create locally
     await api.post('/api/monolith-projects', monolithParams);
+    
+    // Also create in Portal (cross-kiosk sync)
+    const portalAPI = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
+    try {
+      await fetch(`${portalAPI}/api/portal-projects/create-from-kiosk`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          project_name: params.project_name || params.project_id,
+          project_type: 'monolit',
+          kiosk_type: 'monolit',
+          kiosk_project_id: params.project_id || params.bridge_id,
+          description: params.description
+        })
+      });
+      if (import.meta.env.DEV) console.log('[API] Project synced to Portal');
+    } catch (error) {
+      console.warn('[API] Failed to sync project to Portal:', error);
+      // Don't fail - local creation succeeded
+    }
   },
 
   update: async (bridgeId: string, params: Partial<Bridge>): Promise<void> => {

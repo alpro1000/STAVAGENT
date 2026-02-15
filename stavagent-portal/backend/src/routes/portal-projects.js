@@ -40,7 +40,103 @@ function safeGetPool() {
 
 const router = express.Router();
 
-// All routes require authentication
+/**
+ * POST /api/portal-projects/create-from-kiosk
+ * Create portal project from kiosk (Monolit, Registry, etc.)
+ * NO AUTH REQUIRED - kiosks communicate without user session
+ *
+ * Body:
+ * - project_name: string (required)
+ * - project_type: string (optional)
+ * - kiosk_type: 'monolit' | 'registry' | 'urs_matcher' (required)
+ * - kiosk_project_id: string (required) - ID in kiosk's system
+ * - description: string (optional)
+ *
+ * Returns:
+ * - portal_project_id: string - ID in Portal system
+ * - link_id: string - kiosk link ID
+ */
+router.post('/create-from-kiosk', async (req, res) => {
+  try {
+    const { project_name, project_type, kiosk_type, kiosk_project_id, description } = req.body;
+
+    // Validation
+    if (!project_name || !kiosk_type || !kiosk_project_id) {
+      return res.status(400).json({
+        success: false,
+        error: 'project_name, kiosk_type, and kiosk_project_id are required'
+      });
+    }
+
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
+
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      const portal_project_id = `proj_${uuidv4()}`;
+      const link_id = `link_${uuidv4()}`;
+
+      // 1. Create portal project (owner_id=1 for kiosk-created projects)
+      await client.query(
+        `INSERT INTO portal_projects (
+          portal_project_id,
+          project_name,
+          project_type,
+          description,
+          owner_id,
+          core_status,
+          created_at,
+          updated_at
+        ) VALUES ($1, $2, $3, $4, 1, 'not_sent', NOW(), NOW())`,
+        [portal_project_id, project_name, project_type || 'custom', description || '']
+      );
+
+      // 2. Create kiosk link
+      await client.query(
+        `INSERT INTO kiosk_links (link_id, portal_project_id, kiosk_type, kiosk_project_id, status, created_at, last_sync)
+         VALUES ($1, $2, $3, $4, 'active', NOW(), NOW())`,
+        [link_id, portal_project_id, kiosk_type, kiosk_project_id]
+      );
+
+      await client.query('COMMIT');
+
+      console.log(`[PortalProjects] Created from ${kiosk_type}: ${portal_project_id} (${project_name})`);
+
+      res.status(201).json({
+        success: true,
+        portal_project_id,
+        link_id,
+        message: `Project created in Portal and linked to ${kiosk_type}`
+      });
+
+    } catch (dbError) {
+      await client.query('ROLLBACK');
+      console.error('[PortalProjects] DB error creating from kiosk:', dbError);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create project'
+      });
+    } finally {
+      client.release();
+    }
+
+  } catch (error) {
+    console.error('[PortalProjects] Error creating from kiosk:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to create project'
+    });
+  }
+});
+
+// All routes below require authentication
 router.use(requireAuth);
 
 /**
