@@ -31,6 +31,7 @@ import portalFilesRoutes from './src/routes/portal-files.js';
 import kioskLinksRoutes from './src/routes/kiosk-links.js';
 import otskpRoutes from './src/routes/otskp.js';
 import debugRoutes from './src/routes/debug.js';
+import integrationRoutes from './src/routes/integration.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -54,11 +55,13 @@ const ALLOWED_ORIGINS = [...new Set([
   'http://localhost:5173',
   'http://localhost:3000',
   'https://monolit-planner-frontend.onrender.com',
+  'https://monolit-planner-frontend.vercel.app',
   'https://stavagent-portal-frontend.onrender.com',
   'https://stavagent-backend.vercel.app',
-  'https://www.stavagent.cz',           // Production domain
-  'https://stavagent.cz',               // Alternative domain (without www)
-  process.env.CORS_ORIGIN, // Allow custom origin from env
+  'https://www.stavagent.cz',
+  'https://stavagent.cz',
+  'https://rozpocet-registry.vercel.app',
+  process.env.CORS_ORIGIN,
 ].filter(Boolean))];
 
 // Also allow Vercel preview deployments (*.vercel.app)
@@ -169,6 +172,9 @@ app.use('/api/kiosk-links', kioskLinksRoutes);
 
 // OTSKP reference (shared across all kiosks)
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
+
+// Integration routes (Monolit ↔ Registry sync) - NO AUTH REQUIRED
+app.use('/api/integration', integrationRoutes);
 
 // Debug routes (disable in production)
 app.use('/api/debug', debugRoutes);
