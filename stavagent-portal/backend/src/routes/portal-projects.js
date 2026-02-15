@@ -185,16 +185,17 @@ router.get('/by-kiosk/:kioskType/:kioskProjectId', async (req, res) => {
 
 /**
  * GET /api/portal-projects
- * List all portal projects for current user
+ * List all portal projects + projects from all linked kiosks
+ * For authenticated users: show their projects
+ * For kiosks: show all projects (no auth)
  */
 router.get('/', async (req, res) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.user?.userId || 1; // Default to 1 for kiosk requests
 
     // Check if PostgreSQL is available
     const pool = safeGetPool();
     if (!pool) {
-      // Return empty array if PostgreSQL not available (dev mode or misconfigured)
       console.warn('[PortalProjects] PostgreSQL not available, returning empty projects list');
       return res.json({
         success: true,
@@ -203,7 +204,8 @@ router.get('/', async (req, res) => {
       });
     }
 
-    const result = await pool.query(
+    // Get all portal projects for this user
+    const portalResult = await pool.query(
       `SELECT
         portal_project_id,
         project_name,
@@ -215,16 +217,35 @@ router.get('/', async (req, res) => {
         core_audit_result,
         core_last_sync,
         created_at,
-        updated_at
+        updated_at,
+        'portal' as source
        FROM portal_projects
        WHERE owner_id = $1
        ORDER BY updated_at DESC`,
       [userId]
     );
 
+    // Get all kiosk links for these projects
+    const kioskLinksResult = await pool.query(
+      `SELECT kl.*, pp.project_name
+       FROM kiosk_links kl
+       JOIN portal_projects pp ON kl.portal_project_id = pp.portal_project_id
+       WHERE pp.owner_id = $1
+       ORDER BY kl.last_sync DESC`,
+      [userId]
+    );
+
+    // Enrich portal projects with kiosk info
+    const projectsWithKiosks = portalResult.rows.map(project => ({
+      ...project,
+      kiosks: kioskLinksResult.rows.filter(link => link.portal_project_id === project.portal_project_id)
+    }));
+
     res.json({
       success: true,
-      projects: result.rows
+      projects: projectsWithKiosks,
+      total: projectsWithKiosks.length,
+      kiosk_links_count: kioskLinksResult.rows.length
     });
 
   } catch (error) {

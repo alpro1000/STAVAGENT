@@ -163,16 +163,43 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
       const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
 
-      // Fetch project data
+      // 1. Check if project exists in Portal
+      const checkRes = await fetch(`${PORTAL_API}/api/portal-projects/by-kiosk/monolit/${selectedBridge}`);
+      let portalProjectId;
+
+      if (checkRes.ok) {
+        const checkData = await checkRes.json();
+        portalProjectId = checkData.project.portal_project_id;
+        console.log('[Export] Found existing Portal project:', portalProjectId);
+      } else {
+        // Create new Portal project
+        const createRes = await fetch(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_name: selectedBridge,
+            project_type: 'monolit',
+            kiosk_type: 'monolit',
+            kiosk_project_id: selectedBridge
+          })
+        });
+
+        if (!createRes.ok) throw new Error('Failed to create Portal project');
+        const createData = await createRes.json();
+        portalProjectId = createData.portal_project_id;
+        console.log('[Export] Created new Portal project:', portalProjectId);
+      }
+
+      // 2. Fetch project data
       const projectRes = await fetch(`/api/monolith-projects/${selectedBridge}`);
       if (!projectRes.ok) throw new Error('Failed to fetch project');
       const { project, parts } = await projectRes.json();
 
-      // Fetch positions for this project
+      // 3. Fetch positions
       const positionsRes = await positionsAPI.getForBridge(selectedBridge);
       const positions = positionsRes.positions || [];
 
-      // Group positions by part_name
+      // 4. Group positions by part_name
       const positionsByPart = positions.reduce((acc: any, pos: any) => {
         const partName = pos.part_name || 'Bez části';
         if (!acc[partName]) acc[partName] = [];
@@ -180,7 +207,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         return acc;
       }, {});
 
-      // Map to Portal format with TOV data
+      // 5. Map to Portal format
       const objects = Object.entries(positionsByPart).map(([partName, partPositions]: [string, any]) => ({
         code: partName,
         name: `Objekt ${partName}`,
@@ -198,34 +225,35 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         }))
       }));
 
-      // Import to Portal
-      const response = await fetch(`${PORTAL_API}/api/integration/import-from-monolit`, {
+      // 6. Import to Portal
+      const importRes = await fetch(`${PORTAL_API}/api/integration/import-from-monolit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          portal_project_id: portalProjectId,
           project_name: project.project_name || selectedBridge,
           monolit_project_id: selectedBridge,
           objects
         })
       });
 
-      if (!response.ok) {
-        const text = await response.text();
-        console.error('[Export to Registry] Portal response:', text);
-        throw new Error(`Portal API error: ${response.status}`);
+      if (!importRes.ok) {
+        const text = await importRes.text();
+        console.error('[Export] Portal response:', text);
+        throw new Error(`Portal API error: ${importRes.status}`);
       }
       
-      const contentType = response.headers.get('content-type');
+      const contentType = importRes.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
-        const text = await response.text();
-        console.error('[Export to Registry] Non-JSON response:', text.substring(0, 200));
+        const text = await importRes.text();
+        console.error('[Export] Non-JSON response:', text.substring(0, 200));
         throw new Error('Portal returned HTML instead of JSON');
       }
       
-      const result = await response.json();
+      const result = await importRes.json();
       
-      // Open Registry with portal project
-      window.open(`${REGISTRY_URL}?portal_project=${result.portal_project_id}`, '_blank');
+      // 7. Open Registry with portal project
+      window.open(`${REGISTRY_URL}?portal_project=${portalProjectId}`, '_blank');
       
       alert(`✅ Export do Registry úspěšný!\nExportováno: ${objects.length} objektů`);
 
