@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
 **Last Updated:** 2026-02-10
-**Current Branch:** `claude/phase-6-technology-review-SVfgv`
-**Last Session:** Portal Production Fixes + URS Matcher Diagnosis
+**Current Branch:** `claude/monolit-registry-integration`
+**Last Session:** Monolit ↔ Registry Integration (Phase 1 Complete)
 
 ---
 
@@ -14,104 +14,118 @@ cd /home/user/STAVAGENT
 # 1. Read system context
 cat CLAUDE.md
 
-# 2. Read current session summary
-cat docs/archive/completed-sessions/SESSION_2026-02-10_PASSPORT_PRODUCTION_FIX.md
+# 2. Read integration documentation
+cat docs/MONOLIT_REGISTRY_INTEGRATION.md
 
 # 3. Check branch and recent commits
-git checkout claude/phase-6-technology-review-SVfgv
+git checkout claude/monolit-registry-integration
 git log --oneline -10
 
-# 4. Check production status
-curl https://stavagent-portal-backend.onrender.com/health
-curl https://urs-matcher-service.onrender.com/health
+# 4. Run database migration
+cd stavagent-portal/backend
+psql $DATABASE_URL < src/db/migrations/add-unified-project-structure.sql
 
-# 5. Continue with environment configuration (see Next Steps below)
+# 5. Test integration
+# - Open Monolit: https://monolit-planner-frontend.onrender.com
+# - Click "→ Registry" button
+# - Verify: Registry opens with project data
 ```
 
 ---
 
 ## Сессия 2026-02-10: Резюме
 
-### Что сделано:
+### ✅ Что сделано:
 
 | Компонент | Задача | Статус |
 |-----------|--------|--------|
-| Portal DocumentSummary | Production fixes (401, CORS, timeout) | ✅ |
-| Portal server.js | CORS для www.stavagent.cz | ✅ |
-| File input modal | Убрали overlay, добавили кнопку | ✅ |
-| URS Matcher | Диагностика batch processing | ✅ |
-| Architecture analysis | Выявлена двух-API архитектура (Perplexity + Gemini) | ✅ |
+| Portal API | Integration routes (import, for-registry, sync-tov) | ✅ |
+| Portal DB | Unified project structure (objects + positions) | ✅ |
+| Monolit Export | "→ Registry" button with TOV mapping | ✅ |
+| Registry Import | Load from Portal via URL param | ✅ |
+| Documentation | MONOLIT_REGISTRY_INTEGRATION.md | ✅ |
 
-### Ключевые находки:
+### Ключевые достижения:
 
-**1. Portal Production Issues (все исправлены):**
-- ❌ 401 Unauthorized → ✅ Добавлен `credentials: 'include'`
-- ❌ CORS blocked → ✅ Добавлен www.stavagent.cz
-- ❌ Timeout 120s → ✅ Увеличен до 300s (5 минут)
-- ❌ TypeError: map → ✅ Обработка array vs object response
-- ❌ File input overlay bug → ✅ Refactored с ref + button
-
-**2. URS Matcher Batch Processing:**
+**1. Portal API (3 endpoints):**
 ```
-Архитектура (2 API):
-  RETRIEVE (Perplexity) → Ищет кандидатов на сайте ÚRS
-  RERANK (Gemini)       → Ранжирует кандидатов
+POST /api/integration/import-from-monolit  - Import from Monolit with TOV
+GET  /api/integration/for-registry/:id     - Get project for Registry
+POST /api/integration/sync-tov             - Sync TOV changes back
+```
 
-Проблема:
-  Perplexity API не сконфигурирован → 0 кандидатов
-  Gemini ранжирует пустой массив → пустой результат
+**2. Database Schema:**
+```sql
+portal_objects    - SO 202, SO 203, etc.
+portal_positions  - Unified positions with TOV data (JSON)
+```
+
+**3. TOV Mapping (Monolit → Registry):**
+```
+Betonování → Labor (Betonář)
+Bednění    → Labor (Tesař / Bednář)
+Výztuž     → Labor (Železář)
+Beton      → Materials (editable price)
+```
+
+**4. Data Flow:**
+```
+Monolit → [Export] → Portal → [Load] → Registry
+                       ↑
+                       └─ [Sync TOV] ← Registry
 ```
 
 ### Коммиты (2026-02-10):
 ```
-[будут после push]
-FIX: Portal production fixes + URS Matcher analysis
-- DocumentSummary.tsx: timeout, API endpoint, CORS, file input
-- server.js: CORS для www.stavagent.cz
-- Detailed analysis of URS Matcher batch processing architecture
+[pending]
+FEAT: Add Monolit-Registry integration via Portal API
+
+Phase 1 Complete:
+- Portal API: 3 integration endpoints
+- Database: portal_objects + portal_positions tables
+- Monolit: Updated export button with TOV mapping
+- Registry: Load from Portal via URL param
+- Documentation: MONOLIT_REGISTRY_INTEGRATION.md
+
+Files:
+- stavagent-portal/backend/src/routes/integration.js (NEW)
+- stavagent-portal/backend/src/db/migrations/add-unified-project-structure.sql (NEW)
+- Monolit-Planner/frontend/src/components/Header.tsx (UPDATED)
+- rozpocet-registry/src/App.tsx (UPDATED)
+- rozpocet-registry/src/services/portalSync.ts (NEW)
+- docs/MONOLIT_REGISTRY_INTEGRATION.md (NEW)
 ```
 
 ---
 
 ## ⏳ AWAITING USER ACTION (High Priority)
 
-### 1. Portal Backend Environment Variables
-Добавить в Render Dashboard → **stavagent-portal-backend** → Environment:
-```env
-DISABLE_AUTH=true
-CORS_ORIGIN=https://www.stavagent.cz
+### 1. Run Database Migration
+Выполнить миграцию в Portal PostgreSQL:
+```bash
+cd stavagent-portal/backend
+psql $DATABASE_URL < src/db/migrations/add-unified-project-structure.sql
 ```
 
-### 2. URS Matcher - Perplexity API Configuration
+### 2. Test Integration Flow
+1. Open Monolit: https://monolit-planner-frontend.onrender.com
+2. Select project with positions
+3. Click "→ Registry" button
+4. Verify: Registry opens with project data
+5. Verify: TOV data is populated (Labor, Materials)
 
-**Вариант A: Perplexity API (Быстро, рекомендовано)**
+### 3. Configure Environment Variables (Optional)
 
-Шаги:
-1. Получить API key: https://www.perplexity.ai/settings/api
-2. Добавить в Render Dashboard → **URS_MATCHER_SERVICE** → Environment:
+**Monolit Frontend (.env):**
 ```env
-PPLX_API_KEY=pplx-xxxxxxxxxxxxxxxxxxxxx
-PPLX_MODEL=sonar
-URS_CATALOG_MODE=online
-```
-3. Redeploy service
-4. Протестировать batch processing
-
-**Стоимость:** ~$20/месяц
-
-**Вариант B: Локальная база ÚRS кодов (Бесплатно)**
-```env
-URS_CATALOG_MODE=local
-URS_CATALOG_PATH=/app/data/urs_catalog.db
+VITE_PORTAL_API_URL=https://stavagent-portal-backend.onrender.com
+VITE_REGISTRY_URL=https://rozpocet-registry.vercel.app
 ```
 
-Требует разработки:
-- Скрейпинг ÚRS каталога
-- SQLite database
-- Модификация candidateRetriever.js
-- Оценка: 3-5 дней
-
-**Рекомендация:** Начать с Perplexity API → позже мигрировать на local DB если нужно.
+**Registry (.env):**
+```env
+VITE_PORTAL_API_URL=https://stavagent-portal-backend.onrender.com
+```
 
 ---
 

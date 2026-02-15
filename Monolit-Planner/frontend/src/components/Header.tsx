@@ -160,59 +160,102 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
     setIsExportingToRegistry(true);
     try {
-      // Fetch positions for the selected bridge
-      const result = await positionsAPI.getForBridge(selectedBridge);
-      const positions = result.positions;
+      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
+      const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
 
-      // Map positions to unified format
-      const unifiedPositions = positions.map((pos: any) => ({
-        id: pos.id || crypto.randomUUID(),
-        portalProjectId: '',
-        sourceKiosk: 'monolit',
-        sourceItemId: pos.id,
-        code: pos.otskp_code || null,
-        description: pos.item_name || '',
-        quantity: pos.qty || null,
-        unit: pos.unit || null,
-        unitPrice: pos.unit_cost_native || null,
-        totalPrice: pos.kros_total_czk || null,
-        category: pos.subtype || null,
-        rowRole: 'main',
-        confidence: null,
-        matchSource: 'monolit',
-        source: {
-          fileName: selectedBridge,
-          importedAt: new Date().toISOString(),
-        },
-      }));
+      // 1. Check if project exists in Portal
+      const checkRes = await fetch(`${PORTAL_API}/api/portal-projects/by-kiosk/monolit/${selectedBridge}`);
+      let portalProjectId;
 
-      // Open Registry and send positions via postMessage (direct browser transfer)
-      const registryUrl = 'https://stavagent-backend-ktwx.vercel.app';
-      const registryWindow = window.open(`${registryUrl}?source=monolit`, '_blank');
+      if (checkRes.ok) {
+        const checkData = await checkRes.json();
+        portalProjectId = checkData.project.portal_project_id;
+        console.log('[Export] Found existing Portal project:', portalProjectId);
+      } else {
+        // Create new Portal project
+        const createRes = await fetch(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_name: selectedBridge,
+            project_type: 'monolit',
+            kiosk_type: 'monolit',
+            kiosk_project_id: selectedBridge
+          })
+        });
 
-      if (!registryWindow) {
-        throw new Error('Nelze otevřít Registry. Povolte vyskakovací okna.');
+        if (!createRes.ok) throw new Error('Failed to create Portal project');
+        const createData = await createRes.json();
+        portalProjectId = createData.portal_project_id;
+        console.log('[Export] Created new Portal project:', portalProjectId);
       }
 
-      // Wait for Registry to signal it's ready, then send data
-      const sendData = (event: MessageEvent) => {
-        if (event.data?.type === 'registry-ready') {
-          registryWindow.postMessage({
-            type: 'import-positions',
-            positions: unifiedPositions,
-            source: 'monolit',
-            projectName: selectedBridge,
-          }, registryUrl);
-          window.removeEventListener('message', sendData);
-          alert(`✅ Export do Registry úspěšný!\nExportováno: ${positions.length} pozic`);
-        }
-      };
-      window.addEventListener('message', sendData);
+      // 2. Fetch project data
+      const projectRes = await fetch(`/api/monolith-projects/${selectedBridge}`);
+      if (!projectRes.ok) throw new Error('Failed to fetch project');
+      const { project, parts } = await projectRes.json();
 
-      // Timeout — if Registry doesn't respond in 15s, clean up
-      setTimeout(() => {
-        window.removeEventListener('message', sendData);
-      }, 15000);
+      // 3. Fetch positions
+      const positionsRes = await positionsAPI.getForBridge(selectedBridge);
+      const positions = positionsRes.positions || [];
+
+      // 4. Group positions by part_name
+      const positionsByPart = positions.reduce((acc: any, pos: any) => {
+        const partName = pos.part_name || 'Bez části';
+        if (!acc[partName]) acc[partName] = [];
+        acc[partName].push(pos);
+        return acc;
+      }, {});
+
+      // 5. Map to Portal format
+      const objects = Object.entries(positionsByPart).map(([partName, partPositions]: [string, any]) => ({
+        code: partName,
+        name: `Objekt ${partName}`,
+        positions: partPositions.map((pos: any) => ({
+          monolit_id: pos.id,
+          kod: pos.otskp_code || '',
+          popis: pos.item_name || partName,
+          mnozstvi: pos.qty || 0,
+          mj: pos.unit || '',
+          tov: {
+            labor: mapPositionToLabor(pos),
+            machinery: [],
+            materials: mapPositionToMaterials(partName, pos)
+          }
+        }))
+      }));
+
+      // 6. Import to Portal
+      const importRes = await fetch(`${PORTAL_API}/api/integration/import-from-monolit`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          portal_project_id: portalProjectId,
+          project_name: project.project_name || selectedBridge,
+          monolit_project_id: selectedBridge,
+          objects
+        })
+      });
+
+      if (!importRes.ok) {
+        const text = await importRes.text();
+        console.error('[Export] Portal response:', text);
+        throw new Error(`Portal API error: ${importRes.status}`);
+      }
+      
+      const contentType = importRes.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        const text = await importRes.text();
+        console.error('[Export] Non-JSON response:', text.substring(0, 200));
+        throw new Error('Portal returned HTML instead of JSON');
+      }
+      
+      const result = await importRes.json();
+      
+      // 7. Open Registry with portal project
+      window.open(`${REGISTRY_URL}?portal_project=${portalProjectId}`, '_blank');
+      
+      alert(`✅ Export do Registry úspěšný!\nExportováno: ${objects.length} objektů`);
 
     } catch (error: any) {
       console.error('[Export to Registry] Error:', error);
@@ -220,6 +263,62 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     } finally {
       setIsExportingToRegistry(false);
     }
+  };
+
+  // Helper: Map Monolit position to Labor TOV
+  const mapPositionToLabor = (pos: any) => {
+    const labor = [];
+    if (pos.subtype === 'beton') {
+      labor.push({
+        id: `labor_${pos.id}_beton`,
+        name: 'Betonář',
+        count: pos.crew_size || 0,
+        hours: pos.shift_hours || 0,
+        normHours: pos.labor_hours || 0,
+        hourlyRate: pos.wage_czk_ph || 0,
+        totalCost: pos.cost_czk || 0
+      });
+    }
+    if (pos.subtype === 'bednění') {
+      labor.push({
+        id: `labor_${pos.id}_bednar`,
+        name: 'Tesař / Bednář',
+        count: pos.crew_size || 0,
+        hours: pos.shift_hours || 0,
+        normHours: pos.labor_hours || 0,
+        hourlyRate: pos.wage_czk_ph || 0,
+        totalCost: pos.cost_czk || 0
+      });
+    }
+    if (pos.subtype === 'výztuž') {
+      labor.push({
+        id: `labor_${pos.id}_zelezar`,
+        name: 'Železář',
+        count: pos.crew_size || 0,
+        hours: pos.shift_hours || 0,
+        normHours: pos.labor_hours || 0,
+        hourlyRate: pos.wage_czk_ph || 0,
+        totalCost: pos.cost_czk || 0
+      });
+    }
+    return labor;
+  };
+
+  // Helper: Map Monolit position to Materials TOV
+  const mapPositionToMaterials = (part: any, pos: any) => {
+    const materials = [];
+    const concreteMatch = part.part_name?.match(/C\d+\/\d+/);
+    if (concreteMatch && pos.concrete_m3) {
+      materials.push({
+        id: `material_${pos.id}_beton`,
+        name: `Beton ${concreteMatch[0]}`,
+        quantity: pos.concrete_m3,
+        unit: 'm³',
+        unitPrice: 0,
+        totalCost: 0
+      });
+    }
+    return materials;
   };
 
   const handleCreateSuccess = async (bridge_id: string) => {

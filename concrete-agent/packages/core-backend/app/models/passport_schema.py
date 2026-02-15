@@ -70,14 +70,23 @@ class ConcreteType(str, Enum):
 
 
 class StructureType(str, Enum):
-    """Typ konstrukce"""
-    BUILDING = "building"  # Budova
-    BRIDGE = "bridge"  # Most
-    TUNNEL = "tunnel"  # Tunel
-    FOUNDATION = "foundation"  # Základy
-    RETAINING_WALL = "retaining_wall"  # Opěrná zeď
-    SLAB = "slab"  # Deska
-    OTHER = "other"  # Jiné
+    """Typ konstrukce / Structure Type"""
+    BUILDING = "building"  # Budova / Building
+    BRIDGE = "bridge"  # Most / Bridge
+    TUNNEL = "tunnel"  # Tunel / Tunnel
+    FOUNDATION = "foundation"  # Základy / Foundation
+    RETAINING_WALL = "retaining_wall"  # Opěrná zeď / Retaining wall
+    SLAB = "slab"  # Deska / Slab
+    RAILWAY = "railway"  # Železniční stavba / Railway structure
+    ROAD = "road"  # Silnice / Road
+    INDUSTRIAL = "industrial"  # Průmyslová stavba / Industrial facility
+    RESIDENTIAL = "residential"  # Obytná stavba / Residential building
+    COMMERCIAL = "commercial"  # Obchodní stavba / Commercial building
+    INFRASTRUCTURE = "infrastructure"  # Infrastruktura / Infrastructure
+    PARKING = "parking"  # Parkování / Parking structure
+    STADIUM = "stadium"  # Stadion / Stadium
+    HYDRAULIC = "hydraulic"  # Hydrotechnické dílo / Hydraulic structure
+    OTHER = "other"  # Jiné / Other
 
 
 class ExposedConcreteClass(str, Enum):
