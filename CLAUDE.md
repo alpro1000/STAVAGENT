@@ -2,7 +2,7 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.0.4
+**Version:** 2.0.5
 **Last Updated:** 2026-02-10
 **Repository:** STAVAGENT (Monorepo)
 
@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-02-10 | Monolit + Registry + Portal | Monolit-Registry integration via Portal API (Phase 1): 3 endpoints, TOV mapping, unified storage | ✅ PR Created |
 | 2026-02-10 | stavagent-portal | Portal production fixes: timeout 300s, CORS, file input modal, API endpoint | ✅ Pushed |
 | 2026-02-10 | URS_MATCHER_SERVICE | Batch processing diagnosis: identified Perplexity API requirement (2-API architecture) | 📋 Analysis |
 | 2026-02-09 | Monolit + Registry | Inter-kiosk data transfer via postMessage (Monolit → Registry) | ✅ Pushed |
@@ -732,6 +733,7 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 - CI/CD: Add npm caching, Dependency Review Action
 
 ### Feature Roadmap
+- **Monolit-Registry Integration Phase 2** - Auto-sync TOV, bi-directional sync, conflict resolution
 - URS Matcher Phase 2-4 (Document Parsing, Multi-Role, Optimization)
 - Vitest migration for Monolit (better ESM support)
 - Czech label mapping for rozpocet-registry work groups (UX enhancement)
@@ -751,6 +753,7 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 | `DESIGN_SYSTEM.md` | Digital Concrete design specification |
 | `KEEP_ALIVE_SETUP.md` | Render Free Tier sleep prevention guide |
 | `UNIFIED_ARCHITECTURE.md` | Portal-centric project integration |
+| `docs/MONOLIT_REGISTRY_INTEGRATION.md` | Monolit-Registry integration guide (Phase 1) |
 
 ### Service Documentation
 | File | Purpose |
@@ -784,6 +787,7 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
+| 2026-02-10 | Monolit + Registry + Portal | Monolit-Registry integration (Phase 1): Portal API, TOV mapping, unified storage | 1 |
 | 2026-02-04 | stavagent-portal + rozpocet-registry | Portal fix (safeGetPool), Price editing, Section totals, Excel export fixes, Import preview, Unification audit | 10+ |
 | 2026-01-26 | rozpocet-registry | Classification migration, multi-sheet import, Project→Sheets refactoring, AI panel, Excel-style tabs, tab navigation, autocomplete, modal, price request, export improvements | 20+ |
 | 2026-01-21 | Portal + Monolit | R0 Deterministic Core, Unified Architecture, AI suggestion audit trail | 11 |

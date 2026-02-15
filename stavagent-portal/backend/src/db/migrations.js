@@ -124,6 +124,16 @@ async function initPostgresSchema() {
     `).run(defaultFeatureFlags, defaultDefaults);
   }
 
+  // Create default kiosk user (id=1) if not exists
+  const userExists = await db.prepare('SELECT id FROM users WHERE id = 1').get();
+  if (!userExists) {
+    await db.prepare(`
+      INSERT INTO users (id, email, password_hash, name, role, email_verified)
+      VALUES (1, 'kiosk@stavagent.local', 'kiosk_default', 'Kiosk System', 'admin', true)
+    `).run();
+    console.log('[Database] Created default kiosk user (id=1)');
+  }
+
   // Run Phase 1 & 2 migrations (add missing columns/tables for existing databases)
   await runPhase1Phase2Migrations();
 
@@ -133,11 +143,11 @@ async function initPostgresSchema() {
   // Run Phase 4 migrations (document upload and analysis)
   await runPhase4Migrations();
 
+  // Run Phase 5 migrations (Monolit-Registry integration)
+  await runPhase5Migrations();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
-
-  // Auto-load part templates if database is empty
-  await autoLoadPartTemplatesIfNeeded();
 }
 
 /**
@@ -431,34 +441,46 @@ async function runPhase4Migrations() {
     console.log('[PostgreSQL Migrations] ✅ Phase 4 migrations completed successfully');
   } catch (error) {
     console.error('[PostgreSQL Migrations] Error during Phase 4 migrations:', error);
-    // Don't fail startup if migrations fail
   }
+}
 
-  // Phase 5: Add UNIQUE constraint to kiosk_links (for ON CONFLICT support)
+/**
+ * Migrations for Phase 5 - Monolit-Registry Integration
+ */
+async function runPhase5Migrations() {
   try {
-    console.log('[PostgreSQL Migrations] Running Phase 5 migrations (kiosk_links UNIQUE)...');
+    console.log('[PostgreSQL Migrations] Running Phase 5 migrations (Monolit-Registry Integration)...');
 
-    // Check if constraint already exists
-    const constraintCheck = await db.prepare(`
-      SELECT 1 FROM pg_constraint
-      WHERE conname = 'kiosk_links_portal_project_id_kiosk_type_key'
-    `).get();
-
-    if (!constraintCheck) {
-      await db.exec(`
-        ALTER TABLE kiosk_links
-        ADD CONSTRAINT kiosk_links_portal_project_id_kiosk_type_key
-        UNIQUE (portal_project_id, kiosk_type);
-      `);
-      console.log('[Migration] ✓ kiosk_links UNIQUE constraint added');
-    } else {
-      console.log('[Migration] ✓ kiosk_links UNIQUE constraint already exists');
+    if (USE_POSTGRES) {
+      try {
+        await db.exec(`
+          ALTER TABLE kiosk_links
+          ADD CONSTRAINT kiosk_links_portal_project_id_kiosk_type_key
+          UNIQUE (portal_project_id, kiosk_type);
+        `);
+        console.log('[Migration] ✓ kiosk_links UNIQUE constraint added');
+      } catch (error) {
+        if (error.message.includes('already exists')) {
+          console.log('[Migration] ✓ kiosk_links UNIQUE constraint already exists');
+        }
+      }
     }
 
+    const migrationPath = join(__dirname, 'migrations', 'add-unified-project-structure.sql');
+    
+    if (!fs.existsSync(migrationPath)) {
+      console.log('[Migration] ⚠️  Migration file not found, skipping Phase 5');
+      return;
+    }
+
+    const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+    await db.exec(migrationSQL);
+
+    console.log('[Migration] ✓ portal_objects and portal_positions tables created');
     console.log('[PostgreSQL Migrations] ✅ Phase 5 migrations completed successfully');
   } catch (error) {
     if (error.message.includes('already exists')) {
-      console.log('[Migration] ✓ kiosk_links UNIQUE constraint already exists');
+      console.log('[Migration] ✓ Integration tables already exist');
     } else {
       console.error('[PostgreSQL Migrations] Error during Phase 5 migrations:', error);
     }
