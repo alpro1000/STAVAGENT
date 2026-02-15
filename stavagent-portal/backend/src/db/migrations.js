@@ -441,37 +441,6 @@ async function runPhase4Migrations() {
     console.log('[PostgreSQL Migrations] ✅ Phase 4 migrations completed successfully');
   } catch (error) {
     console.error('[PostgreSQL Migrations] Error during Phase 4 migrations:', error);
-    // Don't fail startup if migrations fail
-  }
-
-  // Phase 5: Add UNIQUE constraint to kiosk_links (for ON CONFLICT support)
-  try {
-    console.log('[PostgreSQL Migrations] Running Phase 5 migrations (kiosk_links UNIQUE + integration tables)...');
-
-    // Check if constraint already exists
-    const constraintCheck = await db.prepare(`
-      SELECT 1 FROM pg_constraint
-      WHERE conname = 'kiosk_links_portal_project_id_kiosk_type_key'
-    `).get();
-
-    if (!constraintCheck) {
-      await db.exec(`
-        ALTER TABLE kiosk_links
-        ADD CONSTRAINT kiosk_links_portal_project_id_kiosk_type_key
-        UNIQUE (portal_project_id, kiosk_type);
-      `);
-      console.log('[Migration] ✓ kiosk_links UNIQUE constraint added');
-    } else {
-      console.log('[Migration] ✓ kiosk_links UNIQUE constraint already exists');
-    }
-
-    console.log('[PostgreSQL Migrations] ✅ Phase 5 migrations completed successfully');
-  } catch (error) {
-    if (error.message.includes('already exists')) {
-      console.log('[Migration] ✓ kiosk_links UNIQUE constraint already exists');
-    } else {
-      console.error('[PostgreSQL Migrations] Error during Phase 5 migrations:', error);
-    }
   }
 }
 
@@ -482,7 +451,21 @@ async function runPhase5Migrations() {
   try {
     console.log('[PostgreSQL Migrations] Running Phase 5 migrations (Monolit-Registry Integration)...');
 
-    // Read and execute migration file
+    if (USE_POSTGRES) {
+      try {
+        await db.exec(`
+          ALTER TABLE kiosk_links
+          ADD CONSTRAINT kiosk_links_portal_project_id_kiosk_type_key
+          UNIQUE (portal_project_id, kiosk_type);
+        `);
+        console.log('[Migration] ✓ kiosk_links UNIQUE constraint added');
+      } catch (error) {
+        if (error.message.includes('already exists')) {
+          console.log('[Migration] ✓ kiosk_links UNIQUE constraint already exists');
+        }
+      }
+    }
+
     const migrationPath = join(__dirname, 'migrations', 'add-unified-project-structure.sql');
     
     if (!fs.existsSync(migrationPath)) {

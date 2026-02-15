@@ -305,9 +305,9 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   };
 
   // Helper: Map Monolit position to Materials TOV
-  const mapPositionToMaterials = (part: any, pos: any) => {
+  const mapPositionToMaterials = (partName: string, pos: any) => {
     const materials = [];
-    const concreteMatch = part.part_name?.match(/C\d+\/\d+/);
+    const concreteMatch = partName.match(/C\d+\/\d+/);
     if (concreteMatch && pos.concrete_m3) {
       materials.push({
         id: `material_${pos.id}_beton`,
