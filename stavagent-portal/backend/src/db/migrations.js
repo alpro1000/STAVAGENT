@@ -124,6 +124,16 @@ async function initPostgresSchema() {
     `).run(defaultFeatureFlags, defaultDefaults);
   }
 
+  // Create default kiosk user (id=1) if not exists
+  const userExists = await db.prepare('SELECT id FROM users WHERE id = 1').get();
+  if (!userExists) {
+    await db.prepare(`
+      INSERT INTO users (id, email, password_hash, name, role, email_verified)
+      VALUES (1, 'kiosk@stavagent.local', 'kiosk_default', 'Kiosk System', 'admin', true)
+    `).run();
+    console.log('[Database] Created default kiosk user (id=1)');
+  }
+
   // Run Phase 1 & 2 migrations (add missing columns/tables for existing databases)
   await runPhase1Phase2Migrations();
 
