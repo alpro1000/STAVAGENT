@@ -308,14 +308,20 @@ function getColumnValue(row, possibleNames) {
 }
 
 /**
- * Parse number from string
+ * Parse number from Czech/EU format (comma as decimal, space as thousands separator)
+ * Examples: "2 832,000" → 2832, "204,646" → 204.646, "1 386,700" → 1386.7
  */
 function parseNumber(value) {
-  if (!value) return 0;
-  const str = String(value).trim();
-  if (str === '') return 0;
-  const normalized = str.replace(',', '.');
-  const num = parseFloat(normalized);
+  if (value === null || value === undefined || value === '') return 0;
+
+  if (typeof value === 'number') return value;
+
+  const str = String(value)
+    .trim()
+    .replace(/\s/g, '')     // Remove spaces (Czech thousands separator: "2 832" → "2832")
+    .replace(',', '.');     // Replace comma with dot (Czech decimal: "204,646" → "204.646")
+
+  const num = parseFloat(str);
   return isNaN(num) ? 0 : num;
 }
 
@@ -689,6 +695,211 @@ export function extractConcreteOnlyM3(rawRows) {
   logger.info(`[ConcreteExtractor] 📊 Result: ${concreteItems.length} concrete items, total ${totalConcreteVolume.toFixed(2)} m³`);
 
   return concreteItems;
+}
+
+/**
+ * Extract ALL construction items from BOQ rows (beton, výztuž, bednění, jiné).
+ *
+ * Unlike extractConcreteOnlyM3 which only finds M3 items with concrete grade,
+ * this function captures the full scope of bridge/structural work:
+ *   - beton (M3) - concrete
+ *   - výztuž (T, KG) - reinforcement
+ *   - bednění (M2) - formwork
+ *   - jiné (KUS, KG, etc.) - other (anchoring, metal construction)
+ *
+ * Detection strategy:
+ *   1. Find rows with construction keywords OR codes starting with 3xxxxx (TSKP div. 3)
+ *   2. Detect unit to determine subtype
+ *   3. Extract quantity from adjacent cells
+ *
+ * @param {Array} rawRows - Raw rows from Excel sheet
+ * @returns {Array} Array of positions with subtype
+ */
+export function extractAllConstructionItems(rawRows) {
+  if (!Array.isArray(rawRows) || rawRows.length === 0) {
+    logger.warn(`[ConcreteExtractor] extractAllConstructionItems: Empty input`);
+    return [];
+  }
+
+  const items = [];
+  logger.info(`[ConcreteExtractor] 🔍 Searching ALL construction items in ${rawRows.length} rows...`);
+
+  // Unit patterns for detection
+  const unitPatterns = {
+    beton:   /^m[3³]$/i,
+    výztuž:  /^(t|kg)$/i,
+    bednění: /^m[2²]$/i
+  };
+
+  // Keywords that indicate construction work (exclude PP description rows)
+  const constructionCodePattern = /^\d{5,6}(-R\d+)?$/;  // e.g., 317325, 31717-R01, 333325
+
+  for (let i = 0; i < rawRows.length; i++) {
+    const row = rawRows[i];
+    try {
+      const entries = Object.entries(row);
+
+      // Skip rows with very few non-empty values (headers, empty rows)
+      const nonEmpty = entries.filter(([, v]) => v !== null && v !== undefined && String(v).trim() !== '');
+      if (nonEmpty.length < 3) continue;
+
+      // Detect: does this row have a construction code?
+      let foundCode = null;
+      let foundDescription = null;
+      let foundDescKey = null;
+      let foundUnit = null;
+      let foundUnitKey = null;
+      let foundType = null;  // K, D, PP
+      let concreteMark = null;
+
+      for (const [key, value] of entries) {
+        if (value === null || value === undefined) continue;
+        const cellStr = String(value).trim();
+        if (!cellStr) continue;
+
+        // Detect row type (K = work item, D = section header, PP = description)
+        if (cellStr === 'K' || cellStr === 'D' || cellStr === 'PP') {
+          foundType = cellStr;
+          continue;
+        }
+
+        // Detect construction code (5-6 digits, optionally with -R01 suffix)
+        if (constructionCodePattern.test(cellStr)) {
+          foundCode = cellStr;
+          continue;
+        }
+
+        // Detect unit
+        const cellLower = cellStr.toLowerCase();
+        if (unitPatterns.beton.test(cellStr)) {
+          foundUnit = cellStr;
+          foundUnitKey = key;
+        } else if (unitPatterns.výztuž.test(cellStr)) {
+          foundUnit = cellStr;
+          foundUnitKey = key;
+        } else if (unitPatterns.bednění.test(cellStr)) {
+          foundUnit = cellStr;
+          foundUnitKey = key;
+        } else if (cellStr === 'KUS' || cellStr === 'kus') {
+          foundUnit = cellStr;
+          foundUnitKey = key;
+        }
+
+        // Detect description (long text with construction keywords)
+        if (cellStr.length > 15 && !foundDescription) {
+          const hasKeyword = /beton|železo|výztuž|ocel|kovov|římsy|opěr|pilíř|nosn|přechod|most|křídl|bedn/i.test(cellStr);
+          if (hasKeyword) {
+            foundDescription = cellStr;
+            foundDescKey = key;
+          }
+        }
+
+        // Detect concrete mark
+        const gradeMatch = cellStr.match(/C\s*(\d{1,3})\s*\/\s*(\d{1,3})/i);
+        if (gradeMatch) {
+          concreteMark = `C${gradeMatch[1]}/${gradeMatch[2]}`;
+        }
+      }
+
+      // Skip non-work rows (D = section headers, PP = descriptions)
+      if (foundType === 'D' || foundType === 'PP') continue;
+
+      // Must have description AND unit to be a valid work item
+      if (!foundDescription || !foundUnit) continue;
+
+      // Determine subtype from unit
+      let subtype = 'jiné';
+      const unitLower = foundUnit.toLowerCase();
+      if (/^m[3³]$/i.test(foundUnit)) subtype = 'beton';
+      else if (/^(t|kg)$/i.test(foundUnit)) subtype = 'výztuž';
+      else if (/^m[2²]$/i.test(foundUnit)) subtype = 'bednění';
+
+      // Find quantity: look for numbers in the row, prioritize cells near the unit
+      let qty = 0;
+      const columnKeys = entries.map(e => e[0]);
+      const unitColIdx = foundUnitKey ? columnKeys.indexOf(foundUnitKey) : -1;
+      const numbersInRow = [];
+
+      for (const [key, value] of entries) {
+        if (key === foundDescKey || key === foundUnitKey) continue;
+        const num = parseNumber(value);
+        if (num > 0) {
+          const colIdx = columnKeys.indexOf(key);
+          const isCode = Number.isInteger(num) && num >= 10000 && num <= 999999;
+          if (!isCode) {
+            numbersInRow.push({ key, num, colIdx });
+          }
+        }
+      }
+
+      // Strategy: number immediately BEFORE the unit column (typical: Množství | MJ)
+      if (unitColIdx > 0) {
+        const prevKey = columnKeys[unitColIdx - 1];
+        const prevNum = numbersInRow.find(n => n.key === prevKey);
+        if (prevNum && prevNum.num > 0 && prevNum.num <= 50000) {
+          qty = prevNum.num;
+        }
+      }
+
+      // Fallback: closest number to unit cell that's reasonable
+      if (qty <= 0 && numbersInRow.length > 0 && unitColIdx >= 0) {
+        const sorted = numbersInRow
+          .filter(n => n.num >= 0.1 && n.num <= 50000)
+          .sort((a, b) => Math.abs(a.colIdx - unitColIdx) - Math.abs(b.colIdx - unitColIdx));
+        if (sorted.length > 0) qty = sorted[0].num;
+      }
+
+      // Fallback: any reasonable number
+      if (qty <= 0 && numbersInRow.length > 0) {
+        const candidate = numbersInRow.find(n => n.num >= 0.1 && n.num <= 50000);
+        if (candidate) qty = candidate.num;
+      }
+
+      if (qty <= 0) continue;
+
+      // Build part name
+      let partName = foundDescription;
+      if (partName.length > 60) partName = partName.substring(0, 57) + '...';
+
+      // Extract OTSKP code
+      let otskpCode = null;
+      if (foundCode) {
+        const codeMatch = foundCode.match(/^(\d{5,6})/);
+        if (codeMatch) otskpCode = codeMatch[1];
+      }
+
+      items.push({
+        part_name: partName,
+        item_name: foundDescription,
+        subtype: subtype,
+        unit: foundUnit.toUpperCase(),
+        qty: qty,
+        concrete_m3: subtype === 'beton' ? qty : 0,
+        crew_size: 4,
+        wage_czk_ph: 398,
+        shift_hours: 10,
+        days: 0,
+        otskp_code: otskpCode,
+        concrete_grade: concreteMark,
+        source: 'ALL_ITEMS_SEARCH'
+      });
+
+      logger.info(`[ConcreteExtractor] ✅ ${subtype}: ${qty} ${foundUnit} | ${otskpCode || ''} | "${foundDescription.substring(0, 50)}..."`);
+
+    } catch (error) {
+      logger.debug(`[ConcreteExtractor] Error processing row ${i}: ${error.message}`);
+    }
+  }
+
+  const betonCount = items.filter(i => i.subtype === 'beton').length;
+  const vyztuzCount = items.filter(i => i.subtype === 'výztuž').length;
+  const bedneniCount = items.filter(i => i.subtype === 'bednění').length;
+  const jineCount = items.filter(i => i.subtype === 'jiné').length;
+  const totalM3 = items.filter(i => i.subtype === 'beton').reduce((s, i) => s + i.qty, 0);
+
+  logger.info(`[ConcreteExtractor] 📊 All items: ${items.length} (beton: ${betonCount}/${totalM3.toFixed(1)}m³, výztuž: ${vyztuzCount}, bednění: ${bedneniCount}, jiné: ${jineCount})`);
+
+  return items;
 }
 
 export { parseNumber };
