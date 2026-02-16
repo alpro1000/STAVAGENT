@@ -12,7 +12,7 @@ import { readExcelFile, getSheetNames, parseExcelSheet } from '../../services/pa
 import { detectExcelStructure, type DetectionResult } from '../../services/autoDetect/structureDetector';
 import { classifyItems, applyClassificationsWithCascade } from '../../services/classification/classificationService';
 import { classifyRows } from '../../services/classification/rowClassificationService';
-import { useRegistryStore } from '../../stores/registryStore';
+import { useRegistryStoreAPI } from '../../stores/registryStoreAPI';
 import { getDefaultTemplate } from '../../config/templates';
 import { defaultImportConfig } from '../../config/defaultConfig';
 import { storeOriginalFile } from '../../services/originalFileStore';
@@ -32,7 +32,7 @@ interface ImportModalProps {
 type Step = 'upload' | 'template' | 'custom-config' | 'sheet' | 'parsing' | 'raw-view' | 'success';
 
 export function ImportModal({ isOpen, onClose }: ImportModalProps) {
-  const { addProject, addTemplate } = useRegistryStore();
+  const { addProject, addTemplate } = useRegistryStoreAPI();
 
   const [step, setStep] = useState<Step>('upload');
   const [file, setFile] = useState<File | null>(null);
