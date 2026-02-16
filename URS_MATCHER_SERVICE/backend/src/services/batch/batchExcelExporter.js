@@ -72,26 +72,24 @@ async function createMatchesSheet(workbook, batchData) {
   });
 
   // ========================================================================
-  // COLUMNS
+  // COLUMNS - Czech headers for better readability
   // ========================================================================
   sheet.columns = [
-    { header: 'Line №', key: 'lineNo', width: 10 },
-    { header: 'Original Text', key: 'originalText', width: 50 },
-    { header: 'Type', key: 'detectedType', width: 12 },
-    { header: 'SubWork №', key: 'subWorkNo', width: 12 },
-    { header: 'SubWork Text', key: 'subWorkText', width: 40 },
-    { header: 'Rank', key: 'rank', width: 8 },
-    { header: 'ÚRS Code', key: 'ursCode', width: 12 },
-    { header: 'ÚRS Name', key: 'ursName', width: 50 },
-    { header: 'Unit', key: 'unit', width: 8 },
-    { header: 'Score', key: 'score', width: 10 },
-    { header: 'Confidence', key: 'confidence', width: 12 },
-    { header: 'Needs Review', key: 'needsReview', width: 14 },
-    { header: 'Reason', key: 'reason', width: 50 },
-    { header: 'Evidence', key: 'evidence', width: 40 },
-    { header: 'TSKP Section', key: 'tskpSection', width: 20 },
-    { header: 'TSKP Name', key: 'tskpName', width: 35 },
-    { header: 'Source', key: 'source', width: 12 }
+    { header: '№', key: 'lineNo', width: 6 },
+    { header: 'Vstupní text', key: 'originalText', width: 55 },
+    { header: 'Typ', key: 'detectedType', width: 14 },
+    { header: 'Dílčí práce', key: 'subWorkText', width: 45 },
+    { header: 'Pořadí', key: 'rank', width: 7 },
+    { header: 'Kód ÚRS', key: 'ursCode', width: 14 },
+    { header: 'Název ÚRS', key: 'ursName', width: 55 },
+    { header: 'MJ', key: 'unit', width: 8 },
+    { header: 'Skóre', key: 'score', width: 8 },
+    { header: 'Jistota', key: 'confidence', width: 10 },
+    { header: 'Ke kontrole', key: 'needsReview', width: 12 },
+    { header: 'Odůvodnění', key: 'reason', width: 50 },
+    { header: 'TSKP', key: 'tskpSection', width: 12 },
+    { header: 'TSKP název', key: 'tskpName', width: 35 },
+    { header: 'Zdroj', key: 'source', width: 14 }
   ];
 
   // ========================================================================
@@ -128,17 +126,15 @@ async function createMatchesSheet(workbook, batchData) {
         lineNo: lineNo,
         originalText: originalText,
         detectedType: detectedType,
-        subWorkNo: '',
         subWorkText: '',
         rank: '',
-        ursCode: item.status === 'error' ? 'ERROR' : 'NO RESULTS',
-        ursName: item.errorMessage || 'No candidates found',
+        ursCode: item.status === 'error' ? 'CHYBA' : 'BEZ VÝSLEDKŮ',
+        ursName: item.errorMessage || 'Žádní kandidáti',
         unit: '',
         score: 0,
-        confidence: 'low',
-        needsReview: 'YES',
-        reason: item.errorMessage || 'Processing failed',
-        evidence: '',
+        confidence: 'nízká',
+        needsReview: 'ANO',
+        reason: item.errorMessage || 'Zpracování selhalo',
         tskpSection: tskp0?.sectionCode || '',
         tskpName: tskp0?.sectionName || '',
         source: ''
@@ -161,21 +157,23 @@ async function createMatchesSheet(workbook, batchData) {
         const tskp = result.tskpClassification || null;
 
         for (const candidate of candidates) {
+          // Translate confidence levels
+          const confLabel = candidate.confidence === 'high' ? 'vysoká'
+            : candidate.confidence === 'medium' ? 'střední' : 'nízká';
+
           sheet.addRow({
             lineNo: lineNo,
             originalText: originalText,
             detectedType: detectedType,
-            subWorkNo: subWork.index || '',
             subWorkText: subWork.text || '',
             rank: candidate.rank || '',
             ursCode: candidate.code || '',
             ursName: candidate.name || '',
             unit: candidate.unit || '',
-            score: candidate.score || 0,
-            confidence: candidate.confidence || 'low',
-            needsReview: candidate.needsReview ? 'YES' : 'NO',
+            score: typeof candidate.score === 'number' ? Math.round(candidate.score * 100) / 100 : 0,
+            confidence: confLabel,
+            needsReview: candidate.needsReview ? 'ANO' : 'NE',
             reason: candidate.reason || '',
-            evidence: candidate.evidence || '',
             tskpSection: tskp?.sectionCode || '',
             tskpName: tskp?.sectionName || '',
             source: candidate.source || ''
@@ -205,7 +203,7 @@ async function createMatchesSheet(workbook, batchData) {
   }
 
   // ========================================================================
-  // BORDERS
+  // BORDERS + TEXT WRAPPING
   // ========================================================================
   for (let i = 1; i < rowIndex; i++) {
     const row = sheet.getRow(i);
@@ -216,8 +214,16 @@ async function createMatchesSheet(workbook, batchData) {
         bottom: { style: 'thin' },
         right: { style: 'thin' }
       };
+      // Wrap text in description columns
+      cell.alignment = { ...cell.alignment, wrapText: true, vertical: 'top' };
     });
   }
+
+  // Auto-filter on header
+  sheet.autoFilter = {
+    from: { row: 1, column: 1 },
+    to: { row: 1, column: sheet.columns.length }
+  };
 
   logger.info(`[BatchExcelExporter] Matches sheet: ${rowIndex - 2} rows`);
 }
@@ -244,7 +250,7 @@ async function createSummarySheet(workbook, batchData) {
   // ========================================================================
   sheet.mergeCells('A1:B1');
   const titleCell = sheet.getCell('A1');
-  titleCell.value = `Batch URS Matcher - Summary Report`;
+  titleCell.value = `URS Matcher - Souhrn výsledků`;
   titleCell.font = { bold: true, size: 16 };
   titleCell.alignment = { horizontal: 'center', vertical: 'middle' };
   sheet.getRow(1).height = 30;
@@ -254,27 +260,27 @@ async function createSummarySheet(workbook, batchData) {
   // ========================================================================
   let row = 3;
 
-  sheet.getCell(`A${row}`).value = 'Batch Name:';
+  sheet.getCell(`A${row}`).value = 'Název dávky:';
   sheet.getCell(`A${row}`).font = { bold: true };
   sheet.getCell(`B${row}`).value = batchData.name;
   row++;
 
-  sheet.getCell(`A${row}`).value = 'Batch ID:';
+  sheet.getCell(`A${row}`).value = 'ID dávky:';
   sheet.getCell(`A${row}`).font = { bold: true };
   sheet.getCell(`B${row}`).value = batchData.batchId;
   row++;
 
-  sheet.getCell(`A${row}`).value = 'Status:';
+  sheet.getCell(`A${row}`).value = 'Stav:';
   sheet.getCell(`A${row}`).font = { bold: true };
-  sheet.getCell(`B${row}`).value = batchData.status;
+  sheet.getCell(`B${row}`).value = batchData.status === 'completed' ? 'Dokončeno' : batchData.status;
   row++;
 
-  sheet.getCell(`A${row}`).value = 'Total Positions:';
+  sheet.getCell(`A${row}`).value = 'Celkem pozic:';
   sheet.getCell(`A${row}`).font = { bold: true };
   sheet.getCell(`B${row}`).value = stats.totalPositions;
   row++;
 
-  sheet.getCell(`A${row}`).value = 'Export Date:';
+  sheet.getCell(`A${row}`).value = 'Datum exportu:';
   sheet.getCell(`A${row}`).font = { bold: true };
   sheet.getCell(`B${row}`).value = new Date().toLocaleString('cs-CZ');
   row++;
@@ -284,19 +290,19 @@ async function createSummarySheet(workbook, batchData) {
   // ========================================================================
   // DETECTION TYPES
   // ========================================================================
-  sheet.getCell(`A${row}`).value = 'Position Types:';
+  sheet.getCell(`A${row}`).value = 'Typy pozic:';
   sheet.getCell(`A${row}`).font = { bold: true, size: 12 };
   row++;
 
-  sheet.getCell(`A${row}`).value = 'SINGLE:';
+  sheet.getCell(`A${row}`).value = 'Jednoduchá (SINGLE):';
   sheet.getCell(`B${row}`).value = stats.detectionTypes.SINGLE;
   row++;
 
-  sheet.getCell(`A${row}`).value = 'COMPOSITE:';
+  sheet.getCell(`A${row}`).value = 'Složená (COMPOSITE):';
   sheet.getCell(`B${row}`).value = stats.detectionTypes.COMPOSITE;
   row++;
 
-  sheet.getCell(`A${row}`).value = 'UNKNOWN:';
+  sheet.getCell(`A${row}`).value = 'Neurčeno (UNKNOWN):';
   sheet.getCell(`B${row}`).value = stats.detectionTypes.UNKNOWN;
   row++;
 
@@ -306,12 +312,12 @@ async function createSummarySheet(workbook, batchData) {
   // SUBWORKS DISTRIBUTION
   // ========================================================================
   if (stats.subWorksDistribution && Object.keys(stats.subWorksDistribution).length > 0) {
-    sheet.getCell(`A${row}`).value = 'SubWorks Distribution (COMPOSITE):';
+    sheet.getCell(`A${row}`).value = 'Rozložení dílčích prací (COMPOSITE):';
     sheet.getCell(`A${row}`).font = { bold: true, size: 12 };
     row++;
 
     for (const [count, freq] of Object.entries(stats.subWorksDistribution)) {
-      sheet.getCell(`A${row}`).value = `  ${count} subworks:`;
+      sheet.getCell(`A${row}`).value = `  ${count} dílčích prací:`;
       sheet.getCell(`B${row}`).value = freq;
       row++;
     }
@@ -322,11 +328,11 @@ async function createSummarySheet(workbook, batchData) {
   // ========================================================================
   // CONFIDENCE LEVELS
   // ========================================================================
-  sheet.getCell(`A${row}`).value = 'Confidence Levels:';
+  sheet.getCell(`A${row}`).value = 'Úrovně jistoty:';
   sheet.getCell(`A${row}`).font = { bold: true, size: 12 };
   row++;
 
-  sheet.getCell(`A${row}`).value = 'High:';
+  sheet.getCell(`A${row}`).value = 'Vysoká:';
   sheet.getCell(`B${row}`).value = stats.confidenceLevels.high;
   sheet.getCell(`B${row}`).fill = {
     type: 'pattern',
@@ -335,11 +341,11 @@ async function createSummarySheet(workbook, batchData) {
   };
   row++;
 
-  sheet.getCell(`A${row}`).value = 'Medium:';
+  sheet.getCell(`A${row}`).value = 'Střední:';
   sheet.getCell(`B${row}`).value = stats.confidenceLevels.medium;
   row++;
 
-  sheet.getCell(`A${row}`).value = 'Low:';
+  sheet.getCell(`A${row}`).value = 'Nízká:';
   sheet.getCell(`B${row}`).value = stats.confidenceLevels.low;
   sheet.getCell(`B${row}`).fill = {
     type: 'pattern',
@@ -353,11 +359,11 @@ async function createSummarySheet(workbook, batchData) {
   // ========================================================================
   // REVIEW STATUS
   // ========================================================================
-  sheet.getCell(`A${row}`).value = 'Review Status:';
+  sheet.getCell(`A${row}`).value = 'Kontrola:';
   sheet.getCell(`A${row}`).font = { bold: true, size: 12 };
   row++;
 
-  sheet.getCell(`A${row}`).value = 'Needs Review:';
+  sheet.getCell(`A${row}`).value = 'Ke kontrole:';
   sheet.getCell(`B${row}`).value = stats.needsReviewCount;
   sheet.getCell(`B${row}`).fill = {
     type: 'pattern',
@@ -366,7 +372,7 @@ async function createSummarySheet(workbook, batchData) {
   };
   row++;
 
-  sheet.getCell(`A${row}`).value = 'Errors:';
+  sheet.getCell(`A${row}`).value = 'Chyby:';
   sheet.getCell(`B${row}`).value = stats.errorCount;
   if (stats.errorCount > 0) {
     sheet.getCell(`B${row}`).fill = {

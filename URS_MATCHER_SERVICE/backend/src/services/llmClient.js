@@ -372,20 +372,46 @@ export async function callLLMForTask(taskType, systemPrompt, userPrompt, timeout
 
   logger.info(`[LLMClient] Task "${taskType}" → ${taskClient.provider}/${taskClient.model}`);
 
-  // Call with task-specific model
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), effectiveTimeout);
+  // Retry with exponential backoff for 429 rate limiting
+  const MAX_RETRIES = 3;
+  const BASE_DELAY_MS = 2000;
 
-  try {
-    if (taskClient.provider === 'claude') {
-      return await callClaudeAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
-    } else if (taskClient.provider === 'gemini') {
-      return await callGeminiAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
-    } else {
-      return await callOpenAIAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), effectiveTimeout);
+
+    try {
+      let result;
+      if (taskClient.provider === 'claude') {
+        result = await callClaudeAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+      } else if (taskClient.provider === 'gemini') {
+        result = await callGeminiAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+      } else {
+        result = await callOpenAIAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+      }
+      clearTimeout(timeout);
+      return result;
+    } catch (error) {
+      clearTimeout(timeout);
+      const status = error.response?.status;
+
+      // Retry on 429 (rate limit) or 503 (overloaded) with backoff
+      if ((status === 429 || status === 503) && attempt < MAX_RETRIES) {
+        const delay = BASE_DELAY_MS * Math.pow(2, attempt);
+        logger.warn(`[LLMClient] Task "${taskType}": ${status} rate limited (attempt ${attempt + 1}/${MAX_RETRIES}), retrying in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        continue;
+      }
+
+      // On final failure, fall back to main provider chain
+      if (attempt === MAX_RETRIES && (status === 429 || status === 503)) {
+        logger.warn(`[LLMClient] Task "${taskType}": ${taskClient.provider} exhausted retries, falling back to provider chain`);
+        initializeLLMClient();
+        return await callLLMWithTimeout(systemPrompt, userPrompt, effectiveTimeout);
+      }
+
+      throw error;
     }
-  } finally {
-    clearTimeout(timeout);
   }
 }
 
