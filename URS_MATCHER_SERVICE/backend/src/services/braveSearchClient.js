@@ -70,7 +70,7 @@ async function callBraveSearchAPI(query) {
     url.searchParams.set('q', query);
     url.searchParams.set('count', '10');
     url.searchParams.set('search_lang', 'cs');
-    url.searchParams.set('country', 'cz');
+    url.searchParams.set('country', 'ALL');
 
     const response = await fetch(url.toString(), {
       method: 'GET',

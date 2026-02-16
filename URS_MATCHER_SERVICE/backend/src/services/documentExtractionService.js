@@ -21,37 +21,42 @@ import { callLLMForTask, TASKS } from './llmClient.js';
 
 const CONCRETE_AGENT_URL = process.env.STAVAGENT_API_URL || 'https://concrete-agent.onrender.com';
 const SIMILARITY_THRESHOLD = 0.85; // 85% similarity for deduplication
-const PARSE_TIMEOUT_MS = 120000; // 2 minutes (lightweight parse, not full Workflow C)
+const PARSE_TIMEOUT_MS = 180000; // 3 minutes (parsing + waiting for positions)
 
 /**
- * Upload document to concrete-agent for LIGHTWEIGHT parsing.
+ * Upload document to concrete-agent for parsing.
  *
- * Uses /api/upload with auto_start_audit=false, generate_summary=false
- * to avoid the heavy Multi-Role AI pipeline that crashes 512MB servers.
+ * Uses /api/upload with:
+ *   auto_start_audit=true   → triggers SmartParser to extract positions
+ *   generate_summary=false  → skip LLM summary (saves ~100MB)
+ *   enable_enrichment=false → skip drawing enrichment (saves ~50MB)
  *
- * Memory: ~100MB (vs 500-750MB for full Workflow C)
+ * After upload, fetches parsed positions from /api/projects/{id}/positions
+ * with wait_for_completion=true (waits up to 30s for background parsing).
+ *
+ * Memory: ~150-200MB (vs 500-750MB for full enrichment+summary)
  */
 async function parseDocumentWithConcreteAgent(filePath) {
   const startTime = Date.now();
   try {
-    logger.info(`[DocExtract] Uploading to concrete-agent (lightweight parse): ${filePath}`);
+    logger.info(`[DocExtract] Uploading to concrete-agent: ${filePath}`);
 
     const fileBuffer = await fs.readFile(filePath);
     const fileName = path.basename(filePath);
     const formData = new FormData();
 
-    // Use /api/upload with parse-only mode (no audit, no summary)
+    // Upload with parsing enabled but enrichment/summary disabled
     formData.append('vykaz_vymer', fileBuffer, {
       filename: fileName,
       contentType: fileName.endsWith('.pdf') ? 'application/pdf' : 'application/octet-stream'
     });
     formData.append('project_name', `doc-extract-${Date.now()}`);
     formData.append('workflow', 'A');
-    formData.append('auto_start_audit', 'false');      // Skip Multi-Role AI (saves ~250MB)
-    formData.append('generate_summary', 'false');       // Skip summary (saves ~100MB)
+    formData.append('auto_start_audit', 'true');        // Parse positions (SmartParser)
+    formData.append('generate_summary', 'false');       // Skip LLM summary (saves ~100MB)
     formData.append('enable_enrichment', 'false');      // Skip enrichment (saves ~50MB)
 
-    logger.info(`[DocExtract] Calling /api/upload (parse-only, timeout: ${PARSE_TIMEOUT_MS / 1000}s)...`);
+    logger.info(`[DocExtract] Calling /api/upload (parse+audit, no enrichment, timeout: ${PARSE_TIMEOUT_MS / 1000}s)...`);
 
     const response = await axios.post(
       `${CONCRETE_AGENT_URL}/api/upload`,
@@ -70,16 +75,15 @@ async function parseDocumentWithConcreteAgent(filePath) {
       throw new Error(data?.error || 'Neplatná odpověď z concrete-agent');
     }
 
-    const duration = ((Date.now() - startTime) / 1000).toFixed(1);
-    const posCount = data.positions_total || data.positions_raw || 0;
-    logger.info(`[DocExtract] ✓ Parsed in ${duration}s: project_id=${data.project_id}, ${posCount} positions`);
+    const uploadDuration = ((Date.now() - startTime) / 1000).toFixed(1);
+    logger.info(`[DocExtract] Upload OK in ${uploadDuration}s: project_id=${data.project_id}`);
 
-    // Build positions from response
+    // Build positions from response or fetch them from the positions endpoint
     const positions = [];
     let fullText = '';
 
-    // If response contains parsed positions directly
-    if (data.positions && Array.isArray(data.positions)) {
+    // If response contains parsed positions directly (unlikely but handle it)
+    if (data.positions && Array.isArray(data.positions) && data.positions.length > 0) {
       for (const pos of data.positions) {
         positions.push({
           code: pos.code || pos.urs_code || '',
@@ -90,23 +94,23 @@ async function parseDocumentWithConcreteAgent(filePath) {
           total_price: pos.total_price || null
         });
       }
-      fullText = positions.map(p =>
-        `${p.code} ${p.description} ${p.quantity || ''} ${p.unit}`
-      ).join('\n');
     }
 
-    // If the server returned message/status but no positions yet,
-    // try to fetch the parsed data from the project endpoint
+    // Parsing runs in background - fetch positions with wait_for_completion
     if (positions.length === 0 && data.project_id) {
-      logger.info(`[DocExtract] No positions in upload response, fetching project data...`);
+      logger.info(`[DocExtract] Fetching parsed positions (wait_for_completion=true)...`);
       try {
-        const projectResponse = await axios.get(
-          `${CONCRETE_AGENT_URL}/api/project/${data.project_id}`,
-          { timeout: 30000 }
+        const posResponse = await axios.get(
+          `${CONCRETE_AGENT_URL}/api/projects/${data.project_id}/positions`,
+          {
+            params: { wait_for_completion: true },
+            timeout: 60000  // 60s (server waits up to 30s internally)
+          }
         );
-        const projectData = projectResponse.data;
-        if (projectData?.positions && Array.isArray(projectData.positions)) {
-          for (const pos of projectData.positions) {
+        const posData = posResponse.data;
+
+        if (posData?.positions && Array.isArray(posData.positions)) {
+          for (const pos of posData.positions) {
             positions.push({
               code: pos.code || pos.urs_code || '',
               description: pos.description || pos.name || pos.text || '',
@@ -116,25 +120,29 @@ async function parseDocumentWithConcreteAgent(filePath) {
               total_price: pos.total_price || null
             });
           }
-          fullText = positions.map(p =>
-            `${p.code} ${p.description} ${p.quantity || ''} ${p.unit}`
-          ).join('\n');
+          logger.info(`[DocExtract] Fetched ${positions.length} positions (status: ${posData.status})`);
         }
 
-        // If still no positions, get file text from diagnostics or message
+        // If still pending/no positions, use message as fullText for LLM extraction
         if (positions.length === 0) {
-          fullText = projectData?.message || data?.message || '';
-          if (projectData?.diagnostics) {
-            fullText += '\n' + JSON.stringify(projectData.diagnostics);
-          }
+          fullText = posData?.message || data?.message || '';
+          logger.info(`[DocExtract] No positions yet (status: ${posData?.status}), will use LLM extraction`);
         }
       } catch (fetchError) {
-        logger.warn(`[DocExtract] Could not fetch project data: ${fetchError.message}`);
+        logger.warn(`[DocExtract] Could not fetch positions: ${fetchError.message}`);
         fullText = data?.message || '';
       }
     }
 
-    logger.info(`[DocExtract] Extracted ${fullText.length} chars of text, ${positions.length} positions`);
+    // Build fullText from positions if we have them
+    if (positions.length > 0 && !fullText) {
+      fullText = positions.map(p =>
+        `${p.code} ${p.description} ${p.quantity || ''} ${p.unit}`
+      ).join('\n');
+    }
+
+    const duration = ((Date.now() - startTime) / 1000).toFixed(1);
+    logger.info(`[DocExtract] Extracted ${fullText.length} chars of text, ${positions.length} positions in ${duration}s`);
 
     return {
       fullText: fullText,
@@ -142,9 +150,9 @@ async function parseDocumentWithConcreteAgent(filePath) {
       sections: [],
       metadata: {
         project_id: data.project_id,
-        positions_count: posCount,
+        positions_count: positions.length,
         duration_seconds: parseFloat(duration),
-        parse_mode: 'lightweight'
+        parse_mode: 'smart_parser'
       }
     };
 

@@ -1013,57 +1013,60 @@ exportBtn.addEventListener('click', async () => {
     exportBtn.disabled = true;
     exportBtn.textContent = 'Příprava...';
 
-    let csv = '';
+    // Helper: escape CSV field with semicolon separator
+    const esc = (val) => {
+      if (val === null || val === undefined) return '';
+      const s = String(val);
+      if (s.includes('"') || s.includes(';') || s.includes('\n')) {
+        return '"' + s.replace(/"/g, '""') + '"';
+      }
+      return s;
+    };
+
+    let csv = 'sep=;\n';
     let items = currentResults.items || [];
     const candidates = currentResults.candidates || [];
     const relatedItems = currentResults.related_items || [];
 
     // Handle text-match results (manual input)
     if (candidates.length > 0) {
-      csv = 'Typ,Kód ÚRS,Název,MJ,Jistota (%),Důvod\n';
+      csv += 'Typ;Kód ÚRS;Název;MJ;Jistota (%);Důvod\n';
 
-      // Main candidates
       candidates.forEach((item) => {
         const confidence = ((item.confidence || 0) * 100).toFixed(0);
-        csv += `"Hlavní","${item.urs_code || ''}","${item.urs_name || ''}","${item.unit || ''}","${confidence}","${item.reason || ''}"\n`;
+        csv += [esc('Hlavní'), esc(item.urs_code), esc(item.urs_name), esc(item.unit), confidence, esc(item.reason)].join(';') + '\n';
       });
 
-      // Related items
       if (relatedItems.length > 0) {
         relatedItems.forEach((item) => {
-          csv += `"Doplňková","${item.urs_code || ''}","${item.urs_name || ''}","${item.unit || ''}","","${item.reason || ''}"\n`;
+          csv += [esc('Doplňková'), esc(item.urs_code), esc(item.urs_name), esc(item.unit), '', esc(item.reason)].join(';') + '\n';
         });
       }
     }
-    // Handle block-match results (blocks instead of items)
+    // Handle block-match results
     else if (!items.length && currentResults.blocks) {
-      csv = 'Blok,Řádek,Vstupní text,Kód ÚRS,Název,MJ\n';
+      csv += 'Blok;Řádek;Vstupní text;Kód ÚRS;Název;MJ\n';
       currentResults.blocks.forEach((block) => {
         const blockName = block.block_name || '';
         (block.items || []).forEach((item) => {
-          const rowId = item.row_id || '';
-          const inputText = item.input_text || '';
-          const ursCode = item.selected_urs?.urs_code || '';
-          const ursName = item.selected_urs?.urs_name || '';
-          const unit = item.selected_urs?.unit || '';
-          csv += `"${blockName}","${rowId}","${inputText}","${ursCode}","${ursName}","${unit}"\n`;
+          csv += [esc(blockName), esc(item.row_id), esc(item.input_text), esc(item.selected_urs?.urs_code), esc(item.selected_urs?.urs_name), esc(item.selected_urs?.unit)].join(';') + '\n';
         });
       });
     } else {
       // Handle regular file upload results
-      csv = 'Řádek,Vstupní text,Kód ÚRS,Název,MJ,Množství,Jistota,Typ\n';
+      csv += 'Řádek;Vstupní text;Kód ÚRS;Název;MJ;Množství;Jistota;Typ\n';
       items.forEach((item) => {
         const type = item.extra_generated ? 'Doplňková' : 'Přímá';
-        csv += `"${item.input_row_id}","${item.input_text}","${item.urs_code}","${item.urs_name}","${item.unit}","${item.quantity}","${item.confidence.toFixed(2)}","${type}"\n`;
+        csv += [esc(item.input_row_id), esc(item.input_text), esc(item.urs_code), esc(item.urs_name), esc(item.unit), item.quantity || '', item.confidence?.toFixed(2) || '', type].join(';') + '\n';
       });
     }
 
-    // Create download with UTF-8 BOM for Excel compatibility
+    // Download with UTF-8 BOM for Excel compatibility
     const BOM = '\uFEFF';
     const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.setAttribute('href', URL.createObjectURL(blob));
-    link.setAttribute('download', `urs_results_${new Date().getTime()}.csv`);
+    link.setAttribute('download', `urs_vysledky_${new Date().getTime()}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -1769,15 +1772,27 @@ function attachDocumentUploadHandlers() {
     debugLog('🔬 ✓ Extracted works displayed');
   }
 
-  // Export works to Excel
+  // Export works to Excel (CSV with semicolon separator for European Excel)
   function exportWorksToExcel() {
     if (!window.extractedWorks) {
       showError('Nejsou k dispozici žádná data pro export');
       return;
     }
 
-    // Create CSV
-    let csv = 'Sekce,Název Práce,TSKP Kód,Kategorie,Jednotka,Množství,Jistota\n';
+    // Helper: escape CSV field (handle quotes, newlines)
+    const esc = (val) => {
+      if (val === null || val === undefined) return '';
+      const s = String(val);
+      if (s.includes('"') || s.includes(';') || s.includes('\n')) {
+        return '"' + s.replace(/"/g, '""') + '"';
+      }
+      return s;
+    };
+
+    // Create CSV with semicolon separator (Czech Excel default)
+    // sep=; tells Excel which delimiter to use
+    let csv = 'sep=;\n';
+    csv += 'Sekce;Název práce;TSKP kód;TSKP název;Kategorie;Jednotka;Množství;Jistota\n';
 
     window.extractedWorks.sections.forEach(section => {
       section.works.forEach(work => {
@@ -1785,21 +1800,30 @@ function attachDocumentUploadHandlers() {
           ? (work.tskp_confidence * 100).toFixed(0) + '%'
           : '';
 
-        csv += `"${section.name}","${work.name || ''}","${work.tskp_code || ''}","${work.category || ''}","${work.unit || ''}","${work.quantity !== null ? work.quantity : ''}","${confidence}"\n`;
+        csv += [
+          esc(section.name),
+          esc(work.name),
+          esc(work.tskp_code),
+          esc(work.tskp_name),
+          esc(work.category),
+          esc(work.unit),
+          work.quantity !== null && work.quantity !== undefined ? work.quantity : '',
+          confidence
+        ].join(';') + '\n';
       });
     });
 
-    // Download CSV with UTF-8 BOM for Excel
+    // Download CSV with UTF-8 BOM for Excel compatibility
     const BOM = '\uFEFF';
     const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `extracted_works_${new Date().toISOString().slice(0, 10)}.csv`;
+    link.download = `extrakce_praci_${new Date().toISOString().slice(0, 10)}.csv`;
     link.click();
     URL.revokeObjectURL(url);
 
-    debugLog('📥 ✓ Works exported to Excel');
+    debugLog('📥 ✓ Works exported to CSV');
   }
 
   // Send works to batch processor

@@ -81,7 +81,7 @@ import fs from 'fs';
 import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { parseXLSX, parseAllSheets, parseNumber, extractProjectsFromCOREResponse, extractFileMetadata, detectObjectTypeFromDescription, normalizeString } from '../services/parser.js';
-import { extractConcretePositions, convertRawRowsToPositions, extractConcreteOnlyM3 } from '../services/concreteExtractor.js';
+import { extractConcretePositions, convertRawRowsToPositions, extractConcreteOnlyM3, extractAllConstructionItems } from '../services/concreteExtractor.js';
 import { parseExcelByCORE, convertCOREToMonolitPosition, filterPositionsForBridge, validatePositions, enrichPosition } from '../services/coreAPI.js';
 import { importCache, cacheStatsMiddleware } from '../services/importCache.js';
 import DataPreprocessor from '../services/dataPreprocessor.js';
@@ -233,17 +233,27 @@ router.post('/', upload.single('file'), async (req, res) => {
 
         logger.info(`[Upload] Processing sheet: ${sheet.sheetName} → Bridge: ${bridgeId}`);
 
-        // Extract ONLY concrete items (m3) from this sheet
-        const concretePositions = extractConcreteOnlyM3(sheet.rawRows);
+        // Extract concrete items (m3) by grade pattern first
+        let concretePositions = extractConcreteOnlyM3(sheet.rawRows);
+        let extractionMethod = 'grade_search';
 
-        // Calculate total concrete volume
-        const totalConcreteM3 = concretePositions.reduce((sum, p) => sum + (p.qty || 0), 0);
-
-        logger.info(`[Upload] Sheet "${sheet.sheetName}": ${concretePositions.length} concrete items, ${totalConcreteM3.toFixed(2)} m³`);
-
-        // Skip sheets with no concrete
+        // If grade search found nothing, try comprehensive extraction (výztuž, bednění, etc.)
         if (concretePositions.length === 0) {
-          logger.info(`[Upload] Skipping sheet "${sheet.sheetName}" - no concrete items found`);
+          logger.info(`[Upload] No concrete grades found in "${sheet.sheetName}", trying full extraction...`);
+          concretePositions = extractAllConstructionItems(sheet.rawRows);
+          extractionMethod = 'all_items_search';
+        }
+
+        // Calculate total concrete volume (only M3 beton items)
+        const totalConcreteM3 = concretePositions
+          .filter(p => p.subtype === 'beton')
+          .reduce((sum, p) => sum + (p.qty || 0), 0);
+
+        logger.info(`[Upload] Sheet "${sheet.sheetName}": ${concretePositions.length} items (${extractionMethod}), ${totalConcreteM3.toFixed(2)} m³ concrete`);
+
+        // Skip sheets with no construction items at all
+        if (concretePositions.length === 0) {
+          logger.info(`[Upload] Skipping sheet "${sheet.sheetName}" - no construction items found`);
           continue;
         }
 
