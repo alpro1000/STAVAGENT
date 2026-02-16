@@ -5,6 +5,7 @@
 
 import { create } from 'zustand';
 import type { Project, Sheet } from '../types';
+import type { ImportTemplate } from '../types/template';
 import { registryAPI } from '../services/registryAPI';
 
 interface RegistryState {
@@ -22,6 +23,7 @@ interface RegistryState {
   setSelectedProject: (projectId: string | null) => void;
   setSelectedSheet: (projectId: string | null, sheetId: string | null) => void;
   getSheet: (projectId: string, sheetId: string) => Sheet | null;
+  addTemplate: (template: ImportTemplate) => void;
 }
 
 export const useRegistryStoreAPI = create<RegistryState>((set, get) => ({
@@ -184,5 +186,9 @@ export const useRegistryStoreAPI = create<RegistryState>((set, get) => ({
   getSheet: (projectId, sheetId) => {
     const project = get().projects.find((p) => p.id === projectId);
     return project?.sheets.find((s) => s.id === sheetId) || null;
+  },
+
+  addTemplate: (template) => {
+    console.log('[API Store] addTemplate called (templates stored locally, not in DB):', template.metadata.name);
   },
 }));
