@@ -1,5 +1,5 @@
 /**
- * FormworkCalculatorModal - Kalkulátor opalubky
+ * FormworkCalculatorModal - Kalkulátor pronájmu bednění
  * Modal with a table for calculating formwork rental costs
  * Results are transferred to PositionsTable as "nájem bednění" rows
  */
@@ -19,6 +19,8 @@ import { FORMWORK_SYSTEMS, findFormworkSystem, getDefaultFormworkSystem } from '
 interface Props {
   bridgeId: string;
   partNames: string[];        // Available part names for linking (future use)
+  currentPartName?: string;   // Part that opened the calculator (for display)
+  elementTotalDays?: number;  // Total element occupancy days (all work types + curing)
   onTransfer: (rows: FormworkCalculatorRow[]) => void;
   onClose: () => void;
   initialRows?: FormworkCalculatorRow[];
@@ -48,8 +50,10 @@ function createEmptyRow(bridgeId: string): FormworkCalculatorRow {
   };
 }
 
-/** Recalculate dependent fields after any edit */
-function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: number): FormworkCalculatorRow {
+/** Recalculate dependent fields after any edit
+ * @param elementTotalDays - if > 0, use as rental term (total element occupancy)
+ */
+function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: number, elementTotalDays = 0): FormworkCalculatorRow {
   const sys = findFormworkSystem(row.system_name);
 
   // Assembly/disassembly days from norm (if system selected)
@@ -69,8 +73,11 @@ function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: num
   const autoTacts = calculateFormworkTacts(row.total_area_m2, row.set_area_m2);
   const numTacts = row.num_tacts > 0 ? row.num_tacts : autoTacts;
 
-  // Term
-  const termDays = calculateFormworkTerm(numTacts, daysPerTact);
+  // Term: use elementTotalDays (full element occupancy) when available,
+  // otherwise fall back to formwork-only term (tacts × daysPerTact)
+  const termDays = elementTotalDays > 0
+    ? elementTotalDays
+    : calculateFormworkTerm(numTacts, daysPerTact);
 
   // Rental
   const monthlyPerSet = calculateMonthlyRentalPerSet(row.set_area_m2, row.rental_czk_per_m2_month);
@@ -95,6 +102,8 @@ function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: num
 export default function FormworkCalculatorModal({
   bridgeId,
   partNames: _partNames,
+  currentPartName,
+  elementTotalDays = 0,
   onTransfer,
   onClose,
   initialRows
@@ -122,7 +131,7 @@ export default function FormworkCalculatorModal({
         if (res.ok) {
           const data = await res.json();
           if (data.rows && data.rows.length > 0) {
-            setRows(data.rows.map((r: FormworkCalculatorRow) => recalcRow(r, crewRef.current, shiftRef.current)));
+            setRows(data.rows.map((r: FormworkCalculatorRow) => recalcRow(r, crewRef.current, shiftRef.current, elementTotalDays)));
           }
         }
       } catch (err) {
@@ -146,10 +155,10 @@ export default function FormworkCalculatorModal({
     return () => clearTimeout(timer);
   }, [rows, bridgeId, isLoading]);
 
-  // Recalc all rows when crew/shift changes
+  // Recalc all rows when crew/shift or elementTotalDays changes
   useEffect(() => {
-    setRows(prev => prev.map(r => recalcRow(r, crewSize, shiftHours)));
-  }, [crewSize, shiftHours]);
+    setRows(prev => prev.map(r => recalcRow(r, crewSize, shiftHours, elementTotalDays)));
+  }, [crewSize, shiftHours, elementTotalDays]);
 
   const handleFieldChange = useCallback((rowId: string, field: keyof FormworkCalculatorRow, value: any) => {
     setRows(prev => prev.map(r => {
@@ -172,9 +181,9 @@ export default function FormworkCalculatorModal({
         updated.num_tacts = calculateFormworkTacts(value as number, updated.set_area_m2);
       }
 
-      return recalcRow(updated, crewSize, shiftHours);
+      return recalcRow(updated, crewSize, shiftHours, elementTotalDays);
     }));
-  }, [crewSize, shiftHours]);
+  }, [crewSize, shiftHours, elementTotalDays]);
 
   const addRow = () => {
     setRows(prev => [...prev, createEmptyRow(bridgeId)]);
@@ -227,9 +236,15 @@ export default function FormworkCalculatorModal({
           background: 'var(--data-surface-alt, #f5f5f5)'
         }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: '18px' }}>Kalkulátor opalubky (Bednění)</h2>
+            <h2 style={{ margin: 0, fontSize: '18px' }}>Kalkulátor pronájmu bednění</h2>
             <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--text-secondary)' }}>
+              {currentPartName ? `Část: ${currentPartName} • ` : ''}
               Výpočet pronájmu bednícího systému • Montáž + Demontáž odděleny
+              {elementTotalDays > 0 && (
+                <span style={{ marginLeft: '8px', fontWeight: 600, color: '#e65100' }}>
+                  • Celk. doba prvku: {elementTotalDays} dní
+                </span>
+              )}
             </p>
           </div>
           <button onClick={onClose} style={{
@@ -284,7 +299,9 @@ export default function FormworkCalculatorModal({
                 <th style={{...thStyle, background: '#e3f2fd'}}>Montáž [dny]</th>
                 <th style={{...thStyle, background: '#e3f2fd'}}>Demontáž [dny]</th>
                 <th style={thStyle}>Dny/takt (z+o)</th>
-                <th style={thStyle}>Termín [den]</th>
+                <th style={thStyle} title={elementTotalDays > 0 ? 'Celk. doba prvku (montáž+výztuž+beton+zrání+demontáž)' : 'Termín bednění (taktů × dny/takt)'}>
+                  {elementTotalDays > 0 ? 'Celk.doba [den]' : 'Termín [den]'}
+                </th>
                 <th style={thStyle}>Systém</th>
                 <th style={thStyle}>Výška</th>
                 <th style={thStyle}>Nájem [Kč/m²/měs]</th>

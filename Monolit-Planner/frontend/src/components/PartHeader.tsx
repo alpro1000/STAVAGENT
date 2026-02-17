@@ -262,7 +262,7 @@ export default function PartHeader({
             <button
               onClick={onOpenFormworkCalculator}
               disabled={isLocked}
-              title="Otevřít kalkulátor opalubky (pronájem bednění)"
+              title="Otevřít kalkulátor pronájmu bednění"
               style={{
                 background: '#1565c0',
                 color: 'white',

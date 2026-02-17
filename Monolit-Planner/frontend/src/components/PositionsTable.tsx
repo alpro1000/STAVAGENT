@@ -10,7 +10,7 @@ import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
 import { positionsAPI } from '../services/api';
 import type { Position, Subtype, Unit } from '@stavagent/monolit-shared';
-import { SUBTYPE_LABELS } from '@stavagent/monolit-shared';
+import { SUBTYPE_LABELS, calculateElementTotalDays } from '@stavagent/monolit-shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
@@ -31,7 +31,7 @@ export default function PositionsTable() {
   const [showNewPartModal, setShowNewPartModal] = useState(false);
   const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
-  const [showFormworkCalc, setShowFormworkCalc] = useState(false);
+  const [showFormworkCalc, setShowFormworkCalc] = useState<string | null>(null);
 
   // Resizable column state
   const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
@@ -309,16 +309,18 @@ export default function PositionsTable() {
     setPendingCustomWork(null);
   };
 
-  // Handle formwork calculator transfer - create rental positions
+  // Handle formwork calculator transfer - create rental positions in the SAME part
   const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[]) => {
-    if (!selectedBridge) return;
+    if (!selectedBridge || !showFormworkCalc) return;
+
+    const targetPartName = showFormworkCalc; // partName that opened the calculator
 
     try {
       const newPositions: Partial<Position>[] = calcRows.map(row => ({
         id: uuidv4(),
         bridge_id: selectedBridge,
-        part_name: `Bednění ${row.construction_name}`,
-        item_name: `Nájem - ${row.system_name} ${row.system_height}`,
+        part_name: targetPartName,
+        item_name: `Bednění - ${row.construction_name}`,
         subtype: 'jiné' as Subtype,
         unit: 'sada' as any,
         qty: row.num_sets,
@@ -340,8 +342,8 @@ export default function PositionsTable() {
       }
 
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
-      setShowFormworkCalc(false);
-      alert(`Přeneseno ${calcRows.length} řádků pronájmu bednění do pozic.`);
+      setShowFormworkCalc(null);
+      alert(`Přeneseno ${calcRows.length} řádků pronájmu bednění do části "${targetPartName}".`);
     } catch (error) {
       alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
     }
@@ -500,7 +502,7 @@ export default function PositionsTable() {
                   onOtskpCodeAndNameUpdate={(code, name, unitPrice, unit) =>
                     handleOtskpCodeAndNameUpdate(partName, code, name, unitPrice, unit)
                   }
-                  onOpenFormworkCalculator={() => setShowFormworkCalc(true)}
+                  onOpenFormworkCalculator={() => setShowFormworkCalc(partName)}
                   isLocked={isLocked}
                 />
 
@@ -630,12 +632,17 @@ export default function PositionsTable() {
       )}
 
       {/* Formwork Calculator Modal */}
-      {showFormworkCalc && selectedBridge && (
+      {showFormworkCalc !== null && selectedBridge && (
         <FormworkCalculatorModal
           bridgeId={selectedBridge}
           partNames={Object.keys(groupedPositions)}
+          currentPartName={showFormworkCalc}
+          elementTotalDays={(() => {
+            const partPos = groupedPositions[showFormworkCalc] || [];
+            return partPos.length > 0 ? calculateElementTotalDays(partPos) : 0;
+          })()}
           onTransfer={handleFormworkTransfer}
-          onClose={() => setShowFormworkCalc(false)}
+          onClose={() => setShowFormworkCalc(null)}
         />
       )}
     </div>
