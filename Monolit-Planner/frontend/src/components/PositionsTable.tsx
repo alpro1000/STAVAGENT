@@ -370,13 +370,20 @@ export default function PositionsTable() {
       setFormworkCalcPartName(null);
       
       const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
+      const totalArea = calcRows.reduce((sum, r) => r.total_area_m2, 0);
+      const registryUrl = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
       
       alert(
         `✅ Přeneseno ${newPositions.length} řádků (Montáž + Demontáž) do části "${targetPartName}"\n\n` +
-        `💡 TIP: Nájem bednění přidejte do Registry jako TOV položku:\n` +
-        `- Termín: ${totalRentalDays} dní\n` +
-        `- Dodavatel: DOKA/Peri\n` +
-        `- Výpočet nájmu proveďte v Registry TOV kalkulátoru`
+        `💡 NÁJEM BEDNĚNÍ - přidejte do Registry TOV:\n` +
+        `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+        `📊 Parametry pro kalkulátor:\n` +
+        `   • Plocha: ${totalArea.toFixed(1)} m²\n` +
+        `   • Termín nájmu: ${totalRentalDays} dní\n` +
+        `   • Systém: ${calcRows[0]?.formwork_system || 'FRAMI XLIFE'}\n\n` +
+        `🔗 Otevřete Registry TOV:\n` +
+        `   ${registryUrl}\n\n` +
+        `   Klikněte na "🏗️ Nájem bednění" → zadejte parametry → přidejte do TOV`
       );
     } catch (error) {
       alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
