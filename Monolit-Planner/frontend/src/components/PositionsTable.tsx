@@ -380,7 +380,7 @@ export default function PositionsTable() {
         `📊 Parametry pro kalkulátor:\n` +
         `   • Plocha: ${totalArea.toFixed(1)} m²\n` +
         `   • Termín nájmu: ${totalRentalDays} dní\n` +
-        `   • Systém: ${calcRows[0]?.formwork_system || 'FRAMI XLIFE'}\n\n` +
+        `   • Systém: ${calcRows[0]?.system_name || 'FRAMI XLIFE'}\n\n` +
         `🔗 Otevřete Registry TOV:\n` +
         `   ${registryUrl}\n\n` +
         `   Klikněte na "🏗️ Nájem bednění" → zadejte parametry → přidejte do TOV`
