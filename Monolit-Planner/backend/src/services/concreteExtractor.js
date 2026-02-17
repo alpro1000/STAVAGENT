@@ -461,9 +461,13 @@ export function extractConcreteOnlyM3(rawRows) {
       // 2. Look for M3 unit cell as hint - quantity should be in ADJACENT column
       // 3. Prefer reasonable volume values (not OTSKP codes or prices)
       let qty = 0;
+      let unitPrice = 0;
+      let totalPrice = 0;
       let foundM3Cell = false;
       let m3CellKey = null;
       let quantityColumnKey = null;
+      let priceColumnKey = null;
+      let totalPriceColumnKey = null;
       let numbersInRow = [];
 
       // Get column order for position-based detection
@@ -483,6 +487,14 @@ export function extractConcreteOnlyM3(rawRows) {
             keyLower.includes('qty') || keyLower.includes('quantity') ||
             keyLower.includes('objem') || keyLower.includes('počet')) {
           quantityColumnKey = key;
+        }
+
+        // Check for price columns
+        if (keyLower.includes('j.cena') || keyLower.includes('jednotková') || keyLower === 'unit price') {
+          priceColumnKey = key;
+        }
+        if (keyLower.includes('cena celkem') || keyLower.includes('celkem') || keyLower === 'total') {
+          totalPriceColumnKey = key;
         }
 
         // Check if this is the M3 unit cell
@@ -627,6 +639,44 @@ export function extractConcreteOnlyM3(rawRows) {
         continue;
       }
 
+      // Extract prices: unit price and total price
+      // Strategy: use named columns first, then positional (after M3/qty column)
+      if (priceColumnKey) {
+        unitPrice = parseNumber(row[priceColumnKey]) || 0;
+      }
+      if (totalPriceColumnKey) {
+        totalPrice = parseNumber(row[totalPriceColumnKey]) || 0;
+      }
+
+      // Positional fallback: unit price is typically 2 columns after M3, total price 3 columns after
+      if (unitPrice <= 0 && foundM3Cell && m3CellKey) {
+        const m3ColIdx = columnKeys.indexOf(m3CellKey);
+        if (m3ColIdx >= 0) {
+          // Column after M3 is unit price, next is total price
+          for (let offset = 1; offset <= 3; offset++) {
+            const nextKey = columnKeys[m3ColIdx + offset];
+            if (nextKey && row[nextKey]) {
+              const num = parseNumber(row[nextKey]);
+              if (num > 0 && num >= 10) { // prices are typically >= 10 CZK
+                if (unitPrice <= 0) {
+                  unitPrice = num;
+                } else if (totalPrice <= 0 && num > unitPrice) {
+                  totalPrice = num;
+                  break;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      // Calculate missing price if we have the other
+      if (unitPrice > 0 && totalPrice <= 0) {
+        totalPrice = unitPrice * qty;
+      } else if (totalPrice > 0 && unitPrice <= 0 && qty > 0) {
+        unitPrice = totalPrice / qty;
+      }
+
       // Create position
       // IMPORTANT: part_name should be unique per concrete element to create separate sections
       // Use truncated description as part_name, NOT "Beton C30/37" which groups all same-grade items together
@@ -675,8 +725,10 @@ export function extractConcreteOnlyM3(rawRows) {
         wage_czk_ph: 398,
         shift_hours: 10,
         days: 0,
-        otskp_code: otskpCode,  // ✅ Add OTSKP code
+        otskp_code: otskpCode,
         concrete_grade: foundGrade,
+        unit_price: unitPrice,
+        total_price: totalPrice,
         source: 'GRADE_SEARCH'
       };
 
@@ -814,20 +866,24 @@ export function extractAllConstructionItems(rawRows) {
       else if (/^(t|kg)$/i.test(foundUnit)) subtype = 'výztuž';
       else if (/^m[2²]$/i.test(foundUnit)) subtype = 'bednění';
 
-      // Find quantity: look for numbers in the row, prioritize cells near the unit
+      // Find quantity and prices: look for numbers in the row, prioritize cells near the unit
       let qty = 0;
+      let unitPrice = 0;
+      let totalPrice = 0;
       const columnKeys = entries.map(e => e[0]);
       const unitColIdx = foundUnitKey ? columnKeys.indexOf(foundUnitKey) : -1;
       const numbersInRow = [];
 
       for (const [key, value] of entries) {
         if (key === foundDescKey || key === foundUnitKey) continue;
+        const keyLower = key.toLowerCase();
+
         const num = parseNumber(value);
         if (num > 0) {
           const colIdx = columnKeys.indexOf(key);
           const isCode = Number.isInteger(num) && num >= 10000 && num <= 999999;
           if (!isCode) {
-            numbersInRow.push({ key, num, colIdx });
+            numbersInRow.push({ key, num, colIdx, keyLower });
           }
         }
       }
@@ -857,6 +913,37 @@ export function extractAllConstructionItems(rawRows) {
 
       if (qty <= 0) continue;
 
+      // Extract prices: columns AFTER the unit column
+      // Typical layout: Množství | MJ | J.cena | Cena celkem
+      if (unitColIdx >= 0) {
+        // Find price columns by header name
+        const priceEntry = numbersInRow.find(n =>
+          n.keyLower.includes('j.cena') || n.keyLower.includes('jednotková') || n.keyLower.includes('unit price')
+        );
+        const totalEntry = numbersInRow.find(n =>
+          n.keyLower.includes('celkem') || n.keyLower.includes('total')
+        );
+
+        if (priceEntry) unitPrice = priceEntry.num;
+        if (totalEntry) totalPrice = totalEntry.num;
+
+        // Positional: 1st number after MJ = unit price, 2nd = total
+        if (unitPrice <= 0) {
+          const afterUnit = numbersInRow
+            .filter(n => n.colIdx > unitColIdx && n.num >= 1)
+            .sort((a, b) => a.colIdx - b.colIdx);
+          if (afterUnit.length >= 1) unitPrice = afterUnit[0].num;
+          if (afterUnit.length >= 2) totalPrice = afterUnit[1].num;
+        }
+      }
+
+      // Calculate missing price
+      if (unitPrice > 0 && totalPrice <= 0) {
+        totalPrice = unitPrice * qty;
+      } else if (totalPrice > 0 && unitPrice <= 0 && qty > 0) {
+        unitPrice = totalPrice / qty;
+      }
+
       // Build part name
       let partName = foundDescription;
       if (partName.length > 60) partName = partName.substring(0, 57) + '...';
@@ -881,6 +968,8 @@ export function extractAllConstructionItems(rawRows) {
         days: 0,
         otskp_code: otskpCode,
         concrete_grade: concreteMark,
+        unit_price: unitPrice,
+        total_price: totalPrice,
         source: 'ALL_ITEMS_SEARCH'
       });
 
