@@ -6,7 +6,6 @@
 
 import express from 'express';
 import db from '../db/init.js';
-import { calculatePositionFields } from '@stavagent/monolit-shared';
 
 const router = express.Router();
 
@@ -22,10 +21,14 @@ const REGISTRY_URL = process.env.REGISTRY_URL || 'https://rozpocet-registry.verc
 router.post('/:bridge_id', async (req, res) => {
   const { bridge_id } = req.params;
 
+  if (!bridge_id || typeof bridge_id !== 'string' || bridge_id.length > 255) {
+    return res.status(400).json({ error: 'Invalid bridge_id' });
+  }
+
   try {
     // 1. Fetch project data
-    const project = db.prepare(`
-      SELECT bridge_id, project_name, object_name, concrete_m3
+    const project = await db.prepare(`
+      SELECT project_id, project_name, object_name, concrete_m3
       FROM monolith_projects
       WHERE project_id = ?
     `).get(bridge_id);
@@ -34,25 +37,16 @@ router.post('/:bridge_id', async (req, res) => {
       return res.status(404).json({ error: 'Project not found' });
     }
 
-    // 2. Fetch positions with full data
-    const rawPositions = db.prepare(`
+    // 2. Fetch positions (already have calculated fields stored in DB)
+    const positions = await db.prepare(`
       SELECT * FROM positions WHERE bridge_id = ? ORDER BY part_name, created_at
     `).all(bridge_id);
 
-    if (rawPositions.length === 0) {
+    if (!positions || positions.length === 0) {
       return res.status(400).json({ error: 'No positions to export' });
     }
 
-    // 3. Calculate all position fields (enrichment)
-    const positions = rawPositions.map(pos => {
-      const calculated = calculatePositionFields({
-        ...pos,
-        concrete_m3: pos.concrete_m3 || (pos.subtype === 'beton' ? pos.qty : 0)
-      });
-      return { ...pos, ...calculated };
-    });
-
-    // 4. Check/create Portal project
+    // 3. Check/create Portal project
     const checkRes = await fetch(`${PORTAL_API}/api/portal-projects/by-kiosk/monolit/${bridge_id}`);
     let portalProjectId;
 
@@ -78,7 +72,7 @@ router.post('/:bridge_id', async (req, res) => {
       portalProjectId = createData.portal_project_id;
     }
 
-    // 5. Group positions by part_name for Portal objects
+    // 4. Group positions by part_name for Portal objects
     const positionsByPart = positions.reduce((acc, pos) => {
       const partName = pos.part_name || 'Bez části';
       if (!acc[partName]) acc[partName] = [];
@@ -86,7 +80,7 @@ router.post('/:bridge_id', async (req, res) => {
       return acc;
     }, {});
 
-    // 6. Map to Portal format with full TOV data and prices
+    // 5. Map to Portal format with full TOV data and prices
     const objects = Object.entries(positionsByPart).map(([partName, partPositions]) => ({
       code: partName,
       name: `Objekt ${partName}`,
@@ -106,7 +100,7 @@ router.post('/:bridge_id', async (req, res) => {
       }))
     }));
 
-    // 7. Import to Portal (non-blocking, best effort)
+    // 6. Import to Portal (non-blocking, best effort)
     try {
       const importRes = await fetch(`${PORTAL_API}/api/integration/import-from-monolit`, {
         method: 'POST',
@@ -125,7 +119,7 @@ router.post('/:bridge_id', async (req, res) => {
       console.warn('[Export] Portal sync failed (non-critical):', portalErr.message);
     }
 
-    // 8. Direct export to Registry backend - create project + sheet + items + TOV
+    // 7. Direct export to Registry backend - create project + sheet + items + TOV
     let registryProjectId = null;
     try {
       const regProjectRes = await fetch(`${REGISTRY_API}/api/registry/projects`, {
@@ -188,7 +182,7 @@ router.post('/:bridge_id', async (req, res) => {
       console.warn('[Export] Registry direct sync failed (non-critical):', regErr.message);
     }
 
-    // 9. Return success with Registry URL
+    // 8. Return success with Registry URL
     res.json({
       success: true,
       portal_project_id: portalProjectId,
@@ -212,7 +206,6 @@ function mapPositionToLabor(pos) {
   const normHours = pos.labor_hours || (crewSize * shiftHours * totalDays);
   const totalCost = pos.cost_czk || 0;
 
-  // Map work subtype → profession name
   const professionMap = {
     'beton': 'Betonář',
     'bednění': 'Tesař / Bednář',
