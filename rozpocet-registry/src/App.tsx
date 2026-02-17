@@ -12,6 +12,7 @@ import { AIPanel } from './components/ai/AIPanel';
 import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { PortalLinkBadge } from './components/portal/PortalLinkBadge';
+import FormworkRentalCalculator from './components/tov/FormworkRentalCalculator';
 import { useRegistryStoreAPI } from './stores/registryStoreAPI';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
@@ -21,6 +22,7 @@ import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isPriceRequestOpen, setIsPriceRequestOpen] = useState(false);
+  const [isFormworkCalcOpen, setIsFormworkCalcOpen] = useState(false);
   const {
     projects,
     selectedProjectId,
@@ -372,14 +374,23 @@ function App() {
             </div>
             <div className="flex items-center gap-4">
               {projects.length > 0 && (
-                <button
-                  onClick={() => setIsPriceRequestOpen(true)}
-                  className="btn btn-secondary text-sm flex items-center gap-2"
-                  title="Vytvořit poptávku cen pro dodavatele"
-                >
-                  <Package size={16} />
-                  Poptávka cen
-                </button>
+                <>
+                  <button
+                    onClick={() => setIsFormworkCalcOpen(true)}
+                    className="btn btn-secondary text-sm flex items-center gap-2"
+                    title="Kalkulátor nájmu bednění"
+                  >
+                    🏗️ Nájem bednění
+                  </button>
+                  <button
+                    onClick={() => setIsPriceRequestOpen(true)}
+                    className="btn btn-secondary text-sm flex items-center gap-2"
+                    title="Vytvořit poptávku cen pro dodavatele"
+                  >
+                    <Package size={16} />
+                    Poptávka cen
+                  </button>
+                </>
               )}
               {selectedProject && (
                 <div className="relative">
@@ -833,6 +844,15 @@ function App() {
       <PriceRequestPanel
         isOpen={isPriceRequestOpen}
         onClose={() => setIsPriceRequestOpen(false)}
+      />
+
+      {/* Formwork Rental Calculator */}
+      <FormworkRentalCalculator
+        isOpen={isFormworkCalcOpen}
+        onClose={() => setIsFormworkCalcOpen(false)}
+        onAddToRegistry={(calculation) => {
+          alert(`Nájem bednění: ${calculation.total_rental_czk} Kč\n\nPřidejte ručně do Registry TOV:\n- Plocha: ${calculation.area_m2} m²\n- Systém: ${calculation.system}\n- Dny: ${calculation.rental_days}\n- Cena: ${calculation.unit_price_czk_m2_day} Kč/m²/den`);
+        }}
       />
     </div>
   );

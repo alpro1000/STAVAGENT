@@ -259,6 +259,52 @@ app.patch('/api/registry/items/:id/tov', async (req, res) => {
   }
 });
 
+// ============ FORMWORK RENTAL CALCULATOR ============
+
+const FORMWORK_PRICES = {
+  'FRAMI XLIFE': { base: 8.5, heights: { 1.2: 0.9, 1.5: 1.0, 2.4: 1.1, 2.7: 1.15, 3.0: 1.2 } },
+  'FRAMAX XLIFE': { base: 9.0, heights: { 1.5: 1.0, 2.4: 1.1, 2.7: 1.15, 3.0: 1.2 } },
+  'STAXO100': { base: 12.0, heights: { 2.7: 1.0, 3.0: 1.1 } }
+};
+
+app.post('/api/formwork-rental/calculate', async (req, res) => {
+  try {
+    const { area_m2, system, height, rental_days } = req.body;
+
+    if (!area_m2 || !system || !height || !rental_days) {
+      return res.status(400).json({ success: false, error: 'Missing required fields' });
+    }
+
+    const priceConfig = FORMWORK_PRICES[system];
+    if (!priceConfig) {
+      return res.status(400).json({ success: false, error: 'Unknown formwork system' });
+    }
+
+    const heightMultiplier = priceConfig.heights[height] || 1.0;
+    const unit_price_czk_m2_day = priceConfig.base * heightMultiplier;
+    const total_rental_czk = Math.round(unit_price_czk_m2_day * area_m2 * rental_days);
+
+    res.json({
+      success: true,
+      calculation: {
+        area_m2,
+        system,
+        height,
+        rental_days,
+        unit_price_czk_m2_day: Math.round(unit_price_czk_m2_day * 100) / 100,
+        total_rental_czk,
+        breakdown: {
+          base_price: priceConfig.base,
+          height_multiplier: heightMultiplier,
+          daily_cost: Math.round(unit_price_czk_m2_day * area_m2)
+        }
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'rozpocet-registry-backend' });
