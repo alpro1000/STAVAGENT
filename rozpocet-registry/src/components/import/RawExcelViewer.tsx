@@ -101,22 +101,80 @@ function autoDetectColumns(data: string[][]): Partial<ColumnMapping> {
       const cell = (row[colIdx] || '').toString().toLowerCase().trim();
       const colLetter = colToLetter(colIdx);
 
-      if (!mapping.kod && (cell.includes('kód') || cell.includes('kod') || cell === 'č.' || cell === 'číslo')) {
+      // KÓD POLOŽKY - расширенные паттерны
+      if (!mapping.kod && (
+        cell.includes('kód') || 
+        cell.includes('kod') || 
+        cell.includes('položky') ||
+        cell.includes('polozky') ||
+        cell === 'č.' || 
+        cell === 'číslo' ||
+        cell === 'p.č.' ||
+        cell.includes('item code') ||
+        cell.includes('code')
+      )) {
         mapping.kod = colLetter;
       }
-      if (!mapping.popis && (cell.includes('popis') || cell.includes('název') || cell.includes('text') || cell.includes('položka'))) {
+      
+      // NÁZEV / POPIS - расширенные паттерны
+      if (!mapping.popis && (
+        cell.includes('popis') || 
+        cell.includes('název') || 
+        cell.includes('nazev') ||
+        cell.includes('text') || 
+        cell.includes('položka') ||
+        cell.includes('polozka') ||
+        cell.includes('description') ||
+        cell.includes('name')
+      )) {
         mapping.popis = colLetter;
       }
-      if (!mapping.mj && (cell === 'mj' || cell.includes('jednotka') || cell.includes('měrná'))) {
+      
+      // MĚRNÁ JEDNOTKA
+      if (!mapping.mj && (
+        cell === 'mj' || 
+        cell.includes('jednotka') || 
+        cell.includes('měrná') ||
+        cell.includes('merna') ||
+        cell === 'unit' ||
+        cell.includes('m.j.')
+      )) {
         mapping.mj = colLetter;
       }
-      if (!mapping.mnozstvi && (cell.includes('množství') || cell.includes('mnozstvi') || cell === 'výměra')) {
+      
+      // MNOŽSTVÍ
+      if (!mapping.mnozstvi && (
+        cell.includes('množství') || 
+        cell.includes('mnozstvi') || 
+        cell === 'výměra' ||
+        cell === 'vymera' ||
+        cell.includes('quantity') ||
+        cell.includes('amount')
+      )) {
         mapping.mnozstvi = colLetter;
       }
-      if (!mapping.cenaJednotkova && (cell.includes('jednotková') || cell.includes('jc') || cell.includes('cena/mj'))) {
+      
+      // CENA JEDNOTKOVÁ
+      if (!mapping.cenaJednotkova && (
+        cell.includes('jednotková') || 
+        cell.includes('jednotkova') ||
+        cell.includes('jc') || 
+        cell.includes('cena/mj') ||
+        cell.includes('unit price') ||
+        (cell.includes('cena') && cell.includes('jedn'))
+      )) {
         mapping.cenaJednotkova = colLetter;
       }
-      if (!mapping.cenaCelkem && (cell.includes('celkem') || cell.includes('celková') || cell.includes('suma'))) {
+      
+      // CENA CELKEM
+      if (!mapping.cenaCelkem && (
+        cell.includes('celkem') || 
+        cell.includes('celková') ||
+        cell.includes('celkova') ||
+        cell.includes('suma') ||
+        cell.includes('total') ||
+        (cell.includes('cena') && (cell.includes('celk') || cell.includes('sum')))
+      )) {
         mapping.cenaCelkem = colLetter;
       }
     }
