@@ -43,9 +43,12 @@ export default function FormworkRentalCalculator({ isOpen, onClose, onAddToRegis
       const data = await response.json();
       if (data.success) {
         setCalculation(data.calculation);
+      } else {
+        alert(`Chyba výpočtu: ${data.error || 'Neznámá chyba'}`);
       }
     } catch (error) {
       console.error('Calculation error:', error);
+      alert(`Chyba připojení: ${error instanceof Error ? error.message : 'Nepodařilo se spojit se serverem'}`);
     } finally {
       setLoading(false);
     }

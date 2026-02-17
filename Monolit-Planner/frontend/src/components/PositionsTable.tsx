@@ -370,7 +370,7 @@ export default function PositionsTable() {
       setFormworkCalcPartName(null);
       
       const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
-      const totalArea = calcRows.reduce((sum, r) => r.total_area_m2, 0);
+      const totalArea = calcRows.reduce((sum, r) => sum + r.total_area_m2, 0);
       const registryUrl = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
       
       alert(
