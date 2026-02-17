@@ -323,14 +323,15 @@ router.post('/', upload.single('file'), async (req, res) => {
               // Delete existing positions
               await client.query('DELETE FROM positions WHERE bridge_id = $1', [bridgeId]);
 
-              // Insert new positions
+              // Insert new positions (with prices if extracted)
               for (const pos of concretePositions) {
                 const id = `${bridgeId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
                 await client.query(`
                   INSERT INTO positions (
                     id, bridge_id, part_name, item_name, subtype, unit,
-                    qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
-                  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                    qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code,
+                    concrete_m3, cost_czk, unit_cost_native
+                  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
                 `, [
                   id, bridgeId,
                   pos.part_name || 'Beton',
@@ -342,7 +343,10 @@ router.post('/', upload.single('file'), async (req, res) => {
                   pos.wage_czk_ph || POSITION_DEFAULTS.wage_czk_ph,
                   pos.shift_hours || POSITION_DEFAULTS.shift_hours,
                   pos.days || POSITION_DEFAULTS.days,
-                  pos.otskp_code || null  // ✅ Add OTSKP code
+                  pos.otskp_code || null,
+                  pos.concrete_m3 || (pos.subtype === 'beton' ? pos.qty : 0),
+                  pos.total_price || null,
+                  pos.unit_price || null
                 ]);
               }
 
@@ -361,8 +365,9 @@ router.post('/', upload.single('file'), async (req, res) => {
               const stmt = db.prepare(`
                 INSERT INTO positions (
                   id, bridge_id, part_name, item_name, subtype, unit,
-                  qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code,
+                  concrete_m3, cost_czk, unit_cost_native
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
               `);
 
               for (const pos of positions) {
@@ -378,7 +383,10 @@ router.post('/', upload.single('file'), async (req, res) => {
                   pos.wage_czk_ph || POSITION_DEFAULTS.wage_czk_ph,
                   pos.shift_hours || POSITION_DEFAULTS.shift_hours,
                   pos.days || POSITION_DEFAULTS.days,
-                  pos.otskp_code || null  // ✅ Add OTSKP code
+                  pos.otskp_code || null,
+                  pos.concrete_m3 || (pos.subtype === 'beton' ? pos.qty : 0),
+                  pos.total_price || null,
+                  pos.unit_price || null
                 );
               }
             });
