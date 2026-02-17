@@ -4,7 +4,7 @@
  * Results are transferred to PositionsTable as "nájem bednění" rows
  */
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import {
   calculateFormworkTacts,
@@ -108,6 +108,12 @@ export default function FormworkCalculatorModal({
   const [shiftHours, setShift] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Use refs for crew/shift to avoid stale closures in load effect
+  const crewRef = useRef(crewSize);
+  const shiftRef = useRef(shiftHours);
+  crewRef.current = crewSize;
+  shiftRef.current = shiftHours;
+
   // Load saved data on mount
   useEffect(() => {
     (async () => {
@@ -116,7 +122,7 @@ export default function FormworkCalculatorModal({
         if (res.ok) {
           const data = await res.json();
           if (data.rows && data.rows.length > 0) {
-            setRows(data.rows.map((r: FormworkCalculatorRow) => recalcRow(r, crewSize, shiftHours)));
+            setRows(data.rows.map((r: FormworkCalculatorRow) => recalcRow(r, crewRef.current, shiftRef.current)));
           }
         }
       } catch (err) {

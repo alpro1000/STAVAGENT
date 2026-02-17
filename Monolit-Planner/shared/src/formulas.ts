@@ -376,7 +376,10 @@ export function calculateElementTotalDays(
       // "jiné" with rental metadata don't count towards element time
       // they are a result of the calculator, not a work activity
       const meta = (pos as any).metadata;
-      if (!meta || !meta?.includes?.('formwork_rental')) {
+      const isFormworkRental = typeof meta === 'string'
+        ? meta.includes('formwork_rental')
+        : (meta && typeof meta === 'object' && meta.type === 'formwork_rental');
+      if (!isFormworkRental) {
         otherDays += days;
       }
     }

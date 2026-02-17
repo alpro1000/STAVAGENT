@@ -1020,7 +1020,7 @@ async function runPhase8FormworkCalculator() {
       await db.exec(`
         CREATE TABLE IF NOT EXISTS formwork_calculator (
           id VARCHAR(255) PRIMARY KEY,
-          bridge_id VARCHAR(255) NOT NULL REFERENCES bridges(bridge_id) ON DELETE CASCADE,
+          bridge_id VARCHAR(255) NOT NULL,
           construction_name VARCHAR(500) NOT NULL,
           total_area_m2 REAL NOT NULL DEFAULT 0,
           set_area_m2 REAL NOT NULL DEFAULT 0,

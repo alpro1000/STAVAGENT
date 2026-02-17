@@ -16,6 +16,12 @@ const router = express.Router();
 router.get('/:bridge_id', (req, res) => {
   try {
     const { bridge_id } = req.params;
+
+    // Input validation: bridge_id must be a non-empty string without SQL-dangerous characters
+    if (!bridge_id || typeof bridge_id !== 'string' || bridge_id.length > 255) {
+      return res.status(400).json({ error: 'Invalid bridge_id' });
+    }
+
     const rows = db.prepare(
       'SELECT * FROM formwork_calculator WHERE bridge_id = ? ORDER BY created_at ASC'
     ).all(bridge_id);
@@ -113,6 +119,12 @@ router.post('/', (req, res) => {
 router.delete('/:id', (req, res) => {
   try {
     const { id } = req.params;
+
+    // Input validation: id must be a non-empty string (UUID format)
+    if (!id || typeof id !== 'string' || id.length > 255) {
+      return res.status(400).json({ error: 'Invalid id' });
+    }
+
     db.prepare('DELETE FROM formwork_calculator WHERE id = ?').run(id);
     res.json({ success: true, message: 'Deleted' });
   } catch (error) {
