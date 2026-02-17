@@ -143,6 +143,9 @@ async function initPostgresSchema() {
   // Run Phase 7 migration (Portal Integration for monolith_projects)
   await runPhase7PortalIntegration();
 
+  // Run Phase 8 migration (Formwork Calculator + curing_days)
+  await runPhase8FormworkCalculator();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 
@@ -994,6 +997,67 @@ async function runPhase7PortalIntegration() {
 }
 
 /**
+ * Migration Phase 8 - Formwork Calculator + curing_days
+ */
+async function runPhase8FormworkCalculator() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 8 (Formwork Calculator + curing_days)...');
+
+    // Add curing_days to positions
+    try {
+      await db.exec(`ALTER TABLE positions ADD COLUMN curing_days INTEGER DEFAULT 0`);
+      console.log('[Migration 008] ✓ curing_days column added');
+    } catch (error) {
+      if (error.message?.includes('already exists') || error.message?.includes('duplicate column')) {
+        console.log('[Migration 008] ✓ curing_days column already exists');
+      } else {
+        console.error('[Migration 008] Error adding curing_days:', error);
+      }
+    }
+
+    // Create formwork_calculator table
+    try {
+      await db.exec(`
+        CREATE TABLE IF NOT EXISTS formwork_calculator (
+          id VARCHAR(255) PRIMARY KEY,
+          bridge_id VARCHAR(255) NOT NULL REFERENCES bridges(bridge_id) ON DELETE CASCADE,
+          construction_name VARCHAR(500) NOT NULL,
+          total_area_m2 REAL NOT NULL DEFAULT 0,
+          set_area_m2 REAL NOT NULL DEFAULT 0,
+          num_tacts INTEGER NOT NULL DEFAULT 1,
+          num_sets INTEGER NOT NULL DEFAULT 1,
+          assembly_days_per_tact REAL DEFAULT 0,
+          disassembly_days_per_tact REAL DEFAULT 0,
+          days_per_tact REAL DEFAULT 0,
+          formwork_term_days REAL DEFAULT 0,
+          system_name VARCHAR(255) DEFAULT 'Frami Xlife',
+          system_height VARCHAR(100) DEFAULT '',
+          rental_czk_per_m2_month REAL DEFAULT 0,
+          monthly_rental_per_set REAL DEFAULT 0,
+          final_rental_czk REAL DEFAULT 0,
+          kros_code VARCHAR(50),
+          kros_description TEXT,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+      `);
+      console.log('[Migration 008] ✓ formwork_calculator table created');
+    } catch (error) {
+      if (error.message?.includes('already exists')) {
+        console.log('[Migration 008] ✓ formwork_calculator table already exists');
+      } else {
+        console.error('[Migration 008] Error creating formwork_calculator:', error);
+      }
+    }
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 8 Formwork Calculator completed');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 8:', error);
+    console.error('[Migration 008] ⚠️  Phase 8 failed, but continuing startup...');
+  }
+}
+
+/**
  * Initialize SQLite schema (existing logic from init.js)
  */
 async function initSqliteSchema() {
@@ -1018,10 +1082,43 @@ async function initSqliteSchema() {
       unit_cost_on_m3 REAL,
       kros_unit_czk REAL,
       kros_total_czk REAL,
+      curing_days INTEGER DEFAULT 0,
       has_rfi INTEGER DEFAULT 0,
       rfi_message TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+
+  // Add curing_days column if missing (for existing databases)
+  try {
+    db.exec(`ALTER TABLE positions ADD COLUMN curing_days INTEGER DEFAULT 0`);
+  } catch (_) { /* column already exists */ }
+
+  // Formwork calculator table
+  db.exec(`
+    CREATE TABLE IF NOT EXISTS formwork_calculator (
+      id TEXT PRIMARY KEY,
+      bridge_id TEXT NOT NULL,
+      construction_name TEXT NOT NULL,
+      total_area_m2 REAL NOT NULL DEFAULT 0,
+      set_area_m2 REAL NOT NULL DEFAULT 0,
+      num_tacts INTEGER NOT NULL DEFAULT 1,
+      num_sets INTEGER NOT NULL DEFAULT 1,
+      assembly_days_per_tact REAL DEFAULT 0,
+      disassembly_days_per_tact REAL DEFAULT 0,
+      days_per_tact REAL DEFAULT 0,
+      formwork_term_days REAL DEFAULT 0,
+      system_name TEXT DEFAULT 'Frami Xlife',
+      system_height TEXT DEFAULT '',
+      rental_czk_per_m2_month REAL DEFAULT 0,
+      monthly_rental_per_set REAL DEFAULT 0,
+      final_rental_czk REAL DEFAULT 0,
+      kros_code TEXT,
+      kros_description TEXT,
+      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (bridge_id) REFERENCES bridges(bridge_id)
     );
   `);
 

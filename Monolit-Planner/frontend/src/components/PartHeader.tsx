@@ -4,9 +4,11 @@
  * v4.4.0: Added OTSKP autocomplete search
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import OtskpAutocomplete from './OtskpAutocomplete';
 import { otskpAPI } from '../services/api';
+import { calculateElementTotalDays } from '@stavagent/monolit-shared';
+import type { Position } from '@stavagent/monolit-shared';
 
 interface Props {
   partName?: string;  // Name of the construction part (from OTSKP)
@@ -15,9 +17,11 @@ interface Props {
   catalogPrice?: number;
   catalogUnit?: string;
   partTotalKrosCzk?: number;  // Sum of KROS total for all positions in this part
+  partPositions?: Position[];  // All positions in this part (for element total days)
   onPartNameUpdate: (partName: string) => void;  // Update part_name for all positions
   onBetonQuantityUpdate: (quantity: number) => void;
   onOtskpCodeAndNameUpdate: (code: string, name: string, unitPrice?: number, unit?: string) => void;
+  onOpenFormworkCalculator?: () => void;
   isLocked: boolean;
 }
 
@@ -28,15 +32,23 @@ export default function PartHeader({
   catalogPrice,
   catalogUnit,
   partTotalKrosCzk,
+  partPositions,
   onPartNameUpdate,
   onBetonQuantityUpdate,
   onOtskpCodeAndNameUpdate,
+  onOpenFormworkCalculator,
   isLocked
 }: Props) {
   // Calculate Kč/m³ for this part (for comparison with catalog)
   const calculatedPricePerM3 = betonQuantity > 0 && partTotalKrosCzk
     ? partTotalKrosCzk / betonQuantity
     : undefined;
+
+  // Calculate element total days (all work types + curing)
+  const elementTotalDays = useMemo(() => {
+    if (!partPositions || partPositions.length === 0) return 0;
+    return calculateElementTotalDays(partPositions);
+  }, [partPositions]);
   const [editedName, setEditedName] = useState(partName || '');
   const [editedBeton, setEditedBeton] = useState(betonQuantity.toString());
   const [editedOtskp, setEditedOtskp] = useState(otskpCode || '');
@@ -216,6 +228,58 @@ export default function PartHeader({
             )}
           </div>
         </div>
+
+        {/* Element total days (all work types + curing) */}
+        <div className="concrete-param">
+          <label>Celk. doba:</label>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '6px 10px',
+            background: elementTotalDays > 0 ? '#fff3e0' : 'var(--panel-inset)',
+            borderRadius: 'var(--radius-sm)',
+            minWidth: '80px',
+            border: '1px solid var(--border-default)'
+          }}>
+            {elementTotalDays > 0 ? (
+              <span style={{
+                fontWeight: 600,
+                color: '#e65100',
+                fontVariantNumeric: 'tabular-nums'
+              }}>
+                {elementTotalDays} dní
+              </span>
+            ) : (
+              <span style={{ color: 'var(--text-tertiary)', fontStyle: 'italic' }}>—</span>
+            )}
+          </div>
+        </div>
+
+        {/* Formwork calculator button */}
+        {onOpenFormworkCalculator && (
+          <div className="concrete-param">
+            <label>&nbsp;</label>
+            <button
+              onClick={onOpenFormworkCalculator}
+              disabled={isLocked}
+              title="Otevřít kalkulátor opalubky (pronájem bednění)"
+              style={{
+                background: '#1565c0',
+                color: 'white',
+                border: 'none',
+                borderRadius: 'var(--radius-sm)',
+                padding: '6px 12px',
+                cursor: isLocked ? 'not-allowed' : 'pointer',
+                fontWeight: 600,
+                fontSize: '12px',
+                opacity: isLocked ? 0.5 : 1,
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Kalkulátor bednění
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

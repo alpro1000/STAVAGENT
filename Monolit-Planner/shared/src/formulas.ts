@@ -3,7 +3,7 @@
  * Core business logic for position calculations
  */
 
-import { Position, HeaderKPI } from './types';
+import { Position, HeaderKPI, FormworkCalculatorRow } from './types';
 
 /**
  * Calculate labor hours for a position
@@ -293,4 +293,107 @@ export function calculateHeaderKPI(
     days_per_month: days_per_month_mode,
     rho_t_per_m3
   };
+}
+
+// ============================================================
+// FORMWORK CALCULATOR FORMULAS
+// ============================================================
+
+/**
+ * Calculate number of tacts (cycles) for formwork
+ * Default: ceil(total_area / set_area), but user can override
+ */
+export function calculateFormworkTacts(
+  total_area_m2: number,
+  set_area_m2: number
+): number {
+  if (set_area_m2 <= 0) return 1;
+  return Math.ceil(total_area_m2 / set_area_m2);
+}
+
+/**
+ * Calculate formwork term in days (pure formwork work only)
+ * termín = taktů × dní_na_takt
+ */
+export function calculateFormworkTerm(
+  num_tacts: number,
+  days_per_tact: number
+): number {
+  return num_tacts * days_per_tact;
+}
+
+/**
+ * Calculate monthly rental cost per set
+ * měsíční_nájem_sada = sada_m² × cena_Kč/m²
+ */
+export function calculateMonthlyRentalPerSet(
+  set_area_m2: number,
+  rental_czk_per_m2_month: number
+): number {
+  return set_area_m2 * rental_czk_per_m2_month;
+}
+
+/**
+ * Calculate final rental cost for the usage period
+ * konečný_nájem = měsíční_nájem_sada × (termín_dní / 30)
+ */
+export function calculateFinalRentalCost(
+  monthly_rental_per_set: number,
+  term_days: number
+): number {
+  if (term_days <= 0) return 0;
+  return monthly_rental_per_set * (term_days / 30);
+}
+
+/**
+ * Calculate total element duration (all work types + curing)
+ * Used to determine total formwork occupancy for rental calculation
+ *
+ * Celk. doba = Σ dny(bednění) + Σ dny(výztuž) + Σ dny(beton) + max(curing_days)
+ */
+export function calculateElementTotalDays(
+  partPositions: Position[]
+): number {
+  let bedneniDays = 0;
+  let vyztuzDays = 0;
+  let betonDays = 0;
+  let maxCuringDays = 0;
+  let otherDays = 0;
+
+  for (const pos of partPositions) {
+    const days = pos.days || 0;
+    const subtype = pos.subtype;
+
+    if (subtype === 'bednění' || subtype?.startsWith('oboustranné')) {
+      bedneniDays += days;
+    } else if (subtype === 'výztuž') {
+      vyztuzDays += days;
+    } else if (subtype === 'beton') {
+      betonDays += days;
+      const curing = (pos as any).curing_days || 0;
+      if (curing > maxCuringDays) maxCuringDays = curing;
+    } else if (subtype === 'jiné') {
+      // "jiné" with rental metadata don't count towards element time
+      // they are a result of the calculator, not a work activity
+      const meta = (pos as any).metadata;
+      if (!meta || !meta?.includes?.('formwork_rental')) {
+        otherDays += days;
+      }
+    }
+  }
+
+  return bedneniDays + vyztuzDays + betonDays + maxCuringDays + otherDays;
+}
+
+/**
+ * Generate KROS description for formwork rental position
+ */
+export function generateFormworkKrosDescription(
+  row: Pick<FormworkCalculatorRow, 'construction_name' | 'system_name' | 'system_height' | 'rental_czk_per_m2_month' | 'set_area_m2' | 'monthly_rental_per_set'>
+): string {
+  const price = row.rental_czk_per_m2_month.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const setArea = row.set_area_m2.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const monthlyRental = row.monthly_rental_per_set.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  return `Bednění - ${row.construction_name} (${row.system_name} ${row.system_height}; ${price} Kč/m2) sada - ${setArea} m2 => ${monthlyRental} Kč/sada/měsíc`;
 }

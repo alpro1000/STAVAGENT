@@ -17,6 +17,8 @@ import PartHeader from './PartHeader';
 import WorkTypeSelector from './WorkTypeSelector';
 import NewPartModal from './NewPartModal';
 import CustomWorkModal from './CustomWorkModal';
+import FormworkCalculatorModal from './FormworkCalculatorModal';
+import type { FormworkCalculatorRow } from '@stavagent/monolit-shared';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
@@ -29,6 +31,7 @@ export default function PositionsTable() {
   const [showNewPartModal, setShowNewPartModal] = useState(false);
   const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
+  const [showFormworkCalc, setShowFormworkCalc] = useState(false);
 
   // Resizable column state
   const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
@@ -306,6 +309,44 @@ export default function PositionsTable() {
     setPendingCustomWork(null);
   };
 
+  // Handle formwork calculator transfer - create rental positions
+  const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[]) => {
+    if (!selectedBridge) return;
+
+    try {
+      const newPositions: Partial<Position>[] = calcRows.map(row => ({
+        id: uuidv4(),
+        bridge_id: selectedBridge,
+        part_name: `Bednění ${row.construction_name}`,
+        item_name: `Nájem - ${row.system_name} ${row.system_height}`,
+        subtype: 'jiné' as Subtype,
+        unit: 'sada' as any,
+        qty: row.num_sets,
+        crew_size: 0,
+        wage_czk_ph: 0,
+        shift_hours: 0,
+        days: row.formwork_term_days,
+        cost_czk: row.final_rental_czk,
+        metadata: JSON.stringify({ type: 'formwork_rental', calculator_id: row.id })
+      }));
+
+      const result = await positionsAPI.create(selectedBridge, newPositions as Position[]);
+
+      if (result.positions) {
+        setPositions(result.positions);
+        if (result.header_kpi) {
+          setHeaderKPI(result.header_kpi);
+        }
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
+      setShowFormworkCalc(false);
+      alert(`Přeneseno ${calcRows.length} řádků pronájmu bednění do pozic.`);
+    } catch (error) {
+      alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
+    }
+  };
+
   // Handle new part creation from OTSKP search
   const handleNewPartSelected = async (otskpCode: string, partName: string) => {
     if (!selectedBridge) return;
@@ -449,6 +490,7 @@ export default function PositionsTable() {
                     .reduce((sum, p) => sum + (p.qty || 0), 0)}
                   otskpCode={partPositions[0]?.otskp_code || ''}
                   partTotalKrosCzk={partPositions.reduce((sum, p) => sum + (p.kros_total_czk || 0), 0)}
+                  partPositions={partPositions}
                   onPartNameUpdate={(newName) =>
                     handlePartNameUpdate(partName, newName)
                   }
@@ -458,6 +500,7 @@ export default function PositionsTable() {
                   onOtskpCodeAndNameUpdate={(code, name, unitPrice, unit) =>
                     handleOtskpCodeAndNameUpdate(partName, code, name, unitPrice, unit)
                   }
+                  onOpenFormworkCalculator={() => setShowFormworkCalc(true)}
                   isLocked={isLocked}
                 />
 
@@ -513,6 +556,7 @@ export default function PositionsTable() {
                       <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">Hod./den</th>
                       <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Dny</th>
                       <th className="col-rychlost" title="Norma rychlosti v MJ/hod (EDITABLE). Zadejte normu → přepočítá dny. Nebo zadejte dny → norma se vypočítá zpětně.">MJ/h</th>
+                      <th className="col-zrani" title="Dny zrání betonu (technologická pauza) - pouze pro beton">Zrání</th>
                       <th className="col-hod-celkem" title="Celkový počet hodin = Počet × Hod./den × Dny">Celk.hod.</th>
                       <th className="col-kc-celkem" title="Celková cena v CZK = Celk.hod. × Kč/h">Celk.Kč</th>
                       <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Celk.Kč ÷ Objem betonu">
@@ -531,7 +575,7 @@ export default function PositionsTable() {
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={isLocked ? 16 : 15} style={{
+                          <td colSpan={isLocked ? 17 : 16} style={{
                             textAlign: 'center',
                             padding: '20px',
                             color: 'var(--text-secondary)',
@@ -582,6 +626,16 @@ export default function PositionsTable() {
         <CustomWorkModal
           onSelect={handleCustomWorkSubmit}
           onCancel={handleCustomWorkCancelled}
+        />
+      )}
+
+      {/* Formwork Calculator Modal */}
+      {showFormworkCalc && selectedBridge && (
+        <FormworkCalculatorModal
+          bridgeId={selectedBridge}
+          partNames={Object.keys(groupedPositions)}
+          onTransfer={handleFormworkTransfer}
+          onClose={() => setShowFormworkCalc(false)}
         />
       )}
     </div>

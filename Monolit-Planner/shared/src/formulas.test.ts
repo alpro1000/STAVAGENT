@@ -16,7 +16,13 @@ import {
   calculateWeightedAverage,
   calculatePositionFields,
   findConcreteVolumeForPart,
-  calculateHeaderKPI
+  calculateHeaderKPI,
+  calculateFormworkTacts,
+  calculateFormworkTerm,
+  calculateMonthlyRentalPerSet,
+  calculateFinalRentalCost,
+  calculateElementTotalDays,
+  generateFormworkKrosDescription
 } from './formulas';
 import type { Position } from './types';
 
@@ -444,5 +450,122 @@ describe('calculateHeaderKPI', () => {
     expect(kpi.sum_kros_total_czk).toBe(0);
     expect(kpi.project_unit_cost_czk_per_m3).toBe(0);
     expect(kpi.estimated_months).toBe(0);
+  });
+});
+
+// ============================================================
+// FORMWORK CALCULATOR TESTS
+// ============================================================
+
+describe('Formwork Calculator', () => {
+  describe('calculateFormworkTacts', () => {
+    it('should calculate number of tacts', () => {
+      expect(calculateFormworkTacts(127.2, 31.8)).toBe(4);   // 127.2 / 31.8 = 4.0
+      expect(calculateFormworkTacts(208.5, 41.7)).toBe(5);   // 208.5 / 41.7 = 5.0
+    });
+
+    it('should round up partial tacts', () => {
+      expect(calculateFormworkTacts(100, 31.8)).toBe(4);     // 3.14 → 4
+      expect(calculateFormworkTacts(50, 31.8)).toBe(2);      // 1.57 → 2
+    });
+
+    it('should handle zero set area', () => {
+      expect(calculateFormworkTacts(127.2, 0)).toBe(1);
+    });
+  });
+
+  describe('calculateFormworkTerm', () => {
+    it('should calculate formwork term', () => {
+      expect(calculateFormworkTerm(4, 3)).toBe(12);     // 4 tacts × 3 days
+      expect(calculateFormworkTerm(5, 3)).toBe(15);     // 5 tacts × 3 days
+    });
+  });
+
+  describe('calculateMonthlyRentalPerSet', () => {
+    it('should calculate monthly rental for Základ OP', () => {
+      // 31.8 m² × 507.20 Kč/m² = 16,128.96 Kč
+      const rental = calculateMonthlyRentalPerSet(31.8, 507.20);
+      expect(rental).toBeCloseTo(16128.96, 2);
+    });
+
+    it('should calculate monthly rental for Základ Pilířů', () => {
+      // 41.7 m² × 454.40 Kč/m² = 18,948.48 Kč
+      const rental = calculateMonthlyRentalPerSet(41.7, 454.40);
+      expect(rental).toBeCloseTo(18948.48, 2);
+    });
+  });
+
+  describe('calculateFinalRentalCost', () => {
+    it('should calculate final rental for Základ OP (12 days)', () => {
+      // 16,128.96 × (12 / 30) = 6,451.58
+      const cost = calculateFinalRentalCost(16128.96, 12);
+      expect(cost).toBeCloseTo(6451.58, 1);
+    });
+
+    it('should calculate final rental for Základ Pilířů (15 days)', () => {
+      // 18,948.48 × (15 / 30) = 9,474.24
+      const cost = calculateFinalRentalCost(18948.48, 15);
+      expect(cost).toBeCloseTo(9474.24, 2);
+    });
+
+    it('should return 0 for zero days', () => {
+      expect(calculateFinalRentalCost(16128.96, 0)).toBe(0);
+    });
+  });
+});
+
+describe('Element Total Days', () => {
+  it('should sum all work types + curing', () => {
+    const positions: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'Základ', subtype: 'bednění', days: 3, qty: 127 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'Základ', subtype: 'výztuž', days: 5, qty: 5800 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'Základ', subtype: 'beton', days: 2, curing_days: 5, qty: 45 } as unknown as Position,
+    ];
+
+    // 3 (bednění) + 5 (výztuž) + 2 (beton) + 5 (curing) = 15
+    expect(calculateElementTotalDays(positions)).toBe(15);
+  });
+
+  it('should use max curing_days when multiple beton positions', () => {
+    const positions: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 1, curing_days: 3, qty: 10 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 2, curing_days: 7, qty: 20 } as unknown as Position,
+    ];
+
+    // 1 + 2 (beton days) + 7 (max curing) = 10
+    expect(calculateElementTotalDays(positions)).toBe(10);
+  });
+
+  it('should handle positions without curing', () => {
+    const positions: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'bednění', days: 4, qty: 100 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 2, qty: 50 } as unknown as Position,
+    ];
+
+    // 4 (bednění) + 2 (beton) + 0 (no curing) = 6
+    expect(calculateElementTotalDays(positions)).toBe(6);
+  });
+
+  it('should return 0 for empty positions', () => {
+    expect(calculateElementTotalDays([])).toBe(0);
+  });
+});
+
+describe('generateFormworkKrosDescription', () => {
+  it('should generate correct description', () => {
+    const desc = generateFormworkKrosDescription({
+      construction_name: 'Základ OP (sada: 1x základ / dilatace / LM)',
+      system_name: 'Frami Xlife',
+      system_height: 'h= 0,9 m',
+      rental_czk_per_m2_month: 507.20,
+      set_area_m2: 31.80,
+      monthly_rental_per_set: 16128.96
+    });
+
+    expect(desc).toContain('Bednění - Základ OP');
+    expect(desc).toContain('Frami Xlife');
+    expect(desc).toContain('h= 0,9 m');
+    expect(desc).toContain('Kč/m2');
+    expect(desc).toContain('Kč/sada/měsíc');
   });
 });

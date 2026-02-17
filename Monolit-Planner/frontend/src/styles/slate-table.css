@@ -277,6 +277,12 @@
   min-width: 56px;
 }
 
+/* Zrání - curing days */
+.col-zrani {
+  width: 52px !important;
+  min-width: 52px;
+}
+
 /* H: MJ/h - speed */
 .col-rychlost {
   width: 72px !important;
@@ -380,6 +386,11 @@
 .positions-table .col-den {
   font-weight: 600;
   color: var(--color-positive);
+}
+
+/* Curing days - orange tint */
+.positions-table .col-zrani {
+  color: #e65100;
 }
 
 /* Cost columns - emphasis */

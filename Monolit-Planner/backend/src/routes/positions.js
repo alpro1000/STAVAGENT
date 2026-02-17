@@ -20,7 +20,7 @@ const router = express.Router();
 const ALLOWED_UPDATE_FIELDS = new Set([
   'part_name', 'item_name', 'subtype', 'unit', 'qty', 'qty_m3_helper',
   'crew_size', 'wage_czk_ph', 'shift_hours', 'days', 'otskp_code',
-  'concrete_m3', 'cost_czk', 'metadata', 'position_number'
+  'concrete_m3', 'cost_czk', 'metadata', 'position_number', 'curing_days'
 ]);
 
 /**

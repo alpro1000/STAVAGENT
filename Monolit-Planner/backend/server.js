@@ -24,6 +24,7 @@ import snapshotsRoutes from './src/routes/snapshots.js';
 import otskpRoutes from './src/routes/otskp.js';
 import documentsRoutes from './src/routes/documents.js';
 import sheathingRoutes from './src/routes/sheathing.js';
+import formworkCalcRoutes from './src/routes/formwork-calculator.js';
 import debugRoutes from './src/routes/debug.js';
 import r0Routes from './src/routes/r0.js';
 
@@ -161,6 +162,7 @@ app.use('/api/snapshots', snapshotsRoutes);
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
 app.use('/api/documents', uploadLimiter, documentsRoutes);
 app.use('/api/sheathing', sheathingRoutes);
+app.use('/api/formwork-calculator', formworkCalcRoutes);
 app.use('/api/r0', r0Routes);
 
 // DEBUG routes - ONLY enabled in development
