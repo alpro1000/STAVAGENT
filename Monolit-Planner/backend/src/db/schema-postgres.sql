@@ -71,10 +71,35 @@ CREATE TABLE IF NOT EXISTS positions (
   unit_cost_on_m3 REAL,
   kros_unit_czk REAL,
   kros_total_czk REAL,
+  curing_days INTEGER DEFAULT 0,
   has_rfi INTEGER DEFAULT 0,
   rfi_message TEXT,
   item_name VARCHAR(255),
   otskp_code VARCHAR(50),
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Formwork calculator table
+CREATE TABLE IF NOT EXISTS formwork_calculator (
+  id VARCHAR(255) PRIMARY KEY,
+  bridge_id VARCHAR(255) NOT NULL REFERENCES bridges(bridge_id) ON DELETE CASCADE,
+  construction_name VARCHAR(500) NOT NULL,
+  total_area_m2 REAL NOT NULL DEFAULT 0,
+  set_area_m2 REAL NOT NULL DEFAULT 0,
+  num_tacts INTEGER NOT NULL DEFAULT 1,
+  num_sets INTEGER NOT NULL DEFAULT 1,
+  assembly_days_per_tact REAL DEFAULT 0,
+  disassembly_days_per_tact REAL DEFAULT 0,
+  days_per_tact REAL DEFAULT 0,
+  formwork_term_days REAL DEFAULT 0,
+  system_name VARCHAR(255) DEFAULT 'Frami Xlife',
+  system_height VARCHAR(100) DEFAULT '',
+  rental_czk_per_m2_month REAL DEFAULT 0,
+  monthly_rental_per_set REAL DEFAULT 0,
+  final_rental_czk REAL DEFAULT 0,
+  kros_code VARCHAR(50),
+  kros_description TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

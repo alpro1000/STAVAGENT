@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
-import { exportAPI, uploadAPI, positionsAPI } from '../services/api';
+import { exportAPI, uploadAPI } from '../services/api';
 import CreateMonolithForm from './CreateMonolithForm';
 import EditBridgeForm from './EditBridgeForm';
 import ExportHistory from './ExportHistory';
@@ -160,157 +160,23 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
     setIsExportingToRegistry(true);
     try {
-      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
-      const REGISTRY_API = import.meta.env.VITE_REGISTRY_API_URL || 'https://rozpocet-registry-backend.onrender.com';
-      const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
+      // Call backend endpoint which handles all the export logic
+      const response = await fetch(`/api/export-to-registry/${selectedBridge}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
 
-      // 1. Fetch project data
-      const projectRes = await fetch(`/api/monolith-projects/${selectedBridge}`);
-      if (!projectRes.ok) throw new Error('Failed to fetch project');
-      const { project } = await projectRes.json();
-
-      // 2. Fetch positions with calculated values
-      const positionsRes = await positionsAPI.getForBridge(selectedBridge);
-      const positions = positionsRes.positions || [];
-
-      if (positions.length === 0) {
-        alert('Žádné pozice k exportu');
-        return;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Export failed');
       }
 
-      // 3. Check/create Portal project
-      const checkRes = await fetch(`${PORTAL_API}/api/portal-projects/by-kiosk/monolit/${selectedBridge}`);
-      let portalProjectId;
+      const result = await response.json();
 
-      if (checkRes.ok) {
-        const checkData = await checkRes.json();
-        portalProjectId = checkData.project.portal_project_id;
-      } else {
-        const createRes = await fetch(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            project_name: project.project_name || selectedBridge,
-            project_type: 'monolit',
-            kiosk_type: 'monolit',
-            kiosk_project_id: selectedBridge
-          })
-        });
+      // Open Registry in new tab
+      window.open(result.registry_url, '_blank');
 
-        if (!createRes.ok) throw new Error('Failed to create Portal project');
-        const createData = await createRes.json();
-        portalProjectId = createData.portal_project_id;
-      }
-
-      // 4. Group positions by part_name for Portal objects
-      const positionsByPart = positions.reduce((acc: any, pos: any) => {
-        const partName = pos.part_name || 'Bez části';
-        if (!acc[partName]) acc[partName] = [];
-        acc[partName].push(pos);
-        return acc;
-      }, {});
-
-      // 5. Map to Portal format with full TOV data and prices
-      const objects = Object.entries(positionsByPart).map(([partName, partPositions]: [string, any]) => ({
-        code: partName,
-        name: `Objekt ${partName}`,
-        positions: partPositions.map((pos: any) => ({
-          monolit_id: pos.id,
-          kod: pos.otskp_code || '',
-          popis: pos.item_name || partName,
-          mnozstvi: pos.qty || 0,
-          mj: pos.unit || '',
-          cena_jednotkova: pos.unit_cost_native || pos.kros_unit_czk || 0,
-          cena_celkem: pos.cost_czk || pos.kros_total_czk || 0,
-          tov: {
-            labor: mapPositionToLabor(pos),
-            machinery: mapPositionToMachinery(pos),
-            materials: mapPositionToMaterials(partName, pos)
-          }
-        }))
-      }));
-
-      // 6. Import to Portal (non-blocking)
-      try {
-        const importRes = await fetch(`${PORTAL_API}/api/integration/import-from-monolit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            portal_project_id: portalProjectId,
-            project_name: project.project_name || selectedBridge,
-            monolit_project_id: selectedBridge,
-            objects
-          })
-        });
-        if (importRes.ok) console.log('[Export] Portal sync done');
-      } catch (portalErr) {
-        console.warn('[Export] Portal sync failed:', portalErr);
-      }
-
-      // 7. Direct export to Registry backend - create project + items + TOV
-      try {
-        const regProjectRes = await fetch(`${REGISTRY_API}/api/registry/projects`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            project_name: project.project_name || selectedBridge,
-            portal_project_id: portalProjectId
-          })
-        });
-
-        if (regProjectRes.ok) {
-          const regProject = await regProjectRes.json();
-          const regProjectId = regProject.project?.project_id;
-
-          if (regProjectId) {
-            const sheetRes = await fetch(`${REGISTRY_API}/api/registry/projects/${regProjectId}/sheets`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                sheet_name: project.object_name || selectedBridge,
-                sheet_order: 0
-              })
-            });
-
-            if (sheetRes.ok) {
-              const sheetData = await sheetRes.json();
-              const sheetId = sheetData.sheet?.sheet_id;
-
-              if (sheetId) {
-                let itemOrder = 0;
-                for (const pos of positions) {
-                  await fetch(`${REGISTRY_API}/api/registry/sheets/${sheetId}/items`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      kod: pos.otskp_code || '',
-                      popis: pos.item_name || pos.part_name || '',
-                      mnozstvi: pos.qty || 0,
-                      mj: pos.unit || '',
-                      cena_jednotkova: pos.unit_cost_native || pos.kros_unit_czk || 0,
-                      cena_celkem: pos.cost_czk || pos.kros_total_czk || 0,
-                      item_order: itemOrder++,
-                      tov_data: {
-                        labor: mapPositionToLabor(pos),
-                        machinery: mapPositionToMachinery(pos),
-                        materials: mapPositionToMaterials(pos.part_name || '', pos)
-                      }
-                    })
-                  });
-                }
-                console.log(`[Export] Created ${positions.length} items in Registry`);
-              }
-            }
-          }
-        }
-      } catch (regErr: any) {
-        console.warn('[Export] Registry direct sync failed:', regErr.message);
-      }
-
-      // 8. Open Registry
-      window.open(`${REGISTRY_URL}?portal_project=${portalProjectId}`, '_blank');
-
-      alert(`✅ Export do Registry úspěšný!\n${positions.length} pozic s TOV daty`);
+      alert(`✅ Export do Registry úspěšný!\n${result.positions_count} pozic s TOV daty a cenami`);
 
     } catch (error: any) {
       console.error('[Export to Registry] Error:', error);
@@ -318,103 +184,6 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     } finally {
       setIsExportingToRegistry(false);
     }
-  };
-
-  // Helper: Map Monolit subtype to profession name for Labor TOV
-  const mapPositionToLabor = (pos: any) => {
-    const crewSize = pos.crew_size || 0;
-    const shiftHours = pos.shift_hours || 0;
-    const totalDays = pos.days || 0;
-    const hourlyRate = pos.wage_czk_ph || 0;
-    const normHours = pos.labor_hours || (crewSize * shiftHours * totalDays);
-    const totalCost = pos.cost_czk || 0;
-
-    // Map work subtype → profession name
-    const professionMap: Record<string, string> = {
-      'beton': 'Betonář',
-      'bednění': 'Tesař / Bednář',
-      'oboustranné (opěry)': 'Tesař / Bednář',
-      'oboustranné (křídla)': 'Tesař / Bednář',
-      'oboustranné (závěrné zídky)': 'Tesař / Bednář',
-      'výztuž': 'Železář / Armovač',
-      'jiné': 'Stavební dělník'
-    };
-
-    return [{
-      id: `labor_${pos.id}`,
-      name: professionMap[pos.subtype] || 'Stavební dělník',
-      count: crewSize,
-      hours: shiftHours,
-      days: totalDays,
-      normHours: normHours,
-      hourlyRate: hourlyRate,
-      totalCost: totalCost
-    }];
-  };
-
-  // Helper: Map Monolit position to Machinery TOV
-  const mapPositionToMachinery = (pos: any) => {
-    const machinery = [];
-    if (pos.subtype === 'beton' && pos.qty > 0) {
-      machinery.push({
-        id: `mach_${pos.id}_pump`,
-        name: 'Čerpadlo betonové směsi',
-        hours: Math.ceil(pos.qty / 20),
-        hourlyRate: 2500,
-        totalCost: Math.ceil(pos.qty / 20) * 2500
-      });
-    }
-    if (pos.subtype === 'výztuž' && pos.qty > 0) {
-      machinery.push({
-        id: `mach_${pos.id}_crane`,
-        name: 'Autojeřáb',
-        hours: Math.ceil((pos.unit === 'T' ? pos.qty : pos.qty / 1000) / 5),
-        hourlyRate: 3500,
-        totalCost: Math.ceil((pos.unit === 'T' ? pos.qty : pos.qty / 1000) / 5) * 3500
-      });
-    }
-    return machinery;
-  };
-
-  // Helper: Map Monolit position to Materials TOV
-  const mapPositionToMaterials = (partName: string, pos: any) => {
-    const materials = [];
-
-    if (pos.subtype === 'beton' && pos.qty > 0) {
-      const gradeMatch = (pos.item_name || partName || '').match(/C\d+\/\d+/i);
-      materials.push({
-        id: `mat_${pos.id}_beton`,
-        name: `Beton ${gradeMatch ? gradeMatch[0] : 'C30/37'}`,
-        quantity: pos.concrete_m3 || pos.qty,
-        unit: 'm³',
-        unitPrice: pos.unit_cost_native || 0,
-        totalCost: pos.cost_czk || 0
-      });
-    }
-
-    if (pos.subtype === 'výztuž' && pos.qty > 0) {
-      materials.push({
-        id: `mat_${pos.id}_ocel`,
-        name: 'Ocel betonářská 10505 (R)',
-        quantity: pos.qty,
-        unit: pos.unit === 'T' ? 't' : 'kg',
-        unitPrice: pos.unit_cost_native || 0,
-        totalCost: pos.cost_czk || 0
-      });
-    }
-
-    if (pos.subtype === 'bednění' && pos.qty > 0) {
-      materials.push({
-        id: `mat_${pos.id}_bednicka`,
-        name: 'Systémové bednění (pronájem)',
-        quantity: pos.qty,
-        unit: 'm²',
-        unitPrice: pos.unit_cost_native || 0,
-        totalCost: pos.cost_czk || 0
-      });
-    }
-
-    return materials;
   };
 
   const handleCreateSuccess = async (bridge_id: string) => {

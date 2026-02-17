@@ -610,6 +610,27 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         />
       </td>
 
+      {/* Curing days - only for beton subtype */}
+      <td className="cell-input col-zrani">
+        {position.subtype === 'beton' ? (
+          <input
+            type="number"
+            min={0}
+            max={30}
+            step={1}
+            className="input-cell"
+            value={(editedFields as any).curing_days ?? (position as any).curing_days ?? 0}
+            onChange={(e) => handleFieldChange('curing_days' as any, Math.max(0, parseInt(e.target.value) || 0))}
+            onBlur={handleBlur}
+            disabled={isLocked}
+            title="Dny zrání betonu (technologická pauza)"
+            style={{ textAlign: 'center' }}
+          />
+        ) : (
+          <div style={{ color: 'var(--text-tertiary)', textAlign: 'center', fontSize: '11px' }}>—</div>
+        )}
+      </td>
+
       {/* COMPUTED CELLS - Readonly (gray) - Using locally computed values for instant update */}
 
       {/* Labor hours */}
