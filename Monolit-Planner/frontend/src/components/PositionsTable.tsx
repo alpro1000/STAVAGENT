@@ -32,6 +32,7 @@ export default function PositionsTable() {
   const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
   const [showFormworkCalc, setShowFormworkCalc] = useState(false);
+  const [formworkCalcPartName, setFormworkCalcPartName] = useState<string | null>(null);
 
   // Resizable column state
   const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
@@ -309,16 +310,27 @@ export default function PositionsTable() {
     setPendingCustomWork(null);
   };
 
-  // Handle formwork calculator transfer - create rental positions
-  const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[]) => {
+  // Handle formwork calculator transfer - create rental positions IN CURRENT PART
+  const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[], targetPartName?: string) => {
     if (!selectedBridge) return;
+
+    // If no target part specified, ask user to select
+    if (!targetPartName) {
+      const partNames = Object.keys(groupedPositions);
+      if (partNames.length === 0) {
+        alert('Nejprve vytvořte část konstrukce');
+        return;
+      }
+      // For now, use first part (TODO: add part selector in modal)
+      targetPartName = partNames[0];
+    }
 
     try {
       const newPositions: Partial<Position>[] = calcRows.map(row => ({
         id: uuidv4(),
         bridge_id: selectedBridge,
-        part_name: `Bednění ${row.construction_name}`,
-        item_name: `Nájem - ${row.system_name} ${row.system_height}`,
+        part_name: targetPartName, // ✅ USE EXISTING PART!
+        item_name: `Bednění + ${row.construction_name}`, // ✅ ADD PREFIX!
         subtype: 'jiné' as Subtype,
         unit: 'sada' as any,
         qty: row.num_sets,
@@ -341,7 +353,7 @@ export default function PositionsTable() {
 
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
       setShowFormworkCalc(false);
-      alert(`Přeneseno ${calcRows.length} řádků pronájmu bednění do pozic.`);
+      alert(`Přeneseno ${calcRows.length} řádků pronájmu bednění do části "${targetPartName}".`);
     } catch (error) {
       alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
     }
@@ -500,7 +512,10 @@ export default function PositionsTable() {
                   onOtskpCodeAndNameUpdate={(code, name, unitPrice, unit) =>
                     handleOtskpCodeAndNameUpdate(partName, code, name, unitPrice, unit)
                   }
-                  onOpenFormworkCalculator={() => setShowFormworkCalc(true)}
+                  onOpenFormworkCalculator={() => {
+                    setFormworkCalcPartName(partName);
+                    setShowFormworkCalc(true);
+                  }}
                   isLocked={isLocked}
                 />
 
@@ -630,12 +645,15 @@ export default function PositionsTable() {
       )}
 
       {/* Formwork Calculator Modal */}
-      {showFormworkCalc && selectedBridge && (
+      {showFormworkCalc && selectedBridge && formworkCalcPartName && (
         <FormworkCalculatorModal
           bridgeId={selectedBridge}
           partNames={Object.keys(groupedPositions)}
-          onTransfer={handleFormworkTransfer}
-          onClose={() => setShowFormworkCalc(false)}
+          onTransfer={(rows) => handleFormworkTransfer(rows, formworkCalcPartName)}
+          onClose={() => {
+            setShowFormworkCalc(false);
+            setFormworkCalcPartName(null);
+          }}
         />
       )}
     </div>

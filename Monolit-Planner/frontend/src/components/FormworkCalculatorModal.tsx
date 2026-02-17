@@ -227,7 +227,7 @@ export default function FormworkCalculatorModal({
           background: 'var(--data-surface-alt, #f5f5f5)'
         }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: '18px' }}>Kalkulátor opalubky (Bednění)</h2>
+            <h2 style={{ margin: 0, fontSize: '18px' }}>Kalkulátor Bednění</h2>
             <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--text-secondary)' }}>
               Výpočet pronájmu bednícího systému • Montáž + Demontáž odděleny
             </p>
