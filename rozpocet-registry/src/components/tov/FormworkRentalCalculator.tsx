@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import Modal from '../common/Modal';
+import { useState } from 'react';
+import { Modal } from '../common/Modal';
 
 interface FormworkRentalCalculatorProps {
   isOpen: boolean;
@@ -14,6 +14,11 @@ interface FormworkCalculation {
   rental_days: number;
   unit_price_czk_m2_day: number;
   total_rental_czk: number;
+  breakdown: {
+    base_price: number;
+    height_multiplier: number;
+    daily_cost: number;
+  };
 }
 
 const FORMWORK_SYSTEMS = ['FRAMI XLIFE', 'FRAMAX XLIFE', 'STAXO100'];
