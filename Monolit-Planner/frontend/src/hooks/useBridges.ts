@@ -87,6 +87,26 @@ export function useBridges() {
     }
   });
 
+  // Mutation: Rename project (update project_name for all objects)
+  const renameProjectMutation = useMutation({
+    mutationFn: ({ oldName, newName }: { oldName: string; newName: string }) => {
+      return bridgesAPI.renameProject(oldName, newName);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+    }
+  });
+
+  // Mutation: Bulk delete objects by IDs
+  const bulkDeleteMutation = useMutation({
+    mutationFn: (projectIds: string[]) => {
+      return bridgesAPI.bulkDelete(projectIds);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+    }
+  });
+
   return {
     ...query,
     createBridge: async (params: any) => {
@@ -104,6 +124,12 @@ export function useBridges() {
     deleteProject: async (projectName: string) => {
       return await deleteProjectMutation.mutateAsync(projectName);
     },
-    isLoading: query.isLoading || createMutation.isPending || statusMutation.isPending || deleteMutation.isPending || completeMutation.isPending || deleteProjectMutation.isPending
+    renameProject: async (oldName: string, newName: string) => {
+      return await renameProjectMutation.mutateAsync({ oldName, newName });
+    },
+    bulkDelete: async (projectIds: string[]) => {
+      return await bulkDeleteMutation.mutateAsync(projectIds);
+    },
+    isLoading: query.isLoading || createMutation.isPending || statusMutation.isPending || deleteMutation.isPending || completeMutation.isPending || deleteProjectMutation.isPending || renameProjectMutation.isPending || bulkDeleteMutation.isPending
   };
 }

@@ -14,6 +14,7 @@ import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
 import DeleteBridgeModal from './DeleteBridgeModal';
 import DeleteProjectModal from './DeleteProjectModal';
+import RenameProjectModal from './RenameProjectModal';
 import CreateMonolithForm from './CreateMonolithForm';
 
 interface SidebarProps {
@@ -28,7 +29,7 @@ const STORAGE_KEY = 'monolit-sidebar-width';
 
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
-  const { completeBridge, deleteBridge, deleteProject, refetch: refetchBridges, isLoading } = useBridges();
+  const { completeBridge, deleteBridge, deleteProject, renameProject, bulkDelete, refetch: refetchBridges, isLoading } = useBridges();
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [hoveredBridgeId, setHoveredBridgeId] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
@@ -36,8 +37,11 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('active');
   const [bridgeToDelete, setBridgeToDelete] = useState<typeof bridges[0] | null>(null);
   const [projectToDelete, setProjectToDelete] = useState<{ name: string; count: number } | null>(null);
+  const [projectToRename, setProjectToRename] = useState<string | null>(null);
   const [showAddObjectModal, setShowAddObjectModal] = useState(false);
   const [selectedProjectForAdd, setSelectedProjectForAdd] = useState<string | null>(null);
+  // Multi-select state
+  const [selectedObjects, setSelectedObjects] = useState<Set<string>>(new Set());
 
   // Resize state
   const sidebarRef = useRef<HTMLElement>(null);
@@ -238,6 +242,79 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
     setSelectedBridge(bridgeId);
   };
 
+  // Handle project rename
+  const handleRenameClick = (e: React.MouseEvent, projectName: string) => {
+    e.stopPropagation();
+    setProjectToRename(projectName);
+  };
+
+  const confirmRename = async (newName: string) => {
+    if (!projectToRename) return;
+    try {
+      await renameProject(projectToRename, newName);
+      setProjectToRename(null);
+      await refetchBridges();
+    } catch (error) {
+      console.error('Failed to rename project:', error);
+      alert('Chyba při přejmenování projektu');
+    }
+  };
+
+  // Multi-select toggle for a single object
+  const toggleObjectSelection = (bridgeId: string) => {
+    setSelectedObjects(prev => {
+      const next = new Set(prev);
+      if (next.has(bridgeId)) {
+        next.delete(bridgeId);
+      } else {
+        next.add(bridgeId);
+      }
+      return next;
+    });
+  };
+
+  // Select/deselect all objects in a project
+  const toggleSelectAllInProject = (projectBridges: typeof bridges) => {
+    const ids = projectBridges.map(b => b.bridge_id);
+    const allSelected = ids.every(id => selectedObjects.has(id));
+
+    setSelectedObjects(prev => {
+      const next = new Set(prev);
+      if (allSelected) {
+        ids.forEach(id => next.delete(id));
+      } else {
+        ids.forEach(id => next.add(id));
+      }
+      return next;
+    });
+  };
+
+  // Bulk delete selected objects
+  const handleBulkDelete = async () => {
+    if (selectedObjects.size === 0) return;
+
+    const confirmed = window.confirm(
+      `Smazat ${selectedObjects.size} ${selectedObjects.size === 1 ? 'objekt' : selectedObjects.size < 5 ? 'objekty' : 'objektů'}?\n\nTuto akci nelze vrátit!`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await bulkDelete(Array.from(selectedObjects));
+
+      // Clear selection for deleted bridges
+      if (selectedBridge && selectedObjects.has(selectedBridge)) {
+        setSelectedBridge(null);
+      }
+
+      setSelectedObjects(new Set());
+      await refetchBridges();
+    } catch (error) {
+      console.error('Failed to bulk delete:', error);
+      alert('Chyba při mazání objektů');
+    }
+  };
+
   // Toggle project expansion
   const toggleProject = (projectName: string) => {
     const newExpanded = new Set(expandedProjects);
@@ -384,10 +461,41 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                 <p>Žádné objekty v této kategorii.</p>
               </div>
             ) : (
+              <>
+              {/* Bulk actions bar */}
+              {selectedObjects.size > 0 && (
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '6px 8px', marginBottom: '8px',
+                  background: 'var(--bg-hover)', borderRadius: '6px',
+                  fontSize: '12px', color: 'var(--text-secondary)'
+                }}>
+                  <span>{selectedObjects.size} vybráno</span>
+                  <button
+                    className="c-btn c-btn--sm"
+                    onClick={handleBulkDelete}
+                    disabled={isLoading}
+                    style={{ marginLeft: 'auto', background: 'var(--danger)', color: '#fff', border: 'none', padding: '3px 8px', fontSize: '11px' }}
+                  >
+                    Smazat vybrané
+                  </button>
+                  <button
+                    className="c-btn c-btn--sm"
+                    onClick={() => setSelectedObjects(new Set())}
+                    style={{ padding: '3px 8px', fontSize: '11px' }}
+                  >
+                    Zrušit
+                  </button>
+                </div>
+              )}
+
               <div className="project-list">
                 {Object.entries(bridgesByProject).map(([projectName, projectBridges]) => {
                   const isExpanded = expandedProjects.has(projectName);
                   const bridgeCount = projectBridges.length;
+                  const projectIds = projectBridges.map(b => b.bridge_id);
+                  const allSelected = projectIds.length > 0 && projectIds.every(id => selectedObjects.has(id));
+                  const someSelected = projectIds.some(id => selectedObjects.has(id));
 
                   return (
                     <div key={projectName} className="project-group">
@@ -397,16 +505,35 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                         onClick={() => toggleProject(projectName)}
                         title={`${projectName} (${bridgeCount} objektů)`}
                       >
+                        {/* Select all checkbox for project */}
+                        <input
+                          type="checkbox"
+                          checked={allSelected}
+                          ref={(el) => { if (el) el.indeterminate = someSelected && !allSelected; }}
+                          onChange={(e) => { e.stopPropagation(); toggleSelectAllInProject(projectBridges); }}
+                          onClick={(e) => e.stopPropagation()}
+                          style={{ width: '14px', height: '14px', cursor: 'pointer', flexShrink: 0 }}
+                          title={allSelected ? 'Zrušit výběr všech' : 'Vybrat všechny objekty'}
+                        />
                         <span className="project-toggle">{isExpanded ? '▼' : '▶'}</span>
                         <span className="project-icon">📁</span>
                         <span className="project-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{projectName}</span>
                         <span className="project-count">{bridgeCount}</span>
                         <button
+                          className="bridge-action-btn"
+                          onClick={(e) => handleRenameClick(e, projectName)}
+                          title="Přejmenovat projekt"
+                          disabled={isLoading}
+                          style={{ marginLeft: '4px' }}
+                        >
+                          ✏️
+                        </button>
+                        <button
                           className="bridge-action-btn btn-add"
                           onClick={(e) => handleAddObjectClick(e, projectName)}
                           title="Přidat objekt do tohoto projektu"
                           disabled={isLoading}
-                          style={{ marginLeft: '4px' }}
+                          style={{ marginLeft: '2px' }}
                         >
                           ➕
                         </button>
@@ -415,7 +542,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                           onClick={(e) => handleDeleteProjectClick(e, projectName, bridgeCount)}
                           title="Smazat celý projekt"
                           disabled={isLoading}
-                          style={{ marginLeft: '4px' }}
+                          style={{ marginLeft: '2px' }}
                         >
                           🗑️
                         </button>
@@ -433,6 +560,15 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                               onMouseLeave={() => setHoveredBridgeId(null)}
                               title={`${bridge.object_name || bridge.bridge_id} (${bridge.element_count} prvků)`}
                             >
+                              {/* Object checkbox */}
+                              <input
+                                type="checkbox"
+                                checked={selectedObjects.has(bridge.bridge_id)}
+                                onChange={() => toggleObjectSelection(bridge.bridge_id)}
+                                onClick={(e) => e.stopPropagation()}
+                                style={{ width: '14px', height: '14px', cursor: 'pointer', flexShrink: 0, marginRight: '4px' }}
+                                title="Vybrat objekt"
+                              />
                               <div className="bridge-info" style={{ overflow: 'hidden' }}>
                                 <span className="bridge-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{bridge.object_name || bridge.bridge_id}</span>
                                 <span className="bridge-id" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{bridge.bridge_id}</span>
@@ -466,6 +602,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                   );
                 })}
               </div>
+              </>
             )}
 
             {/* Hover Tooltip for Collapsed State */}
@@ -546,6 +683,13 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         onConfirm={confirmDeleteProject}
         onCancel={() => setProjectToDelete(null)}
         isDeleting={isLoading}
+      />
+      <RenameProjectModal
+        projectName={projectToRename}
+        isOpen={!!projectToRename}
+        onConfirm={confirmRename}
+        onCancel={() => setProjectToRename(null)}
+        isRenaming={isLoading}
       />
 
       {/* Modal for adding object to project */}
