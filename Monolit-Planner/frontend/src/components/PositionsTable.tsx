@@ -314,33 +314,47 @@ export default function PositionsTable() {
   const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[], targetPartName?: string) => {
     if (!selectedBridge) return;
 
-    // If no target part specified, ask user to select
     if (!targetPartName) {
       const partNames = Object.keys(groupedPositions);
       if (partNames.length === 0) {
         alert('Nejprve vytvořte část konstrukce');
         return;
       }
-      // For now, use first part (TODO: add part selector in modal)
       targetPartName = partNames[0];
     }
 
     try {
-      const newPositions: Partial<Position>[] = calcRows.map(row => ({
-        id: uuidv4(),
-        bridge_id: selectedBridge,
-        part_name: targetPartName, // ✅ USE EXISTING PART!
-        item_name: `Bednění + ${row.construction_name}`, // ✅ ADD PREFIX!
-        subtype: 'jiné' as Subtype,
-        unit: 'sada' as any,
-        qty: row.num_sets,
-        crew_size: 0,
-        wage_czk_ph: 0,
-        shift_hours: 0,
-        days: row.formwork_term_days,
-        cost_czk: row.final_rental_czk,
-        metadata: JSON.stringify({ type: 'formwork_rental', calculator_id: row.id })
-      }));
+      const newPositions: Partial<Position>[] = [];
+      
+      calcRows.forEach(row => {
+        newPositions.push({
+          id: uuidv4(),
+          bridge_id: selectedBridge,
+          part_name: targetPartName,
+          item_name: `Bednění + ${row.construction_name} - Montáž`,
+          subtype: 'bednění' as Subtype,
+          unit: 'm2',
+          qty: row.total_area_m2,
+          crew_size: 4,
+          wage_czk_ph: 398,
+          shift_hours: 10,
+          days: row.assembly_days_per_tact * row.num_tacts
+        });
+        
+        newPositions.push({
+          id: uuidv4(),
+          bridge_id: selectedBridge,
+          part_name: targetPartName,
+          item_name: `Bednění + ${row.construction_name} - Demontáž`,
+          subtype: 'bednění' as Subtype,
+          unit: 'm2',
+          qty: row.total_area_m2,
+          crew_size: 4,
+          wage_czk_ph: 398,
+          shift_hours: 10,
+          days: row.disassembly_days_per_tact * row.num_tacts
+        });
+      });
 
       const result = await positionsAPI.create(selectedBridge, newPositions as Position[]);
 
@@ -353,7 +367,17 @@ export default function PositionsTable() {
 
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
       setShowFormworkCalc(false);
-      alert(`Přeneseno ${calcRows.length} řádků pronájmu bednění do části "${targetPartName}".`);
+      setFormworkCalcPartName(null);
+      
+      const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
+      
+      alert(
+        `✅ Přeneseno ${newPositions.length} řádků (Montáž + Demontáž) do části "${targetPartName}"\n\n` +
+        `💡 TIP: Nájem bednění přidejte do Registry jako TOV položku:\n` +
+        `- Termín: ${totalRentalDays} dní\n` +
+        `- Dodavatel: DOKA/Peri\n` +
+        `- Výpočet nájmu proveďte v Registry TOV kalkulátoru`
+      );
     } catch (error) {
       alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
     }
