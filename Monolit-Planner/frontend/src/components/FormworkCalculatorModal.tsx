@@ -94,11 +94,10 @@ function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: num
 
 export default function FormworkCalculatorModal({
   bridgeId,
-  partNames,
+  partNames: _partNames,
   onTransfer,
   onClose,
-  initialRows,
-  partNames: _partNames
+  initialRows
 }: Props) {
   const [rows, setRows] = useState<FormworkCalculatorRow[]>(
     initialRows && initialRows.length > 0
