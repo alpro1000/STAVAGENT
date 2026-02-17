@@ -169,6 +169,120 @@ router.post('/', async (req, res) => {
 });
 
 /**
+ * PUT /api/monolith-projects/rename-project/:projectName
+ * Rename project - updates project_name for ALL objects with this name
+ * Body: { new_name: string }
+ */
+router.put('/rename-project/:projectName', async (req, res) => {
+  try {
+    const oldName = decodeURIComponent(req.params.projectName);
+    const { new_name } = req.body;
+
+    if (!new_name || !new_name.trim()) {
+      return res.status(400).json({ error: 'new_name is required' });
+    }
+
+    const newName = new_name.trim();
+    logger.info(`[RENAME PROJECT] "${oldName}" → "${newName}"`);
+
+    // Special handling: "Bez projektu" in UI means NULL in DB
+    const isNullProject = oldName === 'Bez projektu';
+
+    // Count affected objects
+    let affectedObjects;
+    if (isNullProject) {
+      affectedObjects = await db.prepare(
+        `SELECT COUNT(*) as count FROM monolith_projects WHERE project_name IS NULL`
+      ).get();
+    } else {
+      affectedObjects = await db.prepare(
+        `SELECT COUNT(*) as count FROM monolith_projects WHERE project_name = ?`
+      ).get(oldName);
+    }
+
+    if (affectedObjects.count === 0) {
+      return res.status(404).json({ error: 'No objects found with this project name' });
+    }
+
+    // Update monolith_projects
+    if (isNullProject) {
+      await db.prepare(
+        `UPDATE monolith_projects SET project_name = ?, updated_at = CURRENT_TIMESTAMP WHERE project_name IS NULL`
+      ).run(newName);
+    } else {
+      await db.prepare(
+        `UPDATE monolith_projects SET project_name = ?, updated_at = CURRENT_TIMESTAMP WHERE project_name = ?`
+      ).run(newName, oldName);
+    }
+
+    // Update bridges table too (for consistency)
+    if (isNullProject) {
+      await db.prepare(
+        `UPDATE bridges SET project_name = ? WHERE project_name IS NULL`
+      ).run(newName);
+    } else {
+      await db.prepare(
+        `UPDATE bridges SET project_name = ? WHERE project_name = ?`
+      ).run(newName, oldName);
+    }
+
+    logger.info(`[RENAME PROJECT] ✅ Renamed ${affectedObjects.count} objects: "${oldName}" → "${newName}"`);
+
+    res.json({
+      success: true,
+      old_name: oldName,
+      new_name: newName,
+      objects_updated: affectedObjects.count
+    });
+  } catch (error) {
+    logger.error('[RENAME PROJECT] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/monolith-projects/bulk-delete
+ * Delete multiple objects by their IDs
+ * Body: { project_ids: string[] }
+ */
+router.post('/bulk-delete', async (req, res) => {
+  try {
+    const { project_ids } = req.body;
+
+    if (!Array.isArray(project_ids) || project_ids.length === 0) {
+      return res.status(400).json({ error: 'project_ids array is required' });
+    }
+
+    logger.info(`[BULK DELETE] Deleting ${project_ids.length} objects: ${project_ids.join(', ')}`);
+
+    let deletedCount = 0;
+
+    for (const id of project_ids) {
+      try {
+        // Delete from bridges (CASCADE deletes positions)
+        await db.prepare('DELETE FROM bridges WHERE bridge_id = ?').run(id);
+        // Delete from monolith_projects (CASCADE deletes parts)
+        await db.prepare('DELETE FROM monolith_projects WHERE project_id = ?').run(id);
+        deletedCount++;
+      } catch (err) {
+        logger.warn(`[BULK DELETE] Failed to delete ${id}: ${err.message}`);
+      }
+    }
+
+    logger.info(`[BULK DELETE] ✅ Deleted ${deletedCount}/${project_ids.length} objects`);
+
+    res.json({
+      success: true,
+      deleted_count: deletedCount,
+      deleted_ids: project_ids
+    });
+  } catch (error) {
+    logger.error('[BULK DELETE] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
  * DELETE /api/monolith-projects/by-project-name/:projectName
  * Delete ALL projects with matching project_name (group deletion)
  * This deletes an entire "project folder" in the sidebar

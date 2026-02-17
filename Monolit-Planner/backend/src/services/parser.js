@@ -135,41 +135,35 @@ export async function parseXLSX(filePath) {
 }
 
 /**
- * Extract file metadata (Stavba, Objekt, Сoupis)
+ * Extract file metadata (Stavba, Objekt, Soupis)
  * This metadata is used to create project hierarchy
  *
  * Stavba = Project container (from file headers)
  * Objekt = Object name (from file headers or CORE)
- * Сoupis = Budget/list name
+ * Soupis = Budget/list name
+ *
+ * Handles multiple Excel header formats:
+ *   Format 1: Label in column N, value in column N+1  ("Stavba" | "D6 Karlovy Vary")
+ *   Format 2: "Stavba:" with colon, value in next col  ("Stavba:" | "D6 Karlovy Vary")
+ *   Format 3: Label+value in same cell                  ("Stavba: D6 Karlovy Vary")
+ *   Format 4: Label row, value in next row below        (row i: "Stavba:", row i+1: "D6 Karlovy Vary")
  */
 export function extractFileMetadata(rawData) {
-  // 🔴 FIX: Check if rawData is valid array
   if (!Array.isArray(rawData)) {
     logger.warn(`[Parser] Invalid input: rawData is not an array`);
-    return {
-      stavba: null,
-      objekt: null,
-      soupis: null
-    };
+    return { stavba: null, objekt: null, soupis: null };
   }
 
   if (rawData.length === 0) {
     logger.warn(`[Parser] rawData is empty array`);
-    return {
-      stavba: null,
-      objekt: null,
-      soupis: null
-    };
+    return { stavba: null, objekt: null, soupis: null };
   }
 
-  let metadata = {
-    stavba: null,
-    objekt: null,
-    soupis: null
-  };
+  let metadata = { stavba: null, objekt: null, soupis: null };
+  const metadataKeys = ['stavba', 'objekt', 'soupis'];
 
-  // Scan first 15 rows for metadata labels
-  for (let i = 0; i < Math.min(15, rawData.length); i++) {
+  // Scan first 20 rows for metadata labels
+  for (let i = 0; i < Math.min(20, rawData.length); i++) {
     const row = rawData[i];
     const keys = Object.keys(row);
 
@@ -179,24 +173,47 @@ export function extractFileMetadata(rawData) {
 
       if (!value || typeof value !== 'string') continue;
 
-      const normalized = value.trim().toLowerCase();
+      const trimmed = value.trim();
+      const normalized = trimmed.toLowerCase();
 
-      // Look for "Stavba:" label
-      if (normalized === 'stavba' && keyIndex + 1 < keys.length) {
-        metadata.stavba = row[keys[keyIndex + 1]];
-        logger.info(`[Parser] Found Stavba: "${metadata.stavba}"`);
-      }
+      for (const metaKey of metadataKeys) {
+        if (metadata[metaKey]) continue; // already found
 
-      // Look for "Objekt:" label
-      if (normalized === 'objekt' && keyIndex + 1 < keys.length) {
-        metadata.objekt = row[keys[keyIndex + 1]];
-        logger.info(`[Parser] Found Objekt: "${metadata.objekt}"`);
-      }
+        // Format 1/2: Label is exact match (with or without colon), value in next column
+        if ((normalized === metaKey || normalized === metaKey + ':') && keyIndex + 1 < keys.length) {
+          const nextValue = row[keys[keyIndex + 1]];
+          if (nextValue && String(nextValue).trim()) {
+            metadata[metaKey] = String(nextValue).trim();
+            logger.info(`[Parser] Found ${metaKey} (next-col): "${metadata[metaKey]}"`);
+            break;
+          }
+        }
 
-      // Look for "Сoupis:" label
-      if (normalized === 'soupis' && keyIndex + 1 < keys.length) {
-        metadata.soupis = row[keys[keyIndex + 1]];
-        logger.info(`[Parser] Found Сoupis: "${metadata.soupis}"`);
+        // Format 3: "Stavba: D6 Karlovy Vary" in a single cell
+        const colonPattern = new RegExp(`^${metaKey}\\s*:\\s*(.+)$`, 'i');
+        const colonMatch = trimmed.match(colonPattern);
+        if (colonMatch && colonMatch[1].trim()) {
+          metadata[metaKey] = colonMatch[1].trim();
+          logger.info(`[Parser] Found ${metaKey} (inline): "${metadata[metaKey]}"`);
+          break;
+        }
+
+        // Format 4: Label in this row, value in the same column position in next row
+        if ((normalized === metaKey || normalized === metaKey + ':') && i + 1 < rawData.length) {
+          const nextRow = rawData[i + 1];
+          if (nextRow) {
+            const nextRowKeys = Object.keys(nextRow);
+            // Try same column position
+            if (keyIndex < nextRowKeys.length) {
+              const belowValue = nextRow[nextRowKeys[keyIndex]];
+              if (belowValue && String(belowValue).trim() && !metadataKeys.includes(String(belowValue).trim().toLowerCase().replace(':', ''))) {
+                metadata[metaKey] = String(belowValue).trim();
+                logger.info(`[Parser] Found ${metaKey} (below-row): "${metadata[metaKey]}"`);
+                break;
+              }
+            }
+          }
+        }
       }
     }
   }

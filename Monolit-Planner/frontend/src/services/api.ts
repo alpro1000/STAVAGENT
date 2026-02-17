@@ -187,6 +187,16 @@ export const bridgesAPI = {
   deleteByProjectName: async (projectName: string): Promise<{ deleted_count: number; deleted_ids: string[] }> => {
     const { data } = await api.delete(`/api/monolith-projects/by-project-name/${encodeURIComponent(projectName)}`);
     return data;
+  },
+
+  renameProject: async (oldName: string, newName: string): Promise<{ old_name: string; new_name: string; objects_updated: number }> => {
+    const { data } = await api.put(`/api/monolith-projects/rename-project/${encodeURIComponent(oldName)}`, { new_name: newName });
+    return data;
+  },
+
+  bulkDelete: async (projectIds: string[]): Promise<{ deleted_count: number; deleted_ids: string[] }> => {
+    const { data } = await api.post('/api/monolith-projects/bulk-delete', { project_ids: projectIds });
+    return data;
   }
 };
 

@@ -190,7 +190,22 @@ router.post('/', upload.single('file'), async (req, res) => {
 
     // Extract file metadata from first sheet
     const fileMetadata = extractFileMetadata(sheets[0]?.rawRows || []);
-    logger.info(`[Upload] File metadata: Stavba="${fileMetadata.stavba}"`);
+    logger.info(`[Upload] File metadata: Stavba="${fileMetadata.stavba}", Objekt="${fileMetadata.objekt}", Soupis="${fileMetadata.soupis}"`);
+
+    // If no Stavba found, generate sequential project name
+    if (!fileMetadata.stavba) {
+      try {
+        const countResult = await db.prepare(
+          `SELECT COUNT(*) as cnt FROM monolith_projects WHERE project_name LIKE 'Projekt %'`
+        ).get();
+        const nextNum = (countResult?.cnt || 0) + 1;
+        fileMetadata.stavba = `Projekt ${nextNum}`;
+        logger.info(`[Upload] No Stavba in header, using sequential name: "${fileMetadata.stavba}"`);
+      } catch (err) {
+        fileMetadata.stavba = `Projekt ${Date.now()}`;
+        logger.warn(`[Upload] Sequential name fallback error: ${err.message}`);
+      }
+    }
 
     // Create stavba (project container) if metadata exists
     let stavbaProjectId = null;
@@ -229,7 +244,10 @@ router.post('/', upload.single('file'), async (req, res) => {
     for (const sheet of sheets) {
       try {
         const bridgeId = sheet.bridgeId;
-        const bridgeName = sheet.bridgeName;
+        // Use Objekt metadata for first sheet's bridge name, fallback to sheet-detected name
+        const bridgeName = (sheets.indexOf(sheet) === 0 && fileMetadata.objekt)
+          ? fileMetadata.objekt
+          : sheet.bridgeName;
 
         logger.info(`[Upload] Processing sheet: ${sheet.sheetName} → Bridge: ${bridgeId}`);
 
@@ -267,7 +285,7 @@ router.post('/', upload.single('file'), async (req, res) => {
           await db.prepare(`
             INSERT INTO bridges (bridge_id, object_name, concrete_m3, status, project_name)
             VALUES (?, ?, ?, 'active', ?)
-          `).run(bridgeId, bridgeName, totalConcreteM3, fileMetadata.stavba || 'Import');
+          `).run(bridgeId, bridgeName, totalConcreteM3, fileMetadata.stavba);
 
           // Create monolith_projects record with project_name and status for sidebar display
           await db.prepare(`
@@ -279,7 +297,7 @@ router.post('/', upload.single('file'), async (req, res) => {
               element_count = excluded.element_count,
               project_name = COALESCE(excluded.project_name, monolith_projects.project_name),
               status = COALESCE(monolith_projects.status, 'active')
-          `).run(bridgeId, fileMetadata.stavba || 'Import', bridgeName, `Imported from: ${sheet.sheetName}`, totalConcreteM3, concretePositions.length, 1);
+          `).run(bridgeId, fileMetadata.stavba, bridgeName, `Imported from: ${sheet.sheetName}`, totalConcreteM3, concretePositions.length, 1);
 
           logger.info(`[Upload] ✅ Created bridge: ${bridgeId} "${bridgeName}" (${totalConcreteM3.toFixed(2)} m³)`);
         } else {
@@ -373,7 +391,7 @@ router.post('/', upload.single('file'), async (req, res) => {
 
         createdBridges.push({
           bridge_id: bridgeId,
-          project_name: fileMetadata.stavba || 'Import',  // Include project_name for frontend sidebar
+          project_name: fileMetadata.stavba,  // Include project_name for frontend sidebar
           object_name: bridgeName,
           sheet_name: sheet.sheetName,
           concrete_m3: totalConcreteM3,
@@ -384,6 +402,23 @@ router.post('/', upload.single('file'), async (req, res) => {
 
       } catch (sheetError) {
         logger.error(`[Upload] Error processing sheet ${sheet.sheetName}: ${sheetError.message}`);
+      }
+    }
+
+    // Sync created projects to Portal (non-blocking)
+    const PORTAL_API = process.env.PORTAL_API_URL || 'https://stav-agent.onrender.com';
+    for (const bridge of createdBridges) {
+      try {
+        await axios.post(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {
+          project_name: bridge.project_name,
+          project_type: 'monolit',
+          kiosk_type: 'monolit',
+          kiosk_project_id: bridge.bridge_id,
+          description: bridge.object_name
+        }, { timeout: 5000 });
+        logger.info(`[Upload] Synced to Portal: ${bridge.bridge_id}`);
+      } catch (portalErr) {
+        logger.warn(`[Upload] Portal sync failed for ${bridge.bridge_id}: ${portalErr.message}`);
       }
     }
 
