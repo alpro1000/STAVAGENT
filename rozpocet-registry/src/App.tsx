@@ -32,6 +32,7 @@ function App() {
     removeProject,
     addProject,
     getSheet,
+    linkToPortal,
   } = useRegistryStore();
 
   // Search state
@@ -165,6 +166,12 @@ function App() {
       };
 
       addProject(newProject);
+
+      // Auto-link the project to Portal (portal_project_id is used as registry project id)
+      linkToPortal(newProject.id, portalProjectId, portalProject.name);
+
+      // Auto-select the imported project
+      setSelectedProject(newProject.id);
 
       // Clean URL params
       window.history.replaceState({}, '', window.location.pathname);

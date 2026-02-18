@@ -45,7 +45,7 @@ interface PartTemplate {
   created_at: string;
 }
 
-const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+export const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
 if (import.meta.env.DEV) {
   console.log('[API Service] Initializing with API_URL:', API_URL);
@@ -144,7 +144,7 @@ export const bridgesAPI = {
     await api.post('/api/monolith-projects', monolithParams);
     
     // Also create in Portal (cross-kiosk sync)
-    const portalAPI = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
+    const portalAPI = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
     try {
       await fetch(`${portalAPI}/api/portal-projects/create-from-kiosk`, {
         method: 'POST',

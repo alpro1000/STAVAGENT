@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
-import { exportAPI, uploadAPI } from '../services/api';
+import { exportAPI, uploadAPI, API_URL } from '../services/api';
 import CreateMonolithForm from './CreateMonolithForm';
 import EditBridgeForm from './EditBridgeForm';
 import ExportHistory from './ExportHistory';
@@ -161,7 +161,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     setIsExportingToRegistry(true);
     try {
       // Call backend endpoint which handles all the export logic
-      const response = await fetch(`/api/export-to-registry/${selectedBridge}`, {
+      const response = await fetch(`${API_URL}/api/export-to-registry/${selectedBridge}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });

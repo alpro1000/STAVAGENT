@@ -7,6 +7,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import { API_URL } from '../services/api';
 
 interface ExportToRegistryProps {
   projectId: string;
@@ -29,7 +30,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
-  const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
+  const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
   const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
 
     try {
       // Fetch Monolit project data
-      const monolitResponse = await fetch(`/api/monolith-projects/${projectId}`);
+      const monolitResponse = await fetch(`${API_URL}/api/monolith-projects/${projectId}`);
       if (!monolitResponse.ok) throw new Error('Failed to fetch project data');
       
       const monolitData = await monolitResponse.json();
