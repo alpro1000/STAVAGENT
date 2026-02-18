@@ -13,7 +13,7 @@ import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { PortalLinkBadge } from './components/portal/PortalLinkBadge';
 import FormworkRentalCalculator from './components/tov/FormworkRentalCalculator';
-import { useRegistryStoreAPI } from './stores/registryStoreAPI';
+import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
@@ -32,7 +32,7 @@ function App() {
     removeProject,
     addProject,
     getSheet,
-  } = useRegistryStoreAPI();
+  } = useRegistryStore();
 
   // Search state
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
@@ -117,7 +117,7 @@ function App() {
   // Load project from Portal
   const loadFromPortal = async (portalProjectId: string) => {
     try {
-      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
+      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
       const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portalProjectId}`, {
         credentials: 'include'
       });

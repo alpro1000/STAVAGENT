@@ -20,31 +20,38 @@ interface FormworkCalculation {
 const FORMWORK_SYSTEMS = ['FRAMI XLIFE', 'FRAMAX XLIFE', 'STAXO100'];
 const HEIGHTS = [1.2, 1.5, 2.4, 2.7, 3.0];
 
+// Price table (Kč/m²/day) — source: rozpocet-registry-backend/server.js
+const FORMWORK_PRICES: Record<string, { base: number; heights: Record<number, number> }> = {
+  'FRAMI XLIFE':  { base: 8.5,  heights: { 1.2: 0.9, 1.5: 1.0, 2.4: 1.1, 2.7: 1.15, 3.0: 1.2 } },
+  'FRAMAX XLIFE': { base: 9.0,  heights: { 1.5: 1.0, 2.4: 1.1, 2.7: 1.15, 3.0: 1.2 } },
+  'STAXO100':     { base: 12.0, heights: { 2.7: 1.0, 3.0: 1.1 } },
+};
+
 export default function FormworkRentalCalculator({ isOpen, onClose, onAddToRegistry }: FormworkRentalCalculatorProps) {
   const [area, setArea] = useState<number>(100);
   const [system, setSystem] = useState<string>('FRAMI XLIFE');
   const [height, setHeight] = useState<number>(2.7);
   const [rentalDays, setRentalDays] = useState<number>(15);
   const [calculation, setCalculation] = useState<FormworkCalculation | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  const handleCalculate = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(`${import.meta.env.VITE_REGISTRY_API_URL}/api/formwork-rental/calculate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ area_m2: area, system, height, rental_days: rentalDays })
-      });
-      const data = await response.json();
-      if (data.success) {
-        setCalculation(data.calculation);
-      }
-    } catch (error) {
-      console.error('Calculation error:', error);
-    } finally {
-      setLoading(false);
-    }
+  const handleCalculate = () => {
+    const priceConfig = FORMWORK_PRICES[system];
+    if (!priceConfig) return;
+
+    const heightMultiplier = priceConfig.heights[height] ?? 1.0;
+    const unit_price_czk_m2_day = Math.round(priceConfig.base * heightMultiplier * 100) / 100;
+    const total_rental_czk = Math.round(unit_price_czk_m2_day * area * rentalDays);
+    const daily_cost = Math.round(unit_price_czk_m2_day * area);
+
+    setCalculation({
+      area_m2: area,
+      system,
+      height,
+      rental_days: rentalDays,
+      unit_price_czk_m2_day,
+      total_rental_czk,
+      breakdown: { daily_cost },
+    });
   };
 
   const handleAdd = () => {
@@ -102,7 +109,6 @@ export default function FormworkRentalCalculator({ isOpen, onClose, onAddToRegis
 
         <button
           onClick={handleCalculate}
-          disabled={loading}
           style={{
             width: '100%',
             padding: '10px',
@@ -114,7 +120,7 @@ export default function FormworkRentalCalculator({ isOpen, onClose, onAddToRegis
             marginBottom: '20px'
           }}
         >
-          {loading ? 'Počítám...' : 'Vypočítat'}
+          Vypočítat
         </button>
 
         {calculation && (
