@@ -20,6 +20,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { requireAuth } from '../middleware/auth.js';
 import { getPool } from '../db/postgres.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
+import { parseFile } from '../services/universalParser.js';
 
 const router = express.Router();
 
@@ -144,9 +145,23 @@ router.post('/:projectId/upload', upload.single('file'), async (req, res) => {
 
     console.log(`[PortalFiles] Uploaded file: ${file_id} (${req.file.originalname}) to project ${projectId}`);
 
+    const fileRecord = result.rows[0];
+
+    // Auto-parse Excel files in the background
+    const excelMimes = [
+      'application/vnd.ms-excel',
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    ];
+    if (excelMimes.includes(req.file.mimetype)) {
+      // Don't await — parse in background so upload returns immediately
+      autoParseFile(file_id, req.file.path, req.file.originalname).catch(err => {
+        console.error(`[PortalFiles] Background parse failed for ${file_id}:`, err.message);
+      });
+    }
+
     res.status(201).json({
       success: true,
-      file: result.rows[0]
+      file: fileRecord
     });
 
   } catch (error) {
@@ -424,5 +439,307 @@ router.post('/:fileId/analyze', async (req, res) => {
     client.release();
   }
 });
+
+/**
+ * POST /api/portal-files/:fileId/parse
+ * Manually trigger Universal Parser for a file.
+ * Useful for re-parsing or parsing non-Excel files that were uploaded earlier.
+ */
+router.post('/:fileId/parse', async (req, res) => {
+  const pool = getPool();
+
+  try {
+    const userId = req.user.userId;
+    const { fileId } = req.params;
+
+    const fileResult = await pool.query(
+      `SELECT pf.*
+       FROM portal_files pf
+       JOIN portal_projects pp ON pf.portal_project_id = pp.portal_project_id
+       WHERE pf.file_id = $1 AND pp.owner_id = $2`,
+      [fileId, userId]
+    );
+
+    if (fileResult.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'File not found' });
+    }
+
+    const file = fileResult.rows[0];
+
+    if (!fs.existsSync(file.file_path)) {
+      return res.status(404).json({ success: false, error: 'Physical file not found' });
+    }
+
+    console.log(`[PortalFiles] Manual parse triggered for ${fileId}`);
+
+    const parsedData = await parseFile(file.file_path, { fileName: file.file_name });
+
+    await pool.query(
+      `UPDATE portal_files
+       SET parsed_data = $1, parse_status = 'parsed', parsed_at = NOW()
+       WHERE file_id = $2`,
+      [JSON.stringify(parsedData), fileId]
+    );
+
+    res.json({
+      success: true,
+      summary: parsedData.summary,
+      metadata: parsedData.metadata,
+      sheetCount: parsedData.sheets.length,
+    });
+
+  } catch (error) {
+    console.error('[PortalFiles] Error parsing file:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message || 'Failed to parse file'
+    });
+  }
+});
+
+/**
+ * GET /api/portal-files/:fileId/parsed-data
+ * Get full parsed data for a file.
+ * Used by kiosks to fetch parsed items without re-parsing.
+ */
+router.get('/:fileId/parsed-data', async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { fileId } = req.params;
+    const pool = getPool();
+
+    const result = await pool.query(
+      `SELECT pf.file_id, pf.file_name, pf.parse_status, pf.parsed_at, pf.parsed_data
+       FROM portal_files pf
+       JOIN portal_projects pp ON pf.portal_project_id = pp.portal_project_id
+       WHERE pf.file_id = $1 AND pp.owner_id = $2`,
+      [fileId, userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'File not found' });
+    }
+
+    const file = result.rows[0];
+
+    if (file.parse_status !== 'parsed' || !file.parsed_data) {
+      return res.status(404).json({
+        success: false,
+        error: 'File has not been parsed yet',
+        parse_status: file.parse_status,
+      });
+    }
+
+    const parsedData = JSON.parse(file.parsed_data);
+
+    res.json({
+      success: true,
+      file_id: file.file_id,
+      file_name: file.file_name,
+      parsed_at: file.parsed_at,
+      data: parsedData,
+    });
+
+  } catch (error) {
+    console.error('[PortalFiles] Error fetching parsed data:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch parsed data'
+    });
+  }
+});
+
+/**
+ * GET /api/portal-files/:fileId/parsed-data/summary
+ * Get only summary + metadata (lightweight endpoint for preview).
+ */
+router.get('/:fileId/parsed-data/summary', async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { fileId } = req.params;
+    const pool = getPool();
+
+    const result = await pool.query(
+      `SELECT pf.file_id, pf.file_name, pf.parse_status, pf.parsed_at, pf.parsed_data
+       FROM portal_files pf
+       JOIN portal_projects pp ON pf.portal_project_id = pp.portal_project_id
+       WHERE pf.file_id = $1 AND pp.owner_id = $2`,
+      [fileId, userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'File not found' });
+    }
+
+    const file = result.rows[0];
+
+    if (file.parse_status !== 'parsed' || !file.parsed_data) {
+      return res.status(404).json({
+        success: false,
+        error: 'File has not been parsed yet',
+        parse_status: file.parse_status,
+      });
+    }
+
+    const parsedData = JSON.parse(file.parsed_data);
+
+    res.json({
+      success: true,
+      file_id: file.file_id,
+      file_name: file.file_name,
+      parsed_at: file.parsed_at,
+      metadata: parsedData.metadata,
+      summary: parsedData.summary,
+      sheets: parsedData.sheets.map(s => ({
+        name: s.name,
+        bridgeId: s.bridgeId,
+        bridgeName: s.bridgeName,
+        itemCount: s.items.length,
+        stats: s.stats,
+      })),
+    });
+
+  } catch (error) {
+    console.error('[PortalFiles] Error fetching parsed data summary:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch parsed data summary'
+    });
+  }
+});
+
+/**
+ * GET /api/portal-files/:fileId/parsed-data/for-kiosk/:kioskType
+ * Get filtered parsed data for a specific kiosk.
+ *
+ * Kiosk types:
+ * - monolit: Only concrete-related items (beton, bedneni, vyztuze)
+ * - registry: All items
+ * - urs_matcher: Items with descriptions for URS matching
+ */
+router.get('/:fileId/parsed-data/for-kiosk/:kioskType', async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { fileId, kioskType } = req.params;
+    const pool = getPool();
+
+    const result = await pool.query(
+      `SELECT pf.file_id, pf.file_name, pf.parse_status, pf.parsed_data
+       FROM portal_files pf
+       JOIN portal_projects pp ON pf.portal_project_id = pp.portal_project_id
+       WHERE pf.file_id = $1 AND pp.owner_id = $2`,
+      [fileId, userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'File not found' });
+    }
+
+    const file = result.rows[0];
+
+    if (file.parse_status !== 'parsed' || !file.parsed_data) {
+      return res.status(404).json({
+        success: false,
+        error: 'File has not been parsed yet',
+        parse_status: file.parse_status,
+      });
+    }
+
+    const parsedData = JSON.parse(file.parsed_data);
+
+    // Filter items based on kiosk type
+    let filteredSheets;
+    switch (kioskType) {
+      case 'monolit':
+        // Only concrete-related work types
+        filteredSheets = parsedData.sheets.map(sheet => ({
+          ...sheet,
+          items: sheet.items.filter(item =>
+            ['beton', 'bedneni', 'vyztuze'].includes(item.detectedType)
+          ),
+        })).filter(sheet => sheet.items.length > 0);
+        break;
+
+      case 'registry':
+        // All items — no filtering
+        filteredSheets = parsedData.sheets;
+        break;
+
+      case 'urs_matcher':
+        // Items with descriptions for matching
+        filteredSheets = parsedData.sheets.map(sheet => ({
+          ...sheet,
+          items: sheet.items.filter(item =>
+            item.popis && item.popis.length > 5
+          ),
+        })).filter(sheet => sheet.items.length > 0);
+        break;
+
+      default:
+        return res.status(400).json({
+          success: false,
+          error: `Unknown kiosk type: ${kioskType}. Supported: monolit, registry, urs_matcher`,
+        });
+    }
+
+    const totalItems = filteredSheets.reduce((sum, s) => sum + s.items.length, 0);
+
+    res.json({
+      success: true,
+      file_id: file.file_id,
+      file_name: file.file_name,
+      kioskType,
+      metadata: parsedData.metadata,
+      totalItems,
+      sheets: filteredSheets,
+    });
+
+  } catch (error) {
+    console.error('[PortalFiles] Error fetching kiosk data:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch kiosk data'
+    });
+  }
+});
+
+// ============================================================================
+// INTERNAL HELPERS
+// ============================================================================
+
+/**
+ * Auto-parse an Excel file in the background after upload.
+ * Updates portal_files with parsed_data.
+ */
+async function autoParseFile(fileId, filePath, fileName) {
+  const pool = getPool();
+
+  try {
+    console.log(`[UniversalParser] Auto-parsing file: ${fileId} (${fileName})`);
+
+    await pool.query(
+      `UPDATE portal_files SET parse_status = 'parsing' WHERE file_id = $1`,
+      [fileId]
+    );
+
+    const parsedData = await parseFile(filePath, { fileName });
+
+    await pool.query(
+      `UPDATE portal_files
+       SET parsed_data = $1, parse_status = 'parsed', parsed_at = NOW()
+       WHERE file_id = $2`,
+      [JSON.stringify(parsedData), fileId]
+    );
+
+    console.log(`[UniversalParser] Auto-parse complete: ${fileId} → ${parsedData.summary.totalItems} items from ${parsedData.summary.totalSheets} sheets`);
+  } catch (error) {
+    console.error(`[UniversalParser] Auto-parse failed for ${fileId}:`, error.message);
+
+    await pool.query(
+      `UPDATE portal_files SET parse_status = 'error' WHERE file_id = $1`,
+      [fileId]
+    ).catch(() => {}); // Ignore update errors
+  }
+}
 
 export default router;
