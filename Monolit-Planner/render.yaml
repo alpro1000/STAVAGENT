@@ -47,6 +47,8 @@ services:
     staticPublishPath: frontend/dist
     autoDeploy: false  # Disable auto-deploy
     envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
       - key: VITE_API_URL
         value: "https://monolit-planner-api.onrender.com"
     headers:
