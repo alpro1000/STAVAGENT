@@ -370,7 +370,7 @@ export default function PositionsTable() {
       setFormworkCalcPartName(null);
 
       const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
-      const totalArea = calcRows.reduce((sum, r) => r.total_area_m2, 0);
+      const totalArea = calcRows.reduce((acc, r) => acc + r.total_area_m2, 0);
       const registryUrl = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
 
       alert(
@@ -379,7 +379,7 @@ export default function PositionsTable() {
         `Parametry pro kalkulator:\n` +
         `   Plocha: ${totalArea.toFixed(1)} m2\n` +
         `   Termin najmu: ${totalRentalDays} dni\n` +
-        `   System: ${calcRows[0]?.formwork_system || 'FRAMI XLIFE'}\n\n` +
+        `   System: ${calcRows[0]?.system_name || 'FRAMI XLIFE'}\n\n` +
         `Otevrete Registry TOV:\n` +
         `   ${registryUrl}\n\n` +
         `   Kliknete na "Najem bedneni" -> zadejte parametry -> pridejte do TOV`
