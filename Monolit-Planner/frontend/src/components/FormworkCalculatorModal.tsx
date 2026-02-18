@@ -102,7 +102,7 @@ function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: num
 export default function FormworkCalculatorModal({
   bridgeId,
   partNames: _partNames,
-  currentPartName,
+  currentPartName: _currentPartName,
   elementTotalDays = 0,
   onTransfer,
   onClose,
