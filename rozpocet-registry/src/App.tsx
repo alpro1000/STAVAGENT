@@ -117,6 +117,9 @@ function App() {
 
   // Load project from Portal
   const loadFromPortal = async (portalProjectId: string) => {
+    // Clean URL params immediately so page refresh doesn't re-trigger import
+    window.history.replaceState({}, '', window.location.pathname);
+
     try {
       const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
       const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portalProjectId}`, {
@@ -124,13 +127,22 @@ function App() {
       });
 
       if (!response.ok) throw new Error('Failed to load from Portal');
-      
+
       const data = await response.json();
       if (!data.success) throw new Error(data.error || 'Failed to load project');
 
       const portalProject = data.project;
 
-      // Convert Portal format to Registry format
+      // --- Deduplicate: if a project with this Portal ID already exists, just re-select it ---
+      // This prevents skupiny and other local edits from being wiped on repeated portal opens.
+      const existingProject = projects.find(p => p.id === portalProject.id);
+      if (existingProject) {
+        setSelectedProject(existingProject.id);
+        linkToPortal(existingProject.id, portalProjectId, portalProject.name);
+        return; // Preserve all local skupiny — do NOT re-import
+      }
+
+      // First-time import: convert Portal format to Registry format
       const newProject = {
         id: portalProject.id,
         fileName: `${portalProject.name}.xlsx`,
@@ -141,7 +153,18 @@ function App() {
           id: crypto.randomUUID(),
           name: sheet.name,
           projectId: portalProject.id,
-          items: sheet.items,
+          items: sheet.items.map((item: any) => ({
+            ...item,
+            // Normalise source so cascade-sort (source.rowStart) doesn't produce NaN
+            source: {
+              projectId: portalProject.id,
+              fileName: `${portalProject.name}.xlsx`,
+              sheetName: sheet.name,
+              rowStart: item.source?.row ?? item.source?.rowStart ?? 0,
+              rowEnd:   item.source?.row ?? item.source?.rowEnd   ?? 0,
+              cellRef:  item.source?.cellRef ?? 'A1',
+            },
+          })),
           stats: {
             totalItems: sheet.items.length,
             classifiedItems: sheet.items.filter((i: any) => i.skupina).length,
@@ -166,15 +189,8 @@ function App() {
       };
 
       addProject(newProject);
-
-      // Auto-link the project to Portal (portal_project_id is used as registry project id)
       linkToPortal(newProject.id, portalProjectId, portalProject.name);
-
-      // Auto-select the imported project
       setSelectedProject(newProject.id);
-
-      // Clean URL params
-      window.history.replaceState({}, '', window.location.pathname);
 
       alert(`✅ Načteno z Portal: ${portalProject.sheets.length} objektů`);
     } catch (error) {
