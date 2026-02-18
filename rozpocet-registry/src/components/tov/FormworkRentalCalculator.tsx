@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import Modal from '../common/Modal';
+import { useState } from 'react';
+import { Modal } from '../common/Modal';
 
 interface FormworkRentalCalculatorProps {
   isOpen: boolean;
@@ -14,6 +14,7 @@ interface FormworkCalculation {
   rental_days: number;
   unit_price_czk_m2_day: number;
   total_rental_czk: number;
+  breakdown?: { daily_cost: number };
 }
 
 const FORMWORK_SYSTEMS = ['FRAMI XLIFE', 'FRAMAX XLIFE', 'STAXO100'];
@@ -124,10 +125,12 @@ export default function FormworkRentalCalculator({ isOpen, onClose, onAddToRegis
                 <span>Cena za m²/den:</span>
                 <strong>{calculation.unit_price_czk_m2_day} Kč</strong>
               </div>
+              {calculation.breakdown && (
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>Denní náklady:</span>
                 <strong>{calculation.breakdown.daily_cost} Kč</strong>
               </div>
+              )}
               <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '8px', borderTop: '2px solid #ddd' }}>
                 <span style={{ fontSize: '16px', fontWeight: 600 }}>Celkem nájem:</span>
                 <strong style={{ fontSize: '18px', color: '#2563eb' }}>{calculation.total_rental_czk} Kč</strong>
