@@ -349,7 +349,12 @@ export function calculateFinalRentalCost(
  * Calculate total element duration (all work types + curing)
  * Used to determine total formwork occupancy for rental calculation
  *
- * Celk. doba = Σ dny(bednění) + Σ dny(výztuž) + Σ dny(beton) + max(curing_days)
+ * Celk. doba = Σ dny(bednění) + Σ dny(výztuž) + Σ dny(beton) + effectiveCuring + Σ dny(jiné)
+ *
+ * Curing logic: effectiveCuring = maxCuringDays / numSets
+ * - If 1 set: full curing time added to timeline
+ * - If 2+ sets: curing overlaps with work on other sets (parallel)
+ * - numSets detected from formwork_rental positions in the same part (qty field)
  */
 export function calculateElementTotalDays(
   partPositions: Position[]
@@ -359,6 +364,7 @@ export function calculateElementTotalDays(
   let betonDays = 0;
   let maxCuringDays = 0;
   let otherDays = 0;
+  let maxNumSets = 1;
 
   for (const pos of partPositions) {
     const days = pos.days || 0;
@@ -370,7 +376,7 @@ export function calculateElementTotalDays(
       vyztuzDays += days;
     } else if (subtype === 'beton') {
       betonDays += days;
-      const curing = (pos as any).curing_days || 0;
+      const curing = (pos as any).curing_days ?? 3;
       if (curing > maxCuringDays) maxCuringDays = curing;
     } else if (subtype === 'jiné') {
       // "jiné" with rental metadata don't count towards element time
@@ -379,13 +385,22 @@ export function calculateElementTotalDays(
       const isFormworkRental = typeof meta === 'string'
         ? meta.includes('formwork_rental')
         : (meta && typeof meta === 'object' && meta.type === 'formwork_rental');
-      if (!isFormworkRental) {
+      if (isFormworkRental) {
+        // Extract num_sets from rental position (stored as qty)
+        const sets = pos.qty || 1;
+        if (sets > maxNumSets) maxNumSets = sets;
+      } else {
         otherDays += days;
       }
     }
   }
 
-  return bedneniDays + vyztuzDays + betonDays + maxCuringDays + otherDays;
+  // Effective curing: divided by num_sets (parallel work with multiple sets)
+  const effectiveCuring = maxNumSets > 1
+    ? maxCuringDays / maxNumSets
+    : maxCuringDays;
+
+  return bedneniDays + vyztuzDays + betonDays + effectiveCuring + otherDays;
 }
 
 /**

@@ -558,7 +558,6 @@ export default function PositionsTable() {
                       <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">Hod./den</th>
                       <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Dny</th>
                       <th className="col-rychlost" title="Norma rychlosti v MJ/hod (EDITABLE). Zadejte normu → přepočítá dny. Nebo zadejte dny → norma se vypočítá zpětně.">MJ/h</th>
-                      <th className="col-zrani" title="Dny zrání betonu (technologická pauza) - pouze pro beton">Zrání</th>
                       <th className="col-hod-celkem" title="Celkový počet hodin = Počet × Hod./den × Dny">Celk.hod.</th>
                       <th className="col-kc-celkem" title="Celková cena v CZK = Celk.hod. × Kč/h">Celk.Kč</th>
                       <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Celk.Kč ÷ Objem betonu">
@@ -572,12 +571,28 @@ export default function PositionsTable() {
                     </thead>
                     <tbody>
                       {partPositions.length > 0 ? (
-                        partPositions.map((position) => (
-                          <PositionRow key={position.id} position={position} isLocked={isLocked} />
-                        ))
+                        partPositions.map((position) => {
+                          // For beton rows, compute numSets from rental positions in same part
+                          const partNumSets = position.subtype === 'beton'
+                            ? Math.max(1, ...partPositions
+                                .filter(p => {
+                                  if (p.subtype !== 'jiné') return false;
+                                  const meta = (p as any).metadata;
+                                  const isFR = typeof meta === 'string'
+                                    ? meta.includes('formwork_rental')
+                                    : (meta && typeof meta === 'object' && meta.type === 'formwork_rental');
+                                  return isFR;
+                                })
+                                .map(p => p.qty || 1)
+                              )
+                            : undefined;
+                          return (
+                            <PositionRow key={position.id} position={position} isLocked={isLocked} partNumSets={partNumSets} />
+                          );
+                        })
                       ) : (
                         <tr>
-                          <td colSpan={isLocked ? 17 : 16} style={{
+                          <td colSpan={isLocked ? 16 : 15} style={{
                             textAlign: 'center',
                             padding: '20px',
                             color: 'var(--text-secondary)',

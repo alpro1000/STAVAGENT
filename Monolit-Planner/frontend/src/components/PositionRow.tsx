@@ -24,9 +24,10 @@ interface DaysSuggestion {
 interface Props {
   position: Position;
   isLocked?: boolean;
+  partNumSets?: number;  // Number of formwork sets in this part (for curing÷sets display)
 }
 
-export default function PositionRow({ position, isLocked = false }: Props) {
+export default function PositionRow({ position, isLocked = false, partNumSets }: Props) {
   const { selectedBridge } = useAppContext();
   const { updatePositions, deletePosition, isUpdating } = usePositions(selectedBridge);
   const { data: config } = useConfig(); // Get feature flags from config
@@ -610,27 +611,6 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         />
       </td>
 
-      {/* Curing days - only for beton subtype */}
-      <td className="cell-input col-zrani">
-        {position.subtype === 'beton' ? (
-          <input
-            type="number"
-            min={0}
-            max={30}
-            step={1}
-            className="input-cell"
-            value={(editedFields as any).curing_days ?? (position as any).curing_days ?? 0}
-            onChange={(e) => handleFieldChange('curing_days' as any, Math.max(0, parseInt(e.target.value) || 0))}
-            onBlur={handleBlur}
-            disabled={isLocked}
-            title="Dny zrání betonu (technologická pauza)"
-            style={{ textAlign: 'center' }}
-          />
-        ) : (
-          <div style={{ color: 'var(--text-tertiary)', textAlign: 'center', fontSize: '11px' }}>—</div>
-        )}
-      </td>
-
       {/* COMPUTED CELLS - Readonly (gray) - Using locally computed values for instant update */}
 
       {/* Labor hours */}
@@ -715,6 +695,57 @@ export default function PositionRow({ position, isLocked = false }: Props) {
         </div>
       </td>
     </tr>
+
+    {/* Curing sub-row - only for beton positions */}
+    {position.subtype === 'beton' && (
+      <tr className="curing-sub-row" style={{
+        background: 'var(--status-warning-bg, #fff8e1)',
+        borderBottom: '1px solid var(--border-default, #eee)'
+      }}>
+        {isLocked && <td></td>}
+        <td colSpan={2} style={{ padding: '4px 12px', fontSize: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '14px' }}>⏳</span>
+            <span style={{ fontWeight: 600, color: '#e65100' }}>Zrání betonu</span>
+          </div>
+        </td>
+        <td colSpan={4}></td>
+        <td style={{ padding: '4px 6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <input
+              type="number"
+              min={0}
+              max={30}
+              step={1}
+              className="input-cell"
+              value={(editedFields as any).curing_days ?? (position as any).curing_days ?? 3}
+              onChange={(e) => handleFieldChange('curing_days' as any, Math.max(0, parseInt(e.target.value) || 0))}
+              onBlur={handleBlur}
+              disabled={isLocked}
+              title="Dny zrání betonu (technologická pauza). Výchozí: 3 dny."
+              style={{ width: '50px', textAlign: 'center', fontWeight: 600, fontSize: '13px' }}
+            />
+            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>dní</span>
+          </div>
+        </td>
+        <td colSpan={7} style={{ padding: '4px 12px', fontSize: '11px', color: 'var(--text-secondary)' }}>
+          {(() => {
+            const curingDays = (editedFields as any).curing_days ?? (position as any).curing_days ?? 3;
+            const numSets = partNumSets || 1;
+            if (numSets > 1) {
+              const effective = (curingDays / numSets).toFixed(1);
+              return (
+                <span>
+                  Technologická pauza • {curingDays} dní ÷ {numSets} sad = <b style={{ color: '#e65100' }}>{effective} efektivních dní</b>
+                </span>
+              );
+            }
+            return <span>Technologická pauza • {curingDays} dní zrání betonu</span>;
+          })()}
+        </td>
+        <td></td>
+      </tr>
+    )}
 
     {/* Formula Details Modal */}
     <FormulaDetailsModal

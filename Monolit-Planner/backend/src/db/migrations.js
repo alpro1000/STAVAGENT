@@ -1005,8 +1005,8 @@ async function runPhase8FormworkCalculator() {
 
     // Add curing_days to positions
     try {
-      await db.exec(`ALTER TABLE positions ADD COLUMN curing_days INTEGER DEFAULT 0`);
-      console.log('[Migration 008] ✓ curing_days column added');
+      await db.exec(`ALTER TABLE positions ADD COLUMN curing_days INTEGER DEFAULT 3`);
+      console.log('[Migration 008] ✓ curing_days column added (default 3)');
     } catch (error) {
       if (error.message?.includes('already exists') || error.message?.includes('duplicate column')) {
         console.log('[Migration 008] ✓ curing_days column already exists');
@@ -1082,7 +1082,7 @@ async function initSqliteSchema() {
       unit_cost_on_m3 REAL,
       kros_unit_czk REAL,
       kros_total_czk REAL,
-      curing_days INTEGER DEFAULT 0,
+      curing_days INTEGER DEFAULT 3,
       has_rfi INTEGER DEFAULT 0,
       rfi_message TEXT,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
@@ -1092,7 +1092,7 @@ async function initSqliteSchema() {
 
   // Add curing_days column if missing (for existing databases)
   try {
-    db.exec(`ALTER TABLE positions ADD COLUMN curing_days INTEGER DEFAULT 0`);
+    db.exec(`ALTER TABLE positions ADD COLUMN curing_days INTEGER DEFAULT 3`);
   } catch (_) { /* column already exists */ }
 
   // Formwork calculator table

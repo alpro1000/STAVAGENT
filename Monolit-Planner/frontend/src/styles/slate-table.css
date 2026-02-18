@@ -277,10 +277,9 @@
   min-width: 56px;
 }
 
-/* Zrání - curing days */
-.col-zrani {
-  width: 52px !important;
-  min-width: 52px;
+/* Curing sub-row (under beton) */
+.curing-sub-row td {
+  border-bottom: 1px solid #e0e0e0 !important;
 }
 
 /* H: MJ/h - speed */
@@ -386,11 +385,6 @@
 .positions-table .col-den {
   font-weight: 600;
   color: var(--color-positive);
-}
-
-/* Curing days - orange tint */
-.positions-table .col-zrani {
-  color: #e65100;
 }
 
 /* Cost columns - emphasis */
