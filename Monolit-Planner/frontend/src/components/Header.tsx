@@ -166,12 +166,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
         headers: { 'Content-Type': 'application/json' }
       });
 
+      const text = await response.text();
+      let parsed: any = null;
+      try { parsed = JSON.parse(text); } catch { /* non-JSON body */ }
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Export failed');
+        throw new Error(parsed?.error || `Export failed (${response.status})`);
       }
 
-      const result = await response.json();
+      const result = parsed;
 
       // Open Registry in new tab
       window.open(result.registry_url, '_blank');

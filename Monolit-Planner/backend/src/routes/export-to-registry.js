@@ -46,30 +46,33 @@ router.post('/:bridge_id', async (req, res) => {
       return res.status(400).json({ error: 'No positions to export' });
     }
 
-    // 3. Check/create Portal project
-    const checkRes = await fetch(`${PORTAL_API}/api/portal-projects/by-kiosk/monolit/${bridge_id}`);
-    let portalProjectId;
+    // 3. Check/create Portal project (non-blocking – Portal may be sleeping on free tier)
+    let portalProjectId = null;
+    try {
+      const checkRes = await fetch(`${PORTAL_API}/api/portal-projects/by-kiosk/monolit/${bridge_id}`);
 
-    if (checkRes.ok) {
-      const checkData = await checkRes.json();
-      portalProjectId = checkData.project.portal_project_id;
-    } else {
-      const createRes = await fetch(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          project_name: project.project_name || bridge_id,
-          project_type: 'monolit',
-          kiosk_type: 'monolit',
-          kiosk_project_id: bridge_id
-        })
-      });
+      if (checkRes.ok) {
+        const checkData = await checkRes.json();
+        portalProjectId = checkData.project?.portal_project_id || null;
+      } else {
+        const createRes = await fetch(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            project_name: project.project_name || bridge_id,
+            project_type: 'monolit',
+            kiosk_type: 'monolit',
+            kiosk_project_id: bridge_id
+          })
+        });
 
-      if (!createRes.ok) {
-        throw new Error('Failed to create Portal project');
+        if (createRes.ok) {
+          const createData = await createRes.json();
+          portalProjectId = createData.portal_project_id || null;
+        }
       }
-      const createData = await createRes.json();
-      portalProjectId = createData.portal_project_id;
+    } catch (portalErr) {
+      console.warn('[Export] Portal project lookup failed (non-critical):', portalErr.message);
     }
 
     // 4. Group positions by part_name for Portal objects
@@ -187,7 +190,7 @@ router.post('/:bridge_id', async (req, res) => {
       success: true,
       portal_project_id: portalProjectId,
       registry_project_id: registryProjectId,
-      registry_url: `${REGISTRY_URL}?portal_project=${portalProjectId}`,
+      registry_url: portalProjectId ? `${REGISTRY_URL}?portal_project=${portalProjectId}` : REGISTRY_URL,
       positions_count: positions.length
     });
 
