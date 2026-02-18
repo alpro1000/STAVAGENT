@@ -236,15 +236,9 @@ export default function FormworkCalculatorModal({
           background: 'var(--data-surface-alt, #f5f5f5)'
         }}>
           <div>
-            <h2 style={{ margin: 0, fontSize: '18px' }}>Kalkulátor pronájmu bednění</h2>
+            <h2 style={{ margin: 0, fontSize: '18px' }}>Kalkulátor Bednění</h2>
             <p style={{ margin: '4px 0 0', fontSize: '13px', color: 'var(--text-secondary)' }}>
-              {currentPartName ? `Část: ${currentPartName} • ` : ''}
-              Výpočet pronájmu bednícího systému • Montáž + Demontáž odděleny
-              {elementTotalDays > 0 && (
-                <span style={{ marginLeft: '8px', fontWeight: 600, color: '#e65100' }}>
-                  • Celk. doba prvku: {elementTotalDays} dní
-                </span>
-              )}
+              Výpočet montáže a demontáže bednění • Nájem se počítá v Registry TOV
             </p>
           </div>
           <button onClick={onClose} style={{
@@ -278,8 +272,7 @@ export default function FormworkCalculatorModal({
           </label>
           <div style={{ marginLeft: 'auto', fontSize: '13px', color: 'var(--text-secondary)' }}>
             Celkem: <b>{formatCZK(totals.totalArea)} m²</b> |
-            Nájem: <b>{formatCZK(totals.totalRental)} Kč</b> |
-            Max termín: <b>{totals.maxTerm} dní</b>
+            Termín bednění: <b>{totals.maxTerm} dní</b>
           </div>
         </div>
 
@@ -304,10 +297,6 @@ export default function FormworkCalculatorModal({
                 </th>
                 <th style={thStyle}>Systém</th>
                 <th style={thStyle}>Výška</th>
-                <th style={thStyle}>Nájem [Kč/m²/měs]</th>
-                <th style={thStyle}>Nájem sada [Kč/měs]</th>
-                <th style={{...thStyle, background: '#e8f5e9', fontWeight: 700}}>Konečný nájem [Kč]</th>
-                <th style={thStyle}>KROS popis</th>
                 <th style={thStyle}>Akce</th>
               </tr>
             </thead>
@@ -351,7 +340,7 @@ export default function FormworkCalculatorModal({
               border: 'none', borderRadius: '6px', padding: '8px 20px',
               fontWeight: 600, cursor: 'pointer', fontSize: '13px'
             }}>
-              Přenést do Monolitu ({rows.filter(r => r.total_area_m2 > 0).length} řádků)
+              Přenést Montáž + Demontáž ({rows.filter(r => r.total_area_m2 > 0).length * 2} řádků)
             </button>
           </div>
         </div>
@@ -524,43 +513,6 @@ function FormworkRow({
             style={{ ...inputStyle, width: '75px' }}
           />
         )}
-      </td>
-
-      {/* Nájem Kč/m² (editable) */}
-      <td style={cellStyle}>
-        <input type="number" min={0} step={10}
-          value={row.rental_czk_per_m2_month || ''}
-          onChange={e => onChange(row.id, 'rental_czk_per_m2_month', parseFloat(e.target.value) || 0)}
-          style={{ ...inputStyle, width: '70px' }}
-        />
-      </td>
-
-      {/* Nájem sada - computed */}
-      <td style={cellStyle}>
-        <span style={{ ...computedStyle, fontWeight: 500 }}>{fmt(row.monthly_rental_per_set)} Kč</span>
-      </td>
-
-      {/* Konečný nájem - computed, highlighted */}
-      <td style={{ ...cellStyle, background: '#e8f5e922' }}>
-        <span style={{
-          ...computedStyle,
-          fontWeight: 700,
-          color: row.final_rental_czk > 0 ? 'var(--status-success, #2e7d32)' : 'var(--text-secondary)',
-          fontSize: '13px'
-        }}>
-          {fmt(row.final_rental_czk)} Kč
-        </span>
-      </td>
-
-      {/* KROS popis */}
-      <td style={{ ...cellStyle, textAlign: 'left', maxWidth: '250px' }}>
-        <div style={{
-          fontSize: '10px', color: 'var(--text-secondary)',
-          overflow: 'hidden', textOverflow: 'ellipsis',
-          maxWidth: '250px'
-        }} title={row.kros_description || ''}>
-          {row.kros_description || '—'}
-        </div>
       </td>
 
       {/* Akce */}

@@ -1,0 +1,2368 @@
+## Page 1
+
+Průměrné ceny z r
+ORIENTAČNÍ JEDNOTKOVÉ
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">Bednění</th>
+      <th rowspan="2">Typ Bednění</th>
+      <th colspan="5" rowspan="3">Forma bednění</th>
+      <th rowspan="2">Výška bednění [m]</th>
+      <th colspan="2" rowspan="2"></th>
+    </tr>
+    <tr></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="17"><strong>STĚNOVÉ BEDNĚNÍ</strong><br><br><strong>FRAMI XLIFE</strong><br><br><strong>FRAMAX XLIFE</strong></td>
+      <td rowspan="17"><strong>FRAMI XLIFE</strong><br><strong>FRAMAX XLIFE</strong></td>
+      <td colspan="3">OBOUSTRAN</td>
+      <td>NE</td>
+      <td rowspan="6">1.20<br>1.50<br>2.40<br>2.70<br>3.00<br>1.50<br>2.40<br>2.70<br>3.00<br>2.70<br>3.00<br>2.70<br>3.00<br>2.40</td>
+      <td rowspan="6">-</td>
+      <td rowspan="6">-</td>
+      <td rowspan="6">-</td>
+    </tr>
+    <tr>
+      <td colspan="3">JEDNOSTRAN</td>
+    </tr>
+    <tr>
+      <td>NE</td>
+      <td colspan="2">+</td>
+      <td>Paždíky</td>
+    </tr>
+    <tr>
+      <td colspan="3">OVÉ</td>
+    </tr>
+    <tr>
+      <td colspan="3">vými</td>
+    </tr>
+    <tr>
+      <td colspan="3">plechy</td>
+    </tr>
+    <tr>
+      <td colspan="3">VÝTAH</td>
+      <td>čtverec</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (bez odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ove</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (bez odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ove</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr>
+    <tr>
+      <td colspan="3">šachty (včetně odb.</td>
+    </tr>
+    <tr>
+      <td colspan="3">rohů)</td>
+    </tr>
+    <tr>
+      <td colspan="3">ovy</td>
+    </tr
+
+---
+
+
+## Page 2
+
+Kupní cena obsahuje: spotřební materiál (plastové trubičky, kónusy). Není součástí cen výše.
+Procentuelní rozptyl ceny znamená cenový rozdíl od jednotkové ceny v případě:
+a) + členitých konstrukcí (tzn. větší potřeba rohů a malých dílů)
+b) - málo členitých konstrukcí (tzn, dlouhé rovné stěny)
+Cena jednostranného bednění neobsahuje opěrnou konstrukci ! (Obsahuje pouze bednící par
+Veškeré dřevěné doplňky bednění, podlahy a zábradlí pracovních podlah nejsou součástí nak
+Ve výše uvedených cenách není zahrnuto, DPH, doprava materiálu, montáž a demontáž bedni
+informací kontaktujte našeho obchodního zástupce.
+
+ORIENTAČNÍ JEDNOTKOVÉ CENY
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">Bednění</th>
+      <th rowspan="2">Typ Bednění</th>
+      <th rowspan="2">Forma bednění</th>
+      <th colspan="2">Tloušťka stropní desky [m]</th>
+      <th rowspan="2">Podpěrná výška [m]</th>
+    </tr>
+    <tr>
+      <th>0.60</th>
+      <th>0.90</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="3">PODPĚRNÁ KONSTRUKCE (OTEVŘENÉ PROSTORY)</td>
+      <td rowspan="3">STAXO100+VRCHNÍ KONSTRUKCE</td>
+      <td rowspan="3">PODPEŘNÁ VRCHNÍ KONSTRUKCE (držená v horní části)</td>
+      <td>-</td>
+      <td>0.60</td>
+      <td>do 20,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.90</td>
+      <td>do 20,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>1.20</td>
+      <td>do 20,0 m</td>
+    </tr>
+    <tr>
+      <td rowspan="3">PODPĚRNÁ KONSTRUKCE (OTEVŘENÉ PROSTORY)</td>
+      <td rowspan="3">STAXO40+VRCHNÍ KONSTRUKCE</td>
+      <td rowspan="3">PODPEŘNÁ VRCHNÍ KONSTRUKCE (držená v horní části)</td>
+      <td>-</td>
+      <td>0.60</td>
+      <td>do 10,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.90</td>
+      <td>do 10,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>1.20</td>
+      <td>do 10,0 m</td>
+    </tr>
+    <tr>
+      <td rowspan="5">PODPĚRNÁ KONSTRUKCE (OTEVŘENÉ PROSTORY)</td>
+      <td rowspan="5">STAXO40+VRCHNÍ KONSTRUKCE</td>
+      <td rowspan="5">PODPEŘNÁ VRCHNÍ KONSTRUKCE (volně stojící)</td>
+      <td>-</td>
+      <td>0.20</td>
+      <td>do 12,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.30</td>
+      <td>do 12,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.40</td>
+      <td>do 12,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.60</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.20</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td rowspan="5">PODPĚRNÁ KONSTRUKCE (OTEVŘENÉ PROSTORY)</td>
+      <td rowspan="5">STAXO40+VRCHNÍ KONSTRUKCE</td>
+      <td rowspan="5">PODPEŘNÁ VRCHNÍ KONSTRUKCE (volně stojící)</td>
+      <td>-</td>
+      <td>0.30</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.40</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.60</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.20</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.30</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td rowspan="5">PODPĚRNÁ KONSTRUKCE (OTEVŘENÉ PROSTORY)</td>
+      <td rowspan="5">STAXO40+VRCHNÍ KONSTRUKCE</td>
+      <td rowspan="5">PODPEŘNÁ VRCHNÍ KONSTRUKCE (volně stojící)</td>
+      <td>-</td>
+      <td>0.40</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.60</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.20</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.30</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.40</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td rowspan="5">PODPĚRNÁ KONSTRUKCE (OTEVŘENÉ PROSTORY)</td>
+      <td rowspan="5">STAXO40+VRCHNÍ KONSTRUKCE</td>
+      <td rowspan="5">PODPEŘNÁ VRCHNÍ KONSTRUKCE (volně stojící)</td>
+      <td>-</td>
+      <td>0.60</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.20</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.30</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.40</td>
+      <td>do 8,0 m</td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.60</td>
+      <td>do 8,0 m</td>
+    </tr>
+  </tbody>
+</table>
+
+Poznámka!:
+
+Nájemní cena obsahuje:
+- Vrchní konstrukce: Ocelové nosníky WS10, dřevěné nosníky H20, spojovací materiál
+- Podpěrná konstrukce: Staxo100, Staxo 40
+Veškeré dřevěné doplňky bednění, podlahy a zábradlí pracovních podlah nejsou součástí nak
+Ve výše uvedených cenách není zahrnuto, DPH, doprava materiálu, montáž a demontáž bedni
+těchto informací kontaktujte našeho obchodního zástupce.
+
+ORIENTAČNÍ JEDNOTKOVÉ CENY
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">Bednění</th>
+      <th rowspan="2">Typ Bednění</th>
+      <th rowspan="2">Forma bednění</th>
+      <th rowspan="2">Tloušťka stropní desky [m]</th>
+      <th rowspan="2">Podpěrná výška [m]</th>
+    </tr>
+    <tr>
+      <th>2,00-2,92</th>
+      <th>2,25-3,42</th>
+      <th>2,50-3,92</th>
+      <th>2,75-4,42</th>
+      <th>3,50-5,92</th>
+      <th>2,00-2,92</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="5">PODPĚRNÁ KONSTRUKCE (OTEVŘENÉ PROSTORY)</td>
+      <td rowspan="5">STAXO40+VRCHNÍ KONSTRUKCE</td>
+      <td rowspan="5">PODPEŘNÁ VRCHNÍ KONSTRUKCE (volně stojící)</td>
+      <td rowspan="5">- 0.20</td>
+      <td>2,00-2,92</td>
+      <td>2,25-3,42</td>
+      <td>2,50-3,92</td>
+      <td>2,75-4,42</td>
+      <td>3,50-5,92</td>
+      <td>2,00-2,92</td>
+    </tr>
+    <tr>
+      <td>2,00-2,92</td>
+      <td>2,25-3,42</td>
+      <td>2,50-3,92</td>
+      <td>2,75-4,42</td>
+      <td>3,50-5,92</td>
+      <td>2,00-2,92</td>
+    </tr>
+    <tr>
+      <td>2,00-2,92</td>
+      <td>2,25-3,42</td>
+      <td>2,50-3,92</td>
+      <td>2,75-4,42</td>
+      <td>3,50-5,92</td>
+      <td>2,00-2,92</td>
+    </tr>
+    <tr>
+      <td>2,00-2,92</td>
+      <td>2,25-3,42</td>
+      <td>2,50-3,92</td>
+      <td>2,75-4,42</td>
+      <td>3,50-5,92</td>
+      <td>2,00-2,92</td>
+    </tr>
+    <tr>
+      <td>2,00-2,92</td>
+      <td>2,25-3,42</td>
+      <td>2,50-3,92</td>
+      <td>2,75-4,42</td>
+      <td>3,50-5,92</td>
+      <td>2,00-2,92</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+
+## Page 3
+
+STROPNÍ BEDNĚNÍ
+
+DOKAFLEX 20
+
+STROP BEZ PRŮVLAKŮ
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>-</td>
+      <td>0.25</td>
+      <td>2,25-3,42<br>2,50-3,92<br>2,75-4,42<br>3,50-5,92</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.30</td>
+      <td>2,00-2,92<br>2,25-3,42<br>2,50-3,92<br>2,75-4,42<br>3,50-5,92</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.35</td>
+      <td>2,00-2,92<br>2,25-3,42<br>2,50-3,92<br>2,75-4,42<br>3,50-5,92</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.40</td>
+      <td>2,00-2,92<br>2,25-3,42<br>2,50-3,92<br>2,75-4,42<br>3,50-5,92</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>0.50</td>
+      <td>2,00-2,92<br>2,25-3,42<br>2,50-3,92<br>2,75-4,42<br>3,50-5,92</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+Poz
+
+Podíl vrchní konstrukce (dřevěné nosníky) a podpěrné konstrukce (stojky s hlavicemi a stabi = 100% (cena za 1,0m²). Procentuální rozptyl znamená procentní snížení ceny v p Nájemní cena obsahuje: Dřevěné nosníky Nájemní cena neobsahuje bednící desku !!! Informa Veškeré dřevěné doplňky bednění, podlahy a zábradl Ve výše uvedených cenách není zahrnuto, DPH, doprava materiálu, montáž a demontáž bed obchodn
+
+ORIENTAČNÍ JEDNOC
+
+<table>
+  <thead>
+    <tr>
+      <th>Bednění</th>
+      <th>Typ Bednění</th>
+      <th>Forma bednění</th>
+      <th>Výška bednění [m]</th>
+      <th>Podpěrná výška [m]</th>
+      <th>Měrná jednotka</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>STROPNÍ BEDNĚNÍ</td>
+      <td>DOKAFLEX 20</td>
+      <td>PRŮVLAK</td>
+      <td>0,5x0,3</td>
+      <td>2,00-2,92<br>2,25-3,42<br>2,50-3,92<br>2,75-4,42<br>3,50-5,92</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0,5x0,4</td>
+      <td>2,00-2,92<br>2,25-3,42<br>2,50-3,92<br>2,75-4,42<br>3,50-5,92</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>0,5x0,5</td>
+      <td>2,00-2,92<br>2,25-3,42<br>2,50-3,92<br>2,75-4,42<br>3,50-5,92</td>
+      <td>mb</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+
+## Page 4
+
+<table>
+  <thead>
+    <tr>
+      <th>ST</th>
+      <th>0,5x0,6</th>
+      <th>0,5x0,7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td></td>
+      <td>2,00-2,92</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>2,25-3,42</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>2,50-3,92</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>2,75-4,42</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>3,50-5,92</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>2,00-2,92</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>2,25-3,42</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>2,50-3,92</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>2,75-4,42</td>
+      <td>mb</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>3,50-5,92</td>
+      <td>mb</td>
+    </tr>
+  </tbody>
+</table>
+
+**Poznámka!:**
+
+Podíl vrchní konstrukce (nosníky s kleštinami) a podpěrné konstrukce (stojky s hlavicemi a střešní konstrukce) = 100% (cena za 1,0mb).
+Nájemní cena obsahuje: Dřevěné nosníky H20, kleštiny popř. nástavce kleštin, stojky s hlavicemi.
+Nájemní cena neobsahuje bednící desku !!! Informaci o ceně bednících desek vám podá obchodník.
+Veškeré dřevěné doplňky bednění, podlahy a zábradlí pracovních podlah nejsou součástí našeho nabídky.
+Ve výše uvedených cenách není zahrnuto, DPH, doprava materiálu, montáž a demontáž bednění. Pokud máte další požadavky, kontaktujte našeho obchodního zástupce.
+
+ORIENTAČNÍ JEDNOTKY
+
+<table>
+  <thead>
+    <tr>
+      <th>Bednění</th>
+      <th>Typ Bednění</th>
+      <th>Forma bednění</th>
+      <th>Výška bednění [m]</th>
+      <th>Podpěrná výška [m]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="4">SVORKA PRO OBEDNĚNÍ ČELA</td>
+      <td rowspan="4">Čelo stropní desky</td>
+      <td>Bez sloupku zábradlí</td>
+      <td>0,2-0,3</td>
+      <td>BETONOVÁ STĚNA</td>
+    </tr>
+    <tr>
+      <td>Bez sloupku zábradlí</td>
+      <td>0,2-0,3</td>
+      <td>CIHELNÉ ZDIVO</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+
+## Page 5
+
+Poznámka!:
+V ceně za 1 bm není uvažována cena za bednící desku
+Nájemní cena obsahuje: Dřevěné nosníky H20, svorka pro obednění čela stropní desky.Předp
+Nájemní cena neobsahuje bednící desku !!! Informaci o ceně bednících desek vám podá obc
+Veškeré dřevěné doplňky bednění, podlahy a zábradlí pracovních podlah nejsou součástí nak
+Ve výše uvedených cenách není zahrnuto, DPH, doprava materiálu, montáž a demontáž bedni
+doplňení těchto informací kontaktujte našeho obchodního zástupce.
+
+ORIENTAČNÍ JEDNOTKY
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">Bednění</th>
+      <th rowspan="2">Typ Bednění</th>
+      <th rowspan="2">Forma bednění</th>
+      <th colspan="3">Výška bednění [m]</th>
+    </tr>
+    <tr>
+      <th>2.70</th>
+      <th>3.00</th>
+      <th>3.60</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="5">SLOUPOVÉ BEDNĚNÍ</td>
+      <td rowspan="5">FRAMI</td>
+      <td rowspan="5">Pro sloupy do 60x60 cm v rastru po 5 cm</td>
+      <td>-</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>2.70</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.60</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>4.05</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td rowspan="5">KRUHOVÉ SLOUPY RS</td>
+      <td rowspan="5">Průměr 25 cm</td>
+      <td rowspan="5">Pro sloupy do 75x75 cm v rastru po 5 cm</td>
+      <td>2.70</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.30</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>4.05</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>6.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td rowspan="5"></td>
+      <td rowspan="5">Průměr 30 cm</td>
+      <td rowspan="5">Průměr 40 cm</td>
+      <td>2.70</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.30</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>4.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>6.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td rowspan="5"></td>
+      <td rowspan="5">Průměr 45 cm</td>
+      <td rowspan="5">Průměr 40 cm</td>
+      <td>2.70</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.30</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>4.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>6.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td rowspan="5"></td>
+      <td rowspan="5">Průměr 45 cm</td>
+      <td rowspan="5">Průměr 40 cm</td>
+      <td>2.70</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>3.30</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>4.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>6.00</td>
+      <td>-</td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+
+Poznámka!:
+Nájemní cena obsahuje: Bednění, spojovací materiál, stabilizační pomůcky, konzoly pro vytvo
+Veškeré dřevěné doplňky bednění, podlahy a zábradlí pracovních podlah nejsou součástí nak
+Ve výše uvedených cenách není zahrnuto, DPH, doprava materiálu, montáž a demontáž bedni
+našeho obchodního zástupce.
+
+---
+
+
+## Page 6
+
+ORIENTAČNÍ CENY BI
+
+<table>
+  <thead>
+    <tr>
+      <th>Bednění</th>
+      <th>Typ Bednění</th>
+      <th>Výška výstupu [m]</th>
+      <th></th>
+      <th></th>
+      <th>Měrná jednotka</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td rowspan="7">Schodišťová věž</td>
+      <td rowspan="7">RINGLOCK</td>
+      <td>2.30</td>
+      <td>-</td>
+      <td>-</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>4.30</td>
+      <td>-</td>
+      <td>-</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>6.30</td>
+      <td>-</td>
+      <td>-</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>8.30</td>
+      <td>-</td>
+      <td>-</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>10.30</td>
+      <td>-</td>
+      <td>-</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>12.30</td>
+      <td>-</td>
+      <td>-</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>14.30</td>
+      <td>-</td>
+      <td>-</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>16.30</td>
+      <td>-</td>
+      <td>-</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+**Poznámka!:**
+Ve výše uvedených cenách není zahrnuto, DPH, doprava materiálu.
+montáž a demontáž bednění na stavbě, náklady na montážního mistra. Pro doplnění těchto informací kontaktujte našeho obchodního zástupce.
+
+---
+
+
+## Page 7
+
+ovných i členitých kcí
+CENY A HMOTNOSTI BEDNĚNÍ
+
+<table>
+  <thead>
+    <tr>
+      <th>Měrná jednotka</th>
+      <th>Velikost sady [m²]</th>
+      <th>Jednotková cena nájem [Kč] bez slevy</th>
+      <th>Procentuální rozptyl ceny</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,661 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,494 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,511 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,788 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,710 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,451 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,520 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,760 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,723 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,814 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,734 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>3,468 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>2,255 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,780 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,777 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,879 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,875 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,790 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,887 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,861 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>2,441 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>2,486 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>2,371 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>2,489 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>2,545 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>2,393 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>3,313 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>0 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,800 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,811 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,880 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,886 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,951 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,942 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>1,973 Kč</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+ní pracovních plošin.
+
+---
+
+
+## Page 8
+
+cca 4,0 Kč/m2 bednění
+
+slevy, spojovací díly a roznášecí paždíky) výrobky firmy DOKA.
+náklady na stavbě, náklady na montážního mistra, manipulační poplatek a slevy. Pro doplnění
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="4">JEDNOTKOVÉ CENY A HMOTNOSTI BEDNĚNÍ</th>
+    </tr>
+    <tr>
+      <th>Měrná jednotka</th>
+      <th>Velikost sady [m²]</th>
+      <th>Jednotková cena nájem [Kč] bez slevy</th>
+      <th>Přepravní hmotnost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>m²</td>
+      <td>1.00</td>
+      <td>266 Kč</td>
+      <td>26 Kg</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.00</td>
+      <td>344 Kč</td>
+      <td>32 Kg</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.00</td>
+      <td>351 Kč</td>
+      <td>33 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>102 Kč</td>
+      <td>6,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>136 Kč</td>
+      <td>8,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>168 Kč</td>
+      <td>10,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>109 Kč</td>
+      <td>6,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>147 Kč</td>
+      <td>8,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>182 Kč</td>
+      <td>10,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.00</td>
+      <td>168 Kč</td>
+      <td>19 Kg</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.00</td>
+      <td>189 Kč</td>
+      <td>20 Kg</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.00</td>
+      <td>246 Kč</td>
+      <td>26 Kg</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.00</td>
+      <td>266 Kč</td>
+      <td>29 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>79 Kč</td>
+      <td>5,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>93 Kč</td>
+      <td>5,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>110 Kč</td>
+      <td>6,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>155 Kč</td>
+      <td>8,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>79 Kč</td>
+      <td>5,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>93 Kč</td>
+      <td>5,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>110 Kč</td>
+      <td>6,0 Kg</td>
+    </tr>
+    <tr>
+      <td>m³</td>
+      <td>1.00</td>
+      <td>155 Kč</td>
+      <td>8,0 Kg</td>
+    </tr>
+  </tbody>
+</table>
+
+slevy, spojovací díly a roznášecí paždíky) výrobky firmy DOKA.
+náklady na stavbě, náklady na montážního mistra, manipulační poplatek. Pro doplnění
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="4">JEDNOTKOVÉ CENY BEDNĚNÍ</th>
+    </tr>
+    <tr>
+      <th>Měrná jednotka</th>
+      <th>Velikost sady [m²]</th>
+      <th>Jednotková měsíční cena nájem [Kč]</th>
+      <th>Procentuální rozptyl</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>332 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>338 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>343 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>369 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>412 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>362 Kč</td>
+      <td>8.00%</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+
+## Page 9
+
+<table>
+  <thead>
+    <tr>
+      <th>m²</th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>369 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>374 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>406 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>459 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>436 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>444 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>451 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>490 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>557 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>404 Kč</td>
+      <td>10.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>412 Kč</td>
+      <td>10.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>420 Kč</td>
+      <td>10.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>461 Kč</td>
+      <td>10.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>530 Kč</td>
+      <td>12.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>442 Kč</td>
+      <td>7.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>451 Kč</td>
+      <td>7.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>460 Kč</td>
+      <td>7.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>506 Kč</td>
+      <td>7.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>584 Kč</td>
+      <td>8.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>492 Kč</td>
+      <td>9.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>503 Kč</td>
+      <td>9.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>513 Kč</td>
+      <td>9.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>567 Kč</td>
+      <td>9.00%</td>
+    </tr>
+    <tr>
+      <td>m²</td>
+      <td>1.0</td>
+      <td>660 Kč</td>
+      <td>9.00%</td>
+    </tr>
+  </tbody>
+</table>
+
+**NÁMKA!:**
+
+*   ilizací) na celkové ceně za m² je cca: 40% (m² vrchní konstrukce) + 60%(m² podpěrná konstrukce) + 10% (m² stěny) + 10% (m² podlahy) + 10% (m² stropu).
+*   případě velkých prostor, procentní zvýšení ceny v případě malých a členitých prostor.
+*   H20, stojky s hlavicemi, stabilizační pomůcky.
+*   ci o ceně bednících desek vám podá obchodní zástupce.
+*   í pracovních podlah nejsou součástí nabídky firmy DOKA.
+*   nění na stavbě, náklady na montážního mistra. Pro doplnění těchto informací kontaktujte jeho zástupce.
+
+---
+
+**OTKOVÉ CENY BEDNĚNÍ**
+
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2">Velikost sady [mb]</th>
+      <th colspan="3">Obvodový - samostatný</th>
+    </tr>
+    <tr>
+      <th>S kleštinou</th>
+      <th>Hmotnost</th>
+      <th>Bez Kleštin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.0</td>
+      <td>1,895 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>1,923 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>1,947 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,083 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,312 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,208 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,236 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,260 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,396 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,625 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,309 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,337 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,361 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,497 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>1.0</td>
+      <td>2,726 Kč</td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+
+## Page 10
+
+<table>
+  <tr>
+    <td>1.0</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td>2,458 Kč</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td>2,486 Kč</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td>2,510 Kč</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td>2,646 Kč</td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>1.0</td>
+    <td>2,875 Kč</td>
+    <td></td>
+    <td></td>
+  </tr>
+</table>
+
+tabilizací) na celkové ceně za mb (s kleštinou) je cca: 60% (vrchní konstrukce) + 40%(pokem, stabilizační pomůcky.
+vedný zástupce.
+lodky firmy DOKA.
+ření na stavbě, náklady na montážního mistra, manipulační poplatek. Pro doplnění těchto
+
+---
+
+OVÉ CENY BEDNĚNÍ
+<table>
+  <thead>
+    <tr>
+      <th>Měrná jednotka</th>
+      <th>Velikost sady [m²]</th>
+      <th>Jednotková měsíční cena nájem [Kč]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>mb</td>
+      <td>1.0</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td>mb</td>
+      <td>1.0</td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>-</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td>-</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+
+## Page 11
+
+oklad ŽB stěny pod stropem
+hodní zástupce.
+dídky firmy DOKA.
+ění na stavbě, náklady na montážního mistra, manipulační poplatek a slevy. Pro
+
+OVÉ CENY BEDNĚNÍ
+
+<table>
+  <thead>
+    <tr>
+      <th>Měrná jednotka</th>
+      <th>Pozn.</th>
+      <th>Jednotková cena nájem [Kč]</th>
+      <th>Přepravní hmotnost [Kg]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td>19,070 Kč</td>
+      <td>667 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td>22,787 Kč</td>
+      <td>792 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td>27,124 Kč</td>
+      <td>916 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td>26,682 Kč</td>
+      <td>1207 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td>31,926 Kč</td>
+      <td>1372 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td>43,448 Kč</td>
+      <td>1771 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td>68,430 Kč</td>
+      <td>2699 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>2x Eurex<br>60 550</td>
+      <td>105,193 Kč</td>
+      <td>3783 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>365 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>490 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>800 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>400 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>530 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>860 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>450 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>610 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>970 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>475 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>650 Kg</td>
+    </tr>
+    <tr>
+      <td>1 ks</td>
+      <td>-</td>
+      <td></td>
+      <td>965 Kg</td>
+    </tr>
+  </tbody>
+</table>
+
+oření pracovních plošin.
+dídky firmy DOKA.
+ění na stavbě, náklady na montážního mistra. Pro doplnění těchto informací kontaktujte
+
+---
+
+
+## Page 12
+
+EDNĚNÍ
+
+<table>
+  <thead>
+    <tr>
+      <th>Pozn.</th>
+      <th>Cena za sestavu [Kč]</th>
+      <th>Přepravní hmotnost [Kg]</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>-</td>
+      <td>5,060 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>9,460 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>13,860 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>18,260 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>22,660 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>27,060 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>31,460 Kč</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>-</td>
+      <td>35,860 Kč</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+
+## Page 13
+
+<table>
+  <thead>
+    <tr>
+      <th>Přepravní hmotnost</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>61 Kg</td>
+    </tr>
+    <tr>
+      <td>55 Kg</td>
+    </tr>
+    <tr>
+      <td>57 Kg</td>
+    </tr>
+    <tr>
+      <td>63 Kg</td>
+    </tr>
+    <tr>
+      <td>61 Kg</td>
+    </tr>
+    <tr>
+      <td>60 Kg</td>
+    </tr>
+    <tr>
+      <td>65 Kg</td>
+    </tr>
+    <tr>
+      <td>53 Kg</td>
+    </tr>
+    <tr>
+      <td>65 Kg</td>
+    </tr>
+    <tr>
+      <td>64 kg</td>
+    </tr>
+    <tr>
+      <td>62 Kg</td>
+    </tr>
+    <tr>
+      <td>91 Kg</td>
+    </tr>
+    <tr>
+      <td>91 Kg</td>
+    </tr>
+    <tr>
+      <td>77 Kg</td>
+    </tr>
+    <tr>
+      <td>76 Kg</td>
+    </tr>
+    <tr>
+      <td>80 Kg</td>
+    </tr>
+    <tr>
+      <td>79 Kg</td>
+    </tr>
+    <tr>
+      <td>77 Kg</td>
+    </tr>
+    <tr>
+      <td>80 Kg</td>
+    </tr>
+    <tr>
+      <td>80 Kg</td>
+    </tr>
+    <tr>
+      <td>85 Kg</td>
+    </tr>
+    <tr>
+      <td>86 Kg</td>
+    </tr>
+    <tr>
+      <td>93 Kg</td>
+    </tr>
+    <tr>
+      <td>87 Kg</td>
+    </tr>
+    <tr>
+      <td>87 Kg</td>
+    </tr>
+    <tr>
+      <td>94 Kg</td>
+    </tr>
+    <tr>
+      <td>103 Kg</td>
+    </tr>
+    <tr>
+      <td>81 Kg</td>
+    </tr>
+    <tr>
+      <td>79 Kg</td>
+    </tr>
+    <tr>
+      <td>83 Kg</td>
+    </tr>
+    <tr>
+      <td>82 Kg</td>
+    </tr>
+    <tr>
+      <td>81 Kg</td>
+    </tr>
+    <tr>
+      <td>80 Kg</td>
+    </tr>
+    <tr>
+      <td>80 Kg</td>
+    </tr>
+  </tbody>
+</table>
+
+---
+
+
+## Page 14
+
+í těchto
+
+Přepravní hmotnost
+<table>
+  <tr>
+    <td>27 Kg</td>
+  </tr>
+  <tr>
+    <td>28 Kg</td>
+  </tr>
+  <tr>
+    <td>29 Kg</td>
+  </tr>
+  <tr>
+    <td>31 Kg</td>
+  </tr>
+  <tr>
+    <td>35 Kg</td>
+  </tr>
+  <tr>
+    <td>29 Kg</td>
+  </tr>
+</table>
+
+---
+
+
+## Page 15
+
+30 Kg
+32 Kg
+33 Kg
+38 Kg
+34 Kg
+36 Kg
+37 Kg
+40 Kg
+46 Kg
+31 Kg
+32 Kg
+34 Kg
+37 Kg
+43 Kg
+33 Kg
+35 Kg
+37 Kg
+40 Kg
+47 Kg
+36 Kg
+38 Kg
+41 Kg
+44 Kg
+53 Kg
+
+nstrukce)
+
+Pozor: Při rozvoji svého předchůdce STRIKE elektrodráždění zdokonalil více než 50 faktorů našeho lehké elektrického podvozku GELEK. A mnoho z nich jsou hotové pro budoucí veřejnosti. Elektricky provozovaná motorová vozba Striker musí splňovat takto zjištěné vlastnosti.
+[Image of rail with figure, with "Hmotnost" text on the left]
+
+
+Hmotnost
+
+---
+
+
+## Page 16
+
+&lt;img&gt;Vertical stack of light orange rectangles with thin black borders, arranged vertically.&lt;/img&gt;
+
+pěr
+
+informací
+

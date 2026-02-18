@@ -31,7 +31,8 @@ export default function PositionsTable() {
   const [showNewPartModal, setShowNewPartModal] = useState(false);
   const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
-  const [showFormworkCalc, setShowFormworkCalc] = useState<string | null>(null);
+  const [showFormworkCalc, setShowFormworkCalc] = useState(false);
+  const [formworkCalcPartName, setFormworkCalcPartName] = useState<string | null>(null);
 
   // Resizable column state
   const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
@@ -309,28 +310,51 @@ export default function PositionsTable() {
     setPendingCustomWork(null);
   };
 
-  // Handle formwork calculator transfer - create rental positions in the SAME part
-  const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[]) => {
-    if (!selectedBridge || !showFormworkCalc) return;
+  // Handle formwork calculator transfer - create rental positions IN CURRENT PART
+  const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[], targetPartName?: string) => {
+    if (!selectedBridge) return;
 
-    const targetPartName = showFormworkCalc; // partName that opened the calculator
+    if (!targetPartName) {
+      const partNames = Object.keys(groupedPositions);
+      if (partNames.length === 0) {
+        alert('Nejprve vytvořte část konstrukce');
+        return;
+      }
+      targetPartName = partNames[0];
+    }
 
     try {
-      const newPositions: Partial<Position>[] = calcRows.map(row => ({
-        id: uuidv4(),
-        bridge_id: selectedBridge,
-        part_name: targetPartName,
-        item_name: `Bednění - ${row.construction_name}`,
-        subtype: 'jiné' as Subtype,
-        unit: 'sada' as any,
-        qty: row.num_sets,
-        crew_size: 0,
-        wage_czk_ph: 0,
-        shift_hours: 0,
-        days: row.formwork_term_days,
-        cost_czk: row.final_rental_czk,
-        metadata: JSON.stringify({ type: 'formwork_rental', calculator_id: row.id })
-      }));
+      const newPositions: Partial<Position>[] = [];
+
+      calcRows.forEach(row => {
+        newPositions.push({
+          id: uuidv4(),
+          bridge_id: selectedBridge,
+          part_name: targetPartName,
+          item_name: `Bednění + ${row.construction_name} - Montáž`,
+          subtype: 'bednění' as Subtype,
+          unit: 'm2',
+          qty: row.total_area_m2,
+          crew_size: 4,
+          wage_czk_ph: 398,
+          shift_hours: 10,
+          days: row.assembly_days_per_tact * row.num_tacts
+        });
+
+        newPositions.push({
+          id: uuidv4(),
+          bridge_id: selectedBridge,
+          part_name: targetPartName,
+          item_name: `Bednění + ${row.construction_name} - Demontáž`,
+          subtype: 'bednění' as Subtype,
+          unit: 'm2',
+          qty: row.total_area_m2,
+          crew_size: 4,
+          wage_czk_ph: 398,
+          shift_hours: 10,
+          days: row.disassembly_days_per_tact * row.num_tacts
+        });
+      });
 
       const result = await positionsAPI.create(selectedBridge, newPositions as Position[]);
 
@@ -342,8 +366,24 @@ export default function PositionsTable() {
       }
 
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
-      setShowFormworkCalc(null);
-      alert(`Přeneseno ${calcRows.length} řádků pronájmu bednění do části "${targetPartName}".`);
+      setShowFormworkCalc(false);
+      setFormworkCalcPartName(null);
+
+      const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
+      const totalArea = calcRows.reduce((sum, r) => r.total_area_m2, 0);
+      const registryUrl = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
+
+      alert(
+        `Preneseno ${newPositions.length} radku (Montaz + Demontaz) do casti "${targetPartName}"\n\n` +
+        `NAJEM BEDNENI - pridejte do Registry TOV:\n` +
+        `Parametry pro kalkulator:\n` +
+        `   Plocha: ${totalArea.toFixed(1)} m2\n` +
+        `   Termin najmu: ${totalRentalDays} dni\n` +
+        `   System: ${calcRows[0]?.formwork_system || 'FRAMI XLIFE'}\n\n` +
+        `Otevrete Registry TOV:\n` +
+        `   ${registryUrl}\n\n` +
+        `   Kliknete na "Najem bedneni" -> zadejte parametry -> pridejte do TOV`
+      );
     } catch (error) {
       alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
     }
@@ -502,7 +542,10 @@ export default function PositionsTable() {
                   onOtskpCodeAndNameUpdate={(code, name, unitPrice, unit) =>
                     handleOtskpCodeAndNameUpdate(partName, code, name, unitPrice, unit)
                   }
-                  onOpenFormworkCalculator={() => setShowFormworkCalc(partName)}
+                  onOpenFormworkCalculator={() => {
+                    setFormworkCalcPartName(partName);
+                    setShowFormworkCalc(true);
+                  }}
                   isLocked={isLocked}
                 />
 
@@ -647,17 +690,15 @@ export default function PositionsTable() {
       )}
 
       {/* Formwork Calculator Modal */}
-      {showFormworkCalc !== null && selectedBridge && (
+      {showFormworkCalc && selectedBridge && formworkCalcPartName && (
         <FormworkCalculatorModal
           bridgeId={selectedBridge}
           partNames={Object.keys(groupedPositions)}
-          currentPartName={showFormworkCalc}
-          elementTotalDays={(() => {
-            const partPos = groupedPositions[showFormworkCalc] || [];
-            return partPos.length > 0 ? calculateElementTotalDays(partPos) : 0;
-          })()}
-          onTransfer={handleFormworkTransfer}
-          onClose={() => setShowFormworkCalc(null)}
+          onTransfer={(rows) => handleFormworkTransfer(rows, formworkCalcPartName)}
+          onClose={() => {
+            setShowFormworkCalc(false);
+            setFormworkCalcPartName(null);
+          }}
         />
       )}
     </div>
