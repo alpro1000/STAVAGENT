@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS positions (
   unit_cost_on_m3 REAL,
   kros_unit_czk REAL,
   kros_total_czk REAL,
-  curing_days INTEGER DEFAULT 0,
+  curing_days INTEGER DEFAULT 3,
   has_rfi INTEGER DEFAULT 0,
   rfi_message TEXT,
   item_name VARCHAR(255),

@@ -536,14 +536,52 @@ describe('Element Total Days', () => {
     expect(calculateElementTotalDays(positions)).toBe(10);
   });
 
-  it('should handle positions without curing', () => {
+  it('should use default 3 curing days when curing_days not set', () => {
     const positions: Position[] = [
       { bridge_id: 'SO-01', part_name: 'X', subtype: 'bednění', days: 4, qty: 100 } as unknown as Position,
       { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 2, qty: 50 } as unknown as Position,
     ];
 
-    // 4 (bednění) + 2 (beton) + 0 (no curing) = 6
+    // 4 (bednění) + 2 (beton) + 3 (default curing) = 9
+    expect(calculateElementTotalDays(positions)).toBe(9);
+  });
+
+  it('should use 0 curing when explicitly set to 0', () => {
+    const positions: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'bednění', days: 4, qty: 100 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 2, curing_days: 0, qty: 50 } as unknown as Position,
+    ];
+
+    // 4 (bednění) + 2 (beton) + 0 (explicit zero curing) = 6
     expect(calculateElementTotalDays(positions)).toBe(6);
+  });
+
+  it('should divide curing by num_sets from rental positions', () => {
+    const positions: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'bednění', days: 3, qty: 127 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'výztuž', days: 5, qty: 5800 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 2, curing_days: 6, qty: 45 } as unknown as Position,
+      // Rental position with num_sets = 2 (stored as qty)
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'jiné', days: 12, qty: 2,
+        metadata: JSON.stringify({ type: 'formwork_rental', calculator_id: 'calc-1' })
+      } as unknown as Position,
+    ];
+
+    // 3 (bednění) + 5 (výztuž) + 2 (beton) + 6/2 (curing÷sets) = 13
+    expect(calculateElementTotalDays(positions)).toBe(13);
+  });
+
+  it('should divide curing by num_sets with object metadata', () => {
+    const positions: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 1, curing_days: 9, qty: 30 } as unknown as Position,
+      // Rental position with num_sets = 3, object metadata
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'jiné', days: 10, qty: 3,
+        metadata: { type: 'formwork_rental', calculator_id: 'calc-1' }
+      } as unknown as Position,
+    ];
+
+    // 1 (beton) + 9/3 (curing÷3 sets) = 4
+    expect(calculateElementTotalDays(positions)).toBe(4);
   });
 
   it('should return 0 for empty positions', () => {

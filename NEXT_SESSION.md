@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
-**Last Updated:** 2026-02-10
-**Current Branch:** `claude/monolit-registry-integration`
-**Last Session:** Monolit ↔ Registry Integration (Phase 1 Complete)
+**Last Updated:** 2026-02-18
+**Current Branch:** `claude/continue-implementation-NEOkf`
+**Last Session:** Universal Parser for Portal (Phase 1 Complete) + Build Fixes
 
 ---
 
@@ -14,302 +14,173 @@ cd /home/user/STAVAGENT
 # 1. Read system context
 cat CLAUDE.md
 
-# 2. Read integration documentation
-cat docs/MONOLIT_REGISTRY_INTEGRATION.md
-
-# 3. Check branch and recent commits
-git checkout claude/monolit-registry-integration
+# 2. Check branch and recent commits
+git checkout claude/continue-implementation-NEOkf
 git log --oneline -10
 
-# 4. Run database migration
-cd stavagent-portal/backend
-psql $DATABASE_URL < src/db/migrations/add-unified-project-structure.sql
-
-# 5. Test integration
-# - Open Monolit: https://monolit-planner-frontend.onrender.com
-# - Click "→ Registry" button
-# - Verify: Registry opens with project data
+# 3. Run tests to verify everything works
+cd stavagent-portal && node --test backend/tests/universalParser.test.js  # 11 tests
+cd ../Monolit-Planner/shared && npx vitest run                            # 51 tests
+cd ../../rozpocet-registry && npx tsc -b                                   # TypeScript check
 ```
 
 ---
 
-## Сессия 2026-02-10: Резюме
+## Сессия 2026-02-18: Резюме
 
 ### ✅ Что сделано:
 
 | Компонент | Задача | Статус |
 |-----------|--------|--------|
-| Portal API | Integration routes (import, for-registry, sync-tov) | ✅ |
-| Portal DB | Unified project structure (objects + positions) | ✅ |
-| Monolit Export | "→ Registry" button with TOV mapping | ✅ |
-| Registry Import | Load from Portal via URL param | ✅ |
-| Documentation | MONOLIT_REGISTRY_INTEGRATION.md | ✅ |
+| Portal Backend | Universal Parser — парсинг Excel один раз, данные для всех киосков | ✅ |
+| Portal Backend | Миграция Phase 6 (parsed_data, parse_status, parsed_at) | ✅ |
+| Portal Backend | API: auto-parse, manual re-parse, summary, for-kiosk/:type | ✅ |
+| Portal Backend | 11 тестов Universal Parser | ✅ |
+| Merge Conflicts | Разрешение конфликтов с PR #445 (formwork-rental) | ✅ |
+| rozpocet-registry | Fix TS build errors в FormworkRentalCalculator.tsx | ✅ |
 
 ### Ключевые достижения:
 
-**1. Portal API (3 endpoints):**
+**1. Universal Parser (`universalParser.js` — ~600 строк):**
+- Парсит Excel один раз в Portal
+- Auto-detect колонок (15+ Czech/English ключевых слов)
+- Детекция типов строк: section (D), item (K), description (PP)
+- Классификация работ: beton, bedneni, vyztuze, zemni, izolace, komunikace, piloty, kotveni, prefab, doprava, jine
+- Детекция кодов: URS, OTSKP, RTS, construction codes
+- Извлечение метаданных: Stavba, Objekt, Soupis (4 формата)
+- Извлечение мостов из имён листов (SO codes)
+- Чешские числа (запятая-десятичная, пробел-тысячные)
+
+**2. Новые API эндпоинты (portal-files.js):**
 ```
-POST /api/integration/import-from-monolit  - Import from Monolit with TOV
-GET  /api/integration/for-registry/:id     - Get project for Registry
-POST /api/integration/sync-tov             - Sync TOV changes back
+POST /:fileId/parse              — Ручной перепарсинг
+GET  /:fileId/parsed-data         — Полные данные
+GET  /:fileId/parsed-data/summary — Превью (metadata + summary)
+GET  /:fileId/parsed-data/for-kiosk/:kioskType — Фильтр для киоска
 ```
 
-**2. Database Schema:**
-```sql
-portal_objects    - SO 202, SO 203, etc.
-portal_positions  - Unified positions with TOV data (JSON)
+**3. Маршрутизация по киоскам:**
+```
+monolit      → beton, bedneni, vyztuze + метаданные
+registry     → ВСЕ строки для классификации
+urs_matcher  → строки с описаниями для сопоставления кодов
 ```
 
-**3. TOV Mapping (Monolit → Registry):**
+**4. Build Fix:**
+- FormworkRentalCalculator.tsx: удалён неиспользуемый React import, исправлен Modal import (named vs default), добавлен optional breakdown
+
+### Коммиты (2026-02-18):
 ```
-Betonování → Labor (Betonář)
-Bednění    → Labor (Tesař / Bednář)
-Výztuž     → Labor (Železář)
-Beton      → Materials (editable price)
+ad2bf7a FIX: Fix TypeScript build errors in FormworkRentalCalculator
+77f2fa6 Merge origin/main - resolve formwork calculator conflicts
+330fc15 FEAT: Universal Parser for Portal - parse once, use in all kiosks
 ```
 
-**4. Data Flow:**
+### Новые файлы:
 ```
-Monolit → [Export] → Portal → [Load] → Registry
-                       ↑
-                       └─ [Sync TOV] ← Registry
-```
-
-### Коммиты (2026-02-10):
-```
-[pending]
-FEAT: Add Monolit-Registry integration via Portal API
-
-Phase 1 Complete:
-- Portal API: 3 integration endpoints
-- Database: portal_objects + portal_positions tables
-- Monolit: Updated export button with TOV mapping
-- Registry: Load from Portal via URL param
-- Documentation: MONOLIT_REGISTRY_INTEGRATION.md
-
-Files:
-- stavagent-portal/backend/src/routes/integration.js (NEW)
-- stavagent-portal/backend/src/db/migrations/add-unified-project-structure.sql (NEW)
-- Monolit-Planner/frontend/src/components/Header.tsx (UPDATED)
-- rozpocet-registry/src/App.tsx (UPDATED)
-- rozpocet-registry/src/services/portalSync.ts (NEW)
-- docs/MONOLIT_REGISTRY_INTEGRATION.md (NEW)
+stavagent-portal/backend/src/services/universalParser.js     (NEW ~600 строк)
+stavagent-portal/backend/tests/universalParser.test.js       (NEW ~290 строк, 11 тестов)
+stavagent-portal/backend/src/db/migrations.js                (MODIFIED — Phase 6)
+stavagent-portal/backend/src/routes/portal-files.js          (MODIFIED — 4 эндпоинта)
+stavagent-portal/backend/package.json                        (MODIFIED — test script)
+rozpocet-registry/src/components/tov/FormworkRentalCalculator.tsx (FIXED — 3 TS errors)
 ```
 
 ---
 
-## ⏳ AWAITING USER ACTION (High Priority)
+## ⏭️ Следующие шаги: Universal Parser Phase 2
 
-### 1. Run Database Migration
-Выполнить миграцию в Portal PostgreSQL:
+### Приоритет 1: Интеграция в Portal Frontend
+- [ ] UI превью парсинга: после загрузки файла показать summary (листы, позиции, типы работ)
+- [ ] Кнопка "Отправить в Monolit / Registry / URS Matcher" из превью
+- [ ] Визуальный статус парсинга (parsing → parsed → error)
+
+### Приоритет 2: Киоски получают данные из Portal
+- [ ] Monolit: добавить опцию "Загрузить из Portal" (GET /for-kiosk/monolit)
+- [ ] Registry: добавить опцию "Загрузить из Portal" (GET /for-kiosk/registry)
+- [ ] URS Matcher: добавить опцию "Загрузить из Portal" (GET /for-kiosk/urs_matcher)
+
+### Приоритет 3: Синхронизация через Portal
+- [ ] Киоски сохраняют результаты обратно в Portal
+- [ ] Portal агрегирует результаты всех киосков
+- [ ] Двусторонняя синхронизация изменений
+
+---
+
+## ⏳ AWAITING USER ACTION (из предыдущих сессий)
+
+### 1. AI Suggestion Button Enablement (Monolit)
 ```bash
-cd stavagent-portal/backend
-psql $DATABASE_URL < src/db/migrations/add-unified-project-structure.sql
+# В Render Dashboard → monolit-db → Shell:
+# Выполнить: Monolit-Planner/БЫСТРОЕ_РЕШЕНИЕ.sql
 ```
 
-### 2. Test Integration Flow
-1. Open Monolit: https://monolit-planner-frontend.onrender.com
-2. Select project with positions
-3. Click "→ Registry" button
-4. Verify: Registry opens with project data
-5. Verify: TOV data is populated (Labor, Materials)
-
-### 3. Configure Environment Variables (Optional)
-
-**Monolit Frontend (.env):**
+### 2. Добавить environment variables
 ```env
-VITE_PORTAL_API_URL=https://stavagent-portal-backend.onrender.com
-VITE_REGISTRY_URL=https://rozpocet-registry.vercel.app
+# stavagent-portal-backend:
+DISABLE_AUTH=true
+
+# URS_MATCHER_SERVICE:
+PPLX_API_KEY=pplx-...
 ```
 
-**Registry (.env):**
-```env
-VITE_PORTAL_API_URL=https://stavagent-portal-backend.onrender.com
-```
+### 3. Google Drive + Keep-Alive Setup
+- См. `GOOGLE_DRIVE_SETUP.md` и `KEEP_ALIVE_SETUP.md`
 
 ---
 
-## 📊 URS Matcher - LLM Providers (7 моделей)
+## 🧪 Статус тестов
 
-| Provider | Task | Cost | Status |
-|----------|------|------|--------|
-| **Perplexity** | RETRIEVE (search) | $20/мес | ❌ Нужен API key |
-| **Gemini** | RERANK, General | FREE | ✅ Configured |
-| **Claude** | High accuracy | $$$ | ⚠️ Out of money |
-| **DeepSeek** | Cost-effective | $ | ✅ Configured |
-| **Grok** | Alternative | $$ | ✅ Configured |
-| **Qwen** | Chinese docs | $ | ✅ Configured |
-| **GLM** | Alternative | $ | ✅ Configured |
-| **OpenAI** | Fallback | $$ | ✅ Configured |
-
-**Fallback chain:**
-```
-deepseek → glm → qwen → gemini → grok → openai → claude
-```
+| Сервис | Тесты | Статус |
+|--------|-------|--------|
+| Portal Universal Parser | 11/11 | ✅ Pass |
+| Monolit shared formulas | 51/51 | ✅ Pass |
+| rozpocet-registry | tsc -b + vite build | ✅ Pass |
+| URS Matcher | 159 | ⚠️ Not run this session |
 
 ---
 
-## 🔍 Batch Processing Pipeline (4 Steps)
+## 📊 Архитектура Universal Parser
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│              URS Matcher Batch Processing                   │
-│                                                             │
-│  Step 1: NORMALIZE TEXT                                     │
-│    └─> LLM: DeepSeek, Gemini                               │
-│                                                             │
-│  Step 2: SPLIT (SINGLE/COMPOSITE)                           │
-│    └─> LLM: Gemini, Claude                                 │
-│                                                             │
-│  Step 3a: RETRIEVE CANDIDATES ← ❌ REQUIRES PPLX_API_KEY    │
-│    └─> Perplexity API (searches online ÚRS catalog)        │
-│                                                             │
-│  Step 3b: RERANK CANDIDATES                                 │
-│    └─> LLM: Claude, Gemini, OpenAI                         │
-│                                                             │
-│  Step 4: FORMAT RESULT                                      │
-│    └─> Return best URS code + confidence                   │
-└─────────────────────────────────────────────────────────────┘
+│                    Portal Backend                            │
+│                                                              │
+│  Upload Excel → universalParser.parseFile() → parsed_data   │
+│                                                              │
+│  parsed_data = {                                             │
+│    metadata: { stavba, objekt, soupis },                    │
+│    sheets: [{ name, bridge, items: [...] }],                │
+│    summary: {                                                │
+│      totalItems, workTypes, codeTypes,                      │
+│      kiosks: { monolit: N, registry: N, urs_matcher: N }   │
+│    }                                                         │
+│  }                                                           │
+│                                                              │
+│  ┌──────────┐  ┌──────────┐  ┌──────────────┐              │
+│  │ /for-kiosk│  │ /for-kiosk│  │ /for-kiosk   │              │
+│  │ /monolit  │  │ /registry │  │ /urs_matcher  │              │
+│  └─────┬─────┘  └─────┬─────┘  └──────┬───────┘              │
+│        │              │               │                      │
+└────────┼──────────────┼───────────────┼──────────────────────┘
+         │              │               │
+         ▼              ▼               ▼
+    ┌─────────┐   ┌──────────┐   ┌──────────────┐
+    │ Monolit │   │ Registry │   │ URS Matcher  │
+    │ beton,  │   │ ALL rows │   │ items with   │
+    │ bedneni,│   │ for      │   │ descriptions │
+    │ vyztuze │   │ classify │   │ for matching │
+    └─────────┘   └──────────┘   └──────────────┘
 ```
-
----
-
-## Next Steps (Priority Order)
-
-### 🔴 Critical (блокирующие)
-1. [ ] Добавить `DISABLE_AUTH=true` в stavagent-portal-backend
-2. [ ] Добавить `PPLX_API_KEY` в URS_MATCHER_SERVICE (или решить использовать local DB)
-3. [ ] Redeploy оба сервиса
-
-### 🟡 High Priority
-4. [ ] Протестировать Project Passport на production после env vars
-5. [ ] Протестировать URS Matcher batch processing после Perplexity configuration
-6. [ ] Merge ветки `claude/phase-6-technology-review-SVfgv` в main
-
-### 🟢 Medium Priority
-7. [ ] Рассмотреть разработку локальной базы ÚRS кодов (если Perplexity дорого)
-8. [ ] Добавить мониторинг API costs для всех LLM providers
-9. [ ] Написать тесты для DocumentSummary.tsx
-
-### ⚪ Low Priority
-10. [ ] Update CLAUDE.md с новой информацией о Project Passport
-11. [ ] Создать документацию по локальной базе ÚRS кодов
-12. [ ] Оптимизировать timeout для разных размеров PDF
-
----
-
-## 📁 Измененные файлы
-
-### Portal (stavagent-portal)
-```
-frontend/src/components/portal/DocumentSummary.tsx
-  - Timeout: 120s → 300s
-  - API endpoint: /api/portal/projects → /api/portal-projects
-  - Added credentials: 'include'
-  - Response format handling (array vs object)
-  - File input modal refactor (ref + button)
-
-backend/server.js
-  - CORS: added www.stavagent.cz, stavagent.cz
-```
-
-### Analyzed (не изменено)
-```
-URS_MATCHER_SERVICE/backend/src/
-  config/llmConfig.js                    # 7 providers, task routing
-  services/batch/batchProcessor.js       # 4-step pipeline
-  services/batch/candidateRetriever.js   # Perplexity integration
-```
-
----
-
-## 🌐 Production Status
-
-| Service | URL | Status | Action Needed |
-|---------|-----|--------|---------------|
-| Portal Frontend | https://www.stavagent.cz | ✅ Live | None |
-| Portal Backend | https://stavagent-portal-backend.onrender.com | ⚠️ | Add DISABLE_AUTH |
-| URS Matcher | https://urs-matcher-service.onrender.com | ⚠️ | Add PPLX_API_KEY |
-| concrete-agent | https://concrete-agent.onrender.com | ✅ Live | None |
-| Monolit API | https://monolit-planner-api.onrender.com | ✅ Live | None |
-
----
-
-## Environment Variables - Complete Reference
-
-### concrete-agent
-```env
-GOOGLE_API_KEY=AIza...
-ANTHROPIC_API_KEY=sk-ant...
-OPENAI_API_KEY=sk-...
-GEMINI_MODEL=gemini-2.0-flash-exp
-MULTI_ROLE_LLM=gemini
-```
-
-### stavagent-portal-backend
-```env
-DISABLE_AUTH=true                        # ← НУЖНО ДОБАВИТЬ
-CORS_ORIGIN=https://www.stavagent.cz    # ← НУЖНО ДОБАВИТЬ
-NODE_ENV=production
-PORT=3001
-```
-
-### URS_MATCHER_SERVICE
-```env
-# Perplexity (для batch processing)
-PPLX_API_KEY=pplx-...                   # ← НУЖНО ДОБАВИТЬ
-PPLX_MODEL=sonar
-URS_CATALOG_MODE=online
-
-# LLM Providers (fallback)
-GOOGLE_AI_KEY=AIza...
-ANTHROPIC_API_KEY=sk-ant...
-OPENAI_API_KEY=sk-...
-DEEPSEEK_API_KEY=...
-GROK_API_KEY=...
-
-# concrete-agent integration
-STAVAGENT_API_URL=https://concrete-agent.onrender.com
-```
-
----
-
-## 📖 Related Documentation
-
-| File | Description |
-|------|-------------|
-| `CLAUDE.md` | System overview (v2.0.3) |
-| `docs/archive/completed-sessions/SESSION_2026-02-10_PASSPORT_PRODUCTION_FIX.md` | This session details |
-| `stavagent-portal/frontend/src/types/passport.ts` | Project Passport TypeScript types |
-| `URS_MATCHER_SERVICE/backend/src/config/llmConfig.js` | LLM configuration (1044 lines) |
-
----
-
-## 🐛 Known Issues
-
-1. **Portal:** DISABLE_AUTH нужен в backend (не frontend VITE_DISABLE_AUTH)
-2. **URS Matcher:** Batch processing не работает без Perplexity API
-3. **Timeout:** 300s может быть недостаточно для PDF >100 страниц (monitor logs)
-
----
-
-## 💡 Lessons Learned
-
-1. **Multi-API workflows:** Системы могут использовать несколько AI провайдеров для разных этапов (search vs ranking)
-2. **CORS production:** Всегда добавлять варианты с `www.` и без
-3. **React file inputs:** Использовать `ref` вместо invisible overlay
-4. **API response formats:** Всегда обрабатывать разные форматы (array vs object)
-5. **Environment variables:** Backend vs Frontend (DISABLE_AUTH vs VITE_DISABLE_AUTH)
 
 ---
 
 **При старте следующей сессии:**
 ```bash
 1. Прочитай CLAUDE.md
-2. Прочитай docs/archive/completed-sessions/SESSION_2026-02-10_PASSPORT_PRODUCTION_FIX.md
-3. Проверь NEXT_SESSION.md — текущая фаза
-4. Verify environment variables were added
-5. Test production services
+2. Прочитай NEXT_SESSION.md (этот файл)
+3. git log --oneline -10 — посмотри коммиты
+4. Спроси пользователя что делать: Phase 2 Parser UI или другая задача
 ```
 
 *Ready for next session!*

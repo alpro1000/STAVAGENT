@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.0.5
-**Last Updated:** 2026-02-10
+**Version:** 2.0.6
+**Last Updated:** 2026-02-18
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,8 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-02-18 | stavagent-portal | Universal Parser Phase 1: parse Excel once, serve filtered data per kiosk (monolit/registry/urs_matcher) | ✅ Pushed |
+| 2026-02-18 | rozpocet-registry | Fix TS build errors in FormworkRentalCalculator (imports, interface) | ✅ Pushed |
 | 2026-02-10 | Monolit + Registry + Portal | Monolit-Registry integration via Portal API (Phase 1): 3 endpoints, TOV mapping, unified storage | ✅ PR Created |
 | 2026-02-10 | stavagent-portal | Portal production fixes: timeout 300s, CORS, file input modal, API endpoint | ✅ Pushed |
 | 2026-02-10 | URS_MATCHER_SERVICE | Batch processing diagnosis: identified Perplexity API requirement (2-API architecture) | 📋 Analysis |

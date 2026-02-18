@@ -146,6 +146,9 @@ async function initPostgresSchema() {
   // Run Phase 5 migrations (Monolit-Registry integration)
   await runPhase5Migrations();
 
+  // Run Phase 6 migrations (Universal Parser - parsed_data)
+  await runPhase6Migrations();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 }
@@ -488,6 +491,64 @@ async function runPhase5Migrations() {
 }
 
 /**
+ * Migrations for Phase 6 - Universal Parser (parsed_data on portal_files)
+ */
+async function runPhase6Migrations() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 6 migrations (Universal Parser)...');
+
+    // Add parsed_data column to portal_files (stores JSON output from Universal Parser)
+    try {
+      await db.exec(`
+        ALTER TABLE portal_files
+        ADD COLUMN IF NOT EXISTS parsed_data TEXT;
+      `);
+      console.log('[Migration] ✓ parsed_data column added to portal_files');
+    } catch (error) {
+      if (error.message.includes('already exists') || error.message.includes('duplicate column')) {
+        console.log('[Migration] ✓ parsed_data column already exists');
+      } else {
+        console.error('[Migration] Error adding parsed_data:', error.message);
+      }
+    }
+
+    // Add parse_status column to track parsing state
+    try {
+      await db.exec(`
+        ALTER TABLE portal_files
+        ADD COLUMN IF NOT EXISTS parse_status VARCHAR(50) DEFAULT 'not_parsed';
+      `);
+      console.log('[Migration] ✓ parse_status column added to portal_files');
+    } catch (error) {
+      if (error.message.includes('already exists') || error.message.includes('duplicate column')) {
+        console.log('[Migration] ✓ parse_status column already exists');
+      } else {
+        console.error('[Migration] Error adding parse_status:', error.message);
+      }
+    }
+
+    // Add parsed_at timestamp
+    try {
+      await db.exec(`
+        ALTER TABLE portal_files
+        ADD COLUMN IF NOT EXISTS parsed_at TIMESTAMP;
+      `);
+      console.log('[Migration] ✓ parsed_at column added to portal_files');
+    } catch (error) {
+      if (error.message.includes('already exists') || error.message.includes('duplicate column')) {
+        console.log('[Migration] ✓ parsed_at column already exists');
+      } else {
+        console.error('[Migration] Error adding parsed_at:', error.message);
+      }
+    }
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 6 migrations completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 6 migrations:', error);
+  }
+}
+
+/**
  * Initialize SQLite schema (existing logic from init.js)
  */
 async function initSqliteSchema() {
@@ -612,6 +673,27 @@ async function initSqliteSchema() {
 
   // Apply SQLite-specific migrations
   await applySqliteMigrations();
+
+  // Phase 6: Universal Parser columns on portal_files (SQLite)
+  try {
+    const pfColumns = db.prepare("PRAGMA table_info(portal_files)").all();
+    if (pfColumns && pfColumns.length > 0) {
+      if (!pfColumns.some(col => col.name === 'parsed_data')) {
+        db.exec("ALTER TABLE portal_files ADD COLUMN parsed_data TEXT");
+        console.log('[MIGRATION] Added parsed_data column to portal_files');
+      }
+      if (!pfColumns.some(col => col.name === 'parse_status')) {
+        db.exec("ALTER TABLE portal_files ADD COLUMN parse_status TEXT DEFAULT 'not_parsed'");
+        console.log('[MIGRATION] Added parse_status column to portal_files');
+      }
+      if (!pfColumns.some(col => col.name === 'parsed_at')) {
+        db.exec("ALTER TABLE portal_files ADD COLUMN parsed_at TEXT");
+        console.log('[MIGRATION] Added parsed_at column to portal_files');
+      }
+    }
+  } catch (error) {
+    console.log('[MIGRATION] portal_files table may not exist yet, skipping Phase 6 migration');
+  }
 
   // Snapshots table
   db.exec(`

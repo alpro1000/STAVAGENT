@@ -10,7 +10,7 @@ import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
 import { positionsAPI } from '../services/api';
 import type { Position, Subtype, Unit } from '@stavagent/monolit-shared';
-import { SUBTYPE_LABELS } from '@stavagent/monolit-shared';
+import { SUBTYPE_LABELS, calculateElementTotalDays } from '@stavagent/monolit-shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
@@ -325,7 +325,7 @@ export default function PositionsTable() {
 
     try {
       const newPositions: Partial<Position>[] = [];
-      
+
       calcRows.forEach(row => {
         newPositions.push({
           id: uuidv4(),
@@ -340,7 +340,7 @@ export default function PositionsTable() {
           shift_hours: 10,
           days: row.assembly_days_per_tact * row.num_tacts
         });
-        
+
         newPositions.push({
           id: uuidv4(),
           bridge_id: selectedBridge,
@@ -368,22 +368,21 @@ export default function PositionsTable() {
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
       setShowFormworkCalc(false);
       setFormworkCalcPartName(null);
-      
+
       const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
       const totalArea = calcRows.reduce((sum, r) => r.total_area_m2, 0);
       const registryUrl = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
-      
+
       alert(
-        `✅ Přeneseno ${newPositions.length} řádků (Montáž + Demontáž) do části "${targetPartName}"\n\n` +
-        `💡 NÁJEM BEDNĚNÍ - přidejte do Registry TOV:\n` +
-        `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-        `📊 Parametry pro kalkulátor:\n` +
-        `   • Plocha: ${totalArea.toFixed(1)} m²\n` +
-        `   • Termín nájmu: ${totalRentalDays} dní\n` +
-        `   • Systém: ${calcRows[0]?.formwork_system || 'FRAMI XLIFE'}\n\n` +
-        `🔗 Otevřete Registry TOV:\n` +
+        `Preneseno ${newPositions.length} radku (Montaz + Demontaz) do casti "${targetPartName}"\n\n` +
+        `NAJEM BEDNENI - pridejte do Registry TOV:\n` +
+        `Parametry pro kalkulator:\n` +
+        `   Plocha: ${totalArea.toFixed(1)} m2\n` +
+        `   Termin najmu: ${totalRentalDays} dni\n` +
+        `   System: ${calcRows[0]?.formwork_system || 'FRAMI XLIFE'}\n\n` +
+        `Otevrete Registry TOV:\n` +
         `   ${registryUrl}\n\n` +
-        `   Klikněte na "🏗️ Nájem bednění" → zadejte parametry → přidejte do TOV`
+        `   Kliknete na "Najem bedneni" -> zadejte parametry -> pridejte do TOV`
       );
     } catch (error) {
       alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
@@ -602,7 +601,6 @@ export default function PositionsTable() {
                       <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">Hod./den</th>
                       <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Dny</th>
                       <th className="col-rychlost" title="Norma rychlosti v MJ/hod (EDITABLE). Zadejte normu → přepočítá dny. Nebo zadejte dny → norma se vypočítá zpětně.">MJ/h</th>
-                      <th className="col-zrani" title="Dny zrání betonu (technologická pauza) - pouze pro beton">Zrání</th>
                       <th className="col-hod-celkem" title="Celkový počet hodin = Počet × Hod./den × Dny">Celk.hod.</th>
                       <th className="col-kc-celkem" title="Celková cena v CZK = Celk.hod. × Kč/h">Celk.Kč</th>
                       <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Celk.Kč ÷ Objem betonu">
@@ -616,12 +614,28 @@ export default function PositionsTable() {
                     </thead>
                     <tbody>
                       {partPositions.length > 0 ? (
-                        partPositions.map((position) => (
-                          <PositionRow key={position.id} position={position} isLocked={isLocked} />
-                        ))
+                        partPositions.map((position) => {
+                          // For beton rows, compute numSets from rental positions in same part
+                          const partNumSets = position.subtype === 'beton'
+                            ? Math.max(1, ...partPositions
+                                .filter(p => {
+                                  if (p.subtype !== 'jiné') return false;
+                                  const meta = (p as any).metadata;
+                                  const isFR = typeof meta === 'string'
+                                    ? meta.includes('formwork_rental')
+                                    : (meta && typeof meta === 'object' && meta.type === 'formwork_rental');
+                                  return isFR;
+                                })
+                                .map(p => p.qty || 1)
+                              )
+                            : undefined;
+                          return (
+                            <PositionRow key={position.id} position={position} isLocked={isLocked} partNumSets={partNumSets} />
+                          );
+                        })
                       ) : (
                         <tr>
-                          <td colSpan={isLocked ? 17 : 16} style={{
+                          <td colSpan={isLocked ? 16 : 15} style={{
                             textAlign: 'center',
                             padding: '20px',
                             color: 'var(--text-secondary)',

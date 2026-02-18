@@ -1,6 +1,6 @@
 # STAVAGENT Backlog & Pending Plans
 
-**Last Updated:** 2026-01-21
+**Last Updated:** 2026-02-18
 **Maintained By:** Development Team
 
 ---
@@ -96,7 +96,35 @@ curl -s https://monolit-planner-api.onrender.com/api/config | jq '.feature_flags
 
 ## 🟠 High Priority
 
-### 5. Node.js Version Update
+### 5. Universal Parser Phase 2 — Portal Frontend + Kiosk Integration
+
+**Status:** ⏳ Phase 1 Complete (backend), Phase 2 planned
+**Branch:** `claude/continue-implementation-NEOkf`
+**Service:** Portal + All Kiosks
+
+**Phase 1 (✅ Done):**
+- [x] `universalParser.js` — parse Excel with auto-detect, work type classification
+- [x] DB migration (parsed_data, parse_status, parsed_at)
+- [x] API endpoints: parse, parsed-data, summary, for-kiosk/:type
+- [x] Auto-parse on upload + 11 tests
+
+**Phase 2 (⏳ Next):**
+- [ ] Portal Frontend: parse preview UI (summary, sheets, work types)
+- [ ] Portal Frontend: "Send to Kiosk" buttons from preview
+- [ ] Portal Frontend: parse status indicator (parsing → parsed → error)
+- [ ] Monolit: "Load from Portal" option (GET /for-kiosk/monolit)
+- [ ] Registry: "Load from Portal" option (GET /for-kiosk/registry)
+- [ ] URS Matcher: "Load from Portal" option (GET /for-kiosk/urs_matcher)
+
+**Phase 3 (planned):**
+- [ ] Bi-directional sync: kiosks save results back to Portal
+- [ ] Portal aggregates all kiosk results
+
+**Reference:** `stavagent-portal/backend/src/services/universalParser.js`
+
+---
+
+### 6. Node.js Version Update
 
 **Status:** ⏳ Not started
 **Service:** All services
@@ -111,7 +139,7 @@ curl -s https://monolit-planner-api.onrender.com/api/config | jq '.feature_flags
 
 ---
 
-### 6. npm Security Vulnerabilities
+### 7. npm Security Vulnerabilities
 
 **Status:** ⏳ Not started
 **Service:** All services
@@ -130,7 +158,7 @@ cd ../shared && npm audit fix
 
 ## 🟡 Medium Priority
 
-### 7. URS Matcher - Phase 2: Document Parsing
+### 8. URS Matcher - Phase 2: Document Parsing
 
 **Status:** 🔄 In Progress (partially complete)
 **Service:** URS_MATCHER_SERVICE
@@ -150,7 +178,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 8. URS Matcher - Phase 3: Multi-Role System
+### 9. URS Matcher - Phase 3: Multi-Role System
 
 **Status:** 🔄 In Progress (MVP complete)
 **Service:** URS_MATCHER_SERVICE
@@ -170,7 +198,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 9. CI/CD Improvements
+### 10. CI/CD Improvements
 
 **Status:** ⏳ Not started
 **Service:** All services
@@ -185,7 +213,7 @@ cd ../shared && npm audit fix
 
 ## 🟢 Low Priority / Future
 
-### 10. URS Matcher - Phase 4: Optimization
+### 11. URS Matcher - Phase 4: Optimization
 
 **Status:** ⏳ Planned
 **Service:** URS_MATCHER_SERVICE
@@ -202,7 +230,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 11. Integration Tests - Vitest Migration
+### 12. Integration Tests - Vitest Migration
 
 **Status:** ⏳ Planned
 **Service:** Monolit-Planner
@@ -216,7 +244,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 12. Document Accumulator - Production Fixes
+### 13. Document Accumulator - Production Fixes
 
 **Status:** ⏳ Identified but not started
 **Service:** concrete-agent
@@ -233,7 +261,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 13. Security Audit Follow-up
+### 14. Security Audit Follow-up
 
 **Status:** ⏳ Some items fixed, some pending
 **Service:** All services
@@ -267,12 +295,12 @@ docs/archive/
 | Priority | Items | Impact |
 |----------|-------|--------|
 | 🔴 Immediate | 4 | User action needed |
-| 🟠 High | 2 | Security |
+| 🟠 High | 3 | Universal Parser Phase 2 + Security |
 | 🟡 Medium | 3 | Features |
 | 🟢 Low | 4 | Optimization |
 
 ---
 
-**Total Pending Items:** 13
-**Next Critical Path:** AI Suggestion SQL → Node.js update → npm audit
+**Total Pending Items:** 14
+**Next Critical Path:** Universal Parser Phase 2 UI → AI Suggestion SQL → Node.js update
 

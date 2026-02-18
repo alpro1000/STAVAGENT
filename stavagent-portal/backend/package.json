@@ -11,7 +11,7 @@
     "prestart": "npm run prepare:shared",
     "start": "node server.js",
     "build": "echo 'No build needed for Node.js'",
-    "test": "echo 'Tests not implemented yet'"
+    "test": "node --test tests/universalParser.test.js"
   },
   "dependencies": {
     "@stavagent/portal-shared": "file:../shared",
