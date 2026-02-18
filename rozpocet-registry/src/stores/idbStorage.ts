@@ -67,8 +67,13 @@ export const idbStorage = {
       const db = await getDB();
       await db.put(STORE_NAME, value, name);
     } catch (err) {
-      console.error('[idbStorage] setItem failed:', err);
-      // Don't fall back to localStorage - that's the problem we're solving
+      console.error('[idbStorage] setItem failed, falling back to localStorage:', err);
+      // Fallback: skupiny and other edits always persist even when IDB is unavailable
+      try {
+        localStorage.setItem(name, value);
+      } catch (lsErr) {
+        console.error('[idbStorage] localStorage fallback also failed (quota?):', lsErr);
+      }
     }
   },
 
