@@ -24,6 +24,14 @@ import ProjectDocuments from '../components/portal/ProjectDocuments';
 import DocumentSummary from '../components/portal/DocumentSummary';
 import ThemeToggle from '../components/ThemeToggle';
 
+interface KioskLink {
+  link_id: string;
+  kiosk_type: string;
+  kiosk_project_id: string;
+  status: string;
+  last_sync?: string;
+}
+
 interface PortalProject {
   portal_project_id: string;
   project_name: string;
@@ -36,6 +44,7 @@ interface PortalProject {
   core_last_sync?: string;
   created_at: string;
   updated_at: string;
+  kiosks?: KioskLink[];
 }
 
 interface Service {
