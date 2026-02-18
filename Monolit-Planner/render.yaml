@@ -51,6 +51,10 @@ services:
         value: 20.11.0
       - key: VITE_API_URL
         value: "https://monolit-planner-api.onrender.com"
+      - key: VITE_PORTAL_API_URL
+        value: "https://stav-agent.onrender.com"
+      - key: VITE_REGISTRY_URL
+        value: "https://rozpocet-registry.vercel.app"
     headers:
       # Prevent caching of HTML to ensure latest version is served
       - path: /*
