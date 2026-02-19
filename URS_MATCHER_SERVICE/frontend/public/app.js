@@ -2277,6 +2277,69 @@ document.addEventListener('DOMContentLoaded', () => {
   debugLog('✅ DOMContentLoaded event fired');
   debugLog('📄 Document ready, showing upload section');
   showUpload();
+
+  // Portal import: check for ?portal_file_id=&portal_api= URL params
+  const urlParams = new URLSearchParams(window.location.search);
+  const portalFileId = urlParams.get('portal_file_id');
+  const portalApi = urlParams.get('portal_api');
+
+  if (portalFileId && portalApi) {
+    // Clean URL params immediately
+    window.history.replaceState({}, '', window.location.pathname);
+    debugLog('🌐 Portal import detected, fetching data...');
+
+    fetch(`${portalApi}/api/portal-files/${portalFileId}/parsed-data/for-kiosk/urs_matcher`)
+      .then(resp => {
+        if (!resp.ok) throw new Error(`Portal fetch failed: ${resp.status}`);
+        return resp.json();
+      })
+      .then(data => {
+        if (!data.success || !data.sheets?.length) {
+          showError('Portal vrátil prázdná data. Ujistěte se, že soubor byl nejdříve zparsován.');
+          return;
+        }
+
+        // Collect all item descriptions for batch matching
+        const lines = [];
+        for (const sheet of data.sheets) {
+          for (const item of sheet.items) {
+            const desc = item.popis || item.kod;
+            if (desc && desc.trim().length > 3) {
+              lines.push(desc.trim());
+            }
+          }
+        }
+
+        if (lines.length === 0) {
+          showError('V souboru nebyly nalezeny žádné popisky pro URS Matcher.');
+          return;
+        }
+
+        const batchText = lines.join('\n');
+        sessionStorage.setItem('batchInputText', batchText);
+
+        // Navigate to batch section and pre-fill input
+        const openBatchBtn = document.getElementById('openBatchBtn');
+        if (openBatchBtn) {
+          openBatchBtn.click();
+          // Fill textarea after section is visible
+          setTimeout(() => {
+            const batchTextInput = document.getElementById('batchTextInput');
+            if (batchTextInput) {
+              batchTextInput.value = batchText;
+            }
+          }, 100);
+          debugLog(`🌐 ✓ Portal import: ${lines.length} položek načteno z Portal (${data.file_name || portalFileId})`);
+        } else {
+          showError('Batch procesor není k dispozici.');
+        }
+      })
+      .catch(err => {
+        debugError('❌ Portal import failed:', err.message);
+        showError(`Import z Portal selhal: ${err.message}`);
+      });
+  }
+
   debugLog('✅ Initialization complete');
 });
 

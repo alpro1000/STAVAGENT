@@ -45,8 +45,16 @@ function App() {
     const params = new URLSearchParams(window.location.search);
     const source = params.get('source');
     const portalProjectId = params.get('portal_project');
+    const portalFileId = params.get('portal_file_id');
+    const portalApi = params.get('portal_api');
 
-    // Load from Portal if portal_project param exists
+    // Universal Parser flow: portal_file_id + portal_api (new, Phase 1)
+    if (portalFileId && portalApi) {
+      loadFromPortalFile(portalFileId, portalApi);
+      return;
+    }
+
+    // Legacy Monolit-export flow: portal_project (old integration endpoint)
     if (portalProjectId) {
       loadFromPortal(portalProjectId);
       return;
@@ -115,7 +123,91 @@ function App() {
     return () => window.removeEventListener('message', handler);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  // Load project from Portal
+  // Load project from Portal via Universal Parser (portal_file_id endpoint)
+  const loadFromPortalFile = async (portalFileId: string, portalApi: string) => {
+    window.history.replaceState({}, '', window.location.pathname);
+
+    try {
+      const response = await fetch(
+        `${portalApi}/api/portal-files/${portalFileId}/parsed-data/for-kiosk/registry`
+      );
+      if (!response.ok) throw new Error(`Portal fetch failed: ${response.status}`);
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || 'Failed to load file');
+
+      // Deduplicate: if already imported, re-select
+      const existingProject = projects.find(p => p.id === portalFileId);
+      if (existingProject) {
+        setSelectedProject(existingProject.id);
+        return;
+      }
+
+      const projectName = data.file_name?.replace(/\.[^.]+$/, '') || `Portal File ${portalFileId.slice(0, 8)}`;
+
+      const newProject = {
+        id: portalFileId,
+        fileName: data.file_name || `${projectName}.xlsx`,
+        projectName,
+        filePath: '',
+        importedAt: new Date(),
+        sheets: (data.sheets ?? []).map((sheet: any) => ({
+          id: crypto.randomUUID(),
+          name: sheet.name,
+          projectId: portalFileId,
+          items: (sheet.items ?? []).map((item: any) => ({
+            id: item.id || crypto.randomUUID(),
+            kod: item.kod ?? '',
+            popis: item.popis ?? '',
+            mj: item.mj ?? '',
+            mnozstvi: item.mnozstvi ?? 0,
+            cenaJednotkova: item.cenaJednotkova ?? 0,
+            cenaCelkem: item.cenaCelkem ?? 0,
+            skupina: item.skupina ?? null,
+            rowRole: item.rowRole ?? null,
+            source: {
+              projectId: portalFileId,
+              fileName: data.file_name || `${projectName}.xlsx`,
+              sheetName: sheet.name,
+              rowStart: item.source?.rowStart ?? item.source?.row ?? 0,
+              rowEnd:   item.source?.rowEnd   ?? item.source?.row ?? 0,
+              cellRef:  item.source?.cellRef ?? 'A1',
+            },
+          })),
+          stats: {
+            totalItems: (sheet.items ?? []).length,
+            classifiedItems: (sheet.items ?? []).filter((i: any) => i.skupina).length,
+            totalCena: (sheet.items ?? []).reduce((s: number, i: any) => s + (i.cenaCelkem ?? 0), 0),
+          },
+          metadata: {
+            projectNumber: data.metadata?.projectNumber ?? '',
+            projectName,
+            oddil: '',
+            stavba: '',
+            custom: {},
+          },
+          config: {
+            templateName: 'portal-file-import',
+            columns: { kod: 'A', popis: 'B', mj: 'C', mnozstvi: 'D', cenaJednotkova: 'E', cenaCelkem: 'F' },
+            dataStartRow: 1,
+            sheetName: sheet.name,
+            sheetIndex: 0,
+            metadataCells: {},
+          },
+        })),
+      };
+
+      addProject(newProject);
+      setSelectedProject(newProject.id);
+
+      const totalItems = data.totalItems ?? 0;
+      alert(`✅ Načteno z Portal: ${(data.sheets ?? []).length} listů, ${totalItems} položek`);
+    } catch (error) {
+      console.error('[Portal File Import] Error:', error);
+      alert(`❌ Načtení souboru z Portal selhalo: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  };
+
+  // Load project from Portal via legacy Monolit-export integration
   const loadFromPortal = async (portalProjectId: string) => {
     // Clean URL params immediately so page refresh doesn't re-trigger import
     window.history.replaceState({}, '', window.location.pathname);
