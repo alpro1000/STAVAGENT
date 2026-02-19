@@ -149,6 +149,9 @@ async function initPostgresSchema() {
   // Run Phase 6 migrations (Universal Parser - parsed_data)
   await runPhase6Migrations();
 
+  // Run Phase 7 migrations (Stavba hierarchy - stavba_name on portal_projects)
+  await runPhase7Migrations();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 }
@@ -545,6 +548,35 @@ async function runPhase6Migrations() {
     console.log('[PostgreSQL Migrations] ✅ Phase 6 migrations completed successfully');
   } catch (error) {
     console.error('[PostgreSQL Migrations] Error during Phase 6 migrations:', error);
+  }
+}
+
+/**
+ * Migrations for Phase 7 - Stavba hierarchy (stavba_name on portal_projects)
+ */
+async function runPhase7Migrations() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 7 migrations (Stavba hierarchy)...');
+
+    if (USE_POSTGRES) {
+      try {
+        await db.exec(`
+          ALTER TABLE portal_projects
+          ADD COLUMN IF NOT EXISTS stavba_name VARCHAR(255);
+        `);
+        console.log('[Migration] ✓ stavba_name column added to portal_projects');
+      } catch (error) {
+        if (error.message.includes('already exists') || error.message.includes('duplicate column')) {
+          console.log('[Migration] ✓ stavba_name column already exists');
+        } else {
+          console.error('[Migration] Error adding stavba_name:', error.message);
+        }
+      }
+    }
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 7 migrations completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 7 migrations:', error);
   }
 }
 

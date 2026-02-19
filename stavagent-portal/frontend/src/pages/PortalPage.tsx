@@ -37,6 +37,7 @@ interface PortalProject {
   project_name: string;
   project_type: string;
   description?: string;
+  stavba_name?: string;
   owner_id: number;
   core_project_id?: string;
   core_status: 'not_sent' | 'processing' | 'completed' | 'error';
@@ -217,6 +218,7 @@ export default function PortalPage() {
     project_name: string;
     project_type: string;
     description?: string;
+    stavba_name?: string;
   }) => {
     try {
       const response = await fetch(`${API_URL}/api/portal-projects`, {
@@ -480,18 +482,108 @@ export default function PortalPage() {
                 Vytvořit první projekt
               </button>
             </div>
-          ) : (
-            <div className="c-grid c-grid--3">
-              {projects.map(project => (
-                <ProjectCard
-                  key={project.portal_project_id}
-                  project={project}
-                  onOpen={() => handleOpenProject(project)}
-                  onDelete={() => handleDeleteProject(project.portal_project_id)}
-                />
-              ))}
-            </div>
-          )}
+          ) : (() => {
+            // Group projects by stavba_name; null/empty = "Ostatní projekty"
+            const grouped = new Map<string, typeof projects>();
+            for (const p of projects) {
+              const key = p.stavba_name?.trim() || '';
+              if (!grouped.has(key)) grouped.set(key, []);
+              grouped.get(key)!.push(p);
+            }
+            // Named stavby first (sorted), then unnamed at the bottom
+            const namedGroups = [...grouped.entries()]
+              .filter(([k]) => k !== '')
+              .sort(([a], [b]) => a.localeCompare(b, 'cs'));
+            const unnamedGroup = grouped.get('') || [];
+
+            const renderCards = (list: typeof projects) => (
+              <div className="c-grid c-grid--3">
+                {list.map(project => (
+                  <ProjectCard
+                    key={project.portal_project_id}
+                    project={project}
+                    onOpen={() => handleOpenProject(project)}
+                    onDelete={() => handleDeleteProject(project.portal_project_id)}
+                  />
+                ))}
+              </div>
+            );
+
+            return (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+                {namedGroups.map(([stavbaName, list]) => (
+                  <div key={stavbaName}>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px',
+                      marginBottom: '16px',
+                      padding: '8px 0',
+                      borderBottom: '2px solid var(--accent-color, #FF9F1C)',
+                    }}>
+                      <span style={{ fontSize: '18px' }}>🏗️</span>
+                      <h3 style={{
+                        fontSize: '16px',
+                        fontWeight: '700',
+                        fontFamily: 'var(--font-mono, monospace)',
+                        color: 'var(--text-primary)',
+                        letterSpacing: '0.05em',
+                        textTransform: 'uppercase',
+                      }}>
+                        {stavbaName}
+                      </h3>
+                      <span style={{
+                        fontSize: '12px',
+                        color: 'var(--text-secondary)',
+                        backgroundColor: 'var(--bg-secondary)',
+                        borderRadius: '12px',
+                        padding: '2px 8px',
+                      }}>
+                        {list.length} {list.length === 1 ? 'objekt' : list.length < 5 ? 'objekty' : 'objektů'}
+                      </span>
+                    </div>
+                    {renderCards(list)}
+                  </div>
+                ))}
+                {unnamedGroup.length > 0 && (
+                  <div>
+                    {namedGroups.length > 0 && (
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        marginBottom: '16px',
+                        padding: '8px 0',
+                        borderBottom: '1px solid var(--border-color)',
+                      }}>
+                        <span style={{ fontSize: '18px' }}>📋</span>
+                        <h3 style={{
+                          fontSize: '14px',
+                          fontWeight: '600',
+                          fontFamily: 'var(--font-mono, monospace)',
+                          color: 'var(--text-secondary)',
+                          letterSpacing: '0.05em',
+                          textTransform: 'uppercase',
+                        }}>
+                          Ostatní projekty
+                        </h3>
+                        <span style={{
+                          fontSize: '12px',
+                          color: 'var(--text-secondary)',
+                          backgroundColor: 'var(--bg-secondary)',
+                          borderRadius: '12px',
+                          padding: '2px 8px',
+                        }}>
+                          {unnamedGroup.length}
+                        </span>
+                      </div>
+                    )}
+                    {renderCards(unnamedGroup)}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
         </section>
       </div>
 

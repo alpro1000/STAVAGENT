@@ -58,7 +58,7 @@ const router = express.Router();
  */
 router.post('/create-from-kiosk', async (req, res) => {
   try {
-    const { project_name, project_type, kiosk_type, kiosk_project_id, description } = req.body;
+    const { project_name, project_type, kiosk_type, kiosk_project_id, description, stavba_name } = req.body;
 
     // Validation
     if (!project_name || !kiosk_type || !kiosk_project_id) {
@@ -90,12 +90,13 @@ router.post('/create-from-kiosk', async (req, res) => {
           project_name,
           project_type,
           description,
+          stavba_name,
           owner_id,
           core_status,
           created_at,
           updated_at
-        ) VALUES ($1, $2, $3, $4, 1, 'not_sent', NOW(), NOW())`,
-        [portal_project_id, project_name, project_type || 'custom', description || '']
+        ) VALUES ($1, $2, $3, $4, $5, 1, 'not_sent', NOW(), NOW())`,
+        [portal_project_id, project_name, project_type || 'custom', description || '', stavba_name || null]
       );
 
       // 2. Create kiosk link
@@ -215,6 +216,7 @@ router.get('/', async (req, res) => {
         project_name,
         project_type,
         description,
+        stavba_name,
         owner_id,
         core_project_id,
         core_status,
@@ -225,7 +227,7 @@ router.get('/', async (req, res) => {
         'portal' as source
        FROM portal_projects
        WHERE owner_id = $1
-       ORDER BY updated_at DESC`,
+       ORDER BY stavba_name NULLS LAST, updated_at DESC`,
       [userId]
     );
 
@@ -273,7 +275,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { project_name, project_type, description } = req.body;
+    const { project_name, project_type, description, stavba_name } = req.body;
 
     // Validation
     if (!project_name) {
@@ -294,6 +296,7 @@ router.post('/', async (req, res) => {
         project_name,
         project_type: project_type || 'custom',
         description: description || '',
+        stavba_name: stavba_name || null,
         owner_id: userId,
         core_status: 'not_sent',
         core_project_id: null,
@@ -322,13 +325,14 @@ router.post('/', async (req, res) => {
           project_name,
           project_type,
           description,
+          stavba_name,
           owner_id,
           core_status,
           created_at,
           updated_at
-        ) VALUES ($1, $2, $3, $4, $5, 'not_sent', NOW(), NOW())
+        ) VALUES ($1, $2, $3, $4, $5, $6, 'not_sent', NOW(), NOW())
         RETURNING *`,
-        [portal_project_id, project_name, project_type || 'custom', description || '', userId]
+        [portal_project_id, project_name, project_type || 'custom', description || '', stavba_name || null, userId]
       );
 
       await client.query('COMMIT');

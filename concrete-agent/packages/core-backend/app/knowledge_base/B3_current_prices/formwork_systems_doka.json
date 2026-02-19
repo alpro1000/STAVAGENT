@@ -1,0 +1,356 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "created": "2026-02-19",
+    "source": "DOKA Cenník průměrných orientačních cen (CZ) + PERI průmyslové normy + pracovní normy KROS",
+    "currency": "CZK",
+    "price_basis": "Kč/m²/měsíc bez DPH, bez dopravy, bez montáže a demontáže",
+    "price_variance_note": "Procentní rozptyl = rozdíl od jednotkové ceny: (+) členité konstrukce, (-) rovné stěny",
+    "assembly_note": "Montážní normy v Nh/m² zahrnují: přijetí, uložení, montáž, přesuny. Demontáž = ~35–50 % montáže.",
+    "notes": "Ceny dle DOKA ceníku. Skutečné ceny závisí na obchodní smlouvě, množství, délce pronájmu."
+  },
+  "categories": {
+    "wall": "Stěnové bednění (svislé betonové prvky: stěny, opěry, pilíře)",
+    "slab": "Stropní bednění (vodorovné prvky: desky, mostovky, průvlaky)",
+    "support": "Podpěrná konstrukce (scaffolding, stojky, lešení pro stropní bednění)",
+    "special": "Speciální bednění (římsové, konzolové, výtahové šachty)"
+  },
+  "systems": [
+    {
+      "id": "frami-0.9",
+      "manufacturer": "DOKA",
+      "system_name": "Frami Xlife",
+      "variant": "h=0,9 m",
+      "label_cs": "Frami Xlife h=0,9 m",
+      "category": "wall",
+      "subcategory": "frame_formwork",
+      "rental_czk_m2_month": 507.20,
+      "price_variance_pct": 8,
+      "assembly_h_m2": 0.72,
+      "disassembly_h_m2": 0.25,
+      "max_wall_height_m": 0.9,
+      "typical_applications": [
+        "Základové desky – čelo",
+        "Nízké stěny a opěry mostů",
+        "Stupňovitá betonáž",
+        "Nájezdové klíny, závěrné stěny"
+      ],
+      "description_cs": "Rámové bednění Frami Xlife, výška panelu 0,9 m. Lehký a snadno přenosný systém pro nízké svislé prvky. Vhodný pro práci bez jeřábu (panel do 40 kg). Ocelový rám s překližkovým bednicím dílcem Xlife.",
+      "form_types": ["oboustranné", "jednostranné s paždíky"],
+      "notes": "Cena platí pro oboustranné bednění rovných stěn. Rohové díly zvyšují cenu o 8–15 %.",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "frami-1.5",
+      "manufacturer": "DOKA",
+      "system_name": "Frami Xlife",
+      "variant": "h=1,50 m",
+      "label_cs": "Frami Xlife h=1,50 m",
+      "category": "wall",
+      "subcategory": "frame_formwork",
+      "rental_czk_m2_month": 454.40,
+      "price_variance_pct": 8,
+      "assembly_h_m2": 0.70,
+      "disassembly_h_m2": 0.25,
+      "max_wall_height_m": 1.5,
+      "typical_applications": [
+        "Základy pod pilíře a opěry",
+        "Nízké stěny protihlukových stěn",
+        "Stupňovitá betonáž mostních opěr"
+      ],
+      "description_cs": "Rámové bednění Frami Xlife, výška panelu 1,50 m. Nejčastěji používaná výška pro mostní opěry a základy. Kombinovatelné s panely 0,9 m pro nestandardní výšky.",
+      "form_types": ["oboustranné", "jednostranné s paždíky"],
+      "notes": "",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "frami-1.8",
+      "manufacturer": "DOKA",
+      "system_name": "Frami Xlife",
+      "variant": "h=1,80 m",
+      "label_cs": "Frami Xlife h=1,80 m",
+      "category": "wall",
+      "subcategory": "frame_formwork",
+      "rental_czk_m2_month": 523.20,
+      "price_variance_pct": 8,
+      "assembly_h_m2": 0.68,
+      "disassembly_h_m2": 0.24,
+      "max_wall_height_m": 1.8,
+      "typical_applications": [
+        "Mostní opěry",
+        "Stěny podzemních garáží",
+        "Zábrany a opěrné stěny"
+      ],
+      "description_cs": "Rámové bednění Frami Xlife, výška panelu 1,80 m. Vhodné pro stěny do výšky 1,8 m v jednom taktu.",
+      "form_types": ["oboustranné"],
+      "notes": "",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "framax-2.7",
+      "manufacturer": "DOKA",
+      "system_name": "Framax Xlife",
+      "variant": "h=2,70 m",
+      "label_cs": "Framax Xlife h=2,70 m",
+      "category": "wall",
+      "subcategory": "frame_formwork",
+      "rental_czk_m2_month": 520.00,
+      "price_variance_pct": 8,
+      "assembly_h_m2": 0.55,
+      "disassembly_h_m2": 0.19,
+      "max_wall_height_m": 2.7,
+      "typical_applications": [
+        "Mostní pilíře h=2,7–3,3 m",
+        "Stěny výšky 2,7 m v jednom taktu",
+        "Opěrné zdi komunikací"
+      ],
+      "description_cs": "Velkoformátové rámové bednění Framax Xlife, výška 2,70 m. Panely se přesouvají jeřábem. Vysoká produktivita díky velkým plochám — méně spojů a spár. Ocelový rám s Xlife deskou.",
+      "form_types": ["oboustranné", "jednostranné"],
+      "notes": "Přesun jeřábem povinný — panel cca 120 kg.",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "framax-4.65",
+      "manufacturer": "DOKA",
+      "system_name": "Framax Xlife",
+      "variant": "h=4,65 m",
+      "label_cs": "Framax Xlife h=4,65 m",
+      "category": "wall",
+      "subcategory": "frame_formwork",
+      "rental_czk_m2_month": 552.00,
+      "price_variance_pct": 8,
+      "assembly_h_m2": 0.50,
+      "disassembly_h_m2": 0.18,
+      "max_wall_height_m": 4.65,
+      "typical_applications": [
+        "Vysoké mostní pilíře (h=3–5 m)",
+        "Stěny výšky 3,0–5,4 m",
+        "Nástupní stěny podchodů"
+      ],
+      "description_cs": "Velkoformátové rámové bednění Framax Xlife, 2 panely na výšku (2×2,70 m = 5,40 m). Nejproduktivnější varianta pro vysoké monolitické stěny. Přesun výhradně jeřábem.",
+      "form_types": ["oboustranné"],
+      "notes": "2 panely výšky 2,70 m spojeny nástavcem. Maximální výška betonáže 5,40 m.",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "top50-1.4",
+      "manufacturer": "DOKA",
+      "system_name": "Top 50 + ramenáty",
+      "variant": "h=1,4 m (římsové lešení)",
+      "label_cs": "Top 50 + ramenáty h=1,4 m",
+      "category": "slab",
+      "subcategory": "beam_slab",
+      "rental_czk_m2_month": 576.00,
+      "price_variance_pct": 10,
+      "assembly_h_m2": 0.60,
+      "disassembly_h_m2": 0.21,
+      "max_wall_height_m": null,
+      "slab_thickness_range_m": [0.25, 0.50],
+      "typical_applications": [
+        "Stropní desky mostů",
+        "Mostovky — vodorovné plochy",
+        "Stropy budov h=2,5–4,5 m"
+      ],
+      "description_cs": "Stropní bednění Top 50 s dřevěnými nosníky H20 a ramenáty. Podpěrná výška h=1,4 m. Kombinace nosníků Top 50 a stojek s hlavicemi pro stropy a mostovky do tl. 0,5 m.",
+      "form_types": ["vodorovné stropní"],
+      "notes": "Bednící deska není součástí nájmu — cenu desky stanoví obchodník.",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "staxo100-top50",
+      "manufacturer": "DOKA",
+      "system_name": "Staxo 100 + Top 50",
+      "variant": "h=4,50 m",
+      "label_cs": "Staxo 100 + Top 50 h=4,50 m",
+      "category": "support",
+      "subcategory": "heavy_shoring",
+      "rental_czk_m2_month": 70.40,
+      "price_variance_pct": 10,
+      "assembly_h_m2": 0.80,
+      "disassembly_h_m2": 0.30,
+      "max_support_height_m": 20.0,
+      "typical_applications": [
+        "Těžké mostní desky (tl. 0,6–1,2 m)",
+        "Mostovky s velkým zatížením",
+        "Podpěrná lešení do výšky 20 m"
+      ],
+      "description_cs": "Systémová podpěrná věžová konstrukce Staxo 100 s vrchní konstrukcí Top 50. Nosnost do 1000 kN/stojku. Ideální pro těžké mostní desky a velká světlá pole. Modulární systém.",
+      "form_types": ["podpěrná věžová"],
+      "notes": "Cena za podpěrnou část (bez bednící desky a nosníků). Vrchní kce WS10+H20 se pronajímá zvlášť.",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "ws10-h20",
+      "manufacturer": "DOKA",
+      "system_name": "WS10 + H20",
+      "variant": "mostovka 109×14,35 m",
+      "label_cs": "WS10 + H20 (mostovka)",
+      "category": "slab",
+      "subcategory": "bridge_deck",
+      "rental_czk_m2_month": 288.00,
+      "price_variance_pct": 8,
+      "assembly_h_m2": 0.90,
+      "disassembly_h_m2": 0.35,
+      "max_support_height_m": null,
+      "typical_applications": [
+        "Mostovky dálničních mostů",
+        "Velká světlá pole přes 20 m",
+        "Bednění mostů na skružích"
+      ],
+      "description_cs": "Vrchní konstrukce pro bednění mostovek. Ocelové nosníky WS10 jako primární nosníky, dřevěné nosníky H20 jako sekundární nosníky. Celek slouží jako podkladní vrstva pro bednicí desku mostovky.",
+      "form_types": ["mostovkové", "vodorovné"],
+      "notes": "Cena za sadu 109×14,35 m. Bednící deska není součástí nájmu.",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "staxo100",
+      "manufacturer": "DOKA",
+      "system_name": "Staxo 100",
+      "variant": "podpěrná konstrukce",
+      "label_cs": "Staxo 100 (podpěrná kce)",
+      "category": "support",
+      "subcategory": "heavy_shoring",
+      "rental_czk_m2_month": 112.00,
+      "price_variance_pct": 10,
+      "assembly_h_m2": 0.85,
+      "disassembly_h_m2": 0.32,
+      "max_support_height_m": 20.0,
+      "typical_applications": [
+        "Podpěrná konstrukce pro těžká stropní bednění",
+        "Opěry při betonáži masivních desek",
+        "Podpěry mostovek do výšky 20 m"
+      ],
+      "description_cs": "Podpěrná věžová soustava Staxo 100. Nosnost do 1000 kN na stojku. Používá se jako podpěrná vrstva při stropním bednění těžkých mostních desek.",
+      "form_types": ["věžová podpěrná"],
+      "notes": "Cena pouze za podpěrnou část. Vrchní kce (nosníky, bednění) se pronajímá zvlášť.",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "rimsove",
+      "manufacturer": "DOKA",
+      "system_name": "Římsové bednění T",
+      "variant": "",
+      "label_cs": "Římsové bednění T",
+      "category": "special",
+      "subcategory": "parapet_formwork",
+      "rental_czk_m2_month": 33.60,
+      "price_variance_pct": 10,
+      "assembly_h_m2": 1.10,
+      "disassembly_h_m2": 0.45,
+      "max_wall_height_m": null,
+      "typical_applications": [
+        "Mostní římsové chodníky",
+        "Konzolové chodníky na mostech",
+        "Římsové pasy vozovkových mostů"
+      ],
+      "description_cs": "Konzolové římsové bednění pro mostní římsové pasy. Systém T-profilu se zajišťuje do předem vložených trubek v hlavní nosné konstrukci mostu. Demontáž po zatvrdnutí betonu bez přístupu jeřábu.",
+      "form_types": ["konzolové římsové"],
+      "notes": "Nízká cena nájmu, ale vysoká pracnost montáže/demontáže. Nelze použít pro římsové pasy šířky > 1,2 m bez speciálního příslušenství.",
+      "source": "DOKA cenník průměrných orientačních cen"
+    },
+    {
+      "id": "trio-2.7",
+      "manufacturer": "PERI",
+      "system_name": "TRIO",
+      "variant": "h=2,70 m",
+      "label_cs": "TRIO (PERI) h=2,70 m",
+      "category": "wall",
+      "subcategory": "frame_formwork",
+      "rental_czk_m2_month": 480.00,
+      "price_variance_pct": 8,
+      "assembly_h_m2": 0.50,
+      "disassembly_h_m2": 0.18,
+      "max_wall_height_m": 2.7,
+      "typical_applications": [
+        "Stěny budov a mostní pilíře h=2,7 m",
+        "Náhrada za Framax pro PERI dodavatele",
+        "Opakovaná betonáž stěn"
+      ],
+      "description_cs": "Rámové bednění PERI TRIO, výška 2,70 m. Alternativa k DOKA Framax pro dodavatele bednění PERI. Kompatibilní s ostatními systémy PERI (Skydeck, Gridflex).",
+      "form_types": ["oboustranné", "jednostranné"],
+      "notes": "Cena orientační — závisí na konkrétní smlouvě s PERI.",
+      "source": "PERI průmyslové normy + tržní průzkum 2024"
+    },
+    {
+      "id": "sl1-4.5",
+      "manufacturer": "DOKA",
+      "system_name": "SL-1 Sloupové",
+      "variant": "h=4,50 m",
+      "label_cs": "SL-1 Sloupové h=4,50 m",
+      "category": "wall",
+      "subcategory": "column_formwork",
+      "rental_czk_m2_month": 580.00,
+      "price_variance_pct": 10,
+      "assembly_h_m2": 0.80,
+      "disassembly_h_m2": 0.30,
+      "max_wall_height_m": 4.5,
+      "typical_applications": [
+        "Mostní pilíře průřezu sloup",
+        "Kruhové a čtvercové sloupy",
+        "Pilíře dálničních nadjezdů"
+      ],
+      "description_cs": "Sloupové bednění DOKA pro čtvercové a obdélníkové průřezy. Výška sady 4,50 m. Snadné nastavení šířky a délky panelu. Používá se bez jeřábu do 3 m, s jeřábem pro vyšší výšky.",
+      "form_types": ["sloupové obdélníkové", "sloupové čtvercové"],
+      "notes": "Pro pilíře h > 4,5 m se skládá více sad na výšku.",
+      "source": "DOKA produktový katalog + tržní průzkum 2024"
+    },
+    {
+      "id": "tradicni",
+      "manufacturer": "Tesařská",
+      "system_name": "Tradiční tesařské bednění",
+      "variant": "libovolná výška",
+      "label_cs": "Tradiční tesařské",
+      "category": "wall",
+      "subcategory": "timber_formwork",
+      "rental_czk_m2_month": 0.0,
+      "material_czk_m2": 350.0,
+      "price_variance_pct": 20,
+      "assembly_h_m2": 1.30,
+      "disassembly_h_m2": 0.65,
+      "max_wall_height_m": null,
+      "typical_applications": [
+        "Atypické tvary a malé plochy",
+        "Základy pro malé stavby",
+        "Opravy a doplňkové práce"
+      ],
+      "description_cs": "Jednorázové tesařské bednění z řeziva. Bez pronájmu — materiál se nakupuje nebo recykluje. Vysoká pracnost montáže, vhodné pouze pro malé nebo atypické plochy kde systémové bednění nevychází.",
+      "form_types": ["libovolné"],
+      "notes": "rental_czk_m2_month = 0 (žádný pronájem). Počítejte s náklady na řezivo cca 350 Kč/m².",
+      "source": "Průmyslové normy ČR"
+    }
+  ],
+  "assembly_norms_note": {
+    "description": "Pracovní normy montáže bednění (Nh/m²) z KROS normatívov a průmyslových standardů",
+    "frami_wall_basic": 0.72,
+    "framax_wall_basic": 0.55,
+    "top50_slab": 0.60,
+    "staxo_shoring": 0.85,
+    "rimsove": 1.10,
+    "traditional_timber": 1.30,
+    "disassembly_ratio_avg": 0.35,
+    "unit": "Nh/m²"
+  },
+  "key_formulas": {
+    "mesicni_najem_sada": "sada_m2 × mesicni_najem_jednotka [Kč/m²/měsíc]",
+    "konecny_najem": "mesicni_najem_sada × (celkova_doba_dni / 30) × pocet_sad",
+    "doba_bedneni": "(pocet_taktu / pocet_sad) × dni_na_takt",
+    "celkova_doba": "doba_bedneni + celkem_beton_dni",
+    "labor_cost": "assembly_h_m2 × celkem_m2 × hourly_rate_czk"
+  },
+  "typical_cycle_times": {
+    "frami_basic": {
+      "assembly_days": 3,
+      "concrete_cure_days": 5,
+      "disassembly_days": 1,
+      "total_days": 9,
+      "note": "Pro 1 takt základové stěny délky 20 m, h=1,5 m, 2 pracovníci"
+    },
+    "framax_pillar": {
+      "assembly_days": 2,
+      "concrete_cure_days": 5,
+      "disassembly_days": 1,
+      "total_days": 8,
+      "note": "Pro mostní pilíř h=2,7 m, s jeřábem, 4 pracovníci"
+    }
+  }
+}

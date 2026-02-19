@@ -155,6 +155,36 @@ export interface UnifiedPosition {
 // TOV (ВЕДОМОСТЬ РЕСУРСОВ)
 // ============================================================================
 
+/**
+ * FormworkRentalRow — one construction element in the formwork rental table
+ * Matches the user's spreadsheet structure exactly:
+ * Konstrukce | m2 | Sada | taktů | sad | dní/takt | Doba bednění | beton/takt | Celkem beton | Celková | Měsíční/sada | Konečný nájem | Systém | Výška | Kč/m2
+ */
+export interface FormworkRentalRow {
+  id: string;
+  construction_name: string;       // Konstrukce (e.g. "SO202 Základ OP")
+  celkem_m2: number;               // Celkem [m2] — total formwork area
+  sada_m2: number;                 // Sada [m2] — one set area
+  pocet_taktu: number;             // Množství taktů [kus]
+  pocet_sad: number;               // Množství sad [kus] — usually 1 or 2
+  dni_na_takt: number;             // počet dní na takt (zřízení+odstranění)
+  dni_beton_takt: number;          // Doba beton+výztuž+zrání na 1 takt [den]
+  // Computed (stored for display):
+  doba_bedneni: number;            // = (takty/sady) × dní_na_takt
+  celkem_beton: number;            // = (takty/sady) × dní_beton_takt
+  celkova_doba: number;            // = doba_bedneni + celkem_beton
+  // Formwork system:
+  bednici_system: string;          // Bednící systém (Frami Xlife, Framax...)
+  rozmery: string;                 // Rozměry / Výška bednění (h= 0,9 m)
+  mesicni_najem_jednotka: number;  // Měsíční nájem [Kč/m²]
+  // Computed:
+  mesicni_najem_sada: number;      // = sada_m2 × mesicni_najem_jednotka
+  konecny_najem: number;           // = mesicni_najem_sada × (celkova_doba/30) × pocet_sad
+  // KROS:
+  kros_kod?: string;
+  kros_popis?: string;             // Auto-generated description
+}
+
 export interface TOVData {
   // === ТРУДОВЫЕ РЕСУРСЫ ===
   labor: LaborResource[];
@@ -182,6 +212,9 @@ export interface TOVData {
     /** Количество наименований */
     itemCount: number;
   };
+
+  // === NÁJEM BEDNĚNÍ (only for BEDNENI positions) ===
+  formworkRental?: FormworkRentalRow[];
 }
 
 export interface LaborResource {
