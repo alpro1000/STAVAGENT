@@ -18,7 +18,6 @@
  *   konecny_najem  = mesicni_sada × (celkova_doba / 30) × pocet_sad
  */
 
-import { useState } from 'react';
 import { Plus, Trash2, ArrowDownToLine } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import type { FormworkRentalRow } from '../../types/unified';
@@ -120,8 +119,6 @@ export function FormworkRentalSection({
   itemMnozstvi,
   onAddToMaterials,
 }: FormworkRentalSectionProps) {
-  const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
-
   const addRow = () => {
     const name = rows.length === 0 ? (itemPopis ?? '') : '';
     const area = rows.length === 0 ? (itemMnozstvi ?? 0) : 0;
