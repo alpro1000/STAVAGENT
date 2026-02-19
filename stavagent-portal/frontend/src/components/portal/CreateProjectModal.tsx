@@ -13,6 +13,7 @@ interface CreateProjectModalProps {
     project_name: string;
     project_type: string;
     description?: string;
+    stavba_name?: string;
   }) => Promise<void>;
 }
 
@@ -20,7 +21,8 @@ export default function CreateProjectModal({ onClose, onCreate }: CreateProjectM
   const [formData, setFormData] = useState({
     project_name: '',
     project_type: 'custom',
-    description: ''
+    description: '',
+    stavba_name: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -47,7 +49,8 @@ export default function CreateProjectModal({ onClose, onCreate }: CreateProjectM
       await onCreate({
         project_name: formData.project_name.trim(),
         project_type: formData.project_type,
-        description: formData.description.trim() || undefined
+        description: formData.description.trim() || undefined,
+        stavba_name: formData.stavba_name.trim() || undefined,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create project');
@@ -88,6 +91,25 @@ export default function CreateProjectModal({ onClose, onCreate }: CreateProjectM
               disabled={loading}
               required
             />
+          </div>
+
+          {/* Stavba Name (optional grouping) */}
+          <div>
+            <label htmlFor="stavba_name" className="block text-sm font-medium text-gray-700">
+              Stavba <span className="text-gray-400 font-normal">(volitelné, pro seskupení objektů)</span>
+            </label>
+            <input
+              type="text"
+              id="stavba_name"
+              value={formData.stavba_name}
+              onChange={(e) => setFormData({ ...formData, stavba_name: e.target.value })}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholder="např. D35 Dálniční přivaděč, nebo Jižní obchvat Brna"
+              disabled={loading}
+            />
+            <p className="mt-1 text-xs text-gray-400">
+              Objekty se stejnou stavbou budou zobrazeny ve skupině
+            </p>
           </div>
 
           {/* Project Type */}
