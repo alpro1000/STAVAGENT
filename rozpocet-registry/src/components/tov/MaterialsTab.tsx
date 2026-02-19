@@ -7,13 +7,19 @@
 
 import { useState } from 'react';
 import { Plus, Trash2, ExternalLink } from 'lucide-react';
-import type { MaterialResource } from '../../types/unified';
+import type { MaterialResource, FormworkRentalRow } from '../../types/unified';
 import { v4 as uuidv4 } from 'uuid';
+import { FormworkRentalSection } from './FormworkRentalSection';
 
 interface MaterialsTabProps {
   resources: MaterialResource[];
   onChange: (resources: MaterialResource[]) => void;
   itemQuantity: number | null;
+  /** Item skupina — shows FormworkRentalSection only for BEDNENI */
+  itemSkupina?: string | null;
+  itemPopis?: string;
+  formworkRental?: FormworkRentalRow[];
+  onFormworkRentalChange?: (rows: FormworkRentalRow[]) => void;
 }
 
 const COMMON_MATERIALS = [
@@ -27,7 +33,16 @@ const COMMON_MATERIALS = [
   { name: 'Těsnící pás', unit: 'm', price: 120 },
 ];
 
-export function MaterialsTab({ resources, onChange, itemQuantity }: MaterialsTabProps) {
+export function MaterialsTab({
+  resources,
+  onChange,
+  itemQuantity,
+  itemSkupina,
+  itemPopis,
+  formworkRental = [],
+  onFormworkRentalChange,
+}: MaterialsTabProps) {
+  const isBedneni = itemSkupina === 'BEDNENI';
   const [showAddForm, setShowAddForm] = useState(false);
   const [newMaterial, setNewMaterial] = useState({ name: '', unit: '', price: 0 });
 
@@ -237,6 +252,17 @@ export function MaterialsTab({ resources, onChange, itemQuantity }: MaterialsTab
         <div className="text-xs text-text-muted mt-2">
           Položka: {itemQuantity} jednotek. Náklady materiálů na jednotku: {totalCost > 0 ? (totalCost / itemQuantity).toFixed(2) : '-'} Kč
         </div>
+      )}
+
+      {/* Formwork rental table — only for BEDNENI positions */}
+      {isBedneni && onFormworkRentalChange && (
+        <FormworkRentalSection
+          rows={formworkRental}
+          onChange={onFormworkRentalChange}
+          itemPopis={itemPopis}
+          itemMnozstvi={itemQuantity}
+          onAddToMaterials={(res) => onChange([...resources, res])}
+        />
       )}
     </div>
   );

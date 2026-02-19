@@ -12,7 +12,7 @@ import { AIPanel } from './components/ai/AIPanel';
 import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { PortalLinkBadge } from './components/portal/PortalLinkBadge';
-import FormworkRentalCalculator from './components/tov/FormworkRentalCalculator';
+// FormworkRentalCalculator removed from header — now integrated into TOV/Materiály tab
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
@@ -22,7 +22,6 @@ import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isPriceRequestOpen, setIsPriceRequestOpen] = useState(false);
-  const [isFormworkCalcOpen, setIsFormworkCalcOpen] = useState(false);
   const {
     projects,
     selectedProjectId,
@@ -33,6 +32,7 @@ function App() {
     addProject,
     getSheet,
     linkToPortal,
+    tovData,
   } = useRegistryStore();
 
   // Search state
@@ -439,6 +439,37 @@ function App() {
     });
   };
 
+  const handleExportSheetWithTOV = () => {
+    if (!selectedProject || !selectedSheet) return;
+    setIsExportMenuOpen(false);
+    const sheetAsProject = {
+      ...selectedProject,
+      items: selectedSheet.items,
+      stats: selectedSheet.stats,
+      metadata: selectedSheet.metadata,
+      config: selectedSheet.config,
+    };
+    exportAndDownload(sheetAsProject, {
+      includeMetadata: true,
+      includeSummary: true,
+      groupBySkupina: true,
+      addHyperlinks: true,
+      includeTOV: true,
+      tovDataMap: tovData,
+    });
+  };
+
+  const handleExportProjectWithTOV = () => {
+    if (!selectedProject) return;
+    setIsExportMenuOpen(false);
+    exportFullProjectAndDownload(selectedProject, {
+      groupBySkupina: true,
+      addHyperlinks: true,
+      includeTOV: true,
+      tovDataMap: tovData,
+    });
+  };
+
   // Check if original file is available when project changes
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const checkOriginalFile = async () => {
@@ -490,14 +521,7 @@ function App() {
             <div className="flex items-center gap-4">
               {projects.length > 0 && (
                 <>
-                  <button
-                    onClick={() => setIsFormworkCalcOpen(true)}
-                    className="btn btn-secondary text-sm flex items-center gap-2"
-                    title="Kalkulátor nájmu bednění"
-                  >
-                    🏗️ Nájem bednění
-                  </button>
-                  <button
+<button
                     onClick={() => setIsPriceRequestOpen(true)}
                     className="btn btn-secondary text-sm flex items-center gap-2"
                     title="Vytvořit poptávku cen pro dodavatele"
@@ -539,6 +563,28 @@ function App() {
                       >
                         <Download size={14} />
                         Export projekt
+                        <span className="text-xs text-text-muted ml-auto">({selectedProject.sheets.length} {selectedProject.sheets.length === 1 ? 'list' : 'listy'})</span>
+                      </button>
+                      <div className="border-t border-divider" />
+                      <button
+                        onMouseDown={(e) => { e.preventDefault(); handleExportSheetWithTOV(); }}
+                        disabled={!selectedSheet}
+                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+                        title="Export listu s rozpisem TOV (práce, materiál, mechanizace, bednění)"
+                      >
+                        <FileSpreadsheet size={14} />
+                        Export list + TOV rozpis
+                        {selectedSheet && (
+                          <span className="text-xs text-text-muted ml-auto">({selectedSheet.name})</span>
+                        )}
+                      </button>
+                      <button
+                        onMouseDown={(e) => { e.preventDefault(); handleExportProjectWithTOV(); }}
+                        className="w-full text-left px-4 py-2.5 text-sm hover:bg-bg-secondary transition-colors flex items-center gap-2"
+                        title="Export celého projektu s rozpisem TOV (práce, materiál, mechanizace, bednění)"
+                      >
+                        <Download size={14} />
+                        Export projekt + TOV rozpis
                         <span className="text-xs text-text-muted ml-auto">({selectedProject.sheets.length} {selectedProject.sheets.length === 1 ? 'list' : 'listy'})</span>
                       </button>
                       <div className="border-t border-divider" />
@@ -961,14 +1007,6 @@ function App() {
         onClose={() => setIsPriceRequestOpen(false)}
       />
 
-      {/* Formwork Rental Calculator */}
-      <FormworkRentalCalculator
-        isOpen={isFormworkCalcOpen}
-        onClose={() => setIsFormworkCalcOpen(false)}
-        onAddToRegistry={(calculation) => {
-          alert(`Nájem bednění: ${calculation.total_rental_czk} Kč\n\nPřidejte ručně do Registry TOV:\n- Plocha: ${calculation.area_m2} m²\n- Systém: ${calculation.system}\n- Dny: ${calculation.rental_days}\n- Cena: ${calculation.unit_price_czk_m2_day} Kč/m²/den`);
-        }}
-      />
     </div>
   );
 }

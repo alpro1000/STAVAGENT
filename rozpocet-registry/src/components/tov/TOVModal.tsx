@@ -15,7 +15,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { X, Users, Truck, Package, Calculator, ExternalLink, Check, ArrowRight } from 'lucide-react';
 import type { ParsedItem } from '../../types';
-import type { TOVData, LaborResource, MachineryResource, MaterialResource } from '../../types/unified';
+import type { TOVData, LaborResource, MachineryResource, MaterialResource, FormworkRentalRow } from '../../types/unified';
 import { LaborTab } from './LaborTab';
 import { MachineryTab } from './MachineryTab';
 import { MaterialsTab } from './MaterialsTab';
@@ -52,12 +52,13 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
     setPriceApplied(false);
   }, [tovData, item.id]);
 
-  // Calculate total cost from all resources
+  // Calculate total cost from all resources (including formwork rental)
   const calculatedTotals = useMemo(() => {
     const laborCost = localData.labor.reduce((sum, r) => sum + (r.totalCost || 0), 0);
     const machineryCost = localData.machinery.reduce((sum, r) => sum + (r.totalCost || 0), 0);
     const materialsCost = localData.materials.reduce((sum, r) => sum + (r.totalCost || 0), 0);
-    const totalCost = laborCost + machineryCost + materialsCost;
+    const formworkCost = (localData.formworkRental ?? []).reduce((sum, r) => sum + r.konecny_najem, 0);
+    const totalCost = laborCost + machineryCost + materialsCost + formworkCost;
     const quantity = item.mnozstvi || 1;
     const unitPrice = quantity > 0 ? totalCost / quantity : totalCost;
 
@@ -119,6 +120,10 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
       materials,
       materialsSummary: { totalCost, itemCount },
     }));
+  };
+
+  const handleFormworkRentalChange = (formworkRental: FormworkRentalRow[]) => {
+    setLocalData(prev => ({ ...prev, formworkRental }));
   };
 
   const handleSave = () => {
@@ -230,6 +235,10 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               resources={localData.materials}
               onChange={handleMaterialsChange}
               itemQuantity={item.mnozstvi}
+              itemSkupina={item.skupina}
+              itemPopis={item.popis}
+              formworkRental={localData.formworkRental ?? []}
+              onFormworkRentalChange={handleFormworkRentalChange}
             />
           )}
         </div>
@@ -285,7 +294,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               </div>
 
               {/* Price breakdown */}
-              <div className="flex gap-4 mt-2 text-xs text-text-muted">
+              <div className="flex flex-wrap gap-4 mt-2 text-xs text-text-muted">
                 {calculatedTotals.laborCost > 0 && (
                   <span>Práce: {calculatedTotals.laborCost.toLocaleString('cs-CZ')} Kč</span>
                 )}
@@ -294,6 +303,11 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
                 )}
                 {calculatedTotals.materialsCost > 0 && (
                   <span>Materiály: {calculatedTotals.materialsCost.toLocaleString('cs-CZ')} Kč</span>
+                )}
+                {(localData.formworkRental?.length ?? 0) > 0 && (
+                  <span className="text-blue-600">
+                    Nájem bednění: {(localData.formworkRental ?? []).reduce((s, r) => s + r.konecny_najem, 0).toLocaleString('cs-CZ')} Kč
+                  </span>
                 )}
               </div>
             </div>

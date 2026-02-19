@@ -13,3 +13,4 @@ export { LaborTab } from './LaborTab';
 export { MachineryTab } from './MachineryTab';
 export { MaterialsTab } from './MaterialsTab';
 export { TOVSummary } from './TOVSummary';
+export { FormworkRentalSection, generateKrosPopis } from './FormworkRentalSection';

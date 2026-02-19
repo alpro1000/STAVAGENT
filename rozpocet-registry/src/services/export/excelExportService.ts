@@ -13,6 +13,8 @@ import type { ProjectMetadata } from '../../types/project';
 import type { ImportConfig } from '../../types/config';
 import type { ParsedItem } from '../../types/item';
 import type { Project } from '../../types/project';
+import type { TOVData } from '../../types/unified';
+import { generateKrosPopis } from '../../components/tov/FormworkRentalSection';
 import { getOriginalFile } from '../originalFileStore';
 
 /**
@@ -39,6 +41,9 @@ export interface ExportOptions {
   includeSummary?: boolean;     // Include summary statistics
   groupBySkupina?: boolean;     // Group items by work group
   addHyperlinks?: boolean;      // Add hyperlinks to items (default true)
+  // TOV breakdown export
+  includeTOV?: boolean;         // Add TOV sub-rows (labor/materials/machinery) under each item
+  tovDataMap?: Record<string, TOVData>; // Map of itemId → TOVData (from store)
 }
 
 /* ============================================
@@ -88,6 +93,28 @@ const SECTION_STYLE: XLSX.CellStyle = {
 // Numeric cell alignment
 const NUM_ALIGN: XLSX.CellStyle['alignment'] = { horizontal: 'right', vertical: 'center' };
 
+// TOV sub-row styles (collapsible subordinate rows)
+const TOV_LABOR_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'FEF9C3' } },  // yellow-100
+  font: { name: 'Calibri', sz: 9, color: { rgb: '713F12' }, italic: true },
+  border: { bottom: { style: 'thin', color: { rgb: 'FDE68A' } } },
+};
+const TOV_MATERIAL_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'F0FDF4' } },  // green-50
+  font: { name: 'Calibri', sz: 9, color: { rgb: '14532D' }, italic: true },
+  border: { bottom: { style: 'thin', color: { rgb: 'BBF7D0' } } },
+};
+const TOV_MACHINERY_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'EFF6FF' } },  // blue-50
+  font: { name: 'Calibri', sz: 9, color: { rgb: '1E3A5F' }, italic: true },
+  border: { bottom: { style: 'thin', color: { rgb: 'BFDBFE' } } },
+};
+const TOV_FORMWORK_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'EDE9FE' } },  // violet-100
+  font: { name: 'Calibri', sz: 9, color: { rgb: '3B0764' }, italic: true },
+  border: { bottom: { style: 'thin', color: { rgb: 'DDD6FE' } } },
+};
+
 /* ============================================
    SINGLE SHEET EXPORT (existing behavior, now with styling)
    ============================================ */
@@ -104,12 +131,14 @@ export function exportProjectToExcel(
     includeSummary = true,
     groupBySkupina = true,
     addHyperlinks = true,
+    includeTOV = false,
+    tovDataMap = {},
   } = options;
 
   const workbook = XLSX.utils.book_new();
 
   // Add items sheet
-  const itemsSheet = createStyledItemsSheet(project.items, project.id, groupBySkupina, addHyperlinks);
+  const itemsSheet = createStyledItemsSheet(project.items, project.id, groupBySkupina, addHyperlinks, includeTOV, tovDataMap);
   XLSX.utils.book_append_sheet(workbook, itemsSheet, 'Položky');
 
   // Add summary sheet
@@ -142,6 +171,8 @@ export function exportFullProjectToExcel(
   const {
     groupBySkupina = true,
     addHyperlinks = true,
+    includeTOV = false,
+    tovDataMap = {},
   } = options;
 
   const workbook = XLSX.utils.book_new();
@@ -149,7 +180,7 @@ export function exportFullProjectToExcel(
   for (const sheet of project.sheets) {
     // Sanitize sheet name for Excel (max 31 chars, no special chars)
     const sheetName = sanitizeSheetName(sheet.name, workbook);
-    const ws = createStyledItemsSheet(sheet.items, project.id, groupBySkupina, addHyperlinks);
+    const ws = createStyledItemsSheet(sheet.items, project.id, groupBySkupina, addHyperlinks, includeTOV, tovDataMap);
     XLSX.utils.book_append_sheet(workbook, ws, sheetName);
   }
 
@@ -197,7 +228,9 @@ function createStyledItemsSheet(
   items: ParsedItem[],
   projectId: string,
   _groupBySkupina: boolean, // DEPRECATED: always keep original order now
-  addHyperlinks: boolean
+  addHyperlinks: boolean,
+  includeTOV = false,
+  tovDataMap: Record<string, TOVData> = {}
 ): XLSX.WorkSheet {
   // Sort by source.rowStart to preserve EXACT original file order
   // (boqLineNumber is only assigned to main items, not subordinates)
@@ -287,6 +320,40 @@ function createStyledItemsSheet(
       rowTypes.push('code'); // main = code style
       outlineLevels.push(1); // main rows = outline level 1
     }
+
+    // TOV breakdown: add sub-rows for labor, materials, machinery, formwork rental
+    if (includeTOV && !isSubordinate && !isSection) {
+      const tov = tovDataMap[item.id];
+      if (tov) {
+        // Labor rows (yellow)
+        for (const r of (tov.labor ?? [])) {
+          const cost = r.totalCost ?? (r.normHours * (r.hourlyRate ?? 0));
+          data.push(['', '', `  👷 ${r.profession} — ${r.count} prac × ${r.hours}h = ${r.normHours.toFixed(1)} Nh`, '', r.normHours, r.hourlyRate ?? '', cost || '', 'TOV:Práce']);
+          rowTypes.push('tov_labor');
+          outlineLevels.push(3);
+        }
+        // Machinery rows (blue)
+        for (const r of (tov.machinery ?? [])) {
+          const cost = r.totalCost ?? (r.machineHours * (r.hourlyRate ?? 0));
+          data.push(['', '', `  🏗️ ${r.type} — ${r.count} ks × ${r.hours}h = ${r.machineHours.toFixed(1)} Mh`, '', r.machineHours, r.hourlyRate ?? '', cost || '', 'TOV:Mechanizace']);
+          rowTypes.push('tov_machinery');
+          outlineLevels.push(3);
+        }
+        // Material rows (green)
+        for (const r of (tov.materials ?? [])) {
+          data.push(['', r.code ?? '', `  📦 ${r.name}`, r.unit, r.quantity, r.unitPrice ?? '', r.totalCost ?? '', 'TOV:Materiál']);
+          rowTypes.push('tov_material');
+          outlineLevels.push(3);
+        }
+        // Formwork rental rows (violet)
+        for (const r of (tov.formworkRental ?? [])) {
+          const popis = r.kros_popis || generateKrosPopis(r);
+          data.push([r.kros_kod ?? '', '', `  🏛️ ${popis}`, 'kpl', 1, r.konecny_najem, r.konecny_najem, 'TOV:Bednění']);
+          rowTypes.push('tov_formwork');
+          outlineLevels.push(3);
+        }
+      }
+    }
   }
 
   // Create worksheet from data
@@ -349,7 +416,7 @@ function createStyledItemsSheet(
       const cell = ws[cellRef];
       if (!cell) continue;
 
-      // Base style based on row type: 'header' | 'code' | 'desc' | 'section'
+      // Base style based on row type: 'header' | 'code' | 'desc' | 'section' | 'tov_*'
       let style: XLSX.CellStyle;
       switch (rowType) {
         case 'header':
@@ -360,6 +427,18 @@ function createStyledItemsSheet(
           break;
         case 'code':
           style = { ...CODE_ROW_STYLE };
+          break;
+        case 'tov_labor':
+          style = { ...TOV_LABOR_STYLE };
+          break;
+        case 'tov_material':
+          style = { ...TOV_MATERIAL_STYLE };
+          break;
+        case 'tov_machinery':
+          style = { ...TOV_MACHINERY_STYLE };
+          break;
+        case 'tov_formwork':
+          style = { ...TOV_FORMWORK_STYLE };
           break;
         case 'desc':
         default:
