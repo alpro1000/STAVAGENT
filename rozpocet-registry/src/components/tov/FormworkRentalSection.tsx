@@ -23,8 +23,9 @@ import { Plus, Trash2, ArrowDownToLine } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import type { FormworkRentalRow } from '../../types/unified';
 import type { MaterialResource } from '../../types/unified';
+import formworkKnowledge from '../../data/formwork_knowledge.json';
 
-// ─── Knowledge base: formwork systems (real DOKA prices from cenník) ─────────
+// ─── Knowledge base: formwork systems (loaded from formwork_knowledge.json) ──
 
 interface BedniSystem {
   id: string;
@@ -34,21 +35,16 @@ interface BedniSystem {
   jednotka: number;      // Kč/m²/měsíc
 }
 
+// Derive dropdown options from JSON knowledge base (single source of truth)
 const BEDNI_SYSTEMS: BedniSystem[] = [
-  { id: 'frami-0.9',        label: 'Frami Xlife h=0,9 m',          system: 'Frami Xlife',          rozmery: 'h= 0,9 m',       jednotka: 507.20 },
-  { id: 'frami-1.5',        label: 'Frami Xlife h=1,50 m',         system: 'Frami Xlife',          rozmery: 'h= 1,50 m',      jednotka: 454.40 },
-  { id: 'frami-1.8',        label: 'Frami Xlife h=1,80 m',         system: 'Frami Xlife',          rozmery: 'h= 1,80 m',      jednotka: 523.20 },
-  { id: 'framax-2.7',       label: 'Framax Xlife h=2,70 m',        system: 'Framax Xlife',         rozmery: 'h= 2,70 m',      jednotka: 520.00 },
-  { id: 'framax-4.65',      label: 'Framax Xlife h=4,65 m',        system: 'Framax Xlife',         rozmery: 'h= 4,65m',       jednotka: 552.00 },
-  { id: 'top50-1.4',        label: 'Top 50 + ramenáty h=1,4 m',    system: 'Top 50 + ramenáty',    rozmery: 'h= 1,4m',        jednotka: 576.00 },
-  { id: 'staxo-top50-4.5',  label: 'Staxo 100 + Top 50 h=4,50 m', system: 'Staxo 100 + Top 50',   rozmery: 'h = 4,50m',      jednotka:  70.40 },
-  { id: 'ws10-h20',         label: 'WS10 + H20 (mostovka)',        system: 'WS10 + H20',           rozmery: '109 x 14,35m',   jednotka: 288.00 },
-  { id: 'staxo100',         label: 'Staxo 100 (podpěrná kce)',     system: 'Staxo 100',            rozmery: '',               jednotka: 112.00 },
-  { id: 'rimsove',          label: 'Římsové bednění T',            system: 'Římsové bednění T',    rozmery: '',               jednotka:  33.60 },
-  { id: 'trio-2.7',         label: 'TRIO (PERI) h=2,70 m',         system: 'TRIO (PERI)',          rozmery: 'h= 2,70 m',      jednotka: 480.00 },
-  { id: 'sl1-4.5',          label: 'SL-1 Sloupové h=4,50 m',       system: 'SL-1 Sloupové',        rozmery: 'h= 4,50 m',      jednotka: 580.00 },
-  { id: 'tradicni',         label: 'Tradiční tesařské',             system: 'Tradiční tesařské',    rozmery: 'libovolná',      jednotka:   0.00 },
-  { id: 'custom',           label: '— Vlastní systém —',           system: '',                     rozmery: '',               jednotka:   0.00 },
+  ...formworkKnowledge.systems.map(s => ({
+    id: s.id,
+    label: s.label_cs,
+    system: s.system_name,
+    rozmery: s.variant,
+    jednotka: s.rental_czk_m2_month,
+  })),
+  { id: 'custom', label: '— Vlastní systém —', system: '', rozmery: '', jednotka: 0.00 },
 ];
 
 // ─── Computation helpers ───────────────────────────────────────────────────
