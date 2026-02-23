@@ -12,7 +12,7 @@
  * @see docs/UNIFICATION_PLAN.md - Phase 3
  */
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { X, Users, Truck, Package, Calculator, ExternalLink, Check, ArrowRight } from 'lucide-react';
 import type { ParsedItem } from '../../types';
 import type { TOVData, LaborResource, MachineryResource, MaterialResource, FormworkRentalRow } from '../../types/unified';
@@ -46,16 +46,21 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
   const [activeTab, setActiveTab] = useState<TabType>('labor');
   const [localData, setLocalData] = useState<TOVData>(tovData || emptyTOV);
   const [priceApplied, setPriceApplied] = useState(false);
+  // Tracks when we triggered a store update ourselves so the resulting
+  // tovData prop change doesn't reset localData back from the store.
+  const isAutoSaving = useRef(false);
 
-  // Sync local state when a different item is opened.
-  // NOTE: tovData intentionally excluded — auto-save updates the store while
-  // the modal is open, and re-syncing from the prop would reset priceApplied
-  // and cause a render loop (auto-save → prop changes → effect → setLocalData).
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Sync local state when external props change (new item opened, or
+  // external update to this item's data). Skips the cycle caused by
+  // our own auto-save in handleFormworkRentalChange.
   useEffect(() => {
+    if (isAutoSaving.current) {
+      isAutoSaving.current = false;
+      return;
+    }
     setLocalData(tovData || emptyTOV);
     setPriceApplied(false);
-  }, [item.id]);
+  }, [tovData, item.id]);
 
   // Calculate total cost from all resources (including formwork rental)
   const calculatedTotals = useMemo(() => {
@@ -129,10 +134,14 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
 
   // Auto-persist formwork rental rows on every change so they survive
   // closing the modal via X / ESC / "Zavřít" without clicking "Uložit TOV".
+  // Uses functional update to always merge with the latest state (no stale closure).
   const handleFormworkRentalChange = (formworkRental: FormworkRentalRow[]) => {
-    const updatedData = { ...localData, formworkRental };
-    setLocalData(updatedData);
-    onSave(updatedData); // auto-save to store immediately
+    setLocalData(prev => {
+      const updatedData = { ...prev, formworkRental };
+      isAutoSaving.current = true;
+      onSave(updatedData);
+      return updatedData;
+    });
   };
 
   const handleSave = () => {
