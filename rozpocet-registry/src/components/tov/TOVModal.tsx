@@ -39,6 +39,7 @@ const emptyTOV: TOVData = {
   machinerySummary: { totalMachineHours: 0, totalUnits: 0 },
   materials: [],
   materialsSummary: { totalCost: 0, itemCount: 0 },
+  formworkRental: [],
 };
 
 export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice }: TOVModalProps) {
@@ -46,11 +47,15 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
   const [localData, setLocalData] = useState<TOVData>(tovData || emptyTOV);
   const [priceApplied, setPriceApplied] = useState(false);
 
-  // Sync local state when props change
+  // Sync local state when a different item is opened.
+  // NOTE: tovData intentionally excluded — auto-save updates the store while
+  // the modal is open, and re-syncing from the prop would reset priceApplied
+  // and cause a render loop (auto-save → prop changes → effect → setLocalData).
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     setLocalData(tovData || emptyTOV);
     setPriceApplied(false);
-  }, [tovData, item.id]);
+  }, [item.id]);
 
   // Calculate total cost from all resources (including formwork rental)
   const calculatedTotals = useMemo(() => {
@@ -122,8 +127,12 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
     }));
   };
 
+  // Auto-persist formwork rental rows on every change so they survive
+  // closing the modal via X / ESC / "Zavřít" without clicking "Uložit TOV".
   const handleFormworkRentalChange = (formworkRental: FormworkRentalRow[]) => {
-    setLocalData(prev => ({ ...prev, formworkRental }));
+    const updatedData = { ...localData, formworkRental };
+    setLocalData(updatedData);
+    onSave(updatedData); // auto-save to store immediately
   };
 
   const handleSave = () => {
