@@ -16,7 +16,7 @@ const AI_ENABLED = process.env.AI_ENABLED !== 'false'; // Default: true
 
 // ─── Formwork assistant: model config ────────────────────────────────────────
 const GEMINI_API_KEY = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
-const GEMINI_MODEL   = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+const GEMINI_MODEL   = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 const CLAUDE_API_KEY  = process.env.ANTHROPIC_API_KEY;
 const CLAUDE_MODEL    = process.env.CLAUDE_MODEL || 'claude-sonnet-4-6';

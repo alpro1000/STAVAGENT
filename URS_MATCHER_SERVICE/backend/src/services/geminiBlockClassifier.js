@@ -280,7 +280,7 @@ async function callGeminiWithTimeout(prompt, timeoutMs) {
     } else {
       // Last resort: environment variables
       apiKey = process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY;
-      modelName = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+      modelName = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
     }
 
     if (!apiKey) {

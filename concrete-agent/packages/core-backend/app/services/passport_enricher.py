@@ -155,11 +155,11 @@ PŘÍKLADY RIZIK:
 VRAŤ POUZE JSON, žádný další text před ani za."""
 
     # Model configurations
-    GEMINI_MODEL = "gemini-2.0-flash"  # Note: gemini-2.0-flash-exp is deprecated, use stable version
-    CLAUDE_MODEL = "claude-3-5-sonnet-20241022"
-    CLAUDE_HAIKU_MODEL = "claude-3-5-haiku-20241022"
-    OPENAI_MODEL = "gpt-4-turbo-preview"
-    OPENAI_MINI_MODEL = "gpt-4o-mini"
+    GEMINI_MODEL = "gemini-2.5-flash-lite"
+    CLAUDE_MODEL = "claude-sonnet-4-6"
+    CLAUDE_HAIKU_MODEL = "claude-haiku-4-5-20251001"
+    OPENAI_MODEL = "gpt-4.1"
+    OPENAI_MINI_MODEL = "gpt-5-mini"
     PERPLEXITY_MODEL = "llama-3.1-sonar-large-128k-online"
 
     def __init__(self, preferred_model: Optional[str] = None):

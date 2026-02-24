@@ -6,8 +6,8 @@
 import type { GeminiRequest, GeminiResponse, MemoryExample } from './types.js';
 
 const GEMINI_API_KEY = process.env.GOOGLE_API_KEY || process.env.GEMINI_API_KEY;
-// gemini-2.0-flash is stable GA (released Jan 2026). The -exp preview was retired.
-const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+// gemini-2.5-flash-lite (Feb 2026, fast, cheap). gemini-2.0-flash retired.
+const GEMINI_MODEL = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
 const GEMINI_ENDPOINT = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
 /**
