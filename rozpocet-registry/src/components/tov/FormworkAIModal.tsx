@@ -11,8 +11,40 @@
 
 import { useState } from 'react';
 import { Sparkles, Loader2, CheckCircle, AlertTriangle, ChevronRight, RotateCcw } from 'lucide-react';
-import type { FormworkAIRequest, FormworkAIResponse, ElementType, Season, ConcreteClass, Workforce }
-  from '../../../api/formwork-assistant';
+// Types inlined here after formwork-assistant.ts was merged into ai-agent.ts
+// (Vercel Hobby plan: max 12 serverless functions)
+type ElementType    = 'zakl' | 'stena' | 'pilir' | 'strop' | 'mostovka';
+type Season         = 'summer' | 'spring_autumn' | 'winter' | 'frost';
+type ConcreteClass  = 'C25_CEM1' | 'C30_CEM2' | 'C35_mostni' | 'C25_CEM3';
+type Workforce      = 'small_2' | 'medium_4' | 'large_6plus';
+
+interface FormworkAIRequest {
+  operation:       'formwork-assistant';
+  element_type:    ElementType;
+  celkem_m2:       number;
+  sada_m2:         number;
+  pocet_sad:       number;
+  bednici_system:  string;
+  season:          Season;
+  concrete_class:  ConcreteClass;
+  workforce:       Workforce;
+  deep_analysis?:  boolean;
+}
+
+interface FormworkAIResponse {
+  pocet_taktu:        number;
+  sada_m2_doporucena: number;
+  dni_na_takt:        number;
+  dni_beton_takt:     number;
+  dni_demontaz:       number;
+  celkova_doba_dni:   number;
+  billing_months:     number;
+  zduvodneni:         string | null;
+  upozorneni:         string[];
+  model_used:         string;
+  temp_factor:        number;
+  cement_factor:      number;
+}
 
 // ─── Question option definitions ──────────────────────────────────────────
 
@@ -106,6 +138,7 @@ export function FormworkAIModal({
     setResult(null);
 
     const body: FormworkAIRequest = {
+      operation:       'formwork-assistant',
       element_type:    elementType,
       celkem_m2:       initialCelkemM2,
       sada_m2:         initialSadaM2 > 0 ? initialSadaM2 : Math.round(initialCelkemM2 * 0.4),
@@ -118,10 +151,10 @@ export function FormworkAIModal({
     };
 
     try {
-      const resp = await fetch('/api/formwork-assistant', {
+      const resp = await fetch('/api/ai-agent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ ...body, operation: 'formwork-assistant' }),
       });
       if (!resp.ok) {
         const err = await resp.json().catch(() => ({ error: `HTTP ${resp.status}` }));
