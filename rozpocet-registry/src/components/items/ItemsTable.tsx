@@ -98,7 +98,7 @@ export function ItemsTable({
   onSortingChange: externalOnSortingChange,
   showOnlyWorkItems = false,
 }: ItemsTableProps) {
-  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV } = useRegistryStore();
+  const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny } = useRegistryStore();
 
   // TOV modal state
   const [tovModalItem, setTovModalItem] = useState<ParsedItem | null>(null);
@@ -732,17 +732,21 @@ export function ItemsTable({
               <div className="flex-1">
                 <SkupinaAutocomplete
                   value={currentSkupina}
+                  memoryHint={item.kod ? getMemorySkupiny(item.kod) : null}
                   onChange={async (value, shouldLearn = false) => {
                     if (value === null) {
                       setItemSkupina(projectId, sheetId, item.id, null!);
                     } else {
                       setItemSkupina(projectId, sheetId, item.id, value);
 
-                      // If user wants to remember this classification
+                      // Always record to browser localStorage memory (persistent, works offline)
+                      if (item.kod) {
+                        recordSkupinaMemory(item.kod, value);
+                      }
+
+                      // Server-side learning (best-effort, AI mode only)
                       if (shouldLearn) {
                         try {
-                          console.log('[ItemsTable] Recording correction for learning:', item.id, value);
-
                           await fetch('/api/ai-agent', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
@@ -755,11 +759,8 @@ export function ItemsTable({
                               allItems: items,
                             }),
                           });
-
-                          console.log('[ItemsTable] ✓ Correction recorded successfully');
                         } catch (error) {
-                          console.error('[ItemsTable] Failed to record correction:', error);
-                          // Don't block the UI - correction was already applied
+                          // Don't block the UI - browser memory was already recorded
                         }
                       }
                     }

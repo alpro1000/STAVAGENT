@@ -16,6 +16,8 @@ interface SkupinaAutocompleteProps {
   // Optional: for learning
   itemId?: string;
   enableLearning?: boolean;
+  // Optional: browser-side memory hint (kod → skupina from localStorage)
+  memoryHint?: string | null;
 }
 
 export function SkupinaAutocomplete({
@@ -25,6 +27,7 @@ export function SkupinaAutocomplete({
   onAddGroup,
   itemId,
   enableLearning = false,
+  memoryHint = null,
 }: SkupinaAutocompleteProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
@@ -195,6 +198,21 @@ export function SkupinaAutocomplete({
               : { top: dropdownPos.top + 4 }),
           }}
         >
+          {/* Memory Hint — show if browser memory has a suggestion for this item */}
+          {memoryHint && memoryHint !== value && (
+            <div className="px-3 py-2 border-b border-border-color">
+              <button
+                onClick={() => handleSelect(memoryHint)}
+                className="w-full text-left flex items-center gap-2 text-xs hover:bg-accent-primary/10 rounded px-1 py-1 transition-colors"
+                title="Naposledy použitá skupina pro tento kód"
+              >
+                <Brain size={12} className="text-accent-primary flex-shrink-0" />
+                <span className="text-text-muted">Paměť:</span>
+                <span className="font-semibold text-accent-primary">{memoryHint}</span>
+              </button>
+            </div>
+          )}
+
           {/* Learning Checkbox (if enabled) */}
           {enableLearning && itemId && (
             <div

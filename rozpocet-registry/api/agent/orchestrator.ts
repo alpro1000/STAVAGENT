@@ -98,7 +98,7 @@ export async function classifyItem(rowpack: RowPack): Promise<ClassificationResu
       confidenceScore: confidenceToScore(geminiResult.confidence),
       reasoning: geminiResult.reason,
       source: 'gemini',
-      modelUsed: 'gemini-2.0-flash-exp',
+      modelUsed: 'gemini-2.0-flash',
       timestamp: Date.now(),
     };
   } catch (error) {

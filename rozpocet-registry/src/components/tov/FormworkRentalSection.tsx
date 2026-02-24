@@ -4,25 +4,31 @@
  * Tabuľka nájmu bednění — vložená sekce v záložce "Materiály" TOV modalu.
  * Zobrazuje se pouze pro pozice skupiny BEDNENI.
  *
- * Struktura sloupců (shodná s uživatelskou tabulkou):
- * Konstrukce | Celkem m2 | Sada m2 | Taktů | Sad | Dní/takt | Doba bedn. |
- * Beton/takt | Celkem beton | Celková doba | Měs.nájem/sada | Konečný nájem |
- * Systém | Výška | Kč/m2 | KROS popis
+ * Struktura sloupců:
+ * Konstrukce | Celkem m2 | Sada m2 | Taktů | Sad | Dní/takt | Dem.d |
+ * Doba bedn. | Beton/takt | Celkem beton | Celková doba |
+ * Systém | Výška | Kč/m2 | Měs.nájem/sada | Konečný nájem | KROS popis
  *
- * Výpočtové vzorce (ověřeno na datech uživatele):
+ * Výpočtové vzorce (rev. 2.1 — Expert Review, ČSN EN 13670):
+ *   pocet_taktu    = ⌈celkem_m2 / sada_m2⌉  (auto) nebo ručně
  *   takt_per_set   = pocet_taktu / pocet_sad
- *   doba_bedneni   = takt_per_set × dni_na_takt
- *   celkem_beton   = takt_per_set × dni_beton_takt
- *   celkova_doba   = doba_bedneni + celkem_beton
+ *   doba_bedneni   = takt_per_set × dni_na_takt        (montáž per sada)
+ *   celkem_beton   = takt_per_set × dni_beton_takt     (zrání per sada)
+ *   celkova_doba   = doba_bedneni + celkem_beton + dni_demontaz  (+ fin. demontáž)
  *   mesicni_sada   = sada_m2 × mesicni_najem_jednotka
- *   konecny_najem  = mesicni_sada × (celkova_doba / 30) × pocet_sad
+ *   konecny_najem  = mesicni_sada × MAX(1, celkova_doba/30) × pocet_sad
+ *                                   ↑ min. 1 měsíc (standard DOKA/PERI/MEVA)
+ *
+ * DŮLEŽITÉ: Cena nájmu NEZAHRNUJE dopravu, montáž ani DPH!
  */
 
-import { Plus, Trash2, ArrowDownToLine } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Trash2, ArrowDownToLine, Sparkles } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import type { FormworkRentalRow } from '../../types/unified';
 import type { MaterialResource } from '../../types/unified';
 import formworkKnowledge from '../../data/formwork_knowledge.json';
+import { FormworkAIModal } from './FormworkAIModal';
 
 // ─── Knowledge base: formwork systems (loaded from formwork_knowledge.json) ──
 
@@ -57,47 +63,76 @@ export function generateKrosPopis(r: FormworkRentalRow): string {
 function computeRow(r: FormworkRentalRow): FormworkRentalRow {
   // Auto-derive tacts from area ratio when auto_taktu=true:
   //   pocet_taktu = ⌈celkem_m2 / sada_m2⌉
-  // With pocet_sad > 1 (šachmatný postup), takt_per_set halves → duration halves
-  // but rental cost stays the same (more sets × less time = same Kč).
+  // With pocet_sad > 1 (šachmatný postup), takt_per_set halves → calendar duration halves.
   const pocet_taktu = r.auto_taktu === true && r.sada_m2 > 0
     ? Math.ceil(r.celkem_m2 / r.sada_m2)
     : r.pocet_taktu;
 
+  // takt_per_set = how many tacts each set must do (can be fractional when not evenly divisible)
   const takt_per_set = r.pocet_sad > 0 ? pocet_taktu / r.pocet_sad : pocet_taktu;
-  const doba_bedneni  = Math.round(takt_per_set * r.dni_na_takt * 1000) / 1000;
-  const celkem_beton  = Math.round(takt_per_set * r.dni_beton_takt * 1000) / 1000;
-  const celkova_doba  = Math.round((doba_bedneni + celkem_beton) * 1000) / 1000;
+
+  // Assembly time (montáž) and curing time (zrání) per set
+  const doba_bedneni = Math.round(takt_per_set * r.dni_na_takt * 1000) / 1000;
+  const celkem_beton = Math.round(takt_per_set * r.dni_beton_takt * 1000) / 1000;
+
+  // dni_demontaz = final stripping of last takt (ČSN EN 13670 §8.5).
+  // Intermediate re-stripping is implicitly part of mobilization before next takt.
+  // Default 1 day; backward-compat: treat missing field as 1.
+  const dni_demontaz = r.dni_demontaz ?? 1;
+
+  // celkova_doba = total calendar duration incl. final dismantling
+  const celkova_doba = Math.round((doba_bedneni + celkem_beton + dni_demontaz) * 1000) / 1000;
+
   const mesicni_najem_sada = Math.round(r.sada_m2 * r.mesicni_najem_jednotka * 100) / 100;
-  const konecny_najem = Math.round(mesicni_najem_sada * (celkova_doba / 30) * r.pocet_sad * 100) / 100;
+
+  // Minimum billing = 1 full month — industry standard for DOKA / PERI / MEVA.
+  // Without this, short projects (1 takt, 9 days) are underestimated by 3×.
+  const billing_months = Math.max(1, celkova_doba / 30);
+  const konecny_najem = Math.round(mesicni_najem_sada * billing_months * r.pocet_sad * 100) / 100;
 
   // Preserve user-edited kros_popis; auto-generate only when empty
   const kros_popis = r.kros_popis || generateKrosPopis({ ...r, mesicni_najem_sada });
 
-  return { ...r, pocet_taktu, doba_bedneni, celkem_beton, celkova_doba, mesicni_najem_sada, konecny_najem, kros_popis };
+  return { ...r, pocet_taktu, dni_demontaz, doba_bedneni, celkem_beton, celkova_doba, mesicni_najem_sada, konecny_najem, kros_popis };
 }
+
+// Curing-time presets by element type (ČSN EN 13670, at +20°C).
+// dni_beton_takt recommendation: minimum time before formwork stripping.
+// Multiply by 2 at +10°C, ×3 at +5°C, ×4 at 0°C (frost protection required).
+export const CURING_PRESETS = [
+  { id: 'zakl',    label: 'Základy, čela (1–2 d)',         dni: 2,  note: 'Boční bednění základových desek a čel. Beton dosáhne 50 % pevnosti za ~24–48 h.' },
+  { id: 'stena',   label: 'Stěny, opěry, opěrné zdi (5 d)',dni: 5,  note: 'Standardní případ mostních opěr a stěn. ČSN EN 13670 §8.5 — min. 70 % fck.' },
+  { id: 'pilir',   label: 'Pilíře, masivní prvky (7 d)',   dni: 7,  note: 'Masivní opěry, mostní pilíře. Tepelný gradient > 20 K → prodlužte.' },
+  { id: 'strop',   label: 'Stropní desky — spodní (21 d)', dni: 21, note: 'Nosné spodní bednění desek. Nesmí se odstranit do dosažení 70 % fck nosné kce.' },
+  { id: 'mostovka',label: 'Mostovka (28 d)',               dni: 28, note: 'Mostovkové desky mostů. Dle TP 102 min. 28 dní nebo 80 % fck.' },
+] as const;
 
 function makeEmptyRow(constructionName?: string, totalM2?: number): FormworkRentalRow {
   const area = totalM2 ?? 0;
   const sys = BEDNI_SYSTEMS[0];
+  // sada_m2 default: ~40% of total area (realistic for bridge abutment staging).
+  // If area is 0 or very small, start at 0 so user must enter actual kit size.
+  const defaultSada = area > 10 ? Math.round(area * 0.4 * 10) / 10 : area;
   const raw: FormworkRentalRow = {
     id: uuidv4(),
     construction_name: constructionName ?? '',
-    celkem_m2:  area,
-    sada_m2:    area,       // Default: 1 set covers full area → 1 tact auto-derived
-    pocet_taktu: 1,
-    auto_taktu:  true,      // New rows use auto-derivation by default
-    pocet_sad:   1,
-    dni_na_takt: 3,
-    dni_beton_takt: 5,
-    doba_bedneni: 0,
-    celkem_beton: 0,
-    celkova_doba: 0,
+    celkem_m2:     area,
+    sada_m2:       defaultSada,   // 40% of total → auto-takt ≈ 3 relocations (realistic start)
+    pocet_taktu:   1,
+    auto_taktu:    true,          // New rows use auto-derivation by default
+    pocet_sad:     1,
+    dni_na_takt:   3,             // Assembly days per takt (DOKA frami_basic norm)
+    dni_beton_takt: 5,            // Curing days — stěny/opěry default; adjust per CURING_PRESETS
+    dni_demontaz:  1,             // Final stripping of last takt (DOKA frami_basic: 1 day)
+    doba_bedneni:  0,
+    celkem_beton:  0,
+    celkova_doba:  0,
     bednici_system: sys.system,
-    rozmery:    sys.rozmery,
+    rozmery:       sys.rozmery,
     mesicni_najem_jednotka: sys.jednotka,
     mesicni_najem_sada: 0,
-    konecny_najem: 0,
-    kros_popis: '',
+    konecny_najem:  0,
+    kros_popis:    '',
   };
   return computeRow(raw);
 }
@@ -128,6 +163,18 @@ export function FormworkRentalSection({
   itemMnozstvi,
   onAddToMaterials,
 }: FormworkRentalSectionProps) {
+  // AI modal state: which row is being suggested (null = closed)
+  const [aiTargetRowId, setAiTargetRowId] = useState<string | null>(null);
+
+  const aiTargetRow = aiTargetRowId ? rows.find(r => r.id === aiTargetRowId) ?? null : null;
+
+  const handleApplyAI = (
+    rowId: string,
+    values: { pocet_taktu: number; sada_m2: number; dni_na_takt: number; dni_beton_takt: number; dni_demontaz: number }
+  ) => {
+    updateRow(rowId, { ...values, auto_taktu: false });
+  };
+
   const addRow = () => {
     const name = rows.length === 0 ? (itemPopis ?? '') : '';
     const area = rows.length === 0 ? (itemMnozstvi ?? 0) : 0;
@@ -202,6 +249,16 @@ export function FormworkRentalSection({
           <span className="text-xs text-slate-500">
             Celkem: <strong className="text-blue-700">{totalRental.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</strong>
           </span>
+          {rows.length > 0 && (
+            <button
+              onClick={() => setAiTargetRowId(rows[0].id)}
+              className="flex items-center gap-1 px-2 py-1 text-xs text-purple-600 border border-purple-300 rounded hover:bg-purple-50 transition-colors"
+              title="AI Průvodce taktování — vyplní takty, montáž, zrání na základě vašich odpovědí"
+            >
+              <Sparkles size={12} />
+              AI Průvodce
+            </button>
+          )}
           <button
             onClick={addRow}
             className="flex items-center gap-1 px-2 py-1 text-xs text-blue-600 border border-blue-300 rounded hover:bg-blue-50 transition-colors"
@@ -222,16 +279,17 @@ export function FormworkRentalSection({
               <th className={`${thCell} min-w-[70px]`}>Sada<br/>m2</th>
               <th className={`${thCell} min-w-[60px]`} title="Počet přestavení sady. Auto = ⌈Celkem m2 ÷ Sada m2⌉">Taktů<br/><span className="text-[9px] font-normal text-blue-400">⌈m2÷sada⌉</span></th>
               <th className={`${thCell} min-w-[45px]`} title="Počet sad (šachmatný postup: 2 sady → doba × 0.5)">Sad<br/>kus</th>
-              <th className={`${thCell} min-w-[55px]`}>Dní/<br/>takt</th>
+              <th className={`${thCell} min-w-[55px]`} title="Počet dní na montáž bednění v jednom taktu (bez finální demontáže)">Montáž<br/>dní/takt</th>
+              <th className={`${thCell} min-w-[50px]`} title="Demontáž posledního taktu [dny] — ČSN EN 13670 §8.5. Průběžná demontáž je součástí přesunu na další záběr.">Dem.<br/>dní</th>
               <th className={`${thCell} min-w-[65px] bg-slate-100`}>Doba<br/>bedn. d</th>
-              <th className={`${thCell} min-w-[65px]`}>Beton<br/>/takt d</th>
+              <th className={`${thCell} min-w-[90px]`} title="Zrání betonu před odbedněním dle ČSN EN 13670. Doporučení: Stěny/opěry 5 d · Pilíře 7 d · Desky 21 d · Mostovka 28 d. Při 10°C × 2, při 5°C × 3.">Zrání<br/>/takt d ⓘ</th>
               <th className={`${thCell} min-w-[70px] bg-slate-100`}>Celkem<br/>beton d</th>
-              <th className={`${thCell} min-w-[65px] bg-slate-100`}>Celk.<br/>doba d</th>
+              <th className={`${thCell} min-w-[65px] bg-slate-100`} title="= Doba bednění + Celkem beton + Demontáž. Fakturace: min. 1 měsíc.">Celk.<br/>doba d</th>
               <th className={`${thCell} min-w-[150px]`}>Systém bednění</th>
               <th className={`${thCell} min-w-[110px]`}>Výška / rozm.</th>
               <th className={`${thCell} min-w-[70px]`}>Kč/m2<br/>měsíc</th>
               <th className={`${thCell} min-w-[90px] bg-slate-100`}>Měs. nájem<br/>sada Kč</th>
-              <th className={`${thCell} min-w-[95px] bg-blue-50`}>Konečný<br/>nájem Kč</th>
+              <th className={`${thCell} min-w-[95px] bg-blue-50`} title="= Měs.nájem/sada × MAX(1, celkova_doba/30) × počet sad. Min. 1 měsíc (standard DOKA/PERI/MEVA). NEZAHRNUJE dopravu (50–200 tis. Kč) ani montáž!">Konečný<br/>nájem Kč ⚠</th>
               <th className={`${thCell} min-w-[90px]`}>Kód KROS</th>
               <th className={`${thCell} min-w-[220px]`}>Popis KROS</th>
               <th className={`${thCell} min-w-[30px]`}></th>
@@ -306,29 +364,56 @@ export function FormworkRentalSection({
                       onChange={e => updateRow(row.id, { pocet_sad: parseFloat(e.target.value) || 1 })}
                       className={cellInput} />
                   </td>
-                  {/* Dní/takt */}
+                  {/* Montáž dní/takt */}
                   <td className={tdCell}>
                     <input type="number" min="0" step="0.5" value={row.dni_na_takt}
                       onChange={e => updateRow(row.id, { dni_na_takt: parseFloat(e.target.value) || 0 })}
-                      className={cellInput} />
+                      className={cellInput}
+                      title="Dny na montáž bednění v jednom taktu (bez finální demontáže)" />
+                  </td>
+                  {/* Demontáž posledního taktu */}
+                  <td className={tdCell}>
+                    <input type="number" min="0" step="0.5" value={row.dni_demontaz ?? 1}
+                      onChange={e => updateRow(row.id, { dni_demontaz: parseFloat(e.target.value) || 0 })}
+                      className={cellInput}
+                      title="Demontáž posledního taktu (finální stripping). DOKA norma: 1 den." />
                   </td>
                   {/* Doba bednění (computed) */}
                   <td className={`${tdCell} bg-slate-50`}>
-                    <div className={cellReadonly}>{row.doba_bedneni.toFixed(3).replace(/\.?0+$/, '')}</div>
+                    <div className={cellReadonly} title="= takt_per_set × dni_na_takt">{row.doba_bedneni.toFixed(1)}</div>
                   </td>
-                  {/* Beton/takt */}
+                  {/* Zrání betonu/takt — s předvolbami dle typu konstrukce */}
                   <td className={tdCell}>
-                    <input type="number" min="0" step="0.5" value={row.dni_beton_takt}
-                      onChange={e => updateRow(row.id, { dni_beton_takt: parseFloat(e.target.value) || 0 })}
-                      className={cellInput} />
+                    <div className="space-y-0.5">
+                      <input type="number" min="0" step="0.5" value={row.dni_beton_takt}
+                        onChange={e => updateRow(row.id, { dni_beton_takt: parseFloat(e.target.value) || 0 })}
+                        className={cellInput}
+                        title="Zrání betonu před odbedněním dle ČSN EN 13670" />
+                      <select
+                        value=""
+                        onChange={e => {
+                          const preset = CURING_PRESETS.find(p => p.id === e.target.value);
+                          if (preset) updateRow(row.id, { dni_beton_takt: preset.dni });
+                        }}
+                        className="w-full text-[9px] bg-white border border-slate-200 rounded px-0.5 py-0 text-slate-500 focus:outline-none focus:ring-1 focus:ring-blue-400 cursor-pointer"
+                        title="Předvolby dle ČSN EN 13670 při +20°C"
+                      >
+                        <option value="">⏱ Typ prvku…</option>
+                        {CURING_PRESETS.map(p => (
+                          <option key={p.id} value={p.id} title={p.note}>{p.label}</option>
+                        ))}
+                      </select>
+                    </div>
                   </td>
                   {/* Celkem beton (computed) */}
                   <td className={`${tdCell} bg-slate-50`}>
-                    <div className={cellReadonly}>{row.celkem_beton.toFixed(3).replace(/\.?0+$/, '')}</div>
+                    <div className={cellReadonly} title="= takt_per_set × dni_beton_takt">{row.celkem_beton.toFixed(1)}</div>
                   </td>
-                  {/* Celková doba (computed) */}
+                  {/* Celková doba (computed = montáž + zrání + demontáž) */}
                   <td className={`${tdCell} bg-slate-50`}>
-                    <div className={cellReadonly}>{row.celkova_doba.toFixed(3).replace(/\.?0+$/, '')}</div>
+                    <div className={cellReadonly} title={`= ${row.doba_bedneni.toFixed(1)} montáž + ${row.celkem_beton.toFixed(1)} beton + ${row.dni_demontaz ?? 1} dem. = ${row.celkova_doba.toFixed(1)} d. Fakturace: min. 1 měsíc.`}>
+                      {row.celkova_doba.toFixed(1)}
+                    </div>
                   </td>
                   {/* Systém — dropdown */}
                   <td className={tdCell}>
@@ -398,6 +483,13 @@ export function FormworkRentalSection({
                   <td className={`${tdCell} text-center`}>
                     <div className="flex items-center gap-0.5">
                       <button
+                        onClick={() => setAiTargetRowId(row.id)}
+                        title="✨ AI Průvodce — navrhnout takty a zrání pro tento řádek"
+                        className="p-0.5 text-purple-500 hover:bg-purple-50 rounded transition-colors"
+                      >
+                        <Sparkles size={13} />
+                      </button>
+                      <button
                         onClick={() => addRowToMaterials(row)}
                         title="Přidat do Materiálů jako MaterialResource"
                         className="p-0.5 text-green-600 hover:bg-green-50 rounded transition-colors"
@@ -421,7 +513,7 @@ export function FormworkRentalSection({
           {/* Totals footer */}
           <tfoot>
             <tr className="bg-blue-50 border-t-2 border-blue-200">
-              <td colSpan={16} className="px-2 py-1.5 text-right text-xs font-medium text-blue-700">
+              <td colSpan={17} className="px-2 py-1.5 text-right text-xs font-medium text-blue-700">
                 Celkem nájem bednění:
               </td>
               <td className="px-1 py-1.5 text-right text-sm font-bold text-blue-800 tabular-nums">
@@ -433,11 +525,26 @@ export function FormworkRentalSection({
         </table>
       </div>
 
+      {/* AI Modal — rendered per-row when ✨ button is clicked */}
+      {aiTargetRow && (
+        <FormworkAIModal
+          isOpen={true}
+          onClose={() => setAiTargetRowId(null)}
+          initialCelkemM2={aiTargetRow.celkem_m2}
+          initialSadaM2={aiTargetRow.sada_m2}
+          initialPocetSad={aiTargetRow.pocet_sad}
+          initialSystem={aiTargetRow.bednici_system}
+          onApply={values => handleApplyAI(aiTargetRow.id, values)}
+        />
+      )}
+
       {/* Add all to materials */}
       {rows.length > 0 && (
         <div className="mt-2 flex items-center justify-between">
-          <p className="text-[10px] text-slate-400 italic">
-            Takty Auto = ⌈Celkem m2 ÷ Sada m2⌉. Šachmatný postup: 2 sady zkrátí dobu 2×, ale cena zůstane stejná. Klikněte na ↓ pro přidání do Materiálů:
+          <p className="text-[10px] text-slate-400 italic max-w-xl">
+            Takty Auto = ⌈m2÷sada⌉ · Šachmatný: 2 sady → doba ÷2 · Min. 1 měs. fakturace ·{' '}
+            <span className="text-amber-600 font-medium">⚠ Cena NEZAHRNUJE dopravu (~50–200 tis. Kč/mobilizace), montáž ani DPH!</span>{' '}
+            · Zrání: Stěny 5d · Pilíře 7d · Desky 21d · Mostovka 28d (×2 při 10°C)
           </p>
           <button
             onClick={() => rows.forEach(row => addRowToMaterials(row))}

@@ -157,30 +157,49 @@ export interface UnifiedPosition {
 
 /**
  * FormworkRentalRow — one construction element in the formwork rental table
- * Matches the user's spreadsheet structure exactly:
- * Konstrukce | m2 | Sada | taktů | sad | dní/takt | Doba bednění | beton/takt | Celkem beton | Celková | Měsíční/sada | Konečný nájem | Systém | Výška | Kč/m2
+ *
+ * Formulas (rev. 2.1 — Expert Review, ČSN EN 13670):
+ *   pocet_taktu    = ⌈celkem_m2 / sada_m2⌉  (auto) or manual
+ *   takt_per_set   = pocet_taktu / pocet_sad
+ *   doba_bedneni   = takt_per_set × dni_na_takt        (assembly per set)
+ *   celkem_beton   = takt_per_set × dni_beton_takt     (curing per set)
+ *   celkova_doba   = doba_bedneni + celkem_beton + dni_demontaz  (+ final stripping)
+ *   mesicni_sada   = sada_m2 × mesicni_najem_jednotka
+ *   konecny_najem  = mesicni_sada × MAX(1, celkova_doba/30) × pocet_sad
+ *                                   ↑ min. 1 month (DOKA/PERI/MEVA industry standard)
+ *
+ * Recommended dni_beton_takt by element type (ČSN EN 13670, 20°C):
+ *   Základy, čela stěn          → 1–2 days
+ *   Stěny, opěry, opěrné zdi    → 3–5 days    ← default
+ *   Masivní opěry, pilíře       → 5–7 days
+ *   Stropní desky (spodní bednění) → 14–21 days
+ *   Mostovky                    → 21–28 days
+ *   Temperature correction: ×2 at 10°C, ×3 at 5°C, ×4 at 0°C
+ *
+ * Price does NOT include: transport (50–200 kCZK/mobilization), assembly labor, VAT.
  */
 export interface FormworkRentalRow {
   id: string;
   construction_name: string;       // Konstrukce (e.g. "SO202 Základ OP")
   celkem_m2: number;               // Celkem [m2] — total formwork area
-  sada_m2: number;                 // Sada [m2] — one set area
+  sada_m2: number;                 // Sada [m2] — one set area (typically 30–60% of celkem_m2)
   pocet_taktu: number;             // Množství taktů [kus]
   auto_taktu?: boolean;            // When true: pocet_taktu = ⌈celkem_m2 / sada_m2⌉ (auto-derived)
-  pocet_sad: number;               // Množství sad [kus] — usually 1 or 2 (šachmatný postup)
-  dni_na_takt: number;             // počet dní na takt (zřízení+odstranění)
-  dni_beton_takt: number;          // Doba beton+výztuž+zrání na 1 takt [den]
+  pocet_sad: number;               // Množství sad [kus] — šachmatný postup: 2 sady → half duration
+  dni_na_takt: number;             // Montáž bednění na takt [dny] (assembly only, excl. final stripping)
+  dni_beton_takt: number;          // Zrání betonu na takt [dny] — varies by element type, see above
+  dni_demontaz: number;            // Demontáž posledního taktu [dny] — default 1 (ČSN EN 13670 §8.5)
   // Computed (stored for display):
-  doba_bedneni: number;            // = (takty/sady) × dní_na_takt
-  celkem_beton: number;            // = (takty/sady) × dní_beton_takt
-  celkova_doba: number;            // = doba_bedneni + celkem_beton
+  doba_bedneni: number;            // = takt_per_set × dni_na_takt
+  celkem_beton: number;            // = takt_per_set × dni_beton_takt
+  celkova_doba: number;            // = doba_bedneni + celkem_beton + dni_demontaz
   // Formwork system:
   bednici_system: string;          // Bednící systém (Frami Xlife, Framax...)
   rozmery: string;                 // Rozměry / Výška bednění (h= 0,9 m)
-  mesicni_najem_jednotka: number;  // Měsíční nájem [Kč/m²]
+  mesicni_najem_jednotka: number;  // Měsíční nájem [Kč/m²] — bez DPH, bez dopravy, bez montáže
   // Computed:
   mesicni_najem_sada: number;      // = sada_m2 × mesicni_najem_jednotka
-  konecny_najem: number;           // = mesicni_najem_sada × (celkova_doba/30) × pocet_sad
+  konecny_najem: number;           // = mesicni_najem_sada × MAX(1, celkova_doba/30) × pocet_sad
   // KROS:
   kros_kod?: string;
   kros_popis?: string;             // Auto-generated description
