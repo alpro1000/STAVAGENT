@@ -55,7 +55,15 @@ export function generateKrosPopis(r: FormworkRentalRow): string {
 }
 
 function computeRow(r: FormworkRentalRow): FormworkRentalRow {
-  const takt_per_set = r.pocet_sad > 0 ? r.pocet_taktu / r.pocet_sad : r.pocet_taktu;
+  // Auto-derive tacts from area ratio when auto_taktu=true:
+  //   pocet_taktu = ⌈celkem_m2 / sada_m2⌉
+  // With pocet_sad > 1 (šachmatný postup), takt_per_set halves → duration halves
+  // but rental cost stays the same (more sets × less time = same Kč).
+  const pocet_taktu = r.auto_taktu === true && r.sada_m2 > 0
+    ? Math.ceil(r.celkem_m2 / r.sada_m2)
+    : r.pocet_taktu;
+
+  const takt_per_set = r.pocet_sad > 0 ? pocet_taktu / r.pocet_sad : pocet_taktu;
   const doba_bedneni  = Math.round(takt_per_set * r.dni_na_takt * 1000) / 1000;
   const celkem_beton  = Math.round(takt_per_set * r.dni_beton_takt * 1000) / 1000;
   const celkova_doba  = Math.round((doba_bedneni + celkem_beton) * 1000) / 1000;
@@ -65,7 +73,7 @@ function computeRow(r: FormworkRentalRow): FormworkRentalRow {
   // Preserve user-edited kros_popis; auto-generate only when empty
   const kros_popis = r.kros_popis || generateKrosPopis({ ...r, mesicni_najem_sada });
 
-  return { ...r, doba_bedneni, celkem_beton, celkova_doba, mesicni_najem_sada, konecny_najem, kros_popis };
+  return { ...r, pocet_taktu, doba_bedneni, celkem_beton, celkova_doba, mesicni_najem_sada, konecny_najem, kros_popis };
 }
 
 function makeEmptyRow(constructionName?: string, totalM2?: number): FormworkRentalRow {
@@ -75,8 +83,9 @@ function makeEmptyRow(constructionName?: string, totalM2?: number): FormworkRent
     id: uuidv4(),
     construction_name: constructionName ?? '',
     celkem_m2:  area,
-    sada_m2:    area,
+    sada_m2:    area,       // Default: 1 set covers full area → 1 tact auto-derived
     pocet_taktu: 1,
+    auto_taktu:  true,      // New rows use auto-derivation by default
     pocet_sad:   1,
     dni_na_takt: 3,
     dni_beton_takt: 5,
@@ -211,8 +220,8 @@ export function FormworkRentalSection({
               <th className={`${thCell} text-left min-w-[140px]`}>Konstrukce</th>
               <th className={`${thCell} min-w-[70px]`}>Celkem<br/>m2</th>
               <th className={`${thCell} min-w-[70px]`}>Sada<br/>m2</th>
-              <th className={`${thCell} min-w-[55px]`}>Taktů<br/>kus</th>
-              <th className={`${thCell} min-w-[45px]`}>Sad<br/>kus</th>
+              <th className={`${thCell} min-w-[60px]`} title="Počet přestavení sady. Auto = ⌈Celkem m2 ÷ Sada m2⌉">Taktů<br/><span className="text-[9px] font-normal text-blue-400">⌈m2÷sada⌉</span></th>
+              <th className={`${thCell} min-w-[45px]`} title="Počet sad (šachmatný postup: 2 sady → doba × 0.5)">Sad<br/>kus</th>
               <th className={`${thCell} min-w-[55px]`}>Dní/<br/>takt</th>
               <th className={`${thCell} min-w-[65px] bg-slate-100`}>Doba<br/>bedn. d</th>
               <th className={`${thCell} min-w-[65px]`}>Beton<br/>/takt d</th>
@@ -254,11 +263,42 @@ export function FormworkRentalSection({
                       onChange={e => updateRow(row.id, { sada_m2: parseFloat(e.target.value) || 0 })}
                       className={cellInput} />
                   </td>
-                  {/* Taktů */}
+                  {/* Taktů — Auto mode: ⌈celkem_m2/sada_m2⌉, or manual override */}
                   <td className={tdCell}>
-                    <input type="number" min="1" step="1" value={row.pocet_taktu}
-                      onChange={e => updateRow(row.id, { pocet_taktu: parseFloat(e.target.value) || 1 })}
-                      className={cellInput} />
+                    {row.auto_taktu ? (
+                      <div>
+                        <div
+                          className="w-full text-right bg-blue-50 border border-blue-200 rounded px-1 py-0.5 text-xs tabular-nums text-blue-700 font-medium select-all cursor-default"
+                          title={`Auto: ⌈${row.celkem_m2} ÷ ${row.sada_m2}⌉ = ${row.pocet_taktu}`}
+                        >
+                          {row.pocet_taktu}
+                        </div>
+                        <button
+                          onClick={() => updateRow(row.id, { auto_taktu: false })}
+                          className="text-[9px] text-blue-400 hover:text-blue-600 text-right w-full block leading-tight mt-0.5"
+                          title="Klikněte pro ruční zadání počtu taktů"
+                        >
+                          ∑ Auto ✎
+                        </button>
+                      </div>
+                    ) : (
+                      <div>
+                        <input
+                          type="number" min="1" step="1" value={row.pocet_taktu}
+                          onChange={e => updateRow(row.id, { pocet_taktu: parseFloat(e.target.value) || 1 })}
+                          className={cellInput}
+                        />
+                        {row.sada_m2 > 0 && (
+                          <button
+                            onClick={() => updateRow(row.id, { auto_taktu: true })}
+                            className="text-[9px] text-blue-400 hover:text-blue-600 text-right w-full block leading-tight mt-0.5"
+                            title={`Automaticky: ⌈${row.celkem_m2} ÷ ${row.sada_m2}⌉ = ${Math.ceil(row.celkem_m2 / row.sada_m2)}`}
+                          >
+                            ∑ {Math.ceil(row.celkem_m2 / row.sada_m2)} → Auto
+                          </button>
+                        )}
+                      </div>
+                    )}
                   </td>
                   {/* Sad */}
                   <td className={tdCell}>
@@ -397,7 +437,7 @@ export function FormworkRentalSection({
       {rows.length > 0 && (
         <div className="mt-2 flex items-center justify-between">
           <p className="text-[10px] text-slate-400 italic">
-            Klikněte na ↓ u řádku pro přidání do Materiálů, nebo přidejte vše najednou:
+            Takty Auto = ⌈Celkem m2 ÷ Sada m2⌉. Šachmatný postup: 2 sady zkrátí dobu 2×, ale cena zůstane stejná. Klikněte na ↓ pro přidání do Materiálů:
           </p>
           <button
             onClick={() => rows.forEach(row => addRowToMaterials(row))}
