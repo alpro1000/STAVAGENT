@@ -1,0 +1,160 @@
+{
+  "_meta": {
+    "source": "Beton Union Plzeň s.r.o. — Ceník betonočerpadel platný od 01.01.2026",
+    "note": "Ceny bez DPH (sazba 21 %). Km = vzdálenost od betonárny jedním směrem; doprava se počítá tam+zpět (×2).",
+    "km_note": "czk_km je cena za 1 km jedním směrem. Kalkulátor násobí × 2 pro tam+zpět.",
+    "pristaveni_note": "pristaveni_czk = fixní cena přistavení čerpadla bez km. Celková doprava = pristaveni_czk + km × czk_km × 2."
+  },
+
+  "pumps": [
+    {
+      "id": "bu_28_24",
+      "label_cs": "28/24 m  (Boom 28 m / výložník 24 m)",
+      "boom_m": 28,
+      "reach_m": 24,
+      "vykon_m3h": 90,
+      "manipulace_czk_h": 2500,
+      "priplatek_czk_m3": 0,
+      "pristaveni_czk": 2000,
+      "czk_km": 60,
+      "notes": "Standardní čerpadlo — nejčastěji používané pro základy, sloupy, stěny do 24 m"
+    },
+    {
+      "id": "bu_31_27",
+      "label_cs": "31/27 m  (Boom 31 m / výložník 27 m)",
+      "boom_m": 31,
+      "reach_m": 27,
+      "vykon_m3h": 160,
+      "manipulace_czk_h": 2650,
+      "priplatek_czk_m3": 0,
+      "pristaveni_czk": 2000,
+      "czk_km": 60,
+      "notes": "Vyšší výkon 160 m³/h — vhodné pro velké základové desky"
+    },
+    {
+      "id": "bu_34_30",
+      "label_cs": "34/30 m  (Boom 34 m / výložník 30 m)",
+      "boom_m": 34,
+      "reach_m": 30,
+      "vykon_m3h": 150,
+      "manipulace_czk_h": 2750,
+      "priplatek_czk_m3": 10,
+      "pristaveni_czk": 2000,
+      "czk_km": 60,
+      "notes": "Příplatek 10 Kč/m³ za čerpání"
+    },
+    {
+      "id": "bu_36_32",
+      "label_cs": "36/32 m  (Boom 36 m / výložník 32 m)",
+      "boom_m": 36,
+      "reach_m": 32,
+      "vykon_m3h": 160,
+      "manipulace_czk_h": 2750,
+      "priplatek_czk_m3": 15,
+      "pristaveni_czk": 2000,
+      "czk_km": 60,
+      "notes": "Příplatek 15 Kč/m³"
+    },
+    {
+      "id": "bu_38_34",
+      "label_cs": "38/34 m  (Boom 38 m / výložník 34 m)",
+      "boom_m": 38,
+      "reach_m": 34,
+      "vykon_m3h": 160,
+      "manipulace_czk_h": 2900,
+      "priplatek_czk_m3": 20,
+      "pristaveni_czk": 2000,
+      "czk_km": 60,
+      "notes": "Příplatek 20 Kč/m³"
+    },
+    {
+      "id": "bu_42_38",
+      "label_cs": "42/38 m  (Boom 42 m / výložník 38 m)",
+      "boom_m": 42,
+      "reach_m": 38,
+      "vykon_m3h": 160,
+      "manipulace_czk_h": 2900,
+      "priplatek_czk_m3": 40,
+      "pristaveni_czk": 2000,
+      "czk_km": 60,
+      "notes": "Příplatek 40 Kč/m³"
+    },
+    {
+      "id": "bu_46_42",
+      "label_cs": "46/42 m  (Boom 46 m / výložník 42 m)",
+      "boom_m": 46,
+      "reach_m": 42,
+      "vykon_m3h": 163,
+      "manipulace_czk_h": 3350,
+      "priplatek_czk_m3": 50,
+      "pristaveni_czk": 2000,
+      "czk_km": 60,
+      "notes": "Příplatek 50 Kč/m³"
+    },
+    {
+      "id": "bu_52_48",
+      "label_cs": "52/48 m  (Boom 52 m / výložník 48 m)",
+      "boom_m": 52,
+      "reach_m": 48,
+      "vykon_m3h": 160,
+      "manipulace_czk_h": 3900,
+      "priplatek_czk_m3": 60,
+      "pristaveni_czk": 3500,
+      "czk_km": 90,
+      "notes": "Velké čerpadlo — příplatek 60 Kč/m³, vyšší přistavení a km sazba"
+    },
+    {
+      "id": "bu_56_52",
+      "label_cs": "56/52 m  (Boom 56 m / výložník 52 m)",
+      "boom_m": 56,
+      "reach_m": 52,
+      "vykon_m3h": 160,
+      "manipulace_czk_h": 4600,
+      "priplatek_czk_m3": 60,
+      "pristaveni_czk": 3500,
+      "czk_km": 90,
+      "notes": "Největší čerpadlo v ceníku — pro výškové stavby"
+    },
+    {
+      "id": "bu_pumi_24",
+      "label_cs": "Mix-pumpa PUMI 24/20 m",
+      "boom_m": 24,
+      "reach_m": 20,
+      "vykon_m3h": 56,
+      "manipulace_czk_h": 2500,
+      "priplatek_czk_m3": 0,
+      "pristaveni_czk": 2000,
+      "czk_km": 90,
+      "notes": "Kombinovaný autodomíchávač + čerpadlo. Nižší výkon, ale nevyžaduje domíchávač zvlášť. Vyšší km sazba."
+    }
+  ],
+
+  "standard_times": {
+    "stavba_h": 0.5,
+    "myti_h": 0.5,
+    "note": "Vždy se účtuje 30 min. za postavení čerpadla + 30 min. za umytí = 1 h per přistavení. Zdroj: Beton Union ceník."
+  },
+
+  "accessories": {
+    "note": "Příslušenství — volitelné příplatky",
+    "items": [
+      { "id": "gumova_hadice",    "label_cs": "Gumová hadice",      "unit": "m",   "czk_per_unit": 120, "note": "1 m gumové hadice" },
+      { "id": "ocelove_potrubi",  "label_cs": "Ocelové potrubí",    "unit": "m",   "czk_per_unit": 100, "note": "1 m ocelového potrubí" },
+      { "id": "dratkobetonova",   "label_cs": "Drátkobetonová směs","unit": "m³",  "czk_per_unit": 50,  "note": "Příplatek za čerpání drátkobetonu" },
+      { "id": "najezd_prisadou",  "label_cs": "Nájezd přísadou",    "unit": "ks",  "czk_per_unit": 500, "note": "Per přistavení" },
+      { "id": "marny_vyjezd",     "label_cs": "Marný výjezd",       "unit": "ks",  "czk_per_unit": 2999,"note": "Pokud čerpadlo dorazí a betonáž se nekoná" }
+    ]
+  },
+
+  "surcharge_hints": [
+    "Příplatek za víkend / svátek",
+    "Příplatek za noční provoz",
+    "Příplatek za čekání",
+    "Odvoz zbytků betonu (mytí mimo stavbu)",
+    "Příplatek za vzdálenost (nad tarif)"
+  ],
+
+  "cancellation_czk": 10000,
+  "cancellation_note": "Při zrušení čerpadla v den betonáže — 10 000 Kč bez DPH (netýká se vyšší moci / extrémní změny počasí).",
+  "myti_mimo_stavbu_czk": 1000
+}

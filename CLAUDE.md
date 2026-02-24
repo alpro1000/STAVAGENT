@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.0.6
-**Last Updated:** 2026-02-18
+**Version:** 2.0.7
+**Last Updated:** 2026-02-24
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,10 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-02-24 | rozpocet-registry | R0 Pump Calculator v2: realistic Beton Union 2026 pricing model (hourly + km + accessories) | ✅ Pushed |
+| 2026-02-24 | rozpocet-registry | R0 Pump Calculator v1: initial pump rental section in MachineryTab | ✅ Pushed |
+| 2026-02-24 | rozpocet-registry | FIX: Bot review — TOVModal formwork auto-save race condition, stale closure, isAutoSaving ref | ✅ Pushed |
+| 2026-02-24 | rozpocet-registry | FIX: TOVModal FormworkRentalSection — auto-persist rows (useRef isAutoSaving) | ✅ Pushed |
 | 2026-02-18 | stavagent-portal | Universal Parser Phase 1: parse Excel once, serve filtered data per kiosk (monolit/registry/urs_matcher) | ✅ Pushed |
 | 2026-02-18 | rozpocet-registry | Fix TS build errors in FormworkRentalCalculator (imports, interface) | ✅ Pushed |
 | 2026-02-10 | Monolit + Registry + Portal | Monolit-Registry integration via Portal API (Phase 1): 3 endpoints, TOV mapping, unified storage | ✅ PR Created |
@@ -20,13 +24,6 @@
 | 2026-02-09 | Monolit + Registry | Inter-kiosk data transfer via postMessage (Monolit → Registry) | ✅ Pushed |
 | 2026-02-09 | rozpocet-registry | Export-to-original rewrite: JSZip direct XML patching (no XLSX.write) | ✅ Pushed |
 | 2026-02-09 | stavagent-portal | Public landing page for stavagent.cz (no auth) | ✅ Pushed |
-| 2026-02-09 | stavagent-portal | CORS whitelist: Vercel domains + preview regex | ✅ Pushed |
-| 2026-02-09 | stavagent-portal | Portal loading timeout (8s) + graceful fallback | ✅ Pushed |
-| 2026-02-09 | All | Vercel domain migration: URLs updated across all services | ✅ Pushed |
-| 2026-02-04 | stavagent-portal | Portal project creation fix: safeGetPool() for SQLite mode | ✅ Pushed |
-| 2026-02-04 | rozpocet-registry | Price editing: editable cenaJednotkova, section totals, spinner hide | ✅ Pushed |
-| 2026-02-04 | rozpocet-registry | Excel Export Fixes: subordinate inheritance, collapsible rows, input cells styling | ✅ Pushed |
-| 2026-02-04 | rozpocet-registry | Import Preview: larger table (600px), auto-scroll to data rows, jump button | ✅ Pushed |
 
 ---
 

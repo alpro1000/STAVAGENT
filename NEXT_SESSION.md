@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
-**Last Updated:** 2026-02-18
-**Current Branch:** `claude/continue-implementation-NEOkf`
-**Last Session:** Universal Parser for Portal (Phase 1 Complete) + Build Fixes
+**Last Updated:** 2026-02-24
+**Current Branch:** `claude/universal-excel-parser-IcihR`
+**Last Session:** R0 Pump Calculator v2 (Beton Union 2026 model) + TOV auto-save fix
 
 ---
 
@@ -15,107 +15,114 @@ cd /home/user/STAVAGENT
 cat CLAUDE.md
 
 # 2. Check branch and recent commits
-git checkout claude/continue-implementation-NEOkf
+git checkout claude/universal-excel-parser-IcihR
 git log --oneline -10
 
-# 3. Run tests to verify everything works
-cd stavagent-portal && node --test backend/tests/universalParser.test.js  # 11 tests
-cd ../Monolit-Planner/shared && npx vitest run                            # 51 tests
-cd ../../rozpocet-registry && npx tsc -b                                   # TypeScript check
+# 3. TypeScript check (rozpocet-registry)
+cd rozpocet-registry && npx tsc --noEmit
+
+# 4. Run tests
+cd ../Monolit-Planner/shared && npx vitest run        # 51 tests
+cd ../../stavagent-portal && node --test backend/tests/universalParser.test.js  # 11 tests
 ```
 
 ---
 
-## Сессия 2026-02-18: Резюме
+## Сессия 2026-02-24: Резюме
 
 ### ✅ Что сделано:
 
 | Компонент | Задача | Статус |
 |-----------|--------|--------|
-| Portal Backend | Universal Parser — парсинг Excel один раз, данные для всех киосков | ✅ |
-| Portal Backend | Миграция Phase 6 (parsed_data, parse_status, parsed_at) | ✅ |
-| Portal Backend | API: auto-parse, manual re-parse, summary, for-kiosk/:type | ✅ |
-| Portal Backend | 11 тестов Universal Parser | ✅ |
-| Merge Conflicts | Разрешение конфликтов с PR #445 (formwork-rental) | ✅ |
-| rozpocet-registry | Fix TS build errors в FormworkRentalCalculator.tsx | ✅ |
+| TOVModal | Fix Amazon Q bot review: stale closure, useEffect deps, isAutoSaving ref | ✅ |
+| MachineryTab | R0 Pump Calculator v1 — начальная версия с плоской моделью | ✅ |
+| PumpRentalSection | R0 Pump Calculator v2 — реальная модель Beton Union 2026 | ✅ |
+| pump_knowledge.json | База знаний: 10 типов насосов, аксессуары, standard_times | ✅ |
+| unified.ts | Новые типы: PumpConstructionItem, PumpAccessory, PumpRentalData (5 компонентов) | ✅ |
 
-### Ключевые достижения:
+### Ключевое достижение — R0 Kalkulátor betonočerpadla:
 
-**1. Universal Parser (`universalParser.js` — ~600 строк):**
-- Парсит Excel один раз в Portal
-- Auto-detect колонок (15+ Czech/English ключевых слов)
-- Детекция типов строк: section (D), item (K), description (PP)
-- Классификация работ: beton, bedneni, vyztuze, zemni, izolace, komunikace, piloty, kotveni, prefab, doprava, jine
-- Детекция кодов: URS, OTSKP, RTS, construction codes
-- Извлечение метаданных: Stavba, Objekt, Soupis (4 формата)
-- Извлечение мостов из имён листов (SO codes)
-- Чешские числа (запятая-десятичная, пробел-тысячные)
-
-**2. Новые API эндпоинты (portal-files.js):**
+**Модель ценообразования (из Beton Union Plzeň ceník 2026):**
 ```
-POST /:fileId/parse              — Ручной перепарсинг
-GET  /:fileId/parsed-data         — Полные данные
-GET  /:fileId/parsed-data/summary — Превью (metadata + summary)
-GET  /:fileId/parsed-data/for-kiosk/:kioskType — Фильтр для киоска
+Konečná cena =
+  Doprava      = přistavení × (fixed_czk + km × czk_km × 2)
++ Manipulace   = manipulace_czk_h × Σ hodiny_celkem
++ Příplatek    = priplatek_czk_m3 × Σ celkem_m3
++ Příslušenství = Σ accessories
++ Příplatky    = Σ custom_surcharges
 ```
 
-**3. Маршрутизация по киоскам:**
+**Overhead per přistavení:** 0.5h stavba + 0.5h mytí (stánda Beton Union)
+
+**Pump types в knowledge base:**
 ```
-monolit      → beton, bedneni, vyztuze + метаданные
-registry     → ВСЕ строки для классификации
-urs_matcher  → строки с описаниями для сопоставления кодов
+28/24m   2500 Kč/h  | 31/27m  2600 Kč/h | 34/30m  2800 Kč/h
+36/32m   3000 Kč/h  | 38/34m  3300 Kč/h | 42/38m  3700 Kč/h
+46/42m   4000 Kč/h  | 52/48m  4300 Kč/h | 56/52m  4600 Kč/h
+PUMI 24/20m 2800 Kč/h
 ```
 
-**4. Build Fix:**
-- FormworkRentalCalculator.tsx: удалён неиспользуемый React import, исправлен Modal import (named vs default), добавлен optional breakdown
-
-### Коммиты (2026-02-18):
+**Новые файлы:**
 ```
-ad2bf7a FIX: Fix TypeScript build errors in FormworkRentalCalculator
-77f2fa6 Merge origin/main - resolve formwork calculator conflicts
-330fc15 FEAT: Universal Parser for Portal - parse once, use in all kiosks
+rozpocet-registry/src/data/pump_knowledge.json          NEW (~160 строк)
+rozpocet-registry/src/types/unified.ts                  MOD (+89 строк)
+rozpocet-registry/src/components/tov/PumpRentalSection.tsx  MOD (~785 строк)
 ```
 
-### Новые файлы:
+### Архитектура R0 Calculators:
+
 ```
-stavagent-portal/backend/src/services/universalParser.js     (NEW ~600 строк)
-stavagent-portal/backend/tests/universalParser.test.js       (NEW ~290 строк, 11 тестов)
-stavagent-portal/backend/src/db/migrations.js                (MODIFIED — Phase 6)
-stavagent-portal/backend/src/routes/portal-files.js          (MODIFIED — 4 эндпоинта)
-stavagent-portal/backend/package.json                        (MODIFIED — test script)
-rozpocet-registry/src/components/tov/FormworkRentalCalculator.tsx (FIXED — 3 TS errors)
+TOVModal
+├── MaterialsTab → FormworkRentalSection  (BEDNENI)     ✅ работает
+├── MachineryTab → PumpRentalSection      (BETON_MONOLIT / BETON_PREFAB / PILOTY) ✅ работает
+└── Footer total: formworkCost + pumpCost + material + labor + machinery
+```
+
+### Коммиты сессии:
+```
+6000478 FEAT: Pump calculator v2 — realistic Beton Union 2026 pricing model
+db1e360 FEAT: Kalkulátor betonočerpadla (R0 Pump Calculator) v1
+999f004 FIX: Address bot review issues in TOVModal formwork auto-save
+97b8b29 FIX: Auto-persist formwork rental rows in TOV modal
+691ef5f FIX: Remove unused expandedRowId state — TS6133 build error
 ```
 
 ---
 
-## ⏭️ Следующие шаги: Universal Parser Phase 2
+## ⏭️ Следующие задачи (приоритет)
 
-### Приоритет 1: Интеграция в Portal Frontend
+### Приоритет 1: Pump Calculator — тестирование и доработка
+- [ ] Проверить PumpRentalSection в браузере (реальный UI тест)
+- [ ] Проверить auto-save (аналогично FormworkRentalSection — isAutoSaving ref)
+- [ ] Добавить `handlePumpRentalChange` в TOVModal (см. паттерн handleFormworkRentalChange)
+- [ ] Показать `pumpCost` в footer breakdown TOVModal
+
+### Приоритет 2: Universal Parser Phase 2 (Portal UI)
 - [ ] UI превью парсинга: после загрузки файла показать summary (листы, позиции, типы работ)
 - [ ] Кнопка "Отправить в Monolit / Registry / URS Matcher" из превью
 - [ ] Визуальный статус парсинга (parsing → parsed → error)
 
-### Приоритет 2: Киоски получают данные из Portal
-- [ ] Monolit: добавить опцию "Загрузить из Portal" (GET /for-kiosk/monolit)
-- [ ] Registry: добавить опцию "Загрузить из Portal" (GET /for-kiosk/registry)
-- [ ] URS Matcher: добавить опцию "Загрузить из Portal" (GET /for-kiosk/urs_matcher)
+### Приоритет 3: Кiosks получают данные из Portal
+- [ ] Monolit: опция "Загрузить из Portal" (GET /for-kiosk/monolit)
+- [ ] Registry: опция "Загрузить из Portal" (GET /for-kiosk/registry)
+- [ ] URS Matcher: опция "Загрузить из Portal" (GET /for-kiosk/urs_matcher)
 
-### Приоритет 3: Синхронизация через Portal
-- [ ] Киоски сохраняют результаты обратно в Portal
-- [ ] Portal агрегирует результаты всех киосков
-- [ ] Двусторонняя синхронизация изменений
+### Приоритет 4: Будущие R0 Калькуляторы
+- [ ] LaborTab — калькулятор рабочей силы (бригада, смены, норма-часы)
+- [ ] MachineryTab — калькулятор аренды крана/экскаватора
+- [ ] Общий паттерн: каждый calculator tab имеет collapsible section с auto-save
 
 ---
 
-## ⏳ AWAITING USER ACTION (из предыдущих сессий)
+## ⏳ AWAITING USER ACTION
 
-### 1. AI Suggestion Button Enablement (Monolit)
+### 1. AI Suggestion Button (Monolit)
 ```bash
 # В Render Dashboard → monolit-db → Shell:
 # Выполнить: Monolit-Planner/БЫСТРОЕ_РЕШЕНИЕ.sql
 ```
 
-### 2. Добавить environment variables
+### 2. Environment Variables
 ```env
 # stavagent-portal-backend:
 DISABLE_AUTH=true
@@ -127,6 +134,9 @@ PPLX_API_KEY=pplx-...
 ### 3. Google Drive + Keep-Alive Setup
 - См. `GOOGLE_DRIVE_SETUP.md` и `KEEP_ALIVE_SETUP.md`
 
+### 4. PR Review
+- `claude/universal-excel-parser-IcihR` — содержит все изменения этой сессии, готов к review
+
 ---
 
 ## 🧪 Статус тестов
@@ -135,42 +145,54 @@ PPLX_API_KEY=pplx-...
 |--------|-------|--------|
 | Portal Universal Parser | 11/11 | ✅ Pass |
 | Monolit shared formulas | 51/51 | ✅ Pass |
-| rozpocet-registry | tsc -b + vite build | ✅ Pass |
+| rozpocet-registry | `npx tsc --noEmit` | ✅ 0 errors |
 | URS Matcher | 159 | ⚠️ Not run this session |
 
 ---
 
-## 📊 Архитектура Universal Parser
+## 📐 R0 Calculator Pattern (для будущих калькуляторов)
 
+```typescript
+// 1. Knowledge base JSON (src/data/xxx_knowledge.json)
+// 2. Types in unified.ts (XXXData interface с computed totals)
+// 3. XxxSection.tsx:
+//    - recomputeItem() — pure function
+//    - computeTotals() — pure function
+//    - collapsible header с badge + total
+//    - auto-save on every change (isAutoSaving ref pattern)
+// 4. В TOVModal:
+//    handleXxxChange = (data: XxxData) => setLocalData(prev => {
+//      const updatedData = { ...prev, xxxData: data };
+//      isAutoSaving.current = true;
+//      onSave(updatedData);
+//      return updatedData;
+//    });
+// 5. В footer: включить xxxCost в calculatedTotals
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                    Portal Backend                            │
-│                                                              │
-│  Upload Excel → universalParser.parseFile() → parsed_data   │
-│                                                              │
-│  parsed_data = {                                             │
-│    metadata: { stavba, objekt, soupis },                    │
-│    sheets: [{ name, bridge, items: [...] }],                │
-│    summary: {                                                │
-│      totalItems, workTypes, codeTypes,                      │
-│      kiosks: { monolit: N, registry: N, urs_matcher: N }   │
-│    }                                                         │
-│  }                                                           │
-│                                                              │
-│  ┌──────────┐  ┌──────────┐  ┌──────────────┐              │
-│  │ /for-kiosk│  │ /for-kiosk│  │ /for-kiosk   │              │
-│  │ /monolit  │  │ /registry │  │ /urs_matcher  │              │
-│  └─────┬─────┘  └─────┬─────┘  └──────┬───────┘              │
-│        │              │               │                      │
-└────────┼──────────────┼───────────────┼──────────────────────┘
-         │              │               │
-         ▼              ▼               ▼
-    ┌─────────┐   ┌──────────┐   ┌──────────────┐
-    │ Monolit │   │ Registry │   │ URS Matcher  │
-    │ beton,  │   │ ALL rows │   │ items with   │
-    │ bedneni,│   │ for      │   │ descriptions │
-    │ vyztuze │   │ classify │   │ for matching │
-    └─────────┘   └──────────┘   └──────────────┘
+
+---
+
+## 🔑 Ключевые паттерны (anti-render-loop)
+
+```tsx
+// Проблема: auto-save → Zustand → prop change → useEffect re-sync → loop
+
+// Решение:
+const isAutoSaving = useRef<boolean>(false);
+
+// В useEffect:
+useEffect(() => {
+  if (isAutoSaving.current) { isAutoSaving.current = false; return; }
+  setLocalData(tovData ?? createEmptyTOVData());
+}, [tovData, item.id]);
+
+// В обработчике изменений:
+setLocalData(prev => {
+  const updatedData = { ...prev, someData };
+  isAutoSaving.current = true;   // ← флаг ПЕРЕД onSave
+  onSave(updatedData);
+  return updatedData;
+});
 ```
 
 ---
@@ -179,8 +201,8 @@ PPLX_API_KEY=pplx-...
 ```bash
 1. Прочитай CLAUDE.md
 2. Прочитай NEXT_SESSION.md (этот файл)
-3. git log --oneline -10 — посмотри коммиты
-4. Спроси пользователя что делать: Phase 2 Parser UI или другая задача
+3. git log --oneline -10
+4. Спроси: тестировать PumpRentalSection или идти на Phase 2 Parser UI?
 ```
 
 *Ready for next session!*
