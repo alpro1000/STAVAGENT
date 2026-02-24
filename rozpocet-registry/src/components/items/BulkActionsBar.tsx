@@ -4,7 +4,7 @@
  */
 
 import { useState } from 'react';
-import { Trash2, Tag, X } from 'lucide-react';
+import { Trash2, Tag, X, Eraser } from 'lucide-react';
 import { useRegistryStore } from '../../stores/registryStore';
 import { SkupinaAutocomplete } from './SkupinaAutocomplete';
 
@@ -41,6 +41,15 @@ export function BulkActionsBar({
       deleteItem(projectId, sheetId, id);
     });
 
+    onClearSelection();
+  };
+
+  const handleBulkClearSkupiny = () => {
+    const updates = Array.from(selectedIds).map((itemId) => ({
+      itemId,
+      skupina: null!,
+    }));
+    bulkSetSkupina(projectId, sheetId, updates);
     onClearSelection();
   };
 
@@ -81,6 +90,16 @@ export function BulkActionsBar({
 
         {/* Divider */}
         <div className="w-px h-8 bg-white/30"></div>
+
+        {/* Clear skupiny button (keep items, just clear category) */}
+        <button
+          onClick={handleBulkClearSkupiny}
+          className="flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 rounded transition-colors"
+          title="Vymazat skupiny u vybraných položek (položky zůstanou)"
+        >
+          <Eraser size={16} />
+          <span className="text-sm font-medium">Vymazat skupiny</span>
+        </button>
 
         {/* Delete button */}
         <button

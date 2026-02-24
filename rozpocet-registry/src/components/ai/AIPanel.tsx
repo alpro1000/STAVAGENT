@@ -18,7 +18,7 @@
  */
 
 import { useState } from 'react';
-import { Sparkles, Loader2, ChevronDown, ChevronUp, Zap, Power } from 'lucide-react';
+import { Sparkles, Loader2, ChevronDown, ChevronUp, Zap, Power, Brain, Eraser } from 'lucide-react';
 import { useRegistryStore } from '../../stores/registryStore';
 import { isMainCodeExported } from '../../services/classification/rowClassificationService';
 import type { ParsedItem } from '../../types/item';
@@ -78,7 +78,7 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     };
   } | null>(null);
 
-  const { bulkSetSkupina } = useRegistryStore();
+  const { bulkSetSkupina, clearSheetSkupiny, skupinyMemory, getSkupinyMemoryCount } = useRegistryStore();
 
   const itemsToProcess = selectedItemIds.length > 0
     ? items.filter(item => selectedItemIds.includes(item.id))
@@ -251,6 +251,52 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
     }
   };
 
+  /**
+   * Apply skupiny from browser localStorage memory to unclassified items
+   * Works fully offline — no API call needed
+   */
+  const handleApplyFromMemory = () => {
+    const updates: Array<{ itemId: string; skupina: string }> = [];
+
+    for (const item of itemsToProcess) {
+      const isMain = item.rowRole
+        ? (item.rowRole === 'main' || item.rowRole === 'section')
+        : (item.kod ? isMainCodeExported(item.kod) : false);
+
+      if (isMain && !item.skupina && item.kod) {
+        const memSkupina = skupinyMemory[item.kod.trim()];
+        if (memSkupina) {
+          updates.push({ itemId: item.id, skupina: memSkupina });
+        }
+      }
+    }
+
+    if (updates.length > 0) {
+      bulkSetSkupina(projectId, sheetId, updates);
+      setClassificationStats(null);
+      setLastAction(`Aplikováno ${updates.length} skupin z paměti (z ${getSkupinyMemoryCount()} uložených)`);
+    } else {
+      setLastAction('Paměť neobsahuje shody pro prázdné položky');
+    }
+  };
+
+  /**
+   * Clear all skupiny in the current sheet (without deleting items)
+   */
+  const handleClearSkupiny = () => {
+    const classifiedCount = items.filter(i => i.skupina).length;
+    if (classifiedCount === 0) {
+      setLastAction('Žádné skupiny k vymazání');
+      return;
+    }
+    if (!window.confirm(`Opravdu chcete vymazat skupiny u ${classifiedCount} položek v tomto listu?\nPoložky zůstanou zachovány.`)) return;
+    clearSheetSkupiny(projectId, sheetId);
+    setClassificationStats(null);
+    setLastAction(`Skupiny vymazány u ${classifiedCount} položek`);
+  };
+
+  const memoryCount = getSkupinyMemoryCount();
+
   return (
     <div className="card" style={{ borderLeft: '3px solid var(--accent-orange)' }}>
       {/* Header */}
@@ -341,7 +387,20 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
             </ul>
           </div>
 
-          {/* Buttons */}
+          {/* Memory info */}
+          {memoryCount > 0 && (
+            <div
+              className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs"
+              style={{ backgroundColor: '#EEF2FF', borderColor: '#818CF8', border: '1px solid' }}
+            >
+              <Brain size={14} style={{ color: '#6366F1' }} />
+              <span style={{ color: '#4338CA' }}>
+                Paměť: <strong>{memoryCount}</strong> naučených skupin (kód → skupina)
+              </span>
+            </div>
+          )}
+
+          {/* Buttons row 1 — AI classification */}
           <div className="grid grid-cols-2 gap-3">
             <button
               onClick={handleClassifyEmpty}
@@ -377,6 +436,39 @@ export function AIPanel({ items, projectId, sheetId, selectedItemIds = [] }: AIP
                   <span>Překlasifikovat vše</span>
                 </>
               )}
+            </button>
+          </div>
+
+          {/* Buttons row 2 — Memory + Clear */}
+          <div className="grid grid-cols-2 gap-3">
+            <button
+              onClick={handleApplyFromMemory}
+              disabled={isClassifying || unclassifiedMainCount === 0 || memoryCount === 0}
+              className="flex items-center justify-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{
+                backgroundColor: memoryCount > 0 ? '#EEF2FF' : LIGHT.headerBg,
+                color: memoryCount > 0 ? '#4338CA' : LIGHT.textMuted,
+                border: `1px solid ${memoryCount > 0 ? '#818CF8' : LIGHT.border}`,
+              }}
+              title="Aplikovat skupiny z paměti prohlížeče na prázdné položky (offline, bez AI)"
+            >
+              <Brain size={16} />
+              <span>Z paměti ({memoryCount})</span>
+            </button>
+
+            <button
+              onClick={handleClearSkupiny}
+              disabled={isClassifying || items.filter(i => i.skupina).length === 0}
+              className="flex items-center justify-center gap-2 px-3 py-2 rounded text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              style={{
+                backgroundColor: LIGHT.warningBg,
+                color: '#92400E',
+                border: `1px solid #F59E0B`,
+              }}
+              title="Vymazat skupiny ze všech položek v tomto listu (položky zůstanou)"
+            >
+              <Eraser size={16} />
+              <span>Vymazat skupiny</span>
             </button>
           </div>
 

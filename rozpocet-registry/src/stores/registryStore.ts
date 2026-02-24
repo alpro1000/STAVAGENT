@@ -39,6 +39,10 @@ interface RegistryState {
   // TOV Data (Resource Breakdown)
   tovData: Record<string, TOVData>;  // itemId → TOVData
 
+  // Browser-side skupiny memory (persistent, survives page reload)
+  // Maps item kod → learned skupina from user manual corrections
+  skupinyMemory: Record<string, string>;
+
   // Действия с проектами
   addProject: (project: Project) => void;
   removeProject: (projectId: string) => void;
@@ -96,6 +100,16 @@ interface RegistryState {
   getItemTOV: (itemId: string) => TOVData | undefined;
   removeItemTOV: (itemId: string) => void;
   hasItemTOV: (itemId: string) => boolean;
+
+  // Skupiny Memory Actions (browser-side learning)
+  recordSkupinaMemory: (kod: string, skupina: string) => void;
+  getMemorySkupiny: (kod: string) => string | null;
+  clearSkupinaMemory: () => void;
+  getSkupinyMemoryCount: () => number;
+
+  // Bulk clear skupiny (without deleting rows)
+  clearSheetSkupiny: (projectId: string, sheetId: string) => void;
+  clearProjectSkupiny: (projectId: string) => void;
 }
 
 /**
@@ -125,6 +139,7 @@ export const useRegistryStore = create<RegistryState>()(
       customGroups: [],
       hiddenDefaultGroups: [],
       tovData: {},
+      skupinyMemory: {},
 
       // Проекты
       addProject: (project) => {
@@ -783,6 +798,68 @@ export const useRegistryStore = create<RegistryState>()(
 
       hasItemTOV: (itemId) => {
         return itemId in get().tovData;
+      },
+
+      // Skupiny Memory Actions
+      recordSkupinaMemory: (kod, skupina) => {
+        const trimmedKod = kod?.trim();
+        if (!trimmedKod || !skupina) return;
+        set((state) => ({
+          skupinyMemory: { ...state.skupinyMemory, [trimmedKod]: skupina },
+        }));
+      },
+
+      getMemorySkupiny: (kod) => {
+        const mem = get().skupinyMemory;
+        const trimmed = kod?.trim();
+        return trimmed ? (mem[trimmed] || null) : null;
+      },
+
+      clearSkupinaMemory: () => {
+        set({ skupinyMemory: {} });
+      },
+
+      getSkupinyMemoryCount: () => {
+        return Object.keys(get().skupinyMemory).length;
+      },
+
+      // Clear skupiny from all items in a sheet (without deleting items)
+      clearSheetSkupiny: (projectId, sheetId) => {
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => {
+                if (sheet.id !== sheetId) return sheet;
+                return {
+                  ...sheet,
+                  items: sheet.items.map((item) => ({ ...item, skupina: null })),
+                };
+              }),
+            };
+          }),
+        }));
+        get().updateSheetStats(projectId, sheetId);
+      },
+
+      // Clear skupiny from ALL sheets in a project
+      clearProjectSkupiny: (projectId) => {
+        const project = get().projects.find(p => p.id === projectId);
+        if (!project) return;
+        set((state) => ({
+          projects: state.projects.map((p) => {
+            if (p.id !== projectId) return p;
+            return {
+              ...p,
+              sheets: p.sheets.map((sheet) => ({
+                ...sheet,
+                items: sheet.items.map((item) => ({ ...item, skupina: null })),
+              })),
+            };
+          }),
+        }));
+        project.sheets.forEach(s => get().updateSheetStats(projectId, s.id));
       },
     }),
     {
