@@ -54,20 +54,20 @@ export function getLLMConfig() {
     break;
   case 'gemini':
     apiKey = process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
-    // gemini-2.0-flash is stable GA. gemini-2.0-flash-exp was preview (now retired).
-    defaultModel = 'gemini-2.0-flash';
+    // gemini-2.5-flash-lite (Feb 2026, fast, cheap). gemini-2.0-flash retired.
+    defaultModel = 'gemini-2.5-flash-lite';
     break;
   case 'deepseek':
     apiKey = process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
-    defaultModel = 'deepseek-chat';  // DeepSeek V3 (very cheap!)
+    defaultModel = 'deepseek-v3';  // DeepSeek V3 (very cheap!)
     break;
   case 'grok':
     apiKey = process.env.XAI_API_KEY || process.env.LLM_API_KEY;
-    defaultModel = 'grok-2';
+    defaultModel = 'grok-3';
     break;
   case 'qwen':
     apiKey = process.env.DASHSCOPE_API_KEY || process.env.LLM_API_KEY;
-    defaultModel = 'qwen-plus';  // Alibaba Qwen
+    defaultModel = 'qwen-max';  // Alibaba Qwen (Feb 2026 flagship)
     break;
   case 'glm':
     apiKey = process.env.ZHIPU_API_KEY || process.env.LLM_API_KEY;
@@ -75,7 +75,7 @@ export function getLLMConfig() {
     break;
   default:
     apiKey = process.env.LLM_API_KEY || process.env.OPENAI_API_KEY;
-    defaultModel = 'gpt-4o-mini';
+    defaultModel = 'gpt-5-mini';
   }
 
   const model = process.env.LLM_MODEL || defaultModel;
@@ -492,19 +492,19 @@ export const BRAVE_SEARCH_CONFIG = getBraveSearchConfig();
 
 /**
  * Model pricing information (USD per 1M tokens)
- * Last updated: December 2024
+ * Last updated: February 2026
  */
 const MODEL_PRICING = {
-  // Claude models
-  'claude-sonnet-4-5-20250929': {
+  // Claude models (Anthropic)
+  'claude-sonnet-4-6': {
     provider: 'claude',
     inputCost: 3.0,      // $3 per 1M input tokens
     outputCost: 15.0,    // $15 per 1M output tokens
-    costPerMinute: 0.30, // Estimated for typical usage
-    speedScore: 8,       // 1-10 scale (10 = fastest)
-    qualityScore: 10     // 1-10 scale (10 = best)
+    costPerMinute: 0.30,
+    speedScore: 8,
+    qualityScore: 10
   },
-  'claude-opus': {
+  'claude-opus-4-6': {
     provider: 'claude',
     inputCost: 15.0,
     outputCost: 75.0,
@@ -513,15 +513,7 @@ const MODEL_PRICING = {
     qualityScore: 10
   },
   // OpenAI models
-  'gpt-4-turbo': {
-    provider: 'openai',
-    inputCost: 10.0,
-    outputCost: 30.0,
-    costPerMinute: 1.00,
-    speedScore: 7,
-    qualityScore: 9
-  },
-  'gpt-4o': {
+  'gpt-4.1': {
     provider: 'openai',
     inputCost: 5.0,
     outputCost: 15.0,
@@ -529,7 +521,7 @@ const MODEL_PRICING = {
     speedScore: 9,
     qualityScore: 9
   },
-  'gpt-4o-mini': {
+  'gpt-5-mini': {
     provider: 'openai',
     inputCost: 0.15,
     outputCost: 0.60,
@@ -537,31 +529,31 @@ const MODEL_PRICING = {
     speedScore: 10,
     qualityScore: 7
   },
-  // Gemini models
-  'gemini-2.0-flash': {
+  // Gemini models (Google)
+  'gemini-2.5-flash-lite': {
     provider: 'gemini',
-    inputCost: 0.075,     // $0.075 per 1M input tokens (cheapest!)
-    outputCost: 0.30,     // $0.30 per 1M output tokens
-    costPerMinute: 0.001, // Extremely cheap
-    speedScore: 10,       // Very fast
-    qualityScore: 8       // Good quality
-  },
-  'gemini-pro': {
-    provider: 'gemini',
-    inputCost: 0.5,
-    outputCost: 1.5,
-    costPerMinute: 0.05,
-    speedScore: 9,
+    inputCost: 0.075,     // extremely cheap
+    outputCost: 0.30,
+    costPerMinute: 0.001,
+    speedScore: 10,
     qualityScore: 8
   },
+  'gemini-2.5-pro': {
+    provider: 'gemini',
+    inputCost: 1.25,
+    outputCost: 5.0,
+    costPerMinute: 0.10,
+    speedScore: 8,
+    qualityScore: 10
+  },
   // DeepSeek models (VERY CHEAP!)
-  'deepseek-chat': {
+  'deepseek-v3': {
     provider: 'deepseek',
     inputCost: 0.14,      // $0.14 per 1M input tokens (cache hit: $0.014!)
-    outputCost: 0.28,     // $0.28 per 1M output tokens
-    costPerMinute: 0.001, // Extremely cheap
+    outputCost: 0.28,
+    costPerMinute: 0.001,
     speedScore: 9,
-    qualityScore: 9       // Very good quality, comparable to GPT-4
+    qualityScore: 9
   },
   'deepseek-reasoner': {
     provider: 'deepseek',
@@ -569,33 +561,33 @@ const MODEL_PRICING = {
     outputCost: 2.19,
     costPerMinute: 0.01,
     speedScore: 7,
-    qualityScore: 10      // Best reasoning
+    qualityScore: 10
   },
   // Grok models (xAI)
-  'grok-2': {
+  'grok-3': {
     provider: 'grok',
-    inputCost: 2.0,
-    outputCost: 10.0,
-    costPerMinute: 0.20,
+    inputCost: 3.0,
+    outputCost: 15.0,
+    costPerMinute: 0.30,
     speedScore: 8,
     qualityScore: 9
   },
-  'grok-2-mini': {
+  'grok-3-mini': {
     provider: 'grok',
-    inputCost: 0.2,
-    outputCost: 1.0,
+    inputCost: 0.3,
+    outputCost: 0.5,
     costPerMinute: 0.02,
     speedScore: 10,
     qualityScore: 7
   },
   // Qwen models (Alibaba)
-  'qwen-plus': {
+  'qwen-max': {
     provider: 'qwen',
-    inputCost: 0.8,
-    outputCost: 2.0,
-    costPerMinute: 0.03,
-    speedScore: 9,
-    qualityScore: 8
+    inputCost: 1.6,
+    outputCost: 6.4,
+    costPerMinute: 0.05,
+    speedScore: 8,
+    qualityScore: 9
   },
   'qwen-turbo': {
     provider: 'qwen',
@@ -773,32 +765,32 @@ const TASK_MODEL_ROUTING = {
   [TASK_TYPES.KEYWORD_GENERATION]: {
     priority: ['gemini', 'openai', 'claude'],
     reason: 'Fast and cheap for simple extraction',
-    preferModel: 'gemini-2.0-flash'
+    preferModel: 'gemini-2.5-flash-lite'
   },
   [TASK_TYPES.TRANSLATION]: {
     priority: ['gemini', 'claude', 'openai'],
     reason: 'Fast translation with good quality',
-    preferModel: 'gemini-2.0-flash'
+    preferModel: 'gemini-2.5-flash-lite'
   },
   [TASK_TYPES.BLOCK_ANALYSIS]: {
     priority: ['claude', 'openai', 'gemini'],
     reason: 'Complex reasoning requires best quality',
-    preferModel: 'claude-sonnet-4-5-20250929'
+    preferModel: 'claude-sonnet-4-6'
   },
   [TASK_TYPES.URS_SELECTION]: {
     priority: ['claude', 'openai', 'gemini'],
     reason: 'Critical decision - needs expert reasoning',
-    preferModel: 'claude-sonnet-4-5-20250929'
+    preferModel: 'claude-sonnet-4-6'
   },
   [TASK_TYPES.VALIDATION]: {
     priority: ['openai', 'claude', 'gemini'],
     reason: 'Different POV for validation',
-    preferModel: 'gpt-4-turbo'
+    preferModel: 'gpt-4.1'
   },
   [TASK_TYPES.NORMS_INTERPRETATION]: {
     priority: ['claude', 'openai', 'gemini'],
     reason: 'Technical norms require precise understanding',
-    preferModel: 'claude-sonnet-4-5-20250929'
+    preferModel: 'claude-sonnet-4-6'
   }
 };
 

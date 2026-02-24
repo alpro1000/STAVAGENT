@@ -152,7 +152,7 @@ Content-Type: application/json
 **LLM Configuration:**
 ```env
 MULTI_ROLE_LLM=gemini          # "gemini" (default/cheap), "claude", "auto" (fallback)
-GEMINI_MODEL=gemini-2.0-flash-exp
+GEMINI_MODEL=gemini-2.5-flash-lite
 ```
 
 **Monorepo Structure:**
@@ -628,7 +628,7 @@ claude/<task-description>-<random5chars>
 ```env
 ANTHROPIC_API_KEY=sk-ant-...
 GOOGLE_API_KEY=...              # Gemini (default LLM - FREE/cheap)
-GEMINI_MODEL=gemini-2.0-flash-exp
+GEMINI_MODEL=gemini-2.5-flash-lite
 MULTI_ROLE_LLM=gemini           # "gemini", "claude", "auto"
 OPENAI_API_KEY=sk-...
 DATABASE_URL=postgresql+asyncpg://...
