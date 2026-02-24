@@ -22,11 +22,13 @@
  * DŮLEŽITÉ: Cena nájmu NEZAHRNUJE dopravu, montáž ani DPH!
  */
 
-import { Plus, Trash2, ArrowDownToLine } from 'lucide-react';
+import { useState } from 'react';
+import { Plus, Trash2, ArrowDownToLine, Sparkles } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import type { FormworkRentalRow } from '../../types/unified';
 import type { MaterialResource } from '../../types/unified';
 import formworkKnowledge from '../../data/formwork_knowledge.json';
+import { FormworkAIModal } from './FormworkAIModal';
 
 // ─── Knowledge base: formwork systems (loaded from formwork_knowledge.json) ──
 
@@ -161,6 +163,18 @@ export function FormworkRentalSection({
   itemMnozstvi,
   onAddToMaterials,
 }: FormworkRentalSectionProps) {
+  // AI modal state: which row is being suggested (null = closed)
+  const [aiTargetRowId, setAiTargetRowId] = useState<string | null>(null);
+
+  const aiTargetRow = aiTargetRowId ? rows.find(r => r.id === aiTargetRowId) ?? null : null;
+
+  const handleApplyAI = (
+    rowId: string,
+    values: { pocet_taktu: number; sada_m2: number; dni_na_takt: number; dni_beton_takt: number; dni_demontaz: number }
+  ) => {
+    updateRow(rowId, { ...values, auto_taktu: false });
+  };
+
   const addRow = () => {
     const name = rows.length === 0 ? (itemPopis ?? '') : '';
     const area = rows.length === 0 ? (itemMnozstvi ?? 0) : 0;
@@ -235,6 +249,16 @@ export function FormworkRentalSection({
           <span className="text-xs text-slate-500">
             Celkem: <strong className="text-blue-700">{totalRental.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</strong>
           </span>
+          {rows.length > 0 && (
+            <button
+              onClick={() => setAiTargetRowId(rows[0].id)}
+              className="flex items-center gap-1 px-2 py-1 text-xs text-purple-600 border border-purple-300 rounded hover:bg-purple-50 transition-colors"
+              title="AI Průvodce taktování — vyplní takty, montáž, zrání na základě vašich odpovědí"
+            >
+              <Sparkles size={12} />
+              AI Průvodce
+            </button>
+          )}
           <button
             onClick={addRow}
             className="flex items-center gap-1 px-2 py-1 text-xs text-blue-600 border border-blue-300 rounded hover:bg-blue-50 transition-colors"
@@ -459,6 +483,13 @@ export function FormworkRentalSection({
                   <td className={`${tdCell} text-center`}>
                     <div className="flex items-center gap-0.5">
                       <button
+                        onClick={() => setAiTargetRowId(row.id)}
+                        title="✨ AI Průvodce — navrhnout takty a zrání pro tento řádek"
+                        className="p-0.5 text-purple-500 hover:bg-purple-50 rounded transition-colors"
+                      >
+                        <Sparkles size={13} />
+                      </button>
+                      <button
                         onClick={() => addRowToMaterials(row)}
                         title="Přidat do Materiálů jako MaterialResource"
                         className="p-0.5 text-green-600 hover:bg-green-50 rounded transition-colors"
@@ -493,6 +524,19 @@ export function FormworkRentalSection({
           </tfoot>
         </table>
       </div>
+
+      {/* AI Modal — rendered per-row when ✨ button is clicked */}
+      {aiTargetRow && (
+        <FormworkAIModal
+          isOpen={true}
+          onClose={() => setAiTargetRowId(null)}
+          initialCelkemM2={aiTargetRow.celkem_m2}
+          initialSadaM2={aiTargetRow.sada_m2}
+          initialPocetSad={aiTargetRow.pocet_sad}
+          initialSystem={aiTargetRow.bednici_system}
+          onApply={values => handleApplyAI(aiTargetRow.id, values)}
+        />
+      )}
 
       {/* Add all to materials */}
       {rows.length > 0 && (

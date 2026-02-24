@@ -49,10 +49,12 @@ export function getLLMConfig() {
   switch (provider) {
   case 'claude':
     apiKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
-    defaultModel = 'claude-sonnet-4-5-20250929';
+    // claude-sonnet-4-6 is current as of Feb 2026 (claude-sonnet-4-5 → 4-6)
+    defaultModel = 'claude-sonnet-4-6';
     break;
   case 'gemini':
     apiKey = process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
+    // gemini-2.0-flash is stable GA. gemini-2.0-flash-exp was preview (now retired).
     defaultModel = 'gemini-2.0-flash';
     break;
   case 'deepseek':
