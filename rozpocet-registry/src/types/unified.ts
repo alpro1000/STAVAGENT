@@ -166,7 +166,8 @@ export interface FormworkRentalRow {
   celkem_m2: number;               // Celkem [m2] — total formwork area
   sada_m2: number;                 // Sada [m2] — one set area
   pocet_taktu: number;             // Množství taktů [kus]
-  pocet_sad: number;               // Množství sad [kus] — usually 1 or 2
+  auto_taktu?: boolean;            // When true: pocet_taktu = ⌈celkem_m2 / sada_m2⌉ (auto-derived)
+  pocet_sad: number;               // Množství sad [kus] — usually 1 or 2 (šachmatný postup)
   dni_na_takt: number;             // počet dní na takt (zřízení+odstranění)
   dni_beton_takt: number;          // Doba beton+výztuž+zrání na 1 takt [den]
   // Computed (stored for display):
