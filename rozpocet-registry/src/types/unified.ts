@@ -185,6 +185,63 @@ export interface FormworkRentalRow {
   kros_popis?: string;             // Auto-generated description
 }
 
+/**
+ * PumpConstructionItem — one construction element in the pump calculator table.
+ * Tracks volume per takt and number of pump mobilizations (přistavení).
+ */
+export interface PumpConstructionItem {
+  id: string;
+  nazev: string;                   // Betonáž základové desky / pilotů...
+  objem_m3_takt: number;           // m³ concrete per takt
+  pocet_taktu: number;             // number of construction cycles
+  pocet_pristaveni: number;        // number of pump mobilizations for this element
+  // computed:
+  celkem_m3: number;               // = objem_m3_takt × pocet_taktu
+}
+
+/**
+ * PumpSurcharge — additional charge per pump mobilization
+ * e.g. čištění pumpy, příplatek za víkend, příplatek za vzdálenost
+ */
+export interface PumpSurcharge {
+  id: string;
+  nazev: string;                   // Name of the surcharge
+  czk_per_pristaveni: number;      // CZK per mobilization
+  // computed:
+  celkem: number;                  // = czk_per_pristaveni × celkem_pristaveni
+}
+
+/**
+ * PumpRentalData — full concrete pump calculator state.
+ * One instance per BETON_MONOLIT / BETON_PREFAB position.
+ *
+ * Cost structure from supplier offer:
+ *   doprava × přistavení  +  čerpání × max(m³, min_objem×přistavení)  +  příplatky
+ */
+export interface PumpRentalData {
+  // Construction elements
+  items: PumpConstructionItem[];
+
+  // Pump offer parameters (from betonárka / pump company)
+  doprava_czk_pristaveni: number;  // Transport cost per mobilization [Kč]
+  cerpani_czk_m3: number;         // Pumping cost per m³ [Kč]
+  min_objem_m3: number;           // Minimum charged volume per mobilization [m³]
+
+  // Additional surcharges (příplatky)
+  surcharges: PumpSurcharge[];
+
+  // KROS
+  kros_kod?: string;
+
+  // Computed totals (stored for display & export)
+  celkem_m3: number;              // Total concrete volume
+  celkem_pristaveni: number;      // Total pump mobilizations
+  celkem_doprava: number;         // = celkem_pristaveni × doprava_czk_pristaveni
+  celkem_cerpani: number;         // = charged_m3 × cerpani_czk_m3
+  celkem_priplatky: number;       // Sum of surcharges
+  konecna_cena: number;           // Grand total
+}
+
 export interface TOVData {
   // === ТРУДОВЫЕ РЕСУРСЫ ===
   labor: LaborResource[];
@@ -215,6 +272,9 @@ export interface TOVData {
 
   // === NÁJEM BEDNĚNÍ (only for BEDNENI positions) ===
   formworkRental?: FormworkRentalRow[];
+
+  // === KALKULÁTOR BETONOČERPADLA (only for BETON_MONOLIT / BETON_PREFAB) ===
+  pumpRental?: PumpRentalData;
 }
 
 export interface LaborResource {

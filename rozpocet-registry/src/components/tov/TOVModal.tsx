@@ -15,7 +15,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { X, Users, Truck, Package, Calculator, ExternalLink, Check, ArrowRight } from 'lucide-react';
 import type { ParsedItem } from '../../types';
-import type { TOVData, LaborResource, MachineryResource, MaterialResource, FormworkRentalRow } from '../../types/unified';
+import type { TOVData, LaborResource, MachineryResource, MaterialResource, FormworkRentalRow, PumpRentalData } from '../../types/unified';
 import { LaborTab } from './LaborTab';
 import { MachineryTab } from './MachineryTab';
 import { MaterialsTab } from './MaterialsTab';
@@ -62,13 +62,14 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
     setPriceApplied(false);
   }, [tovData, item.id]);
 
-  // Calculate total cost from all resources (including formwork rental)
+  // Calculate total cost from all resources (labor + machinery + materials + formwork + pump)
   const calculatedTotals = useMemo(() => {
     const laborCost = localData.labor.reduce((sum, r) => sum + (r.totalCost || 0), 0);
     const machineryCost = localData.machinery.reduce((sum, r) => sum + (r.totalCost || 0), 0);
     const materialsCost = localData.materials.reduce((sum, r) => sum + (r.totalCost || 0), 0);
     const formworkCost = (localData.formworkRental ?? []).reduce((sum, r) => sum + r.konecny_najem, 0);
-    const totalCost = laborCost + machineryCost + materialsCost + formworkCost;
+    const pumpCost = localData.pumpRental?.konecna_cena ?? 0;
+    const totalCost = laborCost + machineryCost + materialsCost + formworkCost + pumpCost;
     const quantity = item.mnozstvi || 1;
     const unitPrice = quantity > 0 ? totalCost / quantity : totalCost;
 
@@ -76,9 +77,11 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
       laborCost,
       machineryCost,
       materialsCost,
+      formworkCost,
+      pumpCost,
       totalCost,
       unitPrice,
-      quantity
+      quantity,
     };
   }, [localData, item.mnozstvi]);
 
@@ -138,6 +141,16 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
   const handleFormworkRentalChange = (formworkRental: FormworkRentalRow[]) => {
     setLocalData(prev => {
       const updatedData = { ...prev, formworkRental };
+      isAutoSaving.current = true;
+      onSave(updatedData);
+      return updatedData;
+    });
+  };
+
+  // Auto-persist pump rental data on every change (same pattern as formwork).
+  const handlePumpRentalChange = (pumpRental: PumpRentalData) => {
+    setLocalData(prev => {
+      const updatedData = { ...prev, pumpRental };
       isAutoSaving.current = true;
       onSave(updatedData);
       return updatedData;
@@ -246,6 +259,9 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               resources={localData.machinery}
               onChange={handleMachineryChange}
               itemQuantity={item.mnozstvi}
+              itemSkupina={item.skupina}
+              pumpRental={localData.pumpRental}
+              onPumpRentalChange={handlePumpRentalChange}
             />
           )}
           {activeTab === 'materials' && (
@@ -322,9 +338,14 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
                 {calculatedTotals.materialsCost > 0 && (
                   <span>Materiály: {calculatedTotals.materialsCost.toLocaleString('cs-CZ')} Kč</span>
                 )}
-                {(localData.formworkRental?.length ?? 0) > 0 && (
+                {calculatedTotals.formworkCost > 0 && (
                   <span className="text-blue-600">
-                    Nájem bednění: {(localData.formworkRental ?? []).reduce((s, r) => s + r.konecny_najem, 0).toLocaleString('cs-CZ')} Kč
+                    Nájem bednění: {calculatedTotals.formworkCost.toLocaleString('cs-CZ')} Kč
+                  </span>
+                )}
+                {calculatedTotals.pumpCost > 0 && (
+                  <span className="text-blue-600">
+                    Betonočerpadlo: {calculatedTotals.pumpCost.toLocaleString('cs-CZ')} Kč
                   </span>
                 )}
               </div>

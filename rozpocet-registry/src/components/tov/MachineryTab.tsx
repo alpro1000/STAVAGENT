@@ -7,13 +7,20 @@
 
 import { useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
-import type { MachineryResource } from '../../types/unified';
+import type { MachineryResource, PumpRentalData } from '../../types/unified';
 import { v4 as uuidv4 } from 'uuid';
+import { PumpRentalSection } from './PumpRentalSection';
+
+// Work groups where the concrete pump calculator is relevant
+const PUMP_SKUPINY = new Set(['BETON_MONOLIT', 'BETON_PREFAB', 'PILOTY']);
 
 interface MachineryTabProps {
   resources: MachineryResource[];
   onChange: (resources: MachineryResource[]) => void;
   itemQuantity: number | null;
+  itemSkupina?: string | null;
+  pumpRental?: PumpRentalData;
+  onPumpRentalChange?: (data: PumpRentalData) => void;
 }
 
 const COMMON_MACHINERY = [
@@ -42,7 +49,15 @@ const DEFAULT_RATES: Record<string, number> = {
   'Kompresor': 380,
 };
 
-export function MachineryTab({ resources, onChange, itemQuantity }: MachineryTabProps) {
+export function MachineryTab({
+  resources,
+  onChange,
+  itemQuantity,
+  itemSkupina,
+  pumpRental,
+  onPumpRentalChange,
+}: MachineryTabProps) {
+  const showPumpCalc = !!itemSkupina && PUMP_SKUPINY.has(itemSkupina);
   const [showAddForm, setShowAddForm] = useState(false);
   const [newType, setNewType] = useState('');
 
@@ -245,6 +260,15 @@ export function MachineryTab({ resources, onChange, itemQuantity }: MachineryTab
         <div className="text-xs text-text-muted mt-2">
           Položka: {itemQuantity} jednotek. Strojhodiny na jednotku: {totalMachineHours > 0 ? (totalMachineHours / itemQuantity).toFixed(2) : '-'} h
         </div>
+      )}
+
+      {/* Pump rental calculator — shown for BETON_MONOLIT / BETON_PREFAB / PILOTY */}
+      {showPumpCalc && onPumpRentalChange && (
+        <PumpRentalSection
+          pumpRental={pumpRental}
+          onChange={onPumpRentalChange}
+          itemQuantity={itemQuantity}
+        />
       )}
     </div>
   );
