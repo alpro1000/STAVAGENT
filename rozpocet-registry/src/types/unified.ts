@@ -186,8 +186,8 @@ export interface FormworkRentalRow {
 }
 
 /**
- * PumpConstructionItem — one construction element in the pump calculator table.
- * Tracks volume per takt and number of pump mobilizations (přistavení).
+ * PumpConstructionItem — one construction element in the pump calculator.
+ * Tracks volume per takt, mobilizations, and computed billing hours.
  */
 export interface PumpConstructionItem {
   id: string;
@@ -195,13 +195,16 @@ export interface PumpConstructionItem {
   objem_m3_takt: number;           // m³ concrete per takt
   pocet_taktu: number;             // number of construction cycles
   pocet_pristaveni: number;        // number of pump mobilizations for this element
-  // computed:
+  // computed (re-calculated when pump type changes):
   celkem_m3: number;               // = objem_m3_takt × pocet_taktu
+  hodiny_cerpani: number;          // = celkem_m3 / vykon_m3h
+  hodiny_overhead: number;         // = pocet_pristaveni × (stavba_h + myti_h)
+  hodiny_celkem: number;           // = hodiny_cerpani + hodiny_overhead
 }
 
 /**
- * PumpSurcharge — additional charge per pump mobilization
- * e.g. čištění pumpy, příplatek za víkend, příplatek za vzdálenost
+ * PumpSurcharge — additional custom charge per pump mobilization.
+ * e.g. příplatek za víkend, noční provoz, čekání.
  */
 export interface PumpSurcharge {
   id: string;
@@ -212,34 +215,76 @@ export interface PumpSurcharge {
 }
 
 /**
+ * PumpAccessory — optional accessory charge (příslušenství).
+ * e.g. gumová hadice (Kč/m), drátkobetonová (Kč/m³).
+ */
+export interface PumpAccessory {
+  id: string;
+  nazev: string;                   // Gumová hadice, Ocelové potrubí...
+  mnozstvi: number;                // Length in m, volume in m³, or count
+  unit: string;                    // "m", "m³", "ks"
+  czk_per_unit: number;            // From knowledge base or custom
+  // computed:
+  celkem: number;                  // = mnozstvi × czk_per_unit
+}
+
+/**
  * PumpRentalData — full concrete pump calculator state.
- * One instance per BETON_MONOLIT / BETON_PREFAB position.
+ * Realistic pricing model based on Czech supplier offers (betonárka).
  *
- * Cost structure from supplier offer:
- *   doprava × přistavení  +  čerpání × max(m³, min_objem×přistavení)  +  příplatky
+ * Cost formula:
+ *   Doprava     = přistavení × (pristaveni_fixed + km × czk_km × 2)
+ *   Manipulace  = manipulace_czk_h × Σ hodiny_celkem_per_item
+ *   Příplatek   = priplatek_czk_m3 × celkem_m3  (0 for small pumps)
+ *   Příslušenství = Σ accessories
+ *   Příplatky   = Σ surcharges × celkem_pristaveni
+ *   ──────────────────────────────────────────────
+ *   Konečná cena = součet všeho výše
+ *
+ * Standard times (per přistavení, per Beton Union):
+ *   0.5 h stavba + 0.5 h mytí = 1 h overhead billed at manipulace_czk_h
  */
 export interface PumpRentalData {
-  // Construction elements
+  // ── Pump type (from pump_knowledge.json) ──────────────────────────────────
+  pump_type_id?: string;           // e.g. "bu_28_24"
+  pump_label?: string;             // e.g. "28/24 m (Boom 28 m)"
+
+  // ── Pump parameters (auto-filled from knowledge base, but editable) ───────
+  manipulace_czk_h: number;        // Hourly rate on site [Kč/h]
+  priplatek_czk_m3: number;        // Per-m³ surcharge (0 for small pumps) [Kč/m³]
+  pristaveni_fixed_czk: number;    // Fixed mobilization cost at plant [Kč]
+  czk_km: number;                  // Per km (one way) — calc uses × 2 [Kč/km]
+  vykon_m3h: number;               // Pump capacity for auto-computing hours [m³/h]
+
+  // ── Transport ──────────────────────────────────────────────────────────────
+  vzdalenost_km: number;           // Distance from concrete plant [km, one way]
+
+  // ── Standard overhead times (per přistavení) ──────────────────────────────
+  stavba_h: number;                // Setup time per mobilization [h], default 0.5
+  myti_h: number;                  // Cleanup time per mobilization [h], default 0.5
+
+  // ── Construction elements ──────────────────────────────────────────────────
   items: PumpConstructionItem[];
 
-  // Pump offer parameters (from betonárka / pump company)
-  doprava_czk_pristaveni: number;  // Transport cost per mobilization [Kč]
-  cerpani_czk_m3: number;         // Pumping cost per m³ [Kč]
-  min_objem_m3: number;           // Minimum charged volume per mobilization [m³]
+  // ── Accessories (příslušenství) ────────────────────────────────────────────
+  accessories: PumpAccessory[];
 
-  // Additional surcharges (příplatky)
+  // ── Custom surcharges (příplatky) ─────────────────────────────────────────
   surcharges: PumpSurcharge[];
 
-  // KROS
+  // ── KROS ──────────────────────────────────────────────────────────────────
   kros_kod?: string;
 
-  // Computed totals (stored for display & export)
-  celkem_m3: number;              // Total concrete volume
-  celkem_pristaveni: number;      // Total pump mobilizations
-  celkem_doprava: number;         // = celkem_pristaveni × doprava_czk_pristaveni
-  celkem_cerpani: number;         // = charged_m3 × cerpani_czk_m3
-  celkem_priplatky: number;       // Sum of surcharges
-  konecna_cena: number;           // Grand total
+  // ── Computed totals (stored for display & export) ─────────────────────────
+  celkem_m3: number;               // Total concrete volume
+  celkem_pristaveni: number;       // Total pump mobilizations
+  celkem_hodiny: number;           // Total billing hours (Σ hodiny_celkem)
+  celkem_doprava: number;          // n × (pristaveni_fixed + km × czk_km × 2)
+  celkem_manipulace: number;       // manipulace_czk_h × celkem_hodiny
+  celkem_priplatek_m3: number;     // priplatek_czk_m3 × celkem_m3
+  celkem_prislusenstvi: number;    // Σ accessories.celkem
+  celkem_priplatky: number;        // Σ surcharges.celkem
+  konecna_cena: number;            // Grand total
 }
 
 export interface TOVData {
