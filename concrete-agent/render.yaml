@@ -20,9 +20,9 @@ services:
       
       # AI Models
       - key: CLAUDE_MODEL
-        value: claude-sonnet-4-20250514
+        value: claude-sonnet-4-6
       - key: GPT4_MODEL
-        value: gpt-4-vision-preview
+        value: gpt-4.1
       - key: CLAUDE_MAX_TOKENS
         value: 4000
       - key: GPT4_MAX_TOKENS

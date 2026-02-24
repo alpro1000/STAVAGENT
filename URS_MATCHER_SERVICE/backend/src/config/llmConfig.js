@@ -140,7 +140,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'claude',
       apiKey: claudeKey,
-      model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-5-20250929',
+      model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -152,7 +152,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'gemini',
       apiKey: geminiKey,
-      model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+      model: process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -164,7 +164,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'openai',
       apiKey: openaiKey,
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',  // 66x cheaper than gpt-4-turbo
+      model: process.env.OPENAI_MODEL || 'gpt-5-mini',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -176,7 +176,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'deepseek',
       apiKey: deepseekKey,
-      model: process.env.DEEPSEEK_MODEL || 'deepseek-chat',
+      model: process.env.DEEPSEEK_MODEL || 'deepseek-v3',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -188,7 +188,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'grok',
       apiKey: grokKey,
-      model: process.env.GROK_MODEL || 'grok-2',
+      model: process.env.GROK_MODEL || 'grok-3',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -200,7 +200,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'qwen',
       apiKey: qwenKey,
-      model: process.env.QWEN_MODEL || 'qwen-plus',
+      model: process.env.QWEN_MODEL || 'qwen-max',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -887,18 +887,17 @@ export function getAllModels() {
  */
 function formatModelName(modelId) {
   const names = {
-    'claude-sonnet-4-5-20250929': 'Claude Sonnet 4.5',
-    'claude-opus': 'Claude Opus',
-    'gpt-4-turbo': 'GPT-4 Turbo',
-    'gpt-4o': 'GPT-4o',
-    'gpt-4o-mini': 'GPT-4o Mini',
-    'gemini-2.0-flash': 'Gemini 2.0 Flash',
-    'gemini-pro': 'Gemini Pro',
-    'deepseek-chat': 'DeepSeek V3 Chat',
+    'claude-sonnet-4-6': 'Claude Sonnet 4.6',
+    'claude-opus-4-6': 'Claude Opus 4.6',
+    'gpt-4.1': 'GPT-4.1',
+    'gpt-5-mini': 'GPT-5 Mini',
+    'gemini-2.5-flash-lite': 'Gemini 2.5 Flash Lite',
+    'gemini-2.5-pro': 'Gemini 2.5 Pro',
+    'deepseek-v3': 'DeepSeek V3',
     'deepseek-reasoner': 'DeepSeek Reasoner',
-    'grok-2': 'Grok 2',
-    'grok-2-mini': 'Grok 2 Mini',
-    'qwen-plus': 'Qwen Plus',
+    'grok-3': 'Grok 3',
+    'grok-3-mini': 'Grok 3 Mini',
+    'qwen-max': 'Qwen Max',
     'qwen-turbo': 'Qwen Turbo',
     'glm-4-flash': 'GLM-4 Flash (Free)',
     'glm-4': 'GLM-4'
@@ -927,7 +926,7 @@ function formatProviderName(provider) {
  */
 function isRecommendedModel(modelId) {
   // Recommended models: cheap + good quality
-  const recommended = ['deepseek-chat', 'gemini-2.0-flash', 'glm-4-flash', 'gpt-4o-mini'];
+  const recommended = ['deepseek-v3', 'gemini-2.5-flash-lite', 'glm-4-flash', 'gpt-5-mini'];
   return recommended.includes(modelId);
 }
 
