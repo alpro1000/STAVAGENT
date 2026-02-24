@@ -331,26 +331,81 @@
     "unit": "Nh/m²"
   },
   "key_formulas": {
+    "pocet_taktu_auto": "⌈celkem_m2 / sada_m2⌉ — minimum tact count for given set size",
+    "takt_per_set": "pocet_taktu / pocet_sad — each set repositions this many times",
+    "doba_bedneni": "takt_per_set × dni_na_takt [days] — assembly per set",
+    "celkem_beton": "takt_per_set × dni_beton_takt [days] — curing per set",
+    "celkova_doba": "doba_bedneni + celkem_beton + dni_demontaz [days] — total calendar duration incl. final stripping",
     "mesicni_najem_sada": "sada_m2 × mesicni_najem_jednotka [Kč/m²/měsíc]",
-    "konecny_najem": "mesicni_najem_sada × (celkova_doba_dni / 30) × pocet_sad",
-    "doba_bedneni": "(pocet_taktu / pocet_sad) × dni_na_takt",
-    "celkova_doba": "doba_bedneni + celkem_beton_dni",
-    "labor_cost": "assembly_h_m2 × celkem_m2 × hourly_rate_czk"
+    "konecny_najem": "mesicni_najem_sada × MAX(1, celkova_doba/30) × pocet_sad — min. 1 month billing",
+    "labor_cost": "assembly_h_m2 × celkem_m2 × hourly_rate_czk — NOT included in rental price",
+    "note_sachmatny": "šachmatný postup (pocet_sad=2): takt_per_set halves → calendar duration halves, rental cost identical"
+  },
+  "concrete_curing_by_type": {
+    "_note": "Minimum stripping time at +20°C per ČSN EN 13670 §8.5. Temperature correction: ×2 at +10°C, ×3 at +5°C, ×4 at 0°C. Concrete class C25/30, CEM I 42.5R assumed.",
+    "zakl_cela": {
+      "label_cs": "Základy, čela (boční bednění)",
+      "dni_beton_min": 1,
+      "dni_beton_typical": 2,
+      "dni_demontaz": 1,
+      "note": "Boční bednění základových pasů a desek. Beton dosáhne 50 % fck za ~24–48 h. Nesmí být zatěžováno dříve."
+    },
+    "stena_opera": {
+      "label_cs": "Stěny, opěry, opěrné zdi",
+      "dni_beton_min": 3,
+      "dni_beton_typical": 5,
+      "dni_demontaz": 1,
+      "note": "Nejčastější případ mostní opěry a protihlukové stěny. ČSN EN 13670 §8.5: min 70 % fck před odbedněním."
+    },
+    "pilir_masivni": {
+      "label_cs": "Pilíře, masivní opěry",
+      "dni_beton_min": 5,
+      "dni_beton_typical": 7,
+      "dni_demontaz": 1,
+      "note": "Masivní průřezy — tepelný gradient > 20 K → riziko trhlin. Nutno monitorovat teplotu. Prodloužit při CEM III nebo nízkoteplotní cementaci."
+    },
+    "strop_deska": {
+      "label_cs": "Stropní desky — spodní (nosné) bednění",
+      "dni_beton_min": 14,
+      "dni_beton_typical": 21,
+      "dni_demontaz": 2,
+      "note": "Nosné spodní bednění nesmí se odstraňovat do dosažení ≥70 % fck nosné konstrukce. Po odstranění nutno ponechat podbednění (re-propping) dle statika."
+    },
+    "mostovka": {
+      "label_cs": "Mostovky (bridge deck slabs)",
+      "dni_beton_min": 21,
+      "dni_beton_typical": 28,
+      "dni_demontaz": 2,
+      "note": "Dle TP 102 (ČR) min. 28 dní nebo 80 % fck. Skružová bednění se odbedňují postupně od středu k oporám. Přidejte 3–7 dní pro kolejnicový posun skruže."
+    }
   },
   "typical_cycle_times": {
     "frami_basic": {
       "assembly_days": 3,
       "concrete_cure_days": 5,
-      "disassembly_days": 1,
-      "total_days": 9,
-      "note": "Pro 1 takt základové stěny délky 20 m, h=1,5 m, 2 pracovníci"
+      "disassembly_days_final": 1,
+      "total_days_per_takt": 9,
+      "note": "Pro 1 takt stěny opěry délky 20 m, h=1,5 m, 2 pracovníci. dni_na_takt=3, dni_beton_takt=5, dni_demontaz=1."
     },
     "framax_pillar": {
       "assembly_days": 2,
-      "concrete_cure_days": 5,
-      "disassembly_days": 1,
-      "total_days": 8,
-      "note": "Pro mostní pilíř h=2,7 m, s jeřábem, 4 pracovníci"
+      "concrete_cure_days": 7,
+      "disassembly_days_final": 1,
+      "total_days_per_takt": 10,
+      "note": "Pro mostní pilíř h=2,7 m, s jeřábem, 4 pracovníci. Zrání prodlouženo na 7 dní pro masivní průřez pilíře."
+    },
+    "staxo_bridge_deck": {
+      "assembly_days": 5,
+      "concrete_cure_days": 28,
+      "disassembly_days_final": 3,
+      "total_days_per_takt": 36,
+      "note": "Mostovka na skružích Staxo. Zrání 28 dní dle TP 102. Demontáž skruže 3 dny. Typicky pouze 1–2 takty."
     }
+  },
+  "rental_billing_note": {
+    "minimum_billing": "1 month — DOKA, PERI, MEVA all require minimum 1 month rental fee",
+    "billing_model": "Monthly: each started month billed in full, OR proportional (negotiated in contract)",
+    "transport_cost_czk": "50000–200000 per mobilization (NOT included in Kč/m²/měsíc price)",
+    "assembly_labor": "Billed separately — see assembly_h_m2 norms (0.50–1.30 Nh/m²)"
   }
 }
