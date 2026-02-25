@@ -6,6 +6,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { Sparkles } from 'lucide-react';
 import {
   calculateFormworkTacts,
   calculateFormworkTerm,
@@ -15,6 +16,7 @@ import {
 } from '@stavagent/monolit-shared';
 import type { FormworkCalculatorRow } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, findFormworkSystem, getDefaultFormworkSystem } from '../constants/formworkSystems';
+import FormworkAIModal from './FormworkAIModal';
 
 interface Props {
   bridgeId: string;
@@ -116,6 +118,8 @@ export default function FormworkCalculatorModal({
   const [crewSize, setCrew] = useState(4);
   const [shiftHours, setShift] = useState(10);
   const [isLoading, setIsLoading] = useState(true);
+  // AI modal state
+  const [aiModalRowId, setAiModalRowId] = useState<string | null>(null);
 
   // Use refs for crew/shift to avoid stale closures in load effect
   const crewRef = useRef(crewSize);
@@ -185,6 +189,23 @@ export default function FormworkCalculatorModal({
     }));
   }, [crewSize, shiftHours, elementTotalDays]);
 
+  /** Apply AI suggestion to a specific row */
+  const handleAIApply = useCallback((rowId: string, daysPerTact: number, formworkTermDays: number) => {
+    setRows(prev => prev.map(r => {
+      if (r.id !== rowId) return r;
+      const updated = { ...r, days_per_tact: daysPerTact, formwork_term_days: formworkTermDays };
+      // Recalculate rental cost with new term
+      const monthlyPerSet = calculateMonthlyRentalPerSet(updated.set_area_m2, updated.rental_czk_per_m2_month);
+      const finalRental   = calculateFinalRentalCost(monthlyPerSet, formworkTermDays);
+      return {
+        ...updated,
+        monthly_rental_per_set: parseFloat(monthlyPerSet.toFixed(2)),
+        final_rental_czk:       parseFloat(finalRental.toFixed(2)),
+        kros_description:       generateFormworkKrosDescription(updated),
+      };
+    }));
+  }, []);
+
   const addRow = () => {
     setRows(prev => [...prev, createEmptyRow(bridgeId)]);
   };
@@ -210,6 +231,9 @@ export default function FormworkCalculatorModal({
   }), [rows]);
 
   const formatCZK = (n: number) => n.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  // The row currently selected for AI assistance
+  const aiRow = aiModalRowId ? rows.find(r => r.id === aiModalRowId) : null;
 
   return (
     <div className="modal-overlay" style={{
@@ -307,6 +331,7 @@ export default function FormworkCalculatorModal({
                   row={row}
                   onChange={handleFieldChange}
                   onRemove={removeRow}
+                  onAISuggest={() => setAiModalRowId(row.id)}
                 />
               ))}
             </tbody>
@@ -345,6 +370,20 @@ export default function FormworkCalculatorModal({
           </div>
         </div>
       </div>
+
+      {/* AI modal — rendered inside overlay so it stacks on top */}
+      {aiRow && (
+        <FormworkAIModal
+          totalAreaM2={aiRow.total_area_m2}
+          setAreaM2={aiRow.set_area_m2}
+          systemName={aiRow.system_name}
+          onApply={(daysPerTact, formworkTermDays) => {
+            handleAIApply(aiRow.id, daysPerTact, formworkTermDays);
+            setAiModalRowId(null);
+          }}
+          onClose={() => setAiModalRowId(null)}
+        />
+      )}
     </div>
   );
 }
@@ -386,11 +425,13 @@ const computedStyle: React.CSSProperties = {
 function FormworkRow({
   row,
   onChange,
-  onRemove
+  onRemove,
+  onAISuggest,
 }: {
   row: FormworkCalculatorRow;
   onChange: (id: string, field: keyof FormworkCalculatorRow, value: any) => void;
   onRemove: (id: string) => void;
+  onAISuggest: () => void;
 }) {
   const sys = findFormworkSystem(row.system_name);
   const heights = sys?.heights || [];
@@ -516,7 +557,23 @@ function FormworkRow({
       </td>
 
       {/* Akce */}
-      <td style={cellStyle}>
+      <td style={{ ...cellStyle, whiteSpace: 'nowrap' }}>
+        <button
+          onClick={onAISuggest}
+          title="AI průvodce bedněním — ✨ 4 otázky + výpočet zrání"
+          style={{
+            background: 'linear-gradient(135deg, #1a1a2e, #4a4e69)',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            padding: '4px 6px',
+            marginRight: '4px',
+            display: 'inline-flex',
+            alignItems: 'center',
+          }}
+        >
+          <Sparkles size={13} color="#FFD700" />
+        </button>
         <button onClick={() => onRemove(row.id)} style={{
           background: 'none', border: 'none', cursor: 'pointer',
           fontSize: '14px', padding: '4px'

@@ -1,0 +1,370 @@
+{
+  "_meta": {
+    "source_file": "DOKA - ceny 01-01-2025 obchod.xls",
+    "effective_date": "2025-01-01",
+    "extracted": "2026-02-25",
+    "currency": "CZK",
+    "price_type": "list_price_bez_slevy",
+    "price_note": "Orientační CENÍKOVÉ ceny BEZ slevy, BEZ DPH, BEZ dopravy, BEZ montáže a demontáže. Průměr z rovných i členitých konstrukcí.",
+    "includes_note": "Nájemní cena OBSAHUJE: bednění, spojovací materiál, stabilizační pomůcky, pracovní plošiny. NEobsahuje: bednící desku (Dokaflex/Top50), DPH, dopravu, montáž/demontáž, manipulační poplatek.",
+    "discount_standard": {
+      "najem_pct": 68,
+      "koupe_ztracene_pct": 15,
+      "bednici_desky_pct": 0,
+      "net_factor": 0.32,
+      "note": "Standardní obchodní podmínky. Čistá cena = ceníková × 0.32. Zdroj: Nabídka Doka č. 540044877, Revitalizace trati Nýřany-Heřmanova Huť, leden 2026."
+    },
+    "variance_note": "Procentní rozptyl = cenový rozdíl: (+) členité kce s rohy, (-) dlouhé rovné stěny.",
+    "publisher": "DOKA GmbH Czech Republic",
+    "sheets": 6
+  },
+
+  "stenove_bedneni": {
+    "_note": "List 'Stěnové bednění'. Ceníková cena nájmu [Kč/m²/měsíc] bez slevy.",
+    "frami_xlife": {
+      "system": "FRAMI XLIFE",
+      "typ": "Rámové bednění",
+      "poznamka_kupni": "Kupní cena obsahuje spotřební materiál (plastové trubičky, kónusy) ≈ 4,0 Kč/m²",
+      "oboustranné": [
+        { "vyska_m": 1.2, "cena_czk_m2": 1661, "hmotnost_kg": 61 },
+        { "vyska_m": 1.5, "cena_czk_m2": 1494, "hmotnost_kg": 55 },
+        { "vyska_m": 2.4, "cena_czk_m2": 1511, "hmotnost_kg": 57 },
+        { "vyska_m": 2.7, "cena_czk_m2": 1788, "hmotnost_kg": 63 },
+        { "vyska_m": 3.0, "cena_czk_m2": 1710, "hmotnost_kg": 61 }
+      ],
+      "jednostranné_s_pazdiky": [
+        { "vyska_m": 1.5, "cena_czk_m2": 1451, "hmotnost_kg": 60, "poznamka": "bez opěrné konstrukce" },
+        { "vyska_m": 2.4, "cena_czk_m2": 1520, "hmotnost_kg": 65, "poznamka": "bez opěrné konstrukce" },
+        { "vyska_m": 2.7, "cena_czk_m2": 1760, "hmotnost_kg": 53, "poznamka": "bez opěrné konstrukce" },
+        { "vyska_m": 3.0, "cena_czk_m2": 1723, "hmotnost_kg": 65, "poznamka": "bez opěrné konstrukce" }
+      ],
+      "vytahove_sachty_bez_rohu": [
+        { "vyska_m": 2.7, "cena_czk_m2": 1814, "hmotnost_kg": 64 },
+        { "vyska_m": 3.0, "cena_czk_m2": 1734, "hmotnost_kg": 62 }
+      ],
+      "obloukove_plechy_R2m": [
+        { "vyska_m": 2.4, "cena_czk_m2": 3468, "hmotnost_kg": 91, "poznamka": "Frami s obloukovými plechy R=2 m" }
+      ]
+    },
+    "framax_xlife": {
+      "system": "FRAMAX XLIFE",
+      "typ": "Velkoformátové rámové bednění",
+      "poznamka_kupni": "Kupní cena obsahuje spotřební materiál (plastové trubičky, kónusy) ≈ 4,0 Kč/m²",
+      "oboustranné": [
+        { "vyska_m": 1.35, "cena_czk_m2": 2255, "hmotnost_kg": 91 },
+        { "vyska_m": 2.7,  "cena_czk_m2": 1780, "hmotnost_kg": 77 },
+        { "vyska_m": 3.3,  "cena_czk_m2": 1777, "hmotnost_kg": 76 },
+        { "vyska_m": 4.05, "cena_czk_m2": 1879, "hmotnost_kg": 80 },
+        { "vyska_m": 4.65, "cena_czk_m2": 1875, "hmotnost_kg": 79 },
+        { "vyska_m": 5.4,  "cena_czk_m2": 1790, "hmotnost_kg": 77 },
+        { "vyska_m": 6.0,  "cena_czk_m2": 1887, "hmotnost_kg": 80 },
+        { "vyska_m": 6.6,  "cena_czk_m2": 1861, "hmotnost_kg": 80 }
+      ],
+      "jednostranné_s_pazdiky": [
+        { "vyska_m": 1.35, "cena_czk_m2": 0,    "hmotnost_kg": null, "poznamka": "cena nestanovena, dotaz obchodní zástupce" },
+        { "vyska_m": 2.7,  "cena_czk_m2": 1800, "hmotnost_kg": 81 },
+        { "vyska_m": 3.3,  "cena_czk_m2": 1811, "hmotnost_kg": 79 },
+        { "vyska_m": 4.05, "cena_czk_m2": 1880, "hmotnost_kg": 83 },
+        { "vyska_m": 4.65, "cena_czk_m2": 1886, "hmotnost_kg": 82 },
+        { "vyska_m": 5.4,  "cena_czk_m2": 1951, "hmotnost_kg": 81 },
+        { "vyska_m": 6.0,  "cena_czk_m2": 1942, "hmotnost_kg": 80 },
+        { "vyska_m": 6.6,  "cena_czk_m2": 1973, "hmotnost_kg": 80 }
+      ],
+      "vytahove_sachty_bez_rohu": [
+        { "vyska_m": 2.7,  "cena_czk_m2": 2441, "hmotnost_kg": 85 },
+        { "vyska_m": 3.3,  "cena_czk_m2": 2486, "hmotnost_kg": 86 },
+        { "vyska_m": 4.05, "cena_czk_m2": 2371, "hmotnost_kg": 93 }
+      ],
+      "vytahove_sachty_vcetne_4_rohu": [
+        { "vyska_m": 2.7,  "cena_czk_m2": 2489, "hmotnost_kg": 87 },
+        { "vyska_m": 3.3,  "cena_czk_m2": 2545, "hmotnost_kg": 87 },
+        { "vyska_m": 4.05, "cena_czk_m2": 2393, "hmotnost_kg": 94 }
+      ],
+      "obloukove_plechy_R5m": [
+        { "vyska_m": 2.7, "cena_czk_m2": 3313, "hmotnost_kg": 103, "poznamka": "Framax s obloukovými plechy R=5,0 m" }
+      ]
+    },
+    "kruhove_bedneni_h20": {
+      "system": "KRUHOVÉ BEDNĚNÍ H20",
+      "typ": "Systémové bednění na obloukové a kruhové stěny",
+      "poznamka_kupni": "Kupní cena obsahuje spotřební materiál (plastové trubičky, kónusy) ≈ 3,0 Kč/m²",
+      "oboustranné": [
+        { "vyska_m": 2.4, "cena_czk_m2": 1566, "hmotnost_kg": 94 },
+        { "vyska_m": 3.0, "cena_czk_m2": 1372, "hmotnost_kg": 83 },
+        { "vyska_m": 3.6, "cena_czk_m2": 1480, "hmotnost_kg": 90 },
+        { "vyska_m": 4.8, "cena_czk_m2": 1550, "hmotnost_kg": 94 },
+        { "vyska_m": 6.0, "cena_czk_m2": 1529, "hmotnost_kg": 93 }
+      ]
+    },
+    "operne_kozy": {
+      "system": "OPĚRNÉ KOZY",
+      "typ": "Podpěrné konzolové kozy",
+      "poznamka": "Nájemní cena NEZAHRNUJE bednění + roznášecí paždíky. Kupní cena = ztracený materiál (krycí pouzdra, kotvy).",
+      "variabel_tlak_40kn": [
+        {
+          "varianta": "á 1,35 m",
+          "vyska_bedneni_m": 3.0,
+          "kotveni": "kotevní systém 15,0",
+          "cena_najem_czk_m2": 589,
+          "cena_ztraceny_material_czk_m2": 105,
+          "hmotnost_kg": 65
+        },
+        {
+          "varianta": "á 1,00 m",
+          "vyska_bedneni_m": 4.0,
+          "kotveni": "kotevní systém 15,0",
+          "cena_najem_czk_m2": 743,
+          "cena_ztraceny_material_czk_m2": 96,
+          "hmotnost_kg": 105
+        }
+      ],
+      "univerzal_tlak_50kn": [
+        {
+          "varianta": "á 1,35 m",
+          "vyska_bedneni_m": 4.05,
+          "kotveni": "kotevní systém 20,0",
+          "cena_najem_czk_m2": 798,
+          "cena_ztraceny_material_czk_m2": 130,
+          "hmotnost_kg": 73
+        },
+        {
+          "varianta": "á 1,00 m",
+          "vyska_bedneni_m": 6.0,
+          "kotveni": "kotevní systém 20,0",
+          "cena_najem_czk_m2": 1168,
+          "cena_ztraceny_material_czk_m2": 115,
+          "hmotnost_kg": 172
+        }
+      ]
+    }
+  },
+
+  "podporna_kce_staxo": {
+    "_note": "List 'Podpěrná kce Staxo'. Vrchní konstrukce v Kč/m², Podpěrná kce v Kč/m³ prostoru (1 m² plochy × výška podpěr). Součet = celková cena na 1 m² plochy bednění.",
+    "staxo100_vrchni_kce": {
+      "system": "STAXO100 + VRCHNÍ KONSTRUKCE",
+      "popis": "Vrchní kce: ocelové nosníky WS10 + dřevěné nosníky H20. Staxo100: podpěrné věže do 20 m / 10 m.",
+      "vrchni_kce_czk_m2": [
+        { "tloustka_desky_m": 0.6, "cena_czk_m2": 266, "hmotnost_kg_m2": 26 },
+        { "tloustka_desky_m": 0.9, "cena_czk_m2": 344, "hmotnost_kg_m2": 32 },
+        { "tloustka_desky_m": 1.2, "cena_czk_m2": 351, "hmotnost_kg_m2": 33 }
+      ],
+      "podporna_kce_drzena_do_20m_czk_m3": [
+        { "tloustka_desky_m": 0.6, "cena_czk_m3": 102, "hmotnost_kg_m3": 6.0 },
+        { "tloustka_desky_m": 0.9, "cena_czk_m3": 136, "hmotnost_kg_m3": 8.0 },
+        { "tloustka_desky_m": 1.2, "cena_czk_m3": 168, "hmotnost_kg_m3": 10.0 }
+      ],
+      "podporna_kce_volne_stojici_do_10m_czk_m3": [
+        { "tloustka_desky_m": 0.6, "cena_czk_m3": 109, "hmotnost_kg_m3": 6.0 },
+        { "tloustka_desky_m": 0.9, "cena_czk_m3": 147, "hmotnost_kg_m3": 8.0 },
+        { "tloustka_desky_m": 1.2, "cena_czk_m3": 182, "hmotnost_kg_m3": 10.0 }
+      ],
+      "vypocet_ceny_m2": "cena_m2 = vrchni_kce[tloustka] + podporna_kce_m3[tloustka] × vyska_podpor_m",
+      "priklad_0.9m_4.5m_drzena": "344 + 136 × 4.5 = 344 + 612 = 956 Kč/m² list, po 68% slevě = 305.9 Kč/m²",
+      "priklad_0.6m_6m_drzena": "266 + 102 × 6 = 266 + 612 = 878 Kč/m² list, po 68% slevě = 281.0 Kč/m²"
+    },
+    "staxo40_vrchni_kce": {
+      "system": "STAXO40 + VRCHNÍ KONSTRUKCE",
+      "popis": "Pro lehčí stropní bednění do 12 m / 8 m.",
+      "vrchni_kce_czk_m2": [
+        { "tloustka_desky_m": 0.2, "cena_czk_m2": 168, "hmotnost_kg_m2": 19 },
+        { "tloustka_desky_m": 0.3, "cena_czk_m2": 189, "hmotnost_kg_m2": 20 },
+        { "tloustka_desky_m": 0.4, "cena_czk_m2": 246, "hmotnost_kg_m2": 26 },
+        { "tloustka_desky_m": 0.6, "cena_czk_m2": 266, "hmotnost_kg_m2": 29 }
+      ],
+      "podporna_kce_drzena_do_12m_czk_m3": [
+        { "tloustka_desky_m": 0.2, "cena_czk_m3": 79,  "hmotnost_kg_m3": 5.0 },
+        { "tloustka_desky_m": 0.3, "cena_czk_m3": 93,  "hmotnost_kg_m3": 5.0 },
+        { "tloustka_desky_m": 0.4, "cena_czk_m3": 110, "hmotnost_kg_m3": 6.0 },
+        { "tloustka_desky_m": 0.6, "cena_czk_m3": 155, "hmotnost_kg_m3": 8.0 }
+      ],
+      "podporna_kce_volne_stojici_do_8m_czk_m3": [
+        { "tloustka_desky_m": 0.2, "cena_czk_m3": 79,  "hmotnost_kg_m3": 5.0 },
+        { "tloustka_desky_m": 0.3, "cena_czk_m3": 93,  "hmotnost_kg_m3": 5.0 },
+        { "tloustka_desky_m": 0.4, "cena_czk_m3": 110, "hmotnost_kg_m3": 6.0 },
+        { "tloustka_desky_m": 0.6, "cena_czk_m3": 155, "hmotnost_kg_m3": 8.0 }
+      ]
+    }
+  },
+
+  "stropni_bedneni_dokaflex20": {
+    "_note": "List 'Stropní bednění Dokaflex 20'. Strop: Kč/m². Průvlak: Kč/mb. Cena NEOBSAHUJE bednící desku!",
+    "strop_bez_pruvalku": {
+      "popis": "DOKAFLEX 20 — STROP BEZ PRŮVLAKŮ",
+      "split_vrchni_podporna": "40% vrchní kce (nosníky) + 60% podpěrná kce (stojky). Cena NEOBSAHUJE bednící desku.",
+      "data": [
+        { "tloustka_m": 0.20, "podperna_vyska": "2,00-2,92", "cena_czk_m2": 332,  "rozptyl_pct": 8,  "hmotnost_kg": 27 },
+        { "tloustka_m": 0.20, "podperna_vyska": "2,25-3,42", "cena_czk_m2": 338,  "rozptyl_pct": 8,  "hmotnost_kg": 28 },
+        { "tloustka_m": 0.20, "podperna_vyska": "2,50-3,92", "cena_czk_m2": 343,  "rozptyl_pct": 8,  "hmotnost_kg": 29 },
+        { "tloustka_m": 0.20, "podperna_vyska": "2,75-4,42", "cena_czk_m2": 369,  "rozptyl_pct": 8,  "hmotnost_kg": 31 },
+        { "tloustka_m": 0.20, "podperna_vyska": "3,50-5,92", "cena_czk_m2": 412,  "rozptyl_pct": 8,  "hmotnost_kg": 35 },
+        { "tloustka_m": 0.25, "podperna_vyska": "2,00-2,92", "cena_czk_m2": 362,  "rozptyl_pct": 8,  "hmotnost_kg": 29 },
+        { "tloustka_m": 0.25, "podperna_vyska": "2,25-3,42", "cena_czk_m2": 369,  "rozptyl_pct": 8,  "hmotnost_kg": 30 },
+        { "tloustka_m": 0.25, "podperna_vyska": "2,50-3,92", "cena_czk_m2": 374,  "rozptyl_pct": 8,  "hmotnost_kg": 32 },
+        { "tloustka_m": 0.25, "podperna_vyska": "2,75-4,42", "cena_czk_m2": 406,  "rozptyl_pct": 8,  "hmotnost_kg": 33 },
+        { "tloustka_m": 0.25, "podperna_vyska": "3,50-5,92", "cena_czk_m2": 459,  "rozptyl_pct": 8,  "hmotnost_kg": 38 },
+        { "tloustka_m": 0.30, "podperna_vyska": "2,00-2,92", "cena_czk_m2": 436,  "rozptyl_pct": 8,  "hmotnost_kg": 34 },
+        { "tloustka_m": 0.30, "podperna_vyska": "2,25-3,42", "cena_czk_m2": 444,  "rozptyl_pct": 8,  "hmotnost_kg": 36 },
+        { "tloustka_m": 0.30, "podperna_vyska": "2,50-3,92", "cena_czk_m2": 451,  "rozptyl_pct": 8,  "hmotnost_kg": 37 },
+        { "tloustka_m": 0.30, "podperna_vyska": "2,75-4,42", "cena_czk_m2": 490,  "rozptyl_pct": 8,  "hmotnost_kg": 40 },
+        { "tloustka_m": 0.30, "podperna_vyska": "3,50-5,92", "cena_czk_m2": 557,  "rozptyl_pct": 8,  "hmotnost_kg": 46 },
+        { "tloustka_m": 0.35, "podperna_vyska": "2,00-2,92", "cena_czk_m2": 404,  "rozptyl_pct": 10, "hmotnost_kg": 31 },
+        { "tloustka_m": 0.35, "podperna_vyska": "2,25-3,42", "cena_czk_m2": 412,  "rozptyl_pct": 10, "hmotnost_kg": 32 },
+        { "tloustka_m": 0.35, "podperna_vyska": "2,50-3,92", "cena_czk_m2": 420,  "rozptyl_pct": 10, "hmotnost_kg": 34 },
+        { "tloustka_m": 0.35, "podperna_vyska": "2,75-4,42", "cena_czk_m2": 461,  "rozptyl_pct": 10, "hmotnost_kg": 37 },
+        { "tloustka_m": 0.35, "podperna_vyska": "3,50-5,92", "cena_czk_m2": 530,  "rozptyl_pct": 12, "hmotnost_kg": 43 },
+        { "tloustka_m": 0.40, "podperna_vyska": "2,00-2,92", "cena_czk_m2": 442,  "rozptyl_pct": 7,  "hmotnost_kg": 33 },
+        { "tloustka_m": 0.40, "podperna_vyska": "2,25-3,42", "cena_czk_m2": 451,  "rozptyl_pct": 7,  "hmotnost_kg": 35 },
+        { "tloustka_m": 0.40, "podperna_vyska": "2,50-3,92", "cena_czk_m2": 460,  "rozptyl_pct": 7,  "hmotnost_kg": 37 },
+        { "tloustka_m": 0.40, "podperna_vyska": "2,75-4,42", "cena_czk_m2": 506,  "rozptyl_pct": 7,  "hmotnost_kg": 40 },
+        { "tloustka_m": 0.40, "podperna_vyska": "3,50-5,92", "cena_czk_m2": 584,  "rozptyl_pct": 8,  "hmotnost_kg": 47 },
+        { "tloustka_m": 0.50, "podperna_vyska": "2,00-2,92", "cena_czk_m2": 492,  "rozptyl_pct": 9,  "hmotnost_kg": 36 },
+        { "tloustka_m": 0.50, "podperna_vyska": "2,25-3,42", "cena_czk_m2": 503,  "rozptyl_pct": 9,  "hmotnost_kg": 38 },
+        { "tloustka_m": 0.50, "podperna_vyska": "2,50-3,92", "cena_czk_m2": 513,  "rozptyl_pct": 9,  "hmotnost_kg": 41 },
+        { "tloustka_m": 0.50, "podperna_vyska": "2,75-4,42", "cena_czk_m2": 567,  "rozptyl_pct": 9,  "hmotnost_kg": 44 },
+        { "tloustka_m": 0.50, "podperna_vyska": "3,50-5,92", "cena_czk_m2": 660,  "rozptyl_pct": 9,  "hmotnost_kg": 53 }
+      ]
+    },
+    "pruvlak": {
+      "popis": "DOKAFLEX 20 — PRŮVLAK (downstand beam). Kč/mb bednění průvlaku.",
+      "split": "60% vrchní kce + 40% podpěrná kce na 1 mb průvlaku. Cena NEOBSAHUJE bednící desku.",
+      "data": [
+        { "rozmery": "0,5×0,3", "podperna_vyska": "2,00-2,92", "cena_czk_mb": 1895 },
+        { "rozmery": "0,5×0,3", "podperna_vyska": "2,25-3,42", "cena_czk_mb": 1923 },
+        { "rozmery": "0,5×0,3", "podperna_vyska": "2,50-3,92", "cena_czk_mb": 1947 },
+        { "rozmery": "0,5×0,3", "podperna_vyska": "2,75-4,42", "cena_czk_mb": 2083 },
+        { "rozmery": "0,5×0,3", "podperna_vyska": "3,50-5,92", "cena_czk_mb": 2312 },
+        { "rozmery": "0,5×0,4", "podperna_vyska": "2,00-2,92", "cena_czk_mb": 2208 },
+        { "rozmery": "0,5×0,4", "podperna_vyska": "2,25-3,42", "cena_czk_mb": 2236 },
+        { "rozmery": "0,5×0,4", "podperna_vyska": "2,50-3,92", "cena_czk_mb": 2260 },
+        { "rozmery": "0,5×0,4", "podperna_vyska": "2,75-4,42", "cena_czk_mb": 2396 },
+        { "rozmery": "0,5×0,4", "podperna_vyska": "3,50-5,92", "cena_czk_mb": 2625 },
+        { "rozmery": "0,5×0,5", "podperna_vyska": "2,00-2,92", "cena_czk_mb": 2309 },
+        { "rozmery": "0,5×0,5", "podperna_vyska": "2,25-3,42", "cena_czk_mb": 2337 },
+        { "rozmery": "0,5×0,5", "podperna_vyska": "2,50-3,92", "cena_czk_mb": 2361 },
+        { "rozmery": "0,5×0,5", "podperna_vyska": "2,75-4,42", "cena_czk_mb": 2497 },
+        { "rozmery": "0,5×0,5", "podperna_vyska": "3,50-5,92", "cena_czk_mb": 2726 },
+        { "rozmery": "0,5×0,6", "podperna_vyska": "all",       "cena_czk_mb": null, "poznamka": "cena nestanovena, dotaz obchodní zástupce" },
+        { "rozmery": "0,5×0,7", "podperna_vyska": "2,00-2,92", "cena_czk_mb": 2458 },
+        { "rozmery": "0,5×0,7", "podperna_vyska": "2,25-3,42", "cena_czk_mb": 2486 },
+        { "rozmery": "0,5×0,7", "podperna_vyska": "2,50-3,92", "cena_czk_mb": 2510 },
+        { "rozmery": "0,5×0,7", "podperna_vyska": "2,75-4,42", "cena_czk_mb": 2646 },
+        { "rozmery": "0,5×0,7", "podperna_vyska": "3,50-5,92", "cena_czk_mb": 2875 }
+      ]
+    }
+  },
+
+  "skladaci_plosiny_k": {
+    "_note": "List 'Skládací plošiny K'. Ceny nestanoveny — individuální nabídka.",
+    "system": "Skládací plošiny K + závěsné prvky",
+    "typ": "Předmontované pracovní plošiny",
+    "jednotka": "1 běžný metr",
+    "cena_najem_czk_mb": null,
+    "ztraceny_material_polozky": "kotva s destičkou 16 cm, plech hřebíkového spoje, pouzdro",
+    "poznamka": "Ceny nestanoveny v ceníku — individuální nabídka obchodního zástupce."
+  },
+
+  "sloupove_bedneni": {
+    "_note": "List 'Sloupové bednění'. Cena PER SADA (1 ks = 1 kompletní sada pro 1 sloup) [Kč/sada/měsíc].",
+    "frami_ctverecne": {
+      "system": "SLOUPOVÉ BEDNĚNÍ FRAMI",
+      "popis": "Pro sloupy do 60×60 cm, raster 5 cm",
+      "data": [
+        { "vyska_m": 2.7, "cena_czk_sada": 19070,  "hmotnost_kg": 667 },
+        { "vyska_m": 3.0, "cena_czk_sada": 22787,  "hmotnost_kg": 792 },
+        { "vyska_m": 3.6, "cena_czk_sada": 27124,  "hmotnost_kg": 916 }
+      ]
+    },
+    "framax_ctverecne": {
+      "system": "SLOUPOVÉ BEDNĚNÍ FRAMAX",
+      "popis": "Pro sloupy do 75×75 cm, raster 5 cm",
+      "data": [
+        { "vyska_m": 2.7, "cena_czk_sada": 26682,  "hmotnost_kg": 1207 },
+        { "vyska_m": 3.3, "cena_czk_sada": 31926,  "hmotnost_kg": 1372 },
+        { "vyska_m": 4.05,"cena_czk_sada": 43448,  "hmotnost_kg": 1771 },
+        { "vyska_m": 6.0, "cena_czk_sada": 68430,  "hmotnost_kg": 2699 },
+        { "vyska_m": 8.1, "cena_czk_sada": 105193, "hmotnost_kg": 3783, "poznamka": "2× Eurex 60 550" }
+      ]
+    },
+    "kruhove_rs": {
+      "system": "KRUHOVÉ SLOUPY RS",
+      "popis": "Průměry 25–45 cm",
+      "cena_czk_sada": null,
+      "poznamka": "Ceny nestanoveny v ceníku — individuální nabídka.",
+      "hmotnosti": [
+        { "prumer_cm": 25, "vyska_m": 3.0, "hmotnost_kg": 365 },
+        { "prumer_cm": 25, "vyska_m": 4.0, "hmotnost_kg": 490 },
+        { "prumer_cm": 25, "vyska_m": 6.0, "hmotnost_kg": 800 },
+        { "prumer_cm": 30, "vyska_m": 3.0, "hmotnost_kg": 400 },
+        { "prumer_cm": 30, "vyska_m": 4.0, "hmotnost_kg": 530 },
+        { "prumer_cm": 30, "vyska_m": 6.0, "hmotnost_kg": 860 },
+        { "prumer_cm": 40, "vyska_m": 3.0, "hmotnost_kg": 450 },
+        { "prumer_cm": 40, "vyska_m": 4.0, "hmotnost_kg": 610 },
+        { "prumer_cm": 40, "vyska_m": 6.0, "hmotnost_kg": 970 },
+        { "prumer_cm": 45, "vyska_m": 3.0, "hmotnost_kg": 475 },
+        { "prumer_cm": 45, "vyska_m": 4.0, "hmotnost_kg": 650 },
+        { "prumer_cm": 45, "vyska_m": 6.0, "hmotnost_kg": 965 }
+      ]
+    }
+  },
+
+  "schodistove_veze": {
+    "_note": "List 'Schodišťové věže'. Cena za SESTAVU (1 kus kompletní schodišťové věže) [Kč/sada/měsíc]. NEobsahuje DPH, dopravu.",
+    "ringlock": {
+      "system": "RINGLOCK Schodišťová věž",
+      "popis": "Montovaná schodišťová věž pro stavební práce.",
+      "krok_czk": 4400,
+      "krok_m": 2.0,
+      "data": [
+        { "vyska_vystupu_m": 2.3,  "cena_czk_sada": 5060  },
+        { "vyska_vystupu_m": 4.3,  "cena_czk_sada": 9460  },
+        { "vyska_vystupu_m": 6.3,  "cena_czk_sada": 13860 },
+        { "vyska_vystupu_m": 8.3,  "cena_czk_sada": 18260 },
+        { "vyska_vystupu_m": 10.3, "cena_czk_sada": 22660 },
+        { "vyska_vystupu_m": 12.3, "cena_czk_sada": 27060 },
+        { "vyska_vystupu_m": 14.3, "cena_czk_sada": 31460 },
+        { "vyska_vystupu_m": 16.3, "cena_czk_sada": 35860 }
+      ]
+    }
+  },
+
+  "quick_reference": {
+    "_note": "Nejčastěji používané systémy — čistá cena po 68% slevě (× 0.32). Pro kalkulace v systému.",
+    "frami_oboustranné_net": [
+      { "vyska_m": 1.2,  "list": 1661, "net_0.32": 531.52 },
+      { "vyska_m": 1.5,  "list": 1494, "net_0.32": 477.91 },
+      { "vyska_m": 2.4,  "list": 1511, "net_0.32": 483.52 },
+      { "vyska_m": 2.7,  "list": 1788, "net_0.32": 572.16 },
+      { "vyska_m": 3.0,  "list": 1710, "net_0.32": 547.20 }
+    ],
+    "framax_oboustranné_net": [
+      { "vyska_m": 1.35, "list": 2255, "net_0.32": 721.60 },
+      { "vyska_m": 2.7,  "list": 1780, "net_0.32": 569.60 },
+      { "vyska_m": 3.3,  "list": 1777, "net_0.32": 568.64 },
+      { "vyska_m": 4.05, "list": 1879, "net_0.32": 601.28 },
+      { "vyska_m": 4.65, "list": 1875, "net_0.32": 600.00 },
+      { "vyska_m": 5.4,  "list": 1790, "net_0.32": 572.80 },
+      { "vyska_m": 6.0,  "list": 1887, "net_0.32": 603.84 },
+      { "vyska_m": 6.6,  "list": 1861, "net_0.32": 595.52 }
+    ],
+    "dokaflex20_strop_net": [
+      { "tloustka_m": 0.25, "vyska": "2,50-3,92", "list": 374, "net_0.32": 119.68 },
+      { "tloustka_m": 0.30, "vyska": "2,50-3,92", "list": 451, "net_0.32": 144.32 },
+      { "tloustka_m": 0.35, "vyska": "2,50-3,92", "list": 420, "net_0.32": 134.40 },
+      { "tloustka_m": 0.40, "vyska": "2,50-3,92", "list": 460, "net_0.32": 147.20 },
+      { "tloustka_m": 0.50, "vyska": "2,50-3,92", "list": 513, "net_0.32": 164.16 }
+    ],
+    "staxo100_kombinovana_0.9m_net": {
+      "popis": "Top kce (0.9m slab) + Staxo100 shoring, výška podpěr 4.5 m (typický most)",
+      "top_list": 344,
+      "shoring_list_per_m3": 136,
+      "shoring_height_m": 4.5,
+      "total_list": 956,
+      "total_net_0.32": 305.92
+    },
+    "operne_kozy_variabel_net": [
+      { "varianta": "á 1,35m, h=3m", "najem_list": 589, "najem_net": 188.48, "ztraceny_list": 105, "ztraceny_net": 89.25 },
+      { "varianta": "á 1,00m, h=4m", "najem_list": 743, "najem_net": 237.76, "ztraceny_list": 96,  "ztraceny_net": 81.60 }
+    ]
+  }
+}

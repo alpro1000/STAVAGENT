@@ -1,0 +1,248 @@
+{
+  "_meta": {
+    "tkp": "17",
+    "title": "Beton pro konstrukce",
+    "title_en": "Concrete for Structures",
+    "year": 2022,
+    "month": "04",
+    "effective": "2022-06-01",
+    "publisher": "Správa železnic (SŽ), státní organizace",
+    "source_pdf": "TKP17_2022_04.pdf",
+    "extracted": "2026-02-25",
+    "scope": "Betonové konstrukce na stavbách státních drah. Návrhová životnost 50 nebo 100 let.",
+    "key_norms": [
+      "ČSN EN 206+A2 — Beton: specifikace, vlastnosti, výroba a shoda",
+      "ČSN P 73 2404 — Beton pro pozemní stavby (národní příloha k ČSN EN 206)",
+      "ČSN EN 13670 — Provádění betonových konstrukcí",
+      "ČSN EN 1992-1-1 — Eurokód 2: Navrhování betonových konstrukcí",
+      "ČSN EN 197-1 ed. 2 — Cement: složení a druhy",
+      "ČSN EN 12620+A1 — Kamenivo do betonu"
+    ]
+  },
+
+  "tridy_betonu": {
+    "_note": "Minimální třídy betonu dle stupně vlivu prostředí. Nosné konstrukce mostů: w/c max 0.50 (přísnější než tabulka).",
+    "navrhova_zivotnost_50_let": [
+      { "stupen": "X0",   "min_trida": "C 16/20", "w_c_max": null, "cement_min_kg_m3": 260 },
+      { "stupen": "XC1",  "min_trida": "C 16/20", "w_c_max": 0.65, "cement_min_kg_m3": 260 },
+      { "stupen": "XC2",  "min_trida": "C 20/25", "w_c_max": 0.60, "cement_min_kg_m3": 280 },
+      { "stupen": "XC3",  "min_trida": "C 25/30", "w_c_max": 0.55, "cement_min_kg_m3": 280 },
+      { "stupen": "XC4",  "min_trida": "C 25/30", "w_c_max": 0.50, "cement_min_kg_m3": 300 },
+      { "stupen": "XD1",  "min_trida": "C 25/30", "w_c_max": 0.55, "cement_min_kg_m3": 300 },
+      { "stupen": "XD2",  "min_trida": "C 30/37", "w_c_max": 0.50, "cement_min_kg_m3": 300 },
+      { "stupen": "XD3",  "min_trida": "C 30/37", "w_c_max": 0.45, "cement_min_kg_m3": 320, "poznamka": "Lze C 25/30 pokud XF vyloučeno" },
+      { "stupen": "XF1",  "min_trida": "C 25/30", "w_c_max": 0.55, "cement_min_kg_m3": 300, "poznamka": "Kamenivo mrazuvzdorné F2" },
+      { "stupen": "XF2",  "min_trida": "C 25/30", "w_c_max": 0.55, "cement_min_kg_m3": 300, "poznamka": "Kamenivo F2, bez popílku" },
+      { "stupen": "XF3",  "min_trida": "C 30/37", "w_c_max": 0.50, "cement_min_kg_m3": 320, "poznamka": "Kamenivo F1" },
+      { "stupen": "XF4",  "min_trida": "C 25/30", "w_c_max": 0.45, "cement_min_kg_m3": 340, "poznamka": "Bez popílku; kamenivo F1" },
+      { "stupen": "XA1",  "min_trida": "C 25/30", "w_c_max": 0.55, "cement_min_kg_m3": 300, "poznamka": "SR cement" },
+      { "stupen": "XA2",  "min_trida": "C 30/37", "w_c_max": 0.50, "cement_min_kg_m3": 320, "poznamka": "SR cement" },
+      { "stupen": "XA3",  "min_trida": "C 30/37", "w_c_max": 0.45, "cement_min_kg_m3": 360, "poznamka": "SR cement (CEM III/B 32.5 N-LH/SR)" }
+    ],
+    "navrhova_zivotnost_100_let": "Zvýšit třídu betonu o 1 stupeň oproti 50-leté životnosti (výjimka: X0)",
+    "prezdeni_mostni_nosne_kce": "w/c max 0.50 pro nosné konstrukce mostů (přísnější limit)"
+  },
+
+  "cementy": {
+    "_note": "Druhy cementu dle stupně prostředí",
+    "pravidla": [
+      { "stupne": ["X0", "XC1-XC4", "XD1-XD3", "XF1", "XF3"], "cementy": ["CEM I", "CEM II", "CEM III"] },
+      { "stupne": ["XF2", "XF4"], "cementy": ["CEM I", "CEM II"], "poznamka": "Bez popílku" },
+      { "stupne": ["XA1"], "cementy": ["CEM II", "CEM III"], "poznamka": "S příměsí strusky nebo popílku" },
+      { "stupne": ["XA2", "XA3"], "cementy": ["SR cement"], "priklad": "CEM III/B 32.5 N-LH/SR" }
+    ],
+    "specialni": {
+      "masivni_beton": "Nízkoteplotní cement (typ LH): teplo hydratace < 300 kJ/kg za 28 dní, < 280 kJ/kg za 7 dní",
+      "predupatý_beton": "Pouze CEM I (portlandský cement)"
+    }
+  },
+
+  "obsah_jemnych_castic": {
+    "_note": "Doporučený obsah částic ≤ 0,25 mm dle max. zrna kameniva",
+    "data": [
+      { "d_max_mm": 8,  "min_kg_m3": 400, "max_kg_m3": 600 },
+      { "d_max_mm": 16, "min_kg_m3": 410, "max_kg_m3": 550 },
+      { "d_max_mm": 22, "min_kg_m3": 410, "max_kg_m3": 550 },
+      { "d_max_mm": 32, "min_kg_m3": 400, "max_kg_m3": null }
+    ]
+  },
+
+  "odbedneni": {
+    "_note": "Požadavky při odstraňování bednění (odbednění) dle ČSN EN 13670",
+    "min_pevnost_pred_odbedenim_mpa": 10,
+    "postup_odstranovani_podpor": [
+      "Boky: po dosažení 10 MPa",
+      "Podpěry stropů: po dosažení 70 % návrhové pevnosti (doporučeno)",
+      "Podsypky: ne dříve než dosáhne beton návrhové pevnosti",
+      "Pořadí odstraňování: stupňovité (ne naráz)"
+    ],
+    "min_doba_bedneni_normalne_3_dni": "Minimálně 3 dny při normálních podmínkách pro stropní bednění",
+    "teplota_povrchu_min_c": 5,
+    "ochrana_do_pevnosti_mpa": {
+      "C8_10_a_nize": 4.0,
+      "C12_15_az_C16_20": 6.0,
+      "C20_25_a_vise": 8.0
+    }
+  },
+
+  "osétrovani": {
+    "_note": "Ošetřování betonu (curing) — minimální doby a podmínky",
+    "normalni_podminky_5_20_C": {
+      "CEM_I_CEM_II_min_dni": 7,
+      "CEM_III_popilkovy_beton_min_dni": 14,
+      "poznamka": "Vlhké ošetřování; při teplotě < 5 °C vlhčení není nutné"
+    },
+    "nizke_teploty_pod_5_C": {
+      "min_teplota_povrchu_C": 5,
+      "min_doba_pri_5_C_hod": 72,
+      "pak_ochrana_do_pevnosti": "Do dosažení min. pevnosti dle tabulky odbednění",
+      "gradient_narustu_max_C_hod": 15,
+      "gradient_ochlazeni_max_C_hod": 10
+    },
+    "horuci_suche_podmínky_nad_20_C": {
+      "zacatek": "Bezprostředně po zatuhnutí povrchu (ustání krvácení)",
+      "zpusob": "Mokrá geotextilie + nepropustná fólie",
+      "min_dni": 3,
+      "konec": "Při dosažení 70 % charakteristické pevnosti"
+    },
+    "masivni_beton": {
+      "max_vnitrni_teplota_C": 70,
+      "max_teplota_povrchu_C": 65,
+      "gradient_narustu_max_C_hod": 15,
+      "gradient_ochlazeni_max_C_hod": 10,
+      "poznamka": "Povinné monitorování teploty uvnitř konstrukce"
+    }
+  },
+
+  "betonaz": {
+    "max_vyska_spadiste_m": {
+      "obvykly_beton": 1.5,
+      "vysokopevnostni_beton": 1.5,
+      "pohledovy_beton": 1.0,
+      "SCC_samozhutnitelny": 1.0
+    },
+    "vibrovani": {
+      "ponorny_vibrator": {
+        "hloubka_do_predchozi_vrstvy_mm": "100-150",
+        "max_rozestup_vpichu": "1.4 × efektivní poloměr vibrátoru",
+        "max_tloustka_vrstvy": "1.25 × délka hlavy vibrátoru",
+        "zabranit": "Přímý kontakt vibrátoru s výztuží nebo bedněním"
+      },
+      "povrchovy_vibrator": {
+        "prekryv_pasu_mm": "100-200"
+      }
+    },
+    "max_rychlost_betonaze_masivni_m_hod": 0.5
+  },
+
+  "kryt_vyztuze_mm": {
+    "_note": "Minimální krytí výztuže (jmenovité = min + 10 mm). Tolerance osazení ±10 mm.",
+    "nominalni_min_kryt": [
+      { "stupen": "X0",       "kryt_mm": 15 },
+      { "stupen": "XC1",      "kryt_mm": 20 },
+      { "stupen": "XC2",      "kryt_mm": 25 },
+      { "stupen": "XC3",      "kryt_mm": 30 },
+      { "stupen": "XC4",      "kryt_mm": 40 },
+      { "stupen": "XD1-XD2",  "kryt_mm": 30 },
+      { "stupen": "XD3",      "kryt_mm": 40 },
+      { "stupen": "XF1-XF4",  "kryt_mm_range": "30-40" },
+      { "stupen": "XA1-XA2",  "kryt_mm": 40 },
+      { "stupen": "XA3",      "kryt_mm": 40 }
+    ],
+    "korozivzdorna_ocel": "Snížení krytu na 10-30 mm dle stupně XC1-XC4",
+    "navrhovy_kryt": "min_kryt + přídavek (obvykle +10 mm)"
+  },
+
+  "zkouseni": {
+    "cerstvy_beton": {
+      "konzistence": "1. a 2. dodávka dne, pak každá 3.–5. dodávka (vyšší třídy: častěji)",
+      "vzdusnost_provzdusnenych": "2× denně",
+      "teplota": "Na začátku betonáže + s každou zkouškou konzistence"
+    },
+    "tvrdly_beton_pocet_vzorku_28d": {
+      "_note": "Počet zkušebních těles pro pevnost v tlaku (28 dní)",
+      "do_50_m3":    { "C12_C20": 3, "C25_C50": 3,  "C55_C100": 3 },
+      "50_100_m3":   { "C12_C20": 3, "C25_C50": 6,  "C55_C100": 6 },
+      "100_300_m3":  { "C12_C20": 6, "C25_C50": 9,  "C55_C100": 9 },
+      "300_600_m3":  { "C12_C20": 9, "C25_C50": 12, "C55_C100": 15 },
+      "nad_600_m3":  { "C12_C20": 9, "C25_C50": 15, "C55_C100": 21 }
+    },
+    "kriterium_shody": {
+      "prumer_3_telesa_mpa": "≥ f_ck (charakteristická pevnost třídy)",
+      "min_individualni_mpa": "≥ f_ck − 4 MPa"
+    },
+    "dalsi_zkousky": [
+      { "parametr": "Hloubka průsaku vody", "frekvence": "1× per 100–300 m³", "limit": "≤ 50 mm (50 let), ≤ 20 mm (100 let)" },
+      { "parametr": "Mrazuvzdornost (cykly zmrazování)", "frekvence": "1× per 100–300 m³", "limit": "Součinitel trvanlivosti ≥ 0.75" },
+      { "parametr": "Odolnost povrchu vůči CHRL (obrušování)", "frekvence": "1× per 100–300 m³ pro XF2/XF4", "limit": "≤ 1250 g/m² za 100 cyklů" },
+      { "parametr": "Vzdušnost (provzdušnění)", "frekvence": "2× denně pokud předepsáno", "limit": "±2.5 % tolerance" }
+    ]
+  },
+
+  "specialni_betony": {
+    "vysokopevnostni_HSC": {
+      "tridy": "C 55/67 až C 110/115",
+      "w_c": "0.28–0.38",
+      "cement_kg_m3": "450–580 (CEM I 42.5R nebo 52.5R)",
+      "plastifikatory": "Superplastifikátory (min. 28% redukce vody)",
+      "max_teplota_v_konstrukci_C": 65
+    },
+    "pohledovy_beton": {
+      "tridy_PB": "PB0 (žádné), PB1 (nízké), PB2 (střední), PB3 (vysoké), PBS (speciální)",
+      "w_c_max": 0.54,
+      "kamenivo": "Bez recyklovaného a regenerovaného kameniva",
+      "tolerances_mm_per_tridu": "±5–15 mm dle třídy",
+      "max_plocha_poru_pct_per_tridu": "0.6–1.2 % dle třídy"
+    },
+    "masivni_beton": {
+      "cement": "Nízkoteplotní typ LH, teplo hydratace max 300 kJ/kg (28d)",
+      "max_teplota_C": 70,
+      "gradient_narustu_max_C_hod": 15,
+      "gradient_ochlazeni_max_C_hod": 10,
+      "monitoring": "Povinné měření teploty uvnitř konstrukce"
+    },
+    "SCC_samozhutnitelny": {
+      "oznaceni_konzistence": "SF (flow spread), VS (viskozita), PJ (J-ring)",
+      "max_vyska_spadiste_m": 1.0,
+      "priklad_oznaceni": "SCC – C 25/30 – XC4, XF3 – Cl 0.4 – D_max 22 – SF2 – VS1 – PJ1"
+    },
+    "drenazni_porozni_MCB": {
+      "min_objem_poru_pct": 20,
+      "w_c_max": 0.50,
+      "min_pevnost_tlak_28d_mpa": 8,
+      "mrazuvzdornost": "≤ 15 % ztráta pevnosti za 50–75 cyklů (pokud exponováno)"
+    }
+  },
+
+  "vady_a_opravy": {
+    "prijatelne_bez_opravy": {
+      "trhliny_sirka_max_mm": 0.15,
+      "trhliny_hloubka_max_mm": 5,
+      "poznamka": "Pro nechráněné povrchy; větší trhliny vyžadují posouzení/opravu"
+    },
+    "oprava_dle": "ČSN EN 1504 (systémy oprav betonových konstrukcí)"
+  },
+
+  "priklad_oznaceni_betonu": {
+    "nostna_kce_mostu_100_let": "C 30/37 – XC4, XF3 (F.1.2) – Cl 0.4 – D_max 16 – S3",
+    "vysvetleni": {
+      "C30_37": "30 MPa válec / 37 MPa krychle",
+      "XC4": "Karbonátová koroze (mokro/sucho střídavě)",
+      "XF3": "Zmrazování bez rozmrazovacích látek",
+      "F1_2": "Typ mrazuvzdornosti kameniva",
+      "Cl_0_4": "Max. 0.4 % obsah chloridů",
+      "D_max_16": "Max. zrno kameniva 16 mm",
+      "S3": "Třída sednutí (100–150 mm)"
+    }
+  },
+
+  "rizeni_jakosti": {
+    "certifikace_vyroba": "Povinná pro C 12/15 a vyšší (ČSN EN 206 Příloha 3, Nařízení 163/2002)",
+    "prubkazni_zkousky": {
+      "predstih_min_mesice": { "X0_XC1_XC2": 4, "ostatni": 6 },
+      "platnost_mesice": 6,
+      "opakovani_pokud": "Změna zdroje materiálů nebo specifikace"
+    },
+    "kontrolni_zkouseni": "Dle KZP (Kontrolní a zkušební plán) stanoveného před zahájením prací"
+  }
+}

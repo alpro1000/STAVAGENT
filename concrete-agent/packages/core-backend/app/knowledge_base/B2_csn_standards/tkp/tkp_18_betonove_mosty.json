@@ -1,0 +1,204 @@
+{
+  "_meta": {
+    "tkp": "18",
+    "title": "Betonové mosty a konstrukce",
+    "title_en": "Concrete Bridges and Structures",
+    "year": 2022,
+    "month": "05",
+    "effective": "2022-06-01",
+    "publisher": "Správa železnic (SŽ), státní organizace",
+    "source_pdf": "TKP18_2022_05.pdf",
+    "extracted": "2026-02-25",
+    "scope": "Speciální požadavky pro betonové mosty na státních drahách nad rámec TKP17. Platí společně s TKP17.",
+    "navazuje_na": "TKP17 (Beton pro konstrukce) — TKP18 upřesňuje a zpřísňuje požadavky TKP17 pro mosty.",
+    "zpracovatel": ["Ing. Michal Drahorád, Ph.D.", "doc. Ing. Lukáš Vráblík, Ph.D."],
+    "gestor": "Správa železnic, Generální ředitelství, Odbor traťového hospodářství"
+  },
+
+  "navrhova_zivotnost": {
+    "standardni_roky": 100,
+    "poznamka": "Mosty na státních drahách se navrhují na 100 let — tj. použít vyšší třídy betonu dle TKP17 tabulky pro 100 let"
+  },
+
+  "min_tridy_betonu_mosty": {
+    "_note": "Zpřísněné požadavky pro mostní konstrukce oproti TKP17. Nosné kce: w/c max 0.50.",
+    "pilire_opery_zaklady": {
+      "stupen_prostredi": "XC4, XF1 nebo XF3 (dle polohy)",
+      "min_trida_100_let": "C 30/37",
+      "w_c_max": 0.50,
+      "cement_min_kg_m3": 320
+    },
+    "mostovka_horni_povrch": {
+      "stupen_prostredi": "XD3, XF4 (posyp rozmrazovacích látek)",
+      "min_trida_100_let": "C 35/45",
+      "w_c_max": 0.40,
+      "cement_min_kg_m3": 360,
+      "poznamka": "Horní povrch mostovky — přímý kontakt s rozmrazovacími látkami"
+    },
+    "rimsy": {
+      "stupen_prostredi": "XD3, XF4",
+      "min_trida_100_let": "C 30/37",
+      "w_c_max": 0.45,
+      "cement_min_kg_m3": 340
+    }
+  },
+
+  "bedneni_mostnich_konstrukci": {
+    "_note": "Specifické požadavky pro bednění mostních prvků",
+    "tlak_cerstvého_betonu": "Dle ČSN EN 13670 — závisí na rychlosti betonáže a teplotě betonu",
+    "pilire": {
+      "poznamka": "Pilíře výšky > 3 m: použít systémové bednění (Framax, Framax Xlife apod.)",
+      "takt_max_vyska_m": 3.0,
+      "preferable_systems": ["FRAMAX XLIFE", "DOKA Framax", "FRAMI pro nízké pilíře"]
+    },
+    "mostovka_deska": {
+      "typ": "Stropní bednění na podpěrných věžích (Staxo, Shoring)",
+      "odbedneni_min_pevnost_pct": 70,
+      "odbedneni_poznamka": "Stropní bednění mostovky: min. 70 % návrhové pevnosti před odstraněním podpor"
+    },
+    "rimsy": {
+      "systemy": ["Římsové bednění T (konzolový, ≤50 m)", "Římsový vozík TU (50–150 m)", "Římsový vozík T (>150 m)"],
+      "technicka_dokumentace": "rimsove_bedneni_sosna_2026.json"
+    },
+    "pohledovy_povrch_trid_PB2": "Standardní požadavek pro pohledové části mostů (pilíře, opěry)",
+    "tolerances": {
+      "svisla_odchylka_pilire_max_mm_m": 3,
+      "pricna_odchylka_mm": 10,
+      "vyskova_odchylka_mm": 10
+    }
+  },
+
+  "kryt_vyztuze": {
+    "_note": "Přísnější hodnoty pro mostní konstrukce oproti TKP17",
+    "pilire_opery": {
+      "stupen": "XC4, XF3",
+      "nominalni_kryt_mm": 50,
+      "poznamka": "100-letá životnost: +10 mm oproti 50-leté"
+    },
+    "mostovka_horni_povrch_XD3_XF4": {
+      "nominalni_kryt_mm": 60,
+      "poznamka": "Přímý kontakt se solí — maximální ochrana"
+    },
+    "rimsy_XD3_XF4": {
+      "nominalni_kryt_mm": 55
+    },
+    "zakladova_kce_XC2": {
+      "nominalni_kryt_mm": 40
+    }
+  },
+
+  "osétrovani_mostni_kce": {
+    "pilire_opery": {
+      "min_dni": 14,
+      "poznamka": "Mosty vyžadují prodloužené ošetřování oproti standardu (TKP17: 7 dní pro CEM I)"
+    },
+    "mostovka_deska": {
+      "min_dni": 14,
+      "zpusob": "Mokrá jutová tkanina nebo geotextilie + PE fólie",
+      "teplota_min_C": 5
+    },
+    "rimsy": {
+      "min_dni": 10,
+      "poznamka": "Říms jsou exponovány XD3/XF4 — důkladné ošetřování kritické"
+    }
+  },
+
+  "betonaz_mostni_kce": {
+    "pilire": {
+      "max_vyska_taktu_m": 3.0,
+      "max_vyska_spadu_m": 1.5,
+      "technologie": "Čerpání nebo spouštění přes potrubí (zamezit rozmísení)"
+    },
+    "mostovka": {
+      "smer_betonaze": "Od středu k okrajům NEBO kontinuálně dle TSchP",
+      "max_vyska_spadu_m": 1.0,
+      "vibrovani": "Ponorné vibrátory na každém průřezu",
+      "dilatacni_spary": "Dle projektu — svislé nebo skloněné"
+    },
+    "rimsy": {
+      "betonaz_po": "Po dokončení a aktivaci hydroizolace mostovky",
+      "smer": "Postupně od jednoho konce (zamezit smršťovacím trhlinám)",
+      "max_takt_mb": 24
+    },
+    "pracovni_spary": {
+      "poznamka": "Pracovní spáry u pilířů: vodorovné, horní plocha zdrsněna (min. 5 mm výstupků)",
+      "dovolene_trhliny_max_mm": 0.2
+    }
+  },
+
+  "hydroizolace_mostovky": {
+    "_note": "Hydroizolace je samostatně řešena v TKP22. Zde jen základní vztah k TKP18.",
+    "tkp22_reference": "tkp_22_izolace.json",
+    "postup": [
+      "1. Betonáž desky + říms",
+      "2. Vyrovnávací vrstva (v případě potřeby)",
+      "3. Hydroizolace (asf. pásy nebo epoxy nátěry)",
+      "4. Ochranná vrstva",
+      "5. Vozovkové souvrství"
+    ]
+  },
+
+  "trhliny_pricetne_limity": {
+    "_note": "Přípustné šířky trhlin pro mostní konstrukce",
+    "pozadovana_max_sirka_mm": 0.2,
+    "pro_predpjate_kce_mm": 0.1,
+    "bez_opravy_max_mm": 0.15,
+    "oprava_nutna_nad_mm": 0.2,
+    "metoda_opravy": "Injektáž epoxidovou pryskyřicí nebo cementovým mlékem dle ČSN EN 1504"
+  },
+
+  "zkoušení_mostni_kce": {
+    "zatezovaci_zkouska": {
+      "kdy": "Před uvedením do provozu (u nových mostů)",
+      "typ": "Statická + případně dynamická zatěžovací zkouška",
+      "reference": "ČSN 73 6209 — Zatěžovací zkoušky mostů"
+    },
+    "kontrolni_prohlidky": {
+      "behem_betonaze": "Průběžně — technický dozor stavebníka",
+      "po_odbedneni": "Vizuální prohlídka + měření odchylek",
+      "po_zatezovaci_zkousce": "Finální přejímka"
+    }
+  },
+
+  "pozadavky_na_dokumentaci": {
+    "KZP": "Kontrolní a zkušební plán — povinný před zahájením prací",
+    "betonazni_denik": "Povinný záznam: datum, teplota, pevnostní třída, dodávka, výsledky zkoušek",
+    "protokoly_zkusek": "Archivace po dobu životnosti stavby (min. 10 let)",
+    "geodetické_zaměření": "Zaměření tvaru a rozměrů po odbednění (srovnání s projektem)"
+  },
+
+  "typy_mostni_nosne_kce": {
+    "_note": "Orientační přehled typů mostních nosných konstrukcí a jejich bednění",
+    "destkova_kce": {
+      "popis": "Monolitická deska (TKP 18 typický most)",
+      "bedneni": "Staxo 100/40 + Top 50 nebo Dokaflex",
+      "typicka_tloustka_m": "0.3–1.2"
+    },
+    "ramova_kce": {
+      "popis": "Rámový most — deska + pilíře jako jeden celek",
+      "bedneni": "Kombinace Framax (pilíře/stěny) + Staxo (deska)"
+    },
+    "krabicova_kce": {
+      "popis": "Krabicový průřez — dutý most",
+      "bedneni": "Vnější Framax + vnitřní speciální jádro (core formwork)"
+    }
+  },
+
+  "obsah_kapitoly_18": {
+    "_note": "Stručný přehled struktury TKP18",
+    "sekce": [
+      "18.1 Úvod — Všeobecně, názvosloví, základní legislativa",
+      "18.2 Popis a kvalita materiálů — Beton, ocel (výztuž, předpínací), ložiska, závěry",
+      "18.3 Technologické postupy — Bednění, betonáž, ošetřování, předpínání",
+      "18.4 Dodávka, skladování, počáteční zkoušky",
+      "18.5 Odebírání vzorků a kontrolní zkoušky",
+      "18.6 Přípustné odchylky a záruky",
+      "18.7 Klimatická omezení",
+      "18.8 Odsouhlasení a převzetí prací",
+      "18.9 Kontrolní měření",
+      "18.10 Ekologie",
+      "18.11 Bezpečnost práce",
+      "18.12 Normy a předpisy"
+    ]
+  }
+}

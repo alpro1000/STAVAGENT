@@ -356,6 +356,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           project_id: projectId,
+          project_name: projectName,
           language,
         }),
       });
