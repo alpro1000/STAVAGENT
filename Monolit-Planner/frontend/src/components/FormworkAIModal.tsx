@@ -13,7 +13,7 @@
  */
 
 import { useState } from 'react';
-import { Sparkles, Zap, Brain, AlertTriangle, CheckCircle, X } from 'lucide-react';
+import { Sparkles, Zap, Brain, Bot, AlertTriangle, CheckCircle, X } from 'lucide-react';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -22,7 +22,7 @@ type Season           = 'leto' | 'podzim_jaro' | 'zima';
 type ConcreteClass    = 'C20_25' | 'C25_30' | 'C30_37' | 'C35_45' | 'C40_50';
 type CementType       = 'CEM_I_II' | 'CEM_III';
 type Crew             = '2_bez_jeravu' | '4_bez_jeravu' | '4_s_jeravem' | '6_s_jeravem';
-type AIModel          = 'gemini' | 'claude';
+type AIModel          = 'gemini' | 'claude' | 'openai';
 
 interface Answers {
   construction_type: ConstructionType;
@@ -289,6 +289,13 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
               icon={<Zap size={13} />}
               label="Gemini 2.0 Flash"
               note="~1 s · levnější"
+            />
+            <ModelButton
+              active={model === 'openai'}
+              onClick={() => setModel('openai')}
+              icon={<Bot size={13} />}
+              label="GPT-4o mini"
+              note="~2 s · střední"
             />
             <ModelButton
               active={model === 'claude'}

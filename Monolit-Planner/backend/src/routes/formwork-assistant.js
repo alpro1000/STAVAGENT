@@ -203,58 +203,109 @@ router.post('/', async (req, res) => {
     let modelUsed = model;
 
     try {
-      const isDetailed   = model === 'claude';
-      const consLabel    = CONSTRUCTION_LABELS[construction_type] || construction_type;
-      const seasonLabel  = SEASON_LABELS[season] || season;
-      const concrLabel   = concrete_class.replace('_', '/');
-      const crewLabel    = `${crewCfg.crew} lidí${crewCfg.crane ? ' + jeřáb' : ''}`;
+      const consLabel   = CONSTRUCTION_LABELS[construction_type] || construction_type;
+      const seasonLabel = SEASON_LABELS[season] || season;
+      const concrLabel  = concrete_class.replace('_', '/');
+      const crewLabel   = `${crewCfg.crew} lidí${crewCfg.crane ? ' + jeřáb' : ''}`;
 
-      const question = isDetailed
-        ? `Podej podrobné doporučení pro bednění konstrukce "${consLabel}" (${system_name}). `
+      if (model === 'openai' && process.env.OPENAI_API_KEY) {
+        // ── OpenAI gpt-4o-mini — direct call ──────────────────────────────
+        const prompt =
+          `Jsi expert na stavební bednění. Zhodnoť plán pro konstrukci "${consLabel}" (systém ${system_name}). `
           + `Celková plocha ${total_area_m2} m², sada ${set_area_m2} m², ${pocetTaktu} taktů. `
           + `Beton ${concrLabel}, ${cement_type.replace('_', '/')}, ${seasonLabel}. Parta ${crewLabel}. `
-          + `Ošetřování ${zraniDays} dní/takt. Délka bednění: ${daysPerTact} dní/takt. `
-          + `Odkaž na TKP17 (beton) nebo TKP18 (mosty) kde je to relevantní. `
-          + `Zmíň hlavní rizika a kontrolní body pro stavební dozor.`
-        : `Stručně shrň: bednění ${consLabel}, ${total_area_m2} m², ${pocetTaktu} taktů po ${daysPerTact} dnech + ošetřování ${zraniDays} dní. `
-          + `${seasonLabel}, ${crewLabel}. Co je klíčové hlídat?`;
+          + `Výsledky kalkulace: montáž ${daysPerTact} dní/takt, ošetřování ${zraniDays} dní, celkový termín ${formworkTermDays} dní. `
+          + `Napiš stručné, praktické doporučení (max 5 vět). Zmiň 2-3 klíčová rizika.`;
 
-      const controller = new AbortController();
-      const timeoutId  = setTimeout(() => controller.abort(), CORE_TIMEOUT);
+        const controller = new AbortController();
+        const timeoutId  = setTimeout(() => controller.abort(), CORE_TIMEOUT);
 
-      const aiRes = await fetch(`${CORE_API_URL}/api/v1/multi-role/ask`, {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          question,
-          context: {
-            tool:              'formwork_assistant',
-            formwork_system:   system_name,
-            construction_type,
-            concrete_class,
-            cement_type,
-            season,
-            crew_size:         crewCfg.crew,
-            crane:             crewCfg.crane,
-            deterministic:     deterministic,
+        const oaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+          method:  'POST',
+          headers: {
+            'Content-Type':  'application/json',
+            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
           },
-          enable_kb:          true,
-          enable_perplexity:  false,
-          use_cache:          true,
-        }),
-        signal: controller.signal,
-      });
+          body: JSON.stringify({
+            model:      'gpt-4o-mini',
+            messages:   [{ role: 'user', content: prompt }],
+            max_tokens: 400,
+            temperature: 0.4,
+          }),
+          signal: controller.signal,
+        });
 
-      clearTimeout(timeoutId);
+        clearTimeout(timeoutId);
 
-      if (aiRes.ok) {
-        const aiData = await aiRes.json();
-        aiExplanation = aiData.answer || '';
-        logger.info(`[Formwork Assistant] AI OK (model=${model})`);
+        if (oaiRes.ok) {
+          const oaiData = await oaiRes.json();
+          aiExplanation = oaiData.choices?.[0]?.message?.content || '';
+          modelUsed = 'gpt-4o-mini';
+          logger.info('[Formwork Assistant] OpenAI OK (gpt-4o-mini)');
+        } else {
+          const errText = await oaiRes.text().catch(() => '');
+          logger.warn(`[Formwork Assistant] OpenAI ${oaiRes.status}: ${errText}`);
+          // Fall through to multi-role fallback below
+          throw new Error(`OpenAI ${oaiRes.status}`);
+        }
+
       } else {
-        logger.warn(`[Formwork Assistant] Multi-Role API ${aiRes.status}`);
-        aiExplanation = buildFallbackExplanation(deterministic, construction_type, season, warnings);
-        modelUsed = 'fallback';
+        // ── concrete-agent Multi-Role API (Gemini / Claude / OpenAI fallback) ──
+        const isDetailed = model === 'claude';
+        const isMedium   = model === 'openai'; // fallback path
+
+        const question = isDetailed
+          ? `Podej podrobné doporučení pro bednění konstrukce "${consLabel}" (${system_name}). `
+            + `Celková plocha ${total_area_m2} m², sada ${set_area_m2} m², ${pocetTaktu} taktů. `
+            + `Beton ${concrLabel}, ${cement_type.replace('_', '/')}, ${seasonLabel}. Parta ${crewLabel}. `
+            + `Ošetřování ${zraniDays} dní/takt. Délka bednění: ${daysPerTact} dní/takt. `
+            + `Odkaž na TKP17 (beton) nebo TKP18 (mosty) kde je to relevantní. `
+            + `Zmíň hlavní rizika a kontrolní body pro stavební dozor.`
+          : isMedium
+          ? `Zhodnoť plán bednění: ${consLabel} (${system_name}), ${total_area_m2} m², ${pocetTaktu} taktů, `
+            + `${daysPerTact} dní/takt + ošetřování ${zraniDays} dní. ${seasonLabel}, ${crewLabel}. `
+            + `Uveď 3 praktická doporučení a hlavní rizika.`
+          : `Stručně shrň: bednění ${consLabel}, ${total_area_m2} m², ${pocetTaktu} taktů po ${daysPerTact} dnech + ošetřování ${zraniDays} dní. `
+            + `${seasonLabel}, ${crewLabel}. Co je klíčové hlídat?`;
+
+        const controller = new AbortController();
+        const timeoutId  = setTimeout(() => controller.abort(), CORE_TIMEOUT);
+
+        const aiRes = await fetch(`${CORE_API_URL}/api/v1/multi-role/ask`, {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question,
+            context: {
+              tool:              'formwork_assistant',
+              formwork_system:   system_name,
+              construction_type,
+              concrete_class,
+              cement_type,
+              season,
+              crew_size:         crewCfg.crew,
+              crane:             crewCfg.crane,
+              deterministic:     deterministic,
+            },
+            enable_kb:         true,
+            enable_perplexity: false,
+            use_cache:         true,
+          }),
+          signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (aiRes.ok) {
+          const aiData = await aiRes.json();
+          aiExplanation = aiData.answer || '';
+          if (isMedium) modelUsed = 'openai-fallback';
+          logger.info(`[Formwork Assistant] Multi-Role OK (model=${model})`);
+        } else {
+          logger.warn(`[Formwork Assistant] Multi-Role API ${aiRes.status}`);
+          aiExplanation = buildFallbackExplanation(deterministic, construction_type, season, warnings);
+          modelUsed = 'fallback';
+        }
       }
     } catch (aiErr) {
       const isTimeout = aiErr.name === 'AbortError';
