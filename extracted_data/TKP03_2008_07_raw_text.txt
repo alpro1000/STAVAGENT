@@ -1,0 +1,1571 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 3
+ZEMNÍ PRÁCE
+Třetí - aktualizované vydání
+změna č. 6
+Schváleno generálním ředitelem SŽDC
+dne: 7.4.2008
+č.j.: 12153/08-OKS
+Účinnost od: 1.7.2008
+Počet listů : 18
+Počet příloh: 0
+Počet listů příloh: 0
+Praha 2008
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+3.1 ÚVOD 4
+3.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 4
+3.2.1 Zeminy a horniny 4
+3.2.2 Nevhodné zeminy a horniny 4
+3.2.3 Druhotné materiály 4
+3.2.4 Lehké stavební hmoty 5
+3.2.5 Geosyntetika 5
+3.2.6 Ocelové výztužné prvky 6
+3.2.7 Vápno, cement a jiné chemické přípravky pro zlepšování zemin 6
+3.3 TECHNOLOGICKÉ POSTUPY PRACÍ 6
+3.3.1 Kvalifikace pracovníků zhotovitele 6
+3.3.2 Výkopy 6
+3.3.2.1 Výkopy podle způsobu rozpojování 7
+3.3.2.2 Výkopy podle polohy 8
+3.3.2.3 Výkopy podle způsobu zajištění 9
+3.3.3 Náspy 10
+3.3.3.1 Náspy podle materiálu 10
+3.3.3.2 Podloží náspu 12
+3.3.3.3 Svahy zemního tělesa 13
+3.3.3.4 Zemní pláň 13
+3.3.3.5 Zpětný zásyp, obsypy objektů 14
+3.3.4 Přechodová oblast mostních objektů 14
+3.3.5 Technologie pokládky geosyntetik 15
+3.3.5.1 Boční napojování sousedních pásů 15
+3.3.5.2 Napojování geosyntetik ve směru tahových napětí 15
+3.3.5.3 Řezání 16
+3.3.5.4 Poruchy na místě a jejich opravy 16
+3.4 DODÁVKA, SKLADOVÁNÍ A POČÁTEČNÍ (PRŮKAZNÍ) ZKOUŠKY 16
+3.4.1 Dodávka a skladování 16
+3.4.2 Počáteční (průkazní) zkoušky 17
+3.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 18
+3.5.1 Vymezení pojmů 18
+3.5.2 Zkoušení 19
+3.5.3 Těžba zemin 19
+3.5.4 Těžba skalních hornin 20
+3.5.5 Podloží náspu (mimo přechodovou oblast) 20
+3.5.6 Těleso náspu 21
+3.5.6.1 Zeminy (jemnozrnné i hrubozrnné) 21
+3.5.6.2 Kamenitá sypanina 21
+3.5.6.3 Druhotné suroviny a jiné materiály 22
+3.5.7 Přechodová oblast 22
+3.5.8 Aktivní zóna 22
+3.5.9 Zemní pláň 23
+3.5.10 Zpětný zásyp, obsypy objektů a zásyp základů mostů 24
+3.5.11 Kontrolní hodnoty 24
+3.5.11.1 Míra zhutnění hrubozrnných zemin 24
+3.5.11.2 Míra zhutnění jemnozrnných zemin 24
+3.5.11.3 Míra zhutnění směsných zemin 25
+3.5.11.4 Míra zhutnění kamenitých a balvanitých sypanin 25
+3.5.12 Zkušební postupy 25
+3.6 PŘÍPUSTNÉ ODCHYLKY, ZÁRUKY, ÚDRŽBA V ZÁRUČNÍ DOBĚ 26
+1
+3.6.1 Odchylky od výšek zemní pláně. 26
+3.6.2 Odchylky od šířek zemní pláně 26
+3.6.3 Rovnost povrchu pláně 26
+3.6.4 Přesnost svahování 26
+3.6.5 Skalní výlomy 26
+3.6.6 Přetěžení výkopů 27
+3.6.7 Odchylky modulu přetvárnosti. 27
+3.7 KLIMATICKÁ OMEZENÍ 27
+3.7.1 Stavba náspů při dešťových srážkách 27
+3.7.2 Stavba náspů v zimním období 27
+3.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 27
+3.8.1 Odsouhlasení prací 27
+3.8.2 Převzetí prací 28
+3.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 29
+3.10 EKOLOGIE 29
+3.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 29
+3.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 30
+3.12.1 Související normy 30
+3.12.2 Související předpisy 33
+3.12.3 Související kapitoly TKP 34
+2
+Seznam zkratek
+CBR California Bearing Ratio (Kalifornský poměr únosnosti)
+ČSN Česká norma
+ČD České dráhy, akciová společnost
+ČBÚ Český báňský úřad
+Mze Ministerstvo zemědělství
+OTP Obecné technické podmínky
+OBÚ Obvodní báňský úřad
+PS Zhutnitelnost Proctor Standard
+PSŘ Projekt souhrnného řešení
+SŽDC Správa železniční dopravní cesty, státní organizace
+SŽDC OTH Správa železniční dopravní cesty, státní organizace, Odbor traťového hospodářství
+TKP Technické kvalitativní podmínky
+TP Technické podmínky
+ÚKZÚZ Ústřední kontrolní a zkušební ústav zemědělský
+ZTKP Zvláštní technické kvalitativní podmínky
+3
+3.1 ÚVOD
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole l - Všeobecně.
+Práce popsané v této kapitole technických kvalitativních podmínek (dále jen TKP) zahrnují všechny činnosti,
+zařízení, dodávky a materiál související s těžbou, přesunem a ukládáním zemin, lomového kamene, kameniva
+i jiných hmot při stavbě železničního tělesa. U novostaveb se konkrétně jedná o odstraňování porostu a kulturní
+vrstvy půdního profilu, výkopy pro objekty a odvodňovací systémy, zářezy a náspy v trase, zásypy a obsypy
+okolo konstrukcí, úpravy zemní pláně a další související činnosti. U rekonstrukcí stávajících tratí patří
+do zemních prací i odtěžení, případně využití starého kolejového lože do konstrukce zemního tělesa.
+Nepatří sem výstavba konstrukčních a ochranných vrstev na zemní pláni (je obsahem kapitoly 6 TKP) ani
+konstrukce kolejového lože (je obsaženo v kapitole 7 TKP). V této kapitole se neřeší odvodnění drážního tělesa,
+které je v kapitole 4 TKP. Ochrana zemního tělesa ať vegetační, nebo technická je obsažena v kapitole 5 TKP
+a v kapitole 15 TKP.
+Zemní práce musí být provedeny v souladu s projektovou dokumentací (dále jen dokumentace), TKP, ZTKP
+a s rozhodnutím stavebního dozoru.
+3.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+Do zemního tělesa se, kromě neupravených nevhodných a zdravotně závadných zemin a materiálů, používají
+prakticky všechny druhy zemin a hornin. Velmi rozšířené je i použití různých umělých materiálů a druhotných
+surovin (geosyntetické materiály), méně používané jsou lehké stavební hmoty pro vylehčené náspy, popílky,
+struska, důlní odvaly, apod.). Kritéria vhodnosti a použitelnosti jsou obecně vymezena českými normami.
+3.2.1 Zeminy a horniny
+Vlastnosti a meze použitelnosti zemin a hornin jako základové půdy a sypaniny jsou popsány
+v ČSN EN 1997-1, ČSN EN ISO 14688-1, ČSN EN ISO 14688-2, ČSN EN ISO 14689, ČSN 73 1001,
+ČSN 72 1002, ČSN 73 6133 a v předpisu SŽDC S4. Kvalita zpracování a kontrola prací je, kromě uvedených
+norem, podrobněji specifikována v ČSN 72 1006, ČSN 73 3050, ČSN 73 6133. Laboratorní a terénní zkoušky
+pro zjištění popisných a mechanických vlastností zemin a hornin se provádí podle příslušných ČSN a předpisů,
+jejichž seznam je v oddíle 3.12 této kapitoly TKP.
+3.2.2 Nevhodné zeminy a horniny
+Do zemního tělesa se nesmí použít organické zeminy, bahna, rašelina, humus a ornice s obsahem organických
+látek větším než 5 % (stanovených podle ČSN 72 1021).
+Bez úprav není možné používat do zemních těles tyto zeminy a horniny:
+− zasolené zeminy s obsahem vodou rozpustných solí větším než 10 %,
+− objemově nestabilní zeminy a horniny (bobtnavé jíly a jílovité břidlice), u nichž při běžných klimatických
+podmínkách bude v zemním tělese docházet k objemovým změnám větším než 3 %,
+− jíly s mezí tekutosti větší než 60 % nebo indexem plasticity větším než 40 %,
+− jílovité zeminy s indexem konzistence Ic menším než 0,5.
+Pokud se tyto zeminy vyskytují v podloží projektovaných zemních těles (náspů, zemní pláně, zářezů), musí být
+jejich úprava obsažena v dokumentaci a Zvláštních technických kvalitativních podmínkách (dále jen ZTKP),
+kde se stanoví kritéria v rozsahu požadavku článku 3.2.3 této kapitoly TKP.
+Použití zdravotně závadných zemin se posuzuje podle Zákona č. 185/2001 Sb. O odpadech, vyhlášky
+381/2001 Sb. Katalog odpadů a vyhlášky 383/2001 Sb. o podrobnostech nakládání s odpady.
+3.2.3 Druhotné materiály
+Zásady pro použití popílků vymezuje ČSN 73 6133, a TP 93 (technické podmínky pozemních komunikací).
+Zásady pro použití vysokopecní strusky vymezuje předpis SŽDC S4 příloha 15. Využití hlušin je možno
+posoudit podle ČSN 73 6133 a návrhu TP Hlušiny (v přípravě pro pozemní komunikace). Vzhledem k značné
+variabilitě vlastností druhotných materiálů je možno je použít, pokud jsou navrženy v dokumentaci.
+4
+Dokumentace musí stanovit požadované parametry materiálů a postupy zpracování. Konkrétní zdroj druhotného
+materiálu musí odsouhlasit stavební dozor na základě počátečních (průkazních) zkoušek předložených
+zhotovitelem. Pro jejich zabudování musí být vypracovány ZTKP.
+V ZTKP je nutné definovat:
+− přesný popis,
+− technologii zpracování,
+− projektové fyzikálně-mechanické parametry,
+− vyluhovatelnost a její změny v čase,
+− nezávadnost ve smyslu Zákona č. 185/2001 Sb. O odpadech,
+− způsob kontroly a její četnost.
+Dosažení projektovaných parametrů musí být prokázáno laboratorními zkouškami a ověřeno zhutňovací
+zkouškou v souladu s ČSN 72 1006 příloha H.
+3.2.4 Lehké stavební hmoty
+Používají se v konstrukcích náspů na velmi stlačitelném a neúnosném podloží, případně v nestabilním území
+(sesuvy). Z lehkých stavebních hmot se nejčastěji uplatňuje použití elektrárenských popílků a elektrárenské
+strusky (objemová hmotnost o cca 30 % nižší než u zeminy), lehkého keramického kameniva (objemová
+hmotnost je 4 až 5 x nižší než u zeminy) a expandovaného polystyrenu (objemová hmotnost 50 až 100 x nižší
+než u zeminy).
+Návrh vylehčeného náspu se provede v souladu s ČSN EN 1997-1. Konstrukční zásady výstavby vylehčeného
+náspu a způsob kontroly musí být stanoveny v dokumentaci a ZTKP.
+3.2.5 Geosyntetika
+Nejběžnější výrobky ze syntetických materiálů, určené k zabudování do zemních konstrukcí, jsou geotextilie,
+geomřížky, geodrény a geomembrány. Geosyntetika splňuje v zemním tělese některou z těchto funkcí:
+− oddělovací (oddělení dvou vrstev zemin, u kterých nesmí dojít ke smísení),
+− drenážní (odvedení vody v rovině geotextilie do drenážního systému),
+− filtrační (zachytávání jemné frakce vyplavované ze zeminy proudící vodou),
+− výztužnou (zvýšení únosnosti a stability zemního tělesa),
+− protierozní (ochrana svahu před povětrnostními vlivy),
+− ochrannou (ochrana konstrukce před poškozením),
+− těsnící (geomembrány).
+Zásady pro jejich použití a kontrolu jsou obsaženy v ČSN 73 6133, předpisu SŽDC S4, a dalších předpisech,
+jako např. TP 97 Geotextilie a další geosyntetické výrobky v zemním tělese pozemních komunikací
+a TKP Pozemních komunikací kap. 30 Speciální zemní konstrukce.
+Podmínky pro dodávky geosyntetik musí odpovídat Obecným technickým podmínkám „Geotextilie v tělese
+železničního spodku“ a „Geomřížky a geomembrány v tělese železničního spodku“ a musí být stanoveny
+v dokumentaci. Výrobce geosyntetických materiálů se musí prokázat „Osvědčením“ o kvalitě geosyntetických
+materiálů vydaným odborem stavebním ČD, a.s. (do skončení platnosti) a Správou železniční dopravní cesty,
+státní organizace, Odborem traťového hospodářství (dále jen SŽDC OTH).
+V místech, kde by mohla být poškozena konstrukce (oheň, náraz vozidla) musí být v projektové dokumentaci
+řešena i její oprava.
+Dodávky těchto materiálů musí být doloženy certifikáty jakosti vydanými akreditovanou, případně notifikova-
+nou osobou.
+5
+3.2.6 Ocelové výztužné prvky
+Pro vyztužování zemních těles se používají ocelové výztužné prvky ve formě tyčí, pásků, sítí nebo mříží.
+Ocelové výztuže se použijí zejména v kombinaci s lícovým opevněním (betonové panely, bloky, gabiony)
+v zemních tělesech se strmým a svislým sklonem povrchu (mostní opěry, opěrné zdi, protihlukové stěny).
+Ocelové výztuže se vyrábějí z ocelového drátu taženého za studena dle ČSN EN 10079. Svařování sítí a mříží
+musí být provedeno v souladu s ČSN EN 10080. V případě že je ocelová výztuž galvanizována, musí
+galvanizační postup odpovídat ČSN EN ISO 1461.
+Kvalita drátů pro gabiony včetně kritérií pro kvalitu kamene jsou uvedeny v příloze 27 předpisu SŽDC S4
+a TKP Kapitoly 30 (pozemní komunikace). Na elektrizovaných tratích je nutno řešit ochranu před vlivem
+bludných proudů.
+3.2.7 Vápno, cement a jiné chemické přípravky pro zlepšování zemin
+Kvalitativní požadavky na materiály pro zlepšování zemin vápnem, cementem, popílky apod. jsou předepsány
+v SŽDC S4, ČSN 73 6133, kapitole 6 TKP (státních drah), TP 93 a TP 94 (pozemní komunikace).
+Chemické přípravky pro zlepšení zemin, které nejsou popsány v běžně dostupných normách a předpisech musí
+být uvedeny v dokumentaci a/nebo ZTKP.
+3.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+Před zahájením zemních prací musí zhotovitel předložit objednateli/stavebnímu dozoru k odsouhlasení techno-
+logický předpis těžby a zpracování sypaniny.
+Pro zpracování zemin s pojivy nebo pro vyztužování zemin (geosyntetika, ocelová výztuž) musí být
+v dokumentaci nebo ZTKP vypracovány zásady technologie, které zhotovitel rozpracuje do technologického
+předpisu pro svá zařízení na základě svých zkušeností a předloží je k odsouhlasení objednateli/stavebnímu
+dozoru.
+Návrhy speciálních technologií pro zajištění zemních těles (kotvy, injektáže, sítě proti padání kamenů,
+mikropiloty, gabiony, sanace základové spáry apod.) jsou obsaženy v dokumentaci nebo ZTKP a zhotovitel na
+ně musí vypracovat technologický předpis, který předloží k odsouhlasení objednateli.
+Nasazení stavebních mechanizmů, které přímo ovlivňují kvalitu zemních prací (např. hutnící prostředky),
+podléhá schválení stavebního dozoru. Pokud zařízení nesplňuje technické parametry stanovené výrobcem, nebo
+se nachází v takovém technickém stavu, který nedává záruku dodržení předepsaných technologických kritérií po
+celou dobu výstavby, je zhotovitel povinen, na žádost stavebního dozoru, takový stroj nebo zařízení vyměnit za
+vyhovující.
+3.3.1 Kvalifikace pracovníků zhotovitele
+Pracovníci, kteří provádějí a kontrolují zemní práce musí mít odpovídající znalosti a zkušenosti v této činnosti.
+Na místě těžby zemin, horninových výlomů, ukládání a hutnění sypanin musí být po celou dobu
+technologických procesů pracovník s odpovídající kvalifikací. Pokud objednatel/stavební dozor zjistí, že zemní
+práce nejsou prováděny kvalifikovaným personálem, musí zhotovitel, na žádost stavebního dozoru, zajistit jejich
+náhradu pracovníky s odpovídající kvalifikací. Objednatel/stavební dozor také musí ověřit způsobilost
+laboratoře pro provádění kontrolních zkoušek (vybavení, personál), v souladu s kapitolou 1 Všeobecně.
+3.3.2 Výkopy
+Výkopy zahrnují rozpojení hornin, odebrání výkopku, naložení na dopravní prostředek a odvezení do
+vzdálenosti předepsané dokumentací nebo smlouvou o dílo. Budování výkopů musí být prováděno v souladu
+s předpisem SŽDC S4.
+Výkopy musí být provedeny v úrovních a geometrických hranicích podle dokumentace.
+Dodatečné výkopy na již provedené zemní pláni, či konstrukčních vrstvách budou posuzovány a přejímány jako
+nové práce se všemi náležitostmi (statické zatěžovací zkoušky, míra zhutnění apod.).
+6
+Výkopovými pracemi nesmí dojít k poškození stávajících konstrukcí a inženýrských sítí které nejsou určeny
+k odstranění. Dále nesmí dojít ani ke znečistění kolejového lože.
+Pro železniční stavby se stanovují 3 třídy těžitelnosti:
+I. Těžba je prováděná běžnými výkopovými mechanismy (buldozery, rypadla, ručně prováděné výkopy).
+Jedná se o třídy 1 až 3, a 4 a), b), c), f) dle ČSN 73 3050.
+II. Pro těžbu a rozpojování horniny je nutné použít speciální rozpojovací mechanismy (rozrývače, skalní
+lžíce, kladiva). Podle ČSN 73 3050 se jedná o třídu 4 d) a e) a třídu 5.
+III. K rozpojování je nutné použít nejtěžší rozrývače, nejtěžší hydraulická kladiva nebo trhací práce. Jedná
+se o třídy 6 a 7 dle ČSN 73 3050.
+Zatřídění hornin je uvedeno v dokumentaci stavby podle výsledků geotechnického průzkumu. Případný
+nesoulad mezi třídou těžitelnosti uvedenou v dokumentaci a skutečností řeší stavební dozor.
+Střídají-li se horniny v příčném řezu po vrstvách, v nichž se hornina také těží, zaměří se každá vrstva a určí se
+objem výkopku příslušné třídy. Při těžbě na plnou výšku zářezu (etáže) se zaměří celá výška těženého svahu.
+Jestliže je hloubeným zářezem zastižena kombinace souvrství, ze kterého vyvěrá voda ze svahu zářezu, je nutno
+tuto vodu odvést mimo zářez. Potenciálním místem vyvěrání je zejména styk propustných a nepropustných
+vrstev. V případě stavební jámy je nutno vodu odčerpat. Potřebné úpravy spojené s odvedením vody mimo
+staveniště zabezpečuje zhotovitel a způsob úpravy odsouhlasí objednatel/stavební dozor.
+3.3.2.1 Výkopy podle způsobu rozpojování
+a) Běžné výkopy
+Zahrnují všechny druhy strojních a ručních výkopů v zeminách a dobře rozpojitelných horninách, kromě
+výkopů s použitím trhavin. Podle článku 3.3.2 těchto TKP se jedná o třídu těžitelnosti I. a II. (podle
+ČSN 73 3050 se jedná o třídu těžitelnosti 1 až 5) .
+b) Výlomy pomocí trhavin
+Pevné horniny, které nelze odtěžit běžnými těžebními mechanizmy včetně použití rozrývačů, se rozpojují
+pomocí trhavin. Podle článku 3.3.2 těchto TKP se jedná o třídu těžitelnosti III, (podle ČSN 73 3050 se jedná
+o třídu 6 a 7, z ekonomického hlediska se někdy může jednat i o třídu 5). Trhavinami se rozpojují i jednotlivé
+balvany.
+Odstřely se uskutečňují na základě projektu trhacích prací, který podléhá schválení příslušného místního orgánu
+státní báňské správy (tj. Obvodního báňského úřadu-OBÚ). Zhotovitel musí dodržovat všechny platné zákony
+a vyhlášky o provádění odstřelů, stejně jako výnosy ČBÚ a bezpečnostní předpisy vztahující se na manipulaci,
+dopravu a skladování trhavin. Souhlas k odstřelu dává stavební dozor vždy písemně.
+Zhotovitelem trhacích prací může být pouze osoba vlastnící:
+a) v případě trhacích prací malého rozsahu oprávnění pro výkon funkce střelmistra daného typu prací,
+b) v případě trhacích prací velkého rozsahu oprávnění pro výkon funkce technického vedoucího odstřelu
+pro daný typ prací.
+Rozsah trhacích prací závisí na místních podmínkách a je stanoven vyhláškou č. 72/1988 Sb.
+Technické odstřely pomocí trhavin vyvolávají indukované seizmické účinky. Proto je nezbytné při všech větších
+nebo hromadných odstřelech stanovit dosah zóny indukovaných seizmických účinků a také jejich intenzitu
+(frekvenci a rychlost kmitání, které jsou závislé na velikosti efektivní nálože a vzdálenosti od místa odstřelu).
+Pokud se v zóně indukovaných seizmických účinků nacházejí objekty třetích osob nebo prováděné stavby
+(stavební objekty, inženýrské sítě, studny, apod.), musí zhotovitel posoudit odolnost těchto objektů vůči
+seizmickému zatížení, vyvolaného odstřelem, zdokumentovat výchozí stav ohrožených objektů a volit takové
+mezní nálože trhavin, které nezpůsobí žádné škody. Odpovědnost za způsobené škody nese zhotovitel.
+Tyto otázky musí být řešeny v projektu trhacích prací.
+Před zahájením trhacích prací musí zhotovitel předložit objednateli/stavebnímu dozoru veškerou dokumentaci,
+tj. projekt trhacích prací (odstřelů), včetně stanovení mezních náloží, vymezení zóny indukovaných účinků
+a případně dokumentace technického stavu ohrožených objektů. Součástí přípravy jsou zkušební odstřely
+doprovázené měřením seizmických účinků v okolí na ohrožených objektech. Měření musí provádět nezávislá
+odborná organizace. Pro tuto problematiku platí ČSN 73 0040 a ČSN EN 1998. Výlom pro definitivní terénní
+7
+úpravu (svah zářezu) musí být proveden tak, aby nedošlo k porušení skalního masivu a ke zhoršení podmínek
+stability budovaného svahu. V tomto případě je účelné použití technologie řízeného výlomu (hladký výlom nebo
+presplit).
+Pokud se horninový materiál používá pro budování násypů, musí být volena taková technologie odstřelu
+(uspořádání a vzdálenost vrtů, velikost náloží), která zaručí optimální fragmentaci horniny při odstřelu.
+V případě potřeby se materiál rozpojuje sekundárním odstřelem nebo předrcením.
+3.3.2.2 Výkopy podle polohy
+a) V trase
+Výkopy v trase zahrnují odstranění humusu v mocnosti stanovené dokumentací na základě výsledků
+pedologického nebo geotechnického průzkumu, odtěžení horniny na úroveň zemní pláně a vytvarování
+bočních svahů v souladu s příčnými řezy uvedenými v projektové dokumentaci. Při výkopových pracích
+musí zhotovitel zajistit soustavné odvádění povrchových a podzemních vod systémem svahovaných ploch,
+příkopů a provizorních drénů tak, aby nedošlo k znehodnocování těžené horniny, zhoršení únosnosti zemní
+pláně, snížení stability svahů podkopáním nebo podmáčením apod.
+Kromě nevhodných zemin se veškeré vykopané zeminy a horniny použijí do zemních těles v souladu
+s dokumentací. Každá zemina, použitelná do náspů, musí být chráněna před znehodnocením klimatickými
+vlivy. Uložení zeminy na deponie před dalším použitím, pokud není určeno v dokumentaci stavby, je možné
+pouze s písemným souhlasem stavebního dozoru.
+Přes zimní období a v klimaticky nepříznivých podmínkách musí být zemní pláň v zářezech chráněna proti
+znehodnocení klimatickými vlivy, staveništní dopravou apod. Ochranná vrstva bude tvořena nedotěžením
+zářezu na úroveň pláně a to v minimální mocnosti 0,50 m nad projektovanou zemní pláň, pokud
+objednatel/stavební dozor nestanoví jinak. Sejmutí ochranné vrstvy je možné před jejím překrytím navazující
+konstrukční vrstvou v době, kdy nedojde k znehodnocení zemní pláně včetně aktivní zóny. Náklady na
+opravu znehodnocené zemní pláně plně hradí zhotovitel.
+V žádném případě není přípustné přetěžení (nadvýlom) svahů výkopu (výlomu) při patě svahu. Pokud dojde
+k zestrmení svahu, i dočasnému, přetěžením nebo nadvýlomem, uloží objednatel/stavební dozor zhotoviteli
+vypracovat posouzení stability a návrh opatření k jejímu zajištění. Jestliže v důsledku nevhodného
+pracovního postupu dojde k sesutí svahu, předloží zhotovitel návrh opatření pro zajištění a/nebo sanaci
+sesuvu objednateli/stavebnímu dozoru. Po schválení navržených opatření může zhotovitel zahájit sanační
+práce. Všechny náklady spojené s případným dodatečným průzkumem, posouzením stability a sanačními
+prácemi hradí zhotovitel.
+Všechny skalní výlomy, včetně výkopu pro kanalizaci, musí být před definitivní úpravou (zásyp, položení
+následujících vrstev, ohumusování, obklady, sítě apod.) geologicky zdokumentovány ve vhodném měřítku
+v závislosti na složitosti geologických podmínek. Tyto práce zajišťuje zhotovitel. Geologická dokumentace
+včetně posouzení tříd těžitelnosti je součástí předávacího protokolu.
+b) V zemníku
+Pro výkopy v zemníku mimo trasu platí stejné zásady jako pro výkopy v trase. Dočasné svahy mohou být
+strmé, navržené na základě neodvodněné smykové pevnosti. Definitivní svahy však musí mít stabilitu
+odpovídající efektivní smykové pevnosti zeminy a ustáleným poměrům proudění podzemní vody. Konečnou
+úpravu zemníku schvaluje stavební dozor.
+c) Výkopy pro zakládání objektů
+Výkopy pro zakládání mostů, opěrných zdí, propustků, ramp a jiných objektů musí být provedeny podle
+dokumentace. Pokud není možné zahájit konstrukční práce na základu (zhotovení podkladního betonu,
+konsolidační vrstvy apod.) bezprostředně po dosažení úrovně základové spáry, musí být výkopové práce
+ukončeny min. 0,30 m nad projektovanou základovou spárou. Dotěžení na konečnou úroveň se provede max.
+48 hodin před návaznými pracemi, pokud stavební dozor nerozhodne jinak. Jestliže nedojde do 48 hodin
+k zakrytí základové spáry, nebo pokud dojde ke zhoršení jejích geotechnických vlastností zaplavením vodou,
+vyschnutím, znečištěním, napadanou zeminou, apod., musí zhotovitel na vlastní náklady odtěžit narušenou
+vrstvu až na úroveň intaktní horniny a požádat stavební dozor o nové odsouhlasení základové spáry. Rozdíl
+mezi původní a novou úrovní základové spáry nahradí zhotovitel na vlastní náklady betonem nebo hutněným
+náspem o stejných nebo lepších deformačních vlastnostech, než měla původní hornina.
+Každá základová spára musí být písemně odsouhlasená stavebním dozorem. Pro odsouhlasení základové
+spáry zajišťuje zhotovitel geologickou dokumentaci skutečných základových poměrů a srovnání s doku-
+8
+mentací. Posouzení základové spáry musí provést geotechnik zhotovitele za přítomnosti odborného zástupce
+objednatele. Při kontrole se ověří zda zemina/hornina v základové spáře odpovídá požadavkům dokumentace
+na založení stavby (objektu) a výsledků geotechnického průzkumu dle čl. 3.5.5. V případě pochybnosti
+nařídí objednatel/stavební dozor ověření základových podmínek (ulehlosti u nesoudržných zemin např.
+penetrační zkouškou; konzistence, případně pevnosti a stlačitelnosti u soudržných zemin vrtem, penetrační
+nebo vrtulkovou zkouškou). Tato ověření se provádí vždy u konstrukcí třetí geotechnické kategorie dle
+ČSN EN 1997-1. U konstrukcí nižších kategorií podle požadavků objednatele/stavebního dozoru.
+V případě zakládání na horninách, zvláště silně rozpukaných, je nutné, u staveb třetí geotechnické kategorie,
+zdokumentovat základovou spáru a horninový masiv zatřídit podle ČSN EN ISO 14688-1, ČSN EN 1997-1,
+ČSN 73 1001, případně další vhodné klasifikace (Bieniawsky, Barton).
+Pokud vlastnosti zemin a hornin v základové spáře nedosahují parametrů předepsaných v dokumentaci,
+navrhne zhotovitel, na doporučení geotechnika, její úpravu. Ta může spočívat v přehutnění, prohloubení
+úrovně základové spáry, nahrazení čočky nebo vrstvy méně únosné zeminy štěrkopískem, kamenivem nebo
+betonem, vyztužením geosyntetiky apod.
+Při zakládání pod hladinou podzemní vody se obvykle snižuje její úroveň čerpáním pod niveletu základové
+spáry. Pokud to není možné, navrhne se v dokumentaci jiný způsob zakládání objektu. V blízkosti existující
+zástavby je nutné posoudit vliv snížení hladiny na okolní objekty (zvýšené sedání v důsledku vyššího
+efektivního napětí případně sufoze, vliv na studny, vrty, mokřiny apod.) a pokud se betonuje pod vodou musí
+být zvolen takový postup, aby nedošlo k narušení (nakypření) zemin v základové spáře.
+Výkop může být proveden jako pažený v souladu s čl. 3.3.2.3, této kapitoly TKP, nebo jako svahovaný.
+Za návrh sklonů svahů dočasných výkopů a jejich stabilitu odpovídá zhotovitel. Pokud objednatel/stavební
+dozor usoudí, že při výkopových pracích je ohrožena bezpečnost pracovníků (opadávání rozvolněné horniny
+do výkopu, progresivní otevírání trhlin za hranou výkopu), nařídí zhotoviteli úpravu jeho sklonu. Zhotovitel
+přitom musí zajistit trvalé sledování svislých a vodorovných deformací a výsledky poskytovat objed-
+nateli/stavebnímu dozoru.
+Při budování základové konstrukce i po jejím dokončení, zejména v soudržných zeminách a rozpadavých
+horninách, musí být zajištěna dostatečná ochrana zemin/hornin v podzákladí proti jejich porušení vodou,
+klimatickými vlivy i stavebními postupy. Při nebezpečí promrznutí musí být prostor mezi stěnou výkopu
+a základovou konstrukcí zasypán na nezámrznou hloubku, případně odvodněn.
+Dočasné výkopy, krátkodobě stabilní, nesmějí být ponechány přes zimní období.
+d) Výkopy pro inženýrské sítě a odvodnění
+Výkop se zahajuje, pokud možno, na nejnižším místě a postupuje se proti spádu, aby bylo zajištěno
+v každém okamžiku odvodnění výkopu. V soudržných zeminách a v horninách se obvykle dělají výkopové
+stěny svislé, pokud to krátkodobá stabilita umožňuje. Není-li stabilita výkopu dostačující, dále
+v nesoudržných zeminách nebo pokud se ve stěně objevují výrony vody, je nutné buď výkop pažit, nebo
+provést svahovaný výkop. Výkop je nutno pažit v zastavěném území od hloubky 1,30 m a v nezastavěném
+území od hloubky l,50 m. Za stabilitu výkopu zodpovídá zhotovitel. Zhotovitel je také povinen chránit
+všechny výkopy před zaplavením vodou. Potřebná zařízení na čerpání a odvedení vody musí mít zhotovitel
+k dispozici po celou dobu výstavby. Při křížení inženýrských sítí je třeba postupovat tak, aby nenastalo
+vzájemné narušení funkce jednotlivých vedení. Mimo jiné platí pro tyto práce ČSN EN 12007-1
+až ČSN 12007-4, ČSN 73 6005, ČSN 73 6006, ČSN 75 2130, ČSN 75 4030, ČSN 75 5630, ČSN 75 6101
+ČSN EN 1610 a ČSN 75 6230.
+Rovněž při výkopových pracích pro přeložky stávajícího vedení musí zhotovitel organizovat práce tak, aby
+funkce překládaného vedení byla narušena jen po nezbytně nutnou dobu. Odpovědnost za škody na
+překládaném vedení nese v plné míře zhotovitel. Nefunkční vedení, pokud je v prostoru mimo dosah napětí
+přenášeného z dopravy, je možné v zemním tělese ponechat. Pro zpětný zásyp výkopů platí podmínky
+uvedené v čl. 3.3.3.5 a čl. 3.5.10 této kapitoly TKP.
+3.3.2.3 Výkopy podle způsobu zajištění
+a) Svahované jámy
+Za návrh svahů dočasných výkopů nese plnou zodpovědnost zhotovitel. Pokud stavební dozor považuje
+svahy výkopu za nedostatečně stabilní, může zhotoviteli nařídit jejich úpravu. Dočasné výkopy,
+z dlouhodobého hlediska nestabilní, nesmějí být ponechány přes zimní období.
+9
+b) Pažené jámy
+Pažení stěn hloubených výkopů zajistí zhotovitel všude tam, kde je to nezbytné z hlediska bezpečnosti práce
+a stability stěn a okolí, kde je to předepsáno dokumentací stavby anebo určeno objednatelem/stavebním
+dozorem. V ostatních případech záleží na úvaze zhotovitele, zda použije pažení, vysvahování nebo jiného
+způsobu zajišťujícího bezpečnost a stabilitu na staveništi a okolí. Pažení musí zajistit bezpečnost práce pod
+stěnami výkopů, zabránit poklesu okolního území, zabránit sesuvu stěn výkopů a ohrožení stability hotových
+nebo budovaných sousedních objektů. Vnitřní rozměry zapaženého prostoru musí být takové, aby dávaly
+potřebný pracovní prostor pro manipulaci při provádění stavebních prací. Pokud se změní stabilitní poměry
+(zvýšení hladiny podzemní vody, přitížení, vibrace, apod.) v průběhu prací, je zhotovitel povinen upravit
+druh a rozsah pažení podle skutečných poměrů na staveništi. Podmínky použití jednotlivých druhů pažení
+a ocelových štětových stěn upravují příslušné čl. ČSN 73 3050.
+Po ukončení prací bude pažení i jeho zajištění odstraněno, pokud není projektovou dokumentací nebo
+stavebním dozorem stanoveno jinak. Odstranění bude provedeno takovým způsobem, aby nedošlo
+k poškození povrchu betonu nebo některé části nové konstrukce. Mezery vzniklé po odstranění pažení mezi
+stěnou výkopu a novou konstrukcí musí být vyplněny zhutněnou sypaninou nebo betonem.
+Pažený výkop se provede podle dokumentace zhotovitele a odsouhlasí ho stavební dozor. Pažící konstrukce
+se navrhuje podle zásad zemních tlaků v souladu s ČSN EN 1997-1.
+K trvalému nebo dočasnému zajištění stavební jámy nebo výkopu je možné rovněž použít metodu
+hřebíkování zemin. Zásady provádění hřebíkovaného svahu jsou v TKP Kapitola 30 (pozemní komunikace).
+c) Jímky
+Jímky jsou pažící a těsnící konstrukce které se používají pro stavbu objektů ve vodě. Chrání výkop před
+účinky tlaku vody. Konstrukce jímky musí být obsažena v dokumentaci stavby nebo projektovém souhrnném
+řešení (PSŘ).
+3.3.3 Náspy
+Náspy jsou zemní konstrukce postavené na upraveném povrchu terénu ze zemin, hornin a jiných materiálů
+zpracovaných zpravidla hutněním při vlhkosti obvykle nepřesahující rozmezí ± 5 % od w dle zkoušky Proctor
+opt
+standard. Jejich budování musí být prováděno v souladu s předpisem SŽDC S4. Násep se provede ve shodě
+s výškovým a směrovým vedením trasy a vzorovým příčným řezem podle dokumentace. Náspy jsou buď prosté
+(z jednoho druhu zeminy nebo horniny), vrstevnaté, vyztužené (geotextilie, geomřížky, speciální výztužné
+prvky), z druhotných materiálů (struska, popílek, důlní odvaly) nebo z lehkých stavebních hmot (lehké
+keramické kamenivo, polystyren). Kromě prostých náspů musí být způsob výstavby a použité materiály
+specifikovány v dokumentaci, případně ZTKP.
+3.3.3.1 Náspy podle materiálu
+a) Zemní náspy
+Násep se provede ve shodě s vytyčenými směrovými a výškovými prvky a vzorovým příčným řezem podle
+PSŘ.
+Pokud není v dokumentaci uvedeno jinak musí se sypanina ukládat do náspu ve vrstvách a zhutňovat
+hutnícími prostředky (válce, desky, pěchy, apod.) tak, aby bylo dosaženo stupně zhutnění podle
+ČSN 72 1006.
+Pro ochranu staveniště před škodlivým účinkem povrchových vod je zhotovitel povinen po celou dobu
+výstavby zajistit odvedení povrchových vod. Při deštivém počasí je nutno pozorně sledovat vlhkost zemin
+a v případě nutnosti včas zemní práce přerušit. Ze stejného důvodu je nutno průběžně odvádět srážkovou
+vodu s povrchu zemního tělesa a jeho boků. Povrch náspu, zejména ze soudržných zemin, musí mít při
+navážení mírné sklony do stran. Denně, před ukončením práce ve směně, je nutno navezenou vrstvu upravit
+a zhutnit, aby případná srážková voda mohla s náspu stékat. Jednotlivé vrstvy nesmí vykazovat místní
+prohlubeniny. Při pojíždění sypaniny technologickou dopravou, je třeba se vyvarovat pojíždění v jedné
+stopě.
+Sypanina se musí ukládat po vrstvách na celou šířku zemního tělesa, v souladu s příslušným příčným řezem
+a na takovou délku, aby během zhutňování nemohlo dojít v rozprostřené vrstvě ke změně vlhkosti, která by
+ovlivnila dosažený stupeň zhutnění. Nejvhodnější technologie hutnění se zjišťuje zhutňovací zkouškou podle
+ČSN 72 1006.
+10
+Je zakázáno v jedné vrstvě nepravidelně smíchávat materiály výrazně odlišných geomechanických
+vlastností. Toto ustanovení neplatí při tzv. mechanickém zlepšování zemin, kdy se do vrstvy jedné zeminy
+(např. stejnozrnný písek) zapracovává frézou druhá zemina (např. štěrkodrť).
+Vlhkost rozprostřené zeminy se před zahájením zhutňovacích prací nemá odlišovat od hodnoty optimální
+vlhkosti stanovené podle ČSN 72 1015 o více než 3 %. U spraší a sprašových hlín nesmí vlhkost při
+zhutňování klesnout pod w o více než 2 %. U jílovitých zemin s IP>17 je možné připustit odchylku
+opt
+od optimální vlhkosti v rozmezí -3 % až +5 %. Na suché straně od w musí být splněna podmínka,
+opt
+že v zemině nesmí být po zhutnění více než 12 % vzduchových pórů. V případě větší odchylky navrhne
+zhotovitel způsob úpravy a předloží objednateli/stavebnímu dozoru k odsouhlasení. K nejběžnějším úpravám
+převlhčené zeminy, v závislosti na jejím typu a na povětrnostních podmínkách, patří zejména mechanické
+provzdušování (rozrývání), přidání vápna, popílku, střídání vrstvy převlhčené zeminy se zeminou o menší
+vlhkosti, vkládání geotextilií, apod. (viz též TP 94 a TP 97).
+Pokud má navážená zemina vlhkost mimo uvedené meze, je nutné přistoupit k její úpravě (přivlhčení,
+promísení s jinou zeminou, vápnění), případně ji vyloučit.
+Pokud se nejedná o zvláštní zeminy (např. křemelina), druhotné materiály (popílek), zeminy upravené pojivy
+nebo umělé materiály (keramické kamenivo, polystyren), musí suchá objemová hmotnost zhutněné zeminy
+dosahovat minimálně 1.500 kg.m-3, pokud dokumentace nestanoví jinak.
+b) Kamenité náspy
+Kamenitou a balvanitou sypaninou se rozumí materiál, u kterého nelze stanovit maximální objemovou
+hmotnost, nebo ulehlost podle ČSN EN 13286-2, nebo ČSN 72 1018 a u kterého tudíž není možné vyjádřit
+stupeň zhutnění nebo ulehlosti.
+Sypaniny z kamenů a balvanů se zhutní těžkými vibračními válci v souvislých vrstvách podle
+odsouhlaseného technologického předpisu. Pro snadnější zhutňování se kamenitá sypanina z tvrdých
+skalních hornin může skrápět vodou. Počet pojezdů a tloušťka vrstvy se určí podle výsledků zhutňovací
+zkoušky (ČSN 72 1006) schválené stavebním dozorem. Maximální velikost zrna nesmí v případě tvrdých
+hornin přesáhnout 2/3 tloušťky vrstvy. V případě měkkých hornin nesmí velikost horninových úlomků
+přesáhnout tloušťku vrstvy. Balvany větších rozměrů musí zhotovitel na vlastní náklady rozrušit, ze
+staveniště odstranit, případně uložit do míst odsouhlasených stavebním dozorem. Kvalita kamenitého náspu
+se posuzuje podle dodržování předepsané technologie, stanovené zhutňovací zkouškou, a kritérií uvedených
+v čl. 3.5.6.2 této kapitoly TKP a v ČSN 73 6133.
+c) Náspy z druhotných surovin a jiných materiálů
+Technologie zpracování druhotných surovin (popely, struska, hlušina), syntetických a jiných materiálů musí
+být stanovena v dokumentaci stavby a musí být na ni zhotovitelem zpracován technologický předpis
+odsouhlasený objednatelem/stavebním dozorem. Pro použití elektrárenských popílků do náspů platí
+ČSN 73 6133 a TP 93. Pro použití důlních hlušin se postupuje v souladu s TP Hlušiny (v přípravě pro
+pozemní komunikace).
+d) Vrstevnaté náspy
+Účelem vrstevnatého náspu je maximální využití málo vhodných zemin z trasy, případně využití druhotných
+surovin. Málo vhodné zeminy se prokládají vrstvami zemin vhodných, nebo kamenitými materiály.
+Vrstevnaté náspy se provádějí podle norem ČSN 73 3050 a ČSN 73 6133 tak, aby byla dosažena kvalitativní
+kritéria předepsaná dokumentací stavby.
+Ověření geotechnických parametrů vrstevnatého náspu před zahájením výstavby provede zhotovitel
+zhutňovací zkouškou podle ČSN 72 1006.
+e) Náspy ze zlepšených zemin
+Pro zlepšení zpracovatelnosti zemin a úpravu jejich mechanických vlastností se používají materiály uvedené
+v článku 3.2.7 těchto TKP. Jedná se zejména o úpravu vlhkosti (vápnem) a zrnitosti (příměsí popílku,
+kameniva, chybějící frakce). Tyto úpravy obvykle vedou i ke zlepšení mechanických vlastností.
+Návrh a provádění náspů ze zlepšených zemin se provádí v souladu s požadavky ČSN 73 6133, SŽDC S4,
+kapitoly 6 TKP Konstrukční vrstvy a TP 94 Zlepšení zemin (pozemní komunikace).
+11
+f) Vyztužené náspy
+Výstavba vyztužených náspů musí být v souladu s dokumentací stavby, ČSN 73 6133, TKP 30 a technolo-
+gickým předpisem vypracovaným zhotovitelem, který musí být odsouhlasený objednatelem/stavebním
+dozorem.
+Účelem vyztužování náspů je zachycení smykových a tahových napětí v zemině pomocí ocelových nebo
+geosyntetických výztužných prvků. Vyztužené náspy mohou mít libovolně strmý sklon svahu, případně
+svislý líc s opevněním. Vyztužení je možné také použít na kontaktu náspu s podložím. Jako výztužné prvky
+se používají pásky, tyče, geotextilie, geomříže apod. Podrobný popis výztužných materiálů je v TP 97
+a ČSN EN 14475. Podmínky pro provádění vyztužených náspů jsou v čl. 3.3.5 této kapitoly TKP a v TKP 30
+(pozemní komunikace).
+g) Vylehčené náspy
+Vylehčené náspy se používají vyjímečně dle dokumentace stavby, zejména v místech, kde je žádoucí omezit
+zatížení povrchu terénu z důvodu snížení sedání (např. u objektů), nebo zmenšení aktivních sil při přechodu
+nestabilních území. Používá se lehké keramické kamenivo, expandovaný i extrudovaný polystyren,
+vyjímečně i duté elementy ze syntetických materiálů, použité pneumatiky, apod.
+Stavba náspu z lehkého keramického kameniva se provádí systémem vrstevnatého náspu. Vrstvy lehkého
+keramického kameniva (obvykle frakce 4/8 a 8/16 mm) o tloušťce 0,40 až 0,80 m se prokládají vrstvou
+zeminy (obvykle hlinitý písek) o mocnosti 0,10 až 0,15 mm. Hutnění se provádí přes vrstvu zeminy.
+Konstrukce náspu z lehkého keramického kameniva se ukončuje na parapláni pod aktivní zónou. Aktivní
+zóna se provede ze zeminy tak, aby byly splněny kvalitativní podmínky stanovené v dokumentaci a této
+kapitoly TKP.
+Při stavbě náspu z polystyrénu se první vrstva bloků polystyrenu pokládá na urovnaný, odvodněný
+a zhutněný podklad. Další vrstvy bloků se pokládají s překladem (jako cihly) bez průběžných svislých spár.
+Přesah spár je obvykle požadován 0,30 m. Střídají se vrstvy s bloky rovnoběžně a kolmo na osu náspu.
+Krajní řady se přikotvují, aby se zabránilo odfouknutí bloků. Boční strany náspu se chrání přísypem písčité
+zeminy (písek, štěrk) o tloušťce minimálně 0,80 m. Povrch náspu z polystyrenu se před pokládkou
+konstrukčních vrstev ochrání vhodným způsobem (geomembrána, bentonitová rohož, železobetonová deska)
+před případnými účinky chemických látek rozpouštějících polystyren.
+Konkrétní použití a specifikaci lehkého materiálu musí obsahovat dokumentace stavby a technologický
+předpis zpracovaný zhotovitelem a odsouhlasený objednatelem.
+h) Rozšiřování stávajících náspů
+Rozšíření stávajícího náspu řeší dokumentace. Zejména je nutné posoudit vliv přitížení svahu stávajícího
+náspu novým zemním tělesem, zejména na dodatečné sedání a stabilitu celé rozšířené zemní konstrukce.
+Při rozšíření náspu o stezku musí být dodržena ustanovení předpisu SŽDC S4 Železniční spodek
+a vzorového listu železničního spodku Ž 2.2 Rozšíření tělesa železničního spodku pro zvětšení šířky stezky.
+Před zahájením rozšíření náspu musí být odstraněny ze svahu stávajícího tělesa organické zeminy (humus),
+křoviny a dřeviny v souladu se zákonem č. 114/1992 Sb. a ve svahu zřízeny svahové stupně podle vzorového
+listu Ž 2. Rozšíření může být zahájeno pouze se souhlasem stavebního dozoru po převzetí svahových stupňů.
+Požadovaná míra zhutnění musí odpovídat článku 3.5.8 této kapitoly TKP nebo ZTKP. Minimální rozsah
+kontrolních zkoušek je v tabulce 4 této kapitoly TKP, přičemž se kontroluje každá vrstva. Pro úpravu svahu
+rozšířeného tělesa platí ustanovení článku 3.3.3.3 této kapitoly TKP.
+3.3.3.2 Podloží náspu
+Před budováním náspu zhotovitel musí pečlivě upravit podloží, tj. odstranit veškerou vegetaci, kulturní vrstvu
+půdy, případně nevhodné zeminy (bahnité náplavy, rašelinu, apod.). Podloží náspu je třeba vyspádovat,
+odvodnit a přehutnit v souladu s dokumentací a ČSN 72 1006.
+Pokud je technicky obtížné nebo nehospodárné nevhodné zeminy z podloží náspu odstranit nebo pokud úprava
+podloží není řešena v dokumentaci, zhotovitel navrhne a předloží stavebnímu dozoru k odsouhlasení úpravu
+podloží (sanaci). Účelem sanačních opatření pod náspem je zajistit stabilní, únosné podloží pro násep, omezit,
+zrovnoměrnit a urychlit sedání. Navržená opatření musí být podložena výpočty stability a sedání.
+Při úpravě podloží náspu tvořeném soudržnými zeminami měkké a tuhé konzistence se zakazuje použít lomový
+kámen bez mezilehlého filtru (písek, geotextilie). Úpravu lomovým kamenem musí řešit dokumentace.
+12
+Pro zajištění separační a filtrační funkce mezi náspem a podložím se obvykle používá netkaná geotextilie
+s tažností nejméně 30 % v obou směrech. Je-li součástí úpravy podloží náspu i jeho vyztužení pomocí výztužné
+geotextilie, není nutné pod ní vkládat separační geotextilii pokud množství a velikost pórů splňuje kriteria dle
+TP 97 a při provádění nedojde k takovému poškození geotextilie které by separační funkci významně omezilo.
+Zlepšování měkkých zemin v podloží vysokých náspů vápnem je přípustné za předpokladu, že nedojde
+ke snížení propustnosti zlepšovaných zemin. Při požití páleného práškového vápna se obvykle propustnost
+zlepšené zeminy zvyšuje o 1 až 2 řády. Propustnost zeminy po úpravě vápnem je nutné prokázat laboratorní
+zkouškou propustnosti.
+Pokud došlo ke znehodnocení zemin v podloží náspu zaviněním ze strany zhotovitele (např. zanedbáním
+odvodnění, technologickou dopravou apod.), nebude navržené a stavebním dozorem odsouhlasené opatření
+zhotoviteli uhrazeno.
+Ke zvýšení stability se, při sklonech území kolmých na podélnou osu náspu větších než 1:6 budují v podloží
+stupně. Stupně musejí mít min. příčný sklon 3 % ve směru sklonu svahu pro odvádění povrchových vod. Místa
+s úpravou podloží do stupňů musí být vyznačena v dokumentaci.
+Pro zřízení stupňů v podloží náspu platí ustanovení vzorového listu železničního spodku Ž 2 - Zemní těleso.
+Jestliže je podloží tvořeno skalními horninami, provede zhotovitel jejich vyčištění a úpravu rovinatosti.
+3.3.3.3 Svahy zemního tělesa
+Svahy náspů a zářezů musí být upraveny tak, aby výsledné sklony odpovídaly sklonům podle dokumentace.
+Vzhledem k tomu, že minimální stupeň zhutnění zemního tělesa musí být dosažen i na jeho okraji, přesypává
+často zhotovitel projektem předepsaný příčný profil o určitou tloušťku pracovní vrstvy. Tato vrstva musí být při
+konečných úpravách odstraněna, povrch svahu urovnán (tolerance jsou uvedeny v oddíle 3.6 této kapitoly TKP)
+a přehutněn. Horní okraj zářezu musí přecházet do původního terénu plynulým obloukem (podle příčných řezů
+v projektové dokumentaci).
+U skalních zářezů a náspů rozhoduje o podmínkách rovnosti stavební dozor.
+Svahy zářezů i náspů se z důvodu ochrany proti erozi a pro začlenění do krajiny obvykle pokrývají vrstvou
+zeminy vhodné pro zřízení vegetační úpravy. Způsob vegetační úpravy nebo jiné ochrany svahu proti erozi
+stanoví dokumentace. U strmých svahů (1:2 a strmější), zejména v soudržných zeminách, musí být provedena
+taková úprava povrchu, která umožní bezpečné upevnění vegetační vrstvy na povrch svahu. Tyto práce provede
+zhotovitel bezprostředně po dokončení projektovaného tvaru zemního tělesa. Přitom musí řízeně odvádět
+povrchově tekoucí a srážkové vody. Pokud dokumentace neřeší ochranu svahu v průběhu stavby, a stavební
+dozor usoudí, že je ochrana potřebná, navrhne ji zhotovitel a předloží stavebnímu dozoru k odsouhlasení jako
+dodatečnou práci. Náklady na dočasné úpravy svahů nese zhotovitel.
+Zhotovitel musí ošetřovat hotovou úpravu svahu, včetně zeleně, do převzetí prací. Podrobně je tato problematika
+řešena v kapitole 15 TKP.
+V dosahu kolísání hladiny vody (u souběhu nebo křížení železničního zemního tělesa s vodními toky) řeší
+ochranu svahů vzorový list žel. spodku Ž 6.
+3.3.3.4 Zemní pláň
+Zemní pláň tvoří povrch zemního tělesa (v zářezu nebo náspu), na který se pokládají ochranné a konstrukční
+vrstvy pražcového podloží. Zemní pláň musí být provedena z materiálů předepsaných v dokumentaci. Změny
+musí být odsouhlaseny stavebním dozorem. Podélný a příčný sklon, výškové úrovně a tolerance musí odpovídat
+dokumentaci, předpisu SŽDC S4 a těmto TKP. V celé mocnosti aktivní zóny, tj. od povrchu zemní pláně do
+hloubky min. 0,50 m musí být dodržen předepsaný stupeň zhutnění a na povrchu zemní pláně musí být dosaženo
+předepsaného modulu přetvárnosti podle předpisu SŽDC S4. Povrch musí být rovný, hladký, bez prohlubní
+a v tolerancích uvedených v oddíle 3.6 této kapitoly TKP.
+Zemní pláň, která nevyhovuje požadavkům podle předchozího odstavce, bude rozrušena a upravena tak, aby
+předepsané požadavky splnila. Veškeré náklady, spojené s úpravou nevyhovující zemní pláně, hradí zhotovitel.
+Aby nedocházelo k pronikání jemné frakce ze zemní pláně do nadložní nezpevněné konstrukční vrstvy, musí být
+splněno filtrační kriterium dle TNŽ 73 6949. Pokud toto kritérium není splněno, musí být na zemní pláni
+provedena taková úprava, která vzájemnému pronikání zrn zabrání (např. položením netkané separační
+geotextilie s filtračním účinkem).
+13
+Před povolením pokládky konstrukčních vrstev musí zemní pláň odpovídat požadavkům dokumentace a musí
+být vyčištěna a odsouhlasena stavebním dozorem. Práce na pokládce následných podkladních a konstrukčních
+vrstev nesmějí být zahájeny bez odsouhlasení pláně stavebním dozorcem podle čl. 3.8.
+Dokončená zemní pláň musí být ze strany zhotovitele chráněna do překrytí následující konstrukční vrstvou.
+Jakékoliv stavební zásahy (např. výkopy pro odvodnění) do upravené a odsouhlasené zemní pláně jsou
+nepřípustné. Zhotovitel musí veškeré přeložky, odvodňovací systémy, sítě apod. provést v mezích stanovených
+v dokumentaci a dokončit před definitivní úpravou zemní pláně. Deponie stavebního materiálu jsou na pláni
+zakázány.
+Přejezdy vozidel po dokončené zemní pláni musí být minimalizovány. Všechna poškozená místa na pláni musí
+být zhotovitelem opravena na jeho náklady a převzata stavebním dozorem.
+Pokud nedošlo před zimním obdobím k zakrytí pláně konstrukčními vrstvami, je nutno takovou pláň v další
+stavební sezóně přehutnit a opět zkontrolovat podle oddílu 3.5.8 této kapitoly TKP. Náklady na opakovanou
+kontrolu a z ní vyplývající případné dodatečně práce hradí zhotovitel.
+Trvalá hladina podzemní vody musí být nejméně 0,50 m pod zemní plání (pokud dokumentace stavby nestanoví
+jinak). Jestliže se v průběhu stavby prokáže, že trvalá hladina podzemní vody zasahuje do aktivní zóny, navrhne
+zhotovitel opatření (odvodnění, úpravu nivelety apod.) která předloží objednateli/stavebnímu dozoru
+k odsouhlasení.
+3.3.3.5 Zpětný zásyp, obsypy objektů
+Zpětný zásyp se musí provádět podle dokumentace, a to jen stavebním dozorem odsouhlasenou sypaninou
+hutněnou po vrstvách. Vlhkost zeminy při hutnění nesmí vybočovat z mezí uvedených v čl. 3.3.3.1 a) této
+kapitoly TKP. Stupeň zhutnění musí být stanoven v dokumentaci, přičemž minimální hodnoty nesmějí být nižší,
+než je uvedeno v tabulce 3 a 4 čl. 3.5.6.1 a 3.5.6.2 této kapitoly TKP.
+U výkopů pro konstrukce platí pro zpětný zásyp od základové spáry po úroveň okolního terénu hodnoty
+zhutnění jako pro podloží náspu.
+Pro zásypy rýh a jiných výkopů, které jsou součástí železničního tělesa, platí hodnoty hutnění jako pro okolní
+zemní těleso.
+Pro zásypy za opěrnými zdmi apod. platí do vzdálenosti 1 m od rubu zasypávané konstrukce hodnoty hutnění
+jako pro aktivní zónu, ve větší vzdálenosti platí hodnoty hutnění jako pro násep.
+U propustků a jiných přesypaných objektů je minimální požadované zhutnění do výšky 1 m nad objektem stejné
+jako pro aktivní zónu, mimo tuto oblast je požadovaný stupeň zhutnění jako pro násep. Zemina za objektem,
+která je v dosahu promrzání, musí být nenamrzavá.
+Zpětný zásyp (betonových propustků, tubosiderů aj.) se musí provádět současně na obou stranách objektu, aby
+se předešlo nerovnoměrným tlakům a případným deformacím vlastního objektu. Největší rozdíl v úrovních
+zásypu na obou stranách objektu je 0,50 m.
+Do vzdálenosti 1 m od povrchu zasypávaného objektu nesmí být použit kamenitý materiál o velikosti zrna
+větším než 16 mm. Výjimku může povolit pouze stavební dozor.
+Tloušťka zhutňované vrstvy nesmí být větší než 0,30 m. Hutnění v blízkosti objektu (obvykle do vzdálenosti
+1 m od rubu konstrukce) se musí provádět pomocí takových prostředků, aby nedošlo k vybočení konstrukce,
+poškození izolace, uloženého potrubí, atd. Všechny způsobené škody jdou na náklad zhotovitele. Zásadně je
+třeba se vyvarovat přehutnění, při kterém by byla konstrukce namáhána zvýšeným vodorovným tlakem než na
+jaký byla dimenzována. Bednění a jiné pomocné zařízení musí být před započetím zpětného zásypu odstraněno
+a pod zpětným zásypem nesmí být ponecháno žádné dřevo.
+3.3.4 Přechodová oblast mostních objektů
+Přechod z náspového tělesa na most zahrnuje klínovou oblast zemního tělesa přiléhajícího k opěře mostní
+konstrukce o délce stanovené dokumentací. Návrh a provádění zemních prací musí být v souladu
+s ČSN 73 6201, ČSN 73 6301 a SŽDC S4.
+K výstavbě přechodové oblasti musí být použito zeminy alespoň vhodné (podle ČSN 72 1002) pokud
+dokumentace nebo objednatel/stavební dozor neurčí jinak.
+14
+Pro přechodové oblasti platí hodnoty hutnění stanovené přílohou 24 předpisu SŽDC S4. Způsob hutnění
+v blízkosti mostní opěry musí být odsouhlasen stavebním dozorem.
+Při zakládání mostní opěry v tělese náspu na úložném prahu podepřeném pilotami se musí celé zemní těleso
+v přechodové oblasti včetně svahových kuželů před opěrou, stavět současně. Zásyp za opěrou se provádí
+a kontroluje na celou výšku přechodové oblasti. Rovněž obsyp mostních křídel musí zhotovitel provádět
+současně na obou stranách konstrukce, podle projektové dokumentace, aby nedocházelo k jejímu
+jednostrannému zatěžování. Pro ochranný zásyp za opěrou se použije nenamrzavá zemina. Na obsyp objektu
+a křídel se použije zemina, jejíž efektivní smyková pevnost umožní vytvoření stabilního svahu podle
+dokumentace.
+3.3.5 Technologie pokládky geosyntetik
+Před pokládkou je třeba zkontrolovat povrch, na který se geosyntetika ukládají a odstranit veškeré ostré
+předměty. Po fixování počátku role (kolíky, hřeby, přitížením zeminou) je možné jak strojní tak ruční odvíjení.
+Nikdy však položená vrstva nesmí být následně pojížděna stroji. V případě větru je vhodné rozvíjené pásy
+zatěžovat, např. starými pneumatikami nebo přikolíkovat.
+Zvláštní pozornost se věnuje ukládání pro účely vyztužování. Po uchycení a fixaci jednoho konce je vhodné
+určité mírné předepnutí pokládaného geosyntetika s následnou fixací před překrytím zeminou. Rozhodně je
+nutné se vyvarovat různým záhybům a boulím. Bezprostředně po položení geosyntetického materiálu musí dojít
+k jeho zakrytí zeminou. Při delším ponechání nepřikrytého geosyntetika na místě je nebezpečí jeho znečištění,
+poškození, případně krádeže.
+3.3.5.1 Boční napojování sousedních pásů
+Boční nastavování jednotlivých pásů geosyntetik v konstrukčních vrstvách, zejména geotextilií, se obvykle
+provádí přesahem. Přesah je minimálně 0,20 m (při vyztužování kontaktu náspu na měkkém podloží se
+doporučuje min. 0,50 m) a řídí se velikostí očekávaných deformací a tím možného oddělení pásů. Přesahy vždy
+mají být orientovány tak, aby následným překrytím zeminou nedošlo k jejich odhrnutí.
+Způsob bočního napojení pásů geosyntetik při vyztužování opěrných stěn s tuhým, případně pružným, lícovým
+opevněním a strmých svahů řeší dokumentace. Výztužné pásy lze pokládat i na sraz (jednotlivé pásy se bočně
+dotýkají) nebo ponechat mezi pásy mezeru, pokud je prokázána vyhovující výztužná funkce a je zamezeno
+vypadávání zrn zeminy z líce vyztužené konstrukce.
+3.3.5.2 Napojování geosyntetik ve směru tahových napětí
+Pro výztužné účely se mohou přesahem nastavovat pásy geosyntetik pouze ve směru kolmém na hlavní tahová
+napětí. Nastavování geosyntetik ve směru působení hlavního tahového napětí se běžně neprovádí. Pokud se
+nevyhnutelně musí některý pás nastavit musí být spojení provedeno takovým způsobem, aby pevnost spoje byla
+stejná nebo vyšší než pevnost vlastního materiálu a nedošlo přitom k vyššímu protažení než je uvažováno ve
+výpočtech. Způsob spojování navrhne zhotovitel a odsouhlasí ho stavební dozor.
+Spojení jednotlivých pásů se provádí některým z následujících způsobů:
+sešíváním - které je nejběžnějším způsobem spojování geotextilií. Používají se pro to přenosné šicí stroje.
+Způsob úpravy švu stanovuje dokumentace stavby. Základní metody sešívání geotextilií jsou
+v TP 97,
+svorkováním - které se používá pro zajištění polohy (přesahu) navazujících pásů geotextilií. Ocelové svorky
+mohou urychlovat degradaci geotextilie v místě spojení,
+lepením - druh lepidla musí být konzultován s výrobcem geotextilie, mechanická pevnost a stálost spoje
+musí být prokázány zkouškami,
+svařováním - které, podobně jako lepení, musí zajistit dokonalost spojení, mechanickou pevnost
+a dlouhodobou stálost spoje bez oslabení vlastního materiálu. Vhodnost svařování musí
+potvrdit výrobce geotextilie a zhotovitel musí předložit počáteční (průkazní) zkoušky pevnosti
+spoje,
+přesahem na kotevní délku - zajištěnou některým z výše uvedených způsobů (sešití, svorkování, lepení,
+svařování),
+15
+proplétáním - které se používá pro napojování pásů geomřížek. Pro tento účel se používá tyčový prvek ze
+stejného materiálu jako geomřížka a jeho tuhost musí umožnit rovnoměrný přenos zatížení bez
+zvýšených deformací.
+Geosyntetika se kladou ve směru hlavních tahových napětí, tj. obvykle kolmo na podélnou osu náspu
+a spojování přesahy je pouze ve směru rovnoběžném s podélnou osou náspu.
+3.3.5.3 Řezání
+Pro složitost řezání geosyntetik na stavbě je vhodnější se tomuto procesu vyhnout pečlivějším naplánováním
+dodávky o různých délkách (šířkách) geosyntetik. Pokud se bude řezání na stavbě provádět, nesmí být narušena
+celistvost, nesmí dojít k porušení okrajů. Řezné nástroje (ostré nože, nůžky, pily) se volí podle typu geosyntetika
+a směru řezu - kolmo na pás nebo v jeho směru. Postup musí být v souladu s bezpečnostními předpisy.
+Je zakázáno řezání geosyntetik plamenem (autogenem) vzhledem k tepelnému znehodnocení geosyntetik v okolí
+řezu.
+3.3.5.4 Poruchy na místě a jejich opravy
+Převážně jde o případy proražení, natržení. V případě opěrných stěn, a velmi strmých svahů je nutné porušený
+materiál (celý pás) nahradit novým. U vyztužených zemních konstrukcí s mírným sklonem a vyztužení podloží
+je nejčastějším způsobem opravy záplata spojená s ostatním materiálem způsobem dle čl. 3.3.5.2 těchto TKP.
+Pokud se provede oprava pouze přesahem (aspoň 300 mm na každou stranu od okraje poškození), musí být při
+překrývání zeminou zajištěno tak, aby nedošlo k posunutí záplaty.
+3.4 DODÁVKA, SKLADOVÁNÍ A POČÁTEČNÍ (PRŮKAZNÍ) ZKOUŠKY
+3.4.1 Dodávka a skladování
+a) Zeminy
+Pokud se zeminy a horniny ukládají do dočasných deponií pro pozdější využití, je nutné povrch deponie
+upravit do střechovitého tvaru o příčném sklonu min. 5 %, přehutnit, případně zakrýt nepropustnou fólií.
+Zhotovitel musí rovněž stavebnímu dozoru prokázat, že deponie je stabilní a neohrožuje celkovou stabilitu
+svahu nebo výkopů v její blízkosti.
+Do deponií se nedoporučuje ukládat jílovité zeminy, u kterých by mohlo působením klimatických vlivů dojít
+k jejich znehodnocení. Výjimky povoluje stavební dozor. Pokud je zemina na deponii nevhodně uložena tak,
+že dojde k jejímu znehodnocení klimatickými vlivy nebo promísením s nevhodnou zeminou (např. ornicí),
+zhotovitel zajistí na vlastní náklady náhradní množství vhodné zeminy popřípadě i odvoz a uložení
+znehodnocené zeminy.
+Zřízení deponie podléhá schválení stavebního dozoru.
+Zásady pro budování deponií jsou uvedeny v ČSN 73 3050.
+b) Kamenité materiály, drcené kamenivo
+Deponie lomového kamene a tříděného kameniva musí být chráněna proti promísení s jiným materiálem.
+Podloží pro vybudování deponie musí být rovinné, v mírném sklonu (3 až 5 %), aby se zamezilo akumulaci
+prosáklé vody na dně deponie, očištěné a přehutněné. Na oddělení deponovaného kameniva od povrchu
+terénu je možné použít separační geotextilii. U velkých deponií na svahu je třeba přešetřit celkovou stabilitu
+svahu a ohrožení případných výkopů v blízkosti. Umístění deponie schvaluje stavební dozor.
+c) Druhotné suroviny a jiné materiály
+Pokud se pro výstavbu zemních těles používají druhotné suroviny (popely, struska apod.), je třeba jejich
+přepravu a skladování zajistit tak, aby nedošlo ke zhoršení fyzikálně-mechanických vlastností, případně
+zcizení (polystyren). U materiálů, které jsou určeny k zabudování dovnitř zemního tělesa (popely), bude také
+případné skladování podléhat vyjádření okresního hygienika (zvýšená prašnost). Místo deponie podléhá
+schválení stavebního dozoru.
+16
+d) Nevhodné zeminy
+Zeminy prokazatelně nevhodné pro použití v zemním tělese, u kterých není ekonomicky únosné je zlepšit,
+budou po odsouhlasení stavebním dozorem využity jako druhotný materiál, např. pro terénní úpravy,
+zaplnění vytěžených zemníků mimo trasu apod. Pokud není možné tyto zeminy využít, pohlíží se na ně jako
+na odpadový materiál a uloží se jako odpad na skládku, přičemž zhotovitel musí prokázat zatřídění odpadu.
+Vyhledání vhodné skládky, pokud není určena dokumentací, zajistí a předloží zhotovitel a odsouhlasí
+stavební dozor.
+e) Půda
+Sejmutá svrchní organická půda nebo náhradní zeminy určené k provedení čistých terénních úprav
+(podorničí) se skladují ve vrstvě co nejnižší, maximálně 3 m. Sklon svahů deponie by měl být maximálně
+1:2, aby bylo možné jejich mechanické obdělávání. Povrch deponie musí být urovnaný. Pokud není umístění
+deponie půdy/organické zeminy a její tvar v dokumentaci navrhne je zhotovitel a předloží stavebnímu
+dozoru ke schválení. Při dlouhodobém uskladnění půdy/organické zeminy musí být povrch deponie
+urovnaný a osetý travním semenem nebo zeleným hnojením, aby se zabránilo růstu plevelů. Pokud dojde
+k zaplevelení deponie musí zhotovitel provést chemické ošetření a nové osetí.
+Použité chemické prostředky musí být uvedeny v Seznamu povolených prostředků na ochranu rostlin, který
+každoročně vydává MZe a ÚKZÚZ Brno. Registrované prostředky musí být použity v předepsaných
+koncentracích, dávkách a způsobem, který je uveden na etiketě použitých prostředků. Podrobnosti
+o skladování a ošetřování ornice jsou v ČSN 83 9011 .
+f) Hydraulická a jiná pojiva
+Hydraulická a jiná pojiva pro úpravy zemin musí být dodávána v autocisternách, účelových vysoko-
+kapacitních přepravnících, v případě staveb malého rozsahu se připouštějí i pytlovaná. Při volném
+uskladnění v silech je nutno délku skladování omezit podle pokynů výrobce. Objem skladovacího prostoru
+musí pojmout hydraulická pojiva minimálně na 2 dny činnosti při úpravě zemin. Skladovací sila musí být
+umístěna tak, aby při převládajícím směru větru nebyl provoz na stavbě nebo v obydlené oblasti obtěžovány
+zvýšenou prašností.
+g) Výztužné, separační a drenážní geosyntetické materiály .
+Geotextilie, geomříže, výztuže ocelové i syntetické se dodávají na stavbu a skladují podle dispozic výrobce
+tak, aby nedošlo před jejich zabudováním k jejich poškození nebo znehodnocení klimatickými a jinými
+vlivy. Obecné zásady jsou v TP 97.
+3.4.2 Počáteční (průkazní) zkoušky
+Počáteční (průkazní) zkoušky musí provádět laboratoř s příslušnou způsobilostí která byla odsouhlasena
+objednatelem.
+a) Zeminy a horniny
+Za počáteční (průkazní) zkoušky zemin a hornin pro zakládání staveb a geotechnické konstrukce (zářezy,
+náspy) se považují výsledky geotechnického průzkumu pro nově zpracovávanou přípravnou a projektovou
+dokumentaci provedeném podle požadavků SŽDC S4.
+Pro zeminy uvažované do aktivní zóny se stanoví pevnost CBR na vzorcích zhutněných 100 % energií
+Proctor standard při návrhové vlhkosti. V případě kapilárního a pendulárního vodního režimu se stanoví
+CBR na vzorcích zhutněných 100 % energií Proctor standard při návrhové vlhkosti a po 4 denním uložením
+ve vodě. Minimální pevnost CBR musí být vyšší než 10 % pokud dokumentace nebo ZTKP nestanoví jinak.
+Při nižší hodnotě CBR musí být zemina upravena (zlepšení pojivy, mechanická stabilizace) nebo se do
+aktivní zóny použije jiná zemina. Splnění předepsané hodnoty CBR však nezbavuje zhotovitele povinnosti
+prokázat na zemní pláni dosažení modulu přetvárnosti podle SŽDC S4, pokud není v dokumentaci
+předepsána hodnota jiná.
+Zhotovitel však je povinen, při zpracování např. vlastní dokumentace, si vlastnosti zemin a hornin, stejně
+jako jejich využitelné množství pro stavbu, ověřit doplňkovým průzkumem na vlastní náklad. Kde není
+dostatečné množství zeminy do náspů ze stavby, zajistí zhotovitel, na vlastní náklad, průzkum vhodných
+zemníků. U nejasných nebo rozporných závěrů doplňkového průzkumu má stavební dozor právo si vyžádat
+od zhotovitele další ověřovací zkoušky nebo objednat rozhodčí průzkum. Náklady na tento průzkum uhradí
+ta strana, jejíž závěry se nepotvrdily.
+17
+Při zahájení zemních prací na železničních stavbách prokazuje zhotovitel technologii zpracování sypaniny
+zhutňovací zkouškou v souladu s ČSN 72 1006.
+b) Zeminy zlepšené vápnem, cementem a chemickými přípravky
+Při počátečních (průkazních) zkouškách zlepšených zemin používaných do tělesa náspu se laboratorními
+zkouškami ověřuje:
+(cid:131) vlhkost zeminy před i po dávkování pojiva,
+(cid:131) zrnitost zeminy před dávkováním pojiva,
+(cid:131) číslo plasticity před dávkováním pojiva,
+(cid:131) ekvivalent písku před dávkováním pojiva (pouze u písků, a štěrků),
+(cid:131) humusovitost před i po dávkování pojiva,
+(cid:131) zhutnitelnost dle zkoušky Proctor standard před dávkováním pojiva i po něm,
+(cid:131) CBR směsi zeminy s pojivem zhutněné 100 % energií Proctor standard po 7denním zrání a 4denní
+saturaci (pouze při použití do aktivní zóny).
+U zlepšených zemin prokazuje zhotovitel množství pojiva dávkovaného do zeminy při ověřených vlhkostech
+zeminy. Pro navržené množství pojiva a místo použití v zemním tělese (podloží, násep, aktivní zóna, zemní
+pláň) zhotovitel prokáže zhutňovací zkouškou podle ČSN 72 1006 dosažení předepsaného stupně zhutnění
+v souladu s tabulkou 2 až 5 těchto TKP. Při použití zlepšené zeminy do aktivní zóny prokazuje zhotovitel při
+zhutňovací zkoušce i dosažení předepsaného modulu přetvárnosti zatěžovací zkouškou konanou minimálně
+48, maximálně 96 hodin po zhutnění zlepšené vrstvy zeminy.
+Počáteční (průkazní) zkoušky zemin zpevněných chemickými přípravky se provádí podle ZTKP.
+c) Geosyntetické materiály
+Kvalita geotextilií, gemřížek a geomembrán se prokazuje prohlášením o shodě a zkouškami v souladu
+Obecnými technickými podmínkami.
+d) Ostatní materiály
+Všechny materiály, určené k zabudování do zemních těles, musí být dodány s prohlášením o shodě
+a protokoly počátečních (průkazních) zkoušek podle příslušných norem a v souladu s platnými předpisy.
+Kopie protokolů včetně zhodnocení zkoušek předkládá zhotovitel stavebnímu dozoru. Pokud stavební dozor
+usoudí, že počet nebo kvalita počátečních (průkazních) zkoušek jsou nedostačující, provede zhotovitel na
+vlastní náklady dodatečné zkoušky.
+3.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+3.5.1 Vymezení pojmů
+Kontrolní zkoušky jsou zkoušky, kterými se v průběhu prací průběžně ověřují výsledky zkoušek počátečních
+(průkazních) a další kvalitativní vlastnosti předepsané ve smlouvě o dílo, TKP a ZTKP. Kontrolní zkoušky
+zajišťuje zhotovitel přičemž část zkoušek musí být provedena laboratoří nezúčastněnou na procesu výroby.
+Rozsah těchto zkoušek je stanoven ve smlouvě o dílo.
+Zhotovitel musí práce organizovat tak, aby byla stavebnímu dozoru umožněna kontrola prací, laboratoří
+a výroben v každé fázi výstavby. Pokud podmínky stavebního povolení vyžadují provedení zkoušek zemin nebo
+jiných materiálů, zejména pro určení jejich vlivu na životní prostředí, zajistí tyto zkoušky zhotovitel.
+Místa odběrů a zkoušek určuje stavební dozor tak, aby výsledky charakterizovaly kontrolovaný úsek a současně
+aby byla postižena případná slabá místa s nedostatečnou kvalitou zpracování. Zkoušky provádí na vlastní
+náklady zhotovitel a jejich výsledky předává protokolárně nebo dohodnutou formou stavebnímu dozoru.
+Při nesplnění kvalitativních podmínek nese náklady na opakování zkoušek zhotovitel.
+K prověření kvality prováděných prací nebo hodnověrnosti zkoušek zhotovitele, může objednatel provádět
+zkoušky podle vlastního systému kontroly jakosti. Tyto zkoušky dělá ve vlastní laboratoři nebo je zadává u jiné
+nezávislé laboratoře s příslušnou způsobilostí.
+Pro hrazení nákladů na zkoušky platí příslušné články Všeobecných dodacích podmínek (kapitola 1 TKP).
+Předepsaná kritéria, druh a četnost kontrolních zkoušek jsou uvedena v následujících článcích této kapitoly.
+18
+3.5.2 Zkoušení
+Všechny zkoušky budou prováděny podle dále uvedených požadavků a při každé změně zeminy, nebo na
+vyžádání objednatele/stavebního dozoru. Vzorky pro zkoušky budou odebírány rovnoměrně tak, aby
+reprezentovaly zkoušenou výměru.
+Četnost zkoušek je uvedena v tabulkách 1 až 5 těchto TKP.
+Fyzikálně-mechanické laboratorní zkoušky zemin se provedou v souladu s ČSN EN ISO/TS 17892-1
+až ČSN EN ISO/TS 17892-12. U technologických zkoušek se postupuje podle ČSN EN 13286-2 (Proctorova
+zkouška zhutnitelnosti) a ČSN EN 13286-47 (CBR).
+Měření objemové hmotnosti na zhutněné vrstvě zeminy pro stanovení stupně zhutnění se provádí podle
+ČSN 72 1010.
+Zatěžovací zkouška se provádí v souladu s ČSN 72 1006 a používá se při výskytu zemin obsahujících hrubé
+úlomky a štěrková zrna (>16 mm) v množství větším než 30 %, takže nelze provést laboratorní zkoušku
+zhutnitelnosti.
+Pro výběr místa provedení statické zatěžovací zkoušky je možné použít lehkou rázovou zatěžovací zkoušku,
+podle ČSN 72 1006 a ČSN 73 6192. Statická zatěžovací zkouška musí být provedena v místě, kde byly
+naměřeny nejnepříznivější hodnoty. Rázová zkouška nesmí být použita pro měření modulu přetvárnosti.
+Kontrolní zkoušky hornin, kameniva a geosyntetických materiálů se provádí podle těchto TKP, pokud nejsou
+pro stavbu zpracovány ZTKP.
+Zkoušky ocelových sítí a jiných ocelových prvků, lehkého keramického kameniva, polystyrenu a dalších
+materiálů zabudovaných do tělesa železničního spodku se provádí podle dokumentace a ZTKP.
+Zhotovitel hradí veškeré náklady související se zkouškami uvedenými v těchto TKP.
+3.5.3 Těžba zemin
+Při těžbě zemin v trase nebo v zemníku je nutné kontrolovat shodu vlastností zeminy s předpoklady uvedenými
+v dokumentaci stavby. Za tím účelem musí zhotovitel zajistit provedení zkoušek dle tabulky 1.
+Tabulka 1 Počet zkoušek při těžbě zemin
+Zkouška Minimální počet zkoušek *
+Přirozená vlhkost 1x na 10.000 m3 nebo 1x denně
+Zrnitost 1x na 10.000 m3
+Meze plasticity 1x na 10.000 m3
+Obsah organických látek 1x na 10.000 m3**
+Objemová hmotnost v přirozeném uložení 1x na 10.000 m3
+Zhutnitelnost PS nebo max.- min. relativní 1x na 10.000 m3
+ulehlost (hutnost)
+* Uvedené max. objemy těžené zeminy na 1 zkoušku platí pro homogenní poměry. Při změně materiálu
+provede zhotovitel znovu všechny uvedené zkoušky. Při změně konzistence změří zhotovitel pouze vlhkost.
+** Tato zkouška se provádí pouze při těžbě zeminy v blízkosti povrchu odhumusovaného terénu nebo kde lze
+očekávat výskyt organických nebo spalitelných příměsí (např. údolní náplavy, zeminy v nadloží uhelných slojí).
+Poznámka: Jsou-li uvedena 2 kritéria četnosti zkoušek, musí být splněna obě.
+U rekonstrukcí a oprav stávajících zemních těles se na objemy předepsané v tabulce 1 provádí dvojnásobný
+počet kontrolních zkoušek.
+Zhotovitel je povinen prokázat míru nakypření při těžbě zemin v případech, kdy považuje za potřebné zohlednit
+tuto skutečnost v ceně svých prací a přitom není tato problematika řešena jinak.
+19
+3.5.4 Těžba skalních hornin
+Při rozpojování hornin rozrývači, kladivy nebo trhavinami kontroluje zhotovitel fragmentaci horniny a provádí
+geologickou dokumentaci při těžbě (po odstřelu). Podle způsobu následného použití se provádějí zkoušky
+vyžadované v dokumentaci stavby nebo ZTKP. Pojmenování a zatřiďování hornin se provádí podle
+ČSN EN ISO 14689-1.
+Pokud není smlouvou o dílo stanoveno jinak, zajišťuje měření seismických účinků na stávající zástavbu
+a rozestavěné objekty zhotovitel u nezávislé organizace, v souladu s dokumentací stavby, ČSN 73 0040,
+podmínkami provedení trhacích prací a podle dispozic objednatele/stavebního dozoru.
+3.5.5 Podloží náspu (mimo přechodovou oblast)
+Na upraveném podloží se před zahájením sypání vlastního zemního tělesa zkontroluje stupeň zhutnění
+a přirozená vlhkost zeminy. Za tím účelem musí zhotovitel zajistit zkoušky podle tabulky 2.
+Tabulka 2 Počet zkoušek při kontrole podloží náspu
+Zkouška Druh sypaniny Minimální počet zkoušek *
+vlhkost jemnozrnná zemina 1 x na 2.000 m2
+hrubozrnná zemina 1 x na 5.000 m2
+objemová jemnozrnná zemina 1 x na 2.000 m2 nebo při každé změně zeminy
+hmotnost
+hrubozrnná zemina 1 x na 5.000 m2
+zhutnitelnost (PS) jemnozrnná zemina 1 x na 4.000 m2 nebo při každé změně zeminy.
+min. hutnost hrubozrnná zemina 1 x na 5.000 m2 nebo při změně zeminy
+nivelační zkouška zvětralá hornina, 1 x na 2.000 m2
+hrubozrnná zemina
+* Uvedené počty zkoušek platí pro homogenní poměry. Při změně materiálu provede zhotovitel znovu všechny
+uvedené zkoušky.
+Poznámka 1: Jsou-li uvedena 2 kritéria četnosti zkoušek, musí být splněna obě.
+Poznámka 2: Odběry vzorků musí charakterizovat poměry do hloubky min. 0,30 m od povrchu upraveného
+terénu (podloží náspu).
+Pokud je v dokumentaci předepsán minimální modul přetvárnosti podloží, provádí se jeho ověření, v prostoru
+poblíž osy náspu zatěžovací zkouškou, případně odběrem vzorku zeminy podloží a následnou zkouškou
+stlačitelnosti v edometru. Obor napětí se volí s ohledem na maximální výšku náspu. Jedna kontrolní zkouška se
+provádí na 5000 m2.
+Při podloží tvořeném skalními horninami se provede geologická dokumentace charakteristických profilů a skalní
+masiv se zatřídí podle ČSN EN ISO 14689-1, ČSN 73 1001 a ČSN 73 3050. Geologickou dokumentaci zpracuje
+zhotovitel a předá stavebnímu dozoru.
+20
+3.5.6 Těleso náspu
+3.5.6.1 Zeminy (jemnozrnné i hrubozrnné)
+Při ukládání zemin do náspu kontroluje zhotovitel kvalitativní parametry zkouškami v rozsahu dle tabulky 3.
+Kontrolovány jsou jednotlivé vrstvy. Tento rozsah zkoušek platí pro zemní tělesa, na kterých je vybudována
+pojížděná konstrukce (kolejový rošt). U nepojížděných náspů (protihlukové zemní valy, terénní úpravy, apod.)
+provádí zhotovitel kontrolní zkoušky v polovičním rozsahu přičemž minimální počet zkoušek při kontrole míry
+zhutnění jsou 3 zkoušky.
+Tabulka 3 Počet zkoušek při kontrole tělesa náspu
+Zkouška Druh sypaniny Minimální počet zkoušek *
+vlhkost jemnozrnná zemina 1 x na 2.000 m2 nebo 500 m3
+hrubozrnná zemina 1 x na 5.000 m2 nebo 1.500 m3
+zrnitost jemnozrnná zemina 1 x na 10.000 m3 nebo při změně
+hrubozrnná zemina 1 x na 10.000 m3 nebo při změně
+meze plasticity jemnozrnná zemina 1 x na 10.000 m3 nebo při změně
+objemová jemnozrnná zemina 1 x na 2.000 m2 nebo 500 m3 nebo při každé změně sypaniny.
+hmotnost
+hrubozrnná zemina 1 x na 5.000 m2 nebo 1.500 m3
+zhutnitelnost (PS) jemnozrnná zemina 1 x na 4.000 m2 nebo 1.000 m3 nebo při každé změně
+sypaniny. Pokud je navážená sypanina homogenní a
+navážené množství je vyšší než 2.000 m3/den provede
+zhotovitel denně minimálně 2 zkoušky zhutnitelnosti
+min. hutnost hrubozrnná zemina 1 x na 5.000 m2 nebo 1.500 m3 nebo při změně sypaniny
+nivelační zkouška kamenitá sypanina 1 x na každé vrstvě nebo 2.000 m2
+zatěžovací zkouška kamenitá sypanina, Alternativní nebo doplňková zkouška k nivelační zkoušce
+deskou hrubozrnná zemina, kamenité sypaniny, (nenahrazuje zkoušku zhutnění u
+jemnozrnná zemina jemnozrnných zemin)
+* Uvedené počty zkoušek platí pro homogenní poměry. Při změně materiálu provede zhotovitel znovu všechny
+uvedené zkoušky.
+Poznámka 1: Jsou-li uvedena 2 kritéria četnosti zkoušek, musí být splněna obě.
+Poznámka 2: Odběry vzorků musí charakterizovat poměry do hloubky min. 0,30 m od povrchu upraveného
+terénu (podloží násypu) nebo v celé tloušťce vrstvy (násypu).
+Směrné hodnoty nejmenší míry zhutnění jsou uvedeny v tabulce 6 a 7 čl. 3.5.11 této kapitoly TKP.
+Vlhkost jemnozrnné sypaniny při hutnění musí být v mezích od w -3 % do w +3 % pro zeminy o číslu
+opt opt
+plasticity Ip<17, u zemin s vyšší plasticitou je povoleno zhutňovat zeminu v mezích od w -3 % do w +5 %,.
+opt opt
+Současně však musí být splněna podmínka, že množství vzduchových pórů ve zhutněné zemině nesmí být větší
+než 12 %. Kriteria zhutnění jemnozrnných zemin jsou uvedena v tabulce 7 čl. 3.5.11 těchto TKP.
+U hrubozrnné sypaniny jsou limitní meze vlhkosti pro zpracování obvykle užší (-2 % <w <+2 %). Kritéria
+opt
+zhutnění hrubozrnných zemin jsou v tabulce 6 čl. 3.5.11 těchto TKP.
+3.5.6.2 Kamenitá sypanina
+Kontrola kvality zhutnění kamenité sypaniny se provádí nivelační metodou podle ČSN 73 6133. Zkouška
+nivelací se provádí na každé zhutněné vrstvě, minimálně však 1 sada měření na 1000 m2, pokud stavební dozor
+21
+nerozhodne jinak. Zhutnění je považováno za vyhovující, pokud zatlačení měřicích destiček po dvou
+kontrolních pojezdech zhutňovacího mechanizmu nepřekročí 0,5 % tloušťky vrstvy. Nesmí přitom docházet
+k viditelným pružným deformacím pod běhounem válce. Měření se provádí nejméně na 10 destičkách.
+Největší zrno nesmí překročit 2/3 tloušťky zhutněné vrstvy.
+Se souhlasem stavebního dozoru je možné použít i jiné kontrolní metody podle ČSN 72 1006.
+3.5.6.3 Druhotné suroviny a jiné materiály
+Pro popílky, popely a směsi popílků s pojivy (stabilizáty) je způsob kontroly a počet zkoušek uveden
+v ČSN 73 6133 a TP 93.
+Požadavky na kontrolní zkoušky geosyntetik jsou v OTP (SŽDC) a v TKP (pozemní komunikace) Kapitola 30.
+Ocelové sítě (pletené i svařované) pro gabiony se kontrolují podle TKP (pozemní komunikace) kap. 30.
+Pro ostatní materiály musí být způsob kontroly a počet zkoušek uveden v ZTKP.
+3.5.7 Přechodová oblast
+Na novostavbách a přeložkách tratí se kontrola míry zhutnění, případně relativní ulehlosti podloží a vlastního
+zásypu v prostoru přechodové oblasti, tj. v úseku mezi rubem mostní opěry a zemním tělesem v délce 2H + 5m
+0
+(kde H je výška náspu dle předpisu SŽDC S4), provádí ve třech profilech, min. však 5 m od sebe:
+0
+− ve vzdálenosti max. 1,0 m za rubem opěry,
+− ve vzdálenosti 3/4 výšky náspu (zásypu) za rubem opěry,
+− ve vzdálenosti 1,5 násobku výšky náspu za rubem opěry.
+Na stávajících tratích je délka přechodové oblasti snížena na H + 5m, u konstrukce ze štěrkodrtě stabilizované
+0
+cementem nebo z mezerovitého betonu H + 2m (min. 7 m). Proto se realizují pouze dvě zkoušky na vrstvě a to:
+0
+- ve vzdálenosti 1,0 m od rubu opěry,
+- ve vzdálenosti rovné výšce náspu (nebo 5 m).
+Pro přechodové oblasti platí příloha 24 předpisu SŽDC S4.
+Kontrolní zkoušky vlhkosti a objemové hmotnosti se provádějí na jednom místě v každém profilu, a to
+v hloubce 0,25 m pod povrchem upraveného podloží, na povrchu podloží a pak na každé zhutněné vrstvě. Pokud
+délka přechodové oblasti neumožňuje zachovat předepsanou vzdálenost profilů, provedou se minimálně dvě
+kontrolní zkoušky na každé vrstvě.
+Zkouška zhutnitelnosti se provede pro zeminu charakterizující podloží do hloubky 0,50 m a pro sypaninu při
+každé změně, min. však 1 zkouška na 500 m3 uložené zeminy u novostavby a 150 m3 u rekonstrukce mostu.
+V případě jemnozrnných zemin se zhutnění vztahuje k max. hmotnosti podle Proctora standard, ČSN 72 1015,
+u hrubozrnných zemin se zhutnění vyjádří jako relativní ulehlost podle ČSN 72 1018. Kamenitá sypanina se
+kontroluje nivelací na každé vrstvě podle ČSN 73 6133, nebo zatěžovací zkouškou, pokud stavební dozor
+nerozhodne jinak.
+U vnějších obsypů mostních opěr a křídel jsou požadované hodnoty zhutnění stejné jako v přechodové oblasti.
+3.5.8 Aktivní zóna
+Aktivní zóna je část pražcového podloží a část zemního tělesa, ve které se projevují účinky dopravního zatížení
+a klimatických poměrů; zpravidla se uvažuje do hloubky 1,50 m od horní plochy pražce, vždy však nejméně
+0,50 m pod zemní pláň. Stupeň zhutnění je v tabulce 6 a 7. Ve složitějších případech, pro které jsou zpracovány
+ZTKP může být počet zkoušek, na žádost investora, zvýšen.
+Oblast se kontroluje stejnými metodami jako vlastní zemní těleso a kriteria kvality jsou uvedena v tab. 6 a 7
+čl. 3.5.11.2. Počet zkoušek je následující tabulce 4:
+22
+Tabulka 4 Počet zkoušek při kontrole aktivní zóny
+Zkouška Druh sypaniny Minimální počet zkoušek *
+vlhkost jemnozrnná zemina 1 x na 500 m2 nebo 150 m3
+hrubozrnná zemina 1 x na 1.000 m2 nebo 300 m3
+objemová hmotnost* jemnozrnná zemina 1 x na 500 m2 nebo 150 m3
+hrubozrnná zemina 1 x na 1.000 m2 nebo 300 m3
+zhutnitelnost (PS) jemnozrnná zemina 1 x na 2.000 m2 nebo 500 m3 nebo při každé změně sypaniny.
+min. hutnost hrubozrnná zemina 1 x na 4.000 m2 nebo 1.000 m3 nebo při změně sypaniny
+nivelační zkouška kamenitá sypanina 1 x na každé vrstvě nebo 1.000 m2
+zatěžovací zkouška kamenitá sypanina, Alternativní nebo doplňková zkouška k nivelační zkoušce
+deskou hrubozrnná zemina, kamenité sypaniny, (nenahrazuje zkoušku zhutnění u
+jemnozrnná zemina jemnozrnných zemin)
+* Součástí zkoušky je i výpočet stupně zhutnění D nebo relativní ulehlosti I
+D
+Požadavky na odolnost zemin aktivní zóny proti mrazu musí vycházet z návrhu celkové tloušťky konstrukce
+pražcového podloží, jejího teplotního a vodního režimu ve vztahu ke klimatické zóně. Do aktivní zóny se nesmí
+používat zeminy nevhodné do náspů (podle ČSN 72 1002) a takové materiály, u kterých působením změn
+teploty, vlhkosti a zatížení může dojít k takovým změnám jejich fyzikálně mechanických vlastností, které by
+způsobily, že dokumentací stanovené parametry nebudou dosaženy.
+3.5.9 Zemní pláň
+Zemní pláň kontroluje zhotovitel zkouškami, jejichž druh a četnost je v tabulce 4. Kritérium zhutnění je stejné
+jako pro aktivní zónu dle tabulky 5 a 6, modul přetvárnosti musí splňovat podmínku dle SŽDC S4.
+Použití kamenité a balvanité sypaniny se v úrovni pláně (do hloubky 0,50 m pod zemní pláň) nepřipouští.
+Druh a minimální počet zkoušek na zemní pláni určuje následující tabulka 5:
+Tabulka 5 Počet zkoušek na zemní pláni
+Zkouška Druh sypaniny Minimální počet zkoušek
+Zrnitost jemnozrnná i hrubozrnná zemina 1x na 200 m jedné koleje nebo
+1000 m2
+Meze plasticity Jemnozrnná zemina 1x na 200 m jedné koleje nebo
+1000 m2
+Vlhkost Jemnozrnná i hrubozrnná zemina 1x na 100 m
+Objemová hmotnost Jemnozrnná i hrubozrnná zemina 1x na 100 m
+Proctor standard Jemnozrnná zemina 1x na 250 m jedné koleje nebo
+1000 m2 nebo při změně
+Relativní ulehlost Hrubozrnná zemina 1x na 250 m jedné koleje nebo
+1000 m2 nebo při změně
+Zatěžovací zkouška deskou Jemnozrnná i hrubozrnná zemina 1x na 250 m jedné koleje
+Ve složitých případech, pro které jsou zpracovány ZTKP, nebo v místech kde se kvalita zemin často mění, může
+být počet kontrolních zkoušek na žádost objednatele zvýšen.
+23
+Požadované hodnoty zhutnění jsou uvedeny v tabulce 6 a 7, čl. 3.5.11 této kapitoly TKP. Modul přetvárnosti
+zemní pláně zjištěný zatěžovací zkouškou se upravuje na výpočtovou hodnotu opravným součinitelem „z“. Ten
+se zjišťuje postupem popsaným v předpisu SŽDC S4 na základě zatřídění zeminy a její konzistence.
+Stanovení opravného součinitele z penetrační zkoušky se nepřipouští.
+Minimální požadované hodnoty redukovaného modulu přetvárnosti zemní pláně musí dosahovat hodnot
+dle předpisu SŽDC S4.
+3.5.10 Zpětný zásyp, obsypy objektů a zásyp základů mostů
+Z hlediska požadavků na kvalitu prováděných prací při zpětném zásypu a provádění obsypů platí příslušná
+ustanovení ČSN 72 1006, ČSN 73 3050, ČSN 73 6133. Netýká se přechodových oblastí dle článku 3.5.7.
+Pro zásypy rýh a podobných výkopů mimo těleso železničního spodku je min. míra zhutnění zásypu 92 % PS,
+v tělese železničního spodku 95 % PS a v aktivní zóně 100 % PS. Kontrola zhutnění se provádí s frekvencí
+min. 1 zkoušky na 50 m délky výkopu a 1 m hloubky. Laboratorní zkouška zhutnitelnosti se provede při každé
+změně zásypového materiálu. Podrobnosti o způsobu provádění a kontrole kvality zásypů inženýrských sítí jsou
+v TP 146 (pozemní komunikace).
+Zásypy základů mostů mimo přechodovou oblast mostu a zásypy základů jiných objektů se provádějí a zhutnění
+kontroluje jako u zásypu základů v přechodové oblasti mostů uvedeného v ČSN 73 6244 pokud dokumentace
+stavby nestanoví jinak.
+3.5.11 Kontrolní hodnoty
+3.5.11.1 Míra zhutnění hrubozrnných zemin
+Mírou zhutnění hrubozrnných písčitých a štěrkovitých zemin je relativní hutnost (ulehlost) I ve smyslu
+D
+ČSN 72 1006. Max. a min. ulehlost se zjišťuje podle ČSN 72 1018. Tato metoda se použije pouze tehdy, když
+nebude možné stanovit zhutnění metodikou dle Proctora (čl. 4.5.6). V případě, že lze použít pro stanovení
+zhutnění obě metodiky (relativní hutnost i Proctor), porovnává se docílené zhutnění k vyšší hodnotě maximální
+objemové hmotnosti. Požadovaná nejmenší míra zhutnění musí odpovídat hodnotám podle tabulky 6.
+Tabulka 6 Nejmenší míra zhutnění hrubozrnných zemin v zemním tělese železničního spodku
+Název zeminy Symbol dle Min. hodnoty relativní hutnosti I
+D
+ČSN 73 1001 Podloží a těleso aktivní zóna∗ ∗
+železničního spodku
+štěrk dobře zrněný GW
+štěrk špatně zrněný GP 0,75 0,85
+štěrk s příměsí jemnozrnné zeminy * G-F
+písek dobře zrněný SW
+písek špatně zrněný SP 0,80 0,90
+písek s příměsí jemnozrnné zeminy * S-F
+* Platí pouze pro neplastickou příměs jemnozrnné zeminy.
+V případě I > 0 se použije tabulka č.7.
+p
+∗ ∗ Současně musí být splněna podmínka min. hodnoty modulu přetvárnosti ze zatěžovací zkoušky deskou dle
+SŽDC S4.
+3.5.11.2 Míra zhutnění jemnozrnných zemin
+Mírou zhutnění jemnozrnných zemin je parametr D (%) ve smyslu ČSN 72 1006. Max. objemová hmotnost se
+stanovuje zkouškou zhutnitelnosti podle ČSN EN 13286-2 (Proctor standard, Proctor modifikovaný). Při udání
+výsledků této zkoušky musí být vždy uvedena metodika (A,B,C,D). Požadovaná nejmenší míra zhutnění
+jemnozrnných zemin musí odpovídat hodnotám podle tabulky 7.
+24
+Tabulka 7 Nejmenší míra zhutnění jemnozrnných zemin v zemním tělese železničního spodku
+Název zeminy Symbol dle Min. hodnoty parametru D (%)
+ČSN 73 1001 Podloží a těleso Aktivní zóna∗∗∗
+železničního spodku
+hlína s nízkou plasticitou ML 95 103
+hlína se střední plasticitou MI
+jíl s nízkou plasticitou∗ ∗ CL 102
+jíl se střední plasticitou∗ ∗ CI
+jíl s vysokou plasticitou ∗ ∗ CH 95
+hlína s vysokou plasticitou∗ ∗ MH
+hlína štěrkovitá MG 100
+hlína písčitá MS
+jíl štěrkovitý CG
+jíl písčitý CS
+štěrk s příměsí jemnozrnné zeminy * G-F
+štěrk hlinitý GM
+štěrk jílovitý GC
+písek s příměsí jemnozrnné zeminy S-F SM
+*
+SC
+písek hlinitý
+písek jílovitý
+ostatní jemnozrnné
+* Platí, pokud I > 0. Při nesoudržné příměsi jemnozrnné zeminy se použije tabulka č. 1.
+c
+∗ ∗ Bez úpravy (pojivy, smísením s jinou zeminou apod., nesmí být použito do aktivní zóny)
+∗ ∗∗ Současně musí být splněna podmínka min. hodnoty modulu přetvárnosti ze zatěžovací zkoušky deskou
+dle SŽDC S4.
+3.5.11.3 Míra zhutnění směsných zemin
+Požadovaná míra zhutnění směsných zemin, ve smyslu ČSN 72 1006, se určí podle tabulky 7, pokud
+dokumentace nestanoví přísnější podmínky.
+3.5.11.4 Míra zhutnění kamenitých a balvanitých sypanin
+Počet pojezdů zhutňovacího prostředku, případně další technologické požadavky (např. kropení sypaniny při
+hutnění) musí zhotovitel stanovit na základě zhutňovací zkoušky v souladu s ČSN 72 1006, vlastním
+technologickým předpisem a na základě souhlasu stavebního dozoru. Zhutnění je považováno za dostatečné,
+nepřekročí-li při kontrole nivelační metodou podle ČSN 73 6133 rozdíl zatlačení před a po dvou kontrolních
+pojezdech zhutňovacího mechanizmu při plném výkonu 0,5 % tloušťky vrstvy. Nesmí též docházet k viditelným
+pružným deformacím pod běhounem válce. Se souhlasem stavebního dozoru lze použít i jiných nepřímých
+kontrolních metod, např. kompaktometru (podle ČSN 72 1006).
+Případné použití kamenité a balvanité sypaniny v aktivní zóně musí být řešeno v projektové dokumentaci.
+3.5.12 Zkušební postupy
+Všechny laboratorní zkoušky se provádí podle ČSN EN nebo ČSN. Běžně nepoužívané zkušební postupy nebo
+metody, které nejsou v ČR normalizovány a které projektová dokumentace vyžaduje, musí být popsány v ZTKP.
+a) Laboratorní zkoušky zemin (indexové i mechanické) se dělají podle ČSN EN 17892-1 až ČSN 17892-12.
+Pouze obsah organických látek, obsah uhličitanů a namrzavost zemin se stanovují podle příslušných ČSN.
+Laboratorní zkoušky hornin a kameniva se provádí podle ČSN EN, případně ČSN. Úplný seznam norem pro
+laboratorní zkoušky používané při kontrole zemních prací je v čl. 3.12.1 této kapitoly.
+25
+b) Terénní zkoušky zemin a kamenitých sypanin se provádí podle těchto norem a předpisů:
+SŽDC S4 - Železniční spodek,
+ČSN 72 1010 Stanovení objemové hmotnosti zemin,
+ČSN EN 22476-1 Statická penetrační zkouška,
+ČSN EN 22476-2 Dynamická penetrační zkouška,
+ČSN EN 22476-4 Zkouška presiometrem Ménard,
+ČSN 73 6192 Rázová zatěžovací zkouška netuhých vozovek a podloží,
+ČSN 73 1375 Radiometrické zkoušení objemové hmotnosti a vlhkosti.
+Nepřímé metody kontroly podle ČSN 72 1006 (např. zkoušky dle ČSN 73 6192, ČSN 73 1375) mohou být
+použity pouze se svolením stavebního dozoru.
+c) Metodika zhutňovací zkoušky v terénu pro vypracování technologie hutnění je uvedena v příloze G
+ČSN 72 1006. Organizace zhutňovací zkoušky a počet kontrolních testů je věcí zhotovitele. Výsledkem
+zhutňovací zkoušky musí být jednoznačný způsob provádění hutnění.
+d) Nivelační metoda se řídí ustanovením ČSN 72 1006 a ČSN 73 6133.
+3.6 PŘÍPUSTNÉ ODCHYLKY, ZÁRUKY, ÚDRŽBA V ZÁRUČNÍ DOBĚ
+Záruční doby všeobecně stanoví kapitola 1 TKP.
+Údržbu v záruční době zajišťuje provozovatel dráhy podle ustanovení v kapitole 1 TKP.
+3.6.1 Odchylky od výšek zemní pláně.
+Odchylky od výšek zemní pláně a kót odvozených od nivelety, které jsou požadovány dokumentací, se pro
+jednotlivá měření povolují +20, -30 mm. Zvětšené množství sypaniny, potřebné k vyrovnání nivelety náspu
+následkem stlačení podloží, se započítává do objemu náspu tam kde je to určeno v dokumentaci. Velikost
+sednutí je nutno prokázat nezávislým měřením s uvážením časového průběhu.
+3.6.2 Odchylky od šířek zemní pláně
+Dovolená odchylka v šířce zemní pláně je + 100 mm. Při šířce koruny náspu mimo dovolenou odchylku provede
+zhotovitel na vlastní náklad úpravy odsouhlasené stavebním dozorem.
+3.6.3 Rovnost povrchu pláně
+Rovnost povrchu pláně v podélném a příčném směru se kontroluje 3 m latí, pod níž smí být prohlubeň
+max. 20 mm hluboká. Odchylka od projektovaného příčného sklonu zemní pláně nesmí být větší než 0,5 %.
+Měření se provádí ve vzdálenostech nepřesahujících 50 m.
+U skalních zářezů a plání z kamenité sypaniny se postupuje individuálně podle rozhodnutí stavebního dozoru
+a v závislosti na úpravě podle dokumentace.
+3.6.4 Přesnost svahování
+Přesnost svahování se posuzuje 3 m latí. Největší prohlubeň pod touto latí, pokud dokumentace nestanoví jinak,
+má činit:
+a) 30 mm u svahů, na které má být položena dlažba z kamene nebo betonu.
+b) 50 mm u svahů, na které má být položena ornice
+Skutečný sklon svahu se od projektovaného může odchýlit o 5 % z hodnoty tangenty původního svahu.
+3.6.5 Skalní výlomy
+Ve skalních výlomech se svahování neprovádí. Uvolněné části horniny, nestabilní kulisy a převisy musí být
+z bezpečnostních důvodů odstraněny ihned po odstřelu. Stěny výlomu mohou zůstat nerovné, pokud není
+v projektu nebo stavebním dozorem stanoveno jinak.
+26
+3.6.6 Přetěžení výkopů
+V žádném případě není přípustné přetěžení (nadvýlom) svahů výkopu (výlomu) při patě svahu. Pokud dojde
+k zestrmení svahu i dočasnému, přetěžením nebo nadvýlomem, nechá stavební dozor vypracovat posouzení
+stability a návrh opatření k jejímu zajištění. Všechny náklady spojené s posouzením stability a sanační práce
+hradí zhotovitel.
+3.6.7 Odchylky modulu přetvárnosti.
+Při menším počtu zkoušek než 5 na km jedné koleje nesmí žádná z naměřených hodnot modulu přetvárnosti
+zemní pláně nebo pláně tělesa železničního spodku být nižší než je stanoveno v dokumentaci nebo v SŽDC S4.
+Při počtu zkoušek 6 a více na km jedné koleje nesmí být žádná naměřená hodnota o víc než 10 % nižší než
+předepsaná. Hodnoty menší než předepsané kritérium se nesmí vyskytovat za sebou a na jednom odsouhlaseném
+úseku jich nesmí být více než 10 %.
+3.7 KLIMATICKÁ OMEZENÍ
+3.7.1 Stavba náspů při dešťových srážkách
+Při dešti je možné stavět náspy ze zrnitých, hrubozrnných zemin a skalních sypanin, u kterých zvýšená vlhkost
+neovlivní předepsanou míru zhutnění.
+Zhutňovaná vrstva musí být vysvahována v takovém příčném sklonu, aby nedocházelo k retenci vody na jejím
+povrchu a srážková voda byla plynule odváděna mimo násep.
+Výstavba náspů z jemnozrnných zemin, u kterých je nebezpečí zvýšení vlhkosti nad povolenou mez w +3 %
+opt
+(resp. w +5 %), se neprovádí v průběhu dešťových srážek.
+opt
+3.7.2 Stavba náspů v zimním období
+Pro sypání v zimě je nutno dodržovat tyto zásady:
+− zářezová figura, určená dokumentací k těžbě kamenité sypaniny, musí být dokonale strojně očištěna od
+zeminy a zvětralých hornin. Těžbu lze zahájit až po odsouhlasení určené figury stavebním dozorem,
+− při teplotách nižších než -5°C je dovoleno provádět náspy pouze ze sypaniny z tvrdých skalních hornin
+(s obsahem zrn do 2 mm max. 15 %). Zhutňování okrajů zemního tělesa je nutno zintenzívnit na
+dvojnásobek stanoveného počtu pojezdů,
+− navážený materiál je nutno ihned rozhrnout a zhutnit, aby nedošlo k jeho zmrznutí před zhutněním
+a vytvoření hrud. Pokud není reálný předpoklad pro jeho zhutnění, je nutno ihned navážení zastavit,
+− další vrstva nesmí být sypána na poslední zmrzlou vrstvu, která může být nakypřena ledem v pórech.
+Při budování náspů v zimním období je povinností zhotovitele výrazně zpřísnit dohled nad technologií
+prováděných prací. Navážená sypanina musí být ukládána na předchozí vrstvu zbavenou sněhu a ledu, která se
+znovu přehutní.
+Zásadně nelze povolit stavbu násypů:
+− ze zmrzlé zeminy nebo zeminy promrzlé do hloubky větší než 5 cm,
+− na zmrzlém podloží,
+− při teplotách vzduchu nižších než -5°C, s výjimkou sypaniny z tvrdých skalních hornin,
+− při mrznoucím dešti nebo sněžení.
+3.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+3.8.1 Odsouhlasení prací
+Odsouhlasení prací znamená, že předmětné práce byly provedeny v souladu se závazky zhotovitele ve smlouvě
+o dílo, tj. že jejich poloha, tvar, rozměry, jakost a ostatní charakteristiky odpovídají požadavkům dokumentace,
+TKP, ZTKP a případně dalším dokumentům smlouvy.
+27
+Toto odsouhlasení je nutné pro:
+- zahájení následujících prací, které na posuzované práce navazují nebo je zakryjí,
+- potvrzení měsíčních plateb za provedené práce.
+Zhotovitel musí i nadále o odsouhlasené práce řádně pečovat, udržovat je a zodpovídá za vzniklé škody až do
+doby převzetí prací objednatelem, pokud není ve smlouvě o dílo dohodnuto jinak.
+Odsouhlasení zemní pláně v zimním období nebude prováděno v případě, že nebude reálný předpoklad jejího
+zakrytí následujícími konstrukčními vrstvami. Pokud nebyla převzatá pláň takto překryta, provádí se po zimním
+období její dohutnění s novým odsouhlasením. Zhotovitel přitom musí provést nové kontrolní zkoušky v plném
+rozsahu včetně kontrol modulu přetvárnosti zatěžovací zkouškou ve vzdálenostech uvedených v článku 3.5.8
+této kapitoly TKP.
+Požadavek na odsouhlasení prací předkládá zhotovitel písemnou formou. K žádosti se přikládají doklady
+prokazující řádné provedení prací, pokud pro konkrétní práci jsou předepsány nebo přicházejí v úvahu, tj.:
+- výsledky kontrolních zkoušek a jejich porovnání s kvalitativními podmínkami, počátečními zkouškami
+a požadavky dokumentace,
+- doklady o kvalitě stanovených výrobků podle nařízení vlády č. 163/2002 Sb. a případně 190/2002 Sb. ve
+znění pozdějších předpisů,
+- doklady o kvalitě ostatních výrobků podle zákona č. 22/1997 Sb. a 190/2002 Sb., ve znění pozdějších
+předpisů zákona 71/2000 Sb.,
+- výsledky náhradních a dodatečných zkoušek (pokud nebyl dodržen předepsaný počet kontrolních zkoušek),
+- změřené výměry,
+- všechny ostatní doklady požadované smlouvou o dílo a obecně závaznými předpisy nebo stavebním
+dozorem.
+Odsouhlasení prací provede objednatel/stavební dozor jen pokud bylo dodrženo provedení podle dokumentace
+a kvalita odpovídá požadavkům TKP a ZTKP.
+Odsouhlasením prací se neruší závazky zhotovitele vyplývající ze smlouvy o dílo.
+3.8.2 Převzetí prací
+Převzetí prací se provádí pro celé dílo nebo pro jeho jednotlivé části (objekt, provozní soubor, jejich části, úsek)
+ve shodě s požadavkem objednatele, který je uveden ve smlouvě o dílo.
+Převzetí prací se uskutečňuje přejímacím řízením, které svolává stavební dozor po oznámení zhotovitele, že
+dokončil příslušný objekt, technologické vybavení, úsek nebo celou stavbu. Podmínkou uskutečnění přejímacího
+řízení je provedení přejímacích zkoušek s kladným výsledkem, pokud jsou tyto zkoušky ve smlouvě o dílo
+požadovány.
+K převzetí prací je ze strany zhotovitele vždy třeba předložit zejména tyto základní doklady:
+- kompletní dokumentaci stavby případně vyhotovenou PSŘ (obě dokumentace s vyznačením všech
+provedených změn),
+- speciální doklady uvedené ve smlouvě o dílo a doklady podle specifikace jednotlivých prací, které jsou
+uvedeny v této kapitole TKP, ZTKP, případně SŽDC S4 a dalších podmínek (Obecné podmínky pro použití
+geotextilií apod.),
+- zápisy o odsouhlasení následně zakrytých nebo nepřístupných prací, konstrukcí nebo zařízení stavebním
+dozorem,
+- zápisy a protokoly o zkouškách a měřeních,
+- dokumentaci prokazující kvalitu použitých výrobků, tj. kopie prohlášení o shodě, certifikátů atd. včetně
+výsledků a hodnocení zkoušek,
+- výsledky kontrolních měření, měření posunů a přetvoření,
+- dokumentaci skutečného provedení stavby včetně geologické dokumentace,
+28
+- stavební deníky,
+- všechny další doklady, které objednatel/stavební dozor požadoval v průběhu stavby.
+Převzetí prací uskuteční objednatel/stavební dozor pouze tehdy, když všechny přebírané práce jsou provedeny
+ve shodě s dokumentací stavby, s požadavky TKP, ZTKP a případnými odsouhlasenými změnami.
+Přejímací řízení se uzavře „Protokolem o převzetí prací“, který vystaví objednatel/stavební dozor.
+Od okamžiku převzetí prací přechází povinnost pečovat o dílo nebo jeho část na objednatele, který se stává
+odpovědným za škody vzniklé na díle, pokud nevyplývají z vadného plnění zhotovitele.
+Převzetím prací se neruší zbývající závazky zhotovitele určené smlouvou o dílo a obecně závaznými právními
+předpisy, tj. zejména odpovědnost za vady díla.
+Převzetí prací se řídí ustanoveními smlouvy o dílo.
+3.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+Požadavek na kontrolní sledování, včetně návrhu nebo doporučení metody, četnosti a doby měření musí být
+obsažen v dokumentaci.
+Geotechnický monitoring zahrnuje:
+− měření napětí v horninovém masivu nebo na kontaktu hornina-stavební konstrukce,
+− měření přetvoření zemních konstrukcí,
+a) svislá přetvoření (sedání),
+b) vodorovná přetvoření (roztlačování, sesuvy svahů),
+− měření hladiny podzemní vody a napětí vody v pórech zeminy,
+− měření protažení geosyntetické výztuže zemního tělesa,
+− měření jiných fyzikálních veličin (např. kmitání),
+Výsledky měření kontrolního sledování stavby jsou součástí průkazu kvality díla.
+3.10 EKOLOGIE
+Všechny materiály zabudované do zemního tělesa musí splňovat ustanovení zákona č. 114/1992 Sb., ve znění
+zákona č. 347/1992 Sb. a prováděcí vyhlášky č. 395/1992 Sb.
+Při těžbě i ukládání zemin musí zhotovitel zvolit takovou techniku, aby nedošlo k překročení nejvyšších
+přípustných hodnot hluku a vibrací. Stroje a vozidla musí být v řádném technickém stavu, aby nedocházelo
+k úniku olejů a pohonných hmot.
+Ekologické aspekty provádění zemních prací a jejich negativních vlivů na životní prostředí upravuje zákonné
+opatření, které vymezuje základní pojmy a stanoví zásady ochrany životního prostředí a povinnosti právnických
+a fyzických osob při ochraně a zlepšování stavu životního prostředí a při využívání přírodních zdrojů (zákon
+č. 17/1992 Sb., zákon č. 244/1992 Sb., zákon č. 439/1992 Sb.). Souhrn všech zákonných opatření je v kapitole
+1 TKP.
+3.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Obecné požadavky a souhrn zákonných opatření je v kapitole1 TKP.
+Při pracích na staveništi je povinností zhotovitele při manipulaci se škodlivými látkami a následně při
+zneškodňování odpadů postupovat v souladu se zákonem č. 185/2001 Sb. a prováděcími předpisy.Všechny
+druhotné materiály zabudované do zemního tělesa musí splňovat ustanovení zákona č. 114/1992 Sb., ve znění
+pozdějších předpisů a souvisejících právních předpisů uvedených v kapitole 1TKP.
+Veškeré zemní práce v ochranných pásmech přírodních léčivých zdrojů, přírodních zdrojů stolních minerálních
+vod nebo lázeňských míst je možno provádět pouze po uplatnění opatření uvedených v dokumentaci stavby ve
+shodě s požadavky, které jsou pro tato ochranná pásma a lázeňská místa příslušným zákonem a vyhláškami
+určeny.
+29
+Jestliže se při provádění zemních prací vyskytnou nálezy, u kterých nelze vyloučit že jde o nálezy historické,
+archeologické, paleontologické nebo geologické, o minerální prameny nebo jiné důležité nálezy veřejného
+zájmu, postupuje se podle zákona č. 50/1976 Sb. ve znění pozdějších předpisů.
+Při těžbě i ukládání zemin musí zhotovitel zvolit takovou techniku, aby nedošlo k překročení zákona
+č. 258/2000 Sb. a nařízení vlády č. 502/2000 Sb. ve znění pozdějších předpisů. Stroje a vozidla musí být
+v řádném technickém stavu, aby nedocházelo k úniku olejů a pohonných hmot.
+Při provádění zemních prací musí zhotovitel respektovat požadavky hygienika uvedené ve stavebním povolení.
+Ekologické aspekty provádění zemních prací a jejich negativních vlivů na životní prostředí upravují právní
+předpisy, které vymezuje základní pojmy a stanoví zásady ochrany životního prostředí a povinnosti právnických
+a fyzických osob při ochraně a zlepšování stavu životního prostředí a při využívání přírodních zdrojů např.
+zákon č. 17/1992 Sb. , zákon 100/01 Sb., zákon č. 244/1992 Sb., zákon č. 44/1988 Sb. ve znění pozdějších
+předpisů.
+Pro práci s trhavinami platí zákon č. 61/1988 Sb.
+3.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+3.12.1 Související normy
+ČSN 38 6413 Plynovody a přípojky s nízkým a středním tlakem
+ČSN 72 1002 Klasifikace zemin pro dopravní stavby.
+ČSN 72 1006 Kontrola zhutnění zemin a sypanin
+ČSN 72 1010 Stanovení objemové hmotnosti zemin. Laboratorní a polní metody.
+ČSN 72 1018 Laboratorní stanovení relativní ulehlosti nesoudržných zemin
+ČSN 72 1021 Laboratórne stanovenie organických látok v zeminách
+ČSN 72 1026 Laboratorní stanovení smykové pevnosti zemin vrtulkovou zkouškou
+ČSN 72 1191 Zkoušení míry namrzavosti zemin
+ČSN 73 0040 Zatížení stavebních objektů technickou seismicitou a jejich odezva
+ČSN 73 0037 Zemní tlak na stavební konstrukce
+ČSN 73 0039 Navrhování objektů na poddolovaném území. Základní ustanovení.
+ČSN 73 1001 Zakládaní staveb. Základová půda pod plošnými základy.
+ČSN 73 1375 Radiometrické zkoušení objemové hmotnosti a vlhkosti
+ČSN 73 3050 Zemné práce. Všeobecné ustanovenia
+ČSN 73 6005 Prostorové uspořádání sítí technických vybavení
+ČSN 73 6006 Výstražné fólie k identifikaci podzemních vedení technického vybavení
+ČSN 73 6124-1 Stavba vozovek – Vrstvy ze směsí stmelených hydraulickými pojivy - Část 1 :
+Provádění a kontrola shody
+ČSN 73 6124-2 Stavba vozovek – Vrstvy ze směsí stmelených hydraulickými pojivy - Část 2 :
+Mezerovitý beton
+ČSN 73 6126-1 Stavba vozovek - Nestmelené vrstvy - Část 1: Provádění a kontrola shody
+ČSN 73 6126-2 Stavba vozovek - Nestmelené vrstvy - Část 2: Vrstva z vibrovaného štěrku
+ČSN 73 6126 Stavba vozovek. Nestmelené vrstvy
+ČSN 73 6133 Navrhování a provádění zemního tělesa pozemních komunikací
+ČSN 73 6175 Měření nerovnosti povrchů vozovek.
+ČSN 73 6192 Rázová zatěžovací zkouška netuhých vozovek a podloží
+30
+ČSN 73 6201 Projektování mostních objektů
+ČSN 73 6244 Přechody mostů pozemních komunikací
+ČSN 73 6301 Projektování železničních drah
+ČSN 75 2130 Křížení a souběhy vodních toků s dráhami, pozemními komunikacemi a vedeními
+ČSN 75 4030 Křížení a souběhy melioračních zařízení s dráhami, pozemními komunikacemi
+a vedeními
+ČSN 75 2310 Sypané hráze
+ČSN 75 2410 Malé vodní nádrže
+ČSN 75 6101 Stokové sítě a kanalizační přípojky
+ČSN 75 6230 Podchody stok a kanalizačních přípojek pod dráhou a pozemní komunikací
+ČSN 83 9011 Technologie vegetačních úprav v krajině – Práce s půdou
+ČSN CEN ISO/TS 17892-1 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Stanovení
+vlhkosti zemin
+ČSN CEN ISO/TS 17892-2 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Stanovení
+objemové hmotnosti jemnozrnných zemin
+ČSN CEN ISO/TS 17892-3 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Stanovení
+zdánlivé hustoty pevných částic zemin pomocí pyknometru
+ČSN CEN ISO/TS 17892-4 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Stanovení
+zrnitosti zemin
+ČSN CEN ISO/TS 17892-5 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Stanovení
+stlačitelnosti zemin v edometru
+ČSN CEN ISO/TS 17892-6 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Kuželová
+zkouška
+ČSN CEN ISO/TS 17892-7 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Zkouška
+pevnosti v prostém tlaku u jemnozrnných zemin
+ČSN CEN ISO/TS 17892-8 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Stanovení
+pevnosti zemin nekonsolidovanou neodvodněnou triaxiální zkouškou
+ČSN CEN ISO/TS 17892-9 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin –
+Konsolidovaná triaxiální zkouška nasycených zemin
+ČSN CEN ISO/TS 17892-10 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Krabicová
+smyková zkouška
+ČSN CEN ISO/TS 17892-11 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Stanovení
+propustnosti zemin při konstantním a proměnném spádu
+ČSN CEN ISO/TS 17892-12 Geotechnický průzkum a zkoušení – Laboratorní zkoušky zemin – Stanovení
+konzistenčních mezí
+ČSN EN 1610 Provádění stok a kanalizačních přípojek a jejich zkoušení
+ČSN EN 1997-1 Eurokód 7: Navrhování geotechnických konstrukcí – Část 1: Obecná pravidla
+ČSN EN 1997-2 Eurokód 7: Navrhování geotechnických konstrukcí – Část 2: Průzkum a zkoušení
+základové půdy
+ČSN EN 10079 Hutnictví železa. Definice ocelových výrobků
+ČSN EN 10080 Ocel pro výztuž do betonu – Svařitelná, betonářská ocel - Všeobecně
+ČSN EN 12224 Geotextilie a výrobky podobné geotextiliím – Zjišťování odolnosti proti
+povětrnostním vlivům
+31
+ČSN EN 12225 Geotextilie a výrobky podobné geotextiliím – Zjišťování odolnosti proti
+mikroorganismům pomocí zkoušky zahrabáním do zeminy
+ČSN EN 12226 Geotextilie a výrobky podobné geotextiliím – Všeobecné zkoušky pro následné
+hodnocení po zkoušení odolnosti
+ČSN EN 13242 Kamenivo pro nestmelené směsi a směsi stmelené hydraulickými pojivy pro
+inženýrské stavby a pozemní komunikace
+ČSN EN 13250 Geotextilie a výrobky podobné geotextiliím – Vlastnosti požadované pro použití
+při stavbě železnic
+ČSN EN 13251 Geotextilie a výrobky podobné geotextiliím – Vlastnosti požadované pro použití
+v zemních stavbách, základech a opěrných konstrukcích
+ČSN EN 13252 Geotextilie a výrobky podobné geotextiliím – Vlastnosti požadované pro použití
+v odvodňovacích systémech;
+ČSN EN 13256 Geotextilie a výrobky podobné geotextiliím – Vlastnosti požadované pro použití
+při stavbě tunelů a podzemních staveb
+ČSN EN 13285 Nestmelené směsi - Specifikace
+ČSN EN 13286-2 Nestmelené směsi a směsi stmelené hydraulickými pojivy – Část 2: Zkušební
+metody pro stanovení laboratorní srovnávací objemové hmotnosti a vlhkosti –
+Proctorova zkouška
+ČSN EN 13562 Geotextilie a výrobky podobné geotextiliím –Stanovení odolnosti proti pronikání
+vody (zkouška hydrostatickým tlakem)
+ČSN EN 14030 Geotextilie a výrobky podobné geotextiliím – Zkušební metoda pro zjišťování
+odolnosti proti kyselým a alkalickým kapalinám
+ČSN EN 14227-1 Směsi stmelené hydraulickými pojivy - Specifikace - Část 1: Směsi stmelené
+cementem
+ČSN EN 14227-2 Směsi stmelené hydraulickými pojivy - Specifikace - Část 2: Směsi stmelené
+struskou
+ČSN EN 14227-3 Směsi stmelené hydraulickými pojivy - Specifikace - Část 3: Směsi stmelené
+popílkem
+ČSN EN 14227-4 Směsi stmelené hydraulickými pojivy - Specifikace - Část 4: Popílky pro směsi
+stmelené hydraulickými pojivy
+ČSN EN 14227-5 Směsi stmelené hydraulickými pojivy - Specifikace - Část 5: Směsi stmelené
+hydraulickými silničními pojivy
+ČSN EN 14227-10 Směsi stmelené hydraulickými pojivy - Specifikace - Část 10: Zeminy upravené
+cementem
+ČSN EN 14227-11 Směsi stmelené hydraulickými pojivy - Specifikace - Část 11: Zeminy upravené
+vápnem
+ČSN EN 14227-12 Směsi stmelené hydraulickými pojivy - Specifikace - Část 12: Zeminy upravené
+struskou
+ČSN EN 14227-13 Směsi stmelené hydraulickými pojivy - Specifikace - Část 13: Zeminy upravené
+hydraulickými silničními pojivy
+ČSN EN 14227-14 Směsi stmelené hydraulickými pojivy - Specifikace - Část 14: Zeminy upravené
+popílkem
+ČSN EN 14475 Provádění speciálních geotechnických prací – Vyztužené zemní konstrukce
+ČSN EN ISO 1461 Žárové povlaky zinku nanášené ponorem na železných a ocelových výrobcích –
+Specifikace a zkušební metody
+ČSN EN ISO 9862 Geosyntetika - Odběr a příprava vzorků ke zkouškám
+32
+ČSN EN ISO 9863-1 Geosyntetika - Zjišťování tloušťky specifickými tlaky - Část 1: Jednotlivé vrstvy
+ČSN EN ISO 9863-2 Geotextilie a výrobky podobné geotextiliím – Zjišťování tloušťky specifickými
+tlaky – Část 2: Postup pro zjišťování tloušťky jednotlivých vrstev
+u vícevrstevných výrobků
+ČSN EN ISO 9864 Geosyntetika - Metody zkoušení pro zjišťování plošné hmotnosti geotextilií a
+výrobků podobných geotextiliím
+ČSN EN ISO 10319 Geotextilie – Tahová zkouška na širokém proužku
+ČSN EN ISO 10320 Geotextilie a výrobky podobné geotextiliím – Identifikace na staveništi
+ČSN EN ISO 10321 Geotextilie – Tahová zkouška pro spoje a švy prováděná na širokém proužku
+ČSN EN ISO 11058 Geotextilie a výrobky podobné geotextiliím – Zjišťování vlastnosti propustnosti
+vody kolmo k rovině bez zatížení
+ČSN EN ISO 12236 Geosyntetika – Statická zkouška protržení (zkouška CBR)
+ČSN EN ISO 12956 Geotextilie a výrobky podobné geotextiliím – Zjišťování charakteristické
+velikosti otvorů
+ČSN EN ISO 12958 Geotextilie a výrobky podobné geotextiliím – Zjišťování schopnosti proudění
+vody v jejich rovině
+ČSN EN ISO 13426-1 Geotextilie a výrobky podobné geotextiliím – Pevnost vnitřních strukturálních
+spojů – Část 1: Geobuňky
+ČSN EN ISO 13431 Geotextilie a výrobky podobné geotextiliím – Zjišťování chování při tečení v tahu
+a přetrhu při tečení v tahu
+ČSN EN ISO 13433 Geosyntetika - Zkouška dynamickým protržením (zkouška padajícím kuželem)
+ČSN EN ISO 14688-1 Geotechnický průzkum a zkoušení – Pojmenování a zatřiďování zemin – Část 1:
+Pojmenování a popis
+ČSN EN ISO 14688-2 Geotechnický průzkum a zkoušení – Pojmenování a zatřiďování zemin – Část 2:
+Zásady pro zatřiďování
+ČSN EN ISO 14689-1 Geotechnický průzkum a zkoušení – Pojmenování a zatřiďování hornin –Část 1:
+Pojmenování a popis
+TNŽ 01 0101 Názvosloví Českých drah
+TNŽ 73 6949 Odvodnění železničních tratí a stanic
+3.12.2 Související předpisy
+SŽDC (ČD) D7/2 Předpis pro organizování výluk na síti Českých drah
+SŽDC (ČD) Op16 Pravidla o bezpečnosti a ochraně zdraví při práci
+SŽDC S3 Železniční svršek
+SŽDC S4 Železniční spodek
+TP53 MHPR ČR-SD, Protierozní opatření na svazích pozemních komunikací, 1992
+TP93 (2003) Návrh a provádění staveb pozemních komunikací s využitím popílků a popelů
+TP94 (1994) Zlepšení zemin
+TP95 (1997) Vrstevnaté násypy pozemních komunikací
+TP 97(2001) Geotextílie a další geosyntetické materiály v zemním tělese pozemních komunikací
+TP 146 Povolování a provádění výkopů a zásypů rýh pro inženýrské sítě ve vozovkách PK
+Zákon č. 17/1992 Sb. o životním prostředí, v platném znění
+33
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění některých zákonů,
+v platném znění
+Zákon č. 44/1988 Sb. o ochraně a využití nerostného bohatství (horní zákon), v platném znění
+Zákon č. 183/2006 Sb. o územním plánování a stavebním řádu (stavební zákon), v platném znění
+a příslušné prováděcí vyhlášky
+Zákon č. 61/1988 Sb. o hornické činnosti, výbušninách a o státní báňské správě, v platném znění
+Zákon č. 114/1992 Sb. o ochraně přírody a krajiny, v platném znění, prováděcí vyhláška č. 395/1992
+Sb., kterou se provádějí některá ustanovení zákona České národní rady
+č. 114/1992 Sb., o ochraně přírody a krajiny, v platném znění
+Zákon č. 185/2001 Sb. o odpadech a o změně některých dalších zákonů, v platném znění a příslušné
+prováděcí vyhlášky
+Zákon č. 100/2001 Sb. o posuzování vlivů na životní prostředí a o změně některých souvisejících
+zákonů (zákon o posuzování vlivů na životní prostředí), v platném znění
+Zákon č. 254/2001 Sb. o vodách a o změně některých zákonů (vodní zákon), v platném znění
+Zákon č. 266/1994 Sb. o drahách, v platném znění
+Zákon č. 334/1992 Sb. o ochraně zemědělského půdního fondu, v platném znění
+Nařízení vlády č. 163/2002 Sb., kterým se stanoví technické požadavky na vybrané stavební výrobky, v platném
+znění
+Nařízení vlády č.190/2002 Sb., kterým se stanoví technické požadavky na stavební výrobky označované CE,
+v platném znění
+Vzorové listy
+Ž1 Základní rozměry pláně tělesa železničního spodku
+Ž2 Zemní těleso
+Ž3 Odvodňovací zařízení
+Ž4 Pražcové podloží
+Ž5 Úprava drážních svahů
+Ž6 Železniční těleso ve styku s vodními toky a díly
+3.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 4 - Odvodnění tratí a stanic
+Kapitola 5 - Ochrana drážního tělesa
+Kapitola 6 - Konstrukční vrstvy tělesa železničního spodku
+Kapitola 7 - Kolejové lože
+Kapitola 15 - Vegetační úpravy
+TKP staveb pozemních komunikací Kapitola 30 - Speciální zemní konstrukce
+34
+Poznámky:
+35
+36
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 3
+T ř e t í - aktualizované vydání se zapracovanou změnou č. 6 /z roku 2008/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Ing. Vítězslav Herle,
+Stavební geologie - Geotechnika, a.s.,Praha
+Odborný gestor: Ing. Petr Jasanský,
+Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Vydal: Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 241, +420 972 741 769,
+fax: +420 972 741 290,
+e-mail: otd@tudc.cz
+www.tudc.cz

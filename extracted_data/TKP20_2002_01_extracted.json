@@ -1,0 +1,984 @@
+{
+  "type": "tkp_document",
+  "filename": "TKP20_2002_01.pdf",
+  "extracted_at": "2026-02-25T15:43:02.409466",
+  "document_info": {
+    "tkp_number": "20",
+    "year": "2002",
+    "month": "01"
+  },
+  "technical_specs": [
+    {
+      "value": "1435",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "120",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "16",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "11",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "063",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "0",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "750",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "150",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "14",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "35",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "40",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "40",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "40",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "150",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "5",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "3",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "70",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "3",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "3",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "15",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "500",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "0",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "250",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "250",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1435",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "3",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "12",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "120",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1000",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "6",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "60",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "95",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "16",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "11",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "063",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "450",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "0",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "750",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "150",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "14",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "35",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1000",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1000",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "120",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "40",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "40",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "40",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "150",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "6",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "5",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "12",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "3",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "60",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "60",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "70",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "3",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "3",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "15",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "500",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "15",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "5",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "3",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2500",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "0",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "40",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "250",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "250",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "400",
+      "unit": "kg",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "420",
+      "unit": "kg",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "kg",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "80",
+      "unit": "kg",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "400",
+      "unit": "kg",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "460",
+      "unit": "kg",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "550",
+      "unit": "kg",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "340",
+      "unit": "kg",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "kg",
+      "context": "extracted_from_text"
+    }
+  ],
+  "prices": [],
+  "raw_text": "ČESKÉ DRÁHY, státní organizace\nDIVIZE DOPRAVNÍ CESTY, o.z.\nTECHNICKÉ KVALITATIVNÍ PODMÍNKY\nSTAVEB ČESKÝCH DRAH\nKapitola 20\nTUNELY\nTřetí - aktualizované vydání\nzměna č. 2\nSchváleno VŘ DDC č.j. TÚDC-60357/2001- 013 ze dne 30.10.2001\nÚčinnost od 1.1.2002\nPraha 2001\nVšechna práva vyhrazena.\nTato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím\nsystému nebo přenášena, a to v žádné formě a žádnými prostředky elektronickými,\nfotokopírovacími či jinými, bez předchozího písemného svolení vydavatele.\nVýhradní distributor: České dráhy, státní organizace,\nDivize dopravní cesty, odštěpný závod\nTechnická ústředna dopravní cesty\nSekce technické dokumentace - Oddělení typové dokumentace\n772 58 Olomouc, Nerudova l\nObsah\n20.1 ÚVOD 4\n20.1.1 Všeobecně 4\n20.1.2 Rozsah platnosti TKP-20 4\n20.1.3 Rozdělení tunelů 5\n20.1.4 Požadavky na dokumentaci skutečného provedení stavby 5\n20.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 6\n20.2.1 Všeobecně 6\n20.2.2 Monolitický beton definitivního ostění 6\n20.2.2.1 Zásady pro složení betonu 6\n20.2.2.2 Doba odbednění, pevnost při odbednění 7\n20.2.2.3 Zabránění vzniku trhlin 7\n20.2.2.4 Třída pevnosti betonu 7\n20.2.2.5 Odolnost betonu proti průsakům vody 8\n20.2.2.6 Mrazuvzdornost 8\n20.2.2.7 Beton odolný proti síranům 9\n20.2.2.8 Beton vodotěsného definitivního ostění bez izolace 9\n20.2.2.9 Souběh trhacích prací a betonáže definitivního ostění 9\n20.2.3 Stříkaný beton 9\n20.2.3.1 Všeobecně 9\n20.2.3.2 Požadavky na nárůst pevnosti v čase 11\n20.2.3.3 Složky betonové směsi - cement 12\n20.2.3.4 Složky betonové směsi - kamenivo 13\n20.2.3.5 Složky betonové směsi - záměsová voda 13\n20.2.3.6 Složky betonové směsi - pojiva pro nástřik 13\n20.2.3.7 Složky betonové směsi - příměsi 14\n20.2.3.8 Složky betonové směsi - přísady 14\n20.2.3.9 Složky betonové směsi - urychlovače 15\n20.2.3.10 Nealkalické urychlovače tuhnutí 15\n20.2.3.11 Alkalické urychlovače tuhnutí 15\n20.2.3.12 Stříkaný beton s rozptýlenou výztuží 16\n20.2.4 Ocel 17\n20.2.5 Injektážní směsi 17\n20.2.6 Materiál pro zděné konstrukce 17\n20.2.7 Dílce 17\n20.2.8 Izolace 17\n20.2.9 Odvodnění 18\n20.3 TECHNOLOGICKÉ POSTUPY PRACÍ 19\n20.3.1 Všeobecně 19\n20.3.2 Ražení tunelů 19\n20.3.2.1 Ražba pomocí NRTM - technologická třída výrubu 19\n20.3.2.2 Ostatní tunelovací metody 20\n20.3.3 Primární ostění tunelu 20\n20.3.3.1 Všeobecně 20\n20.3.3.2 Nanášení stříkaného betonu suchým způsobem 21\n20.3.3.3 Nanášení stříkaného betonu mokrým způsobem 22\n20.3.3.4 Vyztuž primárního ostění 22\n20.3.3.5 Kotvy a kotvení 22\n20.3.3.6 Ramenáty 23\n20.3.4 Sekundární (definitivní) ostění tunelu 24\n20.3.4.1 Všeobecně 24\n20.3.4.2 Dimenzování definitivního ostění 25\n20.3.4.3 Minimální konstrukční požadavky na beton dna 25\n20.3.4.4 Minimální konstrukční požadavky na beton klenby 26\n20.3.4.5 Vodotěsná definitivní ostění 27\n1\n20.3.4.6 Stanovení času zahájení betonáže definitivního ostění 28\n20.3.4.7 Pevnost při odbednění 28\n20.3.4.8 Betonáž - příprava podkladu 28\n20.3.4.9 Betonáž - příprava styčných ploch - pracovní spáry 29\n20.3.4.10 Betonáž - příprava styčných ploch - dilatační spáry 29\n20.3.4.11 Betonáž - hutnění 30\n20.3.4.12 Separační vrstvy mezi ostěním a podkladem 31\n20.3.4.13 Bednění - všeobecně 31\n20.3.4.14 Bednění - separační prostředky 31\n20.3.4.15 Výztuž - definitivní ostění s izolací 32\n20.3.4.16 Výztuž - definitivní ostění bez izolace 32\n20.3.4.17 Odbednění a ošetřování betonu 32\n20.3.4.18 Požadavky na povrch definitivního ostění - opravy 32\n20.3.4.19 Definitivní ostění ze stříkaného betonu 33\n20.3.5 Dílcová ostění 33\n20.3.6 Zděná ostění 34\n20.3.7 Portály, galerie a předportálová křídla 34\n20.3.8 Ochrana proti pronikání podzemní vody do tunelu 34\n20.3.8.1 Všeobecně 34\n20.3.8.2 Požadavky na provádění izolací 35\n20.3.8.3 Požadavky na podkladní vrstvu izolace 37\n20.3.9 Odvodnění tunelu - drenážní systém 38\n20.3.9.1 Po dobu výstavby 38\n20.3.9.2 Za provozu 38\n20.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 39\n20.4.1 Všeobecně 39\n20.4.2 Beton 39\n20.4.3 Izolace 39\n20.4.4 Ocel 39\n20.4.5 Kotvy 39\n20.5 ODEBÍRÁNÍ VZORKŮ, KONTROLNÍ ZKOUŠKY 39\n20.5.1 Všeobecně 39\n20.5.2 Beton 40\n20.5.2.1 Monolitický beton 40\n20.5.2.2 Stříkaný beton 40\n20.5.3 Injektážní a spárovací směsi 40\n20.5.4 Kotvy 41\n20.5.5 Izolace 41\n20.5.6 Výsledky kontrolních zkoušek 42\n20.6 PŘÍPUSTNÉ ODCHYLKY, ZÁRUKY 42\n20.6.1 Všeobecně 42\n20.6.2 Odchylky od projektované tloušťky definitivního ostění v ražené části tunelu 42\n20.7 KLIMATICKÁ OMEZENÍ 42\n20.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 43\n20.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 43\n20.9.1 Geotechnický monitoring 43\n20.9.2 Kontrolní měření a vytyčovací práce 46\n20.10 EKOLOGIE 46\n20.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 46\n20.11.1 Všeobecně 46\n20.11.2 Izolace 47\n2\n20.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 47\n20.12.1 Technické normy uvedené v textu TKP-20 47\n20.12.2 Předpisy 48\n20.12.3 Související kapitoly TKP 48\n20.13 PŘÍLOHY 48\n3\n20.1 ÚVOD\n20.1.1 Všeobecně\nPro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP - Všeobecně.\nPro projektování a stavbu ražených a hloubených tunelů na drahách celostátních, drahách regionálních\na vlečkách normálního rozchodu 1435 mm s traťovou rychlostí do 160 km/h platí norma ČSN 73 7508. Norma\npřipouští použití jiných postupů, které v ní nejsou stanoveny, pokud jsou věcně a odborně zdůvodněny. Postupy\nmusí mít potřebnou odbornou úroveň a nesmí být v rozporu se zásadami normy.\nTunelové stavby se svým charakterem odlišují od ostatních stavebních konstrukcí. Vzájemné spolupůsobení\ntunelu s obklopujícím horninovým masivem, proměnné vlastnosti horninového masivu nejen u různých staveb,\nale i u jedné stavby v trase tunelu, nutnost přizpůsobovat stavební postupy a technologie daným podmínkám\nv procesu výstavby, zvýšené riziko a další skutečnosti určují, že každý tunel je neopakovatelným unikátním\ndílem.\nPři volbě tunelovací metody je jedním z významných kritérií plocha příčného řezu podzemního díla. Zatímco\nv případě štol či jednokolejných tunelů je možno volit jak metody konvenční, tak metody kontinuálního ražení\n(viz bod 20.1.3 Rozdělení tunelů), v případě dvoukolejných tunelů je vzhledem k velikosti nutného příčného\nprofilu tunelu použití kontinuálního způsobu ražby prakticky vyloučeno. I v případě menších profilů je při\nvýběru metody nutno provést důkladné technicko-ekonomické porovnání variant.\nLze předpokládat, že v podmínkách České republiky bude většina tunelů ražena konvenčními metodami,\nzejména pak metodou, která je všeobecně známa pod názvem Nová rakouská tunelovací metoda (dále jen\nNRTM). Proto byl při přepracování kapitoly 20 TKP kladen zvýšený důraz na činnosti spojené s NRTM\na příslušné části TKP-20 byly podstatně rozšířeny. Rozšířeny byly i kapitoly, které se týkají požadovaných\nvlastností materiálů a činností spojených se zajištěním stability výrubu. TKP byly doplněny o některé\ntechnologie, které dosud nebyly uvedeny a rozšířena byla i část týkající se kontinuální ražby (předpokládané\nnasazení v případě průzkumných, záchranných, technologických nebo odvodňovacích štol).\n20.1.2 Rozsah platnosti TKP-20\nKapitola 20 Technických kvalitativních podmínek staveb Českých drah (dále jen TKP-20) platí pro:\n– provádění nových železničních tunelů (ražených i hloubených),\n– rekonstrukce stávajících tunelů,\n– opravy a práce charakteru údržby (v přiměřeném rozsahu),\n– výstavbu galerií a portálových konstrukcí,\n– výstavbu pomocných podzemních objektů, které slouží při budování nebo v provozu vlastních tunelových\nobjektů (např. technologické a odvodňovací štoly).\nPožadavky objednatele stavby na provedení, kontrolu a převzetí prácí, výkonů a dodávek, které souvisejí\ns výstavbou tunelu a nejsou uvedeny v této kapitole, jsou uvedeny v příslušné kapitole TKP, které platí pro\nstavby dráhy a pro stavby na dráze (viz TKP-1 Všeobecně). To se týká především hloubených tunelů a částečně\ntunelů budovaných kombinací ražení a hloubení, kdy jsou požadavky popsány v jiných kapitolách TKP (viz\n20.12.3 Související kapitoly TKP).\nV případech, kdy stavba zahrnuje práce, které nejsou uvedeny v TKP, kdy je potřebné změnit nebo doplnit\nustanovení TKP nebo jsou na stavbě použity speciální technologie a materiály, musí objednatel zajistit\nvypracování „Zvláštních technických kvalitativních podmínek“ (ZTKP).\nPokud jsou prováděny práce, které je možno definovat jako „činnost prováděnou hornickým způsobem“ (viz §3\nzákona ČNR č. 61/1988Sb. ve znění pozdějších předpisů), spadají pod působnost státní báňské správy.\nVykonávání činností prováděných hornickým způsobem a projektování a navrhování objektů a zařízení, které\njsou součástí činnosti prováděné hornickým způsobem, lze pouze na základě oprávnění (viz vyhláška ČBÚ\nč. 15/1995 Sb. ve znění pozdějších předpisů).\n4\nV oddíle 12 této kapitoly TKP jsou uvedeny citované a související normy a předpisy, které se týkají\nproblematiky tunelových staveb. Platné jsou také normy a předpisy, které jsou v uvedených předpisech\na normách citované. Metodika uvedená v citovaných ČSN, TNŽ, případně předpisech je pro provádění tunelů\nzávazná.\n20.1.3 Rozdělení tunelů\nPodle typu výstavby se tunely dělí na tunely:\n– ražené,\n– hloubené,\n– kombinace obou technologií.\nTunely ražené se dělí podle tunelovací metody na:\n– Tunely ražené cyklickou ražbou. Jedná se o konveční způsob ražby, při kterém se jednotlivé pracovní\noperace (rozpojování, odtěžování rubaniny a zajištění výrubu) uskutečňují v pevném časovém sledu za\nsebou.\n– Tunely ražené kontinuální ražbou. Jedná se o ražbu tunelovacími stroji (TBM), při které jsou jednotlivé\npracovní operace (rozpojování, odtěžování rubaniny a zajištění výrubu) prováděny prakticky současně.\n– Tunely ražené štítováním. Ražba se uskutečňuje zatlačováním pláště štítu (resp. pološtítu). Rozpojování je\nprováděno různými metodami (rypadlem, frézou, za použití trhacích prací apod.), přičemž plášť štítu\nzajišťuje stabilitu líce výrubu až do osazení ostění.\nTunely hloubené se dělí na:\n– Tunely budované v otevřené stavební jámě. Konstrukce zajištění stavební jámy není součástí nosné\nkonstrukce tunelu.\n– Tunely budované ve stavební jámě, kde zajištění stěn jámy je využito jako součást nosné konstrukce tunelu\n(podzemní stěny apod.).\nTunely budované kombinací ražení a hloubení jsou:\n– Tunely ražené pod ochranou stropní desky (resp. klenby), která je vybetonována předem na upravený terén.\nOpěří a počva tunelu je ražena konvenční metodou (např. metoda „želva“).\n– tunely ražené se zajištěním přístropí i opěří v předstihu provedenými konstrukcemi (stropní deska nebo\nklenba v kombinaci s podzemními stěnami, pilotami, tryskovou injektáží apod.).\nVelký význam má rovněž rozdělení tunelů podle účinků na povrch, resp. objekty v nadloží. Podle tohoto kritéria\ntunely rozdělujeme na:\n– Tunely ražené bez nutnosti omezovat negativní projevy tunelovací metody na povrchu, resp. v nadloží.\nJedná se o tunely ražené v místech, kde se v nadloží tunelu nenachází žádná zařízení, objekty nebo plochy\ns nutností omezení deformací.\n– Tunely s nutným omezením negativních projevů ražby na objekty v nadloží. Jedná se o tunely pod\nsouvislou zástavbou, resp. křižující objekty nebo inženýrské sítě citlivé na poklesy. Zvolená tunelovací\nmetoda musí umožňovat řízení průběhu deformace v požadovaných mezích.\n20.1.4 Požadavky na dokumentaci skutečného provedení stavby\nV průběhu výstavby zpracuje zhotovitel dokumentaci skutečného provedení stavby tunelu.\nPodkladem pro vypracování dokumentace skutečného provedení jsou zejména:\n– projekt stavby (resp. dokumentace zhotovitele) se zakreslením všech provedených změn,\n– protokoly o provedení a převzetí prací (např. záběrové listy),\n5\n– protokoly o provedených zkouškách (např. tahové zkoušky kotev, zkoušky tloušťky a pevnosti betonu\nprimárního ostění, svarů izolačních pásů apod.),\n– výsledky geotechnických měření,\n– dokumentace čelby a nadvýlomů,\n– lokalizace výronů vody na líci primárního ostění,\n– výsledky zaměření vnitřního líce primárního ostění,\n– protokoly o osazení izolace, zaměření polohy těsnicích pásů a jiných opatření ,\n– protokoly o převzetí výztuže a betonáži definitivního ostění,\n– zaměření skutečného tvaru líce definitivního ostění apod.\nObecný rozsah dokumentace skutečného provedení je dán předpisem ČD S-6 Správa tunelů ze dne 21.3.2001.\nNa každém dokladu je mimo specifických údajů uvedeno jméno a podpis zástupce zhotovitele, který práci\npředává a zástupce zadavatele, který práci přebírá (např. provedený úsek mezilehlé izolace), resp. povoluje její\nprovedení (např. provedení výztuže spodní klenby po převzetí upraveného povrchu dna, zahájení betonáže po\npřevzetí provedené výztuže a kontrole povrchu izolací z hlediska jejich poškození při provádění výztuže apod.).\n20.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ\n20.2.1 Všeobecně\nKonstrukční materiály použité při výstavbě tunelu a požadavky na jejich jakost a vlastnosti jsou předepsány\nv dokumentaci. Pokud dokumentace předepisuje přísnější požadavky, než uvádí TKP, platí požadavky uvedené\nv dokumentaci. Požadavky uvedené v TKP nesmí být dokumentací snižovány (v odůvodněných případech je\nmožno požádat o výjimku odbor stavební ředitelství divize dopravní cesty).\nZhotovitel je povinen při výrobě konstrukcí nebo konstrukčních prvků z více materiálových složek zajistit\npožadovanou jakost těchto konstrukcí nebo prvků. Zdroje stavebních hmot, jejich dávkování, mísení apod. musí\nbýt určeny technologickým předpisem zhotovitele, který schvaluje kompetentní zástupce zadavatele (např.\nstavební dozor). Schválení si může vyhradit odbor stavební ředitelství divize dopravní cesty.\nJakákoliv změna materiálů nebo jejich požadovaných vlastností předepsaných dokumentací, resp. TKP, musí být\npředem schválena kompetentním zástupcem zadavatele (Odbor stavební ředitelství Divize dopravní cesty).\n20.2.2 Monolitický beton definitivního ostění\nPro beton a železobeton tunelových ostění platí obecně požadavky uvedené v kapitole 17 TKP.\nMusí být provedena taková opatření, aby viditelné povrchy ostění po odbednění nevyžadovaly další pohledové\núpravy a tomuto požadavku musí vyhovovat navrhovaný materiál a systém bednění, postup při odbedňování,\nsprávně zvolená technologie ukládání, hutnění a ošetřování betonu.\nPokud se ve zvláštních případech vyžaduje povrchová úprava (estetické požadavky nebo požadavky na\nprovedení sekundární ochrany betonových konstrukcí), specifikuje požadavky na povrchovou úpravu\ndokumentace nebo ZTKP.\n20.2.2.1 Zásady pro složení betonu\nSprávné složení betonu pro definitivní ostění vyžaduje optimalizaci jednotlivých složek směsi jak z hlediska\nkvality, tak i kvantity, aby bylo možné dosáhnout co nejlepších předpokladů pro splnění následujících\npožadavků:\n– zpracovatelnost,\n– zkrácení doby potřebné pro odbednění na technologicky přípustné minimum,\n6\n– zamezení vzniku trhlin,\n– dodržení požadovaných užitných a provozních vlastností.\nNa snížení napětí vzniklých účinky teploty se doporučuje používat cementy s mlecími přísadami a/nebo určitou\nčást pojiva pokrýt hydraulicky účinnými přísadami, např. popílkem. Velmi jemné přísady mohou kromě toho\nzlepšit zpracovatelnost čerstvého betonu a nepropustnost betonové struktury. Při návrhu směsi je třeba zohlednit\npožadavky na mrazuvzdornost konstrukce.\nCementy s malým množstvím C A a především bez C A vykazují kromě zvýšené odolnosti vůči síranům velmi\n3 3\nmalý růst teploty, výrazně snižují nebezpečí vzniku trhlin v důsledku napětí vzniklého účinky teploty a hodí se\nproto především pro „vodotěsná definitivní ostění“. Zvolené množství cementu a přísad musí zaručovat při\nodpovídající teplotě čerstvého betonu požadovanou pevnost při odbednění a dodržení požadovaných parametrů\nostění.\nVývoj teploty betonu je závislý na teplotě čerstvého betonu, na vývinu hydratačního tepla, na tloušťce\nkonstrukce a na vnějších vlivech (např. teplota vzduchu, rychlost proudění vzduchu). Aby se co nejvíce\nzamezilo vzniku trhlin, je třeba udržet maximální teplotu betonu klenby co nejnižší.\nOptimální teplota čerstvého betonu (tj. teplota betonové směsi v době ukládání do bednění) se pohybuje\nv rozmezí 13 °C až 18 °C. Teploty pod 10 °C velmi výrazně zpomalují nárůst pevnosti, teploty vyšší než 25 °C\nmají za následek větší náchylnost k tvorbě trhlin. Ukládání čerstvého betonu s teplotou nad 30 °C je nepřípustné.\n20.2.2.2 Doba odbednění, pevnost při odbednění\nAby se zamezilo vytvoření trhlin, je třeba okamžik odbednění co nejvíce oddálit. Při dodržení obvyklého\n24 hodinového cyklu na jeden záběr betonáže (blok ostění délky max. 12 m) je obvyklá doba odbednění klenby\nv raženém úseku tunelu 12 až 14 hodin. Zkrátí-li se tato doba pod 10 hodin, musí být přijata opatření proti příliš\nsilnému ochlazení a vysychání betonu. Jedná se zejména o zamezení příliš silného proudění vzduchu. (např.\nuzavřením portálu „závěsem“). Od opatření se může upustit, pokud je relativní vlhkost vzduchu větší než 90 %\na rychlost jeho proudění nízká.\nPevnost při odbednění by neměla být stanovena příliš vysoká, neboť i teplota betonu je právě v momentě\nnejvyšší náchylnosti ke vzniku trhlin při odbednění velmi vysoká. Beton klenby má pevnost při odbednění\n(měřeno na stavebním objektu) obvykle hodnotu mezi 1,5 MPa a 3,0 MPa.\nV případě tunelů budovaných v otevřené stavební jámě je nutno dobu odbednění stanovit individuálně\nv závislosti na geometrických a pevnostních a deformačních parametrech konstrukce, vlastnostech okolního\nprostředí, technologickém postupu prací, požadavcích na vlastnosti ostění (odolnost proti průsakům vody, vznik\ntrhlin apod.).\n20.2.2.3 Zabránění vzniku trhlin\nMaximální teplota betonu ostění tunelu nesmí překročit:\n40 °C - u ostění z betonu odolného proti průsakům bez plášťové izolace nebo separační fólie s obvyklou délkou\nbloků 10 m,\n45 °C - u kratších úseků nebo u definitivního ostění s izolací nebo vhodnou separační fólií omezující přenos\nsmykových napětí mezi definitivním ostěním a jeho podkladem (primárním ostěním, lícem výrubu)\nOpatření se musí přizpůsobit aktuálním podmínkám stavby tak, aby se v co možná největší míře zabránilo\nvytvoření trhlin (viz např. tabulka 10).\n20.2.2.4 Třída pevnosti betonu\nTřídy pevnosti se stanovují na základě požadavků statického výpočtu. Definitivní ostění jsou prováděna\nz betonu třídy pevnosti min. C20/25 podle ČSN EN 206-1. Pro využití dotvarování s použitím hydraulicky\núčinných přísad musí být třída pevnosti vztažena k co nejvyššímu stáří betonu (56, 90 dní). V případě zkoušky\nprovedené po 56 nebo 90 dnech se stáří v momentě zkoušky uvádí do závorky za třídu pevnosti, např. C25/30\n(56).\n7\n20.2.2.5 Odolnost betonu proti průsakům vody\nZ důvodu požadované životnosti tunelu musí být beton definitivního ostění v každém případě odolný proti\nprůsakům vody. Pro dosažení požadované odolnosti se doporučuje přidání vhodných přísad. V případě\nchemického působení se tak zpomalí pronikání škodlivých látek. Průkaz odolnosti proti průsakům vody se\nprovádí na hotovém betonu s minimálním tlakem. Beton ostění musí v každém případě prokázat maximální\nstřední hloubku průsaku 25 mm při zkušebním tlaku 0,7 MPa.\nU betonů ostění odolných proti účinkům agresivních vod nebo ostění z betonu odolného proti průsaku vody smí\nčinit střední hloubka průsaku vody do zkušebního tělesa při zkoušce max. 25 mm. Pokud ZTKP neurčí jinak, je\nve smyslu ČSN EN 206-1, článek 5.5.3 použita následující metodika provádění zkoušky odolnosti proti průsaku\nvody (metodika odpovídá ÖNORM B3303 Betonprüfung).\nZkouška je prováděna na zkušebních tělesech rozměrů 200x200x120 mm nebo 300x300x200 mm. Maximální\nzkušební tlak vody odpovídá 1,5 násobku nejvyšší hodnoty hydrostatického tlaku, který bude působit na\ntunelové ostění, minimálně však 0,7 MPa. Tlak vody působí na líc zkušebního tělesa na kruhové ploše průměru\n100 mm (tvar plochy zajištěn např. těsnícím kroužkem). Pokud není projektem nebo ZTKP určeno jinak, je\nzkouška prováděna na vzorcích betonu stáří 28 dnů. Zkušební tělesa musí být uložena stále ve vodě, vzorky\nzískané ze stavby musí být ve vodě uloženy min. 7 dnů před provedením zkoušky. Doba trvání zkoušky je 14\ndní a probíhá ve dvou fázích:\nfáze 1 – vzorek je zatěžován po dobu 3 dnů tlakem vody odpovídajícím 25 % maximálního tlaku\nfáze 2 – následuje zvýšení tlaku na maximum a jeho působení po dobu dalších 11 dnů\nBezprostředně po ukončení zkoušky je zkušební těleso rozřezáno dvěma na sebe kolmými řezy tak, aby bylo\nmožno určit rozhraní suchého a mokrého betonu. Hranice je na tělese graficky vyznačena a je určena střední\nhodnota hloubky průsaku s přesností na 1 mm.\nStřední hloubka průsaku je určena na základě výsledků min. 3 zkoušek jako střední hodnota středních\nprůsakových hloubek zjištěných na jednotlivých zkušebních tělesech.\nVodní tlak\nTěsnicí kroužek\nStřední hloubka průsaku ZkušeZbknuí špelboncíh pal ocha\nHranice průsaku\nZkušební plocha\nZkušební vzorek\nObr. 1\n20.2.2.6 Mrazuvzdornost\nV oblasti portálů a do vzdálenosti 1000 m od portálů se navíc musí prokázat stálost při mrazu v počtu 100\nzmrazovacích cyklů, přičemž platí, že vodotěsnost ostění, použití provzdušňujících přísad a kameniva\nodpovídajících parametrů zpravidla mrazuvzdornost zaručuje.\n8\n20.2.2.7 Beton odolný proti síranům\nVzhledem k tomu, že v případě betonu definitivního ostění není možné provést dodatečnou ochranu nebo\nopravná opatření proti působení síranových vod v horninovém masivu, je třeba provést příslušná opatření již při\npodezření, že k malému působení dochází. To se týká i betonu definitivního ostění s fóliovou izolací.\nU železničních tunelů v městských aglomeracích je provádění ostění z betonu odolného proti účinkům\nsíranových vod doporučeno i v případě, že v době výstavby tunelu neobsahují vody škodlivé množství síranů\nvzhledem k možné kontaminaci vod (např. netěsností stok) během životnosti tunelu.\nProtože koncentrace síranů ve vodě může v horninovém masivu v čase silně kolísat, musí se jejich účinek\nposoudit minimálně ze 3 časově oddělených odběrů vzorků.\n20.2.2.8 Beton vodotěsného definitivního ostění bez izolace\nV případě vodotěsných definitivních ostění bez izolace přebírá beton definitivního ostění plně funkci izolace.\nTento beton je tedy třeba zhotovit nejenom tak, aby vykazoval odolnost proti průsakům, která představuje pouze\njednu podmínku pro nepropustnost struktury betonu, ale také aby nevykazoval trhliny, které by vodu vedly. Pro\nbeton je určující obzvláště dobrá zpracovatelnost, rozsáhlé omezení teploty čerstvého betonu a maximální\nteploty betonu, rychlosti ochlazení a minimalizace smršťování. Zvláštní důraz je nutno klást na použití cementu\ns malým hydratačním teplem a na dodržení co možná nejmenšího celkového množství vody ve spojení\ns použitím přísad. Kromě toho je třeba dodržet příslušná konstrukční opatření. Technologický postup musí být\nnavržen tak, aby se v prvních 3 dnech po odbednění zabránilo rychlému ochlazení a v prvních 7 dnech po\nodbednění rychlému vyschnutí konstrukce.\n20.2.2.9 Souběh trhacích prací a betonáže definitivního ostění\nV případě souběhu ražby prováděné za použití trhacích prací a betonáže definitivního ostění je nutno ukládání\nčerstvého betonu provádět v dostatečné vzdálenosti od čelby.\nK vyšetření vlivu odstřelů je nutno vzorky betonu vystavit účinku odpálení v plánované vzdálenosti. U těchto\nzkušebních vzorků se kontroluje pevnost po 7 dnech. Podle výsledků zkoušek se stanoví potřebná opatření.\n20.2.3 Stříkaný beton\n20.2.3.1 Všeobecně\nStříkaný beton se sestavuje ze stanovených složek betonu (pojiva pro nástřik, tj. cementu nebo jiných\nspeciálních pojiv, příměsí, kameniva, vody a přísad) tak, aby za očekávaných poměrů na stavbě bylo možné jeho\nnastříkání odborným způsobem a byly s jistotou dodrženy požadované vlastnosti.\nKvalita stříkaného betonu použitého při výstavbě tunelových ostění je předepsána dokumentací\na technologickým předpisem zhotovitele schváleným kompetentním zástupcem objednatele (stavební dozor).\nSložení směsi dokumentací požadovaných parametrů stanoví zhotovitel v technologickém předpisu, který musí\nobsahovat :\n– množství kameniva na m3 hotového betonu a na jednu záměs,\n– množství cementu na m3směsi a na jednu záměs,\n– množství přísad v poměru k hmotnosti cementu,\n– vodní součinitel betonové směsi a případně tlak vody do stříkací pistole,\n– údaje o dávkování a jeho sledu, mísení, délce mísení, postup stříkaní betonové směsi při daném výrobním\nzařízení,\n– ostatní údaje potřebné k dosažení požadovaných vlastností betonu.\n9\nPodle způsobu nástřiku se rozlišuje:\n– suchý způsob nástřiku, kdy se voda přidává do suché či zavlhlé betonové směsi až v trysce zpravidla\ns přísadou urychlující tuhnutí a tvrdnutí,\n– mokrý způsob nástřiku, kdy do mokré betonové směsi je v trysce přidáván vzduch a urychlující přísada\nnebo pouze urychlující přísada (při pneumatické dopravě směsi, tj. při dopravě tzv. řídkým proudem).\nTABULKA 1\nROZLIŠOVÁNÍ SMĚSÍ PRO SUCHÝ A MOKRÝ STŘÍKANÝ BETON\nsuchý stříkaný beton mokrý stříkaný beton\nobsah vody W < 0,2 % zpravidla w = 2 - 4 % w < 8 %\nv kamenivu\npásmo rozptylu w = 1,5 - 5 %\noznačení suchá směs dopravovaná vlhká směs vlhká směs mokrá směs (čerpaný\nokamžitě beton)\npoužívaná\npojivo cement + přísady nebo cement + přísady vlhké pojivo pro cement + přísady\nsuché pojivo pro nástřik nástřik\npřidání případně v míchačce při stříkání případně při při stříkání\nurychlovače stříkání\nzhotovení výrobní nebo staveništní výrobní nebo staveništní průběžné výrobní nebo\nsměsi míchárna míchárna míchání při staveništní míchárna\nstříkání (betonárka)\nskladování uzavřené (silo, pytle) chráněné chráněné\npoužitelnost bez omezení omezená použitelnost bez omezení omezená použitelnost\npřipravenost předchozí dohoda podle výroba dle dohody, výroba pro výroba dle dohody\npotřeby zpracování v době bezprostřední zpracování v době\nskladovatelnosti potřebu skladovatelnosti\n(maximálně 1,5 hod) (maximálně 1,5 hod)\nTABULKA 2\nSMĚRNÉ HODNOTY PRO SKLADBU SMĚSÍ\nsuchý stříkaný beton mokrý stříkaný beton\ncement - pojivo k nástřiku 320 - 400 kg/m3 360 - 420 kg/m3\npřísady (např. popílek) 30 - 50 kg/m3 50 - 80 kg/m3\ndávkování pojiva (cement + příměsi, pojivo pro 350 - 400 kg/m3 1) 400 – 460 kg/m3\nnástřik)\nvodní součinitel (voda/pojivo) < 0,50\nkonzistence (míra tekutosti, roztečení) podle pravidel 48 – 52 cm\nobsah jemných prachových součástí minimálně 550 kg/m3\n1) Při dávkování pojiva pod 340 kg/m3 se výrazně snižuje přilnavost stříkaného betonu k nástřikové ploše\nPro zjištění vlivu přísad (urychlovače apod.) na pevnostní a technologické parametry betonu je nutno připravit\na odzkoušet recepturu betonu a porovnat výsledky s výsledky provedenými na nulovém betonu (porovnávací\nbeton bez přísad).\nZ hlediska funkce se stříkaný beton dělí na (viz tabulka 3):\n10\nTABULKA 3\nROZDĚLENÍ STŘÍKANÝCH BETONŮ PODLE FUNKCE\nvýplňový a ochranný Úloha tohoto stříkaného betonu spočívá vesměs ve zřizování určité úpravy líce (např.\npodkladu pro fóliovou izolaci), výplně dutin (puklin, nadvýlomů) a uzavření povrchu\nhorniny (např. utěsnění povrchu horniny proti vzdušné vlhkosti).\nkonstrukční Úlohou konstrukčního stříkaného betonu je funkce zajištění nebo podepření. Používá se\nnapř. pro primární ostění podzemních staveb ražených podle NRTM (Nové rakouské\ntunelovací metody), zajištění stability čelby podzemních staveb nebo pro zajištění svahů\nstavebních jam a zpevnění stěn přírodních svahů. Součástí návrhu je i definice nárůstu\npevnosti v čase se zohledněním vlivu jednotlivých složek směsi (urychlovače tuhnutí\napod.) na konečnou pevnost betonu. Požadavky na nárůst pevnosti v čase musí\nodpovídat předpokládanému průběhu zatěžování primárního ostění.\npro zvláštní účely Stříkaný beton pro zvláštní účely je používán např. pro primární ostění ražených staveb\npod zástavbou a při nízkém nadloží, jednoplášťových ostění tunelů, podpůrných prvků\nsvahů a líců výkopů.\n20.2.3.2 Požadavky na nárůst pevnosti v čase\nJako mladý beton se uvažuje stříkaný beton do stáří 24 hodin. Z hlediska nárůstu pevnosti a požadavků na\npevnost se dělí mladý beton do třech oblastí J , J , J .\n1 2 3\nOblast J je vymezena mezí \"A\" a \"B\".\n1\nOblast J je vymezena mezí \"B\" a \"C\".\n2\nOblast J leží nad mezí \"C\".\n3\nMeze A, B a C viz obr. 2.\nNárůst pevnosti v prvních minutách po nástřiku má, vedle významu pro nástřik nad hlavou v odpovídajících\ntloušťkách vrstev, také velký vliv na vývin prašnosti a na spad, protože při příliš rychlém nárůstu pevnosti\nstříkaný beton bezprostředně po nanesení na stěnu ztvrdne a hrubší částice následujícího stříkaného betonu se již\nnemohou uložit a zhutnit. Proto nesmí měrná hodnota pevnosti po 2 minutách (např. zkouška penetrační jehlou)\npřestoupit hodnotu 0,2 MPa, aby se snížil vývin prachu a spadu za normálních poměrů pro nanášení stříkaného\nbetonu. Při silném přítoku vody nebo při nevhodném povrchu podkladu je vyšší pevnost v prvních minutách\npotřebná, je však nutno přitom počítat krátkodobě se zvýšenou prašností a větším množstvím spadu.\nNárůst pevnosti „mladého betonu“ se zjišťuje nepřímými zkušebními postupy (zpravidla vyhodnocením\npevnosti na základě penetračních zkoušek). Doby měření a postup zkoušení je třeba přizpůsobit nárůstu pevnosti\nstříkaného betonu, aby se zjistil co možná nejplynulejší průběh. Za směrodatné hodnoty jsou považovány doby\nměření po 6,10 a 30 minutách a dále pak po 1, 2, 3, 6 a 24 hodinách). Zpravidla se prokazuje průběh od 6 minut\ndo 6 hodin a po 24 hodinách. Průkaz pevnosti po 9 a 12 hodinách je potřebný jen ve zvláštních případech\n(např.u tunelů s nízkým nadložím pod zástavbou).\nStříkaný beton z oblasti J se hodí pro nástřik v tenkých vrstvách na suchý podklad bez zvláštních statických\n1\npožadavků a je výhodný pro malou prašnost a malý spad.\nStříkaný beton z oblasti J je požadován v případě, kdy má být beton nanesen co nejrychleji v silných vrstvách\n2\n(i nad hlavou), při přítoku vody a v případech, kdy dochází k jeho okamžitému namáhání vlivem dalších činností\npři zajišťování stability výrubu (např. provádění vrtů pro kotvy, zahánění pažin, otřesy při trhacích pracích).\nPožadavek na použití betonu z oblasti J je uplatněn také při rychlém nárůstu zatížení horninovým tlakem,\n2\nzemním tlakem nebo jinak vyvolaným přitížením.\nStříkaný beton J se používá pouze ve zvláštních případech (např. v silně porušené hornině, silném přítoku\n3\nvody) z důvodu zvýšeného vývinu prachu a zvýšeného množství spadu.\nVysoké počáteční pevnosti betonu vyvolané použitím alkalických urychlovačů vedou zpravidla k vysokému\npoklesu konečné pevnosti oproti nulovému betonu (bez urychlovače). To je třeba zohlednit při stanovování třídy\n11\npevnosti. Z důvodu velkého vlivu alkalických urychlovačů na konečnou pevnost betonu není použití těchto\nurychlovačů v případě betonů z oblasti J vhodné a je možno je předepisovat jen ve zvláštních případech. Použití\n2\nnealkalických urychlovačů neovlivňuje negativně konečnou pevnost betonu.\nPožadovanýný nárůst pevnosti stříkaného betonu v tlaku\nprimárního ostění v prvních 24 hodinách po aplikaci\n16\n14\n12\n10\n8\n6\n4\n2\n0\n0 2 4 6 8 10 12 14 16 18 20 22 24 26\nČas [hodiny]\n12\n]aPM[\nukalt\nv\ntsonveP\nMez \"A\"\nMez \"B\"\nMez \"C\"\nPožadovaný nárůst pevnosti stříkaného betonu v tlaku\nprimárního ostění v prvních 60 minutách po aplikaci\n1,6\n1,4\n1,2\n1\n0,8\n0,6\n0,4\n0,2\n0\n5 10 15 20 25 30 35 40 45 50 55 60\nČas [minuty]\n]aPM[\nukalt\nv\ntsonveP\nMez \"A\"\nMez \"B\"\nMez \"C\"\nObr. 2\n20.2.3.3 Složky betonové směsi - cement\nPočátek tuhnutí cementu má být v rozmezí od 1,5 hodiny do 4 hodin.\nJe třeba dbát vlivu teploty a chemického složení cementu na dobu reakce suché směsi (dobu zpracovatelnosti)\na případně dobu zpracovatelnosti betonu vhodnou metodou přezkoušet.\nPro síranovzdorný stříkaný beton je třeba při výskytu vod s obsahem SO -2 nad 600 mg/l používat portlandský\n4\ncement se zvýšenou síranovzdorností bez C A.\n3\n20.2.3.4 Složky betonové směsi - kamenivo\nPro stříkaný beton se používá kamenivo oblé (přirozené či přírodně těžené neupravované kamenivo) nebo\nostrohranné (drcené) se zrnem tříděným do frakcí. Rozdělení frakcí zrn má být provedeno tak, aby byl zajištěn\nsprávný rozsah pásma celkové křivky zrnitosti podle tabulky 4. Zpravidla se předpokládá třídění do 4 mm a nad\n4 mm.\nTABULKA 4\nPrůměr oka síta [mm] 0,063 0,25 0,50 1,00 2,00 4,00 8,00 11,0\npropad min. [%] 2 8 18 30 45 65 85 95\nmax. [%] 6 15 25 40 55 75 95 100\nNejvětší zrna se volí v závislosti na účelu použití mezi 4 mm a 16 mm. V případě stříkaného betonu\npro konstrukční využití se používá největší zrno ≤ 11mm.\nPři mokrém stříkaném betonu je třeba sladit složení zrnitosti kameniva zejména s požadavky čerpatelnosti\nbetonu.\nPři použití drceného kameniva může být zvýšen nejvyšší přípustný podíl odplavitelných částic (podíl frakce\n< 0,063 mm) oproti tabulce 4 max. o 5 %.\nPři volbě kameniva je třeba dbát na to, že účinná pevnost kameniva (petrografické složení, soudržnost zrn, tvar\na skladba zrn) ovlivňuje předepsanou pevnost stříkaného betonu.\nVlastnosti kameniva musí odpovídat účelu použití stříkaného betonu i složení betonové směsi (např. chemické\nreakce s jednotlivými složkami použité receptury).\n20.2.3.5 Složky betonové směsi - záměsová voda\nPožadavky na záměsovou vodu se řídí normou ČSN EN 206-1 a normami souvisejícími.\n20.2.3.6 Složky betonové směsi - pojiva pro nástřik\nPojiva pro nástřik umožňují zřízení suchého stříkaného betonu se stanovenými požadavky na mladý stříkaný\nbeton bez přidání urychlovače tuhnutí.\nPojiva k nástřiku při kontaktu s vodou reagují velmi silně. Obvyklé míchání s vlhkým kamenivem proto není\nmožné.\nNa základě jejich rychlosti reakce se rozlišují dva druhy pojiv k nástřiku:\n– Suché pojivo k nástřiku: Pojivo má dobu reakce pod jednu minutu a je proto použitelné pouze pro\nzřizování stříkaného betonu se suchým kamenivem (obsah vody w < 0,2 %, případně podle údaje výrobce).\nSkladování suché směsi je možné po delší dobu v silu (zásobníku).\n– Vlhké pojivo k nástřiku se stanovenou dobou reakce: Toto pojivo má stanovenou dobu reakce od jedné do\ntří minut. V důsledku stanovené doby reakce je použitelné také pro zřizování stříkaného betonu\ns přirozeně vlhkým kamenivem (obsah vody w zpravidla v mezích 2 až 4 %). Při použití vlhkého kameniva\nvyžaduje omezená doba zpracovatelnosti stanovit postup zpracování. Vlhké pojivo se smíchá s vlhkým\nkamenivem bezprostředně u čelby ve vhodném strojním zařízení a okamžitě se nanáší.\nPro pojiva k nástřiku je třeba stanovit následující charakteristiky, popř. požadavky podle výsledků průkazních\nzkoušek:\n– specifický povrch - průměrná hodnota, standardní (normová) odchylka pro specifický povrch podle Blainea\nsmí dosahovat maximálně 5 % od příslušně (cementárnou) stanovené průměrné hodnoty,\n– počátek tuhnutí nikdy nesmí klesnout pod 15 sekund,\n– prostorová stálost,\n13\n– SO :< 4,5 %, v případě vody s obsahem SO -2 nad 600 mg/l < 3,5 %,\n3 4\n– Cl: maximálně 0,1 %,\n– MgO: maximálně 5,0 %,\n– AL O : informační a charakteristická hodnota.\n2 3\nTABULKA 5\nPOŽADAVKY NA NÁRŮST PEVNOSTI V ČASE\nčas nejnižší hodnota minimum poznámka\npo 1 hodině > 0.5 Mpa - informační hodnota\npo 6 hodinách 70 % z hodnot 1,5 MPa významná charakteristická\nprůkazních zkoušek hodnota\npo 24 hodinách 70 % z hodnot 12 MPa charakteristická hodnota\nprůkazních zkoušek\npo 28 dnech 80 % z hodnot 32,5 MPa charakteristická hodnota\nprůkazních zkoušek\n20.2.3.7 Složky betonové směsi - příměsi\nS ohledem na zlepšení vlastností stříkaného betonu, jako je zpracovatelnost, lepivost, vývin prachu, odpad,\npevnost a hutnost stříkaného betonu, jakož i na snížení vývinu tepla, je účelné přidávání hydratačně působících\npříměsí. Dosud se osvědčil jako příměs létavý popílek, ale také je možné i použití jiných příměsí (např. křemitý\nprachový silikát, hutnický písek). Nejpříznivější poměr pojivo - příměsi se musí stanovit zkouškami vlastností.\nCelkový podíl příměsí a přísad smí dosahovat max. 35 % množství pojiva. Specifický povrch podle Blainea by\nměl být 450 m2/kg a standardní odchylka od stanovené průměrné hodnoty smí dosáhnout max. 25 m2/kg.\nPři použití příměsí je třeba posoudit vhodnost jejich použití s dalšími složkami betonové směsi.\n20.2.3.8 Složky betonové směsi - přísady\nPod pojmem přísady jsou ve smyslu této kapitoly TKP rozuměny zejména:\n– plastifikátory,\n– urychlovače tuhnutí a tvrdnutí,\n– ztekucovače,\n– provzdušňující plastifikátory,\n– provzdušňovače,\n– zpožďovače tuhnutí,\n– přísady pro snížení vývinu prachu.\nÚčinnost přísad do betonu a jejich vzájemná snášenlivost je třeba prokázat zkouškami vlastností a kvality\nstříkaného betonu.\nPro přísady musí mít k dispozici certifikát, protokol o zkouškách a doklad o zkouškách, které nejsou starší 3 let.\nPro všechny ostatní přísady, (zpožďovače tuhnutí, stabilizátory atd.) je třeba, aby dodavatel vždy s odstupem\ndvou let prokázal nepřítomnost chloridů.\nDlouhodobé zpožďovače začátku tuhnutí zastavují hydratační reakci cementu po předem určenou dobu,\nzpravidla o několik hodin až maximálně do 3 dnů. Umožňují uložit v meziskladu jak suchou, tak i mokrou směs.\nV případě uložení mokré směsi nedochází ke snížení kvality nebo změně konzistence. Působení stanoveného\ndlouhodobého zpožďovače musí být zrušeno přidáním odpovídajícího urychlovače tuhnutí. Další průběh\n14\ntvrdnutí a vlastnosti zatvrdlého betonu nesmí být dlouhodobým zpožďovačem negativně ovlivněny (např.\npoklesem pevnosti).\nPřísady pro snížení vývinu prachu a spadu zlepšují pracovní podmínky, zejména při nasazení vysušeného\nkameniva. Přidávané množství je třeba stanovit ověřovacími zkouškami. Ostatní vlastnosti stříkaného betonu\nnesmí tím být negativně ovlivněny. Přidávání je třeba přizpůsobit používanému způsobu stříkání.\n20.2.3.9 Složky betonové směsi - urychlovače\nUrychlovače tuhnutí se používá v kombinaci s vhodným druhem cementu a případnými dalšími přísadami.\nV současnosti se používají bezalkalické (preferované) nebo alkalické urychlovače tuhnutí. Ve zvláštních\npřípadech (např. při silném výronu vody na ploše nástřiku) může být použito nealkalického urychlovače tuhnutí\nv kombinaci se speciálním pojivem k nástřiku.\nPro urychlovač tuhnutí musí být k dispozici výsledky průkazní zkoušky, provedené akreditovanou zkušebnou,\nkteré nejsou starší tří roků.\nPoužívané přísady musí být s používaným cementem odzkoušeny včas před zahájením prací z hlediska účinků\nurychlování tuhnutí, počátku tvrdnutí a nárůstu pevnosti v čase, vlivu na konečnou pevnost a z hlediska\nsíranovzdornosti (pokud je požadována). K tomu se použijí laboratorní zkušební metody. Laboratorní zkoušky\nposkytují dobré směrné hodnoty o chování navržené směsi v podmínkách výstavby, ale nemohou zohlednit\nveškeré vlivy působící během realizace. Proto nemohou nahrazovat kontrolní zkoušky na vzorcích prováděné na\nvzorcích odebraných na stavbě přímo z ostění.\nPrůkazní zkoušky musí stanovit pro danou recepturu maximální přípustné dávkování urychlovače.\n20.2.3.10 Nealkalické urychlovače tuhnutí\nZ hlediska dodržení požadovaných hygienických podmínek na pracovišti je třeba omezit hodnotu pH roztoku\nnebo suspenze urychlovače v rozmezí od 3,0 do 8,0 pH. Požadavky viz tabulka 6.\nTABULKA 6\nPOŽADAVKY NA NEALKALICKÉ URYCHLOVAČE\ndávkování (práškové, tekuté) Zpravidla 4 až 8 %\n(u tekutých urychlovačů obsah pevných látek < 5 %) z pojiva\nekvivalent Na O < 1,0 %\n2\nobsah sulfátů (síranů) jako S0 ≤ 4,5 % v součtu s použitým cementem\n3\nobsah sulfátů jako S0 pro síranovzdorný ≤ 3,5 % v součtu s použitým cementem nebo pojivem k nástřiku\n3\nstříkaný beton (voda s obsahem síranů SO -2\n4\nnad 600 mg/l)\nAL O pro síranovzdorný stříkaný beton (voda ≤ 2,0 % nebo průkaz síranovzdornosti na ověřovacím stříkaném\n2 3\ns obsahem síranů SO -2 nad betonu a stříkaném betonu stavebního díla\n4\n600 mg/l)\nsnížení (pokles) pevnosti ≤ 10 %\n20.2.3.11 Alkalické urychlovače tuhnutí\nUrychlovače na bázi alkalického hlinitanu se mohou přidávat v práškové nebo tekuté formě vhodným\ndávkovacím zařízením.\nDávkování urychlovačů má být nízké. Jako směrné hodnoty pro stříkaný beton J , J platí hodnoty uvedené\n1 2\nv tabulce č. 7.\n15\nTABULKA 7\nTyp urychlovače doporučené dávkování maximální hodnota\npráškový urychlovač tuhnutí 6 - 8 % hmotnosti 10 %\npojiva\ntekutý urychlovač tuhnutí 5 - 7 % hmotnosti 8 %\npojiva\nPokles pevnosti stříkaného betonu s potřebným dávkováním urychlovače oproti porovnávacímu (nulovému)\nbetonu bez přísady nesmí přestoupit ve stáří 7 nebo 28 dnů, (nezávisle na dosažené konečné pevnosti) hodnoty\nuvedené v tabulce 8\nTABULKA 8\ntyp urychlovače přípustné hodnoty maximální hodnota\npráškový urychlovač tuhnutí 30 - 40 % 45 %\ntekutý urychlovač tuhnutí 20 - 25 % 30 %.\nPři výskytu vody s obsahem SO vyšším než 600 mg/l nesmí obsah ve vodě rozpustných Al O při potřebném\n4 2 3\ndávkování cementu nebo pojiva přestoupit hodnotu 0,6 % (vztaženo na pojivo), případně při překročení této\nmezní hodnoty je třeba provést přezkoušení na porovnávacím stříkaném betonu nebo stříkaném betonu\nkonstrukce. Při průkazních zkouškách je třeba provádět ověření s maximálním na stavbě přípustným\ndávkováním.\n20.2.3.12 Stříkaný beton s rozptýlenou výztuží\nStříkaný beton s rozptýlenou ocelovou výztuží je stříkaný beton, do kterého se přidávají vhodná ocelová vlákna\nv min. množství 30kg /m3 nastříkaného betonu, aby se dosáhlo zvláštní vlastnosti mladého i vyzrálého betonu.\nVelikost kameniva nemá přestoupit 8 mm. Kromě ocelových vláken je možno použít vlákna skleněná,\npolymerová a karbonová. Přitom je třeba dbát na to, že zpracování a technologický postup je specifický pro\nkaždý materiál použitých vláken.\nPřidáním ocelových vláken lze ovlivnit tyto vlastnosti stříkaného betonu:\n– zvýšit únosnost konstrukce zejména při namáhání na ohyb,\n– omezit velikost rozevření trhlin,\n– nahradit běžně používanou výztuž (sítě, pruty) v tenkých nebo nepravidelných vrstvách stříkaného betonu,\n– zlepšit homogenitu vyloučením stínů v nástřiku, následkem vynechání výztuže apod.\nTvar a délka vláken se řídí podle oblasti použití (tloušťka stříkaného betonu, žádaná úprava líce, technologie\nnástřiku betonu, průměr dopravních přívodů apod.).\nObvyklá délka vláken je 30 mm. V nastříkaném betonu je poněkud menší podíl vláken než ve výchozí směsi.\nProto je třeba obsah vláken nastříkaného betonu v pravidelných intervalech přezkoušet.\nOcelová vlákna se přidávají do suché nebo mokré směsi v rozptýleném stavu. Přidávání do suché směsi lze\nprovádět v míchárně, v pojízdné míchačce nebo ve stříkacím stroji. Cílené a řiditelné přidávání do stříkacího\nstroje nebo přímo do přiváděného proudu směsi lze zajistit vhodným dávkovacím zařízením. Při stanovení doby\nmíchání a zpracování je třeba dbát údajů výrobce.\nPro stříkaný drátkobeton je nutno použít minimálně beton třídy C20/25 s vodním součinitelem w/c < 0,5.\nPři vzniku pracovních spár nelze docílit „přesahovou délku“ vláken. Proto musí být již v projektu stanovena\npoloha pracovních spár, nebo se musí navrhnout doplňující opatření pro napojení výztuže, resp. vytvoření\ndostatečně únosného spoje v místě spáry.\nKonkrétní podmínky použití a požadované vlastnosti stříkaného drátkobetonu pro tunelové stavby, rekonstrukce\nnebo opravy určuje dokumentace, resp. ZTKP.\n16\n20.2.4 Ocel\nRamenáty z válcovaných profilů a typová korýtková výztuž se používá pouze s prohlášením o shodě.\nPro betonářskou výztuž a příhradové ramenáty z betonářské oceli platí kapitola 17 TKP.\n20.2.5 Injektážní směsi\nPro kvalitu injektážních směsí platí ustanovení uvedená v kapitole 24 TKP.\n20.2.6 Materiál pro zděné konstrukce\nStavební kámen pro zděné konstrukce se používá pevnostní třídy nejméně 40 podle ČSN 72 1860, který vyhoví\n25 zmrazovacím cyklům podle ČSN 72 1156.\nKámen vhodný pro opravy a rekonstrukční práce se použije s vyšší objemovou hmotností, nízkou pórovitostí, tj.\nkámen hutný, pevný a málo nasákavý.\nPevnost kamene v tlaku musí být nejméně desetinásobkem namáhání, s nímž se počítá ve statickém výpočtu.\nJednotnost zbarvení kamene nemusí být pro zdivo podzemních staveb dodržena, vyjma zdiva portálů.\nMalty pro zdění a spárování kamenného zdiva musí mít pevnost v tlaku nejméně 10 MPa (ČSN 74 2430).\n20.2.7 Dílce\nPro kvalitu prefabrikovaných dílců platí kapitola 17 TKP.\n20.2.8 Izolace\nPro izolaci tunelů a jiných podzemních staveb mohou být použity pouze výrobky k tomuto účelu určené.\nPožadavky na materiál izolace určuje projekt, výběr izolačního materiálu schvaluje odbor stavební ředitelství\ndivize dopravní cesty. Projektem navržená izolace musí splňovat požadavky uvedené v tabulce 9.\nIzolační fólie musí mít signální vrstvu, která umožňuje vizuální kontrolu případného mechanického poškození\nizolace při následně prováděných pracích v tunelu (osazování výztuže, montáž bednicího vozu apod.)\nBarva signální vrstvy bývá zpravidla světlá a v každém případě musí zřetelně kontrastovat s barvou materiálu\nizolační fólie. Signální vrstva je nanesena v malé tloušťce na materiál vlastní izolace a nesmí být započítána do\nminimální požadované tloušťky izolace. Materiál signální vrstvy nesmí negativně ovlivňovat svařitelnost\na snižovat pevnost svaru izolační fólie.\nMateriál izolační fólie musí dlouhodobě odolávat působení podzemní vody a ostatním vnějším činitelům\n(agresivita prostředí, prorůstání kořenů apod). Při deformačním namáhání vlivem smrštování, teplotních změn\na nerovnoměrného sedání jednotlivých částí konstrukce nesmí fólie ztratit požadované ochranné parametry.\n17\nTABULKA 9\nPOŽADOVANÉ PARAMETRY MATERIÁLU IZOLAČNÍ FOLIE\nVšeobecné vlastnosti materiál bez bublin, trhlin a sraženin\nCelková tlouštka 2,0; 2,5 a 3,0 mm\nPevnost na mezi trhlin v podélném a příčném směru ≥ 10 MPa\nProtažení na mezi trhlin v podélném a příčném směru ≥ 200 %\nChování svarového spoje při trhací zkoušce přetržení materiálu mimo oblast svaru\nChování při namáhání vodním tlakem těsný při zkušebním tlaku 0,5 MPa působícím po dobu\n72 hodin\nChování při zkoušce na proražení těsný při výšce pádu zkušebního tělesa 750 mm\nChování při ohýbání za studena bez trhlin\nstav bez puchýřků a bublin\nzměna rozměrů ≤ 3 %\nv podélném a příčném\nsměru\nChování po uskladnění za změna pevnosti na mezi ± 20 %\nteploty 800 C trhlin v podélném a\npříčném směru\nzměna protažení na mezi ± 20 %\ntrhlin v podélném a\npříčném směru\nohýbání za studena bez trhlin\nzměna pevnosti na mezi ± 20 %\ntrhlin v podélném a\npříčném směru\nChování po uskladnění ve změna protažení na mezi ± 20 %\nvodě trhlin v podélném a\npříčném směru\nohýbání za studena bez trhlin\nZměkčovadla nebo jiné přísady použité pro modifikaci fólií z plastů musí působit trvale s ohledem na specifické\npředpoklady daného objektu a nesmí negativně ovlivňovat požadované vlastnosti materiálu.\nPožadavky na požární odolnost:\n– teplota kouře < 200 0C,\n– vývin kouře po dobu 10 min < 400 %,\n– požární odolnost B2 dle DIN 4102.\nPro izolační pásy musí být zvolen takový materiál, při jehož tepelném namáhání (hoření) nedochází\nk uvolňování toxických látek.\nUpevňovací prvky (např. nastřelovací terče) musí být s materiálem použité izolační fólie dobře svařitelné\na vzájemně se musí dlouhodobě snášet. Je vhodné používat izolační pásy a upevňovací prvky od jednoho\nvýrobce. Pokud jsou použity upevňovací prvky a izolační pásy různých výrobců, musí výrobce izolačního pásu\nodsouhlasit vhodnost použití upevňovacích prvků.\n20.2.9 Odvodnění\nPro odvodnění tunelů smí být používány pouze výrobky k tomuto účelu určené, které odpovídají příslušným\nnormám, předpisům i konkrétním podmínkám stavby.\n18\nOdvodňovací potrubí musí bez poškození snášet vnitřní přetlak 12 MPa (čištění tlakovou vodou).\nČástečně děrované drenážní trubky musí mít pro zajištění správné polohy při ukládání buď patu (v případě\nklenbového tvaru s rovným dnem) nebo odpovídající označení vrcholu (u kruhových profilů).\nOdvodňovací plastové potrubí musí být uvnitř, v místech mimo spoj, zcela hladké.\n20.3 TECHNOLOGICKÉ POSTUPY PRACÍ\n20.3.1 Všeobecně\nPro veškeré činnosti spojené s výstavbou tunelu je nutno vypracovat technologický postup. Práce mohou být\nzahájeny až po projednání a odsouhlasení technologického postupu kompetentním zástupcem zadavatele (např.\nstavební dozor). Schválení si může vyhradit odbor stavební ředitelství divize dopravní cesty.\n20.3.2 Ražení tunelů\n20.3.2.1 Ražba pomocí NRTM - technologická třída výrubu\nPojem „technologická třída výrubu“ rozšiřuje pojem „třída výrubu“ uvedený v ČSN 73 7508. Při ražbě tunelu\npomocí NRTM je ražený úsek v celé délce posouzen z geotechnického hlediska a je provedeno rozdělení do\nkvazihomogenních celků. Ražba a způsob zajištění výrubu je v každém z celků jednoznačně popsána\ntechnologickou třídou výrubu. Definice technologických tříd výrubu musí být součástí projektu stavby\na technologického postupu prací zhotovitele (viz např. §23 vyhlášky ČBÚ č. 55/1996 Sb. ve znění pozdějších\npředpisů).\nTechnologická třída výrubu musí jednoznačně určit:\n– způsob členění výrubu (vertikální, horizontální, počet dílčích výrubů apod.),\n– maximální délku záběru v každém z dílčích výrubů,\n– tloušťku primárního ostění, parametry betonu a výztuže (nárůst pevnosti betonu v čase, konečná pevnost\nbetonu, velikost ok sítí, počet vrstev sítí, způsob osazování apod.),\n– geometrické schéma systémového kotvení, typ, délku a požadovanou únosnost kotev, požadavky na\npředpínání kotev apod.,\n– maximální přípustnou vzdálenost provádění systémového kotvení od čelby. Vzdálenost se udává se\nzpravidla počtem záběrů od čelby (příklad: Kotvení musí být provedeno nejpozději v druhém záběru od\nčelby). Pro případ přerušení ražby je nutno kromě vzdálenosti kotvení od čelby uvést i čas, kdy musí\nnejpozději dojít k provedení kotvení, aby nedošlo k dlouhodobému stavu bez dostatečného zajištění stability\nvýrubu,\n– způsob zajištění stability čelby (stříkaný beton, kotvení, čelbový klín apod.) včetně požadovaných\nparametrů prvků zajištění,\n– maximální přípustnou vzdálenost čeleb dílčích výrubů, resp. požadavek na uzavření profilu primárního\nostění,\n– opatření prováděná v předstihu pro zvýšení stability výrubu (jehlování, předhánění pažin, mikropilotový\ndeštník, trysková injektáž, zmrazování, vakuovaní apod.),\n– maximální a minimální rychlost ražby (s ohledem na předepsaný nárůst pevnosti v čase primárního ostění),\n– předpokládanou velikost deformace výrubu, resp. primárního ostění,\n– případná další opatření či omezení bezprostředně související s ražbou a zajištěním výrubu.\nTechnologická třída výrubu hraje významnou roli nejen pro vlastní provádění tunelu, ale má zásadní význam\npro stanovení jeho ceny. Proto je třeba návrhu technologických tříd výrubu věnovat maximální pozornost a při\nnávrhu zajištění výrubu využít všech dostupných podkladů a zkušeností. Na základě výsledků\ninženýrskogeologického (dále IG) průzkumu je provedena prognóza zastoupení technologických tříd výrubu\n19\nv rámci raženého úseku tunelu. Na základě prognózy technologických tříd výrubu je možno sestavit časový\nharmonogram prací, projekt geotechnických měření a stanovit objem prací a materiálu jako podklad pro\nstanovení ceny běžného metru tunelu zajištěného podle technologické třídy výrubu.\nSkutečná cena tunelu je pak závislá na přesnosti prognózy procentuelního zastoupení technologických tříd\nvýrubu (porovnání předpokládaných a skutečně zastižených IG podmínek).\nPři vlastní ražbě je možno na základě skutečně zastižených IG poměrů provádět změny nejen v procentuelním\nzastoupení tříd výrubu, ale i ve způsobu zajištění výrubu v rámci technologické třídy výrubu (úprava systému\nkotvení, jehlování apod). Každá taková změna má dopad (pozitivní nebo negativní) do času výstavby a ceny\ntunelu. Proto musí být veškeré úpravy protokolárně zaznamenány do záběrových listů (viz příloha 1)\na odsouhlaseny kompetentním zástupcem zadavatele (stavební dozor).\nZásady uvedené v tomto odstavci platí v přiměřeném rozsahu i pro ostatní tunely ražené cyklickou ražbou (např.\nmetoda obvodového vrubu apod.)\n20.3.2.2 Ostatní tunelovací metody\nV případě tunelů ražených kontinuální ražbou (TBM) nebo štítováním (viz kapitola 20.1.3 Rozdělení tunelů) je\ntechnologický postup závislý na volbě konstrukce štítu, způsobu pažení čelby (bentonitové, zeminové štíty\napod.) a mnoha dalších faktorech. Požadavky na technologický postup určuje dokumentace, resp. ZTKP.\n20.3.3 Primární ostění tunelu\n20.3.3.1 Všeobecně\nPod pojmem \"primární ostění tunelu\" je pro potřeby těchto TKP uvažován takový komplex opatření, která vedou\nk dočasnému zajištění stability výrubu při současném dodržení průběhu deformací výrubu pod předpokládanými\nmezními hodnotami. Mezi prvky primárního ostění patří:\n– stříkaný beton,\n– výztužné sítě,\n– ocelové ramenáty ,\n– kotvy (svorníky),\n– předháněné jehly, pažiny nebo mikropiloty,\n– v předstihu prováděné zlepšování masivu (injektáž, trysková injektáž, vakuování, zmrazování apod.).\nV rámci primárního ostění musí být jednotlivé prvky navrženy tak, aby způsob zajištění výrubu odpovídal\npředpokládaným (resp. skutečně zastiženým) inženýrskogeologickým poměrům, požadavkům na konstrukci\nprimárního ostění jako celku a umožňoval ekonomické provádění podzemního díla za dodržení všech\nbezpečnostních opatření.\nPlochy se silným přítokem vody určené pro nástřik nosné konstrukce primárního ostění musí být předem vhodně\nupraveny (např. předběžným těsnicím nástřikem, vybudováním organizovaného svodu apod.). Bez těchto\nopatření nesmí být nástřik ostění proveden.\nPři statickém návrhu ostění je vhodné preferovat zvýšení tloušťky stříkaného betonu před zvyšováním množství\nvýztuže. Případy navrhování ostění ze stříkaného betonu s tloušťkou nad 40 cm je třeba minimalizovat.\nNapojování ostění ze stříkaného betonu je třeba omezit na místa nezbytně nutná a styky umístit pokud možno\nmimo oblasti namáhané ohybovým momentem.\nMinimální tloušťka stříkaného betonu primárního ostění plnícího nosnou funkci je 10 cm.\nPři vyztužení ostění dvěmi vrstvami výztuže smí být druhá vrstva výztuže osazena až po zastříkání prvé vrstvy\nvýztuže.\n20\n20.3.3.2 Nanášení stříkaného betonu suchým způsobem\nNanášení se má provádět po vrstvách rovnoměrnými pohyby, aniž by se přerušovala spojitost nanášení\nstříkaného betonu. Struktura betonu má být hutná, povrch uzavřený a má vykazovat pokud možno rovnoměrnou\na plošně rovinnou skladbu.\nPři velkých tloušťkách stříkaného betonu je nutno tyto nanášet ve dvou nebo více vrstvách, aby se zabránilo\nodpadávání čerstvého betonu. To platí zejména při nástřiku nad hlavou. Při větších časových přerušeních\nnástřiku jednotlivých vrstev a dílčích ploch pro dosažení požadované celkové tloušťky se musí stará vrstva\nstříkaného betonu očistit směsí stlačeného vzduchu a vody a případně navlhčit. Nástřik se provádí od spodu\nnahoru, aby se vyloučilo zastříkávání napadaného spadu u paty ostění.\nS ohledem k přepravnímu výkonu a přepravní rychlosti je třeba udržovat odstup stříkací trysky od podkladu\nv závislosti na množství vzduchu ve vzdálenosti mezi 1 až max. 2 m. Úhel nástřiku, tj. úhel směru trysky k ploše\nnástřiku, má být pokud možno kolmý. Zmenšení nebo překročení doporučeného odstupu trysky, případně šikmé\nodklonění trysky od podkladu nástřiku snižuje kvalitu stříkaného betonu a zvyšuje spad.\nSprávné dávkování pojiva nebo urychlovače, které je stanoveno průkazními zkouškami, může být mírně\npřizpůsobeno místním poměrům (stav podkladu nástřiku, vliv meziročního kolísání teploty, vlhkosti podkladu,\nčetnosti a vydatnosti výronů vody apod.)\nPři obzvlášť nepříznivých podmínkách a za předpokladu časově omezeného nasazení (např. při silném výronu\nvody) může být nutné dodatečné přimíchání práškového urychlovače tuhnutí, které však musí být v souladu\ns ostatními použitými složkami receptury betonové směsi.\nVliv na množství vznikajícího spadu má:\n– skladba směsi (velikost zrna, stavba zrn, dávkování pojiva a přísad),\n– výstupní rychlost na trysce (množství dopravního vzduchu),\n– tloušťka vrstvy stříkaného betonu,\n– upevnění výztužných sítí k ramenátům či líci výrubu (rozkmitání sítě zvyšuje spad),\n– vlastnosti podkladu,\n– vedení stříkací trysky (vzdálenost a úhel vzhledem k podkladu),\n– technologická kázeň při provádění nástřiku.\nNeupravený spad a zbytky směsi při přerušení prací se nesmí pro stříkaný beton znovu použít.\nVýztuž a zabudovávané ocelové prvky musí být dostatečně upevněny, aby pří zástřiku nedocházelo k jejich\nrozvibrování. Při zastříkávání výztuže i systémových ocelových prvků jako např. ocelových oblouků, ocelových\nnosníků, pažicích plechů, trubek apod., nelze zcela vyloučit vznik stínů ve stříkaném betonu. Odborným\nvedením trysky lze však tyto stíny podstatně omezit.\nPokud se má provést výztuž ve dvou vrstvách, smí se druhá vrstva výztuže osadit teprve tehdy, když je první\nvrstva výztuže zastříkána.\nPři provádění stříkaného betonu po dílčích plochách, resp. při napojování na stávající konstrukce ze stříkaného\nbetonu nebo na stávající ocelové prvky, je třeba dbát na odborné navázání na stávající plochy stříkaného betonu.\nJe třeba vyloučit plošné změny tloušťky u prováděného stříkaného betonu. Výztuž (sítě) musí být před\nstykováním přesahem očištěna od zbytků stříkaného betonu prováděného v předchozím kroku (záběru). Sítě\nmají být stykovány tak, aby se v místě styku jednotlivé pruty sítě překrývaly a nedocházelo ke zmenšení\nvelikosti oka.\nNízké teploty podkladních ploch nástřiku, především při zmrzlé hornině, zemině nebo ledu, vyžadují zvětšení\ntloušťky stříkaného betonu o 2 až 3 cm (nutno posoudit pro konkrétní způsob použití).\nZpracování stříkaného betonu při teplotě vzduchu a podkladu nižší než +5 °C vyžaduje doplňující opatření.\nMinimální teplota směsi se doporučuje +15 °C. Jako účinná opatření pro zajištění optimální teploty směsi se\nhodí ohřívání přídavné vody až do maxima 50 °C nebo zahřívání kameniva, resp. směsi.\n21\nPři zvýšené teplotě stříkaného betonu jsou potřebná zvláštní opatření při ošetřování.\nNásledné ošetření stříkaného betonu je potřebné jen tehdy, pokud jsou požadovány zvláštní vlastnosti (např.\nstříkaný beton pro trvalé konstrukční účely, pro opravy a zesilování konstrukcí, stříkaný beton v tenkých\nvrstvách) nebo se vyskytují zvláštní okolnosti (silné vysušování). V takových případech se povrchy stříkaného\nbetonu udržují vlhké přednostně nepřímo pomocí zavěšeného dostatečně máčeného krytu (např. tkaninou) nebo\nse dostatečně postřikují ošetřovacím prostředkem.\n20.3.3.3 Nanášení stříkaného betonu mokrým způsobem\nNanášení betonu mokrým způsobem se provádí zpravidla pomocí dálkově řízeného stříkacího ramene\n(manipulátoru), protože v důsledku velké váhy hutného proudu dopravovaného čerstvého betonu a těžkého\nstříkacího vybavení (pistole) není ruční obsluha řízení trysky možná. Mechanická stříkací ramena umožňují při\npoužití větších průměrů přívodů a strojů s vyšším výkonem případné vyšší výkony nanášení. Podmínkou je\npříprava dostatečně veliké souvislé plochy pro nástřik.\nOdstup a směr trysky, jakož i rychlost přísunu směsi, mohou být optimalizovány operátorem pro jakýkoliv\npřípad použití. Operátor trysky se pohybuje stranou od nastříkávané plochy a tím mimo přímý prostor\nodráženého spadu a prachu. Zaujímá místo podle typu stroje v řídícím stanovišti na nosiči ramene nebo se volně\npohybuje po dně výrubu s řídícím modulem. Tím je pro operátora zaručena vyšší pracovní hygiena\na bezpečnost. Velký odstup s horším dohledem operátora na plochu nástřiku a vysoký výkon při nástřiku ztěžují\nprovádění rovnoměrného povrchu a tloušťky stříkaného betonu. V nebezpečných podmínkách se tak ulehčuje\nprovádění nástřiku pomocí málo rizikového vedení trysky v místě nástřiku.\n20.3.3.4 Vyztuž primárního ostění\nJako výztuž primárního ostění se používají sítě s minimální velikostí oka ≥ 100x100 mm (doporučeno 150 x 150\nmm) o průměru prutů do 10 mm.\nSítě v místech přesahu musí být na sebe položeny tak, aby se jednotlivé pruty pokud možno kryly. Zamezí se tak\nvytváření stínů zmenšením ok překrytím (v krajním případě až na polovinu jejich původních rozměrů).\nStaticky nutné příložky z prutové výztuže se ukládají pokud možno jen ke každému druhému podélnému nebo\npříčnému prutu sítě. Průměr prutů příložek se zpravidla omezuje na max. 14 mm.\nPokud není stanoveno jinak, je minimální krytí výztuže 20 mm. V případě výskytu agresivních vod se minimální\nkrytí zvyšuje na 35 mm.\n20.3.3.5 Kotvy a kotvení\nPod pojmem \"kotva\" se pro účely této kapitoly TKP rozumí i svorník.\nHlavní funkcí kotev v primárním ostění je přechodné nebo trvalé zvýšení stability výrubu. Kotvy mohou být\nprováděny jako předem předpínané nebo bez předpětí.\nPodle způsobu provádění a upevnění kotvy v horninovém masivu rozeznáváme:\n– Kotvy prováděné do zálivky (např. cementová zálivka, speciální druhy malt apod.). Jedná se o kotvy\nosazované do předem odvrtaných a vodou nebo stlačeným vzduchem vyčištěných vrtů. Do vrtu je následně\nod jeho konce začerpána injektážní směs a do ní zatlačena kotva. Přenos sil mezi kotvou a horninou\nprobíhá po celé délce zabudované části kotvy. Pro materiál kotev je zpravidla používána betonářská\nžebírková ocel příslušného průměru. Kotvy jsou na konci opatřeny závitem, kotevní deskou a matkou. Po\nzatvrdnutí zálivky je nutno dotáhnout matky tak, aby kotevní deska dosedala na líc primárního ostění (např.\nkontrola poklepem). Kotva je plně funkční po dosažení požadovaných parametrů zálivky.\n– Obdobou kotev prováděných do zálivky jsou kotvy injektované od ústí vrtu. K tyči kotvy je po celé délce\nupevněna hadička, která při injektování odvádí vzduch z vrtu a signalizuje zaplnění vrtu injektážní směsí\n(směs vytéká z hadičky).\n– Kotvy lepené. Používá se zpravidla dvousložkových lepidel aktivovaných vsazením kotvy do vrtu.\nPoužívají se zejména tam, kde např. přítoky vody nedovolují použití zálivky a je nutno kotvu co nejrychleji\naktivovat. Kotva je plně funkční po dosažení požadovaných parametrů lepidla.\n22\n– Kotvy hydraulicky upínatelné. Principem je aktivace kotvy třením na plášti po hydraulickém rozepnutí\nprofilu kotvy. Kotvy jsou vzhledem ke způsobu aktivace vhodné do pevnějších hornin. Kotva je plně\nfunkční ihned po aktivaci ve vrtu. S časem může její únosnost klesat. V případě použití tohoto druhu kotev\nje zvláště nutné prokázat požadovanou únosnost kotvy po dobu předpokládaného využití v ostění. Vlivem\ndotvarování líce vrtu může dojít ke snížení plášťového tření a tím i únosnosti kotvy. Průkazní zkoušky je\nnutno provádět s časovým odstupem od osazení kotvy, který je závislý na geologických vlastnostech\nhorninového masivu a který musí být určen v projektové dokumentaci, resp. v technologickém postupu\nprací.\n– Kotvy samozavrtávací. Osazování kotev je prováděno se \"ztracenou korunkou\" a kotvy jsou používány\nzpravidla tam, kde je problematické udržet stabilitu líce vrtu. Injektáž je prováděna od vrtné korunky\notvorem v tyči kotvy. Přenos sil je po celé délce zabudované části kotvy. Kotva je plně funkční po dosažení\npožadovaných parametrů injektážní směsi.\n– Kotvy na principu mechanicky upínatelných svorníků. Zpravidla se jedná o kotevní tyč upevněnou\nv hornině v místě kořene a hlavy kotvy.\nPoužití jiných typů kotev je nutno projednat s kompetentním zástupcem zadavatele.\nKotvení se provádí buď jako systémové (plošné) kotvení ke zpevnění horniny a zlepšení jeho samonosnosti,\nnebo jako jednotlivé kotvení k bodovému (lokálnímu) zajištění částí horniny v místech s nebezpečím ztráty\nstability (např. v místech s nepříznivým sklonem vrstev, bloků apod).\nDruh, délka, profil, počet a rozmístění kotev po obvodu ostění (případně velikost předpětí) je v projektové\ndokumentaci dáno pro příslušnou technologickou třídu výrubu. Na základě skutečně zastižených\ninženýrskogeologických poměrů a výsledků geotechnických měření mohou být tyto parametry dále upraveny\ntak, aby navržený sytém zajištění výrubu splňoval požadavky na ekonomické a bezpečné provádění ražby.\nOdsouhlasení odchylek od projektem předepsaného systému kotvení (počet, délka, typ, rozmístění kotev a pod.)\nje provedeno za účasti odpovědných zástupců zúčastněných stran a protokolárně zaznamenáno v záběrovém\nlistu (viz příloha 1).\nVrty pro kotvy se uspořádají a provedou tak, aby okolní hornina byla co nejméně narušena a aby nebyla\nnepříznivě ovlivněna soudržnost mezi kotvou a stěnou vrtu. V horninovém prostředí citlivém na obsah vody\n(bobtnání a degradace horniny, snižování smykových parametrů v pulinách apod.) může být např. nevýhodné\nproplachování vrtu vodou.\nPřed osazením kotvy musí být vrt vyčištěn (stlačeným vzduchem, vodou apod.).\nHlavy kotev mohou být zastříkány do betonu primárního ostění nebo mohou být umístěny na jeho líci. Umístění\nkotev v primárním ostění určuje projekt a je součástí technologické třídy výrubu. Hlavy kotev nesmí být\npřestříkány dříve, než je provedeno přebrání kotev ze strany zadavatele, resp. než jsou provedeny případné\nzkoušky kotev.\nPředpjaté kotvy se při stavbě tunelů používají jen ve zvláštních případech při velkém rozpětí výrubu (např.\nu tunelových rozpletů v místě odbočení). Před betonáží definitivního ostění se má předpětí předpjatých kotev,\nkteré jsou svou konstrukcí určeny jen k přechodnému použití, uvolnit, pokud tím nebude narušena stabilita díla.\nNejvětší směrová odchylka v nejhlubším místě vrtu oproti žádané poloze nesmí být větší než 3 % délky vrtu.\n20.3.3.6 Ramenáty\nJako součást zajištění výrubu se používají příhradové nebo plnostěnné ramenáty. Volba typu ramenátu závisí na\nindividuálních podmínkách konkrétní stavby, přičemž je při výběru typu nutno zohlednit následující kritéria:\n– Zajištění výrubu je provedeno za použití stříkaného betonu nebo bez něho (pro technologii stříkaného\nbetonu se lépe hodí ramenáty z příhradových nosníků, plnostěnné nosníky jsou zase vhodnější pro hnané\npažení nebo jako ocelová výstroj bez nástřiku).\n– Ražba v nestabilních materiálech s nutností okamžitého podepření líce výrubu (plnostěnné nosníky\npředstavují stabilnější zajištění než nosníky příhradové, které jsou plně využitelné až po zastříkání\nbetonem).\n– Konstrukční výška nosníků z hlediska teoretické nebo skutečné tlouštky stříkaného betonu (staticky\nsrovnatelné plnostěnné nosníky mají obvykle nižší konstrukční výšku než nosníky příhradové).\n23\n– Těsnost z hlediska pronikání podzemní vody nebo ztráty vzduchu při ražení pod ochranou stlačeného\nvzduchu (příhradové nosníky dosahují lepší soudržnosti se stříkaným betonem a primární ostění má\nobvykle menší propustnost než při použití plnostěnných nosníků).\n– Vytváření dutin (stínů) při nástřiku (v případě použití plnostěnných profilů je pravděpodobnost vzniku\ndutin a stínů větší, než při použití příhradových ramenátů.).\n– Poddajnost v lokálně omezeném rozsahu s ohledem na přetvárnost primárního ostění (při osazování\nramenátů vykazují příhradové nosníky větší schopnost přizpůsobit se případným nepřesnostem než nosníky\nplnostěnné).\n– Hmotnost ramenátů z hlediska velikosti průřezu výrubu a možnosti jejich osazování během ražby\n(plnostěnné nosníky jsou těžší, než příhradové).\n– Citlivost ramenátů na poškození (příhradové nosníky v nezastříkaném stavu se mohou snáze poškodit než\nnosníky plnostěnné).\nPro usnadnění montáže jsou ramenáty rozděleny na jednotlivé díly spojené ve styčnících zpravidla šroubovými\nspoji. Spoje musí být dimenzovány tak, aby jejich únosnost nesnižovala celkovou únosnost rámu.\nPři použití korýtkové výztuže musí být ramenát osazen tak, aby bylo umožněno jeho dokonalé vyplnění\nstříkaným betonem (uzavřenou stranou směrem do hory).\nPokud je ramenát součástí primárního ostění ze stříkaného betonu, musí být při osazování dbáno na to, aby byl\nmezi ramenátem a lícem výrubu dostatečný prostor (doporučeno min. 50 mm) pro vyplnění betonem. Tak je\ndosaženo lepšího roznášení zatížení v ostění. Přímý kontakt ramenátu s obnaženým lícem výrubu je nežádoucí.\nV konečném provedení musí být ramenáty plně zastříkány betonem. Tím je docíleno pevného kontaktu\ns horninovým masivem a je zamezeno jejich vybočení. Pokud je nutné minimalizovat sedání, je možno ramenáty\n\"předepnout\" proti líci výrubu pomocí lisů.\nPři členění výrubu na jednotlivé dílčí výruby jsou paty ramenátů osazovány pokud možno na rostlou horninu.\nPokud není možné tento požadavek dodržet, je nutné paty osadit na pevný podklad a zamezit posunu paty, který\nby vedl k nežádoucímu nárůstu deformací. Je zakázáno pro podložení pat ramenátů používat volně sypanou\nrubaninu nebo jiný způsob nestabilního podepření.\nPři ražbě dílčích profilů ve vyšších technologických třídách výrubu mají být v patě kaloty pod ramenáty osazeny\npodélné roznášecí prahy ze čtyřprutových příhradových nosníků nebo válcovaných profilů. U podélných\nroznášecích prahů se musí provést tytéž zkoušky materiálových vlastností jako u ramenátů.\n20.3.4 Sekundární (definitivní) ostění tunelu\n20.3.4.1 Všeobecně\nDefinitivní ostění se provádí:\n– bez výztuže,\n– s výztuží.\nV obou případech může být provedena izolace.\nZ hlediska zatížení ostění hydrostatickým tlakem je možné tunely rozdělit na tunely, které tvoří nepropustnou\nrouru (tlakové) a tunely s drenáží (beztlakové). Rozhodnutí, která varianta bude zvolena, závisí na těchto\nbodech:\n– možnost volného odtoku podzemní vody, případně nutnost čerpání (náklady na stavbu a provoz čerpadla),\n– předpokládaný přítok podzemní vody,\n– očekávaný hydrostatický tlak,\n– vliv stavby na okolí (snížení hladiny spodní vody apod.).\n24\nDefinitivní ostění bez výztuže se zpravidla provádějí v tunelech bez možnosti zatížení hydrostatickým tlakem.\nDefinitivní ostění s výztuží se zpravidla provádějí v tunelech pod hladinou podzemní vody a v tunelech\nv městském prostředí, přičemž u těchto tunelů (městské prostředí) se dává přednost vodotěsnému definitivnímu\nostění. V případě tunelů s ostěním bez výztuže se definitivní ostění většinou vyztužuje pouze v portálových\núsecích, resp. v hloubených úsecích tunelu se zpětným zásypem (portálové úseky budované v otevřené stavební\njámě).\n20.3.4.2 Dimenzování definitivního ostění\nDimenzování definitivního ostění ražené části tunelu je prováděno na základě výsledků geotechnických měření\npo stanovení skutečně působícího zatížení horninovým tlakem.\nV kombinacích zatěžovacích stavů je třeba zohlednit i stav nerovnoměrného oteplení, jehož intenzita je závislá\nna vzdálenosti sledovaného úseku od portálu a ročním období. Hodnoty nerovnoměrného oteplení jsou uvedeny\nv tabulce 10.\nTABULKA 10\nZATÍŽENÍ DEFINITIVNÍHO OSTĚNÍ\nŽELEZNIČNÍCH TUNELŮ\nNEROVNOMĚRNÝM OTEPLENÍM\nPoloha v tunelu Poloha Léto Zima\nv ostění\n[°C] [°C]\nVolně osluněný vnější líc + 35 -25\ntunelový portál\nstřednice +30 -20\nvnitřní líc +25 -15\nZakrytý tunel do vnější líc +15 -5\n200 m od portálu\nstřednice +20 -10\nvnitřní líc +25 -15\nZakrytý tunel od vnější líc +10 +5\n200 m do 1000 m\nod portálu\nstřednice +15 0\nvnitřní líc +20 -5\nZakrytý tunel nad vnější líc +10 +5\n1000 m od portálu\nstřednice +12,5 +2,5\nvnitřní líc +15 0\n20.3.4.3 Minimální konstrukční požadavky na beton dna\nPro všechny typy dna platí, že rozmístění spár musí odpovídat rozmístění spár v betonu definitivního ostění\nklenby (průběžné spáry mezi bloky betonáže v konstrukci horní i spodní klenby tunelu). V konstrukci dna je\nmožno provést další doplňková rozdělení.\nKonstrukce spodní klenby nebo desky musí mít min. tloušťku 300 mm.\nPro min. výztuž a krytí výztuže betonem platí zásady uvedené v ČSN 73 12 01. V případě, že je ve dně tunelu\nnavržena fóliová izolace chráněná vrstvou geotextilie, je minimální krytí výztuže na straně do horninového\nmasivu 50 mm.\nPokud je požadováno vodotěsné definitivní ostění, platí pro beton dna stejné požadavky jako pro beton klenby.\n25\n20.3.4.4 Minimální konstrukční požadavky na beton klenby\nMinimální konstrukční požadavky podle tabulky 11 platí pro klenbu výše uvedených typů definitivního ostění.\nPlatí pro ražené tunely s plochou výrubu 30 m2 až 120 m2.\nTABULKA 11\nKritérium Klenba\nbez výztuže s výztuží „vodotěsné\ndefinitivní ostění“\nIzolace bez s bez s\nMin. tloušťka v mm; 200 1) 250 1) 300 1) 300 1) 300 až 400 2)\nkonvenční a strojní\nražba\nMax. délka bloku 3) 12 4,5) 12 5) 12 5) 12 5) 10 6)\nv m\nMin. doba odbednění 7) 8 h 8 h 8 h 8 h 8 h 8)\nBěžná doba odbednění 10 h 10 h 10 h 10 h 12 h\nOmezení tvorby trhlin\nprostřednictvím:\nseparační vrstvy\ndoporučeno obsaženo doporučeno obsaženo nezbytné\n(viz kap. 20.3.4.12 v portálových v izolaci v izolaci\nSeparační vrstvy mezi úsecích\nostěním a podkladem)\núpravy výztuže min. výztuž min. výztuž 1‰\npodle beton. příč. profil\npříslušné v podélném a\nČSN resp. na příčném směru na\nzákladě vnitřní a vnější straně\nstatického\nvýpočtu\ndůkaz omezení trhlin\npro vnitřní a vnější\n- -\nstranu min. v příčném\nsměru\nVzdálenost (šířka)\ntrhlin\nW < 0,2 mm\nk\nSpáry pracovní spára pouze na rozhraní bloků betonáže nebo na u pracovních\nrozhraní horní klenby a konstrukce dna tunelu (patky, deska, a dilatačních spar\nklenba) mezi bloky betonáže\njsou nezbytné\nspárové těsnicí pásy\nPovrchová rovnost - podle (7) dostatečná podle (7) zvláštní opatření\npodloží pro umístění\ndělicí vrstvy\nMinimální krycí vrstva 40 mm na 40 mm na 40 mm na vnitřní\nbetonu v mm vnitřní vnitřní straně, a vnější straně\n- -\na vnější 30 mm na\nstraně vnější straně\n26\nVYSVĚTLIVKY K TABULCE 11\n1) Výčnělky horniny a hlavy kotev mohou zasahovat do profilu definitivního ostění. max 5 cm.\n2) V případě centricky položeného spárového těsnicího pásu\n3) Omezení délky bloku především z důvodu zamezení tvorby trhlin a zlepšení kvality betonu.\n4) Výjimky např. u přívodních štol.\n5) V úsecích blízko portálu a na místech se silným střídáním teploty (provozně-technicky podmíněným), např.\nšachty, se doporučuje přepůlení délky bloku proříznutím nepravých spár\n6) Na přechodu ke stavebnímu objektu s podstatně rozdílným deformačním chováním je nutno počítat\ns krátkými styčnými (připojovacími) bloky.\n7) Pouze při využití příznivých předpokladů pro zamezení tvorby trhlin podle kapitoly 20.2.2.3 Zabránění\nvzniku trhlin a zvláštních opatření podle kapitoly 20.2.2.8 Beton vodotěsného definitivního ostění bez\nizolace.\n8) Platí pouze při použití cementu bez C A (kvůli hydratačnímu teplu, ne kvůli odolnosti proti síranům).\n3\nDůkaz omezení trhlin není zpravidla třeba vést. U podzemních staveb určených pro účely skladování může být\nvyžadován důkaz omezení tvorby trhlin na vnitřní straně (do tunelu).\n20.3.4.5 Vodotěsná definitivní ostění\nVodotěsná tunelová ostění jsou ve smyslu těchto TKP taková ostění, která splňují požadavky třídy\nvodotěsnosti 0 podle tabulky 11.\nPod pojmem vodotěsného definitivního ostění rozumíme vodonepropustný stavební prvek. Proto se u betonu\npožaduje nejenom odolnost vůči průsakům, ale i další technická, konstrukční (Tabulka 10) a stavebně-technická\nopatření (např. dělicí vrstvy) zamezující tvorbě trhlin a dutin, kterými může protékat voda. Opatření k zajištění\nvodotěsnosti ostění jsou uvedena v tabulce 12 v závislosti na velikosti hydrostatického tlaku.\nDefinitivní ostění se označují jako vodotěsná tehdy, pokud se na vnitřní straně vyskytnou pouze ojedinělá vlhká\nmísta (např. vlhké skvrny, lokální zabarvení a lehké skvrny, které do 20 min. zaschnou). Intenzivnější dutiny,\nkterými se může pohybovat voda a které se nezatáhnou výluhem do stanovené doby, je třeba odstranit injektáží.\nVýztuž ostění je nutno v realizační dokumentaci navrhovat ze sítí umístěných při obou površích. Staticky\npotřebná výztuž, přesahující rámec minimální nutné plochy výztuže pokryté výztuží ze sítí, se provádí formou\njednotlivých prutů. Průměry prutů nad 20 mm by se neměly pokud možno používat. Aby byla zaručena\nbezchybná betonáž, musí mít oka výztuže velikost alespoň 100 mm (doporučeno 150 mm).\nPokud překročí skutečné krytí výztuže na vnější straně ostění 100 mm (např. z důvodu nadvýrubů nevyplněných\nstříkaným betonem do projektovaného tvaru vnitřního líce primárního ostění), je třeba použít některé\nz následujících opatření:\n– v oblasti zvýšené tloušťky krycí vrstvy výztuže se dodatečně osadí konstrukční výztuž z betonářských sítí,\n– projektovaná výztuž se lokálně přizpůsobí v poloze a v průřezu skutečnému tvaru vnějšího líce\ndefinitivního ostění (do horniny),\n– nerovnosti líce primárního ostění se vyplní stříkaným betonem.\nPlášť bednění, výztuhy a ztužení podporami se musí přizpůsobit daným požadavkům z hlediska přípustných\nnapětí a deformací.\nProkluz v kloubech bednicích prvků, a bednicích vozů je třeba minimalizovat. V případě bednění kotevních\notvorů pro tyče procházejících ostěním (např. u tunelů budovaných v otevřené stavební jámě) a zajišťujících\nstabilitu bednění musí být použity takové materiály trubek a systémy uzávěr (zátek), které vyloučí obtékání\ntrubek vodou a zaručí trvalou vodotěsnost ostění.\nPočet pracovních spár musí být co nejmenší. U příčných profilů výrubu do cca 50 m2 se doporučuje použití\nkruhového bednicího vozu. Pracovní spáry musí být konstrukčně izolovány např. pomocí těsnicího spárového\n27\npásu. Mezi bloky betonáže se do dilatační spáry umístí k tomu určené těsnicí spárové pásy minimální šířky 300\nmm. Spára může být provedena jako pracovní (která bude později injektována) nebo se stlačitelnou vložkou.\nNa přechodu stavebních prvků s rozdílným deformačním chováním se stlačitelné spárové vložky použijí\nv každém případě.\n20.3.4.6 Stanovení času zahájení betonáže definitivního ostění\nDefinitivní ostění je možné betonovat bez doplňkových opatření až do rychlosti přetváření horninového masivu\nv hodnotě max. 4 mm za měsíc (podle výsledků sedání vrcholu klenby a/nebo konvergenčních měření). Výjimku\ntvoří tunely v bobtnavých horninách a tunely s velmi vysokým nadložím.\nOkamžik uložení je závislý na rychlosti deformace okraje výrubu po osazení stabilizačních prostředků a na\nprojektem předpokládané únosnosti definitivního ostění.\nToto neplatí pro tunely ražené v nesoudržných horninách s malým nadložím pod zástavbou, kde musí být\ndefinitivní ostění provedeno co nejdříve po ražbě z důvodu zamezení nežádoucích deformací tunelového\nnadloží.\nDoplňková opatření:\n– zvýšení odporu výstroje,\n– položení geotextilie, osazení prvků schopných deformace,\n– konstrukční opatření (např. vyšší pevnost betonu).\n20.3.4.7 Pevnost při odbednění\nPevnost betonu, nezbytná ze statického hlediska pro odbednění, je závislá na velikosti výrubu, geometrii\ndefinitivního ostění a na jeho tloušťce a na zatížení působící na ostění v době odbednění.\nPro běžné tunelové profily s poloměrem v kalotě R ? 6 m je potřebná minimální výpočtová pevnost betonu\nv tlaku při odbednění v hodnotě 2 MPa. Pro příčné profily s tloušťkou ostění > 0,25 m je tato pevnost dostačující\ni pro nadvýlom v rozsahu projektované tloušťky ostění.\nZvláštní statické důkazy jsou nezbytné v těchto případech:\n– zvláštní příčné profily (např. niky, záchranné výklenky),\n– větší poloměry oblouků konstrukce ostění,\n– nepravidelné tloušťky ostění, např. v důsledku nedostatečně vyplněných nadvýlomů,\n– jednostranná koncentrace zatížení, resp. vykomínování horniny v oblasti stropu, nadvýlomy většího úseku.\nZjištění pevnosti betonu v tlaku se provádí např. Schmidtovým kladívkem po odbednění čela bloku na čelní\nploše, následně v místě bočních otvorů bednicího vozu (otvory pro betonáž a ponorné vibrátory) a v případě\npozitivního výsledku v místě otvorů v prostoru kaloty.\n20.3.4.8 Betonáž - příprava podkladu\nOpatření v případě přítoků podzemní vody\nPřed betonáží je třeba v každém případě odvést tekoucí nebo plošně odkapávající vodu, čímž se zamezí\nvymývání jemných částí a pojiv z betonu a vytvoření tlaku vody během ukládání betonu. Podle místa jsou\nprováděna tato opatření:\nDno\n– osazení drenážních pásů, drenážních vrstev a vedení, např. drobný štěrk nebo mezerovitý drenážní beton\n(požadavky na mezerovitý drenážní beton viz TKP-17) apod. V případě použití mezerovitého drenážního\nbetonu v kombinaci s drenážním potrubím je třeba učinit taková opatření, aby nedošlo k zanesení\ndrenážního potrubí a otvorů (např. ochrana vrstvou geotextilie),\n– přitékající voda musí být odvedena podélnou drenáží, stavební drenáží nebo odčerpáním.\n28\nKalota a opěří\n– dostatečně nadimenzované hadice a korýtka tvořící organizovaný svod prosakující podzemní vody,\n– plošné odvodnění (fólie, geotextilie apod.),\n– kompletní izolace.\nProvádí-li se izolace objektu, může tato být současně požadovanou ochranou mladého betonu proti přítoku\npodzemní vody.\nOpatření pro úpravu podkladu\nPřed uložením betonu je třeba odpovídajícím způsobem připravit povrch jak kaloty, tak i opěří a dna tunelu.\nKalota a opěří\nPodklad (povrch stříkaného betonu nebo horniny) se musí vyčistit, je třeba z něj odstranit volné částečky.\nPomocí příslušných opatření je třeba zamezit vtékání cementových výluhů do drenáží a filtračních těles.\nDno\nV případě betonáže konstrukce dna přímo na horninu musí být odstraněny volné úlomky materiálu z povrchu\nhorniny. K očištění spáry se použije stlačený vzduch, resp. – dovoluje-li to povrch horniny, směs voda / vzduch\n(pouze pokud nehrozí rozbřídání či jiná degradace základové spáry).\nU založení na nesoudržném materiálu se dno zhotoví podle projektovaného tvaru profilu. Plocha se v případě\npotřeby vysuší, rozmočené oblasti se vymění a materiál v podloží se odpovídajícím způsobem zhutní.\nV případě vyztužené konstrukce dna tunelu se zhotoví podkladní vrstva vyrovnávacího betonu.\n20.3.4.9 Betonáž - příprava styčných ploch - pracovní spáry\nPracovní spáry jsou spáry podmíněné prováděním s nebo bez schopnosti přenášet síly. Obecně je třeba všechny\npracovní spáry před betonáží vyčistit (vzduchem, vodou, směsí vzduch / voda).\nU vodotěsných ostění je nutné zajistit takový technologický postup, který zajistí plynulou betonáž bloku bez\nmožnosti vytvoření pracovních spár. Pracovní spáry mezi jednotlivými bloky betonáže a pracovní spáry na styku\ndno/klenba je případně nutno těsnit těsnicími pásy (viz tabulka 12).\nV případě komplikací při provádění pracovních spár (např. u tunelových rozpletů a křížení) a v případě\nvysokých požadavků na přenášení sil je možné využít injektáže kontaktních ploch.\n20.3.4.10 Betonáž - příprava styčných ploch - dilatační spáry\nDilatační spáry jsou konstrukční spáry s nebo bez měkké vložky.\nJsou-li dilatační spáry zhotoveny jako spáry nepravé, tvoří hloubka řezu min. 1/3 teoretické tloušťky stavebního\nprvku. Spáry se musí vyříznout včas, aby nedošlo k předčasné tvorbě trhlin v důsledku drcení betonu. Beton\nmusí být dostatečně ztvrdlý, aby byly plochy řezu čisté.\nBedněné dilatační spáry se zásadně čistí jako lícní plocha. Používají-li se spárové vložky (desky z pěnové\nhmoty, desky z měkkých vláken, z minerální vlny), pokládají se (případně lepí) celoplošně.\nU definitivního ostění s výztuží musí profil vložené lišty zaručovat požadované krytí výztuže (např. trojhranná\nlišta).\nTěsnicí spárové pásy a pásy s narůstáním objemu\nPro těsnicí spárové pásy se používají materiály: PVC, PE, SBR (elastomer) a kombinace kovu a elastomeru.\nPro výběr materiálu jsou rozhodující požadavky týkající se zpracování, napojení na izolační pásy, tažnost,\nchemická odolnost a chování při stárnutí.\nŠířka těsnicího spárového pásu závisí na tlaku vody a očekávaném protažení. Minimální šířka pásu je 300 mm,\nminimální tloušťka v oblasti dilatace je 5 mm. Poloha těsnicích spárových pásů musí být zakreslena do výkresu\ntvaru příslušného bloku betonáže.\n29\nZa zvláštních požadavků (vysoký tlak vody) je vhodné zhotovit 2 těsnicí úrovně v jedné spáře, např. kombinace\n„vnitřní těsnicí spárový pás“ a pás s nárůstem objemu.\nTěsnicí pásy musí být zafixovány v jejich plánované poloze tak, aby při ukládání betonu nemohlo dojít k jejich\nposunutí. Na upevnění se používají pomocné prostředky dodané výrobcem, resp. se respektují speciální předpisy\npro osazení. Těsnicí pásy je třeba před betonáží následujícího bloku vyčistit. V místech, kde není možné zaručit\ndokonalé obetonování těsnicího pásu musí být použito dodatečného zainjektování pásu tak, aby nemohlo dojít\nk jeho obtékání vodou.\nBednění a spoje, především v oblasti těsnicích pásů, musí být tak těsné, aby se tak zamezilo vytékání\ncementových kalů a tím i vzniku trhlin.\nVnější těsnicí spárové pásy\nVnější těsnicí spárové pásy musí doléhat na bednění, podkladní vyrovnávací beton, izolaci, na plochy stříkaného\nbetonu a na ostatní úložné plochy celou plochou, co možná nejvíce rovně. Především v oblasti dna je třeba dbát\nna čistotu kotevních prvků těsnicích pásů.\nV případě nepravidelných profilů výrubu je nebezpečí, že především dutiny v oblasti stropu nebudou zcela\nzaplněny, čímž ztratí vnější těsnicí pás v důsledku chybějícího zalití svoji účinnost. Za těchto podmínek je lepší\npoužít vnitřní těsnicí spárový pás. Je-li ovšem použití vnějšího těsnicího pásu nutné (úsekové svaření\ns přepážkami z izolačních fólií), je třeba počítat s možností dodatečného zaplnění dutin (např. těsnicí pás\ns injektážní hadicí).\nVnitřní spárové těsnicí pásy\nV případě prostého betonu (např. dno) se těsnicí spárový pás zajistí pomocnou konstrukcí. Doporučujeme osadit\ndoplňkové injektážní hadice, které mají tu výhodu, že je i později možné injektáží odstranit netěsnosti.\nVzhledem k tomu, že upevnění pásu do prostého betonu vyžaduje určitá opatření navíc, je vhodné použít těsnicí\npásy s nárůstem objemu.\nTěsnicí pásy s nárůstem objemu (rozpínavé)\nTěsnicí pásy s nárůstem objemu působí vodotěsně díky zvětšení objemu, ke kterému dochází chemickým\nvázáním vody.\nTěsnicí pásy s nárůstem objemu musí sestávat z takových materiálů, které vykazují dostatečně reverzibilní\nbobtnání (faktor bobtnání účinného těsnicího materiálu min. 200 %), odpovídající dobu bobtnání a dostatečnou\nstabilitu při vyšším tlaku vody nebo při větších pohybech spáry.\nJako vhodná se osvědčila kombinace neoprénového tělesa (jádro) a vnějšího pláště z bobtnavého těsnicího\nmateriálu. Tvarem neoprénového tělesa je možné určit směr bobtnání, takže tlak působí na boky a ne směrem ze\nspáry. Roztažnost celkového profilu udává výrobce v mm.\nBobtnání musí být reverzibilní a nezávislé na chemickém složení kontaktní vody. Při jiných namáháních spáry\npředkládá výrobce zvláštní důkaz těsnicího účinku a chemické odolnosti. Součást, která reaguje s vodou, se\nnesmí vypláchnout, ani nesmí předávat do vody škodlivé látky. Je třeba zohlednit, že proces bobtnání vyžaduje\nurčitou dobu a těsnicí účinek není tedy okamžitý.\nBetonové úložné plochy pro těsnicí pásy s nárůstem objemu musí být rovné a bez trhlin. Těsnicí pás s nárůstem\nobjemu se pokládá přesně podle návodu výrobce. Výhodné je pokládání do drážky, což zaručuje lepší fixaci\npolohy.\n20.3.4.11 Betonáž - hutnění\nHutnění betonu musí být prováděno vysokovýkonným vnitřním nebo příložným vibrátorem. Příložné vibrátory\nmusí být umístěny co nejrovnoměrněji v závislosti na konstrukci bednicího vozu, přičemž se předpokládá\n1 vibrátor na 3 až 4 m2 pláště bednění.\nVibrátory musí být dimenzovány tak, aby byl beton dokonale zhutněn v plánované tloušťce. Hloubka působení\nvibrátoru dosahuje 40 cm až max. 50 cm. Při vibrování se uvádí do provozu příložný vibrátor v oblasti aktuální\nvýšky hladiny betonu v bednění.\n30\n20.3.4.12 Separační vrstvy mezi ostěním a podkladem\nPod pojmem „separační vrstvy mezi podkladem a betonem“ rozumíme dělicí vrstvy, plošné drenáže a izolace.\nTechnika pokládky a upevnění\nJednotlivé pásy dělicích vrstev musí být položeny s takovým přesahem, aby mohla voda z horninového masivu\nza nimi volné odtékat a nedostala se k čerstvému betonu. Při silnějším přítoku se použije odvedení vody pomocí\nhadic, což zamezí tvorbě vodních vaků za dělicí vrstvou. Okraje jednotlivých pásů musí být slepeny nebo musí\npřesahovat, aby se zabránilo vniknutí betonu mezi dělicí vrstvu a horninu, resp. ostění ze stříkaného betonu.\nUpevnění musí být takové, aby se dělicí vrstva nemohla během betonáže posunout. Upevňovací materiál nesmí\ndělicí vrstvu protrhnout. Na upevnění se zpravidla používají speciální hřeby.\nDělicí vrstvy\nPomocí dělicích vrstev se snižuje soudržnost a zazubení mezi výstrojí výrubu a horninou, resp. ostěním ze\nstříkaného betonu. Používají se hlavně ve spojení s definitivním ostěním bez izolace. Napětí vznikající v ostění\nv průběhu procesu tvrdnutí a s tím vlivem omezené deformace spojená tvorba trhlin je použitím dělicí vrstvy\nredukována. Zpravidla se používají tenké umělohmotné fólie zesílené mřížkou nebo geotextilií.\nPlošné drenáže\nPlošné drenáže umožňují odtok (s nízkou hodnotou odporu) plošně přitékající vody z horninového masivu do\ntunelové drenáže. Zpravidla se používají strukturované plastové profilované desky, speciální geotextilie nebo\ndrenážní prvky.\nIzolace\nOsazením fóliové izolace se má trvale zabránit vnikání vody do dutiny.\n20.3.4.13 Bednění - všeobecně\nBednicí prvky jsou v normálním případě v půdorysu při délkách bloků do 12 m přímé, z čehož vyplývá\npolygonální průběh oblouku. Je třeba dbát na dodržení přípustných geometrických tolerancí.\nBednicí systémy musí mít takové konstrukční řešení, aby dynamická namáhání v důsledku působení příložného\nvibrátoru, hydrostatický tlak čerstvého betonu a hydraulický tlak čerpaného betonu při ukončování betonáže\nv oblasti vrcholu klenby nezpůsobovaly nepřípustné deformace bednění nebo jeho čela.\n20.3.4.14 Bednění - separační prostředky\nSeparační prostředky je zásadně třeba sladit s použitým materiálem bednění a musí být ekologicky nezávadné.\nPřednostně se používají separační prostředky s chemicko-fyzikálním účinkem. Voskové roztoky a pasty mohou\nvytvořit obzvláště dobře přilnavý odolný separační film, který je nezbytný, pokud bednění dlouho stojí a při\npokládce výztuže je silně namáháno. Velmi důležitá je tenká rovnoměrná vrstva na dobře vyčištěném ocelovém\nbednění. Separační prostředky musí obsahovat antikorozní přísady (inhibitory).\nPoužitý separační prostředek musí být sladěn s eventuelními dodatečnými nátěry či vrstvami ostění.\nKaždý separační prostředek musí být jasně, trvale a jednoznačně označen. Pokud je přípustné ředění, uvede se,\nčím je možné ředění provádět a v jakém rozsahu. Na etiketě musí být v heslech uvedeno:\n– přiměřený způsob zpracování,\n– průměrné nanášené množství,\n– účinek při předávkování,\n– pokyny pro odstranění zbytků separačních prostředků z povrchu betonu,\n– hořlavost (třída nebezpečnosti) a možnosti a podmínky uložení.\nDále je třeba označit nebezpečné pracovní materiály.\nPři každé dodávce musí být uvedeno:\n31\n– číslo šarže,\n– rok a měsíc výroby,\n– přípustná doba skladování.\n20.3.4.15 Výztuž - definitivní ostění s izolací\nV definitivním ostění s izolací se zpravidla výztuž nenavrhuje. Pokud je výztuž nezbytná ze statických důvodů,\npřicházejí v úvahu v souladu se stavem výrubu a plánovaným průběhem výstavby následující provedení:\n– samonosná výztuž,\n– výztuž položena na bednění.\nUchycení výztuže pomocí konstrukcí procházejících izolačními vrstvami je nepřípustné.\n20.3.4.16 Výztuž - definitivní ostění bez izolace\nU definitivního ostění bez izolace je stabilitu výztuže možno zajistit montážními háky a kotvami upevněnými\npřímo do horninového masivu\nPlánovaná poloha výztuže musí být zajištěna vhodnými opatřeními, která budou omezovat ukládání betonu v co\nnejmenší míře (potřebná výměna výztuže v prostoru plnicích a vibračních otvorů). Vzdálenost mezi vrstvami\nvýztuže zajistí distanční železa, která je možno připravit např. z betonářských sítí.\nPředohýbané výztužné sítě a distanční železa se dimenzují na plánovanou tloušťku definitivního ostění\n(s ohledem na výrobní tolerance).\nVnitřní betonová krycí vrstva se zajistí vhodnými distančníky (např. trojhranné lišty z betonu min. přes dva\npruty výztužné sítě, min. 1 kus na m2). Spoje musí být vyřešeny tak, aby při osazení bednění (resp. bednicího\nvozu) nedošlo k poškození distančníků.\nSpoje výztužné sítě se umístí tak, aby se vyloučila možnost překrytí 4 vrstev sítě (překážka pro uložení betonu).\n20.3.4.17 Odbednění a ošetřování betonu\nOkamžik odbednění se vztahuje na vnitřní bednění betonu klenby. Bednění čela se běžně odnímá po 8 hodinách\na zjišťuje se vývoj pevnosti v tlaku pomocí nedestruktivních metod (např. Schmidtovým kladívkem).\nAby se zamezilo poškození hran, zůstávají zpravidla vestavby (především záchranné výklenky, niky apod.) po\nodstranění vnitřního bednění obedněné déle. Totéž se týká spár na obvodu ostění mezi bloky betonáže (pokud\nnejsou profily pevně spojeny s bedněním).\nBěžné ošetření betonu definitivního ostění se zpravidla provádí tekutými prostředky. Tyto prostředky se nanášejí\nco nejrychleji, po celé ploše, v dostatečném množství, například postřikem. V každém případě je třeba dbát na\nto, aby nedošlo k ovlivnění adheze později nanášených nátěrů nebo vrstev. Aby se zamezilo příliš silnému\nochlazení a vysušení, je třeba přijmout taková opatření, která zamezí příliš silnému proudění vzduchu. (např.\nuzavření portálu „závěsem“). Od ošetření se může upustit, pokud je relativně vysoká vlhkost vzduchu větší než\n90% a nízká rychlost jeho proudění (posoudí se dle konkrétních podmínek na stavbě).\nPři nedodržení normální doby odbednění je třeba zajistit provedení takových opatření, které zaručí ochranu\nbetonu ihned po odbednění min. na 3 dny proti příliš rychlému ochlazení a min. 7 dnů proti vyschnutí. Tato\nopatření zajistí v podmínkách stavby dostatečné zatvrdnutí povrchových oblastí a zamezí tvorbě trhlin.\n20.3.4.18 Požadavky na povrch definitivního ostění - opravy\nPovrch betonu definitivního ostění musí svou povrchovou rovností odpovídat požadavkům na povrchy\nz pohledového betonu.\nNa bocích, pod skloněnými plochami ostění jsou póry do průměru 20 mm (u ostění s výztuží), resp. 25 mm\n(u ostění bez výztuže) prakticky nevyhnutelné a neškodné. U definitivního ostění s výztuží nesmí hloubka pórů\npřekročit hodnotu 10 mm. V případě zvláštních požadavků na povrch betonu, např. architektonické ztvárnění,\nodolnost proti mrazu apod., musí být přijata zvláštní opatření, (např. drenážní geotextilie, nátěry).\n32\nDrobná vadná místa, která nemají vliv na použitelnost, není nutné sanovat. Pro nařízení opravných opatření\nplatí, že povrchové stažení betonu, např. broušením, je vždy lepší – trvanlivější, než tenká vrstva malty. To platí\npředevším pro mělká, plošná vadná místa.\nObnovu hlubších, plochých vadných míst je nutno provádět stříkáním.\nPrůběžné trhliny větší než 0,3 mm (definitivní ostění s výztuží) se musí zaplnit vhodnou injektáží schopnou\npřenosu sil v ostění.\nV případě definitivního ostění bez výztuže nemusí být vadná místa vyplněna, pokud bude prokázána únosnost\nostění a pokud se nebude jednat o místa se zvýšenými nároky na pohledový beton (např. portály apod.) .\nOchrana povrchu\nDoplňková ochranná opatření povrchu betonu definitivního ostění – impregnace, pečetění, nátěry nebo nanášení\nurčitých vrstev. Ochranná opatření jsou doporučena zejména u portálů s ohledem na zlepšení odolnosti proti\nmrazu. Opatření jsou stanovena projektovou dokumentací.\nZaplnění dutin v oblasti stropu\nPo dostatečném zatvrdnutí betonu klenby se dutiny vzniklé v oblasti vrcholu klenby zaplní pomocí injektážních\ntrubek stabilní pojivovou suspenzí pod nízkým tlakem (cca 0,1 až 0,2 MPa). Úplné zaplnění se kontroluje\nvytrysknutím malty z nejblíže ležících trubek, které se po vytrysknutí směsi uzavřou. Výplňová injektáž se\nprovádí nejdříve po 56 dnech od uložení betonu. Injektážní trubky jsou vkládány do bednění a zabetonovány.\nPolohu a počet injektážních trubek určí dokumentace, bednicí vůz musí být upraven tak, aby umožnil osazení\ntrubek do ostění.\nJako alternativní řešení v úsecích s izolací může být zaplnění provedeno specielně pro tento účel vyrobenou\na osazenou hadicí, s připojovacím hrdlem na konci úseku.\n20.3.4.19 Definitivní ostění ze stříkaného betonu\nJednoplášťové definitivní ostění lze definovat tak, že všechny statické a konstrukční požadavky splňuje jediné\nostění. Toto ostění se může zřídit v jednom nebo ve více krocích (vrstvách).\nKonstrukce jednoplášťového ostění musí splňovat požadavky zajišťování výrubu v průběhu ražení tunelu\ni požadavky na definitivní ostění při provozu v tunelu. Pokud má být plášť ze stříkaného betonu zajišťující\nvýrub v pozdějším pracovním kroku zesílen další vrstvou stříkaného betonu nebo bedněným monolitickým\nbetonem, musí být provedeno silové i tvarové spřažení tak, aby byla zabezpečena staticky účinná spřažená\nkonstrukce.\nPři jednoplášťovém ostění za výhradního použití stříkaného betonu nelze zcela vyloučit průsaky vody trhlinami,\npracovními spárami a vadnými místy, a proto se toto ostění používá výhradně pouze v prostorách, ve kterých\nnejsou žádné nebo jen mírné průsaky vody a působí nízký hydrostatický tlak.\nZásadně před rozhodnutím o použití stavby jednoplášťového ostění v místech s výrony vody je třeba vyhodnotit\npřípustné průsaky vody ostěním a uvážit možnosti opatření pro odvedení vod a následného dotěsnění.\nAby se při použití jednoplášťového ostění minimalizovalo tvoření trhlin a umožnilo se mírné, rovnoměrné\nvyztužení, je hlavním předpokladem co možná nejmenší ohybové zatížení pláště. To vyžaduje odpovídající tvar\ntunelového průřezu a staticky příznivé působení zatížení (symetrické zatížení) a předpokládá i odpovídající\ngeologické poměry.\n20.3.5 Dílcová ostění\nDílcové ostění musí být navrženo a staticky doloženo v dokumentaci. Montované tunelové ostění se provádí\npodle předem schváleného technologického předpisu stavebním dozorem.\nZpůsob přebíraní a zkoušení dílců se stanoví v zhotovitelem předložených technických podmínkách pro výrobu,\nkontrolu a přebírání dílců ostění, přičemž je nutné vycházet z ČSN 73 1321, ČSN 73 2011 a ČSN 73 2031.\nDíly tunelového ostění musí být osazovány v tunelu strojními ukladači, rovnoměrně z obou stran až\nk závěrovému dílu.\n33\nAktivace montovaného ostění vyplněním prostoru za rubem obezdívky musí být provedena ihned po smontování\nprstence ostění. Materiál pro výplň určuje dokumentace.\nUtěsnění tunelového ostění z dílců proti podzemní vodě se musí provést utěsněním styčných, ložných spár\na šroubových otvorů způsobem předepsaným v dokumentaci a v technologickém předpisu zhotovitele.\n20.3.6 Zděná ostění\nU zděných tunelových ostění kamenné zdivo zůstává režné (neomítnuté). Pro klenby, u nichž se kámen klade při\nzdění na bednění, musí být líc kamene opracován špicováním.\nNepřipouští se spárování zatřením. Nová maltová výplň spár musí zcela vyplňovat prostor spáry a nesmí\npřesahovat přes líc zdiva.\nU ložných spár musí být výplň 10 mm pod úrovní líce zdiva.\nPokud při opravách předepisuje dokumentace použití betonových tvárnic, zejména při výměně části zdiva nebo\ncelých tunelových pasů, tvárnice z betonu musí být minimálně z betonu C12/15. Pevnost betonových tvárnic\nv tlaku je nejméně 35 MPa. Tvar betonových tvárnic se určuje v dokumentaci kamenořezem příslušné části\nostění.\n20.3.7 Portály, galerie a předportálová křídla\nPortály a galerie se provádějí podle typu konstrukce a druhu prací - zemní práce, zvláštní zakládání, tunelové,\nmostní, pozemní konstrukce na základě dokumentace. Platí pro ně kapitoly 3, 17, 18, 22, 24 TKP.\nNa elektrizovaných tratích se portály tunelů opatřují ochrannými zařízeními ve smyslu ČSN 73 6223.\nLícní plochy portálové zdi a portálového věnce se vyžadují hladké. Postup při betonáži zejména portálového\nvěnce je nutné provádět tak, aby pracovní spáry byly umístěny do falešných spár portálového věnce.\nU zděných konstrukcí je nutné zachovat jednobarevnost použitého kamene, směr a tloušťku spár a výšku vrstev\nzdiva.\nPříkopy za tunelovými portály, korunami křídel a náhorní příkopy tunelu se provedou podle dokumentace\ns ohledem na velikost povodí a také s ohledem na nebezpečí zanášení příkopů zvětrávající horninou.\nV případě záchytné funkce příkopů za korunami portálové i předportálových zdí předepisuje dokumentace na\nzdech zřízení zábran potřebné mohutnosti a rozměrů.\n20.3.8 Ochrana proti pronikání podzemní vody do tunelu\n20.3.8.1 Všeobecně\nNavržený systém ochrany proti pronikání podzemní vody do tunelu dlouhodobě zabraňuje negativním účinkům\npůsobení podzemní vody na konstrukci a vybavení tunelu (agresivní voda, průsaky, námraza apod.). Jedná se\no komplex opatření, která je třeba provést, aby bylo dosaženo požadovaných parametrů vodotěsnosti tunelu\n(konstrukce z betonu odolného proti průsakům, izolační pásy, těsnicí pásy ve spárách betonáže, drenážní systém\napod.).\nPři volbě opatření k utěsnění železničních tunelů musí být zohledněno:\n– geologické poměry dané lokality,\n– očekávané namáhání tunelové stavby,\n– chemické působení podzemní vody,\n– způsob ražby tunelu a technologický postup výstavby,\n– očekávané deformace ostění,\n34\n– rozdíly sedání a ostatní relativní pohyby sousedních částí konstrukce tunelu,\n– požadavek na vodotěsnost v závislosti na užití tunelu,\n– požadavky vodního hospodářství (snižování hladiny spodní vody, odtok vody z tunelu apod.).\nVodotěsnost tunelu se stanovuje podle tabulky 12.\nTABULKA 12\nTřída vodotěsnosti 0 A B C\nMnožství vody q[litr/den/m2] 0 1 3 10\nprosakující ostěním\nV případě novostaveb tunelů je vždy požadována třída vodotěsnosti 0 (tj. tunel je nutno navrhovat tak, aby byly\nvyloučeny jakékoli průsaky ostěním). Průsaky jsou (kromě nebezpečí vzniku námraz) při střídání mrazu a tepla\nzdrojem poruch ostění.\nTřídy vodotěsnosti A až C slouží pro zatřídění stávajících tunelů.\nVolba systému závisí na druhu působení podzemní vody (tlaková nebo prosakující), agresivitě prostředí a na\nvelikosti hydrostatického tlaku působícího na ostění tunelu (viz tabulka 13).\nTABULKA 13\nNÁVRH SYSTÉMU OCHRANY PROTI PRONIKÁNÍ VODY DO TUNELU\nPROSAKUJÍCÍ TLAKOVÁ VODA\nVODA\n(ustálená hladina pod\núrovní dna tunelu)\nDo 30 m vodního sloupce Do 60 m vodního Více než 60 m vodního\nsloupce sloupce\nNízká Beton odolný proti Beton odolný proti Beton odolný proti Beton odolný proti\nagresivita průsakům v průsakům v kombinaci průsakům a jedna průsakům a dvě vrstvy\nprostředí kombinaci s těsnicími s těsnicími pásy ve vrstva izolační fólie po izolační fólie po celém\npásy ve spárách nebo spárách nebo jedna celém obvodu tunelu. obvodu tunelu. Izolace\njedna vrstva izolační vrstva izolační fólie po Izolace je v podélném je v podélném směru\nfólie v horní klenbě celém obvodu tunelu. směru rozdělena na rozdělena na\ntunelu (systém Izolace je v podélném vodotěsné na sobě vodotěsné na sobě\ndeštníku) směru rozdělena na nezávislé sektory. nezávislé sektory.\nvodotěsné na sobě\nnezávislé sektory.\nVysoká Jedna vrstva izolační Beton odolný proti Beton odolný proti průsakům a dvě vrstvy\nagresivita fólie po celém obvodu průsakům a jedna vrstva izolační fólie po celém obvodu tunelu. Izolace je\nprostředí tunelu. izolační fólie po celém v podélném směru rozdělena na vodotěsné na\nobvodu tunelu. Izolace je sobě nezávislé sektory.\nv podélném směru\nrozdělena na vodotěsné\nna sobě nezávislé\nsektory.\n20.3.8.2 Požadavky na provádění izolací\nPro provádění izolací vypracuje dodavatel technologický postup, který musí být před započetím prací\nodsouhlasen odborem stavebním ředitelství divize dopravní cesty.\n35\nIzolace musí být osazována tak, aby bylo před betonáží definitivního ostění umožněno její přezkoušení\na případné opravy. Jedná se zejména o oblast vrcholu klenby v případě, kdy je podklad izolace nerovný (např.\nvlivem nadvýrubů). Izolační fólie se pokládá tak, aby signální vrstva byla vždy na vzdušné straně.\nIzolační fólie musí být ze strany horniny chráněna v celé ploše vrstvou geotextilie. Vzdušná strana izolace\nvyžaduje ochranu zpravidla pouze v oblasti dna. Ochranu je možno provést například vrstvou betonu tloušťky\nmin. 70 mm vyztuženou jednou vrstvou sítě nebo vrstvou ochranné fólie (např. geotextilie) s rovnocenným\núčinkem.\nMinimální tloušťka fólie je závislá na způsobu odvodnění tunelu. Pokud je tunel situován nad hladinou spodní\nvody, systém izolace funguje na principu \"deštníku\" a průlinová voda je sváděna do tunelové drenáže, je\nminimální tloušťka fólie 2 mm. V případě, že je izolace navržena proti tlakové vodě, je tloušťka fólie 3 mm.\nTloušťka fólie větší než 3 mm se nedoporučuje vzhledem k obtížnosti montáže a zvýšení rizika chyb. Výjimku\ntvoří fólie pokládané v oblasti dna tunelu při dostatečně plochém tvaru spodní klenby.\nIzolační fólie i ochranné vrstvy musí být pokládány kolmo k ose tunelu. Ve dně mohou být pokládány\nrovnoběžně s tunelovou osou.\nPřesahy jednotlivých pásů izolační fólie a pásů ochranných fólií (geotextilií) musí být vždy minimálně 50 mm.\nPři osazování izolačních pásu je třeba vzít v úvahu nerovnoměrnost tvaru podkladu a fólii pokládat tak, aby po\ndotlačení k povrchu podkladu při betonáži definitivního ostění nebyla namáhána tahem (resp. bylo toto\nnamáhání omezeno na minimum).\nIzolační fólie je k podkladu připevňována prostřednictvím vhodných upevňovacích prvků, které jsou v předstihu\nnainstalovány na líc podkladu. Upevňovací prvky musí být osazeny tak, aby nemohly způsobit proražení nebo\njiné poškození izolační fólie. Mezi hlavou hřebíku a upevňovacím prvkem musí být umístěny kovové podložky\nprůměru min. 20 mm a tloušťky min. 1 mm. Tím je zajištěno, aby při nastřelování hřebíků nebyl upevňovací\nprvek proražen. Podložka a hlavička hřebíku musí být do konstrukce prvku zapuštěna o min. 4 mm.\nIzolační fólie je k upevňovacím prvkům tepelně přivařena. Spoj mezi fólií a upevňovacím prvkem musí prokázat\nmenší pevnost na odtržení než je pevnost fólie. Tím je zaručeno, že při namáhání spoje nedojde k poškození\nfólie, ale pouze k jejímu odtržení od upevňovacího prvku.\nPřed instalací izolační fólie je nutno zkontrolovat kvalitu osazení upevňovacích prvků, prvky nedostatečně\nupevněné do podkladní vrstvy odstranit a nahradit jinými.\nMnožství použitých upevňovacích prvků je závislé na velikosti a tvaru výrubu, poloze (vrchol klenby, opěří,\ndno) a použitém izolačním materiálu. Orientačně je možno počítat s 2 až 3 ks/m2 v oblasti horní klenby, 1 ks/m2\nv oblasti opěří a 0 až 0,5 ks/m2 v oblasti dna.\nJednotlivé pásy izolační fólie jsou svařovány dvojitým svarem se středním kanálkem. Minimální šířka\njednotlivých svarů je 15 mm, šířka kanálku se pohybuje podle druhu materiálu od 10 do 20 mm.\nSpojením tří pásů v jednom místě vznikají T-spoje (např. napojení podélně pokládaných pásů ve dně tunelu na\npříčně pokládané pásy v horní klenbě). Spojení čtyř pásů fólie v jednom místě (křížový svar) je nežádoucí a je\ntřeba se ho vyvarovat.\nSpoje musí být provedeny svářecím automatem, který spolehlivě zajistí požadovaný tepelný rozsah sváření\nv závislosti na rychlosti pohybu, okolní teplotě a proudění vzduchu na pracovišti.\nPři svařování izolačních pásů nesmí teplota prostředí klesnout po +5 0C. Při nižších teplotách prostředí je sváření\nmožné jen za zvláštních opatření.\nPřipojení pásu izolační fólie na beton odolný vůči průsakům vody definitivního ostění musí být provedeno\nprostřednictvím připojovacího pásu.\nIzolační fólii je nutné chránit před poškozením během pokládání až do provedení vnitřní obezdívky vhodnými\nopatřeními. Distanční podložky betonářské výztuže musí být upraveny tak, aby nedošlo k poškození izolace.\nV místě pracovní spáry mezi bloky betonáže musí být provedena ochrana izolace vložením ochranného pásu.\nV případě, kdy se nejedná o tlakovou vodu je možno použít ochranné pásy ze stejného materiálu, jakým je\nmateriál izolace. Minimální šířka pásu je 500 mm a je umístěn na vnitřní straně fólie po celém obvodu izolované\nčásti tunelu středově k pracovní (resp. dilatační) spáře. Pás je přivařen na obou okrajích k izolaci průběžným,\n36\nnepřerušovaným svarem. Bodové uchycení ochranného pásu není přípustné. Důvodem je vyloučení dodatečného\npoškození izolace pod ochranným pásem (např. při osazování výztuže), které by nebylo možné vizuálně\nkontrolovat.\nPokud je izolace navržena na tlakovou vodu, je nutné izolaci tunelu v podélném směru rozdělit na vodotěsné,\nna sobě nezávislé sektory. V místě pracovní spáry je na izolaci upevněn dvěma průběžnými svary napojovací\npás. Parametry svaru odpovídají svarům pro spojování izolačních pásů. Prostor mezi svary je nutno přezkoušet\nna těsnost. Napojovací pás je při betonáži definitivního ostění uchycen pomocí kotevních prvků do betonu\nostění. Polohu sektorů (napojovacích pásů) je nutno přesně zaměřit pro případné opravy a dokladovat\nv dokumentaci skutečného provedení.\n20.3.8.3 Požadavky na podkladní vrstvu izolace\nPodkladní vrstva izolace musí být provedena tak, aby na ni mohly být bez rizika poškození nebo zvýšeného\nnamáhání instalovány ochranné vrstvy izolace a vlastní izolační fólie s ohledem na materiálové vlastnosti\npoužitých výrobků.\nPodkladní vrstva izolace musí splňovat následující podmínky:\n– dostatečnou tvarovou stálost a pevnostní charakteristiky,\n– tloušťka vrstvy je min. 50 mm při maximální velikosti zrna 8 mm,\n– do směsi je možno použít pouze přírodní kamenivo (oblázkový štěrk). Použití drceného kameniva\ns ostrými hranami není možné,\n– maximální poměr délky ku výšce u sousedních nerovností je 10:1 (viz obrázek 2),\n– lokální nerovnosti (např. zastříkané hlavy kotev) musí být zaobleny v poloměru min. 200 mm,\n– vlhkost povrchu musí být v přijatelných mezích. Pokud prosakující voda brání kvalitnímu provádění\nizolace, je nutno ji odpovídajícím způsobem jímat a odvádět do tunelové drenáže (např. pomocí\norganizovaného svodu),\n– pevnostní charakteristiky a tloušťka vrstvy musí odpovídat použitému systému upevnění izolace,\n– při nastřelování upevňovacích prvků nesmí docházet k odprýskávání podkladní vrstvy.\nObr. 3\nPRIMÁRNÍ OSTĚNÍ ZE STŘÍKANÉHO BETONU\na\nR > 0,20 m\na\nVZDÁLENOST NEROVNOSTÍ ∅ > 10a\nKde:\na je příčná nerovnost,\n∅ ≥ 10 a vzdálenost nerovností,\nR ≥ 0,20 m poloměr zakřivení nerovnosti.\na\n37\n20.3.9 Odvodnění tunelu - drenážní systém\n20.3.9.1 Po dobu výstavby\nOdvodňování po dobu výstavby musí odpovídat požadavkům vyhlášky ČBÚ č. 55/1996 Sb. ve znění pozdějších\npředpisů a předpisům souvisejícím.\nZpůsob a postup odvodňování včetně čerpání vod při výstavbě stanoví dokumentace zhotovitele. Navržená\nopatření musí být zahrnuta do technologických předpisů odsouhlasených stavebním dozorem.\nOd počátku ražení až do dokončení tunelu musí být trvale zajištěno odvádění všech vod ze všech pracovišť.\nPři povrchním ražení musí být odvodňovací stoka zřízena nejdále 15 m od čelby. Při úpadním ražení je nutno\nzajistit odčerpávání vody z čelby do přečerpávací jímky nebo odvodňovací stoky.\nSystém odvodnění po dobu výstavby musí být upraven tak, aby dno tunelu zůstalo pevné po celou dobu\nvýstavby. Provozem mechanizmů nesmí být dno dílčích výrubů prohlubováno.\nVodu odváděnou z tunelu je nutné před vypouštěním ze stavby zbavit ropných produktů a mechanických\nnečistot podle požadavků hygienických předpisů.\nSystém odvodňování, působící pouze po dobu výstavby tunelu, se po jejich dokončení odstraní způsobem\nstanoveným v dokumentaci.\n20.3.9.2 Za provozu\nPři návrhu systému odvodnění musí být zohledněn případný vliv snížení hladiny spodní vody na okolní\nprostředí se všemi důsledky, které jsou snížením vyvolány (např. sedání povrchu, ztráta vody ve studních apod.).\nMinimální sklon podélného odvodnění tunelu je 0,3 % (viz ČSN 73 7508)\nPokud je nutné provádět podélné odvodnění dna tunelu, mělo by být situováno na bocích tak, aby jeho údržba\nminimalizovala omezení železniční dopravy. Minimální příčný sklon střechovitě upraveného krytu dna\nk podélnému odvodnění dna tunelu je 2,5 %. Minimální sklon příčné drenáže propojující podélnou tunelovou\ndrenáž s podélným odvodněním dna je 5 %. Světlost příčného odvodnění se určí dle odváděného množství vody,\nmusí být však min. 100 mm.\nSvedení příčného odvodnění do podélného odvodnění dna musí být provedeno v kontrolních nebo čisticích\nšachtách. Přitom musí dno podélného odvodnění probíhat plynule.\n(Pod pojmem \"podélná tunelová drenáž\" je pro účely této kapitoly TKP myšlena boční drenáž odvádějící\nprosakující podzemní vodu stékající vně ostění po rubové nebo mezilehlé izolaci. Pod pojmem \"podélné\nodvodnění dna\" je myšlena tunelová stoka, do které je sváděna voda z vnitřní části tunelu. U novostaveb\ns požadavkem vodotěsnosti \"O\" se jedná např. o technologickou vodu používanou při práci v tunelu, o vodu\npoužívanou při zásahu požárníků v tunelu nebo v případě havárie o kapaliny vytékající z havarovaných vozů.\nV případě stávajících tunelů s nižší třídou vodotěsnosti jsou do podélného odvodnění dna jímány navíc průsaky\npodzemní vody ostěním.)\nPropojení podélné tunelové drenáže s podélným odvodněním dna tunelu není vždy nutné provádět a závisí na\ndélce tunelu, množství podzemní vody (resp. průtoku), podélnému sklonu tunelu, materiálu drenáže apod.\nPodélné odvodnění dna musí být provedeno jako trubní vedení kruhového nebo podkovovitého tvaru a musí být\ndimenzováno s ohledem na množství podzemní vody vytékající z horninového masivu, popřípadě na vodu\nprotékající tunelem z předzářezu.\nPro dosažení samočisticí schopnosti odvodňovacího potrubí musí být při stálém průtoku potrubím dosažena\nrychlost minimálně 0,5 m/sec, avšak nesmí být překročena rychlost 3 m/sec.\nPro čistění a prohlídku podélného odvodnění tunelu musí být zřízeny snadno přístupné čisticí a revizní šachty.\nVzdálenost šachet udává norma ČSN 73 7508 a je min. 25 m. Čisticí a revizní šachty a jejich vstupy musí být\nuspořádány tak, aby bylo možné použít kontrolní a čisticí zařízení. Šachty musí být zakryty deskami.\n38\n20.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY\n20.4.1 Všeobecně\nVšechna zařízení, stroje a materiály zajišťuje zhotovitel, pokud smlouva o dílo nestanoví jinak.\nDoprava, skladování, manipulace s materiály a stavebními dílci musí být prováděny tak, aby nedocházelo\nk jejich znehodnocování. Řídí se ustanoveními příslušných norem a dodacími podmínkami výrobců.\nMetodika průkazních zkoušek materiálů a konstrukcí v tunelu je stanovena příslušnými technickými normami,\npřípadně technickými a dodacími podmínkami používaných technologií.\nPrůkazní zkoušky se při provádění tunelů vztahují na všechny druhy a části konstrukcí trvalého vystrojení.\n20.4.2 Beton\nPřed zahájením betonáže musí zhotovitel průkazními zkouškami prokázat vlastnosti betonové směsi a betonu\ns ohledem na zvolenou technologii a použité materiály.\nPro dodávku a skladování materiálů pro betonové směsi a pro průkazní zkoušky betonu platí kapitola 17 TKP.\n20.4.3 Izolace\nPro izolační materiály proti vodě, jejich dodávky a skladování, technologické postupy prací a pro provádění\nprůkazních a kontrolních zkoušek platí požadavky uvedené v kapitole 22 B TKP.\n20.4.4 Ocel\nOcelová výztuž do ostění musí být dodána s prohlášením o shodě. V případě pochybnosti stavebního dozoru\no jakosti materiálu musí zhotovitel provést průkazní zkoušky podle ČSN 73 2400 a norem souvisejících. Pro\ndodávku a skladování platí požadavky uvedené v kapitole 17 TKP.\n20.4.5 Kotvy\nPro dodávky, skladování a přepravu kotevního materiálu a pro provádění průkazních zatěžovacích zkoušek\nkotevní výstroje platí kapitola 24 C TKP.\nPro průkazní zkoušky jsou pro charakteristické geotechnické podmínky a typ osazovaných kotev odzkoušeny\nvždy minimálně 3 ks kotev.\n20.5 ODEBÍRÁNÍ VZORKŮ, KONTROLNÍ ZKOUŠKY\n20.5.1 Všeobecně\nMetodika kontrolních zkoušek materiálů a konstrukcí v tunelu je stanovena příslušnými technickými normami\nuvedenými v oddíle 12 této kapitoly TKP, technickými a dodacími podmínkami jednotlivých technologií.\nTypy zkoušek:\n– Průkazní zkoušky - průkazními zkouškami jsou prokazovány vlastnosti materiálů a prací požadované\npříslušnými normami a TKP. Výsledky zkoušek musí dodavatel předložit min. 14 dní před započetím\nprací.\n– Kontrolní zkoušky ověřují průběžně výsledky průkazních zkoušek v podmínkách stavby. Dodavatel je\npovinen předložit zadavateli k odsouhlasení plán zkoušek materiálů, které budou v průběhu stavby\npoužívány. Plán zkoušek obsahuje počet provedených zkoušek, místo a čas jejich provedení. V průběhu\nvýstavby předkládá dodavatel zadavateli výsledky provedených zkoušek. Kontrolní zkoušky se při\n39\nprovádění tunelů vztahují na všechny druhy nosných konstrukcí, přičemž za nosnou konstrukci jsou\npovažovány i jednotlivé prvky primárního ostění. Zkoušky se provádí u monolitických konstrukcí\nz prostého nebo železového betonu, u stříkaných ostění, spárovacích, injektážních směsí, kotevní výstroje\na izolace.\n– Zkoušky přejímací prověřují kvalitu dokončených konstrukcí nebo ucelených částí konstrukce\na provedených prací. Jsou podkladem pro převzetí úseku, objektu nebo všech dokončených prací, které\nbyly definovány smlouvou o dílo.\nU všech druhů tunelových konstrukcí se musí provádět zkoušky pevnosti betonu v tlaku, u pružných\ntenkostěnných ostění se statickou funkcí se zkouší navíc pevnost v tahu za ohybu a ve smyku.\nU těsnicích materiálů (stříkané pláště, injektážní a spárovací hmoty, izolační materiály) se vyžadují také zkoušky\nvodotěsnosti a namrzavosti.\n20.5.2 Beton\n20.5.2.1 Monolitický beton\nKontrolní zkoušky jakosti betonu, ocelové výztuže do betonu, kontrola bednění a uložené výztuže se provádí\npodle ustanovení ČSN EN 206-1 a TKP 17.\n20.5.2.2 Stříkaný beton\nKontrolní zkoušky jakosti stříkaných betonů se provádějí v četnosti 1 zkoušky na každých i započatých 2500 m2\nnastříkané plochy ostění. Jakost betonu předepisuje dokumentace. Kvalita stříkaného betonu se hodnotí podle\nČSN 73 2430.\nPrůkazními a kontrolními zkouškami je nutno doložit:\n– pevnost mladého stříkaného betonu a nárůst pevnosti v čase,\n– konečnou pevnost betonu v tlaku (28 dní),\n– tloušťku ostění,\n– počátek a dobu tuhnutí,\n– křivku zrnitosti kameniva,\n– vlastnosti a podmínky použití příměsí.\nPrůkazní zkoušky je nutno provést před prvním použitím příslušného druhu stříkaného betonu se zohledněním\nzpůsobu výroby a nástřiku směsi. Musí být uvedeno procentuální zastoupení jednotlivých komponent. V případě\nzměny zastoupení nebo druhu komponent nebo podmínek, pro které byla předcházející zkouška provedena, je\nnutno provést průkazní zkoušky znovu se zohledněním všech odchylek od původní zkoušky.\nPředepsané parametry, počet a způsob provedení stanoví dokumentace nebo ZTKP.\nKontrola tloušťky ostění ze stříkaného betonu se provede podle požadavku dokumentace a stavebního dozoru\nv místě jím určeném. Kontrola tloušťky primárního ostění je zpravidla prováděna pomocí vrtů, při kterých jsou\nodebírány vzorky betonu ostění pro zjištění pevnosti stříkaného betonu.\n20.5.3 Injektážní a spárovací směsi\nKontrolní zkoušky jakosti injektážních směsí se provádí podle kapitoly 24 B TKP.\nKontrolní zkoušky jakosti spárovacích směsí se provádí podle kapitoly 23 TKP.\n40\n20.5.4 Kotvy\nZpůsob a rozsah kontrolních zkoušek kotevní výstroje se provádí podle kapitoly 24 C TKP.\nKotvy (svorníky) určené ke zkoušce určuje stavební dozor během místního šetření v tunelu. V případě, že\nběhem zkoušky prováděné podle předem stanoveného postupu dojde k poškození nebo vytržení kotvy, musí být\nna náklady zhotovitele provedena nová, plně funkční kotva.\nÚnosnost kotev (svorníků) se prokazuje tahovými zkouškami, jejichž výsledky musí být protokolárně\ndokladovány. Zařízení k provádění tahových zkoušek kotev musí být trvale k dispozici na stavbě a je zajištěno\ndodavatelem.\nKontrolní zkoušky se provádí na min. 5 % všech osazených kotev. V případě hydraulicky upínatelných kotev se\nprovádí zkouška natlakováním na hodnotu tlaku při osazování, v ostatních případech jsou provedeny tahové\nzkoušky kotev.\nKaždá kotva, která při zkoušce nevyhoví předepsanému zatížení musí, být na náklady dodavatele nahrazena\nnovou kotvou. Metodika zkoušek je stanovena v projektu nebo v ZTKP.\n20.5.5 Izolace\nVšechny svary izolačních fólií z plastů musí být bez výjimky přezkoušeny na těsnost.\nZkušební tlak při tlakové zkoušce se při šířce svaru dle odstavce 20.3.8.2 „Požadavky na provádění izolací„\npohybuje v intervalu 0,2 až 0,3 MPa. Doba zkoušky je 10 minut. Úbytek tlaku nesmí být větší než 20 %.\nV místech připojení a proražení může být použito místo tlakové zkoušky zkouška vakuová. Zkouška svarů se na\nstavbě provádí za přítomnosti stavebního dozoru, dodavatele stavebních prací a dodavatele izolačních prací. Pro\nkaždou zkoušku je proveden zkušební protokol, který musí obsahovat minimálně tyto údaje:\n– datum,\n– objekt,\n– staničení,\n– dodavatel stavby,\n– dodavatel izolačních prací,\n– teplota okolního prostředí při svařování,\n– použitá zkušební metoda,\n– výsledek zkoušky nebo posudek,\n– popis celkového stavu izolace,\n– podpis zástupce stavebního dozoru, dodavatele stavebních prací a dodavatele izolačních prací.\nKontrolní zkoušky u fóliových izolací se provádí podle technických podmínek příslušného typu izolace,\npředevším však se kontroluje:\n– úprava podkladu před položením izolace - provádí se průběžně,\n– těsnost veškerých spojů izolačních pásů,\n– dokonalost upevnění k podkladu,\n– dokonalost navázání na odvodňovací (drenážní) systém,\n– mechanické porušení před betonáží.\nKvalita izolačního materiálu musí být doložena osvědčením o kvalitě a vhodnosti použití (certifikát) od\nakreditované zkušebny a referencemi o použití v obdobných podmínkách na tunelových stavbách.\n41\n20.5.6 Výsledky kontrolních zkoušek\nO provádění kontrolních zkoušek a jejich výsledcích musí být vedena kniha protokolů, do níž se zaznamenávají\núdaje o odběru vzorků a o druhu a rozsahu zkoušek. Výsledky zkoušek se průběžně zaznamenávají do\nstavebního deníku.\n20.6 PŘÍPUSTNÉ ODCHYLKY, ZÁRUKY\n20.6.1 Všeobecně\nPokud není stanoveno v ustanoveních těchto TKP, případně v uváděných ČSN nebo předepsáno v dokumentaci,\nplatí pro přípustné odchylky ustanovení ČSN 73 0210-1, ČSN 73 0212-4, ČSN 73 0212-5, ČSN 73 7508.\nHodnoty mezních vytyčovacích odchylek pro tunely jsou stanoveny v TNŽ 73 0423.\nV dokumentaci se stanovují povolené odchylky ve stádiu ražby a pro konstrukce primárního ostění.\nSměrové a výškové odchylky definitivního betonového ostění od projektované osy díla musí být v rozmezí\n0,0 mm, - 50 mm.\nSměrové a výškové odchylky definitivního dílcového ostění stanoví ZTKP.\nZáruční doby všeobecně stanoví kapitola 1 TKP.\nÚdržbu v záruční době zajišťuje správce HIM podle ustanovení v Kapitole 1 TKP.\nÚdržba tunelů po dobu záruky spočívá v:\n– čištění ploch od spadu,\n– pročišťování odvodňovacího zařízení,\n– odstraňování vegetace v bezprostřední blízkosti,\n– odstraňování zvětralých a uvolněných hornin v okolí tunelu, které by svým pádem ohrožovaly bezpečnost\nželezničního provozu,\n– zajišťování prostorové průchodnosti,\n– udržovacích pracích na železničním svršku,\n– odstraňování ledu v tunelech pokud se nejedná o reklamaci.\n20.6.2 Odchylky od projektované tloušťky definitivního ostění v ražené části tunelu\nVlivem nerovností podkladu definitivního ostění (výrub, líc primárního ostění) může dojít při betonáži\nk odchylkám od projektované tloušťky definitivního ostění. Povolená minimální tloušťka ostění d je uvedena\nžád\nv závislosti na typu ostění v tabulce 9 v kapitole 20.3.4.4 Minimální konstrukční požadavky na beton klenby ,\nresp. je uvedena v projektové dokumentaci. Pro maximální tloušťku ostění d platí následující omezení:\nmax\n– u tunelů s mezilehlou izolací a bez požadavku na odolnost betonu ostění proti průsakům vody\nd ≤ d + 0,40 m, resp. 2 x d (m) a\nmax žád žád\n– u tunelů s vnitřním ostěním z betonu odolného proti průsakům vody\nd ≤ d + 0,30 m, resp. 1,5 x d (m),\nmax žád žád\npřičemž je směrodatná vždy menší hodnota d .\nmax\n20.7 KLIMATICKÁ OMEZENÍ\nBetonáž a ošetřování za obvyklých klimatických podmínek se řídí ustanoveními ČSN EN 206-1.\n42\nBetonáž trvalého ostění železničních tunelů za zvláštních klimatických podmínek podle ČSN 73 2400 se\nnepřipouští.\nKlimatická omezení pro stříkaná ostění, spárování a injektáže na bázi cementu:\n– během zpracování, tuhnutí a tvrdnutí směsí používaných pro tyto práce nesmí průměrná denní teplota\nprostředí klesnout pod + 5° C., přičemž absolutní teplota nesmí klesnout pod +l.\nKlimatické omezení pro zřizování izolace stanoví příslušný technologický předpis zpracovaný zhotovitelem\na odsouhlasený stavebním dozorem.\n20.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ\nPřejímka prací se řídí ustanoveními kapitoly 1 TKP, případně ZTKP. Na elektrizované trati musí být ověřeno\nsplnění podmínek předepsaných dokumentací uvedenou v 31.3.10.\nZhotovitel je povinen vyzvat stavební dozor k odsouhlasení prací, zejména těch, které budou v dalším postupu\nprací zakryty nebo se stanou nepřístupnými. Jedná se zejména o:\n– otevřený výrub,\n– konstrukce dočasného vystrojení,\n– odvodňovací systém (dočasný i trvalý),\n– podklad pro izolace,\n– stav tunelu před výstavbou trvalého ostění.\nZápis o odsouhlasení stavebních prací, které budou následně zakryty, provede stavební dozor do stavebního\ndeníku ihned po jejich provedení.\nV případě tunelu raženého NRTM musí být přebírání prací spojených s výrubem a zajištěním výrubu prováděno\nprostřednictvím formulářů uvedených v příloze 1 (schéma zajištění výrubu a záběrový list výrubu), přičemž\nplatí:\n– Schéma zajištění výrubu je vypracováno předem před provedením záběru a je stanoveno pro delší úsek\ntunelu v závislosti na geotechnické prognóze a výsledcích geotechnických měření. Zpravidla odpovídá\nprojektovanému stavu definovanému technologickou třídou výrubu (viz 20.3.2.1 Ražba pomocí NRTM),\nresp. úpravou projektované technologické třídy výrubu v závislosti na skutečně zastižených\ninženýrskogeologických podmínkách.\n– Záběrový list výrubu dokladuje dodavatelem skutečně provedené práce a materiál zabudovaný v rámci\njednoho záběru a je vypracován po provedení záběru. Do příčného řezu musí být zakresleny nadvýlomy,\nkteré přesahují smlouvou (resp. ZTKP) dohodnutou hranici a přítoky podzemní vody s udáním množství.\nVypracování formulářů zajišťuje dodavatel, převzetí potvrzuje zástupce dodavatele a odběratele (TDI)\npodpisem. Formuláře jsou podkladem pro vypracování dokumentace skutečného provedení ve smyslu předpisu\nČD S6.\nHlavní prohlídka tunelu se provádí před kolaudačním řízením. Způsob provedení hlavní prohlídky se řídí\npředpisem ČD S6. Zhotovitel má povinnost poskytnout podklady stavebnímu dozoru a aktivně se účastnit hlavní\nprohlídky.\n20.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ\n20.9.1 Geotechnický monitoring\nV případě, že je pro ražbu tunelu použita tunelovací metoda využívající spolupůsobení masivu, je vždy nutné\nprovádět měření přetváření nosného systému hornina-ostění (viz § 28 vyhlášky ČBÚ č. 55/1996 Sb ve znění\npozdějších předpisů).\n43\nProjekt podzemního díla pod souvislou zástavbou vymezí pásma předpokládaných poklesů a uvede hodnoty\ndovolených poklesů stavebních objektů a inženýrských sítí v závislosti na použité technologii a vlastnostech\nhorninového masivu. Pokud vyhodnocené výsledky měření překračují hodnoty určené projektem, musí projekt\nupravit další postup. Do té doby nesmí ražba pokračovat. Proto je nutné v projektu stanovit kromě mezní\nhodnoty deformace i deformaci „varovnou“, při jejímž dosažení je nutno vyhodnotit dosavadní časový průběh\ndeformace a v předstihu před dosažením mezní deformace rozhodnout o případných dalších opatřeních, aby\nnebylo nutné ražbu zastavit.\nV souvislosti s výstavbou tunelů jsou prováděna:\n– geotechnická měření pro kontrolu stability výrubu a ověření předpokladů chování horninového masivu\n(např. deformace líce výrubu - konvergence, měření kontaktních napětí, napětí v ostění, extenzometrická\na inklinometrická měření apod.),\n– měření deformací hlavních nosných konstrukcí a vzájemných posunů jednotlivých jejích částí (definitivní\nostění, portálové objekty, dilatační celky apod.),\n– měření deformací povrchu terénu pro stanovení rozsahu, tvaru a velikosti poklesové kotliny,\n– měření účinků tunelování na stavby, inženýrské sítě a jiné objekty v nadloží,\n– měření účinků trhacích prací.\nMěření probíhají před zahájením stavby, během výstavby a po jejím ukončení (např. do ustálení deformací).\nNulová měření musí být prováděna tak, aby s ohledem na použitou metodu zaznamenala stav sledované veličiny\nv okamžiku, kdy je její ovlivnění vlivem výstavby minimální.\nZákladní rozsah, druh a četnost měření je dána projektem měření, který musí být nedílnou součástí projektové\ndokumentace. Případné úpravy projektu měření probíhají během výstavby tunelu na základě skutečně\nzastižených inženýrskogeologických poměrů a výsledků již provedených měření. Změny musí být projednány\ns kompetentními zástupci zúčastněných stran a odsouhlaseny zadavatelem.\nPokud jsou geotechnická měření prováděná při ražbě (např. konvergenční měření, měření kontaktních napětí\napod.) doplněna geotechnickým měřením prováděným z povrchu (např. extenzometrická měření, měření\ndeformací povrchu), je vhodné měření koordinovat tak, aby poskytla maximum informací o sledovaném profilu\na měření probíhala pokud možno ve stejném místě.\nVyhodnocování výsledků měření je nutno provádět komplexně se zohledněním inženýrskogeologických poměrů\n(tektonické poruchy, přítomnost spodní vody, sklony vrstev apod.) a technologického postupu výstavby (způsob\nrozpojování, členění výrubu, délka záběru, tvorba nadvýlomů apod.) Výsledkem komplexního vyhodnocení je\nsprávná interpretace naměřených hodnot a doporučení pro další postup, resp. návrh doplňujících opatření. Cílem\nje optimalizace prvků zajištění výrubu jak z hlediska bezpečnosti, tak z hlediska ekonomického provádění\nstavby.\nPři interpretaci výsledků měření se musí brát v úvahu časový moment nulového měření a vzdálenost měřického\nprofilu od čelby v okamžiku provedení nulového měření. Dále je nutno zohlednit, že naměřené hodnoty\ndokumentují jen skutečný stav, který ještě nezahrnuje bezpečnostní rezervy konceptu dimenzování ostění.\nMěřický profil musí být v případě sledování deformací výrubu osazen bezprostředně za čelbou. Nulté měření\nmusí být provedeno v co nejkratším čase po osazení profilu, nejpozději před provedením dalšího záběru.\nPokud měřené defomace výrubu rostou nad předpokládané hodnoty nebo pokud nevykazují tendenci k ustálení,\nmůže dojít ke ztrátě stability výrubu a je nutno provést zvláštní opatření, která nepříznivý vývoj deformací\npozitivně ovlivní (přidání kotev, zesílení tloušťky ostění apod.) a případné ztrátě stability zamezí.\nPro měření deformací výrubu musí být používány metody s přesností měření ± 1 mm (ve výšce) a ± 2 mm\n(v poloze v případě 3D měření vektoru deformace). Výsledky měření mají být k dispozici co nejdříve po měření,\nnejpozději do jedné hodiny.\nPokud není stanoveno jinak, musí se při ražbě minimálně měřit:\n– svislé posuny patek a vrcholu horní klenby,\n– relativní nebo absolutní horizontální posuny patek.\n44\nV případě členěného výrubu se měření patek musí přizpůsobit geometrii dílčího výrubu.\nMěřický profil je sestaven z bodů osazených zpravidla v oblasti přístropí a opěří tunelu. Pokud jsou\npředpokládány výrazné deformace dna (např. bobtnavé materiály), které mohou mít zásadní vliv na stabilitu\nvýrubu, je možno osadit body i ve dně tunelu. Je nutno učinit taková opatření, aby během výstavby nedošlo\nk poškození bodů a tím k ovlivnění výsledků měřených hodnot nebo dokonce ke ztrátě informací o deformacích.\nGeotechnická měření se musí rozšířit i na okolí stavebního díla, pokud je to nutné k posouzení dlouhodobé\nstability.\nPro geotechnická měření v tunelu prováděná při běžném drážním provozu se mají použít měřicí zařízení,\nvybavená – pokud je to technicky možné – automatickým sběrem dat.\nDlouhodobá geotechnická měření po uvedení tunelu do provozu se provádějí zejména v tom případě, kdy ve\nsložitých inženýrskogeologických poměrech docházelo již při ražení tunelu k mimořádným deformacím a/nebo\npokud se po skončení stavebních prací dá očekávat významná změna napěťových a deformační poměrů nosného\nsystému ostění-hornina. V případě stávajících tunelů se měření provádějí zejména tehdy, pokud změny a rozsah\npoškození ostění, resp. jeho deformace, svědčí o kritickém namáhání konstrukce.\nGeotechnická měření je nutno provádět i při opravách a rekonstrukcích, jejichž součástí je takový zásah do\nnosného systému konstrukce tunelu, který by mohl ohrozit stabilitu ostění.\nPři použití geodetických metod měření, viz kapitola 20.9.2 Kontrolní měření a vytyčovací práce\nVýsledky měření musí být okamžitě vyhodnoceny, spolu s dalšími informacemi interpretovány pro dané\nprostředí a předány odpovědným zástupcům zúčastněných stran. Vzhledem k významu výsledků měření\na nutnosti jejich okamžitého předání mají být výsledky zpracovány pokud možno v elektronické podobě, aby\nbylo možno zajistit jejich předávání pomocí datových sítí.\nPřed zahájením prací vyžadujících provádění geotechnických měření musí být jasně definován způsob\nzpracování naměřených dat a struktura jejich předávání. Vedení stavby zajistí vypracování písemného\nprotokolu, jehož obsah musí zejména definovat:\n– kterým z účastníků výstavby mají být výsledky měření zasílány,\n– předpokládanou dobu zpracování a vyhodnocení výsledků od ukončení měření,\n– kontaktní osoby,\n– forma a způsob archivace dat.\nProtokol musí být předán všem účastníkům výstavby na něm uvedených.\nVýsledky měření deformací výrubu (resp. primárního ostění) musí být znázorněny graficky. Z grafu musí být\njasně zřejmý časový průběh příslušné složky vektoru deformace (vertikální nebo horizontální posun) pro každý\nbod měřičského profilu. Součástí grafu musí být i informace o vzdálenosti čelby (resp. čeleb dílčích výrubů) od\nměřičského profilu.\nDimenzování dočasného a trvalého zajištění výrubu je nutno provádět na základě již uskutečněných a správně\ninterpretovaných výsledků měření.\nOperativní geotechnický monitoring zajišťuje zhotovitel. Kontrolní geotechnický monitoring provede nezávislá\norganizace.\nObjednatel poskytne v případě rekonstrukcí a oprav zhotoviteli komplexní inventarizaci stavebního stavu tunelu.\nTato inventarizace slouží jako podklad pro dokumentaci, pro návrh opatření na jejich ochranu proti účinkům\ntunelování a pro měření v průběhu tunelování i po něm. Před započetím stavebních prací zajistí zhotovitel\npasportizaci objektů ležících v zóně ovlivnění v nadloží tunelu.\nPřípustné hodnoty dynamického namáhání od trhacích prací na stavební konstrukce (povrchové, podzemní) či\ninženýrské konstrukce se posuzují podle ČSN 73 0036.\nPodmínky, zásady, účinky, postup i kontrola použití trhacích prací se specifikují v “Technických podmínkách\npro trhací práce a kontrolu jejich nežádoucích účinků při výstavbě“, které zhotovitel projedná a odsouhlasí\ns příslušným Obvodním báňským úřadem a předá stavebnímu dozoru.\n45\n20.9.2 Kontrolní měření a vytyčovací práce\nGeodetická kontrolní měření i vytyčovací práce může dle zákona č. 200/1994 Sb. a zákona č. 186/2001 Sb.\nprovádět pouze osoba odborně způsobilá. Ověřovat výsledky měření a dokumentaci může pouze úředně\noprávněný zeměměřický inženýr podle § 13 odst. 1 písm. c) zákona č. 200/1994 Sb. Za správnost a úplnost\ndůlně měřické dokumentace při hornické činnosti a její odborné vedení odpovídá podle podle § 2 odst. 3\nvyhlášky ČBÚ č. 435/1992 Sb. hlavní důlní měřič.\nVytyčovací a kontrolní geodetické práce mohou velmi významně ovlivnit výslednou cenu díla. Již ve fázi\nprojektu je možno provést odbornou analýzu maximální dosažitelné odchylky na konci raženého úseku a s její\npomocí předvídat náklady na případné nutné úpravy díla po proražení raženého úseku, následném přeurčení\nsouřadnic bodů polohové a výškové vytyčovací sítě v podzemí a nezbytné opravě všech geodetických kontrol,\nkteré jsou na nich závislé.\nZhotovitel zajišťuje operativní geodetické práce, které zahrnují především:\n– kontrolu, údržbu a zhušťování bodů polohové a výškové základní vytyčovací sítě na povrchu předané\ninvestorem,\n– vytvoření a údržbu polohové a výškové vytyčovací sítě v podzemí,\n– prostorové vytýčení díla při ražbě,\n– průběžnou kontrolu vytýčení díla při ražbě,\n– prostorové vytýčení všech ostatních stavebních etap díla a jejich okamžitou následnou kontrolu\n– zaměření skutečného provedení díla\n– vedení důlně měřické dokumentace.\nInvestor zajišťuje kontrolní geodetické práce, jejichž součástí je:\n– vytvoření a údržba polohové a výškové základní vytyčovací sítě na povrchu s přesností odpovídající\npožadavkům na další vytyčovací práce a na přesnost prorážky\n– kontrola polohové a výškové vytyčovací sítě v podzemí\n– kontrola prostorových vytýčení a kontrola skutečného provedení díla\n– vedení důlně měřické dokumentace v omezeném rozsahu.\nObecně jsou všechny vytyčovací geodetické práce v ražených tunelech prováděny za účelem dovedení ražby\ns co nejmenší možnou odchylkou do prorážky a zároveň za účelem vytvoření díla co nejpřesněji podle\nrealizačního projektu. To vše snižuje celkové náklady na vytvoření díla. Kontrolní práce jsou nutné pro\nvyloučení hrubých chyb při vytyčování, jejichž náprava především v ražených tunelech obvykle vyvolá\nnečekaně vysoké navýšení nákladů.\n20.10 EKOLOGIE\nPři provádění všech prací souvisejících s výstavbou, rekonstrukcemi, opravami a údržbou železničních tunelů je\ntřeba dbát pokynů a ustanovení uvedených v kapitole 1 TKP.\n20.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA\n20.11.1 Všeobecně\nPři provádění tunelové stavby je nutné dodržovat a řídit se zejména ustanoveními:\n– Vyhlášky č. 55/1996 Sb.,\n– Vyhlášky č. 26. Českého báňského úřadu z 29.prosince 1988,\n– Vyhlášky č. 324. Českého úřadu bezpečnosti práce a Českého báňského úřadu ze dne 31. července 1990,\n46\n– Zákon ČNR č. 542/1991 Sb., kterým se mění a doplňuje zákon ČNR č. 61/1988 Sb.,\n– ČD Op 16,\n– z hlediska bezpečného pohybu a úkrytu zaměstnanců drah v tunelu za budoucího provozu zhotovitel\nvybaví tunel odpovídajícími značkami a nátěry podle předpisu ČD S6.\n20.11.2 Izolace\nMísto pokládání izolačních fólií z plastů musí být označeno tabulkami označujícími prostor s nebezpečím\npožáru.\nNa místě smí být k dispozici pouze takové množství materiálu, které bude zpracováno v průběhu jednoho\npracovního dne.\nDélka rozpracovaného úseku s volně položenou fólií je omezena na max. 50 m.\nÚnikové cesty musí být vždy volné.\nHořlavé látky, jako např. zbytky fólie, obaly, lepidla a podobně, musí být z tunelu odstraněny vždy nejpozději\ndo konce směny.\nV blízkostí hořlavých látek nesmí být prováděny práce s otevřeným plamenem nebo s přístrojem, který je\nzdrojem jiskření.\nPracoviště je vybaveno dostatečným počtem hasicích přístrojů vhodných pro hašení použitých hmot a materiálů.\n20.12 SOUVISEJÍCÍ NORMY A PŘEDPISY\nUvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich\naktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj.\nprávních předpisů, technických norem a předpisů a předpisů ČD.\n20.12.1 Technické normy uvedené v textu TKP-20\nČSN EN 206-1 Beton - Část 1: Specifikace, vlastnosti, výroba a shoda\nČSN 72 1156 Stanovení odolnosti přírodního kamene proti mrazu\nČSN 72 1170 Zkoušení kameniva pro stavební účely. Základní ustanovení\nČSN 72 1860 Kámen pro zdivo a stavební účely. Společná ustanovení\nČSN 73 0036 Seizmická zatížení staveb\nČSN 73 0210-1 Geometrická přesnost ve výstavbě. Podmínky provádění. Část 1: Přesnost osazení\nČSN 73 0212-4 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 4: Liniové stavební objekty\nČSN 73 0212-5 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 5: Kontrola přesnosti\nstavebních dílců\nČSN 73 1201 Navrhování betonových konstrukcí\nČSN 73 1321 Stanovení vodotěsnosti betonu\nČSN 73 2011 Nedeštruktívne skušanie betonových konštrukcií\nČSN 73 2031 Zkoušení stavebních objektů, konstrukcí a dílců. Společná ustanovení\nČSN 73 2400 Provádění a kontrola betonových konstrukcí\nČSN 73 2430 Provádění a kontrola konstrukcí ze stříkaného betonu\nČSN 73 6223 Ochrany proti nebezpečnému dotyku s živými částmi trakčního vedení a proti účinkům\nvýfukových plynů na objektech nad kolejemi železničních drah\n47\nČSN 737508 Železniční tunely\n20.12.2 Předpisy\nČD S 6 Správa tunelů\nVyhláška ČBÚ O požadavcích k zajištění bezpečnosti a ochrany zdraví při práci a bezpečnosti\nč.55/1996 Sb. provozu při činnosti prováděné hornickým způsobem v podzemí\nVyhláška č. 26/1989 Sb. O bezpečnosti a ochraně zdraví při práci a bezpečnosti provozu při hornické\nčinnosti a při činnosti prováděné hornickým způsobem na povrchu\nVyhláška č. 177/1995 Sb. Stavební a technický řád drah\nVyhláška č. 324/1990 Sb. O bezpečnosti práce a technických zařízení při stavebních pracích\nVýnos GŘ ČD č.j. 1/93 – 021 Zásady modernizace vybrané železniční sítě Českých drah\na Dodatek č.j. 138/94 - 07\nZákon č. 114/1992 Sb. Ve znění zákona č. 347/1992 Sb., o provádění vyhlášky č. 395/1992 Sb.\no ochraně přírody a krajiny.\nZákon č. 266/1994 Sb. O drahách\nZákon č. 542/1991 Sb. Kterým se mění a doplňuje zákon ČNR č. 61/1988 Sb., o hornické činnosti,\nvýbušninách a o státní báňské správě, ve znění zákona ČNR č. 425/1990 Sb.\n20.12.3 Související kapitoly TKP\nKapitola 1 - Všeobecně\nKapitola 3 - Zemní práce\nKapitola 17 - Beton pro konstrukce\nKapitola 18 - Betonové mosty a konstrukce\nKapitola 22 - Izolace proti vodě\nKapitola 23 - Sanace inženýrských objektů\nKapitola 24 - Zvláštní zakládání\nKapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí\nKapitola 27 - Zabezpečovací zařízení\nKapitola 31 -Trakční vedení\n20.13 PŘÍLOHY\nPříloha č. 1 – příklady vzorů formulářů\n– denní diagram ražby\n– schéma zajištění výrubu\n– záběrový list\nPříloha č. 2 - inženýrskogeologické podklady pro stavbu tunelu\n48\n49\nČD-DDC MODERNIZACE TRATI\nKRALUPY NAD VLTAVOU - VRAŇANY\nTUNEL V KM 446.030 - 446.420\nSCHÉMA ZAJIŠTĚNÍ VÝRUBU Schéma č:\nKALOTY JÁDRA POČVY Třída výrubu : IV.\nSchváleno pro úsek Od TM: __________ Do TM: __________\nMěřítko : 1 : 200\nPOKYNY PRO VÝRUB\nDélka Max. vzdálenost čelby jádra Max. vzdálenost ražby\n_________ m ______ ______\nzáběru od čelby kaloty v [m]: počvy od čelby jádra v [m]:\nZABUDOVANÉ PRVKY ZAJIŠTĚNÍ VÝRUBU\nDélka\nRámy BRETEX typ: R0-K _____ks R0-B _____ks R1-K _____ks ____ m\nzáběru\nSítě\nQ 188 Q 378 Jiná: _______ Počet vrstev : 1 2\nKARI:\nTloušťka stříkaného betonu: 200 mm 250 mm 300 mm Jiná _____ mm\nStříkaný beton zajištění\nTloušťka : _________ mm Plocha : _________ m2\nčelby:\nJehly : Profil : _________ mm Délka : _________ m Počet: _________ ks\nTyp : Délka : Počet : Délka : Počet : Délka : Počet : Délka : Počet :\nSN\nKotvy :\nHUS\nIBO\nOdchylky od projektované třídy výrubu:\nZa odběratele: Za dodavatele:\nJméno : Datum : Jméno : Datum :\n50\nČD-DDC MODERNIZACE TRATI\nKRALUPY NAD VLTAVOU - VRAŇANY\nTUNEL V KM 446.030 - 446.420\nPoužité schéma\nZÁBĚROVÝ LIST VÝRUBU List číslo:\nzajištění výrubu č.\nKALOTY JÁDRA POČVY _________ Třída výrubu :\nStaničení v TM Od: Do:\nPOZNÁMKA:\nPomocný rastr v kalotě 1 x 1 m\nPomocný rastr po obvodě 0,1 m\nMěřítko : 1 : 200\nZpůsob\nstrojní : trhací práce : kombinované : další členění výrubu:\nrozpojování :\nČelbový klín : ano ne Plánovaná délka záběru: _________ m\nRozšíření paty\nano ne Skutečná délka záběru : _________ m\nkaloty :\nZABUDOVANÉ PRVKY ZAJIŠTĚNÍ VÝRUBU\nTunel.\nRámy BRETEX Rám č: Typ rámu: R0 R1\n............... metr: ...............\nSítě\nQ 188 Q 378 Jiná: Počet vrstev : 1 2\nKARI: ...............\nTloušťka stříkaného betonu : 200 mm 250 mm 300 mm Jiná _____ mm\nStříkaný beton zajištění\nTloušťka : _________ mm Plocha : _________ m2\nčelby:\nJehly : Profil : _________ mm Délka : _________ m Počet: _________ ks\nTyp : Délka : Počet : Délka : Počet : Délka : Počet : Délka : Počet :\nSN\nKotvy :\nHUS\nIBO\nVýron vody : čelba : Záběr celkem :\nPoznámky :\nZa odběratele: Za dodavatele:\nJméno : Datum : Jméno : Datum :\n51\nPříloha č.2\nINŽENÝRSKOGEOLOGICKÉ PODKLADY PRO STAVBU TUNELU\nInženýrskogeologický průzkum vyšetří geologické, geomorfologické a hydrogeologické poměry v takovém\nrozsahu, aby získaná představa o inženýrskogeologických poměrech lokality postihovala prostor, který může\novlivnit projektované dílo a také umožňovala posoudit inženýrskogeologické podmínky výstavby, tj.\nzhodnocení zjištěných údajů z hlediska připravované výstavby podzemního díla.\nPro rekonstrukce a opravy tunelů inženýrskogeologický průzkum zajišťuje komplexní hodnocení stávajícího díla\ns jeho okolním masivem, průzkum kvality materiálů tunelového ostění, případně zakládek.\nPŘEDMĚTEM VYŠETŘENÍ IG POMĚRŮ JSOU:\n− Hornina\n= litologie,\n= stav horniny,\n= fyzikální vlastnosti,\n= mechanické vlastnosti,\n= termální vlastnosti,\n= technologické vlastnosti.\n− Horninový masiv\n= úložné poměry,\n= puklinatost,\n= tektonické porušení,\n= stav napjatosti,\n= přetvárné vlastnosti,\n= pevnostní vlastnosti,\n= technologické vlastnosti,\n= propustnost.\n− Podzemní vody\n= směr a rychlost proudění,\n= režim hladiny,\n= velikost a charakter infiltrační oblasti,\n= vztah podzemních vod k povrchovým vodotečím,\n= chemismus podzemních vod.\n− Geodynamické procesy\n52\n= tektonika, seizmicita a jejich vliv na napětí v masivu,\n= činnost tekoucí a stojaté vody,\n= činnost větru,\n= činnost podzemní vody,\n= teplotní změny,\n= geotermické vlivy,\n= gravitační síly,\n= antropogenní / poddolování, sedání/.\nPŘEDMĚTEM POSOUZENÍ IG-PODMÍNEK VÝSTAVBY TUNELOVÉ STAVBY NA ZÁKLADĚ\nZJIŠTĚNÝCH IG POMĚRŮ JSOU:\n− Vedení trasy (směrové, výškové)\n= homogenita prostředí,\n= vztah osy díla k hlavním strukturním a texturním prvkům,\n= vyhledání horninového prostředí s nejpozitivnějšími vlastnostmi pro vedení trasy,\n= vliv hloubky podzemní vody a její kvality na umístění trasy.\n− Stabilita území\n= posouzení stability v předportálových a portálových úsecích,\n= posouzení stability svahů u úbočních tunelů,\n= posouzení tunelů s nízkým nadložím,\n= vliv ražby na změny vlastností horninového prostředí,\n= ovlivnění nadloží, jiných podzemních děl, zástavby na povrchu.\n− Stabilita výrubu.\n= kvalitativní i kvantitativní,\n= zařazení do technologických tříd,\n= podklady pro návrh dočasné výstroje a ostění,\n= stanovení započitatelného nadvýlomu,\n= posouzení stability výrubu v čase.\n− Přetváření horninového masivu a stavebních konstrukcí.\n− Rozpojování\n= podklady pro volbu vhodného způsobu rozpojování,\n53\n= podklady pro rozhodnutí o nasazení mechanizmů.\n− Změny hydrogeologického režimu\n= posouzení rozsahu změn hydrogeologického režimu v okolí stavby,\n= přítok do díla (povaha, množství).\n− Zlepšování vlastností horninového masivu.\n− Podklady pro: injektování, kotvení, vyztužení hornin nebo zemin, odvodnění apod.\nJedním ze závěrů inženýrskogeologického průzkumu je rozčlenění horninového prostředí v trase na\nkvazihomogenní celky - geotechnické typy a subtypy. Ty se definují tak, aby k nim bylo možné přiřadit\ntechnologické třídy pro různé tunelovací technologie.\nVlastnosti a charakteristika geotechnických typů se vyjádří podle geotechnických klasifikací. Zatřídění\nhorninového prostředí se provede alespoň dvěma nezávislými klasifikačními metodami.\nZatřídění se postupně upřesňuje v jednotlivých etapách inženýrskogeologického průzkumu.\nKonečné klasifikační ohodnocení a zatřídění do technologických tříd se zjišťuje v průběhu stavby a zaznamená\nse v dokumentaci skutečného provedení stavby tunelu. Základními klasifikacemi jsou QTS, NRTM, BARTON,\nBIENIAWSKI.\nRozsah IG průzkumu, množství a typ průzkumných prací se řídí složitostí zamýšlené stavby\na inženýrskogeologických poměrů.\nPRO SANACI NEBO REKONSTRUKCI TUNELU\nse kromě průzkumu stavu a vlastností horninového prostředí v okolí tunelu (v přiměřeném rozsahu) podle výše\nuvedeného, dále vyšetřuje:\n− tloušťka stávajícího ostění,\n− stav obezdívky včetně výplně spár,\n− stav kontaktní spáry ostění – hornina,\n− stávající podmínky zatížení ostění,\n− vývoj zatížení ostění od okolní horniny,\n− základové podmínky pod opěrami ostění,\n− funkčnost drenážního systému, měření kvality a vydatnosti výronů vody do tunelu, celkové posouzení\nhydrogeologického režimu v okolí tunelu,\n− existence a měření trhlin.\n54\nPoznámky:\nTECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB ČESKÝCH DRAH\nVydavatel: České dráhy, s.o. - Divize dopravní cesty, o.z.\nP r v n í v y d á n í / z roku 1996/ bylo vyhotoveno a připomínkováno v tomto složení:\nZpracovatel: PRAGOPROJEKT, a.s., a SUDOP Praha, a.s.\nZpracovatel kap. 20: Ing. Roman Smida (SUDOP Praha a.s.)\nTechnická rada: Ing. Milan Strnad (Pragoprojekt, a.s.), Ing. Miloslav Bažant (Pragoprojekt, a.s.),\nIng. Jiří Stříbrný (SUDOP Praha, a.s.), Ing. Petr Lapáček (SUDOP Praha, a.s.),\nIng. Vítězslav Herle (SG-Geotechnika, a.s.), Ing. Jiří Bureš (ČD-DDC),\nIng. Ondřej Chládek (ČD-DDC), Ing. Danuše Marusičová (ČD-DDC),\nIng. Pavel Stoulil (MD ČR)\nT ř e t í - aktualizované v y d á n í včetně změny č. 2 /z roku 2001/ :\nZpracovatel: Ing. Libor Mařík, ILF Consulting Engineers, s.r.o.\nGestor kapitoly 20: Ing. Bohuslav Stečínský (ČD-DDC O13)\nZpracovatel připomínek ke kapitole 20:\nIng. Miroslav Teichman\n(ČD, DDC, Technická ústředna dopravní cesty, sekce 13)\nDistribuce: České dráhy, s.o., DDC, o.z\nTechnická ústředna dopravní cesty - Sekce technické dokumentace\n772 58 Olomouc, Nerudova l\ntel. 950-2241, st. tel. 068-4722241\nfax 950-5290, st. fax 068-4725290\ne-mail: TUDCOTDOLCsek@tudc.olc.cdrail.cz\n"
+}

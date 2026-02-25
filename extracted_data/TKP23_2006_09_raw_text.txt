@@ -1,0 +1,2546 @@
+Správa železniční dopravní cesty, státní organizace
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 23
+SANACE INŽENÝRSKÝCH OBJEKTŮ
+Třetí - aktualizované vydání
+změna č. 5
+Schváleno I. náměstkem generálního ředitele SŽDC
+č.j.: 5584 ze dne 16.2.2006
+Účinnost od 1.9.2006
+Praha 2006
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím
+systému nebo přenášena, a to v žádné formě a žádnými prostředky elektronickými,
+fotokopírovacími či jinými, bez předchozího písemného svolení vydavatele.
+Výhradní distributor: České dráhy, a. s., Technická ústředna Českých drah
+SATT - oddělení typové dokumentace
+Nerudova l
+772 58 Olomouc
+Obsah
+23.1 ÚVOD 3
+23.1.1 Základní ustanovení 3
+23.1.2 Cíle a strategie sanací inženýrských konstrukcí 4
+23.1.3 Stavebně technický průzkum 5
+23.1.4 Příprava stavebního počinu 6
+23.1.5 Požadavky na dodavatele 7
+23.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 7
+23.2.1 Tradiční materiály 8
+23.2.2 Adhezní můstky 9
+23.2.3 Správkové malty 10
+23.2.4 Povrchové ochranné systémy 11
+23.2.5 Injektážní hmoty 13
+23.2.6 Nové materiály 13
+23.3 TECHNOLOGICKÉ POSTUPY PRACÍ 14
+23.3.1 Sanace betonových konstrukcí 14
+23.3.1.1 Předúprava betonu 14
+23.3.1.2 Předúprava výztuže 16
+23.3.1.3 Sanace výztuže 17
+23.3.1.4 Sanace betonu 20
+23.3.1.5 Injektáže 27
+23.3.2 Sanace zděných konstrukcí 32
+23.3.2.1 Spárování 33
+23.3.2.2 Injektování 33
+23.3.2.3 Přezdívání 34
+23.3.2.4 Plombování 34
+23.3.2.5 Spínání a stahování 35
+23.3.2.6 Povrchová ochrana 35
+23.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 36
+23.4.1 Dodávka a skladování 36
+23.4.2 Průkazní zkoušky 36
+23. 5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 40
+23.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 42
+23.7 KLIMATICKÁ OMEZENÍ 43
+23.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 43
+23.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 43
+23.10 EKOLOGIE 44
+23.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 44
+23.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 44
+23.12.1 Technické normy 44
+23.12.2 Předpisy 46
+23.12.3 Související kapitoly TKP 46
+1
+Příloha 1 Výklad pojmů 47
+Příloha 2 Stavebně technický průzkum 50
+Příloha 3 Netradiční zkušební postupy 53
+2
+23.1 ÚVOD
+Kapitola 23 TKP se zabývá sanacemi inženýrských objektů, které jsou součástí železniční infrastruktury.
+Inženýrskými objekty se pro potřeby této kapitoly rozumí především stavby železničního spodku (mosty,
+propustky, tunely, zdi). V přiměřeném rozsahu lze tuto kapitolu využít i pro sanace pozemních staveb (výpravní
+budovy, nástupištní přístřešky apod.).
+Kapitola 23 TKP je použitelná pro sanace objektů realizovaných z prostého betonu, železobetonu, předpjatého
+betonu a zdiva.
+Kapitola 23 TKP pojednává uceleně o celém sanačním procesu, který by měl být navržen a proveden tak, aby
+sanace byla realizována efektivně, tj. aby se při vynaložení přiměřených prostředků co nejvýrazněji prodloužila
+životnost inženýrského díla.
+Tato kapitola vychází a navazuje na ustanovení definice a pojmy kapitoly 1 TKP "Všeobecně". Kapitola 23 TKP
+a kapitola 1 TKP musí být používány jako nedílné součásti.
+Sanace inženýrských konstrukcí jsou však v mnoha bodech specifickou oblastí a při tvorbě technických
+a kvalitativních podmínek pro sanace nelze vždy uplatnit smluvně taxativní dikci textu. To vede ke snaze
+poskytnout uživateli základní, ale co nejkomplexnější informace nejen o realizaci, ale i o metodice plánování
+a přípravy sanačních prací včetně kontroly kvality. Platnost příslušných předpisů a podmínek pro přípravu staveb
+tím není nijak změněna. Konkrétní podmínky pro konkrétní stavbu musí být vždy obsahem projektové
+dokumentace.
+U složitějších úkolů se doporučuje řešení konzultovat se specialisty a konfrontovat s nejaktuálnějším stavem
+poznání a Evropskými normami. Výsledek sanace může být značně ovlivněn správnou volbou materiálů
+a výběrem vhodné technologie, které jsou z velké části závislé na výběru zhotovitele a dopracování projektové
+dokumentace v rámci dokumentace dodavatele. Z těchto důvodů se doporučuje u složitějších sanací nebo sanací
+významných svým rozsahem zpracování nezávislého posudku dokumentace zhotovitele.
+V případě požadavku na použití netradičních materiálů nebo technologií se vypracují zvláštní technické
+kvalitativní podmínky (ZTKP). Povinnost vypracovat ZTKP přísluší iniciátorovi použití těchto materiálů nebo
+technologií (zadavatel, projektant, dodavatel).
+Vzhledem k stále probíhajícímu dynamickému vývoji v oboru sanací konstrukcí a nutnosti zasazení této kapitoly
+do širších souvislostí je základní text doplněn přílohami, které slouží k definování některých pojmů (Příloha 1),
+stanovení základních požadavků na stavebně technický průzkum (Příloha 2) a k popisu nenormových zkušebních
+postupů (Příloha 3).
+23.1.1 Základní ustanovení
+Tato kapitola TKP se vztahuje na sanační zásahy, jejichž cílem je:
+– obnovit statickou funkčnost konstrukčních prvků,
+– obnovit homogenitu prvků narušených trhlinami,
+– obnovit schopnost konstrukce odolávat průnikům vody,
+– zastavit korozní procesy na výztuži,
+– obnovit statickou funkčnost degradovaných vrstev,
+– obnovit původní rozměry konstrukce,
+– obnovit estetický vzhled konstrukce.
+Při posuzování zbytkové životnosti sanovaných konstrukcí je třeba vždy realisticky posoudit efekt provedených
+sanačních zásahů. V některých případech nelze počítat s plným obnovením funkčních parametrů konstrukce,
+které by odpovídaly stavu po jejím uvedení do provozu.
+Součástí úvodního rozhodovacího procesu musí být vždy posouzení, zdali efektivní alternativou není výstavba
+inženýrského objektu nového.
+3
+Součástí rozhodovacího procesu musí být posouzení finanční náročnosti alternativních variant sanace ve fázi
+přípravné dokumentace.
+Součástí procesu sanace musí být i garanční kontroly sanace tak, aby se dodatečně ověřilo (obvykle před
+uplynutím záruční doby), že sanace byla navržena a provedena kompetentně. Výsledky těchto kontrol by měly
+být vyhodnoceny a využívány k formulování sanačních strategií v budoucnu.
+Tato kapitola TKP není primárně určena pro zesilování inženýrských objektů a rekonstrukce související se
+změnou jejich zatížitelnosti nebo charakteru užívání. Při těchto pracích však může být přiměřeně využita.
+Některé postupy zesilování jsou uvedeny i v této kapitole. Obecně je však nutné vždy dodržovat kapitoly 17, 18
+a 20, případně 24 TKP.
+Tato kapitola neřeší konstrukční souvislosti, které musí být řešeny projektovou dokumentací na základě
+průzkumů příslušného charakteru. Použití technologií uvedených v této kapitole musí vždy předcházet posouzení
+možných příčin degradace objektu nebo konstrukčního prvku. Rozhodnutí o způsobu sanace konstrukce musí být
+provedeno v souvislostech uvažujících statické působení, konstrukční uspořádání, účel a využitelnost konstrukce
+a také s ohledem na estetické požadavky výsledného efektu sanačního zásahu.
+Jedním z podkladů pro sanace prvků inženýrských konstrukcí se statickou funkcí musí být statické posouzení.
+V případě pochybností o zatížitelnosti stávajícího objektu nebo je-li součástí sanace zesilování konstrukce musí
+projektu stavby předcházet zpracování statického přepočtu.
+Při veškerých činnostech popisovaných v této kapitole TKP je třeba respektovat platné ČSN i návazné technické
+normy a předpisy (TNP) zadavatele. V případě rozporu mezi ustanoveními této kapitoly TKP a ČSN nebo
+ostatních TNP platí ustanovení těchto TKP.
+23.1.2 Cíle a strategie sanací inženýrských konstrukcí
+Hlavním cílem sanace betonu a zdiva je především zastavit nebo zpomalit korozní procesy, probíhající
+v konstrukčních prvcích, obnovit jejich původní rozměry, homogenitu i požadovaný estetický vzhled
+a prodloužit jejich trvanlivost.
+Projektová dokumentace musí vždy zohlednit příčiny degradace konstrukce a zajistit odstranění nebo
+minimalizaci jejich účinků. V těchto souvislostech je nutné respektovat příslušná ustanovení kapitol 17, 18, 20
+a 22, případně kapitoly 25 TKP.
+Je nutné preventivně posuzovat stav konstrukce ve vhodných intervalech a aktuální výsledky archivovat (musí
+být zaveden systém dohlédací činnosti a jejího evidování).
+Pokud se zjistí vady nebo poruchy, mají se provést další posouzení, ve kterých se stanoví rozsah vad a poruch
+a jejich příčiny. Obvykle je potřebné provedení jak zkoušek přímo na místě, tak i zkoušek laboratorních,
+prostřednictvím stavebně technického průzkumu (STP).
+Za primární zdroj ohrožení konstrukcí staveb železničního spodku je považováno působení vody v různých
+modifikacích spolu s účinky mrazových cyklů. Z tohoto důvodu se za prioritní považuje zajištění konstrukce
+proti průsakům vody.
+Projektová dokumentace musí řešit ochranu před působením vody a mrazu komplexně. Komplexním postupem
+se rozumí v první řadě zajištění odvedení vody z dosahu konstrukčních prvků a jejich následná ochrana. Ta může
+být zajištěna vlastní odolností konstrukčního materiálu nebo bariérovou ochranou příslušných částí konstrukce
+před pronikáním vody (izolační souvrství). Odolnost samotných části konstrukce lze dosáhnout volbou
+kvalitních materiálů nebo jejich dodatečnou ochranou speciálními hmotami (povrchové ochranné systémy).
+Sanace betonových a zděných konstrukcí lze členit do čtyř kategorií podle požadavků, které jsou na
+sanace kladeny a cílů, které jsou sanací sledovány:
+– preventivní (profylaktický) zásah na dosud korozně nepoškozené a staticky zcela vyhovující
+konstrukci, jehož jediným cílem je v předstihu s co nejmenšími náklady prodloužit životnost
+objektu,
+– ochrana a oprava, jejímž cílem je obnovit estetický vzhled konstrukce, zejména z hlediska
+barevného řešení, tento zásah je pochopitelně současně využíván i k prodloužení životnosti
+objektu,
+– sanační zásah na korozně poškozené konstrukci, která však po statické stránce stále vyhovuje;
+cílem tohoto typu sanace je zastavit pokračování korozních procesů, obnovit estetický vzhled
+konstrukce i veškeré její další užitné parametry,
+4
+– sanační zásah, kdy v důsledku korozních procesů je již ohrožena nejen životnost konstrukce,
+ale i její statická bezpečnost; konstrukci je třeba zesílit např. přidáním nové výztuže; tento typ
+sanace připadá v úvahu i tehdy, mají-li být změněny užitné parametry objektu, tj. např.
+zvětšena zatížitelnost.
+Při rozhodování o činnosti, která má splnit všechny budoucí požadavky na životnost celé konstrukce, je nutné
+analyzovat všechny navržené postupy. Zde je potřeba zohlednit řadu faktorů, které jsou následně na konstrukci
+kladeny.
+Základní faktory, které ovlivňují výběr vhodných variant řešení jsou:
+– předpokládané využití, návrhová a provozní životnost konstrukce,
+– konstrukční hlediska,
+– požadované funkční parametry (včetně např. požární odolnosti a vodotěsnosti),
+– pravděpodobná dlouhodobá funkčnost provedené ochrany a opravy,
+– možnosti pro dodatečnou ochranu, opravu a sledování,
+– počet a náklady opakovaných sanací, předpokládaných během návrhové životnosti konstrukce,
+– náklady a způsob financování variantních ochranných a sanačních opatření, včetně budoucí
+údržby a zabezpečení finančních prostředků na ni,
+– vlastnosti a možné způsoby předúpravy podkladu,
+– vzhled ošetřené nebo opravené konstrukce,
+– ekologická a hygienická hlediska,
+– zdravotní a bezpečnostní hlediska.
+Postup řešení problémů souvisejících se sanací betonu a zdiva zahrnuje rozbor, strategii, návrh sanace a její
+realizaci. Je nutné provést souhrnné posouzení celého spektra příčin i důsledků poškození. Výsledky
+vyhodnocení, spolu s potřebami nebo požadavky uživatele, poskytují potřebné informace pro návrh projektu
+sanace. Konečný návrh představuje řešení, které zohledňuje trvanlivost, proveditelnost a kompatibilitu se
+stávající konstrukcí.
+Nejdůležitější součástí návrhu sanace je výběr vhodných zásad ochrany a opravy. Proto je vhodné připravit
+několik variantních řešení, vycházejících z odborného posouzení, z nichž se následně provede konečný výběr.
+Pro všechny vybrané zásady se stanoví vhodné metody, včetně kvalitativních požadavků pro navrhované
+metody, kde se definuje uvažované použití výrobků a systémů.
+Provádění prací se musí svěřit dodavateli s dostatečnou a prokazatelnou zkušeností s prováděním daného druhu
+sanací.
+Musí se vytvořit takový systém kontroly jakosti, který zajistí splnění specifikovaných kvalitativních požadavků
+a výběr správných metod pro sanaci.
+Musí se stanovit příslušné podmínky pro přejímku. Veškerá dokumentace, týkající se sanace, se má uchovávat
+v příslušném systému řízení projektu.
+23.1.3 Stavebně technický průzkum
+Stavebně technický průzkum (STP) je nezbytným podkladem pro zpracování projektu sanace a pro její
+objektivní ocenění.
+STP se člení na etapy. Rozsah jednotlivých etap je dán především předpokládaným rozsahem stavebního počinu.
+Rozsah jednotlivých etap je třeba přizpůsobovat závěrům předchozí etapy a závěrům předchozího stupně
+projekční přípravy.
+Pro každou etapu STP musí být vždy zpracován projekt STP. Projekt STP musí být odsouhlasen projektantem
+příslušného stupně projektové přípravy, který bude jeho závěry využívat.
+Podrobnosti týkající se STP a požadavky na minimální rozsah závěrečné zprávy z STP jsou uvedeny v příloze 2.
+5
+23.1.4 Příprava stavebního počinu
+Příprava stavebního počinu se řídí příslušnými předpisy a podmínkami zadavatele.
+Projektová dokumentace sanace by měla být vždy zpracována v dostatečném předstihu před výběrovým řízením,
+resp. před realizací sanace. Optimální situace je, aby projekt sanace byl zpracován v roce předcházejícím
+předpokládanému datu realizace sanačního zásahu.
+Podkladem pro vypracování projektové dokumentace sanace jsou:
+– stavebně technický průzkum, resp. zpráva o výsledcích STP,
+– původní (archivní) dokumentace objektu nebo dokumentace skutečného provedení,
+– závěry z dohlédací činnosti,
+– vzorové listy a další normativní podklady z doby výstavby objektu,
+– požadavky investora na funkčnost a zbytkovou životnost konstrukce po provedeném sanačním
+zásahu,
+– stanovisko investora k možnosti zpřístupnění konstrukce,
+– požadavky investora na možnosti výluky provozu na konstrukci,
+– požadavky investora na estetický vzhled resp. barevné vyznění konstrukce,
+– případné požadavky státních institucí (např. památkového úřadu, pokud je sanovaná
+konstrukce technickou památkou apod.).
+Projektová dokumentace musí obsahovat:
+– popis systému sanace (druhy, pořadí a tloušťky vrstev, úprava povrchu před nanášením,
+konkrétní způsob nanášení, způsob úpravy povrchu, metoda ošetřování pro konkrétní systém
+a stanoviště, orientační harmonogram prací, zejména s ohledem na klimatické podmínky ve
+vazbě na použité sanační hmoty),
+– požadavky na parametry jednotlivých materiálů z hlediska jejich funkce v sanačním systému,
+z hlediska jakosti a případné vzájemné nezaměnitelnosti v rámci konkrétních sanačních hmot,
+– doporučení jednotlivých technologických operací, které se jeví jako vhodné pro konkrétní typ
+konstrukce, a výpis technologií, které se nedoporučují,
+– doporučení jednotlivých výrobků a hmot pro sanaci z hlediska jejich parametrů,
+– popis systému protikorozní ochrany oceli (druhy a tloušťky vrstev, předúprava povrchu) pro
+konkrétní objekt, specifikaci betonářské výztuže, předpínací výztuže, ocelových prvků systému
+předpětí a tuhé výztuže,
+– další použité postupy prací a údaje o prvcích systému na konkrétním objektu, které mají
+význam pro zamýšlenou ochranu a opravu a vliv na jakost dodávky,
+– způsob likvidace vybouraných hmot, odstraněných vrstev, obalů, zbytků aplikovaných hmot
+a odpadů u konkrétního objektu,
+– požadavky na záruky a údržbu,
+– požadavky na průkazní a kontrolní zkoušky a na referenční plochy,
+– předpokládaný rozsah výměr.
+Dokumentace dodavatele
+Rozsah dokumentace dodavatele je určen potřebou dalšího rozpracování projektové dokumentace pro účely
+stanovení konkrétních materiálů a pracovních postupů včetně požadavků na kontrolní činnost a systém jakosti.
+Požadavky zadavatele na rozsah dokumentace dodavatele musí být uvedeny v zadání stavby. Vždy je nutno
+zpracovat Technologický předpis.
+Technologický předpis musí respektovat technologické postupy výrobce příslušných sanačních materiálů,
+případně technické listy výrobců hmot (stavebních výrobků). Technologický předpis musí obsahovat kontrolní
+a zkušební plán pro vlastní kontrolní zkoušky a měření zhotovitele pro konkrétní objekt, druhy a rozsah
+referenčních ploch.
+Dodavatel vybere a navrhne konkrétní materiál podle požadavků projektové dokumentace. Navržený výběr musí
+být odsouhlasen autorským dozorem.
+6
+Technologický předpis musí odsouhlasit zodpovědný zástupce zadavatele (obvykle stavební dozor) a to na
+podkladě souhlasného stanoviska autorského dozoru.
+23.1.5 Požadavky na dodavatele
+Dodavatel musí prokázat způsobilost pracovníků, strojního zařízení, skladování, dopravy, kontrolního systému
+a dalších činností, které mohou ovlivnit jakost sanace betonových konstrukcí. V dokumentu systému jakosti
+musí být doloženy předpokládané technické postupy oprav.
+Dodavatel musí prokázat ověřitelnými referencemi, že má s technologiemi použitými v rámci projektu sanace
+víceleté zkušenosti a dosáhl uspokojivých výsledků.
+Dodavatel musí prokázat u všech vedoucích a středních řídících pracovníků odbornou způsobilost
+k požadovaným úkonům; u řídících pracovníků např. osvědčení o autorizaci a doklad o úspěšném absolvování
+speciálních kurzů u akreditovaných pracovišť, znalecké oprávnění, sdělení o praxi v dané činnosti apod.
+Autorizace není striktně vyžadována, protože specifická autorizace pro sanační práce není udělována.
+Předpokládá se, že autorizace osob řídících sanační práce může být vydána pro příslušné autorizační okruhy dle
+staveb, které jsou sanovány (mosty a inženýrské stavby, pozemní stavby apod.). Jako rozhodující kvalifikační
+předpoklad pro řízení sanačních prací je praxe v oboru sanací inženýrských konstrukcí. U dělnických profesí
+doklad o úspěšném absolvování speciálních kurzů a potvrzení o praxi v dané činnosti pro pracovníky provádějící
+specializované sanační práce.
+Zadavatel má právo vyžadovat jmenovitou kontrolu přítomnosti pracovníků u nichž byla dodavatelem prokázána
+kvalifikace. Zadavatel má právo přerušit práce nebo práce nepřevzít, pokud budou vykonávány pracovníky
+u nichž nebyla prokázána praxe a proškolení pro provádění příslušných sanačních postupů.
+Zadavatel má právo vyžadovat od dodavatele údaje o zkušenostech a kvalifikaci personálu, který se bude podílet
+na sanaci kdykoliv v průběhu její realizace. U významnějších sanačních zásahů si investor může vymínit, že ve
+stavebním deníku budou pracovníci, přítomní na stavbě, uváděni jmenovitě.
+Jakákoliv změna v personálním obsazení stavby, změna subdodavatelů, změna plánu jakosti či rozsahu
+prováděných kontrolních zkoušek musí být předem odsouhlasena zadavatelem.
+Požadavky na rozsah praxe a proškolení musí být uvedeny v zadání stavby. Požadavky na reference a jejich
+rozsah a obsah musí být také stanoveny v zadání stavby.
+Seznam referencí musí zejména obsahovat:
+– informace o sanacích podobných staveb s případným vyjádřením provozovatele resp.
+s výsledky pozáručních kontrol,
+– popis rozsahu a formy účasti na uváděných referenčních stavbách zejména pokud se týče
+procentuálního podílu vlastních činností.
+Reference mohou být též prokázány odbornými články nebo příspěvky o provedených sanacích, pokud jsou
+předchozí body jejich součástí.
+Zhotovitel musí dále prokázat, jakým způsobem zabezpečuje jakost práce resp. jaký systém jakosti má zavedený.
+Požadavek na certifikaci zavedeného systému jakosti, pokud se vyžaduje, musí být uveden v zadání stavby.
+Pro konkrétní sanační akci zpracuje zhotovitel plán zabezpečení jakosti, zaměřený na požadované technologie
+a druhy oprav a konkretizovaný pro dané podmínky při opravě konstrukce. Plán jakosti musí obsahovat také
+kontrolní a zkušební plán, tj. druhy a počty zkoušek, kterými zhotovitel bude sám kontrolovat kvalitu
+jednotlivých technologických operací.
+Rozsah plánu zabezpečení jakosti se vždy přiměřeně upraví podle skutečného rozsahu sanačního zásahu.
+23.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+Materiály pro sanace jak co do typu, tak kvality jsou vždy předepsány projektovou dokumentací. K volbě
+materiálu pro sanace se může vyjadřovat technický úsek investora i vybraný zhotovitel.
+Technické parametry materiálu pro sanace prokazuje dodavatel materiálu prohlášením o shodě, protokoly
+zkoušek materiálů z akreditované laboratoře (průkazní zkoušky) a dle požadavků zadavatele i prokazatelnými
+referencemi o použití a dlouhodobé spolehlivosti funkce materiálů na srovnatelně sanované konstrukci
+(viz. kap 23.1.5).
+7
+Technické parametry materiálů musí splňovat kromě požadavků projektu hodnoty uvedené v přiložených
+tabulkách č. 23-1 a 23-2.
+Parametry použitých materiálů pro sanace se při realizaci průběžně ověřují kontrolními zkouškami prováděnými
+na zhotoviteli nezávislou autorizovanou právnickou nebo fyzickou osobou (viz kap. 23.5).
+Dodávky materiálu pro sanace jsou na stavbě evidovány prostřednictvím dodacích listů, které jsou archivovány
+a jejich kopie jsou součástí předávací dokumentace díla.
+Dodací list musí obsahovat minimálně tyto údaje:
+– přesné označení materiálu,
+– způsob balení materiálu,
+– celkovou hmotnost dodávky,
+– datum výroby materiálu,
+– čísla výrobních šarží, pokud je materiál takto označen.
+Použití materiálu je zaznamenáváno do stavebního deníku s uvedením:
+– přesného označení materiálů,
+– spotřebovaného množství,
+– způsobu aplikace.
+Na vyžádání objednatele lze evidovat skutečnou spotřebu materiálu skladováním a evidencí prázdných obalů.
+Jednotlivé materiály musí mít přiměřeným způsobem prokázán jejich vliv na životní prostředí včetně rizik
+vyplývajících z jejich užití. Za dostatečný doklad se považuje tzv. Bezpečnostní list materiálu (viz. kap. 23.11).
+Zhotovitel musí veškeré materiály skladovat podle běžných zásad nebo pokynů výrobce obsažených
+v Technickém listu. Zhotovitel musí doložit ekologickou likvidaci obalů (viz kap. 23.10).
+K sanacím inženýrských objektů se používá široké spektrum tradičních hmot i speciálních materiálů. V závislosti
+na době, po kterou jsou s daným typem materiálu zkušenosti, je třeba prověřovat údaje o jeho parametrech,
+předpokládané životnosti a stárnutí. Za výběr materiálu a požadavky na něj kladené zodpovídá především
+projektant. Jen on zná všechny souvislosti konstrukčního řešení a je tedy kompetentní posuzovat vhodnost
+či nevhodnost materiálu pro navržený konstrukční resp. sanační systém.
+23.2.1 Tradiční materiály
+Tradičními materiály rozumíme ty stavební hmoty, s jejichž využitím jsou mnohaleté, ve většině případů více
+než stoleté zkušenosti, takže kvalitové požadavky na ně jsme schopni formulovat na základě dlouhodobě
+ověřených empirických zkušeností.
+Při formulaci požadavků na kvalitu tradičních stavebních materiálů není tedy rozhodující otázkou jakou kvalitu
+pro jednotlivé typy materiálu předepsat, ale spíše obecně platný požadavek, že starší (původní) i nově doplněné
+materiály by měly být fyzikálně kompatibilní, tj. zejména z hlediska:
+– pružnostně pevnostního,
+– teplotní roztažnosti,
+– dlouhodobé stability.
+V tomto ohledu je tedy velmi důležité, aby stavebně technickým průzkumem byly zjištěny co nejpřesněji
+parametry tradičních materiálů ve stávající konstrukci tak, aby nově zvolené materiály se z výše uvedených
+hledisek k původním co nejvíce přibližovaly.
+Kámen
+Pro sanaci kamenného zdiva se smí použít pouze stejného druhu kamene či petrograficky příbuzného druhu
+kamene, který byl použit pro výstavbu objektu.
+Součinitel mrazuvzdornosti jako základní parametr vhodnosti kamene pro jeho exteriérové použití stanoví
+projektant rekonstrukce. V žádném případě se nepřipouští použití kamene, jehož součinitel mrazuvzdornosti je
+nižší než 0,75 podle ČSN 72 1800.
+U nasákavých hornin (např. pískovec, opuka) musí být provedena taková konstrukční opatření, která zamezí
+trvalému provlhání těchto materiálů. Opatření povrchu kamenné konstrukce bariérovým nátěrem není ve většině
+8
+případů vhodné. Podle aktuální situace lze případně zvážit použití hydrofobizační penetrace, která sníží
+nasákavost kamene a současně umožní migraci vodní páry.
+Cihly
+Pro přezdívání pohledových ploch zděných konstrukcí se smí použít pouze cihly příslušného formátu minimální
+pevnostní značky 25, s mrazuvzdorností M 50 a objemovou hmotností minimálně 1.600 kg.m-3 a nasákavostí
+8 až 10 % hmotnostních podle ČSN 72 2623.
+Pro výslednou kvalitu zdiva je však kromě kvality cihel a zdicí malty velmi důležité i správné provedení, a to jak
+z hlediska správné skladby zdiva, tak šířky ložných i styčných spár. Nesprávná vazba zdiva (průběžné styčné
+spáry) může ohrozit únosnost zdiva podstatně více než použití více či méně kvalitních materiálů. Podobně
+s šířkou ložných a styčných spár výrazně klesá únosnost zdiva. Je třeba si uvědomit, že malta ve zdivu působí ve
+stavu tříosé napjatosti a její pevnost ve srovnání s pevnostmi stanovenými na kontrolních krychlích je až
+několikanásobně vyšší.
+Malty pro zdění a spárování
+Malty pro zdění a spárování obecně musí splňovat požadavky ČSN 72 2430. Je však na projektantovi, aby pro
+specifické konstrukce nebo účel použití předepsal takové fyzikálně mechanické vlastnosti zdicí malty, které jsou
+k danému účelu potřebné. Vzestup pevnosti zdicí malty v tlaku o 5 MPa se projeví ve výpočtové pevnosti zdiva
+nárůstem o 0,3 až 0,5 MPa. Nejvyšší značka zdicí malty podle ČSN 72 2430 (zn. 150 - 15 MPa) je přitom
+standardně dosažitelnou úrovní při použití běžné cementové malty míchané v hmotnostním poměru 1:4.
+Z hlediska dlouhodobé funkčnosti zdiva je pro zdicí maltu v exteriérových podmínkách podstatně důležitější její
+mrazuvzdornost, která by měla být standardně dokládána formou průkazních zkoušek.
+V případě spárovací malty je nejpodstatnějším parametrem míra objemových změn (smrštění spárovací malty).
+Vzhledem k tomu, že smrštění spárovací malty může ohrozit kompaktnost zdiva jak z hlediska statického, tak
+i z hlediska jeho výsledné vodotěsnosti je nezbytné, aby zdicí malty, používané při sanaci náročnějších
+inženýrských konstrukcí měly objemové změny menší než 0,4 mm/m (u běžné cementové malty se pohybují
+objemové změny obvykle v intervalu 1,5 až 2,5 mm/m). Spárovací malty s potlačenými objemovými změnami
+musí obsahovat speciální organické, resp. anorganické přísady a lze je připravit pouze jako prefabrikované
+(pytlované). O jejich použití by měl rozhodovat projektant v souladu s širšími konstrukčními souvislostmi
+projektované sanace.
+Beton
+Požadavky na kvalitu betonu a betonové směsi jsou uvedeny v kapitole 17 TKP.
+23.2.2 Adhezní můstky
+Adhezní můstek je materiálem, který je schopen zajistit zvýšenou soudržnost s podkladem v náročnějších
+podmínkách. Pokud je to možné, je třeba se použití adhezního můstku vyhýbat a zajistit soudržnost správkové
+malty s podkladem kvalitní předúpravou podkladu. Pokud však nelze s ohledem např. na provozní podmínky
+provádět předúpravu podkladu nebo v situaci, kdy podklad je velmi hutný, umožní adhezní můstek tyto
+problémy eliminovat. Adhezní můstek však v žádném případě není schopen zajistit plnohodnotnou funkci
+správkové malty na problematickém podkladu, tj. např. podkladu s nízkou pevností v tahu povrchových vrstev.
+Adhezní můstky mají různou materiálovou bázi. Rozlišujeme tři základní typy:
+– čistě cementové adhezní můstky,
+– polymercementové adhezní můstky,
+– čistě polymerní, převážně epoxidové adhezní můstky.
+Klasickým, čistě cementovým „adhezním můstkem“ je tzv. cementový prostřik (špric), který by se však při
+sanaci inženýrských objektů neměl používat, protože při jeho přípravě na stavbě nelze garantovat jeho výsledné
+vlastnosti.
+Nejtypičtějším, nejčastěji používaným adhezním můstkem je cementopolymerní, obvykle dvousložková
+suspenze, která se na předupravený a čistý povrch nanáší štětcem, válečkováním nebo stříkáním. Základní
+podmínkou při aplikaci těchto adhezních můstků je, aby správková malta byla nanášena do čerstvého
+(zavadlého) adhezního můstku. Pokud dojde k zatuhnutí, resp. zatvrdnutí adhezního můstku může adhezní
+můstek působit spíše jako separační vrstva. Jedním z významných parametrů adhezního cementopolymerního
+adhezního můstku je tzv. otevřená doba, tj. časový úsek, během kterého je nezbytné aplikovat správkovou maltu.
+Tato otevřená doba se výrazně mění v závislosti na teplotě.
+9
+Cementopolymerní adhezní můstky mají většinou dlouhou dobu zrání, která souvisí s pomalejším síťováním
+použité polymerní disperze. Konečných pevností dosahuje cementopolymerní adhezní můstek obvykle
+v intervalu 28 až 60 dnů. V případě, že je sanační souvrství zkoušeno v menším stáří, je třeba tuto skutečnost při
+interpretaci získaných výsledků zohlednit.
+Cementopolymerní adhezní můstky jsou aplikačně poměrně náročné, (je třeba vždy nanášet jen na takový úsek,
+který může být vzápětí reprofilován správkovou maltou).
+Čistě polymerové adhezní můstky obvykle na bázi epoxidové pryskyřice, jsou velmi spolehlivé a umožňují
+přikotvit správkové malty i k velmi problematickému podkladu. Provádí se tak, že na suchý, nečistot zbavený
+podklad se válečkováním nanese dvousložková epoxidová pryskyřice a vzápětí se na takto ošetřený podklad
+aplikuje monofrakční suchý křemičitý písek se zrnitostí 1 až 4 mm. Epoxidová pryskyřice se díky svým
+penetračním schopnostem, případně díky použití penetrace velmi dobře zakotví do podkladního betonu
+(u vodorovných podkladů je schopna proniknout do hloubek 3 až 5 mm) a současně zrna suchého písku se
+spolehlivě zakotví do epoxidové vrstvy. Tento adhezní můstek může být připraven ve větším předstihu
+a dodatečně lze na něj nanášet správkovou maltu. Díky mechanickému zakotvení správkové malty do zrn písku
+se tak dosáhne vynikajícího zakotvení správkové malty do podkladu. Zkoušky soudržnosti správkové malty
+v těchto případech jsou vždy obvykle vyšší než tahová pevnost podkladního betonu resp. tahové pevnosti
+správkové malty.
+Adhezní můstky se obvykle současně využívají i jako antikorozní ochrana výztuže. K tomuto účelu lze použít
+vhodné cementopolymerní i čistě polymerní – epoxidové adhezní můstky. Předpokladem jejich účinnosti jako
+ochrany výztuže je dokonalé očištění korodující výztuže a celoplošná aplikace.
+23.2.3 Správkové malty
+Správkové malty musí splňovat především tyto požadavky:
+– vysokou soudržnost s podkladem,
+– mrazuvzdornost minimálně na úrovni T 100, případně větší podle konkrétních podmínek
+expozice,
+– omezený vznik smršťovacích trhlin,
+– minimální objemové změny v důsledku změn vlhkosti a teploty,
+– dobrou vodotěsnost resp. malou nasákavost,
+– co nejnižší modul pružnosti, který by měl být nižší než modul pružnosti podkladního betonu,
+– pevnost v tlaku, resp. v tahu za ohybu na shodné nebo mírně vyšší úrovni než podkladní beton,
+– zvýšenou odolnost vůči agresivním médiím podle konkrétních podmínek expozice.
+Požadované základní parametry správkových hmot jsou uvedeny v následující tabulce.
+Tab. 23-1 Požadované základní parametry správkových hmot
+Průkazní zkoušky Kontrolní zkoušky
+Parametr
+Požadovaná hodnota Požadovaná hodnota
+Pevnost v tlaku > 25 MPa < 50 MPa > 25 MPa < 50 MPa
+Pevnost v tahu za ohybu > 5,5 MPa > 5,5 MPa
+(Soudržnost s podkladem > 1,7 MPa > 1,1 MPa
+(bez adhezního můstku) jednotl. > 1,5 MPa jednotl. ≥ 0,8 MPa
+Smršťování < 0,5 ‰ -
+Sklon k tvorbě trhlin 1 trhlina šířky do 0,1 mm 1 trhlina šířky do 0,1 mm
+Mrazuvzdornost T 100 -
+Koeficient teplotní
+< 14 x 10-6 -
+roztažnosti
+Statický modul pružnosti < 30 GPa -
+10
+Správkové malty se používají výhradně prefabrikované, a to jednosložkové nebo dvousložkové. Obecné
+požadavky na správkové hmoty i jejich zkoušení jsou obsaženy v ČSN EN 1504.
+Nejpodstatnějšími požadavky na správkové malty je jejich optimální přídržnost k podkladnímu betonu a absence
+smršťovacích trhlin. Aby bylo dosaženo optimálního výsledku v tomto směru, je třeba použít nejen vhodnou
+správkovou maltu, ale také ji správně aplikovat a přiměřeným způsobem ošetřovat. I velmi dobrá správková
+malta, použitá nevhodně a neošetřovaná nezajistí dosažení požadovaného výsledku.
+Prioritně se volí použití správkových malt cementopolymerních vzhledem k jejich vysoké alkalitě, která
+zajišťuje pasivaci odhalené výztuže a částečně je schopna i repasivovat povrchové i zkarbonatované vrstvy. Čistě
+polymerní, např. epoxidové správkové hmoty jsou používány pro reprofilace jen výjimečně. Užívány jsou spíše
+jako zálivkové či konstrukční výplňové materiály. Jejich předností je vysoká přídržnost k podkladu, dobré
+mechanické vlastnosti. Nevýhodou pak vysoký koeficient teplotní roztažnosti, výrazná závislost materiálových
+vlastností na teplotě, vytvoření absolutní parozábrany na povrchu prvku a nevyhovující alkalita z hlediska
+pasivace výztuže.
+23.2.4 Povrchové ochranné systémy
+Povrchové ochranné systémy vytvářejí na povrchu sanované konstrukce doplňující bariéru proti průniku
+nežádoucích médií zejména k ocelové výztuži. Jedná se především o průnik oxidu uhličitého a vody, může se
+však jednat i o celé spektrum dalších agresivních médií podle konkrétní expozice železobetonového prvku.
+Současně povrchové ochranné systémy barevně sjednocují povrch lokálně opravované betonové konstrukce
+a zlepšují její celkový vzhled.
+Vzhledem k omezené životnosti povrchových ochranných systémů (5 až 10 let), nelze je považovat za
+plnohodnotnou náhradu dostatečně tlusté krycí vrstvy betonu nebo správkové hmoty nad výztuží. Pro výběr
+povrchového ochranného systému jsou rozhodující tato kritéria:
+– požadovaná hodnota difúzního odporu vůči vodní páře a oxidu uhličitému,
+– odolnost vůči specifickým agresivním médiím, např. posypovým solím,
+– přídržnost k podkladu,
+– požadavky na vodotěsnost,
+– požadavky na překlenutí stabilních nebo pohyblivých trhlin,
+– požadavky na vzhled, barevnost a strukturu povrchu.
+Povrchové ochranné systémy rozdělujeme na - impregnace,
+- nátěry.
+11
+Tab. 23-2 Požadované parametry ochranných bariérových nátěrů
+Průkazní zkouška Kontrolní zkouška
+Parametr Typ nátěru
+Požadovaná hodnota Požadovaná hodnota
+parotěsný 1,2 MPa 0,8 MPa
+Přídržnost s podkladem
+propustný 0,8 MPa 0,6 MPa
+parotěsný 200 - 300 µm
+Tloušťka tenkovrstvých nátěrů 1)
+propustný 100 - 200 µm
+Ekvivalentní difúzní tloušťka parotěsný > 10 m
+-
+r , H O paropropustný < 4 m, lépe < 3 m
+D 2
+Difúzní ekvivalent tloušťky parotěsný > 50 m
+-
+vzduchové vrstvy S , CO paropropustný > 50 m
+D 2
+parotěsný 0,0 1 . m2 0,0 1 . m2
+Vodotěsnost V
+30 paropropustný < 2.0 l.m2 < 2.0 l.m2
+parotěsný
+Schopnosti překlenovat trhliny 2) -
+paropropustný
+Odolnost vůči agresivním parotěsný
+2) 3) -
+vlivům paropropustný
+parotěsný odolný UV záření
+Odolnost UV záření -
+paropropustný odolný UV záření
+parotěsný
+Odolnost vysokým teplotám 60 °C 4) -
+paropropustný
+parotěsný 50 cyklů
+Mrazuvzdornost -
+paropropustný 50 cyklů
+Vysvětlivky: 1) podle technologického předpisu sanace, event. dle specifikace výrobce,
+2) požadavky se řídí zvláštními předpisy,
+3) požadavky na typ a rozsah zkoušek předepisuje technologický předpis sanace.
+4) není-li stanoveno jinak.
+Impregnace je obvykle nízkoviskózní vodný nebo ředidlový roztok, mající schopnost pronikat strukturou pórů
+pod povrch prvku. Tento průnik je však vždy omezen hloubkou maximálně několika mm. Spotřeba impregnace
+se i u vícenásobné aplikace pohybuje maximálně do 200 g/m2. Obvykle se jedná o transparentní bezpigmentové
+materiály, které nevytvářejí na povrchu prvku vrstvu s měřitelnou tloušťkou.
+S ohledem na jejich charakter a spotřebu nedojde k úplnému uzavření pórového systému. Tato úprava obvykle
+zmenšuje průnik tekutých médií betonem, zpevní povrch a neeliminuje přirozenou difúzi vodní páry prvkem.
+Speciálním typem jsou hydrofobní impregnace, které se vsáknou do ošetřovaného materiálu a brání netlakové,
+obvykle srážkové vodě ve vnikání do povrchových vrstev konstrukce. Jedná se opět o materiály jak na vodní, tak
+rozpouštědlové bázi. Předností impregnace je, že nemohou být mechanicky porušeny nebo abradovány. Jejich
+dlouhodobá účinnost je tedy obvykle vyšší než u standardních povrchových nátěrů.
+Nátěry se provádí nanášením filmotvorného materiálu na podklad. Formulovány jsou na základě různých
+materiálových bází převážně organického původu. Nátěry kromě pojivové fáze a jemných plniv obsahují celou
+řadu dalších přísad, které ovlivňují jak jejich zpracovatelnost, tak výsledné vlastnosti.
+Nátěry se používají jak k barevnému sjednocení vzhledu konstrukce, tak k vytvoření doplňkové ochranné
+bariéry, která má zamezit průniku nežádoucích kapalných nebo plynných složek pod povrch konstrukce.
+Obvykle nátěrový systém brání především průniku vody, případně oxidu uhličitého do krycích vrstev
+železobetonové konstrukce. Současně by nátěrový systém měl co nejméně omezovat difúzi vodní páry.
+Nátěry dělíme na tenkovrstvé a tlustovrstvé.
+12
+Tenkovrstvý nátěr má obvykle tloušťku od 0,1 až 0,3 mm při spotřebě 200 až 400 g/m2. I tenkovrstvý nátěr se
+provádí obvykle ve dvou vrstvách. Obecně u všech nátěrových systémů platí, že pro jeho výsledné vlastnosti je
+lepší aplikovat více tenčích vrstev než se snažit v jednom pracovním kroku nanést větší množství materiálu.
+Tlustovrstvý nátěr má tloušťku obvykle od 0,3 do 1 mm. Tyto nátěrové systémy mají s ohledem na tloušťku lepší
+bariérové vlastnosti. Požadované parametry povrchových ochranných systémů jsou uvedeny v tabulce č. 23-2.
+Součástí projektu sanace by vždy mělo být stanovení požadované tloušťky nátěrového systému a požadavek na
+následnou kontrolu této tloušťky spolu s přídržností k podkladu, případně vodotěsností. Ostatní parametry se
+obvykle zjišťují v rámci průkazních zkoušek.
+23.2.5 Injektážní hmoty
+Injektážní hmoty jsou používány pro vyplňování trhlin, pracovních spár a dutin v betonových resp. zděných
+konstrukcích s cílem obnovit jejich statické spolupůsobení nebo zabránit průniku vody či jiné kapaliny
+konstrukčním prvkem. Proto také rozdělujeme injektáže na tzv. silové a těsnicí.
+Injektážní hmoty volíme na základě celého spektra dílčích jak technologických, tak výsledných fyzikálně
+mechanických vlastností. Injektážní hmota musí mít přiměřenou viskozitu, aby byla schopna pronikat trhlinami
+či pracovními spárami a potřebnou dobu zpracovatelnosti (tzv. otevřenou dobu). Po zatuhnutí pak by měla mít
+dobrou adhezi k injektovanému konstrukčnímu materiálu, přiměřenou pružnost a pevnost minimálně na úrovni
+injektovaného materiálu. Vlastnosti injektážních hmot se dokládají průkazními zkouškami. Injektážní hmoty
+obvykle členíme na:
+– epoxidové,
+– polyuretanové,
+– cementové (mikrocementové).
+Injektážní hmoty představují specifickou oblast sanačních materiálů a jejich užití je vždy třeba konzultovat se
+specialistou nebo specializovanou firmou, která bude injektáže provádět.
+23.2.6 Nové materiály
+Na trhu se objevuje celé spektrum materiálů se speciálními vlastnostmi, určenými ke specifickým účelům. Pouze
+jako příklad lze uvést rozpínavé malty, materiály pro krystalizační dotěsňování betonu, bobtnavé materiály pro
+dotěsňování pracovních spár, materiály se specifickou elektrickou vodivostí či nevodivostí, materiály se
+zvýšenou odolností vůči zvýšeným teplotám, materiály s mimořádně rychlým nárůstem počátečních pevností,
+materiály se zvýšenou korozní odolností atd.
+O použití těchto materiálů rozhoduje projektant na základě informací v Technických listech těchto materiálů,
+doložených průkazními zkouškami a prokazatelnými referencemi. Zvlášť pečlivě musí být u těchto materiálů
+prověřována jejich trvanlivost resp. dlouhodobá stabilita vlastností.
+Dodavatel je při použití speciálních materiálů povinen seznámit své pracovníky s jejich vlastnostmi a správným
+postupem zpracování a aplikace. Ve zvláštních případech si projektant resp. investor může vymínit, aby
+pracovníci dodavatele byli speciálně proškoleni výrobcem či dodavatelem speciálního materiálu, případně aby
+zástupce dodavatele speciálního materiálu byl přítomen zhotovení referenčních ploch či samotné aplikace.
+Krystalizační prostředky pro obnovení vodotěsnosti betonu
+Použití speciálních materiálů je třeba pečlivě dokumentovat ve stavebním deníku. Technické listy těchto
+materiálů, provedená školení personálu i výsledky kontrolních zkoušek je třeba archivovat jako součást
+dokumentace skutečného provedení, případně další stavebně technické dokumentace. Použití speciálních
+materiálů při sanacích betonových a železobetonových konstrukcí a zděných konstrukcí je zcela přirozeným
+jevem, který je důsledkem průběžných technických inovací ve stavebnictví, jejichž cílem i výsledkem je zvýšení
+užitných vlastností sanačního zásahu i jeho dlouhodobé funkčnosti.
+Jedním z nových materiálů, používaných pro sanaci, avšak výhradně betonových konstrukcí, jsou
+tzv. krystalické, krystalizační či krystalizačně těsnicí materiály, které obsahují speciální přísady, které vytvářejí
+společně s vápenatými a hlinitými kationty krystalické komplexy, schopné utěsňovat pórový systém betonu.
+Pokud jsou tyto látky naneseny na povrch vlhkého betonu, jejich účinné složky reagují s přítomným hydroxidem
+vápenatým s dalšími složkami obsaženými v cementu nebo s jeho nehydratovanými či částečně hydratovanými
+složkami. Vznikající krystalické komplexy mají podobu husté sítě nerozpustných vláknitých krystalů, které
+prorůstají i do pórů, trhlin či dutin materiálu až do hloubky 500 mm. Šíří se rovněž proti hydrostatickému tlaku
+vody a uvádí se rychlost jejich průniku cca 2 mm za týden. Vzniklé krystaly se stávají integrální součástí
+13
+cementového pojiva a umožňují zcela eliminovat plošné či lokální průsaky vody v betonových konstrukcích,
+ať již nezhutněnými oblastmi, pracovními spárami či trhlinami. Aplikace těchto krystalizačních materiálů
+vyžaduje, aby beton, resp. jeho povrch byl vlhký. V případě nedostatku vody se růst krystalů zastaví, avšak po
+opětovném zvlhnutí betonu jejich růst pokračuje. Prostředky jsou použitelné jak pro sanaci průsaků v zatvrdlém
+betonu, tak i jako přísada do betonu čerstvého. Krystalizační prostředky výrazně zvyšují vodotěsnost betonu, ale
+jsou schopny dotěsnit beton i vůči průniku ropných látek (benzín, nafta, oleje apod.). Krystalické novotvary
+odolávají i trvale prostředí s hodnotami pH v širokém rozmezí od pH 3 do pH 12, což umožňuje chránit beton
+před účinky širokého spektra agresivních látek.
+Jakmile jsou aktivní látky těsnicího krystalizačního prostředku přítomny v pórech, je možné povrchovou
+stěrkovou vrstvu odstranit, takže těsnicí účinek nemá povrchová stěrka, ale výhradně síť krystalů, která postupně
+vzniká uvnitř pórézního systému betonu.
+Účinnost krystalizačních prostředků nelze ověřit běžnými zkouškami vodotěsnosti např. podle ČSN 73 1321. Je
+třeba stanovit tzv. koeficient filtrace, který přesně charakterizuje schopnost pórézního systému testované hmoty
+blokovat průnik kapaliny. Velmi jednoduše lze také prokázat účinnost krystalizačního dotěsnění betonu
+zkouškami povrchové nasákavosti, avšak nikoliv s použitím vody, ale benzínu (viz příloha 3). Krystalizační
+prostředky nabízejí nejen možnost sanace průsaků u starších betonových konstrukcí, ale i principiálně nový
+přístup k návrhu vodotěsných konstrukcí bez rubových izolací (tzv. bílé vany).
+23.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+Provádění technologických operací při sanaci inženýrských objektů musí být prováděno standardizovaným
+způsobem, který odpovídá cílům sanačního zásahu. Požadavky na rozsah a podrobnost technologických předpisů
+musí obsahovat projekt sanace. U rozsahem malých a technologicky jednoduchých sanačních akcí lze vycházet
+u jednotlivých technologických operací z popisu a parametrů uváděných v těchto Technických podmínkách.
+U rozsáhlejších sanačních akcí a náročnějších technologických postupech zpracuje technologický předpis
+vybraný zhotovitel a odsouhlasí ho projektant a objednatel.
+Technologický předpis musí obsahovat:
+– soupis a popis jednotlivých pracovních operací,
+– soupis použitých výrobků a hmot nezbytných pro realizaci technologické operace,
+– soupis strojů a zařízení nezbytných pro realizaci technologické operace,
+– způsob a rozsah kontroly technologického postupu.
+23.3.1 Sanace betonových konstrukcí
+Veškeré technologické postupy jsou pouze prostředky řady variantních sanačních strategií.
+Obecně lze strategie tohoto typu rozdělit do tří oblastí:
+– strategie zaměřené na předúpravu betonu a výztuže,
+– strategie zaměřené na ochranu a opravy výztuže,
+– strategie zaměřené na ochranu a opravy betonu.
+Každé z těchto strategií lze přiřadit několik technologických postupů, kterými lze dosáhnout podobného efektu.
+Je vždy na projektantovi, resp. zhotoviteli, aby navrhl resp. použil takové technologické postupy, které v dané
+situaci pro danou konstrukci vedou k optimálnímu naplnění strategických cílů opravy.
+23.3.1.1 Předúprava betonu
+Pojmem předúprava betonu a výztuže se rozumí především odstranění nesoudržných a neúnosných partií betonu,
+případně povrchových partií betonu, které jsou kontaminovány nežádoucími látkami, resp. odstranění korozních
+zplodin z výztuže. Cílem předúpravy betonu je tzv. "otevřít" strukturu betonu, tj. odhalit strukturu tak, aby
+mohlo dojít k dobrému zakotvení reprofilačních vrstev. "Otevření" povrchu betonu se nejsnáze identifikuje tak,
+že jsou vizuálně patrná na povrchu zrna drobného i hrubého kameniva včetně větších vzduchových pórů.
+Současně odhalený podklad musí být dostatečně únosný, což je obvykle charakterizováno odtrhovými
+zkouškami, a to pevností v tahu povrchových vrstev na úrovni 1,5 MPa.
+Rozsah a intenzitu předúpravy betonu i (výztuže) je třeba vždy pečlivě předepsat v projektu tak, aby nedošlo
+např. ke zbytečnému odstraňování (bourání) povrchových vrstev, které by nebylo účelné a pouze by zvyšovalo
+spotřebu správkových materiálů.
+14
+Tab. 23-3 Přehled zásad a metod předúpravy betonu a frekvence jejich použití
+Frekvence použití
+Zásada a její
+Typ metody
+definice Méně
+Časté
+časté
+Rozrušování pomocí technologie VVP x
+Hrubé
+rozrušení a Rozrušování betonu pomocí expanzních směsí x
+destrukce
+hmoty betonu Rozrušování betonu pomocí bouracích kladiv, klínů a x
+hydraulických kleští
+Rozrušování mechanické (lehká bourací kladiva) x
+Řezání diamantovými nástroji x
+Beton Jemné
+Rozrušování betonu rotačními nástroji (broušení) x
+rozrušení a
+destrukce Pneumatické pemrlování jehlovými pistolemi x
+hmoty betonu
+Tryskání abrazivem (pískování) x
+Brokování x
+Termický ohřev x
+Tryskání a řezání pomocí technologie VVP x
+VVP - vysokotlaký vodní paprsek
+Mechanické odstraňování povrchových vrstev
+K tomuto účelu se používá lehkých elektrických nebo lehkých pneumatických kladiv s hmotností max. do 4 kg.
+Nevýhodou tohoto postupu je, že je tzv. "nevýběrový" a je tedy kromě nesoudržného často odbouráván i kvalitní
+beton. Zvláště při necitlivé aplikaci může vyvolat dodatečné poškození konstrukce nebo vést k zbytečnému
+nárůstu spotřeby správkových malt. Současně však aplikace tohoto postupu je prakticky nezbytná u všech
+železobetonových konstrukcí. Mechanické bourání se musí prioritně zaměřit na beton podél prutů korodující
+výztuže. Odbourání v těchto oblastech by mělo být pokud možno provedeno tak, aby byl odhalen nejen čelní
+plášť výztužného prutu, ale i jeho zadní strana.
+Vysokotlaký vodní paprsek
+Vysokotlaký vodní paprsek je jednou z nejčastěji používaných technologií pro předúpravu betonu. Jeho
+předností je tzv. "výběrovost", tj. že odstraňuje prioritně zdegradovaný beton, naopak beton "zdravý" ponechává.
+Pro správné nasazení vysokotlakého vodního paprsku je důležité použití vhodné aparatury, jejíž pracovní tlak
+i výkon (spotřeba vody v l/min) je přiměřený použitému účelu. Samotný údaj o tlaku vodního paprsku není
+rozhodujícím parametrem pro posouzení jeho účinnosti. V žádném případě však za vysokotlaký vodní paprsek
+nelze vydávat aparatury s pracovním tlakem do 300 barů.
+Pro plošné odstraňování zdegradovaného betonu je třeba používat tzv. rotační trysky, bodové trysky pouze pro
+čištění betonu podél prutů korodující výztuže. Vysokotlaký vodní paprsek se standardně také používá
+i k účinnému omytí předupraveného podkladu a jeho zbavení jemných prachových částic např. po mechanické
+předúpravě nebo pískování.
+Pískování
+Tradiční technologický postup, spočívající v atakování povrchu betonu abrazivem vnášeným proudem
+stlačeného vzduchu. Tímto abrazivem bývá především křemičitý písek ale i další speciální materiály jako např.
+upravená vysokopecní struska. Nevýhodou tradičního pískování je vysoká prašnost. Proto se vyvinuly
+technologické varianty tzv. mokrého pískování, kdy abrazivo je zvlhčeno, čímž je snížena prašnost tohoto
+procesu. Při jeho použití je třeba dbát na plnění bezpečnostních i hygienických norem. Po provedeném pískování
+je třeba vždy povrch omýt vysokotlakým vodním paprskem.
+Brokování
+Technologický postup, při němž ve speciální aparatuře jsou proti povrchu betonového prvku vrhány ocelové
+broky, odsáván vznikající prach a v uzavřeném cyklu broky opět vrhány proti povrchu. S ohledem na aparaturní
+náročnost se brokování používá především při předúpravě betonových podlah. Jen výjimečně je používáno pro
+15
+předúpravu svislých stěn. Účinně ho lze aplikovat pouze u plochých velkoplošných konstrukcí. Předností
+brokování je, že je schopno odstraňovat z povrchu betonového prvku i tlustší a houževnaté nátěrové systémy.
+Pneumatické pemrlování
+Jedná se o použití tzv. pneumatických jehlových pistolí, které byly v minulosti používány např. pro čištění krust
+v kotlích. Ocelové jehly jsou v tomto případě vrhány proti přeupravovanému povrchu, který je tak intenzivně,
+avšak relativně citlivě narušován. Technologický postup je vhodný i pro odstraňování starších houževnatých
+nátěrových systémů.
+Frézování, broušení
+Technologické postupy závislé na speciálním aparaturním vybavení vhodné pro povrchovou předúpravu
+plochých, převážně vodorovných konstrukcí. Tento technologický postup je především používán k předúpravě
+betonových podlah. Pouze se značným rizikem ho lze použití při předúpravě vyztuženého betonu. Jakýkoliv
+vyčnívající prut výztuže může frézovací prvek resp. brusný kotouč zničit.
+Termický ohřev
+Technologický postup spočívá v šokovém ohřevu povrchových vrstev plynovými hořáky. V důsledku rozdílné
+roztažnosti zrn hrubého kameniva a cementového tmele dochází k jejich narušení, takže povrchové vrstvy se pak
+následně mechanicky snadno odstraní. Tento postup se v současné době používá pouze k odstraňování, resp.
+narušování starších houževnatých nátěrových systémů. K přímému odstraňování povrchových vrstev betonu se
+nepoužívá, a to jak z hlediska požárních tak i hygienických rizik.
+Chemická preparace povrchu
+Velmi účinně lze předupravit povrch betonu v tenké vrstvě a otevřít jeho strukturu aplikací např. zředěné
+kyseliny solné. Pěti až desetiprocentní roztok kyseliny se aplikuje na povrch nástřikem, štětcem či válečkováním
+a nechá se působit cca 60 minut. Následně se povrch omyje neutralizačním roztokem a důkladně omyje.
+Odhalená struktura jemných i hrubých zrn kameniva umožňuje velmi dobře zakotvit povrchové vrstvy. Postup je
+v exteriéru obtížně akceptovatelný z hlediska ekologických požadavků a jeho rizikem jsou i bezpečnostní
+hlediska. Použít by ho bylo možné pouze v striktně kontrolovaných podmínkách s dobře proškoleným
+personálem, a to např. pro předúpravu prefabrikátů apod. V současnosti se tento postup prakticky nepoužívá.
+23.3.1.2 Předúprava výztuže
+Při požadavcích na předúpravu výztuže je třeba vzít v úvahu, že z elektrochemického hlediska by bylo vždy
+teoreticky nezbytné, aby výztuž v celém rozsahu měla stejnou kvalitu povrchu. Pouze lokální očištění některých
+partií může průběh elektrochemické koroze spíše zrychlovat. Vzhledem k tomu, že ve většině případů není
+z technických i finančních důvodů možné odhalit v konstrukci veškerou, byť i slabě korodující výztuž, je
+důkladné očištění výztuže důležitým, avšak nikoliv zásadním požadavkem.
+V případě výztuže lze hovořit o dvou rovinách předúpravy, a to jednak odstranění nesoudržných korozních
+zplodin, kdy na výztuži zůstává jemný korozní povlak nebo očištění výztuže do tzv. stříbřitého lesku na stupeň
+Sa 2 1/2. V řadě případů celoplošná předúprava do úrovně stříbřitého lesku není možná.
+Odkrytá betonářská výztuž musí být co nejdůkladněji v mezích daných možností a požadavků projektu očištěna
+od korozních produktů a ihned ošetřena vhodným antikorozním nátěrem. Po provedené předúpravě výztuže by
+v žádném případě neměly být ponechány na povrchu nesoudržné korozní zplodiny.
+Odkrytá předpínací výztuž musí být ošetřena výhradně postupem stanoveným pro konkrétní případ
+specializovaným projektantem a technologie a systém protikorozní ochrany předpínací výztuže musí být
+odsouhlasený korozním specialistou. Předpínací výztuž je z korozního hlediska mimořádně citlivá a jakékoliv
+nekompetentní zásahy, podnikané byť v dobré víře, by mohly její korozní stav pouze zhoršit.
+Pro předúpravu výztuže se používají prakticky shodné postupy jako pro předúpravu betonu, a to:
+– čištění pomocí technologie vysokotlakého vodního paprsku obvykle s přidáním abraziva,
+– čištění pískováním, tedy aplikací abraziva stlačeným vzduchem,
+– pneumatické pemrlování,
+– kartáčování mechanickými drátěnými kartáči.
+16
+Tab. 23-4 Přehled zásad a metod předúpravy výztuže a frekvence jejich použití
+Frekvence použití
+Zásada a
+Typ metody
+její definice Méně
+Časté
+časté
+Čištění stlačeným vzduchem s abrazivem (např. pískování) x
+Čištění pomocí technologie vysokotlakého vodního paprsku s
+Výztuž Čištění přidáním abraziva x
+výztuže
+Pneumatické pemrlování jehlovými pistolemi x
+Kartáčování mechanickým drátěným kartáčem x
+23.3.1.3 Sanace výztuže
+Koroze výztuže může být způsobena:
+– rozběhem elektrochemické koroze výztuže v důsledku ztráty alkality krycí betonové vrstvy,
+– rozběhem elektrochemické koroze v důsledku kontaminace okolí výztuže chloridovými ionty,
+– přímým poškozením výztuže korozními činidly (např. kyselinami, louhy), které je typické
+především pro chemický průmysl,
+– elektrickými bludnými proudy indukovanými ve výztuži z okolních elektrických vedení.
+Uvedeným korozním mechanismům lze čelit těmito strategiemi:
+– ochranou nebo obnovením pasivace výztuže,
+– zvýšením elektrického odporu krycích vrstev betonu (snížením jejich vlhkosti),
+– úpravou katodické oblasti,
+– úpravou anodické oblasti,
+– katodickou ochranou výztuže.
+Ochrana nebo obnovení pasivace
+Výztuž je standardně pasivována vysokou alkalitou mladého betonu, která se pohybuje na úrovni pH 12,5 až
+13,0. V důsledku karbonatace, tj. reakce oxidu uhličitého s hydroxidem vápenatým v betonu dochází
+k postupnému snižování alkality povrchových vrstev. V okamžiku, kdy alkalita klesne pod úroveň 9,6 dochází
+ke ztrátě pasivace a je vytvořena jedna z podmínek pro rozběh elektrochemické koroze. Cílem této strategie je
+tedy, aby krycí vrstvy betonu měly co největší tloušťku (přirozený proces karbonatace pak trvá mnohem déle)
+a aby náhradou staré, již zkarbonatované, případně jinak kontaminované krycí vrstvy za novou, byla vysoká
+alkalita v okolí výztuže opět obnovena. Neinvazivní přístupy počítají pak s realkalizací karbonatovaného betonu
+bez odstranění stávajících krycích vrstev, resp. s neinvazivním odstraněním chloridů s povrchových vrstev.
+Zvětšení tloušťky krycí vrstvy výztuže dodatečně nanesenou správkovou maltou nebo betonem
+Nově nanášená vrstva správkové malty se obvykle dimenzuje v takové tloušťce, aby byla splněna současná
+kritéria na tloušťku krycích vrstev a aby rozhraní betonu se sníženou alkalitou v důsledku karbonatace se
+přiblížilo k výztuži po více než padesáti letech.
+Náhrada kontaminovaného nebo karbonatovaného betonu
+Současně s předchozím krokem se v rámci odstranění zkarbonatovaných či jinak kontaminovaných krycích
+vrstev betonu obnoví v důsledku aplikace nové správkové hmoty vysoká alkalita v okolí výztuže, kterou je
+výztuž dlouhodobě pasivována. Reprofilace tedy zajistí v okolí výztuže nejen opět vysokou alkalitu, ale
+současně umožní zvětšit tloušťku krycích vrstev, a tak oddálit vznik podmínek pro rozběh elektrochemické
+koroze výztuže do vzdálené budoucnosti.
+17
+Tab. 23-5 Přehled zásad a metod ochrany a opravy výztuže a frekvence jejich použití
+(podle ČSN EN 1504-9)
+Frekvence použití
+Zásada
+Zásada a její definice Typ metody
+č. Méně
+Časté
+časté
+Zvětšení tloušťky krycí vrstvy výztuže
+dodatečně nanesenou správkovou maltou nebo x
+betonem
+Náhrada kontaminovaného nebo
+x
+karbonatovaného betonu
+Ochrana nebo obnovení
+1 pasivace
+Elektrochemická realkalizace karbonatovaného
+x
+betou
+Realkalizace karbonatovaného betonu difúzí x
+Elektrochemické odstranění chloridu x
+Zvýšení elektrického Omezení obsahu vlhkosti povrchovou
+x
+2 odporu ochranou, nátěry nebo zakrytím
+Omezení obsahu kyslíku (na katodě)
+3 Úprava katodické oblasti x
+impregnací nebo povrchovým povlakem
+4 Katodická ochrana Aplikace elektrického potenciálu x
+Nátěry výztuže látkami, obsahujícími aktivní
+x
+pigmenty
+5 Úprava anodické oblasti Nátěry výztuže bariérovými povlaky x
+Přidání inhibitorů x
+Elektrochemická realkalizace karbonatovaného betonu
+Vzhledem k tomu, že kompletní mechanické odstraňování zkarbonatovaných krycích vrstev není vždy technicky
+ani finančně možné, používá se metoda, kdy na povrch betonu se připevní rohož z vodivých vláken, která je
+nasycena vodným alkalickým roztokem. K rohoži na jedné straně a k oslabené výztuži na straně druhé se
+připevní zdroj stejnosměrného proudu. Působením elektrického pole migrují ionty obsažené v alkalickém
+roztoku do zkarbonatovaného betonu ve směru od povrchu směrem k výztuži a zvyšují tak alkalitu betonu
+v jejím okolí. Metoda zatím byla použita spíše ojediněle, a to na vodorovném povrchu, např. mostovkách
+rekonstruovaných mostních objektů.
+Realkalizace karbonatovaného betonu difúzí
+Při tomto postupu se na povrch zkarbonatovaného betonu nanese alkalický roztok, který proniká směrem dovnitř
+difúzí vyvolanou gradientem koncentrací roztoku na povrchu a uvnitř konstrukce. Metoda je závislá na
+charakteru pórového systému betonu, který musí umožňovat dostatečně rychlou difúzi účinného roztoku krycími
+vrstvami nad výztuží. Účinnost metody je závislá na dispozici sanovaných konstrukčních prvků, hutnosti krycích
+vrstev, jejich vlhkosti i tloušťce.
+Elektrochemické odstranění chloridů
+Elektrochemické odstranění chloridů je možné u krycích vrstev mezi výztuží a povrchem, resp. v bezprostředním
+okolí výztuže. Extrakce chloridů z okolí výztužné oceli je založena na podobném elektrochemickém principu
+jako realkalizace. Rozdíl je pouze v tom, že v tomto případě může být použita varianta s externí anodou i externí
+katodou, případně varianta, kdy katodou je sama výztuž a pouze anoda je externí. Transport iontů tímto
+elektrochemickým postupem je významně závislý na vlhkosti betonu, na materiálu anody, na volbě externího
+elektrolytu a na použité proudové hustotě, pórové struktuře betonu, tloušťce krycí vrstvy a zejména na množství
+chloridů, kterými je povrchová vrstva kontaminována. Elektrolytem může být suspenze hydroxidu vápenatého
+18
+nebo běžná voda. Rizikem této metody může být skutečnost, že pokud jsou zdrojem chloridů posypové soli, tedy
+chlorid sodný, mohou uvolňované sodíkové ionty reagovat s reaktivním kamenivem a může docházet k tzv.
+alkalické reakci, jejímž důsledkem je následná postupná degradace betonu. Na základě dostupných zkušeností se
+uvádí, že v intervalu 10 až 50 dnů může být odstraněno 20 až 50 % původně přítomných chloridových iontů.
+Zvýšení odporu krycích vrstev betonu
+Koroze výztuže je v převážné většině případů elektrochemický proces, pro jehož vznik je nezbytná přítomnost
+elektrolytu, tj. pórového roztoku v betonu. Čím sušší je beton, tedy čím vyšší je odpor betonu, tedy nižší jeho
+elektrická vodivost, tím menší riziko vzniku elektrochemické koroze výztuže existuje. Obecně platí, že pro
+rozběh elektrochemické koroze výztuže musí být splněny dvě podmínky:
+– nízká alkalita betonu v okolí výztuže (nižší než 9,6),
+– nízký odpor betonu (vysoká vlhkost betonu v okolí výztuže).
+V případě, že nejsme schopni v okolí výztuže obnovit alkalitu, např. odstraněním starých krycích vrstev
+a nahrazením novou reprofilací, nebo nejsme schopni tyto oblasti neinvazivně realkalizovat, je dalším možným
+opatřením provést takové zásahy, které sníží vlhkost v povrchových vrstvách betonu.
+Snížení vlhkosti betonu snížením relativní vlhkosti okolního vzduchu
+Vlhkost všech stavebních materiálů je závislá na relativní vlhkosti okolního prostředí, resp. na kontaminaci
+prvky dešťovými, případně sněhovými srážkami. Pokud to situace umožňuje, lze dosáhnout velmi účinného
+snížení vlhkosti betonu např. zvýšenou intenzitou přirozeného či umělého větrání nebo umělým odvlhčováním
+vzduchu. Tato opatření jsou nejsnáze použitelná pouze v interiérových podmínkách.
+Snížení obsahu vlhkosti betonu zakrytím
+Omezení vstupu vlhkosti z dešťových nebo sněhových srážek můžeme velmi účinně zajistit zastřešením nebo
+oplechováním prvku samozřejmě za předpokladu, že jeho konfigurace toto opatření umožňuje realizovat.
+Podobnou variantou může být opláštění povrchu železobetonového prvku tak, aby mezi vnějším pláštěm a jeho
+povrchem docházelo k dostatečně účinnému provětrávání.
+Snížení obsahu vlhkosti v povrchové vrstvě nátěry
+Bariérové vodotěsné nátěrové systémy jsou po jistou dobu schopny účinně bránit vstupu v kapalné formě i ve
+formě vodní páry do konstrukce. Při návrhu tohoto opatření je však třeba vzít v úvahu, že životnost těchto nátěrů
+je omezená a z dlouhodobého hlediska by bylo nezbytné je tedy v pravidelných intervalech obměňovat.
+Veškeré výše uvedené postupy musíme vždy volit tak, aby byly realisticky zhodnoceny všechny transportní
+cesty vlhkosti do prvku. Musí být zvážena i možnost kondenzace vzdušné vlhkosti, průnik zemní vlhkosti do
+železobetonového prvku, případně průnik porušeným odvodněním nebo dalšími mechanismy. Řešení by mělo
+vždy respektovat, aby z prvků vlhkost mohla přirozeným způsobem unikat.
+Úprava katodické oblasti
+Úprava katodické oblasti vyžaduje omezení přístupu kyslíku do všech potenciálních katodických oblastí až do té
+míry, že korozní články jsou utlumeny a korozi je zabráněno deaktivací katod.
+Tohoto cíle lze dosáhnout impregnací nebo povrchovým povlakem, který však musí být zcela kompaktní
+a dlouhodobě účinný.
+Úprava anodické oblasti
+Vytvoření podmínek, za kterých potenciálně anodické oblasti výztuže nejsou schopné zúčastnit se korozní
+reakce.
+Nátěry výztuže látkami obsahujícími aktivní pigmenty
+Aktivní pigmenty mohou působit jako anodické inhibitory. Jedná se o chemická činidla, která brání vytváření
+anodických oblastí na výztuži. Podobný účinek může mít i vytvoření galvanické reakce tzv. obětovaného kovu
+(obětovaná anoda).
+Nátěry výztuže bariérovými povlaky
+Izolace výztuže od okolního betonu nátěrem, který je elektrickým izolantem, má zabránit tomu, aby se kationty
+kovu uvolňovaly z oceli, rovněž má zabránit ukládání příchozích aniontů v těchto místech. Metoda může být
+účinná jedině pokud je ocel zcela čistá a povrchový nátěr celistvý. To znamená, že prut výztuže musí být
+kompletně zapouzdřen a povrchový povlak neporušen. Metoda se nemůže navrhovat, pokud není možné pokrýt
+celý obvod prutu výztuže. K těmto účelům se používají především epoxidové nátěry. Postup je však prakticky
+použitelný pouze u nové výztuže, resp. výztuže nově vkládané do prvku. Výztuž musí být předem naohýbaná,
+protože ohýbání povlakované výztuže vede k lokálním poruchám povlaku. Povlakování odkryté výztuže na
+19
+sanované výztuži je prakticky neproveditelné. Povlakování funguje pouze za předpokladu, že všechny pruty
+v poškozeném dílci jsou kompaktně pokryty. Pokud budou potaženy jen částečně, elektrické proudy v souvislosti
+s elektrochemickou korozí se budou soustřeďovat v nechráněné výztuži a budou zde vyvolávat korozní
+problémy.
+Aplikace inhibitorů do betonu impregnací nebo difúzí
+Inhibitory je možné nanášet ve formě povrchové úpravy nebo elektrochemickou cestou. Rovněž je možné
+přidávat do systému pro ochranu a opravy (do správkových malt a nátěrových systémů). Princip použití tzv.
+migrujících inhibitorů spočívá v nanášení roztoku na povrch sanované železobetonové konstrukce, který v sobě
+obsahuje inhibitory koroze rozpuštěné v polyalkoholech. Tyto látky mají mimořádnou schopnost penetrace
+a migrace k výztuži. Účinnost tohoto opatření se odhaduje na tři až pět let.
+Katodická ochrana výztuže
+Katodová ochrana výztuže vychází ze známých fyzikálních principů a je dlouhou dobu běžně používaná
+především při ochraně ocelových potrubních vedeních uložených v zemi. Katodickou ochranou se zabývá
+ČSN EN 12 696 "Katodická ochrana oceli v betonu". Katodická ochrana se zvlášť používá tam, kde beton je
+kontaminován chloridy, případně tam, kde není ekonomické nebo vhodné odstranit beton, který je nenarušený,
+avšak chloridy kontaminovaný. Pokud je totiž beton kontaminován chloridy, způsobí tyto chloridové ionty
+depasivaci, která vede ke korozi za předpokladu, že současně má k výztuži přístup kyslík. Depasivaci
+a následnou korozi doprovází pokles potenciálu oceli v betonu. Při jeho nižších záporných či dokonce kladných
+hodnotách prudce roste rychlost rozpuštění železa a tedy dramaticky stoupá korozní rychlost. Naopak při
+potenciálu nižším (zápornějším) rychlost koroze klesá.
+Cílem katodické ochrany je posunout potenciál oceli v betonu do oblastí, kde vznik koroze nebo pokračování
+šíření již vzniklé koroze jsou natolik potlačeny, že výskyt poruchy způsobené korozí je po dobu životnosti
+konstrukce nepravděpodobný.
+U železobetonových konstrukcí se katodická ochrana realizuje polarizací výztuže vnějším proudem. Za tímto
+účelem se na povrch upevňují, natírají nebo pod povrch zabetonovávají anody, které se v případě ochrany
+vloženým proudem připojují na kladný pól zdroje. Při použití vloženého proudu je záporný pól zdroje připojen
+na ocelovou výztuž. Beton, resp. roztok v jeho pórech slouží jako elektrolyt, umožňující průchod proudu a s ním
+spojený pohyb iontů. Změna potenciálu oceli v betonu se monitoruje pomocí referenčních elektrod, zapuštěných
+do betonu nebo umístěných na jeho povrchu. Tyto elektrody se spolu s vhodným přístrojovým vybavením
+a propojením s výztuží používají ke sledování vývoje potenciálu oceli v betonu vůči referenčním elektrodám.
+Návrh i provedení katodické ochrany jsou náročné na teoretické znalosti, tak i technologické vybavení.
+Navrhovat, resp. realizovat ji může pouze specializovaný odborník resp. firma.
+23.3.1.4 Sanace betonu
+Porušení betonu může být vyvoláno celou řadou mechanismů, ať již fyzikálních, chemických či mechanických.
+Většinou se jedná o kombinaci účinků. Na beton, resp. jeho povrchové oblasti velmi negativně působí také
+korodující výztuž, a to tlaky, resp. tahy vyvolávané korozními zplodinami, které vznikají při elektrochemické
+korozi výztuže. Tyto korozní zplodiny mají výrazně větší objem než původní kov (o několik set procent)
+a v důsledku toho u železobetonových konstrukcí s korodující výztuží dochází k postupnému oddělování krycích
+vrstev. Naopak degradace povrchových vrstev betonu a trhliny v betonu významně ovlivňují stav výztuže, resp.
+nebezpečí vzniku její elektrochemické koroze. Degradace a ztráta alkality povrchových vrstev vyvolává
+depasivaci výztuže, průnik vlhkosti povrchovými vrstvami a trhlinami vytváří dostatek pórového roztoku, který
+funguje jako elektrolyt a opět elektrochemickou korozi urychluje. I když formálně jsou technologické postupy
+pro opravy betonu a výztuže pro přehlednost uvedeny samostatně je zřejmé, že opravu betonu a výztuže nelze
+vzájemně oddělovat.
+Nejčastějšími degradačními mechanismy jsou:
+– mrazové namáhání betonu,
+– namáhání betonu cyklickými změnami vlhkosti,
+– chemická koroze betonu,
+– koroze v důsledku působení mikrofauny a mikroflóry na beton,
+– mechanické narušení nebo opotřebení betonu,
+– působení vysokých teplot (požár),
+– vznik technologických a statických trhlin.
+20
+Uvedeným korozním mechanismům lze čelit dále uvedenými strategiemi, ochranou betonu proti vnikání vody
+a agresivních látek do povrchových vrstev, obnovou betonu, zesílením konstrukce, injektáží trhlin…
+Ochrana povrchu betonu proti vnikání vody a agresivních látek
+Beton je porézní stavební materiál, u kterého jsou všechny korozní procesy vyvolány agresivními látkami
+v plynné nebo kapalné formě, které pronikají skrz kapilární systém pórů. Schopnost betonu odolávat účinkům
+okolního prostředí závisí v rozhodující míře na nepropustnosti povrchových vrstev betonu. Nejvýhodnější je
+proto hutný, málo propustný beton. V případě, že se tak nestalo, nebo je tato ochrana s ohledem na agresivitu
+prostředí nepostačující, vyžaduje povrch betonu sekundární ochranu povrchovou úpravou.
+Povrchová úprava musí být trvanlivá v alkalickém prostředí betonu, odolná vůči klimatickým podmínkám a UV
+záření. V zásadě se rozlišují dvě metody povrchové úpravy betonu:
+– impregnace, při níž impregnační materiál pronikne do povrchových vrstev betonu a nevytváří
+měřitelnou vrstvu na jeho povrchu,
+– nátěr, kterým se vytvoří souvislý film na povrchu betonu.
+Při impregnaci na rozdíl od nátěrů je impregnační látka uvnitř betonu chráněna před přímými účinky ovzduší,
+mechanického poškození a ultrafialového záření. Vzhledem k uvedeným skutečnostem je životnost impregnace
+větší než životnost nátěrů.
+Nátěry vytvářejí na povrchu betonu různě tlusté vrstvy přibližně od 100 µm výše. Při posouzení funkčnosti
+nátěru se zohledňuje především bariérová účinnost a životnost nátěru.
+Příprava i nanášení povrchových ochranných systémů se provádí přesně podle pokynů výrobce, které jsou
+uvedeny v příslušných technologických předpisech nebo technických listech. Technologický předpis musí
+zejména obsahovat:
+– charakterizaci požadovaného podkladu pod nátěr, jak co do hutnosti, rovinnosti, tak vlhkosti,
+– teplotní rozmezí, ve kterém lze nátěr aplikovat včetně minimální teploty podkladní vrstvy,
+– informace o tzv. otevřené době, tj. časovém intervalu, ve kterém lze nátěr bez obtíží aplikovat
+(v závislosti na vnější teplotě),
+– informaci, zdali je možné nátěr dořeďovat, a to jakými rozpouštědly,
+– způsob nanášení nátěru včetně požadovaných pomůcek a jejich přesné charakterizace,
+– informace o minimální tloušťce nátěrů,
+– informace o maximální době jeho skladovatelnosti,
+– informace o minimálních, resp. maximálních skladovacích teplotách.
+Nátěrové hmoty musí být dodávány na stavbu v originálním balení, označené datem výroby, případně číslem
+výrobní šarže. Dodavatel je povinen na vyžádání objednatele skladovat prázdné obaly od nátěrů tak, aby bylo
+možné prokázat jejich skutečnou spotřebu.
+V případě vícevrstvých nátěrů nepigmentovaných penetrací nebo hydrofobizací může zadavatel vyžadovat po
+předchozím odsouhlasení dodavatele nátěru na zhotoviteli částečné doplňkové pigmentování jednotlivých vrstev
+tak, aby bylo možné jednoduchým způsobem posoudit rovnoměrnost nanesení nátěru na určené ploše resp.
+požadovanou skladbu vrstev. Kontrola provádění povrchových ochranných vrstev musí být podrobena průběžné
+a důkladné kontrole kvality prací. Pro výslednou kvalitu povrchového ochranného systému má zásadní význam
+pečlivost provedení a dodržení všech technologických požadavků vyžadovaných v technologickém předpisu.
+U rozsáhlejších povrchových úprav, resp. u úprav se specifickými vlastnostmi se doporučuje na počátku prací
+provést referenční plochy za přítomnosti investora, projektanta, zhotovitele, případně dodavatele nátěru
+a následně jejich vzhledové i fyzikálně mechanické vlastnosti odsouhlasit. Referenční plochy mohou být také
+využity pro objektivní stanovení optimální měrné spotřeby nátěrového systému. Spotřebu nátěru totiž výrazně
+ovlivňuje hutnost podkladních vrstev, kterou nelze v předstihu zcela objektivně posoudit. Pro hodnocení
+nátěrového systému je vždy rozhodující jeho tloušťka, uvedená v projektu sanace, nikoliv měrná spotřeba
+nátěrové hmoty. Je třeba upozornit, že u savých betonových podkladů může být výsledná tloušťka nátěrového
+systému i poloviční ve srovnání s hutným a nenasákavým podkladem!
+21
+Obnova betonu
+Obnova betonu může být prováděna několika technologickými postupy:
+– reprofilace maltovými vrstvami - nanášenými ručně,
+- nanášenými strojně stříkáním,
+– dobetonování - pěchování,
+- dobetonování plného průřezu,
+- čerpání betonové směsi do bednění.
+Nanášení reprofilační malty ručně
+Zpracování, nanášení a ošetřování správkových hmot se provádí přesně podle pokynů výrobce, uvedených
+v příslušných technologických předpisech. S tímto technologickým předpisem musí být seznámeni všichni
+zodpovědní pracovníci zhotovitele a přiměřeným způsobem i staveništní personál, provádějící sanační práce.
+V technologickém předpisu musí být zejména uveden:
+– postup přípravy (míchání) sanační správkové hmoty,
+– délka míchání,
+– tzv. otevřené časy pro zpracování správkové hmoty v závislosti na teplotě,
+– vymezení, za jakých klimatických podmínek nelze se správkovou hmotou pracovat,
+– nejnižší přípustná teplota vzduchu a podkladního betonu (obvykle se nepřipouští, aby teplota
+vzduchu a podkladu klesla pod +5 °C),
+– požadavky na kvalitu podkladního betonu a jeho vlhkost,
+– požadavky na ošetřování správkové hmoty (délka ošetření závisí na typu použitého pojiva
+i tloušťce vrstvy).
+Dále musí být v technologickém předpisu přesně specifikovány podmínky ošetřování správkových hmot, a to
+zejména u správkových hmot obsahující jakákoliv silikátová pojiva. Délka ošetření závisí na typu použitého
+pojiva i tloušťce nanesené vrstvy. Minimálně je nezbytné zabránit vysušení a podchlazení správkových hmot
+s pojivem na silikátové bázi po dobu 7 dnů.
+Ruční aplikace spočívá ve standardním zednickém ručním nahazování, jehož kvalita je samozřejmě výrazně
+ovlivněna zkušeností a pečlivostí provádějícího pracovníka. Při ruční aplikaci správkových malt je třeba vzít
+v úvahu, že na tyto malty jsou kladeny výrazně vyšší požadavky na soudržnost s podkladem než tradičních
+interiérových či fasádních omítek. U tradičních omítek se požaduje soudržnost s podkladem na úrovni 0,1 resp.
+0,2 MPa, zatímco u reprofilačních malt na úrovni v průměru 1,2 MPa a výše. Přitom je zřejmé, že soudržnost
+správkové malty s podkladem výrazně závisí kromě kvality předúpravy podkladu i na intenzitě zapracování
+správkové hmoty do podkladu. Zkoušky provedené s cílem odhalit vliv technologie aplikace na soudržnost
+prokázaly, že strojní aplikace správkové hmoty stříkáním dosahuje v průměru o 0,5 MPa vyšší soudržnosti
+s podkladem než technologie ručního nanášení při použití stejné správkové malty ve shodných podmínkách a na
+shodném podkladě. Naopak aplikace správkové malty pouhým natahováním vykázala o cca 0,5 MPa nižší
+soudržnost než aplikace ručním nahazováním.
+22
+Tab. 3-6 Přehled zásad a metod ochrany a opravy betonu a frekvence jejich použití (dle ČSN EN 1504-9)
+Frekvence použití
+Zásada
+Zásada a její definice Typ metody
+č. Méně
+Časté
+časté
+Impregnace x
+Ochrana proti vnikání
+Povrchová ochrana x
+Omezení nebo zabránění
+průniku škodlivých činitelů
+1 Místní bandážování trhlin x
+(např. vody, jiných kapalin,
+páry, plynu, chemikálií a
+Povrchové úpravy x
+biologických látek).
+Výplň trhlin x
+Impregnace x
+Ovlivňování vlhkosti
+Povrchová ochrana x
+2 Nastavení a udržování
+obsahu vlhkosti v betonu v Stínění a opláštění x
+daných mezích
+Elektrochemická ochrana x
+Obnova betonu
+Nanášení malty ručně x
+Obnovení původního
+Dobetonování x
+betonu prvku konstrukce do
+3
+původně stanoveného tvaru
+Nástřik betonu nebo malty x
+a funkce. Obnovení
+betonové konstrukce
+Náhrada prvků x
+náhradou její části.
+Přidání nebo náhrada zabudované nebo vnější
+x
+výztuže
+Vlepování výztuže do otvorů v betonu x
+Zesílení konstrukce
+Vyztužení lepenými příložkami x
+4 Zvýšení nebo obnovení
+Doplnění malty nebo betonu - reprofilace x
+únosnosti prvku betonové
+konstrukce
+Injektáž trhlin, dutin nebo mezer x
+Výplň trhlin, dutin nebo mezer x
+Dodatečné předpínání x
+23
+Ruční aplikaci správkových hmot stěrkováním lze proto použít zcela výjimečně s vědomím, že hodnoty
+soudržnosti s podkladem mohou být nižší než jsou obvyklé požadavky technických podmínek. Pokud se použije
+přesto ruční aplikace natahováním, je třeba preferovat použití zubových stěrek, které umožňují vtlačit
+správkovou hmotu do podkladu s vyšší intenzitou a zároveň vrstvu odvzdušnit. Při stěrkování totiž velmi často
+dochází k uzavření vzduchu na styčné spáře mezi stěrkou a podkladem. Zároveň tenkovrstvé stěrky jsou výrazně
+citlivější na ošetření, které musí být prováděno vzápětí po jejich zatuhnutí a se zvýšenou intenzitou.
+Nanášení správkové hmoty strojně - stříkáním
+Při strojním nanášení správkových hmot lze použít dvě technologické varianty, a to tzv. suchý nástřik,
+tj. technologický postup, kdy je v trysce stříkacího zařízení odděleně dopravována suchá správková hmota
+a odděleně voda a směs je pak zvlhčována těsně před tryskou, nebo variantu tzv. mokrého nástřiku, kdy je
+správková hmota rozmíšena ve vodě standardním míchacím zařízením a potrubím dopravována ke stříkací
+trysce.
+Předností prvé varianty je možnost snadného přerušení prací. Proto se tato technologie preferuje především
+v oblasti sanací, kdy se většinou nejedná o časově souvislejší nástřiky rozsáhlejších ploch, ale naopak o práce
+přerušované finalizováním povrchu a dalšími technologickými operacemi. Nevýhodou tohoto postupu je, že je
+velmi závislý na zkušenosti pracovníka, který obsluhuje vlastní trysku a rozhoduje o množství záměsové vody,
+která je k suché směsi přidávána. Získat dostatek zkušeností v tomto směru je mimořádně náročné a možnost
+předchozího tréninku na "simulátoru" prakticky nulová. Nástřik musí být prováděn z optimální vzdálenosti 1 m
+až 1,5 m pokud možno kolmo ke stříkanému povrchu krouživým pohybem. Důležitým technologickým
+parametrem je tzv. odpad, tj. množství směsi, která se neuchytí na sanované ploše a odpadne, tj. dojde k její
+ztrátě. Tato směs v žádném případě nesmí být recyklována a zpětně používána pro nástřik. Míra odpadu se
+pohybuje v závislosti na řadě podmínek v rozmezí 15 až 30 %. U technologie suchého nástřiku má rozhodující
+význam průběžná kontrola kvality prostřednictvím nastříkaných kontrolních bloků. Jedná se o nástřik směsi do
+dřevěných forem o rozměrech 500 x 500 x 100 cm, které se umísťují obvykle pod úhlem 45° ke stěně a nastříkají
+se krouživým pohybem. Po zatvrdnutí se uloží do normových podmínek a následně se z nich vyřežou kontrolní
+tělesa. Již pouhý řez kontrolního bloku umožní získat informace o kvalitě nástřiku, a to posouzením homogenity
+řezné plochy. Pokud na ní nejsou prakticky patrné či jen neznatelně patrné jednotlivé vrstvy, jedná se o nástřik
+provedený kvalitně, v opačném případě jsou nejen zřetelné jednotlivé vrstvy nástřiku, ale velmi často se
+vyskytují v řezné ploše i zcela nesoudržná hnízda.
+Technologie mokrého nástřiku se při sanačních pracích používá jen výjimečně vzhledem k tomu, že neumožňuje
+provádět častější odstávky, které jsou nutně spojeny s nezbytností čištění přívodních hadic, resp. potrubí.
+Účinněji lze proto použít pouze při velkoobjemových reprofilačních pracích, kdy v jednom pracovním cyklu se
+aplikuje několik desítek metrů krychlových betonu.
+Dobetonování
+V řadě případů jsou železobetonové konstrukční prvky poškozeny tak, že reprofilace ať již ruční či strojní by
+nebyla racionální. V těchto případech je vhodné postižené oblasti (průrazy, hluboké kaverny, masivně rozpadlé
+prvky apod.) dobetonovat. V úvahu připadá celá řada technologických variant, závislá na dané konfiguraci prvku
+i objemu dobetonávek.
+Pěchování
+Pěchování je metoda aplikace správkové hmoty nebo betonu, která má pouze zavlhlou konzistenci, vysokou
+thixotropicitu, a tedy prakticky nulovou roztékavost. Mechanické pěchování umožňuje správkovou hmotu
+takovéto konzistence tlačit i do relativně malých poruch a účinněji zhutnit. Celý proces se provádí po vrstvách.
+Zhutňuje se obvykle pěchem z tvrdého dřeva. Velmi záleží na pečlivosti a důkladnosti provádění. Po dokončení
+je velmi důležité i takovéto malé oblasti přiměřenou dobu ošetřovat.
+Zalití poruch ve vodorovných prvcích
+Vykazují-li betony na vodorovných plochách rozsáhlá povrchová poškození, může být hospodárnější
+a trvanlivější znovu obnovit celou narušenou část prvku. Průřez se tedy vybourá buď na celou tloušťku nebo na
+podstatnou část tloušťky prvku, porucha se vhodně ohraničí, očistí se odhalená výztuž a vzniklá prostora po
+případném zabednění se dobetonuje správkovou hmotou či betonem tekuté konzistence. Podstatným
+požadavkem při této jednoduché technologické operaci jsou požadavky na minimální smrštění správkové hmoty
+nebo betonové směsi. Je tedy třeba použít hmoty, u níž by mělo být garantováno smrštění na úrovni 0,4 mm/m či
+menší. S použitím zvláštních přísad lze i u standardních betonů dosáhnout výrazného snížení objemových změn,
+případně nastavit jeho rozpínání.
+24
+Čerpání do bednění
+V případě, že potřebujeme doplnit (dobetonovat) rozsáhlejší objemy materiálů u prvků svislých, resp. např. na
+spodních lících vodorovných konstrukčních prvků, je možné aplikovat tekutou správkovou maltu nebo
+betonovou směs tak, že se porucha uzavře vodotěsně bedněním, osadí se dvěma vstupy s ventily, přičemž na
+jeden se připojí hadice čerpacího zařízení, druhý slouží jako odvzdušňovací. Technologie je při správném
+provedení poměrně jednoduchá a velmi účinná. Velmi je však závislá na zkušenosti provádějících pracovníků
+a na jejich pečlivosti a dobrém materiálovém vybavení.
+Zesílení konstrukce
+Velmi často je železobetonová konstrukce narušena degradačními účinky, které vyvolaly pokročilou korozi
+betonu i výztuže nebo byla v minulosti vystavena náhodnému přetížení ať již statickými nebo dynamickými
+účinky. Součástí sanačního zásahu pak musí být nezbytně i zesílení konstrukce nebo dílčích konstrukčních
+prvků, protože jenom tak je možné zachovat další plnou funkčnost konstrukce.
+Na rozdíl od většiny předcházejících sanačních zásahů, jejichž cílem je zastavit korozní degradaci
+železobetonové konstrukce nebo prodloužit její životnost a které jsou navrhovány spíše intuitivně, musí při
+zesílení konstrukce být vždy provedeno statické posouzení, které by prokázalo jak statickou únosnost konstrukce
+před zesílením, tak po něm. U náročnějších nebo složitějších zesilovacích zásahů se doporučuje provést po
+provedeném zesílení zatěžovací zkoušku, která by ověřila souhlas reálného chování zesílené konstrukce
+s výpočtem. Variant, jak mohou být různorodé železobetonové inženýrské konstrukce zesíleny, je velké
+množství. Velmi orientačně je lze rozdělit na postupy zesilující konstrukci:
+– zvětšením průřezu,
+– vnesením předpětí do konstrukce,
+– změnou nosného systému.
+Zvětšení únosnosti průřezu můžeme zajistit:
+– zvětšením průřezu reprofilací (s výztuží i bez výztuže),
+– dobetonováním (s výztuží i bez výztuže),
+– výztuží lepenou na povrch nebo umístěnou do drážky,
+– přidáním tuhé výztuže.
+Důležitým předpokladem fungování zvětšeného průřezu je zabezpečení spolupůsobení nového materiálu
+a původního betonu. Ve výpočtu se musí zohlednit i skutečnost, že původní část prvku je pod vlivem zatížení ve
+stavu napětí, zatímco nová část betonu pouze tvrdne a podléhá objemovým změnám (smršťování, hydratačnímu
+smrštění).
+Zesilování vodorovných ohybově namáhaných prvků
+U těchto konstrukčních prvků mohou být k zesílení využity tyto postupy:
+– nadbetonování,
+– přidání výztuže,
+– zmenšení rozpětí,
+– kombinace uvedených způsobů.
+Zesilování nadbetonováním
+Pro nadbetonování se navrhuje alespoň taková třída betonu, jakou má původní deska, lépe však ještě o stupeň
+vyšší. Tloušťka nadbetonované vrstvy musí být nejméně 50 mm. Zesílení desek nadbetonováním může být
+provedeno:
+– spolupůsobením nového a původního betonu (spolupůsobící deska),
+– bez spolupůsobení (odlehčovací deska).
+Pokud je zabezpečeno spolupůsobení nového a původního betonu, tloušťka desky při výpočtu představuje součet
+původní a nové desky. Tahová síla ve výztuži přechází prostřednictvím vodorovných smykových sil do
+tlačeného betonu. Kritickým místem zesílené desky je spára na styku mezi novým a starým betonem. Její
+spolupůsobení lze zlepšit:
+– zdrsněním povrchu původního betonu v kombinaci s adhezním můstkem,
+– vložením ocelových trnů do předem vyvrtaných otvorů v původním betonu nebo svorníků
+vložených na celou tloušťku prvku a jejich stažením. Nadbetonovaná vrstva se obvykle
+vyztužuje svařovanými sítěmi.
+25
+Při použití systému odlehčovací desky odpadá problém spojení starého a nového betonu, není třeba odstraňovat
+povrchové vrstvy a osazovat trny nebo svorníky, čímž se dosáhne urychlení prací. Složitější je výpočet, kdy
+poměr únosnosti obou desek je velmi složitý. Uplatňuje se vliv smršťování, změny modulu pružnosti nového
+betonu dotvarováním a další okolnosti, které je třeba zohlednit. Tloušťka odlehčovací desky je vždy větší než
+tloušťka desky spřažené s původní konstrukcí.
+Zesilování přidáním výztuže
+Vždy přidáváme výztuž k povrchu, kde je situována tažená zóna (podle průběhu ohybových momentů).
+Přidávaná výztuž musí spolupůsobit s betonem. Klasická měkká výztuž se může vkládat do vyfrézované drážky
+a vyplněním drážky materiálem zabezpečujícím soudržnost betonu a výztuže. Druhou možností je nalepení
+pásové výztuže (lamel) na beton dvousložkovým lepidlem. Lamely mohou být ocelové nebo uhlíkové.
+Předpokladem účinného spolupůsobení betonového podkladu, lepidla a lamel je dostatečná pevnost jednotlivých
+materiálů a vysoká přilnavost na styčných plochách. Na podkladový beton se kladou tyto požadavky:
+– pevnost betonu v tlaku musí odpovídat minimálně třídě betonu B 15,
+– průměrná pevnost v tahu povrchových vrstev musí být větší než 1,5 MPa,
+– maximální vlhkost betonu musí být 4 %,
+– teplota povrchu musí být v intervalu + 15 až + 35 °C,
+– na lepené ploše betonu musí být obnažené vrcholky zrn kameniva o velikosti 8 mm.
+Oddělení lamely od betonu před dosažením mezní únosnosti zabrání dodržení těchto požadavků:
+– tloušťka ocelové lamely se musí v závislosti na třídě podkladního betonu pohybovat
+v intervalu od 15 do 15 mm,
+– šířka lamely musí být menší než 200 mm,
+– mezní poměrné přetvoření lamely musí být menší než 2 %,
+– stupeň zesílení musí být menší než 2,0.
+Manipulace s poměrně těžkými, málo ohybnými ocelovými pásy a nebezpečí koroze jsou hlavními nevýhodami
+ocelových zesilovacích lamel. Proto se v posledním období s převahou začínají používat lamely s vlákny
+z vyztuženého polymeru (FRP), nejvíce pak lamely vyztužené uhlíkovými vlákny (CFRP). Dosavadní mírnou
+nevýhodou uhlíkových lamel je jejich cena a přenos sil v jednom směru.
+Zesilování zmenšením rozpětí
+V deskách se zkrácení rozpětí dosahuje vložením železobetonového nebo ocelového nosníku uprostřed rozpětí
+desky. Betonáž vloženého železobetonového nosníku se provádí skrz otvory v desce do přiloženého bednění
+s výztuží. Do otvoru se vkládají i ocelové trny na zlepšení spolupůsobení desky s novým nosníkem. Průřez není
+schopný přenést záporný ohybový moment a vznikne trhlina. I přesto dojde ke zmenšení mezipodporových
+a podporových momentů.
+U nosníků se zmenšení rozpětí dosáhne vložením pevných nebo poddajných podpor. Nově vzniklé záporné
+podporové momenty a příčné síly, které vznikají nad vloženými podpěrami, nejsou vykryté výztuží. Vzniklé
+trhliny způsobují, že nosník nad podporou má charakter kloubového uložení.
+Zesilování přidáním tuhé výztuže
+Tuhé válcové profily spolupůsobící se železobetonovým nosníkem nebo deskou mohou vlastní ohybovou tuhostí
+výrazně zvětšit jejich únosnost. Podmínkou je spolehlivé spolupůsobení, které se většinou zabezpečuje svorníky
+v kombinaci s adhezním můstkem mezi železobetonovým průřezem a přidaným ocelovým profilem.
+Zesilování vnějším předpětím
+Vnější předpínací výztuž tvoří lana, kabely nebo tyče, které jsou osazené mimo betonový průřez. Při návrhu
+výztuže se vychází z předpokladu, že do konstrukce budou vneseny vnější síly předpětí. To znamená, že celá
+konstrukce je ve výpočtovém modelu zatížena dalšími vnějšími silami, a to v místě zakotvení silovým
+a ohybovým momentem od excentrické polohy kotev. S ohledem na množství kritérií a požadavků ovlivňujících
+návrh zesilování betonových konstrukcí vnesením předpětí proto tento způsob zesílení může navrhovat pouze
+zkušený statik, důkladně seznámený s reálným statickým schématem konstrukce i s metodikou návrhu
+předpjatých konstrukcí. V tomto směru je tedy tento zesilovací postup velmi náročný, v případě nekvalitního
+návrhu i riskantní. Výhodou techniky vnějšího předpětí je, že jeho části jsou snadno kontrolovatelné, opravitelné
+a vyměnitelné.
+26
+23.3.1.5 Injektáže
+Injektáž je technologie, při které se do nepřístupných trhlin a dutin stavebního prvku vhání injektážními otvory
+pod tlakem injektážní směs. Smyslem injektáže je vyplnění, spojení, zpevnění a utěsnění injektovaného
+materiálu.
+Trhliny (poruchy které se nejčastěji injektují) vznikají přetížením konstrukce nebo kombinací silových
+a fyzikálních účinků. Podstatná část trhlin vzniká v době tuhnutí a tvrdnutí betonu od objemových změn, jako je
+tzv. hydratační smrštění a smrštění spojené s vysýcháním betonu.
+Z hlediska injektáže rozlišujeme mezi povrchovými trhlinami a trhlinami štěpnými:
+– trhliny povrchové zasahují jen do krycí vrstvy betonu nad výztuží a končí na nosné
+či konstrukční výztuži,
+– štěpné trhliny zasahují do hlubších podpovrchových partií průřezu nebo procházejí průřezem
+v celé tloušťce.
+U trhlin dochází velmi často ke změně jejich šířky, která se může projevit:
+– krátkodobě (např. v důsledku periodického pohyblivého zatížení),
+– denně (např. v důsledku slunečního osvitu nebo v závislosti na denním a nočním vývoji teplot,
+– dlouhodobě (např. v důsledku ročního období a tomu odpovídajících klimatických podmínek).
+K zaplňování trhlin přistupujeme, má-li být dosaženo jednoho nebo více z dále uvedených cílů:
+– omezení nebo zabránění přístupu agresivních látek, vznikajících do stavebních dílů trhlinami,
+– odstranění netěsnosti stavebních dílů, podmíněných trhlinami,
+– spojení protilehlých okrajů trhliny tak, aby výplň přenášela tahové namáhání,
+– spojení protilehlých okrajů trhliny, které umožňuje vzájemně omezený pohyb.
+Dosažení jednoho nebo více výše uvedených cílů může být částečně nebo zcela znemožněno tím, že se do trhliny
+dostanou materiály poškozující beton nebo výplňový materiál snižující přilnavost k betonu. Stejný účinek má
+i vytvoření uhličitanových výluhů v trhlině.
+Cílů uvedených v předchozím odstavci lze dosáhnout:
+– samotížnou penetrací trhlin epoxidovou pryskyřicí (použitelné pouze na vodorovném
+podkladu),
+– tlakovou injektáží epoxidovou pryskyřicí, která umožní silové namáhání trhlin,
+– tlakovou injektáží polyuretanovou pryskyřicí s omezenou možnosti dilatace.
+Výběr injektážních materiálů (epoxid/polyuretan) je velmi často podmíněn stavem vlhkosti trhliny, resp. jejích
+okrajů.
+K provedení injektáže je třeba:
+– vhodné injektážní zařízení,
+– vytvoření injektážních bodů (plnících hrdel) pomocí vrtaných resp. lepených injektážních
+přípravků („pakrů“),
+– povrchové utěsnění trhliny v oblasti mimo plnící hrdla.
+Nezbytnou součástí injektáží je i kontrola kvality injektáže. Její rozsah a forma musí být součástí projektu nebo
+technologického postupu injektáže. Průkazná kontrola zainjektování je proveditelná pouze odběrem malých
+jádrových vývrtů o průměru cca 30 až 50 mm.
+27
+Tabulka 23-7 Způsoby identifikace trhlin
+č. Znak Metoda zachycení / zkoušení Výsledek / dokumentace
+1 Druh trhliny Vizuální prohlídka, případně odběr jádrového vývrtu ∅ 50 mm Řešení podle definice
+Zakreslení, případně paušální údaje (např. ohybová trhlina ve
+Vizuální prohlídka
+2 Průběh trhliny vzdálenostech ...., síťová trhlina s velikostí ok ...)
+Údaje s datem a místem měření
+Měřítko pro šířku trhliny, lupa na trhliny (přesnost 0,05 mm) u změn šířky trhlin dle řádků 4.1 a 4.2 i s udáním hodin a
+3 Šířka trhliny
+klimatických podmínek, případně teploty stavebního dílu
+Nejzávažnější změny s uvedením data, hodin a klimatických
+Měření změny šířky, např. pomocí snímače pohybu
+4.1 krátkodobé podmínek
+Změny mezi naměřenými hodnotami ráno a večer v intervalu
+Měření změny šířky, např. číslicovým úchylkoměrem, při sedání
+cca 12 hodin, s datem, klimatickými podmínkami a teplotou
+4.2 Změny šířky trhlin denní snímačem pohybu
+stavebních dílů
+Změny ve stále delších časových intervalech (podle okolností
+Lepení značek (případně kalibrovaných), měření sedání i více měsíců) s uvedením data a klimatických podmínek,
+4.3 dlouhodobé
+popř. teploty stav. dílu
+Vizuální prohlídka, průzkum včetně podmínek výstavby, Rozdíl podle definice, případně vyhodnocení
+5 Příčina vzniku trhlin zhodnocení výsledků řádku 1 - 4, případně výpočty pravděpodobnosti opětovného vzniku trhlin
+Vizuální prohlídka, případně odběr jádrového vývrtu Popis
+6 Stav trhlin /okrajů trhlin
+Stavební deník, průzkumy Údaje o dřívějších opatřeních, např. o výplni trhlin
+7 Předcházející opatření
+Místní stanovení Charakterizování poměrů (potřeba lešení atd.)
+8 Přístupnost
+28
+Před provádění injektážních prací je třeba vždy dokumentovat stav a rozsah trhlin, a to z hlediska:
+– příčiny vzniku trhliny,
+– polohy trhlin a jejich rozsahu,
+– šířky trhlin,
+– změny šířky trhlin v krátkodobé denní či dlouhodobé periodě,
+– stav okrajů trhlin,
+– informace o případných předchozích sanačních opatřeních,
+– informace o přístupnosti konstrukce resp. trhlin z hlediska provádění injektáže.
+Injektážní zařízení by mělo mít zejména tyto vlastnosti:
+– jednoduchou obsluhu a možnost jednoduché kontroly funkčnosti,
+– možnost regulace injektážního tlaku v celém pracovním rozsahu,
+– malou poruchovost,
+– jednoduché čištění a údržbu.
+Rozhodnutí o způsobu a rozsahu injektážních prací by mělo vycházet ze vzájemné konzultace mezi projektantem
+sanace, zadavatelem i vybraným dodavatelem.
+Dodavatel musí pečlivě zkontrolovat poměry na stavbě a posoudit možnost provedení účinného zaplnění trhliny.
+V případě, že poměry na stavbě nebo předpokládaný způsob provedení nezaručují dosažení výsledku, který byl
+stanoven, musí zadavateli neprodleně písemně sdělit své pochybnosti.
+Dodavatel injektážních prací musí vždy pečovat o vhodnou likvidaci všech hmot, které se objeví jako odpad
+v průběhu prací a po jejich skončení a nemohou být recyklovány. V této souvislosti musí dodržovat veškerá
+platná zákonná ustanovení a o likvidaci hmot musí mít příslušné doklady (viz kap. 23.10.).
+Injektážní práce smějí provádět pouze pracovní čety, které mají potřebnou kvalifikaci, tj. jak potřebné
+zkušenosti, tak i proškolení. Doklady o odborném proškolení personálu i o referencích jsou nedílnou součástí
+nabídky injektážních prací.
+Během provádění injektážních prací je bezpodmínečně nutná přítomnost vedoucího pracovní čety na pracovišti.
+V průběhu prací musí dodavatel průběžně provádět záznamy o injektážních pracích a podle možností je doplnit
+fotografiemi. Součástí záznamu je místo a rozsah prováděných injektáží, typ a objem spotřebovaných
+injektážních hmot, vlhkost a teplota v průběhu injektážních prací.
+Po skončení prací vypracuje dodavatel injektážních prací závěrečnou zprávu, která musí obsahovat minimálně:
+– přehled druhů použitých injektážních materiálů, jejich technické listy a jejich celkovou
+spotřebu,
+– výsledky kontrolních zkoušek,
+– přesně popsaný používaný technologický postup,
+– grafické znázornění zaplněných trhlin s uvedením data provedených prací,
+– přehled klimatických podmínek v průběhu injektážních prací,
+– zprávy o kontrole objednatele v průběhu injektážních prací,
+– zvláštní okolnosti.
+29
+Tabulka 23-8 Oblasti použití výplňových materiálů a druhů výplní
+Vlhkost trhlin/okrajů trhlin
+Cíl použití Trhliny, které vedou vodu
+suché vlhké
+"bez tlaku" "pod tlakem"
+EP-T EP-Tx
+Uzavření EP-I EP-Ix PUR-I PUR-Ix
+PUR-I PUR-I
+EP-I EP-Ix
+Utěsnění PUR-I PUR-Ix
+PUR-I PUR-I
+Spojení trhlin
+EP-I EP-Ix - -
+namáhaných silou
+Spojení trhlin s možností
+PUR-I PUR-I PUR-I PUR-Ix
+dilatace
+EP-T penetrace epoxidovou pryskyřicí
+EP-I injektáž epoxidovou pryskyřicí
+PUR-I injektáž polyuretanovou pryskyřicí
+x za použití pryskyřic, speciálně vhodných pro tento účel
+Penetrace epoxidovou pryskyřicí (Beztlaková injektáž)
+K penetraci trhlin epoxidovou pryskyřicí se smí používat pouze za studena tvrdnoucí dvousložkové pryskyřice
+bez rozpouštědel a bez plniv, vhodné pro injektáž betonových konstrukcí. Šířka trhliny může být prakticky
+libovolná.
+Je třeba si uvědomit, že penetrací lze zaplňovat zásadně pouze oblasti povrchových trhlin. Původní únosnost
+průřezu poškozeného trhlinami se proto obnoví jen částečně.
+Epoxidová pryskyřice pro penetraci musí mít při předpokládaných teplotách použití velmi nízkou viskozitu,
+vysokou schopnost kapilární vzlínavosti a dostatečně dlouhou dobu zpracování, aby bylo dosaženo hloubkového
+účinku penetrace.
+Trhliny musí být zaplněny minimálně do hloubky 5 mm, případně do patnáctinásobné šířky trhliny. Rozhodující
+je vyšší hodnota. Trhliny a zóny trhlin je třeba před penetrací očistit vhodnými metodami, minimálně ručně
+úzkými drátěnými kartáči nebo lépe „copánkovým“ drátěným kartáčem umístěným na úhlové brusce. Před
+vlastní penetrací je vhodné trhliny vysát, nejlépe průmyslovým vysavačem. V případě, že dosažená hloubka
+penetrace nedostačuje zamýšlenému účelu, musí se i povrchové trhliny injektovat tlakově.K dosažení potřebného
+stupně penetrace musí být v rozmezí doby zpracování výplňového materiálu závislé na teplotě stavebního
+objektu zajištěn dostatečný přívod materiálu k trhlině. Je třeba pamatovat na možnost odvzdušnění trhliny.
+Penetraci je proto třeba provádět postupně z jedné strany.
+Tlaková injektáž epoxidovou pryskyřicí k silovému zaplnění trhliny
+K injektáži epoxidovou pryskyřicí, vhodnou pro zaplnění trhlin namáhaných silou, smějí být používány pouze za
+studena tvrdnoucí dvousložkové epoxidové pryskyřice bez rozpouštědel a plniv.
+Práce se musí provádět podle odsouhlaseného technologického postupu. Injektáž se nesmí provádět při teplotách
+konstrukčních prvků nižších než +8 °C.
+Pokud není dohodnuto jinak, je třeba trhliny zásadně ze všech stran utěsnit, osadit injektážními přípravky
+a injektovat.
+Rozestup injektážních přípravků se v závislosti na použité technologii pohybuje od poloviny do celé tloušťky
+prvku. Svislé trhliny se injektují vždy od spodu nahoru.
+Maximální pracovní tlak by měl být na úrovni jedné třetiny až jedné čtvrtiny tlakové pevnosti injektovaného
+betonu. Při injektáži používáme buď injektážní přípravky vkládané do předvrtaných otvorů, nebo injektážní
+přípravky lepené na povrch trhliny.
+Po dokončení injektáže se odstraní injektážní přípravky i hmota uzavírající trhlinu v oblasti mezi injektážními
+přípravky a povrch konstrukce se v těchto oblastech opraví. Způsob této opravy je vždy třeba předem dohodnout,
+30
+protože dosažení identického stavu povrchu co do struktury a barevného ladění je jen obtížně možné.
+Na pohledových površích tedy vždy po injektáži zůstanou patrné stopy. Je tedy třeba počítat s následným
+použitím barevně sjednocujícího nátěru.
+Tabulka 23-9 Podmínky použití specifických materiálů pro penetraci EP-T
+Č. Znak Podmínky použití
+Pro oba druhy trhlin
+1 Druh trhliny
+Libovolný
+2 Průběh trhliny
+Libovolná 1)
+3 Šířka trhliny
+4.1 krátkodobé
+Žádné
+4.2 Změny šířek trhliny denní
+4.3 dlouhodobé
+Známé
+5 Příčiny vzniku trhlin
+Standardní
+6 Stav trhlin /okrajů trhlin
+Žádné podmínky
+7 Předcházející opatření
+1) Technika penetrace je určena šířkou trhliny
+Tabulka 23-10 Podmínky použití specifických materiálů pro injektáž EP-T
+Č. Znak Podmínky použití
+Pro oba druhy trhlin
+1 Druh trhliny
+Libovolný
+2 Průběh trhliny
+3 Šířka trhliny w ≥ 0,01 mm 1)
+∆ w ≤ 0,1 w, případně
+4.1 krátkodobé
+∆ w ≤ 0,3 mm
+Změny
+4.2 denní
+závislé na vývoji pevnosti EP 2)
+šířek trhliny
+Libovolné
+4.3 dlouhodobé
+Známé, neopakující se
+5 Příčiny vzniku trhlin
+Standardní
+6 Stav trhlin /okrajů trhlin
+Nebyly provedena ještě žádná výplň
+7 Předcházející opatření
+1) Aktuální hodnota v podstatných oblastech průběhu trhliny
+2) Žádné omezení, pokud je pevnost = 3,0 MPa v rozmezí 10 hodin
+Tlaková injektáž polyuretanem sloužící k utěsnění trhlin s možností jejich částečné dilatace
+Injektáž polyuretanovými pryskyřicemi je obvykle charakterizována jako těsnicí. Umožňuje částečný pohyb
+trhlin, zároveň však nezajišťuje přenášení silových účinků.
+Použitá injektážní polyuretanová pryskyřice musí mít dostatečnou adhezi k okrajům trhlin o libovolné vlhkosti
+a dostatečnou schopnost dilatace v trhlinách. Výplň nesmí při styku s vodou před nebo po průběhu reakce
+zkřehnout.
+31
+Tabulka 23-11 Podmínky použití specifických materiálů PUR I
+Č. Znak Podmínky použití
+Pro oba druhy trhlin
+1 Druh trhliny
+Libovolný
+2 Průběh trhliny
+3 Šířka trhliny w ≥ 0,01 mm 1)
+Dilatace výplňového materiálu vytvrzeného v Podle průkazní zkoušky 2)
+4
+trhlině pro libovolné změny šířky
+Známé
+5 Příčina (ny) vzniku trhlin
+Standardní
+6 Stav trhlin /okrajů trhlin
+Opakované zaplňování je možné
+7 Předcházející opatření
+1) Aktuální hodnota v nejdůležitějších oblastech průběhu trhliny
+2) Požadavek podle použití, min. ∆ w > 0,1 w
+Polyuretanová pryskyřice, určená k utěsnění trhlin z hlediska jejich vodotěsnosti, musí dále splňovat požadavky:
+– velmi krátkou dobu reakce při styku s vodou,
+– vytvoření pěny s velmi jemnými póry se značným zvětšením objemu.
+Injektáž polyuretanovou pryskyřicí je třeba provádět bez povrchové ucpávky trhlin pomocí injektážních
+přípravků ve vyvrtaných otvorech.
+Detailní ustanovení, kterými je třeba se řídit při provádění i kontrole injektážních prací jsou uvedeny
+v Technických podmínkách pro opravu trhlin v betonových konstrukcích, které vydal německý spolkový ministr
+pro dopravu pod označením „ZTV-RISS 93„ a který je k dispozici v českém překladu.1
+23.3.2 Sanace zděných konstrukcí
+Zděné konstrukce jsou především rozrušovány působením srážkové vody, která je vodou hladovou
+a demineralizovanou. Tato voda má schopnost rozpouštět vazné součásti vápenných vápenocementových
+i cementových zdicích malt. Pronikání vody, zejména pak vody srážkové zděnými konstrukcemi vede
+k postupné degradaci zdicí malty, ztrátě těsnosti zdiva, kompaktnosti zdiva a v případě staticky významněji
+namáhaných konstrukcí (klenby) i ke ztrátě předpětí a vzniku trhlin.
+Kromě toho voda prosycuje jak zdicí maltu i zdicí prvky a pokud jsou exponovány v exteriéru, vyvolává
+postupně jejich mrazové porušení. Zejména v případě cihel a méně kvalitních kamenů (opuka, pískovec), tak
+postupně dochází k rozpadu zdicí malty i zdiva a k postupné ztrátě jeho kompaktnosti.
+Velmi významným degradačním činitelem, který působí na zdivo, jsou účinky dynamické a mikrodynamické,
+tedy silové, mnohonásobně se opakující účinky především vyvolané okolní dopravou. Vzhledem k tomu, že
+pevnost zdiva v tahu je velmi malá či nulová, mohou tyto dlouhodobě působící dynamické účinky vést
+k postupnému rozvolnění zdiva a jeho porušení.
+Poruchy vyvolané výše uvedenými degradačními mechanismy mají zprvu vliv pouze na vzhled zdiva, později
+dochází ke vzniku trhlin nebo lokálnímu drcení zdiva a v nejkritičtějších fázích může dojít k lokálnímu kolapsu,
+tj. vypadnutím dílčích partií zdiva.
+1 Vydala Správa silničního fondu České republiky, Čimická 319, 181 00 Praha 8 Zpracovatel Silniční vývoj
+Brno, Olomoucká 174, 627 00 Brno.
+32
+Sanace zděných konstrukcí vyžaduje, aby provedený stavebně technický průzkum identifikoval aktuální kvalitu
+zdicích materiálů (zdicí malty, zdicích prvků) a odhalil převažující příčinu vzniku existujících poruch.
+Pouze na základě vyhodnocení stavebně technického průzkumu lze navrhnout odpovídající technologii sanace
+zdiva.
+V případě, že se jedná o staticky náročnější inženýrský objekt, musí být součástí stavebně technického průzkumu
+i statický přepočet zděné konstrukce. Problémem věrohodného statického přepočtu narušené zděné konstrukce je
+však zahrnutí zjištěných imperfekcí (trhlin a dalších poruch) tak, aby výpočtový model věrohodně odrážel
+aktuální stav zděné konstrukce.
+Sanace zděné konstrukce se obvykle provádí některými z dále uvedených metod:
+– spárováním,
+– injektováním zdiva,
+– přezdíváním,
+– plombováním,
+– spínáním armaturou vloženou do spár a otvorů, spínáním železobetonovými prvky, spínáním
+ocelovými táhly,
+– povrchová ochrana.
+23.3.2.1 Spárování
+Spárování obvykle rozlišujeme jako povrchové (náhrada malty do hloubky cca 50 mm), resp. hloubkové. V obou
+případech se postupuje takto:
+– odstranění rozrušené malty ze spár do zadané hloubky mechanicky (v kombinaci se stlačeným
+vzduchem) nebo vysokotlakým vodním paprskem,
+– odstranění materiálu ze spár a jejich řádné provlhčení, případná aplikace adhezního můstku,
+– vyplnění spár cementovou maltou a jejich povrchová finalizace.
+Maltu do spár lze vtlačovat ručně v případě povrchového spárování a pomocí spárovací pistole s tlakem
+do 0,5 MPa při hloubkovém spárování.
+Pro spárování zvlášť staticky exponovaných objektů (např. kleneb) je třeba použít spárovací maltu, jejíž
+objemové změny v důsledku vysychání (smrštění) jsou menší než 0,4 mm/m. Jedná se o tzv. objemově
+kompenzovanou cementopolymerní maltu, která je schopná zdivo vodotěsně utěsnit a zabránit jeho výraznějšímu
+dotvarování.
+23.3.2.2 Injektování
+Účelem injektování porušeného zdiva je zejména obnovení jeho původní pevnosti v tlaku. Injektážní suspenze
+musí vyplnit všechny vnitřní dutiny a trhliny ve zdivu (výplňová injektáž). Chceme-li zajistit odolnost vůči
+průsakům vody zdivem, mluvíme o těsnicí injektáži (např. za rubem kleneb).
+Před zahájením injektáže je nutné zdivo přespárovat na hloubku nejméně 50 mm, aby nedošlo k výronům
+suspenze na povrchu zdiva.
+Rozmístění a hloubka injektážních vrtů se stanoví v závislosti na výsledcích průzkumu (vodní tlaková zkouška)
+a na tom, zda se injektování může provádět z jedné nebo z obou stran.
+Při jednostranném injektování se hloubka vrtů volí obvykle 2/3 tloušťky konstrukce, při oboustranném
+1/3 tloušťky konstrukce.
+Při plošném injektování se vrty rozmístí šachovnicovitě po celé ploše povrchu. Vodorovná vzdálenost vrtů je od
+0,5 do 2,0 m, svislá vzdálenost vodorovných řad je od 0,5 do 0,8 m.
+Při pásovém injektování se vrty rozmístí opět šachovnicovitě, avšak nikoliv po celé ploše, nýbrž ve svislých
+a vodorovných pásech, širokých asi 1,0 m, vzájemně osově vzdálených 3,0 až 4,0 m. Ve zdivu se vytvoří
+pravoúhlá mříž (skelet) z injektovaného zdiva s vnitřními poli neinjektovaného zdiva. Tato metoda se používá
+velmi zřídka a přichází v úvahu pouze u méně namáhaných konstrukcí.
+Dává se přednost aktivované maltě. Volba postupu při injektování (jednofázové nebo vícefázové – reinjektáž)
+a injektážních tlaků (postupně se zvyšujících) je závislá na použitém zařízení a stavu zdiva. U značně
+porušeného zdiva je nutné zpočátku volit velmi nízké tlaky. Zdivo se injektuje tlaky od 0,1 do 0,6 MPa.
+Po zatvrdnutí injektážní směsi (minimálně po 28 dnech) se v kontrolních vrtech vodní tlakovou zkouškou ověří
+kvalita injektážních prací.
+33
+Mikroinjektování kamenného zdiva
+Touto metodou se injektují málo hutné a nasákavé kameny (opuka, pískovec) u staveb památkově chráněných.
+– Injektáž se provádí umělými pryskyřicemi nebo jejich směsí.
+– Před injektáží se povrch zdiva utěsní. Injektážní tlak je 0,2 MPa.
+– Injektování se ukončí, když nastane vzestup injektážního tlaku na manometru nebo když dojde
+k výronu směsi kdekoliv na povrchu.
+– Pro mikroinjektování velmi provlhlého zdiva se osvědčily malty obsahující speciální
+tzv. mikromleté cementy.
+Sanace trhlin epoxidovými pryskyřicemi
+Při injektování zdiv je třeba dodržovat shodné principy jako při injektování betonu (viz kap. 23.3.1.5)
+– Trhlina ve zdivu se sanuje injektáží jenom tehdy, je-li stabilizována.
+– Nejvhodnějšími materiály pro sanaci trhlin jsou epoxidové pryskyřice.
+– Trhliny ve zdivu užší než 1 mm se sanují epoxidovými pryskyřicemi bez plnidel, pro širší
+trhliny je nutné použít epoxidové pryskyřice s plnidly.
+– Teplota zdiva a okolního prostředí musí být nejméně + 10 °C,
+– Sanace začíná očištěním povrchu zdiva, odstraněním uvolněných částí cihel, kamenů nebo
+malty a odsáním nečistot a zejména prachu z trhliny.
+– Mastné skvrny se odstraní saponáty, nikoliv organickými rozpouštědly, zdivo se vysuší
+proudem vzduchu nebo nástřikem lihu a proudem vzduchu. K vysušování se nesmí použít
+žádný otevřený plamen.
+– Není vhodné vrtat otvory pro osazení injektážních trubiček (prach se dostane do trhliny). Lepší
+způsob je připevnění trubičky na povrch zdiva v místě trhliny tmelem.
+– Vzdálenost trubiček závisí na druhu použitého materiálu a na šířce trhliny – při šířce menší než
+1 mm je 20 až 40 cm, při šířce 1 mm je 50 cm a při šířce větší než 1 mm je 60 až 100 cm.
+Po osazení injektážní přípravků se trhlina zatmelí.
+– Směs pro injektování musí být dokonale zhomogenizována. Vždy se připraví jen takové
+množství, které lze zpracovat během 15 až 20 minut. Přesný postup se řídí pokyny výrobce
+injektážní směsi uvedené v Technickém listu.
+– Plnidlem je křemičitá moučka s maximální velikostí zrna 0,1 mm v množství až 40 %
+hmotnosti pryskyřice.
+23.3.2.3 Přezdívání
+Jedná se o postup, kterým se opravují silně narušené oblasti s rozpadající se zdicí maltou nebo zdicími prvky.
+V závislosti na statickém schématu konstrukce je třeba fixovat okolní nenarušené či méně narušené zdivo např.
+vyklínováním. Následuje postupné vybourání (odstranění) jednotlivých narušených zdicích prvků a jejich
+postupná náhrada zdicími prvky novými.
+V případě výměny celých řad je zdivo třeba ve vodorovném i svislém směru rozepřít tak, aby nedošlo
+k deformaci okolního zdiva.
+Nově usazené zdicí prvky se vyklínují a následně zaspárují cementovou maltou, jejíž smrštění bude menší než
+0,4 mm/m. Po zatvrdnutí malty ve spárách, nejdříve však po sedmi dnech, se klínky odstraní a spára se
+dospáruje.
+23.3.2.4 Plombování
+Jedná se o postup, kdy do lokálně poškozených partií zdiva se místo náhrady původními zdicími prvky uloží
+betonová směs vhodné konzistence.
+Do vybouraného prostoru, který se důkladně zbaví všech prachových částic a provlhčí se osadí krátké trny
+z betonářské výztuže s cílem zajistit spolupůsobení betonové plomby s okolním zdivem a následně se do
+prostoru uloží betonová směs buď pěchováním nebo zalitím zabedněného otvoru tekutou betonovou směsí.
+Kvalita použitého betonu musí být minimálně na úrovni B 30/37. Beton musí obsahovat minimálně hrubé
+kamenivo frakce 16 - 22 mm. V žádném případě k těmto účelům nemohou být používány cementové potěry
+z těženého kameniva frakce 0-4 resp. 0-8 mm! Použitý beton musí být mrazuvzdorný (T 100). Smrštění betonu,
+doložené průkazními zkouškami, musí být menší než 0,4 mm/m.
+34
+23.3.2.5 Spínání a stahování
+U zdiva, u něhož nedochází k celoplošnému rozpadu zdící malty ale současně je zřejmé, že kompaktnost zdiva je
+snížena, se do prohloubených spár zdiva vkládá speciální nerezová výztuž přespárovaná speciální maltou. Tento
+postup umožňuje sanovat jak celkově rozvolněné zdivo, tak i trhliny ve zdivu.
+Podobně se používá metoda tzv. „sešívání trhlin“, která spočívá ve vytvoření soustavy ocelových spon různé
+délky, osazených zpravidla kolmo přes trhlinu tak, aby spony mohly převzít tahové i smykové namáhání.
+Ocelové spony se zapouštějí na obou koncích do zdiva na různé hloubky, aby se jejich zakotvením nevytvořila
+jiná trhliny. Spony ve tvaru U se osazují do předvrtaných otvorů, nebo se do otvorů osadí nejprve kotvy
+z betonářské oceli a ty se navzájem spojí betonářskou výztuží, přivařenou ke kotvám.
+Tuto běžnou ocelovou výztuž, fixovanou na povrchu zděné konstrukce, je třeba chránit vrstvou betonu nebo
+cementové omítky tak, aby byla zajištěna její dlouhodobá korozní stabilita.
+Spojení části zděného objektu, porušeného trhlinou, lze provést železobetonovými hmoždinkami (sponami).
+Vyztužené plomby se osazují nebo betonují přes trhlinu do vysekaných drážek v líci zdiva a kotví se kotvami
+z betonářské oceli. Hmoždinky mají obvykle rybinovitý tvar o rozměrech 1000 x 350 x 100 mm. Vyztužují se
+betonářskou ocelí o průměru 10 až 12 mm.
+Jinou možností je v místě trhliny vysekat rýhu o potřebných rozměrech (hloubka až do 70 cm), která se klínovitě
+rozšiřuje směrem do zdiva. Na dno rýhy se osadí ocelové spony zakotvené do zdravého zdiva. Ocelové spony
+jsou z betonářské oceli o průměru 12 až 20 mm, osazují se na vzdálenost 20 až 30 cm od sebe a na hloubku
+15 až 20 cm, případně se kotví. Stejným způsobem se osadí spony na stupeň lícního rozšíření a oboje se spojí
+třmínky umístěnými na vzdálenost 30 až 40 cm od sebe. Třmínky jsou rovněž z betonářské oceli o průměru
+5 mm. Líc zdiva se pak postupně zabední a prostor rýhy se vyplní betonem.
+Jestliže je konstrukce rozdělena několika rovnoběžnými trhlinami (např. klenba rozdělena podélnými trhlinami
+na více úzkých kleneb), lze s výhodou použít ocelová táhla, která se osadí do líce i na rub konstrukce klenby
+a přes válcovaný U profil se sešroubují. U kleneb se obvykle horní táhlo protáhne otvorem vyvrtaným ve zdivu
+čelní zdi nad klenbou a dolní svorník se zapustí do rýhy vysekané ve zdivu v líci klenby. U profily se mohou
+zapustit do zdiva čelních věnců klenby. Součástí sanace je ochrana táhel, ručně či strojně aplikovanou
+cementopolymerní správkovou maltou.
+Další způsob spojení zdiva porušeného podélnými trhlinami používá táhel procházejících vrstvy ve zdivu
+klenby. Při této metodě je zapotřebí provrtat klenbu podélnými vrty (od jednoho lícového věnce k druhému),
+do níž se zatáhnou svorníky. Ty se opět spojí na límci spojkami z válcovaných U profilů.
+Místo měkké výztuže táhel lze použít i předpínací tyče nebo lana. Po předepnutí se trhliny a kanálky s výztuží
+zainjektují.
+23.3.2.6 Povrchová ochrana
+Povrchovou ochranu cihelného i kamenného zdiva je třeba navrhovat a provádět s největší opatrností. Každá
+povrchová ochrana ovlivňuje difúzi vlhkosti zdivem a může vytvářet větší či menší difúzní bariéru, která se
+může následně projevit zvětšenou citlivostí povrchových partií zdiva k degradaci či mrazovému porušování.
+Proto je použití bariérových nátěrů na bázi epoxidu a polyuretanů až na přesně zdůvodněné výjimky zakázáno.
+Povrchovou ochranu zdiva lze provádět především vhodnými hydrofobizačními prostředky, jejichž použití
+k tomuto účelu je přesně specifikováno v Technickém listu výrobku a průkazním způsobem ověřeno
+prohlášením o shodě.
+K povrchové ochraně zdiva by měly být využívány především takové materiálové systémy, s jejichž použitím
+jsou přiměřené zkušenosti. Ideální je, pokud povrchová ochrana cihelného či kamenného zdiva může být ověřena
+na referenční ploše, a to po dobu minimálně 12 měsíců. U povrchové ochrany zdiva musí být garantováno, že
+srovnávací tloušťka vzduchové vrstvy vůči vodní páře je menší než 0,3 m. Současně musí být ověřeno, že
+povrchová nasákavost takto ošetřeného povrchu podle ČSN 73 2578 bude V = 0,0 l/m2.
+30
+35
+23.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+23.4.1 Dodávka a skladování
+Doprava a skladování výrobků a hmot musí být zabezpečena tak, aby nedošlo k jejich znehodnocení (zejména
+klimatickými srážkami a mrazem) a k jejich vzájemnému promíchání a znečištění.
+Při dopravě a skladování se preferují výrobky umístěné na europaletách, fixované a částečně chráněné
+smrštitelnou plastovou fólií nebo opáskované. Hmoty a výrobky, které nejsou takto adjustovány, mohou být
+během automobilové a železniční dopravy znehodnoceny například v důsledku prudkého brždění a narážení
+vagónů při sestavování vlaků.
+U hmot a výrobků, které musí být chráněny před povětrností, je třeba důsledně dbát na to, aby dopravní
+prostředky, zejména automobily byly opatřeny plachtami.
+Vykládání musí probíhat mechanizovaně, nejlépe pomocí vysokozdvižného vozíku, případě mechanizované ruky
+na automobilu, posuvného čela na automobilu nebo jeřábu. Ruční vykládání zvyšuje riziko poškození zejména
+pytlovaných hmot.
+Hmoty a výrobky by měly být přednostně umístěny v zakrytých skladech nebo zakrytých skladových
+přístřešcích, případně je lze chránit vhodnými plachtami. U plachet je třeba počítat s tím, že může na spodním
+líci docházet ke kondenzaci vlhkosti a v důsledku toho ke znehodnocování cementem pojených materiálů.
+Pytlovaný cement a cementem pojené správkové zdící a spárovací malty je třeba po složení z dopravního
+prostředku a uložení ve skladovací prostoře zbavit samosmrštitelné plastové folie. Pod touto fólií dochází ke
+kondenzaci vody a snižuje se doba skladovatelnosti výrobku.
+Hmoty a výrobky musí být zřetelně označeny tak, aby nedošlo k jejich záměně. Každá dodávka se na základě
+dodacího listu zapisuje do stavebního deníku.
+Pro prostý beton, železobeton, předpjatý beton, betonovou směs, injektážní maltu a výztuž měkkou i tvrdou platí
+příslušná ustanovení kapitol 17 a 18 TKP.
+Pro zdivo, zdicí materiály a zdicí malty platí ČSN 73 2310 a ČSN 72 2430.
+Obecně platí, že při skladování je třeba prioritně dodržovat požadavky výrobců uvedené v technických listech.
+Obzvlášť je to třeba respektovat u správkových a speciálních materiálů.
+U těchto materiálů je třeba zejména kontrolovat jejich stáří ve vztahu k době skladovatelnosti. Výrobky s prošlou
+skladovatelností je možné zabudovat do konstrukce pouze na základě dodatečně provedených kontrolních
+zkoušek.
+23.4.2 Průkazní zkoušky
+Průkazní zkoušky dokládají vybrané vlastnosti dodávaných hmot, výrobků a systémů. Slouží k posouzení
+vhodnosti výrobků, hmoty nebo systému k danému sanačnímu účelu, resp. k porovnání s kvalitativními
+požadavky uvedenými v těchto technických podmínkách nebo v jiných technických normách. Průkazní zkoušky
+může provádět jenom akreditovaná zkušebna. Platnost provedené průkazní zkoušky je obvykla dva roky.
+Další možností jak doložit kvalitu hmoty, výrobku nebo systému je doložení "prohlášení o shodě" včetně
+podkladů na jejichž základě je prohlášení o shodě vydáno. Prohlášení o shodě musí doložit, že průkazní zkoušky,
+provedené na hmotě, výrobku nebo systému odpovídají smluvním technickým požadavkům pro daný typ sanace.
+Požadavky na průkazní zkoušky, tedy jejich typ a rozsah musí být obsahem projektové dokumentace sanace, a to
+zejména tehdy, kdy pro použité typy technologií nejsou k dispozici obecně závazné normy. V projektové
+dokumentaci se též uvede požadavek na rozsah oprávnění k provádění příslušných zkoušek, které budou
+požadovány na dodavateli průkazních zkoušek.
+Rozsah průkazních zkoušek by měl být vždy přiměřený rozsahu a náročnosti sanačního zásahu. Neměly by být
+vyžadovány nadbytečné údaje, které pro výslednou kvalitu sanačního zásahu nejsou podstatné.
+Rozhodující fyzikálně mechanické či jiné parametry by měly být prokázány:
+– vždy v předstihu,
+– akreditovanou zkušebnou s akreditovaným zkušebním postupem,
+– stáří zkoušek by nemělo být delší než dva roky,
+36
+– v případě výstupů zahraničních laboratoří by měly být k dispozici originály či ověřené kopie
+zkušebních protokolů a jejich překlad do českého jazyka.
+Na základě výsledků průkazních zkoušek resp. prohlášení o shodě a dalších náležitostí odsouhlasí autorský dozor
+a zodpovědný zástupce zadavatele vhodnost navržených hmot, výrobků a systémů k provedení sanace.
+Referenční plochy
+Zvlášť vhodným prostředkem pro prokázání vhodnosti hmoty, výrobku nebo systému, je provedení referenčních
+ploch. Tyto referenční plochy je třeba předepsat v projektu tak, aby mohly být zhotoveny v dostatečném
+předstihu a mohlo tedy dojít k vyzrání všech použitých hmot v době, kdy lze o použití jednotlivých typů hmot
+ještě rozhodnout.
+V případech, kdy byly předchozím diagnostickým průzkumem zjištěny nižší hodnoty důležitých parametrů
+betonu opravované konstrukce, zejména pevnost v tahu povrchové vrstvy nebo uvažované pracovní spáry
+(a to i po odstranění jinak znehodnoceného betonu) nižší než 1,5 MPa nebo při použití nových nebo
+neodzkoušených technologií nebo vyžádá-li si to zadavatel, provádí se ověřovací pokládka (aplikace) hmoty pro
+ochranu a opravy povrchových částí betonových konstrukcí na referenční ploše vždy.
+Referenční plocha by měla být provedena pokud možno na sanované konstrukci, v případě že je to z provozních
+hledisek nemožné, alespoň na konstrukci s podobnými charakteristickými znaky jako je konstrukce opravovaná.
+Aplikace hmot na referenční ploše se provádí za přítomnosti zástupce zadavatele a autorského dozoru podle
+existujícího technologického předpisu zhotovitele.
+Na referenční ploše provede dohodnuté zkoušky autorizovaná fyzická nebo právnická osoba s příslušnou
+autorizací a předloží je projektantovi, resp. zadavateli k posouzení. Tyto výsledky společně s vizuálním
+hodnocením vzhledu a struktury referenční plochy umožňují velmi objektivně rozhodnout o vhodnosti dané
+hmoty, výrobku nebo systému v konkrétních provozních podmínkách.
+Referenční plocha může současně zhotoviteli sloužit jako podklad pro ověření měrné spotřeby jednotlivých
+materiálů. Referenční plocha se provádí především u ochranných povrchových systémů, zejména nátěrů.
+Referenční plocha slouží též k odsouhlasení kvality povrchových úprav mezi zadavatelem stavby a dodavatelem,
+zejména struktury povrchů, barevnosti a přípustných odchylek od rovnosti ploch a přímosti hran opravovaných
+konstrukcí.
+Vlastnosti sanačních hmot při průkazních zkouškách
+Za vyhovující parametry, dosažené při průkazních zkouškách, lze považovat takové, jejichž hodnoty odpovídají
+požadavkům projektu, těchto technických podmínek nebo Evropských norem. U jednotlivých hmot, výrobků
+a systémů se může vyžadovat prokázání vlastností uvedených v tabulce 12 a 13.
+U čerstvé malty lze ve zvláštních případech požadovat průkaz vlastností jako je zpracovatelnost, odlučivost
+vody, rozmísitelnost, obsah vzduchu v provzdušněné maltě, složení a přilnavost k podkladu. Tyto parametry
+mají však technologický charakter a nemusí mít bezprostřední vztah k výsledným garantovaným vlastnostem
+zatvrdlé malty.
+U zdicích a spárovacích malt připravovaných na stavbě musí průkazní zkouška přesně specifikovat složení
+malty, typ a vlastnosti použitého cementu i typ a vlastnosti použitého kameniva. Výsledky zkoušky platí pouze
+za předpokladu, že k výrobě zdicí nebo spárovací malty na staveništi budou použity identické suroviny.
+37
+Tab. 23 – 12 Vlastnosti hmot pro sanace betonových konstrukcí
+Druh hmoty Vlastnost Zkušební předpis
+Doba zpracovatelnosti ČSN EN 12 189
+Přídržnost k podkladu odtrhovou
+ČSN EN 12 639
+Adhezní můstky zkouškou
+Soudržnost s vybranou správkovou ČSN 73 2577, ČSN 72 2451,
+hmotou ČSN EN 1542
+Pevnost v tlaku
+ČSN 72 2450, ČSN EN 12617
+Pevnost v tahu za ohybu
+Soudržnost s podkladem bez adhezního ČSN 73 2577, ČSN 72 2451,
+můstku ČSN EN 1542
+ČSN 72 2453,
+Volné smrštění
+ČSN EN 12617-4*
+Správkové hmoty
+Sklon k tvorbě trhlin Příloha 3 TKP 23
+ČSN 73 1321
+Mrazuvzdornost
+ČSN 73 1326
+Koeficient teplotní roztažnosti ČSN EN 1770
+ČSN EN 73 1319,
+Statický modul pružnosti
+ČSN ISO 6784
+ČSN 73 2577, ČSN 72 2451,
+Soudržnost s podkladem
+ČSN EN 1542
+ČSN 73 2580,
+Difúzní odpor vůči H O
+2
+ČSN EN 1015-19
+Difúzní odpor vůči CO
+2
+Povrchové ochranné ČSN 73 2578,
+systémy Povrchová vodotěsnost V 30
+ČSN EN 13580*
+Schopnost překlenout trhliny
+Odolnost vůči agresivním médiím
+ČSN 67 3091,
+Odolnost vůči UV záření
+ASTM D 4587-91
+Viskozita
+Doba zpracovatelnosti (otevřená doba)
+Přídržnost k podkladu v závislosti na
+prEN 14068*
+vlhkosti podkladu
+Injektážní hmoty
+prEN 14117*
+Pevnost v tahu za ohybu
+Modul pružnosti
+Koeficient teplotní roztažnosti
+38
+Tab 23 – 13 Vlastnosti hmot pro sanace zdiva
+Druh hmoty Vlastnost Zkušební předpis
+ČSN 72 1153
+Petrografické složení
+Měrná a objemová hmotnost, hutnost a ČSN EN 1936
+pórovitost
+ČSN EN 13755
+Nasákavost
+ČSN EN 12371
+Mrazuvzdornost
+ČSN EN 14157
+Kámen Obrusnost podle Böhma
+ČSN 72 1159
+Odolnost proti vlivům povětrnosti
+ČSN EN 1926
+Pevnost v tlaku
+ČSN 72 1164
+Pevnost v tahu za ohybu
+ČSN 72 1167
+Tvrdost podle Vickerse
+(dříve ON 72 1161)
+Pevnost desek v tahu za ohybu
+ČSN 72 2602
+Vzhled a rozměry
+ČSN 72 2603
+Objemová hmotnost a nasákavost
+ČSN 72 2605
+Mechanické vlastnosti
+Cihly Mrazuvzdornost ČSN EN 53 – 2
+ČSN 72 2607
+Výskyt cicvárů
+ČSN 72 2608
+Náchylnost ke tvorbě výkvětů
+ČSN EN 14411
+Odolnost keramického střepu
+ČSN 72 2449
+Pevnost v tlaku
+ČSN 72 2450
+Pevnost v tahu za ohybu
+ČSN 72 2447
+Objemová hmotnost
+Zdicí malty Objemová stálost ČSN 72 2453
+ČSN 72 2453
+Mrazuvzdornost
+ČSN 72 2451
+Přídržnost k podkladu
+ČSN 72 2454
+Propustnost vůči vodním parám
+Stejné vlastnosti jako u zdících malt
+ČSN 72 2453,
+Volné smrštění ČSN EN 12617-4*
+Spárovací malty
+Příloha 3 TKP 23
+Sklon k tvorbě trhlin
+ČSN EN 73 1319,
+Statický modul pružnosti ČSN ISO 6784
+Doba zpracovatelnosti (otevřená doba)
+Přídržnost k podkladu v závislosti na
+vlhkosti podkladu
+prEN 14068*
+Injektážní hmoty prEN 14117*
+Pevnost v tahu za ohybu
+Modul pružnosti
+Koeficient teplotní roztažnosti
+39
+23. 5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Kontrolní zkoušky a měření jsou zkoušky, jejichž cílem je průběžně ověřovat aktuální jakostní vlastnosti
+stavebních materiálů používaných při sanaci inženýrské konstrukce. Kontrolní zkoušky zajišťuje dodavatel.
+Náklady na odběr vzorků, dopravu vzorků z místa odběru do zkušebny, zkoušení, měření, vyhotovení správ
+a protokolů včetně vypracování závěrečné souhrnné zprávy zhotovitele o jakosti jsou vždy obsaženy v nákladech
+na příslušné položky prací. Projektant, resp. zadavatel má právo určit místa zkoušek a jejich četnost.
+Při provádění zkoušek resp. odběrů vzorků musí být každé zkušební místo, resp. vzorek označeny značkou, která
+zabrání záměně a zároveň je vždy proveden záznam o zhotovení (odběru) vzorku (zkušebního tělesa)
+s následujícími informacemi:
+– původ vzorku (název stavby, název výrobce hmoty, lokalita zdroje hmoty),
+– kdo vzorek odebral, jméno a podpis, datum a hodina odběru,
+– komu je vzorek určen, adresa,
+– hodnoty parametrů naměřených na čerstvém vzorku, pokud jsou při odběru zjišťovány
+(teplota, konzistence, objemová hmotnost, obsahu vzduchu apod.),
+– vzhled a způsob balení vzorku.
+Četnosti a druhy kontrolních zkoušek musí být součástí předem schváleného kontrolního plánu, který odsouhlasí
+autorský dozor a zodpovědný zástupce zadavatele. Minimální povinný rozsah jednotlivých kontrolních zkoušek
+zhotovitele je uveden v přiložených tabulkách.
+Tab. 23-14 Kontrola předúpravy povrchu
+Kontrola Zkouška Zkušební předpis Minimální četnosti
+Vizuální kontrola - Celoplošné
+Akustické trasování - Celoplošné
+Předúprava Min. 3 stanovení, na
+Stanovení pevnosti v tahu povrchových ČSN 72 2451
+betonu každých 100 m2 povrchu
+vrstev ČSN EN 1542
+další 3 zkoušky
+Min. 9 stanovení, na
+Zkouška pevnosti v tlaku Schmidtovým
+ČSN 73 1373 každých 100 m2 povrchu
+tvrdoměrem
+další 16 zkoušek
+Provádění odběru vzorků, resp. konání kontrolních zkoušek musí zhotovitel oznámit pověřené osobě zadavatele
+(obvykle stavební dozor) nejpozději 48 hodin před jejich provedením. Zadavatel, resp. jím pověřený zástupce
+sdělí nejméně 24 hodin předem, že se hodlá zkoušky zúčastnit. Informace sdělované dodavatelem zadavateli
+o plánovaných zkouškách musí obsahovat minimálně:
+– označení staveniště, kde bude zkouška prováděna a jména zodpovědného pracovníka
+zhotovitele na stavbě, který se bude zkoušky účastnit,
+– čas počátku a předpokládaného konce prováděných prací,
+– sdělení, podle jakého zkušebního postupu budou zkoušky nebo odběr vzorků prováděny.
+Dodavatel musí umožnit zadavateli nebo jím pověřené osobě přístup na staveniště, do skladů i laboratoří, a to
+i v případě, že jsou zkoušky prováděny smluvními fyzickými nebo právnickými osobami.
+40
+Tab. 23 - 15 Kontrola správkových hmot
+Kontrola Zkouška Zkušební předpis Minimální četnosti
+Pevnost v tahu za ohybu ČSN 72 2450 1 sada za den aplikace
+Pevnost v tlaku ČSN EN 12617 1 sada za den aplikace
+Správkové
+hmoty Mrazuvzdornost ČSN 73 1321 2 sady na akci a typ malty
+Min. 3 stanovení, na každých
+ČSN 72 2451
+Stanovení soudržnosti 100 m2 povrchu další 3
+ČSN EN 1542
+zkoušky
+Zadavatel je oprávněn kdykoliv v průběhu prací provést vlastní kontrolní zkoušky. V případě potvrzení
+pochybnosti objednatele o kvalitě výrobků, hmot nebo prací, uhradí náklady na provedení zkoušky dodavatel.
+Kontrolní zkoušky prací, výrobků, hmot, složek směsí a systémů pro sanace inženýrských staveb může
+zajišťovat autorizovaná právnická nebo fyzická osoba pro oblast diagnostiky a zkušebnictví staveb, přičemž
+zkoušky musí být provedeny v akreditované zkušebně podle akreditovaného zkušebního postupu.
+Výsledky kontrolních zkoušek předává dodavatel zadavateli neprodleně a průběžně. Celkové zhodnocení
+kontrolních zkoušek je součástí závěrečné zprávy o provedených kontrolách a zkouškách, jejich přílohou jsou
+také veškeré protokoly o výsledcích zkoušek.
+Tab. 23-16 Kontrola povrchových ochranných systémů
+Kontrola Zkouška Zkušební předpis Minimální četnosti
+Min. 3 stanovení, na každých
+přídržnosti mřížkovou
+ČSN ISO 2409 100 m2 povrchu další 2
+zkouškou
+zkoušky
+přídržnosti odtrhovou Min. 3 stanovení, na každých
+zkouškou ČSN 73 2577 100 m2 povrchu další 1
+zkoušku
+Min. 3 stanovení, na každých
+Tloušťka vrstvy nátěru
+ČSN ISO 2808 100 m2 povrchu další 3
+(nátěrového systému)
+zkoušky
+Vodotěsnost nátěru a Min. 1 stanovení, na každých
+tenkovrstvých povrchových ČSN 73 2578 500 m2 povrchu další 2
+Povrchové
+úprav zkoušky
+ochranné
+Zkouška se provádí pouze v
+systémy
+případě pochybnosti o
+Stanovení propustnosti oxidu difúzních vlastnostech
+*
+uhličitého aplikovaného materiálu,
+četnost 1 sada tří zkušebních
+těles
+- Zkouška se provádí pouze v
+případě pochybnosti o
+Stanovení propustnosti difúzních vlastnostech
+ČSN 73 2580
+vodních par aplikovaného materiálu,
+četnost 1 sada tří zkušebních
+těles
+* Různé zkušební postupy akreditované na vybraných pracovištích
+41
+Tab. 23-17 Kontrola zdiva
+Kontrola Zkouška Zkušební předpis Minimální četnosti
+vazba zdiva
+vizuálně průběžně
+šířka spár
+zdicí prvky ČSN 73 1163
+1 x za celou akci
+pevnost v tlaku ČSN 72 2605
+zdicí malta
+Zdivo ČSN 72 2449 1 x za celou akci
+pevnost v tlaku
+spárovací malta korýtková zkouška
+2 x za celou akci
+sklon k tvorbě trhlin (viz Příloha 3)
+povrchová úprava
+ČSN 73 2578 1 x za celou akci
+povrchová nasákavost
+Zpráva o kontrolách a zkouškách musí minimálně obsahovat:
+– název, adresu zadavatele a dodavatele a další údaje o právnické nebo fyzické osobě, která
+prováděla kontrolní práce pro dodavatele,
+– adresu nebo přesnou specifikaci umístění sanované konstrukce včetně stručného popisu
+provedeného sanačního zásahu,
+– jména zodpovědných pracovníků dodavatele a souhrnné údaje o stavebním personálu,
+– údaje o použitých správkových hmotách včetně technologických předpisů nebo odkazů na ně,
+– soupis a charakterizace použitého strojního zařízení,
+– stručný harmonogram provádění jednotlivých technologických operací včetně charakterizace
+klimatických podmínek,
+– výsledky vlastních kontrolních zkoušek dodavatele včetně zkušebních protokolů,
+– výsledky případných kontrolních zkoušek prováděných zadavatelem,
+– datum, podpis, razítko právnické nebo fyzické osoby, provádějící kontrolní zkoušky pro
+zadavatele.
+Typy a četnost kontrolních zkoušek pro jednotlivé druhy stavebních hmot, používaných při sanacích
+inženýrských konstrukcí jsou uvedeny v Tab. 14 až 16.
+23.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+Pro všechny konstrukce platí tolerance podle dokumentace nebo tolerance podle norem (ČSN 73 0202,
+ČSN 73 0205, ČSN 73 0210-1) nebo ustanovení těchto TKP.
+Pokud tolerance pro některé konstrukce nejsou stanoveny, platí požadavky uvedené v TKP 18.
+Přípustné odchylky, v případech kdy to neurčuje dokumentace, odsouhlasí stavební dozor.
+Pro betonové a zděné konstrukce se stanovují vytyčovací odchylky podle ČSN 73 0205 s tř. přesností
+nejméně 10, pokud není v dokumentaci stanoveno jinak.
+Pro mezní odchylky a místní nerovností povrchů rovinných ploch, pro celkové a místní přímosti hran a koutů
+u betonových a zděných konstrukcí platí ČSN 73 0205.
+U hmot nanášených stříkáním určí přípustné tolerance stavební dozor za účasti autorského dozoru až po
+vyhodnocení referenční plochy.
+Pro dosažení příznivého architektonického vzhledu různých částí sanovaných betonových konstrukcí se
+vyžaduje, aby opravený beton měl homogenní strukturu a zabarvení.
+Záruční doby všeobecně stanoví kapitola 1 TKP. Po celou záruční dobu je třeba sledovat celkový stav objektu
+a jakákoliv zjištění zakládající důvod k zahájení reklamačního řízení musí být správcem bez zbytečného odkladu
+písemně oznámena dodavateli a investorovi.
+42
+23.7 KLIMATICKÁ OMEZENÍ
+Pro beton nevyztužený, vyztužený, předpjatý, betonovou směs a injektážní maltu platí příslušná ustanovení
+kap. 17 a 18 TKP.
+Pro zdění za nízkých teplot platí ČSN 73 2310.
+U ostatních sanačních hmot a ochranných nátěrů musí být klimatická omezení uvedena v technologickém
+předpisu, který zhotovitel předkládá zadavateli k odsouhlasení před započetím prací.
+23.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+Odsouhlasení provedených prací podle projektové dokumentace a dokumentace zhotovitele provádí stavební
+dozor na základě kontrolních zkoušek a měření.
+Dodavatel je povinen včas vyzvat stavební dozor k odsouhlasení všech prací, které budou v dalším postupu
+zakryty nebo se stanou nepřístupnými nebo obtížně kontrolovatelnými. Jedná se především o odsouhlasení:
+– referenčních ploch a závěrů z jejich provedení,
+– povrchu upraveného pro aplikaci sanačního systému,
+– povrchu výztuže před aplikací sanačního systému,
+– jednotlivých vrstev izolačního souvrství,
+– nanášení a pokládky jednotlivých sanačních vrstev,
+– aplikace přídavné výztuže,
+– úpravy styčných ploch pracovních spár,
+– injektážního postupu,
+– úpravy spár před obnovou spárování
+– obnoveného spárování atd.
+O výsledku odsouhlasení jednotlivých etap sanace provede stavební dozor zápis do stavebního deníku.
+Převzetí prací provádí zadavatel na základě dokumentace skutečného provedení, kladném výsledku hlavní
+prohlídky a zprávy o průběhu stavby zpracované dodavatelem, která musí obsahovat:
+– označení objektu,
+– údaje o schválené dokumentaci a jejich změnách,
+– přehled všech subdodavatelů a jejich činností,
+– časový přehled prací,
+– změny a odchylky, které vznikly v průběhu prací,
+– přehled provedených kontrolních měření, zkoušek, odebraných vzorků a jejich vyhodnocení.
+U mostů a objektů mostům podobných se musí před převzetím prací uskutečnit hlavní prohlídka podle předpisu
+ČD S5 Správa mostních objektů (pokud se dle tohoto předpisu vyžaduje).
+U tunelů se musí před převzetím prací uskutečnit hlavní prohlídka podle předpisu ČD S6 Správa tunelů (pokud
+se dle tohoto předpisu vyžaduje).
+V případě, že dokumentace stanovila provedení zatěžovací zkoušky nebo o ní bylo rozhodnuto během sanačních
+prací (v případě zesilování), musí být výsledek zatěžovací zkoušky znám před převzetím prací.
+Nezbytnou podmínkou pro převzetí prací je předání dokumentace skutečného provedení. Tuto dokumentaci
+zajišťuje zhotovitel, podkladem pro její zpracování je původní schválená dokumentace se zakreslením všech
+změn a odchylek provedených během sanačních prací.
+23.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+Pokud podle dokumentace pro provedení sanačních prací bude na konstrukci sledována deformace, je nutné
+v dokumentaci označit místa osazení měřických bodů. Dodavatel je povinen během výstavby tyto body osadit,
+udržovat a zajistit provedení požadovaných měření a výsledky předat stavebnímu dozoru. Pokud byla
+dokumentaci předepsána zatěžovací zkouška nebo další měření a zkoušky, je povinností dodavatele tyto zajistit.
+43
+23.10 EKOLOGIE
+Při provádění sanačních prací je třeba dbát pokynů a ustanovení uvedených v kapitole 1 těchto TKP.
+Při provádění sanací inženýrských objektů platí z hlediska ochrany přírody a životního prostředí stejná
+legislativa jako při provádění jakékoliv jiné stavby dráhy nebo stavby na dráze.
+23.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ
+OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví kapitola
+1 TKP.
+Pracovníci nesmí prodlévat v místech se zúženým průjezdným průřezem. Tato místa musí být označena podle
+předpisu ČD Op 16. Je-li nutné pracovat v těsných prostorách i na mostech a tunelech, musí být učiněna stejná
+opatření jako při práci za zhoršené viditelnosti.
+U epoxidových, epoxicementových a polyuretanových vícesložkových materiálů není škodlivý výsledný
+produkt, ale jednotlivé složky ano. Při zasažení pokožky nebo očí je nutné vyhledat lékařskou pomoc. Obal
+s popisem materiálu je vhodné vzít sebou.
+Základní informací o rizikovosti a zdravotním působení jednotlivých materiálů je jejich Bezpečnostní list, který
+by měl být součástí dokumentace poskytované výrobcem či prodejcem stavebních materiálů dodavateli sanace.
+23.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich
+aktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP,
+tj. právních předpisů, technických norem a předpisů a předpisů ČD.
+23.12.1 Technické normy
+ČSN 72 1151 Zkoušení přírodního stavebního kamene. Základní ustanovení
+ČSN 72 1152 Odběr vzorků přírodního kamene
+ČSN 72 1153 Petrografický rozbor přírodního kamene
+ČSN EN 1936 Zkušební metody přírodního kamene - Stanovení měrné a objemové hmotnosti a
+celkové otevřené pórovitosti
+ČSN EN 13755 Zkušební metody přírodního kamene - Stanovení nasákavosti vodou za atmosférického
+tlaku
+ČSN EN 12371 Zkušební metody přírodního kamene - Stanovení mrazuvzdornosti
+ČSN EN 14157 Zkušební metody přírodního kamene - Stanovení odolnosti proti obrusu
+ČSN 72 1159 Stanovení odolnosti přírodního stavebního kamene proti vlivu povětrnosti
+ČSN 72 1160 Stanovenie alkalickej rozpínavosti prírodného stavebného uhličitanového kameňa
+ČSN 72 1162 Stanovenie odolnosti prírodného stavebného kamene kameňa proti silicifikácii
+ČSN EN 1926 Zkušební metody přírodního kamene - Stanovení pevnosti v tlaku
+ČSN 72 1164 Stanovení pevnosti v tahu za ohybu přírodního kamene
+ČSN 72 1165 Stanovení statického modulu pružnosti v tlaku přírodního stavebního kamene
+ČSN 72 1167 Stanovení tvrdosti přírodního stavebního kamene podle Vickerse
+ČSN 72 1218 Vápenec. Kusovitost. Dolomit.
+ČSN 72 1800 Přírodní stavební kámen pro kamenické výrobky. Technické požadavky
+ČSN 72 1810 Prvky z přírodního kamene pro stavební účely. Společná ustanovení
+ČSN 72 1860 Kámen pro zdivo a stavební účely. Společná ustanovení
+ČSN 72 2430-1 až 5 Malty pro stavební účely. Část 1 až 5
+ČSN 72 2440 Zkoušení malt a maltových směsí. Společná ustanovení.
+44
+ČSN 72 2441 Zkouška zpracovatelnosti čerstvé malty
+ČSN 72 2442 Zkouška odlučnosti vody čerstvé malty
+ČSN 72 2443 Zkouška rozmísitelnosti čerstvé malty
+ČSN 72 2444 Zkouška obsahu vzduchu v provzdušené čerstvé maltě
+ČSN 72 2445 Rozbor čerstvé malty a maltové směsi
+ČSN 72 2446 Zkouška přilnavosti čerstvé malty k podkladu
+ČSN 72 2447 Zkouška hmotnosti a pórovitosti malty
+ČSN 72 2448 Stanovení vlhkosti a nasákavosti malty
+ČSN 72 2449 Zkouška pevnosti malty v tlaku
+ČSN 72 2450 Zkouška pevnosti malty v tahu za ohybu
+ČSN 72 2451 Zkouška přídržnosti malty k podkladu
+ČSN 72 2452 Zkouška mrazuvzdornosti malty
+ČSN 72 2453 Zkouška objemové stálosti malty
+ČSN 72 2454 Zkouška propustnosti malty vůči vodním parám
+ČSN 72 2600 Cihlářské výrobky. Společná ustanovení
+ČSN 72 2601 Skúšanie tehliarskych výrobkov. Spoločné ustanovenia
+ČSN 72 2602 Skúšanie tehliarskych výrobkov. Zisťovanie vzhladu a rozměrov
+ČSN 72 2603 Skúšanie tehliarskych výrobkov. Stanovenie hmotnosti objemovej hmotnosti
+a nasákavosti
+ČSN 72 2605 Skúšanie tehliarskych výrobkov. Stanovenie mechanických vlastností
+ČSN 72 2607 Skúšanie tehliarskych výrobkov. Stanovenie výskytu cicvárov
+ČSN 72 2608 Skúšanie tehliarskych výrobkov. Stanovenie náchylnosti na tvorbu výkvetov
+ČSN 72 2609 Cihlářské názvosloví
+ČSN 72 2610 Cihlářské prvky pro svislé konstrukce. Cihly plné CP.
+ČSN 72 2623 Cihlářské výrobky pro režné zdivo. Společná ustanovení
+ČSN EN 14411 Keramické obkladové prvky - Definice, klasifikace, charakteristiky a označování
+ČSN 73 0202 Geometrická přesnost ve výstavbě. Základní ustanovení
+ČSN 73 0205 Geometrická přesnost ve výstavbě. Navrhování geometrické přesnosti
+ČSN 73 0210-1 Geometrická přesnost ve výstavbě. Podmínky provádění. Část 1: Přesnost osazení
+ČSN 73 0210-2 Geometrická přesnost ve výstavbě. Část 2: Přesnost monolitických betonových
+konstrukcí.
+ČSN 73 1313 Stanovení obsahu vzduchu v provzdušené betonové směsi
+ČSN 73 1326 Stanovení odolnosti povrchu cementového betonu proti působení vody a chemických
+rozmrazovacích látek
+ČSN 73 2061-1 Zatěžovací zkoušky zdiva. Část 1: Všeobecná ustanovení
+ČSN EN 1052-1 Zkušební metody pro zdivo - Část 1: Stanovení pevnosti v tlaku
+ČSN EN 1052-2 Zkušební metody pro zdivo - Část 2: Stanovení pevnosti v tahu za ohybu
+ČSN 73 2310 Provádění zděných konstrukcí.
+ČSN 73 2401 Provádění a kontrola konstrukcí z předpjatého betonu
+ČSN 73 2520 Drsnost povrchů stavebních konstrukcí
+ČSN 73 2577 Zkouška pružnosti povrchové úpravy stavebních konstrukcí k podkladu
+ČSN 73 2578 Zkouška vodotěsnosti povrchové úpravy stavebních konstrukcí
+ČSN 73 2579 Zkouška mrazuvzdornosti povrchové úpravy stavebních konstrukcí
+45
+ČSN 73 2580 Zkouška prostupu vodních par povrchovou úpravou stavebních konstrukcí
+ČSN 73 2581 Zkouška odolnosti povrchové úpravy stavebních konstrukcí proti náhlým teplotním
+změnám
+ČSN 73 2582 Zkouška otěruvzdornosti povrchové úpravy stavebních konstrukcí
+ČSN 73 6242 Navrhování a provádění vozovek na mostech pozemních komunikací
+ČSN EN 539-1(72 2682) Pálené střešní tašky pro skládané krytiny. Stanovení fyzikálních charakteristik.
+Část 1: Zkouška prosákavosti
+ČSN EN 539-2 (72 2682) Pálené střešní tašky pro skládané krytiny. Stanovení fyzikálních charakteristik.
+Část 2: Zkouška mrazuvzdornosti
+ČSN EN 12 696 Katodická ochrana oceli v betonu
+ČSN EN 1504 Výrobky a systémy pro ochranu a opravy betonových konstrukcí
+ČSN EN 12350-7 Zkoušení čerstvého betonu - Část 7: Obsah vzduchu - Tlakové metody
+23.12.2 Předpisy
+ČD Op 16 Pravidla o bezpečnosti a ochraně zdraví při práci
+ČD S 5 Správa mostních objektů, republikovaný předpis
+ČD S 6 Správa tunelů
+Vyhláška č. 177/1995 Sb. Stavební a technický řád drah, v platném znění
+23.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 17 - Beton pro konstrukce
+Kapitola 18 - Betonové mosty a konstrukce
+Kapitola 20 - Tunely
+Kapitola 22 - Izolace proti vodě
+Kapitola 24 - Zvláštní zakládání
+Kapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí
+46
+Příloha 1 Výklad pojmů
+Adhezní můstek Speciální mezivrstva nanesená na beton původní konstrukce, zajišťující vyšší
+soudržnost mezi podkladním betonem a správkovou maltou.
+Adhezní lom Lom na rozhraní dvou vrstev.
+Alkáliové rozpínání Chemická reakce mezi alkáliemi (sodíkem a draslíkem) obsaženými v cementu
+s některými typy kameniv vyvolávající objemové změny betonu vedoucí ke vzniku
+(alkalická reakce)
+trhlin a jeho postupnému porušení.
+Antikorozní ochrana Nátěr nebo nátěrový systém omezující přístup vody a kyslíku k výztuži.
+výztuže
+Bariérové povlaky Nátěry nebo nátěrové systémy omezující průnik plynů a kapalin k výztuži nebo
+betonu nebo výztuže povrchovým vrstvám betonu.
+Betonový podklad Beton původní konstrukce, na který má být nanášen ochranný nebo opravný
+systém.
+Předupravený betonový Beton původní konstrukce očištěný a zbavený zdegradovaných vrstev, jehož
+podklad pevnost v tahu povrchových vrstev je obvykle 1,5 MPa.
+Cementové malty Malty a betony vzniklé smísením hydraulického pojiva (obvykle cementu)
+a cementové betony s kamenivem vhodné zrnitosti, přísadami a příměsemi, které po smíchání s vodou
+tvrdnou hydratační reakcí.
+Čerstvé na čerstvé Nanášení správkové malty nebo betonu na předupravený betonový podklad
+opatřený vhodným adhezním můstkem, u něhož ještě nezapočalo tuhnutí.
+Dávka (šarže) Objem sanačního materiálu vyrobený během jednoho pracovního cyklu, tj. v rámci
+jednoho navažovacího cyklu surovinových složek.
+Degradace Postupné a trvalé narušování povrchových vrstev betonu. Konkrétní mechanismus
+degradace je třeba vždy co nejpřesněji identifikovat diagnostickým průzkumem.
+Difúzní ekvivalentní Tloušťka vzduchové vrstvy v metrech, mající stejný difúzní odpor vůči průniku
+tloušťka vzduchové vodní páry nebo oxidu uhličitého jako hodnocený nátěr nebo nátěrový systém dané
+vrstvy tloušťky. Slouží přehlednějšímu vyjádření bariérových schopností nátěru nebo
+nátěrového systému vůči vodní páře nebo oxidu uhličitému.
+Dilatační spára Spára oddělující jednotlivé konstrukční prvky nebo vrstvy, umožňující jejich
+nezávislou deformaci, délkovou změnu související s kolísáním teplot a deformací
+konstrukce od nahodilého zatížení.
+Doba zrání Časový interval mezi okamžikem přípravy správkové malty a dosažením
+požadovaných fyzikálně mechanických vlastností.
+Dotvarování Pružně plastická deformace tělesa v důsledku působení stálého a vlastního zatížení.
+Elektrochemická koroze Proces, kdy v důsledku chemické či fyzikální nehomogenity výztuže resp. ochranné
+výztuže vrstvy dochází za přítomnosti elektrolytu (vody obsažené v pórovém systému
+betonu) k oxidačně redukčním reakcím a ke vzniku různě velikého
+elektrochemického článku s katodou a anodou, jehož důsledkem je korozní
+poškození (hmotnostní úbytek) výztuže.
+Epoxidové pryskyřice Typ organického polymeru, který spolu s tvrdidlem a případně dalšími aditivy
+vytváří pojivo používané pro výrobu nátěrů lepidel, malt a betonů se specifickými
+fyzikálně mechanickými vlastnostmi (vysoká pevnost v tahu, vysoká adheze
+k betonovému podkladu, vysoká korozní odolnost).
+Hloubkové spárování Náhrada malty v ložných a styčných spárách zdiva do hloubky větší než 50 mm.
+Hydrofobizace Nátěr nebo nátěrový systém, který výrazně omezuje smočitelnost ošetřeného
+povrchu vodou, a tedy průnik kapalin, zejména vody do pórového systému
+povrchových vrstev betonu. Současně hydrofobizace neomezuje difúzi vodní páry.
+47
+Objemováhydrofobizace Omezení smáčitelnosti pórového systému správkové hmoty v celém objemu
+použitím zvláštních přísad vmíchaných do suché směsi při její přípravě.
+Inhibitor koroze Chemická sloučenina, která je-li obsažena v malých koncentracích ve správkové
+hmotě, omezuje vznik elektrochemické koroze výztuže.
+Injektáž Beztlakové či tlakové plnění spár trhlin pórového systému konstrukčních materiálů
+s cílem zajistit jejich vodotěsnost nebo silové působení.
+Karbonatace betonů Proces snižování alkality povrchových vrstev betonu v důsledku reakce hydroxidu
+vápenatého, vzdušného oxidu uhličitého a vody. Snížení alkality betonu
+karbonatací pod úroveň pH = 9,5 vytváří podmínky pro vznik elektrochemické
+koroze výztuže.
+Katoda Záporná elektroda, na které probíhá při elektrochemické korozi chemická redukce.
+Koroze výztuže Poškozování ocelové výztuže v železobetonu chemickými procesy (přímým
+působením korozních médií) nebo vznikem elektrochemických článků.
+Krycí vrstvy (krytí) Vzdálenost mezi povrchem konstrukce a výztuží. Její tloušťka ve vazbě na rychlost
+karbonatace betonu rozhoduje o časovém intervalu, po který je výztuž chráněna
+před elektrochemickou korozí.
+Nátěr Souvislá ochrana nebo bariérová vrstva s obvyklou tloušťkou 100 až 500 µm
+(0,1 až 0,5 mm).
+Obsah volných chloridů Celkové množství chloridových iontů přítomných v betonu nebo maltě
+vyluhovatelných ve vodě. Chloridové ionty mohou být obsaženy jak v cementu tak
+v kamenivu nebo speciálních přísadách, zejména jsou však vnášeny do
+železobetonových konstrukcí posypovými solemi.
+Ochrana Opatření bránící vzniku poruch nebo omezující jejich rozvoj.
+Oprava Obnovení požadovaných užitných vlastností konstrukce s cílem zajistit její
+provozuschopnost.
+Ošetřování Zajištění optimálních podmínek pro zrání ochranných a opravných systémů,
+zejména pak správkových malt na bázi cementového pojiva.
+Otevřená doba Časový interval od přípravy vícesložkových hmot, během kterého lze materiál bez
+obtíží zpracovat. Tento interval je výrazně závislý na klimatických podmínkách
+a měl by být uváděn v Technických listech výrobků.
+Pasivace Stav, při němž je díky alkalitě okolního prostředí zabráněno vzniku
+elektrochemické koroze oceli.
+Pečetící vrstva Penetrace z nízkoviskózní, obvykle epoxidové pryskyřice, zvyšující soudržnost
+izolačního systému k podkladní betonové konstrukci a bránící průniku vodních par
+do styčné spáry mezi povrchem konstrukce a izolací.
+Penetrace Nátěr neměřitelné tloušťky zabudovaný do pórového systému povrchových vrstev,
+netvořící souvislý film.
+pH Záporný dekadický logaritmus koncentrace vodíkových iontů v roztoku, vyjadřující
+jeho zásaditost resp. kyselost.
+Polymercementové Malty, u nichž základní pojivovou složku tvoří hydraulické pojivo (zejména
+malty a betony (PCC) cement), které jsou modifikovány přídavkem polymeru s cílem zlepšit některé
+fyzikálně mechanické vlastnosti (přídržnost k podkladu, modul pružnosti).
+Porucha Změna konstrukce proti jejímu původnímu stavu, která zhoršuje její spolehlivost
+nebo funkčnost.
+Povrchové spárování Náhrada malty v ložných a styčných spárách zdiva do hloubky 50 mm.
+Pracovní spára Kontaktní styk konstrukčních hmot, vznikající jako důsledek přerušení prací.
+V těchto oblastech je obvykle snížena soudržnost materiálů a dochází ke vzniku
+trhlin.
+48
+Provzdušnění Vnesení mikroskopických vzduchových pórů o průměru 100 až 300 µm do
+pojivové fáze cementových malt a betonů pomocí speciálních přísad s cílem zajistit
+jejich mrazuvzdornost.
+Předúprava povrchu Technologická operace odstraňující degradované povrchové vrstvy se sníženou
+hutností, zkarbonatované, prosycené nežádoucími médii a se sníženou pevností
+v tahu.
+Přídržnost Odolnost proti oddělení dvou nebo více materiálů namáhaných tahem.
+Příměsi Jemně mleté anorganické materiály inertní či hydraulicky aktivní, umožňující
+zlepšení některých vlastností správkových malt a betonů.
+Přísady Chemické sloučeniny přidávané do správkových malt a betonů v množství do 5 %
+z hmotnosti cementu s cílem modifikovat jeho vlastnosti.
+Reprofilace povrchu Nanášení stěrky, správkové malty nebo betonu s cílem obnovit původní tvar
+konstrukčního prvku, zvětšit tloušťku krycí vrstvy nebo vytvořit hutný podklad pro
+povrchový ochranný systém.
+Sanace betonu Komplexní proces ochrany a opravy betonové resp. železobetonové konstrukce.
+Sanační systém Soubor technologických postupů a hmot vytvářejících podmínky pro obnovení
+(systém ochrany původních užitných vlastností konstrukce.
+a opravy)
+Sekundární ochrana Povrchová ochrana betonové konstrukce, realizovaná obvykle penetrací
+(hydrofobizací) nebo nátěrem.
+Správková hmota (malta) Hmota na libovolné materiálové bázi sloužící k reprofilaci konstrukcích prvků
+a splňující specifické technické požadavky.
+Stěrková hmota Jemnozrnná správková hmota sloužící k finální povrchové úpravě, tj. zejména
+vyrovnání a uhlazení povrchu a vytvoření hutného souvislého podkladu pro
+nanášení nátěrů. Její tloušťka se pohybuje do 3 mm
+Stříkaná malta (beton) Správková hmota na CC bázi nebo PCC bázi, nanášená na povrch opravované
+konstrukce stříkáním tzv. suchým nebo mokrým způsobem.
+Trhlina Porucha v betonu zdivu nebo správkové hmotě narušující její celistvost. Za trhlinu
+je považována porucha širší než 0,1 mm v agresivním prostředí, 0,2 mm ve vlhkém
+neagresivním prostředí a 0,3 mm v suchém neagresivním prostředí. Trhliny užší
+nejsou považovány ve smyslu ČSN 73 1201 za defekty.
+Trhlina staticky Trhlina snižující statickou spolehlivost konstrukce.
+významná
+Trvanlivost Schopnost konstrukce být v bezpečném a provozuschopném stavu, předepsaném
+v konkrétním prostředí po vymezené období.
+Tužidlo Látka, která vstupuje do chemické reakce s jinými, obvykle polymerními
+substancemi (např. epoxidy) a iniciující chemickou reakci vedoucí ke vzniku tuhé
+hmoty.
+Vada konstrukce Nedostatek konstrukce způsobený
+- chybným návrhem konstrukce
+- chybným provedením,
+- použitím vadných hmot,
+- nevhodnou kombinací hmot,
+- zabudováním vadných výrobků.
+Zesilování konstrukce Úprava konstrukce za účelem zvýšení její únosnosti
+49
+Příloha 2 Stavebně technický průzkum
+P2. 1 Všeobecně
+Stavebně technický průzkum (STP) je nezbytným podkladem pro zpracování projektu sanace a pro její
+objektivní ocenění.
+Cílem STP je především charakterizovat stav konstrukce z hlediska:
+– kvality a rozsahu a stupně degradace betonu či zdiva,
+– kvality a rozsahu a stupně degradace výztuže,
+– kvality a rozsahu narušení spárování,
+– kvality vazby zdiva a porušení povrchových vrstev zdiva,
+– ověření skladby konstrukce,
+– rozsahu a popisu deformací a nelinearit konstrukce,
+– rozsahu nehomogenit konstrukce (např. kaverny ve zdivu kleneb apod.),
+– popisu trhlin a ostatních závad z hlediska typu, četnosti a intenzity,
+– zjištění materiálových charakteristik potřebných pro případné statické posouzení nebo návrh
+sanačního systému.
+Specifickou součástí STP může být:
+– pořízení dokumentace stávajícího stavu konstrukce (především z hlediska rozměrů),
+– statický nebo dynamický přepočet konstrukce,
+– průzkum základových poměrů konstrukce,
+– ověření vyztužení konstrukce,
+– průzkum korozního ohrožení konstrukce apod.
+Požadavky na provedení těchto součástí STP musí být uvedeny v zadání STP.
+Kvalita STP významným způsobem závisí na zpřístupnění konstrukce. Je třeba počítat s tím, že náklady na
+zpřístupnění některých typů inženýrských konstrukcí mohou významně zvýšit cenu diagnostických prací,
+současně však výrazně zlepší jejich průkaznost.
+STP, který nemohl být prováděn z objektivních důvodů na přijatelným způsobem zpřístupněné konstrukci, je
+třeba vždy navrhovat jako dvoustupňový. Informace zjištěné první etapou STP je třeba následně ověřit po
+postavení lešení či zavěšení lávek v průběhu úvodních fází sanace, tj. v období předúpravy podkladu. V tomto
+případě musí projekt sanace i konstrukce ceny sanace respektovat skutečnost, že dodatečným diagnostickým
+průzkumem může být původně předpokládaný rozsah a intenzita sanačního zásahu významně ovlivněna.
+STP musí být prováděn podle projektu STP, ve kterém jsou stanoveny zejména:
+– cíle STP,
+– typy zkoušek a postupy jejich provádění (podle ČSN, zvláštních metodik, ZTKP apod.),
+– počty zkoušek,
+– rozsah vyhodnocení zkoušek,
+– rozsah fotografické dokumentace a video dokumentace.
+Základním výstupem STP musí být kromě celkové charakterizace stavu konstrukce zejména rozsah a intenzita
+poškození ve vazbě na předpokládané sanační zásahy.
+STP může obsahovat doporučení pro sanaci konstrukce, které může být zohledněno v následné projektové fázi.
+STP může provádět fyzická osoba, která je autorizovaná v oboru diagnostiky a zkoušení staveb nebo fyzická,
+resp. právnická osoba, která zaměstnává pracovníky autorizované v oboru diagnostiky a zkoušení staveb.
+Při porovnávání cen STP by měla být vždy vyžadována přesná specifikace oceňovaných prací tak, aby byly
+srovnávány co do rozsahu a kvality srovnatelné nabídky.
+Objednatelem STP je zásadně vlastník nebo správce objektu, resp. jeho investorský útvar, případně právnické
+a fyzické osoby, na které vlastníci přenesli své pravomoci (např. projektant).
+Výsledky STP jsou podkladem pro zpracování projektu sanace. V případě, že uchazeči o dodávku sanačních
+prací zpracovávají zároveň i projekt sanace, musí všichni obdržet výsledky identického STP. Pouze za tohoto
+předpokladu lze následné technické i cenové nabídky považovat za srovnatelné.
+50
+Vlastník nebo správce objektu musí v rámci dostupných možností zajistit zpracovateli STP:
+– původní projektovou dokumentaci konstrukce, resp. dokumentaci skutečného provedení,
+– údaje o stáří konstrukce, jejím užívání, zatížení a dosud provedených průzkumech,
+– údaje o přestavbách, opravách a mimořádných událostech.
+P2.2 Etapy STP
+STP se obvykle dělí na několik etap. Základní rozčlenění STP je na:
+– předběžný průzkum,
+– podrobný průzkum,
+– doplňkový průzkum.
+S ohledem na proměnlivost cílů STP i různorodost inženýrských objektů nelze přesně definovat rozsah
+jednotlivých typů průzkumu. Rozsah STP musí definovat projektant sanačního zásahu.
+Předběžný STP sestává obvykle z podrobné vizuální prohlídky konstrukce a fotografické dokumentace poruch
+a poškozených oblastí. Předběžný STP by měl zejména zaznamenat rozsah narušení povrchových vrstev
+betonových či kamenných konstrukcí, korozi výztuže, výskyt trhlin, výskyt průsaků a výkvětů, výskyt
+nadměrných průhybů a deformací, veškerých dalších atypických okolností a měl by stručně charakterizovat
+i stav veškerých doplňkových konstrukcí a konstrukčních prvků.
+Na základě předběžného STP lze pak definovat optimální rozsah podrobného stavebně technického průzkumu,
+který by identifikoval příčiny zjištěných závad, jejich rozsah a intenzitu.
+Podrobný STP by se měl zaměřit zejména na:
+– typ a rozsah porušení povrchových úprav (omítky, nátěry),
+– rozsah porušení krycích vrstev betonu a korozi výztuže,
+– rozsah porušení vrstev zdiva,
+– soupis veškerých vad a poruch vzniklých provozem (např. trhliny),
+– stav uložení konstrukce (stav podpor), průhyby, deformace,
+– zjištění vlivu zabudované technologie na konstrukci,
+– rozsah poškození doplňkových konstrukcí, zejména ocelových,
+– stanovení pevnosti v tahu povrchových vrstev betonu resp. zdiva,
+– stanovení hloubky karbonatace betonu, stanovení pevnosti v tlaku betonu resp. zdiva,
+– stanovení objemové hmotnosti betonu resp. zdiva,
+– míry degradace a kontaminace betonu resp. zdiva,
+– povrchové nasákavosti,
+– identifikace druhu výztužné oceli,
+– změření korozního proudu ve výztuži,
+– stanovení tloušťky krycí vrstvy betonu nad výztuží,
+– zjištění stavu spárování,
+– zjištění a ověření rozměrů konstrukcí (např. tloušťky kleneb apod.),
+– charakterizaci deformace zdiva (např. boulení poprsních zdí, vyklonění křídel a opěr apod.),
+– zjištění mezerovitosti zdiva
+– diagnostiku skrytých částí konstrukcí.
+Četnost těchto zkoušek a činností by měla být stanovena v závislosti na velikosti a významu konstrukce
+i s ohledem na rozsah jejího poškození.
+Podrobný STP musí vždy identifikovat i příčiny degradace, porušení nebo závady.
+Doplňkový STP se provádí tehdy:
+– pokud výsledky podrobného stavebně technického průzkumu naznačují atypický stav
+či chování konstrukce, které nebylo možné provedenými zkouškami vysvětlit,
+– pokud v průběhu projektu sanace či statického přepočtu vznikla potřeba doplnění potřebných
+údajů,
+– pokud v průběhu sanace byly zjištěny neočekávané skutečnosti, které je nezbytné dodatečně
+přesněji charakterizovat.
+51
+P2. 3 Závěrečná zpráva o STP
+Závěrečná zpráva o STP musí být zpracována v rozsahu minimálně dle tohoto článku a v níže uvedeném členění:
+Úvod
+– základní údaje o zadavateli a dodavateli,
+– přesná specifikace zadání,
+– přehled podkladů dodaných zadavatelem.
+Popis vyšetřované konstrukce
+Základní údaje o konstrukčním provedení vyšetřovaného objektu včetně popisu jeho současného stavu.
+Metodika a rozsah zkoušení
+Uvede se přehled zjišťovaných parametrů s uvedením příslušných zkušebních předpisů (ČSN, metodické pokyny
+apod.), stručný popis provádění a rozsah zkoušení.
+Výsledky STP
+Výsledky stanovení jednotlivých parametrů na vyšetřovaných konstrukcích se zpracují do tabulek, které obsahují
+zejména:
+– označení zkušebního místa nebo vyšetřované části,
+– zjištěnou hodnotu příslušného parametru.
+Pro jednoznačnou identifikaci jsou zkušební místa jednotlivých zkoušek a odběru vzorků vyznačeny na
+schematickém nákresu vyšetřované konstrukce. Tam musí být zaznamenávány i poruchy na vyšetřované části
+konstrukce (trhliny, vady apod.).
+Vyhodnocení výsledků STP
+– dílčí shrnutí a zhodnocení výsledků šetření a zkoušek pro jednotlivé části vyšetřovaného
+objektu,
+– zhodnocení stavu celého objektu.
+Závěr
+Zde je nutné uvést, resp. shrnout:
+– hlavní výsledky a poznatky z STP a z jeho vyhodnocení,
+– doporučení z hlediska požadavků na další etapu průzkumu nebo na statické posouzení (typy
+a četnosti zkoušek a přepočtů),
+– vyhodnocení průzkumu a statických šetření (pokud byly prováděny),
+– stanovisko k eventuální potřebě ochrany a opravy konstrukce nebo jejích částí a souhrn
+podkladů vhodných pro rozhodnutí o provedení stavby,
+– doporučený rámcový technologický postup sanace a doporučení základních technických
+a technologických kritérií pro ochranu a opravu, využitelných pro vypsání výběrového řízení
+na dodavatele sanace.
+Přílohy:
+– fotografická dokumentace,
+– video dokumentace.
+Fotograficky, resp. pomocí videozáznamu se zpravidla dokumentuje:
+– vyšetřovaný objekt, konstrukce nebo konstrukční prvek,
+– odebrané vzorky, event. ilustrativně způsob odběru,
+– charakteristické poruchy a poškození.
+52
+Příloha 3 Netradiční zkušební postupy
+Zkouška odolnosti vůči tvorbě smršťovacích trhlin při vázaném smrštění
+Zkouška prokazuje schopnost správkových reprofilačních malt odolávat šíření smršťovacích trhlin vznikajících
+v důsledku smršťování tuhnoucích malt během tuhnutí, vázáných adhezí k podkladu.
+Zkouška se provádí tak, že správková reprofilační malta, připravená podle návodu výrobce, se uloží zednickou
+lžící do ocelové formy, tvořené ocelovým úhelníkem o délce 1 m a příčných rozměrech 50 x 50 mm. Tento
+ocelový úhelník je v čelech uzavřen ocelovými čely. Vnitřní povrch ocelové formy je zdrsněn pomocí
+opískování za sucha. Vnitřní stěny formy se nesmějí olejovat ani opatřovat jinou povrchovou úpravou, snižující
+adhezi správkové malty k povrchu formy.
+Po vyplnění formy maltou a jejím povrchovém urovnání ocelovým hladítkem se forma ponechá v suchém
+vzdušném prostředí o teplotě 20 °C ±2 °C s relativní vlhkostí cca 65 %.
+V případě, že je zkouška prováděna jako kontrolní přímo in situ, je forma uložena v prostředí konstrukce, avšak
+chráněna před dešťovými srážkami.
+Stav povrchu správkové malty ve formě se jedenkrát denně vizuálně ověřuje na přítomnost trhlin. Zkouška se
+ukončí sedmý den po zaformování. Dojde-li ke vzniku trhlin, provede se po ukončení zkoušky proměření šířky
+trhlin pomocí vhodné lupy s příložným měřítkem, schématicky se zakreslí počet a umístění trhlin, případně
+pořídí fotodokumentace.
+Zkoušky prostředků pro krystalizační dotěsňování betonu
+Krystalizační prostředky určené k dotěsňování pórového systému betonu zvýší jeho vodotěsnost natolik, že
+ověřování vodotěsnosti standardním postupem podle ČSN 73 1321 je málo průkazné. Jednou z možností je
+provedení zkoušky povrchové nasákavosti postupem podle ČSN 73 2578 pouze s tím rozdílem, že testovaným
+médiem není voda, ale automobilový benzín.
+Polární afinita automobilového benzínu umožňuje jeho mimořádně snadný průnik pórovým systémem betonu.
+To umožňuje vysokou citlivost této metodiky vůči jakékoliv změně kapilární pórozity betonu.
+Zkouška se provádí tak, že k testovanému povrchu se vhodným tmelem ukotví skleněný zvon o průměru 60 mm.
+Následně se ke skleněnému zvonu připojí cejchovaná byreta a celý systém se vyplní benzínem. Přitom se dbá na
+to, aby nezůstaly ve spojovacím hrdle nebo ve zvonu vzduchové bublinky. Po pěti minutách se benzín doplní
+znovu po značku 0. Tento okamžik je počátkem měření. Po 30 minutách se odečte hladina benzínu v byretě
+s přesností na 0,1 ml. Měřeným parametrem je pak přepočtená hodnota nasákavosti benzínu v litrech vztažená
+na m2.
+Druhou možností je prodloužení zkoušky na libovolný časový úsek s tím, že se každodenně sleduje, zdali došlo
+k průniku benzínu na opačnou stranu vzorku. Zkouška může být ukončena po jednom až pěti dnech. Poté se
+testované těleso rozlomí např. zkouškou v příčném tahu a zakreslí se hloubka průniku benzínu. V tomto případě
+je měřeným parametrem maximální hloubka průniku benzínu na lomové ploše vzorku vztažená k délce expozice.
+U běžného konstrukčního betonu dojde při tloušťce vzorku v intervalu od 40 do 100 mm k průniku benzínu na
+opačnou stranu tělesa v průběhu několika desítek minut až hodin. U povrchových úprav, resp. materiálů
+s obsahem krystalizačních přísad se doba průniku benzínu prodlužuje na několik dnů až desítek dnů. Tímto
+postupem lze tedy výrazně citlivěji rozlišit utěsnění pórového systému než při použití standardní metodiky
+vodotěsnosti podle ČSN 73 1321.
+Popisovaná zkouška není normována a při jejím provádění je třeba dodržovat veškerá bezpečnostní opatření
+související s manipulací s hořlavinami.
+Zkoušení mechanických vlastností cihelného nebo kamenného zdiva
+Únosnost zdiva je ovlivněna jak kvalitou zdicích prvků (cihly, kámen), tak zdící malty, ale i řadou dalších
+faktorů, jako je způsob skladby zdiva, šířka styčných a ložných spár, případný výskyt trhlin či jiných imperfekcí.
+Stanovení únosnosti zdiva in situ není jednoduchým technickým úkolem. Nejkomplexnější a nejověřenější
+přístup je uveden v Příloze 3 ČSN 73 0038 "Navrhování a posuzování stavebních konstrukcí při přestavbách".
+Vychází se zde jednoznačně ze separátního stanovení kvality zdicích prvků a zdící malty a následného
+vyhodnocení těchto veličin.
+Využití odběru jádrových vývrtů a jejich zkoušek ke stanovení únosnosti cihelného zdiva je především
+teoretickou, prakticky obtížně realizovatelnou možností. V běžném, zejména starším cihelném zdivu dojde při
+odběru jakéhokoliv vývrtu k rozpadu celistvosti zdiva a následné odzkoušení jádrového vývrtu pak je prakticky
+53
+nemožné. Odběr celistvého jádrového vývrtu ze zdiva by připadalo v úvahu pouze tehdy, pokud by jak zdící
+prvky, tak zdící malta měly vysokou kvalitu a vzájemně vysokou adhezi. Tato situace zejména u starších
+zděných objektů je však málo pravděpodobná.
+Zatěžovací zkoušky zdiva podle ČSN 73 2061-1 Část 1 Všeobecná ustanovení, Část 2 Pevnost v tlaku, Část 3
+Pevnost v tahu za ohybu předpokládají provádění těchto zkoušek na velkých vzorcích vyzděných ve svislé
+poloze přímo ve zkušebně.
+Jednou z mála praktických možností, jak posoudit únosnost a deformační charakteristiky zdiva in situ, je použití
+tenkých hydraulických válců, které se vkládají do vyčištěných ložných spár ve zdivu, případně do vodorovných
+drážek vyřezaných ve zdivu. Zároveň se zdivo v okolí osazeného válce osadí měřícími čidly vhodnými ke
+sledování deformací. Vnášením napětí do zdiva a měřením deformací lze získat kvantitativní informaci
+o chování zdiva. Pro tuto metodiku není k dispozici žádný normový postup.
+54
+Poznámky:
+55
+56
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 23
+T ř e t í - aktualizované vydání se zapracovanou změnou č. 5 /z roku 2006/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Doc. Ing. Jiří Dohnálek, CSc.
+České vysoké učení technické v Praze
+Technický redaktor: Ing. Miroslav Teichman
+České dráhy, a.s., Technická ústředna Českých drah,
+sekce tratí a budov
+Odborný gestor: Ing. Bohuslav Stečínský
+České dráhy, a.s., generální ředitelství, odbor 13
+Nakladatelství: České dráhy, a.s., Technická ústředna Českých drah,
+Malletova 10/2363,
+190 00 Praha 9 - Libeň
+Distribuce: České dráhy, a.s., Technická ústředna Českých drah,
+SATT - oddělení typové dokumentace,
+Nerudova l,
+772 58 Olomouc
+tel.: +420 972 742 241, +420 972 741 769,
+fax: +420 972 741 290,
+e-mail: otd@tucd.cz
+www.cd.cz/tucd

@@ -1,0 +1,1239 @@
+[
+  {
+    "type": "bridge_project",
+    "filename": "26-027C C D6 Karlove Vary- Olsova Vrata,SO 202 - most na sil.I 6 v km 0,900.pdf",
+    "extracted_at": "2026-02-25T14:41:43.656488",
+    "project_info": {
+      "so_number": "202",
+      "km_position": "0,900"
+    },
+    "items": [
+      {
+        "price": "41,40",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "190,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "180,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "950,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "250,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "550,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "41,40",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "996,19",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "190,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "130,80",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "906,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "386,24",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "190,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "595,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "204,23",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "180,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "788,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "940,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "950,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "440,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "250,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "600,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "550,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "710,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "850,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "328,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "27,80",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "304,74",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "159,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "888,40",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "211,30",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "732,66",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "030,10",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "001,98",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "927,78",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "204,23",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "328,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "927,78",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "100,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "460,01",
+        "context": "extracted_from_text"
+      }
+    ],
+    "raw_text": "Strana 1\nPraha, 19.02.2026\nCenová nabídka č. 26-027 C\nD6 Karlovy Vary – Olšová Vrata\nSO 202 Most na silnici I/6 v km 0,900\n1. Klient: Berger Bohemia a.s.\n2. Nabídka byla vypracovaná na základě:\n Poptávkového dopisu, projektové dokumentace, realizovaných projektů a katalogů firmy\nSAFE\n3. Společnost SAFE Vám nabízí:\n Odbornost a zkušenosti stabilní firmy pocházející z Beneluxu, kde jsme téměř 40 let na trhu,\nna lokálním trhu působíme 10 let\n Zkušenosti z realizací kompletních dodávek skruží a bednění velkých mostů pro významné\nstavební firmy (Doprastav, Eurovia, Metrostav, Porr, Strabag atd.)\n Kompletní servis zahrnující dodávku projektu, statického výpočtu, vlastního materiálu\npodpěrné skruže i bednění, montáže, demontáže, dopravy, mechanizace, technické kontroly\na BOZP\n Komplexní zabezpečení zakázky prostřednictvím profesionálních projektových manažerů s\nvíce jak dvacetiletou praxi v oboru, koordinátorů stavby, projektantů a logistiky\n Montáž skruže a bednění realizovanou našimi zkušenými pracovníky\n Profesionální projektové pojištění ve výši 5 mil. EUR, Master cover ve výši 15 mil. EUR\n4. Doba platnosti cenové nabídky:\n 30 dní (ode dne zaslaní cenové nabídky)\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 2\nObdoba řešení podobného typu konstrukce\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 3\n5. Ceny a výměry:\nCenová nabídka obsahuje detailní rozpočet pronájmu bednění Meccano a podpěrné skruže POLY, včetně\npřeklenutí požadovaných překážek a výstupu na nosnou konstrukci skrze schodišťovou věž. CN zahrnuje\npronájem uvedených prvků, jejich montáž, dopravu a technickou podporu po dobu celého projektu.\nBedněná konstrukce je konstantě v celé délce tvořena deskovým průřezem s křídly. Nabídka je\nkoncipována na montáž bednění Meccano a montáž překližky či desek třívrstvých (Dodávka překližky/desky\ntřívrstvé je výkonem objednatele).\nPodpěrná konstrukce je řešena efektivně tak, aby co nejlépe řešila úsporu silničních panelů, potřebnou\nk roznesení reakčních sil do podloží.\nJednotkové ceny PRONÁJMU CZK na 30 dní\n41,40 Kč/m3 podpěrná prostorová skruž POLY\n190,00 Kč/m2 bednění mostovky MECCANO\n900,00 Kč/m schodišťová věž RINGSCAFF\n1 374,00 Kč/t nosníky pro překlenutí svahů, průjezdných profilů, vodních toků\nJednotkové ceny MONTÁŽÍ v CZK\n180,00 Kč/m3 Montáž a demontáž podpěrné prostorové skruže POLY\n650,00 Kč/m2 Predmontáž - debnenie mostovky MECCANO\n950,00 Kč/m2 Montáž a demontáž - debnenie mostovky MECCANO\n250,00 Kč/m2 Príplatok za opláštenie debnenia pri použití dosek\n45 000,00 Kč/ks Príplatok za zadebnenie nadpodporového priečniku\n86 400,00 Kč/ks Príplatok za koncový priečnik\n75 000,00 Kč/ks Zavesenie nosníkov preklenujúcich svah na oporu\n1 550,00 Kč/m schodisková veža RINGSCAFF\n2 875,00 Kč/t Montáž a demontáž překlenutí svahů, průjezdných profilů a toků\nTvar nosné konstrukce\n111,5 m délka nosné konstrukce\n10,3 m šířka nosné konstrukce\n2,0 ks počet mostů\npřekližky předepsaný povrch bednění (překližky nebo palubky)\n3 055,2 m2 celková plocha bednění obou mostů\n11 676,6 m3 celková kubatura skruže obou mostů\n5,5 m průměrná výška skruže\n- ks počet vytvářených začelení pracovních spár\n4,0 ks počet koncových příčníků obou mostů\n8,2 m Výška schodišťové věže\n- ks Počet zavěšení nosníků na opěru (překlenutí svahu)\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 4\nPlochy nasazeného bednění MECCANO\nBednění mostovky včetně přesahů\n1 527,6 m2 13,7 m šířka (rozvinutá)\n111,5 m délka\nObjem nasazené skruže POLY\nZákladní sestava skruže (na délku bednících stolů včetně přesahů)\n9,7 m šířka\n5 838,3 m3\n5,5 m výška (průměrná výška skruže za celý most)\n110,0 m délka\nNosníky pro překlenutí svahů, průjezdných profilů, vodních toků - odhad tonáže\n4,8 t Překlenutí svahu v poli 1 (HEB 220 dł.5m)\n50,0 t Komunikační průchod v poli 2 a pole 5 (2x IPN 500 dł. 12m)\n25,0 t Překlenutí svahu v poli 6 (IPN 500 DL.12m)\n79,8 t CELKEM\nHarmonogram výstavby\n54,0 dní Montáž skruže a bednění\n28,0 dní Vázání výztuže včetně předpínacího systému\n8,0 dní Betonáž, zrání, předepnutí\n24,0 dní Demontáž skruže a bednění\n37,0 dní Montáž skruže a bednění druhého mostu\n28,0 dní Vázání výztuže včetně předpínacího systému\n8,0 dní Betonáž, zrání, předepnutí\n24,0 dní Demontáž skruže a bednění druhého mostu\n10,0 dní Rozebrání předmontovaného bednění + paletováni skruže\n221,0 dní Celková doba výstavby ( 7,4 měs.)\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 5\nPRONÁJMY - odhad\nSystém Popis Množství Dny J. c. pron. na 30 dní Pronájem celkem\nPoly Skruž 5 838,3 m3 211 41,40 Kč/m3 1 699 996,19 Kč\nMeccano Debnenie mostovky vrátané presahy 1 527,6 m2 221 190,00 Kč/m2 2 138 130,80 Kč\nRingscaff Schodišťová věž 8,2 m 2 11 900,00 Kč/m1 51 906,00 Kč\nOcel Překlenutí svahu v poli 1 (HEB 220 dł.5m) 4,8 t 211 1 374,00 Kč/t 46 386,24 Kč\nOcel Komunikační průchod v poli 2 a pole 5 (2x IP N 5 0 5 00 d,0ł. 12mt) 211 1 374,00 Kč/t 483 190,00 Kč\nOcel Překlenutí svahu v poli 6 (IPN 500 DL.12m) 2 5,0 t 211 1 374,00 Kč/t 241 595,00 Kč\nC E L K E M 4 661 204,23 Kč\nMONTÁŽE (montáž + demontáž celkem)\nSystém Popis Množství Jednotková cena Celkem\nPoly Podporná priestorová skruž vrátané bárky 11 676,6 m3 180,00 Kč/m3 2 101 788,00 Kč\nMeccano Predmontáž - debnenie MECCANO 1 527,6 m2 650,00 Kč/m2 992 940,00 Kč\nMeccano Montáž a demontáž debnenie 3 055,2 m2 950,00 Kč/m2 2 902 440,00 Kč\nPalubky Příplatek za bednící plášť z palubek - m2 250,00 Kč/m2 - Kč\nMeccano Príplatok za zadebnenie nadpodporového p r i e č n i k- u ks 45 000,00 Kč/ks - Kč\nMeccano Príplatok za koncový priečnik 4,0 ks 86 400,00 Kč/ks 345 600,00 Kč\nOcel Zavesenie nosníkov preklenujúcich svah na o p o r u - ks 75 000,00 Kč/ks - Kč\nRingscaff Schodišťová věž 8,2 m 1 550,00 Kč/m 12 710,00 Kč\nOcel nosníky na preklenovanie svahov, priechodn ý c h 1 p5r9o,6filotv, vodný c h t o k o v 2 875,00 Kč/t 458 850,00 Kč\nC E L K E M 6 814 328,00 Kč\nDOPRAVA (na stavbu a zpět celkem)\nSystém Popis Množství Jednotková cena Doprava celkem\nPoly Podporná priestorová skruž vrátané bárky 5 838,3 m3 27,80 Kč/m3 162 304,74 Kč\nMeccano Debnenie mostovky vrátané presahy 1 527,6 m2 159,00 Kč/m2 242 888,40 Kč\nRingscaff Schodišťová věž 8,2 m2 211,30 Kč/m 1 732,66 Kč\nOcel nosníky na preklenovanie svahov, priechodn ý c h p 7r9o,8filotv, vodný c h t o k o v 2 030,10 Kč/t 162 001,98 Kč\nC E L K E M 568 927,78 Kč\nCELKOVÁ REKAPITULACE ZA CELÝ PROJEKT\nPronájem (skruž + bednění + nosníky) 4 661 204,23 Kč\nMontáže (montáž + demontáž) 6 814 328,00 Kč\nDoprava (na stavbu a zpět) 568 927,78 Kč\nMechanizace 3 295 000,00 Kč\nProjektová dokumentace 208 100,00 Kč\nStatický výpočet 50 900,00 Kč\nTisk VTD 10 000,00 Kč\nCELKEM 15 608 460,01 Kč\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 6\n6. Všeobecné podmínky:\n Pronájem dodaných komponentů je zahájen počátkem montáže a ukončen až po demontáži\nposlední etapy, přičemž je nájem fakturován kontinuálně po celou dobu výstavby.\n Fakturace proběhne měsíčně dle skutečných kubatur, na základě odsouhlasených soupisů\nprací. Objednatel je povinen se k měsíčním soupisům vyjádřit do 5-ti pracovních dní, jinak se\nsoupis považuje za odsouhlasený.\n Všechny ceny jsou uvedeny bez DPH\n Splatnost vystavených faktur bude 45 dní\n Úhrada faktur, vystavených pronajímatelem, je uvažována v plné výši, tedy 100 %\nz fakturované částky. Srážky z faktur v podobě pozastávek, zádržného, jistot, apod. nebudou\npronajímatelem akceptovány.\n Materiál pro finální vrstvu bednění (překližky, třívrstvé desky, palubky a materiál pro výdřevu)\nzajišťuje objednatel. Zhotovitel (Safe) z dodaného materiálu zhotoví bednění. Pokud bude na\nstavbu objednatelem dodán nekvalitní nebo opotřebený materiál, nebude možné následně\nvyžadovat opravy bednění dané nekvalitou dodaných desek. Zejména se jedná o spáry\nvzniklé seschnutím desek, výškové nerovnosti dané různou tloušťkou desek, špatný povrch\ndesek, nadměrná deformace desek atd.\n Objednatel je povinen písemně nahlásit požadovaný konkrétní termín nástupu zhotovitele na\nmontáž nebo demontáž minimálně ve 14denním předstihu.\n Pokud dojde ze strany objednavatele k časovým posunům již nahlášenému termínu nástupu\nna montáže nebo demontáže, vyhrazuje si zhotovitel právo na další 14denní období, které\nmůže využít pro přeskupení jeho montážních kapacit. Fakturovaná doba pronájmu skruže,\nbednění a ocelových nosníků se tím automaticky prodlužuje. Zároveň se tím adekvátně\nprodlužuje dohodnutý harmonogram.\n V případě kdy objednatel nebude schopen připravit podmínky k nástupu zhotovitele k realizaci\ndíla, započne po uplynutí 30ti dnů od smluvního data zahájení díla (nástup k montáži)\nfakturace pronájmu předpokládaného objemu materiálu ve výši 50% ze zasmluvněné ceny.\n V případech, kdy je zhotovitel zajišťuje mechanizaci, a dojde k prodloužení doby výstavby\nz důvodu, které nejsou zaviněné zhotovitelem, bude automaticky navýšena cena za\nmechanizaci. Způsob vypočtu částky, o kterou se cena mechanizace zvýší: celková původní\ncena mechanizace (Kč) děleno původní předpokládaná doba výstavby (dny) násobeno dobou\nprodloužení výstavby (dny).\n Cena dopravy je vypočtena za předpokladu, že objednatel připraví kvalitní zpevněnou\nstaveništní komunikaci, po které bude možno navážet a odvážet materiál standardními\nsilničními návěsy (24 tun). Případné vícenáklady vzniklé z důvodu nepřipravenosti\nstaveništních komunikací budou přefakturovány objednateli.\n Zhotovitel provádí montážní práce pouze v pracovní dny (Po – Pá). V ojedinělých případech,\njako je vytváření průjezdných profilů přes železnici a podobně, pracuje i o víkendu.\n Tuny ocelových nosníků nasazených v průjedných profilech a překlenutích jsou pouze\norientační a mohou se měnit v závislosti na výsledném realizačním řešení. Fakturovány budou\npodle skutečně nasazených tun nosníků.\n7. Realizační podmínky:\n Bednění kapsy mostního závěru je kalkulováno za předpokladu použití B-systemu (Stretch\nMetal). V případě požadavku na zabednění dřevem, budou práce účtovány jako vícepráce\nv níže uvedené hodinové sazbě.\n Bednění čel předpínacích kotev (po předepnutí) není součástí výše uvedené kalkulace.\nV případě požadavku na jeho zabednění, budou práce účtovány jako vícepráce v níže\nuvedené hodinové sazbě, včetně nákladů na dopravu.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 7\n Bednění nálitku na konci křídla NK (tzv. „moravský hrobeček“) z vnitřní stany (směrem od osy\nmostu) není zahrnuto v uvedených cenách. V případě požadavku na jeho zabednění, budou\npráce účtovány jako vícepráce v níže uvedené hodinové sazbě, včetně nákladů na dopravu.\n Objednatel zajistí cisternu s vodou (kropičku) pro očištění bednění po montáži.\n Zhotovitel předá informaci o dokončení bednění nosné konstrukce minimálně v 10ti denním\npředstihu, tak aby mohl objednatel dostatečně dopředu zajistit kapacity pro montáž výztuže.\n8. Vytvoření průjezdného profilu\n Při vytváření průjezdného profilu se do kubatury skruže zahrnuje také prostor průjezdu\n(kompenzuje to zvýšené náklady na vytvoření masivních bárek po obou stranách průjezdu).\n9. Projektová dokumentace\n Vytvoření projektové dokumentace\n Statický výpočet s razítkem autorizovaného statika\n Tisk čtyř pare výkresů pro schválení dokumentace\n Objednatel bere na vědomí, že zhotovitel potřebuje minimálně 30 dní na vytvoření projektové\ndokumentace, kterou může začít vytvářet až po tom, co mu objednatel pošle závaznou\nobjednávku a upřesní výškové úrovně budoucích panelových ploch a pošle platnou RDS\ndokumentaci v dwg. jako podklad pro zpracování výkresů skruže a bednění.\n Změny v projektové dokumentaci, které budou třeba vytvořit z důvodu na straně objednatele,\nbudou fakturovány dle skutečnosti sazbou 625,- Kč/hod za projekční práce a 800,- Kč/hod za\npráce statika.\n10. Cena obsahuje:\n Prostorovou skruž Polysystem – kompletní konstrukce včetně všech potřebných stojek,\npříčníků, hlav, ztužidel.\n Systémové prvkové bednění Meccano – kompletní konstrukce včetně všech potřebných\nprimárních a sekundárních nosníků, nastavitelných vzpěr, spojek, sloupků zábradlí, v případě\npojezdu včetně koleček. Cena za montáž obsahuje kompletní montáž a demontáž bednění,\npřekližek, výdřevy, čílek, příčníků, včetně výškového vyrovnání s geodetem stavby\n(upozornění: dodávku překližek na stavbu zajišťuje objednatel)\n Mechanizaci potřebnou pro montáž a demontáž skruže a bednění mostovky\n Schodišťovou věž Ringscaff\n Nosníky k překlenutí výše uvedených překážek\n11. Cenová nabídka nezahrnuje (plnění objednavatele):\n Vytvoření panelové plochy a posouzení její únosnosti. Obecný postup při přípravě panelové\nplochy je následovný:\n1. Objednatel sdělí Safe jakými panely disponuje a upřesní výškové úrovně, na které se\nchystá připravovat panelovou plochu\n2. Safe připraví výkres skladby panelové plochy s vyznačenou polohou stojek skruže a\ns vyznačenou hodnou reakce ve stojce (kN)\n3. Objednatel osloví svého geotechnika, který vypočítá požadavky na přípravu podloží pod\npanelovou plochu. Pokud klient nemá svého geotechnika Safe může nějakého doporučit.\n(pro rámcovou představu – obecně bývá geotechniky požadován Edef.2 = 45 až 60 MPa\ns poměrem Edef2/Edef1≤2,5)\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 8\n Náklady spojené s vyčištěním bednění před betonáží (pře nástupem železářů vám\nodevzdáme vyčištěné a naolejované bednění)\n Spotřební příslušenství k bednění (vruty, hřebíky, silikon, pěnu, olej, PVC chráničky a\ntrojhranné lišty, kotvy stabilizátorů, stretch metal pro bednění čela křídla, navařovací matice...)\n Dodávku dřevěných spotřebních prvků (překližky nebo palubky, řezivo pro obšalování ložisk\na zabednění speciálního tvaru příčníků případně deviátorů a podobně, fošny pro podlahu\nobslužné lávky, klíny do hlav skruže). Objednavatel zajistí jejich dodávku na stavbu, Safe\nzajistí jejich montáž a demontáž na stavbě.\n Náklady na geodetické práce\n Náklady na zařízení staveniště, 2 x kancelářský kontejner (š.2,5m x dl.6,0m) + energie\n(přípojka min. C 25A) + WC\n Ostrahu staveniště mimo pracovní dobu a o víkendu.\n Náklady na likvidaci odpadů\n Začištění otvorů po spínacích tyčích\n Cenu za případné vzniklé vícepráce a prostoje. Budou fakturovány podle skutečnosti\nsazbou 520 Kč/hod za jednoho pracovníka + prostoje mechanismu (900,- Kč/hod za auto\ns HR, 1350,- Kč/hod za manipulátor a 1700,- Kč/hod za jeřáb).\n Zápis do stavebního deníku před betonáží je standardně prováděn technickým pracovníkem\nSafe. V případech, kdy bude objednatel vyžadovat zápis autorizovaného statika, bude\nfakturován vícenáklad ve výši 12 750,- Kč za každý výjezd.\n Náklady spojené s čištěním (kompresor, voda, cisterna, čerpadlo, vodní pistole)\n Vyvrtání otvorů v zadním čílku koncového příčníku pro průchod předpínací výztuže.\n Náklady na výměnu překližek na smontovaném bednění, týká se to zejména dlouhodobých\nprojektů s více betonážemi. Výměna překližek bude fakturována sazbou 110,- Kč/m2.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 9\n12. Srovnání plnění Safe x Objednatel\nPŘEHLED ZAJIŠTĚNÍ DODÁVEK OBJEDNATELEM A SPOLEČNOSTÍ SAFE\nDODÁVKA PRÁCE\nPodloží SAFE OBJEDNATEL SAFE OBJEDNATEL\nPříprava terénu (násyp, výškové úpravy) x x\nPanelová rovnanina pod podpěrnou konstrukci x x\nPodpěrný systém/ Skruž\nPOLYSYSTÉM - skruž vč. příslušenství x x\nKompletní systémové bednění Meccano x x\nVýškové vyrovnání podpěrného systému x x\nDřevo\nPracovní fošny jako pracovní podlaha na skruž x x\nDřevo pro zaklopení mezer mezi nosníky k ochraně proti pádu\npředmětům do oblasti pod překlenutím - pokud je vyžadováno x x\nkoordinátorem BOZP\nBednící desky (deska třívrstvá/ překližka) x x\nDrobné řezivo, klínky,.. (spotřební dřevo) x x\nDřevěné nosníky H20 x x\nSpotřební materiál (vruty, hřebíky, silikon, pěnu, olej, kotvy\nx x\nstabilizátorů, stretch metal, navařovací matice...)\nSpotřební plastový mateiál (PVC chráničky, trojhranné lišty, apod.) x x\nZtužující kříže mezi nosníky (vykřížování), vyjma nosníků ve výkonu\nx x\nobjednatele\nZábradlí\nFošny jako výplň ochrany volného okraje (zábradlí) x x\nUchycení zábradlového sloupku k bednění x x\nZábradlový sloupek x x\nOkopová zarážka x x\nOcel\nOcelové nosníky:\nOcelové nosníky k překlenutí svahu v poli 1 x x\nOcelové nosníky k překlenutí místní komunikace v poli 2 x x\nOcelové nosníky k překlenutí svahu v poli 3 x x\nPřístupové cesty/ ochrana prostoru - v případě vytvoření prostupu\nx x\nskrz podpěrnou kci pro pěší, cyklostezsku,..\nSchodišťová věž Ringscaff x x\nMechanizace a doprava\nManipulátor pro montáž bednění a podpěrné skruže x x\nDoprava podpěrné skruže a bednění na stavbu a zpět x x\nTECHNICKÁ A LOGISTICKÁ PODPORA\nPOSKYTNE\nSAFE OBJEDNATEL\nTechnické výkresy bednění a podpěrné konstrukce - tisk ve čtyřech paré x\nVýpočet zatížení s uvedením hodnot ve výkresu x\nStatický výpočet pro objednatele, vč. Technické zprávy x\nTechnická podpora na staveništi x\nKontrola nákladů po dobu realizace x\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 10\n13. Kontaktní pracovníci:\nKontaktujte nás telefonicky nebo emailem. Naši pracovníci Vám rádi odpovědí na všechny\nVaše otázky.\nS pozdravem a přáním hezkého dne\nPatrik Korger\nProject manager SAFE Czech s.r.o.\nRohanské nábřeží 721/39\n186 00 Praha 8\n+420 722 788 341\nČeská republika\np .korger@safebv.eu\n+421 907 678 057\nw ww.safebv.eu\nObchodní oddělení: Technické oddělení:\nIng. Patrik Szetey Ing. Sebastian Szczupaczyński\nOperating Director Central Europe Technical-Commercial Director\ntel.+420 737 218 520 tel.+48 607 330 535\ne-mail: p.szetey@safebv.eu e-mail: s.szczupaczyński@safebv.eu\nMartin Bárta Ing. František Novák\nSenior Project Manager Project Manager\ntel.+420 727 915 810 tel.+420 732 790 326\ne-mail: m.barta@safebv.eu e-mail: f.novak@safebv.eu\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\n"
+  },
+  {
+    "type": "bridge_project",
+    "filename": "26-028C P D6 Karlove Vary- Olsova Vrata,SO 203 - most na sil.I 6 km 2,450.pdf",
+    "extracted_at": "2026-02-25T14:41:46.150460",
+    "project_info": {
+      "so_number": "203",
+      "km_position": "2,450"
+    },
+    "items": [
+      {
+        "price": "41,40",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "190,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "180,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "950,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "250,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "550,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "702,30",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "871,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "553,13",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "750,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "800,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "500,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "176,43",
+        "context": "extracted_from_text"
+      }
+    ],
+    "raw_text": "Strana 1\nPraha, 19.02.2026\nCenová nabídka č. 26-028 C\nD6 Karlovy Vary – Olšová Vrata\nSO 203 Most na silnici I/6 v km 2,450\n1. Klient: Berger Bohemia a.s.\n2. Nabídka byla vypracovaná na základě:\n Poptávkového dopisu, projektové dokumentace, realizovaných projektů a katalogů firmy\nSAFE\n3. Společnost SAFE Vám nabízí:\n Odbornost a zkušenosti stabilní firmy pocházející z Beneluxu, kde jsme téměř 40 let na trhu,\nna lokálním trhu působíme 10 let\n Zkušenosti z realizací kompletních dodávek skruží a bednění velkých mostů pro významné\nstavební firmy (Doprastav, Eurovia, Metrostav, Porr, Strabag atd.)\n Kompletní servis zahrnující dodávku projektu, statického výpočtu, vlastního materiálu\npodpěrné skruže i bednění, montáže, demontáže, dopravy, mechanizace, technické kontroly\na BOZP\n Komplexní zabezpečení zakázky prostřednictvím profesionálních projektových manažerů s\nvíce jak dvacetiletou praxi v oboru, koordinátorů stavby, projektantů a logistiky\n Montáž skruže a bednění realizovanou našimi zkušenými pracovníky\n Profesionální projektové pojištění ve výši 5 mil. EUR, Master cover ve výši 15 mil. EUR\n4. Doba platnosti cenové nabídky:\n 30 dní (ode dne zaslaní cenové nabídky)\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 2\nObdoba řešení podobného typu konstrukce\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 3\n5. Ceny a výměry:\nCenová nabídka obsahuje detailní rozpočet pronájmu bednění Meccano a podpěrné skruže POLY, včetně\npřeklenutí požadovaných překážek a výstupu na nosnou konstrukci skrze schodišťovou věž. CN zahrnuje\npronájem uvedených prvků, jejich montáž, dopravu a technickou podporu po dobu celého projektu.\nBedněná konstrukce je konstantě v celé délce tvořena deskovým průřezem s křídly. Nabídka je\nkoncipována na montáž bednění Meccano a montáž překližky či desek třívrstvých (Dodávka překližky/desky\ntřívrstvé je výkonem objednatele).\nPodpěrná konstrukce je řešena efektivně tak, aby co nejlépe řešila úsporu silničních panelů, potřebnou\nk roznesení reakčních sil do podloží.\nJednotkové ceny PRONÁJMU CZK na 30 dní\n41,40 Kč/m3 podpěrná prostorová skruž POLY\n190,00 Kč/m2 bednění mostovky MECCANO\n900,00 Kč/m schodišťová věž RINGSCAFF\n1 374,00 Kč/t nosníky pro překlenutí svahů, průjezdných profilů, vodních toků\nJednotkové ceny MONTÁŽÍ v CZK\n180,00 Kč/m3 Montáž a demontáž podpěrné prostorové skruže POLY\n650,00 Kč/m2 Predmontáž - debnenie mostovky MECCANO\n950,00 Kč/m2 Montáž a demontáž - debnenie mostovky MECCANO\n250,00 Kč/m2 Príplatok za opláštenie debnenia pri použití dosek\n45 000,00 Kč/ks Príplatok za zadebnenie nadpodporového priečniku\n86 400,00 Kč/ks Príplatok za koncový priečnik\n75 000,00 Kč/ks Zavesenie nosníkov preklenujúcich svah na oporu\n1 550,00 Kč/m schodisková veža RINGSCAFF\n2 875,00 Kč/t Montáž a demontáž překlenutí svahů, průjezdných profilů a toků\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 4\nTvar nosné konstrukce\n109,2 m délka nosné konstrukce\n12,7 m šířka nosné konstrukce\n2,0 ks počet mostů\npřekližky předepsaný povrch bednění (překližky nebo palubky)\n3 691,2 m2 celková plocha bednění obou mostů\n14 090,2 m3 celková kubatura skruže obou mostů\n5,4 m průměrná výška skruže\n- ks počet vytvářených začelení pracovních spár\n4,0 ks počet koncových příčníků obou mostů\n8,2 m Výška schodišťové věže\n- ks Počet zavěšení nosníků na opěru (překlenutí svahu)\nPlochy nasazeného bednění MECCANO\nBednění mostovky včetně přesahů\n1 845,5 m2 16,9 m šířka (rozvinutá)\n109,2 m délka\nObjem nasazené skruže POLY\nZákladní sestava skruže (na délku bednících stolů včetně přesahů)\n12,1 m šířka\n7 045,1 m3\n5,4 m výška (průměrná výška skruže za celý most)\n108,0 m délka\nNosníky pro překlenutí svahů, průjezdných profilů, vodních toků - odhad tonáže\n31,3 t Překlenutí svahu v poli 1 (IPN 500 dl.12m)\n31,3 t Komunikační průchod v poli 4 ( IPN 500 dl. 12m)\n5,8 t Překlenutí svahu v poli 5 ((HEB220 dl.5m)\n68,4 t CELKEM\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 5\nHarmonogram výstavby\n65,0 dní Montáž skruže a bednění\n27,0 dní Vázání výztuže včetně předpínacího systému\n8,0 dní Betonáž, zrání, předepnutí\n28,0 dní Demontáž skruže a bednění\n44,0 dní Montáž skruže a bednění druhého mostu\n27,0 dní Vázání výztuže včetně předpínacího systému\n8,0 dní Betonáž, zrání, předepnutí\n28,0 dní Demontáž skruže a bednění druhého mostu\n12,0 dní Rozebrání předmontovaného bednění + paletováni skruže\n247,0 dní Celková doba výstavby ( 8,2 měs.)\nCELKOVÁ REKAPITULACE ZA CELÝ PROJEKT\nPronájem (skruž + bednění + nosníky) 5 965 702,30 Kč\nMontáže (montáž + demontáž) 7 993 871,00 Kč\nDoprava (na stavbu a zpět) 568 553,13 Kč\nMechanizace 3 682 750,00 Kč\nProjektová dokumentace 203 800,00 Kč\nStatický výpočet 47 500,00 Kč\nTisk VTD 10 000,00 Kč\nCELKEM 18 472 176,43 Kč\n6. Všeobecné podmínky:\n Pronájem dodaných komponentů je zahájen počátkem montáže a ukončen až po demontáži\nposlední etapy, přičemž je nájem fakturován kontinuálně po celou dobu výstavby.\n Fakturace proběhne měsíčně dle skutečných kubatur, na základě odsouhlasených soupisů\nprací. Objednatel je povinen se k měsíčním soupisům vyjádřit do 5-ti pracovních dní, jinak se\nsoupis považuje za odsouhlasený.\n Všechny ceny jsou uvedeny bez DPH\n Splatnost vystavených faktur bude 45 dní\n Úhrada faktur, vystavených pronajímatelem, je uvažována v plné výši, tedy 100 %\nz fakturované částky. Srážky z faktur v podobě pozastávek, zádržného, jistot, apod. nebudou\npronajímatelem akceptovány.\n Materiál pro finální vrstvu bednění (překližky, třívrstvé desky, palubky a materiál pro výdřevu)\nzajišťuje objednatel. Zhotovitel (Safe) z dodaného materiálu zhotoví bednění. Pokud bude na\nstavbu objednatelem dodán nekvalitní nebo opotřebený materiál, nebude možné následně\nvyžadovat opravy bednění dané nekvalitou dodaných desek. Zejména se jedná o spáry\nvzniklé seschnutím desek, výškové nerovnosti dané různou tloušťkou desek, špatný povrch\ndesek, nadměrná deformace desek atd.\n Objednatel je povinen písemně nahlásit požadovaný konkrétní termín nástupu zhotovitele na\nmontáž nebo demontáž minimálně ve 14denním předstihu.\n Pokud dojde ze strany objednavatele k časovým posunům již nahlášenému termínu nástupu\nna montáže nebo demontáže, vyhrazuje si zhotovitel právo na další 14denní období, které\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 6\nmůže využít pro přeskupení jeho montážních kapacit. Fakturovaná doba pronájmu skruže,\nbednění a ocelových nosníků se tím automaticky prodlužuje. Zároveň se tím adekvátně\nprodlužuje dohodnutý harmonogram.\n V případě kdy objednatel nebude schopen připravit podmínky k nástupu zhotovitele k realizaci\ndíla, započne po uplynutí 30ti dnů od smluvního data zahájení díla (nástup k montáži)\nfakturace pronájmu předpokládaného objemu materiálu ve výši 50% ze zasmluvněné ceny.\n V případech, kdy je zhotovitel zajišťuje mechanizaci, a dojde k prodloužení doby výstavby\nz důvodu, které nejsou zaviněné zhotovitelem, bude automaticky navýšena cena za\nmechanizaci. Způsob vypočtu částky, o kterou se cena mechanizace zvýší: celková původní\ncena mechanizace (Kč) děleno původní předpokládaná doba výstavby (dny) násobeno dobou\nprodloužení výstavby (dny).\n Cena dopravy je vypočtena za předpokladu, že objednatel připraví kvalitní zpevněnou\nstaveništní komunikaci, po které bude možno navážet a odvážet materiál standardními\nsilničními návěsy (24 tun). Případné vícenáklady vzniklé z důvodu nepřipravenosti\nstaveništních komunikací budou přefakturovány objednateli.\n Zhotovitel provádí montážní práce pouze v pracovní dny (Po – Pá). V ojedinělých případech,\njako je vytváření průjezdných profilů přes železnici a podobně, pracuje i o víkendu.\n Tuny ocelových nosníků nasazených v průjedných profilech a překlenutích jsou pouze\norientační a mohou se měnit v závislosti na výsledném realizačním řešení. Fakturovány budou\npodle skutečně nasazených tun nosníků.\n7. Realizační podmínky:\n Bednění kapsy mostního závěru je kalkulováno za předpokladu použití B-systemu (Stretch\nMetal). V případě požadavku na zabednění dřevem, budou práce účtovány jako vícepráce\nv níže uvedené hodinové sazbě.\n Bednění čel předpínacích kotev (po předepnutí) není součástí výše uvedené kalkulace.\nV případě požadavku na jeho zabednění, budou práce účtovány jako vícepráce v níže\nuvedené hodinové sazbě, včetně nákladů na dopravu.\n Bednění nálitku na konci křídla NK (tzv. „moravský hrobeček“) z vnitřní stany (směrem od osy\nmostu) není zahrnuto v uvedených cenách. V případě požadavku na jeho zabednění, budou\npráce účtovány jako vícepráce v níže uvedené hodinové sazbě, včetně nákladů na dopravu.\n Objednatel zajistí cisternu s vodou (kropičku) pro očištění bednění po montáži.\n Zhotovitel předá informaci o dokončení bednění nosné konstrukce minimálně v 10ti denním\npředstihu, tak aby mohl objednatel dostatečně dopředu zajistit kapacity pro montáž výztuže.\n8. Vytvoření průjezdného profilu\n Při vytváření průjezdného profilu se do kubatury skruže zahrnuje také prostor průjezdu\n(kompenzuje to zvýšené náklady na vytvoření masivních bárek po obou stranách průjezdu).\n9. Projektová dokumentace\n Vytvoření projektové dokumentace\n Statický výpočet s razítkem autorizovaného statika\n Tisk čtyř pare výkresů pro schválení dokumentace\n Objednatel bere na vědomí, že zhotovitel potřebuje minimálně 30 dní na vytvoření projektové\ndokumentace, kterou může začít vytvářet až po tom, co mu objednatel pošle závaznou\nobjednávku a upřesní výškové úrovně budoucích panelových ploch a pošle platnou RDS\ndokumentaci v dwg. jako podklad pro zpracování výkresů skruže a bednění.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 7\n Změny v projektové dokumentaci, které budou třeba vytvořit z důvodu na straně objednatele,\nbudou fakturovány dle skutečnosti sazbou 625,- Kč/hod za projekční práce a 800,- Kč/hod za\npráce statika.\n10. Cena obsahuje:\n Prostorovou skruž Polysystem – kompletní konstrukce včetně všech potřebných stojek,\npříčníků, hlav, ztužidel.\n Systémové prvkové bednění Meccano – kompletní konstrukce včetně všech potřebných\nprimárních a sekundárních nosníků, nastavitelných vzpěr, spojek, sloupků zábradlí, v případě\npojezdu včetně koleček. Cena za montáž obsahuje kompletní montáž a demontáž bednění,\npřekližek, výdřevy, čílek, příčníků, včetně výškového vyrovnání s geodetem stavby\n(upozornění: dodávku překližek na stavbu zajišťuje objednatel)\n Mechanizaci potřebnou pro montáž a demontáž skruže a bednění mostovky\n Schodišťovou věž Ringscaff\n Nosníky k překlenutí výše uvedených překážek\n11. Cenová nabídka nezahrnuje (plnění objednavatele):\n Vytvoření panelové plochy a posouzení její únosnosti. Obecný postup při přípravě panelové\nplochy je následovný:\n1. Objednatel sdělí Safe jakými panely disponuje a upřesní výškové úrovně, na které se\nchystá připravovat panelovou plochu\n2. Safe připraví výkres skladby panelové plochy s vyznačenou polohou stojek skruže a\ns vyznačenou hodnou reakce ve stojce (kN)\n3. Objednatel osloví svého geotechnika, který vypočítá požadavky na přípravu podloží pod\npanelovou plochu. Pokud klient nemá svého geotechnika Safe může nějakého doporučit.\n(pro rámcovou představu – obecně bývá geotechniky požadován Edef.2 = 45 až 60 MPa\ns poměrem Edef2/Edef1≤2,5)\n Náklady spojené s vyčištěním bednění před betonáží (pře nástupem železářů vám\nodevzdáme vyčištěné a naolejované bednění)\n Spotřební příslušenství k bednění (vruty, hřebíky, silikon, pěnu, olej, PVC chráničky a\ntrojhranné lišty, kotvy stabilizátorů, stretch metal pro bednění čela křídla, navařovací matice...)\n Dodávku dřevěných spotřebních prvků (překližky nebo palubky, řezivo pro obšalování ložisk\na zabednění speciálního tvaru příčníků případně deviátorů a podobně, fošny pro podlahu\nobslužné lávky, klíny do hlav skruže). Objednavatel zajistí jejich dodávku na stavbu, Safe\nzajistí jejich montáž a demontáž na stavbě.\n Náklady na geodetické práce\n Náklady na zařízení staveniště, 2 x kancelářský kontejner (š.2,5m x dl.6,0m) + energie\n(přípojka min. C 25A) + WC\n Ostrahu staveniště mimo pracovní dobu a o víkendu.\n Náklady na likvidaci odpadů\n Začištění otvorů po spínacích tyčích\n Cenu za případné vzniklé vícepráce a prostoje. Budou fakturovány podle skutečnosti\nsazbou 520 Kč/hod za jednoho pracovníka + prostoje mechanismu (900,- Kč/hod za auto\ns HR, 1350,- Kč/hod za manipulátor a 1700,- Kč/hod za jeřáb).\n Zápis do stavebního deníku před betonáží je standardně prováděn technickým pracovníkem\nSafe. V případech, kdy bude objednatel vyžadovat zápis autorizovaného statika, bude\nfakturován vícenáklad ve výši 12 750,- Kč za každý výjezd.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 8\n Náklady spojené s čištěním (kompresor, voda, cisterna, čerpadlo, vodní pistole)\n Vyvrtání otvorů v zadním čílku koncového příčníku pro průchod předpínací výztuže.\n Náklady na výměnu překližek na smontovaném bednění, týká se to zejména dlouhodobých\nprojektů s více betonážemi. Výměna překližek bude fakturována sazbou 110,- Kč/m2.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 9\n12. Srovnání plnění Safe x Objednatel\nPŘEHLED ZAJIŠTĚNÍ DODÁVEK OBJEDNATELEM A SPOLEČNOSTÍ SAFE\nDODÁVKA PRÁCE\nPodloží SAFE OBJEDNATEL SAFE OBJEDNATEL\nPříprava terénu (násyp, výškové úpravy) x x\nPanelová rovnanina pod podpěrnou konstrukci x x\nPodpěrný systém/ Skruž\nPOLYSYSTÉM - skruž vč. příslušenství x x\nKompletní systémové bednění Meccano x x\nVýškové vyrovnání podpěrného systému x x\nDřevo\nPracovní fošny jako pracovní podlaha na skruž x x\nDřevo pro zaklopení mezer mezi nosníky k ochraně proti pádu\npředmětům do oblasti pod překlenutím - pokud je vyžadováno x x\nkoordinátorem BOZP\nBednící desky (deska třívrstvá/ překližka) x x\nDrobné řezivo, klínky,.. (spotřební dřevo) x x\nDřevěné nosníky H20 x x\nSpotřební materiál (vruty, hřebíky, silikon, pěnu, olej, kotvy\nx x\nstabilizátorů, stretch metal, navařovací matice...)\nSpotřební plastový mateiál (PVC chráničky, trojhranné lišty, apod.) x x\nZtužující kříže mezi nosníky (vykřížování), vyjma nosníků ve výkonu\nx x\nobjednatele\nZábradlí\nFošny jako výplň ochrany volného okraje (zábradlí) x x\nUchycení zábradlového sloupku k bednění x x\nZábradlový sloupek x x\nOkopová zarážka x x\nOcel\nOcelové nosníky:\nOcelové nosníky k překlenutí svahu v poli 1 x x\nOcelové nosníky k překlenutí místní komunikace v poli 2 x x\nOcelové nosníky k překlenutí svahu v poli 3 x x\nPřístupové cesty/ ochrana prostoru - v případě vytvoření prostupu\nx x\nskrz podpěrnou kci pro pěší, cyklostezsku,..\nSchodišťová věž Ringscaff x x\nMechanizace a doprava\nManipulátor pro montáž bednění a podpěrné skruže x x\nDoprava podpěrné skruže a bednění na stavbu a zpět x x\nTECHNICKÁ A LOGISTICKÁ PODPORA\nPOSKYTNE\nSAFE OBJEDNATEL\nTechnické výkresy bednění a podpěrné konstrukce - tisk ve čtyřech paré x\nVýpočet zatížení s uvedením hodnot ve výkresu x\nStatický výpočet pro objednatele, vč. Technické zprávy x\nTechnická podpora na staveništi x\nKontrola nákladů po dobu realizace x\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 10\n13. Kontaktní pracovníci:\nKontaktujte nás telefonicky nebo emailem. Naši pracovníci Vám rádi odpovědí na všechny\nVaše otázky.\nS pozdravem a přáním hezkého dne\nPatrik Korger\nProject manager SAFE Czech s.r.o.\nRohanské nábřeží 721/39\n186 00 Praha 8\n+420 722 788 341\nČeská republika\np .korger@safebv.eu\n+421 907 678 057\nw ww.safebv.eu\nObchodní oddělení: Technické oddělení:\nIng. Patrik Szetey Ing. Sebastian Szczupaczyński\nOperating Director Central Europe Technical-Commercial Director\ntel.+420 737 218 520 tel.+48 607 330 535\ne-mail: p.szetey@safebv.eu e-mail: s.szczupaczyński@safebv.eu\nMartin Bárta Ing. František Novák\nSenior Project Manager Project Manager\ntel.+420 727 915 810 tel.+420 732 790 326\ne-mail: m.barta@safebv.eu e-mail: f.novak@safebv.eu\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\n"
+  },
+  {
+    "type": "bridge_project",
+    "filename": "26-029C P D6 Karlove Vary- Olsova Vrata, SO 207 - Estakada na sil. I 6 v km 4,450-4,650.pdf",
+    "extracted_at": "2026-02-25T14:41:50.006418",
+    "project_info": {
+      "so_number": "207",
+      "km_position": "4,450"
+    },
+    "items": [
+      {
+        "price": "41,25",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "190,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "165,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "50,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "375,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "175,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "950,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "213,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "238,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "500,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "700,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "550,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "41,25",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "526,25",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "41,25",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "653,75",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "90,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "891,67",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "65,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "890,28",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "65,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "624,08",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "50,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "733,33",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "50,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "330,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "00,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "816,60",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "375,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "048,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "375,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "376,67",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "375,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "375,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "375,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "890,63",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "175,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "700,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "750,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "950,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "173,95",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "189,98",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "213,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "934,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "238,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "858,71",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "500,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "700,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "600,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "600,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "550,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "135,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "591,63",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "23,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "312,50",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "23,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "572,50",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "158,50",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "267,50",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "114,50",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "150,73",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "114,50",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "682,48",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "44,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "544,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "44,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "048,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "211,30",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "472,21",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "225,30",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "500,46",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "760,80",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "046,56",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "596,94",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "890,63",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "591,63",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "596,94",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "200,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "500,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "679,20",
+        "context": "extracted_from_text"
+      }
+    ],
+    "raw_text": "Strana 1\nPraha, 19.02.2026\nCenová nabídka č. 26-029 C\nD6 Karlovy Vary – Olšová Vrata\nSO 207 Most na silnici I/6 v km 2,450\n1. Klient: Berger Bohemia a.s.\n2. Nabídka byla vypracovaná na základě:\n Poptávkového dopisu, projektové dokumentace, realizovaných projektů a katalogů firmy\nSAFE\n3. Společnost SAFE Vám nabízí:\n Odbornost a zkušenosti stabilní firmy pocházející z Beneluxu, kde jsme téměř 40 let na trhu,\nna lokálním trhu působíme 10 let\n Zkušenosti z realizací kompletních dodávek skruží a bednění velkých mostů pro významné\nstavební firmy (Doprastav, Eurovia, Metrostav, Porr, Strabag atd.)\n Kompletní servis zahrnující dodávku projektu, statického výpočtu, vlastního materiálu\npodpěrné skruže i bednění, montáže, demontáže, dopravy, mechanizace, technické kontroly\na BOZP\n Komplexní zabezpečení zakázky prostřednictvím profesionálních projektových manažerů s\nvíce jak dvacetiletou praxi v oboru, koordinátorů stavby, projektantů a logistiky\n Montáž skruže a bednění realizovanou našimi zkušenými pracovníky\n Profesionální projektové pojištění ve výši 5 mil. EUR, Master cover ve výši 15 mil. EUR\n4. Doba platnosti cenové nabídky:\n 30 dní (ode dne zaslaní cenové nabídky)\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 2\nObdoba řešení podobného typu konstrukce\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 3\n5. Ceny a výměry:\nCenová nabídka obsahuje detailní rozpočet pronájmu bednění Meccano a podpěrné skruže POLY, včetně\npřeklenutí požadovaných překážek a výstupu na nosnou konstrukci skrze schodišťovou věž. CN zahrnuje\npronájem uvedených prvků, jejich montáž, dopravu a technickou podporu po dobu celého projektu.\nBedněná konstrukce je konstantě v celé délce tvořena deskovým průřezem s křídly. Nabídka je\nkoncipována na montáž bednění Meccano a montáž překližky či desek třívrstvých (Dodávka překližky/desky\ntřívrstvé je výkonem objednatele).\nPodpěrná konstrukce je řešena efektivně tak, aby co nejlépe řešila úsporu silničních panelů, potřebnou\nk roznesení reakčních sil do podloží.\nJednotkové ceny PRONÁJMU CZK na 30 dní\n41,25 Kč/m3 podpěrná prostorová skruž POLY\n190,00 Kč/m2 pojízdné bednící stoly MECCANO - bednění boků trámů, křídel\n165,00 Kč/m2 vodorovné bednění MECCANO - spodní plochy trámů nebo komory\n50,00 Kč/m2 pomocné podlahy po kterých jezdí bednící vozíky (včetně zábradlí)\n900,00 Kč/m schodišťová věž Ringscaff\n1 375,00 Kč/t nosníky pro překlenutí svahů, průjezdných profilů, vodních toků\nJednotkové ceny MONTÁŽÍ v CZK\n175,00 Kč/m3 Montáž a demontáž podpěrné prostorové skruže POLY\n650,00 Kč/m2 Předmontáž - pojízdné bednící stoly MECCANO\n950,00 Kč/m2 Montáž a demontáž - pojízdné bednící stoly MECCANO\n650,00 Kč/m2 Předmontáž - vodorovné bednění MECCANO\n900,00 Kč/m2 Montáž a demontáž - vodorovné bednění MECCANO\n213,00 Kč/m2 Předmontáž - pomocné podlahy po kterých jezdí bednící vozíky\n238,00 Kč/m2 Montáž a demontáž - pomocné podlahy po kterých jezdí bednící vozíky\n9 900,00 Kč/ks Příplatek za zabednění deviátorů nebo nálitků (pro předpínání)\n49 500,00 Kč/ks Příplatek za zabednění nadpodporového příčníku\n39 700,00 Kč/ks Příplatek za vytvoření začelení pracovní spáry\n86 400,00 Kč/ks Příplatek za koncový příčník\n1 550,00 Kč/m Montáž a demontáž schodišťové věže Ringscaff\n2 875,00 Kč/t Montáž a demontáž překlenutí svahů, průjezdných profilů a toků\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 4\nTvar nosné konstrukce\n652,70 m délka nosné konstrukce\n14,10 m šířka nosné konstrukce\n1,0 ks počet mostů\n12 924,0 m2 celková plocha bednění\n54 884,0 m3 celková kubatura skruže\n6,0 m průměrná výška skruže\n36,0 m délka typického betonážního taktu\n2,4 m požadovaný přesah bednění pro železáře dopředu\n1,2 m požadovaný přesah bednění zpět pro přitažení k předchozímu taktu\n- ks počet deviátorů a nálitků (pro předpínání)\n18,0 ks počet nadpodporových příčníků\n19,0 ks počet vytvářených začelení pracovních spár (vyjma koncových čel)\n4,0 ks počet koncových příčníků\nPlochy bednění MECCANO - uvažované nasazené množství v pronájmu\nPojízdné bednící stoly - bednění boků trámů, křídel včetně přesahů\n355,0 m2 9,0 m šířka (rozvinutá)\n39,6 m délka\nVodorovné bednění (spodní plochy trámů nebo komory) - jednoduché\n820,0 m2 10,8 m šířka\n75,6 m délka\nPomocné podlahy, po kterých jezdí bednící vozíky\n718,0 m2 9,5 m šířka\n75,6 m délka\nObjem nasazené skruže POLY - průměrné uvažované nasazené množství v pronájmu\nZákladní sestava skruže (na délku bednících stolů včetně přesahů)\n14,1 m šířka\n3 350,0 m3\n6,0 m výška (průměrná výška skruže za celý most)\n39,6 m délka\nDoplňující sestava skruže (pro přejezd do dalšího taktu)\n14,1 m šířka\n3 046,0 m2\n6,0 m výška (průměrná výška skruže za most)\n36,0 m délka\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 5\nNosníky pro překlenutí svahů, průjezdných profilů, vodních toků - odhad tonáže\n18,2 t Překlenutí svahu u opěry OP1 (I400 8m)\n18,2 t Překlenutí svahu u opěry OP10 (I400 8m)\n36,4 t CELKEM\nPRONÁJMY - odhad\nSystém Popis Množství Dny J. c. pron. na 30 dní Pronájem celkem\nPoly Základní sestava skruže 3 350,0 m3 507 41,25 Kč/m3 2 333 526,25 Kč\nPoly Doplňující sestava skruže 3 046,0 m3 455 41,25 Kč/m3 1 905 653,75 Kč\nMeccano Pojízdné bednící stoly 355,0 m2 515 1 90,00 Kč/m2 1 157 891,67 Kč\nMeccano Vodorovné bednění - základní sestav a 429,3 m2 515 1 65,00 Kč/m2 1 215 890,28 Kč\nMeccano Vodorovné bednění - doplňující sesta v a 390,2 m2 469 1 65,00 Kč/m2 1 006 624,08 Kč\nMeccano Pomocné podlahy - základní sestava 376,0 m2 515 50,00 Kč/m2 3 22 733,33 Kč\nMeccano Pomocné podlahy - doplňující sestava 342,0 m2 469 50,00 Kč/m2 2 67 330,00 Kč\nRingscaff Schodišťová věž Rinscaff 11,7 m 507 9 00,00 Kč/m 1 77 816,60 Kč\nOcel Překlenutí svahu u opěry OP1 (I400 8 m ) 1 8,2 t 58 1 375,00 Kč/t 48 048,00 Kč\nOcel Překlenutí svahu u opěry OP10 (I400 8 m ) 1 8,2 t 52 1 375,00 Kč/t 43 376,67 Kč\nOcel 0 - t - 1 375,00 Kč/t - Kč\nOcel 0 - t - 1 375,00 Kč/t - Kč\nOcel 0 - t - 1 375,00 Kč/t - Kč\nPoznámka: odhadovaná doba předmontáže bednění 14 dní C E L K E M 8 478 890,63 Kč\nodhadovaná doba výstavby jednoho taktu 2 6 dní\nMONTÁŽE (montáž + demontáž celkem)\nSystém Popis Množství Jednotková cena Celkem\nPoly Skruž prostorová včetně bárek 54 884,0 m3 175,00 Kč/m3 9 604 700,00 Kč\nMeccano Pojízdné bednící stoly - PŘEDMONTÁŽ 355,0 m2 650,00 Kč/m2 2 30 750,00 Kč\nMeccano Pojízdné bednící stoly (M+D) 5 848,6 m2 950,00 Kč/m2 5 556 173,95 Kč\nMeccano Vodorovné bednění - PŘEDMONTÁŽ 820,0 m2 650,00 Kč/m2 5 33 000,00 Kč\nMeccano Vodorovné bednění (M+D) 7 075,8 m2 900,00 Kč/m2 6 368 189,98 Kč\nMeccano Pomocné podlahy - PŘEDMONTÁŽ 718,0 m2 213,00 Kč/m2 1 52 934,00 Kč\nMeccano Pomocné podlahy (M+D) 6 201,1 m2 238,00 Kč/m2 1 475 858,71 Kč\nMeccano Bednění deviátorů/nálitků - ks 9 900,00 Kč/ks - Kč\nMeccano Bednění nadpodporových příčníků 18,0 ks 49 500,00 Kč/ks 8 91 000,00 Kč\nMeccano Vytvoření začelení pracovních spár 18,0 ks 39 700,00 Kč/ks 7 14 600,00 Kč\nMeccano Koncové příčníky 4,0 ks 86 400,00 Kč/ks 3 45 600,00 Kč\nRingscaff Montáž a demontáž schodišťové věže R i n g s1 c1a,7ff m 1 550,00 Kč/m 18 135,00 Kč\nOcel Překlenutí svahů, průjezdů, vodních t o k ů 3 6,4 t 2 875,00 Kč/t 1 04 650,00 Kč\nC E L K E M 25 995 591,63 Kč\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 6\nDOPRAVA (na stavbu a zpět celkem)\nSystém Popis Množství Jednotková cena Pronájem celkem\nPoly Základní sestava skruže 4 187,5 m3 23,00 Kč/m3 96 312,50 Kč\nPoly Doplňující sestava skruže 3 807,5 m3 23,00 Kč/m3 87 572,50 Kč\nMeccano Pojízdné bednící stoly 355,0 m2 158,50 Kč/m2 56 267,50 Kč\nMeccano Vodorovné bednění - základní sestav a 429,3 m2 114,50 Kč/m2 49 150,73 Kč\nMeccano Vodorovné bednění - doplňující sesta v a 390,2 m2 114,50 Kč/m2 44 682,48 Kč\nMeccano Pomocné podlahy - základní sestava 376,0 m2 44,00 Kč/m2 16 544,00 Kč\nMeccano Pomocné podlahy - doplňující sestava 342,0 m2 44,00 Kč/m2 15 048,00 Kč\nRingscaff Schodišťová věž Rinscaff 11,7 m 211,30 Kč/m 2 472,21 Kč\nOcel Překlenutí svahu u opěry OP1 (I400 8 m ) 1 8,2 t 2 225,30 Kč/t 40 500,46 Kč\nOcel Překlenutí svahu u opěry OP10 (I400 8 m ) 1 8,2 t 1 760,80 Kč/t 32 046,56 Kč\nOcel 0 - t - Kč/t - Kč\nOcel 0 - t - Kč/t - Kč\nOcel 0 - t - Kč/t - Kč\nC E L K E M 4 40 596,94 Kč\nCELKOVÝ REKAPITULACE ZA CELÝ PROJEKT\nPronájem (skruž + bednění + nosníky) 8 478 890,63 Kč\nMontáže (montáž + demontáž) 25 995 591,63 Kč\nDoprava (na stavbu a zpět) 440 596,94 Kč\nMechanizace 6 399 000,00 Kč\nProjektová dokumentace 609 200,00 Kč\nStatický výpočet 37 900,00 Kč\nTisk VTD 8 500,00 Kč\nCELKEM 41 969 679,20 Kč\n6. Všeobecné podmínky:\n Pronájem dodaných komponentů je zahájen počátkem montáže a ukončen až po demontáži\nposlední etapy, přičemž je nájem fakturován kontinuálně po celou dobu výstavby.\n Fakturace proběhne měsíčně dle skutečných kubatur, na základě odsouhlasených soupisů\nprací. Objednatel je povinen se k měsíčním soupisům vyjádřit do 5-ti pracovních dní, jinak se\nsoupis považuje za odsouhlasený.\n Všechny ceny jsou uvedeny bez DPH\n Splatnost vystavených faktur bude 45 dní\n Úhrada faktur, vystavených pronajímatelem, je uvažována v plné výši, tedy 100 %\nz fakturované částky. Srážky z faktur v podobě pozastávek, zádržného, jistot, apod. nebudou\npronajímatelem akceptovány.\n Materiál pro finální vrstvu bednění (překližky, třívrstvé desky, palubky a materiál pro výdřevu)\nzajišťuje objednatel. Zhotovitel (Safe) z dodaného materiálu zhotoví bednění. Pokud bude na\nstavbu objednatelem dodán nekvalitní nebo opotřebený materiál, nebude možné následně\nvyžadovat opravy bednění dané nekvalitou dodaných desek. Zejména se jedná o spáry\nvzniklé seschnutím desek, výškové nerovnosti dané různou tloušťkou desek, špatný povrch\ndesek, nadměrná deformace desek atd.\n Objednatel je povinen písemně nahlásit požadovaný konkrétní termín nástupu zhotovitele na\nmontáž nebo demontáž minimálně ve 14denním předstihu.\n Pokud dojde ze strany objednavatele k časovým posunům již nahlášenému termínu nástupu\nna montáže nebo demontáže, vyhrazuje si zhotovitel právo na další 14denní období, které\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 7\nmůže využít pro přeskupení jeho montážních kapacit. Fakturovaná doba pronájmu skruže,\nbednění a ocelových nosníků se tím automaticky prodlužuje. Zároveň se tím adekvátně\nprodlužuje dohodnutý harmonogram.\n V případě kdy objednatel nebude schopen připravit podmínky k nástupu zhotovitele k realizaci\ndíla, započne po uplynutí 30ti dnů od smluvního data zahájení díla (nástup k montáži)\nfakturace pronájmu předpokládaného objemu materiálu ve výši 50% ze zasmluvněné ceny.\n V případech, kdy je zhotovitel zajišťuje mechanizaci, a dojde k prodloužení doby výstavby\nz důvodu, které nejsou zaviněné zhotovitelem, bude automaticky navýšena cena za\nmechanizaci. Způsob vypočtu částky, o kterou se cena mechanizace zvýší: celková původní\ncena mechanizace (Kč) děleno původní předpokládaná doba výstavby (dny) násobeno dobou\nprodloužení výstavby (dny).\n Cena dopravy je vypočtena za předpokladu, že objednatel připraví kvalitní zpevněnou\nstaveništní komunikaci, po které bude možno navážet a odvážet materiál standardními\nsilničními návěsy (24 tun). Případné vícenáklady vzniklé z důvodu nepřipravenosti\nstaveništních komunikací budou přefakturovány objednateli.\n Zhotovitel provádí montážní práce pouze v pracovní dny (Po – Pá). V ojedinělých případech,\njako je vytváření průjezdných profilů přes železnici a podobně, pracuje i o víkendu.\n Tuny ocelových nosníků nasazených v průjedných profilech a překlenutích jsou pouze\norientační a mohou se měnit v závislosti na výsledném realizačním řešení. Fakturovány budou\npodle skutečně nasazených tun nosníků.\n7. Realizační podmínky:\n Bednění kapsy mostního závěru je kalkulováno za předpokladu použití B-systemu (Stretch\nMetal). V případě požadavku na zabednění dřevem, budou práce účtovány jako vícepráce\nv níže uvedené hodinové sazbě.\n Bednění čel předpínacích kotev (po předepnutí) není součástí výše uvedené kalkulace.\nV případě požadavku na jeho zabednění, budou práce účtovány jako vícepráce v níže\nuvedené hodinové sazbě, včetně nákladů na dopravu.\n Bednění nálitku na konci křídla NK (tzv. „moravský hrobeček“) z vnitřní stany (směrem od osy\nmostu) není zahrnuto v uvedených cenách. V případě požadavku na jeho zabednění, budou\npráce účtovány jako vícepráce v níže uvedené hodinové sazbě, včetně nákladů na dopravu.\n Objednatel zajistí cisternu s vodou (kropičku) pro očištění bednění po montáži.\n Zhotovitel předá informaci o dokončení bednění nosné konstrukce minimálně v 10ti denním\npředstihu, tak aby mohl objednatel dostatečně dopředu zajistit kapacity pro montáž výztuže.\n8. Vytvoření průjezdného profilu\n Při vytváření průjezdného profilu se do kubatury skruže zahrnuje také prostor průjezdu\n(kompenzuje to zvýšené náklady na vytvoření masivních bárek po obou stranách průjezdu).\n9. Projektová dokumentace\n Vytvoření projektové dokumentace\n Statický výpočet s razítkem autorizovaného statika\n Tisk čtyř pare výkresů pro schválení dokumentace\n Objednatel bere na vědomí, že zhotovitel potřebuje minimálně 30 dní na vytvoření projektové\ndokumentace, kterou může začít vytvářet až po tom, co mu objednatel pošle závaznou\nobjednávku a upřesní výškové úrovně budoucích panelových ploch a pošle platnou RDS\ndokumentaci v dwg. jako podklad pro zpracování výkresů skruže a bednění.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 8\n Změny v projektové dokumentaci, které budou třeba vytvořit z důvodu na straně objednatele,\nbudou fakturovány dle skutečnosti sazbou 625,- Kč/hod za projekční práce a 800,- Kč/hod za\npráce statika.\n10. Cena obsahuje:\n Prostorovou skruž Polysystem – kompletní konstrukce včetně všech potřebných stojek,\npříčníků, hlav, ztužidel.\n Systémové prvkové bednění Meccano – kompletní konstrukce včetně všech potřebných\nprimárních a sekundárních nosníků, nastavitelných vzpěr, spojek, sloupků zábradlí, v případě\npojezdu včetně koleček. Cena za montáž obsahuje kompletní montáž a demontáž bednění,\npřekližek, výdřevy, čílek, příčníků, včetně výškového vyrovnání s geodetem stavby\n(upozornění: dodávku překližek na stavbu zajišťuje objednatel)\n Mechanizaci potřebnou pro montáž a demontáž skruže a bednění mostovky\n Schodišťovou věž Ringscaff\n Nosníky k překlenutí výše uvedených překážek\n11. Cenová nabídka nezahrnuje (plnění objednavatele):\n Vytvoření panelové plochy a posouzení její únosnosti. Obecný postup při přípravě panelové\nplochy je následovný:\n1. Objednatel sdělí Safe jakými panely disponuje a upřesní výškové úrovně, na které se\nchystá připravovat panelovou plochu\n2. Safe připraví výkres skladby panelové plochy s vyznačenou polohou stojek skruže a\ns vyznačenou hodnou reakce ve stojce (kN)\n3. Objednatel osloví svého geotechnika, který vypočítá požadavky na přípravu podloží pod\npanelovou plochu. Pokud klient nemá svého geotechnika Safe může nějakého doporučit.\n(pro rámcovou představu – obecně bývá geotechniky požadován Edef.2 = 45 až 60 MPa\ns poměrem Edef2/Edef1≤2,5)\n Náklady spojené s vyčištěním bednění před betonáží (pře nástupem železářů vám\nodevzdáme vyčištěné a naolejované bednění)\n Spotřební příslušenství k bednění (vruty, hřebíky, silikon, pěnu, olej, PVC chráničky a\ntrojhranné lišty, kotvy stabilizátorů, stretch metal pro bednění čela křídla, navařovací matice...)\n Dodávku dřevěných spotřebních prvků (překližky nebo palubky, řezivo pro obšalování ložisk\na zabednění speciálního tvaru příčníků případně deviátorů a podobně, fošny pro podlahu\nobslužné lávky, klíny do hlav skruže). Objednavatel zajistí jejich dodávku na stavbu, Safe\nzajistí jejich montáž a demontáž na stavbě.\n Náklady na geodetické práce\n Náklady na zařízení staveniště, 2 x kancelářský kontejner (š.2,5m x dl.6,0m) + energie\n(přípojka min. C 25A) + WC\n Ostrahu staveniště mimo pracovní dobu a o víkendu.\n Náklady na likvidaci odpadů\n Začištění otvorů po spínacích tyčích\n Cenu za případné vzniklé vícepráce a prostoje. Budou fakturovány podle skutečnosti\nsazbou 520 Kč/hod za jednoho pracovníka + prostoje mechanismu (900,- Kč/hod za auto\ns HR, 1350,- Kč/hod za manipulátor a 1700,- Kč/hod za jeřáb).\n Zápis do stavebního deníku před betonáží je standardně prováděn technickým pracovníkem\nSafe. V případech, kdy bude objednatel vyžadovat zápis autorizovaného statika, bude\nfakturován vícenáklad ve výši 12 750,- Kč za každý výjezd.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 9\n Náklady spojené s čištěním (kompresor, voda, cisterna, čerpadlo, vodní pistole)\n Vyvrtání otvorů v zadním čílku koncového příčníku pro průchod předpínací výztuže.\n Náklady na výměnu překližek na smontovaném bednění, týká se to zejména dlouhodobých\nprojektů s více betonážemi. Výměna překližek bude fakturována sazbou 110,- Kč/m2.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 10\n12. Srovnání plnění Safe x Objednatel\nPŘEHLED ZAJIŠTĚNÍ DODÁVEK OBJEDNATELEM A SPOLEČNOSTÍ SAFE\nDODÁVKA PRÁCE\nPodloží SAFE OBJEDNATEL SAFE OBJEDNATEL\nPříprava terénu (násyp, výškové úpravy) x x\nPanelová rovnanina pod podpěrnou konstrukci x x\nPodpěrný systém/ Skruž\nPOLYSYSTÉM - skruž vč. příslušenství x x\nKompletní systémové bednění Meccano x x\nVýškové vyrovnání podpěrného systému x x\nDřevo\nPracovní fošny jako pracovní podlaha na skruž x x\nDřevo pro zaklopení mezer mezi nosníky k ochraně proti pádu\npředmětům do oblasti pod překlenutím - pokud je vyžadováno x x\nkoordinátorem BOZP\nBednící desky (deska třívrstvá/ překližka) x x\nDrobné řezivo, klínky,.. (spotřební dřevo) x x\nDřevěné nosníky H20 x x\nSpotřební materiál (vruty, hřebíky, silikon, pěnu, olej, kotvy\nx x\nstabilizátorů, stretch metal, navařovací matice...)\nSpotřební plastový mateiál (PVC chráničky, trojhranné lišty, apod.) x x\nZtužující kříže mezi nosníky (vykřížování), vyjma nosníků ve výkonu\nx x\nobjednatele\nZábradlí\nFošny jako výplň ochrany volného okraje (zábradlí) x x\nUchycení zábradlového sloupku k bednění x x\nZábradlový sloupek x x\nOkopová zarážka x x\nOcel\nOcelové nosníky:\nOcelové nosníky k překlenutí svahu v poli 1 x x\nOcelové nosníky k překlenutí místní komunikace v poli 2 x x\nOcelové nosníky k překlenutí svahu v poli 3 x x\nPřístupové cesty/ ochrana prostoru - v případě vytvoření prostupu\nx x\nskrz podpěrnou kci pro pěší, cyklostezsku,..\nSchodišťová věž Ringscaff x x\nMechanizace a doprava\nManipulátor pro montáž bednění a podpěrné skruže x x\nDoprava podpěrné skruže a bednění na stavbu a zpět x x\nTECHNICKÁ A LOGISTICKÁ PODPORA\nPOSKYTNE\nSAFE OBJEDNATEL\nTechnické výkresy bednění a podpěrné konstrukce - tisk ve čtyřech paré x\nVýpočet zatížení s uvedením hodnot ve výkresu x\nStatický výpočet pro objednatele, vč. Technické zprávy x\nTechnická podpora na staveništi x\nKontrola nákladů po dobu realizace x\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 11\n13. Kontaktní pracovníci:\nKontaktujte nás telefonicky nebo emailem. Naši pracovníci Vám rádi odpovědí na všechny\nVaše otázky.\nS pozdravem a přáním hezkého dne\nPatrik Korger\nProject manager SAFE Czech s.r.o.\nRohanské nábřeží 721/39\n186 00 Praha 8\n+420 722 788 341\nČeská republika\np .korger@safebv.eu\n+421 907 678 057\nw ww.safebv.eu\nObchodní oddělení: Technické oddělení:\nIng. Patrik Szetey Ing. Sebastian Szczupaczyński\nOperating Director Central Europe Technical-Commercial Director\ntel.+420 737 218 520 tel.+48 607 330 535\ne-mail: p.szetey@safebv.eu e-mail: s.szczupaczyński@safebv.eu\nMartin Bárta Ing. František Novák\nSenior Project Manager Project Manager\ntel.+420 727 915 810 tel.+420 732 790 326\ne-mail: m.barta@safebv.eu e-mail: f.novak@safebv.eu\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\n"
+  },
+  {
+    "type": "bridge_project",
+    "filename": "26-030C P D6 Karlove Vary- Olsova Vrata, SO 212 Nadjezd nad dal. D6 V KM 7,574.pdf",
+    "extracted_at": "2026-02-25T14:41:52.686155",
+    "project_info": {
+      "so_number": "212"
+    },
+    "items": [
+      {
+        "price": "41,40",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "190,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "180,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "950,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "250,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "550,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "41,40",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "622,56",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "190,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "576,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "434,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "207,52",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "822,36",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "207,52",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "869,96",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "180,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "040,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "650,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "200,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "950,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "600,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "250,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "800,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "550,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "710,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "225,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "23,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "144,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "158,30",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "574,40",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "211,30",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "732,66",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "131,60",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "501,20",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "952,26",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "869,96",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "225,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "952,26",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "500,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "100,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "547,22",
+        "context": "extracted_from_text"
+      }
+    ],
+    "raw_text": "Strana 1\nPraha, 19.02.2026\nCenová nabídka č. 26-030 C\nD6 Karlovy Vary – Olšová Vrata\nSO 212 Nadjezd nad. Dál. D6 V KM 7,574\n1. Klient: Berger Bohemia a.s.\n2. Nabídka byla vypracovaná na základě:\n Poptávkového dopisu, projektové dokumentace, realizovaných projektů a katalogů firmy\nSAFE\n3. Společnost SAFE Vám nabízí:\n Odbornost a zkušenosti stabilní firmy pocházející z Beneluxu, kde jsme téměř 40 let na trhu,\nna lokálním trhu působíme 10 let\n Zkušenosti z realizací kompletních dodávek skruží a bednění velkých mostů pro významné\nstavební firmy (Doprastav, Eurovia, Metrostav, Porr, Strabag atd.)\n Kompletní servis zahrnující dodávku projektu, statického výpočtu, vlastního materiálu\npodpěrné skruže i bednění, montáže, demontáže, dopravy, mechanizace, technické kontroly\na BOZP\n Komplexní zabezpečení zakázky prostřednictvím profesionálních projektových manažerů s\nvíce jak dvacetiletou praxi v oboru, koordinátorů stavby, projektantů a logistiky\n Montáž skruže a bednění realizovanou našimi zkušenými pracovníky\n Profesionální projektové pojištění ve výši 5 mil. EUR, Master cover ve výši 15 mil. EUR\n4. Doba platnosti cenové nabídky:\n 30 dní (ode dne zaslaní cenové nabídky)\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 2\nObdoba řešení podobného typu konstrukce\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 3\n5. Ceny a výměry:\nCenová nabídka obsahuje detailní rozpočet pronájmu bednění Meccano a podpěrné skruže POLY, včetně\npřeklenutí požadovaných překážek a výstupu na nosnou konstrukci skrze schodišťovou věž. CN zahrnuje\npronájem uvedených prvků, jejich montáž, dopravu a technickou podporu po dobu celého projektu.\nBedněná konstrukce je konstantě v celé délce tvořena deskovým průřezem s křídly. Nabídka je\nkoncipována na montáž bednění Meccano a montáž překližky či desek třívrstvých (Dodávka překližky/desky\ntřívrstvé je výkonem objednatele).\nPodpěrná konstrukce je řešena efektivně tak, aby co nejlépe řešila úsporu silničních panelů, potřebnou\nk roznesení reakčních sil do podloží.\nJednotkové ceny PRONÁJMU CZK na 30 dní\n41,40 Kč/m3 podpěrná prostorová skruž POLY\n190,00 Kč/m2 bednění mostovky MECCANO\n900,00 Kč/m schodišťová věž RINGSCAFF\n1 374,00 Kč/t nosníky pro překlenutí svahů, průjezdných profilů, vodních toků\nJednotkové ceny MONTÁŽÍ v CZK\n180,00 Kč/m3 Montáž a demontáž podpěrné prostorové skruže POLY\n650,00 Kč/m2 Predmontáž - debnenie mostovky MECCANO\n950,00 Kč/m2 Montáž a demontáž - debnenie mostovky MECCANO\n250,00 Kč/m2 Príplatok za opláštenie debnenia pri použití dosek\n45 000,00 Kč/ks Príplatok za zadebnenie nadpodporového priečniku\n86 400,00 Kč/ks Príplatok za koncový priečnik\n75 000,00 Kč/ks Zavesenie nosníkov preklenujúcich svah na oporu\n1 550,00 Kč/m schodisková veža RINGSCAFF\n2 875,00 Kč/t Montáž a demontáž překlenutí svahů, průjezdných profilů a toků\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 4\nTvar nosné konstrukce\n57,7 m délka nosné konstrukce\n11,9 m šířka nosné konstrukce\n1,0 ks počet mostů\npřekližky předepsaný povrch bednění (překližky nebo palubky)\n768,0 m2 celková plocha bednění obou mostů\n3 528,2 m3 celková kubatura skruže obou mostů\n5,6 m průměrná výška skruže\n- ks počet vytvářených začelení pracovních spár\n2,0 ks počet koncových příčníků obou mostů\n8,2 m Výška schodišťové věže\n- ks Počet zavěšení nosníků na opěru (překlenutí svahu)\nPlochy nasazeného bednění MECCANO\nBednění mostovky včetně přesahů\n768,0 m2 13,3 m šířka (rozvinutá)\n57,7 m délka\nObjem nasazené skruže POLY\nZákladní sestava skruže (na délku bednících stolů včetně přesahů)\n11,3 m šířka\n3 528,0 m3\n5,6 m výška (průměrná výška skruže za celý most)\n56,0 m délka\nNosníky pro překlenutí svahů, průjezdných profilů, vodních toků - odhad tonáže\n13,6 t Překlenutí svahu v poli 1 (IPN 400 dl.8m)\n29,8 t Komunikační průchod v poli 3 ( IPN 500 dl. 12m)\n13,6 t Překlenutí svahu v poli 4 (IPN 400 dl.8m)\n57,0 t CELKEM\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 5\nHarmonogram výstavby\n30,0 dní Montáž skruže a bednění\n15,0 dní Vázání výztuže včetně předpínacího systému\n21,0 dní Betonáž, zrání, předepnutí\n13,0 dní Demontáž skruže a bednění\n5,0 dní Rozebrání předmontovaného bednění + paletováni skruže\n84,0 dní Celková doba výstavby ( 2,8 měs.)\nPRONÁJMY - odhad\nSystém Popis Množství Dny J. c. pron. na 30 dní Pronájem celkem\nPoly Skruž 3 528,0 m3 79 41,40 Kč/m3 384 622,56 Kč\nMeccano Debnenie mostovky vrátané presahy 7 68,0 m2 84 190,00 Kč/m2 408 576,00 Kč\nRingscaff Schodišťová věž 8,2 m 79 900,00 Kč/m1 19 434,00 Kč\nOcel Překlenutí svahu v poli 1 (IPN 400 dl.8m) 1 3,6 t 79 1 374,00 Kč/t 49 207,52 Kč\nOcel Provizorní komunikace v poli 3 (IPN 500 dl. 1 2 m )2 9,8 t 79 1 374,00 Kč/t 107 822,36 Kč\nOcel Překlenutí svahu v poli 4 (IPN 400 dl.8m) 1 3,6 t 79 1 374,00 Kč/t 49 207,52 Kč\nC E L K E M 1 018 869,96 Kč\nMONTÁŽE (montáž + demontáž celkem)\nSystém Popis Množství Jednotková cena Celkem\nPoly Podporná priestorová skruž vrátané bárky 3 528,0 m3 180,00 Kč/m3 635 040,00 Kč\nMeccano Predmontáž - debnenie MECCANO 7 68,0 m2 650,00 Kč/m2 499 200,00 Kč\nMeccano Montáž a demontáž debnenie 7 68,0 m2 950,00 Kč/m2 729 600,00 Kč\nPalubky Příplatek za bednící plášť z palubek - m2 250,00 Kč/m2 - Kč\nMeccano Príplatok za zadebnenie nadpodporového p r i e č n i k- u ks 45 000,00 Kč/ks - Kč\nMeccano Príplatok za koncový priečnik 2,0 ks 86 400,00 Kč/ks 172 800,00 Kč\nOcel Zavesenie nosníkov preklenujúcich svah na o p o r u - ks 75 000,00 Kč/ks - Kč\nRingscaff Schodišťová věž 8,2 m 1 550,00 Kč/m 12 710,00 Kč\nOcel nosníky na preklenovanie svahov, priechodn ý c h p 5r7o,0filotv, vodný c h t o k o v 2 875,00 Kč/t 163 875,00 Kč\nC E L K E M 2 213 225,00 Kč\nDOPRAVA (na stavbu a zpět celkem)\nSystém Popis Množství Jednotková cena Doprava celkem\nPoly Podporná priestorová skruž vrátané bárky 3 528,0 m3 23,00 Kč/m3 81 144,00 Kč\nMeccano Debnenie mostovky vrátané presahy 7 68,0 m2 158,30 Kč/m2 121 574,40 Kč\nRingscaff Schodišťová věž 8,2 m2 211,30 Kč/m 1 732,66 Kč\nOcel nosníky na preklenovanie svahov, priechodn ý c h p 5r7o,0filotv, vodný c h t o k o v 2 131,60 Kč/t 121 501,20 Kč\nC E L K E M 325 952,26 Kč\nCELKOVÁ REKAPITULACE ZA CELÝ PROJEKT\nPronájem (skruž + bednění + nosníky) 1 018 869,96 Kč\nMontáže (montáž + demontáž) 2 213 225,00 Kč\nDoprava (na stavbu a zpět) 325 952,26 Kč\nMechanizace 1 252 500,00 Kč\nProjektová dokumentace 53 900,00 Kč\nStatický výpočet 44 100,00 Kč\nTisk VTD 5 000,00 Kč\nCELKEM 4 913 547,22 Kč\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 6\n6. Všeobecné podmínky:\n Pronájem dodaných komponentů je zahájen počátkem montáže a ukončen až po demontáži\nposlední etapy, přičemž je nájem fakturován kontinuálně po celou dobu výstavby.\n Fakturace proběhne měsíčně dle skutečných kubatur, na základě odsouhlasených soupisů\nprací. Objednatel je povinen se k měsíčním soupisům vyjádřit do 5-ti pracovních dní, jinak se\nsoupis považuje za odsouhlasený.\n Všechny ceny jsou uvedeny bez DPH\n Splatnost vystavených faktur bude 45 dní\n Úhrada faktur, vystavených pronajímatelem, je uvažována v plné výši, tedy 100 %\nz fakturované částky. Srážky z faktur v podobě pozastávek, zádržného, jistot, apod. nebudou\npronajímatelem akceptovány.\n Materiál pro finální vrstvu bednění (překližky, třívrstvé desky, palubky a materiál pro výdřevu)\nzajišťuje objednatel. Zhotovitel (Safe) z dodaného materiálu zhotoví bednění. Pokud bude na\nstavbu objednatelem dodán nekvalitní nebo opotřebený materiál, nebude možné následně\nvyžadovat opravy bednění dané nekvalitou dodaných desek. Zejména se jedná o spáry\nvzniklé seschnutím desek, výškové nerovnosti dané různou tloušťkou desek, špatný povrch\ndesek, nadměrná deformace desek atd.\n Objednatel je povinen písemně nahlásit požadovaný konkrétní termín nástupu zhotovitele na\nmontáž nebo demontáž minimálně ve 14denním předstihu.\n Pokud dojde ze strany objednavatele k časovým posunům již nahlášenému termínu nástupu\nna montáže nebo demontáže, vyhrazuje si zhotovitel právo na další 14denní období, které\nmůže využít pro přeskupení jeho montážních kapacit. Fakturovaná doba pronájmu skruže,\nbednění a ocelových nosníků se tím automaticky prodlužuje. Zároveň se tím adekvátně\nprodlužuje dohodnutý harmonogram.\n V případě kdy objednatel nebude schopen připravit podmínky k nástupu zhotovitele k realizaci\ndíla, započne po uplynutí 30ti dnů od smluvního data zahájení díla (nástup k montáži)\nfakturace pronájmu předpokládaného objemu materiálu ve výši 50% ze zasmluvněné ceny.\n V případech, kdy je zhotovitel zajišťuje mechanizaci, a dojde k prodloužení doby výstavby\nz důvodu, které nejsou zaviněné zhotovitelem, bude automaticky navýšena cena za\nmechanizaci. Způsob vypočtu částky, o kterou se cena mechanizace zvýší: celková původní\ncena mechanizace (Kč) děleno původní předpokládaná doba výstavby (dny) násobeno dobou\nprodloužení výstavby (dny).\n Cena dopravy je vypočtena za předpokladu, že objednatel připraví kvalitní zpevněnou\nstaveništní komunikaci, po které bude možno navážet a odvážet materiál standardními\nsilničními návěsy (24 tun). Případné vícenáklady vzniklé z důvodu nepřipravenosti\nstaveništních komunikací budou přefakturovány objednateli.\n Zhotovitel provádí montážní práce pouze v pracovní dny (Po – Pá). V ojedinělých případech,\njako je vytváření průjezdných profilů přes železnici a podobně, pracuje i o víkendu.\n Tuny ocelových nosníků nasazených v průjedných profilech a překlenutích jsou pouze\norientační a mohou se měnit v závislosti na výsledném realizačním řešení. Fakturovány budou\npodle skutečně nasazených tun nosníků.\n7. Realizační podmínky:\n Bednění kapsy mostního závěru je kalkulováno za předpokladu použití B-systemu (Stretch\nMetal). V případě požadavku na zabednění dřevem, budou práce účtovány jako vícepráce\nv níže uvedené hodinové sazbě.\n Bednění čel předpínacích kotev (po předepnutí) není součástí výše uvedené kalkulace.\nV případě požadavku na jeho zabednění, budou práce účtovány jako vícepráce v níže\nuvedené hodinové sazbě, včetně nákladů na dopravu.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 7\n Bednění nálitku na konci křídla NK (tzv. „moravský hrobeček“) z vnitřní stany (směrem od osy\nmostu) není zahrnuto v uvedených cenách. V případě požadavku na jeho zabednění, budou\npráce účtovány jako vícepráce v níže uvedené hodinové sazbě, včetně nákladů na dopravu.\n Objednatel zajistí cisternu s vodou (kropičku) pro očištění bednění po montáži.\n Zhotovitel předá informaci o dokončení bednění nosné konstrukce minimálně v 10ti denním\npředstihu, tak aby mohl objednatel dostatečně dopředu zajistit kapacity pro montáž výztuže.\n8. Vytvoření průjezdného profilu\n Při vytváření průjezdného profilu se do kubatury skruže zahrnuje také prostor průjezdu\n(kompenzuje to zvýšené náklady na vytvoření masivních bárek po obou stranách průjezdu).\n9. Projektová dokumentace\n Vytvoření projektové dokumentace\n Statický výpočet s razítkem autorizovaného statika\n Tisk čtyř pare výkresů pro schválení dokumentace\n Objednatel bere na vědomí, že zhotovitel potřebuje minimálně 30 dní na vytvoření projektové\ndokumentace, kterou může začít vytvářet až po tom, co mu objednatel pošle závaznou\nobjednávku a upřesní výškové úrovně budoucích panelových ploch a pošle platnou RDS\ndokumentaci v dwg. jako podklad pro zpracování výkresů skruže a bednění.\n Změny v projektové dokumentaci, které budou třeba vytvořit z důvodu na straně objednatele,\nbudou fakturovány dle skutečnosti sazbou 625,- Kč/hod za projekční práce a 800,- Kč/hod za\npráce statika.\n10. Cena obsahuje:\n Prostorovou skruž Polysystem – kompletní konstrukce včetně všech potřebných stojek,\npříčníků, hlav, ztužidel.\n Systémové prvkové bednění Meccano – kompletní konstrukce včetně všech potřebných\nprimárních a sekundárních nosníků, nastavitelných vzpěr, spojek, sloupků zábradlí, v případě\npojezdu včetně koleček. Cena za montáž obsahuje kompletní montáž a demontáž bednění,\npřekližek, výdřevy, čílek, příčníků, včetně výškového vyrovnání s geodetem stavby\n(upozornění: dodávku překližek na stavbu zajišťuje objednatel)\n Mechanizaci potřebnou pro montáž a demontáž skruže a bednění mostovky\n Schodišťovou věž Ringscaff\n Nosníky k překlenutí výše uvedených překážek\n11. Cenová nabídka nezahrnuje (plnění objednavatele):\n Vytvoření panelové plochy a posouzení její únosnosti. Obecný postup při přípravě panelové\nplochy je následovný:\n1. Objednatel sdělí Safe jakými panely disponuje a upřesní výškové úrovně, na které se\nchystá připravovat panelovou plochu\n2. Safe připraví výkres skladby panelové plochy s vyznačenou polohou stojek skruže a\ns vyznačenou hodnou reakce ve stojce (kN)\n3. Objednatel osloví svého geotechnika, který vypočítá požadavky na přípravu podloží pod\npanelovou plochu. Pokud klient nemá svého geotechnika Safe může nějakého doporučit.\n(pro rámcovou představu – obecně bývá geotechniky požadován Edef.2 = 45 až 60 MPa\ns poměrem Edef2/Edef1≤2,5)\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 8\n Náklady spojené s vyčištěním bednění před betonáží (pře nástupem železářů vám\nodevzdáme vyčištěné a naolejované bednění)\n Spotřební příslušenství k bednění (vruty, hřebíky, silikon, pěnu, olej, PVC chráničky a\ntrojhranné lišty, kotvy stabilizátorů, stretch metal pro bednění čela křídla, navařovací matice...)\n Dodávku dřevěných spotřebních prvků (překližky nebo palubky, řezivo pro obšalování ložisk\na zabednění speciálního tvaru příčníků případně deviátorů a podobně, fošny pro podlahu\nobslužné lávky, klíny do hlav skruže). Objednavatel zajistí jejich dodávku na stavbu, Safe\nzajistí jejich montáž a demontáž na stavbě.\n Náklady na geodetické práce\n Náklady na zařízení staveniště, 2 x kancelářský kontejner (š.2,5m x dl.6,0m) + energie\n(přípojka min. C 25A) + WC\n Ostrahu staveniště mimo pracovní dobu a o víkendu.\n Náklady na likvidaci odpadů\n Začištění otvorů po spínacích tyčích\n Cenu za případné vzniklé vícepráce a prostoje. Budou fakturovány podle skutečnosti\nsazbou 520 Kč/hod za jednoho pracovníka + prostoje mechanismu (900,- Kč/hod za auto\ns HR, 1350,- Kč/hod za manipulátor a 1700,- Kč/hod za jeřáb).\n Zápis do stavebního deníku před betonáží je standardně prováděn technickým pracovníkem\nSafe. V případech, kdy bude objednatel vyžadovat zápis autorizovaného statika, bude\nfakturován vícenáklad ve výši 12 750,- Kč za každý výjezd.\n Náklady spojené s čištěním (kompresor, voda, cisterna, čerpadlo, vodní pistole)\n Vyvrtání otvorů v zadním čílku koncového příčníku pro průchod předpínací výztuže.\n Náklady na výměnu překližek na smontovaném bednění, týká se to zejména dlouhodobých\nprojektů s více betonážemi. Výměna překližek bude fakturována sazbou 110,- Kč/m2.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 9\n12. Srovnání plnění Safe x Objednatel\nPŘEHLED ZAJIŠTĚNÍ DODÁVEK OBJEDNATELEM A SPOLEČNOSTÍ SAFE\nDODÁVKA PRÁCE\nPodloží SAFE OBJEDNATEL SAFE OBJEDNATEL\nPříprava terénu (násyp, výškové úpravy) x x\nPanelová rovnanina pod podpěrnou konstrukci x x\nPodpěrný systém/ Skruž\nPOLYSYSTÉM - skruž vč. příslušenství x x\nKompletní systémové bednění Meccano x x\nVýškové vyrovnání podpěrného systému x x\nDřevo\nPracovní fošny jako pracovní podlaha na skruž x x\nDřevo pro zaklopení mezer mezi nosníky k ochraně proti pádu\npředmětům do oblasti pod překlenutím - pokud je vyžadováno x x\nkoordinátorem BOZP\nBednící desky (deska třívrstvá/ překližka) x x\nDrobné řezivo, klínky,.. (spotřební dřevo) x x\nDřevěné nosníky H20 x x\nSpotřební materiál (vruty, hřebíky, silikon, pěnu, olej, kotvy\nx x\nstabilizátorů, stretch metal, navařovací matice...)\nSpotřební plastový mateiál (PVC chráničky, trojhranné lišty, apod.) x x\nZtužující kříže mezi nosníky (vykřížování), vyjma nosníků ve výkonu\nx x\nobjednatele\nZábradlí\nFošny jako výplň ochrany volného okraje (zábradlí) x x\nUchycení zábradlového sloupku k bednění x x\nZábradlový sloupek x x\nOkopová zarážka x x\nOcel\nOcelové nosníky:\nOcelové nosníky k překlenutí svahu v poli 1 x x\nOcelové nosníky k překlenutí místní komunikace v poli 2 x x\nOcelové nosníky k překlenutí svahu v poli 3 x x\nPřístupové cesty/ ochrana prostoru - v případě vytvoření prostupu\nx x\nskrz podpěrnou kci pro pěší, cyklostezsku,..\nSchodišťová věž Ringscaff x x\nMechanizace a doprava\nManipulátor pro montáž bednění a podpěrné skruže x x\nDoprava podpěrné skruže a bednění na stavbu a zpět x x\nTECHNICKÁ A LOGISTICKÁ PODPORA\nPOSKYTNE\nSAFE OBJEDNATEL\nTechnické výkresy bednění a podpěrné konstrukce - tisk ve čtyřech paré x\nVýpočet zatížení s uvedením hodnot ve výkresu x\nStatický výpočet pro objednatele, vč. Technické zprávy x\nTechnická podpora na staveništi x\nKontrola nákladů po dobu realizace x\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 10\n13. Kontaktní pracovníci:\nKontaktujte nás telefonicky nebo emailem. Naši pracovníci Vám rádi odpovědí na všechny\nVaše otázky.\nS pozdravem a přáním hezkého dne\nPatrik Korger\nProject manager SAFE Czech s.r.o.\nRohanské nábřeží 721/39\n186 00 Praha 8\n+420 722 788 341\nČeská republika\np .korger@safebv.eu\n+421 907 678 057\nw ww.safebv.eu\nObchodní oddělení: Technické oddělení:\nIng. Patrik Szetey Ing. Sebastian Szczupaczyński\nOperating Director Central Europe Technical-Commercial Director\ntel.+420 737 218 520 tel.+48 607 330 535\ne-mail: p.szetey@safebv.eu e-mail: s.szczupaczyński@safebv.eu\nMartin Bárta Ing. František Novák\nSenior Project Manager Project Manager\ntel.+420 727 915 810 tel.+420 732 790 326\ne-mail: m.barta@safebv.eu e-mail: f.novak@safebv.eu\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\n"
+  },
+  {
+    "type": "bridge_project",
+    "filename": "26-031C P D6 Karlove Vary- Olsova Vrata, SO 241 Most na Vratskem potoce v km 2,950 na sil. I 6.pdf",
+    "extracted_at": "2026-02-25T14:41:55.381689",
+    "project_info": {
+      "so_number": "241",
+      "km_position": "2,950"
+    },
+    "items": [
+      {
+        "price": "75,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "350,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "825,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "250,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "550,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "75,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "219,25",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "350,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "327,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "882,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "374,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "914,34",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "342,59",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "840,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "825,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "202,50",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "700,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "250,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "400,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "800,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "550,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "610,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "875,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "337,50",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "490,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "76,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "439,60",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "218,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "482,60",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "211,30",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "310,06",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "965,50",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "499,95",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "732,21",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "342,59",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "490,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "732,21",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "500,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "800,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "900,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "000,00",
+        "context": "extracted_from_text"
+      },
+      {
+        "price": "764,80",
+        "context": "extracted_from_text"
+      }
+    ],
+    "raw_text": "Strana 1\nPraha, 19.02.2026\nCenová nabídka č. 26-031 C\nD6 Karlovy Vary – Olšová Vrata\nSO 241 Most na Vratském potoce v km 2,950 na sil. I/6\n1. Klient: Berger Bohemia a.s.\n2. Nabídka byla vypracovaná na základě:\n Poptávkového dopisu, projektové dokumentace, realizovaných projektů a katalogů firmy\nSAFE\n3. Společnost SAFE Vám nabízí:\n Odbornost a zkušenosti stabilní firmy pocházející z Beneluxu, kde jsme téměř 40 let na trhu,\nna lokálním trhu působíme 10 let\n Zkušenosti z realizací kompletních dodávek skruží a bednění velkých mostů pro významné\nstavební firmy (Doprastav, Eurovia, Metrostav, Porr, Strabag atd.)\n Kompletní servis zahrnující dodávku projektu, statického výpočtu, vlastního materiálu\npodpěrné skruže i bednění, montáže, demontáže, dopravy, mechanizace, technické kontroly\na BOZP\n Komplexní zabezpečení zakázky prostřednictvím profesionálních projektových manažerů s\nvíce jak dvacetiletou praxi v oboru, koordinátorů stavby, projektantů a logistiky\n Montáž skruže a bednění realizovanou našimi zkušenými pracovníky\n Profesionální projektové pojištění ve výši 5 mil. EUR, Master cover ve výši 15 mil. EUR\n4. Doba platnosti cenové nabídky:\n 30 dní (ode dne zaslaní cenové nabídky)\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 2\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 3\nObdoba řešení podobného typu konstrukce\n5. Ceny a výměry:\nCenová nabídka obsahuje detailní rozpočet pronájmu bednění Meccano a podpěrné skruže POLY, včetně\npřeklenutí požadovaných překážek a výstupu na nosnou konstrukci skrze schodišťovou věž. CN zahrnuje\npronájem uvedených prvků, jejich montáž, dopravu a technickou podporu po dobu celého projektu.\nBedněná konstrukce je konstantě v celé délce tvořena deskovým průřezem s křídly. Nabídka je\nkoncipována na montáž bednění Meccano a montáž překližky či desek třívrstvých (Dodávka překližky/desky\ntřívrstvé je výkonem objednatele).\nPodpěrná konstrukce je řešena efektivně tak, aby co nejlépe řešila úsporu silničních panelů, potřebnou\nk roznesení reakčních sil do podloží.\nJednotkové ceny PRONÁJMU CZK na 30 dní\n75,00 Kč/m3 podpěrná prostorová skruž POLY\n350,00 Kč/m2 bednění mostovky MECCANO\n900,00 Kč/m schodišťová věž RINGSCAFF\n1 374,00 Kč/t nosníky pro překlenutí svahů, průjezdných profilů, vodních toků\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 4\nJednotkové ceny MONTÁŽÍ v CZK\n400,00 Kč/m3 Montáž a demontáž podpěrné prostorové skruže POLY\n825,00 Kč/m2 Predmontáž - debnenie mostovky MECCANO\n1 000,00 Kč/m2 Montáž a demontáž - debnenie mostovky MECCANO\n250,00 Kč/m2 Príplatok za opláštenie debnenia pri použití dosek\n45 000,00 Kč/ks Príplatok za zadebnenie nadpodporového priečniku\n86 400,00 Kč/ks Príplatok za koncový priečnik\n75 000,00 Kč/ks Zavesenie nosníkov preklenujúcich svah na oporu\n1 550,00 Kč/m schodisková veža RINGSCAFF\n2 875,00 Kč/t Montáž a demontáž překlenutí svahů, průjezdných profilů a toků\nTvar nosné konstrukce\n11,6 m délka nosné konstrukce\n5,6 m šířka nosné konstrukce\n1,0 ks počet mostů\npřekližky předepsaný povrch bednění (překližky nebo palubky)\n185,7 m2 celková plocha bednění\n532,1 m3 celková kubatura skruže\n3,8 m průměrná výška skruže\n- ks počet vytvářených začelení pracovních spár\n2,0 ks počet koncových příčníků\n6,2 m Výška schodišťové věže\n- ks Počet zavěšení nosníků na opěru (překlenutí svahu)\nPlochy nasazeného bednění MECCANO\nBednění mostovky včetně přesahů\n185,7 m2 12,2 m šířka (rozvinutá)\n15,2 m délka\nObjem nasazené skruže POLY\nZákladní sestava skruže (na délku bednících stolů včetně přesahů)\n9,2 m šířka\n532,1 m3\n3,8 m výška (průměrná výška skruže za celý most)\n15,2 m délka\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 5\nNosníky pro překlenutí svahů, průjezdných profilů, vodních toků - odhad tonáže\n2,9 t Překlenutí potoka (HEB220 400 dl.5m)\n0,0 t\n0,0 t\n2,9 t CELKEM\nHarmonogram výstavby\n8,0 dní Montáž skruže a bednění\n5,0 dní Vázání výztuže včetně předpínacího systému\n21,0 dní Betonáž, zrání, předepnutí\n3,0 dní Demontáž skruže a bednění\n1,0 dní Rozebrání předmontovaného bednění + paletováni skruže\n38,0 dní Celková doba výstavby ( 1,3 měs.)\nPRONÁJMY - odhad\nSystém Popis Množství Dny J. c. pron. na 30 dní Pronájem celkem\nPoly Skruž 5 32,1 m3 37 75,00 Kč/m3 49 219,25 Kč\nMeccano Debnenie mostovky vrátané presahy 1 85,7 m2 38 350,00 Kč/m2 82 327,00 Kč\nRingscaff Schodišťová věž 6,2 m 37 900,00 Kč/m1 6 882,00 Kč\nOcel Překlenutí potoka (HEB220 400 dl.5m) 2,9 t 37 1 374,00 Kč/t 4 914,34 Kč\n-\n-\nC E L K E M 143 342,59 Kč\nMONTÁŽE (montáž + demontáž celkem)\nSystém Popis Množství Jednotková cena Celkem\nPoly Podporná priestorová skruž vrátané bárky 5 32,1 m3 400,00 Kč/m3 212 840,00 Kč\nMeccano Predmontáž - debnenie MECCANO 1 85,7 m2 825,00 Kč/m2 153 202,50 Kč\nMeccano Montáž a demontáž debnenie 1 85,7 m2 1 000,00 Kč/m2 185 700,00 Kč\nPalubky Příplatek za bednící plášť z palubek - m2 250,00 Kč/m2 - Kč\nMeccano Príplatok za zadebnenie nadpodporového p r i e č n i k- u ks 45 000,00 Kč/ks - Kč\nMeccano Príplatok za koncový priečnik 2,0 ks 86 400,00 Kč/ks 172 800,00 Kč\nOcel Zavesenie nosníkov preklenujúcich svah na o p o r u - ks 75 000,00 Kč/ks - Kč\nRingscaff Schodišťová věž 6,2 m 1 550,00 Kč/m 9 610,00 Kč\nOcel nosníky na preklenovanie svahov, priechodn ý c h p r 2o,9filotv, vodný c h t o k o v 2 875,00 Kč/t 8 337,50 Kč\nC E L K E M 742 490,00 Kč\nDOPRAVA (na stavbu a zpět celkem)\nSystém Popis Množství Jednotková cena Doprava celkem\nPoly Podporná priestorová skruž vrátané bárky 5 32,1 m3 76,00 Kč/m3 40 439,60 Kč\nMeccano Debnenie mostovky vrátané presahy 1 85,7 m2 218,00 Kč/m2 40 482,60 Kč\nRingscaff Schodišťová věž 6,2 m2 211,30 Kč/m 1 310,06 Kč\nOcel nosníky na preklenovanie svahov, priechodn ý c h p r 2o,9filotv, vodný c h t o k o v 13 965,50 Kč/t 40 499,95 Kč\nC E L K E M 122 732,21 Kč\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 6\nCELKOVÁ REKAPITULACE ZA CELÝ PROJEKT\nPronájem (skruž + bednění + nosníky) 143 342,59 Kč\nMontáže (montáž + demontáž) 742 490,00 Kč\nDoprava (na stavbu a zpět) 122 732,21 Kč\nMechanizace 566 500,00 Kč\nProjektová dokumentace 10 800,00 Kč\nStatický výpočet 27 900,00 Kč\nTisk VTD 5 000,00 Kč\nCELKEM 1 618 764,80 Kč\n6. Všeobecné podmínky:\n Pronájem dodaných komponentů je zahájen počátkem montáže a ukončen až po demontáži\nposlední etapy, přičemž je nájem fakturován kontinuálně po celou dobu výstavby.\n Fakturace proběhne měsíčně dle skutečných kubatur, na základě odsouhlasených soupisů\nprací. Objednatel je povinen se k měsíčním soupisům vyjádřit do 5-ti pracovních dní, jinak se\nsoupis považuje za odsouhlasený.\n Všechny ceny jsou uvedeny bez DPH\n Splatnost vystavených faktur bude 45 dní\n Úhrada faktur, vystavených pronajímatelem, je uvažována v plné výši, tedy 100 %\nz fakturované částky. Srážky z faktur v podobě pozastávek, zádržného, jistot, apod. nebudou\npronajímatelem akceptovány.\n Materiál pro finální vrstvu bednění (překližky, třívrstvé desky, palubky a materiál pro výdřevu)\nzajišťuje objednatel. Zhotovitel (Safe) z dodaného materiálu zhotoví bednění. Pokud bude na\nstavbu objednatelem dodán nekvalitní nebo opotřebený materiál, nebude možné následně\nvyžadovat opravy bednění dané nekvalitou dodaných desek. Zejména se jedná o spáry\nvzniklé seschnutím desek, výškové nerovnosti dané různou tloušťkou desek, špatný povrch\ndesek, nadměrná deformace desek atd.\n Objednatel je povinen písemně nahlásit požadovaný konkrétní termín nástupu zhotovitele na\nmontáž nebo demontáž minimálně ve 14denním předstihu.\n Pokud dojde ze strany objednavatele k časovým posunům již nahlášenému termínu nástupu\nna montáže nebo demontáže, vyhrazuje si zhotovitel právo na další 14denní období, které\nmůže využít pro přeskupení jeho montážních kapacit. Fakturovaná doba pronájmu skruže,\nbednění a ocelových nosníků se tím automaticky prodlužuje. Zároveň se tím adekvátně\nprodlužuje dohodnutý harmonogram.\n V případě kdy objednatel nebude schopen připravit podmínky k nástupu zhotovitele k realizaci\ndíla, započne po uplynutí 30ti dnů od smluvního data zahájení díla (nástup k montáži)\nfakturace pronájmu předpokládaného objemu materiálu ve výši 50% ze zasmluvněné ceny.\n V případech, kdy je zhotovitel zajišťuje mechanizaci, a dojde k prodloužení doby výstavby\nz důvodu, které nejsou zaviněné zhotovitelem, bude automaticky navýšena cena za\nmechanizaci. Způsob vypočtu částky, o kterou se cena mechanizace zvýší: celková původní\ncena mechanizace (Kč) děleno původní předpokládaná doba výstavby (dny) násobeno dobou\nprodloužení výstavby (dny).\n Cena dopravy je vypočtena za předpokladu, že objednatel připraví kvalitní zpevněnou\nstaveništní komunikaci, po které bude možno navážet a odvážet materiál standardními\nsilničními návěsy (24 tun). Případné vícenáklady vzniklé z důvodu nepřipravenosti\nstaveništních komunikací budou přefakturovány objednateli.\n Zhotovitel provádí montážní práce pouze v pracovní dny (Po – Pá). V ojedinělých případech,\njako je vytváření průjezdných profilů přes železnici a podobně, pracuje i o víkendu.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 7\n Tuny ocelových nosníků nasazených v průjedných profilech a překlenutích jsou pouze\norientační a mohou se měnit v závislosti na výsledném realizačním řešení. Fakturovány budou\npodle skutečně nasazených tun nosníků.\n7. Realizační podmínky:\n Bednění kapsy mostního závěru je kalkulováno za předpokladu použití B-systemu (Stretch\nMetal). V případě požadavku na zabednění dřevem, budou práce účtovány jako vícepráce\nv níže uvedené hodinové sazbě.\n Bednění čel předpínacích kotev (po předepnutí) není součástí výše uvedené kalkulace.\nV případě požadavku na jeho zabednění, budou práce účtovány jako vícepráce v níže\nuvedené hodinové sazbě, včetně nákladů na dopravu.\n Bednění nálitku na konci křídla NK (tzv. „moravský hrobeček“) z vnitřní stany (směrem od osy\nmostu) není zahrnuto v uvedených cenách. V případě požadavku na jeho zabednění, budou\npráce účtovány jako vícepráce v níže uvedené hodinové sazbě, včetně nákladů na dopravu.\n Objednatel zajistí cisternu s vodou (kropičku) pro očištění bednění po montáži.\n Zhotovitel předá informaci o dokončení bednění nosné konstrukce minimálně v 10ti denním\npředstihu, tak aby mohl objednatel dostatečně dopředu zajistit kapacity pro montáž výztuže.\n8. Vytvoření průjezdného profilu\n Při vytváření průjezdného profilu se do kubatury skruže zahrnuje také prostor průjezdu\n(kompenzuje to zvýšené náklady na vytvoření masivních bárek po obou stranách průjezdu).\n9. Projektová dokumentace\n Vytvoření projektové dokumentace\n Statický výpočet s razítkem autorizovaného statika\n Tisk čtyř pare výkresů pro schválení dokumentace\n Objednatel bere na vědomí, že zhotovitel potřebuje minimálně 30 dní na vytvoření projektové\ndokumentace, kterou může začít vytvářet až po tom, co mu objednatel pošle závaznou\nobjednávku a upřesní výškové úrovně budoucích panelových ploch a pošle platnou RDS\ndokumentaci v dwg. jako podklad pro zpracování výkresů skruže a bednění.\n Změny v projektové dokumentaci, které budou třeba vytvořit z důvodu na straně objednatele,\nbudou fakturovány dle skutečnosti sazbou 625,- Kč/hod za projekční práce a 800,- Kč/hod za\npráce statika.\n10. Cena obsahuje:\n Prostorovou skruž Polysystem – kompletní konstrukce včetně všech potřebných stojek,\npříčníků, hlav, ztužidel.\n Systémové prvkové bednění Meccano – kompletní konstrukce včetně všech potřebných\nprimárních a sekundárních nosníků, nastavitelných vzpěr, spojek, sloupků zábradlí, v případě\npojezdu včetně koleček. Cena za montáž obsahuje kompletní montáž a demontáž bednění,\npřekližek, výdřevy, čílek, příčníků, včetně výškového vyrovnání s geodetem stavby\n(upozornění: dodávku překližek na stavbu zajišťuje objednatel)\n Mechanizaci potřebnou pro montáž a demontáž skruže a bednění mostovky\n Schodišťovou věž Ringscaff\n Nosníky k překlenutí výše uvedených překážek\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 8\n11. Cenová nabídka nezahrnuje (plnění objednavatele):\n Vytvoření panelové plochy a posouzení její únosnosti. Obecný postup při přípravě panelové\nplochy je následovný:\n1. Objednatel sdělí Safe jakými panely disponuje a upřesní výškové úrovně, na které se\nchystá připravovat panelovou plochu\n2. Safe připraví výkres skladby panelové plochy s vyznačenou polohou stojek skruže a\ns vyznačenou hodnou reakce ve stojce (kN)\n3. Objednatel osloví svého geotechnika, který vypočítá požadavky na přípravu podloží pod\npanelovou plochu. Pokud klient nemá svého geotechnika Safe může nějakého doporučit.\n(pro rámcovou představu – obecně bývá geotechniky požadován Edef.2 = 45 až 60 MPa\ns poměrem Edef2/Edef1≤2,5)\n Náklady spojené s vyčištěním bednění před betonáží (pře nástupem železářů vám\nodevzdáme vyčištěné a naolejované bednění)\n Spotřební příslušenství k bednění (vruty, hřebíky, silikon, pěnu, olej, PVC chráničky a\ntrojhranné lišty, kotvy stabilizátorů, stretch metal pro bednění čela křídla, navařovací matice...)\n Dodávku dřevěných spotřebních prvků (překližky nebo palubky, řezivo pro obšalování ložisk\na zabednění speciálního tvaru příčníků případně deviátorů a podobně, fošny pro podlahu\nobslužné lávky, klíny do hlav skruže). Objednavatel zajistí jejich dodávku na stavbu, Safe\nzajistí jejich montáž a demontáž na stavbě.\n Náklady na geodetické práce\n Náklady na zařízení staveniště, 2 x kancelářský kontejner (š.2,5m x dl.6,0m) + energie\n(přípojka min. C 25A) + WC\n Ostrahu staveniště mimo pracovní dobu a o víkendu.\n Náklady na likvidaci odpadů\n Začištění otvorů po spínacích tyčích\n Cenu za případné vzniklé vícepráce a prostoje. Budou fakturovány podle skutečnosti\nsazbou 520 Kč/hod za jednoho pracovníka + prostoje mechanismu (900,- Kč/hod za auto\ns HR, 1350,- Kč/hod za manipulátor a 1700,- Kč/hod za jeřáb).\n Zápis do stavebního deníku před betonáží je standardně prováděn technickým pracovníkem\nSafe. V případech, kdy bude objednatel vyžadovat zápis autorizovaného statika, bude\nfakturován vícenáklad ve výši 12 750,- Kč za každý výjezd.\n Náklady spojené s čištěním (kompresor, voda, cisterna, čerpadlo, vodní pistole)\n Vyvrtání otvorů v zadním čílku koncového příčníku pro průchod předpínací výztuže.\n Náklady na výměnu překližek na smontovaném bednění, týká se to zejména dlouhodobých\nprojektů s více betonážemi. Výměna překližek bude fakturována sazbou 110,- Kč/m2.\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 9\n12. Srovnání plnění Safe x Objednatel\nPŘEHLED ZAJIŠTĚNÍ DODÁVEK OBJEDNATELEM A SPOLEČNOSTÍ SAFE\nDODÁVKA PRÁCE\nPodloží SAFE OBJEDNATEL SAFE OBJEDNATEL\nPříprava terénu (násyp, výškové úpravy) x x\nPanelová rovnanina pod podpěrnou konstrukci x x\nPodpěrný systém/ Skruž\nPOLYSYSTÉM - skruž vč. příslušenství x x\nKompletní systémové bednění Meccano x x\nVýškové vyrovnání podpěrného systému x x\nDřevo\nPracovní fošny jako pracovní podlaha na skruž x x\nDřevo pro zaklopení mezer mezi nosníky k ochraně proti pádu\npředmětům do oblasti pod překlenutím - pokud je vyžadováno x x\nkoordinátorem BOZP\nBednící desky (deska třívrstvá/ překližka) x x\nDrobné řezivo, klínky,.. (spotřební dřevo) x x\nDřevěné nosníky H20 x x\nSpotřební materiál (vruty, hřebíky, silikon, pěnu, olej, kotvy\nx x\nstabilizátorů, stretch metal, navařovací matice...)\nSpotřební plastový mateiál (PVC chráničky, trojhranné lišty, apod.) x x\nZtužující kříže mezi nosníky (vykřížování), vyjma nosníků ve výkonu\nx x\nobjednatele\nZábradlí\nFošny jako výplň ochrany volného okraje (zábradlí) x x\nUchycení zábradlového sloupku k bednění x x\nZábradlový sloupek x x\nOkopová zarážka x x\nOcel\nOcelové nosníky:\nOcelové nosníky k překlenutí svahu v poli 1 x x\nOcelové nosníky k překlenutí místní komunikace v poli 2 x x\nOcelové nosníky k překlenutí svahu v poli 3 x x\nPřístupové cesty/ ochrana prostoru - v případě vytvoření prostupu\nx x\nskrz podpěrnou kci pro pěší, cyklostezsku,..\nSchodišťová věž Ringscaff x x\nMechanizace a doprava\nManipulátor pro montáž bednění a podpěrné skruže x x\nDoprava podpěrné skruže a bednění na stavbu a zpět x x\nTECHNICKÁ A LOGISTICKÁ PODPORA\nPOSKYTNE\nSAFE OBJEDNATEL\nTechnické výkresy bednění a podpěrné konstrukce - tisk ve čtyřech paré x\nVýpočet zatížení s uvedením hodnot ve výkresu x\nStatický výpočet pro objednatele, vč. Technické zprávy x\nTechnická podpora na staveništi x\nKontrola nákladů po dobu realizace x\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\nStrana 10\n13. Kontaktní pracovníci:\nKontaktujte nás telefonicky nebo emailem. Naši pracovníci Vám rádi odpovědí na všechny\nVaše otázky.\nS pozdravem a přáním hezkého dne\nPatrik Korger\nProject manager SAFE Czech s.r.o.\nRohanské nábřeží 721/39\n186 00 Praha 8\n+420 722 788 341\nČeská republika\np .korger@safebv.eu\n+421 907 678 057\nw ww.safebv.eu\nObchodní oddělení: Technické oddělení:\nIng. Patrik Szetey Ing. Sebastian Szczupaczyński\nOperating Director Central Europe Technical-Commercial Director\ntel.+420 737 218 520 tel.+48 607 330 535\ne-mail: p.szetey@safebv.eu e-mail: s.szczupaczyński@safebv.eu\nMartin Bárta Ing. František Novák\nSenior Project Manager Project Manager\ntel.+420 727 915 810 tel.+420 732 790 326\ne-mail: m.barta@safebv.eu e-mail: f.novak@safebv.eu\nSafe Czech s.r.o.\nRohanské nábřeží 721/39 Telefon: +420 737 218 520 IBAN: CZ27 0300 0000 0002 8760 4505\n186 00 Praha 8 administrativa@safebv.eu BIC: CEKOCZPP, (ČSOB)\nČeská Republika www.safebv.eu IČ: 079 35 943\n"
+  },
+  {
+    "type": "doka_offer",
+    "filename": "540-044877_NAB_DOKA_Q101.pdf",
+    "extracted_at": "2026-02-25T14:41:57.985126",
+    "offer_info": {
+      "offer_number": "540-044877"
+    },
+    "items": [],
+    "raw_text": "BERGER BOHEMIA, a.s. Česká Doka\n- Klatovská 410 obchodní zástupce\nPlzeň Tomáš Gerát\nCZ M: +420 724 282 810\ntomas.gerat@doka.com\nČeská Doka\ntechnik\nOndřej Kvíz\nT: 284 001 347\nondrej.kviz@doka.com\nNabídka č 540044877-Q101 15.01.2026\nNabídka bednění\nRevitalizace trati Nýřany - Heřmanova Huť\nVážený pane Prokopove,\nděkujeme za poptávku a za Váš zájem o naše bednicí systémy. Na základě předaných projektových podkladů a\ninformací si dovolujeme předložit Vám nabídku bednění na výše uvedený stavební projekt.\nNabídka vychází z našich obchodních a dodacích podmínek.\nS přátelským pozdravem\nČeská Doka\nbednící technika spol. s r. o.\nIng. Jan Lavička Tomáš Gerát\nvedoucí obchodního oddělení obchodní zástupce\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n2 / 13\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n3 / 13\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n4 / 13\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n5 / 13\nSHRNUTÍ NABÍDKY\nΣ Nájem Σ Podíl\nΣ Hodnota Σ Nájem/den po koupě\nmateriálu (ceník)) slevě/den po slevě Σ Služby Σ Hmotnost\nPoz. Popis [CZK] [CZK] [CZK] [CZK] [CZK] [kg]\nQ 102 - Most a podchod, základ,opěry a\nmostovka,křídlo, zídka, stěna, strop, 7 992 112,88 17 435,64 6 370,41 29 496,38 22 832,22\nFram,Staxo,Framax,Doka\n1 Most SO 11-20-01 4 748 283,38 10 052,13 3 693,53 23 107,48 12 819,29\n1.1 Základ 1 kus , Frami Xlife 445 397,48 917,21 293,51 1 834,71 1 050,24\n1.1.1 Prvky Frami Xlife 323 436,00 712,78 228,09 685,00\n1.1.2 Spojovací díly Rámové bednění 40 548,00 83,08 26,59 76,26\n1.1.3 Jeřábová oka 14 310,00 13,60 4,35 14,90\n1.1.4 Doka-trenn 766,00 651,10 4,50\n1.1.5 Kotevní díly opakovaně použitelné 23 184,00 61,32 19,62 64,64\n1.1.6 Kotevní díly ztracené 1 392,48 1 183,61 2,94\n1.1.7 Víceúčelové skladovací a 41 761,00 46,43 14,86 202,00\ntransportní pomůcky\n1.2 Opěry a čela , Frami Xlife 1 728 503,00 3 663,45 1 172,30 16 328,50 3 823,23\n1.2.1 Prvky Frami Xlife 1 150 518,00 2 535,12 811,24 2 349,00\n1.2.2 Spojovací díly Rámové bednění 184 348,00 390,34 124,91 369,62\n1.2.3 Pracovní plošiny & Stabilizační 169 674,00 370,70 118,62 293,16\npomůcky\n1.2.4 Expreskotvy 2 824,00 2 400,40 2,48\n1.2.5 Kotevní díly opakovaně použitelné 88 130,00 236,34 75,63 229,52\n1.2.6 Kotevní díly ztracené 16 386,00 13 928,10 28,45\n1.2.7 Víceúčelové skladovací a 116 623,00 130,95 41,90 551,00\ntransportní pomůcky\n1.3 Mostovka , Staxo 100 1 346 412,38 2 855,47 1 390,60 2 953,13 5 160,89\n1.3.1 Nosná konstrukce Staxo Doka 944 280,00 1 485,00 475,20 2 204,82\n1.3.2 Dřevěný bednící nosník 258 372,00 565,92 181,09 1 717,68\n1.3.3 Bednící deska 39 864,38 701,25 701,25 2 953,13 721,19\n1.3.4 Víceúčelové skladovací a 103 896,00 103,30 33,06 517,20\ntransportní pomůcky\n1.4 Křídlo 1 kus , Frami Xlife 442 593,44 925,21 296,07 1 268,57 1 030,50\n1.4.1 Prvky Frami Xlife 256 580,00 565,12 180,84 517,20\n1.4.2 Spojovací díly Rámové bednění 75 756,00 168,12 53,80 146,62\n1.4.3 Pracovní plošiny & Stabilizační 35 583,00 78,12 25,00 65,43\npomůcky\n1.4.4 Expreskotvy 1 059,00 900,15 0,93\n1.4.5 Kotevní díly opakovaně použitelné 22 620,00 58,50 18,72 56,25\n1.4.6 Kotevní díly ztracené 433,44 368,42 1,07\n1.4.7 Víceúčelové skladovací a 50 562,00 55,35 17,71 243,00\ntransportní pomůcky\n1.5 Zábradelní zídka 1 kus , Frami Xlife 785 377,08 1 690,79 541,05 722,57 1 754,43\n1.5.1 Prvky Frami Xlife 557 898,00 1 228,59 393,15 1 098,90\n1.5.2 Spojovací díly Rámové bednění 104 772,00 224,84 71,95 227,28\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n6 / 13\n1.5.3 Kotevní díly opakovaně použitelné 63 580,00 171,60 54,91 149,16\n1.5.4 Kotevní díly ztracené 850,08 722,57 2,09\n1.5.5 Víceúčelové skladovací a 58 277,00 65,76 21,04 277,00\ntransportní pomůcky\n2 Podchod SO 12-20-01 3 243 829,50 7 383,51 2 676,88 6 388,90 10 012,93\n2.1 Stěna 1 kus , Framax Xlife 2 803 714,00 6 147,15 1 967,09 2 451,40 7 577,43\n2.1.1 Prvky Framax Xlife 2 202 054,00 4 846,62 1 550,92 6 378,70\n2.1.2 Spojovací díly Rámové bednění 282 591,00 633,63 202,76 460,48\n2.1.3 Pracovní plošiny & Stabilizační 202 221,00 442,20 141,50 390,75\npomůcky\n2.1.4 Expreskotvy 2 118,00 1 800,30 1,86\n2.1.5 Jeřábová oka 16 810,00 39,30 12,58 21,10\n2.1.6 Doka-trenn 766,00 651,10 4,50\n2.1.7 Kotevní díly opakovaně použitelné 52 020,00 140,40 44,93 122,04\n2.1.8 Víceúčelové skladovací a 45 134,00 45,00 14,40 198,00\ntransportní pomůcky\n2.2 Strop t. 450mm, Dokaflex 440 115,50 1 236,36 709,80 3 937,50 2 435,50\n2.2.1 Bednící deska 28 255,50 462,00 462,00 3 937,50 544,48\n2.2.2 Podpěrná konstrukce Dokaflex 214 979,00 413,52 132,33 731,52\n2.2.3 Dřevěný bednící nosník 131 929,00 283,80 90,82 892,80\n2.2.4 Pracovní plošiny & Stabilizační 19 818,00 32,04 10,25 68,70\npomůcky\n2.2.5 Víceúčelové skladovací a 45 134,00 45,00 14,40 198,00\ntransportní pomůcky\nPodrobný výpis materiálu\nVÝPIS MATERIÁLU\nHodnota Nájem/den/kus\nmateriálu/kus) (ceník) Hmotnost/kus\nPoz. Popis (s číslem artiklu) [CZK] [CZK] [kg]\nQ 102 - Most a podchod, základ,opěry a\nmostovka,křídlo, zídka, stěna, strop,\nFram,Staxo,Framax,Doka\n1 Most SO 11-20-01\n1.1 Základ 1 kus , Frami Xlife\n1.1.1 Prvky Frami Xlife\n12 ks 588401500 - Rámový prvek Frami Xlife 0,90x1,20m 17 210,00 37,92 39,00\n4 ks 588447500 - Rámový prvek Frami Xlife 0,75x1,20m 16 172,00 35,63 33,50\n2 ks 588405500 - Rámový prvek Frami Xlife 0,30x1,20m 12 082,00 26,63 19,50\n4 ks 588459000 - Vnější roh Frami 1,20m 7 016,00 15,49 11,00\n1.1.2 Spojovací díly Rámové bednění\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n7 / 13\nVÝPIS MATERIÁLU\nHodnota Nájem/den/kus\nmateriálu/kus) (ceník) Hmotnost/kus\nPoz. Popis (s číslem artiklu) [CZK] [CZK] [kg]\n62 ks 588433000 - Rychloupínač Frami 654,00 1,34 1,23\n1.1.3 Jeřábová oka\n2 ks 588438000 - Jeřábové oko Frami 7 155,00 6,80 7,45\n1.1.4 Doka-trenn\n1 ks 580915000 - Doka-Trenn v kanystru 5l 766,00 4,50\n1.1.5 Kotevní díly opakovaně použitelné\n4 ks 581821000 - Kotevní tyč 15,0mm pozinkovaná 0,50m 120,00 0,39 0,72\n12 ks 581829000 - Kotevní tyč 15,0mm pozinkovaná 2,00m 499,00 1,34 2,86\n28 ks 581966000 - Kotevní matka s podložkou 15,0 597,00 1,56 0,98\n1.1.6 Kotevní díly ztracené\n4 ks 581691000 - Přivařovací matice 15,0 153,00 0,25\n12 ks 754000144 - Trubka z umělé hmoty 22 mm 2m 60,00 0,15\n28 ks 754000913 - Univerzální konus 22mm 2,16 0,01\n1.1.7 Víceúčelové skladovací a transportní pomůcky\n2 ks 588478000 - Paleta Frami 1,20m 14 098,00 16,48 66,00\n1 ks 583011000 - Víceúčelový kontejner Doka 1,20x0,80m 13 565,00 13,47 70,00\n1.2 Opěry a čela , Frami Xlife\n1.2.1 Prvky Frami Xlife\n20 ks 588401500 - Rámový prvek Frami Xlife 0,90x1,20m 17 210,00 37,92 39,00\n12 ks 588463500 - Rámový prvek Frami Xlife 0,60x1,20m 15 992,00 35,21 29,50\n8 ks 588405500 - Rámový prvek Frami Xlife 0,30x1,20m 12 082,00 26,63 19,50\n6 ks 588402500 - Univerzální prvek Frami Xlife 0,75x1,20m 19 285,00 42,50 39,00\n14 ks 588407500 - Univerzální prvek Frami Xlife 0,75x1,50m 22 704,00 50,02 49,50\n12 ks 588459000 - Vnější roh Frami 1,20m 7 016,00 15,49 11,00\n1.2.2 Spojovací díly Rámové bednění\n204 ks 588433000 - Rychloupínač Frami 654,00 1,34 1,23\n4 ks 588436000 - Upínač pro vyrovnání Frami 2 968,00 6,60 3,60\n14 ks 588440000 - Upínací kolejnice Frami 1,25m 1 886,00 4,27 6,35\n14 ks 588441000 - Svorka Frami 904,00 2,20 1,10\n1.2.3 Pracovní plošiny & Stabilizační pomůcky\n8 ks 580365000 - Opěra bednění 340 IB 11 686,00 25,32 24,30\n16 ks 588945000 - Hlava vzpěry EB 1 251,00 2,69 1,36\n10 ks 588442000 - Konzola Frami 60 5 617,00 12,51 7,70\n1.2.4 Expreskotvy\n8 ks 588631000 - Expreskotva Doka 16x125mm 353,00 0,31\n1.2.5 Kotevní díly opakovaně použitelné\n94 ks 581821000 - Kotevní tyč 15,0mm pozinkovaná 0,50m 120,00 0,39 0,72\n28 ks 581826000 - Kotevní tyč 15,0mm pozinkovaná 1,25m 314,00 0,78 1,79\n114 ks 581966000 - Kotevní matka s podložkou 15,0 597,00 1,56 0,98\n1.2.6 Kotevní díly ztracené\n94 ks 581691000 - Přivařovací matice 15,0 153,00 0,25\n28 ks 754000144 - Trubka z umělé hmoty 22 mm 2m 60,00 0,15\n150 ks 754000913 - Univerzální konus 22mm 2,16 0,01\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n8 / 13\nVÝPIS MATERIÁLU\nHodnota Nájem/den/kus\nmateriálu/kus) (ceník) Hmotnost/kus\nPoz. Popis (s číslem artiklu) [CZK] [CZK] [kg]\n1.2.7 Víceúčelové skladovací a transportní pomůcky\n4 ks 588478000 - Paleta Frami 1,20m 14 098,00 16,48 66,00\n2 ks 588476000 - Paleta Frami 1,50m 14 904,00 17,43 69,00\n1 ks 586151000 - Ukládací paleta Doka 1,55x0,85m 8 863,00 8,73 41,00\n1 ks 583016000 - Ukládací paleta Doka 1,20x0,80m 7 995,00 7,97 38,00\n1 ks 583011000 - Víceúčelový kontejner Doka 1,20x0,80m 13 565,00 13,47 70,00\n1.3 Mostovka , Staxo 100\n1.3.1 Nosná konstrukce Staxo Doka\n27 ks 582301000 - Rám Staxo 100 1,20m 15 682,00 24,42 28,00\n18 ks 582772000 - Diagonální kříž 9.100 1 206,00 1,93 4,05\n36 ks 582610000 - Diagonální kříž 12.100 1 318,00 2,08 4,83\n108 ks 582641000 - Stahovací díl 15,0 330mm 240,00 0,37 0,48\n54 ks 582637000 - Patní vřeteno 3 565,00 5,51 8,33\n54 ks 582638000 - Vřeteno čtyřcestné hlavice 3 706,00 5,70 10,40\n108 ks 581961000 - Křídlová matice 15,0 207,00 0,49 0,31\n54 ks 502709030 - Upínací deska D 200,00 0,33 1,95\n1.3.2 Dřevěný bednící nosník\n48 ks 189701000 - Nosník Doka H20 top P 1,80m 1 408,00 3,02 9,54\n84 ks 189702000 - Nosník Doka H20 top P 2,45m 1 975,00 4,36 12,99\n12 ks 189703000 - Nosník Doka H20 top P 2,65m 2 074,00 4,56 14,05\n1.3.3 Bednící deska\n51 ks 186011000 - Bednicí deska Doka 3-SO 21mm 250/50cm 723,75 13,75 12,13\n3 ks 185241000 - UNIplex F/F brown 120 21mm 125/250cm 984,38 34,27\n1.3.4 Víceúčelové skladovací a transportní pomůcky\n1 ks 583016000 - Ukládací paleta Doka 1,20x0,80m 7 995,00 7,97 38,00\n5 ks 583011000 - Víceúčelový kontejner Doka 1,20x0,80m 13 565,00 13,47 70,00\n2 ks 582783000 - Paleta na rámy Doka 14 038,00 13,99 64,60\n1.4 Křídlo 1 kus , Frami Xlife\n1.4.1 Prvky Frami Xlife\n4 ks 588401500 - Rámový prvek Frami Xlife 0,90x1,20m 17 210,00 37,92 39,00\n4 ks 588463500 - Rámový prvek Frami Xlife 0,60x1,20m 15 992,00 35,21 29,50\n4 ks 588405500 - Rámový prvek Frami Xlife 0,30x1,20m 12 082,00 26,63 19,50\n4 ks 588448500 - Rámový prvek Frami Xlife 0,75x1,50m 18 861,00 41,52 41,30\n1.4.2 Spojovací díly Rámové bednění\n42 ks 588433000 - Rychloupínač Frami 654,00 1,34 1,23\n6 ks 588436000 - Upínač pro vyrovnání Frami 2 968,00 6,60 3,60\n8 ks 588440000 - Upínací kolejnice Frami 1,25m 1 886,00 4,27 6,35\n16 ks 588479000 - Univerzální svorka Frami 5-12cm 365,00 0,82 0,43\n16 ks 581966000 - Kotevní matka s podložkou 15,0 597,00 1,56 0,98\n1.4.3 Pracovní plošiny & Stabilizační pomůcky\n3 ks 588945000 - Hlava vzpěry EB 1 251,00 2,69 1,36\n3 ks 588437500 - Vyrovnávací opěra 260 IB 4 993,00 10,84 12,75\n3 ks 588442000 - Konzola Frami 60 5 617,00 12,51 7,70\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n9 / 13\nVÝPIS MATERIÁLU\nHodnota Nájem/den/kus\nmateriálu/kus) (ceník) Hmotnost/kus\nPoz. Popis (s číslem artiklu) [CZK] [CZK] [kg]\n1.4.4 Expreskotvy\n3 ks 588631000 - Expreskotva Doka 16x125mm 353,00 0,31\n1.4.5 Kotevní díly opakovaně použitelné\n15 ks 581826000 - Kotevní tyč 15,0mm pozinkovaná 1,25m 314,00 0,78 1,79\n30 ks 581966000 - Kotevní matka s podložkou 15,0 597,00 1,56 0,98\n1.4.6 Kotevní díly ztracené\n6 ks 754000144 - Trubka z umělé hmoty 22 mm 2m 60,00 0,15\n34 ks 754000913 - Univerzální konus 22mm 2,16 0,01\n1.4.7 Víceúčelové skladovací a transportní pomůcky\n1 ks 588478000 - Paleta Frami 1,20m 14 098,00 16,48 66,00\n1 ks 588476000 - Paleta Frami 1,50m 14 904,00 17,43 69,00\n1 ks 583016000 - Ukládací paleta Doka 1,20x0,80m 7 995,00 7,97 38,00\n1 ks 583011000 - Víceúčelový kontejner Doka 1,20x0,80m 13 565,00 13,47 70,00\n1.5 Zábradelní zídka 1 kus , Frami Xlife\n1.5.1 Prvky Frami Xlife\n22 ks 588464500 - Rámový prvek Frami Xlife 0,60x1,50m 17 762,00 39,11 35,50\n11 ks 588409500 - Rámový prvek Frami Xlife 0,45x1,50m 15 194,00 33,47 28,90\n1.5.2 Spojovací díly Rámové bednění\n82 ks 588433000 - Rychloupínač Frami 654,00 1,34 1,23\n30 ks 588439000 - Upínací kolejnice Frami 0,70m 1 320,00 2,88 3,65\n12 ks 588479000 - Univerzální svorka Frami 5-12cm 365,00 0,82 0,43\n12 ks 581966000 - Kotevní matka s podložkou 15,0 597,00 1,56 0,98\n1.5.3 Kotevní díly opakovaně použitelné\n44 ks 581823000 - Kotevní tyč 15,0mm pozinkovaná 1,00m 251,00 0,78 1,43\n88 ks 581966000 - Kotevní matka s podložkou 15,0 597,00 1,56 0,98\n1.5.4 Kotevní díly ztracené\n11 ks 754000144 - Trubka z umělé hmoty 22 mm 2m 60,00 0,15\n88 ks 754000913 - Univerzální konus 22mm 2,16 0,01\n1.5.5 Víceúčelové skladovací a transportní pomůcky\n3 ks 588476000 - Paleta Frami 1,50m 14 904,00 17,43 69,00\n1 ks 583011000 - Víceúčelový kontejner Doka 1,20x0,80m 13 565,00 13,47 70,00\n2 Podchod SO 12-20-01\n2.1 Stěna 1 kus , Framax Xlife\n2.1.1 Prvky Framax Xlife\n2 ks 588222500 - Rámový prvek Framax Xlife 0,90x3,30m 65 775,00 144,73 154,45\n20 ks 588221500 - Rámový prvek Framax Xlife 1,35x3,30m 86 063,00 189,42 259,30\n2 ks 588100500 - Rámový prvek Framax Xlife 1,35x2,70m 69 270,00 152,48 210,00\n2 ks 588104500 - Rámový prvek Framax Xlife 0,60x2,70m 44 248,00 97,40 91,50\n2 ks 588110500 - Rámový prvek Framax Xlife 1,35x1,35m 39 387,00 86,62 106,30\n2 ks 588118500 - Rámový prvek Framax Xlife 0,30x1,35m 21 717,00 47,88 34,10\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n10 / 13\nVÝPIS MATERIÁLU\nHodnota Nájem/den/kus\nmateriálu/kus) (ceník) Hmotnost/kus\nPoz. Popis (s číslem artiklu) [CZK] [CZK] [kg]\n2.1.2 Spojovací díly Rámové bednění\n94 ks 588153400 - Rychloupínač RU Framax 2 339,00 5,23 3,12\n11 ks 588150000 - Upínací kolejnice Framax 0,90m 2 631,00 5,77 10,60\n4 ks 588152000 - Napínací svorka Framax 922,00 2,22 1,49\n18 ks 588143000 - Čelní kotva Framax 1 075,00 2,31 1,50\n18 ks 581966000 - Kotevní matka s podložkou 15,0 597,00 1,56 0,98\n2.1.3 Pracovní plošiny & Stabilizační pomůcky\n5 ks 580365000 - Opěra bednění 340 IB 11 686,00 25,32 24,30\n1 ks 580366000 - Opěra bednění 540 IB 16 882,00 36,54 41,40\n12 ks 588244500 - Hlava opěry EB 2 262,00 4,88 3,05\n15 ks 588979000 - Konzola Framax 90 EP 5 126,00 12,09 8,95\n15 ks 584335000 - Zábradlí 1,00m 1 525,00 2,61 3,80\n2.1.4 Expreskotvy\n6 ks 588631000 - Expreskotva Doka 16x125mm 353,00 0,31\n2.1.5 Jeřábová oka\n2 ks 588149000 - Jeřábové oko Framax 8 405,00 19,65 10,55\n2.1.6 Doka-trenn\n1 ks 580915000 - Doka-Trenn v kanystru 5l 766,00 4,50\n2.1.7 Kotevní díly opakovaně použitelné\n36 ks 581823000 - Kotevní tyč 15,0mm pozinkovaná 1,00m 251,00 0,78 1,43\n72 ks 581966000 - Kotevní matka s podložkou 15,0 597,00 1,56 0,98\n2.1.8 Víceúčelové skladovací a transportní pomůcky\n1 ks 586151000 - Ukládací paleta Doka 1,55x0,85m 8 863,00 8,73 41,00\n1 ks 583011000 - Víceúčelový kontejner Doka 1,20x0,80m 13 565,00 13,47 70,00\n1 ks 583012000 - Kontejner se síťovými bočnic. Doka 1,70x0,80m 22 706,00 22,80 87,00\n2.2 Strop t. 450mm, Dokaflex\n2.2.1 Bednící deska\n12 ks 186009000 - Bednicí deska Doka 3-SO 21mm 200/50cm 579,00 11,00 9,70\n24 ks 186011000 - Bednicí deska Doka 3-SO 21mm 250/50cm 723,75 13,75 12,13\n4 ks 185241000 - UNIplex F/F brown 120 21mm 125/250cm 984,38 34,27\n2.2.2 Podpěrná konstrukce Dokaflex\n19 ks 586155500 - Opěrná trojnožka top 3 240,00 6,53 11,95\n19 ks 586174000 - Spouštěcí hlavice H20 1 473,00 3,23 6,10\n13 ks 586179000 - Přidržovací hlavice H20 DF 536,00 1,20 0,77\n32 ks 586086400 - Stropní podpěra Doka Eurex 20 top 250 3 702,00 6,64 11,83\n2.2.3 Dřevěný bednící nosník\n63 ks 189701000 - Nosník Doka H20 top P 1,80m 1 408,00 3,02 9,54\n3 ks 189702000 - Nosník Doka H20 top P 2,45m 1 975,00 4,36 12,99\n5 ks 189705000 - Nosník Doka H20 top P 3,30m 2 580,00 5,58 17,49\n8 ks 189707000 - Nosník Doka H20 top P 3,90m 3 050,00 6,57 20,67\n2.2.4 Pracovní plošiny & Stabilizační pomůcky\n6 ks 580470000 - Sloupek ochranného zábradlí S 3 303,00 5,34 11,45\n2.2.5 Víceúčelové skladovací a transportní pomůcky\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n11 / 13\nVÝPIS MATERIÁLU\nHodnota Nájem/den/kus\nmateriálu/kus) (ceník) Hmotnost/kus\nPoz. Popis (s číslem artiklu) [CZK] [CZK] [kg]\n1 ks 586151000 - Ukládací paleta Doka 1,55x0,85m 8 863,00 8,73 41,00\n1 ks 583011000 - Víceúčelový kontejner Doka 1,20x0,80m 13 565,00 13,47 70,00\n1 ks 583012000 - Kontejner se síťovými bočnic. Doka 1,70x0,80m 22 706,00 22,80 87,00\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n12 / 13\nObchodní podmínky\nCena\nUvedené ceny se rozumí v českých korunách ze skladu:\n– v Praze 9 Čakovicích, ulice Za Avií 868/1,\n– v Brně Horních Heršpicích ulice Kšírová 265,\n– v Ostravě Přívoze ulice Palackého 1144/80\ns naložením vysokozdvižným vozíkem na nákladní auto. Ceny vycházejí ze současných mzdových a materiálových\nnákladů a jsou uvedeny bez DPH a dopravy. Nájemní cenou za 1 měsíc se rozumí nájemné v Kč za 30 kalendářních dnů.\nPři zpracování detailních plánů mohou nastat změny v počtech kusů a tím i změny v konečné ceně.\nSlevy\nCeny v této nabídce a v přílohách jsou uvedeny včetně smluvních rabatů. Výši slev naleznete ve výpisu materiálu a\nshrnutí. Sleva na materiál do nájmu ve výši 68% , na materiál do koupě ve výši 15%. Slevy se netýkají bednících desek.\nPlatnost nabídky\nCeny uvedené v nabídce jsou platné do 16.02.2026\nDodací termíny (v týdnech)\n- pro projektovou dokumentaci cca 2 - 3 t.\n- pro standardní systémové prvky cca 3 - 4 t.\n- pro speciální konstrukce cca 16-18 týdnů od objednání\n- pro dílce z truhlárny cca 16-18 týdnů od objednání\nTermín začíná plynout od Vaší písemné objednávky specifikující dodávku materiálu, jakož i po předání platných plánů ve\nformátu DWG a po objasnění všech technických detailů.\nObjednávka musí obsahovat:\nNázev firmy, adresa firmy, IČO, DIČ, číslo účtu, datum vystavení, místo použití – název stavby, specifikaci požadovaného\nmateriálu, požadovaný termín odběru materiálu, požadované místo odběru materiálu, odhadovaná doba použití, jméno a\ntelefon kontaktní osoby, razítko, podpis oprávněné osoby, případné další požadavky.\nVyplněnou objednávku zašlete na e-mailovou adresu:\nOddělení potvrzení zakázek:\nEva Sunkovská| eva.sunkovska@doka.com| Tel. 284 001 370| Mobil. +420 606 637 290\nObchodní zástupce:\nTomáš Gerát | tomas.gerat@doka.com | M: +420 724 282 810 |\nPlatební podmínky\nPlatební podmínky se řídí dle uzavřené rámcové kupní či nájemní smlouvy.\nVývoz a vracení materiálu\nDatumy všech vývozů a vracení materiálu je nutné rezervovat minimálně 3 dny předem. Podle vytíženosti skladu bude\nurčen čas přistavení nákladního auta pro vývoz, resp. vracení materiálu. Sklady České Doky jsou otevřeny v pracovních\ndnech od 7:00 do 15:30 hodin.\nNákladní auto odběratele musí být schopné naložení, resp. vyložení vysokozdvižným vozíkem ze stran – tj. musí mít\nsklopné postranice. Pracovníci České Doky nejsou oprávněni vstupovat na dopravní prostředky odběratele.\nPři vracení materiálu je nutné dodat seznam vraceného materiálu, včetně názvu stavby a identifikace zákazníka.\nProjekční činnost\nV případě nutnosti rozkreslovat další záběry, které nebudou vázány na navýšení množství bednícího materiálu na stavbě,\npožadavky na statické posudky, úpravy dohodnutých řešení, jsme připraveni vám toto nabídnout. Cena za tyto služby\nbude fakturována dle potřebného nároku na projekční čas. Sazba 1375 Kč/hod\nRevitalizace trati Nýřany - Heřmanova Huť\nNabídka č. 540044877\n13 / 13\nŠéfmontáž a zaškolení pracovníků na stavbě\nV případě potřeby jsme připraveni vyslat kvalifikovaného montážního mistra pro zaškolení personálu na stavbě. Cena dle\nrozsahu prací a vzájemné dohody. Nasazení montážního mistra je za 960 Kč/hod.\nCestovní náklady na servisní vůz činí 18 Kč/km. Montážní mistr bude na stavbu vyslán na základě písemné objednávky.\nObjednávka musí obsahovat adresu a název stavby, termín a hodinu nástupu montážního mistra, kontakt na odpovědnou\nosobu na stavbě a domluvenou cenu montáže.\nVýkony ze strany stavby\nMontáž, demontáž a přemístění bednění na staveništi, hraněné řezivo, fošny, podlážky plošin, drobné ocelové prvky,\nobednění čela, zábradlí, tak jako všechny výkony, které v této nabídce nejsou jednoznačně jako takové firmou Doka\nuvedeny.\nBezpečnostní pokyny\nPři práci s produkty firmy Doka je nutné bezpodmínečně dodržovat příslušné návody k použití a\ninformace z plánů nasazení bednění. Uvedené dokumenty vám na požádání poskytne kontaktní osoba\nfirmy DOKA, nebo je možné je stáhnout na odkazu: http://www.doka.com/downloadcenter/\nPokud si návody k použití nevyžádáte, považujeme je za předané.\nInformační povinnost ve smyslu GDPR:\nZa účelem splnění smluvních povinností nebo pro případ oprávněného zájmu zpracovává Česká Doka bednicí technika\nspol. s r.o., se sídlem Za Avií 868/1, 196 00 Praha 9 - Čakovice osobní údaje jako jméno, firemní adresu, číslo firemního\nmobilního telefonu či firemní emailovou adresu kontaktní osoby smluvního partnera, a to skrze smluvního zpracovatele\nDoka GmbH, Josef-Umdasch-Platz 1, 3300 Amstetten, Rakouská republika. Zpracování probíhá až do doby splnění všech\nsmluvních či zákonných povinností popř. po dobu trvání oprávněného zájmu. Dotčené osobě náleží veškerá práva subjektu\núdajů ve smyslu GDPR, především právo na informace a výmaz, jakožto i právo vznést námitku u \"Úřad pro ochranu\nosobních údajů\", www.uoou.cz. V případě dotazů k ochraně osobních údajů v rámci Doka prosím kontaktujte\nceska@doka.com\nDoufáme, že Vás naše nabídka zaujala a budeme se těšit na Vaši reakci.\nS přátelským pozdravem\nČeská Doka\nbednící technika spol. s r. o.\n"
+  }
+]

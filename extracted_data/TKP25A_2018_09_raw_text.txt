@@ -1,0 +1,1002 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 25
+PROTIKOROZNÍ OCHRANA ÚLOŽNÝCH
+ZAŘÍZENÍ A KONSTRUKCÍ
+Třetí - aktualizované vydání
+změna č. 12
+Část 25 A - Ochrana proti elektrochemické korozi
+a korozi bludnými proudy
+Schváleno generálním ředitelem SŽDC
+dne 29. 05. 2018
+č.j.: S18985/2018-SŽDC-GŘ-O24
+Účinnost od: 1. 9. 2018
+Počet listů: 24
+Počet příloh: 0
+Počet listů příloh: 0
+Praha 2018
+Všechna práva vyhrazena.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+Úsek technický, oddělení distribuce dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+Seznam zkratek 5
+25.A.1 ÚVOD 6
+25.A.1.1 Všeobecné informace 6
+25.A.1.2 Vymezení základních pojmů 7
+25.A.1.2.1 Definice pojmů 7
+25.A.1.2.2 Pásma korozního ohrožení 9
+25.A.2 POPIS A KVALITA PROSTŘEDKŮ PROTIKOROZNÍ OCHRANY 10
+25.A.2.1 Prostředky pasivní protikorozní ochrany 10
+25.A.2.1.1 Izolace liniových a neliniových kovových zařízení 10
+25.A.2.1.2 Izolační spoje (IS) 10
+25.A.2.2 Prostředky aktivní protikorozní ochrany 10
+25.A.2.2.1 Stanice katodické ochrany (SKAO) 11
+25.A.2.2.2 Elektrická polarizovaná drenáž (EPD) 11
+25.A.2.2.3 Zesílená elektrická drenáž (saturáž) - SAT 11
+25.A.2.2.4 Galvanické (obětované) anody 11
+25.A.2.2.5 Uzemňovací anoda, úložná anoda, anodové uzemnění (AU) 11
+25.A.2.2.6 Stálá referenční elektroda (SRE) 11
+25.A.2.2.7 Příslušenství protikorozní ochrany 12
+25.A.3 TECHNOLOGICKÉ POSTUPY PRACÍ 12
+25.A.3.1 Kovová liniová úložná zařízení 12
+25.A.3.2 Kovová neliniová úložná zařízení 13
+25.A.3.3 Křížení a souběhy kovových úložných zařízení 13
+25.A.3.4 Společná protikorozní ochrana 13
+25.A.3.5 Speciální metody ukládání úložných zařízení do země 14
+25.A.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 14
+25.A.4.1 Prostředky pasivní protikorozní ochrany 14
+25.A.4.2 Zařízení aktivní protikorozní ochrany 14
+25.A.4.3 Technická prohlídka a zkouška určeného technického zařízení 14
+25.A.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 15
+25.A.5.1 Korozní průzkum a měření 15
+25.A.5.1.1 Předběžný korozní průzkum 15
+25.A.5.1.2 Základní korozní průzkum 16
+25.A.5.1.3 Korozní měření před zahájením stavby 16
+25.A.5.1.4 Korozní měření po ukončení stavby (závěrečný korozní průzkum) 16
+25.A.5.1.5 Dokumentace o výsledcích korozního průzkumu a měření 17
+25.A.5.2 Korozní zkoušky a měření v průběhu stavby 17
+25.A.5.2.1 Zkoušky a měření úložných zařízení 17
+25.A.5.2.2 Zkoušky aktivní protikorozní ochrany 17
+25.A.5.2.3 Dokumentace o kontrolních měřeních a zkouškách 17
+25.A.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 18
+25.A.6.1 Přípustné odchylky naměřených hodnot elektrických veličin 18
+25.A.6.2 Míry opotřebení galvanických anod, anodových uzemnění a stálých referenčních elektrod 18
+25.A.6.3 Záruky, údržba v záruční době 18
+3
+25.A.7 KLIMATICKÁ OMEZENÍ 18
+25.A.7.1 Klimatická omezení pro korozní měření a korozní průzkum 18
+25.A.7.2 Klimatická omezení pro montážní práce prostředků a zařízení protikorozní ochrany 18
+25.A.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 18
+25.A.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNU A PŘETVOŘENÍ (není uplatňováno) 19
+25.A.10 EKOLOGIE 19
+25.A.10.1 Ekologické vlivy prvků a zařízení protikorozní ochrany 19
+25.A.10.2 Ekologické důsledky poruchových stavů zařízení protikorozní ochrany na potrubní systémy,
+nádrže a tlakové jímky 19
+25.A.11 BEZPEČNOST PRÁCE A TECHNICKÉHO ZAŘIZENÍ 19
+25.A.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 20
+25.A.12.1 Technické normy 20
+25.A.12.2 Předpisy 21
+25.A.12.3 Související kapitoly TKP 22
+4
+Seznam zkratek
+AC střídavý trakční systém
+AU anodové uzemnění
+DC stejnosměrný trakční systém
+Specializované středisko Diagnostika korozních vlivů (specializované
+DKoV
+pracoviště v rámci TÚDC)
+EPD elektrická polarizovaná drenáž
+GA galvanická anoda
+IS izolační spoj
+KAO katodická ochrana
+KMB kontrolní měřící bod
+KMO kontrolní měřící objekt
+KSUaTP koordinační schéma ukolejnění a trakčních propojení
+KV kontrolní vývod
+MD ČR Ministerstvo dopravy České republiky
+PKO protikorozní ochrana
+POCH propojovací objekt na chráničce
+POIS propojovací objekt izolačního spoje
+POTV prostor ohrožení trakčním vedením (ČSN 34 1500 a ČSN EN 50122-1)
+ŘSKAO automaticky řízená stanice katodické ochrany
+SAT zesílená polarizovaná drenáž (saturáž)
+SKAO stanice katodické ochrany
+SRE stálá referenční elektroda
+SŽDC Správa železniční dopravní cesty, státní organizace
+TKP Technické kvalitativní podmínky staveb státních drah
+TÚDC Technická ústředna dopravní cesty (organizační jednotka SŽDC)
+UTZ určená technická zařízení
+VUZ Výzkumný ústav železniční, akciová společnost
+ZTKP Zvláštní technické kvalitativní podmínky staveb státních drah
+5
+25.A.1 ÚVOD
+25.A.1.1 Všeobecné informace
+Pro tuto kapitolu 25A TKP (dále jen Kapitola) platí všechny pojmy, ustanovení, požadavky a údaje uvedené
+v kapitole 1 TKP -Všeobecně.
+Kapitola definuje podmínky pro navrhování, projektování a výstavbu ochrany kovových liniových a neliniových
+úložných zařízení a dalších konstrukcí majících charakter stavby dráhy nebo stavby na dráze (§5 odst. 1 a 4
+zákona č. 266/1994 Sb.) v případě, že z jejich technického řešení nebo z důvodu agresivity okolní půdy či vody
+vyplývá možnost výskytu koroze bludnými proudy nebo jiné formy elektrochemické koroze.
+Mezi stavby dráhy, kterými se tato Kapitola zabývá, patří zejména liniová úložná zařízení z vodivých materiálů
+(produktovody včetně suchovodů a požárních vodovodů), napájecí a uzemňovací soustavy, přípojky nn/vn,
+kabelová vedení s kovovými plášti nebo stíněním a další zařízení a konstrukce, které mohou být kvůli svému
+konstrukčnímu řešení ohroženy korozí bludnými proudy.
+Pro nové nebo rekonstruované stavby na dráze, které jsou nebo mohou být ovlivněny provozem elektrizované
+trakční soustavy, změnou napájecí soustavy nebo výstavbou trakční měnírny/napájecí stanice, stanovuje SŽDC
+podmínky pro jejich realizaci a provoz z hlediska nutné ochrany před účinky bludných proudů. SŽDC
+neodpovídá za následky způsobené nedodržením stanovených podmínek ani za poškození cizích zařízení
+a konstrukcí, které nejsou vybaveny řádnou protikorozní ochranou a nejsou řádně udržovány vlastníkem
+dotčeného zařízení.
+SŽDC zajišťuje především ochranná opatření pro eliminaci úniku bludných proudů z trakčního systému (zpětné
+trakční cesty), na dodatečných ochranných opatřeních se podílí v případě, že je měřením prokázáno zhoršení
+korozního stavu na dotčených liniových i neliniových úložných zařízeních vlivem elektrizace nebo změny
+elektrizace dráhy. SŽDC neodpovídá za následky způsobené nedodržením podmínek pro uložení a provoz
+zařízení a konstrukcí z hlediska ochrany před účinky bludných proudů ani za poškození cizích zařízení
+a konstrukcí, které nejsou vybaveny řádnou pasivní ochranou a nejsou řádně udržovány vlastníkem dotčeného
+zařízení. Podle zák. č. 266/1994 Sb. je vlastník sítí technického vybavení, které jsou umístěny v obvodu dráhy
+nebo v ochranném pásmu dráhy a jsou v pásmu vlivů zpětných trakčních proudů z používání napájecích systémů
+dráhy stejnosměrné nebo střídavé trakční soustavy povinen zajistit jejich provoz, údržbu a opravy tak, aby se
+nestaly příčinou ohrožení života, zdraví či majetku osob.
+Veškerá opatření popsaná v této Kapitole, jež se týkají koroze bludnými proudy, jsou v plné šíři platná pro tratě
+v síti SŽDC, které jsou elektrizovány stejnosměrnou trakční soustavou, nebo pro tratě, u nichž je tato elektrizace
+připravována a v definovaném okolí těchto tratí. U neelektrizovaných tratí a tratí elektrizovaných střídavými
+trakčními soustavami se při návrhu protikorozní ochrany postupuje podle výsledků předběžného a základního
+korozního průzkumu (viz 25.A.5.1.1. a 25.A.5.1.2).
+V rámci SŽDC problematiku řešení možného korozního ohrožení kovových úložných zařízení bludnými proudy
+vyvolanými provozem na síti SŽDC zaštiťuje a metodicky řídí Odbor elektrotechniky a energetiky (O24).
+Odborná technická měření spolu s návrhy na konkrétní opatření zabezpečují příslušná specializovaná pracoviště
+TÚDC (viz 25.A.5.1).
+Tato Kapitola se nezabývá protikorozní ochranou mostních objektů a dalších železobetonových konstrukcí na síti
+SŽDC. Uvedenou problematiku řeší předpisy SŽDC (ČD) SR5/7 (S) „Ochrana železničních mostních objektů
+proti účinkům bludných proudů“ (do ukončení platnosti) a TP 124 „Základní ochranná opatření pro omezení
+vlivu bludných proudů na mostní objekty a ostatní betonové konstrukce pozemních komunikací“; od začátku
+platnosti potom předpisy SŽDC SR 5/7 (S) „Ochranná opatření pro omezení vlivu bludných proudů na stavby
+železničního spodku“ a SŽDC SR5/7(S)-DEM „Dokumentace elektrických a geofyzikálních měření betonových
+mostů a ostatních betonových konstrukcí železničního spodku“.
+Podle zásad uvedených v předpisech SŽDC SR 5/7 a TP 124 je však potřeba postupovat také v případech dalších
+železobetonových konstrukcí, například u základů trakčních podpěr (TKP 31). Jedná se především o zajištění
+zvýšené odolnosti betonu (TKP 17) proti působení agresivního prostředí (tzv. primární ochranné opatření),
+omezením nebo vyloučením působení agresívního prostředí na beton (sekundární ochranné opatření),
+propojením ocelové výztuže nebo v odůvodněných případech též jiným konstrukčním opatřením.
+V rámci této Kapitoly nejsou řešena opatření ke snížení úniku zpětného trakčního proudu do země. Tuto
+problematiku řeší předpis SŽDC S3 a zejména ČSN EN 50122-2. V místech provozu kolejových obvodů musí
+železniční svršek a elektrická izolace mezi kolejí a zemí splňovat rovněž parametry předepsané Vyhláškou
+MD ČR č. 177/1995 Sb. a ČSN 34 2613. Důležitost této problematiky v souvislosti s korozí bludnými proudy je
+zdůrazněna i v celé řadě jiných vztahujících se technických norem (např. ČSN 03 8371).
+6
+Zvláštní pozornost pro omezení možnosti zavlečení bludných proudů je třeba věnovat místům, která se nachází
+v místě styku různých druhů trakčních soustav, nebo pokud se různé trakční soustavy nacházejí ve své blízkosti.
+Vzájemnou interakci mezi AC a DC trakčními soustavami řeší ČSN EN 50122-3.
+Veškerá realizace ochranných opatření proti účinkům bludných proudů musí být ve shodě s elektrotechnickými
+předpisy a ochrannými opatřeními proti úrazu elektrickým proudem. Pokud by opatření proti bludnému proudu
+ovlivnila elektrickou bezpečnost, pak podle části 4 normy ČSN EN 50122-2 ed. 2 mají při zjišťování rizik
+a nebezpečí opatření proti úrazu elektrickým proudem uvedená v ČSN EN 50122-1 přednost před opatřeními
+proti účinkům bludných proudů.
+Z důvodu omezení úniku bludných proudů však na trati se stejnosměrnou trakční soustavou k zajištění ochrany
+před nebezpečným dotykem neživých částí trakčního vedení a jiných kovových konstrukcí v POTV je možno
+provést propojení se zpětným kolejnicovým vedením jedině pomocí nepřímého spojení (tj. pomocí průrazky
+nebo jiného schváleného zařízení omezujícího napětí). Výjimky pro vyrovnání potenciálu přímým spojením
+mezi uzemněnými konstrukcemi a zpětným obvodem jsou povoleny jen ve zvláštních případech (např. v depech
+a dílnách) a to jen za předpokladu, že studie bludných proudů neprokáže žádné negativní účinky (viz část 9
+ČSN EN 50122-2 ed. 2).
+25.A.1.2 Vymezení základních pojmů
+25.A.1.2.1 Definice pojmů
+aktivní ochrana úložného zařízení proti korozi - ochrana úložného zařízení katodickou ochranou (vnějším
+zdrojem stejnosměrného proudu nebo galvanickými anodami), drenážemi, propojovacími objekty
+a kombinacemi těchto způsobů
+anodické pásmo - úsek úložného zařízení, z něhož přechází elektrický proud do země
+bludné proudy - elektrické proudy protékající prostředím (např. půdou, vodou) a pocházející z elektrických
+zařízení, která nejsou dokonale izolována od tohoto prostředí nebo používající zem jako zpětný vodič; část
+zpětného trakčního proudu, který alespoň v části své dráhy protéká jinými cestami než k tomu určenou částí
+elektrického obvodu.
+drenáž - odvádění bludných proudů z ohrožené konstrukce ke zdroji proudu drenážním vodičem
+elektrická drenáž - zařízení ochrany proti korozi bludnými proudy, spočívající v záměrném galvanickém
+propojení anodické oblasti na úložném zařízení se zdrojem bludných proudů (v tomto případě trakční kolej tratě
+elektrizované stejnosměrnou trakční soustavou)
+galvanická anoda (též obětovaná anoda) - kovové těleso uložené v půdě nebo ve vodě, které je připojeno
+k chráněnému kovovému zařízení a s ním vytváří galvanický článek, kde úložné zařízení se stává katodou a je
+tedy katodicky chráněno
+chráněný úsek - úsek úložného zařízení, kde potenciál úložné zařízení/půda je v mezích ochranných potenciálů
+chránička - ochranná roura větší světlosti než chráněné úložné zařízení; slouží k ochraně potrubí/kabelu před
+vnějšími vlivy, usnadnění výstavby a výměny potrubí/kabelu
+interferenční propojka - galvanické propojení liniových zařízení k omezení korozního účinku interferenčního
+proudu
+interferenční proud - stejnosměrný elektrický proud vznikající v důsledku různých potenciálů galvanicky
+nepropojených liniových zařízení a protékající mezi nimi půdou, především v místech jejich křížení a souběhu
+IR spád - úbytek napětí obsažený v měřené hodnotě potenciálu, vyvolaný průtokem proudu vnějšího zdroje
+(katodická ochrana, bludné proudy), ohmickým odporem mezi referenční elektrodou vloženou do korozního
+prostředí a kovem úložného zařízení
+izolační spoj - konstrukční prvek k záměrnému snížení podélné elektrické vodivosti potrubí nebo jiného
+liniového zařízení
+katodická ochrana - aktivní ochrana proti korozi, při které je chráněné úložné zařízení katodou
+katodické pásmo - úsek úložného zařízení v cizím proudovém poli, do něhož vchází elektrický proud ze země
+7
+komplexní protikorozní ochrana - ochrana úložného zařízení, při které bylo současně použito několika
+ochranných metod
+kontrolní měřicí bod/kontrolní vývod – zařízení umožňující vodivé připojení měřicích přístrojů k úložnému
+zařízení
+kontrolní zařízení drenážního objektu - jednotka splňující požadavky ČSN 34 2600 a ČSN 34 2613, která
+umožnuje ve stanoveném čase spolehlivě elektricky rozpojit drenážní kabel, pokud v něm vzniknou nadlimitní
+hodnoty rušivého napětí a proudu; pokud jsou na příslušné koleji provozované kolejové obvody pro detekci
+vlaku, musí tato jednotka splňovat zejména ustanovení bodu 7.4.3 normy ČSN 34 2613 ed.3
+koroze - fyzikálně-chemická interakce kovu a prostředí vedoucí ke změnám vlastnosti kovu, které mohou
+vyvolávat významné zhoršení vlastností kovu, prostředí nebo technického systému, jehož jsou kov a prostředí
+složkami
+koroze elektrochemická – souhrn elektrochemických reakci mezí kovem a okolním elektrolytem
+korozní průzkum - souhrn šetření a měření, který poskytuje podklady pro návrh protikorozní ochrany
+katodická ochrana - aktivní ochrana proti korozi, při které je chráněné úložné zařízení katodou
+kritérium katodické ochrany - dosažení hodnot potenciálu chráněného zařízení vůči referenční elektrodě
+umístěné v blízkosti povrchu chráněného zařízení
+liniové zařízení - kovové potrubí, kabel s kovovým obalem a podobná zařízení, jejichž největší rozměry
+v půdoryse přesahují 100 m
+měděná referenční elektroda - referenční elektroda, tvořená mědí ponořenou v nasyceném roztoku síranu
+měďnatého
+měřící bod – místo na úložném zařízení, na němž lze měřit různé elektrické veličiny, kde je možno docílit
+kovový kontakt měřících přístrojů s úložným zařízením (kontrolní vývod, kontrolní objekt, armatura atp.)
+napájecí bod (úložného zařízení) - místo, kde je připojen k úložnému zařízení záporný pól zdroje
+stejnosměrného napětí katodické ochrany
+neliniové zařízení - zařízení ve smyslu čl. 2 až 10 ČSN 03 8372 (nádrž, šachta, bunkr, základy staveb, most,
+ocelové piloty, pažnice vrtu, těžební trubky, zárubnice studní, kotvy lan a táhel, uzemňovací soustavy) a další
+obdobné objekty, jejichž povrch má úplný nebo částečný kontakt s horninovým prostředím a jejichž největší
+půdorysné rozměry obvykle nepřesahují 100 m
+ochranná konstrukce - prostředek, jehož účelem je ochrana liniového úložného zařízení před mechanickým
+poškozením a jinými škodlivými účinky prostředí, nebo ochrana okolí před následky havárií úložných zařízení
+(např. chránička, kanál, kolektor, štola)
+ochranný proud – stejnosměrný elektrický proud, zajišťující katodickou ochranu úložného zařízení
+pasivní ochrana úložného zařízení proti korozi - zvýšení zemního odporu úložného zařízení oddělením jeho
+povrchu od korozního prostředí, popř. zvýšením podélného elektrického odporu úložného zařízení
+pásmo korozního ohrožení – prostor v blízkosti dráhy elektrizované stejnosměrnou trakční soustavou
+definovaný částí 25.A.1.2.2 této Kapitoly vymezený pro účely posuzování korozního ohrožení úložných zařízení
+potenciál polarizační - potenciálový rozdíl polarizovaného povrchu kovu úložného zařízení proti referenční
+elektrodě vložené do korozního prostředí měřený s vyloučením IR spádu
+potenciál vypínací - potenciál úložné zařízení-půda měřený bezprostředně po současném vypnutí všech zdrojů
+působícího ochranného proudu
+potenciál zařízení-půda – potenciálový rozdíl mezi zařízením a specifikovanou referenční elektrodou, která je
+ve styku se zeminou na místě dostatečně blízkém zařízení, ale nedotýká se ho (používá se také pojem „potenciál
+zařízení-elektrolyt“)
+potenciál zapínací - potenciál zařízení-půda, měřený při průtoku ochranného proudu (včetně IR spádu)
+propojovací objekt - zařízení umožňující propojení dvou nebo více kovových úložných zařízení při společné
+ochraně proti korozi nebo při potlačování interference
+protikorozní ochrana - jedná se o souhrn opatření, kterými se v daném korozním prostředí prodlužuje fyzická
+životnost zařízení
+8
+referenční elektroda – elektroda, jejíž potenciál je stálý v širokém rozmezí podmínek
+společná ochrana proti korozi - ochrana vedená podle jednotného plánu společnými ochrannými prostředky
+současně na několika úložných zařízeních
+stálá (permanentní) referenční elektroda - referenční elektroda uzpůsobená pro dlouhodobé uložení v zemi
+stanice katodické ochrany - zařízení pro katodickou ochranu sestávající ze zdroje stejnosměrného proudu
+(obvykle transformátor-usměrňovač s přípojkou střídavého napětí, rozvodu stejnosměrného proudu a anodového
+uzemnění
+úložné zařízení - zařízení (potrubí, kabely, nádrže a podobná zařízení) které je celé nebo z podstatné části trvale
+uloženo v půdě nebo ve vodě
+vzdálená země; referenční země - místa půdy vzdálená od zemniče, kterým protéká proud tak daleko, že mezi
+těmito libovolnými místy nevznikne téměř žádné napětí
+životnost - doba, po kterou ochranný systém zařízení nebo konstrukce plní předepsanou funkci
+25.A.1.2.2 Pásma korozního ohrožení
+Návrh protikorozní ochrany stávajících a plánovaných úložných zařízení ležících v blízkosti tratí
+elektrizovaných stejnosměrnou proudovou soustavou (nebo u kterých je tato elektrizace připravována) a další
+související opatření vycházejí ze zařazení těchto zařízení do pásem korozního ohrožení I. – IV. stupně podle
+jejich polohy vůči dráze.
+pásmo
+korozního vymezení pásma Opatření
+ohrožení
+- nutno respektovat § 9 zák. č. 266/1994 Sb.
+I. stupně ochranné pásmo dráhy (podle § 8 zák. - pro umístění úložných zařízení a konstrukcí je nutný
+č. 266/1994 Sb.) souhlas SŽDC a jeho specializovaného pracoviště
+(DKoV) a splnění jejich požadavků
+- souběh kovových úložných zařízení s dráhou by
+do 150 m od osy krajní koleje plus neměl být delší než 100 m
+okruh 500 m od připojení zpětných - zařízení a konstrukce potenciálně ohrožené korozí
+II. stupně musí být opatřeny dostatečnou ochranou před korozí
+kabelů trakčních měníren (navazuje na
+bludnými proudy
+pásmo I. stupně)
+- je nutná konzultace se specializovaným pracovištěm
+SŽDC (DKoV)
+- opatření proti korozi bludnými proudy se stanovují
+do 500 m od osy krajní koleje (navazuje na základě výsledků základního korozního průzkumu
+III. stupně
+na pásmo II. stupně) - je nutná konzultace se specializovaným pracovištěm
+SŽDC (DKoV)
+- ohrožení korozí bludnými proudy pouze vpřípadě
+až do 5 km od elektrizované tratě vhodných podmínek pro jejich šíření
+- opatření proti korozi bludnými proudy se stanovují na
+IV. stupně (výjimečně i více; navazuje na pásmo
+základě výsledků základního korozního průzkumu
+III. stupně)
+- doporučuje se konzultace se specializovaným
+pracovištěm SŽDC (DKoV)
+Pozn: U železničních tratí s jednofázovou trakční soustavou je riziko poškození úložných zařízení střídavými
+bludnými proudy (pokud neobsahují stejnosměrnou složku) oproti DC trakčnímu systému podstatně nižší, pásma
+korozního ohrožení se proto nerozlišují. Při hodnocení pravděpodobnosti koroze střídavými bludnými proudy
+z AC trakčního systému je vždy postupováno v souladu s ČSN EN ISO 18086, ČSN 34 2040 a ČSN EN 50443.
+Korozní průzkum, který se provádí v souvislosti s výstavbou, provozem nebo budoucí změnou elektrizace na AC
+trakční systém musí vždy obsahovat i měření střídavých elektrických veličin.
+9
+25.A.2 POPIS A KVALITA PROSTŘEDKŮ PROTIKOROZNÍ OCHRANY
+Níže uvedená opatření se v plné míře týkají staveb dráhy, staveb na dráze a staveb v pásmech korozního
+ohrožení I.– III. stupně. Pro větší zemní vzdálenosti mají tato opatření doporučující charakter - pokud výsledky
+provedeného korozního průzkumu a měření nerozhodnou jinak.
+25.A.2.1 Prostředky pasivní protikorozní ochrany
+Pasivní ochranou jsou opatření, která omezují vstup a výstup bludných proudů do zařízení a ze zařízení - tato
+ochrana se aplikuje vždy. Mezi pasívní ochranu řadíme i opatření, která omezují tok proudu přes vlastní úložné
+zařízení.
+Pasivní PKO má především za účel zvýšit životnost chráněné stavby, a to například zvýšením elektrické
+rezistivity, nebo vhodnou volbou nekovových materiálů či způsobem uložení chráněné konstrukce.
+Nejrozšířenějším druhem pasivní PKO jsou izolace (zejména na bázi bitumenů, plastů, anorganických povlaků
+a izolace speciální), dále pak ochrany stavební - uložení v kolektoru/kanálu nebo v chráničce.
+Pasivní ochrana musí být aplikována bez rozdílu vždy, přičemž její kvalitu dokládá zhotovitel
+certifikátem/prohlášením o shodě, pokud konkrétní prostředek pasivní ochrany nebyl již schválen SŽDC.
+Ochranu před účinky atmosférické koroze nelze považovat za prostředek pasivní PKO ve smyslu této Kapitoly.
+25.A.2.1.1 Izolace liniových a neliniových kovových zařízení
+Kvalita izolace kovových částí se posuzuje dle ČSN 03 8375, ČSN 03 8376 a dalších norem. Izolace musí být
+stanovena včetně odůvodnění, dostatečně odolná proti mechanickému poškození při dopravě, skladování,
+montáži, kladení, záhozu a při provozu. Konkrétní provedení ochranných obalů musí uvedeno v projektové
+dokumentaci. Ochranné obaly dálkových a místních kabelů jsou popsány v kapitole TKP 28.
+Protikorozní ochranu zemních kabelů s kovovým pláštěm před bludnými proudy řeší ČSN 03 8370,
+ČSN 03 8371 a ČSN 33 2000-5-52.
+25.A.2.1.2 Izolační spoje (IS)
+Účelem izolačních spojů používaných u liniových zařízení je elektrické odizolování (oddělení) úložného zařízení
+na více částí, čímž se omezí průtok bludných proudů nebo se záměrně omezí vliv KAO jednoho úložného
+zařízení na jiné. IS lze doporučit po rozboru místních podmínek a na základě výsledků korozního průzkumu.
+Nevhodné použití IS může způsobit vznik dalších anodických pásem. Úložné zařízení musí být se zesílenou
+izolací na obě strany od IS do vzdálenosti 10 - 25 metrů.
+Izolační spoje přicházejí v úvahu zejména:
+- v půdě s vysokou rezistivitou,
+- při bludných proudech malé intenzity,
+- při nebezpečí, že nové úložné zařízení přivede bludné proudy do oblastí bludnými proudy dosud
+neohrožených.
+25.A.2.2 Prostředky aktivní protikorozní ochrany
+Název Zkratka Poznámka
+S vnějším zdrojem proudu
+(Řízená) stanice SKAO/ Vhodné pro oblast s bludnými proudy a s rezistivitou půdy menší než
+katodické ochrany ŘSKAO 200 Ωm a pro kabely do 100 Ωm.
+U staveb dráhy/na dráze zásadně jen ŘSKAO.
+Zařízení zajišťující možnost průtoku proudu pouze ve směru
+Elektrická
+EPD z úložného zařízení ke zdroji bludných proudů - mimo půdní nebo
+polarizovaná drenáž
+vodní prostředí (např. vřazením polovodičového prvku)
+Saturáž SAT Zesílená drenáž s vnějším zdrojem proudu.
+Účinnost omezena na krátké úseky úložného zařízení.
+Galvanická anoda
+GA
+(obětovaná) Vhodné pro rezistivitu půdy do 50 Ωm.
+10
+Kvalita zařízení aktivní PKO je stvrzena průkazem způsobilosti a dosažením hodnot požadovaného kritéria
+katodické ochrany na chráněném zařízení.
+Prostředky aktivní PKO se umísťují vždy mimo POTV. Mají-li prostředky aktivní protikorozní ochrany
+charakter stavby dráhy nebo rozhodne-li o tom Diagnostická laboratoř zabezpečovací techniky TÚDC, musejí
+mít technické podmínky schváleny SŽDC a splňovat náležitosti UTZ.
+Jakékoliv vodivé připojení zařízení ke koleji na elektrizované trati (i nepřímé - přes průrazku), je možné
+realizovat až po ověření a odsouhlasení změny KSUaTP pověřenými oprávněnými osobami dle schválené
+Směrnice pro správu koordinačních schémat ukolejnění a trakčního propojení. Podmínky pro připojení stanovené
+příslušnými oprávněnými osobami musí být vždy dodrženy.
+25.A.2.2.1 Stanice katodické ochrany (SKAO)
+Princip činnosti je založen na poznatku, že některé kovy lze chránit vytvořením dostatečně vysokého záporného
+potenciálu na chráněném zařízení, které je katodou. Hodnota ochranného proudu může být řízena automaticky
+(ŘSKAO) nebo s ručním nastavením (SKAO). Součástí stanice katodické ochrany může být diagnostické
+a telemetrické zařízení.
+25.A.2.2.2 Elektrická polarizovaná drenáž (EPD)
+Elektrická polarizovaná drenáž je zařízení umožňující průtok elektrického proudu pouze ve směru z úložného
+zařízení ke zdroji bludných proudů, např. vřazením polovodičového prvku. Pro nové stavby se připouští pouze
+elektronicky řízené EPD s možností diagnostiky a telemetrie. V případech určených projektem vyhotoveným ve
+shodě se stanoviskem Diagnostické laboratoře zabezpečovací techniky TÚDC obsahuje EPD v drenážním
+obvodu prvky podle ČSN 34 2613 s ohledem na ohrožující účinky drenáže na provoz kolejových obvodů. V
+takových případech je zařízení drenážního objektu uspořádáno tak, aby k drenážnímu obvodu měly přístup pouze
+určené osoby správce zabezpečovacího zařízení a osoby v jejich doprovodu.
+25.A.2.2.3 Zesílená elektrická drenáž (saturáž) - SAT
+Princip činnosti zesílené polarizované drenáže je obdobný jako EPD. Používá se v případech, kdy rozdíl
+potenciálu mezi úložným zařízením a kolejí by byl k dosažení kritéria katodické ochrany aplikací EPD
+nepostačující. SAT se skládá ze stejných částí jako EPD. Do obvodu, kterým je připojeno úložné zařízení ke
+koleji, je však vložen pomocný stejnosměrný zdroj (usměrňovač s můstkovým zapojením), jehož kladný pól je
+připojen ke koleji.
+25.A.2.2.4 Galvanické (obětované) anody
+Princip činnosti galvanické anody spočívá v použití anod z elektronegativního kovu připojených k chráněnému
+zařízení, se kterým vytváří galvanický článek, jehož elektromotorické napětí, dané rozdílem elektrodových
+potenciálů materiálu chráněného zařízení a GA je zdrojem ochranného proudu. GA jsou vhodné při malé
+spotřebě ochranného proudu (např. u podzemní nádrže).
+25.A.2.2.5 Uzemňovací anoda, úložná anoda, anodové uzemnění (AU)
+Jedná se o uzemňovací soustavu, kterou prochází do půdy elektrický proud z kladné svorky zdroje
+stejnosměrného napětí SKAO.
+25.A.2.2.6 Stálá referenční elektroda (SRE)
+Stálá referenční elektroda je tvořena kovovou elektrodou v elektrolytu. SRE je funkční součástí
+EPD/SAT/ŘSKAO, neboť trvale vytváří provozně standartní referenční hodnotu napětí pro jednotku
+automatické regulace, která pak zajišťuje funkci katodické ochrany. SRE musí být situována nejlépe nad nebo
+vedle chráněného zařízení.
+11
+25.A.2.2.7 Příslušenství protikorozní ochrany
+Kromě výše uvedených, patří do příslušenství PKO ještě:
+Propojovací objekty (PO) - zařízení umožňující galvanické propojení (přímo, přes rezistor nebo přes diodový
+člen) dvou nebo více úložných zařízení při společné PKO nebo pro pravidelné měřicí účely.
+Spojovací objekty (SO) - zvláštní typ PO umožňující pravidelná měření elektrických veličin na úložném zařízení
+opatřeném prostředkem pasivní PKO (např. úložné zařízení oddělené IS) nebo na GA.
+Kontrolní vývody (KV) - zařízení umožňující připojit měřicí přístroje k povrchu úložného zařízení a provést
+předepsaná korozní měření.
+25.A.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+V tomto oddíle jsou uvedeny zásady konstrukčních řešení protikorozní ochrany kovových úložných
+zařízení.
+Při návrhu a budování kovových úložných zařízení mají být dodrženy zejména následující zásady:
+- při volbě trasy nebo volbě místa uložení zařízení se vyhnout, pokud je to možné, půdám se zvýšenou
+korozní agresivitou, oblastem výskytu bludných proudů a takovému způsobu uložení, jímž by se nepříznivě
+ovlivnila PKO dalších úložných zařízení,
+- pokud nelze zcela vyloučit křížení s tělesem dráhy, musí být počet těchto křížení co nejmenší,
+- zřízením křížení nesmí být narušena stabilita a únosnost železničního spodku (kap. 5 a 12 TKP) ani
+ohrožena nebo omezena funkce zařízení ve správě SŽDC,
+- PKO musí vycházet ze životnosti chráněného zařízení, respektive z doby jeho předpokládaného využívání,
+a z geologické skladby prostředí,
+- při zřízení nové PKO nesmí dojít k narušení funkce PKO stávajících úložných zařízení, drážních, či
+mimodrážních,
+- nesmí dojít k zavlečení bludných proudů na kovová úložná zařízení nevhodným řešením ochrany před
+nebezpečným dotykovým napětím (elektricky ovládaná šoupátka, elektromotory čerpadla apod.). Jedním
+z vhodných řešení je ochrana elektrickým oddělením dle ČSN EN 50122-1, ČSN 33 2000-4-41
+- PKO musí být v koordinaci s ochranou před účinky atmosférické a statické elektřiny
+- nutno dodržet ustanovení ČSN EN 50122-1, ČSN 34 1500 a ČSN 33 2000-4-41 a dalších souvisejících
+předpisů při ochraně neživých částí úložných zařízení a zařízení aktivní PKO, která jsou v POTV nebo
+musejí být chráněna před nebezpečným dotykovým napětím,
+- základním způsobem PKO kovových úložných zařízení je pasivní ochrana s dostatečnou životností,
+- ke snížení účinku bludných proudů se podélná elektrická rezistivita úložného zařízení zvýší pomocí
+vložených izolačních spojek nebo izolačním oddělením jednotlivých konstrukčních částí úložného zařízení,
+- pasivní ochrana se v místech, kde je nebezpečí mechanického poškození izolace, doplňuje podsypem
+a obsypem potrubí ve výkopu (např. pískem nebo jiným jemnozrnným inertním materiálem)
+25.A.3.1 Kovová liniová úložná zařízení
+Základním prvkem protikorozní ochrany je izolace povrchu zařízení, která se za následujících podmínek provádí
+v zesíleném provedení:
+- křížení a souběh s dráhou nebo komunikací,
+- křížení s jiným úložným zařízením,
+- v místech s rizikem mechanického poškození izolace,
+- v husté zástavbě,
+- u významných potrubí, jejichž porušení by způsobilo rozsáhlé výpadky zásobování přepravované látky,
+- u potrubí sloužících k přepravě látek, které mohou způsobit ohrožení zdraví lidí nebo vážně narušit životní
+prostředí.
+U staveb dráhy je nutné zajistit PKO kabelů s kovovým obalem (plášť a pancíř) a kabelových souborů vždy ve
+smyslu zásad pro oblasti s bludnými proudy. Zásady konstrukčních řešení jsou uvedeny v ČSN 03 8371.
+U dálkových kabelů s kovovým obalem se podle agresivity prostředí doporučuje alespoň dosažení kritéria
+částečné katodické ochrany podle ČSN 03 8350, resp. hodnot a opatření podle ČSN 03 8371.
+12
+U galvanického propojení pláště a pancíře kabelu je rovněž požadována PKO.
+Potrubí nemusí být opatřeno katodickou ochranou v případech uvedených v čl. 6.3 ČSN 03 8350.
+25.A.3.2 Kovová neliniová úložná zařízení
+U stejnosměrné trakční soustavy je nutné vyloučit galvanické propojení neliniového zařízení se zpětným
+trakčním vedením (tj. vyloučit vodivé propojení přímo ukolejněného zařízení se zemněným zařízením).
+Přednostně se navrhuje:
+- elektricky odizolovat ukolejněné zařízení od základu, nebo od stavební části chráněné uzemněním,
+- použitím izolace redukovat působení půdy na základ stavby/zařízení,
+- důsledně využít ochranu ukolejněním v POTV (dle ČSN 34 1500, ČSN EN 50122-1 a ČSN EN 50122-2),
+ale elektrická zařízení, jejichž neživé části jsou ukolejněny, nesmějí být galvanicky propojena s ochranným
+vodičem sítě TN-C, resp. TN-S.
+- na trati se stejnosměrnou trakční soustavou k zajištění ochrany před nebezpečným dotykem neživých částí
+trakčního vedení je ukolejnění možné provést jen pomocí nepřímého spojení (tj. pomocí průrazky nebo
+jiného schváleného prvku omezujícího napětí) se zpětným kolejnicovým vedením
+- výjimka z předchozího ustanovení je možná jedině v případech uvedených v ČSN EN 50122-2 při dodržení
+všech normou předepsaných podmínek
+Pasivní ochrana u neliniových zařízení se zajišťuje:
+- izolováním jeho povrchu od okolního prostředí,
+- stavební úpravou:
+- rozdělením objektu na dvě nebo více od sebe elektricky odizolovaných částí,
+- vložením elektricky izolačního materiálu mezi části konstrukce nebo zařízení,
+- provedením části konstrukce z elektricky nevodivého materiálu,
+- vytvořením elektricky izolačních vrstev u částí konstrukce nebo IS.
+25.A.3.3 Křížení a souběhy kovových úložných zařízení
+Obecnou zásadou je, aby na tratích elektrizovaných stejnosměrnou (ale i střídavou) trakční soustavou byla
+vzdálenost mezi kabelovým vedením nebo potrubím a elektrizovanou kolejí co největší. Konstrukční řešení při
+křížení cizího úložného zařízení s úložným zařízením ve správě SŽDC musí zejména respektovat:
+- existenci dvou různých správců/majitelů úložných zařízení,
+- výskyt interferenčních vlivů a jejich odstranění ve smyslu ČSN EN ISO 18086,
+- nejmenší vzdálenost mezi souběžnými a křižujícími vedení podle ČSN 73 6005,
+- podmínky stanovené správním orgánem v průběhu územního nebo stavebního řízení (podle zákona
+č. 266/1994 Sb. a zákona č. 183/2006 včetně prováděcích předpisů v platném znění).
+Při křížení dvou kovových úložných liniových zařízení nesmí vzrůst riziko jejich korozního poškození.
+Po vyhodnocení kontrolního korozního průzkumu a přijetí koncepce PKO projektant v dokumentaci řeší PKO
+podle konkrétní situace a místa křížení propojovacím objektem vhodného typu. Při návrhu křížení kovových
+úložných zařízení musí být vzato v úvahu, že mimo místo uvažovaného křížení může být jedno ze zařízení již
+galvanicky propojeno s jiným zařízením s aktivní PKO.
+25.A.3.4 Společná protikorozní ochrana
+Společná PKO se doporučuje projektovat pro takovou stavbu dráhy nebo úložného zařízení, kdy z výsledků
+korozního průzkumu vyplývá nutnost instalace aktivní PKO této stavby. Projektová dokumentace a koncepce
+PKO pak musí řešit PKO v uvažované oblasti pro všechna kovová liniová a neliniová úložná zařízení.
+Nacházejí-li se v této oblasti také zařízení, která nejsou ve správě SŽDC, pojmou se i tato zařízení do společné
+PKO.
+Podle čl. 8.10 ČSN 03 8350 je výjimečně možné, po dohodě se všemi provozovateli zařízení, provozovat
+samostatnou aktivní PKO potrubí, kterým je dopravována velmi nebezpečná látka. Konstrukční opatření se pak
+týkají řešení interferenčních vlivů, rovnoměrného rozložení ochranného proudu, vzájemného stínění anod apod.
+Při umístění cizích zařízení na konstrukcích a objektech SŽDC je nutné věnovat při řešení PKO zvláštní
+pozornost. Při realizaci musí být zohledněn § 10 zákona č. 266/1994 Sb.
+13
+Na elektrizovaných tratích SŽDC musí být u těchto zařízení zajištěna ochrana před nebezpečným dotykem dle
+ČSN 34 1500 a ČSN 33 2000-4-41, ČSN EN 50122-1 a dalších.
+25.A.3.5 Speciální metody ukládání úložných zařízení do země
+V některých případech lze pasivní PKO liniových zařízení zajistit uložením do chrániček nebo kolektorů, které
+musejí splňovat požadavky kapitoly 12 TKP. Při tomto uložení je třeba dbát na možnost instalace měřicích bodů
+nebo kontrolních vývodů, aby bylo možné zjišťovat korozní situaci daného zařízení. Při uložení do kolektoru je
+třeba dbát na instalaci izolačních spojek při přechodech kolektor/zem a odizolování úložného zařízení od
+ocelových částí výstroje kolektoru.
+25.A.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+U dodávek, skladování a průkazních zkoušek jednotlivých součástí systému PKO musí být dodrženy následující
+zásady:
+- Za způsob dopravy a skladování prostředků PKO odpovídá zhotovitel, přičemž nesmí dojít ke snížení
+jakosti dodávaného zboží.
+- Výrobky, pro které TKP nebo ZTKP nepožadují certifikát, nemusí být zhotovitelem podrobeny průkazním
+zkouškám, pokud výrobce prokazuje shodu s požadavky technických norem osvědčením o jakosti nebo
+prohlášením o shodě.
+25.A.4.1 Prostředky pasivní protikorozní ochrany
+Průkazní zkoušky jsou požadovány u:
+- izolovaných trubek (před jejich uložením do země) v souladu s ČSN 03 8375, ČSN 03 8376,
+- izolovaných trubek (po zahrnutí a při zjišťování poškození izolace) vhodnou průkaznou metodou,
+- izolovaných spojů (před a po instalaci) podle ČSN 03 8376 (elektrická rezistivita),
+- chrániček (ČSN 03 8376),
+- kabelů s kovovým obalem,
+- izolačních materiálů pro dodatečnou aplikaci na zaizolování potrubí, spojek a kabelových souborů,
+- svorkovnic/svorek pro stálé měřicí body, kontrolní vývody apod.,
+- kabelů podle kapitol 26 a 28 TKP.
+Pro zkoušení páskových izolací a smršťovacích materiálů z plastů platí ČSN 03 8332.
+25.A.4.2 Zařízení aktivní protikorozní ochrany
+U SKAO/ŘSKAO, EPD/SAT jsou požadovány následující průkazní zkoušky:
+- parametry vestavěných měřicích přístrojů (kalibrace),
+- izolační rezistivita celého zařízení,
+- ochrany před nebezpečným dotykem,
+- galvanických anod a anodového uzemnění,
+- ochranných transformátorů pro ochranu oddělením obvodů,
+- stálé referenční elektrody,
+- měření rezistivity ochranného uzemnění,
+- kontrolního zařízení drenážního objektu, pokud je instalováno
+25.A.4.3 Technická prohlídka a zkouška určeného technického zařízení
+Technickou prohlídku a zkoušku UTZ smí vykonat pouze právnická osoba určená MD ČR (odst. 4 § 47 zákona
+č. 266/1994 Sb.).
+Před zahájením technické prohlídky a zkoušky UTZ zhotovitel zapůjčí právnické osobě technickou dokumentaci
+(včetně zprávy o výchozí revizi elektrického zařízení), aby se dalo zkontrolovat splnění podmínek konstrukce
+podle §3 a §4 vyhlášky č. 100/1995 Sb.
+Rozsah technické prohlídky a zkoušky UTZ je dán opatřením MD ČR a požadavky Drážního úřadu.
+O provedené technické prohlídce a zkoušce UTZ vystaví určená právnická osoba protokol.
+14
+25.A.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Prvek vzorkování není v rámci této Kapitoly uplatňován. Kontrolními zkouškami se pro účely této Kapitoly
+rozumějí jednotlivé druhy korozních průzkumů a měření.
+25.A.5.1 Korozní průzkum a měření
+Podle ČSN 03 8372 a ČSN 03 8375 a s přihlédnutím k normě ČSN 03 8370 se rozlišují korozní průzkumy
+předběžný, základní, dodatečný a kontrolní:
+- předběžný pro zjištění, zda se zamýšlené zařízení nebude nacházet v oblasti, ve které je možné očekávat
+nebezpečí koroze bludnými proudy
+- základní pro stanovení pravděpodobného korozního ohrožení připravovaného zařízení,
+- dodatečný pro stanovení korozní situace u již existujícího zařízení jako podklad pro doplnění protikorozní
+ochrany,
+- kontrolní pro zjištění stavu protikorozní ochrany existujícího zařízení včetně stavu aktivní ochrany
+a objektů ovlivňujících její činnost.
+Rozsah korozního průzkumu závisí na rozsahu stavby, požadované životnosti a ekonomických, ekologických
+a jiných důsledcích vyvolaných případnou korozní havárií; stanovuje ho projektant PKO nebo specializované
+pracoviště, jehož prokázaná odbornost zahrnuje protikorozní ochranu; měřicí metody používané při jednotlivých
+průzkumech, jsou uvedeny v ČSN 03 8372, ČSN 03 8375 a ČSN EN 13509.
+V případě nově budované elektrizace jednofázovou trakční soustavou se postupuje rovněž podle norem ČSN EN
+ISO 18086, ČSN EN 50443, ČSN 33 2160, ČSN 33 2165, ČSN 34 2040 a ČSN EN 50 122-3.
+Korozní průzkumy (kromě předběžného, který se provádí vždy) jsou obvykle prováděny v pásmech korozního
+ohrožení I. – III. stupně, přičemž v odůvodněných případech mohou být rozšířeny i do pásma korozního
+ohrožení IV. stupně. Projektant a zhotovitel stavby zajistí zhotoviteli korozních průzkumů a dalších korozních
+měření potřebnou součinnost při poskytnutí potřebné dokumentace.
+Aby bylo možné doložit vliv stavby dráhy na okolní úložná zařízení, s ohledem na výsledek a doporučení
+základního korozního průzkumu, nebo v případě změny napájecího systému dráhy (případně jiné stavby mající
+za následek předpokládanou změnu korozní situace) jsou s využitím metod dodatečného a kontrolního průzkumu
+(podle ČSN 03 8372, ČSN 03 8375, ČSN EN 13509 a dalších norem) prováděna následující měření:
+- korozní měření před zahájením stavby,
+- korozní měření v průběhu stavby,
+- korozní měření po ukončení stavby (závěrečný korozní průzkum).
+Korozní měření, které se provádí v souvislosti s výstavbou, provozem nebo změnou elektrizace na AC trakční
+systém musí vždy obsahovat i měření střídavých elektrických veličin.
+Specializovaným pracovištěm SŽDC, které zajišťuje výše uvedené korozní průzkumy a měření je Technická
+ústředna dopravní cesty (TÚDC), specializované středisko Diagnostika korozních vlivů (DKoV) s regionálními
+pracovišti:
+Vedoucí DKoV: tel. +420 972 228 747
+Vedoucí regionálního pracoviště Praha: tel. +420 972 228 749
+Vedoucí regionálního pracoviště Olomouc: tel. +420 972 741 787
+Další specializovaná pracoviště, která splňují potřebná kritéria k provádění průzkumných a diagnostických
+prací v oblasti koroze jsou uvedena na stránkách www.pjpk.cz (Politika jakosti pozemních komunikací).
+25.A.5.1.1 Předběžný korozní průzkum
+Před vypracováním projektu stavby nového liniového úložného zařízení musí být proveden průzkum, zda
+zamýšlené zařízení neleží v oblasti, kde je možné očekávat nebezpečí koroze bludnými proudy. Podklady pro
+předběžný korozní průzkum jsou získávány z dostupných dokumentů a map, případně z rekognoskace daného
+území. Vypracování předběžného průzkumu zajišťuje zadavatel stavby např. u zhotovitele dokumentace v rámci
+přípravy dokumentace pro územní rozhodnutí. V přiměřené míře se tato opatření týkají í dalších zařízení
+s přihlédnutím k jejich charakteru, zejména pak možnosti a následkům případného korozního ohrožení.
+Je-li výsledkem předběžného korozního průzkumu zjištění, že:
+ do 5 km od zamýšlené trasy (stavby) vede trať elektrizovaná stejnosměrnou trakční soustavou nebo se o její
+výstavbě či elektrizací uvažuje,
+15
+ do 500 m od zamýšlené trasy (stavby) vede trať elektrizovaná jednofázovou trakční soustavou nebo se s její
+výstavbou uvažuje,
+ do 1 km od zamýšlené trasy (stavby) existují nebo jsou plánována další zařízení, která mohou být zdrojem
+bludných proudů (např. stanice katodické ochrany),
+ geologické podklady připouštějí blízký výskyt zdrojů spontánní polarizace (rudní ložiska, výskyty grafitů
+a grafitických břidlic nebo vodivých tektonických zón),
+provede se základní korozní průzkum.
+25.A.5.1.2 Základní korozní průzkum
+Základní korozní průzkum slouží pro zjištění pravděpodobného korozního ohrožení připravované stavby. Kromě
+měření, která jsou uvedena zejména v ČSN 03 8372 a ČSN 03 8375, mohou být jeho součástí také korozní
+měření na již existujících úložných zařízeních. Zároveň jeho výsledky umožňují upřesnit rozsah korozního
+měření před zahájením stavby.
+Základní korozní průzkum se zpracovává v rámci přípravy dokumentace pro územní rozhodnutí, nejpozději však
+při zahájení zpracování dokumentace pro stavební povolení. Základní korozní průzkum zpracovává pro
+zadavatele (investora) nebo zhotovitele dokumentace (projektanta) specializované pracoviště.
+Řešení ochrany stavby před účinky bludných proudů včetně výsledků a závěrečných doporučení základního
+korozního průzkumu musí být součástí dokumentace pro stavební povolení.
+Vyhodnocení základního korozního průzkumu podle druhu a rozsahu stavby zpravidla také upřesňuje potřebná
+korozní měření před zahájením, v průběhu a po dokončení stavby.
+V případě, že další korozní měření (před zahájením a v průběhu stavby) nejsou podle výsledků základního
+korozního průzkumu ani podle druhu a rozsahu stavby nutná, uvede se tato skutečnost spolu s odůvodněním ve
+vyhodnocení základního korozního průzkumu.
+25.A.5.1.3 Korozní měření před zahájením stavby
+Toto měření slouží k doložení korozní situace na zařízeních v blízkosti stavby, která může způsobit její změnu.
+Korozní měření před zahájením stavby se provádí zejména na liniových zařízeních, uzemňovacích soustavách,
+a dalších ocelových a železobetonových konstrukcích (včetně rodinných a bytových domů a průmyslových
+staveb), a to v těchto případech:
+- výstavba, modernizace, nebo jiná obdobná rekonstrukce trakční měnírny nebo spínací stanice spojené se
+zásahem do jejich zemnicí sítě,
+- výstavba, modernizace, optimalizace nebo jiná rekonstrukce železniční tratě elektrizované stejnosměrnou
+trakční soustavou, která může ve větším rozsahu ovlivnit parametry železničního svršku z hlediska úniku
+bludných proudů (např. změna materiálu pražců, druhu upevnění kolejnic nebo ukolejnění) a to včetně
+přechodu ze stejnosměrné na jednofázovou trakční soustavu.
+Korozní měření před zahájením stavby zahrnuje s přihlédnutím k charakteru a rozsahu stavby zejména:
+- měření potenciálu zařízení-půda,
+- měření potenciálu trakční kolej-půda, případně další měření na zpětné trakční cestě
+- zjištění dosahu a účinnosti zařízení aktivní PKO (např. SKAO) – měření se provádí ve spolupráci
+s provozovateli zařízení.
+Korozní měření před zahájením stavby zpracovává pro zhotovitele stavby specializované pracoviště.
+Výsledky a konkrétní závěrečná doporučení korozního měření před zahájením stavby mohou svým návrhem
+ovlivnit řešení ochrany před účinky bludných proudů u některých vztahujících se částí a souborů v realizační
+dokumentaci stavby.
+25.A.5.1.4 Korozní měření po ukončení stavby (závěrečný korozní průzkum)
+Toto měření musí být provedeno pokud možno na identických místech a obdobnými metodami jako korozní
+průzkum před zahájením stavby, a to po 30 až 90 dnech po ukončení stavby či zahájení elektrického provozu (po
+polarizaci prostředí a zařízení).
+Výsledky závěrečného korozního měření se vyhodnotí a porovnají s výsledky předchozích korozních měření;
+v případě potřeby (zhoršení korozní situace na stávajících úložných zařízeních) jsou podkladem pro vybudování
+nebo doplnění stávající protikorozní ochrany.
+16
+Jestliže výsledky závěrečného korozního měření potvrdí, že vlivem stavby dráhy došlo ke zhoršení korozní
+situace u mimodrážního zařízení, je nutné informovat majitele/správce tohoto zařízení a dohodnout další postup.
+Korozní měření po ukončení stavby zpracovává pro zhotovitele stavby specializované pracoviště.
+25.A.5.1.5 Dokumentace o výsledcích korozního průzkumu a měření
+Dokumentace o provedeném korozním průzkumu a měření musí obsahovat přehled použitých měřicích metod,
+naměřené hodnoty, grafické záznamy v měřených místech (případně synchronizované s datovými výstupy
+měřených elektrických veličin s datovými výstupy měřených elektrických veličin z měníren (napájecích stanic)
+a zpětné trakční cesty. Dále musí dokumentace obsahovat vyhodnocení ve vztahu k použitým normám
+a předpisům, konkrétní návrhy protikorozních opatření a případně další doporučení.
+Výsledky korozních průzkumů je nutno uložit po dobu 10 let. Uložení výsledků měření zajišťuje SŽDC.
+25.A.5.2 Korozní zkoušky a měření v průběhu stavby
+25.A.5.2.1 Zkoušky a měření úložných zařízení
+Kontrolní zkoušky a měření na úložných zařízeních jsou součástí ověřování kvality a účinnosti PKO v době
+výstavby. Zásadně se vykonávají po dokončených úkonech zhotovitele, avšak před realizací takového
+následného úkonu, kterým v průběhu stavby bude zařízení zakryto a nepřístupno, nebo by z jiného důvodu již
+nebylo možné potřebné měření později provést. Kontrolní zkoušky a měření mající za úkol doložit kvalitu prací
+provedených v rámci stavby zajišťuje zhotovitel (v případě, že to vyžaduje povaha měření, prostřednictvím
+specializovaného pracoviště).
+V případě, že v průběhu stavby došlo ke zhoršení korozní situace na okolních zařízeních, postupuje se podle
+25.A.1.1, případně 25.A.5.1.4.; na žádost zhotovitele nebo investora to může (zejména jedná-li se o kontrolu
+vlivu stavby na PKO okolních úložných nebo jiných zařízení) provést specializované pracoviště.
+Kontrolní korozní zkoušky a měření probíhají pomocí metod uvedených v normách řady ČSN 03 83xx a dalších
+normách a předpisech týkajících se konkrétního zařízení.
+25.A.5.2.2 Zkoušky aktivní protikorozní ochrany
+Kontrolní korozní zkoušky a měření u zařízení aktivní PKO zahrnují s přihlédnutím k charakteru a rozsahu
+stavby zejména:
+- stanovení distribuční křivky potenciálu úložné zařízení - půda podle ČSN 03 8376 (včetně účinnosti KAO),
+- zjištění proudu GA (ČSN 03 8373),
+- určení rozdílu mezi zapínacím a vypínacím potenciálem zařízení KAO,
+- stanovení napětí mezi trakčním kolejnicovým pásem a nejbližším kovovým kabelovým pláštěm,
+- měření izolačního stavu drenážního a dalších kabelů,
+- zjištění hodnot interferenčních proudů a jejich omezení zejména v místech křížení katodicky chráněného
+a interferencí ohroženého úložného zařízení,
+- určení míry interference při katodické ochraně (příloha B ČSN 03 8350),
+- ověření funkčnosti SRE a AU,
+- ověření funkčnosti zařízení aktivní PKO na vlastním zařízení a úložném zařízení (dosah a účinnost),
+- měření potenciálu mezi trakční kolejí a referenční elektrodou.
+Pro tuto skupinu PKO je povinné v případě instalace elektrické drenáže stanovení podmínek připojení
+drenážního vodiče ke kolejím a v případě potřeby konfigurace potřebných omezovacích prvků a kontrolního
+obvodu. Tuto činnost zajišťuje Diagnostická laboratoř zabezpečovací techniky TÚDC.
+25.A.5.2.3 Dokumentace o kontrolních měřeních a zkouškách
+Dokumentace o kontrolních měřeních a zkouškách musí obsahovat všechny výsledné hodnoty a analýzy
+(s odkazem na příslušné normy a technické podmínky), jakož i podmínky, za kterých byly provedeny.
+17
+25.A.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+25.A.6.1 Přípustné odchylky naměřených hodnot elektrických veličin
+Přípustné odchylky naměřených hodnot od normativních (kriteriálních) jsou uvedeny v normách a předpisech,
+podle kterých jsou měření prováděna a vyhodnocována; seznam těchto norem je nezbytnou součástí Protokolu
+o zkoušce (bez ohledu na název).
+Všeobecně a zjednodušeně se podle ČSN 03 8370 a ČSN 03 8371 považuje zařízení za dostatečně chráněné proti
+korozi, je-li jeho potenciál měřený proti síranoměďnaté referenční elektrodě (včetně IR spádu):
+- u ocelového zařízení (nízkouhlíkatá ocel) zápornější než -0,85 V (v anaerobním prostředí - 0,92 V), avšak
+maximálně -1,5V
+- u olověných zařízení zápornější než - 0,55 V,
+- u hliníkových zařízení v rozmezí - 0,85 až - 1,2 V.
+25.A.6.2 Míry opotřebení galvanických anod, anodových uzemnění a stálých
+referenčních elektrod
+Míra opotřebení galvanických anod a anodových uzemnění smí být při podmínkách udaných výrobcem 20 % za
+10 roků a to včetně kabelů. Stálé referenční elektrody včetně kabelu musí mít dokladovanou funkční životnost
+10 let. Zhotovitel je povinen předložit provozovateli doklady o životnosti, střední doby do poruchy a podmínky
+udržovatelnosti galvanických anod, anodových uzemnění a stálých referenčních elektrod.
+25.A.6.3 Záruky, údržba v záruční době
+Záruční doby všeobecně stanovuje kap. 1 TKP.
+Údržbu v záruční době zajišťuje správce zařízení podle ustanovení uvedených v kap. 1 TKP.
+25.A.7 KLIMATICKÁ OMEZENÍ
+25.A.7.1 Klimatická omezení pro korozní měření a korozní průzkum
+Při měření elektrických veličin v rámci korozních měření a průzkumů za použití referenční elektrody smí být
+teplota jejího elektrolytu v rozmezí +0 °C až +50 °C. Tato měření se nemají provádět při dlouhotrvajícím suchu
+nebo mokru. Klimatické podmínky při měřeních, jejichž výsledky mají být porovnávány, mají být pokud možno
+shodné.
+25.A.7.2 Klimatická omezení pro montážní práce prostředků a zařízení protikorozní
+ochrany
+Kromě klimatických omezení, udaných v technických podmínkách výrobce prostředků a zařízení PKO, se
+vyžaduje dodržení podmínek:
+- pokládka a montáž kabelů/kabelových soborů nesmí být při vnější teplotě nižší než + 4 °C bez zvláštních
+opatření podle ČSN 33 2000-5-52,
+- usazení a montáž SRE smí být při vnější teplotě alespoň + 5 °C,
+- montáž zařízení aktivní PKO a přezkoušení kontrolního zařízení drenážního objektu smí být prováděna za
+podmínek uvedených v kap. 27 a 29 TKP.
+25.A.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+Je-li plánováno:
+- umístění cizího úložného nebo jiného zařízení, které může být kvůli své konstrukci ohroženo korozí
+bludnými proudy, v některém z pásem korozního ohrožení (viz bod 25.A.1.2.2),
+- křížení cizího úložného zařízení nebo jeho souběh s tratí elektrizovanou stejnosměrnou trakční soustavou
+v některém z pásem korozního ohrožení (viz bod 25.A.1.2.2),
+- křížení nebo souběh cizího úložného zařízení, které může být ohroženo korozí bludnými proudy nebo je
+chráněno aktivní PKO, s liniovým úložným zařízením SŽDC, které může být ohroženo korozí bludnými
+proudy,
+- vybudování systému PKO na stávajících úložných zařízeních popsaných v tomto oddíle,
+18
+je třeba při volbě konstrukčních řešení a materiálů PKO postupovat v souladu s oddíly 25.A.2 a 25.A.3 této
+Kapitoly. Navržená konstrukční řešení nesmějí mít za následek zhoršení korozní situace ostatních úložných
+zařízení.
+V případě návrhu elektrické polarizované drenáže/saturáže připojené ke kolejišti drenážním kabelem musí být
+místo připojení projednáno a schváleno Diagnostickou laboratoří zabezpečovací techniky TÚDC, zapracováno
+na kopii místně příslušného KSUaTP s návrhem jeho změny podle platných směrnic pro používání a správu
+KSUaTP a případně doloženo projektovým řešením vyvolaných změn závislosti zabezpečovacího zařízení; nutné
+je také splnění požadavků stavebního řízení (§ 7 zákona č. 266/1994 Sb.) a pro provoz UTZ (§ 47 zákona
+č. 266/1994 Sb., vyhláška č. 100/1995 Sb.).
+Odsouhlasení provedených prací provádí stavební dozor a budoucí správce zařízení; na jejich vyžádání provede
+odsouhlasení provedených prací specializované pracoviště SŽDC (DKoV). Odsouhlasení provedených prací
+souvisejících s PKO je nezbytné pro jejich ocenění ve smyslu požadavků této Kapitoly a pro možnost zahájení
+navazujících prací. Zhotovitel odsouhlasených prací za ně odpovídá až do doby ukončení převzetí
+prací/ukončení přejímky hotového díla. Vady a nedodělky zjištěné při odsouhlasení provedených prací/ukončení
+přejímky hotového díla odstraňuje zhotovitel.
+V rámci odsouhlasení a převzetí prací je nezbytné posoudit hotové dílo z hlediska porovnání
+a vyhodnocení výsledků z korozního měření před zahájením stavby a po jejím dokončení, jakož
+i z hlediska výsledků korozních měření v průběhu stavby. Toto posouzení musí vyjadřovat hodnocení
+korozního ohrožení úložných zařízení/konstrukcí.
+Odsouhlasení provedených prací a převzetí hotového díla musí být v souladu s platnými předpisy a respektovat
+čl. 41 až 48 ČSN 03 8376. Při převzetí hotového díla PKO musí být přítomen budoucí provozovatel a zástupci
+vlastníků nebo správců kovových úložných zařízení, která by mohla být ohrožena provozem zařízení aktivní
+PKO.
+Zařízení aktivní protikorozní ochrany a jejich součásti, určené pro použití na tratích s kolejovými obvody, musejí
+být konstruovány s ohledem na provoz kolejových obvodů podle norem ČSN 34 2600 a ČSN 34 2613.
+25.A.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNU A PŘETVOŘENÍ (není
+uplatňováno)
+Vzhledem k povaze měření a zkoušek není tento prvek v rámci této Kapitoly uplatňován.
+25.A.10 EKOLOGIE
+Veškeré práce prováděné podle této Kapitoly musejí být v souladu s oddílem 10 kap. TKP 1.
+25.A.10.1 Ekologické vlivy prvků a zařízení protikorozní ochrany
+Správné používání prvků a zařízení PKO nemá za následek negativní ekologické důsledky. Při spojkování
+kabelů nesmí však být znečištěna půda a voda. Zbytky spojovacích hmot a kabelů likviduje zhotovitel.
+25.A.10.2 Ekologické důsledky poruchových stavů zařízení protikorozní ochrany na
+potrubní systémy, nádrže a tlakové jímky
+Funkční PKO významným způsobem zabraňuje vzniku poruch a havarijních stavů, které při přepravě
+nebezpečných médií (např. uhlovodíkové produkty) by mohly mít velmi negativní dopad na životní prostředí.
+U neliniových zařízení (typu nádrží) je nutné věnovat zvláštní pozornost opatřením proti atmosférickým
+a elektrostatickým vlivům, které mohou eliminovat PKO a zvýšit korozní ohrožení.
+25.A.11 BEZPEČNOST PRÁCE A TECHNICKÉHO ZAŘIZENÍ
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví kapitola
+1 TKP.
+Před započetím prací předloží zhotovitel objednateli ke schválení technologický postup provádění PKO.
+Při umístění cizích zařízení na konstrukcích a objektech SŽDC je nutné věnovat při řešení PKO zvláštní
+pozornost. Při realizaci musí být zohledněn § 10 zákona č. 266/1994 Sb.
+Na elektrizovaných tratích a v jejich blízkosti musí být vždy dodržena potřebná ochranná opatření podle
+příslušných elektrotechnických předpisů (ČSN 34 1500, ČSN 33 2000-4-41, ČSN EN 50122-1 a dalších).
+19
+Bezpečnost zaměstnanců provádějících práce PKO je povinen zajistit zhotovitel, jakož i zajistit vybavení svých
+zaměstnanců ochrannými a pracovními pomůckami v souladu s prováděnou technologií práce a s případnými
+riziky s prací spojenými. Zaměstnanci zhotovitele nesmí při prováděných pracích ohrožovat bezpečnost a zdraví
+jiných osob. Při pracích na kovových úložných zařízeních zejména liniového charakteru, které jsou v blízkosti
+(souběh nebo křižování) nadzemních vedení elektrizačních soustav, je nutné počítat s možnými indukčními
+a kapacitními vlivy těchto soustav.
+Základní bezpečnostní opatření ukládá předpis SŽDC Bp1 a příslušné všeobecně platné předpisy v oblasti
+bezpečnosti a ochraně zdraví při práci.
+25.A.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+U nedatovaných technických norem platí poslední vydání příslušné normy popřípadě norma, která ji nahrazuje.
+Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu oddílu 1.3 TKP 1, tj. právních
+předpisů, technických norem v platné edici a drážních předpisů SŽDC.
+25.A.12.1 Technické normy
+Označení Název
+ČSN 03 8005 Ochrana proti korozi. Názvosloví protikorozní ochrany podzemních úložných zařízení
+ČSN 03 8332 Ochrana proti korozi. Zkoušení páskových izolací a smršťovacích materiálů z plastů
+ČSN 03 8350 Požadavky na protikorozní ochranu úložných zařízení.
+Zásady měření při protikorozní ochraně kovových zařízení uložených v zemi. Fyzikálně-
+ČSN 03 8361
+chemický rozbor zemin a vod
+Zásady měření při protikorozní ochraně kovových zařízení uložených v zemi. Měření
+ČSN 03 8363
+zdánlivého měrného odporu půdy Wennerovou metodou
+Zásady měření při protikorozní ochraně kovových zařízení uložených v zemi. Stanovení
+ČSN 03 8365
+přítomnosti bludných proudů v zemi
+Zásady měření při protikorozní ochraně kovových zařízení uložených v zemi. Měření
+ČSN 03 8368
+měrného přechodového odporu kabelu nebo potrubí proti zemi
+ČSN 03 8370 Snížení korozního účinku bludných proudů na úložná zařízení
+Protikorozní ochrana v zemi uložených sdělovacích kabelů s olověnými, hliníkovými
+ČSN 03 8371
+a ocelovými obaly
+ČSN 03 8372 Zásady ochrany proti korozi neliniových zařízení uložených v zemi nebo ve vodě
+Zásady provozu, údržby a revize ochrany proti korozi kovových potrubí a kabelů
+ČSN 03 8373
+s kovovým pláštěm uložených v zemi
+ČSN 03 8374 Zásady protikorozní ochrany podzemních kovových zařízení
+ČSN 03 8375 Ochrana kovových potrubí uložených v půdě nebo ve vodě proti korozi
+Zásady pro stavbu ocelových potrubí uložených v zemi. Kontrolní měření z hlediska
+ČSN 03 8376
+ochrany před korozí
+Elektrické instalace nízkého napětí - Část 1: Základní hlediska, stanovení základních
+ČSN 33 2000-1
+charakteristik, definice
+Elektrické instalace nízkého napětí - Část 4-41: Ochranná opatření pro zajištění
+ČSN 33 2000-4-41
+bezpečnosti - Ochrana před úrazem elektrickým proudem
+Elektrické instalace nízkého napětí - Část 5-51: Výběr a stavba elektrických zařízení -
+ČSN 33 2000-5-51
+Všeobecné předpisy
+Elektrické instalace nízkého napětí - Část 5-52: Výběr a stavba elektrických zařízení -
+ČSN 33 2000-5-52
+Elektrická vedení
+Elektrické instalace nízkého napětí - Část 5-54: Výběr a stavba elektrických zařízení -
+ČSN 33 2000-5-54
+Uzemnění a ochranné vodiče
+Elektrotechnické předpisy. Požadavky na odolnost sdělovacích zařízení proti přepětí
+ČSN 33 4000
+a nadproudu
+Elektrotechnické předpisy. Ochrana sdělovacích vedení a zařízení proti přepětí
+ČSN 33 4010
+a nadproudu atmosférického původu
+Elektrotechnické předpisy – Předpisy pro ochranu sdělovacích vedení a zařízení před
+ČSN 33 2160
+nebezpečnými vlivy trojfázových vedení vn, vvn a zvn
+Elektrotechnické předpisy – Zásady pro ochranu ocelových izolovaných potrubí
+ČSN 33 2165 uložených v zemi před nebezpečnými vlivy venkovních trojfázovýchg vedení a stanic vvn
+a zvn
+ČSN 34 1500 Elektrotechnické předpisy. Předpisy pro elektrická trakční zařízení
+Předpisy pro ochranu sdělovacích a zabezpečovacích vedení a zařízení před
+ČSN 34 2040
+nebezpečnými, rušivými a korozivními vlivy elektrické trakce 25 kV, 50 Hz
+20
+ČSN 34 2600 Drážní zařízení - Železniční zabezpečovací zařízení
+Železniční zabezpečovací zařízení - Kolejové obvody a vnější podmínky pro jejich
+ČSN 34 2613
+činnost
+Železniční zabezpečovací zařízení - Předpisy pro projektování provozování a používání
+ČSN 34 2614
+kolejových obvodů
+ČSN 34 5145 Názvosloví pro elektrická trakční zařízení
+ČSN 37 5711 Drážní zařízení - Křížení kabelových vedení s železničními dráhami
+ČSN 42 0021 Ocelové trubky. Asfaltová izolace trubek pod DN 50
+ČSN 42 0022 Ocelové trubky. Asfaltová izolace trubek od DN 50
+ČSN 73 6005 Prostorové uspořádání sítí technického vybavení
+Ochranná zařízení proti dotyku s živými částmi trakčního vedení a proti účinkům
+ČSN 73 6223
+výfukových plynů na objektech nad železničními dráhami
+Katodická ochrana kovových zařízení vložených v půdě nebo ve vodě – Všeobecné
+ČSN EN 12954
+aplikace na potrubí
+ČSN EN 13509 Měřicí postupy v katodické ochraně
+Potrubí z tvárné litiny, tvarovky a příslušenství – Vnější polyethylenový povlak potrubí –
+ČSN EN 14628
+Požadavky a zkušební metody
+Potrubí z tvárné litiny, tvarovky a příslušenství – Epoxidový povlak tvarovek
+ČSN EN 14901
+a příslušenství z tvárné litiny (pro těžký provoz) – Požadavky a zkušební metody
+Potrubí z tvárné litiny, tvarovky a příslušenství – Vnější polyuretanový povlak potrubí –
+ČSN EN 15189
+Požadavky a zkušební metody
+Trubky, tvarovky a příslušenství z tvárné litiny – Vnější povlak trubek cementovou
+ČSN EN 15542
+maltou – Požadavky a zkušební metody
+Drážní zařízení - Pevná trakční zařízení - Elektrická bezpečnost, uzemňování a zpětný
+ČSN EN 50122-1
+obvod - Část 1: Ochranná opatření proti úrazu elektrickým proudem
+Drážní zařízení - Pevná trakční zařízení - Elektrická bezpečnost, uzemnění a zpětný obvod
+ČSN EN 50122-2
+- Část 2: Ochranná opatření proti účinkům bludných proudů DC trakčních soustav
+Drážní zařízení - Pevná trakční zařízení - Elektrická bezpečnost, uzemnění a zpětný obvod
+ČSN EN 50122-3
+- Část 3: Vzájemná interakce mezi AC a DC trakčními soustavami
+ČSN EN 50162 Ochrana před korozí bludnými proudy ze stejnosměrných proudových soustav
+Účinky elektromagnetické interference na potrubí způsobené AC vysokonapěťovými
+ČSN EN 50443
+elektrickými trakčními soustavami a/nebo AC vysokonapěťovými napájecími soustavami
+Trubky, tvarovky a příslušenství z tvárné litiny a jejich spoje pro vodovodní potrubí –
+ČSN EN 545
+Požadavky a zkušební metody
+ČSN EN 62305-1 až -4 Předpisy pro ochranu před bleskem
+ČSN EN ISO 12696 Katodická ochrana oceli v betonu
+ČSN EN ISO 15589-1 Katodická ochrana potrubních dopravních systémů – Část 1: Potrubí na souši
+ČSN EN ISO 18086 Koroze kovů a slitin – Stanovení koroze střídavými proudy – Kritéria ochrany
+ČSN EN ISO 8044 Koroze kovů a slitin. Základní termíny a definice
+TNŽ 34 2603 Pravidla pro kreslení koordinačních schémat ukolejnění a trakčních propojení
+Bezpečnostní předpisy pro činnost na trakčním vedení a v jeho blízkosti na železničních
+TNŽ 34 3109
+dráhách celostátních, regionálních a vlečkách
+TNŽ 37 5715 Silová kabelová vedení celostátních drah
+TPG 920 24 Zásady pro provádění jiskrových zkoušek ochranných povlaků vysokým napětím
+TPG 92025 Omezení korozního účinku bludných a interferenčních proudů na úložná zařízení
+25.A.12.2 Předpisy
+Označení Název
+SŽDC Bpl Předpis o bezpečnosti a ochraně zdraví při práci
+SŽDC S 3 Železniční svršek
+SŽDC (ČD) S 5/4 Protikorozní ochrana ocelových konstrukcí
+Služební rukověť. Ochrana železničních mostních objektů proti účinkům bludných
+SŽDC (ČD) SR 5/7 (S)
+proudů
+Směrnice pro uvádění do provozu výrobků, které jsou součástí sdělovacích
+Směrnice SŽDC č. 34 a zabezpečovacích zařízení a zařízení elektrotechniky a energetiky, na železniční
+dopravní cestě ve vlastnictví státu státní organizace Správa železniční dopravní cesty
+21
+Směrnice SŽDC SM33
+Správa koordinačních schémat ukolejnění a trakčního propojení
+18752/2018-SŽDC-GŘ-O14
+Základní ochranná opatření pro omezení vlivu bludných proudů na mostní objekty a
+TP 124 MD ČR 2009
+ostatní betonové konstrukce pozemních komunikací (MD – OI čj. 1092/08-910-IPK/1)
+Vyhláška Ministerstva dopravy, kterou se stanoví podmínky pro provoz konstrukci a
+Vyhláška č. 100/1995 Sb. výrobu určených technických zařízení a jejich konkretizace (Řad určených technických
+zařízení)
+Vyhláška č. 177/1995 Sb. Vyhláška Ministerstva dopravy, kterou se vydává stavební a technický řád drah
+Vyhláška Českého báňského úřadu o bezpečnosti a ochraně zdraví při práci a bezpečnosti
+provozu při těžbě a úpravě ropy a zemního plynu a při vrtných a geofyzikálních pracích a
+Vyhláška č. 239/1998 Sb.
+o změně některých předpisů k zajištění bezpečnosti a ochrany zdraví při práci a
+bezpečnosti provozu při hornické činnosti a činnosti prováděné hornickým způsobem
+Vyhláška č. 499/2006 Sb. Vyhláška o dokumentaci staveb
+Zákon č. 183/2006 Sb. Zákon o územním plánování a stavebním řádu (stavební zákon)
+Zákon č. 266/1994 Sb. Zákon o dráhách
+25.A.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 5 - Ochrana zemního tělesa
+Kapitola 12 - Chráničky a kolektory
+Kapitola 13 - Plyn, voda, produktovody
+Kapitola 14 - Kanalizace, septiky, čističky, lapače
+Kapitola 17 - Beton pro konstrukce
+Kapitola 18 - Betonové mosty a konstrukce
+Kapitola 19 - Ocelové mosty a konstrukce
+Kapitola 20 - Tunely
+Kapitola 21 - Mostní ložiska a ukončení mostů
+Kapitola 22 - Izolace proti vodě
+Kapitola 23 - Sanace inženýrských objektů
+Kapitola 24 - Zvláštní zakládání
+Kapitola 25 – Protikorozní ochrana úložných zařízení a konstrukcí
+část B - Ochrana ocelových konstrukcí proti atmosférické korozi
+Kapitola 26 - Osvětlení, EOV, stožárové transformátory vn/nn, rozvody nn včetně dálkového ovládání
+Kapitola 27 - Zabezpečovací zařízení
+Kapitola 28 - Sdělovací zařízení
+Kapitola 29 - Silnoproudá technologická zařízení
+Kapitola 31 - Trakční vedení
+22
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+KAPITOLA 25 A
+Třetí aktualizované vydání včetně změny č. 12 /z roku 2018/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Správa železniční dopravní cesty, státní organizace
+Odborný gestor: Ing. Josef Dostál
+Správa železniční dopravní cesty, státní organizace
+Odbor elektrotechniky a energetiky
+Vydal: Správa železniční dopravní cesty, státní organizace
+Odbor elektrotechniky a energetiky
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+www.szdc.cz
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚT - oddělení distribuce dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 396, +420 972 741 769,
+mobil: +420 725 039 782,
+e-mail: typdok@tudc.cz
+www.tudc.cz, http://typdok.tudc.cz

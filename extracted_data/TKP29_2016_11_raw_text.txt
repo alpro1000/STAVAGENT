@@ -1,0 +1,1081 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 29
+SILNOPROUDÁ TECHNOLOGICKÁ
+ZAŘÍZENÍ
+Třetí - aktualizované vydání
+změna č. 10
+Schváleno generálním ředitelem SŽDC
+dne: 5. 9. 2016
+č.j.: S 35447/2016-SŽDC-O14
+Účinnost od: 1. 11. 2016
+Počet listů: 28
+Počet příloh: 0
+Počet listů příloh: 0
+Praha 2016
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení distribuce dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+Seznam zkratek 4
+29.1 ÚVOD 5
+29.1.1 Všeobecně 5
+29.1.2 Základní pojmy 5
+29.1.2.1 Trakční napájecí stanice (TNS) 5
+29.1.2.2 (Trakční) spínací stanice (SpS) 6
+29.1.2.3 Distribuční transformovna (TS) 6
+29.1.2.4 Elektrické pevné napájecí zařízení drážních kolejových vozidel (EPZ) 6
+29.1.3 Podsystémy STZ 6
+29.1.3.1 Trakční transformovna (TT) 6
+29.1.3.2 Trakční měnírna (TM) 6
+29.1.3.3 Spínací stanice 25 kV, 50 Hz (SpS) 7
+29.1.3.4 Spínací stanice 3 kV (SpS) 7
+29.1.3.5 Distribuční transformovna (TS) 7
+29.1.3.6 Elektrické pevné napájecí zařízení drážních kolejových vozidel (EPZ) 7
+29.1.4 Charakteristika a rozsah STZ 8
+29.1.4.1 Trakční napájecí stanice (TNS) 8
+29.1.4.2 Spínací stanice (SpS) 9
+29.1.4.3 Distribuční transformovna (TS) 10
+29.1.4.4 Elektrické pevné napájecí zařízení drážních kolejových vozidel 10
+29.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 11
+29.2.1 Všeobecně 11
+29.2.2 Rozhodující stroje, přístroje a zařízení 11
+29.3 TECHNOLOGICKÉ POSTUPY PRACÍ 12
+29.3.1 Stavební připravenost 12
+29.3.2 Technologické postupy prací 14
+29.3.2.1 Ochrana proti korozi 14
+29.3.2.2 Označování a jiné nátěry 15
+29.3.3 Kontrola stavebního objektu po montáži 15
+29.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 15
+29.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 16
+29.5.1 Všeobecně 16
+29.5.2 Kontroly, zkoušky a měření 16
+29.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 17
+29.6.1 Přípustné odchylky 17
+29.6.2 Záruky, údržba v záruční době 17
+29.7 KLIMATICKÁ OMEZENÍ 17
+29.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 17
+29.8.1 Všeobecně 17
+29.8.2 Příprava k uvedení do provozu 18
+29.8.3 Příprava přejímacího řízení 18
+29.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 19
+29.10 EKOLOGIE 19
+29.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 19
+29.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 20
+29.12.1 Technické normy 20
+29.12.2 Předpisy 24
+29.12.3 Související kapitoly TKP 25
+3
+Seznam zkratek
+AC Střídavý systém
+ČD České dráhy, a.s.
+CDP Centrální dispečerské stanoviště
+DC Stejnosměrný systém
+EPZ Elektrické pevné napájecí zařízení drážních kolejových vozidel
+KSU a TP koordinační schéma ukolejnění a trakčního propojení
+NN nízké napětí
+OK ocelová konstrukce
+PBŘ Požárně bezpečnostní řešení (stavby)
+TM trakční měnírna
+SKŘ systém kontroly a řízení
+SO stavební objekt
+SpS spínací stanice
+STZ silnoproudá technologická zařízení
+SZ sdělovací zařízení
+SŽDC Správa železniční dopravní cesty, státní organizace
+TKP technické kvalitativní podmínky
+TNS trakční napájecí stanice
+TS distribuční transformovna
+TT trakční transformovna
+TV trakční vedení
+UTZ určené technické zařízení
+VN vysoké napětí
+VS vlastní spotřeba
+VVN velmi vysoké napětí
+4
+29.1 ÚVOD
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP - Všeobecně.
+29.1.1 Všeobecně
+Tato kapitola obsahuje podmínky pro silnoproudá technologická zařízení (dále jen STZ) trakčních napájecích
+a spínacích stanic. Dále platí pro distribuční transformovny (kromě stožárových) a elektrická předtápěcí zařízení
+(kromě zjednodušeného provedení bez výkonových vypínačů). Napájecí transformovny 6 kV, 50 Hz pro
+zabezpečovací zařízení instalované v prostoru trakčních napájecích stanic jsou předmětem kapitoly 30 TKP
+”Silnoproudé rozvody”.
+Uvedená STZ jsou určená technická zařízení ve smyslu zákona č. 266/1994 Sb., o drahách, ve znění pozdějších
+předpisů a vyhlášky č. 100/1995 Sb., kterou se stanoví podmínky pro provoz, konstrukci a výrobu určených
+technických zařízení a jejich konkretizaci, ve znění pozdějších předpisů.
+Při výstavbě STZ musí být respektována vyhláška č. 177/1995 Sb., s účinností od 1. 12. 1995, kterou se vydává
+stavební a technický řád drah.
+Pro připojování elektrických zařízení na silnoproudé rozvody Správy železniční dopravní cesty, státní organizace,
+platí Technické podmínky připojení k Lokální distribuční soustavě železnice a Obchodní podmínky dodávky
+elektřiny z Lokální distribuční soustavy železnice (LDSž).
+Práce pro uvedená silnoproudá technologická zařízení zahrnují dodávky strojů, přístrojů, rozváděčů, spojovacích
+vedení (kabelová, holé nebo izolované vodiče), hlavních a pomocných ocelových konstrukcí, montážního materiálu,
+jejich kompletace a montážní práce, provedení zkoušek podle příslušných norem a předpisů, těchto TKP a technické
+dokumentace, zpracované výrobci jednotlivých strojů, přístrojů a zařízení vč. podmínek pro uvádění do provozu.
+Tato kapitola neřeší elektrické přípojky pro STZ, ty jsou součástí kapitoly 26 TKP - Osvětlení, rozvody NN,
+vč. dálkového ovládání a kapitoly 30 TKP - Silnoproudé rozvody.
+Zařízení ústředního a dálkového řízení (ÚDŘ) nejsou předmětem této kapitoly a musí být vždy pro daný řízený
+systém elektrických zařízení zpracována samostatně jako ZTKP (zvláštní TKP).
+TKP udávají základní požadavky a doplňují požadavky kladené příslušnými normami a předpisy na elektrické části
+STZ i na STZ jako celek zejména z těchto hledisek:
+ bezpečnost osob, zvířat a majetku,
+ ochrana životního prostředí,
+ správná, spolehlivá a hospodárná funkce,
+ snadná obsluha, údržba a lokalizace a odstranitelnost poruch,
+ odolnost na vliv prostředí, pro které je určeno,
+ bezpečnost proti působení možných poruchových stavů,
+ trvanlivost a provozní spolehlivost, která odpovídá danému užití a je úměrná nákladům na jeho pořízení,
+ odolnost proti rušení jiným zařízením,
+ nesmí rušit provoz jiných zařízení ani na ně nebezpečně působit.
+Situování STZ, rozsah, dimenzování, zajištění bezpečnosti osob a zařízení, vazby na okolí a funkční vazby na další
+systémy určuje projektová dokumentace (dále jen dokumentace).
+V tomto dokumentu jsou uváděné normy uvažovány v platné edici. Dojde-li v průběhu platnosti TKP k aktualizaci
+norem, musí být tyto normy používány vždy v platné edici.
+U nedatovaných technických norem uvedených v textu TKP platí poslední vydání příslušné normy, popřípadě
+normy, která ji nahrazuje.
+Normy a předpisy uvedené v oddíle 29.12 této kapitoly TKP jsou při aplikaci těchto TKP závazné.
+29.1.2 Základní pojmy
+29.1.2.1 Trakční napájecí stanice (TNS)
+ Trakční transformovny (TT) - el. stanice, které jsou zdrojem el. energie pro 1-fázovou trakční proudovou
+soustavu 25 kV, 50 Hz.
+5
+ Trakční měnírny (TM) - el. stanice, které jsou zdrojem el. energie pro stejnosměrnou trakční proudovou soustavu
+3 kV a 1,5 kV.
+29.1.2.2 (Trakční) spínací stanice (SpS)
+ Spínací stanice pro 1-fázovou trakční proudovou soustavu 25 kV, 50 Hz.
+ Spínací stanice pro stejnosměrnou trakční proudovou soustavu 3 kV a 1,5 kV.
+29.1.2.3 Distribuční transformovna (TS)
+Elektrické stanice, které jsou zdrojem elektrické energie s nízkým napětím o kmitočtu 50 Hz především pro
+netrakční odběry.
+29.1.2.4 Elektrické pevné napájecí zařízení drážních kolejových vozidel (EPZ)
+EPZ je určeno pro předtápění odstavených vlakových souprav. Mění vstupující el. energii o napětí, kmitočtu a počtu
+fází příslušné trakční proudové soustavy, případně místní distribuční energetické soustavy, na výstupní el. energii
+o napětí a kmitočtu v parametrech potřebných pro elektrické napájení železničních vozů.
+EPZ zjednodušeného provedení (bez výkonových vypínačů) napájená z TV nejsou předmětem této kapitoly TKP.
+29.1.3 Podsystémy STZ
+29.1.3.1 Trakční transformovna (TT)
+ Rozvodna VVN, u SŽDC doposud výhradně 110 kV,
+ Stanoviště s 1-fázovými transformátory VVN/ 27 kV,
+ Aktivní balancér (systém jednotné fáze 25 kV),
+ Jednofázová rozvodna 25 kV (pro rozvod trolejového pólu),
+ Filtračně - kompenzační zařízení, případně filtrační - kompenzační - symetrizační zařízení,
+ Systém kontroly a řízení (SKŘ),
+ Vlastní spotřeba (VS),
+ Kabelové rozvody, v odpovídajícím rozsahu jsou součástí každého uvedeného podsystému,
+ Vnější uzemnění,
+ Případná prostorová rezerva pro napájecí transformovnu 6 kV, 50 Hz (75 Hz).
+29.1.3.2 Trakční měnírna (TM)
+ Rozvodna VVN, u SŽDC doposud výhradně 110 kV,1)
+ Stanoviště s 3-fázovými transformátory VVN/ 23 kV,1)
+ Trojfázová rozvodna VN (zpravidla 22 kV),
+ Usměrňovačové soustrojí (3 kV nebo 1,5 kV),
+ Stejnosměrný rozváděč pro rozvod trolejového pólu (+ pól),
+ Rozváděč zpětných kabelů pro rozvod kolejového pólu (- pól),
+ Systém kontroly a řízení (SKŘ),
+ Vlastní spotřeba (VS),
+ Kabelové rozvody, v odpovídajícím rozsahu jsou součástí každého uvedeného podsystému,
+ Vnější uzemnění,
+ Prostorová rezerva pro napájecí transformovnu 6 kV, 50 Hz.
+1) V případech, kdy není možné nebo účelné přímé připojení na rozvodnou síť VN
+6
+29.1.3.3 Spínací stanice 25 kV, 50 Hz (SpS)
+ Jednopólová rozvodna 25 kV, 50 Hz (pro rozvod, spínání a přepínání trolejového pólu),
+ Systém kontroly a řízení (SKŘ),
+ Vlastní spotřeba (VS),
+ Kabelové rozvody, v odpovídajícím rozsahu jsou součástí každého uvedeného podsystému,
+ Vnější uzemnění a přivedení kolejového pólu.
+29.1.3.4 Spínací stanice 3 kV (SpS)
+ Stejnosměrný rozváděč + 3 kV (pro rozvod trolejového pólu),
+ Systém kontroly a řízení (SKŘ),
+ Vlastní spotřeba (VS),
+ Kabelové rozvody, v odpovídajícím rozsahu jsou součástí každého uvedeného podsystému,
+ Vnější uzemnění a přivedení kolejového pólu.
+29.1.3.5 Distribuční transformovna (TS)
+ Trojfázová rozvodna VN, 50 Hz,
+ Trojfázová rozvodna NN (zpravidla 400/230V), 50 Hz,
+ Zařízení pro kompenzaci účiníku a případně i pro filtraci vyšších harmonických,
+ Systém kontroly a řízení (SKŘ),
+ Vlastní spotřeba (VS),
+ Kabelové rozvody, v odpovídajícím rozsahu jsou součástí každého uvedeného podsystému,
+ Vnější uzemnění.
+POZNÁMKA: Rozsah SKŘ a VS podle konkrétního řešení TS - nemusí být nutnou součástí všech TS.
+29.1.3.6 Elektrické pevné napájecí zařízení drážních kolejových vozidel (EPZ)
+ Vstupní rozvodna VN, 50 Hz,2)
+ Transformátor VN/VN,2) 3)
+ Trojfázový usměrňovač v 6-ti pulsním zapojení,4) 3)
+ Rozváděč EPZ VN,
+ Vlastní spotřeba,
+ Kabelové rozvody, v odpovídajícím rozsahu jsou součástí každého uvedeného podsystému,5)
+ Předtápěcí stojany vč. ovládacích skříněk v kolejišti,
+ Signální skříňky (tabla) v dopravní kanceláři, v kanceláři vozmistrů apod., dálkové ovládání a centrální
+dispečerské pracoviště (CDP).
+2) Pouze u EPZ na tratích elektrizovaných jednofázovou trakční proudovou soustavou a na tratích neelektrizovaných
+3) U EPZ na neelektrizovaných tratích lze, při dodržení povolené nesymetrie odběru, použít jednofázový transformátor VN/VN,
+potom se nepoužije usměrňovač (konkrétní zařízení je uvedeno v dokumentaci).
+4) Pouze u EPZ na tratích neelektrizovaných
+5) Pokládka kabelů mezi rozváděčem EPZ VN a předtápěcími stojany a kabely z EPZ k signálním skříňkám se řeší podle TKP
+silnoproudých rozvodů
+7
+29.1.4 Charakteristika a rozsah STZ
+29.1.4.1 Trakční napájecí stanice (TNS)
+Používají se typy:
+a) podle provozního uspořádání
+ trakční měnírny pro stejnosměrnou trakční proudovou soustavu 3 kV, 1,5 kV,
+ trakční transformovny pro jednofázovou trakční proudovou soustavu 25 kV, 50 Hz,
+ kombinované napájecí stanice,
+b) podle provedení
+ stabilní,
+ převozné,
+ podpůrné,
+c) podle způsobu obsluhy
+ bez trvalé obsluhy,
+ s trvalou obsluhou,
+d) podle způsobu řízení
+ ústředně řízené,
+ dálkově řízené,
+ místně řízené.
+Trakční napájecí stanice je vymezena těmito styčnými místy:
+ připojením přívodního venkovního vedení VVN na vstupní izolátory nebo průchodky v rozvodně 110 kV TNS
+nebo na vstupních průchodkách VN při připojení na venkovní vedení VN nebo na připojovacích praporcích
+rozvodny VN při připojení kabelem VN,
+ mezi trakční měnírnou a trakčním vedením v napájecím pólu na svornících výstupních průchodek z budovy,
+nebo vstupních kabelových koncovkách, napáječů v napájecím pólu s tím, že ventilová bleskojistka je součástí
+trakčního vedení,
+ mezi trakční transformovnou a trakčním vedením v napájecím pólu na svorkách vývodových odpojovačů
+u venkovních provedení rozvodny 25 kV, nebo na připojovacích praporcích rozvodny 25 kV vnitřního provedení
+s tím, že ventilová bleskojistka je součástí trakčního vedení,
+ mezi trakční měnírnou a trakčním vedením v odváděcím (zpětném, kolejnicovém) pólu na svornících vstupních
+kabelových koncovek (kobka minus pólu), resp. na svornících výstupních průchodek z budovy (kabelové
+koncovky nejsou součástí TM, vstupní průchodky jsou součástí TM),
+ mezi trakční transformovnou a trakčním vedením v odváděcím (zpětném, kolejnicovém) pólu na svornících
+vstupních kabelových koncovek, resp. na prvních svorkách připojujících venkovní vedení,
+ výstupní svorky rozváděče 6 kV mezi TNS a rozvodem 6 kV (pokud je napájecí transformovna součástí TNS),
+ výstupní svorky rozváděče 22 kV mezi TNS a rozvodem 22 kV (drážní rozvod 22 kV),
+ vstupními svorkami NN mezi TNS a přívodem NN z energetické sítě nebo drážního rozvodu NN.
+Provedení vlečky pro pevnou i převoznou trakční měnírnu musí z hlediska uzemnění odpovídat ČSN 33 3505.
+Rozmístění trakčních napájecích stanic určuje dokumentace při respektování:
+ energetických výpočtů na maximální objem dopravy v období deseti let nebo objem dopravy podle objednatele
+při hospodárném využití zatěžovacích charakteristik instalovaných zařízení,
+ zajištění napájení při výlukách pro údržbu a předpokládaných mimořádných stavech,
+ kvality a vzdálenosti připojovacího bodu energetické sítě VVN nebo VN,
+ využití stávajících inženýrských sítí (vlečka, komunikace, sdělovací vedení),
+ výhledového napájení sousedních tratí,
+ rozsahu následných protikorozních opatření,
+ rozsahu opatření vedoucích k omezení zpětných vlivů na napájecí síť energetiky,
+8
+ skutečnosti, že zpětné vedení se připojuje tak, aby nebylo připojováno ke kolejnicovému vedení v oblasti
+železniční nebo seřaďovací stanice,
+ skutečnosti, že propojení souběžných kolejí je dovoleno ve vzdálenostech stanovených v ČSN 34 2613
+a ČSN 34 2614,
+ předpisů na ochranu zdraví obyvatelstva a životního prostředí,
+ řešení musí být v souladu s PBŘ stavby.
+29.1.4.2 Spínací stanice (SpS)
+Jsou to elektrické stanice, které jsou zřizovány pro:
+ zvýšení spolehlivosti napájení elektrizovaných tratí,
+ zvýšení výkonnosti pevných elektrických trakčních zařízení,
+ zvýšení propustnosti elektrizovaných tratí,
+ snížení energetických ztrát a úbytků napětí v trakčním vedení,
+ oddělení samostatných úseků TV určených podle ČSN 34 1530.
+Používají se typy:
+a) podle provozního uspořádání
+ vícevypínačové,
+ jednovypínačové,
+b) podle provedení
+ stabilní,
+ převozné,
+c) podle způsobu obsluhy
+ bez trvalé obsluhy,
+d) podle způsobu řízení
+ ústředně řízené,
+ dálkově řízené,
+ místně řízené.
+Spínací stanice je vymezena těmito styčnými místy:
+ mezi spínací stanicí a trakčním vedením v napájecím pólu na svornících výstupních průchodek z budovy, nebo
+vstupních kabelových koncovkách, nebo na svorkách vývodových odpojovačů u venkovního provedení
+rozvodny 25 kV s tím, že bleskojistky jsou součástí trakčního vedení (svorky vývodových odpojovačů a vstupní
+průchodky jsou součástí spínací stanice, vstupní kabelové koncovky jsou součástí trakčního vedení),
+ mezi spínací stanicí stejnosměrné trakční proudové soustavy a kolejnicovým vedením na svornících výstupních
+průchodek z budovy pro připojení venkovního vedení, nebo v místě připojení kabelového vedení
+ke kolejnicovému vedení, resp. ke středu stykového transformátoru (výstupní průchodky jsou součástí spínací
+stanice, kabelové koncovky, kabelová vedení nejsou součástí spínací stanice),
+ mezi spínací stanicí střídavé proudové soustavy a kolejnicovým vedením na svornících vstupních kabelových
+koncovek, resp. na prvních svorkách připojujících venkovní vedení (kabelové a venkovní vedení není součástí
+spínací stanice),
+ vstupními svorkami NN mezi spínací stanicí a přívodem NN z energetické sítě nebo místního drážního rozvodu.
+Rozmístění spínacích stanic určuje dokumentace při respektování:
+ energetických výpočtů na maximální objem dopravy v období deseti let nebo objem dopravy podle objednatele
+při hospodárném využití zatěžovacích charakteristik instalovaných zařízení,
+ zajištění napájení při výlukách pro údržbu a předpokládaných mimořádných stavech,
+ využití stávajících inženýrských sítí (komunikace, sdělovací vedení),
+ výhledového napájení sousedních tratí,
+ rozsahu následných protikorozních opatření,
+9
+ zohlednění požadavků ČSN 34 2613 při volbě místa uzemnění,
+ předpisů na ochranu zdraví obyvatelstva a životního prostředí,
+ řešení musí být v souladu s PBŘ stavby.
+29.1.4.3 Distribuční transformovna (TS)
+Je zřizována pro zajištění odběru elektrické energie v dané oblasti.
+Používají se typy:
+a) podle provozního uspořádání
+ transformace 22(35) / 6 / 0,4 kV,
+ transformace 22(35) / 0,4 kV,
+ transformace 10 / 0,4 kV,
+b) podle provedení
+ s kabelovým přívodem,
+ s venkovním přívodem,
+c) podle způsobu obsluhy
+ bez trvalé obsluhy,
+d) podle způsobu řízení
+ ústředně řízené,
+ dálkově řízené,
+ místně řízené.
+Distribuční transformovna je vymezena těmito styčnými místy:
+ vstupní svorky nebo průchodky mezi přívodním vedením z energetické sítě a transformovnou,
+ vstupní a výstupní svorky rozváděče 6 kV,
+ vstupní a výstupní svorky rozváděče NN.
+Situování distribučních transformoven
+Situování je určeno dokumentací při respektování:
+ jakosti dodávky el. energie a místa největšího odběru,
+ současného stavu i možného rozvoje rozvodné soustavy, kterou zásobují,
+ velikosti zkratových proudů a úbytků napětí,
+ výše provozních nákladů,
+ zohlednění požadavků ČSN 34 2613 při volbě místa připojení ke kolejím,
+ požadavků předpisů na ochranu zdraví obyvatelstva a životního prostředí,
+ řešení musí být v souladu s PBŘ.
+29.1.4.4 Elektrické pevné napájecí zařízení drážních kolejových vozidel
+Používají se typy:
+a) podle použití
+ pro trakční proudovou soustavu 3 kV DC,
+ pro trakční proudovou soustavu 25 kV, 50 Hz,
+ pro neelektrizované tratě.
+b) podle provedení
+ s vypínači a rozváděči,
+ zjednodušené, není předmětem této kapitoly TKP.
+10
+c) podle výstupního jmenovitého napětí
+ 3 kV DC,
+ 1,5 kV DC,
+ 3 kV, 50 Hz,
+ 1,5 kV, 50Hz,
+ 1 kV, 50 Hz,
+ 1 kV, 16,7 Hz.
+EPZ je vymezena těmito styčnými místy:
+ na VN straně odpojovač připojení na TV (odpojovač není součástí EPZ), nebo sekční odpojovač napájecí linky
+22 kV energetiky,
+ vstupní svorka rozváděče NN, nebo je-li součástí EPZ oddělovací transformátor, tak svorníky jeho vstupní
+strany,
+ výstupní svorka napájecího stojanu pro připojení pohyblivého VN kabelu.
+Situování EPZ
+Situování je určeno dokumentací při respektování:
+ jakosti dodávky el. energie,
+ současného stavu i možného rozvoje EPZ, podle požadavků dopravní technologie a potřeby dopravců,
+ výše provozních nákladů,
+ zohlednění požadavků ČSN 34 2613 při volbě místa připojení ke kolejím a určení míst stání předtápěných
+souprav,
+ požadavků předpisů na ochranu zdraví obyvatelstva a životního prostředí,
+ řešení musí být v souladu s PBŘ.
+29.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+29.2.1 Všeobecně
+V STZ se musí použít stroje, přístroje a zařízení v souladu s dokumentací a odpovídající předmětovým normám
+nebo technickým podmínkám. Musí vyhovovat podmínkám v místě použití uvedeném v dokumentaci (provozní
+podmínky, zkratové poměry, prostředí, výkon, třída přesnosti).
+Materiály, polotovary, výrobky použité ke stavbě STZ musí mít takové elektrické, mechanické a tepelné vlastnosti,
+aby celé zařízení i jeho jednotlivé části a prvky vyhovovaly všem požadavkům na ně kladeným, zejména z hlediska
+bezpečnosti osob, požární bezpečnosti, spolehlivosti, trvanlivosti a provozní hospodárnosti. Jejich zabudování musí
+vyhovovat příslušným předpisům a normám a musí splňovat podmínky obsluhy, údržby a kontroly bez nebezpečí
+úrazu osob a bez nebezpečí poškození zařízení.
+29.2.2 Rozhodující stroje, přístroje a zařízení
+Vypínače VVN, VN
+Použité vypínače musí odpovídat ČSN EN 62271-1, část 100, 108, vypínače VN ještě ČSN 34 1500.
+Odpojovače VVN, VN
+Použité odpojovače musí odpovídat ČSN EN 62271-1, část 102,103, odpojovače VN ještě ČSN 34 1500.
+Rozváděče VN
+Skříňové rozváděče musí vyhovovat ČSN EN 62271-1, a ČSN EN 62271-200, otevřená rozvodná zařízení
+ČSN EN 50 522, ČSN EN 61936-1 a ČSN 34 1500.
+Transformátory
+Transformátory musí odpovídat souboru norem ČSN EN 60076-(1,11,12, atd) a normám k ní přidruženým - viz
+oddíl 29.12 této kapitoly TKP. Transformátory pro jednofázovou trakční proudovou soustavu a transformátory
+usměrňovačových soustrojí trakčních měníren musí dále odpovídat ČSN EN 50329 a ČSN 34 1500.
+11
+Stanoviště transformátorů musí odpovídat ČSN EN 50522 a ČSN EN 61936-1.
+Usměrňovačové soustrojí
+Usměrňovačové soustrojí musí odpovídat ČSN EN 50328, ČSN 33 3505 a ČSN 34 1500.
+Přístrojové transformátory
+Musí odpovídat ČSN EN 61869-1.
+Ochrany, místní automatiky a měření
+Vybavení STZ ochranami, místními automatikami a měřením musí odpovídat ČSN 33 3505, ČSN 33 3051,
+ČSN 33 3265 a služební rukověti SR 34 (E). Místní automatiky a měření musí být kompatibilní se systémem
+ústředního a dálkového řízení.
+Rozvodna (rozváděč) stejnosměrného proudu
+Musí odpovídat ČSN 34 1500 a ČSN 33 3505.
+Rychlovypínače
+Musí odpovídat ČSN 34 1500 a ČSN 33 3505.
+Rozváděče NN
+Pokud není v dokumentaci uvedeno jinak, použije se skříňové provedení
+ s přívodními jističi umožňujícími ústřední (dálkové) ovládání,
+ s měřením napětí a proudu vybraných přívodů a vývodů včetně měření odběru el. energie.
+U rozváděčů s dvěma a více přívody může být požadováno podélné dělení hlavní přípojnice.
+Akumulátory
+Musí vyhovovat ČSN EN 50272-2 a ČSN 38 1140. Kapacita každé z akumulátorových baterií musí být
+dimenzovaná alespoň na jednu hodinu provozního zatížení. Trakční napájecí a spínací stanice musí být vybavena
+dvěma na sobě nezávislými sadami baterií pro napájení řídících a ochranných obvodů a nouzového osvětlení, je-li
+vybudováno a provozováno, včetně dvou na sobě nezávislých zařízení pro jejich nabíjení.
+Pokud není uvedeno v dokumentaci jinak, použijí se akumulátory olověné s nízkými nároky na údržbu.
+Uzemnění
+Musí vyhovovat ČSN 34 1500 a ČSN 33 2000-5-54
+Materiály pro uzemnění:
+ ocel pásková (11 373), v ohni pozinkovaná 30x4 mm, 20x3 mm,
+ ocel pásková (11 373), v ohni pozinkovaná, 60x5 mm (uzemňovací kruh v jímkách),
+ ocelový drát pozinkovaný 8 mm,
+ tyč z oceli 11 340.0, v ohni pozinkovaná, (tyčový zemnič), rozměry 2000x28 mm.
+Zemní odpor ochranného uzemnění smí být nejvýše:
+ u trakčních měníren 0,5 ohmu
+ u trakčních transformoven 1 ohm
+ u spínacích stanic a EPZ u stejnosměrné trakční proudové soustavy 2 ohmy
+ u spínacích stanic a EPZ u jednofázové trakční proudové soustavy,
+nelze-li provést ochranu jen ukolejněním 5 ohm
+ u distribučních transformoven (vč. zemního odporu všech nulovacích
+vodičů odcházejících vedení) 2 ohmy
+29.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+29.3.1 Stavební připravenost
+Jakákoliv připojení ke kolejím smí být prováděna až na základě písemného souhlasu provozovatele, po ověření
+změny KSU a TP a za případných podmínek, stanovených touto změnou, ověřenou oprávněnými určenými osobami.
+12
+Stavební objekt (dále jen SO) určený pro instalaci STZ musí být proveden zhotovitelem podle dokumentace, která
+vychází z dokumentace STZ a respektuje nároky provozu elektrických zařízení a zejména pak musí být v souladu
+s PBŘ
+Pozemek STZ musí zhotovitel ochránit před přívaly dešťových vod z okolních pozemků a nesmí do něho zasahovat
+zařízení, která nesouvisejí s jeho provozem.
+Příjezdová kolej a komunikace do trakčních napájecích a spínacích stanic a oplocení se zřizuje podle ČSN 33 3505.
+Všechny části STZ musí být provedeny v souladu s dokumentací tak, aby jejich okolí bylo chráněno před
+nebezpečným dotykovým napětím, před nadměrným hlukem a před nebezpečnými a škodlivými látkami.
+STZ musí být chráněna před účinky přepětí, které vzniká z atmosférických vlivů nebo ze spínacích procesů.
+Pro ochranu proti přímému úderu blesku platí soubor norem EN 62305.
+Z hlediska požární bezpečnosti a vybavenosti hasícími prostředky musí STZ být v souladu s PBŘ a dále odpovídat
+souvisejícím normám ČSN, zejména pak ČSN EN 50522 a ČSN EN 61936-1.
+Pro prostory s technologickým zařízením se přednostně používají hasicí přístroje s náplní CO2.
+V této souvislosti je nutno upozornit, že pro každou stavbu (SO, PS) musí být individuálně zpracováno požární
+bezpečnostní řešení (PBŘ) stavby, které je rozhodující v řešení požární ochrany STZ.
+Dimenzování nosných konstrukcí se řídí ustanoveními ČSN EN 50522 a ČSN EN 61936-1.
+Osvětlení prostorů trakčních napájecích a spínacích stanic je určeno ČSN EN 61936-1, ČSN 33 3505 a zejména
+ČSN EN 12464-1 a ČSN EN 12464-2.
+Nouzové osvětlení se zřizuje u trakčních napájecích stanic podle ČSN 33 3505 a podle PBŘ.
+V ostatních elektrických stanicích se instaluje nouzové osvětlení dle PBŘ nebo se doporučuje orientační osvětlení.
+Trakční napájecí a spínací stanice musí být vybaveny telekomunikačním zařízením podle ČSN 33 3505. Distribuční
+transformovny se vybavují telekomunikačním zařízením podle předpisu SŽDC E 8.
+Montáž technologického zařízení mohou provádět jen firmy, které prokáží odbornou způsobilost k této montáži.
+Montáž zařízení STZ může zhotovitel zahájit, jestliže:
+ SO zajistí správnou a stabilní polohu STZ a předepsané bezpečné izolační vzdálenosti podle dokumentace STZ
+a dokumentace stavby,
+ SO zajistí požadované prostředí ve smyslu ČSN 33 2000-5-51 a ČSN 30 2000-4-41 - Z1 podle dokumentace
+a technických podmínek STZ nebo jeho příslušného podsystému,
+ vše bude v souladu s řešením PBŘ,
+ SO zajistí dokumentací stanovenou ochranu životního prostředí,
+ provádění dalších prací na SO nebo na SO souvisejících neohrozí bezpečnost pracovníků tyto práce
+provádějících,
+ provádění dalších prací na SO nebo na SO souvisejících neohrozí bezpečnost instalovaného STZ a nesníží jeho
+jakost nebo nebude důvodem pro zánik záruční lhůty.
+Před montáží technologických zařízení zhotovitel zajistí stavební připravenost. Kontrola stavební připravenosti je
+prováděna v rozsahu podle následujících bodů. Provádí ji stavební dozor, který kontroluje zejména:
+a) prostory určené pro montáž - podle dokumentace a platných norem s kontrolou
+ rozměrů místností,
+ rozměrů a polohy základů a stavebních konstrukcí pro venkovní zařízení,
+ stání transformátorů a protipožárních stěn,
+ přístupových cest pro montáž, oplocení a ploch venkovních rozvoden,
+ polohy a rozměrů prostupů - okosení hran apod.,
+ správného směru otvírání dveří,
+ materiálového provedení,
+ funkčnosti odvodnění drenáží,
+13
+ zabezpečení prostor proti zatečení dešťových vod,
+ dodržení ochranných pásem.
+b) kvalitu podlah (bezprašnost), nátěry stěn, provedení soklu u podlahy,
+c) kvalitu a funkčnost elektroinstalace a uzemnění - podle druhu prostředí,
+d) kvalitu a funkčnost větrání - podle druhu prostředí,
+e) únosnost podlah, podlahových roštů a montážních plošin podle požadavku dokumentace. (Zhotovitel doloží
+atesty zabudovaných výrobků beton. panelů a ocelových konstrukcí.),
+f) kvalitu a funkčnost temperování podle požadavků montovaných zařízení (viz oddíl 29.7) v případě,
+že instalované topení není připojeno na funkční zdroj, musí zhotovitel zajistit náhradní zdroj temperování,
+g) přístupové cesty
+ pro osoby provádějící montáž,
+ pro transport technologických zařízení.
+h) umístění bezpečnostních tabulek - soubor norem ČSN ISO 3864 (01 8010) – oddíl 12 – článek 1 označení
+místností (na dveřích),
+i) protipožární opatření v souladu s PBŘ,
+j) zakrytí rozvodných žlabů a šachet a montážních žlabů poklopy pro zajištění bezpečnosti,
+k) zabezpečení kabelových vstupů proti vnikání malých hlodavců do místností,
+l) uzamykatelnost dveří patentními klíči, zabezpečení poklopů z důvodu zajištění prostor proti vniknutí neoprávně-
+ných osob,
+m) splnění podmínek z hlediska bezpečnosti práce podle ČSN EN 50272-2 a ČSN EN 50110-1,
+n) splnění ekologických požadavků - provedení a funkčnost odvodnění, kanalizace, jímek, lapolů, separátorů oleje,
+dodržení předpisů pro akumulátorovny.
+29.3.2 Technologické postupy prací
+Technologické postupy musí zhotovitel volit tak, aby nenarušil již provedené práce.
+Použité mechanizmy stanovuje zhotovitel, případná omezení musí být uvedena v dokumentaci.
+Při montáži STZ se musí respektovat montážní podmínky a technologické postupy stanovené výrobci a zhotoviteli
+zařízení.
+Kromě toho musí být zejména zajištěno:
+29.3.2.1 Ochrana proti korozi
+(podrobnosti viz kapitola 25 TKP)
+S ohledem na určený stupeň korozní agresivity atmosféry a požadovanou životnost protikorozní ochrany se volí
+protikorozní ochrana s ochrannými povlaky nátěrovými, kovovými nebo kombinovanými. Požadovaná životnost
+protikorozní ochrany a podmínky pro volbu protikorozního ochranného povlaku jsou dány předpisem SŽDC S 5/4.
+Pro protikorozní ochranu ocelových konstrukcí (OK) musí být zpracován projekt protikorozní ochrany. Projekt musí
+obsahovat zejména identifikační a konstrukční údaje o OK, určení stupně korozní agresivity atmosféry, zásadní
+rozčlenění OK na dílčí prvky z hlediska protikorozní ochrany a návrh protikorozní ochrany pro požadovanou
+životnost.
+Projekt musí obsahovat základní údaje o navrhovaných ochranných povlacích, tj. u nátěrového systému zejména
+druh nátěrové hmoty, skladbu, počet a tloušťky jednotlivých vrstev, barevný odstín vrchního nátěru.
+U kombinovaných a kovových povlaků také druh kovu, tloušťku vrstvy, způsob nanášení. Projekt musí obsahovat
+předpokládaný způsob a technologii provádění protikorozní ochrany.
+14
+29.3.2.2 Označování a jiné nátěry
+Označování a jiné nátěry provede zhotovitel, pokud není v dokumentaci stanoveno jinak, takto:
+a) Nátěr vnějšího kovového oplocení, ocelových konstrukcí a ocelových částí vnějších přístrojů zelenou barvou,
+odstín RAL 6005.
+b) Základy pod konstrukcemi venkovního technologického zařízení cementovým mlékem (světle šedá barva).
+c) Ocelová bezpečnostní zábradlí u venkovních přístrojů VN a VVN žlutou barvou - odstín RAL 1021.
+d) Barevné nátěry a označení vodičů a kabelů podle ČSN 33 0165.
+e) Označení v rozvodně podle ČSN EN 50 522, ČSN EN 61 936-1 a musí být shodné s označením v dokumentaci
+stavby.
+f) Bezpečnostní označení podle souboru ČSN ISO 3864 (ČSN ISO 3864-1, ČSN ISO 3864-3, ČSN ISO 3864-
+2+Amd.1, ČSN ISO 3864-4).
+29.3.3 Kontrola stavebního objektu po montáži
+Po montáži technologických zařízení provede stavební dozor kontrolu:
+a) utěsnění kabelů a prostupů z hlediska:
+ vniknutí vody,
+ zajištění požárních uzávěrů,
+ zajištění proti vniknutí malých hlodavců,
+b) bezprašnosti podlah a kvality stěn a nátěrů,
+c) zda při montáži technologických zařízení nedošlo k porušení stavební připravenosti (body a) až n) článku
+29.3.1),
+d) zda byly dodrženy bezpečnostní provozní vzdálenosti mezi živými vodivými částmi pod napětím a konstrukcemi
+(neživými vodivými částmi) vč. zajištění prostoru pro pohyb osob a obsluhu i s ohledem na maximální průhyb
+a výkyv vodiče,
+e) provedení ochran kabelových rozvodů proti vlivům stejnosměrné nebo střídavé trakce a nebezpečnému dotyku
+(podle dokumentace a souvisejících norem a předpisů).
+29.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+Součástí dodávky každého stroje, přístroje a zařízení pro STZ musí být nejméně jedna1) souprava průvodní
+dokumentace v českém jazyce1), kterou zajistí zhotovitel a předá objednateli (viz oddíl 29.8 této kapitoly TKP).
+Průvodní dokumentace v závislosti na dodávaném stroji, přístroji nebo zařízení, musí obsahovat:
+ osvědčení o jakosti a kompletnosti výrobku, případně o zkouškách, jsou-li tyto v příslušných normách
+předepsány nebo v objednávce požadovány (lze považovat za průkazní zkoušky),
+ rozměrový výkres a sestavu umístěných přístrojů,
+ zapojovací schéma vnitřních spojů,
+ specifikaci přístrojů,
+ popis a funkční popis,
+ podmínky pro montáž, údržbu a obsluhu,
+ podmínky pro dopravu a skladování,
+ prohlášení, že dodávaný stroj, přístroj nebo zařízení odpovídají normám a předpisům uvedeným v objednávce,
+1) Pokud nebylo ve smlouvě o dílo dohodnuto jinak
+15
+ prohlášení, že zařízení jsou konstruována a vyráběna pro provozování dráhy nebo drážní dopravy (§47 odst. 1
+zákona č. 266/94),
+ dodací list.
+Dodaný stroj, přístroj nebo zařízení musí být opatřeny trvanlivým, dobře viditelným a čitelným štítkem.
+Stroje, přístroje a zařízení dodávají jejich výrobci podle dokumentace vcelku nebo v přepravních jednotkách,
+s aretovanými přístroji, případně ve speciálním balení.
+POZNÁMKA: Rozváděče se v tuzemsku mohou přepravovat bez speciálních obalů, jen se zajištěním proti pohybu
+a poškození.
+Stroje, přístroje a zařízení musí zhotovitel skladovat v prostorách, jejichž prostředí odpovídá prostředí, pro které
+jsou určeny, pokud není v průvodní dokumentaci uvedeno jinak, a kde nehrozí nebezpečí mechanického poškození.
+Je nepřípustné, aby zhotovitel skladoval stroje, přístroje a zařízení v nevysušených a stavebně nedokončených
+prostorech.
+Zhotovitel zajistí ochranu proti vnikání cizích těles a živočichů do strojů, přístrojů a zařízení.
+Při uskladnění na delší dobu musí zhotovitel zajistit konzervaci.
+Pokud budou stroje, přístroje a zařízení skladovány v jiném prostředí, než pro které jsou určeny, je nutná předchozí
+dohoda zhotovitele s výrobcem.
+Způsob uskladnění a způsob přepravy na stavbu se nesmí stát důvodem k omezení garančních podmínek výrobce.
+29.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+29.5.1 Všeobecně
+V průběhu montážních prací provádí stavební dozor kontroly dodaného zařízení a materiálu.
+Při montáži nebo po dokončení jednotlivých podsystémů STZ provede zhotovitel zejména tyto zkoušky: izolační
+stavy kabelů, kontrola spojů a svárů, jednoduché ruční manipulace přístrojů apod.
+Po skončení montáže kabelů, před jejich připojením do svorek, provede zhotovitel měření izolačního stavu všech
+kabelů a naměřené hodnoty zaznamená do kabelových seznamů.
+Před připojením transformátorů s olejovým chlazením na napětí zajistí zhotovitel laboratorní kontrolu oleje.
+U strojů a přístrojů s plynovou náplní zajistí zhotovitel před uvedením do provozu předepsané kontroly plynové
+náplně.
+29.5.2 Kontroly, zkoušky a měření
+Zajistí zhotovitel za účasti stavebního dozoru a právnické osoby podle §47 zákona č. 266/1994 Sb., o drahách, jako
+podklad pro odsouhlasení a převzetí prací.
+1) DOKUMENTACE:
+ návaznost výrobních výkresů na dokumentaci,
+ oprava dokumentace podle skutečného provedení stavby STZ.
+2) TECHNOLOGICKÁ ZAŘÍZENÍ:
+ zapojení,
+ proudové obvody,
+ ovládání z místa vč. signalizace,
+ ovládání dálkové vč. signalizace (pokud je realizováno),
+ ovládání ústřední vč. signalizace,
+ napájecí smyčky,
+ blokování a vazby,
+ zapojení a funkce vypínačů,
+ seřízení odpojovačů,
+16
+ přístrojové transformátory proudu a napětí (VN, VVN):
+ izolační stavy jednotlivých vinutí proti zemi a proti sobě,
+ polarita měničů, uzemnění,
+ převody proudové i napěťové,
+ ovládací skříně vč. funkce,
+ funkce vypínačů při působení ochran a místních automatik,
+ nastavení ochran,
+ zkratové zkoušky,
+ komplex zkoušek transformátorů,
+ funkce rozváděčů, usměrňovačů a akumulátorových baterií,
+ izolační stav jednotlivých kabelů vč. napájecích, ovládacích a blokovacích smyček, žil proti sobě i proti
+zemi.
+29.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+29.6.1 Přípustné odchylky
+Odchylky lze připustit, jen pokud jsou uvedeny v dokumentaci.
+Nepřipouštějí se zásadně záporné odchylky u nejmenších vzdušných vzdáleností živých částí podle ČSN EN
+61936-1, pokud způsobilost s menší vzdáleností nebyla prokázána.
+Odchylky uložení kabelů mimo kabelový kanál nebo prostor a uzemnění je nutno kontrolovat podle ČSN 73 0212.
+29.6.2 Záruky, údržba v záruční době
+Záruční doby všeobecně stanovuje kapitola 1 TKP.
+Zhotovitel STZ musí zvolit takový postup výstavby a objednávek zařízení, aby bylo možno v provozu využít
+v plném rozsahu záruční lhůty výrobců zařízení.
+Údržbu v záruční době zajišťuje správce HIM podle ustanovení uvedených v kapitole 1 TKP.
+29.7 KLIMATICKÁ OMEZENÍ
+Vybavení STZ musí splňovat nejméně podmínky ve venkovním prostředí a vnitřních prostorech el. stanic podle
+ČSN EN 50 522, a ČSN EN 61936-1.
+Tepelně technické vlastnosti objektu musí splňovat ČSN 73 0550.
+Kabely se kladou při teplotách, jejichž meze jsou stanoveny v normách příslušného výrobku nebo v údajích
+uváděných výrobcem.
+29.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+29.8.1 Všeobecně
+Základním předpokladem odsouhlasení a převzetí prací od zhotovitele je získání průkazu způsobilosti podle § 47
+zákona č. 266/1994 Sb., o drahách. Požaduje se, aby určená technická zařízení podle vyhlášky č. 100/1995 Sb. byla
+předávána zhotovitelem provozuschopná a s vystaveným průkazem způsobilosti.
+Elektrická zařízení, která musí mít před uvedením do provozu schválené ”Technické podmínky pro elektrická
+zařízení” stanovuje Směrnice SŽDC č. 34 – „Směrnice pro uvádění do provozu výrobků, které jsou součástí
+sdělovacích a zabezpečovacích zařízení a zařízení elektrotechniky a energetiky, na železniční dopravní cestě
+ve vlastnictví státu státní organizace Správa železniční dopravní cesty.“
+Odevzdání a převzetí díla se provádí pro celé dílo nebo jeho ucelenou provozuschopnou část formou přejímacího
+řízení.
+Při odevzdání a převzetí díla se zjišťuje, zda je provedeno podle uzavřené smlouvy řádně a v celém rozsahu, zda
+odpovídá schválené dokumentaci a zda jeho provedení odpovídá normám a předpisům podle oddílu 29.12 této
+kapitoly TKP.
+17
+Požadovaný termín přejímky dokončeného STZ oznámí zhotovitel stavebnímu dozoru, který přizve případné další
+účastníky (např. budoucího provozovatele a vlastníka). V průběhu přejímacího řízení musí být zhodnocena kvalita
+díla nebo jeho části nabídnuté k přejímce a rozhodnuto, zda zjištěné vady a dosud neodstraněné vady brání
+uskutečnění aktu odevzdání díla zhotovitelem a jeho převzetí objednatelem.
+V průběhu výstavby STZ, kdy některé zařízení bude zakryto tak, že k němu nebude dále přístup, musí být
+zhotovitelem zaměřena jeho skutečná prostorová poloha a toto zařízení musí být před zakrytím ověřeno
+a odsouhlaseno stavebním dozorem a pořízen o provedené práci a její kvalitě zápis. Jedná se především o kabely
+ve výkopech a uzemnění ve výkopech.
+Každé předávané STZ musí být vybaveno dokumentací v českém jazyce, která odpovídá skutečnému provedení.
+Každé předávané STZ musí být vybaveno pracovními a ochrannými pomůckami podle TNŽ 381981 a bezpečnost-
+ními tabulkami.
+Funkční způsobilost jednotlivých komponent STZ a dodržení povolených mezí jejich působení na okolí prokazuje
+zhotovitel doklady o typových a kusových zkouškách - viz ČSN 33 2000-5-54.
+29.8.2 Příprava k uvedení do provozu
+Před uvedením do provozu provede zhotovitel za účasti stavebního dozoru a právnické osoby podle § 47 zákona
+č. 266/1994 Sb., o drahách, a v návaznosti na oddíl 29.5.2 zkoušky, které jsou určeny ke zjištění vad montáže,
+nežádoucích změn STZ způsobených dopravou, skladováním a montáží. Provádějí se na kompletně smontovaném
+zařízení a jedná se podle ČSN EN 61936-1 a ČSN EN 50522 a dalšími souvisejícími normami ČSN a předpisy
+ zkoušky rozměrových tolerancí (při montáži a po montáži, pokud jsou tolerance v dokumentaci předepsány),
+ zkoušky správné funkce,
+ zkoušky řídících a pomocných obvodů,
+ zkoušky vlivů zařízení na okolí,
+ další předepsané nebo zvlášť dohodnuté zkoušky.
+ rozsah zkoušek TNS, SpS a EPZ je uveden v ČSN 33 3505 v části zkoušení.
+Zkoušky před uvedením do provozu jsou součástí výchozí revize podle ČSN 33 1500.
+Elektrické zkoušky elektrických předmětů z hlediska jejich elektrické bezpečnosti se řídí ČSN EN 60204-1 zejména
+článek 18.1 body a-f a ČSN EN 60204-11.
+U nově zřízených nebo rekonstruovaných uzemnění zhotovitel musí před uvedením do provozu zajistit měření
+zemního odporu uzemnění jako celku. Měření dotykových a krokových napětí musí zhotovitel zajistit jen u stanic
+uvedených v ČSN 33 2000-5-54.
+Do provozu lze uvést jen ta STZ nebo jejich části, která:
+a) splňují požadavky příslušných norem a předpisů, na základě výchozí revize podle ČSN 33 1500 a na základě
+technické prohlídky a zkoušky, provedené právnickou osobou určenou Ministerstvem dopravy podle § 47 zákona
+č. 266/1994 Sb.,
+b) mají platný průkaz způsobilosti UTZ podle vyhl. č. 100/1995 Sb., § 1, odst. 4. písm. k), jedná-li se o zařízení,
+které musí být konstruováno s ohledem na podmínky provozu kolejových obvodů,
+c) jsou uvedena v KSU a TP ověřeném určenými oprávněnými osobami.
+29.8.3 Příprava přejímacího řízení
+K žádosti o přejímací řízení musí zhotovitel připravit doklady:
+ dokumentaci včetně montážních výkresů s vyznačenými změnami podle skutečného provedení, včetně
+geodetického zaměření, dokumentace musí být předložena v takovém provedení a rozsahu, jak je stanoveno
+v kapitole 1 TKP,
+ technickou dokumentaci instalovaných strojů, přístrojů a zařízení a dokumentaci pro obsluhu, provoz a údržbu
+těchto zařízení,
+ zápisy o prověření části díla zakrytých v průběhu výstavby,
+ osvědčení a protokoly o provedených zkouškách,
+ zprávu z výchozí revize podle ČSN 33 2000-6 a ČSN 33 1500,
+18
+ stavební (montážní) deník,
+ doklady o provedení komplexního vyzkoušení,
+ doklad o přezkoušení o zajištění proti vlivu na okolí,
+ platný originál průkazu způsobilosti UTZ podle vyhl. 100/1995 Sb., včetně protokolu o technické prohlídce
+a zkoušce elektrického zařízení, provedené ve smyslu zákona o dráhách č. 266/1994 Sb., § 47,
+ ve spolupráci s objednatelem provozní dokumentaci (provozní řád STZ, údržbový plán, místní pracovní
+a bezpečnostní předpisy).
+Objednatel připraví:
+ zprávu, jak odpovídá provedení prací schválené dokumentaci, smluvním podmínkám, technickým normám
+a předpisům,
+ rozhodnutí o povolení výjimek z norem a předpisů,
+ stavební povolení,
+ přehled o vybavení ochrannými a pracovními pomůckami,
+ souhlas k ověřovacímu provozu (je-li prováděn),
+ soupis všech dosud neodstraněných vad zjištěných prohlídkou a komplexním vyzkoušením.
+O přejímacím řízení provede stavební dozor ve spolupráci se zhotovitelem zápis, ve kterém musí být zhodnocena
+kvalita díla. V případě nevyhovující kvality nutno uvést důvody, dohodnout způsob odstranění vad bránících
+převzetí a termín opakování přejímacího řízení.
+29.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+U STZ napájených z rozvodné sítě VVN nebo VN se po uvedení do provozu provede kontrolní měření zpětných
+vlivů na napájecí síť, zajistí objednatel.
+Po uvedení do provozu těch STZ, která napájejí stejnosměrnou el. trakci, je nutno provést kontrolní korozní měření,
+zajistí objednatel.
+29.10 EKOLOGIE
+Hluk šířený ze STZ nesmí překročit nejvyšší přípustné hodnoty stanovené vyhláškou č.272/2011 Sb. o ochraně
+zdraví před účinky hluku a vibrací ve znění pozdějších předpisů, základní řešení musí být v dokumentaci.
+Nádoby maloolejových vypínačů a přístrojových transformátorů s izolací olej-papír se na svých stanovištích
+nepovažují za nádoby pro manipulaci s ropnými produkty. Při práci na zařízení musí být provedena taková opatření,
+aby olej nemohl uniknout do okolí. Ochrana povrchových vod před znečištěním musí být zajištěna podle současně
+platné legislativy.
+Při manipulaci s olejem výkonových transformátorů se musí respektovat ochrana povrchových vod před znečištěním
+podle současně platné legislativy.
+Ke všem manipulacím s transformátorovým olejem při přepravě, montáži a uvádění výkonových olejových
+transformátorů do provozu musí mít zhotovitel vypracovaný havarijní plán, ve kterém bude popsán technologický
+proces a budou uvedena odpovídající opatření pro všechny případy možného úniku oleje (záchytné vany pod
+nádobami s olejem, trvalý dozor při provádění, připravený absorbent k zásypu apod.). Současně musí zhotovitel řešit
+podmínky pro vypouštění a likvidaci odpadních vod.
+29.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanovuje kapitola 1 TKP.
+Všeobecné podmínky pro montáž vyplývají z oddílu 29.3 této kapitoly TKP.
+Při práci na STZ musí zhotovitel respektovat ČSN EN 50110-1 a normy k ní přidružené a předpis SŽDC – Bp1.
+Při práci na zapouzdřených rozváděčích s izolací SF se jmenovitým napětím nad 52 kV musí zhotovitel respektovat
+6
+ČSN EN 50110-1 a jiné dotčené předpisy zabývající se touto problematikou a předpisy výrobce dodaného zařízení.
+Objekty STZ musí zhotovitel zajistit již v průběhu výstavby proti vstupu nepovolaných osob, jednotlivé prostory
+musí být zajištěny před vstupem osob bez příslušné elektrotechnické kvalifikace.
+19
+29.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj. právních předpisů,
+technických norem a předpisů a předpisů SŽDC.
+29.12.1 Technické normy
+ČSN 33 0010 Elektrická zařízení – Rozdělení pojmy
+ČSN 330050-603 Mezinárodní elektrotechnický slovník. Kapitola 603 : Výroba, přenos a rozvod
+elektrické energie. Plánování a řízení elektrizační soustavy
+ČSN 33 0165 Značení vodičů barvami nebo číslicemi. Prováděcí ustanovení
+ČSN 33 0340 Elektrotechnické předpisy. Ochranné kryty elektrických zařízení a předmětů
+ČSN 33 0405 Elektrotechnické předpisy. Navrhování venkovní elektrické izolace podle stupně
+znečištění
+ČSN 33 1500 Elektrotechnické předpisy. Revize elektrických zařízení
+ČSN 33 2000-1 Elektrické instalace nízkého napětí – Část 1 : Základní hlediska, Stanovení
+základních charakteristik, definice
+ČSN 33 2000-4-41 Elektrické instalace nízkého napětí – Část 4-41: Ochranná opatření pro zajištění
+bezpečnosti – Ochrana před úrazem elektrickým proudem
+ČSN 33 2000-4-443 Ochrana přede úrazem elektrickým proudem – Společná hlediska pro instalaci
+a zařízení
+ČSN 33 2000-5-56 Elektrické instalace nízkého napětí. Část 5-56: Výběr a stavba elektrických zařízení –
+Zařízení pro bezpečnostní účely
+ČSN 33 2000-5-57 Elektrické instalace nízkého napětí. Část 5-57: Koordinace elektrických zařízení pro
+ochranu, odpojování, spínání a řízení
+ČSN 33 2000-5-534 Elektrické instalace nízkého napětí. Část 5-53: Výběr a stavba elektrických zařízení -
+odpojování, spínání a řízení – Oddíl 534: Přepěťová ochranná zařízení
+ČSN 33 2000-7-718 Elektrické instalace nízkého napětí. Část 7-718: Zařízení jednoúčelová a ve
+zvláštních objektech – Prostory občanské výstavby a pracoviště
+ČSN 33 2000-7-729 Elektrické instalace nízkého napětí. Část 7-729: Zařízení jednoúčelová a ve
+zvláštních objektech – Uličky pro obsluhu nebo údržbu
+ČSN 33 2030 Elektrostatika – Směrnice pro vyloučení nebezpečí od statické elektřiny.
+ČSN 33 2040 Elektrotechnické předpisy. Ochrana před účinky elektromagnetického pole 50 Hz
+v pásmu vlivu zařízení elektrizační soustavy
+ČSN 33 2130 Elektrická instalace nízkého napětí – Vnitřní elektrické rozvody
+ČSN 33 2160 Elektrotechnické předpisy. Předpisy pro ochranu sdělovacích vedení a zařízení před
+nebezpečnými vlivy třífázových vedení VN, VVN a ZVN
+ČSN 33 2165 Elektrotechnické předpisy. Zásady pro ochranu ocelových izolovaných potrubí
+uložených v zemi před nebezpečnými vlivy venkovních trojfázových vedení a stanic
+VVN a ZVN
+ČSN 33 2180 Elektrotechnické předpisy ČSN. Připojování elektrických přístrojů a spotřebičů.
+ČSN 33 2312 Elektrické instalace nízkého napětí – Elektrická zařízení v hořlavých látkách a na
+nich
+ČSN 33 3015 Elektrotechnické předpisy. Elektrické stanice a elektrická zařízení. Zásady
+dimenzování podle elektrodynamické a tepelné odolnosti při zkratech
+ČSN 33 3051 Ochrany elektrických strojů a rozvodných zařízení
+ČSN 33 3060 Elektrotechnické předpisy. Ochrana elektrických zařízení před přepětím
+ČSN 33 3070 Elektrotechnické předpisy. Kompenzace kapacitních zemních proudů v sítích
+vysokého napětí
+ČSN 33 3080 Elektrotechnické předpisy. Kompenzace indukčního výkonu statickými
+kondenzátory
+ČSN 33 3265 Elektrotechnické předpisy. Měření elektrických veličin v dozornách výroben
+a rozvodů elektřiny
+20
+ČSN 33 3270 Elektrotechnické předpisy. Sdělovací a zabezpečovací zařízení ve výrobnách
+a rozvodu elektrické energie a tepla
+ČSN 33 3320 Elektrotechnické předpisy. Elektrické přípojky
+ČSN 33 3505 Drážní zařízení - Pevná trakční zařízení – Základní požadavky na elektrické napájecí
+a spínací stanice
+ČSN 33 4640 Elektrotechnické předpisy. Vysokofrekvenční spoje po vedeních nad 1000 V
+ČSN 34 1500 Drážní zařízení – Pevná trakční zařízení - Předpisy pro elektrická trakční zařízení
+ČSN 34 1530 Drážní zařízení – Elektrická trakční vedení železničních drah celostátních,
+regionálních a vleček.
+ČSN 34 1610 Elektrotechnické předpisy ČSN. Elektrický silnoproudý rozvod v průmyslových
+provozovnách
+ČSN 34 2040 Předpisy pro ochranu sdělovacích a zabezpečovacích vedení a zařízení před
+nebezpečnými a rušivými vlivy elektrické trakce 25 kV, 50 Hz
+ČSN 34 2613 Železniční zabezpečovací zařízení – Kolejové obvody a vnější podmínky pro jejich
+činnost
+ČSN 34 2614 Železniční zabezpečovací zařízení – Předpisy pro projektování, provozování
+a používání kolejových obvodů
+ČSN 34 2710 Elektrická požární signalizace – Projektování, montáž, užívání, provoz, kontrola,
+servis a údržba
+ČSN 34 5145 Názvosloví pro elektrická trakční zařízení
+ČSN 36 0011-3 Měření osvětlení prostorů – Část 3: Měření umělého osvětlení vnitřních prostorů
+ČSN 37 5199 Označování a bezpečnostní sdělení na trakčních vedeních celostátních drah a vleček.
+ČSN 37 5711 Drážní zařízení- Křížení kabelových vedení s železničními dráhami
+ČSN 37 6605 Připojování elektrických zařízení celostátních a regionálních drah a vleček na
+elektrický rozvod
+ČSN 38 0810 Použití ochran před přepětím v silových zařízeních
+ČSN 38 1140 Akumulátorové baterie v elektrárnách a elektrických stanicích.
+ČSN 38 1754 Dimenzování elektrického zařízení podle účinku zkratových proudů
+ČSN 73 0212-1 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 1: Základní ustanovení
+ČSN 73 0212-3 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 3: Pozemní stavební
+objekty
+ČSN 73 0212-4 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 4: Liniové stavební
+objekty
+ČSN 73 0212-5 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 5: Kontrola přesnosti
+stavebních dílů
+ČSN 73 0212-6 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 6: Statická analýza
+a přejímka
+ČSN 73 0212-7 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 7: Statistická regulace
+ČSN 73 0550 Stanovení tepelně technických vlastností stavebních konstrukcí a budov. Měření
+a kontrola tepelných ztrát budov.
+ČSN 73 0802 Požární bezpečnost staveb – Nevýrobní objekty
+ČSN 73 0804 Požární bezpečnost staveb – Výrobní objekty
+ČSN 73 0810 Požární bezpečnost staveb – Společná ustanovení
+ČSN 73 0831 Požární bezpečnost staveb – Shromažďovací prostory
+ČSN 73 0848 Požární bezpečnost staveb – Kabelové rozvody
+ČSN IEC 27-1 (33 0100) Písmenné značky používané v elektrotechnice. Část 1: Všeobecně
+ČSN IEC 913 (34 1540) Elektrotechnické předpisy. Elektrické trakční nadzemní vedení
+ČSN EN 1838 (36 0453) Světlo a osvětlení – Nouzové osvětlení
+ČSN EN 12464-1 (36 0450) Světlo a osvětlení – Osvětlení pracovních prostorů – Část 1: Vnitřní pracovní
+prostory
+21
+ČSN EN 12464-2 (36 0450) Světlo a osvětlení – Osvětlení pracovních prostorů – Část 2: Venkovní pracovní
+prostory
+ČSN EN 50110-1 (34 3100) Obsluha a práce na elektrických zařízeních – Část 1: Obecné požadavky
+ČSN EN 50110-2 (34 3100) Obsluha a práce na elektrických zařízeních – Část 2: Národní dodatky
+ČSN EN 50121-1 (33 3590) Drážní zařízení – Elektromagnetická kompatibilita – Část 1: Všeobecně
+ČSN EN 50122-1 (34 1520) Drážní zařízení- Pevná trakční zařízení – elektrická bezpečnost, uzemňování a zpětný
+chod – Část 1 : Ochranná opatření proti úrazu elektrickým proudem
+ČSN EN 50122-2 (34 1520) Drážní zařízení – Pevná trakční zařízení – Část 2 : Ochranná opatření proti účinkům
+bludných proudů, způsobených DC trakčními proudovými soustavami
+ČSN EN 50163 (33 3500) Drážní zařízení – Napájecí napětí trakčních soustav
+ČSN EN 50172 (36 0631) Systémy nouzového únikového osvětlení
+ČSN EN 50174-1 (36 9071) Informační technologie – Instalace kabelových rozvodů – Část 1: Specifikace a
+zabezpečení kvality
+ČSN EN 50174-2 (36 9071) Informační technologie – Instalace kabelových rozvodů – Část 2: Projektová příprava
+a výstavby v budovách
+ČSN EN 50174-3 (36 9071) Informační technologie – Instalace kabelových rozvodů – Část 3: Projektová příprava
+a výstavba vně budov
+ČSN EN 50272-2 (36 4380) Bezpečnostní požadavky pro akumulátorové stanice a akumulátorové instalace –
+Část 2: Staniční baterie
+ČSN EN 50341-1(33 3300) Elektrické venkovní vedení s napětím nad AC 1 kV –Část 1: Obecné požadavky –
+ČSN EN 50328 (34 1583) společné specifikace
+ČSN EN 50329 (34 1582) Drážní zařízení – Pevná trakční zařízení – Elektronické výkonové měniče pro
+napájecí stanice Drážní zařízení – Pevná trakční zařízení – Trakční transformátory
+ČSN EN 50423-1 (33 3301) Elektrická venkovní vedení s napětím nad AC 1kV do AC 45 kV včetně –
+Část 1: Všeobecné požadavky – společné specifikace
+ČSN EN 50423-2 (33 3301) Elektrická venkovní vedení s napětím nad AC 1kV do AC 45 kV včetně –
+Část 2: Seznam Národních normativních aspektů
+ČSN EN 50423-3 (33 3301) Elektrická venkovní vedení s napětím nad AC 1kV do AC 45 kV včetně –
+Část 3: Soubor Národních normativních aspektů
+ČSN EN 50522 (33 3201) Uzemňování elektrických stanic AC nad 1kV
+ČSN EN 60038 (33 0120) Jmenovitá napětí CENELEC
+ČSN IEC 60050 – 444 Mezinárodní elektrotechnický slovník – Část 444: Elementární relé
+(33 0050)
+ČSN IEC 60050 – 445 Mezinárodní elektrotechnický slovník – Část 444: Časová relé
+(33 0050)
+ČSN EN 60051-1 (35 6203) Elektrické měřicí přístroje přímopůsobící ukazovací analogové a jejich příslušenství
+– Část 1: Definice a všeobecné požadavky společné pro všechny části
+ČSN EN 60076-1 (35 1001) Výkonové transformátory – Část 1: Obecně
+ČSN EN 60076-3 (351001) Výkonové transformátory – Část 3: izolační hladiny, dielektrické zkoušky a vnější
+vzdušné vzdálenosti.
+ČSN EN 60076-5 (351008) Výkonové transformátory – Část 5: Zkratová odolnost
+ČSN EN 60076-6 (351001) Výkonové transformátory – Část 6: Tlumivky
+ČSN IEC 60076-7 (351001) Výkonové transformátory – Část 7: Směrnice pro zatěžování olejových výkonových
+transformátorů
+ČSN EN 60076-8 (351008) Výkonové transformátory – Část 8: Pokyny pro použití
+ČSN EN 60076-10-1 (351001) Výkonové transformátory – Část 10 – 1: Stanovení hladin hluku – směrnice pro
+používání
+ČSN EN 60076-11 (35 1001) Výkonové transformátory – Část 11: Suché transformátory
+ČSN EN 60076-12 (35 1001) Výkonové transformátory – Část 12: Směrnice pro zatěžování suchých výkonových
+transformátorů
+ČSN EN 60076-13 (35 1001) Výkonové transformátory – Část 13: Transformátory s vlastním chráněním plněné
+kapalinou
+22
+ČSN EN 60076-14 (35 1001) Výkonové transformátory – Část 14 Výkonové transformátory ponořené do kapaliny
+používající vysokoteplotní izolační materiály
+ČSN EN 60076-15 (35 1001) Výkonové transformátory – Část 15: Výkonové transformátory plněné plynem
+ČSN EN 60076-18 (35 1001) Výkonové transformátory – Část 18: Měření kmitočtové odezvy
+ČSN IEC 146-1-2 (35 1530) Polovodičové měniče – Všeobecné požadavky a měniče se síťovou komutací
+Část 1-2: Aplikační návod
+ČSN EN 60146-1-1 (35 1530) Polovodičové měniče – Všeobecné požadavky a měniče se síťovou komutací
+Část 1-1: Stanovení základních požadavků
+ČSN EN 60146-1-3 (35 1530) Polovodičové měniče - Všeobecné požadavky a měniče se síťovou komutací
+Část 1-3: Transformátory a tlumivky
+ČSN EN 60204-1 (33 2200) Část Bezpečnost strojních zařízení – Elektrická zařízení strojů – Část 1: Všeobecné
+požadavky
+ČSN EN 60204-11 (33 2200) Část Bezpečnost strojních zařízení – Elektrická zařízení strojů – Část 11 : Požadavky
+na elektrické zařízení VN pro napětí nad 1000V AC nebo 1500 V DC
+a nepřesahující 36 kV
+ČSN EN 60269-1 (35 4701) Pojistky nízkého napětí. Část 1: Všeobecné požadavky
+ČSN EN 60282-1 (35 4720) Pojistky vysokého napětí – Část 1: Pojistky omezující proud
+ČSN EN 60445 (33 0160) Základní a bezpečnostní zásady pro rozhraní člověk-stroj, značení a identifikaci –
+Identifikace svorek předmětů, konců vodičů a vodičů
+ČSN EN 60529 (33 0330) Stupně ochrany krytem (krytí - IP kód)
+ČSN EN 60865-1 (33 3040) Zkratové proudy - Výpočet účinků. Část 1: Definice a výpočetní metody
+ČSN EN 60947-1 (35 4101) Spínací a řídící přístroje nízkého napětí. Část 1: Všeobecná ustanovení.
+ČSN EN 60947-5-1 (35 4101) Spínací a řídící přístroje nízkého napětí. Část 5-1: Přístroje a spínací ústrojí řídicích
+obvodů - Elektromechanické přístroje řídicích obvodů
+ČSN EN 61140 (33 0500) Ochrana přede úrazem elektrickým proudem – Společná hlediska pro instalaci
+a zařízení
+ČSN EN 61439-1 (35 7107) Rozváděče nízkého napětí: Část 1: Všeobecná ustanovení
+ČSN EN 61439-2 (35 7107) Rozváděče nízkého napětí: Část 2: Výkonové rozváděče
+ČSN EN 61439-3 (35 7107) Rozváděče nízkého napětí: Část 3: Rozvodnice určené k provozování laiky (DBO)
+ČSN EN 61439-4 (35 7107) Rozváděče nízkého napětí: Část 2: Zvláštní požadavky pro staveništní rozváděče
+(ACS)
+ČSN EN 61439-5 (35 7107) Rozváděče nízkého napětí: Část 1: Rozváděče pro veřejné distribuční sítě
+ČSN EN 61537 (37 0400) Vedení kabelů – Systémy kabelových lávek a systémy kabelových roštů
+ČSN EN 61558-1 (35 1330) Bezpečnost výkonových transformátorů, napájecích zdrojů a podobně –
+Část 1: Všeobecné požadavky a zkoušky
+ČSN EN 61558-2-3 (35 1330) Bezpečnost transformátorů, tlumivek, napájecích zdrojů a jejich kombinací –
+Část 2-3: Zvláštní požadavky a zkoušky pro zapalovací transformátory pro plynové
+a olejové hořáky
+ČSN EN 61558-2-5 (35 1330) Bezpečnost transformátorů, tlumivek, napájecích zdrojů a jejich kombinací –
+Část 2-5: Zvláštní požadavky a zkoušky pro transformátory pro holicí strojky,
+napájecí zdroje pro holicí strojky a napájecí jednotky holicích strojků
+ČSN EN 61558-2-8 (35 1330) Bezpečnost transformátorů, tlumivek, napájecích zdrojů a jejich kombinací –
+Část 2-8: Zvláštní požadavky a zkoušky pro transformátory a napájecí zdroje pro
+zvonky a gongy
+ČSN EN 61558-2-26 Bezpečnost transformátorů, tlumivek, napájecích zdrojů a jejich kombinací –
+(35 1330) Část 2-26: Zvláštní požadavky a zkoušky pro transformátory a napájecí zdroje pro
+úsporu energie a jiné účely
+ČSN EN 61869-1 Přístrojové transformátory – Část 1: Všeobecné požadavky
+ČSN EN 61936-1 (33 3201) Elektrická instalace nad AC 1 kV – Část 1: Všeobecná pravidla
+ČSN EN 62271-1 (35 4205) Vysokonapěťová spínací a řídící zařízení – Část 1: Společná ustanovení
+ČSN EN 62271-100 (35 4220) Vysokonapěťová spínací a řídící zařízení – Část 100: Vypínače střídavého proudu
+23
+ČSN EN 62271-102 (35 4210) Vysokonapěťová spínací a řídící zařízení – Část 102: Odpojovače a uzemňovače
+střídavého proudu na napětí 1 000 V
+ČSN EN 62271-103(35 4211) Vysokonapěťová spínací a řídící zařízení – Část 103: Spínače pro jmenovitá Napětí
+nad 1 kV do 52 kV včetně
+ČSN EN 62271-104 Vysokonapěťová spínací a řídící zařízení – Část 104: Spínače střídavého proudu pro
+(35 4211) jmenovitá napětí 52 kV a vyšší
+ČSN EN 62271-105 (354230) Vysokonapěťová spínací a řídící zařízení – Část 105: Kombinace spínače s
+pojistkami na střídavý proud o jmenovitých napětích nad 1 kV do 52 kV včetně
+ČSN EN 62271-107 (35 4215) Vysokonapěťová spínací a řídící zařízení – Část 107: Výkonové spínače střídavého
+proudu s pojistkami pro jmenovitá napětí nad 1 kV do 52 kV včetně
+ČSN EN 62271-108(35 4226) Vysokonapěťová spínací a řídící zařízení – Část 108: Vypínače střídavého proudu
+s odpojovací funkcí pro jmenovitá napětí 72,5 kV a vyšší
+ČSN EN 62271-109(35 4227) Vysokonapěťová spínací a řídící zařízení – Část 109: Paralelní spínače střídavého
+proudu sériových kondenzátorů
+ČSN EN 62271-110(35 4224) Vysokonapěťová spínací a řídící zařízení – Část 110: Spínání induktivní zátěže
+ČSN EN 62271-111(35 4225) Vysokonapěťová spínací a řídící zařízení – Část 111: Stožárové, soklové, kobkové
+a ponorné vypínače s funkcí opětného zapínání (autoreclosery) a vypínače zkratu pro
+sítě střídavého proudu na napětí do 38 kV
+ČSN EN 62271-112(35 4212) Vysokonapěťová spínací a řídící zařízení – Část 112: Vysokorychlostní uzemňovače
+pro zhášení sekundárního oblouku v přenosových vedeních
+ČSN EN 62271-200 (35 7181) Vysokonapěťová spínací a řídící zařízení – Část 200: Kovové kryté rozváděče
+na střídavý proud pro jmenovitá napětí nad 1 kV do 52 kV včetně.
+ČSN EN 62271-201(35 7180) Vysokonapěťová spínací a řídící zařízení – část 201: Izolačně kryté rozváděče
+na střídavý proud pro jmenovitá napětí nad 1 kV do 52 kV včetně
+ČSN EN 62305-1 (34 1390) Ochrana před bleskem – Část 1: Obecné principy
+ČSN EN 62305-2 (34 1390 Ochrana před bleskem – Část 2: Řízení rizika
+ČSN EN 62305-3 (34 1390) Ochrana před bleskem – Část 3: Hmotné škody na stavbách a ohrožení života
+ČSN EN 62305-4 (34 1390) Ochrana před bleskem – Část 4: Elektrické a elektronické systémy ve stavbách
+ČSN ISO 3864-1(01 8011) Grafické značky- Bezpečnostní barvy a bezpečnostní značky – Část 1: Zásady
+navrhování bezpečnostních značek a bezpečnostního značení
+ČSN ISO 3864-2+Amd.1 Grafické značky- Bezpečnostní barvy a bezpečnostní značky – Část 2: Zásady
+(01 8011) navrhování bezpečnostních štítků výrobků
+ČSN ISO 3864-3 (01 8011) Grafické značky- Bezpečnostní barvy a bezpečnostní značky – Část 3: Zásady
+navrhování grafických značek pro použití v bezpečnostních značkách
+ČSN ISO 3864-4 (01 8011) Grafické značky- Bezpečnostní barvy a bezpečnostní značky – Část 4:Kolorimetrické
+a fotometrické vlastnosti materiálů bezpečnostních značek
+TNŽ 34 2603 Pravidla pro kreslení koordinačních schémat ukolejnění a trakčních propojení
+Bezpečnostní předpisy pro činnost na trakčním vedení a v jeho blízkosti na
+TNŽ 34 3109
+železničních dráhách celostátních, regionálních a vlečkách
+TNŽ 37 5715 Silová kabelová vedení celostátních drah
+TNŽ 73 6334 Oplocení a zábradlí na dráhách celostátních a regionálních
+Osobní ochranné prostředky a pracovní pomůcky pro elektrické stanice železničních
+TNŽ 38 1981
+rozvodných a napájecích soustav a vybavení mobilních prostředků a pracovních čet
+29.12.2 Předpisy
+SŽDC E8 Předpis pro provoz zařízení energetického napájení zabezpečovacích zařízení
+SŽDC Bp1 Předpis o bezpečnosti a ochraně zdraví při práci
+SŽDC (ČD) S5/4 Protikorozní ochrana ocelových konstrukcí
+SŽDC (ČD) SR34(E) Nastavování, provoz a údržba reléových ochran trakčního napájecího obvodu.
+Výnos ČD DDC č.j. 56 Směrnice pro zavedení, používání a správu koordinačních schémat ukolejnění
+731/96-S14 a trakčního propojení ze dne 27. 5. 1996
+24
+Směrnice SŽDC č. 34 Směrnice pro uvádění do provozu výrobků, které jsou součástí sdělovacích
+a zabezpečovacích zařízení a zařízení elektrotechniky a energetiky, na železniční
+dopravní cestě ve vlastnictví státu státní organizace Správa železniční dopravní cesty
+Zákon č.262/2006 Sb. Zákoník práce ve znění pozdějších předpisů
+Zákon č.309/2006 Sb. kterým se upravují další požadavky bezpečnosti a ochrany zdraví při práci v pracovně
+právních vztazích a o zajištění bezpečnosti a ochrany zdraví při činnosti nebo
+poskytování služeb mimo pracovně právní vztahy ve znění pozdějších předpisů
+Nařízení vlády č. 591/2006 Sb. Bližší minimální požadavky na bezpečnost a ochranu zdraví při práci ve znění
+pozdějších předpisů
+Nařízení vlády č. 201/2010 Sb. Způsob evidence úrazů, hlášení a zasílání záznamu o úrazu ve znění pozdějších
+předpisů
+Nařízení vlády č. 495/2001 Sb. Rozsah a bližší podmínky poskytování osobních ochranných pracovních prostředků,
+mycích, čistících a desinfekčních prostředků ve znění pozdějších předpisů
+Nařízení vlády č. 362/2005 Sb. Bližší požadavky na bezpečnost a ochranu zdraví při práci na pracovištích
+s nebezpečím pádu z výšky nebo do hloubky ve znění pozdějších předpisů
+Nařízení vlády č. 101/2005 Sb. Podrobnější požadavky na pracoviště a pracovní prostředí ve znění pozdějších
+předpisů
+Nařízení vlády č. 361/2007 Sb. Podmínky ochrany zdraví při práci ve znění pozdějších předpisů
+Vyhláška č. 272/2011 Sb. Ochrana zdraví při práci před účinky hluku a vibrací ve znění pozdějších předpisů
+Vyhláška ČÚBP a ČBU Odborná způsobilost v elektrotechnice, ve znění vyhl.98/1982 Sb.
+č. 50/1978
+Vyhláška MD č. 100/1995 Sb. Podmínky pro provoz, konstrukci a výrobu určených technických zařízení ve znění
+pozdějších předpisů
+Vyhláška č. 177/1995 Sb. Stavební a technický řád drah ve znění pozdějších předpisů
+Zákon č. 266/1994 Sb. Zákon o drahách ve znění pozdějších předpisů
+Vyhláška ČÚBPč. 48/1982 Sb. Základní požadavky k zajištění bezpečnosti práce a technických zařízení ve znění
+pozdějších předpisů
+Nařízení vlády č. 406/2004 Sb. Požadavky na zajištění bezpečnosti a ochrany zdraví při práci v prostředí
+s nebezpečím výbuchu ve znění pozdějších předpisů
+Vyhláška č. 23/2008 Sb. O technických podmínkách požární ochrany staveb
+29.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí
+Kapitola 26 - Osvětlení, rozvody NN včetně dálkového ovládání
+Kapitola 27 - Zabezpečovací zařízení
+Kapitola 30 - Silnoproudé rozvody VN a soustava 6 kV
+Kapitola 31 - Trakční vedení
+Kapitola 33 - Elektromagnetická kompatibilita (EMC)
+25
+26
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+KAPITOLA 29
+Třetí aktualizované vydání včetně změny č. 10 (z roku 2016)
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Správa železniční dopravní cesty, státní organizace
+Odborný gestor: Ing. Zdeněk Kriš
+Správa železniční dopravní cesty, státní organizace
+Odbor automatizace a elektrotechniky
+Vydal: Správa železniční dopravní cesty, státní organizace
+Odbor automatizace a elektrotechniky
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+www.szdc.cz
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení distribuce dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 396, +420 972 741 769
+mobil: +420 725 039 782
+e-mail: typdok@tudc.cz
+www.tudc.cz
