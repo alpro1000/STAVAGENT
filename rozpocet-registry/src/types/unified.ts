@@ -199,7 +199,13 @@ export interface FormworkRentalRow {
   mesicni_najem_jednotka: number;  // Měsíční nájem [Kč/m²] — bez DPH, bez dopravy, bez montáže
   // Computed:
   mesicni_najem_sada: number;      // = sada_m2 × mesicni_najem_jednotka
-  konecny_najem: number;           // = mesicni_najem_sada × MAX(1, celkova_doba/30) × pocet_sad
+  najem_naklady: number;           // = mesicni_najem_sada × MAX(1, celkova_doba/30) × pocet_sad (rental only)
+  // Doka offer logic (Nabídka 540044877): each position has rental + one-time purchase costs.
+  // "Ztracené díly" = kotevní díly ztracené + expreskotvy + Doka-trenn + bednící desky.
+  // From real 2026 Doka offer: Frami abutment ~300 Kč/m², Framax wall ~22 Kč/m², Dokaflex ~72 Kč/m².
+  // Default populated from formwork_knowledge.json podil_koupe_m2_typical × sada_m2.
+  podil_koupe: number;             // Ztracené díly: one-time purchase costs (lost anchors, boards, doka-trenn) [Kč]
+  konecny_najem: number;           // = najem_naklady + podil_koupe
   // KROS:
   kros_kod?: string;
   kros_popis?: string;             // Auto-generated description

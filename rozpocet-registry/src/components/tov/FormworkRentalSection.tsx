@@ -7,17 +7,20 @@
  * Struktura sloupců:
  * Konstrukce | Celkem m2 | Sada m2 | Taktů | Sad | Dní/takt | Dem.d |
  * Doba bedn. | Beton/takt | Celkem beton | Celková doba |
- * Systém | Výška | Kč/m2 | Měs.nájem/sada | Konečný nájem | KROS popis
+ * Systém | Výška | Kč/m2 | Měs.nájem/sada | Ztracené díly | Konečný nájem | KROS popis
  *
- * Výpočtové vzorce (rev. 2.1 — Expert Review, ČSN EN 13670):
+ * Výpočtové vzorce (rev. 2.2 — Doka nabídka č. 540044877, leden 2026):
  *   pocet_taktu    = ⌈celkem_m2 / sada_m2⌉  (auto) nebo ručně
  *   takt_per_set   = pocet_taktu / pocet_sad
  *   doba_bedneni   = takt_per_set × dni_na_takt        (montáž per sada)
  *   celkem_beton   = takt_per_set × dni_beton_takt     (zrání per sada)
  *   celkova_doba   = doba_bedneni + celkem_beton + dni_demontaz  (+ fin. demontáž)
  *   mesicni_sada   = sada_m2 × mesicni_najem_jednotka
- *   konecny_najem  = mesicni_sada × MAX(1, celkova_doba/30) × pocet_sad
+ *   najem_naklady  = mesicni_sada × MAX(1, celkova_doba/30) × pocet_sad
  *                                   ↑ min. 1 měsíc (standard DOKA/PERI/MEVA)
+ *   podil_koupe    = ztracené díly (kotevní díly, expreskotvy, Doka-trenn, desky) [Kč]
+ *                    — editovatelné, předvyplněno z podil_koupe_m2_typical × sada_m2
+ *   konecny_najem  = najem_naklady + podil_koupe
  *
  * DŮLEŽITÉ: Cena nájmu NEZAHRNUJE dopravu, montáž ani DPH!
  */
@@ -38,6 +41,7 @@ interface BedniSystem {
   system: string;        // bednici_system value
   rozmery: string;       // rozmery / výška
   jednotka: number;      // Kč/m²/měsíc
+  podil_koupe_m2: number; // Typical purchase share of lost items [Kč/m²] (Doka offer 540044877)
 }
 
 // Derive dropdown options from JSON knowledge base (single source of truth)
@@ -48,8 +52,9 @@ const BEDNI_SYSTEMS: BedniSystem[] = [
     system: s.system_name,
     rozmery: s.variant,
     jednotka: s.rental_czk_m2_month,
+    podil_koupe_m2: (s as unknown as { podil_koupe_m2_typical?: number }).podil_koupe_m2_typical ?? 0,
   })),
-  { id: 'custom', label: '— Vlastní systém —', system: '', rozmery: '', jednotka: 0.00 },
+  { id: 'custom', label: '— Vlastní systém —', system: '', rozmery: '', jednotka: 0.00, podil_koupe_m2: 0 },
 ];
 
 // ─── Computation helpers ───────────────────────────────────────────────────
@@ -88,12 +93,18 @@ function computeRow(r: FormworkRentalRow): FormworkRentalRow {
   // Minimum billing = 1 full month — industry standard for DOKA / PERI / MEVA.
   // Without this, short projects (1 takt, 9 days) are underestimated by 3×.
   const billing_months = Math.max(1, celkova_doba / 30);
-  const konecny_najem = Math.round(mesicni_najem_sada * billing_months * r.pocet_sad * 100) / 100;
+  // najem_naklady = pure rental cost (nájemné)
+  const najem_naklady = Math.round(mesicni_najem_sada * billing_months * r.pocet_sad * 100) / 100;
+  // podil_koupe = one-time purchase of lost items (Doka: kotevní díly ztracené, expreskotvy, doka-trenn, desky)
+  // Backward-compat: old rows from localStorage may not have this field yet → treat as 0.
+  const podil_koupe = r.podil_koupe ?? 0;
+  // konecny_najem = total = rental + purchase of lost items
+  const konecny_najem = Math.round((najem_naklady + podil_koupe) * 100) / 100;
 
   // Preserve user-edited kros_popis; auto-generate only when empty
   const kros_popis = r.kros_popis || generateKrosPopis({ ...r, mesicni_najem_sada });
 
-  return { ...r, pocet_taktu, dni_demontaz, doba_bedneni, celkem_beton, celkova_doba, mesicni_najem_sada, konecny_najem, kros_popis };
+  return { ...r, pocet_taktu, dni_demontaz, doba_bedneni, celkem_beton, celkova_doba, mesicni_najem_sada, najem_naklady, podil_koupe, konecny_najem, kros_popis };
 }
 
 // Curing-time presets by element type (ČSN EN 13670, at +20°C).
@@ -113,6 +124,8 @@ function makeEmptyRow(constructionName?: string, totalM2?: number): FormworkRent
   // sada_m2 default: ~40% of total area (realistic for bridge abutment staging).
   // If area is 0 or very small, start at 0 so user must enter actual kit size.
   const defaultSada = area > 10 ? Math.round(area * 0.4 * 10) / 10 : area;
+  // Pre-fill podil_koupe from knowledge base: podil_koupe_m2_typical × sada_m2
+  const podil_koupe = Math.round(sys.podil_koupe_m2 * defaultSada * 100) / 100;
   const raw: FormworkRentalRow = {
     id: uuidv4(),
     construction_name: constructionName ?? '',
@@ -131,6 +144,8 @@ function makeEmptyRow(constructionName?: string, totalM2?: number): FormworkRent
     rozmery:       sys.rozmery,
     mesicni_najem_jednotka: sys.jednotka,
     mesicni_najem_sada: 0,
+    najem_naklady:  0,
+    podil_koupe,                  // Ztracené díly: pre-filled from knowledge base
     konecny_najem:  0,
     kros_popis:    '',
   };
@@ -196,10 +211,14 @@ export function FormworkRentalSection({
 
   const handleSystemChange = (id: string, sysId: string) => {
     const sys = BEDNI_SYSTEMS.find(s => s.id === sysId) ?? BEDNI_SYSTEMS[BEDNI_SYSTEMS.length - 1];
+    const row = rows.find(r => r.id === id);
+    const sada = row?.sada_m2 ?? 0;
     updateRow(id, {
       bednici_system: sys.system,
       rozmery: sys.rozmery,
       mesicni_najem_jednotka: sys.jednotka,
+      // Auto-update podil_koupe from new system's knowledge base default × sada_m2
+      podil_koupe: Math.round(sys.podil_koupe_m2 * sada * 100) / 100,
     });
   };
 
@@ -215,6 +234,8 @@ export function FormworkRentalSection({
     });
   };
 
+  const totalNajem = rows.reduce((s, r) => s + (r.najem_naklady ?? 0), 0);
+  const totalPodilKoupe = rows.reduce((s, r) => s + (r.podil_koupe ?? 0), 0);
   const totalRental = rows.reduce((s, r) => s + r.konecny_najem, 0);
 
   if (rows.length === 0) {
@@ -247,7 +268,11 @@ export function FormworkRentalSection({
         </h4>
         <div className="flex items-center gap-2">
           <span className="text-xs text-slate-500">
-            Celkem: <strong className="text-blue-700">{totalRental.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</strong>
+            Nájem: <strong className="text-blue-700">{totalNajem.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</strong>
+            {totalPodilKoupe > 0 && (
+              <> + Ztracené díly: <strong className="text-amber-700">{totalPodilKoupe.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</strong></>
+            )}
+            {' '}= <strong className="text-blue-800">{totalRental.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</strong>
           </span>
           {rows.length > 0 && (
             <button
@@ -289,7 +314,8 @@ export function FormworkRentalSection({
               <th className={`${thCell} min-w-[110px]`}>Výška / rozm.</th>
               <th className={`${thCell} min-w-[70px]`}>Kč/m2<br/>měsíc</th>
               <th className={`${thCell} min-w-[90px] bg-slate-100`}>Měs. nájem<br/>sada Kč</th>
-              <th className={`${thCell} min-w-[95px] bg-blue-50`} title="= Měs.nájem/sada × MAX(1, celkova_doba/30) × počet sad. Min. 1 měsíc (standard DOKA/PERI/MEVA). NEZAHRNUJE dopravu (50–200 tis. Kč) ani montáž!">Konečný<br/>nájem Kč ⚠</th>
+              <th className={`${thCell} min-w-[105px] bg-amber-50`} title="Ztracené díly (podíl koupě): kotevní díly ztracené, expreskotvy, Doka-trenn, bednící desky. Jednorázový nákup při výstavbě. Odvozeno z reálné nabídky Doka č. 540044877 (Nýřany-Heřmanova Huť, leden 2026). Editovatelné — tlačítko ~% doplní odhad z plochy sady.">Ztracené díly<br/>Kč ⓘ</th>
+              <th className={`${thCell} min-w-[95px] bg-blue-50`} title="= Nájem (nájemné) + Ztracené díly. Min. 1 měsíc fakturace (standard DOKA/PERI/MEVA). NEZAHRNUJE dopravu (50–200 tis. Kč) ani montáž!">Konečný<br/>nájem Kč ⚠</th>
               <th className={`${thCell} min-w-[90px]`}>Kód KROS</th>
               <th className={`${thCell} min-w-[220px]`}>Popis KROS</th>
               <th className={`${thCell} min-w-[30px]`}></th>
@@ -446,9 +472,33 @@ export function FormworkRentalSection({
                       {row.mesicni_najem_sada.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
                   </td>
-                  {/* Konečný nájem (computed) */}
+                  {/* Ztracené díly (podil_koupe) — editable, pre-filled from knowledge base */}
+                  <td className={`${tdCell} bg-amber-50`}>
+                    <div className="flex items-center gap-0.5">
+                      <input
+                        type="number" min="0" step="0.01" value={row.podil_koupe ?? 0}
+                        onChange={e => updateRow(row.id, { podil_koupe: parseFloat(e.target.value) || 0 })}
+                        className="w-full text-right bg-white border border-amber-200 rounded px-1 py-0.5 text-xs focus:outline-none focus:ring-1 focus:ring-amber-400 tabular-nums"
+                        title="Ztracené díly: kotevní díly ztracené, expreskotvy, Doka-trenn, bednící desky [Kč]"
+                      />
+                      <button
+                        onClick={() => {
+                          const sys = BEDNI_SYSTEMS.find(s => s.system === row.bednici_system && s.rozmery === row.rozmery) ?? null;
+                          if (sys) updateRow(row.id, { podil_koupe: Math.round(sys.podil_koupe_m2 * row.sada_m2 * 100) / 100 });
+                        }}
+                        title={`~Odhad: ${(BEDNI_SYSTEMS.find(s => s.system === row.bednici_system && s.rozmery === row.rozmery)?.podil_koupe_m2 ?? 0).toFixed(0)} Kč/m² × ${row.sada_m2} m²`}
+                        className="flex-shrink-0 px-1 py-0.5 text-[9px] text-amber-600 border border-amber-300 rounded hover:bg-amber-100 transition-colors whitespace-nowrap leading-tight"
+                      >
+                        ~%
+                      </button>
+                    </div>
+                  </td>
+                  {/* Konečný nájem (= najem_naklady + podil_koupe, computed) */}
                   <td className={`${tdCell} bg-blue-50`}>
-                    <div className="w-full text-right font-semibold text-xs text-blue-700 tabular-nums px-1 py-0.5">
+                    <div
+                      className="w-full text-right font-semibold text-xs text-blue-700 tabular-nums px-1 py-0.5"
+                      title={`Nájem: ${(row.najem_naklady ?? 0).toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč + Ztracené díly: ${(row.podil_koupe ?? 0).toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč`}
+                    >
                       {row.konecny_najem.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                     </div>
                   </td>
@@ -513,13 +563,22 @@ export function FormworkRentalSection({
           {/* Totals footer */}
           <tfoot>
             <tr className="bg-blue-50 border-t-2 border-blue-200">
-              <td colSpan={17} className="px-2 py-1.5 text-right text-xs font-medium text-blue-700">
-                Celkem nájem bednění:
+              <td colSpan={15} className="px-2 py-1.5 text-right text-xs font-medium text-blue-700">
+                Nájem: <span className="font-bold">{totalNajem.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</span>
+                {totalPodilKoupe > 0 && (
+                  <> + Ztracené díly: <span className="font-bold text-amber-700">{totalPodilKoupe.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč</span></>
+                )}
+                {' '}= Celkem:
+              </td>
+              <td className="px-1 py-1.5 text-right text-xs font-semibold text-amber-700 tabular-nums bg-amber-50">
+                {totalPodilKoupe > 0
+                  ? `${totalPodilKoupe.toLocaleString('cs-CZ', { minimumFractionDigits: 2 })} Kč`
+                  : '—'}
               </td>
               <td className="px-1 py-1.5 text-right text-sm font-bold text-blue-800 tabular-nums">
                 {totalRental.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč
               </td>
-              <td></td>
+              <td colSpan={3}></td>
             </tr>
           </tfoot>
         </table>
@@ -543,6 +602,7 @@ export function FormworkRentalSection({
         <div className="mt-2 flex items-center justify-between">
           <p className="text-[10px] text-slate-400 italic max-w-xl">
             Takty Auto = ⌈m2÷sada⌉ · Šachmatný: 2 sady → doba ÷2 · Min. 1 měs. fakturace ·{' '}
+            Ztracené díly = kotevní díly + expreskotvy + Doka-trenn + desky (dle nabídky Doka č. 540044877) ·{' '}
             <span className="text-amber-600 font-medium">⚠ Cena NEZAHRNUJE dopravu (~50–200 tis. Kč/mobilizace), montáž ani DPH!</span>{' '}
             · Zrání: Stěny 5d · Pilíře 7d · Desky 21d · Mostovka 28d (×2 při 10°C)
           </p>

@@ -1,13 +1,15 @@
 {
   "_meta": {
-    "version": "1.0.0",
+    "version": "1.1.0",
     "created": "2026-02-19",
+    "updated": "2026-02-25",
     "source": "DOKA Cenník průměrných orientačních cen (CZ) + PERI průmyslové normy + pracovní normy KROS",
     "currency": "CZK",
     "price_basis": "Kč/m²/měsíc bez DPH, bez dopravy, bez montáže a demontáže",
     "price_variance_note": "Procentní rozptyl = rozdíl od jednotkové ceny: (+) členité konstrukce, (-) rovné stěny",
     "assembly_note": "Montážní normy v Nh/m² zahrnují: přijetí, uložení, montáž, přesuny. Demontáž = ~35–50 % montáže.",
-    "notes": "Ceny dle DOKA ceníku. Skutečné ceny závisí na obchodní smlouvě, množství, délce pronájmu."
+    "notes": "Ceny dle DOKA ceníku. Skutečné ceny závisí na obchodní smlouvě, množství, délce pronájmu.",
+    "podil_koupe_note": "podil_koupe_m2_typical = Kč/m² jako ORIENTAČNÍ jednoráz. cena ztracených dílů (kotevní díly ztracené, expreskotvy, doka-trenn, bednící desky). Odvozeno z reálné nabídky Doka č. 540044877 (Revitalizace trati Nýřany-Heřmanova Huť, leden 2026). Sleva 15 % na koupě je již zahrnuta. Skutečná výše závisí na počtu kotevních otvorů (m²) a hustotě vázání."
   },
   "categories": {
     "wall": "Stěnové bednění (svislé betonové prvky: stěny, opěry, pilíře)",
@@ -25,6 +27,7 @@
       "category": "wall",
       "subcategory": "frame_formwork",
       "rental_czk_m2_month": 507.20,
+      "podil_koupe_m2_typical": 90,
       "price_variance_pct": 8,
       "assembly_h_m2": 0.72,
       "disassembly_h_m2": 0.25,
@@ -37,8 +40,8 @@
       ],
       "description_cs": "Rámové bednění Frami Xlife, výška panelu 0,9 m. Lehký a snadno přenosný systém pro nízké svislé prvky. Vhodný pro práci bez jeřábu (panel do 40 kg). Ocelový rám s překližkovým bednicím dílcem Xlife.",
       "form_types": ["oboustranné", "jednostranné s paždíky"],
-      "notes": "Cena platí pro oboustranné bednění rovných stěn. Rohové díly zvyšují cenu o 8–15 %.",
-      "source": "DOKA cenník průměrných orientačních cen"
+      "notes": "Cena platí pro oboustranné bednění rovných stěn. Rohové díly zvyšují cenu o 8–15 %. podil_koupe: základ 106 Kč/m² (Doka 540044877), průměr ~90 Kč/m².",
+      "source": "DOKA cenník průměrných orientačních cen + Nabídka 540044877 (2026)"
     },
     {
       "id": "frami-1.5",
@@ -49,6 +52,7 @@
       "category": "wall",
       "subcategory": "frame_formwork",
       "rental_czk_m2_month": 454.40,
+      "podil_koupe_m2_typical": 180,
       "price_variance_pct": 8,
       "assembly_h_m2": 0.70,
       "disassembly_h_m2": 0.25,
@@ -60,8 +64,8 @@
       ],
       "description_cs": "Rámové bednění Frami Xlife, výška panelu 1,50 m. Nejčastěji používaná výška pro mostní opěry a základy. Kombinovatelné s panely 0,9 m pro nestandardní výšky.",
       "form_types": ["oboustranné", "jednostranné s paždíky"],
-      "notes": "",
-      "source": "DOKA cenník průměrných orientačních cen"
+      "notes": "podil_koupe: opěry (kotevné díly) 301 Kč/m², zábradelní zídka 27 Kč/m² — průměr pro opěry ~180 Kč/m² (Doka 540044877).",
+      "source": "DOKA cenník průměrných orientačních cen + Nabídka 540044877 (2026)"
     },
     {
       "id": "frami-1.8",
@@ -72,6 +76,7 @@
       "category": "wall",
       "subcategory": "frame_formwork",
       "rental_czk_m2_month": 523.20,
+      "podil_koupe_m2_typical": 150,
       "price_variance_pct": 8,
       "assembly_h_m2": 0.68,
       "disassembly_h_m2": 0.24,
@@ -83,7 +88,7 @@
       ],
       "description_cs": "Rámové bednění Frami Xlife, výška panelu 1,80 m. Vhodné pro stěny do výšky 1,8 m v jednom taktu.",
       "form_types": ["oboustranné"],
-      "notes": "",
+      "notes": "podil_koupe: podobné h=1,5m — odhadnuto ~150 Kč/m².",
       "source": "DOKA cenník průměrných orientačních cen"
     },
     {
@@ -95,6 +100,7 @@
       "category": "wall",
       "subcategory": "frame_formwork",
       "rental_czk_m2_month": 520.00,
+      "podil_koupe_m2_typical": 25,
       "price_variance_pct": 8,
       "assembly_h_m2": 0.55,
       "disassembly_h_m2": 0.19,
@@ -106,8 +112,8 @@
       ],
       "description_cs": "Velkoformátové rámové bednění Framax Xlife, výška 2,70 m. Panely se přesouvají jeřábem. Vysoká produktivita díky velkým plochám — méně spojů a spár. Ocelový rám s Xlife deskou.",
       "form_types": ["oboustranné", "jednostranné"],
-      "notes": "Přesun jeřábem povinný — panel cca 120 kg.",
-      "source": "DOKA cenník průměrných orientačních cen"
+      "notes": "Přesun jeřábem povinný — panel cca 120 kg. podil_koupe: stěna podchodu 22 Kč/m² (Doka 540044877); opěry Frami jsou nákladnější.",
+      "source": "DOKA cenník průměrných orientačních cen + Nabídka 540044877 (2026)"
     },
     {
       "id": "framax-4.65",
@@ -118,6 +124,7 @@
       "category": "wall",
       "subcategory": "frame_formwork",
       "rental_czk_m2_month": 552.00,
+      "podil_koupe_m2_typical": 25,
       "price_variance_pct": 8,
       "assembly_h_m2": 0.50,
       "disassembly_h_m2": 0.18,
@@ -129,7 +136,7 @@
       ],
       "description_cs": "Velkoformátové rámové bednění Framax Xlife, 2 panely na výšku (2×2,70 m = 5,40 m). Nejproduktivnější varianta pro vysoké monolitické stěny. Přesun výhradně jeřábem.",
       "form_types": ["oboustranné"],
-      "notes": "2 panely výšky 2,70 m spojeny nástavcem. Maximální výška betonáže 5,40 m.",
+      "notes": "2 panely výšky 2,70 m spojeny nástavcem. Maximální výška betonáže 5,40 m. podil_koupe: ~25 Kč/m².",
       "source": "DOKA cenník průměrných orientačních cen"
     },
     {
@@ -141,6 +148,7 @@
       "category": "slab",
       "subcategory": "beam_slab",
       "rental_czk_m2_month": 576.00,
+      "podil_koupe_m2_typical": 80,
       "price_variance_pct": 10,
       "assembly_h_m2": 0.60,
       "disassembly_h_m2": 0.21,
@@ -153,7 +161,7 @@
       ],
       "description_cs": "Stropní bednění Top 50 s dřevěnými nosníky H20 a ramenáty. Podpěrná výška h=1,4 m. Kombinace nosníků Top 50 a stojek s hlavicemi pro stropy a mostovky do tl. 0,5 m.",
       "form_types": ["vodorovné stropní"],
-      "notes": "Bednící deska není součástí nájmu — cenu desky stanoví obchodník.",
+      "notes": "Bednící deska není součástí nájmu — cenu desky stanoví obchodník. podil_koupe: bednící desky + ztracené díly ~80 Kč/m².",
       "source": "DOKA cenník průměrných orientačních cen"
     },
     {
@@ -165,6 +173,7 @@
       "category": "support",
       "subcategory": "heavy_shoring",
       "rental_czk_m2_month": 70.40,
+      "podil_koupe_m2_typical": 20,
       "price_variance_pct": 10,
       "assembly_h_m2": 0.80,
       "disassembly_h_m2": 0.30,
@@ -176,8 +185,8 @@
       ],
       "description_cs": "Systémová podpěrná věžová konstrukce Staxo 100 s vrchní konstrukcí Top 50. Nosnost do 1000 kN/stojku. Ideální pro těžké mostní desky a velká světlá pole. Modulární systém.",
       "form_types": ["podpěrná věžová"],
-      "notes": "Cena za podpěrnou část (bez bednící desky a nosníků). Vrchní kce WS10+H20 se pronajímá zvlášť.",
-      "source": "DOKA cenník průměrných orientačních cen"
+      "notes": "Cena za podpěrnou část (bez bednící desky a nosníků). Vrchní kce WS10+H20 se pronajímá zvlášť. podil_koupe: stahovací díly + klíny ~20 Kč/m² (Staxo: mostovka Doka 540044877).",
+      "source": "DOKA cenník průměrných orientačních cen + Nabídka 540044877 (2026)"
     },
     {
       "id": "ws10-h20",
@@ -188,6 +197,7 @@
       "category": "slab",
       "subcategory": "bridge_deck",
       "rental_czk_m2_month": 288.00,
+      "podil_koupe_m2_typical": 70,
       "price_variance_pct": 8,
       "assembly_h_m2": 0.90,
       "disassembly_h_m2": 0.35,
@@ -199,7 +209,7 @@
       ],
       "description_cs": "Vrchní konstrukce pro bednění mostovek. Ocelové nosníky WS10 jako primární nosníky, dřevěné nosníky H20 jako sekundární nosníky. Celek slouží jako podkladní vrstva pro bednicí desku mostovky.",
       "form_types": ["mostovkové", "vodorovné"],
-      "notes": "Cena za sadu 109×14,35 m. Bednící deska není součástí nájmu.",
+      "notes": "Cena za sadu 109×14,35 m. Bednící deska není součástí nájmu. podil_koupe: bednící desky mostovky ~70 Kč/m².",
       "source": "DOKA cenník průměrných orientačních cen"
     },
     {
@@ -211,6 +221,7 @@
       "category": "support",
       "subcategory": "heavy_shoring",
       "rental_czk_m2_month": 112.00,
+      "podil_koupe_m2_typical": 15,
       "price_variance_pct": 10,
       "assembly_h_m2": 0.85,
       "disassembly_h_m2": 0.32,
@@ -222,7 +233,7 @@
       ],
       "description_cs": "Podpěrná věžová soustava Staxo 100. Nosnost do 1000 kN na stojku. Používá se jako podpěrná vrstva při stropním bednění těžkých mostních desek.",
       "form_types": ["věžová podpěrná"],
-      "notes": "Cena pouze za podpěrnou část. Vrchní kce (nosníky, bednění) se pronajímá zvlášť.",
+      "notes": "Cena pouze za podpěrnou část. Vrchní kce (nosníky, bednění) se pronajímá zvlášť. podil_koupe: minimální ~15 Kč/m².",
       "source": "DOKA cenník průměrných orientačních cen"
     },
     {
@@ -234,6 +245,7 @@
       "category": "special",
       "subcategory": "parapet_formwork",
       "rental_czk_m2_month": 33.60,
+      "podil_koupe_m2_typical": 55,
       "price_variance_pct": 10,
       "assembly_h_m2": 1.10,
       "disassembly_h_m2": 0.45,
@@ -245,7 +257,7 @@
       ],
       "description_cs": "Konzolové římsové bednění pro mostní římsové pasy. Systém T-profilu se zajišťuje do předem vložených trubek v hlavní nosné konstrukci mostu. Demontáž po zatvrdnutí betonu bez přístupu jeřábu.",
       "form_types": ["konzolové římsové"],
-      "notes": "Nízká cena nájmu, ale vysoká pracnost montáže/demontáže. Nelze použít pro římsové pasy šířky > 1,2 m bez speciálního příslušenství.",
+      "notes": "Nízká cena nájmu, ale vysoká pracnost montáže/demontáže. podil_koupe: trubky a expreskotvy ~55 Kč/m².",
       "source": "DOKA cenník průměrných orientačních cen"
     },
     {
@@ -257,6 +269,7 @@
       "category": "wall",
       "subcategory": "frame_formwork",
       "rental_czk_m2_month": 480.00,
+      "podil_koupe_m2_typical": 25,
       "price_variance_pct": 8,
       "assembly_h_m2": 0.50,
       "disassembly_h_m2": 0.18,
@@ -268,7 +281,7 @@
       ],
       "description_cs": "Rámové bednění PERI TRIO, výška 2,70 m. Alternativa k DOKA Framax pro dodavatele bednění PERI. Kompatibilní s ostatními systémy PERI (Skydeck, Gridflex).",
       "form_types": ["oboustranné", "jednostranné"],
-      "notes": "Cena orientační — závisí na konkrétní smlouvě s PERI.",
+      "notes": "Cena orientační — závisí na konkrétní smlouvě s PERI. podil_koupe: ~25 Kč/m² (podobné Framax).",
       "source": "PERI průmyslové normy + tržní průzkum 2024"
     },
     {
@@ -280,6 +293,7 @@
       "category": "wall",
       "subcategory": "column_formwork",
       "rental_czk_m2_month": 580.00,
+      "podil_koupe_m2_typical": 45,
       "price_variance_pct": 10,
       "assembly_h_m2": 0.80,
       "disassembly_h_m2": 0.30,
@@ -291,7 +305,7 @@
       ],
       "description_cs": "Sloupové bednění DOKA pro čtvercové a obdélníkové průřezy. Výška sady 4,50 m. Snadné nastavení šířky a délky panelu. Používá se bez jeřábu do 3 m, s jeřábem pro vyšší výšky.",
       "form_types": ["sloupové obdélníkové", "sloupové čtvercové"],
-      "notes": "Pro pilíře h > 4,5 m se skládá více sad na výšku.",
+      "notes": "Pro pilíře h > 4,5 m se skládá více sad na výšku. podil_koupe: ~45 Kč/m².",
       "source": "DOKA produktový katalog + tržní průzkum 2024"
     },
     {
@@ -303,6 +317,7 @@
       "category": "wall",
       "subcategory": "timber_formwork",
       "rental_czk_m2_month": 0.0,
+      "podil_koupe_m2_typical": 0,
       "material_czk_m2": 350.0,
       "price_variance_pct": 20,
       "assembly_h_m2": 1.30,
@@ -315,7 +330,7 @@
       ],
       "description_cs": "Jednorázové tesařské bednění z řeziva. Bez pronájmu — materiál se nakupuje nebo recykluje. Vysoká pracnost montáže, vhodné pouze pro malé nebo atypické plochy kde systémové bednění nevychází.",
       "form_types": ["libovolné"],
-      "notes": "rental_czk_m2_month = 0 (žádný pronájem). Počítejte s náklady na řezivo cca 350 Kč/m².",
+      "notes": "rental_czk_m2_month = 0 (žádný pronájem). Počítejte s náklady na řezivo cca 350 Kč/m². podil_koupe = 0 (materiál je v material_czk_m2).",
       "source": "Průmyslové normy ČR"
     }
   ],
