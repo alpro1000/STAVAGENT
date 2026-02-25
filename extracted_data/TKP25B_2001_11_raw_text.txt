@@ -1,0 +1,738 @@
+ČESKÉ DRÁHY, státní organizace
+DIVIZE DOPRAVNÍ CESTY, o.z.
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB ČESKÝCH DRAH
+Kapitola 25
+PROTIKOROZNÍ OCHRANA ÚLOŽNÝCH
+ZAŘÍZENÍ A KONSTRUKCÍ
+Třetí - aktualizované vydání
+Změna č.1
+Část B: Ochrana ocelových konstrukcí
+proti atmosférické korozi
+Schváleno VŘ DDC čj. TÚDC-16013/2001 ze dne 31.7.2001
+Účinnost od 1.11.2001
+Praha 2001
+Všechna práva vyhrazena.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím
+systému nebo přenášena, a to v žádné formě a žádnými prostředky elektronickými,
+fotokopírovacími či jinými, bez předchozího písemného svolení vydavatele.
+Výhradní distributor: České dráhy, státní organizace
+Divize dopravní cesty, odštěpný závod
+Technická ústředna dopravní cesty
+Sekce technické dokumentace - Oddělení typové dokumentace
+772 58 Olomouc, Nerudova l
+Obsah
+25.B.1 ÚVOD 3
+25.B.1.1 Všeobecně 3
+25.B.1.2 Definice pojmů 3
+25.B.1.3 Korozní agresivita atmosféry 4
+25.B.1.4 Požadavky na OK z hlediska její protikorozní ochrany 4
+25.B.1.5 Protikorozní ochranné povlaky 4
+25.B.1.6 Projekt protikorozní ochrany 4
+25.B.1.7 Způsobilost zhotovitele protikorozní ochrany 5
+25.B.1.8 Doku mentace zhotovitele protikorozní ochrany 5
+25.B.1.9 Stavební deník 5
+25.B.1.10 Dokumentace skutečného provedení 6
+25.B.2 VÝROBKY PRO OCHRANNÉ PROTIKOROZNÍ POVLAKY 6
+25.B.2.1 Nátěrové hmoty 6
+25.B.2.2 Výrobky pro kovové povlaky 6
+25.B.3 TECHNOLOGICKÉ POSTUPY PRACÍ 6
+25.B.3.1 Technologický předpis protikorozní ochrany 6
+25.B.3.2 Příprava ocelového povrchu otryskáváním 7
+25.B.3.3 Příprava ocelového povrchu ručním a mechanizovaným čištěním 7
+25.B.3.4 Drsnost připraveného ocelového povrchu pro NS a pro žárově stříkaný kov 7
+25.B.3.5 Kontrola připraveného ocelového povrchu 8
+25.B.3.6 Příprava ocelového povrchu pro žárové zinkování ponorem 8
+25.B.3.7 Žárově stříkané povlaky 8
+25.B.3.8 Povlaky vytvořené žárovým zinkováním ponorem 8
+25.B.3.9 Základní nátěr 8
+25.B.3.10 Příprava povrchů již dříve natřených 9
+25.B.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 9
+25.B.4.1 Dodávka 9
+25.B.4.2 Skladování 10
+25.B.4.3 Průkazní zkoušky 10
+25.B.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 10
+25.B.5.1 Odebírání vzorků 10
+25.B.5.2 Kontrola a přejímka ocelové konstrukce k protikorozní ochraně 10
+25.B.5.3 Kontroly a kontrolní zkoušky zhotovitele 10
+25.B.5.4 Kontroly a kontrolní zkoušky objednatele 11
+25.B.5.5 Přilnavost nátěrů 11
+25.B.5.7 Měření tloušťky 11
+25.B.5.8 Kontrolní plochy 12
+25.B.6. PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 12
+25.B.6.1 Přípustné odchylky 12
+25.B.6.2 Míra opotřebení 12
+25.B.6.3 Záruky 12
+25.B.7. KLIMATICKÁ OMEZENÍ 12
+25.B.7.1 Vlhkost a teplota ovzduší a podkladu 12
+25.B.8. SOUHLAS S PROVEDENÝMI PRACEMI, PŘEVZETÍ PRACÍ 13
+25.B.8.1 Souhlas s provedenými pracemi 13
+25.B.8.2. Převzetí prací 13
+25.B.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 14
+1
+25.B.9.1 Kontrolní měření 14
+25.B.9.2 Měření posunů a přetvoření 14
+25.B.10 EKOLOGIE 14
+25.B.10.1 Všeobecně 14
+25.B.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 14
+25.B.11.1 Bezpečnost práce a technických zařízení 14
+25.B.11.2 Požární ochrana 14
+25.B.12 CITOVANÉ A SOUVISEJÍCÍ NORMY A PŘEDPISY 14
+25.B.12.1 Obecné ustanovení 14
+25.B.12.2 Citované normy a předpisy 15
+25.B.12.3 Související normy a předpisy 16
+25.B.12.4 Související kapitoly TKP 17
+2
+25.B.1 ÚVOD
+25.B.1.1 Všeobecně
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP Všeobecně.
+Část B kapitoly 25 TKP „Ochrana ocelových konstrukcí proti atmosférické korozi” platí pro protikorozní
+ochranu všech typů ocelových konstrukcí, zařízení, příslušenství, výstroje a výzbroje (s výjimkou ocelových lan
+a kabelů), které jsou zhotoveny z běžné konstrukční oceli a jsou exponovány v atmosférických podmínkách
+České republiky. Nevztahuje se na povrchy trvale exponované ve vodě nebo jiných kapalných médiích, na
+povrchy vystavené trvalému působení teplot nad 50 °C a krátkodobému nad 80 °C, na povlaky s funkcí dočasné
+ochrany.
+Část B kapitoly 25 TKP se zabývá protikorozní ochranou vytvořenou:
+- nátěrovými povlaky (nátěry, nátěrovými systémy) na upravený povrch oceli,
+- kovovými povlaky žárově nanesenými (stříkáním, ponorem) na upravený povrch oceli,
+- kombinovanými povlaky, tj. kovovými povlaky s následnými nátěrovými povlaky (nátěrovými systémy).
+Část B kapitoly 25 TKP neobsahuje zásady pro volbu protikorozní ochrany (protikorozního ochranného
+povlaku) ani zásady pro volbu ochranných nátěrových systémů, ani konkrétní návrhy nátěrových systémů
+a jejich vztah k požadované životnosti. Nezabývá se problematikou vhodných technologií pro zhotovování
+protikorozní ochrany. V těchto věcech odkazuje na příslušné normy, předpisy a na předpis ČD S 5/4.
+V dalším textu je pro část B kapitoly 25 TKP používáno zjednodušené označení „kapitola 25.B”.
+25.B.1.2 Definice pojmů
+Definice pojmů vztahující se k oboru koroze a protikorozní ochrany ochrannými protikorozními povlaky jsou
+předmětem ČSN ISO 8044, ČSN EN 971-1, ČSN EN ISO 4618-2, ČSN EN ISO 4618-3 a také jsou v ČSN EN
+ISO 12944 v částech 1 až 6 a v části 8. Pro srozumitelnost komunikace je třeba je respektovat.
+Zejména je třeba respektovat význam následujících pojmů:
+dílčí prvek - část konstrukce (plochy, povrchu), pro kterou se určuje samostatně definovaná protikorozní
+ochrana (co do skladby nebo technologie)
+kombinovaný povlak - žárově nanesený povlak kovu (nástřikem zinku, hliníku případně jejich slitin, nebo
+ponorem nanesený zinek) s následným nátěrovým povlakem
+korozní agresivita atmosféry - schopnost atmosféry vyvolávat korozi v daném korozním systému
+kovový povlak - žárově nanesený povlak kovu (nástřikem zinku, hliníku nebo jejich slitin, nebo ponorem
+nanesený zinek) bez nátěrového povlaku, popř. jen s utěsňujícím nátěrem
+nátěrový povlak - ochranný povlak výhradně z NH
+nátěrový systém - konkrétní nátěrový povlak daný druhem použitých NH, skladbou a celkový počtem vrstev
+(různých) NH
+podkladový nátěr (mezivrstva) - každá vrstva NH mezi základním a vrchním nátěrem
+požadovaná životnost - doba, po kterou má protikorozní ochrana splňovat svou protikorozní ochrannou funkci.
+Při určené korozní agresivitě atmosféry je životnost protikorozní ochrany závislá zejména na úpravě chráněného
+povrchu a na životnosti jednotlivých ochranných povlaků
+protikorozní ochrana - zahrnuje úpravu ocelového povrchu (povrchu OK) a ochranný protikorozní povlak
+(nátěrový, kovový, kombinovaný)
+vrchní nátěr - poslední vrstva NH v nátěrovém systému
+základní nátěr - první nátěr v nátěrovém systému, který je nanesen na podklad (zejména na upravený ocelový
+povrch, na žárově nanesený kovový povrch). Za základní nátěr lze považovat i dvě vrstvy téže NH (určené pro
+základní nátěry) nanesené pro dosažení potřebné tloušťky základního nátěru
+3
+Použité značky a zkratky
+ISO International Organization for Standardization (Mezinárodní organizace pro standardizaci)
+NH nátěrová hmota
+NS nátěrový systém
+OK ocelová konstrukce
+OTP obecné technické podmínky
+RAL mezinárodní vzorkovnice barevných odstínů
+TP technologický předpis
+25.B.1.3 Korozní agresivita atmosféry
+Vnější prostředí působící na konstrukci se hodnotí podle ČSN EN ISO 12944-2, tj. šesti stupni korozní
+agresivity atmosféry označenými C1 až C4, C5-I a C5-M.
+ČSN EN ISO 12944-2 stanoví též způsoby pro určení stupně korozní agresivity atmosféry. Zjednodušené určení
+stupně korozní agresivity atmosféry pro OK mostů připouští předpis ČD S 5/4. Toto zjednodušení lze použít
+i pro ostatní konstrukce ČD. Předpis ČD S 5/4 určuje také, které stupně korozní agresivity atmosféry lze
+uvažovat pro OK mostních objektů.
+25.B.1.4 Požadavky na OK z hlediska její protikorozní ochrany
+Při výrobě nových OK smějí být používány ocelové plechy a profily s výchozím stavem povrchu, na němž se
+korozní napadení projevuje stupněm A, B, popř. C. Stupeň D se nepřipouští. Totéž se týká nových ocelových
+plechů a profilů při opravách OK.
+Stupně korozního napadení povrchů oceli určuje ČSN ISO 8501-1. Jednotlivé stupně mají následující význam:
+A - povrh oceli pokryt pevně ulpívajícími okujemi, nezkorodovaný,
+B - povrh oceli s počínající tvorbou rzi a s počínajícím odlupováním okují,
+C - povrh oceli bez okují s celoplošnou korozí,
+D - povrh oceli zkorodovaný, s výskytem okem rozeznatelné hloubkové koroze.
+Při návrhu OK, při zpracování výkresů, při výrobě OK je třeba respektovat požadavky na OK s ohledem na její
+protikorozní ochranu. Základní požadavky jsou dány v ČSN EN ISO 12944-3. Z příkladů uvedených v této
+normě je třeba volit příklady označené jako řešení dobré, popř. nejlepší, např. plné průřezy, zaoblení hran
+R = 2 mm, hladký povrch svarů aj. Jako další vhodná řešení lze využít doporučené příklady uvedené
+v ČSN EN ISO 14713.
+Při svařování je třeba omezit co nejvíce provádění svarů obalovými elektrodami, přednostně je třeba využívat
+svařování v ochranné atmosféře.
+Požadavky na OK, jejichž povrchy mají být žárově zinkovány ponorem nebo žárově stříkány, jsou dány v ČSN
+EN ISO 1461 a v ČSN EN ISO 14713. Z příkladů uvedených v ČSN EN ISO 14713 je třeba volit řešení
+označené jako doporučené.
+25.B.1.5 Protikorozní ochranné povlaky
+S ohledem na určený stupeň korozní agresivity atmosféry a požadovanou životnost protikorozní ochrany se volí
+protikorozní ochrana s ochrannými povlaky nátěrovými, kovovými nebo kombinovanými. Požadovaná životnost
+protikorozní ochrany a podmínky pro volbu protikorozního ochranného povlaku jsou dány předpisem ČD S 5/4.
+25.B.1.6 Projekt protikorozní ochrany
+Pro protikorozní ochranu OK musí být zpracován projekt protikorozní ochrany. Projekt musí obsahovat zejména
+identifikační a konstrukční údaje o OK, určení stupně korozní agresivity atmosféry, zásadní rozčlenění OK na
+dílčí prvky z hlediska protikorozní ochrany (viz ČSN EN ISO 12 944-8) a návrh protikorozní ochrany pro
+požadovanou životnost.
+4
+Projekt musí obsahovat základní údaje o navrhovaných ochranných povlacích, tj. u nátěrového systému zejména
+druh NH, skladbu, počet a tloušťky jednotlivých vrstev, barevný odstín vrchního nátěru. U kombinovaných
+a kovových povlaků také druh kovu, tloušťku vrstvy, způsob nanášení. Projekt musí obsahovat předpokládaný
+způsob a technologii provádění protikorozní ochrany.
+Při zpracování projektu je třeba se řídit ČSN EN ISO 12944-1 až 8. Podrobnější údaje o obsahu projektu
+protikorozní ochrany OK mostních objektů jsou v předpise ČD S 5/4 a v OTP ČD pro dokumentaci železničních
+mostních objektů (dále jen OTP pro dokumentaci). Pro ostatní OK lze tyto OTP pro dokumentaci použít
+v přiměřeném rozsahu.
+Projekt protikorozní ochrany mostních objektů se projednává a schvaluje podle OTP pro dokumentaci.
+25.B.1.7 Způsobilost zhotovitele protikorozní ochrany
+Protikorozní ochranu OK ČD smějí provádět jen firmy k provádění protikorozní ochrany oprávněné a odborně
+způsobilé. Zhotovitel protikorozní ochrany musí mít potřebné technické vybavení, odborný personál a zavedený
+vlastní systém řízení jakosti. Zhotovitel musí zajistit kvalitní provádění všech fází protikorozní ochrany
+od úpravy povrchu oceli až po poslední vrstvu nátěru, včetně všech potřebných kontrol a zkoušek během
+provádění protikorozní ochrany ve smyslu ČSN EN ISO 12944-1 až 8.
+Pro provádění nátěrových systémů musí být zhotovitel od výrobce (dodavatele) NH oprávněn a zaškolen
+k používání příslušných NH a NS.
+Zhotovitel žárového stříkání kovů musí být způsobilý pro příslušné práce (i pro přípravu ocelového povrchu)
+ve smyslu ČSN EN ISO 14922-1 až ČSN EN ISO 14922-4. Např. musí mít příslušné prostory a vybavení,
+pracovníky se zkouškou způsobilosti pro žárové stříkání (viz ČSN EN ISO 14918), kvalifikované pracovníky
+pro zkoušky, systém řízení jakosti atd.
+Zhotovitel žárového zinkování ponorem musí mít zavedený systém řízení jakosti podle ČSN EN ISO 9001 nebo
+ČSN EN ISO 9002.
+Zhotovitel protikorozní ochrany musí zpracovat (zajistit) dokumentaci skutečného provedení (viz 25.B.1.10).
+25.B.1.8 Dokumentace zhotovitele protikorozní ochrany
+Pro zhotovení protikorozní ochrany OK musí její zhotovitel vypracovat (zajistit na své náklady) kvalitní
+podrobný TP protikorozní ochrany se všemi náležitostmi (viz 25.B.3.1).
+25.B.1.9 Stavební deník
+O provádění protikorozní ochrany vede zhotovitel protikorozní ochrany stavební deník (stavební deník pro práce
+protikorozní ochrany). Do stavebního deníku se zaznamenávají všechny práce prováděné zhotovitelem
+protikorozní ochrany.
+Základní požadavky na vedení stavebního deníku jsou v kap. 1 TKP, další údaje jsou v předpise ČD S 5/4.
+Pro práce protikorozní ochrany musí stavební deník obsahovat zejména:
+• identifikační údaje,
+• seznam provádějících pracovníků s příslušnou kvalifikací pro jednotlivé druhy prací,
+• seznam kvalifikovaných pracovníků kontroly,
+• údaje o výrobcích, označení NH, číslo šarže, datum výroby,
+• údaje o zahájení a postupu prací,
+• údaje o provozních vlivech a povětrnostních podmínkách při provádění prací (měří se 2krát denně), slovně
+se uvádí hodnocení povětrnostních podmínek, např. jasno, slunečno, zataženo apod.,
+• údaje o přerušení, pokračování prací a technologických přestávkách,
+• změny v průběhu stavby a specifikace víceprací,
+• údaje o zakrývaných pracích a o jejich převzetí a údaje o dílčích přejímkách,
+• údaje o provedení stanovených zkoušek a měření, druh a datum provádění kontrolních nebo jiných zkoušek,
+5
+• technologické údaje o nanášení NH,
+• údaje o zvláštních událostech, které mohly ovlivnit kvalitu prováděných prací,
+• údaje o kontrolách odběratelem.
+Ke stavebnímu deníku patří i zprávy o kontrolách a zkušební protokoly. Pro zkušební protokoly lze použít
+formuláře uvedené v přílohách ČSN EN ISO 12994-8.
+25.B.1.10 Dokumentace skutečného provedení
+Dokumentaci skutečného provedení protikorozní ochrany (obecně „Dokumentace skutečného provedení
+stavby“) zajišťuje zhotovitel protikorozní ochrany.
+Pro zpracování dokumentace skutečného provedení protikorozní ochrany včetně počtu vyhotovení a termínu
+jejího odevzdání platí stejně jako pro dokumentaci skutečného provedení stavby kap. 1 TKP, čl. 1.11.4 a OTP
+pro dokumentaci.
+25.B.2 VÝROBKY PRO OCHRANNÉ PROTIKOROZNÍ POVLAKY
+25.B.2.1 Nátěrové hmoty
+Pro používání NH a jim příslušných doplňujících výrobků pro protikorozní ochranu OK mostních objektů platí
+„Obecné technické podmínky ČD pro ochranné nátěrové systémy ocelových konstrukcí mostních objektů”.
+U ostatních OK staveb železničního spodku a dalších OK podle předpisu ČD S 5/4 se uvedené OTP použijí
+v přiměřeném rozsahu.
+Výplňové a těsnicí tmely používané v ochranných nátěrových systémech musejí splňovat základní a technické
+požadavky obecně závazných předpisů na stavební výrobky pro dopravní stavby.
+Další podmínky a požadavky pro použití NH jsou v předpise ČD S 5/4.
+25.B.2.2 Výrobky pro kovové povlaky
+Výrobky pro kovové povlaky pro protikorozní ochranu OK musejí splňovat základní a technické požadavky
+obecně závazných předpisů na stavební výrobky pro dopravní stavby. Tato podmínka se týká i kovových
+povlaků, které jsou součástí kombinovaných povlaků.
+25.B.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+25.B.3.1 Technologický předpis protikorozní ochrany
+Zhotovitel protikorozní ochrany musí zpracovat podrobný TP protikorozní ochrany. Technologický předpis
+protikorozní ochrany vychází z projektu protikorozní ochrany. V technologickém předpisu protikorozní ochrany
+lze, s ohledem na konkrétní situaci, upřesnit řešení protikorozní ochrany dané projektem.
+TP musí obsahovat podrobný postup prací pro všechny dílčí prvky OK. Přitom musí být respektován požadavek,
+že provádění každé vrstvy smí být zahájeno až po kontrole vrstvy předchozí (viz kontrolní plán v TP), po
+odstranění případných nedostatků a po zápisu do stavebního deníku. TP musí obsahovat také podmínky, za
+kterých smějí být práce prováděny, kvalitativní parametry všech používaných výrobků a prací, způsob ochrany
+proti nepříznivým klimatickým podmínkám v průběhu provádění prací i po jejich dokončení, způsob kontroly
+kvality.
+Při zpracování TP protikorozní ochrany je třeba se řídit příslušnými částmi ČSN EN ISO 12944, zejména částí
+8. Podrobnější údaje o obsahu TP protikorozní ochrany pro OK jsou v předpise ČD S 5/4 a pro OK mostních
+objektů v OTP pro dokumentaci. Pro ostatní OK lze předpis OTP pro dokumentaci použít v přiměřeném
+rozsahu.
+TP protikorozní ochrany schvaluje stavební dozor investora po kladném projednání se správcem objektu (OK).
+6
+25.B.3.2 Příprava ocelového povrchu otryskáváním
+Obecné zásady pro přípravu povrchu jsou dány ČSN ISO 8504-1.
+Kvalita přípravy povrchu je základním parametrem jakosti ovlivňujícím celkovou životnost protikorozní
+ochrany a její funkčnost. Z tohoto důvodu se ocelové povrchy připravují (pro nanášení nátěrových a žárově
+stříkaných povlaků) především otryskáním vhodným abrazivem - viz ČSN EN ISO 11124-1 a ČSN EN ISO
+11126-1.
+Svary musejí být upraveny tak, aby nesnižovaly životnost protikorozní ochrany. Svary nesmějí vykazovat
+nerovnosti (viz ČSN EN ISO 12944-3), póry, kráterky, přívarky, rozstřiky svarového kovu apod.
+Dodatečná úprava povrchů částí poškozených při montáži, montážních svarů a ostatních ploch musí odpovídat
+stupni přípravy povrchu předepsanému pro celek.
+Dodatečné broušení svarů ocelových konstrukcí, které byly čištěny otryskáváním, je možné (bez dalšího
+otryskání) pouze v technicky odůvodněných případech a se souhlasem stavebního dozoru. Broušení je
+využitelné v případech, kdy není vyžadován určitý stupeň drsnosti povrchu (viz 25.B.3.4).
+Stupně přípravy povrchu při přípravě povrchu otryskáním stanoví ČSN EN ISO 12944-4. Otryskání se provádí
+podle ČSN ISO 8504-2. Stupeň přípravy povrchu se hodnotí podle ČSN ISO 8501-1 porovnáním
+s reprezentativními fotografickými vzory.
+Způsob a kvalitu přípravy povrchu předepisuje dokumentace (projekt, TP). Přitom pro nátěrové povlaky je třeba
+respektovat stupeň přípravy povrchu podle požadavků výrobce NH pro základní nátěr.
+Pro žárové stříkání kovu je třeba v souladu s ČSN EN 22063 stupeň přípravy povrchu Sa 3.
+25.B.3.3 Příprava ocelového povrchu ručním a mechanizovaným čištěním
+Ruční a mechanizovaný způsob přípravy povrchu se použije při údržbě protikorozní ochrany v souladu
+s dokumentací (projekt, TP). Tento způsob je využitelný pouze v technicky zdůvodněných případech (není-li
+realizovatelné otryskání).
+Stupně přípravy povrchu při ruční a mechanizované přípravě povrchu stanoví ČSN EN ISO 12944-4. Přípustné
+jsou pouze stupně St 2 a St 3. Ruční a mechanizované čištění se provádí podle ČSN ISO 8504-3. Stupeň
+přípravy povrchu se hodnotí podle ČSN ISO 8501-1 porovnáním s reprezentativními fotografickými vzory.
+Ruční a mechanizovaná příprava povrchu není postačující pro žárově stříkaný povlak.
+Pro nátěrové povlaky je ruční a mechanizovaná příprava povrchu použitelná v technicky zdůvodněných
+případech (není-li realizovatelné otryskání) za předpokladu, že je k dispozici NH vhodná pro základní nátěr pro
+takto připravený povrch a použitelná tak, aby byla zaručena požadovaná životnost protikorozní ochrany.
+25.B.3.4 Drsnost připraveného ocelového povrchu pro NS a pro žárově stříkaný kov
+Pro určení drsnosti otryskaného ocelového povrchu stanoví ČSN EN ISO 8503, část 1. a část 2. stupně drsnosti.
+Stupně drsnosti se vyjadřují slovně: jemnější než jemný, jemný, střední, hrubý, hrubší než hrubý a hodnotí se
+pomocí porovnávacích ISO komparátorů drsnosti profilu povrchu.
+Otryskávací prostředky použité zhotovitelem musejí být v souladu s ČSN ISO 8504-2 tak, aby pro daný typ
+povlaku byla dosažena požadovaná drsnost povrchu.
+Požadavky na drsnost ocelového podkladu musejí být uvedeny v TP protikorozní ochrany. Pro nátěrové povlaky
+se drsnost řídí požadavky výrobce NH pro základní nátěr. Není-li stanoveno jinak, považuje se za vyhovující
+stupeň střední (viz ČSN EN ISO 12944-4). Pro nátěrové hmoty s vysokým obsahem zinku se vyžaduje
+ostrohranný povrch.
+Drsnost ocelového povrchu připraveného ručním a mechanizovaným čištěním není pro potřeby protikorozní
+ochrany definována.
+Pro žárové stříkání kovového povlaku se drsnost otryskaného povrchu řídí ČSN EN 22063.
+Další podrobnosti jsou v předpise ČD S 5/4.
+7
+25.B.3.5 Kontrola připraveného ocelového povrchu
+Ocelový povrch připravený pro nanášení základního nátěru nebo pro žárově stříkaný kov musí být vždy
+prokazatelně zkontrolován určeným kontrolním orgánem (podle kontrolního plánu v TP). Požadovaná kvalita
+(stupeň přípravy, drsnost) musí být potvrzena zápisem do stavebního deníku, popř. samostatným protokolem.
+Při kontrole se také zjišťují povrchové vady z výroby nebo z montáže konstrukce (vrypy, ostré hrany,
+nezačištěné svary, odstřiky svarového kovu apod. - viz ČSN EN ISO 12944-3) a nařizuje se jejich odstranění.
+25.B.3.6 Příprava ocelového povrchu pro žárové zinkování ponorem
+Povrchy OK určené k žárovému zinkování ponorem se nesmějí při výrobě OK chránit nátěry proti ulpívání
+odstřiků svarového kovu.
+Povrch OK určený k zinkování ponorem musí být z výroby OK připraven. Nepřípustné jsou povrchové vady
+typu vrypu, zápalů apod. Hrany musejí být opracovány, povrch musí být zbaven svarových odstřiků a návarů,
+svary musejí být očištěny od strusky. Na povrchu nesmějí být jiné kovové povlaky, nátěrové hmoty (popisové
+značky), povrch nesmí být znečištěn tukem apod. Stav povrchu musí být předán zinkovně prokazatelným
+způsobem.
+25.B.3.7 Žárově stříkané povlaky
+Pro vytvoření žárově stříkaných povlaků ze zinku, hliníku a jejich slitin platí ČSN EN 22063.
+Doba mezi dokončením přípravy povrchu a nanesením povlaku musí být v závislosti na místních podmínkách co
+nejkratší, a to kratší než 4 hodiny.
+Otryskaný povrch připravený ke stříkání povlaku musí být čistý, suchý a bez jakýchkoliv náznaků rzi.
+Nástřik kovů se nesmí provádět v podmínkách způsobujících kondenzaci vlhkosti na pokovovaném povrchu
+a při teplotách nižších než -5 °C.
+Další podrobnosti jsou v předpise ČD S 5/4. Případné opravy (doplnění) žárově stříkaného povlaku a jeho
+ošetření před nanášením základního nátěru následného NS musejí být podrobně uvedeny v TP.
+25.B.3.8 Povlaky vytvořené žárovým zinkováním ponorem
+Pro vytvoření povlaků žárovým zinkováním ponorem platí ČSN EN ISO 1461 a ČSN EN ISO 14713. Kvalitu
+zinkového povlaku podle těchto norem zajišťuje zinkovna podle konkrétních dohodnutých podmínek mezi
+zinkovnou a objednatelem (případným zhotovitelem ochranného nátěrového povlaku).
+Konkrétní podmínky musejí být uvedeny v TP protikorozní ochrany. Další podrobnosti jsou v předpise
+ČD S 5/4.
+Objednatel žárového zinkování ponorem musí objednat zinkování v rozsahu celé ČSN EN ISO 1461 a musí
+sdělit zinkovně závazné doplňující informace podle přílohy A této normy. Větší tloušťky zinkového povlaku
+(dle TP protikorozní ochrany) je třeba zvlášť objednat. Je třeba vyhradit si přejímací kontrolu v zinkovně
+a předání protokolů o měření tlouštěk. Měření tlouštěk se v běžných případech provádí magnetickou metodou
+dle ČSN EN ISO 2178.
+Přilnavost zinkového povlaku se v běžných případech při přejímací kontrole nezjišťuje.
+Případné opravy (doplnění) povlaku se provádí jen podle konkrétně dohodnutých podmínek (technologie) mezi
+zinkovnou a objednatelem (případným zhotovitelem ochranného nátěrového povlaku).
+Ošetření zinkového povrchu před nanášením základního nátěru následného NS nebo před nanášením těsnicího
+nátěru musí být podrobně uvedeno v TP protikorozní ochrany.
+25.B.3.9 Základní nátěr
+Základní nátěr na ocelový povrch ani na kovový podklad (nanesený žárovým stříkáním nebo žárovým
+zinkováním ponorem) nesmí být nanášen válečkem ani textilií.
+Na připravený ocelový povrch musí být základní nátěr nanesen co nejdříve po dokončení přípravy ocelového
+povrchu.
+8
+Nejdelší přípustné doby v závislosti na umístění natírané konstrukce jsou:
+• 4 hodiny, když je dílec OK v průběhu přípravy povrchu (tryskání) nebo po ukončení přípravy povrchu
+umístěn pod přístřeškem, na volném prostranství nebo je volným prostranstvím transportován,
+• 8 hodin, když je dílec OK v průběhu přípravy povrchu (tryskání) nebo po ukončení přípravy povrchu
+umístěn v hale.
+Pro nanášení základního nátěru na žárově nanesený kovový povlak je rozhodující stav kovového povlaku
+(čistota, drsnost atd.).
+Porušené plochy zinkového povrchu musejí být obnoveny takovým způsobem, aby ochranná účinnost povlaku
+jako celku byla zachována. Znečištění povrchu zinku látkami ve formě olejů, tuků, konzervačních prostředků,
+solí, mechanicky ulpěných nečistot a zbytků značení musí být odstraněno.
+Při lehkém zdrsnění povrchu otryskáváním musí být použit nekovový otryskávací prostředek. Ostatní úpravy
+musejí být provedeny v souladu s technickými podmínkami výrobců nátěrových hmot.
+Po lehkém přetryskání, jehož cílem je zdrsnění povrchu pro zvýšení přilnavosti u nových lesklých povlaků
+zinku, musí být zbytková vrstva zinku celistvá a bez mechanického poškození. Minimální zbytková tloušťka
+vrstvy zinku musí být uvedena v TP.
+Z povrchů vystavených delší dobu vlivům povětrnosti nebo v případě jejich znečištění je nutné odstranění všech
+nečistot a případných náletů korozních produktů lehkým přetryskáním, omytím tlakovou vodou s přídavkem
+detergentů, tlakovou párou nebo kartáčováním ocelovými kartáči. Způsob je nutno stanovit s ohledem na
+konkrétně zjištěný stav povrchu při jeho prohlídce.
+Použitá technologie nanášení (ruční, stříkání pneumatické, stříkání vysokotlaké apod.) musí odpovídat
+doporučení výrobce.
+Pro úpravu nátěrových hmot pro nanášení smějí být použita pouze výrobcem předepsaná ředidla.
+První vrstva systému musí být nanesena tak, aby byly rovnoměrně zaplněny nerovnosti povrchu.
+Zvláštní pozornost je nutno věnovat hranám, nýtům, spojům, otvorům, svarům apod., které je nutno např.
+v případě nátěrových hmot s vysokým obsahem sušiny předetřít (pásový nátěr), zejména je-li následně použita
+technologie vysokotlakého stříkání.
+25.B.3.10 Příprava povrchů již dříve natřených
+Pro přípravu povrchů již dříve natřených stanoví ČSN EN ISO 12944-4 typ přípravy povrchu s označením
+částečná příprava povrchu. Stupně částečné přípravy povrchu udává ČSN ISO 8501-2 s ukázkami
+reprezentativních vzorků a označuje je podle způsobu přípravy povrchu jako skupinu stupňů P Sa, P St, P Ma.
+Před zahájením dalších nátěrů po provedené přípravě povrchu musejí být zbylé části původních nátěrů, včetně
+všech základních a podkladových vrstev prosté odlupujících se vrstev, prosté nečistot a musejí vykazovat
+dostatečnou přilnavost.
+Přilnavost původních nátěrů se hodnotí mřížkovou zkouškou podle ČSN ISO 2409 nebo zkouškou přilnavosti
+odtrhem podle ČSN EN 24624. Za vyhovující se u mřížkové zkoušky považují stupně 0 až 2 a u zkoušky
+přilnavosti odtrhem hodnota nejméně 2,0 MPa.
+25.B.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+25.B.4.1 Dodávka
+Zhotovitel protikorozního povlaku smí použít jen výrobky, které patří do daného, předem schváleného,
+protikorozního povlaku. Pro NH viz 25.B.2.1.
+Při dodávce výrobků na stavbu kontroluje zodpovědný zástupce zhotovitele s přizváním stavebního dozoru
+zejména:
+• dodací listy a označení dodávky,
+• neporušenost obalů a výrobků,
+9
+• datum výroby,
+• údaj o záruční lhůtě,
+• údaj o způsobu skladování,
+• údaj o poměru míšení jednotlivých výrobků,
+• údaj o předepsaných teplotách pro zpracovatelnost.
+Údaje musejí být v češtině.
+Kontrola musí být zaznamenána ve stavebním deníku (viz 25.B.1.8).
+Výrobky s neprůkaznými údaji, výrobky s prošlou záruční dobou a výrobky porušené tak, že nemohou plnit
+svou funkci, se nesmějí použít.
+25.B.4.2 Skladování
+U všech výrobků musí zhotovitel protikorozní ochrany zajistit jejich skladování předepsaným způsobem podle
+údajů výrobce, popř. podle TP (prostory, ochrana, teplota apod.).
+Nátěrové hmoty vyžadují umístění v suchých prostorách s teplotami nad 0 °C u rozpouštědlových NH a nad
++5 °C u vodou ředitelných NH.
+25.B.4.3 Průkazní zkoušky
+Průkazní zkoušky výrobků pro protikorozní povlaky se provádějí v rámci ověřování výrobků podle příslušných
+právních předpisů, které stanovují technické požadavky na výrobky (viz kap.1 TKP), případně i podle
+požadavků ČD - viz OTP ČD pro ochranné nátěrové systémy ocelových konstrukcí mostních objektů. Na stavbě
+se průkazní zkoušky neprovádějí.
+25.B.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+25.B.5.1 Odebírání vzorků
+Odebírání vzorků pro kontrolní zkoušky přichází v úvahu u NH v případě pochybností o jejich kvalitě (viz
+kap. 1 TKP). Vzorky se odebírají podle ČSN 67 3007. Odebíraní vzorků pro kontrolní zkoušky je vždy přítomen
+zhotovitel protikorozní ochrany a stavební dozor.
+25.B.5.2 Kontrola a přejímka ocelové konstrukce k protikorozní ochraně
+Před zahájením prací protikorozní ochrany kontroluje a přejímá zhotovitel protikorozní ochrany ocelovou
+konstrukci - povrch od výrobce OK, popř. od montážní organizace. Při této kontrole se posuzuje stav povrchu
+OK ve vztahu k 25.B.1.4. Přejímka se zapisuje do stavebního deníku.
+25.B.5.3 Kontroly a kontrolní zkoušky zhotovitele
+Potřebné kontroly a zkoušky, které má zhotovitel v průběhu prací provádět musejí být uvedeny v kontrolním
+plánu, který je součástí TP.
+Kontrolní zkoušky provádí zhotovitel za účasti stavebního dozoru.
+Bezprostředně před prováděním každé nátěrové vrstvy musí zhotovitel změřit rozhodující parametry podkladu
+a ovzduší (viz 25.B.7). Tato měření se provádějí i v průběhu prací, a to 2x denně a při náhlé změně počasí.
+Výsledky měření je nutno zapsat do stavebního deníku.
+Pokud podmínky nejsou vyhovující, nesmějí být práce zahájeny ani prováděny.
+Zhotovitel musí kontrolní zkoušky provádět v průběhu prací s potřebnou pečlivostí, v požadovaném rozsahu
+a způsobem podle TP. O výsledcích se sepisuje protokol, který je součástí stavebního deníku.
+Objednatel je prostřednictvím stavebního dozoru průběžně informován o výsledcích kontrolních zkoušek
+zhotovitele protikorozní ochrany.
+10
+Pokud podmínky pro provádění dané vrstvy nejsou v mezích dle TP, práce nesmějí být zahájeny (musejí být
+přerušeny). Rozhodující skutečnosti je nutno zapsat do stavebního deníku.
+Zkoušky hradí zhotovitel.
+25.B.5.4 Kontroly a kontrolní zkoušky objednatele
+Stavební dozor kontroluje výrobky pro protikorozní ochranu a jejich přípravu zhotovitelem. Zhotovitel musí mít
+certifikáty a osvědčení pro všechny použité NH a povlakové materiály.
+Při provádění, u všech druhů protikorozních povlaků, kontroluje na stavbě stavební dozor zejména:
+• kvalitu nanášení jednotlivých vrstev - celistvost, rovinnost, tloušťku vrstvy, rovnoměrnost, spotřebu,
+• provedení detailů podle TP - dokonalé provedení v místech napojení na prvky mostního vybavení
+a mostních součástí (odvodňovače, mostní závěry, ukončení u říms apod.) v místě tvarových změn
+podkladní konstrukce, v místě návaznosti samostatných konstrukčních částí, v místě styku dvou konstrukcí
+apod.
+V případě pochybností o zkouškách provedených zhotovitelem vyžaduje stavební dozor provedení opakovaných
+zkoušek nebo opakované zkoušky sám zajišťuje, popř. se po dohodě se zhotovitelem provádějí rozhodčí
+zkoušky nezávislou zkušebnou (viz kap.1 TKP, čl. 1.6.5).
+Pro úhradu zkoušek prováděných z rozhodnutí stavebního dozoru platí kap. 1 TKP.
+25.B.5.5 Přilnavost nátěrů
+Zjišťování přilnavosti nátěrů se (s ohledem na destrukční charakter zkoušek) běžně provádí po provedení
+základního nátěru, případně po provedení podkladových nátěrů.
+U konečných nátěrových povlaků se přilnavost zjišťuje pouze v rozhodčích případech, např. vznikne-li
+podezření na nedodržení TP, nebo je-li vzhled povlaku nevyhovující (viz ČSN EN ISO 4618-2).
+Přilnavost se zkouší buď mřížkovou zkouškou podle ČSN ISO 2409 nebo odtrhovou zkouškou podle
+ČSN EN 24624.
+Pro stanovení přilnavosti mřížkovou zkouškou v provozních podmínkách se používá pouze skalpel nebo
+podobný ostrý řezný nástroj.
+Vyhovující stupně přilnavosti jsou 0 až 2 v případě nových i údržbových obnovovacích nátěrů (viz 25.B.3.10).
+Při stanovení přilnavosti odtrhovou zkouškou se za vyhovující považuje hodnota nejméně 3,0 MPa.
+Četnost zkoušek přilnavosti je individuální a stanovuje se v TP.
+25.B.5.6 Přilnavost kovových povlaků
+Přilnavost povlaku vytvořeného žárovým zinkováním ponorem se v běžných případech nezjišťuje (viz
+25.B.3.8), pokud není dohodnuto jinak.
+Přilnavost žárově stříkaného povlaku se zjišťuje mřížkovou nebo odtrhovou zkouškou. Provádí se v případech
+stanovených v TP s ohledem na ČSN EN ISO 14922-1 až ČSN EN ISO 14922-4, nebo jako dodatečná kontrolní
+zkouška v případě pochybností.
+25.B.5.7 Měření tloušťky
+Pro měření tloušťky nátěru platí norma ČSN EN ISO 2808.
+V průběhu provádění nátěrového systému kontroluje zhotovitel tloušťky mokrých vrstev (viz ČSN 67 3062)
+v souladu s TP.
+Tloušťka zaschlých povlaků se v běžných případech měří magnetickou metodou podle ČSN ISO 2178 v souladu
+s ČSN ISO 2064, ČSN 03 8187 a ČSN 67 3061.
+U nátěrů, není-li stanoveno jinak (v odůvodněných případech je stanoveno v TP), nejsou přípustné jednotlivé
+tloušťky suchého filmu menší než 80 % předepsané tloušťky. Místa, na kterých byly naměřeny nepřípustné
+hodnoty tloušťky, musejí být opravena. Jednotlivé tloušťky suchého filmu v rozmezí 80 % až 100 % předepsané
+11
+tloušťky jsou přípustné za předpokladu, že průměrná tloušťka suchého filmu zjištěná ze všech měřených tlouštěk
+v dané části plochy je rovna předepsané tloušťce suchého filmu nebo je větší.
+Maximální tloušťka suchého filmu by neměla být větší než dvojnásobek předepsané tloušťky (pokud výrobce
+NH nestanoví jinak).
+Toto kriterium lze uplatnit i pro kombinované povlaky za předpokladu, že byla samostatně zjištěna vyhovující
+tloušťka kovového povlaku stanovená v TP v souladu s příslušnými normami.
+Počet měřených míst určuje individuálně TP v závislosti na rozsahu a členitosti plochy (dílčích prvků).
+25.B.5.8 Kontrolní plochy
+Kontrolní plocha se zhotovuje při provádění NS a kombinovaných systémů na ocelovém povrchu i na kovovém
+povlaku. Při zřizování kontrolní plochy se provádějí všechny práce protikorozní ochrany podle TP. K účasti při
+zřizování kontrolní plochy zve zhotovitel protikorozní ochrany příslušné účastníky, kterými jsou výrobce NH,
+kontrolní orgán zhotovitele protikorozní ochrany, stavební dozor, správce objektu, inspekční organizace.
+Kontrolní plochy se zhotovují v místech, která jsou typická pro korozní namáhání konstrukce jako celku. Mají
+obsahovat plochy svislé i vodorovné i hrany.
+Velikost a počet kontrolních ploch se stanovuje proporcionálně k velikosti konstrukce asi od l m2 do 20 m2
+(podrobnosti viz ČSN EN ISO 12944-7 a 8).
+Všechny kontrolní plochy musejí být přesně zdokumentovány a mají být na povrchu konstrukce trvale
+vyznačeny.
+O umístění kontrolních ploch a postupu prací se vede písemný záznam ve stavebním deníku. Vede se
+dokumentace s vyznačením všech významných údajů.
+O zhotovování protikorozní ochrany na kontrolní ploše se pořizuje samostatný zápis. Pro zápis lze využít
+doporučený formulář v příloze ČSN EN ISO 12944-8.
+Další podrobnosti viz předpis ČD S 5/4.
+25.B.6. PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+25.B.6.1 Přípustné odchylky
+Přípustná rozmezí v tloušťkách protikorozního povlaku - viz 25.B.5.7.
+25.B.6.2 Míra opotřebení
+Základní nátěr vystavený povětrnosti déle než 6 měsíců (pokud výrobce nestanoví jinak) se v daném systému
+nebere v úvahu. Po uplynutí této doby se další provádění nátěrového povlaku řeší individuálně (překrytí
+základního nátěru novou vrstvou, odstranění základního nátěru apod.).
+25.B.6.3 Záruky
+Záruční doby všeobecně stanoví kapitola 1 TKP.
+Záruční doba 5 let platí pro použité výrobky i provedení protikorozní ochrany včetně detailů.
+25.B.7. KLIMATICKÁ OMEZENÍ
+25.B.7.1 Vlhkost a teplota ovzduší a podkladu
+Práce se smějí provádět pouze ve vhodných klimatických podmínkách. Základní vymezení přípustné vlhkosti
+a teploty ovzduší pro provádění jednotlivých vrstev je v ČSN EN ISO 12944.
+12
+Pro každý případ protikorozní ochrany musejí být klimatické podmínky uvedeny v příslušném TP včetně
+vhodných (možných) ochranných opatření pro jejich dodržení.
+Pro klimatické podmínky platí následující ustanovení:
+• otryskávání a žárové stříkání kovového povlaku se nesmí provádět při teplotě nižší než -5 °C,
+• polyuretanové dvousložkové NH, epoxidové dvousložkové NH a polyesterové dvousložkové NH smějí být
+nanášeny a smějí zasychat při teplotě okolního vzduchu nejméně +15 °C, pokud není výrobcem stanoveno
+jinak,
+• vodou ředitelné NH smějí být nanášeny a smějí zasychat při teplotě okolního vzduchu nejméně +10 °C,
+• ostatní NH (s výjimkami speciálních nátěrových hmot) smějí být nanášeny a smějí zasychat při teplotě
+okolního vzduchu nejméně +5 °C, pokud není výrobcem nátěrové hmoty stanoveno jinak,
+• během otryskávání a žárového stříkání kovového povlaku nesmí dojít k ovlhčení povrchu (orosení) vlivem
+snížení teploty povrchu podkladového kovu pod teplotu rosného bodu,
+• teplota povrchu podkladového kovu musí být o +3 °C vyšší než teplota rosného bodu, za okamžitých
+podmínek, tj. teploty a relativní vlhkosti vzduchu. Vztah mezi teplotou vzduchu, relativní vlhkosti vzduchu
+a teplotou povrchu je uveden v ČSN ISO 8502-4,
+• teplota natíraného povrchu nesmí být vyšší než +40 °C.
+• při provádění protikorozní ochrany OK v dílně nemá být relativní vlhkost vzduchu vyšší než 75 % (mimo
+alkylsilikátových NH). Je třeba zajistit, aby nátěry byly nanášeny a aby zasychaly v bezprašném prostředí,
+• nátěry je zakázáno zhotovovat na mokrý a orosený povrch,
+• měření pro určení rosného bodu podle ČSN ISO 8502-4 je nutno provádět podle momentálních
+povětrnostních podmínek a při jejich změně, nejméně však 2 x denně,
+• o naměřených údajích, tj. teplotě vzduchu, teplotě povrchu a relativní vlhkosti vzduchu se vede záznam
+ve stavebním deníku,
+• stanovení okamžitých povětrnostních podmínek se provádí v místech, kde se momentálně provádějí práce.
+25.B.8. SOUHLAS S PROVEDENÝMI PRACEMI, PŘEVZETÍ PRACÍ
+25.B.8.1 Souhlas s provedenými pracemi
+Když zhotovitel dokončí práce, oznámí tuto skutečnost stavebnímu dozoru. Předá mu zprávu o rozsahu prací
+ve vztahu k požadavkům smlouvy o dílo.
+Zpráva musí obsahovat přehled všech provedených kontrol a zkoušek ve vztahu k TP. Ve zprávě musejí být
+uvedeny podle protokolů sepsaných v průběhu provádění výsledky všech zkoušek, skutečná spotřeba výrobků,
+období nanášení jednotlivých vrstev, provedení detailů.
+Zpráva musí obsahovat potvrzené dokumenty skutečného provedení stavby (písemnosti, výkresy, stavební deník
+atd. - viz 25.B.1.10).
+Stavební dozor posoudí tuto zprávu a po jejím případném doplnění a na základě průběžného dozoru nad činností
+zhotovitele, na základě přejímání jednotlivých vrstev a výsledků kontrolních zkoušek vysloví písemně souhlas
+s provedenými pracemi.
+25.B.8.2. Převzetí prací
+Souhlas stavebního dozoru s provedenými pracemi, potvrzující, že práce uvedené ve zprávě zhotovitele souhlasí
+se skutečností, je nutnou podmínkou pro převzetí prací od zhotovitele.
+Součástí převzetí prací protikorozní ochrany je vzhledové hodnocení celkového stavu protikorozního povlaku
+(viz ČSN EN ISO 4618-2). Kontroluje se zejména:
+• rovnoměrnost nanesení na všechny plochy,
+• překrytí hran a obtížně dostupných míst,
+• celistvost,
+• zanesení nečistot do zaschlého nátěru,
+13
+• výskyt nepřípustných vad jako jsou trhliny, puchýřování, praskání, odlupování, pórovitost, kráterky, slzy,
+apod..
+Součástí převzetí je i měření celkové tloušťky protikorozního povlaku.
+Při převzetí prací musí být odevzdána dokumentace skutečného provedení stavby, případně musí být rozhodnuto
+o termínu dodání této dokumentace.
+Jednání o převzetí prací se zúčastní správce objektu.
+25.B.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+25.B.9.1 Kontrolní měření
+Kontrolní měření se provádí v rozsahu kontrol uvedených v oddíle 25.B.5.
+25.B.9.2 Měření posunů a přetvoření
+Neurčuje se.
+25.B.10 EKOLOGIE
+25.B.10.1 Všeobecně
+Podle typu protikorozního povlaku a povahy činností při jeho zhotovování je nutno řídit se podmínkami danými
+v kap. 1 TKP.
+Nátěrové hmoty patří k chemickým látkám. Musí se s nimi zacházet podle příslušných právních předpisů
+v platném znění.
+25.B.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ
+OCHRANA
+25.B.11.1 Bezpečnost práce a technických zařízení
+Podmínky pro bezpečnost práce a technických zařízení jsou dány předpisem ČD Op 16 a kap. 1 TKP.
+25.B.11.2 Požární ochrana
+Zásady požární ochrany jsou uvedeny v kap. 1 TKP.
+25.B.12 CITOVANÉ A SOUVISEJÍCÍ NORMY A PŘEDPISY
+25.B.12.1 Obecné ustanovení
+Uvedené citované a související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, případně
+v době jejich aktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu
+kap. 1 TKP, oddílu 1.3, tj. právních předpisů, technických norem a předpisů a předpisů ČD.
+14
+25.B.12.2 Citované normy a předpisy
+ČSN 03 8157 Ochrana proti korozi. Kovové a nekovové povlaky. Nedestruktivní metody
+měření tloušťky. Všeobecné požadavky.
+ČSN 67 3007 Vzorkování nátěrových hmot
+ČSN 67 3061 Stanovení tloušťky nátěru
+ČSN 67 3062 Stanovení tloušťky mokrého nátěru
+ČSN EN 971-1 Nátěrové hmoty - Názvy a definice v oboru nátěrových hmot - Část : obecné
+(67 0010) pojmy
+ČSN EN 22063 Kovové a jiné anorganické povlaky - Žárové stříkání - Zinek, hliník a jejich
+(03 8551) slitiny (ISO 2063: 1991 modifikovaná)
+ČSN EN 24624 Nátěrové hmoty. Odtrhová zkouška přilnavosti
+(67 3077)
+ČSN EN ISO 1461 Žárové povlaky zinku nanášené ponorem na železných a ocelových
+(03 8558) výrobcích - Specifikace a zkušební metody
+ČSN EN ISO 2808 Nátěrové hmoty - Stanovení tloušťky nátěru
+(673061)
+ČSN EN ISO 4618-2 Nátěrové hmoty - Názvy a definice v oboru nátěrových hmot - Část 2:
+(67 0010) Odborné termíny vztahující se k charakterizaci a vlastnostem nátěrů
+ČSN EN ISO 4618-3 Nátěrové hmoty - Názvy a definice v oboru nátěrových hmot - Část 3:
+(67 0010) Příprava povrchu a způsoby aplikace
+ČSN EN ISO 8503-1 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8223) výrobků - Charakteristiky drsnosti povrchu otryskaných ocelových podkladů -
+Část 1: Specifikace a definice pro hodnocení otryskaných povrchů s pomocí
+ISO komparátorů profilů povrchu
+ČSN EN ISO 8503-2 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8223) výrobků - Charakteristiky drsnosti povrchu otryskaných ocelových podkladů -
+Část 2: Hodnocení profilu povrchu otryskané oceli komparátorem
+ČSN EN ISO 9001 Systémy jakosti. Model zabezpečování jakosti při návrhu, vývoji, výrobě,
+(01 0321) instalaci a servisu
+ČSN EN ISO 9002 Systémy jakosti. Model zabezpečování jakosti při výrobě, instalaci a servisu
+(01 0322)
+ČSN EN ISO 11124-1 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8234) výrobků - Specifikace kovových otryskávacích prostředků - Část 1: Obecný
+úvod a klasifikace
+ČSN EN ISO 11126-1 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8236) výrobků - Specifikace nekovových otryskávacích prostředků - Část 1: Obecný
+úvod a klasifikace
+ČSN EN ISO 12944-1 Nátěrové hmoty - Protikorozní ochrana ocelových konstrukcí ochrannými
+(03 8241) nátěrovými systémy - Část 1: Obecné zásady
+ČSN EN ISO 12944-2 Nátěrové hmoty - Protikorozní ochrana ocelových konstrukcí ochrannými
+(03 8241) nátěrovými systémy - Část 2: Klasifikace vnějšího prostředí
+ČSN EN ISO 12944-3 Nátěrové hmoty - Protikorozní ochrana ocelových konstrukcí ochrannými
+(03 8241) nátěrovými systémy - Část 3: Navrhování
+ČSN EN ISO 12944-4 Nátěrové hmoty - Protikorozní ochrana ocelových konstrukcí ochrannými
+(03 8241) nátěrovými systémy - Část 4: Typy povrchů podkladů a jejich příprava
+ČSN EN ISO 12944-5 Nátěrové hmoty - Protikorozní ochrana ocelových konstrukcí ochrannými
+(03 8241) nátěrovými systémy - Část 5: Ochranné systémy
+ČSN EN ISO 12944-6 Nátěrové hmoty - Protikorozní ochrana ocelových konstrukcí ochrannými
+(03 8241) nátěrovými systémy - Část 6: Laboratorní zkušební metody
+15
+ČSN EN ISO 12944-7 Nátěrové hmoty - Protikorozní ochrana ocelových konstrukcí ochrannými
+(03 8241) nátěrovými systémy - Část 7: Provádění a dozor při zhotovování nátěrů
+ČSN EN ISO 12944 8 Nátěrové hmoty - Protikorozní ochrana ocelových konstrukcí ochrannými
+(03 8241) nátěrovými systémy - Část 8: Zpracování specifikací pro nové a údržbové
+nátěry
+ČSN EN ISO 14918 Žárové stříkání - Zkoušení způsobilosti pracovníků provádějících žárové
+(038750) stříkání
+ČSN EN ISO 14713 Ochrana železných a ocelových konstrukcí proti korozi - Povlaky zinku
+(03 8261) a hliníku - Směrnice
+ČSN EN ISO 14922-1 Žárové stříkání - Požadavky na jakost při žárovém stříkání konstrukcí -Část 1:
+(03 8711) Směrnice pro jejich volbu a použití
+ČSN EN ISO 14922-2 Žárové stříkání - Požadavky na jakost při žárovém stříkání konstrukcí -Část 2:
+(03 8711) Komplexní požadavky na jakost
+ČSN EN ISO 14922-3 Žárové stříkání - Požadavky na jakost při žárovém stříkání konstrukcí -Část 3:
+(03 8711) Standardní požadavky na jakost
+ČSN EN ISO 14922-4 Žárové stříkání - Požadavky na jakost při žárovém stříkání konstrukcí -Část 4:
+(03 8711) Základní požadavky na jakost
+ČSN ISO 2064 Kovové a jiné anorganické povlaky. Definice a dohody týkající se měření
+(03 8155) tloušťky.
+ČSN ISO 2409 Nátěrové hmoty. Mřížková zkouška
+(67 3085)
+ČSN ISO 2178 Nemagnetické povlaky na magnetických podkladech. Měření tloušťky
+(03 8181) povlaku. Magnetická metoda
+ČSN ISO 8044 Koroze kovů a slitin. Slovník
+(03 8001)
+ČSN ISO 8501-1 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8221) výrobků - Vizuální vyhodnocení čistoty povrchu - Část 1: Stupně zarezavění
+a stupně přípravy ocelového podkladu bez povlaku a ocelového podkladu po
+úplném odstranění předchozích povlaků
+ČSN ISO 8501-2 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8221) výrobků - Vizuální vyhodnocení čistoty povrchu - Část 2: Stupně přípravy
+dříve natřeného ocelového podkladu po místním odstranění předchozích
+povlaků
+ČSN ISO 8502-4 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8222) výrobků - Zkoušky pro vyhodnocení čistoty povrchů - Část 4: Směrnice pro
+odhad pravděpodobnosti kondenzace vlhkosti před nanášením nátěrů
+ČSN ISO 8504-1 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8224) výrobků - Metody přípravy povrchu - Část 1: Obecné zásady
+ČSN ISO 8504-2 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8224) výrobků - Metody přípravy povrchu - Část 2: Otryskávání
+ČSN ISO 8504-3 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8224) výrobků - Metody přípravy povrchu - Část 3: Ruční a mechanizované čištění
+ČD S 5/4 Protikorozní ochrana ocelových konstrukcí
+OTP Obecné technické podmínky Českých drah, s.o. pro dokumentaci železničních
+mostních objektů (č.j. 794/2000 - O 13)
+OTP Obecné technické podmínky Českých drah s.o. pro ochranné nátěrové
+systémy ocelových konstrukcí mostních objektů (č.j. 955/2000 - O 13)
+ČD Op 16 Pravidla o bezpečnosti a ochraně zdraví při práci
+25.B.12.3 Související normy a předpisy
+ČSN 03 8215 Stanovení zamaštění kovových povrchů
+ČSN 03 8220 Zásady povrchové úpravy nátěrem
+16
+ČSN 03 8260 Ochrana ocelových konstrukcí proti atmosférické korozi. Předpisování,
+provádění, kontrola
+ČSN ISO/TR 8502-1 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8222) výrobků. Zkoušky pro vyhodnocení čistoty povrchu - Část 1: Provozní
+metody pro rozpustné korozní produkty železa
+ČSN ISO 8502-2 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8222) výrobků. Zkoušky pro vyhodnocení čistoty povrchu - Část 2: Laboratorní
+stanovení chloridů na očištěném povrchu
+ČSN ISO 8502-3 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8222) výrobků. Zkoušky pro vyhodnocení čistoty povrchu - Část 3: Stanovení
+prachu na ocelovém povrchu připraveném pro natírání (metoda snímání
+samolepicí páskou)
+ČSN ISO 9223 Koroze kovů a slitin. Korozní agresivita atmosfér. Klasifikace
+(03 8203)
+25.B.12.4 Související kapitoly TKP
+Kapitola 1 Všeobecně
+Kapitola 19 Ocelové mosty a konstrukce
+17
+Poznámky:
+18
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB ČESKÝCH DRAH
+Vydavatel: České dráhy, s.o. - Divize dopravní cesty, o.z.
+P r v n í v y d á n í / z roku 1996/ bylo vyhotoveno a připomínkováno v tomto složení:
+Zpracovatel: PRAGOPROJEKT, a.s., a SUDOP Praha, a.s.
+Zpracovatel kap. 25: část A-Ing. Šetřil (SUDOP Praha, a.s.),
+část B-Ing. Kubátová (SVÚOM Praha, a.s.)
+Technická rada: Ing. Milan Strnad (Pragoprojekt, a.s.), Ing. Miloslav Bažant (Pragoprojekt, a.s.),
+Ing. Jiří Stříbrný (SUDOP Praha, a.s.), Ing. Petr Lapáček (SUDOP Praha, a.s.),
+Ing. Vítězslav Herle (SG-Geotechnika, a.s.), Ing. Jiří Bureš (ČD-DDC),
+Ing. Ondřej Chládek (ČD-DDC), Ing. Danuše Marusičová (ČD-DDC),
+Ing. Pavel Stoulil (MD ČR)
+T ř e t í - aktualizované v y d á n í /z roku 2000/ včetně z m ě n y č. 1 /z roku 2001/ :
+Zpracovatel: České dráhy, s.o., DDC, o.z., Technická ústředna dopravní cesty Praha
+Gestor části B Ing. Milan Kučera (ČD, DDC O13)
+kapitoly 25:
+Zpracovatel připomínek k části B kapitoly 25:
+Ing. Miroslav Teichman
+(ČD, DDC, Technická ústředna dopravní cesty - sekce 13)
+Distribuce: České dráhy, s.o., DDC, o.z.
+Technická ústředna dopravní cesty - Sekce technické dokumentace
+772 58 Olomouc, Nerudova l
+tel. 950-2241, st. tel. 068-472 22 41
+fax 950-5290, st. fax 068-472 52 90
+e-mail: TUDCOTDOLCsek.@tudc.olc.cdrail.cz

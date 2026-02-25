@@ -1,0 +1,1409 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 5
+OCHRANA ZEMNÍHO TĚLESA
+Třetí - aktualizované vydání
+změna č. 6
+Schváleno generálním ředitelem SŽDC
+dne: 7.4.2008
+č.j.: 12153/08-OKS
+Účinnost od: 1.7.2008
+Počet listů : 16
+Počet příloh: 0
+Počet listů příloh: 0
+Praha 2008
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+5.1 ÚVOD 4
+5.1.1 Druhy ochran svahů tělesa železničního spodku 4
+5.1.1.1 Vegetační ochrana 4
+5.1.1.2 Technická ochrana zemních svahů 4
+5.1.1.3 Kombinovaná ochrana 5
+5.1.1.4 Technická ochrana skalních svahů 5
+5.1.1.5 Ochranné a udržovací prostory 5
+5.1.1.6 Ochrana proti padajícím kamenům 5
+5.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 5
+5.2.1 Kvalita použitých materiálů 5
+5.2.1.1 Materiál pro vegetační úpravy všeobecně 5
+5.2.1.2 Dřeviny 5
+5.2.1.3 Půda 6
+5.2.1.4 Hydroosev 6
+5.2.1.5 Drny 6
+5.2.1.6 Pleteniny 6
+5.2.1.7 Přírodní a umělé kamenivo 6
+5.2.1.8 Přírodní a umělý kámen 6
+5.2.1.9 Travní rohože 6
+5.2.1.10 Vegetační tvárnice 6
+5.2.1.11 Biodegradační rohože, protierozní síťovina (georohož) 7
+5.2.1.12 Celulární systém (geobuňky), zatravňovací panely 7
+5.2.1.13 Materiál pro úpravy skalních svahů 7
+5.2.1.14 Ochranné sítě 7
+5.2.1.15 Gabiony 8
+5.2.1.16 Hřebíkování zemin 10
+5.2.1.17 Geotextílie, geomřížky a sítě 11
+5.2.1.18 Stříkaný beton a torkretová omítka 11
+5.2.1.19 Obkladní zdi 12
+5.2.1.20 Kotvy a hřebíky 12
+5.2.1.21 Kotvené trámce a žebra 12
+5.2.1.22 Ochranné a udržovací prostory 12
+5.2.1.23 Ochrana proti padajícím kamenům 13
+5.3 TECHNOLOGICKÉ POSTUPY PRACÍ 14
+5.3.1 Vegetační ochrany všeobecně 14
+5.3.2 Hlavní zásady při používání vegetačních ochran 14
+5.3.3 Hydroosev 14
+5.3.4 Drnování 14
+5.3.5 Pleteniny 14
+5.3.6 Travní rohože 15
+5.3.7 Vegetační tvárnice 15
+5.3.8 Geotextilie a hydroosev 15
+5.3.9 Gabiony 15
+5.3.10 Hřebíkování zemin 17
+5.3.11 Plombování dutin 18
+5.3.12 Těsnění spár (trhlin nebo puklin) 19
+5.3.13 Podezdívání skalních bloků 19
+5.3.14 Kotvení skalních bloků 19
+5.3.15 Ochranné sítě 19
+5.3.16 Stříkaný beton a torkretová omítka 20
+5.3.17 Obkladní zdi 20
+5.3.18 Kotvení 21
+5.3.19 Kotvené trámce a žebra 22
+1
+5.3.20 Ochranné a udržovací prostory 22
+5.3.21 Ochrana proti padajícím kamenům 22
+5.3.22 Železniční těleso ve styku s vodními toky a díly 22
+5.4 DODÁVKA, SKLADOVÁNÍ A POČÁTEČNÍ ZKOUŠKY 22
+5.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 23
+5.5.1 Vegetační ochrana 23
+5.5.2 Technická ochrana 23
+5.5.3 Kombinovaná ochrana 23
+5.5.4 Gabiony 23
+5.5.5 Kotvy a hřebíky 23
+5.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 23
+5.6.5 Záruky, údržba v záruční době 24
+5.7 KLIMATICKÁ OMEZENÍ 24
+5.7.1 Osévání 24
+5.7.2 Výsadba dřevin 24
+5.7.3 Drnování 25
+5.7.4 Pleteniny 25
+5.7.5 Betonářské práce 25
+5.7.6 Injektování 25
+5.7.7 Použití svorníků 25
+5.7.8 Zemní práce 25
+5.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 25
+5.8.1 Odsouhlasení prací 25
+5.8.2 Převzetí prací 25
+5.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 26
+5.9.1 Sklonitost svahů 26
+5.9.2 Vegetační ochrany 26
+5.9.3 Technické ochrany 26
+5.9.4 Kotvy a hřebíky 26
+5.10 EKOLOGIE 27
+5.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 27
+5.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 28
+5.12.1 Technické normy 28
+5.12.2 Předpisy 30
+5.12.3 Související kapitoly TKP 31
+2
+Seznam zkratek
+ČSN Česká norma
+DLHM Dlouhodobý hmotný majetek
+OTP Obecné technické podmínky
+POTV Prostor ohrožení trakčním vedením
+SŽDC Správa železniční dopravní cesty, státní organizace
+TKP Technické kvalitativní podmínky
+TP Technické podmínky
+ZTKP Zvláštní technické kvalitativní podmínky
+3
+5.1 ÚVOD
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP -
+Všeobecně.
+Všechny práce a konstrukce, které jsou obsaženy v této kapitole TKP, musí být provedeny v souladu
+s projektovou dokumentací, s požadavky Technických kvalitativních podmínek staveb státních drah (dále jen
+TKP) a případně Zvláštních technických kvalitativních podmínek (dále jen ZTKP).
+Kapitola řeší ochranu svahů tělesa železničního spodku, zemních a skalních zářezů a ochranu zemního tělesa
+zřízením ochranných opatření a udržovacích prostorů. Tato ochrana může být vegetační, technická (ochrana
+zemního tělesa, ochrana skalních svahů a ochranné a udržovací prostory) a kombinovaná (spojení technické
+a vegetační ochrany).
+Ochrana svahů tělesa železničního spodku musí zajišťovat bezporuchovou funkci tělesa železničního spodku po
+dobu životnosti železničního spodku, tj. cca 50 roků před nepříznivými účinky povětrností (srážková voda,
+mráz, agresivní ovzduší apod.) a všemi dalšími v úvahu přicházejícími vlivy.
+Součástí této kapitoly nejsou technická opatření pro zachytávání podzemních, event. povrchových vod, což
+obsahuje kapitola 4 TKP - Odvodnění tratí a stanic.
+Tato kapitola dále úzce souvisí v případě vegetačních ochran s kapitolou 15 TKP - Vegetační úpravy, v případě
+technických ochran zemních svahů s kapitolou 3 - Zemní práce, v případě technických ochran skalních svahů
+s kapitolou 17 TKP - Beton pro konstrukce a kapitolou 18 TKP - Betonové mosty a konstrukce (Plombování
+dutin, Těsnění spár, Podezdívání skalních bloků, Obkladní zdi, Kotvené trámce a žebra), v případě ochrany proti
+padajícím kamenům a u ocelových trámců a žeber s kapitolou 19 TKP - Ocelové mosty a konstrukce, v případě
+ochrany stříkaným betonem a torkretovou omítkou s kapitolou 20 TKP - Tunely, v případě kotvení s kapitolou
+23 TKP - Sanace inženýrských objektů a kapitolou 24 TKP - Zvláštní zakládání.
+5.1.1 Druhy ochran svahů tělesa železničního spodku
+5.1.1.1 Vegetační ochrana
+5.1.1.1.1 Rozprostření ornice, osetí, případně vysázení dřevin
+5.1.1.1.2 Smísení jalové zeminy s ornicí a osetí
+5.1.1.1.3 Drnování
+5.1.1.1.4 Pleteniny
+5.1.1.1.5 Plůtky
+5.1.1.1.6 Hydroosev
+5.1.1.2 Technická ochrana zemních svahů
+5.1.1.2.1 Gabiony
+5.1.1.2.2 Hřebíkování zemin
+5.1.1.2.3 Dlažby
+5.1.1.2.4 Pohozy, štěrkové koberce
+5.1.1.2.5 Rovnaniny
+5.1.1.2.6 Obklady
+5.1.1.2.7 Geotextilní matrace
+5.1.1.2.8 Geotextílie
+5.1.1.2.9 Geomřížky
+5.1.1.2.10 Sítě
+5.1.1.2.11 Rohože
+4
+5.1.1.3 Kombinovaná ochrana
+5.1.1.3.1 Spojení technické ochrany tělesa železničního spodku ve styku s vodními toky a díly s vegetační
+ochranou
+5.1.1.3.2 Travní rohože
+5.1.1.3.3 Vegetační tvárnice
+5.1.1.3.4 Geotextilie ve spojení s hydroosevem
+5.1.1.3.5 Biodegradační rohože
+5.1.1.3.6 Protierozní síťovina (georohož)
+5.1.1.3.7 Celulární systém (geobuňky)
+5.1.1.3.8 Zatravňovací panely
+5.1.1.4 Technická ochrana skalních svahů
+5.1.1.4.1 Technická ochrana skalních svahů místními úpravami
+5.1.1.4.1.1 Plombování dutin
+5.1.1.4.1.2 Těsnění spár
+5.1.1.4.1.3 Podezdění skalních bloků
+5.1.1.4.1.4 Kotvení skalních bloků
+5.1.2.4.1.5 Kotvené trámce a žebra
+5.1.1.4.2 Technická ochrana skalních svahů ochrannými sítěmi a vegetačními hmotami
+5.1.1.4.3 Technická ochrana skalních svahů plášti ze stříkaného betonu a torkretovými omítkami
+5.1.1.4.4 Technická ochrana skalních svahů obkladními zdmi
+5.1.1.4.4.1 Monolitické obkladní zdi
+5.1.1.4.4.2 Polomontované obkladní zdi
+5.1.1.4.4.3 Montované obkladní zdi
+5.1.1.5 Ochranné a udržovací prostory
+5.1.1.6 Ochrana proti padajícím kamenům
+5.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+5.2.1 Kvalita použitých materiálů
+5.2.1.1 Materiál pro vegetační úpravy všeobecně
+Pro kvalitu půdy, rostlinného materiálu, osiva, vody, organických hmot, hnojiva a protierozních přísad platí
+kapitola 15 TKP.
+5.2.1.2 Dřeviny
+U dřevin je nutno jejich výběr podřídit klimatickým a půdním podmínkám.
+5
+5.2.1.3 Půda
+Rozprostřená vrstva půdy nebo zeminy s vlastnostmi blízkými ornici musí být o tloušťce min. 0,15 m. Podle
+chemických rozborů se půda doplní základními živinami ve smyslu kapitoly 15 TKP. Travní směsi se použijí
+v množství od 30g/m2do 60g/m2. V extrémních podmínkách a při snížené klíčivosti se výsevné množství úměrně
+zvýší.
+5.2.1.4 Hydroosev
+U hydroosevu musí být tloušťka nastříkané slehnuté vrstvy 0,005 m až 0,05 m a musí být souvislá. Směs vody
+a travního semene musí být bez toxických příměsí a doplněna dostatečným množstvím umělých hnojiv,
+organické hmoty a protierozní přísady ve smyslu kapitoly 15 TKP.
+5.2.1.5 Drny
+Při drnování, které je vhodné pro ochranu svahů menšího rozsahu, musí být drny srýpány ručně do čtvercových
+tabulí o straně nejméně 0,25 m. Tloušťka drnů je dána druhem zeminy (obvykle 0,05 až 0,07 m), ze které jsou
+snímány.
+5.2.1.6 Pleteniny
+Pro pleteniny je nejvhodnější materiál ze všech druhů vrb a jív. Nejvhodnější je užití prutů v době od opadání
+listů do jejich vyrašení. Pokud je nutno zřizovat pleteniny v době vegetace, musí se pruty zbavit listů.
+5.2.1.7 Přírodní a umělé kamenivo
+Přírodní kamenivo použité při úpravách svahů ve styku s vodními toky a díly (pohozy, štěrkové koberce,
+rovnaniny) musí odpovídat požadavkům Vzorového listu železničního spodku Ž 6.
+Výzisk ze štěrkového lože je možné použít, pokud nepřekročí limity pro třídu vyluhovatelnosti I podle Zákona
+č. 185/2001 Sb. „O odpadech“, i když se zde o odpady nejedná.
+Umělé kamenivo vzniklé průmyslovou výrobou (např. recyklací betonových konstrukcí) musí splňovat fyzikální
+a mechanické požadavky kladené na přírodní kamenivo a musí být nezávadné z hlediska životního prostředí. Pro
+umělé kamenivo určené k ochraně svahů musí být zpracovány ZTKP a lze jej použít pouze se souhlasem
+stavebního dozoru.
+5.2.1.8 Přírodní a umělý kámen
+Přírodní kámen použitý při úpravách svahů ve styku s vodními toky a díly (pohozy, štěrkové koberce, patky
+a záhozy, dlažby, rovnaniny) musí odpovídat požadavkům ČSN 72 1860, v případě dlažby také ČSN 72 1861.
+Lomový kámen určený do konstrukce k ochraně svahů musí splňovat požadavky projektové dokumentace.
+Použití umělého kamene (např. betonových výrobků, recyklovaných betonových bloků) k ochraně svahů musí
+odpovádat požadavkům Vzorového listu železničního spodku Ž 6 a projektové dokumentací.
+5.2.1.9 Travní rohože
+Travní rohože musí být vytvořeny ze sítí ze syntetických nerozpadavých látek, pod kterými je položena živná
+vrstva z odpadových směsných, rozpaduschopných textilních materiálů, obsahujících travní semeno.
+5.2.1.10 Vegetační tvárnice
+Vegetační tvárnice musí svým tvarem odpovídat katalogové nabídce výrobce a musí svojí kvalitou odpovídat
+podmínkám odolnosti proti účinkům vody a chemických látek podle ČSN 73 1326, mrazuvzdornosti,
+trvanlivosti a pevnosti.
+Pro betonové dílce se vyžaduje beton třídy C 30/37 XF3 podle ČSN EN 206-1.
+Vegetační tvárnice z plastů musí splňovat všechny vlastnosti deklarované výrobcem.
+6
+5.2.1.11 Biodegradační rohože, protierozní síťovina (georohož)
+Biodegradační rohože jsou tvořeny přírodními látkami organického původu, které jsou kompletně biologicky
+odbouratelné. Musí umožňovat dobrou akumulaci vody i na strmých svazích a vytvářet vlhké a teplé mikroklima
+pro optimální podmínky vzrůstu. Zřizují se při kombinované ochraně k dočasné stabilizaci povrchu svahu.
+Použije se takový typ rohože, aby nedošlo k fotodegradaci dříve, než se vytvoří souvislý porost vegetace, který
+převezme protierozní ochranu svahu.
+Protierozní prostorová síťovina (georohož) se zřizuje z PP a PEHD. Musí být odolná proti UV záření. Použije se
+při kombinované ochraně k trvalé stabilizaci povrchu svahu.
+Biodegradační rohože a protierozní síťovina musí umožnit spolehlivé zakořenění vegetace. Musí být nezávadná
+pro životní prostředí, tvarově stálá, odolávat unášecí síle přívalové vody, poryvům větru, mechanickému zatížení
+při montáži a údržbě a nesmí bránit růstu vegetace. Minimální pevnost materiálů v tahu v obou směrech je
+3 kN.m-3. Současně musí splňovat všechny vlastnosti deklarované výrobcem.
+5.2.1.12 Celulární systém (geobuňky), zatravňovací panely
+Celulární systém (geobuňky) je tvořen PE flexibilní buněčnou strukturou podobnou včelímu plástu. Geobuňky
+musí být tvarově stálé, aby nedošlo k porušení na spojích a ke zborcení na svahu.
+Zatravňovací panely tvoří tuhou buněčnou strukturu z plastů.
+Prostorové buňky obou systémů musí být nezávadné pro životní prostředí a musí splňovat všechny vlastnosti
+deklarované výrobcem. Vyplňují se zrnitým materiálem nebo zeminou. Podle požadavku na druh ochrany svahu
+se zatravní, případně se do buněk vysadí dřeviny.
+5.2.1.13 Materiál pro úpravy skalních svahů
+Materiál použitý pro ochranu skalních svahů místními úpravami musí mít tyto minimální pevnosti v tlaku:
+kámen 60,0 MPa, cihly 20,0 MPa, prostý beton 25,0 MPa.
+Při spárování se použije aktivovaná cementová malta nebo stříkaný beton o minimální pevnosti v tlaku
+25,0 MPa.
+Pro vyplnění spár a trhlin injektáží se použije aktivované cementové mléko o minimální pevnosti v tlaku
+20,0 MPa nebo cementová malta aktivovaná o minimální pevnosti v tlaku 25,0 MPa. Dále je možno použít
+materiál na bázi pryskyřic. V tomto případě je nutno se řídit předpisem SR 105/1(S)-Používání plastbetonu
+v traťovém hospodářství.
+Při podezdívání musí použitý materiál vykazovat tyto minimální pevnosti v tlaku: kámen 60,0 MPa, beton pro
+zdivo betonové 25,0 MPa, beton pro železobeton 30,0 MPa.
+(Pozn: všechny uvedené hodnoty pevností platí pro krychelnou pevnost v tlaku)
+5.2.1.14 Ochranné sítě
+Pro ochranu skalních svahů, na nichž dochází v důsledku působení různých činitelů (zejména zvětrávání)
+k opadávání úlomků a kusů horniny, se používají ocelové sítě nebo sítě z geosyntetických materiálů. Ochranné
+sítě z ocelového pletiva, které mají plnit funkci trvalé ochrany svahu, musí splňovat tato kritéria: drát
+minimálního průměru 2,2 mm, počáteční zkoušky typu drátu a pletiva musí splňovat podmínku tahové pevnosti
+drátu min. 350 N/mm2, tažnost min 8 %, tloušťka pozinkování min. 240 g/m2, odolnost proti korozi 350 hodin.
+Kvalita použitého materiálu musí být stanovena projektovou dokumentací.
+Slouží-li sítě jen k ochraně pracovníků nebo pro krátkodobé zajištění svahu před provedením jiného způsobu
+ochrany (tj. dočasná ochrana), je možno použít sítě z geosyntetických materiálů, případně ocelové pletivo
+s nižším nánosem zinku než určuje první odstavec tohoto článku.
+V místech, kde hrozí nebezpečí porušení sítí z geosyntetických materiálů (nebezpečí požárů, chemických
+havárií, dopravních nehod, vandalismu aj.), nelze tyto sítě bez účinné ochrany použít.
+V místech menších sklonů a tam kde nehrozí nebezpečí porušení sítí (podle předcházejícího odstavce), je možno
+použít geomřížky z polyethylenu (použití musí být v dokumentaci posouzeno). Materiál musí být odolný vůči
+působení UV záření a dalším povětrnostním vlivům.
+Na ochranné sítě, použité na stavbě musí být doloženo prohlášení o shodě, certifikát na výrobek dle zákona
+22/1997 Sb. v platném znění a Vyhl. 163/2002 Sb., technická dokumentace a výsledky počátečních zkoušek
+typu v souladu s požadavky dokumentace.
+7
+5.2.1.15 Gabiony
+Gabionová konstrukce je prvek ve tvaru krychle nebo kvádru, vyrobený z šestibokého ocelového pletiva,
+svařovaných ocelových sítí, případně vysokopevnostních polymerových geomříží vyplněný přírodním
+kamenivem, lomovým kamenem, zeminou, recyklátem apod. Podle provedení se gabiony dělí na vázané
+a svařované. Podle rozměrů se dělí na koše a matrace.
+Na elektrizovaných tratích musí být použití gabionů posouzeno v souladu s ustanovením předpisu SŽDC S4,
+příloha 27.
+V blízkosti stejnosměrné trakční proudové soustavy se doporučuje přednostně používat konstrukce gabionů
+z nevodivých nebo izolovaných materiálů. Pokud jsou gabiony v prostoru ohrožení trakčním vedením (dále jen
+v POTV) provedeny z vodivých materiálů, musí mít ochranu před nebezpečným dotykem podle ustanovení
+normy ČSN 34 1500, ČSN EN 50122-1 a v souladu s ČSN 34 2613, ČSN 34 2614 a ČSN 33 2000-4-41.
+Pokud je pro konstrukci gabionů použito elektricky vodivých materiálů, vzniká riziko současného dotyku mezi
+neživou částí trakčního zařízení a vodivou cizí částí (gabiony) s možným rozdílným potenciálem podle
+ČSN 33 2000-4-41. Vzdálenost je dostatečná, jestliže není menší než 2,50 m. Tuto vzdálenost je nutno dodržet
+vždy mezi nejbližšími povrchy stožárů TV a gabionů. Zajištění předpisového požadavku lze technicky řešit
+přerušením vodivé gabionové konstrukce v požadaveném odstupu a nahrazení konstrukcí elektricky nevodivou.
+Použití možných úprav nebo náhradních konstrukcí řeší projektová dokumentace podle místních podmínek
+(násep/výkop, výška konstrukce, kolize s odvodňovacím zařízením, kolize s kabelovými trasami, kolize s PHS,
+vlivy podmínek slaboproudu a silnoproudu apod.). Pro navrhování uvedených konstrukcí platí zásady podle
+odpovídajících kapitol TKP.
+Vázaný gabion (koš) - pletivo pro vázaný gabion je vyrobeno z galvanizovaného ocelového drátu o průměru
+min. 2,7 mm. Tahová pevnost drátu před spletením musí být min. 400 MPa. Minimální pokovení drátu zinkem
+je 260 g/m2. Pro extrémní korozní podmínky lze pozinkovaný drát potáhnout PVC o tl. 0,4 – 0,6 mm (tuto
+úpravu nelze použít, pokud se jedná o POTV). Šířka oka se obvykle pohybuje v mezích 50 mm – 100 mm.
+Pletivo musí být vyrobeno tak, aby nemohlo dojít k jeho rozpletení při poškození jednoho drátu, t.j. má min.
+dvojité zakroucení.
+Obvodové hrany vázaného gabionu musí být bezpečně zpevněny vázacím drátem a zajištěny ocelovou spirálou
+tak, aby všechny spoje měly přinejmenším stejnou pevnost jako pletivo. Drát pro zpevnění obvodových hran
+musí mít tloušťku min. 3,4 mm pro sítě z drátu o průměru 2,7 mm a 3,9 mm u sítí z drátu o průměru 3,0 mm.
+Podle potřeby se zajišťuje tvarová poloha gabionu výztužným drátem, kterým se spojují protější svislé stěny
+(4 výztuhy na 1 m2 ). Tloušťka tohoto drátu musí být min. 2,0 mm. Při použití velmi ostrohranného kamene se
+doporučuje použít spojovací drát tloušťky 2,2 mm. Vázací drát pro spojování jednotlivých košů mezi sebou
+a vyztužení hran má průměr min. 2,2 mm u koše ze sítě o tloušťce drátu 2,7 mm a min. 2,4 mm při tloušťce
+drátu pletiva 3,0 mm. Místo vázacího drátu lze použít ocelové háčky, které se po umístění stlačí do kroužků.
+Vzdálenost těchto kroužků mezi sebou nesmí překročit 0,20 m. Tloušťka drátu pro kroužky je min. 3,0 mm.
+Vázaný gabion (matrace) - pletivo pro matraci je vyrobeno z galvanizovaného ocelového drátu o průměru min.
+2,0 mm. Tahová pevnost drátu před spletením musí být min. 350 MPa. Minimální pokovení drátu zinkem je
+240 g/m2 původního povrchu drátu. Pro agresivní prostředí se drát potáhnuje PVC o tloušťce min. 0,5 mm nebo
+se drát galvanizuje zinko-hliníkovou slitinou.
+Drát pro zpevnění obvodových hran musí mít tloušťku min. 2,4 mm pro sítě z drátu o průměru 2,0 mm a 2,7 mm
+u sítí z drátu o průměru 2,2 mm. Vázací drát pro spojování jednotlivých dílů musí mít průměr min. 2,0 mm.
+Požadované vlastnosti drátu pro vázané gabiony (koše a matrace) uvádí tab. 1.
+Svařovaný gabion - u svařovaných sítí je průměr drátu min. 3,7 mm a musí být u nich zajištěna předepsaná
+pevnost svaru. Tahová pevnost drátu musí být min. 400 MPa. Minimální žárové pokovení musí být 260 g/m2
+původní plochy drátu. Velikost oka ve tvaru čtverce nebo obdélníku se obvykle pohybuje v mezích 100 mm -
+120 mm. Pevnost svarů ve smyku musí být min. 4 kN.
+Spojovacím materiálem jsou spirály, sloužící ke spojování jednotlivých stykových hran gabionové konstrukce
+a distanční spony (rohové a příčné), které slouží k zachování její tvarové stability. Oba druhy spojovacích
+materiálů mají průměr drátu min. 3,7 mm.
+Požadované vlastnosti drátu pro svařované gabiony uvádí tab. 1.
+8
+Tabulka 1 Požadavky na dráty vázaných a svařovaných gabionů
+Vlastnost Požadavek Zkušební metoda
+Tahová pevnost drátu - koš min. 400 MPa ČSN EN 10002-1
+Tahová pevnost drátu - matrace min. 350 MPa ČSN EN 10002-1
+Tažnost min. 8% ČSN EN 10002-1
+Přilnavost Zn 1) ČSN ISO 7802
+Tloušťka pozinkování min.40μm, min.260 g.m-2 ČSN EN ISO 1463
+Tolerance rozestupu drátů svařované sítě 5 mm/1 bm sítě
+Únosnost svarů ve smyku min. 4,0 kN ČSN 05 1133
+Tahová pevnost pletiva/ sítě min. 40 kN.m-2 2) ČSN EN 10002-1
+Odolnost proti korozi 350 hodin
+1) Při otočení kolem trnu o Ø 8 mm nesmí být zinková vrstva oloupaná nebo popraskaná
+2) Pro různé Ø drátů a různé velikosti ok pletiva může odběratel požadovat hodnoty odlišné
+Gabion z vysokopevnostních polymerových geomříží - pro stavbu gabionové konstrukce lze použít
+i vysokopevnostní polymerové geomříže z polyetylenu a polypropylenu, u nichž je zajištěna dlouhodobá stálost
+jejich mechanických vlastností proti působení UV záření, povětrnostním vlivům apod. Vysokopevnostní
+polymerové geomříže musí mít minimální pevnost v tahu podélně i příčně 30 kN.m-1 a tažnost max. 15%.
+Minimální rozměry oka jsou 40 mm, maximální 80 mm. Sestavení gabionu z polymerových geomříží vyžaduje
+podpůrnou konstrukci (formu).
+V místech, kde hrozí nebezpečí porušení gabionů z gesyntetických materiálů (nebezpečí požárů, chemických
+havárií, dopravních nehod, vandalismu aj.), nelze tyto gabiony bez účinné ochrany použít.
+Výplň gabionů - pro výplň gabionů, které mají statickou funkci, musí být použity pouze pevné úlomky hornin
+nebo valouny, které nepodléhají povětrnostním vlivům, neobsahují vodou rozpustné soli a nejsou křehké.
+Přednost mají horniny s vyšší měrnou hmotností a nízkou pórovitostí. Rozměry horninových úlomků musí být
+větší než průměr oka v pletivu (síti), aby nedocházelo k vypadávání kamene. Nejvhodnější jsou úlomky
+o minimální velikosti rovné 1,5 až 2 násobku průměru oka. Maximální velikost kamene je 2,5 násobek velikosti
+oka. Větší kameny než 2,5 násobek velikosti oka pletiva se mohou vyskytnout pouze ojediněle v líci. Kámen
+(úlomky) menší než průměr oka může být použit v množství, které nepřesahuje 10% - 15% celkového objemu
+pro výplň mezer a uklínování větších kamenů uvnitř gabionů (mimo líc). Pro staticky působící konstrukce je
+nutné použít kámen čistý, bez příměsí jemnozrnné zeminy ani jinak znečištěny (např. organickým materiálem).
+Kámen použitý do líce gabionů, které nemají statickou funkci (např. protihlukové a obkladní stěny) musí
+splňovat požadavky na vlastnosti kamene jako na výplň gabionů se statickou funkcí.
+Za lícovou stěnou múže být použitý i jiný materiál (netříděný kámen, říční valouny, recyklované kamenivo nebo
+beton, zemina apod.). U těchto gabionů lze připustit i růst vegetace.
+Valouny lze použít pouze při styku s vodními toky jako místní materiál z řečiště. Objem valounů může činit
+max. 60% z celkového objemu kameniva.
+Kombinace kamene a zeminy – používá se zpravidla u protihlukových clon tak, aby stěna mohla být doplněna
+výsadbou zeleně. Při kombinaci kamene se zeminou musí být gabion zevnitř vyložen separační, případně
+filtrační geotextílií (podle projektové dokumentace). Osázení zeleně je možné jak při výstavbě, tak dodatečně.
+Vlastnosti náhradních materiálů použitých pro plnění gabionů, zpětný zásyp a jejich hutnění určuje projektová
+dokumentace nebo ZTKP.
+Požadavky na vlastnosti výplňového kamene uvádí tab.2.
+9
+Tabulka 2 Požadavky na výplňový kámen gabionů
+Vlastnost Požadavek
+Pevnost v tlaku min. 50 MPa
+Nasákavost max. 1,5% hmotnosti
+Trvanlivost 3) max. 9%
+Mrazuvzdornost 4)
+Sypná hmotnost min.16 kN. m-3
+Pórovitost kamene max. 15%
+Odplavitelné částice max. 3,0% hmotnosti
+3) Zhotovitel zajistí provedení zkoušky trvanlivosti, pokud je nasákavost kamene větší než 1,5 %.
+4) Zhotovitel zajistí provedení zkoušky mrazuvzdornosti, pokud je trvanlivost kamene větší než 9 %.
+5.2.1.16 Hřebíkování zemin
+Všeobecně
+Hřebíkování je technický způsob zajištění stability zářezového svahu v zeminách. Hřebíkovaný svah se obvykle
+zhotovuje postupně s odkopáváním (tvarováním) líce svahu. Konstrukce hřebíkovaného svahu pozůstává
+z krátkých zpravidla ocelových tahových prvků – výztuže, zvané hřebík, případně cementové zálivky těchto
+hřebíků a zajištění líce svahu proti vypadávání zeminy, obvykle stříkaným betonem s výztuží. Povrch svahu je
+možno dále upravovat např. obkladem z betonových prefabrikátů apod.
+Hřebíky se osazují buď do předvrtaného vrtu a zainjektují cementovou směsí, nebo se osazují zarážením,
+zavibrováním apod. Jejich sklon je většinou kolmý k povrchu svahu. V případě svislého výkopu se vrty pro
+hřebíky provádějí ve sklonu 5 až 10° od vodorovné roviny směrem dolů, aby bylo možné vyplnit vrt zálivkou.
+Vytvořené vyztužené zemní těleso vzdoruje zemnímu tlaku, vnějšímu zatížení i povrchové erozi.
+Zemina
+Pro hřebíky nejsou vhodné štěrkové a balvanité sedimenty. Hřebíky lze zpevňovat i svahy v měkkých
+a zvětralých horninách (jílovce, slínovce, břidlice). Kvalita zemního masivu je posuzována podle výsledků
+geotechnického průzkumu. Ten musí stanovit i podmínky pro vrtání (zarážení) hřebíků, hydraulické poměry pro
+návrh hustoty a délky odvoďňovacích vrtů.
+Hřebíky
+Hřebíky jsou obvykle ocelové prvky (dráty, pruty, tyče, trubky apod.). Použití jiných materiálů než oceli (např.
+laminátu, polymerů, uhlíkových vláken) musí být uvedeno v projektové dokumentaci. Požadavky na kvalitu
+materiálů jsou určeny projektovou dokumentací a musí splňovat podmínky těchto TKP a souvisejících norem.
+Běžně se používá betonářská ocel, svorníkové tyče apod. Pokud jsou ocelové výztužné prvky v přímém
+kontaktu se zeminou (zarážené hřebíky), musí být odolné proti korozi. Způsob antikorozní ochrany, která musí
+zaručit spolehlivou funkci výztuže po celou dobu životnosti konstrukce, určuje projektová dokumentace. Plné
+ocelové tyče musí splňovat podmínky ČSN P ENV 10080, ocelové trubky musí odpovídat ČSN EN 10210-2
+nebo ČSN EN 10219-1. Válcovaný výrobek (za horka) musí vyhovovat ČSN EN 10025 nebo ČSN EN 10125-
+1,3,4. Pokud je výztužný prvek galvanizován za horka, musí splňovat požadavky ČSN EN ISO 1461.
+Injekční směs (zálivka)
+Cementová injekční směs musí splňovat požadavky norem ČSN EN 445, ČSN EN 446 a ČSN EN 447. Volba
+cementu pro injekční směs musí vzít v úvahu agresivitu prostředí, propustnost zeminy a životnost hřebíku.
+Agresivita prostředí bude určena podle ČSN EN 206-1. Volba vodního součinitele závisí na geotechnických
+podmínkách, metodě hřebíkování, požadavcích na trvalnlivost a pevnost. V případě použití přísad nesmí dojít
+k negativnímu vlivu na výztužný prvek nebo vlastnosti injekční směsi. Přísady nesmí obsahovat více než 0,1%
+chloridů, síranů nebo dusičnanů. Běžná injekční směs musí mít pevnost v tlaku min. 5 MPa před zatížením
+hřebíku. Pevnost injekční směsi po 28 dnech musí být min. 25 MPa.
+10
+Lícové opevnění
+Lícové opevnění svahu je tvořeno materiály a nebo prvky předepsanými v projektové dokumentaci. Spojení
+mezi lícovým opevněním a hřebíky musí spolehlivě zajistit přenášení napětí z líce na hřebíky a tolerovat rozdíly
+v sedání mezi lícovým opevněním a zeminou. Nejběžnější typy lícového opevnění jsou panely a bloky, stříkaný
+beton, na místě betonová stěna, sítě (ocelové nebo geosysntetické). Kvalita lícového opevnění musí být doložena
+doklady, které předkládá zhotovitel stavby stavebnímu dozoru. Požadavky na kvalitu jsou určeny projektovou
+dokumentací a musí splňovat podmínky těchto TKP a souvisejících ČSN.
+V místech, kde hrozí nebezpečí porušení lícového opevnění z gesyntetických materiálů (nebezpečí požárů,
+chemických havárií, dopravních nehod, vandalismu aj.), nelze toto opevnění bez účinné ochrany použít.
+Panely a bloky (obvykle prefabrikované)
+Betonové panely musí vyhovovat ČSN EN 206-1 a kapitole 17 TKP. Beton musí mít pevnost min. C 30/37.
+U vyztužených betonových panelů musí ocel splňovat požadavky ČSN P ENV 10080. Líc panelu v kontaktu se
+zeminou bude upraven v souladu s ČSN EN 1992-1-1.
+5.2.1.17 Geotextílie, geomřížky a sítě
+Požadavky na geotextílie jsou určeny funkcí, kterou má geotextílie jako ochrana tělesa železničního spodku
+plnit. Použití geotextílie, jež je součástí ochrany svahu je vymezeno Vzorovým listem železničního spodku
+Ž 6.11.
+Pro geotextílie s funkcí filtrační a separační platí podmínky stanovené předpisem SŽDC S4 a OTP „Geotextilie
+v tělese železničního spodku“.
+Geotextílie ve spojení s hydroosevem slouží ke zřizování vegetačního krytu na svahu z jalové zeminy. Pro tento
+účel se používá geotextílie s velkými póry.
+Geotextílie textilních matrací, přenášející tahová napětí, musí zajišťovat min. tahovou pevnost předepsanou
+projektovou dokumentací. Další vlastnosti jsou stanoveny předpisem SŽDC S4 a OTP „Geotextilie v tělese
+železničního spodku“.
+Geomřížky a sítě z geosyntetik, které jsou určeny k ochraně svahů tělesa železničního spodku musí splňovat
+obecné požadavky podle ČSN EN 12224 a musí být odolné proti UV záření a dalším povětrnostním vlivům,
+pokud jsou přímo vystaveny účinkům atmosféry.
+Geomřížky a sítě z geosyntetik, které plní statickou funkci v geotechnických konstrukcích (gabiony, vyztužené
+zeminy, lícová opevnění hřebíkovaných zemin, ochranné a záchytné sítě a.j.), musí splňovat požadavky
+stanovené projektovou dokumentací a musí být v souladu s OTP „Geomřížky a geomembrány v tělese
+železničního spodku“.
+V místech, kde hrozí nebezpečí porušení geotechnických konstrukcí s použitím gesyntetických materiálů
+(nebezpečí požárů, chemických havárií, dopravních nehod, vandalismu aj.), nelze tyto materiály bez účinné
+ochrany použít.
+Geomřížky a sítě z geosyntetik, které zajišťují protierozní ochranu svahů zemního tělesa, musí splňovat
+požadavky stanovené OTP „Geomřížky a geomembrány v tělese železničního spodku“. Velikost ok geomřížek
+nebo sítí nemá být větší než velikost efektivního zrna kamenitého svahu. Současně musí splňovat všechny
+vlastnosti deklarované výrobcem. V případě použití při kombinované ochraně musí umožnit spolehlivé
+zakořenění vegetace.
+V místech, kde hrozí nebezpečí porušení geosyntetických materiálů (nebezpečí požárů, chemických havárií),
+určených k protierozní ochraně, je vhodné geosyntetický materiál překrýt ochrannou vrstvou.
+5.2.1.18 Stříkaný beton a torkretová omítka
+Stříkaný beton
+Minimální požadovaná krychelná pevnost v tlaku stříkaného betonu je 25,0 MPa. Kamenivo pro stříkaný beton
+musí mít plynulou křivku zrnitosti, frakce 0-22 mm, případně 0-32 mm. Minimální tloušťka vrstvy stříkaného
+betonu pro dočasné konstrukce je 0,10 m. V případě trvalých konstrukcí se stříkaný beton vyztužuje ocelovou
+sítí a jeho min. tloušťka je 0,20 m. Stříkaný beton se nanáší v jedné nebo více vrstvách. Množství jemných
+součástí (< 0,08 mm) ve směsi stříkaného betonu musí být alespoň 17%. Vodní součinitel směsi se pohybuje
+11
+mezi 0,4 –0,5, vlhkost kameniva v mezích 2 –4 % a množství cementu musí být alespoň 300 kg na m3 čerstvého
+betonu. Pro tekutou směs musí být množství cementu min. 400 kg na m3 čerstvého betonu.
+Torkretová omítka
+Minimální požadovaná krychelná pevnost v tlaku torkretové omítky je 25,0 MPa.
+Ocelové sítě
+Pro vyztužení stříkaného betonu nebo torkretové omítky se používají ocelové sítě - ocelová svařovaná mřížovina
+z drátů o profilu 3,5 až 5,0 mm, velikosti ok 50/50 až 200/200 mm. Výjimečně lze použít i drátěné pletivo.
+Ocelové sítě použité jako výztuž do stříkaného betonu torkretové omítky musí splňovat požadavky projektové
+dokumentace a ČSN EN 10079. Ocelové sítě jako trvalá povrchová úprava vyztuženého svahu musí odpovídat
+požadavkům projektové dokumentace, ČSN 42 6403 a ČSN 42 6410. Protikorozní úprava ocelových sítí musí
+být v souladu s ČSN EN ISO 1461.
+Ocelová síť se připevňuje ke skalnímu podkladu kotvičkami z betonářské oceli zpravidla průměru 10 mm.
+Další požadavky na materiál jsou obsaženy v kapitole 20 TKP a v kapitole 23 TKP.
+5.2.1.19 Obkladní zdi
+Obkladní zdi zděné se budují z kamenného zdiva na cementovou maltu s kameny o minimální pevnosti v tlaku
+60,0 MPa.
+Obkladní zdi monolitické se provádějí z betonu minimální třídy C 30/37 XD3, XF3.
+U obkladních zdí polomontovaných a montovaných se používá pro nosné konstrukce betonu minimální třídy
+C 30/37 XD3, XF3, pro konstrukce výplňové beton minimální třídy C 20/25.
+Požadavky na beton obkladních zdí z betonu obsahuje kapitola 17 TKP, požadavky na konstrukce obkladních
+zdí z betonu obsahuje kapitola 18 TKP.
+5.2.1.20 Kotvy a hřebíky
+Použité kotvy pro ochranu svahů kotvením musí být provedeny jako trvalé s odpovídající antikorozní ochranou.
+Pro kotvy tyčové se používá ocel s minimální výpočtovou pevností 500 MPa, o minimálním průměru tyče
+20 mm, trubky profilu 24 mm a tloušťce stěny 4 mm. Pro kotvy kabelové se použije drát z oceli o minimální
+výpočtové pevnosti 1400 MPa a vyšší, minimálního průměru 4 mm. Pro hřebíky se používá ocel s minimální
+výpočtovou pevností 500 MPa, o minimálním průměru tyče 20 mm (bez závitu). Pro upínání kořene se používá
+injekční směs (cementová zálivka, kaše nebo malta, syntetická pryskyřice). Syntetická pryskyřice se používá
+zpravidla pro upínání tyčových kotev a hřebíků. Jako podložky pro tyčové kotvy se používají ocelové desky
+minimální tloušťky 15 mm. Pro hřebíky postačí podložky tloušťky min. 5 mm.
+Pro návrh a použití hřebíků je zpracován návrh *prEN 14490, pro kotvy platí ČSN EN 1537. Pro výplň vrtů se
+používá cementové injekční směsi z portlandského cementu a písku v poměru 1:1 až 1:2 s vodním součinitelem
+c:v = 0,4, pevnosti v tlaku minimálně 25 MPa. Pro výrobu malty se nesmí použít směsných cementů.
+Další údaje jsou uváděny v kapitole 24 TKP.
+5.2.1.21 Kotvené trámce a žebra
+V silně narušených lokalitách je možno použít pro ochranu svahů kotvené vodorovné trámy a svislá žebra. Tím
+se dosáhne roznesení kotevní síly soustavou masivních konstrukcí po velké ploše povrchu svahu zářezu. Jedná
+se o železobetonové trámy a žebra, případně je možno použít ocelové prvky.
+Bližší údaje jsou obsaženy v kapitole 18 TKP, v kapitole 19 TKP a kapitole 24 TKP.
+5.2.1.22 Ochranné a udržovací prostory
+Ochranné a udržovací prostory se zřizují ve skalních zářezech nebo odřezech, hloubky větší než 5,00 m, ve
+kterých lze očekávat vlivem zvětrávání skalních stěn spad kamenů a balvanů a tím ohrožení bezpečnosti
+železničního provozu.
+Ochranný a udržovací prostor se doplní zábranou proti padajícím kamenům v případech stanovených Vzorovým
+listem železničního spodku Ž 2.12. Výška zábrany nad niveletou koleje se zřizuje nejméně 1,00 m nad niveletou
+koleje.
+12
+Ochranné a udržovací prostory se nemusí zřizovat pokud je vhodným technickým opatřením dle Vzorového listu
+železničního spodku Ž 5 zajištěna ochrana skalního svahu před zvětráváním a padáním kamenů a balvanů.
+V odůvodněných případech se navrhnou a zřídí ochranné a udržovací prostory v hlubokých zemních zářezech,
+kde je třeba zajistit možnost příjezdu mechanizačních prostředků pro obnovovací a udržovací práce.
+Ochranné a udržovací prostory se zřizují v celé délce zářezu a ve vhodném místě musí být napojeny na veřejnou
+komunikaci.
+5.2.1.23 Ochrana proti padajícím kamenům
+Pro zajištění odvozu spadlého materiálu ze zářezu je nutno zachovat nejmenší šířku ochranného prostoru před
+zábranou 3,00 m až do konce zářezu nebo jiného vhodného místa napojeného na veřejnou komunikaci.
+V případě, že zde není dostatek místa (min. 3,00 m), je nutno vybudovat ochrannou galerii s patřičnou ochranou
+proti padajícím kamenům na straně, na které se budou zachytávat padající kameny. V případě, že vzdálenost
+svahu od tělesa trati je tak malá, že ani tato galerie nejde vybudovat, je nutno vybudovat galerii, která bude
+překrývat železniční trať. Touto ochrannou galerií budou padající kameny převáděny mimo drážní těleso.
+Způsob vybudování této ochrany musí být plně řešen v projektové dokumentaci.
+Pro zajištění bezpečnosti železničního provozu se u skalních zářezů a u hlubokých zemních zářezů (hlubších než
+5, 00 m) s výchozy skalních masivů zřizuje v případě potřeby ochrana proti padajícím kamenům.
+Zemní těleso bez ochranných a udržovacích prostorů se zajišťuje před padajícími kameny vhodným technickým
+opatřením. Tato ochrana může být provedena jako:
+− ochranné sítě,
+− záchytné sítě,
+− ochranné ploty,
+− záchytné zdi,
+− ochranné valy,
+− ochranné galerie.
+Ochranné sítě se sestávají z ochranného pletiva připevněného k povrchu svahu stěny kotevní technikou.
+Záchytné sítě jsou tvořeny nosnou sítí upnutou mezi konzolové nosníky vetknuté do skalního svahu/ stěny. Sítě
+se obvykle instalují kolmo na dráhu volného pádu kamenného bloku nebo skalního řícení. Použije-li se systém
+záchytných sítí neobvyklý u staveb SŽDC, je nutno pro tuto konstrukci zpracovat ZTKP.
+Ochranný plot může být proveden jako plnostěnný nebo s otvory. Plnostěnná konstrukce se zřizuje ze
+zabetonovaných ocelových nebo železobetonových Ι profilů s výplní ze železobetonových nebo dřevěných
+pražců, trámů, kulatiny, betonových desek, prefabrikátů z recyklovaných plastů a jiné. Konstrukce s otvory ve
+stěně se zřizuje jako zábradlí z ocelových úhelníků doplněné ocelovou sítí nebo jako silniční svodidlo
+z ocelových nebo betonových sloupků s ocelovými lany doplněné ocelovou sítí a jiné.
+Záchytné zdi se budují obvykle z betonu, železobetonu, z prefabrikátů, gabionů apod.
+Ochranné valy se zřizují ze zemin nebo vhodných sypanin v místech, kde je dostatečný prostor mezi kolejí
+a skalní stěnou nebo svahem.
+Ochranné galerie je nutno navrhnout v případě nedostatku místa v exponovaných lokalitách v závislosti na
+konfiguraci terénu.
+Ochranné stavby se navrhují pro každý případ zvlášť na základě geotechnického průzkumu a místních
+podmínek.
+Záchytné sítě, ochranné ploty, záchytné zdi, ochranné valy a ochranné galerie se posuzují na kinematické
+(dynamické) účinky padajících hmot a na zatížení zemním tlakem sypaniny za zcela naplněnou ochrannou
+konstrukcí.
+Požadavky na materiály ochranných sítí jsou uvedeny v čl. 5.2.1.14. V místech, kde hrozí nebezpečí porušení
+ochranných sítí z geosyntetických materiálů (nebezpečí požárů, chemických havárií, dopravních nehod,
+vandalismu aj.), nelze tyto materiály bez účinné ochrany použít.
+Požadavky na konstrukce z betonu, železobetonu, z betonových a železobetonových prefabrikátu jsou stanoveny
+v Kapitole 17 TKP.
+Požadavky na ocelové konstrukce a ocelové prvky jsou stanoveny v Kapitole 19 TKP. Pevné ocelové části
+ochranné konstrukce musí mít antikorozní ochranu.
+13
+Požadavky na materiály použité v gabionových konstrukcích jsou stanoveny v čl. 5.2.1.15.
+Požadavky na zeminy a materiály použité v zemních konstrukcí jsou stanoveny v Kapitole 3 TKP.
+Požadavky na materiál nosných sítí nutno stanovit v ZTKP v závislosti na typu použitého systému záchytné sítě.
+5.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+5.3.1 Vegetační ochrany všeobecně
+Pro vyznačení míst a ploch pro výsadbu, zakládání trávníků, přípravu pro výsadbu, hloubení jamek, ošetřování
+dřevin před výsadbou, výsadbu, kůly a úvazky ke kůlům, úpravu ploch po výsadbě, mulčování, hnojení,
+ošetřování dřevin po výsadbě platí zásady kapitoly 15 TKP.
+5.3.2 Hlavní zásady při používání vegetačních ochran
+Svahy náspů se opatřují vegetační ochranou od zemní pláně po úroveň původního terénu, případně po úroveň
+laviček mezi patou náspu a hranou příkopu. Zatěžovací lavice ze zemin nebo sypanin se opatřují vegetační
+ochranou celé. Svahy zářezů se opatřují vegetační ochranou od úrovně původního terénu po místo vzdálené
+0,50 m ode dna příkopu nebo po vrchní okraj zpevněné plochy příkopu.
+Vegetační ochrana se nezřizuje:
+− na svahu příkopu přilehlém ke koleji při hloubce příkopu menší než 1,00 m od zemní pláně s přihlédnutím
+k vlastnostem a stavu zemin zemního tělesa,
+− na lavičkách mezi patou náspu a hranou příkopu,
+− na stezkách,
+− na svazích konstrukční vrstvy,
+− na odřezech zemní pláně náspu.
+Ukončení vegetační ochrany svahu zářezu v místě styku s terénem nesmí tvořit překážku odtoku vody z území
+nad zářezem.
+Ochranu svahů příkopů z písčitých a prachovitých zemin je nutno posoudit v závislosti na stavu rostlé zeminy.
+V místech s plošnými výrony vody se vegetační ochrana nahradí kamenným pohozem. Použité kamenivo musí
+být odolné povětrnostním vlivům.
+Ve zdůvodněných případech se ochrana svahů příkopu zřizuje až ke dnu příkopu na přilehlé i odlehlé straně
+koleje.
+Vegetační ochrana rozprostřením půdy, osetím, popř. vysazením dřevin se provede bezprostředně po konečné
+úpravě svahů.
+Pro technologické postupy těchto ochran platí zásady z kapitoly 15 TKP.
+5.3.3 Hydroosev
+Pro technologii hydroosevu platí zásady uvedené v kapitole 15 TKP.
+Metodu hydroosevu je možno navíc kombinovat s užitím geotextilií nebo s dalšími vhodnými druhy
+kombinované nebo technické ochrany.
+5.3.4 Drnování
+Pro technologické postupy drnování platí zásady z kapitoly 15 TKP.
+Drnované plochy je možno v případě potřeby upevnit také sítěmi.
+Nejstrmější sklon svahu pro celoplošné drnování je 1:1,25 a pro úsporné drnování 1:1,5.
+Zvláštním druhem drnování je použití předpěstovaných travních koberců.
+5.3.5 Pleteniny
+Pleteniny se zřizují v šikmých pásech nebo ve čtvercích. Při likvidaci erozivních rýh a brázd se pleteniny zřizují
+kolmo na směr erozivních rýh a brázd.
+14
+5.3.6 Travní rohože
+Travní rohože se kladou na svah v pruzích ve směru maximálního sklonu svahu nebo souběžně s patou svahu.
+Množství a druh hnojiva uloženého na svahu určí projektová dokumentace.
+V krajních hranách ploch opatřovaných travními rohožemi se rohož uchytí do zavazovací rýhy.
+Pro správné zakořenění travních rohoží je nutno zajistit jejich dokonalé přilnutí ke svahu kotvením.
+Horní okraj rohoží náspu se ukládá min. 0,15 m pod pláň tělesa železničního spodku s přesahem min. 0,50 m.
+Rohož se překryje materiálem stezky, jejíž konstrukční uspořádání je řešeno předpisem SŽDC S3.
+Spodní okraj rohoží, uložených na svahu zářezu ve výšce 0,50 m ode dna příkopu, se připevní ocelovými
+skobami, zaráženými ve vzdálenostech po 0,50 m. Travní rohože se kladou s přesahem minimálně 0,20 m.
+Travní rohože se kotví ocelovými skobami ve tvaru „U“ nebo „L“ v celé ploše. Ocelové skoby jsou ze stavební
+oceli profilu 8 až 10 mm a jsou navzájem vzdáleny cca 1,00 m.
+Do soudržných zemin se používají skoby délky 0,30 m, do písčitých a rozbahněných zemin délky 0,50 m. Místo
+ocelových skob je možno použít laťky s hřeby dlouhými 0,15 až 0,20 m.
+Při pokládce se nesmí travní rohože příliš napínat, aby mohly přilnout k případným nerovnostem svahu.
+Po položení je nutno travní rohož lehce zalít vodou. V době klíčení semen je nutno provádět kontrolu uložení
+travních rohoží a zalévat tak, aby nedocházelo k podtékání vody pod travní rohože.
+5.3.7 Vegetační tvárnice
+Vegetační tvárnice se kladou na upravený svah a upevňují se k podkladu dřevěnými kolíky nebo jinými
+upevňovadly (např. z betonářské oceli).
+Otvory vegetační tvárnice se po osazení na svah vyplní ornicí a osejí.
+Při použití vegetačních tvárnic jako ochrany svahu na styku s vodou nebo ke zpevnění povrchu svahu bez
+požadavku ozelenění, se tvárnice osadí do lože tl. 0,05 –0,10 m ze štěrkodrti a otvory se zasypou stejným
+materiálem.
+5.3.8 Geotextilie a hydroosev
+Při použití geotextilie ve spojení s hydroosevem pro ochranu svahů se na svah nejdříve rozprostře geotextilie
+a zakotví se způsobem a kotvící technikou uvedenou v čl.5.3.6. Hydroosev se potom provede na tuto
+rozprostřenou geotextilii.
+5.3.9 Gabiony
+Gabiony se sestavují přímo na místě stavby v rozměrech určených projektovou dokumentací. Gabiony je možné
+také zhotovit jako montážní prefabrikát a následně osadit jeřábem na místo uložení. Zhotovitel musí před
+zahájením prací předložit technologický předpis ke schválení stavebnímu dozoru.
+Základová spára
+Musí být urovnána a zhutněna na min. D=95% PS a odsouhlasena stavebním dozorem. Nevhodné zeminy podle
+kapitoly 3 TKP budou ze základové spáry odstraněny, upraveny nebo nahrazeny vhodnějším materiálem podle
+dokumentace a se souhlasem stavebního dozoru.
+V případě zakládání gabionové konstrukce na skalním podloží zhotovitel řádně vyčistí základovou spáru
+a případné nerovnosti vyplní štěrkodrtí nebo hubeným betonem podle projektové dokumentace. Spáru přejímá
+a způsob vyplnění odsouhlasuje stavební dozor.
+Hloubka založení gabionové konstrukce je určena projektovou dokumentací na základě statického výpočtu.
+Nepožaduje se zakládání v nezámrzné hloubce, pokud to nestanoví projektová dokumentace.
+Montáž gabionů
+Gabiony se usazují na základovou spáru. Vázané gabiony se navzájem spojují vázacím drátem v místech styku
+svislých hran buď kontinuálně nebo ve výškovém intervalu 0,15 m. Pokud se ukládají na již usazenou
+a vyplněnou vrstvu gabionů, spojují se ještě navíc s podkladem v místech styku kolmých stěn gabionů s víky
+spodních gabionů.
+Svařované gabionové sítě se vyztužují distančními sponami a spojují se do jednotlivých celků pomocí spirál.
+15
+Gabiony jako montážní prafabrikáty se opatří dočasným rámem pro jednodušší manipulaci. Rám se zhotovuje
+z drátěné konstrukce splétané, případně svařované.
+Spojovací a výztužný materiál musí mít tloušťku a kvalitu dle čl. 5.2.1.15.
+Plnění gabionů kamenivem
+Plnění gabionů je možné provádět ručně, strojně nebo kombinací obou způsobů a musí být určeno projektovou
+dokumentací. U ručního plnění je možno dosáhnout nižší mezerovitosti výplně a estetičtějšího vzhledu líce
+gabionu. Je však pracnější. U strojního plnění je postup rychlejší, avšak dosažená mezerovitost je vyšší.
+Urovnání výplně musí být důkladně provedeno zejména u stěn a v rozích gabionu, a to z vybraných kusů
+s dlaždicovitým urovnáním, aby bylo dosaženo celistvosti tělesa. Ostré hrany výplně na styku s pletivem se
+opracují. Při plnění musí zhotovitel neustále sledovat případné deformace líce gabionu a vyrovnávat je
+vypínáním drátěného pletiva. Případně je možno použít provizorní konstrukci, např. lešenářských trubek. Pro
+omezení případného dotvarování gabionů v důsledku stlačení jeho výplně se koše obvykle přeplňují
+o očekávané sednutí kamenné výplně.
+Plnění gabionů zeminou
+Gabion plněný zeminou musí být zevnitř vyložen separační geotextílií, která zamezí vyplavování zeminy.
+Zemina se umisťuje do gabionů po vrstvách do mocnosti 0,30 m a hutní se. Další vrstvu lze ukládat na
+zhutněnou předcházející vrstvu. Do konstrukce se nesmí ukládat deštěm nebo sněhem promáčené nebo namrzlé
+zeminy.
+Vlastnosti zemin použitých pro plnění gabionů a jejich hutnění určuje projektová dokumentace.
+Vyztužování gabionů
+Během postupu plnění gabionů kamenem se navzájem protilehlé stěny stabilizují výztužnými dráty tak, aby
+nedocházelo k vydouvání líce gabionu tlakem uloženého kamene. Obvyklý výškový interval, ve kterém se
+vyztužovací dráty osazují je 0,25- 0,35 m. V horizontálním směru se distanční spony umisťují po cca 0,33 m
+(2 dráty na 1 m šířky gabionů).
+Uzavření gabionů
+Po naplnění kamenem až po horní okraj se gabion uzavře drátěným víkem, které se spojí s kolmými stěnami
+vázacím drátem, resp. spirálou.
+Převazování vrstev
+Při vícevrstvé konstrukci gabiony v horní vrstvě převazují svislé spáry spodní vrstvy (podobně jako cihelná
+vazba). U svařovaných gabionů se převazování obvykle neprovádí.
+Zasypávání gabionové konstrukce
+Rub gabionové konstrukce se zasypává zeminou předepsanou v projektové dokumentaci. Zásyp a hutnění se
+provádí současně s plněním gabionu po vrstvách max. 0,30 m, pokud projektová dokumentace nebo stavební
+dozor nestanoví jinak. V případě, že za rubem gabionu se nachází jemnozrnná zemina, jejíž částice by se mohli
+vplavovat do mezer kamenné výplně gabionu, opatří se rub gabionu separační geotextílií v souladu
+s projektovou dokumentací. Do vzdálenosti 2,00 m od gabionové konstrukce se mohou k hutnění použít pouze
+lehké hutnící prostředky (pěchy, vibrační desky do hmotnosti 1 000 kg nebo vedené válce do hmotnosti
+1 500 kg).
+Ochrana před nebezpečným dotykem na elektrizovaných tratích
+Podmínky ochrany gabionových konstrukcí před nepezpečným dotykem na elektrizovaných tratích stanoví
+předpis SŽDC S4, příloha 27. Spolehlivý způsob ochrany musí být řešen v projektové dokumentaci.
+Ochrana proti korozi bludnými proudy
+Podmínky ochrany gabionových konstrukcí proti korozi bludnými proudy stanoví předpis SŽDC S4, příloha 27.
+Spolehlivý způsob ochrany musí být řešen v projektové dokumentaci na základě vyhodnocení výsledků
+korozního průzkumu.
+16
+5.3.10 Hřebíkování zemin
+Všeobecně
+Před zahájením prací musí zhotovitel vypracovat technologický předpis, který předloží stavebnímu dozoru
+k odsouhlasení.
+Hřebíkovaná konstrukce s tvrdým lícovým upevněním se obvykle vytváří opakováním následujících pracovních
+kroků při hloubení zářezového svahu shora dolů:
+a) odkopání vrstvy zeminy na výšku 1,00 až 2,00 m, podle projektové dokumentace stavby nebo ZTKP,
+b) vyhloubení vrtů v rozteči a do hloubky předepsané projektovou dokumentací,
+c) zaplnění vrtů cementovou zálivkou,
+d) osazení výztuží (hřebíků) do vrtů,
+e) vytvoření povrchové vrstvy ze stříkaného betonu o tloušťce a vyztužení podle projektové dokumentace.
+Osazení hřebíků může následovat po vyhloubení vrtů jako bod c). Zaplnění vrtů zálivkou pak následuje jako
+bod d).
+Ve vrtech jsou hřebíky chráněny zálivkou z cementové malty o vodním součiniteli 0,4 - 0,5 (ρ=1930-1800
+kg/m3).
+Pokud se výztužné prvky zaráží do zemního masivu bez předvrtání, odpadá hloubení a zaplňování vrtů
+(body b,c).
+Bod e) může v případech nesoudržných zemin následovat za bodem a).
+U hřebíkované konstrukce s pružným lícovým opevněním (ocelová mříž) nebo měkkým lícovým opevněním
+(ocelové sítě, geosyntetická protierozní rohož apod.) se úprava povrchu obvykle provádí až po osazení hřebíků
+na celou výšku svahu. Rovněž povrchová úprava (obklad) z betonových panelů se provádí až po zajištění svahu
+hřebíky a případně i stříkaným betonem.
+Přesné podmínky stanoví ZTKP.
+Výkop zeminy
+Celý pracovní cyklus a) až e) musí být u hřebíkovaného svahu s tvrdým lícovým opevněním ukončen v jedné
+směně. Není dovoleno ponechat odkopanou stěnu bez vyztužení a povrchové vrstvy ze stříkaného betonu
+do druhého dne. Výjimku povoluje v odůvodněných případech po konzultaci s geotechnikem stavební dozor.
+Časový interval mezi odtěžením zeminy (vytvořením svahu/stěny) a instalaci hřebíků musí být co nejkratší, aby
+se omezilo riziko vypadávání zeminy ze svahu, případně jeho sesutí. Povrch odkopané stěny musí být proveden
+ve sklonu dle projektové dokumentace. Při těžbě musí zhotovitel postupovat takovým způsobem a volit takové
+prostředky, aby nedocházelo k přetěžení a nadvýlomům. Rozvolněnou zeminu je nutno odstranit a její objem
+nahradit stříkaným betonem. Ve spodní části pracovní etáže se ponechává cca 0,50 m výztužné sítě nezastříkané
+betonem pro umožnění napojení přesahem v další etáži. U svahů s kompaktním povrchem, kde lícové opevnění
+má zejména protierozní funkci, může být konečná úprava provedena až po dokončení osazení hřebíků
+v pracovní sekci.
+Hloubení vrtů pro hřebíky
+Vrt se zhotovuje kolmo k povrchu stěny nebo max. 10º ukloněný od kolmice směrem dolů (u svislých stěn pro
+usnadnění vyplněn zálivky). Provádí se rotačním, případně rotačně příklepovým způsobem se vzduchovým
+výplachem. V případě soudržných zemin je možno použít šnekové vrtání. Použití vodního výplachu se
+nedoporučuje, neboť v soudržných zeminách mění jejich konzistenci a tím i účinnost hřebíků. Pokud není vrt
+dostatečně stabilní do doby instalace hřebíku je nutno provést úpravu technologie (např. použít pažnice, dutý
+šnekový vrták, případně výplach). Minimální průměr vrtu v mm musí být D=d+40, kde d je vnější průměr
+vyztuženého hřebíku v mm. Na každé straně výztuže musí být min. 20 mm tloušťka cementové zálivky
+z důvodu antikorozní ochrany. Délka vrtu je stanovena projektovou dokumentací. Pokud ji projektová
+dokumentace nestanovuje, je v horní části svahu délka vrtů min. L = 0,6 H (H je celková výška svahu). Při patě
+svahu může být délka vrtů kratší. V případě existence plochy oslabení v horninovém masivu (zlomy, pukliny,
+smykové zóny) musí být délka hřebíků navržena tak, aby byla zajištěna dostatečná stabilita svahu podél této
+plochy.
+17
+Některé typy hřebíků mohou být instalovány do zeminy příklepem, vibrací nebo nastřelením (balisticky).
+Výztužný prvek je v přímém kontaktu se zeminou. Některé typy hřebíků umožňují následnou injektáž. Pro
+vyloučení případné deformace při instalaci musí mít zarážené hřebíky dostatečnou tuhost a při osazování mohou
+být vedeny. Při instalaci se zaznamená čas nutný k zarážení a dostatečná hloubka.
+Hustotu hřebíků/vrtů stanoví projektová dokumentace.
+Zaplnění vrtu a osazení hřebíků
+Vyplnění vrtu cementovou směsí je možné provést v průběhu vrtání skrz výztužný prvek, po skončení vrtání
+nebo po instalaci výztuže pomocí injekční trubky. Obvykle se po dokončení a vyčištění vrt vyplní vzestupně
+(ode dna vrtu směrem vzhůru) cementovou zálivkou. Ihned po vyplnění vrtu zálivkou se osadí hřebíková výztuž.
+Délka hřebíku je min. o 50 mm větší, než je délka vrtu, aby bylo umožněno napojení výztužného prvku na
+lícové opevnění. Délka vnějšího přesahu musí být stanovena v projektové dokumentaci. Pro zajištění
+dostatečného a stejnoměrného vykrytí výztuže zálivkou je nutné na výztužné prvky při instalaci upevnit
+distanční prvky.
+Lícové opevnění
+Podle tuhosti se rozlišuje lícové opevnění:
+− měkké, které je tvořeno např. ocelovou sítí nebo geosyntetickou sítí nebo mříží, případně pouze vegetačním
+prvkem (má pouze protierozní funkci),
+− pružné, pro které se nejčastěji používá ocelová mříž o dostatečné tuhosti (přenáší osové a smykové síly),
+− tvrdé, které se provádí jako:
+– stříkaný beton bez ocelové sítě,
+– stříkaný beton vyztužený ocelovou sítí,
+– na místě vytvořená betonová stěna nebo stěna z betonových prefabrikátů.
+Spojení výztuže – hřebíků s pokryvnou vrstvou se provede přivařením k ocelové síti, ohnutím výztuže,
+přivařením ocelových podložek, maticí s podložkou a závitem na konci výztuže apod. Způsob spojení musí být
+uveden v projektové dokumentaci. Po osazení hřebíků se provede úprava povrchu podle projektové
+dokumentace. Pro trvalé konstrukce se povrch ze stříkaného betonu obvykle obkládá pohledovými panely podle
+projektové dokumentace.
+Odvodnění hřebíkované konstrukce
+Odvodnění hřebíkované konstrukce se provede v souladu s projektovou dokumentací. Pokud se v průběhu
+výstavby objeví nečekané vývěry nebo přítoky vody, navrhne způsob odvodnění zhotovitel a předloží jej
+stavební dozoru ke schválení. Odvodnění z hlediska funkce lze rozdělit:
+− povrchové odvodnění,
+− hloubkové odvodnění zemního masivu,
+− drenáž za lícovým opevněním.
+Odvodnění povrchových vod z území přilehlého k hřebíkované konstrukci se provádí podle kapitoly 4 TKP
+a Vzorového listu železničního spodku Ž 3.
+Hloubkové odvodnění zemního masivu snižuje tlak na hřebíkovanou zemní konstrukci a odvádí tuto vodu
+k povrchu svahu. Odvodňovací vrty se provádí se podle kapitoly 4 TKP.
+Drenáž za lícovým obkladem odvádí vody z hloubkového odvodnění, případně vodu z nitra zemního masivu
+k povrchu svahu do svodného drénu u paty svahu (stěny). Zřídí se buď z vertikálních drénů (geodrénů) nebo
+jako pošný geosyntetický drén (z netkané geotextílie nebo geokompozita). Plošný drén musí být spolehlivě
+upevněn na povrch svahu, aby se minimalizovala možnost vytváření dutin za vrstvou stříkaného betonu.
+Doporučuje se, aby plocha drénu nepřekročila 15% celkové plochy svahu.
+5.3.11 Plombování dutin
+Plombování dutin je ochrana skalních svahů před nepříznivými účinky vody a mrazu vyplněním povrchových
+dutin plombami z odolnějšího materiálu-cihel, kamene nebo betonu.
+Před plombováním dutin se povrch horniny očistí od vegetace, zvětralé části horniny se odsekají, ložná plocha
+se zdrsní. Bezprostředně před betonáží nebo zděním se styčná plocha navlhčí a postříká cementovým mlékem.
+18
+Spolupůsobení plomby s horninou je možno zvýšit osazením krátkých trnů z betonářské oceli, osazených do
+předvrtaných otvorů. Plomby zděné se na lícní straně vyspárují cementovou maltou.
+5.3.12 Těsnění spár (trhlin nebo puklin)
+Ochrana skalních svahů těsněním spár zabraňuje pronikání povrchové vody do skalních spár a má obnovit
+spojení skalních bloků. Toho se dosáhne vyspárováním rozevřených spár ve skalním líci a jejich vyplněním
+injektáží. V případě vytékání vody ze spár je nutno těsnění spár provést v kombinaci s odvodněním. Hloubka
+utěsnění spár se určí v projektové dokumentaci případ od případu podle charakteru spár.
+Poměr hmot v injektážní směsi a injektážní tlak se určí v projektové dokumentaci na základě geotechnického
+posudku a vodní tlakové zkoušky.
+Před spárováním se spáry vyčistí do dosažitelné hloubky a vymyjí tlakovou vodou. Vyplnění spár se provede
+zpravidla mechanizovaným způsobem. Při rozsahu menším než 100 m2 je možno provést spárování i ručně.
+Pro injektování se do spár osadí injekční trubky nebo se do spáry provede vrt pro osazení obturátoru.
+Injektovat lze až po zatvrdnutí malty ve spárách.
+5.3.13 Podezdívání skalních bloků
+Ochrana skalních svahů podezděním skalních bloků má zabránit pohybu uvolněných skalních bloků pomocí
+výztužných žeber, podpěrných pilířů, podpěrných trámů a jejich kombinací.
+K podezdění se použije zpravidla kamenné zdivo na cementovou maltu nebo beton.
+Podpěrnou konstrukci je třeba založit na neporušené hornině a dozdít těsně do horniny, očištěné od vegetace
+a zvětralých částic horniny.
+Vzájemná vzdálenost a šířka výztužných žeber nebo podpěrných pilířů se volí podle místních podmínek
+z hlediska funkčního a estetického. Tloušťka konstrukce musí být min. 0,60 m. Pro zvýšení účinnosti
+podpěrných konstrukcí je účelné metodu kombinovat s kotvením.
+5.3.14 Kotvení skalních bloků
+Kotvení skalních bloků jako ochrana skalních svahů stabilizuje porušené části skalní stěny jejím spojením se
+stabilním skalním podložím kotvami. Způsob kotvení se určí v projektové dokumentaci pro každý případ zvlášť
+na základě geotechnického posouzení.
+5.3.15 Ochranné sítě
+Ochrana skalních svahů ochrannými sítěmi v kombinaci s vegetační ochranou se provádí u skalních svahů, na
+nichž dochází v důsledku působení různých činitelů (hlavně zvětrávání) k opadávání úlomků a kusů horniny.
+V zásadě není rozdílu mezi aplikací ochranných sítí na různé druhy hornin, naopak určující je zejména míra
+tektonického porušení a zvětrání hornin. Se zvyšující se intenzitou tektonického porušení a hlubším dosahem
+zvětrání je provedení ochranných sítí obtížnější.
+Sítě se použijí buď jako dočasná nebo jako trvalá ochrana v závislosti na požadavku objednatele. Podle toho se
+volí i doba životnosti sítí v souladu s doporučením výrobce. Pod pojmem dočasné ochrany je míněno použití
+ochranných sítí během stavebních prací (např. stavba portálových částí tunelů, tvorba zářezů, zajištění
+bezpečného provozu pod skalní stěnou během její sanace apod.). V případě aplikace ochranných sítí jako trvalé
+ochrany skalních svahů je nutné sítě fixovat na skalní stěně pomocí tzv. hřebíků (krátké nepředpjaté tyčové
+prvky, upnuté v horninách po celé délce). Obvykle jsou hřebíky zhotoveny z betonářské oceli nebo
+celozávitových kotevních tyčí zpravidla profilu 20 - 22 mm, osazenými do vrtů profilu 34 - 38 mm, vyplněnými
+po celé délce vrtu cementovou injekční směsí. Délky hřebíků (zpravidla 0,60 – 1,50 m) jsou stanoveny na
+základě geologických poměrů (zvětrání, rozpukanost), příp. zatížení a ověřují se průkazními zkouškami.
+Hřebíky je možné, mimo klasickou cementovou injekční směs kotvit pomocí lepících ampulí s polyesterovou
+pryskyřicí. Ideální průměr vrtu je potom stanoven technickým listem dodavatele těchto ampulí. Optimální
+velikost mezikruží je zpravidla 2 až 4 mm. Sítě bývají zpravidla v okrajových úsecích vybaveny vodícími
+ocelovými lany, která zajišťují dostatečný přítlak sítě na skalní stěnu. Ocelová lana musí být opatřena
+antikorozní ochranou odpovídající danému prostření a životnosti konstrukce.
+Pokud existuje reálná možnost poškození sítí při uvolnění větších objemů hornin pod nimi, lze lokálně zesílit
+sítě ocelovými lany s odpovídajícím antikorozním opatřením. Velikost ok ochranné sítě stanoví projektová
+19
+dokumentace. Pokud je třeba zachytit kamenivo natolik rozdílných frakcí, že nestačí jedna velikost oka, je nutné
+položit na stěnu sítě různých velikostí ok na sebe (možno i lokálně), přičemž fixace se provádí najednou.
+Konstrukční řešení upnutí ochranných sítí na skalní stěnu a plošný rozsah zasíťovaných ploch vždy vychází
+z geologické situace. Přesnou lokalizaci rozsahu zasíťovaných ploch a četnost její fixace včetně jejího způsobu
+určuje projektová dokumentace. V průběhu prací řeší lokální úpravy ochrany skalních stěn projektant po dohodě
+s geotechnickým dozorem investora a stavebním dozorem.
+Ochranné sítě se ukládají na svah očištěný od uvolněných kusů horniny a zvětralých částí skalní stěny a přichytí
+se k hřebíkům deskovými podložkami rozměrů minimálně 120 x 120 x 5 mm (v návaznosti na velikost
+ok použité sítě) a matkami. Vyčnívající části hřebíků se po osazení opatří antikorozním nátěrem. Další
+podmínky při použití hřebíků určuje kapitola 24 TKP.
+K trvalé stabilizaci povrchově rozrušeného skalního svahu se mohou ochranné sítě doplnit vegetační vrstvou
+v souladu s projektovou dokumentací. Vegetační vrstva snižuje možnost dalšího zvětrávání horniny. Vegetační
+vrstva se na skalní povrch zřídí zpravidla hydroosevem. Složení a dávkování složek vegetačního nástřiku se určí
+projektovou dokumentací na základě agrotechnických rozborů.
+5.3.16 Stříkaný beton a torkretová omítka
+Ochrana skalních svahů pláštěm ze stříkaného betonu a torkretovou omítkou sleduje vytvoření ochranné vrstvy
+na povrchu rozrušené horniny.
+Skalní podklad pod ochrannou vrstvou musí být co nejméně narušen. Líc odlomu se proto provede ručním
+dolamováním nebo metodou hladkého výlomu.
+U stávajících skalních svahů se skalní podklad očistí od vegetace a zvětralin.
+Ochranné vrstvy se vyztužují jednou nebo dvěma ocelovými sítěmi. Ocelová síť se připevní ke skalnímu
+podkladu kotvičkami z betonářské oceli zpravidla profilu 10 mm. Kotvičky se osazují do předem předvrtaných
+otvorů o průměru 36 až 42 mm vyplněných cementovou maltou. Hloubka zakotvení je 0,30 až 0,80 m, vzájemná
+rozteč kotviček se volí zpravidla od 0,80 do 1,20 m. Jmenovitá tloušťka betonu krycí vrstvy výztužné sítě t je
+b
+stanovena ČSN 73 6206.
+Stříkaný beton se provádí v tloušťce 0,20 m až 0,30 m.
+Torkretová omítka se provádí v tloušťkách 0,05 až 0,07 m maltou provzdušněnou nebo aktivovanou.
+Použití torkretových omítek je možné pouze jako opatření dočasná. Po očištění tlakovou vodou, případně
+otryskání pískem, může být torkretová omítka využita jako podklad pro definitivní ochrannou vrstvu.
+Bezprostředně před provedením nástřiku ochranné vrstvy se skalní podklad omyje tlakovou vodou.
+Vlastní nástřik ochranné vrstvy se provádí po vrstvách tloušťky 0,03 až 0,05 m, přičemž u stříkaného betonu se
+základní a uzavírací vrstva provede ze záměsi s větším množstvím cementu a jemnějšího kameniva.
+Osazení ocelové sítě na předem osazené kotvičky se provede po prvním základním nástřiku. Nástřik ochranné
+vrstvy se ukončí 0,50 m nad poslední chráněnou skalní lavičkou.
+Dilatační spára ochranné vrstvy se zřídí po každých 20 m. Časový odstup provádění jednotlivých nástřiků musí
+zajišťovat spojení jednotlivých vrstev.
+Dojde-li v průběhu prací k znečištění povrchu provedených nástřiků, je třeba před nástřikem další vrstvy provést
+omytí tlakovou vodou, případně otryskání pískem.
+5.3.17 Obkladní zdi
+Ochrana skalních svahů obkladními zdmi se provádí tam, kde je ohrožena stabilita líce skalního svahu
+zvětráváním na větších souvislých plochách. Obkladní zdi nezachycují zemní a horninový tlak.
+Obkladní zeď monolitická je kompaktní konstrukce z jednotného stavebního materiálu, budovaná v celém
+rozsahu na místě určení.
+Obkladní zeď polomontovaná je tvořena monolitickou nebo prefabrikovanou nosnou konstrukcí a prefabrikáty,
+tvořícími ztracené bednění. Prostor mezi horninou a bednícími prefabrikáty se musí vyplnit betonem.
+Obkladní zeď montovaná je tvořena v celém rozsahu z prefabrikovaných dílců na místě smontovaných
+a zmonolitněných. Obkladní zeď musí těsně přiléhat k hornině, čehož se dosáhne dozděním do horniny,
+injektáží, příp. kotvením.
+V případě výskytu horninové vody je nutno navrhnout opatření pro odtok této vody.
+Obkladní zdi je třeba založit minimálně 0,50 m pode dnem příkopu.
+20
+Tloušťka monolitické zdi v koruně je minimálně 0,10 m. Tloušťka monolitické zdi se stanoví statickým
+výpočtem. Sklon rubu zdi se určí na základě geotechnického posudku. Tento sklon nesmí být strmější než 10:1.
+Sklon líce zdi se volí u zdí monolitických maximálně 5:1, u zdí polomontovaných a montovaných může být
+shodný se sklonem rubu zdi.
+Tloušťka obkladních zdí polomontovaných a montovaných je závislá na typu konstrukce. Nesmí být menší než
+0,10 m. Je-li třeba podle statického výpočtu zvýšit stabilitu zdi, provede se to výztužnými žebry nebo kotvením.
+Pokud je stabilita zdi zajišťována kotvením, musí být kotvy provedeny podle čl. 5.3.18 Kotvení. Pokud je třeba,
+zřídí se za korunou zdi zpevněný záchytný příkop pro odvedení povrchové vody. Příkop se zřizuje
+z příkopových tvárnic osazených do lože z betonu C 16/20 – XF3 v tloušťce min. 0,15 m, případně
+z monolitického betonu C 30/37 – XF3. Velikost příkopu určí hydrotechnický výpočet. Pro usnadnění
+udržovacích prací se zřídí v úrovni koruny zdi lavička o minimální šířce 1,50 m. Lavičky ve skalních zářezech
+se zřizují podle zásad Vzorového listu železničního spodku Ž2. Pro zamezení vniku vody do spodní části masivu
+se povrch lavičky opatří nepropustnou úpravou v příčném sklonu 3 – 5% od zdi např. vrstvou z vodostavebního
+betonu.
+Obkladní zdi monolitické se zdí nebo betonují po úplném dokončení výkopu. Obkladní zdi polomontované
+a montované, kombinované s kotvením je možno provádět současně s výlomem.
+Pro zachycení kamenů, uvolněných ze skalního svahu nad zdí, je možno zřídit ochranu proti padajícícím
+kamenům v koruně zdi podle čl. 5.3.21.
+5.3.18 Kotvení
+Ochrana skalních svahů kotvením spočívá v zachycení povrchových rozvolněných vrstev skalního masivu
+soustavou kotev. Síly, způsobující pohyb skalních vrstev se tak přenášejí do neporušeného stabilního skalního
+masivu. Nepředpínané kotvící prvky se nazývají hřebíky, předpínané prvky jsou kotvami. Kotvení se použije
+v místech a rozsahu stanovených projektovou dokumentací.
+Trvalé kotvy jsou takové prvky, jejichž životnost překračuje dva roky. Dočasné kotvy jsou pak takové prvky,
+jejichž životnost je projektována na dobu kratší dvou let.
+Trvalé kotvy musí být opatřeny odpovídající antikorozní ochranou v souladu s projektovou dokumentací
+a ČSN EN 1537. Vyplnění vrtu cementovou injekční směsí se považuje za dočasnou ochranu kotvy proti korozi
+(dle ČSN EN 1537) za podmínky, že směs vyplní celý prostor vrtu.
+Z hlediska konstrukce se používají kotvy tyčové a kabelové, podle stavu napjatosti nepředpjaté (prosté) nebo
+předpjaté. U kotev nepředpjatých se zpravidla volí směr kotvy ve sklonu 45° od smykové roviny nebo hlavní
+diskontinuity masivu. U kotev předpjatých se zpravidla volí směr kotev kolmý na předpokládanou smykovou
+rovinu a puklinový systém. Pro nepředpjaté tyčové kotvy, upnuté po celé jejich délce, je zaveden termín
+hřebíky.
+Způsob a rozsah zkoušek kotev a hřebíků upřesňuje kapitola 24 TKP a ustanovení norem ČSN EN 1537
+a *prEN 14490).
+Pro dočasné krátké tyčové kotvy se používá upínání mechanické, nejčastěji klínovou patkou. Mechanicky
+upínané kotvy dosahují konečné pevnosti bezprostředně po upnutí a možno je napínat a zatěžovat ihned po
+osazení. Používají se pouze u pevných skalních hornin, kde nehrozí zatlačení klínu do horniny. Pro
+kotvení poloskalních hornin nebo pro přenášení větších tahových sil se používá upínání kořene tmelem
+(cementová injekční směs nebo syntetická pryskyřice). Aktivace kotvy s kořenem upínaným tmelem je možná až
+po zatvrdnutí tmele.
+Syntetická pryskyřice se používá zpravidla pro upínání nepředpjatých tyčových kotev (hřebíků). Výhodou
+pryskyřice je rychlejší tvrdnutí (řádově desítky minut až maximálně 1 – 2 hodiny dle typu použité pryskyřice),
+vyšší pevnost a soudržnost s kotvou i skalním podkladem, a tím možnost přenášení větších sil.
+Předpětí do kotvy tyčové se vnáší utažením matice na táhle kotvy opřené o podložku na skalním podkladu.
+Velikost kotvící síly se zajišťuje buď pružnými podložkami, kalibrovanými na požadovanou sílu, předpínacím
+klíčem nebo lisem. Pro správnou funkci kotvy je nezbytné centrické namáhání kotvy a přenos síly do horniny
+podložkou. Podložky pro tyčové kotvy jsou ocelové desky minimální tloušťky 15 mm. Plocha podložky je dána
+předpínací silou a pevnostní charakteristikou horniny. Při úklonu kotvy od skalního podkladu jiném než 90° je
+třeba přenos kotvící síly zajistit speciální úpravou podložky, např. sférickou podložkou. Upínání kořenů
+kabelových kotev je řešeno technickými podmínkami použitého systému kotev. Kotvy kabelové se předpínají
+speciálním zařízením podle typu kotvy.
+Upínání kabelových kotev na hybném konci se provádí zpravidla do pevných vybetonovaných hlavic
+provedených podle technických podmínek daného typu kotev v souladu s dokumentací. Kotvící síla P, vložená
+z
+21
+(vnesená) do kotvy po dokončeném napnutí, musí být větší než kotvící síla P , s níž se počítá ve statickém
+k
+výpočtu, přičemž P /P = w, kde w se volí u kotev tyčových minimálně 0,7. Pro kotvy kabelové se w volí podle
+k z
+typu a konstrukce kotvy a musí být stanovená v projektové dokumentaci. Životnost kotvených konstrukcí závisí
+na kvalitě kotevní výztuže a její protikorozní ochraně.
+5.3.19 Kotvené trámce a žebra
+Technologický postup u této metody ochrany jednoznačně musí stanovit projektová dokumentace. Tomu musí
+také odpovídat použité kotvení. Bude se jednat vždycky o použití trvalých kotev.
+5.3.20 Ochranné a udržovací prostory
+Odvodnění dna ochranných a udržovacích prostorů se zajistí vyspádováním ve sklonu 5 % do příkopů v případě
+zemních zářezů, nebo do rigolů v případě skalních zářezů. Rigoly hloubky 0,20 m se vybetonují současně
+s okrajovými zídkami. Šířka rigolu se provede 1,00 m a započítá se do šířky ochranného prostoru. Ochranné
+a udržovací prostory se přiměřeně zpevní jako udržovací komunikace ve shodě s projektovou dokumentací např.
+vrstvou štěrkopísku apod.
+5.3.21 Ochrana proti padajícím kamenům
+Ochrana proti padajícím kamenům se provádí buď při okraji pláně tělesa železničního spodku nebo na první
+lavičce u skalních zářezů, příp. v koruně obkladních zdí.
+Požadavky na provádění ochranných sítí jsou uvedeny v čl. 5.3.15.
+Požadavky na instalaci záchytných sítí je nutno stanovit v ZTKP.
+Požadavky na provádění konstrukcí z betonu a železobetonu a provádění montážních prací z betonových
+a železobetonových prefabrikátu jsou stanoveny v Kapitole 17 TKP.
+Požadavky na provádění ocelových konstrukcí jsou stanoveny v Kapitole 19 TKP. Ukolejnění ocelových
+konstrukcí řeší projektová dokumentace v souladu s ČSN 34 1500 a ČSN EN 50122-1.
+Požadavky na provádění gabionových konstrukcí jsou stanoveny v čl. 5.3.9.
+Požadavky na výstavbu zemních konstrukcí jsou stanoveny v kapitole 3 TKP.
+5.3.22 Železniční těleso ve styku s vodními toky a díly
+Technologické postupy pro provádění ochran svahů tělesa železničního spodku ve styku s vodními toky a díly
+určuje Vzorový list železničního spodku Ž 6, který pojednává o styku tělesa železničního spodku s vodou podél
+vodního toku, v inundačním území nebo pokud tvoří hráz vodního díla.
+Jednotlivé způsoby tohoto zpevnění jsou: pohozy, štěrkové koberce, patky a záhozy, dlažba, rovnaniny, masivní
+obklady, gabiony, textilní matrace, ochranné sítě a rohože.
+Navržené úpravy musí být dále realizovány v souladu s ustanoveními ČSN 75 2130 Křížení a souběh vodních
+toků s dráhami, pozemními komunikací a vedeními.
+5.4 DODÁVKA, SKLADOVÁNÍ A POČÁTEČNÍ ZKOUŠKY
+5.4.1
+Pro dodávku, skladování a počáteční zkoušky rostlinného a dřevního materiálu platí kapitola 15 TKP.
+5.4.2
+Travní rohože je nutno skladovat podle údajů výrobce a těsně před položením na svah ověřit zkouškou klíčivosti
+jejich použitelnost ve smyslu kapitoly 15 TKP.
+5.4.3
+Pro dodávku, skladování a počáteční zkoušky materiálů pro výrobu betonu, výztuže, betonových a ocelových
+výrobků, kotvení a pro ochranu skalních svahů platí kapitoly 17, 18, 19, 23 a 24 TKP.
+5.4.4
+Kámen pro výplň do gabionů může být skladován na otevřené deponii. Deponie musí mít zpevněný povrch, aby
+nedocházelo ke znečištění kamene. Počátečními zkouškami se prokazují vlastnosti výplňového kamene podle
+tab. 2, čl. 5.2.1.15. Zkoušky těchto vlastností jsou prováděny dle platných norem.
+22
+5.4.5
+Ocelové prvky (pletivo, ocelové sítě, spojovací materiál, výztuhy) a polymerové sítě do gabionů musí být
+skladovány tak, aby nemohlo dojít k jeho poškození a znečistění. V případě použití více druhů ocelových prvků
+musí být každý materiál zřetelně označen, případně skladován odděleně. Počátečními zkouškami se prokazují
+vlastnosti ocelových prvků podle tab. 1, čl. 5.2.1.15, u polymerových sítí dle čl.5.2.1.15. Zkoušky těchto
+vlastností jsou prováděny dle platných norem.
+5.4.6
+Každá zásilka materiálu musí být doprovázena dodacím listem a případně certifikátem nebo prohlášením shody,
+je-li toto požadováno TKP nebo ZTKP. Údaje v dodacím listu musí souhlasit s označením materiálu na
+jmenovkách nebo obalu.
+5.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+5.5.1 Vegetační ochrana
+Požadavky na odebírání vzorků jsou stanoveny v kapitole 15 TKP. Kontrolní zkoušky se neprovádí.
+5.5.2 Technická ochrana
+Požadavky na odebírání vzorků a kontrolní zkoušky materiálů pro technickou ochranu svahů jsou stanoveny
+v kapitolách 17, 18, 19, 23 a 24 TKP.
+5.5.3 Kombinovaná ochrana
+Pro vegetační ochranu svahů platí ustanovení čl. 5.5.1, pro technickou ochranu svahů platí ustanovení čl. 5.5.2.
+5.5.4 Gabiony
+Při výstavbě konstrukce z gabionů kontroluje zhotovitel průběžně velikost kamene, množství menších úlomků
+pro výplň mezer a klínování větších kamenů. Současně kontroluje vizuálně celistvost kamene a jeho navětrání.
+Kontroluje způsob ukládání kamene do koše, hutnění, rovinatost líce gabionů, vypnutí pletiva, kvalitu provedení
+spojů a výztuh, apod.
+Počet kontrolních zkoušek se řídí těmito kritérii:
+− počet a druh zkoušek předepsaný projektovou dokumentací,
+− na požádání stavebního dozoru,
+− nejméně 1 krát na 500 m3 konstrukce,
+− zkoušky z každého zdroje zásypového materiálu.
+5.5.5 Kotvy a hřebíky
+Počáteční zkoušky kotev (typové a ověřovací) se provádí před zahájením nebo na počátku prací. Je nutné
+provést nejméně tři ověřovací zkoušky. Každá systémová kotva musí být podrobena kontrolní zkoušce.
+Podrobnosti určuje norma ČSN EN 1537 a ustanovení kapitoly TKP 24.
+Pro zkoušky hřebíků platí ustanovení ustanovení návrhu normy *prEN 14490 a kapitoly TKP 24. Doporučená
+četnost zkoušek hřebíků je udána v tabulce č.3 v návrhu normy *prEN 14490.
+5.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+5.6.1
+Náhrady rostlinného a dřevního materiálu jsou povoleny, jen pokud je prokázáno, že materiál předepsaný
+dokumentací není možné v příslušném vegetačním období zajistit. Veškeré změny druhu, velikosti a kategorie
+musí být povoleny stavebním dozorem a lze je připustit pouze za předpokladu, že náhrada bude rovnocenná co
+do požadavků, ceny i množství.
+V případě, že se jedná o náhradu materiálem, který není obsažen v sortimentu povoleném pro stavbu, je rovněž
+nutné schválení příslušným orgánem ochrany přírody.
+23
+5.6.2
+Skalní svahy upravované stavbou, které zůstanou bez ochrany, musí být odborně posouzeny osobou pověřenou
+zhotovitelem. Pověřená právnická nebo fyzická osoba musí splňovat podmínky odborné způsobilosti podle
+zákona č. 366/2000 Sb.
+Součástí posudku musí být:
+− geotechnická charakteristka skalního masivu a jeho stavu bezprostředně po ukončení úprav skalních svahů,
+− prognóza chování masivu v dlouhodobém výhledu vlivem endogenních i exogenních geologických sil,
+− vliv geologických sil na stabilitu celého masivu i na lokální projevy nestability,
+− vliv chování masivu na bezpečnost železničního provozu včetně posouzení míry rizika možného jeho
+ohrožení,
+− návrh na způsob údržby skalních svahů a na další příp. technická opatření uvažovaná v dlouhodobém
+výhledu,
+− návrh kontrolního sledování ve smyslu čl. 5.9.3, pokud tento požadavek vyplyne z prognózy chování
+masivu,
+− další parametry uplatněné stavebním dozorem nebo jím pověřeným odborným zástupcem.
+Posudek musí být vypracován a předán stavebnímu dozoru nejpozději při odsouhlasení a převzetí prací podle
+čl. 5.8.
+5.6.3
+Další přípustné odchylky, míry opotřebení a záruky pro vegetační ochrany svahů jsou stanoveny v kapitole
+15 TKP.
+Pro technické ochrany svahů platí dále přípustné technické odchylky, míry opotřebení a záruky podle ustanovení
+kapitol 17, 18, 19 a 23 TKP.
+5.6.4
+Nevyplněné gabiony musí být rozměry stanovené dokumentací s tolerancí 3%. Pro velikost otvoru je povolena
+tolerance 10%. Průměr drátu se může odchylovat od dokumentace o 3%. Tloušťky pozinkování nesmí klesnout
+pod hodnoty uvedené v tab.1., čl. 5.2.1.15.
+Tolerance hotové gabionové konstrukce (sklon líce zdi, výšková deformace koruny zdi, boulení stěn) určuje
+projektová dokumentace na základě předpokládaných deformací podloží.
+5.6.5 Záruky, údržba v záruční době
+Záruční doby všeobecně stanoví kapitola 1 TKP. Vegetační úpravy zemního tělesa je možno předat až po
+prvním posekání (viz kapitola 15 TKP). Při kolaudaci je předávána stavba dle schválené projektové
+dokumentace a zadávacích podmínek, t.j. prosta plevelů, náletových dřevin a po kosení ve stavbě osetých svahů.
+Součástí projektové dokumentace i prováděného díla je zabezpečení prvního preventivního postřiku proti
+plevelům.
+Údržbu v záruční době zajišťuje správce DLHM podle ustanovení v kapitole 1 TKP. V této době za odstranění
+plevele, náletových dřevin, přírodního spadu a překážek vzniklých dopravním provozem odpovídá příslušná
+SDC.
+5.7 KLIMATICKÁ OMEZENÍ
+5.7.1 Osévání
+Pro osévání je nutné vegetační období s dostatkem vláhy. Tyto podmínky jsou podrobně stanoveny v kapitole
+15 TKP.
+5.7.2 Výsadba dřevin
+Výsadby prostokořenných a balových dřevin lze provádět pouze v době vegetačního klidu v jarní nebo podzimní
+agrotechnické lhůtě. Olistěné výpěstky nelze vysazovat.
+24
+Lhůta pro výsadbu dřevin v kontejnerech je delší, není však hospodárné provádět jakoukoliv výsadbu v letním
+období. Vhodnost doby výsadby je nutno posuzovat vždy s ohledem na klimatické podmínky v delším období.
+Další údaje jsou obsaženy v kapitole 15 TKP.
+5.7.3 Drnování
+Při použití drnování je nutné v suchém období před srýpnutím drn pokropit.
+5.7.4 Pleteniny
+Pro použití pletenin je nejvhodnější doba od opadání listů do jejich vyrašení. Pokud je nutno zřizovat pleteniny
+v době vegetace, musí se pruty zbavit listů.
+5.7.5 Betonářské práce
+Pro betonářské práce platí klimatická omezení z kapitol 17, 18 a 23 TKP.
+5.7.6 Injektování
+Pro injektování za nízkých teplot platí ČSN 73 2401, čl. 8.4.1. Při teplotách vzduchu nižších než 0°C je
+injektování bez zvláštních opatření schválených stavebním dozorem zakázáno. Po dobu tuhnutí injektážní malty
+musí být udržována teplota betonu v okolí kanálků +5°C po dobu 5 dnů, není-li zkouškami prokázána doba
+kratší. V případě použití materiálů na jiné než cementové bázi je nutné dodržet údaje výrobce.
+5.7.7 Použití svorníků
+Lepené svorníky je možno používat jen v suchém prostředí při teplotě vyšší než +5°C.
+5.7.8 Zemní práce
+Pro zemní práce platí klimatická omezení z kapitola 3 TKP.
+5.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+5.8.1 Odsouhlasení prací
+Při odsouhlasování prací stavební dozor zkontroluje:
+− zda soupis prací pro měsíční vyúčtování odpovídá skutečně odvedeným pracím,
+− zda práce jsou provedeny způsobem a v kvalitě podle projektové dokumentace a TKP,
+− zda materiál uváděný v soupisech prací odpovídá materiálu podle projektové dokumentace, popřípadě
+změnám odsouhlaseným stavebním dozorem.
+5.8.2 Převzetí prací
+Podkladem pro převzetí prací je dokumentace skutečného provedení, kde zhotovitel vyznačí veškeré provedené
+změny proti projektové dokumentaci, které vznikly během realizace.
+5.8.2.1
+Při přejímacím řízení stavební dozor uvede jmenovitě veškeré vady a nedodělky, které nebrání převzetí díla,
+a stanoví lhůtu k jejich odstranění.
+5.8.2.2
+Vegetační ochrany svahů mohou být převzaty teprve po dokončení všech prací určených projektovou
+dokumentací zabezpečujících kvalitu a další rozvoj výsadeb. Převzaty mohou být pouze výsadby v dobrém
+zdravotním stavu, vitální, nezaplevelené, okopané, s miskami kolem solitérních stromů, s kůly u stromů
+a funkčními úvazky. Před převzetím je nutno vyměnit poškozené, uschlé nebo napadené dřeviny za dřeviny
+kvalitní, stejného druhu, velikosti a v dobrém zdravotním stavu.
+25
+5.8.2.3
+Pro technické a kombinované ochrany platí pro převzetí prací ještě podmínky z kapitol 15, 17, 18 a 23 TKP.
+5.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+5.9.1 Sklonitost svahů
+K základnímu kontrolnímu měření při přejímání tělesa železničního spodku trati patří kontrola výsledných
+sklonů svahů jak zemního tělesa, tak sklonů skalních svahů. Zpevněním svahů tělesa železničního spodku nesmí
+dojít ke zhoršení sklonitosti svahů proti dokumentaci.
+Tolerance sklonitosti u zemních svahů musí odpovídat kapitole 3 TKP. V žádném případě nesmí dojít ke
+zhoršení parametrů zemního tělesa.
+U skalních svahů musí sklon odpovídat projektové dokumentaci. V případě odchylek a nerovností se postupuje
+individuálně na základě rozhodnutí stavebního dozoru.
+5.9.2 Vegetační ochrany
+Po čas záruční lhůty u vegetačních ochran svahů je předmětem sledování zejména úhyn rostlin a dřevin a zjišťují
+se příčiny. Kontroluje se také, zda nedošlo k pohybu osázených ploch na svazích a následnému poškození
+provedené výsadby. Sledování úhynu je podkladem pro reklamační řízení.
+Tyto kontrolní prohlídky vyplývají ze zákona č.35/2001 Sb. o drahách a z vyhlášky 177/1995 Sb. Intervaly
+a lhůty záručních prohlídek se stanoví ve smlouvě o díle na základě projektové dokumentace.
+5.9.3 Technické ochrany
+U technických ochran skalních svahů a objektů, vyžaduje-li to stav skalních svahů a objektů, se zpracovává
+projekt kontrolního sledování deformací skalních svahů a objektů. Projekt musí obsahovat rozsah instrumentace,
+polohu měřických stanovišt, způsob instalace měřících zařízení, bodů, značek a dalších prvků monitoringu,
+metodiku měření, způsob vyhodnocení měření, časový plán měření, časovou a prostorou prognózu deformací,
+plán technických a správních opatření. Zhotovitel je povinen před zahájením během výstavby zajistit realizaci
+projektu kontrolního sledování. Instalace měřících zařízení a prvků monitoringu se u skalních svahů a objektů
+zajišťovaných místními úpravami provádí před zahájením stavebních prací, u skalních svahů a objektů
+odtěžovaných, zmenšovaných a tvarově upravovaných bezprostředně po dokončení skalních a stavebních prací.
+Nejméně jedno (nulté) měření musí být provedeno bezprostředně po instalaci prvků monitoringu, nejpozději
+však před zahájením přejímacího řízení. Dokumentace o kontrolním měření během výstavby a pokyny pro další
+postup měření musí být při předávání tohoto úseku stavby do provozu odevzdány stavebním dozorem správci
+stavby.
+5.9.4 Kotvy a hřebíky
+Při ochraně skalních svahů kotvením se musí kontrolovat kotevní síla na kotvách podle kapitoly 24 TKP.
+Rozsah zkoušky musí být předepsán projektovou dokumentací podle významu trati a kvality kotvené horniny.
+Při provádění trhacích prací do 5 m od předpjatých kotev je nutno sledovat stav předpětí a kotvy pravidelně
+dopínat na hodnotu P.
+z
+U hřebíků se kontrolní měření, měření posunů ani přetvoření během provozu se nepožaduje. Předepisuje-
+li projektová dokumentace:
+− neobvyklou ochrannou konstrukci s použitím hřebíků,
+− zvláštní použití hřebíků s neobvyklým statickým působením,
+− použití nestandartní technologie provádění hřebíkované konstrukce,
+− nebo jinak zvláštní konstrukci s použitím hřebíků,
+musí být pro uvedené případy zpracovány ZTKP, jejichž součástí je projekt kontrolního sledování.
+26
+5.10 EKOLOGIE
+5.10.1
+Ochrany svahů tělesa železničního spodku mají nejenom význam pro stabilitu svahů tohoto tělesa, ale mají
+i velký význam pro zabezpečení ekologické stability krajiny a měly by přispívat k zlepšení životního prostředí.
+Jsou proto nedílnou součástí všech staveb Českých drah. Při provádění stavby je nutno respektovat ustanovení
+zákona č. 114/1992 Sb., o ochraně přírody a krajiny.
+Navržený druh ochrany svahů tělesa železničního spodku a materiály navržené v projektové dokumentaci těchto
+ochran musí být projednány a odsouhlaseny Odborem životního prostředí příslušného Okresního úřadu v rámci
+územního řízení.
+5.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ
+OCHRANA
+5.11.1
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví kapitola
+1 TKP.
+5.11.2
+Při provádění ochran skalních svahů drážního tělesa platí zásady a předpisy pro práce ve výškách. Za práci ve
+výšce se považuje práce a pohyb pracovníka, při kterých je ohrožen pádem z výšky, propadnutím nebo sesutím.
+Při této činnosti musí být pracovníci zajištěni proti pádu. Požadavky na bezpečnost a ochranu zdraví při práci na
+pracovištích s nebezpečím pádu z výšky nebo do hloubky stanovuje nařízení vlády č. 362/2005 Sb.
+Zajištění proti pádu musí být zabezpečeno od výšky 1,5 m, pokud není stanoveno jinak v projektové
+dokumentaci nebo stavebním dozorem.
+5.11.3
+Prostředky osobního zajištění proti pádu jsou zejména: bezpečnostní lano, bezpečnostní pás, bezpečnostní
+postroj, zkracovač lana, samonavíjecí kladka, bezpečnostní brzda, přípravky pro spouštění a vytahování,
+vč. příslušenství.
+5.11.4
+Prostředky osobního zajištění musí být pravidelně prohlíženy a zkoušeny nejméně jedenkrát za dva roky, pokud
+není interními předpisy stanoveno jinak. Pracovník je povinen se vizuálně přesvědčit před použitím osobního
+zajištění o jeho kompletnosti, provozuschopnosti a nezávadnosti.
+Pracovníci, kteří budou používat prostředky osobního zajištění, musí být o jejich používání prokazatelně
+poučeni a vyškoleni.
+5.11.5
+Materiál, nářadí a pomůcky musí být uloženy, případně skladovány ve výškách tak, aby byly po celou dobu
+uložení zajištěny proti pádu nebo sklouznutí. Pracovní nářadí je zakázáno zavěšovat na části oděvů, pokud
+k tomu oděv není zvlášť upraven (pás s upínkami apod.). Prostory, nad kterými se pracuje, musí být vždy
+bezpečně zajištěny (ohrazeny, označeny), aby nedošlo k ohrožení pracovníků a zájmu jiných osob.
+5.11.6
+Práce ve výškách a v prostorách nechráněných proti povětrnostním vlivům musí být přerušeny při: bouři, silném
+dešti a sněžení, tvoření námrazy, dohlednosti menší než 30 m, teplotě prostředí nižší než -10°C a čerstvém větru
+(podrobnosti stanovuje nařízení vlády č. 362/2005 Sb).
+Používání silonových lan a ochranných pásů ze silonu a jiných umělých vláken v období, kdy klesne teplota pod
++5°C, je zakázáno.
+5.11.7
+Při provádění rozsáhlých ochran a zabezpečení skalních svahů vypracuje zhotovitel technologický postup tak,
+aby v průběhu prací nedošlo k nekontrolovanému porušení stability celého svahu nebo jeho části.
+27
+5.11.8
+Při čištění skalních stěn se musí stěna čistit zásadně shora dolů a rovněž se musí shora na ní sestupovat.
+Pracovník nikdy nesmí čistit stěnu nad sebou. Níže smí pracovník sestoupit teprve tehdy, když skálu pod sebou
+řádně očistil.
+Skupina pracovníků čistících skálu musí být rozestavěna tak, aby byla vyloučena práce dvou nebo více
+pracovníků nad sebou.
+5.11.9
+Při použití výbušnin k trhacím pracím při úpravách skalních svahů je třeba odborné znalosti a zvýšené
+opatrnosti. Je nutno dbát, aby se výbušniny nedostaly do rukou nepovolaných.
+Trhací práce smí řídit podle povahy a druhu:
+a) technický vedoucí trhacích prací, jde-li o trhací práce velkého rozsahu,
+b) střelmistr, jde-li o trhací práce menšího rozsahu.
+Osoby zaměstnané při trhacích pracích nesmějí převzaté trhaviny a rozněcovadla svěřit cizím osobám, ani jich
+nesmějí používat pro jiné účely, než pro které byly původně určeny.
+Všichni pracovníci zúčastnění při trhacích pracích musí dodržovat ustanovení pro práce s výbušninami
+z předpisu SŽDC (ČD) Op16.
+5.11.10
+Ve všech prostorách, ve kterých se výbušniny uskladňují nebo kde se výbušniny používají, je v jejich přímé
+blízkosti zakázáno kouření a jakékoliv zacházení s otevřeným ohněm a nekrytým světlem nebo s rozpálenými
+předměty.
+Zápalky, zapalovače nebo jiné předměty a látky snadno vznětlivé se nesmějí přenášet do prostorů, kde jsou
+uskladňovány výbušniny.
+Ve skladu výbušnin se smějí uskladňovat pouze výbušniny. Trhaviny a rozněcovadla se nesmějí schovávat ani
+v malém množství v dílnách, přístřešcích, kancelářích nebo odnášet a schovávat v bytech apod.
+5.11.11
+Z hlediska požární ochrany je nutné včas odstraňovat ze svahů přeschlé travní porosty a křoviny jako prevence
+před možným vznikem požárů a jejich eventuální přenesení do okolí tělesa železničního spodku (obilí, les
+apod.). Je zakázáno odstraňovat přeschlou trávu a křoviny vypalováním.
+5.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich
+aktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP,
+tj. právních předpisů, technických norem a předpisů SŽDC (ČD).
+5.12.1 Technické normy
+ČSN 33 2000-4-41 Elektrotechnické předpisy. Elektrická zařízení. Část 4: Bezpečnost – Kapitola 41:
+Ochrana před úrazem elektrickým proudem. Změna Z1. Oprava O1. Změna Z2.
+ČSN 34 1500 Elektrotechnické předpisy. Předpisy pro elektrická trakční vedení. Změna Z1, Změna
+Z2, Změna Z3, Změna Z4, Změna Z5
+ČSN 34 2613 Železniční zabezpečovací zařízení. Kolejové obvody a vnější podmínky pro jejich
+činnost.
+ČSN 34 2614 Železniční zabezpečovací zařízení. Předpisy pro projektování, provozování a používání
+kolejových obvodů
+ČSN 42 6403 Tažené ocelové dráty kruhového průřezu – JK 135. Základní rozměrová norma
+ČSN 42 6410 Tažený ocelový drát pro všeobecné účely
+ČSN 46 4902 Výpěstky okrasných dřevin. Společná a základní ustanovení
+ČSN 72 1151 Zkoušení přírodního stavebního kamene. Základní ustanovení
+ČSN 72 1176 Zkouška trvanlivosti a odolnosti kameniva proti mrazu
+ČSN 72 1860 Kámen pro zdivo a stavební účely. JK 583 - Společná ustanovení
+28
+ČSN 72 1861 Desky z přírodního kamene pro venkovní dlažbu. Požadavky a zkušební metody.
+ČSN 73 1326 Stanovení odolnosti povrchu cementového betonu proti působení vody a chemických
+rozmrazovacích látek. Změna Z1
+ČSN 73 2310 Provádění zděných konstrukcí
+ČSN 73 2401 Provádění a kontrola konstrukcí z předpjatého betonu. Změna 2. Změna 3
+ČSN 73 6206 Navrhování betonových a železobetonových mostních konstrukcí. Změna a. Změna
+Z2. Změna Z3.
+ČSN 75 2130 Křížení a souběh vodních toků s dráhami, pozemními komunikacemi a vedeními
+ČSN 83 9011 Technologie vegetačních úprav v krajině - Práce s půdou
+ČSN 83 9021 Technologie vegetačních úprav v krajině – Rostliny a jejich výsatba
+ČSN 83 9031 Technologie vegetačních úprav v krajině - Trávníky a jejich zakládání
+ČSN 83 9041 Technologie vegetačních úprav v krajině - Technicko-biologické způsoby stabilizace
+terénu - Stabilizace výsevy, výsadbami, konstrukcemi ze živých a neživých materiálů a
+stavebních prvků, kombinované konstrukce
+ČSN EN 206-1 Beton – Část 1: Specifikace, vlastnosti, výroba a shoda. Změna Z1. Změna Z2. Změna
+A1. Změna A2.
+ČSN EN 445 Injektážní malta pro předpínací kabely. Zkušební metody
+ČSN EN 446 Injektážní malta pro předpínací kabely. Postupy injektování
+ČSN EN 447 Injektážní malta pro předpínací kabely. Požadavky na běžnou maltu.
+ČSN EN 933-3 Zkoušení geometrických vlastností kameniva – Část 3: Stanovení tvaru zrn – Index
+plochosti
+ČSN EN 1537 Provádění speciálních geotechnických prací. Injektované horninové kotvy
+ČSN EN 1936 Zkušební metody přírodního kamene. Stanovení měrné a objemové hmotnosti
+a celkové a otevřené pórovitosti
+ČSN EN 1992-1-1 Eurokód 2: Navrhování betonových konstrukcí – Část 1-12: Obecná pravidla a
+pravidla pro pozemní stavby
+ČSN EN 10002-1 Kovové materiály. Zkouška tahem. Část 1: Zkušební metoda
+ČSN EN 10025 Výrobky válcované za tepla z konstrukčních ocelí. Technické dodací podmínky
+ČSN EN 10025-1 Výrobky válcované za tepla z konstrukčních ocelí. Část 1: Všeobecné dodací
+podmínky
+ČSN EN 10025-3 Výrobky válcované za tepla z konstrukčních ocelí. Část 3: Technické dodací podmínky
+pro normalizačně žíhané/normalizačně válcované svařitelné jemnozrnné konstrukční
+oceli
+ČSN EN 10025-4 Výrobky válcované za tepla z konstrukčních ocelí. Část 3: Technické dodací podmínky
+pro termomechanicky válcované svařitelné jemnozrnné konstrukční oceli
+ČSN EN 10079 Hutnictví železa. Definice ocelových výrobků
+ČSN EN 10210-2 Duté profily tvářené za tepla z nelegovaných a jemnozrnných ocelí. Část 2: Rozměry,
+úchylky a statické hodnoty
+ČSN EN 10219-1 Svařované duté profily z konstrukčních nelegovaných a jemnozrnných ocelí, tvářené
+za studena. Část 2: Rozměry, úchylky a statické hodnoty
+ČSN EN 12224 Geotextilie a výrobky podobné geotextiliím Zjišťování odolnosti proti povětrnostním
+vlivům
+ČSN EN 12371 Zkušební metody přírodního kamene. Stanovení mrazuvzdornosti
+ČSN EN 12715 Provádění speciálních geotechnických prací. Injektáže
+ČSN EN 13755 Zkušební metody přírodního kamene. Stanovení násakavosti vodou za atmosférického
+tlaku
+ČSN EN 50122-1 Drážní zařízení – Pevná trakční zařízení. Část 1: Ochranná opatření vztahující se na
+elektrickou bezpečnost a uzemňování
+ČSN EN ISO 1461 Žárové povlaky zinku nanášené ponorem na železných o ocelových výrobcích.
+Specifikace a zkušební metody
+ČSN EN ISO 1463 Kovové a oxidové povlaky. Měření tloušťky povlaku - Mikroskopická metoda
+29
+ČSN EN ISO 9227 Korozní zkoušky v umělých atmosférách. Zkoušky solnou mlhou
+ČSN P ENV 1992-1-1 Eurokód 2: Navrhování betonových konstrukcí. Část 1.1: Obecná pravidla a pravidla
+pro pozemní stavby.
+ČSN P ENV 10080 Ocel pro výztuž do betonu – Svařitelná, žebírková, betonářská ocel B 500. Technické
+dodací podmínky pro tyče, svitky a svařované sítě
+*EN 14490 (v návrhu) Execution of special geotechnical works – Soil nailing
+5.12.2 Předpisy
+SŽDC (ČD) Op16 Pravidla o bezpečnosti a ochraně zdraví při práci
+SŽDC S3 Železniční svršek
+SŽDC S4 Železniční spodek
+SŽDC SR105/1(S) Používání plastbetonu v traťovém hospodářství
+Obecné technické podmínky SŽDC č.j. 20034/04-OP a ČD č.j. 60 124/2004-O13„ Geotextilie v tělese
+železničního spodku“
+Obecné technické podmínky SŽDC č.j. 24 288/04OP a ČD č.j. 63 484/2004-O13„ Geomřížky a geomembrány
+v tělese železničního spodku“
+Vyhláška č. 395/1992 Sb., kterou se provádějí některá ustanovení zákona ČNR č. 114/1992 Sb., o ochraně
+přírody a krajiny, v platném znění
+Zákon č. 114/1992 Sb. o ochraně přírody a krajiny, v platném znění
+Vyhláška č. 177/1995 Sb., kterou se vydává stavební a technický řád drah, v platném znění
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění některých zákonů,
+v platném znění
+Zákon č. 62/1998 Sb o geologických pracích, v platném znění
+Zákon č. 44/1998 Sb. o ochraně a využití nerostného bohatství (horní zákon), v platném znění
+Zákon č. 266/1994 Sb. o drahách, v platném znění
+Zákon č. 185/2001 Sb. o odpadech a o změně některých dalších zákonů, v platném znění
+Nařízení vlády kterým se stanoví technické požadavky na vybrané stavební výrobky, v platném
+č. 163/2002 Sb., znění
+Nařízení vlády kterým se stanoví technické požadavky na stavební výrobky označované CE,
+č. 190/2002 Sb., v platném znění
+Nařízení vlády o bližších požadavcích na bezpečnost a ochranu zdraví při práci na pracovištích
+č. 362/2005 Sb. s nebezpečím pádu z výšky nebo do hloubky, v platném znění
+Vzorové listy železničního spodku
+Ž1 Základní rozměry pláně tělesa železničního spodku
+Ž2 Zemní těleso
+Ž3 Odvodňovací zařízení
+Ž4 Pražcové podloží
+Ž5 Úprava drážních svahů
+Ž6 Železniční těleso ve styku s vodními toky
+30
+5.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 3 - Zemní práce
+Kapitola 4 - Odvodnění kolejiště
+Kapitola 15 - Vegetační úpravy
+Kapitola 17 - Beton pro konstrukce
+Kapitola 18 - Betonové mosty a konstrukce
+Kapitola 19 - Ocelové mosty a konstrukce
+Kapitola 20 - Tunely
+Kapitola 23 - Sanace inženýrských objektů
+Kapitola 24 - Zvláštní zakládání
+TKP staveb pozemních komunikací
+Kapitola 13 - Vegetační úpravy
+Kapitola 30 - Speciální zemní konstrukce
+TP 53 Protierozní opatření na svazích pozemních komunikací
+31
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 5
+T ř e t í - aktualizované vydání se zapracovanou změnou č. 6 /z roku 2008/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Ing. Milan Koblása,
+Pragoprojekt, a.s., Praha
+Odborný gestor: Ing. Jan Tupý,
+Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Vydal: Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 241, +420 972 741 769,
+fax: +420 972 741 290,
+e-mail: otd@tudc.cz
+www.tudc.cz

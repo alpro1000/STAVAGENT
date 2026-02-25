@@ -1,0 +1,394 @@
+{
+  "type": "tkp_document",
+  "filename": "TKP12_2013_05.pdf",
+  "extracted_at": "2026-02-25T15:41:32.930816",
+  "document_info": {
+    "tkp_number": "12",
+    "year": "2013",
+    "month": "05"
+  },
+  "technical_specs": [
+    {
+      "value": "4",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "900",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "900",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2000",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1500",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "152",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "5",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "00",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "60",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "00",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "900",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "900",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "20",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "25",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "2000",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "1500",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "152",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    }
+  ],
+  "prices": [],
+  "raw_text": "Správa železniční dopravní cesty, státní organizace\nDlážděná 1003/7, 110 00 Praha 1, Nové Město\nTECHNICKÉ KVALITATIVNÍ PODMÍNKY\nSTAVEB STÁTNÍCH DRAH\nKapitola 12\nCHRÁNIČKY A KOLEKTORY\nTřetí - aktualizované vydání\nzměna č. 8\nSchváleno generálním ředitelem SŽDC\ndne: 27.3.2013\nč.j.: S 3916/2012-TÚDC\nÚčinnost od: 1.5.2013\nPočet stran: 22\nPočet příloh: 0\nPočet listů příloh: 0\nPraha 2013\nOznačení textu po stranách znamená věcnou změnu textu oproti TKP - Třetímu aktualizovanému vydání,\nzměně č. 6 z roku 2008.\nVšechna práva vyhrazena.\nTato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo\npřenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez\npředchozího písemného svolení vydavatele.\nVýhradní distributor: Správa železniční dopravní cesty, státní organizace\nTechnická ústředna dopravní cesty\nÚATT - oddělení typové dokumentace\n772 58 Olomouc, Nerudova 1\nObsah\n12.1 ÚVOD 4\n12.1.1 Všeobecně 4\n12.1.2 Použití a umístění chrániček a kolektorů 4\n12.1.3 Obsah dodávky 5\n12.1.4 Vytyčení 5\n12.1.5 Sledování stavu okolních objektů 5\n12.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 6\n12.2.1 Všeobecně 6\n12.2.2 Trouby a dílce pro chráničky inženýrských sítí 6\n12.2.3 Kamenivo pro lože a obsyp chrániček 7\n12.2.4 Betonové monolitické konstrukce pro chráničky a kolektory 7\n12.2.5 Prefabrikované konstrukce pro chráničky a kolektory včetně šachet 7\n12.2.6 Ocelové konstrukce pro vystrojení chrániček a kolektorů včetně šachet 8\n12.2.7 Poklopy 8\n12.2.8 Žebříky 8\n12.2.9 Izolace proti vodě 8\n12.3 TECHNOLOGICKÉ POSTUPY PRACÍ 8\n12.3.1 Všeobecně 8\n12.3.2 Zemní práce 9\n12.3.2.1 Otevřené výkopy 9\n12.3.2.2 Bezvýkopové technologie 9\n12.3.2.3 Ražené kolektory 9\n12.3.3 Podkladní lože 10\n12.3.3.1 Lože pod chráničky 10\n12.3.3.2 Lože pod šachty 10\n12.3.3.3 Lože pod kolektory 10\n12.3.4 Spojování trub 10\n12.3.4.1 Ocelové trouby 10\n12.3.4.2 Betonové a železobetonové trouby 10\n12.3.4.3 Vláknocementové trouby 11\n12.3.4.4 Trouby z PVC a HDPE 11\n12.3.4.5 Trouby z lineárního polyetylénu 11\n12.3.4.6 Trouby z jiných materiálů 11\n12.3.4.7 Multikanály 11\n12.3.5 Obetonování chrániček a kolektorů 11\n12.3.5.1 Obetonování v otevřeném výkopu 11\n12.3.5.2 Obetonování při bezvýkopových technologiích 11\n12.3.6 Obsyp chrániček a kolektorů 11\n12.3.7 Betonové monolitické konstrukce pro chráničky a kolektory včetně šachet 12\n12.3.8 Prefabrikované konstrukce pro chráničky a kolektory včetně šachet 12\n12.3.9 Ocelové konstrukce pro vystrojení kolektorů a šachet 12\n12.3.10 Izolace proti vodě 13\n12.3.11 Dokončující práce 13\n12.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 13\n12.4.1 Všeobecně 13\n12.4.2 Dodávka a skladování 13\n12.4.2.1 Trubní materiál 14\n12.4.2.2 Prefabrikáty kolektorových tubusů šachet a doplňkových objektů chrániček 14\n12.4.2.3 Ocelové konstrukce 14\n12.4.2.4 Výrobky pro systémy vodotěsné izolace 14\n12.4.2.5 Cement, kamenivo, armovací výztuž 15\n12.4.3 Průkazní zkoušky 15\n1\n12.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 15\n12.5.1 Všeobecně 15\n12.5.2 Zemní práce 15\n12.5.3 Monolitické betonové konstrukce 15\n12.5.4 Montované betonové konstrukce 15\n12.5.5 Ocelové konstrukce 15\n12.5.6 Izolace proti vodě 15\n12.5.7 Trubní materiál 15\n12.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 16\n12.6.1 Přípustné odchylky 16\n12.6.2 Míra opotřebení 16\n12.6.3 Záruky 16\n12.7 KLIMATICKÁ OMEZENÍ 16\n12.7.1 Zemní práce 16\n12.7.2 Monolitické betonové konstrukce 16\n12.7.3 Montované betonové konstrukce 16\n12.7.4 Ocelové konstrukce 17\n12.7.5 Izolace proti vodě 17\n12.7.6 Trubní materiál 17\n12.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 17\n12.8.1 Všeobecně 17\n12.8.2 Odsouhlasení zakrývaných prací 17\n12.8.3 Převzetí prací 18\n12.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 18\n12.10 EKOLOGIE 19\n12.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 19\n12.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 19\n12.12.1 Technické normy 19\n12.12.2 Předpisy 21\n12.12.3 Související kapitoly TKP 22\n2\nSeznam zkratek\nČD České dráhy, akciová společnost\nČSN České normy\nEN Evropské normy\nTPG Technická pravidla GAS (resp. Technická pravidla pro plynaře, vydává GAS s.r.o.)\nSŽDC Správa železniční dopravní cesty, státní organizace\nTP Technologický předpis\nTKP Technické kvalitativní podmínky staveb státních drah\nTNŽ Technické normy železnic\nTÚDC Technická ústředna dopravní cesty\nZTKP Zvláštní technické kvalitativní podmínky\nTDS Technický dozor stavebníka\nPVC-U Neměkčený polyvinylchlorid\nHDPE Vysokohustotní polyetylen\nhPS Houževnatý polystyren\n3\n12.1 ÚVOD\n12.1.1 Všeobecně\nPro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kap. 1 TKP - Všeobecně.\nTechnické kvalitativní podmínky (dále jen „TKP“) jsou zpracovány s ohledem na platné ČSN, TNŽ a jiné předpisy\ns tím, že některé články norem upřesňují nebo doplňují.\nKapitola 12 TKP zahrnuje práce a činnosti spojené se zřízením chrániček a kolektorů pro uložení inženýrských sítí\nve shodě s uspořádáním, rozměry a podrobnostmi uvedenými v projektové dokumentaci (dále jen „dokumentaci“),\npožadavky danými TKP nebo rozhodnutím technického dozoru stavebníka (dále jen „TDS“). Na tratích\nelektrizovaných stejnosměrnou trakční proudovou soustavou je při projektování a realizaci staveb a rekonstrukcí\nkovových úložných zařízení nutno dbát pokynů TKP, kapitola 25. Při navrhování a realizaci chrániček a kolektorů je\ntřeba respektovat požadavky, uvedené v kapitole 27 TKP, pro ochranu před účinky blesku.\nVeškerá stavební činnost drážních i mimodrážních investorů v obvodu dráhy a v ochranném pásmu dráhy musí být\nprováděna v souladu s podmínkami rozhodnutí vydaného speciálním stavebním úřadem. Povinnosti zhotovitele\na objednatele dále stanoví Kapitola 1 TKP – článek 1.10.3 Ochranná pásma.\nTermín „chránička“ znamená potrubí, chodbu nebo jiné zařízení, jehož účelem je ochrana podzemních sítí před\nmechanickým poškozením a jinými škodlivými účinky prostředí nebo ochrana okolí před následky havárií\npodzemních sítí, případně možnost provedení výměn nebo oprav pozemních sítí bez porušení nadloží.\nChráničkou se rozumí i kabelovod ve smyslu TNŽ 34 2609. Požadavky na trubkové systémy pro vedení kabelů\nuložené v zemi jsou uvedeny v ČSN EN 61386-24.\nPodle technologie provádění se rozlišují chráničky realizované v otevřeném výkopu a chráničky realizované\nbezvýkopovými technologiemi.\nTermín „kolektor“ znamená objekt, zpravidla podzemní, realizovaný jako samostatná průchozí liniová stavba určená\npro všechny kategorie vedení technického vybavení. Podle technologie provádění se rozlišují kolektory hloubené\na kolektory ražené.\n12.1.2 Použití a umístění chrániček a kolektorů\nPřípady použití, poloha chrániček a kolektorů vzhledem k drážnímu tělesu, jiným podzemním vedením, případně\npoužití doplňujících objektů chrániček (šachty, armaturní a kabelové komory, čichačky, odkalení, kontrolní trubky\napod.) jsou pro jednotlivé druhy sítí stanoveny příslušnými ČSN a TNŽ (normy jsou uvedeny v oddíle 12.12 této\nkapitoly TKP) a ČSN 73 6005.\nPoloha nadzemních částí, případně poklopů šachet a komor je rovněž omezena vyhláškou 177/1995 Sb., předpisy\nSŽDC S3, SŽDC S4 a ČSN 73 6320, které vymezují volný schůdný a manipulační prostor a prostorové uspořádání\ntěchto zařízení vzhledem ke koleji pro zajištění průchodu mechanizačních prostředků při udržovacích\na obnovovacích pracích na železničním spodku a svršku kolejí (předpis SŽDC S4 čl. 28).\nInženýrské sítě a vedení se na mostní objekty a do jejich bezprostředního okolí (do mostních otvorů, na nosnou\nkonstrukci, na pilíře, opěry a křídla) umísťují jen výjimečně a to pouze po předchozím odborném posouzení správce\nmostního objektu. Pro umísťování inženýrských sítí na mostních objektech, v mostních otvorech a v blízkosti žel.\nmostů platí konstrukční pokyny uvedené v ČSN 73 6201 „Projektování mostních objektů“ v čl. 14.17. Přiměřeně lze\npoužít ustanovení čl. 15.21 téže ČSN platné pro mostní objekty pozemních komunikací a městských drah.\nInženýrské sítě se do otvorů mostních objektů charakteru propustků neumísťují.\nSpecifickým případem použití chrániček je křížení inženýrských sítí s drážním tělesem. Poloha chrániček vůči\ndrážnímu tělesu je stanovena pro jednotlivé sítě:\n− sdělovací kabely - TNŽ 37 5711, TNŽ 34 2609\n− silové kabely – ČSN EN 50341-1, TNŽ 37 5715\n− vodovody - ČSN 75 5630\n− kanalizace - ČSN 75 6230, TNŽ 73 6949\n− plynovody - ČSN EN 1594, ČSN EN 12007-1, ČSN EN 15001-1\n4\n− teplovody - ČSN 38 3350\n− meliorace a závlahy - ČSN 75 4030\n− dálkovody - ČSN 65 0204, ČSN 65 0208\nKřížení inženýrských sítí s drážním tělesem upravuje předpis SŽDC S4 díl II, kap. V. – Křížení a souběhy vedení\ns dráhou. Minimální krytí chráničky prováděné metodou protlačování musí být 1,5 m od pláně železničního spodku.\nChránička nebo kolektor musí být vybudovány v celé délce křížení, nejméně do vzdálenosti 2,00 m od paty svahu\nnáspu nebo 0,60 m od vnější hrany odvodňovacího příkopu, přičemž tato délka nesmí být menší než 4,00 m od osy\nkrajní koleje, pokud se nejedná o kabely SŽDC (ČD) k vnějším sdělovacím, zabezpečovacím a nn prvkům\nv kolejišti. Pokud ČSN příslušných sítí pro křížení s drážním tělesem stanovují vyšší hodnoty minimální délky\nchráničky od paty železničního náspu nebo od osy krajní koleje než předpis SŽDC S4, platí pro minimální délku\nchráničky hodnota uvedená v ČSN. Poloha chrániček a kolektorů musí umožňovat práci traťové mechanizace,\nzejména strojních čističek kolejového lože (předpis SŽDC S4, Část druhá, Kapitola V.).\nZásady pro navrhování křížení chrániček a kolektorů s vodními toky jsou uvedeny v ČSN 75 2130.\nVšechna elektricky vodivá podzemní vedení, uložená v okolí tratí elektrizovaných stejnosměrnou proudovou\nsoustavou, musí být zřizována s ochranou proti korozi bludnými proudy. Způsob ochrany určuje dokumentace.\nPro protikorozní ochranu kovových potrubí a chrániček potrubí platí kapitola 25 TKP, včetně ČSN 03 8370,\nČSN 03 8373, ČSN 03 8374, ČSN 03 8375 a ČSN 03 8376. Kovové potrubí uložené v chráničce musí být od\nchráničky elektricky odizolováno.\nUmístění a počet čichaček na plynovodním potrubí je dán TPG 700 21.\nUmístění kontrolních trubek na potrubí dálkovodů hořlavých kapalin upravují ČSN 65 0204 a ČSN 65 0208.\nKonkrétní výškopisné a polohopisné umístění, rozměry, materiál a konstrukci chráničky a kolektoru, včetně dopl-\nňujících objektů, vystrojení a vybavení určuje dokumentace.\n12.1.3 Obsah dodávky\nPráce prováděné podle této kapitoly obsahují dodání všech potřebných materiálů, mechanizmů, zařízení a pra-\ncovníků zhotovitele a provedení úkonů nutných k realizaci chrániček inženýrských sítí a stavební části kolektorů,\nvčetně předepsaných zkoušek s vyhodnocením podle dokumentace a v souladu s TKP, ČSN a TNŽ.\nPoužité výrobky pro ochranu podzemních sítí před mechanickým poškozením musí být schváleny pro použití na\nželezniční dopravní cestě příslušným odborem GŘ SŽDC.\nObsahem kapitoly 12 TKP není stanovení technických a kvalitativních podmínek pro vedení a uložení inženýrských\nsítí v chráničkách a kolektorech a pro vystrojení a vybavení kolektorů.\nZásady pro vedení trubních a kabelových sítí a pro vybavení a vystrojení kolektorů včetně šachet jsou obsaženy\nv ČSN 73 7505.\nPro vedení inženýrských sítí v kolektorech, vybavení a vystrojení kolektorů jsou závazné kapitoly 13, 14, 26, 27, 28\na 30 TKP. Technické a kvalitativní podmínky pro inženýrské sítě, vybavení a vystrojení kolektorů neřešené\njednotlivými kapitolami TKP jsou obsahem příslušných Zvláštních technických kvalitativních podmínek (dále jen\n„ZTKP“).\n12.1.4 Vytyčení\nObjednatel před zahájením prací předá zhotoviteli základní polohopisné a výškopisné body vytyčovací sítě, z nichž\nlze vytyčit umístění chrániček inženýrských sítí a kolektorů. Zhotovitel na základě souřadnic podrobných bodů uve-\ndených v projektu provede vytyčení jednotlivých bodů chrániček a kolektorů s přesností určenou ČSN 73 0420-1\na ČSN 73 0420-2.\n12.1.5 Sledování stavu okolních objektů\nVyžaduje-li to smlouva o dílo nebo TDS, musí zhotovitel před zahájením zemních prací zajistit pasportizaci\npřilehlých objektů, které by mohly být porušeny jeho stavební činností. Návrh pasportizace a její rozsah, je vhodné\nuvést již v projektu stavby.\n5\nPři realizaci chrániček bezvýkopovými technologiemi nebo ražených kolektorů bez výluky provozu zpracuje\nzhotovitel technologický předpis (dále jen „TP“), který bude obsahovat sledování geometrické polohy provozo-\nvaných kolejí a jejich případnou opravu do požadované polohy. V případě změny polohy koleje postupuje zhotovitel\nv souladu s drážními předpisy (SŽDC (ČD) D1 – Předpis pro používání návěstí při organizování a provozování\ndrážní dopravy, SŽDC (ČD) D2 – Předpis pro organizování a provozování drážní dopravy, SŽDC (ČD) Op16 –\nPředpis o bezpečnosti a ochraně zdraví při práci a ČSN 73 6360-2 - Konstrukční a geometrické uspořádání koleje\nželezničních drah a její prostorová poloha. Část 2: Stavba a přejímka, provoz a údržba).\n12.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ\nPopis a kvalita použitých výrobků jsou stanoveny v:\n− technických specifikacích projektu stavby,\n− této a souvisejících kapitolách TKP,\n− technologických předpisech vývozce (dovozce).\nDále se na výrobky vztahuje zákon č. 22/1997 Sb., nařízení vlády č. 163/2002 Sb., nařízení vlády č 190/2002 Sb.\na nařízení EP a Rady (EU) č. 305/2011.\n12.2.1 Všeobecně\nMateriál, jeho rozměry, typ a případné další požadované vlastnosti trub a dílců pro chráničky inženýrských sítí\na kolektory určuje dokumentace. Ve všech stupních dokumentace, až do stupně sloužícího pro výběr zhotovitele\n(včetně), musí být tyto požadavky stanoveny v souladu se zákonem o veřejných zakázkách, tzn. konkrétní materiál\na typ výrobku může být stanoven až v dokumentaci zhotovitele.\nV případě, že v dokumentaci není stanoven typ a druh trub nebo dílců, a není-li předepsána jejich délka, lze použít\ntrub libovolné délky nebo dílců jakéhokoli tuzemského nebo zahraničního výrobce, pokud odpovídají požadavkům\nuvedeným v této kapitole TKP a jsou odsouhlaseny výrobcem. Při použití výrobků nepředepsaných v dokumentaci,\nTKP ani ZTKP odsouhlasí jejich použití projektant a TDS. Současně musí být tyto „nepředepsané výrobky“\nschváleny pro použití na železniční dopravní cestě příslušným odborem GŘ SŽDC.\nChráničky musí být vyrobeny a provedeny z materiálů určených dokumentací, které zároveň zaručují náležitou\npevnost a odolnost proti působení vnějšího prostředí. Pevnost trub použitých jako chrániček při křížení podzemních\nvedení s drážním tělesem musí být vždy určena dokumentací v souladu s předpisem PMR 18/86 a musí vyhovovat\nnamáhání vyplývajícímu z technologie provádění stavby. Na elektrizovaných tratích nesmí být použito samostatných\nocelových chrániček bez dodatečné ochrany izolace proti mechanickému poškození a ochrany ocelových chrániček\nproti bludným proudům obetonováním nebo jiným způsobem ochrany izolačních povlaků (např. geotextilií).\nKolektorové tubusy a šachty se podle dokumentace provádějí z monolitického betonu nebo se montují\nz prefabrikovaných dílců a to betonových nebo plastových. Druh a třídu betonu, armovací výztuže, typ a rozměry\nprefabrikátů, případně jejich výrobce určuje dokumentace.\n12.2.2 Trouby a dílce pro chráničky inženýrských sítí\na) Trouby ocelové\nOcelové trouby musí odpovídat ČSN 42 0250, ČSN 42 0252, případně ČSN 42 0144, ČSN 42 0152, pokud doku-\nmentace nebo ZTKP nepředepisují použití jiného výrobku (např. podle ČSN 13 1030). Pro svařované ocelové\nchráničky na plynovodech a dálkovodech (produktovodech) musí být použity trouby se zaručenou svařitelností.\nKvalita trub předepsaných dokumentací se dokládá prohlášením shody výrobce (dříve hutním atestem) s výjimkou,\nbude-li trouba sloužit pouze jako ztracené bednění.\nOcelové trouby použité jako chráničky v místech, kde by vlivem koroze mohlo dojít k jejich destrukci, musí být\nv souladu s ČSN 03 8370, ČSN 03 8373, ČSN 03 8374, ČSN 03 8375, ČSN 03 8376 opatřeny protikorozní\nochranou. Trubky se opatřují izolací podle ČSN 42 0022, v blízkosti elektrické trakce musí být opatřeny\nprotikorozní ochranou podle kapitoly 25 TKP.\n6\nb) Betonové a železobetonové trouby\nBetonové a železobetonové trouby musí odpovídat ČSN EN 1916, pokud dokumentace nebo ZTKP nepředepisují\npoužití jiného výrobku.\nPro chráničky inženýrských sítí možno použít trub hrdlových, trub s perem a polodrážkou, případně trub s patkou.\nc) Vláknocementové trouby\nVláknocementové trouby použité na chráničku musí odpovídat ČSN EN 512, pokud dokumentace nebo\nZTKP nepředepisují použití jiného výrobku.\nPro použití trub jako chrániček inženýrských sítí se používají vláknocementové trouby na obou koncích opracované\npro možnost jejich spojení vláknocementovými spojkami, výjimečně trouby hrdlové.\nd) Trouby z PVC\nTrouby z PVC musí odpovídat ČSN EN ISO 1452-2, trouby z PVC-U musí odpovídat ČSN EN 1329-1, pokud\ndokumentace nebo ZTKP nepředepisují použití jiného výrobku. Jako chráničky inženýrských sítí se používají trouby\nhladké, případně trouby hrdlové.\ne) Trouby z hPS a HDPE (i korugované)\nPro chráničky se používají trouby hPS a HDPE spojované převlečnými spojkami. Trouby mohou být v konstrukci\nchráničky použity pouze jako ztracené bednění. (ČSN EN 12 201-1).\nf) Jiné druhy trub\nPro chráničky inženýrských sítí lze použít i trub z jiných materiálů tuzemských i zahraničních výrobců. Výrobek\nmusí být předepsán v dokumentaci nebo odsouhlasen TDS, případně uveden v ZTKP. Současně musí být výrobek\nschválen pro použití na železniční dopravní cestě příslušným odborem GŘ SŽDC.\ng) Multikanály\nJedná se o plastové tvárnice vyrobené z HDPE materiálu. Jejich konstrukce zaručuje vysokou únosnost. Lze je\npoužívat i v podpovrchových trasách bez obetonování. Vyrábějí se v hrdlovaném provedení. (ČSN EN 12201-1).\nh) Jiné druhy chrániček\nPro chráničky kabelových rozvodů lze použít betonových, železobetonových, keramických nebo plastových žlabů\nodpovídajících svými vlastnostmi ČSN 72 3000 nebo betonových kabelových tvárnic odpovídajících ČSN 72 3376,\npřípadně jiných materiálů, pro které platí obdobně ustanovení článku 12.2.2.f této kapitoly TKP.\n12.2.3 Kamenivo pro lože a obsyp chrániček\nDruh kameniva pro podkladní lože a obsyp chrániček je stanoven dokumentací v souladu s ČSN EN 13242+A1.\nV případech, že není druh kameniva předepsán, lze použít pro podkladní lože těžený písek frakce 0-4 mm, pro obsyp\ntrub chráničky štěrkopísek frakce 0 - 32 mm.\n12.2.4 Betonové monolitické konstrukce pro chráničky a kolektory\na) Beton\nPro vlastnosti a výrobu betonu použitého pro obetonování trub nebo dílců chrániček, pro podkladní desky,\nkolektorové tubusy a kolektorové šachty, případně pro dokumentací předepsané objekty (vzduchotechnické hlavice\napod.), platí požadavky kapitoly 17 TKP a v návaznosti na stupeň vlivu prostředí ČSN EN 206-1.\nb) Výztuž\nPro materiál armovací výztuže platí ČSN 42 0139. Značka a průměr betonářské výztuže musí být stanoveny\nv dokumentaci. Podrobné požadavky jsou uvedeny v kapitole 18 TKP.\n12.2.5 Prefabrikované konstrukce pro chráničky a kolektory včetně šachet\nPro beton a výztuž platí ustanovení čl. 12.2.4.\nTyp, tvar a rozměry, případně druh výrobku prefabrikovaných prvků použitých pro doplňkové konstrukce chrániček,\nkolektorové tubusy a kolektorové šachty musí být uvedeny v dokumentaci. Pro jejich výrobu platí ČSN 72 3000.\n7\n12.2.6 Ocelové konstrukce pro vystrojení chrániček a kolektorů včetně šachet\nMateriál, tvar, rozměry, umístění a způsob ochrany proti korozi ocelových, resp. zámečnických konstrukcí,\npoužitých pro vystrojení kolektorů a šachet chrániček musí být uvedeny v dokumentaci. Pro návrh protikorozní\nochrany lze přiměřeně využít doporučení předpisu SŽDC (ČD) S5/4 a kapitoly 25B TKP. Nepřístupné části, resp.\nčásti u kterých je nemožná (ztížená) údržba ochranného nátěrového systému, chránit zinkováním ponorem nebo\nvyrábět z nerezu.\n12.2.7 Poklopy\nTyp a provedení poklopů pro vstup do kolektorových šachet, armaturních a kabelových komor, případně provedení\núnikových poklopů, jejich materiál a způsob ochrany proti korozi je stanoven dokumentací. Poklopy lze použít\nlitinové, ocelové nebo z vyztuženého betonu v souladu s ČSN EN 124 s národní úpravou podle ČSN 73 7505.\nMinimální rozměr pro průlezné, vstupní a únikové otvory je 600 x 900 mm, resp. 700 x 900 mm, nahlížecí\na montážní otvory musí mít rozměr minimálně 600 x 600 mm. Poklopy musí být uzamykatelné a musí být provedena\nopatření proti znemožnění jejich otevření (ČSN 73 7505).\n12.2.8 Žebříky\nŽebříky pro vstup do kolektorových šachet a armaturních komor musí splňovat podmínky stanovené ČSN 74 3282.\nPro návrh protikorozní ochrany lze přiměřeně využít doporučení předpisu SŽDC (ČD) S5/4 a kapitoly 25B TKP.\nUpřednostnit použití stupadel (ČSN EN 13101) před žebříky. Doporučená ochrana povrchu je poplastováním\n(ČSN EN 13101).\n12.2.9 Izolace proti vodě\nPožadavky na izolaci proti vodě stanoví dokumentace v souladu s kapitolou 22 TKP a TNŽ 73 6280. Materiály\npoužité pro izolaci proti vodě jsou stanoveny dokumentací, přičemž platí, že smějí být použity výrobky a systémy\nvodotěsných izolací ověřené a schválené pro dané hydrofyzikální namáhání (viz ČSN P 73 0600) a agresivitu\nprostředí. Izolaci proti vodě vždy přebírá TDS.\n12.3 TECHNOLOGICKÉ POSTUPY PRACÍ\n12.3.1 Všeobecně\nPřed zahájením prací musí zhotovitel předložit objednateli stavby TP zhotovovaných prací, pokud tento předpis není\njiž obsažen v dokumentaci. TP musí mít na každé stránce identifikační údaje jako řízený dokument (označení TP,\ndatum, stránkování…). TP musí být před zahájením prací odsouhlasen TDS.\nMinimální obsah TP:\n− úvod, identifikační údaje stavby,\n− výchozí podklady,\n− popis (např. výrobků), včetně kvalitativních parametrů,\n− pracovní postupy,\n− jakost a její kontrola včetně provádění zkoušek a způsobu oprav,\n− záruky,\n− bezpečnost práce a ochrana zdraví,\n− přejímky,\n− citované a související normy, technické předpisy a podklady,\n− u kolektorů realizovaných ražením TP použité metody, včetně přípustných odchylek směrové a výškové\npřesnosti,\n− u ražených kolektorů v hloubce větší jak 10 m musí být TP zpracován v souladu se zákonem č. 61/1988 Sb.\nv platném znění,\n− v případě otevřených výkopů zhotovitel předloží vždy statický posudek v oblasti roznosu zatížení od přilehlých\nprovozovaných kolejí.\n8\nPři souvislých opravných a rekonstrukčních pracích se chráničky ukládají vždy před sanací zemní pláně. Jestliže je\nzemní pláň překryta další konstrukční vrstvou (např. podkladní, kolejovým ložem), je zcela nepřípustné ukládat\nchráničku do výkopu přes tuto vrstvu do zemní pláně podélně mezi kolej a přilehlé odvodňovací zařízení (např.\ntrativod, příkop). Přes vložené geosyntetikum výkop zřizovat nelze.\n12.3.2 Zemní práce\n12.3.2.1 Otevřené výkopy\nPro provádění zemních prací pro chráničky a kolektory uložené v otevřených výkopech se postupuje ve shodě\ns dokumentací, kapitolou 3 TKP a ČSN EN 1610. Při výkopu nesmí být znečištěno kolejové lože. Provádí-li se\nvýkop v blízkosti kolejového lože nebo podkladní vrstvy, musí být povrch těchto vrstev zakryt proti znečištění.\nŠířka rýhy je dána profilem použitých chrániček a kolektorů a rozměry obetonování, rozměry prefabrikátů nebo\nmonolitické konstrukce, hloubkou rýhy a použitou technologií výkopových prací. Výkopy se provádí se stěnami ve\nsklonu odpovídajícímu vlastnostem horniny, v níž se výkop provádí. Není-li to možné, provede se pažení stěn. Dno\nrýhy musí být rovné, musí být odstraněny výčnělky skalnatých hornin, kameny, hroudy zmrzlé zeminy apod. Stěny\nrýhy je třeba očistit od větších kamenů, které by pádem mohly poškodit trouby nebo izolaci tubusů a šachet,\npřípadně by o ně mohla být poškozena izolace trub při jejich pokládce. Pro realizaci zemních prací se musí volit\ntakové postupy, aby nebyla narušena stabilita drážního tělesa a funkce ostatních železničních zařízení. Pokud dojde\npři zemních pracích k porušení příkopů nebo jiných odvodňovacích zařízení, je zhotovitel povinen uvést porušená\nzařízení do původního stavu na svůj náklad. Výkopové práce se provádějí tak, aby nedošlo k promíchání\njednotlivých druhů zemin, odděleně se ukládá materiál vytěžený z kolejového lože a podkladních vrstev, zemina\na ornice.\nK zásypu se používá vhodné zeminy, případně štěrkopísek nebo vhodné hlinitopísčité zeminy. Pokud je pro zásyp\npoužit jiný materiál než výkopek, musí zásypový materiál mít stejnou propustnost a nejméně stejnou únosnost a míru\nzhutnění, jako měl výkopek v příslušné hloubce. Materiál zásypu podléhá souhlasu TDS. Zásypový materiál nesmí\nmít nadměrnou vlhkost způsobenou atmosférickými srážkami. Hloubka rozhraní jednotlivých vrstev musí být\nzachována podle stavu před výkopem a přesností do 100 mm. Při zpětném zásypu se jednotlivé vrstvy ukládají na\nsvé původní místo za příslušného hutnění. Zhutňovaná vrstva nad vrcholem trub musí být minimálně 300 mm silná\nu obetonovaných trub a min. 600 mm u trub neobetonovaných. Míra zhutnění je předepsána dokumentací a musí\nnejméně splňovat požadavky TKP a předpisů SŽDC na příslušnou konstrukční vrstvu, které je součástí, a na\npříslušnou pláň (zemní, tělesa železničního spodku), kterou spoluvytváří.\nPři zásypu musí být zachována čistota kolejového lože a drenážní funkce podkladních vrstev.\n12.3.2.2 Bezvýkopové technologie\nTyto technologie je třeba upřednostnit při budování podchodu chrániček a kolektorů pod provozovanými kolejemi\na komunikacemi. Podmínky stanovuje předpis SŽDC S4.\nPro provádění chrániček bezvýkopovými technologiemi (propichováním, protlačováním nebo vodorovným vrtáním)\nse postupuje ve shodě s dokumentací a TP zhotovitele, které musí být odsouhlaseny TDS. TP zpracuje zhotovitel\nv dostatečném předstihu před zahájením prací, pokud TP nebyl součástí nabídky prací zhotovitele. Při protlačování\nse musí dbát na to, aby nedošlo k nadzvednutí nadloží, a tím ke změně nivelety koleje.\nStartovací jámy se provádí v rozměrech podle dokumentace nebo podle TP zhotovitele v souladu kapitolou\n3 TKP a ČSN EN 12889 tak, aby nebyla porušena stabilita drážního tělesa.\n12.3.2.3 Ražené kolektory\nPro provádění kolektorů ražením (štítováním nebo klasickým hornickým způsobem) se postupuje ve shodě\ns dokumentací, konstrukčními zásadami ČSN 73 7501 a TP zhotovitele. Při ražení se musí dbát na to, aby nedošlo\nk nadzvednutí nebo propadnutí nadloží, a tím ke změně nivelety koleje.\nTěžní šachty se provádějí v místech budoucích kolektorových šachet podle dokumentace nebo podle TP zhotovitele\nv souladu s ČSN EN 12889 tak, aby nebyla porušena stabilita drážního tělesa.\n9\n12.3.3 Podkladní lože\n12.3.3.1 Lože pod chráničky\nLože se provádí z důvodu ochrany tělesa chráničky nebo její izolace vlivem nerovností dna rýhy a zároveň slouží\nk rovnoměrnému rozložení tlaku potrubí na základovou spáru. Pokud není v dokumentaci předepsán způsob\nprovedení lože, postupuje se v souladu s kapitolou 3 TKP, nebo v závislosti na použitém materiálu chráničky\na hydrogeologických poměrech staveniště:\na) dno rýhy není pod hladinou podzemní vody\naa) dno rýhy tvoří zeminy se zrny max. 8 mm.\nOcelové trouby se ukládají přímo na urovnané dno rýhy. Multikanály se ukládají na min. 50 mm silnou vrstvu\nz nekompaktní poddajné výplně z granulovaného materiálu se zrny menšími jak 20 mm. Vláknocementové roury\nse ukládají do pískového lože min. tl. 100 mm. Obetonované vláknocementové roury a roury z umělých hmot se\nukládají na podkladní betonovou desku v tl. min. 50 mm. Betonové trouby se ukládají na betonovou desku v tl.\nmin. 100 mm v případě jejich dalšího obetonování nebo do betonového sedla o úhlu 135°, pokud trouba přenese\npodle statických výpočtů zatížení na ni působící. Pro podkladní betonovou desku se používá betonu min.\npevnostní třídy C 8/10.\nab) dno rýhy tvoří zeminy se zrny většími jak 8 mm, horniny skalní a poloskalní.\nOcelové a vláknocementové tlakové trouby se ukládají do lože tloušťky min. 100 mm. Maximální velikost zrna je\n8 mm. Multikanály se ukládají na 100 mm silnou vrstvu z nekompaktní poddajné výplně z granulovaného\nmateriálu se zrny menšími jak 20 mm. Na lože se používá písek, písčitá nebo hlinitopísčitá zemina. Lože je\nmožno nahradit uložením ocelových trub na pytle naplněné gumovou drtí.\nOstatní potrubí se ukládají podle bodu aa).\nb) dno rýhy je pod hladinou podzemní vody\nPřed pokládkou trub je nutné z rýhy odvést prosakující vodu podélnou drenáží gravitačně, případně svést vodu\ndo vsakovacích jímek a odčerpat. Dále se postupuje s ohledem na geologické poměry podle bodů aa) nebo ab).\n12.3.3.2 Lože pod šachty\nTyto objekty se provádějí po položení (v některých případech v souběhu s pokládkou) chrániček a kolektorů.\nProvedení lože musí zamezit relativnímu posuvu tělesa šachty a potrubí. Pokud není v dokumentaci předepsán\nzpůsob provedení lože, postupuje se dle článku 12.3.3.1.\n12.3.3.3 Lože pod kolektory\nLože pod kolektory slouží k rovnoměrnému rozložení tlaku tělesa kolektoru na základovou spáru. Pokud není\nv dokumentaci předepsán způsob provedení lože, postupuje se dle článku 12.3.3.1.\n12.3.4 Spojování trub\n12.3.4.1 Ocelové trouby\nOcelové trouby se spojují zásadně svařováním. Sváry se provedou podle požadavků dokumentace, nejsou-li\npožadavky stanoveny platí ustanovení příslušných norem podle druhu do chráničky vkládaného potrubí\n(viz ČSN 65 0204, ČSN 65 0208). Svary smí provádět pouze svářeč se státní zkouškou.\nV případě, že chránička není ukončena v šachtě, musí být čela chráničky utěsněna způsobem předepsaným\ndokumentací.\nV případě použití trubek s tovární izolací je nutno zabezpečit dodatečnou izolaci svarů v souladu s dokumentací.\n12.3.4.2 Betonové a železobetonové trouby\nBetonové trouby použité pro chráničky se spojují v souladu s předpisem výrobce. Pokud betonové roury nebudou ze\nstatických důvodů obetonovány, používá se spoj s gumovým kroužkem, případně se provádí spoj ucpávkou. Při\ntomto způsobu se do hloubky 1/3 hrdla zatlačí suchý konopný provazec, do druhé třetiny se zatlačí impregnovaný\n10\nprovazec a zbytek prostoru hrdla se vyplní cementovou maltou, u větších profilů lze zbytek prostoru vyplnit\nasfaltovým tmelem za studena.\nV případě následného obetonování betonových trub se hrdla pouze zaplňují cementovou maltou, trouby s perem\na polodrážkou se spojují na sraz.\n12.3.4.3 Vláknocementové trouby\nVláknocementové roury se spojují v souladu s předpisem výrobce. Tlakové a kanalizační vláknocementové trouby se\nspojují převlečnými spojkami. Hrdlové vláknocementové roury se spojují obdobně jako trouby betonové.\n12.3.4.4 Trouby z PVC a HDPE\nTrouby hladké z PVC a HDPE sloužící jako ztracené bednění se spojují převlečnými manžetami. Hrdlové trouby\ns gumovým těsněním se spojují nasunutím volného konce trouby do hrdla.\n12.3.4.5 Trouby z lineárního polyetylénu\nTrouby z lineárního polyetylénu se spojují svařováním nebo elektrospojkami podle předpisů výrobce trub.\n12.3.4.6 Trouby z jiných materiálů\nTrouby z jiných materiálů se spojují v souladu s předpisem výrobce trub. Způsob spojování, stejně jako použitý\nmateriál, musí být předem odsouhlasen TDS.\n12.3.4.7 Multikanály\nSpojují se pomocí ocelových pružných spon (minimálně vždy jedna spona na každé stěně multikanálu). Do spoje je\nnezbytné vložit příslušné těsnění, dle požadavku dokumentace a TDS schváleného TP, v souladu s předpisem\nvýrobce a požadavkem na vodotěsnost.\n12.3.5 Obetonování chrániček a kolektorů\nObetonování chrániček a kolektorů vždy přebírá TDS.\n12.3.5.1 Obetonování v otevřeném výkopu\nObetonování chrániček se provádí z důvodů zvýšení statické únosnosti použitých trub, případně jako ochrana proti\núčinkům agresivního prostředí nebo bludných proudů. Rozměry a třídu betonu na obetonování stanoví dokumentace.\nObetonování chrániček se provádí do bednění po vrstvách tak, aby se zabránilo vyplavování potrubí vlivem vztlaku\nvyvozeného potrubím. Při betonáži se betonová směs vždy hutní. U víceděrových chrániček z betonových,\nvláknocementových nebo plastických trub je nutné zároveň zajistit polohu jednotlivých trub distančními rámečky.\nU trub vláknocementových nebo z plastických hmot uložených ve více vrstvách je nutné provádět obetonování\nbetonem tekuté konzistence tak, aby bylo zajištěno obetonováni trub v celém průřezu chráničky. Hutnění se provádí\npropichováním.\nPro obetonování se použije beton min. pevnostní třídy C 16/20 a stupněm vlivu prostředí dle ČSN EN 206-1.\nMinimální tloušťka vrstvy 50 mm (obvykle 100 mm), pokud dokumentace nestanoví jinak.\nU multikanálů je nutné podbetonování u vstupu do šachet pro zamezení střihnutí.\n12.3.5.2 Obetonování při bezvýkopových technologiích\nPři použití ocelové chráničky zasouvané do ocelové protlakové trouby v drážním tělese je nutno prostor mezi\ntroubami zabetonovat injektáží z důvodu ochrany chráničky před mechanickým poškozením její izolace a proti\núčinkům bludných proudů. Protlaková ocelová trouba plní pouze funkci pažení, následně pak ztraceného bednění.\n12.3.6 Obsyp chrániček a kolektorů\nPro provádění těchto prací platí požadavky kapitoly 3 TKP.\n11\nPřed obsypem je nutné provést geodetické zaměření na úsecích označených TDS.\nRozměry a druh obsypového materiálu, případně požadavky na použitou geotextilii stanovuje dokumentace.\nNa obsyp a zásyp se nesmí použít materiál, který by mohl působit škodlivě na materiál chráničky a na jakost\npodzemní vody. Obsyp jílem, slínem, navážkou a rozpojenou skalní horninou není povolen.\nObsyp chrániček se provede souměrně po obou stranách, u více chrániček současně i mezi nimi. Zhutňování obsypu\nse provádí pouze po stranách chrániček, síla vrstev se volí podle účinnosti zhutňovacího prostředku. Při hutnění\nobsypu nesmí nastat výškové nebo směrové vybočení chrániček a kolektorů z původní polohy a nesmí být porušeno\nobetonování ani konstrukce chráničky.\nPo obsypu chrániček a kolektorů je nutné provést kontrolní měření rovinatosti chrániček a kolektorů.\nOcelové trouby s ochranou izolací se opatří obsypem z vhodné písčité nebo hlinitopísčité zeminy ve smyslu\nČSN 73 6133 v tloušťce 200 mm od vnějšího povrchu trouby. Max. velikost zrn je 32 mm, případně lze obsyp\nprovést vytěženou zeminou s ochranou izolace trub vhodnou geotextilií.\nObetonované trouby (betonové, vláknocementové, z plastických hmot) se opatří obsypem z vhodné písčité nebo\nhlinitopísčité zeminy o max. velikosti zrna 32 mm v tloušťce min. 200 mm od povrchu obetonování.\nNeobetonované betonové trouby se obsypávají vhodnou písčitou nebo hlinitopísčitou zeminou o max. velikosti zrna\n32 mm v tloušťce min. 200 mm od vnějšího povrchu trub.\nVláknocementové tlakové trouby se obsypávají vhodnou písčitou nebo hlinitopísčitou zeminou o max. zrnu 32 mm\nmin. 200 mm od vnějšího povrchu trub. Obsyp více chrániček se provede pískem frakce 0-8 mm. Při obsypu více\nchrániček je nutné zabezpečit trouby proti vybočení distančními ocelovými obetonovanými rámečky.\nMultikanály, potrubí z plastů a sklolaminátů se obsypávají pískem, resp. štěrkopískem. Maximální velikost zrna\nurčuje technický předpis dodavatele multikanálů nebo potrubí.\nV případě, že se na staveništi ani v jeho blízkosti nenalézá vhodná zemina pro obsyp, je možno po odsouhlasení\nTDS použít jiný vhodný materiál.\n12.3.7 Betonové monolitické konstrukce pro chráničky a kolektory včetně šachet\nPro provádění obetonování trub chrániček, podkladních desek, monolitických kolektorových tubusů a šachet jsou\nzávazné v plném rozsahu kapitoly 18 TKP a kapitoly 17 TKP. Při provádění prací se postupuje ve shodě\ns ČSN EN 13670.\nPro betonování všech konstrukcí zhotovitel zpracuje a před zahájením betonáže předloží TDS k odsouhlasení TP\nbetonáže.\n12.3.8 Prefabrikované konstrukce pro chráničky a kolektory včetně šachet\nPro kabelové šachty pod hladinou spodní vody se upřednostňují, pokud není v dokumentaci požadováno jinak,\nbezesparé monolitické výrobky z betonu s max. hloubkou průsaku vody 20 mm.\nPro provádění prefabrikovaných kolektorových tubusů a šachet, armaturních komor, případně pro realizaci tělesa\nchráničky z betonových prefabrikátů je závazná kapitola 18 TKP.\nPři provádění montovaných betonových konstrukcí se postupuje ve shodě s ČSN 73 2480, pro stykový beton platí\nČSN EN 13670.\nOšetření spár vodotěsných šachet viz článek 12.2.9.\nPostup montáže je určen dokumentací nebo TP zhotovitele odsouhlaseným TDS.\nPřed zahájením montáže nosných prefabrikovaných konstrukcí zpracuje zhotovitel postup montáže, dodávek\nprefabrikovaných dílců a zmonolitňování konstrukce a před zahájením montáže jej předloží TDS k odsouhlasení.\n12.3.9 Ocelové konstrukce pro vystrojení kolektorů a šachet\nPři provádění ocelových konstrukcí se postupuje v souladu s ČSN EN 1090-1 a ČSN EN 1090-2+A1.\n12\nPro návrh protikorozní ochrany lze přiměřeně využít doporučení předpisu SŽDC (ČD) S5/4. Nepřístupné části, resp.\nčásti, u kterých je nemožná (ztížená) údržba ochranného nátěrového systému, chránit zinkováním ponorem nebo\nvyrábět z nerezu.\nOcelové konstrukce se vyrábějí podle dokumentace zpracované zhotovitelem (dílenská dokumentace). Před\nzahájením prací zpracuje zhotovitel TP montáže včetně způsobu upevnění konstrukce na betonovou konstrukci nebo\nprefabrikáty. Dokumentaci a TP předloží zhotovitel TDS k odsouhlasení.\n12.3.10 Izolace proti vodě\nPro provádění izolací proti vodě kolektorových tubusů, šachet a doplňkových objektů chrániček platí ustanovení\nkapitoly 22 TKP Části B a přiměřeně a ve využitelném rozsahu zásady stanovené v Části A kapitoly 22 TKP.\nIzolaci vždy přebírá TDS.\n12.3.11 Dokončující práce\nSoučástí chrániček je dodávka zatahovacích drátů případně lanek pro možnost následného zatažení kabelů. Konce\nrezervních chrániček i obsazených chrániček, které nejsou ukončeny v šachtách je nutné před obsypem a zásypem\nvhodným způsobem zabezpečit proti vniknutí zeminy do trub. Předtím je nutné vyčistit trouby od zeminy, betonu\na všech dalších nečistot.\nNeosazené chráničky a otvory multikanálů vždy zatěsnit dle dokumentace.\nŠachty opatřit čerpací jímkou s nerez krytem.\nChráničky zaústěné do šachet nad hladinou spodní vody se zatěsňují pracovně proti vniknutí vody do šachet, pokud\ndokumentace nebo výrobce nepožaduje jinak, pěnou nebo netlakovými ucpávkami.\nChráničky zaústěné do šachet pod hladinou spodní vody se zatěsňují proti vniknutí vody do šachet tlakovými\nucpávkami.\nZaústění chrániček do šachet podléhá vždy odsouhlasení TDS.\nÚprava stěn a dna kolektorů se provádí v rozsahu a skladbách daných dokumentací. Případné omítky se provádějí\nv souladu s ČSN EN 13914-1.\n12.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY\n12.4.1 Všeobecně\nMateriál a výrobky se musí dopravovat a skladovat způsobem, který je předepsán příslušnými normami nebo TP\nvýrobce, případně TP zhotovitele.\nMateriál musí být chráněn před poškozením a znehodnocením, případně proti povětrnostním vlivům. Ve skladech\na na skládkách materiálu musí být materiál označen podle druhu, případně podle dodávky tak, aby nemohlo dojít\nk jeho záměně.\nO dodávkách musí zhotovitel vést evidenci ve stavebním deníku (viz kapitola 1 TKP a vyhláška č. 499/2006 Sb.)\nMateriál nebo výrobky, které vykazují vady, poškození, případně které nevyhověly zkouškám nebo neodpovídají\nparametrům stanoveným v dokumentaci, musí zhotovitel neprodleně odstranit z prostoru staveniště.\nZhotovitel je povinen umožnit TDS kontrolu dodaného materiálu a s každou dodávkou mu předloží doklad\no dodávce (dodací list, prohlášení o shodě, certifikát).\nMateriály a výrobky, u kterých si to TDS předem písemnou formou vymíní, smí zhotovitel zabudovat do díla až po\njeho souhlasném stanovisku.\n12.4.2 Dodávka a skladování\nMateriál ukládat vždy podle pokynů výrobce.\n13\n12.4.2.1 Trubní materiál\na) Ocelové trouby\nZpůsob dodávky a jejich ochrana před poškozením je stanovena v ČSN 13 0420. Konkrétní ustanovení týkající\nse dopravy, skladování a manipulace s materiálem jsou uvedena v ČSN EN 12007-3. Konce trub s úpravou pro\nsvar musí být chráněny záslepkami tak, aby záslepka chránila úpravu pro svar během dopravy, při manipulaci\na uskladnění.\nSkladování trubek se musí provádět dle technologických pokynů výrobce se zřetelem na rozměry a pevnost\ntrubek a na použitou izolaci. Izolované trubky se zpravidla ukládají na dřevěné hranolky, jednotlivé vrstvy se\nprokládají vhodným prokladovým materiálem (pryžové pásy) tak, aby hmotnost byla rozdělena rovnoměrně.\nSpodní vrstva trub musí být zajištěna proti rozkulení. Povrchová ochrana potrubí pro přepravu a skladování je\nupravena ČSN 13 0420.\nSkladují se na rovných, dostatečně pevných odvodněných plochách, u elektrizovaných tratí ve vzdálenosti větší\njak 25 m od trolejového vedení.\nb) Betonové trouby\nDodávku a skladování betonových nebo železobetonových trub upravuje ČSN EN 1916, případně se musí\npostupovat podle technologických postupů výrobce.\nSkladování se provádí na rovném, suchém a únosném terénu. Spodní vrstva trub se ukládá na dřevěné podklady,\nostatní vrstvy se prokládají dřevěnými nebo pryžovými proklady.\nPři skladování trub ve vrstvách se počet vrstev určuje tak, aby nedošlo k porušení trub přetížením. Proti\npodélnému posunutí musí být trouby zajištěny klíny. Těsnící pryžové kroužky je třeba při skladování chránit před\nmechanickým, případně chemickým poškozením.\nc) Vláknocementové trouby\nDodávku a skladování vláknocementových trub upravují ČSN EN 512 a ČSN EN 1444. Výrobky se skladují na\nrovném podkladě v hromadách dle jmenovitých světlostí a délek do výšky maximálně 2000 mm. Trouby je nutno\nukládat a skládat tak, aby se vyloučil jakýkoliv náraz. Spodní vrstva trub musí být zabezpečena proti posunutí.\nd) Trouby z plastických hmot\nDodávku a skladování trub z plastických hmot upravují ČSN 64 0090, ČSN EN 12007-2, ČSN EN 12201-1,\nČSN EN ISO 1452-2 a ČSN EN 1329-1. Při dodávce a skladování je vždy třeba dbát pokynů výrobce.\nRoury se skladují na rovném místě a musí ležet na podložce celou svou délkou. Výška skládky nesmí být vyšší\njak 1500 mm. Trouby je nutné chránit před škodlivými vlivy, jako jsou tepelné sálání, přímé světelné záření,\nmechanické poškození a vlivy chemických látek.\ne) Multikanály\nPři dodávce a skladování je vždy třeba dbát pokynů výrobce a ČSN 64 0090.\nMultikanály se skladují až v deseti vrstvách tak, aby konce nebyly mechanicky namáhány. Multikanály je nutné\nchránit před škodlivými vlivy, jako jsou tepelné sálání, přímé světelné záření, mechanické poškození a vlivy\nchemických látek.\nf) Jiné druhy trub\nPři použití trub z jiných materiálů se musí při dodávce a skladování dodržet pokyny výrobce.\n12.4.2.2 Prefabrikáty kolektorových tubusů šachet a doplňkových objektů chrániček\nPro dodávku a přejímání prefabrikovaných stavebních dílců platí ustanovení ČSN 73 2480. Pro dopravu\na skladování platí příslušná ustanovení ČSN 72 3000. Prefabrikované dílce se skladují na odvodněných, dostatečně\núnosných plochách, pokud možno v poloze, v níž budou osazovány na stavbě. Musí být zabezpečeny proti posunutí\na překocení. Při skladování ve více vrstvách musí být prefabrikáty proloženy dřevem nebo pryží a nesmí dojít\nk jejich statickému přetížení. Při dopravě a manipulaci je prefabrikáty povoleno zavěšovat pouze v místech\na úchytech k tomu určených. Plastové šachty musí být skladovány na rovné podložce a musí být chráněny před\nškodlivými vlivy, jako jsou tepelné sálání, přímé světelné záření, mechanické poškození a vlivy chemických látek.\n12.4.2.3 Ocelové konstrukce\nPro ocelové konstrukce platí ustanovení kapitoly 19 TKP.\n12.4.2.4 Výrobky pro systémy vodotěsné izolace\nPlatí ustanovení kapitoly 22 TKP, Části B.\n14\n12.4.2.5 Cement, kamenivo, armovací výztuž\nPro cement, kamenivo a armovací výztuž platí ustanovení kapitoly 17 a 18 TKP.\n12.4.3 Průkazní zkoušky\nZ výsledků průkazních zkoušek musí být jednoznačně zřejmé, že z navrhovaných materiálů a za navrhovaných\ntechnologických postupů provádění budou dodrženy vlastnosti a parametry konstrukcí nebo objektů předepsané\ndokumentací, platnými zákony, vyhláškami, normami, případně TKP a ZTKP.\nU konstrukcí chrániček a kolektorů se obecně průkazní zkoušky nevyžadují. Pokud se u některých materiálů nebo\nkonstrukčních částí vyžaduje provedení průkazních zkoušek, postupuje se podle ZTKP.\n12.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY\n12.5.1 Všeobecně\nKontrolní zkoušky se provádějí pro zjištění shody vlastností a parametrů výrobků a konstrukcí s vlastnostmi\na parametry předepsanými dokumentací, příslušnými normami, TKP a ZTKP, případně TP zhotovitele.\nTechnologický předpis zhotovitele bude obsahovat plán kontrol a zkoušek, který odsouhlasí TDS.\nZhotovitel musí kontrolní zkoušky provádět během realizace prací s potřebnou pečlivostí a v požadovaném rozsahu.\nO odběru, výrobě vzorků a o zkouškách vede zhotovitel písemné protokoly tak, aby byla možná přesná identifikace\nmísta a času odběru a aby bylo možno zjistit rozhodující okolnosti, které ovlivňují výsledky zkoušek. Protokoly\nkontrolních zkoušek a jejich vyhodnocení musí být předávány TDS.\nKontrolní zkoušky mohou být prováděny ve staveništních laboratořích schválených TDS.\n12.5.2 Zemní práce\nPro odběr a kontrolu zemních prací jsou závazná ustanovení kapitoly 3 TKP. Při kontrole zhutnění zemin a sypanin\nse postupuje v souladu s dokumentací a ČSN 72 1006. Při překopu zemní pláně se kontroluje únosnost statickou\nzatěžovací zkouškou na zemní pláni (a na povrchu všech vrstev) a míra zhutnění na hloubku výkopu vždy.\n12.5.3 Monolitické betonové konstrukce\nPro odběr vzorků a kontrolu betonových konstrukcí jsou závazná ustanovení kapitoly 17 a 18. TKP. Kontrolní\nzkoušky se provádějí, pokud dokumentace neurčuje jinak, podle ČSN EN 206-1 a ČSN EN 13670.\n12.5.4 Montované betonové konstrukce\nPro výrobu a kontrolu stavebních dílců z hutného betonu prostého, železového a předpjatého platí ČSN 72 3000.\nSpecifické požadavky na dílce z betonu jsou stanoveny v kapitole 18 TKP nebo je specifikuje dokumentace.\nPro kontrolu provádění montovaných betonových konstrukcí platí kapitola 18 TKP a ČSN 73 2480.\n12.5.5 Ocelové konstrukce\nPro kontrolu výroby a montáž ocelových konstrukcí a jejich protikorozní ochranu je závazná kapitola 19 TKP.\n12.5.6 Izolace proti vodě\nPro kontrolu provádění izolace proti vodě je závazná kapitola 22 TKP.\n12.5.7 Trubní materiál\nTrubní materiál se dodává s prohlášením shody a úplnosti dodávky (dříve „Osvědčení o jakosti nebo hutní atest)“\nnebo certifikátem. Jestliže jakost a parametry uvedené na dokladech odpovídají příslušným normám, případně\npožadavkům dokumentace, kontrolují se na stavbě pouze rozměry a tvarová přesnost. Vizuální prohlídkou se\nkontroluje vzhled a zjišťují se případná porušení a povrchová poškození.\n15\nU ocelových trub se provede elektrojiskrová zkouška izolace, pokud ji předepisuje dokumentace, v rozsahu podle\nČSN EN 1594 za přítomnosti TDS.\nZkoušky svarů předepisuje dokumentace.\nKonstrukce ocelových chrániček pod tělesy s kolejovou dopravou musí odpovídat ČSN 03 8376. Kontroluje\nse případné elektrolytické nebo galvanické spojení mezi potrubím a chráničkou a u kontrolního objektu se prověřuje\npřipojení vodiče na ocelovou chráničku. Tyto kontrolní zkoušky chrániček je však možno provádět až souběžně se\nzkouškami potrubí - viz kapitola 13 TKP.\n12.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY\n12.6.1 Přípustné odchylky\nPro konstrukce chrániček a kolektorů platí tolerance rozměrů (tvaru a polohy) podle dokumentace nebo tolerance\nuvedené v příslušných technických normách nebo ustanoveních odpovídajících kapitol TKP, případně ZTKP,\npřičemž platí nejpřísnější požadavek.\nGeometrická přesnost konstrukcí se kontroluje podle ČSN 73 0212-4, ČSN 73 0212-5 a ČSN 73 0212-3. Posuzuje\nse na základě skutečných hodnot geometrických parametrů konstrukce zjištěných ve vybraných místech měření\na hodnotí se podle ČSN 73 0212-6.\nPro chráničky prováděné bezvýkopovými technologiemi a ražené kolektory musí skutečné směrové a výškové\nodchylky odpovídat odchylkám uvedeným v TP zhotovitele a schváleným TDS. Při provádění je třeba dodržet\nustanovení příslušných norem a předpisů, které stanoví krytí jednotlivých druhů podzemních vedení a krytí chrániček\na kolektorů zvětšit úměrně dovolené výškové odchylce a vzdálenosti od čelby.\nHloubka rozhraní jednotlivých vrstev pražcového podloží musí být zachována podle stavu před výkopem s přesností\ndo 10 mm.\n12.6.2 Míra opotřebení\nPro kap. 12 TKP nepřichází v úvahu.\n12.6.3 Záruky\nZáruční doby všeobecně stanoví kapitola 1 TKP.\n12.7 KLIMATICKÁ OMEZENÍ\n12.7.1 Zemní práce\nProvádění zemních prací v zimním období upravuje kapitola 3 TKP.\nZemina dna výkopů se musí v zimním období chránit před zamrzáním ponecháním vrstvy na pozdější dokopávku,\nnebo krytím ochrannými materiály. Ochranná vrstva se odstraní bezprostředně před vybudováním základu, nebo\npřed položením potrubí. Zejména je nutné dbát na to, aby zemina určená pro obsyp a zásyp neobsahovala zmrzlé\nkusy, které by mohly poškodit izolaci potrubí nebo izolaci kolektorového tubusu a šachet, případně konstrukci\nchráničky.\n12.7.2 Monolitické betonové konstrukce\nKlimatická omezení, provádění a ošetřování betonových konstrukcí upravují kapitoly 17 a 18 TKP.\n12.7.3 Montované betonové konstrukce\nProvádění montovaných betonových konstrukcí za nepříznivých klimatických podmínek upravuje kapitola 18 TKP,\npřípadně TP zhotovitele.\nMontážní práce včetně mokrých procesů je možné provádět bez zvláštních opatření :\n16\n− pro betonové směsi z cementů portlandských při průměrné denní teplotě nejméně +5 °C a pro betonové směsi\nz cementů směsných při průměrné denní teplotě nejméně +8 °C, přičemž nejnižší teplota nesmí klesnout pod\n0 °C,\n− pro malty při teplotě vzduchu nejméně +5 °C během doby tuhnutí.\n12.7.4 Ocelové konstrukce\nProvádění ocelových konstrukcí v nepříznivých klimatických podmínkách upravuje kapitola 19 TKP.\n12.7.5 Izolace proti vodě\nProvádění izolací proti vodě v nepříznivých klimatických podmínkách upravuje kapitola 22 TKP, případně TP\nzhotovitele odsouhlasené TDS pro navržený systém vodotěsné izolace.\n12.7.6 Trubní materiál\na) Manipulace s trubním materiálem\nManipulace s ocelovými troubami opatřenými asfaltovou izolací není povolena při teplotách nižších než -5 C\na vyšších jak +30°C. Výjimku na základě TP výrobce předloženém zhotovitelem povoluje TDS.\nPři manipulaci s troubami z plastických hmot a s multikanály při teplotách pod +5 °C a nad +25 °C se musí\nu většiny materiálů dbát zvýšené opatrnosti.\nb) Spojování trub\nSvařovat ocelové trouby je povoleno pouze při teplotách nad 0 °C , svařování není povoleno za deště a sněžení.\nPro spojování betonových a vláknocementových trub, pokud se provádí cementovou zálivkou, platí podmínky\nuvedené v článku 12.7.3 této kapitoly TKP.\nMontáž trub z plastických hmot a multikanálů je povolena při teplotách vyšších jak 0 °C, při nižších teplotách\nmusí zhotovitel doložit TDS TP výrobce trub, zaručující možnost manipulace s troubami a jejich montáž.\n12.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ\n12.8.1 Všeobecně\nPři odsouhlasení a převzetí prací se postupuje v souladu s kapitolou 1 TKP.\n12.8.2 Odsouhlasení zakrývaných prací\nPráce, které budou v dalším pracovním postupu zakryty nebo se stanou nepřístupnými, prověří TDS na písemnou\nvýzvu zhotovitele. Zápis o prověření prací se provede přednostně do stavebního deníku, resp. se vystaví protokol\no odsouhlasení.\nPro konstrukce chrániček a kolektorů je nutno zejména odsouhlasit:\n− základovou spáru kolektorů,\n− konstrukce chrániček a kolektorů před jejich obetonováním nebo obsypem,\n− provedení izolací proti vodě kolektorových tubusů a šachet, kabelových komor před jejím zakrytím ochranou\ngeotextilií nebo přizdívkou,\n− ochranu kovových částí proti korozi,\n− těsnění a úpravu spár montovaných konstrukcí před jejich zakrytím izolací nebo zásypem.\nPro přejímky kabelovodů odsouhlasit:\n− základovou spáru u šachet,\n− smontované multikanály před zásypem,\n− izolační práce před zakrytím ochrannou vrstvou,\n− zapravení vstupů multikanálů do šachet před obsypem šachet,\n− pokud je požadavek dokumentace na vodotěsnost, zkontrolovat spoje (sponky, páska,…).\n17\nOdsouhlasení prací TDS se provede též pro všechny práce, které zhotovitel požaduje zaplatit v dohodnutých\nfakturačních obdobích.\n12.8.3 Převzetí prací\nVeškeré úkony související s kontrolou realizace, odevzdáním a převzetím díla se provádějí písemnou formou na\nmístě zhotovení díla.\nPráce na díle se předávají a přejímají postupně po objektech nebo skupinách objektů schopných řádného\na bezpečného užívání či provozu v souladu se smlouvou o dílo. Zhotovitel je povinen předem písemně vyzvat TDS\nk převzetí díla či jeho části a oznámit mu, kdy budou práce na něm ukončeny a připraveny k převzetí. TDS zajistí\nřízení o převzetí.\nK převzetí prací jsou povinni připravit a předat (zpravidla ve 2 provedeních):\nZhotovitel:\n− úplnou projektovou dokumentaci a dokumentaci zhotovitele, obojí s vyznačením všech odsouhlasenýcha\nprovedených změn,\n− dokumentaci skutečného provedení díla,\n− geodetickou část dokumentace dle skutečného provedení stavby podle článku 1.7.3 Kapitoly 1 TKP,\n− zaměření skutečné hloubky uložení chráničky nebo kolektoru oprávněným geodetem,\n− dokumentaci prokazující kvalitu použitých materiálů, dílců a konstrukcí (certifikáty, prohlášení shody atd.),\n− doklady, potvrzující jakost svářečských prací,\n− zápisy o výsledcích kontrol díla, jejich zkouškách nebo jiného způsobu ověření provozu, včetně vyhodnocení,\n− zápis o odsouhlasení prací a konstrukcí zakrytých v průběhu prací,\n− stavební deník objektu, pokud je smluvně předepsán,\n− protokoly tlakových zkoušek chrániček,\n− protokoly o zkouškách průchodnosti multikanálů (pokud byla kalibrace požadována),\n− protokoly tlakových a kalibračních zkoušek plastových chrániček pro ukládání optických kabelů\nzafukováním,\n− zvláštní prostředky pro manipulaci s poklopy (manipulační oka, háky – předají se správci).\nTDS:\n− soupis zjištěných vad a nedokončených prací,\n− zápis o odevzdání a převzetí,\n− zprávu TDS, jak dílo odpovídá dokumentaci, TKP, případně ZTKP,\n− vyhodnocení zkoušek, které byly provedeny dle požadavků TDS.\nTlaková zkouška chrániček se provádí tehdy, jestliže v chráničce prochází potrubí s ekologicky nebezpečným\nmédiem (ropa, chemické tekutiny a podobně). Zkušební tlak, médium a způsob utěsnění chráničky určuje\ndokumentace.\nTlaková zkouška a kalibrační zkouška na plastových trubkách, které slouží pro zafukování optických kabelů, se\nprovádí vždy.\nO převzetí díla nebo jeho části sepíší smluvní strany předávací protokol. V něm uvedou zejména případné zjištěné\nvady a nedokončené práce, způsob a termíny jejich odstranění.\n12.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ\nPro konstrukce obsažené v kapitole 12 TKP se měření posunů a přetvoření nevyžaduje. Pokud kontrolní měření\nněkteré konstrukční části předepíše dokumentace, provádí se v souladu s jejími požadavky a podle příslušných\nnorem.\n18\n12.10 EKOLOGIE\nVeškeré stavební a montážní práce prováděné podle kapitoly 12 TKP musí být v souladu s oddílem 10\nkap.1 - Všeobecně.\nZ hlediska ochrany přírodního prostředí je třeba dbát zvýšené pozornosti při realizaci chrániček objektů sloužících\nk dopravě ekologicky závadných kapalin (ropovody, produktovody).\nZ hlediska ochrany pracovníků je na novostavbách zakázáno používat azbestocementové trouby do konstrukcí\nchrániček. Při rekonstrukcích se mohou použít pouze ve výjimečných případech, kdy použití předepíše dokumentace\nnebo kdy k použití vydá souhlas TDS.\n12.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA\nPožadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví kapitola 1 TKP\n(oddíl 1.13 a 1.14), předpis SŽDC Ob14, předpis SŽDC (ČD) Op16 a předpis SŽDC Zam1 (prozatímní).\nDále je nutno dodržovat ustanovení zákona č. 258/2000 Sb., zákona č. 262/2006 Sb., zákona č. 309/2006 Sb.,\nzákona č. 133/1985 Sb. a předpisů vydaných na jejich základě, zejména nařízení vlády č. 591/2006 Sb.\nPři výstavbě ražených kolektorů je nutno dodržet vyhlášku č. 22/1989 Sb., vyhlášku č. 26/1989 Sb. a vyhlášku\nč. 415/2003 Sb.\n12.12 SOUVISEJÍCÍ NORMY A PŘEDPISY\nUvedené závazné normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich aktualizace.\nUživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj. právních předpisů,\ntechnických norem a předpisů SŽDC.\n12.12.1 Technické normy\nČSN 03 8370 Snížení korozního účinku bludných proudů na úložná zařízení\nČSN 03 8373 Zásady provozu, údržby a revize ochrany proti korozi kovových potrubí a kabelů\ns kovovým pláštěm uložených v zemi\nČSN 03 8374 Zásady protikorozní ochrany podzemních kovových zařízení\nČSN 03 8375 Ochrana kovových potrubí uložených v půdě nebo ve vodě proti korozi\nČSN 03 8376 Zásady pro stavbu ocelových potrubí uložených v zemi. Kontrolní měření z hlediska\nochrany před korozí\nČSN 13 0420 Potrubí. Povrchová ochrana potrubí pro přepravu a skladování\nČSN 13 1030 Potrubí. Bezešvé trubky pro potrubí PN 40 až PN 250. Výběr rozměrů pro\nkonstrukci\nČSN 38 3350 Zásobování teplem, všeobecné zásady\nČSN 42 0022 Ocelové trubky. Asfaltová izolace trubek nad DN 50\nČSN 42 0139 Ocel pro výztuž do betonu - Svařitelná betonářská ocel žebírková a hladká\nČSN 42 0144 Trubky ocelové svařované se šroubovicovým svarem. Technické dodací předpisy\nČSN 42 0152 Trubky z ocelí tříd 11 a 12 podélně svařované hladké do vnějšího průměru 152 mm.\nTechnické dodací předpisy\nČSN 42 0250 Trubky bezešvé z ocelí tříd 10 až 16 tvářené za tepla. Technické dodací předpisy\nČSN 42 0252 Trubky bezešvé z ocelí třídy 17. Technické dodací předpisy\nČSN 64 0090 Plasty. Skladování výrobků z plastů\nČSN 65 0204 Dálkovody hořlavých kapalin\nČSN 65 0208 Dálkovody hořlavých zkapalněných uhlovodíkových plynů\nČSN 72 1006 Kontrola zhutnění zemin a sypanin\nČSN 72 3000 Výroba a kontrola betonových stavebních dílců. Společná ustanovení\nČSN 72 3376 Betonové kabelové tvárnice. Technické požadavky\n19\nČSN 73 0212-3 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 3: Pozemní stavební\nobjekty\nČSN 73 0212-4 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 4: Liniové stavební\nobjekty\nČSN 73 0212-5 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 5: Kontrola přesnosti\nstavebních dílců\nČSN 73 0212-6 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 6: Statistická analýza\na přejímka\nČSN 73 0420-1 Přesnost vytyčování staveb-Část 1: Základní požadavky\nČSN 73 0420-2 Přesnost vytyčování staveb-Část 2: Vytyčovací odchylky\nČSN 73 2480 Provádění a kontrola montovaných betonových konstrukcí\nČSN 73 6005 Prostorové uspořádání sítí technického vybavení\nČSN 73 6133 Návrh a provádění zemního tělesa pozemních komunikací\nČSN 73 6201 Projektování mostních objektů\nČSN 73 6320 Průjezdné průřezy na dráhách celostátních, dráhách regionálních a vlečkách\nnormálního rozchodu\nČSN 73 6360-2 Konstrukční a geometrické uspořádání koleje železničních drah a její prostorová\npoloha - Část 2: Stavba a přejímka, provoz a údržba\nČSN 73 7501 Navrhování konstrukcí ražených podzemních objektů. Společná ustanovení\nČSN 73 7505 Sdružené trasy městských vedení technického vybavení\nČSN 74 3282 Ocelové žebříky. Základní ustanovení\nČSN 75 2130 Křížení a souběhy vodních toků s dráhami, pozemními komunikacemi a vedeními\nČSN 75 4030 Křížení a souběhy melioračních zařízení s dráhami, pozemními komunikacemi\na vedeními\nČSN 75 5630 Vodovodní podchody pod dráhou a pozemní komunikací\nČSN 75 6230 Podchody stok a kanalizačních přípojek pod dráhou a pozemní komunikací\nČSN P 73 0600 Hydroizolace staveb - Základní ustanovení.\nČSN EN 124 Poklopy a vtokové mříže pro dopravní plochy. Konstrukční zásady, zkoušení,\noznačování, řízení jakosti\nČSN EN 206-1 Beton - Část 1: Specifikace,vlastnosti, výroba a shoda\nČSN EN 512 Vláknocementové výrobky - tlakové trouby a spoje\nČSN EN 1090-1 Provádění ocelových konstrukcí a hliníkových konstrukcí - Část 1: Požadavky na\nposouzení shody konstrukčních dílců\nČSN EN 1090-2+A1 Provádění ocelových konstrukcí a hliníkových konstrukcí - Část 2: Technické\npožadavky na ocelové konstrukce\nČSN EN 1329-1 Plastové potrubní odpadní systémy (pro nízkou a vysokou teplotu) uvnitř budov -\nNeměkčený polyvinylchlorid (PVC-U) - Část 1: Požadavky na trubky, tvarovky a\nsystém\nČSN EN 1444 Vláknocementové potrubí - Zásady pro pokládku a ostatní práce na staveništi\nČSN EN 1594 Zásobování plynem – Plynovody s nejvyšším provozním tlakem nad 16 bar –\nFunkční požadavky\nČSN EN 1916 Trouby a tvarovky z prostého betonu, drátkobetonu a železobetonu\nČSN EN 12007-1 Zásobování plynem- Plynovody s nejvyšších provozním tlakem do 16 barů včetně –\nČást 1: Všeobecné funkční požadavky\nČSN EN 12007-2 Zásobování plynem - Plynovody s nejvyšším provozním tlakem do 16 barů včetně -\nČást 2: Specifické funkční požadavky pro polyethylen (nejvyšší provozní tlak do 10\nbarů včetně)\nČSN EN 12007-3 Zásobování plynem - Plynovody s nejvyšším provozním tlakem do 16 barů včetně -\nČást 3: Specifické funkční požadavky pro ocel\n20\nČSN EN 12201-1 Plastové potrubní systémy pro rozvod vody a pro tlakové kanalizační přípojky\na stokové sítě - Polyethylen (PE) - Část 1: Všeobecně\nČSN EN 13242+A1 Kamenivo pro nestmelené směsi a směsi stmelené hydraulickými pojivy pro\ninženýrské stavby a pozemní komunikace\nČSN EN 50341-1 Elektrická venkovní vedení s napětím nad AC 45 kV – Část. 1: Všeobecné\npožadavky – Společná specifikace\nČSN EN 61386-24 Trubkové systémy pro vedení kabelů - Část 24: Zvláštní požadavky - Trubkové\nsystémy uložené v zemi\nČSN EN 15001-1 Zásobování plynem - Plynovody s provozním tlakem vyšším než 0,5 bar pro\nprůmyslové využití a plynovody s provozním tlakem vyšším než 5 bar pro\nprůmyslové a neprůmyslové využití - Část 1: Podrobné funkční požadavky pro\nprojektování, materiály, stavbu, kontrolu a zkoušení\nČSN EN 1610 Provádění stok a kanalizačních přípojek a jejich zkoušení\nČSN EN 12889 Bezvýkopové provádění stok a kanalizačních přípojek a jejich zkoušení\nČSN EN 13914-1 Navrhování, příprava a provádění vnitřních a vnějších omítek – Část 1: Vnější\nomítky\nČSN EN 13670 Provádění betonových konstrukcí\nČSN EN 13101 Stupadla pro podzemní vstupní šachty – požadavky, označování, zkoušení a\nhodnocení shody\nČSN EN ISO 1452-2 Plastové potrubní systémy pro rozvod vody a tlakové kanalizační přípojky a stokové\nsítě uložené v zemi i nadzemní - Neměkčený polyvinylchlorid (PVC-U) - Část 2:\nTrubky\nTPG 700 21 Čichačky pro plynovody a přípojky\nTNŽ 34 2609 Projektování kabelových rozvodů železničních zabezpečovacích zařízení\nTNŽ 37 5711 Křížení úložných, závlačných a závěsných kabelů s celostátními drahami a vlečkami\nTNŽ 37 5715 Silová kabelová vedení celostátních drah.\nTNŽ 73 6949 Odvodnění železničních tratí a stanic\nTNŽ 73 6280 Navrhování a provádění vodotěsných izolací železničních mostních objektů\n12.12.2 Předpisy\nSŽDC (ČD) D1 Předpis pro používání návěstí při organizování a provozování drážní dopravy\nSŽDC (ČD) D2 Předpis pro organizování a provozování drážní dopravy\nSŽDC (ČD) S5/4 Předpis Protikorozní ochrana ocelových konstrukcí\nSŽDC Ob14 Předpis pro stanovení organizace zabezpečení požární ochrany Správy železniční\ndopravní cesty, státní organizace\nSŽDC (ČD) Op16 Předpis o bezpečnosti a ochraně zdraví při práci\nSŽDC S3 Železniční svršek\nSŽDC S4 Železniční spodek\nSŽDC Zam1 (prozatímní) Předpis o odborné způsobilosti zaměstnanců Správy železniční dopravní cesty, státní\norganizace\nPMR 18/86 Kategorie železničních tratí z hlediska mostů (Věstník dopravy č. 6/87)\nč.j. 21 288/86-O13\nZákon č. 133/1985 Sb. o požární ochraně, v platném znění\nZákon č. 61/1988 Sb. o hornické činnosti, výbušninách a o státní správě, v platném znění\nZákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění některých zákonů,\nv platném znění\nZákon č. 258/2000 Sb. o ochraně veřejného zdraví a o změně některých souvisejících zákonů, v platném\nznění\nZákon č. 262/2006 Sb. zákoník práce, v platném znění\n21\nZákon č. 309/2006 Sb. o zajištění dalších podmínek bezpečnosti a ochrany zdraví při práci, v platném znění\nNařízení vlády kterým se stanoví technické požadavky na vybrané stavební výrobky, v platném\nč. 163/2002 Sb. znění\nNařízení vlády kterým se stanoví technické požadavky na vybrané stavební výrobky označované\nč. 190/2002 Sb. CE, v platném znění\nNařízení EP a Rady nařízení Evropského parlamentu a Rady (EU), kterým se stanoví harmonizované\nč. 305/2011 podmínky pro uvádění stavebních výrobků na trh a kterým se zrušuje směrnice Rady\n89/106/EHS\nNařízení vlády o bližších minimálních požadavcích na bezpečnost a ochranu zdraví při práci na\nč. 591/2006 Sb. staveništích, v platném znění\nVyhláška č. 48/1982 Sb. kterou se stanoví základní požadavky k zajištění bezpečnosti práce a technických\nzařízení, v platném znění\nVyhláška č. 22/1989 Sb. o bezpečnosti a ochraně zdraví při práci a bezpečnosti provozu při hornické činnosti\na při činnosti prováděné hornickým způsobem v podzemí, v platném znění\nVyhláška č. 26/1989 Sb. o bezpečnosti a ochraně zdraví při práci a bezpečnosti provozu při hornické činnosti\na při činnosti prováděné hornickým způsobem na povrchu, v platném znění\nVyhláška č. 177/1995 Sb. kterou se vydává stavební a technický řád drah, v platném znění\nVyhláška č. 55/1996 Sb. o požadavcích k zajištění bezpečnosti a ochrany zdraví a bezpečnosti provozu při\nčinnosti prováděné hornickým způsobem v podzemí\nVyhláška č. 247/2001 Sb. o organizaci a činnostech jednotek požární ochrany, v platném znění\nVyhláška č. 23/2008 Sb. o technických podmínkách požární ochrany staveb\nVyhláška č. 246/2001Sb. o stanovení podmínek požární bezpečnosti a výkonu státního požárního dozoru\n(vyhláška o požární prevenci)\nVyhláška č. 415/2003 Sb. o požadavcích k zajištění bezpečnosti a ochrany zdraví při práci a bezpečnosti\nprovozu při svislé dopravě a chůzi\nVyhláška č. 499/2006 Sb. o dokumentaci staveb\n12.12.3 Související kapitoly TKP\nKapitola 1 - Všeobecně\nKapitola 3 - Zemní práce\nKapitola 13 - Plyn, voda, produktovody\nKapitola 14 - Septiky, čističky, lapače, kanalizace\nKapitola 17 - Beton pro konstrukce\nKapitola 18 - Betonové mosty a konstrukce\nKapitola 19 - Ocelové konstrukce a mosty\nKapitola 22 - Izolace proti vodě\nKapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí\nKapitola 26 - Osvětlení, rozvody NN, včetně dálkového ovládání\nKapitola 27 - Montáž zabezpečovacího zařízení\nKapitola 28 - Montáž sdělovacího zařízení\nKapitola 30 - Silnoproudé rozvody\nKapitola 31 - Trakční vedení\n22\nTECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH\nKapitola 12\nTřetí aktualizované vydání včetně změny č. 8 /z roku 2013/\nVydala Správa železniční dopravní cesty, státní organizace.\nZpracovatel: Ing. Karel Pávek\nSpráva železniční dopravní cesty, státní organizace\nTechnická ústředna dopravní cesty\nÚsek tratí a budov\nOdborný gestor: Ing. arch. Pavel Andršt\nSpráva železniční dopravní cesty, státní organizace\nOdbor traťového hospodářství\nVydal: Správa železniční dopravní cesty, státní organizace\nGenerální ředitelství\nOdbor traťového hospodářství\nDlážděná 1003/7, 110 00 Praha 1, Nové Město\nwww.szdc.cz\nDistribuce: Správa železniční dopravní cesty, státní organizace\nTechnická ústředna dopravní cesty\nÚATT - oddělení typové dokumentace\n772 58 Olomouc, Nerudova 1\ntel.: +420 972 742 396, +420 972 741 769\nfax: +420 972 741 290\ne-mail: typdok@tudc.cz\nhttp://typdok.tudc.cz\n"
+}

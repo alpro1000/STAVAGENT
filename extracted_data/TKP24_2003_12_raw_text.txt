@@ -1,0 +1,1313 @@
+ČESKÉ DRÁHY, a.s.
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB ČESKÝCH DRAH
+Kapitola 24
+ZVLÁŠTNÍ ZAKLÁDÁNÍ
+Třetí - aktualizované vydání
+změna č. 4
+Schváleno náměstkem GŘ ČD pro dopravní cestu č.j. TÚDC-18059/2003 ze dne 30.12.2003
+Účinnost od 31.12.2003
+Praha 2003
+Všechna práva vyhrazena.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím
+systému nebo přenášena, a to v žádné formě a žádnými prostředky elektronickými,
+fotokopírovacími či jinými, bez předchozího písemného svolení vydavatele.
+Výhradní distributor: České dráhy, a.s.
+Technická ústředna dopravní cesty
+Sekce technické dokumentace - Oddělení typové dokumentace
+772 58 Olomouc, Nerudova l
+Obsah
+24.1 ÚVOD 3
+24.1.1 Všeobecně 3
+24.1.2 Rozsah kapitoly 3
+24.1.3 Legislativní požadavky 4
+24.1.4 Odborná způsobilost 4
+24.1.5 Obsah dodávky 5
+24.1.6 Vytýčení stavby 5
+24.1.7 Sledování okolních objektů 5
+24.1.8 Názvosloví 5
+24.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 6
+24.2.1 Všeobecně 6
+24.2.2 Materiály k výrobě 6
+24.2.2.1 Beton a materiály k jeho výrobě 6
+24.2.2.2 Betonářská výztuž 7
+24.2.2.3 Ocelové prvky pro piloty 7
+24.2.2.4 Ocelové štětovnice 7
+24.2.2.5 Ocelová trubka k výrobě mikropiloty 7
+24.2.2.6 Hřebík 7
+24.2.2.7 Dřevo pro piloty a štětové stěny 7
+24.2.2.8 Štěrk pro ražené/vibrované pilíře 7
+24.2.2.9 Pažící suspenze 7
+24.2.2.10 Kotevní táhlo 8
+24.2.2.11 Kotevní hlava 8
+24.2.2.12 Manžetová trubka 8
+24.2.2.13 Cementová zálivka 8
+24.2.2.14 Injekční směsi 8
+24.2.2.15 Vápno 8
+24. 2.2.16 Popílek 8
+24.2.3 Ochrana proti korozi a bludným proudům 8
+24.3 TECHNOLOGICKÉ POSTUPY PRACÍ 9
+24.3.1 Všeobecně 9
+24.3.2 Přípravné práce 9
+24.3.3 Technologické zásady provádění prací 9
+24.3.3.1 Piloty vrtané 9
+24.3.3.2 Piloty ražené 10
+24.3.3.3 Podzemní stěny 11
+24.3.3.4 Štětové stěny 11
+24.3.3.5 Kotvy 12
+24.3.3.6 Mikropiloty 12
+24.3.3.7 Hřebíky 12
+24.3.3.8 Injektování zemin a hornin 12
+24.3.3.9 Trysková injektáž 13
+24.3.3.10 Deep mixing 13
+24.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 14
+24.4.1 Všeobecně 14
+24.4.2 Dodávka a skladování 14
+24.4.3 Průkazní zkoušky 15
+24.4.3.1 Všeobecně 15
+24.4.3.2 Složky betonu a beton 15
+24.4.3.3 Ocel pro výztuž 15
+24.4.3.4 Ocelové profily a trouby 15
+24.4.3.5 Pažící suspenze a výplň podzemních stěn 15
+24.4.3.6 Ocelové štětovnice a profily 15
+24.4.3.7 Dřevěné štětovnice a převázky 16
+1
+24.4.3.8 Zatěžovací zkoušky pilot a elementů podzemních stěn 16
+24.4.3.9 Zatěžovací zkoušky kotev, mikropilot a hřebíků 16
+24.4.3.10 Pevnost směsi zemin s pojivy (deep mixing) 16
+24.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 17
+24.5.1 Všeobecně 17
+24.5.2 Kontrolní zkoušky 17
+24.5.2.1 Složky betonové směsi, betonová směs a beton 17
+24.5.2.2 Betonové prefabrikáty 17
+24.5.2.3 Betonářská ocel 17
+24.5.2.4 Ocelové profily, trouby, štětovnice, kotvy 17
+24.5.2.5 Dřevo pro piloty 17
+24.5.2.6 Pažící suspenze a výplň podzemních stěn 17
+24.5.2.7 Příměsi a plastifikační materiály 18
+24.5.2.8 Kontrolní zkoušky pilot a elementů podzemních stěn 18
+24.5.2.9 Injekční směs 18
+24.5.2.10 Kontrola vrtných prací (vrtané piloty, mikropiloty, kotvy, hřebíky, injektáže) 19
+24.5.2.11 Kontrola vrtů před betonováním a injektáží (vrtané piloty, mikropiloty, kotvy, hřebíky,
+injektáže) 19
+24.5.2.12 Kontrola prací v průběhu injektáže 19
+24.5.2.13 Kontrola vytyčovacích bodů 19
+24.5.2.14 Měření deformací 20
+24.5.2.15 Kontrolní zkoušky zlepšené zeminy (deep mixing) 20
+24.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 20
+24.6.1 Přípustné odchylky 20
+24.6.2 Míra opotřebení 21
+26.6.3 Záruky 21
+24.7 KLIMATICKÁ OMEZENÍ 21
+24.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 22
+24.8.1 Odsouhlasení prací 22
+24.8.2 Převzetí prací 23
+24.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUVŮ A PŘETVOŘENÍ 23
+24.10 EKOLOGIE 24
+24.10.1 Všeobecně 24
+24.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 24
+24.11.1 Všeobecně 24
+24.11.2 Práce s mechanizmy 24
+24.11.3 Ochranná pásma 25
+24.11.4 Ohrazení pracoviště 25
+24.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 25
+24.12.1 Technické normy 25
+24.12.2 Předpisy 27
+24.12.3 Související kapitoly TKP a jiné předpisy ČD 27
+24.12.4 Související předpisy MD odbor PK 27
+Příloha 1 Popis metody a technologické zařízení pro „deep mixing“ 28
+2
+24.1 ÚVOD
+24.1.1 Všeobecně
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP -
+Všeobecně.
+Tato kapitola technických kvalitativních podmínek obsahuje požadavky objednatele stavby na materiály,
+technologické postupy, zkoušení a převzetí výkonů a dodávek při výstavbě, opravách a údržbě konstrukcí
+zvláštního zakládání.
+Piloty, podzemní stěny
+Štětové stěny
+Kotvy, mikropiloty a hřebíky
+Injektování hornin a zemin
+Trysková injektáž
+Deep mixing (hloubkové zlepšování zemin mísením s pojivy - vápenocementové pilíře)
+Stanovení druhu konstrukce zvláštního zakládání, její členění a rozměry určuje projektová dokumentace, která
+musí být vypracovaná v souladu s předpisy Českých drah (ČD) a touto kapitolou TKP.
+Pro konkrétní stavby a stavební objekty lze tuto kapitolu doplnit Zvláštními technickými kvalitativními
+podmínkami (dále jen ZTKP), ve kterých se přihlédne ke specifickým podmínkám stavby.
+V případě návrhu nestandardního materiálu, výrobku nebo technologie musí být ZTKP zpracovány projektantem
+jako součást projektové dokumentace pro zadání stavby.
+Požadavek na použití nestandardního materiálu, výrobku nebo technologie může iniciovat také zhotovitel stavby.
+V tomto případě je povinen zajistit zpracování ZTKP na své náklady a předložit je k odsouhlasení
+zodpovědnému zástupci objednatele.
+Nestandardním pro tyto účely se rozumí takový materiál, výrobek nebo technologie, pro něž nejsou v České
+republice zpracovány normy pro běžné použití, TKP, OTP nebo jiný všeobecně uznávaný předpis nebo vnitřní
+TNP ČD.
+V dalších případech zajišťuje zpracování ZTKP objednatel.
+Normy označené v této kapitole *EN jsou evropské normy v návrhu. Po svém schválení a nabytí platnosti budou
+součástí těchto TKP. V současném znění mají informativní charakter.
+Obecné požadavky na zhotovitele :
+a) Zhotovitel zpracuje technologický postup zvláštního zakládání a předloží objednateli k odsouhlasení. Pokud
+výchozí projekt neobsahuje úplné posouzení prováděných prací, musí zhotovitel předložit doplňující statický
+výpočet a případně výpočet zatížitelnosti.
+b) Zhotovitelé musí vést po dobu své činnosti na stavbě kromě dále uvedených záznamů stavební deník.
+c) Zhotovitelé musí připravit a předložit objednateli prostřednictvím vyšších zhotovitelů podklady a doklady
+o použitých materiálech a prefabrikátech.
+d) Zhotovitelé předávají objednateli prostřednictvím vyšších zhotovitelů dokumentaci skutečného provedení
+stavby a graficky zpracované výsledky výškového a polohopisného geodetického zaměření díla.
+24.1.2 Rozsah kapitoly
+Tyto technické kvalitativní podmínky staveb Českých drah část 24 (dále jen TKP) se týkají následujících prvků
+zvláštního zakládání :
+Piloty, podzemní stěny
+- piloty vrtané, provedené v souladu s ČSN EN 1536 Provádění speciálních geotechnických prací – Vrtané
+piloty,
+3
+- piloty ražené, provedené v souladu s ČSN EN 12699 Provádění speciálních geotechnických prací – Ražené
+piloty,
+- piloty provedené jinými technologiemi nebo z jiných materiálů, než jsou uvedeny výše (např. štěrkové
+pilíře),
+- podzemní stěny a jejich elementy provedené v souladu s ČSN EN 1538 Provádění speciálních
+geotechnických prací – Podzemní stěny.
+Štětové stěny
+- štětové stěny provedené v souladu s ČSN EN 12063 Provádění speciálních geotechnických prací - Štětové
+stěny.
+Kotvy, mikropiloty, hřebíky
+- kotvy provedené v souladu s ČSN EN 1537 Provádění speciálních geotechnických prací – Injektované
+horninové kotvy,
+- mikropiloty provedené podle technologického předpisu schváleného objednatelem. Evropská norma
+na mikropiloty *EN 14199 „Execution of special geotechnical works – Micropiles” je v návrhu,
+- hřebíky předvrtávané injektované i zarážené provedené podle technologického předpisu schváleného
+objednatelem. Evropská norma na hřebíky *EN 14490 „Execution of special geotechnical works –Soil
+nailing“ je v návrhu.
+Injektování hornin a zemin
+- injektování hornin a zemin způsobující přetvoření v hornině (zhutňovací injektáže, klakáž) i bez přetvoření
+v hornině (průniková injektáž, injektáž puklin, výplňová injektáž) provedené v souladu s ČSN EN 12715
+Provádění speciálních geotechnických prací – Injektáže.
+Trysková injektáž
+- prvky a konstrukce z tryskové injektáže provedené v souladu s ČSN EN 12716 Provádění speciálních
+geotechnických prací – Trysková injektáž
+Deep mixing (hloubkové zlepšování zemin mísením s pojivy - vápenocementové pilíře)
+- hloubkové zlepšování měkkých zemin pomocí suchých pojiv (vápna, cementu, popílku, strusky apod.) nebo
+cementové suspenze vmíchávaných do zeminy podle technologického předpisu zpracovaného zhotovitelem
+a schváleného objednatelem. Evropská norma na deep mixing *EN 14679 „Execution of special
+geotechnical works – Deep mixing“ je v návrhu.
+24.1.3 Legislativní požadavky
+V souladu s požadavky zákona č. 22/1997 Sb. v platném znění a souvisejícího nařízení vlády č. 163/2002 Sb.
+je výrobce povinen prokazovat shodu u vybraných stavebních výrobků. Přehled těchto výrobků je uveden
+v příloze č.2 tohoto nařízení vlády.
+Shoda se prokazuje postupy dle § 5 až 8, u kusové výroby dle § 9 nařízení vlády č. 163/2002 Sb.
+Nejvyšší úrovní prokazování shody je postup dle § 5 – certifikace výrobku. Tímto postupem lze nahradit postupy
+prokazování shody dle § 6 až 8 nařízení vlády č. 163/2002 Sb.
+Jestliže na výrobek neexistuje česká technická norma, vystavuje autorizovaná osoba výrobci (dodavateli)
+stavebně technické osvědčení dle § 3. Platnost tohoto stavebně technického osvědčení je časově omezena a tudíž
+je omezena i platnost prohlášení o shodě, není-li tato omezena jiným způsobem vyplývajícím z nařízení vlády.
+Náležitosti prohlášení o shodě jsou uvedeny v § 13 nařízení vlády č. 163/2002 Sb.
+24.1.4 Odborná způsobilost
+Zhotovitel stavby (objektu) musí mít zaveden, certifikován a prověřován systém řízení jakosti dle ČSN EN ISO
+9001:2001. Zhotovitel/podzhotovitel je povinen prokázat, že disponuje potřebným počtem pracovníků
+předepsané kvalifikace, potřebným, technicky způsobilým strojním a dalším vybavením. Zkušenost
+s prováděním prací podle této kapitoly TKP zhotovitel/podzhotovitel prokazuje také referenčním listem
+4
+provedených prací stejného nebo podobného zaměření. Zhotovitel je povinen prokázat též způsobilost zkušeben,
+kontrolního systému a dalších činností, které mohou ovlivnit jakost prací.
+Pracovníci zhotovitele realizující prvky zvláštního zakládání musí mít potřebnou kvalifikaci pro jednotlivé
+technické a dělnické profese a musí být vedeni odborným pracovníkem. Výrobu prvků zvláštního zakládání řídí
+zodpovědný pracovník s odpovídajícími znalostmi a zkušenostmi. Veškeré práce musí být prováděny pod
+vedením osoby způsobilé dle zákona ČNR č. 360/1992 Sb. o výkonu povolání autorizovaných architektů
+a o výkonu autorizovaných inženýrů a techniků činných ve výstavbě, v platném znění.
+24.1.5 Obsah dodávky
+Práce prováděné podle této kapitoly obsahují dodávku všech potřebných materiálů, mechanizmů, zařízení
+a výkonu pracovníků zhotovitele a provedení všech úkonů nutných k vybudování prvků zvláštního zakládání
+včetně předepsaných zkoušek podle projektové dokumentace a příslušných norem, v souladu s touto kapitolou
+a kapitolou 1 TKP.
+Dodávka musí obsahovat dokumentaci zhotovitele, technologický předpis prováděných prací včetně návrhu
+dalších zkoušek navrhovaných zhotovitelem a požadovaných objednatelem. Tyto doklady musí být předem
+předloženy objednateli.
+24.1.6 Vytýčení stavby
+Při předání staveniště předá objednatel i jeho vytyčení. Pro vytýčení staveniště platí ustanovení kapitoly 1 TKP.
+Umístění prvků zvláštního zakládání musí být odvoditelné běžnými geodetickými postupy z vytýčení staveniště.
+Zhotovitel předané vytýčení zajistí tak, aby byl schopen provést jednotlivé prvky zvláštního zakládání
+v tolerancích uvedených v čl. 24.6. Za předané vytýčení dále zodpovídá zhotovitel.
+Zhotovitel zodpovídá za výškové a směrové umístění pracovních ploch, šablon, vodicích zídek a dalších
+pomocných konstrukcí potřebných pro řádné provedení prvků zvláštního zakládání.
+24.1.7 Sledování okolních objektů
+V průběhu zpracování projektové dokumentace zvláštního zakládání posoudí projektant, které objekty mohou
+být prováděnými pracemi ovlivněny a zajistí jejich pasportizaci.
+Pokud nelze pasportizaci okolních objektů provést při zpracování projektové dokumentace (časové, finanční
+a jiné důvody), zpracuje pasportizaci zhotovitel jako součást dokumentace zhotovitele.
+V případě, že pasportizace není součástí žádné dokumentace a v průběhu prací je zřejmé, že k ovlivnění okolních
+objektů dochází, rozhodne o rozsahu a způsobu pasportizace objektů objednatel/stavební dozor na základě
+upozornění zhotovitele.
+Zhotovitel je povinen před započetím prací překontrolovat rozsah pasportizace, upozornit na možné rozpory
+a nová fakta a pasportizaci s objednatelem odsouhlasit.
+Pasportizaci provádí autorizovaná osoba s kvalifikací v příslušném oboru (statika a dynamika stavebních
+konstrukcí, geotechnika), případně soudní znalec. Pasportizace se provádí fotografickou a grafickou
+dokumentací, videozáznamem nebo jiným způsobem se stejnou nebo vyšší vypovídací hodnotou. Dokumentace
+pasportizace musí být jednoznačně označena datem zhotovení. V opodstatněných případech, zejména při použití
+technologií vyvolávajících vibrace a seismické účinky (vibrování, vibroberanění a beranění, dlátování, trhací
+práce), určuje dokumentace pomocí kriterií stanovených v ČSN 73 0036 resp. ČSN 73 0040 minimální
+vzdálenost od zdroje, při které nedojde k ohrožení staveb.
+V průběhu realizace stavby monitoruje okolní objekty zhotovitel a kontroluje objednatel/stavební dozor. Četnost
+a způsob sledování určuje projektová dokumentace/dokumentace zhotovitele. O sledování se provádějí písemné
+záznamy způsobem odsouhlaseným objednatelem/stavební dozor.
+24.1.8 Názvosloví
+V tomto článku TKP jsou uvedeny pouze základní pojmy. Podrobné názvosloví je v souladu s definicemi
+a termíny uvedené v ČSN EN 1536, ČSN EN 1538, ČSN EN 12699, ČSN EN 12063, ČSN EN 1537, ČSN EN
+12715, ČSN EN 12716, *EN 14199,*EN 14490.
+5
+pilota (pile): štíhlý stavební prvek v základové půdě určený pro přenášení účinků zatížení,
+vrtaná pilota (bored pile): pilota, která je v základové půdě vytvořena vrtáním, popř. těžením zapaženého, nebo
+nezapaženého vrtu, který je vyplněn betonem nebo železobetonem,
+ražená pilota (displacement pile): pilota instalovaná v základové půdě bez těžení zeminy z vrtu nebo prostoru,
+který pilota zaujímá. Piloty se do základové půdy instalují beraněním, vibrováním, zatláčením, rotací nebo
+kombinací těchto metod,
+podzemní stěna (diaphragm wall): svislá stavební konstrukce trvalého nebo dočasného charakteru která má účel
+pažicí nebo těsnicí, případně splňuje oba účely,
+štětová stěna (sheet pile wall): řada štětovnic, které tvoří souvislou stěnu. V případě ocelových štětovnic
+je kontinuita zajišťována zámkováním ve spojích, provázáním v podélných rýhách nebo prostřednictvím
+speciálních spojek, v případě dřevěných štětovnic systémem pero-drážka,
+kotva (anchor): stavební prvek přenášející tahové zatížení do únosné vrstvy,
+mikropilota (micropile): vrtaná pilota o průměru menším než 300mm, ražená pilota o průměru menším než
+150mm. K jejich zhotovení se používají malé pilotovací soupravy,
+hřebík (nail): tyčový výztužný prvek zabudovaný do zemního masivu obvykle pod subhorizontálním úhlem,
+který mobilizuje tření podél celé své délky v zemině,
+svorník (bolt): tyčový výztužný prvek používaný v tunelovém stavitelství pro zajištění výrubu. Podle způsobu
+osazení může působit jako kotva nebo jako hřebík,
+injektáž (grouting): zlepšování mechanických a propustnostních vlastností zemin a hornin vtlačováním injekční
+směsi (suspenze, roztok, emulze nebo malta). Dělí se na výplňovou (zaplnění dutin větších rozměrů), zhutňovací,
+kontaktní (do spáry mezi stavební konstrukci a horninu) a injektáž způsobující přetvoření v hornině (stlačení
+nebo posun horniny),
+trysková injektáž (jet grouting): technologie tryskové injektáže sestává z rozrušení zeminy nebo zvětralé skalní
+horniny, jejího částečného nahrazení a ze smíchání rozrušené zeminy s cementačním pojivem, přičemž rozrušení
+nastává působením tryskaného paprsku tekutého média o vysoké mechanické energii; médium může být
+současně pojivem,
+deep mixing (hloubkové zlepšování zemin mísením): při zlepšování zemin technologií „deep mixing“ se do
+zemního tělesa vmíchává mísicím nástrojem (vrtulka, šnekový vrták) pojivo (obvykle cement a/nebo pálené
+vápno) v práškovém stavu případně plnivo (mletá struska, popílek aj.). U některých technologií se používá
+injekční směs místo práškového pojiva.Výsledkem je pilíř zlepšené zeminy. Velikost a tvar pilíře je ovlivněn
+tvarem mísicího nástroje a technologickým postupem.
+24.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+24.2.1 Všeobecně
+Veškerý materiál, který se stane trvalou součástí předmětu díla, musí vyhovovat požadavkům uvedeným
+v dokumentaci. Není-li požadavek taxativně uveden, musí materiál odpovídat příslušným normativním
+předpisům. Materiál musí být bez zjevných vad a musí vyhovět předepsaným zkouškám (viz článek 24.4 této
+části a kapitoly TKP). Legislativní požadavky na materiály a výrobky jsou uvedeny v článku 24.1.3 této kapitoly
+TKP.
+24.2.2 Materiály k výrobě
+24.2.2.1 Beton a materiály k jeho výrobě
+Materiálová ustanovení pro beton jsou předmětem kapitoly 17 TKP.
+Stříkaný beton musí splňovat požadavky kapitoly 20 TKP.
+6
+24.2.2.2 Betonářská výztuž
+Podmínky pro betonářskou výztuž jsou popsány v kapitole 18 TKP.
+24.2.2.3 Ocelové prvky pro piloty
+Pro ocelové piloty se používají prvky z válcované oceli v souladu s ČSN EN 10025, z konstrukční oceli dle ČSN
+42 0135 a bezešvých trub podle ČSN 42 0250. Ocelové prvky pilot, které jsou trvalého charakteru, je nutné
+dodat s příslušnými dokumenty kontroly dle ČSN EN 10204 na úrovni inspekčního certifikátu 3.1B.
+24.2.2.4 Ocelové štětovnice
+Nové štětovnice musí odpovídat ČSN EN 10248-1, ČSN EN 10248-2, ČSN EN 10249-1, ČSN EN 10249-2
+a ČSN EN 10079.
+Opakovaně použité štětovnice nesmí být poškozené a musí splňovat požadavky dokumentace.
+Trouby použité v kombinovaných stěnách musí odpovídat ČSN EN 10219-1 a ČSN EN 10219-2.
+Speciální spojky musí odpovídat ČSN EN 10248-1, ČSN EN 10248-2.
+24.2.2.5 Ocelová trubka k výrobě mikropiloty
+Nejčastěji se používá ocelová trubka, zpravidla o průměru 70/12 mm, 89/10 mm a 108/16 mm podle
+ČSN 42 0250, pokud dokumentace nestanoví jinak.
+Podle *EN14199 musí ocelové výztužné prvky splňovat požadavky následujících norem:
+ENV 10080 nebo *EN 10138-4 u ocelových prutů
+ČSN EN 10210 nebo ČSN EN 10219 u dutých profilů (trub)
+ČSN EN 10025 nebo ČSN EN 10113 u za horka válcovaných profilů.
+24.2.2.6 Hřebík
+Ocelový hřebík tvořený plným ocelovým prutem musí být vyroben v souladu s normou EN 10080 nebo EN
+10025 v případě válcovaných profilů za horka. Ocelový hřebík tvořený dutým ocelovým profilem musí být
+v souladu s normami ČSN EN 10 219 nebo ČSN EN 10210. Při použití předpínací oceli musí být splněny
+požadavky *EN 10138-4.
+Při použití nekovových materiálů (geosyntetika, plastové tyče s karbonovými, skleněnými a jinými vlákny) musí
+splňovat požadavky příslušných EN, ČSN nebo doporučení výrobců.
+24.2.2.7 Dřevo pro piloty a štětové stěny
+Pilotové dřevo musí vyhovovat jakosti podle čl. 21 ČSN 49 1531. Čl. 5.4.2 ČSN 73 2810 předepisuje věnovat
+zvýšenou pozornost ochraně povrchů a částí, které budou dlouhodobě nebo střídavě vystaveny zvýšené vlhkosti.
+Podle čl. 11 ČSN 73 2810 se předepisuje používat zdravé odkorněné dřevo, nejlépe borové nebo dubové, vhodné
+je i modřínové nebo smrkové. Výřezy nemají mít křivost větší než 0,5 % délky. Druh dřeva stanoví
+dokumentace. Dřevěné piloty musí být celou svojí délkou pod úrovní hladiny podzemní vody uvedené
+v dokumentaci.
+24.2.2.8 Štěrk pro ražené/vibrované pilíře
+Kvalitu kameniva použitého pro výrobu štěrkových pilířů předepisuje projektová dokumentace a technologický
+předpis zhotovitele.
+Pro výrobu štěrkových pilířů (pilot) se obvykle používá přírodní nebo drcené kamenivo plynulé křivky zrnitosti
+o max. zrnu obvykle do 75 mm bez jemnozrnných příměsí. Zrnitost závisí na účelu použití štěrkových pilířů
+(zhutnění zemního masivu, urychlení konsolidace, odvodnění a jiné). U technologie vibračního zhotovení
+štěrkových pilot se v souladu s *EN 14731 doporučuje používat tyto frakce kameniva: 40-75 mm pro hutnění za
+sucha, 25-75 mm pro hutnění pod vodou a 8-50 mm jestliže se dodává kamenivo přes sondu ke špici.
+Nevylučuje se použití druhotných materiálů (kamenivo z drceného, tříděného betonu apod.), pokud to předepíše
+projektová dokumentace.
+24.2.2.9 Pažící suspenze
+Pro účely dočasného pažení vrtů se používají bentonitové suspenze, polymerové suspenze, jiné suspenze.
+Vlastnosti bentonitové suspenze musí odpovídat požadavkům uvedeným v ČSN EN 1536 a ČSN EN 1538.
+Polymerové a jiné suspenze musí být popsány v dokumentaci zhotovitele.
+7
+24.2.2.10 Kotevní táhlo
+Ocelová kotevní táhla musí odpovídat následujícím normám a předpisům:
+stavební ocel: ČSN 42 0135, ČSN P ENV 1993-1-1
+betonářská ocel: ČSN 73 6206, ČSN 73 1201, ČSN P ENV 1992-1-1
+předpínací ocel: ČSN 73 6207, popř. ČSN 73 1201, *EN 10138-4, ČSN P ENV 1992-1-5.
+24.2.2.11 Kotevní hlava
+Musí odpovídat ČSN EN 1537. Musí být schopna přenést mezní tahové zatížení táhla.
+24.2.2.12 Manžetová trubka
+Trubky obvykle z PVC o průměru 32mm a délce nejčastěji 4m které jsou vzájemně spojovány závitovým
+nátrubkem. V kořenové části je manžetová trubka opatřena injekčními otvory o průměru 6mm (4 otvory na etáž)
+překrytými pryžovou manžetou. Vzdálenost manžet je 0,25 až 0,5m.
+24.2.2.13 Cementová zálivka
+Cementová zálivka je suspenze cementu a vody o vodním součiniteli < 0,4. Plní se jí vrt před zasunutím ocelové
+trubky (mikropiloty), hřebíku nebo kotvy. U mikropiloty může mít zálivka charakter cementové malty o vodním
+součiniteli <0,6. Použité kamenivo musí splňovat tato základní zrnitostní kriteria: d < 4 mm, max. průměr zrna
+85
+8 mm.
+24.2.2.14 Injekční směsi
+Injekční směsi a materiály k jejich výrobě musí splňovat podmínky uvedené v ČSN EN 12715 a ČSN EN 12716,
+pokud projektová dokumentace nestanoví jinak.
+24.2.2.15 Vápno
+K hloubkovému zlepšování zemin se používá pálené (nehašené) vápno které splňuje požadavky ČSN EN 459.
+24. 2.2.16 Popílek
+Základní kriteria pro použití popílku jsou v TP 93 (pozemní komunikace). Podrobná specifikace musí být
+v projektové dokumentaci.
+24.2.3 Ochrana proti korozi a bludným proudům
+Pokud stupeň vlivu prostředí na beton podle ČSN EN 206-1 a kapitoly 17 TKP vyžaduje použití sekundární
+ochrany betonových pilot, musí být tato ochrana navržena v dokumentaci. Zhotovitel musí dodržet zásady pro
+použití impregnačních hmot, nátěrů a fólií předepsané výrobcem.
+Při použití fólie musí výrobce v prohlášení o shodě uvést též hodnotu měrného elektrického odporu pro
+posouzení účinnosti ochrany před vlivem bludných elektrických proudů. Nejčastěji se používají fólie z PVC
+a z PE. Tloušťka fólie se pohybuje od 0,1 mm pro PE fólii do cca 1 mm pro fólii z PVC.
+Ocelové prvky (trubní piloty, kotvy) se opatřují pro neabrazivní podmínky nátěry živicemi nebo jinými hmotami
+podle dokumentace, pro abrazivní podmínky epoxydehtem nebo jinými hmotami podle dokumentace. Volba
+protikorozní ochrany musí být v souladu s TKP 25 B.
+Dřevěné piloty a štětovnice se opatřují hloubkovou impregnací podle normy ČSN 49 0616 2. část, nebo
+impregnačními nátěry podle ČSN 49 0600 1. část.
+V případě, že druh materiálu pro sekundární ochranu není specifikován v dokumentaci, předloží zhotovitel
+objednateli/stavebnímu dozoru ke schválení návrh sekundární ochrany ve svém technologickém předpisu včetně
+prohlášení o shodě od výrobce, vlastností, technických parametrů, způsobu přejímky a zkoušek.
+Při ochraně proti vlivům bludných elektrických proudů (katodická ochrana) se postupuje podle ustanovení
+kapitoly 25 A TKP a lze přiměřeně užít ustanovení SR 5/7 (ČD) ve shodě s dokumentací.
+Důležitým prvkem systému ochrany výztuže základů před vlivy bludných elektrických proudů je kvalitně
+provedený beton, který je v dokumentaci navržen s ohledem na zvolenou ochranu proti agresivním vlivům
+prostředí.
+8
+24.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+24.3.1 Všeobecně
+Zhotovitel předloží před zahájením prací objednateli/stavebnímu dozoru k odsouhlasení technologický předpis
+pro zhotovení prvků zvláštního zakládání. Tento technologický předpis musí být v souladu s projektovou
+dokumentací stavby. Součástí technologického předpisu musí být technické a kvalitativní parametry, podmínky
+pro přesnost jejich výroby, podmínky pro kontrolu jakosti a dodací podmínky. Dále musí obsahovat mezní
+hodnoty geotechnických parametrů horninového masivu, které byly uvažovány ve statickém výpočtu a které jsou
+rozhodující z hlediska ukončení prvků zvláštního zakládání.
+Zvolená technologie výroby prvků zvláštního zakládání musí umožnit jejich zhotovení v daných geotechnických
+poměrech v požadované kvalitě podle dokumentace. V technologickém předpisu zhotovitel podrobně popíše
+způsob jejich provádění a přípustné odchylky v umístění, směru a horní úrovni jednotlivých prvků (viz čl.24.6).
+Požadované odchylky odlišné od této kapitoly TKP a příslušných evropských norem musí být stanoveny
+projektovou dokumentací nebo ZTKP.
+Dále zhotovitel předloží pořadí zhotovování jednotlivých základových prvků a jméno pracovníka zhotovitele
+zodpovídajícího za kvalitu díla.
+Zhotovitel předá objednateli/stavebnímu dozoru časový plán prací a harmonogram jednotlivých dílčích
+odsouhlasení. Objednatel/stavební dozor se zúčastňuje dílčích odsouhlasení podle postupu prací, nerozhodne-li
+písemně jinak. Bez souhlasu objednatele/stavebního dozoru nelze stavební práce zahájit. V případech, kdy se
+provádění prací dotýká železničního provozu, musí technologický předpis obsahovat doklady o zajištění
+průjezdného průřezu dle ČSN 73 6320 a zajištění bezpečnosti železničního provozu z hlediska únosnosti
+a stability provozovaných kolejí po celou dobu stavby, případně návrh časového plánu omezení železničního
+provozu.
+Zhotovitel je povinen bez prodlení oznámit objednateli/stavebnímu dozoru všechny podstatné odchylky skutečně
+zjištěných geotechnických poměrů od geotechnických poměrů předpokládaných dokumentací, které by mohly
+ovlivnit funkci zhotovovaných prvků (např. zatřídění horniny, změna hydrogeologických poměrů). Zhotovitel
+navrhne potřebná opatření, která podléhají odsouhlasení objednatelem/stavebním dozorem.
+24.3.2 Přípravné práce
+Potřebné úpravy pracovní plochy včetně jejího zpevnění, konstrukcí jímek, pažení nebo rozepření a zbudování
+šablon a vodicích zídek provádí zhotovitel před zahájením výstavby prvků zvláštního zakládání.
+24.3.3 Technologické zásady provádění prací
+Technologický předpis, zpracovaný zhotovitelem stavby, musí obsahovat informace relevantní k příslušné
+technologii provádění prací.
+24.3.3.1 Piloty vrtané
+Pro piloty vrtané platí zásady provádění podle ČSN EN 1536, vrtné zařízení musí splňovat požadavky
+ČSN EN 791.
+Bezprostředně po dokončení vrtu se provádí jeho betonáž. Pokud nedochází k rozvolňování stěn vrtů, ztrátě
+výplachu nebo jiným projevům nestability může být betonáž provedena později. Max. prodleva mezi dovrtáním
+a betonováním však nesmí u suchých nezapažených vrtů překročit 36 hodin, u vrtů pažených výpažnicemi
+72 hodin a vrtů pažených suspenzí 8 hodin. Je-li tato doba překročena, musí se vrt prohloubit, případně rozšířit.
+Pod hladinou podzemní vody nebo suspenze se betonuje sypákovými troubami nebo čerpadlem. Spojení trub
+musí být vodotěsné. Na hadici čerpadla se použije nástavec z ocelové trouby. Betonování se musí provádět
+vcelku a bez přerušování. Během betonáže musí ústí trouby neustále zasahovat pod povrch ukládaného betonu.
+Voda nebo suspenze se postupně odčerpávají při zachování úrovně hladiny. Odčerpaná suspenze se po přečištění
+může znovu použít, vyjma cca posledních 2 m znehodnocené suspenze nad hladinou betonu, která se likviduje.
+Podle spotřebovaného betonu se řídí zkracování trub.
+Beton hlavy piloty musí mít kvalitu požadovanou v dokumentaci stavby. Proto se horní vrstva betonu
+znehodnoceného suspenzí odebere nebo se betonáž ukončí (cca 0,4 m) nad projektovanou hlavou piloty
+9
+a znehodnocený beton se později odstraní. Případné přebetonování a odbourání znehodnocené části piloty bude
+provedeno dle ČSN EN 1536, pokud dokumentace neurčí jinak.
+Pokud je navržena zvláštní úprava hlavy piloty (např. kalich pro montáž prefabrikovaného skeletu), zabetonuje
+se dodatečně po očištění kotevní výztuže a úpravě pracovní spáry podle dokumentace. Dovoluje-li to navržený
+tvar hlavy a výškové poměry, lze hlavu betonovat současně s pilotou. Objednatel/stavební dozor kontroluje
+během betonáže stav zařízení pro betonování, kvalitu dodávané betonové směsi, dodržování technologických
+předpisů pro betonáž, úpravu hlavy piloty, její očistění a výškovou úroveň.
+Technologický předpis zpracovaný zhotovitelem stavby musí minimálně obsahovat:
+- Způsob hloubení vrtů pro piloty zhotovené na místě (vrtání,náběrová těžba, beranění a vibroberanění na patě
+uzavřené dočasné nebo trvale v zemi ponechané trouby z betonu nebo z oceli, zavrtávání, šroubování nebo
+zatlačování trouby opatřené na spodním konci omezeným počtem závitů bez těžení zeminy).
+- Způsob a hloubku pažení (bez pažení, pažnicí-dočasné nebo trvalé, pažící suspenzí-bentonitovou,
+polymerovou, jinou) a odpažování.
+- Způsob rozšiřování piloty nebo její části.
+- Způsob injektáže paty a/nebo dříku piloty.
+- Druh výztuže piloty.
+- Druh výplně piloty, požadavky na kvalitu betonové směsi a způsob jejího ukládání.
+- Místo a způsob ukládání vytěžené zeminy
+- Hloubku vniku do únosného podloží (u opřených pilot).
+- Způsob překonávání překážek (balvanů, tvrdých poloh, zvýšených přítoků vody do vrtu, kavernování
+apod.).
+- Údaje o materiálech sloužících k zhotovení piloty včetně výsledků průkazních zkoušek nebo atestů a jejich
+vyhodnocení.
+- Způsob osazení ochranných prostředků proti agresivitě prostředí (polymerové folie).
+- Způsob kontroly, zkoušení, odsouhlasení a přejímek, které ověřují kvalitu předmětu díla.
+24.3.3.2 Piloty ražené
+Pro výrobu ražených pilot musí být použité zařízení v souladu s ČSN EN 996, zásady provádění jsou v ČSN EN
+12699. Pokud není dokumentací předepsáno jinak, nemají se razit dočasně zapažené piloty v osové vzdálenosti
+menší než 6násobek průměru, pokud beton nebude vykazovat dostatečnou pevnost. Minimální krytí výztuže
+prefabrikátů předepisuje kapitola 18 TKP přičemž nesmí být menší než 30 mm, v silně agresivním prostředí
+(XA3 podle ČSN EN 206-1) musí být nejméně 50 mm, pokud dokumentace nepředepíše vyšší krytí. Povrchovou
+úpravu předepisuje dokumentace. Má-li být použito sekundární ochrany proti agresivitě prostředí, musí povrch
+odpovídat podmínkám daným normou navržené ochrany (ČSN P 73 0600) nebo předpisu výrobce ochranného
+systému.
+Technologický předpis zpracovaný zhotovitelem stavby musí minimálně obsahovat:
+- Způsob výroby, dopravy, ukládání a ošetřování betonu při výrobě prefabrikátů pilot na stavbě (TKP 18).
+- Způsob ražení předem zhotovených pilot (beranění, vibrování, zatlačování, vplachování, šroubování
+(rotace), kombinace metod beranění).
+- Zařízení na ražení prefabrikovaných pilot.
+- Zařízení pro výrobu ražených pilot betonovaných na místě (Franki, štěrkové pilíře).
+- Způsob nastavení piloty včetně minimální požadované technologické prodlevy.
+- Kriterium pro ukončení vhánění (hloubka vniku na posledních 10 úderů).
+- Opatření v případě že nedojde k zaberanění piloty na předepsanou hloubku.
+- Údaje o materiálech sloužících k zhotovení piloty včetně výsledků průkazních zkoušek nebo atestů a jejich
+vyhodnocení.
+- Údaje o prefabrikovaných dílech.
+- Údaje o protikorozní ochraně
+- Způsob kontroly, zkoušek, odsouhlasení a přejímek, které ověřují kvalitu předmětu díla
+1 0
+24.3.3.3 Podzemní stěny
+Podmínky provádění podzemních stěn jsou v ČSN EN 1538.
+Rovinatost odkrytého líce podzemní stěny zhotovené na místě je přímo závislá na geologické stavbě území
+a nelze ji zcela limitovat technologickým postupem. Nerovnosti větší, než stanoví dokumentace, nebo které by
+byly na závadu provedení následujících prací, odstraní zhotovitel na vlastní náklady po obnažení líce. Dojde-li
+k větší odchylce ve svislosti, navrhne zhotovitel nezbytná opatření, která podléhají souhlasu objednatele/stavební
+dozor.
+Požaduje-li se provedení podzemní stěny jako vodotěsné, stanoví dokumentace požadavek na odolnost vůči
+průsakům vody a úpravu dělících spár. Podzemní stěna se jako celek považuje za vodotěsnou, neobjevují-li se na
+povrchu mokrá místa nebo kapky prosakující vody. Části povrchu mohou být vlhké. V dokumentaci je možné
+požadavek na těsnost podzemní stěny jako celku stanovit údajem o maximálním průsaku na 1 m2 líce stěny za 24
+hod. Při požadavku zcela suchého povrchu jsou v dokumentaci navržena zvláštní opatření.
+Technické požadavky na výplň těsnících podzemních stěn stanoví dokumentace. Vlastnosti výplně s udáním
+času požadované pevnosti, případně propustnosti, prokazuje zhotovitel průkazními zkouškami podle článku 24.4
+této kapitoly TKP vzhledem k použitým materiálům a technologii.
+Způsob hloubení rýhy pro podzemní stěny stanoví dokumentace. Pokud se předpokládá použití trhacích prací
+musí být způsob jejich provádění popsáno v projektové dokumentaci (projekt trhacích prací) a rozpracováno
+v dokumentaci zhotovitele.
+Způsob styku lamel, zajištění jeho vodotěsnosti a délku jednotlivých lamel určuje projektová dokumentace,
+pokud nejsou tyto parametry uvedeny, navrhuje je zhotovitel. Navržené parametry musí být odsouhlaseny
+objednatelem/stavebním dozorem.
+Objednatel/stavební dozor kontroluje a odsouhlasuje dokončený úsek rýhy. Měří se hloubka, šířka, případně
+svislost rýhy.
+Způsob vyztužení, rozměry, tvar a průměr výztuže a její stykování jsou stanoveny dokumentací. Výztuž
+z betonářské oceli se připravuje předem ve formě armokoše. Armokoš tvoří jeden prostorový celek, který se
+vkládá do úseku rýhy před betonáží. Nejmenší průměr prutů svislé výztuže je 12 mm. Na každé straně armokoše
+musí být nejméně 3 pruty na jeden metr (čl. 7.4.2 ČSN EN 1538).
+Objednatel/stavební dozor kontroluje a odsouhlasuje dokončený úsek rýhy. Měří se hloubka, šířka, případně
+svislost rýhy.
+Technologický předpis zpracovaný zhotovitelem stavby musí minimálně obsahovat:
+- Způsob hloubení podzemní stěny (kontinuální, po lamelách, ražení-pouze tenké těsnící stěny).
+- Druh pažící suspenze podzemní stěny.
+- Druh výztuže podzemní stěny.
+- Druh výplně podzemní stěny a způsob jejího ukládání.
+- Místo a způsob ukládání vytěžené zeminy.
+- Údaje o materiálech sloužících k zhotovení piloty a podzemní stěny včetně výsledků průkazních zkoušek
+nebo atestů a jejich vyhodnocení.
+- Údaje o prefabrikovaných dílech.
+- Způsob kontroly, zkoušek, odsouhlasení a přejímek, které ověřují kvalitu předmětu díla.
+24.3.3.3.1 Tenké těsnící stěny
+Tenké těsnící stěny (TTS) jsou těsnící membránou vzniklou vyplněním prostoru po zaberaněném nebo
+zavibrovaném speciálním I profilu těsnící výplní. Pro provádění tenkých těsnících stěn platí ustanovení
+technologických předpisů zhotovitele schválených objednatelem/stavebním dozorem.
+Způsob hloubení rýhy a instalace výplně TTS stanovuje dokumentace zhotovitele.
+24.3.3.4 Štětové stěny
+Při budování štětových stěn se postupuje v souladu s ČSN EN 12063.
+Technologický předpis, zpracovaný zhotovitelem stavby, musí minimálně obsahovat následující informace:
+- skladování a manipulaci se štětovnicemi,
+- svařování a řezání štětovnic a dalších ocelových prvků (tab. 1 ČSN EN 12063),
+1 1
+- způsob vhánění štětovnic (beraněním, vibrováním, vtlačováním),
+- umístění a tvar šablon a kleštin,
+- pomocné technologie pro vhánění, pokud jsou použity (maziva, bentonit, tryskání, předvrtání aj.),
+- postup při vytahování štětovnic (pokud je dokumentací požadováno).
+Při vytahování štětovnic musí zhotovitel zvolit takové prostředky a technologický postup, aby nedošlo
+k poškození přilehlých objektů, nebo jeho částí (např. izolace). Vytahování štětovnic se musí provádět za
+trvalého dozoru odborného pracovníka zhotovitele. Za případné škody zodpovídá zhotovitel.
+24.3.3.5 Kotvy
+Při zhotovení kotev se postupuje v souladu s ČSN EN 1537.
+Technologický předpis, zpracovaný zhotovitelem stavby, musí minimálně obsahovat následující informace:
+- přípravu staveniště,
+- skladování a manipulaci s výztužnými profily,
+- způsob vrtání, průměr vrtu, sklon, hloubka, rozteče vrtů, použití výplachu, pažení,
+- podrobnou specifikaci osazovaného prvku (kotva tyčová, kotva pramencová atd.),
+- složení injektážní směsi (zálivky),
+- způsob injektáže, dobu zahájení injektáže po dokončení zálivky (ev. následných reinjektáží),
+- tolerance v osazení kotvy,
+- protikorozní ochrana ocelového táhla a napínaných ocelových součástí,
+- způsob napínaní a zkoušení únosnosti včetně specifikace použitého zařízení.
+24.3.3.6 Mikropiloty
+Pro zhotovení mikropilot je zpracován návrh evropské normy *EN 14199. Do nabytí její účinnosti se při výrobě
+mikropilot postupuje v souladu s technologickým předpisem zhotovitele.
+Technologický předpis, zpracovaný zhotovitelem stavby, musí minimálně obsahovat následující informace:
+- přípravu staveniště,
+- skladování a manipulaci s výztužnými profily,
+- způsob vrtání, průměr vrtu, sklon, hloubka, rozteče vrtů, použití výplachu, pažení,
+- tolerance v osazení mikropiloty,
+- podrobnou specifikaci výztužného prvku (armokoš, trubka),
+- složení injektážní směsi (zálivky),
+- způsob injektáže, dobu zahájení injektáže po dokončení zálivky (a zahájení následných reinjektáží) pokud je
+požadována.
+24.3.3.7 Hřebíky
+Pro provádění hřebíků je zpracován návrh evropské normy *EN 14490. Do nabytí její účinnosti se při výrobě
+hřebíků postupuje v souladu s technologickým předpisem zhotovitele.
+Technologický předpis, zpracovaný zhotovitelem stavby, musí minimálně obsahovat následující informace:
+- skladování a manipulaci s výztužnými profily,
+- způsob vrtání, průměr vrtu, sklon, hloubka, rozteče vrtů, použití výplachu, pažení,
+- tolerance v osazení hřebíku,
+- v případě přímého osazení hřebíku (příklepem, vibrací, nastřelením) podrobný popis způsobu instalace,
+- podrobnou specifikaci výztužného prvku (ocel, plast, uhlíková vlákna),
+- složení injektážní směsi (zálivky),
+- rozmístění, průměr, sklon, hloubka a vystrojení odvodňovacích vrtů,
+- podrobná specifikace lícového opevnění včetně technologie provádění.
+24.3.3.8 Injektování zemin a hornin
+Pro injektování zemin a hornin platí ČSN EN 12715.
+1 2
+Technologický předpis, zpracovaný zhotovitelem stavby, musí minimálně obsahovat následující informace:
+- vrtné práce (způsob vrtání, průměr vrtu, sklon, hloubka, rozteče vrtů, použití výplachu, pažení),
+- složení a vlastnosti směsi,
+- vlastní injektáž (specifikace obturátoru a injekčního čerpadla, specifikace zařízení pro míchání a dávkování
+injekční směsi, rozmístění injekčních trubek a přívodní potrubní systém, specifikace zařízení pro monitoring
+a zkoušení).
+24.3.3.9 Trysková injektáž
+Pro tryskovou injektáž platí ČSN EN 12716.
+Technologický předpis, zpracovaný zhotovitelem stavby, musí minimálně obsahovat následující informace:
+- použitý systém tryskové injektáže (jednofázový, dvojfázový vzduchový, dvojfázový vodní, trojfázový),
+- složení injektážní směsi,
+- rozmístění, průměr, hloubka a sklon vrtů,
+- popis prvků tryskové injektáže,
+- pořadí provádění,
+- rychlost vytahování soutyčí,
+- vyztužení,
+- monitoring.
+Návrh metody předloží zhotovitel po provedení ověřovacího úseku k odsouhlasení objednateli/stavebnímu
+dozoru.
+24.3.3.10 Deep mixing
+Pro zlepšení zemin metodou deep mixing musí zhotovitel zpracovat podrobný technologický předpis. Evropská
+norma je zpracována v návrhu pod číslem ∗EN 14679.
+Technologický předpis, zpracovaný zhotovitelem stavby, musí minimálně obsahovat následující informace:
+Suché mísení:
+- druh pojiva nebo směsi pojiv a plniva,
+- množství pojiva (směsi, plniva) na metr hloubky během penetrace a vytahování soutyčí,
+- tlak vzduchu,
+- rychlost penetrace a vytahování soutyčí,
+- rychlost rotace (ot/min) při penetraci a vytahování.
+Mokré mísení:
+- složení injekční směsi,
+- množství pojiva na metr hloubky během penetrace a vytahování soutyčí,
+- tlak injekční směsi,
+- rychlost penetrace a vytahování soutyčí,
+- rychlost rotace (ot/min) při penetraci a vytahování
+Popis metody a technologické zařízení pro „deep mixing“ jsou uvedeny v příloze č.1.
+1 3
+24.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+24.4.1 Všeobecně
+Materiál, prvky a dílce se přepravují a skladují způsobem, který stanoví tyto TKP a normy uvedené
+v následujících článcích, nebo předpis výrobce. Zhotovitel je povinen zajistit řádnou přejímku dodávaného
+materiálu a výrobků a přesně evidovat jednotlivé dodávky. Všechny materiály, prvky a dílce musí být chráněny
+před poškozením, znehodnocením, povětrnostními vlivy, popřípadě odcizením. Skladovaný materiál musí být
+zřetelně označen podle druhu, případně i podle dodávky. Na staveništi mohou být k dispozici pouze materiály,
+které jsou v dokumentaci a které odpovídají smlouvě o dílo. Materiál, který vykazuje vady, je poškozen,
+nevyhověl zkouškám nebo neodpovídá požadavkům dokumentace, objednatel/stavební dozor odmítne.
+Odmítnutý materiál je zhotovitel povinen ze stavby odstranit a dodat materiál nový, popřípadě prokázat dalšími
+zkouškami, že požadavkům vyhovuje.
+24.4.2 Dodávka a skladování
+Zásilka materiálu a výrobků musí být provázena dodacím listem, který musí obsahovat zejména:
+- číslo a datum vystavení,
+- název a adresu výrobce/dovozce a distributora,
+- název a sídlo odběratele,
+- místo dodávky,
+- předmět dodávky a jakostní třídu,
+- hmotnost dodávky, počet kusů apod.,
+- další údaje požadované objednatelem.
+Zjišťuje se, zda zásilka je úplná a nepoškozená a zda dodané množství, druh a jakost souhlasí s údaji uvedenými
+na dodacím listu.
+Pokud nebyl u „stanovených výrobků“ předem předán doklad o vydaném prohlášení o shodě podle zákona
+č 22/1997 Sb. v platném znění a nařízení vlády č. 163/2002 Sb., musí být předán nejpozději s dodacím listem
+první dodávky. Tento požadavek platí i pro ostatní dodávané stavební výrobky. Dodávku a skladování
+základních materiálů a výrobků upravují následující předpisy:
+− Cement : Platí požadavky kapitoly 17 TKP.
+− Kamenivo : Platí požadavky kapitoly 17 TKP.
+− Přísady : Dodávají se v sudech, barelech, pytlích nebo jiných obalech, skladují se a chrání před
+povětrnostními a teplotními vlivy podle zásad kapitoly 17 a podle pokynů výrobce.
+− Bentonit : Dodává se, balí, přepravuje a skladuje podle čl. 53 - 60 a tab. 5 ČSN 72 1000. Volně ložený se
+dodává a skladuje jako cement.
+− Čerstvý beton : Platí požadavky kapitoly 17 TKP.
+− Ocel pro výztuž: Platí požadavky kapitoly 18 TKP
+− Ocelové profily a trouby: Platí požadavky kapitoly 19 TKP (čl. 19.4.1) a ČSN 42 0135. Dále platí ENV
+10080 pro ocelové pruty, ČSN EN 10210 nebo ČSN EN 10219 pro duté profily (trouby), ČSN EN 10025
+nebo ČSN EN 10113 pro za horka válcované profily.
+− Dřevo na výrobu pilot: Impregnované borovicové dřevo, tropické tvrdé dřevo apod. Dodává a skladuje se na
+volných krytých skládkách se zpevněným povrchem podle ČSN 49 1531-1.
+− Prefabrikáty pro piloty a podzemní stěny : Platí požadavky uvedené v tab. 4 ČSN EN 1538.
+− Nátěrové a izolační hmoty : Dodávají se a skladují se podle podmínek výrobce a TKP 25 B.
+− Štětovnice: Platí požadavky ČSN EN 12063 (zejména příloha A).
+1 4
+− Kotevní táhla, mikropiloty, hřebíky: ENV 10080 nebo *EN 10138-4 u ocelových prutů, ČSN EN 10210-1,
+ČSN EN 10210-2 nebo ČSN EN 10219-1, ČSN EN 10219-2 u dutých profilů (trub), ČSN EN 10025 + A1
+nebo ČSN EN 10113-1, ČSN EN 10113-2 u za horka válcovaných profilů.
+− Manžetové trubky (plastové): Dodávají se a skladují podle podmínek výrobce. Nesmí být dlouhodobě
+vystaveny přímému slunečnímu světlu.
+− Popílek: Mechanické vlastnosti a přípustné hodnoty výluhů jsou v ČSN 73 6133 a TP 93 (pozemní
+komunikace, Ministerstvo dopravy).
+− Vápno: K hloubkovému zlepšování zemin metodou deep mixing se používá pálené (nehašené) vápno které
+splňuje požadavky ČSN EN 459.
+24.4.3 Průkazní zkoušky
+24.4.3.1 Všeobecně
+Průkazní zkoušky prokazují vlastnosti materiálů a spolehlivé plnění požadovaných parametrů výrobku. Průkazní
+zkoušky materiálu a výrobků zajišťuje zhotovitel stavby u výrobce/dovozce, přičemž protokoly s výsledky
+zkoušek a posouzení splnění kvalitativních parametrů podle příslušných ČSN, předpisů ČD, této kapitoly TKP,
+případně dalších požadavků podle ZTKP jsou přílohou dokladu o vydaném prohlášení o shodě. Průkazní
+zkoušky prováděné na stavbě provádí zhotovitel před zahájením dodávek nebo v době zahájení dodávek.
+Průkazní zkoušky musí být provedeny laboratoří s příslušnou způsobilostí. Laboratoř musí být odsouhlasena
+objednatelem/stavebním dozorem.
+24.4.3.2 Složky betonu a beton
+Platí příslušná ustanovení kapitoly 17 TKP. Zhotovitel předloží doklad o vydaném prohlášení o shodě včetně
+všech příloh dle čl. 24.4.3.1 těchto TKP nejpozději v termínu podle čl. 24.4.2 těchto TKP objednateli/stavebnímu
+dozoru k odsouhlasení včetně navržené receptury.
+24.4.3.3 Ocel pro výztuž
+Platí příslušná ustanovení kapitoly 18 TKP. Zhotovitel předloží doklad o vydaném prohlášení o shodě včetně
+všech příloh dle čl. 24.4.3.1 těchto TKP nejpozději v termínu podle čl. 24.4.2 těchto TKP objednateli/stavebnímu
+dozoru k odsouhlasení.
+24.4.3.4 Ocelové profily a trouby
+Výrobky musí splňovat příslušná ustanovení kapitoly 19 TKP. Zhotovitel předloží doklad o vydaném prohlášení
+o shodě včetně všech příloh dle čl. 24.4.3.1 těchto TKP nejpozději v termínu podle čl. 24.4.2 těchto TKP
+objednateli/stavebnímu dozoru k odsouhlasení. Dodávají-li se ocelové profily s inspekčním certifikátem 3.1 B,
+kontroluje se shoda s předepsaným stupněm jakosti a zda výrobky vyhověly ustanovením normy. Další průkazní
+zkoušky se nepožadují, pokud materiál nevykazuje zjevné vady.
+24.4.3.5 Pažící suspenze a výplň podzemních stěn
+Zhotovitel prokazuje před zahájením prací, že z materiálů a přísad uvedených v receptuře lze vyrobit suspenzi
+požadovaných vlastností podle ČSN EN 1538.
+Průkazní zkoušky výplně betonových monolitických podzemních stěn se provedou podle ČSN EN 206-1,
+průkazní zkoušky jílových, jílocementových, jílobetonových stěn a stěn ze samotvrdnoucí suspenze se provedou
+podle dokumentace. Zhotovitel předloží doklad o vydaném prohlášení o shodě včetně všech příloh dle
+čl. 24.4.3.1 těchto TKP nejpozději v termínu podle čl. 24.4.2 těchto TKP objednateli/stavebnímu dozoru
+k odsouhlasení.
+24.4.3.6 Ocelové štětovnice a profily
+Výrobky musí splňovat příslušná ustanovení kapitoly 19 TKP. Zhotovitel předloží doklad o vydaném prohlášení
+o shodě včetně všech příloh dle čl. 24.4.3.1 těchto TKP nejpozději v termínu podle čl. 24.4.3.1 těchto TKP
+objednateli/stavebnímu dozoru k odsouhlasení. Dodávají-li se ocelové profily s hutním atestem/certifikátem,
+1 5
+kontroluje se shoda s předepsaným stupněm jakosti a zda výrobky vyhověly ustanovením normy. Další průkazní
+zkoušky se nepožadují, pokud materiál nevykazuje zjevné vady.
+24.4.3.7 Dřevěné štětovnice a převázky
+Zhotovitel předloží doklad o vydaném prohlášení o shodě včetně všech příloh dle čl. 24.4.3.1 těchto TKP
+nejpozději v termínu podle čl. 24.4.3.1 těchto TKP objednateli/stavebnímu dozoru k odsouhlasení. Dřevěné
+štětovnice musí splňovat kvalitativní požadavky dle přílohy F ČSN EN 12063.
+24.4.3.8 Zatěžovací zkoušky pilot a elementů podzemních stěn
+Pro zatěžovací zkoušky vrtaných pilot a elementů podzemních stěn, které mají nosnou funkci platí kapitola 9.3
+ČSN EN 1536, pro zatěžovací zkoušky ražených pilot platí kapitola 9.3 ČSN EN 12699. Předepisuje-li to
+dokumentace, provede zhotovitel zkušební piloty nebo elementy podzemních stěn k ověření délky piloty nebo
+elementu nutné k dosažení požadované únosnosti. Zkušební piloty nebo elementy se provedou v místech
+určených v dokumentaci. Zkušební piloty nebo elementy jsou stejné konstrukce, ze stejného materiálu
+a vyrobené stejným technologickým postupem jako piloty nebo elementy stavby a provádí je strojní zařízení
+stejné jako bude použito na stavbě.
+Průkazní zkoušky se dělají před zahájením nebo na počátku prací. Počet a typ průkazních zkoušek stanoví
+dokumentace s přihlédnutím ke složitosti geotechnických poměrů, náročnosti díla a rozsahu zakládání. U pilot
+provedených jinými technologiemi než které jsou uvedeny v ČSN EN 1536 a ČSN EN 12699 (např. štěrkové
+pilíře) se provádí průkazní zatěžovací zkouška vždy. Dokumentaci statické zatěžovací zkoušky předkládá
+objednateli/stavebnímu dozoru ke schválení zhotovitel se všemi údaji svého zatěžovacího zařízení, popisem
+průběhu zkoušky a popisem měřícího zařízení. Zkoušku provede a vyhodnotí zhotovitel podle ustanovení kapitol
+9.3 ČSN EN 1536 a ČSN EN 12699 v souladu s ČSN P ENV 1997-1 a požadavky projektové dokumentace.
+Projektovou dokumentací mohou být místo statických zkoušek předepsány zkoušky dynamické. Pokud budou
+navrženy nestandardní zkoušky zpracuje zhotovitel na jejich provedení a vyhodnocení podrobný technologický
+předpis.
+24.4.3.9 Zatěžovací zkoušky kotev, mikropilot a hřebíků
+Zatěžovací zkoušky kotev se provedou podle čl. 9 ČSN EN 1537. Zkušební kotvy se provedou v místech
+určených v dokumentaci. Podle ČSN EN 1537 jsou dva druhy průkazních zkoušek a to:
+- typová zkouška, kterou se zjišťuje odpor navržené kotvy proti vytažení. Typové zkoušky se mají provést
+tehdy, pokud jsou kotvy použity v základových poměrech, kde dosud žádné typové zkoušky nebyly
+provedeny, nebo kde budou ve známých základových poměrech zhotoveny kotvy o vyšším zatížení než
+dosud,
+- ověřovací zkouška, kterou se potvrzuje dodržení dovolených hodnot meze tečení, nebo úbytek napínací síly
+při zkušebním zatížení a zaručená síla pro následné kontrolní zkoušky nebo kritická síla na mezi tečení.
+Doporučuje se provedení nejméně 3 ověřovacích zkoušek na kotvách, které byly vyrobeny ve stejných
+podmínkách jako systémové kotvy.
+Průkazní zkoušky se dělají před zahájením nebo na počátku prací. Počet a typ průkazních zkoušek stanoví
+dokumentace s přihlédnutím ke složitosti geotechnických poměrů, náročnosti díla a rozsahu zakládání.
+Dokumentaci zatěžovací zkoušky předkládá objednateli/stavebnímu dozoru ke schválení zhotovitel se všemi
+údaji o použitém zatěžovacím zařízení, popisem průběhu zkoušky a popisem měřícího zařízení. Zkoušku
+provede a vyhodnotí zhotovitel podle přílohy E ČSN EN 1537, v souladu s ČSN P ENV 1997-1 a požadavky
+projektové dokumentace.
+U zatěžovacích zkoušek mikropilot (statické, dynamické) se postupuje v souladu s čl. 9 *EN 14199.
+Zatěžovací zkoušky hřebíků se provádí podle přílohy B *EN 14490.
+24.4.3.10 Pevnost směsi zemin s pojivy (deep mixing)
+Průkazní zkoušky, kterými se zjišťuje optimální složení směsi zeminy s pojivy, provádí zhotovitel nejprve
+v laboratoři a ověřuje je na zkušebním poli. Poměr pevnosti zlepšené zeminy připravené v laboratoři a zkoušené
+in situ se pohybuje mezi 0,2 a 1,0.
+1 6
+24.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+24.5.1 Všeobecně
+Zhotovitel provádí zkoušky pro ověření jakosti vstupních materiálů a polotovarů a kontrolní výrobní zkoušky
+během prací prováděných na stavbě. O prováděných kontrolách a zkouškách a jejich výsledcích musí vést
+řádnou evidenci s údaji o odběru vzorků a druhu a rozsahu zkoušek. Nedílnou součástí této evidence jsou
+osvědčení o jakosti a atesty od dodavatelů. Odběry vzorků a zkoušky provádí zhotovitel podle příslušných
+norem. Vzorky se odebírají a ošetřují na stavbě, zkoušejí se ve schválené zkušebně.
+24.5.2 Kontrolní zkoušky
+24.5.2.1 Složky betonové směsi, betonová směs a beton
+Pro provádění zkoušek platí ustanovení kapitoly 17 a 18 TKP. Při betonáži pilot a podzemních stěn na místě
+zhotovitel odebírá vzorky a provádí minimálně následující kontrolní zkoušky:
+• Krychelná pevnost v tlaku:
+− Podle TKP 17,
+− 1x pro každou pilotu dia. 1800 mm a větší,
+− vždy při pochybnostech o kvalitě,
+• vodotěsnost: 1x na 600 m3 hotového betonu,
+• zpracovatelnost: 2x za směnu, kdy se betonuje,
+• vždy při pochybnostech po vizuální kontrole.
+24.5.2.2 Betonové prefabrikáty
+Pro provádění zkoušek platí ustanovení kapitoly 18 TKP. Kvalita a kompletnost dodávky betonových
+prefabrikátů se prokazuje Osvědčením o jakosti a kompletnosti dodávky s uvedením třídy betonu a třídy
+přesnosti dílce, doložené protokolem o zkouškách betonu, doklady o použité výztuži, popřípadě doklady
+o předpínání. Betonové prefabrikáty musí být přejímány objednatelem/stavebním dozorem.
+24.5.2.3 Betonářská ocel
+Pro provádění zkoušek platí ustanovení kapitoly 18 TKP. Kontroluje se, zda ocel byla dodána s předepsaným
+dokumentem kontroly a zda výsledky zkoušek vyhovují ustanovením příslušných norem a předpisů jakosti.
+Pokud výsledky nevyhovují, vykazuje-li ocel povrchové vady a poškození nebo jsou-li pochybnosti o její jakosti,
+musí být provedeny zkoušky mechanických vlastností. Betonářská ocel nesmí být znečištěna.
+24.5.2.4 Ocelové profily, trouby, štětovnice, kotvy
+Pro provádění zkoušek platí ustanovení kapitoly 19 TKP. Ocelové prvky se dodávají s prohlášením o shodě.
+Na stavbě se kontrolují pouze rozměry, vzhled a tvarová přesnost. Pouze v případě, že ocelové prvky a profily
+vykazují zjevné vady nebo poškození, požadují se zkoušky mechanických vlastností ocelových výrobků podle
+předepsaných norem. Ocelové prvky kotev nesmějí být znečištěny. Rozsah zkoušek stanovují kapitoly 19 TKP.
+24.5.2.5 Dřevo pro piloty
+Provede se vizuální kontrola vlastností podle ČSN 48 0055.
+24.5.2.6 Pažící suspenze a výplň podzemních stěn
+- Pažící suspenze : Druh a četnost kontrolních zkoušek stanoví projektová dokumentace. Není-li tomu tak,
+provádějí se zkoušky podle návrhu zhotovitele, který musí být schválen objednatelem/stavebním dozorem.
+Úplnou zkoušku suspenze dělá laboratoř zhotovitele alespoň 1x za týden, ale vždy při nové dodávce jílu.
+1 7
+- Na stavbě dělá zhotovitel na vzorku z výrobny zkoušky objemové hmotnosti, viskozity, obsahu písku, popř.
+pH aspoň 1x za směnu podle ČSN EN 1538.
+- Při každém odsouhlasení vrtu pro pilotu a rýhy podzemní stěny se na vzorcích suspenze provádí zkouška
+objemové hmotnosti, , viskozity, obsah písku, popřípadě pH. Vzorek se odebírá z hloubky nejméně 2 m pod
+hladinou suspenze. Posuzuje se, zda splňuje příslušná kritéria podle ČSN EN 1538.
+- Výplň podzemních stěn : Druh a četnost kontrolních zkoušek stanoví dokumentace a odsouhlasený
+technologický předpis zhotovitele. Pro monolitické a prefabrikované podzemní stěny platí ustanovení
+o zkouškách betonu a betonové směsi podle kapitoly 17 TKP. Pro jílové, jílocementové, jílobetonové výplně
+se provádějí zkoušky podle dokumentace a odsouhlaseného technologického předpisu.
+24.5.2.7 Příměsi a plastifikační materiály
+Kontrolují se a zkoušejí podle kapitoly 17 TKP, ČSN 72 2320 a ČSN 72 2321, předpisů výrobce příměsi nebo
+přísady a odsouhlasených technologických předpisů zhotovitele na základě údajů výrobce.
+24.5.2.8 Kontrolní zkoušky pilot a elementů podzemních stěn
+Kontrolní zkoušky zajišťuje zhotovitel v rozsahu požadovaném dokumentací. Zkoušky smí provádět zkušebna
+se způsobilostí v oblasti zkušebnictví. Tato zkušebna musí být odsouhlasena objednatelem/stavebním dozorem.
+Provádějí se následující zkoušky :
+a) zkouška statické únosnosti,
+b) zkouška integrity,
+c) zkouška dynamické únosnosti.
+Pro kontrolní zatěžovací zkoušky vrtaných pilot a elementů podzemních stěn, které mají funkci pilot, platí
+kapitola 9.3 ČSN EN 1536, pro zatěžovací zkoušky ražených pilot platí kapitola 9.3 ČSN EN 12699. Zkoušky
+pilot musí být v souladu s ČSN ENV 1997-1. Zkoušky se provádějí během nebo po provedení prací. Pro
+stanovení únosnosti pilot jsou rozhodující statické zatěžovací zkoušky. Dokumentací mohou být místo statických
+zkoušek předepsány zkoušky dynamické, které jsou vhodné zejména u beraněných pilot. Metodiku jejich
+provedení a vyhodnocení musí stanovit technologický předpis. Pokud byly na staveništi realizovány průkazní
+dynamické zatěžovací zkoušky pilot nebo elementů podzemních stěn, lze jejich výsledky považovat též za
+zkoušky kontrolní, jestliže byly provedeny na systémových pilotách, tj. pilotách, které jsou součástí budované
+základové konstrukce.
+Počet zkoušených systémových pilot nebo elementů určuje dokumentace v závislosti na množství zhotovova-
+ných pilot, složitosti geotechnických poměrů a náročnosti horní konstrukce.
+U pilot ražených beraněním lze provádět kontrolní zkoušky sledováním vniku piloty do základové půdy, nebo
+sledováním energetického kritéria postupu. Tento záznam je součástí protokolu o výrobě pilot. Metodiku, počet
+a způsob vyhodnocení zkoušek pilot beraněním stanoví technologický předpis.
+Provedení kontrolní zkoušky integrity pilot a elementů podzemních stěn předepisuje dokumentace. Integritu pilot
+lze zkoušet metodou dynamických impulsů (PIT, SIT, low strain), ultrazvukem nebo dynamickou zkouškou
+(high strain). Integritu elementů podzemních stěn lze zkoušet ultrazvukem nebo dynamickou zkouškou (high
+strain). Počet zkoušených pilot stanoví dokumentace. Metodiku a způsob vyhodnocení zkoušky integrity stanoví
+technologický předpis. Pro mostní stavby je provedení kontrolní zkoušky integrity povinné u každé piloty nebo
+elementu podzemní stěny.
+Při pochybnostech o jakosti piloty/podzemní stěny může objednatel/stavební dozor požadovat provedení
+jádrového vrtu v celé délce piloty/podzemní stěny nebo její části, případně vyžádat jiný způsob ověření kvality.
+Pro hrazení nákladů na tyto zkoušky platí příslušné články uvedené v TKP kapitola 1 – Všeobecně.
+24.5.2.9 Injekční směs
+Při kontrole injekční směsi postupuje zhotovitel v souladu s ČSN EN 12715. Zhotovitel kontroluje:
+- hustotu směsi, která se měří hustoměrem z každé záměsi. Požadované hodnoty jsou dány technologickým
+předpisem,
+- odstoj vody, který zhotovitel měří jednou za směnu ve výrobně směsi v kalibrovaném válci o obsahu
+1000 cm3. Odstoj za 1 hodinu nesmí být větší než 1 %,
+1 8
+- viskozitu podle Marshe,
+- dobu tuhnutí,
+- pevnost v prostém tlaku, kterou zhotovitel zjišťuje jednou týdně na sadě tří vzorků ve válcových formách
+o průměru 50 mm a výšce 100 mm. Skladování vzorků musí být 28 dnů (pokud dokumentace nestanoví
+jinak) ve vlhkém prostředí při teplotě +10° až +25°C.
+24.5.2.10 Kontrola vrtných prací (vrtané piloty, mikropiloty, kotvy, hřebíky, injektáže)
+Kontrola vrtných prací spočívá
+- v kontrole, zda vrtná věž je nastavena ve směru a sklonu vrtu podle dokumentace,
+- v kontrole, zda se vrt hloubí předepsaným nástrojem,
+- v měření hloubky a průměru vrtu,
+- v odběru vzorků horniny z vrtu,
+- v kontrole úklonu vrtu během hloubení.
+Kontroly provádí zhotovitel na každém vrtu a písemně o nich informuje objednatele/stavební dozor. V případě
+nedodržení předepsaných kritérií, navrhne zhotovitel nápravu a nechá odsouhlasit objednatelem/stavebním
+dozorem.
+24.5.2.11 Kontrola vrtů před betonováním a injektáží (vrtané piloty, mikropiloty, kotvy,
+hřebíky, injektáže)
+Před betonáží pilot a před injektáží zhotovitel ověřuje předpokládané inženýrsko-geologické poměry. Zhotovitel
+oznámí objednateli/stavebnímu dozoru všechny zjištěné odchylky naznačující, že se skutečné geologické poměry
+liší od předpokládaných, čímž může dojít k ovlivnění kvality prací. V takovém případě navrhne zhotovitel
+opatření, která předloží objednateli/stavebnímu dozoru ke schválení.
+24.5.2.12 Kontrola prací v průběhu injektáže
+Kontrola prací v průběhu injektáže spočívá v kontrole dodržování předepsané technologie a zkoušek injekční
+směsi.
+Ve skalních horninách se používá ke kontrole účinnosti injektáže vodní tlaková zkouška. Délka kontrolních vrtů
+pro VTZ musí činit minimálně 7 % z celkové metráže injekčních vrtů. Zkoušené úseky nesmí přesáhnout délku
+5 m.
+V zeminách na kvalitu zainjektování se usuzuje:
+- z rychlosti hloubení vrtů před a po injektáži při použití stejného nářadí a stejné velikosti přítlaku.
+V zainjektovaných materiálech je rychlost postupu vrtání několikanásobně pomalejší,
+- z měření přítoků vody do kontrolních vrtů hloubených do zainjektovaného prostoru. Vrt až po začátek
+zainjektovaného prostoru plus 1 až 1,5 m musíme zapažit a mezikruží stěny vrtu a výpažnice zalít
+cementovou zálivkou o vodním součiniteli 0,4. Při kontrole se sleduje nástup hladiny vody a vypočte se
+koeficient filtrace,
+- z vyhloubené šachtice, kde se sleduje nejen přítok vody, ale i velikost modulů pružnosti na do stěny
+vysekaných kostkách 20 x 20 x 20 cm nebo 40 x 40 x 40 cm. Při zatížení kostky měříme trvalou a pružnou
+deformaci.
+Kontrolu geotechnických vlastností hornin provede zhotovitel v souladu s dokumentací. Minimální množství
+celkové délky kontrolních vrtů musí činit minimálně 7 % z celkového objemu prací. Běžně se provádějí
+kontrolní zkušební vrty v délce do 5 m, pokud dokumentace nestanoví jinak.
+24.5.2.13 Kontrola vytyčovacích bodů
+Kontrolu vytyčovacích bodů pro injekční práce provádí zhotovitel nejméně jednou měsíčně v souladu
+s kapitolou 1 TKP. Poškozené vytyčovací body musí zhotovitel opravit.
+1 9
+24.5.2.14 Měření deformací
+Měření deformací terénu a okolních objektů provádí zhotovitel v průběhu realizace prací zvláštního zakládání
+v souladu s projektem monitoringu a vlastním technologickým předpisem. Monitorování staveb a terénu je nutné
+zahájit v předstihu před vlastními pracemi zvláštního zakládání a provádět v předepsaných intervalech
+stanovených projektem monitoringu až do ukončení prací. V případě že se očekává doznívání deformací i po
+ukončení prací provádí se sledování i nadále až do doby stanovené projektem monitoringu. Pokud měřené
+deformace neodpovídají předpokladům či mezním přípustným hodnotám, informuje o tom zhotovitel neprodleně
+objednatele/stavební dozor a předloží mu k odsouhlasení návrh opatření.
+24.5.2.15 Kontrolní zkoušky zlepšené zeminy (deep mixing)
+Kontrolní zkoušky masivu zlepšené zeminy se provádějí:
+- penetrační zkouškou (zatlačovaný kužel nebo vytahovaná penetrační vrtulka),
+- presiometrickou zkouškou ve vrtu zlepšené zeminy,
+- odběry vzorků z vrtů zlepšené zeminy (na vzorcích se dělají zkoušky pevnosti, stlačitelnosti, propustnosti).
+Kontroly provádí zhotovitel na každém vrtu a písemně o nich informuje objednatele/stavební dozor. V případě
+nedodržení předepsaných kritérií, navrhne zhotovitel nápravu a nechá odsouhlasit objednatelem/stavebním
+dozorem.
+24.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+24.6.1 Přípustné odchylky
+Výrobní tolerance pro výrobu prvků zvláštního zakládání udávají tyto TKP a projektová dokumentace.
+Zhotovitel musí požadavky na přípustné odchylky z projektové dokumentace respektovat při zpracování
+dokumentace zhotovitele. Pokud z vážných důvodů dojde k překročení předepsaných mezních odchylek,
+navrhne zhotovitel řešení a předloží jej objednateli/stavebnímu dozoru k odsouhlasení.
+Mezní odchylky vrtaných pilot jsou v ČSN EN 1536. Kromě tolerancí uvedených v normě musí zhotovitel
+dodržet ještě následující mezní odchylky:
+a) mezní odchylka v hloubce (úrovni dna) vrtu pro pilotu je +100 mm,
+b) mezní odchylky v umístění výztuže:
+- rozmístění nosných prutů ±30 mm při dodržení předepsaného krytí výztuže,
+- délka nosné výztuže: ±D (průměr) výztuže,
+- povrch vyčnívající výztuže po betonáži piloty + 0,15 m vzhledem k projektované výšce hlavy piloty,
+c) mezní odchylky úrovně betonu při betonáži:
+- betonáž v úrovni terénu +20 mm vzhledem k projektované výšce hlavy piloty,
+- betonáž do 1 m pod terénem +50 mm, za každý další metr hloubky nevyplněného vrtu +20 mm.
+Pro mezní odchylky ražených pilot platí tolerance uvedené v ČSN EN 12699.
+Mezní odchylky podzemních stěn jsou uvedeny v ČSN EN 1538. Kromě v normě uvedených tolerancí musí
+zhotovitel dodržet následující odchylky:
+a) mezní odchylka půdorysného umístění pažící podzemní stěny je <20 mm směrem do výkopu a <50 mm na
+rubu u lamely stěny monolitické, u lamel prefabrikovaných podzemních stěn <10 mm v obou směrech,
+b) odchylka od rovinatosti líce podzemní stěny je dána dokumentací,
+c) mezní odchylka v hloubce lamely podzemní stěny je +100 mm,
+d) mezní odchylky v umístění výztuže podzemních stěn betonovaných na místě:
+- rozmístění nosných prutů: ±30 mm při dodržení předepsaného krytí výztuže,
+- délka nosné výztuže: ±D (průměr) výztuže,
+e) úroveň betonu při betonáži:
+- betonáž v úrovni terénu +20 mm,
+2 0
+- betonáž do 1 m pod terénem +50 mm, za každý další metr hloubky nevyplněné rýhy + 20 mm.
+f) maximální odchylka svislosti lamel u pažících stěn v podélném i příčném směru ±1,0 % jejich délky.
+Výrobní tolerance ocelových i dřevěných štětovnic udává ČSN EN 12063. Mezní odchylky při provádění udává
+projektová dokumentace.
+Výrobní tolerance pro kotvy jsou uvedeny v ČSN EN 1537. Výrobní odchylky pro mikropiloty a hřebíky jakož
+i odchylky od umístění a sklonu udává projektová dokumentace.
+Při provádění injektážních prací platí následující tolerance:
+a) Odchylky umístění injekčního vrtu, jeho hloubky a sklonu, v hustotě injekční směsi a injekčního tlaku musí
+být v přípustné toleranci a nesmí být překročeny.
+b) Odchylka od teoretického místa zavrtání smí být ± 20 mm,
+c) hloubka vrtu smí být odchýlena + 100 mm,
+d) sklon vrtu smí být odchýlen ± 1°,
+e) odchylka v hustotě injekční směsi smí být - 2 %,
+f) povolená odchylka u injekčního tlaku je ± 2,5 %.
+Pro tryskovou injektáž platí následující tolerance:
+a) Hloubení vrtů: přesnost vrtání od teoretické osy vrtu 1,5° do hl. 15 m, přesnost vrtání od teoretické osy vrtu
+2,0° do hl. 25 m,
+b) hloubka vrtu: + 100 mm,
+c) injekční směs: objemová hmotnost injekční směsi -2 %,
+d) odchylka osy armokoše v úrovni hlavy: ± 30 mm.
+Pro technologii deep mixing se musí dodržet následující tolerance:
+a) Odchylky umístění vrtu, jeho hloubky a sklonu, ve složení suché nebo mokré injekční směsi a injekčního
+tlaku musí být v přípustné toleranci a nesmí být překročeny,
+b) odchylka od teoretického místa zavrtání smí být ± 20 mm,
+c) hloubka vrtu smí být odchýlena + 100 mm,
+d) sklon vrtu smí být odchýlen ± 1°.
+Poloha prvků zvláštního zakládání včetně výztuže se nesmí opravovat násilným způsobem.
+Požadavky na mezní odchylky odlišné od ustanovení těchto TKP musí být stanoveny v dokumentaci nebo
+ZTKP.
+24.6.2 Míra opotřebení
+Míra opotřebení se pro prvky zvláštního zakládání nestanovuje.
+26.6.3 Záruky
+Záruční doby stanoví kapitola 1 TKP.
+24.7 KLIMATICKÁ OMEZENÍ
+Piloty a podzemní stěny lze provádět i za nízkých teplot, pokud není omezena spolehlivost a funkce těžebního
+zařízení nebo beranidla a funkce pažící suspenze. Technologická zařízení a místa betonáže musí být dostatečně
+zateplena .
+Pro přípravu betonové směsi prováděnou za nízkých teplot a pro betonování za zvláštních klimatických
+podmínek platí ustanovení kapitoly 17 TKP.
+Hlava piloty a podzemní stěny zhotovené na místě musí být při teplotě pod +3°C chráněny proti promrznutí
+vhodným způsobem podle ustanovení kapitoly 17 TKP.
+2 1
+Používají-li se fólie nebo ochranné nátěry jako sekundární ochrana proti agresivnímu prostředí, je práce s nimi
+omezena teplotou doporučenou výrobcem. Ochranné nátěry se za nízkých teplot musí provádět v temperovaných
+halách. Natíraná konstrukce musí být před natíráním prohřátá na minimální teplotu udanou výrobcem nátěru.
+Štětové stěny lze provádět i za nízkých teplot, pokud není omezena spolehlivost a funkce strojního zařízení nebo
+beranidla.
+Pro zhotovení kotev, mikropilot a hřebíků platí stejná klimatická omezení jako pro piloty. U nastřelovaných
+hřebíků lze provádět práce bez klimatických omezení.
+Injekční práce lze provádět bez zvláštních opatření do teploty vzduchu +5°C. Při nižších teplotách musí být
+injekční stanice zatepleny, aby nedošlo ke zmrznutí injekční směsi. Při pracích v uzavřeném prostoru z obou
+stran není nebezpečí ze zmrznutí směsi. Teplota v injekční stanici musí být vždy taková, aby mohly být
+provedeny spolehlivě kontrolní zkoušky.
+Tryskovou injektáž lze provádět i při nízkých teplotách s tím, že výrobna výplachu a injekční směsi se musí
+zateplit. Zateplena musí být i zásobní nádrž injekční směsi.
+Zlepšení zemin mísením s pojivy-deep mixing- (suchá metoda) lze provádět bez zvláštních opatření i při
+teplotách pod bodem mrazu, pokud nepromrzne povrchová vrstva terénu do takové hloubky, která by ztěžovala
+penetraci nástroje. U mokré metody platí obdobné předpisy jako u injektážních prací, tj. bez omezení lze práce
+provádět do teploty vzduchu +5°C. Při nižších teplotách musí být injekční stanice zatepleny, aby nedošlo ke
+zmrznutí injekční směsi při mokrém mísení.
+24.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+24.8.1 Odsouhlasení prací
+Odsouhlasení prací znamená, že předmětné práce byly provedeny v souladu se závazky zhotovitele ve smlouvě
+o dílo, tj., že jejich poloha, tvar, rozměry, jakost a ostatní charakteristiky odpovídají požadavkům dokumentace,
+TKP, ZTKP a případně dalším dokumentům smlouvy. Toto odsouhlasení je nutné pro:
+- zahájení následujících prací, které na posuzované práce navazují nebo je zakryjí,
+- potvrzení plateb za provedené práce.
+Zhotovitel musí i nadále o odsouhlasené práce řádně pečovat, udržovat je a zodpovídá za vzniklé škody až do
+doby převzetí prací objednatelem, pokud je ve smlouvě o dílo dohodnuto nositelství nebezpečí škod na
+zhotoviteli.
+Požadavek na odsouhlasení prací předkládá zhotovitel objednateli/stavebnímu dozoru písemnou formou.
+K žádosti se přikládají doklady prokazující řádné provedení prací, pokud jsou pro konkrétní práce předepsány
+nebo připadají v úvahu, tj.:
+- výsledky kontrolních zkoušek a jejich porovnání s průkazními zkouškami a ustanoveními smlouvy o dílo,
+- doklady o kvalitě stanovených výrobků podle zákona č. 22/1997 ve znění nařízení vlády č. 163/2002 Sb.,
+ujištěním o vydání prohlášení o shodě,
+- doklady o kvalitě ostatních výrobků podle zákona č. 22/1997 ve znění nařízení vlády č. 163/2002 Sb.,
+ujištěním o vydání prohlášení o shodě,
+- výsledky kontrolních měření,
+- změřené výměry,
+- geodetické zaměření,
+- všechny ostatní doklady požadované smlouvou o dílo a obecně závaznými předpisy nebo
+objednatelem/stavebním dozorem.
+Odsouhlasení provede objednatel/stavební dozor jen pokud bylo dodrženo provedení podle dokumentace
+a kvalita odpovídá požadavkům TKP a ZTKP.
+Odsouhlasením prací se neruší závazky zhotovitele vyplývající ze smlouvy o dílo.
+2 2
+24.8.2 Převzetí prací
+Převzetí prací se provádí pro celé dílo nebo pro jeho jednotlivé části (objekt, provozní soubor, jejich části, úsek)
+ve shodě s požadavkem objednatele, který je uveden ve smlouvě o dílo.
+Převzetí prací se uskutečňuje přejímacím řízením, které svolává objednatel/stavební dozor po oznámení
+zhotovitele, že dokončil příslušný objekt, úsek nebo celou stavbu. Podmínkou uskutečnění přejímacího řízení je
+provedení přejímacích zkoušek s kladným výsledkem, pokud jsou zkoušky v obsahu smlouvy o dílo
+požadovány.
+K převzetí prací je ze strany zhotovitele vždy třeba předložit zejména tyto základní doklady:
+- kompletní projektová dokumentace a dokumentace zhotovitele (obě dokumentace s vyznačením všech
+provedených změn),
+- speciální doklady uvedené ve smlouvě o dílo a doklady podle specifikace jednotlivých prací, které jsou
+uvedeny v jednotlivých kapitolách TKP,
+- zápisy o odsouhlasení následně zakrytých nebo nepřístupných prací, konstrukcí nebo zařízení
+objednatelem/stavebním dozorem,
+- zápisy a protokoly o zkouškách, měřeních, odzkoušení smontovaných zařízení,
+- revizní zprávy,
+- výsledky zatěžovacích zkoušek,
+- dokumentaci prokazující kvalitu použitých výrobků (materiálů, dílců a konstrukcí), tj. kopie prohlášení
+o shodě, certifikátů atd. včetně výsledků a hodnocení zkoušek,
+- výsledky kontrolních měření, měření posunů a přetvoření,
+- dokumentaci skutečného provedení stavby,
+- stavební deníky,
+- všechny další doklady, které objednatel/stavební dozor požadoval v průběhu stavby.
+Se žádostí o zahájení přejímacího řízení zhotovitel předloží na základě všech výše uvedených dokumentů zprávu
+o hodnocení jakosti díla.
+Pokud objednatel připraví k přejímacímu řízení vlastní celkové hodnocení jakosti provedených prací, předá kopii
+zhotoviteli a následnému správci. Podkladem je zpráva o hodnocení jakosti zpracovaná zhotovitelem, závěry
+objednatele/stavebního dozor k činnosti zhotovitele a výsledky zkoušek a měření objednatele.
+Převzetí prací uskuteční objednatel/stavební dozor pouze tehdy, když všechny přebírané práce jsou provedeny ve
+shodě s dokumentací stavby, s požadavky TKP, ZTKP a případnými odsouhlasenými změnami.
+Přejímací řízení se uzavře „Protokolem o převzetí prací“, který vystaví objednatel/stavební dozor. Od okamžiku
+převzetí prací přechází povinnost pečovat o dílo nebo jeho část na objednatele, který se stává odpovědným
+za škody vzniklé na díle, pokud nevyplývají z vadného plnění zhotovitele.
+Převzetím prací se neruší zbývající závazky zhotovitele určené smlouvou o dílo a obecně závaznými právními
+předpisy, tj. zejména odpovědnost za vady díla.
+Převzetí prací se řídí ustanoveními smlouvy o dílo.
+24.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUVŮ A PŘETVOŘENÍ
+Měření deformací jednotlivých základových prvků se běžně neprovádí, kromě zatěžovacích zkoušek popsaných
+v článcích 24.4 této části a kapitoly TKP. Měření posunů se provádí u pažicích konstrukcí (jednostranně trvale
+obnažených pilotových stěn a podzemních stěn). Měření sedání nebo pootočení celých základů po zatížení
+stavbou může být předepsáno dokumentací u konstrukcí citlivých na nerovnoměrné sedání. V takovém případě
+se měření provádí podle dokumentace kontrolního sledování , která předepisuje instrumentaci a monitoring díla.
+Měření lze provádět pomocí elektrických nebo mechanických snímačů, přesné nivelace, elektrických vodováh,
+vertikálních a horizontálních inklinometrů, extenzometrů, holografických hranolů, piezometrů atp..
+Zvláštním případem jsou tzv. předtížené piloty, tj. takové, u nichž se požaduje, aby nepružná deformace podloží
+proběhla ještě před zatížením piloty nebo základu stavbou. Předtěžování a měření sedání jednotlivých pilot
+probíhá podle schváleného technologického předpisu.
+2 3
+Trysková injektáž a technologie deep mixing, řízené správným způsobem, vyvolávají deformace pomalé nebo
+minimální. Při provádění těchto prací se musí měřit deformace okolního terénu a staveb. Deformace se kontrolují
+nivelačním přístrojem nebo hydrostatickou nivelací. Rozsah měření deformací stanoví projektová dokumentace.
+O každém měření zhotovitel vypracuje zprávu, podle požadavků projektové dokumentace.
+Všechna výše uvedená měření smí provádět fyzická nebo právnická osoba splňující požadavky kapitoly 1 TKP
+která byla odsouhlasena objednatelem.
+24.10 EKOLOGIE
+24.10.1 Všeobecně
+Zásady ochrany životního prostředí se řídí obecnými právními předpisy (zákony č. 17/1992 Sb., č. 114/1992 Sb.,
+ve znění zákona č. 347/92 Sb., zákona č. 289/95 Sb., prováděcí vyhlášky č. 395/1992 Sb.,a č. 244/1992 Sb., ve
+znění zákona č. 100/01 Sb.) a obecnými ustanoveními kapitoly 1 TKP ustanoveními stavebního povolení a roz-
+hodnutími ostatních orgánů státní správy. Při pracích prováděných podle této kapitoly TKP je třeba brát zřetel na
+charakter prací spojený s významnými zásahy do horninového prostředí. Práce prováděné v oblastech se
+zvláštním režimem (národní parky, CHKO, pásma hygienické ochrany vodních zdrojů, lázní a zřídel atp.) se
+kromě obecných předpisů řídí ustanoveními příslušných státních orgánů vydávajících pro dané práce povolení.
+Omezení ve stavební činnosti nebo způsobu provádění prací jsou součástí dokumentace. Zhotovitel je povinen se
+těmito omezeními řídit. Objednatel/stavební dozor kontroluje dodržování předepsaných omezení.
+Výběr technologie provádí zhotovitel s ohledem na požadavky na ochranu životního prostředí a zejména v expo-
+novaných lokalitách zhotovitel volí technologie méně zatěžující okolí hlukem, prachem, emisemi spalovacích
+motorů a vibracemi. Materiály a hmoty, které budou trvale nebo dočasně ve styku s horninovým prostředím
+a podzemní a povrchovou vodou, musí splňovat požadavky uvedené v oddíle 24.A.2 této části a kapitoly TKP.
+Jejich součástí jsou též průkazní zkoušky hygienické nezávadnosti materiálu. Atest je součástí dodávky prací.
+24.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ
+OCHRANA
+24.11.1 Všeobecně
+Obecné zásady bezpečnosti práce a technických zařízení a požární ochrany stanoví obecně platné předpisy
+(Vyhláška č. 324/90 Sb., Vyhláška č. 26/89 Sb., Zákon č. 203/94 Sb.) a ustanovení kapitoly 1 TKP.
+24.11.2 Práce s mechanizmy
+Při pracích zvláštního zakládání je třeba provádět ustavení těžební, vrtné nebo beranící soupravy a jejího
+příslušenství tak, aby zajišťovalo bezpečný provoz stroje i bezpečnost v prostoru nebezpečného dosahu stroje
+(§ 2, písm. e Vyhl. č. 324/90 Sb.).
+Stroje může samostatně obsluhovat pouze pracovník, který má na tuto činnost příslušnou odbornou způsobilost.
+Při činnosti mechanizmu je odpovědný pracovník povinen vytyčit bezpečnostní prostor z hlediska možného
+ohrožení pádem stroje, nářadí nebo materiálu. Do tohoto prostoru mají vstup povolen pouze určení pracovníci.
+Při provozu strojů musí být vyloučen kontakt pracovníků s jeho pohyblivými nebezpečnými částmi.
+Dojde-li ke vzniku havarijní situace při těžbě vrtu velkoprofilové piloty nebo rýhy podzemní stěny, která je
+charakterizována náhlým poklesem pažící suspenze (při poklesu o 1 m v době kratší než 5 min.), nebo
+vytvořením kaverny ve svrchní části vrtu nebo rýhy vypadnutím materiálu do vrtu nebo rýhy, je nutno okamžitě
+provést následující bezpečnostní opatření:
+- odsunout stroj a zařízení z ohroženého prostoru - zastavit dopravu kolem ohroženého prostoru,
+- zahustit suspenzi a vyplnit místa pravděpodobného úniku suspenze těsnícím materiálem nebo sanovat vrt
+nebo rýhu stabilizací, nebo samotvrdnoucí suspenzí.
+2 4
+24.11.3 Ochranná pásma
+Práci v ochranných pásmech upravují příslušné články kapitoly 1 TKP.
+24.11.4 Ohrazení pracoviště
+Obecné předpisy pro ohrazení pracoviště upravuje kapitoly 1 TKP. Možné zdroje ohrožení života a zdraví osob
+vznikající při pracích podle kapitoly 24 TKP (otvory, jámy, rýhy, nestabilní konstrukce a stavební díly, stroje) je
+povinen zhotovitel zajistit tak, aby ohrožení bylo vyloučeno.
+24.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich
+aktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj.
+právních předpisů, technických norem a předpisů a předpisů ČD.
+24.12.1 Technické normy
+ČSN EN 1536 Provádění speciálních geotechnických prací – Vrtané piloty
+ČSN EN12699 Provádění speciálních geotechnických prací – Ražené piloty
+ČSN EN 1538 Provádění speciálních geotechnických prací – Podzemní stěny
+ČSN EN 12063 Provádění speciálních geotechnických prací – Štětové stěny
+ČSN EN 1537 Provádění speciálních geotechnických prací – Injektované horninové kotvy
+ČSN EN 12715 Provádění speciálních geotechnických prací – Injektáže
+ČSN EN 12716 Provádění speciálních geotechnických prací – Trysková injektáž
+ČSN P ENV 1992-1-1 Navrhování betonových konstrukcí. Část 1-1: Obecná pravidla a pravidla pro pozemní
+stavby
+ČSN P ENV 1992-1-5 Navrhování betonových konstrukcí. Část 1-5: Obecná pravidla. Konstrukce
+s nesoudržnou a vnější předpínací výztuží
+ČSN P ENV 1993-1-1 Navrhování ocelových konstrukcí. Část 1-1: Obecná pravidla
+ČSN P ENV 1997-1 Navrhování geotechnických konstrukcí. Část 1 : Obecná pravidla
+*EN 14199 Execution of special geotechnical works – Micropiles
+*EN 14490 Execution of special geotechnical works – Soil nailing
+*EN 14679 Execution of special geotechnical works – Deep mixing
+*EN 14731 Execution of special geotechnical works - Ground treatment by
+deep vibration
+ČSN EN 459-1 Stavební vápno - Část 1: Definice, specifikace a kritéria shody
+ČSN EN 459-2 Stavební vápno - Část 2: Zkušební metody
+ČSN EN 459-3 Stavební vápno - Část 3: Hodnocení shody
+ČSN EN 791 Vrtné soupravy - Bezpečnost
+ČSN EN 996 Souprava pro pilotovací práce – Bezpečnostní požadavky
+ČSN ISO 8501-1 Příprava ocelových konstrukcí před nanesením nátěrových hmot a obdobných výrobků –
+Vizuální vyhodnocení čistoty povrchu - Část 1: Stupně zarezavění a stupně přípravy
+ocelového podklad bez povlaku a ocelového podkladu po úplném odstranění předchozích
+povlaků
+ČSN ISO 8501-2 Příprava ocelových konstrukcí před nanesením nátěrových hmot a obdobných výrobků –
+Vizuální vyhodnocení čistoty povrchu - Část 2: Stupně přípravy dříve natřeného
+ocelového podkladu po místním odstranění předchozích povlaků
+ČSN 03 8374 Zásady protikorozní ochrany podzemních kovových zařízení.
+ČSN EN 10025 + A1 Výrobky válcované za tepla z nelegovaných konstrukčních ocelí. Technické dodací
+podmínky (obsahuje změnu A1:1993)
+ČSN EN 10079 Hutnictví železa. Definice ocelových výrobků
+ENV 10080 Steels for reinforcement of concrete – Weldable ribbed reinforcing steels B500
+2 5
+ČSN EN 10113-1 Výrobky válcované za tepla ze svařitelných jemnozrnných konstrukčních ocelí. Část 1:
+Všeobecné dodací podmínky
+ČSN EN 10113-2 Výrobky válcované za tepla ze svařitelných jemnozrnných konstrukčních ocelí. Část 2:
+Dodací podmínky pro normalizačně žíhané nebo normalizačně válcované oceli
+*EN 10138-4 Prestressing steels - Bars
+ČSN EN 10204 Kovové výrobky. Druhy dokumentů kontroly
+ČSN EN 10210-1 Duté profily tvářené za tepla z nelegovaných a jemnozrnných konstrukčních ocelí. Část
+1: Technické dodací předpisy
+ČSN EN 10210-2 Duté profily tvářené za tepla z nelegovaných a jemnozrnných ocelí - Část 2: Rozměry,
+úchylky a statické hodnoty
+ČSN EN 10219-1 Svařované duté profily z konstrukčních nelegovaných a jemnozrnných ocelí, tvářené za
+studena - Část 1: Technické dodací podmínky
+ČSN EN 10219-2 Svařované duté profily z konstrukčních nelegovaných a jemnozrnných ocelí, tvářené za
+studena - Část 2: Rozměry, úchylky a statické hodnoty
+ČSN EN 10248-1 Štětovnice válcované za tepla z nelegovaných ocelí - Část 1: Technické dodací podmínky
+ČSN EN 10248-2 Štětovnice válcované za tepla z nelegovaných ocelí - Část 2: Mezní úchylky rozměrů a
+tolerance tvaru
+ČSN EN 10249-1 Štětovnice tvářené za studena z nelegovaných ocelí - Část 1: Technické dodací podmínky
+ČSN EN 10249-2 Štětovnice tvářené za studena z nelegovaných ocelí - Část 2: Mezní úchylky rozměrů a
+tolerance tvaru
+ČSN EN 12350-2 Zkoušení čerstvého betonu – Část 2: Zkouška sednutím
+ČSN 42 0135 Tyče tvarované z konstrukčních ocelí za tepla. Technické dodací předpisy
+ČSN 42 0250 Trubky bezešvé z ocelí tříd 10 až 16 tvářené za tepla. Technické dodací předpisy
+ČSN 48 0055 Jehličnaté sortimenty surového dříví. Technické požadavky
+ČSN 49 0600-1 Ochrana dřeva – Základní ustanovení – Část 1: Chemická ochrana
+ČSN 49 0600-4 Ochrana dreva. Základné ustanovenia. Ochrana náterovými látkami
+ČSN 49 0609 Ochrana dreva. Skúšanie akosti ochrany dreva
+ČSN 49 0616-2 Ochrana dreva. Impregnácia drevených podvalov. Dvojitý spôsob podľa Rüpinga.
+Modifikovaný spôsob
+ČSN 49 1531-1 Dřevo na stavební konstrukce. Část 1: Vizuální třídění podle pevnosti
+ČSN 72 1000 Keramické suroviny. Společná ustanovení
+ČSN 73 0036 Seismická zatížení staveb
+ČSN 73 0040 Zatížení stavebních objektů technickou seismicitou a jejich odezva
+ČSN 73 0202 Geometrická přesnost ve výstavbě. Základní ustanovení
+ČSN 73 0205 Geometrická přesnost ve výstavbě. Navrhování geometrické přesnosti
+ČSN ISO 7077 Geometrická přesnost ve výstavbě. Měřičké metody ve výstavbě. Všeobecné zásady a
+postupy pro ověřování správnosti rozměrů
+ČSN P 73 0600 Ochrana staveb proti vodě. Hydroizolace. Základní ustanovení.
+ČSN 73 1002 Pilotové základy
+ČSN 73 1201 Navrhování betonových konstrukcí
+ČSN 73 2400 Provádění a kontrola betonových konstrukcí.
+ČSN EN 206-1 Beton – Část 1: Specifikace, vlastnosti, výroba a shoda
+ČSN 73 2810 Dřevěné stavební konstrukce. Provádění
+ČSN 73 6133 Navrhování a provádění zemního tělesa pozemních komunikací
+ČSN 73 6205 Navrhování ocelových mostů
+ČSN 73 6206 Navrhování betonových a železobetonových mostních konstrukcí
+ČSN 73 6207 Navrhování mostních konstrukcí z předpjatého betonu
+ČSN 73 6320 Průjezdné průřezy na dráhách celostátních, dráhách regionálních a vlečkách normálního
+rozchodu
+ČSN 83 8030 Skládkování odpadů - Základní podmínky pro navrhování a výstavbu skládek
+2 6
+ČSN EN ISO 9001 Systémy managementu jakosti - Požadavky
+Normy označené *EN jsou evropské normy v návrhu. Po svém schválení a nabytí platnosti budou součástí těchto
+TKP. V současném znění mají informativní charakter.
+24.12.2 Předpisy
+Vyhláška č. 26/1989 Sb. o bezpečnosti a ochraně zdraví při práci a bezpečnosti provozu při hornické činnosti
+a při činnosti prováděné hornickým způsobem na povrchu
+Vyhláška č. 324/1990 Sb. o bezpečnosti práce a technických zařízení při stavebních pracích
+Vyhláška MŽP kterou se vydává Katalog odpadů a stanoví další seznamy odpadů (Katalog odpadů)
+č. 337/1997 Sb.
+Vyhláška MŽP Vyhláška Ministerstva životního prostředí o podrobnostech nakládání s odpady
+č. 338/1997 Sb.
+Zákon č. 17/1992 Sb. o životním prostředí
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky ve znění zákona č. 71/2000 Sb. a 102/01 Sb.
+Zákon č. 100/2001 Zákon o posuzování vlivů na životní prostředí a o změně některých souvisejících
+zákonů (zákon o posuzování vlivů na životní prostředí)
+Zákon č. 114/1992 Sb. o ochraně přírody a krajiny, ve znění zákona č. 347/1992 Sb., o provádění vyhlášky
+č. 395/1992 Sb.
+Zákon č. 185/2001 Sb. o odpadech
+Zákon č. 203/1994 Sb. o požární ochraně (mění a doplňuje zákon č. 133/1985 Sb., ve znění zákona
+č. 425/1990 Sb. a 40/1994 Sb.)
+Zákon č. 244/1992 Sb. o posuzování vlivů na životní prostředí.
+Zákon č. 289/1995 Zákon o lesích a o změně a doplnění některých zákonů (lesní zákon)
+Zákon č. 347/1992 Zákonné opatření předsednictva České národní rady, kterým se mění zákon České
+národní rady č. 114/1992 Sb., o ochraně přírody a krajiny
+Zákon č. 360/1992 Zákon České národní rady o výkonu povolání autorizovaných architektů a o výkonu
+povolání autorizovaných inženýrů a techniků činných ve výstavbě
+NV č. 163/2002 Sb. Nařízení vlády, kterým se stanoví technické požadavky na vybrané stavební výrobky
+24.12.3 Související kapitoly TKP a jiné předpisy ČD
+Kapitola 1 - Všeobecně
+Kapitola 17 - Beton pro konstrukce
+Kapitola 18 - Betonové mosty a konstrukce
+Kapitola 19 - Ocelové mosty a konstrukce
+Kapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí
+SR 5/7 – Ochrana železničních mostních objektů proti účinkům bludných proudů
+24.12.4 Související předpisy MD odbor PK
+TP 93 – Návrh a provádění staveb pozemních komunikací s využitím popílků a popelů
+2 7
+Příloha 1 Popis metody a technologické zařízení pro „deep mixing“
+Hloubkové zlepšování zemin mísením se provádí mechanickým rozrušováním zeminy svislým pohybem rotující
+jednotky, dávkováním pojiva a jeho homogenizací v zemině během penetrace a/nebo vytahování soutyčí.
+Hloubkové zlepšení se může provádět jak dávkováním suchého pojiva (suché mísení) tak dávkování tekuté
+injekční směsi (mokré mísení).
+U suchého mísení se pojivo dávkuje stlačeným vzduchem. Jako pojiva se používá pálené (nehašené) vápno
+a cement. Rovněž se používá směs cementu, vápna, sádry, vysokopecní strusky nebo popílku. Suché mísení se
+používá ke zlepšení vlastností soudržných zemin. Vlhkost zeminy by měla být >20%.
+U mokrého mísení je transportním médiem voda. Jako pojiva se nejčastěji používá cementová injekční směs do
+které se mohou přidat přísady a plnidlo (písek). Mokré mísení se používá v nesoudržných (písčitých) zeminách.
+Obvyklé parametry stroje pro zlepšování zemin (skandinávská metoda) jsou v tabulce 1.
+Tab. 1
+Mísicí souprava Suché mísení Mokré mísení
+Počet mísicích soutyčí u jednoho 1 1-3
+stroje
+Průměr mísicího nástroje 0,4-1,0 m 0,4-0,9 m
+Maximální dosažitelná hloubka 25 m 25 m
+zlepšení
+Dávkování pojiva Dnem soutyčí Tyčí
+Injektážní tlak 400-800 kPa 500-1000 kPa
+Dávkované množství 50-300 kg/min 0,08-0,25 m3/min
+Rychlost penetrace soutyčí 2-6 m/min 0,5-1,5 m/min
+Rychlost vytahování soutyčí 1,5-6 m/min 3,0-5,0 m/min
+Rychlost rotace mísicí vrtulky 100-200 ot/min 25-50 ot/min
+Číslo rotace vrtulky* 150-500 na m Obvykle průběžný šnek
+Množství dávkovaného pojiva 100-250 kg/m3 80-450 kg/m3
+Rychlost při vytahování (penetraci) 10-30 mm/ot 10-100 mm/ot
+Dávkování pojiva Obvykle při vytahování Při penetraci a/nebo vytahování
+* Celkový počet otáček mísicích nožů během vytvoření 1m sloupu zlepšené zeminy.
+Nejvhodnější pojiva nebo kombinace pojiva a plnidla pro běžné typy zemin jsou v tabulce 2.
+Tab. 2
+Zemina Pojivo
+Jíl Vápno nebo vápno+cement
+Organický jíl nebo hnilokal Vápno+cement nebo cement+drcená vysokopecní
+struska nebo vápno+sádra
+Rašelina Cement nebo cement+drcená vysokopecní struska nebo
+vápno+sádra+cement
+Spraš, sprašová hlína Vápno+cement nebo cement
+Pro vysoce organické zeminy nebo zeminy kašovité konzistence se používají i jiné směsi pojiv (např. směs
+popílku, sádry a cementu). Do některých směsí se přidává bentonit.
+2 8
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB ČESKÝCH DRAH
+Vydavatel: České dráhy, a.s.
+P r v n í v y d á n í / z roku 1996/ bylo vyhotoveno a připomínkováno v tomto složení:
+Zpracovatel: PRAGOPROJEKT, a.s., a SUDOP Praha, a.s.
+Zpracovatel kap. 24: část A-RNDr. Ivan Beneš (Zakládání staveb, a.s.)
+část B, C, D-Ing. Jaroslav Verfel, DrSc.
+Technická rada: Ing. Milan Strnad (Pragoprojekt, a.s.), Ing. Miloslav Bažant (Pragoprojekt, a.s.),
+Ing. Jiří Stříbrný (SUDOP Praha, a.s.), Ing. Petr Lapáček (SUDOP Praha, a.s.),
+Ing. Vítězslav Herle (SG-Geotechnika, a.s.), Ing. Jiří Bureš (ČD-DDC),
+Ing. Ondřej Chládek (ČD-DDC), Ing. Danuše Marusičová (ČD-DDC),
+Ing. Pavel Stoulil (MD ČR)
+T ř e t í - aktualizované v y d á n í vč. změny č. 4 /z roku 2003/ :
+Zpracovatel: Ing. Vítězslav Herle, Stavební geologie – GEOTECHNIKA, a.s.
+Gestor kapitoly 24: Ing. Josef Hloušek (ČD, Technická ústředna dopravní cesty - sekce 13)
+Zpracovatel připomínek ke kapitole 24:
+Ing. Josef Hloušek (ČD, Technická ústředna dopravní cesty - sekce 13)
+Distribuce: České dráhy, a.s.
+Technická ústředna dopravní cesty - Sekce technické dokumentace
+772 58 Olomouc, Nerudova l
+tel. +420 585 782 241, tel.(drážní) 950-2241
+fax +420 585 785 290, fax (drážní) 950-5290
+e-mail: TUDCOTDOLCsek@tudc.olc.cd.cz

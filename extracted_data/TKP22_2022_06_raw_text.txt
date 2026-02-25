@@ -1,0 +1,1032 @@
+Úroveň přístupu
+A
+Technické kvalitativní
+podmínky staveb státních
+drah
+Kapitola 22
+IZOLACE PROTI VODĚ
+Vydání: červen 2022
+Účinnost od 1. července 2022
+Nahrazení předchozího znění kapitoly
+Datem účinností tohoto dokumentu se nahrazuje kapitola 22 – Izolace proti vodě schválená dne
+31. 7. 2001, účinná od 1. 11. 2001.
+Schváleno pod č.j. 40307/2022-SŽ-GŘ-O13
+Dne
+Bc. Jiří Svoboda, MBA v. r.
+Generální ředitel
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+Technické kvalitativní podmínky
+Kapitola 22 IZOLACE PROTI VODĚ
+Gestorský útvar: Správa železnic, státní organizace
+Generální ředitelství
+Odbor traťového hospodářství
+Praha
+www.spravazeleznic.cz
+Gestor: Ing. David Zeman
+Vydání: červen 2022
+Náklad: vydáno pouze v elektronické podobě (PDF), formát (A4)
+© Správa železnic, státní organizace, rok 2022
+Tento dokument je duševním vlastnictvím státní organizace Správa železnic, na které se vztahuje zákon č. 121/2000 Sb.,
+o právu autorském, o právech souvisejících s právem autorským a o změně některých zákonů (autorský zákon), ve znění
+pozdějších předpisů. Státní organizace Správa železnic je v uvedené souvislosti rovněž vykonavatelem majetkových práv.
+Tento dokument smí fyzická osoba použít pouze pro svou osobní potřebu, právnická osoba pro svou vlastní vnitřní potřebu.
+Poskytování tohoto dokumentu nebo jeho části v jakékoliv formě nebo jakýmkoliv způsobem třetí osobě je bez svolení státní
+organizace Správa železnic zakázáno.
+2/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+OBSAH
+Strana
+SEZNAM ZKRATEK ................................................................................................................................... 5
+PŘEDMLUVA ............................................................................................................................................ 6
+22.1 ÚVOD .......................................................................................................................................... 7
+22.1.1 Obecná ustanovení .......................................................................................................................7
+22.1.2 Základní pojmy a jejich výklad ......................................................................................................8
+22.1.3 Systémy vodotěsné izolace ...........................................................................................................8
+22.1.4 Návrh konstrukce ve vztahu k vodotěsné izolaci .............................................................................9
+22.1.5 Dokumentace systému vodotěsné izolace ......................................................................................9
+22.1.5.1 Předprojektová dokumentace ...................................................................................... 9
+22.1.5.2 Projektová dokumentace (DUSP, DUSL, DSP) ................................................................ 9
+22.1.5.3 Projektová dokumentace (PDPS) ................................................................................. 10
+22.1.5.4 Dokumentace zhotovitele systému vodotěsné izolace .................................................... 12
+22.1.5.5 Dokumentace skutečného provedení (DSPS) ................................................................ 12
+22.1.6 Stavební deník systému vodotěsné izolace ................................................................................... 12
+22.1.7 Přejímka podkladní konstrukce .................................................................................................... 13
+22.1.8 Provádění systému vodotěsné izolace .......................................................................................... 13
+22.1.8.1 Provádění přípravné vrstvy ......................................................................................... 13
+22.1.8.2 Provádění vodotěsné vrstvy........................................................................................ 14
+22.1.8.3 Provádění ochranné vrstvy ......................................................................................... 14
+22.1.8.4 Ochrana při provádění vodotěsné izolace a při provádění nadložních vrstev ...................... 14
+22.1.9 Odvodnění ................................................................................................................................. 15
+22.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ .......................................................................... 16
+22.2.1 Výrobky pro jednotlivé vrstvy SVI ............................................................................................... 16
+22.2.2 Doplňkové výrobky pro systém vodotěsné izolace ........................................................................ 16
+22.2.3 Výrobky pro zálivkové těsnění spár ............................................................................................. 16
+22.2.4 Ochrana proti zemní vlhkosti ....................................................................................................... 16
+22.2.5 Přímo pochozí a přímo pojížděné systémy vodotěsné izolace ......................................................... 16
+22.3 TECHNOLOGICKÉ PŘEDPISY A POSTUPY ................................................................................ 16
+22.3.1 Technologický postup ................................................................................................................. 16
+22.3.2 Technologický předpis vodotěsné izolace...................................................................................... 17
+22.3.3 Obsah a rozsah Technologického předpisu ................................................................................... 17
+22.3.3.1 Úvod ....................................................................................................................... 18
+22.3.3.2 Specifikace volby systému vodotěsné izolace ................................................................ 18
+22.3.3.3 Popis výrobků systému vodotěsné izolace .................................................................... 18
+22.3.3.4 Skladování a manipulace............................................................................................ 18
+22.3.3.5 Podmínky aplikace systému vodotěsné izolace .............................................................. 18
+22.3.3.6 Pracovní pomůcky a mechanizmy ................................................................................ 18
+22.3.3.7 Pracovní postupy ...................................................................................................... 19
+22.3.3.8 Výkresy ................................................................................................................... 19
+22.3.3.9 Opravy poškozených míst .......................................................................................... 19
+22.3.3.10 Kontroly, zkoušení a přejímky .................................................................................... 19
+22.3.3.11 Kvalita, její kontrola a záruky ..................................................................................... 19
+22.3.3.12 Bezpečnost a ochrana zdraví při práci .......................................................................... 19
+22.3.3.13 Způsob nakládání s odpady ........................................................................................ 19
+22.3.3.14 Prohlášení zhotovitele systému vodotěsné izolace ......................................................... 20
+22.3.3.15 Personální zajištění provádění systému vodotěsné izolace .............................................. 20
+22.3.3.16 Další přílohy technologického předpisu......................................................................... 20
+22.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY ................................................................... 20
+22.4.1 Dodávka .................................................................................................................................... 20
+22.4.2 Skladování................................................................................................................................. 20
+22.4.3 Průkazní zkoušky ....................................................................................................................... 21
+22.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY ....................................................................... 21
+22.5.1 Odebírání vzorků ........................................................................................................................ 21
+22.5.2 Kontrola a zkoušky podkladní konstrukce ..................................................................................... 21
+22.5.3 Kontrolní zkoušky zhotovitele systému vodotěsné izolace .............................................................. 21
+22.5.4 Kontroly objednatele .................................................................................................................. 22
+22.5.5 Kontrolní zkoušky objednatele (rozhodčí zkoušky) ........................................................................ 22
+22.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY ........................................................... 22
+22.6.1 Přípustné odchylky ..................................................................................................................... 22
+3/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+22.6.2 Míra opotřebení .......................................................................................................................... 22
+22.6.3 Záruky zhotovitele SVI, záruční a pozáruční doba ......................................................................... 22
+22.7 KLIMATICKÁ OMEZENÍ ............................................................................................................ 23
+22.8 SOUHLAS S PROVEDENÝMI PRACEMI, PŘEVZETÍ PRACÍ........................................................ 23
+22.8.1 Souhlas s provedenými pracemi .................................................................................................. 23
+22.8.2 Předání systému vodotěsné izolace .............................................................................................. 23
+22.8.3 Převzetí prací ............................................................................................................................. 24
+22.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ ........................................................ 24
+22.9.1 Kontrolní měření ........................................................................................................................ 24
+22.9.2 Měření posunů a přetvoření ........................................................................................................ 24
+22.10 EKOLOGIE................................................................................................................................. 25
+22.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA ................................ 25
+22.11.1 Bezpečnost práce a technických zařízení ...................................................................................... 25
+22.11.2 Požární ochrana ......................................................................................................................... 25
+22.12 CITOVANÉ A SOUVISEJÍCÍ DOKUMENTY ................................................................................ 25
+4/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+SEZNAM ZKRATEK
+Níže uvedený seznam obsahuje zkratky a značky použité v tomto dokumentu. V seznamu se
+neuvádějí legislativní zkratky, zkratky a značky obecně známé, zavedené právními předpisy,
+uvedené v obrázcích, příkladech nebo tabulkách.
+ČSN Česká technická norma
+ČSN EN Česká technická norma, která zavádí do soustavy českých norem
+evropskou normu
+DSP Projektová dokumentace pro vydání stavebního povolení
+DSPS Dokumentace skutečného provedení stavby
+DUSL Dokumentace pro vydání společného povolení podle zákona č. 416/2009
+Sb., liniového zákona, ve znění pozdějších předpisů
+DUSP Dokumentace pro vydání společného povolení
+GŘ Generální ředitelství
+IGP Inženýrsko geologický průzkum
+KZP Kontrolní a zkušební plán
+MVL Mostní vzorové listy
+O13 Odbor traťového hospodářství
+OTP Obecné technické podmínky
+PDPS Projektová dokumentace pro provádění stavby
+RS SVI Regionální specialista pro systémy vodotěsných izolací
+SVI Systém vodotěsné izolace
+SŽ Správa železnic, státní organizace
+SO Stavební objekt
+TDS Technický dozor stavebníka
+TEP Technologický postup
+TePř Technologický předpis
+TKP Technické kvalitativní podmínky staveb státních drah
+TNŽ Technická norma železnic
+TPD Technické podmínky dodací
+TZ Technická zpráva
+VTP Všeobecné technické podmínky (součást zadávací dokumentace)
+ZD Zadávací dokumentace stavby
+ZP Záměr projektu
+ZTKP Zvláštní technické kvalitativní podmínky
+ZTP Zvláštní technické podmínky
+5/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+PŘEDMLUVA
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP
+- Všeobecně. Použití kapitoly 22 TKP je možné pouze společně s kapitolou 1 TKP.
+Kapitola 22 Technických kvalitativních podmínek staveb státních drah (dále jen TKP) se zabývá
+požadavky objednatele na systémy vodotěsných izolací (dále jen SVI) staveb železničního
+spodku. Jde o SVI proti vodě volně stékající a SVI proti vodě tlakové. V kapitole 22 TKP jsou také
+uvedeny možnosti ochrany některých objektů nebo částí objektů pouze proti zemní vlhkosti.
+Tato kapitola uvádí požadavky na SVI jako celek, na materiály jednotlivých vrstev, na
+technologické předpisy a postupy, zkoušení, přejímky a způsob kontrol při výstavbě, opravách,
+údržbě a při ukončení záruční doby. Dále obsahuje požadavky na materiály a provedení veškerých
+prací a úprav (včetně podkladní konstrukce), které s provedením vodotěsných izolací souvisí.
+Tato kapitola TKP je zpracována s ohledem na ČSN a jiné technické předpisy s tím, že některé
+články norem upřesňuje, doplňuje nebo upravuje. V případech, kdy jsou požadovány jiné práce,
+než práce obsažené v této kapitole TKP, nebo je třeba doplnit ustanovení této kapitoly, a nebo
+v případech, kdy se jedná o ojedinělé technické řešení, stanoví objednatel potřebné zásady
+v zadávací dokumentaci.
+Technické požadavky na použité materiály a podmínky pro dodržování kvality musí odpovídat
+především směrnici SŽDC č. 67 a dále pak této kapitole TKP, zde uvedeným technickým normám
+a příslušným technickým předpisům. V případě rozporu mezi obecně platnými technickými
+normami a dalšími technickými předpisy platí ustanovení TKP, pokud pověřený útvar (podle
+kapitoly 1 TKP) nestanoví jinak.
+6/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+22.1 ÚVOD
+22.1.1 OBECNÁ USTANOVENÍ
+(1) Kapitola 22 TKP se zabývá především vodotěsnými izolacemi mostních objektů dle ČSN
+73 6200. Dále uvedené zásady se ve využitelném rozsahu použijí i na ostatních stavbách
+železničního spodku, kolektorů, septiků, lapačů a ostatních obdobných staveb.
+Souhrnně se tato část kapitoly týká:
+ nosných konstrukcí mostních objektů s kolejovým ložem;
+- přesypaných
+- nepřesypaných
+ pochozích a pojížděných mostních konstrukcí bez kolejového lože;
+ spodních staveb mostních objektů;
+ víceúčelových přestupních terminálů;
+ opěrných zdí;
+ zárubních zdí;
+ ostatních staveb železničního spodku.
+(2) Pro vodotěsné izolace proti podzemní vodě konstrukcí kolektorových tubusů, šachet
+a doplňkových objektů chrániček, prováděných v otevřené stavební jámě v souladu
+s kapitolou 12 TKP, platí uvedená ustanovení ve využitelném rozsahu této kapitoly
+(3) Pro vodotěsné izolace proti podzemní vodě konstrukcí odpadních jímek, čistíren a lapačů,
+prováděných v otevřené stavební jámě v souladu s kapitolou 14 TKP, platí ve využitelném
+rozsahu ustanovení kapitoly 22 TKP. Kapitola 22 TKP neřeší izolaci a ochranu konstrukcí
+proti kapalinám uvnitř těchto staveb.
+(4) Pro konstrukce kolektorových tubusů, šachet, doplňkových objektů chrániček, odpadních
+jímek, čistíren a lapačů, které se provádějí ražením, se vodotěsné izolace proti podzemní
+vodě a zemní vlhkosti řeší v souladu s kapitolou 20 TKP. Schválení použité vodotěsné izolace
+podléhá pověřenému útvaru GŘ Správy železnic v souladu s kapitolou 20 TKP.
+(5) Vodotěsné izolace tunelů (schválení použitého SVI podléhá v souladu s kapitolou 20 TKP
+pověřenému útvaru GŘ Správy železnic).
+(6) Pro výše uvedené konstrukce, které nejsou zatěžovány železniční dopravou, není nutné
+používat pro vodotěsné izolace schválené SVI dle kapitoly 22 TKP. Je možné používat
+výrobky splňující požadavky pro uvedení na trh v České republice. Skladba vodotěsné
+izolace musí zajišťovat dostatečnou ochranu pro dané hydrofyzikální namáhání (viz ČSN
+73 0600) a zajišťovat odolnost proti mechanickému poškození.
+(7) Pokud dochází k vzájemnému napojení vodotěsných izolací konstrukcí kolektorových
+tubusů, šachet, doplňkových objektů chrániček, odpadních jímek, čistíren, lapačů a jiných
+pozemních staveb na mostní objekty, je nutné vždy na přechodu mezi těmito konstrukcemi
+respektovat požadavky na vodotěsné izolace dle kapitoly 22 TKP, tj. použít schválené SVI
+(případně SVI v ověřovacím procesu).
+(8) Mostní objekty jsou v souladu s jednotlivými příslušnými kapitolami TKP navrhovány podle
+ČSN 73 6201 a příslušných vnitřních předpisů SŽ s plánovanou životností 100 let. Povrchy
+těchto objektů na styku se zeminou a kolejovým ložem je nutné izolovat (např. žlab
+kolejového lože, rubové plochy opěr atp.). Konstrukční zásady pro ochranu mostních objektů
+stanovuje ČSN 73 6201 včetně požadavků na návrh odvodnění izolovaných ploch.
+(9) Na některých vybraných konstrukcích se připouští kromě použití vodotěsných izolací jejich
+ochrana proti vodě pouze ochrannými nátěry proti zemní vlhkosti:
+7/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+ schválené prefabrikované konstrukce propustků s integrovaným těsněním s maximální
+hloubkou průsaku tlakovou vodou 20 mm dle ČSN EN 12390-8 nebo kapitoly 17 TKP;
+ konstrukce dle kapitoly 18 TKP, příloha A, poznámka f;
+ nízké opěrné stěny svisle ohraničující přechodovou oblast včetně dilatací (přechodové
+zídky);
+ zídky pro rozšíření drážní stezky;
+ jiné obdobné konstrukce na základě požadavku odborného útvaru GŘ SŽ.
+(10) SVI musí svými kvalitativními parametry zajistit dokonalou ochranu izolované konstrukce
+před působením vody po dobu své předpokládané životnosti minimálně 30 let.
+(11) Zhotovitel SVI musí pro kvalitní a včasné provedení SVI zajistit proškolení personálu včetně
+zajištění odpovídajícího technického vybavení.
+(12) Zásady pro navrhování, provádění, zkoušení a kontrolu SVI stanovuje TNŽ 73 6280, tj. např.
+požadavky na SVI, konstrukční zásady a technické požadavky pro podkladní konstrukce
+a SVI, požadavky na provádění podkladní konstrukce, SVI a jejich opravy atd.
+(13) Na staveništní prefabrikáty nelze obecně používat pouze ochranné nátěry proti zemní
+vlhkosti.
+22.1.2 ZÁKLADNÍ POJMY A JEJICH VÝKLAD
+(1) Základní pojmy jsou definovány v kapitole 1 TKP.
+(2) Pojmy týkající se vodotěsných izolací jsou v textu této kapitoly používány v souladu s TNŽ
+73 6280. Pro srozumitelnost a jednoznačnost je třeba respektovat ve všech stupních
+dokumentace stavby (objektu) pojmy uvedené v TNŽ 73 6280.
+(3) Pro dokumentaci, schvalování a pro používání SVI pro mostní objekty SŽ platí „Obecné
+technické podmínky pro Systémy vodotěsných izolací na železničních mostních objektech“
+(dále jen OTP pro SVI).
+(4) „Zhotovitel stavby“ viz pojem “zhotovitel” definovaný v kapitole 1 TKP.
+(5) „Pověřený útvar“ je útvar, zmocněný jednat jménem a v zájmu SŽ jako uživatele ve věci
+péče o kvalitu výrobků a technologických procesů pro stavbu a udržování železničních drah
+ve vlastnictví ČR, se kterými má právo hospodařit SŽ.
+(6) „Odpovědný zástupce pověřeného útvaru“ je pro vodotěsné izolace včetně souvisejících
+prací pověřený zástupce SŽ Generálního ředitelství Odboru traťového hospodářství (O13)
+Oddělení mostů a tunelů.
+(7) „Garant SVI“ je právnická nebo fyzická osoba zodpovědná za kvalitu rozhodujících
+výrobků v SVI a stanovování technologických podmínek pro zpracování jednotlivých vrstev
+SVI. Nejčastěji je to přímo výrobce vodotěsné vrstvy nebo jeho zástupce pro Českou
+republiku. Garant SVI zodpovídá za ověření technické úrovně a provádění pravidelných
+školení zhotovitelů, jimž vydal oprávnění k aplikaci SVI.
+(8) „Zhotovitel SVI“ je právnická nebo fyzická osoba mající příslušná oprávnění k podnikání
+a požadovanou kvalifikaci dle kapitoly 22 TKP, která provádí celý SVI, případně jeho část.
+Minimálně však musí provádět přípravnou a vodotěsnou vrstvu SVI. Zhotovitel SVI
+zodpovídá za provedení celého SVI včetně prací, které mu provádí podzhotovitel ve smyslu
+kapitoly 1 TKP. Jedná se pouze o práce na přípravě povrchu podkladní konstrukce nebo
+provádění tvrdé ochranné vrstvy.
+22.1.3 SYSTÉMY VODOTĚSNÉ IZOLACE
+(1) Pro železniční mostní objekty musí být použity pouze schválené SVI (tj. pouze ty, které
+mají platné Osvědčení o ověření shody s OTP pro SVI – dále jen Osvědčení pro SVI).
+8/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+(2) Seznamy SVI s platným Osvědčením pro SVI včetně SVI, které jsou v ověřování jsou
+zveřejněny na webových stránkách SŽ (www.spravazeleznic.cz) na adrese:
+https://www.spravazeleznic.cz/dodavatele-odberatele/technicke-pozadavky-na-vyrobky-
+zarizeni-a-technologie-pro-zdc/zeleznicni-mosty-a-tunely/3.1.systemy-izolaci.
+(3) Příklady možných skladeb SVI jsou uvedeny v TNŽ 73 6280.
+(4) Se souhlasem odpovědného zástupce pověřeného útvaru mohou být použity SVI, které jsou
+v ověřovacím procesu. Tyto SVI podléhají speciálnímu režimu, který je popsán v OTP pro
+SVI.
+(5) Přípravná, vodotěsná a příp. ochranná vrstva musí splňovat (včetně doplňkových výrobků)
+požadavky stanovené TNŽ 73 6280, v souvisejících normách a příp. doplňující požadavky
+TPD pro jednotlivé schválené SVI.
+(6) Garant SVI nesmí ve schváleném SVI měnit nebo nahrazovat žádnou z vrstev uvedenou
+v TPD jinou vrstvou. Dále není dovoleno garantu SVI jakoukoli vrstvu ze schváleného SVI
+vypustit nebo doplnit SVI vrstvou další bez souhlasu odpovědného zástupce pověřeného
+útvaru. V případě návrhu změny SVI v projektové dokumentaci ve stupni realizace stavby
+je nutný souhlas odpovědného zástupce pověřeného útvaru.
+(7) SVI se zpravidla doplňuje o vodotěsné prvky (řešení dilatačních a pracovních spár,
+odvodnění, zálivky apod.). Obecné specifikace vlastností těchto prvků se uvádějí
+v projektové dokumentaci pro provádění stavby (PDPS). Základní detaily a použití
+zaměnitelných výrobků jsou vždy uvedeny v příslušných TPD a následně v TePř
+vyhotoveném zhotovitelem SVI.
+22.1.4 NÁVRH KONSTRUKCE VE VZTAHU K VODOTĚSNÉ IZOLACI
+(1) Ve všech stupních dokumentace je nutné při návrhu mostních objektů vždy respektovat
+možnosti jednotlivých typů vodotěsných izolací.
+(2) Nově navrhované mostní objekty a/nebo jejich části, zejména detaily, je třeba navrhnout
+s ohledem na proveditelnost budoucí vodotěsné izolace (viz TNŽ 73 6280, čl. 4.1.2, čl.
+4.1.4).
+22.1.5 DOKUMENTACE SYSTÉMU VODOTĚSNÉ IZOLACE
+(1) Dokumentace vodotěsné izolace se provádí v rozsahu dle příslušného stupně dokumentace
+v souladu se Směrnicí SŽ SM011.
+22.1.5.1 Předprojektová dokumentace
+(1) V rámci předprojektové přípravy ve Stádiu 1 (stádium koncepce: SP a ZP) se pouze uvede,
+zda objekty budou či nebudou opatřeny SVI.
+(2) SVI je v rámci předprojektové přípravy řešen od druhého stádia v dokumentaci pro územní
+řízení (DUR).
+(3) Předprojektová dokumentace stanoví základní požadavky na SVI (uvede se , zda se jedná
+o ochranu proti zemní vlhkosti, SVI proti vodě stékající nebo tlakové (na základě IGP), typ
+vodotěsné vrstvy, druh ochranné vrstvy a rozsah SVI).
+22.1.5.2 Projektová dokumentace (DUSP, DUSL, DSP)
+(1) V projektové dokumentaci musí být specifikovány podrobnosti předpokládaného SVI
+v rozsahu a zpracování dle Směrnice SŽ SM011.
+(2) Pro projektovou dokumentaci (Stádium 3 - stádium projektové přípravy) ve stupni:
+ Projektová dokumentace pro společné povolení (DUSP),
+ Projektová dokumentace pro společné povolení podle liniového zákona (DUSL)
+ Projektová dokumentace pro stavební povolení (DSP),
+9/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+ se popis SVI uvádí v souladu se Směrnicí SŽ SM011 v rozsahu jako u stupně DUR.
+22.1.5.3 Projektová dokumentace (PDPS)
+(1) Pro projektovou dokumentaci (Stádium 3 - stádium projektové přípravy) ve stupni pro
+provádění stavby (PDPS) platí mimo zásady uvedené ve Směrnici SM011 následující
+odstavce.
+(2) Projektová dokumentace vodotěsné izolace slouží jako podklad pro zpracování TePř.
+(3) Projektová dokumentace musí popsat vodotěsné izolace všech částí mostního objektu. Je
+nutno zpracovat podrobně zejména konstrukční detaily, které mohou ovlivnit tvar částí
+mostního objektu (např. odvodnění, ukončení mostního objektu, mostní závěry, dilatační
+a pracovní spáry, římsy, návaznost na další stavební objekty, prostupy apod.). Navazujícími
+stavebními objekty jsou myšleny například objekty pozemních staveb (např. objekt
+podchodu a výpravní budovy), souvisejících opěrných a zárubních zdí apod. Návrh SVI musí
+zohlednit předpokládané okrajové podmínky (např. délku výluky, náročnost detailů,
+vhodnost použití při extrémech klimatických podmínek atd.).
+(4) Pokud dochází k vzájemnému napojení vodotěsných izolací pozemních a mostních objektů,
+je nutné vždy na přechodu mezi těmito objekty respektovat požadavky na vodotěsné izolace
+dle této části kapitoly 22 TKP, tj. použít schválené SVI (případně SVI v ověřovacím procesu).
+(5) Součástí projektové dokumentace PDPS je TZ a výkresová dokumentace SVI . Obě části
+mohou být dle složitosti objektů zpracovány jako samostatné přílohy nebo mohou být
+součástí TZ a výkresů objektu.
+(6) TZ SVI (samostatná příloha) musí obsahovat:
+ identifikační údaje objektu (traťový úsek, km, číslo koleje),
+ základní údaje o stávajícím stavu vodotěsných izolací mostního objektu (stávající
+vodotěsná izolace, řešení dilatačních a pracovních spár, závěrů, odvodnění apod.),
+ popis nového objektu se zdůvodněním volby SVI pro aplikaci na danou podkladní
+konstrukci, s ohledem na tloušťku a vlastnosti kolejového lože, řešení dilatačních
+a pracovních spár, závěrů, odvodnění, prostupů včetně napojení na stávající
+vodotěsnou izolaci atp.),
+ způsob provádění (technologické zásady provádění SVI, požadavky na výluky, časové
+souvislosti a termíny vazeb mezi stavbou a prováděním vodotěsných izolací, přehled
+kontrol a přejímek rozhodujících o dalším postupu celé stavby),
+ požadavky na doplnění průzkumů (např. lokální odkrytí stávající vodotěsné izolace),
+které svým charakterem nemohly být provedeny v rámci projektové dokumentace,
+ závěry z hydrotechnických a hydrologických výpočtů, výtah ze statického výpočtu -
+částí, které rozhodují o způsobu řešení dilatačních spár, závěrů atp.),
+ obecné vlastnosti výrobků SVI navržených v projektové dokumentaci vodotěsné izolace
+ odkaz na předpisy a normy.
+(7) Pokud je vypracována samostatná TZ SVI, mohou se pak vypustit v rámci popisu izolací
+v TZ objektu pouze ty části, které jsou uvedeny v TZ SVI.
+(8) Pokud je popis SVI součástí TZ objektu, bude kapitola Vodotěsné izolace obsahovat všechny
+výše uvedené body kromě prvního a posledního, které budou uvedeny v obecných částech
+TZ objektu.
+(9) Výkresová dokumentace musí obsahovat minimálně:
+ schéma mostního objektu (půdorysy, řezy apod.) s vyznačenou polohou a rozsahem
+vodotěsné izolace, s popisem jednotlivých SVI, označenými polohami detailů
+a uvedením výměr,
+10/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+ v půdorysu a řezech musejí být ve výkresech vyznačeny údaje o nadmořské výšce
+i v místech zlomových ploch a odvodnění (příčném i podélném),
+ základní detaily v místech tvarových změn, napojení na vodotěsné prvky a návaznosti
+jednotlivých SVI nebo změny podkladní konstrukce,
+ základní detaily dilatačních a pracovních spár,
+ detaily řešení veškerých prostupů,
+ ukončení SVI (pod římsou, do drážky atp.),
+ specifické detaily pro konkrétní objekt.
+(10) V projektové dokumentaci vodotěsné izolace musí být obecně popsány pouze takové SVI,
+které jsou schválené nebo ve schvalovacím procesu pro použití pro mostní objekty na
+železniční dopravní cestě.
+(11) Zvolený SVI musí brát ohled především na:
+ druh hydrofyzikálního namáhání,
+ druh a kvalitu podkladní konstrukce (beton, ocel, přesypávka), příp. na její stáří,
+ tloušťku kolejového lože,
+ čas potřebný pro zhotovení SVI (např. ve vazbě na délku výluk),
+ klimatické podmínky, za nichž lze daný SVI ještě provádět (zde je třeba zvážit nejistotu
+klimatických podmínek a případně upozornit i na varianty).
+(12) Hlavní zásady pro navrhování SVI jsou stanoveny v TNŽ 73 6280 (viz kap. 4). Při návrhu je
+třeba zohlednit následující požadavky:
+ na celý objekt použít shodný SVI, pokud to je s ohledem na podkladní konstrukci
+a technologii provádění vhodné/možné,
+ pokud není možné na celý objekt navrhnout jednotný SVI, musí se použít slučitelný
+SVI od stejného výrobce vodotěsné vrstvy, pokud se tyto SVI vzájemně spojují,
+ pokud se stavba objektu bude provádět po etapách, které se soutěží odděleně, je nutné
+na celém objektu zachovat shodný SVI použitý v předchozích etapách, a to zejména
+v případech, kdy se SVI vzájemně napojují (tzv. etapový spoj),
+ pokud se při dílčích rekonstrukcích a opravách objektů nebo dostaveb objektů provádí
+napojení starého a nového SVI, musí být použit shodný SVI, a to zejména v případech,
+kdy se SVI vzájemně napojují (tzv. etapový spoj),
+ pokud není možné postupovat dle bodů b) až d), musí se použít SVI slučitelný s SVI,
+na který se napojuje (viz TNŽ 73 6280 čl. 4.1.9),
+ kompatibilitu jednotlivých SVI zajišťuje garant SVI,
+ v případě nutnosti kombinace neslučitelných SVI se jejich napojení řeší individuálně.
+Úprava spoje nesmí zasahovat do obrysu nutného kolejového lože. Řešení musí schválit
+odpovědný zástupce pověřeného útvaru,
+ při rekonstrukcích, opravných a údržbových pracích (případně cyklické údržbě) je nutné
+v první řadě zhodnotit stav a životnost stávajícího SVI. Pokud se životnost stávajícího
+SVI blíží garantované životnosti SVI, je třeba příslušnou část objektu nově izolovat.
+Pokud se bude nově realizovaný SVI napojovat na původní SVI, pak se řeší dle bodů
+výše,
+ při projektování ucelených úseků (více mostních) objektů se preferuje využití
+podobných nebo stejných systémů SVI,
+ při projektování jednotlivých dílčích etap provádění SVI je nutné u těchto spojů
+zpracovat řešení napojení SVI i v návaznostech na související stavební práce (např.
+úprava pažení).
+11/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+22.1.5.4 Dokumentace zhotovitele systému vodotěsné izolace
+(1) Pro každou realizaci vodotěsné izolace musí její zhotovitel vypracovat (zajistit na své
+náklady) dokumentaci zhotovitele SVI (stadium 5 - stádium v průběhu realizace), která
+rozpracovává podrobně projektovou dokumentaci PDPS (případně zadávací dokumentaci)
+konkrétního SVI se všemi náležitostmi. Do této dokumentace zhotovitele SVI patří:
+a) RDS
+b) TePř
+c) DSPS
+d) KZP
+e) a další.
+(2) TePř schvaluje osoba pověřená výkonem TDS po předchozím kladném projednání se
+správcem objektu (nebo zástupcem správce objektu pověřeného odpovědným zástupcem
+pověřeného útvaru – dále jen regionální specialista SVI), případně po posouzení
+odpovědným zástupcem pověřeného útvaru.
+(3) V případě SVI v ověřovacím procesu musí být TePř před vlastním schválením vždy posouzen
+odpovědným zástupcem pověřeného útvaru.
+(4) V rámci schvalování TePř nelze schválit změnu typu vodotěsné vrstvy, druhu ochranné
+vrstvy a změnu rozsahu SVI (např. SVI z asfaltových pásů za bezešvý syntetický a naopak)
+navržené v projektové dokumentaci.
+(5) V případech, kdy se zpracovává RDS bez předchozího stupně PDPS, musí dokumentace
+v tomto stupni splňovat veškeré požadavky jako pro dokumentaci ve stupni PDPS.
+22.1.5.5 Dokumentace skutečného provedení (DSPS)
+(1) Rozsah a obsah dokumentace skutečného provedení stavby (tj. včetně dokumentace
+skutečného provedení vodotěsné izolace) stanovuje vyhláška č. 499/2006 Sb., ve znění
+pozdějších předpisů. Rozsah a obsah dokumentace skutečného provedení stavby je
+stanoven v příslušné příloze k této vyhlášce. Případné další pokyny pro zpracování
+dokumentace skutečného provedení vodotěsné izolace včetně počtu vyhotovení a termínů
+jejího odevzdání mohou být uvedeny v zadávací dokumentaci stavby.
+(2) Dokumentace skutečného provedení SVI včetně uvedení konkrétních výrobků musí být
+zapracována do výkresové i textové části dokumentace skutečného provedení mostního
+objektu.
+22.1.6 STAVEBNÍ DENÍK SYSTÉMU VODOTĚSNÉ IZOLACE
+(1) Na provádění SVI musí být založen vždy samostatný stavební deník SVI, a to i pokud je
+zhotovitel SVI také zhotovitelem objektu.
+(2) V případech staveb malého rozsahu nebo u méně náročných technických řešení (např.
+systém volně pokládané SVI) je možné se souhlasem TDS upustit od samostatného deníku
+pro SVI. Veškeré záznamy o provádění prací na SVI se následně musí zapisovat do
+stavebního deníku SO. O této skutečnosti je nutné provést zápis v protokolu o předání
+staveniště.
+(3) Veškerý průběh provádění SVI musí být zaznamenán ve stavebním deníku zhotovitele SVI
+(v souladu se zákonem č. 183/2006 Sb., ve znění pozdějších předpisů a v rozsahu
+stanoveném v příslušné příloze vyhlášky č. 499/2006 Sb., ve znění pozdějších předpisů,
+příp. dle dalších prováděcích předpisů a kapitoly 22 TKP).
+(4) Kromě zápisů do stavebního deníku zhotovitele SVI se zásadní skutečnosti zaznamenávají
+i do stavebního deníku zhotovitele objektu. Mezi tyto záznamy patří:
+ předání podkladní konstrukce zhotoviteli SVI,
+12/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+ výzvy k TDS pro vydání souhlasu s provedenými pracemi na jednotlivých vrstvách SVI
+a předání SVI,
+ souhlas TDS s provedenými pracemi na jednotlivých vrstvách SVI,
+ souhlas s provedenými dílčími změnami v rámci SVI oproti schválenému TePř
+a projektové dokumentaci,
+ přerušení prací v důsledku nevyhovujících klimatických podmínek,
+ předání SVI mezi zhotovitelem SVI a zhotovitelem objektu.
+(5) V případě záznamů do elektronického deníku platí stejná pravidla jako pro stavební deník
+psaný ručně.
+(6) Předání stavebního deníku zhotovitele SVI je podmínkou pro předání SVI a převzetí objektu
+(viz 22.8).
+(7) Stavební deník SVI musí být veden vždy v případě SVI proti tlakové vodě (např. u staveb
+podchodů).
+22.1.7 PŘEJÍMKA PODKLADNÍ KONSTRUKCE
+(1) Podkladní konstrukce se zhotoviteli SVI musí předat prostřednictvím TDS. Podkladní
+konstrukce musí odpovídat kvalitativním parametrům stanoveným v kapitole 22 TKP, v TNŽ
+73 6280 (viz tab. 4, příp. tab. 5, kapitola 5 a kapitola 6), TPD a TePř SVI pro konkrétní
+objekt.
+(2) Pro převzetí podkladní konstrukce zhotovitelem SVI musí být provedeny kontrolní zkoušky
+dle TNŽ 73 6280 (viz kap. 7). Kontrolní zkoušky včetně četnosti musí být uvedeny
+v kontrolním a zkušebním plánu (KZP).
+(3) Součástí převzetí jsou i protokoly s výsledky předepsaných kontrolních zkoušek podle KZP.
+(4) O převzetí podkladní konstrukce zhotovitelem SVI je nutné sepsat zápis do stavebního
+deníku stavby a SVI, případně také vyhotovit protokol o převzetí. Převzetí se zúčastní
+zhotovitel podkladní konstrukce a pověřený zástupce zhotovitele (pokud je jiný než
+zhotovitel podkladní konstrukce), zástupce zhotovitele SVI a TDS. Podkladní konstrukci
+přebírá zhotovitel SVI od zhotovitele podkladní konstrukce se souhlasem TDS.
+(5) Pokud podkladní konstrukce nesplňuje požadavky uvedené v TNŽ 73 6280 (tab. č. 4 a 5),
+potom je nutné postupovat dle příslušných předpisů (např. kapitol 18, 23 TKP atd.).
+(6) V případech, které nastanou při pochybnostech o kvalitě podkladní konstrukce a zároveň
+nedojde k všeobecné shodě zúčastněných stran (zvl. zhotovitel, projektant, TDS a zhotovitel
+SVI), rozhoduje o dalším postupu TDS ve spolupráci se správcem objektu.
+22.1.8 PROVÁDĚNÍ SYSTÉMU VODOTĚSNÉ IZOLACE
+(1) SVI musí být aplikován na připravenou a převzatou podkladní konstrukci.
+(2) Pracovníci zhotovitele SVI musí být proškoleni garantem příslušného SVI v souladu s OTP
+pro SVI. Seznam proškolených pracovníků musí být vždy k nahlédnutí v místě stavby.
+(3) Zhotovitel SVI musí zodpovídat za provedení celého SVI vč. prací, které provádí
+podzhotovitel (příprava povrchu nebo tvrdé ochranné vrstvy). Z tohoto důvodu se při
+realizaci těchto prací doporučuje přítomnost zástupce zhotovitele SVI.
+22.1.8.1 Provádění přípravné vrstvy
+(1) Přípravná vrstva se musí provádět pouze na převzatou podkladní konstrukci (viz 22.1.7).
+(2) Zásady pro provádění přípravné vrstvy jsou uvedeny v TNŽ 73 6280 (viz kapitoly č. 4 a 6).
+Detailní způsob a podmínky pro aplikaci přípravné vrstvy pro jednotlivé SVI musí být
+uvedeny v TePř zhotovitele SVI (v souladu s TPD příslušného SVI).
+13/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+(3) TDS vyslovuje souhlas s provedením přípravné vrstvy zhotovitelem SVI na základě
+provedených zkoušek a kontrol dle KZP, které musí prokázat, že přípravná vrstva je
+provedena dle požadovaných kvalitativních parametrů.
+(4) Do stavebního deníku SVI je nutné sepsat zápis o vyslovení souhlasu s provedenou
+přípravnou vrstvou.
+22.1.8.2 Provádění vodotěsné vrstvy
+(1) Vodotěsná vrstva se musí provádět pouze na přípravnou vrstvu, s jejímž provedením TDS
+vyslovil souhlas (viz 22.8.1) nebo na převzatou podkladní konstrukci (viz 22.1.7).
+(2) Při provádění vodotěsné vrstvy musí být dodrženy zásady uvedené v kapitolách 4 a 6 TNŽ
+73 6280. Detailní způsob a podmínky pro aplikaci vodotěsné vrstvy pro jednotlivé SVI musí
+být uvedeny v TePř (v souladu s TPD příslušného SVI) zhotovitele SVI s dodržením zásad
+provádění.
+(3) TDS vyslovuje souhlas s provedením vodotěsné vrstvy (u vícevrstvých vyslovuje TDS
+souhlas s každou vrstvou) zhotovitelem SVI na základě provedených zkoušek a kontrol dle
+KZP, které musí prokázat, že vodotěsná vrstva je provedena dle požadovaných kvalitativních
+parametrů.
+(4) Do stavebního deníku SVI je nutné sepsat zápis o vyslovení souhlasu s provedenou
+vodotěsnou vrstvou.
+(5) Pokud je součástí vodotěsné vrstvy integrovaná ochranná vrstva nebo použit SVI bez
+ochranné vrstvy, je nutné provést předání a převzetí SVI.
+(6) O převzetí SVI je nutné sepsat zápis do stavebního deníku objektu a SVI, případně také
+vyhotovit protokol o převzetí. Převzetí se zúčastní zástupce zhotovitele SVI a pověřený
+zástupce stavby a TDS.
+22.1.8.3 Provádění ochranné vrstvy
+(1) Ochranná vrstva je vždy součástí SVI.
+(2) Ochranná vrstva se musí provádět pouze na vodotěsnou vrstvu, s jejímž provedením TDS
+vyslovil souhlas (viz 22.8.2).
+(3) Při provádění ochranné vrstvy musí být dodrženy zásady uvedené v TNŽ 73 6280 (viz kap.
+4, 5 a 6). Detailní způsob a podmínky pro aplikaci ochranné vrstvy pro jednotlivé SVI musí
+být uvedeny v TePř (v souladu s TPD příslušného SVI) zhotovitele SVI s dodržením zásad
+provádění.
+(4) Při provádění tvrdé ochranné vrstvy z litého asfaltu (MA) je zakázáno používat vsyp
+z jakéhokoliv materiálu.
+(5) O převzetí SVI je nutné sepsat zápis do stavebního deníku objektu a stavebního deníku SVI,
+případně také vyhotovit protokol o převzetí. Převzetí se zúčastní zástupce zhotovitele SVI
+a pověřený zástupce stavby a TDS. SVI přebírá zhotovitel od zhotovitele SVI se souhlasem
+TDS.
+22.1.8.4 Ochrana při provádění vodotěsné izolace a při provádění nadložních vrstev
+(1) Při provádění jednotlivých vrstev SVI a při technologických přestávkách je nutné dbát
+zvýšené opatrnosti dodržovat požadavky vyplývající z TPD pro jednotlivé SVI, které musí
+být uvedeny v TePř pro konkrétní objekt. Po jednotlivých vrstvách je možný pohyb pouze
+pracovníků a zařízení nutných pro zhotovení SVI. Aby nedošlo k poškození jednotlivých
+vrstev SVI, je pohyb jiných pracovníků nebo zařízení po jednotlivých vrstvách zakázán.
+(2) Na mostních objektech s průběžným kolejovým ložem opatřených SVI může být kolejové
+lože zřizováno až po převzetí systému vodotěsné izolace. Kolejové lože musí být zřizováno
+s největší opatrností. Kolové mechanizmy rozvážející či rozprostírající kamenivo mohou
+pojíždět teprve po vrstvě kameniva tloušťky minimálně 250 mm (u systémů vodotěsné
+14/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+izolace s měkkou a tvrdou ochrannou vrstvou) nebo 300 mm (u systémů vodotěsných izolací
+bez ochranné vrstvy) ve volně sypaném stavu.
+(3) Tyto kolové mechanizmy se musí pohybovat maximálně rychlostí 5 km.h-1, není dovoleno
+jejich otáčení ani prudké rozjíždění či brždění. Homogenizace vrstvy kameniva tloušťky min.
+250 mm se provádí podle předpisu SŽ S 3/1, čl. 26 odstavce 7 a 8 s tím, že na mostním
+objektu nesmí být použita vibrace.
+(4) Postup zřizování kolejového lože musí projednat zhotovitel kolejového lože s TDS,
+zástupcem zhotovitele objektu a zhotovitelem izolace. Ve složitějších případech musí být
+pro konkrétní mostní objekt zpracován zhotovitelem kolejového lože technologický předpis
+zřizování kolejového lože.
+(5) Při zřizování kolejového lože na konkrétním mostním objektu musí být přítomen TDS
+a případně i zástupce budoucího správce. TDS je povinen budoucího správce informovat
+v dostatečném předstihu o termínu zřizování kolejového lože. V případě, že zhotovitel
+mostního objektu (železničního svršku) není schopen při zaštěrkování dodržet uvedená
+bezpečnostní opatření a hrozilo by tak poškození systému vodotěsné izolace, je nutné
+chránit vodotěsnou vrstvu např. geotextilií o plošné hmotnosti min. 1000 g/m2.
+(6) Tento technologický předpis musí být projednán se zástupcem zhotovitele objektu
+a zhotovitelem SVI a odsouhlasen TDS. Při zřizování kolejového lože na konkrétním mostním
+objektu musí být přítomen TDS (příp. zástupce budoucího správce objektu).
+(7) Při zřizování zásypů (včetně přesypávky) musí zhotovitel zvolit takový pracovní postup,
+kterým se vyloučí poškození SVI. Zejména je nutné zabránit přímému kontaktu hutnicích
+mechanizmů s měkkou ochrannou vrstvou nebo s SVI bez ochranné vrstvy.
+(8) Při zřizování zásypů (včetně přesypávky) se musí respektovat požadavky předpisu SŽ S4.
+(9) Předání SVI respektive SO ke zřizování nadložních vrstev nad SVI musí být zaznamenáno
+ve stavebním deníku SO a povoleno TDS.
+(10) Další dodatečné úpravy kolejového lože, které by mohly poškodit SVI (např. pokládka
+kabelových tras do kolejového lože), musí být zaznamenány do stavebního deníku SO,
+povoleny TDS a zhotovitelem SO. Provádění těchto zásahů je možné za dohledu zástupce
+zhotovitele SO, případně TDS.
+22.1.9 ODVODNĚNÍ
+(1) Odvodnění povrchu SVI musí být zajištěno plynule tvarem nosné konstrukce, příčným
+odvodňovacím žebrem v předpolích mostu anebo odvodňovači a svody v souladu
+s příslušnými kapitolami TKP (např. kapitola 18 TKP), MVL 102 a dalšími stanovenými
+požadavky SŽ.
+(2) Svody a potrubí musí mít minimální průměr 150 mm. Drenážní trubky odvodňující prostor
+za opěrami musí mít minimální světlý průměr 150 mm.
+(3) Doporučený spád drenáže je 5 %, minimální 2 %.
+(4) Drenážní trubky musí být uloženy po celé délce na vodotěsnou vrstvu (příp. měkkou
+ochrannou vrstvu) SVI. Pokud je podkladní konstrukce opatřena vodotěsnou izolací, musí
+být izolace zatažena pod a za drenážní trubku do výšky minimálně nad horní úroveň povrchu
+drenážní trubky.
+(5) Drenážní trubky se musí napojit na jiný drenážní systém nebo musí být vyústěny před líc
+opěry, křídla nebo vyústěny na svah (podrobněji viz MVL 102).
+(6) Materiál filtrační vrstvy musí být zvolen v souladu s konstrukcí drenážní trubky a její
+perforace tak, aby nedošlo k ucpání otvorů drenážní trubky. Doporučuje se obsyp
+hrubozrnným štěrkem frakce 32/63, příp. 16/32. Geotextilie nesmí překrývat perforaci
+trubek, aby nedošlo k dodatečnému zatažení pórů geotextilie a následnému hromadění vody
+za opěrou.
+15/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+(7) Pro vývody drenáží je nutno používat materiály odolávající korozi, UV záření a materiály
+s dostatečnou mrazuvzdorností.
+(8) Pokud se provádí odvodnění SVI, které se napojuje na staniční nebo traťové odvodnění,
+musí respektovat kapitolu 4 TKP.
+22.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+22.2.1 VÝROBKY PRO JEDNOTLIVÉ VRSTVY SVI
+(1) Vlastnosti a kvalita výrobků pro zhotovení jednotlivých vrstev SVI (přípravné, vodotěsné,
+ochranné), ale i SVI jako celku, jsou stanoveny v TNŽ 73 6280 (viz kap. 5).
+(2) Popis vlastností a kvality jednotlivých výrobků zvoleného SVI musí být uveden v TePř
+(v souladu s TPD).
+(3) Jednotlivé vrstvy SVI musí být vzájemně slučitelné tak, aby bylo zajištěno jejich vzájemné
+spolupůsobení i požadovaná přilnavost k podkladu stanovená v TNŽ 73 6280 (viz kap. 5).
+22.2.2 DOPLŇKOVÉ VÝROBKY PRO SYSTÉM VODOTĚSNÉ IZOLACE
+(1) Doplňkové výrobky pro SVI (např. vodotěsné prvky dle TNŽ 73 6280) musí splňovat
+požadavky příslušných norem a předpisů platných pro daný výrobek. Obecné požadavky na
+vodotěsné prvky jsou uvedené v TNŽ 73 6280 (viz kap. 4). Konkrétní vlastnosti a kvalita
+těchto výrobků musí být uvedeny v TPD a TePř.
+22.2.3 VÝROBKY PRO ZÁLIVKOVÉ TĚSNĚNÍ SPÁR
+(1) Kvalitativní požadavky na výrobky pro zálivkové hmoty jsou stanoveny v ČSN EN 14188-1.
+Zásady použití jsou v ČSN 73 6242 kapitola 5.6. Přitom je třeba přihlédnout ke svislým
+i vodorovným deformacím a v závislosti na jejich velikosti zvolit druh zálivky.
+22.2.4 OCHRANA PROTI ZEMNÍ VLHKOSTI
+(1) Pro ochranu konstrukcí proti zemní vlhkosti se používají nátěrové hmoty na bázi asfaltu ve
+skladbě 1 x penetrační nátěr a 2x nátěr asfaltový.
+(2) Je možné používat i jiné výrobky pro nátěry proti zemní vlhkosti. Použití podléhá
+předchozímu schválení TDS na základě technických parametrů uvedených ve schválené
+projektové dokumentaci.
+22.2.5 PŘÍMO POCHOZÍ A PŘÍMO POJÍŽDĚNÉ SYSTÉMY VODOTĚSNÉ
+IZOLACE
+(1) Pro přímo pochozí a pojížděné SVI se uplatňuje tato kapitola ve využitelném rozsahu.
+(2) Specifické požadavky na pochozí povrchy jsou uvedeny v pokynu SŽ PO-06/2021-GŘ.
+(3) Použití těchto SVI podléhá schválení pověřeným útvarem O13.
+(4) Seznamy SVI s platným Osvědčením pro SVI včetně SVI, které jsou v ověřování jsou
+zveřejněny na internetových stránkách SŽ (www.spravazeleznic.cz).
+22.3 TECHNOLOGICKÉ PŘEDPISY A POSTUPY
+22.3.1 TECHNOLOGICKÝ POSTUP
+Technologický postup pro jednotlivé vrstvy SVI je obecně stanoven v TPD jednotlivých SVI. Pro
+konkrétní objekt jsou technologické postupy prací rozpracovány do TePř pro SVI.
+16/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+22.3.2 TECHNOLOGICKÝ PŘEDPIS VODOTĚSNÉ IZOLACE
+(1) Při zpracování TePř je nutno respektovat ustanovení této kapitoly TKP a schválenou
+projektovou (zadávací) dokumentaci.
+(2) TePř je řízený dokument, a proto musí mít na každé stránce identifikační údaje (označení
+TePř, datum, číslo stránky, identifikace zhotovitele/zhotovitelů, identifikační údaje
+stavebního objektu, případně verze TePř).
+(3) TePř musí být opatřen datem zpracování, podepsán osobou odpovědnou za jeho zpracování,
+včetně kontaktu a dále musí být opatřen podpisem osoby oprávněné jednat za zhotovitele
+SVI, případně razítkem zhotovitele SVI.
+(4) TePř nabývá platnosti schválením a podpisem TDS. V případě použití SVI v ověřovacím
+procesu je nutné TePř před vlastním schválením předložit k posouzení zástupci pověřeného
+útvaru.
+(5) TePř musí být zpracován pro konkrétní mostní objekt a SVI s uvedením konkrétních
+materiálů, výrobků, detailů, pomůcek atd., v rozsahu dle článku 22.3.3.
+(6) TePř musí být v souladu se schválenými TPD, příp. se souhlasem zástupce pověřeného
+útvaru s poslední předloženou verzí TPD u SVI v ověřovacím procesu.
+(7) Pokud ZD nepostihuje skutečnosti na stavbě (např. po odkrytí detailů), potom musí
+zhotovitel stavby vyzvat objednatele k řešení této situace. Objednatel stavby ve spolupráci
+se zpracovatelem PD dořeší za případné spolupráce se zhotovitelem SVI úpravu
+dokumentace. Změny pak budou zaneseny do realizační dokumentace (včetně TePř)
+a následně do dokumentace skutečného provedení.
+(8) TePř musí být předložen zhotovitelem v dostatečném předstihu před realizací SVI zástupci
+objednatele (TDS) ke schválení. Práce na SVI mohou být započaty až po jeho schválení.
+(9) V případech, kdy stavebním počinem na mostním objektu je provedení nového SVI, oprava
+nebo obnova stávají nebo vodotěsné izolace, musí být vždy zpracována samostatná
+projektová dokumentace (minimálně realizační dokumentace). Dokumentace musí být
+schválena objednatelem.
+(10) TePř vodotěsné izolace popisuje podrobně konkrétní SVI navržený ve schválené projektové
+dokumentaci konkrétního stavebního objektu.
+(11) TePř musí minimálně obsahovat:
+ konkrétní informace o zhotoviteli stavby, zhotoviteli SVI,
+ popis jednotlivých konkrétně použitých SVI,
+ popis všech vrstev v daných SVI,
+ popis všech použitých konkrétních výrobků,
+ provádění jednotlivých vrstev a detailů,
+ podmínky (včetně klimatických) pro provádění jednotlivých vrstev SVI,
+ popis předpokládaných oprav na jednotlivých vrstvách SVI,
+ grafické zpracování všech konstrukčních detailů SVI konkrétního objektu,
+ způsob ochrany vrstev SVI v průběhu jejich provádění i po jejich dokončení,
+ způsob kontroly kvality,
+ způsob převzetí jednotlivých vrstev i celého SVI.
+Další náležitosti jsou popsány v následujících odstavcích.
+22.3.3 OBSAH A ROZSAH TECHNOLOGICKÉHO PŘEDPISU
+Celková skladba TePř musí obsahovat minimálně následující kapitoly.
+17/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+22.3.3.1 Úvod
+(1) Uvedení zodpovědných osob včetně platných kontaktních údajů (zpracovatel, ověřovatel,
+schvalovatel a zástupce zhotovitele SVI).
+(2) Identifikační údaje o mostním objektu (název stavby, číslo stavebního objektu, kilometrická
+poloha, traťový úsek).
+(3) Identifikační údaje o zhotoviteli SVI.
+22.3.3.2 Specifikace volby systému vodotěsné izolace
+(1) V této části musí být popsán důvod volby konkrétního SVI v souladu se ZD, dále jeho
+podrobná skladba s popisem všech vrstev SVI.
+(2) Případná změna volby typu SVI oproti ZD je ve své podstatě závažná změna smlouvy o dílo.
+Zhotovitel stavby po dohodě s projektantem stavby musí tuto změnu vždy projednat se
+správcem objektu a vedoucím hlavní prohlídky. Po vydání souhlasného stanoviska se
+změnou typu SVI ze strany správce objektu, musí změnu odsouhlasit TDS. V opačném
+případě není možné změnu typu SVI provést.
+22.3.3.3 Popis výrobků systému vodotěsné izolace
+(1) Tato část musí obsahovat popis všech výrobků použitých v SVI, včetně všech jejich
+kvalitativních parametrů a porovnání vzhledem k požadavkům TNŽ 73 6280.
+22.3.3.4 Skladování a manipulace
+(1) Tato část musí obsahovat:
+ popis skladování a způsob manipulace se všemi výrobky použitými v SVI,
+ požadavky na podmínky skladování a manipulace výrobků,
+ zajištění ochrany proti vnějším klimatickým vlivům (vnější teplota a vlhkost) a proti
+mechanickému poškození při skladování,
+ respektování specifických požadavků při skladování některých výrobků.
+22.3.3.5 Podmínky aplikace systému vodotěsné izolace
+V této části musí být uvedeny:
+ požadavky na kvalitu podkladní konstrukce ve vztahu k určenému SVI, zejména pak
+celkovou a lokální rovinatost, celistvost (možnost vzniku trhlin) a vlhkost podkladu
+v souladu s TNŽ 73 6280 ((včetně kontrol a zkoušek podkladní konstrukce - součást
+KZP),
+ klimatická omezení, která ovlivňují provádění SVI. Zejména maximální a minimální
+teploty vzduchu v době provádění SVI, případně povrchové teploty podkladní
+konstrukce, relativní vlhkost a maximální dovolenou rychlost větru,
+ návrhy opatření při předpokládaných klimatických podmínkách nevhodných pro aplikaci
+SVI (příp. některých vrstev SVI), například přirozené klimatické podmínky je možné
+v případě nutnosti nahradit uměle,
+ technologická omezení pro používání jednotlivých výrobků SVI,
+ pravidla - včetně omezení - pro pohyb osob a mechanismů po podkladní konstrukci
+a po jednotlivých vrstvách při provádění SVI a po jeho dokončení,
+22.3.3.6 Pracovní pomůcky a mechanizmy
+(1) V této části je nutné popsat úplný seznam pracovních pomůcek a mechanizmů, které budou
+potřebné při provádění SVI, a to od přípravy podkladní konstrukce až po ochrannou vrstvu
+včetně přístrojového vybavení pro nutná měření.
+18/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+22.3.3.7 Pracovní postupy
+(1) Tato část musí obsahovat popis veškerých pracovních postupů, časových návazností
+a technologických přestávek, pro všechny součásti SVI nebo navazující konstrukce:
+ úprava podkladní konstrukce,
+ přípravná vrstva,
+ vodotěsná vrstva,
+ ochranná vrstva,
+ konstrukční detaily.
+22.3.3.8 Výkresy
+(1) Součástí TePř musí být grafické zpracování konstrukčních detailů SVI pro předmětný mostní
+objekt (např. u odvodňovačů, mostních závěrů, mostních říms, dilatačních a pracovních spár
+příčných i podélných, přechodů z nosné konstrukce na spodní stavbu, návaznosti
+jednotlivých SVI, prostupů atd.) s přesnou polohou vyznačenou v půdorysu a příslušných
+řezech objektu.
+22.3.3.9 Opravy poškozených míst
+(1) V této části musí být popsán podrobný návrh opravy poškozených míst pro předpokládané
+druhy poškození na všech vrstvách SVI s rozlišením oprav po náhodných poškozeních od
+oprav plánovaných poškození při zkouškách přilnavosti nebo při odstraňování montážních
+zařízení.
+22.3.3.10 Kontroly, zkoušení a přejímky
+(1) V této části musí být stanoven podrobný postup zkoušek a kontrol (včetně vypracování KZP)
+ve vztahu k TNŽ 73 6280 a způsob přejímání podkladní konstrukce, jednotlivých vrstev SVI
+a detailů.
+(2) Dále je nutné popsat způsob přejímek včetně nutných účastníků jednotlivých přejímacích
+procesů.
+22.3.3.11 Kvalita, její kontrola a záruky
+(1) Zhotovitel SVI musí uvést, jaký systém kontroly kvality má zaveden. Pokud má zaveden
+systém managementu kvality např. dle řady ISO 9000, pak musí tento certifikát doložit.
+(2) Poskytnutá záruční doba na dílo musí respektovat ustanovení kapitoly 1 TKP. Na zhotovený
+SVI je požadována záruční doba 10 let. Záruka se vztahuje jak na práci, tak na použité
+výrobky, přípravnou, vodotěsnou a ochrannou vrstvu, které musí být doloženy garantem
+SVI.
+22.3.3.12 Bezpečnost a ochrana zdraví při práci
+(1) Dodavatel musí doložit oprávnění pro vstup do provozované železniční dopravní cesty.
+(2) V TePř musí být uvedeny obecně platné předpisy o bezpečnosti a ochraně zdraví při práci
+při realizaci SVI. Současně však se musí vypsat i specifické předpisy o bezpečnosti a ochraně
+při práci dodavatele SVI použití materiálů a pracovních postupů, které nejsou obsaženy
+v obecných předpisech.
+22.3.3.13 Způsob nakládání s odpady
+(1) V TePř musí být uveden stanovený způsob nakládání s odpady jako jsou zbytky hmot
+a výrobků použitých při provádění SVI včetně způsobu jejich ekologické likvidace v souladu
+s bezpečnostními listy jednotlivých výrobků.
+19/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+22.3.3.14 Prohlášení zhotovitele systému vodotěsné izolace
+(1) TePř musí obsahovat rovněž prohlášení zhotovitele SVI, kterým vysloví souhlas s realizací
+díla v zadaném termínu a za dohodnutých podmínek stavby.
+22.3.3.15 Personální zajištění provádění systému vodotěsné izolace
+(1) V TePř musí být uveden jmenný seznam všech garantem SVI proškolených pracovníků
+prováděného SVI doložený OTP pro SVI, včetně pracovníků zhotovitele SVI zajišťujících
+kontrolu prací na stavbě.
+(2) Součástí TePř musí být záznam o seznámení s dokumentem podepsaný všemi proškolenými
+pracovníky zhotovitele SVI.
+22.3.3.16 Další přílohy technologického předpisu
+ Osvědčení o shodě SVI s podmínkami dle OTP pro SVI,
+ návrh předávacího protokolu,
+ prohlášení o shodě výrobků použitých v systému vodotěsné izolace,
+ seznam a kopie certifikátů výrobků přípravné, vodotěsné a ochranné vrstvy,
+ technické a bezpečnostní listy výrobků použitých v systému vodotěsné izolace,
+ odchylky od projektové dokumentace, změny konstrukčních detailů, šarže použitých
+výrobků, spotřeby výrobků apod.
+22.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+22.4.1 DODÁVKA
+(1) Zhotovitel SVI zodpovídá za dodávku za dodávku všech výrobků a hmot, které jsou součástí
+SVI, včetně manipulace s nimi.
+(2) Při dodávce výrobků pro SVI na stavbu kontroluje zodpovědný zástupce zhotovitele za účasti
+osoby pověřené výkonem stavebního dozoru (TDS) zejména:
+ dodací listy a označení dodávky,
+ neporušenost obalů a výrobků,
+ datum výroby,
+ údaj o záruční lhůtě, době použitelnosti nebo minimální trvanlivosti,
+ údaj o způsobu skladování, včetně předepsaných teplot.
+(3) Do stavebního deníku se uvede výrobní číslo, číslo šarže a datum spotřeby vodotěsné
+izolace.
+(4) O výsledcích kontrol je nutno sepsat záznam do stavebního deníku SVI a do KZP s odkazem
+na příslušný protokol o zkoušce.
+(5) Výše uvedené doklady a údaje v nich musí být v českém jazyce.
+22.4.2 SKLADOVÁNÍ
+(1) Zhotovitel SVI musí u všech jím dodaných výrobků a hmot zajistit odpovídající skladování
+a manipulaci s nimi.
+(2) Předepsaný způsob skladování a manipulace s výrobky a hmotami musí být konkretizován
+v TePř (prostory, ochrana, teplota apod.) dle návodu výrobce tak, aby nedošlo k jejich
+20/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+poškození nebo ke zhoršení kvality fyzikálními nebo chemickými vlivy (nízké nebo vysoké
+teploty, nadměrná vlhkost ovzduší, sluneční záření apod).
+(3) Výrobky s neprůkaznými údaji, výrobky s prošlou záruční dobou a výrobky porušené nebo
+jinak znehodnocené tak, že nemohou plnit svou funkci v SVI, se nesmějí používat a ani
+skladovat na stavbě.
+(4) Neschválené výrobky, stavební materiály a směsi nesmí být skladovány ani dočasně složeny
+na staveništi.
+22.4.3 PRŮKAZNÍ ZKOUŠKY
+(1) Průkazní zkoušky výrobků pro SVI se provádějí v rámci ověřovacího procesu výrobků podle
+příslušných právních předpisů, které stanovují technické požadavky na výrobky (viz kapitola
+1 TKP), případně i podle požadavků SŽ (viz OTP pro SVI).
+(2) Na stavbě se průkazní zkoušky neprovádějí.
+22.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+22.5.1 ODEBÍRÁNÍ VZORKŮ
+(1) Při odebírání vzorků pro kontrolní zkoušky je vždy přítomen zhotovitel stavby, zhotovitel
+SVI a TDS. V případě pochybností o kvalitě je nutné pozvat k odebírání vzorků ke kontrolním
+zkouškám také zástupce pověřeného útvaru.
+22.5.2 KONTROLA A ZKOUŠKY PODKLADNÍ KONSTRUKCE
+(1) Kontrola a zkoušky podkladní konstrukce se provádějí v rámci přejímky podkladní
+konstrukce v souladu s TNŽ 73 6280. Zkoušky hradí zhotovitel podkladní konstrukce.
+(2) Zhotovitel SVI si převezme povrch podkladu na základě kladných výsledků zkoušek nebo
+v případě pochybností může provést zkoušky a kontroly na vlastní náklady.
+22.5.3 KONTROLNÍ ZKOUŠKY ZHOTOVITELE SYSTÉMU VODOTĚSNÉ
+IZOLACE
+(1) Kontrolní zkoušky jednotlivých vrstev SVI se provádí za účelem zjištění, zda kvalitativní
+parametry výrobků a hotových vrstev SVI odpovídají smluvním požadavkům, zejména TNŽ
+73 6280, TKP a projektové dokumentace. Kontrolní zkoušky se provádějí v rozsahu
+stanoveném v KZP, který je součástí TePř SVI.
+(2) O výsledcích zkoušek se sepíše protokol nebo se provede zápis do KZP, který je vč. TePř
+součástí DSPS. Výsledky zkoušek musí zhotovitel průběžně při provádění jednotlivých vrstev
+izolačního systému předkládat zástupci objednateli stavby. Výsledky kontrolních zkoušek je
+nutné uchovávat min. po dobu trvání záruční doby.
+(3) Kontrolní zkoušky mohou být prováděny akreditovanou laboratoří nebo laboratoří
+odsouhlasenou odpovědným zástupcem TDS. Zkoušky jednotlivých vrstev SVI se provádějí
+dle TNŽ 73 6280, ČSN 73 6242 a v souladu s KZP uvedeného v TePř.
+(4) U kontrolních zkoušek je povinná účast zástupce objednatele. Zhotovitel SVI je povinen
+oznámit provádění kontrolních zkoušek minimálně 2 pracovní dny před jeho konáním.
+Provedené kontrolní zkoušky bez účasti zástupce objednatele se považují za neprovedené.
+(5) Mezi kontrolní zkoušky zhotovitele patří zkoušky prokazující přilnavost SVI k podkladní
+konstrukci nebo jednotlivých vrstev vodotěsné vrstvy navzájem. U SVI, kde se vodotěsná
+vrstva vytváří přímo na stavbě (např. bezešvé SVI), musí být provedena zkouška prokazující
+nepropustnost vodotěsné vrstvy vysokým elektrickým napětím tzv. jiskrová zkouška.
+Zkouška se provádí dle ČSN 73 6242 (příloha E). Tuto zkoušku musí provést pouze
+21/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+akreditovaná laboratoř. Zkouška se provádí i u SVI z asfaltových modifikovaných pásů
+plnoplošně spojených s podkladem (zejména v místech spojů). Provedení této zkoušky
+zhotovitelem SVI je nepřípustné.
+(6) Zkoušky hradí zhotovitel SVI.
+22.5.4 KONTROLY OBJEDNATELE
+(1) TDS kontroluje podkladní konstrukci, výrobky pro SVI, provádění SVI a jednotlivé
+dokončené vrstvy SVI včetně všech detailů apod. (viz TNŽ 73 6280).
+(2) U všech druhů SVI kontroluje TDS na stavbě zejména:
+ kvalitu pokládky jednotlivých vrstev,
+ celistvost, rovinnost, tloušťku vrstvy, rovnoměrnost, spotřebu, kvalitu celoplošného
+natavení pásů, dodržování příčných a podélných přesahů, kvalitu spojů, přilnavost
+k podkladu, provedení detailů SVI podle TePř,
+ dokonalé provedení SVI v místech napojení na prvky mostního vybavení a mostních
+součástí (odvodňovače, mostní závěry, prvky prostupů, kotvení u říms apod.), v místě
+tvarových změn podkladní konstrukce, v místě návaznosti samostatných konstrukčních
+částí, v místě styku dvou konstrukcí apod.
+22.5.5 KONTROLNÍ ZKOUŠKY OBJEDNATELE (ROZHODČÍ ZKOUŠKY)
+(1) V případě pochybností o výsledcích některé z kontrolních zkoušek doložených zhotovitelem
+SVI vyžaduje TDS nebo zástupce pověřeného útvaru provedení opakované zkoušky, kterou
+zajišťuje sám prostřednictvím akreditované laboratoře. Pro úhradu rozhodčí zkoušky
+prováděné z rozhodnutí TDS platí kap. 1 TKP.
+22.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+22.6.1 PŘÍPUSTNÉ ODCHYLKY
+(1) Přípustné odchylky u jednotlivých vlastností jako jsou rozměry, tloušťky, přesahy apod.,
+které jsou uvedené v TNŽ 73 6280 v kapitole 5, musí být specifikovány v příslušných TPD
+SVI.
+(2) Přípustné odchylky uvedené v TPD musí být v příslušném rozsahu popsány i v TePř.
+22.6.2 MÍRA OPOTŘEBENÍ
+(1) Neurčuje se.
+22.6.3 ZÁRUKY ZHOTOVITELE SVI, ZÁRUČNÍ A POZÁRUČNÍ DOBA
+(1) Záruční doby všeobecně stanoví kapitola 1 TKP.
+(2) Minimální délka záruční doby na SVI 10 let musí být uvedena ve smlouvě o dílo.
+(3) Zhotovitel SVI zodpovídá po dobu záruční lhůty za veškeré vady způsobené špatnou funkcí
+SVI.
+(4) Zhotovitel SVI je v záruční době povinen zajistit na vlastní náklady opravy veškerých vad
+SVI, které byly způsobené špatnou funkcí SVI nebo jeho nekvalitním provedením (včetně
+nákladů na dopravní omezení, obnovu zásypů, kolejového lože apod.).
+(5) Správce objektu ve smyslu vnitřních předpisů SŽ sleduje po celou záruční dobu celkový stav
+objektu. Jakákoliv zjištění zakládající důvod k zahájení reklamačního řízení musí být
+správcem písemně oznámena bez zbytečného odkladu podle ustanovení ve smlouvě o dílo.
+22/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+(6) Před ukončením záruční doby je nutné provést prohlídku objektu (dle předpisu SŽDC S5)
+s dostatečným předstihem zaručujícím uplatnění reklamace.
+22.7 KLIMATICKÁ OMEZENÍ
+(1) Veškeré práce na SVI se smějí provádět pouze ve vhodných podmínkách (klimatických nebo
+uměle vytvořených). Základní omezení pro provádění jednotlivých vrstev SVI je uvedeno
+v TNŽ 73 6280 a musí být specifikována v TPD a TePř.
+(2) Pro každý SVI musí být vhodné podmínky pro aplikaci podrobně uvedeny v příslušném TePř
+včetně vhodných (možných) ochranných opatření pro jejich dodržení v souladu s příslušným
+TPD.
+(3) Pokud podmínky pro provádění dané vrstvy SVI nejsou v mezích dle TePř, práce nesmějí
+být zahájeny nebo musí být neprodleně přerušeny. Rozhodující skutečnosti je nutno zapsat
+do stavebního deníku SVI i stavebního deníku objektu.
+22.8 SOUHLAS S PROVEDENÝMI PRACEMI, PŘEVZETÍ PRACÍ
+22.8.1 SOUHLAS S PROVEDENÝMI PRACEMI
+(1) TDS potvrzuje ve stavebním deníku souhlas s provedenými pracemi, tj. že práce uvedené
+v zápisech ve stavebním deníku zhotovitele SVI souhlasí se skutečností provedenou na
+stavbě a jsou v souladu s platnou realizační dokumentací.
+(2) Souhlas s provedenými pracemi se provádí po dokončení každé vrstvy SVI před započetím
+další vrstvy.
+(3) Zhotovitel SVI vyzve TDS k vyslovení souhlasu s provedením každé vrstvy SVI zápisem ve
+stavebním deníku.
+(4) Pro kontrolu TDS je nutné doložit doklady prokazující řádné provedení prací dle TePř,
+zejména:
+ výsledky kontrolních zkoušek a měření stanovených v KZP pro jednotlivé vrstvy a jejich
+porovnání s příslušnými ČSN, TNŽ 73 6280, TePř, hodnotami deklarovanými výrobcem
+v TPD,
+ stavební deník zhotovitele SVI se záznamy o provedených zkouškách, klimatických
+podmínkách, případně provedených opravách a odstraněných vadách, souhlasy
+s provedenými pracemi atd.,
+ projekt SVI.
+(5) Odsouhlasení prací provede TDS jen pokud bylo dodrženo jejich provedení podle realizační
+dokumentace, dodrženy zásady pro provádění uvedené v těchto TKP a TePř zhotovitele SVI
+a pokud kvalita výrobků/materiálů odpovídá požadavkům TKP, TPD, TNŽ 73 6280 a případně
+ZTKP.
+(6) Zhotovitel SVI a zhotovitel stavby jsou povinni o jednotlivé vrstvy SVI řádně pečovat až do
+předání SVI, aby nedošlo k jakémukoliv poškození nebo znečištění vrstev SVI před
+dokončením SVI.
+(7) Souhlas s provedenými pracemi je nutnou podmínkou pro předání SVI zhotovitelem SVI
+zhotoviteli stavby.
+22.8.2 PŘEDÁNÍ SYSTÉMU VODOTĚSNÉ IZOLACE
+(1) Zhotovitel SVI na základě souhlasů s provedenými pracemi předá realizovaný SVI zhotoviteli
+stavby.
+23/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+(2) K vlastnímu předání musí zhotovitel SVI v souladu s předpisem SŽDC S5 předložit zhotoviteli
+stavby následující doklady:
+ dokumentaci skutečného provedení SVI
+ doklady o kvalitě výrobků/materiálů,
+ zápisy a protokoly o zkouškách, měřeních a vizuálních kontrolách (vyplněný KZP),
+ výsledky kontrolních zkoušek a jejich porovnání s příslušnými ČSN, TNŽ 73 6280, TePř,
+hodnotami deklarovanými výrobcem v TPD a případně ZTKP,
+ skutečné spotřeby veškerých hmot a výrobků vč. výkazu výměr,
+ stavební deník zhotovitele SVI se záznamy o:
+- povedených zkouškách, klimatických podmínkách,
+- souhlasy s provedením jednotlivých vrstev SVI,
+- ekologické likvidaci odpadu, jehož původcem je zhotovitel SVI,
+- případné další doklady, které objednatel požadoval v průběhu stavby.
+(3) Doklad o tomto předání bude součástí protokolu o převzetí stavby objednatelem.
+22.8.3 PŘEVZETÍ PRACÍ
+(1) Převzetí prací se provede za celé dílo nebo jeho části ve shodě s požadavky objednatele
+uvedenými ve smlouvě o dílo. Řídí se ustanoveními kapitol 1 a 22 TKP.
+(2) Zástupce objednatele (TDS) kontroluje shodu s TePř.
+(3) K vlastnímu předání musí zhotovitel stavby předložit zástupci objednatele:
+(4) doklady uvedené v bodě 22.8.2 a v předpisu SŽDC S5,
+(5) doklad o předání SVI mezi zhotovitelem SVI a zhotovitelem stavby.
+(6) Dokumentaci, na základě které došlo k převzetí prací, předá objednatel správci objektu.
+22.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+22.9.1 KONTROLNÍ MĚŘENÍ
+(1) Kontrolní měření provádí zhotovitel SVI v průběžně po celou dobu provádění SVI. Jde
+o kontrolní měření, kterými ověřuje vhodnost klimatických podmínek nebo např. tlouštěk
+vrstev SVI zhotovovaných přímo na stavbě, vážení hmot pro stanovení správného poměru
+směsí apod., které jsou stanoveny dle TePř v souladu s TPD (včetně KZP) a nespadají do
+kontrol dle oddílu 22.5.
+(2) U všech těchto měření musí být proveden záznam ve stavebním deníku zhotovitele SVI.
+(3) Hodnoty těchto měření se ověřují pouze v případě pochybností nebo při destruktivních
+kontrolních zkouškách prováděných dle oddílu 22.5. Pokud se prokáže, že zhotovitel SVI
+tyto zkoušky reálně neprováděl nebo výsledky nezaznamenal správně, může tato skutečnost
+vést k nepřevzetí provedených prací a následně i odebrání způsobilosti zhotovitele SVI.
+22.9.2 MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+(1) Neurčuje se.
+24/25
+TKP Kapitola 22 – Izolace proti vodě Účinnost od 1. července 2022
+22.10 EKOLOGIE
+(1) Z hlediska vlivu stavby na životní prostředí je nutné se řídit podmínkami danými v kapitole
+1 TKP a zákonem č. 541/2020 Sb., vyhláškou č. 273/2021 Sb. a katalogem odpadů.
+(2) Zhotovitel SVI je povinen mít doklad o ekologické likvidaci odpadu, který je nezbytnou
+součástí pro předání a převzetí SVI dle oddílu 22.8.
+22.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ
+OCHRANA
+22.11.1 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ
+Podmínky pro bezpečnost práce a technických zařízení jsou dány kapitolou 1 TKP.
+22.11.2 POŽÁRNÍ OCHRANA
+(1) Základní zásady požární bezpečnosti při realizovaných činnostech jsou uvedeny v kapitole
+1 TKP.
+(2) Při zpracovávání pracovních postupů a při stanovení požárně bezpečnostních opatření při
+svařování nekovových materiálů se postupuje obdobně jako při svařování kovových
+materiálů, přičemž se vychází z vlastností konkrétního svařovaného materiálu a dané
+technologie za účelem zabránit:
+ možnosti vzniku a šíření požáru nebo výbuchu s následným požárem působením částic
+nekovových materiálů, které odkapávají a hoří,
+ vznícení svařovaného materiálu nebo jiných hořlavých látek (např. stanovením
+způsobu a délky ohřevu, určením postavení plamene).
+(3) Při svařování včetně natavování izolačních materiálů (např. polyethylen v kombinaci
+s bitumeny) se hořák zapaluje ve směru větru do otevřeného prostoru, ve kterém se
+nevyskytují hořlavé materiály, páry hořlavých kapalin nebo hořlavý plyn.
+(4) Zapálený hořák v úsporném režimu se odkládá na volné místo bez hořlavých materiálů ve
+stabilizované poloze, přičemž hubice směřuje do volného prostoru. Je nutno zamezit jeho
+sklouznutí, pádu, zasypání, stržení vahou hadice nebo náhodnému otevření přívodu plynu,
+uhašení či stržení plamene vlivem povětrnostních podmínek.
+(5) Po skončení práce s ručním i kombajnovým hořákem se před uložením soupravy hořák nechá
+vychladnout, popř. se umístí ve zvláštním držáku umístěném od ventilu tlakové lahve
+v požárně bezpečné vzdálenosti určené výrobcem nebo dovozcem.
+(6) Po skončení práce se tlaková lahev, hadice a hořák odstraní z pracoviště a uloží na předem
+stanovené místo.
+22.12 CITOVANÉ A SOUVISEJÍCÍ DOKUMENTY
+(1) Seznam souvisejících právních předpisů, českých technických norem a vnitřních předpisů
+SŽ je uveden v příloze A Kapitoly 1 TKP.
+25/25
+Ověřovací doložka konverze dokumentu
+Ověřuji pod pořadovým číslem 2841191, že tento dokument, který vznikl převedením vstupu v listinné
+podobě do podoby elektronické, skládající se z 25 listů, se doslovně shoduje s obsahem vstupu.
+Ověřující osoba: David ZEMAN
+Vystavil: Správa železnic, státní organizace
+Datum: 04.07.2022 12:14:56

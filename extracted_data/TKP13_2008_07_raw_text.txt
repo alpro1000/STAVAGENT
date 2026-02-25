@@ -1,0 +1,1083 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 13
+PLYN, VODA, PRODUKTOVODY
+Třetí - aktualizované vydání
+změna č. 6
+Schváleno generálním ředitelem SŽDC
+dne: 7.4.2008
+č.j.: 12153/08-OKS
+Účinnost od: 1.7.2008
+Počet listů : 14
+Počet příloh: 0
+Počet listů příloh: 0
+Praha 2008
+Všechna práva vyhrazena.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+13.1 ÚVOD 4
+13.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 4
+13.2.1 Obecně 4
+13.2.2 Potrubí plynovodů 5
+13.2.2.1 Trouby ocelové 5
+13.2.2.2 Trubky z polyetylénu 5
+13.2.3 Potrubí vodovodů 6
+13.2.3.1 Trouby litinové 6
+13.2.3.2 Azbestocementové trouby 6
+13.2.3.3 Trouby z PVC 6
+13.2.3.4 Trouby z polyetylénu 6
+13.2.3.5 Trouby ocelové 7
+13.2.4 Potrubí produktovodů 7
+13.3 TECHNOLOGICKÉ POSTUPY PRACÍ 7
+13.3.1 Plyn 7
+13.3.1.1 Křížení a souběhy vedení s dráhou 7
+13.3.1.2 Zemní práce pro plynovody a přípojky 8
+13.3.1.3 Uložení, sklon výkopů, umístění odvodňovačů, uzavíracích armatur a kompenzátorů 9
+13.3.1.4 Bloky pod potrubí 9
+13.3.1.5 Spojování a těsnění potrubí 9
+13.3.1.6 Připojení na stávající trubní vedení 10
+13.3.1.7 Tlakové zkoušky potrubí 10
+13.3.2 Voda 11
+13.3.2.1 Křížení a souběhy vedení s dráhou 11
+13.3.2.2 Zemní práce pro vodovody 11
+13.3.2.3 Lože pod potrubí, obsyp potrubí, objektů, zásypy výkopů 11
+13.3.2.4 Bloky pod potrubí 12
+13.3.2.5 Spojování a těsnění potrubí 12
+13.3.2.6 Připojení na stávající trubní vedení 12
+13.3.2.7 Tlakové zkoušky potrubí, proplach a dezinfekce 12
+13.3.3 Produktovody 12
+13.3.3.1 Křížení a souběhy vedení s dráhou 12
+13.3.3.2 Zemní práce pro produktovody 13
+13.3.3.3 Uložení, sklon produktovodů, uzavírací armatury a kompenzátory 13
+13.3.3.4 Bloky pod potrubí 14
+13.3.3.5 Spojování a těsnění potrubí 14
+13.3.3.6 Tlakové zkoušky potrubí 14
+13.3.4 Společná ustanovení pro ocelová potrubí 15
+13.4 DODÁVKA, SKLADOVÁNÍ, PRŮKAZNÍ ZKOUŠKY 15
+13.4.1 Plyn 15
+13.4.2 Voda 15
+13.4.3 Produktovody 16
+13.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 16
+13.5.1 Plyn 16
+13.5.2 Voda 16
+13.5.3 Produktovody 16
+13.6 PŘÍPUSTNÉ ODCHYLKY, ZÁRUKY 16
+13.6.1 Plyn 17
+13.6.2 Voda 17
+13.6.3 Produktovody 17
+1
+13.7 KLIMATICKÁ OMEZENÍ 17
+13.7.1 Plyn 17
+13.7.2 Voda 17
+13.7.3 Produktovody 17
+13.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 18
+13.8.1 Plyn 18
+13.8.2 Voda 19
+13.8.3 Produktovody 19
+13.8.4 Společná ustanovení pro ocelová potrubí 20
+13.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNU A PŘETVOŘENÍ 20
+13.10 EKOLOGIE 20
+13.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 21
+13.11.1 Plyn 21
+13.11.2 Voda 21
+13.11.3 Produktovody 21
+13.12 ZÁVAZNÉ NORMY A PŘEDPISY 21
+13.12.1 Technické normy 21
+13.12.2 Předpisy 24
+13.12.3 Související kapitoly TKP 25
+2
+Seznam zkratek
+ČD České dráhy, akciová společnost
+ČSN České normy
+EN Evropské normy
+GŘ ČD Generální ředitelství Českých drah, akciová společnost
+SŽDC Správa železniční dopravní cesty, státní organizace
+TP Technologický předpis
+TPG Technická pravidla plyn
+TKP Technické kvalitativní podmínky staveb státních drah
+TNŽ Technické normy železnic
+TÚDC Technická ústředna dopravní cesty
+ZTK Zvláštní technické kvalitativní podmínky
+3
+13.1 ÚVOD
+Pro tuto kapitolu platí všechny pojmy, ustanovení a údaje uvedené v kapitole 1 TKP - Všeobecně.
+TKP v kapitole 13 se zabývají plynovody, vodovody a produktovody zřizovanými a rekonstruovanými, které
+jsou vně i uvnitř ochranného pásma dráhy.
+Na elektrizovaných tratích při projektování a realizaci staveb a rekonstrukcí kovových úložných zařízení musí
+být také v souvislosti s ukolejněním konstrukcí spojených s ocelovým potrubím dodržena vztažná ustanovení
+12.1.1; 27.2.2; 31.3.10; jiné i zprostředkované spojení s kolejemi je nepřípustné.
+Použití kovových trub v blízkosti elektrické trakce je podmíněno dodržením zásad zabezpečení protikorozní
+ochrany, a to buď aktivní, nebo pasivní, případně jejich kombinací, podle kapitoly 25 a 31 TKP.
+Kapitola 13 se nezabývá způsobem a podmínkami uložení potrubí plynovodů, vodovodů a produktovodů
+v případě křížení s podzemními inženýrskými sítěmi, pozemními komunikacemi a železničními tratěmi. Ty jsou
+předmětem kapitoly 12 TKP.
+Kapitola 13 se nezabývá ani zemními prácemi, které jsou zpracovány v kapitole 3 TKP, betonovými konstruk-
+cemi, které jsou zpracovány v kapitole 17, a ocelovými konstrukcemi, které jsou zpracovány v kapitole 19.
+Veškerá stavební činnost drážních i mimodrážních investorů v ochranném pásmu dráhy musí být prováděna
+v souladu s podmínkami rozhodnutí o přípustnosti stavby vydanými Drážním úřadem.
+a) Plynovody:
+Plynovody se dělí na plynovody a přípojky s provozním tlakem nad 16 barů (ČSN EN 1594) a plynovody
+a přípojky s provozním tlakem do 16 barů včetně (ČSN EN 12 007-1), průmyslové plynovody a odběrní
+plynová zařízení na zemní plyn a svítiplyn v budovách.
+Základní podmínky pro zřizování a rekonstrukce stávajících plynovodů určují tyto ČSN a Technická
+pravidla (dále jen TPG):
+ČSN EN 1594, ČSN EN 12007-1, ČSN EN 12007-2, ČSN EN 12007-3, ČSN EN 12007-4, ČSN EN 1775,
+ČSN 386420, TPG 70024 a TPG 70201.
+b) Vodovody:
+Vodovody se dělí do těchto skupin:
+b1) Vodovody pitné a užitkové vody
+Jedná se o vodovodní potrubí pro dopravu pitné nebo užitkové vody, a to řady přívodné do vodojemu,
+zásobovací, hlavní a rozvodné včetně, vodovodních přípojek. Stavba vodovodů pitné a užitkové vody se řídí
+především ustanoveními ČSN 75 5401, ČSN 75 5411, jakož i normami a předpisy souvisejícími.
+b2) Vodovody požární
+Jedná se o vodovody pro dopravu požární vody z místa zásoby požární vody k jednotlivým objektům
+a požárním hydrantům. Požární vodovody mohou být zavodněné, nebo nezavodněné.
+Výstavba požárních vodovodů se řídí ustanoveními ČSN 73 0873.
+c) Produktovody:
+Výstavba produktovodů se podle přepravy daného média řídí ČSN:
+ČSN EN 13 941, ČSN 38 6420, ČSN EN 1775, ČSN 38 6462, ČSN 38 6479, ČSN 65 0201, ČSN 65 0202,
+ČSN 65 0204, ČSN 65 0205 a ČSN 65 0208.
+13.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+13.2.1 Obecně
+Typ, materiál a rozměry trub, tvarovek a armatur pro plynovody, vodovody a produktovody určuje projektová
+dokumentace (dále jen dokumentace). Pokud není v dokumentaci specifikován typ, délka a výrobce trub, je
+možno použít libovolný typ a délku trouby tuzemského nebo zahraničního výrobce trub, pokud technické
+podmínky neodporují požadavkům těchto TKP.
+4
+13.2.2 Potrubí plynovodů
+13.2.2.1 Trouby ocelové
+Pro stavbu plynovodů a přípojek s provozním tlakem vyšším než 16 barů se použijí pouze ocelové trubky
+s hladkými konci se zaručenou svařitelností ve smyslu ČSN 05 1309, a to:
+a) bezešvé - podle ČSN 42 5715
+Rozměry podle ČSN 42 0250
+b) podélně svařované
+− podle ČSN 42 5723
+c) svařované se šroubovicovým svarem
+− podle ČSN 42 5738
+Rozměry podle ČSN 42 0144
+d) tuzemské nebo zahraniční výroby, pokud mají alespoň srovnatelné vlastnosti s vlastnostmi trubek uvedených
+v bodě a), b), c) nebo je předčí. Trubky musí být vně opatřeny vhodným základním nátěrem nebo být
+izolovány proti korozi ve smyslu ČSN 42 0022. Tato ČSN obsahuje i metodiku zkoušek kvality izolací.
+Vnitřní povrch trubek musí být chráněn alespoň dočasně proti korozi.
+Technické požadavky na ocelový materiál trubek a tvarovek jsou specifikovány v těchto ČSN:
+ČSN EN 1594 čl. 8.1-8.6, ČSN EN 12 007-3 čl. 4.1-4.2, ČSN 38 6420 čl. 26 až 32 a ČSN 65 0208 čl. 76
+až 90.
+Trubky a přivařované části potrubí musí být vyrobeny z oceli se zaručenou svařitelností a vyhovovat
+ČSN EN 10 208-1.
+Vlastnosti použitého materiálu nutno doložit osvědčením o jakosti trubního a spojovacího materiálu (u tuzem-
+ských trubek hutním atestem, u dovážených trubek dokladem o jejich vlastnostech).
+Technické požadavky ochrany úložných kovových zařízení umístěných v zemi nebo ve vodě proti korozi musí
+být provedeny v souladu s dokumentací ve smyslu kapitoly 25, 31 a dále:
+ČSN 03 8370, ČSN 03 8372, ČSN 03 8373, ČSN 03 8374, ČSN 03 8375, ČSN 03 8376, ČSN 42 0021
+a ČSN 42 0022.
+Kvalita ochranných izolací proti korozi, provedených na úložných kovových zařízeních, umístěných v zemi
+nebo vodě, se posuzuje podle ČSN EN 1594, čl.9.2.10 - 9.2.10.5. (Metodika zkoušek je stanovena v ČSN 42
+0022.)
+13.2.2.2 Trubky z polyetylénu
+Používají se materiály, které
+a) splňují požadavky čl. 4.2 TPG 702 01
+b) jsou certifikovány pro použití v plynárenství (např. certifikační systém COVO – Certifikační a registrační
+orgán výrobků a organizací GAS).
+Trubky a tvarovky musí odpovídat požadavkům ČSN EN 1555-2 - trubky a ČSN EN 1553-3 - tvarovky
+a požadavkům technických podmínek.
+Používají se trubky a tvarovky z polyetylénu v řadě středně těžké SDR 17,6 nebo v řadě těžké SDR 11 podle
+tabulky 1 v TPG 702 01.
+Pro chráničky a ochranné potrubí je možno použít trubky z plastů (PVC, PE).
+Ostatní požadavky na materiál jsou specifikovány v TPG 702 01.
+Kovové části a příslušenství se opatřují ochranou proti korozi viz článek 13.2.4 této kapitoly TKP Ocelové
+trouby - Technické požadavky ochrany úložných zařízení proti korozi.
+Souběžně s potrubím se ukládá signalizační vodič, který musí být připevněn na povrch potrubí.
+Ve vzdálenosti 0,3 až 0,4 m nad vrchem potrubí se položí ochranná fólie podle ČSN 73 6006.
+5
+Ostatní požadavky uložení a značení potrubí udávají TPG 702 01 čl. 4.16 a TPG 700 24.
+13.2.3 Potrubí vodovodů
+Vodovody dělíme na
+− vodovody pitné a užitkové vody
+− vodovody požární
+Problematika trubních materiálů je zpracována společně pro vodovody pitné a užitkové vody a pro vodovody
+požární.
+Rozměry, materiál, typ a případné další požadované vlastnosti trub a dílců pro vodovody určuje dokumentace
+v souladu s touto kapitolou TKP, pokud není v ZTKP uvedeno jinak. Jestliže v dokumentaci není předepsána
+délka, typ a výrobce trub, použije se trouba libovolné délky a typu kteréhokoliv výrobce tuzemského či zahra-
+ničního, pokud neodporují požadavkům uvedeným v této kapitole TKP.
+V ose nekovových potrubí se umístí nad troubou kovový vodič pro možnost budoucího určení polohy sítě.
+13.2.3.1 Trouby litinové
+Požadavky na materiál a přípustné vady udává ČSN EN 545.
+Lze použít trub se spojem temovaným, pružným LKD a přírubovým. Přírubový spoj se nesmí použít na potrubí
+uložené v zemi, s výjimkou tvarovek a armatur. Šrouby přírubového spoje musí být v takovém případě chráněné
+proti korozi v souladu s ČSN 75 5411.
+Litinové trouby se spojem ucpávkovým je možno použít jen tehdy, předepisuje-li to výslovně dokumentace.
+Pro přírubové trouby platí ČSN EN 1092-2.
+13.2.3.2 Azbestocementové trouby
+Použití azbestocementových trub pro vodovodní potrubí je vyloučeno. Případné přeložky stávajícího
+azbestocementového potrubí budou prováděny z jiných materiálů, uvedených v této kapitole TKP.
+13.2.3.3 Trouby z PVC
+V souladu s dokumentací se použijí hrdlované trouby z tlakového PVC pro vodu a netoxické látky do teploty
+45°C. Maximální dovolené napětí je dáno teplotou média 20°C. Při provozní teplotě vyšší než 20°C se musí
+v závislosti na teplotě snížit provozní tlak. ( Příloha A, ČSN EN 1452-2)
+Trouby musí svými rozměry odpovídat ČSN EN 1452-2 (PVC-U) a to včetně dovolených odchylek. (čl. 6.1
+měření rozměrů podle pr.EN 496, tabulka č.1)
+Při každé dodávce trub z PVC je nutno doložit následující vlastnosti:
+- materiál trubek podle čl.4.1 musí vyhovovat ČSN EN 1452-1 a požadavkům uvedeným v čl.4.2 a 4.3
+- dovolené provozní tlaky - příloha A, tabulka A 1 (ČSN EN 1452-2)
+- vzhled trub musí odpovídat čl. 5.1, barva čl. 5.2 ČSN EN 1452-2
+Značení trub se provádí přímo na troubě nebo na svazku trub. Minimální požadované značení čl.14.2, tabulka 10
+(číslo normy, výrobce, jmenovitý vnější průměr, tloušťka stěny, jmenovitý tlak, informace výrobce, číslo
+vytlačovací linky). Doplňkové značení uvádí čl.14.3.1 ČSN EN 1452-2.
+13.2.3.4 Trouby z polyetylénu
+Pro použití trub z polyetylénu (lineárního nebo rozvětveného) platí stejné podmínky jako pro použití trub z PVC
+za dodržení podmínek podle ČSN EN ISO 1872-2 a ČSN EN 12 201-1
+- minimální pevnost v tahu 24 MPa při teplotě 20°C
+- rozměrová stálost do 2 %.
+6
+13.2.3.5 Trouby ocelové
+Ocelové trouby nesmí být použity pro pitný vodovod a tam, kde nebude potrubí trvale naplněné vodou.
+Při užití ocelového potrubí musí trouby splňovat ustanovení následujících ČSN:
+ČSN 42 0250, ČSN 42 5715, ČSN 42 5738, ČSN 42 5780, ČSN 42 5782.
+Současně musí zaručovat zdravotní nezávadnost.
+Ocelové trouby lze použít na rozvody užitkové a požární vody.
+13.2.4 Potrubí produktovodů
+Pro stavbu produktovodů se použijí tyto ocelové trubky:
+a) bezešvé - podle ČSN 42 5715
+ČSN 42 0250
+ČSN 42 0251
+b) podélně svařované
+- podle ČSN 42 5723
+ČSN 42 0152
+c) svařovaných se šroubovicovým svarem
+- podle ČSN 42 5738
+ČSN 42 0144
+Ostatní trubky, jen pokud mají alespoň srovnatelné vlastnosti s vlastnostmi trubek, uvedených v bodě a), b), c)
+nebo je předčí.
+Trubky musí být vně opatřeny vhodným základním nátěrem nebo izolovány proti korozi ve smyslu
+ČSN 42 0022.
+Vnitřní povrch trubek musí být chráněn alespoň dočasně proti korozi.
+Technické požadavky na ocelový materiál trubek a tvarovek jsou specifikovány v těchto ČSN:
+ČSN 42 0144, ČSN 42 0250, ČSN 42 0284, ČSN 42 5711, ČSN 42 5710, ČSN 42 5715, ČSN 42 5716,
+ČSN 42 5738, a ČSN 42 5782
+Technické požadavky ochrany úložných kovových zařízení umístěných v zemi nebo ve vodě proti korozi musí
+být provedeny v souladu s dokumentací ve smyslu:
+ČSN 03 8370, ČSN 03 8372, ČSN 03 8373, ČSN 03 8374, ČSN 03 8375, ČSN 03 8376, ČSN 42 0021
+a ČSN 42 0022.
+Kvalita provedených ochranných izolací proti korozi na úložných kovových zařízeních umístěných v zemi nebo
+vodě se posuzuje podle ČSN EN 1594 čl.9.2.10 a 9.2.10.5
+(Metodika zkoušek je stanovena v ČSN 42 0022.)
+Trubky a přivařované části potrubí musí být vyrobeny z oceli se zaručenou svařitelností.
+Vlastnosti použitého materiálu doloží zhotovitel osvědčením o jakosti trubního a spojovacího materiálu
+(u tuzemských trubek hutním atestem, u dovážených trubek dokladem o jejich vlastnostech).
+13.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+13.3.1 Plyn
+13.3.1.1 Křížení a souběhy vedení s dráhou
+Z hlediska drážních předpisů se křížením a souběhem plynovodů, vodovodů a jiných podzemních nebo
+nadzemních vedení s drahou se zabývá zákon č. 266/1994 Sb.
+7
+Technické podmínky pro křížení a souběhy plynovodního vedení s celostátní dráhou jsou vydány v souladu
+s ČSN EN 1594 čl.9.3 a ČSN EN 12 007-1 čl. 7.1.2.1 , čl. 7.4.6.1 - 7.4.6.5, ČSN 38 6420 čl. 158, 159
+a ČSN 73 6005.
+Křížení musí být provedeno tak, aby při běžném provozu dráhy nedošlo k porušení podzemního, popřípadě
+nadzemního vedení a naopak, aby při poruše těchto vedení nedošlo k ohrožení bezpečnosti provozu dráhy.
+Veškerá podzemní vedení křižující těleso dráhy musí být uložena v chráničce nebo kolektoru tak, aby bylo
+možné jejich vložení nebo výměna proveditelné bez narušení železničního provozu.
+O podmínkách budování chrániček a kolektorů pojednává kapitola 12 TKP.
+Plynovody a přípojky s provozním tlakem vyšším než 16 barů
+Místo a způsob křížení určí dokumentace. Potrubí musí být opatřeno chráničkou.
+Opatření k zajištění bezpečnosti řeší ČSN EN 1594 v kap.5, čl. 5.2 (ochranná pásma § 68 zák.458/2000Sb.)
+Plynovody a přípojky s provozním tlakem do 16 barů
+Při styku s dráhami je třeba dodržet ustanovení zákona č. 266/1994 Sb. a ČSN 73 6005.
+13.3.1.2 Zemní práce pro plynovody a přípojky
+Veškeré zemní práce, prováděné pro plynovody, musí splňovat náležitosti kapitoly 3 TKP.
+Volba výkopové technologie závisí na geologických a hydrogeologických podmínkách, s přihlédnutím
+k situování zřizované sítě vzhledem k trati a drážním objektům a s přihlédnutím k místním podmínkám.
+Technologii výkopových prací, jejich druh a postup provádění určuje dokumentace. Pokud dokumentace
+technologii neurčuje, navrhne ji zhotovitel a odsouhlasí stavební dozor.
+Plynovody a přípojky s provozním tlakem nad 16 barů
+Pro provádění zemních prací při stavbě plynovodů a přípojek s provozním tlakem nad 16 barů platí
+ČSN 73 3050 a ČSN EN 1594 čl.9.2.3 a 9.2.5.
+Šířku pracovního pruhu pro uložení podzemního vedení určuje dokumentace podle čl. 9.2.3 ČSN EN 1594.
+Hloubku a šířku rýhy, zajištění proti sesutí, jakož i případné svahování určuje ČSN 73 3050 čl. 77 až 79.
+Dno rýhy musí být upraveno tak, aby potrubí leželo v celé délce na dně rýhy (ČSN EN 1594 čl. 9.2.5).
+V zeminách písčitých, soudržných, štěrkovitých se zrny do 8 mm, hlinitých štěrcích, jílovitých štěrcích se zrny
+štěrku od 8 do 32 mm musí být dno rýhy upraveno tak, aby při uložení potrubí nemohlo dojít k poškození
+izolace (ČSN EN 1594 čl. 9.2.5). Při velikosti zrn štěrku nad 32 mm musí být proveden obsyp štěrkopískem ve
+vrstvě 100 - 200 mm (ČSN EN 1594 čl. 9.2.5).
+Podmínky pro zhutnění zásypů stanoví dokumentace v souladu s kapitolou 3 TKP.
+Plynovody a přípojky s provozním tlakem do 16 barů
+Pro provádění zemních prací při stavbě plynovodů a přípojek s provozním tlakem do 16 barů platí kapitola
+3 TKP a ČSN EN 12007-1 čl.7.4.
+Šířku pracovního pruhu pro uložení podzemního vedení určuje dokumentace. Způsob mechanické ochrany
+potrubí před poškozením zásypovým materiálem a materiálem na dně výkopu, tzn. úprava dna výkopu, obsyp
+a zásyp určují ČSN EN 12 007-1 čl.10.1.
+Podmínky pro zhutnění zásypů stanoví dokumentace v souladu s ČSN 73 3050 čl. 114 až 122.
+Plynovody a přípojky z polyetylénu
+Provádění zemních prací se řídí ustanoveními kapitoly 3 TKP.
+Podsyp potrubí musí být minimálně 0,1 m. Rozměry rýhy a způsob výkopu a uložení určí dokumentace.
+Úpravu dna výkopu, obsyp a zásyp určují čl. 5.4 až 5.10 TPG 702 01.
+8
+13.3.1.3 Uložení, sklon výkopů, umístění odvodňovačů, uzavíracích armatur a kompenzátorů
+Plynovody a přípojky s provozním tlakem nad 16 barů
+Potrubí se uloží pod povrchem terénu s krytím nejméně 0,8 m a nejvýše 1,5 m ve smyslu ČSN EN 1594 čl.7.7.
+Plynovod musí být zajištěn proti posunutí nebo vychýlení v souladu s ČSN EN 1594 čl.7.1.2.2 .
+Pravidla na provedení součástí plynovodu jsou uvedena v ČSN EN 1594 čl.7.10.1 – 7.10.8 .
+Umístění uzavíracích armatur a kompenzátorů určuje dokumentace ve shodě s čl.7.10.8 ČSN EN 1594.
+Plynovody a přípojky s provozním tlakem do 16 barů
+Krytí trubního vedení, popřípadě chráničky určuje dokumentace, volí se zpravidla 0,8 - 1,2 m. Při uložení
+potrubí musí být dodrženo nejmenší dovolené krytí podle ČSN 73 6005.
+Krytí uloženého potrubí nesmí být větší nežli 1,5 m, kromě podchodů potrubí pod silničními komunikacemi
+a drahami a úseků, kde je nutno z důvodu překážky v trase potrubí (křížení) uložit hlouběji. Vše viz čl.7.7
+ČSN EN 12 007-1.
+Sklon potrubí určuje dokumentace. Potrubí se klade souběžně se sklonem terénu - viz čl. 7.1.2
+ČSN EN 12 007-1.
+Uzavírací armatury, odvodňovače a kompenzátory určuje dokumentace podle ČSN EN 12 007-1.
+Plynovody a přípojky z polyetylénu
+Krytí potrubí z polyetylénu určuje dokumentace, volí se zpravidla 0,8 až 1,2 m. Při uložení potrubí se vzdále-
+nosti od podzemních vedení a objektů řídí ustanoveními ČSN 75 2130, ČSN 75 4030 a ČSN EN 12 007 – 2.
+Potrubí musí být chráněno před tepelnými účinky tak, aby jeho teplota nepřesáhla 20°C. Sklon potrubí určuje
+dokumentace podle čl. 4.10 a čl. 4.11.2 v TPG 702 01.
+Uzavírací armatury vymezuje čl. 4.4 a odvodňovače čl. 4.5 TPG 702 01.
+13.3.1.4 Bloky pod potrubí
+V místech lomů potrubí, pod odbočnými tvarovkami a armaturami umístěnými v zemi se podle dokumentace
+osadí pod potrubí betonové bloky. Bloky jsou dále fixována potrubí ve velkých sklonech nebo tam, kde hrozí
+pohyb potrubí a jeho následné porušení.
+Způsob zajištění určuje dokumentace na základě statických výpočtů. Pro provedení betonových bloků platí
+kapitola 17. V příkrých svazích má být trasa volena ve spádnici (čl. 7.1.2 ČSN EN 1594).
+13.3.1.5 Spojování a těsnění potrubí
+Veškeré roury, s výjimkou svařovaných, se kladou, utěsní a spojí jednotlivě v rýze. Roury, které se zkracují,
+musí mít řez hladký a kolmý na osu. Při spojování potrubí je nutno dodržet postup utěsňování podle typu spoje
+technologických předpisů výrobce příslušného potrubí.
+Plynovody a přípojky s provozním tlakem nad 16 barů
+Spoje potrubí se svaří elektrickým obloukem. Plamenem je dovoleno svařovat jen do DN 150 a do tloušťky
+stěny 5,0 mm. Kombinace svařování plamenem a elektrickým obloukem není u téhož svarového spoje dovolena.
+Pro tyto svářečské práce platí ČSN 05 0610 a ČSN 05 0630 a ČSN EN 1594 (čl.9.2.9 ).
+Svařování se provádí podle ČSN EN 12 732 a schváleného postupu. Úpravu svarových ploch vymezuje čl.6.1.4
+ČSN EN 12 732. Svářečské práce vykonávají zkoušení kvalifikovaní svářeči. Zkoušky a oprávnění svářečů
+včetně vydání úředního osvědčení vymezuje ČSN EN 287-1.Stanovení a schvalování postupu svařování
+kovových materiálů řeší ČSN EN ISO 15609-1.Úkoly a odpovědnost svářečské dozoru stanovuje ČSN EN ISO
+14731.
+Pokud to provozovatel plynu vyžaduje, musí být při svařování potrubí použit systém jakosti. Požadavky na
+jakost při tavném svařování stanovuje ČSN EN ISO 3834-1, ČSN EN ISO 3834-2, ČSN EN ISO 3834-3, ČSN
+EN ISO 3834-4, ČSN EN ISO 3834-5.
+Manipulaci s trubkami a rozvoz řeší čl.9.2.7 a svařování a kontrola svarů je uvedena v čl.9.2.9 ČSN EN 1594.
+9
+Plynovody a přípojky s provozním tlakem do 16 barů
+Potrubí se spojí svařením. Jiné druhy spojování jsou přípustné jen v nezbytných případech určených
+dokumentací nebo odsouhlasených stavebním dozorem, a to:
+a) přírubové spoje při připojení přírubových armatur
+b) závitové spoje
+Jiné druhy spojování řeší ČSN EN 12 007-3.
+Při svařování je nutno dodržovat bezpečnostní předpisy a ustanovení ČSN 05 0610 a ČSN 05 0630. Svářečské
+práce mohou vykonávat svářeči s platnou úřední zkouškou odpovídajícího rozsahu podle ČSN EN 287-1
+a TPG 927 04.
+Pro provádění koutových svarů obloukovým svařováním musí mít svářeč doplňkovou zkoušku, pokud tato
+nebyla součástí zkoušky úřední. Pro svařování hrdlových spojů, odboček apod. je třeba, aby svářeč vykonal
+pracovní zkoušku. Kvalifikace svářečů musí být v souladu s příslušnou normou (kap. 10,11,12) a příslušnou
+specializací (čl.4.2 ČSN EN 12 732 )
+Úpravu svarových ploch trubek ( čl.6.1.4), sestavování trubek a kontrolu svarů ( čl.8.1) řeší ČSN EN 12 732.
+Plynovody a přípojky z polyetylénu
+Spojování potrubí se provede elektrotvarovkami podle TPG 921 01.
+Svařování metodou na tupo a sedlové svařování se provádí pouze u trubek s tloušťkou stěny větší než 3 mm.
+13.3.1.6 Připojení na stávající trubní vedení
+Plynovody a přípojky s provozním tlakem do 16 barů
+Napojování nového potrubí určuje dokumentace.
+Propojovací práce provádí pracovníci podle pracovního postupu zhotovitele a přitom respektují podmínky
+plynárenského podniku a pokyny stavebního dozoru.
+O vpuštění plynu do potrubí se sepíše zápis. Odvzdušnění a odplynění se provede podle ČSN 38 6405.
+Provedené propojení zakreslí zhotovitel do dokumentace skutečného provedení.
+Podmínky pro připojení na stávající trubní vedení řeší ČSN EN 12 007-1, čl.10.2
+Plynovody a přípojky z polyetylénu
+Napojení se provede elektrotvarovkami, kusem nebo pomocí navrtávacího kusu. Požadavky na provedení
+přípojek jsou uvedeny v čl. 4.13 TPG 702 01. Přípojka musí být ukončena před obvodovou zdí. Způsoby
+ukončení přípojky v objektu jsou uvedeny v přílohách 4,5 a 6 v TPG 702 01.
+13.3.1.7 Tlakové zkoušky potrubí
+Plynovody a přípojky s provozním tlakem nad 16 barů
+Zkoušení potrubí - účelem je prokázat pevnost a těsnost smontovaného úseku potrubí.
+Hlavní tlaková zkouška u plynovodů a přípojek s provozním tlakem nad 16 barů se provede podle zpracované
+dokumentace ve smyslu čl.9.5.1 ČSN EN 1594. Zkoušky musí být prováděny podle příslušných ustanovení
+ČSN EN 12 327.
+U plynovodů a přípojek s provozním tlakem do 16 barů se provádí stejná zkouška ve smyslu kap.11
+ČSN EN 12 007-1.
+Pro tlakové zkoušky vypracuje zhotovitel podrobný technologický předpis zkoušky viz čl.9.5.1, ČSN EN 1594.
+Zkoušky jsou pneumatické nebo hydraulické a jsou popsány v ČSN EN 12 327 čl.4.3 - 4.4. Zkušební metoda
+a hodnota zkušebního tlaku závisí vždy na použitém materiálu, druhu spojů, předpokládané oblasti použití pro
+zásobování plynem. (Příloha „B“)
+10
+Plynovody a přípojky s provozním tlakem do 16 barů
+Po dokončení montáže provede zhotovitel tlakovou zkoušku podle ČSN EN 12 007-1, kap.11. Jejím účelem je
+prokázat těsnost smontovaného potrubí. Provádí se vzduchem nebo inertním plynem - ČSN EN 12 007-1.
+Způsob provedení tlakové zkoušky stanoví dokumentace.
+O zkoušce s kladným výsledkem zpracovatel vyplní údaje protokolu o zkoušce - čl.4.6 ČSN EN 12 327. Potrubí
+vedené zemí musí být před zahájením tlakování uložené v zemi a kromě armatur a rozebíratelných spojů
+zasypané. Těsnost potrubí je vyhovující, pokud v průběhu tlakové zkoušky:
+a) nedošlo ke změně přetlaku vlivem úniku zkušebního média a
+b) nebyly zjištěny netěsnosti přírubových spojů, závitových spojů nebo ucpávek armatur - ČSN EN 12 327.
+Platnost tlakové zkoušky potrubí je 6 měsíců, i když nebyla provozována ČSN EN 12 007-1.
+Plynovody a přípojky z polyetylénu
+Po dokončení montáže zhotovitel provede tlakovou zkoušku podle ČSN EN 12 007-1 s odchylkami podle čl. 7.3
+až 7.6 TPG 702 01.
+13.3.2 Voda
+13.3.2.1 Křížení a souběhy vedení s dráhou
+Vodovodní potrubí a armatury musí být označené tak, aby bylo možno vždy určit jejich přesnou polohu. Mimo
+zastavěné území musí být osa potrubí a lomové body označeny kovovým sloupkem na betonovém bloku.
+Označování podzemního hydrantu, šoupěte nebo jiné podzemní armatury nebo armaturní šachty provede
+zhotovitel orientačními tabulkami podle ČSN 75 5025.
+Křížení musí být provedeno tak, aby při běžném drážním provozu nedošlo k porušení vedení, a naopak, aby při
+poruše vedení nemohlo dojít k ohrožení drážního provozu.
+Souběžná mimodrážní tlaková vedení nesmí být vedena náspem železničního tělesa.
+Veškerá nově budovaná a rekonstruovaná podzemní vedení souběžná s dráhou musí být uložena mimo svahy
+zemního tělesa. Trasu vodovodu je nutno volit mimo území pod napájecím kabelem.
+Veškerá mimodrážní podzemní vedení křižující dráhu musí být uložená v chráničce nebo kolektoru tak, aby bylo
+možné jejich vložení a výměna bez narušení železničního provozu. Úhel křížení nesmí být menší než 60°.
+O podmínkách budování chrániček a kolektorů pojednává kapitola 12 TKP.
+U každého úseku se po dohotovení provede protokolární odsouhlasení za účasti zástupce příslušného správce
+sítě. Protokol o odsouhlasení se připojí k dokladům o převzetí vodovodu.
+13.3.2.2 Zemní práce pro vodovody
+Veškeré zemní práce prováděné pro vodovody musí splňovat náležitosti kapitoly 3 TKP.
+Volba výkopové technologie závisí na geologických a hydrogeologických podmínkách s přihlédnutím
+k situování prováděné sítě vzhledem k dráze a drážním objektům a s přihlédnutím k místním podmínkám.
+Podmínky pro provádění zemních prací určuje kapitola 3 TKP.
+Krytí vodovodního potrubí se řídí ustanoveními ČSN 75 5401. Krytí vodovodního potrubí musí být při křížení
+s dráhou alespoň 1,50 m od povrchu území, resp. od pláně železničního spodku, při zapuštěném kolejovém loži
+od nivelety koleje.
+13.3.2.3 Lože pod potrubí, obsyp potrubí, objektů, zásypy výkopů
+Veškerá vodovodní potrubí se kladou na pískové lože tloušťky min. 100 mm. Lože musí pod potrubím tvořit
+jednolitou vrstvu, bodové podepření trouby není přípustné. Potrubí má být obsypáno do výšky 300 mm nad
+vrchol trouby štěrkopískem, příp. prohozenou zeminou (velikost zrna do 32 mm).
+Zásypy výkopů pro trubní vedení se provádějí jako hutněné, ve zpevněných plochách štěrkopískové až pod
+těleso zpevněné plochy. Druh a vlastnosti zásypových materiálů předepisuje dokumentace.
+11
+Objekty na trubní síti se obsypou po hutněných vrstvách.
+13.3.2.4 Bloky pod potrubí
+V místech lomů potrubí, pod odbočnými tvarovkami a armaturami, umístěnými v zemi osazuje zhotovitel pod
+potrubí betonové bloky. Bloky dále fixují potrubí ve velkých sklonech nebo tam, kde hrozí pohyb potrubí a jeho
+následné porušení. Bloky pod potrubí jsou prováděny podle dokumentace a kapitoly 17 TKP.
+13.3.2.5 Spojování a těsnění potrubí
+Veškeré roury, s výjimkou svařovaných, se kladou, utěsňují a spojují jednotlivě v rýze. Roury, které se zkracují,
+musí mít řez hladký a kolmý na osu. Při spojování potrubí je nutno dodržet postup utěsňování podle typu spoje
+a technologických předpisů výrobce příslušného potrubí.
+Svařované spoje musí být izolovány zevnitř i zvenku. Vnitřní doizolace se provádí až po kontrole svarů. Pokud
+není možné doizolování potrubí DN 500 a menšího z vnitřní strany, nesmí voda působit korozívně na vnitřní
+povrch potrubí.
+Přírubové spoje musí mít před spojováním těsnící plochy očištěné, šrouby musí být zbaveny rzi a závity musí
+být konzervovány proti rezavění, aby bylo umožněno pozdější rozebíratelnost. Těsnění spojů ani jeho části
+nesmí zasahovat do vnitřního profilu potrubí.
+13.3.2.6 Připojení na stávající trubní vedení
+Napojení nově budovaného vodovodu pitné, užitkové i požární vody na stávající vedení předepisuje
+dokumentace.
+13.3.2.7 Tlakové zkoušky potrubí, proplach a dezinfekce
+Vodovodní potrubí musí být před zasypáním propláchnuto a jedná-li se o pitnou vodu, dezinfikováno. Za účasti
+stavebního dozoru musí být provedena tlaková zkouška v souladu s ČSN 75 5911. O vykonání tlakové zkoušky
+a dezinfekce se pořídí písemný protokol.
+13.3.3 Produktovody
+13.3.3.1 Křížení a souběhy vedení s dráhou
+Z hlediska drážních předpisů se křížením a souběhem dálkovodů, tepelných sítí, rozvodů stlačeného vzduchu
+a jiných podzemních nebo nadzemních vedení s celostátní dráhou zabývá zákon č. 266/1994 Sb.
+Technické podmínky pro křížení a souběhy produktovodů s dráhou jsou vydány v souladu s ČSN 65 0204.
+Křížení musí být provedeno tak, aby při běžném provozu dráhy nedošlo k porušení podzemního, popřípadě
+nadzemního vedení a naopak aby při poruše těchto vedení nedošlo k ohrožení bezpečnosti provozu dráhy.
+Veškerá podzemní vedení křižující těleso dráhy musí být uložena v chráničce nebo kolektoru tak, aby bylo
+možné jejich vložení nebo výměna proveditelná bez narušení železničního provozu.
+O podmínkách budování chrániček, a kolektorů pojednává kapitola 12 TKP.
+Ocelové potrubí musí být uloženo do chráničky tak, aby nemělo kovový kontakt s chráničkou.
+Dálkovody hořlavých zkapalněných uhlovodíků
+Křižuje-li takový produktovod železniční trať, musí být jednotlivé potrubí uloženo do chráničky přesahující
+o 2 m patu náspu. Produktovod v souběhu nesmí být ukládán do tělesa náspu.
+Hloubka uložení musí být nejméně 1,5 m od pláně železničního spodku a vrcholu chráničky.
+Pro křížení s železniční tratí platí ČSN 65 0208 čl. 130.
+Dálkovody hořlavých kapalin
+Dálkovod hořlavých kapalin musí být uložen do chráničky, která přesahuje o 2 m patu náspu.
+Pro křížení s železniční tratí platí ČSN 65 0204 čl. 135.
+12
+Rozvody stlačeného vzduchu
+Chránička pro vedení stlačeného vzduchu se ukončí v minimální vzdálenosti 1 m od osy koleje. Potrubí nesmí
+mít v místě podchodu žádné svary.
+Tepelné sítě
+Při křížení s drážními objekty se postupuje podle ČSN EN 13 941.
+Kyslíkovody
+Při křížení se železnicí musí být potrubí uloženo do chráničky, která přesahuje na obou koncích min. o 1 m
+chráněný prostor podle ČSN 38 6461.
+Acetylenovody
+Při křížení se železnicí musí být potrubí uloženo do chráničky, která přesahuje na obou koncích min. o 1 m
+chráněný prostor. Uložení do ochranné trubky se provede podle ČSN EN 1594.
+Rozvody propan-butanu
+Při křížení se železnicí musí být potrubí uloženo do chráničky, která přesahuje na obou koncích min. o 1 m
+podchodnou trasu. Provedení chráničky musí odpovídat požadavkům ČSN 38 6462.
+13.3.3.2 Zemní práce pro produktovody
+Veškeré zemní práce, prováděné pro produktovody, musí splňovat náležitosti kapitoly 3 TKP.
+Volba výkopové technologie závisí na geologických a hydrogeologických podmínkách s přihlédnutím
+k situování prováděné sítě, vzhledem k dráze a drážním objektům a s přihlédnutím k místním podmínkám.
+Šířku pracovního pruhu pro uložení podzemního vedení určuje dokumentace. Způsob mechanické ochrany
+potrubí před poškozením zásypovým materiálem a materiálem na dně výkopu, tzn. úprava dna výkopu, obsyp
+a zásyp určují příslušné ČSN tj.
+čl. 131 až 140 ČSN 65 0208
+čl. 126 až 140 ČSN 65 0204
+čl. 8.2 – 8.4 ČSN EN 13 941
+čl. 156 až 175 ČSN 38 6420
+čl. 78 až 91 ČSN 38 6461
+čl. 171 až 178 ČSN 38 6462
+čl. 4.12.1 až 4.12.10 ČSN 38 6479
+Podzemní úseky produktovodů musí být uloženy do země tak, aby byly kryty vrstvou přirozeně slehlé zeminy
+o tloušťce nejméně 1 m.
+Podmínky pro zhutnění zásypů stanoví dokumentace v souladu s kapitolou 3 TKP.
+13.3.3.3 Uložení, sklon produktovodů, uzavírací armatury a kompenzátory
+Uložením potrubí průmyslového plynovodu (produktovodu) v zemi se zabývá čl. 156 až 163 ČSN 38 6420,
+sklon a odvodnění produktovodu určuje čl. 181 až 193 ČSN 38 6420. Mechanickými uzávěry (šoupátka, ventily,
+kohouty, uzavírací klapky apod.) těchto potrubí návazně čl. 51 až 56, kapalinovými uzávěry čl. 61 až 63,
+odvodňovači potrubí čl. 66 až 67, explozními klapkami čl. 71 až 73, měřícím a regulačním zařízením čl. 76 až
+79, přetlakovými pojistkami čl. 81, kompenzátory čl. 86 až 87, zařízením pro zvyšování přetlaku čl. 91 až 95,
+směšovacími stanicemi čl. 101 až 104 a ostatním zařízením čl. 106 vše ČSN 38 6420.
+Dálkovody zkapalněných uhlovodíkových plynů
+Hlavní i pomocné armatury musí odpovídat požadavkům čl. 38, 41, 53, 80 a 186 až 198 ČSN 65 0208.
+Dálkovody hořlavých kapalin
+Hlavní i pomocné armatury musí odpovídat požadavkům čl. 37, 38, 41, 45, 48, 49, 74, 77 a 172 až 181 140
+ČSN 65 0204.
+Pro tepelné sítě se použijí výhradně armatury a tvarovky ocelové podle příslušných rozměrových norem.
+13
+Rozvody stlačeného vzduchu
+Jako armatury se použijí šoupátka, ventily a další armatury určené pro rozvod plynů. Armatury pro odvodnění
+a vypouštění a jejich umístění v rozvodu určuje dokumentace.
+Tepelné sítě
+Všechny ocelové trubky a komponenty, které jsou použity pro zhotovení potrubního systému musí být dodány
+alespoň s jedním přejímacím zkušebním protokolem 3.1.B podle EN 10 204 (čl. 6.2.2 ČSN EN 13 941).
+K výrobě teplonosných ocelových trubek se mají používat buď trubky podle EN 10 217-2 nebo EN 10 217-5,
+nebo bezešvé trubky podle EN 10 216-2 s tolerancí podle EN 253 (čl. 6.2.3 ČSN EN 13 941)
+Komponenty ocelové teplonosné trubky, které podléhají podle čl.6.2.1 ČSN EN 13 941 požadavkům této normy
+jsou: přímé trubky, ohyby, T-kusy, odbočky, redukce a prodlužovací kusy, průchody stěn a jednorázové
+kompenzátory.
+Uložení potrubí se provede podle čl. 8.4 ČSN EN 13 941.
+Kyslíkovody
+Kyslíkovod se uloží ve spádu podle dokumentace. Armatury se používají z litiny, oceli nebo ocelolitiny viz
+čl. 15 až 17 ČSN 38 6461.
+Acetylénovody
+Acetylénovod se ukládá ve spádu podle dokumentace. Armatury se používají v souladu s požadavky čl. 4.4 až
+4.8 ČSN 38 6479.
+Rozvody propan-butanu
+Rozvodné potrubí se klade ve spádu podle dokumentace. Používají se uzávěry a kompenzátory podle čl. 242 až
+250 ČSN 38 6462.
+13.3.3.4 Bloky pod potrubí
+V místech lomů potrubí, pod odbočnými tvarovkami a armaturami, umístěnými v zemi se osadí pod potrubí
+betonové bloky. Bloky dále fixují potrubí ve velkých sklonech nebo tam, kde hrozí pohyb potrubí a jeho
+následné porušení. Bloky pod potrubí se provedou podle dokumentace při dodržení veškerých ustanovení
+kapitoly 17 TKP.
+13.3.3.5 Spojování a těsnění potrubí
+Přídavný materiál a technologie svařování musí zaručit, že mechanické hodnoty svarových spojů po stránce
+pevnosti vyhoví alespoň podmínkám kladeným na základní materiál. Splnění tohoto požadavku prokazuje
+zhotovitel výsledkem mechanických zkoušek svarů.
+Dálkovody zkapalněných uhlovodíkových plynů
+Dálkovody hořlavých kapalin
+Spoje se provedou výhradně obloukovým svařováním. Svařování provádí pouze svářeči s příslušným
+oprávněním. Přírubové spoje musí splňovat požadavky příslušných ČSN.
+Spoje mohou být i přírubové pro připojení armatur. Spoje musí odpovídat požadavkům příslušné ČSN 65 0208
+čl. 221 až 230, čl. 214 až 230 ČSN 65 0208, čl. 216 až 220 ČSN 65 0204, čl. 217 až 221 ČSN 38 6462, čl.8.4.2
+a 8.5.1 ČSN EN 13 941, čl. 17 až 24 ČSN 38 6479, čl. 16 ČSN 38 6461.
+13.3.3.6 Tlakové zkoušky potrubí
+Dálkovody zkapalněných uhlovodíkových plynů
+Dálkovody hořlavých kapalin
+Jakost dokončeného úseku zhotovitel prokáže první tlakovou zkouškou. Tlakovou zkoušku provede podle
+čl. 266 až 288 ČSN 65 0208 a čl. 271 až 290 dle ČSN 65 0204.
+14
+Tepelné sítě
+Tlaková zkouška a zkouška těsnosti tepelných sítí se provádí podle čl.8.6 ČSN EN 13 941. (Zásyp rýhy řeší
+čl.8.8 ČSN EN 13 941)
+Kyslíkovody
+U kyslíkovodu zkouší zhotovitel pevnost a těsnost po vnější prohlídce jednotlivých úseků podle čl. 159 až 168
+ČSN 38 6461.
+Acetylenovody
+Zhotovitel provádí celkovou prohlídku, funkční zkoušky a tlakovou zkoušku na pevnost a těsnost podle
+požadavků čl. 7.1 až 7.3 ČSN 38 6479.
+Rozvody propan-butanu
+U rozvodů propan-butanu zhotovitel provádí tlakovou zkoušku rozvodu viz čl. 261 až 270 ČSN 38 6462.
+13.3.4 Společná ustanovení pro ocelová potrubí
+U ocelových trub při provádění prací na elektrizované trati nesmí být porušeny podmínky, které pro potrubí
+stanoví dokumentace podle 13.10 (překlenutí vložené izolace).
+13.4 DODÁVKA, SKLADOVÁNÍ, PRŮKAZNÍ ZKOUŠKY
+13.4.1 Plyn
+Plynovody a přípojky s provozním tlakem do 16 barů
+Dopravu, skladování a manipulaci s materiálem řeší čl.9 ČSN EN 12 007-1. Konkrétní ustanovení týkající se
+dopravy, skladování a manipulace s materiálem jsou uvedena v ČSN EN 12007-2 (další zásady v příloze A)
+a ČSN EN 12 007-3. Při manipulaci s trubkami s povlaky z plastických hmot platí doporučení jednotlivých
+výrobců.
+Použitý trubní materiál dokladuje zhotovitel hutním atestem (osvědčením) obsahujícím výsledky předepsaných
+zkoušek.
+Průmyslové armatury zhotovitel doloží ještě protokolem o zkouškách (dokument C), přivařovací armatury
+i osvědčením o jakosti materiálu (dokument C) podle ČSN 13 3060.
+Přídavný materiál pro svařování dokladuje osvědčením o jakosti a kompletnosti.
+Plynovody a přípojky z polyetylénu
+Trubky a tvarovky musí odpovídat požadavkům ČSN EN 1555-2 (trubky) a ČSN EN 1553-3 (tvarovky)
+a požadavkům dohodnutých technických podmínek. Technické požadavky na trubky jsou uvedeny v čl. 4
+TPG 702 01.
+Uzávěry zhotovitel doloží dokumentem C podle ČSN 13 3060.
+Trouby a křehké dílce, případně dílce snadno deformovatelné, musí být na skládkách proloženy dřevěnými
+latěmi.
+13.4.2 Voda
+Zhotovitel požádá při každé dodávce trub stavební dozor o povolení k použití dodaných trub, přičemž předloží
+doklad o dodávce (dodací list, osvědčení o jakosti), ze kterého je patrno, že trouby splňují technické požadavky
+na ně kladené dokumentací a TKP. Zhotovitel umožní stavebnímu dozoru kontrolu dodaných trub. Pokud
+některé trouby nebudou stavebním dozorem schváleny, budou neprodleně ze staveniště odstraněny.
+Trouby a křehké dílce, případně dílce snadno deformovatelné, musí být na skládkách proloženy dřevěnými
+latěmi. Pokud o to stavební dozor požádá, provede zhotovitel zkoušky vybraného množství trubek na pevnost.
+Náklady na zkoušku jsou hrazeny objednatelem jen tehdy, jestliže zkouška požadované hodnoty prokáže.
+15
+13.4.3 Produktovody
+Pro dodávku, skladování a průkazní zkoušky trub včetně příslušných armatur, které budou sloužit jako
+produktovody, platí v celém rozsahu stejná ustanovení jako pro plynovody a přípojky STL a NTL .
+13.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+13.5.1 Plyn
+Kontrolu svarových spojů - provádí zhotovitel.
+Kvalitu každého svarového spoje potrubí kontroluje bezprostředně po jeho dokončení svářeč, který svar
+prováděl.
+Kontrolou se rozumí prohlídka povrchu dokončeného svarového spoje, při které se zjišťují jeho vizuálně
+zřetelné vady. Nepřípustné vady svarů specifikuje příloha E , ČSN EN 12 732.
+V odůvodněných případech se v úsecích potrubí určených dokumentací podle místních podmínek provádí
+kontrola jakosti svarových spojů ještě doplňkovou kontrolou - nedestruktivní defektoskopickou zkouškou
+(prozářením). Minimální rozsah zkoušení nedestruktivního se zřetelem na kategorii požadované jakosti a na typ
+a polohu svaru je uveden v tabulce 4 ČSN EN 12 732.
+Zkouška svarových spojů prozařováním se provádí podle ČSN EN 444 a ČSN EN 1435.
+Vyhodnocení radiogramů a klasifikace svarů podle radiogramů se provádí podle ČSN EN 12 517-1.
+Jakost svaru musí být zajištěna kontrolou svarů destruktivním a nedestruktivním zkoušením. Výsledky musí být
+uvedeny v protokolu. Nedestruktivní zkoušení se musí provádět podle schválených postupů a destruktivní
+zkoušení musí být stejné jako určený postup svařování např. EN 288-3:92 (čl.8.1 ČSN EN 12 732).
+Rozsah zkoušení musí zabezpečit kontrolu během svařování, konečnou vizuální kontrolu, nedestruktivní
+a destruktivní zkoušení. Minimální rozsah zkoušení je uveden v tab.č.4 (čl.8.2 ČSN EN 12 732).
+Kvalita izolace při kladení ocelového potrubí se posuzuje podle zkoušek (čl.9.2.10 a 9.2.10.5 ČSN EN 1594) :
+a) poréznosti jiskrovým defektoskopem - 100 % povrchu
+b) přilnavosti izolace - minimálně na 100 m/1 kontrola svaru nebo oblouku a jedna oprava izolace
+c) tloušťky - namátkově
+d) vizuální kontrolou - průběžně.
+13.5.2 Voda
+U ocelových trub zhotovitel provede elektrojiskrovou zkoušku izolace, pokud ji předepisuje dokumentace.
+Provede se v rozsahu ČSN EN 1594 čl.9.2.10 - 9.2.10.5 (Metodika zkoušek je stanovena v ČSN 42 0022).
+Zkoušky svarů předepisuje dokumentace. O veškerých zkouškách musí být vystaven písemný protokol.
+13.5.3 Produktovody
+Kvalita izolace při kladení ocelového potrubí se posoudí podle zkoušek ( ČSN EN 1594 čl.9.2.10 – 9.2.10.5.):
+a) poréznosti jiskrovým defektoskopem - 100 % povrchu
+b) přilnavosti izolace - minimálně na 100 m/1 kontrola svaru nebo oblouku a jedna oprava izolace
+c) tloušťky - namátkově
+d) vizuální kontrolou - průběžně
+Metodika uvedených zkoušek je stanovena v ČSN 42 0022.
+13.6 PŘÍPUSTNÉ ODCHYLKY, ZÁRUKY
+Záruční doby všeobecně stanoví kapitola 1 TKP.
+16
+13.6.1 Plyn
+Přípustné odchylky jsou stanoveny následujícími ČSN:
+ČSN EN 1594, ČSN EN 12 007 – 3, ČSN EN 1775, ČSN 38 6420, TPG 700 24 a TPG 702 01
+13.6.2 Voda
+Přípustné odchylky jsou stanoveny následujícími ČSN:
+ČSN 75 5401 a ČSN 73 0873
+13.6.3 Produktovody
+Přípustné odchylky jsou stanoveny následujícími ČSN:
+ČSN EN 13 941, ČSN 38 6420, ČSN 38 6461, ČSN 38 6462, ČSN 38 6479, ČSN 65 0201, ČSN 65 0202,
+ČSN 65 0204, ČSN 65 0205 a ČSN 65 0208.
+13.7 KLIMATICKÁ OMEZENÍ
+13.7.1 Plyn
+Plynovody a přípojky z oceli
+Svařovat je povoleno pouze při teplotách nad bodem mrazu. Není povoleno svařovat za deště a sněžení.
+Potrubí se nesmí ukládat do rýhy, pokud by v důsledku teploty ovzduší nebo zmrzlého podloží mohlo dojít
+k porušení izolace.
+Plynovody a přípojky z polyetylénu
+Montážní práce lze provádět pouze, pokud teplota v montážním prostoru není nižší než 0°C.
+Pokud se trubky přemístí z míst s nižší teplotou než 0°C, je nutno je temperovat min. 2 hodiny.
+Tato ustanovení neplatí pro svařování elektrotvarovkami, kde je nejnižší teplota uvedena výrobcem.
+Kladení potrubí z plastických hmot lze provádět při teplotách vyšších než + 5°C.
+13.7.2 Voda
+Tlakové zkoušky se nesmějí provádět, pokud teplota vzduchu v místě zkoušky klesne pod + 5°C.
+Podmínky betonářských prací jsou uvedeny v kapitole 17 TKP.
+Svařovat je povoleno pouze při teplotách nad bodem mrazu. Není povoleno svařovat za deště a sněžení.
+Potrubí se nesmí ukládat do rýhy, pokud by v důsledku teploty ovzduší nebo zmrzlého podloží mohlo dojít
+k porušení izolace.
+Montážní práce na potrubí z polyetylénu lze provádět pouze, pokud teplota v montážním prostoru není nižší než
+0°C.
+Pokud se trubky přemístí z míst s nižší teplotou než 0°C, je nutno je temperovat min. 2 hodiny.
+Tato ustanovení neplatí pro svařování elektrotvarovkami, kde je nejnižší teplota uvedena výrobcem.
+Kladení potrubí z plastických hmot lze provádět při teplotách vyšších než + 5°C.
+13.7.3 Produktovody
+Podmínky pro provádění betonářských prací jsou uvedeny v kapitole 17 TKP.
+Svařovat je povoleno pouze při teplotách nad bodem mrazu. Není povoleno svařovat za deště a sněžení.
+17
+Potrubí se nesmí ukládat do rýhy, pokud by v důsledku teploty ovzduší nebo zmrzlého podloží mohlo dojít
+k porušení izolace.
+13.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+13.8.1 Plyn
+Plynovody a přípojky s provozním tlakem nad 16 barů
+Pro převzetí plynovodu a přípojky platí ustanovení ČSN EN 1594 čl.9.6. O převzetí díla se mezi zhotovitelem
+a objednatelem sepíše zápis. Jeho nedílnou součástí jsou:
+a) zpráva o výchozí revizi podle § 6 vyhlášky č. 85/1978 Sb.
+b) protokol o hlavní tlakové zkoušce
+c) technická zpráva provedeného díla zpracovaná zhotovitelem
+d) montážní deník s určením míst svarů
+e) doklady o převzetí hotového díla podle ČSN 03 8376
+f) záznam stavebních prací
+g) deník zemních prací
+h) geodetické zaměření skutečného provedení stavby
+i) dokumentace skutečného provedení plynovodu ( čl. 9.6.1 ČSN EN 1594)
+j) písemný souhlas všech majitelů dotčených podzemních zařízení se způsobem provedení souběhu nebo
+křížení
+k) písemný souhlas správců dopravní cesty se způsobem provedeného křížení
+l) soupis vad a nedodělků nebránících bezpečnému provozování plynovodu nebo přípojky s termíny jejich od-
+stranění
+m) stavební povolení.
+n) zprávy o výchozích revizích ostatních vyhrazených zařízení, která jsou součástí potrubí nebo jeho
+příslušenstvím.
+Zápis o prověření dodávky musí být podepsán zhotovitelem, objednatelem, stavebním dozorem a budoucím
+provozovatelem a musí obsahovat seznam předávané dokumentace. Chybí-li kterýkoliv z těchto dokladů, nesmí
+být potrubí převzato.
+Plynovody a přípojky s provozním tlakem do 16 barů
+Pro odsouhlasení plynovodu a přípojky platí ustanovení ČSN EN 12 007-1.
+Při přejímacím řízení zhotovitel odevzdává a objednatel přebírá doklady, kterými jsou zejména:
+a) zpráva o výchozí revizi plynového zařízení a zápis o tlakové zkoušce
+b) zprávy o výchozích revizích ostatních vyhrazených zařízení, které jsou součástí plynového zařízení.
+c) dokumentace skutečného provedení stavby se zaměřením všech lomů trasy a armatur na nejméně 2 pevné
+body v měřítku 1:500 nebo větším a jejich uvedením v souřadnicích a výšek v systému Balt po vyrovnání
+(dále jen BpV).
+Plynovody a přípojky z polyetylénu
+Při přejímacím řízení zhotovitel odevzdává a objednatel přebírá doklady, kterými jsou zejména:
+a) zpráva o výchozí revizi plynového zařízení a zápis o tlakové zkoušce
+b) zprávy o výchozích revizích ostatních vyhrazených zařízení, která jsou součástí plynového zařízení.
+c) dokumentace skutečného provedení stavby se zaměřením všech lomů trasy a armatur na nejméně 2 pevné
+body v měřítku 1:500 nebo větším a jejich uvedení v souřadnicích a výšek v systému BpV.
+Před protokolárním převzetím nesmí být plynovod (přípojka) naplněn topným plynem.
+18
+Plynovody a přípojky s provozním tlakem nad 16 barů a plynovody a přípojky s provozním tlakem do 16
+barů
+Po převzetí bude napojen nový plynovod nebo přípojka na stávající plynovod nebo zdroj. Nové potrubí se
+napojí na stávající rozvodný systém podle technologického postupu vypracovaného provozovatelem -
+ČSN EN 1594 čl.9.2.13.
+Ostatní podmínky uvedení tohoto zařízení do provozu jsou předmětem čl.9.6.1- 9.6.3 ČSN EN 1594.
+13.8.2 Voda
+Vodovodní potrubí pitné vody musí být před zasypáním propláchnuto a dezinfikováno (zajistí zhotovitel).
+Za účasti stavebního dozoru musí být provedena tlaková zkouška v souladu s ČSN 75 5911. O vykonání tlakové
+zkoušky se pořídí písemný protokol.
+Vodovodní potrubí požární vody musí být před zasypáním propláchnuto, vykonána tlaková zkouška
+a protokolárně prokázána funkce požárního vodovodu, a to zavodněného i nezavodněného (zajistí zhotovitel).
+Konstrukce nebo objekty, které budou následně zakryty a znepřístupněny, odsouhlasuje stavební dozor před
+jejich zasypáním. Spoje potrubí musí zůstat nezasypané až do vykonání tlakové zkoušky. U potrubí
+z plastických hmot kontroluje stavební dozor uložení signalizačního vodiče.
+Upravený povrch terénu se odsouhlasuje v rámci objektu, do kterého je v dokumentaci zahrnut.
+Objekty nebo jejich části, které budou uvedeny do provozu v průběhu výstavby, odsouhlasuje stavební dozor
+v dřívějších, předem určených termínech. Zhotovitel je povinen předat kromě zakreslení změn, ke kterým došlo
+oproti dokumentaci, také dokumentaci technologických souborů a předpisy o jejich provozu a údržbě.
+O převzetí mezi zhotovitelem a objednatelem se podle zjištěných skutečností sepíše zápis. Jeho nedílnou
+součástí jsou:
+a) stavební povolení
+b) doklady o použitém materiálu (atesty)
+c) protokol o tlakové zkoušce podle ČSN 75 5911
+d) u pitné vody doklad o hygienické nezávadnosti
+e) technická zpráva provedeného díla zpracovaná zhotovitelem
+f) u požárních vodovodů zpráva o výchozí revizi
+g) u ocelového potrubí doklady o převzetí hotového díla podle ČSN 03 8376 - Zásady pro stavbu ocelových
+potrubí uložených v zemi. Kontrolní měření z hlediska ochrany před korozí
+h) záznam stavebních prací
+i) deník zemních prací
+j) geodetické zaměření skutečného provedení stavby v souřadnicích
+k) u studní protokol o provedené čerpací zkoušce pro ověření projektované vydatnosti
+l) dokumentace skutečného provedení stavby
+m) soupis vad a nedodělků s udáním termínu jejich odstranění
+n) zprávy o výchozích revizích ostatních vyhrazených zařízení, která jsou součástí potrubí nebo jeho
+příslušenstvím.
+Zápis o převzetí díla musí být podepsán zhotovitelem, objednatelem, stavebním dozorem včetně budoucího
+provozovatele. Současně musí obsahovat seznam předávané dokumentace. Chybí-li kterýkoliv z těchto dokladů,
+nesmí být potrubí převzato.
+13.8.3 Produktovody
+Dálkovody zkapalněných uhlovodíkových plynů
+Pro převzetí plynovodu a přípojky platí ustanovení ČSN 65 0208.
+Při přejímacím řízení zhotovitel odevzdává a objednatel přebírá doklady, kterými jsou zejména:
+a) zpráva o výchozí revizi plynového zařízení a zápis o tlakové zkoušce
+b) zprávy o výchozích revizích ostatních vyhrazených zařízení, která jsou součástí plynového zařízení.
+19
+c) dokumentace skutečného provedení stavby, kterou specifikuje čl. 292 ČSN 65 0208.
+Převzetí aktivní protikorozní ochrany dálkovodu a její uvedení do zkušebního provozu se provede podle
+kapitoly 25 TKP.
+K předání a převzetí dokončeného úseku může dojít teprve tehdy, byly-li dokončeny všechny zkoušky
+a provedeny všechny operace předepsané normou ČSN 65 0208.
+Převzetí dálkovodu se provede podle čl. 289 až 295 ČSN 65 0208.
+Uvedení do provozu, provoz a obsluha dálkovodu se řídí čl. 296 až 315 ČSN 65 0208.
+Dálkovody hořlavých kapalin
+Převzetí se provede podle čl. 291 až 295 ČSN 65 0204.
+Uvedení do provozu, provoz a obsluha dálkovodu se provede podle čl. 296 až 315 ČSN 65 0204.
+Tepelné sítě
+Převzetí díla se řídí dodacími podmínkami. Dokumentace se předává jako součást dodávky.
+Uvedení do provozu se provede po předání trasy a po propláchnutí potrubí (čl.8.10 ČSN EN 13 941), které
+zajistí zhotovitel.
+Kyslíkovody
+U kyslíkovodu se přejímka řídí čl. 181 až 184 ČSN 38 6461. Její součástí je zkouška pevnosti s těsnosti podle
+čl. 159 až 168 ČSN 38 6461.
+Po přejímce kyslíkovodu ho zhotovitel zprovozní. Kyslíkovod se profoukne, a pokud není v provozu, je nutno
+ho udržovat pod trvalým přetlakem (viz čl. 189 až 200 ČSN 38 6461). Pro provoz kyslíkovodů platí čl. 189
+až 193 uvedené normy.
+Acetylenovody
+Přejímka acetylenovodu se provádí způsobem stanoveným dodacími podmínkami po vyhovující zkoušce.
+Předává se dokumentace podle čl. 7.3.9 ČSN 38 6479.
+Pro provoz acetylenovodu zajistí zhotovitel splnění požadavků čl. 8.1 ČSN 38 6479. Požadavky na bezpečnost
+jsou uplatněny čl. 8.2.1 až 8.2.4 uvedené normy.
+Rozvody propan-butanu
+Předávací řízení probíhá za účasti zhotovitele a objednatele, resp. stavebního dozoru po vykonání všech
+zkoušek. Podrobnosti viz čl. 271 až 277 ČSN 38 6462.
+Povinnosti provozovatele při vedení rozvodu propan-butanu jsou uvedeny v čl. 278 až 305 ČSN 38 6462.
+Všeobecná bezpečnostní ustanovení jsou uvedena v čl. 306 až 340 výše uvedené normy.
+Před protokolárním převzetím nesmí být produktovod (přípojka) naplněn médiem a po převzetí musí být
+bezprostředně zahájeno kolaudační řízení
+13.8.4 Společná ustanovení pro ocelová potrubí
+U ocelových trub při odsouhlasení a převzetí prací na elektrizované trati musí být ověřeno splnění podmínek
+předepsaných v dokumentaci podle 13.10.
+13.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNU A PŘETVOŘENÍ
+Není požadováno.
+13.10 EKOLOGIE
+Základní požadavky na ochranu životního prostředí uvádí kapitola 1 TKP - Všeobecně.
+Z hlediska ochrany přírodního prostředí je třeba dbát zvýšené pozornosti při realizaci vedení sloužících
+k dopravě ekologicky závadných látek (ropovody, produktovody).
+20
+13.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví kapitola
+1 TKP.
+13.11.1 Plyn
+Při vlastním provedení díla musí zhotovitel zajistit všechny požadavky na bezpečnost práce vyplývající ze
+zákona č. 174/1968 Sb., vyhlášky ČÚBP č. 21/1979 Sb., č. 48/1982 Sb. a č. 85/1978 Sb. Při zemních pracích
+platí ustanovení o bezpečnosti práce uvedené v kapitole 3 TKP.
+Práce na plynovodech a rozvodech plynu mohou provádět pracovníci s oprávněním podle ČSN EN 287-1.
+13.11.2 Voda
+Při stavbě vodovodního potrubí a sítí musí být vytvořeny podmínky na dodržení zásad ochrany a bezpečnosti
+práce v souladu s vyhláškou ČUBP č. 48/1982 Sb., rozhodnutí hlavního hygienika ČSR č.j. HEM -311-14.8.86
+a doplněk HEM 324 - 1 - z 10.3. 1987, ČSN 73 3050.
+Při zemních pracích platí ustanovení o bezpečnosti práce uvedené v kapitole 3 TKP.
+13.11.3 Produktovody
+Při vlastním provedení díla musí zhotovitel zajistit všechny požadavky na bezpečnost práce vyplývající ze
+zákona č. 174/1968 Sb., vyhlášky ČÚBP č. 21/1979 Sb., č. 48/1982 Sb. a č. 85/1978 Sb.. Při zemních pracích
+platí ustanovení o bezpečnosti práce uvedené v kapitole 3 TKP.
+Při práci na acetylenovodech je třeba dodržet bezpečnostní požadavky viz ČSN 38 6461 čl. 201 až 208.
+Při práci na kyslíkovodech třeba dodržet bezpečnostní požadavky viz ČSN 38 6479 čl. 8.2.1 až 8.2.4.
+13.12 ZÁVAZNÉ NORMY A PŘEDPISY
+Uvedené závazné normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich
+aktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP,
+tj. právních předpisů, technických norem a předpisů SŽDC.
+13.12.1 Technické normy
+ČSN 03 8370 Snížení korozního účinku bludných proudů na úložná zařízení.
+ČSN 03 8372 Zásady ochrany proti korozi neliniových zařízení uložených v zemi nebo ve vodě
+ČSN 03 8373 Zásady provozu, údržby a revize ochrany proti korozi kovových potrubí a kabelů
+s kovovým pláštěm uložených v zemi.
+ČSN 03 8374 Zásady protikorozní ochrany podzemních kovových zařízení.
+ČSN 03 8375 Ochrana kovových potrubí uložených v půdě nebo ve vodě proti korozi.
+ČSN 03 8376 Zásady pro stavbu ocelových potrubí uložených v zemi. Kontrolní měření z hlediska
+ochrany před korozí.
+ČSN 05 0610 Zváranie. Bezpečnostné ustanovenia pre plameňové zváranie kovov a rezanie kovov
+ČSN 05 0630 Zváranie. Bezpečnostné ustanovenia pre oblúkové zváranie kovov
+ČSN 051309 Zváranie. Zvariteľnosť kovov a jej hodnotenie. Všeobecné ustanovenia
+ČSN 13 0010 Potrubí a armatury. Jmenovité tlaky a pracovní přetlaky.
+ČSN 13 0020 Kovová průmyslová potrubí - Část 7: Návod na používání postupů posuzování shody.
+ČSN 13 0420 Potrubí. Povrchová ochrana potrubí pro přepravu a skladování
+ČSN 13 1075 Potrubí. Úprava konců součástí potrubí pro svařování
+ČSN 13 3060-1 Armatury průmyslové. Technické předpisy. Všeobecná ustanovení
+ČSN 13 3060-2 Armatury průmyslové. Technické předpisy. Prověřování armatur
+ČSN 13 3060-3 Armatury průmyslové. Technické předpisy. Balení, doprava, skladování, montáž a opravy
+21
+ČSN 13 3060-4 Průmyslové armatury. Technické předpisy. Část 4: Dokumentace armatur
+ČSN 13 6505 Armatury vodárenské. Šoupátka vodárenská PN10 ze šedé litiny.
+ČSN 13 6506 Armatury vodárenské. Zemní soupravy. Technické předpisy.
+ČSN 13 6507 Armatury vodárenské. Šoupátkové, ventilové a hydrantové poklopy. Technické předpisy.
+ČSN 38 6405 Plynová zařízení. Zásady provozu
+ČSN 38 6420 Průmyslové plynovody.
+ČSN 38 6461 Kyslíkovody
+ČSN 38 6462 Zásobování plynem - LPG - Tlaková stanice, rozvod a použití
+ČSN 38 6479 Stavba a provoz acetylenovodů
+ČSN 42 0021 Ocelové trubky. Asfaltová izolace trubek pod DN 50
+ČSN 42 0022 Ocelové trubky. Asfaltová izolace trubek nad DN 50.
+ČSN 42 0144 Trubky ocelové svařované se šroubovicovým svarem. Technické dodací předpisy.
+ČSN 42 0152 Trubky z ocelí tříd 11 a 12 podélně svařované hladké do vnějšího průměru 152 mm.
+Technické dodací předpisy.
+ČSN 42 0250 Trubky bezešvé z ocelí tříd 10 až 16 tvářené za tepla. Technické dodací předpisy
+ČSN 42 0251 Trubky ocelové bezešvé se zaručenými vlastnostmi za vyšších teplot. Technické dodací
+předpisy
+ČSN 42 0284 Předpisy pro zpracování uhlovodíkových ocelí tř. 11, 12 a ocelí na odlitky tř. 26,
+užívaných pro stavbu kotlů, parovodů a tlakových nádob pracujících za normálních nebo
+zvýšených teplot.
+ČSN 42 5710 Trubky ocelové závitové běžné. Rozměry
+ČSN 42 5711 Trubky ocelové závitové zesílené. Rozměry
+ČSN 42 5715 Trubky ocelové bezešvé tvářené za tepla. Rozměry.
+ČSN 42 5716 Trubky ocelové bezešvé tvářené za tepla s malými mezními úchylkami. Rozměry
+ČSN 42 5723 Trubky z ocelí tříd 11 a 12 podélně svařované hladké do vnějšího průměru 152 mm.
+Rozměry.
+ČSN 42 5738 Trubky ocelové svařované se šroubovicovým svarem. Rozměry.
+ČSN 42 5780 Trubky ocelové bezešvé k temování. Rozměry.
+ČSN 42 5782 Trubky ocelové bezešvé hrdlové ke svařování. Rozměry.
+ČSN 65 0201 Hořlavé kapaliny. Prostory pro výrobu, skladování a manipulaci.
+ČSN 65 0202 Hořlavé kapaliny - Plnění a stáčení - Výdejní čerpací stanice
+ČSN 65 0204 Dálkovody hořlavých kapalin.
+ČSN 65 0205 Hořlavé zkapalněné uhlovodíkové plyny - Výrobny a sklady
+ČSN 65 0208 Dálkovody hořlavých zkapalněných uhlovodíkových plynů.
+ČSN 73 0036 Seizmická zatížení staveb
+ČSN 73 0081 Ochrana proti korózii v stavebníctve. Všeobecné ustanovenia.
+ČSN 73 0873 Požární bezpečnost staveb - Zásobování požární vodou.
+ČSN 73 3050 Zemné práce. Všeobecné ustanovenia
+ČSN 73 6005 Prostorové uspořádání sítí technických vybavení
+ČSN 73 6006 Výstražné fólie k identifikaci podzemních vedení technického vybavení
+ČSN 73 7505 Sdružené trasy městských vedení technického vybavení.
+ČSN 75 0000 Vodní hospodářství. Soustava norem ve vodním hospodářství. Základní ustanovení.
+ČSN 75 0150 Vodní hospodářství - Terminologie vodárenství
+ČSN 75 2130 Křížení a souběhy vodních toků s dráhami, pozemními komunikacemi a vedeními.
+ČSN 75 3415 Ochrana vody před ropnými látkami. Objekty pro manipulaci s ropnými látkami a jejich
+skladování
+ČSN 75 4030 Křížení a souběhy melioračních zařízení s dráhami, pozemními komunikacemi a vedeními.
+ČSN 75 5025 Orientační tabulky rozvodné vodovodní sítě
+22
+ČSN 75 5115 Vodárenství. Studny individuálního zásobování pitnou vodou
+ČSN 75 5401 Navrhování vodovodního potrubí.
+ČSN 75 5411 Vodovodní přípojky
+ČSN 75 5630 Vodovodní podchody pod dráhou a pozemní komunikací.
+ČSN 75 5911 Tlakové zkoušky vodovodního a závlahového potrubí
+ČSN EN 10208-1 Ocelové potrubí na hořlavá media. Technické dodací podmínky- Část 1: Trubky
+s požadavky třídy A.
+ČSN EN 1092-1 Příruby a přírubové spoje. Kruhové příruby pro trubky, armatury, tvarovky a příslušenství
+s označením PN Část 1: Příruby z oceli
+ČSN EN 12007-1 Zásobování plynem. Plynovody s nejvyšším provozním tlakem do 16 barů včetně -Část 1:
+Všeobecné funkční požadavky
+ČSN EN 12007-2 Zásobování plynem. Plynovody s nejvyšším provozním tlakem do 16 barů včetně -Část 2:
+Specifické funkční požadavky pro polyethylen (nejvyšší provozní tlak do 10 barů včetně)
+ČSN EN 12007-3 Zásobování plynem-Plynovody s nejvyšším provozním tlakem do 16 barů včetně - Část 3 :
+Specifické funkční požadavky pro ocel.
+ČSN EN 12007-4 Zásobování plynem. Plynovody s nejvyšším provozním tlakem do 16 barů včetně-Část 4:
+Specifické funkční požadavky pro rekonstrukce.
+ČSN EN 12201-1 Plastové potrubní systémy pro rozvod vody -Polyethylén (PE) - Část 1: Všeobecně.
+ČSN EN 12201-2 Plastové potrubní systémy pro rozvod vody -Polyethylén (PE) - Část 2: Trubky
+ČSN EN 12201-3 Plastové potrubní systémy pro rozvod vody - Polyethylén (PE) -Část 3: Tvarovky.
+ČSN EN 12201-4 Plastové potrubní systémy pro rozvod vody - Polyethylén (PE) -Část 4: Ventily.
+ČSN EN 12201-5 Plastové potrubní systémy pro rozvod vody-Polyethylén (PE) -Část 5:Vhodnost použití
+systému.
+ČSN EN 12327 Zásobování plynem. Tlakové zkoušky, postupy při uvádění do provozu a odstavování
+z provozu. Funkční požadavky.
+ČSN EN 12517-1 Nedestruktivní zkoušení svarů -Část 1: Hodnocení svarových spojů u oceli, niklu, titanu a
+jejich slitin při radiografickém zkoušení - Stupně přípustnosti
+ČSN EN 12732 Zásobování plynem - Svařované ocelové potrubí - Funkční požadavky
+ČSN EN 13480-3 Kovová průmyslová potrubí. Část 3: Konstrukce a výpočet.
+ČSN EN 13941 Navrhování a provádění vedení vodních tepelných sítí bezkanálové sdružené konstrukce
+předizolovaných potrubí
+ČSN P ENV 13670-1
+Provádění betonových konstrukcí. Část 1: Společná ustanovení.
+ČSN EN 1435 Nedestruktivní zkoušení svarů - Radiografické zkoušení svarových spojů.
+(05 1150)
+ČSN EN 1452-1 Plastové potrubní systémy pro rozvod vody - Neměkčený polyvinylchlorid (PVC-U) -
+Část 1: Všeobecně
+ČSN EN 1452-2 Plastové potrubní systémy pro rozvod vody. Neměkčený polyvinylchlorid (PVC U) Část
+2: Trubky.
+ČSN EN 1555-1 Plastové potrubní systémy pro rozvod plynných paliv-Polyethylén (PE) Část 1:
+Všeobecně.
+ČSN EN 1555-2 Plastové potrubní systémy pro rozvod plynných paliv -Polyethylén (PE) Část 2: Trubky.
+ČSN EN 1555-3 Plastové potrubní systémy pro rozvod plynných paliv -Polyethylén (PE) Část: 3.
+Tvarovky.
+ČSN EN 1555-4 Plastové potrubní systémy pro rozvod plynných paliv -Polyethylén (PE) Část 4: Armatury.
+ČSN EN 1555-5 Plastové potrubní systémy pro rozvod plynných paliv - Polyethylen (PE) - Část 5:
+Vhodnost pro použití
+ČSN EN 1594 Zásobování plynem.Plynovody s nejvyšším provozním tlakem nad 16 barů. Funkční
+požadavky
+23
+ČSN EN 1775 Zásobování plyna - Plynovody v budovách - Nejvyšší provozní tlak <= 5 bar – Provozní
+požadavky
+ČSN EN 1916 Trouby a tvarovky z prostého betonu, drátkobetonu a železobetonu.
+ČSN EN 287-1 Zkoušky svářečů - Tavné svařování - Část 1: Oceli
+ČSN EN 444 Nedestruktivní zkoušení. Základní pravidla pro radiografické zkoušení kovových
+(01 5010) materiálů rentgenovým zářením a zářením gama
+ČSN EN 545 Trubky, tvarovky a příslušenství z tvárné litiny a jejich spojování pro vodovodní potrubí.
+Požadavky a zkušební metody.
+ČSN EN 60079-14 Elektrická zařízení pro výbušnou plynnou atmosféru - Část 14: Elektrická instalace
+ed. 2 v nebezpečných prostorech (jiných než důlních)
+ČSN EN 969 Trubky, tvarovky a příslušenství z tvárné litiny a jejich spojení pro plynová potrubí.
+Požadavky a metody zkoušení.
+ČSN EN ISO 14731 Svářečský dozor - Úkoly a odpovědnosti
+ČSN EN ISO 15609-1 Stanovení a kvalifikace postupů svařování kovových materiálů - Stanovení postupu
+svařování - Část 1: Obloukové svařování
+ČSN EN ISO 18278-1 Odporové svařování - Svařitelnost - Část 1: Hodnocení svařitelnosti kovových materiálů
+pro odporové bodové, švové a výstupkové svařování
+ČSN EN ISO 1872-2 Plasty - Polyethylén (PE) pro tváření - Část 2: Příprava zkušebních těles a stanovení
+(64 3010) vlastností
+ČSN EN ISO 3834-1 Požadavky na jakost při tavném svařování kovových materiálů -Část 1: Kritéria pro volbu
+odpovídajících požadavků na jakost
+ČSN EN ISO 3834-2 Požadavky na jakost při tavném svařování kovových materiálů - Část 2: Vyšší požadavky
+na jakost
+ČSN EN ISO 3834-3 Požadavky na jakost při tavném svařování kovových materiálů - Část 3: Standardní
+požadavky na jakost
+ČSN EN ISO 3834-4 Požadavky na jakost při tavném svařování kovových materiálů - Část 4: Základní
+požadavky na jakost
+ČSN EN ISO 3834-5 Požadavky na jakost při tavném svařování kovových materiálů - Část 5: Dokumenty,
+kterými je nezbytné se řídit pro dosažení shody s požadavky na jakost podle ISO 3834-2,
+ISO 3834-3 nebo ISO 3834-4
+ČSN EN ISO 6708 Potrubní části - Definice a výběr jmenovitých světlostí - DN
+(13 0015)
+TPG - Technická pravidla (Český plynárenský svaz)
+TPG 700 21 Čichačky pro plynovod a přípojky
+TPG 700 24 Označování plynovodů a přípojek
+TPG 702 01 Plynovody a přípojky z polyetylenu
+TPG 704 01 Odběrná plynová zařízení a spotřebiče na plynná paliva v budovách
+TPG 800 03 Připojování odběrných plynových zařízení a jejich uvádění do provozu
+TPG 905 01 Základní požadavky na bezpečnost provozu plynárenských zařízení
+TPG 905 02 Základní požadavky na bezpečnost provozu plynových zařízení na LPG
+TPG 913 01 Kontrola těsnosti plynovodů a plynovodních přípojek
+TPG 921 01 Spojování plynovodů a plynovodních přípojek z polyetylenu
+TPG 934 01 Plynoměry. Umísťování, připojování a provoz.
+13.12.2 Předpisy
+SŽDC S4 Železniční spodek
+Rozhodnutí hlavního hygienika ČSR č.j. HEM-311 ze 14.8.1986
+Rozhodnutí hlavního hygienika ČSR č.j. HEM-324-1 - doplněk ze dne 10.3.1987
+24
+Vyhláška č. 21/1979 Sb., kterou se určují vyhrazená plynová zařízení a stanoví některé podmínky
+k zajištění jejich bezpečnosti, v platném znění
+Vyhláška č. 48/1982 Sb., kterou se stanoví základní požadavky k zajištění bezpečnosti práce a tech-
+nických zařízení, v platném znění
+Vyhláška č. 85/1978 Sb., o kontrolách, revizích a zkouškách plynových zařízení, v platném znění
+Vyhláška č. 100/1995 Sb., kterou se stanoví podmínky pro provoz, konstrukci a výrobu určených
+technických zařízenía jejich konkretizace (Řád určených technických zařízení),
+v platném znění
+Vyhláška č. 137/1998 Sb., o obecných technických požadavcích na výstavbu, v platném znění
+Vyhláška č. 177/1995 Sb., kterou se vydává stavební a technický řád drah, v platném znění
+Nařízení vlády č.591/2006 Sb., o bližších minimálních požadavcích na bezpečnost a ochranu zdraví při práci na
+staveništích.
+Zákon č. 183/2006 Sb. o územním plánování a stavebním řádu (stavební zákon), v platném znění
+Zákon č. 186/2006 Sb. o změně některých zákonů souvisejících s přijetím stavebního zákona a zákona
+o vyvlastnění, v platném znění
+Zákon č. 254/2001 Sb. o vodách a o změně některých zákonů (vodní zákon), v platném znění
+Zákon č. 174/1968 Sb. o státním odborném dozoru nad bezpečností práce, v platném znění
+Zákon č. 458/2000 Sb. o podmínkách podnikání a o výkonu státní správy v energetických odvětvích
+a o změně některých zákonů (energetický zákon), v platném znění
+Zákon č. 266/1994 Sb. o dráhách, v platném znění
+13.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 3 - Zemní práce
+Kapitola 12 - Chráničky a kolektory
+Kapitola 14 - Kanalizace, septiky, čističky, lapače
+Kapitola 17 - Beton pro konstrukce
+Kapitola 19 - Ocelové mosty a konstrukce
+Kapitola 18 - Betonové konstrukce
+Kapitola 22 - Izolace proti vodě
+Kapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí
+Kapitola 27 - Zabezpečovací zařízení
+Kapitola 31 - Trakční vedení
+25
+26
+Poznámky:
+27
+28
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+KAPITOLA 13
+Třetí aktualizované vydání včetně změny č.6 (z roku 2008)
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: PRAGOPROJEKT, a.s., a SUDOP Praha, a.s.
+Zpracovatel změny č. 6: Ing. Zdeněk Levý
+České dráhy, a.s.,
+Generální ředitelství, Odbor správy a majetku
+Odborný gestor: Ing. arch. Pavel Andršt,
+Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Vydal: Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 241, +420 972 741 769,
+fax: +420 972 741 290,
+e-mail: otd@tudc.cz
+www.tudc.cz

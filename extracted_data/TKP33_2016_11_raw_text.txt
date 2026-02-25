@@ -1,0 +1,1301 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 33
+ELEKTROMAGNETICKÁ
+KOMPATIBILITA (EMC)
+Třetí - aktualizované vydání
+změna č. 10
+Schváleno generálním ředitelem SŽDC
+dne: 23. 6. 2016
+č.j.: S 25627/2016-SŽDC-O14
+Účinnost od: 1. 11. 2016
+Počet listů: 22
+Počet příloh: 1
+Počet listů příloh: 3
+Praha 2016
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+Nerudova l
+772 58 Olomouc
+Obsah
+Seznam zkratek 2
+33.1 ÚVOD 3
+33.1.1 Všeobecně 3
+33.1.2 Základní pojmy 3
+33.2 ZÁKLADNÍ POŽADAVKY NA ZAJIŠTĚNÍ EMC 4
+33.2.1 Obecné požadavky 4
+33.2.2 Emise a odolnost spotřebičů 5
+33.2.3 Emise a odolnost zdrojů 5
+33.2.4 Kompatibilní úrovně napájecích sítí 6
+33.3 SPECIFICKÉ POŽADAVKY A ZPŮSOBY JEJICH NAPLNĚNÍ 6
+33.3.1 Trakční napájecí stanice 6
+33.3.2 Filtračně kompenzační zařízení 8
+33.3.3 Rozvody a vedení 9
+33.3.4 Zařízení napájená z trakčního obvodu (zejména TV) 10
+33.3.5 Elektrická pevná napájecí zařízení 10
+33.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 10
+33.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 11
+33.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 11
+33.7 KLIMATICKÁ OMEZENÍ 11
+33.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 11
+33.9 KONTROLNÍ MĚŘENÍ 11
+33.10 EKOLOGIE 11
+33.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 11
+33.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 11
+33.12.1 Technické normy 12
+33.12.2 Právní předpisy (v platném znění) 13
+33.12.3 Související vnitropodnikové předpisy SŽDC 13
+33.12.4 Související kapitoly TKP 13
+1
+Seznam zkratek
+AC střídavý proud
+C kapacita, kondenzátor
+ČSN česká technická norma
+DC stejnosměrný proud
+DLZT Diagnostická laboratoř zabezpečovací techniky (složka TÚDC)
+EMC elektromagnetická kompatibilita
+EMI elektromagnetická interference
+EPZ elektrické pevné napájecí zařízení drážních kolejových vozidel
+FKZ filtračně kompenzační zařízení
+HDO hromadné dálkové ovládání
+L indukčnost, tlumivka
+NN nízké napětí
+NZZ napájení zabezpečovacího zařízení
+O14 Odbor 14 – odbor automatice a elektrotechniky (složka Generálního ředitelství SŽDC)
+OŘ Oblastní ředitelství (organizační jednotka SŽDC)
+PPDS pravidla provozu distribuční soustavy
+SEE Správa elektrotechniky a energetiky (složka Oblastního ředitelství)
+SpS spínací stanice
+SSZT Správa sdělovací a zabezpečovací techniky (složka Oblastního ředitelství)
+SŽDC Správa železniční dopravní cesty, státní organizace
+SŽE Správa železniční energetiky (organizační jednotka SŽDC)
+THDi celkové harmonické zkreslení proudu
+TKP technické kvalitativní podmínky
+TM trakční měnírna
+TNS trakční napájecí stanice
+TS distribuční transformovna (trafostanice)
+TT trakční transformovna
+TÚDC Technická ústředna dopravní cesty (organizační jednotka SŽDC)
+TV trakční vedení
+VN vysoké napětí
+VVN velmi vysoké napětí
+ŽDC železniční dopravní cesta
+2
+33.1 ÚVOD
+Ustanovení této kapitoly musí být splněna v rámci přípravy, návrhu, projekce, konstrukce, výstavby i uvádění do
+provozu zařízení elektrických, elektrotechnických anebo elektronických určených pro použití v železniční dopravní
+cestě, na níž má právo hospodařit státní organizace Správa železniční dopravní cesty.
+Výše uvedená zařízení musí splňovat veškeré podmínky na jejich funkčnost, spolehlivost a kompatibilitu dané
+právními předpisy. Dodržení ustanovení této kapitoly je nutnou, nikoli však postačují podmínkou pro splnění těchto
+podmínek.
+U nedatovaných technických norem uvedených v textu TKP platí poslední vydání příslušné normy, popřípadě
+normy, která ji nahrazuje.
+33.1.1 Všeobecně
+Pro kapitolu 33 - Elektromagnetická kompatibilita platí všechny pojmy, ustanovení, požadavky a údaje uvedené
+v kapitole 1 TKP - Všeobecně.
+Kapitola 33 obsahuje podmínky pro zajištění elektromagnetické kompatibility (dále jen EMC) elektrických
+rozvodů a zařízení.
+Kapitola 33 se vztahuje na všechna elektrická zařízení, napájecí sítě a jejich rozhraní instalovaná a provozovaná
+v infrastruktuře ŽDC, na které má právo hospodařit SŽDC. Zejména se jedná o technologické celky a části
+silnoproudých zařízení jako jsou trakční napájecí a spínací stanice, napájecí stanice rozvodu 6 kV, trakční vedení
+apod. včetně zařízení, která jsou z nich napájena, rozvody VN a NN včetně rozvodů pro napájení zabezpečovacích
+zařízení, distribuční transformovny, venkovní osvětlení železničních prostranství, další odběry a spotřebiče na
+hladině VN i NN.
+Z působnosti této kapitoly jsou vyjmuta
+ zařízení a napájecí sítě malého napětí (ve smyslu normy ČSN 33 0010) a rozhraní mezi nimi,
+ zařízení nízkého napětí, která jsou určena pro připojení do napájecích sítí o jmenovitém napětí mezi pracovním
+a středním vodičem 230 V (resp. jmenovitém napětí mezi pracovními vodiči 400 V) a jmenovitém kmitočtu
+50 Hz, pokud jsou vybavena pohyblivým přívodem zakončeným normalizovanými konektory a opatřena ES/EU
+Prohlášením o shodě,
+ napájecí sítě nízkého napětí, pokud jsou přímo či pomocí transformovny propojeny s nadřazenou distribuční sítí
+dodavatele elektrické energie jiného než SŽDC,
+ rozhraní mezi hnacími vozidly a systémy pro detekování vlaku, pokud jejich vzájemná kompatibilita je
+definována technickými normami (viz ČSN EN 50238, ČSN 34 2613 apod.),
+ zařízení, jež mají svou podstatou takové fyzikální vlastnosti, že nemohou způsobit elektromagnetické vyzařování
+překračující úroveň umožňující rádiovým, telekomunikačním a ostatním zařízením provoz v souladu s daným
+účelem ani k takovému vyzařování přispívat, a budou bez přijatelného zhoršení fungovat v přítomnosti
+elektromagnetického rušení, jež je běžné vzhledem k účelu jejich použití.
+33.1.2 Základní pojmy
+Názvosloví pro elektrická trakční zařízení je uvedeno v ČSN 34 5145, ČSN IEC 50(811).
+Názvosloví pro EMC je uvedeno v ČSN IEC 50(161) a ČSN IEC 1000-1-1.
+Pro účely této kapitoly se dále rozumí
+ zařízením výrobek nebo pevná instalace;
+ výrobkem dokončený výrobek, nebo sestava výrobků uváděná na trh jako samostatný funkční celek určený pro
+konečného uživatele, které mohou způsobit elektromagnetické rušení nebo na jejichž provoz může mít
+elektromagnetické rušení vliv;
+ pevnou instalací určitá sestava několika druhů přístrojů, případně prostředků, jež jsou zkompletovány,
+instalovány a určeny k trvalému používání na předem daném místě;
+ elektrickým zařízením zařízení (přístroj nebo pevná instalace), které ke své činnosti nebo působení využívají
+účinků elektrických nebo magnetických jevů;
+ elektromagnetickou kompatibilitou (EMC) schopnost zařízení uspokojivě fungovat v elektromagnetickém
+prostředí, aniž by samo způsobovalo nepřípustné elektromagnetické rušení jiného zařízení v tomto prostředí;
+3
+ elektromagnetickým rušením elektromagnetický jev, který může zhoršit funkci zařízení; elektromagnetickým
+rušením může být elektromagnetický šum, nežádoucí signál nebo změna v samotném prostředí šíření;
+ odolností schopnost zařízení správně fungovat bez zhoršení kvality funkce za přítomnosti elektromagnetického
+rušení;
+ elektromagnetickým prostředím veškeré elektromagnetické jevy pozorovatelné v daném místě;
+ technickou specifikací dokument nebo dokumenty předepisující technické požadavky, které má zařízení
+splňovat;
+ ověřením shody souhrn postupů, zkoušek, měření a jejich interpretací dokládající, že zařízení je v souladu se
+svými technickými specifikacemi a požadavky příslušných technických norem.
+Výrobkem ve smyslu odstavce předchozího se rozumí rovněž
+ samostatné výrobky nebo komponenty určené pro zabudování do zařízení konečným uživatelem, jež mohou být
+zdrojem elektromagnetického rušení nebo na jejichž správnou funkci může mít elektromagnetické rušení vliv;
+ mobilní instalace definované jako sestava výrobků, případně prostředků, určená k přesunu a provozu na různých
+místech.
+Pro účely této kapitoly se dále rozumí
+ napájecí sítí soubor technických a technologických zařízení určených k distribuci elektrické energie od zdrojů
+ke spotřebičům; za napájecí síť se nepovažuje jednoúčelové elektrické propojení jednoho zdroje
+a jednoho spotřebiče;
+ spotřebičem elektrické zařízení (přístroj nebo pevná instalace), které pro svou činnost využívá elektrickou
+energii získávanou z napájecí sítě, bez ohledu na způsob využití získané elektrické energie;
+ zdrojem elektrické zařízení (přístroj nebo pevná instalace), které svou činností vyrábí energii elektrickou, kterou
+následně dodává do napájecí sítě, bez ohledu na formu původní energie;
+ měničem elektrické zařízení (přístroj nebo pevná instalace), jehož činností dochází ke změně nejméně jednoho
+ze základních parametrů elektrické energie mezi jeho vstupem a výstupem bez ohledu na případné dílčí přeměny
+v rámci měniče; měnič je nutno z hlediska zajištění EMC považovat současně za spotřebič (vůči napájecí síti, ze
+které elektrickou energii odebírá) i zdroj (pro napájecí síť, do které elektrickou energii dodává);
+ transformační stanicí (transformovnou) speciální případ měniče, u nějž dochází pouze ke změně napájecího
+napětí výhradně za využití transformátorů anebo autotransformátorů;
+ rozhraním bod (body) vzájemného elektrického propojení mezi napájecí síti a zařízením, resp. napájecími
+sítěmi či zařízeními navzájem.
+Základními parametry elektrické energie v napájecích sítích jsou:
+ kmitočet sítě,
+ velikost napájecího napětí (nominální hodnota),
+ odchylky napájecího napětí,
+ nesymetrie napájecího napětí,
+ obsah jednotlivých harmonických složek v napájecím napětí,
+ celkové harmonické zkreslení napájecího napětí.
+33.2 ZÁKLADNÍ POŽADAVKY NA ZAJIŠTĚNÍ EMC
+33.2.1 Obecné požadavky
+Zařízení musí být navrženo a vyrobeno tak, aby bylo s přihlédnutím k dosaženému stavu techniky zajištěno, že
+ elektromagnetické rušení, které způsobuje, nepřesáhne úroveň, za níž rádiové a telekomunikační zařízení nebo
+jiné zařízení není schopné fungovat tak, jak má,
+ úroveň jeho odolnosti vůči elektromagnetickému rušení předpokládanému při používání k danému účelu mu
+dovoluje fungovat bez nepřijatelného zhoršení určených funkcí.
+Pevná instalace musí být instalována s použitím správných technických postupů a při respektování údajů
+o použití komponentů pro daný účel, aby byly splněny požadavky na ochranu dle předchozího odstavce. Tyto
+správné technické postupy musí být zdokumentovány, dokumentace musí být předána provozovateli a jím uchová-
+vána po dobu provozování pevné instalace pro potřeby kontroly ze strany příslušných orgánů.
+4
+33.2.1.1 Uvádění veličin a jednotek v technických specifikacích a dokumentaci
+Veličiny a jednotky uváděné v technických specifikacích a dokumentaci musí být základními nebo odvozenými
+veličinami a jednotkami soustavy SI. Při použití poměrných hodnot musí být vždy uvedeno, vůči jaké základní
+veličině resp. hodnotě se vztahují, tzn. jaký je základ pro jejich výpočet.
+Tolerance mohou být uváděny absolutně s uvedením hodnoty a příslušné jednotky anebo poměrově vůči definované
+hodnotě veličiny (obvykle jmenovité hodnotě).
+33.2.2 Emise a odolnost spotřebičů
+Pro každý spotřebič musí být v jeho technické dokumentaci uvedeny mezní úrovně emisí a odolnosti. Zejména se
+jedná o základní parametry napájecí sítě, do které může být spotřebič připojen, a při jejichž dodržení je zajištěna
+jeho plná funkčnost bez interferencí.
+Mezní úrovně dle odstavce předchozího mohou být uvedeny
+ výčtem parametrů a uvedením odpovídajících hodnot a tolerancí,
+ odkazem na českou technickou normu anebo harmonizovanou normu,
+ kombinací výčtu dle bodu prvního (pro vybrané veličiny) a odkazu dle bodu druhého (pro veličiny ostatní).
+Nejsou-li definovány specifické parametry, předpokládá se, že spotřebič je určen pro připojení do napájecí sítě
+s parametry odpovídajícími normě ČSN EN 50160.
+Disponuje-li spotřebič více než jedním napájecím vstupem, musí být mezní úrovně emisí a odolnosti uvedeny
+samostatně pro každý jednotlivý vstup.
+33.2.2.1 Funkčnost spotřebičů při výpadcích a obnovení napájení
+S ohledem na potřebu zajištění odolnosti zařízení proti mimořádným stavům v napájecích sítích bez zásadního
+omezení spolehlivosti a bezpečnosti funkce musí být pro každý spotřebič vybavený jediným napájecím vstupem
+v technické dokumentaci definováno standartní chování při výpadku napájení a po jeho obnovení.
+Pro každý spotřebič disponující více než jedním napájecím vstupem (např. záložní napájení) potom musí být
+v technické dokumentaci definovány
+ priority napájení,
+ postupy a logika přepínání napájení,
+ standartní chování při úplném výpadku napájení na všech dostupných napájecích vstupech a při následném
+obnovení napájení na libovolném vstupu a
+ postupy pro obnovení funkce zařízení po úplném výpadku napájení na všech dostupných napájecích vstupech.
+Je-li zařízení vybaveno vnitřním záložním zdrojem pro překlenutí výpadků napájení (baterie, UPS atd.), musí být při
+obnovení napájení možné obnovení funkce zařízení bez ohledu na stav vnitřního záložního zdroje (zejména při jeho
+úplném vyčerpání či vybití vnitřních baterií). Potřeba zásahu obsluhy musí být minimalizována.
+Je-li to s ohledem bezpečnost a na princip a účel funkce zařízení možné, musí být obnovení funkce zařízení po
+výpadku napájení automatizované či samočinné.
+Pro každé zařízení musí být stanoveny postupy pro obnovení funkce zařízení po nouzovém odpojení všech zdrojů
+elektrické energie (např. tlačítkem „STOP“). Obnovení funkce po nouzovém odpojení dle věty předchozí nesmí být
+možné automatizovaně, samočinně ani výhradně dálkovou obsluhou.
+33.2.3 Emise a odolnost zdrojů
+Pro každý zdroj musí být v jeho technické dokumentaci uvedeny mezní úrovně emisí a odolnosti. Zejména se jedná
+o základní parametry napájecí sítě, pro kterou je tento zdroj určen a která je zdrojem vytvářena.
+Úrovně mohou být uvedeny
+ výčtem parametrů a uvedením odpovídajících hodnot a tolerancí,
+ odkazem na českou technickou normu anebo harmonizovanou normu,
+ kombinací výčtu dle bodu prvního (pro vybrané veličiny) a odkazu dle bodu druhého (pro veličiny ostatní).
+Nejsou-li definovány specifické parametry, předpokládá se, že zdroj je určen a vytváří napájecí síť s parametry
+odpovídajícími normě ČSN EN 50160.
+5
+33.2.4 Kompatibilní úrovně napájecích sítí
+Pro každou napájecí síť musí být v její technické dokumentaci uvedeny parametry, které budou u této sítě garanto-
+vány, a jejich kompatibilní úrovně.
+Úrovně mohou být uvedeny
+ výčtem parametrů a uvedením odpovídajících hodnot a tolerancí,
+ odkazem na českou technickou normu anebo harmonizovanou normu,
+ kombinací výčtu dle bodu prvního (pro vybrané veličiny) a odkazu dle bodu druhého (pro veličiny ostatní).
+Nejsou-li definovány specifické parametry, předpokládá se, že zdroj je určen a vytváří napájecí síť s parametry
+odpovídajícími normě ČSN EN 50160.
+Jmenovité napětí napájecích sítí musí být vždy voleno s ohledem na doporučení normy ČSN EN 60038.
+Do napájecích sítí lze připojovat pouze zdroje a spotřebiče, jejichž provozní parametry emisí a odolnosti plně
+vyhovují parametrům dané sítě a to včetně případných přípustných mezních odchylek.
+33.3 SPECIFICKÉ POŽADAVKY A ZPŮSOBY JEJICH NAPLNĚNÍ
+Specifika provozu elektrotechnických zařízení železniční dopravní cesty vyžadují využití zvláštních postupů pro
+zajištění požadavků vyplývajících z těchto specifik. V této části jsou popsány zásadní specifika a způsoby jejich
+řešení pro zajištění EMC dle předchozího oddílu. Rozsah výčtu je pouze informativní, vychází z poznatků známých,
+ověřených a obecně přijímaných k termínu zpracování této kapitoly. S ohledem na rozvoj techniky
+a technologií nemusí být tento výčet kompletní a aktuální.
+33.3.1 Trakční napájecí stanice
+Trakční napájecí stanice (TNS) se dělí na:
+ trakční měnírny (TM) – napájecí stanice stejnosměrné trakční proudové soustavy 3 kV a 1,5 kV,
+ trakční transformovny (TT) – napájecí stanice jednofázové trakční proudové soustavy 25 kV 50 Hz, 15 kV
+16a2/3 Hz.
+33.3.1.1 Trakční měnírna
+Výkon
+Vzhledem k proměnlivosti odběrů trakčních měníren se pro určování zpětných vlivů trakčních odběrů na napájecí
+síť dodavatele elektrické energie použijí hodnoty odběrových proudů základní harmonické s respektováním jejich
+četnosti, uvedené v Tabulce 1. Uvedené hodnoty byly zjištěny na základě statistiky z dlouhodobých měření na
+reprezentativním vzorku TM
+Tabulka 1
+Výkon [ MW] 1 2 3 4 5 6 7 8 9 10
+Proud [ A ] 26 52 79 105 131 157 184 210 236 262
+% doby za týden 22,2 32,4 23,9 12,5 5,8 2,2 0,8 0,2 0,1 0,1
+Harmonické
+Zpětné vlivy se hodnotí v připojovacím bodě trakční měnírny. Pro určení vlivu trakčních usměrňovačů ve
+dvanáctipulzním spojení na napájecí síť dodavatele, se použijí směrné hodnoty jednotlivých harmonických
+primárních fázových proudů podle Tabulky 2. Hodnota „P / P “ přitom vyjadřuje poměr okamžitého činného
+jm
+zatížení vůči instalovanému výkonu aktivních trakčních usměrňovačů. Vliv ostatních technologií a zařízení
+v TM a napájených z TM je vůči vlivu provozu trakčních usměrňovačů nepatrný a pro hodnocení zpětných vlivů se
+zanedbává.
+6
+Tabulka 2
+P / P [%] 10 20 30 40 50 60 70 80 90 100
+jm
+I [%] 6,83 5,57 5,12 5,11 5,12 5,08 5,00 4,88 4,74 4,58
+11
+I [%] 4,52 4,21 4,00 4,03 4,04 3,99 3,89 3,74 3,58 3,40
+13
+I [%] 1,07 1,84 1,85 1,74 1,55 1,35 1,15 1,00 0,91 0,86
+23
+I [%] 0,94 1,67 1,67 1,54 1,36 1,17 1,00 0,89 0,83 0,81
+25
+THDi [%] 8,58 8,18 7,63 7,28 7,05 6,82 6,57 6,34 6,09 5,85
+POZNÁMKA:
+Hodnoty uvedené v tabulce vycházejí z reálných měření odběrových parametrů trakčních usměrňovačů
+v dvanáctipulzním zapojení v provozu na ŽDC. Tyto směrné hodnoty byly zjištěny pro provoz jednoho a dvou
+usměrňovacího soustrojí (trakční transformátor + trakční usměrňovač) a bylo zohledněno okamžité zatížení ve
+vztahu k jmenovitému výkonu provozovaných soustrojí. Bylo potvrzeno, že při paralelním provozu více
+usměrňovačových skupin dojde k přibližně rovnoměrnému rozdělení výkonu a výše uvedené hodnoty je tedy možno
+zobecnit pro TM vybavené dvanáctipulzními usměrňovači bez ohledu na celkový instalovaný výkon.
+Při porovnávání vypočítaných úrovní jednotlivých harmonických napětí (resp. harmonických proudů)
+v připojovacím bodě se stanovenými hodnotami je nutné brát do úvahy četnost a dobu výskytu maximálního zatížení
+podle tabulky 1.
+33.3.1.2 Trakční transformovna
+Výkon
+Odběr TT je značně proměnlivý s charakterem obdobným TM.
+Harmonické
+V současnosti jsou dosud v provozu také elektrická hnací vozidla jednofázové trakce, vybavená jednofázovým
+neřízeným můstkovým usměrňovačem, jež jsou proudovým zdrojem harmonických všech lichých řádů. Pro určení
+jednotlivých poměrných spektrálních složek proudu odebíraného vozidlem se vychází ze vzorce
+I [%] = 100 / n
+n
+kde n je řád harmonické. Tento vzorec udává nejvyšší teoreticky možný obsah harmonických složek jednotlivých
+řádů v celkovém trakčním odběru. Pro vlastní návrh a dimenzování TT a FKZ se použije hodnot uvedených
+v Tabulce 3.
+Tabulka 3 – Spektra harmonických proudů (vztaženo k proudu základní harmonické)
+harmonická spektrum spektrum
+složka S1 S2
+I [%] 25 35
+3
+I [%] 10 25
+5
+I [%] 5 15
+7
+I [%] 3 12
+9
+I [%] 2 10
+11
+I [%] 1 9
+13
+Spektrum S1 harmonických složek proudu (tzv. obvyklé spektrum) představuje obvyklý předpokládaný obsah
+harmonických složek vycházející z pozorování a měření v reálných provozních podmínkách ŽDC. Toto spektrum se
+užije pro kontrolu činitele zkreslení napětí a výpočet míry zpětných vlivů na distribuční soustavu elektrické energie.
+Spektrum S2 harmonických složek proudu (tzv. pesimistické spektrum) představuje nejvyšší teoreticky možný
+obsah harmonických složek vycházející z výše uvedeného vzorce a navýšený o bezpečnostní rezervu. TT, FKZ
+a jejich dílčí prvky musí být na toto spektrum (obsah harmonických složek) dimenzovány a musí být zajištěna jejich
+plná funkčnost a odolnost.
+POZNÁMKA:
+Při porovnávání vypočítaných úrovní jednotlivých napěťových (či proudových) harmonických v připojovacím bodě
+TT se stanovenými hodnotami je nutné brát do úvahy četnost a dobu výskytu maximálního zatížení.
+Nesymetrie odběru
+Odběr TT je jednofázového charakteru realizovaný ze sdruženého napětí sítě 110kV. Z podstaty věci není tento
+odběr fázově symetrický a má vliv na nesymetrii napájecího napětí. Přípustné hodnoty nesymetrie napájecího napětí
+7
+(příp. příspěvku k celkové nesymetrii) jsou stanovovány provozovatelem distribuční soustavy a musí být v rámci
+návrhu i provozu dodrženy. Připojitelnost TT k distribuční soustavě musí být posouzena prvotně při návrhu TT
+(podrobnosti hodnocení připojitelnosti zařízení i s ohledem na nesymetrii stanovuje soubor norem PNE 33 3430).
+Pokud je hodnocením zjištěno, že TT by nebylo možno připojit z důvodu nepřípustného ovlivnění nesymetrie, musí
+být navrženo a projednáno vhodné řešení, příp. vhodná řešení. Tato řešení musí být posouzena nejen z technického
+hlediska realizovatelnosti, ale též z hlediska ekonomického (investičních i dalších provozních nákladů).
+Omezení příspěvku TT k nesymetrii napájecího napětí v místě připojení lze řešit
+ vhodnou volbu připojení v distribuční soustavě v místě s dostatečným zkratovým výkonem,
+ instalací technických zařízení a řešení anebo
+ technicko-organizačními opatřeními odsouhlasenými provozovatelem distribuční soustavy.
+POZNÁMKA:
+Omezení příspěvku nesymetrie je pro jednofázové odběry vysokých proměnlivých výkonů složité a komplikované.
+Základním opatřením je vhodná volba připojení k distribuční soustavě v místě s dostatečným zkratovým výkonem.
+V případě nevyhovění se upřednostňuje projednání s provozovatelem distribuční soustavy ke zmírnění limitů či
+akceptování krátkodobých překročení daných proměnlivým charakterem zatížení, neboť je nutné brát do úvahy
+četnost a dobu výskytu maximálního zatížení.
+33.3.2 Filtračně kompenzační zařízení
+Pro snížení zpětných vlivů na distribuční soustavu a vykompenzování účiníku se jako součást TT buduje filtračně
+kompenzační zařízení (FKZ). Účelem FKZ je zajistit v připojovacím bodě TT při všech provozních stavem trakční
+soustavy (vyjma stavů mimořádných a poruchových)
+ vykompenzování nevyhovujícího kapacitního charakteru nezatíženého (příp. málo zatíženého) trakčního vedení
+do induktivního charakteru,
+ vykompenzování nevyhovujícího induktivního charakteru odběru způsobeného provozem hnacích vozidel na
+hodnotu danou smluvními podmínkami s distributorem elektrické energie (např. smlouva, PPDS; obvykle je
+požadováno dodržení účiníku v rozmezí 0,95 – 1,00 induktivního charakteru),
+ snížení úrovní harmonických složek napětí anebo proudů způsobených provozem TT (příspěvku TT) na hodnotu
+danou smluvními podmínkami s distributorem elektrické energie (např. smlouva, PPDS),
+ minimální impedanci TT jako celku na úrovni a v charakteru danými smluvními podmínkami s distributorem
+elektrické energie (např. smlouva, PPDS) – zejména na kmitočtu HDO.
+Zařízení obvykle zahrnuje
+ dekompenzační větev umožňující plynulou regulaci jalového induktivního výkonu
+ filtrační větev laděnou na třetí harmonickou (ladí se blízko pod 150 Hz) a
+ filtrační větev laděnou na pátou harmonickou.
+FKZ musí být dimenzováno tak, aby bylo zajištěno spolehlivé plnění jeho účelů dle výše uvedeného. Toho bude
+dosaženo, pokud zejména (nikoli však pouze)
+ potřebný kompenzační výkon, pro vykompenzování nevyhovujícího induktivního charakteru odběru
+způsobeného provozem hnacích vozidel, bude realizován pouze pomocí kapacitního charakteru instalovaných
+filtračních větví (na základní harmonické),
+ dekompenzační výkon realizovaný dekompenzační tlumivkou bude plně pokrývat kapacitní výkony trakčního
+vedení (ve všech předpokládaných provozních konfiguracích), kabelových či jiných vedení v trakčním obvodu,
+filtračních větví včetně přiměřené rezervy pro případnou instalaci filtrační větve pro sedmou harmonickou a
+ měrná kapacita trakčního vedení trakční proudové soustavy 25 kV 50 Hz bude uvažována 15nF/km pro
+jednokolejnou trať nebo jednu kolej vícekolejné trati nebo traťového úseku (hodnota vychází z historických
+pozorování a měření, použití jiné hodnoty musí být navrhovatelem řádně zdůvodněno a odsouhlaseno
+gestorským útvarem této kapitoly TKP).
+Prvky filtračních větví, zejména kondenzátory musí být dimenzovány s ohledem na charakteristiky sériových LC
+rezonančních obvodů, kdy dochází v rezonanci jak k nárůstu proudu, tak i k odpovídajícímu nárůstu napětí na
+jednotlivých prvcích. Celkové napětí na kondenzátorech filtračních větví tak i při nízkém zatížení přesahuje napětí
+trakčního obvodu.
+POZNÁMKA:
+Dekompenzační větev je obvykle tvořena dekompenzační tlumivkou, elektronickým regulátorem případně též
+8
+snižovacím transformátorem. Filtrační větve jsou obvykle tvořeny sériovou kombinací tlumivky a kondenzátoru
+(resp. kondenzátorové baterie) ve funkčnosti sériového rezonančního obvodu.
+Okolnosti vyplývající z požadavků distributora elektrické energie si mohou vyžádat též instalaci filtračních větví
+vyšších řádů. Stavebně se však vždy ponechá místo na filtrační větev laděnou na sedmou harmonickou. Ta se
+realizuje, jen pokud by vznikla nutnost splnění požadavku dodavatele elektrické energie při změně napájecích
+poměrů. Při případném doplnění větve 7. harmonické je nutné ověřit a případně upravit i výkon dekompenzační
+větve.
+Výše uvedené obvyklé řešení využívá existence paralelní rezonance vznikající při paralelní kombinaci dvou
+sériových rezonančních obvodů (kmitočet paralelní rezonance leží mezi kmitočty sériových rezonancí) pro zvýšení
+impedance TNS jako celku na vybraných kmitočtech (zejména kmitočtu HDO). Toto řešení je však využitelné pouze
+v případě, kdy kmitočet, jehož ovlivnění má být eliminováno, leží mezi kmitočty sériových rezonančních větví. Jelikož
+je v ČR pro HDO využíván zejména kmitočet 216,67 Hz, který leží mezi 3. harmonickou (150 Hz) a 5. harmonickou
+(250 Hz), lze řešení obvykle aplikovat bez větších obtíží.
+33.3.3 Rozvody a vedení
+Kapacita vedení je vlastním parametrem každého vedení bez ohledu na napěťovou hladinu, kmitočet sítě a způsob
+realizace. Tato kapacita se projevuje jak u venkovních vedení holými vodiči (lany) tak i u kabelových vedení jedno-
+i vícežilovými kabely. Dle dosavadních zkušeností se však nejvíce její negativní účinky projevují u kabelových
+vedení provozovaných na hladině VN (obvykle 6 kV nebo 22 kV). V některých případech mohou být vlivy
+pozorovány i na hladinách NN (např. 3x 230/400 V 50 Hz) s rozvětveným anebo rozsáhlým rozvodem.
+33.3.3.1 Jalový výkon kapacitního charakteru
+Vlivem vlastní kapacity jsou rozvody obvykle zdrojem kapacitní jalové práce, jejíž nevyžádaná dodávka je
+dodavatelem elektrické energie sledována, měřena a sankcionována. Současně může být kapacitními proudy výrazně
+zatížen jak samotný rozvod, tak i jeho jednotlivé prvky. V mezních případech může kapacitní charakter odběru
+způsobovat přetížení a výpadky nadproudových ochran i při nulovém či nízkém činném odběru.
+Kapacitní výkon musí být kompenzován zařízeními induktivního charakteru (obvykle třífázové tlumivky) tak, aby
+v nezatíženém stavu kabelového vedení byl
+ charakter celkového odběru v napájecím bodě či sběrnici nekapacitní a
+ charakter každého samostatně odpojitelného úseku rozvodu nekapacitní.
+Kompenzační prvky (tlumivky) musí být osazeny (elektricky) přímo na zakončení vedení či v jeho průběhu tak, aby
+byly pod napětím vždy, když bude pod napětím příslušný úsek vedení. Preferuje se připojení přes místně ovládané
+odpojovače či odpínače bez možnosti dálkové obsluhy a ovládání.
+Upřednostňuje se umístění kompenzačních prvků přímo na napěťové hladině rozvodu, umístění kompenzačních
+prvků na hladinu nízkého napětí (například za snižovací transformátor 22/0,23/0,4 kV) musí být zdůvodněno
+a odsouhlaseno správcem zařízení a správcem rozvodu.
+33.3.3.2 Rezonanční vlivy
+Vlastní provozní kapacita vedení společně s náhradní indukčností napájecího transformátoru vytváří sériový LC
+rezonanční obvod. Rezonanční frekvence tohoto obvodu je dána základními parametry prvků – náhradní indukčností
+transformátoru a kapacitou aktuálně připojeného úseku vedení. Pokud by se v napájecím napětí v místě připojení
+transformátoru vyskytovaly harmonické složky blízké rezonanční frekvenci obvodu, zafungoval by tento obvod jako
+filtr a zajišťoval by nežádoucí filtraci. Impedance rezonančního obvodu a tedy i napětí na něm jako celku sice pro
+rezonanční složky klesá, avšak napětí na jednotlivých prvcích (zde na náhradní indukčnosti transformátoru a na
+vedení) roste dle Ohmova zákona přímo úměrně protékajícímu proudu. V rezonanci tak může napětí rezonující
+složky růst nad úroveň základní harmonické. V mezních případech může dojít k nezanedbatelnému zkreslení
+časového průběhu napětí ve vedení, případně až k překročení limitních hodnot elektrické pevnosti a odolnosti vedení
+či připojených zařízení. Současně též dochází k přetěžování transformátoru a vedení protékajícím proudem
+rezonančního kmitočtu. Tento proud potom významně zatěžuje jednotlivé prvky vedení a může nabývat až
+kritických hodnot.
+POZNÁMKA:
+Při řetězení transformátorů (použití vícenásobného převodu např. 22/0,4 kV + 0,4/6 kV) je nutno uvažovat se
+souhrnnou náhradní indukčností všech zřetězených transformátorů.
+9
+Z výše uvedeného vyplývá, že je nutné zamezit vzniku rezonančního LC obvodu, jehož rezonanční frekvence by
+byla blízká těm, které se mohou objektivně vyskytovat v napájecím napětí. Typicky se jedná o harmonické složky
+řádů 3, 5 a 7 (pro napájení ze sběrnic TM potom složky řádů 11, 13, 23 a 25). Současně je třeba věnovat zvýšenou
+pozornost možnému ovlivnění kmitočtu HDO s rizikem narušení činnosti systému HDO v napájecí síti.
+Pro zamezení vzniku rezonančního členu se obvykle používá tzv. rozlaďovacího obvodu, jehož základem je
+kondenzátor. Hodnota kondenzátoru musí být volena tak, aby při provozu nejkratšího možného napájeného úseku
+vedení byl rezonanční kmitočet takto doplněného obvodu (transformátor + kondenzátor + kapacita vedení)
+spolehlivě nižší než nejnižší kritický kmitočet, který se může vyskytovat v napájecím napětí. Pro zajištění
+nekapacitního charakteru celkového odběru musí být kondenzátor doplněn výkonově odpovídající tlumivkou.
+Volba a dimenzování rozlaďovacího členu (či jeho nevyužití) musí být pro všechny rozvody na hladině vn doloženy
+výpočtovou analýzou. Tato analýza musí být součástí dokumentace daného zařízení, ze kterého jsou rozvody
+napájeny. Vztažnými hodnotami, které mají na analýzu vliv, jsou
+ primární a sekundární napětí napájecího transformátoru,
+ jmenovitý výkon transformátoru,
+ napětí nakrátko transformátoru,
+ kapacita nejkratšího úseku napájeného vedení a
+ kapacita kondenzátoru rozlaďovacího členu.
+Dojde-li ke změně některé, byť jediné, ze vztažných hodnot uvedených výše, pozbývá provedená analýza platnosti.
+33.3.4 Zařízení napájená z trakčního obvodu (zejména TV)
+Instalovaný výkon zařízení, které má být napájeno z trakčního obvodu, musí být projednán a odsouhlasen
+s vlastníkem infrastruktury a s provozovatelem trakční napájecí soustavy. Zařízení musí být konstruováno tak, aby
+jeho spolehlivá funkce byla zajištěna ve všech tolerancích napětí trakčního obvodu dle ČSN EN 50163 a souboru
+ČSN EN 50124. Zařízení musí plně akceptovat i případná zkreslení časového průběhu napětí a obsah harmonických
+složek, které se v trakčním obvodu mohou objektivně vyskytnout.
+POZNÁMKA:
+Obsah harmonických složek napětí v trakčním obvodu není v současnosti omezen, limity nejsou stanoveny.
+Za zařízení napájené z trakčního obvodu je nutno považovat též zařízení napájené z trakčního obvodu prostřed-
+nictvím snižovacího transformátoru s pevným (statickým) převodem (napětí má vyjma efektivní hodnoty napětí
+stejné charakteristiky jako napětí v trakčním obvodu).
+Je-li v rámci napájení z trakčního obvodu instalováno zařízení pro automatickou (autonomní) regulaci úrovně napětí
+(regulační autotransformátor apod.) je nutno považovat z něj napájené zařízení též za zařízení napájené z trakčního
+obvodu (napětí má vyjma efektivní hodnoty napětí stejné charakteristiky jako napětí v trakčním obvodu).
+Z hlediska připojení zařízení ke zpětnému vedení (typicky tvořeného jízdní kolejnicí) musí být dodrženy požadavky
+na zajištění funkčnosti, spolehlivosti a bezpečnosti zařízení pro detekci vlaku. Spektrum zpětného proudu nesmí
+obsahovat složky, které by mohly ohrozit funkci těchto systémů (podrobnosti stanoví např. normy ČSN 34 2613
+a ČSN 34 2614). Technické řešení připojení ke zpětnému vedení musí být projednáno a odsouhlaseno všemi
+dotčenými subjekty (typicky SSZT a SEE místně příslušného OŘ, TÚDC DLZT).
+Při záložním napájení zařízení z místní sítě platí obecné požadavky uvedené v části 33.2 této kapitoly TKP.
+33.3.5 Elektrická pevná napájecí zařízení
+Pro EPNZ napájená z distribuční soustavy platí obecné požadavky uvedené v části 33.2 této kapitoly TKP.
+Pro EPZ napájená z trakčního vedení se uplatňují požadavky stanovené pro zařízení napájená z trakčního obvodu
+dle 33.3.4.
+33.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+Použité výrobky, na které se tato povinnost vztahuje, musí mít vydáno ES/EU Prohlášení o shodě.
+Požadavky na dodávku, skladování a průkazní zkoušky se na problematiku EMC nevztahují. Pro dodávky,
+skladování a průkazní zkoušky konkrétních výrobků platí příslušné právní předpisy, technické normy a technické
+podmínky stanovené výrobci dotčených výrobků (včetně např. schválených technických podmínek dle Směrnice
+SŽDC č. 34).
+10
+33.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Odběr vzorků a kontrolní zkoušky se v průběhu stavby neprovádějí.
+33.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+Případné odchylky od stanovených požadavků musí být předem projednány a odsouhlaseny všemi dotčenými
+subjekty (obvykle O14, místně příslušné OŘ, SŽE, TÚDC).
+33.7 KLIMATICKÁ OMEZENÍ
+Na problematiku EMC se klimatická omezení neuplatňují.
+33.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+Do provozu lze uvést jen ty části elektrických zařízení, u nichž bylo kontrolním měřením dle části 33.9 ověřeno, že
+splňují požadavky EMC uvedené v této kapitole TKP. Tímto nejsou dotčena další ustanovení pro elektrická zařízení
+podle příslušných kapitol TKP.
+33.9 KONTROLNÍ MĚŘENÍ
+Kontrolní měření musí být na výrobcích uváděných do provozu provedena před uvedením zařízení do provozu,
+případně po jeho uvedení do provozu, pokud nelze z fyzikální podstaty věci měření před uvedením do provozu
+provést. Kontrolní měření musí být provedena minimálně v rozsahu stanoveném v příloze 1 této kapitoly TKP.
+Kontrolní měření mají charakter přejímkových zkoušek zjišťujících soulad výrobků s technickými specifikacemi
+a závaznými právními předpisy a normami a kompatibilitu s ostatními prvky infrastruktury ŽDC. Kontrolní měření
+musí být provedena výhradně specializovanou zkušebnou, u níž je garantována odbornost a nezávislost, pro kterou
+O14 odsouhlasil uznávání kontrolních měření1)
+Náklady na realizaci kontrolních měření nese zhotovitel stavby, který je současně povinen poskytnout subjektu
+provádějícímu tato měření plnou součinnost.
+33.10 EKOLOGIE
+Na problematiku EMC se ekologické požadavky neuplatňují.
+33.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanovuje kapitola 1 TKP.
+33.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP.
+U nedatovaných technických norem platí poslední vydání příslušné normy popřípadě normy, která ji nahrazuje.
+Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj. právních předpisů,
+technických norem a předpisů a předpisů SŽDC.
+Právní předpisy musí být vždy aplikovány v platném znění.
+1) Poznámka: k termínu zpracování této kapitoly je nezávislou a odborně způsobilou specializovanou zkušebnou
+SŽDC organizační jednotka Technická ústředna dopravní cesty se sídlem Malletova 10/2363, Praha 9 – Libeň,
+přičemž výkon činností v oboru EMC zajišťuje u TÚDC Úsek elektrotechniky a energetiky prostřednictvím
+specializovaných středisek a oddělení.
+11
+33.12.1 Technické normy
+ČSN 33 2160 Elektrotechnické předpisy. Předpisy pro ochranu sdělovacích vedení a zařízení před
+nebezpečnými vlivy trojfázových vedení VN, VVN a ZVN
+ČSN 33 3505 Drážní zařízení - Pevná trakční zařízení - Základní požadavky na elektrické napájecí
+a spínací stanice
+ČSN 34 1500 Drážní zařízení - Pevná trakční zařízení - Předpisy pro elektrická trakční zařízení
+ČSN 34 1530 Drážní zařízení - Elektrická trakční vedení železničních drah celostátních, regionálních
+a vleček
+ČSN 34 2040 Předpisy pro ochranu sdělovacích a zabezpečovacích vedení a zařízení před
+nebezpečnými, rušivými a korozivními vlivy elektrické trakce 25kV, 50 Hz
+ČSN 34 2613 Železniční zabezpečovací zařízení. Kolejové obvody a vnější podmínky pro jejich
+činnost.
+ČSN 34 2614 Železniční zabezpečovací zařízení - Předpisy pro projektování, provozování
+a používání kolejových obvodů
+ČSN 34 5145 Názvosloví pro elektrická trakční zařízení
+ČSN 37 6605 Připojování elektrických zařízení celostátních a regionálních drah a vleček na
+elektrický rozvod
+ČSN EN 50119 Drážní zařízení - Pevná trakční zařízení - Elektrická trakční nadzemní trolejová vedení
+ČSN EN 50121-1 Drážní zařízení – Elektromagnetická kompatibilita
+Část 1: Všeobecně
+ČSN EN 50121-2 Drážní zařízení – Elektromagnetická kompatibilita
+Část 2 : Emise celého drážního systému do vnějšího prostředí
+ČSN EN 50121-4 Drážní zařízení - Elektromagnetická kompatibilita
+Část 4: Emise a odolnost zabezpečovacích a sdělovacích zařízení
+ČSN EN 50121-5 Drážní zařízení - Elektromagnetická kompatibilita
+- Část 5: Emise a odolnost pevných instalací a zařízení napájecí soustavy
+ČSN EN 50124-1 Drážní zařízení - Koordinace izolace - Část 1: Základní požadavky - Vzdušné
+vzdálenosti a povrchové cesty pro všechna elektrická a elektronická zařízení
+ČSN EN 50124-2 Drážní zařízení - Koordinace izolace - Část 2: Přepětí a ochrana před přepětím
+ČSN EN 50160 Charakteristiky napětí elektrické energie dodávané z veřejné distribuční sítě
+ČSN EN 50163 Drážní zařízení - Napájecí napětí trakčních soustav
+ČSN EN 61000 Elektromagnetická kompatibilita (EMC) – soubor norem
+ČSN IEC 1000-1-1 Elektromagnetická kompatibilita (EMC). Část 1: Všeobecně. Díl 1: Použití
+a interpretace základních definic a termínů
+ČSN IEC 50(161) Mezinárodní elektrotechnický slovník - Kapitola 161: Elektromagnetická kompatibilita
+ČSN IEC 50(811) Mezinárodní elektrotechnický slovník - Kapitola 811: Elektrická trakce
+PNE 33 3430-0 Výpočetní hodnocení zpětných vlivů odběratelů distribučních soustav
+PNE 33 3430-1 Parametry kvality elektrické energie. Část 1: Harmonické a meziharmonické
+PNE 33 3430-2 Parametry kvality elektrické energie. Část 2: Kolísání napětí
+PNE 33 3430-3 Parametry kvality elektrické energie. Část 3: Nesymetrie napětí
+PNE 33 3430-4 Parametry kvality elektrické energie. Část 4: Poklesy a krátká přerušení napětí
+PNE 33 3430-5 Parametry kvality elektrické energie. Část 5: Přechodná přepětí - impulsní rušení
+PNE 33 3430-6 Parametry kvality elektrické energie. Část 6: Omezení zpětných vlivů na hromadné
+dálkové ovládání
+PNE 33 3430-7 Charakteristiky napětí elektrické energie dodávané z veřejné distribuční sítě
+ČSN EN 60038 Jmenovitá napětí CENELEC
+12
+33.12.2 Právní předpisy (v platném znění)
+nařízení 1301/2014/EU nařízení Komise (EU) o technické specifikaci pro interoperabilitu subsystému
+energie železničního systému v Unii
+směrnice 2007/58/ES směrnice Evropského parlamentu a Rady o interoperabilitě železničního
+systému ve Společenství
+směrnice 2014/30/EU směrnice Evropského parlamentu a Rady o harmonizaci právních předpisů
+členských států týkajících se elektromagnetické kompatibility
+zákon č. 266/1994 Sb. o drahách
+zákon č. 458/2000 Sb. energetický zákon
+vyhláška č. 100/1995 Sb. kterou se stanoví podmínky pro provoz, konstrukci a výrobu určených
+technických zařízení a jejich konkretizace (Řád určených technických
+zařízení)
+vyhláška č. 177/1995 Sb. kterou se vydává stavební a technický řád drah
+vyhláška č. 352/2004 Sb. o provozní a technické propojenosti evropského železničního systému
+vyhláška č. 133/2005 Sb. o technických požadavcích na provozní a technickou propojenost evropského
+železničního systému
+vyhláška č. 540/2005 Sb. o kvalitě dodávek elektřiny a souvisejících služeb v elektroenergetice
+vyhláška č. 16/2016 Sb. o podmínkách připojení k elektrizační soustavě
+nařízení vlády č. 616/2006 Sb. o technických požadavcích na výrobky z hlediska jejich elektromagnetické
+kompatibility
+33.12.3 Související vnitropodnikové předpisy SŽDC
+Směrnice SŽDC č. 34 Směrnice pro uvádění do provozu výrobků, které jsou součástí sdělovacích
+a zabezpečovacích zařízení a zařízení elektrotechniky a energetiky, na železniční dopravní
+cestě ve vlastnictví státu státní organizace Správa železniční dopravní cesty
+Předpis SŽDC E3 Předpis pro trakční napájecí a spínací stanice
+Předpis SŽDC E4 Předpis pro provoz náhradních zdrojů elektrické energie
+Předpis SŽDC E7 Předpis pro provoz elektrických pevných napájecích zařízení drážních kolejových vozidel
+Předpis SŽDC E8 Předpis pro provoz zařízení energetického napájení zabezpečovacích zařízení
+33.12.4 Související kapitoly TKP
+Kapitola1 Všeobecně
+Kapitola 25 část A Protikorozní ochrana úložných zařízení a konstrukcí
+Kapitola26 Osvětlení, rozvody NN včetně dálkového ovládání, EOV, stožárové transformovny VN/NN
+Kapitola27 Zabezpečovací zařízení
+Kapitola29 Silnoproudá technologická zařízení
+Kapitola30 Silnoproudé rozvody VN a soustava 6 kV
+13
+14
+33
+alotipak
+,hard
+hcíntáts
+bevats
+máknímdop
+mínvitatilavk
+mýkcinhceT
+k
+1
+aholířP
+9.33
+.lč
+eld
+íneřěm
+hcínlortnok
+haszor
+ínláminiM
+ínezířaZ
+ínezířaz
+énežorho
+tsonnič
+/
+íneřěm
+ínlortnok
+ěnvorú
+ínlibitapmok
+)uménežorho
+k
+.řaz
+ohénavolortnok
+uhatzv(
+)anvomrofsnart
+ínčkart(
+zH
+05
+Vk
+52
+ávadířts
+eckart
+–
+ecinats
+ícejápan
+ínčkarT
+mícavádeřp
+v
+eigrene
+ékcirtkele
+ůrtemarap
+ínecondohyv
+a
+íneřěm
+
+yknímdop
+ínvulms
+/
+SDPP
+/
+06105
+NE
+NSČ
+ťís
+ínčubirtsid
+ánezařdan
+utnemukod
+ohénžatzv
+ohénij
+.pířp
+06105
+NE
+NSČ
+eld
+ětsím
+)čibeřtops(
+,Q
+,P(
+uklec
+okaj
+SNT
+ůrtemarap
+hcývorěbdo
+ínecondohyv
+a
+íneřěm
+
+ínešur
+invorú
+évoklec
+k
+SNT
+ukvěpsířp
+mínecondohyv
+s
+a
+)S
+;atunim
+1
+.xam
+tad
+umanzáz
+ylavretni
+ínčagerga(
+itís
+ícejápan
+v
+ínecondohyv
+,)ínelserkz
+ékcinomrah
+évoklec
+,ékcinomrah
+énčanzýv
+uzovorp
+iřp
+SNT
+ínežítaz
+énněmorp
+tavotkepser
+ísum
+mínečru
+s
+ZKF
+ohéviltondej
+ohédžak
+ínědal
+íneřěvo
+míneřěm
+
+yrtemarap
+imývohrván
+s
+udaluos
+a
+ícnevkerf
+hcínčnanozer
+hcýnláer
+42105
+NE
+NSČ
+,36105
+NE
+NSČ
+dovbo
+ínčkart
+es
+ejuřěvoen
+)jordz(
+SNT
+uzovorp
+iřp
+ínešur
+hcýnavořazyv
+udaluos
+íneřěvo
+míneřěm
+
+)robuos(
+12105
+NE
+NSČ
+ídeřtsorp
+íšjěnv
+)jordz(
+elád
+ánedevu
+íneřěm
+ínlortnok
+íjukilpa
+es
+SNT
+z
+ánejápan
+ínedev
+a
+ydovzor
+orp
+:ykmánzoP
+)anríněm
+ínčkart(
+ánrěmsonjets
+eckart
+–
+ecinats
+ícejápan
+ínčkarT
+mícavádeřp
+v
+eigrene
+ékcirtkele
+ůrtemarap
+ínecondohyv
+a
+íneřěm
+
+yknímdop
+ínvulms
+/
+SDPP
+/
+06105
+NE
+NSČ
+ťís
+ínčubirtsid
+ánezařdan
+utnemukod
+ohénžatzv
+ohénij
+.pířp
+06105
+NE
+NSČ
+eld
+ětsím
+)čibeřtops(
+,Q
+,P(
+uklec
+okaj
+SNT
+ůrtemarap
+hcývorěbdo
+ínecondohyv
+a
+íneřěm
+
+ínešur
+invorú
+évoklec
+k
+SNT
+ukvěpsířp
+mínecondohyv
+s
+a
+)S
+;atunim
+1
+.xam
+tad
+umanzáz
+ylavretni
+ínčagerga(
+itís
+ícejápan
+v
+ínecondohyv
+,)ínelserkz
+ékcinomrah
+évoklec
+,ékcinomrah
+énčanzýv
+uzovorp
+iřp
+SNT
+ínežítaz
+énněmorp
+tavotkepser
+ísum
+42105
+NE
+NSČ
+,36105
+NE
+NSČ
+dovbo
+ínčkart
+es
+ejuřěvoen
+)jordz(
+SNT
+uzovorp
+iřp
+ínešur
+hcýnavořazyv
+udaluos
+íneřěvo
+míneřěm
+
+)robuos(
+12105
+NE
+NSČ
+ídeřtsorp
+íšjěnv
+)jordz(
+elád
+ánedevu
+íneřěm
+ínlortnok
+íjukilpa
+es
+SNT
+z
+ánejápan
+ínedev
+a
+ydovzor
+orp
+:ykmánzoP
+1
+33
+alotipak
+,hard
+hcíntáts
+bevats
+máknímdop
+mínvitatilavk
+mýkcinhceT
+k
+1
+aholířP
+ínezířaZ
+ínezířaz
+énežorho
+tsonnič
+/
+íneřěm
+ínlortnok
+ěnvorú
+ínlibitapmok
+)uménežorho
+k
+.řaz
+ohénavolortnok
+uhatzv(
+ínedev
+a
+ydovzoR
+hcýviltondej
+v
+udovzor
+urěbdo
+uretkarahc
+íneřěvo
+míneřěm
+
+eletavozovorp
+ínečru
+eld
+ťís
+ícejápan
+ohévolaj
+atondoh
+,C
+x
+L
+:urěbdo
+retkarahc(
+hcevats
+hcínzovorp
+)čibeřtops(
+)unokýv
+mícejápan
+v
+eigrene
+ékcirtkele
+ůrtemarap
+ínecondohyv
+a
+íneřěm
+
+yknímdop
+ínvulms
+/
+SDPP
+/
+06105
+NE
+NSČ
+udovzor
+z
+ánejápan
+ínezířaz
+.pířp
+06105
+NE
+NSČ
+eld
+ěnidalh
+évoťěpan
+ohej
+an
+udovzor
+ětsím
+)jordz(
+utnemukod
+ohénžatzv
+ohénij
+.pířp
+unelč
+ohícavoďalzor
+ohénežrvan
+itsonvárps
+íneřěvo
+évotčopýv
+
+eletavozovorp
+ínečru
+eld
+dovzor
+ítižuopen
+ohej
+itsonvárps
+)ínežorho
+íntsalv(
+---
+:ykmánzoP
+udovbo
+ohínčkart
+z
+ánejápan
+ínezířaZ
+ykitsiretkarahc
+a
+murtkeps
+hcemsáp
+hcýněnárhc
+v
+tiřěvo
+míneřěm
+
+4162
+43
+NSČ
+/
+3162
+43
+NSČ
+)čibeřtops(
+ůdovbo
+hcývojelok
+métsys
+ínedev
+ohéntěpz
+od
+mínezířaz
+mýnavolortnok
+ohénavoreneg
+uduorp
+)ečiněm
+.řpan
+–
+ínešur
+kinzv
+tadálkopdeřp
+ezl
+edk
+,ínezířaz
+u
+ezuop(
+ohéntěpz
+imesime
+žohej
+,ečibeřtops
+icizop
+v
+uosj
+udovbo
+ohínčkart
+z
+ánejápan
+ínezířaz
+žídut
+,ytsec
+ínčkart
+éntěpz
+ítsáčuos
+uosj
+ůdovbo
+hcývojelok
+ymétsyS
+:ykmánzoP
+.tsonezasbo/tsonlov
+hcícíjucondohyv
+ůdovbo
+hcývojelok
+ečamíjiřp
+ynežorho
+týb
+ímsen
+ukesú
+mévojelok
+v
+uduorp
+2
+33
+alotipak
+,hard
+hcíntáts
+bevats
+máknímdop
+mínvitatilavk
+mýkcinhceT
+k
+1
+aholířP
+ínezířaZ
+ínezířaz
+énežorho
+tsonnič
+/
+íneřěm
+ínlortnok
+ěnvorú
+ínlibitapmok
+)uménežorho
+k
+.řaz
+ohénavolortnok
+uhatzv(
+ínezířaz
+ícejápan
+ánvep
+ákcirtkelE
+mícavádeřp
+v
+eigrene
+ékcirtkele
+ůrtemarap
+ínecondohyv
+a
+íneřěm
+
+yknímdop
+ínvulms
+/
+SDPP
+/
+06105
+NE
+NSČ
+ťís
+ícejápan
+utnemukod
+ohénžatzv
+ohénij
+.pířp
+06105
+NE
+NSČ
+eld
+ětsím
+)čibeřtops(
+,Q
+,P(
+uklec
+okaj
+ZPE
+ůrtemarap
+hcývorěbdo
+ínecondohyv
+a
+íneřěm
+
+ínešur
+invorú
+évoklec
+k
+ZPE
+ukvěpsířp
+mínecondohyv
+s
+a
+)S
+;atunim
+1
+.xam
+tad
+umanzáz
+ylavretni
+ínčagerga(
+itís
+ícejápan
+v
+ínecondohyv
+,)ínelserkz
+ékcinomrah
+évoklec
+,ékcinomrah
+énčanzýv
+uzovorp
+iřp
+ZPE
+ínežítaz
+énněmorp
+tavotkepser
+ísum
+yvatsuos
+ínčubirtsid
+z
+ánejápan
+ZPE
+ezuop
+:ykmánzoP
+ínezířaz
+ícejápan
+ánvep
+ákcirtkelE
+ykitsiretkarahc
+a murtkeps
+hcemsáp
+hcýněnárhc
+v
+tiřěvo
+míneřěm
+
+4162
+43
+NSČ
+/
+3162
+43
+NSČ
+ůdovbo
+hcývojelok
+métsys
+ínedev
+ohéntěpz
+od
+mínezířaz
+mýnavolortnok
+ohénavoreneg
+uduorp
+)čibeřtops(
+)ečiněm
+.řpan
+– ínešur
+kinzv
+tadálkopdeřp
+ezl
+edk
+,ínezířaz
+u
+ezuop(
+ohéntěpz
+imesime
+žohej
+,ečibeřtops
+icizop
+v
+uosj
+udovbo
+ohínčkart
+z
+énejápan
+ínezířaz
+žídut
+,ytsec
+ínčkart
+éntěpz
+ítsáčuos
+uosj
+ůdovbo
+hcývojelok
+ymétsyS
+:ykmánzoP
+.tsonezasbo/tsonlov
+hcícíjucondohyv
+ůdovbo
+hcývojelok
+ečamíjiřp
+ynežorho
+týb
+ímsen
+ukesú
+mévojelok
+v
+uduorp
+3
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+KAPITOLA 33
+Třetí aktualizované vydání včetně změny č. 10 (z roku 2016)
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+Odborný gestor: Ing. Ondřej Plocek,
+Správa železniční dopravní cesty, státní organizace
+Odbor automatizace a elektrotechniky
+Vydal: Správa železniční dopravní cesty, státní organizace
+Odbor automatizace a elektrotechniky
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+www.szdc.cz
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení distribuce dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 396, +420 972 741 769
+mobil: +420 725 039 782
+e-mail: typdok@tudc.cz
+www.tudc.cz
