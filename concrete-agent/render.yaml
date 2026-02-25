@@ -17,6 +17,16 @@ services:
         sync: true
       - key: OPENAI_API_KEY
         sync: true
+      - key: GOOGLE_API_KEY       # Gemini — REQUIRED for Multi-Role AI (MULTI_ROLE_LLM=gemini)
+        sync: true
+      - key: PERPLEXITY_API_KEY   # Optional — for KB Research live search (Poradna norem)
+        sync: true
+
+      # Multi-Role LLM (explicit — don't rely on default)
+      - key: MULTI_ROLE_LLM
+        value: gemini
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash-lite
       
       # AI Models
       - key: CLAUDE_MODEL
