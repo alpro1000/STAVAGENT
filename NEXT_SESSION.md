@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
 **Last Updated:** 2026-02-25
-**Current Branch:** `claude/formwork-calculator-review-ArdKs`
-**Last Session:** KB Research (Poradna norem) + Shrnutí fix + OpenAI model + TS build fix
+**Current Branch:** `claude/pump-calculator-tovmodal-fix-FcLSo`
+**Last Session:** Poradna norem в Portal + Universal Parser Preview UI (Phase 2)
 
 ---
 
@@ -117,26 +117,35 @@ ea8aff7 FEAT: FormworkAIModal — добавлен OpenAI GPT-4o mini
 
 ## ⏭️ Следующие задачи (приоритет)
 
-### Приоритет 1: Poradna — доработка и тестирование
-- [ ] Добавить `STAVAGENT_CORE_URL` в Render (Monolit-Planner backend) если не задан
+### ✅ Poradna norem в Portal — ЗАВЕРШЕНО (сессия 2026-02-25)
+- [x] Portal backend: POST /api/kb/research → proxy → concrete-agent
+- [x] Portal frontend: PoradnaWidget.tsx — chips + textarea + results + badges
+- [x] PortalPage: Poradna section между Services и Stats (сворачиваемый)
+- [ ] Добавить `STAVAGENT_CORE_URL` в Render (Portal backend) если не задан
 - [ ] Добавить `PERPLEXITY_API_KEY` в Render (concrete-agent) если не задан
-- [ ] Проверить KB Research в браузере — chip → поиск → ответ → бейджи
-- [ ] Добавить такую же Poradna в Portal (как отдельная страница или виджет)
+- [ ] Проверить в браузере: chip → поиск → ответ → from_kb/model badges
 
-### Приоритет 2: Poradna — расширение KB categories
+### ✅ Universal Parser Phase 2 — ЗАВЕРШЕНО (сессия 2026-02-25)
+- [x] Portal backend: POST /api/parse-preview — in-memory parse без проекта
+- [x] Portal frontend: ParsePreviewModal.tsx — drag-drop + metadata + types + kiosk cards
+- [x] PortalPage: "Náhled výkazu" service card → открывает модал
+- [ ] Поле "Send to Kiosk" с передачей данных (Phase 3 — POST to kiosk with parsed items)
+
+### Приоритет 1: Poradna — доработка
 - [ ] Проверить авто-определение категорий (B2 для ČSN, B3 для цен, B5 для поступов)
-- [ ] Добавить ещё 10–15 suggested questions
-- [ ] Создать начальный seed KB (5–10 часто задаваемых вопросов заранее сохранённых)
+- [ ] Добавить ещё suggested questions (сейчас 6, добавить до 10-12)
+- [ ] Создать начальный seed KB (5–10 часто задаваемых)
 
-### Приоритет 3: Pump Calculator — незакрытые задачи (из пред. сессии)
-- [ ] `handlePumpRentalChange` в TOVModal (паттерн как handleFormworkRentalChange)
-- [ ] `pumpCost` в footer breakdown TOVModal
-- [ ] auto-save для PumpRentalSection (isAutoSaving ref)
+### ✅ Pump Calculator — ЗАВЕРШЕНО (сессия 2026-02-25)
+- [x] `handlePumpRentalChange` в TOVModal (паттерн как handleFormworkRentalChange)
+- [x] `pumpCost` в footer breakdown TOVModal
+- [x] auto-save для PumpRentalSection (isAutoSaving ref)
+- [x] **FIX: TOVSummary** — formwork + pump costs добавлены в `Celkem TOV:` (баг: ранее не учитывались)
 
-### Приоритет 4: Universal Parser Phase 2
-- [ ] Portal Frontend: parse preview UI (summary, листы, типы работ)
-- [ ] "Send to Kiosk" кнопки из превью
-- [ ] Monolit/Registry: "Load from Portal" option
+### Приоритет 2: Universal Parser Phase 3
+- [ ] "Send to Kiosk" с передачей данных (POST parsed items to kiosk API)
+- [ ] Monolit: "Load from Portal" — принять items от portal parse-preview
+- [ ] Registry: аналогично
 
 ---
 

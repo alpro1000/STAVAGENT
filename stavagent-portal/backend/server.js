@@ -32,6 +32,8 @@ import kioskLinksRoutes from './src/routes/kiosk-links.js';
 import otskpRoutes from './src/routes/otskp.js';
 import debugRoutes from './src/routes/debug.js';
 import integrationRoutes from './src/routes/integration.js';
+import kbResearchRoutes from './src/routes/kb-research.js';
+import parsePreviewRoutes from './src/routes/parse-preview.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -175,6 +177,12 @@ app.use('/api/otskp', otskpLimiter, otskpRoutes);
 
 // Integration routes (Monolit ↔ Registry sync) - NO AUTH REQUIRED
 app.use('/api/integration', integrationRoutes);
+
+// KB Research proxy — no auth required (question is public)
+app.use('/api/kb/research', kbResearchRoutes);
+
+// Parse Preview — no auth required, no DB storage (temp file only)
+app.use('/api/parse-preview', uploadLimiter, parsePreviewRoutes);
 
 // Debug routes (disable in production)
 app.use('/api/debug', debugRoutes);

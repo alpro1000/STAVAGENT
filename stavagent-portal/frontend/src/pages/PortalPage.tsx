@@ -22,6 +22,8 @@ import ServiceCard from '../components/portal/ServiceCard';
 import ProjectAudit from '../components/portal/ProjectAudit';
 import ProjectDocuments from '../components/portal/ProjectDocuments';
 import DocumentSummary from '../components/portal/DocumentSummary';
+import PoradnaWidget from '../components/portal/PoradnaWidget';
+import ParsePreviewModal from '../components/portal/ParsePreviewModal';
 import ThemeToggle from '../components/ThemeToggle';
 
 interface KioskLink {
@@ -86,6 +88,15 @@ const SERVICES: Service[] = [
     url: '#summary', // Special URL for internal action
     status: 'active',
     tags: ['Extrakce', 'One-shot', 'Strukturované data', 'LLM']
+  },
+  {
+    id: 'universal-parser',
+    name: 'Náhled výkazu',
+    description: 'Nahrajte Excel výkaz výměr → okamžitě zjistěte typy prací, listy, metadata a doporučení pro kiosk. Bez projektu, bez uložení.',
+    icon: '🔍',
+    url: '#parse-preview',
+    status: 'active',
+    tags: ['Excel', 'Typy prací', 'Kiosk routing', 'Bez projektu']
   },
   {
     id: 'monolit-planner',
@@ -171,6 +182,7 @@ export default function PortalPage() {
   const [showAuditModal, setShowAuditModal] = useState(false);
   const [showDocumentsModal, setShowDocumentsModal] = useState(false);
   const [showDocumentSummaryModal, setShowDocumentSummaryModal] = useState(false);
+  const [showParsePreviewModal, setShowParsePreviewModal] = useState(false);
   const [documentsProjectId, setDocumentsProjectId] = useState<string>('');
   const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
 
@@ -377,12 +389,16 @@ export default function PortalPage() {
                     setShowDocumentsModal(true);
                   } :
                   service.id === 'document-summary' ? () => setShowDocumentSummaryModal(true) :
+                  service.id === 'universal-parser' ? () => setShowParsePreviewModal(true) :
                   undefined
                 }
               />
             ))}
           </div>
         </section>
+
+        {/* Poradna norem */}
+        <PoradnaWidget />
 
         {/* Stats Section */}
         <section style={{ marginBottom: '48px' }}>
@@ -645,6 +661,11 @@ export default function PortalPage() {
             <DocumentSummary onClose={() => setShowDocumentSummaryModal(false)} />
           </div>
         </div>
+      )}
+
+      {/* Parse Preview Modal */}
+      {showParsePreviewModal && (
+        <ParsePreviewModal onClose={() => setShowParsePreviewModal(false)} />
       )}
 
       {/* Theme Toggle */}

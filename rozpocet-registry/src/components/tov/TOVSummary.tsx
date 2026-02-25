@@ -5,7 +5,7 @@
  * Displayed at the bottom of the TOV modal.
  */
 
-import { Users, Truck, Package } from 'lucide-react';
+import { Users, Truck, Package, Layers, Zap } from 'lucide-react';
 import type { TOVData } from '../../types/unified';
 
 interface TOVSummaryProps {
@@ -16,9 +16,16 @@ export function TOVSummary({ data }: TOVSummaryProps) {
   const laborCost = data.labor.reduce((sum, r) => sum + (r.totalCost || 0), 0);
   const machineryCost = data.machinery.reduce((sum, r) => sum + (r.totalCost || 0), 0);
   const materialsCost = data.materialsSummary.totalCost;
-  const totalCost = laborCost + machineryCost + materialsCost;
+  const formworkCost = (data.formworkRental ?? []).reduce((sum, r) => sum + r.konecny_najem, 0);
+  const pumpCost = data.pumpRental?.konecna_cena ?? 0;
+  const totalCost = laborCost + machineryCost + materialsCost + formworkCost + pumpCost;
 
-  const hasData = data.labor.length > 0 || data.machinery.length > 0 || data.materials.length > 0;
+  const hasData =
+    data.labor.length > 0 ||
+    data.machinery.length > 0 ||
+    data.materials.length > 0 ||
+    formworkCost > 0 ||
+    pumpCost > 0;
 
   if (!hasData) {
     return null;
@@ -67,6 +74,30 @@ export function TOVSummary({ data }: TOVSummaryProps) {
               <span className="text-text-muted">|</span>
               <span className="font-medium tabular-nums">
                 {materialsCost.toLocaleString('cs-CZ')} Kč
+              </span>
+            </div>
+          )}
+
+          {/* Formwork rental */}
+          {formworkCost > 0 && (
+            <div className="flex items-center gap-2">
+              <Layers size={16} className="text-blue-500" />
+              <span className="text-text-secondary">bednění</span>
+              <span className="text-text-muted">|</span>
+              <span className="font-medium tabular-nums text-blue-600">
+                {formworkCost.toLocaleString('cs-CZ')} Kč
+              </span>
+            </div>
+          )}
+
+          {/* Pump rental */}
+          {pumpCost > 0 && (
+            <div className="flex items-center gap-2">
+              <Zap size={16} className="text-blue-500" />
+              <span className="text-text-secondary">pumpa</span>
+              <span className="text-text-muted">|</span>
+              <span className="font-medium tabular-nums text-blue-600">
+                {pumpCost.toLocaleString('cs-CZ')} Kč
               </span>
             </div>
           )}
