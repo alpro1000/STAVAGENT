@@ -601,21 +601,42 @@ class DocumentAccumulator:
         task.progress = 0.3
         await self._notify_subscribers(project_id, 'task_progress', task.to_dict())
 
-        # Generate summary
-        if self._summary_func:
-            summary = await asyncio.get_event_loop().run_in_executor(
-                self._executor,
-                self._summary_func,
-                cache.aggregated_positions,
-                cache.aggregated_requirements,
-                language
+        # Generate summary — use SummaryGenerator (Multi-Role AI) with fallback
+        summary: dict
+        try:
+            from app.services.summary_generator import (
+                SummaryGenerator,
+                SummaryLanguage,
+                SummaryFormat,
             )
-        else:
-            # Default summary
+            lang_enum = SummaryLanguage(language) if language in ('cs', 'en', 'sk') else SummaryLanguage.CZECH
+            project_name = (task.result or {}).get('project_name') or project_id
+
+            generator = SummaryGenerator()
+            project_summary = await generator.generate_summary(
+                project_id=project_id,
+                project_name=project_name,
+                positions=cache.aggregated_positions,
+                audit_results=cache.aggregated_requirements or None,
+                language=lang_enum,
+                output_format=SummaryFormat.JSON,
+                use_parallel=True,
+            )
+            summary = project_summary.to_dict()
+            logger.info(f"[Accumulator] SummaryGenerator OK — {len(cache.aggregated_positions)} positions")
+        except Exception as gen_err:
+            logger.warning(f"[Accumulator] SummaryGenerator failed: {gen_err} — using basic fallback")
             summary = {
-                'executive_summary': f"Project contains {len(cache.aggregated_positions)} positions from {len(cache.file_versions)} files.",
+                'executive_summary': (
+                    f"Projekt obsahuje {len(cache.aggregated_positions)} pozic "
+                    f"z {len(cache.file_versions)} souborů."
+                ),
                 'key_findings': [],
                 'recommendations': [],
+                'critical_issues': [],
+                'warnings': [],
+                'overall_status': 'AMBER',
+                'confidence_score': 0.0,
                 'generated_at': datetime.utcnow().isoformat(),
             }
 
@@ -891,7 +912,12 @@ class DocumentAccumulator:
         await self._task_queue.put(task)
         return task
 
-    async def queue_generate_summary(self, project_id: str, language: str = 'cs') -> BackgroundTask:
+    async def queue_generate_summary(
+        self,
+        project_id: str,
+        language: str = 'cs',
+        project_name: str = '',
+    ) -> BackgroundTask:
         """Queue summary generation."""
         task = BackgroundTask(
             task_id=str(uuid.uuid4()),
@@ -901,7 +927,7 @@ class DocumentAccumulator:
             progress=0.0,
             message='Queued for summary generation',
             created_at=datetime.utcnow(),
-            result={'language': language},
+            result={'language': language, 'project_name': project_name or project_id},
         )
         self._tasks[task.task_id] = task
         await self._task_queue.put(task)

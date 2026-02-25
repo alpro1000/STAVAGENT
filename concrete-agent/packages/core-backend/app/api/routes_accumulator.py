@@ -56,6 +56,7 @@ class GenerateSummaryRequest(BaseModel):
     """Request to generate summary."""
     project_id: str = Field(..., description="Project ID")
     language: str = Field(default="cs", description="Output language: cs, en, sk")
+    project_name: str = Field(default="", description="Human-readable project name")
 
 
 class TaskResponse(BaseModel):
@@ -240,6 +241,7 @@ async def generate_summary(request: GenerateSummaryRequest):
         task = await accumulator.queue_generate_summary(
             project_id=request.project_id,
             language=request.language,
+            project_name=request.project_name or request.project_id,
         )
 
         return TaskResponse(
