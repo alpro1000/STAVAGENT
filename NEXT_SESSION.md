@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
 **Last Updated:** 2026-02-25
-**Current Branch:** `claude/formwork-calculator-review-ArdKs`
-**Last Session:** KB Research (Poradna norem) + Shrnutí fix + OpenAI model + TS build fix
+**Current Branch:** `claude/pump-calculator-tovmodal-fix-FcLSo`
+**Last Session:** TOVSummary fix — formwork + pump costs in Celkem TOV
 
 ---
 
@@ -128,10 +128,11 @@ ea8aff7 FEAT: FormworkAIModal — добавлен OpenAI GPT-4o mini
 - [ ] Добавить ещё 10–15 suggested questions
 - [ ] Создать начальный seed KB (5–10 часто задаваемых вопросов заранее сохранённых)
 
-### Приоритет 3: Pump Calculator — незакрытые задачи (из пред. сессии)
-- [ ] `handlePumpRentalChange` в TOVModal (паттерн как handleFormworkRentalChange)
-- [ ] `pumpCost` в footer breakdown TOVModal
-- [ ] auto-save для PumpRentalSection (isAutoSaving ref)
+### ✅ Pump Calculator — ЗАВЕРШЕНО (сессия 2026-02-25)
+- [x] `handlePumpRentalChange` в TOVModal (паттерн как handleFormworkRentalChange)
+- [x] `pumpCost` в footer breakdown TOVModal
+- [x] auto-save для PumpRentalSection (isAutoSaving ref)
+- [x] **FIX: TOVSummary** — formwork + pump costs добавлены в `Celkem TOV:` (баг: ранее не учитывались)
 
 ### Приоритет 4: Universal Parser Phase 2
 - [ ] Portal Frontend: parse preview UI (summary, листы, типы работ)
