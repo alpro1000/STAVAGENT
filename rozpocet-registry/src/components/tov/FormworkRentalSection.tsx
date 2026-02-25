@@ -51,7 +51,7 @@ const BEDNI_SYSTEMS: BedniSystem[] = [
     label: s.label_cs,
     system: s.system_name,
     rozmery: s.variant,
-    jednotka: s.rental_czk_m2_month,
+    jednotka: s.rental_czk_m2_month ?? 0,
     podil_koupe_m2: (s as unknown as { podil_koupe_m2_typical?: number }).podil_koupe_m2_typical ?? 0,
   })),
   { id: 'custom', label: '— Vlastní systém —', system: '', rozmery: '', jednotka: 0.00, podil_koupe_m2: 0 },
