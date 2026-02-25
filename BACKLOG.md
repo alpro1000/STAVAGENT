@@ -1,6 +1,6 @@
 # STAVAGENT Backlog & Pending Plans
 
-**Last Updated:** 2026-02-18
+**Last Updated:** 2026-02-25
 **Maintained By:** Development Team
 
 ---
@@ -17,7 +17,33 @@
 
 ## 🔴 Immediate / Pending User Action
 
-### 1. AI Suggestion Button Enablement (Monolit Planner)
+### 1. Переменные окружения для Poradna norem (добавить в Render)
+
+**Status:** ⏳ Code complete, awaiting env vars setup
+**Branch:** `claude/formwork-calculator-review-ArdKs`
+**Service:** Monolit-Planner backend + concrete-agent
+
+**Добавить в Render:**
+```env
+# Monolit-Planner backend (Render → monolit-planner-api → Environment):
+STAVAGENT_CORE_URL=https://concrete-agent.onrender.com   # уже есть дефолт, но лучше явно
+
+# concrete-agent (Render → concrete-agent → Environment):
+PERPLEXITY_API_KEY=pplx-...   # без него — Gemini fallback (работает, но без источников)
+
+# Monolit-Planner backend (для OpenAI GPT-4o mini):
+OPENAI_API_KEY=sk-...          # без него — Multi-Role fallback (работает)
+```
+
+**Проверка:**
+```
+FormworkAIModal → вкладка [Poradna norem] → ввести вопрос → Enter
+Ожидаемый результат: ответ + бейдж [perplexity/sonar-pro] или [Z KB cache]
+```
+
+---
+
+### 2. AI Suggestion Button Enablement (Monolit Planner)
 
 **Status:** ⏳ Code complete, awaiting user SQL execution
 **Branch:** `claude/create-onboarding-guide-E4wrx` (merged)
@@ -96,7 +122,34 @@ curl -s https://monolit-planner-api.onrender.com/api/config | jq '.feature_flags
 
 ## 🟠 High Priority
 
-### 5. Universal Parser Phase 2 — Portal Frontend + Kiosk Integration
+### 5. Pump Calculator — незакрытые задачи (TOVModal)
+
+**Status:** ⏳ Partial — PumpRentalSection UI done, TOVModal integration pending
+**Branch:** `claude/formwork-calculator-review-ArdKs`
+**Service:** rozpocet-registry
+
+**Tasks:**
+- [ ] `handlePumpRentalChange` в TOVModal (паттерн как `handleFormworkRentalChange`)
+- [ ] `pumpCost` в footer breakdown TOVModal
+- [ ] auto-save для PumpRentalSection (isAutoSaving ref, как у formwork)
+
+---
+
+### 6. Poradna norem — расширение
+
+**Status:** ⏳ MVP complete, refinements planned
+**Branch:** `claude/formwork-calculator-review-ArdKs`
+**Service:** FormworkAIModal + concrete-agent
+
+**Tasks:**
+- [ ] Добавить Poradna как отдельную страницу/виджет в stavagent-portal
+- [ ] Создать seed KB — 5–10 часто задаваемых вопросов заранее сохранённых
+- [ ] Добавить ещё 10–15 suggested questions (чипы)
+- [ ] Проверить авто-определение категорий (B2 для ČSN, B3 для цен, B5 для postupov)
+
+---
+
+### 7. Universal Parser Phase 2 — Portal Frontend + Kiosk Integration
 
 **Status:** ⏳ Phase 1 Complete (backend), Phase 2 planned
 **Branch:** `claude/continue-implementation-NEOkf`
@@ -124,7 +177,7 @@ curl -s https://monolit-planner-api.onrender.com/api/config | jq '.feature_flags
 
 ---
 
-### 6. Node.js Version Update
+### 8. Node.js Version Update
 
 **Status:** ⏳ Not started
 **Service:** All services
@@ -139,7 +192,7 @@ curl -s https://monolit-planner-api.onrender.com/api/config | jq '.feature_flags
 
 ---
 
-### 7. npm Security Vulnerabilities
+### 9. npm Security Vulnerabilities
 
 **Status:** ⏳ Not started
 **Service:** All services
@@ -158,7 +211,7 @@ cd ../shared && npm audit fix
 
 ## 🟡 Medium Priority
 
-### 8. URS Matcher - Phase 2: Document Parsing
+### 10. URS Matcher - Phase 2: Document Parsing
 
 **Status:** 🔄 In Progress (partially complete)
 **Service:** URS_MATCHER_SERVICE
@@ -178,7 +231,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 9. URS Matcher - Phase 3: Multi-Role System
+### 11. URS Matcher - Phase 3: Multi-Role System
 
 **Status:** 🔄 In Progress (MVP complete)
 **Service:** URS_MATCHER_SERVICE
@@ -198,7 +251,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 10. CI/CD Improvements
+### 12. CI/CD Improvements
 
 **Status:** ⏳ Not started
 **Service:** All services
@@ -213,7 +266,7 @@ cd ../shared && npm audit fix
 
 ## 🟢 Low Priority / Future
 
-### 11. URS Matcher - Phase 4: Optimization
+### 13. URS Matcher - Phase 4: Optimization
 
 **Status:** ⏳ Planned
 **Service:** URS_MATCHER_SERVICE
@@ -230,7 +283,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 12. Integration Tests - Vitest Migration
+### 14. Integration Tests - Vitest Migration
 
 **Status:** ⏳ Planned
 **Service:** Monolit-Planner
@@ -244,7 +297,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 13. Document Accumulator - Production Fixes
+### 15. Document Accumulator - Production Fixes
 
 **Status:** ⏳ Identified but not started
 **Service:** concrete-agent
@@ -261,7 +314,7 @@ cd ../shared && npm audit fix
 
 ---
 
-### 14. Security Audit Follow-up
+### 16. Security Audit Follow-up
 
 **Status:** ⏳ Some items fixed, some pending
 **Service:** All services
@@ -294,13 +347,13 @@ docs/archive/
 
 | Priority | Items | Impact |
 |----------|-------|--------|
-| 🔴 Immediate | 4 | User action needed |
-| 🟠 High | 3 | Universal Parser Phase 2 + Security |
+| 🔴 Immediate | 5 | User action needed (+ Poradna env vars) |
+| 🟠 High | 5 | Pump Calculator + Poradna + Universal Parser Phase 2 + Security |
 | 🟡 Medium | 3 | Features |
 | 🟢 Low | 4 | Optimization |
 
 ---
 
-**Total Pending Items:** 14
-**Next Critical Path:** Universal Parser Phase 2 UI → AI Suggestion SQL → Node.js update
+**Total Pending Items:** 17
+**Next Critical Path:** Poradna env vars → Pump TOVModal → Universal Parser Phase 2 UI
 

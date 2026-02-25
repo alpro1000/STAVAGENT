@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
-**Last Updated:** 2026-02-24
-**Current Branch:** `claude/universal-excel-parser-IcihR`
-**Last Session:** R0 Pump Calculator v2 (Beton Union 2026 model) + TOV auto-save fix
+**Last Updated:** 2026-02-25
+**Current Branch:** `claude/formwork-calculator-review-ArdKs`
+**Last Session:** KB Research (Poradna norem) + Shrnutí fix + OpenAI model + TS build fix
 
 ---
 
@@ -15,127 +15,156 @@ cd /home/user/STAVAGENT
 cat CLAUDE.md
 
 # 2. Check branch and recent commits
-git checkout claude/universal-excel-parser-IcihR
+git checkout claude/formwork-calculator-review-ArdKs
 git log --oneline -10
 
 # 3. TypeScript check (rozpocet-registry)
-cd rozpocet-registry && npx tsc --noEmit
+cd rozpocet-registry && npx tsc --noEmit --skipLibCheck
 
 # 4. Run tests
 cd ../Monolit-Planner/shared && npx vitest run        # 51 tests
-cd ../../stavagent-portal && node --test backend/tests/universalParser.test.js  # 11 tests
 ```
 
 ---
 
-## Сессия 2026-02-24: Резюме
+## Сессия 2026-02-25: Резюме
 
 ### ✅ Что сделано:
 
 | Компонент | Задача | Статус |
 |-----------|--------|--------|
-| TOVModal | Fix Amazon Q bot review: stale closure, useEffect deps, isAutoSaving ref | ✅ |
-| MachineryTab | R0 Pump Calculator v1 — начальная версия с плоской моделью | ✅ |
-| PumpRentalSection | R0 Pump Calculator v2 — реальная модель Beton Union 2026 | ✅ |
-| pump_knowledge.json | База знаний: 10 типов насосов, аксессуары, standard_times | ✅ |
-| unified.ts | Новые типы: PumpConstructionItem, PumpAccessory, PumpRentalData (5 компонентов) | ✅ |
+| FormworkAIModal (Monolit) | Добавлен OpenAI GPT-4o mini как 3-й вариант модели | ✅ |
+| FormworkAIModal (Monolit) | Исправлен лейбл Gemini 2.0 → 2.5 Flash | ✅ |
+| concrete-agent | Новый endpoint POST /api/v1/kb/research (Poradna norem) | ✅ |
+| Monolit backend | Прокси /api/kb/research → concrete-agent | ✅ |
+| FormworkAIModal (Monolit) | Вкладка "Poradna norem" с поиском и кэшем в KB | ✅ |
+| concrete-agent | FIX: Shrnutí — подключён реальный SummaryGenerator | ✅ |
+| routes_accumulator.py | GenerateSummaryRequest + project_name проброшен через цепочку | ✅ |
+| FormworkRentalSection (registry) | FIX: rental_czk_m2_month null → 0 (TS2322 build error) | ✅ |
 
-### Ключевое достижение — R0 Kalkulátor betonočerpadla:
+---
 
-**Модель ценообразования (из Beton Union Plzeň ceník 2026):**
+### Ключевые изменения:
+
+#### 1. FormworkAIModal — 3 модели
 ```
-Konečná cena =
-  Doprava      = přistavení × (fixed_czk + km × czk_km × 2)
-+ Manipulace   = manipulace_czk_h × Σ hodiny_celkem
-+ Příplatek    = priplatek_czk_m3 × Σ celkem_m3
-+ Příslušenství = Σ accessories
-+ Příplatky    = Σ custom_surcharges
-```
-
-**Overhead per přistavení:** 0.5h stavba + 0.5h mytí (stánda Beton Union)
-
-**Pump types в knowledge base:**
-```
-28/24m   2500 Kč/h  | 31/27m  2600 Kč/h | 34/30m  2800 Kč/h
-36/32m   3000 Kč/h  | 38/34m  3300 Kč/h | 42/38m  3700 Kč/h
-46/42m   4000 Kč/h  | 52/48m  4300 Kč/h | 56/52m  4600 Kč/h
-PUMI 24/20m 2800 Kč/h
+[Gemini 2.5 Flash]  ~1s  · concrete-agent Multi-Role (brief prompt)
+[GPT-4o mini]       ~2s  · OpenAI API напрямую (если OPENAI_API_KEY) / Multi-Role fallback
+[Claude Sonnet 4.6] ~5s  · concrete-agent Multi-Role (detailed prompt)
 ```
 
-**Новые файлы:**
+#### 2. Poradna norem — новая вкладка в FormworkAIModal
 ```
-rozpocet-registry/src/data/pump_knowledge.json          NEW (~160 строк)
-rozpocet-registry/src/types/unified.ts                  MOD (+89 строк)
-rozpocet-registry/src/components/tov/PumpRentalSection.tsx  MOD (~785 строк)
+Вкладка [Poradna norem] в FormworkAIModal:
+  6 suggested chips → textarea (Ctrl+Enter submit)
+  → POST /api/kb/research (Monolit backend proxy)
+    → POST /api/v1/kb/research (concrete-agent)
+      1. Проверить KB cache (research_<md5>.json) → бесплатно
+      2. Perplexity sonar-pro (10 чешских стройных сайтов)
+      3. Gemini fallback (если нет PERPLEXITY_API_KEY)
+      4. Сохранить → KB/B5_tech_cards/research_<key>.json
+
+Бейджи результата:
+  [Z KB cache]      ← зелёный, повторный запрос
+  [perplexity/...] ← синий, новый поиск
+  [Uloženo → KB/B5] ← жёлтый, сохранено
 ```
 
-### Архитектура R0 Calculators:
-
+#### 3. Shrnutí в Portal — ИСПРАВЛЕН
 ```
-TOVModal
-├── MaterialsTab → FormworkRentalSection  (BEDNENI)     ✅ работает
-├── MachineryTab → PumpRentalSection      (BETON_MONOLIT / BETON_PREFAB / PILOTY) ✅ работает
-└── Footer total: formworkCost + pumpCost + material + labor + machinery
+БЫЛО: _execute_generate_summary() → fallback "Project contains N positions"
+СТАЛО: → SummaryGenerator.generate_summary() → 5 Multi-Role AI ролей
+         (Document Validator, Structural Engineer, Concrete Specialist,
+          Cost Estimator, Standards Checker)
+       → полный ProjectSummary (executive_summary, key_findings,
+         recommendations, critical_issues, overall_status)
+       → graceful fallback при ошибке AI
+
+project_name теперь передаётся через весь путь:
+  Portal UI → GenerateSummaryRequest → queue_generate_summary → _execute
+```
+
+---
+
+### Новые файлы этой сессии:
+```
+concrete-agent/packages/core-backend/app/api/routes_kb_research.py   NEW (~170 строк)
+Monolit-Planner/backend/src/routes/kb-research.js                    NEW (~50 строк)
+```
+
+### Изменённые файлы:
+```
+concrete-agent/packages/core-backend/app/api/__init__.py              +kb_research_router
+concrete-agent/packages/core-backend/app/services/document_accumulator.py  +SummaryGenerator
+concrete-agent/packages/core-backend/app/api/routes_accumulator.py   +project_name field
+stavagent-portal/frontend/src/components/portal/ProjectDocuments.tsx  +project_name in request
+Monolit-Planner/backend/server.js                                     +kbResearchRoutes
+Monolit-Planner/backend/src/routes/formwork-assistant.js              +OpenAI branch
+Monolit-Planner/frontend/src/components/FormworkAIModal.tsx           +Poradna tab, 3 models
+rozpocet-registry/src/components/tov/FormworkRentalSection.tsx        null ?? 0 fix
 ```
 
 ### Коммиты сессии:
 ```
-6000478 FEAT: Pump calculator v2 — realistic Beton Union 2026 pricing model
-db1e360 FEAT: Kalkulátor betonočerpadla (R0 Pump Calculator) v1
-999f004 FIX: Address bot review issues in TOVModal formwork auto-save
-97b8b29 FIX: Auto-persist formwork rental rows in TOV modal
-691ef5f FIX: Remove unused expandedRowId state — TS6133 build error
+0152a19 FIX: FormworkRentalSection — rental_czk_m2_month null → 0 (TS2322)
+841fda5 FIX: Shrnutí — подключён реальный SummaryGenerator (Multi-Role AI)
+7b8d573 FEAT: Poradna norem — KB Research module + FormworkAIModal tab
+9b94c15 FIX: FormworkAIModal — Gemini 2.0 → 2.5 Flash
+ea8aff7 FEAT: FormworkAIModal — добавлен OpenAI GPT-4o mini
 ```
 
 ---
 
 ## ⏭️ Следующие задачи (приоритет)
 
-### Приоритет 1: Pump Calculator — тестирование и доработка
-- [ ] Проверить PumpRentalSection в браузере (реальный UI тест)
-- [ ] Проверить auto-save (аналогично FormworkRentalSection — isAutoSaving ref)
-- [ ] Добавить `handlePumpRentalChange` в TOVModal (см. паттерн handleFormworkRentalChange)
-- [ ] Показать `pumpCost` в footer breakdown TOVModal
+### Приоритет 1: Poradna — доработка и тестирование
+- [ ] Добавить `STAVAGENT_CORE_URL` в Render (Monolit-Planner backend) если не задан
+- [ ] Добавить `PERPLEXITY_API_KEY` в Render (concrete-agent) если не задан
+- [ ] Проверить KB Research в браузере — chip → поиск → ответ → бейджи
+- [ ] Добавить такую же Poradna в Portal (как отдельная страница или виджет)
 
-### Приоритет 2: Universal Parser Phase 2 (Portal UI)
-- [ ] UI превью парсинга: после загрузки файла показать summary (листы, позиции, типы работ)
-- [ ] Кнопка "Отправить в Monolit / Registry / URS Matcher" из превью
-- [ ] Визуальный статус парсинга (parsing → parsed → error)
+### Приоритет 2: Poradna — расширение KB categories
+- [ ] Проверить авто-определение категорий (B2 для ČSN, B3 для цен, B5 для поступов)
+- [ ] Добавить ещё 10–15 suggested questions
+- [ ] Создать начальный seed KB (5–10 часто задаваемых вопросов заранее сохранённых)
 
-### Приоритет 3: Кiosks получают данные из Portal
-- [ ] Monolit: опция "Загрузить из Portal" (GET /for-kiosk/monolit)
-- [ ] Registry: опция "Загрузить из Portal" (GET /for-kiosk/registry)
-- [ ] URS Matcher: опция "Загрузить из Portal" (GET /for-kiosk/urs_matcher)
+### Приоритет 3: Pump Calculator — незакрытые задачи (из пред. сессии)
+- [ ] `handlePumpRentalChange` в TOVModal (паттерн как handleFormworkRentalChange)
+- [ ] `pumpCost` в footer breakdown TOVModal
+- [ ] auto-save для PumpRentalSection (isAutoSaving ref)
 
-### Приоритет 4: Будущие R0 Калькуляторы
-- [ ] LaborTab — калькулятор рабочей силы (бригада, смены, норма-часы)
-- [ ] MachineryTab — калькулятор аренды крана/экскаватора
-- [ ] Общий паттерн: каждый calculator tab имеет collapsible section с auto-save
+### Приоритет 4: Universal Parser Phase 2
+- [ ] Portal Frontend: parse preview UI (summary, листы, типы работ)
+- [ ] "Send to Kiosk" кнопки из превью
+- [ ] Monolit/Registry: "Load from Portal" option
 
 ---
 
 ## ⏳ AWAITING USER ACTION
 
-### 1. AI Suggestion Button (Monolit)
-```bash
-# В Render Dashboard → monolit-db → Shell:
-# Выполнить: Monolit-Planner/БЫСТРОЕ_РЕШЕНИЕ.sql
-```
-
-### 2. Environment Variables
+### 1. Переменные окружения (добавить в Render)
 ```env
-# stavagent-portal-backend:
-DISABLE_AUTH=true
+# Monolit-Planner backend (для Poradna norem):
+STAVAGENT_CORE_URL=https://concrete-agent.onrender.com  # дефолт уже есть, но лучше явно
 
-# URS_MATCHER_SERVICE:
-PPLX_API_KEY=pplx-...
+# concrete-agent (для Perplexity в KB Research):
+PERPLEXITY_API_KEY=pplx-...   # без него — fallback на Gemini (работает, но без источников)
+
+# concrete-agent (для OpenAI в FormworkAssistant, если хотите GPT-4o mini):
+OPENAI_API_KEY=sk-...         # без него — fallback на Multi-Role (работает)
 ```
 
-### 3. Google Drive + Keep-Alive Setup
-- См. `GOOGLE_DRIVE_SETUP.md` и `KEEP_ALIVE_SETUP.md`
+### 2. PR Review
+- `claude/formwork-calculator-review-ArdKs` — содержит все изменения, готов к review
 
-### 4. PR Review
-- `claude/universal-excel-parser-IcihR` — содержит все изменения этой сессии, готов к review
+### 3. AI Suggestion Button (Monolit) — по-прежнему ожидает
+```bash
+# В Render Dashboard → monolit-db → Shell → БЫСТРОЕ_РЕШЕНИЕ.sql
+```
+
+### 4. Старые задачи
+- Google Drive Setup → `GOOGLE_DRIVE_SETUP.md`
+- Keep-Alive → `KEEP_ALIVE_SETUP.md`
 
 ---
 
@@ -143,56 +172,36 @@ PPLX_API_KEY=pplx-...
 
 | Сервис | Тесты | Статус |
 |--------|-------|--------|
-| Portal Universal Parser | 11/11 | ✅ Pass |
 | Monolit shared formulas | 51/51 | ✅ Pass |
-| rozpocet-registry | `npx tsc --noEmit` | ✅ 0 errors |
+| rozpocet-registry Vercel build | tsc -b && vite build | ✅ (после fix null→0) |
 | URS Matcher | 159 | ⚠️ Not run this session |
 
 ---
 
-## 📐 R0 Calculator Pattern (для будущих калькуляторов)
+## 🏗 Архитектура KB Research
 
-```typescript
-// 1. Knowledge base JSON (src/data/xxx_knowledge.json)
-// 2. Types in unified.ts (XXXData interface с computed totals)
-// 3. XxxSection.tsx:
-//    - recomputeItem() — pure function
-//    - computeTotals() — pure function
-//    - collapsible header с badge + total
-//    - auto-save on every change (isAutoSaving ref pattern)
-// 4. В TOVModal:
-//    handleXxxChange = (data: XxxData) => setLocalData(prev => {
-//      const updatedData = { ...prev, xxxData: data };
-//      isAutoSaving.current = true;
-//      onSave(updatedData);
-//      return updatedData;
-//    });
-// 5. В footer: включить xxxCost в calculatedTotals
+```
+FormworkAIModal
+  └── Вкладка [Poradna norem]
+        ↓ POST /api/kb/research (Monolit)
+  Monolit backend: kb-research.js (proxy)
+        ↓ POST /api/v1/kb/research
+  concrete-agent: routes_kb_research.py
+    1. Ищет research_<md5(question)>.json в KB/*
+    2. Perplexity sonar-pro → csnonline.cz, tkp, beton.cz ...
+    3. Gemini fallback (GOOGLE_API_KEY)
+    4. Сохраняет в KB/<auto-category>/research_<key>.json
+    5. Возвращает { answer, sources[], from_kb, kb_saved, kb_category }
 ```
 
----
-
-## 🔑 Ключевые паттерны (anti-render-loop)
-
-```tsx
-// Проблема: auto-save → Zustand → prop change → useEffect re-sync → loop
-
-// Решение:
-const isAutoSaving = useRef<boolean>(false);
-
-// В useEffect:
-useEffect(() => {
-  if (isAutoSaving.current) { isAutoSaving.current = false; return; }
-  setLocalData(tovData ?? createEmptyTOVData());
-}, [tovData, item.id]);
-
-// В обработчике изменений:
-setLocalData(prev => {
-  const updatedData = { ...prev, someData };
-  isAutoSaving.current = true;   // ← флаг ПЕРЕД onSave
-  onSave(updatedData);
-  return updatedData;
-});
+**Авто-определение категории из вопроса:**
+```
+"čsn", "norma", "tkp"          → B2_csn_standards
+"cena", "kč/m²", "ceník"       → B3_current_prices
+"výkon", "produktivita", "nph"  → B4_production_benchmarks
+"zákon", "bozp", "nařízení"    → B7_regulations
+"jeřáb", "čerpadlo", "pumpa"   → B9_Equipment_Specs
+default                         → B5_tech_cards
 ```
 
 ---
@@ -202,7 +211,8 @@ setLocalData(prev => {
 1. Прочитай CLAUDE.md
 2. Прочитай NEXT_SESSION.md (этот файл)
 3. git log --oneline -10
-4. Спроси: тестировать PumpRentalSection или идти на Phase 2 Parser UI?
+4. Проверь: работает ли Poradna в браузере?
+5. Спроси: продолжать Poradna или переключиться на Pump Calculator?
 ```
 
 *Ready for next session!*
