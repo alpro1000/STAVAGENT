@@ -26,9 +26,11 @@ export function initPostgres() {
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-    max: 20, // Maximum connections in pool
+    max: 10,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    connectionTimeoutMillis: 10000, // 10s — Render Postgres needs time to wake from sleep
+    keepAlive: true,
+    keepAliveInitialDelayMillis: 10000,
   });
 
   // Test connection
@@ -51,15 +53,47 @@ export function getPool() {
 }
 
 /**
- * Execute SQL query (wrapper for compatibility)
+ * Execute SQL query with one retry on connection timeout.
+ * Handles Render Free Tier PostgreSQL sleep (DB needs ~2-5s to wake up).
  */
 export async function query(text, params = []) {
-  const client = await pool.connect();
+  return _queryWithRetry(text, params, 1);
+}
+
+async function _queryWithRetry(text, params, retriesLeft) {
+  let client;
+  try {
+    client = await pool.connect();
+  } catch (connErr) {
+    // pool.connect() itself failed (DB sleeping)
+    const isConnErr = connErr.message?.includes('timeout') ||
+      connErr.message?.includes('Connection terminated') ||
+      connErr.code === 'ECONNREFUSED' ||
+      connErr.code === 'ETIMEDOUT';
+    if (isConnErr && retriesLeft > 0) {
+      console.warn('[PostgreSQL] Cannot connect, retrying in 2s... (' + retriesLeft + ' left)');
+      await new Promise(r => setTimeout(r, 2000));
+      return _queryWithRetry(text, params, retriesLeft - 1);
+    }
+    throw connErr;
+  }
+
   try {
     const result = await client.query(text, params);
-    return result;
-  } finally {
     client.release();
+    return result;
+  } catch (queryErr) {
+    client.release(queryErr); // mark client as bad
+    const isConnErr = queryErr.message?.includes('timeout') ||
+      queryErr.message?.includes('Connection terminated') ||
+      queryErr.code === 'ECONNREFUSED' ||
+      queryErr.code === 'ETIMEDOUT';
+    if (isConnErr && retriesLeft > 0) {
+      console.warn('[PostgreSQL] Query failed on connection error, retrying in 2s...');
+      await new Promise(r => setTimeout(r, 2000));
+      return _queryWithRetry(text, params, retriesLeft - 1);
+    }
+    throw queryErr;
   }
 }
 

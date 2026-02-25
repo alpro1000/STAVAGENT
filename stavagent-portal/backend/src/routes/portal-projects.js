@@ -256,6 +256,21 @@ router.get('/', async (req, res) => {
 
   } catch (error) {
     console.error('[PortalProjects] Error listing projects:', error);
+
+    // DB waking up (Render Free Tier sleep) — return empty list instead of 500
+    const isConnTimeout = error.message?.includes('timeout') ||
+      error.message?.includes('Connection terminated') ||
+      error.code === 'ECONNREFUSED' ||
+      error.code === 'ETIMEDOUT';
+
+    if (isConnTimeout) {
+      return res.json({
+        success: true,
+        projects: [],
+        _warning: 'Database waking up, please refresh in a moment'
+      });
+    }
+
     res.status(500).json({
       success: false,
       error: 'Failed to list projects'
