@@ -1,0 +1,126 @@
+{
+  "_meta": {
+    "tkp": "22",
+    "title": "Izolace proti vodě",
+    "title_en": "Waterproofing",
+    "year": 2022,
+    "month": "06",
+    "effective": "2022-07-01",
+    "publisher": "Správa železnic (SŽ), státní organizace",
+    "source_pdf": "TKP22_2022_06.pdf",
+    "extracted": "2026-02-25",
+    "scope": "Hydroizolace mostů, tunelů a jiných inženýrských objektů státních drah. Typy 1–3."
+  },
+
+  "typy_systemu": {
+    "typ_1": "Hydroizolace proti volně přitékající vodě",
+    "typ_2": "Hydroizolace proti tlakové vodě",
+    "typ_3": "Ochrana proti zemní vlhkosti (asfaltový nátěr)",
+    "min_zivotnost_let": 30
+  },
+
+  "schvalene_systemy_SVI": {
+    "_note": "Použít lze POUZE systémy s platným Osvědčením SŽ",
+    "seznam_na": "www.spravazeleznic.cz",
+    "zakazano": "Náhrazování nebo modifikace schválených vrstev bez povolení",
+    "certifikovany_personál": "Povinné certifikace od garanta systému"
+  },
+
+  "klimaticke_podminky_aplikace": {
+    "teplota_vzduchu": "+5 °C až +40 °C (dle systému)",
+    "teplota_podkladu": "+3 °C až +40 °C",
+    "rel_vlhkost_max_pct": 85,
+    "zakazano": ["Déšť", "Mráz", "Extrémní povětrnostní podmínky"],
+    "max_rychlost_vetru": "Dle systému"
+  },
+
+  "podklad": {
+    "pozadavky": [
+      "Povrchová rovnost dle TNŽ 73 6280 (tabulky 4–5)",
+      "Integrita (kontrola trhlin dle projektu)",
+      "Vlhkost povrchu dle požadavků systému",
+      "Teplota dle aplikačních podmínek"
+    ],
+    "prevzeti": "Písemný protokol — subdodavatel bednění + subdodavatel SVI + TDS",
+    "zaznam": "Do deníku stavby i speciálního deníku SVI"
+  },
+
+  "postup_vrstev_most": {
+    "poradi": [
+      "1. Betonáž desky + říms",
+      "2. Přejímka podkladu (protokol)",
+      "3. Přípravná vrstva (impregnace, penetrace)",
+      "4. Hydroizolační vrstva (asf. pásy nebo epoxy/PU nátěry)",
+      "5. Přejímka izolace (protokol)",
+      "6. Ochranná vrstva (litý asfalt MA nebo geotextilie)",
+      "7. Přejímka ochranné vrstvy (protokol)",
+      "8. Vozovkové souvrství nebo kolejové lože"
+    ],
+    "litý_asfalt_MA": "BEZ přidání kameniva do hotové vrstvy!"
+  },
+
+  "odvodneni": {
+    "min_sklon_pct": 2,
+    "doporuceny_sklon_pct": 5,
+    "min_prumer_drenu_mm": 150,
+    "umisteni_trubky": "Po celé délce musí ležet na hydroizolaci (nebo měkké ochranné vrstvě)",
+    "filtracni_material": "Kamenivo 32/63 mm nebo 16/32 mm",
+    "geotextilie_nesmi": "Překrývat perforace drenážní trubky"
+  },
+
+  "kladen_balastuj_kolejoveho_loze": {
+    "_note": "Před přejezdem kolejového mechanismu",
+    "min_tloustka_balastoveho_lize_mm": {
+      "mekke_nebo_tvrde_ochranne_sys": 250,
+      "bez_ochranne_vrstvy": 300
+    },
+    "max_rychlost_pojezdu_km_h": 5,
+    "zakazano": ["Otáčení na místě", "Brzdění", "Vibrace na mostním objektu"],
+    "ochrana_geotextilii_g_m2_min": 1000
+  },
+
+  "zaruka": {
+    "zarucni_lhuta_let": 10,
+    "pokryva": "Zárukou řemeslo i materiály"
+  },
+
+  "denik_SVI": {
+    "povinny_pro": "Všechny hydroizolace (výjimka: malé jednoduché projekty se souhlasem TDS)",
+    "povinne_zaznamy": [
+      "Schválení každé přípravné vrstvy",
+      "Schválení hydroizolační vrstvy",
+      "Schválení ochranné vrstvy",
+      "Odchylky od technologického předpisu",
+      "Přerušení prací (počasí atd.)",
+      "Přejímka SVI do hlavního stavebního deníku"
+    ]
+  },
+
+  "technicka_dokumentace_TePr": {
+    "_note": "Povinný obsah Technologického předpisu (TePř) dodavatele SVI",
+    "povinne_sekce": [
+      "1. Úvod (odpovědné osoby, identifikace stavby)",
+      "2. Zdůvodnění systému a skladba vrstev",
+      "3. Popis materiálů + kvalitativní parametry",
+      "4. Skladování a manipulace",
+      "5. Podmínky aplikace (teplota, vlhkost, vítr)",
+      "6. Technická omezení",
+      "7. Omezení personálu a strojního vybavení",
+      "8. Pracovní postupy (vrstva po vrstvě)",
+      "9. Výkresová dokumentace detailů",
+      "10. Postupy oprav poškozených míst",
+      "11. Způsob kontroly kvality a inspekce",
+      "12. Certifikace systému managementu kvality (ISO 9000 doporučeno)",
+      "13. Záruční podmínky (10 let)",
+      "14. BOZP a nakládání s odpady",
+      "15. Seznam certifikovaného personálu"
+    ]
+  },
+
+  "normy_a_predpisy": [
+    "TNŽ 73 6280 — Hydroizolace mostních objektů",
+    "ČSN 73 0600 — Ochrana staveb proti vodě",
+    "SŽ S4 — Technická specifikace pro zemní tělesa a konstrukční vrstvy",
+    "SŽ S3/1 — Koleje (balastní vrstvy)"
+  ]
+}
