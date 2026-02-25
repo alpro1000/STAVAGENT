@@ -6,7 +6,7 @@
  *
  * Flow:
  *  1. 4 questions (radio buttons) — construction type, season, concrete, crew
- *  2. Model toggle: Gemini 2.0 Flash (fast/cheap) vs Claude Sonnet (detailed)
+ *  2. Model toggle: Gemini 2.5 Flash (fast/cheap) / GPT-4o mini / Claude Sonnet (detailed)
  *  3. POST /api/formwork-assistant → deterministic + AI explanation
  *  4. Results grid + AI text + warnings
  *  5. "Použít" → applies days_per_tact back to the row
@@ -287,7 +287,7 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
               active={model === 'gemini'}
               onClick={() => setModel('gemini')}
               icon={<Zap size={13} />}
-              label="Gemini 2.0 Flash"
+              label="Gemini 2.5 Flash"
               note="~1 s · levnější"
             />
             <ModelButton
