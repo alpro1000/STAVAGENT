@@ -20,6 +20,7 @@ from app.api.routes_workflow_c import router as workflow_c_router
 from app.api.routes_accumulator import router as accumulator_router
 from app.api.routes_google import router as google_router
 from app.api.routes_passport import router as passport_router
+from app.api.routes_kb_research import router as kb_research_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -38,5 +39,6 @@ api_router.include_router(workflow_c_router)      # /api/v1/workflow/c/*
 api_router.include_router(accumulator_router)     # /api/v1/accumulator/* (Document Accumulator)
 api_router.include_router(google_router)          # /api/v1/google/* (Google Drive Integration)
 api_router.include_router(passport_router)        # /api/v1/passport/* (Project Passport)
+api_router.include_router(kb_research_router)     # /api/v1/kb/* (KB Research)
 
 __all__ = ["api_router"]

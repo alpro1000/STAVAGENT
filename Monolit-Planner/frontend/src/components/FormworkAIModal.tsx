@@ -5,15 +5,14 @@
  * Opens from ✨ button in FormworkCalculatorModal.
  *
  * Flow:
- *  1. 4 questions (radio buttons) — construction type, season, concrete, crew
- *  2. Model toggle: Gemini 2.5 Flash (fast/cheap) / GPT-4o mini / Claude Sonnet (detailed)
- *  3. POST /api/formwork-assistant → deterministic + AI explanation
- *  4. Results grid + AI text + warnings
- *  5. "Použít" → applies days_per_tact back to the row
+ * Two tabs:
+ *  [Kalkulačka] — 4 questions → POST /api/formwork-assistant → results + apply
+ *  [Poradna]    — free-text question → POST /api/kb/research → answer + sources
+ *               Answers cached in concrete-agent KB (no repeat API cost).
  */
 
 import { useState } from 'react';
-import { Sparkles, Zap, Brain, Bot, AlertTriangle, CheckCircle, X } from 'lucide-react';
+import { Sparkles, Zap, Brain, Bot, AlertTriangle, CheckCircle, X, BookOpen, Database, Globe } from 'lucide-react';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -23,6 +22,7 @@ type ConcreteClass    = 'C20_25' | 'C25_30' | 'C30_37' | 'C35_45' | 'C40_50';
 type CementType       = 'CEM_I_II' | 'CEM_III';
 type Crew             = '2_bez_jeravu' | '4_bez_jeravu' | '4_s_jeravem' | '6_s_jeravem';
 type AIModel          = 'gemini' | 'claude' | 'openai';
+type ModalTab         = 'kalkulacka' | 'poradna';
 
 interface Answers {
   construction_type: ConstructionType;
@@ -55,6 +55,20 @@ interface AssistantResult {
   ai_explanation: string;
   warnings:       string[];
   model_used:     string;
+}
+
+interface KBSource {
+  url:   string;
+  title: string;
+}
+
+interface KBResearchResult {
+  answer:      string;
+  sources:     KBSource[];
+  from_kb:     boolean;
+  kb_saved:    boolean;
+  kb_category: string;
+  model_used:  string;
 }
 
 interface Props {
@@ -105,7 +119,17 @@ const Q4_OPTIONS: { value: Crew; label: string; hint: string }[] = [
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
+const PORADNA_SUGGESTIONS = [
+  'Jak se montuje bednění pilíře mostu?',
+  'ČSN normy pro beton C30/37 — mostní konstrukce',
+  'Minimální pevnost betonu pro odbednění stěny',
+  'Technologický postup betonáže v zimě (pod 5 °C)',
+  'Cena systémového bednění Doka 2025 Kč/m²',
+  'Ošetřování betonu — požadavky TKP17',
+];
+
 export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, onApply, onClose }: Props) {
+  // ── Kalkulačka state ──────────────────────────────────────────────────────
   const [answers, setAnswers] = useState<Answers>({
     construction_type: 'steny',
     season:            'leto',
@@ -117,6 +141,13 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
   const [loading, setLoading] = useState(false);
   const [result, setResult]   = useState<AssistantResult | null>(null);
   const [error, setError]     = useState<string>('');
+
+  // ── Poradna state ─────────────────────────────────────────────────────────
+  const [activeTab, setActiveTab]           = useState<ModalTab>('kalkulacka');
+  const [poradnaQ, setPoradnaQ]             = useState('');
+  const [poradnaResult, setPoradnaResult]   = useState<KBResearchResult | null>(null);
+  const [poradnaLoading, setPoradnaLoading] = useState(false);
+  const [poradnaError, setPoradnaError]     = useState('');
 
   function set<K extends keyof Answers>(key: K, val: Answers[K]) {
     setAnswers(prev => ({ ...prev, [key]: val }));
@@ -158,6 +189,30 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
     const { days_per_tact, formwork_term_days } = result.deterministic;
     onApply(days_per_tact, formwork_term_days);
     onClose();
+  }
+
+  async function handlePoradna() {
+    if (!poradnaQ.trim()) return;
+    setPoradnaLoading(true);
+    setPoradnaError('');
+    setPoradnaResult(null);
+    try {
+      const res = await fetch('/api/kb/research', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ question: poradnaQ.trim(), save_to_kb: true }),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+        throw new Error(err.error || `HTTP ${res.status}`);
+      }
+      const data: KBResearchResult = await res.json();
+      setPoradnaResult(data);
+    } catch (e: any) {
+      setPoradnaError(e.message || 'Chyba při vyhledávání');
+    } finally {
+      setPoradnaLoading(false);
+    }
   }
 
   const canCalculate = totalAreaM2 > 0 && setAreaM2 > 0;
@@ -205,8 +260,225 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
           </button>
         </div>
 
+        {/* ── Tabs ── */}
+        <div style={{
+          display: 'flex',
+          borderBottom: '1px solid var(--border-default, #e2e8f0)',
+          background: 'var(--panel-bg, #fff)',
+        }}>
+          {(['kalkulacka', 'poradna'] as ModalTab[]).map(tab => {
+            const active = activeTab === tab;
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                style={{
+                  flex: 1,
+                  padding: '10px 0',
+                  background: 'none',
+                  border: 'none',
+                  borderBottom: active ? '2px solid var(--accent-orange, #FF9F1C)' : '2px solid transparent',
+                  color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
+                  fontWeight: active ? 700 : 400,
+                  fontSize: '13px',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  transition: 'all 0.15s',
+                  marginBottom: '-1px',
+                }}
+              >
+                {tab === 'kalkulacka' ? <><Sparkles size={14} /> Kalkulačka</> : <><BookOpen size={14} /> Poradna norem</>}
+              </button>
+            );
+          })}
+        </div>
+
         {/* ── Scrollable body ── */}
         <div style={{ overflow: 'auto', flex: 1, padding: '18px 22px' }}>
+
+          {/* ══════════ PORADNA TAB ══════════ */}
+          {activeTab === 'poradna' && (
+            <div>
+              {/* Intro */}
+              <div style={{
+                fontSize: '12px',
+                color: 'var(--text-secondary)',
+                marginBottom: '14px',
+                lineHeight: '1.5',
+              }}>
+                Zeptejte se na normy, GOSTy, technologické postupy, ceny nebo předpisy.
+                Odpověď se prohledá přes Perplexity a uloží do KB — příští dotaz vrátí okamžitě z cache.
+              </div>
+
+              {/* Suggested questions */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '12px' }}>
+                {PORADNA_SUGGESTIONS.map(s => (
+                  <button
+                    key={s}
+                    onClick={() => { setPoradnaQ(s); setPoradnaResult(null); setPoradnaError(''); }}
+                    style={{
+                      padding: '4px 10px',
+                      borderRadius: '20px',
+                      border: `1px solid ${poradnaQ === s ? 'var(--accent-orange, #FF9F1C)' : 'var(--border-default, #ddd)'}`,
+                      background: poradnaQ === s ? 'rgba(255,159,28,0.1)' : 'var(--panel-bg, #fff)',
+                      color: 'var(--text-secondary)',
+                      fontSize: '11px',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+
+              {/* Textarea */}
+              <textarea
+                value={poradnaQ}
+                onChange={e => { setPoradnaQ(e.target.value); setPoradnaResult(null); setPoradnaError(''); }}
+                onKeyDown={e => { if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) handlePoradna(); }}
+                placeholder="Napište otázku… (Ctrl+Enter = odeslat)"
+                rows={3}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  borderRadius: '8px',
+                  border: '1px solid var(--border-default, #ddd)',
+                  fontSize: '13px',
+                  resize: 'vertical',
+                  fontFamily: 'inherit',
+                  boxSizing: 'border-box',
+                  background: 'var(--panel-bg, #fff)',
+                  color: 'var(--text-primary)',
+                  marginBottom: '10px',
+                }}
+              />
+
+              {/* Submit */}
+              <button
+                onClick={handlePoradna}
+                disabled={poradnaLoading || !poradnaQ.trim()}
+                style={{
+                  width: '100%',
+                  padding: '11px',
+                  background: poradnaLoading || !poradnaQ.trim()
+                    ? 'var(--border-default, #ccc)'
+                    : 'linear-gradient(135deg, #1a1a2e 0%, #4a4e69 100%)',
+                  color: poradnaLoading || !poradnaQ.trim() ? '#888' : '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  fontWeight: 700,
+                  fontSize: '13px',
+                  cursor: poradnaLoading || !poradnaQ.trim() ? 'not-allowed' : 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  marginBottom: '16px',
+                }}
+              >
+                {poradnaLoading ? <><SpinnerIcon /> Vyhledávám…</> : <><Globe size={14} /> Vyhledat v normách</>}
+              </button>
+
+              {/* Error */}
+              {poradnaError && (
+                <div style={{
+                  padding: '10px 14px',
+                  background: '#fff5f5',
+                  border: '1px solid #fed7d7',
+                  borderRadius: '8px',
+                  color: '#c53030',
+                  fontSize: '13px',
+                  marginBottom: '14px',
+                }}>
+                  ⚠ {poradnaError}
+                </div>
+              )}
+
+              {/* Result */}
+              {poradnaResult && (
+                <div>
+                  {/* Status badges */}
+                  <div style={{ display: 'flex', gap: '6px', marginBottom: '10px', flexWrap: 'wrap' }}>
+                    {poradnaResult.from_kb ? (
+                      <span style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '4px',
+                        padding: '3px 10px', borderRadius: '12px',
+                        background: '#f0fdf4', border: '1px solid #86efac',
+                        color: '#166534', fontSize: '11px', fontWeight: 600,
+                      }}>
+                        <Database size={11} /> Z KB cache
+                      </span>
+                    ) : (
+                      <span style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '4px',
+                        padding: '3px 10px', borderRadius: '12px',
+                        background: '#eff6ff', border: '1px solid #93c5fd',
+                        color: '#1e40af', fontSize: '11px', fontWeight: 600,
+                      }}>
+                        <Globe size={11} /> {poradnaResult.model_used}
+                      </span>
+                    )}
+                    {poradnaResult.kb_saved && (
+                      <span style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '4px',
+                        padding: '3px 10px', borderRadius: '12px',
+                        background: '#fefce8', border: '1px solid #fde68a',
+                        color: '#92400e', fontSize: '11px', fontWeight: 600,
+                      }}>
+                        <Database size={11} /> Uloženo → KB/{poradnaResult.kb_category}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Answer */}
+                  <div style={{
+                    background: 'var(--panel-inset, #f9f9f9)',
+                    border: '1px solid var(--border-default, #e2e8f0)',
+                    borderRadius: '8px',
+                    padding: '12px 14px',
+                    marginBottom: '12px',
+                  }}>
+                    <MarkdownText text={poradnaResult.answer} />
+                  </div>
+
+                  {/* Sources */}
+                  {poradnaResult.sources.length > 0 && (
+                    <div style={{ marginBottom: '6px' }}>
+                      <div style={{ fontSize: '11px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '6px' }}>
+                        Zdroje ({poradnaResult.sources.length})
+                      </div>
+                      {poradnaResult.sources.slice(0, 5).map((src, i) => (
+                        <a
+                          key={i}
+                          href={src.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          style={{
+                            display: 'block',
+                            fontSize: '11px',
+                            color: '#3b82f6',
+                            textDecoration: 'none',
+                            marginBottom: '3px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                          }}
+                        >
+                          {i + 1}. {src.title || src.url}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ══════════ KALKULAČKA TAB ══════════ */}
+          {activeTab === 'kalkulacka' && <>
 
           {/* Q1 */}
           <QuestionSection label="Q1 — Typ konstrukce">
@@ -415,6 +687,8 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
               )}
             </div>
           )}
+
+          </> /* end kalkulacka tab */}
         </div>
 
         {/* ── Footer ── */}
@@ -435,7 +709,7 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
           }}>
             Zavřít
           </button>
-          {result && (
+          {result && activeTab === 'kalkulacka' && (
             <button onClick={handleApply} style={{
               background: '#16a34a',
               color: '#fff',
