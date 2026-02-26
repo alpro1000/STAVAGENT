@@ -17,6 +17,7 @@ import {
 import type { FormworkCalculatorRow } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, findFormworkSystem, getDefaultFormworkSystem } from '../constants/formworkSystems';
 import FormworkAIModal from './FormworkAIModal';
+import { API_URL } from '../services/api';
 
 interface Props {
   bridgeId: string;
@@ -131,7 +132,7 @@ export default function FormworkCalculatorModal({
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`/api/formwork-calculator/${bridgeId}`);
+        const res = await fetch(`${API_URL}/api/formwork-calculator/${bridgeId}`);
         if (res.ok) {
           const data = await res.json();
           if (data.rows && data.rows.length > 0) {
@@ -150,7 +151,7 @@ export default function FormworkCalculatorModal({
   useEffect(() => {
     if (isLoading) return;
     const timer = setTimeout(() => {
-      fetch('/api/formwork-calculator', {
+      fetch(`${API_URL}/api/formwork-calculator`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ bridge_id: bridgeId, rows })

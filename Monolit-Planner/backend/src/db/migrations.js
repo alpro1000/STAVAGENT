@@ -901,6 +901,18 @@ async function runPhase6R0Migrations() {
     // 10. Create indexes for R0 tables
     try {
       console.log('[Migration 006] Creating indexes for R0 tables...');
+
+      // Ensure portal_project_id column exists (may be missing on old deployments
+      // where r0_projects was created before this column was added to CREATE TABLE)
+      try {
+        await db.exec(`ALTER TABLE r0_projects ADD COLUMN IF NOT EXISTS portal_project_id VARCHAR(255);`);
+      } catch (alterErr) {
+        // Ignore "already exists" errors — column is already there
+        if (!alterErr.message?.includes('already exists') && !alterErr.message?.includes('duplicate column')) {
+          console.warn('[Migration 006] ALTER TABLE r0_projects warning:', alterErr.message);
+        }
+      }
+
       await db.exec(`
         CREATE INDEX IF NOT EXISTS idx_r0_projects_portal ON r0_projects(portal_project_id);
         CREATE INDEX IF NOT EXISTS idx_elements_r0_project ON elements(r0_project_id);
