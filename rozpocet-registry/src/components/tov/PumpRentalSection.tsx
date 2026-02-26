@@ -89,7 +89,10 @@ function recomputeItem(
   stavba_h: number,
   myti_h: number,
 ): PumpConstructionItem {
-  const celkem_m3 = item.objem_m3_takt * item.pocet_taktu;
+  // objem_m3_takt stores the TOTAL concrete volume for this item.
+  // pocet_taktu is informational (how many pours), not a multiplier.
+  // m³/takt = objem_m3_takt / pocet_taktu (shown as read-only info).
+  const celkem_m3 = item.objem_m3_takt;
   const hodiny_cerpani = vykon_m3h > 0 ? celkem_m3 / vykon_m3h : 0;
   const hodiny_overhead = item.pocet_pristaveni * (stavba_h + myti_h);
   return {
@@ -157,9 +160,10 @@ interface PumpRentalSectionProps {
   pumpRental: PumpRentalData | undefined;
   onChange: (data: PumpRentalData) => void;
   itemQuantity?: number | null;
+  itemLabel?: string;      // e.g. "272324 - ZÁKLADY ZE ŽELEZOBETONU DO C25/30"
 }
 
-export function PumpRentalSection({ pumpRental, onChange, itemQuantity }: PumpRentalSectionProps) {
+export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabel }: PumpRentalSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [showParamsAdvanced, setShowParamsAdvanced] = useState(false);
 
@@ -193,10 +197,12 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity }: PumpRe
 
   const addItem = () => {
     const vol = data.items.length === 0 && itemQuantity ? Number(itemQuantity) : 0;
+    // First item pre-fills name from position label (editable by user)
+    const defaultNazev = data.items.length === 0 && itemLabel ? itemLabel : '';
     const newItem = recomputeItem(
       {
         id: uuidv4(),
-        nazev: '',
+        nazev: defaultNazev,
         objem_m3_takt: vol,
         pocet_taktu: 1,
         pocet_pristaveni: 1,
@@ -434,9 +440,9 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity }: PumpRe
                 <thead>
                   <tr className="border-b border-border-color/50 text-text-muted">
                     <th className="text-left py-1.5 px-2 font-medium min-w-[130px]">Název</th>
-                    <th className="text-center py-1.5 px-2 font-medium w-20">m³/takt</th>
+                    <th className="text-center py-1.5 px-2 font-medium w-24">Celkem m³</th>
                     <th className="text-center py-1.5 px-2 font-medium w-16">Taktů</th>
-                    <th className="text-center py-1.5 px-2 font-medium w-20 bg-slate-50/50">Celkem m³</th>
+                    <th className="text-center py-1.5 px-2 font-medium w-20 text-text-muted/70">m³/takt</th>
                     <th className="text-center py-1.5 px-2 font-medium w-20">Přistavení</th>
                     <th className="text-center py-1.5 px-2 font-medium w-24 bg-slate-50/50">
                       <span className="flex items-center justify-center gap-1">
@@ -458,12 +464,13 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity }: PumpRe
                           className="w-full bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-400 rounded px-1 py-0.5"
                         />
                       </td>
+                      {/* Celkem m³ — total volume (primary input, pre-filled from position) */}
                       <td className="py-1 px-2">
                         <input
                           type="number" min={0} step={0.5}
                           value={item.objem_m3_takt || ''}
                           onChange={e => updateItem(item.id, { objem_m3_takt: parseFloat(e.target.value) || 0 })}
-                          className="w-full text-center bg-bg-secondary/60 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-blue-400"
+                          className="w-full text-center bg-bg-secondary/60 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-blue-400 font-medium"
                         />
                       </td>
                       <td className="py-1 px-2">
@@ -474,9 +481,11 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity }: PumpRe
                           className="w-full text-center bg-bg-secondary/60 rounded px-1 py-0.5 focus:outline-none focus:ring-1 focus:ring-blue-400"
                         />
                       </td>
-                      {/* Celkem m³ — computed */}
-                      <td className="py-1 px-2 text-center font-medium text-blue-600 bg-slate-50/50 tabular-nums">
-                        {item.celkem_m3.toFixed(1)}
+                      {/* m³/takt — computed info (celkem_m3 ÷ pocet_taktu) */}
+                      <td className="py-1 px-2 text-center text-text-muted tabular-nums text-[11px]">
+                        {item.pocet_taktu > 0
+                          ? (item.objem_m3_takt / item.pocet_taktu).toFixed(1)
+                          : '—'}
                       </td>
                       {/* Přistavení */}
                       <td className="py-1 px-2">
@@ -518,8 +527,8 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity }: PumpRe
                 {data.items.length > 1 && (
                   <tfoot>
                     <tr className="bg-bg-tertiary/30 font-semibold text-xs">
-                      <td colSpan={3} className="py-1.5 px-2 text-right text-text-secondary">Celkem:</td>
-                      <td className="py-1.5 px-2 text-center text-blue-600 tabular-nums bg-slate-50/50">
+                      <td colSpan={2} className="py-1.5 px-2 text-right text-text-secondary">Celkem:</td>
+                      <td colSpan={2} className="py-1.5 px-2 text-center text-blue-600 tabular-nums">
                         {data.celkem_m3.toFixed(1)} m³
                       </td>
                       <td className="py-1.5 px-2 text-center text-blue-600 tabular-nums">
