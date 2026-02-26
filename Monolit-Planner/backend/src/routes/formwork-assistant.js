@@ -189,7 +189,7 @@ router.post('/', async (req, res) => {
       warnings.push('Římsы: konzultovat systém — TU-vozík (≤150 m mostu) / T-vozík (>150 m)');
     }
     if (pocetTaktu > 10) {
-      warnings.push(`${pocetTaktu} taktů — zvažte přidání sad bednění pro zkrácení celkového termínu`);
+      warnings.push(`${pocetTaktu} taktů — zvažte přidání sad bednění pro zkrácení celkové doby`);
     }
     if (crewCfg.crew < 3 && total_area_m2 > 100) {
       warnings.push('Malá parta pro velkou plochu — montáž bude neúměrně dlouhá');
@@ -214,7 +214,7 @@ router.post('/', async (req, res) => {
           `Jsi expert na stavební bednění. Zhodnoť plán pro konstrukci "${consLabel}" (systém ${system_name}). `
           + `Celková plocha ${total_area_m2} m², sada ${set_area_m2} m², ${pocetTaktu} taktů. `
           + `Beton ${concrLabel}, ${cement_type.replace('_', '/')}, ${seasonLabel}. Parta ${crewLabel}. `
-          + `Výsledky kalkulace: montáž ${daysPerTact} dní/takt, ošetřování ${zraniDays} dní, celkový termín ${formworkTermDays} dní. `
+          + `Výsledky kalkulace: montáž ${daysPerTact} dní/takt, ošetřování ${zraniDays} dní, celková doba ${formworkTermDays} dní. `
           + `Napiš stručné, praktické doporučení (max 5 vět). Zmiň 2-3 klíčová rizika.`;
 
         const controller = new AbortController();
@@ -344,7 +344,7 @@ function buildFallbackExplanation(det, constructionType, season, warnings) {
     `| Demontáž/takt | ${det.disassembly_days_per_tact.toFixed(1)} dní |`,
     `| Dny/takt (celkem) | **${det.days_per_tact} dní** |`,
     `| Ošetřování betonu | ${det.zrani_days} dní (základ ${det.base_curing_days}d × ×${det.temp_factor} teplota × ×${det.cement_factor} cement) |`,
-    `| Termín bednění | **~${det.formwork_term_days} dní** |`,
+    `| Doba bednění | **~${det.formwork_term_days} dní** |`,
     `| Parta | ${det.crew_size} lidí${det.crane ? ' + jeřáb' : ''}, směna ${det.shift_hours} h |`,
   ];
 

@@ -728,7 +728,7 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
               gap: '6px',
             }}>
               <CheckCircle size={15} />
-              Použít ({result.deterministic.days_per_tact} dní/takt, termín {result.deterministic.formwork_term_days} dní)
+              Použít ({result.deterministic.days_per_tact} dní/takt, doba {result.deterministic.formwork_term_days} dní)
             </button>
           )}
         </div>
@@ -861,7 +861,7 @@ function ResultGrid({ det }: { det: Deterministic }) {
     ['Dny/takt',        `${det.days_per_tact} dní`,                       'montáž + demontáž'],
     ['Ošetřování',      `${det.zrani_days} dní`,
       `základ ${det.base_curing_days}d × teplota ×${det.temp_factor} × cement ×${det.cement_factor}`],
-    ['Termín bednění',  `${det.formwork_term_days} dní`,                  `${det.pocet_taktu} × (${det.days_per_tact} + ${det.zrani_days})`],
+    ['Doba bednění',    `${det.formwork_term_days} dní`,                  `${det.pocet_taktu} × (${det.days_per_tact} + ${det.zrani_days})`],
   ];
 
   return (
