@@ -14,6 +14,7 @@
 import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Sparkles, Zap, Brain, Bot, AlertTriangle, CheckCircle, X, BookOpen, Database, Globe } from 'lucide-react';
+import { API_URL } from '../services/api';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -161,7 +162,7 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
     setError('');
     setResult(null);
     try {
-      const res = await fetch('/api/formwork-assistant', {
+      const res = await fetch(`${API_URL}/api/formwork-assistant`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -198,7 +199,7 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
     setPoradnaError('');
     setPoradnaResult(null);
     try {
-      const res = await fetch('/api/kb/research', {
+      const res = await fetch(`${API_URL}/api/kb/research`, {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ question: poradnaQ.trim(), save_to_kb: true }),

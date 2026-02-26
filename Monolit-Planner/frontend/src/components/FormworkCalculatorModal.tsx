@@ -55,6 +55,12 @@ function createEmptyRow(bridgeId: string): FormworkCalculatorRow {
 
 /** Recalculate dependent fields after any edit
  * @param elementTotalDays - if > 0, use as rental term (total element occupancy)
+ *
+ * Calculation rules:
+ * - assembly/disassembly days are ALWAYS computed from norms (display-only, blue columns)
+ * - days_per_tact: computed from norms, BUT user can override manually
+ * - formwork_term_days: computed from tacts/sets/daysPerTact, BUT user can override
+ * - num_sets > 1: parallel tacts → effective_tacts = ceil(numTacts / numSets)
  */
 function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: number, elementTotalDays = 0): FormworkCalculatorRow {
   const sys = findFormworkSystem(row.system_name);
@@ -70,21 +76,38 @@ function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: num
 
   const assemblyDays = dailyHours > 0 ? assemblyHours / dailyHours : 0;
   const disassemblyDays = dailyHours > 0 ? disassemblyHours / dailyHours : 0;
-  const daysPerTact = parseFloat((assemblyDays + disassemblyDays).toFixed(1));
+  const computedDaysPerTact = parseFloat((assemblyDays + disassemblyDays).toFixed(1));
+
+  // Use user's manual days_per_tact if they overrode it; otherwise use computed
+  // A user override is detected when existing value differs from computed
+  // (On first calc or after system/crew/shift change, we use computed)
+  const daysPerTact = (row.days_per_tact > 0 && row.days_per_tact !== computedDaysPerTact && row.set_area_m2 > 0)
+    ? row.days_per_tact
+    : computedDaysPerTact;
 
   // Tacts: default from area, but user can override
   const autoTacts = calculateFormworkTacts(row.total_area_m2, row.set_area_m2);
   const numTacts = row.num_tacts > 0 ? row.num_tacts : autoTacts;
 
+  // Multiple sets run tacts in parallel: effective tacts = ceil(numTacts / numSets)
+  const numSets = Math.max(1, row.num_sets || 1);
+  const effectiveTacts = Math.ceil(numTacts / numSets);
+
   // Term: use elementTotalDays (full element occupancy) when available,
-  // otherwise fall back to formwork-only term (tacts × daysPerTact)
-  const termDays = elementTotalDays > 0
+  // otherwise formwork term = effectiveTacts × daysPerTact
+  // User can also manually override formwork_term_days
+  const computedTermDays = elementTotalDays > 0
     ? elementTotalDays
-    : calculateFormworkTerm(numTacts, daysPerTact);
+    : calculateFormworkTerm(effectiveTacts, daysPerTact);
+
+  // Keep user's manual term override if it differs from computed
+  const termDays = (row.formwork_term_days > 0 && row.formwork_term_days !== computedTermDays && row.set_area_m2 > 0)
+    ? row.formwork_term_days
+    : computedTermDays;
 
   // Rental
   const monthlyPerSet = calculateMonthlyRentalPerSet(row.set_area_m2, row.rental_czk_per_m2_month);
-  const finalRental = calculateFinalRentalCost(monthlyPerSet, termDays);
+  const finalRental = calculateFinalRentalCost(monthlyPerSet * numSets, termDays);
 
   const updated: FormworkCalculatorRow = {
     ...row,
@@ -170,7 +193,7 @@ export default function FormworkCalculatorModal({
       if (r.id !== rowId) return r;
       const updated = { ...r, [field]: value };
 
-      // When system changes, update defaults from catalog
+      // When system changes, update defaults from catalog and reset manual overrides
       if (field === 'system_name') {
         const sys = findFormworkSystem(value as string);
         if (sys) {
@@ -179,11 +202,26 @@ export default function FormworkCalculatorModal({
             updated.system_height = sys.heights[0];
           }
         }
+        // Reset overrides — norm changed, so recompute
+        updated.days_per_tact = 0;
+        updated.formwork_term_days = 0;
       }
 
       // When total_area changes and set_area exists, recalculate tacts
       if (field === 'total_area_m2' && updated.set_area_m2 > 0) {
         updated.num_tacts = calculateFormworkTacts(value as number, updated.set_area_m2);
+        updated.formwork_term_days = 0; // Reset term override
+      }
+
+      // When set_area changes, reset days override (norm inputs changed)
+      if (field === 'set_area_m2') {
+        updated.days_per_tact = 0;
+        updated.formwork_term_days = 0;
+      }
+
+      // When num_tacts or num_sets change, reset term override
+      if (field === 'num_tacts' || field === 'num_sets') {
+        updated.formwork_term_days = 0;
       }
 
       return recalcRow(updated, crewSize, shiftHours, elementTotalDays);
