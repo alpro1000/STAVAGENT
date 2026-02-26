@@ -105,6 +105,11 @@ export interface ProjectPassport {
   location: ProjectLocation | null;
   timeline: ProjectTimeline | null;
   stakeholders: ProjectStakeholder[];
+
+  // AI-generated summary (always useful for Technická zpráva docs)
+  description: string | null;
+  technical_highlights: string[];
+  structure_type: string | null;
 }
 
 // ===== API Response =====
@@ -112,15 +117,15 @@ export interface ProjectPassport {
 export interface PassportGenerationResponse {
   success: boolean;
   passport: ProjectPassport;
-  metadata: {
+  metadata?: {
     file_name: string;
     processing_time_seconds: number;
     parser_used: string;               // "SmartParser"
     extraction_method: string;         // "Regex + AI"
-    ai_model_used: string | null;      // "gemini-2.0-flash-exp" | "claude-sonnet-4-5" | null
+    ai_model_used: string | null;      // "gemini" | "claude-sonnet" | null
     total_confidence: number;          // Average confidence across all fields
   };
-  statistics: {
+  statistics?: {
     total_concrete_m3: number;
     total_reinforcement_t: number;
     unique_concrete_classes: number;
@@ -155,7 +160,7 @@ export interface AIModelInfo {
 export const AI_MODEL_OPTIONS: AIModelInfo[] = [
   {
     id: AI_MODELS.GEMINI,
-    name: 'Gemini 2.0 Flash',
+    name: 'Gemini 2.5 Flash Lite',
     cost_per_passport: 'ZDARMA',
     speed: 'Velmi rychlý (1-2s)',
     quality: 'Vysoká',
@@ -163,7 +168,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
   },
   {
     id: AI_MODELS.CLAUDE_HAIKU,
-    name: 'Claude Haiku',
+    name: 'Claude Haiku 4.5',
     cost_per_passport: '$0.0006',
     speed: 'Rychlý (2-3s)',
     quality: 'Velmi vysoká',
@@ -171,7 +176,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
   },
   {
     id: AI_MODELS.CLAUDE_SONNET,
-    name: 'Claude Sonnet 4.5',
+    name: 'Claude Sonnet 4.6',
     cost_per_passport: '$0.0075',
     speed: 'Střední (3-5s)',
     quality: 'Maximální',
@@ -184,14 +189,6 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     speed: 'Rychlý (2-3s)',
     quality: 'Dobrá',
     description: 'Levný OpenAI model',
-  },
-  {
-    id: AI_MODELS.OPENAI_GPT4,
-    name: 'GPT-4 Turbo',
-    cost_per_passport: '$0.025',
-    speed: 'Pomalý (5-8s)',
-    quality: 'Vysoká',
-    description: 'Nejdražší varianta',
   },
   {
     id: AI_MODELS.PERPLEXITY,

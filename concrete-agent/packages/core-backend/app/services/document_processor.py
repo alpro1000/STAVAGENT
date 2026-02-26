@@ -43,7 +43,9 @@ from app.services.passport_enricher import PassportEnricher
 from app.models.passport_schema import (
     ProjectPassport,
     PassportGenerationRequest,
-    PassportGenerationResponse
+    PassportGenerationResponse,
+    PassportMetadata,
+    PassportStatistics
 )
 
 logger = logging.getLogger(__name__)
@@ -198,10 +200,54 @@ class DocumentProcessor:
 
             logger.info(f"Processing complete: {total_time}ms")
 
+            # Compute average confidence
+            confidences = (
+                [s.confidence for s in passport.concrete_specifications] +
+                [r.confidence for r in passport.reinforcement] +
+                [r.confidence for r in passport.risks] +
+                [s.confidence for s in passport.stakeholders]
+            )
+            avg_confidence = sum(confidences) / len(confidences) if confidences else 0.0
+
+            # Build metadata
+            metadata = PassportMetadata(
+                file_name=Path(file_path).name,
+                processing_time_seconds=round(total_time / 1000.0, 2),
+                parser_used="SmartParser",
+                extraction_method="Regex + AI" if enable_ai_enrichment else "Regex only",
+                ai_model_used=preferred_model or "gemini" if enable_ai_enrichment else None,
+                total_confidence=round(avg_confidence, 3)
+            )
+
+            # Build statistics
+            statistics = PassportStatistics(
+                total_concrete_m3=round(sum(q.volume_m3 or 0.0 for q in passport.quantities), 2),
+                total_reinforcement_t=round(sum(s.total_mass_tons or 0.0 for s in passport.reinforcement), 2),
+                unique_concrete_classes=len(set(s.concrete_class for s in passport.concrete_specifications)),
+                unique_steel_grades=len(set(s.steel_grade.value for s in passport.reinforcement)),
+                deterministic_fields=(
+                    len(passport.concrete_specifications) +
+                    len(passport.reinforcement) +
+                    len(passport.quantities) +
+                    len(passport.special_requirements) +
+                    (1 if passport.dimensions else 0)
+                ),
+                ai_enriched_fields=(
+                    len(passport.risks) +
+                    len(passport.stakeholders) +
+                    (1 if passport.location else 0) +
+                    (1 if passport.timeline else 0) +
+                    (1 if passport.description else 0) +
+                    len(passport.technical_highlights)
+                )
+            )
+
             return PassportGenerationResponse(
                 success=True,
                 passport=passport,
-                processing_time_ms=total_time
+                processing_time_ms=total_time,
+                metadata=metadata,
+                statistics=statistics
             )
 
         except Exception as e:
