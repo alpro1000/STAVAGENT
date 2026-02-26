@@ -61,8 +61,8 @@ export function calculateFormwork(params: FormworkCalculatorParams): FormworkCal
   const move_clean_days = params.move_clean_hours / params.shift_h;
 
   // 5. Kit occupancy = full cycle of one capture
-  // [A] + [1d concrete] + [C] + [D] + [move]
-  const kit_occupancy_days = assembly_days + 1 + wait_days + disassembly_days + move_clean_days;
+  // [A] + [C] + [D] + [move]  (concrete day is tracked separately in the backend engine)
+  const kit_occupancy_days = assembly_days + wait_days + disassembly_days + move_clean_days;
 
   // 6. Labor cost (assembly + disassembly only, not wait time!)
   const cost_labor = (assembly_hours + disassembly_hours) * params.wage_czk_h;

@@ -229,11 +229,12 @@ router.post('/', async (req, res) => {
       const rebarDailyH = rebarCrew * crewCfg.shift;
       rebarDays = rebarDailyH > 0 ? rebarHours / rebarDailyH : 0;
 
-      // Smart parallelism: if rebar crew ≠ formwork crew, overlap possible
+      // Smart parallelism: if rebar crew ≠ formwork crew, partial overlap is possible.
+      // Overlap is capped at min(rebar, assembly) to avoid subtracting more than the actual work.
       const parallelOverlap = crew_size_rebar > 0 && crew_size_rebar !== crewCfg.crew
-        ? Math.min(rebarDays, assemblyDays) * 0.5  // 50% overlap
+        ? Math.min(rebarDays, assemblyDays) * 0.5  // up to 50% of the shorter phase
         : 0;
-      rebarDays = Math.max(0, rebarDays - parallelOverlap);
+      rebarDays = Math.max(0.1, rebarDays - parallelOverlap);  // min 0.1d to represent at least some rebar work
 
       // Spacers (distanční kroužky)
       const spacerPcs  = Math.round(set_area_m2 * SPACER_PCS_PER_M2);
@@ -311,13 +312,16 @@ router.post('/', async (req, res) => {
       { id: 'C', label: 'Paralelně (plný)',     sets: pocetTaktu, total_days: totalC, rental_cost: rentalCostC },
     ];
 
-    // Filter: don't show C if N=1 or N=2 (same as A or B)
+    // Filter: C = 'parallel with N sets' is only meaningful when N > 2
+    // (N=1: C≡A, N=2: C≡B — no value to show it separately)
     const filteredStrategies = pocetTaktu <= 2
-      ? strategies.filter(s => s.id !== 'C' || pocetTaktu > 2)
+      ? strategies.filter(s => s.id !== 'C')
       : strategies;
 
-    const minCost = filteredStrategies.reduce((a, b) => a.rental_cost <= b.rental_cost ? a : b);
-    const minTime = filteredStrategies.reduce((a, b) => a.total_days <= b.total_days ? a : b);
+    // Guard against empty array (should not happen, but prevents crash)
+    const safeStrategies = filteredStrategies.length > 0 ? filteredStrategies : strategies;
+    const minCost = safeStrategies.reduce((a, b) => a.rental_cost <= b.rental_cost ? a : b);
+    const minTime = safeStrategies.reduce((a, b) => a.total_days <= b.total_days ? a : b);
 
     // ── Labor cost ──────────────────────────────────────────────────────────
 
@@ -394,7 +398,7 @@ router.post('/', async (req, res) => {
     if (pocetTaktu > 10) {
       warnings.push(`${pocetTaktu} taktů — zvažte strategii B (2 sady) pro zkrácení`);
     }
-    if (minCost.id !== minTime.id) {
+    if (safeStrategies.length > 0 && minCost.id !== minTime.id) {
       warnings.push(`Optimum: ${minCost.label} = nejlevnější (${minCost.rental_cost.toLocaleString('cs')} Kč), ${minTime.label} = nejrychlejší (${minTime.total_days} dní)`);
     }
     if (hasRebar && crew_size_rebar > 0 && crew_size_rebar !== crewCfg.crew) {

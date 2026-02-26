@@ -867,9 +867,9 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                         Spolehlivost: {(spec.confidence * 100).toFixed(0)}%
                       </div>
                     </div>
-                    {spec.exposure_classes.length > 0 && (
+                    {(spec.exposure_classes?.length ?? 0) > 0 && (
                       <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                        <strong>Expozice:</strong> {spec.exposure_classes.join(', ')}
+                        <strong>Expozice:</strong> {spec.exposure_classes!.join(', ')}
                       </div>
                     )}
                     {spec.volume_m3 !== null && (
@@ -877,9 +877,9 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                         <strong>Objem:</strong> {formatNumber(spec.volume_m3)} m³
                       </div>
                     )}
-                    {spec.special_properties.length > 0 && (
+                    {(spec.special_properties?.length ?? 0) > 0 && (
                       <div style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '6px' }}>
-                        <strong>Vlastnosti:</strong> {spec.special_properties.join(', ')}
+                        <strong>Vlastnosti:</strong> {spec.special_properties!.join(', ')}
                       </div>
                     )}
                     <div style={{ fontSize: '12px', color: 'var(--text-tertiary)', marginTop: '8px', fontStyle: 'italic' }}>
