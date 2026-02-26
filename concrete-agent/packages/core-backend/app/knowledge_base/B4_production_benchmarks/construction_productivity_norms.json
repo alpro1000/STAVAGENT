@@ -1,0 +1,961 @@
+{
+  "metadata": {
+    "title": "Construction Productivity Norms Database",
+    "description": "Comprehensive collection of man-hours, production rates, and productivity norms for construction works",
+    "sources": [
+      "Methvin.org",
+      "Methvin.co",
+      "Industry standards",
+      "Czech/European norms"
+    ],
+    "date_compiled": "2026-02-26",
+    "units_note": "Man-hours (mhr) per unit, or production rate per hour"
+  },
+  "formwork": {
+    "description": "Formwork/Bednění man-hours and production rates",
+    "european_systems": [
+      {
+        "system": "Frami Xlife",
+        "type": "wall_frame",
+        "unit": "h_per_m2",
+        "assembly": 0.72,
+        "dismantling": 0.25,
+        "dismantling_factor": 0.35
+      },
+      {
+        "system": "Framax Xlife",
+        "type": "wall_column_frame",
+        "unit": "h_per_m2",
+        "assembly": 0.55,
+        "dismantling": 0.17,
+        "dismantling_factor": 0.3
+      },
+      {
+        "system": "TRIO",
+        "type": "wall_frame_light",
+        "unit": "h_per_m2",
+        "assembly": 0.5,
+        "dismantling": 0.15,
+        "dismantling_factor": 0.3
+      },
+      {
+        "system": "Top 50",
+        "type": "beam_formwork",
+        "unit": "h_per_m2",
+        "assembly": 0.6,
+        "dismantling": 0.21,
+        "dismantling_factor": 0.35
+      },
+      {
+        "system": "Dokaflex",
+        "type": "slab_formwork",
+        "unit": "h_per_m2",
+        "assembly": 0.45,
+        "dismantling": 0.14,
+        "dismantling_factor": 0.3
+      },
+      {
+        "system": "SL-1 Sloupové",
+        "type": "column_system",
+        "unit": "h_per_m2",
+        "assembly": 0.8,
+        "dismantling": 0.28,
+        "dismantling_factor": 0.35
+      },
+      {
+        "system": "Tradiční",
+        "type": "traditional_timber",
+        "unit": "h_per_m2",
+        "assembly": 1.3,
+        "dismantling": 0.65,
+        "dismantling_factor": 0.5
+      },
+      {
+        "system": "Římsové bednění T",
+        "type": "bridge_edge_beam",
+        "unit": "h_per_m",
+        "assembly_min": 0.3,
+        "assembly_max": 0.45,
+        "dismantling_factor": 0.25
+      }
+    ],
+    "formwork_construction_manhours": {
+      "note": "Assumes 5 uses. Adjust: 4 uses +2.5%, 3 uses +6%, 2 uses +12.5%, 1 use +20%",
+      "column_pier_foundations_F1": {
+        "unit": "m2",
+        "tradesman_hours": 1.2
+      },
+      "strip_footing_F1": {
+        "unit": "m2",
+        "tradesman_hours": 1.2
+      },
+      "attached_beam_F4": {
+        "unit": "m2",
+        "tradesman_hours": 2.45
+      },
+      "attached_beam_F1": {
+        "unit": "m2",
+        "tradesman_hours": 2.2
+      },
+      "column_F4": {
+        "unit": "m2",
+        "tradesman_hours": 2.9
+      },
+      "column_F1": {
+        "unit": "m2",
+        "tradesman_hours": 2.65
+      },
+      "lintels_beams_F4": {
+        "unit": "m2",
+        "tradesman_hours": 3.5
+      },
+      "lintels_beams_F1": {
+        "unit": "m2",
+        "tradesman_hours": 3.25
+      },
+      "wall_F4": {
+        "unit": "m2",
+        "tradesman_hours": 2.6
+      },
+      "wall_F1": {
+        "unit": "m2",
+        "tradesman_hours": 2.2
+      },
+      "suspended_slab_F4": {
+        "unit": "m2",
+        "tradesman_hours": 2.35
+      },
+      "suspended_slab_F1": {
+        "unit": "m2",
+        "tradesman_hours": 2.0
+      },
+      "stairs_landings_F4": {
+        "unit": "m2",
+        "tradesman_hours": 4.0
+      },
+      "stairs_landings_F1": {
+        "unit": "m2",
+        "tradesman_hours": 3.5
+      },
+      "edge_0_100mm_F4": {
+        "unit": "m",
+        "tradesman_hours": 0.75
+      },
+      "edge_100_200mm_F4": {
+        "unit": "m",
+        "tradesman_hours": 0.75
+      },
+      "edge_200_300mm_F4": {
+        "unit": "m",
+        "tradesman_hours": 1.0
+      }
+    },
+    "formwork_production_rates": {
+      "pilecaps_small": {
+        "unit": "m2_per_hr",
+        "slow": 0.9,
+        "average": 1.6,
+        "fast": 2.0
+      },
+      "pilecaps_medium": {
+        "unit": "m2_per_hr",
+        "slow": 1.6,
+        "average": 2.0,
+        "fast": 2.3
+      },
+      "pilecaps_large": {
+        "unit": "m2_per_hr",
+        "slow": 2.3,
+        "average": 2.5,
+        "fast": 3.1
+      },
+      "ground_beams": {
+        "unit": "m2_per_hr",
+        "slow": 1.1,
+        "average": 1.7,
+        "fast": 2.5
+      },
+      "elevated_slab_soffit": {
+        "unit": "m2_per_hr",
+        "slow": 0.6,
+        "average": 0.8,
+        "fast": 1.2
+      },
+      "walls_framed_small": {
+        "unit": "m2_per_hr",
+        "slow": 0.9,
+        "average": 1.8,
+        "fast": 1.9
+      },
+      "walls_framed_large": {
+        "unit": "m2_per_hr",
+        "slow": 1.2,
+        "average": 2.5,
+        "fast": 2.9
+      },
+      "columns_square_timber": {
+        "unit": "m2_per_hr",
+        "slow": 1.3,
+        "average": 1.6,
+        "fast": 1.8
+      },
+      "staircases_soffit": {
+        "unit": "m2_per_hr",
+        "slow": 0.7,
+        "average": 0.8,
+        "fast": 1.0
+      }
+    }
+  },
+  "concrete_placement": {
+    "description": "Concrete placement man-hours and production rates",
+    "manhours_unreinforced": {
+      "blinding_50mm": {
+        "unit": "m3",
+        "tradesman_hours": 2.2
+      },
+      "column_pier_foundations": {
+        "unit": "m3",
+        "tradesman_hours": 1.2
+      },
+      "strip_footings": {
+        "unit": "m3",
+        "tradesman_hours": 1.3
+      }
+    },
+    "manhours_reinforced": {
+      "column_pier_foundations": {
+        "unit": "m3",
+        "tradesman_hours": 1.5
+      },
+      "strip_footings": {
+        "unit": "m3",
+        "tradesman_hours": 1.6
+      },
+      "slabs_on_fill": {
+        "unit": "m3",
+        "tradesman_hours": 1.75
+      },
+      "suspended_slabs_150_300mm": {
+        "unit": "m3",
+        "tradesman_hours": 2.0
+      },
+      "walls_150_300mm": {
+        "unit": "m3",
+        "tradesman_hours": 2.0
+      },
+      "columns": {
+        "unit": "m3",
+        "tradesman_hours": 2.9
+      },
+      "attached_beams": {
+        "unit": "m3",
+        "tradesman_hours": 2.25
+      },
+      "isolated_beams": {
+        "unit": "m3",
+        "tradesman_hours": 3.0
+      },
+      "stairs_landings": {
+        "unit": "m3",
+        "tradesman_hours": 3.9
+      }
+    },
+    "production_rates": {
+      "lorry_pump": {
+        "unit": "m3_per_hr",
+        "slow": 30.0,
+        "average": 40.0,
+        "fast": 50.0
+      },
+      "wheelbarrow_1_10m": {
+        "unit": "m3_per_hr",
+        "slow": 2.1,
+        "average": 2.3,
+        "fast": 2.5
+      },
+      "wheelbarrow_10_20m": {
+        "unit": "m3_per_hr",
+        "slow": 1.5,
+        "average": 1.8,
+        "fast": 2.1
+      },
+      "wheelbarrow_20_50m": {
+        "unit": "m3_per_hr",
+        "slow": 0.8,
+        "average": 1.1,
+        "fast": 1.5
+      },
+      "readymix_mass_fill": {
+        "unit": "m3_per_hr",
+        "slow": 2.8,
+        "average": 3.1,
+        "fast": 3.3
+      },
+      "readymix_pile_caps": {
+        "unit": "m3_per_hr",
+        "slow": 1.0,
+        "average": 1.5,
+        "fast": 2.3
+      },
+      "readymix_ground_slab": {
+        "unit": "m3_per_hr",
+        "slow": 2.1,
+        "average": 2.3,
+        "fast": 2.6
+      },
+      "tower_crane_slabs_thin": {
+        "unit": "m3_per_hr",
+        "slow": 0.9,
+        "average": 1.3,
+        "fast": 1.7
+      },
+      "tower_crane_slabs_thick": {
+        "unit": "m3_per_hr",
+        "slow": 1.2,
+        "average": 1.5,
+        "fast": 1.8
+      },
+      "tower_crane_walls": {
+        "unit": "m3_per_hr",
+        "slow": 0.6,
+        "average": 1.1,
+        "fast": 1.5
+      },
+      "tower_crane_columns": {
+        "unit": "m3_per_hr",
+        "slow": 0.4,
+        "average": 0.5,
+        "fast": 0.6
+      }
+    }
+  },
+  "reinforcement": {
+    "description": "Reinforcement placing and fixing man-hours",
+    "mesh": {
+      "slabs_small_areas": {
+        "unit": "m2",
+        "tradesman_hours": 0.12
+      },
+      "slabs_large_areas": {
+        "unit": "m2",
+        "tradesman_hours": 0.08
+      },
+      "walls": {
+        "unit": "m2",
+        "tradesman_hours": 0.12
+      }
+    },
+    "bars": {
+      "stirrups_6_12mm": {
+        "unit": "tonne",
+        "tradesman_hours": 30.0
+      },
+      "bars_16_32mm_slabs": {
+        "unit": "tonne",
+        "tradesman_hours": 18.0
+      },
+      "bars_16_32mm_walls": {
+        "unit": "tonne",
+        "tradesman_hours": 20.0
+      },
+      "bars_16_32mm_columns_beams": {
+        "unit": "tonne",
+        "tradesman_hours": 20.0
+      }
+    },
+    "detailed_rates_slabs": {
+      "6mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 40.3,
+        "average": 38.4,
+        "fast": 36.5
+      },
+      "8mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 28.2,
+        "average": 26.9,
+        "fast": 25.8
+      },
+      "10mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 22.5,
+        "average": 20.6,
+        "fast": 20.1
+      },
+      "12mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 16.9,
+        "average": 16.3,
+        "fast": 15.4
+      },
+      "16mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 12.0,
+        "average": 11.5,
+        "fast": 10.9
+      },
+      "20mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 9.2,
+        "average": 8.6,
+        "fast": 8.2
+      },
+      "25mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 6.9,
+        "average": 6.7,
+        "fast": 6.5
+      },
+      "32mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 5.7,
+        "average": 5.5,
+        "fast": 5.2
+      }
+    },
+    "detailed_rates_columns_beams": {
+      "12mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 23.4,
+        "average": 22.4,
+        "fast": 21.9
+      },
+      "16mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 16.6,
+        "average": 15.8,
+        "fast": 15.1
+      },
+      "20mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 12.4,
+        "average": 11.9,
+        "fast": 11.3
+      },
+      "25mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 9.9,
+        "average": 9.2,
+        "fast": 8.7
+      },
+      "32mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 6.8,
+        "average": 6.6,
+        "fast": 6.2
+      }
+    },
+    "detailed_rates_walls": {
+      "12mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 17.6,
+        "average": 17.3,
+        "fast": 16.9
+      },
+      "16mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 12.4,
+        "average": 12.2,
+        "fast": 11.8
+      },
+      "20mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 9.4,
+        "average": 9.2,
+        "fast": 8.7
+      },
+      "25mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 7.4,
+        "average": 7.2,
+        "fast": 7.0
+      },
+      "32mm": {
+        "unit": "hrs_per_tonne",
+        "slow": 7.0,
+        "average": 6.8,
+        "fast": 6.4
+      }
+    }
+  },
+  "excavation": {
+    "description": "Excavation and earthwork production rates",
+    "bulking_factors": {
+      "sand_soil": 0.15,
+      "gravel": 0.33,
+      "clay_chalk": 0.4,
+      "boulder_clay": 0.45,
+      "rock": 0.6
+    },
+    "spoil_weight": {
+      "rock": {
+        "unit": "tonnes_per_m3",
+        "value": 2.5
+      },
+      "concrete": {
+        "unit": "tonnes_per_m3",
+        "value": 2.4
+      },
+      "landfill_cdg": {
+        "unit": "tonnes_per_m3",
+        "value": 1.9
+      },
+      "sand": {
+        "unit": "tonnes_per_m3",
+        "value": 1.8
+      }
+    },
+    "hydraulic_excavator_sand_soil": {
+      "0.3m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 6.9,
+        "average": 8.7,
+        "fast": 10.2
+      },
+      "0.4m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 23.4,
+        "average": 28.6,
+        "fast": 33.4
+      },
+      "0.5m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 45.5,
+        "average": 50.0,
+        "fast": 58.0
+      }
+    },
+    "hydraulic_excavator_gravel": {
+      "0.3m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 5.6,
+        "average": 7.1,
+        "fast": 8.2
+      },
+      "0.4m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 20.5,
+        "average": 25.0,
+        "fast": 29.0
+      },
+      "0.5m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 36.8,
+        "average": 40.0,
+        "fast": 46.0
+      }
+    },
+    "hydraulic_excavator_clay": {
+      "0.3m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 5.6,
+        "average": 7.1,
+        "fast": 8.3
+      },
+      "0.4m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 20.5,
+        "average": 25.0,
+        "fast": 28.7
+      },
+      "0.5m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 37.0,
+        "average": 40.0,
+        "fast": 46.0
+      }
+    },
+    "hydraulic_excavator_hard_ground": {
+      "0.3m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 4.5,
+        "average": 6.1,
+        "fast": 7.2
+      },
+      "0.4m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 17.9,
+        "average": 22.2,
+        "fast": 25.0
+      },
+      "0.5m3_bucket": {
+        "unit": "m3_per_hr",
+        "slow": 25.7,
+        "average": 28.6,
+        "fast": 32.9
+      }
+    }
+  },
+  "masonry": {
+    "description": "Masonry work man-hours and production rates",
+    "blockwork_hollow": {
+      "400x200x100mm": {
+        "unit": "m2",
+        "tradesman_hours": 0.43,
+        "labourer_hours": 0.22
+      },
+      "400x200x150mm": {
+        "unit": "m2",
+        "tradesman_hours": 0.5,
+        "labourer_hours": 0.25
+      },
+      "400x200x200mm": {
+        "unit": "m2",
+        "tradesman_hours": 0.56,
+        "labourer_hours": 0.28
+      },
+      "400x200x200mm_reinforced": {
+        "unit": "m2",
+        "tradesman_hours": 0.96,
+        "labourer_hours": 0.28
+      },
+      "pointing_cleaning": {
+        "unit": "m2",
+        "tradesman_hours": 0.1,
+        "labourer_hours": 0.1
+      }
+    },
+    "blockwork_production_rates": {
+      "thermalite_under_100mm": {
+        "unit": "m2_per_hr",
+        "slow": 1.8,
+        "average": 2.5,
+        "fast": 3.2
+      },
+      "thermalite_100_150mm": {
+        "unit": "m2_per_hr",
+        "slow": 1.4,
+        "average": 1.9,
+        "fast": 2.5
+      },
+      "thermalite_over_150mm": {
+        "unit": "m2_per_hr",
+        "slow": 1.2,
+        "average": 1.6,
+        "fast": 2.1
+      },
+      "lightweight_under_100mm": {
+        "unit": "m2_per_hr",
+        "slow": 1.5,
+        "average": 2.2,
+        "fast": 2.9
+      },
+      "lightweight_100_150mm": {
+        "unit": "m2_per_hr",
+        "slow": 1.4,
+        "average": 1.9,
+        "fast": 2.1
+      },
+      "lightweight_over_150mm": {
+        "unit": "m2_per_hr",
+        "slow": 1.2,
+        "average": 1.6,
+        "fast": 2.0
+      },
+      "heavyweight_under_100mm": {
+        "unit": "m2_per_hr",
+        "slow": 1.4,
+        "average": 2.1,
+        "fast": 2.9
+      },
+      "heavyweight_100_150mm": {
+        "unit": "m2_per_hr",
+        "slow": 1.2,
+        "average": 1.6,
+        "fast": 2.1
+      },
+      "heavyweight_over_150mm": {
+        "unit": "m2_per_hr",
+        "slow": 1.1,
+        "average": 1.4,
+        "fast": 1.8
+      }
+    },
+    "concrete_filling_cores": {
+      "150mm_block": {
+        "unit": "m2",
+        "tradesman_hours": 0.45
+      },
+      "200mm_block": {
+        "unit": "m2",
+        "tradesman_hours": 0.55
+      }
+    },
+    "lintel_blocks": {
+      "200x200x200mm": {
+        "unit": "m",
+        "tradesman_hours": 0.4,
+        "labourer_hours": 0.14
+      },
+      "200x400x200mm": {
+        "unit": "m",
+        "tradesman_hours": 0.54,
+        "labourer_hours": 0.18
+      }
+    }
+  },
+  "plastering": {
+    "description": "Plastering man-hours and production rates",
+    "cement_render_13mm": {
+      "walls": {
+        "unit": "m2",
+        "tradesman_hours": 0.25,
+        "labourer_hours": 0.11
+      },
+      "soffits": {
+        "unit": "m2",
+        "tradesman_hours": 0.28,
+        "labourer_hours": 0.11
+      },
+      "columns": {
+        "unit": "m2",
+        "tradesman_hours": 0.42,
+        "labourer_hours": 0.18
+      },
+      "beams": {
+        "unit": "m2",
+        "tradesman_hours": 0.42,
+        "labourer_hours": 0.18
+      }
+    },
+    "hardwall_plaster_16mm": {
+      "walls": {
+        "unit": "m2",
+        "tradesman_hours": 0.42,
+        "labourer_hours": 0.18
+      },
+      "soffits": {
+        "unit": "m2",
+        "tradesman_hours": 0.5,
+        "labourer_hours": 0.2
+      },
+      "columns": {
+        "unit": "m2",
+        "tradesman_hours": 0.55,
+        "labourer_hours": 0.25
+      },
+      "beams": {
+        "unit": "m2",
+        "tradesman_hours": 0.55,
+        "labourer_hours": 0.25
+      }
+    },
+    "production_rates_browning": {
+      "walls_under_2.5m": {
+        "unit": "m2_per_hr",
+        "slow": 2.2,
+        "average": 2.8,
+        "fast": 3.1
+      },
+      "walls_over_2.5m": {
+        "unit": "m2_per_hr",
+        "slow": 2.1,
+        "average": 2.6,
+        "fast": 2.8
+      },
+      "reveals_columns_under_100mm": {
+        "unit": "m2_per_hr",
+        "slow": 9.9,
+        "average": 10.0,
+        "fast": 10.1
+      },
+      "reveals_columns_100_200mm": {
+        "unit": "m2_per_hr",
+        "slow": 5.2,
+        "average": 5.4,
+        "fast": 6.4
+      },
+      "reveals_columns_200_300mm": {
+        "unit": "m2_per_hr",
+        "slow": 3.3,
+        "average": 3.6,
+        "fast": 3.9
+      }
+    },
+    "production_rates_skimming": {
+      "walls_under_2.5m": {
+        "unit": "m2_per_hr",
+        "slow": 6.1,
+        "average": 6.7,
+        "fast": 7.3
+      },
+      "walls_over_2.5m": {
+        "unit": "m2_per_hr",
+        "slow": 5.5,
+        "average": 6.1,
+        "fast": 6.7
+      },
+      "reveals_columns_under_100mm": {
+        "unit": "m2_per_hr",
+        "slow": 12.6,
+        "average": 13.8,
+        "fast": 15.4
+      },
+      "reveals_columns_100_200mm": {
+        "unit": "m2_per_hr",
+        "slow": 7.7,
+        "average": 8.3,
+        "fast": 9.8
+      }
+    },
+    "production_rates_ceilings": {
+      "plaster_board": {
+        "unit": "m2_per_hr",
+        "slow": 3.2,
+        "average": 4.5,
+        "fast": 5.5
+      },
+      "plastering_bonding_skim": {
+        "unit": "m2_per_hr",
+        "slow": 1.1,
+        "average": 1.7,
+        "fast": 2.4
+      },
+      "topcoat_skimming": {
+        "unit": "m2_per_hr",
+        "slow": 2.7,
+        "average": 3.2,
+        "fast": 5.4
+      }
+    }
+  },
+  "painting": {
+    "description": "Painting man-hours",
+    "acrylic": {
+      "walls": {
+        "unit": "m2",
+        "tradesman_hours": 0.2,
+        "note": "Prepare and apply 2 coats"
+      },
+      "ceilings_soffits": {
+        "unit": "m2",
+        "tradesman_hours": 0.25
+      },
+      "timber_metal": {
+        "unit": "m2",
+        "tradesman_hours": 0.23
+      }
+    },
+    "enamel": {
+      "walls": {
+        "unit": "m2",
+        "tradesman_hours": 0.3,
+        "note": "Add 50% for joinery/windows"
+      },
+      "ceilings_soffits": {
+        "unit": "m2",
+        "tradesman_hours": 0.32
+      },
+      "timber_metal": {
+        "unit": "m2",
+        "tradesman_hours": 0.3
+      },
+      "polyurethane_timber": {
+        "unit": "m2",
+        "tradesman_hours": 0.18
+      },
+      "stain_timber": {
+        "unit": "m2",
+        "tradesman_hours": 0.2
+      }
+    },
+    "paper_hanging": {
+      "ceilings": {
+        "unit": "m2",
+        "tradesman_hours": 0.34
+      },
+      "walls": {
+        "unit": "m2",
+        "tradesman_hours": 0.3
+      }
+    }
+  },
+  "tiling": {
+    "description": "Tiling production rates",
+    "ceramic_150x150mm": {
+      "ledges_upstands": {
+        "unit": "no_per_hr",
+        "slow": 20.4,
+        "average": 27.1,
+        "fast": 32.0
+      },
+      "areas_under_1.5m2": {
+        "unit": "m2_per_hr",
+        "slow": 0.9,
+        "average": 1.0,
+        "fast": 1.2
+      },
+      "areas_1.5_2.5m2": {
+        "unit": "m2_per_hr",
+        "slow": 1.4,
+        "average": 1.6,
+        "fast": 1.9
+      },
+      "areas_over_2.5m2": {
+        "unit": "m2_per_hr",
+        "slow": 1.5,
+        "average": 1.7,
+        "fast": 2.1
+      },
+      "cutting": {
+        "unit": "no_per_hr",
+        "value": 41.6
+      }
+    },
+    "ceramic_108x108mm": {
+      "ledges_upstands": {
+        "unit": "no_per_hr",
+        "value": 62.5
+      },
+      "areas_under_1.5m2": {
+        "unit": "m2_per_hr",
+        "slow": 1.0,
+        "average": 1.3,
+        "fast": 1.5
+      },
+      "areas_1.5_2.5m2": {
+        "unit": "m2_per_hr",
+        "slow": 1.6,
+        "average": 1.8,
+        "fast": 2.1
+      },
+      "areas_over_2.5m2": {
+        "unit": "m2_per_hr",
+        "slow": 1.7,
+        "average": 1.9,
+        "fast": 2.2
+      },
+      "cutting": {
+        "unit": "no_per_hr",
+        "value": 125.0
+      }
+    },
+    "grouting": {
+      "unit": "m2_per_hr",
+      "slow": 2.2,
+      "average": 2.5,
+      "fast": 2.6
+    }
+  },
+  "calculation_formulas": {
+    "assembly_days": "assemblyDays = (set_m2_or_m * norm_h_per_unit) / (crew_size * shift_hours)",
+    "default_shift_hours": 8,
+    "typical_crew_size": "2-4 persons",
+    "adjustment_factors": {
+      "experience": "±10-20%",
+      "height": "Add time for work above 3m",
+      "weather": "Cold/rain reduces productivity",
+      "complexity": "Detailed work slower than standard"
+    }
+  },
+  "notes": [
+    "All man-hours are based on field-tested productivity",
+    "Formwork constants assume 5 uses - adjust for fewer uses",
+    "Production rates show slow/average/fast ranges for planning",
+    "Excavation rates depend on soil type and equipment size",
+    "Adjust norms for local conditions and crew experience",
+    "European norms compiled from Czech and Central European sources",
+    "Methvin.org provides comprehensive international standards"
+  ]
+}
