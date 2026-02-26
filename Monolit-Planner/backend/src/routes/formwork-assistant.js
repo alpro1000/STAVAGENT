@@ -32,11 +32,11 @@ const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT || '60000', 10);
  */
 const ASSEMBLY_NORMS_FALLBACK = {
   'Frami Xlife':       { h_m2: 0.72, disassembly_h_m2: 0.25, disassembly_ratio: 0.35 },
-  'Framax Xlife':      { h_m2: 0.55, disassembly_h_m2: 0.19, disassembly_ratio: 0.35 },
-  'TRIO':              { h_m2: 0.50, disassembly_h_m2: 0.18, disassembly_ratio: 0.36 },
+  'Framax Xlife':      { h_m2: 0.55, disassembly_h_m2: 0.17, disassembly_ratio: 0.30 },
+  'TRIO':              { h_m2: 0.50, disassembly_h_m2: 0.15, disassembly_ratio: 0.30 },
   'Top 50':            { h_m2: 0.60, disassembly_h_m2: 0.21, disassembly_ratio: 0.35 },
-  'Dokaflex':          { h_m2: 0.45, disassembly_h_m2: 0.14, disassembly_ratio: 0.31 },
-  'SL-1 Sloupové':     { h_m2: 0.80, disassembly_h_m2: 0.30, disassembly_ratio: 0.375 },
+  'Dokaflex':          { h_m2: 0.45, disassembly_h_m2: 0.14, disassembly_ratio: 0.30 },
+  'SL-1 Sloupové':     { h_m2: 0.80, disassembly_h_m2: 0.28, disassembly_ratio: 0.35 },
   'Tradiční tesařské': { h_m2: 1.30, disassembly_h_m2: 0.65, disassembly_ratio: 0.50 },
 };
 

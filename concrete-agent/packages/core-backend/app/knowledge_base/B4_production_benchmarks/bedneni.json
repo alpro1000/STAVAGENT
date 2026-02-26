@@ -30,12 +30,12 @@
       "vyrobce": "DOKA",
       "kategorie": "stena",
       "assembly_h_m2": 0.55,
-      "disassembly_h_m2": 0.19,
-      "disassembly_ratio": 0.35,
+      "disassembly_h_m2": 0.17,
+      "disassembly_ratio": 0.30,
       "poznamka": "Velkoformátové rámové bednění, přesun výhradně jeřábem (panel ~120 kg). Normy platí pro h=2,7 m. Pro h=4,65 m (2 panely) jsou normy ~10 % nižší díky méně spojům.",
       "varianty": [
-        { "vyska_m": 2.7,  "assembly_h_m2": 0.55, "disassembly_h_m2": 0.19 },
-        { "vyska_m": 4.65, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.18 }
+        { "vyska_m": 2.7,  "assembly_h_m2": 0.55, "disassembly_h_m2": 0.17 },
+        { "vyska_m": 4.65, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.15 }
       ],
       "vhodne_pro": ["mostní pilíře h=2,7–5,4 m", "vysoké stěny", "opěrné zdi komunikací"],
       "pozadavky": "jeřáb povinný",
@@ -46,12 +46,12 @@
       "vyrobce": "PERI",
       "kategorie": "stena",
       "assembly_h_m2": 0.50,
-      "disassembly_h_m2": 0.18,
-      "disassembly_ratio": 0.36,
+      "disassembly_h_m2": 0.15,
+      "disassembly_ratio": 0.30,
       "poznamka": "Rámové bednění PERI, alternativa k Framax Xlife. Lehčí rám = rychlejší montáž. Pro h=2,7 m.",
       "varianty": [
-        { "vyska_m": 2.7, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.18 },
-        { "vyska_m": 3.3, "assembly_h_m2": 0.53, "disassembly_h_m2": 0.19 }
+        { "vyska_m": 2.7, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.15 },
+        { "vyska_m": 3.3, "assembly_h_m2": 0.53, "disassembly_h_m2": 0.16 }
       ],
       "vhodne_pro": ["stěny budov", "mostní pilíře h=2,7 m", "náhrada Framax u PERI dodavatelů"],
       "zdroj": "PERI průmyslové normy 2024"
@@ -94,13 +94,13 @@
       "vyrobce": "DOKA",
       "kategorie": "sloupy",
       "assembly_h_m2": 0.80,
-      "disassembly_h_m2": 0.30,
-      "disassembly_ratio": 0.375,
+      "disassembly_h_m2": 0.28,
+      "disassembly_ratio": 0.35,
       "poznamka": "Sloupové bednění pro čtvercové/obdélníkové průřezy. Výšková sada 4,5 m. Manuální montáž do h=3 m, jeřáb pro vyšší výšky.",
       "varianty": [
-        { "vyska_m": 3.0, "assembly_h_m2": 0.75, "disassembly_h_m2": 0.28, "pozadavky": "bez jeřábu" },
-        { "vyska_m": 4.5, "assembly_h_m2": 0.80, "disassembly_h_m2": 0.30, "pozadavky": "jeřáb doporučen" },
-        { "vyska_m": 6.0, "assembly_h_m2": 0.88, "disassembly_h_m2": 0.33, "pozadavky": "jeřáb nutný" }
+        { "vyska_m": 3.0, "assembly_h_m2": 0.75, "disassembly_h_m2": 0.26, "pozadavky": "bez jeřábu" },
+        { "vyska_m": 4.5, "assembly_h_m2": 0.80, "disassembly_h_m2": 0.28, "pozadavky": "jeřáb doporučen" },
+        { "vyska_m": 6.0, "assembly_h_m2": 0.88, "disassembly_h_m2": 0.31, "pozadavky": "jeřáb nutný" }
       ],
       "vhodne_pro": ["mostní pilíře — průřez sloup", "kruhové a čtvercové sloupy", "pilíře nadjezdů"],
       "zdroj": "formwork_systems_doka.json + DOKA produktový katalog 2024"
@@ -139,10 +139,13 @@
       "kategorie": "rimsy",
       "assembly_h_m2": 1.10,
       "disassembly_h_m2": 0.45,
+      "disassembly_ratio": 0.25,
+      "assembly_h_mb_min": 0.30,
+      "assembly_h_mb_max": 0.45,
       "assembly_h_mb": 1.5,
       "disassembly_h_mb": 0.6,
-      "disassembly_ratio": 0.409,
-      "poznamka": "Ruční konzolový systém pro mostní římsy. Bez jeřábu. Normy platí pro standardní římsový chodník š=50–60 cm. Atypické tvary: +20–30 %.",
+      "unit_note": "Normy udávány v h/m (bm římsы) i h/m² bednění. h/m² pro celkovou pracnost, h/m pro plánování taktů.",
+      "poznamka": "Ruční konzolový systém pro mostní římsы. Bez jeřábu. Normy platí pro standardní římsový chodník š=50–60 cm. Atypické tvary: +20–30 %.",
       "vhodne_pro": ["mostní římsové chodníky — mosty ≤50 m", "konzolové chodníky", "rekonstrukce říms"],
       "podminka": "mosty ≤50 m délky, bez jeřábu",
       "zdroj": "formwork_systems_doka.json + Školení zákazníků DOKA 2026"
