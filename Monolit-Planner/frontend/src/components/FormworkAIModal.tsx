@@ -732,7 +732,8 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
           )}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -894,8 +895,7 @@ function MarkdownText({ text }: { text: string }) {
         }
         return <div key={i}>{renderBold(line)}</div>;
       })}
-    </div>,
-    document.body
+    </div>
   );
 }
 
