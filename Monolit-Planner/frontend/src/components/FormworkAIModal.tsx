@@ -12,6 +12,7 @@
  */
 
 import { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Sparkles, Zap, Brain, Bot, AlertTriangle, CheckCircle, X, BookOpen, Database, Globe } from 'lucide-react';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -217,7 +218,9 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
 
   const canCalculate = totalAreaM2 > 0 && setAreaM2 > 0;
 
-  return (
+  // Render via portal so z-index is relative to document root,
+  // not trapped inside FormworkCalculatorModal's stacking context
+  return createPortal(
     <div style={{
       position: 'fixed', inset: 0, zIndex: 10000,
       background: 'rgba(0,0,0,0.65)',
@@ -891,7 +894,8 @@ function MarkdownText({ text }: { text: string }) {
         }
         return <div key={i}>{renderBold(line)}</div>;
       })}
-    </div>
+    </div>,
+    document.body
   );
 }
 
