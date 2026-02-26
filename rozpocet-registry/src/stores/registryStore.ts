@@ -19,6 +19,7 @@ import { PREDEFINED_TEMPLATES } from '../config/templates';
 import { DEFAULT_GROUPS } from '../utils/constants';
 import { idbStorage } from './idbStorage';
 import { isMainCodeExported } from '../services/classification/rowClassificationService';
+import { debouncedSyncToPortal, cancelSync } from '../services/portalAutoSync';
 
 interface RegistryState {
   // Данные
@@ -869,3 +870,43 @@ export const useRegistryStore = create<RegistryState>()(
     }
   )
 );
+
+/**
+ * Auto-sync subscriber: when projects/tovData change, push to Portal DB.
+ * Uses debounced sync (3s delay) to avoid flooding API during rapid edits.
+ */
+let prevProjectIds = new Set<string>();
+useRegistryStore.subscribe((state, prevState) => {
+  // Sync changed projects
+  if (state.projects !== prevState.projects || state.tovData !== prevState.tovData) {
+    const currentIds = new Set(state.projects.map(p => p.id));
+
+    // Detect removed projects — cancel their pending syncs
+    for (const oldId of prevProjectIds) {
+      if (!currentIds.has(oldId)) {
+        cancelSync(oldId);
+      }
+    }
+    prevProjectIds = currentIds;
+
+    // Find which projects changed and sync them
+    for (const project of state.projects) {
+      const prevProject = prevState.projects.find(p => p.id === project.id);
+      const tovChanged = state.tovData !== prevState.tovData;
+
+      // Sync if project is new, sheets/items changed, or TOV data changed
+      if (!prevProject || prevProject !== project || tovChanged) {
+        // Collect TOV data for this project's items
+        const projectTovData: Record<string, TOVData> = {};
+        for (const sheet of project.sheets) {
+          for (const item of sheet.items) {
+            if (state.tovData[item.id]) {
+              projectTovData[item.id] = state.tovData[item.id];
+            }
+          }
+        }
+        debouncedSyncToPortal(project, projectTovData);
+      }
+    }
+  }
+});

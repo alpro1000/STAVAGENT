@@ -13,8 +13,8 @@ interface PortalLinkBadgeProps {
   compact?: boolean;  // Show only icon in compact mode
 }
 
-// Portal base URL (can be configured via env in future)
-const PORTAL_URL = 'https://stav-agent.onrender.com';
+// Portal frontend URL (configurable via env)
+const PORTAL_URL = import.meta.env.VITE_PORTAL_FRONTEND_URL || 'https://stav-agent.onrender.com';
 
 export function PortalLinkBadge({ project, compact = false }: PortalLinkBadgeProps) {
   const { linkToPortal, unlinkFromPortal } = useRegistryStore();
@@ -51,7 +51,7 @@ export function PortalLinkBadge({ project, compact = false }: PortalLinkBadgePro
           e.stopPropagation();
           if (isLinked) {
             // Open Portal project in new tab
-            window.open(`${PORTAL_URL}/projects/${project.portalLink!.portalProjectId}`, '_blank');
+            window.open(`${PORTAL_URL}/portal?project=${project.portalLink!.portalProjectId}`, '_blank');
           } else {
             setIsLinkModalOpen(true);
           }
@@ -82,7 +82,7 @@ export function PortalLinkBadge({ project, compact = false }: PortalLinkBadgePro
               {project.portalLink!.portalProjectName || 'Portal'}
             </span>
             <button
-              onClick={() => window.open(`${PORTAL_URL}/projects/${project.portalLink!.portalProjectId}`, '_blank')}
+              onClick={() => window.open(`${PORTAL_URL}/portal?project=${project.portalLink!.portalProjectId}`, '_blank')}
               className="p-0.5 hover:bg-green-200 rounded transition-colors"
               title="Otevřít v Portálu"
             >

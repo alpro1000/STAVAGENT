@@ -12,7 +12,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Plus, FileText, Activity, MessageSquare } from 'lucide-react';
 import { API_URL } from '../services/api';
 import ProjectCard from '../components/portal/ProjectCard';
@@ -174,6 +174,7 @@ const SERVICES: Service[] = [
 
 export default function PortalPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [projects, setProjects] = useState<PortalProject[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -190,6 +191,20 @@ export default function PortalPage() {
   useEffect(() => {
     loadProjects();
   }, []);
+
+  // Auto-open project from ?project=<id> query param (used by kiosk links)
+  useEffect(() => {
+    const projectId = searchParams.get('project');
+    if (projectId && projects.length > 0 && !selectedProject) {
+      const found = projects.find(p => p.portal_project_id === projectId);
+      if (found) {
+        setSelectedProject(found);
+        // Clear the query param after opening
+        searchParams.delete('project');
+        setSearchParams(searchParams, { replace: true });
+      }
+    }
+  }, [projects, searchParams]);
 
   const loadProjects = async () => {
     try {

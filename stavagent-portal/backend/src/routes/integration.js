@@ -292,4 +292,165 @@ router.post('/sync-tov', async (req, res) => {
   }
 });
 
+/**
+ * POST /api/integration/import-from-registry
+ * Import/sync project data from Rozpočet Registry to Portal DB
+ *
+ * Body:
+ * - registry_project_id: string (local ID in Registry)
+ * - project_name: string
+ * - portal_project_id: string (optional, creates new if not provided)
+ * - sheets: Array<{ name, items[] }>
+ * - tovData: Record<itemId, TOVData> (optional)
+ *
+ * Returns:
+ * - portal_project_id: string
+ * - items_imported: number
+ */
+router.post('/import-from-registry', async (req, res) => {
+  console.log('[Integration] POST /import-from-registry - Request received');
+
+  const pool = safeGetPool();
+  if (!pool) {
+    console.error('[Integration] Database pool not available');
+    return res.status(503).json({ success: false, error: 'Database not available' });
+  }
+
+  let client;
+  try {
+    client = await pool.connect();
+    const { registry_project_id, project_name, portal_project_id, sheets, tovData } = req.body;
+
+    if (!project_name || !sheets || !Array.isArray(sheets)) {
+      return res.status(400).json({ success: false, error: 'project_name and sheets[] required' });
+    }
+
+    await client.query('BEGIN');
+
+    // Create or reuse portal project
+    let projectId = portal_project_id;
+    if (!projectId) {
+      projectId = `proj_${uuidv4()}`;
+      console.log('[Integration] Creating new portal project for Registry:', projectId);
+      await client.query(
+        `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
+         VALUES ($1, $2, 'registry', 1, NOW(), NOW())
+         ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
+        [projectId, project_name]
+      );
+    } else {
+      // Update existing project name
+      await client.query(
+        `UPDATE portal_projects SET project_name = $1, updated_at = NOW() WHERE portal_project_id = $2`,
+        [project_name, projectId]
+      );
+    }
+
+    // Link as registry kiosk
+    if (registry_project_id) {
+      await client.query(
+        `INSERT INTO kiosk_links (link_id, portal_project_id, kiosk_type, kiosk_project_id, status, created_at, last_sync)
+         VALUES ($1, $2, 'registry', $3, 'active', NOW(), NOW())
+         ON CONFLICT (portal_project_id, kiosk_type) DO UPDATE SET kiosk_project_id = $3, last_sync = NOW(), status = 'active'`,
+        [`link_${uuidv4()}`, projectId, registry_project_id]
+      );
+    }
+
+    // Delete existing objects/positions for this project (full replace on sync)
+    await client.query(
+      `DELETE FROM portal_objects WHERE portal_project_id = $1`,
+      [projectId]
+    );
+
+    // Import sheets as objects, items as positions
+    let totalItems = 0;
+    for (const sheet of sheets) {
+      const objectId = `obj_${uuidv4()}`;
+      await client.query(
+        `INSERT INTO portal_objects (object_id, portal_project_id, object_code, object_name, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, NOW(), NOW())`,
+        [objectId, projectId, sheet.name || 'Sheet', sheet.name || 'Sheet']
+      );
+
+      for (const item of (sheet.items || [])) {
+        const positionId = `pos_${uuidv4()}`;
+        // Get TOV data if available
+        const itemTov = (tovData && tovData[item.id]) || {};
+
+        await client.query(
+          `INSERT INTO portal_positions (
+            position_id, object_id, kod, popis, mnozstvi, mj,
+            cena_jednotkova, cena_celkem,
+            tov_labor, tov_machinery, tov_materials,
+            registry_item_id, last_sync_from, last_sync_at,
+            created_at, updated_at
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'registry', NOW(), NOW(), NOW())`,
+          [
+            positionId, objectId,
+            item.kod || '', item.popis || '',
+            item.mnozstvi || 0, item.mj || '',
+            item.cenaJednotkova || 0, item.cenaCelkem || 0,
+            JSON.stringify(itemTov.labor || []),
+            JSON.stringify(itemTov.machinery || []),
+            JSON.stringify(itemTov.materials || []),
+            item.id || null
+          ]
+        );
+        totalItems++;
+      }
+    }
+
+    await client.query('COMMIT');
+    console.log(`[Integration] Registry import complete: ${projectId}, ${sheets.length} sheets, ${totalItems} items`);
+
+    res.json({
+      success: true,
+      portal_project_id: projectId,
+      sheets_imported: sheets.length,
+      items_imported: totalItems
+    });
+
+  } catch (error) {
+    if (client) await client.query('ROLLBACK');
+    console.error('[Integration] Error importing from Registry:', error.message);
+    res.status(500).json({ success: false, error: error.message });
+  } finally {
+    if (client) client.release();
+  }
+});
+
+/**
+ * GET /api/integration/registry-status/:registry_project_id
+ * Check if a Registry project already has a portal link
+ *
+ * Returns:
+ * - linked: boolean
+ * - portal_project_id: string | null
+ */
+router.get('/registry-status/:registry_project_id', async (req, res) => {
+  const pool = safeGetPool();
+  if (!pool) {
+    return res.json({ linked: false, portal_project_id: null });
+  }
+
+  try {
+    const { registry_project_id } = req.params;
+    const result = await pool.query(
+      `SELECT portal_project_id FROM kiosk_links
+       WHERE kiosk_type = 'registry' AND kiosk_project_id = $1 AND status = 'active'
+       LIMIT 1`,
+      [registry_project_id]
+    );
+
+    if (result.rows.length > 0) {
+      res.json({ linked: true, portal_project_id: result.rows[0].portal_project_id });
+    } else {
+      res.json({ linked: false, portal_project_id: null });
+    }
+  } catch (error) {
+    console.error('[Integration] Error checking registry status:', error.message);
+    res.json({ linked: false, portal_project_id: null });
+  }
+});
+
 export default router;
