@@ -332,11 +332,28 @@ def build_kb_context(
 
         category_data = kb_data[category]
 
-        # Format category data (simplified)
         if isinstance(category_data, dict):
-            # Take first few entries
-            for key, value in list(category_data.items())[:3]:
-                context_parts.append(f"{category} - {key}: {str(value)[:200]}...")
+            for key, value in list(category_data.items())[:5]:
+                # Structured expert research JSON (from /api/v1/kb/expert-research)
+                if isinstance(value, dict) and "standards" in value:
+                    stds = [s.get("id", "") for s in value.get("standards", [])[:6] if s.get("id")]
+                    laws = [l.get("id", "") for l in value.get("laws_regulations", [])[:3] if l.get("id")]
+                    summary = value.get("summary", "")[:300]
+                    snippet = ""
+                    if stds:
+                        snippet += f"STANDARDS: {', '.join(stds)}"
+                    if laws:
+                        snippet += f" | LAWS: {', '.join(laws)}"
+                    if summary:
+                        snippet += f" | {summary}"
+                    context_parts.append(f"{category} [{key}]: {snippet}")
+                # Plain research JSON (from /api/v1/kb/research)
+                elif isinstance(value, dict) and "answer" in value:
+                    answer_snippet = str(value.get("answer", ""))[:250]
+                    context_parts.append(f"{category} [{key}]: {answer_snippet}...")
+                # Other dict/list data
+                else:
+                    context_parts.append(f"{category} - {key}: {str(value)[:200]}...")
 
         # Stop if context is getting too large
         current_size = sum(len(p) for p in context_parts)
