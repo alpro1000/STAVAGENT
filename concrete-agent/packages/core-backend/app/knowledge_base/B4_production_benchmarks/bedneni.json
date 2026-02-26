@@ -1,0 +1,72 @@
+{
+  "formwork_norms": [
+    {
+      "system": "Frami Xlife",
+      "type": "wall_frame",
+      "unit": "h_per_m2",
+      "assembly": 0.72,
+      "dismantling": 0.25,
+      "dismantling_factor": 0.35
+    },
+    {
+      "system": "Framax Xlife",
+      "type": "wall_column_frame",
+      "unit": "h_per_m2",
+      "assembly": 0.55,
+      "dismantling": 0.17,
+      "dismantling_factor": 0.30
+    },
+    {
+      "system": "TRIO",
+      "type": "wall_frame_light",
+      "unit": "h_per_m2",
+      "assembly": 0.50,
+      "dismantling": 0.15,
+      "dismantling_factor": 0.30
+    },
+    {
+      "system": "Top 50",
+      "type": "beam_formwork",
+      "unit": "h_per_m2",
+      "assembly": 0.60,
+      "dismantling": 0.21,
+      "dismantling_factor": 0.35
+    },
+    {
+      "system": "Dokaflex",
+      "type": "slab_formwork",
+      "unit": "h_per_m2",
+      "assembly": 0.45,
+      "dismantling": 0.14,
+      "dismantling_factor": 0.30
+    },
+    {
+      "system": "SL-1 Sloupové",
+      "type": "column_system",
+      "unit": "h_per_m2",
+      "assembly": 0.80,
+      "dismantling": 0.28,
+      "dismantling_factor": 0.35
+    },
+    {
+      "system": "Tradiční",
+      "type": "traditional_timber",
+      "unit": "h_per_m2",
+      "assembly": 1.30,
+      "dismantling": 0.65,
+      "dismantling_factor": 0.50
+    },
+    {
+      "system": "Římsové bednění T",
+      "type": "bridge_edge_beam",
+      "unit": "h_per_m",
+      "assembly_min": 0.30,
+      "assembly_max": 0.45,
+      "dismantling_factor": 0.25
+    }
+  ],
+  "calculation": {
+    "assembly_days_formula": "assemblyDays = (set_m2_or_m * norm_h_per_unit) / (crew_size * shift_hours)",
+    "default_shift_hours": 8
+  }
+}
