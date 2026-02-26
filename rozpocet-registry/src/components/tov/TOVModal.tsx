@@ -230,18 +230,34 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
             </button>
           ))}
 
-          {/* Link to Monolit Calculator */}
+          {/* Link to Monolit Calculator — deep-link to specific part when metadata available */}
           <div className="ml-auto flex items-center pr-4">
-            <a
-              href="https://monolit-planner-frontend.onrender.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-500 hover:bg-blue-500/10 rounded transition-colors"
-              title="Otevřít kalkulátor Monolit"
-            >
-              <ExternalLink size={14} />
-              Monolit Planner
-            </a>
+            {localData.monolitMetadata?.project_id ? (
+              <a
+                href={`${localData.monolitMetadata.monolit_url || 'https://monolit-planner-frontend.onrender.com'}?project=${encodeURIComponent(localData.monolitMetadata.project_id)}&part=${encodeURIComponent(localData.monolitMetadata.part_name || '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-500/10 hover:bg-blue-500/20 rounded transition-colors border border-blue-300/50"
+                title={`Otevřít v Monolitu → ${localData.monolitMetadata.part_name || 'projekt'}`}
+              >
+                <ExternalLink size={14} />
+                Otevřít v Monolitu
+                {localData.monolitMetadata.part_name && (
+                  <span className="text-blue-400 ml-1">({localData.monolitMetadata.part_name})</span>
+                )}
+              </a>
+            ) : (
+              <a
+                href="https://monolit-planner-frontend.onrender.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-500 hover:bg-blue-500/10 rounded transition-colors"
+                title="Otevřít kalkulátor Monolit"
+              >
+                <ExternalLink size={14} />
+                Monolit Planner
+              </a>
+            )}
           </div>
         </div>
 

@@ -346,6 +346,18 @@ export interface TOVData {
 
   // === KALKULÁTOR BETONOČERPADLA (only for BETON_MONOLIT / BETON_PREFAB) ===
   pumpRental?: PumpRentalData;
+
+  // === MONOLIT DEEP-LINK METADATA (set during Monolit → Registry export) ===
+  monolitMetadata?: {
+    /** Monolit project/bridge ID */
+    project_id: string;
+    /** Construction part name (ZÁKLADY, MOSTOVKA...) */
+    part_name: string;
+    /** Monolit position ID */
+    position_id?: string;
+    /** Monolit frontend URL for deep-linking */
+    monolit_url?: string;
+  };
 }
 
 export interface LaborResource {

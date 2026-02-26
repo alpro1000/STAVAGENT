@@ -48,6 +48,41 @@ export default function MainApp() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Deep-link: read ?project=X&part=Y URL params (from Registry TOV → Monolit)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const deepLinkProject = params.get('project');
+    const deepLinkPart = params.get('part');
+
+    if (!deepLinkProject) return;
+
+    // Clean URL params immediately
+    window.history.replaceState({}, '', window.location.pathname);
+
+    // Select the project (bridge)
+    const bridge = bridges.find(b => b.bridge_id === deepLinkProject);
+    if (bridge) {
+      setSelectedBridge(deepLinkProject);
+
+      // Scroll to part after a short delay (wait for positions to render)
+      if (deepLinkPart) {
+        setTimeout(() => {
+          const partEl = document.getElementById(`part-${deepLinkPart}`);
+          if (partEl) {
+            partEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Brief highlight effect
+            partEl.style.outline = '3px solid var(--accent-orange, #FF9F1C)';
+            partEl.style.outlineOffset = '2px';
+            setTimeout(() => {
+              partEl.style.outline = '';
+              partEl.style.outlineOffset = '';
+            }, 3000);
+          }
+        }, 500);
+      }
+    }
+  }, [bridges]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Portal import: read ?portal_file_id=&portal_api= URL params on load
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
