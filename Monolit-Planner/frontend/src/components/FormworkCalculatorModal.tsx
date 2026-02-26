@@ -55,14 +55,20 @@ function createEmptyRow(bridgeId: string): FormworkCalculatorRow {
 
 /** Recalculate dependent fields after any edit
  * @param elementTotalDays - if > 0, use as rental term (total element occupancy)
+ * @param forceRecompute - if true, ignore manual overrides (used on crew/shift change)
  *
  * Calculation rules:
- * - assembly/disassembly days are ALWAYS computed from norms (display-only, blue columns)
+ * - assembly/disassembly days: ALWAYS computed from norms (display-only, blue columns)
  * - days_per_tact: computed from norms, BUT user can override manually
- * - formwork_term_days: computed from tacts/sets/daysPerTact, BUT user can override
+ * - formwork_term_days (doba): computed from tacts/sets/daysPerTact, BUT user can override
  * - num_sets > 1: parallel tacts → effective_tacts = ceil(numTacts / numSets)
+ *   More sets = faster project (shorter doba), rental cost stays ~same (total set-days ≈ const)
+ *
+ * Rental formula:
+ *   doba = effectiveTacts × daysPerTact
+ *   totalRental = numSets × monthlyPerSet × (doba / 30)
  */
-function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: number, elementTotalDays = 0): FormworkCalculatorRow {
+function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: number, elementTotalDays = 0, forceRecompute = false): FormworkCalculatorRow {
   const sys = findFormworkSystem(row.system_name);
 
   // Assembly/disassembly days from norm (if system selected)
@@ -79,9 +85,8 @@ function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: num
   const computedDaysPerTact = parseFloat((assemblyDays + disassemblyDays).toFixed(1));
 
   // Use user's manual days_per_tact if they overrode it; otherwise use computed
-  // A user override is detected when existing value differs from computed
-  // (On first calc or after system/crew/shift change, we use computed)
-  const daysPerTact = (row.days_per_tact > 0 && row.days_per_tact !== computedDaysPerTact && row.set_area_m2 > 0)
+  // forceRecompute=true resets to computed (used when crew/shift changes)
+  const daysPerTact = (!forceRecompute && row.days_per_tact > 0 && row.days_per_tact !== computedDaysPerTact && row.set_area_m2 > 0)
     ? row.days_per_tact
     : computedDaysPerTact;
 
@@ -90,22 +95,26 @@ function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: num
   const numTacts = row.num_tacts > 0 ? row.num_tacts : autoTacts;
 
   // Multiple sets run tacts in parallel: effective tacts = ceil(numTacts / numSets)
+  // 1 set, 5 tacts → 5 sequential rounds
+  // 2 sets, 5 tacts → 3 rounds (set A: tact 1,3,5 | set B: tact 2,4)
+  // 3 sets, 5 tacts → 2 rounds
   const numSets = Math.max(1, row.num_sets || 1);
   const effectiveTacts = Math.ceil(numTacts / numSets);
 
-  // Term: use elementTotalDays (full element occupancy) when available,
-  // otherwise formwork term = effectiveTacts × daysPerTact
-  // User can also manually override formwork_term_days
+  // Doba (duration): how long the project needs formwork
+  // With elementTotalDays: full element occupancy (includes curing)
+  // Without: formwork-only = effectiveTacts × daysPerTact
   const computedTermDays = elementTotalDays > 0
     ? elementTotalDays
     : calculateFormworkTerm(effectiveTacts, daysPerTact);
 
-  // Keep user's manual term override if it differs from computed
-  const termDays = (row.formwork_term_days > 0 && row.formwork_term_days !== computedTermDays && row.set_area_m2 > 0)
+  // Keep user's manual term override if they set it directly
+  const termDays = (!forceRecompute && row.formwork_term_days > 0 && row.formwork_term_days !== computedTermDays && row.set_area_m2 > 0)
     ? row.formwork_term_days
     : computedTermDays;
 
-  // Rental
+  // Rental: each set is rented for the full doba period
+  // totalRental = numSets × monthlyPerSet × (doba / 30)
   const monthlyPerSet = calculateMonthlyRentalPerSet(row.set_area_m2, row.rental_czk_per_m2_month);
   const finalRental = calculateFinalRentalCost(monthlyPerSet * numSets, termDays);
 
@@ -184,8 +193,9 @@ export default function FormworkCalculatorModal({
   }, [rows, bridgeId, isLoading]);
 
   // Recalc all rows when crew/shift or elementTotalDays changes
+  // forceRecompute=true: old days_per_tact was computed with old crew/shift, so reset
   useEffect(() => {
-    setRows(prev => prev.map(r => recalcRow(r, crewSize, shiftHours, elementTotalDays)));
+    setRows(prev => prev.map(r => recalcRow(r, crewSize, shiftHours, elementTotalDays, true)));
   }, [crewSize, shiftHours, elementTotalDays]);
 
   const handleFieldChange = useCallback((rowId: string, field: keyof FormworkCalculatorRow, value: any) => {
@@ -335,7 +345,7 @@ export default function FormworkCalculatorModal({
           </label>
           <div style={{ marginLeft: 'auto', fontSize: '13px', color: 'var(--text-secondary)' }}>
             Celkem: <b>{formatCZK(totals.totalArea)} m²</b> |
-            Termín bednění: <b>{totals.maxTerm} dní</b>
+            Doba bednění: <b>{totals.maxTerm} dní</b>
           </div>
         </div>
 
@@ -348,15 +358,15 @@ export default function FormworkCalculatorModal({
             <thead>
               <tr style={{ background: 'var(--data-surface-alt, #f0f0f0)', position: 'sticky', top: 0, zIndex: 2 }}>
                 <th style={thStyle}>Konstrukce</th>
-                <th style={thStyle}>Celkem [m²]</th>
-                <th style={thStyle}>Sada [m²]</th>
+                <th style={thStyle}>Celkem [m²/bm]</th>
+                <th style={thStyle}>Sada [m²/bm]</th>
                 <th style={thStyle}>Taktů [ks]</th>
-                <th style={thStyle}>Sad [ks]</th>
+                <th style={thStyle} title="Počet sad (komletů). Víc sad = kratší doba, nájem ≈ stejný">Sad [ks]</th>
                 <th style={{...thStyle, background: '#e3f2fd'}}>Montáž [dny]</th>
                 <th style={{...thStyle, background: '#e3f2fd'}}>Demontáž [dny]</th>
                 <th style={thStyle}>Dny/takt (z+o)</th>
-                <th style={thStyle} title={elementTotalDays > 0 ? 'Celk. doba prvku (montáž+výztuž+beton+zrání+demontáž)' : 'Termín bednění (taktů × dny/takt)'}>
-                  {elementTotalDays > 0 ? 'Celk.doba [den]' : 'Termín [den]'}
+                <th style={thStyle} title={elementTotalDays > 0 ? 'Celk. doba prvku (montáž+výztuž+beton+zrání+demontáž)' : 'Doba bednění = ⌈taktů/sad⌉ × dny/takt'}>
+                  {elementTotalDays > 0 ? 'Celk.doba [den]' : 'Doba [den]'}
                 </th>
                 <th style={thStyle}>Systém</th>
                 <th style={thStyle}>Výška</th>
@@ -474,6 +484,7 @@ function FormworkRow({
 }) {
   const sys = findFormworkSystem(row.system_name);
   const heights = sys?.heights || [];
+  const unitLabel = sys?.unit === 'bm' ? 'bm' : 'm²';
 
   const fmt = (n: number, d = 2) => n.toLocaleString('cs-CZ', {
     minimumFractionDigits: d, maximumFractionDigits: d
@@ -492,22 +503,28 @@ function FormworkRow({
         />
       </td>
 
-      {/* Celkem m² */}
+      {/* Celkem m²/bm */}
       <td style={cellStyle}>
-        <input type="number" min={0} step={0.1}
-          value={row.total_area_m2 || ''}
-          onChange={e => onChange(row.id, 'total_area_m2', parseFloat(e.target.value) || 0)}
-          style={{ ...inputStyle, width: '70px' }}
-        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+          <input type="number" min={0} step={0.1}
+            value={row.total_area_m2 || ''}
+            onChange={e => onChange(row.id, 'total_area_m2', parseFloat(e.target.value) || 0)}
+            style={{ ...inputStyle, width: '60px' }}
+          />
+          <span style={{ fontSize: '10px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>{unitLabel}</span>
+        </div>
       </td>
 
-      {/* Sada m² */}
+      {/* Sada m²/bm */}
       <td style={cellStyle}>
-        <input type="number" min={0} step={0.1}
-          value={row.set_area_m2 || ''}
-          onChange={e => onChange(row.id, 'set_area_m2', parseFloat(e.target.value) || 0)}
-          style={{ ...inputStyle, width: '70px' }}
-        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+          <input type="number" min={0} step={0.1}
+            value={row.set_area_m2 || ''}
+            onChange={e => onChange(row.id, 'set_area_m2', parseFloat(e.target.value) || 0)}
+            style={{ ...inputStyle, width: '60px' }}
+          />
+          <span style={{ fontSize: '10px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>{unitLabel}</span>
+        </div>
       </td>
 
       {/* Taktů (editable) */}

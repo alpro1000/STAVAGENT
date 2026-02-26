@@ -499,7 +499,7 @@ export default function PositionsTable() {
         const isExpanded = expandedParts.has(partName);
 
         return (
-          <div key={partName} className="c-panel u-mb-md" style={{ padding: 0 }}>
+          <div key={partName} id={`part-${partName}`} className="c-panel u-mb-md" style={{ padding: 0 }}>
             <div
               className="u-flex-between u-p-md"
               onClick={() => togglePart(partName)}

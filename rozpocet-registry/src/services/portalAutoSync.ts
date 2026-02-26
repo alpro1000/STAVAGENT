@@ -64,7 +64,7 @@ export async function syncProjectToPortal(
 
     const body = {
       registry_project_id: project.id,
-      project_name: project.name,
+      project_name: project.projectName,
       portal_project_id: existingPortalId || undefined,
       sheets: project.sheets.map(sheet => ({
         name: sheet.name,
@@ -99,7 +99,7 @@ export async function syncProjectToPortal(
       const data = await response.json();
       if (data.success && data.portal_project_id) {
         portalProjectMap.set(project.id, data.portal_project_id);
-        console.log(`[PortalAutoSync] Synced project "${project.name}" → Portal ${data.portal_project_id} (${data.items_imported} items)`);
+        console.log(`[PortalAutoSync] Synced project "${project.projectName}" → Portal ${data.portal_project_id} (${data.items_imported} items)`);
         return data.portal_project_id;
       }
     } else {

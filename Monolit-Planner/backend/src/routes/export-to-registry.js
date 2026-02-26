@@ -83,7 +83,7 @@ router.post('/:bridge_id', async (req, res) => {
       return acc;
     }, {});
 
-    // 5. Map to Portal format with full TOV data and prices
+    // 5. Map to Portal format with full TOV data and prices + monolit metadata for deep-linking
     const objects = Object.entries(positionsByPart).map(([partName, partPositions]) => ({
       code: partName,
       name: `Objekt ${partName}`,
@@ -95,6 +95,17 @@ router.post('/:bridge_id', async (req, res) => {
         mj: pos.unit || '',
         cena_jednotkova: pos.unit_cost_native || pos.kros_unit_czk || 0,
         cena_celkem: pos.cost_czk || pos.kros_total_czk || 0,
+        // Monolit metadata for deep-linking (Registry → Monolit)
+        monolit_metadata: {
+          project_id: bridge_id,
+          part_name: partName,
+          position_id: pos.id,
+          subtype: pos.subtype,
+          crew_size: pos.crew_size,
+          shift_hours: pos.shift_hours,
+          days: pos.days,
+          labor_hours: pos.labor_hours,
+        },
         tov: {
           labor: mapPositionToLabor(pos),
           machinery: mapPositionToMachinery(pos),
@@ -154,7 +165,7 @@ router.post('/:bridge_id', async (req, res) => {
             const sheetId = sheetData.sheet?.sheet_id;
 
             if (sheetId) {
-              // Create items with TOV data
+              // Create items with TOV data + monolit metadata for deep-linking
               let itemOrder = 0;
               for (const pos of positions) {
                 await fetch(`${REGISTRY_API}/api/registry/sheets/${sheetId}/items`, {
@@ -168,6 +179,12 @@ router.post('/:bridge_id', async (req, res) => {
                     cena_jednotkova: pos.unit_cost_native || pos.kros_unit_czk || 0,
                     cena_celkem: pos.cost_czk || pos.kros_total_czk || 0,
                     item_order: itemOrder++,
+                    monolit_metadata: {
+                      project_id: bridge_id,
+                      part_name: pos.part_name,
+                      position_id: pos.id,
+                      subtype: pos.subtype,
+                    },
                     tov_data: {
                       labor: mapPositionToLabor(pos),
                       machinery: mapPositionToMachinery(pos),

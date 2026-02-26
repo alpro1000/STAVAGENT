@@ -367,8 +367,9 @@ export interface FormworkSystem {
   name: string;                     // System name (e.g., "Frami Xlife")
   manufacturer: string;             // DOKA, PERI, etc.
   heights: string[];                // Available heights
-  rental_czk_m2_month: number;      // Typical rental price per m² per month
-  assembly_h_m2: number;            // Assembly labor norm (hours/m²)
+  rental_czk_m2_month: number;      // Typical rental price per m² (or per bm) per month
+  assembly_h_m2: number;            // Assembly labor norm (hours/m² or hours/bm when unit='bm')
   disassembly_ratio: number;        // Disassembly as fraction of assembly (0.3-0.5)
   description?: string;             // Notes
+  unit?: 'm2' | 'bm';              // Measurement unit: 'm2' (default) or 'bm' (linear meters, e.g. Římsové)
 }
