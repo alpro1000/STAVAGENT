@@ -443,6 +443,26 @@ class PassportGenerationRequest(BaseModel):
     )
 
 
+class PassportMetadata(BaseModel):
+    """Processing metadata returned with passport response"""
+    file_name: str = Field("", description="Original file name")
+    processing_time_seconds: float = Field(0.0, description="Total processing time in seconds")
+    parser_used: str = Field("SmartParser", description="Parser used for document")
+    extraction_method: str = Field("Regex + AI", description="Extraction method")
+    ai_model_used: Optional[str] = Field(None, description="AI model used for enrichment")
+    total_confidence: float = Field(0.0, description="Average confidence across all fields")
+
+
+class PassportStatistics(BaseModel):
+    """Numerical statistics about the generated passport"""
+    total_concrete_m3: float = Field(0.0, description="Total concrete volume in m³")
+    total_reinforcement_t: float = Field(0.0, description="Total reinforcement mass in tons")
+    unique_concrete_classes: int = Field(0, description="Number of unique concrete classes")
+    unique_steel_grades: int = Field(0, description="Number of unique steel grades")
+    deterministic_fields: int = Field(0, description="Fields extracted with confidence=1.0 (regex)")
+    ai_enriched_fields: int = Field(0, description="Fields enriched by AI (confidence<1.0)")
+
+
 class PassportGenerationResponse(BaseModel):
     """Response from passport generation"""
     success: bool = Field(..., description="Generation success")
@@ -450,13 +470,30 @@ class PassportGenerationResponse(BaseModel):
     error: Optional[str] = Field(None, description="Error message if failed")
 
     processing_time_ms: int = Field(..., description="Total processing time")
+    metadata: Optional[PassportMetadata] = Field(None, description="Processing metadata")
+    statistics: Optional[PassportStatistics] = Field(None, description="Passport statistics")
 
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "success": True,
                 "passport": {"passport_id": "passport_12345"},
-                "processing_time_ms": 4500
+                "processing_time_ms": 4500,
+                "metadata": {
+                    "file_name": "technicka_zprava.pdf",
+                    "processing_time_seconds": 4.5,
+                    "parser_used": "SmartParser",
+                    "ai_model_used": "gemini",
+                    "total_confidence": 0.85
+                },
+                "statistics": {
+                    "total_concrete_m3": 1250.5,
+                    "total_reinforcement_t": 85.3,
+                    "unique_concrete_classes": 3,
+                    "unique_steel_grades": 2,
+                    "deterministic_fields": 12,
+                    "ai_enriched_fields": 5
+                }
             }
         }
     )

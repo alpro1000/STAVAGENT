@@ -143,25 +143,26 @@ export const bridgesAPI = {
     // Create locally
     await api.post('/api/monolith-projects', monolithParams);
     
-    // Also create in Portal (cross-kiosk sync)
+    // Fire-and-forget Portal sync — do NOT await so modal doesn't hang
+    // Portal (Render free tier) can take 10-30s to wake from sleep
     const portalAPI = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
-    try {
-      await fetch(`${portalAPI}/api/portal-projects/create-from-kiosk`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          project_name: params.project_name || params.project_id,
-          project_type: 'monolit',
-          kiosk_type: 'monolit',
-          kiosk_project_id: params.project_id || params.bridge_id,
-          description: params.description
-        })
-      });
-      if (import.meta.env.DEV) console.log('[API] Project synced to Portal');
-    } catch (error) {
-      console.warn('[API] Failed to sync project to Portal:', error);
-      // Don't fail - local creation succeeded
-    }
+    const portalController = new AbortController();
+    const portalTimeout = setTimeout(() => portalController.abort(), 5000); // 5s max
+    fetch(`${portalAPI}/api/portal-projects/create-from-kiosk`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: portalController.signal,
+      body: JSON.stringify({
+        project_name: params.project_name || params.project_id,
+        project_type: 'monolit',
+        kiosk_type: 'monolit',
+        kiosk_project_id: params.project_id || params.bridge_id,
+        description: params.description
+      })
+    })
+      .then(() => { if (import.meta.env.DEV) console.log('[API] Project synced to Portal'); })
+      .catch((error) => { console.warn('[API] Failed to sync project to Portal:', error.name === 'AbortError' ? 'timeout' : error); })
+      .finally(() => clearTimeout(portalTimeout));
   },
 
   update: async (bridgeId: string, params: Partial<Bridge>): Promise<void> => {

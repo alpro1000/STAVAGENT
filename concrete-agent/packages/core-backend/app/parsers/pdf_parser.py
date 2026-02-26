@@ -117,25 +117,76 @@ class PDFParser:
                 }
             }
     
+    # Razítko (title block) keywords — headers typical for Czech engineering drawings
+    _RAZITKO_HEADERS = {
+        'datum', 'date', 'revize', 'revision', 'rev', 'podpis', 'signature',
+        'jméno', 'jmeno', 'name', 'schválil', 'schvalil', 'approved',
+        'zpracoval', 'kreslil', 'kontroloval', 'popis změny', 'popis zmeny',
+        'změna', 'zmena', 'change', 'navrhl', 'ing', 'razítko',
+    }
+
+    @staticmethod
+    def _is_razitko_table(table: List[List[str]]) -> bool:
+        """
+        Detect if a table is a drawing title block (razítko) that should be skipped.
+
+        Razítko tables typically have columns: DATUM, REVIZE, POPIS, PODPIS, JMÉNO.
+        They contain no usable BOQ quantity data.
+        """
+        if not table:
+            return False
+
+        # Collect all cell text from first 3 rows for header analysis
+        header_rows = table[:3]
+        all_text = set()
+        for row in header_rows:
+            for cell in row:
+                if cell:
+                    # Normalize: lowercase, strip diacritics roughly
+                    text = str(cell).lower().strip()
+                    text = re.sub(r'\s+', ' ', text)
+                    all_text.add(text)
+
+        # Count how many razítko keywords appear
+        matches = sum(
+            1 for cell in all_text
+            if any(kw in cell for kw in PDFParser._RAZITKO_HEADERS)
+        )
+
+        # If 2+ razítko keywords appear in header rows → it's a title block
+        if matches >= 2:
+            return True
+
+        # Also skip if table is very narrow (1-2 columns) with datum/revision data
+        if len(table[0]) <= 2 and matches >= 1:
+            return True
+
+        return False
+
     def _table_to_positions(
-        self, 
-        table: List[List[str]], 
+        self,
+        table: List[List[str]],
         page_num: int,
         table_idx: int
     ) -> List[Dict[str, Any]]:
         """
         Convert PDF table to list of position dictionaries
-        
+
         Args:
             table: List of table rows (each row is list of cells)
             page_num: Page number for reference
             table_idx: Table index on the page
-            
+
         Returns:
             List of raw position dicts (not normalized yet)
         """
         if not table or len(table) < 2:
             logger.debug("Table too small or empty")
+            return []
+
+        # Skip drawing title blocks (razítko)
+        if self._is_razitko_table(table):
+            logger.debug(f"Skipping razítko (title block) table on page {page_num}")
             return []
         
         # First row is usually header
