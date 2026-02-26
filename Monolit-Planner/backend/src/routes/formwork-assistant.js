@@ -14,6 +14,9 @@
  */
 
 import express from 'express';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 import { logger } from '../utils/logger.js';
 
 const router = express.Router();
@@ -21,18 +24,58 @@ const router = express.Router();
 const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent.onrender.com';
 const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT || '60000', 10);
 
-// ── Lookup tables ────────────────────────────────────────────────────────────
+// ── Load assembly norms from KB (bedneni.json) ───────────────────────────────
 
-/** Assembly norms per system — mirrors frontend formworkSystems.ts */
-const ASSEMBLY_NORMS = {
-  'Frami Xlife':       { h_m2: 0.72, disassembly_ratio: 0.35 },
-  'Framax Xlife':      { h_m2: 0.55, disassembly_ratio: 0.30 },
-  'TRIO':              { h_m2: 0.50, disassembly_ratio: 0.30 },
-  'Top 50':            { h_m2: 0.60, disassembly_ratio: 0.35 },
-  'Dokaflex':          { h_m2: 0.45, disassembly_ratio: 0.30 },
-  'SL-1 Sloupové':     { h_m2: 0.80, disassembly_ratio: 0.35 },
-  'Tradiční tesařské': { h_m2: 1.30, disassembly_ratio: 0.50 },
+/**
+ * Hardcoded fallback norms — used if bedneni.json cannot be loaded.
+ * These mirror the values in formworkSystems.ts (frontend).
+ */
+const ASSEMBLY_NORMS_FALLBACK = {
+  'Frami Xlife':       { h_m2: 0.72, disassembly_h_m2: 0.25, disassembly_ratio: 0.35 },
+  'Framax Xlife':      { h_m2: 0.55, disassembly_h_m2: 0.19, disassembly_ratio: 0.35 },
+  'TRIO':              { h_m2: 0.50, disassembly_h_m2: 0.18, disassembly_ratio: 0.36 },
+  'Top 50':            { h_m2: 0.60, disassembly_h_m2: 0.21, disassembly_ratio: 0.35 },
+  'Dokaflex':          { h_m2: 0.45, disassembly_h_m2: 0.14, disassembly_ratio: 0.31 },
+  'SL-1 Sloupové':     { h_m2: 0.80, disassembly_h_m2: 0.30, disassembly_ratio: 0.375 },
+  'Tradiční tesařské': { h_m2: 1.30, disassembly_h_m2: 0.65, disassembly_ratio: 0.50 },
 };
+
+/** Load norms from bedneni.json KB file, fall back to hardcoded if unavailable */
+function loadAssemblyNorms() {
+  // Try to locate bedneni.json relative to this file and via env override
+  const candidates = [
+    process.env.BEDNENI_JSON_PATH,
+    resolve(dirname(fileURLToPath(import.meta.url)), '../../../../concrete-agent/packages/core-backend/app/knowledge_base/B4_production_benchmarks/bedneni.json'),
+    resolve(dirname(fileURLToPath(import.meta.url)), '../../../../../concrete-agent/packages/core-backend/app/knowledge_base/B4_production_benchmarks/bedneni.json'),
+  ].filter(Boolean);
+
+  for (const candidatePath of candidates) {
+    try {
+      const raw = readFileSync(candidatePath, 'utf8');
+      const kb = JSON.parse(raw);
+      if (!kb.systemy) continue;
+
+      const norms = {};
+      for (const [systemName, data] of Object.entries(kb.systemy)) {
+        norms[systemName] = {
+          h_m2:              data.assembly_h_m2,
+          disassembly_h_m2:  data.disassembly_h_m2,
+          disassembly_ratio: data.disassembly_ratio,
+        };
+      }
+
+      logger.info(`[Formwork Assistant] Loaded ${Object.keys(norms).length} systems from KB: ${candidatePath}`);
+      return norms;
+    } catch {
+      // try next candidate
+    }
+  }
+
+  logger.warn('[Formwork Assistant] bedneni.json not found — using hardcoded norms');
+  return ASSEMBLY_NORMS_FALLBACK;
+}
+
+const ASSEMBLY_NORMS = loadAssemblyNorms();
 
 /**
  * Q4 crew configurations.
@@ -133,9 +176,12 @@ router.post('/', async (req, res) => {
     const pocetTaktu = Math.ceil(total_area_m2 / set_area_m2);
 
     // Assembly hours for one set, adjusted for crane
-    const assemblyH     = set_area_m2 * norm.h_m2 * crewCfg.crane_factor;
-    const disassemblyH  = assemblyH * norm.disassembly_ratio;
-    const dailyH        = crewCfg.crew * crewCfg.shift;
+    const assemblyH = set_area_m2 * norm.h_m2 * crewCfg.crane_factor;
+    // Use absolute disassembly_h_m2 if available (from KB), otherwise fall back to ratio
+    const disassemblyH = norm.disassembly_h_m2 != null
+      ? set_area_m2 * norm.disassembly_h_m2 * crewCfg.crane_factor
+      : assemblyH * (norm.disassembly_ratio || 0.35);
+    const dailyH = crewCfg.crew * crewCfg.shift;
 
     const assemblyDays    = dailyH > 0 ? assemblyH / dailyH : 0;
     const disassemblyDays = dailyH > 0 ? disassemblyH / dailyH : 0;

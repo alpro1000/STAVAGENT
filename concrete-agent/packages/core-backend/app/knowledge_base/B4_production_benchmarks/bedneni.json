@@ -1,0 +1,318 @@
+{
+  "_meta": {
+    "version": "1.0.0",
+    "created": "2026-02-26",
+    "source": "DOKA ceník 2025-01-01 (formwork_systems_doka.json) + KROS normatívy + PERI průmyslové normy + TKP17/TKP18",
+    "note": "Pracovní normy montáže a demontáže bednění (Nh/m²). Hodnoty zahrnují: přijetí, uložení, montáž, přesun, dočištění. Demontáž = skutečné normy z praxe (ne ratio).",
+    "currency": "CZK",
+    "year": 2025,
+    "usage": "Kalkulátor bednění Monolit-Planner. Klíče v 'systemy' odpovídají názvům systémů ve frontend formworkSystems.ts a backend ASSEMBLY_NORMS."
+  },
+
+  "systemy": {
+    "Frami Xlife": {
+      "vyrobce": "DOKA",
+      "kategorie": "stena",
+      "assembly_h_m2": 0.72,
+      "disassembly_h_m2": 0.25,
+      "disassembly_ratio": 0.35,
+      "poznamka": "Rámové bednění, manuální přesun (panely do 40 kg). Platí pro výšky 0,9–1,8 m. Horní normy (výška 0,9 m, nízká stěna) jsou o ~5 % vyšší.",
+      "varianty": [
+        { "vyska_m": 0.9,  "assembly_h_m2": 0.72, "disassembly_h_m2": 0.25 },
+        { "vyska_m": 1.5,  "assembly_h_m2": 0.70, "disassembly_h_m2": 0.25 },
+        { "vyska_m": 1.8,  "assembly_h_m2": 0.68, "disassembly_h_m2": 0.24 }
+      ],
+      "vhodne_pro": ["základové pásy", "nízké opěry mostů", "stupňovitá betonáž", "nájezdové klíny"],
+      "zdroj": "formwork_systems_doka.json + KROS 2024"
+    },
+
+    "Framax Xlife": {
+      "vyrobce": "DOKA",
+      "kategorie": "stena",
+      "assembly_h_m2": 0.55,
+      "disassembly_h_m2": 0.19,
+      "disassembly_ratio": 0.35,
+      "poznamka": "Velkoformátové rámové bednění, přesun výhradně jeřábem (panel ~120 kg). Normy platí pro h=2,7 m. Pro h=4,65 m (2 panely) jsou normy ~10 % nižší díky méně spojům.",
+      "varianty": [
+        { "vyska_m": 2.7,  "assembly_h_m2": 0.55, "disassembly_h_m2": 0.19 },
+        { "vyska_m": 4.65, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.18 }
+      ],
+      "vhodne_pro": ["mostní pilíře h=2,7–5,4 m", "vysoké stěny", "opěrné zdi komunikací"],
+      "pozadavky": "jeřáb povinný",
+      "zdroj": "formwork_systems_doka.json + KROS 2024"
+    },
+
+    "TRIO": {
+      "vyrobce": "PERI",
+      "kategorie": "stena",
+      "assembly_h_m2": 0.50,
+      "disassembly_h_m2": 0.18,
+      "disassembly_ratio": 0.36,
+      "poznamka": "Rámové bednění PERI, alternativa k Framax Xlife. Lehčí rám = rychlejší montáž. Pro h=2,7 m.",
+      "varianty": [
+        { "vyska_m": 2.7, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.18 },
+        { "vyska_m": 3.3, "assembly_h_m2": 0.53, "disassembly_h_m2": 0.19 }
+      ],
+      "vhodne_pro": ["stěny budov", "mostní pilíře h=2,7 m", "náhrada Framax u PERI dodavatelů"],
+      "zdroj": "PERI průmyslové normy 2024"
+    },
+
+    "Top 50": {
+      "vyrobce": "DOKA",
+      "kategorie": "strop",
+      "assembly_h_m2": 0.60,
+      "disassembly_h_m2": 0.21,
+      "disassembly_ratio": 0.35,
+      "poznamka": "Stropní bednění s dřevěnými nosníky H20. Normy pro výšku podpěr h=1,4 m. Vyšší podpěrné výšky zvyšují normy o ~10–20 % (pomalejší stavění podpěr).",
+      "varianty": [
+        { "podpera_h_m": 1.4, "assembly_h_m2": 0.60, "disassembly_h_m2": 0.21 },
+        { "podpera_h_m": 2.5, "assembly_h_m2": 0.65, "disassembly_h_m2": 0.23 },
+        { "podpera_h_m": 4.0, "assembly_h_m2": 0.72, "disassembly_h_m2": 0.26 }
+      ],
+      "vhodne_pro": ["stropní desky mostů", "mostovky", "stropy budov h=2,5–4,5 m"],
+      "poznamka_deska": "Bednící deska není součástí nájmu — kalkulovat zvlášť",
+      "zdroj": "formwork_systems_doka.json + KROS 2024"
+    },
+
+    "Dokaflex": {
+      "vyrobce": "DOKA",
+      "kategorie": "strop",
+      "assembly_h_m2": 0.45,
+      "disassembly_h_m2": 0.14,
+      "disassembly_ratio": 0.31,
+      "poznamka": "Flexibilní stropní bednění s nosníky H20. Nejrychlejší stropní systém. Pro světlé výšky do 5,5 m.",
+      "varianty": [
+        { "podpera_h_m": 2.5, "assembly_h_m2": 0.45, "disassembly_h_m2": 0.14 },
+        { "podpera_h_m": 4.0, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.16 },
+        { "podpera_h_m": 5.5, "assembly_h_m2": 0.58, "disassembly_h_m2": 0.18 }
+      ],
+      "vhodne_pro": ["bytová výstavba", "stropy s pravidelnými rastry"],
+      "zdroj": "DOKA produktový katalog + tržní standard 2024"
+    },
+
+    "SL-1 Sloupové": {
+      "vyrobce": "DOKA",
+      "kategorie": "sloupy",
+      "assembly_h_m2": 0.80,
+      "disassembly_h_m2": 0.30,
+      "disassembly_ratio": 0.375,
+      "poznamka": "Sloupové bednění pro čtvercové/obdélníkové průřezy. Výšková sada 4,5 m. Manuální montáž do h=3 m, jeřáb pro vyšší výšky.",
+      "varianty": [
+        { "vyska_m": 3.0, "assembly_h_m2": 0.75, "disassembly_h_m2": 0.28, "pozadavky": "bez jeřábu" },
+        { "vyska_m": 4.5, "assembly_h_m2": 0.80, "disassembly_h_m2": 0.30, "pozadavky": "jeřáb doporučen" },
+        { "vyska_m": 6.0, "assembly_h_m2": 0.88, "disassembly_h_m2": 0.33, "pozadavky": "jeřáb nutný" }
+      ],
+      "vhodne_pro": ["mostní pilíře — průřez sloup", "kruhové a čtvercové sloupy", "pilíře nadjezdů"],
+      "zdroj": "formwork_systems_doka.json + DOKA produktový katalog 2024"
+    },
+
+    "Staxo 100 + Top 50": {
+      "vyrobce": "DOKA",
+      "kategorie": "podpery",
+      "assembly_h_m2": 0.80,
+      "disassembly_h_m2": 0.30,
+      "disassembly_ratio": 0.375,
+      "poznamka": "Systémová podpěrná věžová konstrukce pro těžké mostní desky. Nosnost 1000 kN/stojku. Normy platí pro h=4,5 m. Vyšší podpěrné výšky: +10 % na každé 3 m.",
+      "varianty": [
+        { "podpera_h_m": 3.0,  "assembly_h_m2": 0.72, "disassembly_h_m2": 0.27 },
+        { "podpera_h_m": 4.5,  "assembly_h_m2": 0.80, "disassembly_h_m2": 0.30 },
+        { "podpera_h_m": 9.0,  "assembly_h_m2": 0.95, "disassembly_h_m2": 0.35 },
+        { "podpera_h_m": 15.0, "assembly_h_m2": 1.10, "disassembly_h_m2": 0.40 }
+      ],
+      "vhodne_pro": ["těžké mostní desky tl. 0,6–1,2 m", "mostovky s velkým zatížením", "podpěrná lešení do 20 m"],
+      "zdroj": "formwork_systems_doka.json + KROS 2024"
+    },
+
+    "WS10 + H20": {
+      "vyrobce": "DOKA",
+      "kategorie": "mostovky",
+      "assembly_h_m2": 0.90,
+      "disassembly_h_m2": 0.35,
+      "disassembly_ratio": 0.389,
+      "poznamka": "Vrchní konstrukce pro bednění mostovek. Ocelové nosníky WS10 + dřevěné H20. Největší pracnost — složité podpírání velkých světlých polí.",
+      "vhodne_pro": ["mostovky dálničních mostů", "velká světlá pole >20 m", "bednění mostů na skružích"],
+      "zdroj": "formwork_systems_doka.json + KROS mostní normy 2024"
+    },
+
+    "Římsové bednění T": {
+      "vyrobce": "DOKA",
+      "kategorie": "rimsy",
+      "assembly_h_m2": 1.10,
+      "disassembly_h_m2": 0.45,
+      "assembly_h_mb": 1.5,
+      "disassembly_h_mb": 0.6,
+      "disassembly_ratio": 0.409,
+      "poznamka": "Ruční konzolový systém pro mostní římsy. Bez jeřábu. Normy platí pro standardní římsový chodník š=50–60 cm. Atypické tvary: +20–30 %.",
+      "vhodne_pro": ["mostní římsové chodníky — mosty ≤50 m", "konzolové chodníky", "rekonstrukce říms"],
+      "podminka": "mosty ≤50 m délky, bez jeřábu",
+      "zdroj": "formwork_systems_doka.json + Školení zákazníků DOKA 2026"
+    },
+
+    "Římsový vozík TU": {
+      "vyrobce": "DOKA",
+      "kategorie": "rimsy",
+      "assembly_h_mb": 0.8,
+      "disassembly_h_mb": 0.3,
+      "assembly_h_m2": 0.80,
+      "disassembly_h_m2": 0.30,
+      "disassembly_ratio": 0.375,
+      "poznamka": "Zavěšený pojízdný systém pro římsы na mostech 50–150 m. 2 takty/týden je standardní rychlost. Sekce 4 m.",
+      "vhodne_pro": ["mosty 50–150 m délky", "rovné mosty a mosty s horizontální křivkou"],
+      "zdroj": "formwork_systems_doka.json + Školení zákazníků DOKA 2026"
+    },
+
+    "Římsový vozík T": {
+      "vyrobce": "DOKA",
+      "kategorie": "rimsy",
+      "assembly_h_mb": 0.6,
+      "disassembly_h_mb": 0.25,
+      "assembly_h_m2": 0.60,
+      "disassembly_h_m2": 0.25,
+      "disassembly_ratio": 0.417,
+      "poznamka": "Převěšené pojízdné bednění pro římsу na dlouhých mostech >150 m. Méně komponent než TU. Takty max. 5 m.",
+      "vhodne_pro": ["mosty >150 m délky", "rovné mosty nebo R≥250 m", "velkosériová opakovaná betonáž říms"],
+      "zdroj": "formwork_systems_doka.json + Školení zákazníků DOKA 2026"
+    },
+
+    "Tradiční tesařské": {
+      "vyrobce": "Tesářská práce",
+      "kategorie": "tradicni",
+      "assembly_h_m2": 1.30,
+      "disassembly_h_m2": 0.65,
+      "disassembly_ratio": 0.50,
+      "poznamka": "Jednorázové bednění z řeziva. Bez pronájmu. Vysoká pracnost — vhodné pouze pro atypické tvary a malé plochy kde systémové bednění nevychází.",
+      "vhodne_pro": ["atypické tvary", "malé plochy", "opravy a doplňkové práce", "základy malých staveb"],
+      "material_czk_m2": 350,
+      "zdroj": "průmyslové normy ČR + KROS 2024"
+    }
+  },
+
+  "faktory_jerab": {
+    "popis": "Koeficient zrychlení montáže při použití jeřábu (crane_factor). Hodnota <1.0 = montáž je rychlejší.",
+    "bez_jeravu":    { "faktor": 1.00, "poznamka": "Manuální přesun, standardní rychlost" },
+    "jeram_maly":    { "faktor": 0.85, "poznamka": "Malý jeřáb 25t, urychlí přesuny těžkých panelů" },
+    "jeram_stredni": { "faktor": 0.80, "poznamka": "Jeřáb 50t, standard pro Framax a věžová bednění" },
+    "jeram_velky":   { "faktor": 0.70, "poznamka": "Jeřáb 80t+, velké přesuny, 2× větší brigáda" },
+    "poznamka_demontaz": "Jeřáb urychluje i demontáž stejnou měrou jako montáž"
+  },
+
+  "faktory_pocasi": {
+    "popis": "Koeficient produktivity dle počasí. Hodnota <1.0 = práce pomalejší.",
+    "suche_teploe":    { "faktor": 1.00, "teplota_c": ">15°C",  "poznamka": "Optimální podmínky léto" },
+    "mirne_pocasi":    { "faktor": 0.93, "teplota_c": "10–15°C", "poznamka": "Podzim/jaro, pomalší pohyb" },
+    "chladno":         { "faktor": 0.85, "teplota_c": "5–10°C",  "poznamka": "Rukavice, opatrnost" },
+    "zima_lehka":      { "faktor": 0.75, "teplota_c": "0–5°C",   "poznamka": "Mráz, opatrnost, přestávky" },
+    "zima_tezka":      { "faktor": 0.60, "teplota_c": "<0°C",    "poznamka": "Silný mráz, nutný ohřev, max. omezení" },
+    "dest_slaby":      { "faktor": 0.90, "poznamka": "Slabý déšť, montáž možná s opatrností" },
+    "dest_silny":      { "faktor": 0.00, "poznamka": "Silný déšť — přerušit práci!" },
+    "vicetri_do_7ms":  { "faktor": 0.90, "poznamka": "Vítr do 7 m/s, jeřáb může pracovat" },
+    "vicetri_7_12ms":  { "faktor": 0.70, "poznamka": "Vítr 7–12 m/s, jeřáb omezit" },
+    "vicetri_nad12ms": { "faktor": 0.00, "poznamka": "Vítr >12 m/s — přerušit jeřáb!" }
+  },
+
+  "faktory_opakovani": {
+    "popis": "Koeficient učení (learning curve). Čím více opakování, tím rychlejší montáž.",
+    "prvni_takt":     { "faktor": 1.20, "poznamka": "První montáž — orientace, pomalší" },
+    "druhy_treti":    { "faktor": 1.05, "poznamka": "2.–3. takt — zaběhnutí" },
+    "ctvry_a_dal":    { "faktor": 1.00, "poznamka": "4. takt a dál — standardní norma" },
+    "nad_10_taktu":   { "faktor": 0.92, "poznamka": "Velký počet taktů — rutina, optimaliz. postupů" },
+    "poznamka": "Faktor platí pouze pro stejný tvar a stejnou partu. Nový tvar nebo nová parta = reset na prvni_takt."
+  },
+
+  "zrani_betonu": {
+    "popis": "Minimální doby ošetřování betonu před odbedněním (dny). Zdroj: TKP17 §6, ČSN EN 13670.",
+    "tridy_betonu": {
+      "C20_25": {
+        "leto_dnu":        7,
+        "podzim_jaro_dnu": 10,
+        "zima_dnu":        21,
+        "poznamka": "Standardní konstrukční beton"
+      },
+      "C25_30": {
+        "leto_dnu":        7,
+        "podzim_jaro_dnu": 10,
+        "zima_dnu":        21
+      },
+      "C30_37": {
+        "leto_dnu":        10,
+        "podzim_jaro_dnu": 14,
+        "zima_dnu":        28,
+        "poznamka": "Běžná třída pro mostní pilíře a opěry"
+      },
+      "C35_45": {
+        "leto_dnu":        14,
+        "podzim_jaro_dnu": 18,
+        "zima_dnu":        35,
+        "poznamka": "Vyšší třída — mostovky, pilíře v agresivním prostředí"
+      },
+      "C40_50": {
+        "leto_dnu":        14,
+        "podzim_jaro_dnu": 21,
+        "zima_dnu":        42,
+        "poznamka": "Vysoce pevnostní beton — delší ošetřování"
+      }
+    },
+    "faktory_cementu": {
+      "CEM_I_II":  { "faktor": 1.0, "poznamka": "Standardní portlandský cement — rychlý nárůst pevnosti" },
+      "CEM_III":   { "faktor": 1.8, "poznamka": "Vysokopecní cement — pomalý nárůst, prodloužit ošetřování o 80 %" },
+      "CEM_IV_V":  { "faktor": 1.5, "poznamka": "Pucolánový cement — střední rychlost" }
+    },
+    "teploty": {
+      "leto_nad15c":       { "faktor": 1.0 },
+      "podzim_jaro_5_15c": { "faktor": 1.5 },
+      "zima_pod5c":        { "faktor": 3.0, "poznamka": "TKP17 §6.4: beton nutno ohřívat min. +5 °C po 72 h" }
+    },
+    "specialni_pozadavky": {
+      "mostovka": {
+        "min_dni": 14,
+        "trida_prostredi": "XD3/XF4",
+        "kryti_mm": 60,
+        "norma": "TKP18"
+      },
+      "pilire_mostu": {
+        "max_takt_m": 3.0,
+        "kryti_mm": 50,
+        "trida_prostredi": "XC4/XF3",
+        "norma": "TKP18"
+      }
+    }
+  },
+
+  "slozitost_korekce": {
+    "popis": "Korekce normy dle složitosti tvaru. Hodnota >1.0 = více práce na m².",
+    "rovne_plochy_opakovane": { "korekce": 0.90, "priklady": ["stěny opěr", "pilíře pravidelné"] },
+    "standardni":             { "korekce": 1.00, "priklady": ["stěny s otvory", "standardní pilíře"] },
+    "clenite_tvary":          { "korekce": 1.20, "priklady": ["opěrné zdi s římsami", "pilíře s náběhy"] },
+    "zakladaci_dily":         { "korekce": 1.35, "priklady": ["zakládací díly", "prvky na terénu"] },
+    "velmi_slozite":          { "korekce": 1.60, "priklady": ["architektonické prvky", "atypické průřezy", "tvarové bednění"] }
+  },
+
+  "brigady": {
+    "popis": "Typické brigády tesařů pro bednění. Velikost brigády ovlivňuje celkovou produktivitu.",
+    "mala_bez_jeravu":  { "pocet_osob": 2, "smena_h": 8,  "jerab": false, "crane_factor": 1.00, "pouziti": "malé plochy, opravy" },
+    "standard_bez_jeravu": { "pocet_osob": 4, "smena_h": 10, "jerab": false, "crane_factor": 1.00, "pouziti": "standardní stavby, Frami Xlife" },
+    "standard_s_jeravem":  { "pocet_osob": 4, "smena_h": 10, "jerab": true,  "crane_factor": 0.80, "pouziti": "Framax, Staxo — standardní" },
+    "velka_s_jeravem":     { "pocet_osob": 6, "smena_h": 10, "jerab": true,  "crane_factor": 0.70, "pouziti": "velké mostní projekty, tight schedule" }
+  },
+
+  "rychlostni_prehled": {
+    "popis": "Orientační přehled m²/den na brigádu (pro rychlé ocenění). Nezohledňuje opakování ani počasí.",
+    "Frami Xlife (4 lidi, 10h)":           { "m2_den_montaz": 55, "m2_den_demontaz": 160 },
+    "Framax Xlife (4 lidi, jeřáb, 10h)":   { "m2_den_montaz": 73, "m2_den_demontaz": 210 },
+    "TRIO (4 lidi, 10h)":                  { "m2_den_montaz": 80, "m2_den_demontaz": 222 },
+    "Top 50 (4 lidi, 10h)":               { "m2_den_montaz": 67, "m2_den_demontaz": 190 },
+    "Dokaflex (4 lidi, 10h)":             { "m2_den_montaz": 89, "m2_den_demontaz": 286 },
+    "SL-1 Sloupové (4 lidi, jeřáb, 10h)": { "m2_den_montaz": 50, "m2_den_demontaz": 133 },
+    "Tradiční tesařské (4 lidi, 8h)":     { "m2_den_montaz": 25, "m2_den_demontaz": 49 },
+    "poznamka": "m²/den = (brigada_osoby × smena_h) / assembly_h_m2 × crane_factor"
+  },
+
+  "usage_guidelines": {
+    "priority": "1. Normy dle konkrétního systému → 2. Oprava dle varianty → 3. Korekce složitostí → 4. Faktor opakování → 5. Faktor počasí",
+    "jerab_note": "Jeřáb urychluje montáž i demontáž stejnou měrou (crane_factor platí pro obě operace)",
+    "demontaz_note": "Demontáž je vždy pomalejší než výpočet říká — beton špíní a zanáší panely, příčníky je nutno odbedňovat postupně. Reálně počítat 35–50 % z montáže.",
+    "opakování_note": "Po 4. taktu se norma stabilizuje na 100 %. Nový typ konstrukce nebo nová parta = reset na 120 % (1. takt).",
+    "confidence": "HIGH pro Frami/Framax (DOKA ceník + KROS), MEDIUM pro ostatní (průmyslový standard)",
+    "update_frequency": "Dle aktualizace DOKA ceníku nebo po dokončení projektu s reálnými záznamy"
+  }
+}
