@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Truck, Zap } from 'lucide-react';
 import type { MachineryResource, PumpRentalData } from '../../types/unified';
 import { v4 as uuidv4 } from 'uuid';
 import { PumpRentalSection } from './PumpRentalSection';
@@ -19,6 +19,7 @@ interface MachineryTabProps {
   onChange: (resources: MachineryResource[]) => void;
   itemQuantity: number | null;
   itemSkupina?: string | null;
+  itemLabel?: string;           // "kod - popis" for PumpRentalSection nazev pre-fill
   pumpRental?: PumpRentalData;
   onPumpRentalChange?: (data: PumpRentalData) => void;
 }
@@ -54,6 +55,7 @@ export function MachineryTab({
   onChange,
   itemQuantity,
   itemSkupina,
+  itemLabel,
   pumpRental,
   onPumpRentalChange,
 }: MachineryTabProps) {
@@ -96,9 +98,86 @@ export function MachineryTab({
 
   const totalMachineHours = resources.reduce((sum, r) => sum + r.machineHours, 0);
   const totalCost = resources.reduce((sum, r) => sum + (r.totalCost || 0), 0);
+  const hasPumpData = !!pumpRental && pumpRental.konecna_cena > 0;
 
   return (
     <div className="space-y-4">
+
+      {/* ── Pump result card — shows when pump calculator is filled ── */}
+      {hasPumpData && pumpRental && (
+        <div className="border border-blue-300/60 rounded-lg bg-blue-50/40 p-3">
+          <div className="flex items-center gap-2 mb-2.5">
+            <Truck size={14} className="text-blue-500 shrink-0" />
+            <span className="text-sm font-semibold text-blue-700">
+              Betonočerpadlo{pumpRental.pump_label ? ` — ${pumpRental.pump_label}` : ''}
+            </span>
+            <span className="text-[11px] text-blue-500 ml-auto tabular-nums">
+              {pumpRental.celkem_pristaveni}× přist. · {pumpRental.celkem_hodiny.toFixed(2)} h · {pumpRental.celkem_m3.toFixed(1)} m³
+            </span>
+          </div>
+          <div className="space-y-1">
+            {pumpRental.celkem_doprava > 0 && (
+              <div className="flex justify-between text-xs">
+                <span className="text-text-muted">
+                  Doprava ({pumpRental.celkem_pristaveni}× přistavení)
+                </span>
+                <span className="tabular-nums font-medium">
+                  {pumpRental.celkem_doprava.toLocaleString('cs-CZ')} Kč
+                </span>
+              </div>
+            )}
+            {pumpRental.celkem_manipulace > 0 && (
+              <div className="flex justify-between text-xs">
+                <span className="text-text-muted">
+                  Manipulace ({pumpRental.celkem_hodiny.toFixed(2)} h × {pumpRental.manipulace_czk_h.toLocaleString('cs-CZ')} Kč/h)
+                </span>
+                <span className="tabular-nums font-medium">
+                  {pumpRental.celkem_manipulace.toLocaleString('cs-CZ')} Kč
+                </span>
+              </div>
+            )}
+            {pumpRental.celkem_priplatek_m3 > 0 && (
+              <div className="flex justify-between text-xs">
+                <span className="text-text-muted">
+                  Příplatek za čerpání ({pumpRental.celkem_m3.toFixed(1)} m³ × {pumpRental.priplatek_czk_m3} Kč/m³)
+                </span>
+                <span className="tabular-nums font-medium">
+                  {pumpRental.celkem_priplatek_m3.toLocaleString('cs-CZ')} Kč
+                </span>
+              </div>
+            )}
+            {pumpRental.accessories.filter(a => a.celkem > 0).map(a => (
+              <div key={a.id} className="flex justify-between text-xs">
+                <span className="text-text-muted">
+                  {a.nazev || 'Příslušenství'} ({a.mnozstvi} {a.unit} × {a.czk_per_unit} Kč)
+                </span>
+                <span className="tabular-nums font-medium">
+                  {a.celkem.toLocaleString('cs-CZ')} Kč
+                </span>
+              </div>
+            ))}
+            {pumpRental.surcharges.filter(s => s.celkem > 0).map(s => (
+              <div key={s.id} className="flex justify-between text-xs">
+                <span className="text-text-muted">
+                  {s.nazev || 'Příplatek'} ({pumpRental.celkem_pristaveni}× × {s.czk_per_pristaveni.toLocaleString('cs-CZ')} Kč)
+                </span>
+                <span className="tabular-nums font-medium">
+                  {s.celkem.toLocaleString('cs-CZ')} Kč
+                </span>
+              </div>
+            ))}
+            <div className="flex justify-between text-xs border-t border-blue-200 pt-1.5 mt-1">
+              <span className="font-semibold text-blue-700 flex items-center gap-1">
+                <Zap size={11} /> Celkem betonočerpadlo
+              </span>
+              <span className="tabular-nums font-bold text-blue-700">
+                {pumpRental.konecna_cena.toLocaleString('cs-CZ')} Kč
+              </span>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Table */}
       {resources.length > 0 ? (
         <div className="overflow-x-auto">
@@ -187,11 +266,11 @@ export function MachineryTab({
             </tfoot>
           </table>
         </div>
-      ) : (
+      ) : !hasPumpData ? (
         <div className="text-center py-8 text-text-muted">
           Žádné mechanizmy. Přidejte stroj níže.
         </div>
-      )}
+      ) : null}
 
       {/* Datalist for autocomplete */}
       <datalist id="machinery">
@@ -268,6 +347,7 @@ export function MachineryTab({
           pumpRental={pumpRental}
           onChange={onPumpRentalChange}
           itemQuantity={itemQuantity}
+          itemLabel={itemLabel}
         />
       )}
     </div>

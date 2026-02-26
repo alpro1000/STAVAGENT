@@ -260,6 +260,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               onChange={handleMachineryChange}
               itemQuantity={item.mnozstvi}
               itemSkupina={item.skupina}
+              itemLabel={item.kod ? `${item.kod} - ${item.popis}` : item.popis}
               pumpRental={localData.pumpRental}
               onPumpRentalChange={handlePumpRentalChange}
             />
