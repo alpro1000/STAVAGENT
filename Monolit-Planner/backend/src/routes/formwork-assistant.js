@@ -38,6 +38,7 @@ const ASSEMBLY_NORMS_FALLBACK = {
   'Dokaflex':          { h_m2: 0.45, disassembly_h_m2: 0.14, disassembly_ratio: 0.30 },
   'SL-1 Sloupové':     { h_m2: 0.80, disassembly_h_m2: 0.28, disassembly_ratio: 0.35 },
   'Tradiční tesařské': { h_m2: 1.30, disassembly_h_m2: 0.65, disassembly_ratio: 0.50 },
+  'Římsové bednění T': { h_m2: 0.38, disassembly_h_m2: 0.10, disassembly_ratio: 0.25, unit: 'bm' },
 };
 
 /** Load norms from bedneni.json KB file, fall back to hardcoded if unavailable */
@@ -57,10 +58,20 @@ function loadAssemblyNorms() {
 
       const norms = {};
       for (const [systemName, data] of Object.entries(kb.systemy)) {
+        // For bm-based systems (e.g. Římsové), use h/bm norms instead of h/m²
+        const isBm = data.assembly_h_mb_min != null;
+        const assemblyH = isBm
+          ? (data.assembly_h_mb_min + data.assembly_h_mb_max) / 2  // average h/bm
+          : data.assembly_h_m2;
+        const disassemblyH = isBm
+          ? assemblyH * (data.disassembly_ratio || 0.25)
+          : data.disassembly_h_m2;
+
         norms[systemName] = {
-          h_m2:              data.assembly_h_m2,
-          disassembly_h_m2:  data.disassembly_h_m2,
+          h_m2:              assemblyH,
+          disassembly_h_m2:  disassemblyH,
           disassembly_ratio: data.disassembly_ratio,
+          ...(isBm ? { unit: 'bm' } : {}),
         };
       }
 

@@ -358,8 +358,8 @@ export default function FormworkCalculatorModal({
             <thead>
               <tr style={{ background: 'var(--data-surface-alt, #f0f0f0)', position: 'sticky', top: 0, zIndex: 2 }}>
                 <th style={thStyle}>Konstrukce</th>
-                <th style={thStyle}>Celkem [m²]</th>
-                <th style={thStyle}>Sada [m²]</th>
+                <th style={thStyle}>Celkem [m²/bm]</th>
+                <th style={thStyle}>Sada [m²/bm]</th>
                 <th style={thStyle}>Taktů [ks]</th>
                 <th style={thStyle} title="Počet sad (komletů). Víc sad = kratší doba, nájem ≈ stejný">Sad [ks]</th>
                 <th style={{...thStyle, background: '#e3f2fd'}}>Montáž [dny]</th>
@@ -484,6 +484,7 @@ function FormworkRow({
 }) {
   const sys = findFormworkSystem(row.system_name);
   const heights = sys?.heights || [];
+  const unitLabel = sys?.unit === 'bm' ? 'bm' : 'm²';
 
   const fmt = (n: number, d = 2) => n.toLocaleString('cs-CZ', {
     minimumFractionDigits: d, maximumFractionDigits: d
@@ -502,22 +503,28 @@ function FormworkRow({
         />
       </td>
 
-      {/* Celkem m² */}
+      {/* Celkem m²/bm */}
       <td style={cellStyle}>
-        <input type="number" min={0} step={0.1}
-          value={row.total_area_m2 || ''}
-          onChange={e => onChange(row.id, 'total_area_m2', parseFloat(e.target.value) || 0)}
-          style={{ ...inputStyle, width: '70px' }}
-        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+          <input type="number" min={0} step={0.1}
+            value={row.total_area_m2 || ''}
+            onChange={e => onChange(row.id, 'total_area_m2', parseFloat(e.target.value) || 0)}
+            style={{ ...inputStyle, width: '60px' }}
+          />
+          <span style={{ fontSize: '10px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>{unitLabel}</span>
+        </div>
       </td>
 
-      {/* Sada m² */}
+      {/* Sada m²/bm */}
       <td style={cellStyle}>
-        <input type="number" min={0} step={0.1}
-          value={row.set_area_m2 || ''}
-          onChange={e => onChange(row.id, 'set_area_m2', parseFloat(e.target.value) || 0)}
-          style={{ ...inputStyle, width: '70px' }}
-        />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+          <input type="number" min={0} step={0.1}
+            value={row.set_area_m2 || ''}
+            onChange={e => onChange(row.id, 'set_area_m2', parseFloat(e.target.value) || 0)}
+            style={{ ...inputStyle, width: '60px' }}
+          />
+          <span style={{ fontSize: '10px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>{unitLabel}</span>
+        </div>
       </td>
 
       {/* Taktů (editable) */}

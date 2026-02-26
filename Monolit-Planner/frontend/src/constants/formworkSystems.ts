@@ -69,6 +69,16 @@ export const FORMWORK_SYSTEMS: FormworkSystem[] = [
     assembly_h_m2: 1.30,
     disassembly_ratio: 0.50,
     description: 'Jednorázové tesařské bednění (bez pronájmu, materiál)'
+  },
+  {
+    name: 'Římsové bednění T',
+    manufacturer: 'DOKA',
+    heights: ['libovolná'],
+    rental_czk_m2_month: 0,
+    assembly_h_m2: 0.38,
+    disassembly_ratio: 0.25,
+    description: 'Konzolové bednění říms mostu (0,30–0,45 h/bm)',
+    unit: 'bm'
   }
 ];
 
