@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
-**Last Updated:** 2026-02-25
+**Last Updated:** 2026-02-26
 **Current Branch:** `claude/pump-calculator-tovmodal-fix-FcLSo`
-**Last Session:** Poradna norem в Portal + Universal Parser Preview UI (Phase 2)
+**Last Session:** Pump Calculator fixes, Poradna v Portal, Universal Parser Preview, Monolit bugs
 
 ---
 
@@ -12,10 +12,9 @@
 cd /home/user/STAVAGENT
 
 # 1. Read system context
-cat CLAUDE.md
+cat CLAUDE.md && cat NEXT_SESSION.md
 
 # 2. Check branch and recent commits
-git checkout claude/formwork-calculator-review-ArdKs
 git log --oneline -10
 
 # 3. TypeScript check (rozpocet-registry)
@@ -27,125 +26,160 @@ cd ../Monolit-Planner/shared && npx vitest run        # 51 tests
 
 ---
 
-## Сессия 2026-02-25: Резюме
+## Сессия 2026-02-26: Резюме
 
 ### ✅ Что сделано:
 
 | Компонент | Задача | Статус |
 |-----------|--------|--------|
-| FormworkAIModal (Monolit) | Добавлен OpenAI GPT-4o mini как 3-й вариант модели | ✅ |
-| FormworkAIModal (Monolit) | Исправлен лейбл Gemini 2.0 → 2.5 Flash | ✅ |
-| concrete-agent | Новый endpoint POST /api/v1/kb/research (Poradna norem) | ✅ |
-| Monolit backend | Прокси /api/kb/research → concrete-agent | ✅ |
-| FormworkAIModal (Monolit) | Вкладка "Poradna norem" с поиском и кэшем в KB | ✅ |
-| concrete-agent | FIX: Shrnutí — подключён реальный SummaryGenerator | ✅ |
-| routes_accumulator.py | GenerateSummaryRequest + project_name проброшен через цепочку | ✅ |
-| FormworkRentalSection (registry) | FIX: rental_czk_m2_month null → 0 (TS2322 build error) | ✅ |
+| TOVSummary (registry) | FIX: formwork + pump costs включены в "Celkem TOV:" | ✅ |
+| Portal — Poradna norem | PoradnaWidget + бэкенд-прокси `/api/kb/research` → concrete-agent | ✅ |
+| Portal — Universal Parser | ParsePreviewModal + drag-drop + сводка типов работ + kiosk cards | ✅ |
+| concrete-agent render.yaml | Добавлены GOOGLE_API_KEY, PERPLEXITY_API_KEY, MULTI_ROLE_LLM | ✅ |
+| PostgreSQL (Monolit) | FIX: connection timeout на Render Free Tier (DB sleep recovery) | ✅ |
+| concrete-agent | FEAT: Multilingual Expert Standards Researcher (любой язык + KB cache) | ✅ |
+| Monolit — Passport | FIX: blank screen, razítko detection, model names | ✅ |
+| Monolit — CORS | FIX: CORS hang + migration 006 + formwork calculator (4 bugs) | ✅ |
+| FormworkAIModal | FIX: z-index trap — рендер позади FormworkCalculatorModal | ✅ |
+| FormworkAIModal | FIX: createPortal — document.body был в неверном return компонента | ✅ |
+| Pump Calculator (Monolit) | FIX: pre-fill Název, m³ ÷ takty формула, result card в Mechanizmy | ✅ |
 
 ---
 
 ### Ключевые изменения:
 
-#### 1. FormworkAIModal — 3 модели
+#### 1. TOVSummary — исправлен расчёт Celkem TOV
 ```
-[Gemini 2.5 Flash]  ~1s  · concrete-agent Multi-Role (brief prompt)
-[GPT-4o mini]       ~2s  · OpenAI API напрямую (если OPENAI_API_KEY) / Multi-Role fallback
-[Claude Sonnet 4.6] ~5s  · concrete-agent Multi-Role (detailed prompt)
+БЫЛО: Celkem TOV = только бетон + арматура + бетонирование
+СТАЛО: Celkem TOV = бетон + арматура + бетонирование + formwork + pump
+FIX: formworkCost + pumpCost теперь суммируются в итоговую строку
 ```
 
-#### 2. Poradna norem — новая вкладка в FormworkAIModal
+#### 2. Poradna norem — виджет на PortalPage
 ```
-Вкладка [Poradna norem] в FormworkAIModal:
-  6 suggested chips → textarea (Ctrl+Enter submit)
-  → POST /api/kb/research (Monolit backend proxy)
+PortalPage → PoradnaWidget (сворачиваемый блок)
+  6 suggested chips (ČSN normy, TKP, ceny, BOZP...)
+  textarea → Ctrl+Enter submit
+  → POST /api/kb/research (Portal backend proxy)
     → POST /api/v1/kb/research (concrete-agent)
-      1. Проверить KB cache (research_<md5>.json) → бесплатно
-      2. Perplexity sonar-pro (10 чешских стройных сайтов)
-      3. Gemini fallback (если нет PERPLEXITY_API_KEY)
-      4. Сохранить → KB/B5_tech_cards/research_<key>.json
-
-Бейджи результата:
-  [Z KB cache]      ← зелёный, повторный запрос
-  [perplexity/...] ← синий, новый поиск
-  [Uloženo → KB/B5] ← жёлтый, сохранено
+      1. KB cache (research_<md5>.json)     → бесплатно, бейдж [Z KB cache]
+      2. Perplexity sonar-pro               → бейдж [perplexity/sonar-pro]
+      3. Gemini fallback (без Perplexity)   → бейдж [Gemini fallback]
+      4. Сохранить → KB/<auto-category>/   → бейдж [Uloženo → KB/B5]
 ```
 
-#### 3. Shrnutí в Portal — ИСПРАВЛЕН
+#### 3. Universal Parser Preview (Portal)
 ```
-БЫЛО: _execute_generate_summary() → fallback "Project contains N positions"
-СТАЛО: → SummaryGenerator.generate_summary() → 5 Multi-Role AI ролей
-         (Document Validator, Structural Engineer, Concrete Specialist,
-          Cost Estimator, Standards Checker)
-       → полный ProjectSummary (executive_summary, key_findings,
-         recommendations, critical_issues, overall_status)
-       → graceful fallback при ошибке AI
+PortalPage → "Náhled výkazu" card → ParsePreviewModal
+  drag-drop .xlsx/.xls → POST /api/parse-preview (in-memory, без проекта)
+  Результат:
+    - кол-во листов, строк, столбцов
+    - work type distribution (ZEMNI_PRACE, BETON_MONOLIT, ...)
+    - Kiosk cards с кнопкой "Otevřít kiosk" (Phase 3: Send to Kiosk)
+```
 
-project_name теперь передаётся через весь путь:
-  Portal UI → GenerateSummaryRequest → queue_generate_summary → _execute
+#### 4. Multilingual Expert Standards Researcher
+```
+concrete-agent: новая роль "multilingual_expert_researcher"
+  - Отвечает на любом языке (чешский, русский, английский, ...)
+  - KB cache → Perplexity → Gemini fallback
+  - Автоматически определяет категорию KB по ключевым словам:
+      "čsn", "norma" → B2_csn_standards
+      "cena", "kč"   → B3_current_prices
+      "bozp", "zákon"→ B7_regulations
+      "jeřáb", "pumpa"→ B9_Equipment_Specs
+      default        → B5_tech_cards
+```
+
+#### 5. Pump Calculator — исправления (Monolit / Mechanizmy)
+```
+FIX 1: Název — pre-fill "Autočerpadlo Putzmeister" при открытии
+FIX 2: m³ ÷ takty — правильная формула (часы × výkon × takty = m³)
+FIX 3: result card — отображается в секции Mechanizmy после расчёта
+```
+
+#### 6. FormworkAIModal — z-index trap
+```
+БЫЛО: FormworkAIModal.tsx → return createPortal(<Modal>, document.body) внутри
+      FormworkCalculatorModal → z-index: 50 перекрывал всё дочернее
+СТАЛО: createPortal вызывается в правильном месте компонентного дерева
+       FormworkAIModal отображается поверх FormworkCalculatorModal
 ```
 
 ---
 
 ### Новые файлы этой сессии:
 ```
-concrete-agent/packages/core-backend/app/api/routes_kb_research.py   NEW (~170 строк)
-Monolit-Planner/backend/src/routes/kb-research.js                    NEW (~50 строк)
+stavagent-portal/backend/src/routes/kb-research.js          NEW (~50 строк)
+stavagent-portal/frontend/src/components/portal/PoradnaWidget.tsx  NEW
+stavagent-portal/frontend/src/components/portal/ParsePreviewModal.tsx  NEW
 ```
 
 ### Изменённые файлы:
 ```
-concrete-agent/packages/core-backend/app/api/__init__.py              +kb_research_router
-concrete-agent/packages/core-backend/app/services/document_accumulator.py  +SummaryGenerator
-concrete-agent/packages/core-backend/app/api/routes_accumulator.py   +project_name field
-stavagent-portal/frontend/src/components/portal/ProjectDocuments.tsx  +project_name in request
-Monolit-Planner/backend/server.js                                     +kbResearchRoutes
-Monolit-Planner/backend/src/routes/formwork-assistant.js              +OpenAI branch
-Monolit-Planner/frontend/src/components/FormworkAIModal.tsx           +Poradna tab, 3 models
-rozpocet-registry/src/components/tov/FormworkRentalSection.tsx        null ?? 0 fix
+rozpocet-registry/src/components/tov/TOVSummary.tsx         +formworkCost +pumpCost
+Monolit-Planner/frontend/src/components/FormworkAIModal.tsx  createPortal fix
+Monolit-Planner/frontend/src/components/PumpCalculator.tsx   pre-fill, m³÷takty, result card
+Monolit-Planner/backend/src/server.js                        +kbResearchRoutes, CORS fix
+Monolit-Planner/backend/migrations/006_*.sql                 DB migration
+stavagent-portal/frontend/src/pages/PortalPage.tsx           +PoradnaWidget +ParsePreviewModal
+stavagent-portal/backend/src/routes/portal-projects.js       +parse-preview endpoint
+concrete-agent/render.yaml                                   +GOOGLE_API_KEY +PERPLEXITY_API_KEY
+concrete-agent/packages/core-backend/app/services/multi_role.py  +multilingual_expert_researcher
 ```
 
 ### Коммиты сессии:
 ```
-0152a19 FIX: FormworkRentalSection — rental_czk_m2_month null → 0 (TS2322)
-841fda5 FIX: Shrnutí — подключён реальный SummaryGenerator (Multi-Role AI)
-7b8d573 FEAT: Poradna norem — KB Research module + FormworkAIModal tab
-9b94c15 FIX: FormworkAIModal — Gemini 2.0 → 2.5 Flash
-ea8aff7 FEAT: FormworkAIModal — добавлен OpenAI GPT-4o mini
+72f0466 FIX: TOVSummary — formwork + pump costs included in Celkem TOV
+d0fa7a4 FEAT: Poradna norem в Portal + Universal Parser Preview UI
+b330b2c FIX: concrete-agent render.yaml — add GOOGLE_API_KEY + PERPLEXITY_API_KEY + explicit MULTI_ROLE_LLM
+828db46 FIX: PostgreSQL connection timeout on Render Free Tier (DB sleep recovery)
+face0e0 FEAT: Multilingual Expert Standards Researcher — KB + any-language portal
+98c6f04 FIX: Passport module blank screen, razítko detection, model names
+e7f4a1f FIX: Monolit — CORS hang, migration 006, formwork calculator (4 bugs)
+47b9f47 FIX: FormworkAIModal renders behind FormworkCalculatorModal (z-index trap)
+e91a020 FIX: createPortal args — document.body was in wrong component return
+08827fc FIX: Pump calculator — Název pre-fill, m³ ÷ takty, result card in Mechanizmy
 ```
 
 ---
 
 ## ⏭️ Следующие задачи (приоритет)
 
-### ✅ Poradna norem в Portal — ЗАВЕРШЕНО (сессия 2026-02-25)
-- [x] Portal backend: POST /api/kb/research → proxy → concrete-agent
-- [x] Portal frontend: PoradnaWidget.tsx — chips + textarea + results + badges
-- [x] PortalPage: Poradna section между Services и Stats (сворачиваемый)
-- [ ] Добавить `STAVAGENT_CORE_URL` в Render (Portal backend) если не задан
-- [ ] Добавить `PERPLEXITY_API_KEY` в Render (concrete-agent) если не задан
-- [ ] Проверить в браузере: chip → поиск → ответ → from_kb/model badges
+### 🔴 Приоритет 1: Universal Parser Phase 3 — Send to Kiosk
+```
+ParsePreviewModal → кнопка "Odeslat do Monolitu" / "Odeslat do Registry"
+  → POST /api/monolit-import (Portal backend)
+    → POST https://monolit-planner-api.onrender.com/import
+      body: { projectId, projectName, positions[] }
 
-### ✅ Universal Parser Phase 2 — ЗАВЕРШЕНО (сессия 2026-02-25)
-- [x] Portal backend: POST /api/parse-preview — in-memory parse без проекта
-- [x] Portal frontend: ParsePreviewModal.tsx — drag-drop + metadata + types + kiosk cards
-- [x] PortalPage: "Náhled výkazu" service card → открывает модал
-- [ ] Поле "Send to Kiosk" с передачей данных (Phase 3 — POST to kiosk with parsed items)
+Monolit: добавить endpoint POST /import (принять items от Portal)
+Registry: аналогично (открыть registry + передать items через postMessage или URL)
+```
 
-### Приоритет 1: Poradna — доработка
-- [ ] Проверить авто-определение категорий (B2 для ČSN, B3 для цен, B5 для поступов)
-- [ ] Добавить ещё suggested questions (сейчас 6, добавить до 10-12)
-- [ ] Создать начальный seed KB (5–10 часто задаваемых)
+### 🔴 Приоритет 2: Pump Calculator (TOVModal в registry) — незакрытые задачи
+```
+Файл: rozpocet-registry/src/components/tov/TOVModal.tsx
 
-### ✅ Pump Calculator — ЗАВЕРШЕНО (сессия 2026-02-25)
-- [x] `handlePumpRentalChange` в TOVModal (паттерн как handleFormworkRentalChange)
-- [x] `pumpCost` в footer breakdown TOVModal
-- [x] auto-save для PumpRentalSection (isAutoSaving ref)
-- [x] **FIX: TOVSummary** — formwork + pump costs добавлены в `Celkem TOV:` (баг: ранее не учитывались)
+[ ] handlePumpRentalChange — обработчик изменений (паттерн как handleFormworkRentalChange)
+[ ] pumpCost — отображение в footer breakdown (строка "Čerpadlo")
+[ ] auto-save PumpRentalSection — useRef isAutoSaving (как у FormworkRentalSection)
+```
 
-### Приоритет 2: Universal Parser Phase 3
-- [ ] "Send to Kiosk" с передачей данных (POST parsed items to kiosk API)
-- [ ] Monolit: "Load from Portal" — принять items от portal parse-preview
-- [ ] Registry: аналогично
+### 🟠 Приоритет 3: Poradna norem — расширение
+```
+[ ] Добавить suggested questions до 10-12 (сейчас 6)
+[ ] Создать seed KB — 5-10 часто задаваемых вопросов заранее сохранённых
+[ ] Проверить авто-определение категорий в браузере
+[ ] Добавить Poradna как отдельную страницу в Portal (route /poradna)
+```
+
+### 🟡 Приоритет 4: Monolit — AI Suggestion Button
+```
+[ ] Выполнить БЫСТРОЕ_РЕШЕНИЕ.sql в Render DB Shell
+    → активирует FF_AI_DAYS_SUGGEST = true
+    → кнопка ✨ в колонке "Dny" станет активна
+```
 
 ---
 
@@ -153,9 +187,6 @@ ea8aff7 FEAT: FormworkAIModal — добавлен OpenAI GPT-4o mini
 
 ### 1. Переменные окружения (добавить в Render)
 ```env
-# Monolit-Planner backend (для Poradna norem):
-STAVAGENT_CORE_URL=https://concrete-agent.onrender.com  # дефолт уже есть, но лучше явно
-
 # concrete-agent (для Perplexity в KB Research):
 PERPLEXITY_API_KEY=pplx-...   # без него — fallback на Gemini (работает, но без источников)
 
@@ -163,17 +194,22 @@ PERPLEXITY_API_KEY=pplx-...   # без него — fallback на Gemini (раб
 OPENAI_API_KEY=sk-...         # без него — fallback на Multi-Role (работает)
 ```
 
-### 2. PR Review
-- `claude/formwork-calculator-review-ArdKs` — содержит все изменения, готов к review
-
-### 3. AI Suggestion Button (Monolit) — по-прежнему ожидает
-```bash
-# В Render Dashboard → monolit-db → Shell → БЫСТРОЕ_РЕШЕНИЕ.sql
+### 2. Merge PR
+```
+Branch: claude/pump-calculator-tovmodal-fix-FcLSo
+URL: https://github.com/alpro1000/STAVAGENT/compare/main...claude/pump-calculator-tovmodal-fix-FcLSo
 ```
 
-### 4. Старые задачи
+### 3. AI Suggestion Button (Monolit) — ожидает SQL
+```bash
+# Render Dashboard → monolit-db → Shell:
+psql -U monolit_user -d monolit_planner < БЫСТРОЕ_РЕШЕНИЕ.sql
+```
+
+### 4. Старые задачи (низкий приоритет)
 - Google Drive Setup → `GOOGLE_DRIVE_SETUP.md`
 - Keep-Alive → `KEEP_ALIVE_SETUP.md`
+- R0 + Unified Architecture PR → `claude/portal-audit-improvements-8F2Co`
 
 ---
 
@@ -182,35 +218,30 @@ OPENAI_API_KEY=sk-...         # без него — fallback на Multi-Role (р
 | Сервис | Тесты | Статус |
 |--------|-------|--------|
 | Monolit shared formulas | 51/51 | ✅ Pass |
-| rozpocet-registry Vercel build | tsc -b && vite build | ✅ (после fix null→0) |
-| URS Matcher | 159 | ⚠️ Not run this session |
+| rozpocet-registry tsc build | npx tsc --noEmit | ✅ Pass |
+| URS Matcher | 159 | ⚠️ Не запускались в этой сессии |
 
 ---
 
-## 🏗 Архитектура KB Research
+## 🏗 Текущая архитектура Poradna / KB Research
 
 ```
-FormworkAIModal
-  └── Вкладка [Poradna norem]
-        ↓ POST /api/kb/research (Monolit)
-  Monolit backend: kb-research.js (proxy)
+Portal PortalPage
+  └── PoradnaWidget
+        ↓ POST /api/kb/research (stavagent-portal backend)
+  kb-research.js (proxy)
         ↓ POST /api/v1/kb/research
-  concrete-agent: routes_kb_research.py
-    1. Ищет research_<md5(question)>.json в KB/*
-    2. Perplexity sonar-pro → csnonline.cz, tkp, beton.cz ...
-    3. Gemini fallback (GOOGLE_API_KEY)
-    4. Сохраняет в KB/<auto-category>/research_<key>.json
-    5. Возвращает { answer, sources[], from_kb, kb_saved, kb_category }
-```
+  concrete-agent routes_kb_research.py
+    1. KB cache (research_<md5>.json) → бесплатно
+    2. Perplexity sonar-pro → чешские строительные сайты
+    3. Gemini fallback
+    4. Сохранить → KB/<auto-category>/research_<key>.json
+    → { answer, sources[], from_kb, kb_saved, kb_category, model }
 
-**Авто-определение категории из вопроса:**
-```
-"čsn", "norma", "tkp"          → B2_csn_standards
-"cena", "kč/m²", "ceník"       → B3_current_prices
-"výkon", "produktivita", "nph"  → B4_production_benchmarks
-"zákon", "bozp", "nařízení"    → B7_regulations
-"jeřáb", "čerpadlo", "pumpa"   → B9_Equipment_Specs
-default                         → B5_tech_cards
+FormworkAIModal (Monolit)
+  └── Вкладка [Poradna norem]
+        ↓ POST /api/kb/research (Monolit backend proxy)
+  kb-research.js → то же самое → concrete-agent
 ```
 
 ---
@@ -220,8 +251,7 @@ default                         → B5_tech_cards
 1. Прочитай CLAUDE.md
 2. Прочитай NEXT_SESSION.md (этот файл)
 3. git log --oneline -10
-4. Проверь: работает ли Poradna в браузере?
-5. Спроси: продолжать Poradna или переключиться на Pump Calculator?
+4. Спроси: Universal Parser Phase 3 (Send to Kiosk) или Pump TOVModal или Poradna расширение?
 ```
 
 *Ready for next session!*
