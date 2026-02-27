@@ -34,6 +34,7 @@ import debugRoutes from './src/routes/debug.js';
 import integrationRoutes from './src/routes/integration.js';
 import kbResearchRoutes from './src/routes/kb-research.js';
 import parsePreviewRoutes from './src/routes/parse-preview.js';
+import positionInstancesRoutes from './src/routes/position-instances.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -177,6 +178,9 @@ app.use('/api/otskp', otskpLimiter, otskpRoutes);
 
 // Integration routes (Monolit ↔ Registry sync) - NO AUTH REQUIRED
 app.use('/api/integration', integrationRoutes);
+
+// Position Instances API (PositionInstance Architecture v1.0) - NO AUTH for kiosk access
+app.use('/api/positions', positionInstancesRoutes);
 
 // KB Research proxy — no auth required (question is public)
 app.use('/api/kb/research', kbResearchRoutes);
