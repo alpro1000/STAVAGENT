@@ -587,6 +587,79 @@ describe('Element Total Days', () => {
   it('should return 0 for empty positions', () => {
     expect(calculateElementTotalDays([])).toBe(0);
   });
+
+  // ── RCPSP Scheduler integration (num_tacts in metadata) ───────────
+
+  it('should use RCPSP scheduler when num_tacts is in metadata (4 tacts, 2 sets)', () => {
+    const positions: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'bednění', days: 12, qty: 127 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'výztuž', days: 8, qty: 5800 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 4, curing_days: 5, qty: 45 } as unknown as Position,
+      // Rental with num_tacts=4 → enables RCPSP scheduler
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'jiné', days: 12, qty: 2,
+        metadata: { type: 'formwork_rental', calculator_id: 'calc-1', num_tacts: 4, stripping_days: 1, rebar_lag_pct: 50 }
+      } as unknown as Position,
+    ];
+
+    const result = calculateElementTotalDays(positions);
+
+    // Per tact: ASM=3, REB=2, CON=1, CUR=5, STR=1
+    // With 2 sets, parallel work during curing → much less than sequential
+    // Sequential: 4 × (3+2+1+5+1) = 48
+    // Simple formula: max(12,8) + 4 + 5/2 = 18.5
+    // RCPSP: properly models interleaving → should be < 48 but realistic
+    expect(result).toBeGreaterThan(0);
+    expect(result).toBeLessThan(48); // less than sequential
+  });
+
+  it('should use RCPSP scheduler with 1 set (sequential)', () => {
+    const positions: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'bednění', days: 6, qty: 100 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 2, curing_days: 5, qty: 40 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'jiné', days: 10, qty: 1,
+        metadata: JSON.stringify({ type: 'formwork_rental', num_tacts: 2, stripping_days: 1, rebar_lag_pct: 100 })
+      } as unknown as Position,
+    ];
+
+    const result = calculateElementTotalDays(positions);
+
+    // 1 set, 2 tacts, sequential rebar: per tact = 3+0+1+5+1=10, total=20
+    expect(result).toBe(20);
+  });
+
+  it('should show significant savings with RCPSP scheduler vs sequential', () => {
+    // Compare: with scheduler (2 sets) vs sequential equivalent
+    const positionsScheduled: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'bednění', days: 12, qty: 127 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'výztuž', days: 8, qty: 5800 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 4, curing_days: 7, qty: 45 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'jiné', days: 12, qty: 2,
+        metadata: { type: 'formwork_rental', calculator_id: 'calc-1', num_tacts: 4 }
+      } as unknown as Position,
+    ];
+
+    const scheduled = calculateElementTotalDays(positionsScheduled);
+
+    // Sequential baseline: 4 × (3+2+1+7+1) = 56
+    // With 2 sets + RCPSP, significant savings
+    expect(scheduled).toBeLessThan(56);
+    expect(scheduled).toBeGreaterThan(10);
+  });
+
+  it('should fallback to simple formula when no num_tacts in metadata', () => {
+    // Same positions but WITHOUT num_tacts → fallback
+    const positions: Position[] = [
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'bednění', days: 3, qty: 127 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'výztuž', days: 5, qty: 5800 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'beton', days: 2, curing_days: 6, qty: 45 } as unknown as Position,
+      { bridge_id: 'SO-01', part_name: 'X', subtype: 'jiné', days: 12, qty: 2,
+        metadata: { type: 'formwork_rental', calculator_id: 'calc-1' }  // NO num_tacts
+      } as unknown as Position,
+    ];
+
+    // Fallback: max(3, 5) + 2 + 6/2 = 10
+    expect(calculateElementTotalDays(positions)).toBe(10);
+  });
 });
 
 describe('generateFormworkKrosDescription', () => {

@@ -4,6 +4,7 @@
  */
 
 import { Position, HeaderKPI, FormworkCalculatorRow } from './types';
+import { scheduleElement } from './calculators/element-scheduler';
 
 /**
  * Calculate labor hours for a position
@@ -349,16 +350,19 @@ export function calculateFinalRentalCost(
  * Calculate total element duration (all work types + curing)
  * Used to determine total element calendar duration for rental calculation
  *
- * Celk. doba = max(bednění, výztuž) + beton + effectiveCuring + jiné
+ * Two modes:
  *
- * Parallel work: bednění (formwork) and výztuž (reinforcement) run concurrently —
- * while the formwork crew assembles panels, the rebar crew ties reinforcement
- * in sections that are already assembled. The critical path is the longer of the two.
+ * 1. RCPSP Scheduler (when num_tacts available in formwork_rental metadata):
+ *    Builds a DAG of activities per tact, schedules with resource constraints
+ *    (formwork sets, crews), finds critical path. Models parallel work on
+ *    different sets during curing and rebar overlap with assembly.
  *
- * Curing logic: effectiveCuring = maxCuringDays / numSets
- * - If 1 set: full curing time added to timeline
- * - If 2+ sets: curing overlaps with work on other sets (parallel)
- * - numSets detected from formwork_rental positions in the same part (qty field)
+ * 2. Simple formula (fallback):
+ *    Celk. doba = max(bednění, výztuž) + beton + effectiveCuring + jiné
+ *    Parallel prep + curing divided by num_sets.
+ *
+ * Metadata for RCPSP mode (in formwork_rental position):
+ *   { type: "formwork_rental", num_tacts: 4, stripping_days: 1, rebar_lag_pct: 50 }
  */
 export function calculateElementTotalDays(
   partPositions: Position[]
@@ -369,6 +373,9 @@ export function calculateElementTotalDays(
   let maxCuringDays = 0;
   let otherDays = 0;
   let maxNumSets = 1;
+  let numTacts = 0;
+  let strippingDays = 1;
+  let rebarLagPct = 50;
 
   for (const pos of partPositions) {
     const days = pos.days || 0;
@@ -386,19 +393,40 @@ export function calculateElementTotalDays(
       // "jiné" with rental metadata don't count towards element time
       // they are a result of the calculator, not a work activity
       const meta = (pos as any).metadata;
-      const isFormworkRental = typeof meta === 'string'
-        ? meta.includes('formwork_rental')
-        : (meta && typeof meta === 'object' && meta.type === 'formwork_rental');
+      const parsed = typeof meta === 'string' ? safeParseMeta(meta) : meta;
+      const isFormworkRental = parsed && parsed.type === 'formwork_rental';
       if (isFormworkRental) {
         // Extract num_sets from rental position (stored as qty)
         const sets = pos.qty || 1;
         if (sets > maxNumSets) maxNumSets = sets;
+        // Extract RCPSP scheduler params if available
+        if (parsed.num_tacts && parsed.num_tacts > 0) {
+          numTacts = parsed.num_tacts;
+          if (typeof parsed.stripping_days === 'number') strippingDays = parsed.stripping_days;
+          if (typeof parsed.rebar_lag_pct === 'number') rebarLagPct = parsed.rebar_lag_pct;
+        }
       } else {
         otherDays += days;
       }
     }
   }
 
+  // --- Mode 1: RCPSP Scheduler (graph-based, parallel sets + crews) ---
+  if (numTacts > 0 && maxNumSets > 0 && (bedneniDays > 0 || betonDays > 0)) {
+    const result = scheduleElement({
+      num_tacts: numTacts,
+      num_sets: maxNumSets,
+      assembly_days: bedneniDays / numTacts,
+      rebar_days: vyztuzDays > 0 ? vyztuzDays / numTacts : 0,
+      concrete_days: betonDays > 0 ? betonDays / numTacts : 1,
+      curing_days: maxCuringDays,
+      stripping_days: strippingDays,
+      rebar_lag_pct: rebarLagPct,
+    });
+    return result.total_days + otherDays;
+  }
+
+  // --- Mode 2: Simple parallel formula (fallback) ---
   // Effective curing: divided by num_sets (parallel work with multiple sets)
   const effectiveCuring = maxNumSets > 1
     ? maxCuringDays / maxNumSets
@@ -409,6 +437,19 @@ export function calculateElementTotalDays(
   const criticalPrep = Math.max(bedneniDays, vyztuzDays);
 
   return criticalPrep + betonDays + effectiveCuring + otherDays;
+}
+
+/** Safely parse JSON metadata string */
+function safeParseMeta(meta: string): Record<string, any> | null {
+  try {
+    return JSON.parse(meta);
+  } catch {
+    // Legacy format: check for substring match
+    if (meta.includes('formwork_rental')) {
+      return { type: 'formwork_rental' };
+    }
+    return null;
+  }
 }
 
 /**
