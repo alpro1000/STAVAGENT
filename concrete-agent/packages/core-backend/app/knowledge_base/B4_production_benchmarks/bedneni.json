@@ -16,6 +16,7 @@
       "assembly_h_m2": 0.72,
       "disassembly_h_m2": 0.25,
       "disassembly_ratio": 0.35,
+      "rental_czk_m2_month": 507.20,
       "poznamka": "Rámové bednění, manuální přesun (panely do 40 kg). Platí pro výšky 0,9–1,8 m. Horní normy (výška 0,9 m, nízká stěna) jsou o ~5 % vyšší.",
       "varianty": [
         { "vyska_m": 0.9,  "assembly_h_m2": 0.72, "disassembly_h_m2": 0.25 },
@@ -32,6 +33,7 @@
       "assembly_h_m2": 0.55,
       "disassembly_h_m2": 0.17,
       "disassembly_ratio": 0.30,
+      "rental_czk_m2_month": 585.00,
       "poznamka": "Velkoformátové rámové bednění, přesun výhradně jeřábem (panel ~120 kg). Normy platí pro h=2,7 m. Pro h=4,65 m (2 panely) jsou normy ~10 % nižší díky méně spojům.",
       "varianty": [
         { "vyska_m": 2.7,  "assembly_h_m2": 0.55, "disassembly_h_m2": 0.17 },
@@ -48,6 +50,7 @@
       "assembly_h_m2": 0.50,
       "disassembly_h_m2": 0.15,
       "disassembly_ratio": 0.30,
+      "rental_czk_m2_month": 480.00,
       "poznamka": "Rámové bednění PERI, alternativa k Framax Xlife. Lehčí rám = rychlejší montáž. Pro h=2,7 m.",
       "varianty": [
         { "vyska_m": 2.7, "assembly_h_m2": 0.50, "disassembly_h_m2": 0.15 },
@@ -63,6 +66,7 @@
       "assembly_h_m2": 0.60,
       "disassembly_h_m2": 0.21,
       "disassembly_ratio": 0.35,
+      "rental_czk_m2_month": 380.00,
       "poznamka": "Stropní bednění s dřevěnými nosníky H20. Normy pro výšku podpěr h=1,4 m. Vyšší podpěrné výšky zvyšují normy o ~10–20 % (pomalejší stavění podpěr).",
       "varianty": [
         { "podpera_h_m": 1.4, "assembly_h_m2": 0.60, "disassembly_h_m2": 0.21 },
@@ -80,6 +84,7 @@
       "assembly_h_m2": 0.45,
       "disassembly_h_m2": 0.14,
       "disassembly_ratio": 0.31,
+      "rental_czk_m2_month": 350.00,
       "poznamka": "Flexibilní stropní bednění s nosníky H20. Nejrychlejší stropní systém. Pro světlé výšky do 5,5 m.",
       "varianty": [
         { "podpera_h_m": 2.5, "assembly_h_m2": 0.45, "disassembly_h_m2": 0.14 },
@@ -96,6 +101,7 @@
       "assembly_h_m2": 0.80,
       "disassembly_h_m2": 0.28,
       "disassembly_ratio": 0.35,
+      "rental_czk_m2_month": 580.00,
       "poznamka": "Sloupové bednění pro čtvercové/obdélníkové průřezy. Výšková sada 4,5 m. Manuální montáž do h=3 m, jeřáb pro vyšší výšky.",
       "varianty": [
         { "vyska_m": 3.0, "assembly_h_m2": 0.75, "disassembly_h_m2": 0.26, "pozadavky": "bez jeřábu" },
@@ -112,6 +118,7 @@
       "assembly_h_m2": 0.80,
       "disassembly_h_m2": 0.30,
       "disassembly_ratio": 0.375,
+      "rental_czk_m2_month": 306.00,
       "poznamka": "Systémová podpěrná věžová konstrukce pro těžké mostní desky. Nosnost 1000 kN/stojku. Normy platí pro h=4,5 m. Vyšší podpěrné výšky: +10 % na každé 3 m.",
       "varianty": [
         { "podpera_h_m": 3.0,  "assembly_h_m2": 0.72, "disassembly_h_m2": 0.27 },
@@ -129,6 +136,7 @@
       "assembly_h_m2": 0.90,
       "disassembly_h_m2": 0.35,
       "disassembly_ratio": 0.389,
+      "rental_czk_m2_month": 288.00,
       "poznamka": "Vrchní konstrukce pro bednění mostovek. Ocelové nosníky WS10 + dřevěné H20. Největší pracnost — složité podpírání velkých světlých polí.",
       "vhodne_pro": ["mostovky dálničních mostů", "velká světlá pole >20 m", "bednění mostů na skružích"],
       "zdroj": "formwork_systems_doka.json + KROS mostní normy 2024"

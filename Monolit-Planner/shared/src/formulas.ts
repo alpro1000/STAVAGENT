@@ -347,9 +347,13 @@ export function calculateFinalRentalCost(
 
 /**
  * Calculate total element duration (all work types + curing)
- * Used to determine total formwork occupancy for rental calculation
+ * Used to determine total element calendar duration for rental calculation
  *
- * Celk. doba = Σ dny(bednění) + Σ dny(výztuž) + Σ dny(beton) + effectiveCuring + Σ dny(jiné)
+ * Celk. doba = max(bednění, výztuž) + beton + effectiveCuring + jiné
+ *
+ * Parallel work: bednění (formwork) and výztuž (reinforcement) run concurrently —
+ * while the formwork crew assembles panels, the rebar crew ties reinforcement
+ * in sections that are already assembled. The critical path is the longer of the two.
  *
  * Curing logic: effectiveCuring = maxCuringDays / numSets
  * - If 1 set: full curing time added to timeline
@@ -400,7 +404,11 @@ export function calculateElementTotalDays(
     ? maxCuringDays / maxNumSets
     : maxCuringDays;
 
-  return bedneniDays + vyztuzDays + betonDays + effectiveCuring + otherDays;
+  // Bednění and výztuž run in parallel (different crews, overlapping work)
+  // Critical path = the longer of the two
+  const criticalPrep = Math.max(bedneniDays, vyztuzDays);
+
+  return criticalPrep + betonDays + effectiveCuring + otherDays;
 }
 
 /**
