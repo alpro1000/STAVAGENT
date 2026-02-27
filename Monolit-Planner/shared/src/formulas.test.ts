@@ -515,15 +515,15 @@ describe('Formwork Calculator', () => {
 });
 
 describe('Element Total Days', () => {
-  it('should sum all work types + curing', () => {
+  it('should use max(bednění, výztuž) for parallel work + beton + curing', () => {
     const positions: Position[] = [
       { bridge_id: 'SO-01', part_name: 'Základ', subtype: 'bednění', days: 3, qty: 127 } as unknown as Position,
       { bridge_id: 'SO-01', part_name: 'Základ', subtype: 'výztuž', days: 5, qty: 5800 } as unknown as Position,
       { bridge_id: 'SO-01', part_name: 'Základ', subtype: 'beton', days: 2, curing_days: 5, qty: 45 } as unknown as Position,
     ];
 
-    // 3 (bednění) + 5 (výztuž) + 2 (beton) + 5 (curing) = 15
-    expect(calculateElementTotalDays(positions)).toBe(15);
+    // max(3, 5) + 2 (beton) + 5 (curing) = 12  (bednění & výztuž parallel)
+    expect(calculateElementTotalDays(positions)).toBe(12);
   });
 
   it('should use max curing_days when multiple beton positions', () => {
@@ -567,8 +567,8 @@ describe('Element Total Days', () => {
       } as unknown as Position,
     ];
 
-    // 3 (bednění) + 5 (výztuž) + 2 (beton) + 6/2 (curing÷sets) = 13
-    expect(calculateElementTotalDays(positions)).toBe(13);
+    // max(3, 5) + 2 (beton) + 6/2 (curing÷sets) = 10
+    expect(calculateElementTotalDays(positions)).toBe(10);
   });
 
   it('should divide curing by num_sets with object metadata', () => {
