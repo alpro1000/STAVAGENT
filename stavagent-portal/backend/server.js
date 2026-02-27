@@ -56,8 +56,8 @@ const PORT = process.env.PORT || 3001;
 const ALLOWED_ORIGINS = [...new Set([
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://monolit-planner-frontend.onrender.com',
   'https://monolit-planner-frontend.vercel.app',
+  'https://monolit-planner-frontend.onrender.com',
   'https://stavagent-portal-frontend.onrender.com',
   'https://stavagent-backend.vercel.app',
   'https://www.stavagent.cz',

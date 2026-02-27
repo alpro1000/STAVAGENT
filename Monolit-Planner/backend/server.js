@@ -52,7 +52,8 @@ const ALLOWED_ORIGINS = [
   'http://localhost:5173',
   'http://localhost:3000',
   // Monolit-Planner domains
-  'https://monolit-planner-frontend.onrender.com', // Production
+  'https://monolit-planner-frontend.vercel.app',   // Production (Vercel)
+  'https://monolit-planner-frontend.onrender.com', // Legacy (Render)
   'https://monolit-planner-test.onrender.com',    // Test
   // StavaAgent Portal domains (auth & redirect)
   'https://stavagent-portal-frontend.onrender.com',

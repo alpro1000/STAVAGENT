@@ -10,7 +10,7 @@
 
 import type { Project, TOVData } from '../types';
 
-const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
+const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
 
 // Debounce timers per project
 const syncTimers = new Map<string, ReturnType<typeof setTimeout>>();

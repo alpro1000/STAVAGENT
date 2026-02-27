@@ -41,7 +41,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link:
   monolit: {
     label: 'Monolit Planner',
     icon: '🪨',
-    buildUrl: () => 'https://monolit-planner-frontend.onrender.com',
+    buildUrl: () => 'https://monolit-planner-frontend.vercel.app',
   },
   registry: {
     label: 'Registr Rozpočtů',

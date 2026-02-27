@@ -26,8 +26,8 @@ interface PortalProjectItem {
   kiosks?: Array<{ kiosk_type: string; kiosk_project_id: string }>;
 }
 
-const PORTAL_URL = import.meta.env.VITE_PORTAL_FRONTEND_URL || 'https://stav-agent.onrender.com';
-const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
+const PORTAL_URL = import.meta.env.VITE_PORTAL_FRONTEND_URL || 'https://www.stavagent.cz';
+const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
 
 export function PortalLinkBadge({ project, compact = false }: PortalLinkBadgeProps) {
   const { linkToPortal, unlinkFromPortal, tovData } = useRegistryStore();

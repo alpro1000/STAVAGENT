@@ -103,7 +103,7 @@ const SERVICES: Service[] = [
     name: 'Monolit Planner',
     description: 'Výpočet nákladů na monolitické betonové konstrukce. Převod všech nákladů na metriku Kč/m³ se zaokrouhlením KROS.',
     icon: '🪨',
-    url: 'https://monolit-planner-frontend.onrender.com',
+    url: 'https://monolit-planner-frontend.vercel.app',
     status: 'active',
     tags: ['Beton', 'KROS', 'Most', 'Budova']
   },
@@ -130,7 +130,7 @@ const SERVICES: Service[] = [
     name: 'R0 Kalkulátory',
     description: 'Detérministické jádro: výpočet výztuže, bednění, betonáže. Scheduling Engine s kritickou cestou. AI-prořab navrhuje, jádro počítá.',
     icon: '🧮',
-    url: 'https://monolit-planner-frontend.onrender.com/r0',
+    url: 'https://monolit-planner-frontend.vercel.app/r0',
     status: 'beta',
     tags: ['Deterministické', 'Scheduling', 'AI-prořab', 'Traceability']
   },

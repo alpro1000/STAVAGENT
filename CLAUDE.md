@@ -47,8 +47,9 @@ STAVAGENT/
 | Service | URL |
 |---------|-----|
 | concrete-agent (CORE) | https://concrete-agent.onrender.com |
-| stavagent-portal | https://stav-agent.onrender.com |
-| Monolit-Planner Frontend | https://monolit-planner-frontend.onrender.com |
+| stavagent-portal (Frontend) | https://www.stavagent.cz |
+| stavagent-portal (API) | https://stavagent-backend.vercel.app |
+| Monolit-Planner Frontend | https://monolit-planner-frontend.vercel.app |
 | Monolit-Planner API | https://monolit-planner-api.onrender.com |
 | URS_MATCHER_SERVICE | https://urs-matcher-service.onrender.com |
 | Rozpočet Registry | https://stavagent-backend-ktwx.vercel.app |
@@ -258,7 +259,7 @@ POST /api/portal-projects/:id/link-kiosk ← Link kiosk project to portal
 
 **Location:** `/Monolit-Planner`
 **Technology:** Node.js 20.x, Express, React, PostgreSQL (prod) / SQLite (dev)
-**Production URL:** `https://monolit-planner-frontend.onrender.com`
+**Production URL:** `https://monolit-planner-frontend.vercel.app`
 **Port (Dev):** Backend 3001, Frontend 5173
 
 **Purpose:** Calculate costs for monolithic concrete structures (bridges, buildings, tunnels). Convert ALL costs to unified metric: **CZK/m³ of concrete**.
@@ -646,7 +647,7 @@ GOOGLE_CREDENTIALS_ENCRYPTION_KEY=...
 NODE_ENV=production
 PORT=3001
 VITE_API_URL=https://monolit-planner-api.onrender.com
-CORS_ORIGIN=https://monolit-planner-frontend.onrender.com
+CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
 ```
 
 ### URS_MATCHER_SERVICE

@@ -145,7 +145,7 @@ export const bridgesAPI = {
     
     // Fire-and-forget Portal sync — do NOT await so modal doesn't hang
     // Portal (Render free tier) can take 10-30s to wake from sleep
-    const portalAPI = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
+    const portalAPI = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
     const portalController = new AbortController();
     const portalTimeout = setTimeout(() => portalController.abort(), 5000); // 5s max
     fetch(`${portalAPI}/api/portal-projects/create-from-kiosk`, {

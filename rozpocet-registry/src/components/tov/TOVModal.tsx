@@ -234,7 +234,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
           <div className="ml-auto flex items-center pr-4">
             {localData.monolitMetadata?.project_id ? (
               <a
-                href={`${localData.monolitMetadata.monolit_url || 'https://monolit-planner-frontend.onrender.com'}?project=${encodeURIComponent(localData.monolitMetadata.project_id)}&part=${encodeURIComponent(localData.monolitMetadata.part_name || '')}`}
+                href={`${localData.monolitMetadata.monolit_url || 'https://monolit-planner-frontend.vercel.app'}?project=${encodeURIComponent(localData.monolitMetadata.project_id)}&part=${encodeURIComponent(localData.monolitMetadata.part_name || '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-500/10 hover:bg-blue-500/20 rounded transition-colors border border-blue-300/50"
@@ -248,7 +248,7 @@ export function TOVModal({ isOpen, onClose, item, tovData, onSave, onApplyPrice 
               </a>
             ) : (
               <a
-                href="https://monolit-planner-frontend.onrender.com"
+                href="https://monolit-planner-frontend.vercel.app"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-500 hover:bg-blue-500/10 rounded transition-colors"
