@@ -121,7 +121,7 @@ const SERVICES: Service[] = [
     name: 'Registr Rozpočtů',
     description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
     icon: '📊',
-    url: 'https://rozpocet-registry.vercel.app',
+    url: 'https://stavagent-backend-ktwx.vercel.app',
     status: 'active',
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },

@@ -40,7 +40,7 @@
    • Systém: FRAMI XLIFE
 
 🔗 Otevřete Registry TOV:
-   https://rozpocet-registry.vercel.app
+   https://stavagent-backend-ktwx.vercel.app
 
    Klikněte na "🏗️ Nájem bednění" → zadejte parametry → přidejte do TOV
 ```
@@ -152,7 +152,7 @@ Rental days = max(Výztuž days, Betonování days, Zrání days, Montáž days,
 
 ### Monolit-Planner Frontend
 ```bash
-VITE_REGISTRY_URL=https://rozpocet-registry.vercel.app
+VITE_REGISTRY_URL=https://stavagent-backend-ktwx.vercel.app
 ```
 
 ### Registry Frontend

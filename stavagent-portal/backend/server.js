@@ -62,7 +62,7 @@ const ALLOWED_ORIGINS = [...new Set([
   'https://stavagent-backend.vercel.app',
   'https://www.stavagent.cz',
   'https://stavagent.cz',
-  'https://rozpocet-registry.vercel.app',
+  'https://stavagent-backend-ktwx.vercel.app',
   process.env.CORS_ORIGIN,
 ].filter(Boolean))];
 

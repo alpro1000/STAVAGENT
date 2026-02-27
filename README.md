@@ -33,7 +33,7 @@
 |--------|-----|
 | Monolit Backend | https://monolit-planner-api.onrender.com |
 | Monolit Frontend | https://monolit-planner-frontend.onrender.com |
-| Registry TOV Frontend | https://rozpocet-registry.vercel.app |
+| Registry TOV Frontend | https://stavagent-backend-ktwx.vercel.app |
 | Registry TOV Backend | https://rozpocet-registry-backend.onrender.com |
 | CORE (AI) | https://concrete-agent.onrender.com |
 | URS Matcher | https://urs-matcher-service.onrender.com |

@@ -44,7 +44,7 @@
 ```
 ✅ Přeneseno 2 řádků
 💡 NÁJEM BEDNĚNÍ - параметры для Registry TOV
-🔗 https://rozpocet-registry.vercel.app
+🔗 https://stavagent-backend-ktwx.vercel.app
 ```
 
 ### 3. Registry TOV
@@ -121,7 +121,7 @@ Height multipliers: 1.2m→0.9, 1.5m→1.0, 2.4m→1.1, 2.7m→1.15, 3.0m→1.2
 1. Задеплоить Registry backend на Render
 2. Задеплоить Registry frontend на Vercel
 3. Обновить environment variables:
-   - Monolit: `VITE_REGISTRY_URL=https://rozpocet-registry.vercel.app`
+   - Monolit: `VITE_REGISTRY_URL=https://stavagent-backend-ktwx.vercel.app`
    - Registry: `VITE_REGISTRY_API_URL=https://rozpocet-registry-backend.onrender.com`
 4. User acceptance testing
 

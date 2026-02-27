@@ -36,7 +36,7 @@ Po přenosu se zobrazí alert s parametry:
    • Systém: FRAMI XLIFE
 
 🔗 Otevřete Registry TOV:
-   https://rozpocet-registry.vercel.app
+   https://stavagent-backend-ktwx.vercel.app
 ```
 
 **Zkopírujte si tyto hodnoty!**

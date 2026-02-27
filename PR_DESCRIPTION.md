@@ -24,7 +24,7 @@ This PR implements two major features:
 
 **Integration (Monolit ↔ Registry):**
 - ✅ Updated alert in Monolit with rental parameters
-- ✅ Link to Registry TOV: https://rozpocet-registry.vercel.app
+- ✅ Link to Registry TOV: https://stavagent-backend-ktwx.vercel.app
 - ✅ Environment variables configured
 
 **Documentation:**

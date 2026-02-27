@@ -542,7 +542,7 @@ vercel --prod
 ```
 
 **Konfigurace:** Auto-detect Vite
-**URL:** `rozpocet-registry.vercel.app`
+**URL:** `stavagent-backend-ktwx.vercel.app`
 
 ### Netlify
 

@@ -51,7 +51,7 @@ STAVAGENT/
 | Monolit-Planner Frontend | https://monolit-planner-frontend.onrender.com |
 | Monolit-Planner API | https://monolit-planner-api.onrender.com |
 | URS_MATCHER_SERVICE | https://urs-matcher-service.onrender.com |
-| Rozpočet Registry | Static hosting (Vercel) |
+| Rozpočet Registry | https://stavagent-backend-ktwx.vercel.app |
 
 ---
 
