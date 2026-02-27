@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-02-27 | Monolit-Planner shared | RCPSP Element Scheduler: DAG, Kahn's topo sort, CPM, parallel scheduling scheme (82 tests) | ✅ Pushed |
 | 2026-02-27 | docs + Registry + Portal | Position Instance Architecture v1.0 + Portal linking fixes (auto-link, project picker, sleeping UX, URL fixes) | ✅ Pushed |
 | 2026-02-24 | rozpocet-registry | R0 Pump Calculator v2: realistic Beton Union 2026 pricing model (hourly + km + accessories) | ✅ Pushed |
 | 2026-02-24 | rozpocet-registry | R0 Pump Calculator v1: initial pump rental section in MachineryTab | ✅ Pushed |
@@ -789,6 +790,7 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
+| 2026-02-27 | Monolit-Planner shared | RCPSP Element Scheduler: DAG + Kahn's topo sort + CPM + parallel scheme, 27 scheduler tests + 4 integration tests | 3 |
 | 2026-02-27 | docs + Registry + Portal | Position Instance Architecture v1.0 (two-level identity model), Portal auto-link fix, PortalLinkBadge project picker v2, sleeping backend UX, Registry URL fixes | 2 |
 | 2026-02-10 | Monolit + Registry + Portal | Monolit-Registry integration (Phase 1): Portal API, TOV mapping, unified storage | 1 |
 | 2026-02-04 | stavagent-portal + rozpocet-registry | Portal fix (safeGetPool), Price editing, Section totals, Excel export fixes, Import preview, Unification audit | 10+ |
