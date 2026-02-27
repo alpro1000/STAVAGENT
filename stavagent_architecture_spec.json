@@ -1,0 +1,797 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "meta": {
+    "project": "STAVAGENT",
+    "title": "Unified Data Architecture Specification",
+    "version": "1.0.0",
+    "created": "2026-02-27",
+    "description": "Machine-readable spec for Project Registry, Position Identity, Template System, Activity-Role Mapping, API Contract, and Relink Mechanism"
+  },
+
+  "hierarchy": {
+    "levels": [
+      { "level": 1, "entity": "Project", "description": "Entire construction project (e.g. highway D1 section)" },
+      { "level": 2, "entity": "Object", "description": "Physical structure = Excel sheet (bridge, retaining wall, culvert)" },
+      { "level": 3, "entity": "Section", "description": "Heading/group within a sheet (optional)" },
+      { "level": 4, "entity": "PositionInstance", "description": "Concrete line item with unique instance ID" },
+      { "level": 5, "entity": "PositionTemplate", "description": "Reusable calculation pattern for identical position types" }
+    ]
+  },
+
+  "enums": {
+    "WorkCategory": {
+      "values": ["beton", "bedneni", "vystuz", "injektaz", "zemni_prace", "izolace", "komunikace", "demolice", "ostatni"],
+      "description": "Classification of construction work type"
+    },
+    "TemplateConfidence": {
+      "values": ["GREEN", "AMBER", "RED"],
+      "rules": {
+        "GREEN": { "criteria": "exact match: catalog_code + unit + normalized_description", "action": "auto_apply_allowed" },
+        "AMBER": { "criteria": "partial: catalog_code + unit match, description differs", "action": "manual_review_required" },
+        "RED":   { "criteria": "only catalog_code matches, different unit or category", "action": "manual_assignment_only" }
+      }
+    },
+    "ScalingRule": {
+      "values": ["linear", "fixed", "manual"],
+      "rules": {
+        "linear": "scales proportionally with qty (materials, labor hours)",
+        "fixed": "constant regardless of qty (mobilization, setup)",
+        "manual": "requires human review for each instance (crane selection, complex formwork)"
+      }
+    },
+    "ProjectStatus": {
+      "values": ["draft", "active", "archived", "deleted"]
+    },
+    "PositionStatus": {
+      "values": ["parsed", "classified", "calculated", "reviewed", "approved", "orphaned"]
+    },
+    "RelinkMatch": {
+      "values": ["exact", "fallback", "fuzzy", "new", "orphaned"]
+    }
+  },
+
+  "entities": {
+
+    "Project": {
+      "table": "projects",
+      "primary_key": "project_id",
+      "fields": {
+        "project_id":   { "type": "uuid", "generated": true, "pk": true },
+        "name":         { "type": "varchar(255)", "required": true },
+        "client":       { "type": "varchar(255)", "nullable": true },
+        "location":     { "type": "varchar(255)", "nullable": true },
+        "description":  { "type": "text", "nullable": true },
+        "status":       { "type": "enum:ProjectStatus", "default": "draft" },
+        "tenant_id":    { "type": "uuid", "rls": true, "description": "PostgreSQL RLS multi-tenancy" },
+        "created_by":   { "type": "uuid", "nullable": true },
+        "created_at":   { "type": "timestamptz", "default": "now()" },
+        "updated_at":   { "type": "timestamptz", "default": "now()" }
+      },
+      "indexes": [
+        { "columns": ["tenant_id", "status"], "name": "idx_projects_tenant_status" },
+        { "columns": ["name"], "name": "idx_projects_name", "type": "gin_trgm" }
+      ]
+    },
+
+    "Object": {
+      "table": "objects",
+      "primary_key": "object_id",
+      "description": "Physical structure = one Excel sheet. Bridge, wall, culvert, etc.",
+      "fields": {
+        "object_id":    { "type": "uuid", "generated": true, "pk": true },
+        "project_id":   { "type": "uuid", "fk": "projects.project_id", "on_delete": "CASCADE" },
+        "name":         { "type": "varchar(255)", "required": true, "description": "Human name: Most 101, Zed 3A" },
+        "sheet_name":   { "type": "varchar(255)", "required": true, "description": "Original Excel sheet name" },
+        "sheet_index":  { "type": "integer", "required": true },
+        "object_type":  { "type": "varchar(100)", "nullable": true, "description": "bridge/wall/culvert/road/..." },
+        "created_at":   { "type": "timestamptz", "default": "now()" }
+      },
+      "indexes": [
+        { "columns": ["project_id", "sheet_name"], "name": "idx_objects_project_sheet", "unique": true }
+      ]
+    },
+
+    "SourceFile": {
+      "table": "source_files",
+      "primary_key": "file_id",
+      "fields": {
+        "file_id":       { "type": "uuid", "generated": true, "pk": true },
+        "project_id":    { "type": "uuid", "fk": "projects.project_id", "on_delete": "CASCADE" },
+        "filename":      { "type": "varchar(500)", "required": true },
+        "mime_type":     { "type": "varchar(100)", "required": true },
+        "upload_path":   { "type": "text", "required": true },
+        "content_hash":  { "type": "varchar(64)", "required": true, "description": "SHA-256 for dedup" },
+        "file_size":     { "type": "bigint", "nullable": true },
+        "uploaded_by":   { "type": "uuid", "nullable": true },
+        "uploaded_at":   { "type": "timestamptz", "default": "now()" }
+      },
+      "indexes": [
+        { "columns": ["project_id"], "name": "idx_source_files_project" },
+        { "columns": ["content_hash"], "name": "idx_source_files_hash" }
+      ]
+    },
+
+    "FileVersion": {
+      "table": "file_versions",
+      "primary_key": "file_version_id",
+      "fields": {
+        "file_version_id": { "type": "uuid", "generated": true, "pk": true },
+        "file_id":         { "type": "uuid", "fk": "source_files.file_id", "on_delete": "CASCADE" },
+        "version_no":      { "type": "integer", "required": true, "default": 1 },
+        "upload_path":     { "type": "text", "required": true },
+        "content_hash":    { "type": "varchar(64)", "required": true },
+        "parsed_at":       { "type": "timestamptz", "nullable": true },
+        "position_count":  { "type": "integer", "nullable": true },
+        "parse_log":       { "type": "jsonb", "nullable": true, "description": "Warnings, skipped rows, etc." },
+        "created_at":      { "type": "timestamptz", "default": "now()" }
+      },
+      "indexes": [
+        { "columns": ["file_id", "version_no"], "name": "idx_file_versions_file_ver", "unique": true }
+      ]
+    },
+
+    "PositionInstance": {
+      "table": "position_instances",
+      "primary_key": "position_instance_id",
+      "description": "Core entity. Every line item in every sheet gets a unique UUID. All kiosks reference this ID.",
+      "fields": {
+        "position_instance_id": { "type": "uuid", "generated": true, "pk": true },
+        "project_id":           { "type": "uuid", "fk": "projects.project_id", "on_delete": "CASCADE", "indexed": true },
+        "object_id":            { "type": "uuid", "fk": "objects.object_id", "on_delete": "CASCADE", "indexed": true },
+        "file_version_id":      { "type": "uuid", "fk": "file_versions.file_version_id", "on_delete": "SET NULL" },
+        "sheet_name":           { "type": "varchar(255)", "required": true },
+        "sheet_index":          { "type": "integer", "required": true },
+        "position_no":          { "type": "varchar(50)", "nullable": true, "description": "Position number in sheet if present" },
+        "row_index":            { "type": "integer", "required": true, "description": "Excel row as fallback anchor" },
+        "catalog_code":         { "type": "varchar(100)", "required": true, "description": "URS/OTSKP/RTS code" },
+        "description":          { "type": "text", "required": true, "description": "Full position description (Czech)" },
+        "description_normalized": { "type": "text", "nullable": true, "description": "Cleaned: no sizes, numbers, synonyms resolved" },
+        "unit":                 { "type": "varchar(20)", "required": true, "description": "m3, m2, t, ks, kpl, hod" },
+        "qty":                  { "type": "numeric(15,4)", "required": true },
+        "unit_price":           { "type": "numeric(15,2)", "nullable": true },
+        "total_price":          { "type": "numeric(18,2)", "nullable": true, "computed": "qty * unit_price" },
+        "work_category":        { "type": "enum:WorkCategory", "nullable": true },
+        "status":               { "type": "enum:PositionStatus", "default": "parsed" },
+
+        "template_id":          { "type": "uuid", "fk": "position_templates.template_id", "nullable": true, "on_delete": "SET NULL" },
+        "template_confidence":  { "type": "enum:TemplateConfidence", "nullable": true },
+        "overrides":            { "type": "jsonb", "nullable": true, "default": "{}", "description": "Local deviations from template" },
+
+        "monolith_payload": {
+          "type": "jsonb",
+          "nullable": true,
+          "description": "Monolit Planner calculation results",
+          "schema": {
+            "calc_inputs": {
+              "concrete_class": "string (C20/25, C30/37, ...)",
+              "element_type": "string (foundation, column, slab, beam, wall)",
+              "complexity_coefficient": "number (1.0 = standard)",
+              "formwork_reuse_cycles": "integer",
+              "curing_days": "integer",
+              "ambient_temp_range": "string (summer/winter/transition)"
+            },
+            "calc_outputs": {
+              "duration_days": "number",
+              "crew_composition": [
+                { "role": "string", "count": "integer", "hours_per_day": "number" }
+              ],
+              "material_takeoff": [
+                { "material": "string", "unit": "string", "qty": "number", "scaling": "enum:ScalingRule" }
+              ],
+              "equipment": [
+                { "name": "string", "hours": "number", "scaling": "enum:ScalingRule" }
+              ],
+              "total_labor_hours": "number",
+              "cost_breakdown": {
+                "labor": "number",
+                "material": "number",
+                "equipment": "number",
+                "overhead": "number"
+              }
+            },
+            "calculated_at": "timestamptz",
+            "calculated_by": "uuid",
+            "potentially_stale": "boolean (set true when qty changes >20%)"
+          }
+        },
+
+        "dov_payload": {
+          "type": "jsonb",
+          "nullable": true,
+          "description": "DOV (decomposition of work) breakdown",
+          "schema": {
+            "activities": [
+              {
+                "activity_type": "enum:WorkCategory",
+                "description": "string",
+                "unit": "string",
+                "qty": "number",
+                "norm_hours": "number",
+                "roles": [
+                  { "role": "string", "coefficient": "number", "hours": "number" }
+                ],
+                "materials": [
+                  { "name": "string", "unit": "string", "qty": "number", "scaling": "enum:ScalingRule" }
+                ],
+                "equipment": [
+                  { "name": "string", "hours": "number", "scaling": "enum:ScalingRule" }
+                ]
+              }
+            ],
+            "total_norm_hours": "number",
+            "calculated_at": "timestamptz",
+            "calculated_by": "uuid"
+          }
+        },
+
+        "tags":        { "type": "jsonb", "nullable": true, "default": "[]", "description": "Free-form labels" },
+        "notes":       { "type": "text", "nullable": true },
+        "created_at":  { "type": "timestamptz", "default": "now()" },
+        "updated_at":  { "type": "timestamptz", "default": "now()" }
+      },
+      "indexes": [
+        { "columns": ["project_id", "object_id"], "name": "idx_positions_project_object" },
+        { "columns": ["project_id", "catalog_code"], "name": "idx_positions_project_code" },
+        { "columns": ["project_id", "work_category"], "name": "idx_positions_project_category" },
+        { "columns": ["template_id"], "name": "idx_positions_template" },
+        { "columns": ["project_id", "sheet_name", "position_no", "catalog_code"], "name": "idx_positions_relink_primary" },
+        { "columns": ["project_id", "sheet_index", "row_index", "catalog_code"], "name": "idx_positions_relink_fallback" }
+      ],
+      "identity_resolution": {
+        "description": "Two-layer identity system for position matching",
+        "instance_id": {
+          "type": "position_instance_id (UUID)",
+          "scope": "unique per line item in a specific sheet of a specific project",
+          "purpose": "all kiosk operations, cross-references, payload attachments",
+          "composition": "project_id + object_id + sheet_name + sheet_index + position_no + row_index"
+        },
+        "template_id": {
+          "type": "position_template.template_id (UUID)",
+          "scope": "reusable across projects and objects",
+          "purpose": "apply standard calculation to matching positions",
+          "composition": "catalog_code + unit + description_normalized + work_category"
+        }
+      }
+    },
+
+    "PositionTemplate": {
+      "table": "position_templates",
+      "primary_key": "template_id",
+      "description": "Reusable calculation pattern. Not tied to any sheet. Created from a good calculation.",
+      "fields": {
+        "template_id":              { "type": "uuid", "generated": true, "pk": true },
+        "template_key":             { "type": "varchar(500)", "required": true, "unique": true, "description": "Hash/composite of code+unit+desc_norm+category" },
+        "catalog_code":             { "type": "varchar(100)", "required": true },
+        "unit":                     { "type": "varchar(20)", "required": true },
+        "description_normalized":   { "type": "text", "required": true },
+        "work_category":            { "type": "enum:WorkCategory", "required": true },
+
+        "monolith_template": {
+          "type": "jsonb",
+          "nullable": true,
+          "description": "Default Monolit calculation parameters (same schema as monolith_payload but without position-specific values)"
+        },
+        "dov_template": {
+          "type": "jsonb",
+          "nullable": true,
+          "description": "Default DOV breakdown (same schema as dov_payload)"
+        },
+        "activity_roles": {
+          "type": "jsonb",
+          "nullable": true,
+          "description": "Activity-to-role mapping with coefficients",
+          "schema": [
+            {
+              "activity_type": "string",
+              "roles": [
+                { "role": "string", "coefficient": "number" }
+              ]
+            }
+          ]
+        },
+        "scaling_rules": {
+          "type": "jsonb",
+          "nullable": true,
+          "description": "Per-resource scaling behavior",
+          "schema": [
+            { "resource_name": "string", "resource_type": "labor|material|equipment", "scaling": "enum:ScalingRule" }
+          ]
+        },
+
+        "created_by":   { "type": "uuid", "nullable": true },
+        "created_at":   { "type": "timestamptz", "default": "now()" },
+        "updated_at":   { "type": "timestamptz", "default": "now()" },
+        "version":      { "type": "integer", "default": 1 },
+        "usage_count":  { "type": "integer", "default": 0, "description": "Incremented on each apply" }
+      },
+      "indexes": [
+        { "columns": ["template_key"], "name": "idx_templates_key", "unique": true },
+        { "columns": ["catalog_code", "unit"], "name": "idx_templates_code_unit" },
+        { "columns": ["work_category"], "name": "idx_templates_category" }
+      ]
+    },
+
+    "ApplyLog": {
+      "table": "apply_logs",
+      "primary_key": "log_id",
+      "description": "Provenance: who applied what template where, when, with what confidence",
+      "fields": {
+        "log_id":                { "type": "uuid", "generated": true, "pk": true },
+        "template_id":           { "type": "uuid", "fk": "position_templates.template_id" },
+        "position_instance_id":  { "type": "uuid", "fk": "position_instances.position_instance_id" },
+        "applied_by":            { "type": "uuid", "nullable": true },
+        "confidence":            { "type": "enum:TemplateConfidence", "required": true },
+        "overrides_applied":     { "type": "jsonb", "nullable": true },
+        "previous_payload":      { "type": "jsonb", "nullable": true, "description": "Snapshot before apply for rollback" },
+        "source_kiosk":          { "type": "varchar(50)", "description": "Which kiosk triggered: rozpocet/monolit/dov" },
+        "applied_at":            { "type": "timestamptz", "default": "now()" }
+      },
+      "indexes": [
+        { "columns": ["position_instance_id"], "name": "idx_apply_logs_position" },
+        { "columns": ["template_id"], "name": "idx_apply_logs_template" },
+        { "columns": ["applied_at"], "name": "idx_apply_logs_time" }
+      ]
+    },
+
+    "ActivityRoleMapping": {
+      "table": "activity_role_mappings",
+      "primary_key": "mapping_id",
+      "description": "Maps activity types to roles with coefficients. Separate from templates for reuse.",
+      "fields": {
+        "mapping_id":     { "type": "uuid", "generated": true, "pk": true },
+        "activity_type":  { "type": "enum:WorkCategory", "required": true },
+        "role":           { "type": "varchar(100)", "required": true, "description": "tesar, zelezar, betonar, zednik, pomocnik, mistr, jerabnik, svarecnik" },
+        "coefficient":    { "type": "numeric(4,2)", "required": true, "description": "Share of total labor (0.00-1.00, sum per activity = 1.00)" },
+        "description":    { "type": "text", "nullable": true },
+        "is_active":      { "type": "boolean", "default": true }
+      },
+      "indexes": [
+        { "columns": ["activity_type", "role"], "name": "idx_arm_activity_role", "unique": true }
+      ],
+      "seed_data": [
+        { "activity_type": "bedneni",    "role": "tesar",     "coefficient": 0.70 },
+        { "activity_type": "bedneni",    "role": "pomocnik",  "coefficient": 0.30 },
+        { "activity_type": "beton",      "role": "betonar",   "coefficient": 0.50 },
+        { "activity_type": "beton",      "role": "pomocnik",  "coefficient": 0.30 },
+        { "activity_type": "beton",      "role": "jerabnik",  "coefficient": 0.20 },
+        { "activity_type": "vystuz",     "role": "zelezar",   "coefficient": 0.70 },
+        { "activity_type": "vystuz",     "role": "pomocnik",  "coefficient": 0.20 },
+        { "activity_type": "vystuz",     "role": "svarecnik", "coefficient": 0.10 },
+        { "activity_type": "injektaz",   "role": "betonar",   "coefficient": 0.60 },
+        { "activity_type": "injektaz",   "role": "pomocnik",  "coefficient": 0.40 },
+        { "activity_type": "zemni_prace","role": "strojnik",  "coefficient": 0.60 },
+        { "activity_type": "zemni_prace","role": "pomocnik",  "coefficient": 0.40 }
+      ]
+    },
+
+    "RelinkReport": {
+      "table": "relink_reports",
+      "primary_key": "report_id",
+      "description": "Generated when a new FileVersion is parsed and positions are re-linked",
+      "fields": {
+        "report_id":        { "type": "uuid", "generated": true, "pk": true },
+        "project_id":       { "type": "uuid", "fk": "projects.project_id" },
+        "old_file_version":  { "type": "uuid", "fk": "file_versions.file_version_id" },
+        "new_file_version":  { "type": "uuid", "fk": "file_versions.file_version_id" },
+        "summary": {
+          "type": "jsonb",
+          "schema": {
+            "total_old": "integer",
+            "total_new": "integer",
+            "matched_exact": "integer",
+            "matched_fallback": "integer",
+            "matched_fuzzy": "integer",
+            "new_positions": "integer",
+            "orphaned_positions": "integer",
+            "qty_changed_positions": "integer"
+          }
+        },
+        "details": {
+          "type": "jsonb",
+          "schema": [
+            {
+              "position_instance_id": "uuid",
+              "match_type": "enum:RelinkMatch",
+              "old_qty": "number|null",
+              "new_qty": "number|null",
+              "qty_delta_pct": "number|null",
+              "payloads_stale": "boolean",
+              "notes": "string"
+            }
+          ]
+        },
+        "reviewed_by":  { "type": "uuid", "nullable": true },
+        "reviewed_at":  { "type": "timestamptz", "nullable": true },
+        "created_at":   { "type": "timestamptz", "default": "now()" }
+      }
+    }
+  },
+
+  "api": {
+    "base_url": "/api/v1",
+    "auth": "Bearer JWT (tenant_id extracted from token for RLS)",
+    "content_type": "application/json",
+
+    "endpoints": [
+      {
+        "method": "POST",
+        "path": "/projects",
+        "description": "Create new project",
+        "request_body": {
+          "name": { "type": "string", "required": true },
+          "client": { "type": "string" },
+          "location": { "type": "string" },
+          "description": { "type": "string" }
+        },
+        "response": { "$ref": "#/entities/Project" },
+        "status_codes": { "201": "Created", "400": "Validation error" }
+      },
+      {
+        "method": "GET",
+        "path": "/projects",
+        "description": "List projects for current tenant",
+        "query_params": {
+          "status": { "type": "enum:ProjectStatus", "optional": true },
+          "search": { "type": "string", "optional": true },
+          "limit": { "type": "integer", "default": 20 },
+          "offset": { "type": "integer", "default": 0 }
+        },
+        "response": { "items": [{ "$ref": "#/entities/Project" }], "total": "integer" }
+      },
+      {
+        "method": "GET",
+        "path": "/projects/{project_id}",
+        "description": "Get project with objects summary",
+        "response": {
+          "project": { "$ref": "#/entities/Project" },
+          "objects": [{ "$ref": "#/entities/Object" }],
+          "file_versions": [{ "$ref": "#/entities/FileVersion" }],
+          "position_stats": {
+            "total": "integer",
+            "by_category": { "beton": "integer", "bedneni": "integer" },
+            "calculated": "integer",
+            "with_template": "integer"
+          }
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/projects/{project_id}/files",
+        "description": "Upload source file to project (multipart/form-data)",
+        "request_body": {
+          "file": { "type": "binary", "required": true, "accept": ".xlsx,.xls,.xml,.pdf" }
+        },
+        "response": {
+          "file": { "$ref": "#/entities/SourceFile" },
+          "file_version": { "$ref": "#/entities/FileVersion" },
+          "deduplicated": "boolean (true if content_hash already exists)"
+        },
+        "status_codes": { "201": "Uploaded", "409": "Duplicate file (same hash)" }
+      },
+      {
+        "method": "POST",
+        "path": "/file-versions/{file_version_id}/parse",
+        "description": "Parse file version into PositionInstances. Creates Objects from sheets.",
+        "request_body": {
+          "classification_mode": { "type": "string", "enum": ["regex", "llm", "hybrid"], "default": "regex" },
+          "relink_from_version": { "type": "uuid", "optional": true, "description": "If set, attempt relink against this previous version" }
+        },
+        "response": {
+          "objects_created": "integer",
+          "positions_created": "integer",
+          "positions_classified": "integer",
+          "relink_report": { "$ref": "#/entities/RelinkReport", "nullable": true },
+          "warnings": ["string"]
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/projects/{project_id}/positions",
+        "description": "Get positions with filters. Primary endpoint for kiosks.",
+        "query_params": {
+          "object_id": { "type": "uuid", "optional": true },
+          "work_category": { "type": "enum:WorkCategory", "optional": true },
+          "catalog_code": { "type": "string", "optional": true },
+          "has_monolith": { "type": "boolean", "optional": true },
+          "has_dov": { "type": "boolean", "optional": true },
+          "has_template": { "type": "boolean", "optional": true },
+          "status": { "type": "enum:PositionStatus", "optional": true },
+          "search": { "type": "string", "optional": true, "description": "Full-text search in description" },
+          "limit": { "type": "integer", "default": 50 },
+          "offset": { "type": "integer", "default": 0 }
+        },
+        "response": {
+          "items": [{ "$ref": "#/entities/PositionInstance" }],
+          "total": "integer",
+          "aggregates": {
+            "total_qty": "number",
+            "total_price": "number",
+            "categories": { "beton": "integer", "bedneni": "integer" }
+          }
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/positions/{position_instance_id}",
+        "description": "Get single position with all payloads, template info, and apply history",
+        "response": {
+          "position": { "$ref": "#/entities/PositionInstance" },
+          "template": { "$ref": "#/entities/PositionTemplate", "nullable": true },
+          "apply_history": [{ "$ref": "#/entities/ApplyLog" }],
+          "object": { "$ref": "#/entities/Object" }
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/positions/{position_instance_id}/monolith-calc",
+        "description": "Write Monolit Planner results back to position",
+        "request_body": {
+          "calc_inputs": { "type": "object", "schema": "monolith_payload.calc_inputs" },
+          "calc_outputs": { "type": "object", "schema": "monolith_payload.calc_outputs" },
+          "save_as_template": { "type": "boolean", "default": false, "description": "Also create/update a PositionTemplate" }
+        },
+        "response": {
+          "position": { "$ref": "#/entities/PositionInstance" },
+          "template_created": { "$ref": "#/entities/PositionTemplate", "nullable": true }
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/positions/{position_instance_id}/monolith-calc",
+        "description": "Read Monolit results for a position",
+        "response": {
+          "position_instance_id": "uuid",
+          "monolith_payload": "object|null",
+          "potentially_stale": "boolean",
+          "template_id": "uuid|null"
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/positions/{position_instance_id}/dov",
+        "description": "Write DOV breakdown results",
+        "request_body": {
+          "activities": { "type": "array", "schema": "dov_payload.activities" },
+          "save_as_template": { "type": "boolean", "default": false }
+        },
+        "response": {
+          "position": { "$ref": "#/entities/PositionInstance" },
+          "template_created": { "$ref": "#/entities/PositionTemplate", "nullable": true }
+        }
+      },
+      {
+        "method": "GET",
+        "path": "/positions/{position_instance_id}/dov",
+        "description": "Read DOV breakdown for a position",
+        "response": {
+          "position_instance_id": "uuid",
+          "dov_payload": "object|null",
+          "template_id": "uuid|null"
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/templates",
+        "description": "Create template from a position's calculation (standalone, without calc endpoint)",
+        "request_body": {
+          "source_position_id": { "type": "uuid", "required": true, "description": "Position to derive template from" },
+          "source_payload": { "type": "string", "enum": ["monolith", "dov", "both"], "default": "both" },
+          "custom_description": { "type": "string", "optional": true }
+        },
+        "response": { "$ref": "#/entities/PositionTemplate" }
+      },
+      {
+        "method": "GET",
+        "path": "/templates/{template_id}/matches",
+        "description": "Find positions in a project that match this template, with confidence scoring",
+        "query_params": {
+          "project_id": { "type": "uuid", "required": true },
+          "min_confidence": { "type": "enum:TemplateConfidence", "default": "RED" },
+          "exclude_already_applied": { "type": "boolean", "default": true }
+        },
+        "response": {
+          "template": { "$ref": "#/entities/PositionTemplate" },
+          "matches": [
+            {
+              "position_instance_id": "uuid",
+              "catalog_code": "string",
+              "description": "string",
+              "unit": "string",
+              "qty": "number",
+              "object_name": "string",
+              "sheet_name": "string",
+              "confidence": "enum:TemplateConfidence",
+              "match_details": {
+                "code_match": "boolean",
+                "unit_match": "boolean",
+                "description_similarity": "number (0.0-1.0)",
+                "category_match": "boolean"
+              }
+            }
+          ],
+          "summary": {
+            "GREEN": "integer",
+            "AMBER": "integer",
+            "RED": "integer"
+          }
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/templates/{template_id}/apply",
+        "description": "Apply template to selected positions (batch)",
+        "request_body": {
+          "position_instance_ids": { "type": "array", "items": "uuid", "required": true },
+          "overrides": { "type": "object", "optional": true, "description": "Common overrides for all positions in batch" },
+          "scale_by_qty": { "type": "boolean", "default": true, "description": "Auto-scale linear resources by qty ratio" }
+        },
+        "response": {
+          "applied": "integer",
+          "skipped": "integer",
+          "details": [
+            {
+              "position_instance_id": "uuid",
+              "status": "applied|skipped|error",
+              "reason": "string|null"
+            }
+          ]
+        }
+      },
+      {
+        "method": "POST",
+        "path": "/positions/{position_instance_id}/relink",
+        "description": "Manually re-link a position after file update (for orphaned or mismatched)",
+        "request_body": {
+          "new_position_data": {
+            "sheet_name": "string",
+            "position_no": "string",
+            "row_index": "integer",
+            "catalog_code": "string",
+            "description": "string",
+            "unit": "string",
+            "qty": "number"
+          }
+        },
+        "response": {
+          "position": { "$ref": "#/entities/PositionInstance" },
+          "payloads_preserved": "boolean",
+          "qty_changed": "boolean"
+        }
+      }
+    ]
+  },
+
+  "algorithms": {
+
+    "relink": {
+      "description": "Matching algorithm for file version updates",
+      "steps": [
+        {
+          "step": 1,
+          "name": "primary_match",
+          "fields": ["sheet_name", "position_no", "catalog_code"],
+          "match_type": "exact",
+          "confidence": "GREEN"
+        },
+        {
+          "step": 2,
+          "name": "fallback_match",
+          "fields": ["sheet_index", "row_index", "catalog_code"],
+          "match_type": "exact",
+          "confidence": "AMBER",
+          "applies_to": "unmatched from step 1"
+        },
+        {
+          "step": 3,
+          "name": "fuzzy_match",
+          "fields": ["description", "catalog_code", "unit"],
+          "match_type": "fuzzy",
+          "min_similarity": 0.75,
+          "confidence": "RED",
+          "applies_to": "unmatched from step 2"
+        },
+        {
+          "step": 4,
+          "name": "classify_remainder",
+          "rules": {
+            "new_not_in_old": { "action": "create_new_instance", "match_type": "new" },
+            "old_not_in_new": { "action": "mark_orphaned", "match_type": "orphaned", "preserve_payloads": true }
+          }
+        }
+      ],
+      "post_match_rules": {
+        "qty_change_threshold_pct": 20,
+        "on_qty_change_exceeds_threshold": "set potentially_stale=true on monolith_payload and dov_payload",
+        "generate_report": true
+      }
+    },
+
+    "template_matching": {
+      "description": "How to find matching positions for a template",
+      "scoring": {
+        "catalog_code_match": { "weight": 0.35, "type": "exact" },
+        "unit_match": { "weight": 0.15, "type": "exact" },
+        "description_similarity": { "weight": 0.35, "type": "trigram_similarity", "min": 0.5 },
+        "work_category_match": { "weight": 0.15, "type": "exact" }
+      },
+      "thresholds": {
+        "GREEN": { "min_score": 0.85 },
+        "AMBER": { "min_score": 0.60 },
+        "RED": { "min_score": 0.35 }
+      }
+    },
+
+    "description_normalization": {
+      "description": "How to normalize description for template matching",
+      "steps": [
+        { "step": 1, "action": "lowercase" },
+        { "step": 2, "action": "remove_dimensions", "pattern": "\\d+[.,]?\\d*\\s*(mm|cm|m|x)\\s*" },
+        { "step": 3, "action": "remove_quantities", "pattern": "\\d+[.,]?\\d*\\s*(ks|m3|m2|t|kg|l|bm)\\b" },
+        { "step": 4, "action": "resolve_synonyms", "examples": { "betonaz": "beton", "betonovani": "beton", "bednici": "bedneni", "armatura": "vystuz", "vyztuze": "vystuz" } },
+        { "step": 5, "action": "remove_extra_whitespace" },
+        { "step": 6, "action": "trim" }
+      ]
+    },
+
+    "work_category_classification": {
+      "description": "Regex-based classification without LLM for speed",
+      "rules": [
+        { "category": "beton",      "patterns": ["beton", "betonaz", "betonovani", "C\\d+/\\d+", "betonova smes"] },
+        { "category": "bedneni",    "patterns": ["bedneni", "bednici", "debedneni", "systémové bednění", "opláštění"] },
+        { "category": "vystuz",     "patterns": ["vystuz", "vyztuze", "armatura", "armovani", "ocel.*B500", "KARI sit"] },
+        { "category": "injektaz",   "patterns": ["injektaz", "injektovani", "injektazni", "zapraveni", "tamponaz"] },
+        { "category": "zemni_prace","patterns": ["vykop", "hloubeni", "zasypani", "zemina", "odkop", "planirka", "hutneni"] },
+        { "category": "izolace",    "patterns": ["izolace", "hydroizolace", "nater", "penetrace", "tesneni"] },
+        { "category": "komunikace", "patterns": ["komunikace", "vozovka", "asfalt", "dlazba", "obrubnik", "chodnik"] },
+        { "category": "demolice",   "patterns": ["bouraci", "demolice", "demontaz", "odstraneni", "rozebrani"] }
+      ],
+      "fallback": "ostatni",
+      "case_sensitive": false,
+      "match_in": ["catalog_code", "description"]
+    }
+  },
+
+  "implementation": {
+    "stage_1": {
+      "title": "Connect Kiosks (MVP)",
+      "estimated_weeks": "2-3",
+      "tasks": [
+        { "id": "S1-1", "task": "Create DB tables: projects, objects, source_files, file_versions, position_instances", "effort_days": "3-4", "priority": "CRITICAL", "depends_on": [] },
+        { "id": "S1-2", "task": "Implement PositionInstance parser output (Excel -> position_instances)", "effort_days": "2-3", "priority": "CRITICAL", "depends_on": ["S1-1"] },
+        { "id": "S1-3", "task": "Build CRUD API: /projects, /projects/{id}/files, /file-versions/{id}/parse", "effort_days": "2-3", "priority": "CRITICAL", "depends_on": ["S1-1"] },
+        { "id": "S1-4", "task": "Refactor Monolit Planner to consume positions via position_instance_id", "effort_days": "3-5", "priority": "CRITICAL", "depends_on": ["S1-2", "S1-3"] },
+        { "id": "S1-5", "task": "Implement monolith_payload write-back (POST /positions/{id}/monolith-calc)", "effort_days": "1-2", "priority": "CRITICAL", "depends_on": ["S1-4"] },
+        { "id": "S1-6", "task": "Unified upload flow: any kiosk -> Project Registry pipeline", "effort_days": "2-3", "priority": "HIGH", "depends_on": ["S1-3"] },
+        { "id": "S1-7", "task": "Deep links between kiosks (project_id + position_instance_id in URL)", "effort_days": "1-2", "priority": "HIGH", "depends_on": ["S1-4"] }
+      ],
+      "success_criteria": [
+        "Position parsed in Rozpocet can be opened in Monolit by position_instance_id",
+        "Monolit results appear in Rozpocet without manual transfer",
+        "Same catalog code on different sheets has separate position_instance_ids",
+        "All uploads route through unified Project Registry"
+      ]
+    },
+    "stage_2": {
+      "title": "Production-Ready (10-15 users)",
+      "estimated_weeks": "3-4",
+      "tasks": [
+        { "id": "S2-1", "task": "FileVersion system + relink algorithm implementation", "effort_days": "3-4", "priority": "HIGH", "depends_on": ["S1-5"] },
+        { "id": "S2-2", "task": "PositionTemplate CRUD + save_as_template flow", "effort_days": "2-3", "priority": "HIGH", "depends_on": ["S1-5"] },
+        { "id": "S2-3", "task": "Template matching engine (trigram similarity, confidence scoring)", "effort_days": "2-3", "priority": "HIGH", "depends_on": ["S2-2"] },
+        { "id": "S2-4", "task": "Batch template apply with scaling rules", "effort_days": "2-3", "priority": "HIGH", "depends_on": ["S2-3"] },
+        { "id": "S2-5", "task": "Activity-Role mapping table, seed data, UI for editing", "effort_days": "2-3", "priority": "MEDIUM", "depends_on": ["S1-1"] },
+        { "id": "S2-6", "task": "Relink report UI + conflict resolution (stale payload flagging)", "effort_days": "2-3", "priority": "MEDIUM", "depends_on": ["S2-1"] },
+        { "id": "S2-7", "task": "ApplyLog provenance + audit trail", "effort_days": "1-2", "priority": "MEDIUM", "depends_on": ["S2-4"] },
+        { "id": "S2-8", "task": "PostgreSQL RLS policies for multi-tenant access", "effort_days": "2-3", "priority": "MEDIUM", "depends_on": ["S1-1"] },
+        { "id": "S2-9", "task": "DOV kiosk integration via position_instance_id", "effort_days": "2-3", "priority": "HIGH", "depends_on": ["S1-4"] }
+      ],
+      "success_criteria": [
+        "Template created from one bridge's calculation can be applied to similar positions on other bridges",
+        "File re-upload preserves all existing calculations for unchanged positions",
+        "Confidence scoring prevents silent data corruption",
+        "Full audit trail: who applied what template, when, with what overrides",
+        "Multi-tenant isolation via RLS"
+      ]
+    }
+  }
+}
