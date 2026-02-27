@@ -20,7 +20,7 @@ type ConstructionType = 'zakladove_pasy' | 'pilire_mostu' | 'mostovka' | 'steny'
 type Season           = 'leto' | 'podzim_jaro' | 'zima';
 type ConcreteClass    = 'C20_25' | 'C25_30' | 'C30_37' | 'C35_45' | 'C40_50';
 type CementType       = 'CEM_I_II' | 'CEM_III';
-type Crew             = '2_bez_jeravu' | '4_bez_jeravu' | '4_s_jeravem' | '6_s_jeravem';
+type Crew             = '2_bez_jeravu' | '3_bez_jeravu' | '4_bez_jeravu' | '4_s_jeravem' | '6_s_jeravem';
 type AIModel          = 'gemini' | 'claude' | 'openai';
 type ModalTab         = 'kalkulacka' | 'poradna';
 
@@ -30,13 +30,9 @@ interface Answers {
   concrete_class:    ConcreteClass;
   cement_type:       CementType;
   crew:              Crew;
-  // Q5: Rebar (optional)
+  // Q5: Rebar (simplified — just 3 inputs)
   rebar_kg_per_m3:      number;
   concrete_m3_per_tact: number;
-  diameter_main_mm:     number;
-  diameter_stirrups_mm: number;
-  stirrup_fraction:     number;
-  mesh_m2:              number;
   crew_size_rebar:      number;
 }
 
@@ -54,17 +50,29 @@ interface RebarDetails {
   rebar_hours:        number;
   rebar_days:         number;
   rebar_crew:         number;
-  parallel_overlap:   number;
-  norm_main_h_t:      number;
-  norm_stirrups_h_t:  number;
+  rebar_shift:        number;
+  norm_h_per_t:       number;
   spacer_pcs:         number;
   spacer_cost_czk:    number;
+}
+
+interface CrewOption {
+  label:            string;
+  crew:             number;
+  shift:            number;
+  assembly_days:    number;
+  disassembly_days: number;
+  rebar_days:       number;
+  cycle_days:       number;
+  total_sequential: number;
+  is_current:       boolean;
 }
 
 interface Deterministic {
   pocet_taktu:               number;
   total_area_m2:             number;
   set_area_m2:               number;
+  set_area_derived:          boolean;
   assembly_days:             number;
   rebar_days:                number;
   concrete_days:             number;
@@ -74,9 +82,14 @@ interface Deterministic {
   disassembly_days:          number;
   cycle_days:                number;
   work_days:                 number;
+  bottleneck:                string;
+  bottleneck_days:           number;
+  crew_optimization:         CrewOption[];
+  efficient_crew:            string | null;
   props_min_days:            number;
   orientation:               string;
   strategies:                Strategy[];
+  cadence_B:                 number;
   recommended_cost:          string;
   recommended_time:          string;
   crew_size:                 number;
@@ -85,7 +98,7 @@ interface Deterministic {
   rebar:                     RebarDetails | null;
   labor_cost_per_tact:       number;
   labor_cost_total:          number;
-  rental_per_m2_day:         number;
+  rental_per_m2_month:       number;
   // Legacy compat
   assembly_days_per_tact:    number;
   disassembly_days_per_tact: number;
@@ -147,10 +160,11 @@ const Q3_CEMENT_OPTIONS: { value: CementType; label: string; note: string }[] = 
 ];
 
 const Q4_OPTIONS: { value: Crew; label: string; hint: string }[] = [
-  { value: '2_bez_jeravu', label: '2 lidé bez jeřábu', hint: 'Pomalá montáž, ruční' },
-  { value: '4_bez_jeravu', label: '4 lidé bez jeřábu', hint: 'Standardní tempo' },
-  { value: '4_s_jeravem',  label: '4 lidé + jeřáb',   hint: '+20 % rychlost' },
-  { value: '6_s_jeravem',  label: '6 lidí + jeřáb',   hint: 'Nejvyšší tempo' },
+  { value: '2_bez_jeravu', label: '2 lidé bez jeřábu', hint: 'Ruční, 8h směna' },
+  { value: '3_bez_jeravu', label: '3 lidé bez jeřábu', hint: 'Střední tempo, 8h' },
+  { value: '4_bez_jeravu', label: '4 lidé bez jeřábu', hint: 'Standard, 10h směna' },
+  { value: '4_s_jeravem',  label: '4 lidé + jeřáb',   hint: '+20 % rychlost, 10h' },
+  { value: '6_s_jeravem',  label: '6 lidí + jeřáb',   hint: 'Nejvyšší tempo, 10h' },
 ];
 
 const PORADNA_SUGGESTIONS = [
@@ -173,10 +187,6 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
     crew:              '4_bez_jeravu',
     rebar_kg_per_m3:      0,
     concrete_m3_per_tact: 0,
-    diameter_main_mm:     16,
-    diameter_stirrups_mm: 8,
-    stirrup_fraction:     0.15,
-    mesh_m2:              0,
     crew_size_rebar:      0,
   });
   const [model, setModel]       = useState<AIModel>('gemini');
@@ -263,7 +273,7 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
     }
   }
 
-  const canCalculate = totalAreaM2 > 0 && setAreaM2 > 0;
+  const canCalculate = totalAreaM2 > 0;
 
   return createPortal(
     <div style={{
@@ -294,9 +304,9 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <Sparkles size={20} color="#FFD700" />
             <div>
-              <div style={{ fontWeight: 700, fontSize: '16px' }}>Kalkulátor Bednění v2</div>
+              <div style={{ fontWeight: 700, fontSize: '16px' }}>Kalkulátor Bednění v3</div>
               <div style={{ fontSize: '11px', opacity: 0.75 }}>
-                {systemName} · {totalAreaM2} m² · {setAreaM2} m²/sada · ČSN EN 13670
+                {systemName} · {totalAreaM2} m²{setAreaM2 > 0 ? ` · ${setAreaM2} m²/sada` : ''} · ČSN EN 13670
               </div>
             </div>
           </div>
@@ -457,13 +467,9 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
             </button>
 
             {showRebar && (
-              <div style={{ marginTop: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+              <div style={{ marginTop: '10px', display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '10px' }}>
                 <NumberInput label="Výztuž (kg/m³)" value={answers.rebar_kg_per_m3} onChange={v => set('rebar_kg_per_m3', v)} hint="0 = bez armování" />
                 <NumberInput label="Beton/takt (m³)" value={answers.concrete_m3_per_tact} onChange={v => set('concrete_m3_per_tact', v)} hint="Objem betonu za 1 záběr" />
-                <NumberInput label="Hlavní pruty (mm)" value={answers.diameter_main_mm} onChange={v => set('diameter_main_mm', v)} hint="d10–d32" />
-                <NumberInput label="Třmínky (mm)" value={answers.diameter_stirrups_mm} onChange={v => set('diameter_stirrups_mm', v)} hint="Norma ~30 h/t" />
-                <NumberInput label="Podíl třmínků" value={answers.stirrup_fraction} onChange={v => set('stirrup_fraction', v)} hint="0.25 trám, 0.15 sloup, 0.05 deska" step={0.05} />
-                <NumberInput label="KARI sítě (m²)" value={answers.mesh_m2} onChange={v => set('mesh_m2', v)} hint="0.08–0.12 h/m²" />
                 <NumberInput label="Brig. armovačů" value={answers.crew_size_rebar} onChange={v => set('crew_size_rebar', v)} hint="0 = společná s bedna." />
               </div>
             )}
@@ -482,7 +488,7 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
           </div>
 
           {/* Calculate button */}
-          {!canCalculate && <div style={{ fontSize: '12px', color: '#e53e3e', marginBottom: '10px' }}>Vyplňte plochu a sadu v kalkulátoru bednění.</div>}
+          {!canCalculate && <div style={{ fontSize: '12px', color: '#e53e3e', marginBottom: '10px' }}>Vyplňte celkovou plochu v kalkulátoru bednění.</div>}
           <button onClick={handleCalculate} disabled={loading || !canCalculate}
             style={{
               width: '100%', padding: '12px',
@@ -528,6 +534,25 @@ export default function FormworkAIModal({ totalAreaM2, setAreaM2, systemName, on
                     Armování
                   </div>
                   <RebarGrid rebar={result.deterministic.rebar} />
+                </div>
+              )}
+
+              {/* Bottleneck + Crew optimization */}
+              {result.deterministic.crew_optimization && result.deterministic.crew_optimization.length > 0 && (
+                <div style={{ background: '#f5f3ff', borderRadius: '10px', padding: '14px 16px', marginBottom: '14px', border: '1px solid #c4b5fd' }}>
+                  <div style={{ fontSize: '12px', fontWeight: 700, marginBottom: '10px', color: '#5b21b6', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    Optimalizace party
+                    {result.deterministic.bottleneck && (
+                      <span style={{ fontSize: '11px', fontWeight: 400, color: '#7c3aed' }}>
+                        · úzké místo: {result.deterministic.bottleneck === 'rebar' ? 'armování' : result.deterministic.bottleneck === 'assembly' ? 'montáž' : 'zrání'} ({result.deterministic.bottleneck_days}d)
+                      </span>
+                    )}
+                  </div>
+                  <CrewOptTable
+                    options={result.deterministic.crew_optimization}
+                    hasRebar={result.deterministic.rebar_days > 0}
+                    efficientCrew={result.deterministic.efficient_crew}
+                  />
                 </div>
               )}
 
@@ -768,13 +793,10 @@ function StrategyTable({ strategies, recommendedCost, recommendedTime, onApply }
 /** Rebar details grid */
 function RebarGrid({ rebar }: { rebar: RebarDetails }) {
   const rows: [string, string][] = [
-    ['Hmotnost',     `${rebar.rebar_mass_kg} kg (${rebar.rebar_mass_t} t)`],
-    ['Normohodiny',  `${rebar.rebar_hours.toFixed(1)} h (hl. ${rebar.norm_main_h_t} h/t, třm. ${rebar.norm_stirrups_h_t} h/t)`],
-    ['Doba arm.',    `${rebar.rebar_days} dní (brig. ${rebar.rebar_crew}L)`],
+    ['Hmotnost',     `${rebar.rebar_mass_kg.toLocaleString('cs')} kg (${rebar.rebar_mass_t} t)`],
+    ['Normohodiny',  `${rebar.rebar_hours.toFixed(1)} h (norma ${rebar.norm_h_per_t} h/t)`],
+    ['Doba arm.',    `${rebar.rebar_days} dní (brig. ${rebar.rebar_crew}L × ${rebar.rebar_shift}h)`],
   ];
-  if (rebar.parallel_overlap > 0) {
-    rows.push(['Paralelní úspora', `-${rebar.parallel_overlap} dní (arm. + bedna. současně)`]);
-  }
   if (rebar.spacer_pcs > 0) {
     rows.push(['Dist. kroužky',  `${rebar.spacer_pcs} ks × ${(4.50).toFixed(1)} Kč = ${rebar.spacer_cost_czk.toFixed(0)} Kč`]);
   }
@@ -789,6 +811,57 @@ function RebarGrid({ rebar }: { rebar: RebarDetails }) {
         ))}
       </tbody>
     </table>
+  );
+}
+
+/** Crew optimization table */
+function CrewOptTable({ options, hasRebar, efficientCrew }: {
+  options: CrewOption[]; hasRebar: boolean; efficientCrew: string | null;
+}) {
+  return (
+    <div>
+      <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '12px' }}>
+        <thead>
+          <tr style={{ borderBottom: '2px solid #c4b5fd' }}>
+            <th style={{ textAlign: 'left', padding: '4px 0', color: '#5b21b6', fontWeight: 600, fontSize: '11px' }}>Parta</th>
+            <th style={{ textAlign: 'center', padding: '4px 0', color: '#5b21b6', fontWeight: 600, fontSize: '11px' }}>Směna</th>
+            <th style={{ textAlign: 'center', padding: '4px 0', color: '#5b21b6', fontWeight: 600, fontSize: '11px' }}>Montáž</th>
+            {hasRebar && <th style={{ textAlign: 'center', padding: '4px 0', color: '#5b21b6', fontWeight: 600, fontSize: '11px' }}>Arm.</th>}
+            <th style={{ textAlign: 'center', padding: '4px 0', color: '#5b21b6', fontWeight: 600, fontSize: '11px' }}>Demontáž</th>
+            <th style={{ textAlign: 'center', padding: '4px 0', color: '#5b21b6', fontWeight: 600, fontSize: '11px' }}>Cyklus</th>
+            <th style={{ textAlign: 'center', padding: '4px 0', color: '#5b21b6', fontWeight: 600, fontSize: '11px' }}>Celkem</th>
+          </tr>
+        </thead>
+        <tbody>
+          {options.map((opt, i) => {
+            const isBest = efficientCrew === opt.label;
+            return (
+              <tr key={i} style={{
+                borderBottom: '1px solid #e9e5ff',
+                background: opt.is_current ? 'rgba(139,92,246,0.08)' : isBest ? 'rgba(34,197,94,0.06)' : undefined,
+              }}>
+                <td style={{ padding: '5px 0', fontWeight: opt.is_current ? 700 : 400 }}>
+                  {opt.label}
+                  {opt.is_current && <span style={{ color: '#7c3aed', fontSize: '10px', marginLeft: '4px' }}>◀</span>}
+                  {isBest && !opt.is_current && <span style={{ color: '#16a34a', fontSize: '10px', marginLeft: '4px' }}>★</span>}
+                </td>
+                <td style={{ padding: '5px 0', textAlign: 'center', fontFamily: 'monospace', fontSize: '11px', color: 'var(--text-secondary)' }}>{opt.shift}h</td>
+                <td style={{ padding: '5px 0', textAlign: 'center', fontFamily: 'monospace' }}>{opt.assembly_days}d</td>
+                {hasRebar && <td style={{ padding: '5px 0', textAlign: 'center', fontFamily: 'monospace', color: opt.rebar_days > opt.assembly_days ? '#dc2626' : undefined }}>{opt.rebar_days}d</td>}
+                <td style={{ padding: '5px 0', textAlign: 'center', fontFamily: 'monospace' }}>{opt.disassembly_days}d</td>
+                <td style={{ padding: '5px 0', textAlign: 'center', fontWeight: 700, fontFamily: 'monospace' }}>{opt.cycle_days}d</td>
+                <td style={{ padding: '5px 0', textAlign: 'center', fontFamily: 'monospace' }}>{opt.total_sequential}d</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+      {efficientCrew && (
+        <div style={{ fontSize: '11px', color: '#16a34a', marginTop: '6px', fontWeight: 600 }}>
+          ★ Nejefektivnější: {efficientCrew}
+        </div>
+      )}
+    </div>
   );
 }
 

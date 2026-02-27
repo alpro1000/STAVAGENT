@@ -92,6 +92,7 @@ const ASSEMBLY_NORMS = loadAssemblyNorms();
 
 const CREW_CONFIG = {
   '2_bez_jeravu': { crew: 2, shift: 8,  crane: false, crane_factor: 1.00 },
+  '3_bez_jeravu': { crew: 3, shift: 8,  crane: false, crane_factor: 1.00 },
   '4_bez_jeravu': { crew: 4, shift: 10, crane: false, crane_factor: 1.00 },
   '4_s_jeravem':  { crew: 4, shift: 10, crane: true,  crane_factor: 0.80 },
   '6_s_jeravem':  { crew: 6, shift: 10, crane: true,  crane_factor: 0.70 },
@@ -116,14 +117,12 @@ const PROPS_MIN_DAYS = {
   'rimsy':    { leto: 7,  podzim_jaro: 10, zima: 14 },
 };
 
-// ── NEW: Rebar norms (h/t by diameter) ─────────────────────────────────────
-// Typical Czech norms for manual tying
+// ── Rebar norms ──────────────────────────────────────────────────────────────
+// Simplified model: single averaged norm based on typical reinforcement mix
+// (80% main bars d16-d20 ≈ 18 h/t + 20% stirrups d8-d10 ≈ 32 h/t → ~21 h/t)
+// This keeps Q5 simple: user only enters kg/m³ + m³/tact + rebar crew
 
-const REBAR_NORMS_H_PER_T = {
-  6:  35, 8: 35, 10: 28, 12: 24, 14: 22,
-  16: 20, 18: 18, 20: 16, 25: 14, 28: 13, 32: 12,
-};
-const MESH_NORM_H_PER_M2 = 0.10;  // KARI sítě: 0.08–0.12 h/m²
+const REBAR_NORM_H_PER_T = 22;    // Weighted average for typical construction
 const SPACER_PCS_PER_M2 = 5;      // Distanční kroužky: 5 ks/m²
 const SPACER_PRICE_CZK = 4.50;    // Cena za kus
 
@@ -167,13 +166,9 @@ router.post('/', async (req, res) => {
       set_area_m2       = 0,
       system_name       = 'Framax Xlife',
       model             = 'gemini',
-      // NEW: rebar params (optional)
+      // Rebar params (simplified — just kg/m³ + volume)
       rebar_kg_per_m3   = 0,       // 0 = no rebar in cycle
       concrete_m3_per_tact = 0,    // volume per tact (for rebar calc)
-      diameter_main_mm  = 16,
-      diameter_stirrups_mm = 8,
-      stirrup_fraction  = 0.15,
-      mesh_m2           = 0,
       crew_size_rebar   = 0,       // 0 = same crew as formwork
       // Rental params
       transport_days    = 1,       // Transport each way
@@ -220,7 +215,7 @@ router.post('/', async (req, res) => {
       : assemblyWorkerH * (norm.disassembly_ratio || 0.35);
     const disassemblyDays = dailyH > 0 ? Math.max(1, Math.ceil(disassemblyWorkerH / dailyH)) : 1;
 
-    // 3. Reinforcement (R) — v3: ceil(), min 1 day when rebar present
+    // 3. Reinforcement (R) — simplified: kg/m³ × m³ → hours → days
     let rebarDays = 0;
     let rebarWorkerHours = 0;
     let rebarDetails = null;
@@ -230,19 +225,13 @@ router.post('/', async (req, res) => {
       const rebarMassKg = rebar_kg_per_m3 * concrete_m3_per_tact;
       const rebarMassT  = rebarMassKg / 1000;
 
-      const normMain     = REBAR_NORMS_H_PER_T[diameter_main_mm] || 20;
-      const normStirrups = REBAR_NORMS_H_PER_T[diameter_stirrups_mm] || 30;
-      const mainFraction = 1 - stirrup_fraction;
+      // Unified norm: ~22 h/t (weighted average for typical mix d16 main + d8 stirrups)
+      rebarWorkerHours = rebarMassT * REBAR_NORM_H_PER_T;
 
-      rebarWorkerHours = rebarMassT * (mainFraction * normMain + stirrup_fraction * normStirrups);
-
-      if (mesh_m2 > 0) {
-        rebarWorkerHours += mesh_m2 * MESH_NORM_H_PER_M2;
-      }
-
-      // Rebar days — v3: ceil(), separate crew
+      // Rebar days — ceil(), separate crew option
       const rebarCrew   = crew_size_rebar > 0 ? crew_size_rebar : crewCfg.crew;
-      const rebarDailyH = rebarCrew * crewCfg.shift;
+      const rebarShift  = crew_size_rebar > 0 ? 8 : crewCfg.shift;  // separate rebar crew → 8h shift
+      const rebarDailyH = rebarCrew * rebarShift;
       rebarDays = rebarDailyH > 0 ? Math.max(1, Math.ceil(rebarWorkerHours / rebarDailyH)) : 1;
 
       // Spacers
@@ -255,8 +244,8 @@ router.post('/', async (req, res) => {
         rebar_hours:      round1(rebarWorkerHours),
         rebar_days:       rebarDays,
         rebar_crew:       rebarCrew,
-        norm_main_h_t:    normMain,
-        norm_stirrups_h_t: normStirrups,
+        rebar_shift:      rebarShift,
+        norm_h_per_t:     REBAR_NORM_H_PER_T,
         spacer_pcs:       spacerPcs,
         spacer_cost_czk:  round2(spacerCost),
       };
@@ -294,14 +283,14 @@ router.post('/', async (req, res) => {
     const bottleneck = phases.reduce((a, b) => a.days >= b.days ? a : b).phase;
 
     // ── CREW OPTIMIZATION TABLE ─────────────────────────────────────────────
-    // Show how different crew sizes affect the cycle
+    // Each crew size uses its OWN shift hours from CREW_CONFIG (2-3 = 8h, 4+ = 10h)
 
     const crewOptions = [
-      { label: '2 lidé',          crew: 2, shift: crewCfg.shift, crane_f: 1.0 },
-      { label: '3 lidé',          crew: 3, shift: crewCfg.shift, crane_f: 1.0 },
-      { label: '4 lidé',          crew: 4, shift: crewCfg.shift, crane_f: 1.0 },
-      { label: '4 lidé + jeřáb',  crew: 4, shift: crewCfg.shift, crane_f: 0.80 },
-      { label: '6 lidí + jeřáb',  crew: 6, shift: crewCfg.shift, crane_f: 0.70 },
+      { label: '2 lidé',          crew: 2, shift: 8,  crane_f: 1.00 },
+      { label: '3 lidé',          crew: 3, shift: 8,  crane_f: 1.00 },
+      { label: '4 lidé',          crew: 4, shift: 10, crane_f: 1.00 },
+      { label: '4 lidé + jeřáb',  crew: 4, shift: 10, crane_f: 0.80 },
+      { label: '6 lidí + jeřáb',  crew: 6, shift: 10, crane_f: 0.70 },
     ];
 
     const crewOptimization = crewOptions.map(opt => {
@@ -312,13 +301,22 @@ router.post('/', async (req, res) => {
         : optAssemblyH * (norm.disassembly_ratio || 0.35);
       const optA = Math.ceil(optAssemblyH / optDailyH);
       const optD = Math.max(1, Math.ceil(optDisassemblyH / optDailyH));
-      const optCycle = optA + R + B + C + optD;
+      // Rebar days also scale with crew if same brigade
+      let optR = R;
+      if (hasRebar && crew_size_rebar <= 0) {
+        // Rebar done by formwork crew — recalculate for this crew size
+        const optRebarDailyH = opt.crew * opt.shift;
+        optR = Math.max(1, Math.ceil(rebarWorkerHours / optRebarDailyH));
+      }
+      const optCycle = optA + optR + B + C + optD;
       const optTotalSeq = pocetTaktu * optCycle;
       return {
         label: opt.label,
         crew: opt.crew,
+        shift: opt.shift,
         assembly_days: optA,
         disassembly_days: optD,
+        rebar_days: optR,
         cycle_days: optCycle,
         total_sequential: optTotalSeq,
         is_current: opt.crew === crewCfg.crew && opt.crane_f === crewCfg.crane_factor,
@@ -609,12 +607,22 @@ function buildFallbackExplanation(det, constructionType, season, warnings) {
 
   // Crew optimization table
   if (det.crew_optimization && det.crew_optimization.length > 0) {
+    const hasR = det.rebar_days > 0;
     lines.push(``, `**Optimalizace party:**`);
-    lines.push(`| Parta | Montáž | Demontáž | Cyklus | Celkem (posl.) |`);
-    lines.push(`|---|---|---|---|---|`);
+    if (hasR) {
+      lines.push(`| Parta | Směna | Montáž | Arm. | Demontáž | Cyklus | Celkem |`);
+      lines.push(`|---|---|---|---|---|---|---|`);
+    } else {
+      lines.push(`| Parta | Směna | Montáž | Demontáž | Cyklus | Celkem |`);
+      lines.push(`|---|---|---|---|---|---|`);
+    }
     for (const opt of det.crew_optimization) {
       const mark = opt.is_current ? ' ◀' : '';
-      lines.push(`| ${opt.label}${mark} | ${opt.assembly_days}d | ${opt.disassembly_days}d | ${opt.cycle_days}d | ${opt.total_sequential}d |`);
+      if (hasR) {
+        lines.push(`| ${opt.label}${mark} | ${opt.shift}h | ${opt.assembly_days}d | ${opt.rebar_days}d | ${opt.disassembly_days}d | ${opt.cycle_days}d | ${opt.total_sequential}d |`);
+      } else {
+        lines.push(`| ${opt.label}${mark} | ${opt.shift}h | ${opt.assembly_days}d | ${opt.disassembly_days}d | ${opt.cycle_days}d | ${opt.total_sequential}d |`);
+      }
     }
     if (det.efficient_crew) {
       lines.push(``, `Nejefektivnější: **${det.efficient_crew}**`);
