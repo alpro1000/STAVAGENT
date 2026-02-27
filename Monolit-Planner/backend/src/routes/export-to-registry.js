@@ -83,7 +83,9 @@ router.post('/:bridge_id', async (req, res) => {
       return acc;
     }, {});
 
-    // 5. Map to Portal format with full TOV data and prices + monolit metadata for deep-linking
+    // 5. Map to Portal format with full TOV data, prices, monolith_payload for deep-linking
+    const MONOLIT_FRONTEND_URL = process.env.MONOLIT_FRONTEND_URL || 'https://monolit-planner-frontend.vercel.app';
+
     const objects = Object.entries(positionsByPart).map(([partName, partPositions]) => ({
       code: partName,
       name: `Objekt ${partName}`,
@@ -95,16 +97,31 @@ router.post('/:bridge_id', async (req, res) => {
         mj: pos.unit || '',
         cena_jednotkova: pos.unit_cost_native || pos.kros_unit_czk || 0,
         cena_celkem: pos.cost_czk || pos.kros_total_czk || 0,
-        // Monolit metadata for deep-linking (Registry → Monolit)
-        monolit_metadata: {
-          project_id: bridge_id,
+        // MonolithPayload (PositionInstance Architecture v1.0)
+        monolith_payload: {
+          monolit_position_id: pos.id,
+          monolit_project_id: bridge_id,
           part_name: partName,
-          position_id: pos.id,
+          monolit_url: `${MONOLIT_FRONTEND_URL}/?project=${bridge_id}`,
           subtype: pos.subtype,
-          crew_size: pos.crew_size,
-          shift_hours: pos.shift_hours,
-          days: pos.days,
-          labor_hours: pos.labor_hours,
+          otskp_code: pos.otskp_code || null,
+          item_name: pos.item_name || null,
+          crew_size: pos.crew_size || 0,
+          wage_czk_ph: pos.wage_czk_ph || 0,
+          shift_hours: pos.shift_hours || 0,
+          days: pos.days || 0,
+          curing_days: null,
+          labor_hours: pos.labor_hours || 0,
+          cost_czk: pos.cost_czk || 0,
+          unit_cost_native: pos.unit_cost_native || null,
+          concrete_m3: pos.concrete_m3 || null,
+          unit_cost_on_m3: pos.unit_cost_on_m3 || null,
+          kros_unit_czk: pos.kros_unit_czk || null,
+          kros_total_czk: pos.kros_total_czk || null,
+          source_tag: 'MONOLIT_EXPORT',
+          assumptions_log: '',
+          confidence: 1.0,
+          calculated_at: pos.updated_at || new Date().toISOString()
         },
         tov: {
           labor: mapPositionToLabor(pos),

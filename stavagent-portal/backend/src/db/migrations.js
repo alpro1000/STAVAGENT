@@ -152,6 +152,9 @@ async function initPostgresSchema() {
   // Run Phase 7 migrations (Stavba hierarchy - stavba_name on portal_projects)
   await runPhase7Migrations();
 
+  // Run Phase 8 migrations (Position Instance Architecture v1.0)
+  await runPhase8Migrations();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 }
@@ -577,6 +580,57 @@ async function runPhase7Migrations() {
     console.log('[PostgreSQL Migrations] ✅ Phase 7 migrations completed successfully');
   } catch (error) {
     console.error('[PostgreSQL Migrations] Error during Phase 7 migrations:', error);
+  }
+}
+
+/**
+ * Migrations for Phase 8 - Position Instance Architecture v1.0
+ * Adds position_instance_id, monolith_payload, dov_payload to portal_positions
+ * Creates position_templates and position_audit_log tables
+ */
+async function runPhase8Migrations() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 8 migrations (Position Instance Architecture)...');
+
+    if (!USE_POSTGRES) {
+      console.log('[Migration] Skipping Phase 8 - SQLite not supported for this migration');
+      return;
+    }
+
+    const migrationPath = join(__dirname, 'migrations', 'add-position-instance-architecture.sql');
+
+    if (!fs.existsSync(migrationPath)) {
+      console.log('[Migration] ⚠️  Phase 8 migration file not found, skipping');
+      return;
+    }
+
+    const migrationSQL = fs.readFileSync(migrationPath, 'utf8');
+
+    // Split into individual statements and execute one by one
+    // This handles IF NOT EXISTS and IF NOT EXISTS gracefully
+    const statements = migrationSQL
+      .split(';')
+      .map(s => s.trim())
+      .filter(s => s.length > 0 && !s.startsWith('--'));
+
+    for (const statement of statements) {
+      try {
+        await db.exec(statement + ';');
+      } catch (error) {
+        // Ignore safe errors (already exists, duplicate column)
+        const safeErrors = ['already exists', 'duplicate column', 'multiple primary'];
+        const isSafe = safeErrors.some(msg => error.message?.toLowerCase().includes(msg));
+        if (!isSafe) {
+          console.error('[Migration Phase 8] Statement error:', error.message);
+          console.error('[Migration Phase 8] Statement:', statement.substring(0, 100));
+        }
+      }
+    }
+
+    console.log('[Migration] ✓ position_instance_id, payloads, templates, audit_log');
+    console.log('[PostgreSQL Migrations] ✅ Phase 8 migrations completed successfully');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 8 migrations:', error);
   }
 }
 

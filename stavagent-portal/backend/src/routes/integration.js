@@ -96,22 +96,31 @@ router.post('/import-from-monolit', async (req, res) => {
 
       const dbObjectId = objResult.rows[0].object_id;
 
-      // Import positions with TOV data
-      for (const pos of obj.positions || []) {
+      // Import positions with TOV data + monolith_payload + position_instance_id
+      for (let posIdx = 0; posIdx < (obj.positions || []).length; posIdx++) {
+        const pos = obj.positions[posIdx];
         const positionId = `pos_${uuidv4()}`;
         await client.query(
           `INSERT INTO portal_positions (
             position_id, object_id, kod, popis, mnozstvi, mj,
+            cena_jednotkova, cena_celkem,
             tov_labor, tov_machinery, tov_materials,
+            monolith_payload,
             monolit_position_id, last_sync_from, last_sync_at,
+            sheet_name, row_index, created_by, updated_by,
             created_at, updated_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'monolit', NOW(), NOW(), NOW())`,
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'monolit', NOW(), $14, $15, 'monolit_import', 'monolit_import', NOW(), NOW())`,
           [
-            positionId, dbObjectId, pos.kod || '', pos.popis, pos.mnozstvi || 0, pos.mj || '',
+            positionId, dbObjectId,
+            pos.kod || '', pos.popis, pos.mnozstvi || 0, pos.mj || '',
+            pos.cena_jednotkova || 0, pos.cena_celkem || 0,
             JSON.stringify(pos.tov?.labor || []),
             JSON.stringify(pos.tov?.machinery || []),
             JSON.stringify(pos.tov?.materials || []),
-            pos.monolit_id
+            pos.monolith_payload ? JSON.stringify(pos.monolith_payload) : null,
+            pos.monolit_id,
+            obj.code || '',
+            posIdx
           ]
         );
       }
@@ -181,12 +190,17 @@ router.get('/for-registry/:portal_project_id', async (req, res) => {
 
       const items = positionsResult.rows.map(pos => ({
         id: pos.position_id,
+        position_instance_id: pos.position_instance_id,
         kod: pos.kod,
         popis: pos.popis,
         mnozstvi: pos.mnozstvi,
         mj: pos.mj,
         cenaJednotkova: pos.cena_jednotkova || 0,
         cenaCelkem: pos.cena_celkem || 0,
+        skupina: pos.skupina || null,
+        row_role: pos.row_role || 'unknown',
+        monolith_payload: pos.monolith_payload || null,
+        dov_payload: pos.dov_payload || null,
         tovData: {
           labor: pos.tov_labor ? JSON.parse(pos.tov_labor) : [],
           machinery: pos.tov_machinery ? JSON.parse(pos.tov_machinery) : [],
@@ -195,7 +209,7 @@ router.get('/for-registry/:portal_project_id', async (req, res) => {
         source: {
           project: project.project_name,
           sheet: obj.object_code,
-          row: 0
+          row: pos.row_index || 0
         }
       }));
 
@@ -372,7 +386,8 @@ router.post('/import-from-registry', async (req, res) => {
         [objectId, projectId, sheet.name || 'Sheet', sheet.name || 'Sheet']
       );
 
-      for (const item of (sheet.items || [])) {
+      for (let itemIdx = 0; itemIdx < (sheet.items || []).length; itemIdx++) {
+        const item = sheet.items[itemIdx];
         const positionId = `pos_${uuidv4()}`;
         // Get TOV data if available
         const itemTov = (tovData && tovData[item.id]) || {};
@@ -383,8 +398,10 @@ router.post('/import-from-registry', async (req, res) => {
             cena_jednotkova, cena_celkem,
             tov_labor, tov_machinery, tov_materials,
             registry_item_id, last_sync_from, last_sync_at,
+            sheet_name, row_index, skupina,
+            created_by, updated_by,
             created_at, updated_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'registry', NOW(), NOW(), NOW())`,
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'registry', NOW(), $13, $14, $15, 'registry_import', 'registry_import', NOW(), NOW())`,
           [
             positionId, objectId,
             item.kod || '', item.popis || '',
@@ -393,7 +410,10 @@ router.post('/import-from-registry', async (req, res) => {
             JSON.stringify(itemTov.labor || []),
             JSON.stringify(itemTov.machinery || []),
             JSON.stringify(itemTov.materials || []),
-            item.id || null
+            item.id || null,
+            sheet.name || '',
+            itemIdx,
+            item.skupina || null
           ]
         );
         totalItems++;

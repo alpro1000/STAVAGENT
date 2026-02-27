@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
 **Last Updated:** 2026-02-27
-**Current Branch:** `claude/fix-ui-add-features-Wq8dc`
-**Last Session:** Position Instance Architecture v1.0 + Portal linking fixes
+**Current Branch:** `claude/update-next-session-PF9Pm`
+**Last Session:** Position Instance Architecture v1.0 — Stage 1 Implementation
 
 ---
 
@@ -26,151 +26,147 @@ cd ../Monolit-Planner/shared && npx vitest run        # 51 tests
 
 ---
 
-## Сессия 2026-02-27: Резюме
+## Сессия 2026-02-27 (часть 2): Stage 1 Implementation
 
 ### ✅ Что сделано:
 
 | Компонент | Задача | Статус |
 |-----------|--------|--------|
-| docs | Position Instance Architecture v1.0 — двухуровневая модель (Instance + Template) | ✅ |
-| portalAutoSync.ts | FIX: auto-sync теперь сохраняет portalProjectId обратно в store | ✅ |
-| PortalLinkBadge.tsx | REWRITE v2: project picker вместо ручного ввода UUID | ✅ |
-| PortalPage.tsx | FIX: sleeping backend UX + ?project= not found banner | ✅ |
-| CorePanel/ParsePreview/PortalPage | FIX: wrong Registry URL (stavagent-backend-ktwx → rozpocet-registry) | ✅ |
+| Portal DB Migration | Phase 8: position_instance_id, monolith_payload, dov_payload, templates, audit_log | ✅ |
+| Portal API | Position Instances CRUD API (13 endpoints) | ✅ |
+| Portal Integration | import-from-monolit → now saves monolith_payload + position_instance_id | ✅ |
+| Portal Integration | import-from-registry → now saves sheet_name, row_index, skupina | ✅ |
+| Portal Integration | for-registry → now returns position_instance_id + payloads | ✅ |
+| Monolit Export | export-to-registry → builds MonolithPayload per spec | ✅ |
+| server.js | Registered /api/positions route | ✅ |
 
 ---
 
 ### Ключевые изменения:
 
-#### 1. Position Instance Architecture (docs/POSITION_INSTANCE_ARCHITECTURE.ts)
-```
-Двухуровневая модель для исключения "двух правд":
+#### 1. DB Migration (`add-position-instance-architecture.sql`)
+```sql
+-- Phase 1: Extend portal_positions
+ALTER TABLE portal_positions ADD COLUMN position_instance_id UUID DEFAULT gen_random_uuid();
+ALTER TABLE portal_positions ADD COLUMN monolith_payload JSONB;
+ALTER TABLE portal_positions ADD COLUMN dov_payload JSONB;
+ALTER TABLE portal_positions ADD COLUMN overrides JSONB;
+ALTER TABLE portal_positions ADD COLUMN template_id UUID;
+ALTER TABLE portal_positions ADD COLUMN template_confidence VARCHAR(10);
+ALTER TABLE portal_positions ADD COLUMN skupina VARCHAR(50);
+ALTER TABLE portal_positions ADD COLUMN row_role VARCHAR(20) DEFAULT 'unknown';
+ALTER TABLE portal_positions ADD COLUMN sheet_name VARCHAR(255);
+ALTER TABLE portal_positions ADD COLUMN row_index INTEGER;
+ALTER TABLE portal_positions ADD COLUMN created_by VARCHAR(100);
+ALTER TABLE portal_positions ADD COLUMN updated_by VARCHAR(100);
 
-Level 1: PositionInstance — конкретная строка на конкретном листе
-  - position_instance_id (UUID) — единственный ID для связи киосков
-  - monolith_payload (JSON) — результат расчёта Monolit
-  - dov_payload (JSON) — распис ресурсов (labor, machinery, materials, formwork, pump)
-  - overrides (JSON) — ручные правки после шаблона
-  - template_id + template_confidence (GREEN/AMBER/RED)
-
-Level 2: PositionTemplate — переиспользуемый шаблон
-  - catalog_code + unit + normalized_description
-  - monolith_template + dov_template (нормализованы на qty=1)
-  - scaling_rule: linear | fixed | manual
-
-Включает:
-  - MonolithPayload (crew, days, KROS rounding, formwork/rebar subtypes)
-  - DOVPayload (labor, machinery, materials, formwork rental, pump rental)
-  - API контракты (GET/POST per payload, Templates API, Audit Log)
-  - SQL миграции (5 фаз, backward compatible)
-  - Compatibility map: existing fields → new fields
+-- Phase 2: position_templates table (natural key: code + unit + normalized_desc)
+-- Phase 3: position_audit_log table (event tracking)
 ```
 
-#### 2. Portal Auto-Link Fix
+#### 2. Position Instances API (`/api/positions/`)
 ```
-БЫЛО: portalAutoSync.ts sync → получал portal_project_id → НЕ сохранял в store
-      → пользователь вручную вводил UUID в текстовое поле
-СТАЛО: setAutoLinkCallback → store регистрирует callback
-      → после успешного sync → linkToPortal() автоматически
-      → проекты линкуются без участия пользователя
+GET    /api/positions/project/:projectId           — List all, grouped by object
+GET    /api/positions/:instanceId                  — Single instance
+POST   /api/positions/project/:projectId/bulk      — Bulk create (Excel import)
+PUT    /api/positions/:instanceId                  — Update core fields
+DELETE /api/positions/:instanceId                  — Delete
+
+GET    /api/positions/:instanceId/monolith         — Read monolith_payload
+POST   /api/positions/:instanceId/monolith         — Write monolith_payload (Monolit)
+GET    /api/positions/:instanceId/dov              — Read dov_payload
+POST   /api/positions/:instanceId/dov              — Write dov_payload (Registry)
+
+POST   /api/positions/templates                    — Save as template
+GET    /api/positions/templates/:projectId         — List templates
+POST   /api/positions/templates/:templateId/apply  — Apply with confidence matching
 ```
 
-#### 3. PortalLinkBadge v2 — Project Picker
+#### 3. Monolit Export → MonolithPayload
 ```
-БЫЛО: текстовое поле "Введите UUID" → пользователь мог ввести "d6"
-СТАЛО:
-  1. "Vytvořit nový" — синк + auto-link одним кликом
-  2. Список проектов из Portal API (с names, kiosk counts)
-  3. Fallback на ручной ввод только если Portal недоступен
-  4. Loading/error/empty states
+БЫЛО: monolit_metadata (flat fields: project_id, part_name, subtype, days)
+СТАЛО: monolith_payload per POSITION_INSTANCE_ARCHITECTURE.ts spec
+  — все расчётные поля (crew, wage, shift, days, labor_hours, costs)
+  — KROS pricing (unit_cost_on_m3, kros_unit_czk, kros_total_czk)
+  — deep-link URL к Monolit frontend
+  — source_tag, confidence, calculated_at
 ```
 
-#### 4. Portal Sleeping Backend UX
+#### 4. Template System
 ```
-БЫЛО: fetch timeout → projects=[] → "Zatím žádné projekty" + "Vytvořit první"
-      → пользователь создавал дубликат, думая что проектов нет
-СТАЛО:
-  - backendSleeping state → "Backend se probouzí..." + кнопка "Načíst znovu"
-  - ?project=d6 not found → жёлтый баннер + "Zkusit znovu" + "Zavřít"
-  - "Vytvořit první projekt" только когда backend ответил и проектов реально 0
+Workflow: Calculate in Monolit → Save as Template → Apply to N matches
+- Natural key: catalog_code + unit + normalized_description
+- Confidence: GREEN (exact) / AMBER (partial) / RED (code-only)
+- Scaling: linear (proportional), fixed (same), manual (user review)
+- Audit trail: position_audit_log with event tracking
 ```
 
 ---
 
-### Коммиты сессии:
+### Новые/изменённые файлы:
 ```
-fa0242d DOCS: Position Instance Architecture v1.0 — two-level identity model
-e56bb6e FIX: Portal project linking — auto-link, project picker, sleeping backend UX
-```
-
-### Изменённые файлы:
-```
-docs/POSITION_INSTANCE_ARCHITECTURE.ts                       NEW (868 lines)
-rozpocet-registry/src/services/portalAutoSync.ts             +setAutoLinkCallback
-rozpocet-registry/src/stores/registryStore.ts                +callback registration
-rozpocet-registry/src/components/portal/PortalLinkBadge.tsx  rewritten v2
-stavagent-portal/frontend/src/pages/PortalPage.tsx           +sleeping/notFound UX
-stavagent-portal/frontend/src/components/portal/CorePanel.tsx       URL fix
-stavagent-portal/frontend/src/components/portal/ParsePreviewModal.tsx URL fix
+stavagent-portal/backend/src/db/migrations/add-position-instance-architecture.sql   NEW (107 lines)
+stavagent-portal/backend/src/db/migrations.js                                        +runPhase8Migrations()
+stavagent-portal/backend/src/routes/position-instances.js                             NEW (670 lines)
+stavagent-portal/backend/src/routes/integration.js                                   updated (monolith_payload, instance_id)
+stavagent-portal/backend/server.js                                                   +positionInstancesRoutes
+Monolit-Planner/backend/src/routes/export-to-registry.js                             +MonolithPayload builder
 ```
 
 ---
 
 ## ⏭️ Следующие задачи (приоритет)
 
-### 🔴 Приоритет 1: Реализация Position Instance API (Phase 1)
+### 🔴 Приоритет 1: Monolit → Position Instance write-back integration
 ```
-Файл-спецификация: docs/POSITION_INSTANCE_ARCHITECTURE.ts
+Monolit при расчёте позиции должен:
+  1. Знать position_instance_id (получать при import/link)
+  2. POST /api/positions/:instanceId/monolith при сохранении
+  3. Обратная связь: Monolit positions table → position_instance_id column
 
-Phase 1 — DB migration:
-  ALTER TABLE portal_positions ADD COLUMN position_instance_id UUID;
-  ALTER TABLE portal_positions ADD COLUMN monolith_payload JSONB;
-  ALTER TABLE portal_positions ADD COLUMN dov_payload JSONB;
-  ALTER TABLE portal_positions ADD COLUMN template_id UUID;
-  ALTER TABLE portal_positions ADD COLUMN template_confidence VARCHAR(10);
-  ALTER TABLE portal_positions ADD COLUMN overrides JSONB;
-
-Phase 2 — API endpoints:
-  GET  /positions/{instance_id}/monolith
-  POST /positions/{instance_id}/monolith
-  GET  /positions/{instance_id}/dov
-  POST /positions/{instance_id}/dov
-
-Phase 3 — Templates:
-  POST /templates (save as template)
-  POST /templates/{id}/apply (apply to matches)
+Файлы:
+  - Monolit-Planner/backend/src/routes/positions.js (PUT handler)
+  - Monolit-Planner/backend/src/routes/upload.js (import flow)
+  - Monolit-Planner/backend/migrations/ (add position_instance_id column)
 ```
 
-### 🔴 Приоритет 2: Universal Parser Phase 3 — Send to Kiosk
+### 🔴 Приоритет 2: Registry → DOV write-back integration
 ```
-ParsePreviewModal → кнопка "Odeslat do Monolitu" / "Odeslat do Registry"
-  → POST /api/monolit-import (Portal backend)
-    → POST https://monolit-planner-api.onrender.com/import
+Registry TOVModal при сохранении должен:
+  1. Знать position_instance_id (получать from Portal при sync)
+  2. POST /api/positions/:instanceId/dov при сохранении
+  3. Auto-sync при изменении TOV данных
+
+Файлы:
+  - rozpocet-registry/src/components/tov/TOVModal.tsx
+  - rozpocet-registry/src/services/portalAutoSync.ts
 ```
 
-### 🟠 Приоритет 3: Pump Calculator (TOVModal) — незакрытые задачи
+### 🟠 Приоритет 3: Deep-links + URL routing
 ```
-[ ] handlePumpRentalChange — обработчик изменений
-[ ] pumpCost — отображение в footer breakdown
-[ ] auto-save PumpRentalSection — useRef isAutoSaving
+Формат: ?project_id=X&position_instance_id=Y
+  - Monolit: open specific position in PositionsTable
+  - Registry: scroll to specific item in ItemsTable
+  - Portal: show position details across all kiosks
 ```
 
-### 🟡 Приоритет 4: Deep-links между киосками
+### 🟡 Приоритет 4: Universal Parser → Bulk Import
 ```
-Обновить формат ссылок:
-  Старый: ?project=X&part=Y
-  Новый:  ?project_id=X&position_instance_id=Y
-Обратная совместимость: если только part=Y → resolve через lookup
+ParsePreviewModal → "Odeslat do Monolitu" / "Odeslat do Registry"
+  → POST /api/positions/project/:projectId/bulk
+  → Create PositionInstances from parsed Excel
 ```
 
 ---
 
 ## ⏳ AWAITING USER ACTION
 
-### 1. Merge PR
+### 1. Deploy Portal Backend
 ```
-Branch: claude/fix-ui-add-features-Wq8dc
-Contains: Architecture doc + Portal linking fixes
+Portal backend needs redeployment to apply:
+  - Phase 8 DB migration (position_instance_id)
+  - /api/positions/ endpoints
+  - Updated /api/integration/ endpoints
 ```
 
 ### 2. Переменные окружения (Render)
@@ -190,6 +186,29 @@ psql -U monolit_user -d monolit_planner < БЫСТРОЕ_РЕШЕНИЕ.sql
 
 ---
 
+## 📊 Stage 1 Progress
+
+```
+Спецификация:        100% задокументирована (869 lines)
+Stage 1 (7 задач):   ~70% реализовано
+
+  S1-1: DB Migration (portal_positions, templates, audit_log)  ✅
+  S1-2: Integration routes + position_instance_id              ✅
+  S1-3: CRUD API (13 endpoints)                                ✅
+  S1-4: Monolit export → MonolithPayload                       ✅
+  S1-5: monolith_payload + dov_payload write-back API          ✅
+  S1-6: Unified upload flow (bulk import endpoint)             ✅
+  S1-7: Deep links (URL format)                                ⏳ Pending
+
+Stage 2 (9 задач):   0% реализовано
+  - Monolit ↔ Portal bidirectional sync
+  - Registry ↔ Portal DOV sync
+  - Template UI in kiosks
+  - Audit log viewer
+```
+
+---
+
 ## 🧪 Статус тестов
 
 | Сервис | Тесты | Статус |
@@ -205,9 +224,9 @@ psql -U monolit_user -d monolit_planner < БЫСТРОЕ_РЕШЕНИЕ.sql
 ```bash
 1. Прочитай CLAUDE.md
 2. Прочитай NEXT_SESSION.md (этот файл)
-3. Прочитай docs/POSITION_INSTANCE_ARCHITECTURE.ts (архитектура интеграции)
+3. Прочитай docs/POSITION_INSTANCE_ARCHITECTURE.ts (архитектура)
 4. git log --oneline -10
-5. Спроси: Position Instance API (Phase 1) или Send to Kiosk или Pump TOVModal?
+5. Задачи: Monolit write-back || Registry DOV sync || Deep links
 ```
 
 *Ready for next session!*
