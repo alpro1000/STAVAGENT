@@ -46,7 +46,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link:
   registry: {
     label: 'Registr Rozpočtů',
     icon: '📊',
-    buildUrl: (_link, portalId) => `https://rozpocet-registry.vercel.app?portal_project=${portalId}`,
+    buildUrl: (_link, portalId) => `https://stavagent-backend-ktwx.vercel.app?portal_project=${portalId}`,
   },
   urs_matcher: {
     label: 'URS Matcher',

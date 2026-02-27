@@ -371,7 +371,7 @@ export default function PositionsTable() {
 
       const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
       const totalArea = calcRows.reduce((acc, r) => acc + r.total_area_m2, 0);
-      const registryUrl = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
+      const registryUrl = import.meta.env.VITE_REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
 
       alert(
         `Preneseno ${newPositions.length} radku (Montaz + Demontaz) do casti "${targetPartName}"\n\n` +

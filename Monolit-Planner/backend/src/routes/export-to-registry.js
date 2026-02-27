@@ -12,7 +12,7 @@ const router = express.Router();
 // Environment URLs
 const PORTAL_API = process.env.PORTAL_API_URL || 'https://stav-agent.onrender.com';
 const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend.onrender.com';
-const REGISTRY_URL = process.env.REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
+const REGISTRY_URL = process.env.REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
 
 /**
  * POST /api/export-to-registry/:bridge_id

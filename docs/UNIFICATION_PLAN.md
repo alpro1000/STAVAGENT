@@ -446,7 +446,7 @@ hasItemTOV: (itemId: string) => boolean;
 
 ### 6.1 Registry Serverless API
 
-**Base URL:** `https://rozpocet-registry.vercel.app/api`
+**Base URL:** `https://stavagent-backend-ktwx.vercel.app/api`
 
 #### Import positions
 ```http

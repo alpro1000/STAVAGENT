@@ -22,7 +22,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const [message, setMessage] = useState('');
 
   const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
-  const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://rozpocet-registry.vercel.app';
+  const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
   const MONOLIT_URL = import.meta.env.VITE_MONOLIT_URL || window.location.origin;
 
   const handleRegistrovat = async () => {
