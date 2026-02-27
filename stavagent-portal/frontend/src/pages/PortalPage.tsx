@@ -121,7 +121,7 @@ const SERVICES: Service[] = [
     name: 'Registr Rozpočtů',
     description: 'Správa a vyhledávání položek ze stavebních rozpočtů. Fuzzy search, automatická klasifikace, Excel export s hyperlinky.',
     icon: '📊',
-    url: 'https://stavagent-backend-ktwx.vercel.app',
+    url: 'https://rozpocet-registry.vercel.app',
     status: 'active',
     tags: ['Rozpočet', 'Výkaz výměr', 'Fuzzy Search', 'Export']
   },
@@ -186,6 +186,8 @@ export default function PortalPage() {
   const [showParsePreviewModal, setShowParsePreviewModal] = useState(false);
   const [documentsProjectId, setDocumentsProjectId] = useState<string>('');
   const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
+  const [backendSleeping, setBackendSleeping] = useState(false);
+  const [projectNotFound, setProjectNotFound] = useState<string | null>(null);
 
   // Load projects on mount
   useEffect(() => {
@@ -195,20 +197,29 @@ export default function PortalPage() {
   // Auto-open project from ?project=<id> query param (used by kiosk links)
   useEffect(() => {
     const projectId = searchParams.get('project');
-    if (projectId && projects.length > 0 && !selectedProject) {
+    if (!projectId || selectedProject) return;
+
+    if (projects.length > 0) {
       const found = projects.find(p => p.portal_project_id === projectId);
       if (found) {
         setSelectedProject(found);
-        // Clear the query param after opening
+        setProjectNotFound(null);
         searchParams.delete('project');
         setSearchParams(searchParams, { replace: true });
+      } else if (!loading) {
+        // Projects loaded but this ID not found
+        setProjectNotFound(projectId);
       }
+    } else if (!loading && backendSleeping) {
+      // Backend is sleeping, can't look up the project
+      setProjectNotFound(projectId);
     }
-  }, [projects, searchParams]);
+  }, [projects, searchParams, loading, backendSleeping]);
 
   const loadProjects = async () => {
     try {
       setLoading(true);
+      setBackendSleeping(false);
       // Timeout 8s — if backend is sleeping or unreachable, show page anyway
       const controller = new AbortController();
       const timeout = setTimeout(() => controller.abort(), 8000);
@@ -228,13 +239,15 @@ export default function PortalPage() {
       const data = await response.json();
       setProjects(data.projects || []);
       setError(null);
+      setBackendSleeping(false);
     } catch (err) {
-      // Don't show error for abort/network failures — just show empty state
+      // Detect sleeping backend vs real error
       if (err instanceof DOMException && err.name === 'AbortError') {
-        setError(null);
+        setBackendSleeping(true);
       } else {
-        setError(null); // Silently fail — show services without projects
+        setBackendSleeping(true); // Any fetch failure = backend likely sleeping
       }
+      setError(null);
       setProjects([]);
     } finally {
       setLoading(false);
@@ -485,6 +498,44 @@ export default function PortalPage() {
             )}
           </div>
 
+          {/* Project not found banner */}
+          {projectNotFound && (
+            <div className="c-panel" style={{
+              background: 'var(--status-warning, #f59e0b)',
+              color: 'white',
+              marginBottom: '24px',
+              padding: '16px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '12px'
+            }}>
+              <p style={{ margin: 0, fontSize: '14px' }}>
+                {backendSleeping
+                  ? `Projekt "${projectNotFound}" nelze otevřít — backend se probouzí. Zkuste to za chvíli.`
+                  : `Projekt "${projectNotFound}" nebyl nalezen v databázi.`
+                }
+              </p>
+              <div style={{ display: 'flex', gap: '8px' }}>
+                <button
+                  onClick={() => { setProjectNotFound(null); loadProjects(); }}
+                  className="c-btn c-btn--sm"
+                  style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none' }}
+                >
+                  Zkusit znovu
+                </button>
+                <button
+                  onClick={() => { setProjectNotFound(null); searchParams.delete('project'); setSearchParams(searchParams, { replace: true }); }}
+                  className="c-btn c-btn--sm"
+                  style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none' }}
+                >
+                  Zavřít
+                </button>
+              </div>
+            </div>
+          )}
+
           {error && (
             <div className="c-panel" style={{
               background: 'var(--status-error)',
@@ -497,22 +548,45 @@ export default function PortalPage() {
           )}
 
           {projects.length === 0 ? (
-            <div className="c-panel c-panel--inset" style={{ textAlign: 'center', padding: '48px 24px' }}>
-              <FileText size={48} style={{ color: 'var(--text-secondary)', margin: '0 auto 16px' }} />
-              <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                Zatím žádné projekty
-              </h3>
-              <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                Začněte vytvořením prvního projektu
-              </p>
-              <button
-                onClick={() => setShowCreateModal(true)}
-                className="c-btn c-btn--primary"
-              >
-                <Plus size={20} />
-                Vytvořit první projekt
-              </button>
-            </div>
+            backendSleeping ? (
+              /* Backend sleeping — show retry instead of "create first project" */
+              <div className="c-panel c-panel--inset" style={{ textAlign: 'center', padding: '48px 24px' }}>
+                <Activity size={48} style={{ color: 'var(--brand-orange)', margin: '0 auto 16px' }} />
+                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                  Backend se probouzí...
+                </h3>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '8px' }}>
+                  Render Free Tier — první požadavek probouzí server (30-60 s).
+                </p>
+                <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  Vaše projekty jsou uloženy v databázi a budou načteny po probuzení.
+                </p>
+                <button
+                  onClick={loadProjects}
+                  className="c-btn c-btn--primary"
+                >
+                  <Activity size={20} />
+                  Načíst znovu
+                </button>
+              </div>
+            ) : (
+              <div className="c-panel c-panel--inset" style={{ textAlign: 'center', padding: '48px 24px' }}>
+                <FileText size={48} style={{ color: 'var(--text-secondary)', margin: '0 auto 16px' }} />
+                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                  Zatím žádné projekty
+                </h3>
+                <p style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                  Začněte vytvořením prvního projektu
+                </p>
+                <button
+                  onClick={() => setShowCreateModal(true)}
+                  className="c-btn c-btn--primary"
+                >
+                  <Plus size={20} />
+                  Vytvořit první projekt
+                </button>
+              </div>
+            )
           ) : (() => {
             // Group projects by stavba_name; null/empty = "Ostatní projekty"
             const grouped = new Map<string, typeof projects>();
