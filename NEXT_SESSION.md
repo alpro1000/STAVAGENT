@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
-**Last Updated:** 2026-02-26
-**Current Branch:** `claude/pump-calculator-tovmodal-fix-FcLSo`
-**Last Session:** Pump Calculator fixes, Poradna v Portal, Universal Parser Preview, Monolit bugs
+**Last Updated:** 2026-02-27
+**Current Branch:** `claude/fix-ui-add-features-Wq8dc`
+**Last Session:** Position Instance Architecture v1.0 + Portal linking fixes
 
 ---
 
@@ -26,178 +26,160 @@ cd ../Monolit-Planner/shared && npx vitest run        # 51 tests
 
 ---
 
-## Сессия 2026-02-26: Резюме
+## Сессия 2026-02-27: Резюме
 
 ### ✅ Что сделано:
 
 | Компонент | Задача | Статус |
 |-----------|--------|--------|
-| TOVSummary (registry) | FIX: formwork + pump costs включены в "Celkem TOV:" | ✅ |
-| Portal — Poradna norem | PoradnaWidget + бэкенд-прокси `/api/kb/research` → concrete-agent | ✅ |
-| Portal — Universal Parser | ParsePreviewModal + drag-drop + сводка типов работ + kiosk cards | ✅ |
-| concrete-agent render.yaml | Добавлены GOOGLE_API_KEY, PERPLEXITY_API_KEY, MULTI_ROLE_LLM | ✅ |
-| PostgreSQL (Monolit) | FIX: connection timeout на Render Free Tier (DB sleep recovery) | ✅ |
-| concrete-agent | FEAT: Multilingual Expert Standards Researcher (любой язык + KB cache) | ✅ |
-| Monolit — Passport | FIX: blank screen, razítko detection, model names | ✅ |
-| Monolit — CORS | FIX: CORS hang + migration 006 + formwork calculator (4 bugs) | ✅ |
-| FormworkAIModal | FIX: z-index trap — рендер позади FormworkCalculatorModal | ✅ |
-| FormworkAIModal | FIX: createPortal — document.body был в неверном return компонента | ✅ |
-| Pump Calculator (Monolit) | FIX: pre-fill Název, m³ ÷ takty формула, result card в Mechanizmy | ✅ |
+| docs | Position Instance Architecture v1.0 — двухуровневая модель (Instance + Template) | ✅ |
+| portalAutoSync.ts | FIX: auto-sync теперь сохраняет portalProjectId обратно в store | ✅ |
+| PortalLinkBadge.tsx | REWRITE v2: project picker вместо ручного ввода UUID | ✅ |
+| PortalPage.tsx | FIX: sleeping backend UX + ?project= not found banner | ✅ |
+| CorePanel/ParsePreview/PortalPage | FIX: wrong Registry URL (stavagent-backend-ktwx → rozpocet-registry) | ✅ |
 
 ---
 
 ### Ключевые изменения:
 
-#### 1. TOVSummary — исправлен расчёт Celkem TOV
+#### 1. Position Instance Architecture (docs/POSITION_INSTANCE_ARCHITECTURE.ts)
 ```
-БЫЛО: Celkem TOV = только бетон + арматура + бетонирование
-СТАЛО: Celkem TOV = бетон + арматура + бетонирование + formwork + pump
-FIX: formworkCost + pumpCost теперь суммируются в итоговую строку
+Двухуровневая модель для исключения "двух правд":
+
+Level 1: PositionInstance — конкретная строка на конкретном листе
+  - position_instance_id (UUID) — единственный ID для связи киосков
+  - monolith_payload (JSON) — результат расчёта Monolit
+  - dov_payload (JSON) — распис ресурсов (labor, machinery, materials, formwork, pump)
+  - overrides (JSON) — ручные правки после шаблона
+  - template_id + template_confidence (GREEN/AMBER/RED)
+
+Level 2: PositionTemplate — переиспользуемый шаблон
+  - catalog_code + unit + normalized_description
+  - monolith_template + dov_template (нормализованы на qty=1)
+  - scaling_rule: linear | fixed | manual
+
+Включает:
+  - MonolithPayload (crew, days, KROS rounding, formwork/rebar subtypes)
+  - DOVPayload (labor, machinery, materials, formwork rental, pump rental)
+  - API контракты (GET/POST per payload, Templates API, Audit Log)
+  - SQL миграции (5 фаз, backward compatible)
+  - Compatibility map: existing fields → new fields
 ```
 
-#### 2. Poradna norem — виджет на PortalPage
+#### 2. Portal Auto-Link Fix
 ```
-PortalPage → PoradnaWidget (сворачиваемый блок)
-  6 suggested chips (ČSN normy, TKP, ceny, BOZP...)
-  textarea → Ctrl+Enter submit
-  → POST /api/kb/research (Portal backend proxy)
-    → POST /api/v1/kb/research (concrete-agent)
-      1. KB cache (research_<md5>.json)     → бесплатно, бейдж [Z KB cache]
-      2. Perplexity sonar-pro               → бейдж [perplexity/sonar-pro]
-      3. Gemini fallback (без Perplexity)   → бейдж [Gemini fallback]
-      4. Сохранить → KB/<auto-category>/   → бейдж [Uloženo → KB/B5]
+БЫЛО: portalAutoSync.ts sync → получал portal_project_id → НЕ сохранял в store
+      → пользователь вручную вводил UUID в текстовое поле
+СТАЛО: setAutoLinkCallback → store регистрирует callback
+      → после успешного sync → linkToPortal() автоматически
+      → проекты линкуются без участия пользователя
 ```
 
-#### 3. Universal Parser Preview (Portal)
+#### 3. PortalLinkBadge v2 — Project Picker
 ```
-PortalPage → "Náhled výkazu" card → ParsePreviewModal
-  drag-drop .xlsx/.xls → POST /api/parse-preview (in-memory, без проекта)
-  Результат:
-    - кол-во листов, строк, столбцов
-    - work type distribution (ZEMNI_PRACE, BETON_MONOLIT, ...)
-    - Kiosk cards с кнопкой "Otevřít kiosk" (Phase 3: Send to Kiosk)
-```
-
-#### 4. Multilingual Expert Standards Researcher
-```
-concrete-agent: новая роль "multilingual_expert_researcher"
-  - Отвечает на любом языке (чешский, русский, английский, ...)
-  - KB cache → Perplexity → Gemini fallback
-  - Автоматически определяет категорию KB по ключевым словам:
-      "čsn", "norma" → B2_csn_standards
-      "cena", "kč"   → B3_current_prices
-      "bozp", "zákon"→ B7_regulations
-      "jeřáb", "pumpa"→ B9_Equipment_Specs
-      default        → B5_tech_cards
+БЫЛО: текстовое поле "Введите UUID" → пользователь мог ввести "d6"
+СТАЛО:
+  1. "Vytvořit nový" — синк + auto-link одним кликом
+  2. Список проектов из Portal API (с names, kiosk counts)
+  3. Fallback на ручной ввод только если Portal недоступен
+  4. Loading/error/empty states
 ```
 
-#### 5. Pump Calculator — исправления (Monolit / Mechanizmy)
+#### 4. Portal Sleeping Backend UX
 ```
-FIX 1: Název — pre-fill "Autočerpadlo Putzmeister" при открытии
-FIX 2: m³ ÷ takty — правильная формула (часы × výkon × takty = m³)
-FIX 3: result card — отображается в секции Mechanizmy после расчёта
-```
-
-#### 6. FormworkAIModal — z-index trap
-```
-БЫЛО: FormworkAIModal.tsx → return createPortal(<Modal>, document.body) внутри
-      FormworkCalculatorModal → z-index: 50 перекрывал всё дочернее
-СТАЛО: createPortal вызывается в правильном месте компонентного дерева
-       FormworkAIModal отображается поверх FormworkCalculatorModal
+БЫЛО: fetch timeout → projects=[] → "Zatím žádné projekty" + "Vytvořit první"
+      → пользователь создавал дубликат, думая что проектов нет
+СТАЛО:
+  - backendSleeping state → "Backend se probouzí..." + кнопка "Načíst znovu"
+  - ?project=d6 not found → жёлтый баннер + "Zkusit znovu" + "Zavřít"
+  - "Vytvořit první projekt" только когда backend ответил и проектов реально 0
 ```
 
 ---
 
-### Новые файлы этой сессии:
+### Коммиты сессии:
 ```
-stavagent-portal/backend/src/routes/kb-research.js          NEW (~50 строк)
-stavagent-portal/frontend/src/components/portal/PoradnaWidget.tsx  NEW
-stavagent-portal/frontend/src/components/portal/ParsePreviewModal.tsx  NEW
+fa0242d DOCS: Position Instance Architecture v1.0 — two-level identity model
+e56bb6e FIX: Portal project linking — auto-link, project picker, sleeping backend UX
 ```
 
 ### Изменённые файлы:
 ```
-rozpocet-registry/src/components/tov/TOVSummary.tsx         +formworkCost +pumpCost
-Monolit-Planner/frontend/src/components/FormworkAIModal.tsx  createPortal fix
-Monolit-Planner/frontend/src/components/PumpCalculator.tsx   pre-fill, m³÷takty, result card
-Monolit-Planner/backend/src/server.js                        +kbResearchRoutes, CORS fix
-Monolit-Planner/backend/migrations/006_*.sql                 DB migration
-stavagent-portal/frontend/src/pages/PortalPage.tsx           +PoradnaWidget +ParsePreviewModal
-stavagent-portal/backend/src/routes/portal-projects.js       +parse-preview endpoint
-concrete-agent/render.yaml                                   +GOOGLE_API_KEY +PERPLEXITY_API_KEY
-concrete-agent/packages/core-backend/app/services/multi_role.py  +multilingual_expert_researcher
-```
-
-### Коммиты сессии:
-```
-72f0466 FIX: TOVSummary — formwork + pump costs included in Celkem TOV
-d0fa7a4 FEAT: Poradna norem в Portal + Universal Parser Preview UI
-b330b2c FIX: concrete-agent render.yaml — add GOOGLE_API_KEY + PERPLEXITY_API_KEY + explicit MULTI_ROLE_LLM
-828db46 FIX: PostgreSQL connection timeout on Render Free Tier (DB sleep recovery)
-face0e0 FEAT: Multilingual Expert Standards Researcher — KB + any-language portal
-98c6f04 FIX: Passport module blank screen, razítko detection, model names
-e7f4a1f FIX: Monolit — CORS hang, migration 006, formwork calculator (4 bugs)
-47b9f47 FIX: FormworkAIModal renders behind FormworkCalculatorModal (z-index trap)
-e91a020 FIX: createPortal args — document.body was in wrong component return
-08827fc FIX: Pump calculator — Název pre-fill, m³ ÷ takty, result card in Mechanizmy
+docs/POSITION_INSTANCE_ARCHITECTURE.ts                       NEW (868 lines)
+rozpocet-registry/src/services/portalAutoSync.ts             +setAutoLinkCallback
+rozpocet-registry/src/stores/registryStore.ts                +callback registration
+rozpocet-registry/src/components/portal/PortalLinkBadge.tsx  rewritten v2
+stavagent-portal/frontend/src/pages/PortalPage.tsx           +sleeping/notFound UX
+stavagent-portal/frontend/src/components/portal/CorePanel.tsx       URL fix
+stavagent-portal/frontend/src/components/portal/ParsePreviewModal.tsx URL fix
 ```
 
 ---
 
 ## ⏭️ Следующие задачи (приоритет)
 
-### 🔴 Приоритет 1: Universal Parser Phase 3 — Send to Kiosk
+### 🔴 Приоритет 1: Реализация Position Instance API (Phase 1)
+```
+Файл-спецификация: docs/POSITION_INSTANCE_ARCHITECTURE.ts
+
+Phase 1 — DB migration:
+  ALTER TABLE portal_positions ADD COLUMN position_instance_id UUID;
+  ALTER TABLE portal_positions ADD COLUMN monolith_payload JSONB;
+  ALTER TABLE portal_positions ADD COLUMN dov_payload JSONB;
+  ALTER TABLE portal_positions ADD COLUMN template_id UUID;
+  ALTER TABLE portal_positions ADD COLUMN template_confidence VARCHAR(10);
+  ALTER TABLE portal_positions ADD COLUMN overrides JSONB;
+
+Phase 2 — API endpoints:
+  GET  /positions/{instance_id}/monolith
+  POST /positions/{instance_id}/monolith
+  GET  /positions/{instance_id}/dov
+  POST /positions/{instance_id}/dov
+
+Phase 3 — Templates:
+  POST /templates (save as template)
+  POST /templates/{id}/apply (apply to matches)
+```
+
+### 🔴 Приоритет 2: Universal Parser Phase 3 — Send to Kiosk
 ```
 ParsePreviewModal → кнопка "Odeslat do Monolitu" / "Odeslat do Registry"
   → POST /api/monolit-import (Portal backend)
     → POST https://monolit-planner-api.onrender.com/import
-      body: { projectId, projectName, positions[] }
-
-Monolit: добавить endpoint POST /import (принять items от Portal)
-Registry: аналогично (открыть registry + передать items через postMessage или URL)
 ```
 
-### 🔴 Приоритет 2: Pump Calculator (TOVModal в registry) — незакрытые задачи
+### 🟠 Приоритет 3: Pump Calculator (TOVModal) — незакрытые задачи
 ```
-Файл: rozpocet-registry/src/components/tov/TOVModal.tsx
-
-[ ] handlePumpRentalChange — обработчик изменений (паттерн как handleFormworkRentalChange)
-[ ] pumpCost — отображение в footer breakdown (строка "Čerpadlo")
-[ ] auto-save PumpRentalSection — useRef isAutoSaving (как у FormworkRentalSection)
+[ ] handlePumpRentalChange — обработчик изменений
+[ ] pumpCost — отображение в footer breakdown
+[ ] auto-save PumpRentalSection — useRef isAutoSaving
 ```
 
-### 🟠 Приоритет 3: Poradna norem — расширение
+### 🟡 Приоритет 4: Deep-links между киосками
 ```
-[ ] Добавить suggested questions до 10-12 (сейчас 6)
-[ ] Создать seed KB — 5-10 часто задаваемых вопросов заранее сохранённых
-[ ] Проверить авто-определение категорий в браузере
-[ ] Добавить Poradna как отдельную страницу в Portal (route /poradna)
-```
-
-### 🟡 Приоритет 4: Monolit — AI Suggestion Button
-```
-[ ] Выполнить БЫСТРОЕ_РЕШЕНИЕ.sql в Render DB Shell
-    → активирует FF_AI_DAYS_SUGGEST = true
-    → кнопка ✨ в колонке "Dny" станет активна
+Обновить формат ссылок:
+  Старый: ?project=X&part=Y
+  Новый:  ?project_id=X&position_instance_id=Y
+Обратная совместимость: если только part=Y → resolve через lookup
 ```
 
 ---
 
 ## ⏳ AWAITING USER ACTION
 
-### 1. Переменные окружения (добавить в Render)
+### 1. Merge PR
+```
+Branch: claude/fix-ui-add-features-Wq8dc
+Contains: Architecture doc + Portal linking fixes
+```
+
+### 2. Переменные окружения (Render)
 ```env
 # concrete-agent (для Perplexity в KB Research):
-PERPLEXITY_API_KEY=pplx-...   # без него — fallback на Gemini (работает, но без источников)
+PERPLEXITY_API_KEY=pplx-...
 
-# concrete-agent (для OpenAI в FormworkAssistant, если хотите GPT-4o mini):
-OPENAI_API_KEY=sk-...         # без него — fallback на Multi-Role (работает)
-```
-
-### 2. Merge PR
-```
-Branch: claude/pump-calculator-tovmodal-fix-FcLSo
-URL: https://github.com/alpro1000/STAVAGENT/compare/main...claude/pump-calculator-tovmodal-fix-FcLSo
+# concrete-agent (для OpenAI в FormworkAssistant):
+OPENAI_API_KEY=sk-...
 ```
 
 ### 3. AI Suggestion Button (Monolit) — ожидает SQL
@@ -205,11 +187,6 @@ URL: https://github.com/alpro1000/STAVAGENT/compare/main...claude/pump-calculato
 # Render Dashboard → monolit-db → Shell:
 psql -U monolit_user -d monolit_planner < БЫСТРОЕ_РЕШЕНИЕ.sql
 ```
-
-### 4. Старые задачи (низкий приоритет)
-- Google Drive Setup → `GOOGLE_DRIVE_SETUP.md`
-- Keep-Alive → `KEEP_ALIVE_SETUP.md`
-- R0 + Unified Architecture PR → `claude/portal-audit-improvements-8F2Co`
 
 ---
 
@@ -219,30 +196,8 @@ psql -U monolit_user -d monolit_planner < БЫСТРОЕ_РЕШЕНИЕ.sql
 |--------|-------|--------|
 | Monolit shared formulas | 51/51 | ✅ Pass |
 | rozpocet-registry tsc build | npx tsc --noEmit | ✅ Pass |
-| URS Matcher | 159 | ⚠️ Не запускались в этой сессии |
-
----
-
-## 🏗 Текущая архитектура Poradna / KB Research
-
-```
-Portal PortalPage
-  └── PoradnaWidget
-        ↓ POST /api/kb/research (stavagent-portal backend)
-  kb-research.js (proxy)
-        ↓ POST /api/v1/kb/research
-  concrete-agent routes_kb_research.py
-    1. KB cache (research_<md5>.json) → бесплатно
-    2. Perplexity sonar-pro → чешские строительные сайты
-    3. Gemini fallback
-    4. Сохранить → KB/<auto-category>/research_<key>.json
-    → { answer, sources[], from_kb, kb_saved, kb_category, model }
-
-FormworkAIModal (Monolit)
-  └── Вкладка [Poradna norem]
-        ↓ POST /api/kb/research (Monolit backend proxy)
-  kb-research.js → то же самое → concrete-agent
-```
+| rozpocet-registry vite build | npm run build | ✅ Pass |
+| URS Matcher | 159 | ⚠️ Не запускались |
 
 ---
 
@@ -250,8 +205,9 @@ FormworkAIModal (Monolit)
 ```bash
 1. Прочитай CLAUDE.md
 2. Прочитай NEXT_SESSION.md (этот файл)
-3. git log --oneline -10
-4. Спроси: Universal Parser Phase 3 (Send to Kiosk) или Pump TOVModal или Poradna расширение?
+3. Прочитай docs/POSITION_INSTANCE_ARCHITECTURE.ts (архитектура интеграции)
+4. git log --oneline -10
+5. Спроси: Position Instance API (Phase 1) или Send to Kiosk или Pump TOVModal?
 ```
 
 *Ready for next session!*

@@ -118,6 +118,16 @@ export async function syncProjectToPortal(
 }
 
 /**
+ * Callback to auto-link project in store after successful sync.
+ * Set by registryStore subscriber to avoid circular imports.
+ */
+let onAutoLink: ((projectId: string, portalProjectId: string) => void) | null = null;
+
+export function setAutoLinkCallback(cb: (projectId: string, portalProjectId: string) => void): void {
+  onAutoLink = cb;
+}
+
+/**
  * Debounced sync — waits 3s after last change before syncing
  * This prevents flooding the API during rapid edits (classification, price edits, etc.)
  */
@@ -131,9 +141,9 @@ export function debouncedSyncToPortal(
   const timer = setTimeout(async () => {
     syncTimers.delete(project.id);
     const portalId = await syncProjectToPortal(project, tovData);
-    if (portalId && !project.portalLink) {
-      // Auto-link if not already linked
-      // This is handled by the store wrapper
+    if (portalId && !project.portalLink && onAutoLink) {
+      onAutoLink(project.id, portalId);
+      console.log(`[PortalAutoSync] Auto-linked project "${project.projectName}" → Portal ${portalId}`);
     }
   }, 3000);
 

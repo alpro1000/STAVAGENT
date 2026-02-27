@@ -19,7 +19,7 @@ import { PREDEFINED_TEMPLATES } from '../config/templates';
 import { DEFAULT_GROUPS } from '../utils/constants';
 import { idbStorage } from './idbStorage';
 import { isMainCodeExported } from '../services/classification/rowClassificationService';
-import { debouncedSyncToPortal, cancelSync } from '../services/portalAutoSync';
+import { debouncedSyncToPortal, cancelSync, setAutoLinkCallback } from '../services/portalAutoSync';
 
 interface RegistryState {
   // Данные
@@ -870,6 +870,14 @@ export const useRegistryStore = create<RegistryState>()(
     }
   )
 );
+
+/**
+ * Register auto-link callback: when sync succeeds and project has no portalLink,
+ * automatically set portalLink in the store (no more manual UUID entry needed).
+ */
+setAutoLinkCallback((projectId: string, portalProjectId: string) => {
+  useRegistryStore.getState().linkToPortal(projectId, portalProjectId);
+});
 
 /**
  * Auto-sync subscriber: when projects/tovData change, push to Portal DB.

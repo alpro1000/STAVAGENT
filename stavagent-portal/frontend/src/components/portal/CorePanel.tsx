@@ -102,7 +102,7 @@ const KIOSK_META = {
     color: '#8b5cf6',
     bg: '#f5f3ff',
     buildUrl: (fileId: string, portalUrl: string, portalProjectId: string) =>
-      `https://stavagent-backend-ktwx.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}&portal_project=${portalProjectId}`,
+      `https://rozpocet-registry.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}&portal_project=${portalProjectId}`,
   },
   urs_matcher: {
     label: 'URS Matcher',
