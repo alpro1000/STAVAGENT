@@ -81,7 +81,7 @@ export function MaterialsTab({
   };
 
   const openInMonolit = () => {
-    window.open('https://monolit-planner-frontend.onrender.com', '_blank');
+    window.open('https://monolit-planner-frontend.vercel.app', '_blank');
   };
 
   const totalCost = resources.reduce((sum, r) => sum + (r.totalCost || 0), 0);

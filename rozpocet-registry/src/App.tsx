@@ -213,7 +213,7 @@ function App() {
     window.history.replaceState({}, '', window.location.pathname);
 
     try {
-      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
+      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
       const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portalProjectId}`, {
         credentials: 'include'
       });

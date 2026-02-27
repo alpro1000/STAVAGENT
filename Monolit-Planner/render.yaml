@@ -29,7 +29,7 @@ services:
       - key: EXPORT_DIR
         value: /opt/render/project/backend/exports
       - key: CORS_ORIGIN
-        value: "https://monolit-planner-frontend.onrender.com"
+        value: "https://monolit-planner-frontend.vercel.app"
       - key: CORE_API_URL
         value: "https://concrete-agent.onrender.com"
       - key: CORE_TIMEOUT
@@ -52,7 +52,7 @@ services:
       - key: VITE_API_URL
         value: "https://monolit-planner-api.onrender.com"
       - key: VITE_PORTAL_API_URL
-        value: "https://stav-agent.onrender.com"
+        value: "https://stavagent-backend.vercel.app"
       - key: VITE_REGISTRY_URL
         value: "https://stavagent-backend-ktwx.vercel.app"
     headers:

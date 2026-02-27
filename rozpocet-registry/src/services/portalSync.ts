@@ -4,7 +4,7 @@
  * Handles loading projects from Portal and syncing TOV data back.
  */
 
-const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
+const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
 
 export interface PortalProject {
   id: string;

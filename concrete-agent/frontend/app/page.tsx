@@ -1,6 +1,6 @@
 import { FileSearch, ShieldCheck, Zap, ArrowRight, Building2 } from "lucide-react";
 
-const PORTAL_URL = "https://stav-agent.onrender.com";
+const PORTAL_URL = "https://www.stavagent.cz";
 
 /* -------------------------------------------------------------------------- */
 /*  Feature card data                                                          */

@@ -74,7 +74,7 @@ interface ParseResult {
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
 const KIOSK_URLS: Record<string, string> = {
-  monolit: 'https://monolit-planner-frontend.onrender.com',
+  monolit: 'https://monolit-planner-frontend.vercel.app',
   registry: 'https://stavagent-backend-ktwx.vercel.app',
   urs_matcher: 'https://urs-matcher-service.onrender.com',
 };

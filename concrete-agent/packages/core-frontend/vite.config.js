@@ -7,7 +7,8 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 10000,
     allowedHosts: [
-      'stav-agent.onrender.com',
+      'stavagent-backend.vercel.app',
+      'www.stavagent.cz',
       '.onrender.com'
     ]
   },

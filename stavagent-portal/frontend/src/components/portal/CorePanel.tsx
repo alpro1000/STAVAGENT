@@ -94,7 +94,7 @@ const KIOSK_META = {
     color: '#3b82f6',
     bg: '#eff6ff',
     buildUrl: (fileId: string, portalUrl: string, _portalProjectId: string) =>
-      `https://monolit-planner-frontend.onrender.com?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
+      `https://monolit-planner-frontend.vercel.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
   },
   registry: {
     label: 'Registr Rozpočtů',

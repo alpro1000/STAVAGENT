@@ -31,10 +31,11 @@
 
 | Сервис | URL |
 |--------|-----|
+| Portal Frontend | https://www.stavagent.cz |
+| Portal API | https://stavagent-backend.vercel.app |
 | Monolit Backend | https://monolit-planner-api.onrender.com |
-| Monolit Frontend | https://monolit-planner-frontend.onrender.com |
-| Registry TOV Frontend | https://stavagent-backend-ktwx.vercel.app |
-| Registry TOV Backend | https://rozpocet-registry-backend.onrender.com |
+| Monolit Frontend | https://monolit-planner-frontend.vercel.app |
+| Registry TOV | https://stavagent-backend-ktwx.vercel.app |
 | CORE (AI) | https://concrete-agent.onrender.com |
 | URS Matcher | https://urs-matcher-service.onrender.com |
 

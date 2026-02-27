@@ -21,7 +21,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
-  const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stav-agent.onrender.com';
+  const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
   const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
   const MONOLIT_URL = import.meta.env.VITE_MONOLIT_URL || window.location.origin;
 
