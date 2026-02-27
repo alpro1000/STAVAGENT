@@ -1,19 +1,23 @@
 /**
- * Formwork Assistant API — v2
+ * Formwork Assistant API — v3
  * POST /api/formwork-assistant
  *
- * New calculation model (ČSN EN 13670):
+ * Calculation model (ČSN EN 13670):
  *
- *   CYCLE per capture:
- *     [MONTÁŽ] → [ARMOVÁNÍ] → [BETONÁŽ 1d] → [ZRÁNÍ min.] → [DEMONTÁŽ]
- *     cycle_days = A + R + 1 + C + D
+ *   CYCLE per capture (all phases in FULL WORK DAYS — ceil()):
+ *     [MONTÁŽ A] → [ARMOVÁNÍ R] → [BETONÁŽ B=1] → [ZRÁNÍ C] → [DEMONTÁŽ D]
+ *     cycle_days = A + R + B + C + D
  *
- *   CURING TABLE (min. days by construction type × temperature):
- *     ČSN EN 13670, TKP17 §6
+ *   KEY FIX v3: All days are ceil() — crews work full shifts, no 0.96 days.
+ *   KEY FIX v3: set_area_m2 is OPTIONAL — auto-derived from total_area / pocet_taktu.
+ *   KEY FIX v3: Rebar days use ceil(), min 1 day when rebar_kg > 0.
+ *   KEY FIX v3: Strategy B cadence accounts for rebar as bottleneck.
+ *   KEY FIX v3: Bottleneck analysis + crew optimization table.
+ *   KEY FIX v3: Rental cost uses KB prices (Kč/m²/month), min 1 month billing.
  *
  *   3 STRATEGIES:
  *     A — Sequential (1 set):   total = N × cycle
- *     B — Overlapping (2 sets): total = (N-1) × stride + cycle,  stride = cycle - overlap
+ *     B — Overlapping (2 sets): cadence = max(A+D, R+B+C), total = cycle + (N-1)×cadence
  *     C — Parallel (N sets):    total = cycle
  *
  *   AUTO-OPTIMIZATION: compare min cost vs min time
@@ -72,13 +76,13 @@ function loadAssemblyNorms() {
           ...(isBm ? { unit: 'bm' } : {}),
         };
       }
-      logger.info(`[Formwork v2] Loaded ${Object.keys(norms).length} systems from KB: ${candidatePath}`);
+      logger.info(`[Formwork v3] Loaded ${Object.keys(norms).length} systems from KB: ${candidatePath}`);
       return norms;
     } catch {
       // try next candidate
     }
   }
-  logger.warn('[Formwork v2] bedneni.json not found — using hardcoded norms');
+  logger.warn('[Formwork v3] bedneni.json not found — using hardcoded norms');
   return ASSEMBLY_NORMS_FALLBACK;
 }
 
@@ -178,31 +182,47 @@ router.post('/', async (req, res) => {
     if (typeof total_area_m2 !== 'number' || total_area_m2 <= 0) {
       return res.status(400).json({ error: 'total_area_m2 must be a positive number' });
     }
-    if (typeof set_area_m2 !== 'number' || set_area_m2 <= 0) {
-      return res.status(400).json({ error: 'set_area_m2 must be a positive number' });
-    }
 
-    // ── Deterministic core v2 ───────────────────────────────────────────────
+    // ── Deterministic core v3 ───────────────────────────────────────────────
 
     const norm    = ASSEMBLY_NORMS[system_name] || ASSEMBLY_NORMS['Framax Xlife'];
     const crewCfg = CREW_CONFIG[crew]           || CREW_CONFIG['4_bez_jeravu'];
 
-    const pocetTaktu = Math.ceil(total_area_m2 / set_area_m2);
+    // v3: set_area_m2 is OPTIONAL — auto-derive from total_area / pocet_taktu
+    // If set_area_m2=0 but pocet_taktu_input > 0: derive set area
+    // If both set_area_m2=0 and pocet_taktu_input=0: use total_area as single tact
+    const pocetTaktuInput = req.body.pocet_taktu || 0;
+    let effectiveSetArea;
+    let pocetTaktu;
 
-    // 1. Assembly (A)
-    const assemblyH    = set_area_m2 * norm.h_m2 * crewCfg.crane_factor;
-    const dailyH       = crewCfg.crew * crewCfg.shift;
-    const assemblyDays = dailyH > 0 ? assemblyH / dailyH : 0;
+    if (set_area_m2 > 0) {
+      // User selected a specific set (e.g., Frami Xlife 53.6 m²)
+      effectiveSetArea = set_area_m2;
+      pocetTaktu = Math.ceil(total_area_m2 / effectiveSetArea);
+    } else if (pocetTaktuInput > 0) {
+      // User knows number of tacts but not set area — derive it
+      pocetTaktu = pocetTaktuInput;
+      effectiveSetArea = round1(total_area_m2 / pocetTaktu);
+    } else {
+      // No set info — treat as single tact (entire area at once)
+      pocetTaktu = 1;
+      effectiveSetArea = total_area_m2;
+    }
 
-    // 2. Disassembly (D)
-    const disassemblyH    = norm.disassembly_h_m2 != null
-      ? set_area_m2 * norm.disassembly_h_m2 * crewCfg.crane_factor
-      : assemblyH * (norm.disassembly_ratio || 0.35);
-    const disassemblyDays = dailyH > 0 ? disassemblyH / dailyH : 0;
+    // 1. Assembly (A) — v3: ceil() to full work days
+    const assemblyWorkerH = effectiveSetArea * norm.h_m2 * crewCfg.crane_factor;
+    const dailyH          = crewCfg.crew * crewCfg.shift;
+    const assemblyDays    = dailyH > 0 ? Math.ceil(assemblyWorkerH / dailyH) : 1;
 
-    // 3. Reinforcement (R) — optional
+    // 2. Disassembly (D) — v3: ceil(), min 1 day
+    const disassemblyWorkerH = norm.disassembly_h_m2 != null
+      ? effectiveSetArea * norm.disassembly_h_m2 * crewCfg.crane_factor
+      : assemblyWorkerH * (norm.disassembly_ratio || 0.35);
+    const disassemblyDays = dailyH > 0 ? Math.max(1, Math.ceil(disassemblyWorkerH / dailyH)) : 1;
+
+    // 3. Reinforcement (R) — v3: ceil(), min 1 day when rebar present
     let rebarDays = 0;
-    let rebarHours = 0;
+    let rebarWorkerHours = 0;
     let rebarDetails = null;
     const hasRebar = rebar_kg_per_m3 > 0 && concrete_m3_per_tact > 0;
 
@@ -210,99 +230,142 @@ router.post('/', async (req, res) => {
       const rebarMassKg = rebar_kg_per_m3 * concrete_m3_per_tact;
       const rebarMassT  = rebarMassKg / 1000;
 
-      // Norm for main bars
-      const normMain = REBAR_NORMS_H_PER_T[diameter_main_mm] || 20;
-      // Norm for stirrups
+      const normMain     = REBAR_NORMS_H_PER_T[diameter_main_mm] || 20;
       const normStirrups = REBAR_NORMS_H_PER_T[diameter_stirrups_mm] || 30;
-
-      // Total rebar hours
       const mainFraction = 1 - stirrup_fraction;
-      rebarHours = rebarMassT * (mainFraction * normMain + stirrup_fraction * normStirrups);
 
-      // KARI mesh hours
+      rebarWorkerHours = rebarMassT * (mainFraction * normMain + stirrup_fraction * normStirrups);
+
       if (mesh_m2 > 0) {
-        rebarHours += mesh_m2 * MESH_NORM_H_PER_M2;
+        rebarWorkerHours += mesh_m2 * MESH_NORM_H_PER_M2;
       }
 
-      // Rebar days
-      const rebarCrew = crew_size_rebar > 0 ? crew_size_rebar : crewCfg.crew;
+      // Rebar days — v3: ceil(), separate crew
+      const rebarCrew   = crew_size_rebar > 0 ? crew_size_rebar : crewCfg.crew;
       const rebarDailyH = rebarCrew * crewCfg.shift;
-      rebarDays = rebarDailyH > 0 ? rebarHours / rebarDailyH : 0;
+      rebarDays = rebarDailyH > 0 ? Math.max(1, Math.ceil(rebarWorkerHours / rebarDailyH)) : 1;
 
-      // Smart parallelism: if rebar crew ≠ formwork crew, partial overlap is possible.
-      // Overlap is capped at min(rebar, assembly) to avoid subtracting more than the actual work.
-      const parallelOverlap = crew_size_rebar > 0 && crew_size_rebar !== crewCfg.crew
-        ? Math.min(rebarDays, assemblyDays) * 0.5  // up to 50% of the shorter phase
-        : 0;
-      rebarDays = Math.max(0.1, rebarDays - parallelOverlap);  // min 0.1d to represent at least some rebar work
-
-      // Spacers (distanční kroužky)
-      const spacerPcs  = Math.round(set_area_m2 * SPACER_PCS_PER_M2);
+      // Spacers
+      const spacerPcs  = Math.round(effectiveSetArea * SPACER_PCS_PER_M2);
       const spacerCost = spacerPcs * SPACER_PRICE_CZK;
 
       rebarDetails = {
-        rebar_mass_kg:  Math.round(rebarMassKg),
-        rebar_mass_t:   round2(rebarMassT),
-        rebar_hours:    round2(rebarHours),
-        rebar_days:     round2(rebarDays),
-        rebar_crew:     crew_size_rebar > 0 ? crew_size_rebar : crewCfg.crew,
-        parallel_overlap: round2(parallelOverlap),
-        norm_main_h_t:  normMain,
+        rebar_mass_kg:    Math.round(rebarMassKg),
+        rebar_mass_t:     round2(rebarMassT),
+        rebar_hours:      round1(rebarWorkerHours),
+        rebar_days:       rebarDays,
+        rebar_crew:       rebarCrew,
+        norm_main_h_t:    normMain,
         norm_stirrups_h_t: normStirrups,
-        spacer_pcs:     spacerPcs,
-        spacer_cost_czk: round2(spacerCost),
+        spacer_pcs:       spacerPcs,
+        spacer_cost_czk:  round2(spacerCost),
       };
     }
 
     // 4. Concrete pouring = 1 day (fixed)
     const concreteDays = 1;
 
-    // 5. Curing (C) — new table by construction type × temperature
+    // 5. Curing (C) — v3: ceil() after applying cement factor
     const curingRow = MIN_CURING[construction_type] || MIN_CURING['steny'];
-    const curingDays = curingRow[season] || 1.0;
-
-    // Cement factor still applies for CEM III (slower strength gain)
+    const curingBase = curingRow[season] || 1.0;
     const cementFactor = cement_type === 'CEM_III' ? 1.8 : 1.0;
-    const adjustedCuringDays = round1(curingDays * cementFactor);
+    const adjustedCuringDays = Math.ceil(curingBase * cementFactor);
 
     // Props min days (horizontal only)
-    const propsRow = PROPS_MIN_DAYS[construction_type];
+    const propsRow  = PROPS_MIN_DAYS[construction_type];
     const propsDays = propsRow ? (propsRow[season] || 0) : 0;
 
-    // 6. CYCLE per capture
-    // [A] + [R] + [B=1] + [C] + [D]
-    const A = round2(assemblyDays);
-    const R = round2(rebarDays);
+    // 6. CYCLE per capture — all in full work days
+    const A = assemblyDays;
+    const R = rebarDays;
     const B = concreteDays;
     const C = adjustedCuringDays;
-    const D = round2(disassemblyDays);
-    const cycleDays = round1(A + R + B + C + D);
+    const D = disassemblyDays;
+    const cycleDays = A + R + B + C + D;
+    const workDays  = A + R + B + D;  // everything except curing
 
-    // Work days (everything except curing)
-    const workDays = round1(A + R + B + D);
+    // ── BOTTLENECK ANALYSIS ─────────────────────────────────────────────────
+
+    const phases = [
+      { phase: 'assembly', days: A },
+      { phase: 'rebar',    days: R },
+      { phase: 'curing',   days: C },
+    ];
+    const bottleneck = phases.reduce((a, b) => a.days >= b.days ? a : b).phase;
+
+    // ── CREW OPTIMIZATION TABLE ─────────────────────────────────────────────
+    // Show how different crew sizes affect the cycle
+
+    const crewOptions = [
+      { label: '2 lidé',          crew: 2, shift: crewCfg.shift, crane_f: 1.0 },
+      { label: '3 lidé',          crew: 3, shift: crewCfg.shift, crane_f: 1.0 },
+      { label: '4 lidé',          crew: 4, shift: crewCfg.shift, crane_f: 1.0 },
+      { label: '4 lidé + jeřáb',  crew: 4, shift: crewCfg.shift, crane_f: 0.80 },
+      { label: '6 lidí + jeřáb',  crew: 6, shift: crewCfg.shift, crane_f: 0.70 },
+    ];
+
+    const crewOptimization = crewOptions.map(opt => {
+      const optDailyH = opt.crew * opt.shift;
+      const optAssemblyH = effectiveSetArea * norm.h_m2 * opt.crane_f;
+      const optDisassemblyH = norm.disassembly_h_m2 != null
+        ? effectiveSetArea * norm.disassembly_h_m2 * opt.crane_f
+        : optAssemblyH * (norm.disassembly_ratio || 0.35);
+      const optA = Math.ceil(optAssemblyH / optDailyH);
+      const optD = Math.max(1, Math.ceil(optDisassemblyH / optDailyH));
+      const optCycle = optA + R + B + C + optD;
+      const optTotalSeq = pocetTaktu * optCycle;
+      return {
+        label: opt.label,
+        crew: opt.crew,
+        assembly_days: optA,
+        disassembly_days: optD,
+        cycle_days: optCycle,
+        total_sequential: optTotalSeq,
+        is_current: opt.crew === crewCfg.crew && opt.crane_f === crewCfg.crane_factor,
+      };
+    });
+
+    // Find crew where adding more people doesn't help
+    let optimalCrewIdx = 0;
+    for (let i = 1; i < crewOptimization.length; i++) {
+      if (crewOptimization[i].cycle_days < crewOptimization[optimalCrewIdx].cycle_days) {
+        optimalCrewIdx = i;
+      }
+    }
+    // Find smallest crew with same result as optimal
+    const optimalCycle = crewOptimization[optimalCrewIdx].cycle_days;
+    const efficientCrewIdx = crewOptimization.findIndex(c => c.cycle_days === optimalCycle);
+    const efficientCrew = crewOptimization[efficientCrewIdx];
 
     // ── 3 STRATEGIES ────────────────────────────────────────────────────────
 
-    const rentalPerM2Day = (norm.rental_czk_m2_month || 0) / 30;
-    const transportDays  = transport_days || 1;
+    const rentalPerM2Month = norm.rental_czk_m2_month || 0;
+    const transportDaysBoth = (transport_days || 1) * 2;
 
-    // Strategy A — Sequential (1 set)
-    const totalA = round1(pocetTaktu * cycleDays);
-    const rentalDaysA = totalA + 2 * transportDays;
-    const rentalCostA = round0(1 * set_area_m2 * rentalPerM2Day * rentalDaysA);
+    // Strategy A — Sequential (1 set): total = N × cycle
+    const totalA = pocetTaktu * cycleDays;
+    const rentalDaysA = totalA + transportDaysBoth;
+    const rentalMonthsA = Math.max(1, rentalDaysA / 30);  // min 1 month billing
+    const rentalCostA = round0(1 * effectiveSetArea * rentalPerM2Month * rentalMonthsA);
 
     // Strategy B — Overlapping (2 sets)
-    // overlap = how much of curing can overlap with next tact's work
-    const overlapB = Math.max(0, C - (A + R + B));  // curing minus work-before-curing
-    const strideB  = round1(cycleDays - overlapB);
-    const totalB   = round1(pocetTaktu <= 1 ? cycleDays : (pocetTaktu - 1) * strideB + cycleDays);
-    const rentalDaysB = totalB + 2 * transportDays;
-    const rentalCostB = round0(2 * set_area_m2 * rentalPerM2Day * rentalDaysB);
+    // v3: cadence = max(formwork_crew_busy, rebar_flow_through)
+    //   formwork_crew_busy = A + D (they do assembly + disassembly)
+    //   rebar_flow = R + B + C (rebar + pour + cure before strip is possible)
+    // The LONGER of these determines how often a new tact can start.
+    const formworkCrewBusy = A + D;
+    const rebarFlowThrough = R + B + C;
+    const cadenceB = Math.max(formworkCrewBusy, rebarFlowThrough);
+    const totalB   = pocetTaktu <= 1 ? cycleDays : cycleDays + (pocetTaktu - 1) * cadenceB;
+    const rentalDaysB = totalB + transportDaysBoth;
+    const rentalMonthsB = Math.max(1, rentalDaysB / 30);
+    const rentalCostB = round0(2 * effectiveSetArea * rentalPerM2Month * rentalMonthsB);
 
-    // Strategy C — Fully parallel (N sets)
+    // Strategy C — Fully parallel (N sets): total = cycle
     const totalC = cycleDays;
-    const rentalDaysC = totalC + 2 * transportDays;
-    const rentalCostC = round0(pocetTaktu * set_area_m2 * rentalPerM2Day * rentalDaysC);
+    const rentalDaysC = totalC + transportDaysBoth;
+    const rentalMonthsC = Math.max(1, rentalDaysC / 30);
+    const rentalCostC = round0(pocetTaktu * effectiveSetArea * rentalPerM2Month * rentalMonthsC);
 
     // ── AUTO-OPTIMIZATION ───────────────────────────────────────────────────
 
@@ -312,21 +375,18 @@ router.post('/', async (req, res) => {
       { id: 'C', label: 'Paralelně (plný)',     sets: pocetTaktu, total_days: totalC, rental_cost: rentalCostC },
     ];
 
-    // Filter: C = 'parallel with N sets' is only meaningful when N > 2
-    // (N=1: C≡A, N=2: C≡B — no value to show it separately)
     const filteredStrategies = pocetTaktu <= 2
       ? strategies.filter(s => s.id !== 'C')
       : strategies;
 
-    // Guard against empty array (should not happen, but prevents crash)
     const safeStrategies = filteredStrategies.length > 0 ? filteredStrategies : strategies;
     const minCost = safeStrategies.reduce((a, b) => a.rental_cost <= b.rental_cost ? a : b);
     const minTime = safeStrategies.reduce((a, b) => a.total_days <= b.total_days ? a : b);
 
     // ── Labor cost ──────────────────────────────────────────────────────────
 
-    const wageCzkH = crewCfg.shift === 8 ? 380 : 398; // typical CZ rates
-    const laborCostPerTact = round0((assemblyH + disassemblyH + rebarHours) * wageCzkH);
+    const wageCzkH = crewCfg.shift === 8 ? 380 : 398;
+    const laborCostPerTact = round0((assemblyWorkerH + disassemblyWorkerH + rebarWorkerHours) * wageCzkH);
     const laborCostTotal   = laborCostPerTact * pocetTaktu;
 
     // ── Build response ──────────────────────────────────────────────────────
@@ -335,21 +395,31 @@ router.post('/', async (req, res) => {
       // Capture cycle
       pocet_taktu:               pocetTaktu,
       total_area_m2,
-      set_area_m2,
-      assembly_days:             round2(A),
-      rebar_days:                round2(R),
+      set_area_m2:               effectiveSetArea,
+      set_area_derived:          set_area_m2 <= 0,  // true if auto-calculated
+      assembly_worker_hours:     round1(assemblyWorkerH),
+      assembly_days:             A,
+      rebar_days:                R,
       concrete_days:             B,
       curing_days:               adjustedCuringDays,
-      curing_base_days:          curingDays,
+      curing_base_days:          curingBase,
       cement_factor:             cementFactor,
-      disassembly_days:          round2(D),
+      disassembly_worker_hours:  round1(disassemblyWorkerH),
+      disassembly_days:          D,
       cycle_days:                cycleDays,
       work_days:                 workDays,
+      // Bottleneck
+      bottleneck,
+      bottleneck_days:           phases.reduce((a, b) => a.days >= b.days ? a : b).days,
+      // Crew optimization
+      crew_optimization:         crewOptimization,
+      efficient_crew:            efficientCrew ? efficientCrew.label : null,
       // Props (horizontal)
       props_min_days:            propsDays,
       orientation:               ORIENTATION[construction_type] || 'vertical',
       // Strategies
       strategies:                filteredStrategies,
+      cadence_B:                 cadenceB,
       recommended_cost:          minCost.id,
       recommended_time:          minTime.id,
       // Crew
@@ -361,16 +431,16 @@ router.post('/', async (req, res) => {
       // Cost
       labor_cost_per_tact:       laborCostPerTact,
       labor_cost_total:          laborCostTotal,
-      rental_per_m2_day:         round2(rentalPerM2Day),
+      rental_per_m2_month:       rentalPerM2Month,
       // Legacy compat fields
-      assembly_days_per_tact:    round2(A),
-      disassembly_days_per_tact: round2(D),
-      days_per_tact:             round1(A + D),
+      assembly_days_per_tact:    A,
+      disassembly_days_per_tact: D,
+      days_per_tact:             A + D,
       zrani_days:                adjustedCuringDays,
-      formwork_term_days:        totalA,  // default = strategy A
+      formwork_term_days:        totalA,
     };
 
-    logger.info(`[Formwork v2] ${pocetTaktu} taktů, cycle=${cycleDays}d, A=${totalA}d B=${totalB}d C=${totalC}d`);
+    logger.info(`[Formwork v3] ${pocetTaktu} taktů, cycle=${cycleDays}d (A=${A} R=${R} B=${B} C=${C} D=${D}), total: A=${totalA}d B=${totalB}d C=${totalC}d, bottleneck=${bottleneck}`);
 
     // ── Warnings ────────────────────────────────────────────────────────────
 
@@ -402,7 +472,17 @@ router.post('/', async (req, res) => {
       warnings.push(`Optimum: ${minCost.label} = nejlevnější (${minCost.rental_cost.toLocaleString('cs')} Kč), ${minTime.label} = nejrychlejší (${minTime.total_days} dní)`);
     }
     if (hasRebar && crew_size_rebar > 0 && crew_size_rebar !== crewCfg.crew) {
-      warnings.push(`Paralelní armování: brig. ${rebarDetails.rebar_crew} arm. + ${crewCfg.crew} bedna. — úspora ${rebarDetails.parallel_overlap.toFixed(1)} dní/takt`);
+      warnings.push(`Paralelní armování: ${rebarDetails.rebar_crew} armovačů + ${crewCfg.crew} bednařů — armování ${R}d souběžně s montáží ${A}d`);
+    }
+    // v3: bottleneck warning
+    if (bottleneck === 'rebar' && R > A) {
+      warnings.push(`Úzké místo: armování (${R} dní > montáž ${A} dní) — zvažte přidání armovačů nebo paralelní brigádu`);
+    } else if (bottleneck === 'curing' && C > A + R) {
+      warnings.push(`Úzké místo: zrání betonu (${C} dní) — nelze urychlit, ale strategie B/C pomůže překrýt čekání`);
+    }
+    // v3: crew optimization hint
+    if (efficientCrew && !efficientCrew.is_current) {
+      warnings.push(`Optimální parta: ${efficientCrew.label} — cyklus ${efficientCrew.cycle_days}d vs. aktuální ${cycleDays}d`);
     }
 
     // ── AI explanation ──────────────────────────────────────────────────────
@@ -461,7 +541,7 @@ router.post('/', async (req, res) => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             question,
-            context: { tool: 'formwork_assistant_v2', construction_type, season, deterministic },
+            context: { tool: 'formwork_assistant_v3', construction_type, season, deterministic },
             enable_kb: true, enable_perplexity: false, use_cache: true,
           }),
           signal: controller.signal,
@@ -475,7 +555,7 @@ router.post('/', async (req, res) => {
         }
       }
     } catch (aiErr) {
-      logger.warn(`[Formwork v2] AI ${aiErr.name === 'AbortError' ? 'timeout' : 'error'}: ${aiErr.message}`);
+      logger.warn(`[Formwork v3] AI ${aiErr.name === 'AbortError' ? 'timeout' : 'error'}: ${aiErr.message}`);
       aiExplanation = buildFallbackExplanation(deterministic, construction_type, season, warnings);
       modelUsed = 'fallback';
     }
@@ -489,7 +569,7 @@ router.post('/', async (req, res) => {
     });
 
   } catch (err) {
-    logger.error('[Formwork v2] Error:', err);
+    logger.error('[Formwork v3] Error:', err);
     res.status(500).json({ error: 'Formwork assistant failed', details: err.message });
   }
 });
@@ -499,19 +579,21 @@ router.post('/', async (req, res) => {
 function buildFallbackExplanation(det, constructionType, season, warnings) {
   const constr = CONSTRUCTION_LABELS[constructionType] || constructionType;
   const lines = [
-    `**Kalkulace bednění v2 — ${constr}**`,
+    `**Kalkulace bednění v3 — ${constr}**`,
     ``,
-    `Plocha **${det.total_area_m2} m²** → **${det.pocet_taktu} taktů** po ${det.set_area_m2} m².`,
+    `Plocha **${det.total_area_m2} m²** → **${det.pocet_taktu} taktů** po ${det.set_area_m2} m²${det.set_area_derived ? ' (odvozeno)' : ''}.`,
     ``,
     `**Cyklus zachvátky:**`,
     `| Fáze | Dní |`,
     `|---|---|`,
-    `| Montáž opalubky | ${det.assembly_days} |`,
-    det.rebar ? `| Armování | ${det.rebar_days} (${det.rebar.rebar_mass_kg} kg) |` : null,
-    `| Betonáž | ${det.concrete_days} |`,
-    `| Zrání (min. ČSN) | ${det.curing_days}${det.cement_factor > 1 ? ` (základ ${det.curing_base_days}d × CEM III ×${det.cement_factor})` : ''} |`,
-    `| Demontáž | ${det.disassembly_days} |`,
+    `| Montáž bednění (A) | ${det.assembly_days} |`,
+    det.rebar ? `| Armování (R) | ${det.rebar_days} (${det.rebar.rebar_mass_kg} kg, ${det.rebar.rebar_hours} h) |` : null,
+    `| Betonáž (B) | ${det.concrete_days} |`,
+    `| Zrání (C) | ${det.curing_days}${det.cement_factor > 1 ? ` (základ ${det.curing_base_days}d × CEM III ×${det.cement_factor})` : ''} |`,
+    `| Demontáž (D) | ${det.disassembly_days} |`,
     `| **Celkem cyklus** | **${det.cycle_days} dní** |`,
+    ``,
+    `**Úzké místo:** ${det.bottleneck} (${det.bottleneck_days} dní)`,
     ``,
     `**Srovnání strategií:**`,
     `| Strategie | Sady | Doba | Nájem |`,
@@ -521,8 +603,26 @@ function buildFallbackExplanation(det, constructionType, season, warnings) {
     ),
   ].filter(Boolean);
 
+  if (det.cadence_B > 0) {
+    lines.push(``, `Kadence B: max(A+D=${det.assembly_days}+${det.disassembly_days}, R+B+C=${det.rebar_days}+1+${det.curing_days}) = **${det.cadence_B}d**`);
+  }
+
+  // Crew optimization table
+  if (det.crew_optimization && det.crew_optimization.length > 0) {
+    lines.push(``, `**Optimalizace party:**`);
+    lines.push(`| Parta | Montáž | Demontáž | Cyklus | Celkem (posl.) |`);
+    lines.push(`|---|---|---|---|---|`);
+    for (const opt of det.crew_optimization) {
+      const mark = opt.is_current ? ' ◀' : '';
+      lines.push(`| ${opt.label}${mark} | ${opt.assembly_days}d | ${opt.disassembly_days}d | ${opt.cycle_days}d | ${opt.total_sequential}d |`);
+    }
+    if (det.efficient_crew) {
+      lines.push(``, `Nejefektivnější: **${det.efficient_crew}**`);
+    }
+  }
+
   if (det.props_min_days > 0) {
-    lines.push(``, `⚠️ Stojky zůstávají min. **${det.props_min_days} dní** (horizontální konstrukce).`);
+    lines.push(``, `Stojky zůstávají min. **${det.props_min_days} dní** (horizontální konstrukce).`);
   }
   if (warnings.length > 0) {
     lines.push('', '**Upozornění:**');
