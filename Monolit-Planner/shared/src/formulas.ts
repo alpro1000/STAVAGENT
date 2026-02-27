@@ -4,7 +4,7 @@
  */
 
 import { Position, HeaderKPI, FormworkCalculatorRow } from './types';
-import { scheduleElement } from './calculators/element-scheduler';
+import { scheduleElement } from './calculators/element-scheduler.js';
 
 /**
  * Calculate labor hours for a position
