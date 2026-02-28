@@ -145,6 +145,9 @@ export function mapUnifiedToItem(
     skupina: unified.category,
     skupinaSuggested: null,
 
+    // Portal PositionInstance link (for cross-kiosk DOV/Monolith write-back)
+    position_instance_id: (unified as any).position_instance_id || null,
+
     // Row classification
     rowRole: unified.rowRole,
     subordinateType: undefined,

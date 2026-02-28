@@ -196,6 +196,7 @@ function App() {
             cenaCelkem: item.cenaCelkem ?? 0,
             skupina: item.skupina ?? null,
             rowRole: item.rowRole ?? null,
+            position_instance_id: item.position_instance_id || null,
             source: {
               projectId: portalFileId,
               fileName: data.file_name || `${projectName}.xlsx`,
@@ -279,6 +280,8 @@ function App() {
           projectId: portalProject.id,
           items: sheet.items.map((item: any) => ({
             ...item,
+            // Keep Portal position_instance_id for cross-kiosk linking
+            position_instance_id: item.position_instance_id || null,
             // Normalise source so cascade-sort (source.rowStart) doesn't produce NaN
             source: {
               projectId: portalProject.id,

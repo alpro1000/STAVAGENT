@@ -140,6 +140,113 @@ router.get('/project/:projectId', async (req, res) => {
 });
 
 // =============================================================================
+// LINKED POSITIONS — CROSS-KIOSK REGISTRY
+// =============================================================================
+
+/**
+ * GET /api/positions/project/:projectId/linked
+ * Returns positions that have data from multiple kiosks (Monolit + Registry).
+ * Shows linkage status for each position.
+ *
+ * Response: { positions[]: { position_instance_id, kod, popis, has_monolith, has_dov, monolith_summary, dov_summary } }
+ */
+router.get('/project/:projectId/linked', async (req, res) => {
+  const pool = safeGetPool();
+  if (!pool) {
+    return res.status(503).json({ success: false, error: 'Database not available' });
+  }
+
+  try {
+    const { projectId } = req.params;
+
+    const result = await pool.query(
+      `SELECT pp.position_instance_id, pp.position_id,
+              pp.kod, pp.popis, pp.mnozstvi, pp.mj,
+              pp.cena_jednotkova, pp.cena_celkem,
+              pp.skupina, pp.sheet_name, pp.row_index,
+              pp.monolit_position_id, pp.registry_item_id,
+              pp.monolith_payload IS NOT NULL AS has_monolith,
+              pp.dov_payload IS NOT NULL AS has_dov,
+              pp.monolith_payload,
+              pp.dov_payload,
+              pp.last_sync_from, pp.last_sync_at,
+              po.object_code, po.object_name
+       FROM portal_positions pp
+       JOIN portal_objects po ON pp.object_id = po.object_id
+       WHERE po.portal_project_id = $1
+       ORDER BY po.object_code, pp.row_index`,
+      [projectId]
+    );
+
+    const positions = result.rows.map(row => {
+      const mp = row.monolith_payload;
+      const dp = row.dov_payload;
+
+      return {
+        position_instance_id: row.position_instance_id,
+        position_id: row.position_id,
+        kod: row.kod,
+        popis: row.popis,
+        mnozstvi: row.mnozstvi,
+        mj: row.mj,
+        skupina: row.skupina,
+        object_code: row.object_code,
+        object_name: row.object_name,
+        sheet_name: row.sheet_name,
+
+        // Cross-kiosk linkage status
+        monolit_linked: row.has_monolith,
+        registry_linked: row.has_dov,
+        monolit_position_id: row.monolit_position_id,
+        registry_item_id: row.registry_item_id,
+
+        // Summaries (without full payload)
+        monolith_summary: mp ? {
+          cost_czk: mp.cost_czk,
+          kros_unit_czk: mp.kros_unit_czk,
+          kros_total_czk: mp.kros_total_czk,
+          unit_cost_on_m3: mp.unit_cost_on_m3,
+          crew_size: mp.crew_size,
+          days: mp.days,
+          source_tag: mp.source_tag,
+          calculated_at: mp.calculated_at,
+        } : null,
+
+        dov_summary: dp ? {
+          total_czk: dp.grand_total?.total_czk,
+          labor_czk: dp.grand_total?.labor_czk,
+          machinery_czk: dp.grand_total?.machinery_czk,
+          materials_czk: dp.grand_total?.materials_czk,
+          rental_czk: dp.grand_total?.rental_czk,
+          calculated_at: dp.calculated_at,
+        } : null,
+
+        last_sync_from: row.last_sync_from,
+        last_sync_at: row.last_sync_at,
+      };
+    });
+
+    const stats = {
+      total: positions.length,
+      monolit_linked: positions.filter(p => p.monolit_linked).length,
+      registry_linked: positions.filter(p => p.registry_linked).length,
+      both_linked: positions.filter(p => p.monolit_linked && p.registry_linked).length,
+    };
+
+    res.json({
+      success: true,
+      project_id: projectId,
+      stats,
+      positions,
+    });
+
+  } catch (error) {
+    console.error('[PositionInstances] Error fetching linked positions:', error);
+    res.status(500).json({ success: false, error: 'Failed to fetch linked positions' });
+  }
+});
+
+// =============================================================================
 // GET SINGLE INSTANCE
 // =============================================================================
 
