@@ -5,14 +5,15 @@
  * Portal is the main entry point - stores all files and coordinates between Kiosks and CORE.
  *
  * Routes:
- * - GET    /api/portal-projects          - List all projects for current user
- * - POST   /api/portal-projects          - Create new portal project
- * - GET    /api/portal-projects/:id      - Get specific project
- * - PUT    /api/portal-projects/:id      - Update project
- * - DELETE /api/portal-projects/:id      - Delete project
+ * - GET    /api/portal-projects              - List all projects for current user
+ * - GET    /api/portal-projects/registry     - Cross-kiosk project registry (all projects + position linkage stats)
+ * - POST   /api/portal-projects              - Create new portal project
+ * - GET    /api/portal-projects/:id          - Get specific project
+ * - PUT    /api/portal-projects/:id          - Update project
+ * - DELETE /api/portal-projects/:id          - Delete project
  * - POST   /api/portal-projects/:id/send-to-core - Send project to CORE
- * - GET    /api/portal-projects/:id/files       - Get all files for project
- * - GET    /api/portal-projects/:id/kiosks      - Get all kiosk links for project
+ * - GET    /api/portal-projects/:id/files         - Get all files for project
+ * - GET    /api/portal-projects/:id/kiosks        - Get all kiosk links for project
  */
 
 import express from 'express';
@@ -143,6 +144,166 @@ router.post('/create-from-kiosk', async (req, res) => {
 
 // All routes below require authentication
 router.use(requireAuth);
+
+/**
+ * GET /api/portal-projects/registry
+ * Cross-kiosk project registry — shows ALL projects with:
+ *   - Kiosk links (which kiosks are connected)
+ *   - Position counts and linkage stats (monolith, dov, both)
+ *   - Summary metrics per project
+ *
+ * NOTE: Must be defined BEFORE /:id to avoid route conflicts
+ */
+router.get('/registry', async (req, res) => {
+  try {
+    const userId = req.user?.userId || 1;
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.json({
+        success: true,
+        projects: [],
+        _warning: 'Database not available'
+      });
+    }
+
+    // 1. All projects with kiosk links in one query
+    const projectsResult = await pool.query(
+      `SELECT
+         pp.portal_project_id,
+         pp.project_name,
+         pp.project_type,
+         pp.stavba_name,
+         pp.description,
+         pp.created_at,
+         pp.updated_at,
+         -- Kiosk links as JSON array
+         COALESCE(
+           json_agg(
+             json_build_object(
+               'kiosk_type', kl.kiosk_type,
+               'kiosk_project_id', kl.kiosk_project_id,
+               'status', kl.status,
+               'last_sync', kl.last_sync
+             )
+           ) FILTER (WHERE kl.link_id IS NOT NULL),
+           '[]'::json
+         ) AS kiosk_links
+       FROM portal_projects pp
+       LEFT JOIN kiosk_links kl ON pp.portal_project_id = kl.portal_project_id
+       WHERE pp.owner_id = $1
+       GROUP BY pp.portal_project_id
+       ORDER BY pp.updated_at DESC`,
+      [userId]
+    );
+
+    // 2. Position linkage stats per project (single query)
+    const statsResult = await pool.query(
+      `SELECT
+         po.portal_project_id,
+         COUNT(*)::int AS total_positions,
+         COUNT(*) FILTER (WHERE pp.monolith_payload IS NOT NULL)::int AS monolit_linked,
+         COUNT(*) FILTER (WHERE pp.dov_payload IS NOT NULL)::int AS registry_linked,
+         COUNT(*) FILTER (WHERE pp.monolith_payload IS NOT NULL AND pp.dov_payload IS NOT NULL)::int AS both_linked,
+         COUNT(*) FILTER (WHERE pp.monolit_position_id IS NOT NULL)::int AS has_monolit_id,
+         COUNT(*) FILTER (WHERE pp.registry_item_id IS NOT NULL)::int AS has_registry_id
+       FROM portal_positions pp
+       JOIN portal_objects po ON pp.object_id = po.object_id
+       JOIN portal_projects proj ON po.portal_project_id = proj.portal_project_id
+       WHERE proj.owner_id = $1
+       GROUP BY po.portal_project_id`,
+      [userId]
+    );
+
+    // Build stats map
+    const statsMap = new Map();
+    for (const row of statsResult.rows) {
+      statsMap.set(row.portal_project_id, {
+        total_positions: row.total_positions,
+        monolit_linked: row.monolit_linked,
+        registry_linked: row.registry_linked,
+        both_linked: row.both_linked,
+        has_monolit_id: row.has_monolit_id,
+        has_registry_id: row.has_registry_id
+      });
+    }
+
+    // 3. Merge into response
+    const projects = projectsResult.rows.map(p => {
+      const stats = statsMap.get(p.portal_project_id) || {
+        total_positions: 0,
+        monolit_linked: 0,
+        registry_linked: 0,
+        both_linked: 0,
+        has_monolit_id: 0,
+        has_registry_id: 0
+      };
+
+      const kioskTypes = p.kiosk_links
+        .filter(k => k.kiosk_type)
+        .map(k => k.kiosk_type);
+
+      return {
+        portal_project_id: p.portal_project_id,
+        project_name: p.project_name,
+        project_type: p.project_type,
+        stavba_name: p.stavba_name,
+        description: p.description,
+        created_at: p.created_at,
+        updated_at: p.updated_at,
+
+        // Kiosk connections
+        kiosk_links: p.kiosk_links.filter(k => k.kiosk_type),
+        linked_kiosks: kioskTypes,
+        has_monolit: kioskTypes.includes('monolit'),
+        has_registry: kioskTypes.includes('registry'),
+
+        // Position-level cross-kiosk stats
+        position_stats: stats,
+
+        // Completeness score (0-100)
+        completeness: stats.total_positions > 0
+          ? Math.round((stats.both_linked / stats.total_positions) * 100)
+          : 0
+      };
+    });
+
+    // Global summary
+    const summary = {
+      total_projects: projects.length,
+      projects_with_monolit: projects.filter(p => p.has_monolit).length,
+      projects_with_registry: projects.filter(p => p.has_registry).length,
+      projects_with_both: projects.filter(p => p.has_monolit && p.has_registry).length,
+      total_positions: projects.reduce((s, p) => s + p.position_stats.total_positions, 0),
+      total_monolit_linked: projects.reduce((s, p) => s + p.position_stats.monolit_linked, 0),
+      total_registry_linked: projects.reduce((s, p) => s + p.position_stats.registry_linked, 0),
+      total_both_linked: projects.reduce((s, p) => s + p.position_stats.both_linked, 0)
+    };
+
+    res.json({
+      success: true,
+      projects,
+      summary
+    });
+
+  } catch (error) {
+    console.error('[PortalProjects] Error fetching registry:', error);
+
+    const isConnTimeout = error.message?.includes('timeout') ||
+      error.message?.includes('Connection terminated') ||
+      error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT';
+
+    if (isConnTimeout) {
+      return res.json({
+        success: true,
+        projects: [],
+        summary: {},
+        _warning: 'Database waking up, please refresh in a moment'
+      });
+    }
+
+    res.status(500).json({ success: false, error: 'Failed to fetch project registry' });
+  }
+});
 
 /**
  * GET /api/portal-projects/by-kiosk/:kioskType/:kioskProjectId

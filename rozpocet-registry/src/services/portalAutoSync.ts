@@ -83,6 +83,7 @@ export async function syncProjectToPortal(
           cenaJednotkova: item.cenaJednotkova,
           cenaCelkem: item.cenaCelkem,
           skupina: item.skupina || null,
+          position_instance_id: item.position_instance_id || null,
         })),
       })),
       tovData: tovData || {},
