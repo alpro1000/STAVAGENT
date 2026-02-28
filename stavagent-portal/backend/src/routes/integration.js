@@ -61,6 +61,9 @@ router.post('/import-from-monolit', async (req, res) => {
     await client.query('BEGIN');
     console.log('[Integration] Transaction started');
 
+    // Track monolit_id → position_instance_id mapping (returned to Monolit for write-back)
+    const instanceMapping = [];
+
     // Create or get portal project
     let projectId = portal_project_id;
     if (!projectId) {
@@ -100,7 +103,7 @@ router.post('/import-from-monolit', async (req, res) => {
       for (let posIdx = 0; posIdx < (obj.positions || []).length; posIdx++) {
         const pos = obj.positions[posIdx];
         const positionId = `pos_${uuidv4()}`;
-        await client.query(
+        const result = await client.query(
           `INSERT INTO portal_positions (
             position_id, object_id, kod, popis, mnozstvi, mj,
             cena_jednotkova, cena_celkem,
@@ -109,7 +112,8 @@ router.post('/import-from-monolit', async (req, res) => {
             monolit_position_id, last_sync_from, last_sync_at,
             sheet_name, row_index, created_by, updated_by,
             created_at, updated_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'monolit', NOW(), $14, $15, 'monolit_import', 'monolit_import', NOW(), NOW())`,
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'monolit', NOW(), $14, $15, 'monolit_import', 'monolit_import', NOW(), NOW())
+          RETURNING position_instance_id`,
           [
             positionId, dbObjectId,
             pos.kod || '', pos.popis, pos.mnozstvi || 0, pos.mj || '',
@@ -123,6 +127,14 @@ router.post('/import-from-monolit', async (req, res) => {
             posIdx
           ]
         );
+
+        // Track mapping: monolit_id → position_instance_id (for Monolit write-back)
+        if (pos.monolit_id && result.rows[0]?.position_instance_id) {
+          instanceMapping.push({
+            monolit_id: pos.monolit_id,
+            position_instance_id: result.rows[0].position_instance_id
+          });
+        }
       }
     }
 
@@ -132,7 +144,8 @@ router.post('/import-from-monolit', async (req, res) => {
     res.json({
       success: true,
       portal_project_id: projectId,
-      objects_imported: objects.length
+      objects_imported: objects.length,
+      instance_mapping: instanceMapping
     });
 
   } catch (error) {

@@ -146,6 +146,9 @@ async function initPostgresSchema() {
   // Run Phase 8 migration (Formwork Calculator + curing_days)
   await runPhase8FormworkCalculator();
 
+  // Run Phase 9 migration (Position Instance ID for Portal write-back)
+  await runPhase9PositionInstanceId();
+
   // Auto-load OTSKP codes if database is empty
   await autoLoadOtskpCodesIfNeeded();
 
@@ -1070,6 +1073,41 @@ async function runPhase8FormworkCalculator() {
 }
 
 /**
+ * Migration Phase 9 - Add position_instance_id to positions table
+ * Links Monolit positions to Portal PositionInstance for write-back
+ */
+async function runPhase9PositionInstanceId() {
+  try {
+    console.log('[PostgreSQL Migrations] Running Phase 9 (Position Instance ID)...');
+
+    try {
+      await db.exec(`ALTER TABLE positions ADD COLUMN position_instance_id VARCHAR(255) UNIQUE`);
+      console.log('[Migration 009] ✓ position_instance_id column added');
+    } catch (error) {
+      if (error.message?.includes('already exists') || error.message?.includes('duplicate column')) {
+        console.log('[Migration 009] ✓ position_instance_id column already exists');
+      } else {
+        console.error('[Migration 009] Error adding position_instance_id:', error);
+      }
+    }
+
+    try {
+      await db.exec(`CREATE INDEX IF NOT EXISTS idx_positions_instance_id ON positions(position_instance_id)`);
+      console.log('[Migration 009] ✓ position_instance_id index created');
+    } catch (error) {
+      if (error.message?.includes('already exists')) {
+        console.log('[Migration 009] ✓ position_instance_id index already exists');
+      }
+    }
+
+    console.log('[PostgreSQL Migrations] ✅ Phase 9 Position Instance ID completed');
+  } catch (error) {
+    console.error('[PostgreSQL Migrations] Error during Phase 9:', error);
+    console.error('[Migration 009] ⚠️  Phase 9 failed, but continuing startup...');
+  }
+}
+
+/**
  * Initialize SQLite schema (existing logic from init.js)
  */
 async function initSqliteSchema() {
@@ -1097,6 +1135,7 @@ async function initSqliteSchema() {
       curing_days INTEGER DEFAULT 3,
       has_rfi INTEGER DEFAULT 0,
       rfi_message TEXT,
+      position_instance_id TEXT UNIQUE,
       created_at TEXT DEFAULT CURRENT_TIMESTAMP,
       updated_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
@@ -1105,6 +1144,11 @@ async function initSqliteSchema() {
   // Add curing_days column if missing (for existing databases)
   try {
     db.exec(`ALTER TABLE positions ADD COLUMN curing_days INTEGER DEFAULT 3`);
+  } catch (_) { /* column already exists */ }
+
+  // Add position_instance_id column if missing (for existing databases)
+  try {
+    db.exec(`ALTER TABLE positions ADD COLUMN position_instance_id TEXT UNIQUE`);
   } catch (_) { /* column already exists */ }
 
   // Formwork calculator table

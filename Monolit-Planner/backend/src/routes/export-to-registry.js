@@ -91,6 +91,7 @@ router.post('/:bridge_id', async (req, res) => {
       name: `Objekt ${partName}`,
       positions: partPositions.map((pos) => ({
         monolit_id: pos.id,
+        position_instance_id: pos.position_instance_id || null,
         kod: pos.otskp_code || '',
         popis: pos.item_name || partName,
         mnozstvi: pos.qty || 0,
@@ -132,6 +133,8 @@ router.post('/:bridge_id', async (req, res) => {
     }));
 
     // 6. Import to Portal (non-blocking, best effort)
+    // Portal returns instance_mapping: [{monolit_id, position_instance_id}]
+    // We store these IDs back in Monolit for future write-back
     try {
       const importRes = await fetch(`${PORTAL_API}/api/integration/import-from-monolit`, {
         method: 'POST',
@@ -144,7 +147,30 @@ router.post('/:bridge_id', async (req, res) => {
         })
       });
       if (importRes.ok) {
+        const importData = await importRes.json();
         console.log('[Export] Portal sync success');
+
+        // Store position_instance_id mapping back in Monolit DB
+        if (importData.instance_mapping && importData.instance_mapping.length > 0) {
+          for (const mapping of importData.instance_mapping) {
+            try {
+              if (db.isPostgres) {
+                const pool = db.getPool();
+                await pool.query(
+                  'UPDATE positions SET position_instance_id = $1 WHERE id = $2 AND position_instance_id IS NULL',
+                  [mapping.position_instance_id, mapping.monolit_id]
+                );
+              } else {
+                await db.prepare(
+                  'UPDATE positions SET position_instance_id = ? WHERE id = ? AND position_instance_id IS NULL'
+                ).run(mapping.position_instance_id, mapping.monolit_id);
+              }
+            } catch (mapErr) {
+              console.warn(`[Export] Failed to store instance mapping for ${mapping.monolit_id}: ${mapErr.message}`);
+            }
+          }
+          console.log(`[Export] ✅ Stored ${importData.instance_mapping.length} position_instance_id mappings`);
+        }
       }
     } catch (portalErr) {
       console.warn('[Export] Portal sync failed (non-critical):', portalErr.message);
@@ -200,6 +226,7 @@ router.post('/:bridge_id', async (req, res) => {
                       project_id: bridge_id,
                       part_name: pos.part_name,
                       position_id: pos.id,
+                      position_instance_id: pos.position_instance_id || null,
                       subtype: pos.subtype,
                     },
                     tov_data: {
