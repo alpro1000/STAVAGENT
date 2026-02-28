@@ -269,7 +269,7 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
 
   return (
     <>
-    <tr className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''} ${Object.keys(editedFields).length > 0 ? 'editing' : ''} ${isUpdating ? 'saving' : ''}`}>
+    <tr data-position-id={position.id} data-position-instance-id={position.position_instance_id || undefined} className={`table-row ${position.subtype} ${position.has_rfi ? 'has-rfi' : ''} ${isLocked ? 'locked' : ''} ${Object.keys(editedFields).length > 0 ? 'editing' : ''} ${isUpdating ? 'saving' : ''}`}>
       {/* Locked indicator */}
       {isLocked && <td className="lock-indicator col-lock">🔒</td>}
 

@@ -48,11 +48,12 @@ export default function MainApp() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Deep-link: read ?project=X&part=Y URL params (from Registry TOV → Monolit)
+  // Deep-link: read ?project=X&part=Y&position_instance_id=Z URL params
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
-    const deepLinkProject = params.get('project');
+    const deepLinkProject = params.get('project') || params.get('project_id');
     const deepLinkPart = params.get('part');
+    const deepLinkInstanceId = params.get('position_instance_id');
 
     if (!deepLinkProject) return;
 
@@ -64,8 +65,23 @@ export default function MainApp() {
     if (bridge) {
       setSelectedBridge(deepLinkProject);
 
-      // Scroll to part after a short delay (wait for positions to render)
-      if (deepLinkPart) {
+      // Scroll to specific position by position_instance_id
+      if (deepLinkInstanceId) {
+        setTimeout(() => {
+          const posEl = document.querySelector(`[data-position-instance-id="${deepLinkInstanceId}"]`) as HTMLElement;
+          if (posEl) {
+            posEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            posEl.style.outline = '3px solid var(--accent-orange, #FF9F1C)';
+            posEl.style.outlineOffset = '2px';
+            setTimeout(() => {
+              posEl.style.outline = '';
+              posEl.style.outlineOffset = '';
+            }, 3000);
+          }
+        }, 500);
+      }
+      // Scroll to part
+      else if (deepLinkPart) {
         setTimeout(() => {
           const partEl = document.getElementById(`part-${deepLinkPart}`);
           if (partEl) {

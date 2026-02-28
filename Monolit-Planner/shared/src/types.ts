@@ -41,6 +41,9 @@ export interface Position {
   kros_unit_czk?: number;         // KROS — JC práce
   kros_total_czk?: number;        // KROS celkem
 
+  // Portal PositionInstance link (for cross-kiosk write-back)
+  position_instance_id?: string;
+
   // Metadata
   has_rfi?: boolean;
   rfi_message?: string;

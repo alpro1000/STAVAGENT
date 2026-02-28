@@ -35,6 +35,9 @@ export interface ParsedItem {
   classificationConfidence?: 'high' | 'medium' | 'low';
   classificationWarnings?: string[];
 
+  // Portal PositionInstance link (for DOV write-back)
+  position_instance_id?: string | null;
+
   // Трассировка источника
   source: ItemSource;
 }

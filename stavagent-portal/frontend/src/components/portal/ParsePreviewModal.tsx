@@ -109,13 +109,53 @@ interface ParsePreviewModalProps {
   onClose: () => void;
 }
 
+interface ImportResultData {
+  success: boolean;
+  project_id: string;
+  project_name: string;
+  objects_created: number;
+  instances_created: number;
+}
+
 export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
   const [dragging, setDragging] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [importing, setImporting] = useState(false);
   const [result, setResult] = useState<ParseResult | null>(null);
+  const [importResult, setImportResult] = useState<ImportResultData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [expandedSheets, setExpandedSheets] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const lastFileRef = useRef<File | null>(null);
+
+  const handleImportToPortal = async () => {
+    if (!lastFileRef.current || !result) return;
+
+    setImporting(true);
+    setError(null);
+
+    const formData = new FormData();
+    formData.append('file', lastFileRef.current);
+    formData.append('project_name', result.metadata.stavba || result.metadata.objekt || result.metadata.fileName);
+
+    try {
+      const res = await fetch(`${API_URL}/api/parse-preview/import`, {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Import selhal');
+      }
+
+      setImportResult(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Chyba při importu');
+    } finally {
+      setImporting(false);
+    }
+  };
 
   const parseFile = async (file: File) => {
     if (!file.name.match(/\.(xlsx?|xls)$/i)) {
@@ -125,7 +165,9 @@ export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
 
     setUploading(true);
     setResult(null);
+    setImportResult(null);
     setError(null);
+    lastFileRef.current = file;
 
     const formData = new FormData();
     formData.append('file', file);
@@ -429,6 +471,57 @@ export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
                     );
                   })}
                 </div>
+              </div>
+
+              {/* Import to Portal */}
+              <div style={{
+                padding: '14px',
+                background: 'var(--bg-secondary)',
+                border: '1px solid var(--border-color)',
+                borderRadius: '8px',
+              }}>
+                {importResult ? (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <CheckCircle2 size={20} style={{ color: '#10b981', flexShrink: 0 }} />
+                    <div>
+                      <div style={{ fontSize: '13px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                        Import dokoncen
+                      </div>
+                      <div style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
+                        {importResult.project_name} — {fmt(importResult.instances_created)} pozic, {fmt(importResult.objects_created)} objektu
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <div>
+                      <div style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                        Importovat do Portal DB
+                      </div>
+                      <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
+                        Vytvorit PositionInstance pro kazdy radek — umozni propojeni s kiosky
+                      </div>
+                    </div>
+                    <button
+                      className="c-btn c-btn--primary c-btn--sm"
+                      onClick={handleImportToPortal}
+                      disabled={importing}
+                      style={{ flexShrink: 0 }}
+                    >
+                      {importing ? (
+                        <>
+                          <Loader2 size={13} style={{ animation: 'spin 1s linear infinite' }} />
+                          Importuji...
+                        </>
+                      ) : (
+                        <>
+                          <Upload size={13} />
+                          Importovat
+                        </>
+                      )}
+                    </button>
+                  </div>
+                )}
               </div>
 
               {/* Sheets breakdown */}

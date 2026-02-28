@@ -390,7 +390,9 @@ router.post('/import-from-registry', async (req, res) => {
     );
 
     // Import sheets as objects, items as positions
+    // Track instance_mapping for DOV write-back (registry_item_id → position_instance_id)
     let totalItems = 0;
+    const instanceMapping = [];
     for (const sheet of sheets) {
       const objectId = `obj_${uuidv4()}`;
       await client.query(
@@ -405,16 +407,31 @@ router.post('/import-from-registry', async (req, res) => {
         // Get TOV data if available
         const itemTov = (tovData && tovData[item.id]) || {};
 
-        await client.query(
+        // Build dov_payload from TOV data (includes formworkRental + pumpRental)
+        const hasTovData = itemTov.labor || itemTov.machinery || itemTov.materials || itemTov.formworkRental || itemTov.pumpRental;
+        const dovPayload = hasTovData ? JSON.stringify({
+          labor: itemTov.labor || [],
+          machinery: itemTov.machinery || [],
+          materials: itemTov.materials || [],
+          formwork_rental: itemTov.formworkRental || null,
+          pump_rental: itemTov.pumpRental || null,
+          labor_summary: itemTov.laborSummary || null,
+          machinery_summary: itemTov.machinerySummary || null,
+          materials_summary: itemTov.materialsSummary || null,
+        }) : null;
+
+        const result = await client.query(
           `INSERT INTO portal_positions (
             position_id, object_id, kod, popis, mnozstvi, mj,
             cena_jednotkova, cena_celkem,
             tov_labor, tov_machinery, tov_materials,
+            dov_payload,
             registry_item_id, last_sync_from, last_sync_at,
             sheet_name, row_index, skupina,
             created_by, updated_by,
             created_at, updated_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'registry', NOW(), $13, $14, $15, 'registry_import', 'registry_import', NOW(), NOW())`,
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'registry', NOW(), $14, $15, $16, 'registry_import', 'registry_import', NOW(), NOW())
+          RETURNING position_instance_id`,
           [
             positionId, objectId,
             item.kod || '', item.popis || '',
@@ -423,6 +440,7 @@ router.post('/import-from-registry', async (req, res) => {
             JSON.stringify(itemTov.labor || []),
             JSON.stringify(itemTov.machinery || []),
             JSON.stringify(itemTov.materials || []),
+            dovPayload,
             item.id || null,
             sheet.name || '',
             itemIdx,
@@ -430,17 +448,26 @@ router.post('/import-from-registry', async (req, res) => {
           ]
         );
         totalItems++;
+
+        // Track instance mapping for write-back
+        if (item.id && result.rows[0]?.position_instance_id) {
+          instanceMapping.push({
+            registry_item_id: item.id,
+            position_instance_id: result.rows[0].position_instance_id,
+          });
+        }
       }
     }
 
     await client.query('COMMIT');
-    console.log(`[Integration] Registry import complete: ${projectId}, ${sheets.length} sheets, ${totalItems} items`);
+    console.log(`[Integration] Registry import complete: ${projectId}, ${sheets.length} sheets, ${totalItems} items, ${instanceMapping.length} instance mappings`);
 
     res.json({
       success: true,
       portal_project_id: projectId,
       sheets_imported: sheets.length,
-      items_imported: totalItems
+      items_imported: totalItems,
+      instance_mapping: instanceMapping,
     });
 
   } catch (error) {

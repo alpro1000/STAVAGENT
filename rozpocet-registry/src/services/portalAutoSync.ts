@@ -10,6 +10,12 @@
 
 import type { Project, TOVData } from '../types';
 
+// Instance mapping from Portal (registry_item_id → position_instance_id)
+export interface InstanceMapping {
+  registry_item_id: string;
+  position_instance_id: string;
+}
+
 const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
 
 // Debounce timers per project
@@ -76,6 +82,7 @@ export async function syncProjectToPortal(
           mj: item.mj,
           cenaJednotkova: item.cenaJednotkova,
           cenaCelkem: item.cenaCelkem,
+          skupina: item.skupina || null,
         })),
       })),
       tovData: tovData || {},
@@ -100,6 +107,13 @@ export async function syncProjectToPortal(
       if (data.success && data.portal_project_id) {
         portalProjectMap.set(project.id, data.portal_project_id);
         console.log(`[PortalAutoSync] Synced project "${project.projectName}" → Portal ${data.portal_project_id} (${data.items_imported} items)`);
+
+        // Store position_instance_id mappings back in Registry items
+        if (data.instance_mapping && data.instance_mapping.length > 0 && onInstanceMapping) {
+          onInstanceMapping(data.instance_mapping);
+          console.log(`[PortalAutoSync] Received ${data.instance_mapping.length} instance mappings`);
+        }
+
         return data.portal_project_id;
       }
     } else {
@@ -125,6 +139,16 @@ let onAutoLink: ((projectId: string, portalProjectId: string) => void) | null = 
 
 export function setAutoLinkCallback(cb: (projectId: string, portalProjectId: string) => void): void {
   onAutoLink = cb;
+}
+
+/**
+ * Callback to store position_instance_id mappings after sync.
+ * Set by registryStore subscriber to avoid circular imports.
+ */
+let onInstanceMapping: ((mappings: InstanceMapping[]) => void) | null = null;
+
+export function setInstanceMappingCallback(cb: (mappings: InstanceMapping[]) => void): void {
+  onInstanceMapping = cb;
 }
 
 /**
