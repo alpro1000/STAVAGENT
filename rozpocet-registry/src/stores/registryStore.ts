@@ -13,7 +13,6 @@ import type {
   SheetStats,
   PortalLink,
   TOVData,
-  MonolithPayload,
 } from '../types';
 import type { ImportTemplate } from '../types/template';
 import { PREDEFINED_TEMPLATES } from '../config/templates';
