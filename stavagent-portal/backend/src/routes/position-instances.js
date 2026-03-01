@@ -78,10 +78,10 @@ router.get('/project/:projectId', async (req, res) => {
       [projectId]
     );
 
-    // Build filter clause
+    // Build filter clause — $1 is always object_id, filters start from $2
     let filterClause = '';
     const filterParams = [];
-    let paramIndex = 1;
+    let paramIndex = 2;
 
     if (skupina) {
       filterClause += ` AND pp.skupina = $${paramIndex++}`;
@@ -108,7 +108,7 @@ router.get('/project/:projectId', async (req, res) => {
                 pp.created_by, pp.updated_by,
                 pp.created_at, pp.updated_at
          FROM portal_positions pp
-         WHERE pp.object_id = $${paramIndex}${filterClause}
+         WHERE pp.object_id = $1${filterClause}
          ORDER BY pp.row_index, pp.created_at`,
         [obj.object_id, ...filterParams]
       );
@@ -247,6 +247,354 @@ router.get('/project/:projectId/linked', async (req, res) => {
 });
 
 // =============================================================================
+// TEMPLATES (defined before /:instanceId to avoid route shadowing)
+// =============================================================================
+
+/**
+ * POST /api/positions/templates
+ * Save a position instance as a reusable template.
+ *
+ * Body: { source_instance_id, scaling_rule?: 'linear'|'fixed'|'manual', created_by? }
+ */
+router.post('/templates', async (req, res) => {
+  const pool = safeGetPool();
+  if (!pool) {
+    return res.status(503).json({ success: false, error: 'Database not available' });
+  }
+
+  const client = await pool.connect();
+  try {
+    const { source_instance_id, scaling_rule = 'linear', created_by = 'manual' } = req.body;
+
+    if (!source_instance_id) {
+      return res.status(400).json({ success: false, error: 'source_instance_id required' });
+    }
+
+    // Get source instance
+    const sourceResult = await client.query(
+      `SELECT pp.*, po.portal_project_id
+       FROM portal_positions pp
+       JOIN portal_objects po ON pp.object_id = po.object_id
+       WHERE pp.position_instance_id = $1`,
+      [source_instance_id]
+    );
+
+    if (sourceResult.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Source position instance not found' });
+    }
+
+    const source = sourceResult.rows[0];
+
+    // Normalize description for matching
+    const normalizedDesc = normalizeDescription(source.popis || '');
+
+    await client.query('BEGIN');
+
+    // Upsert template
+    const templateResult = await client.query(
+      `INSERT INTO position_templates (
+        project_id, catalog_code, unit, normalized_description, display_description,
+        monolith_template, dov_template,
+        scaling_rule, source_qty, source_instance_id, created_by
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
+      ON CONFLICT (project_id, catalog_code, unit, normalized_description)
+      DO UPDATE SET
+        monolith_template = EXCLUDED.monolith_template,
+        dov_template = EXCLUDED.dov_template,
+        scaling_rule = EXCLUDED.scaling_rule,
+        source_qty = EXCLUDED.source_qty,
+        source_instance_id = EXCLUDED.source_instance_id,
+        updated_at = NOW()
+      RETURNING template_id`,
+      [
+        source.portal_project_id,
+        source.kod || '',
+        source.mj || '',
+        normalizedDesc,
+        source.popis || '',
+        source.monolith_payload ? JSON.stringify(source.monolith_payload) : null,
+        source.dov_payload ? JSON.stringify(source.dov_payload) : null,
+        scaling_rule,
+        source.mnozstvi || 1,
+        source_instance_id,
+        created_by
+      ]
+    );
+
+    const templateId = templateResult.rows[0].template_id;
+
+    // Mark source instance as template source
+    await client.query(
+      `UPDATE portal_positions
+       SET template_id = $1, template_confidence = 'GREEN', updated_by = 'template_save'
+       WHERE position_instance_id = $2`,
+      [templateId, source_instance_id]
+    );
+
+    // Audit log
+    await client.query(
+      `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, template_id, details)
+       VALUES ('template_saved', $1, $2, $3, $4, $5)`,
+      [created_by, source.portal_project_id, source_instance_id, templateId, JSON.stringify({
+        catalog_code: source.kod,
+        unit: source.mj,
+        scaling_rule
+      })]
+    );
+
+    await client.query('COMMIT');
+
+    console.log(`[PositionInstances] Template saved: ${templateId} from ${source_instance_id}`);
+
+    res.json({
+      success: true,
+      template_id: templateId,
+      source_instance_id,
+      catalog_code: source.kod,
+      unit: source.mj
+    });
+
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('[PositionInstances] Error saving template:', error);
+    res.status(500).json({ success: false, error: 'Failed to save template' });
+  } finally {
+    client.release();
+  }
+});
+
+/**
+ * GET /api/positions/templates/:projectId
+ * List all templates for a project.
+ *
+ * Query params:
+ *   ?catalog_code=231112   — Filter by catalog code
+ */
+router.get('/templates/:projectId', async (req, res) => {
+  const pool = safeGetPool();
+  if (!pool) {
+    return res.status(503).json({ success: false, error: 'Database not available' });
+  }
+
+  try {
+    const { projectId } = req.params;
+    const { catalog_code } = req.query;
+
+    let query = `SELECT * FROM position_templates WHERE project_id = $1`;
+    const params = [projectId];
+
+    if (catalog_code) {
+      query += ` AND catalog_code = $2`;
+      params.push(catalog_code);
+    }
+
+    query += ` ORDER BY catalog_code, unit`;
+
+    const result = await pool.query(query, params);
+
+    res.json({
+      success: true,
+      templates: result.rows.map(t => ({
+        template_id: t.template_id,
+        project_id: t.project_id,
+        catalog_code: t.catalog_code,
+        unit: t.unit,
+        normalized_description: t.normalized_description,
+        display_description: t.display_description,
+        monolith_template: t.monolith_template,
+        dov_template: t.dov_template,
+        scaling_rule: t.scaling_rule,
+        source_qty: t.source_qty,
+        source_instance_id: t.source_instance_id,
+        created_by: t.created_by,
+        apply_count: t.apply_count,
+        created_at: t.created_at,
+        updated_at: t.updated_at
+      }))
+    });
+
+  } catch (error) {
+    console.error('[PositionInstances] Error listing templates:', error);
+    res.status(500).json({ success: false, error: 'Failed to list templates' });
+  }
+});
+
+/**
+ * POST /api/positions/templates/:templateId/apply
+ * Apply a template to matching position instances.
+ *
+ * Body: {
+ *   target_instance_ids?: string[],  — Specific instances (auto-find if empty)
+ *   min_confidence?: 'GREEN'|'AMBER'|'RED',
+ *   require_approval?: boolean
+ * }
+ */
+router.post('/templates/:templateId/apply', async (req, res) => {
+  const pool = safeGetPool();
+  if (!pool) {
+    return res.status(503).json({ success: false, error: 'Database not available' });
+  }
+
+  const client = await pool.connect();
+  try {
+    const { templateId } = req.params;
+    const {
+      target_instance_ids,
+      min_confidence = 'RED',
+      require_approval = false
+    } = req.body;
+
+    // Get template
+    const templateResult = await client.query(
+      'SELECT * FROM position_templates WHERE template_id = $1',
+      [templateId]
+    );
+
+    if (templateResult.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Template not found' });
+    }
+
+    const template = templateResult.rows[0];
+
+    // Find matching instances
+    let matchQuery;
+    let matchParams;
+
+    if (target_instance_ids && target_instance_ids.length > 0) {
+      matchQuery = `
+        SELECT pp.*, po.portal_project_id
+        FROM portal_positions pp
+        JOIN portal_objects po ON pp.object_id = po.object_id
+        WHERE pp.position_instance_id = ANY($1)
+          AND pp.position_instance_id != $2`;
+      matchParams = [target_instance_ids, template.source_instance_id];
+    } else {
+      // Auto-find: same project, same catalog_code
+      matchQuery = `
+        SELECT pp.*, po.portal_project_id
+        FROM portal_positions pp
+        JOIN portal_objects po ON pp.object_id = po.object_id
+        WHERE po.portal_project_id = $1
+          AND pp.kod = $2
+          AND pp.position_instance_id != $3`;
+      matchParams = [template.project_id, template.catalog_code, template.source_instance_id];
+    }
+
+    const matchResult = await client.query(matchQuery, matchParams);
+
+    // Calculate matches with confidence
+    const confidenceOrder = { GREEN: 3, AMBER: 2, RED: 1 };
+    const minConfidenceLevel = confidenceOrder[min_confidence] || 1;
+
+    const matches = matchResult.rows.map(row => {
+      const unitMatch = (row.mj || '').toLowerCase() === (template.unit || '').toLowerCase();
+      const normalizedRowDesc = normalizeDescription(row.popis || '');
+      const descSimilarity = levenshteinSimilarity(normalizedRowDesc, template.normalized_description);
+      const codeMatch = (row.kod || '') === template.catalog_code;
+
+      let confidence;
+      if (codeMatch && unitMatch && descSimilarity >= 0.7) {
+        confidence = 'GREEN';
+      } else if (codeMatch && unitMatch) {
+        confidence = 'AMBER';
+      } else {
+        confidence = 'RED';
+      }
+
+      return {
+        position_instance_id: row.position_instance_id,
+        confidence,
+        match_details: { code_match: codeMatch, unit_match: unitMatch, description_similarity: descSimilarity },
+        scaling: {
+          rule: template.scaling_rule,
+          source_qty: template.source_qty,
+          target_qty: row.mnozstvi || 0,
+          ratio: template.source_qty > 0 ? (row.mnozstvi || 0) / template.source_qty : 1
+        },
+        approved: !require_approval
+      };
+    }).filter(m => confidenceOrder[m.confidence] >= minConfidenceLevel);
+
+    // Apply template to approved matches
+    await client.query('BEGIN');
+
+    let applied = 0;
+    let skipped = 0;
+    let pendingApproval = 0;
+
+    for (const match of matches) {
+      if (!match.approved) {
+        pendingApproval++;
+        continue;
+      }
+
+      // Scale payloads
+      const scaledMonolith = template.monolith_template
+        ? scalePayload(template.monolith_template, match.scaling.ratio)
+        : null;
+      const scaledDov = template.dov_template
+        ? scalePayload(template.dov_template, match.scaling.ratio)
+        : null;
+
+      await client.query(
+        `UPDATE portal_positions
+         SET monolith_payload = COALESCE($1, monolith_payload),
+             dov_payload = COALESCE($2, dov_payload),
+             template_id = $3,
+             template_confidence = $4,
+             updated_by = 'template_apply',
+             updated_at = NOW()
+         WHERE position_instance_id = $5`,
+        [
+          scaledMonolith ? JSON.stringify(scaledMonolith) : null,
+          scaledDov ? JSON.stringify(scaledDov) : null,
+          templateId,
+          match.confidence,
+          match.position_instance_id
+        ]
+      );
+      applied++;
+    }
+
+    // Update template apply count
+    await client.query(
+      'UPDATE position_templates SET apply_count = apply_count + $1, updated_at = NOW() WHERE template_id = $2',
+      [applied, templateId]
+    );
+
+    // Audit log
+    await client.query(
+      `INSERT INTO position_audit_log (event, actor, project_id, template_id, details)
+       VALUES ('template_applied', 'system:template', $1, $2, $3)`,
+      [template.project_id, templateId, JSON.stringify({
+        applied, skipped, pending_approval: pendingApproval,
+        total_matches: matches.length
+      })]
+    );
+
+    await client.query('COMMIT');
+
+    console.log(`[PositionInstances] Template ${templateId} applied: ${applied} of ${matches.length}`);
+
+    res.json({
+      success: true,
+      template_id: templateId,
+      matches,
+      applied,
+      skipped,
+      pending_approval: pendingApproval
+    });
+
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('[PositionInstances] Error applying template:', error);
+    res.status(500).json({ success: false, error: 'Failed to apply template' });
+  } finally {
+    client.release();
+  }
+});
+
+// =============================================================================
 // GET SINGLE INSTANCE
 // =============================================================================
 
@@ -332,7 +680,6 @@ router.post('/project/:projectId/bulk', async (req, res) => {
       [projectId]
     );
     if (projectCheck.rows.length === 0) {
-      client.release();
       return res.status(404).json({ success: false, error: 'Project not found' });
     }
 
@@ -602,7 +949,6 @@ router.post('/:instanceId/monolith', async (req, res) => {
     const { payload } = req.body;
 
     if (!payload) {
-      client.release();
       return res.status(400).json({ success: false, error: 'payload required' });
     }
 
@@ -621,7 +967,6 @@ router.post('/:instanceId/monolith', async (req, res) => {
 
     if (result.rows.length === 0) {
       await client.query('ROLLBACK');
-      client.release();
       return res.status(404).json({ success: false, error: 'Position instance not found' });
     }
 
@@ -741,7 +1086,6 @@ router.post('/:instanceId/dov', async (req, res) => {
     const { payload } = req.body;
 
     if (!payload) {
-      client.release();
       return res.status(400).json({ success: false, error: 'payload required' });
     }
 
@@ -771,7 +1115,6 @@ router.post('/:instanceId/dov', async (req, res) => {
 
     if (result.rows.length === 0) {
       await client.query('ROLLBACK');
-      client.release();
       return res.status(404).json({ success: false, error: 'Position instance not found' });
     }
 
@@ -802,357 +1145,6 @@ router.post('/:instanceId/dov', async (req, res) => {
     await client.query('ROLLBACK');
     console.error('[PositionInstances] Error writing DOV payload:', error);
     res.status(500).json({ success: false, error: 'Failed to write DOV payload' });
-  } finally {
-    client.release();
-  }
-});
-
-// =============================================================================
-// TEMPLATES
-// =============================================================================
-
-/**
- * POST /api/positions/templates
- * Save a position instance as a reusable template.
- *
- * Body: { source_instance_id, scaling_rule?: 'linear'|'fixed'|'manual', created_by? }
- */
-router.post('/templates', async (req, res) => {
-  const pool = safeGetPool();
-  if (!pool) {
-    return res.status(503).json({ success: false, error: 'Database not available' });
-  }
-
-  const client = await pool.connect();
-  try {
-    const { source_instance_id, scaling_rule = 'linear', created_by = 'manual' } = req.body;
-
-    if (!source_instance_id) {
-      client.release();
-      return res.status(400).json({ success: false, error: 'source_instance_id required' });
-    }
-
-    // Get source instance
-    const sourceResult = await client.query(
-      `SELECT pp.*, po.portal_project_id
-       FROM portal_positions pp
-       JOIN portal_objects po ON pp.object_id = po.object_id
-       WHERE pp.position_instance_id = $1`,
-      [source_instance_id]
-    );
-
-    if (sourceResult.rows.length === 0) {
-      client.release();
-      return res.status(404).json({ success: false, error: 'Source position instance not found' });
-    }
-
-    const source = sourceResult.rows[0];
-
-    // Normalize description for matching
-    const normalizedDesc = normalizeDescription(source.popis || '');
-
-    await client.query('BEGIN');
-
-    // Upsert template
-    const templateResult = await client.query(
-      `INSERT INTO position_templates (
-        project_id, catalog_code, unit, normalized_description, display_description,
-        monolith_template, dov_template,
-        scaling_rule, source_qty, source_instance_id, created_by
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
-      ON CONFLICT (project_id, catalog_code, unit, normalized_description)
-      DO UPDATE SET
-        monolith_template = EXCLUDED.monolith_template,
-        dov_template = EXCLUDED.dov_template,
-        scaling_rule = EXCLUDED.scaling_rule,
-        source_qty = EXCLUDED.source_qty,
-        source_instance_id = EXCLUDED.source_instance_id,
-        updated_at = NOW()
-      RETURNING template_id`,
-      [
-        source.portal_project_id,
-        source.kod || '',
-        source.mj || '',
-        normalizedDesc,
-        source.popis || '',
-        source.monolith_payload ? JSON.stringify(source.monolith_payload) : null,
-        source.dov_payload ? JSON.stringify(source.dov_payload) : null,
-        scaling_rule,
-        source.mnozstvi || 1,
-        source_instance_id,
-        created_by
-      ]
-    );
-
-    const templateId = templateResult.rows[0].template_id;
-
-    // Mark source instance as template source
-    await client.query(
-      `UPDATE portal_positions
-       SET template_id = $1, template_confidence = 'GREEN', updated_by = 'template_save'
-       WHERE position_instance_id = $2`,
-      [templateId, source_instance_id]
-    );
-
-    // Audit log
-    await client.query(
-      `INSERT INTO position_audit_log (event, actor, project_id, position_instance_id, template_id, details)
-       VALUES ('template_saved', $1, $2, $3, $4, $5)`,
-      [created_by, source.portal_project_id, source_instance_id, templateId, JSON.stringify({
-        catalog_code: source.kod,
-        unit: source.mj,
-        scaling_rule
-      })]
-    );
-
-    await client.query('COMMIT');
-
-    console.log(`[PositionInstances] Template saved: ${templateId} from ${source_instance_id}`);
-
-    res.json({
-      success: true,
-      template_id: templateId,
-      source_instance_id,
-      catalog_code: source.kod,
-      unit: source.mj
-    });
-
-  } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('[PositionInstances] Error saving template:', error);
-    res.status(500).json({ success: false, error: 'Failed to save template' });
-  } finally {
-    client.release();
-  }
-});
-
-/**
- * GET /api/positions/templates/:projectId
- * List all templates for a project.
- *
- * Query params:
- *   ?catalog_code=231112   — Filter by catalog code
- */
-router.get('/templates/:projectId', async (req, res) => {
-  const pool = safeGetPool();
-  if (!pool) {
-    return res.status(503).json({ success: false, error: 'Database not available' });
-  }
-
-  try {
-    const { projectId } = req.params;
-    const { catalog_code } = req.query;
-
-    let query = `SELECT * FROM position_templates WHERE project_id = $1`;
-    const params = [projectId];
-
-    if (catalog_code) {
-      query += ` AND catalog_code = $2`;
-      params.push(catalog_code);
-    }
-
-    query += ` ORDER BY catalog_code, unit`;
-
-    const result = await pool.query(query, params);
-
-    res.json({
-      success: true,
-      templates: result.rows.map(t => ({
-        template_id: t.template_id,
-        project_id: t.project_id,
-        catalog_code: t.catalog_code,
-        unit: t.unit,
-        normalized_description: t.normalized_description,
-        display_description: t.display_description,
-        monolith_template: t.monolith_template,
-        dov_template: t.dov_template,
-        scaling_rule: t.scaling_rule,
-        source_qty: t.source_qty,
-        source_instance_id: t.source_instance_id,
-        created_by: t.created_by,
-        apply_count: t.apply_count,
-        created_at: t.created_at,
-        updated_at: t.updated_at
-      }))
-    });
-
-  } catch (error) {
-    console.error('[PositionInstances] Error listing templates:', error);
-    res.status(500).json({ success: false, error: 'Failed to list templates' });
-  }
-});
-
-/**
- * POST /api/positions/templates/:templateId/apply
- * Apply a template to matching position instances.
- *
- * Body: {
- *   target_instance_ids?: string[],  — Specific instances (auto-find if empty)
- *   min_confidence?: 'GREEN'|'AMBER'|'RED',
- *   require_approval?: boolean
- * }
- */
-router.post('/templates/:templateId/apply', async (req, res) => {
-  const pool = safeGetPool();
-  if (!pool) {
-    return res.status(503).json({ success: false, error: 'Database not available' });
-  }
-
-  const client = await pool.connect();
-  try {
-    const { templateId } = req.params;
-    const {
-      target_instance_ids,
-      min_confidence = 'RED',
-      require_approval = false
-    } = req.body;
-
-    // Get template
-    const templateResult = await client.query(
-      'SELECT * FROM position_templates WHERE template_id = $1',
-      [templateId]
-    );
-
-    if (templateResult.rows.length === 0) {
-      client.release();
-      return res.status(404).json({ success: false, error: 'Template not found' });
-    }
-
-    const template = templateResult.rows[0];
-
-    // Find matching instances
-    let matchQuery;
-    let matchParams;
-
-    if (target_instance_ids && target_instance_ids.length > 0) {
-      matchQuery = `
-        SELECT pp.*, po.portal_project_id
-        FROM portal_positions pp
-        JOIN portal_objects po ON pp.object_id = po.object_id
-        WHERE pp.position_instance_id = ANY($1)
-          AND pp.position_instance_id != $2`;
-      matchParams = [target_instance_ids, template.source_instance_id];
-    } else {
-      // Auto-find: same project, same catalog_code
-      matchQuery = `
-        SELECT pp.*, po.portal_project_id
-        FROM portal_positions pp
-        JOIN portal_objects po ON pp.object_id = po.object_id
-        WHERE po.portal_project_id = $1
-          AND pp.kod = $2
-          AND pp.position_instance_id != $3`;
-      matchParams = [template.project_id, template.catalog_code, template.source_instance_id];
-    }
-
-    const matchResult = await client.query(matchQuery, matchParams);
-
-    // Calculate matches with confidence
-    const confidenceOrder = { GREEN: 3, AMBER: 2, RED: 1 };
-    const minConfidenceLevel = confidenceOrder[min_confidence] || 1;
-
-    const matches = matchResult.rows.map(row => {
-      const unitMatch = (row.mj || '').toLowerCase() === (template.unit || '').toLowerCase();
-      const normalizedRowDesc = normalizeDescription(row.popis || '');
-      const descSimilarity = levenshteinSimilarity(normalizedRowDesc, template.normalized_description);
-      const codeMatch = (row.kod || '') === template.catalog_code;
-
-      let confidence;
-      if (codeMatch && unitMatch && descSimilarity >= 0.7) {
-        confidence = 'GREEN';
-      } else if (codeMatch && unitMatch) {
-        confidence = 'AMBER';
-      } else {
-        confidence = 'RED';
-      }
-
-      return {
-        position_instance_id: row.position_instance_id,
-        confidence,
-        match_details: { code_match: codeMatch, unit_match: unitMatch, description_similarity: descSimilarity },
-        scaling: {
-          rule: template.scaling_rule,
-          source_qty: template.source_qty,
-          target_qty: row.mnozstvi || 0,
-          ratio: template.source_qty > 0 ? (row.mnozstvi || 0) / template.source_qty : 1
-        },
-        approved: !require_approval
-      };
-    }).filter(m => confidenceOrder[m.confidence] >= minConfidenceLevel);
-
-    // Apply template to approved matches
-    await client.query('BEGIN');
-
-    let applied = 0;
-    let skipped = 0;
-    let pendingApproval = 0;
-
-    for (const match of matches) {
-      if (!match.approved) {
-        pendingApproval++;
-        continue;
-      }
-
-      // Scale payloads
-      const scaledMonolith = template.monolith_template
-        ? scalePayload(template.monolith_template, match.scaling.ratio)
-        : null;
-      const scaledDov = template.dov_template
-        ? scalePayload(template.dov_template, match.scaling.ratio)
-        : null;
-
-      await client.query(
-        `UPDATE portal_positions
-         SET monolith_payload = COALESCE($1, monolith_payload),
-             dov_payload = COALESCE($2, dov_payload),
-             template_id = $3,
-             template_confidence = $4,
-             updated_by = 'template_apply',
-             updated_at = NOW()
-         WHERE position_instance_id = $5`,
-        [
-          scaledMonolith ? JSON.stringify(scaledMonolith) : null,
-          scaledDov ? JSON.stringify(scaledDov) : null,
-          templateId,
-          match.confidence,
-          match.position_instance_id
-        ]
-      );
-      applied++;
-    }
-
-    // Update template apply count
-    await client.query(
-      'UPDATE position_templates SET apply_count = apply_count + $1, updated_at = NOW() WHERE template_id = $2',
-      [applied, templateId]
-    );
-
-    // Audit log
-    await client.query(
-      `INSERT INTO position_audit_log (event, actor, project_id, template_id, details)
-       VALUES ('template_applied', 'system:template', $1, $2, $3)`,
-      [template.project_id, templateId, JSON.stringify({
-        applied, skipped, pending_approval: pendingApproval,
-        total_matches: matches.length
-      })]
-    );
-
-    await client.query('COMMIT');
-
-    console.log(`[PositionInstances] Template ${templateId} applied: ${applied} of ${matches.length}`);
-
-    res.json({
-      success: true,
-      template_id: templateId,
-      matches,
-      applied,
-      skipped,
-      pending_approval: pendingApproval
-    });
-
-  } catch (error) {
-    await client.query('ROLLBACK');
-    console.error('[PositionInstances] Error applying template:', error);
-    res.status(500).json({ success: false, error: 'Failed to apply template' });
   } finally {
     client.release();
   }

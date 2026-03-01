@@ -1060,7 +1060,7 @@ async function fetchKioskData(kioskType, kioskProjectId) {
 
   const response = await fetch(endpoint, {
     headers: { 'Content-Type': 'application/json' },
-    timeout: 10000
+    signal: AbortSignal.timeout(10000)
   });
 
   if (!response.ok) {

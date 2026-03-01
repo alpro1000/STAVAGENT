@@ -29,7 +29,7 @@ export function extractConcretePositions(rawRows, bridgeId) {
   let bridgeRows = [];
 
   // AUTO-DETECT mode: If bridgeId is SO_AUTO, extract ALL concrete items without filtering by bridge
-  const autoDetectMode = bridgeId === 'SO_AUTO' || bridgeId === 'SO_AUTO';
+  const autoDetectMode = bridgeId === 'SO_AUTO';
 
   if (autoDetectMode) {
     logger.info(`[ConcreteExtractor] 🔍 AUTO-DETECT mode: extracting all concrete items without bridge filtering`);
