@@ -33,9 +33,17 @@ services:
       - key: CORE_API_URL
         value: "https://concrete-agent.onrender.com"
       - key: CORE_TIMEOUT
-        value: "30000"
+        value: "90000"
       - key: ENABLE_CORE_FALLBACK
         value: "true"
+      # LLM API keys for formwork AI assistant (set manually in Render dashboard)
+      # GOOGLE_AI_KEY enables direct Gemini calls (~1s, cheapest)
+      # OPENAI_API_KEY enables direct OpenAI fallback (~2s)
+      # Without these, AI falls back to CORE Multi-Role (may be sleeping)
+      - key: GOOGLE_AI_KEY
+        sync: false
+      - key: OPENAI_API_KEY
+        sync: false
     healthCheckPath: /health
 
   # Frontend (Static Site)
