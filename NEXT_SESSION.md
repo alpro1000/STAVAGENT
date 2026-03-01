@@ -2,7 +2,7 @@
 
 **Last Updated:** 2026-02-27
 **Current Branch:** `claude/update-next-session-PF9Pm`
-**Last Session:** Position Instance Architecture v1.0 — Stage 1 Implementation
+**Last Session:** RCPSP Element Scheduler — graph-based parallel scheduling with real algorithms
 
 ---
 
@@ -20,8 +20,46 @@ git log --oneline -10
 # 3. TypeScript check (rozpocet-registry)
 cd rozpocet-registry && npx tsc --noEmit --skipLibCheck
 
-# 4. Run tests
-cd ../Monolit-Planner/shared && npx vitest run        # 51 tests
+# 4. Run tests (82 total: 55 formulas + 27 scheduler)
+cd Monolit-Planner/shared && npx vitest run
+```
+
+---
+
+## Сессия 2026-02-27 (часть 3): RCPSP Element Scheduler
+
+### ✅ Что сделано:
+
+| Компонент | Задача | Статус |
+|-----------|--------|--------|
+| element-scheduler.ts | RCPSP scheduling engine — DAG, Kahn's topo sort, CPM, parallel scheme | ✅ |
+| element-scheduler.test.ts | 27 comprehensive tests (edge cases, parametric, real-world) | ✅ |
+| formulas.ts | Integration: `calculateElementTotalDays()` → `scheduleElement()` via metadata | ✅ |
+| formulas.test.ts | 4 RCPSP integration tests (multi-tact, sequential, savings, fallback) | ✅ |
+| ESM fix | `.js` extension for Node.js ESM runtime module resolution | ✅ |
+| Refactor v2 | Replaced "textbook recommendations" with real graph algorithms | ✅ |
+
+### Ключевые алгоритмы (element-scheduler.ts):
+
+```
+1. GRAPH: ActivityDAG — adjacency list (V, adjFS, adjSS, inFS, inSS, inDegreeFS)
+2. TOPO SORT: Kahn's BFS algorithm O(V+E) with cycle detection
+3. CPM: Forward pass (ES/EF) + Backward pass (LS/LF) including SS edges
+4. RCPSP: Parallel scheduling scheme (NOT serial topo-order!)
+   - At each step: scan ALL remaining activities, find ready ones
+   - Pick activity with earliest feasible start (resource-aware)
+   - Resources: formwork_crew (ASM+STR), rebar_crew (REB)
+   - CUR/CON are passive (no crew needed → no resource conflict)
+5. CRITICAL PATH: Slack analysis (LS - ES = 0) → bottleneck identification
+```
+
+### Критичное исправление — Serial vs Parallel scheme:
+```
+Serial (broken): Kahn's topo order → T0_ASM, T0_REB, T0_CON, T0_CUR, T0_STR, T1_ASM...
+  → FW crew idle during T0 curing! No parallelism!
+
+Parallel (correct): At each step, scan ALL remaining → find ready → pick earliest ES
+  → T0_CUR running? Start T1_ASM on set 2! Crew utilized!
 ```
 
 ---
@@ -103,7 +141,16 @@ Workflow: Calculate in Monolit → Save as Template → Apply to N matches
 
 ---
 
-### Новые/изменённые файлы:
+### Новые/изменённые файлы (часть 3 — RCPSP):
+```
+Monolit-Planner/shared/src/calculators/element-scheduler.ts     NEW (~500 lines — RCPSP engine)
+Monolit-Planner/shared/src/calculators/element-scheduler.test.ts NEW (27 tests)
+Monolit-Planner/shared/src/calculators/index.ts                  +export element-scheduler
+Monolit-Planner/shared/src/formulas.ts                           +scheduleElement integration, +safeParseMeta
+Monolit-Planner/shared/src/formulas.test.ts                      +4 RCPSP integration tests (total: 55)
+```
+
+### Новые/изменённые файлы (часть 2 — Stage 1):
 ```
 stavagent-portal/backend/src/db/migrations/add-position-instance-architecture.sql   NEW (107 lines)
 stavagent-portal/backend/src/db/migrations.js                                        +runPhase8Migrations()
@@ -213,7 +260,7 @@ Stage 2 (9 задач):   0% реализовано
 
 | Сервис | Тесты | Статус |
 |--------|-------|--------|
-| Monolit shared formulas | 51/51 | ✅ Pass |
+| Monolit shared (formulas + scheduler) | 82/82 (55 + 27) | ✅ Pass |
 | rozpocet-registry tsc build | npx tsc --noEmit | ✅ Pass |
 | rozpocet-registry vite build | npm run build | ✅ Pass |
 | URS Matcher | 159 | ⚠️ Не запускались |
