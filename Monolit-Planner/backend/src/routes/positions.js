@@ -126,7 +126,7 @@ router.get('/', async (req, res) => {
     // Filter RFI if requested
     let responsePositions = calculatedPositions;
     if (include_rfi === 'false') {
-      responsePositions = calculatedPositions.filter(p => p.has_rfi);
+      responsePositions = calculatedPositions.filter(p => !p.has_rfi);
     }
 
     // RFI summary
@@ -467,7 +467,7 @@ router.post('/:id/suggest-days', async (req, res) => {
           id, position_id, suggested_days, suggested_by,
           normset_id, norm_source, assumptions_log, confidence,
           status, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
       `).run(
         suggestionId,
         id,

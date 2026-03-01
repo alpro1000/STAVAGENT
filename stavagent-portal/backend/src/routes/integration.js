@@ -215,9 +215,9 @@ router.get('/for-registry/:portal_project_id', async (req, res) => {
         monolith_payload: pos.monolith_payload || null,
         dov_payload: pos.dov_payload || null,
         tovData: {
-          labor: pos.tov_labor ? JSON.parse(pos.tov_labor) : [],
-          machinery: pos.tov_machinery ? JSON.parse(pos.tov_machinery) : [],
-          materials: pos.tov_materials ? JSON.parse(pos.tov_materials) : []
+          labor: pos.tov_labor ? (typeof pos.tov_labor === 'object' ? pos.tov_labor : JSON.parse(pos.tov_labor)) : [],
+          machinery: pos.tov_machinery ? (typeof pos.tov_machinery === 'object' ? pos.tov_machinery : JSON.parse(pos.tov_machinery)) : [],
+          materials: pos.tov_materials ? (typeof pos.tov_materials === 'object' ? pos.tov_materials : JSON.parse(pos.tov_materials)) : []
         },
         source: {
           project: project.project_name,
