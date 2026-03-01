@@ -44,6 +44,12 @@ export interface ElementScheduleInput {
   rebar_lag_pct?: number;     // 0 = full overlap (rebar starts with assembly)
                               // 50 = rebar starts when assembly 50% done (default)
                               // 100 = sequential (rebar after assembly)
+
+  // v2.0: Scheduling mode (determined by PourDecisionTree)
+  scheduling_mode?: 'linear' | 'chess';  // default 'linear'
+  // chess: odd tacts first (1,3,5...), then cure, then even tacts (2,4,6...)
+  // requires min cure_between_neighbors_h between adjacent tacts
+  cure_between_neighbors_days?: number;  // default 1 (24h) for chess mode
 }
 
 export interface TactDetail {
@@ -111,6 +117,8 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
   } = input;
 
   const num_sets = Math.min(rawSets, num_tacts);
+  const scheduling_mode = input.scheduling_mode ?? 'linear';
+  const cure_between_neighbors_days = input.cure_between_neighbors_days ?? 1;
 
   // Edge case: no tacts
   if (num_tacts <= 0) {
@@ -123,17 +131,60 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
 
   // ─── 1. Build DAG ────────────────────────────────────────────────────────
 
+  // Chess mode: reorder tacts so odd-indexed come first, then even-indexed
+  // This ensures adjacent sections are never poured consecutively.
+  // Example: 6 tacts → pour order [0,2,4, 1,3,5]
+  // Phase 1 (odd positions): 0,2,4 — with cure gaps
+  // Phase 2 (even positions): 1,3,5 — neighbors are already cured
+  let tactOrder: number[];
+  if (scheduling_mode === 'chess' && num_tacts > 2) {
+    const phase1 = []; // Even indices (0,2,4...) — "odd" physical positions
+    const phase2 = []; // Odd indices (1,3,5...) — "even" physical positions
+    for (let i = 0; i < num_tacts; i++) {
+      if (i % 2 === 0) phase1.push(i);
+      else phase2.push(i);
+    }
+    tactOrder = [...phase1, ...phase2];
+  } else {
+    tactOrder = Array.from({ length: num_tacts }, (_, i) => i);
+  }
+
   const nodes: Node[] = [];
   const rebar_lag = assembly_days * (rebar_lag_pct / 100);
 
-  for (let t = 0; t < num_tacts; t++) {
-    const set = t % num_sets;
-    const prevOnSet = t - num_sets; // previous tact on same set
+  // Map from execution order → tact index
+  // executionPos[i] = which tact is scheduled at position i
+  // We build DAG using execution position for set reuse, but keep original tact index for output
 
-    // ASM: after STR of previous tact on same set
+  for (let execPos = 0; execPos < num_tacts; execPos++) {
+    const t = tactOrder[execPos]; // original tact index
+    const set = execPos % num_sets;
+    const prevOnSet = execPos - num_sets; // previous execution position on same set
+    const prevTactOnSet = prevOnSet >= 0 ? tactOrder[prevOnSet] : -1;
+
+    // Chess mode: add cure dependency between adjacent tacts
+    const chessPreds: string[] = [];
+    if (scheduling_mode === 'chess') {
+      // If this tact is adjacent to an already-scheduled tact, add cure wait
+      // Adjacent = tact index differs by 1
+      for (let prevExec = 0; prevExec < execPos; prevExec++) {
+        const prevT = tactOrder[prevExec];
+        if (Math.abs(prevT - t) === 1) {
+          // Neighbor tact — must wait for its concrete to cure
+          chessPreds.push(`T${prevT}_CON`);
+        }
+      }
+    }
+
+    // ASM: after STR of previous tact on same set + chess cure deps
+    const asmPreds = [
+      ...(prevTactOnSet >= 0 ? [`T${prevTactOnSet}_STR`] : []),
+      ...chessPreds,
+    ];
+
     nodes.push({
       id: `T${t}_ASM`, tact: t, type: 'assembly', duration: assembly_days,
-      crew: 'formwork', fs_preds: prevOnSet >= 0 ? [`T${prevOnSet}_STR`] : [], set,
+      crew: 'formwork', fs_preds: asmPreds, set,
     });
 
     // REB: start-to-start with ASM (lag = assembly_days × lag%)

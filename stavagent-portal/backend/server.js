@@ -87,19 +87,39 @@ if (shouldTrustProxy) {
   console.log('[Security] Trust proxy disabled (development mode)');
 }
 
+// Helper: check if origin is allowed
+function isOriginAllowed(origin) {
+  if (!origin) return true;
+  if (ALLOWED_ORIGINS.includes('*')) return true;
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  if (VERCEL_PREVIEW_REGEX.test(origin)) return true;
+  return false;
+}
+
+// Explicit OPTIONS preflight handler — runs BEFORE helmet/cors middleware
+// This ensures Vercel serverless deployments properly handle preflight requests
+// (Vercel can sometimes interfere with Express middleware on OPTIONS)
+app.options('*', (req, res) => {
+  const origin = req.headers.origin;
+  if (isOriginAllowed(origin)) {
+    res.set({
+      'Access-Control-Allow-Origin': origin || '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Max-Age': '86400',
+    });
+  }
+  res.sendStatus(204);
+});
+
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false, // Don't block cross-origin requests
+}));
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-
-    // Check if wildcard is set (for development or multiple frontends)
-    if (ALLOWED_ORIGINS.includes('*')) {
-      return callback(null, true);
-    }
-
-    if (ALLOWED_ORIGINS.includes(origin) || VERCEL_PREVIEW_REGEX.test(origin)) {
+    if (isOriginAllowed(origin)) {
       callback(null, true);
     } else {
       logger.warn(`CORS blocked origin: ${origin}`);
