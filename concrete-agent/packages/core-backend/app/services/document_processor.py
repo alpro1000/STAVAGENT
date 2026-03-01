@@ -293,24 +293,9 @@ class DocumentProcessor:
         # Extract text content
         text_content = ""
 
-        # Try to get text from positions
-        if 'positions' in parsed:
-            for pos in parsed['positions']:
-                if 'popis' in pos:
-                    text_content += pos['popis'] + " "
-                if 'poznamka' in pos:
-                    text_content += pos['poznamka'] + " "
-
-        # Try to get from metadata
-        if 'project_info' in parsed:
-            info = parsed['project_info']
-            for key in ['project_name', 'description', 'investor', 'location']:
-                if key in info and info[key]:
-                    text_content += str(info[key]) + " "
-
-        # Fallback: Try to read raw text if available
-        if not text_content and path_obj.suffix.lower() == '.pdf':
-            # Use simple PDF text extraction
+        # For PDFs: ALWAYS extract full text with pdfplumber first
+        # SmartParser extracts tables but misses prose text (critical for TZ/technical reports)
+        if path_obj.suffix.lower() == '.pdf':
             try:
                 import pdfplumber
                 with pdfplumber.open(path_obj) as pdf:
@@ -318,8 +303,27 @@ class DocumentProcessor:
                         page_text = page.extract_text()
                         if page_text:
                             text_content += page_text + "\n"
+                logger.info(f"PDF full text extracted: {len(text_content)} chars from {len(pdf.pages)} pages")
             except Exception as e:
-                logger.warning(f"Failed to extract PDF text: {e}")
+                logger.warning(f"Failed to extract PDF text with pdfplumber: {e}")
+
+        # Supplement with position descriptions from SmartParser (table data)
+        if 'positions' in parsed:
+            position_text = ""
+            for pos in parsed['positions']:
+                if 'popis' in pos:
+                    position_text += pos['popis'] + " "
+                if 'poznamka' in pos:
+                    position_text += pos['poznamka'] + " "
+            if position_text and position_text not in text_content:
+                text_content += "\n--- Tabulková data ---\n" + position_text
+
+        # Try to get from metadata
+        if 'project_info' in parsed:
+            info = parsed['project_info']
+            for key in ['project_name', 'description', 'investor', 'location']:
+                if key in info and info[key]:
+                    text_content += str(info[key]) + " "
 
         return {
             'text': text_content,

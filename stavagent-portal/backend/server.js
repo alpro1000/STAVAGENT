@@ -35,6 +35,7 @@ import integrationRoutes from './src/routes/integration.js';
 import kbResearchRoutes from './src/routes/kb-research.js';
 import parsePreviewRoutes from './src/routes/parse-preview.js';
 import positionInstancesRoutes from './src/routes/position-instances.js';
+import portalDocumentsRoutes from './src/routes/portal-documents.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -172,6 +173,9 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/portal-projects', portalProjectsRoutes);
 app.use('/api/portal-files', uploadLimiter, portalFilesRoutes);
 app.use('/api/kiosk-links', kioskLinksRoutes);
+
+// Portal documents (passports, summaries, kiosk outputs) - NO AUTH for kiosk saving
+app.use('/api/portal-documents', portalDocumentsRoutes);
 
 // OTSKP reference (shared across all kiosks)
 app.use('/api/otskp', otskpLimiter, otskpRoutes);

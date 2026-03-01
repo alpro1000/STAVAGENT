@@ -257,6 +257,42 @@ class ProjectStakeholder(BaseModel):
     confidence: float = Field(0.7, description="Extraction confidence")
 
 
+class StructureObject(BaseModel):
+    """
+    Sub-object within a project (e.g., a single bridge in a multi-bridge highway project).
+
+    For a project like "D35 Highway" with 5 bridges, each bridge becomes a StructureObject.
+    """
+    object_code: str = Field(..., description="Object code, e.g. SO-201, SO 202")
+    object_name: str = Field("", description="Object name, e.g. 'Most přes Chrudimku km 15.2'")
+    structure_type: Optional[StructureType] = Field(None, description="Type of this structure")
+
+    # Key dimensions for this specific object
+    span_description: Optional[str] = Field(None, description="Span layout, e.g. '3×25m' or '1×42m'")
+    total_length_m: Optional[float] = Field(None, description="Total length in meters")
+    width_m: Optional[float] = Field(None, description="Width in meters")
+    height_m: Optional[float] = Field(None, description="Height / clearance in meters")
+
+    # Concrete and reinforcement for this object
+    concrete_specifications: List[ConcreteSpecification] = Field(
+        default_factory=list,
+        description="Concrete classes for this specific object"
+    )
+    concrete_volume_m3: Optional[float] = Field(None, description="Total concrete volume for this object")
+    reinforcement_tons: Optional[float] = Field(None, description="Total reinforcement for this object")
+    formwork_m2: Optional[float] = Field(None, description="Total formwork area for this object")
+
+    # Timeline
+    duration_months: Optional[int] = Field(None, description="Construction duration for this object")
+    budget_czk: Optional[float] = Field(None, description="Estimated budget for this object")
+
+    # AI-generated summary
+    summary: Optional[str] = Field(None, description="Short AI-generated description of this object")
+    drawing_reference: Optional[str] = Field(None, description="Reference to associated drawing file")
+
+    confidence: float = Field(0.7, description="Extraction confidence")
+
+
 # =============================================================================
 # MAIN PASSPORT MODEL
 # =============================================================================
@@ -314,6 +350,13 @@ class ProjectPassport(BaseModel):
     special_requirements: List[SpecialRequirement] = Field(
         default_factory=list,
         description="Special construction requirements"
+    )
+
+    # === SUB-OBJECTS (Bridges, Buildings, etc.) ===
+
+    objects: List[StructureObject] = Field(
+        default_factory=list,
+        description="Sub-objects within the project (bridges, buildings, structures)"
     )
 
     # === LAYER 3: AI-ENRICHED CONTEXT (Claude) ===
