@@ -74,7 +74,7 @@ function App() {
     return () => stopPolling();
   }, [selectedProjectId, projects]);
 
-  const handleAcceptMonolitPrice = useCallback((itemId: string, monolithTotal: number, monolithUnit: number) => {
+  const handleAcceptMonolitPrice = useCallback((itemId: string, _monolithTotal: number, monolithUnit: number) => {
     const { updateItemPrice, projects: projs } = useRegistryStore.getState();
     // Find which project/sheet has this item
     for (const p of projs) {
