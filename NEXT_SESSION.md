@@ -1,8 +1,8 @@
 # Next Session - Quick Start
 
-**Last Updated:** 2026-02-27
-**Current Branch:** `claude/update-next-session-PF9Pm`
-**Last Session:** RCPSP Element Scheduler — graph-based parallel scheduling with real algorithms
+**Last Updated:** 2026-03-01
+**Current Branch:** `claude/monolit-position-writeback-LotnK`
+**Last Session:** Cross-kiosk project registry (4 features) + production fixes
 
 ---
 
@@ -20,8 +20,65 @@ git log --oneline -10
 # 3. TypeScript check (rozpocet-registry)
 cd rozpocet-registry && npx tsc --noEmit --skipLibCheck
 
-# 4. Run tests (82 total: 55 formulas + 27 scheduler)
+# 4. Run tests (104 total: 55 formulas + 27 scheduler + 22 other)
 cd Monolit-Planner/shared && npx vitest run
+```
+
+---
+
+## Сессия 2026-03-01: Cross-Kiosk Project Registry + Production Fixes
+
+### ✅ Что сделано:
+
+| Компонент | Задача | Статус |
+|-----------|--------|--------|
+| KioskLinksPanel.tsx | Portal frontend — UI for viewing linked kiosks per project | ✅ |
+| monolithPolling.ts | Registry auto-polling for Monolit changes (30s/120s) | ✅ |
+| MonolitCompareDrawer.tsx | Comparison drawer — Registry vs Monolit side-by-side | ✅ |
+| App.tsx + ItemsTable.tsx | Conflict indicators (colored HardHat, pulse, compare button) | ✅ |
+| Monolit server.js | CORS fix — allow all *.vercel.app preview domains | ✅ |
+| passport_enricher.py | httpx proxy fix — `proxy` (singular) with fallback | ✅ |
+
+### Новые файлы:
+```
+stavagent-portal/frontend/src/components/portal/KioskLinksPanel.tsx   NEW (186 lines)
+rozpocet-registry/src/services/monolithPolling.ts                      NEW (186 lines)
+rozpocet-registry/src/components/comparison/MonolitCompareDrawer.tsx    NEW (341 lines)
+```
+
+### Изменённые файлы:
+```
+stavagent-portal/frontend/src/components/portal/CorePanel.tsx          +KioskLinksPanel
+rozpocet-registry/src/App.tsx                                          +polling, +compare drawer, +accept price
+rozpocet-registry/src/components/items/ItemsTable.tsx                  +conflictMap, severity colors
+Monolit-Planner/backend/server.js                                      +Vercel preview CORS
+concrete-agent/.../passport_enricher.py                                +httpx proxy compat
+```
+
+### Архитектура Auto-Polling + Comparison:
+```
+Registry App.tsx
+  ├── useEffect → startPolling(projectId, portalProjectId, items, onUpdate)
+  │     └── monolithPolling.ts
+  │           ├── doPoll() every 30s (active tab) / 120s (background)
+  │           ├── fetchMonolithData(portalProjectId) → Map<positionInstanceId, MonolithPayload>
+  │           └── compute variance: (registryTotal - monolithTotal) / monolithTotal * 100
+  │
+  ├── conflictMap: Map<itemId, severity>
+  │     └── ItemsTable: HardHat icon colored by severity (green/blue/amber/red)
+  │
+  └── MonolitCompareDrawer
+        ├── Grouped by severity: conflict > warning > info > match
+        ├── Each row: kod, popis, Registry price (blue) vs Monolit price (amber)
+        └── "Přijmout cenu" button → accept Monolit price into Registry
+```
+
+### Severity thresholds:
+```
+|variance| < 5%   → match (green)
+|variance| 5-15%  → info (blue)
+|variance| 15-30% → warning (amber)
+|variance| >= 30% → conflict (red, pulsing)
 ```
 
 ---
