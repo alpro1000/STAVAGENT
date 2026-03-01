@@ -8,12 +8,13 @@
  * This ensures Registry data is persisted server-side, not just in browser localStorage.
  */
 
-import type { Project, TOVData } from '../types';
+import type { Project, TOVData, MonolithPayload } from '../types';
 
-// Instance mapping from Portal (registry_item_id → position_instance_id)
+// Instance mapping from Portal (registry_item_id → position_instance_id + optional monolith_payload)
 export interface InstanceMapping {
   registry_item_id: string;
   position_instance_id: string;
+  monolith_payload?: MonolithPayload | null;
 }
 
 const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';

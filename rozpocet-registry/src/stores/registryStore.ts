@@ -13,6 +13,7 @@ import type {
   SheetStats,
   PortalLink,
   TOVData,
+  MonolithPayload,
 } from '../types';
 import type { ImportTemplate } from '../types/template';
 import { PREDEFINED_TEMPLATES } from '../config/templates';
@@ -21,6 +22,7 @@ import { idbStorage } from './idbStorage';
 import { isMainCodeExported } from '../services/classification/rowClassificationService';
 import { debouncedSyncToPortal, cancelSync, setAutoLinkCallback, setInstanceMappingCallback } from '../services/portalAutoSync';
 import { writeBackDOV } from '../services/dovWriteBack';
+import { fetchMonolithData } from '../services/portalMonolithFetch';
 
 interface RegistryState {
   // Данные
@@ -57,6 +59,7 @@ interface RegistryState {
   unlinkFromPortal: (projectId: string) => void;
   updatePortalSyncTime: (projectId: string) => void;
   getLinkedProjects: () => Project[];  // projects with Portal links
+  fetchAndMergeMonolithData: (projectId: string) => void;  // non-blocking fetch of Monolit data
 
   // Действия с листами
   addSheet: (projectId: string, sheet: Sheet) => void;
@@ -178,6 +181,11 @@ export const useRegistryStore = create<RegistryState>()(
           // Auto-select first sheet
           selectedSheetId: project && project.sheets.length > 0 ? project.sheets[0].id : null,
         });
+
+        // Non-blocking: fetch Monolit data for linked projects
+        if (projectId && project?.portalLink) {
+          get().fetchAndMergeMonolithData(projectId);
+        }
       },
 
       getProject: (projectId) => {
@@ -198,6 +206,9 @@ export const useRegistryStore = create<RegistryState>()(
             p.id === projectId ? { ...p, portalLink } : p
           ),
         }));
+
+        // Non-blocking: fetch Monolit data when linking to Portal
+        get().fetchAndMergeMonolithData(projectId);
       },
 
       unlinkFromPortal: (projectId) => {
@@ -225,6 +236,46 @@ export const useRegistryStore = create<RegistryState>()(
 
       getLinkedProjects: () => {
         return get().projects.filter((p) => p.portalLink !== undefined);
+      },
+
+      // Fetch Monolit calculation data from Portal and merge into items (non-blocking)
+      fetchAndMergeMonolithData: (projectId) => {
+        const project = get().projects.find(p => p.id === projectId);
+        const portalProjectId = project?.portalLink?.portalProjectId;
+        if (!portalProjectId) return;
+
+        // Fire-and-forget: fetch monolith data from Portal
+        fetchMonolithData(portalProjectId).then((monolithMap) => {
+          if (monolithMap.size === 0) return;
+
+          const state = get();
+          let updated = 0;
+
+          useRegistryStore.setState({
+            projects: state.projects.map(p => {
+              if (p.id !== projectId) return p;
+              return {
+                ...p,
+                sheets: p.sheets.map(sheet => ({
+                  ...sheet,
+                  items: sheet.items.map(item => {
+                    if (!item.position_instance_id) return item;
+                    const payload = monolithMap.get(item.position_instance_id);
+                    if (payload) {
+                      updated++;
+                      return { ...item, monolith_payload: payload };
+                    }
+                    return item;
+                  }),
+                })),
+              };
+            }),
+          });
+
+          if (updated > 0) {
+            console.log(`[RegistryStore] Merged ${updated} monolith payloads for project "${project?.projectName}"`);
+          }
+        }).catch(() => {});
       },
 
       // Листы
@@ -893,13 +944,15 @@ setAutoLinkCallback((projectId: string, portalProjectId: string) => {
 });
 
 /**
- * Register instance mapping callback: when sync returns position_instance_id mappings,
- * store them on the corresponding ParsedItem objects for DOV write-back.
+ * Register instance mapping callback: when sync returns position_instance_id mappings
+ * (+ optional monolith_payload), store them on ParsedItem objects.
  */
 setInstanceMappingCallback((mappings) => {
   const state = useRegistryStore.getState();
-  // Build a lookup: registry_item_id → position_instance_id
-  const mappingMap = new Map(mappings.map(m => [m.registry_item_id, m.position_instance_id]));
+  // Build lookups: registry_item_id → { position_instance_id, monolith_payload }
+  const mappingMap = new Map(mappings.map(m => [m.registry_item_id, m]));
+
+  let monolithCount = 0;
 
   // Update items across all projects/sheets
   useRegistryStore.setState({
@@ -908,17 +961,26 @@ setInstanceMappingCallback((mappings) => {
       sheets: p.sheets.map(sheet => ({
         ...sheet,
         items: sheet.items.map(item => {
-          const instanceId = mappingMap.get(item.id);
-          if (instanceId && item.position_instance_id !== instanceId) {
-            return { ...item, position_instance_id: instanceId };
+          const mapping = mappingMap.get(item.id);
+          if (!mapping) return item;
+
+          const updates: Partial<typeof item> = {};
+          if (mapping.position_instance_id && item.position_instance_id !== mapping.position_instance_id) {
+            updates.position_instance_id = mapping.position_instance_id;
           }
-          return item;
+          if (mapping.monolith_payload) {
+            updates.monolith_payload = mapping.monolith_payload;
+            monolithCount++;
+          }
+
+          return Object.keys(updates).length > 0 ? { ...item, ...updates } : item;
         }),
       })),
     })),
   });
 
-  console.log(`[RegistryStore] Updated ${mappings.length} position_instance_id mappings`);
+  console.log(`[RegistryStore] Updated ${mappings.length} instance mappings` +
+    (monolithCount > 0 ? `, ${monolithCount} with Monolit data` : ''));
 });
 
 /**
