@@ -251,7 +251,19 @@ async function bootstrap() {
 }
 
 // Start application
-bootstrap();
+// On Vercel serverless, don't call listen() — just export the app
+// VERCEL env var is automatically set by Vercel runtime
+if (process.env.VERCEL) {
+  // Vercel: initialize DB on first import (no listen, no cleanup scheduler)
+  initDatabase()
+    .then(() => logger.info('✅ Database initialized (Vercel)'))
+    .catch(err => logger.error('❌ Database init failed (Vercel):', err));
+} else {
+  bootstrap();
+}
+
+// Export app for Vercel serverless (used by api/index.js)
+export default app;
 
 // Graceful shutdown
 process.on('SIGTERM', () => {
