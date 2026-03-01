@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS positions (
   rfi_message TEXT,
   item_name VARCHAR(255),
   otskp_code VARCHAR(50),
+  position_instance_id VARCHAR(255) UNIQUE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -279,6 +280,7 @@ CREATE INDEX IF NOT EXISTS idx_positions_bridge ON positions(bridge_id);
 CREATE INDEX IF NOT EXISTS idx_positions_part ON positions(part_name);
 CREATE INDEX IF NOT EXISTS idx_positions_subtype ON positions(subtype);
 CREATE INDEX IF NOT EXISTS idx_positions_otskp ON positions(otskp_code);
+CREATE INDEX IF NOT EXISTS idx_positions_instance_id ON positions(position_instance_id);
 CREATE INDEX IF NOT EXISTS idx_snapshots_bridge ON snapshots(bridge_id);
 CREATE INDEX IF NOT EXISTS idx_snapshots_created ON snapshots(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_snapshots_locked ON snapshots(is_locked);

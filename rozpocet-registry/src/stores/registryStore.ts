@@ -19,7 +19,8 @@ import { PREDEFINED_TEMPLATES } from '../config/templates';
 import { DEFAULT_GROUPS } from '../utils/constants';
 import { idbStorage } from './idbStorage';
 import { isMainCodeExported } from '../services/classification/rowClassificationService';
-import { debouncedSyncToPortal, cancelSync, setAutoLinkCallback } from '../services/portalAutoSync';
+import { debouncedSyncToPortal, cancelSync, setAutoLinkCallback, setInstanceMappingCallback } from '../services/portalAutoSync';
+import { writeBackDOV } from '../services/dovWriteBack';
 
 interface RegistryState {
   // Данные
@@ -784,6 +785,18 @@ export const useRegistryStore = create<RegistryState>()(
             [itemId]: data,
           },
         }));
+
+        // Non-blocking DOV write-back to Portal if item has position_instance_id
+        const state = get();
+        for (const project of state.projects) {
+          for (const sheet of project.sheets) {
+            const item = sheet.items.find(i => i.id === itemId);
+            if (item?.position_instance_id) {
+              writeBackDOV(item.position_instance_id, data).catch(() => {});
+              return;
+            }
+          }
+        }
       },
 
       getItemTOV: (itemId) => {
@@ -877,6 +890,35 @@ export const useRegistryStore = create<RegistryState>()(
  */
 setAutoLinkCallback((projectId: string, portalProjectId: string) => {
   useRegistryStore.getState().linkToPortal(projectId, portalProjectId);
+});
+
+/**
+ * Register instance mapping callback: when sync returns position_instance_id mappings,
+ * store them on the corresponding ParsedItem objects for DOV write-back.
+ */
+setInstanceMappingCallback((mappings) => {
+  const state = useRegistryStore.getState();
+  // Build a lookup: registry_item_id → position_instance_id
+  const mappingMap = new Map(mappings.map(m => [m.registry_item_id, m.position_instance_id]));
+
+  // Update items across all projects/sheets
+  useRegistryStore.setState({
+    projects: state.projects.map(p => ({
+      ...p,
+      sheets: p.sheets.map(sheet => ({
+        ...sheet,
+        items: sheet.items.map(item => {
+          const instanceId = mappingMap.get(item.id);
+          if (instanceId && item.position_instance_id !== instanceId) {
+            return { ...item, position_instance_id: instanceId };
+          }
+          return item;
+        }),
+      })),
+    })),
+  });
+
+  console.log(`[RegistryStore] Updated ${mappings.length} position_instance_id mappings`);
 });
 
 /**

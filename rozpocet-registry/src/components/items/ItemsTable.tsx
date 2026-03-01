@@ -907,6 +907,8 @@ export function ItemsTable({
             {table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
+                data-item-id={row.original.id}
+                data-position-instance-id={row.original.position_instance_id || undefined}
                 className={row.original.rowRole === 'subordinate' ? 'opacity-70' : ''}
               >
                 {row.getVisibleCells().map((cell) => (

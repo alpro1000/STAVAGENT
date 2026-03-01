@@ -330,8 +330,8 @@ router.post('/', upload.single('file'), async (req, res) => {
                   INSERT INTO positions (
                     id, bridge_id, part_name, item_name, subtype, unit,
                     qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code,
-                    concrete_m3, cost_czk, unit_cost_native
-                  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)
+                    concrete_m3, cost_czk, unit_cost_native, position_instance_id
+                  ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
                 `, [
                   id, bridgeId,
                   pos.part_name || 'Beton',
@@ -346,7 +346,8 @@ router.post('/', upload.single('file'), async (req, res) => {
                   pos.otskp_code || null,
                   pos.concrete_m3 || (pos.subtype === 'beton' ? pos.qty : 0),
                   pos.total_price || null,
-                  pos.unit_price || null
+                  pos.unit_price || null,
+                  pos.position_instance_id || null
                 ]);
               }
 
@@ -366,8 +367,8 @@ router.post('/', upload.single('file'), async (req, res) => {
                 INSERT INTO positions (
                   id, bridge_id, part_name, item_name, subtype, unit,
                   qty, crew_size, wage_czk_ph, shift_hours, days, otskp_code,
-                  concrete_m3, cost_czk, unit_cost_native
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                  concrete_m3, cost_czk, unit_cost_native, position_instance_id
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
               `);
 
               for (const pos of positions) {
@@ -386,7 +387,8 @@ router.post('/', upload.single('file'), async (req, res) => {
                   pos.otskp_code || null,
                   pos.concrete_m3 || (pos.subtype === 'beton' ? pos.qty : 0),
                   pos.total_price || null,
-                  pos.unit_price || null
+                  pos.unit_price || null,
+                  pos.position_instance_id || null
                 );
               }
             });

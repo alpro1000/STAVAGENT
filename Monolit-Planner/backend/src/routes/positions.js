@@ -10,6 +10,7 @@ import { calculatePositions, calculateKPI } from '../services/calculator.js';
 import { logger } from '../utils/logger.js';
 import { extractPartName } from '../utils/text.js';
 import { suggestDays } from '../services/timeNormsService.js';
+import { writeBackBatch } from '../services/portalWriteBack.js';
 
 const router = express.Router();
 
@@ -20,7 +21,8 @@ const router = express.Router();
 const ALLOWED_UPDATE_FIELDS = new Set([
   'part_name', 'item_name', 'subtype', 'unit', 'qty', 'qty_m3_helper',
   'crew_size', 'wage_czk_ph', 'shift_hours', 'days', 'otskp_code',
-  'concrete_m3', 'cost_czk', 'metadata', 'position_number', 'curing_days'
+  'concrete_m3', 'cost_czk', 'metadata', 'position_number', 'curing_days',
+  'position_instance_id'
 ]);
 
 /**
@@ -381,6 +383,12 @@ router.put('/', async (req, res) => {
       pd_weeks: bridge?.pd_weeks,
       days_per_month_mode: config.days_per_month_mode
     }, config);
+
+    // Non-blocking Portal write-back: send MonolithPayload for linked positions
+    // Uses position_instance_id to identify which Portal positions to update
+    writeBackBatch(positions, bridge_id).catch(err => {
+      logger.warn(`[WriteBack] Batch write-back error (non-critical): ${err.message}`);
+    });
 
     res.json({
       success: true,

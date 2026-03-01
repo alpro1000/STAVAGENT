@@ -19,6 +19,15 @@ import path from 'path';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 import { parseFile } from '../services/universalParser.js';
+import { getPool } from '../db/postgres.js';
+
+function safeGetPool() {
+  try {
+    return getPool();
+  } catch {
+    return null;
+  }
+}
 
 const router = express.Router();
 
@@ -86,6 +95,140 @@ router.post('/', upload.single('file'), async (req, res) => {
     res.status(500).json({ success: false, error: err.message || 'Failed to parse file' });
   } finally {
     // Always delete temp file
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+  }
+});
+
+/**
+ * POST /api/parse-preview/import
+ * Parse Excel file AND create PositionInstances in Portal DB.
+ * Combines Universal Parser + bulk import in one step.
+ *
+ * Body: multipart/form-data { file: Excel, project_name?: string }
+ * Returns: { success, project_id, objects, instance_count }
+ */
+router.post('/import', upload.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, error: 'No file uploaded' });
+  }
+
+  const pool = safeGetPool();
+  if (!pool) {
+    return res.status(503).json({ success: false, error: 'Database not available' });
+  }
+
+  const filePath = req.file.path;
+  let client;
+
+  try {
+    // 1. Parse the file
+    const parsed = await parseFile(filePath, { fileName: req.file.originalname });
+
+    // 2. Create a portal project
+    client = await pool.connect();
+    await client.query('BEGIN');
+
+    const projectName = req.body.project_name
+      || parsed.metadata.stavba
+      || parsed.metadata.objekt
+      || req.file.originalname.replace(/\.\w+$/, '');
+    const projectId = `proj_${uuidv4()}`;
+
+    await client.query(
+      `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
+       VALUES ($1, $2, 'parsed_import', 1, NOW(), NOW())`,
+      [projectId, projectName]
+    );
+
+    // 3. Create objects + positions from parsed sheets
+    let totalInstances = 0;
+    const createdObjects = [];
+
+    for (const sheet of parsed.sheets) {
+      const objectId = `obj_${uuidv4()}`;
+      await client.query(
+        `INSERT INTO portal_objects (object_id, portal_project_id, object_code, object_name, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, NOW(), NOW())`,
+        [objectId, projectId, sheet.name || 'Sheet', sheet.bridgeName || sheet.name || 'Sheet']
+      );
+
+      const instances = [];
+      for (let i = 0; i < sheet.items.length; i++) {
+        const item = sheet.items[i];
+        const positionId = `pos_${uuidv4()}`;
+
+        const result = await client.query(
+          `INSERT INTO portal_positions (
+            position_id, object_id, kod, popis, mnozstvi, mj,
+            cena_jednotkova, cena_celkem,
+            sheet_name, row_index, skupina,
+            created_by, updated_by,
+            created_at, updated_at
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, 'parsed_import', 'parsed_import', NOW(), NOW())
+          RETURNING position_instance_id`,
+          [
+            positionId, objectId,
+            item.kod || '',
+            item.popis || '',
+            item.mnozstvi || 0,
+            item.mj || '',
+            item.cenaJednotkova || null,
+            item.cenaCelkem || null,
+            sheet.name || '',
+            i,
+            null
+          ]
+        );
+
+        instances.push({
+          position_instance_id: result.rows[0].position_instance_id,
+          catalog_code: item.kod || '',
+          description: item.popis || '',
+          row_index: i,
+        });
+        totalInstances++;
+      }
+
+      createdObjects.push({
+        object_id: objectId,
+        object_code: sheet.name,
+        object_name: sheet.bridgeName || sheet.name,
+        instance_count: instances.length,
+        instances,
+      });
+    }
+
+    // 4. Audit log
+    await client.query(
+      `INSERT INTO position_audit_log (event, actor, project_id, details)
+       VALUES ('parsed_import', 'universal_parser', $1, $2)`,
+      [projectId, JSON.stringify({
+        file_name: req.file.originalname,
+        sheets: parsed.sheets.length,
+        instances: totalInstances,
+      })]
+    );
+
+    await client.query('COMMIT');
+
+    console.log(`[ParsePreview] Import complete: ${projectId} → ${parsed.sheets.length} sheets, ${totalInstances} instances`);
+
+    res.json({
+      success: true,
+      project_id: projectId,
+      project_name: projectName,
+      objects_created: createdObjects.length,
+      instances_created: totalInstances,
+      objects: createdObjects,
+    });
+  } catch (err) {
+    if (client) await client.query('ROLLBACK');
+    console.error('[ParsePreview] Import error:', err.message);
+    res.status(500).json({ success: false, error: err.message || 'Failed to import' });
+  } finally {
+    if (client) client.release();
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }

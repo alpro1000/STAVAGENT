@@ -47,6 +47,38 @@ function App() {
     const portalProjectId = params.get('portal_project');
     const portalFileId = params.get('portal_file_id');
     const portalApi = params.get('portal_api');
+    const deepLinkInstanceId = params.get('position_instance_id');
+
+    // Deep-link: scroll to specific position by position_instance_id
+    if (deepLinkInstanceId) {
+      window.history.replaceState({}, '', window.location.pathname);
+      // Find item across all projects/sheets and select it
+      setTimeout(() => {
+        for (const project of projects) {
+          for (const sheet of project.sheets) {
+            const item = sheet.items.find(i => i.position_instance_id === deepLinkInstanceId);
+            if (item) {
+              setSelectedProject(project.id);
+              setSelectedSheet(project.id, sheet.id);
+              // Wait for render, then scroll to the row
+              setTimeout(() => {
+                const row = document.querySelector(`[data-item-id="${item.id}"]`) as HTMLElement;
+                if (row) {
+                  row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  row.style.outline = '3px solid #FF9F1C';
+                  row.style.outlineOffset = '2px';
+                  setTimeout(() => {
+                    row.style.outline = '';
+                    row.style.outlineOffset = '';
+                  }, 3000);
+                }
+              }, 300);
+              return;
+            }
+          }
+        }
+      }, 100);
+    }
 
     // Universal Parser flow: portal_file_id + portal_api (new, Phase 1)
     if (portalFileId && portalApi) {
@@ -164,6 +196,7 @@ function App() {
             cenaCelkem: item.cenaCelkem ?? 0,
             skupina: item.skupina ?? null,
             rowRole: item.rowRole ?? null,
+            position_instance_id: item.position_instance_id || null,
             source: {
               projectId: portalFileId,
               fileName: data.file_name || `${projectName}.xlsx`,
@@ -247,6 +280,8 @@ function App() {
           projectId: portalProject.id,
           items: sheet.items.map((item: any) => ({
             ...item,
+            // Keep Portal position_instance_id for cross-kiosk linking
+            position_instance_id: item.position_instance_id || null,
             // Normalise source so cascade-sort (source.rowStart) doesn't produce NaN
             source: {
               projectId: portalProject.id,
