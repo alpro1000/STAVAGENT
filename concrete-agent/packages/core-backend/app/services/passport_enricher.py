@@ -248,7 +248,11 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 if http_proxy:
                     try:
                         import httpx
-                        http_client = httpx.Client(proxies=http_proxy)
+                        # httpx 0.28+ uses 'proxy' (singular); older versions use 'proxies'
+                        try:
+                            http_client = httpx.Client(proxy=http_proxy)
+                        except TypeError:
+                            http_client = httpx.Client(proxies=http_proxy)
                         init_kwargs["http_client"] = http_client
                         logger.info(f"🔗 OpenAI configured with proxy: {http_proxy}")
                     except ImportError:

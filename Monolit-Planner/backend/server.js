@@ -90,6 +90,11 @@ app.use(cors({
       return callback(null, true);
     }
 
+    // Allow Vercel preview deployments (PR previews, branch deploys)
+    if (origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+
     if (ALLOWED_ORIGINS.includes(origin)) {
       callback(null, true);
     } else {
