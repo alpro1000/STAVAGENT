@@ -14,6 +14,7 @@ import {
   RefreshCw, Upload, Loader, BarChart2, ExternalLink, ChevronDown, ChevronUp
 } from 'lucide-react';
 import { API_URL } from '../../services/api';
+import { KioskLinksPanel } from './KioskLinksPanel';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -766,6 +767,9 @@ export default function CorePanel({ project, onClose, onRefresh }: CorePanelProp
             )}
           </div>
         )}
+
+        {/* ── Kiosk Links ───────────────────────────────────────────────── */}
+        <KioskLinksPanel projectId={project.portal_project_id} onRefresh={onRefresh} />
 
         {/* ── Bottom actions ───────────────────────────────────────────────── */}
         <div className="p-6">

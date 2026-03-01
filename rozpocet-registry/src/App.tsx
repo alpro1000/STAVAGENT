@@ -3,7 +3,7 @@
  * Registr Rozpočtů - система парсинга и агрегации строительных смет
  */
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { ImportModal } from './components/import/ImportModal';
 import { ItemsTable } from './components/items/ItemsTable';
 import { SearchBar } from './components/search/SearchBar';
@@ -12,12 +12,14 @@ import { AIPanel } from './components/ai/AIPanel';
 import { GroupManager } from './components/groups/GroupManager';
 import { PriceRequestPanel } from './components/priceRequest/PriceRequestPanel';
 import { PortalLinkBadge } from './components/portal/PortalLinkBadge';
+import { MonolitCompareDrawer } from './components/comparison/MonolitCompareDrawer';
+import { startPolling, stopPolling, refreshNow, type PollState, type ComparisonItem } from './services/monolithPolling';
 // FormworkRentalCalculator removed from header — now integrated into TOV/Materiály tab
 import { useRegistryStore } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
-import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw } from 'lucide-react';
+import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows } from 'lucide-react';
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -38,6 +40,62 @@ function App() {
   // Search state
   const [searchResults, setSearchResults] = useState<SearchResultItem[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+
+  // Monolit comparison state
+  const [isCompareOpen, setIsCompareOpen] = useState(false);
+  const [pollState, setPollState] = useState<PollState>({
+    active: false, projectId: null, portalProjectId: null,
+    lastFetch: null, itemsWithMonolit: 0, comparisons: [], conflictCount: 0,
+  });
+  // Map: itemId → severity (for ItemsTable conflict indicators)
+  const conflictMap = useRef(new Map<string, ComparisonItem['severity']>());
+
+  // Build conflict map from poll comparisons
+  useEffect(() => {
+    const m = new Map<string, ComparisonItem['severity']>();
+    for (const c of pollState.comparisons) {
+      m.set(c.itemId, c.severity);
+    }
+    conflictMap.current = m;
+  }, [pollState.comparisons]);
+
+  // Start/stop polling when selected project changes
+  useEffect(() => {
+    const project = projects.find(p => p.id === selectedProjectId);
+    const portalId = project?.portalLink?.portalProjectId;
+    if (!portalId || !project) {
+      stopPolling();
+      setPollState(s => ({ ...s, active: false, comparisons: [], conflictCount: 0 }));
+      return;
+    }
+    // Collect all items across all sheets for comparison
+    const allItems = project.sheets.flatMap(s => s.items);
+    startPolling(project.id, portalId, allItems, setPollState);
+    return () => stopPolling();
+  }, [selectedProjectId, projects]);
+
+  const handleAcceptMonolitPrice = useCallback((itemId: string, _monolithTotal: number, monolithUnit: number) => {
+    const { updateItemPrice, projects: projs } = useRegistryStore.getState();
+    // Find which project/sheet has this item
+    for (const p of projs) {
+      for (const s of p.sheets) {
+        const item = s.items.find(i => i.id === itemId);
+        if (item) {
+          updateItemPrice(p.id, s.id, itemId, monolithUnit);
+          return;
+        }
+      }
+    }
+  }, []);
+
+  const handleCompareRefresh = useCallback(() => {
+    const project = projects.find(p => p.id === selectedProjectId);
+    const portalId = project?.portalLink?.portalProjectId;
+    if (portalId && project) {
+      const allItems = project.sheets.flatMap(s => s.items);
+      refreshNow(portalId, allItems);
+    }
+  }, [selectedProjectId, projects]);
 
   // ── INTER-KIOSK IMPORT via postMessage ──
   // When opened from Monolit-Planner (or other kiosk), receive positions
@@ -556,7 +614,22 @@ function App() {
             <div className="flex items-center gap-4">
               {projects.length > 0 && (
                 <>
-<button
+                  {pollState.itemsWithMonolit > 0 && (
+                    <button
+                      onClick={() => setIsCompareOpen(true)}
+                      className="btn btn-secondary text-sm flex items-center gap-2 relative"
+                      title="Srovnání cen Registry vs Monolit"
+                    >
+                      <GitCompareArrows size={16} />
+                      Srovnání
+                      {pollState.conflictCount > 0 && (
+                        <span className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-500 text-white text-[10px] font-bold flex items-center justify-center">
+                          {pollState.conflictCount}
+                        </span>
+                      )}
+                    </button>
+                  )}
+                  <button
                     onClick={() => setIsPriceRequestOpen(true)}
                     className="btn btn-secondary text-sm flex items-center gap-2"
                     title="Vytvořit poptávku cen pro dodavatele"
@@ -1004,6 +1077,7 @@ function App() {
                     selectedIds={selectedItemIds}
                     onSelectionChange={setSelectedItemIds}
                     showOnlyWorkItems={showOnlyWorkItems}
+                    conflictMap={conflictMap.current}
                   />
                 </div>
               )}
@@ -1040,6 +1114,17 @@ function App() {
       <PriceRequestPanel
         isOpen={isPriceRequestOpen}
         onClose={() => setIsPriceRequestOpen(false)}
+      />
+
+      {/* Monolit Comparison Drawer */}
+      <MonolitCompareDrawer
+        open={isCompareOpen}
+        onClose={() => setIsCompareOpen(false)}
+        comparisons={pollState.comparisons}
+        conflictCount={pollState.conflictCount}
+        lastFetch={pollState.lastFetch}
+        onAcceptPrice={handleAcceptMonolitPrice}
+        onRefresh={handleCompareRefresh}
       />
 
     </div>

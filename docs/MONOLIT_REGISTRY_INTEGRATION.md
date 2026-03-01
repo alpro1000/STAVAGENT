@@ -432,28 +432,39 @@ VITE_PORTAL_API_URL=https://stavagent-portal-backend.onrender.com
 
 ---
 
-## ✅ Next Steps (Phase 2)
+## ✅ Phase 2 Progress (2026-03-01)
 
-1. **Auto-sync TOV from Registry** (currently manual)
-   - Implement debounced sync on TOV changes
-   - Add sync status indicator
+### Implemented:
 
-2. **Bi-directional sync**
-   - Sync changes from Portal back to Monolit
-   - Update Monolit positions when TOV changes
+1. **Auto-polling from Registry** ✅
+   - `monolithPolling.ts`: 30s polling (active tab) / 120s (background tab)
+   - Uses `portalMonolithFetch.ts` → Portal GET `/api/integration/for-registry/:id`
+   - Visibility change handler for tab switching
+   - Silent fail (best-effort polling)
 
-3. **Conflict resolution**
-   - Handle concurrent edits
-   - Show last_sync_from indicator
+2. **Comparison / Conflict Detection** ✅
+   - `MonolitCompareDrawer.tsx`: Side-by-side price comparison drawer
+   - Severity classification: match (<5%), info (5-15%), warning (15-30%), conflict (≥30%)
+   - Grouped display: conflicts first → warnings → info → matches
+   - "Přijmout cenu" (Accept price) button per item
 
-4. **Bulk operations**
-   - Export multiple objects at once
-   - Batch TOV updates
+3. **Conflict Indicators in ItemsTable** ✅
+   - HardHat icon colored by severity (green/blue/amber/red)
+   - Conflict items pulse with `animate-pulse`
+   - Compare button in header with red conflict count badge
 
-5. **UI improvements**
-   - Show sync status in Registry
-   - Add "Sync now" button
-   - Show Portal project link in Monolit
+4. **Portal Kiosk Links UI** ✅
+   - `KioskLinksPanel.tsx`: Shows all linked kiosks per project
+   - Kiosk type icons + status badges
+   - Open/Unlink actions
+   - Integrated into CorePanel
+
+### Remaining (Phase 2):
+
+1. **Bi-directional sync** — Monolit → Registry accept price needs write-back to Portal
+2. **Bulk accept** — Accept all Monolit prices at once
+3. **Notification badges** — Portal showing kiosk conflict counts
+4. **Deep links** — URL params for cross-kiosk navigation to specific position
 
 ---
 
@@ -476,6 +487,6 @@ VITE_PORTAL_API_URL=https://stavagent-portal-backend.onrender.com
 
 ---
 
-**Version:** 1.0.0  
-**Last Updated:** 2026-02-10  
+**Version:** 2.0.0
+**Last Updated:** 2026-03-01
 **Author:** Claude AI Assistant

@@ -81,6 +81,8 @@ interface ItemsTableProps {
   sorting?: SortingState;
   onSortingChange?: (sorting: SortingState) => void;
   showOnlyWorkItems?: boolean;
+  /** Conflict severity per itemId from Monolit comparison polling */
+  conflictMap?: Map<string, 'match' | 'info' | 'warning' | 'conflict'>;
 }
 
 const columnHelper = createColumnHelper<ParsedItem>();
@@ -97,6 +99,7 @@ export function ItemsTable({
   sorting: externalSorting,
   onSortingChange: externalOnSortingChange,
   showOnlyWorkItems = false,
+  conflictMap,
 }: ItemsTableProps) {
   const { setItemSkupina, setItemSkupinaGlobal, getAllGroups, addCustomGroup, bulkSetSkupina, getProject, updateItemPrice, getItemTOV, setItemTOV, hasItemTOV, recordSkupinaMemory, getMemorySkupiny } = useRegistryStore();
 
@@ -461,6 +464,7 @@ export function ItemsTable({
       }),
 
       // Monolit indicator — shows when item has calculation data from Monolit-Planner
+      // Color reflects conflict severity: green=match, blue=info, amber=warning, red=conflict
       columnHelper.display({
         id: 'monolit',
         header: '',
@@ -469,6 +473,15 @@ export function ItemsTable({
           const mp = item.monolith_payload;
           if (!mp || item.rowRole === 'section') return null;
 
+          const severity = conflictMap?.get(item.id);
+          const severityColors: Record<string, string> = {
+            match: 'text-green-500',
+            info: 'text-blue-500',
+            warning: 'text-amber-500',
+            conflict: 'text-red-500',
+          };
+          const iconClass = severity ? (severityColors[severity] || 'text-amber-500') : 'text-amber-500';
+
           const costLabel = mp.kros_total_czk
             ? `${Math.round(mp.kros_total_czk).toLocaleString('cs')} Kč`
             : mp.cost_czk
@@ -476,16 +489,18 @@ export function ItemsTable({
               : '';
           const daysLabel = mp.days ? `${mp.days}d` : '';
           const crewLabel = mp.crew_size ? `${mp.crew_size}L` : '';
+          const sevLabel = severity === 'conflict' ? ' ⚠ KONFLIKT' : severity === 'warning' ? ' ⚠' : '';
           const tooltip = [
             `Monolit: ${mp.part_name || mp.subtype || ''}`,
             crewLabel && daysLabel ? `${crewLabel} × ${daysLabel}` : crewLabel || daysLabel,
             costLabel,
+            sevLabel,
           ].filter(Boolean).join(' | ');
 
           return (
             <button
               title={tooltip}
-              className="flex items-center justify-center w-6 h-6 rounded hover:bg-bg-secondary transition-colors"
+              className={`flex items-center justify-center w-6 h-6 rounded hover:bg-bg-secondary transition-colors ${severity === 'conflict' ? 'animate-pulse' : ''}`}
               onClick={(e) => {
                 e.stopPropagation();
                 if (mp.monolit_url) {
@@ -494,7 +509,7 @@ export function ItemsTable({
               }}
               style={{ cursor: mp.monolit_url ? 'pointer' : 'default' }}
             >
-              <HardHat size={14} className="text-amber-500" />
+              <HardHat size={14} className={iconClass} />
             </button>
           );
         },
