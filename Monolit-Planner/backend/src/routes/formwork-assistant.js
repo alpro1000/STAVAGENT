@@ -484,56 +484,93 @@ router.post('/', async (req, res) => {
     }
 
     // ── AI explanation ──────────────────────────────────────────────────────
+    // Chain: Direct Gemini → Direct OpenAI → CORE Multi-Role → Deterministic fallback
+    // Direct API calls avoid dependency on sleeping CORE (Render free tier)
 
     let aiExplanation = '';
     let modelUsed = model;
 
-    try {
-      const consLabel   = CONSTRUCTION_LABELS[construction_type] || construction_type;
-      const seasonLabel = SEASON_LABELS[season] || season;
-      const concrLabel  = concrete_class.replace('_', '/');
-      const crewLabel   = `${crewCfg.crew} lidí${crewCfg.crane ? ' + jeřáb' : ''}`;
+    const consLabel   = CONSTRUCTION_LABELS[construction_type] || construction_type;
+    const seasonLabel = SEASON_LABELS[season] || season;
+    const concrLabel  = concrete_class.replace('_', '/');
+    const crewLabel   = `${crewCfg.crew} lidí${crewCfg.crane ? ' + jeřáb' : ''}`;
 
-      const stratSummary = filteredStrategies.map(s =>
-        `${s.id}: ${s.total_days}d / ${s.rental_cost.toLocaleString('cs')} Kč (${s.sets} sad)`
-      ).join('; ');
+    const stratSummary = filteredStrategies.map(s =>
+      `${s.id}: ${s.total_days}d / ${s.rental_cost.toLocaleString('cs')} Kč (${s.sets} sad)`
+    ).join('; ');
 
-      if (model === 'openai' && process.env.OPENAI_API_KEY) {
-        const prompt =
-          `Jsi expert na stavební bednění. Zhodnoť plán pro "${consLabel}" (${system_name}). `
-          + `${total_area_m2} m², ${pocetTaktu} taktů. Beton ${concrLabel}, ${seasonLabel}. Parta ${crewLabel}. `
-          + `Cyklus zachvatky: montáž ${A}d + armování ${R}d + betonáž 1d + zrání ${C}d + demontáž ${D}d = ${cycleDays}d. `
-          + `Strategie: ${stratSummary}. `
-          + `Doporuč optimální strategii. Stručně, max 5 vět.`;
+    const buildPrompt = (detailed = false) => detailed
+      ? `Jsi expert na stavební bednění (ČSN EN 13670, TKP17, TKP18). Podrobné doporučení pro "${consLabel}" (${system_name}). `
+        + `${total_area_m2} m², ${pocetTaktu} taktů. Beton ${concrLabel}, ${seasonLabel}. Parta ${crewLabel}. `
+        + `Cyklus: A=${A}d R=${R}d B=1d C=${C}d D=${D}d = ${cycleDays}d. `
+        + `Strategie: ${stratSummary}. Odkaž na TKP17/TKP18. Stručně, max 8 vět.`
+      : `Jsi expert na stavební bednění. Shrň: "${consLabel}" (${system_name}), ${total_area_m2} m², ${pocetTaktu}×${cycleDays}d. `
+        + `Cyklus: montáž ${A}d + arm. ${R}d + beton 1d + zrání ${C}d + dem. ${D}d. `
+        + `Strategie: ${stratSummary}. Doporuč optimální strategii. Max 5 vět.`;
 
-        const controller = new AbortController();
-        const timeoutId  = setTimeout(() => controller.abort(), CORE_TIMEOUT);
-        const oaiRes = await fetch('https://api.openai.com/v1/chat/completions', {
+    // Helper: call Gemini API directly (fastest, cheapest)
+    async function callGeminiDirect(prompt) {
+      const apiKey = process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY;
+      if (!apiKey) return null;
+
+      const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      try {
+        const gRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { maxOutputTokens: 600, temperature: 0.4 },
+            }),
+            signal: controller.signal,
+          }
+        );
+        clearTimeout(timeoutId);
+        if (!gRes.ok) throw new Error(`Gemini ${gRes.status}`);
+        const gData = await gRes.json();
+        const text = gData.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) return { text, model: geminiModel };
+      } catch (e) {
+        clearTimeout(timeoutId);
+        logger.warn(`[Formwork v3] Gemini direct: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
+      }
+      return null;
+    }
+
+    // Helper: call OpenAI API directly
+    async function callOpenAIDirect(prompt) {
+      if (!process.env.OPENAI_API_KEY) return null;
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      try {
+        const oRes = await fetch('https://api.openai.com/v1/chat/completions', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` },
           body: JSON.stringify({ model: 'gpt-4o-mini', messages: [{ role: 'user', content: prompt }], max_tokens: 500, temperature: 0.4 }),
           signal: controller.signal,
         });
         clearTimeout(timeoutId);
-        if (oaiRes.ok) {
-          const oaiData = await oaiRes.json();
-          aiExplanation = oaiData.choices?.[0]?.message?.content || '';
-          modelUsed = 'gpt-4o-mini';
-        } else {
-          throw new Error(`OpenAI ${oaiRes.status}`);
-        }
+        if (!oRes.ok) throw new Error(`OpenAI ${oRes.status}`);
+        const oData = await oRes.json();
+        const text = oData.choices?.[0]?.message?.content;
+        if (text) return { text, model: 'gpt-4o-mini' };
+      } catch (e) {
+        clearTimeout(timeoutId);
+        logger.warn(`[Formwork v3] OpenAI direct: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
+      }
+      return null;
+    }
 
-      } else {
-        const isDetailed = model === 'claude';
-        const question = isDetailed
-          ? `Podrobné doporučení pro bednění "${consLabel}" (${system_name}). `
-            + `${total_area_m2} m², ${pocetTaktu} taktů. ${concrLabel}, ${seasonLabel}, ${crewLabel}. `
-            + `Cyklus: A=${A}d R=${R}d B=1d C=${C}d D=${D}d = ${cycleDays}d. `
-            + `Strategie: ${stratSummary}. Odkaž na TKP17/TKP18.`
-          : `Shrň: bednění "${consLabel}" ${total_area_m2} m², ${pocetTaktu}×${cycleDays}d. ${stratSummary}. Co hlídat?`;
-
-        const controller = new AbortController();
-        const timeoutId  = setTimeout(() => controller.abort(), CORE_TIMEOUT);
+    // Helper: call CORE Multi-Role API (may be sleeping)
+    async function callCoreMultiRole(question) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), CORE_TIMEOUT);
+      try {
         const aiRes = await fetch(`${CORE_API_URL}/api/v1/multi-role/ask`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -545,15 +582,47 @@ router.post('/', async (req, res) => {
           signal: controller.signal,
         });
         clearTimeout(timeoutId);
-        if (aiRes.ok) {
-          const aiData = await aiRes.json();
-          aiExplanation = aiData.answer || '';
-        } else {
-          throw new Error(`Multi-Role ${aiRes.status}`);
-        }
+        if (!aiRes.ok) throw new Error(`Multi-Role ${aiRes.status}`);
+        const aiData = await aiRes.json();
+        if (aiData.answer) return { text: aiData.answer, model: 'multi-role' };
+      } catch (e) {
+        clearTimeout(timeoutId);
+        logger.warn(`[Formwork v3] CORE Multi-Role: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
+      }
+      return null;
+    }
+
+    // Execute AI chain based on selected model
+    try {
+      const isDetailed = model === 'claude';
+      const prompt = buildPrompt(isDetailed);
+      let aiResult = null;
+
+      if (model === 'gemini') {
+        // Gemini selected: Gemini direct → OpenAI → CORE → fallback
+        aiResult = await callGeminiDirect(prompt)
+          || await callOpenAIDirect(prompt)
+          || await callCoreMultiRole(prompt);
+      } else if (model === 'openai') {
+        // OpenAI selected: OpenAI direct → Gemini → CORE → fallback
+        aiResult = await callOpenAIDirect(prompt)
+          || await callGeminiDirect(prompt)
+          || await callCoreMultiRole(prompt);
+      } else {
+        // Claude/other: CORE first (claude via multi-role) → Gemini → OpenAI → fallback
+        aiResult = await callCoreMultiRole(buildPrompt(true))
+          || await callGeminiDirect(prompt)
+          || await callOpenAIDirect(prompt);
+      }
+
+      if (aiResult) {
+        aiExplanation = aiResult.text;
+        modelUsed = aiResult.model;
+      } else {
+        throw new Error('All AI providers failed');
       }
     } catch (aiErr) {
-      logger.warn(`[Formwork v3] AI ${aiErr.name === 'AbortError' ? 'timeout' : 'error'}: ${aiErr.message}`);
+      logger.warn(`[Formwork v3] All AI failed, using deterministic fallback`);
       aiExplanation = buildFallbackExplanation(deterministic, construction_type, season, warnings);
       modelUsed = 'fallback';
     }

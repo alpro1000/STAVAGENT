@@ -99,34 +99,99 @@ router.post('/import-from-monolit', async (req, res) => {
 
       const dbObjectId = objResult.rows[0].object_id;
 
-      // Import positions with TOV data + monolith_payload + position_instance_id
+      // UPSERT positions: preserve position_instance_id on re-export
       for (let posIdx = 0; posIdx < (obj.positions || []).length; posIdx++) {
         const pos = obj.positions[posIdx];
-        const positionId = `pos_${uuidv4()}`;
-        const result = await client.query(
-          `INSERT INTO portal_positions (
-            position_id, object_id, kod, popis, mnozstvi, mj,
-            cena_jednotkova, cena_celkem,
-            tov_labor, tov_machinery, tov_materials,
-            monolith_payload,
-            monolit_position_id, last_sync_from, last_sync_at,
-            sheet_name, row_index, created_by, updated_by,
-            created_at, updated_at
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'monolit', NOW(), $14, $15, 'monolit_import', 'monolit_import', NOW(), NOW())
-          RETURNING position_instance_id`,
-          [
-            positionId, dbObjectId,
-            pos.kod || '', pos.popis, pos.mnozstvi || 0, pos.mj || '',
-            pos.cena_jednotkova || 0, pos.cena_celkem || 0,
-            JSON.stringify(pos.tov?.labor || []),
-            JSON.stringify(pos.tov?.machinery || []),
-            JSON.stringify(pos.tov?.materials || []),
-            pos.monolith_payload ? JSON.stringify(pos.monolith_payload) : null,
-            pos.monolit_id,
-            obj.code || '',
-            posIdx
-          ]
-        );
+        let result;
+
+        // Check if position already exists by monolit_position_id
+        if (pos.monolit_id) {
+          const existing = await client.query(
+            `SELECT pp.position_instance_id, pp.position_id
+             FROM portal_positions pp
+             JOIN portal_objects po ON pp.object_id = po.object_id
+             WHERE po.portal_project_id = $1 AND pp.monolit_position_id = $2
+             LIMIT 1`,
+            [projectId, pos.monolit_id]
+          );
+
+          if (existing.rows.length > 0) {
+            // UPDATE existing — preserves position_instance_id!
+            result = await client.query(
+              `UPDATE portal_positions
+               SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
+                   cena_jednotkova = $6, cena_celkem = $7,
+                   tov_labor = $8, tov_machinery = $9, tov_materials = $10,
+                   monolith_payload = COALESCE($11, monolith_payload),
+                   sheet_name = $12, row_index = $13,
+                   last_sync_from = 'monolit', last_sync_at = NOW(),
+                   updated_by = 'monolit_import', updated_at = NOW()
+               WHERE position_instance_id = $14
+               RETURNING position_instance_id`,
+              [
+                dbObjectId,
+                pos.kod || '', pos.popis || '', pos.mnozstvi || 0, pos.mj || '',
+                pos.cena_jednotkova || 0, pos.cena_celkem || 0,
+                JSON.stringify(pos.tov?.labor || []),
+                JSON.stringify(pos.tov?.machinery || []),
+                JSON.stringify(pos.tov?.materials || []),
+                pos.monolith_payload ? JSON.stringify(pos.monolith_payload) : null,
+                obj.code || '', posIdx,
+                existing.rows[0].position_instance_id
+              ]
+            );
+          } else {
+            // INSERT new position
+            result = await client.query(
+              `INSERT INTO portal_positions (
+                position_id, object_id, kod, popis, mnozstvi, mj,
+                cena_jednotkova, cena_celkem,
+                tov_labor, tov_machinery, tov_materials,
+                monolith_payload,
+                monolit_position_id, last_sync_from, last_sync_at,
+                sheet_name, row_index, created_by, updated_by,
+                created_at, updated_at
+              ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'monolit', NOW(), $14, $15, 'monolit_import', 'monolit_import', NOW(), NOW())
+              RETURNING position_instance_id`,
+              [
+                `pos_${uuidv4()}`, dbObjectId,
+                pos.kod || '', pos.popis || '', pos.mnozstvi || 0, pos.mj || '',
+                pos.cena_jednotkova || 0, pos.cena_celkem || 0,
+                JSON.stringify(pos.tov?.labor || []),
+                JSON.stringify(pos.tov?.machinery || []),
+                JSON.stringify(pos.tov?.materials || []),
+                pos.monolith_payload ? JSON.stringify(pos.monolith_payload) : null,
+                pos.monolit_id,
+                obj.code || '', posIdx
+              ]
+            );
+          }
+        } else {
+          // No monolit_id — always INSERT
+          result = await client.query(
+            `INSERT INTO portal_positions (
+              position_id, object_id, kod, popis, mnozstvi, mj,
+              cena_jednotkova, cena_celkem,
+              tov_labor, tov_machinery, tov_materials,
+              monolith_payload,
+              monolit_position_id, last_sync_from, last_sync_at,
+              sheet_name, row_index, created_by, updated_by,
+              created_at, updated_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'monolit', NOW(), $14, $15, 'monolit_import', 'monolit_import', NOW(), NOW())
+            RETURNING position_instance_id`,
+            [
+              `pos_${uuidv4()}`, dbObjectId,
+              pos.kod || '', pos.popis || '', pos.mnozstvi || 0, pos.mj || '',
+              pos.cena_jednotkova || 0, pos.cena_celkem || 0,
+              JSON.stringify(pos.tov?.labor || []),
+              JSON.stringify(pos.tov?.machinery || []),
+              JSON.stringify(pos.tov?.materials || []),
+              pos.monolith_payload ? JSON.stringify(pos.monolith_payload) : null,
+              pos.monolit_id || null,
+              obj.code || '', posIdx
+            ]
+          );
+        }
 
         // Track mapping: monolit_id → position_instance_id (for Monolit write-back)
         if (pos.monolit_id && result.rows[0]?.position_instance_id) {
