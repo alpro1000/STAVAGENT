@@ -38,6 +38,7 @@ from app.models.passport_schema import (
     ProjectTimeline,
     RiskAssessment,
     ProjectStakeholder,
+    StructureObject,
     StructureType
 )
 
@@ -83,7 +84,7 @@ PLNÝ TEXT DOKUMENTU:
 
 PRAVIDLA:
 1. Fakta z EXTRAHOVANÁ FAKTA jsou SPRÁVNÁ — nepřepisuj je ani neměň
-2. Doplň pouze: popis projektu, lokaci, časový plán, účastníky, rizika, technické zajímavosti
+2. Doplň pouze: popis projektu, lokaci, časový plán, účastníky, rizika, technické zajímavosti, stavební objekty
 3. Pokud informace v textu není → vrať null, NEVYMÝŠLEJ
 4. U každého doplnění uveď confidence (0.5-0.9, nikdy 1.0 protože jsou z LLM)
 5. Vrať POUZE JSON, žádný další text
@@ -92,7 +93,26 @@ VRAŤ JSON:
 {{
   "enrichments": {{
     "description": "Stručný popis projektu (2-3 věty) nebo null",
-    "structure_type": "building|bridge|tunnel|foundation|retaining_wall|slab|other nebo null",
+    "structure_type": "building|bridge|tunnel|foundation|retaining_wall|slab|road|infrastructure|other nebo null",
+
+    "objects": [
+      {{
+        "object_code": "SO-201 nebo SO 201 (kód objektu z dokumentu)",
+        "object_name": "Název objektu, např. 'Most přes Chrudimku km 15.2'",
+        "structure_type": "bridge|building|tunnel|other nebo null",
+        "span_description": "Popis rozpětí, např. '3×25m' nebo '1×42m' nebo null",
+        "total_length_m": číslo nebo null,
+        "width_m": číslo nebo null,
+        "height_m": číslo nebo null,
+        "concrete_volume_m3": číslo nebo null,
+        "reinforcement_tons": číslo nebo null,
+        "formwork_m2": číslo nebo null,
+        "duration_months": číslo nebo null,
+        "budget_czk": číslo nebo null,
+        "summary": "Stručný popis objektu (1-2 věty) — typ, konstrukce, materiál, klíčové parametry",
+        "drawing_reference": "Odkaz na číslo výkresu nebo null"
+      }}
+    ],
 
     "location": {{
       "address": "Ulice a číslo popisné nebo null",
@@ -113,7 +133,7 @@ VRAŤ JSON:
 
     "stakeholders": [
       {{
-        "role": "Investor|Dodavatel|Projektant|...",
+        "role": "Investor|Dodavatel|Projektant|Správce stavby|TDI|...",
         "name": "Název firmy/osoby nebo null",
         "contact": "Kontakt nebo null"
       }}
@@ -138,6 +158,7 @@ VRAŤ JSON:
   "confidence_scores": {{
     "description": 0.8,
     "structure_type": 0.9,
+    "objects": 0.7,
     "location": 0.7,
     "timeline": 0.5,
     "stakeholders": 0.7,
@@ -145,6 +166,10 @@ VRAŤ JSON:
     "technical_highlights": 0.7
   }}
 }}
+
+PŘÍKLADY OBJEKTŮ (pro multi-mostové projekty):
+- SO 201: Most přes Chrudimku — monolitický ŽB, 3×25m, C30/37, 450 m³ betonu, 85 t výztuže, 8 měsíců
+- SO 202: Nadjezd km 17.5 — předpjatý beton, 1×42m, C35/45, 280 m³ betonu, 52 t výztuže, 6 měsíců
 
 PŘÍKLADY RIZIK:
 - "Vysoké třídy prostředí XC4 XF4 XD2 vyžadují kvalitní beton a péči" (technical, medium)
@@ -288,8 +313,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         # Prepare facts summary for LLM
         facts_summary = self._prepare_facts_summary(passport)
 
-        # Truncate document text if too long (keep first 10k chars)
-        truncated_text = document_text[:10000] if len(document_text) > 10000 else document_text
+        # Truncate document text if too long (keep first 30k chars for better coverage)
+        truncated_text = document_text[:30000] if len(document_text) > 30000 else document_text
 
         # Build prompt
         prompt = self.ENRICHMENT_PROMPT.format(
@@ -371,41 +396,56 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         return orders.get(self.preferred_model, orders["gemini"])
 
     async def _call_gemini(self, prompt: str) -> Optional[Dict[str, Any]]:
-        """Call Gemini API"""
-        response = self.gemini_model.generate_content(
-            prompt,
-            generation_config={
-                'temperature': 0.3,
-                'max_output_tokens': 2048,
-            }
-        )
+        """Call Gemini API (sync → async via to_thread)"""
+        import asyncio
+
+        def _sync_call():
+            return self.gemini_model.generate_content(
+                prompt,
+                generation_config={
+                    'temperature': 0.3,
+                    'max_output_tokens': 2048,
+                }
+            )
+
+        response = await asyncio.to_thread(_sync_call)
 
         if response and response.text:
             return self._parse_json_response(response.text)
         return None
 
     async def _call_claude(self, prompt: str, model: str) -> Optional[Dict[str, Any]]:
-        """Call Claude API"""
-        response = self.claude_client.messages.create(
-            model=model,
-            max_tokens=2048,
-            temperature=0.3,
-            messages=[{"role": "user", "content": prompt}]
-        )
+        """Call Claude API (sync → async via to_thread)"""
+        import asyncio
+
+        def _sync_call():
+            return self.claude_client.messages.create(
+                model=model,
+                max_tokens=2048,
+                temperature=0.3,
+                messages=[{"role": "user", "content": prompt}]
+            )
+
+        response = await asyncio.to_thread(_sync_call)
 
         if response and response.content:
             return self._parse_json_response(response.content[0].text)
         return None
 
     async def _call_openai(self, prompt: str, model: str) -> Optional[Dict[str, Any]]:
-        """Call OpenAI API"""
-        response = self.openai_client.chat.completions.create(
-            model=model,
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.3,
-            max_tokens=2048,
-            response_format={"type": "json_object"}
-        )
+        """Call OpenAI API (sync → async via to_thread)"""
+        import asyncio
+
+        def _sync_call():
+            return self.openai_client.chat.completions.create(
+                model=model,
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.3,
+                max_tokens=2048,
+                response_format={"type": "json_object"}
+            )
+
+        response = await asyncio.to_thread(_sync_call)
 
         if response and response.choices:
             text = response.choices[0].message.content
@@ -593,6 +633,35 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         # Technical highlights
         if enrich_data.get('technical_highlights'):
             passport.technical_highlights = enrich_data['technical_highlights']
+
+        # Structure objects (bridges, buildings, sub-structures)
+        if enrich_data.get('objects'):
+            obj_confidence = confidence_scores.get('objects', 0.7)
+            passport.objects = []
+            for obj in enrich_data['objects']:
+                if not obj.get('object_code'):
+                    continue
+                try:
+                    st = StructureType(obj['structure_type']) if obj.get('structure_type') else None
+                except ValueError:
+                    st = None
+                passport.objects.append(StructureObject(
+                    object_code=obj['object_code'],
+                    object_name=obj.get('object_name', ''),
+                    structure_type=st,
+                    span_description=obj.get('span_description'),
+                    total_length_m=obj.get('total_length_m'),
+                    width_m=obj.get('width_m'),
+                    height_m=obj.get('height_m'),
+                    concrete_volume_m3=obj.get('concrete_volume_m3'),
+                    reinforcement_tons=obj.get('reinforcement_tons'),
+                    formwork_m2=obj.get('formwork_m2'),
+                    duration_months=obj.get('duration_months'),
+                    budget_czk=obj.get('budget_czk'),
+                    summary=obj.get('summary'),
+                    drawing_reference=obj.get('drawing_reference'),
+                    confidence=obj_confidence
+                ))
 
         return passport
 

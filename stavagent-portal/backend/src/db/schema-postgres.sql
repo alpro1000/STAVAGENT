@@ -249,6 +249,21 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_admin ON audit_logs(admin_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created ON audit_logs(created_at DESC);
 
+-- Portal documents table (generated passports, summaries, kiosk outputs attached to projects)
+CREATE TABLE IF NOT EXISTS portal_documents (
+  document_id VARCHAR(255) PRIMARY KEY,
+  portal_project_id VARCHAR(255) NOT NULL REFERENCES portal_projects(portal_project_id) ON DELETE CASCADE,
+  document_type VARCHAR(50) NOT NULL,       -- 'passport', 'summary', 'kiosk_output', 'audit_report'
+  title VARCHAR(500) NOT NULL,
+  source_file_id VARCHAR(255),              -- Reference to portal_files if generated from a file
+  content JSONB NOT NULL,                   -- Full passport/summary JSON
+  metadata JSONB DEFAULT '{}',              -- Processing metadata (time, model, confidence)
+  version INTEGER DEFAULT 1,
+  created_by VARCHAR(100) DEFAULT 'system',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Portal indexes
 CREATE INDEX IF NOT EXISTS idx_portal_projects_owner ON portal_projects(owner_id);
 CREATE INDEX IF NOT EXISTS idx_portal_projects_type ON portal_projects(project_type);
@@ -264,4 +279,7 @@ CREATE INDEX IF NOT EXISTS idx_chat_sessions_project ON chat_sessions(portal_pro
 CREATE INDEX IF NOT EXISTS idx_chat_sessions_user ON chat_sessions(user_id);
 CREATE INDEX IF NOT EXISTS idx_chat_messages_session ON chat_messages(session_id);
 CREATE INDEX IF NOT EXISTS idx_chat_messages_created ON chat_messages(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_portal_documents_project ON portal_documents(portal_project_id);
+CREATE INDEX IF NOT EXISTS idx_portal_documents_type ON portal_documents(document_type);
+CREATE INDEX IF NOT EXISTS idx_portal_documents_source ON portal_documents(source_file_id);
 
