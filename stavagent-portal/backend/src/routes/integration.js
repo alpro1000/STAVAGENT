@@ -506,7 +506,7 @@ router.post('/import-from-registry', async (req, res) => {
           );
 
           if (existing.rows.length > 0) {
-            // UPDATE existing position — preserves position_instance_id!
+            // UPDATE existing position — preserves position_instance_id + monolith_payload!
             result = await client.query(
               `UPDATE portal_positions
                SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
@@ -517,7 +517,7 @@ router.post('/import-from-registry', async (req, res) => {
                    last_sync_from = 'registry', last_sync_at = NOW(),
                    updated_by = 'registry_sync', updated_at = NOW()
                WHERE position_instance_id = $15
-               RETURNING position_instance_id`,
+               RETURNING position_instance_id, monolith_payload`,
               [
                 dbObjectId,
                 item.kod || '', item.popis || '',
@@ -591,12 +591,20 @@ router.post('/import-from-registry', async (req, res) => {
 
         totalItems++;
 
-        // Track instance mapping for write-back
+        // Track instance mapping for write-back (includes monolith_payload if available)
         if (registryItemId && result.rows[0]?.position_instance_id) {
-          instanceMapping.push({
+          const row = result.rows[0];
+          const mapping = {
             registry_item_id: registryItemId,
-            position_instance_id: result.rows[0].position_instance_id,
-          });
+            position_instance_id: row.position_instance_id,
+          };
+          // Include monolith_payload if Monolit has written calculation data
+          if (row.monolith_payload) {
+            mapping.monolith_payload = typeof row.monolith_payload === 'string'
+              ? JSON.parse(row.monolith_payload)
+              : row.monolith_payload;
+          }
+          instanceMapping.push(mapping);
         }
       }
     }

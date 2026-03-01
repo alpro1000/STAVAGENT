@@ -38,6 +38,37 @@ export interface ParsedItem {
   // Portal PositionInstance link (for DOV write-back)
   position_instance_id?: string | null;
 
+  // Monolit calculation data (read-back from Portal)
+  monolith_payload?: MonolithPayload | null;
+
   // Трассировка источника
   source: ItemSource;
+}
+
+/**
+ * MonolithPayload — calculation data written by Monolit-Planner to Portal.
+ * Read back by Registry to display Monolit results alongside BOQ items.
+ * Spec: docs/POSITION_INSTANCE_ARCHITECTURE.ts
+ */
+export interface MonolithPayload {
+  monolit_position_id: string;
+  monolit_project_id: string;
+  part_name: string;
+  monolit_url?: string;
+  subtype: string;
+  otskp_code?: string | null;
+  item_name?: string | null;
+  crew_size: number;
+  wage_czk_ph: number;
+  shift_hours: number;
+  days: number;
+  labor_hours: number;
+  cost_czk: number;
+  concrete_m3?: number | null;
+  unit_cost_on_m3?: number | null;
+  kros_unit_czk?: number | null;
+  kros_total_czk?: number | null;
+  source_tag: string;
+  confidence: number;
+  calculated_at: string;
 }
