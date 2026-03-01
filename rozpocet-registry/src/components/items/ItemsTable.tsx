@@ -12,7 +12,7 @@ import {
   createColumnHelper,
   type SortingState,
 } from '@tanstack/react-table';
-import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check } from 'lucide-react';
+import { ChevronUp, ChevronDown, ChevronRight, Sparkles, Globe, Filter, Check, HardHat } from 'lucide-react';
 import type { ParsedItem, TOVData } from '../../types';
 import { useRegistryStore } from '../../stores/registryStore';
 import { autoAssignSimilarItems } from '../../services/similarity/similarityService';
@@ -457,6 +457,48 @@ export function ItemsTable({
           );
         },
         size: 32,
+        enableResizing: false,
+      }),
+
+      // Monolit indicator — shows when item has calculation data from Monolit-Planner
+      columnHelper.display({
+        id: 'monolit',
+        header: '',
+        cell: ({ row }) => {
+          const item = row.original;
+          const mp = item.monolith_payload;
+          if (!mp || item.rowRole === 'section') return null;
+
+          const costLabel = mp.kros_total_czk
+            ? `${Math.round(mp.kros_total_czk).toLocaleString('cs')} Kč`
+            : mp.cost_czk
+              ? `${Math.round(mp.cost_czk).toLocaleString('cs')} Kč`
+              : '';
+          const daysLabel = mp.days ? `${mp.days}d` : '';
+          const crewLabel = mp.crew_size ? `${mp.crew_size}L` : '';
+          const tooltip = [
+            `Monolit: ${mp.part_name || mp.subtype || ''}`,
+            crewLabel && daysLabel ? `${crewLabel} × ${daysLabel}` : crewLabel || daysLabel,
+            costLabel,
+          ].filter(Boolean).join(' | ');
+
+          return (
+            <button
+              title={tooltip}
+              className="flex items-center justify-center w-6 h-6 rounded hover:bg-bg-secondary transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                if (mp.monolit_url) {
+                  window.open(mp.monolit_url, '_blank');
+                }
+              }}
+              style={{ cursor: mp.monolit_url ? 'pointer' : 'default' }}
+            >
+              <HardHat size={14} className="text-amber-500" />
+            </button>
+          );
+        },
+        size: 28,
         enableResizing: false,
       }),
 
