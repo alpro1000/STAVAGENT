@@ -22,6 +22,7 @@ from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from fastapi.responses import JSONResponse
 
 from app.services.document_processor import DocumentProcessor, process_document
+from app.services.brief_summarizer import BriefDocumentSummarizer
 from app.models.passport_schema import (
     ProjectPassport,
     PassportGenerationRequest,
@@ -117,6 +118,120 @@ async def generate_passport(
         logger.error(f"Failed to generate passport: {e}", exc_info=True)
         raise HTTPException(status_code=500, detail=str(e))
 
+    finally:
+        # Cleanup temp file
+        try:
+            if os.path.exists(temp_file_path):
+                os.remove(temp_file_path)
+            if os.path.exists(temp_dir):
+                os.rmdir(temp_dir)
+        except Exception as e:
+            logger.warning(f"Failed to cleanup temp files: {e}")
+
+
+@router.post("/summarize")
+async def summarize_document_brief(
+    file: UploadFile = File(..., description="Construction document (PDF, Excel, XML)"),
+    language: str = Form("cs", description="Summary language (cs, en)"),
+    preferred_model: Optional[str] = Form("gemini", description="AI model: gemini (FREE), claude-haiku, openai-mini")
+):
+    """
+    Generate BRIEF TEXT SUMMARY of document (5-10 sentences).
+    
+    **Difference from /generate:**
+    - /generate: Full structured passport (JSON, 50+ fields, 4-8s)
+    - /summarize: Brief text summary (plain text, 5-10 sentences, 2-3s)
+    
+    **Use cases:**
+    - Quick document overview
+    - Email notifications
+    - Dashboard previews
+    
+    **Performance:**
+    - Processing time: 2-3 seconds (vs 4-8s for full passport)
+    - Prompt length: 2K chars (vs 5K for passport)
+    - Output: Plain text (vs complex JSON)
+    
+    **Example:**
+    ```bash
+    curl -X POST "http://localhost:8000/api/v1/passport/summarize" \\
+      -F "file=@technicka_zprava.pdf" \\
+      -F "language=cs" \\
+      -F "preferred_model=gemini"
+    ```
+    
+    **Response:**
+    ```json
+    {
+      "summary": "Projekt: Most přes Chrudimku km 15.2\nTyp: Silniční most...\n",
+      "processing_time_ms": 2500,
+      "chars_processed": 2000,
+      "model_used": "gemini"
+    }
+    ```
+    """
+    logger.info(f"Generating brief summary: {file.filename}, language: {language}")
+    
+    # Save uploaded file to temp location
+    temp_dir = tempfile.mkdtemp()
+    temp_file_path = os.path.join(temp_dir, file.filename)
+    
+    try:
+        # Write uploaded file
+        with open(temp_file_path, "wb") as f:
+            content = await file.read()
+            f.write(content)
+        
+        logger.info(f"Saved file to: {temp_file_path} ({len(content)} bytes)")
+        
+        # Extract text from document
+        from app.parsers.smart_parser import SmartParser
+        parser = SmartParser()
+        parsed = parser.parse(Path(temp_file_path))
+        
+        # Get text content
+        document_text = ""
+        
+        # For PDFs: extract full text with pdfplumber
+        if Path(temp_file_path).suffix.lower() == '.pdf':
+            try:
+                import pdfplumber
+                with pdfplumber.open(temp_file_path) as pdf:
+                    for page in pdf.pages[:5]:  # First 5 pages only
+                        page_text = page.extract_text()
+                        if page_text:
+                            document_text += page_text + "\n"
+            except Exception as e:
+                logger.warning(f"Failed to extract PDF text: {e}")
+        
+        # Fallback to parsed data
+        if not document_text and 'positions' in parsed:
+            for pos in parsed['positions']:
+                if 'popis' in pos:
+                    document_text += pos['popis'] + " "
+        
+        if not document_text:
+            raise HTTPException(
+                status_code=400,
+                detail="Failed to extract text from document"
+            )
+        
+        # Generate brief summary
+        summarizer = BriefDocumentSummarizer(preferred_model=preferred_model)
+        result = await summarizer.summarize(
+            document_text=document_text,
+            language=language,
+            max_chars=2000  # Only first 2K chars
+        )
+        
+        logger.info(f"Brief summary generated: {result['processing_time_ms']}ms")
+        
+        return result
+    
+    except Exception as e:
+        logger.error(f"Failed to generate brief summary: {e}", exc_info=True)
+        raise HTTPException(status_code=500, detail=str(e))
+    
     finally:
         # Cleanup temp file
         try:
