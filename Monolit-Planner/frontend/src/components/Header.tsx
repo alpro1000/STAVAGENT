@@ -52,54 +52,24 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
       // Calculate total positions from all imported bridges
       const totalPositions = result.bridges?.reduce((sum: number, b: any) => sum + (b.positions_count || 0), 0) || 0;
 
-      // ✅ FIX: Immediately update bridges from upload response
-      // This avoids waiting for refetch which might timeout
+      // ✅ FIX: Force refetch to update sidebar
+      // Simple and reliable - let React Query handle the update
+      await refetchBridges();
+
+      // Auto-select the first imported bridge
       if (result.bridges?.length > 0) {
-        // Convert upload response to Bridge format and merge with existing
-        const importedBridges = result.bridges.map((b: any) => ({
-          bridge_id: b.bridge_id,
-          project_name: b.project_name || result.project_name || 'Import',
-          object_name: b.object_name || b.bridge_id,
-          element_count: b.positions_count || 0,
-          concrete_m3: b.concrete_m3 || 0,
-          sum_kros_czk: 0,
-          status: 'active' as const,
-          created_at: new Date().toISOString(),
-          updated_at: new Date().toISOString()
-        }));
-
-        // Merge with existing bridges (avoid duplicates)
-        const existingIds = new Set(bridges.map(b => b.bridge_id));
-        const newBridges = importedBridges.filter((b: any) => !existingIds.has(b.bridge_id));
-
-        if (newBridges.length > 0) {
-          // Update context immediately with new bridges
-          const updatedBridges = [...bridges, ...newBridges];
-
-          // ✅ FIX: Update BOTH context AND query cache
-          // Context update triggers immediate sidebar re-render
-          setBridges(updatedBridges);
-          // Query cache update ensures consistency with React Query
-          queryClient.setQueryData(['bridges'], updatedBridges);
-
-          if (import.meta.env.DEV) console.log('[Upload] Added', newBridges.length, 'new bridges to sidebar');
-        }
-
-        // Auto-select the first imported bridge
         setSelectedBridge(result.bridges[0].bridge_id);
       }
 
       // Invalidate positions cache
       queryClient.invalidateQueries({ queryKey: ['positions'] });
 
-      // ✅ FIX: DON'T do automatic refetch after import!
-      // Data is already in context from upload response.
-      // Refetch was causing race condition: if database hadn't committed yet,
-      // refetch would return old data and overwrite the new bridges.
-      // User can refresh page manually if needed.
-      if (import.meta.env.DEV) console.log('[Upload] Skipping refetch - data already in context');
-
-      alert(`✅ Import úspěšný! Nalezeno ${result.bridges?.length || 0} objektů s ${totalPositions} pozicemi.`);
+      alert(
+        `✅ Import úspěšný!\n\n` +
+        `Objektů: ${result.bridges?.length || 0}\n` +
+        `Pozic: ${totalPositions}\n\n` +
+        `Objekty jsou nyní viditelné v levém panelu.`
+      );
     } catch (error: any) {
       alert(`❌ Nahrání selhalo: ${error.message}`);
     } finally {
