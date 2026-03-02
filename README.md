@@ -23,6 +23,7 @@
 - ✅ **Node.js 20.11.0** - обновлён с 18.20.4 (EOL)
 - ✅ **npm vulnerabilities** - 1/2 исправлено (jws ✅, xlsx ⚠️ no fix)
 - ✅ **Formwork Rental Calculator** - калькулятор аренды бедения в Registry TOV
+- ✅ **Time Norms Automation** - AI-powered work duration estimates (KROS/RTS/ČSN)
 - 🟡 **CORE Deployment Fix** - в процессе (robust KB loading)
 
 ---
@@ -48,10 +49,12 @@
    - Add robust error handling for KB loading
    - Add PDF size/page limits to prevent hanging
    - See: [concrete-agent/QUICK_DEPLOY.md](concrete-agent/QUICK_DEPLOY.md)
-2. **🟢 READY: Implement Time Norms Automation** - AI-powered work duration estimates
-   - Design complete (8 pages)
-   - Backend service + API endpoint + Frontend UI
-   - Leverages concrete-agent Multi-Role API + KROS/RTS norms
+2. **✅ DONE: Time Norms Automation** - AI-powered work duration estimates
+   - ✅ Backend service (timeNormsService.js)
+   - ✅ API endpoint (/api/positions/:id/suggest-days)
+   - ✅ Frontend UI (Sparkles button + tooltip)
+   - ✅ Feature flag enabled (FF_AI_DAYS_SUGGEST)
+   - 📄 See: [TIME_NORMS_IMPLEMENTATION_STATUS.md](Monolit-Planner/docs/TIME_NORMS_IMPLEMENTATION_STATUS.md)
 3. Re-enable npm cache в CI (~2min speedup) - optional
 4. Fix integration tests ES module mocking - optional
 
@@ -132,6 +135,8 @@ npm test                       # 34 formula tests
 | [docs/TESTING_SETUP.md](docs/TESTING_SETUP.md) | Настройка тестов |
 | [docs/POST_DEPLOYMENT_IMPROVEMENTS.md](docs/POST_DEPLOYMENT_IMPROVEMENTS.md) | План улучшений |
 | [Monolit-Planner/CLAUDE.MD](Monolit-Planner/CLAUDE.MD) | Документация Monolit Planner |
+| [Monolit-Planner/docs/TIME_NORMS_AUTOMATION.md](Monolit-Planner/docs/TIME_NORMS_AUTOMATION.md) | Time Norms - Design |
+| [Monolit-Planner/docs/TIME_NORMS_IMPLEMENTATION_STATUS.md](Monolit-Planner/docs/TIME_NORMS_IMPLEMENTATION_STATUS.md) | Time Norms - Status |
 
 ---
 
@@ -166,13 +171,13 @@ cd Monolit-Planner/backend && npm run test:all
 
 ---
 
-**Версия:** 1.0.13
+**Версия:** 1.0.14
 **Последнее обновление:** 2025-01-XX
-**Текущая ветка:** `main`
+**Текущая ветка:** `feature/time-norms-automation`
 **Последние коммиты:**
-- `PENDING` FIX: Render deployment - robust KB loading + port diagnostics
+- `PENDING` FEATURE: Time Norms Automation - AI-powered work duration estimates
+- `30f0d2c` DOCS: Archive Passport Fix PR description + Formwork V3 docs
 - `3c79ed3` FEATURE: Formwork rental calculator in Registry TOV
-- `5326457` REFACTOR: Formwork calculator - labor only (Montáž + Demontáž)
 
 ---
 
