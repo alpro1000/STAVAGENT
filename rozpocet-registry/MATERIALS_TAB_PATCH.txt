@@ -1,0 +1,165 @@
+/**
+ * PATCH: Add "Vybrat z ceníku" button to MaterialsTab
+ * 
+ * Changes:
+ * 1. Import concrete prices
+ * 2. Add modal state
+ * 3. Add "Vybrat z ceníku" button for Beton materials
+ * 4. Add price selector modal with supplier + grade filters
+ */
+
+// Add to imports (line ~10):
+import concretePrices from '../../data/concrete_prices.json';
+
+// Add state after line ~40 (after showAddForm):
+const [showPriceModal, setShowPriceModal] = useState(false);
+const [selectedSupplier, setSelectedSupplier] = useState('');
+const [selectedClass, setSelectedClass] = useState('');
+const [selectedEnv, setSelectedEnv] = useState('');
+const [filteredPrices, setFilteredPrices] = useState<any[]>([]);
+
+// Add filter function:
+const filterPrices = () => {
+  if (!selectedSupplier) return [];
+  const supplier = concretePrices.suppliers.find(s => s.id === selectedSupplier);
+  if (!supplier) return [];
+  
+  return supplier.grades.filter(g => {
+    if (selectedClass && g.class !== selectedClass) return false;
+    if (selectedEnv && !g.env.includes(selectedEnv)) return false;
+    return true;
+  });
+};
+
+// Update filteredPrices when filters change:
+useEffect(() => {
+  setFilteredPrices(filterPrices());
+}, [selectedSupplier, selectedClass, selectedEnv]);
+
+// Add selectPrice function:
+const selectPrice = (grade: any) => {
+  const name = `Beton ${grade.class} ${grade.env} Dmax${grade.Dmax} ${grade.cons}`;
+  const newResource: MaterialResource = {
+    id: uuidv4(),
+    name,
+    code: grade.class,
+    quantity: 0,
+    unit: 'm³',
+    unitPrice: grade.price,
+    totalCost: 0,
+  };
+  onChange([...resources, newResource]);
+  setShowPriceModal(false);
+  // Reset filters
+  setSelectedSupplier('');
+  setSelectedClass('');
+  setSelectedEnv('');
+};
+
+// Add button in quick-add section (after existing buttons, line ~150):
+<button
+  onClick={() => setShowPriceModal(true)}
+  className="px-3 py-1.5 text-sm bg-green-500/10 hover:bg-green-500/20 text-green-600 rounded border border-green-500/30 hover:border-green-500 transition-colors flex items-center gap-1"
+>
+  <span>💰</span> Vybrat z ceníku
+</button>
+
+// Add modal at end of component (before closing </div>):
+{showPriceModal && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={() => setShowPriceModal(false)}>
+    <div className="bg-bg-primary rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-hidden" onClick={e => e.stopPropagation()}>
+      {/* Header */}
+      <div className="px-4 py-3 border-b border-border-color flex items-center justify-between">
+        <h3 className="text-sm font-semibold">Vybrat beton z ceníku</h3>
+        <button onClick={() => setShowPriceModal(false)} className="text-text-muted hover:text-text-primary">✕</button>
+      </div>
+
+      {/* Filters */}
+      <div className="px-4 py-3 border-b border-border-color space-y-2">
+        <div className="grid grid-cols-3 gap-2">
+          {/* Supplier */}
+          <select
+            value={selectedSupplier}
+            onChange={e => setSelectedSupplier(e.target.value)}
+            className="px-2 py-1.5 text-xs bg-bg-secondary rounded border border-border-color focus:outline-none focus:border-accent-primary"
+          >
+            <option value="">— Dodavatel —</option>
+            {concretePrices.suppliers.map(s => (
+              <option key={s.id} value={s.id}>{s.name}</option>
+            ))}
+          </select>
+
+          {/* Class */}
+          <select
+            value={selectedClass}
+            onChange={e => setSelectedClass(e.target.value)}
+            className="px-2 py-1.5 text-xs bg-bg-secondary rounded border border-border-color focus:outline-none focus:border-accent-primary"
+            disabled={!selectedSupplier}
+          >
+            <option value="">— Třída —</option>
+            {concretePrices.common_grades.map(c => (
+              <option key={c} value={c}>{c}</option>
+            ))}
+          </select>
+
+          {/* Environment */}
+          <select
+            value={selectedEnv}
+            onChange={e => setSelectedEnv(e.target.value)}
+            className="px-2 py-1.5 text-xs bg-bg-secondary rounded border border-border-color focus:outline-none focus:border-accent-primary"
+            disabled={!selectedSupplier}
+          >
+            <option value="">— Prostředí —</option>
+            {concretePrices.common_env.map(e => (
+              <option key={e} value={e}>{e}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+
+      {/* Results */}
+      <div className="px-4 py-3 overflow-y-auto max-h-96">
+        {!selectedSupplier && (
+          <p className="text-xs text-text-muted text-center py-8">Vyberte dodavatele</p>
+        )}
+        {selectedSupplier && filteredPrices.length === 0 && (
+          <p className="text-xs text-text-muted text-center py-8">Žádné výsledky</p>
+        )}
+        {filteredPrices.length > 0 && (
+          <div className="space-y-1">
+            {filteredPrices.map((grade, idx) => (
+              <button
+                key={idx}
+                onClick={() => selectPrice(grade)}
+                className="w-full text-left px-3 py-2 text-xs bg-bg-secondary hover:bg-accent-primary/10 rounded border border-border-color hover:border-accent-primary transition-colors"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-medium">{grade.class}</span>
+                    <span className="text-text-muted ml-2">{grade.env}</span>
+                    <span className="text-text-muted ml-2">Dmax{grade.Dmax}</span>
+                    <span className="text-text-muted ml-2">{grade.cons}</span>
+                    {grade.note && <span className="text-[10px] text-blue-500 ml-2">({grade.note})</span>}
+                  </div>
+                  <span className="font-semibold text-accent-primary tabular-nums">
+                    {grade.price.toLocaleString('cs-CZ')} Kč/m³
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Footer */}
+      <div className="px-4 py-3 border-t border-border-color flex justify-end">
+        <button
+          onClick={() => setShowPriceModal(false)}
+          className="px-4 py-2 text-xs text-text-secondary hover:bg-bg-secondary rounded transition-colors"
+        >
+          Zrušit
+        </button>
+      </div>
+    </div>
+  </div>
+)}

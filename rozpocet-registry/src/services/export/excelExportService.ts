@@ -352,6 +352,41 @@ function createStyledItemsSheet(
           rowTypes.push('tov_formwork');
           outlineLevels.push(3);
         }
+        // Pump rental rows (blue-violet)
+        if (tov.pumpRental) {
+          const p = tov.pumpRental;
+          // Main pump row
+          const pumpDesc = `  🚛 Betonočerpadlo ${p.pump_label || ''} — ${p.celkem_m3.toFixed(1)} m³, ${p.celkem_pristaveni}× přist., ${p.celkem_hodiny.toFixed(1)}h`;
+          data.push([p.kros_kod ?? '', '', pumpDesc, 'kpl', 1, p.konecna_cena, p.konecna_cena, 'TOV:Čerpadlo']);
+          rowTypes.push('tov_machinery');
+          outlineLevels.push(3);
+          // Breakdown sub-rows (level 4 - nested under pump)
+          if (p.celkem_doprava > 0) {
+            data.push(['', '', `    ↳ Doprava (${p.celkem_pristaveni}× × ${(p.celkem_doprava/p.celkem_pristaveni).toFixed(0)} Kč)`, '', '', '', p.celkem_doprava, '']);
+            rowTypes.push('tov_machinery');
+            outlineLevels.push(4);
+          }
+          if (p.celkem_manipulace > 0) {
+            data.push(['', '', `    ↳ Manipulace (${p.celkem_hodiny.toFixed(1)}h × ${p.manipulace_czk_h} Kč/h)`, '', '', '', p.celkem_manipulace, '']);
+            rowTypes.push('tov_machinery');
+            outlineLevels.push(4);
+          }
+          if (p.celkem_priplatek_m3 > 0) {
+            data.push(['', '', `    ↳ Příplatek (${p.celkem_m3.toFixed(1)} m³ × ${p.priplatek_czk_m3} Kč/m³)`, '', '', '', p.celkem_priplatek_m3, '']);
+            rowTypes.push('tov_machinery');
+            outlineLevels.push(4);
+          }
+          if (p.celkem_prislusenstvi > 0) {
+            data.push(['', '', `    ↳ Příslušenství`, '', '', '', p.celkem_prislusenstvi, '']);
+            rowTypes.push('tov_machinery');
+            outlineLevels.push(4);
+          }
+          if (p.celkem_priplatky > 0) {
+            data.push(['', '', `    ↳ Příplatky`, '', '', '', p.celkem_priplatky, '']);
+            rowTypes.push('tov_machinery');
+            outlineLevels.push(4);
+          }
+        }
       }
     }
   }

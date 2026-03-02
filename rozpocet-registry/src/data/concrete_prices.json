@@ -1,0 +1,83 @@
+{
+  "suppliers": [
+    {
+      "id": "berger_sadov",
+      "name": "Berger Beton Sadov",
+      "plant": "Karlovy Vary – Sadov",
+      "grades": [
+        { "class": "C8/10", "env": "X0", "Dmax": 22, "cons": "S1", "price": 2675 },
+        { "class": "C8/10", "env": "X0", "Dmax": 22, "cons": "S3", "price": 2805 },
+        { "class": "C12/15", "env": "X0", "Dmax": 22, "cons": "S1", "price": 2775 },
+        { "class": "C12/15", "env": "X0", "Dmax": 22, "cons": "S3", "price": 2895 },
+        { "class": "C16/20", "env": "X0", "Dmax": 22, "cons": "S1", "price": 2885 },
+        { "class": "C16/20", "env": "XC1,XC2", "Dmax": 22, "cons": "S3", "price": 3005 },
+        { "class": "C20/25", "env": "X0", "Dmax": 22, "cons": "S1", "price": 3125 },
+        { "class": "C20/25", "env": "XC2,XC3", "Dmax": 22, "cons": "S3", "price": 3235 },
+        { "class": "C25/30", "env": "X0", "Dmax": 22, "cons": "S1", "price": 3250 },
+        { "class": "C25/30", "env": "XC3", "Dmax": 22, "cons": "S3", "price": 3325 },
+        { "class": "C25/30", "env": "XC4,XF1,XA1,XD1", "Dmax": 22, "cons": "S3", "price": 3465 },
+        { "class": "C25/30", "env": "XF3,XA2,XD2", "Dmax": 22, "cons": "S3", "price": 3515 },
+        { "class": "C25/30", "env": "XF2,XF3,XD2,XA1", "Dmax": 22, "cons": "S3", "price": 3565, "note": "provzdušněný" },
+        { "class": "C30/37", "env": "XC4,XF1,XA1,XD1", "Dmax": 22, "cons": "S3", "price": 3615 },
+        { "class": "C30/37", "env": "XF3,XA2,XD2,XD3", "Dmax": 22, "cons": "S3", "price": 3725 },
+        { "class": "C30/37", "env": "XA3", "Dmax": 22, "cons": "S3", "price": 3815 },
+        { "class": "C30/37", "env": "XF2,XF3,XD2", "Dmax": 22, "cons": "S3", "price": 3775, "note": "provzdušněný" },
+        { "class": "C30/37", "env": "XF4,XD3,XA2", "Dmax": 22, "cons": "S3", "price": 3815, "note": "provzdušněný" },
+        { "class": "C35/45", "env": "XD3,XC4,XA2,XF1,XF3", "Dmax": 22, "cons": "S3", "price": 4335 }
+      ]
+    },
+    {
+      "id": "frischbeton_kv",
+      "name": "Frischbeton KV",
+      "plant": "Karlovy Vary – Olšová Vrata",
+      "grades": [
+        { "class": "C8/10", "env": "X0", "Dmax": 22, "cons": "S3", "price": 3000, "note": "fco stavba" },
+        { "class": "C12/15", "env": "X0", "Dmax": 22, "cons": "S3", "price": 3025, "note": "fco stavba" },
+        { "class": "C16/20", "env": "X0", "Dmax": 22, "cons": "S3", "price": 3240, "note": "fco stavba" },
+        { "class": "C20/25", "env": "X0", "Dmax": 22, "cons": "S3", "price": 3400, "note": "fco stavba" },
+        { "class": "C25/30", "env": "X0", "Dmax": 22, "cons": "S3", "price": 3440, "note": "fco stavba" },
+        { "class": "C25/30", "env": "XA1", "Dmax": 22, "cons": "S4", "price": 3470, "note": "piloty mokré" },
+        { "class": "C25/30", "env": "XA2", "Dmax": 22, "cons": "S4", "price": 3470, "note": "piloty mokré" },
+        { "class": "C25/30", "env": "XC2", "Dmax": 22, "cons": "S3", "price": 3440, "note": "fco stavba" },
+        { "class": "C25/30", "env": "XF1", "Dmax": 22, "cons": "S3", "price": 3590, "note": "fco stavba" },
+        { "class": "C25/30", "env": "XF2", "Dmax": 22, "cons": "S3", "price": 3590, "note": "fco stavba" },
+        { "class": "C25/30", "env": "XF3", "Dmax": 22, "cons": "S3", "price": 3590, "note": "fco stavba" },
+        { "class": "C30/37", "env": "XA2", "Dmax": 22, "cons": "S4", "price": 3470, "note": "piloty mokré" },
+        { "class": "C30/37", "env": "XA3", "Dmax": 22, "cons": "S3", "price": 3590, "note": "fco stavba" },
+        { "class": "C30/37", "env": "XF2", "Dmax": 22, "cons": "S3", "price": 3690, "note": "fco stavba" },
+        { "class": "C30/37", "env": "XF3", "Dmax": 22, "cons": "S3", "price": 3690, "note": "fco stavba" },
+        { "class": "C30/37", "env": "XF4", "Dmax": 22, "cons": "S3", "price": 3690, "note": "fco stavba, CHEAPEST" },
+        { "class": "C35/45", "env": "XF2", "Dmax": 22, "cons": "S3", "price": 3790, "note": "fco stavba" },
+        { "class": "C35/45", "env": "XF4", "Dmax": 22, "cons": "S3", "price": 3790, "note": "fco stavba" }
+      ]
+    }
+  ],
+  "common_grades": [
+    "C8/10",
+    "C12/15",
+    "C16/20",
+    "C20/25",
+    "C25/30",
+    "C30/37",
+    "C35/45"
+  ],
+  "common_env": [
+    "X0",
+    "XC1",
+    "XC2",
+    "XC3",
+    "XC4",
+    "XF1",
+    "XF2",
+    "XF3",
+    "XF4",
+    "XA1",
+    "XA2",
+    "XA3",
+    "XD1",
+    "XD2",
+    "XD3"
+  ],
+  "common_cons": ["S1", "S2", "S3", "S4"],
+  "common_dmax": [8, 16, 22]
+}

@@ -271,6 +271,10 @@ export interface PumpAccessory {
  *   0.5 h stavba + 0.5 h mytí = 1 h overhead billed at manipulace_czk_h
  */
 export interface PumpRentalData {
+  // ── Supplier selection ────────────────────────────────────────────────────
+  supplier_id?: string;            // e.g. "berger_sadov", "frischbeton_kv"
+  supplier_name?: string;          // e.g. "Berger Beton Sadov"
+  
   // ── Pump type (from pump_knowledge.json) ──────────────────────────────────
   pump_type_id?: string;           // e.g. "bu_28_24"
   pump_label?: string;             // e.g. "28/24 m (Boom 28 m)"

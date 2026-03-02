@@ -1,0 +1,100 @@
+/**
+ * PATCH: Add TOV price formulas to Excel export
+ * 
+ * Problem: TOV sub-rows are exported, but "Cena celkem" of main item
+ * doesn't sum up TOV costs automatically.
+ * 
+ * Solution: Add formula to main item's "Cena celkem" that sums:
+ * - Labor costs (Σ labor.totalCost)
+ * - Material costs (Σ materials.totalCost)
+ * - Machinery costs (Σ machinery.totalCost)
+ * - Formwork rental (Σ formwork.konecny_najem)
+ * - Pump rental (pumpRental.konecna_cena)
+ * 
+ * Formula structure:
+ * =SUM(G{row+1}:G{row+N})  where N = number of TOV sub-rows
+ * 
+ * This creates live Excel formulas that recalculate when TOV data changes.
+ */
+
+// Add after line 350 (in createStyledItemsSheet function):
+
+// Track TOV row ranges for formula generation
+const tovRowRanges = new Map<number, { start: number; end: number }>();
+let currentMainRow = -1;
+
+// Modify TOV export section (line 350-400):
+if (includeTOV && !isSubordinate && !isSection) {
+  const tov = tovDataMap[item.id];
+  if (tov) {
+    const tovStartRow = data.length; // First TOV sub-row
+    
+    // [existing TOV export code for labor, materials, machinery, formwork, pump]
+    
+    const tovEndRow = data.length - 1; // Last TOV sub-row
+    
+    // Store range for formula generation
+    if (tovEndRow >= tovStartRow) {
+      tovRowRanges.set(currentMainRow, { start: tovStartRow, end: tovEndRow });
+    }
+  }
+}
+
+// Add formula generation after existing formula loop (line 550):
+
+// Add TOV sum formulas for main items with TOV data
+for (const [mainRow, range] of tovRowRanges) {
+  const excelMainRow = mainRow + 1; // Excel 1-indexed
+  const excelStartRow = range.start + 1;
+  const excelEndRow = range.end + 1;
+  
+  const cellRef = XLSX.utils.encode_cell({ r: mainRow, c: 6 }); // Column G (Cena celkem)
+  const existingCell = ws[cellRef];
+  const existingStyle = existingCell?.s;
+  
+  // Replace with SUM formula that includes TOV sub-rows
+  ws[cellRef] = {
+    t: 'n',
+    f: `SUM(G${excelStartRow}:G${excelEndRow})`,
+    s: existingStyle,
+    z: '#,##0.00',
+  };
+}
+
+/**
+ * ALTERNATIVE: Add TOV summary row after each main item
+ * 
+ * Instead of replacing main item's price, add a summary row:
+ * "  ∑ TOV celkem" with formula =SUM(G{start}:G{end})
+ * 
+ * This preserves original item price and shows TOV breakdown separately.
+ */
+
+// Add after TOV export (line 400):
+if (includeTOV && !isSubordinate && !isSection) {
+  const tov = tovDataMap[item.id];
+  if (tov) {
+    const tovStartRow = data.length - tovSubRowCount; // Calculate based on actual rows added
+    const tovEndRow = data.length - 1;
+    
+    // Add summary row
+    data.push(['', '', '  ∑ TOV celkem', '', '', '', { f: `SUM(G${tovStartRow+1}:G${tovEndRow+1})` }, 'TOV:Souhrn']);
+    rowTypes.push('tov_summary');
+    outlineLevels.push(3);
+  }
+}
+
+// Add TOV summary style:
+const TOV_SUMMARY_STYLE: XLSX.CellStyle = {
+  fill: { fgColor: { rgb: 'FEF3C7' } },  // amber-100
+  font: { name: 'Calibri', sz: 9, color: { rgb: '78350F' }, bold: true },
+  border: { 
+    top: { style: 'thin', color: { rgb: 'FCD34D' } },
+    bottom: { style: 'medium', color: { rgb: 'F59E0B' } }
+  },
+};
+
+// Add to style switch (line 500):
+case 'tov_summary':
+  style = { ...TOV_SUMMARY_STYLE };
+  break;
