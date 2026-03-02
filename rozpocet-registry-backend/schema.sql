@@ -32,6 +32,7 @@ CREATE TABLE IF NOT EXISTS registry_items (
   cena_jednotkova REAL,
   cena_celkem REAL,
   item_order INTEGER DEFAULT 0,
+  sync_metadata TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

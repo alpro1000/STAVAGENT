@@ -1,0 +1,68 @@
+# STAVAGENT - Render Deployment Blueprint
+# https://render.com/docs/blueprint-spec
+
+services:
+  # Backend API (Node.js + Express)
+  - type: web
+    name: stavagent-portal-backend
+    env: node
+    plan: free
+    region: frankfurt
+    rootDir: stavagent-portal
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRY
+        value: 24h
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        value: noreply@stavagent.com
+      - key: CORE_API_URL
+        value: https://concrete-agent.onrender.com
+      - key: UPLOAD_DIR
+        value: /opt/render/project/src/backend/uploads
+      - key: EXPORT_DIR
+        value: /opt/render/project/src/backend/exports
+      - key: MAX_FILE_SIZE
+        value: 10485760
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: RENDER
+        value: "true"
+      - key: DISABLE_AUTH
+        value: "true"
+
+  # Frontend (Static Site - React + Vite)
+  - type: web
+    name: stavagent-portal-frontend
+    env: static
+    rootDir: stavagent-portal
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/dist
+    autoDeploy: false
+    envVars:
+      - key: VITE_API_URL
+        value: https://stavagent-portal-backend.onrender.com
+      - key: VITE_DISABLE_AUTH
+        value: "true"
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
