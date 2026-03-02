@@ -7,7 +7,7 @@ services:
     name: stavagent-portal-backend
     env: node
     plan: free
-    region: oregon
+    region: frankfurt
     rootDir: stavagent-portal
     buildCommand: npm install && cd backend && npm install
     startCommand: cd backend && npm start
