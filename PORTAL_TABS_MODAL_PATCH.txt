@@ -1,3 +1,17 @@
+═══════════════════════════════════════════════════════════════════════════════
+PORTAL TABS + MODAL REDESIGN PATCH
+═══════════════════════════════════════════════════════════════════════════════
+
+ЦЕЛЬ:
+1. Модальное окно в дизайн-системе (c-modal, c-panel)
+2. Вкладки "Služby" / "Projekty" для разделения контента
+
+═══════════════════════════════════════════════════════════════════════════════
+FILE 1: CreateProjectModal.tsx - Redesign to Design System
+═══════════════════════════════════════════════════════════════════════════════
+
+REPLACE ENTIRE FILE WITH:
+
 /**
  * Create Project Modal
  * Design System: Digital Concrete (Brutalist Neumorphism)
@@ -200,3 +214,122 @@ export default function CreateProjectModal({ onClose, onCreate }: CreateProjectM
     </div>
   );
 }
+
+═══════════════════════════════════════════════════════════════════════════════
+FILE 2: PortalPage.tsx - Add Tabs
+═══════════════════════════════════════════════════════════════════════════════
+
+ADD AFTER LINE 169 (after const [projectNotFound...]):
+
+  const [activeTab, setActiveTab] = useState<'services' | 'projects'>('services');
+
+═══════════════════════════════════════════════════════════════════════════════
+
+REPLACE SECTION (after Header, before Available Services):
+
+      <div className="c-container" style={{
+        paddingTop: '32px',
+        paddingBottom: '32px',
+        flex: 1,
+        width: '100%',
+        overflowY: 'auto'
+      }}>
+
+WITH:
+
+      {/* Tabs */}
+      <div className="c-container" style={{ paddingTop: '24px' }}>
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          borderBottom: '2px solid var(--border-color)',
+          marginBottom: '32px'
+        }}>
+          <button
+            onClick={() => setActiveTab('services')}
+            style={{
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 600,
+              color: activeTab === 'services' ? 'var(--brand-orange)' : 'var(--text-secondary)',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: activeTab === 'services' ? '3px solid var(--brand-orange)' : '3px solid transparent',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            📊 Služby
+          </button>
+          <button
+            onClick={() => setActiveTab('projects')}
+            style={{
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 600,
+              color: activeTab === 'projects' ? 'var(--brand-orange)' : 'var(--text-secondary)',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: activeTab === 'projects' ? '3px solid var(--brand-orange)' : '3px solid transparent',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            📁 Projekty ({projects.length})
+          </button>
+        </div>
+      </div>
+
+      <div className="c-container" style={{
+        paddingBottom: '32px',
+        flex: 1,
+        width: '100%',
+        overflowY: 'auto'
+      }}>
+
+═══════════════════════════════════════════════════════════════════════════════
+
+WRAP "Available Services Section" WITH:
+
+        {activeTab === 'services' && (
+          <>
+            {/* Available Services Section */}
+            <section style={{ marginBottom: '48px' }}>
+              ...existing services code...
+            </section>
+
+            {/* Poradna norms */}
+            <PoradnaWidget />
+          </>
+        )}
+
+═══════════════════════════════════════════════════════════════════════════════
+
+WRAP "Stats Section" + "Projects Section" WITH:
+
+        {activeTab === 'projects' && (
+          <>
+            {/* Stats Section */}
+            <section style={{ marginBottom: '48px' }}>
+              ...existing stats code...
+            </section>
+
+            {/* Projects Section */}
+            <section>
+              ...existing projects code...
+            </section>
+          </>
+        )}
+
+═══════════════════════════════════════════════════════════════════════════════
+TESTING
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Click "Nový projekt" → Modal opens with design system styling
+2. Click tabs → Content switches between Services and Projects
+3. Projects tab shows count badge
+4. Modal closes on backdrop click or X button
+
+═══════════════════════════════════════════════════════════════════════════════
