@@ -1,4 +1,5 @@
 # STAVAGENT - Render Deployment Blueprint
+# Backend only - Frontend deployed on Vercel
 # https://render.com/docs/blueprint-spec
 
 services:
@@ -48,21 +49,3 @@ services:
         value: "true"
       - key: DISABLE_AUTH
         value: "true"
-
-  # Frontend (Static Site - React + Vite)
-  - type: web
-    name: stavagent-portal-frontend
-    env: static
-    rootDir: stavagent-portal
-    buildCommand: cd frontend && npm install && npm run build
-    staticPublishPath: frontend/dist
-    autoDeploy: false
-    envVars:
-      - key: VITE_API_URL
-        value: https://stavagent-portal-backend.onrender.com
-      - key: VITE_DISABLE_AUTH
-        value: "true"
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
