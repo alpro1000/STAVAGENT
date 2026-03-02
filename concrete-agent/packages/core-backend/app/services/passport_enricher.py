@@ -179,12 +179,12 @@ PŘÍKLADY RIZIK:
 
 VRAŤ POUZE JSON, žádný další text před ani za."""
 
-    # Model configurations
-    GEMINI_MODEL = "gemini-2.5-flash-lite"
-    CLAUDE_MODEL = "claude-sonnet-4-6"
-    CLAUDE_HAIKU_MODEL = "claude-haiku-4-5-20251001"
-    OPENAI_MODEL = "gpt-4.1"
-    OPENAI_MINI_MODEL = "gpt-5-mini"
+    # Model configurations (UPDATED 2026-03-02 - using actual existing models)
+    GEMINI_MODEL = "gemini-2.5-flash-lite"  # Free tier, fastest (1-2s)
+    CLAUDE_MODEL = "claude-sonnet-4-6"  # Best balance ($3/MTok)
+    CLAUDE_HAIKU_MODEL = "claude-haiku-4-5"  # Fastest, cheapest ($1/MTok)
+    OPENAI_MODEL = "gpt-4.1"  # Smart without reasoning
+    OPENAI_MINI_MODEL = "gpt-5-mini"  # Fast, budget GPT-5
     PERPLEXITY_MODEL = "llama-3.1-sonar-large-128k-online"
 
     def __init__(self, preferred_model: Optional[str] = None):
@@ -214,7 +214,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             try:
                 genai.configure(api_key=settings.GOOGLE_API_KEY)
                 # Try primary model, fallback to stable versions if not available
-                for model_to_try in [self.GEMINI_MODEL, "gemini-1.5-flash", "gemini-1.5-pro"]:
+                # UPDATED 2026-03-02: Using Gemini 2.5 family (2.0 discontinued March 31, 2026)
+                for model_to_try in [self.GEMINI_MODEL, "gemini-2.5-flash", "gemini-1.5-flash-latest", "gemini-1.5-flash"]:
                     try:
                         self.gemini_model = genai.GenerativeModel(model_to_try)
                         logger.info(f"✅ Gemini initialized: {model_to_try}")
@@ -224,7 +225,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                         continue
                 
                 if not self.gemini_model:
-                    logger.warning("No Gemini model available (tried 2.0-flash, 1.5-flash, 1.5-pro)")
+                    logger.warning("No Gemini model available (tried 2.5-flash-lite, 2.5-flash, 1.5-flash-latest, 1.5-flash)")
             except Exception as e:
                 logger.warning(f"Failed to initialize Gemini: {e}")
 
@@ -317,8 +318,9 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
         # Prepare facts summary for LLM
         facts_summary = self._prepare_facts_summary(passport)
 
-        # Truncate document text if too long (keep first 30k chars for better coverage)
-        truncated_text = document_text[:30000] if len(document_text) > 30000 else document_text
+        # Truncate document text if too long (keep first 5k chars for faster processing)
+        # UPDATED 2025-03-02: Reduced from 30K to 5K to improve speed (30K caused 300s timeouts)
+        truncated_text = document_text[:5000] if len(document_text) > 5000 else document_text
 
         # Build prompt
         prompt = self.ENRICHMENT_PROMPT.format(
