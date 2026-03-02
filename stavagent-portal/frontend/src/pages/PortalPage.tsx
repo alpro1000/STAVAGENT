@@ -188,6 +188,7 @@ export default function PortalPage() {
   const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
   const [backendSleeping, setBackendSleeping] = useState(false);
   const [projectNotFound, setProjectNotFound] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'services' | 'projects'>('services');
 
   // Load projects on mount
   useEffect(() => {
@@ -379,15 +380,61 @@ export default function PortalPage() {
         </div>
       </div>
 
+      {/* Tabs */}
+      <div className="c-container" style={{ paddingTop: '24px' }}>
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          borderBottom: '2px solid var(--border-color)',
+          marginBottom: '32px'
+        }}>
+          <button
+            onClick={() => setActiveTab('services')}
+            style={{
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 600,
+              color: activeTab === 'services' ? 'var(--brand-orange)' : 'var(--text-secondary)',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: activeTab === 'services' ? '3px solid var(--brand-orange)' : '3px solid transparent',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            📊 Služby
+          </button>
+          <button
+            onClick={() => setActiveTab('projects')}
+            style={{
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 600,
+              color: activeTab === 'projects' ? 'var(--brand-orange)' : 'var(--text-secondary)',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: activeTab === 'projects' ? '3px solid var(--brand-orange)' : '3px solid transparent',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            📁 Projekty ({projects.length})
+          </button>
+        </div>
+      </div>
+
       <div className="c-container" style={{
-        paddingTop: '32px',
         paddingBottom: '32px',
         flex: 1,
         width: '100%',
         overflowY: 'auto'
       }}>
-        {/* Available Services Section */}
-        <section style={{ marginBottom: '48px' }}>
+        {activeTab === 'services' && (
+          <>
+            {/* Available Services Section */}
+            <section style={{ marginBottom: '48px' }}>
           <div style={{ marginBottom: '24px' }}>
             <h2 style={{
               fontSize: '24px',
@@ -423,13 +470,17 @@ export default function PortalPage() {
               />
             ))}
           </div>
-        </section>
+            </section>
 
-        {/* Poradna norem */}
-        <PoradnaWidget />
+            {/* Poradna norem */}
+            <PoradnaWidget />
+          </>
+        )}
 
-        {/* Stats Section */}
-        <section style={{ marginBottom: '48px' }}>
+        {activeTab === 'projects' && (
+          <>
+            {/* Stats Section */}
+            <section style={{ marginBottom: '48px' }}>
           <div className="c-grid c-grid--3">
             <div className="c-panel" style={{ textAlign: 'center' }}>
               <FileText size={32} style={{ color: 'var(--text-secondary)', margin: '0 auto 12px' }} />
@@ -461,10 +512,10 @@ export default function PortalPage() {
               </div>
             </div>
           </div>
-        </section>
+            </section>
 
-        {/* Projects Section */}
-        <section>
+            {/* Projects Section */}
+            <section>
           <div style={{
             marginBottom: '24px',
             display: 'flex',
@@ -689,7 +740,9 @@ export default function PortalPage() {
               </div>
             );
           })()}
-        </section>
+            </section>
+          </>
+        )}
       </div>
 
       {/* CORE Panel (if project selected) */}
