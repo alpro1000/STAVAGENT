@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { batchMapPositions } from './services/tovProfessionMapper.js';
 
 dotenv.config();
 
@@ -61,7 +62,7 @@ app.get('/api/registry/projects', async (req, res) => {
 app.post('/api/registry/projects', async (req, res) => {
   try {
     const { project_name, portal_project_id } = req.body;
-    const userId = req.body.user_id || 1;
+    const userId = req.body.user_id || 1; // Default owner_id=1 for integration imports
     const projectId = `reg_${uuidv4()}`;
 
     const result = await pool.query(
@@ -172,14 +173,14 @@ app.post('/api/registry/sheets/:id/items', async (req, res) => {
   try {
     await client.query('BEGIN');
 
-    const { kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, tov_data } = req.body;
+    const { kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, tov_data, sync_metadata } = req.body;
     const itemId = `item_${uuidv4()}`;
 
     const result = await client.query(
-      `INSERT INTO registry_items (item_id, sheet_id, kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, created_at, updated_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), NOW())
+      `INSERT INTO registry_items (item_id, sheet_id, kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, sync_metadata, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
        RETURNING *`,
-      [itemId, req.params.id, kod, popis, mnozstvi || 0, mj, cena_jednotkova, cena_celkem, item_order || 0]
+      [itemId, req.params.id, kod, popis, mnozstvi || 0, mj, cena_jednotkova, cena_celkem, item_order || 0, sync_metadata ? JSON.stringify(sync_metadata) : null]
     );
 
     if (tov_data) {
@@ -251,6 +252,78 @@ app.patch('/api/registry/items/:id/tov', async (req, res) => {
 
     await client.query('COMMIT');
     res.json({ success: true });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ success: false, error: error.message });
+  } finally {
+    client.release();
+  }
+});
+
+// ============ MONOLIT INTEGRATION ============
+
+app.post('/api/registry/import/monolit', async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    const { project_name, positions, user_id } = req.body;
+    const userId = user_id || 1; // Default owner_id=1
+    const projectId = `reg_${uuidv4()}`;
+
+    // Create project
+    await client.query(
+      `INSERT INTO registry_projects (project_id, project_name, owner_id, created_at, updated_at)
+       VALUES ($1, $2, $3, NOW(), NOW())`,
+      [projectId, project_name, userId]
+    );
+
+    // Create sheet
+    const sheetId = `sheet_${uuidv4()}`;
+    await client.query(
+      `INSERT INTO registry_sheets (sheet_id, project_id, sheet_name, sheet_order, created_at, updated_at)
+       VALUES ($1, $2, $3, 0, NOW(), NOW())`,
+      [sheetId, projectId, 'Imported from Monolit']
+    );
+
+    // Map positions to labor resources
+    const laborResources = batchMapPositions(positions);
+
+    // Create items with TOV data
+    for (let i = 0; i < positions.length; i++) {
+      const pos = positions[i];
+      const itemId = `item_${uuidv4()}`;
+
+      await client.query(
+        `INSERT INTO registry_items (item_id, sheet_id, kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, sync_metadata, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())`,
+        [
+          itemId,
+          sheetId,
+          pos.otskp_code || '',
+          pos.item_name || pos.part_name,
+          pos.qty || 0,
+          pos.unit || 'm³',
+          pos.cost_czk || 0,
+          (pos.cost_czk || 0) * (pos.qty || 0),
+          i,
+          JSON.stringify({ monolit_position_id: pos.id, subtype: pos.subtype })
+        ]
+      );
+
+      // Add labor TOV if mapped
+      const labor = laborResources.find(l => l && positions.indexOf(pos) === laborResources.indexOf(l));
+      if (labor) {
+        await client.query(
+          `INSERT INTO registry_tov (tov_id, item_id, tov_type, tov_data, created_at, updated_at)
+           VALUES ($1, $2, 'labor', $3, NOW(), NOW())`,
+          [`tov_${uuidv4()}`, itemId, JSON.stringify([labor])]
+        );
+      }
+    }
+
+    await client.query('COMMIT');
+    res.json({ success: true, project_id: projectId, mapped_count: laborResources.length });
   } catch (error) {
     await client.query('ROLLBACK');
     res.status(500).json({ success: false, error: error.message });
