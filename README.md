@@ -18,12 +18,12 @@
 
 - ✅ **Testing**: 37+ integration tests готовы
 - ✅ **CI/CD**: GitHub Actions работает (6 jobs)
-- ✅ **Production**: Backend + Frontend развёрнуты на Render
+- 🔴 **Production**: CORE (AI) deployment issue - KB loading timeout
 - ✅ **Git Hooks**: Pre-commit + Pre-push настроены
 - ✅ **Node.js 20.11.0** - обновлён с 18.20.4 (EOL)
 - ✅ **npm vulnerabilities** - 1/2 исправлено (jws ✅, xlsx ⚠️ no fix)
 - ✅ **Formwork Rental Calculator** - калькулятор аренды бедения в Registry TOV
-- 🟢 **Time Norms Design** - готов к реализации (4-6 часов)
+- 🟡 **CORE Deployment Fix** - в процессе (robust KB loading)
 
 ---
 
@@ -43,18 +43,17 @@
 
 ## 🎯 Приоритетные задачи
 
-1. **✅ DONE: Update Node.js** - 18.20.4 → 20.11.0 (LTS)
-2. **✅ DONE: Fix npm vulnerabilities** - jws fixed, xlsx documented
-3. **✅ DONE: Formwork Rental Calculator** - калькулятор аренды бедения (2 часа)
-   - Backend API endpoint в Registry TOV
-   - Frontend калькулятор с DOKA ценами
-   - Интеграция с Monolit Planner (alert с параметрами)
-4. **🟢 READY: Implement Time Norms Automation** - AI-powered work duration estimates
+1. **🔴 URGENT: Fix CORE Deployment** - KB loading blocks port binding
+   - Suppress pdfminer warnings (100+ lines)
+   - Add robust error handling for KB loading
+   - Add PDF size/page limits to prevent hanging
+   - See: [concrete-agent/QUICK_DEPLOY.md](concrete-agent/QUICK_DEPLOY.md)
+2. **🟢 READY: Implement Time Norms Automation** - AI-powered work duration estimates
    - Design complete (8 pages)
    - Backend service + API endpoint + Frontend UI
    - Leverages concrete-agent Multi-Role API + KROS/RTS norms
-5. Re-enable npm cache в CI (~2min speedup) - optional
-6. Fix integration tests ES module mocking - optional
+3. Re-enable npm cache в CI (~2min speedup) - optional
+4. Fix integration tests ES module mocking - optional
 
 **Детали:** см. [NEXT_SESSION.md](NEXT_SESSION.md) → готовые команды для копирования
 
@@ -125,6 +124,8 @@ npm test                       # 34 formula tests
 | **[SESSION_START.md](SESSION_START.md)** | Быстрый старт - готовые команды |
 | **[CLAUDE.md](CLAUDE.md)** | Полная документация системы |
 | **[NEXT_SESSION.md](NEXT_SESSION.md)** | Детали последней сессии |
+| **[concrete-agent/QUICK_DEPLOY.md](concrete-agent/QUICK_DEPLOY.md)** | Деплой CORE фикса |
+| **[concrete-agent/RENDER_DEPLOYMENT_FIX.md](concrete-agent/RENDER_DEPLOYMENT_FIX.md)** | Диагностика Render |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Multi-kiosk архитектура |
 | [docs/FORMWORK_RENTAL_CALCULATOR.md](docs/FORMWORK_RENTAL_CALCULATOR.md) | Калькулятор аренды бедения |
 | [docs/FORMWORK_RENTAL_USER_GUIDE.md](docs/FORMWORK_RENTAL_USER_GUIDE.md) | Руководство пользователя |
@@ -165,13 +166,13 @@ cd Monolit-Planner/backend && npm run test:all
 
 ---
 
-**Версия:** 1.0.12
+**Версия:** 1.0.13
 **Последнее обновление:** 2025-01-XX
 **Текущая ветка:** `main`
 **Последние коммиты:**
+- `PENDING` FIX: Render deployment - robust KB loading + port diagnostics
 - `3c79ed3` FEATURE: Formwork rental calculator in Registry TOV
 - `5326457` REFACTOR: Formwork calculator - labor only (Montáž + Demontáž)
-- `e967324` FIX: Remove npm cache from test-coverage workflow
 
 ---
 

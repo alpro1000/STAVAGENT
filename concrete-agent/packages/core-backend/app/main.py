@@ -19,6 +19,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Suppress pdfminer warnings (invalid PDF patterns)
+logging.getLogger("pdfminer").setLevel(logging.ERROR)
+
 # Create FastAPI app
 app = FastAPI(
     title="Czech Building Audit System",
@@ -67,6 +70,7 @@ async def startup_event():
     logger.info("=" * 80)
     logger.info("🚀 Czech Building Audit System Starting...")
     logger.info("=" * 80)
+    logger.info(f"🌐 Port: {os.getenv('PORT', '8000')} (Render: $PORT env var)")
     logger.info(f"📂 Base directory: {settings.BASE_DIR}")
     logger.info(f"📂 Data directory: {settings.DATA_DIR}")
     logger.info(f"📚 KB directory: {settings.KB_DIR}")
@@ -112,7 +116,7 @@ async def startup_event():
         logger.error(f"⚠️  KB loading failed: {str(e)}")
     
     logger.info("=" * 80)
-    logger.info("✅ System ready!")
+    logger.info("✅ System ready! Listening on 0.0.0.0:%s", os.getenv('PORT', '8000'))
     logger.info("=" * 80)
 
 
@@ -164,10 +168,13 @@ async def keep_alive_healthcheck(request: Request):
 
 if __name__ == "__main__":
     import uvicorn
+    # Use PORT env var (Render requirement) or fallback to 8000 for local dev
+    port = int(os.getenv("PORT", 8000))
+    logger.info(f"🚀 Starting uvicorn on 0.0.0.0:{port}")
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
-        port=8000,
+        port=port,
         reload=True,
         log_level="info"
     )
