@@ -95,6 +95,18 @@ router.get('/search', async (req, res) => {
       });
     }
 
+    // Check if OTSKP table exists and has data
+    try {
+      const count = await db.prepare('SELECT COUNT(*) as count FROM otskp_codes').get();
+      if (count.count === 0) {
+        logger.warn('[OTSKP Search] No OTSKP codes in database');
+        return res.json({ query: q.trim(), count: 0, results: [], message: 'OTSKP codes not loaded yet' });
+      }
+    } catch (tableError) {
+      logger.error('[OTSKP Search] OTSKP table error:', tableError);
+      return res.status(500).json({ error: 'OTSKP database not initialized', details: tableError.message });
+    }
+
     const searchLimit = Math.min(parseInt(limit) || 20, 100);
     const searchQuery = q.trim();
     const searchQueryUpper = searchQuery.toUpperCase();

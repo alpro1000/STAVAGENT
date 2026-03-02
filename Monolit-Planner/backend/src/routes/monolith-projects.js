@@ -313,7 +313,14 @@ router.delete('/by-project-name/:projectName', async (req, res) => {
     }
 
     if (projectsToDelete.length === 0) {
-      return res.status(404).json({ error: 'No projects found with this project_name' });
+      logger.warn(`[DELETE PROJECT] No projects found with project_name: "${projectName}"`);
+      // Return success with 0 deleted instead of 404 (project might have been deleted already)
+      return res.json({
+        success: true,
+        message: `No objects found with project_name "${projectName}" (already deleted or never existed)`,
+        deleted_count: 0,
+        deleted_ids: []
+      });
     }
 
     const projectIds = projectsToDelete.map(p => p.project_id);
