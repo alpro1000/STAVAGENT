@@ -24,6 +24,7 @@
 - ✅ **npm vulnerabilities** - 1/2 исправлено (jws ✅, xlsx ⚠️ no fix)
 - ✅ **Formwork Rental Calculator** - калькулятор аренды бедения в Registry TOV
 - ✅ **Time Norms Automation** - AI-powered work duration estimates (KROS/RTS/ČSN)
+- ⏳ **MinerU PDF Parser** - deploying (10x speedup for Passport)
 - 🟢 **Production**: All services operational
 
 ---
