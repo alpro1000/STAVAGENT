@@ -32,10 +32,20 @@ app = FastAPI(
     openapi_url="/openapi.json"
 )
 
-# CORS middleware
+# CORS middleware - Allow all STAVAGENT services
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify exact origins
+    allow_origins=[
+        "https://www.stavagent.cz",
+        "https://stavagent.cz",
+        "https://stavagent-portal-backend.onrender.com",
+        "https://monolit-planner-frontend.vercel.app",
+        "https://monolit-planner-api.onrender.com",
+        "https://stavagent-backend-ktwx.vercel.app",
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:8000"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
