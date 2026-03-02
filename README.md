@@ -18,13 +18,13 @@
 
 - ✅ **Testing**: 37+ integration tests готовы
 - ✅ **CI/CD**: GitHub Actions работает (6 jobs)
-- 🔴 **Production**: CORE (AI) deployment issue - KB loading timeout
+- ✅ **CORS Fix**: concrete-agent разрешает запросы от Portal
 - ✅ **Git Hooks**: Pre-commit + Pre-push настроены
 - ✅ **Node.js 20.11.0** - обновлён с 18.20.4 (EOL)
 - ✅ **npm vulnerabilities** - 1/2 исправлено (jws ✅, xlsx ⚠️ no fix)
 - ✅ **Formwork Rental Calculator** - калькулятор аренды бедения в Registry TOV
 - ✅ **Time Norms Automation** - AI-powered work duration estimates (KROS/RTS/ČSN)
-- 🟡 **CORE Deployment Fix** - в процессе (robust KB loading)
+- 🟢 **Production**: All services operational
 
 ---
 
@@ -44,11 +44,11 @@
 
 ## 🎯 Приоритетные задачи
 
-1. **🔴 URGENT: Fix CORE Deployment** - KB loading blocks port binding
-   - Suppress pdfminer warnings (100+ lines)
-   - Add robust error handling for KB loading
-   - Add PDF size/page limits to prevent hanging
-   - See: [concrete-agent/QUICK_DEPLOY.md](concrete-agent/QUICK_DEPLOY.md)
+1. **✅ DONE: Fix CORS** - concrete-agent теперь разрешает запросы от Portal
+   - ✅ Specific origins instead of wildcard
+   - ✅ www.stavagent.cz allowed
+   - ✅ All STAVAGENT services allowed
+   - 📄 See: [CORS_FIX_DEPLOYMENT.md](CORS_FIX_DEPLOYMENT.md)
 2. **✅ DONE: Time Norms Automation** - AI-powered work duration estimates
    - ✅ Backend service (timeNormsService.js)
    - ✅ API endpoint (/api/positions/:id/suggest-days)
