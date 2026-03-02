@@ -1,0 +1,162 @@
+/**
+ * PATCH: Add supplier dropdown to PumpRentalSection
+ * 
+ * Changes:
+ * 1. Import pumpCalculator service
+ * 2. Add supplier state
+ * 3. Add supplier dropdown before pump type selector
+ * 4. Filter pumps by selected supplier
+ * 5. Adapt computeTotals() to use supplier billing model
+ */
+
+// Add to imports (line ~30):
+import { getSuppliers, getSupplier, calculateArrival, calculateOperation } from '../../services/pumpCalculator';
+
+// Add state after line ~70 (after isExpanded):
+const [selectedSupplierId, setSelectedSupplierId] = useState<string | undefined>(data.supplier_id);
+
+// Update selectPumpType function (line ~90):
+const selectPumpType = (supplierId: string, pumpName: string) => {
+  if (!supplierId || !pumpName) {
+    update({ supplier_id: undefined, supplier_name: undefined, pump_type_id: undefined, pump_label: undefined });
+    return;
+  }
+  const supplier = getSupplier(supplierId);
+  if (!supplier) return;
+  
+  const pump = supplier.pumps.find(p => p.name === pumpName);
+  if (!pump) return;
+  
+  // Auto-fill parameters based on supplier billing model
+  const arrival = calculateArrival(supplier, pump, data.vzdalenost_km || 10);
+  const operation = calculateOperation(supplier, pump, 1, 1); // 1h, 1m³ for rate extraction
+  
+  update({
+    supplier_id: supplier.id,
+    supplier_name: supplier.name,
+    pump_type_id: pumpName,
+    pump_label: pumpName,
+    manipulace_czk_h: pump.operation_per_h || operation,
+    priplatek_czk_m3: pump.volume_per_m3 || 0,
+    pristaveni_fixed_czk: pump.arrival_fixed || 0,
+    czk_km: pump.arrival_per_km || 0,
+    vykon_m3h: 30, // Default, user can override
+  });
+};
+
+// Update computeTotals function (line ~120):
+function computeTotals(d: PumpRentalData): PumpRentalData {
+  const items = d.items.map(i =>
+    recomputeItem(i, d.vykon_m3h, d.stavba_h, d.myti_h),
+  );
+
+  const celkem_m3 = items.reduce((s, i) => s + i.celkem_m3, 0);
+  const celkem_pristaveni = items.reduce((s, i) => s + i.pocet_pristaveni, 0);
+  const celkem_hodiny = items.reduce((s, i) => s + i.hodiny_celkem, 0);
+
+  // Use supplier-specific calculation if available
+  let celkem_doprava = 0;
+  let celkem_manipulace = 0;
+  let celkem_priplatek_m3 = 0;
+
+  if (d.supplier_id && d.pump_type_id) {
+    const supplier = getSupplier(d.supplier_id);
+    if (supplier) {
+      const pump = supplier.pumps.find(p => p.name === d.pump_type_id);
+      if (pump) {
+        celkem_doprava = calculateArrival(supplier, pump, d.vzdalenost_km) * celkem_pristaveni;
+        celkem_manipulace = calculateOperation(supplier, pump, celkem_hodiny, celkem_m3);
+        celkem_priplatek_m3 = 0; // Already included in operation for hourly_plus_m3
+      }
+    }
+  }
+
+  // Fallback to legacy calculation
+  if (celkem_doprava === 0) {
+    celkem_doprava = celkem_pristaveni * (d.pristaveni_fixed_czk + d.vzdalenost_km * d.czk_km * 2);
+    celkem_manipulace = d.manipulace_czk_h * celkem_hodiny;
+    celkem_priplatek_m3 = d.priplatek_czk_m3 * celkem_m3;
+  }
+
+  const accessories = d.accessories.map(a => ({
+    ...a,
+    celkem: a.mnozstvi * a.czk_per_unit,
+  }));
+  const celkem_prislusenstvi = accessories.reduce((s, a) => s + a.celkem, 0);
+
+  const surcharges = d.surcharges.map(s => ({
+    ...s,
+    celkem: s.czk_per_pristaveni * celkem_pristaveni,
+  }));
+  const celkem_priplatky = surcharges.reduce((s, x) => s + x.celkem, 0);
+
+  const konecna_cena =
+    celkem_doprava +
+    celkem_manipulace +
+    celkem_priplatek_m3 +
+    celkem_prislusenstvi +
+    celkem_priplatky;
+
+  return {
+    ...d,
+    items,
+    accessories,
+    surcharges,
+    celkem_m3,
+    celkem_pristaveni,
+    celkem_hodiny,
+    celkem_doprava,
+    celkem_manipulace,
+    celkem_priplatek_m3,
+    celkem_prislusenstvi,
+    celkem_priplatky,
+    konecna_cena,
+  };
+}
+
+// Add supplier dropdown UI (insert before pump type selector, line ~200):
+{/* ── Section 1: Supplier + Pump type selector ── */}
+<div className="space-y-3">
+  {/* Supplier selector */}
+  <div>
+    <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2">
+      Dodavatel
+    </p>
+    <select
+      value={selectedSupplierId ?? ''}
+      onChange={e => {
+        setSelectedSupplierId(e.target.value || undefined);
+        update({ supplier_id: e.target.value || undefined, supplier_name: undefined, pump_type_id: undefined });
+      }}
+      className="w-full bg-bg-secondary/60 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 border border-border-color/50"
+    >
+      <option value="">— Vyberte dodavatele —</option>
+      {getSuppliers().map(s => (
+        <option key={s.id} value={s.id}>
+          {s.name} ({s.billing_model === 'hourly' ? 'Kč/h' : s.billing_model === 'hourly_plus_m3' ? 'Kč/h + Kč/m³' : 'Kč/15min'})
+        </option>
+      ))}
+    </select>
+  </div>
+
+  {/* Pump type selector (only show if supplier selected) */}
+  {selectedSupplierId && (
+    <div>
+      <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2">
+        Typ čerpadla
+      </p>
+      <select
+        value={data.pump_type_id ?? ''}
+        onChange={e => selectPumpType(selectedSupplierId, e.target.value)}
+        className="w-full bg-bg-secondary/60 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 border border-border-color/50"
+      >
+        <option value="">— Vyberte čerpadlo —</option>
+        {getSupplier(selectedSupplierId)?.pumps.map(p => (
+          <option key={p.name} value={p.name}>
+            {p.name} · {p.reach_m}m dosah
+          </option>
+        ))}
+      </select>
+    </div>
+  )}
+</div>
