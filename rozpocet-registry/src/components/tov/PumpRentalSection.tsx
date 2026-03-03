@@ -33,6 +33,7 @@ interface KbPump {
   boom_m: number;
   reach_m: number;
   vykon_m3h: number;
+  practical_performance_m3h?: number;
   manipulace_czk_h: number;
   priplatek_czk_m3: number;
   pristaveni_czk: number;
@@ -186,6 +187,8 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
     const pump = KB_PUMPS.find(p => p.id === id);
     if (!pump) return;
     // Auto-fill all parameters from knowledge base
+    // Use practical_performance_m3h if available, otherwise vykon_m3h
+    const performance = pump.practical_performance_m3h || pump.vykon_m3h;
     update({
       pump_type_id: pump.id,
       pump_label: pump.label_cs,
@@ -193,7 +196,7 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
       priplatek_czk_m3: pump.priplatek_czk_m3,
       pristaveni_fixed_czk: pump.pristaveni_czk,
       czk_km: pump.czk_km,
-      vykon_m3h: pump.vykon_m3h,
+      vykon_m3h: performance,
     });
   };
 

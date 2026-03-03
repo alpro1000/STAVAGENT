@@ -24,8 +24,9 @@
 - ✅ **npm vulnerabilities** - 1/2 исправлено (jws ✅, xlsx ⚠️ no fix)
 - ✅ **Formwork Rental Calculator** - калькулятор аренды бедения в Registry TOV
 - ✅ **Time Norms Automation** - AI-powered work duration estimates (KROS/RTS/ČSN)
-- ✅ **Unified Registry Foundation** - Weeks 1-3 complete (8 tables, 10 endpoints, Monolit adapter)
-- ⏳ **MinerU PDF Parser** - deploying (10x speedup for Passport)
+- ✅ **Unified Registry Foundation** - Weeks 1-4 complete (8 tables, 11 endpoints, Monolit adapter)
+- ✅ **Pump Calculator** - Multi-supplier UI + Excel export + Practical performance data
+- ⏳ **MinerU PDF Parser** - stub only (not used, using pdfplumber)
 - 🟢 **Production**: All services operational
 
 ---
