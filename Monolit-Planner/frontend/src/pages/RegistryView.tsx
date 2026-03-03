@@ -54,7 +54,7 @@ export default function RegistryView() {
         <span className="c-badge c-badge--orange">{filtered.length}</span>
       </div>
       
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
         <input
           type="text"
           placeholder="🔍 Hledat podle popisu nebo kódu..."
@@ -73,6 +73,31 @@ export default function RegistryView() {
           <option value="monolit">🪨 Monolit</option>
           <option value="registry_tov">📋 Registry TOV</option>
         </select>
+        <button
+          className="c-btn c-btn--sm"
+          onClick={() => {
+            const csv = [
+              ['Kód', 'Popis', 'Množství', 'MJ', 'Kiosk', 'Kategorie'].join(','),
+              ...filtered.map(p => [
+                p.catalog_code,
+                `"${p.description.replace(/"/g, '""')}"`,
+                p.qty,
+                p.unit,
+                p.kiosk_type,
+                p.work_category
+              ].join(','))
+            ].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `registry_${projectId}_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+          }}
+          disabled={filtered.length === 0}
+          title="Exportovat do CSV"
+        >
+          💾 Export CSV
+        </button>
       </div>
 
       {filtered.length === 0 ? (
