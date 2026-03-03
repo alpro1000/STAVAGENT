@@ -780,7 +780,6 @@ export default function PortalPage() {
       </div>
 
 
-
       {/* Create Project Modal */}
       {showCreateModal && (
         <CreateProjectModal
