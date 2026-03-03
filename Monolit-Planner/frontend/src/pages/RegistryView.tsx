@@ -10,6 +10,7 @@ export default function RegistryView() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({ kiosk: '', search: '' });
   const [selectedPositionId, setSelectedPositionId] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<{ field: keyof PositionInstance; order: 'asc' | 'desc' }>({ field: 'catalog_code', order: 'asc' });
 
   useEffect(() => {
     if (projectId) {
@@ -37,7 +38,22 @@ export default function RegistryView() {
       return p.description.toLowerCase().includes(s) || p.catalog_code.toLowerCase().includes(s);
     }
     return true;
+  }).sort((a, b) => {
+    const aVal = a[sortBy.field];
+    const bVal = b[sortBy.field];
+    const order = sortBy.order === 'asc' ? 1 : -1;
+    if (typeof aVal === 'number' && typeof bVal === 'number') {
+      return (aVal - bVal) * order;
+    }
+    return String(aVal).localeCompare(String(bVal), 'cs') * order;
   });
+
+  const toggleSort = (field: keyof PositionInstance) => {
+    setSortBy(prev => ({
+      field,
+      order: prev.field === field && prev.order === 'asc' ? 'desc' : 'asc'
+    }));
+  };
 
   if (loading) return (
     <div className="c-panel" style={{ margin: '24px', padding: '48px', textAlign: 'center' }}>
@@ -54,7 +70,7 @@ export default function RegistryView() {
         <span className="c-badge c-badge--orange">{filtered.length}</span>
       </div>
       
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
         <input
           type="text"
           placeholder="🔍 Hledat podle popisu nebo kódu..."
@@ -73,6 +89,31 @@ export default function RegistryView() {
           <option value="monolit">🪨 Monolit</option>
           <option value="registry_tov">📋 Registry TOV</option>
         </select>
+        <button
+          className="c-btn c-btn--sm"
+          onClick={() => {
+            const csv = [
+              ['Kód', 'Popis', 'Množství', 'MJ', 'Kiosk', 'Kategorie'].join(','),
+              ...filtered.map(p => [
+                p.catalog_code,
+                `"${p.description.replace(/"/g, '""')}"`,
+                p.qty,
+                p.unit,
+                p.kiosk_type,
+                p.work_category
+              ].join(','))
+            ].join('\n');
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = `registry_${projectId}_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+          }}
+          disabled={filtered.length === 0}
+          title="Exportovat do CSV"
+        >
+          💾 Export CSV
+        </button>
       </div>
 
       {filtered.length === 0 ? (
@@ -88,11 +129,19 @@ export default function RegistryView() {
           <table className="c-table" style={{ width: '100%' }}>
             <thead>
               <tr>
-                <th>Kód</th>
-                <th>Popis</th>
-                <th style={{ textAlign: 'right' }}>Množství</th>
+                <th onClick={() => toggleSort('catalog_code')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                  Kód {sortBy.field === 'catalog_code' && (sortBy.order === 'asc' ? '↑' : '↓')}
+                </th>
+                <th onClick={() => toggleSort('description')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                  Popis {sortBy.field === 'description' && (sortBy.order === 'asc' ? '↑' : '↓')}
+                </th>
+                <th onClick={() => toggleSort('qty')} style={{ textAlign: 'right', cursor: 'pointer', userSelect: 'none' }}>
+                  Množství {sortBy.field === 'qty' && (sortBy.order === 'asc' ? '↑' : '↓')}
+                </th>
                 <th>MJ</th>
-                <th>Kiosk</th>
+                <th onClick={() => toggleSort('kiosk_type')} style={{ cursor: 'pointer', userSelect: 'none' }}>
+                  Kiosk {sortBy.field === 'kiosk_type' && (sortBy.order === 'asc' ? '↑' : '↓')}
+                </th>
               </tr>
             </thead>
             <tbody>
