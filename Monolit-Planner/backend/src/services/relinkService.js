@@ -8,8 +8,8 @@
  * 4. Classify: Orphaned (removed) + New (added)
  */
 
-const stringSimilarity = require('string-similarity');
-const db = require('../db');
+import stringSimilarity from 'string-similarity';
+import db from '../db/index.js';
 
 /**
  * Step 1: Primary Match (Exact)
@@ -369,7 +369,7 @@ async function manualMatch(reportId, oldPositionId, newPositionId) {
   }
 }
 
-module.exports = {
+export {
   generateRelinkReport,
   applyRelink,
   manualMatch,
