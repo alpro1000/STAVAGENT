@@ -6,7 +6,7 @@
 
 ---
 
-## ✅ Completed (Day 1 - 2 hours)
+## ✅ Completed (Day 1-2 - 4 hours)
 
 ### 1. Registry API Client
 **File:** `Monolit-Planner/frontend/src/api/registryApi.ts`
@@ -27,6 +27,8 @@
 - Search by description/catalog_code
 - Kiosk type badges with colors
 - Table view with key columns
+- Click row to open modal
+- Back link to main app
 
 ### 3. UnifiedPositionModal Component
 **File:** `Monolit-Planner/frontend/src/components/UnifiedPositionModal.tsx`
@@ -37,32 +39,44 @@
 - Expandable monolith_payload (JSON)
 - Modal overlay with close button
 
----
+### 4. Routing Setup
+**File:** `Monolit-Planner/frontend/src/App.tsx`
 
-## 🔜 Next Steps (Day 2-3 - 4-6 hours)
+**Routes:**
+- `/registry/:projectId` - Registry view for project
+- Wrapped in AppProvider context
 
-### 1. Sidebar Integration
+### 5. Sidebar Integration
 **File:** `Monolit-Planner/frontend/src/components/Sidebar.tsx`
 
-**Tasks:**
-- [ ] Add "Registry" tab after "Objekty"
-- [ ] Link to RegistryView page
-- [ ] Show position count badge
+**Features:**
+- New "Registry" section
+- "Zobrazit pozice" button
+- Disabled when no object selected
+- Links to `/registry/:projectId`
 
-### 2. Routing Setup
-**File:** `Monolit-Planner/frontend/src/App.tsx` (or router config)
+---
 
-**Tasks:**
-- [ ] Add route `/registry/:projectId`
-- [ ] Add route `/registry/position/:positionId`
+## 🔜 Next Steps (Day 3 - 3-4 hours)
 
-### 3. Cross-Kiosk Navigation
+### 1. Cross-Kiosk Navigation
 **Files:** Multiple
 
 **Tasks:**
 - [ ] Add deep link support with `?position_instance_id=...`
 - [ ] From Monolit → Registry TOV link
 - [ ] From Registry TOV → Monolit link
+- [ ] URL parameter handling
+
+### 2. Styling & UX Polish
+**Files:** RegistryView, UnifiedPositionModal
+
+**Tasks:**
+- [ ] Match Monolit design system
+- [ ] Responsive layout
+- [ ] Loading states
+- [ ] Empty states
+- [ ] Error handling
 
 ---
 
@@ -73,11 +87,11 @@
 | Registry API | 1h | 0.5h | ✅ Done |
 | RegistryView | 2h | 1h | ✅ Done |
 | UnifiedPositionModal | 1h | 0.5h | ✅ Done |
-| Sidebar Integration | 2h | - | 🔜 Next |
-| Routing | 1h | - | 🔜 Next |
+| Sidebar Integration | 2h | 1h | ✅ Done |
+| Routing | 1h | 1h | ✅ Done |
 | Cross-kiosk Nav | 3h | - | 🔜 Next |
-| Styling & UX | 4h | - | ⏳ Later |
-| **Total** | **14h** | **2h** | **14%** |
+| Styling & UX | 4h | - | 🔜 Next |
+| **Total** | **14h** | **4h** | **29%** |
 
 ---
 
