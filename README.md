@@ -24,6 +24,7 @@
 - ✅ **npm vulnerabilities** - 1/2 исправлено (jws ✅, xlsx ⚠️ no fix)
 - ✅ **Formwork Rental Calculator** - калькулятор аренды бедения в Registry TOV
 - ✅ **Time Norms Automation** - AI-powered work duration estimates (KROS/RTS/ČSN)
+- ✅ **Unified Registry Foundation** - Weeks 1-3 complete (8 tables, 10 endpoints, Monolit adapter)
 - ⏳ **MinerU PDF Parser** - deploying (10x speedup for Passport)
 - 🟢 **Production**: All services operational
 
@@ -45,19 +46,18 @@
 
 ## 🎯 Приоритетные задачи
 
-1. **✅ DONE: Fix CORS** - concrete-agent теперь разрешает запросы от Portal
-   - ✅ Specific origins instead of wildcard
-   - ✅ www.stavagent.cz allowed
-   - ✅ All STAVAGENT services allowed
-   - 📄 See: [CORS_FIX_DEPLOYMENT.md](CORS_FIX_DEPLOYMENT.md)
-2. **✅ DONE: Time Norms Automation** - AI-powered work duration estimates
-   - ✅ Backend service (timeNormsService.js)
-   - ✅ API endpoint (/api/positions/:id/suggest-days)
-   - ✅ Frontend UI (Sparkles button + tooltip)
-   - ✅ Feature flag enabled (FF_AI_DAYS_SUGGEST)
-   - 📄 See: [TIME_NORMS_IMPLEMENTATION_STATUS.md](Monolit-Planner/docs/TIME_NORMS_IMPLEMENTATION_STATUS.md)
-3. Re-enable npm cache в CI (~2min speedup) - optional
-4. Fix integration tests ES module mocking - optional
+1. **✅ DONE: Unified Registry Foundation (Weeks 1-3)**
+   - ✅ Database schema (8 tables)
+   - ✅ API endpoints (10 endpoints)
+   - ✅ File versioning (SHA-256 hash)
+   - ✅ Monolit adapter (backward compatible)
+   - 📄 See: [UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md](docs/UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md)
+2. **⏳ IN PROGRESS: Unified Registry (Weeks 4-6)** - Kiosk Integration
+   - ⏳ Registry TOV adapter
+   - ⏳ Frontend integration
+   - ⏳ Cross-kiosk navigation
+3. **🔜 NEXT: Unified Registry (Weeks 7-9)** - Relink Algorithm
+4. **🔜 FUTURE: Unified Registry (Weeks 10-12)** - Template System + Production
 
 **Детали:** см. [NEXT_SESSION.md](NEXT_SESSION.md) → готовые команды для копирования
 
@@ -125,6 +125,10 @@ npm test                       # 34 formula tests
 
 | Файл | Описание |
 |------|----------|
+| **[UNIFIED_ARCHITECTURE_IMPLEMENTATION_PLAN.md](UNIFIED_ARCHITECTURE_IMPLEMENTATION_PLAN.md)** | 12-week implementation plan |
+| **[docs/UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md](docs/UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md)** | Weeks 1-3 progress |
+| **[docs/WEEK_1_PROGRESS.md](docs/WEEK_1_PROGRESS.md)** | Week 1 details |
+| **[docs/WEEK_2_PROGRESS.md](docs/WEEK_2_PROGRESS.md)** | Week 2 details |
 | **[SESSION_START.md](SESSION_START.md)** | Быстрый старт - готовые команды |
 | **[CLAUDE.md](CLAUDE.md)** | Полная документация системы |
 | **[NEXT_SESSION.md](NEXT_SESSION.md)** | Детали последней сессии |
@@ -172,11 +176,11 @@ cd Monolit-Planner/backend && npm run test:all
 
 ---
 
-**Версия:** 1.0.14
+**Версия:** 1.0.15
 **Последнее обновление:** 2025-01-XX
-**Текущая ветка:** `feature/time-norms-automation`
+**Текущая ветка:** `feature/unified-registry-foundation`
 **Последние коммиты:**
-- `PENDING` FEATURE: Time Norms Automation - AI-powered work duration estimates
+- `8068526` FEATURE: Unified Registry Foundation (Weeks 1-3)
 - `30f0d2c` DOCS: Archive Passport Fix PR description + Formwork V3 docs
 - `3c79ed3` FEATURE: Formwork rental calculator in Registry TOV
 
