@@ -3,10 +3,11 @@
  * Endpoints for file version relink operations
  */
 
-const express = require('express');
+import express from 'express';
+import * as relinkService from '../services/relinkService.js';
+import db from '../db/index.js';
+
 const router = express.Router();
-const relinkService = require('../services/relinkService');
-const db = require('../db');
 
 /**
  * POST /api/relink/generate
@@ -198,4 +199,4 @@ router.post('/reports/:id/reject', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
