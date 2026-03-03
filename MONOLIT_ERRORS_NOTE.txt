@@ -1,0 +1,72 @@
+═══════════════════════════════════════════════════════════════════════════════
+MONOLIT PLANNER - QUICK FIX FOR ERRORS
+═══════════════════════════════════════════════════════════════════════════════
+
+ERRORS OBSERVED:
+1. 500 on /api/otskp/search?q=420324
+2. 404 on /api/monolith-projects/by-project-name/Bez%20projektu (DELETE)
+
+═══════════════════════════════════════════════════════════════════════════════
+ERROR 1: OTSKP Search 500
+═══════════════════════════════════════════════════════════════════════════════
+
+LOCATION: Backend API endpoint
+CAUSE: Database query error or missing OTSKP data
+
+FIX: Check backend logs on Render:
+https://dashboard.render.com → monolit-planner-api → Logs
+
+Likely causes:
+- Database connection timeout
+- Missing OTSKP table/data
+- SQL query error
+
+═══════════════════════════════════════════════════════════════════════════════
+ERROR 2: Delete Project 404
+═══════════════════════════════════════════════════════════════════════════════
+
+LOCATION: Sidebar.tsx line 221
+CODE: await deleteProject(projectToDelete.name);
+
+CAUSE: API endpoint expects different format or doesn't exist
+
+CHECK: Monolit-Planner/backend/src/routes/monolithProjects.js
+- Verify DELETE endpoint exists
+- Check if it expects project_name or project_id
+- Verify URL encoding for "Bez projektu"
+
+QUICK FIX (if endpoint missing):
+Add error handling in Sidebar.tsx:
+
+```typescript
+const confirmDeleteProject = async () => {
+  if (!projectToDelete) return;
+
+  try {
+    const result = await deleteProject(projectToDelete.name);
+    // ... existing code
+  } catch (error: any) {
+    console.error('Failed to delete project:', error);
+    
+    // Better error message
+    if (error.response?.status === 404) {
+      alert('Endpoint pro mazání projektu neexistuje. Kontaktujte vývojáře.');
+    } else {
+      alert(`Chyba při mazání projektu: ${error.message}`);
+    }
+  }
+};
+```
+
+═══════════════════════════════════════════════════════════════════════════════
+RECOMMENDATION
+═══════════════════════════════════════════════════════════════════════════════
+
+These are backend issues, not related to Portal tabs feature.
+
+Priority:
+1. Check Render logs for OTSKP 500 error
+2. Verify DELETE project endpoint exists in backend
+3. Add proper error handling in frontend
+
+For now, Portal tabs feature is complete and ready for PR.
