@@ -359,7 +359,8 @@ export default function PortalPage() {
               <img
                 src="/assets/logo.svg"
                 alt="StavAgent Logo"
-                style={{ width: '55px', height: '55px', flexShrink: 0 }}
+                onClick={() => window.location.reload()}
+                style={{ width: '55px', height: '55px', flexShrink: 0, cursor: 'pointer' }}
               />
               <div>
                 <h1 className="c-header__title">StavAgent Portal</h1>
