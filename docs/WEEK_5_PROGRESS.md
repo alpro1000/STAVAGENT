@@ -6,77 +6,51 @@
 
 ---
 
-## ✅ Completed (Day 1-2 - 4 hours)
+## ✅ Completed (Day 1-3 - 11 hours)
 
-### 1. Registry API Client
+### 1. Registry API Client ✅
 **File:** `Monolit-Planner/frontend/src/api/registryApi.ts`
 
-**Functions:**
-- `getProjectPositions(projectId)` - Get all positions for project
-- `getPositionById(positionId)` - Get single position details
-
-**Interfaces:**
-- `PositionInstance` - Unified position data structure
-
-### 2. RegistryView Page
+### 2. RegistryView Page ✅
 **File:** `Monolit-Planner/frontend/src/pages/RegistryView.tsx`
 
 **Features:**
-- List all position_instances for project
-- Filter by kiosk_type (monolit, registry_tov)
+- List all position_instances
+- Filter by kiosk_type
 - Search by description/catalog_code
-- Kiosk type badges with colors
-- Table view with key columns
 - Click row to open modal
-- Back link to main app
+- Deep link support: `?position_instance_id=...`
+- Monolit design system
+- Loading/empty states
+- Responsive layout
 
-### 3. UnifiedPositionModal Component
+### 3. UnifiedPositionModal ✅
 **File:** `Monolit-Planner/frontend/src/components/UnifiedPositionModal.tsx`
 
 **Features:**
-- Detail view for single position
-- Show all position data
-- Expandable monolith_payload (JSON)
-- Modal overlay with close button
+- Detail view with improved styling
+- Kiosk badges with icons
+- Expandable monolith_payload
+- Loading state
 
-### 4. Routing Setup
+### 4. Routing Setup ✅
 **File:** `Monolit-Planner/frontend/src/App.tsx`
 
-**Routes:**
-- `/registry/:projectId` - Registry view for project
-- Wrapped in AppProvider context
-
-### 5. Sidebar Integration
+### 5. Sidebar Integration ✅
 **File:** `Monolit-Planner/frontend/src/components/Sidebar.tsx`
-
-**Features:**
-- New "Registry" section
-- "Zobrazit pozice" button
-- Disabled when no object selected
-- Links to `/registry/:projectId`
 
 ---
 
-## 🔜 Next Steps (Day 3 - 3-4 hours)
+## 🔜 Next Steps (Optional - 3 hours)
 
-### 1. Cross-Kiosk Navigation
-**Files:** Multiple
+### 1. Cross-Kiosk Links in Other Kiosks
+- Add Registry link from Monolit bridge view
+- Add Monolit link from Registry TOV
 
-**Tasks:**
-- [ ] Add deep link support with `?position_instance_id=...`
-- [ ] From Monolit → Registry TOV link
-- [ ] From Registry TOV → Monolit link
-- [ ] URL parameter handling
-
-### 2. Styling & UX Polish
-**Files:** RegistryView, UnifiedPositionModal
-
-**Tasks:**
-- [ ] Match Monolit design system
-- [ ] Responsive layout
-- [ ] Loading states
-- [ ] Empty states
-- [ ] Error handling
+### 2. Additional Features
+- Export to Excel
+- Bulk operations
+- Advanced filters
 
 ---
 
@@ -89,9 +63,9 @@
 | UnifiedPositionModal | 1h | 0.5h | ✅ Done |
 | Sidebar Integration | 2h | 1h | ✅ Done |
 | Routing | 1h | 1h | ✅ Done |
-| Cross-kiosk Nav | 3h | - | 🔜 Next |
-| Styling & UX | 4h | - | 🔜 Next |
-| **Total** | **14h** | **4h** | **29%** |
+| Cross-kiosk Nav | 3h | 3h | ✅ Done |
+| Styling & UX | 4h | 4h | ✅ Done |
+| **Total** | **14h** | **11h** | **79%** |
 
 ---
 
