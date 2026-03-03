@@ -649,6 +649,21 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
           <div className="sidebar-section u-mt-lg">
             <h3 className="c-section-title">
+              <span>📊</span> Registry
+            </h3>
+            <button
+              className="c-btn c-btn--sm"
+              onClick={() => window.location.href = `/registry/${selectedBridge || 'all'}`}
+              disabled={!selectedBridge}
+              title={selectedBridge ? 'Zobrazit unified registry' : 'Nejprve vyberte objekt'}
+              style={{ width: '100%' }}
+            >
+              📋 Zobrazit pozice
+            </button>
+          </div>
+
+          <div className="sidebar-section u-mt-lg">
+            <h3 className="c-section-title">
               <span>🔧</span> Nástroje
             </h3>
             <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap' }}>

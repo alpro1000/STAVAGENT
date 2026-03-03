@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppProvider } from './context/AppContext';
 import MainApp from './components/MainApp';
 import R0App from './components/r0/R0App';
+import RegistryView from './pages/RegistryView';
 import './styles/components.css';
 
 // Create QueryClient instance
@@ -32,6 +33,15 @@ function App() {
             element={
               <AppProvider>
                 <MainApp />
+              </AppProvider>
+            }
+          />
+          {/* Registry View */}
+          <Route
+            path="/registry/:projectId"
+            element={
+              <AppProvider>
+                <RegistryView />
               </AppProvider>
             }
           />
