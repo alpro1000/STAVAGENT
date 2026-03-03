@@ -745,8 +745,8 @@ export default function PortalPage() {
         )}
       </div>
 
-      {/* CORE Panel (if project selected) */}
-      {selectedProject && (
+      {/* CORE Panel (if project selected AND on projects tab) */}
+      {selectedProject && activeTab === 'projects' && (
         <CorePanel
           project={selectedProject}
           onClose={() => setSelectedProject(null)}
