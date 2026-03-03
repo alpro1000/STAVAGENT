@@ -70,11 +70,12 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
   };
 
   const handleApply = async () => {
+    const matched = (report?.summary.matched_exact || 0) + (report?.summary.matched_fallback || 0) + (report?.summary.matched_fuzzy || 0);
     const confirmed = window.confirm(
       `🔄 Aplikovat relink?\n\n` +
-      `Matched: ${report?.summary.matched_exact + report?.summary.matched_fallback + report?.summary.matched_fuzzy}\n` +
-      `Orphaned: ${report?.summary.orphaned}\n` +
-      `New: ${report?.summary.new_positions}\n\n` +
+      `Matched: ${matched}\n` +
+      `Orphaned: ${report?.summary.orphaned || 0}\n` +
+      `New: ${report?.summary.new_positions || 0}\n\n` +
       `Pokračovat?`
     );
 
