@@ -10,7 +10,14 @@ export class RegistryTOVAdapter {
 
       // Fetch Registry TOV project data
       const response = await fetch(`${registryApiUrl}/api/registry/projects/${registryProjectId}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch project: ${response.status} ${response.statusText}`);
+      }
       const { project } = await response.json();
+      
+      if (!project || !project.project_name) {
+        throw new Error('Invalid project data received from Registry TOV API');
+      }
 
       // Create unified registry project
       const projectResult = await client.query(
@@ -20,10 +27,17 @@ export class RegistryTOVAdapter {
          RETURNING id`,
         [project.project_name, { source: 'registry_tov', registry_project_id: registryProjectId }]
       );
+      
+      if (!projectResult.rows || projectResult.rows.length === 0) {
+        throw new Error('Failed to create/update registry project');
+      }
       const projectId = projectResult.rows[0].id;
 
       // Fetch sheets
       const sheetsResponse = await fetch(`${registryApiUrl}/api/registry/projects/${registryProjectId}/sheets`);
+      if (!sheetsResponse.ok) {
+        throw new Error(`Failed to fetch sheets: ${sheetsResponse.status} ${sheetsResponse.statusText}`);
+      }
       const { sheets } = await sheetsResponse.json();
 
       const importSummary = {
@@ -46,6 +60,9 @@ export class RegistryTOVAdapter {
 
         // Fetch items for this sheet
         const itemsResponse = await fetch(`${registryApiUrl}/api/registry/sheets/${sheet.sheet_id}/items`);
+        if (!itemsResponse.ok) {
+          throw new Error(`Failed to fetch items: ${itemsResponse.status} ${itemsResponse.statusText}`);
+        }
         const { items } = await itemsResponse.json();
 
         if (items.length > 0) {
@@ -103,7 +120,7 @@ export class RegistryTOVAdapter {
       source_file_id: sourceFileId,
       file_version_id: fileVersionId,
       position_code: item.kod || 'N/A',
-      position_name: item.popis,
+      position_name: item.popis || 'Unnamed Item',
       unit: item.mj || 'ks',
       quantity: item.mnozstvi || 0,
       kiosk_type: 'registry_tov',

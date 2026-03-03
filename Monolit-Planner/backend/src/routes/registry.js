@@ -8,10 +8,17 @@ import { RegistryTOVAdapter } from '../services/registryTOVAdapter.js';
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
 
+const ALLOWED_FILE_TYPES = ['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+const MAX_FILE_SIZE = 50 * 1024 * 1024;
+
 // POST /api/v1/registry/projects - Create project
 router.post('/projects', async (req, res) => {
   try {
     const { project_name, display_name, metadata } = req.body;
+    
+    if (!project_name || typeof project_name !== 'string' || project_name.length === 0 || project_name.length > 255) {
+      return res.status(400).json({ error: 'Invalid project_name: must be a non-empty string (max 255 chars)' });
+    }
     
     const result = await db.query(
       `INSERT INTO registry_projects (project_name, display_name, metadata)
@@ -147,6 +154,14 @@ router.post('/files/upload', upload.single('file'), async (req, res) => {
 
     if (!file) {
       return res.status(400).json({ error: 'No file uploaded' });
+    }
+    
+    if (!ALLOWED_FILE_TYPES.includes(file.mimetype)) {
+      return res.status(400).json({ error: 'Invalid file type. Only XLSX, PDF, and DOCX files are allowed' });
+    }
+    
+    if (file.size > MAX_FILE_SIZE) {
+      return res.status(400).json({ error: 'File too large. Maximum size is 50MB' });
     }
 
     const result = await FileVersioningService.createOrUpdateFile(db, {

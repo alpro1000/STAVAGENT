@@ -32,10 +32,10 @@ export class MonolitRegistryAdapter {
       object_id: objectId,
       source_file_id: sourceFileId,
       file_version_id: fileVersionId,
-      position_code: position.code || position.position_code,
-      position_name: position.name || position.position_name,
-      unit: position.unit,
-      quantity: position.quantity,
+      position_code: position.code || position.position_code || 'N/A',
+      position_name: position.name || position.position_name || 'Unnamed Position',
+      unit: position.unit || 'ks',
+      quantity: position.quantity || 0,
       kiosk_type: 'monolit',
       kiosk_data: {
         // Monolit-specific fields
