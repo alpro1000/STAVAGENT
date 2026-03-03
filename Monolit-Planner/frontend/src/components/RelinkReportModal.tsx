@@ -59,6 +59,9 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
     setLoading(true);
     try {
       const response = await fetch(`/api/relink/reports/${reportId}`);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       const data = await response.json();
       setReport(data);
     } catch (error) {
@@ -82,7 +85,10 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
     if (!confirmed) return;
 
     try {
-      await fetch(`/api/relink/reports/${reportId}/apply`, { method: 'POST' });
+      const response = await fetch(`/api/relink/reports/${reportId}/apply`, { method: 'POST' });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       alert('✅ Relink aplikován!');
       onClose();
       window.location.reload();
@@ -97,7 +103,10 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
     if (!confirmed) return;
 
     try {
-      await fetch(`/api/relink/reports/${reportId}/reject`, { method: 'POST' });
+      const response = await fetch(`/api/relink/reports/${reportId}/reject`, { method: 'POST' });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       alert('✅ Relink zamítnut');
       onClose();
     } catch (error) {

@@ -26,6 +26,14 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
       - name: Install dependencies (shared)
         working-directory: ./Monolit-Planner/shared
         run: npm ci
@@ -61,6 +69,14 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
       - name: Install dependencies
         working-directory: ./Monolit-Planner/shared
         run: npm ci
@@ -95,6 +111,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
       - name: Install shared dependencies
         working-directory: ./Monolit-Planner/shared
@@ -145,6 +169,14 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
+
       - name: Install shared dependencies
         working-directory: ./Monolit-Planner/shared
         run: npm ci
@@ -183,6 +215,14 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+
+      - name: Cache npm dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
       - name: Audit shared package
         working-directory: ./Monolit-Planner/shared
