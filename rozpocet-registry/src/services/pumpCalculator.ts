@@ -36,7 +36,7 @@ export function getSupplier(id: string): PumpSupplier | undefined {
  * Calculate arrival cost based on supplier billing model
  */
 export function calculateArrival(
-  supplier: PumpSupplier,
+  _supplier: PumpSupplier,
   pump: PumpModel,
   distance_km: number
 ): number {
