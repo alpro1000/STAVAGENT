@@ -3,6 +3,7 @@ import multer from 'multer';
 import db from '../db/index.js';
 import { FileVersioningService } from '../services/fileVersioningService.js';
 import { MonolitRegistryAdapter } from '../services/monolitRegistryAdapter.js';
+import { RegistryTOVAdapter } from '../services/registryTOVAdapter.js';
 
 const router = express.Router();
 const upload = multer({ dest: 'uploads/' });
@@ -223,6 +224,28 @@ router.post('/monolit/import', async (req, res) => {
       success: true,
       ...summary,
       message: `Imported ${summary.objects_imported} objects, ${summary.positions_imported} positions`
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// POST /api/v1/registry/registry-tov/import - Import Registry TOV project
+router.post('/registry-tov/import', async (req, res) => {
+  try {
+    const { registry_project_id, registry_api_url } = req.body;
+
+    if (!registry_project_id) {
+      return res.status(400).json({ error: 'registry_project_id required' });
+    }
+
+    const apiUrl = registry_api_url || process.env.REGISTRY_TOV_API_URL || 'https://stavagent-backend-ktwx.vercel.app';
+    const summary = await RegistryTOVAdapter.importRegistryTOVProject(registry_project_id, apiUrl);
+
+    res.json({
+      success: true,
+      ...summary,
+      message: `Imported ${summary.objects_imported} sheets, ${summary.positions_imported} positions`
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
