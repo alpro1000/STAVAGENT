@@ -11,7 +11,7 @@ export interface PumpSupplier {
   billing_model: 'hourly' | 'hourly_plus_m3' | 'per_15min';
   pumps: PumpModel[];
   hose_per_m_per_day: number;
-  surcharges: Record<string, number>;
+  surcharges: Record<string, number | string>;
 }
 
 export interface PumpModel {
