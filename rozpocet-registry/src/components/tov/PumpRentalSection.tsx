@@ -22,6 +22,7 @@ import type {
   PumpAccessory,
 } from '../../types/unified';
 import pumpKnowledge from '../../data/pump_knowledge.json';
+import { getSuppliers } from '../../services/pumpCalculator';
 import { v4 as uuidv4 } from 'uuid';
 
 // ─── Types from knowledge base ────────────────────────────────────────────────
@@ -166,8 +167,11 @@ interface PumpRentalSectionProps {
 export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabel }: PumpRentalSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
   const [showParamsAdvanced, setShowParamsAdvanced] = useState(false);
+  const [supplierId, setSupplierId] = useState<string>('beton_union');
 
   const data = pumpRental ?? DEFAULT_DATA;
+  const suppliers = getSuppliers();
+  const selectedSupplier = suppliers.find(s => s.id === supplierId);
 
   const update = (patch: Partial<PumpRentalData>) =>
     onChange(computeTotals({ ...data, ...patch }));
@@ -326,27 +330,47 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
       {isExpanded && (
         <div className="px-4 pb-4 space-y-5">
 
-          {/* ── Section 1: Pump type selector ── */}
-          <div>
-            <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2">
-              Typ čerpadla
-            </p>
-            <select
-              value={data.pump_type_id ?? ''}
-              onChange={e => selectPumpType(e.target.value)}
-              className="w-full bg-bg-secondary/60 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 border border-border-color/50"
-            >
-              <option value="">— Vyberte čerpadlo ze seznamu nebo zadejte ručně —</option>
-              {KB_PUMPS.map(p => (
-                <option key={p.id} value={p.id}>
-                  {p.label_cs} · {p.vykon_m3h} m³/h · {p.manipulace_czk_h.toLocaleString('cs-CZ')} Kč/h
-                  {p.priplatek_czk_m3 > 0 ? ` + ${p.priplatek_czk_m3} Kč/m³` : ''}
-                </option>
-              ))}
-            </select>
-            {selectedPump && (
-              <p className="text-[10px] text-text-muted mt-1 italic">{selectedPump.notes}</p>
-            )}
+          {/* ── Section 1: Supplier + Pump type selector ── */}
+          <div className="space-y-3">
+            {/* Supplier dropdown */}
+            <div>
+              <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2">
+                Dodavatel
+              </p>
+              <select
+                value={supplierId}
+                onChange={e => setSupplierId(e.target.value)}
+                className="w-full bg-bg-secondary/60 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 border border-border-color/50"
+              >
+                {suppliers.map(s => (
+                  <option key={s.id} value={s.id}>
+                    {s.name} · {s.billing_model === 'hourly' ? 'hodinová sazba' : s.billing_model === 'hourly_plus_m3' ? 'hodiny + m³' : '15min takty'}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Pump type dropdown */}
+            <div>
+              <p className="text-xs font-medium text-text-secondary uppercase tracking-wide mb-2">
+                Typ čerpadla
+              </p>
+              <select
+                value={data.pump_type_id ?? ''}
+                onChange={e => selectPumpType(e.target.value)}
+                className="w-full bg-bg-secondary/60 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 border border-border-color/50"
+              >
+                <option value="">— Vyberte čerpadlo ze seznamu nebo zadejte ručně —</option>
+                {selectedSupplier?.pumps.map((p: any) => (
+                  <option key={p.name} value={p.name}>
+                    {p.name} · {p.reach_m}m dosah · {p.operation_per_h || p.operation_per_15min || 0} Kč/{p.operation_per_h ? 'h' : '15min'}
+                  </option>
+                ))}
+              </select>
+              {selectedPump && (
+                <p className="text-[10px] text-text-muted mt-1 italic">{selectedPump.notes}</p>
+              )}
+            </div>
           </div>
 
           {/* ── Section 2: Transport + pump params ── */}

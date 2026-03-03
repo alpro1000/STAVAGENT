@@ -7,6 +7,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { batchMapPositions } from './services/tovProfessionMapper.js';
+import ExcelJS from 'exceljs';
 
 dotenv.config();
 
@@ -373,6 +374,103 @@ app.post('/api/formwork-rental/calculate', async (req, res) => {
         }
       }
     });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// ============ EXCEL EXPORT WITH PUMP DATA ============
+
+app.post('/api/registry/export/excel-with-pump', async (req, res) => {
+  try {
+    const { items, pumpRental, projectName } = req.body;
+
+    const workbook = new ExcelJS.Workbook();
+
+    // Sheet 1: Items
+    const itemsSheet = workbook.addWorksheet('Položky');
+    itemsSheet.columns = [
+      { header: 'Kód', key: 'kod', width: 15 },
+      { header: 'Popis', key: 'popis', width: 40 },
+      { header: 'Množství', key: 'mnozstvi', width: 12 },
+      { header: 'MJ', key: 'mj', width: 8 },
+      { header: 'Cena/MJ', key: 'cena_jednotkova', width: 12 },
+      { header: 'Celkem', key: 'cena_celkem', width: 12 }
+    ];
+
+    items.forEach(item => {
+      itemsSheet.addRow({
+        kod: item.kod,
+        popis: item.popis,
+        mnozstvi: item.mnozstvi,
+        mj: item.mj,
+        cena_jednotkova: item.cena_jednotkova,
+        cena_celkem: item.cena_celkem
+      });
+    });
+
+    // Sheet 2: Pump (if provided)
+    if (pumpRental && pumpRental.konecna_cena > 0) {
+      const pumpSheet = workbook.addWorksheet('Betonočerpadlo');
+      pumpSheet.columns = [{ width: 30 }, { width: 15 }, { width: 15 }];
+
+      pumpSheet.addRow(['KALKULACE BETONOČERPADLA']);
+      pumpSheet.getRow(1).font = { bold: true, size: 14 };
+      pumpSheet.addRow([]);
+
+      pumpSheet.addRow(['Dodavatel:', pumpRental.pump_label || 'N/A']);
+      pumpSheet.addRow(['Vzdálenost:', `${pumpRental.vzdalenost_km} km`]);
+      pumpSheet.addRow(['Výkon:', `${pumpRental.vykon_m3h} m³/h`]);
+      pumpSheet.addRow([]);
+
+      // Construction items
+      pumpSheet.addRow(['KONSTRUKCE', 'm³', 'Přistavení', 'Hodiny']);
+      pumpSheet.getRow(pumpSheet.rowCount).font = { bold: true };
+
+      pumpRental.items.forEach(item => {
+        pumpSheet.addRow([
+          item.nazev,
+          item.celkem_m3.toFixed(1),
+          item.pocet_pristaveni,
+          item.hodiny_celkem.toFixed(2)
+        ]);
+      });
+
+      pumpSheet.addRow([]);
+
+      // Cost breakdown
+      pumpSheet.addRow(['NÁKLADY']);
+      pumpSheet.getRow(pumpSheet.rowCount).font = { bold: true };
+
+      if (pumpRental.celkem_doprava > 0) {
+        pumpSheet.addRow(['Doprava:', `${pumpRental.celkem_doprava.toLocaleString('cs-CZ')} Kč`]);
+      }
+      if (pumpRental.celkem_manipulace > 0) {
+        pumpSheet.addRow(['Manipulace:', `${pumpRental.celkem_manipulace.toLocaleString('cs-CZ')} Kč`]);
+      }
+      if (pumpRental.celkem_priplatek_m3 > 0) {
+        pumpSheet.addRow(['Příplatek za čerpání:', `${pumpRental.celkem_priplatek_m3.toLocaleString('cs-CZ')} Kč`]);
+      }
+      if (pumpRental.celkem_prislusenstvi > 0) {
+        pumpSheet.addRow(['Příslušenství:', `${pumpRental.celkem_prislusenstvi.toLocaleString('cs-CZ')} Kč`]);
+      }
+      if (pumpRental.celkem_priplatky > 0) {
+        pumpSheet.addRow(['Příplatky:', `${pumpRental.celkem_priplatky.toLocaleString('cs-CZ')} Kč`]);
+      }
+
+      pumpSheet.addRow([]);
+      const totalRow = pumpSheet.addRow(['CELKEM:', `${pumpRental.konecna_cena.toLocaleString('cs-CZ')} Kč`]);
+      totalRow.font = { bold: true, size: 12 };
+
+      if (pumpRental.celkem_m3 > 0) {
+        pumpSheet.addRow(['Cena/m³:', `${(pumpRental.konecna_cena / pumpRental.celkem_m3).toFixed(0)} Kč/m³`]);
+      }
+    }
+
+    const filename = `${projectName || 'export'}_${new Date().toISOString().split('T')[0]}.xlsx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    await workbook.xlsx.write(res);
   } catch (error) {
     res.status(500).json({ success: false, error: error.message });
   }
