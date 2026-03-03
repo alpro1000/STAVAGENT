@@ -32,6 +32,15 @@ try {
   hasTypescript = false;
 }
 
+// Skip in CI environment (Vercel, GitHub Actions)
+if (process.env.CI || process.env.VERCEL) {
+  console.log('[prepare:shared] CI environment detected, skipping shared build.');
+  if (!existsSync(distEntry)) {
+    console.warn('[prepare:shared] WARNING: dist not found, build may fail.');
+  }
+  process.exit(0);
+}
+
 if (!hasTypescript) {
   console.log('[prepare:shared] Installing shared workspace dependencies...');
   run(npmCmd, ['install', '--include=dev']);
