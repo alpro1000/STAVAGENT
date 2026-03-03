@@ -46,17 +46,19 @@
 
 ## 🎯 Приоритетные задачи
 
-1. **✅ DONE: Unified Registry Foundation (Weeks 1-3)**
+1. **✅ DONE: Unified Registry Foundation (Weeks 1-4)**
    - ✅ Database schema (8 tables)
-   - ✅ API endpoints (10 endpoints)
+   - ✅ API endpoints (11 endpoints)
    - ✅ File versioning (SHA-256 hash)
    - ✅ Monolit adapter (backward compatible)
-   - 📄 See: [UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md](docs/UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md)
-2. **⏳ IN PROGRESS: Unified Registry (Weeks 4-6)** - Kiosk Integration
-   - ⏳ Registry TOV adapter
-   - ⏳ Frontend integration
-   - ⏳ Cross-kiosk navigation
-3. **🔜 NEXT: Unified Registry (Weeks 7-9)** - Relink Algorithm
+   - ✅ Registry TOV adapter
+   - ✅ Security fixes (Amazon Q review)
+   - 📄 See: [WEEK_4_SUMMARY.md](docs/WEEK_4_SUMMARY.md)
+2. **🔜 NEXT: Unified Registry (Weeks 5-6)** - Frontend Integration (OPTIONAL)
+   - 🔜 Registry tab in Monolit UI
+   - 🔜 Unified position view
+   - 🔜 Cross-kiosk navigation
+3. **🔜 FUTURE: Unified Registry (Weeks 7-9)** - Relink Algorithm
 4. **🔜 FUTURE: Unified Registry (Weeks 10-12)** - Template System + Production
 
 **Детали:** см. [NEXT_SESSION.md](NEXT_SESSION.md) → готовые команды для копирования
@@ -176,13 +178,13 @@ cd Monolit-Planner/backend && npm run test:all
 
 ---
 
-**Версия:** 1.0.15
+**Версия:** 1.0.16
 **Последнее обновление:** 2025-01-XX
 **Текущая ветка:** `feature/unified-registry-foundation`
 **Последние коммиты:**
+- `6a56977` DOCS: Week 4 summary - Foundation complete
+- `80683a6` FIX: Security and validation issues from Amazon Q review
 - `8068526` FEATURE: Unified Registry Foundation (Weeks 1-3)
-- `30f0d2c` DOCS: Archive Passport Fix PR description + Formwork V3 docs
-- `3c79ed3` FEATURE: Formwork rental calculator in Registry TOV
 
 ---
 
