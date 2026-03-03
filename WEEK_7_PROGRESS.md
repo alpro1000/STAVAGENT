@@ -1,9 +1,9 @@
 # Week 7-9 Progress: Relink Algorithm
 
 **Branch:** `feature/relink-algorithm`  
-**Status:** 🚀 Week 7 Day 1-2 COMPLETE  
-**Time Spent:** ~3 hours  
-**Remaining:** 21-29 hours
+**Status:** 🚀 Week 7 Day 3 COMPLETE  
+**Time Spent:** ~6 hours  
+**Remaining:** 18-26 hours
 
 ---
 
@@ -54,25 +54,44 @@ Step 4: Classify → Orphaned + New (5-10%)
 
 ## 🔜 Next Steps (Week 7, Day 3-4)
 
-### Day 3: Integration & Testing (3-4 hours)
-1. [ ] Install `string-similarity` package
+### Day 3: Integration & Testing (3-4 hours) ✅ DONE
+1. [x] Install `string-similarity` package
    ```bash
    cd Monolit-Planner/backend
    npm install string-similarity
    ```
 
-2. [ ] Register relink routes in `app.js`
+2. [x] Register relink routes in `server.js`
    ```javascript
-   const relinkRoutes = require('./src/routes/relink');
+   import relinkRoutes from './src/routes/relink.js';
    app.use('/api/relink', relinkRoutes);
    ```
 
-3. [ ] Run migration
+3. [x] Convert to ES modules
+   - ✅ `relink.js` - CommonJS → ES modules
+   - ✅ `relinkService.js` - CommonJS → ES modules
+
+4. [x] Create unit tests (13 tests)
    ```bash
+   # Test primary match (exact)
+   # Test fallback match (positional)
+   # Test fuzzy match (similarity)
+   # Test edge cases (empty, missing data)
+   ```
+
+### Day 4: Run Migration & Test API (2-3 hours) ⏳ TODO
+1. [ ] Run migration 011
+   ```bash
+   cd Monolit-Planner/backend
    npm run migrate
    ```
 
-4. [ ] Test API endpoints
+2. [ ] Start server
+   ```bash
+   npm run dev
+   ```
+
+3. [ ] Test API endpoints
    ```bash
    # Generate report
    curl -X POST http://localhost:3001/api/relink/generate \
@@ -86,12 +105,10 @@ Step 4: Classify → Orphaned + New (5-10%)
    curl -X POST http://localhost:3001/api/relink/reports/1/apply
    ```
 
-### Day 4: Unit Tests (2-3 hours)
-1. [ ] Create test file: `Monolit-Planner/backend/tests/relinkService.test.js`
-2. [ ] Test primary match (exact)
-3. [ ] Test fallback match (positional)
-4. [ ] Test fuzzy match (similarity)
-5. [ ] Test edge cases (empty, duplicates, no matches)
+4. [ ] Run unit tests
+   ```bash
+   npm run test:unit -- relinkService.test.js
+   ```
 
 ---
 
@@ -99,16 +116,17 @@ Step 4: Classify → Orphaned + New (5-10%)
 
 | Task | Status | Time |
 |------|--------|------|
-| **Week 7: File Version System** | 🟡 IN PROGRESS | 3/10h |
+| **Week 7: File Version System** | 🟡 IN PROGRESS | 6/10h |
 | Database migration | ✅ DONE | 1h |
 | Relink service | ✅ DONE | 2h |
 | API routes | ✅ DONE | 1h |
-| Integration | ⏳ TODO | 2h |
-| Unit tests | ⏳ TODO | 2h |
+| Integration | ✅ DONE | 2h |
+| Unit tests | ✅ DONE | 1h |
+| Run migration & test | ⏳ TODO | 2h |
 | **Week 8: Algorithm Core** | ⏳ TODO | 0/12h |
 | **Week 9: UI & Resolution** | ⏳ TODO | 0/10h |
 
-**Total:** 3/32 hours (9% complete)
+**Total:** 6/32 hours (19% complete)
 
 ---
 
