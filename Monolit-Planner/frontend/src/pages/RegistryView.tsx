@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { getProjectPositions, PositionInstance } from '../api/registryApi';
+import UnifiedPositionModal from '../components/UnifiedPositionModal';
 
 export default function RegistryView() {
   const { projectId } = useParams<{ projectId: string }>();
   const [positions, setPositions] = useState<PositionInstance[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({ kiosk: '', search: '' });
+  const [selectedPositionId, setSelectedPositionId] = useState<string | null>(null);
 
   useEffect(() => {
     if (projectId) {
@@ -30,7 +32,10 @@ export default function RegistryView() {
 
   return (
     <div style={{ padding: '24px' }}>
-      <h1>Registry pozic</h1>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+        <Link to="/" style={{ textDecoration: 'none', color: 'var(--accent-orange)' }}>← Zpět</Link>
+        <h1>Registry pozic</h1>
+      </div>
       
       <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
         <input
@@ -59,7 +64,7 @@ export default function RegistryView() {
         </thead>
         <tbody>
           {filtered.map(p => (
-            <tr key={p.position_instance_id}>
+            <tr key={p.position_instance_id} onClick={() => setSelectedPositionId(p.position_instance_id)} style={{ cursor: 'pointer' }}>
               <td>{p.catalog_code}</td>
               <td>{p.description}</td>
               <td>{p.qty}</td>
@@ -78,6 +83,13 @@ export default function RegistryView() {
           ))}
         </tbody>
       </table>
+
+      {selectedPositionId && (
+        <UnifiedPositionModal
+          positionId={selectedPositionId}
+          onClose={() => setSelectedPositionId(null)}
+        />
+      )}
     </div>
   );
 }
