@@ -30,6 +30,7 @@ import exportToRegistryRoutes from './src/routes/export-to-registry.js';
 import debugRoutes from './src/routes/debug.js';
 import r0Routes from './src/routes/r0.js';
 import kbResearchRoutes from './src/routes/kb-research.js';
+import registryRoutes from './src/routes/registry.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -176,6 +177,7 @@ app.use('/api/formwork-assistant', formworkAssistantRoutes);
 app.use('/api/export-to-registry', exportToRegistryRoutes);
 app.use('/api/r0', r0Routes);
 app.use('/api/kb/research', kbResearchRoutes);
+app.use('/api/v1/registry', registryRoutes);
 
 // DEBUG routes - ONLY enabled in development
 if (process.env.NODE_ENV !== 'production') {

@@ -1,0 +1,69 @@
+═══════════════════════════════════════════════════════════════════════════════
+MONOLIT PLANNER - XLSX IMPORT DEBUG PATCH
+═══════════════════════════════════════════════════════════════════════════════
+
+ПРОБЛЕМА: Sidebar не обновляется после импорта XLSX
+
+БЫСТРАЯ ДИАГНОСТИКА:
+Добавить console.log в Header.tsx handleFileUpload
+
+═══════════════════════════════════════════════════════════════════════════════
+FILE: Monolit-Planner/frontend/src/components/Header.tsx
+═══════════════════════════════════════════════════════════════════════════════
+
+AFTER LINE 48 (const result = await uploadAPI.uploadXLSX(file);), ADD:
+
+```typescript
+console.log('[Upload] Backend response:', result);
+console.log('[Upload] Bridges in response:', result.bridges);
+console.log('[Upload] Current bridges in context:', bridges);
+```
+
+AFTER LINE 85 (setBridges(updatedBridges);), ADD:
+
+```typescript
+console.log('[Upload] Updated bridges:', updatedBridges);
+console.log('[Upload] New bridges added:', newBridges);
+```
+
+═══════════════════════════════════════════════════════════════════════════════
+ТЕСТ
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Open browser console (F12)
+2. Click "💾 Nahrát XLSX"
+3. Upload file
+4. Check console logs:
+   - Backend response должен содержать bridges[]
+   - Updated bridges должен показать новые объекты
+   - Sidebar должен обновиться
+
+ЕСЛИ НЕ РАБОТАЕТ:
+- Проверить result.bridges - может быть пустой?
+- Проверить setBridges - вызывается ли?
+- Проверить Sidebar.tsx - слушает ли изменения bridges?
+
+═══════════════════════════════════════════════════════════════════════════════
+ВОЗМОЖНЫЕ ПРИЧИНЫ
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Backend не возвращает bridges в response
+2. setBridges не триггерит ре-рендер Sidebar
+3. Sidebar использует устаревший state
+4. React Query cache конфликтует с context
+
+═══════════════════════════════════════════════════════════════════════════════
+БЫСТРЫЙ ФИКС (если setBridges не работает)
+═══════════════════════════════════════════════════════════════════════════════
+
+REPLACE LINE 85-90 WITH:
+
+```typescript
+// Force refetch instead of manual update
+await refetchBridges();
+setSelectedBridge(result.bridges[0].bridge_id);
+```
+
+Это медленнее, но гарантированно обновит sidebar.
+
+═══════════════════════════════════════════════════════════════════════════════
