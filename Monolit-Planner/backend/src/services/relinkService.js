@@ -14,21 +14,25 @@ import db from '../db/index.js';
 /**
  * Step 1: Primary Match (Exact)
  * Confidence: GREEN (100%)
+ * Optimized: O(n) using Map instead of O(n²) nested loop
  */
 async function primaryMatch(oldPositions, newPositions) {
   const matches = [];
   const unmatchedOld = [];
-  const unmatchedNew = [...newPositions];
+  
+  // Build Map for O(1) lookup: key = position_code|position_name|catalog_code
+  const newPosMap = new Map();
+  for (const newPos of newPositions) {
+    const key = `${newPos.position_code}|${newPos.position_name}|${newPos.kiosk_data?.catalog_code || ''}`;
+    newPosMap.set(key, newPos);
+  }
 
+  // Match old positions against Map
   for (const oldPos of oldPositions) {
-    const matchIndex = unmatchedNew.findIndex(newPos =>
-      newPos.position_code === oldPos.position_code &&
-      newPos.position_name === oldPos.position_name &&
-      newPos.kiosk_data?.catalog_code === oldPos.kiosk_data?.catalog_code
-    );
+    const key = `${oldPos.position_code}|${oldPos.position_name}|${oldPos.kiosk_data?.catalog_code || ''}`;
+    const match = newPosMap.get(key);
 
-    if (matchIndex !== -1) {
-      const match = unmatchedNew[matchIndex];
+    if (match) {
       matches.push({
         old_position_id: oldPos.id,
         new_position_id: match.id,
@@ -38,11 +42,14 @@ async function primaryMatch(oldPositions, newPositions) {
         old_description: oldPos.position_name,
         new_description: match.position_name
       });
-      unmatchedNew.splice(matchIndex, 1);
+      newPosMap.delete(key); // Remove matched position
     } else {
       unmatchedOld.push(oldPos);
     }
   }
+
+  // Remaining positions in Map are unmatched new positions
+  const unmatchedNew = Array.from(newPosMap.values());
 
   return { matches, unmatchedOld, unmatchedNew };
 }
@@ -95,19 +102,27 @@ async function fallbackMatch(unmatchedOld, unmatchedNew) {
 /**
  * Step 3: Fuzzy Match (Description Similarity)
  * Confidence: AMBER/RED (50-75%)
+ * Optimized: Group by catalog_code to reduce comparisons
  */
 async function fuzzyMatch(unmatchedOld, unmatchedNew) {
   const matches = [];
   const orphaned = [];
-  const newPositions = [...unmatchedNew];
+  
+  // Group new positions by catalog_code for faster lookup
+  const newByCode = new Map();
+  for (const newPos of unmatchedNew) {
+    const code = newPos.kiosk_data?.catalog_code || 'NO_CODE';
+    if (!newByCode.has(code)) {
+      newByCode.set(code, []);
+    }
+    newByCode.get(code).push(newPos);
+  }
 
   for (const oldPos of unmatchedOld) {
-    const catalogCode = oldPos.kiosk_data?.catalog_code;
+    const catalogCode = oldPos.kiosk_data?.catalog_code || 'NO_CODE';
     
     // Find candidates with same catalog_code
-    const candidates = newPositions.filter(
-      newPos => newPos.kiosk_data?.catalog_code === catalogCode
-    );
+    const candidates = newByCode.get(catalogCode) || [];
 
     if (candidates.length === 0) {
       orphaned.push(oldPos);
@@ -115,8 +130,8 @@ async function fuzzyMatch(unmatchedOld, unmatchedNew) {
     }
 
     // Calculate similarity scores
+    const oldDesc = oldPos.description_normalized || oldPos.position_name.toLowerCase();
     const scores = candidates.map(candidate => {
-      const oldDesc = oldPos.description_normalized || oldPos.position_name.toLowerCase();
       const newDesc = candidate.description_normalized || candidate.position_name.toLowerCase();
       
       return {
@@ -142,11 +157,19 @@ async function fuzzyMatch(unmatchedOld, unmatchedNew) {
         new_description: best.position.position_name
       });
       
-      const index = newPositions.indexOf(best.position);
-      newPositions.splice(index, 1);
+      // Remove matched position from candidates
+      const codeGroup = newByCode.get(catalogCode);
+      const index = codeGroup.indexOf(best.position);
+      codeGroup.splice(index, 1);
     } else {
       orphaned.push(oldPos);
     }
+  }
+
+  // Collect remaining unmatched new positions
+  const newPositions = [];
+  for (const candidates of newByCode.values()) {
+    newPositions.push(...candidates);
   }
 
   return { matches, orphaned, newPositions };
