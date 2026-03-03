@@ -11,7 +11,7 @@ export interface PumpSupplier {
   billing_model: 'hourly' | 'hourly_plus_m3' | 'per_15min';
   pumps: PumpModel[];
   hose_per_m_per_day: number;
-  surcharges: Record<string, number | string>;
+  surcharges: any;
 }
 
 export interface PumpModel {
@@ -36,7 +36,7 @@ export function getSupplier(id: string): PumpSupplier | undefined {
  * Calculate arrival cost based on supplier billing model
  */
 export function calculateArrival(
-  supplier: PumpSupplier,
+  _supplier: PumpSupplier,
   pump: PumpModel,
   distance_km: number
 ): number {
