@@ -709,7 +709,7 @@ export default function PortalPage() {
                     📤 Nahrát soubor
                   </h4>
                   <div
-                    onClick={() => setSelectedProject(selectedProject)}
+                    onClick={() => alert('TODO: Implement file upload')}
                     style={{
                       border: '2px dashed var(--border-color)',
                       borderRadius: '8px',
