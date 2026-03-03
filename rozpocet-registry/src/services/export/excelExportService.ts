@@ -328,27 +328,27 @@ function createStyledItemsSheet(
         // Labor rows (yellow)
         for (const r of (tov.labor ?? [])) {
           const cost = r.totalCost ?? (r.normHours * (r.hourlyRate ?? 0));
-          data.push(['', '', `  👷 ${r.profession} — ${r.count} prac × ${r.hours}h = ${r.normHours.toFixed(1)} Nh`, '', r.normHours, r.hourlyRate ?? '', cost || '', 'TOV:Práce']);
+          data.push(['', 'TOV:Práce', `  👷 ${r.profession} — ${r.count} prac × ${r.hours}h = ${r.normHours.toFixed(1)} Nh`, '', r.normHours, r.hourlyRate ?? '', cost || '', displaySkupina]);
           rowTypes.push('tov_labor');
           outlineLevels.push(3);
         }
         // Machinery rows (blue)
         for (const r of (tov.machinery ?? [])) {
           const cost = r.totalCost ?? (r.machineHours * (r.hourlyRate ?? 0));
-          data.push(['', '', `  🏗️ ${r.type} — ${r.count} ks × ${r.hours}h = ${r.machineHours.toFixed(1)} Mh`, '', r.machineHours, r.hourlyRate ?? '', cost || '', 'TOV:Mechanizace']);
+          data.push(['', 'TOV:Mechanizace', `  🏗️ ${r.type} — ${r.count} ks × ${r.hours}h = ${r.machineHours.toFixed(1)} Mh`, '', r.machineHours, r.hourlyRate ?? '', cost || '', displaySkupina]);
           rowTypes.push('tov_machinery');
           outlineLevels.push(3);
         }
         // Material rows (green)
         for (const r of (tov.materials ?? [])) {
-          data.push(['', r.code ?? '', `  📦 ${r.name}`, r.unit, r.quantity, r.unitPrice ?? '', r.totalCost ?? '', 'TOV:Materiál']);
+          data.push(['', 'TOV:Materiál', `  📦 ${r.name}`, r.unit, r.quantity, r.unitPrice ?? '', r.totalCost ?? '', displaySkupina]);
           rowTypes.push('tov_material');
           outlineLevels.push(3);
         }
         // Formwork rental rows (violet)
         for (const r of (tov.formworkRental ?? [])) {
           const popis = r.kros_popis || generateKrosPopis(r);
-          data.push([r.kros_kod ?? '', '', `  🏛️ ${popis}`, 'kpl', 1, r.konecny_najem, r.konecny_najem, 'TOV:Bednění']);
+          data.push(['', 'TOV:Bednění', `  🏛️ ${popis}`, 'kpl', 1, r.konecny_najem, r.konecny_najem, displaySkupina]);
           rowTypes.push('tov_formwork');
           outlineLevels.push(3);
         }
@@ -357,7 +357,7 @@ function createStyledItemsSheet(
           const p = tov.pumpRental;
           // Main pump row
           const pumpDesc = `  🚛 Betonočerpadlo ${p.pump_label || ''} — ${p.celkem_m3.toFixed(1)} m³, ${p.celkem_pristaveni}× přist., ${p.celkem_hodiny.toFixed(1)}h`;
-          data.push([p.kros_kod ?? '', '', pumpDesc, 'kpl', 1, p.konecna_cena, p.konecna_cena, 'TOV:Čerpadlo']);
+          data.push(['', 'TOV:Čerpadlo', pumpDesc, 'kpl', 1, p.konecna_cena, p.konecna_cena, displaySkupina]);
           rowTypes.push('tov_machinery');
           outlineLevels.push(3);
           // Breakdown sub-rows (level 4 - nested under pump)
