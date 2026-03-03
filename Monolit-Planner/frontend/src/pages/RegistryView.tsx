@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { getProjectPositions, PositionInstance } from '../api/registryApi';
 import UnifiedPositionModal from '../components/UnifiedPositionModal';
 
 export default function RegistryView() {
   const { projectId } = useParams<{ projectId: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [positions, setPositions] = useState<PositionInstance[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState({ kiosk: '', search: '' });
@@ -19,6 +20,16 @@ export default function RegistryView() {
     }
   }, [projectId]);
 
+  // Handle deep link from URL parameter
+  useEffect(() => {
+    const positionId = searchParams.get('position_instance_id');
+    if (positionId && positions.length > 0) {
+      setSelectedPositionId(positionId);
+      searchParams.delete('position_instance_id');
+      setSearchParams(searchParams, { replace: true });
+    }
+  }, [searchParams, positions]);
+
   const filtered = positions.filter(p => {
     if (filter.kiosk && p.kiosk_type !== filter.kiosk) return false;
     if (filter.search) {
@@ -28,61 +39,88 @@ export default function RegistryView() {
     return true;
   });
 
-  if (loading) return <div>Načítání...</div>;
+  if (loading) return (
+    <div className="c-panel" style={{ margin: '24px', padding: '48px', textAlign: 'center' }}>
+      <div style={{ fontSize: '48px', marginBottom: '16px' }}>⏳</div>
+      <p>Načítání pozic...</p>
+    </div>
+  );
 
   return (
-    <div style={{ padding: '24px' }}>
+    <div className="c-panel" style={{ margin: '24px', padding: '24px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
-        <Link to="/" style={{ textDecoration: 'none', color: 'var(--accent-orange)' }}>← Zpět</Link>
-        <h1>Registry pozic</h1>
+        <Link to="/" className="c-btn c-btn--sm" style={{ textDecoration: 'none' }}>← Zpět</Link>
+        <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 700 }}>Registry pozic</h1>
+        <span className="c-badge c-badge--orange">{filtered.length}</span>
       </div>
       
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
         <input
           type="text"
-          placeholder="Hledat..."
+          placeholder="🔍 Hledat podle popisu nebo kódu..."
           value={filter.search}
           onChange={e => setFilter({ ...filter, search: e.target.value })}
-          style={{ flex: 1, padding: '8px' }}
+          className="c-input"
+          style={{ flex: '1 1 300px', minWidth: '200px' }}
         />
-        <select value={filter.kiosk} onChange={e => setFilter({ ...filter, kiosk: e.target.value })}>
-          <option value="">Všechny kiosky</option>
-          <option value="monolit">Monolit</option>
-          <option value="registry_tov">Registry TOV</option>
+        <select 
+          value={filter.kiosk} 
+          onChange={e => setFilter({ ...filter, kiosk: e.target.value })}
+          className="c-select"
+          style={{ minWidth: '150px' }}
+        >
+          <option value="">📊 Všechny kiosky</option>
+          <option value="monolit">🪨 Monolit</option>
+          <option value="registry_tov">📋 Registry TOV</option>
         </select>
       </div>
 
-      <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr>
-            <th>Kód</th>
-            <th>Popis</th>
-            <th>Množství</th>
-            <th>MJ</th>
-            <th>Kiosk</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filtered.map(p => (
-            <tr key={p.position_instance_id} onClick={() => setSelectedPositionId(p.position_instance_id)} style={{ cursor: 'pointer' }}>
-              <td>{p.catalog_code}</td>
-              <td>{p.description}</td>
-              <td>{p.qty}</td>
-              <td>{p.unit}</td>
-              <td>
-                <span style={{
-                  padding: '2px 8px',
-                  borderRadius: '4px',
-                  fontSize: '12px',
-                  background: p.kiosk_type === 'monolit' ? '#e3f2fd' : '#fff3e0'
-                }}>
-                  {p.kiosk_type}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {filtered.length === 0 ? (
+        <div className="c-panel c-panel--inset" style={{ padding: '48px', textAlign: 'center' }}>
+          <div style={{ fontSize: '48px', marginBottom: '16px' }}>📭</div>
+          <h3 style={{ marginBottom: '8px' }}>Žádné pozice</h3>
+          <p style={{ color: 'var(--text-secondary)' }}>
+            {positions.length === 0 ? 'Projekt neobsahuje žádné pozice.' : 'Zkuste změnit filtry.'}
+          </p>
+        </div>
+      ) : (
+        <div style={{ overflowX: 'auto' }}>
+          <table className="c-table" style={{ width: '100%' }}>
+            <thead>
+              <tr>
+                <th>Kód</th>
+                <th>Popis</th>
+                <th style={{ textAlign: 'right' }}>Množství</th>
+                <th>MJ</th>
+                <th>Kiosk</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(p => (
+                <tr 
+                  key={p.position_instance_id} 
+                  onClick={() => setSelectedPositionId(p.position_instance_id)} 
+                  style={{ cursor: 'pointer' }}
+                  className="c-table-row--hover"
+                >
+                  <td><code>{p.catalog_code}</code></td>
+                  <td>{p.description}</td>
+                  <td style={{ textAlign: 'right', fontWeight: 600 }}>{p.qty}</td>
+                  <td>{p.unit}</td>
+                  <td>
+                    <span className="c-badge" style={{
+                      background: p.kiosk_type === 'monolit' ? '#e3f2fd' : '#fff3e0',
+                      color: p.kiosk_type === 'monolit' ? '#1976d2' : '#f57c00'
+                    }}>
+                      {p.kiosk_type === 'monolit' ? '🪨' : '📋'} {p.kiosk_type}
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
       {selectedPositionId && (
         <UnifiedPositionModal
