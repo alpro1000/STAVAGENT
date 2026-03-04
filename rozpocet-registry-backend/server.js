@@ -17,37 +17,118 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3002;
 
-// Database
-const pool = new pg.Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
-});
+// Database — graceful handling when DATABASE_URL is missing
+let pool = null;
+let dbReady = false;
+
+if (process.env.DATABASE_URL) {
+  pool = new pg.Pool({
+    connectionString: process.env.DATABASE_URL,
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    connectionTimeoutMillis: 10000,
+    idleTimeoutMillis: 30000,
+    max: 10,
+  });
+
+  pool.on('error', (err) => {
+    console.error('[DB] Pool error:', err.message);
+    dbReady = false;
+  });
+} else {
+  console.warn('[DB] DATABASE_URL not set — running without database (health check only)');
+}
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '10mb' }));
+
+// DB availability middleware — returns 503 if DB not ready
+function requireDB(req, res, next) {
+  if (!pool || !dbReady) {
+    return res.status(503).json({
+      success: false,
+      error: 'Database not available',
+      hint: pool ? 'Database connection failed — check DATABASE_URL' : 'DATABASE_URL environment variable not set',
+    });
+  }
+  next();
+}
 
 // Initialize database
 async function initDatabase() {
+  if (!pool) return;
   try {
     const schema = fs.readFileSync(join(__dirname, 'schema.sql'), 'utf8');
     await pool.query(schema);
-    console.log('[DB] Schema initialized');
+    dbReady = true;
+    console.log('[DB] Schema initialized — ready');
   } catch (error) {
-    console.error('[DB] Init error:', error);
+    console.error('[DB] Init error:', error.message);
+    dbReady = false;
   }
 }
 
+// ============ HEALTH CHECK ============
+
+app.get('/health', async (req, res) => {
+  const status = {
+    status: 'ok',
+    service: 'rozpocet-registry-backend',
+    version: '1.1.0',
+    timestamp: new Date().toISOString(),
+    database: dbReady ? 'connected' : (pool ? 'disconnected' : 'not configured'),
+  };
+
+  if (pool && dbReady) {
+    try {
+      const result = await pool.query('SELECT NOW() as time');
+      status.db_time = result.rows[0].time;
+    } catch {
+      status.database = 'error';
+      dbReady = false;
+    }
+  }
+
+  res.json(status);
+});
+
+// Root route
+app.get('/', (req, res) => {
+  res.json({
+    service: 'rozpocet-registry-backend',
+    version: '1.1.0',
+    endpoints: [
+      'GET  /health',
+      'GET  /api/registry/projects',
+      'POST /api/registry/projects',
+      'GET  /api/registry/projects/:id',
+      'DELETE /api/registry/projects/:id',
+      'GET  /api/registry/projects/:id/sheets',
+      'POST /api/registry/projects/:id/sheets',
+      'DELETE /api/registry/sheets/:id',
+      'GET  /api/registry/sheets/:id/items',
+      'POST /api/registry/sheets/:id/items',
+      'PUT  /api/registry/items/:id',
+      'DELETE /api/registry/items/:id',
+      'PATCH /api/registry/items/:id/tov',
+      'POST /api/registry/import/monolit',
+      'POST /api/formwork-rental/calculate',
+      'POST /api/registry/export/excel-with-pump',
+    ],
+    database: dbReady ? 'connected' : (pool ? 'disconnected' : 'not configured'),
+  });
+});
+
 // ============ PROJECTS ============
 
-app.get('/api/registry/projects', async (req, res) => {
+app.get('/api/registry/projects', requireDB, async (req, res) => {
   try {
     const userId = req.query.user_id || 1;
     const result = await pool.query(
-      `SELECT p.*, 
+      `SELECT p.*,
         (SELECT COUNT(*) FROM registry_sheets WHERE project_id = p.project_id) as sheets_count,
-        (SELECT COUNT(*) FROM registry_items i 
-         JOIN registry_sheets s ON i.sheet_id = s.sheet_id 
+        (SELECT COUNT(*) FROM registry_items i
+         JOIN registry_sheets s ON i.sheet_id = s.sheet_id
          WHERE s.project_id = p.project_id) as items_count
        FROM registry_projects p
        WHERE p.owner_id = $1
@@ -60,10 +141,10 @@ app.get('/api/registry/projects', async (req, res) => {
   }
 });
 
-app.post('/api/registry/projects', async (req, res) => {
+app.post('/api/registry/projects', requireDB, async (req, res) => {
   try {
     const { project_name, portal_project_id } = req.body;
-    const userId = req.body.user_id || 1; // Default owner_id=1 for integration imports
+    const userId = req.body.user_id || 1;
     const projectId = `reg_${uuidv4()}`;
 
     const result = await pool.query(
@@ -79,7 +160,7 @@ app.post('/api/registry/projects', async (req, res) => {
   }
 });
 
-app.get('/api/registry/projects/:id', async (req, res) => {
+app.get('/api/registry/projects/:id', requireDB, async (req, res) => {
   try {
     const result = await pool.query(
       'SELECT * FROM registry_projects WHERE project_id = $1',
@@ -94,7 +175,7 @@ app.get('/api/registry/projects/:id', async (req, res) => {
   }
 });
 
-app.delete('/api/registry/projects/:id', async (req, res) => {
+app.delete('/api/registry/projects/:id', requireDB, async (req, res) => {
   try {
     await pool.query('DELETE FROM registry_projects WHERE project_id = $1', [req.params.id]);
     res.json({ success: true });
@@ -105,7 +186,7 @@ app.delete('/api/registry/projects/:id', async (req, res) => {
 
 // ============ SHEETS ============
 
-app.get('/api/registry/projects/:id/sheets', async (req, res) => {
+app.get('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT s.*,
@@ -121,7 +202,7 @@ app.get('/api/registry/projects/:id/sheets', async (req, res) => {
   }
 });
 
-app.post('/api/registry/projects/:id/sheets', async (req, res) => {
+app.post('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
   try {
     const { sheet_name, sheet_order } = req.body;
     const sheetId = `sheet_${uuidv4()}`;
@@ -141,7 +222,7 @@ app.post('/api/registry/projects/:id/sheets', async (req, res) => {
   }
 });
 
-app.delete('/api/registry/sheets/:id', async (req, res) => {
+app.delete('/api/registry/sheets/:id', requireDB, async (req, res) => {
   try {
     await pool.query('DELETE FROM registry_sheets WHERE sheet_id = $1', [req.params.id]);
     res.json({ success: true });
@@ -152,7 +233,7 @@ app.delete('/api/registry/sheets/:id', async (req, res) => {
 
 // ============ ITEMS ============
 
-app.get('/api/registry/sheets/:id/items', async (req, res) => {
+app.get('/api/registry/sheets/:id/items', requireDB, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT i.*,
@@ -169,7 +250,7 @@ app.get('/api/registry/sheets/:id/items', async (req, res) => {
   }
 });
 
-app.post('/api/registry/sheets/:id/items', async (req, res) => {
+app.post('/api/registry/sheets/:id/items', requireDB, async (req, res) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -206,7 +287,7 @@ app.post('/api/registry/sheets/:id/items', async (req, res) => {
   }
 });
 
-app.put('/api/registry/items/:id', async (req, res) => {
+app.put('/api/registry/items/:id', requireDB, async (req, res) => {
   try {
     const { kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem } = req.body;
     const result = await pool.query(
@@ -222,7 +303,7 @@ app.put('/api/registry/items/:id', async (req, res) => {
   }
 });
 
-app.delete('/api/registry/items/:id', async (req, res) => {
+app.delete('/api/registry/items/:id', requireDB, async (req, res) => {
   try {
     await pool.query('DELETE FROM registry_items WHERE item_id = $1', [req.params.id]);
     res.json({ success: true });
@@ -231,7 +312,7 @@ app.delete('/api/registry/items/:id', async (req, res) => {
   }
 });
 
-app.patch('/api/registry/items/:id/tov', async (req, res) => {
+app.patch('/api/registry/items/:id/tov', requireDB, async (req, res) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
@@ -263,13 +344,13 @@ app.patch('/api/registry/items/:id/tov', async (req, res) => {
 
 // ============ MONOLIT INTEGRATION ============
 
-app.post('/api/registry/import/monolit', async (req, res) => {
+app.post('/api/registry/import/monolit', requireDB, async (req, res) => {
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
 
     const { project_name, positions, user_id } = req.body;
-    const userId = user_id || 1; // Default owner_id=1
+    const userId = user_id || 1;
     const projectId = `reg_${uuidv4()}`;
 
     // Create project
@@ -313,7 +394,7 @@ app.post('/api/registry/import/monolit', async (req, res) => {
       );
 
       // Add labor TOV if mapped
-      const labor = laborResources.find(l => l && positions.indexOf(pos) === laborResources.indexOf(l));
+      const labor = laborResources[i];
       if (labor) {
         await client.query(
           `INSERT INTO registry_tov (tov_id, item_id, tov_type, tov_data, created_at, updated_at)
@@ -324,7 +405,7 @@ app.post('/api/registry/import/monolit', async (req, res) => {
     }
 
     await client.query('COMMIT');
-    res.json({ success: true, project_id: projectId, mapped_count: laborResources.length });
+    res.json({ success: true, project_id: projectId, mapped_count: laborResources.filter(Boolean).length });
   } catch (error) {
     await client.query('ROLLBACK');
     res.status(500).json({ success: false, error: error.message });
@@ -341,7 +422,7 @@ const FORMWORK_PRICES = {
   'STAXO100': { base: 12.0, heights: { 2.7: 1.0, 3.0: 1.1 } }
 };
 
-app.post('/api/formwork-rental/calculate', async (req, res) => {
+app.post('/api/formwork-rental/calculate', (req, res) => {
   try {
     const { area_m2, system, height, rental_days } = req.body;
 
@@ -476,13 +557,9 @@ app.post('/api/registry/export/excel-with-pump', async (req, res) => {
   }
 });
 
-// Health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'rozpocet-registry-backend' });
-});
-
 // Start server
 app.listen(PORT, async () => {
-  console.log(`[Registry Backend] Running on port ${PORT}`);
+  console.log(`[Registry Backend] v1.1.0 running on port ${PORT}`);
+  console.log(`[Registry Backend] DATABASE_URL: ${process.env.DATABASE_URL ? 'configured' : 'NOT SET'}`);
   await initDatabase();
 });
