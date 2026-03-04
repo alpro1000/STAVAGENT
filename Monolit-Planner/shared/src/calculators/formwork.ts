@@ -61,7 +61,11 @@ export function calculateFormwork(params: FormworkCalculatorParams): FormworkCal
   const move_clean_days = params.move_clean_hours / params.shift_h;
 
   // 5. Kit occupancy = full cycle of one capture
-  // [A] + [C] + [D] + [move]  (concrete day is tracked separately in the backend engine)
+  // The kit is physically occupied from assembly start to stripping end + move:
+  // [ASM] + [WAIT(rebar+concrete+curing)] + [STR] + [MOVE]
+  // Note: rebar and concrete happen while the kit is in place, so they extend wait_days
+  // The formwork-only view: assembly + curing + disassembly + move
+  // (rebar and concrete are parallel with the kit being in place)
   const kit_occupancy_days = assembly_days + wait_days + disassembly_days + move_clean_days;
 
   // 6. Labor cost (assembly + disassembly only, not wait time!)
@@ -165,6 +169,49 @@ export function calculateKitUtilization(
   const total_available_kit_days = project_duration_days * kits_count;
   const utilization = kit_occupancy_days / total_available_kit_days;
   return Math.min(utilization, 1.0);
+}
+
+/**
+ * Calculate full rental duration including ALL phases the kit is occupied.
+ *
+ * The formwork set is physically in place from assembly start to stripping end.
+ * This includes phases that are NOT formwork labor:
+ *   - Rebar installation (different crew, kit in place)
+ *   - Concrete pouring (different crew, kit in place)
+ *   - Curing wait (no crew, kit in place)
+ *
+ * Use this for rental cost instead of kit_occupancy_days when rebar/concrete
+ * days are known. Falls back to kit_occupancy_days if no rebar/concrete data.
+ *
+ * Full cycle: [ASM] + max(0, REB - ASM_overlap) + [CON] + [CUR] + [STR] + [MOVE]
+ *
+ * @param assembly_days - Formwork assembly duration
+ * @param rebar_days - Rebar installation duration (0 if unknown)
+ * @param concrete_days - Concrete pouring duration (default 1)
+ * @param curing_days - Curing/wait before stripping
+ * @param stripping_days - Formwork disassembly duration
+ * @param move_clean_days - Move + clean duration
+ * @param rebar_overlap_days - How much rebar overlaps with assembly (default 0)
+ */
+export function calculateFullCycleRentalDays(
+  assembly_days: number,
+  rebar_days: number,
+  concrete_days: number,
+  curing_days: number,
+  stripping_days: number,
+  move_clean_days: number,
+  rebar_overlap_days: number = 0,
+): number {
+  // Rebar can partially overlap with assembly (SS lag in scheduler)
+  const effectiveRebarDays = Math.max(0, rebar_days - rebar_overlap_days);
+
+  // Critical path through the kit: ASM → (remaining REB) → CON → CUR → STR → MOVE
+  // But rebar and assembly can overlap, so we take max(assembly, rebar_with_lag)
+  const prepDays = Math.max(assembly_days, assembly_days * (rebar_overlap_days / Math.max(assembly_days, 0.01)) + rebar_days);
+
+  const fullCycle = prepDays + concrete_days + curing_days + stripping_days + move_clean_days;
+
+  return roundTo(fullCycle, 1);
 }
 
 function roundTo(value: number, decimals: number): number {
