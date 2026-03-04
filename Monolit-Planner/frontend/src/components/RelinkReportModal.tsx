@@ -47,7 +47,9 @@ interface RelinkReportModalProps {
 export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkReportModalProps) {
   const [report, setReport] = useState<RelinkReport | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'matches' | 'orphaned' | 'new'>('matches');
+  const [activeTab, setActiveTab] = useState<'matches' | 'orphaned' | 'new' | 'conflicts'>('matches');
+  const [selectedOld, setSelectedOld] = useState<string | null>(null);
+  const [selectedNew, setSelectedNew] = useState<string | null>(null);
 
   useEffect(() => {
     if (isOpen && reportId) {
@@ -95,6 +97,36 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
     } catch (error) {
       console.error('Failed to apply relink:', error);
       alert('❌ Chyba při aplikaci relinku');
+    }
+  };
+
+  const handleManualMatch = async () => {
+    if (!selectedOld || !selectedNew) {
+      alert('⚠️ Vyberte starou a novou pozici');
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/relink/reports/${reportId}/manual-match`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          old_position_id: selectedOld,
+          new_position_id: selectedNew
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      alert('✅ Manuální match aplikován!');
+      setSelectedOld(null);
+      setSelectedNew(null);
+      loadReport();
+    } catch (error) {
+      console.error('Failed to apply manual match:', error);
+      alert('❌ Chyba při aplikaci manuálního matche');
     }
   };
 
@@ -189,7 +221,13 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
                   className={`tab-btn ${activeTab === 'matches' ? 'active' : ''}`}
                   onClick={() => setActiveTab('matches')}
                 >
-                  Matches ({report.details.matches.length})
+                  Matches ({report.details.matches.filter(m => m.confidence === 'GREEN').length})
+                </button>
+                <button
+                  className={`tab-btn ${activeTab === 'conflicts' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('conflicts')}
+                >
+                  🟡🔴 Conflicts ({report.details.matches.filter(m => m.confidence !== 'GREEN').length})
                 </button>
                 <button
                   className={`tab-btn ${activeTab === 'orphaned' ? 'active' : ''}`}
@@ -209,7 +247,7 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
               <div className="relink-content">
                 {activeTab === 'matches' && (
                   <div className="matches-list">
-                    {report.details.matches.map((match, idx) => (
+                    {report.details.matches.filter(m => m.confidence === 'GREEN').map((match, idx) => (
                       <div key={idx} className="match-item">
                         <div className="match-header">
                           <span className="match-confidence">
@@ -225,13 +263,88 @@ export default function RelinkReportModal({ isOpen, onClose, reportId }: RelinkR
                         <div className="match-description">
                           {match.old_description}
                         </div>
-                        {match.similarity_score && (
-                          <div className="match-similarity">
-                            Similarity: {(match.similarity_score * 100).toFixed(0)}%
-                          </div>
-                        )}
                       </div>
                     ))}
+                  </div>
+                )}
+
+                {activeTab === 'conflicts' && (
+                  <div className="conflicts-container">
+                    <div style={{ marginBottom: '16px' }}>
+                      <h3 style={{ fontSize: '16px', marginBottom: '8px' }}>🔧 Manual Conflict Resolution</h3>
+                      <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Review AMBER/RED matches and create manual links if needed</p>
+                    </div>
+                    
+                    <div className="conflicts-list" style={{ marginBottom: '24px' }}>
+                      {report.details.matches.filter(m => m.confidence !== 'GREEN').map((match, idx) => (
+                        <div key={idx} className="match-item" style={{ borderLeft: `4px solid ${match.confidence === 'AMBER' ? '#f59e0b' : '#ef4444'}` }}>
+                          <div className="match-header">
+                            <span className="match-confidence">
+                              {getConfidenceIcon(match.confidence)} {getConfidenceLabel(match.confidence)}
+                            </span>
+                            <span className="match-type">{match.match_type}</span>
+                            {Math.abs(match.qty_change) > 20 && (
+                              <span style={{ fontSize: '12px', color: '#ef4444' }}>⚠️ Qty {match.qty_change > 0 ? '+' : ''}{match.qty_change}%</span>
+                            )}
+                          </div>
+                          <div style={{ fontSize: '13px', marginTop: '8px' }}>
+                            <div><strong>Old:</strong> {match.old_description}</div>
+                            <div style={{ marginTop: '4px' }}><strong>New:</strong> {match.new_description}</div>
+                            {match.similarity_score && (
+                              <div style={{ marginTop: '4px', color: 'var(--text-secondary)' }}>
+                                Similarity: {(match.similarity_score * 100).toFixed(0)}%
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div style={{ padding: '16px', background: 'var(--bg-secondary)', borderRadius: '8px' }}>
+                      <h4 style={{ fontSize: '14px', marginBottom: '12px' }}>Create Manual Match</h4>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', gap: '12px', alignItems: 'end', marginBottom: '12px' }}>
+                        <div>
+                          <label style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>Orphaned Position:</label>
+                          <select 
+                            value={selectedOld || ''} 
+                            onChange={e => setSelectedOld(e.target.value)}
+                            className="c-select"
+                            style={{ width: '100%' }}
+                          >
+                            <option value="">Select old position...</option>
+                            {report.details.orphaned.map((item, idx) => (
+                              <option key={idx} value={item.id}>
+                                {item.position_name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div style={{ fontSize: '20px', paddingBottom: '8px' }}>→</div>
+                        <div>
+                          <label style={{ fontSize: '12px', display: 'block', marginBottom: '4px' }}>New Position:</label>
+                          <select 
+                            value={selectedNew || ''} 
+                            onChange={e => setSelectedNew(e.target.value)}
+                            className="c-select"
+                            style={{ width: '100%' }}
+                          >
+                            <option value="">Select new position...</option>
+                            {report.details.newItems.map((item, idx) => (
+                              <option key={idx} value={item.id}>
+                                {item.position_name}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                      <button 
+                        className="c-btn c-btn--primary" 
+                        onClick={handleManualMatch}
+                        disabled={!selectedOld || !selectedNew}
+                      >
+                        🔗 Create Manual Match
+                      </button>
+                    </div>
                   </div>
                 )}
 
