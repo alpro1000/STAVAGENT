@@ -1,6 +1,16 @@
 import db from '../db/index.js';
 import { FileVersioningService } from './fileVersioningService.js';
 
+// Categorize Monolit position into work_category based on subtype/fields
+function categorizeMonolitPosition(position) {
+  const subtype = (position.subtype || '').toLowerCase();
+  if (subtype === 'beton' || position.concrete_volume) return 'beton';
+  if (subtype === 'bednění' || subtype === 'bedneni' || position.formwork_area) return 'bedneni';
+  if (subtype === 'výztuž' || subtype === 'vystuz' || position.reinforcement_weight) return 'vystuz';
+  if (subtype === 'čerpání' || subtype === 'cerpani') return 'cerpani';
+  return 'ostatni';
+}
+
 export class MonolitRegistryAdapter {
   // Convert Monolit project → Registry project
   static async importMonolitProject(projectName) {
@@ -37,6 +47,8 @@ export class MonolitRegistryAdapter {
       unit: position.unit || 'ks',
       quantity: position.quantity || 0,
       kiosk_type: 'monolit',
+      // Preserve Portal's position_instance_id if already linked
+      position_instance_id: position.position_instance_id || null,
       kiosk_data: {
         // Monolit-specific fields
         concrete_class: position.concrete_class,
@@ -46,7 +58,9 @@ export class MonolitRegistryAdapter {
         days: position.days,
         part_id: position.part_id,
         etap: position.etap,
-        original_id: position.id
+        original_id: position.id,
+        // Work category for filtering
+        work_category: categorizeMonolitPosition(position)
       }
     };
   }
@@ -108,18 +122,30 @@ export class MonolitRegistryAdapter {
           );
           const versionId = version.rows[0].id;
 
-          // 7. Import all positions
+          // 7. Import all positions (with position_instance_id bidirectional linking)
           for (const pos of positions.rows) {
             const mappedPos = this.mapMonolitPosition(pos, objectId, sourceFileId, versionId);
-            await client.query(
-              `INSERT INTO registry_position_instances 
+            const insertResult = await client.query(
+              `INSERT INTO registry_position_instances
                (object_id, source_file_id, file_version_id, position_code, position_name,
                 unit, quantity, kiosk_type, kiosk_data)
-               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+               VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+               ON CONFLICT (object_id, position_code, file_version_id) DO UPDATE
+               SET kiosk_data = $9, updated_at = NOW()
+               RETURNING id`,
               [mappedPos.object_id, mappedPos.source_file_id, mappedPos.file_version_id,
                mappedPos.position_code, mappedPos.position_name, mappedPos.unit,
                mappedPos.quantity, mappedPos.kiosk_type, mappedPos.kiosk_data]
             );
+
+            // Write registry position ID back to Monolit positions table as position_instance_id
+            const registryPositionId = insertResult.rows[0].id;
+            if (pos.id && !pos.position_instance_id) {
+              await client.query(
+                `UPDATE positions SET position_instance_id = $1 WHERE id = $2 AND position_instance_id IS NULL`,
+                [String(registryPositionId), pos.id]
+              );
+            }
             importSummary.positions_imported++;
           }
         }

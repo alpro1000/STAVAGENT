@@ -1,5 +1,37 @@
 import db from '../db/index.js';
 
+// TOV Profession mapping: description keywords → profession (Betonář, Tesař, Železář)
+const TOV_PROFESSION_RULES = [
+  { keywords: ['beton', 'betonáž', 'betonáže', 'betonování', 'železobeton', 'zálivk'], profession: 'Betonář' },
+  { keywords: ['bednění', 'bedneni', 'odbednění', 'systémové bednění', 'deskové bednění'], profession: 'Tesař' },
+  { keywords: ['výztuž', 'vystuz', 'armatura', 'armování', 'kari síť', 'pruty', 'prut'], profession: 'Železář' },
+  { keywords: ['izolace', 'hydroizolace', 'geotextilie', 'těsnění'], profession: 'Izolatér' },
+  { keywords: ['zemní', 'výkop', 'hloubení', 'zásyp', 'násyp', 'pažení'], profession: 'Dělník' },
+  { keywords: ['čerpání', 'pumpa', 'čerpadlo'], profession: 'Strojník' },
+];
+
+function mapTOVProfession(description) {
+  if (!description) return null;
+  const lower = description.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  for (const rule of TOV_PROFESSION_RULES) {
+    for (const kw of rule.keywords) {
+      const kwNorm = kw.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      if (lower.includes(kwNorm)) return rule.profession;
+    }
+  }
+  return null;
+}
+
+function mapTOVWorkCategory(item) {
+  const desc = (item.popis || '').toLowerCase();
+  const unit = (item.mj || '').toLowerCase();
+  if (desc.includes('beton') || desc.includes('železobeton') || unit === 'm3' || unit === 'm³') return 'beton';
+  if (desc.includes('bednění') || desc.includes('bedneni')) return 'bedneni';
+  if (desc.includes('výztuž') || desc.includes('armatura') || unit === 'kg' || unit === 't') return 'vystuz';
+  if (desc.includes('čerpání') || desc.includes('pumpa')) return 'cerpani';
+  return 'ostatni';
+}
+
 export class RegistryTOVAdapter {
   // Convert Registry TOV project → Unified Registry project
   static async importRegistryTOVProject(registryProjectId, registryApiUrl) {
@@ -115,6 +147,7 @@ export class RegistryTOVAdapter {
 
   // Map Registry TOV item → Unified position instance
   static mapRegistryTOVItem(item, objectId, sourceFileId, fileVersionId) {
+    const profession = mapTOVProfession(item.popis);
     return {
       object_id: objectId,
       source_file_id: sourceFileId,
@@ -130,7 +163,11 @@ export class RegistryTOVAdapter {
         cena_jednotkova: item.cena_jednotkova,
         cena_celkem: item.cena_celkem,
         tov_data: item.tov_data,
-        sync_metadata: item.sync_metadata
+        sync_metadata: item.sync_metadata,
+        // TOV profession mapping
+        profession: profession,
+        // Work category for filtering
+        work_category: mapTOVWorkCategory(item)
       }
     };
   }
