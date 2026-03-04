@@ -580,8 +580,8 @@ export default function PortalPage() {
                 <ProjectCard
                   key={project.portal_project_id}
                   project={project}
-                  onOpen={handleOpenProject}
-                  onDelete={handleDeleteProject}
+                  onOpen={() => handleOpenProject(project)}
+                  onDelete={() => handleDeleteProject(project.portal_project_id)}
                 />
               ))
             )}
