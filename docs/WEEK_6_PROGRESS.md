@@ -2,11 +2,11 @@
 
 **Branch:** `feature/unified-registry-frontend`  
 **Started:** 2025-01-XX  
-**Status:** 🚧 IN PROGRESS
+**Status:** ✅ COMPLETE
 
 ---
 
-## ✅ Completed (1 hour)
+## ✅ Completed (4 hours)
 
 ### 1. CSV Export ✅
 **File:** `Monolit-Planner/frontend/src/pages/RegistryView.tsx`
@@ -18,29 +18,36 @@
 - Disabled when no positions
 - Proper CSV escaping for quotes
 
+### 2. Bulk Selection ✅
+**Features:**
+- Checkbox column in table
+- Select all / Deselect all
+- Export selected positions
+- Clear selection button
+- Selected count indicator
+
+### 3. Advanced Filters ✅
+**Features:**
+- Filter by work_category (beton/bedneni/vystuz/cerpani/ostatni)
+- Multi-filter support (kiosk + category + search)
+- Persistent filter state
+
+### 4. Table Sorting ✅
+**Features:**
+- Sort by catalog_code, description, qty, kiosk_type
+- Toggle asc/desc order
+- Visual indicators (↑↓)
+- Czech locale sorting
+
 ---
 
-## 🔜 Next Features (2-3 hours)
+## 🔜 Next Steps
 
-### 1. Bulk Selection & Operations
-**Tasks:**
-- [ ] Checkbox column in table
-- [ ] Select all / Deselect all
-- [ ] Bulk delete (if needed)
-- [ ] Bulk export selected
-
-### 2. Advanced Filters
-**Tasks:**
-- [ ] Filter by work_category
-- [ ] Date range filter (if timestamps available)
-- [ ] Multi-select kiosk types
-
-### 3. Sorting
-**Tasks:**
-- [ ] Sort by catalog_code
-- [ ] Sort by description
-- [ ] Sort by qty
-- [ ] Sort by kiosk_type
+### Week 7-9: Relink Algorithm
+- Conflict resolution UI
+- Manual relink for AMBER/RED matches
+- Stale payload detection
+- Approve/reject workflow
 
 ---
 
@@ -49,10 +56,10 @@
 | Task | Estimated | Actual | Status |
 |------|-----------|--------|--------|
 | CSV Export | 1h | 1h | ✅ Done |
-| Bulk Selection | 1h | - | 🔜 Next |
-| Advanced Filters | 1h | - | 🔜 Next |
-| Sorting | 1h | - | 🔜 Next |
-| **Total** | **4h** | **1h** | **25%** |
+| Bulk Selection | 1h | 1h | ✅ Done |
+| Advanced Filters | 1h | 1h | ✅ Done |
+| Sorting | 1h | 1h | ✅ Done |
+| **Total** | **4h** | **4h** | **100%** |
 
 ---
 
@@ -60,10 +67,10 @@
 
 ### Week 6 Enhancements
 - ✅ CSV Export
-- 🔜 Bulk operations
-- 🔜 Advanced filters
-- 🔜 Table sorting
+- ✅ Bulk operations
+- ✅ Advanced filters
+- ✅ Table sorting
 
 ---
 
-**Next Session:** Add sorting and advanced filters
+**Next Session:** Week 7-9 - Relink Algorithm conflict resolution

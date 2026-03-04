@@ -8,9 +8,10 @@ export default function RegistryView() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [positions, setPositions] = useState<PositionInstance[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState({ kiosk: '', search: '' });
+  const [filter, setFilter] = useState({ kiosk: '', search: '', category: '' });
   const [selectedPositionId, setSelectedPositionId] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<{ field: keyof PositionInstance; order: 'asc' | 'desc' }>({ field: 'catalog_code', order: 'asc' });
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     if (projectId) {
@@ -33,6 +34,7 @@ export default function RegistryView() {
 
   const filtered = positions.filter(p => {
     if (filter.kiosk && p.kiosk_type !== filter.kiosk) return false;
+    if (filter.category && p.work_category !== filter.category) return false;
     if (filter.search) {
       const s = filter.search.toLowerCase();
       return p.description.toLowerCase().includes(s) || p.catalog_code.toLowerCase().includes(s);
@@ -70,7 +72,7 @@ export default function RegistryView() {
         <span className="c-badge c-badge--orange">{filtered.length}</span>
       </div>
       
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', flexWrap: 'wrap', alignItems: 'center' }}>
         <input
           type="text"
           placeholder="🔍 Hledat podle popisu nebo kódu..."
@@ -89,6 +91,58 @@ export default function RegistryView() {
           <option value="monolit">🪨 Monolit</option>
           <option value="registry_tov">📋 Registry TOV</option>
         </select>
+        <select 
+          value={filter.category} 
+          onChange={e => setFilter({ ...filter, category: e.target.value })}
+          className="c-select"
+          style={{ minWidth: '150px' }}
+        >
+          <option value="">🏗️ Všechny kategorie</option>
+          <option value="beton">Beton</option>
+          <option value="bedneni">Bednění</option>
+          <option value="vystuz">Výztuž</option>
+          <option value="cerpani">Čerpání</option>
+          <option value="ostatni">Ostatní</option>
+        </select>
+      </div>
+
+      {selectedIds.size > 0 && (
+        <div style={{ display: 'flex', gap: '12px', marginBottom: '16px', padding: '12px', background: 'var(--bg-secondary)', borderRadius: '8px', alignItems: 'center' }}>
+          <span style={{ fontWeight: 600 }}>Vybráno: {selectedIds.size}</span>
+          <button
+            className="c-btn c-btn--sm"
+            onClick={() => {
+              const selected = filtered.filter(p => selectedIds.has(p.position_instance_id));
+              const csv = [
+                ['Kód', 'Popis', 'Množství', 'MJ', 'Kiosk', 'Kategorie'].join(','),
+                ...selected.map(p => [
+                  p.catalog_code,
+                  `"${p.description.replace(/"/g, '""')}"`,
+                  p.qty,
+                  p.unit,
+                  p.kiosk_type,
+                  p.work_category
+                ].join(','))
+              ].join('\n');
+              const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+              const link = document.createElement('a');
+              link.href = URL.createObjectURL(blob);
+              link.download = `registry_selected_${new Date().toISOString().split('T')[0]}.csv`;
+              link.click();
+            }}
+          >
+            💾 Export vybraných
+          </button>
+          <button
+            className="c-btn c-btn--sm"
+            onClick={() => setSelectedIds(new Set())}
+          >
+            ✕ Zrušit výběr
+          </button>
+        </div>
+      )}
+
+      <div style={{ display: 'flex', gap: '12px', marginBottom: '24px' }}>
         <button
           className="c-btn c-btn--sm"
           onClick={() => {
@@ -110,9 +164,9 @@ export default function RegistryView() {
             link.click();
           }}
           disabled={filtered.length === 0}
-          title="Exportovat do CSV"
+          title="Exportovat všechny filtrované pozice"
         >
-          💾 Export CSV
+          💾 Export všech ({filtered.length})
         </button>
       </div>
 
@@ -129,6 +183,20 @@ export default function RegistryView() {
           <table className="c-table" style={{ width: '100%' }}>
             <thead>
               <tr>
+                <th style={{ width: '40px' }}>
+                  <input
+                    type="checkbox"
+                    checked={filtered.length > 0 && filtered.every(p => selectedIds.has(p.position_instance_id))}
+                    onChange={e => {
+                      if (e.target.checked) {
+                        setSelectedIds(new Set(filtered.map(p => p.position_instance_id)));
+                      } else {
+                        setSelectedIds(new Set());
+                      }
+                    }}
+                    style={{ cursor: 'pointer' }}
+                  />
+                </th>
                 <th onClick={() => toggleSort('catalog_code')} style={{ cursor: 'pointer', userSelect: 'none' }}>
                   Kód {sortBy.field === 'catalog_code' && (sortBy.order === 'asc' ? '↑' : '↓')}
                 </th>
@@ -147,16 +215,30 @@ export default function RegistryView() {
             <tbody>
               {filtered.map(p => (
                 <tr 
-                  key={p.position_instance_id} 
-                  onClick={() => setSelectedPositionId(p.position_instance_id)} 
-                  style={{ cursor: 'pointer' }}
+                  key={p.position_instance_id}
                   className="c-table-row--hover"
                 >
-                  <td><code>{p.catalog_code}</code></td>
-                  <td>{p.description}</td>
-                  <td style={{ textAlign: 'right', fontWeight: 600 }}>{p.qty}</td>
-                  <td>{p.unit}</td>
-                  <td>
+                  <td onClick={e => e.stopPropagation()}>
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.has(p.position_instance_id)}
+                      onChange={e => {
+                        const newSet = new Set(selectedIds);
+                        if (e.target.checked) {
+                          newSet.add(p.position_instance_id);
+                        } else {
+                          newSet.delete(p.position_instance_id);
+                        }
+                        setSelectedIds(newSet);
+                      }}
+                      style={{ cursor: 'pointer' }}
+                    />
+                  </td>
+                  <td onClick={() => setSelectedPositionId(p.position_instance_id)} style={{ cursor: 'pointer' }}><code>{p.catalog_code}</code></td>
+                  <td onClick={() => setSelectedPositionId(p.position_instance_id)} style={{ cursor: 'pointer' }}>{p.description}</td>
+                  <td onClick={() => setSelectedPositionId(p.position_instance_id)} style={{ textAlign: 'right', fontWeight: 600, cursor: 'pointer' }}>{p.qty}</td>
+                  <td onClick={() => setSelectedPositionId(p.position_instance_id)} style={{ cursor: 'pointer' }}>{p.unit}</td>
+                  <td onClick={() => setSelectedPositionId(p.position_instance_id)} style={{ cursor: 'pointer' }}>
                     <span className="c-badge" style={{
                       background: p.kiosk_type === 'monolit' ? '#e3f2fd' : '#fff3e0',
                       color: p.kiosk_type === 'monolit' ? '#1976d2' : '#f57c00'

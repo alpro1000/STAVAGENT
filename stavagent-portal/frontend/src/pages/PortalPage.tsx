@@ -480,37 +480,20 @@ export default function PortalPage() {
 
         {activeTab === 'projects' && (
           <>
-            {/* Projects Section - Master-Detail Layout */}
+            {/* Projects Section */}
             <section>
-          <div style={{
-            marginBottom: '24px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            flexWrap: 'wrap',
-            gap: '16px'
-          }}>
-            <div>
-              <h2 style={{
-                fontSize: '20px',
-                fontWeight: 700,
-                color: 'var(--text-primary)',
-                marginBottom: '4px'
-              }}>
-                📁 Vaše projekty
-              </h2>
-              <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                {projects.length} {projects.length === 1 ? 'projekt' : projects.length < 5 ? 'projekty' : 'projektů'}
-              </p>
-            </div>
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="c-btn c-btn--sm c-btn--primary"
-              style={{ flexShrink: 0 }}
-            >
-              <Plus size={16} />
-              Přidat projekt
-            </button>
+          <div style={{ marginBottom: '24px' }}>
+            <h2 style={{
+              fontSize: '24px',
+              fontWeight: 700,
+              color: 'var(--text-primary)',
+              marginBottom: '8px'
+            }}>
+              📁 Vaše projekty
+            </h2>
+            <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
+              {projects.length} {projects.length === 1 ? 'projekt' : projects.length < 5 ? 'projekty' : 'projektů'}
+            </p>
           </div>
 
           {/* Project not found banner */}
@@ -562,217 +545,45 @@ export default function PortalPage() {
             </div>
           )}
 
-          {/* Master-Detail Layout */}
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: selectedProject ? '380px 1fr' : '1fr',
-            gap: '24px',
-            alignItems: 'start',
-            '@media (max-width: 768px)': {
-              gridTemplateColumns: '1fr'
-            }
-          }}>
-            {/* LEFT: Project List */}
-            <div className="c-panel" style={{ padding: 0, maxHeight: '70vh', overflowY: 'auto' }}>
-              {projects.length === 0 ? (
-                backendSleeping ? (
-                  <div style={{ textAlign: 'center', padding: '48px 24px' }}>
-                    <Activity size={48} style={{ color: 'var(--brand-orange)', margin: '0 auto 16px' }} />
-                    <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                      Backend se probouzí...
-                    </h3>
-                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-                      První požadavek probouzí server (30-60 s)
-                    </p>
-                    <button onClick={loadProjects} className="c-btn c-btn--sm c-btn--primary">
-                      <Activity size={16} /> Načíst znovu
-                    </button>
-                  </div>
-                ) : (
-                  <div style={{ textAlign: 'center', padding: '48px 24px' }}>
-                    <FileText size={48} style={{ color: 'var(--text-secondary)', margin: '0 auto 16px' }} />
-                    <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                      Zatím žádné projekty
-                    </h3>
-                    <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-                      Začněte vytvořením prvního projektu
-                    </p>
-                    <button onClick={() => setShowCreateModal(true)} className="c-btn c-btn--sm c-btn--primary">
-                      <Plus size={16} /> Vytvořit první projekt
-                    </button>
-                  </div>
-                )
+          {/* Projects Grid */}
+          <div className="c-grid c-grid--3">
+            {projects.length === 0 ? (
+              backendSleeping ? (
+                <div className="c-panel" style={{ textAlign: 'center', padding: '48px 24px', gridColumn: '1 / -1' }}>
+                  <Activity size={48} style={{ color: 'var(--brand-orange)', margin: '0 auto 16px' }} />
+                  <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                    Backend se probouzí...
+                  </h3>
+                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                    První požadavek probouzí server (30-60 s)
+                  </p>
+                  <button onClick={loadProjects} className="c-btn c-btn--sm c-btn--primary">
+                    <Activity size={16} /> Načíst znovu
+                  </button>
+                </div>
               ) : (
-                projects.map(project => {
-                  const typeMeta = {
-                    bridge:   { label: 'Most',       icon: '🌉', color: '#f97316' },
-                    building: { label: 'Budova',     icon: '🏢', color: '#3b82f6' },
-                    road:     { label: 'Komunikace', icon: '🛣️', color: '#8b5cf6' },
-                    parking:  { label: 'Parkoviště', icon: '🅿️', color: '#10b981' },
-                    monolit:  { label: 'Monolit',    icon: '🪨', color: '#f59e0b' },
-                    custom:   { label: 'Vlastní',    icon: '📋', color: '#6b7280' },
-                  }[project.project_type] || { label: project.project_type, icon: '📋', color: '#6b7280' };
-
-                  const statusBadge = {
-                    not_sent:   { text: 'Neanalyzováno', color: '#6b7280' },
-                    processing: { text: 'Zpracovává se', color: '#3b82f6' },
-                    completed:  { text: 'Analyzováno',   color: '#10b981' },
-                    error:      { text: 'Chyba',         color: '#ef4444' },
-                  }[project.core_status] || { text: 'Neanalyzováno', color: '#6b7280' };
-
-                  const isActive = selectedProject?.portal_project_id === project.portal_project_id;
-
-                  return (
-                    <div
-                      key={project.portal_project_id}
-                      onClick={() => handleOpenProject(project)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '12px',
-                        padding: '12px 16px',
-                        borderLeft: `4px solid ${typeMeta.color}`,
-                        borderBottom: '1px solid var(--border-color)',
-                        background: isActive ? 'var(--bg-secondary, #f8fafc)' : 'transparent',
-                        cursor: 'pointer',
-                        transition: 'background 0.15s',
-                        minHeight: '52px'
-                      }}
-                      onMouseEnter={(e) => !isActive && (e.currentTarget.style.background = 'var(--bg-hover, #f1f5f9)')}
-                      onMouseLeave={(e) => !isActive && (e.currentTarget.style.background = 'transparent')}
-                    >
-                      <span style={{ fontSize: '20px', flexShrink: 0 }}>{typeMeta.icon}</span>
-                      <div style={{ flex: 1, minWidth: 0 }}>
-                        <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '2px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                          {project.project_name}
-                        </div>
-                        <div style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>
-                          {typeMeta.label}
-                        </div>
-                      </div>
-                      <span style={{
-                        fontSize: '10px',
-                        fontWeight: 600,
-                        color: statusBadge.color,
-                        background: `${statusBadge.color}15`,
-                        padding: '3px 8px',
-                        borderRadius: '999px',
-                        flexShrink: 0
-                      }}>
-                        {statusBadge.text === 'Neanalyzováno' ? '🔴' : statusBadge.text === 'Analyzováno' ? '🟢' : '🟡'}
-                      </span>
-                    </div>
-                  );
-                })
-              )}
-            </div>
-
-            {/* RIGHT: Project Details */}
-            {selectedProject ? (
-              <div className="c-panel" style={{ padding: '24px' }}>
-                {/* Header */}
-                <div style={{ marginBottom: '24px', paddingBottom: '16px', borderBottom: '2px solid var(--border-color)' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                    <span style={{ fontSize: '28px' }}>
-                      {{
-                        bridge: '🌉', building: '🏢', road: '🛣️', parking: '🅿️', monolit: '🪨', custom: '📋'
-                      }[selectedProject.project_type] || '📋'}
-                    </span>
-                    <div style={{ flex: 1 }}>
-                      <h3 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text-primary)', marginBottom: '4px' }}>
-                        {selectedProject.project_name}
-                      </h3>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                          {{
-                            bridge: 'Most', building: 'Budova', road: 'Komunikace', parking: 'Parkoviště', monolit: 'Monolit', custom: 'Vlastní'
-                          }[selectedProject.project_type] || selectedProject.project_type}
-                        </span>
-                        <span style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>•</span>
-                        <span style={{
-                          fontSize: '11px',
-                          fontWeight: 600,
-                          color: selectedProject.core_status === 'completed' ? '#10b981' : '#6b7280',
-                          background: selectedProject.core_status === 'completed' ? '#dcfce7' : '#f3f4f6',
-                          padding: '2px 8px',
-                          borderRadius: '999px'
-                        }}>
-                          {selectedProject.core_status === 'completed' ? '🟢 Analyzováno' : '🔴 Neanalyzováno'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
+                <div className="c-panel" style={{ textAlign: 'center', padding: '48px 24px', gridColumn: '1 / -1' }}>
+                  <FileText size={48} style={{ color: 'var(--text-secondary)', margin: '0 auto 16px' }} />
+                  <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                    Zatím žádné projekty
+                  </h3>
+                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
+                    Začněte vytvořením prvního projektu
+                  </p>
+                  <button onClick={() => setShowCreateModal(true)} className="c-btn c-btn--sm c-btn--primary">
+                    <Plus size={16} /> Vytvořit první projekt
+                  </button>
                 </div>
-
-                {/* File Upload Dropzone */}
-                <div style={{ marginBottom: '24px' }}>
-                  <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    📤 Nahrát soubor
-                  </h4>
-                  <div
-                    onClick={() => alert('TODO: Implement file upload')}
-                    style={{
-                      border: '2px dashed var(--border-color)',
-                      borderRadius: '8px',
-                      padding: '32px 24px',
-                      textAlign: 'center',
-                      cursor: 'pointer',
-                      background: 'var(--bg-secondary, #f8fafc)',
-                      transition: 'border-color 0.2s'
-                    }}
-                    onMouseEnter={(e) => (e.currentTarget.style.borderColor = 'var(--brand-orange)')}
-                    onMouseLeave={(e) => (e.currentTarget.style.borderColor = 'var(--border-color)')}
-                  >
-                    <Upload size={32} style={{ color: 'var(--text-secondary)', margin: '0 auto 12px' }} />
-                    <p style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '4px' }}>
-                      Přetáhněte Excel nebo PDF
-                    </p>
-                    <p style={{ fontSize: '12px', color: 'var(--text-secondary)' }}>
-                      nebo klikněte pro výběr souboru
-                    </p>
-                  </div>
-                </div>
-
-                {/* Files */}
-                <div style={{ marginBottom: '24px' }}>
-                  <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    📄 Soubory projektu
-                  </h4>
-                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)', padding: '16px', background: 'var(--bg-secondary, #f8fafc)', borderRadius: '8px', textAlign: 'center' }}>
-                    Žádné soubory
-                  </div>
-                </div>
-
-                {/* Kiosks */}
-                <div style={{ marginBottom: '24px' }}>
-                  <h4 style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                    🔗 Propojené kiosky
-                  </h4>
-                  <div style={{ fontSize: '13px', color: 'var(--text-secondary)', padding: '16px', background: 'var(--bg-secondary, #f8fafc)', borderRadius: '8px', textAlign: 'center' }}>
-                    Žádné propojené kiosky
-                  </div>
-                </div>
-
-                {/* Action Button */}
-                <button
-                  onClick={() => alert('TODO: Odeslat do CORE')}
-                  className="c-btn c-btn--primary"
-                  style={{ width: '100%' }}
-                >
-                  <Send size={18} />
-                  Odeslat do CORE
-                </button>
-              </div>
+              )
             ) : (
-              <div className="c-panel" style={{ padding: '48px 24px', textAlign: 'center' }}>
-                <FileText size={48} style={{ color: 'var(--text-secondary)', margin: '0 auto 16px' }} />
-                <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                  Vyberte projekt ze seznamu
-                </h3>
-                <p style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
-                  Klikněte na projekt vlevo pro zobrazení detailů
-                </p>
-              </div>
+              projects.map(project => (
+                <ProjectCard
+                  key={project.portal_project_id}
+                  project={project}
+                  onOpen={handleOpenProject}
+                  onDelete={handleDeleteProject}
+                />
+              ))
             )}
           </div>
             </section>
