@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-04 | Portal + Monolit | CI/Build fixes: PortalPage TS2322 (ProjectCard props), Monolit lockfile sync (string-similarity) | ✅ Pushed |
 | 2026-03-04 | Monolit + Registry | Week 7-9: Conflict Resolution UI — manual matching for AMBER/RED positions | ✅ Pushed |
 | 2026-03-04 | Monolit + Registry | Week 6: Bulk selection + Advanced filters + Sorting in RegistryView | ✅ Pushed |
 | 2026-03-03 | Monolit-Planner | Unified Registry Frontend (Weeks 5-6): RegistryView page, sidebar, CSV export, sorting, cross-kiosk nav (93% complete) | ✅ Pushed |
