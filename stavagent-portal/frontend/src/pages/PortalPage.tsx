@@ -648,6 +648,15 @@ export default function PortalPage() {
         <ParsePreviewModal onClose={() => setShowParsePreviewModal(false)} />
       )}
 
+      {/* Project Detail Panel (CorePanel) */}
+      {selectedProject && (
+        <CorePanel
+          project={selectedProject}
+          onClose={() => setSelectedProject(null)}
+          onRefresh={loadProjects}
+        />
+      )}
+
       {/* Theme Toggle */}
       <ThemeToggle />
 
