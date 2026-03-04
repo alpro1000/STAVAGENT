@@ -29,6 +29,11 @@
  * Complexity: O(n²) where n = 5 × num_tacts. Fine for n < 500.
  */
 
+import type { PertParams, MonteCarloResult, ThreePointEstimate } from './pert.js';
+import { toThreePoint, runMonteCarlo } from './pert.js';
+import type { ConcreteClass, CementType, ElementType } from './maturity.js';
+import { getStripWaitHours, curingThreePoint } from './maturity.js';
+
 // ─── Types ──────────────────────────────────────────────────────────────────
 
 export interface ElementScheduleInput {
@@ -50,6 +55,17 @@ export interface ElementScheduleInput {
   // chess: odd tacts first (1,3,5...), then cure, then even tacts (2,4,6...)
   // requires min cure_between_neighbors_h between adjacent tacts
   cure_between_neighbors_days?: number;  // default 1 (24h) for chess mode
+
+  // v3.0: PERT + Maturity integration (optional)
+  pert_params?: PertParams;  // If provided, runs Monte Carlo on critical path
+
+  // Maturity model: auto-calculate curing_days from temperature + concrete class
+  maturity_params?: {
+    concrete_class: ConcreteClass;
+    temperature_c: number;
+    cement_type?: CementType;
+    element_type?: ElementType;
+  };
 }
 
 export interface TactDetail {
@@ -79,6 +95,12 @@ export interface ElementScheduleOutput {
   };
 
   bottleneck: string | null;
+
+  // v3.0: PERT Monte Carlo results (only when pert_params provided)
+  monte_carlo?: MonteCarloResult;
+
+  // v3.0: Effective curing days (from maturity model or input)
+  effective_curing_days?: number;
 }
 
 // Internal activity node in the DAG
@@ -119,6 +141,19 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
   const num_sets = Math.min(rawSets, num_tacts);
   const scheduling_mode = input.scheduling_mode ?? 'linear';
   const cure_between_neighbors_days = input.cure_between_neighbors_days ?? 1;
+
+  // v3.0: Auto-calculate curing_days from maturity model if provided
+  let effectiveCuringDays = curing_days;
+  if (input.maturity_params) {
+    const mp = input.maturity_params;
+    const hours = getStripWaitHours(
+      mp.concrete_class,
+      mp.temperature_c,
+      mp.element_type ?? 'slab',
+      mp.cement_type ?? 'CEM_I',
+    );
+    effectiveCuringDays = hours / 24;
+  }
 
   // Edge case: no tacts
   if (num_tacts <= 0) {
@@ -201,7 +236,7 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
 
     // CUR: after CON (passive — no crew, set occupied)
     nodes.push({
-      id: `T${t}_CUR`, tact: t, type: 'curing', duration: curing_days,
+      id: `T${t}_CUR`, tact: t, type: 'curing', duration: effectiveCuringDays,
       crew: null, fs_preds: [`T${t}_CON`], set,
     });
 
@@ -287,7 +322,7 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
 
   const total_days = round(Math.max(...Array.from(sched.values()).map(s => s.finish)));
 
-  const cycle = assembly_days + rebar_days + concrete_days + curing_days + stripping_days;
+  const cycle = assembly_days + rebar_days + concrete_days + effectiveCuringDays + stripping_days;
   const sequential_days = round(num_tacts * cycle);
   const savings_days = round(sequential_days - total_days);
   const savings_pct = sequential_days > 0 ? Math.round(savings_days / sequential_days * 100) : 0;
@@ -317,14 +352,56 @@ export function scheduleElement(input: ElementScheduleInput): ElementScheduleOut
   const utilization = computeUtilization(nodes, sched, total_days, num_formwork_crews, num_rebar_crews, num_sets);
 
   // Bottleneck analysis
-  const bottleneck = analyzeBottleneck(utilization, num_sets, num_formwork_crews, num_rebar_crews, curing_days, assembly_days + rebar_days);
+  const bottleneck = analyzeBottleneck(utilization, num_sets, num_formwork_crews, num_rebar_crews, effectiveCuringDays, assembly_days + rebar_days);
 
   // Gantt chart
   const gantt = renderGantt(tact_details, total_days, num_sets, nodes, sched, num_formwork_crews, num_rebar_crews);
 
+  // v3.0: PERT Monte Carlo simulation on critical path activities
+  let monte_carlo: MonteCarloResult | undefined;
+  if (input.pert_params) {
+    const pp = input.pert_params;
+    const optFactor = pp.optimistic_factor ?? 0.75;
+    const pesFactor = pp.pessimistic_factor ?? 1.50;
+    const iterations = pp.monte_carlo_iterations ?? 10000;
+
+    // Build three-point estimates for each activity on the critical path
+    // Group critical activities by type to get per-tact estimates
+    const criticalActivities: ThreePointEstimate[] = [];
+    for (const nodeId of critical_path) {
+      const node = nodes.find(n => n.id === nodeId);
+      if (!node) continue;
+
+      if (node.type === 'curing' && input.maturity_params) {
+        // Use maturity-based three-point for curing
+        const mp = input.maturity_params;
+        const tp = curingThreePoint(
+          mp.concrete_class,
+          mp.element_type ?? 'slab',
+          mp.temperature_c,
+          mp.cement_type ?? 'CEM_I',
+        );
+        criticalActivities.push({
+          optimistic: tp.optimistic_hours / 24,
+          most_likely: tp.most_likely_hours / 24,
+          pessimistic: tp.pessimistic_hours / 24,
+        });
+      } else {
+        // Use standard PERT factors for work activities
+        criticalActivities.push(toThreePoint(node.duration, optFactor, pesFactor));
+      }
+    }
+
+    if (criticalActivities.length > 0) {
+      monte_carlo = runMonteCarlo(criticalActivities, iterations, pp.seed);
+    }
+  }
+
   return {
     total_days, sequential_days, savings_days, savings_pct,
     tact_details, critical_path, gantt, utilization, bottleneck,
+    monte_carlo,
+    effective_curing_days: input.maturity_params ? effectiveCuringDays : undefined,
   };
 }
 
