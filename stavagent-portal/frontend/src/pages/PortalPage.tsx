@@ -195,6 +195,18 @@ export default function PortalPage() {
     loadProjects();
   }, []);
 
+  // Sync selectedProject with latest data after refresh
+  useEffect(() => {
+    if (selectedProject && projects.length > 0) {
+      const refreshed = projects.find(p => p.portal_project_id === selectedProject.portal_project_id);
+      if (refreshed && refreshed !== selectedProject) {
+        setSelectedProject(refreshed);
+      } else if (!refreshed) {
+        setSelectedProject(null); // Project was deleted
+      }
+    }
+  }, [projects]);
+
   // Auto-open project from ?project=<id> query param (used by kiosk links)
   useEffect(() => {
     const projectId = searchParams.get('project');
@@ -204,6 +216,7 @@ export default function PortalPage() {
       const found = projects.find(p => p.portal_project_id === projectId);
       if (found) {
         setSelectedProject(found);
+        setActiveTab('projects');
         setProjectNotFound(null);
         searchParams.delete('project');
         setSearchParams(searchParams, { replace: true });
@@ -245,10 +258,14 @@ export default function PortalPage() {
       // Detect sleeping backend vs real error
       if (err instanceof DOMException && err.name === 'AbortError') {
         setBackendSleeping(true);
+        setError(null);
+      } else if (err instanceof TypeError && (err.message.includes('Failed to fetch') || err.message.includes('NetworkError'))) {
+        setBackendSleeping(true);
+        setError(null);
       } else {
-        setBackendSleeping(true); // Any fetch failure = backend likely sleeping
+        setBackendSleeping(false);
+        setError(err instanceof Error ? err.message : 'Nepodařilo se načíst projekty');
       }
-      setError(null);
       setProjects([]);
     } finally {
       setLoading(false);
@@ -480,113 +497,227 @@ export default function PortalPage() {
 
         {activeTab === 'projects' && (
           <>
-            {/* Projects Section */}
-            <section>
-          <div style={{ marginBottom: '24px' }}>
-            <h2 style={{
-              fontSize: '24px',
-              fontWeight: 700,
-              color: 'var(--text-primary)',
-              marginBottom: '8px'
-            }}>
-              📁 Vaše projekty
-            </h2>
-            <p style={{ fontSize: '14px', color: 'var(--text-secondary)' }}>
-              {projects.length} {projects.length === 1 ? 'projekt' : projects.length < 5 ? 'projekty' : 'projektů'}
-            </p>
-          </div>
-
-          {/* Project not found banner */}
-          {projectNotFound && (
-            <div className="c-panel" style={{
-              background: 'var(--status-warning, #f59e0b)',
-              color: 'white',
-              marginBottom: '24px',
-              padding: '16px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: 'wrap',
-              gap: '12px'
-            }}>
-              <p style={{ margin: 0, fontSize: '14px' }}>
-                {backendSleeping
-                  ? `Projekt "${projectNotFound}" nelze otevřít — backend se probouzí. Zkuste to za chvíli.`
-                  : `Projekt "${projectNotFound}" nebyl nalezen v databázi.`
-                }
-              </p>
-              <div style={{ display: 'flex', gap: '8px' }}>
-                <button
-                  onClick={() => { setProjectNotFound(null); loadProjects(); }}
-                  className="c-btn c-btn--sm"
-                  style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none' }}
-                >
-                  Zkusit znovu
-                </button>
-                <button
-                  onClick={() => { setProjectNotFound(null); searchParams.delete('project'); setSearchParams(searchParams, { replace: true }); }}
-                  className="c-btn c-btn--sm"
-                  style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none' }}
-                >
-                  Zavřít
-                </button>
-              </div>
-            </div>
-          )}
-
-          {error && (
-            <div className="c-panel" style={{
-              background: 'var(--status-error)',
-              color: 'white',
-              marginBottom: '24px',
-              padding: '16px'
-            }}>
-              <p style={{ margin: 0, fontSize: '14px' }}>{error}</p>
-            </div>
-          )}
-
-          {/* Projects Grid */}
-          <div className="c-grid c-grid--3">
-            {projects.length === 0 ? (
-              backendSleeping ? (
-                <div className="c-panel" style={{ textAlign: 'center', padding: '48px 24px', gridColumn: '1 / -1' }}>
-                  <Activity size={48} style={{ color: 'var(--brand-orange)', margin: '0 auto 16px' }} />
-                  <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                    Backend se probouzí...
-                  </h3>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-                    První požadavek probouzí server (30-60 s)
-                  </p>
-                  <button onClick={loadProjects} className="c-btn c-btn--sm c-btn--primary">
-                    <Activity size={16} /> Načíst znovu
+            {/* Project not found banner */}
+            {projectNotFound && (
+              <div className="c-panel" style={{
+                background: 'var(--status-warning, #f59e0b)',
+                color: 'white',
+                marginBottom: '24px',
+                padding: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '12px'
+              }}>
+                <p style={{ margin: 0, fontSize: '14px' }}>
+                  {backendSleeping
+                    ? `Projekt "${projectNotFound}" nelze otevřít — backend se probouzí. Zkuste to za chvíli.`
+                    : `Projekt "${projectNotFound}" nebyl nalezen v databázi.`
+                  }
+                </p>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button
+                    onClick={() => { setProjectNotFound(null); loadProjects(); }}
+                    className="c-btn c-btn--sm"
+                    style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none' }}
+                  >
+                    Zkusit znovu
                   </button>
+                  <button
+                    onClick={() => { setProjectNotFound(null); searchParams.delete('project'); setSearchParams(searchParams, { replace: true }); }}
+                    className="c-btn c-btn--sm"
+                    style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none' }}
+                  >
+                    Zavřít
+                  </button>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <div className="c-panel" style={{
+                background: 'var(--status-error)',
+                color: 'white',
+                marginBottom: '24px',
+                padding: '16px'
+              }}>
+                <p style={{ margin: 0, fontSize: '14px' }}>{error}</p>
+              </div>
+            )}
+
+            {/* Master-Detail Layout */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: selectedProject ? '380px 1fr' : '1fr',
+              gap: '24px',
+              minHeight: '60vh',
+            }}>
+              {/* LEFT: Project List (Master) */}
+              <div className="c-panel" style={{
+                padding: 0,
+                maxHeight: '70vh',
+                overflowY: 'auto',
+              }}>
+                {/* List header */}
+                <div style={{
+                  padding: '16px 20px',
+                  borderBottom: '1px solid var(--border-color, #e5e7eb)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  position: 'sticky',
+                  top: 0,
+                  background: 'var(--bg-primary, white)',
+                  zIndex: 1,
+                }}>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
+                      📁 Projekty
+                    </h3>
+                    <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)' }}>
+                      {projects.length} {projects.length === 1 ? 'projekt' : projects.length < 5 ? 'projekty' : 'projektů'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => setShowCreateModal(true)}
+                    className="c-btn c-btn--sm c-btn--primary"
+                    style={{ padding: '6px 12px', fontSize: '12px' }}
+                  >
+                    <Plus size={14} /> Nový
+                  </button>
+                </div>
+
+                {/* Project rows */}
+                {projects.length === 0 ? (
+                  backendSleeping ? (
+                    <div style={{ textAlign: 'center', padding: '48px 24px' }}>
+                      <Activity size={36} style={{ color: 'var(--brand-orange)', margin: '0 auto 12px' }} />
+                      <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                        Backend se probouzí...
+                      </p>
+                      <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '12px' }}>
+                        První požadavek probouzí server (30-60 s)
+                      </p>
+                      <button onClick={loadProjects} className="c-btn c-btn--sm c-btn--primary">
+                        <Activity size={14} /> Načíst znovu
+                      </button>
+                    </div>
+                  ) : (
+                    <div style={{ textAlign: 'center', padding: '48px 24px' }}>
+                      <FileText size={36} style={{ color: 'var(--text-secondary)', margin: '0 auto 12px' }} />
+                      <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+                        Zatím žádné projekty
+                      </p>
+                      <button onClick={() => setShowCreateModal(true)} className="c-btn c-btn--sm c-btn--primary">
+                        <Plus size={14} /> Vytvořit první projekt
+                      </button>
+                    </div>
+                  )
+                ) : (
+                  projects.map(project => {
+                    const isActive = selectedProject?.portal_project_id === project.portal_project_id;
+                    const typeColors: Record<string, string> = {
+                      bridge: '#f97316', building: '#3b82f6', road: '#8b5cf6',
+                      parking: '#10b981', monolit: '#f59e0b', custom: '#6b7280',
+                    };
+                    const typeIcons: Record<string, string> = {
+                      bridge: '🌉', building: '🏢', road: '🛣️',
+                      parking: '🅿️', monolit: '🪨', custom: '📋',
+                    };
+                    const typeLabels: Record<string, string> = {
+                      bridge: 'Most', building: 'Budova', road: 'Komunikace',
+                      parking: 'Parkoviště', monolit: 'Monolit', custom: 'Vlastní',
+                    };
+                    const borderColor = typeColors[project.project_type] || '#6b7280';
+                    const statusColors: Record<string, { bg: string; text: string; label: string }> = {
+                      not_sent:   { bg: '#f3f4f615', text: '#6b7280', label: 'Neanalyzováno' },
+                      processing: { bg: '#dbeafe', text: '#2563eb', label: 'Zpracovává se' },
+                      completed:  { bg: '#dcfce7', text: '#16a34a', label: 'Analyzováno' },
+                      error:      { bg: '#fee2e2', text: '#dc2626', label: 'Chyba' },
+                    };
+                    const status = statusColors[project.core_status] || statusColors.not_sent;
+
+                    return (
+                      <div
+                        key={project.portal_project_id}
+                        onClick={() => handleOpenProject(project)}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '12px',
+                          padding: '12px 16px 12px 20px',
+                          minHeight: '52px',
+                          borderLeft: `4px solid ${borderColor}`,
+                          borderBottom: '1px solid var(--border-color, #f1f5f9)',
+                          background: isActive ? 'var(--bg-secondary, #f8fafc)' : 'transparent',
+                          cursor: 'pointer',
+                          transition: 'background 0.15s',
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!isActive) (e.currentTarget as HTMLElement).style.background = '#f8fafc80';
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!isActive) (e.currentTarget as HTMLElement).style.background = 'transparent';
+                        }}
+                      >
+                        <span style={{ fontSize: '18px', flexShrink: 0 }}>
+                          {typeIcons[project.project_type] || '📋'}
+                        </span>
+                        <div style={{ flex: 1, minWidth: 0 }}>
+                          <p style={{
+                            margin: 0, fontSize: '14px', fontWeight: 600,
+                            color: 'var(--text-primary)', whiteSpace: 'nowrap',
+                            overflow: 'hidden', textOverflow: 'ellipsis',
+                          }}>
+                            {project.project_name}
+                          </p>
+                          <p style={{ margin: 0, fontSize: '11px', color: 'var(--text-secondary)' }}>
+                            {typeLabels[project.project_type] || project.project_type}
+                          </p>
+                        </div>
+                        <span style={{
+                          fontSize: '10px', fontWeight: 600, padding: '2px 8px',
+                          borderRadius: '999px', whiteSpace: 'nowrap', flexShrink: 0,
+                          background: status.bg, color: status.text,
+                        }}>
+                          {status.label}
+                        </span>
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+
+              {/* RIGHT: Project Detail (Detail) */}
+              {selectedProject ? (
+                <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                  <CorePanel
+                    project={selectedProject}
+                    onClose={() => setSelectedProject(null)}
+                    onRefresh={loadProjects}
+                    inline
+                  />
                 </div>
               ) : (
-                <div className="c-panel" style={{ textAlign: 'center', padding: '48px 24px', gridColumn: '1 / -1' }}>
-                  <FileText size={48} style={{ color: 'var(--text-secondary)', margin: '0 auto 16px' }} />
-                  <h3 style={{ fontSize: '16px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                    Zatím žádné projekty
-                  </h3>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '16px' }}>
-                    Začněte vytvořením prvního projektu
+                <div className="c-panel" style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  minHeight: '300px',
+                  color: 'var(--text-secondary)',
+                }}>
+                  <FileText size={48} style={{ marginBottom: '16px', opacity: 0.4 }} />
+                  <p style={{ fontSize: '16px', fontWeight: 600, marginBottom: '4px', color: 'var(--text-primary)' }}>
+                    Vyberte projekt ze seznamu
                   </p>
-                  <button onClick={() => setShowCreateModal(true)} className="c-btn c-btn--sm c-btn--primary">
-                    <Plus size={16} /> Vytvořit první projekt
-                  </button>
+                  <p style={{ fontSize: '13px' }}>
+                    Klikněte na projekt vlevo pro zobrazení detailů
+                  </p>
                 </div>
-              )
-            ) : (
-              projects.map(project => (
-                <ProjectCard
-                  key={project.portal_project_id}
-                  project={project}
-                  onOpen={() => handleOpenProject(project)}
-                  onDelete={() => handleDeleteProject(project.portal_project_id)}
-                />
-              ))
-            )}
-          </div>
-            </section>
+              )}
+            </div>
           </>
         )}
       </div>
@@ -646,15 +777,6 @@ export default function PortalPage() {
       {/* Parse Preview Modal */}
       {showParsePreviewModal && (
         <ParsePreviewModal onClose={() => setShowParsePreviewModal(false)} />
-      )}
-
-      {/* Project Detail Panel (CorePanel) */}
-      {selectedProject && (
-        <CorePanel
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-          onRefresh={loadProjects}
-        />
       )}
 
       {/* Theme Toggle */}

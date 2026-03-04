@@ -32,6 +32,7 @@ interface CorePanelProps {
   project: PortalProject;
   onClose: () => void;
   onRefresh: () => void;
+  inline?: boolean; // When true, renders without fixed overlay (for Master-Detail layout)
 }
 
 interface ProjectFile {
@@ -152,7 +153,7 @@ function formatCZK(value: number): string {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function CorePanel({ project, onClose, onRefresh }: CorePanelProps) {
+export default function CorePanel({ project, onClose, onRefresh, inline = false }: CorePanelProps) {
   const [files, setFiles] = useState<ProjectFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -399,9 +400,9 @@ export default function CorePanel({ project, onClose, onRefresh }: CorePanelProp
 
   // ── Render ────────────────────────────────────────────────────────────────────
 
-  return (
-    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[92vh] overflow-y-auto">
+  const content = (
+    <>
+      <div className={inline ? "bg-white rounded-lg shadow-md border border-gray-200 w-full" : "bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[92vh] overflow-y-auto"}>
 
         {/* ── Header ─────────────────────────────────────────────────────── */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white z-10">
@@ -813,6 +814,16 @@ export default function CorePanel({ project, onClose, onRefresh }: CorePanelProp
       </div>
 
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </>
+  );
+
+  if (inline) {
+    return content;
+  }
+
+  return (
+    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center p-4 z-50">
+      {content}
     </div>
   );
 }
