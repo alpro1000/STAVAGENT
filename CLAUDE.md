@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.0.7
-**Last Updated:** 2026-02-24
+**Version:** 2.1.0
+**Last Updated:** 2026-03-04
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,20 +12,22 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-04 | Monolit + Registry | Week 7-9: Conflict Resolution UI — manual matching for AMBER/RED positions | ✅ Pushed |
+| 2026-03-04 | Monolit + Registry | Week 6: Bulk selection + Advanced filters + Sorting in RegistryView | ✅ Pushed |
+| 2026-03-03 | Monolit-Planner | Unified Registry Frontend (Weeks 5-6): RegistryView page, sidebar, CSV export, sorting, cross-kiosk nav (93% complete) | ✅ Pushed |
+| 2026-03-03 | Monolit-Planner | Relink Algorithm (Weeks 7-9): 4-step confidence matching + 8.8x perf optimization + UI modal | ✅ Pushed |
+| 2026-03-03 | Monolit-Planner | Unified Registry Foundation (Weeks 1-4): DB migrations, 11 API endpoints, adapters, file versioning | ✅ Pushed |
+| 2026-03-03 | rozpocet-registry | Multi-supplier pump calculator: 3 billing models, supplier comparison, Excel export | ✅ Pushed |
+| 2026-03-03 | rozpocet-registry | Pump calculator improvements: practical performance data (25-40 m³/h vs theoretical) | ✅ Pushed |
+| 2026-03-02 | Monolit-Planner | Time Norms Automation — AI days suggestion implementation complete | ✅ Pushed |
+| 2026-03-02 | rozpocet-registry | TOV profession mapping for Monolit→Registry import (Betonář, Tesař, Železář) | ✅ Pushed |
+| 2026-03-02 | stavagent-portal | Portal tabs + modal redesign — Design system UI, Master-Detail layout, Czech labels | ✅ Pushed |
+| 2026-03-02 | concrete-agent | Document Passport performance optimization (300s → 2-8s) + robust KB loading | ✅ Pushed |
+| 2026-03-02 | concrete-agent | CORS fix for www.stavagent.cz + MinerU dependencies for 10x PDF speedup | ✅ Pushed |
+| 2026-03-02 | All | Render Blueprint deployment config + region fix (Oregon → Frankfurt) | ✅ Pushed |
+| 2026-03-01 | Monolit + Registry + Portal | Cross-kiosk project registry: KioskLinksPanel, auto-polling (30s/120s), MonolitCompareDrawer, conflict indicators | ✅ Pushed |
 | 2026-02-27 | Monolit-Planner shared | RCPSP Element Scheduler: DAG, Kahn's topo sort, CPM, parallel scheduling scheme (82 tests) | ✅ Pushed |
-| 2026-02-27 | docs + Registry + Portal | Position Instance Architecture v1.0 + Portal linking fixes (auto-link, project picker, sleeping UX, URL fixes) | ✅ Pushed |
-| 2026-02-24 | rozpocet-registry | R0 Pump Calculator v2: realistic Beton Union 2026 pricing model (hourly + km + accessories) | ✅ Pushed |
-| 2026-02-24 | rozpocet-registry | R0 Pump Calculator v1: initial pump rental section in MachineryTab | ✅ Pushed |
-| 2026-02-24 | rozpocet-registry | FIX: Bot review — TOVModal formwork auto-save race condition, stale closure, isAutoSaving ref | ✅ Pushed |
-| 2026-02-24 | rozpocet-registry | FIX: TOVModal FormworkRentalSection — auto-persist rows (useRef isAutoSaving) | ✅ Pushed |
-| 2026-02-18 | stavagent-portal | Universal Parser Phase 1: parse Excel once, serve filtered data per kiosk (monolit/registry/urs_matcher) | ✅ Pushed |
-| 2026-02-18 | rozpocet-registry | Fix TS build errors in FormworkRentalCalculator (imports, interface) | ✅ Pushed |
-| 2026-02-10 | Monolit + Registry + Portal | Monolit-Registry integration via Portal API (Phase 1): 3 endpoints, TOV mapping, unified storage | ✅ PR Created |
-| 2026-02-10 | stavagent-portal | Portal production fixes: timeout 300s, CORS, file input modal, API endpoint | ✅ Pushed |
-| 2026-02-10 | URS_MATCHER_SERVICE | Batch processing diagnosis: identified Perplexity API requirement (2-API architecture) | 📋 Analysis |
-| 2026-02-09 | Monolit + Registry | Inter-kiosk data transfer via postMessage (Monolit → Registry) | ✅ Pushed |
-| 2026-02-09 | rozpocet-registry | Export-to-original rewrite: JSZip direct XML patching (no XLSX.write) | ✅ Pushed |
-| 2026-02-09 | stavagent-portal | Public landing page for stavagent.cz (no auth) | ✅ Pushed |
+| 2026-02-27 | docs + Registry + Portal | Position Instance Architecture v1.0 + Portal linking fixes | ✅ Pushed |
 
 ---
 
@@ -203,7 +205,9 @@ GET  /health                           ← Health check
 - `packages/core-backend/app/classifiers/work_classifier.py` - Rule-based classifier
 - `packages/core-backend/app/classifiers/rules/default_rules.yaml` - Classification rules (source of truth)
 - `packages/core-backend/app/services/google_drive_service.py` - Google Drive OAuth2
+- `packages/core-backend/app/services/brief_summarizer.py` - Quick document summaries (2-3s vs 300s passport)
 - `packages/core-backend/app/core/config.py` - Configuration
+- `packages/core-backend/app/core/kb_loader.py` - Knowledge base loader (optimized, MinerU-ready)
 
 ---
 
@@ -225,10 +229,14 @@ GET  /health                           ← Health check
 - CORE integration for audit results
 - Digital Concrete Design System (Brutalist Neumorphism)
 - Unified project architecture (Portal aggregates all kiosks)
+- **NEW:** Tab-based navigation (Služby / Projekty) with Master-Detail layout
+- **NEW:** KioskLinksPanel — linked kiosks display with status, sync info, open/unlink actions
+- **NEW:** Position Instance API (13 endpoints) — cross-kiosk position tracking
 
 **Database Tables:**
 ```sql
-portal_projects, portal_files, kiosk_links, chat_sessions, chat_messages, users
+portal_projects, portal_files, kiosk_links, chat_sessions, chat_messages, users,
+position_instances, position_templates, position_audit_log
 ```
 
 **Key API Endpoints:**
@@ -239,6 +247,10 @@ POST /api/portal/projects/:id/files    ← Upload file
 POST /api/portal/projects/:id/core/submit ← Send to CORE
 GET  /api/portal-projects/:id/unified  ← Aggregated data from all linked kiosks
 POST /api/portal-projects/:id/link-kiosk ← Link kiosk project to portal
+GET  /api/portal-projects/:id/kiosks   ← List linked kiosks with status
+GET  /api/positions/project/:projectId ← Position instances for project
+POST /api/positions/:instanceId/monolith ← Monolit payload write-back
+POST /api/positions/:instanceId/dov    ← Registry DOV payload write-back
 ```
 
 **Key Files:**
@@ -247,7 +259,8 @@ POST /api/portal-projects/:id/link-kiosk ← Link kiosk project to portal
 - `frontend/src/components/portal/ProjectAudit.tsx` - Workflow C UI
 - `frontend/src/components/portal/ProjectDocuments.tsx` - Document Accumulator UI
 - `frontend/src/components/portal/ServiceCard.tsx` - Services Hub cards
-- `frontend/src/pages/PortalPage.tsx` - Portal landing page
+- `frontend/src/components/portal/KioskLinksPanel.tsx` - Linked kiosks panel (468 lines)
+- `frontend/src/pages/PortalPage.tsx` - Portal landing page (tab-based)
 
 **Design System:** Digital Concrete / Brutalist Neumorphism
 - Monochrome palette + orange accent (#FF9F1C)
@@ -286,26 +299,53 @@ estimated_months = sum_kros_total_czk / (crew × wage × shift_hours × days_per
 - Resizable "Práce" column (80-400px)
 - Slate Minimal Design System (web + Excel export)
 - R0 Deterministic Core calculators
+- **NEW:** Unified Registry Foundation (Weeks 1-4) — cross-kiosk position tracking
+- **NEW:** Relink Algorithm (Weeks 7-9) — 4-step confidence matching when files are updated
+- **NEW:** RegistryView page — browse positions with filters, sorting, CSV export, bulk selection
+- **NEW:** Time Norms Automation — AI-powered days estimation via concrete-agent
 
 **Structure:**
 ```
 Monolit-Planner/
-├── shared/        (formulas.ts + 34 tests)
+├── shared/        (formulas.ts + element-scheduler.ts, 82 tests)
 ├── backend/       (Express API, PostgreSQL/SQLite)
-├── frontend/      (React + TypeScript, 45+ components)
+│   ├── migrations/ (010_unified_registry, 011_relink_support)
+│   ├── src/routes/ (positions, registry, relink)
+│   └── src/services/ (relinkService, monolitRegistryAdapter, registryTOVAdapter, fileVersioningService)
+├── frontend/      (React + TypeScript, 50+ components)
+│   ├── src/pages/RegistryView.tsx
+│   └── src/components/ (RelinkReportModal, UnifiedPositionModal)
 ├── CLAUDE.MD      (Detailed documentation v4.3.8)
 └── render.yaml
 ```
 
 **Key Files:**
 - `shared/src/formulas.ts` - All calculation formulas
+- `shared/src/element-scheduler.ts` - RCPSP scheduler (DAG, CPM, parallel scheme)
 - `backend/src/routes/positions.js` - Position CRUD + Time Norms API
+- `backend/src/routes/registry.js` - Unified Registry API (11 endpoints)
+- `backend/src/routes/relink.js` - Relink workflow API (6 endpoints)
+- `backend/src/services/relinkService.js` - 4-step confidence matching (402 lines)
+- `backend/src/services/monolitRegistryAdapter.js` - Monolit → Registry position mapping
+- `backend/src/services/registryTOVAdapter.js` - Registry → TOV profession mapping
+- `backend/src/services/fileVersioningService.js` - SHA256 hash-based file versioning
 - `backend/src/services/timeNormsService.js` - AI days estimation
 - `backend/src/services/exporter.js` - Excel export with Slate styling
 - `backend/src/services/concreteExtractor.js` - Excel import parsing
+- `frontend/src/pages/RegistryView.tsx` - Unified registry browse page (264 lines)
+- `frontend/src/components/RelinkReportModal.tsx` - Relink confidence UI (393 lines)
+- `frontend/src/components/UnifiedPositionModal.tsx` - Cross-kiosk position details
 - `frontend/src/components/PositionsTable.tsx` - Main table
 - `frontend/src/components/PartHeader.tsx` - OTSKP + catalog price display
 - `frontend/src/styles/slate-table.css` - Slate design system (593 lines)
+
+**Relink Algorithm (4-Step Confidence Ladder):**
+```
+1. PRIMARY (GREEN 100%) — Exact: sheet_name + position_no + catalog_code
+2. FALLBACK (AMBER 75%) — Positional: sheet_index + row_index(±2) + catalog_code
+3. FUZZY (AMBER/RED 50-75%) — Description similarity > 0.75 (string-similarity)
+4. ORPHANED/NEW — Unmatched positions classified as removed or added
+```
 
 ---
 
@@ -479,8 +519,9 @@ rozpocet-registry/
 │   │   └── config.ts              (Config types)
 │   ├── components/
 │   │   ├── ai/AIPanel.tsx         (AI classification panel with toggle)
-│   │   ├── items/ItemsTable.tsx   (Main data table)
+│   │   ├── items/ItemsTable.tsx   (Main data table + conflict indicators)
 │   │   ├── items/SkupinaAutocomplete.tsx (Work group autocomplete)
+│   │   ├── comparison/MonolitCompareDrawer.tsx (Side-by-side price comparison)
 │   │   ├── search/SearchBar.tsx   (Fuzzy search UI)
 │   │   ├── search/SearchResults.tsx (Results with highlighting)
 │   │   ├── priceRequest/PriceRequestPanel.tsx (Supplier quotations)
@@ -494,12 +535,17 @@ rozpocet-registry/
 │   │   │   ├── classificationService.ts (Classification wrapper)
 │   │   │   └── classificationRules.ts   (336 lines - rule-based classifier)
 │   │   ├── search/searchService.ts      (209 lines - Fuse.js search)
-│   │   ├── export/excelExportService.ts (Excel export with hyperlinks)
+│   │   ├── export/excelExportService.ts (Excel export with hyperlinks + TOV formulas)
 │   │   ├── parser/excelParser.ts        (Excel file parsing)
 │   │   ├── autoDetect/autoDetectService.ts (Structure detection)
+│   │   ├── pumpCalculator.ts            (Multi-supplier pump cost calculator, 149 lines)
+│   │   ├── monolithPolling.ts           (Auto-polling Monolit 30s/120s, 186 lines)
 │   │   ├── ai/                    (AI service integration)
 │   │   ├── similarity/            (Similarity matching)
 │   │   └── priceRequest/          (Price request service)
+│   ├── data/
+│   │   ├── concrete_prices.json   (2026 supplier concrete pricing, 83 entries)
+│   │   └── pump_suppliers.json    (Pump rental pricing, 3 suppliers)
 │   ├── utils/
 │   │   └── constants.ts           (11 work group definitions)
 │   └── config/                    (App configuration)
@@ -722,24 +768,35 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 ## Pending Work (Backlog)
 
 ### Awaiting User Action
-1. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Render DB shell
-2. **R0 + Unified Architecture PR** - Review and merge `claude/portal-audit-improvements-8F2Co`
-3. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
-4. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Render secrets
+1. **Environment Variables** (Render) - `PERPLEXITY_API_KEY`, `OPENAI_API_KEY` for concrete-agent
+2. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Render DB shell
+3. **Portal Backend Deploy** - Phase 8 DB migration (position_instance_id columns + 13 endpoints)
+4. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
+5. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Render secrets
+
+### Recently Completed (March 2-4)
+- ✅ Unified Registry Foundation (Weeks 1-4): DB migrations, 11 API endpoints, adapters
+- ✅ Relink Algorithm (Weeks 7-9): 4-step confidence matching, 8.8x perf, UI modal
+- ✅ Unified Registry Frontend (Weeks 5-6, 93%): RegistryView, filters, sorting, CSV export
+- ✅ Multi-supplier pump calculator: 3 billing models, supplier comparison
+- ✅ Time Norms Automation: AI days suggestion implementation
+- ✅ Portal tabs/modal redesign: Master-Detail layout, Czech labels
+- ✅ Document Passport optimization: 300s → 2-8s
+- ✅ CORS fix + MinerU dependencies + Render Blueprint
 
 ### Technical Debt
 - Node.js 18.x → 20.x upgrade (all services)
 - npm security vulnerabilities (4 items)
 - Document Accumulator: in-memory storage, no file size limits, no temp cleanup
 - React Error Boundaries missing
-- CI/CD: Add npm caching, Dependency Review Action
 
 ### Feature Roadmap
-- **Monolit-Registry Integration Phase 2** - Auto-sync TOV, bi-directional sync, conflict resolution
+- **Monolit Position Write-back** - Monolit → Portal position_instance_id sync
+- **Registry DOV Write-back** - Registry TOV → Portal payload sync
+- **Deep Links** - URL routing with ?position_instance_id=...
+- **Universal Parser Phase 2** - Portal UI + bulk import
 - URS Matcher Phase 2-4 (Document Parsing, Multi-Role, Optimization)
 - Vitest migration for Monolit (better ESM support)
-- Czech label mapping for rozpocet-registry work groups (UX enhancement)
-- Data migration for users with old Czech group names in localStorage
 
 ---
 
@@ -748,22 +805,34 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 ### Root Level
 | File | Purpose |
 |------|---------|
-| `CLAUDE.md` | **THIS FILE** - System overview (v2.0.0) |
+| `CLAUDE.md` | **THIS FILE** - System overview (v2.1.0) |
 | `NEXT_SESSION.md` | Quick start commands + context for next session |
 | `BACKLOG.md` | Pending tasks and priorities |
 | `README.md` | Project overview (Russian) |
 | `DESIGN_SYSTEM.md` | Digital Concrete design specification |
 | `KEEP_ALIVE_SETUP.md` | Render Free Tier sleep prevention guide |
 | `UNIFIED_ARCHITECTURE.md` | Portal-centric project integration |
+| `UNIFIED_ARCHITECTURE_IMPLEMENTATION_PLAN.md` | Detailed implementation plan (Weeks 1-9) |
+| `render.yaml` | Render Blueprint deployment config |
 | `docs/POSITION_INSTANCE_ARCHITECTURE.ts` | Two-level identity model (PositionInstance + PositionTemplate) v1.0 |
-| `docs/MONOLIT_REGISTRY_INTEGRATION.md` | Monolit-Registry integration guide (Phase 1) |
+| `docs/MONOLIT_REGISTRY_INTEGRATION.md` | Monolit-Registry integration guide (Phase 1+2) |
+| `docs/UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md` | Unified Registry Foundation summary |
+| `docs/WEEK_4_SUMMARY.md` | Week 4: Foundation complete (11 endpoints) |
+| `docs/WEEK_5_PROGRESS.md` | Week 5: Frontend integration progress |
+| `docs/WEEK_6_PROGRESS.md` | Week 6: Bulk selection + filters + sorting |
+| `docs/WEEK_7-9_PROGRESS.md` | Weeks 7-9: Relink algorithm + conflict resolution |
 
 ### Service Documentation
 | File | Purpose |
 |------|---------|
 | `concrete-agent/CLAUDE.md` | CORE system documentation (v2.4.1) |
 | `Monolit-Planner/CLAUDE.MD` | Monolit kiosk documentation (v4.3.8) |
+| `Monolit-Planner/TESTING_GUIDE.md` | Testing guide for Monolit |
+| `Monolit-Planner/docs/TIME_NORMS_IMPLEMENTATION_STATUS.md` | Time Norms AI feature status |
+| `Monolit-Planner/docs/FORMWORK_CALCULATOR_V3_ENHANCEMENT.md` | Formwork v3 improvements |
 | `rozpocet-registry/README.md` | BOQ Registry overview (v2.1.0) |
+| `rozpocet-registry/MULTI_SUPPLIER_PUMP_CALCULATOR.md` | Multi-supplier pump calculator docs |
+| `rozpocet-registry-backend/TOV_PROFESSION_MAPPING.md` | TOV profession mapping guide |
 | `docs/ARCHITECTURE.md` | Multi-kiosk architecture |
 | `docs/STAVAGENT_CONTRACT.md` | API contracts between services |
 | `docs/GOOGLE_DRIVE_API_ARCHITECTURE.md` | Google Drive technical spec |
@@ -790,6 +859,17 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
+| 2026-03-04 | Monolit + Registry | Weeks 7-9: Conflict Resolution UI (manual AMBER/RED matching) + Week 6: Bulk selection, advanced filters, sorting | 4 |
+| 2026-03-03 | Monolit-Planner | Unified Registry Frontend (Weeks 5-6): RegistryView, sidebar routing, CSV export, cross-kiosk nav, sorting (93%) | 20+ |
+| 2026-03-03 | Monolit-Planner | Relink Algorithm (Weeks 7-9): 4-step confidence matching, 8.8x optimization, RelinkReportModal UI, migration scripts | 15+ |
+| 2026-03-03 | Monolit-Planner | Unified Registry Foundation (Weeks 1-4): 2 DB migrations, 11 API endpoints, 2 adapters, file versioning, security fixes | 10+ |
+| 2026-03-03 | rozpocet-registry | Multi-supplier pump calculator (3 billing models) + practical pump performance data + TOV formulas in Excel export | 5 |
+| 2026-03-02 | Monolit-Planner | Time Norms Automation complete + Monolit backend fixes (OTSKP 500, delete 404, sidebar refetch) | 5 |
+| 2026-03-02 | rozpocet-registry | TOV profession mapping (Betonář/Tesař/Železář) for Monolit→Registry import | 2 |
+| 2026-03-02 | stavagent-portal | Portal tabs + modal redesign: Služby/Projekty tabs, Master-Detail layout, Czech labels, CorePanel fix | 4 |
+| 2026-03-02 | concrete-agent | Document Passport perf (300s→2-8s), robust KB loading, CORS fix, MinerU dependencies, brief_summarizer.py | 6 |
+| 2026-03-02 | All | Render Blueprint config, region fix (Oregon→Frankfurt), MinerU installation guide, PR template update | 8 |
+| 2026-03-01 | Monolit + Registry + Portal | Cross-kiosk project registry: KioskLinksPanel, auto-polling (30s/120s), MonolitCompareDrawer, conflict indicators | 10+ |
 | 2026-02-27 | Monolit-Planner shared | RCPSP Element Scheduler: DAG + Kahn's topo sort + CPM + parallel scheme, 27 scheduler tests + 4 integration tests | 3 |
 | 2026-02-27 | docs + Registry + Portal | Position Instance Architecture v1.0 (two-level identity model), Portal auto-link fix, PortalLinkBadge project picker v2, sleeping backend UX, Registry URL fixes | 2 |
 | 2026-02-10 | Monolit + Registry + Portal | Monolit-Registry integration (Phase 1): Portal API, TOV mapping, unified storage | 1 |
@@ -813,5 +893,5 @@ rozpocet-registry/
 
 ---
 
-**Last Updated:** 2026-02-04
+**Last Updated:** 2026-03-04
 **Maintained By:** Development Team
