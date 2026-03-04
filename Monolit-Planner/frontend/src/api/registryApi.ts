@@ -13,7 +13,11 @@ export interface PositionInstance {
   description: string;
   qty: number;
   unit: string;
-  monolith_payload?: any;
+  monolith_payload?: Record<string, unknown>;
+  tov_payload?: Record<string, unknown>;
+  urs_payload?: Record<string, unknown>;
+  object_name?: string;
+  project_name?: string;
 }
 
 export async function getProjectPositions(projectId: string): Promise<PositionInstance[]> {

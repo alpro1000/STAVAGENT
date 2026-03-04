@@ -86,15 +86,51 @@ export default function UnifiedPositionModal({ positionId, onClose }: Props) {
               <summary style={{ cursor: 'pointer', fontWeight: 600, padding: '8px', userSelect: 'none' }}>
                 🪨 Monolit data
               </summary>
-              <pre style={{ 
-                background: 'var(--bg-secondary)', 
-                padding: '12px', 
-                borderRadius: '6px', 
+              <pre style={{
+                background: 'var(--bg-secondary)',
+                padding: '12px',
+                borderRadius: '6px',
                 overflow: 'auto',
                 fontSize: '12px',
                 marginTop: '8px'
               }}>
                 {JSON.stringify(position.monolith_payload, null, 2)}
+              </pre>
+            </details>
+          )}
+
+          {position.tov_payload && (
+            <details className="c-panel c-panel--inset">
+              <summary style={{ cursor: 'pointer', fontWeight: 600, padding: '8px', userSelect: 'none' }}>
+                📋 Registry TOV data
+              </summary>
+              <pre style={{
+                background: 'var(--bg-secondary)',
+                padding: '12px',
+                borderRadius: '6px',
+                overflow: 'auto',
+                fontSize: '12px',
+                marginTop: '8px'
+              }}>
+                {JSON.stringify(position.tov_payload, null, 2)}
+              </pre>
+            </details>
+          )}
+
+          {position.urs_payload && (
+            <details className="c-panel c-panel--inset">
+              <summary style={{ cursor: 'pointer', fontWeight: 600, padding: '8px', userSelect: 'none' }}>
+                🔍 URS Matcher data
+              </summary>
+              <pre style={{
+                background: 'var(--bg-secondary)',
+                padding: '12px',
+                borderRadius: '6px',
+                overflow: 'auto',
+                fontSize: '12px',
+                marginTop: '8px'
+              }}>
+                {JSON.stringify(position.urs_payload, null, 2)}
               </pre>
             </details>
           )}
