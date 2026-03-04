@@ -17,6 +17,8 @@ import {
 import type { FormworkCalculatorRow } from '@stavagent/monolit-shared';
 import { FORMWORK_SYSTEMS, findFormworkSystem, getDefaultFormworkSystem } from '../constants/formworkSystems';
 import FormworkAIModal from './FormworkAIModal';
+import MaturityConfigPanel, { getDefaultMaturityConfig, type MaturityConfig } from './MaturityConfigPanel';
+import { getStripWaitHours } from '@stavagent/monolit-shared';
 import { API_URL } from '../services/api';
 
 interface Props {
@@ -153,6 +155,20 @@ export default function FormworkCalculatorModal({
   const [isLoading, setIsLoading] = useState(true);
   // AI modal state
   const [aiModalRowId, setAiModalRowId] = useState<string | null>(null);
+  // Maturity config
+  const [maturityConfig, setMaturityConfig] = useState<MaturityConfig>(getDefaultMaturityConfig());
+
+  // Compute curing hours from maturity model
+  const maturityCuringHours = useMemo(() =>
+    getStripWaitHours(
+      maturityConfig.concrete_class,
+      maturityConfig.temperature_c,
+      maturityConfig.element_type,
+      maturityConfig.cement_type,
+    ),
+    [maturityConfig.concrete_class, maturityConfig.temperature_c, maturityConfig.element_type, maturityConfig.cement_type]
+  );
+  const maturityCuringDays = maturityCuringHours / 24;
 
   // Use refs for crew/shift to avoid stale closures in load effect
   const crewRef = useRef(crewSize);
@@ -345,9 +361,16 @@ export default function FormworkCalculatorModal({
           </label>
           <div style={{ marginLeft: 'auto', fontSize: '13px', color: 'var(--text-secondary)' }}>
             Celkem: <b>{formatCZK(totals.totalArea)} m²</b> |
-            Doba bednění: <b>{totals.maxTerm} dní</b>
+            Doba bednění: <b>{totals.maxTerm} dní</b> |
+            Zrání: <b style={{ color: '#2e7d32' }}>{maturityCuringDays} dní</b>
           </div>
         </div>
+
+        {/* Maturity (curing) configuration */}
+        <MaturityConfigPanel
+          config={maturityConfig}
+          onChange={setMaturityConfig}
+        />
 
         {/* Table */}
         <div style={{ overflow: 'auto', flex: 1, padding: '0' }}>
