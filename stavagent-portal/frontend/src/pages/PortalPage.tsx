@@ -234,9 +234,9 @@ export default function PortalPage() {
     try {
       setLoading(true);
       setBackendSleeping(false);
-      // Timeout 8s — if backend is sleeping or unreachable, show page anyway
+      // Timeout 30s for Professional plan (no cold starts)
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 8000);
+      const timeout = setTimeout(() => controller.abort(), 30000);
 
       const response = await fetch(`${API_URL}/api/portal-projects`, {
         headers: {
@@ -513,7 +513,7 @@ export default function PortalPage() {
               }}>
                 <p style={{ margin: 0, fontSize: '14px' }}>
                   {backendSleeping
-                    ? `Projekt "${projectNotFound}" nelze otevřít — backend se probouzí. Zkuste to za chvíli.`
+                    ? `Projekt "${projectNotFound}" nelze otevřít — server neodpovídá. Zkuste to za chvíli.`
                     : `Projekt "${projectNotFound}" nebyl nalezen v databázi.`
                   }
                 </p>
@@ -595,10 +595,10 @@ export default function PortalPage() {
                     <div style={{ textAlign: 'center', padding: '48px 24px' }}>
                       <Activity size={36} style={{ color: 'var(--brand-orange)', margin: '0 auto 12px' }} />
                       <p style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
-                        Backend se probouzí...
+                        Připojování k serveru...
                       </p>
                       <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginBottom: '12px' }}>
-                        První požadavek probouzí server (30-60 s)
+                        První načtení může trvat déle (až 30 s)
                       </p>
                       <button onClick={loadProjects} className="c-btn c-btn--sm c-btn--primary">
                         <Activity size={14} /> Načíst znovu
