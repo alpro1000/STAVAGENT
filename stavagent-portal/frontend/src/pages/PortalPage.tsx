@@ -435,7 +435,8 @@ export default function PortalPage() {
               borderBottom: activeTab === 'projects' ? '3px solid var(--brand-orange)' : '3px solid transparent',
               cursor: 'pointer',
               transition: 'all 0.2s',
-              marginBottom: '-2px'
+              marginBottom: '-2px',
+              whiteSpace: 'nowrap'
             }}
           >
             📁 Projekty ({projects.length})
@@ -575,16 +576,16 @@ export default function PortalPage() {
                     <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 700, color: 'var(--text-primary)' }}>
                       📁 Projekty
                     </h3>
-                    <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)' }}>
-                      {projects.length} {projects.length === 1 ? 'projekt' : projects.length < 5 ? 'projekty' : 'projektů'}
+                    <p style={{ margin: 0, fontSize: '12px', color: 'var(--text-secondary)', whiteSpace: 'nowrap' }}>
+                      <span style={{ display: 'inline' }}>{projects.length}</span> {projects.length === 1 ? 'projekt' : projects.length < 5 ? 'projekty' : 'projektů'}
                     </p>
                   </div>
                   <button
                     onClick={() => setShowCreateModal(true)}
                     className="c-btn c-btn--sm c-btn--primary"
-                    style={{ padding: '6px 12px', fontSize: '12px' }}
+                    style={{ padding: '6px 12px', fontSize: '12px', whiteSpace: 'nowrap' }}
                   >
-                    <Plus size={14} /> Nový
+                    <Plus size={14} /> Nový 📋
                   </button>
                 </div>
 
@@ -696,6 +697,7 @@ export default function PortalPage() {
                     project={selectedProject}
                     onClose={() => setSelectedProject(null)}
                     onRefresh={loadProjects}
+                    onDelete={handleDeleteProject}
                     inline
                   />
                 </div>

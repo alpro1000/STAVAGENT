@@ -32,7 +32,8 @@ interface CorePanelProps {
   project: PortalProject;
   onClose: () => void;
   onRefresh: () => void;
-  inline?: boolean; // When true, renders without fixed overlay (for Master-Detail layout)
+  onDelete?: (projectId: string) => void;
+  inline?: boolean;
 }
 
 interface ProjectFile {
@@ -153,7 +154,7 @@ function formatCZK(value: number): string {
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export default function CorePanel({ project, onClose, onRefresh, inline = false }: CorePanelProps) {
+export default function CorePanel({ project, onClose, onRefresh, onDelete, inline = false }: CorePanelProps) {
   const [files, setFiles] = useState<ProjectFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
@@ -410,9 +411,20 @@ export default function CorePanel({ project, onClose, onRefresh, inline = false 
             <h3 className="text-lg font-medium text-gray-900">{project.project_name}</h3>
             <p className="text-sm text-gray-500">Soubory a analýza</p>
           </div>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-500">
-            <X className="h-6 w-6" />
-          </button>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            {onDelete && (
+              <button
+                onClick={() => onDelete(project.portal_project_id)}
+                className="text-red-400 hover:text-red-600"
+                title="Smazat projekt"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
+            <button onClick={onClose} className="text-gray-400 hover:text-gray-500">
+              <X className="h-6 w-6" />
+            </button>
+          </div>
         </div>
 
         {/* ── CORE Status ─────────────────────────────────────────────────── */}
