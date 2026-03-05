@@ -51,6 +51,9 @@
   --app-bg-concrete: var(--bg-textured);
   --brand-orange: var(--accent-orange);
   --panel-bg-concrete: var(--panel-clean);
+  --bg-primary: var(--panel-clean);
+  --bg-secondary: var(--data-surface);
+  --border-color: var(--divider);
 
   --accent-green: #4CAF50;
   --accent-green-glow: rgba(76, 175, 80, 0.4);
