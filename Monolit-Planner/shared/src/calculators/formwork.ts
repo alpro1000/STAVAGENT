@@ -295,6 +295,117 @@ export function calculateFullCycleRentalDays(
   return roundTo(fullCycle, 1);
 }
 
+// ─── 3-Phase Formwork Cost Model ────────────────────────────────────────────
+// First tact, middle tacts, and final tact have different labor costs:
+// - Initial assembly: higher cost (first-time layout, marking, alignment)
+// - Cycle relocation: standard (crew experienced, kit pre-assembled)
+// - Final stripping: lower cost (no reassembly, just clean removal)
+
+/**
+ * Phase multipliers for formwork labor.
+ * Based on industry practice: first tact ~15% more, middle standard, last ~10% less.
+ */
+export const PHASE_MULTIPLIERS = {
+  initial_assembly: 1.15,
+  cycle_relocation: 1.0,
+  final_stripping: 0.90,
+} as const;
+
+export interface ThreePhaseCostResult {
+  /** First tact: assembly + disassembly labor cost (CZK) */
+  initial_cost_labor: number;
+  /** Per middle tact: relocation + disassembly labor cost (CZK) */
+  middle_cost_labor: number;
+  /** Last tact: disassembly-only labor cost (CZK) */
+  final_cost_labor: number;
+  /** Total labor cost across all tacts */
+  total_cost_labor: number;
+  /** First tact duration (days) */
+  initial_days: number;
+  /** Middle tact duration (days) */
+  middle_days: number;
+  /** Final stripping duration (days) */
+  final_days: number;
+  /** Number of middle tacts (may be 0) */
+  middle_tact_count: number;
+}
+
+/**
+ * Calculate formwork labor differentiated by phase (first / middle / last tact).
+ *
+ * @param area_m2 - Formwork area per tact
+ * @param norm_assembly_h_m2 - Assembly labor norm (h/m²)
+ * @param norm_disassembly_h_m2 - Disassembly labor norm (h/m²)
+ * @param crew_size - Crew size
+ * @param shift_h - Shift hours
+ * @param k - Time utilization (0-1)
+ * @param wage_czk_h - Wage (CZK/h)
+ * @param num_captures - Total number of captures/tacts
+ *
+ * @example
+ * // 5 captures, 82 m²
+ * calculateThreePhaseFormwork(82, 0.72, 0.25, 4, 10, 0.8, 398, 5)
+ * // → initial ~15% more, 3 middle standard, final ~10% less
+ */
+export function calculateThreePhaseFormwork(
+  area_m2: number,
+  norm_assembly_h_m2: number,
+  norm_disassembly_h_m2: number,
+  crew_size: number,
+  shift_h: number,
+  k: number,
+  wage_czk_h: number,
+  num_captures: number,
+): ThreePhaseCostResult {
+  const effective_h = crew_size * shift_h * k;
+
+  // Base hours
+  const asm_hours = area_m2 * norm_assembly_h_m2;
+  const dis_hours = area_m2 * norm_disassembly_h_m2;
+
+  // Phase 1: Initial assembly (higher effort — first-time layout)
+  const init_asm_hours = asm_hours * PHASE_MULTIPLIERS.initial_assembly;
+  const init_dis_hours = dis_hours; // stripping is always standard in first tact
+  const initial_cost_labor = roundTo((init_asm_hours + init_dis_hours) * wage_czk_h, 2);
+  const initial_days = roundTo((init_asm_hours + init_dis_hours) / effective_h, 2);
+
+  // Phase 2: Middle tacts (relocation = standard)
+  const mid_asm_hours = asm_hours * PHASE_MULTIPLIERS.cycle_relocation;
+  const mid_dis_hours = dis_hours;
+  const middle_cost_labor = roundTo((mid_asm_hours + mid_dis_hours) * wage_czk_h, 2);
+  const middle_days = roundTo((mid_asm_hours + mid_dis_hours) / effective_h, 2);
+
+  // Phase 3: Final stripping (easier — just remove, no re-assembly)
+  const final_dis_hours = dis_hours * PHASE_MULTIPLIERS.final_stripping;
+  const final_cost_labor = roundTo(final_dis_hours * wage_czk_h, 2);
+  const final_days = roundTo(final_dis_hours / effective_h, 2);
+
+  // Count: 1 initial + (N-2) middle + 1 final  (if N >= 2)
+  const middle_tact_count = Math.max(0, num_captures - 2);
+  const has_final = num_captures >= 2;
+
+  let total_cost_labor: number;
+  if (num_captures <= 1) {
+    // Only one tact: initial assembly + stripping
+    total_cost_labor = initial_cost_labor;
+  } else {
+    total_cost_labor = initial_cost_labor
+      + middle_tact_count * middle_cost_labor
+      + (has_final ? final_cost_labor : 0);
+  }
+
+  return {
+    initial_cost_labor,
+    middle_cost_labor,
+    final_cost_labor,
+    total_cost_labor: roundTo(total_cost_labor, 2),
+    initial_days,
+    middle_days,
+    final_days,
+    middle_tact_count,
+  };
+}
+
 function roundTo(value: number, decimals: number): number {
   const factor = Math.pow(10, decimals);
   return Math.round(value * factor) / factor;
