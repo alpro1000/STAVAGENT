@@ -370,7 +370,7 @@ export default function PositionsTable() {
       const maturityDays = (calcRows[0] as any)?._maturity_curing_days;
       if (maturityDays && maturityDays > 0 && targetPartName && result.positions) {
         const betonPosition = result.positions.find(
-          p => p.part_name === targetPartName && p.subtype === 'beton'
+          (p: Position) => p.part_name === targetPartName && p.subtype === 'beton'
         );
         if (betonPosition?.id) {
           updatePositions([{ id: betonPosition.id, curing_days: maturityDays }]);
