@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { API_URL } from '../../services/api';
 import { KioskLinksPanel } from './KioskLinksPanel';
+import { PositionsPanel } from './PositionsPanel';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -783,6 +784,9 @@ export default function CorePanel({ project, onClose, onRefresh, onDelete, inlin
 
         {/* ── Kiosk Links ───────────────────────────────────────────────── */}
         <KioskLinksPanel projectId={project.portal_project_id} onRefresh={onRefresh} />
+
+        {/* ── Positions ──────────────────────────────────────────────────── */}
+        <PositionsPanel projectId={project.portal_project_id} />
 
         {/* ── Bottom actions ───────────────────────────────────────────────── */}
         <div className="p-6">

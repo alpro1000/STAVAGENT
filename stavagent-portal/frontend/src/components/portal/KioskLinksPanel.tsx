@@ -121,11 +121,23 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
     const meta = KIOSK_META[link.kiosk_type];
     if (!meta) return;
 
-    // Build URL with kiosk project context
-    const url = new URL(meta.url);
-    url.searchParams.set('project_id', link.kiosk_project_id);
-    url.searchParams.set('portal_project', projectId);
-    window.open(url.toString(), '_blank');
+    // Build deep-link URL with kiosk-specific routing
+    if (link.kiosk_type === 'monolit') {
+      // Monolit reads ?project=X&portal_project=Y on root path
+      const url = new URL(meta.url);
+      url.searchParams.set('project', link.kiosk_project_id);
+      url.searchParams.set('portal_project', projectId);
+      window.open(url.toString(), '_blank');
+    } else if (link.kiosk_type === 'registry') {
+      // Registry uses /registry/:projectId route (react-router)
+      window.open(`${meta.url}/?project_id=${link.kiosk_project_id}&portal_project=${projectId}`, '_blank');
+    } else {
+      // Default: query params
+      const url = new URL(meta.url);
+      url.searchParams.set('project_id', link.kiosk_project_id);
+      url.searchParams.set('portal_project', projectId);
+      window.open(url.toString(), '_blank');
+    }
   };
 
   // ── Render ───────────────────────────────────────────────────────────────
