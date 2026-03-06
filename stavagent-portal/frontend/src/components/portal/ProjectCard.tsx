@@ -41,17 +41,20 @@ const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link:
   monolit: {
     label: 'Monolit Planner',
     icon: '🪨',
-    buildUrl: () => 'https://monolit-planner-frontend.vercel.app',
+    buildUrl: (link, portalId) =>
+      `https://monolit-planner-frontend.vercel.app/?project=${link.kiosk_project_id}&portal_project=${portalId}`,
   },
   registry: {
     label: 'Registr Rozpočtů',
     icon: '📊',
-    buildUrl: (_link, portalId) => `https://stavagent-backend-ktwx.vercel.app?portal_project=${portalId}`,
+    buildUrl: (link, portalId) =>
+      `https://stavagent-backend-ktwx.vercel.app/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,
   },
   urs_matcher: {
     label: 'URS Matcher',
     icon: '🔎',
-    buildUrl: () => 'https://urs-matcher-service.onrender.com',
+    buildUrl: (link, portalId) =>
+      `https://urs-matcher-service.onrender.com/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,
   },
 };
 
