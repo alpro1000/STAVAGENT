@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.1.0
-**Last Updated:** 2026-03-04
+**Version:** 2.2.0
+**Last Updated:** 2026-03-06
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,11 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-06 | Monolit shared | PERT 3-point estimation + Concrete maturity model (ČSN EN 13670) — 41 new tests, Monte Carlo, scheduler integration | ✅ Pushed |
+| 2026-03-06 | Monolit frontend | MaturityConfigPanel UI — concrete class/cement/month picker, integrated into FormworkCalculatorModal | ✅ Pushed |
+| 2026-03-06 | rozpocet-registry | Backend sync layer: localStorage ↔ PostgreSQL mirror (loadFromBackend + pushProjectToBackend + bulk upsert) | ✅ Pushed |
+| 2026-03-06 | rozpocet-registry-backend | Bulk items endpoint (POST /sheets/:id/items/bulk) + graceful DB startup + health check fix | ✅ Pushed |
+| 2026-03-06 | stavagent-portal | Removed unused ProjectCard import from PortalPage.tsx | ✅ Pushed |
 | 2026-03-04 | Portal + Monolit | CI/Build fixes: PortalPage TS2322 (ProjectCard props), Monolit lockfile sync (string-similarity) | ✅ Pushed |
 | 2026-03-04 | Monolit + Registry | Week 7-9: Conflict Resolution UI — manual matching for AMBER/RED positions | ✅ Pushed |
 | 2026-03-04 | Monolit + Registry | Week 6: Bulk selection + Advanced filters + Sorting in RegistryView | ✅ Pushed |
@@ -769,13 +774,20 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 ## Pending Work (Backlog)
 
 ### Awaiting User Action
-1. **Environment Variables** (Render) - `PERPLEXITY_API_KEY`, `OPENAI_API_KEY` for concrete-agent
-2. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Render DB shell
-3. **Portal Backend Deploy** - Phase 8 DB migration (position_instance_id columns + 13 endpoints)
-4. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
-5. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Render secrets
+1. **Registry Backend Deploy** (Render) - Deploy new `server.js` with graceful DB startup + bulk endpoint; Set `DATABASE_URL` env var
+2. **Environment Variables** (Render) - `PERPLEXITY_API_KEY`, `OPENAI_API_KEY` for concrete-agent
+3. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Render DB shell
+4. **Portal Backend Deploy** - Phase 8 DB migration (position_instance_id columns + 13 endpoints)
+5. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
+6. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Render secrets
 
-### Recently Completed (March 2-4)
+### Recently Completed (March 2-6)
+- ✅ PERT 3-point estimation + Monte Carlo simulation (20 tests)
+- ✅ Concrete maturity/curing model ČSN EN 13670 (21 tests)
+- ✅ MaturityConfigPanel UI in FormworkCalculatorModal
+- ✅ Registry Backend Sync: localStorage ↔ PostgreSQL (backendSync.ts + bulk endpoint)
+- ✅ Registry health check fix (old + new response format support)
+- ✅ Removed dead registryStoreAPI.ts
 - ✅ Unified Registry Foundation (Weeks 1-4): DB migrations, 11 API endpoints, adapters
 - ✅ Relink Algorithm (Weeks 7-9): 4-step confidence matching, 8.8x perf, UI modal
 - ✅ Unified Registry Frontend (Weeks 5-6, 93%): RegistryView, filters, sorting, CSV export
@@ -860,6 +872,7 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
+| 2026-03-06 | Monolit + Registry + Portal | PERT/Maturity modules (41 tests), MaturityConfigPanel UI, Backend sync layer (localStorage↔PostgreSQL), bulk items endpoint, Portal cleanup | 8 |
 | 2026-03-04 | Monolit + Registry | Weeks 7-9: Conflict Resolution UI (manual AMBER/RED matching) + Week 6: Bulk selection, advanced filters, sorting | 4 |
 | 2026-03-03 | Monolit-Planner | Unified Registry Frontend (Weeks 5-6): RegistryView, sidebar routing, CSV export, cross-kiosk nav, sorting (93%) | 20+ |
 | 2026-03-03 | Monolit-Planner | Relink Algorithm (Weeks 7-9): 4-step confidence matching, 8.8x optimization, RelinkReportModal UI, migration scripts | 15+ |
@@ -894,5 +907,5 @@ rozpocet-registry/
 
 ---
 
-**Last Updated:** 2026-03-04
+**Last Updated:** 2026-03-06
 **Maintained By:** Development Team
