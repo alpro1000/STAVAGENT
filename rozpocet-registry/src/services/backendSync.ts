@@ -118,8 +118,7 @@ export async function loadFromBackend(): Promise<Project[]> {
 }
 
 /**
- * Push a single project to the backend (upsert).
- * Creates the project + sheets + items if they don't exist.
+ * Push a single project to the backend (full upsert: project + sheets + items).
  */
 export async function pushProjectToBackend(project: Project): Promise<void> {
   if (_syncInProgress) return;
@@ -129,7 +128,7 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
 
   _syncInProgress = true;
   try {
-    // Check if project exists
+    // 1. Ensure project exists
     let exists = false;
     try {
       await registryAPI.getProject(project.id);
@@ -139,15 +138,43 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
     }
 
     if (!exists) {
-      // Create project
       await registryAPI.createProject(project.projectName, project.portalLink?.portalProjectId);
     }
 
-    // Note: full sync (sheets + items) is expensive.
-    // For now, just ensure project exists in backend.
-    // Full item sync can be added later when needed.
+    // 2. Get existing sheets from backend
+    let existingSheets: Array<{ sheet_id: string }> = [];
+    try {
+      existingSheets = await registryAPI.getSheets(project.id);
+    } catch {
+      // Project may have been created with different ID format
+    }
+    const existingSheetIds = new Set(existingSheets.map(s => s.sheet_id));
 
-    console.log(`[BackendSync] Project "${project.projectName}" synced to backend`);
+    // 3. Sync each sheet + its items
+    for (let si = 0; si < project.sheets.length; si++) {
+      const sheet = project.sheets[si];
+
+      if (!existingSheetIds.has(sheet.id)) {
+        await registryAPI.createSheet(project.id, sheet.name, si);
+      }
+
+      // Bulk upsert items
+      if (sheet.items.length > 0) {
+        const bulkItems = sheet.items.map((item, idx) => ({
+          item_id: item.id,
+          kod: item.kod || '',
+          popis: item.popis || '',
+          mnozstvi: item.mnozstvi || 0,
+          mj: item.mj || '',
+          cena_jednotkova: item.cenaJednotkova ?? null,
+          cena_celkem: item.cenaCelkem ?? null,
+          item_order: idx,
+        }));
+        await registryAPI.bulkCreateItems(sheet.id, bulkItems);
+      }
+    }
+
+    console.log(`[BackendSync] Full sync: "${project.projectName}" (${project.sheets.length} sheets, ${project.sheets.reduce((s, sh) => s + sh.items.length, 0)} items)`);
   } catch (err) {
     console.warn(`[BackendSync] Failed to push project "${project.projectName}":`, err);
   } finally {

@@ -108,6 +108,7 @@ app.get('/', (req, res) => {
       'DELETE /api/registry/sheets/:id',
       'GET  /api/registry/sheets/:id/items',
       'POST /api/registry/sheets/:id/items',
+      'POST /api/registry/sheets/:id/items/bulk',
       'PUT  /api/registry/items/:id',
       'DELETE /api/registry/items/:id',
       'PATCH /api/registry/items/:id/tov',
@@ -232,6 +233,68 @@ app.delete('/api/registry/sheets/:id', requireDB, async (req, res) => {
 });
 
 // ============ ITEMS ============
+
+// Bulk create items (efficient single-transaction insert)
+app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    const { items } = req.body;
+    if (!Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ success: false, error: 'items array required' });
+    }
+
+    let created = 0;
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      const itemId = item.item_id || `item_${uuidv4()}`;
+
+      await client.query(
+        `INSERT INTO registry_items (item_id, sheet_id, kod, popis, mnozstvi, mj, cena_jednotkova, cena_celkem, item_order, sync_metadata, created_at, updated_at)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())
+         ON CONFLICT (item_id) DO UPDATE SET
+           kod = EXCLUDED.kod, popis = EXCLUDED.popis, mnozstvi = EXCLUDED.mnozstvi,
+           mj = EXCLUDED.mj, cena_jednotkova = EXCLUDED.cena_jednotkova,
+           cena_celkem = EXCLUDED.cena_celkem, updated_at = NOW()`,
+        [
+          itemId,
+          req.params.id,
+          item.kod || '',
+          item.popis || '',
+          item.mnozstvi || 0,
+          item.mj || '',
+          item.cena_jednotkova ?? null,
+          item.cena_celkem ?? null,
+          item.item_order ?? i,
+          item.sync_metadata ? JSON.stringify(item.sync_metadata) : null,
+        ]
+      );
+
+      if (item.tov_data) {
+        for (const [type, data] of Object.entries(item.tov_data)) {
+          if (Array.isArray(data) && data.length > 0) {
+            await client.query(
+              `INSERT INTO registry_tov (tov_id, item_id, tov_type, tov_data, created_at, updated_at)
+               VALUES ($1, $2, $3, $4, NOW(), NOW())
+               ON CONFLICT (tov_id) DO UPDATE SET tov_data = EXCLUDED.tov_data, updated_at = NOW()`,
+              [`tov_${uuidv4()}`, itemId, type, JSON.stringify(data)]
+            );
+          }
+        }
+      }
+      created++;
+    }
+
+    await client.query('COMMIT');
+    res.json({ success: true, created });
+  } catch (error) {
+    await client.query('ROLLBACK');
+    res.status(500).json({ success: false, error: error.message });
+  } finally {
+    client.release();
+  }
+});
 
 app.get('/api/registry/sheets/:id/items', requireDB, async (req, res) => {
   try {
