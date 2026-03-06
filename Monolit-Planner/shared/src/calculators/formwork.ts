@@ -118,6 +118,43 @@ export interface StrategyResult {
   rental_days: number;
 }
 
+/**
+ * Calculate cadence for Strategy B (overlapping, 2 sets).
+ *
+ * The cadence determines how often a new tact can start.
+ * It's the LONGER of two constraints:
+ *   1. formwork_crew_busy = A + D (crew does assembly then disassembly)
+ *   2. flow_through = R + B + C (rebar + pour + cure before stripping is possible)
+ *
+ * The crew cannot start the next tact until BOTH constraints are satisfied.
+ *
+ * @param assembly_days - Formwork assembly days (A)
+ * @param disassembly_days - Formwork disassembly days (D)
+ * @param rebar_days - Reinforcement days (R), 0 if no rebar
+ * @param concrete_days - Concrete pouring days (B), typically 1
+ * @param curing_days - Curing/wait days (C)
+ */
+export function calculateCadenceB(
+  assembly_days: number,
+  disassembly_days: number,
+  rebar_days: number,
+  concrete_days: number,
+  curing_days: number,
+): number {
+  const formworkCrewBusy = assembly_days + disassembly_days;
+  const flowThrough = rebar_days + concrete_days + curing_days;
+  return Math.max(formworkCrewBusy, flowThrough);
+}
+
+/**
+ * Calculate 3 strategies for N captures.
+ *
+ * Uses the correct cadence formula for Strategy B:
+ *   cadence = max(A + D, R + B + C)
+ *
+ * For backward compatibility, also accepts the simpler (cycle_days, curing_days, work_days)
+ * signature — but the detailed version is preferred.
+ */
 export function calculateStrategies(
   cycle_days: number,
   curing_days: number,
@@ -129,12 +166,18 @@ export function calculateStrategies(
   const totalA = roundTo(num_captures * cycle_days, 1);
 
   // Strategy B — Overlapping (2 sets)
-  // While one capture cures, the crew works on the next with the second set
-  const overlap = Math.max(0, curing_days - work_days);
-  const stride = roundTo(cycle_days - overlap, 1);
+  // Cadence = max(formwork_crew_busy, flow_through)
+  // When we only have (cycle, curing, work), we approximate:
+  //   formwork_crew_busy ≈ work_days - rebar - concrete ≈ A + D
+  //   flow_through = R + B + C = cycle - A - D = cycle - (work - R - B)
+  // Simplified: cadence = max(work_days, cycle_days - work_days + curing_days)
+  // But the exact formula is: cadence = max(A+D, R+B+C) which reduces to:
+  //   max(work_days, curing_days + rebar + concrete)
+  // Without separate A/D/R/B breakdown, use: max(work_days, cycle_days - work_days + curing_days)
+  const cadenceB = Math.max(work_days, curing_days + (cycle_days - work_days));
   const totalB = num_captures <= 1
     ? cycle_days
-    : roundTo((num_captures - 1) * stride + cycle_days, 1);
+    : roundTo(cycle_days + (num_captures - 1) * cadenceB, 1);
 
   // Strategy C — Parallel (N sets)
   const totalC = cycle_days;
@@ -143,6 +186,44 @@ export function calculateStrategies(
     { id: 'A', label: 'Posloupně (1 sada)',   sets: 1,             total_days: totalA, rental_days: totalA + 2 * transport_days },
     { id: 'B', label: 'S překrytím (2 sady)', sets: 2,             total_days: totalB, rental_days: totalB + 2 * transport_days },
     { id: 'C', label: 'Paralelně (plný)',      sets: num_captures,  total_days: totalC, rental_days: totalC + 2 * transport_days },
+  ];
+}
+
+/**
+ * Calculate strategies with full phase breakdown (preferred).
+ *
+ * Uses the exact cadence formula: max(A+D, R+B+C)
+ */
+export function calculateStrategiesDetailed(params: {
+  assembly_days: number;
+  rebar_days: number;
+  concrete_days: number;
+  curing_days: number;
+  disassembly_days: number;
+  num_captures: number;
+  transport_days?: number;
+}): StrategyResult[] {
+  const { assembly_days: A, rebar_days: R, concrete_days: B, curing_days: C, disassembly_days: D, num_captures } = params;
+  const transport = params.transport_days ?? 1;
+
+  const cycleDays = A + R + B + C + D;
+
+  // Strategy A — Sequential
+  const totalA = roundTo(num_captures * cycleDays, 1);
+
+  // Strategy B — Overlapping (exact cadence)
+  const cadenceB = calculateCadenceB(A, D, R, B, C);
+  const totalB = num_captures <= 1
+    ? cycleDays
+    : roundTo(cycleDays + (num_captures - 1) * cadenceB, 1);
+
+  // Strategy C — Parallel
+  const totalC = cycleDays;
+
+  return [
+    { id: 'A', label: 'Posloupně (1 sada)',   sets: 1,            total_days: totalA, rental_days: totalA + 2 * transport },
+    { id: 'B', label: 'S překrytím (2 sady)', sets: 2,            total_days: totalB, rental_days: totalB + 2 * transport },
+    { id: 'C', label: 'Paralelně (plný)',      sets: num_captures, total_days: totalC, rental_days: totalC + 2 * transport },
   ];
 }
 

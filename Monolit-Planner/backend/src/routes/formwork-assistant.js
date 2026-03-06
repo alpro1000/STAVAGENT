@@ -28,6 +28,16 @@ import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, resolve } from 'path';
 import { logger } from '../utils/logger.js';
+import {
+  calculateConstructionCuring,
+  CONSTRUCTION_LABELS as SHARED_CONSTRUCTION_LABELS,
+  SEASON_LABELS as SHARED_SEASON_LABELS,
+  CONSTRUCTION_ORIENTATION,
+  PROPS_MIN_DAYS as SHARED_PROPS_MIN_DAYS,
+  calculateCadenceB,
+  findFormworkSystem as findSharedFormworkSystem,
+  FORMWORK_SYSTEMS as SHARED_FORMWORK_SYSTEMS,
+} from '@stavagent/monolit-shared';
 
 const router = express.Router();
 
@@ -98,24 +108,9 @@ const CREW_CONFIG = {
   '6_s_jeravem':  { crew: 6, shift: 10, crane: true,  crane_factor: 0.70 },
 };
 
-// ── NEW: Minimum curing table (ČSN EN 13670) ──────────────────────────────
-// Min days before stripping, by construction type × temperature range
-
-const MIN_CURING = {
-  //                          >15°C   10-15°C   5-10°C
-  'zakladove_pasy': { leto: 0.5, podzim_jaro: 1.0, zima: 2.0 },  // Fundament / masiv
-  'steny':          { leto: 1.0, podzim_jaro: 1.5, zima: 3.0 },  // Stěna / kolona
-  'pilire_mostu':   { leto: 1.0, podzim_jaro: 1.5, zima: 3.0 },  // Pilíř (≈ stěna)
-  'sloupy':         { leto: 1.0, podzim_jaro: 1.5, zima: 3.0 },  // Sloup (≈ stěna)
-  'mostovka':       { leto: 7.0, podzim_jaro: 10.0, zima: 14.0 }, // Překlítí / mostovka
-  'rimsy':          { leto: 3.0, podzim_jaro: 5.0,  zima: 7.0 },  // Konzola / římsa (≈ deska)
-};
-
-// For horizontal structures (floor slabs, beams), props stay longer
-const PROPS_MIN_DAYS = {
-  'mostovka': { leto: 14, podzim_jaro: 21, zima: 28 },
-  'rimsy':    { leto: 7,  podzim_jaro: 10, zima: 14 },
-};
+// ── Curing (delegated to shared/calculators/maturity.ts) ────────────────────
+// Single source of truth: calculateConstructionCuring() from @stavagent/monolit-shared
+// Maps construction_type + season → ElementType + temperature → ČSN EN 13670 Table NA.2
 
 // ── Rebar norms ──────────────────────────────────────────────────────────────
 // Simplified model: single averaged norm based on typical reinforcement mix
@@ -126,31 +121,11 @@ const REBAR_NORM_H_PER_T = 22;    // Weighted average for typical construction
 const SPACER_PCS_PER_M2 = 5;      // Distanční kroužky: 5 ks/m²
 const SPACER_PRICE_CZK = 4.50;    // Cena za kus
 
-// ── Labels ──────────────────────────────────────────────────────────────────
+// ── Labels + orientation (from shared maturity.ts) ──────────────────────────
 
-const CONSTRUCTION_LABELS = {
-  'zakladove_pasy': 'Základové pásy / piloty',
-  'pilire_mostu':   'Pilíře mostu',
-  'mostovka':       'Mostovka / deska',
-  'steny':          'Stěny / opěry',
-  'sloupy':         'Sloupy',
-  'rimsy':          'Římsы / konzoly',
-};
-
-const SEASON_LABELS = {
-  'leto':        'léto (>15 °C)',
-  'podzim_jaro': 'podzim/jaro (5–15 °C)',
-  'zima':        'zima (<5 °C)',
-};
-
-const ORIENTATION = {
-  'zakladove_pasy': 'vertical',
-  'steny':          'vertical',
-  'pilire_mostu':   'vertical',
-  'sloupy':         'vertical',
-  'mostovka':       'horizontal',
-  'rimsy':          'horizontal',
-};
+const CONSTRUCTION_LABELS = SHARED_CONSTRUCTION_LABELS;
+const SEASON_LABELS = SHARED_SEASON_LABELS;
+const ORIENTATION = CONSTRUCTION_ORIENTATION;
 
 // ── Route ──────────────────────────────────────────────────────────────────
 
@@ -254,15 +229,24 @@ router.post('/', async (req, res) => {
     // 4. Concrete pouring = 1 day (fixed)
     const concreteDays = 1;
 
-    // 5. Curing (C) — v3: ceil() after applying cement factor
-    const curingRow = MIN_CURING[construction_type] || MIN_CURING['steny'];
-    const curingBase = curingRow[season] || 1.0;
-    const cementFactor = cement_type === 'CEM_III' ? 1.8 : 1.0;
-    const adjustedCuringDays = Math.ceil(curingBase * cementFactor);
+    // 5. Curing (C) — delegated to shared maturity.ts (ČSN EN 13670 Table NA.2)
+    // Maps construction_type + season → ElementType + temperature → curing days
+    const concreteClassNormalized = concrete_class.replace('_', '/');
+    const sharedCementType = cement_type === 'CEM_III' ? 'CEM_III'
+      : cement_type === 'CEM_II' ? 'CEM_II' : 'CEM_I';
+    const curingResult = calculateConstructionCuring({
+      construction_type: construction_type,
+      season: season,
+      concrete_class: concreteClassNormalized,
+      cement_type: sharedCementType,
+    });
+    const adjustedCuringDays = Math.ceil(curingResult.curing.min_curing_days);
+    const curingBase = curingResult.curing.min_curing_days;
+    const cementFactor = sharedCementType === 'CEM_III' ? (1 / 0.6)
+      : sharedCementType === 'CEM_II' ? (1 / 0.85) : 1.0;
 
-    // Props min days (horizontal only)
-    const propsRow  = PROPS_MIN_DAYS[construction_type];
-    const propsDays = propsRow ? (propsRow[season] || 0) : 0;
+    // Props min days (horizontal only) — from shared
+    const propsDays = curingResult.props_min_days;
 
     // 6. CYCLE per capture — all in full work days
     const A = assemblyDays;
@@ -347,13 +331,8 @@ router.post('/', async (req, res) => {
     const rentalCostA = round0(1 * effectiveSetArea * rentalPerM2Month * rentalMonthsA);
 
     // Strategy B — Overlapping (2 sets)
-    // v3: cadence = max(formwork_crew_busy, rebar_flow_through)
-    //   formwork_crew_busy = A + D (they do assembly + disassembly)
-    //   rebar_flow = R + B + C (rebar + pour + cure before strip is possible)
-    // The LONGER of these determines how often a new tact can start.
-    const formworkCrewBusy = A + D;
-    const rebarFlowThrough = R + B + C;
-    const cadenceB = Math.max(formworkCrewBusy, rebarFlowThrough);
+    // Cadence = max(A+D, R+B+C) — from shared calculateCadenceB()
+    const cadenceB = calculateCadenceB(A, D, R, B, C);
     const totalB   = pocetTaktu <= 1 ? cycleDays : cycleDays + (pocetTaktu - 1) * cadenceB;
     const rentalDaysB = totalB + transportDaysBoth;
     const rentalMonthsB = Math.max(1, rentalDaysB / 30);

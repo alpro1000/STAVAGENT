@@ -12,46 +12,40 @@ import {
   SheathingCalculationResult,
   SheathingProjectConfig
 } from './types';
+import { calculateCuring, type ConcreteClass } from './calculators/maturity.js';
 
 /**
- * Calculate curing days for concrete based on class and ambient temperature
+ * Calculate curing days for concrete based on class and ambient temperature.
  *
- * Стандартные дни для набора прочности:
- * - C25/30: 3-5 дней (быстро)
- * - C30/37: 5-7 дней (стандарт)
- * - C35/45: 7-10 дней (медленно)
+ * Delegates to calculateCuring() from maturity.ts (ČSN EN 13670 Table NA.2).
+ * This is a backward-compatible wrapper — new code should use calculateCuring() directly.
  */
 export function getCuringDays(
   concreteClass?: string,
   temperatureCelsius: number = 20
 ): number {
   if (!concreteClass) {
-    return 5; // Default
+    // Default: C30/37 at given temperature (conservative)
+    const result = calculateCuring({
+      concrete_class: 'C30/37',
+      temperature_c: temperatureCelsius,
+    });
+    return Math.ceil(result.min_curing_days);
   }
 
-  const classLower = concreteClass.toLowerCase().trim();
+  // Normalize class string: "c30/37" → "C30/37", "C30_37" → "C30/37"
+  const normalized = concreteClass.trim().toUpperCase().replace('_', '/');
 
-  // Temperature correction: lower temp = more days
-  let baseDays = 5;
-  let tempFactor = 1.0;
+  // Map to valid ConcreteClass or default to C30/37
+  const validClasses: ConcreteClass[] = ['C12/15', 'C16/20', 'C20/25', 'C25/30', 'C30/37', 'C35/45', 'C40/50', 'C45/55', 'C50/60'];
+  const matchedClass = validClasses.find(c => normalized.includes(c.split('/')[0])) || 'C30/37';
 
-  if (temperatureCelsius < 10) {
-    tempFactor = 1.5; // Cold weather
-  } else if (temperatureCelsius < 15) {
-    tempFactor = 1.3;
-  } else if (temperatureCelsius > 25) {
-    tempFactor = 0.8; // Hot weather
-  }
+  const result = calculateCuring({
+    concrete_class: matchedClass as ConcreteClass,
+    temperature_c: temperatureCelsius,
+  });
 
-  if (classLower.includes('c25') || classLower.includes('c30')) {
-    baseDays = 3;
-  } else if (classLower.includes('c35') || classLower.includes('c40')) {
-    baseDays = 7;
-  } else if (classLower.includes('c45') || classLower.includes('c50')) {
-    baseDays = 10;
-  }
-
-  return Math.ceil(baseDays * tempFactor);
+  return Math.ceil(result.min_curing_days);
 }
 
 /**
