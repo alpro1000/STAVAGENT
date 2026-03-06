@@ -341,6 +341,134 @@ export const CZ_MONTHLY_TEMPS: Record<number, number> = {
   12: 0,   // December
 };
 
+// ─── Construction Type Mapping ──────────────────────────────────────────────
+
+/**
+ * Construction type as used in formwork-assistant (bridge/building elements)
+ * Maps to ElementType + orientation for the curing calculation.
+ */
+export type ConstructionType =
+  | 'zakladove_pasy'   // Foundation strips / piles
+  | 'steny'            // Walls / abutments
+  | 'pilire_mostu'     // Bridge piers
+  | 'sloupy'           // Columns
+  | 'mostovka'         // Bridge deck / floor slab
+  | 'rimsy';           // Cornices / cantilevers
+
+/** Season (temperature range) — maps to average temperature */
+export type Season = 'leto' | 'podzim_jaro' | 'zima';
+
+/** Average temperature for each season (°C) */
+export const SEASON_TEMPERATURES: Record<Season, number> = {
+  leto: 20,          // >15°C — summer
+  podzim_jaro: 10,   // 5–15°C — spring/autumn
+  zima: 2,           // <5°C — winter
+};
+
+/** Map construction type → ElementType */
+const CONSTRUCTION_TO_ELEMENT: Record<ConstructionType, ElementType> = {
+  zakladove_pasy: 'wall',    // Foundation = massive, similar to wall
+  steny:         'wall',
+  pilire_mostu:  'column',
+  sloupy:        'column',
+  mostovka:      'slab',     // Horizontal, heavily loaded
+  rimsy:         'beam',     // Cantilever, horizontal
+};
+
+/** Orientation — affects whether props are needed */
+export const CONSTRUCTION_ORIENTATION: Record<ConstructionType, 'vertical' | 'horizontal'> = {
+  zakladove_pasy: 'vertical',
+  steny:          'vertical',
+  pilire_mostu:   'vertical',
+  sloupy:         'vertical',
+  mostovka:       'horizontal',
+  rimsy:          'horizontal',
+};
+
+/**
+ * Minimum prop retention days for horizontal elements (ČSN EN 13670 + TKP17)
+ *
+ * Props must remain under horizontal structures much longer than side formwork
+ * because the element must carry its own weight + live loads.
+ * Side formwork can be stripped when concrete reaches 50–70% f_ck,
+ * but props stay until concrete reaches near-full design strength.
+ */
+export const PROPS_MIN_DAYS: Partial<Record<ConstructionType, Record<Season, number>>> = {
+  mostovka: { leto: 14, podzim_jaro: 21, zima: 28 },
+  rimsy:    { leto: 7,  podzim_jaro: 10, zima: 14 },
+};
+
+/** Labels for construction types (Czech) */
+export const CONSTRUCTION_LABELS: Record<ConstructionType, string> = {
+  zakladove_pasy: 'Základové pásy / piloty',
+  pilire_mostu:   'Pilíře mostu',
+  mostovka:       'Mostovka / deska',
+  steny:          'Stěny / opěry',
+  sloupy:         'Sloupy',
+  rimsy:          'Římsy / konzoly',
+};
+
+/** Labels for seasons (Czech) */
+export const SEASON_LABELS: Record<Season, string> = {
+  leto:        'léto (>15 °C)',
+  podzim_jaro: 'podzim/jaro (5–15 °C)',
+  zima:        'zima (<5 °C)',
+};
+
+/**
+ * High-level curing calculation for a construction type + season.
+ *
+ * This is the **single entry point** for all curing calculations.
+ * It maps construction_type → ElementType and season → temperature,
+ * then delegates to calculateCuring().
+ *
+ * Returns:
+ *   - min_curing_days: When side formwork can be stripped
+ *   - props_min_days: When props can be removed (horizontal only, 0 for vertical)
+ *
+ * @example
+ * const result = calculateConstructionCuring({
+ *   construction_type: 'mostovka',
+ *   season: 'podzim_jaro',
+ *   concrete_class: 'C30/37',
+ *   cement_type: 'CEM_I',
+ * });
+ * // result.curing.min_curing_days = 3
+ * // result.props_min_days = 21
+ */
+export function calculateConstructionCuring(params: {
+  construction_type: ConstructionType;
+  season: Season;
+  concrete_class?: ConcreteClass;
+  cement_type?: CementType;
+}): {
+  curing: CuringResult;
+  props_min_days: number;
+  orientation: 'vertical' | 'horizontal';
+} {
+  const elementType = CONSTRUCTION_TO_ELEMENT[params.construction_type];
+  const temperature = SEASON_TEMPERATURES[params.season];
+  const concreteClass = params.concrete_class || 'C30/37';
+  const cementType = params.cement_type || 'CEM_I';
+
+  const curing = calculateCuring({
+    concrete_class: concreteClass,
+    temperature_c: temperature,
+    cement_type: cementType,
+    element_type: elementType,
+  });
+
+  // Props retention for horizontal elements
+  const propsRow = PROPS_MIN_DAYS[params.construction_type];
+  const propsMinDays = propsRow ? (propsRow[params.season] || 0) : 0;
+
+  return {
+    curing,
+    props_min_days: propsMinDays,
+    orientation: CONSTRUCTION_ORIENTATION[params.construction_type],
+  };
+}
+
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
 function round2(v: number): number {

@@ -13,3 +13,6 @@ export * from './calculators/index.js';
 
 // R0 Deterministic Core - Scheduler
 export * from './scheduler/index.js';
+
+// Data — Canonical data sets (formwork systems, etc.)
+export * from './constants-data/index.js';
