@@ -166,8 +166,8 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
           popis: item.popis || '',
           mnozstvi: item.mnozstvi || 0,
           mj: item.mj || '',
-          cena_jednotkova: item.cenaJednotkova ?? null,
-          cena_celkem: item.cenaCelkem ?? null,
+          cena_jednotkova: item.cenaJednotkova ?? undefined,
+          cena_celkem: item.cenaCelkem ?? undefined,
           item_order: idx,
         }));
         await registryAPI.bulkCreateItems(sheet.id, bulkItems);
