@@ -21,7 +21,8 @@ export async function isBackendAvailable(): Promise<boolean> {
     const res = await fetch(`${API_URL}/health`, { signal: controller.signal });
     clearTimeout(timeout);
     const data = await res.json();
-    _backendAvailable = data.database === 'connected';
+    // Support both old format (status=ok) and new format (database=connected)
+    _backendAvailable = data.status === 'ok' || data.database === 'connected';
   } catch {
     _backendAvailable = false;
   }
