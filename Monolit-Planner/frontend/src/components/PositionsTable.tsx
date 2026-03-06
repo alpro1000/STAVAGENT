@@ -366,9 +366,10 @@ export default function PositionsTable() {
       }
 
       // Transfer curing days from MaturityConfigPanel → beton row's curing_days
+      // Use result.positions (fresh from API) instead of stale component state
       const maturityDays = (calcRows[0] as any)?._maturity_curing_days;
-      if (maturityDays && maturityDays > 0 && targetPartName) {
-        const betonPosition = positions.find(
+      if (maturityDays && maturityDays > 0 && targetPartName && result.positions) {
+        const betonPosition = result.positions.find(
           p => p.part_name === targetPartName && p.subtype === 'beton'
         );
         if (betonPosition?.id) {
