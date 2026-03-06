@@ -15,7 +15,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Plus, FileText, Activity, MessageSquare, Send, Upload } from 'lucide-react';
 import { API_URL } from '../services/api';
-import ProjectCard from '../components/portal/ProjectCard';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
 import ServiceCard from '../components/portal/ServiceCard';

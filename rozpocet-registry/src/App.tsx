@@ -16,6 +16,7 @@ import { MonolitCompareDrawer } from './components/comparison/MonolitCompareDraw
 import { startPolling, stopPolling, refreshNow, type PollState, type ComparisonItem } from './services/monolithPolling';
 // FormworkRentalCalculator removed from header — now integrated into TOV/Materiály tab
 import { useRegistryStore } from './stores/registryStore';
+import { loadFromBackend, mergeProjects, debouncedPushToBackend } from './services/backendSync';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
@@ -73,6 +74,36 @@ function App() {
     startPolling(project.id, portalId, allItems, setPollState);
     return () => stopPolling();
   }, [selectedProjectId, projects]);
+
+  // Backend sync: on startup, load projects from PostgreSQL and merge with local store
+  const backendSyncDone = useRef(false);
+  useEffect(() => {
+    if (backendSyncDone.current) return;
+    backendSyncDone.current = true;
+
+    loadFromBackend().then((backendProjects) => {
+      if (backendProjects.length === 0) return;
+      const { projects: localProjects } = useRegistryStore.getState();
+      const merged = mergeProjects(localProjects, backendProjects);
+      if (merged.length > localProjects.length) {
+        // Add new backend projects to the store
+        const localIds = new Set(localProjects.map(p => p.id));
+        for (const p of merged) {
+          if (!localIds.has(p.id)) {
+            useRegistryStore.getState().addProject(p);
+          }
+        }
+      }
+    }).catch(() => {});
+  }, []);
+
+  // Backend sync: push changes to PostgreSQL on project updates
+  useEffect(() => {
+    const project = projects.find(p => p.id === selectedProjectId);
+    if (project) {
+      debouncedPushToBackend(project);
+    }
+  }, [projects, selectedProjectId]);
 
   const handleAcceptMonolitPrice = useCallback((itemId: string, _monolithTotal: number, monolithUnit: number) => {
     const { updateItemPrice, projects: projs } = useRegistryStore.getState();

@@ -21,7 +21,8 @@ export async function isBackendAvailable(): Promise<boolean> {
     const res = await fetch(`${API_URL}/health`, { signal: controller.signal });
     clearTimeout(timeout);
     const data = await res.json();
-    _backendAvailable = data.database === 'connected';
+    // Support both old format (status=ok) and new format (database=connected)
+    _backendAvailable = data.status === 'ok' || data.database === 'connected';
   } catch {
     _backendAvailable = false;
   }
@@ -210,11 +211,15 @@ class RegistryAPI {
 
   // ============ BULK OPERATIONS ============
 
-  async bulkCreateItems(sheetId: string, items: Array<Partial<RegistryItem> & { tov_data?: TOVData }>): Promise<void> {
-    // Create items one by one (backend doesn't have bulk endpoint yet)
-    for (const item of items) {
-      await this.createItem(sheetId, item, item.tov_data);
-    }
+  async bulkCreateItems(sheetId: string, items: Array<Partial<RegistryItem> & { tov_data?: TOVData }>): Promise<number> {
+    const res = await fetchWithTimeout(`${API_URL}/api/registry/sheets/${sheetId}/items/bulk`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ items }),
+    });
+    if (!res.ok) throw new Error('Failed to bulk create items');
+    const data = await res.json();
+    return data.created || 0;
   }
 }
 
