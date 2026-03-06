@@ -16,6 +16,7 @@ import ResetPasswordPage from './pages/ResetPasswordPage';
 import AdminDashboard from './pages/AdminDashboard';
 import DocumentUploadPage from './pages/DocumentUploadPage';
 import PortalPage from './pages/PortalPage';
+import PumpCalculatorPage from './pages/PumpCalculatorPage';
 import LandingPage from './pages/LandingPage';
 import './styles/components.css';
 
@@ -47,6 +48,9 @@ function App() {
 
             {/* Portal - public (no auth required) */}
             <Route path="/portal" element={<PortalPage />} />
+
+            {/* Pump Calculator - public, mobile-first (no auth) */}
+            <Route path="/pump" element={<PumpCalculatorPage />} />
 
             {/* Protected routes */}
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
