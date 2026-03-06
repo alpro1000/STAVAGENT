@@ -1,72 +1,68 @@
-# NEXT SESSION - Formwork Refactor Complete + Deployment Pending
+# NEXT SESSION - Deep Links Complete + Deployment Pending
 
 **Date:** 2026-03-06
 **Branch:** `claude/review-next-session-Zjn4C`
-**Status:** Formwork consolidation + fixes applied, all tests pass
+**Status:** Deep links implemented across all services, all tests pass
 
 ---
 
 ## What Was Done This Session (2026-03-06)
 
-### Verified 4 commits (from previous session)
+### 8 commits total on branch
 
-#### 1. REFACTOR: Consolidate curing, strategies, and formwork norms (a6af67c)
-- **Eliminated 3 duplications** across backend/frontend/shared
-- Moved canonical data to `shared/src/constants-data/formwork-systems.ts`
-- Moved curing logic to `shared/src/calculators/maturity.ts`
-- Backend `formwork-assistant.js` and frontend `formworkSystems.ts` now import from shared
-- `sheathing-formulas.ts` updated to use shared constants
+#### Formwork Refactor (4 commits, verified)
+1. REFACTOR: Consolidate curing/strategies/formwork norms — eliminate 3 duplications
+2. FIX: Formwork calculator — ceil() for work days + curing transfer to beton row
+3. FIX: Use fresh API positions for curing days lookup (stale state bug)
+4. FIX: Add Position type annotation (TS7006 build error)
 
-#### 2. FIX: Formwork calculator — ceil() for work days + curing transfer (dc4ec0a)
-- `FormworkCalculatorModal.tsx` — Math.ceil() for work day calculation
-- `PositionsTable.tsx` — Curing days transfer from formwork to beton row
+#### Deep Links Implementation (3 commits, new)
+5. DOCS: Update session status — write-backs confirmed complete
+6. FEAT: PositionsPanel + enhanced KioskLinksPanel deep links
+   - **New component:** `PositionsPanel.tsx` — shows linked positions table in Portal project detail
+   - Deep-link buttons to open position in Monolit or Registry
+   - Enhanced `KioskLinksPanel.handleOpen` with kiosk-specific URL routing
+   - Integrated into `CorePanel` below KioskLinksPanel
+7. FEAT: position_instance_id deep links across Portal, Registry, Monolit
+   - `ProjectCard.tsx` — kiosk URLs now include project_id + portal_project
+   - `TOVModal.tsx` — Monolit link appends position_instance_id
+   - `ItemsTable.tsx` — Monolit icon click appends position_instance_id
 
-#### 3. FIX: Use fresh API positions for curing days lookup (5248d8d)
-- Fixed stale state bug where curing days weren't found because state was outdated
-- Now fetches fresh positions from API before looking up curing data
+### Deep Link Architecture (Complete)
 
-#### 4. FIX: Add Position type annotation (c4d5cd3)
-- Fixed TS7006 build error in `PositionsTable.tsx`
+| Component | URL Pattern | position_instance_id |
+|-----------|-------------|---------------------|
+| Monolit MainApp | `?project=X&position_instance_id=Z` | Scroll + highlight |
+| Monolit RegistryView | `/registry/:projectId?position_instance_id=Z` | Opens modal |
+| Registry App | `?position_instance_id=Z` | Scroll + highlight |
+| Portal → Monolit | `?project=X&portal_project=Y` | Via PositionsPanel |
+| Portal → Registry | `?project_id=X&portal_project=Y` | Via PositionsPanel |
+| Registry TOVModal → Monolit | `?project=X&part=Y&position_instance_id=Z` | Deep link |
+| Registry ItemsTable → Monolit | `monolit_url&position_instance_id=Z` | Deep link |
 
-### Verification
-- ✅ 145 shared tests pass (formulas: 55, PERT: 20, maturity: 21, pour-decision: 22, scheduler: 27)
-- ✅ TypeScript frontend compiles cleanly (`tsc --noEmit`)
-- ✅ Shared package builds (`tsc`)
+### Write-back Features (COMPLETE)
+Both confirmed fully implemented:
+- **Monolit → Portal:** `portalWriteBack.js` (auto on PUT /api/positions)
+- **Registry → Portal:** `dovWriteBack.ts` (auto on TOV save)
 
 ---
 
-## Implementation Status Update
+## Remaining Tasks (User Action Required)
 
-### Write-back Features (COMPLETE)
-Both position write-back features are **fully implemented**:
-
-1. **Monolit Position Write-back** ✅
-   - `portalWriteBack.js` — builds MonolithPayload, batch POST to Portal
-   - Auto-triggers on `PUT /api/positions` (non-blocking)
-   - Portal stores in `monolith_payload` JSONB + audit log
-
-2. **Registry DOV Write-back** ✅
-   - `dovWriteBack.ts` — builds DOVPayload (labor+machinery+materials+rentals)
-   - Auto-triggers on TOV save when item has `position_instance_id`
-   - Portal stores in `dov_payload` JSONB + syncs legacy columns
-
-### Remaining Tasks
-
-#### Deploy Portal Backend (User Action Required)
-- Phase 8 DB migration: `position_instance_id` columns + `position_instances` table
+### 1. Deploy Portal Backend
+- Phase 8 DB migration auto-applies on startup (no manual SQL needed)
 - 13 new `/api/positions/` endpoints in `position-instances.js`
-- Run migration on Render PostgreSQL
+- Just deploy the latest code to Render
 
-#### Deep Links Refinement
-- URL routing: `?project_id=X&position_instance_id=Y`
-- Monolit: `MainApp.tsx` handles `?position_instance_id=Z` (basic)
-- Registry: `RegistryView.tsx` supports position_instance_id param (basic)
-- Needed: Portal → Kiosk deep link generation, back-navigation
-
-#### Environment Variables (User Action — Render)
+### 2. Environment Variables (Render)
 - `PERPLEXITY_API_KEY` for concrete-agent
 - `OPENAI_API_KEY` for concrete-agent
 - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB (AI suggestion)
+
+### 3. Future Enhancements
+- Portal → Kiosk back-navigation (breadcrumbs)
+- Template application workflow testing
+- Two-way sync (Portal → Registry)
 
 ---
 
@@ -74,13 +70,14 @@ Both position write-back features are **fully implemented**:
 
 | Component | Tests | Status |
 |-----------|-------|--------|
-| Monolit formulas | 55 | ✅ Pass |
-| PERT estimation | 20 | ✅ Pass |
-| Concrete maturity | 21 | ✅ Pass |
-| Pour decision | 22 | ✅ Pass |
-| RCPSP scheduler | 27 | ✅ Pass |
-| URS Matcher | 159 | ✅ Pass |
-| **Total** | **304+** | **✅ Pass** |
+| Monolit formulas | 55 | Pass |
+| PERT estimation | 20 | Pass |
+| Concrete maturity | 21 | Pass |
+| Pour decision | 22 | Pass |
+| RCPSP scheduler | 27 | Pass |
+| URS Matcher | 159 | Pass |
+| rozpocet-registry TS | - | Compiles clean |
+| **Total** | **304+** | **Pass** |
 
 ---
 
@@ -98,6 +95,6 @@ Both position write-back features are **fully implemented**:
 
 ---
 
-**Version:** 2.0.2
+**Version:** 2.0.3
 **Last Updated:** 2026-03-06
-**Status:** Formwork refactor verified, write-backs complete, Portal deploy pending
+**Status:** Deep links complete, formwork refactored, write-backs verified, Portal deploy pending
