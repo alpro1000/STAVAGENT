@@ -1,68 +1,75 @@
-# NEXT SESSION - Deep Links Complete + Deployment Pending
+# NEXT SESSION - Product Vision Documented + Deep Links Complete
 
 **Date:** 2026-03-06
 **Branch:** `claude/review-next-session-Zjn4C`
-**Status:** Deep links implemented across all services, all tests pass
+**Status:** All code tasks done, product vision documented, deploy pending
 
 ---
 
-## What Was Done This Session (2026-03-06)
+## Key Document
 
-### 8 commits total on branch
-
-#### Formwork Refactor (4 commits, verified)
-1. REFACTOR: Consolidate curing/strategies/formwork norms — eliminate 3 duplications
-2. FIX: Formwork calculator — ceil() for work days + curing transfer to beton row
-3. FIX: Use fresh API positions for curing days lookup (stale state bug)
-4. FIX: Add Position type annotation (TS7006 build error)
-
-#### Deep Links Implementation (3 commits, new)
-5. DOCS: Update session status — write-backs confirmed complete
-6. FEAT: PositionsPanel + enhanced KioskLinksPanel deep links
-   - **New component:** `PositionsPanel.tsx` — shows linked positions table in Portal project detail
-   - Deep-link buttons to open position in Monolit or Registry
-   - Enhanced `KioskLinksPanel.handleOpen` with kiosk-specific URL routing
-   - Integrated into `CorePanel` below KioskLinksPanel
-7. FEAT: position_instance_id deep links across Portal, Registry, Monolit
-   - `ProjectCard.tsx` — kiosk URLs now include project_id + portal_project
-   - `TOVModal.tsx` — Monolit link appends position_instance_id
-   - `ItemsTable.tsx` — Monolit icon click appends position_instance_id
-
-### Deep Link Architecture (Complete)
-
-| Component | URL Pattern | position_instance_id |
-|-----------|-------------|---------------------|
-| Monolit MainApp | `?project=X&position_instance_id=Z` | Scroll + highlight |
-| Monolit RegistryView | `/registry/:projectId?position_instance_id=Z` | Opens modal |
-| Registry App | `?position_instance_id=Z` | Scroll + highlight |
-| Portal → Monolit | `?project=X&portal_project=Y` | Via PositionsPanel |
-| Portal → Registry | `?project_id=X&portal_project=Y` | Via PositionsPanel |
-| Registry TOVModal → Monolit | `?project=X&part=Y&position_instance_id=Z` | Deep link |
-| Registry ItemsTable → Monolit | `monolit_url&position_instance_id=Z` | Deep link |
-
-### Write-back Features (COMPLETE)
-Both confirmed fully implemented:
-- **Monolit → Portal:** `portalWriteBack.js` (auto on PUT /api/positions)
-- **Registry → Portal:** `dovWriteBack.ts` (auto on TOV save)
+**`docs/PRODUCT_VISION_AND_ROADMAP.md`** — full product architecture, math model layers, MVP roadmap, commercial packaging. Read this first.
 
 ---
 
-## Remaining Tasks (User Action Required)
+## What Was Done (2026-03-06)
 
-### 1. Deploy Portal Backend
-- Phase 8 DB migration auto-applies on startup (no manual SQL needed)
-- 13 new `/api/positions/` endpoints in `position-instances.js`
-- Just deploy the latest code to Render
+### Code (8 commits)
+1. Formwork refactor: consolidate 3 duplications into shared/, ceil() fix, curing transfer
+2. Deep links: PositionsPanel, KioskLinksPanel routing, ProjectCard URLs, TOVModal + ItemsTable position_instance_id
+3. Write-backs confirmed: Monolit -> Portal (portalWriteBack.js) + Registry -> Portal (dovWriteBack.ts)
 
-### 2. Environment Variables (Render)
-- `PERPLEXITY_API_KEY` for concrete-agent
-- `OPENAI_API_KEY` for concrete-agent
-- Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB (AI suggestion)
+### Documentation
+- `docs/PRODUCT_VISION_AND_ROADMAP.md` — complete product vision from architecture discussion
 
-### 3. Future Enhancements
-- Portal → Kiosk back-navigation (breadcrumbs)
-- Template application workflow testing
-- Two-way sync (Portal → Registry)
+---
+
+## Implementation Priority (Next Sessions)
+
+### Priority 1: Planner Core Engines (Phase 1 remainder)
+Existing foundation: Graph Builder + CPM + RCPSP + PERT + Maturity (145 tests)
+
+Still needed:
+- [ ] **Element Classifier** — identify structure type (zaklad/stena/sloup/opora/mostovka)
+- [ ] **Formwork Engine** — 3-phase calculation (assembly/relocation/stripping), 3 capture modes
+- [ ] **Rebar Lite Engine** — mass, duration, crew estimate, specific ratios by element
+- [ ] **Pour Task Engine** — duration, window, pump flag, delivery rate
+- [ ] **Planner Orchestrator** — combine all engines into single monolithic cycle
+
+### Priority 2: Pump Calculator Enhancement
+Existing: multi-supplier calculator (3 billing models, 25-40 m3/h practical data)
+
+Still needed:
+- [ ] Lite mode UI (quick estimate for estimator)
+- [ ] Detailed mode UI (full breakdown for site manager)
+- [ ] Calendar logic (holidays, weekends, overtime surcharges)
+- [ ] Supplier registry with tariff versioning
+- [ ] TOV integration (shared Pump Engine)
+
+### Priority 3: Cross-System
+- [ ] Breadcrumbs (Portal <- Kiosk back-navigation)
+- [ ] Template application workflow testing
+- [ ] Two-way sync Portal <-> Registry
+
+### Priority 4: Phase 2 (after Phase 1 complete)
+- [ ] Calendar Engine (work windows, non-working days)
+- [ ] Resource leveling (crew/crane/kit constraints)
+- [ ] Pump Lite mode integration into Planner
+
+### Priority 5: Phase 3
+- [ ] Monte Carlo simulation
+- [ ] Scenario comparison
+- [ ] Optimization modes
+
+---
+
+## User Action Required (Deploy)
+
+1. **Deploy Portal Backend** to Render (migrations auto-apply)
+2. **Environment Variables** on Render:
+   - `PERPLEXITY_API_KEY` for concrete-agent
+   - `OPENAI_API_KEY` for concrete-agent
+   - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB
 
 ---
 
@@ -81,20 +88,5 @@ Both confirmed fully implemented:
 
 ---
 
-## Production URLs
-
-| Service | URL |
-|---------|-----|
-| concrete-agent (CORE) | https://concrete-agent.onrender.com |
-| stavagent-portal (Frontend) | https://www.stavagent.cz |
-| stavagent-portal (API) | https://stavagent-backend.vercel.app |
-| Monolit Frontend | https://monolit-planner-frontend.vercel.app |
-| Monolit API | https://monolit-planner-api.onrender.com |
-| URS Matcher | https://urs-matcher-service.onrender.com |
-| Rozpočet Registry | https://stavagent-backend-ktwx.vercel.app |
-
----
-
-**Version:** 2.0.3
+**Version:** 2.1.0
 **Last Updated:** 2026-03-06
-**Status:** Deep links complete, formwork refactored, write-backs verified, Portal deploy pending
