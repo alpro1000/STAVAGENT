@@ -504,7 +504,12 @@ export function ItemsTable({
               onClick={(e) => {
                 e.stopPropagation();
                 if (mp.monolit_url) {
-                  window.open(mp.monolit_url, '_blank');
+                  let url = mp.monolit_url;
+                  if (item.position_instance_id) {
+                    const sep = url.includes('?') ? '&' : '?';
+                    url += `${sep}position_instance_id=${encodeURIComponent(item.position_instance_id)}`;
+                  }
+                  window.open(url, '_blank');
                 }
               }}
               style={{ cursor: mp.monolit_url ? 'pointer' : 'default' }}

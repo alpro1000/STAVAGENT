@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-06 | Monolit-Planner | Formwork refactor: consolidate curing/strategies/norms into shared, ceil() work days fix, curing transfer to beton row | ✅ Pushed |
 | 2026-03-06 | Monolit shared | PERT 3-point estimation + Concrete maturity model (ČSN EN 13670) — 41 new tests, Monte Carlo, scheduler integration | ✅ Pushed |
 | 2026-03-06 | Monolit frontend | MaturityConfigPanel UI — concrete class/cement/month picker, integrated into FormworkCalculatorModal | ✅ Pushed |
 | 2026-03-06 | rozpocet-registry | Backend sync layer: localStorage ↔ PostgreSQL mirror (loadFromBackend + pushProjectToBackend + bulk upsert) | ✅ Pushed |
