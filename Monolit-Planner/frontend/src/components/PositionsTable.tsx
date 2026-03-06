@@ -310,7 +310,7 @@ export default function PositionsTable() {
     setPendingCustomWork(null);
   };
 
-  // Handle formwork calculator transfer - create rental positions IN CURRENT PART
+  // Handle formwork calculator transfer - create bednění positions + update beton curing days
   const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[], targetPartName?: string) => {
     if (!selectedBridge) return;
 
@@ -365,24 +365,32 @@ export default function PositionsTable() {
         }
       }
 
+      // Transfer curing days from MaturityConfigPanel → beton row's curing_days
+      const maturityDays = (calcRows[0] as any)?._maturity_curing_days;
+      if (maturityDays && maturityDays > 0 && targetPartName) {
+        const betonPosition = positions.find(
+          p => p.part_name === targetPartName && p.subtype === 'beton'
+        );
+        if (betonPosition?.id) {
+          updatePositions([{ id: betonPosition.id, curing_days: maturityDays }]);
+        }
+      }
+
       queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
       setShowFormworkCalc(false);
       setFormworkCalcPartName(null);
 
       const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
       const totalArea = calcRows.reduce((acc, r) => acc + r.total_area_m2, 0);
-      const registryUrl = import.meta.env.VITE_REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
+      const curingInfo = maturityDays ? `\n   Zrání betonu: ${maturityDays} dní (přeneseno do tabulky)` : '';
 
       alert(
-        `Preneseno ${newPositions.length} radku (Montaz + Demontaz) do casti "${targetPartName}"\n\n` +
-        `NAJEM BEDNENI - pridejte do Registry TOV:\n` +
-        `Parametry pro kalkulator:\n` +
-        `   Plocha: ${totalArea.toFixed(1)} m2\n` +
-        `   Termin najmu: ${totalRentalDays} dni\n` +
-        `   System: ${calcRows[0]?.system_name || 'FRAMI XLIFE'}\n\n` +
-        `Otevrete Registry TOV:\n` +
-        `   ${registryUrl}\n\n` +
-        `   Kliknete na "Najem bedneni" -> zadejte parametry -> pridejte do TOV`
+        `Přeneseno ${newPositions.length} řádků (Montáž + Demontáž) do části "${targetPartName}"${curingInfo}\n\n` +
+        `NÁJEM BEDNĚNÍ - přidejte do Registry TOV:\n` +
+        `Parametry pro kalkulátor:\n` +
+        `   Plocha: ${totalArea.toFixed(1)} m²\n` +
+        `   Termín nájmu: ${totalRentalDays} dní\n` +
+        `   Systém: ${calcRows[0]?.system_name || 'FRAMI XLIFE'}\n`
       );
     } catch (error) {
       alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);

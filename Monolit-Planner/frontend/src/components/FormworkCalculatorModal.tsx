@@ -82,9 +82,10 @@ function recalcRow(row: FormworkCalculatorRow, crewSize: number, shiftHours: num
   const disassemblyHours = assemblyHours * disassemblyRatio;
   const dailyHours = crewSize * shiftHours;
 
-  const assemblyDays = dailyHours > 0 ? assemblyHours / dailyHours : 0;
-  const disassemblyDays = dailyHours > 0 ? disassemblyHours / dailyHours : 0;
-  const computedDaysPerTact = parseFloat((assemblyDays + disassemblyDays).toFixed(1));
+  // v3 consistency: ceil() to full work days — crews work full shifts
+  const assemblyDays = dailyHours > 0 ? Math.ceil(assemblyHours / dailyHours) : 0;
+  const disassemblyDays = dailyHours > 0 ? Math.max(1, Math.ceil(disassemblyHours / dailyHours)) : 0;
+  const computedDaysPerTact = assemblyDays + disassemblyDays;
 
   // Use user's manual days_per_tact if they overrode it; otherwise use computed
   // forceRecompute=true resets to computed (used when crew/shift changes)
@@ -285,7 +286,12 @@ export default function FormworkCalculatorModal({
       alert('Žádné platné řádky k přenosu. Vyplňte alespoň plochu.');
       return;
     }
-    onTransfer(validRows);
+    // Attach curing days from MaturityConfigPanel so PositionsTable can update beton row
+    const rowsWithCuring = validRows.map(r => ({
+      ...r,
+      _maturity_curing_days: Math.ceil(maturityCuringDays),
+    }));
+    onTransfer(rowsWithCuring as FormworkCalculatorRow[]);
   };
 
   // Totals
