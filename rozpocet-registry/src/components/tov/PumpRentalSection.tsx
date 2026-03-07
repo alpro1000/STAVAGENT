@@ -179,24 +179,42 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
 
   // ── Pump type selection ──────────────────────────────────────────────────
 
-  const selectPumpType = (id: string) => {
-    if (id === '') {
+  const selectPumpType = (pumpName: string) => {
+    if (pumpName === '') {
       update({ pump_type_id: undefined, pump_label: undefined });
       return;
     }
-    const pump = KB_PUMPS.find(p => p.id === id);
-    if (!pump) return;
-    // Auto-fill all parameters from knowledge base
-    // Use practical_performance_m3h if available, otherwise vykon_m3h
-    const performance = pump.practical_performance_m3h || pump.vykon_m3h;
+
+    // First try detailed KB data (Beton Union pumps with full specs)
+    const kbPump = KB_PUMPS.find(p => p.id === pumpName);
+    if (kbPump) {
+      const performance = kbPump.practical_performance_m3h || kbPump.vykon_m3h;
+      update({
+        pump_type_id: kbPump.id,
+        pump_label: kbPump.label_cs,
+        manipulace_czk_h: kbPump.manipulace_czk_h,
+        priplatek_czk_m3: kbPump.priplatek_czk_m3,
+        pristaveni_fixed_czk: kbPump.pristaveni_czk,
+        czk_km: kbPump.czk_km,
+        vykon_m3h: performance,
+      });
+      return;
+    }
+
+    // Fallback: use supplier pump data directly
+    if (!selectedSupplier) return;
+    const supplierPump = selectedSupplier.pumps.find((p: any) => p.name === pumpName);
+    if (!supplierPump) return;
+
+    const sp = supplierPump as any;
     update({
-      pump_type_id: pump.id,
-      pump_label: pump.label_cs,
-      manipulace_czk_h: pump.manipulace_czk_h,
-      priplatek_czk_m3: pump.priplatek_czk_m3,
-      pristaveni_fixed_czk: pump.pristaveni_czk,
-      czk_km: pump.czk_km,
-      vykon_m3h: performance,
+      pump_type_id: pumpName,
+      pump_label: `${selectedSupplier.name} — ${sp.name} (${sp.reach_m}m)`,
+      manipulace_czk_h: sp.operation_per_h ?? (sp.operation_per_15min ? sp.operation_per_15min * 4 : data.manipulace_czk_h),
+      priplatek_czk_m3: sp.volume_per_m3 ?? 0,
+      pristaveni_fixed_czk: sp.arrival_fixed ?? 0,
+      czk_km: sp.arrival_per_km ?? 0,
+      vykon_m3h: data.vykon_m3h, // keep existing — supplier data doesn't have performance
     });
   };
 
@@ -364,11 +382,21 @@ export function PumpRentalSection({ pumpRental, onChange, itemQuantity, itemLabe
                 className="w-full bg-bg-secondary/60 rounded px-3 py-2 text-xs focus:outline-none focus:ring-1 focus:ring-blue-400 border border-border-color/50"
               >
                 <option value="">— Vyberte čerpadlo ze seznamu nebo zadejte ručně —</option>
-                {selectedSupplier?.pumps.map((p: any) => (
-                  <option key={p.name} value={p.name}>
-                    {p.name} · {p.reach_m}m dosah · {p.operation_per_h || p.operation_per_15min || 0} Kč/{p.operation_per_h ? 'h' : '15min'}
-                  </option>
-                ))}
+                {supplierId === 'beton_union' ? (
+                  // Beton Union has detailed KB data with practical performance
+                  KB_PUMPS.map(p => (
+                    <option key={p.id} value={p.id}>
+                      {p.label_cs} · {p.reach_m}m dosah · {p.manipulace_czk_h} Kč/h
+                    </option>
+                  ))
+                ) : (
+                  // Other suppliers — use their pump list
+                  selectedSupplier?.pumps.map((p: any) => (
+                    <option key={p.name} value={p.name}>
+                      {p.name} · {p.reach_m}m dosah · {p.operation_per_h || p.operation_per_15min || 0} Kč/{p.operation_per_h ? 'h' : '15min'}
+                    </option>
+                  ))
+                )}
               </select>
               {selectedPump && (
                 <p className="text-[10px] text-text-muted mt-1 italic">{selectedPump.notes}</p>
