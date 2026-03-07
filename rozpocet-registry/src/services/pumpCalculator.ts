@@ -47,7 +47,7 @@ export interface PumpSupplier {
 
 /** Returns raw supplier data from JSON (for PumpRentalSection dropdown). */
 export function getSuppliers(): PumpSupplier[] {
-  return pumpSuppliersJson.suppliers as PumpSupplier[];
+  return pumpSuppliersJson.suppliers as unknown as PumpSupplier[];
 }
 
 export function getSupplier(id: string): PumpSupplier | undefined {
