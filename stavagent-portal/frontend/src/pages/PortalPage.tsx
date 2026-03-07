@@ -135,12 +135,12 @@ const SERVICES: Service[] = [
   },
   {
     id: 'pump-module',
-    name: 'Modul čerpání',
-    description: 'Výpočet nákladů a logistiky čerpání betonu. Připravujeme!',
+    name: 'Kalkulačka čerpadel',
+    description: 'Porovnání dodavatelů čerpadel betonu. Příplatky za víkend/svátek/noc, český kalendář. Mobilní verze pro prořaby na stavbě.',
     icon: '⚙️',
-    url: '#',
-    status: 'coming_soon',
-    tags: ['Čerpání', 'Logistika']
+    url: '/pump',
+    status: 'active',
+    tags: ['Čerpadlo', 'Porovnání', 'Mobilní', 'Příplatky']
   },
   {
     id: 'formwork-calculator',
