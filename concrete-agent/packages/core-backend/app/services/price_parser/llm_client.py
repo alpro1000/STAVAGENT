@@ -25,14 +25,21 @@ async def ask_llm(prompt: str, *, temperature: float = 0.1) -> str:
 
     Tries Gemini first (cheap), then Claude as fallback.
     """
-    # Try Gemini first
+    # Try Gemini first (free/cheap)
     if settings.GOOGLE_API_KEY:
         try:
             return await _ask_gemini(prompt, temperature=temperature)
         except Exception as e:
-            logger.warning("Gemini failed: %s, falling back to Claude", e)
+            logger.warning("Gemini failed: %s, falling back to Bedrock", e)
 
-    # Fallback to Claude
+    # Fallback to AWS Bedrock Claude (uses AWS Activate credits)
+    if settings.BEDROCK_ENABLED and settings.AWS_ACCESS_KEY_ID:
+        try:
+            return await _ask_bedrock(prompt, temperature=temperature)
+        except Exception as e:
+            logger.warning("Bedrock failed: %s, falling back to direct Claude", e)
+
+    # Final fallback to direct Claude API
     if settings.ANTHROPIC_API_KEY:
         try:
             return await _ask_claude(prompt, temperature=temperature)
@@ -40,7 +47,7 @@ async def ask_llm(prompt: str, *, temperature: float = 0.1) -> str:
             logger.error("Claude also failed: %s", e)
             raise
 
-    raise RuntimeError("No LLM API key configured (GOOGLE_API_KEY or ANTHROPIC_API_KEY)")
+    raise RuntimeError("No LLM API key configured (GOOGLE_API_KEY, AWS Bedrock, or ANTHROPIC_API_KEY)")
 
 
 async def ask_llm_json(prompt: str, *, temperature: float = 0.1) -> dict | list:
@@ -74,6 +81,14 @@ def _extract_json(text: str) -> dict | list:
 
     # Try direct parse
     return json.loads(text)
+
+
+# ── Bedrock ──────────────────────────────────────────────────────────────────
+
+async def _ask_bedrock(prompt: str, *, temperature: float = 0.1) -> str:
+    """Call Claude via AWS Bedrock (uses AWS Activate credits)."""
+    from app.core.bedrock_client import ask_bedrock_claude
+    return await ask_bedrock_claude(prompt, temperature=temperature)
 
 
 # ── Gemini ───────────────────────────────────────────────────────────────────

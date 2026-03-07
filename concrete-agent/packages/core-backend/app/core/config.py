@@ -58,8 +58,17 @@ class Settings(BaseSettings):
     CLAUDE_MAX_TOKENS: int = Field(default=4000, description="Max tokens for Claude")
     GPT4_MAX_TOKENS: int = Field(default=4000, description="Max tokens for GPT-4")
 
-    # Multi-Role LLM selection: "claude", "gemini", "auto" (Gemini with Claude fallback)
-    MULTI_ROLE_LLM: str = Field(default="gemini", description="LLM for Multi-Role: claude, gemini, auto")
+    # Multi-Role LLM selection: "claude", "gemini", "bedrock", "auto" (Gemini → Bedrock → Claude)
+    MULTI_ROLE_LLM: str = Field(default="gemini", description="LLM for Multi-Role: claude, gemini, bedrock, auto")
+
+    # ==========================================
+    # AWS BEDROCK (uses AWS Activate credits)
+    # ==========================================
+    AWS_ACCESS_KEY_ID: str = Field(default="", description="AWS access key for Bedrock")
+    AWS_SECRET_ACCESS_KEY: str = Field(default="", description="AWS secret key for Bedrock")
+    AWS_DEFAULT_REGION: str = Field(default="eu-central-1", description="AWS region (Frankfurt)")
+    BEDROCK_MODEL_ID: str = Field(default="anthropic.claude-3-5-haiku-20241022-v1:0", description="Bedrock model ID")
+    BEDROCK_ENABLED: bool = Field(default=True, description="Enable Bedrock as LLM provider")
     
     # ==========================================
     # WORKFLOW FEATURE FLAGS
