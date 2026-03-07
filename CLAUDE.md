@@ -14,6 +14,7 @@
 |------|---------|---------|--------|
 | 2026-03-07 | Monolit shared | Calculator audit: 3 bugs fixed (calculateEstimatedWeeks 22d mode ÷7→÷5, dead effectiveRebarDays, pour-decision NaN guard). 332 tests pass | ✅ Pushed |
 | 2026-03-07 | Monolit + Registry | TariffPage CRUD UI (/tariffs), Pump engine unification (registry mirrors shared API, Gauss Easter) | ✅ Pushed |
+| 2026-03-07 | stavagent-portal | Price Parser UI: PriceParserPage (/price-parser), batch PDF upload, supplier comparison table, API types, service registration | ✅ Pushed |
 | 2026-03-07 | concrete-agent | PDF Price Parser: 17 files, 7 section parsers (betony/doprava/cerpadla/priplatky/laborator/malty/source), regex+LLM, API endpoint, 21 tests | ✅ Pushed |
 | 2026-03-07 | Monolit + Portal | PlannerPage UI, PumpCalculatorPage, Calendar dates, PortalBreadcrumb, 332 shared tests | ✅ Pushed |
 | 2026-03-06 | Monolit-Planner | Formwork refactor: consolidate curing/strategies/norms into shared, ceil() work days fix, curing transfer to beton row | ✅ Pushed |

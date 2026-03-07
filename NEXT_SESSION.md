@@ -1,57 +1,59 @@
-# NEXT SESSION — Calculator Logic Audit + Bug Fixes Complete
+# NEXT SESSION — Price Parser Integration Complete
 
 **Date:** 2026-03-07
-**Branch:** `claude/review-session-notes-bODxv`
-**Status:** Session 6 complete — 3 logic bugs fixed in shared calculators. 332 tests pass.
+**Branch:** `claude/price-parser-integration-jeClp`
+**Status:** Session 7 complete — Price Parser UI + batch comparison + service registration.
 
 ---
 
-## What Was Done (2026-03-07, Session 6)
+## What Was Done (2026-03-07, Session 7)
 
-### Calculator Audit + Bug Fixes (`Monolit-Planner/shared`)
+### Price Parser Integration (Portal)
 
-Full logic review of all 7 calculation engines. Found and fixed 3 real bugs:
+1. **PriceParserPage.tsx** — Full standalone page at `/price-parser`
+   - Drag-and-drop PDF upload (single or multiple)
+   - Real-time parsing via `POST /api/v1/price-parser/parse` (concrete-agent)
+   - Active job progress indicators
+   - Error handling with per-file status
 
-**Bug 1 — СЕРЬЁЗНЫЙ: `calculateEstimatedWeeks` (formulas.ts)**
-- В режиме `days_per_month=22` делилось на 7 (calendar days/week) вместо 5 (working days/week)
-- Ошибка ~40%: показывало 13.4 недели вместо правильных 18.7 рабочих недель
-- Fix: `days_per_week = days_per_month === 22 ? 5 : 7`
-- Тест обновлён
+2. **Batch Supplier Comparison** — Upload multiple PDF price lists
+   - Side-by-side concrete price comparison table (C20/25, C25/30, C30/37...)
+   - Lowest price highlighted in green, price difference % shown
+   - Delivery zone comparison across suppliers
+   - Pump pricing comparison (per supplier)
+   - Surcharges comparison (časové, zimní, technologické)
+   - Malty/potěry and laboratory services sections
+   - Supplier metadata display (company, provozovna, platnost)
 
-**Bug 2 — СРЕДНИЙ: мёртвая переменная `effectiveRebarDays` (formwork.ts)**
-- Переменная вычислялась, но никогда не использовалась в `calculateFullCycleRentalDays`
-- Формула `prepDays` дублировала логику через другое выражение
-- Fix: удалена мёртвая переменная, формула упрощена с правильным комментарием
+3. **API Integration** (`api.ts`)
+   - `priceParserAPI.parse(file)` — sends PDF to CORE, returns structured PriceListResult
+   - Full TypeScript types for all 7 sections (BetonItem, Doprava, Cerpadla, etc.)
 
-**Bug 3 — СРЕДНИЙ: нет защиты от `available_pumping_h ≤ 0` (pour-decision.ts)**
-- Если `t_window ≤ setup + washout`, деление давало `Infinity`/`NaN` — тихое NaN-распространение
-- Fix: ранний `throw` с описательным сообщением
-
-### Что проверено и признано корректным:
-- `element-scheduler.ts` — DAG, Kahn topo sort, CPM, chess mode ✓
-- `maturity.ts` — Nurse-Saul, таблица ČSN EN 13670, cement factors ✓
-- `pert.ts` — triangular distribution, Monte Carlo, seeded RNG ✓
-- `formwork.ts` — strategy A/B/C, cadence, 3-phase cost ✓
-- `concreting.ts` — pump time, cost, `calculateRequiredPumpCapacity` ✓
-- `rebar-lite.ts` — mass estimation, crew recommendation ✓
-- `pour-decision.ts` — decision tree, T-window lookup, multi-pump ✓
+4. **Service Registration**
+   - Added "Ceníky dodavatelů" to Portal SERVICES array (active status)
+   - Route `/price-parser` registered in App.tsx (public, no auth)
+   - Build verified: `tsc && vite build` passes clean
 
 ### Previous Sessions (2026-03-07)
 
-**Session 5** — TariffPage + Pump engine unification:
-1. **TariffPage** (`Monolit-Planner/frontend/src/pages/TariffPage.tsx`) — CRUD UI at `/tariffs`
-2. **Pump engine unification** (`rozpocet-registry`) — mirror shared `pump-engine.ts` API, accurate Easter algorithm
-
-**Session 4** — PDF Price Parser (`concrete-agent`):
-- 17 files, 7 section parsers, 21 tests
-- `POST /api/v1/price-parser/parse`
-
-**Session 3** — UI Integration:
-- PumpCalculatorPage, PlannerPage, Calendar dates, PortalBreadcrumb
-
+**Session 6** — Calculator Logic Audit: 3 bugs fixed, 332 tests pass
+**Session 5** — TariffPage + Pump engine unification
+**Session 4** — PDF Price Parser backend (17 files, 7 parsers, 21 tests)
+**Session 3** — PumpCalculatorPage, PlannerPage, Calendar dates, PortalBreadcrumb
 **Sessions 1-2** — Formwork refactor, Core engines, Maturity/PERT
 
 ---
+
+## Architecture: Portal Frontend Pages
+
+```
+/                    → LandingPage
+/portal              → PortalPage (services hub + projects)
+/pump                → PumpCalculatorPage (mobile-first pump calculator)
+/price-parser        → PriceParserPage (PDF price list upload + comparison)
+/dashboard           → DashboardPage (auth required)
+/admin               → AdminDashboard (auth required)
+```
 
 ## Architecture: Monolit Frontend Pages
 
@@ -67,15 +69,17 @@ Full logic review of all 7 calculation engines. Found and fixed 3 real bugs:
 
 ## Implementation Priority (Next Sessions)
 
-### Priority 1: Price Parser Integration
-- [ ] **Test with real PDFs** — run parser on actual supplier price lists
-- [ ] **Frontend upload UI** — Price Parser page in Portal or standalone
-- [ ] **Batch processing** — parse multiple PDFs, compare suppliers
+### Priority 1: Price Parser — End-to-End Testing
+- [x] **Frontend upload UI** — PriceParserPage at `/price-parser`
+- [x] **Batch processing** — multi-PDF upload + comparison table
+- [ ] **Test with real PDFs** — run parser on actual supplier price lists (requires deploy)
+- [ ] **Save parsed results** — store in Portal DB for historical comparison
 
-### Priority 2: Cross-System
+### Priority 2: Cross-System (Already Implemented)
+- [x] Monolit Position Write-back → Portal `position_instance_id` (portalWriteBack.js)
+- [x] Two-way sync Portal ↔ Registry (integration.js + backendSync.ts)
 - [ ] Template application workflow testing
-- [ ] Two-way sync Portal ↔ Registry
-- [ ] Monolit Position Write-back → Portal `position_instance_id`
+- [ ] End-to-end production testing with Portal DB
 
 ### Priority 3: Phase 2 Engines
 - [ ] Resource leveling (crew/crane/kit constraints)
@@ -92,12 +96,23 @@ Full logic review of all 7 calculation engines. Found and fixed 3 real bugs:
 ## User Action Required (Deploy)
 
 1. **Deploy concrete-agent** to Render (new `/api/v1/price-parser/parse` endpoint)
-2. **Deploy Portal Frontend** to Vercel (new /pump route)
+2. **Deploy Portal Frontend** to Vercel (new `/price-parser` route + service card)
 3. **Deploy Monolit Frontend** to Vercel (new /planner, /tariffs routes + breadcrumbs)
 4. **Environment Variables** on Render:
    - `PERPLEXITY_API_KEY` for concrete-agent
    - `OPENAI_API_KEY` for concrete-agent
    - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB
+
+---
+
+## Key Files Changed (Session 7)
+
+| File | Lines | Change |
+|------|-------|--------|
+| `stavagent-portal/frontend/src/pages/PriceParserPage.tsx` | ~620 | NEW — Full price parser UI with batch comparison |
+| `stavagent-portal/frontend/src/services/api.ts` | +95 | Price parser API types + `priceParserAPI.parse()` |
+| `stavagent-portal/frontend/src/App.tsx` | +3 | Route `/price-parser` |
+| `stavagent-portal/frontend/src/pages/PortalPage.tsx` | +9 | Service card "Ceníky dodavatelů" |
 
 ---
 
@@ -121,6 +136,7 @@ Full logic review of all 7 calculation engines. Found and fixed 3 real bugs:
 | Formwork 3-Phase | 8 | Pass |
 | **Monolit shared total** | **332** | **Pass** |
 | URS Matcher | 159 | Pass |
+| Portal frontend | — | Build OK |
 | **Grand Total** | **512+** | **Pass** |
 
 ---
@@ -130,6 +146,9 @@ Full logic review of all 7 calculation engines. Found and fixed 3 real bugs:
 ```bash
 # Run all shared tests (332)
 cd Monolit-Planner/shared && npx vitest run
+
+# Build Portal frontend
+cd stavagent-portal/frontend && npm run build
 
 # Start Monolit dev
 cd Monolit-Planner/backend && npm run dev   # :3001
@@ -146,5 +165,5 @@ curl -X POST http://localhost:8000/api/v1/price-parser/parse \
 
 ---
 
-**Version:** 2.6.0
+**Version:** 2.7.0
 **Last Updated:** 2026-03-07

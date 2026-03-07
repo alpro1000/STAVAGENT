@@ -17,6 +17,7 @@ import AdminDashboard from './pages/AdminDashboard';
 import DocumentUploadPage from './pages/DocumentUploadPage';
 import PortalPage from './pages/PortalPage';
 import PumpCalculatorPage from './pages/PumpCalculatorPage';
+import PriceParserPage from './pages/PriceParserPage';
 import LandingPage from './pages/LandingPage';
 import './styles/components.css';
 
@@ -51,6 +52,9 @@ function App() {
 
             {/* Pump Calculator - public, mobile-first (no auth) */}
             <Route path="/pump" element={<PumpCalculatorPage />} />
+
+            {/* Price Parser - supplier price list comparison (no auth) */}
+            <Route path="/price-parser" element={<PriceParserPage />} />
 
             {/* Protected routes */}
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />

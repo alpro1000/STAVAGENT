@@ -693,6 +693,110 @@ export const workflowCAPI = {
   },
 };
 
+// ============ Price Parser API (concrete-agent CORE) ============
+
+export interface PriceListSource {
+  company: string | null;
+  provozovna: string | null;
+  valid_from: string | null;
+  valid_to: string | null;
+  currency: string;
+  vat_rate: number;
+}
+
+export interface BetonItem {
+  name: string;
+  exposure_class: string | null;
+  price_per_m3: number | null;
+  price_per_m3_vat: number | null;
+  notes: string | null;
+}
+
+export interface DopravaZona {
+  km_from: number;
+  km_to: number;
+  price_per_m3: number;
+}
+
+export interface Doprava {
+  min_objem_m3: number | null;
+  volny_cas_min: number | null;
+  cekani_per_15min: number | null;
+  zony: DopravaZona[];
+  pristaveni_ks: number | null;
+}
+
+export interface CerpadloItem {
+  type: string;
+  pristaveni: number | null;
+  hodinova_sazba: number | null;
+  cena_per_m3: number | null;
+  km_sazba: number | null;
+}
+
+export interface PriplatekCasovy {
+  nazev: string;
+  typ: string;
+  hodnota: number;
+}
+
+export interface PriplatekZimni {
+  teplota_from: number;
+  teplota_to: number;
+  price_per_m3: number;
+}
+
+export interface PriplatekTechnologicky {
+  nazev: string;
+  typ: string;
+  hodnota: number;
+}
+
+export interface Priplatky {
+  casove: PriplatekCasovy[];
+  zimni: PriplatekZimni[];
+  technologicke: PriplatekTechnologicky[];
+}
+
+export interface LaboratorItem {
+  nazev: string;
+  jednotka: string | null;
+  cena: number | null;
+}
+
+export interface PriceListResult {
+  source: PriceListSource;
+  betony: BetonItem[];
+  malty_potere: Array<{ name: string; type: string | null; price_per_m3: number | null; price_per_m3_vat: number | null }>;
+  doprava: Doprava;
+  cerpadla: CerpadloItem[];
+  priplatky: Priplatky;
+  laborator: LaboratorItem[];
+  ostatni: string | null;
+}
+
+export const priceParserAPI = {
+  /**
+   * Parse a single PDF price list
+   */
+  parse: async (file: File): Promise<PriceListResult> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${CORE_API_URL}/api/v1/price-parser/parse`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+      throw new Error(error.detail || `Price parser failed: ${response.status}`);
+    }
+
+    return response.json();
+  },
+};
+
 // Helper exports for convenience
 export const createBridge = bridgesAPI.create;
 export const deleteBridge = bridgesAPI.delete;
