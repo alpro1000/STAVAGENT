@@ -637,7 +637,7 @@ export default function PumpCalculatorPage() {
             </div>
             <div style={{ ...S.inputGroup, flex: '1 1 auto', display: 'flex', alignItems: 'flex-end' }}>
               <span style={S.dayBadge(dayInfo.type)}>
-                {dayInfo.type === 'workday' ? '&#9679;' : dayInfo.type === 'saturday' ? '&#9888;' : '&#10006;'}
+                {dayInfo.type === 'workday' ? '●' : dayInfo.type === 'saturday' ? '⚠' : '✖'}
                 {' '}{dayInfo.label}
               </span>
             </div>
