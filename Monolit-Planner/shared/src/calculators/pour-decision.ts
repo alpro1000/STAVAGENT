@@ -205,6 +205,11 @@ export function decidePourMode(input: PourDecisionInput): PourDecisionOutput {
 
   // Available pumping time per window (minus setup/washout)
   const available_pumping_h = t_window - setup_h - washout_h;
+  if (available_pumping_h <= 0) {
+    throw new Error(
+      `t_window (${t_window}h) must exceed setup (${setup_h}h) + washout (${washout_h}h)`
+    );
+  }
 
   // ─── BRANCH: has_dilatacni_spary ─────────────────────────────────────────
 

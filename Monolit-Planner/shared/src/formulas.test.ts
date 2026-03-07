@@ -120,10 +120,10 @@ describe('Duration Calculations', () => {
     expect(calculateEstimatedMonths(1000000, 10, 0, 8, 22)).toBe(0);
   });
 
-  it('should calculate estimated weeks', () => {
+  it('should calculate estimated weeks (22-day mode → working weeks)', () => {
     const weeks = calculateEstimatedWeeks(4.26, 22);
-    // 4.26 months * 22 days / 7 = 13.39 weeks
-    expect(weeks).toBeCloseTo(13.39, 1);
+    // 4.26 months * 22 working_days/month / 5 working_days/week = 18.74 working weeks
+    expect(weeks).toBeCloseTo(18.74, 1);
   });
 
   it('should handle 30-day month mode', () => {
