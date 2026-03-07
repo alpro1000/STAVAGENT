@@ -1,46 +1,37 @@
-# NEXT SESSION - UI Integration Complete
+# NEXT SESSION — Tariff UI + Pump Unification Complete
 
 **Date:** 2026-03-07
-**Branch:** `claude/review-next-session-Zjn4C`
-**Status:** Priority 1+2 UI Integration complete, 332 tests pass
+**Branch:** `claude/review-session-notes-bODxv`
+**Status:** Tariff CRUD UI + Pump engine unification complete. 332 shared tests pass.
 
 ---
 
-## What Was Done (2026-03-07)
+## What Was Done (2026-03-07, Session 4)
 
-### Session 3: UI Integration + Cross-System
-5 features implemented:
+2 features implemented:
 
-1. **Standalone Pump Calculator** (`stavagent-portal/frontend/src/pages/PumpCalculatorPage.tsx`)
-   - Mobile-first page at `/pump` for field foremen
-   - 3 Czech suppliers (Berger, Frischbeton, Beton Union), surcharges, date picker
-   - Czech calendar (Easter algorithm, 13 holidays), day-type detection
-   - Mini calendar with color-coded days, comparison table
-   - ServiceCard in PortalPage activated (was `coming_soon`)
+1. **TariffPage** (`Monolit-Planner/frontend/src/pages/TariffPage.tsx`)
+   - New page at `/tariffs` — CRUD UI for supplier tariff management
+   - View tariffs grouped by service type (pump/beton/bednění/doprava/jeřáb)
+   - Add new tariff entry with multiple rates (key/value/unit/note)
+   - Auto-closes overlapping active entries (`addTariff` logic from shared)
+   - Price change indicators (▲/▼ %) current vs previous version
+   - Tariff history per supplier (collapsible)
+   - localStorage persistence (`monolit-tariff-registry`)
+   - Navigation: "💰 Tarify" button added to Sidebar Nástroje section
 
-2. **Planner Page** (`Monolit-Planner/frontend/src/pages/PlannerPage.tsx`)
-   - Interactive UI for `planElement()` orchestrator at `/planner`
-   - Full input form: element type, volumes, pour constraints, concrete/maturity, resources
-   - Result display: KPI cards, element classification, pour decision, formwork 3-phase,
-     rebar, schedule (Gantt), cost summary, Monte Carlo, decision log
-   - Advanced settings: formwork system override, crew counts, wage, Monte Carlo toggle
+2. **Pump Engine Unification** (`rozpocet-registry/src/services/pumpCalculator.ts`)
+   - Rewritten to mirror shared `pump-engine.ts` API exactly
+   - Same function signatures: `calculatePumpCost`, `compareSuppliers`, `calculateArrival`, `calculateOperation`, `calculateSurcharges`, `getDayType`
+   - Accurate Easter algorithm (Gauss) replaces hardcoded `MM-DD` holidays
+   - Adapter: converts flat JSON surcharge format (`saturday_pct`, `sunday_per_h`, flat) to structured `{model, value}`
+   - Backward compat: `getSuppliers()` preserved for `PumpRentalSection.tsx`
+   - TypeScript: both projects compile clean (tsc --noEmit)
 
-3. **Calendar Date Mapping** (integrated into PlannerPage)
-   - Start date picker converts work-day schedule to calendar dates
-   - Calendar Engine `addWorkDays()` maps Mon-Fri + Czech holidays
-   - Calendar banner: start/end dates with calendar day count
-   - Milestone table: each tact phase → calendar date ranges
-
-4. **Portal Breadcrumbs** (`Monolit-Planner/frontend/src/components/PortalBreadcrumb.tsx`)
-   - Detects `?portal_project=<id>` from Portal kiosk links
-   - Persists in localStorage, sticky back-link bar to Portal
-   - Integrated in all 4 Monolit pages: MainApp, PlannerPage, R0App, RegistryView
-
-5. **Portal Pump ServiceCard** — `pump-module` card updated: active, points to `/pump`
-
-### Previous Sessions (2026-03-06)
-- Session 2: Planner Core Engines (4 modules, 129 tests)
-- Session 1: Formwork refactor, Deep links, Write-backs, Product Vision
+### Previous Sessions (2026-03-07)
+- Session 3: PlannerPage, PumpCalculatorPage (Portal), PortalBreadcrumb, Calendar date mapping
+- Session 2 (2026-03-06): Planner Core Engines (4 modules, 129 tests)
+- Session 1 (2026-03-06): Formwork refactor, Deep links, Write-backs
 
 ---
 
@@ -48,7 +39,8 @@
 
 ```
 /                    → MainApp (positions table, KPI, import)
-/planner             → PlannerPage (planElement() orchestrator UI)  ← NEW
+/planner             → PlannerPage (planElement() orchestrator UI)
+/tariffs             → TariffPage (supplier tariff CRUD)  ← NEW
 /registry/:projectId → RegistryView (unified position browse)
 /r0/*                → R0App (deterministic core, elements/captures/schedule)
 ```
@@ -57,7 +49,7 @@
 
 ```
 /                    → PortalPage (services hub + project management)
-/pump                → PumpCalculatorPage (standalone pump calculator)  ← NEW
+/pump                → PumpCalculatorPage (standalone pump calculator)
 ```
 
 ---
@@ -68,8 +60,8 @@
 - [x] ~~Orchestrator UI~~ ✅ PlannerPage
 - [x] ~~Calendar display~~ ✅ Calendar dates in PlannerPage
 - [x] ~~Pump comparison~~ ✅ Standalone PumpCalculatorPage
-- [ ] **Tariff management** — simple CRUD UI for tariff entries
-- [ ] **Pump engine in Registry** — replace rozpocet-registry pumpCalculator.ts with shared engine
+- [x] ~~Tariff management~~ ✅ TariffPage with CRUD
+- [x] ~~Pump engine in Registry~~ ✅ Unified API, accurate Easter
 
 ### Priority 2: Cross-System
 - [x] ~~Breadcrumbs~~ ✅ PortalBreadcrumb component
@@ -93,7 +85,7 @@
 
 1. **Deploy Portal Backend** to Render (migrations auto-apply)
 2. **Deploy Portal Frontend** to Vercel (new /pump route)
-3. **Deploy Monolit Frontend** to Vercel (new /planner route + breadcrumbs)
+3. **Deploy Monolit Frontend** to Vercel (new /planner, /tariffs routes + breadcrumbs)
 4. **Environment Variables** on Render:
    - `PERPLEXITY_API_KEY` for concrete-agent
    - `OPENAI_API_KEY` for concrete-agent
@@ -121,23 +113,20 @@
 | **Monolit shared total** | **332** | **Pass** |
 | Monolit frontend TS | - | Compiles clean |
 | Portal frontend TS | - | Compiles clean |
+| Registry TS | - | Compiles clean |
 | URS Matcher | 159 | Pass |
-| rozpocet-registry TS | - | Compiles clean |
 | **Grand Total** | **491+** | **Pass** |
 
 ---
 
-## Commits This Session (2026-03-07)
+## Commits This Session (2026-03-07, Session 4)
 
 | # | Message | Files |
 |---|---------|-------|
-| 1 | FEAT: Add standalone Pump Calculator page for mobile field use | PumpCalculatorPage.tsx, App.tsx |
-| 2 | FEAT: Activate Pump Calculator service card in Portal | PortalPage.tsx |
-| 3 | FEAT: Add Planner page — interactive UI for planElement() orchestrator | PlannerPage.tsx, App.tsx, Sidebar.tsx |
-| 4 | FEAT: Add calendar date mapping to Planner schedule display | PlannerPage.tsx |
-| 5 | FEAT: Add Portal breadcrumb for cross-kiosk back-navigation | PortalBreadcrumb.tsx + 4 integrations |
+| 1 | FEAT: Add TariffPage — CRUD UI for supplier tariff management | TariffPage.tsx (NEW), App.tsx, Sidebar.tsx |
+| 2 | REFACTOR: Unify pump engine in registry — mirror shared pump-engine API | pumpCalculator.ts |
 
 ---
 
-**Version:** 2.3.0
+**Version:** 2.4.0
 **Last Updated:** 2026-03-07
