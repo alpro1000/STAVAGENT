@@ -143,6 +143,15 @@ const SERVICES: Service[] = [
     tags: ['Čerpadlo', 'Porovnání', 'Mobilní', 'Příplatky']
   },
   {
+    id: 'price-parser',
+    name: 'Ceníky dodavatelů',
+    description: 'Nahrajte PDF ceníky dodavatelů betonu → strukturovaná data. Batch upload pro srovnání více dodavatelů: betony, doprava, čerpadla, příplatky.',
+    icon: '📄',
+    url: '/price-parser',
+    status: 'active' as const,
+    tags: ['PDF', 'Ceník', 'Porovnání', 'Dodavatelé']
+  },
+  {
     id: 'formwork-calculator',
     name: 'Kalkulačka bednění',
     description: 'Specializovaná kalkulačka pro bednící systémy. Optimalizace spotřeby materiálu a nákladů.',
