@@ -10,6 +10,7 @@ import MainApp from './components/MainApp';
 import R0App from './components/r0/R0App';
 import PlannerPage from './pages/PlannerPage';
 import RegistryView from './pages/RegistryView';
+import TariffPage from './pages/TariffPage';
 import './styles/components.css';
 
 // Create QueryClient instance
@@ -50,6 +51,11 @@ function App() {
           <Route
             path="/planner"
             element={<PlannerPage />}
+          />
+          {/* Tariff Management */}
+          <Route
+            path="/tariffs"
+            element={<TariffPage />}
           />
           {/* R0 Deterministic Core */}
           <Route
