@@ -17,6 +17,7 @@
 import { useState, useMemo } from 'react';
 import {
   planElement,
+  addWorkDays,
   type PlannerInput,
   type PlannerOutput,
 } from '@stavagent/monolit-shared';
@@ -82,6 +83,7 @@ interface FormState {
   wage_czk_h: number;
   formwork_system_name: string; // empty = auto
   enable_monte_carlo: boolean;
+  start_date: string; // ISO date string for calendar mapping
 }
 
 const DEFAULT_FORM: FormState = {
@@ -108,6 +110,7 @@ const DEFAULT_FORM: FormState = {
   wage_czk_h: 398,
   formwork_system_name: '',
   enable_monte_carlo: false,
+  start_date: new Date().toISOString().split('T')[0],
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -118,6 +121,16 @@ function formatCZK(val: number): string {
 
 function formatNum(val: number, decimals = 1): string {
   return val.toLocaleString('cs-CZ', { maximumFractionDigits: decimals });
+}
+
+/** Map work-day range [start, end] to calendar date string */
+function formatWorkDayRange(baseDate: Date, range: [number, number]): string {
+  const fmt = (d: Date) => d.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'numeric' });
+  const startResult = addWorkDays(baseDate, Math.floor(range[0]));
+  const endResult = addWorkDays(baseDate, Math.ceil(range[1]));
+  const startStr = fmt(startResult.end_date);
+  const endStr = fmt(endResult.end_date);
+  return startStr === endStr ? startStr : `${startStr} – ${endStr}`;
 }
 
 // ─── Component ──────────────────────────────────────────────────────────────
@@ -342,6 +355,15 @@ export default function PlannerPage() {
               </>
             )}
 
+            <Field label="Datum zahájení" hint="pro kalendářní Gantt">
+              <input
+                type="date"
+                style={inputStyle}
+                value={form.start_date}
+                onChange={e => update('start_date', e.target.value)}
+              />
+            </Field>
+
             <Field label="Sezóna">
               <select
                 style={inputStyle}
@@ -469,7 +491,7 @@ export default function PlannerPage() {
         {/* RIGHT: Results */}
         <main style={{ flex: 1, overflowY: 'auto', padding: '20px 24px', background: 'var(--r0-slate-100)' }}>
           {plan ? (
-            <PlanResult plan={plan} showLog={showLog} onToggleLog={() => setShowLog(!showLog)} />
+            <PlanResult plan={plan} startDate={form.start_date} showLog={showLog} onToggleLog={() => setShowLog(!showLog)} />
           ) : (
             <div style={{ textAlign: 'center', paddingTop: 100, color: 'var(--r0-slate-400)' }}>
               <div style={{ fontSize: 48 }}>📐</div>
@@ -484,16 +506,32 @@ export default function PlannerPage() {
 
 // ─── Result Display ─────────────────────────────────────────────────────────
 
-function PlanResult({ plan, showLog, onToggleLog }: {
+function PlanResult({ plan, startDate, showLog, onToggleLog }: {
   plan: PlannerOutput;
+  startDate: string;
   showLog: boolean;
   onToggleLog: () => void;
 }) {
+  // Calendar date mapping
+  const calendarInfo = useMemo(() => {
+    if (!startDate) return null;
+    const start = new Date(startDate + 'T00:00:00');
+    if (isNaN(start.getTime())) return null;
+    const result = addWorkDays(start, plan.schedule.total_days);
+    return {
+      start,
+      end: result.end_date,
+      calendarDays: result.calendar_days,
+      formatDate: (d: Date) => d.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'short', year: 'numeric' }),
+      formatShort: (d: Date) => d.toLocaleDateString('cs-CZ', { day: 'numeric', month: 'numeric' }),
+    };
+  }, [startDate, plan.schedule.total_days]);
+
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
       {/* KPI Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
-        <KPICard label="Celkem dní" value={plan.schedule.total_days} unit="dní" color="var(--r0-blue)" />
+        <KPICard label="Celkem dní" value={plan.schedule.total_days} unit={calendarInfo ? `prac. dní (${calendarInfo.calendarDays} kal.)` : 'prac. dní'} color="var(--r0-blue)" />
         <KPICard label="Počet záběrů" value={plan.pour_decision.num_tacts} unit="taktů" color="var(--r0-orange)" />
         <KPICard label="Náklady práce" value={formatCZK(plan.costs.total_labor_czk)} color="var(--r0-green)" />
         <KPICard label="Úspora vs. sekvenční" value={plan.schedule.savings_pct + '%'} color={plan.schedule.savings_pct > 0 ? 'var(--r0-green)' : 'var(--r0-slate-400)'} />
@@ -574,11 +612,36 @@ function PlanResult({ plan, showLog, onToggleLog }: {
 
       {/* Schedule / Gantt */}
       <Card title="Harmonogram" icon="📅">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12, marginBottom: 12 }}>
-          <Row label="Celkem dní" value={plan.schedule.total_days.toString()} bold />
+        <div style={{ display: 'grid', gridTemplateColumns: calendarInfo ? '1fr 1fr 1fr 1fr' : '1fr 1fr 1fr', gap: 12, marginBottom: 12 }}>
+          <Row label="Celkem (prac.)" value={`${plan.schedule.total_days} dní`} bold />
           <Row label="Sekvenčně" value={`${plan.schedule.sequential_days} dní`} />
           <Row label="Úspora" value={`${plan.schedule.savings_pct}%`} bold />
+          {calendarInfo && (
+            <Row label="Kalendářně" value={`${calendarInfo.calendarDays} dní`} />
+          )}
         </div>
+
+        {/* Calendar dates banner */}
+        {calendarInfo && (
+          <div style={{
+            display: 'flex', gap: 16, padding: '10px 14px', marginBottom: 12,
+            background: 'var(--r0-slate-50)', borderRadius: 6,
+            border: '1px solid var(--r0-slate-200)', fontSize: 13,
+          }}>
+            <span>
+              <span style={{ color: 'var(--r0-slate-500)' }}>Zahájení: </span>
+              <strong>{calendarInfo.formatDate(calendarInfo.start)}</strong>
+            </span>
+            <span>
+              <span style={{ color: 'var(--r0-slate-500)' }}>Dokončení: </span>
+              <strong>{calendarInfo.formatDate(calendarInfo.end)}</strong>
+            </span>
+            <span style={{ color: 'var(--r0-slate-400)', fontSize: 12 }}>
+              (Prac. dní: Po-Pá, svátky ČR)
+            </span>
+          </div>
+        )}
+
         {plan.schedule.gantt && (
           <pre style={{
             background: 'var(--r0-slate-800)', color: '#e2e8f0',
@@ -587,6 +650,39 @@ function PlanResult({ plan, showLog, onToggleLog }: {
           }}>
             {plan.schedule.gantt}
           </pre>
+        )}
+
+        {/* Calendar timeline — map work-day milestones to dates */}
+        {calendarInfo && plan.schedule.tact_details && plan.schedule.tact_details.length > 0 && (
+          <div style={{ marginTop: 12 }}>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-600)', marginBottom: 8 }}>
+              Kalendářní milníky (záběry)
+            </div>
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', fontSize: 12, borderCollapse: 'collapse' }}>
+                <thead>
+                  <tr style={{ borderBottom: '2px solid var(--r0-slate-200)' }}>
+                    <th style={thStyle}>Záběr</th>
+                    <th style={thStyle}>Montáž</th>
+                    <th style={thStyle}>Beton</th>
+                    <th style={thStyle}>Zrání</th>
+                    <th style={thStyle}>Demontáž</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {plan.schedule.tact_details.map(td => (
+                    <tr key={td.tact} style={{ borderBottom: '1px solid var(--r0-slate-100)' }}>
+                      <td style={tdStyle}><strong>T{td.tact} (S{td.set})</strong></td>
+                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.assembly)}</td>
+                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.concrete)}</td>
+                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.curing)}</td>
+                      <td style={tdStyle}>{formatWorkDayRange(calendarInfo.start, td.stripping)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
         )}
       </Card>
 
@@ -738,4 +834,14 @@ const labelStyle: React.CSSProperties = {
 const subTitle: React.CSSProperties = {
   fontSize: 12, fontWeight: 600, color: 'var(--r0-slate-600)',
   marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.03em',
+};
+
+const thStyle: React.CSSProperties = {
+  textAlign: 'left', padding: '6px 8px', fontSize: 11,
+  color: 'var(--r0-slate-500)', fontWeight: 600,
+};
+
+const tdStyle: React.CSSProperties = {
+  padding: '5px 8px', fontSize: 12,
+  fontFamily: "'JetBrains Mono', monospace",
 };
