@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AppProvider } from './context/AppContext';
 import MainApp from './components/MainApp';
 import R0App from './components/r0/R0App';
+import PlannerPage from './pages/PlannerPage';
 import RegistryView from './pages/RegistryView';
 import './styles/components.css';
 
@@ -44,6 +45,11 @@ function App() {
                 <RegistryView />
               </AppProvider>
             }
+          />
+          {/* Planner - Element Planning Orchestrator */}
+          <Route
+            path="/planner"
+            element={<PlannerPage />}
           />
           {/* R0 Deterministic Core */}
           <Route
