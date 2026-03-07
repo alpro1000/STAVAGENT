@@ -193,8 +193,11 @@ interface PumpResult {
   reachM: number;
   billingModel: string;
   arrival: number;
+  arrivalDesc: string;
   operation: number;
+  operationDesc: string;
   surcharge: number;
+  surchargeDesc: string;
   total: number;
   perM3: number;
 }
@@ -211,13 +214,52 @@ function compareAll(
       const operation = calculateOperation(sup.billing_model, pump, hours, volume);
       const surcharge = calculateSurcharges(sup.surcharges, operation, hours, dayType, isNight);
       const total = arrival + operation + surcharge;
+
+      // Build human-readable formula descriptions
+      let arrivalDesc = '';
+      if (pump.arrival_fixed && pump.arrival_per_km) {
+        arrivalDesc = `${fmt(pump.arrival_fixed)} + ${distance} km × ${pump.arrival_per_km} Kč × 2`;
+      } else if (pump.arrival_per_km) {
+        arrivalDesc = `${distance} km × ${pump.arrival_per_km} Kč × 2`;
+      } else if (pump.arrival_fixed) {
+        arrivalDesc = `paušál ${fmt(pump.arrival_fixed)} Kč`;
+      }
+
+      let operationDesc = '';
+      if (sup.billing_model === 'hourly') {
+        operationDesc = `${hours} h × ${fmt(pump.operation_per_h ?? 0)} Kč/h`;
+      } else if (sup.billing_model === 'hourly_plus_m3') {
+        operationDesc = `${hours} h × ${fmt(pump.operation_per_h ?? 0)} Kč/h + ${volume} m³ × ${pump.volume_per_m3 ?? 0} Kč`;
+      } else if (sup.billing_model === 'per_15min') {
+        operationDesc = `${Math.ceil(hours * 4)} × 15min × ${fmt(pump.operation_per_15min ?? 0)} Kč`;
+      }
+
+      const surchargeItems: string[] = [];
+      if (dayType === 'saturday') {
+        if (sup.surcharges.saturday_pct) surchargeItems.push(`So +${sup.surcharges.saturday_pct}%`);
+        else if (sup.surcharges.saturday) surchargeItems.push(`So +${fmt(sup.surcharges.saturday)} Kč`);
+      }
+      if (dayType === 'sunday' || dayType === 'holiday') {
+        if (sup.surcharges.sunday_pct) surchargeItems.push(`Ne/svátek +${sup.surcharges.sunday_pct}%`);
+        else if (sup.surcharges.sunday_per_h) surchargeItems.push(`Ne ${hours}h × ${sup.surcharges.sunday_per_h} Kč/h`);
+        else if (sup.surcharges.sunday) surchargeItems.push(`Ne/svátek +${fmt(sup.surcharges.sunday)} Kč`);
+      }
+      if (isNight) {
+        if (sup.surcharges.night_pct) surchargeItems.push(`noc +${sup.surcharges.night_pct}%`);
+        else if (sup.surcharges.night_per_h) surchargeItems.push(`noc ${hours}h × ${sup.surcharges.night_per_h} Kč/h`);
+        else if (sup.surcharges.night) surchargeItems.push(`noc +${fmt(sup.surcharges.night)} Kč`);
+      }
+
       results.push({
         supplier: sup.name,
         supplierId: sup.id,
         pumpName: pump.name,
         reachM: pump.reach_m,
         billingModel: sup.billing_model === 'hourly' ? 'Kč/h' : sup.billing_model === 'per_15min' ? 'Kč/15min' : 'Kč/h + Kč/m³',
-        arrival, operation, surcharge, total,
+        arrival, arrivalDesc,
+        operation, operationDesc,
+        surcharge, surchargeDesc: surchargeItems.join(', '),
+        total,
         perM3: volume > 0 ? Math.round(total / volume) : 0,
       });
     }
@@ -428,6 +470,13 @@ const S = {
     fontWeight: 600,
     fontFamily: "'JetBrains Mono', monospace",
     background: 'rgba(0,0,0,0.06)',
+  } as React.CSSProperties,
+  formulaHint: {
+    gridColumn: '1 / -1',
+    fontSize: '11px',
+    color: 'var(--text-muted, #7A7D80)',
+    fontFamily: "'Inter', sans-serif",
+    marginBottom: '2px',
   } as React.CSSProperties,
   surchargeWarning: {
     display: 'inline-block',
@@ -732,8 +781,20 @@ export default function PumpCalculatorPage() {
                 <div style={S.costBreakdown}>
                   <span style={S.costLabel}>Příjezd</span>
                   <span style={S.costValue}>{fmt(r.arrival)} Kč</span>
+                  {r.arrivalDesc && (
+                    <>
+                      <span style={S.formulaHint}>{r.arrivalDesc}</span>
+                      <span />
+                    </>
+                  )}
                   <span style={S.costLabel}>Čerpání</span>
                   <span style={S.costValue}>{fmt(r.operation)} Kč</span>
+                  {r.operationDesc && (
+                    <>
+                      <span style={S.formulaHint}>{r.operationDesc}</span>
+                      <span />
+                    </>
+                  )}
                   {r.surcharge > 0 && (
                     <>
                       <span style={S.costLabel}>
@@ -741,6 +802,12 @@ export default function PumpCalculatorPage() {
                         <span style={S.surchargeWarning}>!</span>
                       </span>
                       <span style={{ ...S.costValue, color: '#c62828' }}>+{fmt(r.surcharge)} Kč</span>
+                      {r.surchargeDesc && (
+                        <>
+                          <span style={S.formulaHint}>{r.surchargeDesc}</span>
+                          <span />
+                        </>
+                      )}
                     </>
                   )}
                 </div>
