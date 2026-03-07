@@ -283,12 +283,10 @@ export function calculateFullCycleRentalDays(
   move_clean_days: number,
   rebar_overlap_days: number = 0,
 ): number {
-  // Rebar can partially overlap with assembly (SS lag in scheduler)
-  const effectiveRebarDays = Math.max(0, rebar_days - rebar_overlap_days);
-
-  // Critical path through the kit: ASM → (remaining REB) → CON → CUR → STR → MOVE
-  // But rebar and assembly can overlap, so we take max(assembly, rebar_with_lag)
-  const prepDays = Math.max(assembly_days, assembly_days * (rebar_overlap_days / Math.max(assembly_days, 0.01)) + rebar_days);
+  // Rebar has an SS lag: rebar_overlap_days = when rebar STARTS (days from project start)
+  // Rebar ends at: rebar_overlap_days + rebar_days
+  // Critical path: max(assembly end, rebar end)
+  const prepDays = Math.max(assembly_days, rebar_overlap_days + rebar_days);
 
   const fullCycle = prepDays + concrete_days + curing_days + stripping_days + move_clean_days;
 

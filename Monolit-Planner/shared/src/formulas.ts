@@ -220,13 +220,16 @@ export function calculateEstimatedMonths(
 
 /**
  * ⭐ Calculate duration in weeks
- * Formula: estimated_months × days_per_month / 7
+ * Formula:
+ *   days_per_month=30 (calendar days) → divide by 7 (calendar days/week)
+ *   days_per_month=22 (working days)  → divide by 5 (working days/week)
  */
 export function calculateEstimatedWeeks(
   estimated_months: number,
   days_per_month: number
 ): number {
-  return (estimated_months * days_per_month) / 7;
+  const days_per_week = days_per_month === 22 ? 5 : 7;
+  return (estimated_months * days_per_month) / days_per_week;
 }
 
 /**
