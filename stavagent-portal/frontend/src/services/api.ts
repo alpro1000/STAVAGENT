@@ -797,6 +797,90 @@ export const priceParserAPI = {
   },
 };
 
+// ============ Betonárny Discovery Types ============
+
+export interface GeoPoint {
+  lat: number;
+  lon: number;
+}
+
+export interface PlantContact {
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  price_list_url: string | null;
+}
+
+export interface ConcretePlant {
+  id: string;
+  name: string;
+  company: string | null;
+  address: string | null;
+  location: GeoPoint;
+  distance_km: number | null;
+  source: 'osm' | 'betonserver' | 'manual';
+  tags: Record<string, string>;
+  contact: PlantContact;
+  has_price_list: boolean;
+  price_range_note: string | null;
+}
+
+export interface PlantSearchResult {
+  plants: ConcretePlant[];
+  total: number;
+  sources_used: string[];
+}
+
+export interface ScrapeResult {
+  plants_found: number;
+  plants_new: number;
+  plants_updated: number;
+  errors: string[];
+}
+
+export const betonarnyAPI = {
+  /**
+   * Search for concrete plants near a GPS location
+   */
+  search: async (lat: number, lon: number, radius_km = 50, include_quarries = false): Promise<PlantSearchResult> => {
+    const response = await fetch(`${CORE_API_URL}/api/v1/betonarny/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lat, lon, radius_km, include_quarries }),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Search failed' }));
+      throw new Error(error.detail || `Search failed: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  /**
+   * Admin: scrape BetonServer.cz for new plant listings
+   */
+  scrape: async (region?: string, max_pages = 5): Promise<ScrapeResult> => {
+    const response = await fetch(`${CORE_API_URL}/api/v1/betonarny/scrape`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ region, max_pages }),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Scrape failed' }));
+      throw new Error(error.detail || `Scrape failed: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  /**
+   * Get cached plants from previous scraping
+   */
+  getCache: async (): Promise<{ plants: ConcretePlant[]; total: number }> => {
+    const response = await fetch(`${CORE_API_URL}/api/v1/betonarny/cache`);
+    if (!response.ok) throw new Error('Failed to load cache');
+    return response.json();
+  },
+};
+
 // Helper exports for convenience
 export const createBridge = bridgesAPI.create;
 export const deleteBridge = bridgesAPI.delete;

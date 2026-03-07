@@ -152,6 +152,15 @@ const SERVICES: Service[] = [
     tags: ['PDF', 'Ceník', 'Porovnání', 'Dodavatelé']
   },
   {
+    id: 'betonarny',
+    name: 'Betonárny v okolí',
+    description: 'Najděte betonárny v okolí stavby. Vyhledávání přes OpenStreetMap + BetonServer.cz s řazením podle vzdálenosti.',
+    icon: '🏭',
+    url: '/betonarny',
+    status: 'active' as const,
+    tags: ['Mapa', 'Dodavatelé', 'Vzdálenost', 'OSM']
+  },
+  {
     id: 'formwork-calculator',
     name: 'Kalkulačka bednění',
     description: 'Specializovaná kalkulačka pro bednící systémy. Optimalizace spotřeby materiálu a nákladů.',
