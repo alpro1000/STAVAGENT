@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.2.0
-**Last Updated:** 2026-03-06
+**Version:** 2.3.0
+**Last Updated:** 2026-03-07
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,8 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-07 | concrete-agent | PDF Price Parser: 17 files, 7 section parsers (betony/doprava/cerpadla/priplatky/laborator/malty/source), regex+LLM, API endpoint, 21 tests | ✅ Pushed |
+| 2026-03-07 | Monolit + Portal | PlannerPage UI, PumpCalculatorPage, Calendar dates, PortalBreadcrumb, 332 shared tests | ✅ Pushed |
 | 2026-03-06 | Monolit-Planner | Formwork refactor: consolidate curing/strategies/norms into shared, ceil() work days fix, curing transfer to beton row | ✅ Pushed |
 | 2026-03-06 | Monolit shared | PERT 3-point estimation + Concrete maturity model (ČSN EN 13670) — 41 new tests, Monte Carlo, scheduler integration | ✅ Pushed |
 | 2026-03-06 | Monolit frontend | MaturityConfigPanel UI — concrete class/cement/month picker, integrated into FormworkCalculatorModal | ✅ Pushed |
@@ -200,6 +202,7 @@ POST /api/v1/accumulator/generate-summary ← LLM summary
 GET  /api/v1/accumulator/projects/{id}/export/excel ← Excel export
 GET  /api/v1/accumulator/projects/{id}/export/pdf   ← PDF export
 GET  /api/v1/google/auth               ← Google Drive OAuth2
+POST /api/v1/price-parser/parse         ← PDF price list → structured JSON
 GET  /health                           ← Health check
 ```
 
@@ -215,6 +218,7 @@ GET  /health                           ← Health check
 - `packages/core-backend/app/services/brief_summarizer.py` - Quick document summaries (2-3s vs 300s passport)
 - `packages/core-backend/app/core/config.py` - Configuration
 - `packages/core-backend/app/core/kb_loader.py` - Knowledge base loader (optimized, MinerU-ready)
+- `packages/core-backend/app/services/price_parser/` - PDF price list parser (7 section parsers, 21 tests)
 
 ---
 
@@ -873,6 +877,8 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
+| 2026-03-07 | concrete-agent | PDF Price Parser module: 17 files, pdfplumber+OCR extractor, LLM classifier, 7 section parsers (regex+LLM), Pydantic models, API endpoint, 21 tests | 1 |
+| 2026-03-07 | Monolit + Portal | PlannerPage (orchestrator UI), PumpCalculatorPage (mobile), Calendar date mapping, PortalBreadcrumb, ServiceCard activation | 5 |
 | 2026-03-06 | Monolit + Registry + Portal | PERT/Maturity modules (41 tests), MaturityConfigPanel UI, Backend sync layer (localStorage↔PostgreSQL), bulk items endpoint, Portal cleanup | 8 |
 | 2026-03-04 | Monolit + Registry | Weeks 7-9: Conflict Resolution UI (manual AMBER/RED matching) + Week 6: Bulk selection, advanced filters, sorting | 4 |
 | 2026-03-03 | Monolit-Planner | Unified Registry Frontend (Weeks 5-6): RegistryView, sidebar routing, CSV export, cross-kiosk nav, sorting (93%) | 20+ |
@@ -908,5 +914,5 @@ rozpocet-registry/
 
 ---
 
-**Last Updated:** 2026-03-06
+**Last Updated:** 2026-03-07
 **Maintained By:** Development Team
