@@ -9,6 +9,7 @@ import Header from './Header';
 import Sidebar from './Sidebar';
 import KPIPanel from './KPIPanel';
 import PositionsTable from './PositionsTable';
+import PortalBreadcrumb from './PortalBreadcrumb';
 import { useDarkMode } from '../hooks/useDarkMode';
 import { useAppContext } from '../context/AppContext';
 import { API_URL } from '../services/api';
@@ -207,6 +208,7 @@ export default function MainApp() {
 
   return (
     <div className="app">
+      <PortalBreadcrumb />
       <Header
         isDark={isDark}
         toggleTheme={toggleTheme}

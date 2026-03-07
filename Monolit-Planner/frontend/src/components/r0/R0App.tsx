@@ -15,6 +15,7 @@ import ProjectsList from './ProjectsList';
 import ElementsTable from './ElementsTable';
 import CapturesPanel from './CapturesPanel';
 import ScheduleView from './ScheduleView';
+import PortalBreadcrumb from '../PortalBreadcrumb';
 import '../../styles/r0.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
@@ -113,6 +114,7 @@ export default function R0App() {
 
   return (
     <div className="r0-app">
+      <PortalBreadcrumb />
       {/* Header */}
       <header className="r0-header">
         <div className="r0-header-left">
