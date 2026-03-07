@@ -12,9 +12,9 @@
  * No auth required, public page.
  */
 
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Upload, ArrowLeft, Trash2, FileText, Loader2, AlertTriangle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Upload, ArrowLeft, Trash2, FileText, Loader2, AlertTriangle, ChevronDown, ChevronUp, Calculator, Download } from 'lucide-react';
 import { priceParserAPI, type PriceListResult, type BetonItem } from '../services/api';
 
 // ─── Types ──────────────────────────────────────────────────────────────────
@@ -85,6 +85,161 @@ export default function PriceParserPage() {
     malty: false,
     laborator: false,
   });
+
+  // Calculator state
+  const [calcVolume, setCalcVolume] = useState<number>(30);
+  const [calcDistance, setCalcDistance] = useState<number>(15);
+  const [calcBetonClass, setCalcBetonClass] = useState<string>('');
+  const [showCalculator, setShowCalculator] = useState(false);
+  const [savedMessage, setSavedMessage] = useState<string | null>(null);
+
+  // Available beton classes from all suppliers
+  const availableBetonClasses = useMemo(() => collectBetonTypes(suppliers), [suppliers]);
+
+  // Auto-select first beton class
+  useMemo(() => {
+    if (availableBetonClasses.length > 0 && !calcBetonClass) {
+      // Default to C25/30 if available, otherwise first
+      const preferred = availableBetonClasses.find(b => b.includes('25/30'));
+      setCalcBetonClass(preferred || availableBetonClasses[0]);
+    }
+  }, [availableBetonClasses, calcBetonClass]);
+
+  // Calculate total cost per supplier
+  const calcResults = useMemo(() => {
+    if (suppliers.length === 0 || !calcBetonClass) return [];
+
+    return suppliers.map((s, idx) => {
+      // 1. Concrete price
+      const beton = findBeton(s.result.betony, calcBetonClass);
+      const betonPrice = beton?.price_per_m3 ?? 0;
+      const betonTotal = betonPrice * calcVolume;
+
+      // 2. Delivery price (find matching zone)
+      let deliveryPrice = 0;
+      for (const z of s.result.doprava.zony) {
+        if (calcDistance >= z.km_from && calcDistance <= z.km_to) {
+          deliveryPrice = z.price_per_m3;
+          break;
+        }
+      }
+      const deliveryTotal = deliveryPrice * calcVolume;
+
+      // 3. Pump price (estimate: use first pump type)
+      const pump = s.result.cerpadla[0];
+      let pumpTotal = 0;
+      if (pump) {
+        const arrival = pump.pristaveni ?? 0;
+        const hourly = pump.hodinova_sazba ?? 0;
+        const perM3 = pump.cena_per_m3 ?? 0;
+        // Estimate: ~25 m³/h practical rate → hours needed
+        const pumpHours = Math.max(2, Math.ceil(calcVolume / 25));
+        pumpTotal = arrival + (hourly * pumpHours) + (perM3 * calcVolume);
+      }
+
+      const total = betonTotal + deliveryTotal + pumpTotal;
+      const perM3 = calcVolume > 0 ? total / calcVolume : 0;
+
+      return {
+        supplier: s,
+        supplierIdx: idx,
+        betonPrice,
+        betonTotal,
+        deliveryPrice,
+        deliveryTotal,
+        pumpTotal,
+        pumpName: pump?.type || '—',
+        total,
+        perM3,
+      };
+    }).sort((a, b) => a.total - b.total);
+  }, [suppliers, calcVolume, calcDistance, calcBetonClass]);
+
+  // Export tariffs as JSON (for Monolit import)
+  const exportTariffs = useCallback(() => {
+    if (suppliers.length === 0) return;
+
+    const todayStr = new Date().toISOString().slice(0, 10);
+    const entries = suppliers.flatMap(s => {
+      const label = supplierLabel(s);
+      const supplierId = label.toLowerCase().replace(/\s+/g, '_').replace(/[^a-z0-9_]/g, '');
+
+      const result: Array<Record<string, unknown>> = [];
+
+      // Concrete tariff
+      if (s.result.betony.length > 0) {
+        result.push({
+          id: `${supplierId}_concrete_${todayStr}`,
+          supplier_id: supplierId,
+          supplier_name: label,
+          service: 'concrete',
+          valid_from: s.result.source.valid_from || todayStr,
+          valid_to: s.result.source.valid_to || '9999-12-31',
+          source: 'price_list',
+          rates: s.result.betony.map(b => ({
+            key: normalizeBeton(b.name).replace('/', '_') + '_per_m3',
+            value: b.price_per_m3 ?? 0,
+            unit: 'CZK/m³',
+            note: b.exposure_class || undefined,
+          })),
+        });
+      }
+
+      // Transport tariff
+      if (s.result.doprava.zony.length > 0) {
+        result.push({
+          id: `${supplierId}_transport_${todayStr}`,
+          supplier_id: supplierId,
+          supplier_name: label,
+          service: 'transport',
+          valid_from: s.result.source.valid_from || todayStr,
+          valid_to: s.result.source.valid_to || '9999-12-31',
+          source: 'price_list',
+          rates: s.result.doprava.zony.map(z => ({
+            key: `zone_${z.km_from}_${z.km_to}_per_m3`,
+            value: z.price_per_m3,
+            unit: 'CZK/m³',
+            note: `${z.km_from}–${z.km_to} km`,
+          })),
+        });
+      }
+
+      // Pump tariff
+      if (s.result.cerpadla.length > 0) {
+        result.push({
+          id: `${supplierId}_pump_${todayStr}`,
+          supplier_id: supplierId,
+          supplier_name: label,
+          service: 'pump',
+          valid_from: s.result.source.valid_from || todayStr,
+          valid_to: s.result.source.valid_to || '9999-12-31',
+          source: 'price_list',
+          rates: s.result.cerpadla.flatMap(c => {
+            const rates: Array<{ key: string; value: number; unit: string; note?: string }> = [];
+            const prefix = c.type.replace(/\s+/g, '_').toLowerCase();
+            if (c.pristaveni) rates.push({ key: `${prefix}_arrival`, value: c.pristaveni, unit: 'CZK', note: c.type });
+            if (c.hodinova_sazba) rates.push({ key: `${prefix}_per_h`, value: c.hodinova_sazba, unit: 'CZK/h', note: c.type });
+            if (c.cena_per_m3) rates.push({ key: `${prefix}_per_m3`, value: c.cena_per_m3, unit: 'CZK/m³', note: c.type });
+            return rates;
+          }),
+        });
+      }
+
+      return result;
+    });
+
+    const registry = { entries, base_year: new Date().getFullYear() };
+    const blob = new Blob([JSON.stringify(registry, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `tarify_dodavatelu_${todayStr}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    setSavedMessage('Tarify exportovány jako JSON');
+    setTimeout(() => setSavedMessage(null), 3000);
+  }, [suppliers]);
 
   // Handlers
   const toggleSection = (key: string) => {
@@ -354,6 +509,233 @@ export default function PriceParserPage() {
               >
                 Vymazat vše
               </button>
+            )}
+          </div>
+        )}
+
+        {/* Calculator Panel */}
+        {suppliers.length > 0 && (
+          <div style={{
+            background: 'var(--bg-secondary, white)',
+            borderRadius: 8,
+            border: '2px solid var(--brand-orange, #FF9F1C)',
+            marginBottom: 24,
+            overflow: 'hidden',
+          }}>
+            <button
+              onClick={() => setShowCalculator(prev => !prev)}
+              style={{
+                width: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '14px 16px',
+                background: 'linear-gradient(135deg, #FF9F1C 0%, #e88b0e 100%)',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 15,
+                fontWeight: 700,
+                color: 'white',
+                textAlign: 'left',
+              }}
+            >
+              <Calculator size={18} />
+              <span style={{ flex: 1 }}>Kalkulovat ceny — celkový náklad na dodávku betonu</span>
+              {showCalculator ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+            </button>
+
+            {showCalculator && (
+              <div style={{ padding: 16 }}>
+                {/* Inputs */}
+                <div style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                  gap: 16,
+                  marginBottom: 20,
+                }}>
+                  <label style={{ fontSize: 13 }}>
+                    <span style={{ fontWeight: 600, display: 'block', marginBottom: 4 }}>Objem (m³)</span>
+                    <input
+                      type="number"
+                      value={calcVolume}
+                      onChange={e => setCalcVolume(Math.max(1, Number(e.target.value) || 1))}
+                      min={1}
+                      style={{
+                        width: '100%',
+                        padding: '8px 12px',
+                        border: '1px solid var(--border-color, #ccc)',
+                        borderRadius: 6,
+                        fontSize: 14,
+                      }}
+                    />
+                  </label>
+                  <label style={{ fontSize: 13 }}>
+                    <span style={{ fontWeight: 600, display: 'block', marginBottom: 4 }}>Vzdálenost (km)</span>
+                    <input
+                      type="number"
+                      value={calcDistance}
+                      onChange={e => setCalcDistance(Math.max(0, Number(e.target.value) || 0))}
+                      min={0}
+                      style={{
+                        width: '100%',
+                        padding: '8px 12px',
+                        border: '1px solid var(--border-color, #ccc)',
+                        borderRadius: 6,
+                        fontSize: 14,
+                      }}
+                    />
+                  </label>
+                  <label style={{ fontSize: 13 }}>
+                    <span style={{ fontWeight: 600, display: 'block', marginBottom: 4 }}>Třída betonu</span>
+                    <select
+                      value={calcBetonClass}
+                      onChange={e => setCalcBetonClass(e.target.value)}
+                      style={{
+                        width: '100%',
+                        padding: '8px 12px',
+                        border: '1px solid var(--border-color, #ccc)',
+                        borderRadius: 6,
+                        fontSize: 14,
+                        background: 'white',
+                      }}
+                    >
+                      {availableBetonClasses.map(cls => (
+                        <option key={cls} value={cls}>{cls}</option>
+                      ))}
+                    </select>
+                  </label>
+                </div>
+
+                {/* Results table */}
+                {calcResults.length > 0 && (
+                  <table style={TABLE_STYLE}>
+                    <thead>
+                      <tr>
+                        <th style={TH_STYLE}>Dodavatel</th>
+                        <th style={{ ...TH_STYLE, textAlign: 'right' }}>Beton ({calcBetonClass})</th>
+                        <th style={{ ...TH_STYLE, textAlign: 'right' }}>Doprava ({calcDistance} km)</th>
+                        <th style={{ ...TH_STYLE, textAlign: 'right' }}>Čerpadlo</th>
+                        <th style={{ ...TH_STYLE, textAlign: 'right', fontWeight: 700 }}>Celkem</th>
+                        <th style={{ ...TH_STYLE, textAlign: 'right', fontWeight: 700 }}>Kč/m³</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {calcResults.map((r, idx) => {
+                        const isMin = idx === 0 && calcResults.length > 1;
+                        return (
+                          <tr key={r.supplier.id} style={{
+                            background: isMin ? '#f0fdf4' : undefined,
+                          }}>
+                            <td style={{
+                              ...TD_STYLE,
+                              fontWeight: 600,
+                              color: SUPPLIER_COLORS[r.supplierIdx % SUPPLIER_COLORS.length].text,
+                            }}>
+                              {supplierLabel(r.supplier)}
+                              {isMin && <span style={{
+                                marginLeft: 8,
+                                fontSize: 10,
+                                background: '#059669',
+                                color: 'white',
+                                padding: '2px 6px',
+                                borderRadius: 10,
+                                fontWeight: 600,
+                              }}>NEJLEVNĚJŠÍ</span>}
+                            </td>
+                            <td style={{ ...TD_STYLE, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+                              <div>{formatPrice(r.betonTotal)}</div>
+                              <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{formatPrice(r.betonPrice)}/m³</div>
+                            </td>
+                            <td style={{ ...TD_STYLE, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+                              <div>{formatPrice(r.deliveryTotal)}</div>
+                              <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{formatPrice(r.deliveryPrice)}/m³</div>
+                            </td>
+                            <td style={{ ...TD_STYLE, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>
+                              <div>{formatPrice(r.pumpTotal)}</div>
+                              <div style={{ fontSize: 11, color: 'var(--text-secondary)' }}>{r.pumpName}</div>
+                            </td>
+                            <td style={{
+                              ...TD_STYLE,
+                              textAlign: 'right',
+                              fontWeight: 700,
+                              fontSize: 15,
+                              fontVariantNumeric: 'tabular-nums',
+                              color: isMin ? '#059669' : 'var(--text-primary)',
+                            }}>
+                              {formatPrice(r.total)}
+                            </td>
+                            <td style={{
+                              ...TD_STYLE,
+                              textAlign: 'right',
+                              fontWeight: 700,
+                              fontVariantNumeric: 'tabular-nums',
+                              color: isMin ? '#059669' : 'var(--text-primary)',
+                            }}>
+                              {formatPrice(r.perM3)}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                )}
+
+                {/* Export + savings info */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginTop: 16,
+                  flexWrap: 'wrap',
+                  gap: 12,
+                }}>
+                  {calcResults.length > 1 && (() => {
+                    const saving = calcResults[calcResults.length - 1].total - calcResults[0].total;
+                    return saving > 0 ? (
+                      <span style={{
+                        fontSize: 13,
+                        color: '#059669',
+                        fontWeight: 600,
+                      }}>
+                        Úspora výběrem nejlevnějšího: {formatPrice(saving)} ({Math.round(saving / calcResults[calcResults.length - 1].total * 100)}%)
+                      </span>
+                    ) : null;
+                  })()}
+                  <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
+                    <button
+                      onClick={exportTariffs}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 6,
+                        padding: '8px 16px',
+                        background: 'var(--bg-primary, #f3f4f6)',
+                        border: '1px solid var(--border-color, #ccc)',
+                        borderRadius: 6,
+                        fontSize: 13,
+                        cursor: 'pointer',
+                        fontWeight: 500,
+                      }}
+                    >
+                      <Download size={14} /> Export tarifů (JSON)
+                    </button>
+                  </div>
+                </div>
+
+                {savedMessage && (
+                  <div style={{
+                    marginTop: 8,
+                    padding: '8px 12px',
+                    background: '#d1fae5',
+                    color: '#065f46',
+                    borderRadius: 6,
+                    fontSize: 13,
+                    fontWeight: 500,
+                  }}>
+                    {savedMessage}
+                  </div>
+                )}
+              </div>
             )}
           </div>
         )}
