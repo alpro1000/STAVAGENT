@@ -22,6 +22,7 @@ from app.api.routes_google import router as google_router
 from app.api.routes_passport import router as passport_router
 from app.api.routes_kb_research import router as kb_research_router
 from app.api.routes_price_parser import router as price_parser_router
+from app.api.routes_betonarny_discovery import router as betonarny_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -42,5 +43,6 @@ api_router.include_router(google_router)          # /api/v1/google/* (Google Dri
 api_router.include_router(passport_router)        # /api/v1/passport/* (Project Passport)
 api_router.include_router(kb_research_router)     # /api/v1/kb/* (KB Research)
 api_router.include_router(price_parser_router)    # /api/v1/price-parser/* (Price List Parser)
+api_router.include_router(betonarny_router)       # /api/v1/betonarny/* (Betonárny Discovery)
 
 __all__ = ["api_router"]

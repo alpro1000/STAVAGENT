@@ -18,6 +18,7 @@ import DocumentUploadPage from './pages/DocumentUploadPage';
 import PortalPage from './pages/PortalPage';
 import PumpCalculatorPage from './pages/PumpCalculatorPage';
 import PriceParserPage from './pages/PriceParserPage';
+import BetonarnyPage from './pages/BetonarnyPage';
 import LandingPage from './pages/LandingPage';
 import './styles/components.css';
 
@@ -55,6 +56,9 @@ function App() {
 
             {/* Price Parser - supplier price list comparison (no auth) */}
             <Route path="/price-parser" element={<PriceParserPage />} />
+
+            {/* Betonárny Discovery - find concrete plants near location (no auth) */}
+            <Route path="/betonarny" element={<BetonarnyPage />} />
 
             {/* Protected routes */}
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
