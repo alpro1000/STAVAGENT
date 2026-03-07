@@ -24,6 +24,7 @@ import {
 import { FORMWORK_SYSTEMS } from '@stavagent/monolit-shared';
 import type { StructuralElementType, SeasonMode } from '@stavagent/monolit-shared';
 import type { ConcreteClass, CementType } from '@stavagent/monolit-shared';
+import PortalBreadcrumb from '../components/PortalBreadcrumb';
 import '../styles/r0.css';
 
 // ─── Element type labels ────────────────────────────────────────────────────
@@ -220,6 +221,7 @@ export default function PlannerPage() {
 
   return (
     <div className="r0-app">
+      <PortalBreadcrumb />
       {/* Header */}
       <header className="r0-header">
         <div className="r0-header-left">

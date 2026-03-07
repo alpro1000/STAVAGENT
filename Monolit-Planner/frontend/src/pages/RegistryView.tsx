@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { getProjectPositions, PositionInstance } from '../api/registryApi';
 import UnifiedPositionModal from '../components/UnifiedPositionModal';
+import PortalBreadcrumb from '../components/PortalBreadcrumb';
 
 export default function RegistryView() {
   const { projectId } = useParams<{ projectId: string }>();
@@ -65,6 +66,8 @@ export default function RegistryView() {
   );
 
   return (
+    <>
+    <PortalBreadcrumb />
     <div className="c-panel" style={{ margin: '24px', padding: '24px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
         <Link to="/" className="c-btn c-btn--sm" style={{ textDecoration: 'none' }}>← Zpět</Link>
@@ -260,5 +263,6 @@ export default function RegistryView() {
         />
       )}
     </div>
+    </>
   );
 }
