@@ -1,14 +1,35 @@
-# NEXT SESSION - Price Parser Module Complete
+# NEXT SESSION — Tariff UI + Pump Unification Complete
 
 **Date:** 2026-03-07
-**Branch:** `claude/review-next-session-Zjn4C`
-**Status:** Price Parser module implemented (17 files, 1306 lines, 21 tests)
+**Branch:** `claude/review-session-notes-bODxv`
+**Status:** Session 5 complete — Tariff CRUD UI + Pump engine unification. 332 shared tests + 21 price parser tests pass.
 
 ---
 
-## What Was Done (2026-03-07, Session 4)
+## What Was Done (2026-03-07, Session 5)
 
-### PDF Price List Parser (`concrete-agent`)
+2 features implemented:
+
+1. **TariffPage** (`Monolit-Planner/frontend/src/pages/TariffPage.tsx`)
+   - New page at `/tariffs` — CRUD UI for supplier tariff management
+   - View tariffs grouped by service type (pump/beton/bednění/doprava/jeřáb)
+   - Add new tariff entry with multiple rates (key/value/unit/note)
+   - Auto-closes overlapping active entries (`addTariff` logic from shared)
+   - Price change indicators (▲/▼ %) current vs previous version
+   - Tariff history per supplier (collapsible)
+   - localStorage persistence (`monolit-tariff-registry`)
+   - Navigation: "💰 Tarify" button added to Sidebar Nástroje section
+   - Maршрут `/tariffs` добавлен в `App.tsx`
+
+2. **Pump Engine Unification** (`rozpocet-registry/src/services/pumpCalculator.ts`)
+   - Rewritten to mirror shared `pump-engine.ts` API exactly
+   - Same function signatures: `calculatePumpCost`, `compareSuppliers`, `calculateArrival`, `calculateOperation`, `calculateSurcharges`, `getDayType`
+   - Accurate Easter algorithm (Gauss) replaces hardcoded `MM-DD` holidays
+   - Adapter: converts flat JSON surcharge format (`saturday_pct`, `sunday_per_h`, flat) to structured `{model, value}`
+   - Backward compat: `getSuppliers()` preserved for `PumpRentalSection.tsx`
+   - TypeScript: both projects compile clean
+
+### Session 4 (2026-03-07) — PDF Price Parser (`concrete-agent`)
 Complete module for parsing concrete supplier PDF price lists into structured JSON.
 
 **Pipeline:** `PDF → pdfplumber extract → LLM classify blocks → parse 7 sections → Pydantic validate → JSON`
@@ -52,6 +73,23 @@ concrete-agent/packages/core-backend/tests/test_price_parser.py      — 21 test
 
 ---
 
+## Architecture: Monolit Frontend Pages
+
+```
+/                    → MainApp (positions table, KPI, import)
+/planner             → PlannerPage (planElement() orchestrator UI)
+/tariffs             → TariffPage (supplier tariff CRUD)  ← NEW (session 5)
+/registry/:projectId → RegistryView (unified position browse)
+/r0/*                → R0App (deterministic core, elements/captures/schedule)
+```
+
+## Architecture: Portal Pages
+
+```
+/                    → PortalPage (services hub + project management)
+/pump                → PumpCalculatorPage (standalone pump calculator)
+```
+
 ## Architecture: Price Parser in CORE
 
 ```
@@ -94,8 +132,8 @@ models.py → Pydantic validation → PriceListResult JSON
 - [ ] **Price comparison table** — side-by-side supplier comparison
 
 ### Priority 2: Remaining UI
-- [ ] **Tariff management** — simple CRUD UI for tariff entries
-- [ ] **Pump engine in Registry** — replace rozpocet-registry pumpCalculator.ts with shared engine
+- [x] ~~Tariff management~~ ✅ TariffPage with CRUD (session 5)
+- [x] ~~Pump engine in Registry~~ ✅ Unified API, accurate Easter (session 5)
 
 ### Priority 3: Cross-System
 - [ ] Template application workflow testing
@@ -117,9 +155,10 @@ models.py → Pydantic validation → PriceListResult JSON
 ## User Action Required (Deploy)
 
 1. **Deploy concrete-agent** to Render (new `/api/v1/price-parser/parse` endpoint)
-2. **Deploy Portal Frontend** to Vercel (new /pump route from session 3)
-3. **Deploy Monolit Frontend** to Vercel (new /planner route from session 3)
-4. **Environment Variables** on Render:
+2. **Deploy Portal Backend** to Render (migrations auto-apply)
+3. **Deploy Portal Frontend** to Vercel (new /pump route)
+4. **Deploy Monolit Frontend** to Vercel (new /planner, /tariffs routes + breadcrumbs)
+5. **Environment Variables** on Render:
    - `PERPLEXITY_API_KEY` for concrete-agent
    - `OPENAI_API_KEY` for concrete-agent
    - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB
@@ -138,20 +177,29 @@ models.py → Pydantic validation → PriceListResult JSON
 | Element Classifier | 26 | Pass |
 | Tariff Versioning | 24 | Pass |
 | Pour Decision | 22 | Pass |
-| **Price Parser** | **21** | **Pass** |
+| Price Parser (CORE) | 21 | Pass |
 | Concrete Maturity | 21 | Pass |
 | PERT estimation | 20 | Pass |
 | Pour Task Engine | 14 | Pass |
 | Rebar Lite | 10 | Pass |
 | Formwork 3-Phase | 8 | Pass |
 | **Monolit shared total** | **332** | **Pass** |
-| **Price Parser (CORE)** | **21** | **Pass** |
+| Monolit frontend TS | - | Compiles clean |
+| Portal frontend TS | - | Compiles clean |
+| Registry TS | - | Compiles clean |
 | URS Matcher | 159 | Pass |
 | **Grand Total** | **512+** | **Pass** |
 
 ---
 
-## Commits This Session (2026-03-07, Session 4)
+## Commits This Session (2026-03-07, Session 5)
+
+| # | Message | Files |
+|---|---------|-------|
+| 1 | FEAT: Add TariffPage — CRUD UI for supplier tariff management | TariffPage.tsx (NEW), App.tsx, Sidebar.tsx |
+| 2 | REFACTOR: Unify pump engine in registry — mirror shared pump-engine API | pumpCalculator.ts |
+
+## Commits Session 4 (2026-03-07)
 
 | # | Message | Files |
 |---|---------|-------|
@@ -165,7 +213,7 @@ models.py → Pydantic validation → PriceListResult JSON
 # Start concrete-agent (CORE) — includes price parser
 cd concrete-agent && npm run dev:backend
 
-# Test price parser (locally)
+# Test price parser
 cd concrete-agent/packages/core-backend
 PYTHONPATH=. python -m pytest tests/test_price_parser.py -v
 
@@ -173,12 +221,11 @@ PYTHONPATH=. python -m pytest tests/test_price_parser.py -v
 curl -X POST http://localhost:8000/api/v1/price-parser/parse \
   -F "file=@cenik_beton.pdf"
 
-# Parse a PDF (Python)
-# from app.services.price_parser import parse_price_list
-# result = await parse_price_list("./ceniky/beton_union.pdf")
+# Run Monolit shared tests (332 tests)
+cd Monolit-Planner && npx vitest run
 ```
 
 ---
 
-**Version:** 2.4.0
+**Version:** 2.5.0
 **Last Updated:** 2026-03-07

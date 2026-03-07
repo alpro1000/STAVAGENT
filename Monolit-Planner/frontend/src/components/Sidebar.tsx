@@ -689,8 +689,12 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
               >
                 📊 Historie
               </button>
-              <button className="c-btn c-btn--sm" disabled title="Připravujeme">
-                ⚙️ Nastavení
+              <button
+                className="c-btn c-btn--sm"
+                onClick={() => window.location.href = '/tariffs'}
+                title="Správa tarifů dodavatelů (čerpadla, beton, bednění)"
+              >
+                💰 Tarify
               </button>
             </div>
           </div>
