@@ -33,6 +33,7 @@ export default function PositionsTable() {
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
   const [showFormworkCalc, setShowFormworkCalc] = useState(false);
   const [formworkCalcPartName, setFormworkCalcPartName] = useState<string | null>(null);
+  const [formworkCalcElementDays, setFormworkCalcElementDays] = useState<number>(0);
 
   // Resizable column state
   const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
@@ -553,6 +554,7 @@ export default function PositionsTable() {
                   }
                   onOpenFormworkCalculator={() => {
                     setFormworkCalcPartName(partName);
+                    setFormworkCalcElementDays(calculateElementTotalDays(partPositions));
                     setShowFormworkCalc(true);
                   }}
                   isLocked={isLocked}
@@ -703,10 +705,13 @@ export default function PositionsTable() {
         <FormworkCalculatorModal
           bridgeId={selectedBridge}
           partNames={Object.keys(groupedPositions)}
+          currentPartName={formworkCalcPartName}
+          elementTotalDays={formworkCalcElementDays}
           onTransfer={(rows) => handleFormworkTransfer(rows, formworkCalcPartName)}
           onClose={() => {
             setShowFormworkCalc(false);
             setFormworkCalcPartName(null);
+            setFormworkCalcElementDays(0);
           }}
         />
       )}

@@ -1,46 +1,56 @@
-# NEXT SESSION — Price Parser Integration Complete
+# NEXT SESSION — Session 8 Complete
 
-**Date:** 2026-03-07
+**Date:** 2026-03-08
 **Branch:** `claude/price-parser-integration-jeClp`
-**Status:** Session 7 complete — Price Parser UI + batch comparison + service registration.
+**Status:** Session 8 complete — Betonárny discovery, AWS Bedrock, Objednávka betonu, Universal Parser pipeline, curing days fix.
 
 ---
 
-## What Was Done (2026-03-07, Session 7)
+## What Was Done (2026-03-08, Session 8)
 
-### Price Parser Integration (Portal)
+### 1. Betonárny Discovery — GPS-based concrete plant search
+- **BetonServer scraper** — correct URL, anti-bot headers, robust HTML parsing
+- **Price calculator panel** — real-time cost comparison per supplier (CZK/m³ × volume)
+- **AWS Bedrock integration** — Claude via AWS Activate credits (fallback chain: Bedrock → Anthropic → Gemini)
 
-1. **PriceParserPage.tsx** — Full standalone page at `/price-parser`
-   - Drag-and-drop PDF upload (single or multiple)
-   - Real-time parsing via `POST /api/v1/price-parser/parse` (concrete-agent)
-   - Active job progress indicators
-   - Error handling with per-file status
+### 2. Objednávka Betonu Page (Unified Ordering)
+- **ObjednavkaBetonuPage** — `/objednavka-betonu` route, search + calculate + compare in one flow
+- Infinite re-render loop fix (useEffect dependency cycle)
+- Mobile-responsive layout
 
-2. **Batch Supplier Comparison** — Upload multiple PDF price lists
-   - Side-by-side concrete price comparison table (C20/25, C25/30, C30/37...)
-   - Lowest price highlighted in green, price difference % shown
-   - Delivery zone comparison across suppliers
-   - Pump pricing comparison (per supplier)
-   - Surcharges comparison (časové, zimní, technologické)
-   - Malty/potěry and laboratory services sections
-   - Supplier metadata display (company, provozovna, platnost)
+### 3. Performance: Lazy-load all pages
+- **Bundle reduction**: 519KB → 407KB initial load (-22%)
+- All pages lazy-loaded with `React.lazy()` + `Suspense`
+- Vercel SPA routing fix (`vercel.json` rewrites)
 
-3. **API Integration** (`api.ts`)
-   - `priceParserAPI.parse(file)` — sends PDF to CORE, returns structured PriceListResult
-   - Full TypeScript types for all 7 sections (BetonItem, Doprava, Cerpadla, etc.)
+### 4. CORE Proxy + Workflow Fixes
+- **Portal backend proxy** to concrete-agent (`/api/core/*` → `concrete-agent.onrender.com/*`)
+- Fixed all 5 workflows (file upload, Workflow A/B/C, Drawing Analysis)
+- Drawing Analysis UI with GPT-4 Vision integration
 
-4. **Service Registration**
-   - Added "Ceníky dodavatelů" to Portal SERVICES array (active status)
-   - Route `/price-parser` registered in App.tsx (public, no auth)
-   - Build verified: `tsc && vite build` passes clean
+### 5. Universal Parser Pipeline (4-step)
+- Full positions table with quantities, units, prices
+- 4-step flow: Upload → Parse → Review → Send to Kiosk
+- Kiosk import buttons (Monolit, Registry, URS Matcher) with bidirectional push
 
-### Previous Sessions (2026-03-07)
+### 6. CorePanel Rewrite
+- Replaced all Tailwind classes with inline styles (portal uses Digital Concrete CSS, not Tailwind)
 
-**Session 6** — Calculator Logic Audit: 3 bugs fixed, 332 tests pass
-**Session 5** — TariffPage + Pump engine unification
-**Session 4** — PDF Price Parser backend (17 files, 7 parsers, 21 tests)
-**Session 3** — PumpCalculatorPage, PlannerPage, Calendar dates, PortalBreadcrumb
-**Sessions 1-2** — Formwork refactor, Core engines, Maturity/PERT
+### 7. Curing Days Fix (Formwork Calculator)
+- **BUG FOUND**: `elementTotalDays` was NOT passed to `FormworkCalculatorModal` from `PositionsTable`
+- Calculator always received `0`, falling back to formwork-only duration for rental calculation
+- **FIX**: Now passes `elementTotalDays` + `currentPartName` from PositionsTable → FormworkCalculatorModal
+- Rental term now correctly includes curing period
+
+### Previous Sessions Summary
+| Session | Date | Key Work |
+|---------|------|----------|
+| 7 | 2026-03-07 | Price Parser UI, batch comparison, service registration |
+| 6 | 2026-03-07 | Calculator audit: 3 bugs fixed, 332 tests |
+| 5 | 2026-03-07 | TariffPage + Pump engine unification |
+| 4 | 2026-03-07 | PDF Price Parser backend (17 files, 7 parsers, 21 tests) |
+| 3 | 2026-03-07 | PumpCalculatorPage, PlannerPage, Calendar dates |
+| 1-2 | 2026-03-06 | Formwork refactor, PERT/Maturity, MaturityConfigPanel |
 
 ---
 
@@ -51,6 +61,7 @@
 /portal              → PortalPage (services hub + projects)
 /pump                → PumpCalculatorPage (mobile-first pump calculator)
 /price-parser        → PriceParserPage (PDF price list upload + comparison)
+/objednavka-betonu   → ObjednavkaBetonuPage (search + calculate + compare)
 /dashboard           → DashboardPage (auth required)
 /admin               → AdminDashboard (auth required)
 ```
@@ -69,24 +80,29 @@
 
 ## Implementation Priority (Next Sessions)
 
-### Priority 1: Price Parser — End-to-End Testing
-- [x] **Frontend upload UI** — PriceParserPage at `/price-parser`
-- [x] **Batch processing** — multi-PDF upload + comparison table
-- [ ] **Test with real PDFs** — run parser on actual supplier price lists (requires deploy)
-- [ ] **Save parsed results** — store in Portal DB for historical comparison
+### Priority 1: End-to-End Testing & Deploy
+- [ ] **Deploy concrete-agent** to Render (price-parser + proxy endpoints)
+- [ ] **Deploy Portal** to Vercel (all new pages + CORE proxy)
+- [ ] **Deploy Monolit** to Vercel (planner + tariffs + vercel.json SPA fix)
+- [ ] **Test with real PDFs** — run price parser on actual supplier price lists
+- [ ] **Test Betonárny discovery** — verify GPS search + scraping in production
 
-### Priority 2: Cross-System (Already Implemented)
-- [x] Monolit Position Write-back → Portal `position_instance_id` (portalWriteBack.js)
-- [x] Two-way sync Portal ↔ Registry (integration.js + backendSync.ts)
+### Priority 2: Formwork Calculator Audit
+- [x] Curing days flow: table → calculator → scheduler (FIXED)
+- [ ] Verify rental cost includes full curing period in production
+- [ ] Test MaturityConfigPanel → curing_days transfer end-to-end
+
+### Priority 3: Cross-System Integration
 - [ ] Template application workflow testing
+- [ ] Kiosk import buttons end-to-end (Monolit, Registry, URS)
 - [ ] End-to-end production testing with Portal DB
 
-### Priority 3: Phase 2 Engines
+### Priority 4: Phase 2 Engines
 - [ ] Resource leveling (crew/crane/kit constraints)
 - [ ] Scenario comparison (vary sets/crews, compare total days + cost)
 - [ ] Optimization modes (minimize cost vs minimize time)
 
-### Priority 4: Quality
+### Priority 5: Quality
 - [ ] Vitest migration for Monolit frontend
 - [ ] React Error Boundaries
 - [ ] Node.js 18.x → 20.x upgrade
@@ -95,24 +111,30 @@
 
 ## User Action Required (Deploy)
 
-1. **Deploy concrete-agent** to Render (new `/api/v1/price-parser/parse` endpoint)
-2. **Deploy Portal Frontend** to Vercel (new `/price-parser` route + service card)
-3. **Deploy Monolit Frontend** to Vercel (new /planner, /tariffs routes + breadcrumbs)
+1. **Deploy concrete-agent** to Render (new endpoints: price-parser, proxy)
+2. **Deploy Portal Frontend** to Vercel (6 new pages + CORE proxy backend)
+3. **Deploy Monolit Frontend** to Vercel (vercel.json SPA routing + new routes)
 4. **Environment Variables** on Render:
    - `PERPLEXITY_API_KEY` for concrete-agent
    - `OPENAI_API_KEY` for concrete-agent
+   - `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` (optional, for Bedrock)
    - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB
 
 ---
 
-## Key Files Changed (Session 7)
+## Key Files Changed (Session 8)
 
 | File | Lines | Change |
 |------|-------|--------|
-| `stavagent-portal/frontend/src/pages/PriceParserPage.tsx` | ~620 | NEW — Full price parser UI with batch comparison |
-| `stavagent-portal/frontend/src/services/api.ts` | +95 | Price parser API types + `priceParserAPI.parse()` |
-| `stavagent-portal/frontend/src/App.tsx` | +3 | Route `/price-parser` |
-| `stavagent-portal/frontend/src/pages/PortalPage.tsx` | +9 | Service card "Ceníky dodavatelů" |
+| `stavagent-portal/frontend/src/pages/ObjednavkaBetonuPage.tsx` | ~400 | NEW — Unified ordering page |
+| `stavagent-portal/frontend/src/services/betonServerScraper.ts` | ~180 | NEW — BetonServer plant scraper |
+| `stavagent-portal/frontend/src/components/portal/PriceCalculatorPanel.tsx` | ~200 | NEW — Price comparison calculator |
+| `stavagent-portal/frontend/src/services/bedrockClient.ts` | ~120 | NEW — AWS Bedrock integration |
+| `stavagent-portal/frontend/src/components/portal/CorePanel.tsx` | ~300 | REWRITE — Tailwind → inline styles |
+| `stavagent-portal/frontend/src/App.tsx` | +20 | Lazy-load all pages + new routes |
+| `stavagent-portal/backend/src/routes/core-proxy.js` | ~50 | NEW — CORE proxy route |
+| `Monolit-Planner/frontend/src/components/PositionsTable.tsx` | +5 | FIX — Pass elementTotalDays to FormworkCalc |
+| `Monolit-Planner/vercel.json` | NEW | SPA routing rewrites |
 
 ---
 
@@ -144,6 +166,23 @@
 ## Quick Start Commands
 
 ```bash
+# === START OF SESSION COMMAND ===
+# Run this at the beginning of the next session:
+
+cd /home/user/STAVAGENT && \
+git checkout claude/price-parser-integration-jeClp && \
+git pull origin claude/price-parser-integration-jeClp && \
+echo "=== Branch ready ===" && \
+echo "=== Recent commits ===" && \
+git log --oneline -10 && \
+echo "=== Running shared tests ===" && \
+cd Monolit-Planner/shared && npx vitest run 2>&1 | tail -5 && \
+echo "=== Portal build check ===" && \
+cd ../../stavagent-portal/frontend && npx tsc --noEmit 2>&1 | tail -3 && \
+echo "=== All checks done ==="
+```
+
+```bash
 # Run all shared tests (332)
 cd Monolit-Planner/shared && npx vitest run
 
@@ -153,6 +192,9 @@ cd stavagent-portal/frontend && npm run build
 # Start Monolit dev
 cd Monolit-Planner/backend && npm run dev   # :3001
 cd Monolit-Planner/frontend && npm run dev  # :5173
+
+# Start Portal dev
+cd stavagent-portal && npm run dev
 
 # Test price parser
 cd concrete-agent/packages/core-backend
@@ -165,5 +207,5 @@ curl -X POST http://localhost:8000/api/v1/price-parser/parse \
 
 ---
 
-**Version:** 2.7.0
-**Last Updated:** 2026-03-07
+**Version:** 2.8.0
+**Last Updated:** 2026-03-08
