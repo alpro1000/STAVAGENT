@@ -30,6 +30,13 @@ try:
 except ImportError:
     GEMINI_AVAILABLE = False
 
+# Try to import Bedrock client (AWS Activate credits)
+try:
+    from app.core.bedrock_client import BedrockClient, is_bedrock_available
+    BEDROCK_AVAILABLE = True
+except ImportError:
+    BEDROCK_AVAILABLE = False
+
 
 # ============================================================================
 # DATA STRUCTURES
@@ -135,17 +142,13 @@ class HybridMultiRoleOrchestrator:
         multi_role_llm = getattr(settings, 'MULTI_ROLE_LLM', 'gemini').lower()
 
         if multi_role_llm == "gemini":
-            if not GEMINI_AVAILABLE:
-                logger.warning("Gemini requested but not available, falling back to Claude")
-                self.llm_client = ClaudeClient()
-                self.llm_name = "claude"
-            else:
-                try:
-                    self.llm_client = GeminiClient()
-                    self.llm_name = "gemini"
-                    logger.info(f"Using Gemini for Hybrid Multi-Role ({self.llm_client.model_name})")
-                except Exception as e:
-                    logger.warning(f"Gemini failed: {e}, falling back to Claude")
+            self._init_gemini_or_fallback()
+        elif multi_role_llm == "bedrock":
+            self._init_bedrock_or_fallback()
+        elif multi_role_llm == "auto":
+            # Auto chain: Gemini → Bedrock → Claude
+            if not self._try_init_gemini():
+                if not self._try_init_bedrock():
                     self.llm_client = ClaudeClient()
                     self.llm_name = "claude"
         else:
@@ -153,6 +156,47 @@ class HybridMultiRoleOrchestrator:
             self.llm_name = "claude"
 
         logger.info(f"✅ HybridMultiRoleOrchestrator initialized with {self.llm_name}")
+
+    def _try_init_gemini(self) -> bool:
+        """Try to initialize Gemini client. Returns True on success."""
+        if not GEMINI_AVAILABLE:
+            return False
+        try:
+            self.llm_client = GeminiClient()
+            self.llm_name = "gemini"
+            logger.info(f"Using Gemini for Hybrid Multi-Role ({self.llm_client.model_name})")
+            return True
+        except Exception as e:
+            logger.warning(f"Gemini init failed: {e}")
+            return False
+
+    def _try_init_bedrock(self) -> bool:
+        """Try to initialize Bedrock client. Returns True on success."""
+        if not BEDROCK_AVAILABLE or not is_bedrock_available():
+            return False
+        try:
+            self.llm_client = BedrockClient()
+            self.llm_name = "bedrock"
+            logger.info(f"Using Bedrock for Hybrid Multi-Role ({self.llm_client.model_id})")
+            return True
+        except Exception as e:
+            logger.warning(f"Bedrock init failed: {e}")
+            return False
+
+    def _init_gemini_or_fallback(self):
+        """Initialize Gemini, falling back to Bedrock then Claude."""
+        if not self._try_init_gemini():
+            if not self._try_init_bedrock():
+                self.llm_client = ClaudeClient()
+                self.llm_name = "claude"
+                logger.warning("Gemini unavailable, fell back to Claude")
+
+    def _init_bedrock_or_fallback(self):
+        """Initialize Bedrock, falling back to Claude."""
+        if not self._try_init_bedrock():
+            self.llm_client = ClaudeClient()
+            self.llm_name = "claude"
+            logger.warning("Bedrock unavailable, fell back to Claude")
 
     def _load_hybrid_prompt(self, prompt_type: HybridQueryType) -> str:
         """Load hybrid prompt from file"""
