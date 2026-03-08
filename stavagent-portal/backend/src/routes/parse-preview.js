@@ -102,6 +102,76 @@ router.post('/', upload.single('file'), async (req, res) => {
 });
 
 /**
+ * POST /api/parse-preview/full
+ * Parse Excel and return ALL items with classifications.
+ * Used by the "Step 2" positions table in ParsePreviewModal.
+ *
+ * Returns: { success, metadata, summary, sheets: [{ name, items[] }] }
+ * Each item includes: id, kod, popis, mj, mnozstvi, cenaJednotkova, cenaCelkem,
+ *                     detectedType, concreteGrade, codeType, section
+ */
+router.post('/full', upload.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ success: false, error: 'No file uploaded' });
+  }
+
+  const filePath = req.file.path;
+
+  try {
+    const parsed = await parseFile(filePath, { fileName: req.file.originalname });
+
+    // Map type names to uppercase Registry-compatible groups
+    const TYPE_TO_GROUP = {
+      beton: 'BETON_MONOLIT',
+      bedneni: 'BEDNENI',
+      vyztuze: 'VYZTUŽ',
+      zemni: 'ZEMNI_PRACE',
+      izolace: 'IZOLACE',
+      komunikace: 'KOMUNIKACE',
+      piloty: 'PILOTY',
+      kotveni: 'KOTVENI',
+      prefab: 'BETON_PREFAB',
+      doprava: 'DOPRAVA',
+    };
+
+    const sheets = parsed.sheets.map(s => ({
+      name: s.name,
+      bridgeId: s.bridgeId,
+      bridgeName: s.bridgeName,
+      itemCount: s.items.length,
+      stats: s.stats,
+      items: s.items.map(item => ({
+        id: item.id,
+        kod: item.kod || '',
+        popis: item.popis || '',
+        popisFull: item.popisFull || item.popis || '',
+        mj: item.mj || '',
+        mnozstvi: item.mnozstvi || 0,
+        cenaJednotkova: item.cenaJednotkova || null,
+        cenaCelkem: item.cenaCelkem || null,
+        detectedType: item.detectedType || 'unknown',
+        skupina: TYPE_TO_GROUP[item.detectedType] || null,
+        concreteGrade: item.concreteGrade || null,
+        codeType: item.codeType || null,
+        section: item.section || null,
+      })),
+    }));
+
+    res.json({
+      success: true,
+      metadata: parsed.metadata,
+      summary: parsed.summary,
+      sheets,
+    });
+  } catch (err) {
+    console.error('[ParsePreview] Full parse error:', err.message);
+    res.status(500).json({ success: false, error: err.message || 'Failed to parse file' });
+  } finally {
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+  }
+});
+
+/**
  * POST /api/parse-preview/import
  * Parse Excel file AND create PositionInstances in Portal DB.
  * Combines Universal Parser + bulk import in one step.
@@ -178,7 +248,7 @@ router.post('/import', upload.single('file'), async (req, res) => {
             item.cenaCelkem || null,
             sheet.name || '',
             i,
-            null
+            item.detectedType || null
           ]
         );
 
