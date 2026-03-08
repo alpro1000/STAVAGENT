@@ -1,6 +1,6 @@
 # STAVAGENT Backlog & Pending Plans
 
-**Last Updated:** 2026-02-25
+**Last Updated:** 2026-03-08
 **Maintained By:** Development Team
 
 ---
@@ -355,5 +355,16 @@ docs/archive/
 ---
 
 **Total Pending Items:** 17
-**Next Critical Path:** Poradna env vars → Pump TOVModal → Universal Parser Phase 2 UI
+**Next Critical Path:** Deploy all services → Test with real PDFs → Formwork rental audit → Kiosk import E2E
+
+### Recently Completed (Session 8, 2026-03-08)
+- ✅ Betonárny Discovery — GPS-based concrete plant search + scraping
+- ✅ AWS Bedrock integration — Claude via AWS Activate credits
+- ✅ Objednávka betonu — unified ordering page (search+calculate+compare)
+- ✅ Lazy-load all pages — bundle 519KB→407KB (-22%)
+- ✅ CORE proxy — Portal backend → concrete-agent proxy
+- ✅ All 5 workflows fixed (upload, A, B, C, Drawing Analysis)
+- ✅ Universal Parser 4-step pipeline + kiosk import buttons
+- ✅ CorePanel rewrite (Tailwind → inline styles)
+- ✅ Curing days fix — elementTotalDays now flows to FormworkCalculatorModal
 
