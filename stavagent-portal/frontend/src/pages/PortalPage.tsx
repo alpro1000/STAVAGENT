@@ -134,31 +134,31 @@ const SERVICES: Service[] = [
     tags: ['Deterministické', 'Scheduling', 'AI-prořab', 'Traceability']
   },
   {
-    id: 'pump-module',
-    name: 'Kalkulačka čerpadel',
-    description: 'Porovnání dodavatelů čerpadel betonu. Příplatky za víkend/svátek/noc, český kalendář. Mobilní verze pro prořaby na stavbě.',
-    icon: '⚙️',
-    url: '/pump',
+    id: 'objednavka-betonu',
+    name: 'Objednávka betonu',
+    description: 'Najít betonárny → spočítat cenu (beton + doprava + čerpadlo) → porovnat dodavatele. Ruční zadání cen od prořaba. Jeden flow pro objednávku.',
+    icon: '🏗️',
+    url: '/objednavka-betonu',
     status: 'active',
-    tags: ['Čerpadlo', 'Porovnání', 'Mobilní', 'Příplatky']
+    tags: ['Betonárny', 'Kalkulačka', 'Porovnání', 'Prořab']
   },
   {
     id: 'price-parser',
     name: 'Ceníky dodavatelů',
-    description: 'Nahrajte PDF ceníky dodavatelů betonu → strukturovaná data. Batch upload pro srovnání více dodavatelů: betony, doprava, čerpadla, příplatky.',
+    description: 'Admin: nahrajte PDF ceníky dodavatelů betonu → strukturovaná data. Batch upload pro srovnání: betony, doprava, čerpadla, příplatky.',
     icon: '📄',
     url: '/price-parser',
     status: 'active' as const,
-    tags: ['PDF', 'Ceník', 'Porovnání', 'Dodavatelé']
+    tags: ['PDF', 'Ceník', 'Admin', 'Dodavatelé']
   },
   {
-    id: 'betonarny',
-    name: 'Betonárny v okolí',
-    description: 'Najděte betonárny v okolí stavby. Vyhledávání přes OpenStreetMap + BetonServer.cz s řazením podle vzdálenosti.',
-    icon: '🏭',
-    url: '/betonarny',
-    status: 'active' as const,
-    tags: ['Mapa', 'Dodavatelé', 'Vzdálenost', 'OSM']
+    id: 'pump-module',
+    name: 'Kalkulačka čerpadel',
+    description: 'Detailní porovnání čerpadel: 3 dodavatelé, příplatky za víkend/svátek/noc, český kalendář. Mobilní verze.',
+    icon: '⚙️',
+    url: '/pump',
+    status: 'active',
+    tags: ['Čerpadlo', 'Mobilní', 'Příplatky', 'Kalendář']
   },
   {
     id: 'formwork-calculator',
