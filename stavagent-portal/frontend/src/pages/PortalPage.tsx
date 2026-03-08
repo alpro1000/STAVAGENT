@@ -23,6 +23,7 @@ import ProjectDocuments from '../components/portal/ProjectDocuments';
 import DocumentSummary from '../components/portal/DocumentSummary';
 import PoradnaWidget from '../components/portal/PoradnaWidget';
 import ParsePreviewModal from '../components/portal/ParsePreviewModal';
+import DrawingAnalysis from '../components/portal/DrawingAnalysis';
 import ThemeToggle from '../components/ThemeToggle';
 
 interface KioskLink {
@@ -96,6 +97,15 @@ const SERVICES: Service[] = [
     url: '#parse-preview',
     status: 'active',
     tags: ['Excel', 'Typy prací', 'Kiosk routing', 'Bez projektu']
+  },
+  {
+    id: 'drawing-analysis',
+    name: 'Analýza výkresů',
+    description: 'Nahrajte PDF výkres → AI (GPT-4 Vision + OCR) extrahuje rozměry, objemy a pozice. Automatická klasifikace prací.',
+    icon: '📐',
+    url: '#drawing-analysis',
+    status: 'active',
+    tags: ['Výkres', 'OCR', 'AI Vision', 'Workflow B']
   },
   {
     id: 'monolit-planner',
@@ -201,6 +211,7 @@ export default function PortalPage() {
   const [showDocumentsModal, setShowDocumentsModal] = useState(false);
   const [showDocumentSummaryModal, setShowDocumentSummaryModal] = useState(false);
   const [showParsePreviewModal, setShowParsePreviewModal] = useState(false);
+  const [showDrawingAnalysis, setShowDrawingAnalysis] = useState(false);
   const [documentsProjectId, setDocumentsProjectId] = useState<string>('');
   const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
   const [backendSleeping, setBackendSleeping] = useState(false);
@@ -501,6 +512,7 @@ export default function PortalPage() {
                   } :
                   service.id === 'document-summary' ? () => setShowDocumentSummaryModal(true) :
                   service.id === 'universal-parser' ? () => setShowParsePreviewModal(true) :
+                  service.id === 'drawing-analysis' ? () => setShowDrawingAnalysis(true) :
                   undefined
                 }
               />
@@ -796,6 +808,11 @@ export default function PortalPage() {
       {/* Parse Preview Modal */}
       {showParsePreviewModal && (
         <ParsePreviewModal onClose={() => setShowParsePreviewModal(false)} />
+      )}
+
+      {/* Drawing Analysis Modal (Workflow B) */}
+      {showDrawingAnalysis && (
+        <DrawingAnalysis onClose={() => setShowDrawingAnalysis(false)} />
       )}
 
       {/* Theme Toggle */}

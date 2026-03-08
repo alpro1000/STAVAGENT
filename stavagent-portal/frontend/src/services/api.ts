@@ -563,15 +563,19 @@ export interface WorkflowCProgress {
   error?: string;
 }
 
-// Workflow C API (concrete-agent CORE)
-const CORE_API_URL = (import.meta as any).env?.VITE_CORE_API_URL || 'https://concrete-agent.onrender.com';
+// Workflow C API — proxied through portal backend (/api/core/*)
+// Direct CORE URL kept as fallback for WebSocket connections only
+/** Direct URL for WebSocket connections (cannot be proxied through HTTP) */
+export const CORE_DIRECT_URL = (import.meta as any).env?.VITE_CORE_API_URL || 'https://concrete-agent.onrender.com';
+/** Proxied URL for all HTTP API calls */
+const CORE_API_URL = `${API_URL}/api/core`;
 
 export const workflowCAPI = {
   /**
    * Execute Workflow C with pre-parsed positions
    */
   execute: async (request: WorkflowCRequest): Promise<WorkflowCResult> => {
-    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/execute`, {
+    const response = await fetch(`${CORE_API_URL}/workflow-c/execute`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -615,7 +619,7 @@ export const workflowCAPI = {
     formData.append('use_parallel', String(options?.use_parallel ?? true));
     formData.append('language', options?.language ?? 'cs');
 
-    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/upload`, {
+    const response = await fetch(`${CORE_API_URL}/workflow-c/upload`, {
       method: 'POST',
       body: formData,
     });
@@ -632,7 +636,7 @@ export const workflowCAPI = {
    * Execute Workflow C asynchronously (returns immediately)
    */
   executeAsync: async (request: WorkflowCRequest): Promise<{ project_id: string; status: string; status_url: string; result_url: string }> => {
-    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/execute-async`, {
+    const response = await fetch(`${CORE_API_URL}/workflow-c/execute-async`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -659,7 +663,7 @@ export const workflowCAPI = {
    * Get workflow progress
    */
   getProgress: async (projectId: string): Promise<WorkflowCProgress> => {
-    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/${projectId}/status`);
+    const response = await fetch(`${CORE_API_URL}/workflow-c/${projectId}/status`);
 
     if (!response.ok) {
       throw new Error(`Failed to get progress: ${response.status}`);
@@ -672,7 +676,7 @@ export const workflowCAPI = {
    * Get workflow result
    */
   getResult: async (projectId: string): Promise<WorkflowCResult> => {
-    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/${projectId}/result`);
+    const response = await fetch(`${CORE_API_URL}/workflow-c/${projectId}/result`);
 
     if (!response.ok) {
       if (response.status === 202) {
@@ -688,7 +692,7 @@ export const workflowCAPI = {
    * Health check
    */
   health: async (): Promise<{ status: string; version: string }> => {
-    const response = await fetch(`${CORE_API_URL}/api/v1/workflow/c/health`);
+    const response = await fetch(`${CORE_API_URL}/workflow-c/health`);
     return response.json();
   },
 };
@@ -783,7 +787,7 @@ export const priceParserAPI = {
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await fetch(`${CORE_API_URL}/api/v1/price-parser/parse`, {
+    const response = await fetch(`${CORE_API_URL}/price-parser/parse`, {
       method: 'POST',
       body: formData,
     });
@@ -843,7 +847,7 @@ export const betonarnyAPI = {
    * Search for concrete plants near a GPS location
    */
   search: async (lat: number, lon: number, radius_km = 50, include_quarries = false): Promise<PlantSearchResult> => {
-    const response = await fetch(`${CORE_API_URL}/api/v1/betonarny/search`, {
+    const response = await fetch(`${CORE_API_URL}/betonarny/search`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ lat, lon, radius_km, include_quarries }),
@@ -859,7 +863,7 @@ export const betonarnyAPI = {
    * Admin: scrape BetonServer.cz for new plant listings
    */
   scrape: async (region?: string, max_pages = 5): Promise<ScrapeResult> => {
-    const response = await fetch(`${CORE_API_URL}/api/v1/betonarny/scrape`, {
+    const response = await fetch(`${CORE_API_URL}/betonarny/scrape`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ region, max_pages }),
@@ -875,7 +879,7 @@ export const betonarnyAPI = {
    * Get cached plants from previous scraping
    */
   getCache: async (): Promise<{ plants: ConcretePlant[]; total: number }> => {
-    const response = await fetch(`${CORE_API_URL}/api/v1/betonarny/cache`);
+    const response = await fetch(`${CORE_API_URL}/betonarny/cache`);
     if (!response.ok) throw new Error('Failed to load cache');
     return response.json();
   },
