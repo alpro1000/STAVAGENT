@@ -145,8 +145,10 @@ interface ProjectDocumentsProps {
   onClose: () => void;
 }
 
-// API base URL
-const CORE_API_URL = (import.meta as any).env?.VITE_CORE_API_URL || 'https://concrete-agent.onrender.com';
+import { API_URL, CORE_DIRECT_URL } from '../../services/api';
+
+// Proxied through portal backend
+const CORE_API_URL = `${API_URL}/api/core`;
 
 export default function ProjectDocuments({ projectId, projectName, onClose }: ProjectDocumentsProps) {
   const [status, setStatus] = useState<ProjectStatus | null>(null);
@@ -179,9 +181,9 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
 
       // Load status, files, and folders in parallel
       const [statusRes, filesRes, foldersRes] = await Promise.all([
-        fetch(`${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/status`),
-        fetch(`${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/files`),
-        fetch(`${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/folders`),
+        fetch(`${CORE_API_URL}/accumulator/projects/${projectId}/status`),
+        fetch(`${CORE_API_URL}/accumulator/projects/${projectId}/files`),
+        fetch(`${CORE_API_URL}/accumulator/projects/${projectId}/folders`),
       ]);
 
       if (statusRes.ok) {
@@ -206,7 +208,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
 
   // Connect WebSocket for real-time updates
   const connectWebSocket = useCallback(() => {
-    const wsUrl = CORE_API_URL.replace('https://', 'wss://').replace('http://', 'ws://');
+    const wsUrl = CORE_DIRECT_URL.replace('https://', 'wss://').replace('http://', 'ws://');
     const ws = new WebSocket(`${wsUrl}/api/v1/accumulator/ws/${projectId}`);
 
     ws.onopen = () => {
@@ -292,7 +294,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
         formData.append('project_id', projectId);
         formData.append('file', file);
 
-        await fetch(`${CORE_API_URL}/api/v1/accumulator/files/upload`, {
+        await fetch(`${CORE_API_URL}/accumulator/files/upload`, {
           method: 'POST',
           body: formData,
         });
@@ -312,7 +314,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
     if (!folderPath.trim()) return;
 
     try {
-      const response = await fetch(`${CORE_API_URL}/api/v1/accumulator/folders`, {
+      const response = await fetch(`${CORE_API_URL}/accumulator/folders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -337,7 +339,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
   // Parse all files
   const handleParseAll = async () => {
     try {
-      await fetch(`${CORE_API_URL}/api/v1/accumulator/parse-all?project_id=${projectId}`, {
+      await fetch(`${CORE_API_URL}/accumulator/parse-all?project_id=${projectId}`, {
         method: 'POST',
       });
       await loadData();
@@ -351,7 +353,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
     setGeneratingSummary(true);
 
     try {
-      await fetch(`${CORE_API_URL}/api/v1/accumulator/generate-summary`, {
+      await fetch(`${CORE_API_URL}/accumulator/generate-summary`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -371,7 +373,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
   // Full pipeline
   const handleFullPipeline = async () => {
     try {
-      await fetch(`${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/full-pipeline?language=${language}`, {
+      await fetch(`${CORE_API_URL}/accumulator/projects/${projectId}/full-pipeline?language=${language}`, {
         method: 'POST',
       });
       await loadData();
@@ -383,7 +385,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
   // Load versions
   const loadVersions = async () => {
     try {
-      const response = await fetch(`${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/versions`);
+      const response = await fetch(`${CORE_API_URL}/accumulator/projects/${projectId}/versions`);
       if (response.ok) {
         const data = await response.json();
         setVersions(data.versions || []);
@@ -402,7 +404,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
 
     try {
       const response = await fetch(
-        `${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/compare?from_version=${fromVersion}&to_version=${toVersion}`
+        `${CORE_API_URL}/accumulator/projects/${projectId}/compare?from_version=${fromVersion}&to_version=${toVersion}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -420,7 +422,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
   const handleExportExcel = async () => {
     try {
       const response = await fetch(
-        `${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/export/excel?project_name=${encodeURIComponent(projectName)}`
+        `${CORE_API_URL}/accumulator/projects/${projectId}/export/excel?project_name=${encodeURIComponent(projectName)}`
       );
 
       if (!response.ok) {
@@ -444,7 +446,7 @@ export default function ProjectDocuments({ projectId, projectName, onClose }: Pr
   // Export to PDF
   const handleExportPDF = async (versionId?: string) => {
     try {
-      let url = `${CORE_API_URL}/api/v1/accumulator/projects/${projectId}/export/pdf?project_name=${encodeURIComponent(projectName)}`;
+      let url = `${CORE_API_URL}/accumulator/projects/${projectId}/export/pdf?project_name=${encodeURIComponent(projectName)}`;
       if (versionId) {
         url += `&version_id=${versionId}`;
       }

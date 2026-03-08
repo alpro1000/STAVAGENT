@@ -1,307 +1,255 @@
 /**
  * Concrete-Agent HTTP Client
- * Wrapper for calling the CORE Engine at https://concrete-agent.onrender.com
+ * Wrapper for calling the CORE Engine at concrete-agent.onrender.com
  *
- * This service provides integration with Concrete-Agent for:
- * - Workflow A: Document parsing and analysis (import & audit)
- * - Workflow B: Analysis from drawings (OCR & AI)
+ * Endpoints:
+ * - Workflow C: File upload + parse + audit (all-in-one pipeline)
+ * - Workflow A: Enrich parsed positions (tech-card, resource-sheet, materials)
+ * - Workflow B: Enrich drawing-generated positions
+ * - Multi-Role: AI specialist validation (6 roles)
  * - Knowledge base search
  * - Resource calculations
  */
 
 import FormData from 'form-data';
 import fs from 'fs';
-import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
-// Note: fetch is available natively in Node.js 18+
+const CORE_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent.onrender.com';
+const CORE_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '120000');
 
-// Configuration
-const CONCRETE_AGENT_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent.onrender.com';
-const CONCRETE_AGENT_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '60000');
-
-// Constants for Workflow IDs and Session Management
-const WORKFLOW_VERSION = 'v1';
+// ── Workflow C: Upload + Parse + Audit ──────────────────────────────────
 
 /**
- * Workflow A: Import & Audit existing documents (KROS, Excel, PDF)
- * Used for: Analyzing existing estimates, importing project data
- * Returns: Parsed positions, materials, calculations
+ * Upload file and execute full pipeline (parse → validate → enrich → audit)
+ * This is the primary entry point for document analysis.
+ * Replaces old workflowAStart (which called non-existent /workflow-a/start).
+ */
+export async function workflowCUpload(filePath, metadata = {}) {
+  console.log(`[ConcreteAgent] Workflow C: Uploading ${filePath}`);
+
+  const form = new FormData();
+  if (!fs.existsSync(filePath)) throw new Error(`File not found: ${filePath}`);
+
+  form.append('file', fs.createReadStream(filePath));
+  if (metadata.projectId) form.append('project_id', metadata.projectId);
+  if (metadata.projectName) form.append('project_name', metadata.projectName);
+  form.append('generate_summary', String(metadata.generateSummary ?? true));
+  form.append('use_parallel', String(metadata.useParallel ?? true));
+  form.append('language', metadata.language || 'cs');
+
+  const response = await fetch(`${CORE_URL}/api/v1/workflow/c/upload`, {
+    method: 'POST',
+    body: form,
+    headers: form.getHeaders(),
+    signal: AbortSignal.timeout(CORE_TIMEOUT),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Workflow C upload failed: ${response.status} ${errorText}`);
+  }
+
+  const result = await response.json();
+  console.log(`[ConcreteAgent] Workflow C: Pipeline complete`);
+  return result;
+}
+
+/**
+ * Legacy alias — maps old workflowAStart to Workflow C upload.
  */
 export async function workflowAStart(filePath, metadata = {}) {
-  try {
-    console.log(`[ConcreteAgent] Workflow A: Starting analysis of file: ${filePath}`);
+  return workflowCUpload(filePath, metadata);
+}
 
-    const form = new FormData();
+// ── Multi-Role Audit ────────────────────────────────────────────────────
 
-    // Add file
-    if (!fs.existsSync(filePath)) {
-      throw new Error(`File not found: ${filePath}`);
-    }
+/**
+ * Validate positions using Multi-Role AI specialists.
+ * 6 roles: Document Validator, Structural Engineer, Concrete Specialist,
+ *          Cost Estimator, Standards Checker, Project Manager
+ *
+ * @param {string} role - Role name (e.g. 'concrete_specialist', 'cost_estimator')
+ * @param {string} question - Question to ask the specialist
+ * @param {object} context - Context data (positions, project info)
+ * @returns {object} { answer, confidence, recommendations }
+ */
+export async function performAudit(role, question, context = {}) {
+  console.log(`[ConcreteAgent] Multi-Role Audit: role=${role}`);
 
-    form.append('file', fs.createReadStream(filePath));
+  const response = await fetch(`${CORE_URL}/api/v1/multi-role/ask`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ role, question, context }),
+    signal: AbortSignal.timeout(CORE_TIMEOUT),
+  });
 
-    // Add metadata if provided
-    if (metadata.projectId) form.append('project_id', metadata.projectId);
-    if (metadata.projectName) form.append('project_name', metadata.projectName);
-    if (metadata.objectType) form.append('object_type', metadata.objectType);
-
-    const response = await fetch(`${CONCRETE_AGENT_URL}/workflow-a/start`, {
-      method: 'POST',
-      body: form,
-      headers: form.getHeaders(),
-      timeout: CONCRETE_AGENT_TIMEOUT
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Workflow A failed: ${response.status} ${errorText}`);
-    }
-
-    const result = await response.json();
-    console.log(`[ConcreteAgent] Workflow A: Successfully parsed document`);
-
-    return {
-      status: 'success',
-      workflow_id: result.workflow_id || uuidv4(),
-      positions: result.positions || [],
-      materials: result.materials || [],
-      metadata: result.metadata || {}
-    };
-
-  } catch (error) {
-    console.error('[ConcreteAgent] Workflow A Error:', error.message);
-    throw new Error(`Workflow A failed: ${error.message}`);
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`Multi-Role audit failed: ${response.status} ${errorText}`);
   }
+
+  return response.json();
 }
 
 /**
- * Workflow B: Generate from Drawings
- * Used for: Analyzing PDF drawings, extracting project scope from images
- * Returns: Suggested work items, structure, dimensions
+ * Run full audit across all specialist roles for a set of positions.
+ * @param {Array} positions - Parsed positions to audit
+ * @param {string} projectName - Project name for context
+ * @returns {object} { results: [{role, answer, classification}], summary }
+ */
+export async function auditPositions(positions, projectName = '') {
+  const roles = ['document_validator', 'structural_engineer', 'concrete_specialist',
+                 'cost_estimator', 'standards_checker', 'project_manager'];
+  const results = [];
+
+  for (const role of roles) {
+    try {
+      const result = await performAudit(role, `Zvaliduj pozice projektu "${projectName}"`, {
+        positions,
+        project_name: projectName,
+      });
+      results.push({ role, ...result });
+    } catch (err) {
+      results.push({ role, error: err.message });
+    }
+  }
+
+  return { results, total_roles: roles.length, completed: results.filter(r => !r.error).length };
+}
+
+// ── Workflow A: Position Enrichment ─────────────────────────────────────
+
+/**
+ * Enrich a single position with full technical info.
+ * @param {string} projectId - Project ID
+ * @param {string} positionId - Position ID to enrich
+ * @returns {object} Enriched position data
+ */
+export async function enrichPosition(projectId, positionId) {
+  const response = await fetch(`${CORE_URL}/api/workflow/a/enrich`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ project_id: projectId, position_id: positionId }),
+    signal: AbortSignal.timeout(CORE_TIMEOUT),
+  });
+
+  if (!response.ok) throw new Error(`Enrich failed: ${response.status}`);
+  return response.json();
+}
+
+/**
+ * Generate tech card for a position.
+ */
+export async function generateTechCard(projectId, positionId) {
+  const response = await fetch(`${CORE_URL}/api/workflow/a/tech-card`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ project_id: projectId, position_id: positionId }),
+    signal: AbortSignal.timeout(CORE_TIMEOUT),
+  });
+
+  if (!response.ok) throw new Error(`Tech card generation failed: ${response.status}`);
+  return response.json();
+}
+
+// ── Workflow B: Drawing Analysis ────────────────────────────────────────
+
+/**
+ * Upload a drawing file for analysis via Workflow C pipeline.
+ * Workflow B positions are then available at /api/workflow/b/positions.
  */
 export async function workflowBStart(filePath, metadata = {}) {
-  try {
-    console.log(`[ConcreteAgent] Workflow B: Analyzing drawings from file: ${filePath}`);
-
-    const form = new FormData();
-
-    // Add file
-    if (!fs.existsSync(filePath)) {
-      throw new Error(`File not found: ${filePath}`);
-    }
-
-    form.append('file', fs.createReadStream(filePath));
-
-    // Add metadata
-    if (metadata.projectId) form.append('project_id', metadata.projectId);
-    if (metadata.objectType) form.append('object_type', metadata.objectType);
-    if (metadata.skipOcr) form.append('skip_ocr', metadata.skipOcr);
-
-    const response = await fetch(`${CONCRETE_AGENT_URL}/workflow-b/start`, {
-      method: 'POST',
-      body: form,
-      headers: form.getHeaders(),
-      timeout: CONCRETE_AGENT_TIMEOUT
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Workflow B failed: ${response.status} ${errorText}`);
-    }
-
-    const result = await response.json();
-    console.log(`[ConcreteAgent] Workflow B: Successfully analyzed drawings`);
-
-    return {
-      status: 'success',
-      workflow_id: result.workflow_id || uuidv4(),
-      analysis: result.analysis || {},
-      suggested_works: result.suggested_works || [],
-      dimensions: result.dimensions || {}
-    };
-
-  } catch (error) {
-    console.error('[ConcreteAgent] Workflow B Error:', error.message);
-    throw new Error(`Workflow B failed: ${error.message}`);
-  }
+  console.log(`[ConcreteAgent] Workflow B: Analyzing drawings from ${filePath}`);
+  return workflowCUpload(filePath, {
+    ...metadata,
+    objectType: metadata.objectType || 'drawing',
+  });
 }
 
 /**
- * REMOVED: performAudit() (2025-12-10)
- *
- * Multi-role audit was not used in the file upload workflow and has been removed.
- * If Multi-Role validation is needed in the future, add it as a separate, explicit endpoint
- * with proper opt-in mechanism to avoid unintended calls.
- *
- * See: ANALYSIS_FILE_UPLOAD_LOGIC.md for details
+ * Get positions generated from drawing analysis (Workflow B).
  */
+export async function getWorkflowBPositions(projectId) {
+  const response = await fetch(`${CORE_URL}/api/workflow/b/positions?project_id=${projectId}`, {
+    signal: AbortSignal.timeout(CORE_TIMEOUT),
+  });
 
-/**
- * REMOVED: enrichWithAI() (2025-12-10)
- *
- * AI enrichment was not used in the file upload workflow and has been removed.
- * If AI enrichment is needed in the future, add it as a separate, explicit endpoint
- * with proper opt-in mechanism to avoid unintended calls.
- *
- * See: ANALYSIS_FILE_UPLOAD_LOGIC.md for details
- */
+  if (!response.ok) throw new Error(`Failed to get WF-B positions: ${response.status}`);
+  return response.json();
+}
 
-/**
- * Knowledge Base Search
- * Used for: Finding matching OTSKP codes and technical standards
- * Returns: Matching codes with descriptions and specifications
- */
+// ── Knowledge Base ──────────────────────────────────────────────────────
+
 export async function searchKnowledgeBase(query, category = null) {
-  try {
-    console.log(`[ConcreteAgent] Searching KB for: ${query}`);
+  const url = new URL(`${CORE_URL}/kb/search`);
+  url.searchParams.append('query', query);
+  if (category) url.searchParams.append('category', category);
 
-    const url = new URL(`${CONCRETE_AGENT_URL}/kb/search`);
-    url.searchParams.append('query', query);
-    if (category) url.searchParams.append('category', category);
+  const response = await fetch(url.toString(), {
+    signal: AbortSignal.timeout(CORE_TIMEOUT),
+  });
 
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      timeout: CONCRETE_AGENT_TIMEOUT
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`KB search failed: ${response.status} ${errorText}`);
-    }
-
-    const result = await response.json();
-
-    return {
-      status: 'success',
-      results: result.results || [],
-      total: result.total || 0
-    };
-
-  } catch (error) {
-    console.error('[ConcreteAgent] KB Search Error:', error.message);
-    throw new Error(`KB search failed: ${error.message}`);
-  }
+  if (!response.ok) throw new Error(`KB search failed: ${response.status}`);
+  const result = await response.json();
+  return { status: 'success', results: result.results || [], total: result.total || 0 };
 }
 
-/**
- * Calculate Bridge Resources
- * Used for: Computing volumes, labor hours, materials for bridge construction
- * Input: dimensions, concrete class, reinforcement info
- * Returns: Volume, labor hours, material quantities
- */
+// ── Calculations ────────────────────────────────────────────────────────
+
 export async function calculateBridge(params = {}) {
-  try {
-    console.log(`[ConcreteAgent] Calculating bridge resources...`);
+  const response = await fetch(`${CORE_URL}/calculate/bridge`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+    signal: AbortSignal.timeout(CORE_TIMEOUT),
+  });
 
-    const response = await fetch(`${CONCRETE_AGENT_URL}/calculate/bridge`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(params),
-      timeout: CONCRETE_AGENT_TIMEOUT
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Bridge calculation failed: ${response.status} ${errorText}`);
-    }
-
-    const result = await response.json();
-
-    return {
-      status: 'success',
-      calculation: result
-    };
-
-  } catch (error) {
-    console.error('[ConcreteAgent] Bridge Calculation Error:', error.message);
-    throw new Error(`Calculation failed: ${error.message}`);
-  }
+  if (!response.ok) throw new Error(`Bridge calculation failed: ${response.status}`);
+  return { status: 'success', calculation: await response.json() };
 }
 
-/**
- * Calculate Building Resources
- * Used for: Computing areas, volumes, materials for building construction
- */
 export async function calculateBuilding(params = {}) {
-  try {
-    console.log(`[ConcreteAgent] Calculating building resources...`);
+  const response = await fetch(`${CORE_URL}/calculate/building`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(params),
+    signal: AbortSignal.timeout(CORE_TIMEOUT),
+  });
 
-    const response = await fetch(`${CONCRETE_AGENT_URL}/calculate/building`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(params),
-      timeout: CONCRETE_AGENT_TIMEOUT
-    });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Building calculation failed: ${response.status} ${errorText}`);
-    }
-
-    const result = await response.json();
-
-    return {
-      status: 'success',
-      calculation: result
-    };
-
-  } catch (error) {
-    console.error('[ConcreteAgent] Building Calculation Error:', error.message);
-    throw new Error(`Calculation failed: ${error.message}`);
-  }
+  if (!response.ok) throw new Error(`Building calculation failed: ${response.status}`);
+  return { status: 'success', calculation: await response.json() };
 }
 
-/**
- * Health Check
- * Used for: Verifying CORE Engine is available
- * Returns: Service status
- */
+// ── Health ───────────────────────────────────────────────────────────────
+
 export async function healthCheck() {
   try {
-    const response = await fetch(`${CONCRETE_AGENT_URL}/health`, {
-      method: 'GET',
-      timeout: 5000
-    });
-
+    const response = await fetch(`${CORE_URL}/health`, { signal: AbortSignal.timeout(5000) });
     return response.ok;
-  } catch (error) {
-    console.warn('[ConcreteAgent] Health check failed:', error.message);
-    return false;
-  }
+  } catch { return false; }
 }
 
-/**
- * Get Service Info
- * Returns: CORE Engine version and available endpoints
- */
 export async function getServiceInfo() {
   try {
-    const response = await fetch(`${CONCRETE_AGENT_URL}/info`, {
-      method: 'GET',
-      timeout: CONCRETE_AGENT_TIMEOUT
-    });
-
-    if (!response.ok) {
-      throw new Error(`Could not get service info: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.warn('[ConcreteAgent] Could not get service info:', error.message);
-    return null;
-  }
+    const response = await fetch(`${CORE_URL}/info`, { signal: AbortSignal.timeout(CORE_TIMEOUT) });
+    if (!response.ok) throw new Error(`status ${response.status}`);
+    return response.json();
+  } catch { return null; }
 }
 
 export default {
+  workflowCUpload,
   workflowAStart,
   workflowBStart,
-  // performAudit removed 2025-12-10 (Multi-Role not part of file upload workflow)
-  // enrichWithAI removed 2025-12-10 (AI enrichment not part of file upload workflow)
+  performAudit,
+  auditPositions,
+  enrichPosition,
+  generateTechCard,
+  getWorkflowBPositions,
   searchKnowledgeBase,
   calculateBridge,
   calculateBuilding,
   healthCheck,
-  getServiceInfo
+  getServiceInfo,
 };

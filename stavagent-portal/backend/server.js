@@ -36,6 +36,7 @@ import kbResearchRoutes from './src/routes/kb-research.js';
 import parsePreviewRoutes from './src/routes/parse-preview.js';
 import positionInstancesRoutes from './src/routes/position-instances.js';
 import portalDocumentsRoutes from './src/routes/portal-documents.js';
+import coreProxyRoutes from './src/routes/core-proxy.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -211,6 +212,9 @@ app.use('/api/kb/research', kbResearchRoutes);
 
 // Parse Preview — no auth required, no DB storage (temp file only)
 app.use('/api/parse-preview', uploadLimiter, parsePreviewRoutes);
+
+// CORE proxy — forwards all /api/core/* to concrete-agent with server-side timeouts
+app.use('/api/core', coreProxyRoutes);
 
 // Debug routes (disable in production)
 app.use('/api/debug', debugRoutes);

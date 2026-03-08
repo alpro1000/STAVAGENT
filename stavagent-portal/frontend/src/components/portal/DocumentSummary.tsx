@@ -58,8 +58,10 @@ interface DocumentSummaryProps {
   onClose?: () => void;
 }
 
-// API base URL
-const CORE_API_URL = (import.meta as any).env?.VITE_CORE_API_URL || 'https://concrete-agent.onrender.com';
+import { API_URL } from '../../services/api';
+
+// Proxied through portal backend
+const CORE_API_URL = `${API_URL}/api/core`;
 
 export default function DocumentSummary({ projectId: _projectId, onClose }: DocumentSummaryProps) {
   const [isUploading, setIsUploading] = useState(false);
@@ -160,7 +162,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 300000); // 5 minutes
 
-      const response = await fetch(`${CORE_API_URL}/api/v1/passport/generate`, {
+      const response = await fetch(`${CORE_API_URL}/passport/generate`, {
         method: 'POST',
         body: formData,
         signal: controller.signal,
@@ -265,7 +267,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       formData.append('project_id', selectedProjectId);
       formData.append('file', uploadedFile);
 
-      const response = await fetch(`${CORE_API_URL}/api/v1/accumulator/files/upload`, {
+      const response = await fetch(`${CORE_API_URL}/accumulator/files/upload`, {
         method: 'POST',
         body: formData,
       });
@@ -297,7 +299,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
     try {
       // Open OAuth2 popup
-      const authUrl = `${CORE_API_URL}/api/v1/google/auth?user_id=${googleAuth.userId}`;
+      const authUrl = `${CORE_API_URL}/google/auth?user_id=${googleAuth.userId}`;
       const popup = window.open(
         authUrl,
         'GoogleDriveAuth',
@@ -350,7 +352,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   // Google Drive - Load folders
   const loadGoogleFolders = useCallback(async (userId: string) => {
     try {
-      const response = await fetch(`${CORE_API_URL}/api/v1/google/folders?user_id=${userId}`);
+      const response = await fetch(`${CORE_API_URL}/google/folders?user_id=${userId}`);
 
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
@@ -380,7 +382,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       formData.append('folder_id', selectedGoogleFolder);
       formData.append('file', uploadedFile);
 
-      const response = await fetch(`${CORE_API_URL}/api/v1/google/upload`, {
+      const response = await fetch(`${CORE_API_URL}/google/upload`, {
         method: 'POST',
         body: formData,
       });
