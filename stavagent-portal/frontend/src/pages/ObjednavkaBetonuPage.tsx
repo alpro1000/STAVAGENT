@@ -15,7 +15,7 @@
  *   3. Market averages — fallback estimates
  */
 
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Search, MapPin, Phone, Globe, Loader2,
@@ -120,6 +120,8 @@ export default function ObjednavkaBetonuPage() {
   // ── Results (plants with calculation)
   const [plantsRaw, setPlantsRaw] = useState<ConcretePlant[]>([]);
   const [manualData, setManualData] = useState<Record<string, { manual: ManualPrices; editing: boolean }>>({});
+  const manualDataRef = useRef(manualData);
+  manualDataRef.current = manualData;
 
   // ── Derived: pump hours
   const pumpHours = pumpHoursOverride ?? Math.max(2, Math.ceil(volume / PUMP_RATE_M3_H));
@@ -134,7 +136,7 @@ export default function ObjednavkaBetonuPage() {
       // Initialize manual data for new plants
       const newManual: Record<string, { manual: ManualPrices; editing: boolean }> = {};
       for (const p of result.plants) {
-        newManual[p.id] = manualData[p.id] || { manual: emptyManual(), editing: false };
+        newManual[p.id] = manualDataRef.current[p.id] || { manual: emptyManual(), editing: false };
       }
       setManualData(newManual);
       setHasSearched(true);
@@ -143,7 +145,8 @@ export default function ObjednavkaBetonuPage() {
     } finally {
       setSearching(false);
     }
-  }, [lat, lon, radius, includeQuarries, manualData]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- manualData excluded to prevent infinite re-render loop (setManualData inside)
+  }, [lat, lon, radius, includeQuarries]);
 
   const handleGeolocate = useCallback(() => {
     if (!navigator.geolocation) { setSearchError('Geolokace není podporována'); return; }
