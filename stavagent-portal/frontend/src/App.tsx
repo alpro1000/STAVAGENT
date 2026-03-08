@@ -19,6 +19,7 @@ import PortalPage from './pages/PortalPage';
 import PumpCalculatorPage from './pages/PumpCalculatorPage';
 import PriceParserPage from './pages/PriceParserPage';
 import BetonarnyPage from './pages/BetonarnyPage';
+import ObjednavkaBetonuPage from './pages/ObjednavkaBetonuPage';
 import LandingPage from './pages/LandingPage';
 import './styles/components.css';
 
@@ -51,14 +52,17 @@ function App() {
             {/* Portal - public (no auth required) */}
             <Route path="/portal" element={<PortalPage />} />
 
-            {/* Pump Calculator - public, mobile-first (no auth) */}
+            {/* Unified concrete order: search plants + calculate + compare (no auth) */}
+            <Route path="/objednavka-betonu" element={<ObjednavkaBetonuPage />} />
+
+            {/* Pump Calculator - standalone, mobile-first (no auth) */}
             <Route path="/pump" element={<PumpCalculatorPage />} />
 
-            {/* Price Parser - supplier price list comparison (no auth) */}
+            {/* Price Parser - admin tool: upload supplier PDF price lists (no auth) */}
             <Route path="/price-parser" element={<PriceParserPage />} />
 
-            {/* Betonárny Discovery - find concrete plants near location (no auth) */}
-            <Route path="/betonarny" element={<BetonarnyPage />} />
+            {/* Betonárny — redirects to unified page */}
+            <Route path="/betonarny" element={<Navigate to="/objednavka-betonu" replace />} />
 
             {/* Protected routes */}
             <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
