@@ -261,6 +261,57 @@ export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
     }
   };
 
+  // ── Step 4: Push to kiosk + open ──────────────────────────────────────
+
+  const [pushing, setPushing] = useState<string | null>(null);
+
+  const handlePushToKiosk = async (kioskId: string) => {
+    if (!importResult?.project_id) return;
+
+    setPushing(kioskId);
+    try {
+      // Fetch positions formatted for the kiosk
+      const res = await fetch(`${API_URL}/api/integration/for-registry/${importResult.project_id}`);
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.error || 'Nepodařilo se načíst pozice');
+
+      // Build kiosk URL with project data
+      const kioskUrl = KIOSK_URLS[kioskId];
+      const info = KIOSK_LABELS[kioskId];
+      if (!kioskUrl) throw new Error('Neznámý kiosk');
+
+      if (kioskId === 'registry') {
+        // Push positions to Registry via import-from-registry endpoint
+        const syncRes = await fetch(`${API_URL}/api/integration/import-from-registry`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            portal_project_id: importResult.project_id,
+            project_name: importResult.project_name,
+            sheets: data.project.sheets,
+          }),
+        });
+        const syncData = await syncRes.json();
+        if (!syncRes.ok || !syncData.success) throw new Error(syncData.error || 'Sync selhal');
+
+        // Open Registry with linked project
+        window.open(`${kioskUrl}/?project_id=${syncData.portal_project_id}&portal_project=${importResult.project_id}`, '_blank');
+
+      } else if (kioskId === 'monolit') {
+        // Open Monolit with portal project reference (Monolit pulls data on its own)
+        window.open(`${kioskUrl}/?portal_project=${importResult.project_id}`, '_blank');
+
+      } else {
+        // URS Matcher / others — open with query params
+        window.open(`${kioskUrl}/?portal_project=${importResult.project_id}`, '_blank');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Push selhal');
+    } finally {
+      setPushing(null);
+    }
+  };
+
   // ── Helpers ─────────────────────────────────────────────────────────────
 
   const onDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -712,31 +763,39 @@ export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
                   Propojit s kioskem
                 </p>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '10px' }}>
-                  {Object.entries(KIOSK_LABELS).map(([kioskId, info]) => (
-                    <div key={kioskId} style={{
-                      padding: '16px', background: 'var(--bg-secondary)',
-                      border: `1px solid ${info.color}30`, borderRadius: '8px',
-                      display: 'flex', flexDirection: 'column', gap: '10px',
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <span style={{ fontSize: '20px' }}>{info.icon}</span>
-                        <strong style={{ fontSize: '14px' }}>{info.name}</strong>
+                  {Object.entries(KIOSK_LABELS).map(([kioskId, info]) => {
+                    const isPushing = pushing === kioskId;
+                    return (
+                      <div key={kioskId} style={{
+                        padding: '16px', background: 'var(--bg-secondary)',
+                        border: `1px solid ${info.color}30`, borderRadius: '8px',
+                        display: 'flex', flexDirection: 'column', gap: '10px',
+                      }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <span style={{ fontSize: '20px' }}>{info.icon}</span>
+                          <strong style={{ fontSize: '14px' }}>{info.name}</strong>
+                        </div>
+                        <button
+                          onClick={() => handlePushToKiosk(kioskId)}
+                          disabled={isPushing}
+                          className="c-btn c-btn--sm"
+                          style={{
+                            display: 'flex', alignItems: 'center',
+                            gap: '6px', justifyContent: 'center',
+                            color: 'white', background: isPushing ? '#9ca3af' : info.color,
+                            border: 'none', cursor: isPushing ? 'wait' : 'pointer',
+                          }}
+                        >
+                          {isPushing ? (
+                            <Loader2 size={13} style={{ animation: 'spin 1s linear infinite' }} />
+                          ) : (
+                            <Link2 size={13} />
+                          )}
+                          {isPushing ? 'Odesílám…' : 'Odeslat a otevřít'}
+                        </button>
                       </div>
-                      <a
-                        href={KIOSK_URLS[kioskId]}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="c-btn c-btn--sm"
-                        style={{
-                          textDecoration: 'none', display: 'flex', alignItems: 'center',
-                          gap: '6px', justifyContent: 'center',
-                          color: 'white', background: info.color, border: 'none',
-                        }}
-                      >
-                        <Link2 size={13} /> Otevřít a propojit
-                      </a>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               </div>
 

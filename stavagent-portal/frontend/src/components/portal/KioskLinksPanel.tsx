@@ -9,7 +9,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
-import { ChevronDown, ChevronUp, ExternalLink, Unlink, Loader } from 'lucide-react';
+import { ChevronDown, ChevronUp, ExternalLink, Unlink, Loader, Download } from 'lucide-react';
 import { API_URL } from '../../services/api';
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -61,6 +61,7 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(true);
   const [unlinking, setUnlinking] = useState<string | null>(null);
+  const [importing, setImporting] = useState<string | null>(null);
 
   // ── Fetch kiosk links ────────────────────────────────────────────────────
 
@@ -112,6 +113,70 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
       alert(err instanceof Error ? err.message : 'Failed to unlink kiosk');
     } finally {
       setUnlinking(null);
+    }
+  };
+
+  // ── Import from kiosk ────────────────────────────────────────────────────
+
+  const handleImportFromKiosk = async (link: KioskLink) => {
+    const meta = KIOSK_META[link.kiosk_type];
+    const label = meta?.label || link.kiosk_type;
+
+    try {
+      setImporting(link.link_id);
+
+      if (link.kiosk_type === 'monolit') {
+        // Fetch from Monolit kiosk API and push to Portal
+        const kioskRes = await fetch(
+          `https://monolit-planner-api.onrender.com/api/projects/${link.kiosk_project_id}/export`,
+          { signal: AbortSignal.timeout(30000) }
+        );
+        if (!kioskRes.ok) throw new Error(`${label}: chyba ${kioskRes.status}`);
+        const kioskData = await kioskRes.json();
+
+        const importRes = await fetch(`${API_URL}/api/integration/import-from-monolit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            portal_project_id: projectId,
+            project_name: kioskData.project_name || 'Monolit import',
+            monolit_project_id: link.kiosk_project_id,
+            objects: kioskData.objects || [],
+          }),
+        });
+        if (!importRes.ok) {
+          const d = await importRes.json().catch(() => ({}));
+          throw new Error(d.error || `Import selhal (${importRes.status})`);
+        }
+        const result = await importRes.json();
+        alert(`Import z ${label} dokončen: ${result.objects_imported || 0} objektů`);
+
+      } else if (link.kiosk_type === 'registry') {
+        // Fetch from Registry kiosk (browser-only, uses auto-sync endpoint)
+        const importRes = await fetch(`${API_URL}/api/integration/import-from-registry`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            portal_project_id: projectId,
+            registry_project_id: link.kiosk_project_id,
+            project_name: 'Registry sync',
+            sheets: [],
+          }),
+        });
+        if (!importRes.ok) {
+          const d = await importRes.json().catch(() => ({}));
+          throw new Error(d.error || `Import selhal (${importRes.status})`);
+        }
+        const result = await importRes.json();
+        alert(`Sync z ${label} dokončen: ${result.items_total || 0} položek`);
+      }
+
+      await loadLinks();
+      onRefresh?.();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : `Import z ${label} selhal`);
+    } finally {
+      setImporting(null);
     }
   };
 
@@ -424,6 +489,50 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
                         <ExternalLink style={{ width: '13px', height: '13px' }} />
                         Otevrit
                       </button>
+
+                      {(link.kiosk_type === 'monolit' || link.kiosk_type === 'registry') && (
+                        <button
+                          onClick={() => handleImportFromKiosk(link)}
+                          disabled={importing === link.link_id}
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '5px',
+                            padding: '6px 12px',
+                            borderRadius: '6px',
+                            fontSize: '13px',
+                            fontWeight: 500,
+                            border: '1px solid #e5e5e5',
+                            color: importing === link.link_id ? '#9ca3af' : '#374151',
+                            background: '#f8f8f8',
+                            cursor: importing === link.link_id ? 'wait' : 'pointer',
+                            transition: 'color 0.15s, border-color 0.15s',
+                          }}
+                          onMouseEnter={(e) => {
+                            if (importing !== link.link_id) {
+                              (e.currentTarget as HTMLElement).style.borderColor = meta.color;
+                              (e.currentTarget as HTMLElement).style.color = meta.color;
+                            }
+                          }}
+                          onMouseLeave={(e) => {
+                            (e.currentTarget as HTMLElement).style.borderColor = '#e5e5e5';
+                            (e.currentTarget as HTMLElement).style.color = '#374151';
+                          }}
+                        >
+                          {importing === link.link_id ? (
+                            <Loader
+                              style={{
+                                width: '13px',
+                                height: '13px',
+                                animation: 'spin 1s linear infinite',
+                              }}
+                            />
+                          ) : (
+                            <Download style={{ width: '13px', height: '13px' }} />
+                          )}
+                          {link.kiosk_type === 'monolit' ? 'Stáhnout z Monolitu' : 'Stáhnout z Registru'}
+                        </button>
+                      )}
 
                       <button
                         onClick={() => handleUnlink(link)}
