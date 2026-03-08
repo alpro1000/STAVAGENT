@@ -97,10 +97,32 @@
 - [ ] Kiosk import buttons end-to-end (Monolit, Registry, URS)
 - [ ] End-to-end production testing with Portal DB
 
-### Priority 4: Phase 2 Engines
-- [ ] Resource leveling (crew/crane/kit constraints)
-- [ ] Scenario comparison (vary sets/crews, compare total days + cost)
-- [ ] Optimization modes (minimize cost vs minimize time)
+### Priority 4: Phase 2 Engines — R0 Core Gaps (Audit 2026-03-08)
+
+**Аудит проведён:** 8/10 пунктов реализованы, 2 частично. Спрашивай в начале каждой сессии: «Будем реализовывать один из gaps?»
+
+| # | Gap | Описание | Сложность |
+|---|-----|----------|-----------|
+| G1 | `move` / `inspection` узлы DAG | Сейчас move_clean_hours — плоское число, не узел графа. Добавить как отдельные Activity в DAG → влияет на critical path | Medium |
+| G2 | Кран / насос как resource constraints | Сейчас только crews + sets. Добавить crane (shared, 1 unit) и pump (shared, blockout window) как ресурсы в forward pass | Hard |
+| G3 | Calendar-aware forward pass | Сейчас DAG считает в work-days, calendar-engine — post-hoc маппинг. Интегрировать праздники/выходные прямо в forward pass | Medium |
+| G4 | Weather stochastic | Расширить PERT: вероятность дождя (сезон → P(rain)) как множитель на outdoor activities | Easy |
+| G5 | Supply chain delays | Добавить lead-time для бетона (заказ → доставка) и арматуры как predecessor edge в DAG | Medium |
+| G6 | Resource leveling (post-CPM) | После CPM: выровнять пики crew utilization, сдвигая non-critical activities в пределах float | Hard |
+| G7 | Scenario comparison UI | Frontend: vary sets/crews, compare total_days + cost side-by-side (таблица + chart) | Medium |
+| G8 | Optimization mode | Minimize cost vs minimize time (Pareto front): перебор sets×crews→ dominance filtering | Hard |
+
+**Полностью реализовано (8/10):**
+- ✅ DAG + RCPSP + CPM (element-scheduler.ts, 631 lines)
+- ✅ PERT + Monte Carlo (pert.ts, 256 lines, seeded PRNG)
+- ✅ Concrete maturity ČSN EN 13670 (maturity.ts, 477 lines)
+- ✅ Formwork 3-phase cost (formwork.ts, 411 lines)
+- ✅ Pour decision tree (pour-decision.ts, 390 lines)
+- ✅ Element classifier (8 types, 400+ lines)
+- ✅ Pump engine (3 billing models, surcharges, supplier comparison)
+- ✅ Planner orchestrator (459 lines, wires all engines)
+- ✅ Calendar engine (holidays, work days, Easter)
+- ✅ 332 tests passing
 
 ### Priority 5: Quality
 - [ ] Vitest migration for Monolit frontend
