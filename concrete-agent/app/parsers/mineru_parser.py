@@ -2,10 +2,14 @@
 from __future__ import annotations
 
 import os
+import tempfile
 from pathlib import Path
 from typing import Optional
 
 from loguru import logger
+
+# Dedicated temp base to prevent path traversal via pdf_path.parent (CWE-22)
+_MINERU_OUTPUT_BASE = Path(tempfile.gettempdir()) / "mineru_output"
 
 
 class MineruParser:
@@ -56,8 +60,10 @@ class MineruParser:
         from mineru.utils.enum_class import MinerUFileType
         from mineru.pipe.pipeline import PipelineFactory
 
-        output_dir = pdf_path.parent / "mineru_output"
-        output_dir.mkdir(exist_ok=True)
+        # Fix #4: use dedicated temp dir — prevents CWE-22 path traversal
+        # via malicious pdf_path like '../../sensitive/dir/file.pdf'
+        output_dir = self._resolve_safe_output_dir(pdf_path)
+        output_dir.mkdir(parents=True, exist_ok=True)
 
         writer = FileBasedDataWriter(str(output_dir))
         pipeline = PipelineFactory.create(file_type=MinerUFileType.PDF)
@@ -73,6 +79,16 @@ class MineruParser:
             "positions": positions,
             "diagnostics": {"strategy_used": "mineru", "pages_processed": len(result)},
         }
+
+    @staticmethod
+    def _resolve_safe_output_dir(pdf_path: Path) -> Path:
+        """Return a safe, sandboxed output directory under system temp.
+
+        Uses pdf stem as subdirectory name — path components stripped,
+        so '../../etc/passwd' becomes just 'passwd' under /tmp/mineru_output/.
+        """
+        safe_stem = Path(pdf_path.name).stem  # strips all directory components
+        return _MINERU_OUTPUT_BASE / safe_stem
 
     def _extract_positions_from_result(self, result: list, doc_type: str) -> list:
         """Convert MinerU output blocks to position dicts."""

@@ -56,7 +56,12 @@ class SmartPdfParser:
         logger.info(f"SmartPdfParser: parsing {pdf_path.name} (doc_type={doc_type})")
 
         if force_mineru:
-            return self._try_mineru(pdf_path, doc_type)
+            # Fix #1: guard against None when MinerU is unavailable
+            result = self._try_mineru(pdf_path, doc_type)
+            if result is not None:
+                return result
+            logger.warning("SmartPdfParser: force_mineru requested but MinerU unavailable, falling back")
+            return {"positions": [], "diagnostics": {"strategy_used": "mineru", "error": "unavailable"}}
 
         if force_vision or doc_type == "drawing":
             return self._try_vision(pdf_path, doc_type)
@@ -98,6 +103,10 @@ class SmartPdfParser:
 
     def _try_pdfplumber(self, pdf_path: Path, doc_type: str) -> dict:
         """Parse with pdfplumber (existing PDFParser)."""
+        # Fix #2: null check before calling .parse()
+        if self._pdf_parser is None:
+            logger.warning("SmartPdfParser: PDFParser not available, skipping pdfplumber step")
+            return {"positions": [], "diagnostics": {"strategy_used": "pdfplumber", "error": "unavailable"}}
         try:
             result = self._pdf_parser.parse(str(pdf_path))
             positions = result if isinstance(result, list) else result.get("positions", [])
