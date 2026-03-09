@@ -160,7 +160,7 @@ router.get('/project/:projectId/linked', async (req, res) => {
     const { projectId } = req.params;
 
     const result = await pool.query(
-      `SELECT pp.position_instance_id, pp.position_id,
+      `SELECT pp.position_id,
               pp.kod, pp.popis, pp.mnozstvi, pp.mj,
               pp.cena_jednotkova, pp.cena_celkem,
               pp.skupina, pp.sheet_name, pp.row_index,
@@ -183,7 +183,6 @@ router.get('/project/:projectId/linked', async (req, res) => {
       const dp = row.dov_payload;
 
       return {
-        position_instance_id: row.position_instance_id,
         position_id: row.position_id,
         kod: row.kod,
         popis: row.popis,

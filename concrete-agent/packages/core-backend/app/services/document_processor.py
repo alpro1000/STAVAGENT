@@ -286,26 +286,47 @@ class DocumentProcessor:
         if not path_obj.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
 
-        # Use SmartParser for now
-        # TODO: Add MinerU integration for better PDF parsing
-        parsed = self.parser.parse(path_obj, project_id=project_id)
+        # Check file size
+        size_mb = path_obj.stat().st_size / (1024 * 1024)
+        logger.info(f"Parsing file: {path_obj.name} ({size_mb:.1f}MB)")
 
-        # Extract text content
-        text_content = ""
-
-        # For PDFs: ALWAYS extract full text with pdfplumber first
-        # SmartParser extracts tables but misses prose text (critical for TZ/technical reports)
-        if path_obj.suffix.lower() == '.pdf':
+        # For large PDFs (>20MB), use streaming parser
+        if path_obj.suffix.lower() == '.pdf' and size_mb > 20:
+            logger.warning(f"Large PDF detected ({size_mb:.1f}MB) - using streaming parser with page limit")
+            parsed = self.parser.parse(path_obj, project_id=project_id)
+            # Extract only first 50 pages for large PDFs to avoid memory overflow
+            text_content = ""
             try:
                 import pdfplumber
                 with pdfplumber.open(path_obj) as pdf:
-                    for page in pdf.pages:
-                        page_text = page.extract_text()
+                    max_pages = min(50, len(pdf.pages))
+                    logger.info(f"Extracting text from first {max_pages} pages (total: {len(pdf.pages)})")
+                    for page_num in range(max_pages):
+                        page_text = pdf.pages[page_num].extract_text()
                         if page_text:
                             text_content += page_text + "\n"
-                logger.info(f"PDF full text extracted: {len(text_content)} chars from {len(pdf.pages)} pages")
+                logger.info(f"PDF text extracted: {len(text_content)} chars from {max_pages} pages")
             except Exception as e:
-                logger.warning(f"Failed to extract PDF text with pdfplumber: {e}")
+                logger.warning(f"Failed to extract PDF text: {e}")
+        else:
+            # Use SmartParser for normal-sized files
+            parsed = self.parser.parse(path_obj, project_id=project_id)
+
+            # Extract text content
+            text_content = ""
+
+            # For PDFs: ALWAYS extract full text with pdfplumber first
+            if path_obj.suffix.lower() == '.pdf':
+                try:
+                    import pdfplumber
+                    with pdfplumber.open(path_obj) as pdf:
+                        for page in pdf.pages:
+                            page_text = page.extract_text()
+                            if page_text:
+                                text_content += page_text + "\n"
+                    logger.info(f"PDF full text extracted: {len(text_content)} chars from {len(pdf.pages)} pages")
+                except Exception as e:
+                    logger.warning(f"Failed to extract PDF text with pdfplumber: {e}")
 
         # Supplement with position descriptions from SmartParser (table data)
         if 'positions' in parsed:
