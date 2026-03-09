@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { calculateBatchPlan, BatchPlan, DilationJoint } from '../calculators/batchCalculator';
+import { calculateBatchPlan, BatchPlan, DilationJoint } from '@stavagent/monolit-shared/src/calculators/batchCalculator';
 
 interface BatchCalculatorUIProps {
   /** Начальный объем бетона (m³) */
@@ -356,13 +356,13 @@ export const BatchCalculatorUI: React.FC<BatchCalculatorUIProps> = ({
               </tr>
             </thead>
             <tbody>
-              {plan.recommended_batches.map((batch) => (
+              {plan.recommended_batches.map((batch: any) => (
                 <tr key={batch.batch_number}>
                   <td>
                     <span className="batch-number">#{batch.batch_number}</span>
                   </td>
                   <td>
-                    {batch.section_numbers.map((n) => (
+                    {batch.section_numbers.map((n: any) => (
                       <span key={n} className="section-badge">
                         {n}
                       </span>
