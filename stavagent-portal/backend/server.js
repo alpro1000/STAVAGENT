@@ -70,7 +70,7 @@ const ALLOWED_ORIGINS = [...new Set([
 ].filter(Boolean))];
 
 // Also allow Vercel preview deployments (*.vercel.app)
-const VERCEL_PREVIEW_REGEX = /^https:\/\/stavagent-backend[a-z0-9-]*\.vercel\.app$/;
+const VERCEL_PREVIEW_REGEX = /^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/;
 
 // Initialize Express
 const app = express();
