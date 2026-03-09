@@ -16,9 +16,9 @@
       "default": "./src/calculators/batchCalculator.ts"
     },
     "./src/*": {
-      "types": "./*.ts",
-      "import": "./*.ts",
-      "default": "./*.ts"
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
     }
   },
   "scripts": {
