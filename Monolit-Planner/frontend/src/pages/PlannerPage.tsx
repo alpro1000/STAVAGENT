@@ -237,7 +237,7 @@ export default function PlannerPage() {
         </div>
       </header>
 
-      <div style={{ display: 'flex', gap: 0, minHeight: 'calc(100vh - 56px)' }}>
+      <div style={{ display: 'flex', gap: 0, height: 'calc(100vh - 56px)' }}>
         {/* LEFT: Input Form */}
         <aside style={{
           width: 380,

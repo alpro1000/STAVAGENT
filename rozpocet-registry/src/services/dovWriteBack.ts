@@ -13,7 +13,7 @@
 
 import type { TOVData } from '../types';
 
-const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
+const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
 const WRITE_BACK_TIMEOUT = 5000;
 
 /**

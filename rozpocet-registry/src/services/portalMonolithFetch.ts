@@ -13,7 +13,7 @@
 
 import type { MonolithPayload } from '../types';
 
-const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
+const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
 const FETCH_TIMEOUT = 10_000;
 
 /**

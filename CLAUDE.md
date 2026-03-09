@@ -60,15 +60,20 @@ STAVAGENT/
 
 **Production URLs:**
 
-| Service | URL |
-|---------|-----|
-| concrete-agent (CORE) | https://concrete-agent.onrender.com |
-| stavagent-portal (Frontend) | https://www.stavagent.cz |
-| stavagent-portal (API) | https://stavagent-backend.vercel.app |
-| Monolit-Planner Frontend | https://monolit-planner-frontend.vercel.app |
-| Monolit-Planner API | https://monolit-planner-api.onrender.com |
-| URS_MATCHER_SERVICE | https://urs-matcher-service.onrender.com |
-| Rozpočet Registry | https://stavagent-backend-ktwx.vercel.app |
+ALL backends on **Render**, ALL frontends on **Vercel**.
+
+| Service | Type | URL |
+|---------|------|-----|
+| concrete-agent (CORE) | Backend | https://concrete-agent.onrender.com |
+| stavagent-portal | Backend | https://stavagent-portal-backend.onrender.com |
+| stavagent-portal | Frontend | https://www.stavagent.cz (Vercel: stavagent-backend-*.vercel.app) |
+| Monolit-Planner | Backend | https://monolit-planner-api.onrender.com |
+| Monolit-Planner | Frontend | https://monolit-planner-frontend.vercel.app |
+| URS_MATCHER_SERVICE | Backend | https://urs-matcher-service.onrender.com |
+| rozpocet-registry | Backend | https://rozpocet-registry-backend.onrender.com |
+| rozpocet-registry | Frontend | https://stavagent-backend-ktwx.vercel.app (naming legacy) |
+
+**DB (Render PostgreSQL):** `postgresql://stavagent_portal:***@dpg-d68br3mr433s73cht4r0-a/stavagent_portal`
 
 ---
 
