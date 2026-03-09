@@ -18,7 +18,62 @@ GOOGLE_API_KEY=AIzaSy...
 
 ---
 
-## ✅ ШАГ 2: Создать Service Account (10 минут)
+## ✅ ШАГ 2: Альтернатива Service Account - Application Default Credentials (5 минут)
+
+⚠️ **ВАЖНО:** Если у вас заблокировано создание Service Account ключей (Organization Policy), используйте этот метод.
+
+### 2.1 Установить gcloud CLI
+
+```bash
+# Windows
+# Скачать: https://cloud.google.com/sdk/docs/install
+# Запустить установщик GoogleCloudSDKInstaller.exe
+
+# После установки перезапустить терминал
+```
+
+### 2.2 Авторизоваться
+
+```bash
+# Авторизация с вашим Google аккаунтом
+gcloud auth login
+
+# Выбрать проект
+gcloud config set project project-947a512a-481d-49b5-81c
+
+# Создать Application Default Credentials
+gcloud auth application-default login
+```
+
+### 2.3 Настроить .env
+
+**Вставить в `.env`:**
+```bash
+# НЕ НУЖЕН service-account.json!
+# Используются Application Default Credentials из gcloud
+GOOGLE_PROJECT_ID=project-947a512a-481d-49b5-81c
+```
+
+### 2.4 Обновить код (если нужно)
+
+**Файл:** `concrete-agent/packages/core-backend/app/integrations/vertex_search.py`
+
+```python
+# Строка 25-30 - изменить на:
+def __init__(self):
+    self.project_id = os.getenv("GOOGLE_PROJECT_ID")
+    self.location = "global"
+    self.datastore_id = os.getenv("VERTEX_SEARCH_DATASTORE_ID")
+    
+    # Application Default Credentials (автоматически из gcloud)
+    self.client = discoveryengine.SearchServiceClient()
+```
+
+---
+
+## ✅ ШАГ 2 (АЛЬТЕРНАТИВА): Service Account с ключом (если разрешено)
+
+⚠️ **Используйте только если Organization Policy НЕ блокирует создание ключей**
 
 ### 2.1 Создать Service Account
 
@@ -283,6 +338,24 @@ python test_search.py
 ---
 
 ## 🎯 ИТОГО - Что вписать вручную:
+
+### В `.env` файл (2 строки - БЕЗ service-account.json):
+
+```bash
+GOOGLE_API_KEY=AIzaSy...                              # ← Из AI Studio
+VERTEX_SEARCH_DATASTORE_ID=stavagent-norms_1234567890 # ← Из Data Store URL
+ENABLE_VERTEX_SEARCH=true                             # ← Включить
+```
+
+### Авторизация через gcloud:
+
+```bash
+gcloud auth application-default login
+```
+
+---
+
+## 🎯 ИТОГО (если Service Account заблокирован) - Что вписать вручную:
 
 ### В `.env` файл (3 строки):
 
