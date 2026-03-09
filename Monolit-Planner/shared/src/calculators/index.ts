@@ -21,6 +21,7 @@ export * from './calendar-engine.js';
 export * from './pump-engine.js';
 export * from './tariff-versioning.js';
 export * from './planner-orchestrator.js';
+export * from './batchCalculator.js';
 
 // Classifiers
 export * from '../classifiers/element-classifier.js';
