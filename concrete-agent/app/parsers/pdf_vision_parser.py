@@ -152,8 +152,6 @@ class PdfVisionParser:
         prompt: str,
     ) -> list:
         """Render single page and call Claude Vision."""
-        import json
-
         page = doc[page_num]
 
         # Try normal DPI first, reduce if too large
@@ -183,6 +181,11 @@ class PdfVisionParser:
                 }
             ],
         )
+
+        # Fix #3: guard against empty content array (IndexError)
+        if not response.content:
+            logger.warning(f"PdfVisionParser: empty response from API for page {page_num}")
+            return []
 
         raw_text = response.content[0].text.strip()
         return self._parse_json_response(raw_text)
