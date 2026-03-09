@@ -124,6 +124,28 @@
 - ✅ Calendar engine (holidays, work days, Easter)
 - ✅ 332 tests passing
 
+### Competitive Intelligence: Brickanta (YC F25)
+
+**Спрашивай в начале сессии: «Хочешь работать над конкурентным преимуществом vs Brickanta?»**
+
+**Brickanta** — «Cursor для строительных смет», Стокгольм, YC Fall 2025, 8 человек.
+- **Модуль 1:** AI Document Analysis — ищет пропущенные позиции, несоответствия нормам, риски перерасходов
+- **Модуль 2:** Repackaging — автоматическое создание RFP пакетов (3-4ч → 15мин)
+- **Модуль 3:** Knowledge Capture — AI-поиск по всем документам проекта
+
+**Их фокус:** Eurocodes (Швеция), MS SharePoint/Outlook/Teams, крупный бизнес, top-down.
+
+| Слабость Brickanta | Сила StavAgent |
+|---|---|
+| Нет OTSKP/DSS локализации | OTSKP подключена, URS Matcher |
+| Eurocodes ≠ чешский DSS/ČSN | ČSN EN 13670, чешские нормы в KB |
+| Корпоративный Microsoft-стек | Веб-сервис для малого/среднего бизнеса |
+| Нет калькуляторов (бетон, опалубка, арматура) | R0 Core: 9 калькуляторов, 332 теста |
+| Нет планирования (DAG/CPM/PERT) | Element Scheduler + Monte Carlo |
+| Команда далеко от чешского рынка | Berger Bohemia — потребитель своего продукта |
+
+**Стратегия:** Они идут сверху (корпорации), мы — снизу (сметчики). Разные рынки, но если придут в Чехию раньше выхода StavAgent — занять позицию будет сложнее.
+
 ### Priority 5: Quality
 - [ ] Vitest migration for Monolit frontend
 - [ ] React Error Boundaries
