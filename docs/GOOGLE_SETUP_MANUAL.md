@@ -35,14 +35,27 @@ GOOGLE_API_KEY=AIzaSy...
 ### 2.2 Авторизоваться
 
 ```bash
-# Авторизация с вашим Google аккаунтом
+# Шаг 1: Авторизация с вашим Google аккаунтом
 gcloud auth login
+# В браузере выбрать info@stavagent.cz и РАЗРЕШИТЬ ВСЕ доступы
 
-# Выбрать проект
+# Шаг 2: Выбрать существующий проект (НЕ создавать новый!)
 gcloud config set project project-947a512a-481d-49b5-81c
+# Нажать Y (даже если пишет "does not have permission")
 
-# Создать Application Default Credentials
+# Шаг 3: Application Default Credentials
 gcloud auth application-default login
+# В браузере ОБЯЗАТЕЛЬНО поставить галочку "See, edit, configure, and delete your Google Cloud data"
+# Нажать "Allow" / "Разрешить"
+```
+
+⚠️ **ВАЖНО:** Если ошибка "scope is required but not consented":
+```bash
+# Повторить команду и в браузере ОБЯЗАТЕЛЬНО дать ВСЕ разрешения:
+gcloud auth application-default login --no-browser
+# Скопировать ссылку в браузер
+# Поставить ВСЕ галочки
+# Скопировать код обратно в терминал
 ```
 
 ### 2.3 Настроить .env
