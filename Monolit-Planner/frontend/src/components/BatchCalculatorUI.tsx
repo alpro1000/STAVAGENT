@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { calculateBatchPlan, BatchPlan, DilationJoint } from '@stavagent/monolit-shared/src/calculators/batchCalculator';
+import { calculateBatchPlan, BatchPlan, DilationJoint } from '@stavagent/monolit-shared';
 
 interface BatchCalculatorUIProps {
   /** Начальный объем бетона (m³) */
