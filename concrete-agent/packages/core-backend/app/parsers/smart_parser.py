@@ -145,7 +145,7 @@ class SmartParser:
         # Copy file with safe name if original has non-ASCII chars
         if safe_stem != pdf_path.stem:
             safe_pdf = output_dir / f"{safe_stem}.pdf"
-            shutil.copy2(pdf_path, safe_pdf)  # shutil now imported at module level
+            shutil.copy2(pdf_path, safe_pdf)
             source_path = safe_pdf
         else:
             source_path = pdf_path
