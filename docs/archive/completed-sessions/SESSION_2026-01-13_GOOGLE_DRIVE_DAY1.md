@@ -148,10 +148,10 @@ cryptography==41.0.7
 ```bash
 GOOGLE_CLIENT_ID=<from Google Cloud Console>
 GOOGLE_CLIENT_SECRET=<from Google Cloud Console>
-GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent.onrender.com/api/v1/google/callback
+GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback
 GOOGLE_CREDENTIALS_ENCRYPTION_KEY=<openssl rand -base64 32>
 GOOGLE_WEBHOOK_SECRET_KEY=<openssl rand -hex 32>
-PUBLIC_URL=https://concrete-agent.onrender.com
+PUBLIC_URL=https://concrete-agent-1086027517695.europe-west3.run.app
 ```
 
 ---
@@ -227,7 +227,7 @@ PUBLIC_URL=https://concrete-agent.onrender.com
 1. Application type: Web application
 2. Name: STAVAGENT Web Client
 3. Authorized redirect URIs:
-   - `https://concrete-agent.onrender.com/api/v1/google/callback`
+   - `https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback`
    - `http://localhost:8000/api/v1/google/callback`
 4. Copy: `client_id` and `client_secret`
 
@@ -243,10 +243,10 @@ Add to Environment Variables (concrete-agent):
 ```bash
 GOOGLE_CLIENT_ID=<from step 3>
 GOOGLE_CLIENT_SECRET=<from step 3>
-GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent.onrender.com/api/v1/google/callback
+GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback
 GOOGLE_CREDENTIALS_ENCRYPTION_KEY=<from step 4>
 GOOGLE_WEBHOOK_SECRET_KEY=<from step 4>
-PUBLIC_URL=https://concrete-agent.onrender.com
+PUBLIC_URL=https://concrete-agent-1086027517695.europe-west3.run.app
 ```
 
 ---
@@ -255,7 +255,7 @@ PUBLIC_URL=https://concrete-agent.onrender.com
 
 ### Test 1: Health Check
 ```bash
-curl https://concrete-agent.onrender.com/api/v1/google/health
+curl https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/health
 
 Expected:
 {
@@ -268,7 +268,7 @@ Expected:
 ### Test 2: OAuth2 Flow
 1. Open in browser:
    ```
-   https://concrete-agent.onrender.com/api/v1/google/auth?user_id=test_user_123
+   https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/auth?user_id=test_user_123
    ```
 2. Should redirect to Google consent screen
 3. Grant permissions
@@ -287,7 +287,7 @@ test_user_123|2026-01-13 ...
 
 ### Test 4: List Folders (after auth)
 ```bash
-curl https://concrete-agent.onrender.com/api/v1/google/folders?user_id=test_user_123
+curl https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/folders?user_id=test_user_123
 
 Expected:
 [

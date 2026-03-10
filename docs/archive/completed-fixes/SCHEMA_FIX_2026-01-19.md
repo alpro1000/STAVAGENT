@@ -93,7 +93,7 @@ See detailed instructions in: `EXECUTE_CLEAR_DB.md` (Вариант 2)
 ### 3. Verify Fix
 
 **Test Sequence:**
-1. ✅ Open Monolit Planner frontend: https://monolit-planner-frontend.onrender.com
+1. ✅ Open Monolit Planner frontend: https://monolit-planner-frontend.vercel.app
 2. ✅ Page should load with empty project list
 3. ✅ Import Excel file (same file that failed before)
 4. ✅ Verify projects appear in UI

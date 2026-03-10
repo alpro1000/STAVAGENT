@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.6.0
-**Last Updated:** 2026-03-10
+**Version:** 2.5.0
+**Last Updated:** 2026-03-08
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,7 +12,6 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
-| 2026-03-10 | All backends | Migration: Render → Google Cloud Run (europe-west3). Render kept as fallback. | ✅ Pushed |
 | 2026-03-08 | Portal + Monolit | Session 8: Betonárny discovery, AWS Bedrock, Objednávka betonu page, CORE proxy, Universal Parser pipeline, CorePanel inline styles, curing days fix | ✅ Pushed |
 | 2026-03-07 | Monolit shared | Calculator audit: 3 bugs fixed (calculateEstimatedWeeks 22d mode ÷7→÷5, dead effectiveRebarDays, pour-decision NaN guard). 332 tests pass | ✅ Pushed |
 | 2026-03-07 | Monolit + Registry | TariffPage CRUD UI (/tariffs), Pump engine unification (registry mirrors shared API, Gauss Easter) | ✅ Pushed |
@@ -61,11 +60,10 @@ STAVAGENT/
 
 **Production URLs:**
 
-ALL backends on **Google Cloud Run (europe-west3)** (PRIMARY), ALL frontends on **Vercel**.
-Render kept as **FALLBACK** (see section below).
+ALL backends on **Render**, ALL frontends on **Vercel**.
 
-| Service | Type | URL (Cloud Run PRIMARY) |
-|---------|------|-------------------------|
+| Service | Type | URL |
+|---------|------|-----|
 | concrete-agent (CORE) | Backend | https://concrete-agent-1086027517695.europe-west3.run.app |
 | stavagent-portal | Backend | https://stavagent-portal-backend-1086027517695.europe-west3.run.app |
 | stavagent-portal | Frontend | https://www.stavagent.cz (Vercel: stavagent-backend-*.vercel.app) |
@@ -74,16 +72,6 @@ Render kept as **FALLBACK** (see section below).
 | URS_MATCHER_SERVICE | Backend | https://urs-matcher-service-1086027517695.europe-west3.run.app |
 | rozpocet-registry | Backend | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app |
 | rozpocet-registry | Frontend | https://stavagent-backend-ktwx.vercel.app (naming legacy) |
-
-**Fallback URLs (Render — kept for emergency):**
-
-| Service | Render Fallback URL |
-|---------|---------------------|
-| concrete-agent (CORE) | https://concrete-agent.onrender.com |
-| stavagent-portal | https://stavagent-portal-backend.onrender.com |
-| Monolit-Planner | https://monolit-planner-api.onrender.com |
-| URS_MATCHER_SERVICE | https://urs-matcher-service.onrender.com |
-| rozpocet-registry | https://rozpocet-registry-backend.onrender.com |
 
 **DB (Render PostgreSQL):** `postgresql://stavagent_portal:***@dpg-d68br3mr433s73cht4r0-a/stavagent_portal`
 
@@ -169,7 +157,6 @@ Content-Type: application/json
 **Location:** `/concrete-agent`
 **Technology:** Python 3.10+, FastAPI
 **Production URL:** `https://concrete-agent-1086027517695.europe-west3.run.app`
-**Fallback URL:** `https://concrete-agent.onrender.com`
 **Port (Dev):** 8000
 
 **Purpose:** Central AI system that processes documents, performs audits, and provides Multi-Role validation.
@@ -248,8 +235,6 @@ GET  /health                           ← Health check
 
 **Location:** `/stavagent-portal`
 **Technology:** Node.js, Express, React
-**Production URL:** `https://stavagent-portal-backend-1086027517695.europe-west3.run.app`
-**Fallback URL:** `https://stavagent-portal-backend.onrender.com`
 **Port (Dev):** 3001
 
 **Purpose:** Main entry point for users. Manages projects, routes to kiosks, integrates with CORE.
@@ -308,9 +293,7 @@ POST /api/positions/:instanceId/dov    ← Registry DOV payload write-back
 
 **Location:** `/Monolit-Planner`
 **Technology:** Node.js 20.x, Express, React, PostgreSQL (prod) / SQLite (dev)
-**Production URL (Backend):** `https://monolit-planner-api-1086027517695.europe-west3.run.app`
-**Fallback URL (Backend):** `https://monolit-planner-api.onrender.com`
-**Production URL (Frontend):** `https://monolit-planner-frontend.vercel.app`
+**Production URL:** `https://monolit-planner-frontend.vercel.app`
 **Port (Dev):** Backend 3001, Frontend 5173
 
 **Purpose:** Calculate costs for monolithic concrete structures (bridges, buildings, tunnels). Convert ALL costs to unified metric: **CZK/m³ of concrete**.
@@ -391,7 +374,6 @@ Monolit-Planner/
 **Location:** `/URS_MATCHER_SERVICE`
 **Technology:** Node.js, Express, SQLite
 **Production URL:** `https://urs-matcher-service-1086027517695.europe-west3.run.app`
-**Fallback URL:** `https://urs-matcher-service.onrender.com`
 **Port (Dev):** Backend 3001, Frontend 3000
 
 **Purpose:** Match BOQ (Bill of Quantities) descriptions to URS codes using AI.
@@ -745,8 +727,6 @@ OPENAI_API_KEY=sk-...
 PERPLEXITY_API_KEY=pplx-...
 LLM_TIMEOUT_MS=90000
 STAVAGENT_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
-# Fallback (Render):
-# STAVAGENT_API_URL=https://concrete-agent.onrender.com
 ```
 
 ### stavagent-portal
@@ -779,10 +759,9 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 2. Re-import Excel files (re-classify with new rules)
 
 ### CORE: Service Unavailable
-1. Check Cloud Run deployment status: `gcloud run services list --region europe-west3`
+1. Check Render deployment status
 2. Check `/health` endpoint
-3. Check API keys in Cloud Run environment
-4. Fallback: use Render URL (https://concrete-agent.onrender.com)
+3. Check API keys in environment
 
 ### PostgreSQL Connection Timeout (Render Free Tier)
 - Root cause: DB sleeps after 15min inactivity
@@ -794,14 +773,13 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 ## CI/CD & Workflows
 
 ### GitHub Actions (`.github/workflows/`)
-1. **keep-alive.yml** - Pings all Cloud Run services every 14 min
+1. **keep-alive.yml** - Pings all services every 14 min (prevents Render sleep)
 2. **monolit-planner-ci.yml** - Tests, linting, coverage for Monolit
 3. **test-coverage.yml** - Code coverage analysis
 4. **test-urs-matcher.yml** - 159 URS Matcher tests
 
 ### Deployment
-- **PRIMARY:** Google Cloud Run (europe-west3), project `project-947a512a-481d-49b5-81c`
-- **FALLBACK:** Render.com (kept for emergency)
+- All services deploy on Render.com
 - Each service has `render.yaml` with deployment config
 - `autoDeploy: true` for automatic deployment on push
 
@@ -817,9 +795,7 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 5. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
 6. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Render secrets
 
-### Recently Completed (March 2-10)
-- ✅ Migration: All backends → Google Cloud Run (europe-west3)
-- ✅ Keep-alive workflow updated to ping Cloud Run URLs
+### Recently Completed (March 2-6)
 - ✅ PERT 3-point estimation + Monte Carlo simulation (20 tests)
 - ✅ Concrete maturity/curing model ČSN EN 13670 (21 tests)
 - ✅ MaturityConfigPanel UI in FormworkCalculatorModal
@@ -856,15 +832,15 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 ### Root Level
 | File | Purpose |
 |------|---------|
-| `CLAUDE.md` | **THIS FILE** - System overview (v2.6.0) |
+| `CLAUDE.md` | **THIS FILE** - System overview (v2.1.0) |
 | `NEXT_SESSION.md` | Quick start commands + context for next session |
 | `BACKLOG.md` | Pending tasks and priorities |
 | `README.md` | Project overview (Russian) |
 | `DESIGN_SYSTEM.md` | Digital Concrete design specification |
-| `KEEP_ALIVE_SETUP.md` | Cloud Run sleep prevention guide |
+| `KEEP_ALIVE_SETUP.md` | Render Free Tier sleep prevention guide |
 | `UNIFIED_ARCHITECTURE.md` | Portal-centric project integration |
 | `UNIFIED_ARCHITECTURE_IMPLEMENTATION_PLAN.md` | Detailed implementation plan (Weeks 1-9) |
-| `render.yaml` | Render Blueprint deployment config (fallback) |
+| `render.yaml` | Render Blueprint deployment config |
 | `docs/POSITION_INSTANCE_ARCHITECTURE.ts` | Two-level identity model (PositionInstance + PositionTemplate) v1.0 |
 | `docs/MONOLIT_REGISTRY_INTEGRATION.md` | Monolit-Registry integration guide (Phase 1+2) |
 | `docs/UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md` | Unified Registry Foundation summary |
@@ -910,7 +886,6 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
-| 2026-03-10 | All | Migration to Google Cloud Run (europe-west3), Render kept as fallback | 1 |
 | 2026-03-08 | Portal + Monolit | Session 8: Betonárny discovery (GPS search), AWS Bedrock integration, Objednávka betonu page (search+calculate+compare), lazy-load pages (-22% bundle), CORE proxy + all workflows fix, Universal Parser 4-step pipeline, kiosk import buttons, CorePanel inline styles rewrite, curing days fix (elementTotalDays→FormworkCalc) | 8 |
 | 2026-03-07 | concrete-agent | PDF Price Parser module: 17 files, pdfplumber+OCR extractor, LLM classifier, 7 section parsers (regex+LLM), Pydantic models, API endpoint, 21 tests | 1 |
 | 2026-03-07 | Monolit + Portal | PlannerPage (orchestrator UI), PumpCalculatorPage (mobile), Calendar date mapping, PortalBreadcrumb, ServiceCard activation | 5 |
@@ -949,5 +924,5 @@ rozpocet-registry/
 
 ---
 
-**Last Updated:** 2026-03-10
+**Last Updated:** 2026-03-07
 **Maintained By:** Development Team

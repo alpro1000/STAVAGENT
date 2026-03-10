@@ -17,7 +17,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://concrete-agent.onrender.com',
+        target: 'https://concrete-agent-1086027517695.europe-west3.run.app',
         changeOrigin: true,
       }
     }

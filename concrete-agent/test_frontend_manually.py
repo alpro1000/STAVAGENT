@@ -9,7 +9,7 @@ from pathlib import Path
 import time
 
 # Configuration
-BACKEND_URL = "https://concrete-agent.onrender.com"
+BACKEND_URL = "https://concrete-agent-1086027517695.europe-west3.run.app"
 # BACKEND_URL = "http://localhost:8000"  # For local testing
 
 def print_section(title):

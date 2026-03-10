@@ -351,10 +351,10 @@ No additional environment variables needed. Day 1 variables sufficient:
 ```bash
 GOOGLE_CLIENT_ID=<from Google Cloud Console>
 GOOGLE_CLIENT_SECRET=<from Google Cloud Console>
-GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent.onrender.com/api/v1/google/callback
+GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback
 GOOGLE_CREDENTIALS_ENCRYPTION_KEY=<openssl rand -base64 32>
 GOOGLE_WEBHOOK_SECRET_KEY=<openssl rand -hex 32>
-PUBLIC_URL=https://concrete-agent.onrender.com
+PUBLIC_URL=https://concrete-agent-1086027517695.europe-west3.run.app
 ```
 
 ### Google Cloud Console Setup
@@ -367,7 +367,7 @@ PUBLIC_URL=https://concrete-agent.onrender.com
 **OAuth2 Credentials:**
 - Application type: Web application
 - Authorized redirect URIs:
-  - `https://concrete-agent.onrender.com/api/v1/google/callback`
+  - `https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback`
   - `http://localhost:8000/api/v1/google/callback` (for local testing)
 
 ---

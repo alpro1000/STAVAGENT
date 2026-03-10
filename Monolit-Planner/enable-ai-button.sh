@@ -15,7 +15,7 @@
 # No configuration needed - everything is automatic!
 ###############################################################################
 
-API_URL="https://monolit-planner-api.onrender.com"
+API_URL="https://monolit-planner-api-1086027517695.europe-west3.run.app"
 MAX_RETRIES=5
 RETRY_DELAY=10
 

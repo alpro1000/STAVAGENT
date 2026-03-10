@@ -26,7 +26,7 @@
 **Добавить в Render:**
 ```env
 # Monolit-Planner backend (Render → monolit-planner-api → Environment):
-STAVAGENT_CORE_URL=https://concrete-agent.onrender.com   # уже есть дефолт, но лучше явно
+STAVAGENT_CORE_URL=https://concrete-agent-1086027517695.europe-west3.run.app   # уже есть дефолт, но лучше явно
 
 # concrete-agent (Render → concrete-agent → Environment):
 PERPLEXITY_API_KEY=pplx-...   # без него — Gemini fallback (работает, но без источников)
@@ -60,7 +60,7 @@ psql -U monolit_user -d monolit_planner
 
 **Verification:**
 ```bash
-curl -s https://monolit-planner-api.onrender.com/api/config | jq '.feature_flags.FF_AI_DAYS_SUGGEST'
+curl -s https://monolit-planner-api-1086027517695.europe-west3.run.app/api/config | jq '.feature_flags.FF_AI_DAYS_SUGGEST'
 # Expected: true
 ```
 

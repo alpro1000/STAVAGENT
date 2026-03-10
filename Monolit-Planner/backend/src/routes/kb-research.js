@@ -12,7 +12,7 @@ import { logger } from '../utils/logger.js';
 
 const router = express.Router();
 
-const CORE_API_URL = process.env.STAVAGENT_CORE_URL || 'https://concrete-agent.onrender.com';
+const CORE_API_URL = process.env.STAVAGENT_CORE_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
 const TIMEOUT_MS   = 50_000; // Perplexity бывает медленным
 
 router.post('/', async (req, res) => {

@@ -61,7 +61,7 @@ DELETE /api/monolith-projects/by-project-name/:projectName
    - Дождись строки: `[Migration 005] ✅ Successfully migrated 100 records`
 
 2. **Открой Monolit Planner**
-   - https://monolit-planner-frontend.onrender.com
+   - https://monolit-planner-frontend.vercel.app
    - Должны появиться все 100 проектов
 
 3. **Открой консоль браузера** (F12 → Console)
@@ -92,7 +92,7 @@ DELETE /api/monolith-projects/by-project-name/:projectName
    - В консоли браузера: `DELETE /api/monolith-projects/SOUPIS` → 200 OK
 
 5. ✅ **Проверь базу данных** (опционально)
-   - Открой: https://monolit-planner-api.onrender.com/api/monolith-projects/debug/database
+   - Открой: https://monolit-planner-api-1086027517695.europe-west3.run.app/api/monolith-projects/debug/database
    - В `monolith_projects` объект должен исчезнуть
    - Позиции (positions) для этого объекта тоже должны быть удалены
 
@@ -298,7 +298,7 @@ DELETE /api/monolith-projects/by-project-name/:projectName
 
 **Для быстрой проверки:**
 
-1. Открой: https://monolit-planner-frontend.onrender.com
+1. Открой: https://monolit-planner-frontend.vercel.app
 2. Найди любой тестовый объект (например "45677" в проекте "Manual")
 3. Нажми кнопку удаления 🗑️
 4. Подтверди удаление

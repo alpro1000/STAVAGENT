@@ -512,7 +512,7 @@ router.delete('/cache/clear/:fileHash', (req, res) => {
 // GET /api/upload/diagnostics - Show CORE configuration and test connectivity
 router.get('/diagnostics', async (req, res) => {
   try {
-    const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent.onrender.com';
+    const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
     const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT) || 30000;
     const CORE_ENABLED = process.env.ENABLE_CORE_FALLBACK !== 'false';
 

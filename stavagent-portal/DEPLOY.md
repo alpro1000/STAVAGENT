@@ -45,13 +45,13 @@ Render начнёт деплой (займёт 5-10 минут):
 
 После деплоя frontend получит URL типа:
 ```
-https://stavagent-portal-frontend.onrender.com
+https://stavagent-backend-ktwx.vercel.app
 ```
 
 Обнови backend env var:
 1. Открой **stavagent-portal-backend** в Render Dashboard
 2. Перейди в **Environment**
-3. Измени `CORS_ORIGIN` с `*` на `https://stavagent-portal-frontend.onrender.com`
+3. Измени `CORS_ORIGIN` с `*` на `https://stavagent-backend-ktwx.vercel.app`
 4. Нажми **"Save Changes"** (backend перезапустится автоматически)
 
 ### Шаг 5: Настроить SMTP (опционально)
@@ -104,7 +104,7 @@ https://stavagent-portal-frontend.onrender.com
    DATABASE_URL=<вставь Internal Database URL из шага 1>
    JWT_SECRET=<сгенерируй случайную строку 32+ символов>
    JWT_EXPIRY=24h
-   CORE_API_URL=https://concrete-agent.onrender.com
+   CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
    UPLOAD_DIR=/opt/render/project/src/backend/uploads
    EXPORT_DIR=/opt/render/project/src/backend/exports
    CORS_ORIGIN=*
@@ -128,7 +128,7 @@ https://stavagent-portal-frontend.onrender.com
 
 4. **Environment Variables**:
    ```
-   VITE_API_URL=https://stavagent-portal-backend.onrender.com
+   VITE_API_URL=https://stavagent-portal-backend-1086027517695.europe-west3.run.app
    ```
    (замени URL на реальный URL backend из шага 2)
 
@@ -151,7 +151,7 @@ https://stavagent-portal-frontend.onrender.com
 
 ```bash
 # Health check
-curl https://stavagent-portal-backend.onrender.com/health
+curl https://stavagent-portal-backend-1086027517695.europe-west3.run.app/health
 
 # Должен вернуть:
 {
@@ -164,7 +164,7 @@ curl https://stavagent-portal-backend.onrender.com/health
 
 ### Frontend
 
-Открой: `https://stavagent-portal-frontend.onrender.com`
+Открой: `https://stavagent-backend-ktwx.vercel.app`
 
 Должна открыться страница логина Portal.
 

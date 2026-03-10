@@ -220,7 +220,7 @@ node Monolit-Planner/test-time-norms.js
 
 ```bash
 # Backend (.env)
-CORE_API_URL=https://concrete-agent.onrender.com
+CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
 CORE_TIMEOUT=90000  # 90s for cold start
 ```
 

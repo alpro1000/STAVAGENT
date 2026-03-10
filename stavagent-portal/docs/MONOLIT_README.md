@@ -519,8 +519,8 @@ See [DEPLOY.md](./DEPLOY.md) for detailed instructions.
 4. Deploy both services automatically
 
 **URLs:**
-- Backend: `https://monolit-planner-api.onrender.com`
-- Frontend: `https://monolit-planner-frontend.onrender.com`
+- Backend: `https://monolit-planner-api-1086027517695.europe-west3.run.app`
+- Frontend: `https://monolit-planner-frontend.vercel.app`
 
 ---
 

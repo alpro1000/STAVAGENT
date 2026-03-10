@@ -106,17 +106,17 @@ logger.info(`[DocExtract] ✓ Parsed by MinerU in ${duration}s`);
 ### 1. Проверка Deployment
 ```bash
 # Check URS service
-curl https://urs-matcher-service.onrender.com/health
+curl https://urs-matcher-service-1086027517695.europe-west3.run.app/health
 # Expected: {"status":"ok"} (within 30s)
 
 # Check concrete-agent (may need cold start)
-curl https://concrete-agent.onrender.com/health
+curl https://concrete-agent-1086027517695.europe-west3.run.app/health
 # Expected: {"status":"healthy"} (may take 30-60s first time)
 ```
 
 ### 2. Тест Document Extraction Pipeline
 
-**URL:** https://urs-matcher-service.onrender.com
+**URL:** https://urs-matcher-service-1086027517695.europe-west3.run.app
 
 **Шаги:**
 1. Откройте "Nahrát Dokumenty" блок
@@ -167,7 +167,7 @@ curl https://concrete-agent.onrender.com/health
 ### Document extraction таймаутит?
 1. Проверьте concrete-agent статус:
    ```bash
-   curl https://concrete-agent.onrender.com/health
+   curl https://concrete-agent-1086027517695.europe-west3.run.app/health
    ```
 2. Если 503/timeout → сервис спит, повторите через 60 секунд
 3. Проверьте логи URS service:

@@ -335,7 +335,7 @@ function App() {
     window.history.replaceState({}, '', window.location.pathname);
 
     try {
-      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend.onrender.com';
+      const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
       const response = await fetch(`${PORTAL_API}/api/integration/for-registry/${portalProjectId}`, {
         credentials: 'include'
       });

@@ -42,12 +42,12 @@ STAVAGENT/
 | Сервис | URL | Статус |
 |--------|-----|--------|
 | Portal Frontend | https://www.stavagent.cz | ✅ |
-| Portal Backend | https://stavagent-portal-backend.onrender.com | ✅ |
-| CORE (AI) | https://concrete-agent.onrender.com | ✅ |
-| Monolit Backend | https://monolit-planner-api.onrender.com | ✅ |
+| Portal Backend | https://stavagent-portal-backend-1086027517695.europe-west3.run.app | ✅ |
+| CORE (AI) | https://concrete-agent-1086027517695.europe-west3.run.app | ✅ |
+| Monolit Backend | https://monolit-planner-api-1086027517695.europe-west3.run.app | ✅ |
 | Monolit Frontend | https://monolit-planner-frontend.vercel.app | ✅ |
 | Registry TOV | https://stavagent-backend-ktwx.vercel.app | ✅ |
-| URS Matcher | https://urs-matcher-service.onrender.com | ✅ |
+| URS Matcher | https://urs-matcher-service-1086027517695.europe-west3.run.app | ✅ |
 
 ---
 

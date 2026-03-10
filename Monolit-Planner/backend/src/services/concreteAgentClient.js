@@ -1,6 +1,6 @@
 /**
  * Concrete-Agent HTTP Client
- * Wrapper for calling the CORE Engine at https://concrete-agent.onrender.com
+ * Wrapper for calling the CORE Engine at https://concrete-agent-1086027517695.europe-west3.run.app
  *
  * This service provides integration with Concrete-Agent for:
  * - Workflow A: Document parsing and analysis (import & audit)
@@ -18,7 +18,7 @@ import { logger } from '../utils/logger.js';
 // Note: fetch is available natively in Node.js 18+
 
 // Configuration
-const CONCRETE_AGENT_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent.onrender.com';
+const CONCRETE_AGENT_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
 const CONCRETE_AGENT_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '60000');
 
 // Constants for Workflow IDs and Session Management

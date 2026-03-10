@@ -149,7 +149,7 @@ async function enableWithPostgres() {
 
       console.log('🎉 SUCCESS! All done!\n');
       console.log('Next steps:');
-      console.log('1. Open: https://monolit-planner-frontend.onrender.com');
+      console.log('1. Open: https://monolit-planner-frontend.vercel.app');
       console.log('2. Press Ctrl+Shift+R to hard reload');
       console.log('3. Look for green ✨ button in "Dny" column\n');
     } else {
