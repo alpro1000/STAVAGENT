@@ -1,0 +1,5 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent/urs-matcher-service', '-f', 'URS_MATCHER_SERVICE/backend/Dockerfile', '.']
+images:
+- 'europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent/urs-matcher-service'

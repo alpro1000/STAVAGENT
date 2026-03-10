@@ -9,6 +9,16 @@
     ".": {
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
+    },
+    "./src/calculators/batchCalculator": {
+      "types": "./src/calculators/batchCalculator.ts",
+      "import": "./src/calculators/batchCalculator.ts",
+      "default": "./src/calculators/batchCalculator.ts"
+    },
+    "./src/*": {
+      "types": "./src/*.ts",
+      "import": "./src/*.ts",
+      "default": "./src/*.ts"
     }
   },
   "scripts": {
