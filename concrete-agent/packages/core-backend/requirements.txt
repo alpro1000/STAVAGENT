@@ -27,6 +27,15 @@ openai==1.54.3
 boto3>=1.34.0
 
 # ==========================================
+# GOOGLE CLOUD / VERTEX AI SEARCH
+# ==========================================
+# Vertex AI Search (Discovery Engine) - для поиска норм ÚRS/OTSKP/ČSN
+google-cloud-discoveryengine>=0.11.0
+
+# Vertex AI / Generative AI SDK (embeddings, models)
+google-cloud-aiplatform>=1.38.0
+
+# ==========================================
 # GOOGLE DRIVE API (Day 1: OAuth2 Integration)
 # ==========================================
 # OAuth2 authentication
@@ -41,13 +50,12 @@ google-api-python-client==2.110.0
 cryptography==41.0.7
 
 # ==========================================
-# PDF PARSING (MinerU v2)
+# PDF PARSING (MinerU - FREE alternative)
 # ==========================================
-# MinerU v2 for high-quality PDF extraction (FREE, local)
+# MinerU for high-quality PDF extraction (FREE, local)
 # Install: pip install magic-pdf[full]
 # Docs: https://github.com/opendatalab/MinerU
-# ВАЖНО: v2 использует CLI команду `mineru` (не `magic-pdf`)
-magic-pdf>=2.0.0
+magic-pdf==1.3.12  # High-quality PDF parsing (latest stable)
 # Note: requires system dependencies (poppler, tesseract)
 
 # ==========================================
@@ -69,22 +77,24 @@ pydantic==2.10.3
 pydantic-settings==2.7.0
 python-dotenv>=1.0.0
 python-slugify>=8.0.0
+
 # ==========================================
 # HTTP & ASYNC
 # ==========================================
 httpx==0.28.1
 aiofiles==24.1.0
 requests==2.32.3
+
 # ==========================================
 # LOGGING (Production)
 # ==========================================
 python-json-logger==2.0.7
 loguru>=0.7.2
 colorlog>=6.10.1  # Explicit version to avoid hash mismatch on Render
+
 # ==========================================
 # DEVELOPMENT & TESTING (Optional)
 # ==========================================
-# Uncomment for development:
 pytest==8.3.4
 pytest-asyncio>=0.21.0
 rich>=13.7.0  # Beautiful terminal output for test scripts
