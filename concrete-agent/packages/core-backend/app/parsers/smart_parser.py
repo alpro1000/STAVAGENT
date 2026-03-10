@@ -12,7 +12,6 @@ import asyncio
 import logging
 import os
 import re
-import shutil
 import subprocess
 import tempfile
 import unicodedata
@@ -156,6 +155,7 @@ class SmartParser:
         # Copy file with safe name if original has non-ASCII chars
         if safe_stem != pdf_path.stem:
             safe_pdf = output_dir / f"{safe_stem}.pdf"
+            import shutil
             shutil.copy2(pdf_path, safe_pdf)
             source_path = safe_pdf
         else:
@@ -205,6 +205,7 @@ class SmartParser:
         Extract table rows from MinerU markdown output.
         MinerU outputs HTML tables: <table><tr><td>code</td><td>name</td>...<td>price</td></tr></table>
         """
+        import re
         positions = []
         # Find all table rows
         rows = re.findall(r"<tr>(.*?)</tr>", md_content, re.DOTALL)
