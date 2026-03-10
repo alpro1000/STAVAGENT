@@ -13,7 +13,6 @@ import logging
 import os
 import re
 import shutil
-import subprocess
 import tempfile
 import unicodedata
 from pathlib import Path
@@ -43,11 +42,8 @@ def _slugify(text: str) -> str:
     Prevents MinerU crash on Windows with diacritics (CWE-22 safe).
     e.g. 'IV MM-Ceník2026' -> 'IV_MM-Cenik2026'
     """
-    # Normalize unicode -> decomposed form
     normalized = unicodedata.normalize("NFKD", text)
-    # Keep only ASCII, replace spaces with underscore
     ascii_text = normalized.encode("ascii", "ignore").decode("ascii")
-    # Replace non-alphanumeric (except - _) with underscore
     safe = re.sub(r"[^\w\-]", "_", ascii_text)
     return safe.strip("_") or "document"
 
@@ -70,12 +66,9 @@ class SmartParser:
     """
 
     def __init__(self):
-        # Стандартные парсеры (быстрые, удобные)
         self.excel_parser = ExcelParser()
         self.pdf_parser = PDFParser()
         self.kros_parser = KROSParser()
-
-        # Memory-efficient парсеры (для больших файлов)
         self.memory_excel = MemoryEfficientExcelParser()
         self.memory_pdf = MemoryEfficientPDFParser()
         self.memory_xml = MemoryEfficientXMLParser()
@@ -85,9 +78,7 @@ class SmartParser:
         path = Path(file_path)
         if not path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
-
         detected_type = file_type or self._detect_type(path)
-
         if detected_type == "excel":
             return self.parse_excel(path)
         elif detected_type == "xml":
@@ -113,7 +104,6 @@ class SmartParser:
         """PDF waterfall: pdfplumber -> MinerU async -> streaming."""
         size_mb = _get_file_size_mb(path)
         logger.info(f"SmartParser: PDF {path.name} ({size_mb:.1f}MB)")
-
         if size_mb > SIZE_THRESHOLD_MB:
             logger.info(f"SmartParser: large PDF, using memory-efficient parser")
             return self.memory_pdf.parse(str(path))
@@ -148,7 +138,6 @@ class SmartParser:
         - slugify filename to avoid Windows diacritics crash
         - read output with explicit UTF-8 encoding
         """
-        # Create safe output dir in system temp
         safe_stem = _slugify(pdf_path.stem)
         output_dir = Path(tempfile.gettempdir()) / "mineru_output" / safe_stem
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -156,7 +145,7 @@ class SmartParser:
         # Copy file with safe name if original has non-ASCII chars
         if safe_stem != pdf_path.stem:
             safe_pdf = output_dir / f"{safe_stem}.pdf"
-            shutil.copy2(pdf_path, safe_pdf)
+            shutil.copy2(pdf_path, safe_pdf)  # shutil now imported at module level
             source_path = safe_pdf
         else:
             source_path = pdf_path
@@ -170,7 +159,6 @@ class SmartParser:
         ]
 
         logger.info(f"SmartParser: running MinerU async: {' '.join(cmd)}")
-
         proc = await asyncio.create_subprocess_exec(
             *cmd,
             stdout=asyncio.subprocess.PIPE,
@@ -183,16 +171,13 @@ class SmartParser:
             logger.error(f"SmartParser: MinerU exited {proc.returncode}: {err[:500]}")
             return {"positions": [], "strategy": "mineru_failed", "error": err[:200]}
 
-        # Find generated .md file — always in auto/ subdir
         md_files = list(output_dir.rglob("*.md"))
         if not md_files:
             logger.warning(f"SmartParser: MinerU produced no .md file in {output_dir}")
             return {"positions": [], "strategy": "mineru_no_output"}
 
-        # Read with explicit UTF-8 (fixes Windows cp1252 mojibake)
         md_content = md_files[0].read_text(encoding="utf-8", errors="replace")
         positions = self._extract_positions_from_markdown(md_content)
-
         logger.info(f"SmartParser: MinerU extracted {len(positions)} positions")
         return {
             "positions": positions,
@@ -203,16 +188,14 @@ class SmartParser:
     def _extract_positions_from_markdown(self, md_content: str) -> list:
         """
         Extract table rows from MinerU markdown output.
-        MinerU outputs HTML tables: <table><tr><td>code</td><td>name</td>...<td>price</td></tr></table>
+        Uses module-level re import (no redundant local import).
         """
         positions = []
-        # Find all table rows
         rows = re.findall(r"<tr>(.*?)</tr>", md_content, re.DOTALL)
         for row in rows:
             cells = re.findall(r"<td[^>]*>(.*?)</td>", row, re.DOTALL)
-            # Clean HTML tags from cells
             cells = [re.sub(r"<[^>]+>", "", c).strip() for c in cells]
-            if len(cells) >= 2 and cells[0]:  # at least code + name
+            if len(cells) >= 2 and cells[0]:
                 positions.append({
                     "code": cells[0] if len(cells) > 0 else "",
                     "name": cells[1] if len(cells) > 1 else "",
@@ -222,7 +205,6 @@ class SmartParser:
         return positions
 
     def _detect_type(self, path: Path) -> str:
-        """Detect file type from extension."""
         ext = path.suffix.lower()
         if ext in (".xlsx", ".xls", ".xlsm"):
             return "excel"
@@ -232,7 +214,6 @@ class SmartParser:
             return "pdf"
 
     def get_file_info(self, file_path: str) -> Dict[str, Any]:
-        """Return file metadata."""
         path = Path(file_path)
         size_mb = _get_file_size_mb(path)
         return {

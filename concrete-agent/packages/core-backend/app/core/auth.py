@@ -26,8 +26,7 @@ def verify_token(
     to prevent authentication bypass in production (CWE-306).
     Set SERVICE_TOKEN or API_KEY env vars to enable access.
     """
-    # Security: if neither token is configured, deny all requests.
-    # This prevents silent auth bypass when env vars are not set in production.
+    # Security: deny all if no tokens configured (prevents silent bypass in production)
     if not _SERVICE_TOKEN and not _API_KEY:
         logger.warning(
             "Auth: SERVICE_TOKEN and API_KEY are both unset — "
