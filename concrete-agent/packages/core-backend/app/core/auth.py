@@ -21,12 +21,22 @@ def verify_token(
     """
     Verify request authentication token.
     Accepts either Authorization: Bearer <token> or X-Api-Key: <key> header.
-    If no tokens configured in env, allows all requests (dev mode).
+
+    Security: if no tokens are configured in env, requests are DENIED
+    to prevent authentication bypass in production (CWE-306).
+    Set SERVICE_TOKEN or API_KEY env vars to enable access.
     """
-    # Dev mode: no tokens configured — allow all
+    # Security: deny all if no tokens configured (prevents silent bypass in production)
     if not _SERVICE_TOKEN and not _API_KEY:
-        logger.debug("Auth: dev mode, no tokens configured, allowing request")
-        return True
+        logger.warning(
+            "Auth: SERVICE_TOKEN and API_KEY are both unset — "
+            "all requests denied. Set at least one token in environment."
+        )
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Server not configured: no authentication tokens set",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
 
     # Check X-Api-Key header
     if x_api_key and _API_KEY and x_api_key == _API_KEY:
