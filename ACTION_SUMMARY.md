@@ -139,10 +139,10 @@ git checkout -b feature/unified-registry-frontend
 
 ### Production:
 - **Portal:** https://www.stavagent.cz
-- **Monolit Backend:** https://monolit-planner-api-1086027517695.europe-west3.run.app
+- **Monolit Backend:** https://monolit-planner-api-3uxelthc4q-ey.a.run.app
 - **Monolit Frontend:** https://monolit-planner-frontend.vercel.app
 - **Registry TOV:** https://stavagent-backend-ktwx.vercel.app
-- **CORE (AI):** https://concrete-agent-1086027517695.europe-west3.run.app
+- **CORE (AI):** https://concrete-agent-3uxelthc4q-ey.a.run.app
 
 ### Documentation:
 - **CREATE_RELINK_PR_NOW.md** - PR creation guide

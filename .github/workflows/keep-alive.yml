@@ -15,11 +15,11 @@ jobs:
       matrix:
         service:
           - name: concrete-agent
-            url: https://concrete-agent-1086027517695.europe-west3.run.app/healthcheck
+            url: https://concrete-agent-3uxelthc4q-ey.a.run.app/healthcheck
           - name: monolit-planner
-            url: https://monolit-planner-api-1086027517695.europe-west3.run.app/healthcheck
+            url: https://monolit-planner-api-3uxelthc4q-ey.a.run.app/healthcheck
           - name: urs-matcher-service
-            url: https://urs-matcher-service-1086027517695.europe-west3.run.app/health
+            url: https://urs-matcher-service-3uxelthc4q-ey.a.run.app/health
 
     steps:
       - name: Ping ${{ matrix.service.name }}

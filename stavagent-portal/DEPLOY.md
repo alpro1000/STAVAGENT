@@ -104,7 +104,7 @@ https://www.stavagent.cz
    DATABASE_URL=<вставь Internal Database URL из шага 1>
    JWT_SECRET=<сгенерируй случайную строку 32+ символов>
    JWT_EXPIRY=24h
-   CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
+   CORE_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
    UPLOAD_DIR=/opt/render/project/src/backend/uploads
    EXPORT_DIR=/opt/render/project/src/backend/exports
    CORS_ORIGIN=*
@@ -128,7 +128,7 @@ https://www.stavagent.cz
 
 4. **Environment Variables**:
    ```
-   VITE_API_URL=https://stavagent-portal-backend-1086027517695.europe-west3.run.app
+   VITE_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
    ```
    (замени URL на реальный URL backend из шага 2)
 
@@ -151,7 +151,7 @@ https://www.stavagent.cz
 
 ```bash
 # Health check
-curl https://stavagent-portal-backend-1086027517695.europe-west3.run.app/health
+curl https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app/health
 
 # Должен вернуть:
 {

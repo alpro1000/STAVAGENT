@@ -131,7 +131,7 @@ d81b685 - FIX: Document Summary modal error handling and UX improvements
 
 ### 🔴 Critical (Today)
 1. **Manual Deploy on Render** - Production still has parser bug
-2. **Fix Backend URL 404** - `stavagent-portal-backend-1086027517695.europe-west3.run.app` doesn't exist
+2. **Fix Backend URL 404** - `stavagent-portal-backend-3uxelthc4q-ey.a.run.app` doesn't exist
 3. **Create PR** - Merge this branch to main
 
 ### ⚠️ High Priority (This Week)

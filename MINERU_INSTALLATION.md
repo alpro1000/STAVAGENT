@@ -76,7 +76,7 @@ Instead of:
 
 ### Before (pdfplumber):
 ```bash
-curl -X POST https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/passport/generate \
+curl -X POST https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/passport/generate \
   -F "file=@test_79pages.pdf" \
   -F "project_name=Test"
 
@@ -85,7 +85,7 @@ curl -X POST https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/pa
 
 ### After (MinerU):
 ```bash
-curl -X POST https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/passport/generate \
+curl -X POST https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/passport/generate \
   -F "file=@test_79pages.pdf" \
   -F "project_name=Test"
 

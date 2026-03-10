@@ -163,7 +163,7 @@ ENABLE_KROS_MATCHING=true
 
 5. Click "Create Web Service"
 6. Wait for deployment to complete (5-10 minutes)
-7. Note the service URL: `https://stavagent-concrete-agent-1086027517695.europe-west3.run.app`
+7. Note the service URL: `https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app`
 
 ### Step 5: Deploy stavagent-portal (Node.js)
 
@@ -189,11 +189,11 @@ JWT_SECRET=your-secret-key-here (generate: `node -e "console.log(require('crypto
 JWT_EXPIRE_HOURS=24
 
 # External Services
-CORE_API_URL=https://stavagent-concrete-agent-1086027517695.europe-west3.run.app (from Step 4)
-KIOSK_MONOLIT_URL=https://monolit-planner-api-1086027517695.europe-west3.run.app (you'll get this in Step 6)
+CORE_API_URL=https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app (from Step 4)
+KIOSK_MONOLIT_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app (you'll get this in Step 6)
 
 # Frontend (for build)
-VITE_API_URL=https://stavagent-portal-backend-1086027517695.europe-west3.run.app
+VITE_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
 
 # Email (optional)
 SMTP_HOST=smtp.gmail.com
@@ -204,7 +204,7 @@ SMTP_PASS=...
 
 5. Click "Create Web Service"
 6. Wait for deployment (5-10 minutes)
-7. Note the service URL: `https://stavagent-portal-backend-1086027517695.europe-west3.run.app`
+7. Note the service URL: `https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app`
 
 ### Step 6: Deploy Monolit-Planner (Node.js Kiosk)
 
@@ -226,23 +226,23 @@ NODE_ENV=production
 DATABASE_URL=postgresql://... (from Step 2)
 
 # External Services
-PORTAL_API_URL=https://stavagent-portal-backend-1086027517695.europe-west3.run.app (from Step 5)
-CORE_API_URL=https://stavagent-concrete-agent-1086027517695.europe-west3.run.app (from Step 4)
+PORTAL_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app (from Step 5)
+CORE_API_URL=https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app (from Step 4)
 
 # Frontend
-VITE_API_URL=https://monolit-planner-api-1086027517695.europe-west3.run.app
+VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
 ```
 
 5. Click "Create Web Service"
 6. Wait for deployment (5-10 minutes)
-7. Note the service URL: `https://monolit-planner-api-1086027517695.europe-west3.run.app`
+7. Note the service URL: `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
 
 ### Step 7: Update Portal Configuration
 
 Go back to stavagent-portal service and update:
 
 ```env
-KIOSK_MONOLIT_URL=https://monolit-planner-api-1086027517695.europe-west3.run.app
+KIOSK_MONOLIT_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
 ```
 
 Then redeploy.
@@ -254,13 +254,13 @@ Then redeploy.
 After deployment, you'll have:
 
 ```
-Frontend (Portal):       https://stavagent-portal-backend-1086027517695.europe-west3.run.app
-Backend (Portal):        https://stavagent-portal-backend-1086027517695.europe-west3.run.app/api
-Core API:                https://stavagent-concrete-agent-1086027517695.europe-west3.run.app
-Monolit API:             https://monolit-planner-api-1086027517695.europe-west3.run.app/api
+Frontend (Portal):       https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
+Backend (Portal):        https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app/api
+Core API:                https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app
+Monolit API:             https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api
 
-concrete-agent Docs:     https://stavagent-concrete-agent-1086027517695.europe-west3.run.app/docs
-concrete-agent ReDoc:    https://stavagent-concrete-agent-1086027517695.europe-west3.run.app/redoc
+concrete-agent Docs:     https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app/docs
+concrete-agent ReDoc:    https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app/redoc
 ```
 
 ---

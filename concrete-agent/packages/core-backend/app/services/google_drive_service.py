@@ -79,7 +79,7 @@ class GoogleDriveService:
 
         # Webhook configuration
         self.webhook_secret = os.getenv('GOOGLE_WEBHOOK_SECRET_KEY', secrets.token_hex(32))
-        self.public_url = os.getenv('PUBLIC_URL', 'https://concrete-agent-1086027517695.europe-west3.run.app')
+        self.public_url = os.getenv('PUBLIC_URL', 'https://concrete-agent-3uxelthc4q-ey.a.run.app')
 
     # ==================== OAuth2 Methods ====================
 

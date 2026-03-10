@@ -37,11 +37,11 @@
 |--------|-----|
 | Portal Frontend | https://www.stavagent.cz |
 | Portal API | https://stavagent-backend.vercel.app |
-| Monolit Backend | https://monolit-planner-api-1086027517695.europe-west3.run.app |
+| Monolit Backend | https://monolit-planner-api-3uxelthc4q-ey.a.run.app |
 | Monolit Frontend | https://monolit-planner-frontend.vercel.app |
 | Registry TOV | https://stavagent-backend-ktwx.vercel.app |
-| CORE (AI) | https://concrete-agent-1086027517695.europe-west3.run.app |
-| URS Matcher | https://urs-matcher-service-1086027517695.europe-west3.run.app |
+| CORE (AI) | https://concrete-agent-3uxelthc4q-ey.a.run.app |
+| URS Matcher | https://urs-matcher-service-3uxelthc4q-ey.a.run.app |
 
 ---
 

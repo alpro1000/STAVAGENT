@@ -274,12 +274,12 @@ NODE_ENV = production
 
 ### 6.2 Скопировать URL
 ```
-https://rozpocet-registry-backend-1086027517695.europe-west3.run.app
+https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app
 ```
 
 ### 6.3 Тест Health Check
 ```powershell
-curl https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/health
+curl https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/health
 ```
 
 Ответ:
@@ -289,7 +289,7 @@ curl https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/health
 
 ### 6.4 Тест создания проекта
 ```powershell
-curl -X POST https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/api/registry/projects `
+curl -X POST https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/api/registry/projects `
   -H "Content-Type: application/json" `
   -d '{"project_name":"Test Project","user_id":1}'
 ```

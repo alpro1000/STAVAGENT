@@ -148,11 +148,11 @@ jobs:
             echo "🔍 Attempt $attempt/$max_attempts..."
             
             # Try health endpoint first
-            if curl -f -s --max-time 10 "https://concrete-agent-1086027517695.europe-west3.run.app/health" > /dev/null 2>&1; then
+            if curl -f -s --max-time 10 "https://concrete-agent-3uxelthc4q-ey.a.run.app/health" > /dev/null 2>&1; then
               echo "✅ Health endpoint responded!"
               
               # Get health details
-              health=$(curl -s "https://concrete-agent-1086027517695.europe-west3.run.app/health")
+              health=$(curl -s "https://concrete-agent-3uxelthc4q-ey.a.run.app/health")
               echo "$health" | jq '.' || echo "$health"
               
               # Test other endpoints
@@ -160,10 +160,10 @@ jobs:
               echo "📊 Testing additional endpoints..."
               
               echo "Testing /status..."
-              curl -s "https://concrete-agent-1086027517695.europe-west3.run.app/status" | jq '.' || echo "⚠️ /status endpoint not available"
+              curl -s "https://concrete-agent-3uxelthc4q-ey.a.run.app/status" | jq '.' || echo "⚠️ /status endpoint not available"
               
               echo "Testing /docs..."
-              docs_status=$(curl -s -o /dev/null -w "%{http_code}" "https://concrete-agent-1086027517695.europe-west3.run.app/docs")
+              docs_status=$(curl -s -o /dev/null -w "%{http_code}" "https://concrete-agent-3uxelthc4q-ey.a.run.app/docs")
               if [ "$docs_status" = "200" ]; then
                 echo "✅ API docs available at /docs"
               else
@@ -176,7 +176,7 @@ jobs:
             fi
             
             # If health endpoint doesn't exist, try root endpoint
-            if curl -f -s --max-time 10 "https://concrete-agent-1086027517695.europe-west3.run.app/" > /dev/null 2>&1; then
+            if curl -f -s --max-time 10 "https://concrete-agent-3uxelthc4q-ey.a.run.app/" > /dev/null 2>&1; then
               echo "✅ Root endpoint responded!"
               echo "⚠️ Note: /health endpoint not available, but service is up"
               exit 0
@@ -199,8 +199,8 @@ jobs:
           echo "📋 Deployment Summary"
           echo "=========================================="
           echo "Service: concrete-agent"
-          echo "URL: https://concrete-agent-1086027517695.europe-west3.run.app"
-          echo "Docs: https://concrete-agent-1086027517695.europe-west3.run.app/docs"
+          echo "URL: https://concrete-agent-3uxelthc4q-ey.a.run.app"
+          echo "Docs: https://concrete-agent-3uxelthc4q-ey.a.run.app/docs"
           echo "Dashboard: https://dashboard.render.com/web/${{ secrets.RENDER_BACKEND_SERVICE_ID }}"
           echo ""
           echo "ℹ️ If deployment failed, check Render logs in the dashboard"

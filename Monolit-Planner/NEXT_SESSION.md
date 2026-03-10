@@ -75,7 +75,7 @@ gh pr create --title "FEAT: Excel cross-sheet formula links" \
 
 ### Priority 4: AI Suggestion (Pending from 2026-01-21)
 - Still waiting for user to execute SQL in Render Dashboard
-- Check: `curl -s https://monolit-planner-api-1086027517695.europe-west3.run.app/api/config | jq`
+- Check: `curl -s https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/config | jq`
 
 ---
 

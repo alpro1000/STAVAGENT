@@ -220,7 +220,7 @@ All features deployed to Render and working:
   VITE_API_URL=https://www.stavagent.cz
 
   # Core API URL (concrete-agent)
-  VITE_CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
+  VITE_CORE_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
 
 + # 🔓 DISABLE AUTHENTICATION (for development/testing)
 + # Set to 'false' when you want to enable login/password
@@ -269,7 +269,7 @@ Safari: Cmd+Shift+R
 
 **2. Check Render Backend:**
 ```bash
-curl https://concrete-agent-1086027517695.europe-west3.run.app/health
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/health
 # Should return 200 OK
 ```
 

@@ -115,15 +115,15 @@ git push origin main
 ### 2. Проверка endpoints
 ```bash
 # Health check
-curl https://concrete-agent-1086027517695.europe-west3.run.app/health
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/health
 # Ожидается: {"status": "healthy"}
 
 # Root endpoint
-curl https://concrete-agent-1086027517695.europe-west3.run.app/
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/
 # Ожидается: {"status": "ok", "docs": "/docs"}
 
 # API docs
-# Открыть в браузере: https://concrete-agent-1086027517695.europe-west3.run.app/docs
+# Открыть в браузере: https://concrete-agent-3uxelthc4q-ey.a.run.app/docs
 ```
 
 ---

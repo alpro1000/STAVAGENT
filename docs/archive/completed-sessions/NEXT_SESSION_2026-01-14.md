@@ -37,7 +37,7 @@ const timeoutId = setTimeout(() => controller.abort(), 120000); // 30s → 120s
 2. Найти сервис **concrete-agent**
 3. Нажать **"Manual Deploy"** → **"Deploy latest commit"**
 4. Подождать 2-3 минуты
-5. Проверить: `curl https://concrete-agent-1086027517695.europe-west3.run.app/health`
+5. Проверить: `curl https://concrete-agent-3uxelthc4q-ey.a.run.app/health`
 
 **Приоритет:** 🔴 КРИТИЧНО (блокирует работу Document Summary)
 
@@ -46,7 +46,7 @@ const timeoutId = setTimeout(() => controller.abort(), 120000); // 30s → 120s
 ### 3. Backend URL 404 Error
 **Проблема:**
 ```
-GET https://stavagent-portal-backend-1086027517695.europe-west3.run.app/api/portal/projects 404
+GET https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app/api/portal/projects 404
 ```
 
 **Причина:** URL не существует на Render
@@ -166,7 +166,7 @@ GET https://stavagent-portal-backend-1086027517695.europe-west3.run.app/api/port
 1. [ ] Создать Google Cloud Project
 2. [ ] Включить Google Drive API
 3. [ ] Создать OAuth2 credentials (External consent screen)
-4. [ ] Добавить redirect URI: `https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback`
+4. [ ] Добавить redirect URI: `https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/google/callback`
 5. [ ] Сгенерировать encryption keys:
    ```bash
    openssl rand -base64 32  # GOOGLE_CREDENTIALS_ENCRYPTION_KEY
@@ -246,15 +246,15 @@ GET https://stavagent-portal-backend-1086027517695.europe-west3.run.app/api/port
 ### Проверить Production:
 ```bash
 # Health check
-curl https://concrete-agent-1086027517695.europe-west3.run.app/health
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/health
 
 # Test parse endpoint
-curl -X POST https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/accumulator/summarize/file \
+curl -X POST https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/accumulator/summarize/file \
   -F "file=@test.pdf" -F "language=cs" \
   --max-time 120
 
 # Check deployed version (git commit)
-curl https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/health | jq .git_commit
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/health | jq .git_commit
 ```
 
 ### Локальная разработка:

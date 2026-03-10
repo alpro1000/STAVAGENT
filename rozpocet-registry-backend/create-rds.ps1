@@ -113,7 +113,7 @@ Write-Host ""
 Write-Host "📋 Next Steps:" -ForegroundColor Cyan
 Write-Host "1. Copy DATABASE_URL to Render environment variables"
 Write-Host "2. Deploy backend: https://dashboard.render.com/"
-Write-Host "3. Test: curl https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/health"
+Write-Host "3. Test: curl https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/health"
 Write-Host ""
 Write-Host "💰 Cost: FREE for 12 months (750 hours/month)" -ForegroundColor Green
 Write-Host ""

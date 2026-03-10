@@ -116,7 +116,7 @@ const KIOSK_META = {
     color: '#10b981',
     bg: '#ecfdf5',
     buildUrl: (fileId: string, portalUrl: string, _portalProjectId: string) =>
-      `https://urs-matcher-service-1086027517695.europe-west3.run.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
+      `https://urs-matcher-service-3uxelthc4q-ey.a.run.app?portal_file_id=${fileId}&portal_api=${encodeURIComponent(portalUrl)}`,
   },
 } as const;
 
