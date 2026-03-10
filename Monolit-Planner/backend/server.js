@@ -53,16 +53,13 @@ const ALLOWED_ORIGINS = [
   // Local development
   'http://localhost:5173',
   'http://localhost:3000',
-  // Monolit-Planner domains
-  'https://monolit-planner-frontend.vercel.app',   // Production (Vercel)
-  'https://monolit-planner-frontend.vercel.app', // Legacy (Render)
-  'https://monolit-planner-frontend.vercel.app',    // Test
-  // StavaAgent Portal domains (auth & redirect)
-  'https://www.stavagent.cz',
+  // Monolit-Planner frontend (Vercel)
+  'https://monolit-planner-frontend.vercel.app',
+  // StavAgent Portal
   'https://www.stavagent.cz',
   // Custom origin from environment
   process.env.CORS_ORIGIN
-].filter(Boolean); // Remove undefined/null values
+].filter(Boolean);
 
 // Initialize Express
 const app = express();
