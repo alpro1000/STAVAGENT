@@ -60,6 +60,8 @@ const CEMENT_TYPES: { value: CementType; label: string }[] = [
 
 // ─── Default form values ────────────────────────────────────────────────────
 
+type TactMode = 'spary' | 'manual';
+
 interface FormState {
   element_type: StructuralElementType;
   element_name: string;
@@ -67,10 +69,14 @@ interface FormState {
   volume_m3: number;
   formwork_area_m2: string; // empty = auto-estimate
   rebar_mass_kg: string;    // empty = auto-estimate
+  tact_mode: TactMode;      // 'spary' = auto from joints, 'manual' = direct input
   has_dilatacni_spary: boolean;
   spara_spacing_m: number;
   total_length_m: number;
   adjacent_sections: boolean;
+  num_tacts_override: string; // empty = auto, number = direct
+  tact_volume_m3_override: string; // empty = auto-divide
+  scheduling_mode_override: '' | 'linear' | 'chess';
   season: SeasonMode;
   use_retarder: boolean;
   concrete_class: ConcreteClass;
@@ -94,10 +100,14 @@ const DEFAULT_FORM: FormState = {
   volume_m3: 120,
   formwork_area_m2: '',
   rebar_mass_kg: '',
+  tact_mode: 'spary',
   has_dilatacni_spary: true,
   spara_spacing_m: 10,
   total_length_m: 50,
   adjacent_sections: true,
+  num_tacts_override: '',
+  tact_volume_m3_override: '',
+  scheduling_mode_override: '',
   season: 'normal',
   use_retarder: false,
   concrete_class: 'C30/37',
@@ -182,10 +192,22 @@ export default function PlannerPage() {
       if (form.rebar_mass_kg) {
         input.rebar_mass_kg = parseFloat(form.rebar_mass_kg);
       }
-      if (form.has_dilatacni_spary) {
+      if (form.tact_mode === 'spary' && form.has_dilatacni_spary) {
         input.spara_spacing_m = form.spara_spacing_m;
         input.total_length_m = form.total_length_m;
         input.adjacent_sections = form.adjacent_sections;
+      }
+      // Direct tact input (foundations, piers, etc.)
+      if (form.tact_mode === 'manual' && form.num_tacts_override) {
+        input.num_tacts_override = parseInt(form.num_tacts_override);
+        if (form.tact_volume_m3_override) {
+          input.tact_volume_m3_override = parseFloat(form.tact_volume_m3_override);
+        }
+        if (form.scheduling_mode_override) {
+          input.scheduling_mode_override = form.scheduling_mode_override;
+        }
+        // In manual mode, spáry don't drive tact count
+        input.has_dilatacni_spary = false;
       }
       if (form.formwork_system_name) {
         input.formwork_system_name = form.formwork_system_name;
@@ -317,46 +339,125 @@ export default function PlannerPage() {
             </Field>
           </Section>
 
-          {/* ─── Pour ─── */}
-          <Section title="Betonáž">
-            <label style={labelStyle}>
-              <input
-                type="checkbox"
-                checked={form.has_dilatacni_spary}
-                onChange={e => update('has_dilatacni_spary', e.target.checked)}
-              />
-              {' '}Dilatační spáry
-            </label>
+          {/* ─── Záběry (Tacts) ─── */}
+          <Section title="Záběry">
+            <div style={{
+              display: 'flex', gap: 4, marginBottom: 10,
+              background: 'var(--r0-slate-200)', borderRadius: 4, padding: 2,
+            }}>
+              <button
+                onClick={() => update('tact_mode', 'spary')}
+                style={{
+                  flex: 1, padding: '6px 0', fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer',
+                  borderRadius: 3, fontFamily: 'inherit',
+                  background: form.tact_mode === 'spary' ? 'white' : 'transparent',
+                  color: form.tact_mode === 'spary' ? 'var(--r0-slate-800)' : 'var(--r0-slate-500)',
+                  boxShadow: form.tact_mode === 'spary' ? '0 1px 3px rgba(0,0,0,.1)' : 'none',
+                }}
+              >
+                Dilatační spáry
+              </button>
+              <button
+                onClick={() => update('tact_mode', 'manual')}
+                style={{
+                  flex: 1, padding: '6px 0', fontSize: 12, fontWeight: 600, border: 'none', cursor: 'pointer',
+                  borderRadius: 3, fontFamily: 'inherit',
+                  background: form.tact_mode === 'manual' ? 'white' : 'transparent',
+                  color: form.tact_mode === 'manual' ? 'var(--r0-slate-800)' : 'var(--r0-slate-500)',
+                  boxShadow: form.tact_mode === 'manual' ? '0 1px 3px rgba(0,0,0,.1)' : 'none',
+                }}
+              >
+                Počet záběrů
+              </button>
+            </div>
 
-            {form.has_dilatacni_spary && (
+            {form.tact_mode === 'spary' ? (
               <>
-                <Field label="Rozteč spár (m)">
-                  <input
-                    type="number"
-                    style={inputStyle}
-                    value={form.spara_spacing_m}
-                    onChange={e => update('spara_spacing_m', parseFloat(e.target.value) || 0)}
-                  />
-                </Field>
-                <Field label="Celková délka (m)">
-                  <input
-                    type="number"
-                    style={inputStyle}
-                    value={form.total_length_m}
-                    onChange={e => update('total_length_m', parseFloat(e.target.value) || 0)}
-                  />
-                </Field>
                 <label style={labelStyle}>
                   <input
                     type="checkbox"
-                    checked={form.adjacent_sections}
-                    onChange={e => update('adjacent_sections', e.target.checked)}
+                    checked={form.has_dilatacni_spary}
+                    onChange={e => update('has_dilatacni_spary', e.target.checked)}
                   />
-                  {' '}Sousední sekce (šachový pořadí)
+                  {' '}Dilatační spáry
                 </label>
+                {form.has_dilatacni_spary && (
+                  <>
+                    <Field label="Rozteč spár (m)">
+                      <input
+                        type="number"
+                        style={inputStyle}
+                        value={form.spara_spacing_m}
+                        onChange={e => update('spara_spacing_m', parseFloat(e.target.value) || 0)}
+                      />
+                    </Field>
+                    <Field label="Celková délka (m)">
+                      <input
+                        type="number"
+                        style={inputStyle}
+                        value={form.total_length_m}
+                        onChange={e => update('total_length_m', parseFloat(e.target.value) || 0)}
+                      />
+                    </Field>
+                    <label style={labelStyle}>
+                      <input
+                        type="checkbox"
+                        checked={form.adjacent_sections}
+                        onChange={e => update('adjacent_sections', e.target.checked)}
+                      />
+                      {' '}Sousední sekce (šachový pořadí)
+                    </label>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <div style={{
+                  padding: '8px 10px', marginBottom: 10,
+                  background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 4,
+                  fontSize: 11, color: '#1e40af', lineHeight: 1.5,
+                }}>
+                  Pro základy, pilíře, opěry: každý element = 1 záběr.<br/>
+                  Např. 569 m³ na 2 opěry + 8 pilířů = 10 záběrů.
+                </div>
+                <Field label="Počet záběrů">
+                  <input
+                    type="number"
+                    style={inputStyle}
+                    value={form.num_tacts_override}
+                    onChange={e => update('num_tacts_override', e.target.value)}
+                    placeholder="např. 10"
+                    min={1}
+                  />
+                </Field>
+                <Field label="Objem na záběr (m³)" hint="prázdné = celkem ÷ záběry">
+                  <input
+                    type="number"
+                    style={inputStyle}
+                    value={form.tact_volume_m3_override}
+                    onChange={e => update('tact_volume_m3_override', e.target.value)}
+                    placeholder={form.num_tacts_override
+                      ? `${(form.volume_m3 / (parseInt(form.num_tacts_override) || 1)).toFixed(1)} m³ (auto)`
+                      : 'automatický výpočet'}
+                  />
+                </Field>
+                <Field label="Režim betonáže">
+                  <select
+                    style={inputStyle}
+                    value={form.scheduling_mode_override}
+                    onChange={e => update('scheduling_mode_override', e.target.value as '' | 'linear' | 'chess')}
+                  >
+                    <option value="">Automatický (dle typu)</option>
+                    <option value="linear">Lineární (po řadě)</option>
+                    <option value="chess">Šachový (obskakuje sousední)</option>
+                  </select>
+                </Field>
               </>
             )}
+          </Section>
 
+          {/* ─── Environment ─── */}
+          <Section title="Podmínky">
             <Field label="Datum zahájení" hint="pro kalendářní Gantt">
               <input
                 type="date"
@@ -506,6 +607,54 @@ export default function PlannerPage() {
   );
 }
 
+// ─── Export ──────────────────────────────────────────────────────────────────
+
+function exportPlanToCSV(plan: PlannerOutput, startDate: string) {
+  const BOM = '\uFEFF';
+  const lines: string[] = [];
+  const add = (label: string, value: string) => lines.push(`"${label}","${value}"`);
+
+  add('Element', plan.element.label_cs);
+  add('Režim betonáže', `${plan.pour_decision.pour_mode} / ${plan.pour_decision.sub_mode}`);
+  add('Počet záběrů', String(plan.pour_decision.num_tacts));
+  add('Objem / záběr (m³)', String(plan.pour_decision.tact_volume_m3));
+  add('Celkem dní (prac.)', String(plan.schedule.total_days));
+  add('Sekvenčně (dní)', String(plan.schedule.sequential_days));
+  add('Úspora (%)', String(plan.schedule.savings_pct));
+  add('Bednění - systém', plan.formwork.system.name);
+  add('Montáž (dní/záběr)', String(plan.formwork.assembly_days));
+  add('Zrání (dní)', String(plan.formwork.curing_days));
+  add('Demontáž (dní/záběr)', String(plan.formwork.disassembly_days));
+  add('Náklady - bednění práce (Kč)', String(Math.round(plan.costs.formwork_labor_czk)));
+  add('Náklady - výztuž práce (Kč)', String(Math.round(plan.costs.rebar_labor_czk)));
+  add('Náklady - betonáž práce (Kč)', String(Math.round(plan.costs.pour_labor_czk)));
+  add('Náklady - pronájem bednění (Kč)', String(Math.round(plan.costs.formwork_rental_czk)));
+  add('Celkem práce (Kč)', String(Math.round(plan.costs.total_labor_czk)));
+  add('Celkem vše (Kč)', String(Math.round(plan.costs.total_labor_czk + plan.costs.formwork_rental_czk)));
+  if (plan.monte_carlo) {
+    add('P50 (dní)', String(plan.monte_carlo.p50));
+    add('P80 (dní)', String(plan.monte_carlo.p80));
+    add('P90 (dní)', String(plan.monte_carlo.p90));
+  }
+
+  // Tact details
+  if (plan.schedule.tact_details?.length) {
+    lines.push('');
+    lines.push('"Záběr","Sada","Montáž od","Montáž do","Beton od","Beton do","Zrání od","Zrání do","Demontáž od","Demontáž do"');
+    for (const td of plan.schedule.tact_details) {
+      lines.push(`"T${td.tact}","S${td.set}","${td.assembly[0]}","${td.assembly[1]}","${td.concrete[0]}","${td.concrete[1]}","${td.curing[0]}","${td.curing[1]}","${td.stripping[0]}","${td.stripping[1]}"`);
+    }
+  }
+
+  const blob = new Blob([BOM + lines.join('\n')], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `plan_${plan.element.type}_${startDate || 'export'}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
 // ─── Result Display ─────────────────────────────────────────────────────────
 
 function PlanResult({ plan, startDate, showLog, onToggleLog }: {
@@ -531,6 +680,33 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
 
   return (
     <div style={{ maxWidth: 900, margin: '0 auto' }}>
+      {/* Action buttons */}
+      <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+        <button
+          onClick={() => exportPlanToCSV(plan, startDate)}
+          style={{
+            padding: '8px 16px', fontSize: 13, fontWeight: 600, border: 'none', cursor: 'pointer',
+            borderRadius: 6, fontFamily: 'inherit',
+            background: 'var(--r0-slate-800)', color: 'white',
+          }}
+        >
+          Stáhnout CSV
+        </button>
+        <button
+          onClick={() => {
+            navigator.clipboard.writeText(plan.schedule.gantt || '');
+            alert('Gantt zkopírován do schránky');
+          }}
+          style={{
+            padding: '8px 16px', fontSize: 13, fontWeight: 600, border: '1px solid var(--r0-slate-300)',
+            cursor: 'pointer', borderRadius: 6, fontFamily: 'inherit',
+            background: 'white', color: 'var(--r0-slate-700)',
+          }}
+        >
+          Kopírovat Gantt
+        </button>
+      </div>
+
       {/* KPI Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
         <KPICard label="Celkem dní" value={plan.schedule.total_days} unit={calendarInfo ? `prac. dní (${calendarInfo.calendarDays} kal.)` : 'prac. dní'} color="var(--r0-blue)" />

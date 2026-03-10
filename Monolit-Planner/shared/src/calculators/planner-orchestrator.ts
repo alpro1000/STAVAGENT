@@ -96,6 +96,16 @@ export interface PlannerInput {
   /** Explicit formwork system name (overrides auto-recommendation) */
   formwork_system_name?: string;
 
+  // --- Tact override ---
+  /** Direct number of tacts (overrides auto-calculation from spáry).
+   *  Use for foundations, piers, etc. where each element = 1 tact.
+   *  Example: 8 pier foundations = num_tacts_override: 8 */
+  num_tacts_override?: number;
+  /** Volume per tact (m³). If not given, total volume / num_tacts. */
+  tact_volume_m3_override?: number;
+  /** Scheduling mode override: 'linear' or 'chess' */
+  scheduling_mode_override?: 'linear' | 'chess';
+
   // --- Options ---
   /** Run Monte Carlo simulation. Default: false */
   enable_monte_carlo?: boolean;
@@ -255,6 +265,20 @@ export function planElement(input: PlannerInput): PlannerOutput {
     season: input.season,
     use_retarder: input.use_retarder,
   });
+
+  // Apply user overrides for tacts (foundations, piers, etc.)
+  if (input.num_tacts_override && input.num_tacts_override > 0) {
+    pourDecision.num_tacts = input.num_tacts_override;
+    pourDecision.tact_volume_m3 = input.tact_volume_m3_override
+      ?? Math.round((input.volume_m3 / input.num_tacts_override) * 100) / 100;
+    pourDecision.num_sections = input.num_tacts_override;
+    pourDecision.section_volume_m3 = pourDecision.tact_volume_m3;
+    log.push(`Tacts: MANUAL override → ${pourDecision.num_tacts} tacts × ${pourDecision.tact_volume_m3}m³`);
+  }
+  if (input.scheduling_mode_override) {
+    pourDecision.scheduling_mode = input.scheduling_mode_override;
+    log.push(`Scheduling mode: MANUAL → ${input.scheduling_mode_override}`);
+  }
 
   log.push(`Pour: ${pourDecision.pour_mode}/${pourDecision.sub_mode}, ${pourDecision.num_tacts} tacts × ${pourDecision.tact_volume_m3}m³`);
   warnings.push(...pourDecision.warnings);
