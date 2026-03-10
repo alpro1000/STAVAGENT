@@ -36,7 +36,7 @@ ENABLE_MINERU = os.getenv("ENABLE_MINERU", "false").lower() == "true"
 def _slugify(text: str) -> str:
     """
     Convert filename stem to ASCII-safe slug.
-    Prevents MinerU crash on Windows with diacritics (CWE-22 safe).
+    Prevents MinerU crash on Windows with diacritics.
     e.g. 'IV MM-Ceník2026' -> 'IV_MM-Cenik2026'
     """
     normalized = unicodedata.normalize("NFKD", text)
@@ -96,7 +96,7 @@ class SmartParser:
             if positions:
                 logger.info(f"SmartParser: pdfplumber extracted {len(positions)} positions")
                 return {"positions": positions, "strategy": "pdfplumber"}
-            logger.info(f"SmartParser: pdfplumber returned 0 positions, trying MinerU")
+            logger.info("SmartParser: pdfplumber returned 0 positions, trying MinerU")
         except Exception as e:
             logger.warning(f"SmartParser: pdfplumber failed: {e}")
         if ENABLE_MINERU:
@@ -139,6 +139,7 @@ class SmartParser:
         return {"positions": positions, "strategy": "mineru", "md_path": str(md_files[0])}
 
     def _extract_positions_from_markdown(self, md_content: str) -> list:
+        """Uses module-level re (no redundant local import)."""
         positions = []
         rows = re.findall(r"<tr>(.*?)</tr>", md_content, re.DOTALL)
         for row in rows:
