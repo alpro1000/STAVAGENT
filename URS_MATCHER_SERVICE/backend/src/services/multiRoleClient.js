@@ -17,7 +17,9 @@
 import { logger } from '../utils/logger.js';
 
 // Path to concrete-agent Core API (STAVAGENT ЯДРО)
-const STAVAGENT_API_BASE = process.env.STAVAGENT_API_URL || 'https://concrete-agent.onrender.com';
+// PRIMARY: Google Cloud Run (europe-west3)
+// FALLBACK: https://concrete-agent.onrender.com
+const STAVAGENT_API_BASE = process.env.STAVAGENT_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
 
 /**
  * Ask question to Multi-Role AI System
@@ -49,7 +51,7 @@ export async function askMultiRole(question, options = {}) {
   };
 
   // Use AbortController for timeout
-  // IMPORTANT: Render services need longer timeouts (cold start + actual processing)
+  // Cloud Run services have faster cold starts than Render (~2-5s vs 30s+)
   const MULTI_ROLE_TIMEOUT = parseInt(process.env.MULTI_ROLE_TIMEOUT_MS || '90000', 10); // 90s default
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), MULTI_ROLE_TIMEOUT);
@@ -271,8 +273,8 @@ Provide:
  */
 export async function checkMultiRoleAvailability() {
   // Use AbortController for timeout (fetch doesn't support timeout option)
-  // IMPORTANT: Render services need 30s+ for cold start (can be sleeping)
-  const HEALTH_CHECK_TIMEOUT = parseInt(process.env.MULTI_ROLE_HEALTH_TIMEOUT_MS || '30000', 10); // 30s default
+  // Cloud Run cold start is much faster than Render (~2-5s vs 30s+)
+  const HEALTH_CHECK_TIMEOUT = parseInt(process.env.MULTI_ROLE_HEALTH_TIMEOUT_MS || '15000', 10); // 15s default (Cloud Run)
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), HEALTH_CHECK_TIMEOUT);
 
