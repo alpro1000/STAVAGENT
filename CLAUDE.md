@@ -64,13 +64,13 @@ ALL backends on **Render**, ALL frontends on **Vercel**.
 
 | Service | Type | URL |
 |---------|------|-----|
-| concrete-agent (CORE) | Backend | https://concrete-agent.onrender.com |
-| stavagent-portal | Backend | https://stavagent-portal-backend.onrender.com |
+| concrete-agent (CORE) | Backend | https://concrete-agent-1086027517695.europe-west3.run.app |
+| stavagent-portal | Backend | https://stavagent-portal-backend-1086027517695.europe-west3.run.app |
 | stavagent-portal | Frontend | https://www.stavagent.cz (Vercel: stavagent-backend-*.vercel.app) |
-| Monolit-Planner | Backend | https://monolit-planner-api.onrender.com |
+| Monolit-Planner | Backend | https://monolit-planner-api-1086027517695.europe-west3.run.app |
 | Monolit-Planner | Frontend | https://monolit-planner-frontend.vercel.app |
-| URS_MATCHER_SERVICE | Backend | https://urs-matcher-service.onrender.com |
-| rozpocet-registry | Backend | https://rozpocet-registry-backend.onrender.com |
+| URS_MATCHER_SERVICE | Backend | https://urs-matcher-service-1086027517695.europe-west3.run.app |
+| rozpocet-registry | Backend | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app |
 | rozpocet-registry | Frontend | https://stavagent-backend-ktwx.vercel.app (naming legacy) |
 
 **DB (Render PostgreSQL):** `postgresql://stavagent_portal:***@dpg-d68br3mr433s73cht4r0-a/stavagent_portal`
@@ -134,7 +134,7 @@ Main Flow:
 
 ```http
 # Portal → concrete-agent
-POST https://concrete-agent.onrender.com/workflow/a/import
+POST https://concrete-agent-1086027517695.europe-west3.run.app/workflow/a/import
 Content-Type: multipart/form-data
 
 # Portal → Kiosk
@@ -143,7 +143,7 @@ Content-Type: application/json
 { projectId, projectName, positions[] }
 
 # Kiosk → concrete-agent (Multi-Role)
-POST https://concrete-agent.onrender.com/api/v1/multi-role/ask
+POST https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/multi-role/ask
 Content-Type: application/json
 { role, question, context }
 ```
@@ -156,7 +156,7 @@ Content-Type: application/json
 
 **Location:** `/concrete-agent`
 **Technology:** Python 3.10+, FastAPI
-**Production URL:** `https://concrete-agent.onrender.com`
+**Production URL:** `https://concrete-agent-1086027517695.europe-west3.run.app`
 **Port (Dev):** 8000
 
 **Purpose:** Central AI system that processes documents, performs audits, and provides Multi-Role validation.
@@ -373,7 +373,7 @@ Monolit-Planner/
 
 **Location:** `/URS_MATCHER_SERVICE`
 **Technology:** Node.js, Express, SQLite
-**Production URL:** `https://urs-matcher-service.onrender.com`
+**Production URL:** `https://urs-matcher-service-1086027517695.europe-west3.run.app`
 **Port (Dev):** Backend 3001, Frontend 3000
 
 **Purpose:** Match BOQ (Bill of Quantities) descriptions to URS codes using AI.
@@ -705,7 +705,7 @@ REDIS_URL=redis://...
 # Google Drive (optional)
 GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
-GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent.onrender.com/api/v1/google/callback
+GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback
 GOOGLE_CREDENTIALS_ENCRYPTION_KEY=...
 ```
 
@@ -713,7 +713,7 @@ GOOGLE_CREDENTIALS_ENCRYPTION_KEY=...
 ```env
 NODE_ENV=production
 PORT=3001
-VITE_API_URL=https://monolit-planner-api.onrender.com
+VITE_API_URL=https://monolit-planner-api-1086027517695.europe-west3.run.app
 CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
 ```
 
@@ -726,7 +726,7 @@ GOOGLE_AI_KEY=...
 OPENAI_API_KEY=sk-...
 PERPLEXITY_API_KEY=pplx-...
 LLM_TIMEOUT_MS=90000
-STAVAGENT_API_URL=https://concrete-agent.onrender.com
+STAVAGENT_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
 ```
 
 ### stavagent-portal
@@ -741,7 +741,7 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 ### URS Matcher: Empty Results
 1. Check LLM timeout in `llmConfig.js` (should be 90s)
 2. Check AbortController in `llmClient.js` (each provider needs own controller)
-3. Check Multi-Role URL in `multiRoleClient.js` (concrete-agent.onrender.com)
+3. Check Multi-Role URL in `multiRoleClient.js` (concrete-agent-1086027517695.europe-west3.run.app)
 
 ### Monolit: Calculations Wrong
 1. Check `concrete_m3` value in beton position

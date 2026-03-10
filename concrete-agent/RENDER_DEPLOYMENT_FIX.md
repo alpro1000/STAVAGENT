@@ -143,25 +143,25 @@ kill -9 <PID>
 
 ### Test 1: Health Check
 ```bash
-curl https://concrete-agent.onrender.com/health
+curl https://concrete-agent-1086027517695.europe-west3.run.app/health
 ```
 **Expected:** `{"status": "healthy"}`
 
 ### Test 2: Root Endpoint
 ```bash
-curl https://concrete-agent.onrender.com/
+curl https://concrete-agent-1086027517695.europe-west3.run.app/
 ```
 **Expected:** `{"status": "ok", "docs": "/docs"}`
 
 ### Test 3: API Docs
 ```
-https://concrete-agent.onrender.com/docs
+https://concrete-agent-1086027517695.europe-west3.run.app/docs
 ```
 **Expected:** Swagger UI loads
 
 ### Test 4: Multi-Role API
 ```bash
-curl -X POST "https://concrete-agent.onrender.com/api/v1/multi-role/analyze" \
+curl -X POST "https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/multi-role/analyze" \
   -H "Content-Type: application/json" \
   -d '{
     "project_name": "Test Project",

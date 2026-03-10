@@ -14,7 +14,7 @@
 import { logger } from '../utils/logger.js';
 
 // Configuration
-const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent.onrender.com';
+const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
 const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT || '90000', 10); // 90s for cold start
 
 /**

@@ -315,7 +315,7 @@ Response: [
 // Открыть киоск (редирект)
 GET /api/portal/projects/:portal_project_id/kiosks/:kiosk_type/open
 Response: {
-  redirect_url: "https://monolit-kiosk.onrender.com/projects/SO201?token=..."
+  redirect_url: "https://monolit-planner-frontend.vercel.app/projects/SO201?token=..."
 }
 ```
 
@@ -497,7 +497,7 @@ ChatPanel.tsx
     - Проект в киоске Monolit (kiosk_project_id: "SO201")
     - Заполняет таблицу 35 бетонными работами
 11. Нажимает "Открыть киоск Monolit"
-12. Редирект на https://monolit-kiosk.onrender.com/projects/SO201
+12. Редирект на https://monolit-planner-frontend.vercel.app/projects/SO201
 ```
 
 ---
@@ -511,7 +511,7 @@ ChatPanel.tsx
    - Pump: pump_12 (active)
 3. Нажимает на "Monolit"
 4. Редирект на киоск Monolit:
-   - URL: https://monolit-kiosk.onrender.com/projects/SO201
+   - URL: https://monolit-planner-frontend.vercel.app/projects/SO201
    - Token передается автоматически
 5. Киоск Monolit:
    - Загружает свой проект SO201

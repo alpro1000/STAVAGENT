@@ -75,7 +75,7 @@
 
 ШАГ 8: Проверь в браузере
 ─────────────────────────────────────────────────────────────
-   1. Открой: https://monolit-planner-frontend.onrender.com
+   1. Открой: https://monolit-planner-frontend.vercel.app
 
    2. Нажми Ctrl+Shift+R (жёсткая перезагрузка)
 

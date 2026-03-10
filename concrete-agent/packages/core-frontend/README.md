@@ -1,7 +1,7 @@
 # Stav Agent Frontend
 
 Modern React frontend for the Stav Agent assistant. The UI consumes the public API hosted at
-`https://concrete-agent.onrender.com` (configurable via environment variables) and renders chat
+`https://concrete-agent-1086027517695.europe-west3.run.app` (configurable via environment variables) and renders chat
 responses together with structured artifacts.
 
 ## Getting Started
@@ -24,7 +24,7 @@ The Vite dev server proxies `/api` requests to the configured backend when `npm 
 
 | Name           | Description                                       | Default                               |
 | -------------- | ------------------------------------------------- | ------------------------------------- |
-| `VITE_API_URL` | Base URL of the backend FastAPI service (HTTPS).  | `https://concrete-agent.onrender.com` |
+| `VITE_API_URL` | Base URL of the backend FastAPI service (HTTPS).  | `https://concrete-agent-1086027517695.europe-west3.run.app` |
 
 ## API contract
 

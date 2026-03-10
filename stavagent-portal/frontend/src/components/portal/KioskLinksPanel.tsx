@@ -33,7 +33,7 @@ interface KioskLinksPanelProps {
 const KIOSK_META: Record<string, { label: string; icon: string; color: string; url: string }> = {
   monolit: { label: 'Monolit Planner', icon: '\u{1FAA8}', color: '#6366f1', url: 'https://monolit-planner-frontend.vercel.app' },
   registry: { label: 'Registr Rozpočtů', icon: '\u{1F4CA}', color: '#f59e0b', url: 'https://stavagent-backend-ktwx.vercel.app' },
-  urs_matcher: { label: 'URS Matcher', icon: '\u{1F50E}', color: '#22c55e', url: 'https://urs-matcher-service.onrender.com' },
+  urs_matcher: { label: 'URS Matcher', icon: '\u{1F50E}', color: '#22c55e', url: 'https://urs-matcher-service-1086027517695.europe-west3.run.app' },
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -128,7 +128,7 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
       if (link.kiosk_type === 'monolit') {
         // Fetch from Monolit kiosk API and push to Portal
         const kioskRes = await fetch(
-          `https://monolit-planner-api.onrender.com/api/projects/${link.kiosk_project_id}/export`,
+          `https://monolit-planner-api-1086027517695.europe-west3.run.app/api/projects/${link.kiosk_project_id}/export`,
           { signal: AbortSignal.timeout(30000) }
         );
         if (!kioskRes.ok) throw new Error(`${label}: chyba ${kioskRes.status}`);

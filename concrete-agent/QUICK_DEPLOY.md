@@ -76,7 +76,7 @@ git push origin main
 ### Step 4: Verify Deployment
 ```bash
 # Test health endpoint
-curl https://concrete-agent.onrender.com/health
+curl https://concrete-agent-1086027517695.europe-west3.run.app/health
 
 # Expected: {"status": "healthy"}
 ```

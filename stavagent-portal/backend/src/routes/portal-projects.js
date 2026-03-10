@@ -1033,9 +1033,9 @@ router.get('/:id/unified', async (req, res) => {
  */
 async function fetchKioskData(kioskType, kioskProjectId) {
   const kioskUrls = {
-    'monolit': process.env.MONOLIT_API_URL || 'https://monolit-planner-api.onrender.com',
-    'urs_matcher': process.env.URS_MATCHER_API_URL || 'https://urs-matcher-service.onrender.com',
-    'r0': process.env.MONOLIT_API_URL || 'https://monolit-planner-api.onrender.com'
+    'monolit': process.env.MONOLIT_API_URL || 'https://monolit-planner-api-1086027517695.europe-west3.run.app',
+    'urs_matcher': process.env.URS_MATCHER_API_URL || 'https://urs-matcher-service-1086027517695.europe-west3.run.app',
+    'r0': process.env.MONOLIT_API_URL || 'https://monolit-planner-api-1086027517695.europe-west3.run.app'
   };
 
   const baseUrl = kioskUrls[kioskType];

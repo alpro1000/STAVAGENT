@@ -24,7 +24,7 @@
 - Vercel SPA routing fix (`vercel.json` rewrites)
 
 ### 4. CORE Proxy + Workflow Fixes
-- **Portal backend proxy** to concrete-agent (`/api/core/*` → `concrete-agent.onrender.com/*`)
+- **Portal backend proxy** to concrete-agent (`/api/core/*` → `concrete-agent-1086027517695.europe-west3.run.app/*`)
 - Fixed all 5 workflows (file upload, Workflow A/B/C, Drawing Analysis)
 - Drawing Analysis UI with GPT-4 Vision integration
 

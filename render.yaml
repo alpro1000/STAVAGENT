@@ -36,7 +36,7 @@ services:
       - key: SMTP_FROM
         value: noreply@stavagent.com
       - key: CORE_API_URL
-        value: https://concrete-agent.onrender.com
+        value: https://concrete-agent-1086027517695.europe-west3.run.app
       - key: UPLOAD_DIR
         value: /opt/render/project/src/backend/uploads
       - key: EXPORT_DIR

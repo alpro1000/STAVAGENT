@@ -220,7 +220,7 @@ openssl rand -base64 32
 3. Configure OAuth2 consent screen (External, add test users)
 4. Create OAuth2 credentials (Web application)
 5. Add redirect URIs:
-   - `https://concrete-agent.onrender.com/api/v1/google/callback`
+   - `https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback`
    - `http://localhost:8000/api/v1/google/callback` (for local testing)
 6. Generate encryption keys:
    ```bash
@@ -233,7 +233,7 @@ openssl rand -base64 32
    - GOOGLE_OAUTH_REDIRECT_URI
    - GOOGLE_CREDENTIALS_ENCRYPTION_KEY
    - GOOGLE_WEBHOOK_SECRET_KEY
-   - PUBLIC_URL=https://concrete-agent.onrender.com
+   - PUBLIC_URL=https://concrete-agent-1086027517695.europe-west3.run.app
 
 **Testing (After Setup):**
 1. Open Document Summary in Portal

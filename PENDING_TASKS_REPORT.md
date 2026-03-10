@@ -255,7 +255,7 @@ git add app/main.py app/core/kb_loader.py
 git commit -m "FIX: Render deployment - robust KB loading + remove redundant PDFs"
 git push origin main
 # Monitor: https://dashboard.render.com/web/srv-d38odtemcj7s738gp30g
-curl https://concrete-agent.onrender.com/health
+curl https://concrete-agent-1086027517695.europe-west3.run.app/health
 ```
 
 ---
@@ -355,8 +355,8 @@ git push origin main
 ## 🔗 Полезные ссылки
 
 ### Production URLs:
-- **CORE (AI):** https://concrete-agent.onrender.com
-- **Monolit Backend:** https://monolit-planner-api.onrender.com
+- **CORE (AI):** https://concrete-agent-1086027517695.europe-west3.run.app
+- **Monolit Backend:** https://monolit-planner-api-1086027517695.europe-west3.run.app
 - **Monolit Frontend:** https://monolit-planner-frontend.vercel.app
 - **Registry TOV:** https://stavagent-backend-ktwx.vercel.app
 - **Portal:** https://www.stavagent.cz

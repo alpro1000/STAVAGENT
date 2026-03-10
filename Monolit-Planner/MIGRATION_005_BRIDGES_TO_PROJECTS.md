@@ -37,7 +37,7 @@
 
 **Действия:**
 1. Подожди **2-3 минуты** (Render деплоит изменения)
-2. Открой в браузере: https://monolit-planner-frontend.onrender.com
+2. Открой в браузере: https://monolit-planner-frontend.vercel.app
 3. Список проектов должен **появиться** ✅
 4. Попробуй редактировать "SO 11-20-01" - должно работать ✅
 
@@ -120,7 +120,7 @@ WHERE bridge_id NOT IN (SELECT project_id FROM monolith_projects)
 ### Проверь что всё работает:
 
 1. **Откройте Monolit Planner:**
-   - https://monolit-planner-frontend.onrender.com
+   - https://monolit-planner-frontend.vercel.app
 
 2. **Список проектов:**
    - Должны появиться все 100 проектов ✅

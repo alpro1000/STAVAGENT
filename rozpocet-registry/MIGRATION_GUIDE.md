@@ -131,10 +131,10 @@ const importData = async (projects: Project[]) => {
 
 ```bash
 # Backend API URL
-VITE_REGISTRY_API_URL=https://rozpocet-registry-backend.onrender.com
+VITE_REGISTRY_API_URL=https://rozpocet-registry-backend-1086027517695.europe-west3.run.app
 
 # Portal API URL (for sync)
-VITE_PORTAL_API_URL=https://stavagent-portal-backend.onrender.com
+VITE_PORTAL_API_URL=https://stavagent-portal-backend-1086027517695.europe-west3.run.app
 ```
 
 ### Локальная разработка
@@ -194,5 +194,5 @@ DATABASE_URL=postgresql://postgres:PASSWORD@ENDPOINT:5432/registry
 
 ## Support
 
-- Backend API: https://rozpocet-registry-backend.onrender.com/health
+- Backend API: https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/health
 - Issues: https://github.com/alpro1000/STAVAGENT/issues

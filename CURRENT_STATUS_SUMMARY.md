@@ -22,7 +22,7 @@
 **Проверка:**
 ```bash
 # Test production server
-curl https://concrete-agent.onrender.com/health
+curl https://concrete-agent-1086027517695.europe-west3.run.app/health
 # Expected: {"status": "healthy"}
 
 # Check Render logs
@@ -230,7 +230,7 @@ npm run dev
 #### 1. Verify CORE Production Status
 ```bash
 # Check if server is responding
-curl https://concrete-agent.onrender.com/health
+curl https://concrete-agent-1086027517695.europe-west3.run.app/health
 
 # If not responding, check Render logs
 https://dashboard.render.com/web/srv-d38odtemcj7s738gp30g
@@ -314,11 +314,11 @@ c0f771f FEAT: Monolit → Portal position write-back integration
 
 ### Production URLs:
 - **Portal:** https://www.stavagent.cz
-- **Monolit Backend:** https://monolit-planner-api.onrender.com
+- **Monolit Backend:** https://monolit-planner-api-1086027517695.europe-west3.run.app
 - **Monolit Frontend:** https://monolit-planner-frontend.vercel.app
 - **Registry TOV:** https://stavagent-backend-ktwx.vercel.app
-- **CORE (AI):** https://concrete-agent.onrender.com
-- **URS Matcher:** https://urs-matcher-service.onrender.com
+- **CORE (AI):** https://concrete-agent-1086027517695.europe-west3.run.app
+- **URS Matcher:** https://urs-matcher-service-1086027517695.europe-west3.run.app
 
 ---
 

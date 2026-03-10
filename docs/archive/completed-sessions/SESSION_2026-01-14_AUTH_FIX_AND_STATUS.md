@@ -217,10 +217,10 @@ All features deployed to Render and working:
   # StavAgent Portal - Production Environment Variables
 
   # Backend API URL (stavagent-portal)
-  VITE_API_URL=https://stav-agent.onrender.com
+  VITE_API_URL=https://www.stavagent.cz
 
   # Core API URL (concrete-agent)
-  VITE_CORE_API_URL=https://concrete-agent.onrender.com
+  VITE_CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
 
 + # 🔓 DISABLE AUTHENTICATION (for development/testing)
 + # Set to 'false' when you want to enable login/password
@@ -269,7 +269,7 @@ Safari: Cmd+Shift+R
 
 **2. Check Render Backend:**
 ```bash
-curl https://concrete-agent.onrender.com/health
+curl https://concrete-agent-1086027517695.europe-west3.run.app/health
 # Should return 200 OK
 ```
 

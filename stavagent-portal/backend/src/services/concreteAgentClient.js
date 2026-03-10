@@ -1,6 +1,6 @@
 /**
  * Concrete-Agent HTTP Client
- * Wrapper for calling the CORE Engine at concrete-agent.onrender.com
+ * Wrapper for calling the CORE Engine at concrete-agent-1086027517695.europe-west3.run.app
  *
  * Endpoints:
  * - Workflow C: File upload + parse + audit (all-in-one pipeline)
@@ -15,7 +15,7 @@ import FormData from 'form-data';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 
-const CORE_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent.onrender.com';
+const CORE_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
 const CORE_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '120000');
 
 // ── Workflow C: Upload + Parse + Audit ──────────────────────────────────

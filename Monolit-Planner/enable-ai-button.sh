@@ -15,7 +15,7 @@
 # No configuration needed - everything is automatic!
 ###############################################################################
 
-API_URL="https://monolit-planner-api.onrender.com"
+API_URL="https://monolit-planner-api-1086027517695.europe-west3.run.app"
 MAX_RETRIES=5
 RETRY_DELAY=10
 
@@ -120,7 +120,7 @@ while [ $attempt -le $MAX_RETRIES ]; do
         echo "🎉 SUCCESS! All done!"
         echo ""
         echo "Next steps:"
-        echo "1. Open: https://monolit-planner-frontend.onrender.com"
+        echo "1. Open: https://monolit-planner-frontend.vercel.app"
         echo "2. Press Ctrl+Shift+R (hard reload)"
         echo "3. Open any project with positions"
         echo "4. Look for green ✨ button in 'Dny' column"
@@ -148,7 +148,7 @@ echo ""
 echo "❌ Failed after $MAX_RETRIES attempts"
 echo ""
 echo "Manual alternative:"
-echo "1. Open browser console on https://monolit-planner-frontend.onrender.com"
+echo "1. Open browser console on https://monolit-planner-frontend.vercel.app"
 echo "2. Paste this code:"
 echo ""
 echo "fetch('/api/config', {"
