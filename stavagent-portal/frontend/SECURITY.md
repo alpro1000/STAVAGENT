@@ -138,8 +138,8 @@ export default function ProtectedRoute({ children }) {
 ### Render.com / Vercel / Netlify
 
 1. **Environment Variables:**
-   - `VITE_API_URL` → https://stavagent-portal-backend-1086027517695.europe-west3.run.app
-   - `VITE_CORE_API_URL` → https://concrete-agent-1086027517695.europe-west3.run.app
+   - `VITE_API_URL` → https://www.stavagent.cz
+   - `VITE_CORE_API_URL` → https://concrete-agent-3uxelthc4q-ey.a.run.app
    - **DO NOT SET:** `VITE_DISABLE_AUTH`
 
 2. **Build Command:**
@@ -178,7 +178,7 @@ export default function ProtectedRoute({ children }) {
 
 3. **Verify fix:**
    ```bash
-   curl https://stavagent-portal-backend-1086027517695.europe-west3.run.app/portal
+   curl https://www.stavagent.cz/portal
    # Should return login page HTML (not portal data)
    ```
 

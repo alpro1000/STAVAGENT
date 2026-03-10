@@ -437,10 +437,10 @@ URS_CATALOG_MODE=online
 | Service | URL | Status |
 |---------|-----|--------|
 | Portal Frontend | https://www.stavagent.cz | ✅ Online |
-| Portal Backend | https://stavagent-portal-backend-1086027517695.europe-west3.run.app | ⚠️ Needs env vars |
-| URS Matcher | https://urs-matcher-service-1086027517695.europe-west3.run.app | ⚠️ Needs PPLX_API_KEY |
-| concrete-agent | https://concrete-agent-1086027517695.europe-west3.run.app | ✅ Online |
-| Monolit Planner | https://monolit-planner-api-1086027517695.europe-west3.run.app | ✅ Online |
+| Portal Backend | https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app | ⚠️ Needs env vars |
+| URS Matcher | https://urs-matcher-service-3uxelthc4q-ey.a.run.app | ⚠️ Needs PPLX_API_KEY |
+| concrete-agent | https://concrete-agent-3uxelthc4q-ey.a.run.app | ✅ Online |
+| Monolit Planner | https://monolit-planner-api-3uxelthc4q-ey.a.run.app | ✅ Online |
 
 ---
 

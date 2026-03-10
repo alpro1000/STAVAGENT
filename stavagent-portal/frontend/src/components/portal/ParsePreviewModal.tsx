@@ -119,7 +119,7 @@ interface ImportResultData {
 const KIOSK_URLS: Record<string, string> = {
   monolit: 'https://monolit-planner-frontend.vercel.app',
   registry: 'https://stavagent-backend-ktwx.vercel.app',
-  urs_matcher: 'https://urs-matcher-service-1086027517695.europe-west3.run.app',
+  urs_matcher: 'https://urs-matcher-service-3uxelthc4q-ey.a.run.app',
 };
 
 const KIOSK_LABELS: Record<string, { name: string; icon: string; color: string }> = {

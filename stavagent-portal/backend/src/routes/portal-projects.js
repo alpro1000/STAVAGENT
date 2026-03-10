@@ -770,38 +770,19 @@ router.post('/:id/send-to-core', async (req, res) => {
       });
     }
 
-    // Send first file to CORE for analysis (Workflow C)
+    // Send first file to CORE for analysis (Workflow A)
     const firstFile = filesResult.rows[0];
 
     console.log(`[PortalProjects] Sending project ${id} to CORE via file: ${firstFile.file_name}`);
-    console.log(`[PortalProjects] Using Workflow C (complete pipeline with parsing + audit)`);
+    console.log(`[PortalProjects] Note: Using Workflow A (document parsing only). Multi-Role audit disabled.`);
 
-    // Use Workflow C upload endpoint
-    const FormData = (await import('form-data')).default;
-    const fs = (await import('fs')).default;
-    
-    const form = new FormData();
-    form.append('file', fs.createReadStream(firstFile.file_path));
-    form.append('project_id', id);
-    form.append('project_name', project.project_name);
-    form.append('generate_summary', 'false');
-    form.append('use_parallel', 'true');
-    form.append('language', 'cs');
-
-    const CONCRETE_AGENT_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
-    const response = await fetch(`${CONCRETE_AGENT_URL}/api/v1/workflow/c/upload`, {
-      method: 'POST',
-      body: form,
-      headers: form.getHeaders(),
-      signal: AbortSignal.timeout(120000) // 2 minutes
+    // WARNING: performAudit() and enrichWithAI() have been removed (2025-12-10)
+    // Multi-Role validation is not part of the send-to-core workflow
+    const coreResult = await concreteAgent.workflowAStart(firstFile.file_path, {
+      projectId: id,
+      projectName: project.project_name,
+      objectType: project.project_type
     });
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Workflow C upload failed: ${response.status} ${errorText}`);
-    }
-
-    const coreResult = await response.json();
 
     await client.query('BEGIN');
 
@@ -813,7 +794,7 @@ router.post('/:id/send-to-core', async (req, res) => {
            core_last_sync = NOW(),
            updated_at = NOW()
        WHERE portal_project_id = $2`,
-      [coreResult.project_id, id]
+      [coreResult.workflow_id, id]
     );
 
     // Update file with CORE workflow info
@@ -824,16 +805,16 @@ router.post('/:id/send-to-core', async (req, res) => {
            analysis_result = $2,
            processed_at = NOW()
        WHERE file_id = $3`,
-      [coreResult.project_id, JSON.stringify(coreResult), firstFile.file_id]
+      [coreResult.workflow_id, JSON.stringify(coreResult), firstFile.file_id]
     );
 
     await client.query('COMMIT');
 
-    console.log(`[PortalProjects] Successfully sent to CORE. Project ID: ${coreResult.project_id}`);
+    console.log(`[PortalProjects] Successfully sent to CORE. Workflow ID: ${coreResult.workflow_id}`);
 
     res.json({
       success: true,
-      core_project_id: coreResult.project_id,
+      core_project_id: coreResult.workflow_id,
       core_result: coreResult
     });
 
@@ -1052,9 +1033,9 @@ router.get('/:id/unified', async (req, res) => {
  */
 async function fetchKioskData(kioskType, kioskProjectId) {
   const kioskUrls = {
-    'monolit': process.env.MONOLIT_API_URL || 'https://monolit-planner-api-1086027517695.europe-west3.run.app',
-    'urs_matcher': process.env.URS_MATCHER_API_URL || 'https://urs-matcher-service-1086027517695.europe-west3.run.app',
-    'r0': process.env.MONOLIT_API_URL || 'https://monolit-planner-api-1086027517695.europe-west3.run.app'
+    'monolit': process.env.MONOLIT_API_URL || 'https://monolit-planner-api-3uxelthc4q-ey.a.run.app',
+    'urs_matcher': process.env.URS_MATCHER_API_URL || 'https://urs-matcher-service-3uxelthc4q-ey.a.run.app',
+    'r0': process.env.MONOLIT_API_URL || 'https://monolit-planner-api-3uxelthc4q-ey.a.run.app'
   };
 
   const baseUrl = kioskUrls[kioskType];

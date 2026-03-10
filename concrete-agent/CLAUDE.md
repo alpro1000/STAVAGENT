@@ -22,8 +22,8 @@
   - @stavagent/core-frontend (React/Vite, 34 files, 3,186 LOC)
   - @stavagent/core-shared (TypeScript types, 50+ interfaces)
 - **Production:**
-  - Backend: https://concrete-agent-1086027517695.europe-west3.run.app (pending Nov 19 deployment)
-  - Frontend: https://stavagent-portal-backend-1086027517695.europe-west3.run.app
+  - Backend: https://concrete-agent-3uxelthc4q-ey.a.run.app (pending Nov 19 deployment)
+  - Frontend: https://www.stavagent.cz
 
 ---
 

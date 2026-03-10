@@ -14,7 +14,7 @@ import express from 'express';
 
 const router = express.Router();
 
-const CORE_API_URL = process.env.STAVAGENT_CORE_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
+const CORE_API_URL = process.env.STAVAGENT_CORE_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
 const TIMEOUT_MS = 55_000; // Perplexity can be slow
 
 /**

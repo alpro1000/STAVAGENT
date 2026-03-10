@@ -77,7 +77,7 @@ export const HybridAnalysisProgress: React.FC<HybridAnalysisProgressProps> = ({
   specifications,
   onComplete,
   onError,
-  apiUrl = 'https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/multi-role/ask-stream'
+  apiUrl = 'https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/multi-role/ask-stream'
 }) => {
   const [progress, setProgress] = useState<ProgressState>({
     started: false,

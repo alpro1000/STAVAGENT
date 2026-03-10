@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const DEFAULT_API_URL = 'https://concrete-agent-1086027517695.europe-west3.run.app';
+const DEFAULT_API_URL = 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
   import.meta.env.VITE_API_BASE_URL ||

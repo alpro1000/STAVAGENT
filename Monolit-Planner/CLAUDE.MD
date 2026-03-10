@@ -656,22 +656,22 @@ monolit-planner/
    - `monolit-planner-frontend` (frontend)
 
 4. **После успешного деплоя backend:**
-   - Backend получит URL типа: `https://monolit-planner-api-1086027517695.europe-west3.run.app`
+   - Backend получит URL типа: `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
    - ⚠️ **ВАЖНО**: Нужно вручную настроить frontend!
 
 5. **Настройка frontend (ОБЯЗАТЕЛЬНО!):**
    - Открой Render Dashboard → `monolit-planner-frontend` → Environment
-   - Добавь переменную `VITE_API_URL` = `https://monolit-planner-api-1086027517695.europe-west3.run.app`
+   - Добавь переменную `VITE_API_URL` = `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
    - Нажми **"Save Changes"** → frontend пересобрётся автоматически
 
 6. **(Опционально) Ограничить CORS:**
-   - После деплоя frontend получит URL типа: `https://monolit-planner-frontend.onrender.com`
+   - После деплоя frontend получит URL типа: `https://monolit-planner-frontend.vercel.app`
    - Открой backend Environment
    - Измени `CORS_ORIGIN` с `*` на URL frontend'а для безопасности
 
 7. **URLs:**
-   - Frontend: `https://monolit-planner-frontend.onrender.com`
-   - Backend: `https://monolit-planner-api-1086027517695.europe-west3.run.app`
+   - Frontend: `https://monolit-planner-frontend.vercel.app`
+   - Backend: `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
 
 ### ⚠️ НЕ делай:
 - ❌ New Web Service вручную (сложно настроить связи)
@@ -739,7 +739,7 @@ frontend:
    - Стандартная практика для development
    - Позволяет запросы от любого origin при первом деплое
    - После деплоя frontend можно ограничить на конкретный домен
-   - В production: установи `CORS_ORIGIN=https://monolit-planner-frontend.onrender.com`
+   - В production: установи `CORS_ORIGIN=https://monolit-planner-frontend.vercel.app`
 
 2. **VITE_API_URL = sync:false**:
    - Говорит Render НЕ ждать значение от другого сервиса
@@ -1001,9 +1001,9 @@ cd backend && npm start
 5. Нажать **"Create New Resources"**
 
 После развёртывания:
-- Backend получит URL: `https://monolit-planner-api-1086027517695.europe-west3.run.app`
-- Frontend получит URL: `https://monolit-planner-frontend.onrender.com`
-- В Render Dashboard → frontend → Environment → добавить `VITE_API_URL=https://monolit-planner-api-1086027517695.europe-west3.run.app`
+- Backend получит URL: `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
+- Frontend получит URL: `https://monolit-planner-frontend.vercel.app`
+- В Render Dashboard → frontend → Environment → добавить `VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
 
 ---
 
@@ -1012,7 +1012,7 @@ cd backend && npm start
 ### Проблемы, выявленные в начале сессии
 
 #### 1. ❌ Backend возвращает 500 ошибку при обновлении позиций
-**Симптом:** `monolit-planner-api-1086027517695.europe-west3.run.app/api/positions:1 Failed to load resource: the server responded with a status of 500`
+**Симптом:** `monolit-planner-api-3uxelthc4q-ey.a.run.app/api/positions:1 Failed to load resource: the server responded with a status of 500`
 
 **Причина:** SQL statement в `backend/src/routes/positions.js` в PUT-обработчике строился один раз в начале функции, используя ключи полей из `updates[0]`. Но каждая позиция может иметь разные поля для обновления, что вызывало ошибку SQL.
 

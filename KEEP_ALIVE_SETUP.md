@@ -136,21 +136,21 @@ After services redeploy, test the healthcheck endpoint:
 ```bash
 # Test concrete-agent
 curl -H "X-Keep-Alive-Key: YOUR_SECRET_KEY" \
-  https://concrete-agent-1086027517695.europe-west3.run.app/healthcheck
+  https://concrete-agent-3uxelthc4q-ey.a.run.app/healthcheck
 
 # Expected response:
 # {"status":"alive","service":"concrete-agent"}
 
 # Test monolit-planner
 curl -H "X-Keep-Alive-Key: YOUR_SECRET_KEY" \
-  https://monolit-planner-api-1086027517695.europe-west3.run.app/healthcheck
+  https://monolit-planner-api-3uxelthc4q-ey.a.run.app/healthcheck
 
 # Expected response:
 # {"status":"alive","service":"monolit-planner"}
 
 # Test stavagent-portal
 curl -H "X-Keep-Alive-Key: YOUR_SECRET_KEY" \
-  https://stavagent-portal-backend-1086027517695.europe-west3.run.app/healthcheck
+  https://www.stavagent.cz/healthcheck
 
 # Expected response:
 # {"status":"alive","service":"stavagent-portal"}
@@ -158,7 +158,7 @@ curl -H "X-Keep-Alive-Key: YOUR_SECRET_KEY" \
 
 **⚠️ Test without key (should return 404):**
 ```bash
-curl -i https://concrete-agent-1086027517695.europe-west3.run.app/healthcheck
+curl -i https://concrete-agent-3uxelthc4q-ey.a.run.app/healthcheck
 
 # Expected response:
 # HTTP/1.1 404 Not Found
@@ -208,9 +208,9 @@ Use this one-liner to check all services:
 
 ```bash
 for service in \
-  "concrete-agent|https://concrete-agent-1086027517695.europe-west3.run.app/healthcheck" \
-  "monolit-planner|https://monolit-planner-api-1086027517695.europe-west3.run.app/healthcheck" \
-  "stavagent-portal|https://stavagent-portal-backend-1086027517695.europe-west3.run.app/healthcheck"
+  "concrete-agent|https://concrete-agent-3uxelthc4q-ey.a.run.app/healthcheck" \
+  "monolit-planner|https://monolit-planner-api-3uxelthc4q-ey.a.run.app/healthcheck" \
+  "stavagent-portal|https://www.stavagent.cz/healthcheck"
 do
   name=$(echo $service | cut -d'|' -f1)
   url=$(echo $service | cut -d'|' -f2)

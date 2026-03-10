@@ -224,7 +224,7 @@ GOOGLE_API_KEY=xxx                     # Required for AI mode
 GEMINI_MODEL=gemini-2.0-flash-exp      # Gemini model (default)
 
 # Optional (for concrete-agent fallback)
-CONCRETE_AGENT_URL=https://concrete-agent-1086027517695.europe-west3.run.app
+CONCRETE_AGENT_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
 ```
 
 ### **Client Override:**

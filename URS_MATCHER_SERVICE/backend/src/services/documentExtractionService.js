@@ -19,7 +19,7 @@ import { calculateSimilarity } from '../utils/similarity.js';
 import tskpParserService from './tskpParserService.js';
 import { callLLMForTask, TASKS } from './llmClient.js';
 
-const CONCRETE_AGENT_URL = process.env.STAVAGENT_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
+const CONCRETE_AGENT_URL = process.env.STAVAGENT_API_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
 const SIMILARITY_THRESHOLD = 0.85; // 85% similarity for deduplication
 const PARSE_TIMEOUT_MS = 180000; // 3 minutes (parsing + waiting for positions)
 

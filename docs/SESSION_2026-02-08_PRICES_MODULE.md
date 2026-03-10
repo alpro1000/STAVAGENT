@@ -276,7 +276,7 @@ GOOGLE_AI_KEY=...
 OPENAI_API_KEY=...
 
 # concrete-agent integration
-STAVAGENT_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
+STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
 ```
 
 ---

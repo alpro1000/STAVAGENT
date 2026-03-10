@@ -54,7 +54,7 @@ const KIOSK_META: Record<string, { label: string; icon: string; buildUrl: (link:
     label: 'URS Matcher',
     icon: '🔎',
     buildUrl: (link, portalId) =>
-      `https://urs-matcher-service-1086027517695.europe-west3.run.app/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,
+      `https://urs-matcher-service-3uxelthc4q-ey.a.run.app/?project_id=${link.kiosk_project_id}&portal_project=${portalId}`,
   },
 };
 

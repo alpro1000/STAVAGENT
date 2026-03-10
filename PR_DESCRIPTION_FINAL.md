@@ -174,7 +174,7 @@ node test-mapper.js
 ```
 1. Dashboard → stavagent-portal-frontend
 2. Settings → Environment Variables
-3. Update: VITE_API_URL = https://stavagent-portal-backend-1086027517695.europe-west3.run.app
+3. Update: VITE_API_URL = https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
 4. Redeploy
 ```
 

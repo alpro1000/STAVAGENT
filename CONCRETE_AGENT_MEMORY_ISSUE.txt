@@ -164,13 +164,13 @@ MONITORING COMMANDS
 ═══════════════════════════════════════════════════════════════════════════════
 
 # Check memory usage in logs
-curl https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/health/memory
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/health/memory
 
 # Monitor Render metrics
 # Go to: https://dashboard.render.com → concrete-agent → Metrics
 
 # Check service status
-curl https://concrete-agent-1086027517695.europe-west3.run.app/health
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/health
 
 ═══════════════════════════════════════════════════════════════════════════════
 DECISION TREE

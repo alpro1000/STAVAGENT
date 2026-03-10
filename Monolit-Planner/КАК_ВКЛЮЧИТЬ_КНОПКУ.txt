@@ -18,7 +18,7 @@
 
 🔍 ГДЕ НАЙТИ КНОПКУ ПОСЛЕ ВКЛЮЧЕНИЯ:
 
-   1. Открой: https://monolit-planner-frontend.onrender.com
+   1. Открой: https://monolit-planner-frontend.vercel.app
    2. Нажми Ctrl+Shift+R (перезагрузить страницу)
    3. Открой любой проект → таблица позиций
    4. Колонка "Dny" → справа от поля ввода → ✨ (зелёная)

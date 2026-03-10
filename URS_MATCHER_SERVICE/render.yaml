@@ -42,10 +42,10 @@ services:
         value: "90000"
       # Multi-Role Integration
       - key: STAVAGENT_API_URL
-        value: https://concrete-agent.onrender.com
+        value: https://concrete-agent-3uxelthc4q-ey.a.run.app
       # CORS
       - key: CORS_ORIGIN
-        value: "https://urs-matcher-frontend.onrender.com,http://localhost:3000"
+        value: "https://urs-matcher-frontend.vercel.app,http://localhost:3000"
 
   # Frontend (Static Site)
   - type: web
@@ -57,7 +57,7 @@ services:
     autoDeploy: false  # Disable auto-deploy
     envVars:
       - key: VITE_API_URL
-        value: https://urs-matcher-service.onrender.com
+        value: https://urs-matcher-service-3uxelthc4q-ey.a.run.app
     routes:
       - type: rewrite
         source: /*

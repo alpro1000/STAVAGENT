@@ -364,7 +364,7 @@ formData.append('language', 'cs');
 ## Deployment
 
 **Status:** ✅ Deployed to Production
-**URL:** https://urs-matcher-service-1086027517695.europe-west3.run.app
+**URL:** https://urs-matcher-service-3uxelthc4q-ey.a.run.app
 **Branch:** `claude/stavagent-development-Gc1zm`
 **Commit:** `b4a2cc7`
 

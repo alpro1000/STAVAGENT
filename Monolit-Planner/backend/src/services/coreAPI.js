@@ -8,7 +8,7 @@ import fs from 'fs';
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 
-const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
+const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
 const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT) || 30000; // 30 seconds
 const CORE_ENABLED = process.env.ENABLE_CORE_FALLBACK !== 'false'; // Enabled by default
 
@@ -39,7 +39,7 @@ export async function parseExcelByCORE(filePath) {
     form.append('auto_start_audit', 'false'); // ← Don't auto-start audit
 
     // Call CORE API using CORRECT /api/upload endpoint
-    // This is the concrete-agent-1086027517695.europe-west3.run.app API for parsing Excel documents
+    // This is the concrete-agent-3uxelthc4q-ey.a.run.app API for parsing Excel documents
     logger.info(`[CORE] POST ${CORE_API_URL}/api/upload`);
 
     const response = await axios.post(

@@ -18,7 +18,7 @@ import multer from 'multer';
 
 const router = express.Router();
 
-const CORE_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
+const CORE_URL = process.env.CONCRETE_AGENT_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
 const CORE_TIMEOUT = parseInt(process.env.CONCRETE_AGENT_TIMEOUT || '120000');
 
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 50 * 1024 * 1024 } });

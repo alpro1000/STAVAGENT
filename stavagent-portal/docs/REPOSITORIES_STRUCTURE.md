@@ -42,7 +42,7 @@
 ```
 Репо: https://github.com/alpro1000/concrete-agent
 Статус: ✅ Существует
-URL: https://concrete-agent-1086027517695.europe-west3.run.app
+URL: https://concrete-agent-3uxelthc4q-ey.a.run.app
 Tech: Python + FastAPI
 Что содержит:
   - Workflow A (парсинг документов)
