@@ -6,6 +6,15 @@ on:
     - cron: '*/14 * * * *'
   workflow_dispatch: # Allow manual trigger
 
+# Cloud Run (PRIMARY) - europe-west3
+# Render (FALLBACK) - kept for reference
+#
+# concrete-agent (Render fallback):    https://concrete-agent.onrender.com/healthcheck
+# monolit-planner (Render fallback):   https://monolit-planner-api.onrender.com/healthcheck
+# urs-matcher (Render fallback):       https://urs-matcher-service.onrender.com/health
+# stavagent-portal (Render fallback):  https://stavagent-portal-backend.onrender.com/health
+# rozpocet-registry (Render fallback): https://rozpocet-registry-backend.onrender.com/health
+
 jobs:
   keep-alive:
     name: Ping Services to Prevent Sleep
@@ -15,11 +24,15 @@ jobs:
       matrix:
         service:
           - name: concrete-agent
-            url: https://concrete-agent.onrender.com/healthcheck
+            url: https://concrete-agent-1086027517695.europe-west3.run.app/health
           - name: monolit-planner
-            url: https://monolit-planner-api.onrender.com/healthcheck
+            url: https://monolit-planner-api-1086027517695.europe-west3.run.app/health
           - name: urs-matcher-service
-            url: https://urs-matcher-service.onrender.com/health
+            url: https://urs-matcher-service-1086027517695.europe-west3.run.app/health
+          - name: stavagent-portal
+            url: https://stavagent-portal-backend-1086027517695.europe-west3.run.app/health
+          - name: rozpocet-registry-backend
+            url: https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/health
 
     steps:
       - name: Ping ${{ matrix.service.name }}
