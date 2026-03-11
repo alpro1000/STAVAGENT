@@ -1495,6 +1495,7 @@ async function initSqliteSchema() {
   db.exec(`
     CREATE TABLE IF NOT EXISTS part_templates (
       template_id TEXT PRIMARY KEY,
+      object_type TEXT NOT NULL DEFAULT 'bridge',
       part_name TEXT NOT NULL,
       display_order INTEGER DEFAULT 0,
       is_default INTEGER DEFAULT 1,
@@ -1646,13 +1647,13 @@ async function initSqliteSchema() {
   ];
 
   const insertTemplate = db.prepare(`
-    INSERT OR IGNORE INTO part_templates (template_id, part_name, display_order, is_default, description)
-    VALUES (?, ?, ?, ?, ?)
+    INSERT OR IGNORE INTO part_templates (template_id, object_type, part_name, display_order, is_default, description)
+    VALUES (?, ?, ?, ?, ?, ?)
   `);
 
   const insertManyTemplates = db.transaction((templates) => {
     for (const tpl of templates) {
-      insertTemplate.run(tpl.template_id, tpl.part_name, tpl.display_order, tpl.is_default, tpl.description);
+      insertTemplate.run(tpl.template_id, tpl.object_type, tpl.part_name, tpl.display_order, tpl.is_default, tpl.description);
     }
   });
 
@@ -1898,10 +1899,11 @@ async function autoLoadPartTemplatesIfNeeded() {
     for (const template of templates) {
       try {
         await db.prepare(`
-          INSERT INTO part_templates (template_id, part_name, display_order, is_default, description)
-          VALUES (?, ?, ?, ?, ?)
+          INSERT INTO part_templates (template_id, object_type, part_name, display_order, is_default, description)
+          VALUES (?, ?, ?, ?, ?, ?)
         `).run(
           template.template_id,
+          template.object_type,
           template.part_name,
           template.display_order,
           template.is_default,
