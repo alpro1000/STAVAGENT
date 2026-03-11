@@ -24,7 +24,9 @@ import DocumentSummary from '../components/portal/DocumentSummary';
 import PoradnaWidget from '../components/portal/PoradnaWidget';
 import ParsePreviewModal from '../components/portal/ParsePreviewModal';
 import DrawingAnalysis from '../components/portal/DrawingAnalysis';
+import AdminModelAudit from '../components/portal/AdminModelAudit';
 import ThemeToggle from '../components/ThemeToggle';
+import { useAuth } from '../context/AuthContext';
 
 interface KioskLink {
   link_id: string;
@@ -200,6 +202,8 @@ const SERVICES: Service[] = [
 ];
 
 export default function PortalPage() {
+  const { user } = useAuth();
+  const isAdmin = user?.role === 'admin';
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [projects, setProjects] = useState<PortalProject[]>([]);
@@ -216,7 +220,7 @@ export default function PortalPage() {
   const [documentsProjectName, setDocumentsProjectName] = useState<string>('');
   const [backendSleeping, setBackendSleeping] = useState(false);
   const [projectNotFound, setProjectNotFound] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'services' | 'projects'>('services');
+  const [activeTab, setActiveTab] = useState<'services' | 'projects' | 'admin'>('services');
 
   // Load projects on mount
   useEffect(() => {
@@ -469,6 +473,26 @@ export default function PortalPage() {
           >
             📁 Projekty ({projects.length})
           </button>
+          {isAdmin && (
+            <button
+              onClick={() => setActiveTab('admin')}
+              style={{
+                padding: '12px 24px',
+                fontSize: '16px',
+                fontWeight: 600,
+                color: activeTab === 'admin' ? 'var(--brand-orange)' : 'var(--text-secondary)',
+                background: 'transparent',
+                border: 'none',
+                borderBottom: activeTab === 'admin' ? '3px solid var(--brand-orange)' : '3px solid transparent',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+                marginBottom: '-2px',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              🛡️ Admin audit
+            </button>
+          )}
         </div>
       </div>
 
@@ -750,6 +774,10 @@ export default function PortalPage() {
               )}
             </div>
           </>
+        )}
+
+        {activeTab === 'admin' && isAdmin && (
+          <AdminModelAudit />
         )}
       </div>
 
