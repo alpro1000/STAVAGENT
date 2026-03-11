@@ -12,7 +12,7 @@ RUN cd shared && npm run build
 
 # ---- Install backend deps ----
 COPY backend/package*.json ./backend/
-RUN cd backend && npm ci --only=production
+RUN cd backend && npm install --omit=dev
 
 # ---- Copy backend source ----
 COPY backend/ ./backend/
