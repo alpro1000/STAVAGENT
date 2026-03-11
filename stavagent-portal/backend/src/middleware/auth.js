@@ -19,10 +19,9 @@ const JWT_EXPIRY = process.env.JWT_EXPIRY || '24h';
 export function requireAuth(req, res, next) {
   try {
     // 🚨 TEMPORARY: Dev mode bypass for calculator testing
-    // Also bypassed on Cloud Run (K_SERVICE is set automatically by Cloud Run)
-    // when no JWT_SECRET is explicitly configured (i.e. using the default dev key)
-    const onCloudRunWithoutAuth = !!process.env.K_SERVICE && !process.env.JWT_SECRET;
-    const TEMP_BYPASS_AUTH = process.env.DISABLE_AUTH === 'true' || onCloudRunWithoutAuth;
+    // Requires explicit DISABLE_AUTH=true — never bypassed automatically.
+    // On Cloud Run: set DISABLE_AUTH=true in service env vars if auth is not needed.
+    const TEMP_BYPASS_AUTH = process.env.DISABLE_AUTH === 'true';
 
     if (TEMP_BYPASS_AUTH) {
       // Mock user for dev mode
