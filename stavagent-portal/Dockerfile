@@ -13,7 +13,7 @@ RUN cd shared && npm run build
 # ---- Install backend deps ----
 # "@stavagent/portal-shared": "file:../shared" resolves to /app/shared/
 COPY backend/package*.json ./backend/
-RUN cd backend && npm ci --only=production
+RUN cd backend && npm install --omit=dev
 
 # ---- Copy backend source ----
 COPY backend/ ./backend/
