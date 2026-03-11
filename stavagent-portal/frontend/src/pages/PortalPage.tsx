@@ -83,11 +83,11 @@ const SERVICES: Service[] = [
   {
     id: 'document-summary',
     name: 'Shrnutí dokumentu',
-    description: 'Jednorázová extrakce strukturovaných dat z dokumentu (PDF, Excel). Projekt, položky, objemy, harmonogram, požadavky → JSON.',
+    description: 'Adaptive extraction + summary z PDF/Excel. Univerzální pasport projektu: typ dokumentu, položky, objemy, termíny, požadavky, rizika → JSON.',
     icon: '📋',
     url: '#summary', // Special URL for internal action
     status: 'active',
-    tags: ['Extrakce', 'One-shot', 'Strukturované data', 'LLM']
+    tags: ['Extrakce', 'Adaptive', 'Strukturované data', 'LLM', 'Vertex AI']
   },
   {
     id: 'universal-parser',

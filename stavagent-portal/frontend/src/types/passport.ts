@@ -144,6 +144,8 @@ export const AI_MODELS = {
   OPENAI_GPT4: 'openai-gpt4',
   OPENAI_MINI: 'openai-mini',
   PERPLEXITY: 'perplexity',
+  VERTEX_AI_SEARCH: 'vertex-ai-search',
+  VERTEX_AI_GEMINI: 'vertex-ai-gemini',
 } as const;
 
 export type AIModelType = typeof AI_MODELS[keyof typeof AI_MODELS];
@@ -155,6 +157,20 @@ export interface AIModelInfo {
   speed: string;
   quality: string;
   description: string;
+  provider?: 'google' | 'anthropic' | 'openai' | 'perplexity';
+}
+
+export const VERTEX_SERVICE_ACCOUNTS = {
+  AUTO_VERTEX_SEARCH: 'vertex-ai-search',
+  STAVAGENT_VERTEX_SEARCH: 'stavagent-vertex-search',
+} as const;
+
+export type VertexServiceAccountType = typeof VERTEX_SERVICE_ACCOUNTS[keyof typeof VERTEX_SERVICE_ACCOUNTS];
+
+export interface VertexServiceAccountInfo {
+  id: VertexServiceAccountType;
+  name: string;
+  description: string;
 }
 
 export const AI_MODEL_OPTIONS: AIModelInfo[] = [
@@ -165,6 +181,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     speed: 'Velmi rychlý (1-2s)',
     quality: 'Vysoká',
     description: 'Výchozí model - nejlepší poměr cena/výkon',
+    provider: 'google',
   },
   {
     id: AI_MODELS.CLAUDE_HAIKU,
@@ -173,6 +190,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     speed: 'Rychlý (2-3s)',
     quality: 'Velmi vysoká',
     description: 'Nejlevnější Claude model',
+    provider: 'anthropic',
   },
   {
     id: AI_MODELS.CLAUDE_SONNET,
@@ -181,6 +199,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     speed: 'Střední (3-5s)',
     quality: 'Maximální',
     description: 'Nejlepší kvalita, nejvyšší přesnost',
+    provider: 'anthropic',
   },
   {
     id: AI_MODELS.OPENAI_MINI,
@@ -189,6 +208,7 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     speed: 'Rychlý (2-3s)',
     quality: 'Dobrá',
     description: 'Levný OpenAI model',
+    provider: 'openai',
   },
   {
     id: AI_MODELS.PERPLEXITY,
@@ -197,5 +217,37 @@ export const AI_MODEL_OPTIONS: AIModelInfo[] = [
     speed: 'Střední (3-4s)',
     quality: 'Vysoká',
     description: 'Online vyhledávání + AI',
+    provider: 'perplexity',
+  },
+  {
+    id: AI_MODELS.VERTEX_AI_GEMINI,
+    name: 'Vertex AI Gemini (Google Credits)',
+    cost_per_passport: 'Google credits',
+    speed: 'Rychlý (2-4s)',
+    quality: 'Vysoká',
+    description: 'Gemini přes Vertex AI - vhodné pro firemní Google billing a vyšší limity',
+    provider: 'google',
+  },
+  {
+    id: AI_MODELS.VERTEX_AI_SEARCH,
+    name: 'Vertex AI Search + Extraction',
+    cost_per_passport: 'Google credits',
+    speed: 'Střední (3-6s)',
+    quality: 'Vysoká',
+    description: 'Univerzální adaptive extraction + summary přes Vertex AI Search',
+    provider: 'google',
+  },
+];
+
+export const VERTEX_SERVICE_ACCOUNT_OPTIONS: VertexServiceAccountInfo[] = [
+  {
+    id: VERTEX_SERVICE_ACCOUNTS.AUTO_VERTEX_SEARCH,
+    name: 'vertex-ai-search@…',
+    description: 'Automaticky vytvořený účet Google pro Vertex AI Search',
+  },
+  {
+    id: VERTEX_SERVICE_ACCOUNTS.STAVAGENT_VERTEX_SEARCH,
+    name: 'stavagent-vertex-search@…',
+    description: 'Manuálně spravovaný servisní účet STAV Agent pro Vertex AI',
   },
 ];
