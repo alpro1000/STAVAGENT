@@ -8,17 +8,17 @@ import { logger } from '../utils/logger.js';
 
 /**
  * General API rate limiter
- * 100 requests per 15 minutes per IP
+ * 200 requests per 15 minutes per IP
  */
 export const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: 200,
   message: 'Příliš mnoho požadavků z vaší IP adresy, zkuste to znovu později',
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
   skip: (req) => {
-    // Don't rate limit health checks
-    return req.path === '/health';
+    // Don't rate limit health checks or OTSKP catalog reads (they have their own limiter)
+    return req.path === '/health' || req.path.startsWith('/api/otskp');
   },
   handler: (req, res) => {
     logger.warn(`Rate limit exceeded for IP: ${req.ip}, path: ${req.path}`);
@@ -71,11 +71,12 @@ export const uploadLimiter = rateLimit({
 
 /**
  * OTSKP search rate limiter
- * 50 searches per 15 minutes per IP
+ * 500 requests per 15 minutes per IP
+ * A project page can fire 10+ parallel OTSKP lookups on load
  */
 export const otskpLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 50,
+  max: 500,
   message: 'Příliš mnoho vyhledávacích požadavků',
   standardHeaders: true,
   legacyHeaders: false,
