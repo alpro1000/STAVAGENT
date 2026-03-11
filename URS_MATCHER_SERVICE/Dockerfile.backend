@@ -30,6 +30,10 @@ RUN npm ci --only=production
 COPY backend/src ./src
 COPY backend/.env.example ./.env
 
+# Copy frontend static files
+# app.js resolves __dirname(=/app/src) + ../../frontend/public = /frontend/public
+COPY frontend/public /frontend/public
+
 # ============================================
 # CONCRETE-AGENT INTEGRATION
 # ============================================
