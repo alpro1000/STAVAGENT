@@ -419,6 +419,26 @@ export function planElement(input: PlannerInput): PlannerOutput {
   log.push(`Pour: ${pourResult.effective_rate_m3_h}m³/h, ${pourResult.total_pour_hours}h/tact (bottleneck: ${pourResult.rate_bottleneck})`);
   warnings.push(...pourResult.warnings);
 
+  // Monolithic deck pours without dilation joints are typically executed continuously
+  // in one uninterrupted operation (extended shift + reinforced crew).
+  const uninterruptedDeckPour =
+    elementType === 'mostovkova_deska' &&
+    !input.has_dilatacni_spary &&
+    pourDecision.pour_mode === 'monolithic';
+
+  let effectivePourCrew = crew;
+  if (uninterruptedDeckPour && pourResult.total_pour_hours > shift) {
+    // Scale crew by pour/shift ratio, cap at 12 people (operational limit in current model)
+    effectivePourCrew = Math.min(12, Math.max(crew, Math.ceil((crew * pourResult.total_pour_hours) / shift)));
+    warnings.push(
+      `Monolitická zálivka bez spár: doporučeno navýšit osádku na ${effectivePourCrew} pracovníků a organizovat ` +
+      `nepřerušitelnou směnu 12–15h (bez pracovního švu).`
+    );
+    if (effectivePourCrew > crew) {
+      log.push(`Crew auto-scale (monolithic no-joint): ${crew} → ${effectivePourCrew}`);
+    }
+  }
+
   // ─── 7. Element Scheduler (DAG + CPM + RCPSP) ──────────────────────────
 
   const scheduleResult = scheduleElement({
@@ -447,12 +467,36 @@ export function planElement(input: PlannerInput): PlannerOutput {
     warnings.push(scheduleResult.bottleneck);
   }
 
+  // For bridge decks, temporary support structure (skruž) often remains longer than
+  // formwork stripping. Apply a minimum 21-day hold from the last concrete pour.
+  if (elementType === 'mostovkova_deska') {
+    const lastConcreteFinish = Math.max(...scheduleResult.tact_details.map(t => t.concrete[1]), 0);
+    const skruzMinDays = 21;
+    const withSkruzHold = Math.max(scheduleResult.total_days, lastConcreteFinish + skruzMinDays);
+    if (withSkruzHold > scheduleResult.total_days) {
+      const delta = roundTo(withSkruzHold - scheduleResult.total_days, 2);
+      scheduleResult.total_days = roundTo(withSkruzHold, 2);
+      scheduleResult.savings_days = roundTo(scheduleResult.sequential_days - scheduleResult.total_days, 2);
+      scheduleResult.savings_pct = scheduleResult.sequential_days > 0
+        ? roundTo((scheduleResult.savings_days / scheduleResult.sequential_days) * 100, 1)
+        : 0;
+      warnings.push(
+        `Skruž (podpěrná konstrukce): minimální doba ponechání 21 dní od poslední betonáže. ` +
+        `Harmonogram prodloužen o ${delta} dní.`
+      );
+      log.push(`Skruz hold applied: last CON finish ${roundTo(lastConcreteFinish, 2)}d + 21d => total ${roundTo(withSkruzHold, 2)}d`);
+    }
+  }
+
   // ─── 8. Cost Summary ──────────────────────────────────────────────────
 
   const formworkLaborCZK = threePhase.total_cost_labor;
   const rebarLaborCZK = rebarResult.cost_labor * pourDecision.num_tacts;
   // Pour labor: crew × hours × wage per tact × num_tacts
-  const pourLaborCZK = roundTo(pourResult.total_pour_hours * crew * wage * pourDecision.num_tacts, 2);
+  const regularHours = Math.min(10, pourResult.total_pour_hours);
+  const overtimeHours = Math.max(0, pourResult.total_pour_hours - 10);
+  const laborPerWorkerPerTact = (regularHours * wage) + (overtimeHours * wage * 1.25);
+  const pourLaborCZK = roundTo(laborPerWorkerPerTact * effectivePourCrew * pourDecision.num_tacts, 2);
 
   // Rental cost (monthly → daily)
   const rentalDaysPerSet = scheduleResult.total_days + 2; // +2 for transport
