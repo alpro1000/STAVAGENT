@@ -77,8 +77,9 @@ const app = express();
 // This prevents IP spoofing attacks in local development
 // Enable ONLY:
 // 1. On Render (detected by RENDER env var), OR
-// 2. Explicitly with TRUST_PROXY=true env var
-const shouldTrustProxy = process.env.RENDER === 'true' || process.env.TRUST_PROXY === 'true';
+// 2. On Google Cloud Run (detected by K_SERVICE env var set automatically by Cloud Run), OR
+// 3. Explicitly with TRUST_PROXY=true env var
+const shouldTrustProxy = process.env.RENDER === 'true' || process.env.TRUST_PROXY === 'true' || !!process.env.K_SERVICE;
 if (shouldTrustProxy) {
   app.set('trust proxy', 1);
   console.log('[Security] Trust proxy enabled (behind verified proxy)');
