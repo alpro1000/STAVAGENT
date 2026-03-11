@@ -38,7 +38,7 @@ steps:
     waitFor: [build-portal]
     args:
       - push
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend'
       - --all-tags
 
   - name: gcr.io/cloud-builders/gcloud
@@ -73,7 +73,7 @@ steps:
     waitFor: [build-core]
     args:
       - push
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent'
       - --all-tags
 
   - name: gcr.io/cloud-builders/gcloud
@@ -108,7 +108,7 @@ steps:
     waitFor: [build-monolit]
     args:
       - push
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api'
       - --all-tags
 
   - name: gcr.io/cloud-builders/gcloud
@@ -143,7 +143,7 @@ steps:
     waitFor: [build-urs]
     args:
       - push
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service'
       - --all-tags
 
   - name: gcr.io/cloud-builders/gcloud
