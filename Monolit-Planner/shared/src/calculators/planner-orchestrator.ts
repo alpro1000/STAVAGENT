@@ -106,6 +106,17 @@ export interface PlannerInput {
   /** Scheduling mode override: 'linear' or 'chess' */
   scheduling_mode_override?: 'linear' | 'chess';
 
+  // --- Bridge configuration ---
+  /**
+   * Number of parallel bridges.
+   *   1 = single bridge (default)
+   *   2 = dual carriageway (levý + pravý most, souběžné mosty)
+   *
+   * Affects formwork kit recommendations and scheduling advice.
+   * Only relevant for mostovkova_deska element type.
+   */
+  num_bridges?: number;
+
   // --- Options ---
   /** Run Monte Carlo simulation. Default: false */
   enable_monte_carlo?: boolean;
@@ -282,6 +293,41 @@ export function planElement(input: PlannerInput): PlannerOutput {
 
   log.push(`Pour: ${pourDecision.pour_mode}/${pourDecision.sub_mode}, ${pourDecision.num_tacts} tacts × ${pourDecision.tact_volume_m3}m³`);
   warnings.push(...pourDecision.warnings);
+
+  // ─── 3b. Bridge-specific advice (mostovkova_deska) ──────────────────────
+
+  const numBridges = input.num_bridges ?? 1;
+  if (elementType === 'mostovkova_deska' && numBridges >= 2) {
+    if (!input.has_dilatacni_spary) {
+      // Each bridge is a full monolithic pour — 2 full formwork kits needed for parallel work
+      warnings.push(
+        `2 mosty bez dilatačních spár: každý most = nepřerušitelná monolitická zálivka. ` +
+        `Pro souběžný postup: 2 kompletní soupravy bednění (1 na most) + zdvojit čerpadla a osádku. ` +
+        `S 1 soupravou: nejdříve dokončit levý most → přemístit soupravu → pravý most (harmonogram ×2).`
+      );
+      log.push(`Mosty: 2 (L+P) bez spár → min. 2 kompletní soupravy pro souběh | jinak 2× délka harmonogramu`);
+    } else {
+      // Sectional — kits can be shared or multiplied for chess/both-ends approach
+      const hasChess = pourDecision.sub_mode === 'adjacent_chess' || pourDecision.scheduling_mode === 'chess';
+      if (hasChess) {
+        warnings.push(
+          `2 mosty se spárami, šachovnicový postup: souprava bednění může obskakovat záběry napříč oběma mosty. ` +
+          `1 souprava = sekvenční (L most → P most). ` +
+          `2 soupravy = paralelní práce na obou mostech současně.`
+        );
+      } else {
+        warnings.push(
+          `2 mosty se spárami: doporučen šachovnicový pořadí (zaškrtněte "Sousední sekce"). ` +
+          `1 souprava = sekvenční průchod (L → P). 2 soupravy = souběžná práce.`
+        );
+      }
+      warnings.push(
+        `Varianta "z obou konců": zahájit záběr 1 a záběr ${pourDecision.num_tacts} na každém mostě současně — ` +
+        `zkrátí harmonogram ~50 %, vyžaduje ${numBridges * 2} soupravu/y bednění a ${numBridges * 2} pracovní čety.`
+      );
+      log.push(`Mosty: 2 (L+P) se spárami → šachovnicový/oboustranný postup | opt. 2-4 soupravy`);
+    }
+  }
 
   // ─── 4. Formwork Calculation ────────────────────────────────────────────
 
