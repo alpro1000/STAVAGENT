@@ -52,7 +52,15 @@ logger.info(`[APP] Static files path: ${path.join(__dirname, '../../frontend/pub
 // ============================================================================
 
 // CORS configuration
-const corsOrigins = (process.env.CORS_ORIGIN || '*').split(',');
+const DEFAULT_CORS_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://www.stavagent.cz',
+  'https://stavagent-backend-ktwx.vercel.app',
+];
+const corsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
+  : DEFAULT_CORS_ORIGINS;
 logger.info(`[APP] CORS origins: ${corsOrigins.join(', ')}`);
 
 app.use(cors({

@@ -95,23 +95,6 @@ function isOriginAllowed(origin) {
   return false;
 }
 
-// Explicit OPTIONS preflight handler — runs BEFORE helmet/cors middleware
-// This ensures Vercel serverless deployments properly handle preflight requests
-// (Vercel can sometimes interfere with Express middleware on OPTIONS)
-app.options('*', (req, res) => {
-  const origin = req.headers.origin;
-  if (isOriginAllowed(origin)) {
-    res.set({
-      'Access-Control-Allow-Origin': origin || '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
-      'Access-Control-Allow-Credentials': 'true',
-      'Access-Control-Max-Age': '86400',
-    });
-  }
-  res.sendStatus(204);
-});
-
 // Security middleware
 app.use(helmet({
   crossOriginResourcePolicy: false, // Don't block cross-origin requests
