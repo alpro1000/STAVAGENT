@@ -172,6 +172,11 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     setUploadedFile(file); // Save file for later
 
     try {
+      const ext = getFileExtension(file.name);
+      if (!ALLOWED_FILE_EXTENSIONS.includes(ext)) {
+        throw new Error(`Nepodporovaný formát ${ext || 'souboru'}. Povolené formáty: PDF, XLSX, XLS, XML.`);
+      }
+
       const formData = new FormData();
       formData.append('file', file);
       formData.append('project_name', file.name.replace(/\.[^/.]+$/, '')); // Remove extension
@@ -303,6 +308,11 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     setError(null);
 
     try {
+      const ext = getFileExtension(uploadedFile.name);
+      if (!ALLOWED_FILE_EXTENSIONS.includes(ext)) {
+        throw new Error(`Nepodporovaný formát ${ext || 'souboru'}. Povolené formáty: PDF, XLSX, XLS, XML.`);
+      }
+
       const formData = new FormData();
       formData.append('project_id', selectedProjectId);
       formData.append('file', uploadedFile);
@@ -417,6 +427,11 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     setError(null);
 
     try {
+      const ext = getFileExtension(uploadedFile.name);
+      if (!ALLOWED_FILE_EXTENSIONS.includes(ext)) {
+        throw new Error(`Nepodporovaný formát ${ext || 'souboru'}. Povolené formáty: PDF, XLSX, XLS, XML.`);
+      }
+
       const formData = new FormData();
       formData.append('user_id', googleAuth.userId);
       formData.append('folder_id', selectedGoogleFolder);
@@ -631,7 +646,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       <input
         ref={fileInputRef}
         type="file"
-        accept=".pdf,.xlsx,.xls,.docx"
+        accept=".pdf,.xlsx,.xls,.xml"
         onChange={handleFileSelect}
         style={{ display: 'none' }}
       />
@@ -676,7 +691,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                 Vybrat soubor
               </button>
               <p style={{ margin: 0, color: 'var(--text-tertiary)', fontSize: '13px' }}>
-                Podporované formáty: PDF, XLSX, XLS, DOCX
+                Podporované formáty: PDF, XLSX, XLS, XML
               </p>
             </>
           )}
