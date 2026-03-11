@@ -1,0 +1,333 @@
+{
+  "metadata": {
+    "source": "IV-MM-Cenik2026.pdf",
+    "company": "BERGER BOHEMIA a.s.",
+    "title": "IV Ceník malá mechanizace 2026",
+    "id": "50326",
+    "date": "2026-02-03",
+    "currency": "CZK",
+    "price_type": "Mietpreis/Monat (měsíční nájemné)",
+    "note": "Interní ceník nájmu malé mechanizace - ceny za měsíc bez DPH"
+  },
+  "categories": {
+    "Dempry / Dumper": [
+      {
+        "id": "12000210",
+        "name_cz": "WN dumper kolový DW40 č.21",
+        "name_de": "WN Raddumper DW40 Nr.21",
+        "monthly_CZK": 30420.5
+      },
+      {
+        "id": "12000250",
+        "name_cz": "WN dumper kolový DW60 č.25",
+        "name_de": "WN Raddumper DW60 Nr.25",
+        "monthly_CZK": 39259.0
+      }
+    ],
+    "Hydraulická kladiva / Hydraulikhammer": [
+      {
+        "id": "12101316",
+        "name_cz": "Hydraulické kladivo NPK GH-9",
+        "name_de": "Hydraulikhammer NPK GH-9",
+        "monthly_CZK": 12290.0
+      },
+      {
+        "id": "12102001",
+        "name_cz": "Hydraulické kladivo NPK PH-3",
+        "name_de": "Hydraulikhammer NPK PH-3",
+        "monthly_CZK": 6759.5
+      },
+      {
+        "id": "12420001",
+        "name_cz": "Hydraulické kladivo NPK GH-6",
+        "name_de": "Gesteinsbrecher NPK GH-6",
+        "monthly_CZK": 30195.0
+      },
+      {
+        "id": "12420015",
+        "name_cz": "Hydraulické kladivo NPK GH-1",
+        "name_de": "Gesteinsbrecher NPK GH-1",
+        "monthly_CZK": 8387.5
+      },
+      {
+        "id": "12420032",
+        "name_cz": "Hydraulické kladivo SCB4",
+        "name_de": "Gesteinsbrecher SCB4",
+        "monthly_CZK": 3943.5
+      }
+    ],
+    "Lžíce a příslušenství / Löffel und Zubehör": [
+      {
+        "id": "12104791",
+        "name_cz": "Lžíce bez zubů 60cm",
+        "name_de": "Tieflöffel ohne Zähne 60cm",
+        "monthly_CZK": 1441.0
+      },
+      {
+        "id": "12104792",
+        "name_cz": "Lžíce bez zubů 80cm",
+        "name_de": "Tieflöffel ohne Zähne 80cm",
+        "monthly_CZK": 1540.0
+      },
+      {
+        "id": "12104793",
+        "name_cz": "Lžíce svahovací 180cm",
+        "name_de": "Grabenräumlöffel 180cm starr",
+        "monthly_CZK": 2541.0
+      },
+      {
+        "id": "12300053",
+        "name_cz": "Lžíce 140cm",
+        "name_de": "Tieflöffel 140cm",
+        "monthly_CZK": 1969.0
+      },
+      {
+        "id": "12300113",
+        "name_cz": "Lžíce bez zubů 160cm",
+        "name_de": "Grabenräumlöffel 160cm",
+        "monthly_CZK": 1837.0
+      },
+      {
+        "id": "12300254",
+        "name_cz": "Lžíce 120cm č.254",
+        "name_de": "Tieflöffel 120cm Nr.254",
+        "monthly_CZK": 1551.0
+      },
+      {
+        "id": "12300258",
+        "name_cz": "Lžíce 100cm č.258",
+        "name_de": "Tieflöffel 100cm Nr.258",
+        "monthly_CZK": 1331.0
+      },
+      {
+        "id": "12300321",
+        "name_cz": "Lžíce bez zubů 40cm č.321",
+        "name_de": "Tieflöffel 40cm Nr.321",
+        "monthly_CZK": 1441.0
+      },
+      {
+        "id": "12300322",
+        "name_cz": "Lžíce bez zubů 60cm č.322",
+        "name_de": "Tieflöffel 60cm Nr.322",
+        "monthly_CZK": 1540.0
+      },
+      {
+        "id": "12300323",
+        "name_cz": "Lžíce bez zubů 80cm č.323",
+        "name_de": "Tieflöffel 80cm Nr.323",
+        "monthly_CZK": 1738.0
+      },
+      {
+        "id": "12360021",
+        "name_cz": "Lžíce svahovací 200cm č.21",
+        "name_de": "Grabenräumlöffel 200cm Nr.21",
+        "monthly_CZK": 3883.0
+      },
+      {
+        "id": "12360034",
+        "name_cz": "Lžíce svahovací 220cm č.234",
+        "name_de": "Grabenräumlöffel 220cm Nr.234",
+        "monthly_CZK": 3872.0
+      },
+      {
+        "id": "12360128",
+        "name_cz": "Lžíce svahovací 220cm č.128",
+        "name_de": "Grabenräumlöffel 220cm Nr.128",
+        "monthly_CZK": 8987.0
+      },
+      {
+        "id": "12290003",
+        "name_cz": "Třídící lžíce Wolf č.03",
+        "name_de": "Siebschaufel Wolf Nr.03",
+        "monthly_CZK": 25421.0
+      }
+    ],
+    "Vibrátory ponorné / Rüttelflasche": [
+      {
+        "id": "21301063",
+        "name_cz": "Vibrátor ponorný do měniče č.63 3-plg",
+        "monthly_CZK": 1116.5
+      },
+      {
+        "id": "21301107",
+        "name_cz": "Vibrátor ponorný pr.30 č.1107",
+        "monthly_CZK": 1287.0
+      },
+      {
+        "id": "213011080",
+        "name_cz": "Vibrátor ponorný pr.38 č.1080",
+        "monthly_CZK": 1375.0
+      },
+      {
+        "id": "213011084",
+        "name_cz": "Vibrátor ponorný pr.38 č.1084",
+        "monthly_CZK": 1364.0
+      },
+      {
+        "id": "213011117",
+        "name_cz": "Ponorný vibrátor 10m pr.65 č.1117",
+        "monthly_CZK": 1584.0
+      },
+      {
+        "id": "213011119",
+        "name_cz": "Ponorný vibrátor 10m pr.57 č.1119",
+        "monthly_CZK": 1006.5
+      },
+      {
+        "id": "213011165",
+        "name_cz": "Ponorný vibrátor pr.58 č.1165",
+        "monthly_CZK": 1424.5
+      },
+      {
+        "id": "21301851",
+        "name_cz": "Ponorný vibrátor pr.30 č.851",
+        "monthly_CZK": 1201.75
+      }
+    ],
+    "Vibrační desky / Flächenrüttler": [
+      {
+        "id": "21304101",
+        "name_cz": "Vibrační deska č.101",
+        "monthly_CZK": 6308.5
+      },
+      {
+        "id": "21304121",
+        "name_cz": "Vibrační deska č.121",
+        "monthly_CZK": 7430.5
+      },
+      {
+        "id": "21304170",
+        "name_cz": "Vibrační deska č.170",
+        "monthly_CZK": 7496.5
+      },
+      {
+        "id": "21304225",
+        "name_cz": "Vibrační deska č.225",
+        "monthly_CZK": 7485.5
+      },
+      {
+        "id": "21304231",
+        "name_cz": "Vibrační deska č.231",
+        "monthly_CZK": 7595.5
+      },
+      {
+        "id": "21304237",
+        "name_cz": "Vibrační deska naftová č.237",
+        "monthly_CZK": 3503.5
+      },
+      {
+        "id": "21304255",
+        "name_cz": "Vibrační deska č.255",
+        "monthly_CZK": 7524.0
+      }
+    ],
+    "Malé bagry / Kleine Bagger": [
+      {
+        "id": "21102050",
+        "name_cz": "Rypadlo pásové New Holland E35.2SR č.205",
+        "name_de": "NH Raupenbagger E35.2SR",
+        "monthly_CZK": 26322.0
+      },
+      {
+        "id": "21102060",
+        "name_cz": "Rypadlo pásové New Holland E35.2SR č.206",
+        "monthly_CZK": 26322.0
+      },
+      {
+        "id": "21102680",
+        "name_cz": "Rypadlo pásové CAT 303.5E CR č.268",
+        "monthly_CZK": 26322.0
+      },
+      {
+        "id": "21102880",
+        "name_cz": "Rypadlo pásové Kobelco SK035 SR č.288",
+        "monthly_CZK": 26322.0
+      },
+      {
+        "id": "21103310",
+        "name_cz": "Rypadlo pásové CAT 303.5 ECR č.331",
+        "monthly_CZK": 26322.0
+      }
+    ],
+    "Brusky a řezačky / Schleifers und Fugenschneider": [
+      {
+        "id": "252321510",
+        "name_cz": "Aku úhlová bruska č.1510",
+        "monthly_CZK": 88.0
+      },
+      {
+        "id": "252321514",
+        "name_cz": "Aku úhlová bruska č.1514",
+        "monthly_CZK": 232.65
+      },
+      {
+        "id": "25241047",
+        "name_cz": "Řezačka spár č.47",
+        "monthly_CZK": 1947.0
+      },
+      {
+        "id": "25241055",
+        "name_cz": "Řezačka spár č.55",
+        "monthly_CZK": 1908.5
+      },
+      {
+        "id": "25243213",
+        "name_cz": "Rozbrušovací benzinová pila č.213",
+        "monthly_CZK": 2343.0
+      },
+      {
+        "id": "25243333",
+        "name_cz": "Rozbrušovací benzinová pila č.333",
+        "monthly_CZK": 904.75
+      },
+      {
+        "id": "25243351",
+        "name_cz": "Řezačka na koleje č.351",
+        "monthly_CZK": 2739.0
+      },
+      {
+        "id": "25243365",
+        "name_cz": "Řezačka spár č.365",
+        "monthly_CZK": 2662.0
+      }
+    ],
+    "GPS / Nivelace": [
+      {
+        "id": "13100411",
+        "name_cz": "Nivelační systém Trimble GCS900 na dozer č.411",
+        "name_de": "GPS Steuerung Trimble GCS900",
+        "monthly_CZK": 24799.5
+      }
+    ],
+    "Železniční příslušenství": [
+      {
+        "id": "121042310",
+        "name_cz": "Hydraulický měnič pražců č.423910",
+        "name_de": "Hydr. Schwellenwechselgerät Nr.4239",
+        "monthly_CZK": 13832.5
+      },
+      {
+        "id": "121042311",
+        "name_cz": "Hydraulický ukládač pražců č.42311",
+        "name_de": "Hydr. Schwellenverlegegerät Nr.4231",
+        "monthly_CZK": 16654.0
+      },
+      {
+        "id": "12104239",
+        "name_cz": "Hydraulický zametač štěrku č.9",
+        "name_de": "Hydr. Schotterbesen Nr.9",
+        "monthly_CZK": 26983.0
+      },
+      {
+        "id": "12400008",
+        "name_cz": "Souprava pro manipulaci kolejnic SMK č.08",
+        "monthly_CZK": 1441.0
+      },
+      {
+        "id": "12400011",
+        "name_cz": "Souprava pro manipulaci kolejnic SMK č.11",
+        "monthly_CZK": 2766.5
+      }
+    ]
+  }
+}

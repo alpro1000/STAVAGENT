@@ -20,7 +20,7 @@ class GPT4VisionClient:
     
     def __init__(self):
         self.client = None
-        self.model = "gpt-4-vision-preview"  # or "gpt-4o" for newer version
+        self.model = "gpt-4.1"  # gpt-4.1 (Feb 2026); gpt-4-vision-preview deprecated
         self.max_tokens = 4096
         self.prompts_dir = settings.PROMPTS_DIR / "gpt4"
     

@@ -1,0 +1,17 @@
+# Rozpočet Registry Backend
+# Express.js + PostgreSQL
+type: web
+name: rozpocet-registry-backend
+runtime: node
+region: frankfurt
+plan: starter
+rootDir: rozpocet-registry-backend
+
+buildCommand: npm install
+startCommand: npm start
+
+envVars:
+  - key: NODE_ENV
+    value: production
+  - key: DATABASE_URL
+    sync: false  # Must be set manually in Render dashboard

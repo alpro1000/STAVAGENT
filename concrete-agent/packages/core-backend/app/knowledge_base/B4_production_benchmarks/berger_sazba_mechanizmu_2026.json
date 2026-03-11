@@ -1,0 +1,339 @@
+{
+  "metadata": {
+    "source": "IV-Sazba-mechanizmu-auto.pdf",
+    "company": "BERGER BOHEMIA a.s.",
+    "title": "Vnitropodniková hodinová / denní / měsíční sazba mechanizmů 2026",
+    "valid_from": "2026-02-20",
+    "currency": "CZK",
+    "fuel_price_per_liter": 26.0,
+    "note": "Náklady bez strojníka = odpisy + opravy + nafta"
+  },
+  "hourly_rates": [
+    {
+      "category": "Tandemové válce",
+      "items": [
+        {
+          "size": "Malé",
+          "models": "Hamm HD12, Hamm HD12iVO",
+          "weight": "2.7 t",
+          "depreciation_repairs": 124.59,
+          "fuel_liters_per_h": 3.0,
+          "fuel_cost": 78.0,
+          "total_without_operator": 202.59
+        },
+        {
+          "size": "Střední",
+          "models": "Hamm DV 08, Hamm DV+80i",
+          "weight": "9.4-10.2 t",
+          "depreciation_repairs": 642.62,
+          "fuel_liters_per_h": 8.0,
+          "fuel_cost": 208.0,
+          "total_without_operator": 850.62
+        },
+        {
+          "size": "Velké",
+          "models": "Hamm DV+90i, Hamm HD 130",
+          "weight": "12.3-13.8 t",
+          "depreciation_repairs": 624.45,
+          "fuel_liters_per_h": 9.0,
+          "fuel_cost": 234.0,
+          "total_without_operator": 858.45
+        }
+      ]
+    },
+    {
+      "category": "Zemní válce",
+      "items": [
+        {
+          "size": "Malé",
+          "models": "příkopový válec",
+          "weight": "1.5 t",
+          "depreciation_repairs": 110.69,
+          "fuel_liters_per_h": 2.0,
+          "fuel_cost": 52.0,
+          "total_without_operator": 162.69
+        },
+        {
+          "size": "Velké",
+          "models": "Hamm 3412, Bomag BW 213 AD3, Hamm H20i",
+          "weight": "12.7-20.0 t",
+          "depreciation_repairs": 583.38,
+          "fuel_liters_per_h": 13.0,
+          "fuel_cost": 338.0,
+          "total_without_operator": 921.38
+        },
+        {
+          "size": "Velké",
+          "models": "Bomag BW 213 DH-4 (Ježkový válec)",
+          "weight": "16.0 t",
+          "depreciation_repairs": 624.45,
+          "fuel_liters_per_h": 9.0,
+          "fuel_cost": 234.0,
+          "total_without_operator": 858.45
+        }
+      ]
+    },
+    {
+      "category": "Grader",
+      "items": [
+        {
+          "size": "Std",
+          "models": "New Holland F 156.6",
+          "weight": "16.2 t",
+          "depreciation_repairs": 1033.75,
+          "fuel_liters_per_h": 15.0,
+          "fuel_cost": 390.0,
+          "total_without_operator": 1423.75
+        }
+      ]
+    },
+    {
+      "category": "Bagry",
+      "items": [
+        {
+          "size": "Střední",
+          "models": "NH E80MSR, Cat 308 DCR, Kobelco SK 85, NH MH 2.6, Atlas AB 1504, Liebherr A316, NH MH Plus, Liebherr A900",
+          "weight": "8.3-17.7 t",
+          "depreciation_repairs": 469.3,
+          "fuel_liters_per_h": 9.0,
+          "fuel_cost": 234.0,
+          "total_without_operator": 703.3
+        },
+        {
+          "size": "Velké",
+          "models": "Kobelco SK210, Liebherr A924, Cat M322D, Kobelco SK260, SK385",
+          "weight": "21.7-36.3 t",
+          "depreciation_repairs": 719.01,
+          "fuel_liters_per_h": 13.0,
+          "fuel_cost": 338.0,
+          "total_without_operator": 1057.01
+        },
+        {
+          "size": "Dvoucestný",
+          "models": "Liebherr A922 Rail",
+          "weight": "22.0 t",
+          "depreciation_repairs": 1531.11,
+          "fuel_liters_per_h": 11.0,
+          "fuel_cost": 286.0,
+          "total_without_operator": 1817.11
+        }
+      ]
+    },
+    {
+      "category": "Dozery",
+      "items": [
+        {
+          "size": "Malé",
+          "models": "Komatsu D37",
+          "weight": "7.8 t",
+          "depreciation_repairs": 477.7,
+          "fuel_liters_per_h": 7.0,
+          "fuel_cost": 182.0,
+          "total_without_operator": 659.7
+        },
+        {
+          "size": "Střední",
+          "models": "Komatsu D41",
+          "weight": "11.8 t",
+          "depreciation_repairs": 502.29,
+          "fuel_liters_per_h": 15.0,
+          "fuel_cost": 390.0,
+          "total_without_operator": 892.29
+        },
+        {
+          "size": "Velké",
+          "models": "Zeppelin D6K, Komatsu D61",
+          "weight": "13.9-16.9 t",
+          "depreciation_repairs": 829.95,
+          "fuel_liters_per_h": 15.0,
+          "fuel_cost": 390.0,
+          "total_without_operator": 1219.95
+        },
+        {
+          "size": "Skrejpr",
+          "models": "Menck SR 2001",
+          "weight": "27.1 t",
+          "depreciation_repairs": 1801.51,
+          "fuel_liters_per_h": 35.0,
+          "fuel_cost": 910.0,
+          "total_without_operator": 2711.51
+        }
+      ]
+    },
+    {
+      "category": "Finišery",
+      "items": [
+        {
+          "size": "Malé",
+          "models": "Vögele Super 800-3i",
+          "power": "55.4 kW",
+          "depreciation_repairs": 1675.27,
+          "fuel_liters_per_h": 15.0,
+          "fuel_cost": 390.0,
+          "total_without_operator": 2065.27
+        },
+        {
+          "size": "Velké",
+          "models": "Demag DF 115 P",
+          "power": "82 kW",
+          "depreciation_repairs": 1304.04,
+          "fuel_liters_per_h": 20.0,
+          "fuel_cost": 520.0,
+          "total_without_operator": 1824.04
+        },
+        {
+          "size": "Velké",
+          "models": "Vögele S 1800-2",
+          "power": "130 kW",
+          "depreciation_repairs": 1306.91,
+          "fuel_liters_per_h": 25.0,
+          "fuel_cost": 650.0,
+          "total_without_operator": 1956.91
+        },
+        {
+          "size": "Velké",
+          "models": "Vögele S 1800-3i",
+          "power": "129 kW",
+          "depreciation_repairs": 1306.91,
+          "fuel_liters_per_h": 25.0,
+          "fuel_cost": 650.0,
+          "total_without_operator": 1956.91
+        },
+        {
+          "size": "Velké",
+          "models": "Demag DF 145 CS",
+          "power": "169 kW",
+          "depreciation_repairs": 1341.12,
+          "fuel_liters_per_h": 25.0,
+          "fuel_cost": 650.0,
+          "total_without_operator": 1991.12
+        },
+        {
+          "size": "Velké",
+          "models": "Vögele S2100-3i standardní lišta",
+          "power": "142 kW",
+          "depreciation_repairs": 1542.47,
+          "fuel_liters_per_h": 25.0,
+          "fuel_cost": 650.0,
+          "total_without_operator": 2192.47
+        },
+        {
+          "size": "Velké",
+          "models": "Vögele S2100-3i pevná lišta",
+          "power": "142 kW",
+          "depreciation_repairs": 1831.68,
+          "fuel_liters_per_h": 25.0,
+          "fuel_cost": 650.0,
+          "total_without_operator": 2481.68
+        }
+      ]
+    },
+    {
+      "category": "Podavač",
+      "items": [
+        {
+          "size": "Std",
+          "models": "Dynapac MF 2500CS",
+          "power": "168 kW",
+          "depreciation_repairs": 1158.25,
+          "fuel_liters_per_h": 8.5,
+          "fuel_cost": 221.0,
+          "total_without_operator": 1379.25
+        }
+      ]
+    }
+  ],
+  "daily_monthly_rates": [
+    {
+      "category": "Nakladače",
+      "models": "Kramer 380, 418, 750, 5075",
+      "weight": "3.8-4.9 t",
+      "monthly_CZK": 36332.0,
+      "daily_CZK": 1211.0
+    },
+    {
+      "category": "Manipulátor",
+      "models": "Merlo Roto 40.16",
+      "weight": "13.0 t",
+      "monthly_CZK": 150056.0,
+      "daily_CZK": 5000.0
+    },
+    {
+      "category": "Manipulátor",
+      "models": "Merlo Roto 50.31",
+      "weight": "15.6 t",
+      "monthly_CZK": 150056.0,
+      "daily_CZK": 5000.0
+    },
+    {
+      "category": "Manipulátor",
+      "models": "Kramer 2706",
+      "weight": "4.5 t",
+      "monthly_CZK": 59689.84,
+      "daily_CZK": 1989.66
+    },
+    {
+      "category": "Jeřáby",
+      "models": "Liebherr MK 40",
+      "weight": "33.4 t",
+      "monthly_CZK": 159073.0,
+      "daily_CZK": 5302.0
+    },
+    {
+      "category": "Jeřáby",
+      "models": "Liebherr MK 45",
+      "weight": "32.6 t",
+      "monthly_CZK": 159073.0,
+      "daily_CZK": 5302.0
+    },
+    {
+      "category": "Bagry malé",
+      "models": "Kobelco SK035, NH E35.2SR",
+      "weight": "3.7 t",
+      "monthly_CZK": 26322.0,
+      "daily_CZK": 877.0
+    },
+    {
+      "category": "Dempry",
+      "models": "WN DW40",
+      "capacity": "4.0 t",
+      "monthly_CZK": 30420.0,
+      "daily_CZK": 1014.0
+    },
+    {
+      "category": "Dempry",
+      "models": "WN DW60",
+      "capacity": "6.0 t",
+      "monthly_CZK": 39259.0,
+      "daily_CZK": 1309.0
+    },
+    {
+      "category": "Kontejnery",
+      "models": "Skladovací kontejner",
+      "weight": null,
+      "monthly_CZK": 1782.0,
+      "daily_CZK": 59.4
+    },
+    {
+      "category": "Kontejnery",
+      "models": "Kancelářský kontejner",
+      "weight": null,
+      "monthly_CZK": 2270.0,
+      "daily_CZK": 75.66
+    },
+    {
+      "category": "Kontejnery",
+      "models": "Sanitární kontejner",
+      "weight": null,
+      "monthly_CZK": 3496.0,
+      "daily_CZK": 116.52
+    },
+    {
+      "category": "Kontejnery",
+      "models": "Fekální tank",
+      "weight": null,
+      "monthly_CZK": 2288.0,
+      "daily_CZK": 76.27
+    }
+  ]
+}

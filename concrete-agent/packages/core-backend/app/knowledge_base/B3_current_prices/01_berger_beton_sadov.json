@@ -1,0 +1,276 @@
+{
+  "meta": {
+    "supplier": "BERGER BETON spol. s r.o.",
+    "plant": "Betonárna Karlovy Vary – Sadov, Mostecká ul., 362 61 Sadov",
+    "contact": {
+      "name": "Marek Bednář",
+      "tel": "731 550 573",
+      "email": "marek.bednar@bergerbeton.cz"
+    },
+    "dispatcher": {
+      "name": "Antonín Kadeřábek",
+      "tel": "731 550 576"
+    },
+    "valid_from": "2026-02-01",
+    "currency": "CZK",
+    "vat_rate": 0.21,
+    "note": "Ceny bez DPH. TKP 16/17/18 příplatek +200 Kč/m³"
+  },
+  "concrete": [
+    {
+      "class": "C8/10",
+      "env": "X0",
+      "Dmax": 22,
+      "cons": "S1",
+      "price_ex_vat": 2675,
+      "recipe": "110178S0"
+    },
+    {
+      "class": "C8/10",
+      "env": "X0",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 2805,
+      "recipe": "110378S0"
+    },
+    {
+      "class": "C12/15",
+      "env": "X0",
+      "Dmax": 22,
+      "cons": "S1",
+      "price_ex_vat": 2775,
+      "recipe": "120178S0"
+    },
+    {
+      "class": "C12/15",
+      "env": "X0",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 2895,
+      "recipe": "120378S0"
+    },
+    {
+      "class": "C16/20",
+      "env": "X0",
+      "Dmax": 22,
+      "cons": "S1",
+      "price_ex_vat": 2885,
+      "recipe": "130178S0"
+    },
+    {
+      "class": "C16/20",
+      "env": "XC1,XC2",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3005,
+      "recipe": "131378S0"
+    },
+    {
+      "class": "C20/25",
+      "env": "X0",
+      "Dmax": 22,
+      "cons": "S1",
+      "price_ex_vat": 3125,
+      "recipe": "140178S0"
+    },
+    {
+      "class": "C20/25",
+      "env": "XC2,XC3",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3235,
+      "recipe": "141378S0"
+    },
+    {
+      "class": "C25/30",
+      "env": "X0",
+      "Dmax": 22,
+      "cons": "S1",
+      "price_ex_vat": 3250,
+      "recipe": "150178S0"
+    },
+    {
+      "class": "C25/30",
+      "env": "XC3",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3325,
+      "recipe": "152378S1"
+    },
+    {
+      "class": "C25/30",
+      "env": "XC4,XF1,XA1,XD1",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3465,
+      "recipe": "153378S1"
+    },
+    {
+      "class": "C25/30",
+      "env": "XF3,XA2,XD2",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3515,
+      "recipe": "157378S1"
+    },
+    {
+      "class": "C25/30",
+      "env": "XF2,XF3,XD2,XA1",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3565,
+      "recipe": "15437201",
+      "note": "provzdušněný"
+    },
+    {
+      "class": "C30/37",
+      "env": "XC4,XF1,XA1,XD1",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3615,
+      "recipe": "163378S1"
+    },
+    {
+      "class": "C30/37",
+      "env": "XF3,XA2,XD2,XD3",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3725,
+      "recipe": "167372S1"
+    },
+    {
+      "class": "C30/37",
+      "env": "XA3",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3815,
+      "recipe": "16837M01"
+    },
+    {
+      "class": "C30/37",
+      "env": "XF2,XF3,XD2",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3775,
+      "recipe": "16437201",
+      "note": "provzdušněný"
+    },
+    {
+      "class": "C30/37",
+      "env": "XF4,XD3,XA2",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 3815,
+      "recipe": "16637201",
+      "note": "provzdušněný"
+    },
+    {
+      "class": "C35/45",
+      "env": "XD3,XC4,XA2,XF1,XF3",
+      "Dmax": 22,
+      "cons": "S3",
+      "price_ex_vat": 4335,
+      "recipe": "179372S1"
+    }
+  ],
+  "surcharges": {
+    "TKP_16_17_18_per_m3": 200,
+    "dmax_16mm_per_m3": 40,
+    "dmax_8mm_per_m3": 110,
+    "pumpable_C12_C16_S3_per_m3": 150,
+    "winter_period_per_m3": 200,
+    "accelerated_hardening_per_m3": 200,
+    "winter_period_dates": "15.11 - 15.03",
+    "saturday_per_m3": 160,
+    "sunday_holiday_per_m3": 300,
+    "night_18_06_per_m3": 160
+  },
+  "transport": {
+    "method": "zones_by_aerial_km",
+    "min_volume_m3": 6,
+    "underfill_surcharge_per_m3": null,
+    "free_unloading_min": 30,
+    "waiting_30_45min_per_15min": 300,
+    "waiting_over_45min_per_15min": 400,
+    "zones": [
+      {
+        "zone": "A",
+        "km_max": 5,
+        "price_per_m3": 330
+      },
+      {
+        "zone": "B",
+        "km_max": 10,
+        "price_per_m3": 410
+      },
+      {
+        "zone": "C",
+        "km_max": 15,
+        "price_per_m3": 490
+      },
+      {
+        "zone": "D",
+        "km_max": 20,
+        "price_per_m3": 580
+      },
+      {
+        "zone": "+",
+        "note": "každá další zóna +5km",
+        "surcharge_per_m3": 200
+      }
+    ]
+  },
+  "pump": {
+    "order_advance_hours": 48,
+    "billing_unit": "per_15min_from_arrival",
+    "min_billing_min": 30,
+    "wash_surcharge_if_no_site_wash_min": 30,
+    "models": [
+      {
+        "name": "PUMI",
+        "reach_m": 24,
+        "travel_per_km": 82,
+        "operation_own_concrete_per_h": 2450,
+        "operation_foreign_concrete_per_h": 2550,
+        "volume_surcharge_per_m3": 65,
+        "hose_rental_per_m_per_day": 140,
+        "pipe_rental_per_m_per_day": 140
+      },
+      {
+        "name": "32-36m",
+        "reach_m": 36,
+        "travel_per_km": 80,
+        "operation_own_concrete_per_h": 2500,
+        "operation_foreign_concrete_per_h": 2600,
+        "volume_surcharge_per_m3": 65,
+        "hose_rental_per_m_per_day": 140,
+        "pipe_rental_per_m_per_day": 140
+      },
+      {
+        "name": "38-42m",
+        "reach_m": 42,
+        "travel_per_km": 80,
+        "operation_own_concrete_per_h": 3600,
+        "operation_foreign_concrete_per_h": 3700,
+        "volume_surcharge_per_m3": 65,
+        "hose_rental_per_m_per_day": 140,
+        "pipe_rental_per_m_per_day": 140
+      }
+    ],
+    "pump_surcharges": {
+      "fibreconcrete_per_m3": 50,
+      "night_18_06_pct": 15,
+      "saturday_pct": 15,
+      "sunday_holiday_pct": 20,
+      "late_cancellation_one_time": 3000,
+      "futile_trip_one_time": 2600,
+      "futile_trip_per_km": 82,
+      "standby_pump_per_15min": 550,
+      "primer_chemical_one_time": 500,
+      "residual_concrete_removal": 1200,
+      "hose_pipe_transport_per_km": 50,
+      "slow_down_elbow_one_time": 590,
+      "pump_at_plant_per_day": 10000
+    }
+  }
+}

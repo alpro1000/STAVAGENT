@@ -15,6 +15,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import DocumentUpload from '../components/DocumentUpload';
 import AnalysisPreview from '../components/AnalysisPreview';
+import { API_URL } from '../services/api';
 
 interface Document {
   id: string;
@@ -119,10 +120,10 @@ export default function DocumentUploadPage() {
       formData.append('analysis_type', analysisType);
 
       // Upload file
-      const response = await fetch('/api/documents/upload', {
+      const response = await fetch(`${API_URL}/api/documents/upload`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         },
         body: formData
       });
@@ -170,9 +171,9 @@ export default function DocumentUploadPage() {
 
     const pollInterval = setInterval(async () => {
       try {
-        const response = await fetch(`/api/documents/${documentId}`, {
+        const response = await fetch(`${API_URL}/api/documents/${documentId}`, {
           headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
+            'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
           }
         });
 
@@ -220,10 +221,10 @@ export default function DocumentUploadPage() {
     try {
       setError('');
 
-      const response = await fetch(`/api/documents/${currentDocument.id}/confirm`, {
+      const response = await fetch(`${API_URL}/api/documents/${currentDocument.id}/confirm`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
@@ -264,10 +265,10 @@ export default function DocumentUploadPage() {
     try {
       setError('');
 
-      const response = await fetch(`/api/documents/${currentDocument.id}`, {
+      const response = await fetch(`${API_URL}/api/documents/${currentDocument.id}`, {
         method: 'DELETE',
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
         }
       });
 

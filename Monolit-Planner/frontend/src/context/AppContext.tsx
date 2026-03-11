@@ -23,7 +23,7 @@ interface AppContextType {
   setHeaderKPI: (kpi: HeaderKPI | null) => void;
 
   bridges: Bridge[];
-  setBridges: (bridges: Bridge[]) => void;
+  setBridges: (bridges: Bridge[] | ((prev: Bridge[]) => Bridge[])) => void;
 
   daysPerMonth: 30 | 22;
   setDaysPerMonth: (days: 30 | 22) => void;

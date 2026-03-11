@@ -71,10 +71,36 @@ CREATE TABLE IF NOT EXISTS positions (
   unit_cost_on_m3 REAL,
   kros_unit_czk REAL,
   kros_total_czk REAL,
+  curing_days INTEGER DEFAULT 3,
   has_rfi INTEGER DEFAULT 0,
   rfi_message TEXT,
   item_name VARCHAR(255),
   otskp_code VARCHAR(50),
+  position_instance_id VARCHAR(255) UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Formwork calculator table
+CREATE TABLE IF NOT EXISTS formwork_calculator (
+  id VARCHAR(255) PRIMARY KEY,
+  bridge_id VARCHAR(255) NOT NULL REFERENCES bridges(bridge_id) ON DELETE CASCADE,
+  construction_name VARCHAR(500) NOT NULL,
+  total_area_m2 REAL NOT NULL DEFAULT 0,
+  set_area_m2 REAL NOT NULL DEFAULT 0,
+  num_tacts INTEGER NOT NULL DEFAULT 1,
+  num_sets INTEGER NOT NULL DEFAULT 1,
+  assembly_days_per_tact REAL DEFAULT 0,
+  disassembly_days_per_tact REAL DEFAULT 0,
+  days_per_tact REAL DEFAULT 0,
+  formwork_term_days REAL DEFAULT 0,
+  system_name VARCHAR(255) DEFAULT 'Frami Xlife',
+  system_height VARCHAR(100) DEFAULT '',
+  rental_czk_per_m2_month REAL DEFAULT 0,
+  monthly_rental_per_set REAL DEFAULT 0,
+  final_rental_czk REAL DEFAULT 0,
+  kros_code VARCHAR(50),
+  kros_description TEXT,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -146,13 +172,7 @@ CREATE TABLE IF NOT EXISTS monolith_projects (
   road_length_km REAL,
   road_width_m REAL,
   description TEXT,
-  status VARCHAR(50) DEFAULT 'active',
-  -- Project hierarchy fields (Phase 2 - added for Stavba/Object relationship)
-  stavba VARCHAR(255),                    -- Project name from file header
-  objekt VARCHAR(255),                    -- Object description from file header
-  soupis VARCHAR(255),                    -- Budget/list name from file
-  parent_project_id VARCHAR(255),         -- Link to parent project (stavba) for hierarchy
-  FOREIGN KEY (parent_project_id) REFERENCES monolith_projects(project_id) ON DELETE SET NULL
+  status VARCHAR(50) DEFAULT 'active'
 );
 
 -- Part Templates table (predefined parts for each construction type)
@@ -260,6 +280,7 @@ CREATE INDEX IF NOT EXISTS idx_positions_bridge ON positions(bridge_id);
 CREATE INDEX IF NOT EXISTS idx_positions_part ON positions(part_name);
 CREATE INDEX IF NOT EXISTS idx_positions_subtype ON positions(subtype);
 CREATE INDEX IF NOT EXISTS idx_positions_otskp ON positions(otskp_code);
+CREATE INDEX IF NOT EXISTS idx_positions_instance_id ON positions(position_instance_id);
 CREATE INDEX IF NOT EXISTS idx_snapshots_bridge ON snapshots(bridge_id);
 CREATE INDEX IF NOT EXISTS idx_snapshots_created ON snapshots(created_at DESC);
 CREATE INDEX IF NOT EXISTS idx_snapshots_locked ON snapshots(is_locked);
@@ -271,9 +292,6 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_owner ON monolith_projects(owner_id);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_type ON monolith_projects(object_type);
 CREATE INDEX IF NOT EXISTS idx_monolith_projects_status ON monolith_projects(status);
-CREATE INDEX IF NOT EXISTS idx_monolith_projects_stavba ON monolith_projects(stavba);
-CREATE INDEX IF NOT EXISTS idx_monolith_projects_parent ON monolith_projects(parent_project_id);
-CREATE INDEX IF NOT EXISTS idx_monolith_projects_hierarchy ON monolith_projects(parent_project_id, object_type);
 CREATE INDEX IF NOT EXISTS idx_part_templates_type ON part_templates(object_type);
 CREATE INDEX IF NOT EXISTS idx_parts_project ON parts(project_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_admin ON audit_logs(admin_id);

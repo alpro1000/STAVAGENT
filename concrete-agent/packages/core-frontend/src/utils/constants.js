@@ -43,12 +43,12 @@ export const QUICK_ACTIONS = [
   },
   {
     id: 'resources',
-    label: 'Ведомость ресурсов',
+    label: 'Přehled zdrojů',
     description: 'Analýza pracovních zdrojů po pozicích',
     type: 'prompt',
-    promptMessage: 'Mohu vypracovat ведомость ресурсов. Uveďte prosím:',
+    promptMessage: 'Mohu vypracovat přehled zdrojů. Uveďte prosím:',
     examples: [
-      'Ведомость ресурсов для pozice 123',
+      'Přehled zdrojů pro pozici 123',
       'Zdroje práce pro všechny sloupy',
       'Časový odhad pro pozici 45.3'
     ],

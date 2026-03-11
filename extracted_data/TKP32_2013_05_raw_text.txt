@@ -1,0 +1,228 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 32
+ZAŘÍZENÍ TRATÍ A TRAŤOVÉ ZNAČKY
+Třetí - aktualizované vydání
+změna č. 8
+Schváleno generálním ředitelem SŽDC
+dne: 27.3.2013
+č.j.: S 3916/2012-TÚDC
+Účinnost od: 1.5.2013
+Počet stran : 6
+Počet příloh: 0
+Počet stran příloh: 0
+Praha 2013
+Všechna práva vyhrazena.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+Seznam zkratek 2
+Seznam pojmů 2
+32.1 ÚVOD 3
+32.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 3
+32.2.1 Staničníky a hraniční znaky dráhy 3
+32.2.2 Traťové značky 3
+32.2.3 Označení železničních stanic a zastávek 3
+32.3 TECHNOLOGICKÉ POSTUPY PRACÍ 3
+32.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 4
+32.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 4
+32.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ A ZÁRUKY 4
+32.7 KLIMATICKÁ OMEZENÍ 4
+32.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 4
+32.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 4
+32.10 EKOLOGIE 4
+32.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 5
+32.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 5
+32.12.1 Předpisy 5
+32.12.2 Technické normy 5
+32.12.3 Související kapitoly TKP 6
+1
+Seznam zkratek
+ČD České dráhy, akciová společnost
+OTH Odbor traťového hospodářství
+SŽDC Správa železniční dopravní cesty, státní organizace
+TKP Technické kvalitativní podmínky staveb státních drah
+TNŽ Technické normy železnic
+ZT Zařízení trati
+Seznam pojmů
+Hektometrovník - traťová značka označující trať po 100 m s udáním kilometrů a jejich desetin
+Hraniční znak - značka, která trvalým způsobem označuje v terénu lomové body hranice pozemků
+Kilometrovník - traťová značka označující trať v celých kilometrech
+Materiál činné plochy - materiál nanesený na štít dopravní značky k vytvoření povrchové vrstvy značky
+Mezník - označení pro hraniční znak drážního pozemku
+Návěstidlo - technické zařízení, pomůcka nebo předmět, kterým se dává návěst
+Podklad - ploché těleso sloužící jako podklad materiálu činné plochy
+Staničník - souhrnný název pro kilometrovníky a hektometrovníky
+Štít značky - sestává z podkladu, výztuh a upevňovacího zařízení
+Upevňovací zařízení - slouží k upevnění značek ke sloupkům nebo stožárům trakčního vedení
+2
+32.1 ÚVOD
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP.
+Kapitola 32 určuje technické kvalitativní podmínky pro staničníky, hraniční znaky (mezníky) a traťové značky
+železničních drah v majetku České republiky, se kterými má právo hospodařit Správa železniční dopravní cesty, státní
+organizace.
+Značky pro zajištění prostorové polohy koleje jsou předmětem kapitoly 8 TKP.
+Situování značek a návěstidel je obecně dáno staničením, vzdáleností od osy a výškou nad temenem kolejnice koleje
+přilehlé ke značce nebo návěstidlu.
+Umístění a osazení staničníků zásadně určuje prováděcí vyhláška č. 177/1995 Sb., kterou se vydává stavební a technický
+řád drah, k zákonu č. 266/1994 Sb., o dráhách, v § 20, dále vzorový list zařízení tratí, TNŽ 73 6395 a předpis SŽDC
+(ČD) M21. Pro hraniční znaky (mezníky) platí ustanovení vyhlášky č. 26/2007 Sb., kterou se provádí zákon č. 265/1992
+Sb., o zápisech vlastnických a jiných věcných práv k nemovitostem, ve znění pozdějších předpisů, a zákon č. 344/1992
+Sb., o katastru nemovitostí České republiky (katastrální zákon), ve znění pozdějších předpisů, (katastrální vyhláška).
+Umístění, výrobu a osazení traťových značek předepisují vzorové listy řady ZT - Zařízení trati. Situování a návěstní
+znaky uvedených návěstidel předepisuje předpis SŽDC (ČD) D1 Předpis pro používání návěstí při organizování
+a provozování drážní dopravy. Jejich umístění vzhledem k odvodňovacímu zařízení určuje článek 171 předpisu
+SŽDC S4 Železniční spodek.
+Konkrétní umístění a materiál traťových značek stanovuje dokumentace ve stupni projekt.
+Další návěstidla podle předpisu SŽDC (ČD) D1 neuvedená ve vzorových listech zařízení tratí jsou předmětem těchto
+kapitol TKP:
+8 - Konstrukce koleje a výhybek
+27 - Zabezpečovací zařízení
+31 - Trakční vedení
+32.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+32.2.1 Staničníky a hraniční znaky dráhy
+Staničníky (kilometrovníky a hektometrovníky) se dodávají železobetonové nebo plechové. Tvar, rozměry, vzhled,
+úpravy povrchu a číslic železobetonových staničníků musí odpovídat ustanovením TNŽ 73 6395, pro plechové
+staničníky platí vzorový list zařízení tratí a předpis SŽDC (ČD) M21. Provedení hraničních znaků (mezníků) musí
+odpovídat § 88 vyhlášky č. 26/2007 Sb.
+32.2.2 Traťové značky
+Návěstidla a značky musí svým tvarem a provedením návěstních znaků odpovídat předpisu SŽDC (ČD) D1 a vzorovým
+listům zařízení tratí. Štíty a upevňovací zařízení návěstidel a značek včetně sloupků jsou vyrobeny z pozinkované oceli.
+Materiál činné plochy návěstidel a značek je zhotoven z retroreflexní fólie 1. třídy. Použití dosud nezavedených
+materiálů musí být předem odsouhlaseno OTH. Sloupky se osadí do betonových prefabrikovaných patek nebo se
+zabetonují přímo na stavbě. Beton musí splňovat požadavky kapitol 17 a 18 TKP.
+32.2.3 Označení železničních stanic a zastávek
+Názvy železničních stanic a zastávek státních drah se provádějí dle TNŽ 73 6390 „Nápisy názvů železničních stanic
+a zastávek“.
+32.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+Traťové značky (včetně sloupků), staničníky a hraniční znaky (mezníky) musí být vyrobeny, natřeny a opatřeny
+příslušným nápisem již ve výrobně, dílně nebo v patřičně vybaveném staveništním zařízení. Přímo na staveništi mohou
+být prováděny pouze takové finální úpravy, které nemohou být z technologických důvodů provedeny předem. Po
+přípravě a vyznačení staveniště a pracoviště přistoupí zhotovitel k vytyčení, výkopu základů nebo vyvrtání otvorů. Vždy
+3
+je nutné respektovat postupy v průvodní dokumentaci výrobce, aby nedošlo k poškození výrobku. Po zabetonování
+připravenou směsí nebo po přišroubování dokončí povrchovou úpravu značek a staveniště uvede do původního stavu.
+32.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+Beton musí být doložen doklady podle kapitoly 17 TKP. Použité materiály musí vyhovovat kvalitativním normám
+a výrobním předpisům, uvedeným v oddíle 32.12 této kapitoly TKP.
+Při skladování výrobků je nutné dodržovat pokyny výrobce tak, aby nedošlo k poškození výrobků. Uložení výrobků ve
+skladech a na úložištích musí být přehledné a odpovídat požárním a bezpečnostním předpisům. Zhotovitel musí
+zabezpečit výrobky tak, aby nemohlo dojít k jejich znečištění, poškození nebo odcizení. Na staveništi musí být výrobky
+uloženy mimo volný schůdný a manipulační prostor. Pouze na dobu nezbytně nutnou k osazení návěstidel a značek lze
+k práci a skladování využít volný schůdný a manipulační prostor až k obrysu průjezdného průřezu podle ČSN 73 6320.
+32.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Není obecně požadováno. Pokud budou technickým dozorem stavebníka požadovány zkoušky pro betonové základy,
+provedou se podle kapitoly 17 TKP. Ostatní dodávky se kontrolují podle certifikátů, atestů, případně podle jejich
+průvodních dokladů.
+32.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ A ZÁRUKY
+Pro rozměry a hmotnost železobetonových staničníků včetně přípustných odchylek je závazná tabulka 2 TNŽ 73 6395,
+pro umístění a rozměr číslic na nich tabulka 3 téže normy. Pro jejich umístění platí ustanovení TNŽ 73 6395 a předpisu
+SŽDC (ČD) M21. Pro situování plechových staničníků na trakční stožáry platí ustanovení předpisu SŽDC (ČD) M21.
+Pro umístění hraničního znaku (mezníku) platí ustanovení vyhlášky č. 26/2007 Sb.
+Záruční doby a ukončení záruční doby všeobecně stanoví kapitola 1 TKP.
+Údržbu v záruční době zajišťuje provozovatel dráhy podle ustanovení v kapitole 1 TKP.
+32.7 KLIMATICKÁ OMEZENÍ
+Klimatická omezení vztahující se k obsahu této kapitoly se týkají pouze betonářských prací a nátěrů povrchů značek
+nebo lepení fólií mimo dílnu. Při nízkých nebo velmi vysokých teplotách musí zhotovitel dodržovat ustanovení kapitol
+17, 18 a 25B TKP, předpisy výrobců nátěrových hmot a fólií a předpis SŽDC (ČD) S5/4.
+32.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+Odsouhlasení a převzetí prací se uskutečňuje pro celý úsek tratě nebo pro jednotlivé značky ve shodě s požadavky
+objednatele. Odsouhlasení prací je nezbytné pro možnost zahájení navazujících prací. Zhotovitel odsouhlasených prací
+za ně odpovídá až do doby převzetí prací. Při odsouhlasení a převzetí prací technický dozor stavebníka kontroluje
+rozměry, umístění, vzhled a viditelnost značek, při požadavku na kontrolní zkoušky podle oddílu 32.5 této kapitoly si
+nechá předložit výsledky těchto zkoušek. Za vady zjištěné při převzetí prací a za jejich odstranění ručí zhotovitel. Před
+převzetím prací pečuje o značky zhotovitel, po převzetí objednatel.
+32.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+Kontrolním měřením se ověřuje umístění, rozměry a tvar značek. Vizuální kontrolou se dále ověří správný vzhled
+povrchových úprav značek. U hraničních značek se kontroluje přesnost umístění. Kladný výsledek kontroly je podmíněn
+dodržením přípustných odchylek ve smyslu oddílu 32.6 této kapitoly TKP.
+32.10 EKOLOGIE
+Požadavky na ochranu životního prostředí stanoví obecně kapitola 1 TKP. Při pracích podle této kapitoly se jedná
+zejména o ochranu půdy a povrchových a podzemních vod před působením nátěrových hmot. Za zachování bezpečného
+uložení hmot a dodržování výrobcem předepsaných postupů práce odpovídá zhotovitel. V případě, že jsou zhotovitelem
+používány stroje, mohou být použity pouze takové, jejichž emise hluku nepřekračují stanovené limity a nedochází u nich
+k úniku provozních kapalin.
+4
+32.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví kapitola 1 TKP.
+32.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuální stavu v době zpracování TKP, resp. jejich aktualizace.
+Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj. právních předpisů,
+technických norem a předpisů a předpisů SŽDC.
+32.12.1 Předpisy
+Zákon č. 266/1994 Sb. Zákon o dráhách v platném znění
+Vyhláška č. 26/2007 Sb. Katastrální vyhláška
+Vyhláška č. 173/1995 Sb. Dopravní řád drah v platném znění
+Vyhláška č. 177/1995 Sb. Stavební a technický řád drah v platném znění
+Směrnice SŽDC č. 50 Požadavky na odbornou způsobilost dodavatelů při činnostech na dráhách provozovaných
+státní organizací Správa železniční dopravní cesty, změna č. 1
+SŽDC (ČD) D1 Předpis pro používání návěstí při organizování a provozování drážní dopravy
+SŽDC (ČD) D2 Předpis pro organizování a provozování drážní dopravy
+SŽDC (ČD) D3 Předpis pro zjednodušené řízení drážní dopravy
+SŽDC (ČD) M21 Předpis pro staničení železničních tratí
+SŽDC (ČD) Op16 Předpis o bezpečnosti a ochraně zdraví při práci
+SŽDC S3 Železniční svršek
+SŽDC S4 Železniční spodek
+SŽDC (ČD) S5/4 Protikorozní ochrana ocelových konstrukcí
+32.12.2 Technické normy
+ČSN 42 5301 Plechy tenké z ocelí tříd 10 až 16 válcované za tepla. Rozměry
+ČSN 42 5340 Pásy a pruhy z ocelí tříd 10 a 11 válcované za tepla. Rozměry
+ČSN 42 5512 Tyče kruhové pro výztuž do betonu z oceli značky 10 216. Rozměry
+ČSN 42 5522-2 Hutnictví železa. Tyče ploché válcované za tepla vysoké a zvlášť vysoké přesnosti. Rozměry
+ČSN 72 2518 Kamenné měřičské značky, staničníky, hraničníky, směrové a zábradelní kameny
+ČSN 72 3000 Výroba a kontrola betonových stavebních dílců. Společná ustanovení
+ČSN 73 0415 Geodetické body
+ČSN 73 6301 Projektování železničních drah
+ČSN 73 6320 Průjezdné průřezy na dráhách celostátních, dráhách regionálních a vlečkách normálního rozchodu
+ČSN EN 197-1 Cement – Část 1: Složení, specifikace a kritéria shody cementů pro obecné použití
+ČSN EN 206-1 Beton – Část 1: Specifikace, vlastnosti, výroba a shoda
+ČSN EN 10058 Ocelové tyče ploché válcované za tepla pro všeobecné použití – Rozměry, mezní úchylky rozměrů
+a tolerance tvaru
+ČSN EN 13670 Provádění betonových konstrukcí
+ČSN EN ISO 4016 Šrouby se šestihrannou hlavou – Výrobní třída C
+ČSN EN ISO 4034 Šestihranné matice – Výrobní třída C
+5
+TNŽ 73 6390 Nápisy názvů železničních stanic a zastávek
+TNŽ 73 6395 Staničníky a mezníky ČSD
+32.12.3 Související kapitoly TKP
+Kapitola 1 – Všeobecně
+Kapitola 4 – Odvodnění tratí a stanic
+Kapitola 7 – Kolejové lože
+Kapitola 8 – Konstrukce koleje a výhybek
+Kapitola 17 – Beton pro konstrukce
+Kapitola 18 – Betonové mosty a konstrukce
+Kapitola 25 – Protikorozní ochrana úložných zařízení a konstrukcí, Část B: Ochrana ocelových konstrukcí proti
+atmosférické korozi
+Kapitola 27 – Zabezpečovací zařízení
+Kapitola 31 – Trakční vedení
+6
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 32
+Třetí - aktualizované vydání se zapracovanou změnou č. 8 /z roku 2013/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Ing. Jan Panchartek
+Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Odborný gestor: Ing. Jan Panchartek
+Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Vydal: Správa železniční dopravní cesty, státní organizace
+Generální ředitelství
+Odbor traťového hospodářství
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+www.szdc.cz
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 396, +420 972 741 769
+fax: +420 972 741 290
+e-mail: typdok@tudc.cz
+http://typdok.tudc.cz

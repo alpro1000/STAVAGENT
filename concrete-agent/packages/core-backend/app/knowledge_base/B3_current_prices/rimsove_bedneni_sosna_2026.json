@@ -1,0 +1,249 @@
+{
+  "_meta": {
+    "source_file": "Bednění říms - (Sosna).pptx",
+    "author": "Ing. Martin Sosna (DOKA)",
+    "title": "Bednění mostních říms — Školení zákazníků 2026",
+    "date": "2026-01-09",
+    "extracted": "2026-02-25",
+    "language": "cs",
+    "note": "Technické školení DOKA pro 3 systémy římsového bednění mostů. Bez ceníkových cen — kontakt obchodní zástupce DOKA."
+  },
+
+  "prehled_systemu": {
+    "_note": "Výběr systému závisí na délce mostu, počtu taktů, geometrii.",
+    "rimsove_bedneni_T": {
+      "pouziti_optimalni": "délka mostu ≤ 50 m (celá římsа naráz)",
+      "popis_kratky": "Rychlý ruční systém bednění pomocí jednotlivých konzol"
+    },
+    "rimsovy_vozik_TU": {
+      "pouziti_optimalni": "délka mostu ≤ 150 m (malý počet přemístění), rovné mosty a mosty s horizontální křivkou",
+      "popis_kratky": "Zavěšený systém pro bednění říms, sekce 4 m"
+    },
+    "rimsovy_vozik_T": {
+      "pouziti_optimalni": "délka mostu > 150 m, rovné mosty nebo R ≥ 250 m, takty po 5 m (max)",
+      "popis_kratky": "Převěšené pojízdné bednění mostních říms, větší počet taktů"
+    }
+  },
+
+  "rimsove_bedneni_T": {
+    "system": "Římsové bednění T",
+    "vyrobce": "DOKA",
+    "typ": "Ruční konzolový systém",
+    "kategorie": "special",
+    "podkategorie": "parapet_formwork",
+
+    "geometrie_rimsy": {
+      "sirka_b_cm_min": 8,
+      "sirka_b_cm_max": 60,
+      "vyska_h_cm_min": 0,
+      "vyska_h_cm_max": 76,
+      "roztec_konzol_a_cm_min": 80,
+      "roztec_konzol_a_cm_max": 180,
+      "prizpusobeni_uklonu_deg": 15,
+      "poznamka": "Variabilní pro různé geometrické tvary říms. Prodloužení konzoly umožňuje přizpůsobení."
+    },
+
+    "komponenty": {
+      "konzola_rimsoveho_bedneni_T": {
+        "model": "Konzola římsového bednění T 0,80 m",
+        "hmotnost_kg": 22
+      },
+      "rimsovy_nosnik_T": {
+        "model": "Římsový nosník T 1,40 m",
+        "hmotnost_kg": 16
+      },
+      "rimsova_sverka_T": {
+        "model": "Římsová svěrka T 0,40 m",
+        "hmotnost_kg": 10
+      },
+      "zabradli": {
+        "model": "Zábradlí 1,00 m",
+        "hmotnost_kg": 4
+      },
+      "celkova_hmotnost_sestavy_kg": 52,
+      "poznamka": "Montáž bez jeřábu — 1 konzola cca 52 kg"
+    },
+
+    "montaz_zaveseni": {
+      "postup_4_kroky": [
+        "1. Zatlouct hřebíkový konus 15,0 do bednění mostovky",
+        "2. Zašroubovat zavěšný konus pro římsové bednění 15,0",
+        "3. Nasadit kotvu pro římsové bednění 15,0",
+        "4. Zavěsit konzolu římsového bednění T 0,80 m + zajistit ručním klínem"
+      ],
+      "kryt_kotvy_po_betonazi_cm": 4,
+      "poznamka": "Po odbednění odstranit hřebíkový konus → krytí kotvy a = 4 cm."
+    },
+
+    "kotevni_system": {
+      "standardni": {
+        "prvky": ["Hřebíkový konus 15,0", "Zavěšný konus 15,0", "Kotva pro římsové bednění 15,0"],
+        "pouziti": "Nové mosty — kotvy osazeny předem do bednění"
+      },
+      "rekonstrukce": {
+        "prvky": ["Kotvení do stávající kce (dodávka stavby)", "Krycí pouzdro 21 mm"],
+        "pouziti": "Rekonstrukce — kotvy nejsou předem osazeny"
+      },
+      "utesneni_po_odbedneni": {
+        "prvky": ["Zinková zátka 15,0", "Zátka otvoru pro římsové konzoly 29 mm"],
+        "pouziti": "Korozní ochrana a opakované využití závěsného místa"
+      }
+    },
+
+    "vyhody": [
+      "Snadná ruční montáž (1 konzola ~52 kg = bez jeřábu)",
+      "Vysoká únosnost",
+      "Přizpůsobení různým sklonům ±15°",
+      "Variabilní pro různé geometrické tvary říms",
+      "Armování a betonáž bezpečně z mostovky (přístup shora)",
+      "Modulový systém — prodloužení konzoly pro krátké výkonzolování, mostní křídla",
+      "Použití se záchytnou střeškou nad veřejnými komunikacemi",
+      "Použití i pro demolice"
+    ],
+
+    "pracovni_normy_odhad": {
+      "montaz_nh_mb": 1.5,
+      "demontaz_nh_mb": 0.6,
+      "jednotka": "Nh/mb římsového pasu",
+      "poznamka": "Orientační odhad — závisí na složitosti geometrie, počtu kotev, výšce nad zemí."
+    },
+
+    "cenova_info": {
+      "cena_najem": "Individuální nabídka DOKA — kontakt obchodní zástupce",
+      "cena_ztraceny_material": "Kotva s destičkou, konus, pouzdro — spotřební materiál stavby",
+      "poznamka_z_doka_ceniku": "Viz formwork_systems_doka.json → id='rimsove'. Cena 33.60 Kč/m²/měs je orientační."
+    }
+  },
+
+  "rimsovy_vozik_TU": {
+    "system": "Římsový vozík TU",
+    "vyrobce": "DOKA",
+    "typ": "Zavěšený pojízdný systém",
+    "kategorie": "special",
+    "podkategorie": "travelling_formwork_parapet",
+
+    "uplatneni": {
+      "delka_mostu_optimalni_m_max": 150,
+      "pocet_presunuti": "malý",
+      "geometrie_mostu": ["rovný most", "most s horizontální křivkou"],
+      "vhodne_pro_rekonstrukce": true,
+      "prednost_pri": "Mosty se širokými římsami a výkonzolovanou nosnou konstrukcí v příčném směru"
+    },
+
+    "parametry": {
+      "delka_sekce_m": 4.0,
+      "max_propojeni_sekci": 6,
+      "max_delka_betonaze_m": 24,
+      "poznamka": "Sekce 4 m, lze spojit až 6 × 4 m = 24 m"
+    },
+
+    "produktivita": {
+      "takty_za_tyden": 2,
+      "poznamka": "Obvyklá rychlost betonáže jsou 2 pracovní takty za týden"
+    },
+
+    "vyhody": [
+      "Volný přístup k betonované římse",
+      "Armovací práce a betonáž bez narušení provozu pod mostem",
+      "Rychlá montáž/demontáž díky vysokému stupni předmontáže",
+      "Vhodné pro rekonstrukce",
+      "Neomezuje dopravu pod mostem (jen mírné omezení u sanací)"
+    ],
+
+    "reference": [
+      { "projekt": "Randersacker Viaduct, Německo" },
+      { "projekt": "Nuttlar Viaduct, Německo", "rimsa_vyska_m": 1.5 }
+    ],
+
+    "cenova_info": {
+      "cena_najem": "Individuální nabídka DOKA — kontakt obchodní zástupce",
+      "poznamka": "Cena zahrnuje celou sestavu vozíku. Kalkuluje se na mb římsového pasu nebo na celý projekt."
+    }
+  },
+
+  "rimsovy_vozik_T": {
+    "system": "Římsový vozík T",
+    "vyrobce": "DOKA",
+    "typ": "Převěšené pojízdné bednění",
+    "kategorie": "special",
+    "podkategorie": "travelling_formwork_parapet",
+
+    "uplatneni": {
+      "delka_mostu_optimalni_m_min": 150,
+      "geometrie_mostu": ["rovný most", "most s velkými polomery zakřivení R ≥ 250 m"],
+      "vhodne_pro_rekonstrukce": true,
+      "vhodne_jako_demolični_vozik": true,
+      "prednost_pri": "Velký počet taktů, dlouhé mosty, opakovatelná geometrie"
+    },
+
+    "parametry": {
+      "delka_taktu_m_max": 5.0,
+      "delka_sekce_m": 4.0,
+      "max_propojeni_sekci": 6,
+      "max_delka_betonaze_m": 24,
+      "nutny_protizavazi_prostor": true,
+      "poznamka": "Vyžaduje prostor na mostovce pro protizávaží. Takty po 5 m (max)."
+    },
+
+    "vyhody": [
+      "Optimální pro délky > 150 m",
+      "Méně komponent než vozík TU",
+      "Přizpůsobení geometrii římsového pasu",
+      "Ochrana před deštěm (zakrytí pracovního prostoru)",
+      "Použití v mostním zrcadle (spodní část mostu — atypické použití)",
+      "Vhodné pro rekonstrukce stávajících konstrukcí",
+      "Vhodné jako demoliční vozík"
+    ],
+
+    "cenova_info": {
+      "cena_najem": "Individuální nabídka DOKA — kontakt obchodní zástupce",
+      "poznamka": "Vozík T je zpravidla dražší než T-konzolový systém, ale efektivnější na dlouhých mostech."
+    }
+  },
+
+  "rozhodovaci_tabulka": {
+    "_note": "Rychlý výběr systému podle parametrů mostu",
+    "pravidla": [
+      {
+        "pokud": "délka ≤ 50 m",
+        "volba": "Římsové bednění T (konzolový)",
+        "duvod": "Celá římsа naráz, ruční montáž, bez jeřábu"
+      },
+      {
+        "pokud": "délka 50–150 m, horizontální křivka nebo R < 250 m",
+        "volba": "Římsový vozík TU",
+        "duvod": "Malý počet přemístění, vhodný i pro zakřivené mosty"
+      },
+      {
+        "pokud": "délka > 150 m, rovný nebo R ≥ 250 m",
+        "volba": "Římsový vozík T",
+        "duvod": "Velký počet taktů, méně komponent, 5 m takty"
+      },
+      {
+        "pokud": "rekonstrukce, libovolná délka",
+        "volba": "Římsové bednění T nebo Římsový vozík TU/T",
+        "duvod": "Všechny systémy vhodné pro rekonstrukce (kotvy dodatečně)"
+      },
+      {
+        "pokud": "demolice",
+        "volba": "Římsový vozík T (demoliční varianta)",
+        "duvod": "Speciální varianta vozíku T pro demolice říms"
+      }
+    ]
+  },
+
+  "technicky_kontext_mostni_rimsы": {
+    "co_je_rimsa": "Římsový chodník — boční část mostovky vyčnívající za hlavní nosnou kci. Slouží jako zábradlí, odvodnění, chodník. Betonuje se jako poslední — po dokončení nosné konstrukce.",
+    "typicke_rozmery": {
+      "sirka_m_bezna": "0.5–1.2",
+      "vyska_m_bezna": "0.2–0.6",
+      "delka_m": "= délka mostu"
+    },
+    "specificka_narocnost": [
+      "Výška nad terénem — bezpečnostní požadavky",
+      "Přesná geometrie (viditelná pohledová plocha)",
+      "Kotevní systém musí procházet hotovou mostovkou",
+      "Betonáž po úsecích (takt = 1 římsový úsek)"
+    ]
+  }
+}

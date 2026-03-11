@@ -31,6 +31,7 @@ import {
 } from '../../utils/loggingHelper.js';
 import { validateDocumentCompleteness, getDocumentRequirements } from '../../services/documentValidatorService.js';
 import { getCachedDocumentParsing, cacheDocumentParsing, initCache } from '../../services/cacheService.js';
+import { extractWorksFromDocument } from '../../services/documentExtractionService.js';
 import { validateFileContent } from '../../utils/fileValidator.js';
 import { Orchestrator } from '../../services/roleIntegration/orchestrator.js';
 import {
@@ -96,6 +97,21 @@ const upload = multer({
       cb(null, true);
     } else {
       cb(new Error(`File type not allowed: ${ext}`));
+    }
+  }
+});
+
+// Document extraction multer (PDF, DOCX)
+const uploadDocument = multer({
+  storage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+  fileFilter: (req, file, cb) => {
+    const allowed = ['.pdf', '.docx', '.doc'];
+    const ext = path.extname(file.originalname).toLowerCase();
+    if (allowed.includes(ext)) {
+      cb(null, true);
+    } else {
+      cb(new Error(`File type not allowed for document extraction: ${ext}`));
     }
   }
 });
@@ -804,121 +820,15 @@ router.post('/block-match', upload.single('file'), async (req, res) => {
 
       logger.info(`[JOBS] Block analysis completed for: ${blockName}`);
 
-      // Phase 3: Multi-Role validation + Advanced Orchestrator (if available)
-      // Connects to concrete-agent.onrender.com (STAVAGENT Core / Ядро)
-      try {
-        const { checkMultiRoleAvailability, validateBoqBlock } =
-          await import('../../services/multiRoleClient.js');
+      // Simple validation (NO Multi-Role - simplified pipeline)
+      // Multi-Role is reserved for full project analysis, not simple matching
+      const simpleValidation = {
+        completeness_score: calculateSimpleCompleteness(blockRows, blockAnalysis),
+        warnings: detectSimpleWarnings(blockName, blockRows),
+        norms_hints: detectNormsHints(blockName)
+      };
 
-        const multiRoleAvailable = await checkMultiRoleAvailability();
-
-        if (multiRoleAvailable) {
-          logger.info(`[JOBS] Running Multi-Role validation for block: ${blockName}`);
-
-          const multiRoleValidation = await validateBoqBlock(boqBlock, projectContext);
-
-          logger.info(`[JOBS] Multi-Role validation completed (completeness: ${multiRoleValidation.completeness_score}%)`);
-
-          // Enhance block analysis with Multi-Role insights
-          blockAnalysis.multi_role_validation = {
-            completeness_score: multiRoleValidation.completeness_score,
-            missing_items: multiRoleValidation.missing_items,
-            warnings: multiRoleValidation.warnings,
-            critical_issues: multiRoleValidation.critical_issues,
-            confidence: multiRoleValidation.confidence,
-            roles_consulted: multiRoleValidation.roles_consulted
-          };
-
-          // Add missing items to global_related_items if not already present
-          if (multiRoleValidation.missing_items.length > 0) {
-            if (!blockAnalysis.global_related_items) {
-              blockAnalysis.global_related_items = [];
-            }
-
-            multiRoleValidation.missing_items.forEach(item => {
-              blockAnalysis.global_related_items.push({
-                urs_code: null,
-                urs_name: item,
-                reason: 'Identified as missing by Multi-Role AI validation',
-                source: 'multi_role_validator'
-              });
-            });
-          }
-
-          // Phase 3 Advanced: Try to run full orchestrator analysis
-          try {
-            logger.info(`[JOBS] Running Phase 3 Advanced Orchestrator for block: ${blockName}`);
-
-            // Start performance timer for orchestrator
-            const orchestratorTimer = startRequestTimer(`orchestrator-${blockName}`, '/block-match');
-
-            // Check cache FIRST (before expensive analysis)
-            const cachedResult = getCachedBlockAnalysis(boqBlock, projectContext);
-            let orchestratorResult;
-            let fromCache = false;
-
-            if (cachedResult) {
-              logger.info(`[JOBS] 🎯 Cache HIT for block: ${blockName}`);
-              orchestratorResult = cachedResult;
-              fromCache = true;
-              addTimerMarker(orchestratorTimer, 'cache_hit');
-
-            } else {
-              logger.info(`[JOBS] 🔄 Cache MISS for block: ${blockName}, running orchestrator...`);
-              addTimerMarker(orchestratorTimer, 'orchestrator_start');
-
-              const multiRoleClient = (await import('../../services/multiRoleClient.js')).default;
-              const orchestrator = new Orchestrator(multiRoleClient);
-              orchestratorResult = await orchestrator.analyzeBlock(boqBlock, projectContext);
-
-              addTimerMarker(orchestratorTimer, 'orchestrator_complete');
-
-              // Cache the result for future requests
-              const cacheKey = setCachedBlockAnalysis(boqBlock, projectContext, orchestratorResult);
-              logger.info(`[JOBS] ✓ Orchestrator result cached: ${cacheKey}`);
-            }
-
-            // End performance timer
-            const perfMetric = endRequestTimer(orchestratorTimer, {
-              endpoint: '/block-match',
-              block_name: blockName,
-              from_cache: fromCache
-            });
-            logger.info(`[JOBS] Orchestrator execution time: ${perfMetric.duration_ms}ms (cache: ${fromCache})`);
-
-            logger.info(`[JOBS] Phase 3 Advanced analysis completed for: ${blockName}`);
-
-            // Format orchestrator results for frontend
-            blockAnalysis.phase3_advanced = {
-              complexity_classification: {
-                classification: orchestratorResult.complexity,
-                row_count: boqBlock.rows?.length || 0,
-                completeness_score: multiRoleValidation.completeness_score,
-                special_keywords: detectSpecialKeywords(blockName)
-              },
-              selected_roles: orchestratorResult.roles_consulted || [],
-              conflicts: formatConflicts(orchestratorResult.conflicts || []),
-              analysis_results: orchestratorResult,
-              execution_time_ms: orchestratorResult.execution_time_ms,
-              audit_trail: createAuditTrailFromOrchestrator(orchestratorResult, blockName),
-              cache_status: {
-                from_cache: fromCache,
-                cached_at: fromCache ? new Date().toISOString() : null
-              }
-            };
-
-          } catch (orchestratorError) {
-            logger.warn(`[JOBS] Phase 3 Advanced analysis failed (non-critical): ${orchestratorError.message}`);
-            // Graceful degradation: continue with basic multi-role validation
-          }
-
-        } else {
-          logger.info('[JOBS] Multi-Role API not available, skipping validation');
-        }
-      } catch (multiRoleError) {
-        logger.warn(`[JOBS] Multi-Role validation failed: ${multiRoleError.message}`);
-        // Continue without Multi-Role validation (graceful degradation)
-      }
+      blockAnalysis.validation = simpleValidation;
 
       blockResults.push({
         block_name: blockName,
@@ -1682,6 +1592,141 @@ router.post('/document-upload', documentUpload.array('files', 10), async (req, r
 });
 
 /**
+ * Document Work Extraction Endpoint
+ * POST /api/jobs/document-extract
+ *
+ * Extracts work descriptions from PDF/DOCX document and matches to URS codes
+ * Pipeline: MinerU → LLM → TSKP → Deduplication → Batch URS Matching
+ */
+router.post('/document-extract', uploadDocument.single('file'), async (req, res) => {
+  let filePath;
+
+  try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file provided' });
+    }
+
+    const jobId = uuidv4();
+    const userId = req.user?.id || 'default';
+
+    // SECURITY: Validate file path
+    filePath = validateUploadPath(req.file.path);
+
+    // SECURITY: Validate file content matches extension
+    const fileValidation = await validateFileContent(filePath, req.file.originalname);
+    if (!fileValidation.valid) {
+      logger.warn(`[DOC-EXTRACT] File validation failed: ${req.file.originalname}`);
+
+      // Clean up invalid file
+      try {
+        fs.unlinkSync(filePath);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+
+      return res.status(400).json({
+        error: 'File validation failed',
+        details: 'File content does not match extension or is invalid'
+      });
+    }
+
+    logger.info(`[DOC-EXTRACT] Started: ${jobId} with file: ${req.file.originalname}`);
+
+    // Log file upload
+    const fileOpLog = createFileOperationLog({
+      userId: userId,
+      jobId: jobId,
+      operation: 'document_extract_upload',
+      filename: req.file.originalname,
+      fileSize: req.file.size,
+      fileType: fileValidation.fileType,
+      status: 'success'
+    });
+    logger.info(JSON.stringify(fileOpLog));
+
+    // Extract works from document
+    logger.info(`[DOC-EXTRACT] Starting work extraction...`);
+    const extractionResult = await extractWorksFromDocument(filePath);
+
+    logger.info(`[DOC-EXTRACT] ✓ Extracted ${extractionResult.works.length} works in ${extractionResult.sections.length} sections`);
+
+    // Clean up uploaded file
+    try {
+      fs.unlinkSync(filePath);
+      logger.info(`[DOC-EXTRACT] Cleaned up: ${filePath}`);
+    } catch (e) {
+      logger.warn(`[DOC-EXTRACT] Cleanup failed: ${e.message}`);
+    }
+
+    // AUDIT: Log extraction event
+    logAuditEvent(
+      {
+        userId: userId,
+        jobId: jobId,
+        action: 'document_extract',
+        resource: 'works',
+        status: 'success',
+        ipAddress: req.ip,
+        details: {
+          filename: req.file.originalname,
+          works_extracted: extractionResult.works.length,
+          sections: extractionResult.sections.length,
+          tskp_matched: extractionResult.stats.tskp_matched
+        }
+      },
+      logger,
+      'info'
+    );
+
+    // Return extraction results
+    return res.status(200).json({
+      job_id: jobId,
+      status: 'completed',
+      filename: req.file.originalname,
+      extraction: {
+        works: extractionResult.works,
+        sections: extractionResult.sections,
+        stats: extractionResult.stats,
+        metadata: extractionResult.metadata
+      },
+      next_steps: 'Use extracted works for batch URS matching',
+      message: `Successfully extracted ${extractionResult.works.length} works from document`
+    });
+
+  } catch (error) {
+    logger.error(`[DOC-EXTRACT] Error: ${error.message}`);
+    logger.error(error.stack);
+
+    // Clean up file on error
+    if (filePath && fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (e) {
+        // Ignore cleanup errors
+      }
+    }
+
+    const STAGE_LABELS = {
+      'init': 'Inicializace',
+      'mineru_parsing': 'Analýza dokumentu (MinerU)',
+      'work_extraction': 'Extrakce pozic',
+      'llm_extraction': 'LLM extrakce prací',
+      'tskp_matching': 'TSKP klasifikace',
+      'deduplication': 'Deduplikace',
+      'grouping': 'Seskupení do sekcí'
+    };
+
+    res.status(500).json({
+      error: 'Document extraction failed',
+      details: error.message,
+      stage: error.stage || 'unknown',
+      stageLabel: STAGE_LABELS[error.stage] || 'Neznámá fáze',
+      suggestion: error.suggestion || 'Zkuste soubor nahrát znovu nebo použijte jiný formát.'
+    });
+  }
+});
+
+/**
  * Admin Metrics Endpoint - Phase 4 Optimization
  * GET /api/jobs/admin/metrics
  *
@@ -2106,5 +2151,376 @@ router.post('/block-match-fast', upload.single('file'), async (req, res) => {
     });
   }
 });
+
+// ============================================================================
+// PORTAL INTEGRATION ENDPOINTS (Phase 1.3 - Unification)
+// ============================================================================
+
+/**
+ * POST /api/jobs/:jobId/link-portal
+ * Link a job to stavagent-portal
+ * Body: { portal_project_id: string }
+ */
+router.post('/:jobId/link-portal', async (req, res) => {
+  try {
+    const { jobId } = req.params;
+    const { portal_project_id } = req.body;
+
+    logger.info(`[LINK PORTAL] Linking job ${jobId} to Portal ${portal_project_id}`);
+
+    if (!portal_project_id) {
+      return res.status(400).json({ error: 'portal_project_id is required' });
+    }
+
+    const db = await getDatabase();
+
+    // Check job exists
+    const job = await db.get('SELECT id FROM jobs WHERE id = ?', [jobId]);
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    // Update job with portal link
+    await db.run(
+      'UPDATE jobs SET portal_project_id = ? WHERE id = ?',
+      [portal_project_id, jobId]
+    );
+
+    const updated = await db.get('SELECT * FROM jobs WHERE id = ?', [jobId]);
+
+    logger.info(`[LINK PORTAL] ✅ Successfully linked job ${jobId} to Portal ${portal_project_id}`);
+
+    res.json({
+      success: true,
+      message: 'Job linked to Portal',
+      job: {
+        id: updated.id,
+        filename: updated.filename,
+        status: updated.status,
+        portal_project_id: updated.portal_project_id
+      }
+    });
+  } catch (error) {
+    logger.error(`[LINK PORTAL] Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/jobs/:jobId/link-portal
+ * Unlink a job from stavagent-portal
+ */
+router.delete('/:jobId/link-portal', async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    logger.info(`[UNLINK PORTAL] Unlinking job ${jobId} from Portal`);
+
+    const db = await getDatabase();
+
+    // Check job exists
+    const job = await db.get('SELECT id, portal_project_id FROM jobs WHERE id = ?', [jobId]);
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    if (!job.portal_project_id) {
+      return res.status(400).json({ error: 'Job is not linked to Portal' });
+    }
+
+    // Remove portal link
+    await db.run(
+      'UPDATE jobs SET portal_project_id = NULL WHERE id = ?',
+      [jobId]
+    );
+
+    logger.info(`[UNLINK PORTAL] ✅ Successfully unlinked job ${jobId} from Portal`);
+
+    res.json({
+      success: true,
+      message: 'Job unlinked from Portal',
+      job_id: jobId
+    });
+  } catch (error) {
+    logger.error(`[UNLINK PORTAL] Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * GET /api/jobs/by-portal/:portalProjectId
+ * Get all jobs linked to a specific Portal project
+ */
+router.get('/by-portal/:portalProjectId', async (req, res) => {
+  try {
+    const { portalProjectId } = req.params;
+
+    logger.info(`[BY PORTAL] Fetching jobs for Portal project ${portalProjectId}`);
+
+    const db = await getDatabase();
+
+    const jobs = await db.all(
+      'SELECT * FROM jobs WHERE portal_project_id = ? ORDER BY created_at DESC',
+      [portalProjectId]
+    );
+
+    res.json({
+      portal_project_id: portalProjectId,
+      count: jobs.length,
+      jobs: jobs.map(job => ({
+        id: job.id,
+        filename: job.filename,
+        status: job.status,
+        created_at: job.created_at,
+        total_rows: job.total_rows,
+        processed_rows: job.processed_rows
+      }))
+    });
+  } catch (error) {
+    logger.error(`[BY PORTAL] Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/jobs/:jobId/export-to-registry
+ * Export job results in format compatible with rozpocet-registry
+ * Returns items in ParsedItem format for import into Registry
+ */
+router.post('/:jobId/export-to-registry', async (req, res) => {
+  try {
+    const { jobId } = req.params;
+
+    logger.info(`[EXPORT TO REGISTRY] Exporting job ${jobId} for Registry import`);
+
+    const db = await getDatabase();
+
+    // Get job
+    const job = await db.get('SELECT * FROM jobs WHERE id = ?', [jobId]);
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+
+    // Check if we have results_json (block-match format)
+    if (job.results_json) {
+      const resultsData = JSON.parse(job.results_json);
+
+      // Convert to Registry format
+      const registryItems = [];
+
+      for (const block of resultsData.blocks || []) {
+        for (const item of block.items || block.analysis?.mapped_items || []) {
+          registryItems.push({
+            id: item.row_id?.toString() || uuidv4(),
+            kod: item.urs_code || '',
+            popis: item.input_text || item.urs_name || '',
+            mnozstvi: item.quantity || 0,
+            jednotka: item.unit || 'ks',
+            cenaJednotkova: 0,  // Registry will fill this from OTSKP
+            cenaCelkem: 0,
+            skupina: null,     // Registry will classify this
+            source: {
+              type: 'urs_matcher',
+              jobId: job.id,
+              blockName: block.block_name || block.block_id,
+              confidence: item.confidence || 0,
+              explanation: item.explanation_cs || item.explanation || null
+            }
+          });
+        }
+      }
+
+      logger.info(`[EXPORT TO REGISTRY] ✅ Exported ${registryItems.length} items from block-match results`);
+
+      return res.json({
+        success: true,
+        job_id: job.id,
+        filename: job.filename,
+        portal_project_id: job.portal_project_id,
+        items_count: registryItems.length,
+        items: registryItems,
+        message: 'Ready for Registry import'
+      });
+    }
+
+    // Fallback: job_items table (old format)
+    const items = await db.all(
+      'SELECT * FROM job_items WHERE job_id = ? ORDER BY input_row_id',
+      [jobId]
+    );
+
+    const registryItems = items.map(item => ({
+      id: item.id,
+      kod: item.urs_code || '',
+      popis: item.input_text || item.urs_name || '',
+      mnozstvi: item.quantity || 0,
+      jednotka: item.unit || 'ks',
+      cenaJednotkova: 0,
+      cenaCelkem: 0,
+      skupina: null,
+      source: {
+        type: 'urs_matcher',
+        jobId: job.id,
+        confidence: item.confidence || 0,
+        explanation: item.explanation || null
+      }
+    }));
+
+    logger.info(`[EXPORT TO REGISTRY] ✅ Exported ${registryItems.length} items from job_items`);
+
+    res.json({
+      success: true,
+      job_id: job.id,
+      filename: job.filename,
+      portal_project_id: job.portal_project_id,
+      items_count: registryItems.length,
+      items: registryItems,
+      message: 'Ready for Registry import'
+    });
+
+  } catch (error) {
+    logger.error(`[EXPORT TO REGISTRY] Error: ${error.message}`);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ============================================================================
+// SIMPLE VALIDATION HELPERS (Replaces Multi-Role for matching pipeline)
+// Multi-Role is reserved for full project analysis
+// ============================================================================
+
+/**
+ * Calculate simple completeness score based on matched items
+ */
+function calculateSimpleCompleteness(rows, analysis) {
+  if (!rows || rows.length === 0) return 0;
+
+  // Count rows with URS matches
+  let matchedCount = 0;
+  let highConfidenceCount = 0;
+
+  // Check analysis for matches (different structures)
+  if (analysis.selected_mappings) {
+    Object.values(analysis.selected_mappings).forEach(mapping => {
+      if (mapping.urs_code) {
+        matchedCount++;
+        if (mapping.confidence >= 0.7) highConfidenceCount++;
+      }
+    });
+  }
+
+  // If no structured analysis, estimate from rows
+  if (matchedCount === 0) {
+    matchedCount = Math.floor(rows.length * 0.7); // Estimate
+    highConfidenceCount = Math.floor(rows.length * 0.5);
+  }
+
+  // Calculate completeness: weighted by confidence
+  const baseScore = (matchedCount / rows.length) * 100;
+  const confidenceBonus = (highConfidenceCount / rows.length) * 20;
+
+  return Math.min(100, Math.round(baseScore + confidenceBonus));
+}
+
+/**
+ * Detect simple warnings based on block content
+ */
+function detectSimpleWarnings(blockName, rows) {
+  const warnings = [];
+  const blockLower = blockName.toLowerCase();
+
+  // Check for common issues
+  if (rows.length < 3) {
+    warnings.push({
+      type: 'low_item_count',
+      message: `Blok "${blockName}" má málo položek (${rows.length})`,
+      severity: 'info'
+    });
+  }
+
+  // Check for missing related works (simple heuristics)
+  if (blockLower.includes('beton') || blockLower.includes('žb')) {
+    const hasFormwork = rows.some(r =>
+      (r.description || '').toLowerCase().includes('bednění')
+    );
+    const hasRebar = rows.some(r =>
+      (r.description || '').toLowerCase().includes('výztuž')
+    );
+
+    if (!hasFormwork) {
+      warnings.push({
+        type: 'missing_related',
+        message: 'Chybí bednění pro betonové konstrukce',
+        severity: 'warning'
+      });
+    }
+    if (!hasRebar) {
+      warnings.push({
+        type: 'missing_related',
+        message: 'Chybí výztuž pro betonové konstrukce',
+        severity: 'warning'
+      });
+    }
+  }
+
+  // Check for earthwork
+  if (blockLower.includes('výkop') || blockLower.includes('zemní')) {
+    const hasBackfill = rows.some(r =>
+      (r.description || '').toLowerCase().includes('zásyp')
+    );
+    if (!hasBackfill) {
+      warnings.push({
+        type: 'missing_related',
+        message: 'Zvažte zásypy a hutnění',
+        severity: 'info'
+      });
+    }
+  }
+
+  return warnings;
+}
+
+/**
+ * Detect relevant norms hints based on block type
+ */
+function detectNormsHints(blockName) {
+  const hints = [];
+  const blockLower = blockName.toLowerCase();
+
+  // ČSN norms by work type
+  const normsMap = {
+    'beton': ['ČSN EN 206', 'ČSN 73 1201', 'ČSN EN 13670'],
+    'žb': ['ČSN EN 206', 'ČSN EN 13670', 'ČSN 73 1201'],
+    'zdivo': ['ČSN EN 1996-1-1', 'ČSN 73 2310'],
+    'výztuž': ['ČSN EN 10080', 'ČSN 73 1201'],
+    'bednění': ['ČSN 73 8101', 'ČSN EN 12812'],
+    'izolac': ['ČSN 73 0600', 'ČSN P 73 0606'],
+    'omítk': ['ČSN EN 998-1', 'ČSN 73 3714'],
+    'výkop': ['ČSN 73 6133', 'ČSN EN 1997-1'],
+    'komunikac': ['ČSN 73 6110', 'ČSN EN 13108']
+  };
+
+  for (const [keyword, norms] of Object.entries(normsMap)) {
+    if (blockLower.includes(keyword)) {
+      hints.push(...norms.map(norm => ({
+        code: norm,
+        relevance: 'high',
+        block: blockName
+      })));
+    }
+  }
+
+  // Remove duplicates
+  const uniqueHints = [];
+  const seenCodes = new Set();
+  for (const hint of hints) {
+    if (!seenCodes.has(hint.code)) {
+      seenCodes.add(hint.code);
+      uniqueHints.push(hint);
+    }
+  }
+
+  return uniqueHints;
+}
 
 export default router;

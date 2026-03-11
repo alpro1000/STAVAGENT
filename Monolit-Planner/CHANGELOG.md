@@ -4,6 +4,76 @@
 
 ---
 
+## [2.0.1] - 2025-12-23 - Critical Bug Fixes ✅
+
+### 🔴 Critical Fixes
+
+- **e87ad10**: 🚨 CRITICAL FIX: Import + bridge switch issue - positions now load correctly
+  - **Problem**: After importing Excel with multiple bridges, switching between bridges showed no positions
+  - **Root Cause 1**: `monolith_projects` table missing `project_name` and `status` columns on INSERT
+  - **Root Cause 2**: React Query not refetching positions on bridge change (`refetchOnMount: false`)
+  - **Root Cause 3**: Stale data from previous bridge displayed when switching
+  - **Backend Fix** (`upload.js:255-273`):
+    - Added `project_name` and `status='active'` to INSERT query
+    - Ensures sidebar filtering works correctly (filters by `status='active'`)
+  - **Frontend Fix** (`usePositions.ts`):
+    - Added `useEffect` to clear positions on bridge change
+    - Changed `refetchOnMount: false` → `true`
+    - Reduced `staleTime` from 10min to 5min
+  - **Impact**: Bridge switching now loads positions correctly
+
+### 🔧 Bug Fixes
+
+- **c99ac46**: ♻️ FEAT: Remove template auto-loading on manual project/bridge creation
+  - **Problem**: Manual project creation loaded 42 template positions (35 unique) that users had to delete
+  - **Solution**: Templates now ONLY used during Excel import (parser-driven)
+  - **User Experience**: Manual creation now creates empty project
+  - **Code Reduction**: -180 lines across `monolith-projects.js` and `bridges.js`
+  - **Files Changed**:
+    - `backend/src/routes/monolith-projects.js`: -130 lines
+    - `backend/src/routes/bridges.js`: -50 lines
+
+- **be1ebdd**: 🔧 FIX: Excel export - show custom name for 'jiné' instead of generic label
+  - **Problem**: Export showed generic "jiné" label instead of user's custom work name
+  - **Fix**: `exporter.js:316` now uses `pos.item_name || 'jiné'` for subtype='jiné'
+  - **Impact**: Custom work names properly displayed in Excel exports
+
+- **ca7c9cb**: ⚡ FIX: Speed (MJ/h) now editable with live recalculation
+  - **Problem**: Speed calculated from stale `position.labor_hours` instead of current edited values
+  - **Fix** (`PositionRow.tsx:234-247`):
+    - Speed now calculates from CURRENT values: `qty / (crew_size × shift_hours × days)`
+    - Bidirectional recalculation:
+      - Edit speed → days recalculate
+      - Edit days → speed recalculates
+    - Min days = 0.5 (half-day minimum)
+  - **Impact**: Speed column updates instantly when editing crew/hours/days
+
+### 📊 Changes Summary
+
+| File | Change | Lines | Status |
+|------|--------|-------|--------|
+| `upload.js` | Add project_name & status to INSERT | +2 | ✅ |
+| `usePositions.ts` | Clear positions on bridge change | +5 | ✅ |
+| `usePositions.ts` | refetchOnMount: true, staleTime: 5min | +2 | ✅ |
+| `PositionRow.tsx` | Live speed recalculation | +15 | ✅ |
+| `exporter.js` | Custom name for 'jiné' export | +1 | ✅ |
+| `monolith-projects.js` | Remove template auto-loading | -130 | ✅ |
+| `bridges.js` | Remove template auto-loading | -50 | ✅ |
+
+### 📦 Commits
+
+- `e87ad10` - 🚨 FIX: Import + bridge switch issue - positions now load correctly
+- `ca7c9cb` - ⚡ FIX: Speed (MJ/h) now editable with live recalculation
+- `be1ebdd` - 🔧 FIX: Excel export - show custom name for 'jiné' instead of generic label
+- `c99ac46` - ♻️ FEAT: Remove template auto-loading on manual project/bridge creation
+
+### 📚 Documentation
+
+- Updated `/CLAUDE.md` to v1.0.8
+- Updated `/NEXT_SESSION.md` with session summary
+
+---
+
 ## [2.0.0] - 2025-11-20 - Phase 4 Complete ✅
 
 ### ✨ Major Features

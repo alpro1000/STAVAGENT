@@ -52,7 +52,7 @@ interface PartTemplate {
   created_at: string;
 }
 
-const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+export const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
 console.log('[API Service] Initializing with API_URL:', API_URL);
 
@@ -514,6 +514,375 @@ export const adminAPI = {
     const { data } = await api.get('/api/admin/stats');
     return data;
   }
+};
+
+// ============ Workflow C Types ============
+export interface WorkflowCPosition {
+  code?: string;
+  description: string;
+  quantity?: number;
+  unit?: string;
+  unit_price?: number;
+  total_price?: number;
+}
+
+export interface WorkflowCRequest {
+  project_id: string;
+  project_name: string;
+  positions: WorkflowCPosition[];
+  generate_summary?: boolean;
+  use_parallel?: boolean;
+  language?: 'cs' | 'en' | 'sk';
+}
+
+export interface WorkflowCResult {
+  success: boolean;
+  project_id: string;
+  project_name: string;
+  positions_count: number;
+  audit_classification: 'GREEN' | 'AMBER' | 'RED' | 'UNKNOWN';
+  audit_confidence: number;
+  critical_issues: string[];
+  warnings: string[];
+  summary?: {
+    executive_summary?: string;
+    key_findings?: string[];
+    recommendations?: string[];
+  };
+  total_duration_seconds: number;
+  stage_durations: Record<string, number>;
+  multi_role_speedup?: number;
+}
+
+export interface WorkflowCProgress {
+  project_id: string;
+  current_stage: string;
+  progress_percentage: number;
+  stages_completed: string[];
+  duration_seconds: number;
+  error?: string;
+}
+
+// Workflow C API — proxied through portal backend (/api/core/*)
+// Direct CORE URL kept as fallback for WebSocket connections only
+/** Direct URL for WebSocket connections (cannot be proxied through HTTP) */
+export const CORE_DIRECT_URL = (import.meta as any).env?.VITE_CORE_API_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
+/** Proxied URL for all HTTP API calls */
+const CORE_API_URL = `${API_URL}/api/core`;
+
+export const workflowCAPI = {
+  /**
+   * Execute Workflow C with pre-parsed positions
+   */
+  execute: async (request: WorkflowCRequest): Promise<WorkflowCResult> => {
+    const response = await fetch(`${CORE_API_URL}/workflow-c/execute`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        project_id: request.project_id,
+        project_name: request.project_name,
+        positions: request.positions,
+        generate_summary: request.generate_summary ?? true,
+        use_parallel: request.use_parallel ?? true,
+        language: request.language ?? 'cs',
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+      throw new Error(error.detail || `Workflow C failed: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Upload file and execute Workflow C
+   */
+  uploadAndExecute: async (
+    file: File,
+    projectId: string,
+    projectName: string,
+    options?: {
+      generate_summary?: boolean;
+      use_parallel?: boolean;
+      language?: 'cs' | 'en' | 'sk';
+    }
+  ): Promise<WorkflowCResult> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('project_id', projectId);
+    formData.append('project_name', projectName);
+    formData.append('generate_summary', String(options?.generate_summary ?? true));
+    formData.append('use_parallel', String(options?.use_parallel ?? true));
+    formData.append('language', options?.language ?? 'cs');
+
+    const response = await fetch(`${CORE_API_URL}/workflow-c/upload`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+      throw new Error(error.detail || `Workflow C upload failed: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Execute Workflow C asynchronously (returns immediately)
+   */
+  executeAsync: async (request: WorkflowCRequest): Promise<{ project_id: string; status: string; status_url: string; result_url: string }> => {
+    const response = await fetch(`${CORE_API_URL}/workflow-c/execute-async`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        project_id: request.project_id,
+        project_name: request.project_name,
+        positions: request.positions,
+        generate_summary: request.generate_summary ?? true,
+        use_parallel: request.use_parallel ?? true,
+        language: request.language ?? 'cs',
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+      throw new Error(error.detail || `Workflow C async failed: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Get workflow progress
+   */
+  getProgress: async (projectId: string): Promise<WorkflowCProgress> => {
+    const response = await fetch(`${CORE_API_URL}/workflow-c/${projectId}/status`);
+
+    if (!response.ok) {
+      throw new Error(`Failed to get progress: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Get workflow result
+   */
+  getResult: async (projectId: string): Promise<WorkflowCResult> => {
+    const response = await fetch(`${CORE_API_URL}/workflow-c/${projectId}/result`);
+
+    if (!response.ok) {
+      if (response.status === 202) {
+        throw new Error('Workflow still in progress');
+      }
+      throw new Error(`Failed to get result: ${response.status}`);
+    }
+
+    return response.json();
+  },
+
+  /**
+   * Health check
+   */
+  health: async (): Promise<{ status: string; version: string }> => {
+    const response = await fetch(`${CORE_API_URL}/workflow-c/health`);
+    return response.json();
+  },
+};
+
+// ============ Price Parser API (concrete-agent CORE) ============
+
+export interface PriceListSource {
+  company: string | null;
+  provozovna: string | null;
+  valid_from: string | null;
+  valid_to: string | null;
+  currency: string;
+  vat_rate: number;
+}
+
+export interface BetonItem {
+  name: string;
+  exposure_class: string | null;
+  price_per_m3: number | null;
+  price_per_m3_vat: number | null;
+  notes: string | null;
+}
+
+export interface DopravaZona {
+  km_from: number;
+  km_to: number;
+  price_per_m3: number;
+}
+
+export interface Doprava {
+  min_objem_m3: number | null;
+  volny_cas_min: number | null;
+  cekani_per_15min: number | null;
+  zony: DopravaZona[];
+  pristaveni_ks: number | null;
+}
+
+export interface CerpadloItem {
+  type: string;
+  pristaveni: number | null;
+  hodinova_sazba: number | null;
+  cena_per_m3: number | null;
+  km_sazba: number | null;
+}
+
+export interface PriplatekCasovy {
+  nazev: string;
+  typ: string;
+  hodnota: number;
+}
+
+export interface PriplatekZimni {
+  teplota_from: number;
+  teplota_to: number;
+  price_per_m3: number;
+}
+
+export interface PriplatekTechnologicky {
+  nazev: string;
+  typ: string;
+  hodnota: number;
+}
+
+export interface Priplatky {
+  casove: PriplatekCasovy[];
+  zimni: PriplatekZimni[];
+  technologicke: PriplatekTechnologicky[];
+}
+
+export interface LaboratorItem {
+  nazev: string;
+  jednotka: string | null;
+  cena: number | null;
+}
+
+export interface PriceListResult {
+  source: PriceListSource;
+  betony: BetonItem[];
+  malty_potere: Array<{ name: string; type: string | null; price_per_m3: number | null; price_per_m3_vat: number | null }>;
+  doprava: Doprava;
+  cerpadla: CerpadloItem[];
+  priplatky: Priplatky;
+  laborator: LaboratorItem[];
+  ostatni: string | null;
+}
+
+export const priceParserAPI = {
+  /**
+   * Parse a single PDF price list
+   */
+  parse: async (file: File): Promise<PriceListResult> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await fetch(`${CORE_API_URL}/price-parser/parse`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Unknown error' }));
+      throw new Error(error.detail || `Price parser failed: ${response.status}`);
+    }
+
+    return response.json();
+  },
+};
+
+// ============ Betonárny Discovery Types ============
+
+export interface GeoPoint {
+  lat: number;
+  lon: number;
+}
+
+export interface PlantContact {
+  phone: string | null;
+  email: string | null;
+  website: string | null;
+  price_list_url: string | null;
+}
+
+export interface ConcretePlant {
+  id: string;
+  name: string;
+  company: string | null;
+  address: string | null;
+  location: GeoPoint;
+  distance_km: number | null;
+  source: 'osm' | 'betonserver' | 'manual';
+  tags: Record<string, string>;
+  contact: PlantContact;
+  has_price_list: boolean;
+  price_range_note: string | null;
+}
+
+export interface PlantSearchResult {
+  plants: ConcretePlant[];
+  total: number;
+  sources_used: string[];
+}
+
+export interface ScrapeResult {
+  plants_found: number;
+  plants_new: number;
+  plants_updated: number;
+  errors: string[];
+}
+
+export const betonarnyAPI = {
+  /**
+   * Search for concrete plants near a GPS location
+   */
+  search: async (lat: number, lon: number, radius_km = 50, include_quarries = false): Promise<PlantSearchResult> => {
+    const response = await fetch(`${CORE_API_URL}/betonarny/search`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lat, lon, radius_km, include_quarries }),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Search failed' }));
+      throw new Error(error.detail || `Search failed: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  /**
+   * Admin: scrape BetonServer.cz for new plant listings
+   */
+  scrape: async (region?: string, max_pages = 5): Promise<ScrapeResult> => {
+    const response = await fetch(`${CORE_API_URL}/betonarny/scrape`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ region, max_pages }),
+    });
+    if (!response.ok) {
+      const error = await response.json().catch(() => ({ detail: 'Scrape failed' }));
+      throw new Error(error.detail || `Scrape failed: ${response.status}`);
+    }
+    return response.json();
+  },
+
+  /**
+   * Get cached plants from previous scraping
+   */
+  getCache: async (): Promise<{ plants: ConcretePlant[]; total: number }> => {
+    const response = await fetch(`${CORE_API_URL}/betonarny/cache`);
+    if (!response.ok) throw new Error('Failed to load cache');
+    return response.json();
+  },
 };
 
 // Helper exports for convenience

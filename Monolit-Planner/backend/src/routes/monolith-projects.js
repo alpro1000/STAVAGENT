@@ -8,12 +8,16 @@
  * GET    /api/monolith-projects/:id          - Get project details
  * PUT    /api/monolith-projects/:id          - Update project
  * DELETE /api/monolith-projects/:id          - Delete project
+ *
+ * Portal Integration (Phase 7):
+ * POST   /api/monolith-projects/:id/link-portal   - Link to Portal
+ * DELETE /api/monolith-projects/:id/link-portal   - Unlink from Portal
  */
 
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
-import { createDefaultPositions } from '../utils/positionDefaults.js';
+// NOTE: createDefaultPositions removed - templates only used during Excel import (parser-driven)
 
 const router = express.Router();
 
@@ -67,7 +71,9 @@ router.get('/', async (req, res) => {
 
 /**
  * POST /api/monolith-projects
- * Create new project with default parts
+ * Create new EMPTY project (no templates auto-loaded)
+ * User adds parts manually via "🏗️ Přidat část konstrukce"
+ * Templates are only used during Excel import (parser-driven)
  *
  * Request body:
  * {
@@ -103,139 +109,39 @@ router.post('/', async (req, res) => {
       return res.status(409).json({ error: 'Project already exists' });
     }
 
-    // Get default templates (universal, not type-specific)
-    logger.info(`[CREATE PROJECT] 🔍 Loading default part templates...`);
-    const templates = await db.prepare(`
-      SELECT * FROM part_templates
-      WHERE is_default = true
-      ORDER BY display_order
-    `).all();
+    // ===== CREATE EMPTY PROJECT (no templates) =====
+    logger.info(`[CREATE PROJECT] Creating empty project (no templates)...`);
 
-    const templateCount = templates?.length || 0;
-    logger.info(`[CREATE PROJECT] Found ${templateCount} default templates`);
+    // Create project
+    const insertProjectSql = `
+      INSERT INTO monolith_projects (
+        project_id, project_name, object_name, owner_id, description
+      ) VALUES (?, ?, ?, ?, ?)
+    `;
 
-    if (templates && templates.length > 0) {
-      logger.debug(`[CREATE PROJECT] Template names: ${templates.map(t => t.part_name).join(', ')}`);
+    await db.prepare(insertProjectSql).run(
+      project_id,
+      project_name || '',
+      object_name || '',
+      ownerId,
+      description || ''
+    );
+    logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
+
+    // Create corresponding bridge entry for FK constraint compatibility
+    // The positions table still references bridges(bridge_id), so we need this entry
+    logger.info(`[CREATE PROJECT] Creating bridge entry for FK compatibility...`);
+    try {
+      await db.prepare(`
+        INSERT INTO bridges (bridge_id, object_name, status, project_name)
+        VALUES (?, ?, 'active', ?)
+        ON CONFLICT (bridge_id) DO NOTHING
+      `).run(project_id, object_name || project_id, project_name || 'Manual');
+      logger.info(`[CREATE PROJECT] ✓ Bridge entry created (FK compatibility)`);
+    } catch (bridgeError) {
+      // Non-fatal: bridge entry creation failed but project was created
+      logger.warn(`[CREATE PROJECT] ⚠️  Could not create bridge entry (non-fatal):`, bridgeError.message);
     }
-
-    // ===== TRANSACTION START =====
-    await db.transaction(async (client) => {
-      logger.info(`[CREATE PROJECT] Transaction started`);
-
-      // Create project
-      const insertProjectSql = `
-        INSERT INTO monolith_projects (
-          project_id, project_name, object_name, owner_id, description
-        ) VALUES (?, ?, ?, ?, ?)
-      `;
-
-      logger.info(`[CREATE PROJECT] Creating project in database...`);
-      await db.prepare(insertProjectSql).run(
-        project_id,
-        project_name || '',
-        object_name || '',
-        ownerId,
-        description || ''
-      );
-      logger.info(`[CREATE PROJECT] ✓ Project created successfully`);
-
-      // VARIANT 1: Create corresponding bridge entry for FK constraint compatibility
-      // The positions table still references bridges(bridge_id), so we need this entry
-      // This is a legacy compatibility layer that will be removed when positions table is refactored
-      logger.info(`[CREATE PROJECT] Creating bridge entry for FK compatibility...`);
-      try {
-        await db.prepare(`
-          INSERT INTO bridges (bridge_id, object_name)
-          VALUES (?, ?)
-          ON CONFLICT (bridge_id) DO NOTHING
-        `).run(project_id, object_name || project_id);
-        logger.info(`[CREATE PROJECT] ✓ Bridge entry created (FK compatibility)`);
-      } catch (bridgeError) {
-        // Non-fatal: bridge entry creation failed but project was created
-        logger.warn(`[CREATE PROJECT] ⚠️  Could not create bridge entry (non-fatal):`, bridgeError.message);
-      }
-
-      // Create default parts from templates
-      // VARIANT 1: Deduplicate templates by part_name to avoid duplicate key errors
-      logger.info(`[CREATE PROJECT] Creating default parts from templates...`);
-
-      // Deduplicate templates by part_name (moved outside if block for proper scoping)
-      const seenPartNames = new Set();
-      const uniqueTemplates = templates.filter(t => {
-        if (seenPartNames.has(t.part_name)) {
-          logger.debug(`[CREATE PROJECT] Skipping duplicate template: ${t.part_name}`);
-          return false;
-        }
-        seenPartNames.add(t.part_name);
-        return true;
-      });
-
-      if (uniqueTemplates.length > 0) {
-        logger.info(`[CREATE PROJECT] Creating ${uniqueTemplates.length} unique parts (${templates.length} - ${templates.length - uniqueTemplates.length} duplicates)`);
-
-        try {
-          for (const template of uniqueTemplates) {
-            const partId = `${project_id}_${template.part_name}`;
-            logger.debug(`[CREATE PROJECT] Inserting part: ${partId}`);
-
-            await db.prepare(`
-              INSERT INTO parts (part_id, project_id, part_name, is_predefined)
-              VALUES (?, ?, ?, ?)
-              ON CONFLICT (part_id) DO NOTHING
-            `).run(partId, project_id, template.part_name, 1);
-          }
-          logger.info(`[CREATE PROJECT] ✓ Created ${uniqueTemplates.length} parts successfully`);
-        } catch (partsError) {
-          logger.error(`[CREATE PROJECT] ❌ Failed to create parts:`, partsError.message);
-          throw partsError; // Re-throw to rollback transaction
-        }
-      }
-
-      // Create default positions for each template part
-      logger.info(`[CREATE PROJECT] Creating default positions from unique templates...`);
-      if (uniqueTemplates.length > 0) {
-        try {
-          const defaultPositions = createDefaultPositions(uniqueTemplates, project_id);
-
-          if (defaultPositions && defaultPositions.length > 0) {
-            logger.info(`[CREATE PROJECT] Inserting ${defaultPositions.length} default positions`);
-            for (const pos of defaultPositions) {
-              logger.debug(`[CREATE PROJECT] Position: ${pos.id} (part: ${pos.part_name}, qty: ${pos.qty})`);
-
-              await db.prepare(`
-                INSERT INTO positions (
-                  id, bridge_id, part_name, item_name, subtype, unit,
-                  qty, crew_size, wage_czk_ph, shift_hours, days
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                ON CONFLICT (id) DO NOTHING
-              `).run(
-                pos.id,
-                pos.bridge_id,
-                pos.part_name,
-                pos.item_name,
-                pos.subtype,
-                pos.unit,
-                pos.qty,
-                pos.crew_size,
-                pos.wage_czk_ph,
-                pos.shift_hours,
-                pos.days
-              );
-            }
-            logger.info(`[CREATE PROJECT] ✓ Created ${defaultPositions.length} default positions`);
-          } else {
-            logger.warn(`[CREATE PROJECT] ⚠️  No default positions were generated from templates`);
-          }
-        } catch (posError) {
-          // Non-fatal: position creation failed but project/parts were created
-          logger.error(`[CREATE PROJECT] ❌ Position creation error (non-fatal):`, posError.message);
-          logger.error(`[CREATE PROJECT] Stack:`, posError.stack);
-        }
-      }
-
-      logger.info(`[CREATE PROJECT] Transaction committed`);
-    })(); // db.transaction() handles BEGIN/COMMIT/ROLLBACK automatically
-    // ===== TRANSACTION END =====
 
     // Fetch created project
     const project = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(project_id);
@@ -250,7 +156,7 @@ router.post('/', async (req, res) => {
       });
     }
 
-    logger.info(`[CREATE PROJECT] ✅ SUCCESS - Project ${project_id} created with ${templateCount} parts`);
+    logger.info(`[CREATE PROJECT] ✅ SUCCESS - Empty project ${project_id} created (add parts manually)`);
 
     return res.status(201).json({
       ...project,
@@ -263,12 +169,209 @@ router.post('/', async (req, res) => {
 });
 
 /**
+ * PUT /api/monolith-projects/rename-project/:projectName
+ * Rename project - updates project_name for ALL objects with this name
+ * Body: { new_name: string }
+ */
+router.put('/rename-project/:projectName', async (req, res) => {
+  try {
+    const oldName = decodeURIComponent(req.params.projectName);
+    const { new_name } = req.body;
+
+    if (!new_name || !new_name.trim()) {
+      return res.status(400).json({ error: 'new_name is required' });
+    }
+
+    const newName = new_name.trim();
+    logger.info(`[RENAME PROJECT] "${oldName}" → "${newName}"`);
+
+    // Special handling: "Bez projektu" in UI means NULL in DB
+    const isNullProject = oldName === 'Bez projektu';
+
+    // Count affected objects
+    let affectedObjects;
+    if (isNullProject) {
+      affectedObjects = await db.prepare(
+        `SELECT COUNT(*) as count FROM monolith_projects WHERE project_name IS NULL`
+      ).get();
+    } else {
+      affectedObjects = await db.prepare(
+        `SELECT COUNT(*) as count FROM monolith_projects WHERE project_name = ?`
+      ).get(oldName);
+    }
+
+    if (affectedObjects.count === 0) {
+      return res.status(404).json({ error: 'No objects found with this project name' });
+    }
+
+    // Update monolith_projects
+    if (isNullProject) {
+      await db.prepare(
+        `UPDATE monolith_projects SET project_name = ?, updated_at = CURRENT_TIMESTAMP WHERE project_name IS NULL`
+      ).run(newName);
+    } else {
+      await db.prepare(
+        `UPDATE monolith_projects SET project_name = ?, updated_at = CURRENT_TIMESTAMP WHERE project_name = ?`
+      ).run(newName, oldName);
+    }
+
+    // Update bridges table too (for consistency)
+    if (isNullProject) {
+      await db.prepare(
+        `UPDATE bridges SET project_name = ? WHERE project_name IS NULL`
+      ).run(newName);
+    } else {
+      await db.prepare(
+        `UPDATE bridges SET project_name = ? WHERE project_name = ?`
+      ).run(newName, oldName);
+    }
+
+    logger.info(`[RENAME PROJECT] ✅ Renamed ${affectedObjects.count} objects: "${oldName}" → "${newName}"`);
+
+    res.json({
+      success: true,
+      old_name: oldName,
+      new_name: newName,
+      objects_updated: affectedObjects.count
+    });
+  } catch (error) {
+    logger.error('[RENAME PROJECT] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/monolith-projects/bulk-delete
+ * Delete multiple objects by their IDs
+ * Body: { project_ids: string[] }
+ */
+router.post('/bulk-delete', async (req, res) => {
+  try {
+    const { project_ids } = req.body;
+
+    if (!Array.isArray(project_ids) || project_ids.length === 0) {
+      return res.status(400).json({ error: 'project_ids array is required' });
+    }
+
+    logger.info(`[BULK DELETE] Deleting ${project_ids.length} objects: ${project_ids.join(', ')}`);
+
+    let deletedCount = 0;
+
+    for (const id of project_ids) {
+      try {
+        // Delete from bridges (CASCADE deletes positions)
+        await db.prepare('DELETE FROM bridges WHERE bridge_id = ?').run(id);
+        // Delete from monolith_projects (CASCADE deletes parts)
+        await db.prepare('DELETE FROM monolith_projects WHERE project_id = ?').run(id);
+        deletedCount++;
+      } catch (err) {
+        logger.warn(`[BULK DELETE] Failed to delete ${id}: ${err.message}`);
+      }
+    }
+
+    logger.info(`[BULK DELETE] ✅ Deleted ${deletedCount}/${project_ids.length} objects`);
+
+    res.json({
+      success: true,
+      deleted_count: deletedCount,
+      deleted_ids: project_ids
+    });
+  } catch (error) {
+    logger.error('[BULK DELETE] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/monolith-projects/by-project-name/:projectName
+ * Delete ALL projects with matching project_name (group deletion)
+ * This deletes an entire "project folder" in the sidebar
+ *
+ * IMPORTANT: This route MUST be defined BEFORE /:id to avoid conflicts!
+ *
+ * Special case: "Bez projektu" maps to NULL project_name in DB
+ */
+router.delete('/by-project-name/:projectName', async (req, res) => {
+  try {
+    const projectName = decodeURIComponent(req.params.projectName);
+
+    logger.info(`[DELETE PROJECT] Deleting all objects with project_name: "${projectName}"`);
+
+    // Special handling: "Bez projektu" in UI means NULL in DB
+    const isNullProject = projectName === 'Bez projektu';
+
+    // Find all projects with this project_name (or NULL if "Bez projektu")
+    let projectsToDelete;
+    if (isNullProject) {
+      projectsToDelete = await db.prepare(`
+        SELECT project_id FROM monolith_projects WHERE project_name IS NULL
+      `).all();
+    } else {
+      projectsToDelete = await db.prepare(`
+        SELECT project_id FROM monolith_projects WHERE project_name = ?
+      `).all(projectName);
+    }
+
+    if (projectsToDelete.length === 0) {
+      logger.warn(`[DELETE PROJECT] No projects found with project_name: "${projectName}"`);
+      // Return success with 0 deleted instead of 404 (project might have been deleted already)
+      return res.json({
+        success: true,
+        message: `No objects found with project_name "${projectName}" (already deleted or never existed)`,
+        deleted_count: 0,
+        deleted_ids: []
+      });
+    }
+
+    const projectIds = projectsToDelete.map(p => p.project_id);
+    logger.info(`[DELETE PROJECT] Found ${projectIds.length} objects to delete: ${projectIds.join(', ')}`);
+
+    // Delete from monolith_projects (positions will be deleted by CASCADE)
+    let deleteProjectsResult;
+    if (isNullProject) {
+      deleteProjectsResult = await db.prepare(`
+        DELETE FROM monolith_projects WHERE project_name IS NULL
+      `).run();
+    } else {
+      deleteProjectsResult = await db.prepare(`
+        DELETE FROM monolith_projects WHERE project_name = ?
+      `).run(projectName);
+    }
+
+    // Also delete from bridges table (for FK compatibility)
+    let deleteBridgesResult;
+    if (isNullProject) {
+      deleteBridgesResult = await db.prepare(`
+        DELETE FROM bridges WHERE project_name IS NULL
+      `).run();
+    } else {
+      deleteBridgesResult = await db.prepare(`
+        DELETE FROM bridges WHERE project_name = ?
+      `).run(projectName);
+    }
+
+    logger.info(`[DELETE PROJECT] ✓ Deleted ${deleteProjectsResult.changes} from monolith_projects, ${deleteBridgesResult.changes} from bridges`);
+
+    res.json({
+      success: true,
+      message: `Deleted ${projectIds.length} objects from project "${projectName}"`,
+      deleted_count: projectIds.length,
+      deleted_ids: projectIds
+    });
+  } catch (error) {
+    logger.error('[DELETE PROJECT] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
  * GET /api/monolith-projects/:id
  * Get project details with all parts (no auth - kiosk mode)
  */
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    logger.info(`[GET PROJECT] Requesting project with ID: "${id}"`);
 
     // Get project (no ownership check - kiosk mode)
     const project = await db.prepare(`
@@ -276,6 +379,12 @@ router.get('/:id', async (req, res) => {
     `).get(id);
 
     if (!project) {
+      logger.warn(`[GET PROJECT] Project not found with ID: "${id}"`);
+      // Log all existing project IDs for debugging
+      const allProjects = await db.prepare(`
+        SELECT project_id FROM monolith_projects LIMIT 20
+      `).all();
+      logger.info(`[GET PROJECT] Existing projects: ${allProjects.map(p => p.project_id).join(', ')}`);
       return res.status(404).json({ error: 'Project not found' });
     }
 
@@ -302,6 +411,8 @@ router.get('/:id', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
+    logger.info(`[PUT PROJECT] Updating project with ID: "${id}"`);
+    logger.info(`[PUT PROJECT] Update payload:`, req.body);
 
     // Check project exists (no ownership check - kiosk mode)
     const project = await db.prepare(`
@@ -309,8 +420,16 @@ router.put('/:id', async (req, res) => {
     `).get(id);
 
     if (!project) {
+      logger.warn(`[PUT PROJECT] Project not found with ID: "${id}"`);
+      // Log all existing project IDs for debugging
+      const allProjects = await db.prepare(`
+        SELECT project_id FROM monolith_projects LIMIT 20
+      `).all();
+      logger.info(`[PUT PROJECT] Existing projects: ${allProjects.map(p => p.project_id).join(', ')}`);
       return res.status(404).json({ error: 'Project not found' });
     }
+
+    logger.info(`[PUT PROJECT] Found project: ${project.project_id}, current status: ${project.status}`);
 
     const {
       project_name,
@@ -361,11 +480,12 @@ router.put('/:id', async (req, res) => {
 
     const updated = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(id);
 
+    logger.info(`[PUT PROJECT] ✓ Successfully updated project: ${id}, new status: ${updated.status}`);
+
     res.json({
       ...updated,
       bridge_id: updated.project_id
     });
-    logger.info(`Updated monolith project: ${id}`);
   } catch (error) {
     logger.error('Error updating monolith project:', error);
     res.status(500).json({ error: error.message });
@@ -373,29 +493,222 @@ router.put('/:id', async (req, res) => {
 });
 
 /**
- * DELETE /api/monolith-projects/:id
- * Delete project (and all related parts) - no auth (kiosk mode)
+ * GET /api/monolith-projects/debug/database
+ * TEMPORARY: Debug endpoint to check database contents
  */
-router.delete('/:id', async (req, res) => {
+router.get('/debug/database', async (req, res) => {
+  try {
+    logger.info('[DEBUG] Checking database contents...');
+
+    // Get all projects with ALL columns
+    const projects = await db.prepare(`
+      SELECT * FROM monolith_projects ORDER BY created_at DESC LIMIT 100
+    `).all();
+
+    // Get all positions count
+    const positionsCount = await db.prepare(`
+      SELECT COUNT(*) as count FROM positions
+    `).get();
+
+    // Get all bridges (old table)
+    const bridges = await db.prepare(`
+      SELECT * FROM bridges ORDER BY created_at DESC LIMIT 100
+    `).all();
+
+    logger.info(`[DEBUG] Found ${projects.length} projects in monolith_projects`);
+    logger.info(`[DEBUG] Found ${positionsCount.count} positions`);
+    logger.info(`[DEBUG] Found ${bridges.length} bridges in old table`);
+
+    res.json({
+      monolith_projects: {
+        count: projects.length,
+        data: projects
+      },
+      positions: {
+        count: positionsCount.count
+      },
+      bridges: {
+        count: bridges.length,
+        data: bridges
+      },
+      message: 'Database debug info - this endpoint will be removed after diagnosis'
+    });
+  } catch (error) {
+    logger.error('[DEBUG] Error checking database:', error);
+    res.status(500).json({ error: error.message, stack: error.stack });
+  }
+});
+
+/**
+ * POST /api/monolith-projects/:id/link-portal
+ * Link project to stavagent-portal
+ * Body: { portal_project_id: string }
+ */
+router.post('/:id/link-portal', async (req, res) => {
   try {
     const { id } = req.params;
+    const { portal_project_id } = req.body;
 
-    // Check project exists (no ownership check - kiosk mode)
+    logger.info(`[LINK PORTAL] Linking project ${id} to Portal ${portal_project_id}`);
+
+    if (!portal_project_id) {
+      return res.status(400).json({ error: 'portal_project_id is required' });
+    }
+
+    // Check project exists
     const project = await db.prepare(`
-      SELECT * FROM monolith_projects WHERE project_id = ?
+      SELECT project_id FROM monolith_projects WHERE project_id = ?
     `).get(id);
 
     if (!project) {
       return res.status(404).json({ error: 'Project not found' });
     }
 
-    // Delete project (parts will be deleted by CASCADE)
-    await db.prepare('DELETE FROM monolith_projects WHERE project_id = ?').run(id);
+    // Update project with portal link
+    await db.prepare(`
+      UPDATE monolith_projects SET
+        portal_project_id = ?,
+        portal_linked_at = CURRENT_TIMESTAMP,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE project_id = ?
+    `).run(portal_project_id, id);
 
-    res.json({ message: 'Project deleted successfully' });
-    logger.info(`Deleted monolith project: ${id}`);
+    const updated = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(id);
+
+    logger.info(`[LINK PORTAL] ✅ Successfully linked project ${id} to Portal ${portal_project_id}`);
+
+    res.json({
+      success: true,
+      message: 'Project linked to Portal',
+      project: {
+        ...updated,
+        bridge_id: updated.project_id
+      }
+    });
   } catch (error) {
-    logger.error('Error deleting monolith project:', error);
+    logger.error('[LINK PORTAL] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/monolith-projects/:id/link-portal
+ * Unlink project from stavagent-portal
+ */
+router.delete('/:id/link-portal', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    logger.info(`[UNLINK PORTAL] Unlinking project ${id} from Portal`);
+
+    // Check project exists
+    const project = await db.prepare(`
+      SELECT project_id, portal_project_id FROM monolith_projects WHERE project_id = ?
+    `).get(id);
+
+    if (!project) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    if (!project.portal_project_id) {
+      return res.status(400).json({ error: 'Project is not linked to Portal' });
+    }
+
+    // Remove portal link
+    await db.prepare(`
+      UPDATE monolith_projects SET
+        portal_project_id = NULL,
+        portal_linked_at = NULL,
+        updated_at = CURRENT_TIMESTAMP
+      WHERE project_id = ?
+    `).run(id);
+
+    const updated = await db.prepare('SELECT * FROM monolith_projects WHERE project_id = ?').get(id);
+
+    logger.info(`[UNLINK PORTAL] ✅ Successfully unlinked project ${id} from Portal`);
+
+    res.json({
+      success: true,
+      message: 'Project unlinked from Portal',
+      project: {
+        ...updated,
+        bridge_id: updated.project_id
+      }
+    });
+  } catch (error) {
+    logger.error('[UNLINK PORTAL] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * DELETE /api/monolith-projects/:id
+ * Delete project (and all related parts) - no auth (kiosk mode)
+ *
+ * IMPORTANT: Deletes from BOTH tables (bridges + monolith_projects)
+ * because positions are still FK-linked to bridges table
+ */
+router.delete('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    logger.info(`[DELETE PROJECT] Deleting project: ${id}`);
+
+    // Check project exists in monolith_projects
+    const project = await db.prepare(`
+      SELECT * FROM monolith_projects WHERE project_id = ?
+    `).get(id);
+
+    // Check if exists in old bridges table too
+    const bridge = await db.prepare(`
+      SELECT * FROM bridges WHERE bridge_id = ?
+    `).get(id);
+
+    if (!project && !bridge) {
+      logger.warn(`[DELETE PROJECT] Project not found: ${id}`);
+      return res.status(404).json({ error: 'Project not found' });
+    }
+
+    // Count positions that will be deleted
+    const positionsCount = await db.prepare(`
+      SELECT COUNT(*) as count FROM positions WHERE bridge_id = ?
+    `).get(id);
+
+    logger.info(`[DELETE PROJECT] Will delete ${positionsCount.count} positions for project ${id}`);
+
+    // Delete from bridges FIRST (CASCADE will delete positions automatically)
+    if (bridge) {
+      await db.prepare('DELETE FROM bridges WHERE bridge_id = ?').run(id);
+      logger.info(`[DELETE PROJECT] ✓ Deleted from bridges table (and ${positionsCount.count} positions via CASCADE)`);
+    }
+
+    // Delete from monolith_projects (CASCADE will delete parts)
+    if (project) {
+      await db.prepare('DELETE FROM monolith_projects WHERE project_id = ?').run(id);
+      logger.info(`[DELETE PROJECT] ✓ Deleted from monolith_projects table (and parts via CASCADE)`);
+    }
+
+    // Verify deletion
+    const remainingPositions = await db.prepare(`
+      SELECT COUNT(*) as count FROM positions WHERE bridge_id = ?
+    `).get(id);
+
+    if (remainingPositions.count > 0) {
+      logger.warn(`[DELETE PROJECT] ⚠️  ${remainingPositions.count} positions still remain!`);
+    }
+
+    logger.info(`[DELETE PROJECT] ✅ Successfully deleted project: ${id}`);
+
+    res.json({
+      message: 'Project deleted successfully',
+      deleted: {
+        project: true,
+        bridge: !!bridge,
+        positions_count: positionsCount.count
+      }
+    });
+  } catch (error) {
+    logger.error('[DELETE PROJECT] Error deleting project:', error);
     res.status(500).json({ error: error.message });
   }
 });

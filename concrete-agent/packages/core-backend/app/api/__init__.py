@@ -15,6 +15,15 @@ from app.api.routes_chat import router as chat_router
 from app.api.pdf_extraction_routes import router as pdf_router
 from app.api.routes_agents import router as agents_router
 from app.api.routes_multi_role import router as multi_role_router
+from app.api.routes_summary import router as summary_router
+from app.api.routes_workflow_c import router as workflow_c_router
+from app.api.routes_accumulator import router as accumulator_router
+from app.api.routes_google import router as google_router
+from app.api.routes_passport import router as passport_router
+from app.api.routes_kb_research import router as kb_research_router
+from app.api.routes_price_parser import router as price_parser_router
+from app.api.routes_betonarny_discovery import router as betonarny_router
+from app.api.routes_vertex import router as vertex_router
 
 # Création hlavního API routeru
 api_router = APIRouter()
@@ -27,6 +36,15 @@ api_router.include_router(workflow_b_router)      # /api/workflow/b/*
 api_router.include_router(chat_router)            # /api/chat/*
 api_router.include_router(pdf_router)             # /api/pdf/*
 api_router.include_router(agents_router)          # /api/agents/*
-api_router.include_router(multi_role_router)      # /api/v1/multi-role/* (NEW!)
+api_router.include_router(multi_role_router)      # /api/v1/multi-role/*
+api_router.include_router(summary_router)         # /api/v1/summary/*
+api_router.include_router(workflow_c_router)      # /api/v1/workflow/c/*
+api_router.include_router(accumulator_router)     # /api/v1/accumulator/* (Document Accumulator)
+api_router.include_router(google_router)          # /api/v1/google/* (Google Drive Integration)
+api_router.include_router(passport_router)        # /api/v1/passport/* (Project Passport)
+api_router.include_router(kb_research_router)     # /api/v1/kb/* (KB Research)
+api_router.include_router(price_parser_router)    # /api/v1/price-parser/* (Price List Parser)
+api_router.include_router(betonarny_router)       # /api/v1/betonarny/* (Betonárny Discovery)
+api_router.include_router(vertex_router)          # /api/v1/vertex/* (Vertex AI Search)
 
 __all__ = ["api_router"]

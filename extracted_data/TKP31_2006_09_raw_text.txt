@@ -1,0 +1,1045 @@
+Správa železniční dopravní cesty, státní organizace
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 31
+TRAKČNÍ VEDENÍ
+Třetí - aktualizované vydání
+změna č. 5
+Schváleno I. náměstkem generálního ředitele SŽDC
+č.j. 5584 ze dne 16.2.2006
+Účinnost od 1.9.2006
+Praha 2006
+Označení textu po stranách znamená věcnou změnu textu oproti znění TKP - Třetímu
+aktualizovanému vydání - změně č. 3 /z roku 2002/.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím
+systému nebo přenášena, a to v žádné formě a žádnými prostředky elektronickými,
+fotokopírovacími či jinými, bez předchozího písemného svolení vydavatele.
+Výhradní distributor: České dráhy, a. s., Technická ústředna Českých drah
+SATT - oddělení typové dokumentace
+Nerudova l
+772 58 Olomouc
+Obsah
+31.1 ÚVOD 3
+31.1.1 Všeobecně 3
+31.1.2 Ostatní vedení a zařízení na podpěrách TV 3
+31.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 3
+31.2.1 Základní materiály pro základy TV 3
+31.2.1.1 Beton 3
+31.2.1.2 Voda 3
+31.2.1.3 Kamenivo 3
+31.2.1.4 Cement 4
+31.2.2 Ocel 4
+31.2.2.1 Kotevní svorníky 4
+31.2.2.2 Přídavné výztuže 4
+31.2.3 Podpěry TV 4
+31.2.4 Nosné prvky trolejových vedení 5
+31.2.5 Vodiče trolejového vedení 5
+31.2.6 Přívodní vedení 5
+31.2.7 Určená elektrická zařízení 6
+31.2.8 Materiály pro ukolejňování 6
+31.2.9 Zpětné vedení 6
+31.2.10 Ochrana proti korozi 6
+31.2.11 Elektromagnetická kompatibilita (EMC) 7
+31.3 TECHNOLOGICKÉ POSTUPY PRACÍ 7
+31.3.1 Základy TV a jejich vytyčení 7
+31.3.2 Výkopy 8
+31.3.3 Základy TV typového provedení 8
+31.3.4 Základy TV jiných schválených technologií 9
+31.3.5 Podpěry TV 9
+31.3.6 Otočné trubkové konzoly a svislé izolované konzoly (SIK) 10
+31.3.7 Trolejové vedení 10
+31.3.8 Napájecí vedení 10
+31.3.9 Zpětné vedení 10
+31.3.10 Ukolejnění 11
+31.3.11 Ochrana před dotykem živých částí trakčního vedení 11
+31.3.12 Ochrana před dotykem neživých částí trakčního vedení 11
+31.3.13 Návěstidla pro elektrický provoz a traťové značky 12
+31.3.14 Ostatní vedení a zařízení na podpěrách TV 12
+31.3.15 Tabulky s bezpečnostním sdělením nebo s nápisy 12
+31.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 12
+31.4.1 Základy TV 12
+31.4.2 Stožáry a nosná břevna TV 12
+31.4.3 Trolejový vodič a lana 12
+31.4.4 Elektrická zařízení 12
+31.4.5 Izolátory 13
+31.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 13
+31.5.1 Ukolejnění 13
+31.5.2 Základy TV 13
+31.5.3 Stožáry TV a břevna nosných bran 13
+31.5.4 Kontrolní zkoušky a revize trakčního vedení 13
+31.5.5 Protikorozní ochrana 13
+31.5.6 Kabelová vedení 14
+1
+31.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 14
+31.6.1 Základy TV 14
+31.6.2 Stožáry a nosné brány TV 14
+31.6.3 Výška a sklon trolejového vodiče 15
+31.6.4 Interakce sběrač-trolejové vedení 16
+31.6.5 Oteplení elektrických spojů 18
+31.6.6 Trakční kabelové vedení 18
+31.6.7 Míra opotřebení a konstrukce TV 18
+31.6.8 Záruky, údržba v záruční době 19
+31.7 KLIMATICKÁ OMEZENÍ 19
+31.7.1 Základy TV 19
+31.7.2 Stožáry TV 19
+31.7.3 Trakční vedení 19
+31.7.4 Kabelová vedení 19
+31.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 19
+31.8.1 Příprava k převzetí prací 20
+31.8.2 Převzetí základové spáry 20
+31.8.3 Dokumentace a zaměření skutečného provedení stavby trakčního vedení 20
+31.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 21
+31.9.1 Kontrolní měření 21
+31.10 EKOLOGIE 21
+31.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 21
+31.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 21
+31.12.1 Technické normy 22
+31.12.2 Předpisy 25
+31.12.3 Související kapitoly TKP 25
+2
+31.1 ÚVOD
+31.1.1 Všeobecně
+Pro kapitolu 31 - Trakční vedení platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole
+1 TKP - Všeobecně.
+Tato kapitola platí pro zhotovení trakčního vedení (dále jen TV), neobsahuje napájecí stanice, uvedené
+v kapitole 29 TKP, kabely dálkového ovládání odpojovačů, uvedené v kapitole 26 TKP. Korozi bludnými
+proudy řeší kapitola 25 A TKP.
+Názvosloví pro elektrická trakční vedení je určeno v ČSN 34 5145 a v ČSN IEC 50(811) (33 0050).
+Zhotovení TV musí splňovat požadavky projektové dokumentace (dále jen dokumentace) a dotčených
+kapitol TKP.
+31.1.2 Ostatní vedení a zařízení na podpěrách TV
+Na podpěrách TV lze umístit i jiná venkovní vedení a zařízení, např. vedení 22 kV, optické kabely, jejich
+kabelové spojky a držáky rezervy, ukolejňovací a ochranná lana, rozvody nn pro venkovní osvětlení, svítidla
+venkovního osvětlení, návěsti a návěstidla a elektrické přívody k těmto zařízením. Podle potřeby se souhlasem
+správce TV je možné doplnit na trakční stožáry a základy i jiné traťové značky a výstroj trati ( např. zajišťovací
+značky polohy koleje, rychlostníky, hektometrovníky, první a poslední stožár elektrických staničních
+a mezistaničních úseků apod.). Umístění uvedených zařízení na trakčních podpěrách podléhá schválení
+určenými oprávněnými osobami podle výnosu ČD DDC č.j. 56 731/96-S14 ve znění pozdějších výnosů
+a v případech jimi stanovených musí být uvedeno v koordinačním schématu ukolejnění a trakčních podpěr (dále
+jen KSUaTP) s udáním podmínek tohoto souhlasu.
+31.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+31.2.1 Základní materiály pro základy TV
+31.2.1.1 Beton
+Pro beton platí obecně kapitola 17 TKP s tím, že zhotovitel musí dodržovat následující požadavky.
+Na rozdíl od schválené typové dokumentace musí být provedeny základy z betonu dále předepsaných tříd.
+Základní řada základů (hranovité, stupňované a pilotované)
+Použitý beton je třídy B15 podle ČSN 73 2400, což odpovídá označení C 12/15 podle ČSN EN 206-1 (73 2403).
+Základy těžené (ZT)
+Použitý beton je třídy B 20 (C 16/20).
+Základy vrtané (ZV)
+Použitý beton je třídy B 20 (C 16/20).
+Zkoušení betonové směsi
+se provádí podle ČSN EN 12350 - část 2 až 5.
+31.2.1.2 Voda
+Voda k přípravě betonové směsi nesmí obsahovat látky, které rozrušují cement (např. síra, volný kysličník
+uhličitý) a musí splňovat ČSN EN 1008.
+31.2.1.3 Kamenivo
+K přípravě betonu zhotovitel používá směsi kameniva jemné frakce do 4 mm a hrubé frakce 8 - 16 mm, jejichž
+pevnost musí být větší, než je požadovaná pevnost betonu.
+Kámen pro zdivo a stavební účely je podle ČSN 72 1860.
+3
+31.2.1.4 Cement
+Druh, třídu a kvalitu cementu pro základy stožárů TV určuje obecně kapitola 17 TKP čl. 17. 2. 1.
+Při volbě druhu cementu se přihlíží k agresivitě půd a spodních vod.
+31.2.2 Ocel
+Pro základové konstrukce platí obecně kapitola 19 TKP.
+31.2.2.1 Kotevní svorníky
+musí zhotovitel osazovat z oceli třídy 11 523 kované nebo se svařovanou patkou podle schválené dokumentace
+základů trolejového vedení.
+31.2.2.2 Přídavné výztuže
+zhotovitel osadí podle typové dokumentace základů TV a jsou z oceli třídy 10 216.
+31.2.3 Podpěry TV
+Pro podpěry a konstrukce platí obecně kapitola 18 a 19 TKP. Typ a kvalitu podpěr TV určuje typová
+dokumentace a musí být schváleny pro použití na železniční dopravní cestě.
+Podpěry rozdělujeme na:
+− individuální (stožáry),
+− skupinové (nosné brány),
+Stožáry se používají :
+− ocelové trubkové,
+− ocelové příhradové - včetně plochých,
+− z předpjatého betonu,
+− atypické ( vyrobené podle schválené dokumentace).
+Typ a velikost stožárů určuje dokumentace.
+Podpěru trakčního vedení musí zhotovitel opatřit těmito údaji:
+a) typové označení podpěry,
+b) označení a název výrobce,
+c) číslo normy nebo podnikového předpisu,
+d) rok výroby.
+Údaje musejí být vyznačeny na trvanlivém štítku, spolehlivě připevněném na viditelném místě vnějšího povrchu
+stožáru.
+Ocelové trubkové i příhradové stožáry a patky svorníkových stožárů jsou z oceli třídy 11.
+Nosné brány
+tvoří břevno příhradové konstrukce typu 23 a 34 připevněné na trubkových nebo příhradových ocelových
+stožárech.
+Břevna nosných bran musí být z oceli třídy 11 minimálně kvality 11 325.
+Podle zatížení (velikosti a umístění) určuje dokumentace způsob vyvěšení břevna (bez vyvěšení, jednostranné
+nebo oboustranné). Podle vzorové dokumentace provede zhotovitel vyvěšení ocelovými táhly třídy 11.
+Ocelové konstrukce trakčního vedení musí být navrhovány podle ČSN 73 1401 a vyráběny podle ČSN 73 2601.
+4
+31.2.4 Nosné prvky trolejových vedení
+Nosné prvky provede zhotovitel podle dokumentace a platných vzorových sestav TV typu J, S, P.
+Závěsy trolejového vedení:
+− Otočné izolované konzoly jsou vodorovné (prosté vedení podle vzorové sestavy typu P) a šikmé
+(řetězovkové vedení podle vzorových sestav typu J a S, J/FS1 a S/FS2) a slouží pro zavěšení trolejového
+vedení na stožárech.
+− Musí být vyrobeny z bezešvých trubek podle ČSN 42 5715 (v souladu s dokumentací) z oceli třídy S 355 J0,
+nebo z Al slitiny podle ČSN EN 573-3 třídy EN AW-6082 T6, případně doplněny bronzovým lanem.
+− Svislé izolované konzoly (SIK) slouží pro zavěšení trolejového vedení na břevnech nosných bran.
+− Závěsy se směrovým lanem slouží pro zavěšení trolejového vedení na břevnech nosných bran pomocí
+ocelových táhel.
+− Směrová lana jsou bronzová průřezu 50 nebo 70 mm2.
+− Průřez určuje dokumentace.
+31.2.5 Vodiče trolejového vedení
+Trolejové vedení musí splňovat podmínky uvedené v dokumentaci, v ČSN 34 1500, ČSN 34 1530,
+ČSN IEC 913 a ČSN EN 50 119.
+Při modernizaci a optimalizaci železničních tratí obou elektrických trakčních soustav se stanovenou
+maximální traťovou rychlostí nad 120 km.h-1 je nutná výměna trolejového vodiče a nosného lana.
+Napájení a dělení trolejového vedení zhotovitel provede podle dokumentace a ČSN 34 1530.
+Trolejový vodič
+Průřez a typ určuje dokumentace.
+Tvar trolejového vodiče musí vyhovovat rozměrům podle ČSN EN 50149.
+Materiál minimálně dovolené pevnosti 120 MPa podle ČSN 42 3001. Minimální elektrická vodivost trolejového
+vodiče je podle ČSN 34 1530.
+Trolejové spojky jsou v dodávce nové troleje pro rychlost vyšší než 120 km.h-1 nepřípustné a mohou se použít
+pouze k naspojkování nové troleje s původní trolejí, která zůstává i po rekonstrukci.
+Nosné lano
+Materiál určuje dokumentace.
+Pro nosná lana se používají lana měděná a bronzová.
+Průřezy a typy podle dokumentace, splňující minimálně hodnoty elektrické vodivosti a mechanické pevnosti
+podle ČSN 34 1530 a ČSN EN 50 119.
+Flexilano
+Jako flexilana v napínacích systémech se používají pouze lana z nerez oceli, splňující minimálně hodnoty
+mechanické pevnosti odpovídající trolejovému vodiči či nosnému lanu.
+31.2.6 Přívodní vedení
+Materiály pro napájecí, zesilovací a obcházecí vedení určuje dokumentace.
+Lana těchto vedení musí odpovídat požadavkům na elektrickou vodivost podle normy ČSN 34 1530. Používají
+se lana měděná.
+Celoplastové kabely pro napájecí vedení musí splňovat podmínky ČSN 34 1530.
+5
+31.2.7 Určená elektrická zařízení
+Pro trakční vedení (jako pro určené technické zařízení elektrické podle vyhlášky č. 100/1995 Sb.) lze použít jen
+schválené přístroje a části.
+Typy elektrických zařízení (například odpojovačů, odpínačů a jejich pohonů, úsekových děličů, průrazek,
+bleskojistek) určuje dokumentace.
+31.2.8 Materiály pro ukolejňování
+Materiály pro ukolejňování neživých částí TV a vodivých konstrukcí umístěných v prostoru ohrožení trolejovým
+vedením (dále jen POTV)
+− pro individuální ukolejnění: pozinkovaný drát isolovaný o průměru 10 mm podle ČSN 34 1530,
+− pro skupinové ukolejnění: lano - průřez a délku lana je stanovena v dokumentaci.
+31.2.9 Zpětné vedení
+K vedení zpětného trakčního proudu slouží kolejnice, kolejnicové části výhybek, jejich vodivé propojky
+a lanová propojení, kabelová a venkovní zpětná vedení.
+Propojky a lanová propojení kolejnic
+Pro vodivá propojení kolejnic a kolejnicových částí výhybek se používají propojky a lanová propojení s vodiči
+z měděných nebo ocelových lan, případně z ocelových drátů. Jejich vodivost musí odpovídat požadavkům
+ČSN 34 1530 a ČSN EN 50119.
+Náhradu měděných lan ocelovými lany řeší v souladu s vydáním ČSN EN 50 122-1 opatření ředitele odboru
+automatizace a elektrotechniky pod č.j. 60 351/04-O14 ze dne 2.8.2004. „Směrnice pro náhradu měděných
+propojek a lanových propojení ocelovými propojkami a lanovými propojeními“, čj. 59 556/96-S14-ZV6 ze dne
+5.12.1996 (účinnost od 1.1.1997).
+Venkovní zpětná vedení.
+Materiál a průřez určuje dokumentace.
+Kabelová zpětná vedení .
+Kabely se použijí celoplastové, splňující podmínky podle ČSN 34 1530.
+Rozváděč musí být umístěn na přehledném místě tak, aby byl přístupný od kolejiště.
+Rozváděč musí být viditelně označen štítkem a jeho montáž a provoz musí odpovídat ČSN 33 2000-1
+a ČSN 33 3210.
+31.2.10 Ochrana proti korozi - pasivní ochrana
+Provádí zhotovitel v souladu s kapitolou 25B TKP (komplexní protikorozní ochranu určuje článek 31.5.5)
+s následujícími upřesněními:
+Ocelové stožáry a konstrukce TV
+je nutno opatřit pasivní protikorozní ochranou.
+Před provedením ochrany proti korozi provádí zhotovitel otryskání podle ČSN ISO 8501-1, ČSN ISO 8501-2,
+ČSN EN ISO 8504-1, ČSN EN ISO 8504-2, ČSN ISO 8504-3 a ČSN EN ISO 8504-4.
+Protikorozní ochranu provede zhotovitel podle dokumentace jedním z následujících způsobů:
+− žárovým nástřikem Met Zn min. 40-60 µm,
+− žárovým nástřikem ZnAl 15, min. 50 µm s utěsňovacím nátěrem nebo min. 100 µm bez utěsňovacího nátěru,
+− žárovým zinkováním ponorem,
+− žárovým nástřikem hliníkem min. 100 µm s utěsňovacím nátěrem nebo hliníkem min. 150 µm bez utěsňo-
+vacího nátěru,
+− nátěrovým systémem podle schváleného technologického postupu.
+Technické požadavky na žárové zinkování a na metody zkoušek uvádějí ČSN EN ISO 2063
+a ČSN EN ISO 1461.
+6
+Spojovací materiály se připouští dodávat ve dvojím provedení:
+− nerezové,
+− žárově zinkované.
+Konečná povrchová úprava spojovacích materiálů svorníkových základů - matice, podložka a vyčnívající
+svorník se provede protikorozním nátěrem tak, aby nebyla narušena funkce rozebíratelného šroubového spojení.
+Povrch stožáru, který je vetknut do základu, musí být opatřen vhodným nátěrem, který určuje dokumentace.
+Při rekonstrukci nátěru se provádí odstranění oxidační vrstvy povrchu podle ČSN ISO 8501-1.
+31.2.11 Elektromagnetická kompatibilita (EMC)
+Trakční vedení musí splňovat požadavky elektromagnetické interference (EMI) podle kapitoly 33 TKP,
+čl. 33.3.3 (článku 5.2.15 normy ČSN EN 50119).
+31.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+Práce na trakčním vedení nově elektrizovaných tratí zhotovitel realizuje za dopravních výluk.
+Rekonstrukce trakčního vedení zhotovitel realizuje za dopravních a napěťových výluk.
+31.3.1 Základy TV a jejich vytyčení
+Základy TV provede zhotovitel ve shodě s typovou dokumentací:
+a) podle typové dokumentace
+− základní řada (hloubené),
+− základy těžené,
+− základy vrtané,
+− prefabrikované základy.
+b) podle technologie schválené objednatelem (pilotové základy)
+c) podle dokumentace
+− modifikace typových základů,
+− atypické základy, upravené podle místních podmínek.
+Konkrétní typ základu je určen v dokumentaci.
+Popis základů uvedených v typové dokumentaci:
+V typové dokumentaci základů jsou uvedeny typy základů pro tři druhy únosností půd zatříděných podle
+ČSN 73 1001 a tomu odpovídající únosnost ve vztahu k jejich hloubce.
+Základní řada základů
+je charakteristická hranolovým tvarem základu, jehož výkopy se hloubí strojně nebo ručně (při výskytu
+inženýrských sítí apod.) Pro kotvení se používají zejména stupňovité základy s patkou.
+Použitý beton třídy B 15 podle ČSN 73 2400, což odpovídá označení C 12/15 podle ČSN EN 206-1 (73 2403).
+Základy těžené (ZT)
+Jsou charakteristické strojním výkopem kruhového nebo oválného průřezu o průměru cca 950 a 1250 mm.
+Použitý beton je třídy B 20 (C 16/20).
+7
+Základy vrtané (ZV)
+Provádí se zemním vrtákem průměru cca 700 mm.
+Použitý beton je třídy B 20 (C 16/20).
+Prefabrikované základy (P)
+Jsou vyrobeny ze železobetonu a odlišují se od předchozích typů nejen tvarově, ale hlavně technologií stavby.
+Typová dokumentace vychází z příčného průřezu tvaru I a čtyř variant hloubek navrhovaných podle zatížení
+základu a únosnosti půdy.
+Vytyčení poloh základů
+provede zhotovitel podle dokumentace.
+U atypických základů stožárů TV, které tvoří součást opěrných nebo zárubních zdí apod. musí být doložen
+statický výpočet a příčný řez základu.
+31.3.2 Výkopy
+Pro výkopy obecně platí kapitola 3 TKP.
+Výkopy provede zhotovitel podle dokumentace.
+Před započetím hloubení výkopu, v případě přítomnosti kabelových rozvodů nebo jiných úložných zařízení
+v místě výkopu základu, provede ověření jejich polohy, a to buď kopanou sondou, nebo elektronickým
+zařízením.
+Výkopy základů
+musí být provedeny podle schválené dokumentace. Rozměr výkopu hranolových základů musí zhotovitel zvětšit
+podle typu použitého bednění tak, aby byl dodržen rozměr základu uvedený v dokumentaci.
+Zjistí-li zhotovitel jinou únosnost půdy, než je uvedena v dokumentaci, oznámí tuto skutečnost písemnou
+formou stavebnímu dozoru a po kontrole a odsouhlasení upraví hloubku založení základu.
+Bednění základu je přípravou pro betonáž základu.
+Bednění základů provede zhotovitel do hloubky minimálně 0,2 m pod úroveň definitivního terénu, při zachování
+dostatečné tuhosti bednění.
+Pro bednění dříku stupňových základů lze použít typových dílců dostatečné tuhosti, které zajistí rozměr a tvar
+určený v dokumentaci a umožní vibrování betonové směsi.
+Po odstranění bednění se dosypaná zemina zhutní po vrstvách ne větších než 0,4 m.
+Výkopy pro prefabrikované základy
+Výkop pro tyto základy musí být o 0,1 m hlubší, než je jeho hloubka od temene koleje, uvedená jako výkop
+ve stavební tabulce dokumentace.
+Srovnaná rovina dna výkopu se zasype vrstvou štěrkopísku a zhutní tak, aby následně osazená základová spára
+zůstala ve vodorovné poloze a hloubce uložení podle dokumentace.
+31.3.3 Základy TV typového provedení
+Betonáž základu
+Pro provádění betonáže platí kapitola 17 TKP.
+Výroba betonové směsi, doprava a ukládání musí odpovídat ČSN 73 2400 a ČSN EN 206-1. Zhutnění základu
+se provede vibrováním, jeho stupeň se určuje podle ČSN EN 12350-4.
+Do připraveného výkopu základu osadí zhotovitel pomocí šablony svorníky tak, aby byla zajištěna jejich svislost
+a přesná poloha.
+Při použití svorníků M36 s rektifikační maticí musí být základ proveden tak, aby se pod patkou stožáru nedržela
+voda a závity svorníků včetně matic musí být opatřeny nátěrem zamezujícím korozi svorníků (pokud nejsou již
+jinak opatřeny proti korozi).
+8
+U základů trakčních podpěr, kde nejsou použity rektifikační matky se povrch základu upraví podle kapitoly
+17 TKP. U BP stožáru se podmažou jen patky trakční podpěry. U základu s vetknutím stožáru zhotovitel do
+výkopu upevní jádro kuželového tvaru nebo vhodnou trubku pro vytvoření dutiny. Do doby osazení stožáru
+dutinu základu musí zakrýt, a tak ochránit před znečištěním zeminou.
+Povrch nadzemní části základu musí být celistvý, bez dutin a vad, nesmí být porézní.
+Vrchní hrany základů provede zhotovitel 0,2 m nad úroveň definitivního terénu (neplatí pro nástupiště).
+Vrchní hrana základu pro vetknutý stožár se provede s hlavičkou bez vodu odpuzujícího nátěru.
+V nástupištích se provedou vrchní hrany základů pod úrovní plochy nástupiště tak, aby případné patky
+a svorníky ocelových stožárů z důvodu bezpečnosti nepřesahovaly nad plochu nástupiště a prostor se následně
+zakryje betonovou směsí po případě živičnou směsí do úrovně plochy nástupiště.
+Pro geodetické účely vloží zhotovitel do vrchních hran základů označníky do místa 0,15 m od přední hrany
+základu, nebo které určí dokumentace nebo stavební dozor.
+Osazení prefabrikovaného základu
+provede zhotovitel do požadované polohy za pomoci vodícího přípravku tak, aby byla splněna požadovaná
+poloha základu.
+Obsyp základu provede netříděným štěrkopískem zhutněným po vrstvách.
+Výška vrstvy pro zhutnění nesmí být větší než 0,4 m.
+31.3.4 Základy TV jiných schválených technologií
+Při jiných technologiích postupuje zhotovitel podle ZTKP.
+31.3.5 Podpěry TV
+Rozmístění podpěr
+se provádí podle dokumentace a vzorové sestavy TV.
+Osazení stožárů
+a) do dutiny základu
+Zhotovitel před osazením ocelového stožáru do dutiny základu provede jeho protikorozní ochranu podle
+článku 31.2.10.
+U stožárů z předpjatého betonu před jejich postavením zhotovitel vyplní dno dutiny základu vrstvou betonové
+směsi B 20 (C16/20) o výšce minimálně 0,1 m.
+Potom do dutiny základu vloží stožár do požadované polohy podle dokumentace, v dutině jej zajistí proti
+posunutí a po nastavení svislé polohy nebo případného záklonu ho v dutině zaklínuje třemi klíny tak, aby
+nedošlo po uvolnění stožáru ze závěsu jeřábu k jeho naklonění.
+Následuje zalití dutiny základu betonovou směsí (zálivkou) z betonu třídy B 20 (C16/20) tak, aby došlo
+k zaplnění všech volných prostor dutiny do výše 0,2 - 0,3m od vrchní hrany základu (do místa klínů).
+Provede kontrolu svislosti případně záklonu stožáru.
+Vrchní plochu základu ochrání tak, aby základ nemohl být znečištěn zeminou.
+Po nezbytné době tuhnutí betonu odstraní jistící klíny a provede hlavičku základu.
+b) na svorníky
+Zhotovitel postaví stožár na základ se svorníky a zajistí matkami.
+Pomocí vypodložení patek stožáru nebo nastavením rektifikačních matek se provede jeho vyrovnání nebo se
+nastaví jeho záklon, a v požadované poloze se zajistí dotažením všech matek.
+Stožár včetně patky musí zhotovitel protikorozně ošetřit podle článku 31.2.10.
+Podkladní podložky vymezující záklon stožáru, vkládané pod patku stožáru musí splňovat požadavky
+protikorozní ochrany.
+9
+Břevna nosných bran
+jsou typových provedení ČD a jejich výroba je prováděna podle technologické části typové dokumentace
+stožárů TV.
+Zavěšení břevna provádí zhotovitel podle své technologie, při které musí být zajištěna bezpečnost práce a nesmí
+dojít k poškození protikorozní ochrany břevna.
+V případě vyvěšení břeven nosných bran se toto realizuje současně s montáží nosného břevna.
+V případě kluzného uložení břevna je nutné po montáži kontrolovat, zda má dilatační spára vzhledem k teplotě
+odpovídající rozměry.
+Přesnost výroby břevna a montáže si vyžaduje zvláštní pozornost zhotovitele tak, aby nedošlo k překročení
+maximální hodnoty dovolené deformace prutů nosné brány podle článku 31.6.2.
+31.3.6 Otočné trubkové konzoly a svislé izolované konzoly (SIK)
+Kompletuje a montuje zhotovitel podle své technologie, odsouhlasené stavebním dozorem.
+Při montáži armatur a šroubových spojení je nutné dbát na přesné dotažení šroubů např. pomocí momentových
+klíčů (viz vzorová sestava typu ”J” a ”S”, „J/FS1“ a „S/FS2“).
+31.3.7 Trolejové vedení
+Montáž provede zhotovitel podle své technologie (rozumí se způsob rozvinutí a tažení nosného lana
+a trolejového vodiče) tak, aby byly splněny požadované parametry TV podle vzorových sestav typu ”J”, ”S”,
+”P” nebo podle požadavků objednatele.
+Výška zavěšení nosného lana, zesilovacího lana nebo trolejového vodiče nad provozovanými kolejemi, případně
+silničními přejezdy, musí být taková, aby nedošlo k jejich zachycení projíždějícími železničními či silničními
+vozidly.
+Při rozvinování a zavěšování vodičů na konstrukce TV je třeba důsledně dbát na zachování funkčnosti
+provozovaných kolejových obvodů a dodržení průjezdného profilu dopravně nevyloučených kolejí - toto je
+třeba projednat s SDC-SSZT a uložit výlukovým rozkazem.
+Při rozvinování a zavěšování vodičů na konstrukce TV nesmí dojít k jejich poškození překroucením
+a mechanickým narušením průřezu!
+Při montáži elektrických spojů pomocí šroubových proudových svorek je nutné dbát na správné uložení vodičů
+ve svorce a na přesné dotažení šroubů např. pomocí momentových klíčů.
+Montáž proudového propojení musí být provedena na dokonale očištěné vodiče.
+Spojkování nosných lan je možné pouze lisováním.
+31.3.8 Napájecí vedení
+Nadzemní napájecí vedení, vedoucí mimo pozemek dráhy, musí odpovídat ČSN 33 3301.
+V místech přechodu kabelového vedení na nadzemní vedení nebo v místě připojení na trolejové vedení musí být
+kabely ukončeny na trakčním stožáru kabelovou koncovkou a chráněny svodičem přepětí.
+Uložení kabelových vedení do kabelových korýtek provede zhotovitel podle kapitoly 26 a 30 TKP.
+Pro montáž proudových spojů platí ustanovení v článku 31.3.7.
+31.3.9 Zpětné vedení
+Trakční propojení kolejiště musí odpovídat ověřenému KSUaTP.
+Kolejnicové propojky provede zhotovitel podle typu kolejnic a technologie, schválené stavebním dozorem.
+Osazování kolejnicových propojek se provádí podle ČSN EN 50119, ČSN 34 1530, ČSN 34 2614, předpisu
+ČD S 3, projektové dokumentace a vzorových listů výhybek.
+Umístění kolejnicových propojek a lanových propojení ve výměnách se provede podle vzorových listů.
+10
+Vlastní provedení kolejnicových spojek a příčných propojek určuje dokumentace, vzorová sestava
+TV typu ”J”,”S”, ”P” a ČSN 34 1530.
+Venkovní zpětné vedení, vedoucí mimo pozemek dráhy, musí odpovídat ČSN 33 3301.
+Kabely mají být vedeny od napájecí stanice nejkratším směrem k místu připojení na zpětné kolejnicové vedení.
+Kabely jsou ukončeny v rozváděči, jehož druh a velikost řeší dokumentace.
+Uložení kabelových vedení do kabelových žlabů se řídí ustanoveními kapitol 26 a 30 TKP.
+Pro montáž proudových spojů platí ustanovení v článku 31.3.7.
+31.3.10 Ukolejnění
+Ukolejnění smí být provedeno výhradně podle KSUaTP ověřených oprávněnými osobami podle
+č.j. 56 731/96- S14 ve znění pozdějších výnosů.
+Vodivé konstrukce a podzemní řady spojené s ukolejněním nebo spojené s kolejnicemi elektrizované trati,
+případně elektrická zařízení na takových vodivých konstrukcích nebo spojená s kolejnicemi, musí být s ohledem
+na kolejové obvody zabezpečovacího zařízení upraveny způsobem pro ně předepsaným v KSUaTP a musí
+splňovat ustanovení ČSN EN 50122-1 a norem souvisejících. Ukolejňování malých předmětů dle čl. 6.2.1.
+ČSN EN 50 122-1 řeší opatření ředitele odboru automatizace a elektrotechniky GŘ ČD č.j. 63318/2004-14 ze
+dne 2.8.2004.
+Při modernizaci (rekonstrukci) trati zhotovitel provede podle KSUaTP ukolejnění neživých částí trakčního
+vedení a ostatních vodivých konstrukcí dotčených stavbou (zábradlí mostů, návěstidel, osvětlení, rozhlasů,
+protihlukových stěn apod. v rámci jednotlivých stavebních objektů). Podle KSUaTP se ukolejní i ostatní vodivé
+předměty, které jsou v POTV ve smyslu ČSN 34 1500.
+31.3.11 Ochrana před dotykem živých částí trakčního vedení
+Ochranu provede zhotovitel v souladu s dokumentací a podle ČSN 34 1500, ČSN 33 2000-4-41,
+ČSN EN 50122-1, ČSN EN 50122-2, ČSN 34 1530.
+Ochranu lze provést:
+− polohou,
+− zábranou,
+− krytem,
+− izolací,
+− doplňkovou izolací.
+31.3.12 Ochrana před nebezpečným dotykem neživých částí trakčního vedení
+Ochranu lze provést podle ČSN 34 1500, ČSN 33 2000-4-41, ČSN EN 50122-1, ČSN EN 50122-2,
+ČSN 34 1530 :
+− ukolejněním,
+− zemněním,
+− izolací,
+− v tunelech také polohou (pro nosné konstrukce TV).
+Zhotovitel musí provést ochranu jednotlivých částí trakčního vedení a ostatních vodivých zařízení v POTV
+předepsaným způsobem podle KSUaTP. Musí být dodržen předepsaný způsob připojení ukolejňovacího vodiče
+na chráněnou konstrukci, ke zpětnému kolejnicovému vedení a dodrženo předepsané místo připojení.
+Způsoby ukolejnění nebo zemnění jsou individuální nebo skupinové (ukolejňovací lano nebo uzemňovací lano).
+Ukolejnění může být přímé nebo přes zařízení k omezení napětí (přes průrazku).
+Ukolejňovací nebo uzemňovací lano propojuje podpěry trakčního vedení a navrhuje se v případech, kdy je
+s ohledem na svodovou admitanci ukolejněných konstrukcí výhodnější, než jiná řešení.
+11
+Průřez lan se určuje na základě zkratových proudů a dotykových napětí a musí být uveden v dokumentaci.
+Způsob zavěšení se provádí podle dokumentace.
+Provedení individuálního ukolejnění je podle ČSN 34 1530, dokumentace stavby a výkresů sestavení vzorové
+dokumentace trolejových vedení (”J”, ”S”, ”P”).
+31.3.13 Návěstidla pro elektrický provoz a traťové značky
+Provedení návěstidel pro elektrický provoz a traťových značek osazovaných na trakční nosné konstrukce
+a způsob jejich uchycení na nosnou konstrukci musí odpovídat schváleným TP a/nebo ZL.
+Návěstidla s trvalou nebo občasnou světelnou návěstí zhotovitel osadí podle požadavků návěstních předpisů
+a dokumentace.
+Uchycení návěstidel a traťových značek na nosnou konstrukci provede zhotovitel podle dokumentace.
+31.3.14 Ostatní vedení a zařízení na podpěrách TV
+Pro umístění ostatních vedení a zařízení podle článku 31.1.2 této kapitoly TKP na podpěrách TV musí být
+splněny tyto podmínky:
+− podpěry přívodního vedení musí vyhovovat zvýšenému namáhání od těchto jiných zařízení,
+− svítidla a návěstidla není dovoleno umísťovat na stožáry s odpojovači, s odpínači a s přepěťovými ochranami
+(bleskojistkami, svodiči přepětí apod.),
+− vedení smí být zavěšena a zařízení připojena jen za podmínek určených v KSUaTP. Plášť kabelu musí být
+elektricky nevodivý,
+− musí být dodržena vzdálenost podle ČSN 34 1500 a ČSN 34 2040.
+Ocelové nosné části optických kabelů, umístěné na betonových stožárech TV se nepropojují s ukolejňovacím
+vodičem za předpokladu, že nejsou v prostoru ohroženém trakčním vedením pro ukolejnění podle ČSN 34 1500.
+31.3.15 Tabulky s bezpečnostním sdělením nebo s nápisy
+Tabulky musí splňovat požadavky podle ČSN ISO 3864 (01 8010) a ČSN 37 5199. Jsou součástí dodávky.
+Jejich umístění a uchycení musí být provedeno podle dokumentace.
+31.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+31.4.1 Základy TV
+Dodávka, skladování a průkazní zkoušky jednotlivých materiálů pro výrobu betonu základů stožárů včetně
+výztuže musí odpovídat požadavkům uvedeným v kapitole 17 TKP.
+31.4.2 Stožáry a nosná břevna TV
+Současně s dodávkou stožárů a břeven nosných bran předloží zhotovitel osvědčení o jejich jakosti (atest),
+tj. dodržení rozměrů, tvarů, materiálů atd. podle typové dokumentace stožárů trakčního vedení, případně podle
+ČSN 34 8240, ČSN 34 8346.
+Uložení stožárů a břeven nosných bran a manipulace s nimi musí být prováděna tak, aby nedošlo k jejich
+poškození, deformaci nebo narušení protikorozní ochrany.
+31.4.3 Trolejový vodič a lana
+Vodiče jsou dodávány na cívkách podle technických podmínek výrobce. Dodávka musí být doložena dodacím
+listem a osvědčením o jakosti.
+Skladování cívek s vodiči musí zabezpečit zhotovitel tak, aby nedošlo k poškození vodičů a lan.
+31.4.4 Elektrická zařízení
+Elektrická zařízení pro trakční vedení se dodávají a zkouší podle schválených technických podmínek .
+12
+31.4.5 Izolátory
+Dodávka a montáž izolátorů musí být provedena tak, aby nemohlo dojít k jejich poškození.
+Jednotlivé kusy musí být baleny nebo jiným způsobem zajištěny proti poškození. Dodávka musí být doložena
+dodacím listem a osvědčením o jakosti.
+31.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Odebírání vzorků a kontrolní zkoušky zajišťuje zhotovitel a výsledky předkládá stavebnímu dozoru.
+31.5.1 Ukolejnění
+Veškeré ukolejňované konstrukce musí mít změřen zemní odpor a musí být ověřeno, že jeho hodnoty nebudou
+kolidovat s údaji předepsanými v KSUaTP, respektive s předpoklady hodnot, za kterých bylo KSUaTP
+podmínečně ověřeno, to vše s ohledem na klimatické změny hodnot během roku. V opačném případě nesmí být
+ukolejnění připojováno ke kolejím a trakční vedení z toho důvodu uvedeno pod napětí, dokud nevstoupí
+v platnost změna KSUaTP vyvolaná existencí jiných hodnot a stanovící jiné podmínky (např. ochran před
+nebezpečným dotykem na elektrizované trati, jiné trakční pospojování, atp.). Také tato změna musí být ověřena
+určenými oprávněnými osobami podle č.j. 56 731/96-S14 ve znění pozdějších výnosů.
+31.5.2 Základy TV
+Kontrola základů musí odpovídat ustanovení ČSN 73 2400, ČSN EN 206-1, tyče kruhové pro výztuž základů
+podle ČSN 42 5512 a kapitoly 17 TKP.
+Kotevní svorníky - kontrola se provádí podle ČSN EN 20898-1 a schválené dokumentace.
+Zhotovitel je povinen průběžně požadovat od stavebního dozoru odsouhlasení skutečné polohy plochy výkopu
+pro základovou spáru a pořizovat o tom zápisy.
+31.5.3 Stožáry TV a břevna nosných bran
+Za kvalitu stožárů a nosných prvků ručí dodavatel (výrobce).
+Stožáry a břevna nosných bran musejí splňovat požadavky na provádění ocelových konstrukcí podle
+ČSN 73 2601 a na úchylky rozměrů a tvarů podle ČSN 73 2611.
+31.5.4 Kontrolní zkoušky a revize trakčního vedení
+Při předání každé dokončené stavby TV do elektrického provozu se provede revize podle ČSN EN 50119,
+ČSN 34 1500, ČSN 34 1530, technicko-bezpečnostní zkouška ve smyslu vyhlášky č.177/95 Sb. a u trolejového
+vedení s projektovanou rychlostí nad 120 km.h-1 také měření interakce mezi pantografem a trolejovým vodičem
+(IPTV) a geometrické polohy trolejového vodiče (GPT) ve smyslu ČSN 34 1530, změna Z2:2002.
+Při předání každé dokončené části stavby TV se podle ČSN 34 1530 zkouška plnou rychlostí nahrazuje
+zkouškou stanovenou rychlostí. Rychlost a způsob této zkoušky se stanoví dohodou mezi zhotovitelem
+a správcem TV. Elektrické spoje TV musí mít příslušné parametry podle ČSN EN 50119 a musí být ověřeno,
+zejména u spojů na trolejovém vedení, že nedošlo nedokonalou montáží ke zvýšení stykových odporů nad mez,
+při které dochází při jmenovité proudové zátěži vodiče k oteplení elektrických spojů nad maximální přípustnou
+teplotu vodiče. Ověření oteplení elektrických spojů lze provést například termovizí při zatížení TV provozním
+proudem.
+Při uvedení TV do provozu musí být ověřeno splnění požadavků na EMC podle článku 31.2.11.
+31.5.5 Protikorozní ochrana
+Při nové elektrizaci trati stejnosměrnou proudovou soustavou nebo při rozsáhlých rekonstrukcích
+(modernizacích) stávající trati je nutné provést protikorozní průzkum, měření a vyhodnocení s návrhem na
+opatření podle kapitoly 25 TKP část A.
+Zhotovitel dokládá skutečně provedené tloušťky povlaků. Zkoušky a metody měření tloušťky povlaků uvádí
+normy ČSN EN ISO 2064, ČSN EN ISO 1463, ČSN 03 8157, ČSN ISO 4518, ČSN ISO 2178.
+13
+31.5.6 Kabelová vedení
+Zkoušky kabelových vedení provede zhotovitel podle kapitoly 26 a 30 TKP a ČSN 34 1530.
+31.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+31.6.1 Základy TV
+Odchylky od dokumentace v umístění základů se připouštějí podle tabulky č. 1, přičemž musejí být splněny
+minimální vzdálenosti uvedené v ČSN 34 1530 a ČSN EN 50119.
+Pro rozměry základů a zhotovení konstrukcí TV musí zhotovitel dodržet normu ČSN 73 0202, ČSN 73 0210-1,
+ČSN 73 0210-2.
+31.6.2 Stožáry a nosné brány TV
+Odchylky od dokumentace v umístění stožárů a nosných bran se připouštějí podle tabulky č. 1, přičemž musejí
+být splněny minimální vzdálenosti volných líců podpěr předepsané pro novou stavbu podle ČSN 34 1530
+a ČSN EN 50119.
+Zhotovitel provede měření zemního odporu podpěr TV a ocelových konstrukcí, které je nutno ukolejnit podle
+ČSN 34 1500.
+Tabulka č. 1 Montážní a stavební tolerance trakčního vedení oproti projektové dokumentaci TV:
+hlavní a předjízdné koleje vedlejší koleje
+[mm] [mm]
+Trolejový vodič výška * ± 30 ± 50
+Klikatost *** - 50 - 50
+Nosné lano Výška sestavy TV + 100
+- 50
+Umístění vůči ose ± 150
+trolejového vodiče
+Stožár Volná líc ** ± 50
+Ostatní Upevňovací prvky kotvení, ± 100
+pevných bodů a kotev
+Stožár výška upevnění konzol R R ± 50
+1, 2
+Břevno výška upevnění ± 50
+Základ osa základu od osy koleje + 50
+- 0
+Základ vrchní hrana základu od TK ± 100
+Směrová lana výška upevnění ± 50
+Směrová lana výška upevnění ± 100
+na stožárech BP (AP)
+Poznámky:
+* tolerance výšky se vztahuje na výšku trolejového drátu v celém traťovém úseku, přičemž sklon trolejového
+vodiče v jednom rozpětí stožárů nesmí přesáhnout hodnotu dle tabulky 8 v ČSN EN 50 119
+** projektovaná vzdálenost líce stožáru se předpokládá o 50 mm větší než minimální vzdálenost stanovená
+normou ČSN 34 1530
+***
+s ohledem na místní poměry je nutno zvážit vyvázání bočních držáků na konzolách kvůli odvanutí trole-
+jového vodiče větrem.
+14
+Dovolený záklon stožárů - je odchylka nezatíženého stožáru od svislé polohy ve směru proti působení hlavních
+sil na stožár. Připouští se podle tabulky č. 2.
+Záklon nosných, výztužných a odtahových stožárů trubkových (T, TS), z předpjatého betonu (P, PS)
+a plochých příhradových (DS)
+Záklon se nastavuje ve směru kolmém od osy koleje.
+Hodnoty záklonů v závislosti na umístění stožáru jsou uvedeny v tabulce č. 2.
+Tabulka č. 2:
+Umístění stožáru s konzolou
+Nastavení
+vně oblouku o poloměru (m) uvnitř oblouku o poloměru (m)
+záklonu od
+osy koleje 1 500 - a více 500 - 1499 200 - 499 1 500 - a více 500 - 1 499 200 - 499
+Záklon 1,0 % 1,5 % 2,0 % 1,0 % 0,5 % 0 %
+stožáru
+Poloměr oblouku koleje je uveden v polohovém plánu.
+POZNÁMKA V dělení kotevních úseků se stožáry umístěnými na stejné straně koleje, se záklon nenastavuje
+u stožáru, nesoucího nesjízdný závěs.
+U trubkových stožárů, nesoucích nosná břevna rámové konstrukce se záklon nenastavuje.
+Záklon kotevních stožárů příhradových ( BP )
+Záklon se nastavuje rovnoběžně s osou koleje proti směru zatížení. Velikost záklonu je 1 % bez ohledu na
+umístění stožáru vně nebo uvnitř oblouku.
+Záklon se nenastavuje, je - li kotvení na stožáru oboustranné.
+Záklon příhradových stožárů BP ve skupinových podpěrách
+Bránové stožáry - záklon kolmo ke koleji se nenastavuje.
+Převěsové podpěry (nosné a napájecí převěsy) - záklon stožárů se nastavuje 1 % kolmo k ose koleje ve směru
+proti směru zatížení.
+Záklon kotevních stožárů trubkových
+Záklon těchto stožárů se ve směru rovnoběžném s osou koleje nenastavuje. V případě, že je stožár použit jako
+nosný, nastavuje se záklon kolmo k ose koleje podle tabulky 2. Toto ustanovení neplatí jedná-li se o bránový
+stožár.
+Maximální povolená deformace podpěr a rámových konstrukcí při normálním provozním zatížení je 2 %
+z kontrolované délky prutu pro mezní zatížení podle ČSN 73 0035.
+31.6.3 Výška a sklon trolejového vodiče
+Výška trolejového vodiče je měřena podle ČSN EN 50119 a ČSN 34 1530 jako statická vzdálenost troleje
+od roviny proložené temeny kolejnic.
+Odchylka od dokumentace (v místech závěsů TV) mezi sousedními závěsy se připouští podle tabulky č. 1.
+Sklon (změna výšky trolejového vodiče) musí odpovídat požadavkům podle ČSN EN 50 119, tab. 8.
+15
+31.6.4 Interakce sběrač-trolejové vedení
+Pro posuzování interakčního chování na rozhranní sběrač-trolejové vedení se používají následující kategorie
+trolejových vedení:
+Traťová rychlost v km.h-1 v ≤ 160 160 < v ≤ 220 220 < v < 250 v ≥ 250
+Kategorie pro střídavou trakci (AC) AC 1 AC 2 AC 3 AC 4
+Traťová rychlost v [km/h] v ≤ 160 160 < v ≤ 220 220 < v ≤ 250 -
+Kategorie pro stejnosměrnou trakci (DC) DC 1 DC 2 DC 3 -
+Přípustné proudové zatížení na styku kontaktního pásu a trolejového vodiče v klidovém stavu
+Přípustný proud v trolejovém vedení vztažený na vlak závisí na rychlosti, hmotnosti vlaku vzdálenosti mezi
+vlaky, stoupání trati, konstrukci trolejového vedení. Charakteristiky kontaktního pásu a trolejového vodiče
+musejí být takové, že při maximálním odebraném proudu nedojde k přehřátí trolejového vodiče při klidovém
+stavu a rozjezdu, a k přehřátí kontaktních pásů během požadavku maximálního odebíraného proudu.
+Maximální proud je omezen následujícími faktory:
+- počet a materiál trolejových vodičů,
+- počet a materiál kontaktních pásů,
+- skutečná hodnota kontaktních tlakových sil v kontaktním bodě,
+- kontaktní síla.
+Pro bezpečný provoz musí provozovatel vlaku poskytnout vyhodnocení navrhované konfigurace
+pantografových sběračů a proudových požadavků vlaku, aby bylo možno splnit pracovní mezní hodnoty
+trolejového vedení.
+Statická kontaktní síla vyvolávaná pantografovým sběračem na trolejové vedení musí být uzpůsobena na
+bezpečný odběr proudu v klidovém stavu.
+Pro AC sestavu je použita statická kontaktní síla o hodnotě 75±15 N, pro DC sestavu s napětím 1,5 kV kontaktní
+síla o hodnotě 125±15 N a pro DC se stavu s napětím 3 kV kontaktní síla o hodnotě 110±15 N v klidovém
+stavu.
+Hodnota přípustného proudu v klidovém stavu na pantografový sběrač je uvedena v tabulce č. 3.
+Tabulka č. 3 - Přípustný proud na pantografový sběrač v klidovém stavu
+Kategorie trolejového vedení AC (1,2,3,4) DC (1,2,3) DC (1,2,3) 3
+1,5 kV kV
+Přípustný proud v klidovém stavu 80 300 200
+na pantografový sběrač (A)
+Interakční dynamické chování
+Dynamická interakce mezi pantografovým sběračem a trolejovým vedením má vliv na kvalitu systému odběru
+proudu a na opotřebování kontaktních pásů pantografového sběrače a trolejového vodiče.
+Toto dynamické chování je závislé na charakteristikách pantografového sběrače a trolejového vedení a dále na
+provozních podmínkách. Hlavními provozními podmínkami, které je nutno v této souvislosti brát v úvahu, jsou
+rychlost vlaku, počet, vzdálenost a poloha pantografových sběračů.
+Pro vyhodnocení parametrů v případě více než jednoho pantografového sběrače se budou brát v úvahu výsledky
+u toho pantografového sběrače, který bude vykazovat kritičtější hodnoty. Pro účely přezkoumání se bude
+provádět hodnotící zkouška. Dané hodnoty se budou měřit v souladu s normou ČSN EN 50317.
+16
+Tabulka č. 4 Hodnoty pro interakční chování
+Kategorie trolejového AC 1 AC 2 AC 3 AC 4 DC 1 DC 2 DC 3
+vedení
+F
+M
+(N) Křivka (viz obrázek 1) Křivka (viz obrázek 2)
+σ 0,3 F 0,3 F
+max M M
+(při maximální rychlosti)
+Rezerva pro zdvih Viz 5.2.1.3 ČSN EN 50119
+trolejového vodiče v místě S = k s a)
+0
+závěsu - S (mm)
+a) s - vypočtený, simulovaný nebo měřený zdvih trolejového vodiče u pevného ramene vygenerovaný
+0
+v normálním provozu v souladu s 5.2.1.3 normy ČSN EN 50119
+k - koeficient podle ustanovení 5.2.1.3 normy ČSN EN 50119
+Legenda:
+σ maximální směrodatná odchylka kontaktní tlakové síly
+max
+F průměrná kontaktní síla
+M
+Požadovaná hodnota průměrné kontaktní síly F (N) závisí na rychlosti v (km/h) - viz obrázek č. 1 a 2:
+m
+F = f (v)
+M
+Průměrná kontaktní síla F pro jakýkoliv pantografový sběrač musí být nižší nebo rovna hodnotě udané
+M
+příslušnou křivkou; pro každý pantografový sběrač musí být splněna kritéria pro kvalitu odběru proudu.
+Obrázek č. 1 Závislost F (N) na v (km/h) pro sestavy AC
+M
+v km.h-1
+17
+Obrázek č. 2 Závislost F (N) na v (km/h) pro DC sestavu
+M
+v km.h-1
+Legenda:
+F curve for 1,5 kV – křivka F pro napětí 1,5 kV
+M m
+F curve for 3 kV – křivka F pro napětí 3 kV
+M m
+31.6.5 Oteplení elektrických spojů
+Oteplení elektrických spojů, zejména na vodičích trolejového vedení, nesmí překročit maximální přípustné
+teploty uvedené v tabulce č. 5 (identická tabulka viz ČSN EN 50119 příloha B tabulka B.1), při jejichž
+překročení může dojít k narušení mechanických vlastností materiálu.
+Tabulka č. 5
+Materiál Maximální teplota (°C)
+Normální měď a měď s vysokou pevností a vysokou 80
+vodivostí
+Slitina stříbra a mědi 100
+Slitina kadmia a mědi 80
+31.6.6 Trakční kabelové vedení
+Odchylky položení kabelů jsou uvedeny v kapitole 26 TKP.
+31.6.7 Míra opotřebení a konstrukce TV
+Použití stávajícího materiálu TV určí vlastník dráhy na základě prohlídek, měření, inspekcí a vyhodnocení
+spolehlivosti provozu.
+Trolejový vodič a nosné lano se musí vždy vyměnit při stavbách nebo rekonstrukcích kolejí pro rychlosti nad
+120 km.h-1 a rozpětí stožárů nesmí překročit vzdálenost 65 m (pro sestavy ”J” a ”S” funkčních souborů FS 1
+a FS 2). Doporučuje se střídat velikost rozpětí stožárů po sobě jdoucích pro zamezení rozkmitání trolejového
+vedení při rychlostech nad 120 km.h-1.
+18
+Pro rychlosti do 120 km.h-1 se při stavbách a rekonstrukcích kolejí nemusí trolejový vodič a nosné lano měnit.
+Pro rychlosti do 100 km.h-1 není rozpětí stožárů omezeno vzdáleností 65 m (za předpokladu příznivých
+traťových poměrů a místních podmínek).
+31.6.8 Záruky, údržba v záruční době
+Záruční doby všeobecně stanovuje kapitola 1 TKP. Údržbu v záruční době zajišťuje správce TV podle
+ustanovení uvedených v kapitole 1 TKP.
+V souvislosti s vytahováním (prodlužováním) měděných a bronzových vodičů správce TV po projednání
+s dodavatelem TV zajistí přeregulování TV.
+31.7 KLIMATICKÁ OMEZENÍ
+31.7.1 Základy TV
+Betonáž základů podpěr TV musí být provedena v souladu s ustanovením článku 12 ČSN 73 2400
+a kapitoly 17 TKP.
+31.7.2 Stožáry TV
+Pro osazování vetknutých stožárů do základů spojené betonáží zálivky a pro betonáž hlaviček stožárů platí
+podmínky uvedené v kapitole 17 TKP.
+Pro osazování stožárů svorníkového provedení a pro vlastní stožáry a nosné brány nejsou klimatická omezení.
+31.7.3 Trakční vedení
+Práce na trakčním vedení při napěťových výlukách v době bouřky jsou zakázány.
+31.7.4 Kabelová vedení
+Manipulace a pokládka celoplastových kabelů nesmí být prováděna při teplotách nižších než + 4°C bez
+zvláštních opatření podle ČSN 34 1050.
+31.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+Základním předpokladem odsouhlasení a převzetí prací od zhotovitele je zpráva o technické prohlídce a zkoušce
+ve smyslu § 47 zákona č.266/1994 Sb., souhlas DÚ s uvedením do provozu a protokoly o realizaci podmínek
+stanovených v KSUaTP. Požaduje se, aby určená technická zařízení ve smyslu vyhlášky č. 100/1995 Sb. byla
+předávána dodavatelem provozuschopná a s vystaveným průkazem způsobilosti. Součásti a zařízení, které musí
+být konstruovány s ohledem na provoz kolejových obvodů, musí mít také platný průkaz způsobilosti UTZ podle
+vyhlášky 100/1995 Sb. § 1 odstavec 4 písmeno k).
+Elektrická zařízení, která musí mít před uvedením do provozu schválené ”Technické podmínky pro elektrická
+zařízení”, stanovuje Věstník ČD č. 12/1999.
+Kontrolu a měření provedených prací, potřebnou pro vyhotovení revizních zpráv, zhotovitel provede podle
+ČSN 34 1530 a dále doplní o doklady požadované v oddíle 31.4.
+Do provozu lze uvést jen ty části trakčního vedení a zařízení, které splňují požadavky příslušných norem
+a předpisů na základě výchozí revize podle ČSN EN 50119, ČSN 34 1500 a ČSN 34 1530 a na základě
+technické prohlídky a zkoušky, provedené právnickou osobou určenou § 47 zákona č. 266/1994 Sb.
+Trolejové vedení pro rychlosti nad 120 km.h-1 lze uvést do provozu splňuje-li požadavky článku 31.6.4 ověřené
+měřením jízdou měřicího vozu v souladu s ustanoveními ČSN EN 50317.
+19
+31.8.1 Příprava k převzetí prací
+Zhotovitel je povinen připravit nezbytné podklady, a to zejména:
+− dokumentaci skutečného provedení včetně geodetického zaměření,
+− zápisy o odsouhlasení prací a konstrukcí zakrytých v průběhu výstavby,
+− osvědčení o provedených zkouškách použitých materiálů a konstrukcí, zprávu o převzetí výchozí revize
+zařízení podle ČSN 34 1530,
+− montážní deník,
+− doklady o provedení komplexního vyzkoušení,
+− KSUaTP ověřené oprávněnými osobami podle č.j. 56 731/96-S14 ve znění pozdějších výnosů. Kopie
+ověřeného KSUaTP musí být v počtu pro příslušné správy SDC a pro správce KSUaTP.
+31.8.2 Převzetí základové spáry
+V průběhu výstavby musí být zaměřena skutečná poloha plochy výkopu pro základovou spáru a před betonáží
+základu odsouhlasena stavebním dozorem.
+Zhotovitel musí pořídit písemný záznam o provedené práci a její kvalitě.
+31.8.3 Dokumentace a zaměření skutečného provedení stavby trakčního vedení
+V dokumentaci skutečného provedení stavby trakčního vedení se uvedou a v její grafické části zakreslí veškeré
+změny, které nastaly v průběhu realizace stavby.
+Součástí dokumentace skutečného provedení stavby je:
+− seznam souřadnic geometrických středů základů podpěr nebo kotev trakčního vedení a všech rohů základů
+podle skutečného provedení v souřadnicovém systému S-JTSK a výškovém systému Bpv včetně hloubek
+základů.
+Součástí dokumentace skutečného provedení pokládky kabelového vedení je:
+− seznam souřadnic v systému S - JTSK a nadmořských výšek systému Bpv lomových bodů a zařízení
+nacházejících se na trase kabelového vedení.
+Veškeré výše uvedené měřické práce a následné zpracování předepsané dokumentace zajistí zhotovitel stavby
+tak, aby polohová a výšková přesnost určení podrobných bodů odpovídala ČSN 01 3410 a ČSN 01 3411.
+Kabelová vedení nebo jejich úpravy musí stavební dozor odsouhlasit před zakrytím podle kapitol 26 a 30 TKP.
+V dokumentaci podle skutečného provedení zhotovitel zajišťuje:
+a) podklady pro ukolejnění podpěr trakčního vedení, osvětlení, návěstidel a ocelových konstrukcí:
+− popis měření,
+− výsledky měření elektrických odporů uvedených objektů vůči zemi;
+b) podklady a měření pro závěrečné revizní zprávy stavebních objektů TV;
+c) protokol o shodě skutečného provedení ochran před nebezpečným dotykem a trakčního propojení ve shodě
+s ověřeným KSUaTP spolu s protokolem o skutečných změřených hodnotách zemních odporů ukolejněných
+konstrukcí, stanoví-li KSUaTP ověřené v době, kdy trakční podpěry ještě nejsou dokončeny, místo
+změřených hodnot jen jejich nepodkročitelné meze.
+20
+31.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+V průběhu prací na díle (stavebním objektu) zajišťuje zhotovitel pro dokumentaci skutečného provedení měření
+svislosti trakčních podpěr a případných deformací.
+31.9.1 Kontrolní měření
+Objednatel zajistí do ukončení záruční doby převzatého díla kontrolní měření tak, aby mohl porovnat předané
+výsledky měření od zhotovitele podle oddílu 31.8 této kapitoly TKP a případně uplatnit reklamaci podle článku
+31.6.6 této kapitoly TKP.
+31.10 EKOLOGIE
+Při všech montážních pracích na TV musí zhotovitel dodržet ustanovení kapitoly 1 TKP.
+Odvoz zeminy a její uložení je určeno do míst podle dokumentace nebo pokynů stavebního dozoru.
+Při provádění manipulace s ekologicky nebezpečnými látkami (kupř. ropné produkty, nátěry apod.) musí
+zhotovitel zajistit likvidaci kontaminovaných odpadů (kupř. i obaly od nátěrových hmot, použité štětce apod.)
+podle ustanovení kapitoly 1 TKP.
+31.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ
+OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanovuje kapitola
+1 TKP.
+Zhotovitel musí při práci dodržovat všechny platné normy a předpisy, týkající se bezpečnosti a ochrany zdraví
+při práci - viz kapitolu 1 TKP.
+Bezpečnost pohybu a práce osob na železnici obecně řeší předpis Op 16. Zhotovitel musí provádět
+práce na elektrických zařízeních a práce s elektrickými zařízeními podle norem ČSN EN 50110-1,
+ČSN EN 50110-2, ČSN EN 50110-1 ed. 2, TNŽ 34 3109.
+Při práci na TV a v jeho blízkosti musí zhotovitel zajistit dodržování ustanovení normy TNŽ 34 3109.
+Zhotovitel musí dodržovat při práci a pobytu na stavbě ustanovení normy ČSN ISO 8421-1 až 8 o požární
+bezpečnosti a musí poučit pracovníky o požární ochraně a použití ručních hasicích přístrojů uvedených
+v ČSN EN 3-1 až 6.
+31.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich
+aktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP,
+tj. právních předpisů, technických norem a předpisů a předpisů ČD.
+21
+31.12.1 Technické normy
+ČSN 01 3410 Mapy velkých měřítek. Základní a účelové mapy.
+ČSN 01 3411 Mapy velkých měřítek. Kreslení a značky.
+ČSN 33 1500 Elektrotechnické předpisy. Revize elektrických zařízení.
+ČSN 33 2000-1 Elektrotechnické předpisy. Elektrická zařízení. Část 1: Rozsah platnosti, účel a základní
+hlediska.
+ČSN 33 2000-4-41 Elektrotechnické předpisy . Elektrická zařízení Část 4: Bezpečnost. Kapitola 41: Ochrana
+před úrazem elektrickým proudem.
+ČSN 33 2000-5-52 Elektrotechnické předpisy. Část 5: Výběr a stavba elektrických zařízení. Kapitola 52: Výběr soustav a
+stavba vedení
+ČSN 33 2000-6-61 Elektrotechnické předpisy. Elektrická zařízení. Část 6: Revize. Kapitola 61: Postupy při
+výchozí revizi.
+ČSN 33 3210 Elektrotechnické předpisy. Rozvodná zařízení. Společná ustanovení.
+ČSN 33 3301 Stavba elektrických venkovních vedení s jmenovitým napětím do 52 kV
+ČSN 34 1500 Elektrotechnické předpisy. Předpisy pro elektrická trakční zařízení.
+ČSN 34 1530 Elektrická trakční vedení železničních drah celostátních, regionálních a vleček.
+ČSN 34 2040 Elektrotechnické předpisy ČSN. Předpisy pro ochranu sdělovacích a zabezpečovacích
+vedení a zařízení před nebezpečnými a rušivými vlivy elektrické trakce 25 kV, 50 Hz.
+ČSN 34 2613 Železniční zabezpečovací zařízení. Kolejové obvody a vnější podmínky pro jejich činnost.
+ČSN 34 5145 Elektrotechnické názvosloví. Názvosloví pro elektrická trakční zařízení, vedení nad 1 kV.
+ČSN 34 8240 Příhradové ocelové stožáry pro venkovní silové vedení do 35kV.
+ČSN 34 8340 Osvětlovací stožáry.
+ČSN 34 8346 Stožáry pro trakční vedení tramvajových a trolejbusových drah.
+ČSN 37 5199 Označování a bezpečnostní sdělení na trakčních vedeních celostátních drah a vleček.
+ČSN 42 3001 Měď elektrovodná 42 3001 Cu 99,9E.
+ČSN 42 5512 Tyče kruhové pro výztuž do betonu z oceli značky 10 216. Rozměry.
+ČSN 42 5715 Trubky ocelové bezešvé tvářené za tepla. Rozměry.
+ČSN 42 8460 Trolejový drôt. Rozmery.
+ČSN 72 1860 Kámen pro zdivo a stavební účely. Společná ustanovení.
+ČSN 73 0035 Zatížení stavebních konstrukcí.
+ČSN 73 0202 Geometrická přesnost ve výstavbě. Základní ustanovení.
+ČSN 73 0210-1 Geometrická přesnost ve výstavbě. Podmínky provádění. Část 1: Přesnost osazení.
+ČSN 73 0210-2 Geometrická přesnost ve výstavbě. Podmínky provádění. Část 2: Přesnost monolitických
+betonových konstrukcí.
+ČSN 73 1001 Zakládaní staveb. Základová půda pod plošnými základy.
+ČSN 73 1401 Navrhování ocelových konstrukcí.
+ČSN 73 2400 Provádění a kontrola betonových konstrukcí.
+ČSN 73 2601 Provádění ocelových konstrukcí.
+ČSN 73 2611 Úchylky rozměrů a tvarů ocelových konstrukcí.
+ČSN EN 1008 Záměsová voda do betonu - Specifikace pro odběr vzorků, zkoušení a
+posouzení vhodnosti vody, včetně vody získané při recyklaci v betonárně, jako
+záměsové vody do betonu.
+ČSN EN 12166 (42 1318) Měď a slitiny mědi - Dráty pro všeobecné použití
+ČSN EN 12350-2 (73 1301) Zkouška čerstvého betonu - Část 2: Zkouška sednutím
+ČSN EN 12350-3 Zkoušení čerstvého betonu - Část 3: Zkouška Vebe
+ČSN EN 12350-4 (73 1301) Zkoušení čerstvého betonu - Část 4: Stupeň zhutnitelnosti
+ČSN EN 12350-5 (73 1301) Zkoušení čerstvého betonu - Část 5: Zkouška rozlitím
+ČSN EN 197-1 (72 2101) Cement - Část 1: Složení, specifikace a kritéria
+22
+ČSN EN 206-1 (73 2403) Beton - Část 1: Specifikace, vlastnosti, výroba a shoda
+ČSN EN 3-1 (38 9100) Přenosné hasicí přístroje. Část 1: Názvy, doby činnosti, zkušební objekty pro
+třídu požáru A a B.
+ČSN EN 3-2 (38 9100) Přenosné hasicí přístroje. Část 2: Zkouška těsnosti, zkouška elektrické
+vodivosti, zkouška odolnosti proti vibracím, zvláštní ustanovení.
+ČSN EN 3-3 (38 9100) Přenosné hasicí přístroje. Část 3: Konstrukční provedení, pevnost v tlaku,
+mechanické zkoušky.
+ČSN EN 3-4 (38 9100) Přenosné hasicí přístroje. Část 4: Množství a náplně, minimální požadavky na
+hasicí schopnost.
+ČSN EN 3-5 (38 9100) Přenosné hasicí přístroje. Část 5: Dodatečné požadavky a zkoušky.
+ČSN EN 3-6 (38 9100) Přenosné hasicí přístroje. Část 6: Ustanovení pro atestaci shody přenosných
+hasicích přístrojů podle EN 3 část 1 až část 5.
+ČSN EN 50110-1 (34 3100) Obsluha a práce na elektrických zařízeních
+ČSN EN 50110-1 ed. 2 Obsluha a práce na elektrických zařízeních
+ČSN EN 50110-2 (34 3100) Obsluha a práce na elektrických zařízeních (národní dodatky)
+ČSN EN 50119 (34 1531) Drážní zařízení- Pevná trakční zařízení-Elektrická trakční nadzemní trolejová
+vedení
+ČSN EN 50122-1 (34 1520) Drážní zařízení - Pevná trakční zařízení – Část 1: Ochranná opatření vztahující
+se na elektrickou bezpečnost a uzemňování
+ČSN EN 50122-2 (34 1520) Drážní zařízení - Pevná trakční zařízení – Část 2: Ochranná opatření proti
+účinkům bludných proudů
+ČSN EN 50149 (34 1558) Drážní zařízení - Pevná drážní zařízení - Elektrická trakce - Profilový
+trolejový vodič z mědi a slitin mědi
+ČSN EN 50317 (36 2313) Drážní zařízení - Systémy odběru proudu - Požadavky na měření dynamické
+interakce mezi pantografovým sběračem a nadzemním trolejovým vedením
+a ověřování těchto měření
+ČSN EN 50318 (36 2314) Drážní zařízení - Systémy odběru proudu - Ověřování simulace dynamické
+interakce mezi pantografovým sběračem a nadzemním trolejovým vedením
+ČSN EN 50367 Drážní zařízení - systémy sběračů proudu - Technické kritéria pro interakci
+mezi pantografem a nadzemním trolejovým vedením (pro dosažení volného
+přístupu)
+ČSN EN 573-3 Hliník a slitiny hliníku - Chemické složení a druhy tvářených výrobků - část 3:
+Chemické složení
+ČSN EN ISO 898-1 (02 1005) Mechanické vlastnosti spojovacích součástí z uhlíkové a legované oceli -
+Část 1: Šrouby
+ČSN EN ISO 1461 (03 8558) Žárové povlaky zinku nanášené ponorem na železných a ocelových výrobcích.
+Specifikace a zkušební metody.
+ČSN EN ISO 1520 (67 3081) Nátěrové hmoty – Zkouška hloubením
+ČSN EN ISO 2063 Žárové stříkání - Kovové a jiné anorganické povlaky - zinek, hliník a jejich
+slitiny
+ČSN EN ISO 2064 (03 8155) Kovové a jiné anorganické povlaky - Definice a dohody týkající se měření
+tloušťky
+ČSN EN ISO 2808 (67 3061) Nátěrové hmoty – Stanovení tloušťky nátěru
+ČSN EN ISO 3231 (67 3096) Nátěrové hmoty – Stanovení odolnosti vlhkým atmosférám s obsahem oxidu
+siřičitého
+ČSN EN ISO 8504-1 (03 8224) Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+výrobků. Metody přípravy povrchu. Část 1: Obecné zásady
+ČSN EN ISO 8504-2 (03 8224) Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+výrobků. Metody přípravy povrchu. Část 2: Otryskávání
+ČSN EN ISO 8504-4 Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+(03 8224) výrobků – Metody přípravy povrchu – Část 1: Obecné zásady
+ČSN EN ISO 1463 (03 8156) Kovové a oxidové povlaky. Měření tloušťky povlaku. Mikroskopická metoda.
+23
+ČSN IEC 50(811) (33 0050) Mezinárodní elektrotechnický slovník - Kapitola 811: Elektrická trakce
+ČSN IEC 913 (34 1540) Elektrotechnické předpisy. Elektrické trakční nadzemní vedení.
+ČSN ISO 2178 (03 8181) Nemagnetické povlaky na magnetických podkladech. Měření tloušťky
+povlaku. Magnetická metoda.
+ČSN ISO 2409 Nátěrové hmoty – Mřížková zkouška
+ČSN ISO 2813 (67 3066) Nátěrové hmoty – Stanovení zrcadlového lesku nátěrů bez obsahu kovových
+pigmentů při úhlu 20°, 60° a 80°
+ČSN ISO 3864 (01 8010) Bezpečnostní barvy a bezpečnostní značky.
+ČSN ISO 4518 (03 8170) Kovové povlaky. Měření tloušťky povlaku. Profilometrická metoda.
+ČSN ISO 8421-1 (38 9000) Požární ochrana. Slovník. Část 1: Obecné termíny a jevy požárů.
+ČSN ISO 8421-2 (38 9000) Požární ochrana. Slovník. Část 2: Požární ochrana staveb.
+ČSN ISO 8421-3 (38 9000) Požární ochrana. Slovník. Část 3: Elektrická požární signalizace.
+ČSN ISO 8421-4 (38 9000) Požární ochrana. Slovník. Část 4: Hasicí zařízení.
+ČSN ISO 8421-5 (38 9000) Požární ochrana. Slovník. Část 5: Odvětrání kouře.
+ČSN ISO 8421-6 (38 9000) Požární ochrana. Slovník. Část 6: Evakuace a únikové prostředky.
+ČSN ISO 8421-7 (38 9000) Požární ochrana. Slovník. Část 7: Prostředky pro detekci a protlačení výbuchu.
+ČSN ISO 8421-8 (38 9000) Požární ochrana. Slovník. Část 8: Termíny specifické práce pro hašení požáru,
+záchranné práce a pro zacházení s nebezpečnými látkami.
+ČSN ISO 8501-1 (03 8221) Příprava ocelových povrchů před nanesením nátěrových hmot a obdobných
+výrobků. Vizuální vyhodnocení čistoty povrchu. Část 1: Stupně zarezavění
+a stupně přípravy ocelového podkladu bez povlaku a ocelového podkladu po
+úplném odstranění předchozích povlaků.
+ČSN ISO 8501-2 (03 8221) Příprava ocelových povrchů před nanesením nátěrových hmot a obdobných
+výrobků. Vizuální vyhodnocení čistoty povrchu Část 2: Stupně přípravy dříve
+natřeného ocelového podkladu po místním odstranění předchozích povlaků
+ČSN ISO 8504-3 (03 8224) Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+výrobků. Metody přípravy povrchu. Část 3: Ruční a mechanizované čištění
+ČSN ISO 9223 (03 8203) Koroze kovů a slitin. Korozní agresivita atmosfér. Klasifikace
+ČSN ISO 9227 (03 8132) Korozní zkoušky v umělých atmosférách. Zkoušky solnou mlhou
+ČSN IEC 1000-1-1 (33 3431) Elektromagnetická kompatibilita (EMC). Část 1: Všeobecně. Díl 1: Použití
+a interpretace základních definic a termínů
+TNŽ 01 3412 Značky a zkratky v jednotných železničních mapách.
+TNŽ 01 3468 Výkresy železničních tratí a stanic.
+TNŽ 34 3109 Bezpečnostní předpisy pro činnost na trakčním vedení a v jeho blízkosti na
+železničních dráhách celostátních, regionálních a vlečkách.
+24
+31.12.2 Předpisy
+ČD E15 Měření parametrů trakčního vedení měřicím vozem BDmee 87/MVPTZ 96/3
+ČD Op 16 Pravidla o bezpečnosti a ochraně zdraví při práci.
+ČD S3 Železniční svršek
+Zákon č. 266/1994 Sb. o drahách
+Vyhláška č. 100/1995 Sb. Podmínky pro provoz, konstrukci a výrobu určených technických zařízení.
+Vyhláška č. 177/1995 Sb. Stavební a technický řád drah.
+Výnos ČD DDC č.j. 56 731/96-S14 Směrnice pro zavedeni, používání a správu koordinačních schémat ukolejnění
+a trakčního propojení ze dne 27. 5. 1996.
+„Směrnice pro náhradu měděných propojek a lanových propojení ocelovými propojkami a lanovými
+propojeními“, čj. 59 556/96-S14-ZV6 ze dne 5.12.1996 (účinnost od 1.1.1997)
+Zásady pro schvalování technických podmínek pro elektrická zařízení užívaná v provozu Českých drah. -
+č.j. 56 573/1999-O14 (uveřejněno ve Věstníku ČD č. 12/1999)
+Vzorová sestava typu J č.j. 55 506/1989-O24
+Vzorová sestava typu P č.j. 21 854/1991-210
+Vzorová sestava typu S č.j. 55 506/1989-O24
+Vzorové sestavy TV typu J/S FS č. 1,2 a C
+Typová tabulka stožárů
+31.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 3 - Zemní práce
+Kapitola 17 - Beton pro konstrukce
+Kapitola 18 - Betonové mosty a konstrukce
+Kapitola 19 - Ocelové mosty a konstrukce
+Kapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí
+Kapitola 26 - Osvětlení, rozvody NN včetně dálkového ovládání, EOV, stožárové transformovny vn/nn
+Kapitola 27 - Zabezpečovací zařízení
+Kapitola 29 - Silnoproudá technologická zařízení
+Kapitola 30 - Silnoproudé rozvody vm a soustava 6 kV
+Kapitola 33 - Elektromagnetická kompatibilita (EMC)
+25
+Poznámky:
+26
+27
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 31
+T ř e t í - aktualizované vydání se zapracovanou změnou č. 5 /z roku 2006/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Ing. Bohuslav Kramerius
+České dráhy, a.s., Technická ústředna Českých drah,
+sekce elektrotechniky a energetiky
+Technický redaktor: Ing. Vítězslav Čamek
+České dráhy, a.s., Technická ústředna Českých drah,
+sekce elektrotechniky a energetiky
+Odborný gestor: Ing. Pavel Krkoška
+Správa železniční dopravní cesty, s.o.,
+odbor provozuschopnosti ŽDC
+Nakladatelství: České dráhy, a.s., Technická ústředna Českých drah,
+Malletova 10/2363,
+190 00 Praha 9 - Libeň
+Distribuce: České dráhy, a.s., Technická ústředna Českých drah,
+SATT - oddělení typové dokumentace,
+Nerudova l,
+772 58 Olomouc
+tel.: +420 972 742 241, +420 972 741 769,
+fax: +420 972 741 290,
+e-mail:otd@tucd.cz
+www.cd.cz/tudc

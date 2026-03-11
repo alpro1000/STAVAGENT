@@ -135,41 +135,35 @@ export async function parseXLSX(filePath) {
 }
 
 /**
- * Extract file metadata (Stavba, Objekt, Сoupis)
+ * Extract file metadata (Stavba, Objekt, Soupis)
  * This metadata is used to create project hierarchy
  *
  * Stavba = Project container (from file headers)
  * Objekt = Object name (from file headers or CORE)
- * Сoupis = Budget/list name
+ * Soupis = Budget/list name
+ *
+ * Handles multiple Excel header formats:
+ *   Format 1: Label in column N, value in column N+1  ("Stavba" | "D6 Karlovy Vary")
+ *   Format 2: "Stavba:" with colon, value in next col  ("Stavba:" | "D6 Karlovy Vary")
+ *   Format 3: Label+value in same cell                  ("Stavba: D6 Karlovy Vary")
+ *   Format 4: Label row, value in next row below        (row i: "Stavba:", row i+1: "D6 Karlovy Vary")
  */
 export function extractFileMetadata(rawData) {
-  // 🔴 FIX: Check if rawData is valid array
   if (!Array.isArray(rawData)) {
     logger.warn(`[Parser] Invalid input: rawData is not an array`);
-    return {
-      stavba: null,
-      objekt: null,
-      soupis: null
-    };
+    return { stavba: null, objekt: null, soupis: null };
   }
 
   if (rawData.length === 0) {
     logger.warn(`[Parser] rawData is empty array`);
-    return {
-      stavba: null,
-      objekt: null,
-      soupis: null
-    };
+    return { stavba: null, objekt: null, soupis: null };
   }
 
-  let metadata = {
-    stavba: null,
-    objekt: null,
-    soupis: null
-  };
+  let metadata = { stavba: null, objekt: null, soupis: null };
+  const metadataKeys = ['stavba', 'objekt', 'soupis'];
 
-  // Scan first 15 rows for metadata labels
-  for (let i = 0; i < Math.min(15, rawData.length); i++) {
+  // Scan first 20 rows for metadata labels
+  for (let i = 0; i < Math.min(20, rawData.length); i++) {
     const row = rawData[i];
     const keys = Object.keys(row);
 
@@ -179,24 +173,47 @@ export function extractFileMetadata(rawData) {
 
       if (!value || typeof value !== 'string') continue;
 
-      const normalized = value.trim().toLowerCase();
+      const trimmed = value.trim();
+      const normalized = trimmed.toLowerCase();
 
-      // Look for "Stavba:" label
-      if (normalized === 'stavba' && keyIndex + 1 < keys.length) {
-        metadata.stavba = row[keys[keyIndex + 1]];
-        logger.info(`[Parser] Found Stavba: "${metadata.stavba}"`);
-      }
+      for (const metaKey of metadataKeys) {
+        if (metadata[metaKey]) continue; // already found
 
-      // Look for "Objekt:" label
-      if (normalized === 'objekt' && keyIndex + 1 < keys.length) {
-        metadata.objekt = row[keys[keyIndex + 1]];
-        logger.info(`[Parser] Found Objekt: "${metadata.objekt}"`);
-      }
+        // Format 1/2: Label is exact match (with or without colon), value in next column
+        if ((normalized === metaKey || normalized === metaKey + ':') && keyIndex + 1 < keys.length) {
+          const nextValue = row[keys[keyIndex + 1]];
+          if (nextValue && String(nextValue).trim()) {
+            metadata[metaKey] = String(nextValue).trim();
+            logger.info(`[Parser] Found ${metaKey} (next-col): "${metadata[metaKey]}"`);
+            break;
+          }
+        }
 
-      // Look for "Сoupis:" label
-      if (normalized === 'soupis' && keyIndex + 1 < keys.length) {
-        metadata.soupis = row[keys[keyIndex + 1]];
-        logger.info(`[Parser] Found Сoupis: "${metadata.soupis}"`);
+        // Format 3: "Stavba: D6 Karlovy Vary" in a single cell
+        const colonPattern = new RegExp(`^${metaKey}\\s*:\\s*(.+)$`, 'i');
+        const colonMatch = trimmed.match(colonPattern);
+        if (colonMatch && colonMatch[1].trim()) {
+          metadata[metaKey] = colonMatch[1].trim();
+          logger.info(`[Parser] Found ${metaKey} (inline): "${metadata[metaKey]}"`);
+          break;
+        }
+
+        // Format 4: Label in this row, value in the same column position in next row
+        if ((normalized === metaKey || normalized === metaKey + ':') && i + 1 < rawData.length) {
+          const nextRow = rawData[i + 1];
+          if (nextRow) {
+            const nextRowKeys = Object.keys(nextRow);
+            // Try same column position
+            if (keyIndex < nextRowKeys.length) {
+              const belowValue = nextRow[nextRowKeys[keyIndex]];
+              if (belowValue && String(belowValue).trim() && !metadataKeys.includes(String(belowValue).trim().toLowerCase().replace(':', ''))) {
+                metadata[metaKey] = String(belowValue).trim();
+                logger.info(`[Parser] Found ${metaKey} (below-row): "${metadata[metaKey]}"`);
+                break;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -467,6 +484,163 @@ export function extractProjectsFromCOREResponse(corePositions) {
   }
 
   return projects;
+}
+
+/**
+ * Parse ALL sheets from Excel file
+ * Returns an array of sheets, each with its data and extracted bridge info
+ * Used for multi-bridge import where each sheet = one bridge (MOST)
+ */
+export async function parseAllSheets(filePath) {
+  try {
+    const workbook = XLSX.readFile(filePath, {
+      cellFormula: true,
+      cellStyles: true,
+      cellDates: true
+    });
+
+    if (!workbook.SheetNames || workbook.SheetNames.length === 0) {
+      throw new Error('Excel file has no sheets or is empty');
+    }
+
+    logger.info(`[Parser] parseAllSheets: Found ${workbook.SheetNames.length} sheets`);
+
+    const sheets = [];
+
+    for (const sheetName of workbook.SheetNames) {
+      try {
+        // Skip summary/recap sheets
+        if (/rekapitul|souhrn|summary|obsah|content/i.test(sheetName)) {
+          logger.info(`[Parser] Skipping summary sheet: "${sheetName}"`);
+          continue;
+        }
+
+        const worksheet = workbook.Sheets[sheetName];
+        if (!worksheet) continue;
+
+        const rawData = XLSX.utils.sheet_to_json(worksheet, {
+          raw: false,
+          defval: null,
+          blankrows: false
+        });
+
+        if (!Array.isArray(rawData) || rawData.length === 0) {
+          logger.debug(`[Parser] Sheet "${sheetName}" is empty`);
+          continue;
+        }
+
+        // Filter out mostly empty rows
+        const dataRows = rawData.filter(row => {
+          const values = Object.values(row).filter(v => v !== null && v !== '');
+          return values.length > 0;
+        });
+
+        if (dataRows.length < 5) {
+          logger.debug(`[Parser] Sheet "${sheetName}" has too few data rows (${dataRows.length})`);
+          continue;
+        }
+
+        // Extract bridge info from sheet name
+        // Format: "201 - MOST PŘES BIOKORIDO..." or "SO 201 - MOST..."
+        const bridgeInfo = extractBridgeFromSheetName(sheetName);
+
+        // UTF-8 encoding
+        const encodedData = dataRows.map(row => {
+          const encodedRow = {};
+          for (const [key, value] of Object.entries(row)) {
+            encodedRow[key] = typeof value === 'string' ? String(value) : value;
+          }
+          return encodedRow;
+        });
+
+        sheets.push({
+          sheetName: sheetName,
+          bridgeId: bridgeInfo.bridgeId,
+          bridgeName: bridgeInfo.bridgeName,
+          rawRows: encodedData,
+          rowCount: encodedData.length
+        });
+
+        logger.info(`[Parser] Sheet "${sheetName}" → Bridge: ${bridgeInfo.bridgeId} "${bridgeInfo.bridgeName}" (${encodedData.length} rows)`);
+
+      } catch (sheetError) {
+        logger.warn(`[Parser] Error parsing sheet "${sheetName}": ${sheetError.message}`);
+      }
+    }
+
+    logger.info(`[Parser] parseAllSheets: Extracted ${sheets.length} bridge sheets`);
+    return sheets;
+
+  } catch (error) {
+    logger.error('parseAllSheets error:', error);
+    throw new Error(`Failed to parse all sheets: ${error.message}`);
+  }
+}
+
+/**
+ * Extract bridge ID and name from sheet name
+ * Examples:
+ *   "201 - MOST PŘES BIOKORIDO..." → { bridgeId: "SO201", bridgeName: "MOST PŘES BIOKORIDO..." }
+ *   "SO 204 - MOST PŘES SILNICI III/1211" → { bridgeId: "SO204", bridgeName: "MOST PŘES SILNICI III/1211" }
+ */
+export function extractBridgeFromSheetName(sheetName) {
+  // PRIORITY 1: Compound IDs like "SO 12-23-01" or "SO 11-30-01.1" (NO name after)
+  // These are NOT bridges (mosty), they're generic construction objects
+  const compoundMatch = sheetName.match(/^SO\s*(\d+[-–][\d\-–\.]+)\s*$/i);
+  if (compoundMatch) {
+    const fullId = compoundMatch[1].replace(/\s+/g, '').replace(/–/g, '-');
+    return {
+      bridgeId: `SO${fullId}`,
+      bridgeName: sheetName.trim()
+    };
+  }
+
+  // PRIORITY 2: Bridge format "SO 201 - MOST..." or "201 - MOST..."
+  const bridgePatterns = [
+    /^SO\s*(\d+)\s*[-–]\s*(.+)$/i,           // "SO 201 - MOST..."
+    /^(\d{3})\s*[-–]\s*(.+)$/i,               // "201 - MOST..."
+    /^(\d+)\s*[-–]\s*(.+)$/i,                 // "12 - SOMETHING..."
+  ];
+
+  for (const pattern of bridgePatterns) {
+    const match = sheetName.match(pattern);
+    if (match) {
+      const number = match[1];
+      const name = match[2] ? match[2].trim() : sheetName;
+      // Only use this if the name looks like a real name (has letters)
+      if (name && /[a-zA-Zá-žÁ-Ž]/.test(name)) {
+        return {
+          bridgeId: `SO${number}`,
+          bridgeName: name
+        };
+      }
+    }
+  }
+
+  // PRIORITY 3: Simple SO + number
+  const simpleMatch = sheetName.match(/^SO\s*(\d+)\s*$/i);
+  if (simpleMatch) {
+    return {
+      bridgeId: `SO${simpleMatch[1]}`,
+      bridgeName: sheetName.trim()
+    };
+  }
+
+  // PRIORITY 4: Just a 3-digit number
+  const numMatch = sheetName.match(/^(\d{3})$/);
+  if (numMatch) {
+    return {
+      bridgeId: `SO${numMatch[1]}`,
+      bridgeName: `Object ${numMatch[1]}`
+    };
+  }
+
+  // FALLBACK: Use normalized sheet name as ID
+  const normalized = sheetName.trim().replace(/\s+/g, '_').replace(/[^\w\-\.]/g, '');
+  return {
+    bridgeId: normalized.toUpperCase() || `SHEET_${Date.now()}`,
+    bridgeName: sheetName.trim()
+  };
 }
 
 /**

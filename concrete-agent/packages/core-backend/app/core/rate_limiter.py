@@ -24,56 +24,30 @@ class TokenBucket:
     """Token bucket algorithm for rate limiting"""
 
     def __init__(self, capacity: int, refill_rate: float):
-        """
-        Initialize token bucket
-
-        Args:
-            capacity: Max tokens (tokens per minute)
-            refill_rate: Tokens per second
-        """
         self.capacity = capacity
         self.refill_rate = refill_rate  # tokens/sec
         self.tokens = capacity
         self.last_refill = time.time()
 
     def consume(self, tokens: int) -> bool:
-        """
-        Try to consume tokens
-
-        Returns:
-            True if consumed, False if not enough tokens
-        """
         self._refill()
-
         if self.tokens >= tokens:
             self.tokens -= tokens
             return True
         return False
 
     def wait_for(self, tokens: int) -> float:
-        """
-        Wait until tokens are available and consume them
-
-        Returns:
-            Time waited in seconds
-        """
         start = time.time()
-
         while not self.consume(tokens):
-            # Calculate wait time
             deficit = tokens - self.tokens
             wait_time = deficit / self.refill_rate
-
             logger.debug(f"Rate limit: waiting {wait_time:.1f}s for {tokens} tokens")
-            time.sleep(min(wait_time, 0.1))  # Sleep in 100ms chunks
-
+            time.sleep(min(wait_time, 0.1))
         return time.time() - start
 
     def _refill(self):
-        """Refill tokens based on elapsed time"""
         now = time.time()
         elapsed = now - self.last_refill
-
         refill = elapsed * self.refill_rate
         self.tokens = min(self.capacity, self.tokens + refill)
         self.last_refill = now
@@ -81,42 +55,28 @@ class TokenBucket:
 
 class RateLimiter:
     """
-    Rate limiter for API calls
-    Prevents hitting token/request limits during batch processing
+    Rate limiter for API calls.
+    Prevents hitting token/request limits during batch processing.
     """
 
     def __init__(self, config: Optional[RateLimitConfig] = None):
-        """Initialize rate limiter"""
         self.config = config or RateLimitConfig()
-
-        # Token bucket: 25000 tokens per minute = 416 tokens per second
         self.token_bucket = TokenBucket(
             capacity=self.config.tokens_per_minute,
             refill_rate=self.config.tokens_per_minute / 60
         )
-
-        # Request bucket: 20 requests per minute = 0.33 requests per second
         self.request_bucket = TokenBucket(
             capacity=self.config.requests_per_minute,
             refill_rate=self.config.requests_per_minute / 60
         )
-
         self.hit_count = 0
         self.last_reset = datetime.now()
 
     async def check_tokens(self, estimated_tokens: int) -> bool:
-        """Check if enough tokens available"""
         self.token_bucket._refill()
         return self.token_bucket.tokens >= estimated_tokens
 
     async def acquire(self, estimated_tokens: int = 1000) -> None:
-        """
-        Wait for rate limit to allow request
-
-        Args:
-            estimated_tokens: Estimated tokens for this request
-        """
-        # Check both token and request limits
         while True:
             if self.token_bucket.consume(estimated_tokens):
                 if self.request_bucket.consume(1):
@@ -126,18 +86,14 @@ class RateLimiter:
                     )
                     return
                 else:
-                    # Request limit hit, put tokens back
                     self.token_bucket.tokens += estimated_tokens
                     await asyncio.sleep(0.1)
             else:
-                # Token limit hit
                 await asyncio.sleep(0.1)
 
     def get_status(self) -> dict:
-        """Get current rate limit status"""
         self.token_bucket._refill()
         self.request_bucket._refill()
-
         return {
             'tokens_available': int(self.token_bucket.tokens),
             'tokens_capacity': self.token_bucket.capacity,
@@ -148,7 +104,6 @@ class RateLimiter:
         }
 
     def reset(self) -> None:
-        """Reset rate limiter"""
         self.token_bucket.tokens = self.token_bucket.capacity
         self.request_bucket.tokens = self.request_bucket.capacity
         self.hit_count = 0
@@ -158,6 +113,11 @@ class RateLimiter:
 
 # Global rate limiter instance
 _rate_limiter: Optional[RateLimiter] = None
+
+# Per-user request counters for check_rate_limit()
+_user_request_counts: dict = {}
+_user_window_start: dict = {}
+_USER_REQUESTS_PER_MINUTE = 60
 
 
 def get_rate_limiter() -> RateLimiter:
@@ -169,9 +129,37 @@ def get_rate_limiter() -> RateLimiter:
     return _rate_limiter
 
 
+def check_rate_limit(user_id: Optional[str] = None, limit: int = _USER_REQUESTS_PER_MINUTE) -> bool:
+    """
+    Simple per-user rate limit check (sliding 60s window).
+
+    Returns True if request is allowed, False if limit exceeded.
+    Used by monolit_adapter router to return HTTP 429.
+
+    Args:
+        user_id: User/token identifier. Uses 'anonymous' if None.
+        limit:   Max requests per 60 seconds (default: 60).
+    """
+    uid = user_id or "anonymous"
+    now = time.time()
+
+    # Reset window if 60 seconds have passed
+    if uid not in _user_window_start or now - _user_window_start[uid] >= 60:
+        _user_window_start[uid] = now
+        _user_request_counts[uid] = 0
+
+    _user_request_counts[uid] += 1
+
+    if _user_request_counts[uid] > limit:
+        logger.warning(f"Rate limit exceeded for user '{uid}': {_user_request_counts[uid]} req/min")
+        return False
+
+    return True
+
+
 def rate_limit_async(fn: Callable) -> Callable:
     """
-    Decorator for async functions to add rate limiting
+    Decorator for async functions to add rate limiting.
 
     Usage:
         @rate_limit_async

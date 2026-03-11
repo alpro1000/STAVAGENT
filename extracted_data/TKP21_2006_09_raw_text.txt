@@ -1,0 +1,1663 @@
+Správa železniční dopravní cesty, státní organizace
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 21
+MOSTNÍ LOŽISKA A UKONČENÍ
+NOSNÉ KONSTRUKCE MOSTU
+Třetí - aktualizované vydání
+změna č. 5
+Schváleno I. náměstkem generálního ředitele SŽDC
+č.j.: 5584 ze dne 16.2.2006
+Účinnost od 1.9.2006
+Praha 2006
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím
+systému nebo přenášena, a to v žádné formě a žádnými prostředky elektronickými,
+fotokopírovacími či jinými, bez předchozího písemného svolení vydavatele.
+Výhradní distributor: České dráhy, a. s., Technická ústředna Českých drah
+SATT - oddělení typové dokumentace
+Nerudova l
+772 58 Olomouc
+PŘEDMLUVA
+Kapitola 21 Technických kvalitativních podmínek staveb státních drah (dále jen TKP) se zabývá požadavky na
+mostní ložiska a na ukončení nosné konstrukce mostu.
+Pro tuto kapitolu (stejně jako pro ostatní kapitoly) obecně platí pojmy, ustanovení, požadavky a údaje uvedené
+v kapitole 1 TKP Všeobecně.
+Ve smyslu Zákona 137/2006 Sb. ze dne 1.7.2006 o veřejných zakázkách jsou v této kapitole 21 TKP používány
+termíny zadavatel (místo dřívějšího termínu objednatel) a dodavatel (místo dřívějšího termínu zhotovitel).
+Kapitola 21 TKP se člení na dvě části:
+21A Mostní ložiska
+21B Ukončení nosné konstrukce mostu
+1
+Obsah
+21A MOSTNÍ LOŽISKA
+21A.1 ÚVOD 5
+21A.1.1 Předmět kapitoly 5
+21A.1.2 Druhy mostních ložisek zahrnuté v části A kapitoly 21 TKP 5
+21A.1.3 Opatření pro druhy mostních ložisek uvedených v článku 21A.1.2 TKP 5
+21A.1.4 Opatření pro druhy mostních ložisek neuvedených v článku 21A.1.2 TKP 5
+21A.1.5 Způsobilost dodavatele ložiska 6
+21A.1.6 Dokumentace dodavatele 6
+21A.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 6
+21A.2.1 Základní materiál ložisek 6
+21A.2.1.1 Ložiska ocelová 6
+21A.2.1.2 Ložiska elastomerová 6
+21A.2.1.3 Ložiska hrncová 7
+21A.2.2 Materiál podlití ložisek 7
+21A.2.2.1 Cementová malta a beton 7
+21A.2.2.2 Polymermalta a polymerbeton 7
+21A.3 TECHNOLOGICKÉ POSTUPY PRACÍ 7
+21A.3.1 Mostní ložiska 7
+21A.3.1.1 Obecně 7
+21A.3.1.2 Ložiska ocelová 10
+21A.3.1.3 Ložiska elastomerová 11
+21A.3.1.4 Ložiska hrncová 12
+21A.3.2 Protikorozní ochrana ložisek 12
+21A.3.2.1 Obecně 12
+21A.3.2.2 Ložiska ocelová 13
+21A.3.2.3 Ložiska elastomerová 13
+21A.3.2.4 Ložiska hrncová 13
+21A.3.3 Ochrana proti účinkům bludných proudů 13
+21A.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 13
+21A.4.1 Obecně 13
+21A.4.2 Dodávka a skladování ložisek 14
+21A.4.2.1 Ložiska ocelová 14
+21A.4.2.2 Ložiska elastomerová 16
+21A.4.2.3 Ložiska hrncová 17
+21A.4.3 Dodávka materiálu na podlití ložisek 19
+21A.4.3.1 Cementová malta a beton 19
+21A.4.3.2 Polymermalta a polymerbeton 19
+21A.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 19
+21A.5.1 Kontrolní zkoušky základních materiálů ložisek 19
+21A.5.2 Kontrolní zkoušky betonu a cementové malty na podlití 19
+21A.5.3 Kontrolní zkoušky polymermalty a polymerbetonu na podlití 19
+21A.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 20
+21A.6.1 Výrobní tolerance 20
+21A.6.2 Tolerance osazení 20
+21A.6.2.1 Výškové tolerance 20
+21A.6.2.2 Půdorysné tolerance 20
+21A.6.2.3 Tolerance natočení kolem svislé osy 20
+21A.6.2.4 Tolerance natočení kolem vodorovné osy 20
+21A.6.2.5 Tolerance vodorovnosti uložení 21
+21A.6.3 Míra opotřebení 21
+21A.6.4 Záruky 21
+21A.7 KLIMATICKÁ OMEZENÍ 21
+21A.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 21
+21A.8.1 Obecně 21
+2
+21A.8.2 Převzetí dodávky mostních ložisek 21
+21A.8.3 Montážní prohlídka 21
+21A.8.4 Odsouhlasení dílčích prací 22
+21A.8.5 Převzetí osazených mostních ložisek 22
+21A.8.6 Hlavní prohlídka 22
+21A.8.7 Zatěžovací zkouška, zkušební provoz 23
+21A.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 23
+21A.10 EKOLOGIE 23
+21A.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 23
+21A.12.1 Technické normy 23
+21A.12.2 Předpisy 24
+21A.12.3 Související kapitoly TKP 24
+21B.1 ÚVOD 25
+21B.1.1 Definice pojmů 25
+21B.1.2 Předmět kapitoly 25
+21B.1.3 Způsoby ukončení nosných konstrukcí zahrnuté v kapitole 21 TKP 25
+21B.1.4 Opatření pro způsoby ukončení nosných konstrukcí nezahrnuté v kapitole 21 TKP 26
+21B.1.5 Opatření pro zavedené způsoby ukončení nosných konstrukcí podle článku 21B.1.3
+TKP 26
+21B.1.6 Opatření pro nové typy mostních závěrů 26
+21B.1.7 Způsobilost dodavatele mostního závěru, legislativní požadavky 26
+21B.1.8 Dokumentace dodavatele 26
+21B.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 27
+21B.2.1 Základní materiál ukončení nosných konstrukcí 27
+21B.2.1.1 Mostní závěry 27
+21B.2.1.2 Těsnící pásy a vodotěsné izolace 27
+21B.2.1.3 Ostatní součásti ukončení nosných konstrukcí 27
+21B.2.2 Cementová malta a beton 28
+21B.2.3 Polymermalta a polymerbeton 28
+21B.3 TECHNOLOGICKÉ POSTUPY PRACÍ 28
+21B.3.1 Ukončení nosné konstrukce 28
+21B.3.1.1 Obecně 28
+21B.3.1.2 Ukončení nosné konstrukce mostními závěry 29
+21B.3.1.3 Ukončení nosné konstrukce krycími prvky 29
+21B.3.1.4 Ukončení nosné konstrukce těsnícími pásy anebo zesílenou izolací 30
+21B.3.1.5 Ukončení nosné konstrukce přesahem přes závěrnou zídku 30
+21B.3.1.6 Ukončení nosné konstrukce mostů s mostnicemi 30
+21B.3.1.7 Ukončení nosné konstrukce mostů s přímým uložením koleje 30
+21B.3.1.8 Ukončení nosné konstrukce mostů s pevnou jízdní dráhou 31
+21B.3.2 Protikorozní ochrana ukončení nosné konstrukce 31
+21B.3.3 Ochrana proti účinkům bludných proudů 31
+21B.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 31
+21B.4.1 Obecně 31
+21B.4.2 Dodávka a skladování součástí ukončení nosné konstrukce 32
+21B.4.2.1 Mostní závěry 32
+21B.4.2.2 Vodotěsné izolace a těsnící pásy 32
+21B.4.2.3 Ostatní součásti ukončení nosné konstrukce 32
+21B.4.3 Dodávka betonu, polymermalty a polymerbetonu 32
+21B.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 32
+21B.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 33
+21B.6.1 Výrobní tolerance 33
+21B.6.2 Tolerance osazení 33
+21B.6.3 Míra opotřebení 33
+21B.6.4 Záruky 33
+21B.7 KLIMATICKÁ OMEZENÍ 33
+3
+21B.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 34
+21B.8.1 Obecně 34
+21B.8.2 Převzetí dodávky (příp. dílenská přejímka) součástí ukončení nosné konstrukce 34
+21B.8.3 Montážní prohlídka (u ocelových konstrukcí) 34
+21B.8.4 Odsouhlasení dílčích prací 34
+21B.8.4.1 Obecně 34
+21B.8.4.2 Mostní závěry 34
+21B.8.4.3 Ukončení nosné konstrukce s kolejovým ložem krycími plechy nebo tvárnicemi 35
+21B.8.4.4 Konstrukce s kolejovým ložem těsnícími pásy nebo zesílením izolace 35
+21B.8.4.5 Ukončení nosné konstrukce přesahem přes závěrnou zídku 35
+21B.8.5 Převzetí osazených mostních závěrů 35
+21B.8.6 Hlavní prohlídka 36
+21B.8.7 Zatěžovací zkouška, zkušební provoz 36
+21B.8.8 Typový štítek mostního závěru 36
+21B.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 37
+21B.10 EKOLOGIE 37
+21B.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 37
+21B.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 37
+21B.12.1 Citované technické normy 37
+21B.12.2 Citované předpisy 38
+21B.12.3 Související kapitoly TKP 38
+4
+21A MOSTNÍ LOŽISKA
+21A.1 ÚVOD
+Ložiska jsou důležitou součástí nosné konstrukce mostu. Ložiska jsou vystavena velmi nepříznivým
+podmínkám, za kterých musí dlouhodobě a spolehlivě plnit svoji statickou funkci. S ohledem na to, je snahou
+navrhovat a používat ložiska s co možná největší garantovanou životností.
+Všichni dodavatelé (dodavatel stavby, dodavatel objektu, dodavatel nosné konstrukce, dodavatel ložisek) jsou
+povinni respektovat požadavky soustavy českých technických norem. V případě rozporu mezi TKP a českými
+normami jsou rozhodující ustanovení, požadavky a kritéria TKP.
+21A.1.1 Předmět kapitoly
+Definice ložiska: Pojem ložisko nebo mostní ložisko v části A kapitoly 21 TKP nadále označuje (v souladu
+s ČSN 73 6200 a ČSN EN 1337-1) část nosné konstrukce mostu, která přenáší zatížení z nosné konstrukce na
+podpěry, popř. na jinou část nosné konstrukce, a umožňuje nebo omezuje posuny a pootočení nosné konstrukce
+v místech uložení.
+V České republice pro průmyslově vyráběná ložiska, jakožto výrobky pro stavbu, platí Zákon o technických
+požadavcích na výrobky (Zákon 22/1997 Sb.) a příslušné nařízení vlády (č. 163/2002 Sb.), v platném znění.
+Dodávat se smí pouze ložiska, která jsou v souladu s těmito předpisy. Výrobce je povinen prokazovat shodu
+u vybraných stavebních výrobků. Přehled těchto výrobků je v příloze č.2 tohoto nařízení vlády. Mostní ložiska
+jsou ve skupině 9/5 „Konstrukční ložiska“. Shoda se prokazuje postupy podle § 5 – certifikací výrobku.
+Část A kapitoly 21 TKP stanovuje podmínky pro dodávání, přejímání, skladování a montáž ložisek, které jsou
+závazné pro výstavbu a rekonstrukci všech železničních mostních objektů. Stanovuje:
+− požadavky na zajištění kvality dodávky ložisek jejich dodavatelem (výrobcem),
+− požadavky na zajištění kvality stavebních prací, souvisejících s osazením ložisek do mostního objektu,
+prováděných dodavatelem stavby, příp. subdodavateli stavby,
+− požadavky na přejímání ložisek v hotové mostní konstrukci.
+Část A kapitoly 21 neřeší uložení nosné konstrukce prostřednictvím vrubových nebo ocelových kloubů, neřeší
+uložení integrovaných mostů a neřeší také uložení nosné konstrukce na lepenku nebo jiné vložky.
+21A.1.2 Druhy mostních ložisek zahrnuté v části A kapitoly 21 TKP
+V části A kapitoly 21 TKP jsou zahrnuta mostní ložiska:
+− ocelová (vahadlová, tangenciální, desková a kolejnicová),
+− elastomerová,
+− hrncová.
+21A.1.3 Opatření pro druhy mostních ložisek uvedených v článku 21A.1.2 TKP
+Ustanovení v části A kapitoly 21 TKP jsou závazná i pro druhy mostních ložisek, pro které zpravidla byly
+zpracovány podklady různého stupně závaznosti (ČSN EN, ČSN, TNŽ, bývalé ON, mostní vzorové listy,
+typizační směrnice, typové projekty, podnikové normy a směrnice ap.).
+Použití nového typu ložiska musí být schváleno odborným orgánem zadavatele. Termínem typ ložiska se zde
+rozumí souhrn technických údajů pro konkrétní druh ložiska z výrobního programu výrobce (velikost ložiska,
+únosnost, posuny, pootočení apod.).
+21A.1.4 Opatření pro druhy mostních ložisek neuvedených v článku 21A.1.2 TKP
+Použití druhu mostního ložiska, které není uvedeno v čl. 21A.1.2 této kapitoly TKP musí být schváleno
+odborným orgánem zadavatele. Potřebné zásady uložení je nutno řešit předpisem Zvláštní technické kvalitativní
+podmínky (dále jen ZTKP - viz kapitola 1 TKP).
+5
+Stejně se postupuje při použití nového druhu mostního ložiska nebo u ložisek zvláštního účelu (např. ložisek
+rektifikovatelných nebo ložisek kolejových vah).
+Ve všech případech uvedených v tomto článku musí ložiska splňovat podmínky článku 1.4.5 kapitoly 1 TKP.
+21A.1.5 Způsobilost dodavatele ložiska
+Obecně ložiska může vyrábět pouze dodavatel, jehož systém řízení jakosti, způsobilost pracovníků a výrobní
+zařízení pro výrobu příslušného druhu ložisek jsou certifikovány certifikačním orgánem akreditovaným podle
+ČSN EN 45012.
+Ocelové části mostních ložisek může vyrábět a mostní ložiska všech druhů pro ocelové mosty může osazovat
+pouze dodavatel, který vlastní platný Velký průkaz způsobilosti podle ČSN 73 2601, rozšířený o oprávnění
+k výrobě a montáži ocelových mostních konstrukcí prováděných podle ČSN 73 2603. Obecné požadavky na
+způsobilost dodavatele ocelových částí ložisek jsou popsány v článku 1.3 kapitoly 19 TKP.
+U zahraniční dodávky ložisek rozhodne o jejich použití odborný orgán zadavatele.
+21A.1.6 Dokumentace dodavatele
+Výroba a osazení mostních ložisek musí být provedeny podle zpracované dokumentace dodavatele, kterou
+dodavatel předkládá v celém rozsahu projektantovi k odsouhlasení a zadavateli ke schválení. Tato dokumentace
+musí mít dvě části: Výrobní dokumentace a montážní dokumentace. Podrobné požadavky na dokumentaci
+ocelových částí ložisek jsou uvedeny v článku 1.4 kapitoly 19 TKP.
+21A.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+21A.2.1 Základní materiál ložisek
+21A.2.1.1 Ložiska ocelová
+Ustanovení se týkají ložisek z ocelí běžných i vysokých pevností. Z hlediska jejich konstrukce se jedná o ložiska
+vahadlová, tangenciální, desková a kolejnicová.
+Pro základní ocelový materiál, přídavný materiál i polotovary platí ČSN 73 6205, oddíl 5. Pro dodávku
+ocelového materiálu platí ČSN EN 10021. Vlastnosti základního materiálu ocelových ložisek (plechů, odlitků
+a výkovků) musí být doloženy dokumentem kontroly 3.1.C podle ČSN EN 10204.
+K výrobě ocelových ložisek může být, po odsouhlasení projektantem a schválení zadavatelem, v dokumentaci
+dodavatele navržen i jiný materiál, který vykazuje rovnocenné vlastnosti v rozsahu podle ČSN 73 6205,
+článek 5.2.9.
+Hrubé odlitky nesmějí mít povrchové a vnitřní vady v rozsahu, který by byl na závadu jejich použití a obrábění.
+Opravy vad odlitků jsou přípustné v rozsahu určeném ČSN EN 1559-1 a ČSN EN 1559-2.
+21A.2.1.2 Ložiska elastomerová
+Požadované vlastnosti elastomerového materiálu i výztužných vložek (ocelových plechů) jsou stanoveny
+v ČSN EN 1337-3.
+Pro elastomerová ložiska se používá elastomer na bázi chloropren-kaučuku. V ČSN EN 1337-3 jsou uvedeny
+zkušební metody jednotlivých fyzikálních vlastností elastomeru a příslušné zkušební předpisy.
+Fyzikální vlastnosti elastomeru musí být garantovány pro rozsah teplot podle oddílu 7 této kapitoly TKP,
+Eleastomer musí být odolný proti klimatickým účinkům (včetně slunečního záření a ozónu) a odolný proti
+stárnutí.
+Vlastnosti výztužných vložek (ocelových plechů) a ložiskových desek musí v přiměřené míře splňovat
+požadavky dle ČSN 73 6205, tab.5.4a. Pro ložiskové desky, na kterých se nesvařuje, se však požaduje
+minimálně zkouška tahem. Pro ložiskové desky, na kterých se svařuje, se navíc požaduje zaručená
+svařitelnost (hodnota uhlíkového ekvivalentu CEV). Rozsah případných dalších požadovaných zkoušek musí být
+stanoven v projektové dokumentaci.
+Vlastnosti materiálu musí být doloženy dokumentem kontroly 3.1.B podle ČSN EN 10204.
+6
+21A.2.1.3 Ložiska hrncová
+Požadované vlastnosti základního materiálu jsou stanoveny v ČSN EN 1337-5.
+Požadavky na materiál kluzných a vodících prvků musí být v souladu s ČSN EN 1337-2.
+Fyzikální vlastnosti nekovových materiálů musí být:
+− garantovány pro rozsah teplot podle oddílu 7 této kapitoly TKP,
+− odolné proti klimatickým účinkům (včetně slunečního záření a ozónu),
+− odolné proti stárnutí.
+Vlastnosti ocelového materiálu musí být doloženy dokumentem kontroly 3.1.B podle ČSN EN 10204.
+21A.2.2 Materiál podlití ložisek
+21A.2.2.1 Cementová malta a beton
+Beton, který tvoří podklad ložisek, příp. zajišťuje ložiska proti posunutí, musí odpovídat ustanovením kapitoly
+17 TKP. Požadavky na cementovou maltu se stanoví stejně jako pro beton dle kapitoly 17 TKP.
+Požadavky na beton nebo cementovou maltu musí být obsaženy v projektové dokumentaci a v technologickém
+předpisu zpracovaném zhotovitelem stavby. V žádném případě nesmí být kvalita podlití horší než kvalita betonu
+pod ložiskem. Jedná se o požadavky na pevnostní třídu, složení betonu nebo cementové malty, zpracování
+(konzistence, rychlost tuhnutí) a maximální jmenovitou horní mez frakce kameniva.
+Kvalita betonu musí odpovídat alespoň třídě C25/30 pro stupeň prostředí XF1 podle ČSN EN 206-1, případně
+C30/37 pro stupeň prostředí XD1. Požadovaný stupeň prostředí musí být obsažen v projektové dokumentaci.
+Minimální třída betonu nebo cementové malty musí splňovat limitní požadavky dle tabulky 17-12 v kapitole
+17 TKP.
+V projektové dokumentaci mohou být specifikovány další požadavky, zvláště pak v závislosti na vlivu prostředí
+(např. mrazuvzdornost, odolnost povrchu proti vodě a chloridům apod.)
+21A.2.2.2 Polymermalta a polymerbeton
+Kvalita polymermalty a polymerbetonu, které tvoří podklad ložisek, příp. zajišťují ložiska proti posunutí, musí
+odpovídat ustanovením kapitoly 17 TKP.
+Požadavky na polymermaltu a na polymerbeton musí být obsaženy v projektové dokumentaci a v technologic-
+kém předpisu zpracovaném zhotovitelem stavby. Projektová dokumentace musí obsahovat požadavky na
+pevnost v tlaku a v tahu za ohybu a na nevodivost pro elektrický proud. Technologický předpis musí obsahovat
+požadavky na složení směsi a na maximální jmenovitou horní mez frakce kameniva (neměla by být větší než ¼
+nejmenší tloušťky prováděné vrstvy). V žádném případě nesmí být kvalita podlití horší než kvalita betonu pod
+ložiskem. Požaduje se však minimální charakteristická hodnota pevnosti v tlaku 40 MPa.
+V případě požadavku na elektroizolaci musí receptura polymermalty a polymerbetonu zajistit, po dosažení
+požadované pevnosti dle dokumentace, co nejvyšší hodnotu měrného odporu, minimálně však 1×106 Ωm.
+Pro dosažení požadovaných vlastností polymermalty a polymerbetonu je nutné dodržovat stanovenou recepturu
+při současném respektování klimatických podmínek.
+21A.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+21A.3.1 Mostní ložiska
+21A.3.1.1 Obecně
+21A.3.1.1.1 Uspořádání ložisek
+Uspořádání ložisek, tzn. umístění a orientace jednotlivých druhů a typů ložisek, musí odpovídat dokumentaci.
+Pro osazení mostních ložisek musí být vyhotoven technologický předpis, jehož součástí jsou výkresy umístění
+a osazení ložisek. Technologický předpis musí obsahovat všechny údaje požadované pro osazení ložiska
+(rozměry, výšky, sklony, příčné a podélné umístění, tolerance, svislé a vodorovné síly působící na jednotlivá
+7
+ložiska, jakost malty v ložiskové spáře a jakost materiálu spodní stavby pod ložiskem, nastavení ložiska
+vzhledem k teplotě konstrukce, časový harmonogram osazování ložisek). Výkres osazení ložiska může být
+spojen s výkresem umístění ložisek na konstrukci do jednoho dokumentu.
+Případné změny druhu nebo typu ložisek oproti dokumentaci musí odsouhlasit projektant a schválit zadavatel,
+přičemž použitá ložiska a změnou vyvolané konstrukční úpravy musí vyhovovat ustanovením této kapitoly TKP.
+21A.3.1.1.2 Konstrukční řešení uložení hlavní nosné konstrukce mostu
+Při návrhu mostního objektu je nutno zajistit, aby:
+− provedení úložného prahu umožnilo:
+− čištění prostoru okolo ložisek,
+− kontrolu ložisek,
+− údržbu ložisek (např. mazání, obnovu protikorozní ochrany apod.),
+− výměnu ložisek nebo jejich částí,
+− umístění lisů výšky min 300 mm, pokud nebude manipulace s konstrukcí zajištěna jinak,
+− provedení přípojů úložných ploch ložisek na spodní stavbu i nosnou konstrukci:
+− umožnilo výměnu ložisek nebo jejich částí bez poškození nosné konstrukce a úložných prahů
+(s výjimkou ocelových tangenciálních ložisek),
+− zabránilo putování ložisek.
+21A.3.1.1.3 Konstrukční řešení uložení ložisek
+Horní i dolní úložná plocha ložiska musí být osazeny ve vodorovné poloze, a to i u mostů v podélném nebo
+příčném sklonu. U mostů ve sklonu je nutno nad ložisky provést dolní plochu nosné konstrukce jako vodorovnou
+nebo mezi nosnou konstrukci a ložisko osadit klínovou podložku. Tloušťka klínové podložky ve špici přitom
+musí být nejméně 20 mm.
+Uložení ložisek do hnízd se připouští pouze pro ocelová ložiska. Ocelová ložiska zapuštěná do hnízd s minimální
+hloubkou zapuštění dle TNŽ 73 6277 (viz též čl. 21A.3.1.2 této kapitoly TKP) nemusí mít další kotvení.
+Ložiska elastomerová a hrncová nesmí být zapuštěna do hnízd s výjimkou jejich kotevních desek a kotevních
+prvků. Ložiska elastomerová a hrncová musí být kotvena vždy.
+21A.3.1.1.4 Vyměnitelnost ložisek a jejich částí
+Všeobecně se požaduje umožnění výměny celého ložiska včetně jeho případných ložiskových desek (horní
+a dolní) se zarážkami pro přenos vodorovných sil a výměny jednotlivých funkčních částí ložiska s výjimkou
+elastomerových ložisek mostů rozpětí do 20 m podle čl. 21A.3.1.3 této kapitoly TKP. Proto se přednostně
+používají ložiska přišroubovaná (nepřivařená) k hlavní nosné konstrukci a ke spodní stavbě.
+Při výměně ložisek nebo jejich částí se zpravidla předpokládá přizvednutí konstrukce o 10 mm, pokud
+dokumentace, s ohledem na druh a typ ložiska, nepožaduje hodnotu vyšší. Hodnota přizvednutí musí být
+respektována při návrhu všech částí mostu (zvláště pak při návrhu ukončení nosné konstrukce mostu a při návrhu
+mostního závěru). Pokud ve výjimečných případech nejsou ložiska přístupná a nemohou být vyměněna, musí být
+pro požadovanou dobu životnosti odolná proti korozi a po tuto dobu nesmí vyžadovat žádnou údržbu.
+21A.3.1.1.5 Ložiska přenášející vodorovné síly
+I když jsou ložiska navržena tak, aby zachycovala vodorovné síly, přesto v nich dojde k určitým posunům,
+dokud se vůle mezi jednotlivými částmi ložiska nevyčerpá. Tyto pohyby mají být co nejmenší. Proto by vůle
+v ložiskách neměla být větší než 2 mm, není-li stanoveno jinak.
+Jestliže je vodorovným posunům konstrukce bráněno šroubovým přípojem s nepředpjatými šrouby, tak vrtání
+otvorů může být maximálně o 1,0 mm větší než je průměr šroubu. V případě použití předpjatých šroubů toto
+omezení neplatí.
+21A.3.1.1.6 Měrky pro měření horizontálních posunů
+Pohyblivá ložiska s horizontálními posuny většími než ±20 mm se vybavují měrkou pro měření posunů.
+Na indikátoru pohybu musí být vyznačené přípustné mezní hodnoty pohybu. Indikátor pohybu by měl být
+umístěn tak, aby byl čitelný ze snadno přístupného místa.
+8
+21A.3.1.1.7 Přednastavení ložisek
+Přednastavení ložisek není všeobecně vhodné. Je-li přednastavení nutné, musí být provedeno při výrobě ložiska.
+Není-li možné se vyhnout změně nastavení ložiska na stavbě, musí být provedeno přímo výrobcem ložiska nebo
+jím pověřeným zástupcem. Přednastavení nelze provést u ložiska elastomerového bez kluzné desky.
+21A.3.1.1.8 Změny v uložení ložisek
+Pokud jsou prováděny změny v uložení ložisek oproti dokumentaci, je nutno, aby i v takovém případě byly
+splněny požadavky dle odst. 21A.3.1.1.2.
+21A.3.1.1.9 Osazení ložisek
+Osazení ložisek musí být prováděno výrobcem nebo jinou organizací pověřenou výrobcem za přítomnosti
+výrobce, příp. za přítomnosti jím pověřeného zástupce, pokud se zadavatel s dodavatelem stavby nedohodnou
+jinak. Úpravy na již dodaných ložiskách se mohou provádět jen podle návodu na výkrese osazení, kde jsou
+uvedeny podrobné pokyny. Jakékoliv úpravy musí provádět dodavatel ložiska nebo jiná organizace za
+přítomnosti dodavatele ložiska.
+Ložiska musí být osazena podle výkresu osazení v souladu s označením na ložisku. Aby mohlo být určeno
+nastavení ložiska, musí být stanovena střední teplota konstrukce. Postup pro stanovení střední teploty v závislosti
+na typu hlavní nosné konstrukce je uveden v ČSN EN 1337-11, příloha A.2.
+Při manipulaci s ložisky je nutno zajistit, aby ložiska nebyla mechanicky poškozena a vystavena rázům (zejména
+jejich funkční a kluzné plochy).
+Vždy je třeba vhodným způsobem zajistit, aby nemohlo dojít k postupnému uvolnění sestavy ložisek vlivem
+dynamického zatěžování.
+21A.3.1.1.10 Postup osazování ložisek
+Postup osazování ložisek musí zajistit, aby všechna ložiska byla trvale aktivní (tj. aby trvale doléhaly jejich
+funkční plochy). Proto je nutno zejména:
+− zajistit přesnou výškovou polohu ložisek,
+− dokonale provést podlití ložisek. Bez ohledu na použitou metodu osazování musí být ložisko uloženo na celé
+ploše. Jmenovitá tloušťka podlití musí být nejméně 20 mm, minimální skutečná tloušťka podlití nesmí
+klesnout pod 10 mm,
+− pokud to způsob osazování konstrukce umožňuje, osadit konstrukci na provizorní podpory, upravit výšky
+ložisek a teprve poté ložiska podlít.
+Postup osazování ložisek se zaznamená ve stavebním deníku objektu a pro každé ložisko se musí vyhotovit
+protokol o osazení ložiska (ve smyslu ČSN EN 1337-11) za účasti dodavatele ložisek, dodavatele objektu
+a stavebního dozoru zadavatele stavby. Protokol o osazení ložiska musí obsahovat následující údaje: datum a čas
+osazení ložiska, teplotu vzduchu a konstrukce, stav ložiska včetně protikorozní ochrany, nastavení pohyblivého
+ložiska, poloha ložiska vzhledem k nosné konstrukci dle projektové dokumentace, stav dočasných upínacích
+zařízení, stav úložné plochy (tolerance osazení dle článku 21A.6.2 této kapitoly TKP, čistota úložné plochy),
+údaje o maltě a maltové spáře, výsledek zkoušky materiálu na podlití ložiska, údaje o průběhu ošetřování podlití.
+Jakmile podlití dosáhne požadované pevnosti, tak je možné odstranit montážní podepření. Musí být zaznamenán
+datum a čas uvolnění konstrukce, resp. spuštění konstrukce na ložiska. Dále musí být potvrzeno, že byly
+uvolněny nebo odstraněny šrouby upínacího zařízení. Za žádných okolností není dovoleno, aby montážní
+podložky zůstaly pod ložiskem.
+Jakmile se ložiska stanou funkčními, musí být zkontrolováno jejich osazení a funkce. Kontroluje se předepsaná
+poloha ložisek a jejich pohyblivost. Kontrolu provádí dodavatel ložisek za účasti dodavatele objektu
+a stavebního dozoru zadavatele stavby, není-li v rámci schvalování výrobní dokumentace stanoveno jinak.
+Na závěr se vyhotoví protokol o definitivním zajištění polohy a funkce ložiska, který musí obsahovat následující
+údaje: datum a čas uvolnění konstrukce, teplotu vzduchu a konstrukce, prohlášení o odstranění montážního
+podepření, upínacího zařízení a montážních podložek, výsledek kontroly polohy ložisek a jejich pohyblivosti
+a případně další skutečnosti, které by mohly ovlivňovat požadovanou funkci ložisek.
+21A.3.1.1.11 Vyrovnávací vrstvy a zalití ložisek
+Vyrovnávací vrstvy a zalití ložisek se provádí zpravidla z polymermalty. Polymermalta smí být nahrazena
+cementovou maltou pouze po schválení projektantem. Cementová malta nesmí být použita v oblastech výskytu
+bludných proudů, v žádném případě pak na tratích elektrizovaných stejnosměrnou proudovou trakcí.
+9
+Vyrovnávací vrstvy z polymermalty je nutno provádět na suchý a zdrsněný podklad, zbavený všech nečistot,
+mastnoty a chemikálií. Plnivo musí být suché a musí být proto odpovídajícím způsobem skladováno. Chemické
+vlastnosti pryskyřice a poměr mísení pryskyřice a plniva musí být takové, aby se vytvořila vhodná hustota
+a vhodný čas tuhnutí pro zajištění správného osazení v podmínkách stavby. Dále musí být zajištěno konečné
+vytvrdnutí polymermalty a dlouhodobá pevnost. Betonový podklad se pro zvýšení soudržnosti opatří
+penetračním nátěrem. Podrobnosti provádění stanoví příslušné technické listy použitých výrobků nebo jejich
+složek.
+Pokud se vyrovnávací vrstvy a zalití ložisek provádí z cementové malty, je nutno pro zajištění soudržnosti beton
+úložného prahu dokonale provlhčit. Přebytečná voda musí být bezprostředně před betonáží vytřena. Cementová
+malta musí být provedena podle stejných požadavků jako jsou kladeny na beton podle kapitoly 17 TKP
+a ČSN EN 206-1.
+Ložisko může být osazováno na vypouklé lože malty v tuhém, částečně plastickém stavu tak, že přebytečná
+malta může být vytlačována do všech stran. Nebo může být malta do styčné spáry vnášena injektováním,
+přičemž je nutno zajistit vhodné odvzdušnění. Postup s injektováním je nutno použít pro ložiska s kotevními
+prvky. Pouze ložiska, jejichž délka kratší strany je menší než 500 mm, lze osazovat tak, že malta může být
+napěchována pod ložisko. Ve všech případech musí být použita malta s nízkým koeficientem smrštění.
+Tloušťka nevyztužených maltových spár (z polymermalty nebo z cementové malty) mezi ložiskem a horním
+povrchem úložného bloku nebo prahu nesmí přestoupit 50mm nebo hodnotu danou vztahem:
+0,1 x dotyková plocha ložiska / obvod dotykové plochy ložiska + 15 mm (v mm),
+přičemž platí menší z obou hodnot. Dále platí, že skutečná tloušťka nesmí být menší než 10 mm a než
+trojnásobek maximální velikosti zrna.
+Vyrovnávací vrstvy z polymermalty i cementové malty musí být až do vytvrdnutí ošetřovány a chráněny před
+případnými vodními srážkami.
+V oblastech s výskytem bludných proudů, tj. na tratích elektrizovaných stejnosměrnou proudovou trakcí
+a v přilehlých úsecích nebo v oblastech, kde byl výskyt bludných proudů prokázán korozním průzkumem, musí
+být ložiska osazena tak, aby nebyla v kontaktu s betonem úložného prahu, ale výhradně jen s polymerbetonem,
+polymermaltou nebo s podložkou z PVC. Podložka z PVC je však přípustná pouze pro ocelová ložiska. Detail
+odizolování ložisek od úložného prahu musí být obsažen v projektové dokumentaci.
+21A.3.1.1.12 Spouštění konstrukce na ložiska
+Pokud se mostní konstrukce spouští na ložiska, tak rektifikační šrouby a montážní podložky musí zůstat funkční
+do doby, než podlití v mezilehlé spáře dostatečně zatvrdne. Pevnost malty je třeba doložit průkazní zkouškou.
+Následně musí být všechny montážní podložky odstraněny. Až potom se stane ložisko plně funkční.
+21A.3.1.1.13 Zvláštní podmínky osazení
+Jakékoliv zvláštní podmínky osazení musí být dohodnuty mezi zadavatelem a dodavatelem ložiska a potvrzeny
+písemně při dodávce ložisek. Je velmi obtížné předvídat podmínky na stavbě v době osazování ložisek a tudíž
+přesně určit velikost posunů. Je proto lepší při návrhu ložisek vycházet z nejnepříznivějších možných
+předpokladů. Požaduje-li zadavatel, aby se bral ohled na podmínky existující v době montáže ložisek, musí to
+být projednáno s dodavatelem. Přesné podmínky pro osazení musí být definovány a musí být zajištěno, že budou
+dodrženy.
+21A.3.1.2 Ložiska ocelová
+Ocelová ložiska se standardně osazují do hnízd v provedení podle TNŽ 73 6277, čl. 61-62 a proti posunutí se
+zajišťují polymermaltou, příp. cementovou maltou, provedenou podle dokumentace a v kvalitě podle oddílu
+21A.2 této kapitoly TKP. Ložiska musí být v hnízdech zapuštěna do hloubky nejméně 30 mm, pokud není
+v dokumentaci stanovena hloubka větší.
+Ocelová ložiska musí být vždy rovnoměrně podlita po celé ploše polymermaltou, příp. cementovou maltou,
+provedenou podle dokumentace a v kvalitě podle oddílu 21A.2 této kapitoly TKP.
+Podlití ložiska může být nahrazeno deskou z měkčeného PVC tloušťky 10 mm. Tyto PVC-vložky pod ložiskem
+mohou být sestaveny nejvýše ze dvou částí, a to výhradně se souhlasem stavebního dozoru zadavatele. Vložky se
+osadí s dostatečným přesahem (nejlépe na celou plochu hnízda). Po osazení konstrukce a případné úpravě její
+polohy se PVC-vložky oříznou ostrým nožem podle hran ložiska, aby nepřesahovaly pod zalití ložiska.
+1 0
+Pokud se vyrovnávací vrstva provádí nad úrovní úložného prahu a má tloušťku větší než 50 mm, musí být
+vyztužena rozdělovací výztuží proti účinkům příčných tahů. Pokud se vodorovné síly přenáší pouze třením, musí
+být ložisko obetonováno do výšky nejméně 30 mm, přičemž obetonování ložiska musí být vyztuženo
+odpovídajícím způsobem při dodržení požadovaných izolačních vlastností ložiska.
+V přípoji ocelového ložiska k ocelové nosné konstrukci se zpravidla osazuje vložka z měkčeného PVC. Detaily
+přípoje se provedou u ocelových konstrukcí podle MVL 211 a TNŽ 73 6277, čl. 55, u betonových konstrukcí
+podle dokumentace dle MVL 511, přičemž musí být zachována možnost výměny ložiska, tzn.:
+− pokud je ložisko nutno kotvit, musí být ke kotevním prvkům připojeno oddělitelně,
+− ložisko nesmí být přivařeno k výztuži nosné konstrukce nebo úložného prahu.
+Výjimku tvoří ocelová tangenciální ložiska podle TNŽ 73 6277, čl. 7, která mohou být trvale připojena
+k masivní nosné konstrukci a nebo úložnému prahu zabetonovanými kotvami.
+Případné lepení ložisek k úložnému prahu či nosné konstrukci musí odpovídat technickým podmínkám
+dodavatele ložisek, schváleným odborným orgánem zadavatele.
+V žádném případě se nesmí svařovat na odlitcích, kovaných součástech a částech z ocelí vysoké pevnosti.
+Vzájemná poloha součástí pohyblivého ložiska při montáži se určí v závislosti na okamžité teplotě konstrukce
+tak, aby při teplotě + 10°C bylo ložisko v základní poloze (viz též ČSN 73 6203, část E).
+21A.3.1.3 Ložiska elastomerová
+Pro železniční mosty lze používat elastomerová ložiska pouze vyztužená. Elastomerová ložiska pro betonové
+mosty musí mít horní a dolní kotevní desku s kotevními prvky a současně horní a dolní ložiskovou desku.
+Elastomerová ložiska pro ocelové mosty musí mít dolní kotevní desku s kotevními prvky a současně horní
+a dolní ložiskovou desku. Ložiskové desky musí být oddělitelně připojeny (šroubovým přípojem) ke kotevním
+deskám. Pouze pro mosty do rozpětí 20 m mohou mít elastomerová ložiska pouze horní a dolní ložiskovou desku
+s kotevním prvky. V závislosti na požadovaném vodorovném posunu mohou být použita elastomerová ložiska
+buď bez kluzné desky nebo s kluznou deskou.
+Osazení ložisek se provádí podle projektové dokumentace a dokumentace dodavatele.
+Styčné plochy pro ložisko na spodní stavbě a na nosné konstrukci musí být čisté, suché, hladké a rovné
+v tolerancích stanovených ČSN EN 1337-3. Požadavky na provedení úložných ploch ložiska musí být obsaženy
+v dokumentaci, v závislosti na použitém typu elastomerového ložiska.
+Aby se zamezilo nerovnoměrnému namáhání ložisek, musí být dosedací plochy, které jsou v kontaktu s ložisky,
+navzájem rovnoběžné a rovné. Pokud pod elastomerovým ložiskem není maltové lože, potom vzdálenost mezi
+úložnou rovinou pod ložiskem a rovinou dosedací plochy hlavní nosné konstrukce mostu nesmí vykazovat
+v ploše ložiska rozdíl větší než 3‰ z většího rozměru nebo průměru dosedací plochy, maximálně však 1 mm.
+Nepřípustné je zejména:
+− zapustit elastomerové části ložiska včetně jeho navulkanizovaných ocelových desek do úložného prahu
+či nosné konstrukce,
+− bránit ložisku v deformaci,
+− vrstvit ložiska na sebe,
+− svařovat na ocelových součástech, které jsou součástí ložiska (týká se hlavně vnějších navulkanizovaných
+ocelových desek ložiska).
+V každém případě musí být zajištěna možnost výměny elastomerového bloku ložiska včetně jeho ložiskových
+desek.
+Elastomerová ložiska musí být navržena a provedena tak, aby se zamezilo prokluzu ložisek vlivem vratných sil
+i při minimálním zatížení. Přenos vodorovných sil se zajišťuje čepem.
+Před osazením a v průběhu montážních prací musí být ložiska chráněna před přímým slunečním zářením a před
+přímým stykem s tuky, ropnými produkty a rozpouštědly (např. s odbedňovacími přípravky).
+Nosnou konstrukci je nutno ukládat na elastomerová ložiska, která nemají kluznou část, při střední teplotě
+konstrukce stanovené v dokumentaci s předepsanou tolerancí teplot. Postup pro stanovení střední teploty
+v závislosti na typu hlavní nosné konstrukce je uveden v ČSN EN 1337-11, příloha A.2. Při stanovení tolerance
+1 1
+je nutno respektovat skutečnost, že mostní elastomerová ložiska bez kluzné části nelze přednastavit.
+Elastomerová ložiska s kluznou částí lze přednastavit podle montážní teploty.
+Při svařování v blízkosti ložisek je nutno kontrolovat teplotu elastomeru (dozorem výrobce) a chránit
+elastomerový blok před poškozením (elektrodou, jiskrami apod.).
+21A.3.1.4 Ložiska hrncová
+Osazení ložisek se provádí podle projektové dokumentace a dokumentace dodavatele ložisek.
+Zvláštní pozornost je třeba věnovat:
+− zachování čistoty kluzných ploch pohyblivých ložisek (nutno chránit též před vzdušným prachem),
+− dokonalému zajištění vodorovné polohy ložiska,
+− přesnému nastavení směru posunu jednosměrně pohyblivých ložisek,
+− utěsnění spár při zabetonovávání kotevních prvků do kapes, aby se zabránilo vnikání malty do ložisek,
+− dokonalému zabetonování kapes s kotevními prvky (zpravidla použitím ponorných vibrátorů o malém
+průměru),
+− zákazu svařování na ložisku,
+− kontrole teploty nekovových částí ložiska při sváření v blízkosti ložiska.
+K ocelové konstrukci se hrncová ložiska připevňují pomocí šroubů s tolerancí otvorů 0,2 až 1,0 mm.
+V každém případě musí být zajištěna možnost výměny hrncového ložiska nebo jeho jednotlivých částí
+s výjimkou zabetonovaných kotev.
+Pohyblivá hrncová ložiska jsou nastavena zpravidla výrobcem na montážní teplotu stanovenou v projektové
+dokumentaci. Nastavení ložiska na skutečnou montážní teplotu může provést pouze výrobce nebo jím pověřená
+firma. Pohyblivá hrncová ložiska musí být opatřena kontrolním zařízením pro měření pohybů (ryska a stupnice
+nebo index).
+Kluzné plochy pohyblivých ložisek smí být mazány pouze výrobcem schválenými silikonovými tuky, funkčními
+v požadovaném rozsahu teplot.
+21A.3.2 Protikorozní ochrana ložisek
+21A.3.2.1 Obecně
+Protikorozní ochrana ložisek musí být prováděna pouze schválenými systémy protikorozní ochrany ocelových
+konstrukcí v souladu s ustanoveními kapitoly 25B TKP a předpisu ČD S5/4. Dále jsou požadavky na
+protikorozní ochranu stavebních ložisek uvedeny v ČSN EN 1337-9. V případě rozporu mezi TKP a českými
+technickými normami platí ustanovení oddílu 1 této kapitoly TKP. V této části A kapitoly 21 jsou uvedena pouze
+upřesnění, platná pro mostní ložiska železničních mostních objektů.
+V zásadě se doporučuje kombinovaný ochranný systém ocelových částí mostních ložisek železničních mostních
+objektů. Konkrétní skladba systému protikorozní ochrany se řídí dále podle technologických předpisů
+dodavatele, které mohou požadavky dle předpisu ČD S5/4 pouze zpřísnit (např. požadavky na životnost,
+prostředí apod.). Stanovení požadavků na provedení protikorozní ochrany ložisek je součástí schvalovacího
+řízení pro daný výrobek podle čl. 21A.1.1 této kapitoly TKP.
+Protikorozní ochrana mostních ložisek, vyráběných v rámci dodávky ocelové konstrukce, je zpravidla
+předmětem samostatné dodávky, kterou zajišťuje dodavatel stavby. Její provedení musí odpovídat dokumentaci.
+Použití nových systémů protikorozní ochrany se schvaluje analogicky s čl. 21A.1.4 této kapitoly TKP.
+Protože se protikorozní ochrana mostních ložisek provádí zpravidla před jejich osazením, je nutno dodatečně:
+− doplnit protikorozní ochranu přípojů ložisek,
+− opravit poškození ochranného systému vzniklá při další manipulaci,
+− případně barevně sjednotit ložisko a konstrukci.
+1 2
+Funkční plochy a nekovové části ložisek musí být při dodatečném doplňování a opravách protikorozního
+ochranného systému chráněny.
+Po provedení protikorozní ochrany nesmí být prováděny v jejím dosahu žádné svářečské práce.
+21A.3.2.2 Ložiska ocelová
+Součástí dodávky ložisek je minimálně nátěr základní barvou, který musí být součástí schváleného systému
+protikorozní ochrany dle odst. 21A.3.2.1. Tento nátěr smí být proveden až po dílenské přejímce ložiska.
+Funkční plochy ložisek se ošetří buď základním nátěrem nebo se konzervují směsí tuku a grafitu. Použití
+konzervace směsí tuku a grafitu se provádí až po osazení ložisek a po dokončení protikorozní ochrany ložisek.
+Plochy zapuštěné do betonu se nenatírají s výjimkou přesahu 50 mm od povrchu betonu.
+Provedení definitivní protikorozní ochrany schváleným systémem dle odst. 21A.3.2.1 zajišťuje dodavatel stavby.
+21A.3.2.3 Ložiska elastomerová
+Protikorozní ochrana případných kovových částí pevně spojených s ložiskem je součástí dodávky ložiska.
+Provedení protikorozní ochrany ocelových prvků, které nejsou přímou součástí ložiska (roznášecí desky, zarážky
+apod.), zajistí dodavatel stavby podle dokumentace, schváleným systémem protikorozní ochrany.
+21A.3.2.4 Ložiska hrncová
+Vzhledem k náročnosti ochrany neoprenových částí a kluzných ploch musí být provedení protikorozní ochrany
+ocelových částí ložiska součástí dodávky hrncového ložiska.
+Protikorozní ochrana ocelových částí hrncových ložisek musí být provedena pouze schváleným systémem dle
+odst. 21A.3.2.1.
+21A.3.3 Ochrana proti účinkům bludných proudů
+Ochrana proti účinkům bludných proudů musí být v souladu s ustanoveními kapitoly 25A TKP a předpisu
+ČD SR 5/7(S).
+Ochrana proti účinkům bludných proudů musí být zajištěna v oblastech jejich výskytu, tj. na tratích
+elektrizovaných stejnosměrnou proudovou trakcí a v přilehlých úsecích nebo v oblastech, kde byl výskyt
+bludných proudů prokázán korozním průzkumem.
+V oblastech výskytu bludných proudů je nutno z hlediska vodivosti oddělit nosnou konstrukci od spodní stavby
+následujícími způsoby:
+− použít izolovaná mostní ložiska (např. některé typy elastomerových ložisek),
+− přerušit vodivé propojení izolační vrstvou pod ložisky (vložkami z PVC, vrstvou polymerbetonu nebo
+polymermalty).
+Pokud se v oblasti výskytu bludných proudů výjimečně provádějí ocelová tangenciální ložiska, musí být
+důsledně provedena individuální opatření na ochranu proti účinkům bludných proudů podle dokumentace ve
+smyslu předpisu ČD SR 5/7(S).
+Pokud je požadováno průkazní měření elektrického odporu mostního ložiska, zajistí je dodavatel stavby.
+Elektrický odpor jednoho osazeného mostního ložiska musí být minimálně 5 kΩ.
+21A.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+21A.4.1 Obecně
+Dodávka ložisek v jednotlivých případech je považována:
+− za dodávku výrobků pro stavbu, přičemž se jakost dodaných výrobků zajišťuje certifikací výrobku
+akreditovanou zkušebnou. Dodávat se smí pouze ložiska, která vyhovují požadavkům uvedeným v článku 1.1
+této kapitoly TKP.
+1 3
+− nebo za výrobu částí ocelové konstrukce, pokud ložiska nejsou dodána jako výrobek pro stavbu, přičemž
+stavební dozor nad jakostí provádějí odborné orgány zadavatele v rozsahu daném ČSN 73 2601
+a ČSN 73 2603.
+Parametry dodaných mostních ložisek musí odpovídat dokumentaci. Požadavky na návrh ložiska pro danou
+konstrukci jsou souhrnně uvedeny ve výkazu ložiska dle ČSN EN 1337-1, přílohy B.
+Pro mostní ložiska je charakteristické, že výsledná jakost jejich provedení závisí značnou měrou na parametrech
+materiálů použitých pro výrobu ložiska, jejichž dodávka je zpravidla předmětem samostatných smluvních
+vztahů. Požadavky na průkazní zkoušky materiálů jsou stanoveny v oddíle 21A.2 této kapitoly TKP
+a souvisejících předpisech.
+Jakost dodávky, popř. provedení ložisek, se zajišťuje souběžně:
+− interní kontrolou prováděnou výrobcem ložisek, který vlastní certifikát pro dodávaná ložiska, nebo výrobcem
+ocelové konstrukce, který vlastní oprávnění pro výrobu ocelových mostních konstrukcí,
+− dodavatelem mostního objektu,
+− stavebním dozorem zadavatele, příp. pověřeným orgánem zadavatele.
+Všechna ložiska vyrobená z několika součástí, které spolu nejsou pevně spojené a u nichž se nepředpokládá
+osazení ložisek po částech, budou opatřena spínacími prvky. Spínací prvky musí být dostatečně pevné, aby
+udržely jednotlivé části ložiska ve správné poloze při manipulaci, dopravě a osazování. Tyto prvky se označí,
+tj. natřou se jinou barvou než ložisko. Spínací prvky musí být po osazení ložiska snadno odstranitelné.
+V případě, že spínací prvky nelze po osazení ložiska odstranit, potom musí být navrženy tak, aby se samy
+přerušily bez poškození ložiska, jakmile se ložisko stane funkční.
+Všechna ložiska, která jsou příliš těžká pro ruční manipulaci (hmotnosti nad 50 kg), musí být vybavena úchyty
+pro upevnění zvedacího zařízení.
+Požadavky na kontrolní zkoušky, prováděné v rámci dodávky, jsou uvedeny v oddíle 21A.5 této kapitoly TKP.
+21A.4.2 Dodávka a skladování ložisek
+Všechna ložiska se označí názvem výrobce, místem výroby, rokem výroby a individuálním výrobním číslem pro
+každé ložisko a každý typ ložiska. Navíc všechna ložiska kromě elastomerových se označí následujícím
+způsobem: typ ložiska, objednávkové číslo, maximální návrhová únosnost ložiska na svislé a vodorovné síly,
+maximální rozsah návrhových posunů, umístění v konstrukci, směr osazení. S výjimkou dvou posledních
+položek bude označení provedeno tak, že bude trvale viditelné a zůstane úplné a čitelné po celou dobu životnosti
+ložiska. V případě, že velikost ložiska neumožňuje umístění označení na ložisko, lze označení umístit na spodní
+stavbu tak, aby bylo zřejmé, kterého ložiska se označení týká.
+Balení ložisek musí být provedeno takovým způsobem, aby se ložiska nepoškodila a neznečistila během dopravy
+a manipulace na stavbě. Manipulaci s ložisky musí provádět kvalifikovaný personál. S ložisky se musí zacházet
+opatrně.
+Nejsou-li ložiska osazena do konstrukce bezprostředně po dodání, musí je dodavatel objektu vhodně uskladnit
+(uložit na hraněné dřevo, zespodu větrané a opatřit ochranným krytem). Dočasné uskladnění musí být takové,
+aby ložiska nebyla znečištěna nebo poškozena vlivem počasí, pracemi na staveništi, staveništní dopravou aj.
+Po dodání ložisek na stavbu se provede prohlídka ložisek a pořídí se protokol o převzetí dodávky mostního
+ložiska za účasti dodavatele ložisek a dodavatele objektu. Protokol o převzetí dodávky mostního ložiska musí
+obsahovat následující údaje: datum převzetí dodávky, viditelná poškození (zejména vzhledem ke stavu
+protikorozní ochrany ložiska), čistota ložiska, stav upínacích zařízení, soulad s dokumentací ložisek, označení
+ložisek typovými štítky, prostředky k zajištění přesného osazení ložisek (pokud byly požadovány), označení
+hlavního směru pohybu pro pohyblivá ložiska, údaje o velikosti a směru nastavení ložisek (pokud bylo
+provedeno), údaje o možnosti nového nastavení, způsob dočasného uskladnění na stavbě. Protokol o převzetí
+dodávky mostního ložiska lze nahradit zápisem o dílenské přejímce u výrobce ložiska. Dodavatel objektu
+v tomto případě zkontroluje, že ložiska byla dodána na stavbu v nepoškozeném stavu.
+21A.4.2.1 Ložiska ocelová
+Ustanovení se týkají ložisek z ocelí běžných i vysokých pevností. Z hlediska jejich konstrukce se jedná o ložiska
+vahadlová, tangenciální, desková a kolejnicová.
+1 4
+Dodávka ocelového ložiska je buď dodávkou výrobku pro stavbu, pro kterou musí být splněny požadavky
+uvedené v článku 21A.1.1 této kapitoly TKP, nebo je výrobou části ocelové mostní konstrukce, pro kterou platí
+ČSN 73 2601 a ČSN 73 2603, které stanovují též podmínky součinnosti zadavatele s výrobcem pro zajištění
+kvality dodávky (např. převzetí základního materiálu zadavatelem, právo kontroly výroby a zápisů do výrobního
+deníku, dílenská přejímka).
+21A.4.2.1.1 Výroba
+Způsobilost dodavatele ocelových ložisek musí splňovat požadavky uvedené v článku 1.5 této kapitoly TKP.
+Pro výrobu ocelových ložisek, která nejsou dodávkou výrobku pro stavbu, jsou závazná ustanovení:
+− kapitola 19 TKP,
+− ČSN 73 2601,
+− ČSN 73 2603,
+− TNŽ 73 6277, část IV (pro ložiska z ocelí běžných pevností).
+Dle ČSN 73 6205 jsou ložiska hlavní nosnou částí mostu a dle ČSN 73 2601 jsou zařazena do výrobní
+skupiny Aa.
+Pro jejich výrobu musí být zpracována výrobní dokumentace včetně technologického postupu výroby a montáže
+a technologického postupu svařování a veden výrobní deník.
+Požadavky na drsnost funkčních ploch normalizovaných ložisek, které se po sobě odvalují nebo jinak vzájemně
+pohybují, jsou stanoveny v ČSN EN 1337-4.
+21A.4.2.1.2 Dílenská přejímka
+Dílenská přejímka ložisek se provádí podle ustanovení ČSN 73 2603 za účasti zástupců zadavatele a dodavatele
+objektu.
+K dílenské přejímce se předkládá každé ložisko ve smontovaném stavu před provedením povrchové ochrany.
+Na požádání přejímacího orgánu provede dodavatel rozebrání ložiska na jednotlivé součásti a jejich opětovné
+sestavení. Přitom se kontrolují zejména:
+− dokumentace výrobce včetně schvalovacího protokolu,
+− výrobní deník,
+− doklady o materiálu, jeho zkouškách a odsouhlasení zadavatelem ve vazbě na položky ložisek (viz též oddíl
+21A.2 této kapitoly TKP),
+− doklady o nedestruktivních zkouškách součástí ložiska, (pro ložiska ocelová viz TNŽ 73 6277, čl. 46),
+− výskyt, příp. rozsah vad součástí ložiska, zejména odlitků (pro ložiska ocelová viz TNŽ 73 6277, čl. 46-47),
+− drsnost povrchu funkčních a úložných ploch ložisek (pro ložiska ocelová viz TNŽ 73 6277, čl. 34),
+− rozměry součástí ložisek, rozměrové odchylky (viz též oddíl 21A.6 této kapitoly TKP),
+− správná funkce a rozměry v sestaveném stavu (viz též oddíl 21A.6 této kapitoly TKP),
+− kvalita případných svarů,
+− vzájemné doléhání funkčních ploch v celém rozsahu (pro ložiska ocelová viz TNŽ 73 6277, čl. 49),
+− vůle v ložiskách pro přenášení vodorovných sil (max 2 mm, není-li stanoveno jinak) ,
+− rozteče a průměry otvorů pro připojení ložiska,
+− označení ložiska a jeho součástí (pro ložiska ocelová dle TNŽ 73 6277, čl. 49) musí:
+− zamezit záměně ložisek a jejich součástí,
+− udávat správnou orientaci ložiska,
+− udávat správnou vzájemnou polohu jeho součástí,
+− umožnit nastavení základní polohy pohyblivých ložisek při osazování,
+− zůstat zřetelné i po následném provedení povrchové ochrany a osazení ložiska.
+− označení výrobce a výrobní číslo.
+1 5
+Ke každému ložisku se zhotoví zápis (protokol) o dílenské přejímce v rozsahu podle ČSN 73 2603. Po dodání
+ložisek na stavbu se provede prohlídka ložisek a pořídí se protokol o převzetí dodávky mostního ložiska.
+Pokud ložisko nevyhoví výše uvedeným požadavkům, nesmí být převzato.
+21A.4.2.1.3 Doprava a skladování
+Ložiska se expedují většinou smontovaná, přičemž musí být opatřena alespoň základní protikorozní ochranou,
+zabalena a označena tak, aby při dopravě a skladování nedošlo k jejich poškození či záměně.
+21A.4.2.2 Ložiska elastomerová
+Ustanovení se týkají ložisek elastomerových, vyztužených ocelovými zavulkanizovanými plechy.
+Dodávka elastomerového ložiska je vždy dodávkou výrobku pro stavbu, pro kterou musí být splněny požadavky
+uvedené v článku 21A.1.1 této kapitoly TKP.
+Technické parametry elastomerových ložisek jsou obsaženy v certifikátech. Pro každý typ elastomerového
+ložiska musí být vydáno Stavební technické osvědčení, které obsahuje:
+− popis ložiska a způsob jeho použití
+− technické parametry ložiska,
+− druh a rozsah předepsaných zkoušek sledovaných vlastností,
+− kritéria a způsob vyhodnocení zkoušek sledovaných vlastností,
+− režim a způsob údržby.
+Způsobilost dodavatele elastomerových ložisek musí splňovat požadavky uvedené v článku 21A.1.5 této
+kapitoly TKP.
+21A.4.2.2.1 Výroba
+Bezchybná výroba vyztužených elastomerových ložisek vyžaduje specifické znalosti, zkušenosti, výrobní
+zařízení a nepřetržitou kontrolu výroby (dozor nad kvalitou). Výrobu elastomerových ložisek mohou zajišťovat
+pouze certifikované výrobny ve smyslu článku 21A.1.5 této kapitoly TKP. Ložiska musí být dodána s označením
+výrobce, výrobního čísla, s udáním základních technických údajů a s doklady o výrobě a přejímce základního
+materiálu.
+Výrobce musí doložit správnou polohu výztužných plechů v ložisku (kontrolou rentgenem nebo jinou vhodnou
+nedestruktivní metodou např. tloušťkoměrem) a dokonalé zavulkanizování. Pro každé ložisko se zhotovují
+rentgenové snímky (dva až osm) orientované tak, že normála roviny každého snímku je kolmá ke svislé ose
+ložiska a současně normály obou snímků jsou vzájemně kolmé (viz obr.1). Směr rentgenových paprsků je tudíž
+jednou ve směru podélné osy ložiska a podruhé ve směru příčné osy ložiska. Pro ložiska, jejichž obě hrany jsou
+menší než 300 mm, se těžiště snímku umísťuje do středu hrany ložiska (paprsky kreslené čárkovanou čarou). Pro
+ložiska, jejichž jedna hrana je větší než 300 mm, se těžiště obou snímků umísťuje k diagonálně orientovaným
+rohům ložiska (paprsky kreslené plnou čarou).
+normála roviny 2. snímku
+a<300 mm b
+a≥300 mm
+a≥b
+normála roviny 1. snímku
+Obr.č. 1 – Roviny a poloha rentgenových snímků
+Nedílnou součástí dodávky ocelových částí ložisek jsou dokumenty kontroly dle ČSN EN 10204.
+1 6
+21A.4.2.2.2 Přejímka ložisek
+Pokud není v konkrétním případě stanoveno jinak, přejímá pověřený orgán zadavatele elastomerová ložiska jako
+hotový výrobek s povrchovou ochranou. Konečné přejímce může předcházet kontrola ložiska v nenatřeném
+stavu, případně v rozloženém stavu, pokud si to zadavatel vymíní.
+Při přejímce se kontrolují zejména:
+− certifikát pro daný typ ložiska podle čl. 21A.1.1 této kapitoly TKP,
+− doklady o způsobilosti výrobce,
+− dokumenty ke konkrétní zakázce, zejména:
+− doklady o kvalitě základních materiálů a výsledcích jejich zkoušek (viz též oddíl 21A. 2 této
+kapitoly TKP),
+− doklady o výrobě včetně dokladů o povrchové ochraně,
+− doklady o výsledcích nespecifických a specifických zkoušek,
+− vyplněná karta ložiska,
+− soulad s technickými požadavky objednávky:
+− provedení a rozměry ložiska,
+− dodržení rozměrových tolerancí podle schvalovacího protokolu, viz též oddíl 21A.6 této kapitoly
+TKP,
+− dokonalé zavulkanizování výztužných plechů (kontrola rentgenem),
+− úprava povrchu úložných ploch ložisek,
+− trvanlivé označení ložiska a případně všech jeho oddělitelných součástí, které jsou součástí
+dodávky (např. kotvící prvky) tak, aby byly vyloučeny záměny a zajištěna správná orientace při
+osazování,
+− označení výrobce a výrobní číslo,
+− označení zkušebny.
+Pokud jsou součástí dodávky ložiska ocelové desky a kotvící prvky, kontroluje se též:
+− sestavení ložiska a vzájemné doléhání jednotlivých součástí v celém rozsahu,
+− poloha a provedení kotvících prvků,
+− protikorozní ochrana kovových součástí ložiska,
+− u ocelových desek pevně připojených kvalita jejich připojení (zavulkanizování).
+Po převzetí ložisek se zhotoví protokol o převzetí dodávky mostních ložisek.
+Pokud ložisko nevyhoví těmto požadavkům, nesmí být převzato.
+Přejímací orgán může požadovat rozebrání a opětovné složení ložiska při přejímce, zvláště nepředcházela-li
+kontrola výroby v jejím průběhu.
+21A.4.2.2.3 Doprava a skladování
+Ložiska musí být zabalena tak, aby při dopravě a skladování nedošlo k jejich poškození. Ložiska, příp. i obal,
+musí být označen dle ČSN EN 1337-1 tak, aby nedošlo k záměně ložisek.
+21A.4.2.3 Ložiska hrncová
+Dodávka hrncového ložiska je vždy dodávkou výrobku pro stavbu, pro kterou musí být splněny požadavky
+uvedené v článku 21A.1.1 této kapitoly TKP.
+Technické parametry hrncových ložisek jsou obsaženy v certifikátech. Pro každý typ hrncového ložiska musí být
+vydáno Stavební technické osvědčení, které obsahuje:
+− popis ložiska a způsob jeho použití,
+− technické parametry ložiska,
+1 7
+− druh a rozsah předepsaných zkoušek sledovaných vlastností,
+− kritéria a způsob vyhodnocení zkoušek sledovaných vlastností,
+− režim a způsob údržby.
+Způsobilost dodavatele hrncových ložisek musí splňovat požadavky uvedené v článku 21A.1.5 této
+kapitoly TKP.
+21A.4.2.3.1 Výroba
+Výrobu hrncových ložisek mohou zajišťovat pouze certifikované výrobny ve smyslu článku 21A.1.5 této
+kapitoly TKP. Ložiska musí být dodána s označením výrobce, výrobního čísla, s udáním základních technických
+údajů a s doklady o výrobě a přejímce základního materiálu.
+Nedílnou součástí dodávky jsou dokumenty kontroly dle ČSN EN 10204.
+21A.4.2.3.2 Přejímka ložisek
+Pokud není v konkrétním případě stanoveno jinak, přejímá pověřený orgán zadavatele hrncové ložisko jako
+hotový výrobek s povrchovou ochranou. Konečné přejímce může předcházet kontrola ložiska v nenatřeném
+stavu nebo v rozloženém stavu, pokud si to zadavatel vymíní.
+Při přejímce se kontrolují zejména:
+− certifikát pro daný typ ložiska podle čl. 21A.1.1 této kapitoly TKP,
+− doklady o způsobilosti výrobce,
+− dokumenty ke konkrétní zakázce, zejména:
+− doklady o kvalitě základních materiálů a výsledcích jejich zkoušek (viz též oddíl 21A.2 této
+kapitoly TKP),
+− doklady o výrobě ložiska včetně dokladů o povrchové ochraně,
+− doklady o výsledcích nespecifických a specifických zkoušek provedených v souladu s technickými
+požadavky objednávky,
+− vyplněná karta ložiska,
+− soulad s technickými požadavky objednávky:
+− provedení a rozměry ložiska,
+− dodržení rozměrových tolerancí podle schvalovacího protokolu, viz též oddíl 21A.6 této
+kapitoly TKP,
+− kvalita základního materiálu ložiska,
+− kvalita povrchu kluzných ploch,
+− sestavení ložiska a vzájemné doléhání jednotlivých součástí v celém rozsahu,
+− přednastavení ložiska,
+− poloha a provedení případných kotvících prvků,
+− protikorozní ochrana kovových součástí ložiska,
+− trvanlivé označení ložiska a případně všech jeho oddělitelných součástí, které jsou součástí
+dodávky (např. kotvící prvky) tak, aby byly vyloučeny záměny a zajištěna správná orientace při
+osazování,
+− značka výrobce a výrobní číslo,
+− značka akreditované zkušebny.
+Přejímací orgán si může vyhradit rozebrání a opětovné složení ložiska při přejímce, zvláště nepředcházela-li
+kontrola výroby v jejím průběhu.
+Ke každému ložisku se zhotoví protokol o převzetí dodávky mostního ložiska.
+Pokud ložisko nevyhoví těmto požadavkům, nesmí být převzato.
+1 8
+21A.4.2.3.3 Doprava a skladování
+Hrncová ložiska se dodávají ve smontovaném stavu, s aretací pohyblivých částí. Ložiska musí být zabalena tak,
+aby při dopravě a skladování nedošlo k jejich poškození. Ložisko, příp. i obal, musí být označen dle
+ČSN EN 1337-11 tak, aby nedošlo k záměně ložisek.
+Ložiska je nutno dopravovat ve vodorovné poloze na krytých vozech a skladovat v suchých a krytých
+prostorách. Kluznou vrstvu je nutno chránit před mechanickým poškozením a slunečním zářením.
+21A.4.3 Dodávka materiálu na podlití ložisek
+21A.4.3.1 Cementová malta a beton
+Způsob provádění průkazních zkoušek betonu je stanoven v kapitole 17 TKP a v ČSN EN 206-1. V případě, že
+se jedná o staveništní výrobu cementové malty pro podlití a kotvení ložisek, tak je nutno prokázat její parametry
+průkazními zkouškami obdobně jako pro beton.
+Průkazní zkoušky betonu a cementové malty musí provádět zkušební laboratoř s akreditací.
+V případě, že je cementová malta dodána na stavbu jako výrobek, pak platí parametry uvedené v technickém
+listě výrobku, který je součástí jeho certifikace.
+21A.4.3.2 Polymermalta a polymerbeton
+Průkazní zkoušky polymermalty a polymerbetonu se provádějí v případě jiných poměrů mísení než jsou
+doporučené výrobcem pro dosažení požadovaných parametrů.
+Průkazní zkoušky polymermalty a polymerbetonu musí provádět zkušební laboratoř s akreditací.
+V případě, že je polymermalta dodána na stavbu jako výrobek, pak platí parametry uvedené v technickém listě
+výrobku, který je součástí jeho certifikace.
+21A.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+21A.5.1 Kontrolní zkoušky základních materiálů ložisek
+Způsob a rozsah odebírání vzorků a provádění kontrolních zkoušek použitých základních materiálů pro výrobu
+mostních ložisek se stanoví v technických požadavcích objednávky. Veškeré kontrolní zkoušky materiálů musí
+provádět zkušební laboratoř s akreditací odsouhlasená zadavatelem.
+21A.5.2 Kontrolní zkoušky betonu a cementové malty na podlití
+Způsob a rozsah odebírání vzorků, provádění a vyhodnocení kontrolních zkoušek betonu je stanoven v kapitole
+17 TKP a v ČSN EN 206-1. Obdobným způsobem s postupuje při kontrolních zkouškách cementové malty pro
+podlití a kotvení mostních ložisek.
+Kontrolní zkoušky betonu a cementové malty musí provádět zkušební laboratoř s akreditací.
+Při zkouškách musí být dosaženy minimálně hodnoty požadované v projektu a v technických požadavcích
+objednávky.
+Za odebrání vzorků a provedení kontrolních zkoušek v požadovaném rozsahu odpovídá dodavatel objektu
+v součinnosti se stavebním dozorem zadavatele.
+21A.5.3 Kontrolní zkoušky polymermalty a polymerbetonu na podlití
+Způsob a rozsah odebírání vzorků, provádění a vyhodnocení kontrolních zkoušek polymermalty
+a polymerbetonu musí být specifikován v technických požadavcích objednávky ve shodě s technickými
+specifikacemi výrobce.
+Kontrolní zkoušky polymermalty a polymerbetonu musí provádět zkušební laboratoř s akreditací.
+Při zkouškách musí být dosaženy minimálně hodnoty požadované v projektu a v technických požadavcích
+objednávky.
+1 9
+Za odebrání vzorků a provedení kontrolních zkoušek v požadovaném rozsahu odpovídá dodavatel objektu
+v součinnosti se stavebním dozorem zadavatele.
+21A.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+21A.6.1 Výrobní tolerance
+Ložiska přenášející vodorovné síly musí být provedena tak, aby vůle mezi jednotlivými částmi ložiska byly co
+nejmenší dle článku 21A.3.1.1.5 této kapitoly TKP.
+Výrobní tolerance ocelových ložisek musí odpovídat ČSN 73 2611, tab. 16 a 17 a TNŽ 73 6277, čl. 31,32 a 48.
+Výrobní tolerance válcových ložisek musí splňovat kritéria dle ČN EN 1337-4, vahadlová ložiska dle
+ČSN EN 1337-6 a vodící ložiska dle ČSN EN 1337-8.
+Výrobní tolerance elastomerových ložisek musí odpovídat ČSN EN 1337-3.
+Výrobní tolerance hrncových ložisek musí odpovídat ČSN EN 1337-5.
+21A.6.2 Tolerance osazení
+Rozlišují se tolerance osazení ložiska:
+− tolerance výškové (měřené ve svislém směru),
+− tolerance půdorysné (měřené ve vodorovné rovině podélně a příčně),
+− tolerance natočení ložiska kolem svislé osy (s ohledem na směr požadovaného volného pohybu),
+− tolerance natočení ložiska kolem vodorovné osy (jedná se natočení kolem vodorovné osy
+v libovolném směru, pro který má natočení největší hodnotu)
+− tolerance vodorovnosti uložení (měří se odchylka roviny uložení od vodorovné roviny).
+Pro rozměry, jejichž tolerance nejsou specifikovány v této kapitole TKP, dokumentech výrobce, ostatních TKP
+ani dalších závazných normách a předpisech, platí tolerance podle ČSN ISO 2768-1.
+21A.6.2.1 Výškové tolerance
+Výškové tolerance osazených ložisek ovlivňují statické schéma uložení nosné konstrukce a tím přerozdělují
+velikosti přenášených sil jednotlivými ložisky. Maximální výškové rozdíly mezi jednotlivými ložisky musí být
+určeny v projektové dokumentaci a v technických požadavcích objednávky. Výškové tolerance se zjišťují před
+i po uložení nosné konstrukce na ložiska, aby se vyloučil vliv rozdílného stlačení jednotlivých ložisek. Pokud se
+zjišťují výškové tolerance ložisek s osazenou konstrukcí, tak je nutno respektovat stlačení jednotlivých ložisek.
+21A.6.2.2 Půdorysné tolerance
+Půdorysné tolerance osazení ložisek jsou limitovány konstrukčním řešením nosné konstrukce a spodní stavby.
+Mezní hodnoty musí být určeny v projektové dokumentaci a v technických požadavcích objednávky.
+21A.6.2.3 Tolerance natočení kolem svislé osy
+Pokud není v projektové dokumentaci nebo v technických požadavcích objednávky nebo v podmínkách výrobce
+pro daný typ ložisek požadována větší přesnost, nesmí být:
+− odchylka směru volného pohybu od směru předepsaného u ložisek jednosměrně pohyblivých větší než 3 ‰,
+− vzájemná odchylka směru volného pohybu sousedních jednosměrně pohyblivých ložisek větší než 3 ‰.
+21A.6.2.4 Tolerance natočení kolem vodorovné osy
+Úhel natočení se nesmí od projektovaného úhlu lišit o více než 3 ‰. Při stanovení tohoto úhlu se vychází
+z technologického postupu osazení ložiska (rozhodující je okamžik podlití ložiska).
+2 0
+21A.6.2.5 Tolerance vodorovnosti uložení
+Pokud není v projektové dokumentaci nebo v technických požadavcích objednávky pro daný typ ložisek
+požadována větší přesnost, nesmí být odchylka roviny uložení ložiska od vodorovné větší než 3 ‰.
+21A.6.3 Míra opotřebení
+Při kontrole stávajících ložisek se zjišťuje míra opotřebení a ta se porovnává s mezní hodnotou, při které již
+ložisko přestává spolehlivě plnit svoji funkci.
+21A.6.4 Záruky
+Záruční doby všeobecně stanoví kapitola 1 TKP. Po celou záruční dobu je třeba sledovat celkový stav a funkci
+ložisek a jakákoliv zjištění zakládající důvod k zahájení reklamačního řízení musí být správcem bez zbytečného
+odkladu písemně oznámena dodavateli a zadavateli.
+21A.7 KLIMATICKÁ OMEZENÍ
+Funkce a zachování požadovaných parametrů mostních ložisek musí být zaručeny v rozsahu mezních teplot
+mostních konstrukcí podle ČSN 73 6203 a ČSN P ENV 1991-2-5.
+Případná klimatická omezení pro skladování a osazování mostních ložisek jsou stanovena v dokumentaci
+a technických podmínkách dodavatele.
+Klimatická omezení pro ukládání a po dobu ošetřování cementové malty a betonu jsou stanovena v kapitole
+17 TKP a ČSN EN 206-1.
+Klimatická omezení pro zpracování a ukládání polymerbetonu a polymermalty jsou stanovena v příslušných
+technologických předpisech výrobce.
+Pokud klimatické podmínky neodpovídají výše uvedeným ustanovením, musí být pro provádění prací zřízeny
+vyhřívané přístřešky. Tato opatření schvaluje stavební dozor zadavatele.
+21A.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+21A.8.1 Obecně
+Zajištění všech dále uvedených kontrol, odsouhlasení a převzetí prací je povinností dodavatele objektu, který
+zároveň musí vytvořit podmínky pro jejich úplné provedení.
+21A.8.2 Převzetí dodávky mostních ložisek
+Požadavky na způsob převzetí dodávky jednotlivých druhů a typů mostních ložisek na stavbě jsou uvedeny
+v oddílech 21A.4 až 21A.6 této kapitoly TKP. Podkladem jsou protokoly o převzetí dodávky mostního ložiska
+dle článku 21A.4.2 této kapitoly TKP.
+21A.8.3 Montážní prohlídka
+Montážní prohlídka mostních konstrukcí je součástí zkoušek před jejich převzetím. Součástí montážní prohlídky
+musí být i prohlídka mostních ložisek. Při montážní prohlídce se kontroluje zejména:
+− doklady od montáže a osazení ložisek (protokoly o osazení ložiska a protokoly o definitivním zajištění
+polohy a funkce ložiska),
+− soulad s projektovou, výrobní a montážní dokumentací,
+− dosedání funkčních ploch ložisek,
+− tolerance osazení ložisek,
+− poloha pohyblivých ložisek v závislosti na okamžité teplotě mostní konstrukce,
+− kvalita provedení protikorozní ochrany,
+− označení ložisek.
+2 1
+21A.8.4 Odsouhlasení dílčích prací
+Odsouhlasení stavebních prací probíhá podle dispozic stavebního dozoru zadavatele formou prohlídek. Z výsled-
+ků prohlídek musí být pořízeny protokoly:
+- po dodání ložisek na stavbu se vyhotoví protokol o převzetí dodávky mostního ložiska dle článku
+21A.4.2 této kapitoly TKP,
+- po osazení ložisek se vyhotoví protokol o osazení ložiska dle článku 21A.3.1.1.10 této kapitoly TKP,
+- po uvolnění konstrukce, resp. po spuštění konstrukce na ložiska, se vyhotoví protokol o definitivním
+zajištění polohy a funkce ložiska dle článku 21A.3.1.1.10 této kapitoly TKP.
+Kromě požadavků uvedených v jednotlivých protokolech ložiska může být požadováno měření elektrického
+odporu ložiska (viz článek 21A.3.3 této kapitoly TKP).
+21A.8.5 Převzetí osazených mostních ložisek
+K převzetí dokončených mostních ložisek dodavatel předloží:
+− protokoly o převzetí dodávky mostního ložiska dle článku 21A.4.2 této kapitoly TKP (příp. zápis o dílenské
+přejímce ložiska, pokud byla provedena),
+− protokoly o osazení ložiska dle článku 21A.3.1.1.10 této kapitoly TKP,
+− protokoly o definitivním zajištění polohy a funkce ložiska dle článku 21A.3.1.1.10 této kapitoly TKP,
+− záznamy o měření pohybů pohyblivých ložisek,
+Stavební dozor zadavatele kontroluje zejména:
+− úplnost předkládané dokumentace,
+− provedení a ukončení všech stavebních a montážních prací,
+− funkci pohyblivých ložisek při změnách teplot,
+− tolerance osazení ložisek a nastavení ložisek,
+− kompletnost vybavení ložisek,
+− viditelnost předepsaného označení.
+Závěrem se vyhotoví protokol o převzetí dokončených ložisek. Protokol o převzetí dokončených ložisek je
+součástí dokumentace k převzetí stavby.
+21A.8.6 Hlavní prohlídka
+Hlavní prohlídka mostního objektu je podle Stavebního a technického řádu drah (vyhláška ministerstva dopravy
+č. 177/1995 Sb., hl. III) povinnou součástí technicko-bezpečnostní zkoušky. Provádí se před zahájením provozu
+na mostě a je podmínkou jeho povolení. Požadavky na provádění hlavní prohlídky jsou stanoveny v ČD S5, část
+druhá.
+Hlavní prohlídkou se kontroluje zejména:
+− doklady k ložiskům (protokoly uvedené v článku 21A.8.5 této kapitoly TKP),
+− dosedání funkčních ploch ložisek,
+− kvalitu provedení přípojů,
+− polohu a nastavení ložisek v závislosti na okamžité teplotě, (zvláště pokud kontrola nemohla být s ohledem
+na harmonogram prací provedena již při montážní prohlídce),
+− kvalitu provedení protikorozní ochrany, včetně doplnění protikorozní ochrany přípojů,
+− konzervaci funkčních ploch,
+− viditelnost označení ložisek.
+Povinnou součástí předkládané dokumentace jsou protokoly o převzetí dodávky mostního ložiska (příp. zápis
+o dílenské přejímce, pokud byla provedena), včetně osvědčení o jakosti jejich materiálu, protokoly o osazení
+ložiska, protokoly o definitivním zajištění polohy a funkce ložiska a protokol o převzetí dokončených ložisek.
+2 2
+21A.8.7 Zatěžovací zkouška, zkušební provoz
+Podmínky pro zatěžovací zkoušku a zkušební provoz jsou stanoveny v ČSN 73 6209 a ve Stavebním
+a technickém řádu drah (vyhláška ministerstva dopravy č. 177/1995 Sb.).
+Při zatěžovací zkoušce (pokud je předepsána) a během zkušebního provozu se kontroluje funkce mostních
+ložisek zejména s ohledem na:
+- případný výskyt nadměrných deformací,
+- stabilitu polohy jejich součástí a dosedání funkčních ploch při průjezdu zatížení.
+Provedení zatěžovací zkoušky zajišťuje dodavatel objektu.
+21A.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+Měření polohy pohyblivých mostních ložisek, s využitím měrek pro měření horizontálních posunů dle článku
+21A.3.1.1.6 této kapitoly TKP, provede dodavatel stavby:
+- po jejich osazení,
+- po zajištění jejich polohy,
+- při extrémních teplotách v průběhu stavby.
+Dodavatel stavby zaznamenává polohu ložisek společně s údaji o čase měření, teplotě ovzduší a konstrukce
+a zatížení mostu. Výslednou tabulku s vyhodnocením předkládá k hlavní prohlídce.
+Stavební dozor zadavatele může předepsat další požadavky na provádění měření až do převzetí stavebního
+objektu.
+Požadavky na provádění měření v průběhu zkušebního provozu mohou být součástí samostatných smluvních
+ujednání, případně mohou být předepsány hlavní prohlídkou (v případě pochybností o dokonalé funkci).
+21A.10 EKOLOGIE
+Pro provádění mostních ložisek platí ekologické požadavky platné pro provádění ocelových mostních konstrukcí
+(viz kapitola 19 TKP), betonových mostních konstrukcí (viz kap. 18 TKP), protikorozní ochrany (viz kapitola
+25B TKP) a výrobu betonu, polymerbetonu a polymermalty (viz kapitola 17 TKP).
+21A.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ
+OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví
+kapitola 1 TKP.
+21A.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich aktualizace.
+Uživatel TKP odpovídá, ve smyslu kapitoly 1 TKP, oddíl 3, za použití aktuální verze výchozích podkladů,
+tj. právních předpisů, technických norem a předpisů a předpisů ČD.
+21A.12.1 Technické normy
+ČSN 73 2601 Provádění ocelových konstrukcí.
+ČSN 73 2603 Provádění ocelových mostních konstrukcí.
+ČSN 73 2611 Úchylky rozměrů a tvarů ocelových konstrukcí.
+ČSN 73 6200 Mostní názvosloví.
+ČSN 73 6203 Zatížení mostů.
+ČSN 73 6205 Navrhování ocelových mostů.
+ČSN 73 6209 Zatěžovací zkouška mostů.
+ČSN EN 10021 (42 0905) Všeobecné technické dodací podmínky pro ocel a ocelové výrobky.
+ČSN EN 10204 (42 0009) Kovové výrobky. Druhy dokumentů kontroly.
+2 3
+ČSN EN 1337-1 Stavební ložiska - Část 1: Všeobecná pravidla navrhování.
+ČSN EN 1337-2 Stavební ložiska - Část 2: Kluzné prvky.
+ČSN EN 1337-4 Stavební ložiska - Část 4: Válcová ložiska.
+ČSN EN 1337-6 Stavební ložiska - Část 6: Vahadlová ložiska.
+ČSN EN 1337-9 Stavební ložiska - Část 9: Ochrana.
+ČSN EN 1337-10 Stavební ložiska - Část 10: Prohlídka a údržba.
+ČSN EN 1337-10 Stavební ložiska - Část 11: Doprava, skladování a osazování.
+ČSN EN 1559-1 Slévárenství - Technické dodací podmínky - Část 1: Všeobecně
+ČSN EN 1559-2 Slévárenství - Technické dodací podmínky - Část 2: Doplňkové požadavky
+na ocelové odlitky
+ČSN P ENV 1991-2-5 (73 0035) Zásady navrhování a zatížení konstrukcí - Část 2-5: Zatížení konstrukcí -
+Zatížení teplotou.
+ČSN ISO 2768-1 (01 4240) Všeobecné tolerance. Nepředepsané mezní úchylky délkových a úhlových rozměrů.
+ČSN EN 45012 (015257) Všeobecné požadavky na orgány provádějící posuzování a certifikaci / registraci
+systémů jakosti.
+ČSN EN 206-1 (73 2403) Beton - Část 1: Specifikace, vlastnosti, výroba a shoda.
+TNŽ 73 6277 Ocelová ložiska železničních mostů.
+21A.12.2 Předpisy
+ČD S 5 Správa mostních objektů, nepublikovaný předpis
+ČD S 5/4 Protikorozní ochrana ocelových konstrukcí
+ČD SR 5/7 (S) Ochrana železničních mostních objektů proti účinkům bludných proudů.
+MVL 211 Ocelová konstrukce s kolejovým ložem s dolní mostovkou, plnostěnná.
+Zákon 22/1997 Sb. o technických požadavcích na výrobky
+Zákon 40/2004 Sb. o veřejných zakázkách.
+Nařízení vlády č. 163/2002 Sb., kterým se stanoví technické požadavky na vybrané stavební výrobky.
+Vyhláška č. 177/1995 Sb. Stavební a technický řád drah
+21A.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 6 - Pražcové podloží
+Kapitola 7 - Kolejové lože
+Kapitola 17 - Beton pro konstrukce
+Kapitola 18 - Betonové mosty a konstrukce
+Kapitola 19 - Ocelové mosty a konstrukce
+Kapitola 22 - Izolace proti vodě
+Kapitola 23 - Sanace inženýrských objektů
+Kapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí
+2 4
+21B UKONČENÍ NOSNÉ KONSTRUKCE MOSTU
+21B.1 ÚVOD
+Všichni účastníci výstavby (dodavatel stavby, dodavatel objektu, dodavatel mostního závěru, dodavatel
+projektové dokumentace atd.) jsou povinni respektovat požadavky soustavy českých technických norem.
+V případě rozporu mezi TKP a českými normami jsou rozhodující ustanovení, požadavky a kritéria TKP.
+Ukončení mostní konstrukce (a zejména mostní závěry) by měla být navrhována a prováděna tak, aby jejich
+životnost byla co nejvyšší a blížila se životnosti nosné konstrukce.
+21B.1.1 Definice pojmů
+Pro tuto kapitolu TKP platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP.
+Pojem ukončení nosné konstrukce (mostu) v kapitole 21 TKP nadále označuje součásti mostu v oblasti
+dilatačních spár, které umožňují přechod mostního železničního svršku mezi nosnou konstrukcí a spodní stavbou
+mostu, příp. mezi navazujícími nosnými konstrukcemi ve směru podélném i příčném.
+Pojem způsob ukončení nosné konstrukce (mostu) v kapitole 21 TKP označuje obecné řešení ukončení nosné
+konstrukce (např. mostní závěr, překrytí přes závěrnou zídku, těsnící pás apod.).
+Pojem (mostní) závěr v kapitole 21 TKP nadále označuje součást ukončení nosné konstrukce, která slouží
+překrytí dilatačních spár (obvykle vodotěsnému), je tvořena zpravidla kombinací kovových a nekovových
+materiálů a k podkladu připojena kotvením, přivařením nebo šroubovanými přípoji.
+Pojem typ mostního závěru v kapitole 21 TKP označuje konkrétní konstrukční skupinu mostních závěrů (např.
+lamelový mostní závěr, kobercový mostní závěr, elastický mostní závěr).
+Pojem těsnící pás v kapitole 21 TKP nadále označuje součást ukončení nosné konstrukce, která slouží
+k vodotěsnému překrytí dilatační spáry. Je tvořen zpravidla elastomerovým profilem a uložen nebo přilepen na
+podklad, případně vtlačen do dilatační spáry.
+Pojem těsněná spára označuje v kapitole 21 TKP spáru mezi nosnou konstrukcí a opěrou (popř. mezi dvěma
+nosnými konstrukcemi), která je konstrukčními úpravami upravena tak, že neumožňuje průtok vody.
+Pojem odvodněná spára označuje v kapitole 21 TKP spáru mezi nosnou konstrukcí a opěrou (popř. mezi dvěma
+nosnými konstrukcemi), která je konstrukčními úpravami upravena tak, že umožňuje odtok vody z nosné
+konstrukce, resp. relevantní části opěry.
+Pojem dodavatel mostního závěru označuje v kapitole 21 TKP výrobce mostního závěru nebo jím pověřený
+subjekt.
+Ostatní pojmy jsou použity ve významu podle ČSN 73 6200.
+21B.1.2 Předmět kapitoly
+Tato kapitola technických kvalitativních podmínek státních drah (dále jen TKP) stanoví podmínky pro návrh,
+dodávání, přejímání, skladování a montáž ukončení nosné konstrukce. Tyto podmínky jsou závazné pro
+výstavbu i rekonstrukci všech železničních mostních objektů.
+Pro ukončení nosné konstrukce je charakteristické, že výsledná jakost jejich provedení závisí značnou měrou na
+parametrech dodávaných hotových výrobků (zejména mostních závěrů), jejichž dodávka je zpravidla předmětem
+samostatných smluvních vztahů. Tato kapitola proto stanovuje:
+− požadavky na zajištění kvality dodávky mostních závěrů,
+− požadavky na zajištění kvality stavebních prací, prováděných dodavatelem stavby při osazování mostních
+závěrů a při provádění ukončení mostu.
+21B.1.3 Způsoby ukončení nosných konstrukcí zahrnuté v kapitole 21 TKP
+V kapitole 21 TKP jsou zahrnuta ukončení nosných konstrukcí:
+− pro mosty s průběžným kolejovým ložem
+- s mostními závěry,
+2 5
+- s krycími plechy nebo tvárnicemi (výhradně pro účely rekonstrukcí, pokud byly použity),
+- s těsnícími pásy anebo zesílenou izolací,
+- s přesahem nosné konstrukce přes závěrnou zídku,
+− pro mosty bez průběžného kolejového lože (výhradně pro účely rekonstrukcí),
+- s mostnicemi,
+- s přímým uložením koleje.
+Kapitola 21 platí pro ukončení nosných konstrukcí ve směru podélném i příčném, pokud pro daný způsob
+připadají v úvahu.
+21B.1.4 Opatření pro způsoby ukončení nosných konstrukcí nezahrnuté
+v kapitole 21 TKP
+Použití způsobu ukončení nosných konstrukcí, které není uvedeno v čl. 21B.1.3 této kapitoly TKP, musí být
+předloženo dodavatelem projektové dokumentace zadavateli a schváleno odborným orgánem zadavatele nebo
+jím pověřeným orgánem. Potřebné zásady stanoví zadavatel stavby ve Zvláštních technických kvalitativních
+podmínkách (dále jen ZTKP - viz kapitola 1 těchto TKP).
+21B.1.5 Opatření pro zavedené způsoby ukončení nosných konstrukcí podle článku
+21B.1.3 TKP
+Preferovány jsou těsněné spáry. Netěsněné spáry připadají v úvahu pouze v odůvodněných případech, dodavatel
+projektové dokumentace jejich návrh předkládá zadavateli ke schválení.
+TKP jsou nadále závazné i pro zavedené a dříve schválené způsoby ukončení nosných konstrukcí.
+Soustava ČSN a předpisy ČD platí v plném rozsahu, pokud tato kapitola TKP výslovně nestanovuje jinak.
+Ustanovení nezávazných materiálů, která jsou uvedena v této kapitole TKP formou citací nebo odkazů, jsou pro
+použití závěrů na železničních mostních objektech nadále rovněž závazná.
+21B.1.6 Opatření pro nové typy mostních závěrů
+Nové typy mostních závěrů musí splňovat podmínky výrobku pro stavby podle článku 1.4.5 kapitoly 1 TKP.
+Mostní závěry musí být doloženy certifikátem, osvědčením nebo schvalovacími protokoly. Použití nových typů
+se projednává v rámci zpracování, projednávání a schvalování projektové dokumentace stavby.
+21B.1.7 Způsobilost dodavatele mostního závěru, legislativní požadavky
+Dodavatel mostního závěru musí mít zaveden, certifikován a prověřován systém řízení jakosti dle
+ČSN EN ISO 9001:2001.
+Obecné požadavky na způsobilost dodavatele ocelových konstrukcí jsou popsány v článku 19.1.3 TKP 19.
+Mostní závěry musí splňovat požadavky zákona č. 22/1997 Sb. v platném znění a související nařízení vlády
+č 163/2002 Sb. v platném znění.
+21B.1.8 Dokumentace dodavatele
+Zhotovení mostních závěrů musí být provedeno podle dokumentace dodavatele, kterou dodavatel předkládá
+v celém rozsahu zadavateli ke schválení. V relevantních případech je nutno respektovat požadavky uvedené
+v článku 19.1.4 TKP 19.
+Ukončení nosné konstrukce musí být uspořádáno podle projektové dokumentace, přičemž jeho provedení musí:
+− umožnit výměnu součástí, které překrývají dilatační spáry, bez narušení nosné konstrukce a spodní stavby,
+− zabránit samovolnému putování všech součástí,
+− umožnit výměnu ložisek bez porušení mostního závěru, tj. zdvih alespoň 10 mm, pokud není v projektové
+dokumentaci stanoveno jinak,
+2 6
+− umožnit u mostních závěrů vyměnitelnost částí s kratší životností než je životnost mostu (např. elastomerové
+profily, překrytí, atd.),
+− u těsněných spár zajistit odvedení vody.
+V projektové dokumentaci je dále nezbytné jasně specifikovat, jaké pohyby musí dilatace či mostní závěr přenést
+ve všech fázích své životnosti (v montážních stavech, za provozu, při nadzvedávání nosné konstrukce při
+výměně ložisek, atd.).
+Všechny součásti ukončení nosné konstrukce musí být upraveny tak, aby byla zajištěna snadná manipulace při
+osazování (např. opatřeny vhodnými závěsy).
+Dokumentace dodavatele mostního závěru musí obsahovat pravidla pro jeho údržbu.
+Dokumentaci dodavatele mostního závěru vždy odsouhlasuje dodavatel projektové dokumentace a schvaluje
+zadavatel.
+21B.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+21B.2.1 Základní materiál ukončení nosných konstrukcí
+21B.2.1.1 Mostní závěry
+Preferovány jsou lamelové mostní závěry. Jiné typy mostních závěrů (kobercové, elastické) smí být použity jen
+v odůvodněných případech, dodavatel projektové dokumentace jejich návrh předkládá zadavateli ke schválení.
+Požadované vlastnosti materiálů nových typů mostních závěrů se stanoví v rámci schvalovacího řízení podle
+čl. 21B.1.6 této kapitoly TKP.
+21B.2.1.2 Těsnící pásy a vodotěsné izolace
+Materiál těsnících pásů a vodotěsných izolací, kryjících dilatační spáry, musí:
+− vykazovat tažnost odpovídající požadované deformaci,
+− vykazovat dostatečnou odolnost proti vtlačování štěrku kolejového lože (pokud přichází v úvahu),
+− zajistit použitelnost těsnících pásů v rozsahu teplot podle čl. 21B.7 této kapitoly TKP,
+− zajistit odolnost proti klimatickým účinkům (včetně slunečního záření a ozónu, pokud je jim vystaven),
+− trvanlivostí odpovídat izolaci mimo oblast spáry.
+Vodotěsné izolace musí být prováděny dle kapitoly 22 TKP výhradně schválenými systémy vodotěsných izolací
+(SVI). Vlastnosti výrobků jednotlivých vrstev SVI a SVI jako celku jsou stanoveny v TNŽ 73 6280.
+21B.2.1.3 Ostatní součásti ukončení nosných konstrukcí
+Požadavky na materiál ocelových součástí (krycí plechy kolejového žlabu i chodníků, okapní plechy, lemování
+opěry apod.) musí být specifikovány v projektové dokumentaci a odpovídat požadavkům ČSN 73 6205 (resp.
+ČSN P ENV 1993-2) a ČSN 73 2603 pro podružné části ocelových mostních konstrukcí. Se souhlasem
+příslušného odborného orgánu zadavatele nebo jím pověřeného orgánu lze použít ČSN P ENV 1090-1
+a ČSN P ENV 1090-5. Další požadavky jsou uvedeny v čl. 21B.3.3 této kapitoly TKP.
+Okapový žlab pod odvodněnou spárou musí být proveden z plechu z korozivzdorné oceli tl. min. 4 mm. Kvalita
+oceli musí splňovat požadavky dle tab. 3.1. Případnou náhradu korozivzdorné oceli jinými materiály (např.
+plasty) musí odsouhlasit dodavatel projektové dokumentace a schválit zadavatel.
+kontakt maximální tloušťka plechů druh oceli označení spojovací
+s betonem nesvařovaných svařovaných EC ČSN dle DIN 17 440 materiál
+ne bez omezení 6 mm X5 CrNi 18 10 17 240 1.4301 A2
+ne bez omezení bez omezení X6 CrNiTi 18 10 17 247 1.4541 A2
+ano bez omezení 6 mm X5 CrNiMo 17 12 2 17 346 1.4401 A4
+ano bez omezení bez omezení X5 CrNiMoTi 17 12 2 17 347 1.4571 A4
+Tab. B.2.1 – Korozivzdorné oceli
+2 7
+21B.2.2 Cementová malta a beton
+Cementová malta nebo beton, které tvoří podklad závěrů, příp. zajišťují závěry proti posunutí, musí odpovídat
+ustanovením kapitoly 17 TKP.
+Kvalita betonu nebo cementové malty musí odpovídat alespoň třídě C25/30 pro stupeň prostředí XF1 podle
+ČSN EN 206-1, případně C30/37 pro stupeň prostředí XD1. Minimální třída betonu nebo cementové malty musí
+splňovat limitní požadavky dle tabulky 17 v kapitole 17 TKP.
+V projektové dokumentaci musí být specifikovány tyto požadavky na cementovou maltu a beton:
+− trvanlivost (stupeň vlivu prostředí, stupeň mrazuvzdornosti, odolnost betonu proti průsaku vody, kategorie
+obsahu chloridů),
+− pevnostní třída,
+− zvláštní podmínky pro zpracování a ukládání,
+− případně další doplňkové parametry.
+V technologickém předpisu zpracovaném dodavatelem stavby musí být specifikovány tyto údaje:
+− složení betonu (cementové malty),
+− zpracování (konzistence, rychlost tuhnutí),
+− maximální jmenovitá horní mez frakce kameniva.
+21B.2.3 Polymermalta a polymerbeton
+Kvalita polymermalty a polymerbetonu, které tvoří podklad závěrů, příp. zajišťují závěry proti posunutí, musí
+odpovídat ustanovením kapitoly 17 TKP, ČD SR 105/1 (S) a musí splňovat následující vlastnosti:
+− pevnost dle projektové dokumentace, alespoň jako beton navazujících konstrukcí,
+− měrný odpor alespoň 1 . 106 Ωm (ve smyslu SR 5/7 (S)).
+Požadavky na polymermaltu a na polymerbeton musí být obsaženy v projektové dokumentaci
+a v technologickém předpisu zpracovaném zhotovitelem stavby.
+V projektové dokumentaci musí být specifikovány tyto požadavky na polymermaltu a pelymerbeton:
+− pevnost v tlaku a v tahu za ohybu,
+− případně další doplňkové parametry.
+V technologickém předpisu zpracovaném dodavatelem stavby musí být specifikovány tyto údaje:
+− složení (receptura),
+− zpracování (konzistence, rychlost tuhnutí),
+− maximální jmenovitá horní mez frakce kameniva (neměla by být větší než ¼ nejmenší tloušťky prováděné
+vrstvy)
+Pro dosažení požadovaných vlastností polymermalty a polymerbetonu je nutné dodržovat stanovenou recepturu
+při současném respektování klimatických podmínek.
+21B.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+21B.3.1 Ukončení nosné konstrukce
+21B.3.1.1 Obecně
+Za postupy prací při provádění ukončení nosné konstrukce je zodpovědný dodavatel objektu, resp. dodavatel
+mostního závěru, pokud v textu není výslovně uvedeno jinak.
+Pro všechny způsoby ukončení mostu je třeba věnovat zvýšenou pozornost hutnění zásypu za závěrnou zídkou
+(viz kapitoly 6 a 7 TKP). Přechod mezi železničním tělesem a mostní stavbou musí být upraven podle předpisu
+ČD S 4 a úprava na mostě dle MVL 102.
+2 8
+21B.3.1.2 Ukončení nosné konstrukce mostními závěry
+Osazení mostních závěrů musí být provedeno dodavatelem mostního závěru.
+Mostní závěry dodávané jako hotové výrobky se osazují podle projektové dokumentace a technologických
+předpisů výrobce.
+Beton pro podkladní vrstvy a kotvení musí být proveden podle kapitoly 17 TKP a ČSN EN 206-1. Soudržnost
+musí být zajištěna pro cementový beton dokonalým provlhčením podkladu, pro polymerbeton penetračním
+nátěrem podkladu. Pokud jsou spojovány vrstvy rozdílného stáří, musí být soudržnost zajištěna vhodným
+spojovacím můstkem.
+Je nutno zajistit požadovanou vzájemnou polohu kotevních prvků mostních závěrů na nosné konstrukci a spodní
+stavbě. Kotevní prvky v závěrné zídce se proto zajistí v definitivní poloze zásadně až po osazení nosné
+konstrukce na spodní stavbu. Kotevní prvky v závěrné zídce je přitom účelné osazovat v montážním spojení
+s kotevními prvky v nosné konstrukci, případně s využitím šablon.
+Před definitivním zajištěním polohy mostních závěrů je nutno nastavit jejich rozevření v závislosti na:
+− okamžité teplotě dilatující konstrukce,
+− zatížení konstrukcí,
+− smršťování a dotvarování betonu.
+Podklady pro korekce rozdílu předpokládané a skutečné teploty při montáži musí být obsaženy v projektové
+dokumentaci.
+Závěry musí být osazeny podle technologických předpisů výrobce.
+O osazení mostních závěrů musí být vystaven protokol o přejímce dle čl. 21B.8.5 této kapitoly TKP.
+Osazení závěrů se navíc zaznamená ve stavebním deníku, přičemž je nutno vždy uvést:
+− teplotu vzduchu,
+− teplotu konstrukce,
+− nastavení (rozevření) závěrů.
+Již ve fázi projektové dokumentace je třeba věnovat zvýšenou pozornost řešení napojení systému vodotěsné
+izolace na mostní závěr. Při zpracovávání dokumentace dodavatele je nutné zajistit koordinaci Technologických
+předpisů pro mostní závěry a pro systémy vodotěsných izolací.
+Pokud je na mostním objektu navržen systém vodotěsné izolace s tvrdou ochrannou vrstvou, je nutné vynechat
+mezi krytem mostního závěru a tvrdou ochrannou vrstvou cca 20 mm. Při volbě zálivky této spáry je nutné
+přihlédnout ke svislým a vodorovným deformacím, v závislosti na jejich velikosti je nutné zvolit druh zálivky.
+Zálivkové výrobky musí splňovat požadavky ČSN 73 6242, tab. 6.
+Závěry je po osazení nutno až do zřízení kolejového lože chránit před poškozením staveništní dopravou apod.
+Po osazení nekovových částí závěru je v jeho blízkosti zakázáno svařovat.
+21B.3.1.3 Ukončení nosné konstrukce krycími prvky
+Ukončení nosné konstrukce se provede podle projektové dokumentace, přičemž pro návrh detailu žlabu
+kolejového lože lze využít:
+− pro betonový žlab kolejového lože MVL 554,
+− pro ocelový žlab kolejového lože MVL 211,
+− pro konstrukce se zabetonovanými nosníky MVL 511.
+Tyto vzorové listy zároveň obsahují i detaily provedení krycích prvků.
+U betonového žlabu kolejového lože na nosné konstrukci nebo na spodní stavbě musí být jeho okraje vždy
+lemovány svařeným profilem podle MVL 554, a to i u závěrů s krycími tvárnicemi.
+Líce lemovacích profilů musí vždy přesahovat konzoly mostovkové desky a závěrné zídky ve funkci okapních
+nosů.
+Pro zajištění plynulého průběhu dna a stěn žlabu kolejového lože se lemovací profil závěrné zdi zabetonuje až po
+osazení konstrukce, zatímco lemovací profil nosné konstrukce může být součástí bednění při betonáži
+2 9
+mostovkové desky. Při osazování lemovacího profilu na závěrnou zídku je vhodné využít montážního spojení
+s lemovacím profilem na nosné konstrukci. Při nastavení vzdálenosti profilů je nutno zohlednit vliv okamžité
+teploty konstrukce.
+Polymermaltový povlak lemovacího profilu o tl. 4 mm se provede podle technologických zásad TKP 17
+a ČD SR 5/7 (S), vodotěsná izolace žlabu se ukončí na lemovacím profilu, přičemž případná vzniklá spára se
+zalije pružnou těsnící zálivkou.
+U ocelového žlabu kolejového lože se jeho ukončení provede v uspořádání podle MVL 102 a podle
+technologických zásad ČD SR 5/7 (S).
+Krycí prvky se vždy opatří polymermaltovým povlakem o tl. 4 mm, který má funkci izolace proti bludným
+proudům. Hrany krycích plechů musí být předtím opracovány do poloměru nejméně 2 mm.
+Krycí prvky se osazují bezprostředně před provedením kolejového lože. Jejich poloha musí být vymezena
+zarážkami. Doporučuje se rovněž provést zajištění proti nadzvednutí.
+Ukončení nosné konstrukce je během stavby nutno chránit před poškozením (např. staveništní dopravou).
+21B.3.1.4 Ukončení nosné konstrukce těsnícími pásy anebo zesílenou izolací
+Izolace mostovky se provádí podle ustanovení kapitoly 22 TKP. Detail oblasti ukončení nosné konstrukce musí
+být jednoznačně specifikován v dokumentaci dodavatele (Technologický předpis systému vodotěsných izolací).
+Izolace a těsnící pásy v oblasti ukončení nosné konstrukce se osazují na dokonale rovný a zpravidla suchý
+povrch opatřený přípravnou vrstvou schváleného systému vodotěsné izolace dle TKP 22 a TNŽ 73 6280.
+Provedení přesahů přídavných vrstev izolace musí odpovídat směru odtoku vody (zpravidla směrem od spáry).
+Těsnící pásy uvnitř dilatační spáry musí být vždy dotěsněny pružnou zálivkou. Zálivkové výrobky musí splňovat
+požadavky ČSN 73 6242, tab. 6.
+Pokud je na mostním objektu navržen systém vodotěsné izolace s tvrdou ochrannou vrstvou, je nutné vynechat
+v místě ukončení tvrdou ochrannou vrstvu v nezbytně nutném rozsahu.
+Pokud je izolace zesílena vloženým plechem, musí být jeho hrany opracovány tak, aby izolaci nepoškozovaly.
+21B.3.1.5 Ukončení nosné konstrukce přesahem přes závěrnou zídku
+Detail musí být vyřešen v projektové dokumentaci.
+Spára mezi nosnou konstrukcí a závěrnou zídkou, příp. zadní částí úložného prahu, se provede ve sklonu
+nejméně 2 % směrem k rubu opěry a utěsní gumovou hadicí nebo vhodným těsnícím pásem.
+Těsnící pásy se vkládají do bednění a zabetonovávají do spodní stavby a nosné konstrukce nebo lepí podle
+technických podmínek výrobce, které udávají též požadavky na přípravu povrchu.
+Bednění z pěnového polystyrénu a obdobných materiálů může být ponecháno ve spáře za předpokladu, že
+nenarušuje dilatační pohyby konstrukce, odvodnění mostu a jeho vzhled.
+21B.3.1.6 Ukončení nosné konstrukce mostů s mostnicemi
+Ukončení nosné konstrukce mostů s mostnicemi přichází v úvahu pouze při rekonstrukcích. Detaily provedení
+jsou uvedeny v MVL 311.
+Podkladní vrstvy pod pozednicí se zřídí až po osazení nosné konstrukce do definitivní polohy.
+21B.3.1.7 Ukončení nosné konstrukce mostů s přímým uložením koleje
+Ukončení nosné konstrukce mostů s přímým uložením koleje přichází v úvahu pouze při rekonstrukcích.
+V takovém případě se provede podle MVL 102, přičemž osazení pozednice a rozdělení pražců za opěrou se
+upraví podle MVL 311.
+Podkladní vrstvy pod pozednicí se zřídí až po osazení nosné konstrukce do definitivní polohy.
+3 0
+21B.3.1.8 Ukončení nosné konstrukce mostů s pevnou jízdní dráhou
+V těchto případech bude postupováno individuálně po dohodě s odborným orgánem zadavatele.
+21B.3.2 Protikorozní ochrana ukončení nosné konstrukce
+U mostních závěrů dodávaných jako hotové výrobky je jejich protikorozní ochrana součástí dodávky. Stanovení
+požadavků na její provedení je součástí schvalovacího řízení pro daný typ výrobku podle čl. 21B.1.5 a 6 této
+kapitoly TKP. Pohyblivé části se konzervují podle technických podmínek výrobce.
+Protikorozní ochrana součástí ukončení nosných konstrukcí, vyráběných v rámci dodávky ocelové konstrukce, je
+zpravidla předmětem samostatné dodávky, kterou zajišťuje dodavatel stavebního objektu.
+Protikorozní ochrana mostních závěrů musí být provedena kombinovaným systémem podle ČD S 5/4 (kovový
+povlak + nátěry). Přehled požadavků na provedení protikorozní ochrany je předmětem kapitoly 25B TKP
+a ČD S 5/4. V této kapitole jsou uvedena pouze upřesnění, platná pro mostní závěry.
+Pokud se protikorozní ochrana mostních závěrů provádí před jejich osazením, je nutno dodatečně opravit
+poškození ochranného systému vzniklá při další manipulaci.
+Po provedení protikorozní ochrany nesmí být prováděny v jejím dosahu žádné svářečské práce.
+Protikorozní ochrana se zásadně provádí před instalací nekovových součástí ukončení mostu.
+Prvky z korozivzdorné oceli se používají v souladu s ČSN P ENV 1993-1-4. U nenosných součástí je nutno mít
+na zřeteli zejména přílohy B (trvanlivost) a C (výrobní hlediska). Kvalita oceli musí splňovat požadavky
+dle tab. 1.
+21B.3.3 Ochrana proti účinkům bludných proudů
+Zajištění ochrany proti účinkům bludných proudů je třeba věnovat zvýšenou pozornost v oblastech jejich
+výskytu, tj. na tratích elektrizovaných stejnosměrnou proudovou trakcí a v přilehlých úsecích nebo v oblastech,
+kde byl výskyt bludných proudů prokázán korozním průzkumem.
+Podrobný popis nutných opatření je uveden v kapitole 25A TKP a služební rukověti ČD SR 5/7(S).
+Odizolování mostních závěrů je rozhodující pro zabránění přenosu bludných proudů nosnou konstrukcí.
+V oblastech možného výskytu bludných proudů je proto nutno:
+− použít izolované mostní závěry a krycí součásti ukončení nosné konstrukce,
+− přerušit vodivé propojení izolační vrstvou pod závěry nebo krycími součástmi ukončení nosné konstrukce
+(zpravidla vložkami PVC, vrstvou polymerbetonu nebo povlakem polymermalty).
+Pokud je požadováno průkazní měření elektrického odporu závěru nebo součástí ukončení mostu, zajistí je
+dodavatel stavby.
+Elektrický odpor dodaného mostního závěru musí být větší než 1.106 Ωm.
+21B.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+21B.4.1 Obecně
+Parametry dodaných mostních závěrů a jiných součástí ukončení nosné konstrukce (včetně osazení) musí
+odpovídat projektové dokumentaci, TKP a relevantním částem Smlouvy o dílo. Dodavatel ukončení mostní
+konstrukce ručí za kvalitu použitého materiálu a kvalitu provedení.
+Požadavky na kvalitu materiálů jsou stanoveny v čl. 21B.2 této kapitoly TKP a souvisejících předpisech.
+Průkazní zkoušky kompletních výrobků se provádějí v rámci jejich schvalování podle čl. 21B.1.5 a 6 této
+kapitoly TKP.
+Dále je stanoven způsob zajištění a dokladování požadovaných parametrů v rámci dodávky jejich jednotlivých
+druhů.
+3 1
+21B.4.2 Dodávka a skladování součástí ukončení nosné konstrukce
+21B.4.2.1 Mostní závěry
+Parametry dodaných mostních závěrů musí odpovídat výrobně technické dokumentaci, kterou na základě
+projektové realizační dokumentace zpracovává dodavatel. Výrobně technická dokumentace nesmí být v rozporu
+s TKP. Součástí dodávky jsou i Technologické podmínky pro provoz a údržbu mostního závěru.
+Dodávat se smí pouze mostní závěry, které vyhovují požadavkům zákona č. 22/1997 Sb. a nařízení vlády
+č. 163/2002 Sb. Mostní závěry jsou ve skupině 9/5 „Dilatační podložky a závěry dilatačních spár“ a postup
+posuzování shody je podle § 5 certifikací.
+Dodávka mostních závěrů může být považována:
+− za výrobu částí ocelové konstrukce, přičemž stavební dozor nad jakostí provádí odborné orgány zadavatele
+v rozsahu daném ČSN 73 2601 a ČSN 73 2603, se souhlasem odborného orgánu ČD lze použít
+ČSN P ENV 1090-1, resp. ČSN P ENV 1090-5,
+− za dodávku hotových výrobků, přičemž požadovaná jakost dodaných výrobků je garantována certifikací
+výrobku akreditovanou zkušebnou.
+Jakost dodávky mostních závěrů (včetně provádění) se prověřuje souběžně:
+− interní kontrolou, prováděnou samotným výrobcem,
+− stavebním dozorem zadavatele.
+21B.4.2.1.1 Přejímka mostních závěrů
+Dílenskou přejímku mostních závěrů provádí stavební dozor zadavatele za účasti dodavatele stavebního objektu
+i dodavatele mostních závěrů. Mostní závěry musí být doloženy certifikátem, osvědčením, schvalovacím
+protokolem nebo zaváděcím listem podle čl. 21B 1.6 této kapitoly TKP. Mostní závěry mohou být převzaty
+pouze pokud splňují všechny kvalitativní požadavky (materiálové, PKO atd.).
+Nejpozději s dodacím listem dodávky mostních závěrů na stavbu musí být předán zadavateli doklad o vydaném
+prohlášení o shodě podle § 11 nařízení vlády č. 178/1997 Sb. ve znění nařízení vlády č. 81/1999 Sb.
+Dodavatel mostního závěru vyhotoví protokol (zápis) o dílenské přejímce.
+21B.4.2.1.2 Doprava a skladování
+Mostní závěry je nutno dopravovat a skladovat tak, aby byly chráněny před klimatickými vlivy, proti korozi
+a deformaci. Podmínky pro dopravu a skladování musí být stanoveny a schváleny v technologickém předpisu
+výrobce.
+21B.4.2.2 Vodotěsné izolace a těsnící pásy
+Podmínky pro dodávku izolačních materiálů jsou stanoveny v kapitole 22 TKP.
+Těsnící pásy se dodávají podle technických podmínek výrobce. Přejímku provádí stavební dozor zadavatele za
+účasti dodavatele stavebního objektu.
+21B.4.2.3 Ostatní součásti ukončení nosné konstrukce
+Pro dodávku ostatních součástí ukončení nosné konstrukce platí ustanovení příslušných kapitol TKP.
+21B.4.3 Dodávka betonu, polymermalty a polymerbetonu
+Pro dodávku betonu (resp. transport betonu), polymermalty a polymerbetonu včetně požadovaných průkazních
+zkoušek platí ustanovení a kapitoly 17 TKP, ČSN P ENV 13670-1 a ČSN EN 206-1.
+21B.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Způsob a rozsah odebírání vzorků betonu (polymerberonu, polymermalty) a provádění kontrolních zkoušek pro
+materiál použitý pro kotvení součásti ukončení nosné konstrukce jsou stanoveny v kapitole 17 TKP
+a ČSN EN 206-1.
+3 2
+Kontrolní zkoušky musí být provedeny akreditovanou laboratoří odsouhlasenou zadavatelem.
+Za odebrání vzorků a provedení kontrolních zkoušek v požadovaném rozsahu odpovídá dodavatel stavby
+v součinnosti se stavebním dozorem zadavatele.
+21B.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+21B.6.1 Výrobní tolerance
+Výrobní tolerance mostních závěrů musí odpovídat podmínkám schváleným podle čl. 21B.1.5 a 6 této kapitoly
+TKP.
+V technologickém předpisu dodavatele mostních závěrů se stanoví přípustné odchylky při výrobě.
+21B.6.2 Tolerance osazení
+Pokud není v dokumentaci nebo ve schvalovacím protokolu podle čl. 21B.1.5 této kapitoly TKP pro zavedené
+typy (resp. čl. 21B.1.6 této kapitoly TKP pro nové typy) mostních závěrů stanoveno jinak, musí být zachovány:
+− přípustná výšková odchylka osazení oproti dokumentaci stavby ±3 mm,
+− odchylka šířky dilatační spáry při 10°C od teoretické hodnoty, stanovené projektovou dokumentací ±5 mm.
+Tolerance provedení ostatních součástí ukončení nosné konstrukce posoudí stavební dozor zadavatele.
+Pro rozměry, jejichž tolerance nejsou specifikovány ve schvalovacím protokolu podle čl. 21B.1.5 a 6 této
+kapitoly TKP, ostatních TKP ani dalších závazných normách a předpisech, platí tolerance podle
+ČSN ISO 2768-1.
+21B.6.3 Míra opotřebení
+Po celou dobu životnosti mostu provádí správce pravidelné prohlídky mostních závěrů a sleduje míru jejich
+opotřebení. V případě, že míra opotřebení již zjevně ovlivňuje jejich funkčnost, je třeba tuto vhodnými
+opatřeními zajistit. Tato opatření navrhuje výrobce (dodavatel) mostního závěru a schvaluje ho odborný orgán
+zadavatele.
+21B.6.4 Záruky
+Záruční doby všeobecně stanoví kapitola 1 TKP. Po celou záruční dobu je třeba sledovat celkový stav a funkci
+mostních závěrů a jakákoliv zjištění zakládající důvod k zahájení reklamačního řízení musí být správcem bez
+zbytečného odkladu písemně oznámena dodavateli a zadavateli.
+21B.7 KLIMATICKÁ OMEZENÍ
+Funkce a zachování požadovaných parametrů ukončení nosné konstrukce musí být zaručeny v rozsahu mezních
+teplot mostních konstrukcí podle ČSN 73 6203, čl. 138, nebo ČSN EN 1991-1-5, čl. 6.
+Případná klimatická omezení pro provádění mostních závěrů jsou stanovena v dokumentaci a technických
+podmínkách výrobce.
+Klimatická omezení pro ukládání a ošetřování betonu jsou stanovena v kapitole 17 TKP, ČSN EN 206-1
+a ČSN P ENV 13670-1.
+Klimatická omezení pro zpracování polymerbetonu a polymermalty musí být obsažena v technologickém
+předpisu a jsou uvedena v příslušných technických listech.
+Pokud klimatické podmínky neodpovídají výše uvedeným ustanovením, musí být pro provádění prací zřízeny
+vyhřívané přístřešky. Tato opatření schvaluje stavební dozor zadavatele.
+3 3
+21B.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+21B.8.1 Obecně
+Zajištění všech dále uvedených kontrol, odsouhlasení a převzetí prací je povinností dodavatele stavby, který
+zároveň musí vytvořit podmínky pro jejich úplné provedení. Všechny kroky zahrnuté v článku 8 této kapitoly
+TKP musí probíhat za přítomnosti odborného orgánu zadavatele nebo jím pověřeného zástupce.
+21B.8.2 Převzetí dodávky (příp. dílenská přejímka) součástí ukončení nosné
+konstrukce
+Požadavky na způsob převzetí dodávky jednotlivých druhů a typů mostních závěrů a ostatních součástí ukončení
+nosné konstrukce jsou uvedeny v čl. 21B.4 až 21B.6 této kapitoly TKP.
+21B.8.3 Montážní prohlídka (u ocelových konstrukcí)
+Montážní prohlídka ocelových konstrukcí je součástí zkoušek prováděných před jejich převzetím. Požadavky na
+provádění montážní prohlídky jsou uvedeny v ČSN 73 2603.
+Pokud harmonogram stavby umožňuje, aby při montážní prohlídce byly k nosné konstrukci připojeny mostní
+závěry a ostatní součásti ukončení nosné konstrukce, bude jejich kontrola zahrnuta do montážní prohlídky.
+Pověřený orgán zadavatele přitom kontroluje zejména:
+- soulad s projektovou, výrobní a montážní dokumentací,
+- dosedání funkčních ploch mostních závěrů a ostatních součástí ukončení nosné konstrukce,
+- kvalitu provedení přípojů,
+- polohu a nastavení mostních závěrů v závislosti na okamžité teplotě.
+21B.8.4 Odsouhlasení dílčích prací
+21B.8.4.1 Obecně
+Odsouhlasení stavebních prací probíhá podle dispozic stavebního dozoru zadavatele na základě dokumentace
+dodavatele. Pokud není stanoveno jinak, odsouhlasuje stavební dozor zadavatele dílčí práce v dále uvedeném
+rozsahu.
+Záznamy o kontrole a odsouhlasení dílčích prací provádí stavební dozor zadavatele zpravidla do stavebního
+deníku objektu.
+21B.8.4.2 Mostní závěry
+Pro mostní závěry musí stavební dozor zadavatele odsouhlasit:
+− před definitivním zajištěním kotevních prvků mostních závěrů:
+- jejich polohu výškovou i směrovou s důrazem na vzájemnou polohu součástí podle okamžité
+teploty,
+- provedení kotev nebo šroubových přípojů,
+− před zřízením izolace:
+- připojení kotevních prvků k nosné konstrukci mostu,
+- podbetonování kotevních prvků,
+- rovinnost podkladních vrstev izolace v místech obetonování kotevních prvků mostních závěrů,
+- osazení kompletního mostního závěru, pokud se provádí před zřízením izolace,
+− před zřízením ochranných vrstev izolace:
+- provedení jednotlivých vrstev izolace v oblasti mostního závěru,
+- osazení kompletního mostního závěru, pokud se provádí až po zřízení izolace,
+3 4
+- napojení izolace na mostní závěr, včetně zkoušky vodotěsnosti prolitím (u vodotěsných
+mostních závěrů),
+− před zřízením kolejového lože:
+- dokončený mostní závěr,
+- měření elektrického odporu závěru, je-li požadováno,
+- napojení izolace (bez ochranné vrstvy) na mostní závěr, včetně zkoušky vodotěsnosti prolitím
+(u vodotěsných mostních závěrů).
+21B.8.4.3 Ukončení nosné konstrukce s kolejovým ložem krycími plechy nebo tvárnicemi
+Pro ukončení nosné konstrukce s kolejovým ložem krycími plechy nebo tvárnicemi musí stavební dozor
+zadavatele odsouhlasit:
+− před definitivním zajištěním polohy lemovacích profilů ukončení nosné konstrukce:
+- jejich polohu výškovou i směrovou s důrazem na vzájemnou polohu součástí podle okamžité
+teploty,
+- provedení kotev nebo šroubových přípojů,
+− před zřízením izolace:
+- rovinnost obetonování lemovacích profilů ukončení nosné konstrukce,
+− před zřízením ochranných vrstev izolace:
+- napojení izolace na lemovací profily ukončení nosné konstrukce,
+− před provedením železničního svršku (kolejového lože):
+- osazení krycích plechů a tvárnic, včetně jejich povrchové úpravy,
+- měření elektrického odporu ukončení nosné konstrukce, je-li požadováno.
+21B.8.4.4 Konstrukce s kolejovým ložem těsnícími pásy nebo zesílením izolace
+Pro ukončení nosné konstrukce s kolejovým ložem těsnícími pásy anebo zesílením izolace nad dilatační spárou
+musí stavební dozor zadavatele odsouhlasit:
+− provedení jednotlivých vrstev izolace podle ustanovení kapitoly 22 TKP,
+− osazení těsnícího pásu před jeho překrytím.
+21B.8.4.5 Ukončení nosné konstrukce přesahem přes závěrnou zídku
+Pro ukončení nosné konstrukce s kolejovým ložem přesahem přes závěrnou zídku a pro ukončení nosných
+konstrukcí s mostnicemi nebo přímým uložením koleje musí stavební dozor zadavatele odsouhlasit před
+zřízením železničního svršku (včetně kolejového lože na opěrách) celkové provedení ukončení nosné
+konstrukce.
+21B.8.5 Převzetí osazených mostních závěrů
+Mostní závěry musí být převzaty před jejich zakrytím.
+K převzetí dokončených mostních závěrů dodavatel předloží:
+− dokumentaci k převzetí dodávky mostních závěrů,
+− zápisy o odsouhlasení dílčích prací,
+− záznamy o měření pohybů mostních závěrů,
+− protokol o výsledcích měření izolačního odporu proti úložnému prahu (na opěře, nebo pilíři),
+− případně zápisy z dílenských přejímek.
+3 5
+Stavební dozor zadavatele kontroluje zejména:
+− úplnost předkládané dokumentace,
+− provedení všech stavebních prací,
+− neporušenost protikorozní ochrany,
+− funkčnost mostních závěrů při změnách teplot,
+− odchylky polohy a nastavení závěrů,
+− kompletnost vybavení závěrů,
+− viditelnost předepsaného označení (viz bod 21B.8.8).
+Záznamy o převzetí dokončených mostních závěrů jsou součástí dokumentace k převzetí stavby.
+Výsledkem převzetí je protokol o přejímce mostních závěrů.
+21B.8.6 Hlavní prohlídka
+Hlavní prohlídka mostního objektu je podle Stavebního a technického řádu drah (vyhláška Ministerstva dopravy
+č. 177/95, hl. 3) povinnou součástí technickobezpečnostní zkoušky. Provádí se před zahájením provozu na mostě
+a je podmínkou jeho povolení. Požadavky na provádění hlavní prohlídky jsou stanoveny v ČD S5 (R), část
+druhá.
+U mostních závěrů vedoucí prohlídky kontroluje zejména:
+− dosedání funkčních ploch závěrů,
+− kvalitu provedení přípojů,
+− polohu a nastavení závěrů v závislosti na okamžité teplotě, (zvláště pokud kontrola nemohla být s ohledem
+na harmonogram prací provedena již při montážní prohlídce),
+− funkci mostních závěrů,
+− kvalitu provedení protikorozní ochrany, včetně doplnění protikorozní ochrany přípojů,
+− konzervaci funkčních ploch,
+− doklady a dokumenty o dílčích prohlídkách.
+Kontrola nepřístupných částí může být provedena kontrolou dokumentů o dílčích prohlídkách.
+21B.8.7 Zatěžovací zkouška, zkušební provoz
+Podmínky pro zatěžovací zkoušku a zkušební provoz jsou stanoveny ve Stavebním a technickém řádu drah
+(vyhláška Ministerstva dopravy č. 177/95) a v ČSN 73 6209.
+Při zatěžovací zkoušce mostu (pokud je předepsána) a během zkušebního provozu se kontroluje funkce mostních
+závěrů zejména s ohledem na:
+− případný výskyt nadměrných deformací,
+− stabilitu polohy jejich součástí a dosedání funkčních ploch při průjezdu zatížení.
+Provedení zatěžovací zkoušky zajišťuje dodavatel stavby.
+21B.8.8 Typový štítek mostního závěru
+Mostní závěry musí být na základě požadavku správce mostu opatřeny na trvale přístupném místě typovými
+štítky.
+Musí obsahovat tyto údaje:
+− výrobce závěru,
+− typ závěru vč. jmenovitého rozsahu dilatačního posunu,
+− rok výroby,
+− nastavení mostního závěru při montáži (teplota + výchozí poloha).
+3 6
+21B.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+Měření polohy mostních závěrů provede dodavatel stavby:
+− po jejich osazení,
+− po zajištění jejich polohy,
+− po dokončení železničního svršku (pokud je mostní závěr přístupný),
+− při extrémních teplotách v průběhu stavby.
+Pohyby mostních závěrů se měří posuvným měřítkem s přesností 0,1 mm nejméně na třech místech příčného
+řezu mostu.
+Pro ostatní druhy ukončení nosné konstrukce není nutno měřit pohyby jejich součástí, pokud stavební dozor
+zadavatele nestanoví jinak.
+Dodavatel stavby zaznamenává polohu závěrů společně s údaji o čase měření, teplotě ovzduší a konstrukce
+a zatížení mostu. Výslednou tabulku s vyhodnocením předkládá k hlavní prohlídce.
+Stavební dozor zadavatele může předepsat další požadavky na provádění měření až do převzetí stavebního
+objektu.
+Požadavky na provádění měření v průběhu zkušebního provozu mohou být součástí samostatných smluvních
+ujednání, případně mohou být předepsány hlavní prohlídkou (v případě pochybností o dokonalé funkci).
+21B.10 EKOLOGIE
+Pro provádění mostních závěrů platí ekologické požadavky platné pro provádění ocelových mostních konstrukcí
+(viz kapitola 19 TKP), betonových mostních konstrukcí (viz kap. 18 TKP), protikorozní ochrany (viz kapitola
+25A TKP) a výrobu betonu (viz kapitola 17 TKP).
+21B.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ
+OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví
+kapitola 1 TKP.
+21B.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich aktualizace.
+Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kapitoly 1 TKP, čl. 3, za použití
+aktuální verze výchozích podkladů, tj. právních předpisů, technických norem a předpisů a předpisů ČD.
+21B.12.1 Citované technické normy
+ČSN 73 2601 Provádění ocelových konstrukcí.
+ČSN 73 2603 Provádění ocelových mostních konstrukcí.
+ČSN 73 6200 Mostní názvosloví.
+ČSN 73 6203 Zatížení mostů.
+ČSN 73 6205 Navrhování ocelových mostů.
+ČSN 73 6209 Zatěžovací zkoušky mostů.
+ČSN 73 6242 Navrhování a provádění vozovek na mostech pozemních komunikací.
+ČSN ISO 2768-1 (01 4240) Všeobecné tolerance. Nepředepsané mezní úchylky délkových a úhlových rozměrů.
+ČSN EN ISO 9001 Systémy managementu jakosti – Požadavky.
+ČSN P ENV 1090-1 (73 2601) Provádění ocelových konstrukcí – Část 1: Obecná pravidla a pravidla pro
+pozemní stavby.
+ČSN P ENV 1090-5 (73 2603) Provádění ocelových konstrukcí – Část 5: Doplňující pravidla pro mosty.
+3 7
+ČSN EN 1991-1-5 Eurokód 1: Zatížení konstrukcí – Část 1-5: Obecná zatížení – Zatížení teplotou.
+ČSN P ENV 1993-2 Navrhování ocelových konstrukcí - Část 2: Ocelové mosty.
+ČSN P ENV 1993-1-4 Navrhování ocelových konstrukcí – Část 1 – 4: Obecná pravidla – Doplňující pravidla
+pro korozivzdorné oceli.
+ČSN EN 206-1 Beton – Část 1: Specifikace, vlastnosti, výroba a shoda.
+ČSN P ENV13670-1 Provádění betonových konstrukcí - Část 1: Společná ustanovení
+TNŽ 73 6280 Navrhování a provádění vodotěsných izolací železničních mostních objektů.
+ČD S 4 Železniční spodek.
+ČD S 5 (R) Správa mostních objektů, nepublikovaný předpis.
+ČD S 5/4 Protikorozní ochrana ocelových konstrukcí.
+ČD SR 5/7 (S) Ochrana železničních mostních objektů proti účinkům bludných proudů.
+ČD SR 105/1 (S) Používání plastbetonu v traťovém hospodářství.
+21B.12.2 Citované předpisy
+MVL 102 Přechody mezi nosnými konstrukcemi, mezi nosnou konstrukcí a opěrou, mezi
+spodní stavbou a tělesem železničního spodku.
+MVL 211 Ocelová konstrukce s kolejovým ložem s dolní mostovkou, plnostěnná.
+MVL 311 Ocelová konstrukce s mostnicemi s dolní mostovkou, plnostěnná.
+MVL 511 Nosné konstrukce železničních mostů se zabetonovanými ocelovými nosníky.
+MVL 554 Ocelobetonová konstrukce spřažená s plnostěnnými nosníky.
+Oznámení o Akreditačním systému České republiky, Věstník MH ČR, č. 3-4/1995.
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky
+Nařízení vlády č. 163/2002 Sb. v platném znění, kterým se stanoví technické požadavky na vybrané stavební
+výrobky.
+Nařízení vlády č. 178/1997 Sb..
+Nařízení vlády č. 81/1999 Sb..
+Vyhláška č. 177/1995 Sb. Stavební a technický řád drah.
+21B.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 6 - Pražcové podloží
+Kapitola 7 - Kolejové lože
+Kapitola 17 - Beton pro konstrukce
+Kapitola 18 - Betonové mosty a konstrukce
+Kapitola 19 - Ocelové mosty a konstrukce
+Kapitola 22 - Izolace proti vodě
+Kapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí
+3 8
+Poznámky:
+3 9
+4 0
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 21
+T ř e t í - aktualizované vydání se zapracovanou změnou č. 5 /z roku 2006/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Doc. Ing. Tomáš Rotter, CSc.
+Technický redaktor: Ing. Miroslav Teichman
+České dráhy, a.s., Technická ústředna Českých drah,
+sekce tratí a budov
+Odborný gestor: Ing. Pavla Hrůzová
+SŽDC, státní organizace,
+odbor provozuschopnosti ŽDC
+Nakladatelství: České dráhy, a.s., Technická ústředna Českých drah,
+Malletova 10/2363,
+190 00 Praha 9 - Libeň
+Distribuce: České dráhy, a.s., Technická ústředna Českých drah,
+SATT - oddělení typové dokumentace,
+Nerudova l,
+772 58 Olomouc
+tel.: +420 972 742 241, +420 972 741 769,
+fax: +420 972 741 290,
+e-mail: otd@tucd.cz
+www.cd.cz/tudc

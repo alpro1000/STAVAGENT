@@ -1,0 +1,3039 @@
+Úroveň přístupu
+A
+Technické kvalitativní
+podmínky staveb státních
+drah
+Kapitola 1
+VŠEOBECNĚ
+Příloha A
+Citované a související dokumenty
+Vydání: červen 2024
+Účinnost od: 1. července 2024
+Datum vydání: 14.06.2024
+1
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Obsah
+Strana Poslední změna
+- Souhrnný seznam 3 05.02.2023
+1 Všeobecně 24 07.06.2022
+2 Příprava staveniště 33 28.04.2022
+3 Zemní práce 0
+4 Odvodnění tratí a stanic 0
+5 Ochrana zemního tělesa 0
+6 Konstrukční vrstvy tělesa železničního spodku 0
+7 Kolejové lože 37 28.04.2022
+8 Konstrukce koleje a výhybek 0
+9 Úrovňové přejezdy a přechody 39 15.11.2023
+10 Nástupiště, rampy, zarážedla, účelové komunikace a zpevněné plochy 0
+11 Trvalé oplocení 0
+12 Chráničky a kolektory 0
+13 Plyn, voda, produktovody 0
+14 Kanalizace, septiky, čističky, lapače 0
+15 Vegetační úpravy 0
+16 Protihluková opatření 0
+17 Beton pro konstrukce 43 28.04.2022
+18 Betonové mosty a konstrukce 48 07.06.2022
+19 Ocelové mosty a konstrukce 0
+20 Tunely 0
+21 Mostní ložiska a ukončení nosné konstrukce mostů 0
+22 Izolace proti vodě 56 07.07.2022
+23 Sanace inženýrských objektů 0
+24 Zvláštní zakládání 0
+25A Protikorozní ochrana úložných zařízení a konstrukcí - Část A: Ochrana 0
+proti elektrochemické korozi a korozi bludnými proudy
+25B Protikorozní ochrana úložných zařízení a konstrukcí - Část B: Ochrana 58 14.06.2024
+ocelových konstrukcí proti atmosférické korozi
+26 Osvětlení, EOV, stožárové transformátory vn/nn, rozvody nn včetně 0
+dálkového ovládání
+27 Zabezpečovací zařízení 0
+28 Sdělovací zařízení 62 06.12.2022
+29 Silnoproudá technologická zařízení 0
+30 Silnoproudé rozvody VN a soustava 6 kV 0
+31 Trakční vedení 0
+32 Zařízení tratí a traťové značky 0
+33 Elektromagnetická kompatibilita (EMC) 0
+2
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Souhrnný seznam citovaných a souvisejících dokumentů
+A.0.1.1 Zákony ČR
+Označení Název Kapitola TKP
+Zákon č. 13/1997 Sb. o pozemních komunikacích 1, 9
+Zákon č. 17/1992 Sb. o životním prostředí 1
+Zákon č. 18/1997 Sb. o mírovém využívání jaderné energie a ionizujícího záření (atomový 1
+zákon)
+Zákon č. 20/1987 Sb. o státní památkové péči 1
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění 1, 2, 7, 17,
+některých zákonů 18
+Zákon č. 44/1988 Sb. o ochraně a využití nerostného bohatství (horní zákon) 1
+Zákon č. 49/1997 Sb. o civilním letectví 1
+Zákon č. 61/1988 Sb. o hornické činnosti, výbušninách a o státní báňské správě 1, 2
+Zákon č. 62/1988 Sb. o geologických pracích a o Českém geologickém úřadu 1
+Zákon č. 76/2002 Sb. o integrované prevenci a omezování znečištění, o integrovaném 1
+registru znečišťování a o změně některých zákonů (zákon o
+integrované prevenci)
+Zákon č. 77/2002 Sb. o akciové společnosti České dráhy, státní organizaci Správa železnic 1
+a o změně zákona č. 266/1994 Sb., o dráhách, ve znění pozdějších
+předpisů, a zákona č. 77/1997 Sb., o státním podniku, ve znění
+pozdějších předpisů
+Zákon č. 89/2012 Sb. občanský zákoník 1
+Zákon č. 90/2012 Sb. o obchodních společnostech a družstvech (zákon o obchodních 1
+korporacích)
+Zákon č. 100/2001 Sb. o posuzování vlivů na životní prostředí 1
+Zákon č. 102/2001 Sb. o obecné bezpečnosti výrobků 1, 2, 17
+Zákon č. 114/1992 Sb. o ochraně přírody a krajiny 1, 17
+Zákon č. 127/2005 Sb. o elektronických komunikacích a o změně některých souvisejících 1
+zákonů (zákon o elektronických komunikacích)
+Zákon č. 133/1985 Sb. o požární ochraně 1, 2
+Zákon č. 134/2016 Sb. o zadávání veřejných zakázek 1
+Zákon č. 164/2001 Sb. o přírodních léčivých zdrojích, zdrojích přírodních minerálních vod, 1
+přírodních léčebných lázních a lázeňských místech a o změně
+některých souvisejících zákonů
+Zákon č. 167/2008 Sb. o předcházení ekologické újmě a o její nápravě 1
+Zákon č. 183/2006 Sb. o územním plánování a stavebním řádu (stavební zákon) 1, 2, 17, 22
+Zákon č. 189/1999 Sb. o nouzových zásobách ropy 1
+Zákon č. 200/1994 Sb. o zeměměřictví a o změně a doplnění některých zákonů 1
+souvisejících s jeho zavedením
+Zákon č. 201/2012 Sb. o ochraně ovzduší 1, 2, 17
+Zákon č. 254/2001 Sb. o vodách a o změně některých zákonů (vodní zákon) 1, 2, 17
+Zákon č. 256/2001 Sb. o pohřebnictví a o změně některých zákonů 1
+Zákon č. 256/2013 Sb. o katastru nemovitostí (katastrální zákon) 1
+Zákon č. 258/2000 Sb. o ochraně veřejného zdraví a o změně některých souvisejících 1
+zákonů
+Zákon č. 262/2006 Sb. zákoník práce 1
+Zákon č. 266/1994 Sb. o dráhách 1, 7, 9
+3
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Zákon č. 274/2001 Sb. o vodovodech a kanalizacích 1
+Zákon č. 289/1995 Sb. o lesích a o změně a doplnění některých zákonů (lesní zákon) 1, 2
+Zákon č. 297/2016 Sb. o službách vytvářejících důvěru pro elektronické transakce 1
+Zákon č. 309/2006 Sb. kterým se upravují další požadavky bezpečnosti a ochrany zdraví 1, 17
+při práci v pracovněprávních vztazích a o zajištění bezpečnosti a
+ochrany zdraví při činnosti nebo poskytování služeb mimo
+pracovněprávní vztahy (zákon o zajištění podmínek bezpečnosti)
+Zákon č. 334/1992 Sb. o ochraně zemědělského půdního fondu 1
+Zákon č. 350/2011 Sb. o chemických látkách a chemických směsích a o změně některých 1, 2, 17
+zákonů (chemický zákon)
+Zákon č. 360/1992 Sb. o výkonu povolání autorizovaných architektů a o výkonu povolání 18
+autorizovaných inženýrů a techniků činných ve výstavbě
+(autorizační zákon)
+Zákon č. 361/2000 Sb. o provozu na pozemních komunikacích a o změnách některých 1, 9
+zákonů (zákon o silničním provozu)
+Zákon č. 372/2011 Sb. o zdravotních službách 1
+Zákon č. 458/2000 Sb. o podmínkách podnikání a výkonu správy v energetickém odvětví a 1
+o změně některých zákonů (energetický zákon)
+Zákon č. 499/2004 Sb. o archivnictví a spisové službě a o změně některých zákonů 1
+Zákon č. 505/1990 Sb. o metrologii 17
+Zákon č. 541/2020 Sb. o odpadech 1, 2, 7, 17,
+22
+A.0.1.2 Vyhlášky ČR
+Označení Název Kapitola TKP
+Vyhláška č. 8/2021 Sb. o Katalogu odpadů a posuzování vlastností odpadů (Katalog 2, 7
+odpadů)
+Vyhláška č. 15/1995 Sb. o oprávnění k hornické činnosti 1, 2
+Vyhláška č. 22/1989 Sb. o bezpečnosti a ochraně zdraví při práci v hornictví v podzemí 1
+Vyhláška č. 23/2008 Sb. o technických podmínkách požární ochrany staveb 1, 2
+MV
+Vyhláška č. 26/1989 Sb. o bezpečnosti a ochraně zdraví při práci v hornictví na povrchu 1
+Vyhláška č. 31/1995 Sb. kterou se provádí zákon č. 200/1994 Sb., o zeměměřictví a o 1
+ČÚZK změně a doplnění některých zákonů souvisejících s jeho zavedením
+Vyhláška č. 50/1978 Sb. odborné způsobilosti v elektrotechnice 1
+Vyhláška č. 72/1988 Sb. o používání výbušnin 1, 2
+Vyhláška č. 77/1965 Sb. o výcviku, způsobilosti a registraci obsluh stavebních strojů 17
+Vyhláška č. 87/2000 Sb. podmínky požární bezpečnosti při svařování a nahřívání živic 1
+Vyhláška č. 99/1995 Sb. o skladování výbušnin 2
+Vyhláška č. 100/1995 Sb. kterou se stanoví podmínky pro provoz, konstrukci a výrobu 1
+MD určených technických zařízení a jejich konkretizace (Řád určených
+technických zařízení)
+Vyhláška č. 101/1995 Sb. kterou se vydává Řád pro zdravotní a odbornou způsobilost osob při 1
+MD provozování dráhy a drážní dopravy
+Vyhláška č. 104/1997 Sb. kterou se provádí zákon o pozemních komunikacích 1, 9
+MD
+Vyhláška č. 146/2008 Sb. o rozsahu a obsahu projektové dokumentace dopravních staveb 1
+Vyhláška č. 169/2016 Sb. o stanovení rozsahu dokumentace veřejné zakázky na stavební 1
+práce a soupisu stavebních prací, dodávek a služeb s výkazem
+výměr
+4
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Vyhláška č. 173/1995 Sb. kterou se vydává dopravní řád drah 1
+MD
+Vyhláška č. 177/1995 Sb. kterou se vydává stavební a technický řád drah 1, 7, 9, 18,
+MD 28
+Vyhláška č. 189/2013 Sb. o ochraně dřevin a povolování jejich kácení 1
+MŽP
+Vyhláška č. 246/2001 Sb. o stanovení podmínek požární bezpečnosti a výkonu státního 1
+MV požárního dozoru (vyhláška o požární prevenci)
+Vyhláška č. 268/2009 Sb. o technických požadavcích na stavby 1, 9
+MMR
+Vyhláška č. 271/2019 Sb. o stanovení postupů k zajištění ochrany zemědělského půdního 1
+fondu
+Vyhláška č. 273/2021 Sb. o podrobnostech nakládání s odpady 22
+Vyhláška č. 294/2015 Sb. kterou se provádějí pravidla provozu na pozemních komunikacích 2, 9
+MD
+Vyhláška č. 298/2005 Sb. o požadavcích na odbornou kvalifikaci a odbornou způsobilost při 1
+hornické činnosti nebo činnosti prováděné hornickým způsobem a o
+změně některých právních předpisů
+Vyhláška č. 357/2013 Sb. o katastru nemovitostí (katastrální vyhláška) 1
+Vyhláška č. 376/2006 Sb. o zajišťování bezpečnosti provozování dráhy a drážní dopravy a 1
+postupech při vzniku mimořádných událostí na dráhách
+Vyhláška č. 395/1992 Sb. kterou se provádějí některá ustanovení zákona České národní rady 1
+MŽP č. 114/1992 Sb., o ochraně přírody a krajiny
+Vyhláška č. 398/2009 Sb. o techn. požadavcích zabezpečujících bezbariérové užívání staveb 1
+Vyhláška č. 450/2005 Sb. o náležitostech nakládání se závadnými látkami a náležitostech 1, 2
+MŽP havarijního plánu, způsobu a rozsahu hlášení havárií, jejich
+zneškodňování a odstraňování jejich škodlivých následků
+Vyhláška č. 499/2006 Sb. o dokumentaci staveb 1, 17, 22
+Vyhláška č. 503/2006 Sb. o podrobnější úpravě územního rozhodování, územního opatření a 1
+MMR stavebního řádu
+Vyhláška č. 583/2020 Sb. kterou se stanoví podrobnosti obsahu dokumentace pro vydání 1
+MD společného povolení u staveb dopravní infrastruktury
+A.0.1.3 Nařízení vlády ČR
+Označení Název Kapitola TKP
+Nařízení vlády č. 10/1979 o chráněných oblastech přirozené akumulace vod 1
+Sb.
+Nařízení vlády č. 40/1978 o chráněných oblastech přirozené akumulace vod 1
+Sb.
+Nařízení vlády č. 85/1981 o chráněných oblastech přirozené akumulace vod 1
+Sb.
+Nařízení vlády č. 163/2002 kterým se stanoví technické požadavky na vybrané stavební 1, 9, 17, 18
+Sb. výrobky
+Nařízení vlády č. 272/2011 o ochraně zdraví před nepříznivými účinky hluku a vibrací 1
+Sb.
+Nařízení vlády č. 361/2007 kterým se stanoví podmínky ochrany zdraví při práci 1
+Sb.
+Nařízení vlády č. 362/2005 o bližších požadavcích na bezpečnost a ochranu zdraví při práci na 1, 2, 17
+Sb. pracovištích s nebezpečím pádu z výšky nebo do hloubky
+Nařízení vlády č. 375/2017 o vzhledu, umístění a provedení bezpečnostních značek a značení a 1
+Sb. zavedení signálů
+Nařízení vlády č. 430/2006 o stanovení geodetických systémů a státních mapových děl 1
+Sb.
+5
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Nařízení vlády č. 591/2006 požadavky na bezpečnost a ochranu zdraví při práci na staveništích 1
+Sb.
+Nařízení vlády č. 592/2006 podmínky akreditace a provádění zkoušek z odborné způsobilosti 1
+Sb.
+A.0.1.4 Ostatní dokumenty
+Označení Název Kapitola TKP
+Metodický návod Metodický návod odboru odpadů Ministerstva životního prostředí 1, 2
+MZP/2018/130/682 pro řízení vzniku stavebních a demoličních odpadů a pro nakládání s
+nimi, Praha, srpen 2018, Věstník MŽP: září 2018
+Metodický návod MŽP Metodický návod pro řízení vzniku odpadů s obsahem azbestu při 2
+(azbest) provádění a odstraňování staveb a pro nakládání s nimi
+A.0.1.5 Předpisy EU
+Označení Název Kapitola TKP
+Nařízení Evropského ze dne 9. března 2011, kterým se stanoví harmonizované podmínky 1, 17, 18
+parlamentu a Rady (EU) č. pro uvádění stavebních výrobků na trh a kterým se zrušuje
+305/2011 směrnice Rady 89/106/EHS
+A.0.2.1 Normy ČSN
+Označení Název Kapitola TKP
+ČSN 03 8371 Protikorozní ochrana v zemi uložených sdělovacích kabelů s 28
+olověnými, hliníkovými a ocelovými obaly
+ČSN 05 0601 Zváranie. Bezpečnostné ustanovenia pre zváranie kovov. Prevádzka 1
+ČSN 05 0610 Zváranie. Bezpečnostné ustanovenia pre plameňové zváranie kovov 1
+a rezanie kovov
+ČSN 05 0630 Zváranie. Bezpečnostné ustanovenia pre oblúkové zváranie kovov 1
+ČSN 07 8304 Tlakové nádoby na plyny -Provozní pravidla 1
+ČSN 33 1500 Elektrotechnické předpisy. Revize elektrických zařízení 1, 28
+ČSN 33 1600 ed. 2 Revize a kontroly elektrických spotřebičů během používání 1
+ČSN 33 2000-1 ed. 2 Elektrické instalace nízkého napětí -Část 1: Základní hlediska, 28
+stanovení základních charakteristik, definice
+ČSN 33 2000-5-51 ed. Elektrické instalace nízkého napětí -Část 5-51: Výběr a stavba 1
+3+Z1+Z2 elektrických zařízení -Obecné předpisy
+ČSN 33 2130 ed. 3 Elektrické instalace nízkého napětí -Vnitřní elektrické rozvody 28
+ČSN 33 3270 Elektrotechnické předpisy. Sdělovací a zabezpečovací zařízení ve 28
+výrobnách a rozvodu elektrické energie a tepla
+ČSN 33 4000 Elektrotechnické předpisy. Požadavky na odolnost sdělovacích 28
+zařízení proti přepětí a nadproudu
+ČSN 33 4010 Elektrotechnické předpisy. Ochrana sdělovacích vedení a zařízení 28
+proti přepětí a nadproudu atmosférického původu
+ČSN 34 1090 ed. 2 Elektrické instalace nízkého napětí -Předpisy pro prozatímní 28
+elektrická zařízení
+ČSN 34 2040 ed. 2 Předpisy pro ochranu sdělovacích a zabezpečovacích vedení a 28
+zařízení před nebezpečnými, rušivými a korozivními vlivy elektrické
+trakce 25 kV, 50 Hz
+ČSN 34 2100 Elektrotechnické předpisy ČSN. Předpisy pro nadzemní sdělovací 28
+vedení
+ČSN 34 2300 ed. 2 Předpisy pro vnitřní rozvody vedení elektronických komunikací 28
+ČSN 34 2600 ed. 2 Drážní zařízení -Železniční zabezpečovací zařízení 28
+6
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN 34 2613 ed. 3 Železniční zabezpečovací zařízení -Kolejové obvody a vnější 9
+podmínky pro jejich činnost
+ČSN 34 2650 ed. 2 Železniční zabezpečovací zařízení -Přejezdová zabezpečovací 1, 9
+zařízení
+ČSN 34 2710 Elektrická požární signalizace -Projektování, montáž, užívání, 28
+provoz, kontrola, servis a údržba
+ČSN 37 5711 ed. 2 Drážní zařízení -Křížení kabelových vedení s železničními dráhami 28
+ČSN 42 0139 Ocel pro výztuž do betonu -Svařitelná betonářská ocel žebírková a 18
+hladká
+ČSN 42 0142 Trubky ocelové svařované přesné a závitové. Technické dodací 2
+předpisy
+ČSN 72 1176 Zkouška trvanlivosti a odolnosti kameniva proti mrazu 7
+ČSN 72 1179 Stanovení reaktivnosti kameniva s alkáliemi 17
+ČSN 72 1180 Stanovení rozlišných částic kameniva 7
+ČSN 72 1220 Mleté vápence a dolomity 17
+ČSN 72 3000 Výroba a kontrola betonových stavebních dílců. Společná 18
+ustanovení
+ČSN 73 0038 Hodnocení a ověřování existujících konstrukcí -doplňující 17
+ustanovení
+ČSN 73 0202 Geometrická přesnost ve výstavbě. Základní ustanovení 18
+ČSN 73 0205 Geometrická přesnost ve výstavbě. Navrhování geometrické 18
+přesnosti
+ČSN 73 0210-1 Geometrická přesnost ve výstavbě. Podmínky provádění. Část 1: 1
+Přesnost osazení
+ČSN 73 0212-1 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 1: 18
+Základní ustanovení
+ČSN 73 0212-3 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 3: 1, 18
+Pozemní stavební objekty
+ČSN 73 0212-4 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 4: 1, 18
+Liniové stavební objekty
+ČSN 73 0212-5 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 5: 1, 9, 18
+Kontrola přesnosti stavebních dílců
+ČSN 73 0212-6 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 6: 18
+Statistická analýza a přejímka
+ČSN 73 0212-7 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 7: 18
+Statistická regulace
+ČSN 73 0405 Měření posunů stavebních objektů 1, 18
+ČSN 73 0415 Geodetické body 18
+ČSN 73 0420-1 Přesnost vytyčování staveb -Část 1: Základní požadavky 1, 18
+ČSN 73 0420-2 Přesnost vytyčování staveb -Část 2: Vytyčovací odchylky 1, 18
+ČSN 73 0875 Požární bezpečnost staveb -Stanovení podmínek pro navrhování 28
+elektrické požární signalizace v rámci požárně bezpečnostního
+řešení
+ČSN 73 1318 Stanovení pevnosti betonu v tahu 17
+ČSN 73 1322 Stanovení mrazuvzdornosti betonu 17, 18
+ČSN 73 1324 Stanovení obrusnosti betonu 17
+ČSN 73 1326 Stanovení odolnosti povrchu cementového betonu proti působení 17, 18
+vody a chemických rozmrazovacích látek
+ČSN 73 1370 Nedestruktivní zkoušení betonu -Společná ustanovení 17
+ČSN 73 1371 Nedestruktivní zkoušení betonu -Ultrazvuková impulzová metoda 17
+zkoušení betonu
+ČSN 73 1373 Nedestruktivní zkoušení betonu -Tvrdoměrné metody zkoušení 17
+betonu
+ČSN 73 1376 Radiografie betonových konstrukcí a dílců 17
+7
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN 73 2011 Nedestruktivní zkoušení betonových konstrukcí 17
+ČSN 73 2030 Statické zatěžovací zkoušky stavebních konstrukcí 18
+ČSN 73 2401 Provádění a kontrola konstrukcí z předpjatého betonu 18
+ČSN 73 2480 Provádění a kontrola montovaných betonových konstrukcí 18
+ČSN 73 6005 Prostorové uspořádání vedení technického vybavení 28
+ČSN 73 6101 Projektování silnic a dálnic 9
+ČSN 73 6102 Projektování křižovatek na pozemních komunikacích 9
+ČSN 73 6108 Lesní cestní síť 9
+ČSN 73 6109 Projektování polních cest 9
+ČSN 73 6110 Projektování místních komunikací 9
+ČSN 73 6123-1 Stavba vozovek -Cementobetonové kryty -Část 1: Provádění a 18
+kontrola shody
+ČSN 73 6124-2 Stavba vozovek -Vrstvy ze směsí stmelených hydraulickými 17
+pojivy -Část 2: Mezerovitý beton
+ČSN 73 6126-1 Stavba vozovek -Nestmelené vrstvy -Část 1: Provádění a kontrola 9
+shody
+ČSN 73 6126-2 Stavba vozovek -Nestmelené vrstvy -Část 2: Vrstva z vibrovaného 9
+štěrku
+ČSN 73 6131 Stavba vozovek -Kryty z dlažeb a dílců 17
+ČSN 73 6200 Mosty -Terminologie a třídění 18, 22
+ČSN 73 6201 Projektování mostních objektů 18, 22
+ČSN 73 6209 Zatěžovací zkoušky mostních objektů 18
+ČSN 73 6223 Ochrana zařízení proti dotyku s živými částmi trakčního vedení a 18
+proti účinkům výfukových plynů na objektech nad železničními
+dráhami
+ČSN 73 6242 Navrhování a provádění vozovek na mostech pozemních komunikací 22
+ČSN 73 6360-1 Konstrukční a geometrické uspořádání koleje železničních drah a 7, 9
+její prostorová poloha -Část 1: Projektování
+ČSN 73 6360-2 Konstrukční a geometrické uspořádání koleje železničních drah a 1, 7, 9
+její prostorová poloha -Část 2: Stavba a přejímka, provoz a údržba
+ČSN 73 6380 Železniční přejezdy a přechody 9
+ČSN 73 8101 Lešení -Společná ustanovení 18
+ČSN 73 8102 Pojízdná a volně stojící lešení 18
+ČSN 73 8107 Trubková lešení 18
+ČSN 74 2870 Ocelové kotvy pro kotvení kabelů konstrukcí z dodatečně 18
+předpjatého betonu
+ČSN 83 9061 Technologie vegetačních úprav v krajině -Ochrana stromů, porostů 1
+a vegetačních ploch při stavebních pracích
+ČSN EN 1004-2 Pojízdná dílcová věžová lešení -Část 2: Pravidla a zásady pro 18
+vypracování návodu na montáž a používání
+ČSN EN 1008 Záměsová voda do betonu -Specifikace pro odběr vzorků, zkoušení 17
+a posouzení vhodnosti vody, včetně vody získané při recyklaci v
+betonárně, jako záměsové vody do betonu
+ČSN EN 10080 Ocel pro výztuž do betonu -Svařitelná betonářská ocel -Všeobecně 18
+ČSN EN 10088-1 Korozivzdorné oceli -Část 1: Přehled korozivzdorných ocelí 18
+ČSN EN 10088-2 Korozivzdorné oceli -Část 2: Technické dodací podmínky pro plechy 18
+a pásy z ocelí odolných korozi pro obecné použití
+ČSN EN 10088-3 Korozivzdorné oceli -Část 3: Technické dodací podmínky pro 18
+polotovary, tyče, válcované dráty, profily a lesklé výrobky z ocelí
+odolných korozi pro obecné použití
+ČSN EN 10088-4 Korozivzdorné oceli -Část 4: Technické dodací podmínky pro plech 18
+a pás z ocelí odolných korozi pro požití ve stavebnictví
+8
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 10088-5 Korozivzdorné oceli -Část 5: Technické dodací podmínky pro tyče, 18
+drát, profily a lesklé výrobky z ocelí odolných korozi pro použití ve
+stavebnictví
+ČSN EN 10163-1 Dodací podmínky pro jakost povrchu za tepla válcovaných 25B
+ocelových plechů, široké oceli a tyčí tvarových -Část 1: Všeobecné
+požadavky
+ČSN EN 10163-2 Dodací podmínky pro jakost povrchu za tepla válcovaných 25B
+ocelových plechů, široké oceli a tyčí tvarových -Část 2: Plechy a
+široká ocel
+ČSN EN 10163-3 Dodací podmínky pro jakost povrchu za tepla válcovaných 25B
+ocelových plechů, široké oceli a tyčí tvarových -Část 3: Tyče
+tvarové
+ČSN EN 10204 Kovové výrobky -Druhy dokumentů kontroly 18, 25B
+ČSN EN 1065 Seřiditelné výsuvné ocelové stojky -Základní požadavky, 18
+navrhování a posuzování výpočtem a zkouškami
+ČSN EN 1090-2 Provádění ocelových konstrukcí a hliníkových konstrukcí -Část 2: 25B
+Technické požadavky na ocelové konstrukce
+ČSN EN 1097-1 Zkoušení mechanických a fyzikálních vlastností kameniva -Část 1: 7
+Stanovení odolnosti proti otěru (mikro-Deval)
+ČSN EN 1097-2 Zkoušení mechanických a fyzikálních vlastností kameniva -Část 2: 7
+Metody pro stanovení odolnosti proti drcení
+ČSN EN 1097-3 Zkoušení mechanických a fyzikálních vlastností kameniva -Část 3: 7
+Stanovení sypné hmotnosti a mezerovitosti volně sypaného
+kameniva
+ČSN EN 1097-6 Zkoušení mechanických a fyzikálních vlastností kameniva -Část 6: 7
+Stanovení objemové hmotnosti zrn a nasákavosti
+ČSN EN 1169 Prefabrikované betonové výrobky -Všeobecná pravidla pro výrobní 17
+kontrolu sklovláknobetonu
+ČSN EN 1170-1 Prefabrikované betonové výrobky -Zkušební metoda pro 17
+sklovláknobeton -Část 1: Stanovení tekutosti matrice "Zkouška
+tekutosti"
+ČSN EN 1170-2 Prefabrikované betonové výrobky -Zkušební metoda pro 17
+sklovláknobeton -Část 2: Stanovení obsahu vláken v čerstvém SVB
+"Zkouška vymýváním"
+ČSN EN 1170-3 Prefabrikované betonové výrobky -Zkušební metoda pro 17
+sklovláknobeton -Část 3: Stanovení obsahu vláken ve stříkaném
+SVB
+ČSN EN 1170-4 Prefabrikované betonové výrobky -Zkušební metoda pro 17
+sklovláknobeton -Část 4: Stanovení pevnosti v tahu za ohybu
+"Zjednodušená zkouška pevnosti v tahu za ohybu"
+ČSN EN 1170-5 Prefabrikované betonové výrobky -Zkušební metoda pro 17
+sklovláknobeton -Část 5: Stanovení pevnosti v tahu za ohybu
+"Úplná zkouška pevnosti v tahu za ohybu"
+ČSN EN 1170-6 Prefabrikované betonové výrobky -Zkušební metoda pro 17
+sklovláknobeton -Část 6: Stanovení nasákavosti vodou a objemové
+hmotnosti v suchém stavu
+ČSN EN 1170-7 Prefabrikované betonové výrobky -Zkušební metoda pro 17
+sklovláknobeton -Část 7: Stanovení délkových změn vlivem
+vlhkosti
+ČSN EN 1170-8 Zkušební metoda pro sklovláknobeton -Část 8: Zkoušení 17
+trvanlivosti zkouškou v klimatických cyklech
+ČSN EN 12350-1 Zkoušení čerstvého betonu -Část 1: Odběr vzorků a zkušební 17, 18
+zařízení
+ČSN EN 12350-2 Zkoušení čerstvého betonu -Část 2: Zkouška sednutím 17, 18
+ČSN EN 12350-3 Zkoušení čerstvého betonu -Část 3: Zkouška Vebe 17, 18
+ČSN EN 12350-4 Zkoušení čerstvého betonu -Část 4: Stupeň zhutnitelnosti 18
+ČSN EN 12350-5 Zkoušení čerstvého betonu -Část 5: Zkouška rozlitím 17, 18
+ČSN EN 12350-6 Zkoušení čerstvého betonu -Část 6: Objemová hmotnost 17, 18
+ČSN EN 12350-7 Zkoušení čerstvého betonu -Část 7: Obsah vzduchu -Tlakové 17, 18
+metody
+9
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 12350-8 Zkoušení čerstvého betonu -Část 8: Samozhutnitelný beton - 17, 18
+Zkouška sednutí-rozlitím
+ČSN EN 12350-9 Zkoušení čerstvého betonu -Část 9: Samozhutnitelný beton - 17, 18
+Zkouška V-nálevkou
+ČSN EN 12350-10 Zkouška čerstvého betonu -Část 10: Samozhutnitelný beton - 17, 18
+Zkouška L-truhlíkem
+ČSN EN 12350-11 Zkouška čerstvého betonu -Část 11: Samozhutnitelný beton - 17, 18
+Zkouška segregace při prosévání
+ČSN EN 12350-12 Zkouška čerstvého betonu -Část 12: Samozhutnitelný beton - 17, 18
+Zkouška J-kroužkem
+ČSN EN 12390-1 Zkoušení ztvrdlého betonu -Část 1: Tvar, rozměry a jiné 17, 18
+požadavky na zkušební tělesa a formy
+ČSN EN 12390-2 Zkoušení ztvrdlého betonu -Část 2: Výroba a ošetřování 17, 18
+zkušebních těles pro zkoušky pevnosti
+ČSN EN 12390-3 Zkoušení ztvrdlého betonu -Část 3: Pevnost v tlaku zkušebních 17, 18
+těles
+ČSN EN 12390-5 Zkoušení ztvrdlého betonu -Část 5: Pevnost v tahu ohybem 17, 18
+zkušebních těles
+ČSN EN 12390-6 Zkoušení ztvrdlého betonu -Část 6: Pevnost v příčném tahu 17, 18
+zkušebních těles
+ČSN EN 12390-7 Zkoušení ztvrdlého betonu -Část 7: Objemová hmotnost ztvrdlého 17, 18
+betonu
+ČSN EN 12390-8 Zkoušení ztvrdlého betonu -Část 8: Hloubka průsaku tlakovou 17, 18
+vodou
+ČSN EN 12390-13 Zkoušení ztvrdlého betonu -Část 13: Stanovení sečnového modulu 17, 18
+pružnosti v tlaku
+ČSN EN 12464-2 Světlo a osvětlení -Osvětlení pracovních prostorů -Část 2: 28
+Venkovní pracovní prostory
+ČSN EN 12504-1 Zkoušení betonu v konstrukcích -Část 1: Vývrty -Odběr, vyšetření 17
+a zkoušení v tlaku
+ČSN EN 12504-2 Zkoušení betonu v konstrukcích -Část 2: Nedestruktivní zkoušení - 17
+Stanovení tvrdosti odrazovým tvrdoměrem
+ČSN EN 12504-3 Zkoušení betonu v konstrukcích -Část 3: Stanovení síly na vytržení 17
+ČSN EN 12504-4 Zkoušení betonu v konstrukcích -Část 4: Stanovení rychlosti šíření 17
+ultrazvukového impulsu
+ČSN EN 12620+A1 Kamenivo do betonu 17
+ČSN EN 12699 Provádění speciálních geotechnických prací -Ražené piloty 17
+ČSN EN 12810-1 Fasádní dílcová lešení -Část 1: Požadavky na výrobky 18
+ČSN EN 12810-2 Fasádní dílcová lešení -Část 2: Zvláštní postupy při navrhování 18
+konstrukce
+ČSN EN 12811-1 Dočasné stavební konstrukce -Část 1: Pracovní lešení -Požadavky 18
+na provedení a obecný návrh
+ČSN EN 12811-2 Dočasné stavební konstrukce -Část 2: Informace o materiálech 18
+ČSN EN 12811-3 Dočasné stavební konstrukce -Část 3: Zatěžovací zkoušky 18
+ČSN EN 12811-4 Dočasné stavební konstrukce -Část 4: Záchytné stříšky pro lešení - 18
+Požadavky na provedení a návrh výrobku
+ČSN EN 12812 Podpěrná lešení -Požadavky na provedení a obecný návrh 18
+ČSN EN 13163+A2 Tepelněizolační výrobky pro budovy -Průmyslově vyráběné 18
+výrobky z pěnového polystyrenu (EPS) -Specifikace
+ČSN EN 13164+A1 Tepelněizolační výrobky pro budovy -Průmyslově vyráběné 18
+výrobky z extrudovaného polystyrenu (XPS) -Specifikace
+ČSN EN 13230-1 Železniční aplikace -Kolej -Betonové příčné a výhybkové pražce - 9
+Část 1: Obecné požadavky
+ČSN EN 13263-1+A1 Křemičitý úlet do betonu -Část 1: Definice, požadavky a kritéria 17
+shody
+ČSN EN 13285 ed. 2 Nestmelené směsi -Specifikace 9
+10
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 13369 ed. 2 Společná ustanovení pro betonové prefabrikáty 18
+ČSN EN 1337-1 Stavební ložiska -Část 1: Všeobecná pravidla navrhování 18
+ČSN EN 1337-2 Stavební ložiska -Část 2: Kluzné prvky 18
+ČSN EN 1337-3 Stavební ložiska -Část 3: Elastomerová ložiska 18
+ČSN EN 1337-4 Stavební ložiska -Část 4: Válcová ložiska 18
+ČSN EN 1337-5 Stavební ložiska -Část 5: Hrncová ložiska 18
+ČSN EN 1337-6 Stavební ložiska -Část 6: Vahadlová ložiska 18
+ČSN EN 1337-7 Stavební ložiska -Část 7: PTFE kalotová a PTFE cylindrická ložiska 18
+ČSN EN 1337-8 Stavební ložiska -Část 8: Vodící ložiska a konstrukce 18
+ČSN EN 1337-9 Stavební ložiska -Část 9: Ochrana 18
+ČSN EN 1337-10 Stavební ložiska -Část 10: Prohlídka a údržba 18
+ČSN EN 1337-11 Stavební ložiska -Část 11: Doprava, skladování a osazování 18
+ČSN EN 13391 Mechanické zkoušky pro systémy dodatečného předpínání 18
+ČSN EN 13450 Kamenivo pro kolejové lože 7
+ČSN EN 13577 Chemické působení na beton -Stanovení obsahu agresivního oxidu 17
+uhličitého ve vodě
+ČSN EN 13670 Provádění betonových konstrukcí 1, 17, 18
+ČSN EN 1367-1 Zkoušení odolnosti kameniva vůči teplotě a zvětrávání -Část 1: 7
+Stanovení odolnosti proti zmrazování a rozmrazování
+ČSN EN 1367-3 Zkoušení odolnosti kameniva vůči teplotě a zvětrávání -Část 3: 7
+Zkouška varem pro rozpadavý čedič
+ČSN EN 13791 Posuzování pevnosti betonu v tlaku v konstrukcích a v 17
+prefabrikovaných betonových dílcích
+ČSN EN 13967+A1 Hydroizolační pásy a fólie -Plastové a pryžové pásy a fólie pro 22
+izolace proti zemní vlhkosti a plastové a pryžové pásy a fólie pro
+izolace proti tlakové vodě -Definice a charakteristiky
+ČSN EN 14188-1 Zálivky a vložky do spár -Část 1: Specifikace pro zálivky za horka 22
+ČSN EN 14199 Provádění speciálních geotechnických prací -Mikropiloty 17
+ČSN EN 14487-1 Stříkaný beton -Část 1: Definice, specifikace a shoda 17
+ČSN EN 14487-2 Stříkaný beton -Část 2: Provádění 17
+ČSN EN 14889-1 Vlákna do betonu -Část 1: Ocelová vlákna -Definice, specifikace a 17
+shoda
+ČSN EN 14889-2 Vlákna do betonu -Část 2: Polymerová vlákna -Definice, 17
+specifikace a shoda
+ČSN EN 14899 Charakterizace odpadů -Vzorkování odpadů -Zásady přípravy 2
+programu vzorkování a jeho použití
+ČSN EN 1504-1 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 18
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 1:
+Definice
+ČSN EN 1504-2 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 18
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 2:
+Systémy ochrany povrchu betonu
+ČSN EN 1504-3 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 17, 18
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 3:
+Opravy se statickou funkcí a bez statické funkce
+ČSN EN 1504-4 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 18
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 4:
+Konstrukční spojování
+ČSN EN 1504-5 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 18
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 5:
+Injektáž betonu
+11
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 1504-6 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 17, 18
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 6:
+Kotvení výztužných ocelových prutů
+ČSN EN 1504-7 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 18
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 7:
+Ochrana výztuže proti korozi
+ČSN EN 1504-8 ed. 2 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 18
+Definice, požadavky, kontrola kvality a AVCP -Část 8: Kontrola
+kvality a posuzování a ověřování stálosti vlastností (AVCP)
+ČSN EN 15167-1 Mletá granulovaná vysokopecní struska pro použití do betonu, 17
+malty a injektážní malty -Část 1: Definice, specifikace a kritéria
+shody
+ČSN EN 1536+A1 Provádění speciálních geotechnických prací -Vrtané piloty 17
+ČSN EN 1538+A1 Provádění speciálních geotechnických prací -Podzemní stěny 17
+ČSN EN 16502 Stanovení stupně kyselosti zeminy podle Baumann-Gully 17
+ČSN EN 16587 Železniční aplikace -Konstrukce pro osoby se sníženou schopností 9
+pohybu a orientace -Požadavky na bezbariérové trasy v rámci
+infrastruktury
+ČSN EN 1779 Nedestruktivní zkoušení -Zkoušení těsnosti -Kritéria pro volbu 25B
+metod a postupů
+ČSN EN 196-2 Metody zkoušení cementu -Část 2: Chemický rozbor cementu 17
+ČSN EN 197-1 ed. 2 Cement -Část 1: Složení, specifikace a kritéria shody cementů pro 17, 18
+obecné použití
+ČSN EN 1990 Eurokód: Zásady navrhování konstrukcí 18
+ČSN EN 1991-1-1 Eurokód 1: Zatížení konstrukcí -Část 1-1: Obecná zatížení - 18
+Objemové tíhy, vlastní tíha a užitná zatížení pozemních staveb
+ČSN EN 1991-1-1 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 1-1: 18
+General actions -Densities, self-weight, imposed loads for buildings
+ČSN EN 1991-1-2 Eurokód 1: Zatížení konstrukcí -Část 1-2: Obecná zatížení - 18
+Zatížení konstrukcí vystavených účinkům požáru
+ČSN EN 1991-1-2 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 1-2: 18
+General actions -Actions on structures exposed to fire
+ČSN EN 1991-1-3 Eurokód 1: Zatížení konstrukcí -Část 1-3: Obecná zatížení - 18
+Zatížení sněhem
+ČSN EN 1991-1-3 ed. 2 Eurokód 1: Zatížení konstrukcí -Část 1-3: Obecná zatížení - 18
+Zatížení sněhem
+ČSN EN 1991-1-3 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 1-3: 18
+General actions -Snow loads
+ČSN EN 1991-1-4 Eurokód 1: Zatížení konstrukcí -Část 1-4: Obecná zatížení - 18
+Zatížení větrem
+ČSN EN 1991-1-4 ed. 2 Eurokód 1: Zatížení konstrukcí -Část 1-4: Obecná zatížení - 18
+Zatížení větrem
+ČSN EN 1991-1-4 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 1-4: 18
+General actions -Wind loads
+ČSN EN 1991-1-5 Eurokód 1: Zatížení konstrukcí -Část 1-5: Obecná zatížení - 18
+Zatížení teplotou
+ČSN EN 1991-1-5 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 1-5: 18
+General actions -Thermal actions
+ČSN EN 1991-1-6 Eurokód 1: Zatížení konstrukcí -Část 1-6: Obecná zatížení - 18
+Zatížení během provádění
+ČSN EN 1991-1-6 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 1-6: 18
+General actions -Actions during execution
+ČSN EN 1991-1-7 Eurokód 1: Zatížení konstrukcí -Část 1-7: Obecná zatížení - 18
+Mimořádná zatížení
+ČSN EN 1991-1-7 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 1-7: 18
+General actions -Accidental actions
+ČSN EN 1991-2 Eurokód 1: Zatížení konstrukcí -Část 2: Zatížení mostů dopravou 18
+12
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 1991-2 ed. 2 Eurokód 1: Zatížení konstrukcí -Část 2: Zatížení mostů dopravou 18
+ČSN EN 1991-2 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 2: Traffic 18
+loads on bridges
+ČSN EN 1991-3 Eurokód 1: Zatížení konstrukcí -Část 3: Zatížení od jeřábů a 18
+strojního vybavení
+ČSN EN 1991-3 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 3: 18
+Actions induced by cranes and machinery
+ČSN EN 1991-4 Eurokód 1: Zatížení konstrukcí -Část 4: Zatížení zásobníků a nádrží 18
+ČSN EN 1991-4 ed. 2 Eurokód 1: Zatížení konstrukcí -Část 4: Zatížení zásobníků a nádrží 18
+ČSN EN 1991-4 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 4: Silos 18
+and tanks
+ČSN EN 1992-1-1 Eurokód 2: Navrhování betonových konstrukcí -Část 1-1: Obecná 18
+pravidla a pravidla pro pozemní stavby
+ČSN EN 1992-1-1 ed. 2 Eurokód 2: Navrhování betonových konstrukcí -Část 1-1: Obecná 17, 18
+pravidla a pravidla pro pozemní stavby
+ČSN EN 1992-1-1 NA ed. A National Annex -Eurocode 2: Design of concrete structures -Part 18
+1-1: General rules and rules for buildings
+ČSN EN 1992-1-2 Eurokód 2: Navrhování betonových konstrukcí -Část 1-2: Obecná 18
+pravidla -Navrhování konstrukcí na účinky požáru
+ČSN EN 1992-1-2 NA ed. A National Annex -Eurocode 2: Design of concrete structures -Part 18
+1-2: General rules -Structural fire design
+ČSN EN 1992-2 Eurokód 2: Navrhování betonových konstrukcí -Část 2: Betonové 18
+mosty -Navrhování a konstrukční zásady
+ČSN EN 1992-2 NA ed. A National Annex -Eurocode 2: Design of concrete structures -Part 18
+2: Concrete bridges -Design and detailling rules
+ČSN EN 1992-3 Eurokód 2: Navrhování betonových konstrukcí -Část 3: Nádrže na 18
+kapaliny a zásobníky
+ČSN EN 1992-3 NA ed. A National Annex -Eurocode 2: Design of concrete structures -Part 18
+3: Liquid retaining and containment structures
+ČSN EN 1992-4 Eurokód 2: Navrhování betonových konstrukcí -Část 4: Navrhování 18
+kotvení do betonu
+ČSN EN 1993-1-4 Eurokód 3: Navrhování ocelových konstrukcí -Část 1-4: Obecná 25B
+pravidla -Doplňující pravidla pro korozivzdorné oceli
+ČSN EN 206+A2 Beton -Specifikace, vlastnosti, výroba a shoda 9, 17, 18, 22
+ČSN EN 206+A2 Beton -Specifikace, vlastnosti, výroba a shoda 9
+ČSN EN 445 Injektážní malta pro předpínací kabely -Zkušební metody 18
+ČSN EN 446 Injektážní malta pro předpínací kabely -Postupy injektáže 18
+ČSN EN 447 Injektážní malta pro předpínací kabely -Základní požadavky 18
+ČSN EN 450-1 Popílek do betonu -Část 1: Definice, specifikace a kritéria shody 17
+ČSN EN 480-10 Přísady do betonu, malty a injektážní malty -Zkušební metody - 17
+Část 10: Stanovení obsahu vodou rozpustných chloridů
+ČSN EN 480-11 Přísady do betonu, malty a injektážní malty -Zkušební metody - 17
+Část 11: Stanovení charakteristik vzduchových pórů ve ztvrdlém
+betonu
+ČSN EN 50110-1 ed. 3 Obsluha a práce na elektrických zařízeních -Část 1: Obecné 1, 28
+požadavky
+ČSN EN 50122-2 ed. 3 Drážní zařízení -Pevná trakční zařízení -Elektrická bezpečnost, 9
+uzemnění a zpětný obvod -Část 2: Ochranná opatření proti
+účinkům bludných proudů DC trakčních soustav
+ČSN EN 50131-1 ed. 2 Poplachové systémy -Poplachové zabezpečovací a tísňové 28
+systémy -Část 1: Systémové požadavky
+ČSN EN 50561-1 Zařízení pro komunikaci po vedení používaná v instalacích nízkého 28
+napětí -Charakteristiky vysokofrekvenčního rušení -Meze a
+metody měření -Část 1: Zařízení pro domácí použití
+ČSN EN 60445 ed. 5 Základní a bezpečnostní zásady pro rozhraní člověk-stroj, značení a 28
+identifikaci -Identifikace svorek předmětů, konců vodičů a vodičů
+13
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 60529 Stupně ochrany krytem (krytí -IP kód) 28
+ČSN EN 60708 Nízkofrekvenční kabely s polyolefinovou izolací a vrstveným 28
+polyolefinovým pláštěm zabraňujícím vnikání vlhkosti
+ČSN EN 60794-1-1 ed. 3 Optické vláknové kabely -Část 1-1: Kmenová specifikace -Obecně 28
+ČSN EN 74-1 Spojky, středicí trny a nánožky pro pracovní a podpěrná lešení - 18
+Část 1: Spojky trubek -Požadavky a zkušební postupy
+ČSN EN 74-2 Spojky, středicí trny a nánožky pro pracovní a podpěrná lešení - 18
+Část 2: Speciální spojky -Požadavky a zkušební postupy
+ČSN EN 74-3 Spojky, středicí trny a nánožky pro pracovní a podpěrná lešení - 18
+Část 3: Ploché nánožky a středicí trny -Požadavky a zkušební
+postupy
+ČSN EN 932-1 Zkoušení všeobecných vlastností kameniva -Část 1: Metody odběru 7
+vzorků
+ČSN EN 932-2 Zkoušení všeobecných vlastností kameniva -Část 2: Metody 7
+zmenšování laboratorních vzorků
+ČSN EN 932-3 Zkoušení všeobecných vlastností kameniva -Část 3: Postup a 7
+názvosloví pro jednoduchý petrografický postup
+ČSN EN 932-5 Zkoušení všeobecných vlastností kameniva -Část 5: Běžné 7
+zkušební zařízení a kalibrace
+ČSN EN 933-1 Zkoušení geometrických vlastností kameniva -Část 1: Stanovení 7
+zrnitosti -Sítový rozbor
+ČSN EN 933-3 Zkoušení geometrických vlastností kameniva -Část 3: Stanovení 7
+tvaru zrn -Index plochosti
+ČSN EN 933-4 Zkoušení geometrických vlastností kameniva -Část 4: Stanovení 7
+tvaru zrn -Tvarový index
+ČSN EN 934-1 Přísady do betonu, malty a injektážní malty -Část 1: Společné 17
+požadavky
+ČSN EN 934-2+A1 Přísady do betonu, malty a injektážní malty -Část 2: Přísady do 17
+betonu -Definice, požadavky, shoda, označování a značení štítkem
+ČSN EN IEC 31010 ed. 2 Management rizik -Techniky posuzování rizik 1
+ČSN EN IEC 62368-1 ed. Zařízení audio/video, informační a komunikační technologie -Část 28
+2+A11 1: Bezpečnostní požadavky
+ČSN EN IEC 62485-2 Bezpečnostní požadavky pro akumulátorové baterie a bateriové 28
+instalace -Část 2: Staniční baterie
+ČSN EN ISO 11124-1 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Specifikace kovových otryskávacích
+prostředků -Část 1: Obecný úvod a klasifikace
+ČSN EN ISO 11126-1 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Specifikace nekovových otryskávacích
+prostředků -Část 1: Obecný úvod a klasifikace
+ČSN EN ISO 11600 Stavební konstrukce -Těsnicí hmoty -Klasifikace a požadavky pro 18
+tmely
+ČSN EN ISO 12670 Žárové stříkání -Součásti s žárově stříkanými povlaky -Technické 25B
+dodací podmínky
+ČSN EN ISO 12944-1 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 25B
+ochrannými nátěrovými systémy -Část 1: Obecné zásady
+ČSN EN ISO 12944-2 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 25B
+ochrannými nátěrovými systémy -Část 2: Klasifikace vnějšího
+prostředí
+ČSN EN ISO 12944-3 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 25B
+ochrannými nátěrovými systémy -Část 3: Navrhování
+ČSN EN ISO 12944-4 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 25B
+ochrannými nátěrovými systémy -Část 4: Typy povrchů podkladů a
+jejich příprava
+ČSN EN ISO 12944-5 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 25B
+ochrannými nátěrovými systémy -Část 5: Ochranné nátěrové
+systémy
+ČSN EN ISO 12944-6 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 25B
+ochrannými nátěrovými systémy -Část 6: Laboratorní metody
+zkoušení
+14
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN ISO 12944-7 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 25B
+ochrannými nátěrovými systémy -Část 7: Provádění a dozor při
+zhotovování nátěrů
+ČSN EN ISO 12944-8 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 25B
+ochrannými nátěrovými systémy -Část 8: Zpracování specifikací
+pro nové a údržbové nátěry
+ČSN EN ISO 14001 Systémy environmentálního managementu -Požadavky s návodem 1
+pro použití
+ČSN EN ISO 1461 Povlaky žárového zinku nanesené ponorem na ocelové a litinové 18
+výrobky -Specifikace a zkušební metody
+ČSN EN ISO 1461 Povlaky žárového zinku nanesené ponorem na ocelové a litinové 25B
+výrobky -Specifikace a zkušební metody
+ČSN EN ISO 14713-1 Zinkové povlaky -Směrnice a doporučení pro ochranu ocelových a 25B
+litinových konstrukcí proti korozi -Část 1: Obecné zásady pro
+navrhování a odolnost proti korozi
+ČSN EN ISO 14713-2 Zinkové povlaky -Směrnice a doporučení pro ochranu ocelových a 25B
+litinových konstrukcí proti korozi -Část 2: Žárové zinkování
+ponorem
+ČSN EN ISO 14713-3 Zinkové povlaky -Směrnice a doporučení pro ochranu ocelových a 25B
+litinových konstrukcí proti korozi -Část 3: Sherardování
+ČSN EN ISO 14917 Žárové stříkání -Názvosloví, klasifikace 25B
+ČSN EN ISO 14918 Žárové stříkání -Zkoušení způsobilosti pracovníků provádějících 25B
+žárové stříkání
+ČSN EN ISO 14919 Žárové stříkání -Dráty, tyčinky a kordy pro stříkání plamenem a 25B
+stříkání elektrickým obloukem -Klasifikace -Technické dodací
+podmínky
+ČSN EN ISO 14922 Žárové stříkání -Požadavky na kvalitu pro výrobce žárově 25B
+stříkaných povlaků
+ČSN EN ISO 15528 Nátěrové hmoty a jejich suroviny -Vzorkování 25B
+ČSN EN ISO 15630-1 Ocel pro výztuž a předpínání do betonu -Zkušební metody -Část 18
+1: Tyče, válcovaný drát a drát pro výztuž do betonu
+ČSN EN ISO 15630-2 Ocel pro výztuž a předpínání do betonu -Zkušební metody -Část 18
+2: Svařované sítě a příhradové nosníky
+ČSN EN ISO 16276-1 Ochrana ocelových konstrukcí proti korozi ochrannými nátěrovými 25B
+systémy -Hodnocení a kritéria přijetí, adheze/koheze (odtrhová
+pevnost) povlaku -Část 1: Odtrhová zkouška
+ČSN EN ISO 16276-2 Ochrana ocelových konstrukcí proti korozi ochrannými nátěrovými 25B
+systémy -Hodnocení a kritéria přijetí, adheze/koheze (odtrhová
+pevnost) povlaku -Část 2: Mřížková zkouška a křížový řez
+ČSN EN ISO 17660-1 Svařování -Svařování betonářské oceli -Část 1: Nosné svarové 18
+spoje
+ČSN EN ISO 17660-2 Svařování -Svařování betonářské oceli -Část 2: Nenosné svarové 18
+spoje
+ČSN EN ISO 20471 Oděvy s vysokou viditelností -Zkušební metody a požadavky 1
+ČSN EN ISO 2063-1 Žárové stříkání -Zinek, hliník a jejich slitiny -Část 1: Navrhování a 25B
+požadavky na kvalitu systémů ochrany proti korozi
+ČSN EN ISO 2063-2 Žárové stříkání -Zinek, hliník a jejich slitiny -Část 2: Realizace 25B
+systémů ochrany proti korozi
+ČSN EN ISO 2064 Kovové a jiné anorganické povlaky -Definice a dohody týkající se 25B
+měření tloušťky
+ČSN EN ISO 2178 Nemagnetické povlaky na magnetických podkladech -Měření 25B
+tloušťky povlaku -Magnetická metoda
+ČSN EN ISO 2409 Nátěrové hmoty -Mřížková zkouška 25B
+ČSN EN ISO 2808 Nátěrové hmoty -Stanovení tloušťky nátěru 25B
+ČSN EN ISO 29601 Nátěrové hmoty -Ochrana proti korozi ochrannými nátěrovými 25B
+systémy -Hodnocení pórovitosti suchého nátěru
+ČSN EN ISO 4618 Nátěrové hmoty -Slovník 25B
+ČSN EN ISO 4624 Nátěrové hmoty -Odtrhová zkouška přilnavosti 25B
+15
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN ISO 4628-2 Nátěrové hmoty -Hodnocení degradace nátěrů -Klasifikace 25B
+množství a velikosti defektů a intenzity jednotných změn vzhledu -
+Část 2: Hodnocení stupně puchýřkování
+ČSN EN ISO 4628-3 Nátěrové hmoty -Hodnocení degradace nátěrů -Klasifikace 25B
+množství a velikosti defektů a intenzity jednotných změn vzhledu -
+Část 3: Hodnocení stupně prorezavění
+ČSN EN ISO 4628-4 Nátěrové hmoty -Hodnocení degradace nátěrů -Klasifikace 25B
+množství a velikosti defektů a intenzity jednotných změn vzhledu -
+Část 4: Hodnocení stupně praskání
+ČSN EN ISO 4628-5 Nátěrové hmoty -Hodnocení množství a velikosti defektů a 25B
+intenzity jednotných změn vzhledu -Část 5: Hodnocení stupně
+odlupování
+ČSN EN ISO 4628-6 Nátěrové hmoty -Hodnocení degradace nátěrů -Klasifikace 25B
+množství a velikosti defektů a intenzity jednotných změn vzhledu -
+Část 6: Hodnocení stupně křídování metodou samolepicí pásky
+ČSN EN ISO 5817 Svařování -Svarové spoje oceli, niklu, titanu a jejich slitin 18
+zhotovené tavným svařováním (kromě elektronového a laserového
+svařování) -Stupně kvality pro vady
+ČSN EN ISO 6284 Výkresy ve stavebnictví -Předepisování mezních odchylek 18
+ČSN EN ISO 7010 Grafické značky -Bezpečnostní barvy a bezpečnostní značky - 1
+Registrované bezpečnostní značky
+ČSN EN ISO 8044 Koroze kovů a slitin -Slovník 25B
+ČSN EN ISO 8501-1 Příprava ocelových povrchů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Vizuální vyhodnocení čistoty povrchu -Část
+1: Stupně zarezavění a stupně přípravy ocelového podkladu bez
+povlaku a ocelového podkladu po úplném odstranění předchozích
+povlaků
+ČSN EN ISO 8501-3 Příprava ocelových povrchů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Vizuální vyhodnocení čistoty povrchu -Část
+3: Stupně přípravy svarů, hran a ostatních ploch s povrchovými
+vadami
+ČSN EN ISO 8501-4 Příprava ocelových povrchů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Vizuální vyhodnocení čistoty povrchu -Část
+4: Výchozí stav povrchu, stupně přípravy a bleskové koroze po
+tryskání vodou
+ČSN EN ISO 8502-3 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Zkoušky pro vyhodnocení čistoty povrchu -
+Část 3: Stanovení prachu na ocelovém povrchu připraveném pro
+natírání (metoda snímání samolepicí páskou)
+ČSN EN ISO 8502-4 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Zkoušky pro vyhodnocení čistoty povrchu -
+Část 4: Návod pro odhad pravděpodobnosti kondenzace vlhkosti
+před nanášením nátěrů
+ČSN EN ISO 8502-6 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Zkoušky pro vyhodnocení čistoty povrchu -
+Část 6: Extrakce vodou rozpustných nečistot pro analýzu (Breslova
+metoda)
+ČSN EN ISO 8502-9 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Zkoušky pro vyhodnocení čistoty povrchu -
+Část 9: Provozní metoda pro konduktometrické stanovení solí
+rozpustných ve vodě
+ČSN EN ISO 8503-1 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Charakteristiky drsnosti povrchu otryskaných
+ocelových podkladů -Část 1: Specifikace a definice pro hodnocení
+otryskaných povrchů s pomocí ISO komparátorů profilu povrchu
+ČSN EN ISO 8503-2 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Charakteristiky drsnosti povrchu otryskaných
+ocelových podkladů -Část 2: Hodnocení profilu povrchu otryskané
+oceli komparátorem
+ČSN EN ISO 8504-2 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Metody přípravy povrchu -Část 2:
+Otryskávání
+ČSN EN ISO 8504-3 Příprava ocelových podkladů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Metody přípravy povrchu -Část 3: Ruční a
+mechanizované čištění
+16
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN ISO 9001 Systémy managementu kvality -Požadavky 1, 17, 18,
+25B
+ČSN EN ISO/IEC 17025 Všeobecné požadavky na kompetenci zkušebních a kalibračních 1
+laboratoří
+ČSN ISO 1920-10 Zkoušení betonu -Část 10: Stanovení statického modulu pružnosti 17
+v tlaku
+ČSN ISO 19840 Nátěrové hmoty -Ochrana ocelových konstrukcí nátěrovými 25B
+systémy proti korozi -Měření a kritéria přejímky tloušťky suchého
+nátěru na drsném povrchu
+ČSN ISO 3302-1 Pryž -Tolerance pro výrobky -Část 1: Rozměrové tolerance 9
+ČSN ISO 37 Pryž, vulkanizovaný nebo termoplastický elastomer -Stanovení 9
+tahových vlastností
+ČSN ISO 3864-1 Grafické značky -Bezpečnostní barvy a bezpečnostní značky -Část 28
+1: Zásady navrhování bezpečnostních značek a bezpečnostního
+značení
+ČSN ISO 3864-1 Grafické značky -Bezpečnostní barvy a bezpečnostní značky -Část 1
+1: Zásady navrhování bezpečnostních značek a bezpečnostního
+značení
+ČSN ISO 3864-3 Grafické značky -Bezpečnostní barvy a bezpečnostní značky -Část 1
+3: Zásady navrhování grafických značek pro použití v
+bezpečnostních značkách
+ČSN ISO 3864-4 Grafické značky -Bezpečnostní barvy a bezpečnostní značky -Část 1
+4: Kolorimetrické a fotometrické vlastnosti materiálů
+bezpečnostních značek
+ČSN ISO 4463-1 Měřicí metody ve výstavbě -Vytyčování a měření -Část 1: 18
+Navrhování, organizace, postupy měření a přejímací podmínky
+ČSN ISO 7077 Geometrická přesnost ve výstavbě. Měřické metody ve výstavbě. 18
+Všeobecné zásady a postupy pro ověřování správnosti rozměrů
+ČSN ISO 7150-1 Jakost vod. Stanovení amonných iontů. Část 1: Manuální 17
+spektrometrická metoda
+ČSN ISO 8501-2 Příprava ocelových povrchů před nanesením nátěrových hmot a 25B
+obdobných výrobků -Vizuální vyhodnocení čistoty povrchu -Část
+2: Stupně přípravy dříve natřeného ocelového podkladu po místním
+odstranění předchozích povlaků
+ČSN P 73 0600 Hydroizolace staveb -Základní ustanovení 22
+ČSN P 73 2404 Beton -Specifikace, vlastnosti, výroba a shoda -Doplňující 9, 17, 18
+informace
+ČSN P 73 2450 Vláknobeton -Specifikace, vlastnosti, výroba a shoda 17, 18
+ČSN P 73 2451 Vláknobeton -Zkoušení čerstvého vláknobetonu 17
+ČSN P 73 2452 Vláknobeton -Zkoušení ztvrdlého vláknobetonu 17
+ČSN P 73 7505 Kolektory a ostatní sdružené trasy vedení inženýrských sítí 28
+ČSN P 74 2871 Systémy dodatečného předpínání -Všeobecné požadavky a 18
+zkoušení
+TNI 73 6270 Mostní ložiska 18
+A.0.2.2 Technické normy železnic (TNŽ)
+Označení Název Kapitola TKP
+TNŽ 73 6280 Navrhování a provádění vodotěsných izolací železničních mostních 18, 22
+objektů
+TNŽ 34 2604 Železniční zabezpečovací zařízení -Závěrové tabulky 1, 2
+TNŽ 34 3109 Bezpečnostní předpisy pro činnost na trakčním vedení a v jeho 1, 2
+blízkosti na železničních dráhách celostátních, regionálních a
+vlečkách
+17
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+A.0.2.3 Normy ostatní
+Označení Název Kapitola TKP
+ASTM D 4752 Standard Practice for Measuring MEK Resistance of Ethyl Silicate 25B
+(Inorganic) Zinc-Rich Primers by Solvent Rub
+EAD 160004-00-0301 Post-tensioning kits for prestressing of structures 18
+EAD 320002-00-0605 Coated metal water stop sheet for construction and controlled crack 18
+joints in waterproof concrete
+ETA 15/0003 Coated metal water stop sheet PENTAFLEX 18
+fib Model Code 2010 fib Model Code for Concrete Structures 2010 (The International 17, 18
+Federation for Structural Concrete)
+ISO 10406-1 Fibre-reinforced polymer (FRP) reinforcement of concrete, Test 18
+methods –Part : FRP bars and grids
+Manuál na navrhovanie vydavatel: Slovenská komora stavebných inžinierov 18
+GFRP výstuže do
+betónových konštrukcií
+ÖNORM B 332 Vergussmörtel -Anforderungen und Prüfmethoden (Malty - 17
+Požadavky a zkušební metody)
+prEN 10138 Prestressing Steels, Part 1 to 4 18
+prEN 1992-1-1 Eurocodes 2: Design of concrete structures –Part 1: General 18
+rules –Rules for buildings, bridges and civil engineering structures
+SN NS 476 Paints and coatings -Approval and certification of surface treatment 25B
+inspectors
+Std-401 APC Certifikační schéma kvalifikace a certifikace pracovníků v oboru 25B
+koroze a protikorozní ochrany
+TP ČBS 03 Technická pravidla ČBS 03 Pohledový beton (Česká Betonářská 17
+Společnost) (rok vydání 2018)
+TP ČBS 04 Technická pravidla ČBS 04 Vodonepropustné betonové konstrukce 18
+TP ČBS 05 Technická pravidla ČBS 05 Modul pružnosti betonu 18
+TP ČBS 07 Technická pravidla ČBS 07 Ultra-vysokohodnotný beton 18
+A.0.3.1 Směrnice, pokyny a řády SŽ
+Označení Název Kapitola TKP
+Směrnice SŽDC SM09 Pravidla pro uplatnění výstupů projektu. Moderní design a 28
+architektura nádraží a zastávek ČR
+Směrnice SŽ SM011 Dokumentace staveb Správy železnic, státní organizace 1, 2, 18, 22
+Směrnice SŽDC č. 20 Směrnice pro stanovení a členění investičních nákladů staveb státní 1, 2
+organizace Správa železniční dopravní cesty
+Směrnice SŽDC SM33 Správa koordinačních schémat ukolejnění a trakčního propojení 1, 2
+Směrnice SŽDC č. 34 Směrnice pro uvádění do provozu výrobků, které jsou součástí 1, 2, 28
+sdělovacích a zabezpečovacích zařízení a zařízení elektrotechniky a
+energetiky, na železniční dopravní cestě vlastnictví státu státní
+organizace Správa železniční dopravní cesty
+Směrnice SŽDC SM35 Směrnice, kterou se stanovují technické specifikace vlakových 28
+rádiových zařízení a zásady pro jejich přípravu a realizaci na
+železniční dopravní cestě ve vlastnictví státu
+Směrnice SŽDC č. 42 Hospodaření s vyzískaným materiálem 1, 2
+Směrnice SŽDC č. 67 Systém péče o kvalitu v oblasti traťového hospodářství 1, 2, 18, 22,
+25B
+Směrnice SŽ SM105 Změny během výstavby 1, 2
+18
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Směrnice SŽDC č. 116 Směrnice, kterou se stanovují technické specifikace rádiových 28
+zařízení pracujících v místních rádiových sítích v pásmu 150 MHz a
+zásady pro jejich přípravu a realizaci na železniční dopravní cestě
+ve vlastnictví státu
+Směrnice SŽDC č. 117 Předávání digitální dokumentace investiční výstavby SŽDC 1, 2
+Pokyn GŘ č. 4/2016 Předávání digitální dokumentace a dat mezi SŽDC a externími 1, 2
+subjekty
+Pokyn SŽ PO-08/2022-GŘ Pokyn generálního ředitele k posuzování přípustnosti strojů a 2
+speciálních vozidel dodavatelů pro technologické využití při pracích
+na železničních drahách státní organizace Správa železnic, ve znění
+změny č. 1
+Pokyn SŽ PO-09/2021-GŘ Pokyn generálního ředitele stanovující podmínky pro přístupy osob 1, 2
+v prostoru stavby
+Pokyn SŽDC PO-21/2017- Opatření a omezení pro dodávky technologických celků s dopadem 28
+GŘ na síťovou infrastrukturu SŽDC
+Pokyn SŽDC PO-21/2019- Pokyn generálního ředitele. Evidence technologických počítačů 28
+GŘ
+Řád SŽ R14 Řád zabezpečení požární ochrany státní organizace Správa železnic 1, 2, 22
+A.0.3.2 Předpisy a rukověti SŽ
+Označení Název Kapitola TKP
+Předpis SŽ Bp1 Pokyny provozovatele dráhy k zajištění bezpečnosti a k ochraně 1, 2, 22
+zdraví osob při činnostech a pohybu v jeho prostorách a v
+prostorách železniční dráhy provozované státní organizací Správa
+železnic
+Předpis SŽ Bp3 Bezpečnost a ochrana zdraví při práci na stavbách a při stavebních 1, 22
+činnostech v prostorách Správy železnic, státní organizace
+Předpis SŽ D1 ČÁST PRVNÍ Dopravní a návěstní předpis pro tratě nevybavené evropským 1, 2, 9
+vlakovým zabezpečovačem
+Předpis SŽ D3 Předpis pro zjednodušené řízení drážní dopravy 1, 2, 9
+Předpis SŽ D4 Předpis pro řízení drážní dopravy na tratích vybavených 1
+radioblokem
+Předpis SŽ D7/2 Organizování výlukových činností 1, 2, 9
+Předpis SŽ D17 Předpis pro hlášení a šetření mimořádných událostí 1, 2
+Předpis SŽDC E6 Předpis pro činnost elektrodispečinků 28
+Předpis SŽDC M20 Předpis pro zeměměřictví 1, 2
+Předpis SŽDC M21 Topologie sítě a staničení tratí železničních drah 1, 2
+Předpis SŽDC Ob1 díl II Vydávání povolení ke vstupu do míst veřejnosti nepřístupných. 1, 25B
+Průkaz pro cizí subjekt
+Předpis SŽDC S3 Železniční svršek 7, 9
+Předpis SŽ S3 díl III Železniční svršek. Zajištění prostorové polohy koleje 1
+Předpis SŽ S3/1 Práce na železničním svršku 7, 22
+Předpis SŽDC S3/2 Bezstyková kolej 1, 7
+Předpis SŽ S4 Železniční spodek 7, 9, 18, 22
+Předpis SŽ S4/4 Železniční přejezdy 9
+Předpis SŽDC S5 Správa mostních objektů 2, 18, 22,
+25B
+Předpis SŽ S5/1 Diagnostika, zatížitelnost a přechodnost železničních mostních 18
+objektů
+Předpis SŽDC S5/4 Protikorozní ochrana ocelových konstrukcí 18, 25B
+Předpis SŽ S8 Provoz, údržba a opravy speciálních vozidel 2
+Předpis SŽDC S9 Pevná jízdní dráha 1
+19
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Předpis SŽ S13 Ochranná opatření pro omezení vlivu bludných proudů pro stavby 9
+na železnici
+Předpis SŽDC T7 Rádiový provoz 1
+Předpis SŽDC (ČD) Z11 Předpis pro obsluhu rádiových zařízení 1
+Předpis SŽ Zam1 Předpis o odborné způsobilosti a znalosti osob při provozování 1, 2, 25B
+dráhy a drážní dopravy
+A.0.3.3 Metodické pokyny SŽ
+Označení Název Kapitola TKP
+Metodický pokyn SŽDC Metodický pokyn pro hodnocení a řízení hluku ze železniční dopravy 1
+50023/2017-SŽDC-GŘ-O15
+Metodický pokyn SŽDC Metodický pokyn pro měření prostorové polohy koleje 1, 2
+M20/MP004
+Metodický pokyn SŽ Metodický pokyn pro tvorbu prostorových dat pro mapy velkého 1, 2
+MPM20/MP005 měřítka
+Metodický pokyn SŽDC Opatření k zaměřování objektů železniční dopravní cesty 1, 2
+M20/MP006
+Metodický pokyn SŽ MP Železniční bodové pole 1, 2
+M20/MP007
+Metodický pokyn SŽ MP Účelová železniční mapa velkého měřítka 1, 2
+M20/MP010
+Metodický pokyn SŽ MP Záborový elaborát 1, 2
+M20/MP013
+A.0.3.4 Ostatní dokumenty SŽ
+Označení Název Kapitola TKP
+SŽDC č.j. 9112/12-OP Zavedení typizovaného stavebního deníku pro údržbu a opravy 1
+staveb státních drah
+Stavební deník (údržba a Stavební deník (údržba a opravy státních drah) -smluvní vzor 1
+opravy státních drah) objednatele
+SŽDC č.j. S 17307/09-OI Aktualizace TKP -zavedení typizovaného "SD -SŽDC -smluvní vzor 1
+objednatele
+A. Stavební deník Typizovaný stavební deník A /centrální stavby/ -identifikační údaje 1
+/centrální stavby/
+A. Stavební deník /část Typizovaný stavební deník A /část stavby/ -identifikační údaje 1
+stavby/
+B. Stavební deník Typizovaný stavební deník B /centrální stavby/ -denní záznamy 1
+/centrální stavby/
+B. Stavební deník /část Typizovaný stavební deník B /část stavby/ -denní záznamy 1
+stavby/
+SŽ TS 1/2022-SZ Optické kabely a jejich příslušenství v přenosové síti státní 28
+organizace Správa železnic Vydání II
+SŽDC TS 2/2006-ZS Technické specifikace systémů, zařízení a výrobků. Dálkové 28
+ovládání zabezpečovacího zařízení. Druhé vydání
+SŽDC TS 2/2007-Z Technické specifikace systémů, zařízení a výrobků. Diagnostika 28
+zabezpečovacích zařízení.
+SŽDC TS 2/2008-ZSE Technické specifikace systémů, zařízení a výrobků. Dálková 28
+diagnostika technologických systémů železniční dopravní cesty.
+Třetí vydání
+SŽDC TS 4/2008-Z Technické specifikace systémů, zařízení a výrobků. Diagnostika 28
+zabezpečovacích zařízení na tratích vybavených dálkovým
+ovládáním zabezpečovacích zařízení.
+20
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+SŽDC TS 6/2010-S Technické specifikace systémů, zařízení a výrobků. Výběr a 28
+projektování dotykového terminálu telefonního zapojovače.
+ZTP č.j. 18453/2018 SŽDC- Základní technické požadavky na kamerové systémy 28
+O14
+A.0.3.5 Obecné technické podmínky (OTP)
+Označení Název Kapitola TKP
+OTP Obecné technické podmínky pro ochranné nátěrové systémy 25B
+OTP Obecné technické podmínky -Kamenivo pro kolejové lože 1, 2, 7
+železničních drah
+OTP Obecné technické podmínky -Systémy vodotěsných izolací na 22
+železničních mostních objektech
+OTP Obecné technické podmínky -Protihlukové stěny 2
+OTP Obecné technické podmínky pro železobetonové trouby propustků 18
+A.0.3.6 Vzorové listy
+Označení Název Kapitola TKP
+MLV 102 Mostní vzorový list MVL 102 -Přechodové oblasti a ukončení 18, 22
+nosných konstrukcí železničních mostů
+MVL 511 Mostní vzorový list MVL 511 -Nosné konstrukce železničních mostů 18, 25B
+se zabetonovanými ocelovými nosníky
+MVL 720 Mostní vzorový list MVL 720 -Zábradlí pro železniční mosty 18
+VL Ž3 Vzorový list železničního spodku Ž3 -Odvodňovací zařízení 9
+VL Ž4 Vzorový list železničního spodku Ž4 -Pražcové podloží 9
+VL Ž11 Vzorový list železničního spodku Ž11 -Železniční přejezdy a 9
+přechody
+A.0.3.7 Související kapitoly TKP
+Označení Název Kapitola TKP
+TKP Kapitola 1 TKP Kapitola 1 -Všeobecně 2, 7, 9, 17,
+18, 22, 28
+TKP Kapitola 2 TKP Kapitola 2 -Příprava staveniště 1, 7, 28
+TKP Kapitola 3 TKP Kapitola 3 -Zemní práce 1, 9, 28
+TKP Kapitola 4 TKP Kapitola 4 -Odvodnění tratí a stanic 1, 9, 22
+TKP Kapitola 5 TKP Kapitola 5 -Ochrana drážního tělěsa 1, 9
+TKP Kapitola 6 TKP Kapitola 6 -Pražcové podloží 1, 7, 9
+TKP Kapitola 7 TKP Kapitola 7 -Kolejové lože 1, 9
+TKP Kapitola 8 TKP Kapitola 8 -Konstrukce koleje a výhybek 1, 7, 9
+TKP Kapitola 9 TKP Kapitola 9 -Železniční přejezdy a přechody 2, 7
+TKP Kapitola 10 TKP Kapitola 10 -Nástupiště, rampy, zarážedla, účelové 1, 7, 9
+komunikace a zpevněné plochy
+TKP Kapitola 11 TKP Kapitola 11 -Trvalé oplocení 1, 2, 9
+TKP Kapitola 12 TKP Kapitola 12 -Chráničky a kolektory 1, 9, 22, 28
+TKP Kapitola 13 TKP Kapitola 13 -Plyn, Voda, Produktovody 1, 9
+TKP Kapitola 14 TKP Kapitola 14 -Kanalizace, odpadní jímky, čistírny, lapače 1, 9, 22
+TKP Kapitola 15 TKP Kapitola 15 -Vegetační úpravy 1, 2
+21
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+TKP Kapitola 16 TKP Kapitola 16 -Protihluková opatření 1, 2
+TKP Kapitola 17 TKP Kapitola 17 -Beton pro konstrukce 1, 2, 9, 18,
+22
+TKP Kapitola 18 TKP Kapitola 18 -Betonové mosty a konstrukce 1, 2, 9, 22
+TKP Kapitola 19 TKP Kapitola 19 -Ocelové mosty a konstrukce 1, 2, 22
+TKP Kapitola 20 TKP Kapitola 20 -Tunely 1, 17, 22
+TKP Kapitola 21 TKP Kapitola 21 -Mostní ložiska a ukončení nosné konstrukce 1, 17
+mostu
+TKP Kapitola 22 TKP Kapitola 22 -Izolace proti vodě 1
+TKP Kapitola 23 TKP Kapitola 23 -Sanace inženýrských objektů 1, 17, 18, 22
+TKP Kapitola 24 TKP Kapitola 24 -Zvláštní zakládání 1
+TKP Kapitola 25 A TKP Kapitola 25 -Protikorozní ochrana úložných zařízení a 1, 2, 28
+konstrukcí -Část A: Ochrana proti elektrochemické korozi a korozi
+bludnými proudy
+TKP Kapitola 25 B TKP Kapitola 25 -Protikorozní ochrana úložných zařízení a 1, 2, 28
+konstrukcí -Část B: Ochrana ocelových konstrukcí proti
+atmosferické korozi
+TKP Kapitola 26 TKP Kapitola 26 -Osvětlení, EOV, Stožárové transformovny VN/NN, 1, 28
+rozvody NN včetně dálkového ovládání
+TKP Kapitola 27 TKP Kapitola 27 -Zabezpečovací zařízení 1, 2, 9, 28
+TKP Kapitola 28 TKP Kapitola 28 -Sdělovací zařízení 1, 9
+TKP Kapitola 29 TKP Kapitola 29 -Silnoproudá technologická zařízení 1
+TKP Kapitola 30 TKP Kapitola 30 -Silnoproudé rozvody VN a soustava 6 KV, 1, 9
+napájení z TV
+TKP Kapitola 31 TKP Kapitola 31 -Trakční vedení 1, 2, 9, 28
+TKP Kapitola 32 TKP Kapitola 32 -Zařízení tratí a traťové značky 1, 9
+TKP Kapitola 33 TKP Kapitola 33 -Elektromagnetická kompatibilita (EMC) 1
+A.0.4.1 Kapitoly TKP staveb pozemních kominikací
+Označení Název Kapitola TKP
+Kapitola 3 TKP PK Odvodnění a chráničky pro inženýrské sítě 9
+Kapitola 4 TKP PK Zemní práce 9
+Kapitola 5 TKP PK Podkladní vrstvy 9
+Kapitola 7 TKP PK Hutněné asfaltové vrstvy 9
+Kapitola 8 TKP PK Litý asfalt 9
+Kapitola 9 TKP PK Kryty z dlažeb 9
+Kapitola 14 TKP PK Dopravní značky a dopravní zařízení 9
+Kapitola 26 TKP PK Postřiky a nátěry vozovek 9
+A.0.4.2 Technické podmínky staveb pozemních komunikací
+Označení Název Kapitola TKP
+TP 65 Zásady pro dopravní značení na pozemních komunikacích 9
+TP 66 Zásady pro označování pracovních míst na pozemních komunikacích 1, 9
+TP 83 Odvodnění pozemních komunikací 9
+TP 88 (TPMD 88) Oprava trhlin v betonových konstrukcích 18
+22
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+TP 119 Odrazová zrcadla 9
+TP 133 Zásady pro vodorovné dopravní značení 9
+TP 136 (TPMD 136) Povlakovaná výztuž do betonu 18
+TP 147 Užití asfaltových membrán a výztužných prvků v konstrukci 9
+vozovky
+TP 148 Hutněné asfaltové vrstvy s přídavkem drcené gumy z pneumatik 9
+TP 169 Zásady pro označování dopravních situací na pozemních 9
+komunikacích
+TP 170 Navrhování vozovek pozemních komunikací 9
+TP 193 (TPMD 193) Svařování betonářské výztuže a jiné typy spojů 18
+TP 208 Recyklace konstrukčních vrstev netuhých vozovek za studena 9
+A.0.4.3 Vzorové listy staveb pozemních komunikací
+Označení Název Kapitola TKP
+VL 6.1 Svislé dopravní značky 9
+VL 6.2 Vodorovné dopravní značky 9
+23
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Kapitola 1 - Všeobecně
+Citované a související dokumenty
+A.1.1.1 Zákony ČR
+Označení Název
+Změny, opravy, poznámky
+Zákon č. 13/1997 Sb. o pozemních komunikacích
+Zákon č. 17/1992 Sb. o životním prostředí
+Zákon č. 18/1997 Sb. o mírovém využívání jaderné energie a ionizujícího záření (atomový
+zákon)
+Zákon č. 20/1987 Sb. o státní památkové péči
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění
+některých zákonů
+Zákon č. 44/1988 Sb. o ochraně a využití nerostného bohatství (horní zákon)
+Zákon č. 49/1997 Sb. o civilním letectví
+Zákon č. 61/1988 Sb. o hornické činnosti, výbušninách a o státní báňské správě
+Zákon č. 62/1988 Sb. o geologických pracích a o Českém geologickém úřadu
+Zákon č. 76/2002 Sb. o integrované prevenci a omezování znečištění, o integrovaném
+registru znečišťování a o změně některých zákonů (zákon o
+integrované prevenci)
+Zákon č. 77/2002 Sb. o akciové společnosti České dráhy, státní organizaci Správa železnic a
+o změně zákona č. 266/1994 Sb., o dráhách, ve znění pozdějších
+předpisů, a zákona č. 77/1997 Sb., o státním podniku, ve znění
+pozdějších předpisů
+Zákon č. 89/2012 Sb. občanský zákoník
+Zákon č. 90/2012 Sb. o obchodních společnostech a družstvech (zákon o obchodních
+korporacích)
+Zákon č. 100/2001 Sb. o posuzování vlivů na životní prostředí
+Zákon č. 102/2001 Sb. o obecné bezpečnosti výrobků
+Zákon č. 114/1992 Sb. o ochraně přírody a krajiny
+Zákon č. 127/2005 Sb. o elektronických komunikacích a o změně některých souvisejících
+zákonů (zákon o elektronických komunikacích)
+Zákon č. 133/1985 Sb. o požární ochraně
+Zákon č. 134/2016 Sb. o zadávání veřejných zakázek
+Zákon č. 164/2001 Sb. o přírodních léčivých zdrojích, zdrojích přírodních minerálních vod,
+přírodních léčebných lázních a lázeňských místech a o změně
+některých souvisejících zákonů
+Zákon č. 167/2008 Sb. o předcházení ekologické újmě a o její nápravě
+Zákon č. 183/2006 Sb. o územním plánování a stavebním řádu (stavební zákon)
+zákonem 283/2021 Sb. zrušen pro vyhrazené stavby k 1.1.2024 a k
+1.7.2024 i pro stavby ostatní
+Zákon č. 189/1999 Sb. o nouzových zásobách ropy
+Zákon č. 200/1994 Sb. o zeměměřictví a o změně a doplnění některých zákonů souvisejících
+s jeho zavedením
+Zákon č. 201/2012 Sb. o ochraně ovzduší
+Zákon č. 254/2001 Sb. o vodách a o změně některých zákonů (vodní zákon)
+Zákon č. 256/2001 Sb. o pohřebnictví a o změně některých zákonů
+Zákon č. 256/2013 Sb. o katastru nemovitostí (katastrální zákon)
+24
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Zákon č. 258/2000 Sb. o ochraně veřejného zdraví a o změně některých souvisejících zákonů
+Zákon č. 262/2006 Sb. zákoník práce
+Zákon č. 266/1994 Sb. o dráhách
+Zákon č. 274/2001 Sb. o vodovodech a kanalizacích
+Zákon č. 289/1995 Sb. o lesích a o změně a doplnění některých zákonů (lesní zákon)
+Zákon č. 297/2016 Sb. o službách vytvářejících důvěru pro elektronické transakce
+Zákon č. 309/2006 Sb. kterým se upravují další požadavky bezpečnosti a ochrany zdraví při
+práci v pracovněprávních vztazích a o zajištění bezpečnosti a ochrany
+zdraví při činnosti nebo poskytování služeb mimo pracovněprávní
+vztahy (zákon o zajištění podmínek bezpečnosti)
+Zákon č. 334/1992 Sb. o ochraně zemědělského půdního fondu
+Zákon č. 350/2011 Sb. o chemických látkách a chemických směsích a o změně některých
+zákonů (chemický zákon)
+Zákon č. 361/2000 Sb. o provozu na pozemních komunikacích a o změnách některých
+zákonů (zákon o silničním provozu)
+Zákon č. 372/2011 Sb. o zdravotních službách
+Zákon č. 458/2000 Sb. o podmínkách podnikání a výkonu správy v energetickém odvětví a o
+změně některých zákonů (energetický zákon)
+Zákon č. 499/2004 Sb. o archivnictví a spisové službě a o změně některých zákonů
+Zákon č. 541/2020 Sb. o odpadech
+A.1.1.2 Vyhlášky ČR
+Označení Název
+Změny, opravy, poznámky
+Vyhláška č. 15/1995 Sb. o oprávnění k hornické činnosti
+Vyhláška č. 22/1989 Sb. o bezpečnosti a ochraně zdraví při práci v hornictví v podzemí
+Vyhláška č. 23/2008 Sb. o technických podmínkách požární ochrany staveb
+MV
+Vyhláška č. 26/1989 Sb. o bezpečnosti a ochraně zdraví při práci v hornictví na povrchu
+Vyhláška č. 31/1995 Sb. kterou se provádí zákon č. 200/1994 Sb., o zeměměřictví a o změně
+ČÚZK a doplnění některých zákonů souvisejících s jeho zavedením
+Vyhláška č. 50/1978 Sb. odborné způsobilosti v elektrotechnice
+Vyhláška č. 72/1988 Sb. o používání výbušnin
+Vyhláška č. 87/2000 Sb. podmínky požární bezpečnosti při svařování a nahřívání živic
+Vyhláška č. 100/1995 kterou se stanoví podmínky pro provoz, konstrukci a výrobu určených
+Sb. MD technických zařízení a jejich konkretizace (Řád určených technických
+zařízení)
+Vyhláška č. 101/1995 kterou se vydává Řád pro zdravotní a odbornou způsobilost osob při
+Sb. MD provozování dráhy a drážní dopravy
+Vyhláška č. 104/1997 kterou se provádí zákon o pozemních komunikacích
+Sb. MD
+Vyhláška č. 146/2008 o rozsahu a obsahu projektové dokumentace dopravních staveb
+Sb.
+Vyhláška č. 169/2016 o stanovení rozsahu dokumentace veřejné zakázky na stavební práce
+Sb. a soupisu stavebních prací, dodávek a služeb s výkazem výměr
+25
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Vyhláška č. 173/1995 kterou se vydává dopravní řád drah
+Sb. MD
+Vyhláška č. 177/1995 kterou se vydává stavební a technický řád drah
+Sb. MD
+Vyhláška č. 189/2013 o ochraně dřevin a povolování jejich kácení
+Sb. MŽP
+Vyhláška č. 246/2001 o stanovení podmínek požární bezpečnosti a výkonu státního
+Sb. MV požárního dozoru (vyhláška o požární prevenci)
+Vyhláška č. 268/2009 o technických požadavcích na stavby
+Sb. MMR
+Vyhláška č. 271/2019 o stanovení postupů k zajištění ochrany zemědělského půdního fondu
+Sb.
+Vyhláška č. 298/2005 o požadavcích na odbornou kvalifikaci a odbornou způsobilost při
+Sb. hornické činnosti nebo činnosti prováděné hornickým způsobem a o
+změně některých právních předpisů
+Vyhláška č. 357/2013 o katastru nemovitostí (katastrální vyhláška)
+Sb.
+Vyhláška č. 376/2006 o zajišťování bezpečnosti provozování dráhy a drážní dopravy a
+Sb. postupech při vzniku mimořádných událostí na dráhách
+Vyhláška č. 395/1992 kterou se provádějí některá ustanovení zákona České národní rady č.
+Sb. MŽP 114/1992 Sb., o ochraně přírody a krajiny
+Vyhláška č. 398/2009 o techn. požadavcích zabezpečujících bezbariérové užívání staveb
+Sb.
+Vyhláška č. 450/2005 o náležitostech nakládání se závadnými látkami a náležitostech
+Sb. MŽP havarijního plánu, způsobu a rozsahu hlášení havárií, jejich
+zneškodňování a odstraňování jejich škodlivých následků
+Vyhláška č. 499/2006 o dokumentaci staveb
+Sb.
+Vyhláška č. 503/2006 o podrobnější úpravě územního rozhodování, územního opatření a
+Sb. MMR stavebního řádu
+Vyhláška č. 583/2020 kterou se stanoví podrobnosti obsahu dokumentace pro vydání
+Sb. MD společného povolení u staveb dopravní infrastruktury
+A.1.1.3 Nařízení vlády ČR
+Označení Název
+Změny, opravy, poznámky
+Nařízení vlády č. o chráněných oblastech přirozené akumulace vod
+10/1979 Sb.
+Nařízení vlády č. o chráněných oblastech přirozené akumulace vod
+40/1978 Sb.
+Nařízení vlády č. o chráněných oblastech přirozené akumulace vod
+85/1981 Sb.
+Nařízení vlády č. o technických požadavcích na provozní a technickou propojenost
+133/2005 Sb. evropského železničního systému
+Zrušeno 426/2021 Sb.
+Nařízení vlády č. kterým se stanoví technické požadavky na vybrané stavební výrobky
+163/2002 Sb.
+Nařízení vlády č. o ochraně zdraví před nepříznivými účinky hluku a vibrací
+272/2011 Sb.
+Nařízení vlády č. kterým se stanoví podmínky ochrany zdraví při práci
+361/2007 Sb.
+Nařízení vlády č. o bližších požadavcích na bezpečnost a ochranu zdraví při práci na
+362/2005 Sb. pracovištích s nebezpečím pádu z výšky nebo do hloubky
+Nařízení vlády č. o vzhledu, umístění a provedení bezpečnostních značek a značení a
+375/2017 Sb. zavedení signálů
+26
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Nařízení vlády č. o stanovení geodetických systémů a státních mapových děl
+430/2006 Sb.
+Nařízení vlády č. požadavky na bezpečnost a ochranu zdraví při práci na staveništích
+591/2006 Sb.
+Nařízení vlády č. podmínky akreditace a provádění zkoušek z odborné způsobilosti
+592/2006 Sb.
+A.1.1.4 Ostatní dokumenty
+Označení Název
+Změny, opravy, poznámky
+Metodický návod Metodický návod odboru odpadů Ministerstva životního prostředí pro
+MZP/2018/130/682 řízení vzniku stavebních a demoličních odpadů a pro nakládání s nimi,
+Praha, srpen 2018, Věstník MŽP: září 2018
+A.1.1.5 Předpisy EU
+Označení Název
+Změny, opravy, poznámky
+Nařízení Evropského ze dne 9. března 2011, kterým se stanoví harmonizované podmínky
+parlamentu a Rady (EU) pro uvádění stavebních výrobků na trh a kterým se zrušuje směrnice
+č. 305/2011 Rady 89/106/EHS
+A.1.2.1 Normy ČSN
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ČSN 05 0601 Zváranie. Bezpečnostné ustanovenia pre zváranie kovov. Prevádzka 01.02.1993
+Změny: *1 12.94, *2 12.95, *3 9.99, *Z4 7.19; (01.07.2019)
+ČSN 05 0610 Zváranie. Bezpečnostné ustanovenia pre plameňové zváranie kovov a 01.02.1993
+rezanie kovov (01.12.1995)
+Změny: *1 10.95; Opravy: UR 12.95
+ČSN 05 0630 Zváranie. Bezpečnostné ustanovenia pre oblúkové zváranie kovov 01.02.1993
+Změny: *1 4.99; (01.04.1999)
+ČSN 07 8304 Tlakové nádoby na plyny -Provozní pravidla 01.04.2022
+ČSN 33 1500 Elektrotechnické předpisy. Revize elektrických zařízení 01.06.1991
+Změny: *1 8.96, *Z2 4.00, *Z3 4.04, *Z4 9.07; (01.09.2007)
+ČSN 33 1600 ed. 2 Revize a kontroly elektrických spotřebičů během používání 01.11.2009
+Změny: *Z1 4.21, *Z2 9.21; Opravy: *1 11.21, *2 2.22 (01.02.2022)
+ČSN 33 2000-5-51 ed. Elektrické instalace nízkého napětí -Část 5-51: Výběr a stavba 01.07.2022
+3+Z1+Z2 elektrických zařízení -Obecné předpisy (01.04.2023)
+Opravy: *1 4.23
+ČSN 34 2650 ed. 2 Železniční zabezpečovací zařízení -Přejezdová zabezpečovací zařízení 01.03.2010
+ČSN 73 0210-1 Geometrická přesnost ve výstavbě. Podmínky provádění. Část 1: 01.12.1992
+Přesnost osazení
+ČSN 73 0212-3 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 3: 01.01.1997
+Pozemní stavební objekty
+ČSN 73 0212-4 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 4: 01.06.1994
+Liniové stavební objekty
+ČSN 73 0212-5 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 5: 01.01.1994
+Kontrola přesnosti stavebních dílců
+ČSN 73 0405 Měření posunů stavebních objektů 01.12.1997
+ČSN 73 0420-1 Přesnost vytyčování staveb -Část 1: Základní požadavky 01.07.2002
+ČSN 73 0420-2 Přesnost vytyčování staveb -Část 2: Vytyčovací odchylky 01.07.2002
+ČSN 73 6360-2 Konstrukční a geometrické uspořádání koleje železničních drah a její 01.10.2009
+prostorová poloha -Část 2: Stavba a přejímka, provoz a údržba (01.02.2013)
+Změny: *Z1 2.13;
+27
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN 83 9061 Technologie vegetačních úprav v krajině -Ochrana stromů, porostů a 01.02.2006
+vegetačních ploch při stavebních pracích
+ČSN EN 13670 Provádění betonových konstrukcí 01.06.2010
+Opravy: *1 7.11 (01.07.2011)
+ČSN EN 31010 Management rizik -Techniky posuzování rizik
+Změny: *Z1 3.20, *Z2 8.20;
+Souběžně s touto normou platí ČSN EN IEC 31010 ed. 2 (01 0352) ze srpna
+2020, která tuto normu zcela nahradí od 2022-07-18.
+ČSN EN 50110-1 ed. 3 Obsluha a práce na elektrických zařízeních -Část 1: Obecné 01.05.2015
+požadavky
+ČSN EN IEC 31010 ed. 2 Management rizik -Techniky posuzování rizik 01.08.2020
+ČSN EN ISO 14001 Systémy environmentálního managementu -Požadavky s návodem 01.02.2016
+pro použití
+ČSN EN ISO 20471 Oděvy s vysokou viditelností -Zkušební metody a požadavky 01.10.2013
+Změny: *A1 6.17; Opravy: *1 2.15 (01.06.2017)
+ČSN EN ISO 7010 Grafické značky -Bezpečnostní barvy a bezpečnostní značky - 01.01.2021
+Registrované bezpečnostní značky (01.10.2022)
+Změny: *A1 5.21; *A2 10.22; *A3 10.22
+ČSN EN ISO 9001 Systémy managementu kvality -Požadavky 01.02.2016
+Opravy: *1 11.18 (01.11.2018)
+ČSN EN ISO/IEC 17025 Všeobecné požadavky na kompetenci zkušebních a kalibračních 01.04.2018
+laboratoří
+ČSN ISO 3864-1 Grafické značky -Bezpečnostní barvy a bezpečnostní značky -Část 1: 01.12.2012
+Zásady navrhování bezpečnostních značek a bezpečnostního značení
+ČSN ISO 3864-3 Grafické značky -Bezpečnostní barvy a bezpečnostní značky -Část 3: 01.12.2012
+Zásady navrhování grafických značek pro použití v bezpečnostních
+značkách
+ČSN ISO 3864-4 Grafické značky -Bezpečnostní barvy a bezpečnostní značky -Část 4: 01.12.2012
+Kolorimetrické a fotometrické vlastnosti materiálů bezpečnostních
+značek
+A.1.2.2 Technické normy železnic (TNŽ)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+TNŽ 34 2604 Železniční zabezpečovací zařízení -Závěrové tabulky 01.10.2006
+Změna č. 1: 01.01.2014 (01.01.2014)
+TNŽ 34 3109 Bezpečnostní předpisy pro činnost na trakčním vedení a v jeho 01.01.2006
+blízkosti na železničních dráhách celostátních, regionálních a vlečkách
+A.1.3.1 Směrnice, pokyny a řády SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Směrnice SŽ SM011 Dokumentace staveb Správy železnic, státní organizace 08.04.2022
+Směrnice SŽDC č. 20 Směrnice pro stanovení a členění investičních nákladů staveb státní 01.08.2017
+organizace Správa železniční dopravní cesty (28.11.2017)
+Změna č. 1: 28. 11. 2017
+Směrnice SŽDC SM33 Správa koordinačních schémat ukolejnění a trakčního propojení 30.04.2018
+28
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Směrnice SŽDC č. 34 Směrnice pro uvádění do provozu výrobků, které jsou součástí 01.10.2007
+sdělovacích a zabezpečovacích zařízení a zařízení elektrotechniky a (15.02.2012)
+energetiky, na železniční dopravní cestě vlastnictví státu státní
+organizace Správa železniční dopravní cesty
+Změny: Z1 15.02.2012
+Směrnice SŽDC č. 42 Hospodaření s vyzískaným materiálem 07.01.2013
+Směrnice SŽDC č. 67 Systém péče o kvalitu v oblasti traťového hospodářství 01.09.2011
+Směrnice SŽ SM105 Změny během výstavby 09.08.2023
+Směrnice SŽDC č. 117 Předávání digitální dokumentace investiční výstavby SŽDC 24.03.2017
+Změna č. 1: 6.6.2017 (06.06.2017)
+Pokyn GŘ č. 4/2016 Předávání digitální dokumentace a dat mezi SŽDC a externími 05.09.2016
+subjekty
+Pokyn SŽ PO-09/2021- Pokyn generálního ředitele stanovující podmínky pro přístupy osob v 27.04.2021
+GŘ prostoru stavby
+Řád SŽ R14 Řád zabezpečení požární ochrany státní organizace Správa železnic 09.12.2020
+A.1.3.2 Předpisy a rukověti SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Předpis SŽ Bp1 Pokyny provozovatele dráhy k zajištění bezpečnosti a k ochraně 01.01.2021
+zdraví osob při činnostech a pohybu v jeho prostorách a v prostorách
+železniční dráhy provozované státní organizací Správa železnic
+Změna č. 1: 1.3.2023
+Předpis SŽ Bp3 Bezpečnost a ochrana zdraví při práci na stavbách a při stavebních 01.01.2021
+činnostech v prostorách Správy železnic, státní organizace (01.01.2022)
+Změna č.1: 1.1.2022; Změna č.2: 1.3.2023
+Předpis SŽDC D1 Dopravní a návěstní předpis 01.07.2013
+Změna č. 1: 01.07.2013; změna č. 2: 14.12.2014; změna č. 3: 01.05.2015; (10.06.2018)
+změna č. 4: 10. 6. 2018; k 1.7.2022 zrušen předpisem SŽ D1 ČÁST PRVNÍ
+Předpis SŽ D1 ČÁST Dopravní a návěstní předpis pro tratě nevybavené evropským 01.07.2022
+PRVNÍ vlakovým zabezpečovačem (01.07.2024)
+Oprava č.1: 1.7.2022; Změna č.1: 1.7.2024
+Předpis SŽ D3 Předpis pro zjednodušené řízení drážní dopravy 01.07.2022
+Změna č.1: 1.9.2022 (01.09.2022)
+Předpis SŽ D4 Předpis pro řízení drážní dopravy na tratích vybavených radioblokem 01.07.2022
+Předpis SŽ D7/2 Organizování výlukových činností 01.07.2022
+Změna č.1: 1.3.2023
+Předpis SŽDC M20 Předpis pro zeměměřictví 01.07.2015
+Předpis SŽDC Ob1 díl II Vydávání povolení ke vstupu do míst veřejnosti nepřístupných. Průkaz 01.04.2019
+pro cizí subjekt
+Předpis SŽ S3 díl III Železniční svršek. Zajištění prostorové polohy koleje 01.10.2008
+Změna č. 1: 01.10.2011; změna č. 2,: 01.10.2014; Změna č. 3: 1. 3. 2019; (01.03.2021)
+Změna č. 4: 1. 3. 2021
+Předpis SŽDC S3/2 Bezstyková kolej 01.03.2024
+Předpis SŽDC S9 Pevná jízdní dráha 01.03.2012
+Předpis SŽDC T7 Rádiový provoz 24.05.2016
+Předpis SŽDC (ČD) Z11 Předpis pro obsluhu rádiových zařízení 01.01.2001
+Změna č. 1: 01.06.2016 (01.06.2016)
+29
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Předpis SŽ Zam1 Předpis o odborné způsobilosti a znalosti osob při provozování dráhy a 01.01.2020
+drážní dopravy (01.09.2023)
+Oprava 1: 4. 3. 2020; Změna č. 1: 1. 1. 2021; Změna č. 2: 1. 7. 2022;
+Změna č.3: 15. 9. 2022; Změna č. 4: 1. 9. 2023
+A.1.3.3 Metodické pokyny SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Metodický pokyn SŽDC Metodický pokyn pro hodnocení a řízení hluku ze železniční dopravy 15.01.2018
+50023/2017-SŽDC-GŘ-
+O15
+Metodický pokyn SŽDC Metodický pokyn pro měření prostorové polohy koleje 11.03.2016
+M20/MP004
+Metodický pokyn SŽ Metodický pokyn pro tvorbu prostorových dat pro mapy velkého 15.12.2022
+MPM20/MP005 měřítka (15.12.2022)
+Změna č. 1 : 21. 9. 2017, Změna č. 2 : 1. 9. 2018, Změna č. 3 : 1. 9. 2019,
+Změna č. 4 :1. 9. 2020, Změna č. 5: 1. 9. 2021, Změna č. 6: 15. 12. 2022
+Metodický pokyn SŽDC Opatření k zaměřování objektů železniční dopravní cesty 01.09.2020
+M20/MP006 Změna č. 1: 1.9.2018; Změna č. 2: 1.9.2019; Změna č. 3: 1.9.2020; Změna č. (03.01.2023)
+4: 1.9.2021; Změna č. 5: 3.1.2023
+Metodický pokyn SŽ MP Železniční bodové pole 01.07.2022
+M20/MP007
+Metodický pokyn SŽ MP Účelová železniční mapa velkého měřítka 03.08.2018
+M20/MP010 Změna č. 1: 15.10.2020; Změna č. 1: 12.1.2023 (15.10.2020)
+Metodický pokyn SŽ MP Záborový elaborát 07.01.2020
+M20/MP013 Změna č. 1: 7. 1. 2021 (07.01.2021)
+A.1.3.4 Ostatní dokumenty SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+SŽDC č.j. 9112/12-OP Zavedení typizovaného stavebního deníku pro údržbu a opravy staveb 21.02.2012
+státních drah (01.03.2021)
+Změna č.1: č. j. 52043/2018-SŽDC-GŘ-O15 ze dne 1.11.2018; Změna č. 2: č. j.
+14685/2021-SŽ-GŘ-O15 ze dne 01.03.2021
+Stavební deník (údržba Stavební deník (údržba a opravy státních drah) -smluvní vzor 21.02.2012
+a opravy státních drah) objednatele (01.03.2021)
+Změna č.1: č. j. 52043/2018-SŽDC-GŘ-O15 ze dne 1.11.2018; Změna č. 2: č. j.
+14685/2021-SŽ-GŘ-O15 ze dne 01.03.2021
+SŽDC č.j. S 17307/09- Aktualizace TKP -zavedení typizovaného "SD -SŽDC -smluvní vzor 31.03.2009
+OI objednatele (18.02.2021)
+Změna č.1: č.j. 11661/2021-SŽ-GŘ-O7 ze dne 18.2.2021
+A. Stavební deník Typizovaný stavební deník A /centrální stavby/ -identifikační údaje 01.06.2009
+/centrální stavby/ Změna č. 1: 18.02.2021 (18.02.2021)
+A. Stavební deník /část Typizovaný stavební deník A /část stavby/ -identifikační údaje 01.06.2009
+stavby/ Změna č. 1: 18.02.2021 (18.02.2021)
+B. Stavební deník Typizovaný stavební deník B /centrální stavby/ -denní záznamy 01.06.2009
+/centrální stavby/ Změna č. 1: 18.02.2021 (18.02.2021)
+B. Stavební deník /část Typizovaný stavební deník B /část stavby/ -denní záznamy 01.06.2009
+stavby/ Změna č. 1: 18.02.2021 (18.02.2021)
+30
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+A.1.3.5 Obecné technické podmínky (OTP)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+OTP Obecné technické podmínky -Kamenivo pro kolejové lože 01.01.2021
+železničních drah
+A.1.3.7 Související kapitoly TKP
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+TKP Kapitola 2 TKP Kapitola 2 -Příprava staveniště 26.04.2022
+TKP Kapitola 3 TKP Kapitola 3 -Zemní práce 01.07.2008
+TKP Kapitola 4 TKP Kapitola 4 -Odvodnění tratí a stanic 01.07.2008
+TKP Kapitola 5 TKP Kapitola 5 -Ochrana drážního tělěsa 01.07.2008
+TKP Kapitola 6 TKP Kapitola 6 -Pražcové podloží 01.07.2008
+TKP Kapitola 7 TKP Kapitola 7 -Kolejové lože 01.11.2021
+TKP Kapitola 8 TKP Kapitola 8 -Konstrukce koleje a výhybek 01.05.2013
+TKP Kapitola 10 TKP Kapitola 10 -Nástupiště, rampy, zarážedla, účelové komunikace 01.07.2008
+a zpevněné plochy
+TKP Kapitola 11 TKP Kapitola 11 -Trvalé oplocení 01.12.2000
+TKP Kapitola 12 TKP Kapitola 12 -Chráničky a kolektory 01.05.2013
+TKP Kapitola 13 TKP Kapitola 13 -Plyn, Voda, Produktovody 01.07.2008
+TKP Kapitola 14 TKP Kapitola 14 -Kanalizace, odpadní jímky, čistírny, lapače 01.05.2021
+TKP Kapitola 15 TKP Kapitola 15 -Vegetační úpravy 01.02.2022
+TKP Kapitola 16 TKP Kapitola 16 -Protihluková opatření 01.02.2022
+TKP Kapitola 17 TKP Kapitola 17 -Beton pro konstrukce 27.04.2022
+TKP Kapitola 18 TKP Kapitola 18 -Betonové mosty a konstrukce 10.05.2022
+TKP Kapitola 19 TKP Kapitola 19 -Ocelové mosty a konstrukce 01.03.2015
+TKP Kapitola 20 TKP Kapitola 20 -Tunely 01.01.2002
+TKP Kapitola 21 TKP Kapitola 21 -Mostní ložiska a ukončení nosné konstrukce mostu 01.09.2006
+TKP Kapitola 22 TKP Kapitola 22 -Izolace proti vodě 01.07.2022
+TKP Kapitola 23 TKP Kapitola 23 -Sanace inženýrských objektů 01.09.2006
+TKP Kapitola 24 TKP Kapitola 24 -Zvláštní zakládání 12.03.2013
+TKP Kapitola 25 A TKP Kapitola 25 -Protikorozní ochrana úložných zařízení a 01.09.2018
+konstrukcí -Část A: Ochrana proti elektrochemické korozi a korozi
+bludnými proudy
+TKP Kapitola 25 B TKP Kapitola 25 -Protikorozní ochrana úložných zařízení a 01.11.2001
+konstrukcí -Část B: Ochrana ocelových konstrukcí proti atmosferické
+korozi
+TKP Kapitola 26 TKP Kapitola 26 -Osvětlení, EOV, Stožárové transformovny VN/NN, 01.11.2016
+rozvody NN včetně dálkového ovládání
+TKP Kapitola 27 TKP Kapitola 27 -Zabezpečovací zařízení 01.05.2013
+TKP Kapitola 28 TKP Kapitola 28 -Sdělovací zařízení 01.01.2023
+TKP Kapitola 29 TKP Kapitola 29 -Silnoproudá technologická zařízení 01.11.2016
+TKP Kapitola 30 TKP Kapitola 30 -Silnoproudé rozvody VN a soustava 6 KV, napájení 01.04.2017
+z TV
+TKP Kapitola 31 TKP Kapitola 31 -Trakční vedení 01.09.2006
+TKP Kapitola 32 TKP Kapitola 32 -Zařízení tratí a traťové značky 01.05.2013
+TKP Kapitola 33 TKP Kapitola 33 -Elektromagnetická kompatibilita (EMC) 01.11.2016
+31
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+A.1.4.2 Technické podmínky staveb pozemních komunikací
+Označení Název
+Změny, opravy, poznámky
+TP 66 Zásady pro označování pracovních míst na pozemních komunikacích
+32
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Kapitola 2 - Příprava staveniště
+Citované a související dokumenty
+A.2.1.1 Zákony ČR
+Označení Název
+Změny, opravy, poznámky
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění
+některých zákonů
+Zákon č. 61/1988 Sb. o hornické činnosti, výbušninách a o státní báňské správě
+Zákon č. 102/2001 Sb. o obecné bezpečnosti výrobků
+Zákon č. 133/1985 Sb. o požární ochraně
+Zákon č. 183/2006 Sb. o územním plánování a stavebním řádu (stavební zákon)
+zákonem 283/2021 Sb. zrušen pro vyhrazené stavby k 1.1.2024 a k
+1.7.2024 i pro stavby ostatní
+Zákon č. 201/2012 Sb. o ochraně ovzduší
+Zákon č. 254/2001 Sb. o vodách a o změně některých zákonů (vodní zákon)
+Zákon č. 289/1995 Sb. o lesích a o změně a doplnění některých zákonů (lesní zákon)
+Zákon č. 350/2011 Sb. o chemických látkách a chemických směsích a o změně některých
+zákonů (chemický zákon)
+Zákon č. 541/2020 Sb. o odpadech
+A.2.1.2 Vyhlášky ČR
+Označení Název
+Změny, opravy, poznámky
+Vyhláška č. 8/2021 Sb. o Katalogu odpadů a posuzování vlastností odpadů (Katalog odpadů)
+Vyhláška č. 15/1995 Sb. o oprávnění k hornické činnosti
+Vyhláška č. 23/2008 Sb. o technických podmínkách požární ochrany staveb
+MV
+Vyhláška č. 72/1988 Sb. o používání výbušnin
+Vyhláška č. 99/1995 Sb. o skladování výbušnin
+Vyhláška č. 294/2015 kterou se provádějí pravidla provozu na pozemních komunikacích
+Sb. MD
+Vyhláška č. 450/2005 o náležitostech nakládání se závadnými látkami a náležitostech
+Sb. MŽP havarijního plánu, způsobu a rozsahu hlášení havárií, jejich
+zneškodňování a odstraňování jejich škodlivých následků
+A.2.1.3 Nařízení vlády ČR
+Označení Název
+Změny, opravy, poznámky
+Nařízení vlády č. o bližších požadavcích na bezpečnost a ochranu zdraví při práci na
+362/2005 Sb. pracovištích s nebezpečím pádu z výšky nebo do hloubky
+A.2.1.4 Ostatní dokumenty
+Označení Název
+Změny, opravy, poznámky
+Metodický návod Metodický návod odboru odpadů Ministerstva životního prostředí pro
+MZP/2018/130/682 řízení vzniku stavebních a demoličních odpadů a pro nakládání s nimi,
+Praha, srpen 2018, Věstník MŽP: září 2018
+33
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Metodický návod MŽP Metodický návod pro řízení vzniku odpadů s obsahem azbestu při
+(azbest) provádění a odstraňování staveb a pro nakládání s nimi
+A.2.2.1 Normy ČSN
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ČSN 42 0142 Trubky ocelové svařované přesné a závitové. Technické dodací 01.01.1978
+předpisy (01.02.1992)
+*a 3.80, b 3.83, c 8.85, d 11.90, *e 2.92
+ČSN EN 14899 Charakterizace odpadů -Vzorkování odpadů -Zásady přípravy 01.07.2006
+programu vzorkování a jeho použití
+A.2.2.2 Technické normy železnic (TNŽ)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+TNŽ 34 2604 Železniční zabezpečovací zařízení -Závěrové tabulky 01.10.2006
+Změna č. 1: 01.01.2014 (01.01.2014)
+TNŽ 34 3109 Bezpečnostní předpisy pro činnost na trakčním vedení a v jeho 01.01.2006
+blízkosti na železničních dráhách celostátních, regionálních a vlečkách
+A.2.3.1 Směrnice, pokyny a řády SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Směrnice SŽ SM011 Dokumentace staveb Správy železnic, státní organizace 08.04.2022
+Směrnice SŽDC č. 20 Směrnice pro stanovení a členění investičních nákladů staveb státní 01.08.2017
+organizace Správa železniční dopravní cesty (28.11.2017)
+Změna č. 1: 28. 11. 2017
+Směrnice SŽDC SM33 Správa koordinačních schémat ukolejnění a trakčního propojení 30.04.2018
+Směrnice SŽDC č. 34 Směrnice pro uvádění do provozu výrobků, které jsou součástí 01.10.2007
+sdělovacích a zabezpečovacích zařízení a zařízení elektrotechniky a (15.02.2012)
+energetiky, na železniční dopravní cestě vlastnictví státu státní
+organizace Správa železniční dopravní cesty
+Změny: Z1 15.02.2012
+Směrnice SŽDC č. 42 Hospodaření s vyzískaným materiálem 07.01.2013
+Směrnice SŽDC č. 67 Systém péče o kvalitu v oblasti traťového hospodářství 01.09.2011
+Směrnice SŽ SM105 Změny během výstavby 09.08.2023
+Směrnice SŽDC č. 117 Předávání digitální dokumentace investiční výstavby SŽDC 24.03.2017
+Změna č. 1: 6.6.2017 (06.06.2017)
+Pokyn GŘ č. 4/2016 Předávání digitální dokumentace a dat mezi SŽDC a externími 05.09.2016
+subjekty
+Pokyn SŽ PO-08/2022- Pokyn generálního ředitele k posuzování přípustnosti strojů a 01.07.2022
+GŘ speciálních vozidel dodavatelů pro technologické využití při pracích na
+železničních drahách státní organizace Správa železnic, ve znění
+změny č. 1
+změna č. 1: 1.3.2023
+Pokyn SŽ PO-09/2021- Pokyn generálního ředitele stanovující podmínky pro přístupy osob v 27.04.2021
+GŘ prostoru stavby
+Pokyn GŘ č. 10/2013 Posuzování přípustnosti speciálních vozidel dodavatelů pro 01.01.2014
+technologické využití při pracích na železničních drahách v majetku
+ČR, se kterým má právo hospodařit SŽDC
+1.7.2022 nahrazen Pokynem SŽ PO-08/2022-GŘ
+34
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Řád SŽ R14 Řád zabezpečení požární ochrany státní organizace Správa železnic 09.12.2020
+A.2.3.2 Předpisy a rukověti SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Předpis SŽ Bp1 Pokyny provozovatele dráhy k zajištění bezpečnosti a k ochraně 01.01.2021
+zdraví osob při činnostech a pohybu v jeho prostorách a v prostorách
+železniční dráhy provozované státní organizací Správa železnic
+Změna č. 1: 1.3.2023
+Předpis SŽDC D1 Dopravní a návěstní předpis 01.07.2013
+Změna č. 1: 01.07.2013; změna č. 2: 14.12.2014; změna č. 3: 01.05.2015; (10.06.2018)
+změna č. 4: 10. 6. 2018; k 1.7.2022 zrušen předpisem SŽ D1 ČÁST PRVNÍ
+Předpis SŽ D1 ČÁST Dopravní a návěstní předpis pro tratě nevybavené evropským 01.07.2022
+PRVNÍ vlakovým zabezpečovačem (01.07.2024)
+Oprava č.1: 1.7.2022; Změna č.1: 1.7.2024
+Předpis SŽ D3 Předpis pro zjednodušené řízení drážní dopravy 01.07.2022
+Změna č.1: 1.9.2022 (01.09.2022)
+Předpis SŽ D7/2 Organizování výlukových činností 01.07.2022
+Změna č.1: 1.3.2023
+Předpis SŽ D17 Předpis pro hlášení a šetření mimořádných událostí 23.02.2022
+Předpis SŽDC M20 Předpis pro zeměměřictví 01.07.2015
+Předpis SŽDC M21 Topologie sítě a staničení tratí železničních drah 25.06.2019
+Předpis SŽDC S5 Správa mostních objektů 01.10.2012
+Předpis SŽ S8 Provoz, údržba a opravy speciálních vozidel 10.02.2021
+Změna č. 1: 19.1.2024 (19.01.2024)
+Předpis SŽ Zam1 Předpis o odborné způsobilosti a znalosti osob při provozování dráhy a 01.01.2020
+drážní dopravy (01.09.2023)
+Oprava 1: 4. 3. 2020; Změna č. 1: 1. 1. 2021; Změna č. 2: 1. 7. 2022;
+Změna č.3: 15. 9. 2022; Změna č. 4: 1. 9. 2023
+A.2.3.3 Metodické pokyny SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Metodický pokyn SŽDC Metodický pokyn pro měření prostorové polohy koleje 11.03.2016
+M20/MP004
+Metodický pokyn SŽ Metodický pokyn pro tvorbu prostorových dat pro mapy velkého 15.12.2022
+MPM20/MP005 měřítka (15.12.2022)
+Změna č. 1 : 21. 9. 2017, Změna č. 2 : 1. 9. 2018, Změna č. 3 : 1. 9. 2019,
+Změna č. 4 :1. 9. 2020, Změna č. 5: 1. 9. 2021, Změna č. 6: 15. 12. 2022
+Metodický pokyn SŽDC Opatření k zaměřování objektů železniční dopravní cesty 01.09.2020
+M20/MP006 Změna č. 1: 1.9.2018; Změna č. 2: 1.9.2019; Změna č. 3: 1.9.2020; Změna č. (03.01.2023)
+4: 1.9.2021; Změna č. 5: 3.1.2023
+Metodický pokyn SŽ MP Železniční bodové pole 01.07.2022
+M20/MP007
+Metodický pokyn SŽ MP Účelová železniční mapa velkého měřítka 03.08.2018
+M20/MP010 Změna č. 1: 15.10.2020; Změna č. 1: 12.1.2023 (15.10.2020)
+Metodický pokyn SŽ MP Záborový elaborát 07.01.2020
+M20/MP013 Změna č. 1: 7. 1. 2021 (07.01.2021)
+35
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+A.2.3.5 Obecné technické podmínky (OTP)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+OTP Obecné technické podmínky -Kamenivo pro kolejové lože 01.01.2021
+železničních drah
+OTP Obecné technické podmínky -Protihlukové stěny
+A.2.3.7 Související kapitoly TKP
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+TKP Kapitola 1 TKP Kapitola 1 -Všeobecně 11.04.2022
+TKP Kapitola 9 TKP Kapitola 9 -Železniční přejezdy a přechody 01.01.2024
+TKP Kapitola 11 TKP Kapitola 11 -Trvalé oplocení 01.12.2000
+TKP Kapitola 15 TKP Kapitola 15 -Vegetační úpravy 01.02.2022
+TKP Kapitola 16 TKP Kapitola 16 -Protihluková opatření 01.02.2022
+TKP Kapitola 17 TKP Kapitola 17 -Beton pro konstrukce 27.04.2022
+TKP Kapitola 18 TKP Kapitola 18 -Betonové mosty a konstrukce 10.05.2022
+TKP Kapitola 19 TKP Kapitola 19 -Ocelové mosty a konstrukce 01.03.2015
+TKP Kapitola 25 A TKP Kapitola 25 -Protikorozní ochrana úložných zařízení a 01.09.2018
+konstrukcí -Část A: Ochrana proti elektrochemické korozi a korozi
+bludnými proudy
+TKP Kapitola 25 B TKP Kapitola 25 -Protikorozní ochrana úložných zařízení a 01.11.2001
+konstrukcí -Část B: Ochrana ocelových konstrukcí proti atmosferické
+korozi
+TKP Kapitola 27 TKP Kapitola 27 -Zabezpečovací zařízení 01.05.2013
+TKP Kapitola 31 TKP Kapitola 31 -Trakční vedení 01.09.2006
+36
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Kapitola 7 - Kolejové lože
+Citované a související dokumenty
+A.7.1.1 Zákony ČR
+Označení Název
+Změny, opravy, poznámky
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění
+některých zákonů
+Zákon č. 266/1994 Sb. o dráhách
+Zákon č. 541/2020 Sb. o odpadech
+A.7.1.2 Vyhlášky ČR
+Označení Název
+Změny, opravy, poznámky
+Vyhláška č. 8/2021 Sb. o Katalogu odpadů a posuzování vlastností odpadů (Katalog odpadů)
+Vyhláška č. 177/1995 kterou se vydává stavební a technický řád drah
+Sb. MD
+A.7.2.1 Normy ČSN
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ČSN 72 1176 Zkouška trvanlivosti a odolnosti kameniva proti mrazu 01.08.1968
+Změny: a 1.69, *Z2 5.04; (01.05.2004)
+ČSN 72 1180 Stanovení rozlišných částic kameniva 01.08.1968
+ČSN 73 6360-1 Konstrukční a geometrické uspořádání koleje železničních drah a její 01.12.2020
+prostorová poloha -Část 1: Projektování
+ČSN 73 6360-2 Konstrukční a geometrické uspořádání koleje železničních drah a její 01.10.2009
+prostorová poloha -Část 2: Stavba a přejímka, provoz a údržba (01.02.2013)
+Změny: *Z1 2.13;
+ČSN EN 1097-1 Zkoušení mechanických a fyzikálních vlastností kameniva -Část 1: 01.07.2011
+Stanovení odolnosti proti otěru (mikro-Deval)
+ČSN EN 1097-2 Zkoušení mechanických a fyzikálních vlastností kameniva -Část 2: 01.03.2021
+Metody pro stanovení odolnosti proti drcení
+ČSN EN 1097-3 Zkoušení mechanických a fyzikálních vlastností kameniva -Část 3: 01.08.1999
+Stanovení sypné hmotnosti a mezerovitosti volně sypaného kameniva (01.11.2001)
+Změny: *Z1 11.01; Opravy: UR 11.99
+ČSN EN 1097-6 Zkoušení mechanických a fyzikálních vlastností kameniva -Část 6: 01.01.2023
+Stanovení objemové hmotnosti zrn a nasákavosti
+ČSN EN 13450 Kamenivo pro kolejové lože 01.04.2004
+Změny: *Z1 4.06, *Z3 3.14; (01.03.2014)
+ČSN EN 1367-1 Zkoušení odolnosti kameniva vůči teplotě a zvětrávání -Část 1: 01.11.2007
+Stanovení odolnosti proti zmrazování a rozmrazování
+ČSN EN 1367-3 Zkoušení odolnosti kameniva vůči teplotě a zvětrávání -Část 3: 01.10.2001
+Zkouška varem pro rozpadavý čedič (01.12.2004)
+Opravy: *1 12.04
+ČSN EN 932-1 Zkoušení všeobecných vlastností kameniva -Část 1: Metody odběru 01.12.1997
+vzorků (01.11.2001)
+Změny: *Z1 11.01; Opravy: UR 4.98
+ČSN EN 932-2 Zkoušení všeobecných vlastností kameniva -Část 2: Metody 01.03.2000
+zmenšování laboratorních vzorků
+ČSN EN 932-3 Zkoušení všeobecných vlastností kameniva -Část 3: Postup a 01.12.2022
+názvosloví pro jednoduchý petrografický postup
+37
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 932-5 Zkoušení všeobecných vlastností kameniva -Část 5: Běžné zkušební 01.07.2012
+zařízení a kalibrace
+ČSN EN 933-1 Zkoušení geometrických vlastností kameniva -Část 1: Stanovení 01.06.2012
+zrnitosti -Sítový rozbor
+ČSN EN 933-3 Zkoušení geometrických vlastností kameniva -Část 3: Stanovení 01.06.2012
+tvaru zrn -Index plochosti
+ČSN EN 933-4 Zkoušení geometrických vlastností kameniva -Část 4: Stanovení 01.10.2008
+tvaru zrn -Tvarový index
+A.7.3.2 Předpisy a rukověti SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Předpis SŽDC S3 Železniční svršek 01.10.2008
+Změna č. 1: 1.10.2011; Změna č. 2: 1.10.2014; Změna č. 3: 1. 3. 2019; Změna (01.01.2022)
+č. 4: 1. 3. 2021; Oprava č. 1: 1. 1. 2022
+Předpis SŽ S3/1 Práce na železničním svršku 01.05.2021
+Změna č. 1: 17.7.2023 (17.07.2023)
+Předpis SŽDC S3/2 Bezstyková kolej 01.03.2024
+Předpis SŽ S4 Železniční spodek 01.01.2021
+Změna č. 1: 3.1.2024
+A.7.3.5 Obecné technické podmínky (OTP)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+OTP Obecné technické podmínky -Kamenivo pro kolejové lože 01.01.2021
+železničních drah
+A.7.3.7 Související kapitoly TKP
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+TKP Kapitola 1 TKP Kapitola 1 -Všeobecně 11.04.2022
+TKP Kapitola 2 TKP Kapitola 2 -Příprava staveniště 26.04.2022
+TKP Kapitola 6 TKP Kapitola 6 -Pražcové podloží 01.07.2008
+TKP Kapitola 8 TKP Kapitola 8 -Konstrukce koleje a výhybek 01.05.2013
+TKP Kapitola 9 TKP Kapitola 9 -Železniční přejezdy a přechody 01.01.2024
+TKP Kapitola 10 TKP Kapitola 10 -Nástupiště, rampy, zarážedla, účelové komunikace 01.07.2008
+a zpevněné plochy
+38
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Kapitola 9 - Úrovňové přejezdy a přechody
+Citované a související dokumenty
+A.9.1.1 Zákony ČR
+Označení Název
+Změny, opravy, poznámky
+Zákon č. 13/1997 Sb. o pozemních komunikacích
+Zákon č. 266/1994 Sb. o dráhách
+Zákon č. 361/2000 Sb. o provozu na pozemních komunikacích a o změnách některých
+zákonů (zákon o silničním provozu)
+A.9.1.2 Vyhlášky ČR
+Označení Název
+Změny, opravy, poznámky
+Vyhláška č. 104/1997 kterou se provádí zákon o pozemních komunikacích
+Sb. MD
+Vyhláška č. 177/1995 kterou se vydává stavební a technický řád drah
+Sb. MD
+Vyhláška č. 268/2009 o technických požadavcích na stavby
+Sb. MMR
+Vyhláška č. 294/2015 kterou se provádějí pravidla provozu na pozemních komunikacích
+Sb. MD
+A.9.1.3 Nařízení vlády ČR
+Označení Název
+Změny, opravy, poznámky
+Nařízení vlády č. kterým se stanoví technické požadavky na vybrané stavební výrobky
+163/2002 Sb.
+A.9.2.1 Normy ČSN
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ČSN 34 2613 ed. 3 Železniční zabezpečovací zařízení -Kolejové obvody a vnější 01.03.2014
+podmínky pro jejich činnost (01.05.2020)
+Změny: *Z1 5.20;
+ČSN 34 2650 ed. 2 Železniční zabezpečovací zařízení -Přejezdová zabezpečovací zařízení 01.03.2010
+ČSN 73 0212-5 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 5: 01.01.1994
+Kontrola přesnosti stavebních dílců
+ČSN 73 6101 Projektování silnic a dálnic 01.09.2018
+ČSN 73 6102 Projektování křižovatek na pozemních komunikacích 01.11.2007
+Změny: *Z1 8.11, *Z2 6.12; Opravy: *1 5.13 (01.05.2013)
+Souběžně s touto normou platí ČSN 73 6102 ed. 2 (73 6102) z června 2012.
+ČSN 73 6108 Lesní cestní síť 01.08.2018
+ČSN 73 6109 Projektování polních cest 01.02.2013
+ČSN 73 6110 Projektování místních komunikací 01.01.2006
+Změny: *Z1 2.10; Opravy: *1 4.12 (01.04.2012)
+ČSN 73 6126-1 Stavba vozovek -Nestmelené vrstvy -Část 1: Provádění a kontrola 01.05.2019
+shody
+ČSN 73 6126-2 Stavba vozovek -Nestmelené vrstvy -Část 2: Vrstva z vibrovaného 01.06.2006
+štěrku
+ČSN 73 6360-1 Konstrukční a geometrické uspořádání koleje železničních drah a její 01.12.2020
+prostorová poloha -Část 1: Projektování
+39
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN 73 6360-2 Konstrukční a geometrické uspořádání koleje železničních drah a její 01.10.2009
+prostorová poloha -Část 2: Stavba a přejímka, provoz a údržba (01.02.2013)
+Změny: *Z1 2.13;
+ČSN 73 6380 Železniční přejezdy a přechody 01.07.2020
+Opravy: *1 10.20 (01.10.2020)
+ČSN EN 13230-1 Železniční aplikace -Kolej -Betonové příčné a výhybkové pražce - 01.01.2017
+Část 1: Obecné požadavky
+ČSN EN 13285 ed. 2 Nestmelené směsi -Specifikace 01.05.2019
+ČSN EN 16587 Železniční aplikace -Konstrukce pro osoby se sníženou schopností 01.12.2017
+pohybu a orientace -Požadavky na bezbariérové trasy v rámci
+infrastruktury
+ČSN EN 206+A2 Beton -Specifikace, vlastnosti, výroba a shoda 01.10.2021
+ČSN EN 206+A2 Beton -Specifikace, vlastnosti, výroba a shoda 01.10.2021
+ČSN EN 50122-2 ed. 3 Drážní zařízení -Pevná trakční zařízení -Elektrická bezpečnost, 01.06.2023
+uzemnění a zpětný obvod -Část 2: Ochranná opatření proti účinkům
+bludných proudů DC trakčních soustav
+S účinností od 2025-07-25 se nahrazuje ČSN EN 50122-2 ed. 2 (34 1520)
+ze září 2011, která do uvedeného data platí souběžně s touto normou.
+ČSN ISO 3302-1 Pryž -Tolerance pro výrobky -Část 1: Rozměrové tolerance 01.03.2015
+ČSN ISO 37 Pryž, vulkanizovaný nebo termoplastický elastomer -Stanovení 01.02.2019
+tahových vlastností
+ČSN P 73 2404 Beton -Specifikace, vlastnosti, výroba a shoda -Doplňující informace 01.12.2021
+A.9.3.2 Předpisy a rukověti SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Předpis SŽ D1 ČÁST Dopravní a návěstní předpis pro tratě nevybavené evropským 01.07.2022
+PRVNÍ vlakovým zabezpečovačem (01.07.2024)
+Oprava č.1: 1.7.2022; Změna č.1: 1.7.2024
+Předpis SŽ D3 Předpis pro zjednodušené řízení drážní dopravy 01.07.2022
+Změna č.1: 1.9.2022 (01.09.2022)
+Předpis SŽ D7/2 Organizování výlukových činností 01.07.2022
+Změna č.1: 1.3.2023
+Předpis SŽDC S3 Železniční svršek 01.10.2008
+Změna č. 1: 1.10.2011; Změna č. 2: 1.10.2014; Změna č. 3: 1. 3. 2019; Změna (01.01.2022)
+č. 4: 1. 3. 2021; Oprava č. 1: 1. 1. 2022
+Předpis SŽ S4 Železniční spodek 01.01.2021
+Změna č. 1: 3.1.2024
+Předpis SŽ S4/4 Železniční přejezdy 01.01.2022
+(09.06.2023
+12:04:44)
+Předpis SŽ S13 Ochranná opatření pro omezení vlivu bludných proudů pro stavby na 01.11.2023
+železnici (23.10.2023
+11:08:01)
+A.9.3.6 Vzorové listy
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+VL Ž3 Vzorový list železničního spodku Ž3 -Odvodňovací zařízení 01.04.2002
+VL Ž4 Vzorový list železničního spodku Ž4 -Pražcové podloží 02.10.2023
+40
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+VL Ž11 Vzorový list železničního spodku Ž11 -Železniční přejezdy a přechody 01.01.2023
+A.9.3.7 Související kapitoly TKP
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+TKP Kapitola 1 TKP Kapitola 1 -Všeobecně 11.04.2022
+TKP Kapitola 3 TKP Kapitola 3 -Zemní práce 01.07.2008
+TKP Kapitola 4 TKP Kapitola 4 -Odvodnění tratí a stanic 01.07.2008
+TKP Kapitola 5 TKP Kapitola 5 -Ochrana drážního tělěsa 01.07.2008
+TKP Kapitola 6 TKP Kapitola 6 -Pražcové podloží 01.07.2008
+TKP Kapitola 7 TKP Kapitola 7 -Kolejové lože 01.11.2021
+TKP Kapitola 8 TKP Kapitola 8 -Konstrukce koleje a výhybek 01.05.2013
+TKP Kapitola 10 TKP Kapitola 10 -Nástupiště, rampy, zarážedla, účelové komunikace 01.07.2008
+a zpevněné plochy
+TKP Kapitola 11 TKP Kapitola 11 -Trvalé oplocení 01.12.2000
+TKP Kapitola 12 TKP Kapitola 12 -Chráničky a kolektory 01.05.2013
+TKP Kapitola 13 TKP Kapitola 13 -Plyn, Voda, Produktovody 01.07.2008
+TKP Kapitola 14 TKP Kapitola 14 -Kanalizace, odpadní jímky, čistírny, lapače 01.05.2021
+TKP Kapitola 17 TKP Kapitola 17 -Beton pro konstrukce 27.04.2022
+TKP Kapitola 18 TKP Kapitola 18 -Betonové mosty a konstrukce 10.05.2022
+TKP Kapitola 27 TKP Kapitola 27 -Zabezpečovací zařízení 01.05.2013
+TKP Kapitola 28 TKP Kapitola 28 -Sdělovací zařízení 01.01.2023
+TKP Kapitola 30 TKP Kapitola 30 -Silnoproudé rozvody VN a soustava 6 KV, napájení 01.04.2017
+z TV
+TKP Kapitola 31 TKP Kapitola 31 -Trakční vedení 01.09.2006
+TKP Kapitola 32 TKP Kapitola 32 -Zařízení tratí a traťové značky 01.05.2013
+A.9.4.1 Kapitoly TKP staveb pozemních kominikací
+Označení Název
+Změny, opravy, poznámky
+Kapitola 3 TKP PK Odvodnění a chráničky pro inženýrské sítě
+Kapitola 4 TKP PK Zemní práce
+Kapitola 5 TKP PK Podkladní vrstvy
+Kapitola 7 TKP PK Hutněné asfaltové vrstvy
+Kapitola 8 TKP PK Litý asfalt
+Kapitola 9 TKP PK Kryty z dlažeb
+Kapitola 14 TKP PK Dopravní značky a dopravní zařízení
+Kapitola 26 TKP PK Postřiky a nátěry vozovek
+A.9.4.2 Technické podmínky staveb pozemních komunikací
+Označení Název
+Změny, opravy, poznámky
+TP 65 Zásady pro dopravní značení na pozemních komunikacích
+TP 66 Zásady pro označování pracovních míst na pozemních komunikacích
+TP 83 Odvodnění pozemních komunikací
+TP 119 Odrazová zrcadla
+41
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+TP 133 Zásady pro vodorovné dopravní značení
+TP 147 Užití asfaltových membrán a výztužných prvků v konstrukci vozovky
+TP 148 Hutněné asfaltové vrstvy s přídavkem drcené gumy z pneumatik
+TP 169 Zásady pro označování dopravních situací na pozemních
+komunikacích
+TP 170 Navrhování vozovek pozemních komunikací
+TP 208 Recyklace konstrukčních vrstev netuhých vozovek za studena
+A.9.4.3 Vzorové listy staveb pozemních komunikací
+Označení Název
+Změny, opravy, poznámky
+VL 6.1 Svislé dopravní značky
+VL 6.2 Vodorovné dopravní značky
+42
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Kapitola 17 - Beton pro konstrukce
+Citované a související dokumenty
+A.17.1.1 Zákony ČR
+Označení Název
+Změny, opravy, poznámky
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění
+některých zákonů
+Zákon č. 102/2001 Sb. o obecné bezpečnosti výrobků
+Zákon č. 114/1992 Sb. o ochraně přírody a krajiny
+Zákon č. 183/2006 Sb. o územním plánování a stavebním řádu (stavební zákon)
+zákonem 283/2021 Sb. zrušen pro vyhrazené stavby k 1.1.2024 a k
+1.7.2024 i pro stavby ostatní
+Zákon č. 201/2012 Sb. o ochraně ovzduší
+Zákon č. 254/2001 Sb. o vodách a o změně některých zákonů (vodní zákon)
+Zákon č. 309/2006 Sb. kterým se upravují další požadavky bezpečnosti a ochrany zdraví při
+práci v pracovněprávních vztazích a o zajištění bezpečnosti a ochrany
+zdraví při činnosti nebo poskytování služeb mimo pracovněprávní
+vztahy (zákon o zajištění podmínek bezpečnosti)
+Zákon č. 350/2011 Sb. o chemických látkách a chemických směsích a o změně některých
+zákonů (chemický zákon)
+Zákon č. 505/1990 Sb. o metrologii
+Zákon č. 541/2020 Sb. o odpadech
+A.17.1.2 Vyhlášky ČR
+Označení Název
+Změny, opravy, poznámky
+Vyhláška č. 77/1965 Sb. o výcviku, způsobilosti a registraci obsluh stavebních strojů
+Vyhláška č. 499/2006 o dokumentaci staveb
+Sb.
+A.17.1.3 Nařízení vlády ČR
+Označení Název
+Změny, opravy, poznámky
+Nařízení vlády č. kterým se stanoví technické požadavky na vybrané stavební výrobky
+163/2002 Sb.
+Nařízení vlády č. o bližších požadavcích na bezpečnost a ochranu zdraví při práci na
+362/2005 Sb. pracovištích s nebezpečím pádu z výšky nebo do hloubky
+A.17.1.5 Předpisy EU
+Označení Název
+Změny, opravy, poznámky
+Nařízení Evropského ze dne 9. března 2011, kterým se stanoví harmonizované podmínky
+parlamentu a Rady (EU) pro uvádění stavebních výrobků na trh a kterým se zrušuje směrnice
+č. 305/2011 Rady 89/106/EHS
+A.17.2.1 Normy ČSN
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ČSN 72 1179 Stanovení reaktivnosti kameniva s alkáliemi 01.08.1968
+Změny: *Z1 5.04; (01.05.2004)
+43
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN 72 1220 Mleté vápence a dolomity 01.01.1984
+Změny: *1 11.92; (01.11.1992)
+ČSN 73 0038 Hodnocení a ověřování existujících konstrukcí -doplňující ustanovení 01.11.2019
+ČSN 73 1318 Stanovení pevnosti betonu v tahu 01.07.1987
+Změny: 1 8.94, *Z2 11.03; (01.11.2003)
+ČSN 73 1322 Stanovení mrazuvzdornosti betonu 01.01.1969
+Změny: *Z1 11.03; (01.11.2003)
+ČSN 73 1324 Stanovení obrusnosti betonu 01.07.1972
+Změny: *Z1 11.03; (01.11.2003)
+ČSN 73 1326 Stanovení odolnosti povrchu cementového betonu proti působení 01.10.1985
+vody a chemických rozmrazovacích látek (01.11.2003)
+Změny: *Z1 11.03;
+ČSN 73 1370 Nedestruktivní zkoušení betonu -Společná ustanovení 01.09.2011
+ČSN 73 1371 Nedestruktivní zkoušení betonu -Ultrazvuková impulzová metoda 01.09.2011
+zkoušení betonu
+ČSN 73 1373 Nedestruktivní zkoušení betonu -Tvrdoměrné metody zkoušení 01.09.2011
+betonu
+ČSN 73 1376 Radiografie betonových konstrukcí a dílců 01.01.1978
+Změny: *Z1 11.03; (01.11.2003)
+ČSN 73 2011 Nedestruktivní zkoušení betonových konstrukcí 01.05.2012
+ČSN 73 6124-2 Stavba vozovek -Vrstvy ze směsí stmelených hydraulickými pojivy - 01.03.2008
+Část 2: Mezerovitý beton
+ČSN 73 6131 Stavba vozovek -Kryty z dlažeb a dílců 01.02.2010
+ČSN EN 1008 Záměsová voda do betonu -Specifikace pro odběr vzorků, zkoušení a 01.05.2003
+posouzení vhodnosti vody, včetně vody získané při recyklaci v (01.10.2004)
+betonárně, jako záměsové vody do betonu
+Opravy: *1 10.04
+ČSN EN 1169 Prefabrikované betonové výrobky -Všeobecná pravidla pro výrobní 01.03.2000
+kontrolu sklovláknobetonu
+ČSN EN 1170-1 Prefabrikované betonové výrobky -Zkušební metoda pro 01.09.1999
+sklovláknobeton -Část 1: Stanovení tekutosti matrice "Zkouška
+tekutosti"
+ČSN EN 1170-2 Prefabrikované betonové výrobky -Zkušební metoda pro 01.09.1999
+sklovláknobeton -Část 2: Stanovení obsahu vláken v čerstvém SVB
+"Zkouška vymýváním"
+ČSN EN 1170-3 Prefabrikované betonové výrobky -Zkušební metoda pro 01.09.1999
+sklovláknobeton -Část 3: Stanovení obsahu vláken ve stříkaném SVB
+ČSN EN 1170-4 Prefabrikované betonové výrobky -Zkušební metoda pro 01.09.1999
+sklovláknobeton -Část 4: Stanovení pevnosti v tahu za ohybu (01.05.2006)
+"Zjednodušená zkouška pevnosti v tahu za ohybu"
+Opravy: *1 5.06
+ČSN EN 1170-5 Prefabrikované betonové výrobky -Zkušební metoda pro 01.09.1999
+sklovláknobeton -Část 5: Stanovení pevnosti v tahu za ohybu "Úplná
+zkouška pevnosti v tahu za ohybu"
+ČSN EN 1170-6 Prefabrikované betonové výrobky -Zkušební metoda pro 01.09.1999
+sklovláknobeton -Část 6: Stanovení nasákavosti vodou a objemové
+hmotnosti v suchém stavu
+ČSN EN 1170-7 Prefabrikované betonové výrobky -Zkušební metoda pro 01.09.1999
+sklovláknobeton -Část 7: Stanovení délkových změn vlivem vlhkosti (01.05.2006)
+Opravy: *1 5.06
+ČSN EN 1170-8 Zkušební metoda pro sklovláknobeton -Část 8: Zkoušení trvanlivosti 01.10.2009
+zkouškou v klimatických cyklech
+ČSN EN 12350-1 Zkoušení čerstvého betonu -Část 1: Odběr vzorků a zkušební zařízení 01.04.2020
+ČSN EN 12350-2 Zkoušení čerstvého betonu -Část 2: Zkouška sednutím 01.04.2020
+44
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 12350-3 Zkoušení čerstvého betonu -Část 3: Zkouška Vebe 01.04.2020
+ČSN EN 12350-5 Zkoušení čerstvého betonu -Část 5: Zkouška rozlitím 01.04.2020
+ČSN EN 12350-6 Zkoušení čerstvého betonu -Část 6: Objemová hmotnost 01.07.2020
+ČSN EN 12350-7 Zkoušení čerstvého betonu -Část 7: Obsah vzduchu -Tlakové 01.04.2020
+metody (01.06.2022)
+Opravy: *1 6.22
+ČSN EN 12350-8 Zkoušení čerstvého betonu -Část 8: Samozhutnitelný beton - 01.04.2020
+Zkouška sednutí-rozlitím
+ČSN EN 12350-9 Zkoušení čerstvého betonu -Část 9: Samozhutnitelný beton - 01.10.2010
+Zkouška V-nálevkou
+ČSN EN 12350-10 Zkouška čerstvého betonu -Část 10: Samozhutnitelný beton - 01.10.2010
+Zkouška L-truhlíkem
+ČSN EN 12350-11 Zkouška čerstvého betonu -Část 11: Samozhutnitelný beton - 01.10.2010
+Zkouška segregace při prosévání
+ČSN EN 12350-12 Zkouška čerstvého betonu -Část 12: Samozhutnitelný beton - 01.10.2010
+Zkouška J-kroužkem (01.02.2018)
+Změny: *Z1 2.18;
+ČSN EN 12390-1 Zkoušení ztvrdlého betonu -Část 1: Tvar, rozměry a jiné požadavky 01.11.2021
+na zkušební tělesa a formy
+ČSN EN 12390-2 Zkoušení ztvrdlého betonu -Část 2: Výroba a ošetřování zkušebních 01.07.2020
+těles pro zkoušky pevnosti
+ČSN EN 12390-3 Zkoušení ztvrdlého betonu -Část 3: Pevnost v tlaku zkušebních těles 01.04.2020
+ČSN EN 12390-5 Zkoušení ztvrdlého betonu -Část 5: Pevnost v tahu ohybem 01.07.2020
+zkušebních těles
+ČSN EN 12390-6 Zkoušení ztvrdlého betonu -Část 6: Pevnost v příčném tahu 01.06.2010
+zkušebních těles
+ČSN EN 12390-7 Zkoušení ztvrdlého betonu -Část 7: Objemová hmotnost ztvrdlého 01.07.2020
+betonu (01.04.2021)
+Opravy: *1 4.21
+ČSN EN 12390-8 Zkoušení ztvrdlého betonu -Část 8: Hloubka průsaku tlakovou vodou 01.07.2020
+ČSN EN 12390-13 Zkoušení ztvrdlého betonu -Část 13: Stanovení sečnového modulu 01.12.2021
+pružnosti v tlaku
+ČSN EN 12504-1 Zkoušení betonu v konstrukcích -Část 1: Vývrty -Odběr, vyšetření a 01.03.2021
+zkoušení v tlaku
+ČSN EN 12504-2 Zkoušení betonu v konstrukcích -Část 2: Nedestruktivní zkoušení - 01.03.2023
+Stanovení tvrdosti odrazovým tvrdoměrem
+ČSN EN 12504-3 Zkoušení betonu v konstrukcích -Část 3: Stanovení síly na vytržení 01.09.2005
+ČSN EN 12504-4 Zkoušení betonu v konstrukcích -Část 4: Stanovení rychlosti šíření 01.12.2021
+ultrazvukového impulsu
+ČSN EN 12620+A1 Kamenivo do betonu 01.11.2008
+Změny: *Z2 3.14; (01.03.2014)
+ČSN EN 12699 Provádění speciálních geotechnických prací -Ražené piloty 01.04.2016
+ČSN EN 13263-1+A1 Křemičitý úlet do betonu -Část 1: Definice, požadavky a kritéria 01.11.2009
+shody
+ČSN EN 13577 Chemické působení na beton -Stanovení obsahu agresivního oxidu 01.10.2007
+uhličitého ve vodě
+ČSN EN 13670 Provádění betonových konstrukcí 01.06.2010
+Opravy: *1 7.11 (01.07.2011)
+ČSN EN 13791 Posuzování pevnosti betonu v tlaku v konstrukcích a v 01.10.2021
+prefabrikovaných betonových dílcích
+ČSN EN 14199 Provádění speciálních geotechnických prací -Mikropiloty 01.04.2016
+ČSN EN 14487-1 Stříkaný beton -Část 1: Definice, specifikace a shoda 01.02.2023
+45
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 14487-2 Stříkaný beton -Část 2: Provádění 01.06.2007
+ČSN EN 14889-1 Vlákna do betonu -Část 1: Ocelová vlákna -Definice, specifikace a 01.05.2007
+shoda
+ČSN EN 14889-2 Vlákna do betonu -Část 2: Polymerová vlákna -Definice, specifikace 01.05.2007
+a shoda
+ČSN EN 1504-3 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.08.2006
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 3:
+Opravy se statickou funkcí a bez statické funkce
+ČSN EN 1504-6 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.05.2007
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 6:
+Kotvení výztužných ocelových prutů
+ČSN EN 15167-1 Mletá granulovaná vysokopecní struska pro použití do betonu, malty a 01.12.2006
+injektážní malty -Část 1: Definice, specifikace a kritéria shody
+ČSN EN 1536+A1 Provádění speciálních geotechnických prací -Vrtané piloty 01.12.2016
+ČSN EN 1538+A1 Provádění speciálních geotechnických prací -Podzemní stěny 01.12.2016
+ČSN EN 16502 Stanovení stupně kyselosti zeminy podle Baumann-Gully 01.10.2014
+ČSN EN 196-2 Metody zkoušení cementu -Část 2: Chemický rozbor cementu 01.11.2013
+ČSN EN 197-1 ed. 2 Cement -Část 1: Složení, specifikace a kritéria shody cementů pro 01.04.2012
+obecné použití
+ČSN EN 1992-1-1 ed. 2 Eurokód 2: Navrhování betonových konstrukcí -Část 1-1: Obecná 01.11.2019
+pravidla a pravidla pro pozemní stavby
+ČSN EN 206+A2 Beton -Specifikace, vlastnosti, výroba a shoda 01.10.2021
+ČSN EN 450-1 Popílek do betonu -Část 1: Definice, specifikace a kritéria shody 01.02.2013
+ČSN EN 480-10 Přísady do betonu, malty a injektážní malty -Zkušební metody -Část 01.02.2010
+10: Stanovení obsahu vodou rozpustných chloridů
+ČSN EN 480-11 Přísady do betonu, malty a injektážní malty -Zkušební metody -Část 01.04.2006
+11: Stanovení charakteristik vzduchových pórů ve ztvrdlém betonu
+ČSN EN 934-1 Přísady do betonu, malty a injektážní malty -Část 1: Společné 01.08.2008
+požadavky
+ČSN EN 934-2+A1 Přísady do betonu, malty a injektážní malty -Část 2: Přísady do 01.12.2012
+betonu -Definice, požadavky, shoda, označování a značení štítkem
+ČSN EN ISO 9001 Systémy managementu kvality -Požadavky 01.02.2016
+Opravy: *1 11.18 (01.11.2018)
+ČSN ISO 1920-10 Zkoušení betonu -Část 10: Stanovení statického modulu pružnosti v 01.07.2016
+tlaku
+ČSN ISO 7150-1 Jakost vod. Stanovení amonných iontů. Část 1: Manuální 01.06.1994
+spektrometrická metoda (01.05.2007)
+Změny: *Z1 5.07;
+ČSN P 73 2404 Beton -Specifikace, vlastnosti, výroba a shoda -Doplňující informace 01.12.2021
+ČSN P 73 2450 Vláknobeton -Specifikace, vlastnosti, výroba a shoda 01.06.2015
+ČSN P 73 2451 Vláknobeton -Zkoušení čerstvého vláknobetonu 01.06.2015
+Změny: *Z1 3.17; (01.03.2017)
+ČSN P 73 2452 Vláknobeton -Zkoušení ztvrdlého vláknobetonu 01.06.2015
+A.17.2.3 Normy ostatní
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+fib Model Code 2010 fib Model Code for Concrete Structures 2010 (The International
+Federation for Structural Concrete)
+ÖNORM B 332 Vergussmörtel -Anforderungen und Prüfmethoden (Malty -
+Požadavky a zkušební metody)
+46
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+TP ČBS 03 Technická pravidla ČBS 03 Pohledový beton (Česká Betonářská
+Společnost) (rok vydání 2018)
+A.17.3.7 Související kapitoly TKP
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+TKP Kapitola 1 TKP Kapitola 1 -Všeobecně 11.04.2022
+TKP Kapitola 20 TKP Kapitola 20 -Tunely 01.01.2002
+TKP Kapitola 21 TKP Kapitola 21 -Mostní ložiska a ukončení nosné konstrukce mostu 01.09.2006
+TKP Kapitola 23 TKP Kapitola 23 -Sanace inženýrských objektů 01.09.2006
+47
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Kapitola 18 - Betonové mosty a konstrukce
+Citované a související dokumenty
+A.18.1.1 Zákony ČR
+Označení Název
+Změny, opravy, poznámky
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění
+některých zákonů
+Zákon č. 360/1992 Sb. o výkonu povolání autorizovaných architektů a o výkonu povolání
+autorizovaných inženýrů a techniků činných ve výstavbě (autorizační
+zákon)
+A.18.1.2 Vyhlášky ČR
+Označení Název
+Změny, opravy, poznámky
+Vyhláška č. 177/1995 kterou se vydává stavební a technický řád drah
+Sb. MD
+A.18.1.3 Nařízení vlády ČR
+Označení Název
+Změny, opravy, poznámky
+Nařízení vlády č. kterým se stanoví technické požadavky na vybrané stavební výrobky
+163/2002 Sb.
+A.18.1.5 Předpisy EU
+Označení Název
+Změny, opravy, poznámky
+Nařízení Evropského ze dne 9. března 2011, kterým se stanoví harmonizované podmínky
+parlamentu a Rady (EU) pro uvádění stavebních výrobků na trh a kterým se zrušuje směrnice
+č. 305/2011 Rady 89/106/EHS
+A.18.2.1 Normy ČSN
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ČSN 42 0139 Ocel pro výztuž do betonu -Svařitelná betonářská ocel žebírková a 01.06.2011
+hladká (01.11.2016)
+Změny: *Z1 11.16;
+ČSN 72 3000 Výroba a kontrola betonových stavebních dílců. Společná ustanovení 01.02.1987
+ČSN 73 0202 Geometrická přesnost ve výstavbě. Základní ustanovení 01.03.1995
+ČSN 73 0205 Geometrická přesnost ve výstavbě. Navrhování geometrické přesnosti 01.03.1995
+ČSN 73 0212-1 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 1: 01.10.1996
+Základní ustanovení
+ČSN 73 0212-3 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 3: 01.01.1997
+Pozemní stavební objekty
+ČSN 73 0212-4 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 4: 01.06.1994
+Liniové stavební objekty
+ČSN 73 0212-5 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 5: 01.01.1994
+Kontrola přesnosti stavebních dílců
+ČSN 73 0212-6 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 6: 01.11.1993
+Statistická analýza a přejímka (01.01.2023)
+ČSN 73 0212-7 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 7:
+Statistická regulace
+ČSN 73 0405 Měření posunů stavebních objektů 01.12.1997
+48
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN 73 0415 Geodetické body 01.10.2010
+ČSN 73 0420-1 Přesnost vytyčování staveb -Část 1: Základní požadavky 01.07.2002
+ČSN 73 0420-2 Přesnost vytyčování staveb -Část 2: Vytyčovací odchylky 01.07.2002
+ČSN 73 1322 Stanovení mrazuvzdornosti betonu 01.01.1969
+Změny: *Z1 11.03; (01.11.2003)
+ČSN 73 1326 Stanovení odolnosti povrchu cementového betonu proti působení 01.10.1985
+vody a chemických rozmrazovacích látek (01.11.2003)
+Změny: *Z1 11.03;
+ČSN 73 2030 Statické zatěžovací zkoušky stavebních konstrukcí 01.05.2019
+ČSN 73 2401 Provádění a kontrola konstrukcí z předpjatého betonu 01.01.1989
+Změny: a 1.88, *2 4.95, *3 4.98, *Z4 1.06; (01.01.2006)
+ČSN 73 2480 Provádění a kontrola montovaných betonových konstrukcí 01.03.1994
+Změny: *Z1 12.03; (01.12.2003)
+ČSN 73 6123-1 Stavba vozovek -Cementobetonové kryty -Část 1: Provádění a 01.06.2014
+kontrola shody
+ČSN 73 6200 Mosty -Terminologie a třídění 01.07.2011
+ČSN 73 6201 Projektování mostních objektů 01.10.2008
+Změny: *Z1 1.12; (01.01.2012)
+ČSN 73 6209 Zatěžovací zkoušky mostních objektů 01.09.2019
+ČSN 73 6223 Ochrana zařízení proti dotyku s živými částmi trakčního vedení a proti 01.12.2010
+účinkům výfukových plynů na objektech nad železničními dráhami (01.11.2011)
+Změny: *Z1 11.11;
+ČSN 73 8101 Lešení -Společná ustanovení 01.11.2018
+Opravy: *1 5.22 (01.05.2022)
+ČSN 73 8102 Pojízdná a volně stojící lešení 01.04.1979
+Změny: *1 4.95; (01.04.1995)
+ČSN 73 8107 Trubková lešení 01.04.2005
+ČSN 74 2870 Ocelové kotvy pro kotvení kabelů konstrukcí z dodatečně předpjatého 01.02.1975
+betonu (01.05.1976)
+Změny: a 5.76;
+ČSN EN 1004-2 Pojízdná dílcová věžová lešení -Část 2: Pravidla a zásady pro 01.12.2023
+vypracování návodu na montáž a používání
+ČSN EN 10080 Ocel pro výztuž do betonu -Svařitelná betonářská ocel -Všeobecně 01.12.2005
+ČSN EN 10088-1 Korozivzdorné oceli -Část 1: Přehled korozivzdorných ocelí 01.04.2015
+ČSN EN 10088-2 Korozivzdorné oceli -Část 2: Technické dodací podmínky pro plechy a 01.04.2015
+pásy z ocelí odolných korozi pro obecné použití
+ČSN EN 10088-3 Korozivzdorné oceli -Část 3: Technické dodací podmínky pro 01.04.2015
+polotovary, tyče, válcované dráty, profily a lesklé výrobky z ocelí (01.04.2020)
+odolných korozi pro obecné použití
+Opravy: *1 4.20
+ČSN EN 10088-4 Korozivzdorné oceli -Část 4: Technické dodací podmínky pro plech a 01.01.2010
+pás z ocelí odolných korozi pro požití ve stavebnictví
+ČSN EN 10088-5 Korozivzdorné oceli -Část 5: Technické dodací podmínky pro tyče, 01.01.2010
+drát, profily a lesklé výrobky z ocelí odolných korozi pro použití ve
+stavebnictví
+ČSN EN 10204 Kovové výrobky -Druhy dokumentů kontroly 01.08.2005
+Opravy: *1 9.13 (01.09.2013)
+ČSN EN 1065 Seřiditelné výsuvné ocelové stojky -Základní požadavky, navrhování 01.10.1999
+a posuzování výpočtem a zkouškami
+ČSN EN 12350-1 Zkoušení čerstvého betonu -Část 1: Odběr vzorků a zkušební zařízení 01.04.2020
+ČSN EN 12350-2 Zkoušení čerstvého betonu -Část 2: Zkouška sednutím 01.04.2020
+ČSN EN 12350-3 Zkoušení čerstvého betonu -Část 3: Zkouška Vebe 01.04.2020
+49
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 12350-4 Zkoušení čerstvého betonu -Část 4: Stupeň zhutnitelnosti 01.04.2020
+ČSN EN 12350-5 Zkoušení čerstvého betonu -Část 5: Zkouška rozlitím 01.04.2020
+ČSN EN 12350-6 Zkoušení čerstvého betonu -Část 6: Objemová hmotnost 01.07.2020
+ČSN EN 12350-7 Zkoušení čerstvého betonu -Část 7: Obsah vzduchu -Tlakové 01.04.2020
+metody (01.06.2022)
+Opravy: *1 6.22
+ČSN EN 12350-8 Zkoušení čerstvého betonu -Část 8: Samozhutnitelný beton - 01.04.2020
+Zkouška sednutí-rozlitím
+ČSN EN 12350-9 Zkoušení čerstvého betonu -Část 9: Samozhutnitelný beton - 01.10.2010
+Zkouška V-nálevkou
+ČSN EN 12350-10 Zkouška čerstvého betonu -Část 10: Samozhutnitelný beton - 01.10.2010
+Zkouška L-truhlíkem
+ČSN EN 12350-11 Zkouška čerstvého betonu -Část 11: Samozhutnitelný beton - 01.10.2010
+Zkouška segregace při prosévání
+ČSN EN 12350-12 Zkouška čerstvého betonu -Část 12: Samozhutnitelný beton - 01.10.2010
+Zkouška J-kroužkem (01.02.2018)
+Změny: *Z1 2.18;
+ČSN EN 12390-1 Zkoušení ztvrdlého betonu -Část 1: Tvar, rozměry a jiné požadavky 01.11.2021
+na zkušební tělesa a formy
+ČSN EN 12390-2 Zkoušení ztvrdlého betonu -Část 2: Výroba a ošetřování zkušebních 01.07.2020
+těles pro zkoušky pevnosti
+ČSN EN 12390-3 Zkoušení ztvrdlého betonu -Část 3: Pevnost v tlaku zkušebních těles 01.04.2020
+ČSN EN 12390-5 Zkoušení ztvrdlého betonu -Část 5: Pevnost v tahu ohybem 01.07.2020
+zkušebních těles
+ČSN EN 12390-6 Zkoušení ztvrdlého betonu -Část 6: Pevnost v příčném tahu 01.06.2010
+zkušebních těles
+ČSN EN 12390-7 Zkoušení ztvrdlého betonu -Část 7: Objemová hmotnost ztvrdlého 01.07.2020
+betonu (01.04.2021)
+Opravy: *1 4.21
+ČSN EN 12390-8 Zkoušení ztvrdlého betonu -Část 8: Hloubka průsaku tlakovou vodou 01.07.2020
+ČSN EN 12390-13 Zkoušení ztvrdlého betonu -Část 13: Stanovení sečnového modulu 01.12.2021
+pružnosti v tlaku
+ČSN EN 12810-1 Fasádní dílcová lešení -Část 1: Požadavky na výrobky 01.08.2004
+ČSN EN 12810-2 Fasádní dílcová lešení -Část 2: Zvláštní postupy při navrhování 01.08.2004
+konstrukce
+ČSN EN 12811-1 Dočasné stavební konstrukce -Část 1: Pracovní lešení -Požadavky na 01.08.2004
+provedení a obecný návrh
+ČSN EN 12811-2 Dočasné stavební konstrukce -Část 2: Informace o materiálech 01.10.2004
+ČSN EN 12811-3 Dočasné stavební konstrukce -Část 3: Zatěžovací zkoušky 01.11.2003
+ČSN EN 12811-4 Dočasné stavební konstrukce -Část 4: Záchytné stříšky pro lešení - 01.04.2014
+Požadavky na provedení a návrh výrobku
+ČSN EN 12812 Podpěrná lešení -Požadavky na provedení a obecný návrh 01.05.2009
+ČSN EN 1298 Pojízdná pracovní lešení -Pravidla a zásady pro vypracování návodu 01.03.1997
+na montáž a používání
+K 1.7.2022 zrušena a nahrazena normou ČSN EN 1004-2
+ČSN EN 13163+A2 Tepelněizolační výrobky pro budovy -Průmyslově vyráběné výrobky z 01.08.2017
+pěnového polystyrenu (EPS) -Specifikace (01.05.2013)
+ČSN EN 13164+A1 Tepelněizolační výrobky pro budovy -Průmyslově vyráběné výrobky z 01.05.2016
+extrudovaného polystyrenu (XPS) -Specifikace (01.05.2013)
+ČSN EN 13369 ed. 2 Společná ustanovení pro betonové prefabrikáty 01.08.2019
+(01.08.2019)
+ČSN EN 1337-1 Stavební ložiska -Část 1: Všeobecná pravidla navrhování 01.02.2002
+50
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 1337-2 Stavební ložiska -Část 2: Kluzné prvky 01.06.2005
+ČSN EN 1337-3 Stavební ložiska -Část 3: Elastomerová ložiska 01.12.2005
+ČSN EN 1337-4 Stavební ložiska -Část 4: Válcová ložiska 01.06.2005
+Opravy: *1 9.07 (01.09.2007)
+ČSN EN 1337-5 Stavební ložiska -Část 5: Hrncová ložiska 01.12.2005
+ČSN EN 1337-6 Stavební ložiska -Část 6: Vahadlová ložiska 01.06.2005
+ČSN EN 1337-7 Stavební ložiska -Část 7: PTFE kalotová a PTFE cylindrická ložiska 01.06.2005
+ČSN EN 1337-8 Stavební ložiska -Část 8: Vodící ložiska a konstrukce 01.04.2008
+ČSN EN 1337-9 Stavební ložiska -Část 9: Ochrana 01.03.1999
+ČSN EN 1337-10 Stavební ložiska -Část 10: Prohlídka a údržba 01.10.2004
+ČSN EN 1337-11 Stavební ložiska -Část 11: Doprava, skladování a osazování 01.03.1999
+ČSN EN 13391 Mechanické zkoušky pro systémy dodatečného předpínání 01.09.2004
+ČSN EN 13670 Provádění betonových konstrukcí 01.06.2010
+Opravy: *1 7.11 (01.07.2011)
+ČSN EN 1504-1 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.01.2006
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 1:
+Definice
+ČSN EN 1504-2 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.03.2006
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 2:
+Systémy ochrany povrchu betonu
+ČSN EN 1504-3 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.08.2006
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 3:
+Opravy se statickou funkcí a bez statické funkce
+ČSN EN 1504-4 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.03.2006
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 4:
+Konstrukční spojování
+ČSN EN 1504-5 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.04.2014
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 5:
+Injektáž betonu
+ČSN EN 1504-6 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.05.2007
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 6:
+Kotvení výztužných ocelových prutů
+ČSN EN 1504-7 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.04.2007
+Definice, požadavky, kontrola kvality a hodnocení shody -Část 7:
+Ochrana výztuže proti korozi
+ČSN EN 1504-8 ed. 2 Výrobky a systémy pro ochranu a opravy betonových konstrukcí - 01.11.2016
+Definice, požadavky, kontrola kvality a AVCP -Část 8: Kontrola
+kvality a posuzování a ověřování stálosti vlastností (AVCP)
+ČSN EN 197-1 ed. 2 Cement -Část 1: Složení, specifikace a kritéria shody cementů pro 01.04.2012
+obecné použití
+ČSN EN 1990 Eurokód: Zásady navrhování konstrukcí 01.03.2004
+Změny: *A1 4.07, *Z1 2.10, *Z2 3.10, *Z3 2.11, *Z4 5.15,*Z5 2.21; Opravy: UR (01.02.2021)
+5.07, UR 6.07, *1 11.07, *2 8.08, *3 2.10, *4 1.11
+Souběžně s touto normou platí ČSN EN 1990 ed. 2 (73 0002) z února 2021.
+ČSN EN 1991-1-1 Eurokód 1: Zatížení konstrukcí -Část 1-1: Obecná zatížení - 01.03.2004
+Objemové tíhy, vlastní tíha a užitná zatížení pozemních staveb (01.03.2010)
+Změny: *Z1 2.10, *Z2 3.10; Opravy: UR 6.07, *1 2.10
+ČSN EN 1991-1-1 NA National Annex -Eurocode 1: Actions on structures -Part 1-1: 01.06.2011
+ed. A General actions -Densities, self-weight, imposed loads for buildings
+ČSN EN 1991-1-2 Eurokód 1: Zatížení konstrukcí -Část 1-2: Obecná zatížení -Zatížení 01.08.2004
+konstrukcí vystavených účinkům požáru (01.05.2013)
+Opravy: *1 12.06, UR 6.07, *2 2.10, *3 5.13
+ČSN EN 1991-1-2 NA National Annex -Eurocode 1: Actions on structures -Part 1-2: 01.05.2013
+ed. A General actions -Actions on structures exposed to fire
+51
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 1991-1-3 Eurokód 1: Zatížení konstrukcí -Část 1-3: Obecná zatížení -Zatížení 01.06.2005
+sněhem (01.01.2022)
+Změny: *Z1 10.06, *(NA/Z1 ed. A) 12.06, *(Z 2) 2.10, *Z3 3.10, *Z4 4.12, *Z5
+6.13, *A1 6.16, *Z6 1.22; Opravy: UR 6.07, *1 2.10
+Souběžně s touto normou platí ČSN EN 1991-1-3 ed. 2 (73 0035) z ledna 2022.
+Souběžně s touto normou platí ČSN EN 1991-1-3 ed. 2 (73 0035) z června
+2013.
+ČSN EN 1991-1-3 ed. 2 Eurokód 1: Zatížení konstrukcí -Část 1-3: Obecná zatížení -Zatížení 01.01.2022
+sněhem
+ČSN EN 1991-1-3 NA National Annex -Eurocode 1: Actions on structures -Part 1-3: 01.01.2017
+ed. A General actions -Snow loads
+ČSN EN 1991-1-4 Eurokód 1: Zatížení konstrukcí -Část 1-4: Obecná zatížení -Zatížení 01.04.2007
+větrem (01.08.2020)
+Změny: *Z1 3.10, *A1 10.10, *Z2 11.11, *Z3 4.13; Opravy: UR 6.08, *1 9.08, *2
+5.10, *3 1.11, *4 8.20
+Souběžně s touto normou platí ČSN EN 1991-1-4 ed. 2 (73 0035) z dubna
+2013.
+ČSN EN 1991-1-4 ed. 2 Eurokód 1: Zatížení konstrukcí -Část 1-4: Obecná zatížení -Zatížení 01.11.2020
+větrem
+ČSN EN 1991-1-4 NA National Annex -Eurocode 1: Actions on structures -Part 1-4: 01.07.2013
+ed. A General actions -Wind loads
+ČSN EN 1991-1-5 Eurokód 1: Zatížení konstrukcí -Část 1-5: Obecná zatížení -Zatížení 01.05.2005
+teplotou (01.06.2011)
+Změny: *Z1 2.10, *Z2 3.10; Opravy: UR 6.07, *1 2.10, *2 6.11
+ČSN EN 1991-1-5 NA National Annex -Eurocode 1: Actions on structures -Part 1-5: 01.06.2011
+ed. A General actions -Thermal actions
+ČSN EN 1991-1-6 Eurokód 1: Zatížení konstrukcí -Část 1-6: Obecná zatížení -Zatížení 01.10.2006
+během provádění (01.06.2013)
+Změny: *Z1 2.10, *Z2 3.10, *Z3 7.11, *Z4 4.12; Opravy: *1 9.09, *2 6.13
+ČSN EN 1991-1-6 NA National Annex -Eurocode 1: Actions on structures -Part 1-6: 01.07.2012
+ed. A General actions -Actions during execution
+ČSN EN 1991-1-7 Eurokód 1: Zatížení konstrukcí -Část 1-7: Obecná zatížení - 01.12.2007
+Mimořádná zatížení (01.05.2015)
+Změny: *Z1 3.10, *A1 5.15; Opravy: *1 2.11
+ČSN EN 1991-1-7 NA National Annex -Eurocode 1: Actions on structures -Part 1-7: 01.11.2015
+ed. A General actions -Accidental actions
+ČSN EN 1991-2 Eurokód 1: Zatížení konstrukcí -Část 2: Zatížení mostů dopravou 01.07.2005
+Změny: *Z1 2.10, *Z2 3.10, *Z3 10.12, *Z4 11.15, *Z5 12.17; Opravy: UR 6.07, * (01.12.2017)
+1 1.11
+Souběžně s touto normou platí ČSN EN 1991-2 ed. 2 (73 6203) z listopadu
+2015.
+ČSN EN 1991-2 ed. 2 Eurokód 1: Zatížení konstrukcí -Část 2: Zatížení mostů dopravou 01.12.2018
+ČSN EN 1991-2 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 2: Traffic 01.10.2018
+loads on bridges
+ČSN EN 1991-3 Eurokód 1: Zatížení konstrukcí -Část 3: Zatížení od jeřábů a strojního 01.01.2008
+vybavení (01.12.2019)
+Změny: *Z1 3.10; Opravy: *1 7.13, *2 12.19
+ČSN EN 1991-3 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 3: Actions 01.11.2011
+induced by cranes and machinery
+ČSN EN 1991-4 Eurokód 1: Zatížení konstrukcí -Část 4: Zatížení zásobníků a nádrží 01.03.2008
+Změny: *(NA ed. A) 9.08, *Z1 2.10, *Z2 3.10, *Z3 4.11, *Z4 5.11, *Z5 6.11; (01.05.2018)
+Opravy: *1 1.11, *2 7.13, *3 5.18
+Souběžně s touto normou platí ČSN EN 1991-4 ed. 2 (73 0035) z července
+2013.
+ČSN EN 1991-4 ed. 2 Eurokód 1: Zatížení konstrukcí -Část 4: Zatížení zásobníků a nádrží 01.05.2018
+ČSN EN 1991-4 NA ed. A National Annex -Eurocode 1: Actions on structures -Part 4: Silos and 01.07.2013
+tanks
+ČSN EN 1992-1-1 Eurokód 2: Navrhování betonových konstrukcí -Část 1-1: Obecná 01.11.2006
+pravidla a pravidla pro pozemní stavby (01.11.2019)
+Změny: *Z1 3.10, *Z2 7.11, *A1 11.15, *Z3 5.16, *Z4 11.19; Opravy: *1 7.09, *2
+6.11
+52
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 1992-1-1 ed. 2 Eurokód 2: Navrhování betonových konstrukcí -Část 1-1: Obecná 01.11.2019
+pravidla a pravidla pro pozemní stavby
+ČSN EN 1992-1-1 NA National Annex -Eurocode 2: Design of concrete structures -Part 01.11.2020
+ed. A 1-1: General rules and rules for buildings
+ČSN EN 1992-1-2 Eurokód 2: Navrhování betonových konstrukcí -Část 1-2: Obecná 01.11.2006
+pravidla -Navrhování konstrukcí na účinky požáru (01.03.2020)
+Změny: *(NA ed. A) 7.07, *A1 3.20; Opravy: *1 10.09
+ČSN EN 1992-1-2 NA National Annex -Eurocode 2: Design of concrete structures -Part 01.05.2015
+ed. A 1-2: General rules -Structural fire design
+ČSN EN 1992-2 Eurokód 2: Navrhování betonových konstrukcí -Část 2: Betonové 01.05.2007
+mosty -Navrhování a konstrukční zásady (01.01.2014)
+Změny: *Z1 3.10, *Z2 1.14; Opravy: *1 10.09
+ČSN EN 1992-2 NA ed. A National Annex -Eurocode 2: Design of concrete structures -Part 2: 01.08.2023
+Concrete bridges -Design and detailling rules
+ČSN EN 1992-3 Eurokód 2: Navrhování betonových konstrukcí -Část 3: Nádrže na 01.11.2007
+kapaliny a zásobníky (01.03.2010)
+Změny: *Z1 3.10;
+ČSN EN 1992-3 NA ed. A National Annex -Eurocode 2: Design of concrete structures -Part 3: 01.07.2011
+Liquid retaining and containment structures
+ČSN EN 1992-4 Eurokód 2: Navrhování betonových konstrukcí -Část 4: Navrhování 01.11.2021
+kotvení do betonu
+ČSN EN 206+A2 Beton -Specifikace, vlastnosti, výroba a shoda 01.10.2021
+ČSN EN 445 Injektážní malta pro předpínací kabely -Zkušební metody 01.07.2011
+ČSN EN 446 Injektážní malta pro předpínací kabely -Postupy injektáže 01.07.2011
+ČSN EN 447 Injektážní malta pro předpínací kabely -Základní požadavky 01.07.2011
+ČSN EN 74-1 Spojky, středicí trny a nánožky pro pracovní a podpěrná lešení -Část 01.01.2024
+1: Spojky trubek -Požadavky a zkušební postupy
+ČSN EN 74-2 Spojky, středicí trny a nánožky pro pracovní a podpěrná lešení -Část 01.10.2022
+2: Speciální spojky -Požadavky a zkušební postupy
+ČSN EN 74-3 Spojky, středicí trny a nánožky pro pracovní a podpěrná lešení -Část 01.11.2007
+3: Ploché nánožky a středicí trny -Požadavky a zkušební postupy
+ČSN EN ISO 11600 Stavební konstrukce -Těsnicí hmoty -Klasifikace a požadavky pro 01.11.2004
+tmely (01.11.2011)
+Změny: *A1 11.11;
+ČSN EN ISO 1461 Povlaky žárového zinku nanesené ponorem na ocelové a litinové 01.04.2023
+výrobky -Specifikace a zkušební metody
+ČSN EN ISO 15630-1 Ocel pro výztuž a předpínání do betonu -Zkušební metody -Část 1: 01.01.2020
+Tyče, válcovaný drát a drát pro výztuž do betonu
+ČSN EN ISO 15630-2 Ocel pro výztuž a předpínání do betonu -Zkušební metody -Část 2: 01.01.2020
+Svařované sítě a příhradové nosníky
+ČSN EN ISO 17660-1 Svařování -Svařování betonářské oceli -Část 1: Nosné svarové spoje 01.07.2007
+ČSN EN ISO 17660-2 Svařování -Svařování betonářské oceli -Část 2: Nenosné svarové 01.07.2007
+spoje
+ČSN EN ISO 5817 Svařování -Svarové spoje oceli, niklu, titanu a jejich slitin zhotovené 01.11.2023
+tavným svařováním (kromě elektronového a laserového svařování) -
+Stupně kvality pro vady
+ČSN EN ISO 6284 Výkresy ve stavebnictví -Předepisování mezních odchylek 01.10.2000
+ČSN EN ISO 9001 Systémy managementu kvality -Požadavky 01.02.2016
+Opravy: *1 11.18 (01.11.2018)
+ČSN ISO 4463-1 Měřicí metody ve výstavbě -Vytyčování a měření -Část 1: 01.06.1999
+Navrhování, organizace, postupy měření a přejímací podmínky
+ČSN ISO 7077 Geometrická přesnost ve výstavbě. Měřické metody ve výstavbě. 01.11.1995
+Všeobecné zásady a postupy pro ověřování správnosti rozměrů
+53
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN P 73 2404 Beton -Specifikace, vlastnosti, výroba a shoda -Doplňující informace 01.12.2021
+ČSN P 73 2450 Vláknobeton -Specifikace, vlastnosti, výroba a shoda 01.06.2015
+ČSN P 74 2871 Systémy dodatečného předpínání -Všeobecné požadavky a zkoušení 01.04.2012
+TNI 73 6270 Mostní ložiska 01.02.2014
+A.18.2.2 Technické normy železnic (TNŽ)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+TNŽ 73 6280 Navrhování a provádění vodotěsných izolací železničních mostních 01.03.2015
+objektů
+A.18.2.3 Normy ostatní
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+EAD 160004-00-0301 Post-tensioning kits for prestressing of structures 01.09.2016
+EAD 320002-00-0605 Coated metal water stop sheet for construction and controlled crack 01.11.2016
+joints in waterproof concrete
+ETA 15/0003 Coated metal water stop sheet PENTAFLEX 13.01.2015
+fib Model Code 2010 fib Model Code for Concrete Structures 2010 (The International
+Federation for Structural Concrete)
+ISO 10406-1 Fibre-reinforced polymer (FRP) reinforcement of concrete, Test 01.01.2015
+methods –Part : FRP bars and grids
+Manuál na navrhovanie vydavatel: Slovenská komora stavebných inžinierov 01.08.2015
+GFRP výstuže do
+betónových konštrukcií
+prEN 10138 Prestressing Steels, Part 1 to 4 01.09.2000
+prEN 1992-1-1 Eurocodes 2: Design of concrete structures –Part 1: General rules – 10.09.2021
+Rules for buildings, bridges and civil engineering structures
+TP ČBS 04 Technická pravidla ČBS 04 Vodonepropustné betonové konstrukce 01.01.2015
+TP ČBS 05 Technická pravidla ČBS 05 Modul pružnosti betonu 01.01.2016
+TP ČBS 07 Technická pravidla ČBS 07 Ultra-vysokohodnotný beton 01.01.2022
+A.18.3.1 Směrnice, pokyny a řády SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Směrnice SŽ SM011 Dokumentace staveb Správy železnic, státní organizace 08.04.2022
+Směrnice SŽDC č. 67 Systém péče o kvalitu v oblasti traťového hospodářství 01.09.2011
+A.18.3.2 Předpisy a rukověti SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Předpis SŽ S4 Železniční spodek 01.01.2021
+Změna č. 1: 3.1.2024
+Předpis SŽDC S5 Správa mostních objektů 01.10.2012
+Předpis SŽ S5/1 Diagnostika, zatížitelnost a přechodnost železničních mostních objektů 12.04.2021
+Předpis SŽDC S5/4 Protikorozní ochrana ocelových konstrukcí 01.07.2019
+Služební rukověť SŽDC Služební rukověť. Ochrana železničních mostních objektů proti 01.06.1997
+(ČD) SR5/7(S) účinkům bludných proudů
+Zrušen k 1.1.2023
+54
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+A.18.3.5 Obecné technické podmínky (OTP)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+OTP Obecné technické podmínky pro železobetonové trouby propustků 11.04.2012
+A.18.3.6 Vzorové listy
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+MLV 102 Mostní vzorový list MVL 102 -Přechodové oblasti a ukončení nosných 01.10.2023
+konstrukcí železničních mostů
+MVL 511 Mostní vzorový list MVL 511 -Nosné konstrukce železničních mostů se 01.01.2006
+zabetonovanými ocelovými nosníky
+MVL 720 Mostní vzorový list MVL 720 -Zábradlí pro železniční mosty 01.09.2019
+A.18.3.7 Související kapitoly TKP
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+TKP Kapitola 1 TKP Kapitola 1 -Všeobecně 11.04.2022
+TKP Kapitola 17 TKP Kapitola 17 -Beton pro konstrukce 27.04.2022
+TKP Kapitola 23 TKP Kapitola 23 -Sanace inženýrských objektů 01.09.2006
+A.18.4.2 Technické podmínky staveb pozemních komunikací
+Označení Název
+Změny, opravy, poznámky
+TP 88 (TPMD 88) Oprava trhlin v betonových konstrukcích 01.02.1997
+TP 136 (TPMD 136) Povlakovaná výztuž do betonu 01.07.2000
+TP 193 (TPMD 193) Svařování betonářské výztuže a jiné typy spojů 01.07.2008
+55
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Kapitola 22 - Izolace proti vodě
+Citované a související dokumenty
+A.22.1.1 Zákony ČR
+Označení Název
+Změny, opravy, poznámky
+Zákon č. 183/2006 Sb. o územním plánování a stavebním řádu (stavební zákon)
+zákonem 283/2021 Sb. zrušen pro vyhrazené stavby k 1.1.2024 a k
+1.7.2024 i pro stavby ostatní
+Zákon č. 541/2020 Sb. o odpadech
+A.22.1.2 Vyhlášky ČR
+Označení Název
+Změny, opravy, poznámky
+Vyhláška č. 273/2021 o podrobnostech nakládání s odpady
+Sb.
+Vyhláška č. 499/2006 o dokumentaci staveb
+Sb.
+A.22.2.1 Normy ČSN
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ČSN 73 6200 Mosty -Terminologie a třídění 01.07.2011
+ČSN 73 6201 Projektování mostních objektů 01.10.2008
+Změny: *Z1 1.12; (01.01.2012)
+ČSN 73 6242 Navrhování a provádění vozovek na mostech pozemních komunikací 01.03.2010
+Opravy: *1 7.11 (01.07.2011)
+ČSN EN 13967+A1 Hydroizolační pásy a fólie -Plastové a pryžové pásy a fólie pro izolace 01.01.2020
+proti zemní vlhkosti a plastové a pryžové pásy a fólie pro izolace proti
+tlakové vodě -Definice a charakteristiky
+ČSN EN 14188-1 Zálivky a vložky do spár -Část 1: Specifikace pro zálivky za horka 01.01.2006
+ČSN EN 206+A2 Beton -Specifikace, vlastnosti, výroba a shoda 01.10.2021
+ČSN P 73 0600 Hydroizolace staveb -Základní ustanovení 01.11.2000
+A.22.2.2 Technické normy železnic (TNŽ)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+TNŽ 73 6280 Navrhování a provádění vodotěsných izolací železničních mostních 01.03.2015
+objektů
+A.22.3.1 Směrnice, pokyny a řády SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Směrnice SŽ SM011 Dokumentace staveb Správy železnic, státní organizace 08.04.2022
+Směrnice SŽDC č. 67 Systém péče o kvalitu v oblasti traťového hospodářství 01.09.2011
+Pokyn SŽ PO-06/2021- Moderní design a architektura nádraží a zastávek ČR -Standardy pro 24.03.2021
+GŘ povrchy podchodů
+5.12.2023 zrušeno SŽ SM009
+Řád SŽ R14 Řád zabezpečení požární ochrany státní organizace Správa železnic 09.12.2020
+56
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+A.22.3.2 Předpisy a rukověti SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Předpis SŽ Bp1 Pokyny provozovatele dráhy k zajištění bezpečnosti a k ochraně 01.01.2021
+zdraví osob při činnostech a pohybu v jeho prostorách a v prostorách
+železniční dráhy provozované státní organizací Správa železnic
+Změna č. 1: 1.3.2023
+Předpis SŽ Bp3 Bezpečnost a ochrana zdraví při práci na stavbách a při stavebních 01.01.2021
+činnostech v prostorách Správy železnic, státní organizace (01.01.2022)
+Změna č.1: 1.1.2022; Změna č.2: 1.3.2023
+Předpis SŽ S3/1 Práce na železničním svršku 01.05.2021
+Změna č. 1: 17.7.2023 (17.07.2023)
+Předpis SŽ S4 Železniční spodek 01.01.2021
+Změna č. 1: 3.1.2024
+Předpis SŽDC S5 Správa mostních objektů 01.10.2012
+A.22.3.5 Obecné technické podmínky (OTP)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+OTP Obecné technické podmínky -Systémy vodotěsných izolací na 17.03.2015
+železničních mostních objektech
+A.22.3.6 Vzorové listy
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+MLV 102 Mostní vzorový list MVL 102 -Přechodové oblasti a ukončení nosných 01.10.2023
+konstrukcí železničních mostů
+A.22.3.7 Související kapitoly TKP
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+TKP Kapitola 1 TKP Kapitola 1 -Všeobecně 11.04.2022
+TKP Kapitola 4 TKP Kapitola 4 -Odvodnění tratí a stanic 01.07.2008
+TKP Kapitola 12 TKP Kapitola 12 -Chráničky a kolektory 01.05.2013
+TKP Kapitola 14 TKP Kapitola 14 -Kanalizace, odpadní jímky, čistírny, lapače 01.05.2021
+TKP Kapitola 17 TKP Kapitola 17 -Beton pro konstrukce 27.04.2022
+TKP Kapitola 18 TKP Kapitola 18 -Betonové mosty a konstrukce 10.05.2022
+TKP Kapitola 19 TKP Kapitola 19 -Ocelové mosty a konstrukce 01.03.2015
+TKP Kapitola 20 TKP Kapitola 20 -Tunely 01.01.2002
+TKP Kapitola 23 TKP Kapitola 23 -Sanace inženýrských objektů 01.09.2006
+57
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Kapitola 25B - Protikorozní ochrana úložných zařízení a konstrukcí - Část B:
+Ochrana ocelových konstrukcí proti atmosférické korozi
+Citované a související dokumenty
+A.25B.2.1 Normy ČSN
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ČSN EN 10163-1 Dodací podmínky pro jakost povrchu za tepla válcovaných ocelových 01.07.2005
+plechů, široké oceli a tyčí tvarových -Část 1: Všeobecné požadavky (01.08.2007)
+Opravy: *1 8.07
+ČSN EN 10163-2 Dodací podmínky pro jakost povrchu za tepla válcovaných ocelových 01.07.2005
+plechů, široké oceli a tyčí tvarových -Část 2: Plechy a široká ocel
+ČSN EN 10163-3 Dodací podmínky pro jakost povrchu za tepla válcovaných ocelových 01.07.2005
+plechů, široké oceli a tyčí tvarových -Část 3: Tyče tvarové
+ČSN EN 10204 Kovové výrobky -Druhy dokumentů kontroly 01.08.2005
+Opravy: *1 9.13 (01.09.2013)
+ČSN EN 1090-2 Provádění ocelových konstrukcí a hliníkových konstrukcí -Část 2: 01.02.2019
+Technické požadavky na ocelové konstrukce
+ČSN EN 1779 Nedestruktivní zkoušení -Zkoušení těsnosti -Kritéria pro volbu metod 01.09.2000
+a postupů (01.07.2004)
+Změny: *A1 7.04;
+ČSN EN 1993-1-4 Eurokód 3: Navrhování ocelových konstrukcí -Část 1-4: Obecná 01.01.2008
+pravidla -Doplňující pravidla pro korozivzdorné oceli (01.10.2021)
+Změny: *Z1 3.10, *A1 5.16, *A2 10.21;
+ČSN EN ISO 11124-1 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.05.2019
+obdobných výrobků -Specifikace kovových otryskávacích
+prostředků -Část 1: Obecný úvod a klasifikace
+ČSN EN ISO 11126-1 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.05.2019
+obdobných výrobků -Specifikace nekovových otryskávacích
+prostředků -Část 1: Obecný úvod a klasifikace
+ČSN EN ISO 12670 Žárové stříkání -Součásti s žárově stříkanými povlaky -Technické 01.06.2016
+dodací podmínky
+ČSN EN ISO 12944-1 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 01.09.2018
+ochrannými nátěrovými systémy -Část 1: Obecné zásady
+ČSN EN ISO 12944-2 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 01.06.2019
+ochrannými nátěrovými systémy -Část 2: Klasifikace vnějšího
+prostředí
+ČSN EN ISO 12944-3 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 01.10.2018
+ochrannými nátěrovými systémy -Část 3: Navrhování
+ČSN EN ISO 12944-4 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 01.07.2018
+ochrannými nátěrovými systémy -Část 4: Typy povrchů podkladů a
+jejich příprava
+ČSN EN ISO 12944-5 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 01.06.2020
+ochrannými nátěrovými systémy -Část 5: Ochranné nátěrové
+systémy
+ČSN EN ISO 12944-6 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 01.10.2019
+ochrannými nátěrovými systémy -Část 6: Laboratorní metody
+zkoušení
+ČSN EN ISO 12944-7 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 01.09.2018
+ochrannými nátěrovými systémy -Část 7: Provádění a dozor při
+zhotovování nátěrů
+ČSN EN ISO 12944-8 Nátěrové hmoty -Protikorozní ochrana ocelových konstrukcí 01.07.2018
+ochrannými nátěrovými systémy -Část 8: Zpracování specifikací pro
+nové a údržbové nátěry
+ČSN EN ISO 1461 Povlaky žárového zinku nanesené ponorem na ocelové a litinové 01.04.2023
+výrobky -Specifikace a zkušební metody
+58
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN ISO 14713-1 Zinkové povlaky -Směrnice a doporučení pro ochranu ocelových a 01.02.2018
+litinových konstrukcí proti korozi -Část 1: Obecné zásady pro
+navrhování a odolnost proti korozi
+ČSN EN ISO 14713-2 Zinkové povlaky -Směrnice a doporučení pro ochranu ocelových a 01.09.2020
+litinových konstrukcí proti korozi -Část 2: Žárové zinkování ponorem
+ČSN EN ISO 14713-3 Zinkové povlaky -Směrnice a doporučení pro ochranu ocelových a 01.11.2017
+litinových konstrukcí proti korozi -Část 3: Sherardování
+ČSN EN ISO 14917 Žárové stříkání -Názvosloví, klasifikace 01.09.2017
+ČSN EN ISO 14918 Žárové stříkání -Zkoušení způsobilosti pracovníků provádějících 01.12.2018
+žárové stříkání
+ČSN EN ISO 14919 Žárové stříkání -Dráty, tyčinky a kordy pro stříkání plamenem a 01.02.2016
+stříkání elektrickým obloukem -Klasifikace -Technické dodací
+podmínky
+ČSN EN ISO 14922 Žárové stříkání -Požadavky na kvalitu pro výrobce žárově stříkaných 01.04.2022
+povlaků
+ČSN EN ISO 15528 Nátěrové hmoty a jejich suroviny -Vzorkování 01.05.2021
+ČSN EN ISO 16276-1 Ochrana ocelových konstrukcí proti korozi ochrannými nátěrovými 01.01.2008
+systémy -Hodnocení a kritéria přijetí, adheze/koheze (odtrhová
+pevnost) povlaku -Část 1: Odtrhová zkouška
+ČSN EN ISO 16276-2 Ochrana ocelových konstrukcí proti korozi ochrannými nátěrovými 01.01.2008
+systémy -Hodnocení a kritéria přijetí, adheze/koheze (odtrhová
+pevnost) povlaku -Část 2: Mřížková zkouška a křížový řez
+ČSN EN ISO 2063-1 Žárové stříkání -Zinek, hliník a jejich slitiny -Část 1: Navrhování a 01.01.2020
+požadavky na kvalitu systémů ochrany proti korozi
+ČSN EN ISO 2063-2 Žárové stříkání -Zinek, hliník a jejich slitiny -Část 2: Realizace 01.05.2018
+systémů ochrany proti korozi
+ČSN EN ISO 2064 Kovové a jiné anorganické povlaky -Definice a dohody týkající se 01.10.2000
+měření tloušťky
+ČSN EN ISO 2178 Nemagnetické povlaky na magnetických podkladech -Měření tloušťky 01.01.2017
+povlaku -Magnetická metoda
+ČSN EN ISO 2409 Nátěrové hmoty -Mřížková zkouška 01.05.2021
+Opravy: *1 11.21 (01.11.2021)
+ČSN EN ISO 2808 Nátěrové hmoty -Stanovení tloušťky nátěru 01.05.2020
+ČSN EN ISO 29601 Nátěrové hmoty -Ochrana proti korozi ochrannými nátěrovými 01.11.2011
+systémy -Hodnocení pórovitosti suchého nátěru
+ČSN EN ISO 4618 Nátěrové hmoty -Slovník 01.09.2023
+ČSN EN ISO 4624 Nátěrové hmoty -Odtrhová zkouška přilnavosti 01.01.2024
+ČSN EN ISO 4628-2 Nátěrové hmoty -Hodnocení degradace nátěrů -Klasifikace množství 01.10.2016
+a velikosti defektů a intenzity jednotných změn vzhledu -Část 2:
+Hodnocení stupně puchýřkování
+ČSN EN ISO 4628-3 Nátěrové hmoty -Hodnocení degradace nátěrů -Klasifikace množství 01.10.2016
+a velikosti defektů a intenzity jednotných změn vzhledu -Část 3:
+Hodnocení stupně prorezavění
+ČSN EN ISO 4628-4 Nátěrové hmoty -Hodnocení degradace nátěrů -Klasifikace množství 01.10.2016
+a velikosti defektů a intenzity jednotných změn vzhledu -Část 4:
+Hodnocení stupně praskání
+ČSN EN ISO 4628-5 Nátěrové hmoty -Hodnocení množství a velikosti defektů a intenzity 01.06.2023
+jednotných změn vzhledu -Část 5: Hodnocení stupně odlupování
+ČSN EN ISO 4628-6 Nátěrové hmoty -Hodnocení degradace nátěrů -Klasifikace množství 01.04.2012
+a velikosti defektů a intenzity jednotných změn vzhledu -Část 6:
+Hodnocení stupně křídování metodou samolepicí pásky
+ČSN EN ISO 8044 Koroze kovů a slitin -Slovník 01.10.2020
+59
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN ISO 8501-1 Příprava ocelových povrchů před nanesením nátěrových hmot a 01.11.2007
+obdobných výrobků -Vizuální vyhodnocení čistoty povrchu -Část 1:
+Stupně zarezavění a stupně přípravy ocelového podkladu bez povlaku
+a ocelového podkladu po úplném odstranění předchozích povlaků
+ČSN EN ISO 8501-3 Příprava ocelových povrchů před nanesením nátěrových hmot a 01.02.2008
+obdobných výrobků -Vizuální vyhodnocení čistoty povrchu -Část 3:
+Stupně přípravy svarů, hran a ostatních ploch s povrchovými vadami
+ČSN EN ISO 8501-4 Příprava ocelových povrchů před nanesením nátěrových hmot a 01.05.2021
+obdobných výrobků -Vizuální vyhodnocení čistoty povrchu -Část 4:
+Výchozí stav povrchu, stupně přípravy a bleskové koroze po tryskání
+vodou
+ČSN EN ISO 8502-3 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.09.2017
+obdobných výrobků -Zkoušky pro vyhodnocení čistoty povrchu -Část
+3: Stanovení prachu na ocelovém povrchu připraveném pro natírání
+(metoda snímání samolepicí páskou)
+ČSN EN ISO 8502-4 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.09.2017
+obdobných výrobků -Zkoušky pro vyhodnocení čistoty povrchu -Část
+4: Návod pro odhad pravděpodobnosti kondenzace vlhkosti před
+nanášením nátěrů
+ČSN EN ISO 8502-6 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.12.2020
+obdobných výrobků -Zkoušky pro vyhodnocení čistoty povrchu -Část
+6: Extrakce vodou rozpustných nečistot pro analýzu (Breslova
+metoda)
+ČSN EN ISO 8502-9 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.05.2021
+obdobných výrobků -Zkoušky pro vyhodnocení čistoty povrchu -Část
+9: Provozní metoda pro konduktometrické stanovení solí rozpustných
+ve vodě
+ČSN EN ISO 8503-1 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.08.2012
+obdobných výrobků -Charakteristiky drsnosti povrchu otryskaných
+ocelových podkladů -Část 1: Specifikace a definice pro hodnocení
+otryskaných povrchů s pomocí ISO komparátorů profilu povrchu
+ČSN EN ISO 8503-2 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.08.2012
+obdobných výrobků -Charakteristiky drsnosti povrchu otryskaných
+ocelových podkladů -Část 2: Hodnocení profilu povrchu otryskané
+oceli komparátorem
+ČSN EN ISO 8504-2 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.06.2020
+obdobných výrobků -Metody přípravy povrchu -Část 2: Otryskávání
+ČSN EN ISO 8504-3 Příprava ocelových podkladů před nanesením nátěrových hmot a 01.07.2019
+obdobných výrobků -Metody přípravy povrchu -Část 3: Ruční a
+mechanizované čištění
+ČSN EN ISO 9001 Systémy managementu kvality -Požadavky 01.02.2016
+Opravy: *1 11.18 (01.11.2018)
+ČSN ISO 19840 Nátěrové hmoty -Ochrana ocelových konstrukcí nátěrovými systémy 01.08.2013
+proti korozi -Měření a kritéria přejímky tloušťky suchého nátěru na
+drsném povrchu
+ČSN ISO 8501-2 Příprava ocelových povrchů před nanesením nátěrových hmot a 01.06.1998
+obdobných výrobků -Vizuální vyhodnocení čistoty povrchu -Část 2: (01.11.2001)
+Stupně přípravy dříve natřeného ocelového podkladu po místním
+odstranění předchozích povlaků
+Změny: *Z1 11.01;
+A.25B.2.3 Normy ostatní
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ASTM D 4752 Standard Practice for Measuring MEK Resistance of Ethyl Silicate
+(Inorganic) Zinc-Rich Primers by Solvent Rub
+SN NS 476 Paints and coatings -Approval and certification of surface treatment
+inspectors
+Std-401 APC Certifikační schéma kvalifikace a certifikace pracovníků v oboru
+koroze a protikorozní ochrany
+60
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+A.25B.3.1 Směrnice, pokyny a řády SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Směrnice SŽDC č. 67 Systém péče o kvalitu v oblasti traťového hospodářství 01.09.2011
+A.25B.3.2 Předpisy a rukověti SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Předpis SŽDC Ob1 díl II Vydávání povolení ke vstupu do míst veřejnosti nepřístupných. Průkaz 01.04.2019
+pro cizí subjekt
+Předpis SŽDC S5 Správa mostních objektů 01.10.2012
+Předpis SŽDC S5/4 Protikorozní ochrana ocelových konstrukcí 01.07.2019
+Předpis SŽ Zam1 Předpis o odborné způsobilosti a znalosti osob při provozování dráhy a 01.01.2020
+drážní dopravy (01.09.2023)
+Oprava 1: 4. 3. 2020; Změna č. 1: 1. 1. 2021; Změna č. 2: 1. 7. 2022;
+Změna č.3: 15. 9. 2022; Změna č. 4: 1. 9. 2023
+A.25B.3.5 Obecné technické podmínky (OTP)
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+OTP Obecné technické podmínky pro ochranné nátěrové systémy 01.08.2020
+A.25B.3.6 Vzorové listy
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+MVL 511 Mostní vzorový list MVL 511 -Nosné konstrukce železničních mostů se 01.01.2006
+zabetonovanými ocelovými nosníky
+61
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+Kapitola 28 - Sdělovací zařízení
+Citované a související dokumenty
+A.28.1.2 Vyhlášky ČR
+Označení Název
+Změny, opravy, poznámky
+Vyhláška č. 177/1995 kterou se vydává stavební a technický řád drah
+Sb. MD
+A.28.2.1 Normy ČSN
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+ČSN 03 8371 Protikorozní ochrana v zemi uložených sdělovacích kabelů s 01.10.1979
+olověnými, hliníkovými a ocelovými obaly (01.01.2004)
+Změny: a 8.84, b 12.85, *c 2.89, d 9.91, *Z5 7.01, *Z6 1.04; Opravy: UR 4.92
+ČSN 33 1500 Elektrotechnické předpisy. Revize elektrických zařízení 01.06.1991
+Změny: *1 8.96, *Z2 4.00, *Z3 4.04, *Z4 9.07; (01.09.2007)
+ČSN 33 2000-1 ed. 2 Elektrické instalace nízkého napětí -Část 1: Základní hlediska, 01.05.2009
+stanovení základních charakteristik, definice (01.06.2019)
+Změny: *Z1 3.18; Opravy: *1 6.19
+ČSN 33 2130 ed. 3 Elektrické instalace nízkého napětí -Vnitřní elektrické rozvody 01.12.2014
+Změny: *Z1 1.18; (01.01.2018)
+ČSN 33 3270 Elektrotechnické předpisy. Sdělovací a zabezpečovací zařízení ve 01.09.1992
+výrobnách a rozvodu elektrické energie a tepla
+ČSN 33 4000 Elektrotechnické předpisy. Požadavky na odolnost sdělovacích zařízení 01.10.1988
+proti přepětí a nadproudu (01.09.1990)
+Změny: a 9.90;
+ČSN 33 4010 Elektrotechnické předpisy. Ochrana sdělovacích vedení a zařízení proti 01.01.1991
+přepětí a nadproudu atmosférického původu
+ČSN 34 1090 ed. 2 Elektrické instalace nízkého napětí -Předpisy pro prozatímní 01.11.2011
+elektrická zařízení
+ČSN 34 2040 ed. 2 Předpisy pro ochranu sdělovacích a zabezpečovacích vedení a zařízení 01.07.2013
+před nebezpečnými, rušivými a korozivními vlivy elektrické trakce 25
+kV, 50 Hz
+ČSN 34 2100 Elektrotechnické předpisy ČSN. Předpisy pro nadzemní sdělovací 01.01.1979
+vedení (01.02.1984)
+Změny: *a 2.84;
+ČSN 34 2300 ed. 2 Předpisy pro vnitřní rozvody vedení elektronických komunikací 01.09.2014
+ČSN 34 2600 ed. 2 Drážní zařízení -Železniční zabezpečovací zařízení 01.12.2009
+Opravy: *1 1.15 (01.01.2015)
+ČSN 34 2710 Elektrická požární signalizace -Projektování, montáž, užívání, provoz, 01.10.2023
+kontrola, servis a údržba
+ČSN 37 5711 ed. 2 Drážní zařízení -Křížení kabelových vedení s železničními dráhami 01.10.2009
+ČSN 73 0875 Požární bezpečnost staveb -Stanovení podmínek pro navrhování 01.04.2011
+elektrické požární signalizace v rámci požárně bezpečnostního řešení
+ČSN 73 6005 Prostorové uspořádání vedení technického vybavení 01.10.2020
+ČSN EN 12464-2 Světlo a osvětlení -Osvětlení pracovních prostorů -Část 2: Venkovní 01.12.2014
+pracovní prostory
+ČSN EN 50110-1 ed. 3 Obsluha a práce na elektrických zařízeních -Část 1: Obecné 01.05.2015
+požadavky
+ČSN EN 50131-1 ed. 2 Poplachové systémy -Poplachové zabezpečovací a tísňové systémy - 01.04.2007
+Část 1: Systémové požadavky (01.12.2020)
+Změny: *A1 3.10, *Z2 7.11, *A2 11.17, *A3 12.20;
+62
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+ČSN EN 50561-1 Zařízení pro komunikaci po vedení používaná v instalacích nízkého 01.09.2014
+napětí -Charakteristiky vysokofrekvenčního rušení -Meze a metody (01.01.2016)
+měření -Část 1: Zařízení pro domácí použití
+Opravy: *1 1.16
+ČSN EN 60445 ed. 5 Základní a bezpečnostní zásady pro rozhraní člověk-stroj, značení a 01.05.2018
+identifikaci -Identifikace svorek předmětů, konců vodičů a vodičů (01.05.2022)
+Změny: *Z1 5.22;
+Souběžně s touto normou platí ČSN EN IEC 60445 ed. 6 (33 0160) z května
+2022, která tuto normu zcela nahradí od 2024-08-20.
+ČSN EN 60529 Stupně ochrany krytem (krytí -IP kód) 01.11.1993
+Změny: *A1 4.01, *A2 6.14; Opravy: *1 11.19 (01.11.2019)
+ČSN EN 60708 Nízkofrekvenční kabely s polyolefinovou izolací a vrstveným 01.06.2006
+polyolefinovým pláštěm zabraňujícím vnikání vlhkosti (01.10.2018)
+Opravy: *1 10.18
+ČSN EN 60794-1-1 ed. 3 Optické vláknové kabely -Část 1-1: Kmenová specifikace -Obecně 01.07.2016
+ČSN EN 62368-1 Zařízení audio/video, informační a komunikační technologie -Část 1: 01.06.2015
+Bezpečnostní požadavky (01.09.2021)
+Změny: *A11 11.17, *Z2 9.21; Opravy: *2 5.18
+1.6.2023 nahrazeno normou ČSN EN IEC 62368-1 ed. 2
+ČSN EN IEC 62368-1 Zařízení audio/video, informační a komunikační technologie -Část 1: 01.09.2021
+ed. 2+A11 Bezpečnostní požadavky (01.08.2022)
+Opravy: *1 8.22
+ČSN EN IEC 62485-2 Bezpečnostní požadavky pro akumulátorové baterie a bateriové 01.02.2019
+instalace -Část 2: Staniční baterie
+ČSN ISO 3864-1 Grafické značky -Bezpečnostní barvy a bezpečnostní značky -Část 1: 01.12.2012
+Zásady navrhování bezpečnostních značek a bezpečnostního značení
+ČSN P 73 7505 Kolektory a ostatní sdružené trasy vedení inženýrských sítí 01.04.2017
+Změny: *Z1 1.18; (01.01.2018)
+A.28.3.1 Směrnice, pokyny a řády SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Směrnice SŽDC SM09 Pravidla pro uplatnění výstupů projektu. Moderní design a 03.09.2019
+architektura nádraží a zastávek ČR 13:39:33
+Směrnice SŽDC č. 34 Směrnice pro uvádění do provozu výrobků, které jsou součástí 01.10.2007
+sdělovacích a zabezpečovacích zařízení a zařízení elektrotechniky a (15.02.2012)
+energetiky, na železniční dopravní cestě vlastnictví státu státní
+organizace Správa železniční dopravní cesty
+Změny: Z1 15.02.2012
+Směrnice SŽDC SM35 Směrnice, kterou se stanovují technické specifikace vlakových 02.06.2017
+rádiových zařízení a zásady pro jejich přípravu a realizaci na (15.01.2020)
+železniční dopravní cestě ve vlastnictví státu
+Změny: Z1 15.01.20
+Směrnice SŽDC č. 116 Směrnice, kterou se stanovují technické specifikace rádiových zařízení 01.07.2016
+pracujících v místních rádiových sítích v pásmu 150 MHz a zásady pro
+jejich přípravu a realizaci na železniční dopravní cestě ve vlastnictví
+státu
+Pokyn SŽDC PO- Opatření a omezení pro dodávky technologických celků s dopadem na 18.01.2018
+21/2017-GŘ síťovou infrastrukturu SŽDC
+Pokyn SŽDC PO- Pokyn generálního ředitele. Evidence technologických počítačů 02.09.2019
+21/2019-GŘ
+63
+TKP Kapitola 1 - Všeobecně - Příloha A - Citované a související dokumenty Účinnost od 1. července 2024
+A.28.3.2 Předpisy a rukověti SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+Předpis SŽDC E6 Předpis pro činnost elektrodispečinků 01.01.2011
+A.28.3.4 Ostatní dokumenty SŽ
+Označení Název Účinnost
+Změny, opravy, poznámky (Posl.změna)
+SŽ TS 1/2022-SZ Optické kabely a jejich příslušenství v přenosové síti státní organizace 01.02.2024
+Správa železnic Vydání II
+SŽDC TS 2/2006-ZS Technické specifikace systémů, zařízení a výrobků. Dálkové ovládání 01.02.2009
+zabezpečovacího zařízení. Druhé vydání
+SŽDC TS 2/2007-Z Technické specifikace systémů, zařízení a výrobků. Diagnostika 01.11.2007
+zabezpečovacích zařízení.
+SŽDC TS 2/2008-ZSE Technické specifikace systémů, zařízení a výrobků. Dálková 25.01.2018
+diagnostika technologických systémů železniční dopravní cesty. Třetí
+vydání
+SŽDC TS 4/2008-Z Technické specifikace systémů, zařízení a výrobků. Diagnostika 01.06.2008
+zabezpečovacích zařízení na tratích vybavených dálkovým ovládáním
+zabezpečovacích zařízení.
+SŽDC TS 6/2010-S Technické specifikace systémů, zařízení a výrobků. Výběr a 01.01.2012
+projektování dotykového terminálu telefonního zapojovače.
+ZTP č.j. 18453/2018 Základní technické požadavky na kamerové systémy
+SŽDC-O14
+A.28.3.7 Související kapitoly TKP
+Označení Název Vydání
+Změny, opravy, poznámky (Posl.změna)
+TKP Kapitola 1 TKP Kapitola 1 -Všeobecně 11.04.2022
+TKP Kapitola 2 TKP Kapitola 2 -Příprava staveniště 26.04.2022
+TKP Kapitola 3 TKP Kapitola 3 -Zemní práce 01.07.2008
+TKP Kapitola 12 TKP Kapitola 12 -Chráničky a kolektory 01.05.2013
+TKP Kapitola 25 A TKP Kapitola 25 -Protikorozní ochrana úložných zařízení a 01.09.2018
+konstrukcí -Část A: Ochrana proti elektrochemické korozi a korozi
+bludnými proudy
+TKP Kapitola 25 B TKP Kapitola 25 -Protikorozní ochrana úložných zařízení a 01.11.2001
+konstrukcí -Část B: Ochrana ocelových konstrukcí proti atmosferické
+korozi
+TKP Kapitola 26 TKP Kapitola 26 -Osvětlení, EOV, Stožárové transformovny VN/NN, 01.11.2016
+rozvody NN včetně dálkového ovládání
+TKP Kapitola 27 TKP Kapitola 27 -Zabezpečovací zařízení 01.05.2013
+TKP Kapitola 31 TKP Kapitola 31 -Trakční vedení 01.09.2006

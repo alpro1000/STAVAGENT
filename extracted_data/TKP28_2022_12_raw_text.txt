@@ -1,0 +1,877 @@
+Úroveň přístupu
+A
+Technické kvalitativní
+podmínky staveb státních
+drah
+Kapitola 28
+SDĚLOVACÍ ZAŘÍZENÍ
+Vydání: prosinec 2022
+Účinnost od 1. 1. 2023
+Nahrazení předchozího znění kapitoly
+Datem účinností tohoto dokumentu se nahrazuje kapitola 28 – Sdělovací zařízení schválená dne
+1.12.2022, účinná od 1.1.2023.
+Schváleno pod č.j. 80011/2022-SŽ-GŘ-O14
+Dne 1.1.2023
+Bc. Jiří Svoboda, MBA v. r.
+Generální ředitel
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+Technické kvalitativní podmínky
+Kapitola 28 - SDĚLOVACÍ ZAŘÍZENÍ
+Gestorský útvar: Správa železnic, státní organizace
+Generální ředitelství
+Odbor zabezpečovací a telekomunikační techniky (O14)
+Praha
+www.spravazeleznic.cz
+Gestor:
+Vydání: prosinec 2022
+Náklad: vydáno pouze v elektronické podobě (PDF), formát (A4)
+© Správa železnic, státní organizace, rok 2022
+Tento dokument je duševním vlastnictvím státní organizace Správa železnic, na které se vztahuje zákon č. 121/2000 Sb.,
+o právu autorském, o právech souvisejících s právem autorským a o změně některých zákonů (autorský zákon), ve znění
+pozdějších předpisů. Státní organizace Správa železnic je v uvedené souvislosti rovněž vykonavatelem majetkových práv.
+Tento dokument smí fyzická osoba použít pouze pro svou osobní potřebu, právnická osoba pro svou vlastní vnitřní potřebu.
+Poskytování tohoto dokumentu nebo jeho části v jakékoliv formě nebo jakýmkoliv způsobem třetí osobě je bez svolení státní
+organizace Správa železnic zakázáno.
+2/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+OBSAH
+Strana
+SEZNAM ZKRATEK ................................................................................................................................... 4
+28.1 ÚVOD .......................................................................................................................................... 5
+28.2 POPIS, KVALITA A PARAMETRY POUŽITÝCH ZAŘÍZENÍ ........................................................... 5
+28.2.1 Kabelová vedení - optické kabely .................................................................................................6
+28.2.2 Zařízení přenosové techniky po vedení - analogová ........................................................................6
+28.2.3 Zařízení přenosové techniky po vedení - digitální ............................................................................6
+28.2.4 Rádiová zařízení ...........................................................................................................................7
+28.2.5 Telefonní spojovací systémy (telefonní ústředny) ............................................................................7
+28.2.6 Integrovaná telekomunikační zařízení (ITZ) ...................................................................................7
+28.2.7 Prvky přenosového systému a ostatní zařízení pro přenos dat .........................................................8
+28.2.8 Informační zařízení pro cestující ....................................................................................................8
+28.2.9 Rozhlasová zařízení ......................................................................................................................8
+28.2.10 Požárně bezpečnostní zařízení a ostatní bezpečnostní systémy ........................................................8
+28.2.11 Zařízení pro řídicí a diagnostické systémy Správy železnic ...............................................................9
+28.2.12 Koncová (účastnická) zařízení .......................................................................................................9
+28.2.13 Záznamová zařízení .....................................................................................................................9
+28.2.14 Technologické prostory ............................................................................................................... 10
+28.3 TECHNOLOGICKÉ POSTUPY PRACÍ .......................................................................................... 11
+28.3.1 Kabelová vedení - optická .......................................................................................................... 12
+28.3.2 Kabelová vedení – metalická ....................................................................................................... 13
+28.3.3 Zařízení přenosové techniky po vedení - digitální .......................................................................... 14
+28.3.4 Rádiová zařízení ......................................................................................................................... 14
+28.3.5 Integrovaná telekomunikační zařízení (ITZ) ................................................................................. 15
+28.3.6 Prvky přenosového systému a ostatní zařízení pro přenos dat ....................................................... 15
+28.3.7 Integrované uzly pro přenos dat, hlasu a obrazu .......................................................................... 15
+28.3.8 Informační zařízení pro cestující .................................................................................................. 16
+28.3.9 Rozhlasová zařízení .................................................................................................................... 16
+28.3.10 Požárně bezpečnostní zařízení a ostatní bezpečnostní systémy ...................................................... 16
+28.3.11 Zařízení pro řídicí a diagnostické systémy Správy železnic ............................................................. 17
+28.3.12 Koncová (účastnická) zařízení ..................................................................................................... 17
+28.3.13 Záznamová zařízení ................................................................................................................... 17
+28.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY ................................................................... 18
+28.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY ....................................................................... 18
+28.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY ........................................................... 18
+28.6.1 Přípustné odchylky při výstavbě sdělovacích zařízení .................................................................... 18
+28.6.2 Záruční doba ............................................................................................................................. 19
+28.7 KLIMATICKÁ OMEZENÍ ............................................................................................................ 19
+28.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ ....................................................................................... 19
+28.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ ........................................................ 20
+28.10 EKOLOGIE................................................................................................................................. 20
+28.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA ................................ 21
+28.12 CITOVANÉ A SOUVISEJÍCÍ DOKUMENTY ................................................................................ 21
+3/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+SEZNAM ZKRATEK
+Níže uvedený seznam obsahuje zkratky a značky použité v tomto dokumentu. V seznamu se
+neuvádějí legislativní zkratky, zkratky a značky obecně známé, zavedené právními předpisy,
+uvedené v obrázcích, příkladech nebo tabulkách.
+CTD Centrum telematiky a diagnostiky
+ČSN Česká státní norma
+ČTÚ Český telekomunikační úřad
+DOK Dálkový optický kabel
+eDAP Elektronická knihovna dokumentů a předpisů
+EPS Elektrická požární signalizace
+ERTMS European rail traffic management system (evropský systém řízení dopravy)
+GSM-R Global System for Mobile Communications – Railway
+LDP Lokální detekce požáru
+MRS Místní radiová síť
+MTO Malé technologické objekty
+PZTS Poplachové zabezpečovací a tísňové systémy
+SRV Síť rádiodispečerská
+STM Synchronní transportní moduly
+SŽ Správa železnic, státní organizace
+TNŽ Technická norma železnic
+TRSM Traťový radiový systém
+TS Technické specifikace
+ZPDP Zařízení pro detekci požáru
+ZTKP Zvláštní technické kvalitativní podmínky
+ZTP Zvláštní technické podmínky
+ŽDC Železniční dopravní cesta
+4/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+28.1 ÚVOD
+(1) Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a doporučení uvedené
+v kapitole 1 - Všeobecně.
+(2) :
+- kabelová vedení - optické kabely,
+- kabelová vedení - metalické kabely,
+- zařízení přenosové techniky po vedení – analogová,
+- zařízení přenosové techniky po vedení – digitální,
+- rádiová zařízení pro spojení s vlaky na trati,
+- ostatní rádiová zařízení pro pohyblivá rádiová spojení,
+- rádiová zařízení pro pevná rádiová spojení,
+- spojovací systémy,
+- integrovaná telekomunikační zařízení,
+- prvky přenosového systému a ostatní zařízení pro přenos dat,
+- integrované uzly pro přenos dat, hlasu a obrazu,
+- informační zařízení pro cestující,
+- rozhlasová zařízení,
+- záznamová zařízení,
+- požárně bezpečnostní zařízení: elektrická požární signalizace, zařízení pro detekci
+požáru, zařízení pro lokální detekci požáru, zařízení dálkového přenosu, zařízení pro
+detekci hořlavých plynů a par, autonomní požární signalizace, ruční požárně poplachové
+zařízení,
+- ostatní bezpečnostní systémy, kamerové systémy, poplachový zabezpečovací a tísňový
+systém, koncová (účastnická) zařízení.
+(3) Parametry a ostatní požadavky uvedené v této kapitole doplňují ustanovení platných
+technických norem ČSN, TNŽ a technických předpisů týkajících se výstavby a přejímacího
+řízení sdělovacích zařízení.
+(4) Prostory pro sdělovací zařízení …plocha, počet racků, velikost racků, uzamykatelné racky,
+napájení, klimatizace…
+28.2 Popis, kvalita a parametry použitých zařízení
+(1) U Správy železnic mohou být použita sdělovací zařízení na základě:
+- vydaného zaváděcího listu,
+- na základně vydaného souhlasu s použitím na ŽDC ve vlastnictví státu:
+- souhlasu určeného útvaru Správy železnic s použitím nezavedeného zařízení,
+- souhlasu určeného útvaru Správy železnic s jednorázovým použitím nezavedeného
+zařízení pro konkrétní případ.
+(2) Zavádění nových zařízení do prostředí Správy železnic musí být v souladu se směrnicí
+SŽDC č. 34 v aktuálním znění.
+(3) Určený útvar Správy železnic musí být zhotoviteli a autoru projektové dokumentace (dále
+jen „dokumentace“) sdělen objednatelem.
+5/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+(4) Návrh na použití nezavedených sdělovacích zařízení musí být předložen a projednán
+v průběhu zpracování dokumentace.
+(5) Sdělovací zařízení, která budou propojena se zařízeními cizích železničních správ, musí
+kromě ustanovení předchozího odstavce vyhovovat také mezinárodním doporučením UIC.
+(6) Zřízení pohyblivého rádiového spojení podléhá povolení určeného útvaru Správy železnic.
+(7) Zřízení rádiového spojení podléhá povolení určeného orgánu státní správy České republiky
+(ČTÚ).
+(8) Všechna sdělovací (telekomunikační) zařízení musí předávat diagnostické informace (stavy,
+poruchy) do systému dálkové diagnostiky technologických systémů železniční dopravní
+cesty podle Technických specifikací SŽDC 2/2008–ZSE v platném znění.
+28.2.1 Kabelová vedení - optické kabely
+(1) Základní technické parametry optických kabelů a jejich příslušenství v přenosové síti správy
+železnic musí splňovat podmínky dle technických specifikacích SŽ TS 1/2022-SZ v platném
+znění. Při výstavbě tras optických kabelů se používají zásadně kabely s jednovidovými
+vlákny. Konkrétní typ kabelu, počet optických vláken a způsob instalace kabelu musí být
+předepsány v dokumentaci. Základní technické parametry optických kabelů a jejich
+příslušenství v přenosové síti správy železnic musí splňovat podmínky dle technických
+specifikacích SŽ TS 1/2022-SZ v platném znění.
+(2) Pro sdělovací metalické kabelové sítě se používají přednostně čtyřkové (vyjma vnitřních
+rozvodů) plastové kabely s vrstvenými plášti a s ochranou proti podélnému pronikání vody,
+typové řady TCEKPFLE s pevnou izolací žil, případně TCEPKPFLE s izolací žil typu foam-skin.
+Konkrétní provedení ochranných obalů (-E, -EY, -PE, -PY, -ZE, -ZY, -DE, -DY) musí být
+zásadně stanoveno a zdůvodněno v dokumentaci. U kabelů traťových se požaduje
+dvouplášťová konstrukce.
+(3) Rozsah sledovaných parametrů na TK a obecně metalických sdělovacích vedeních,
+podmíněných předáním měřicích protokolů z výstavby:
+a) kontinuita žil
+b) smyčková rezistance
+c) izolační rezistance žil
+d) rezistance stínící fólie
+e) izolační rezistance stínící fólie
+f) izolační rezistance pancíře (u kabelů opatřených pancířem)
+g) rezistance uzemnění u kabelových rozvaděčů-objektů
+h) vyrovnání kapacitních nerovnováh (u kabelů nad 1,6km) - útlum přeslechu na blízkém
+konci, případně admitanční nerovnováhy.
+Závazné formuláře měřicích protokolů stanovuje správce kabelové sítě
+28.2.2 Zařízení přenosové techniky po vedení - analogová
+(1) Nové analogové přenosové systémy se v přenosové síti Správy železnic nebudují.
+28.2.3 Zařízení přenosové techniky po vedení - digitální
+(1) Na optických kabelech mohou být nasazovány přenosové systémy:
+- přímo zakončené na optických rozhraních aktivních síťových prvků,
+6/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+- používajících výhradně SFP (small form-factor pluggable) všech typů od rychlosti
+přenosu 1Gbps a využívající přenosový protokol Ethernet nebo synchronní Ethernet,
+- převodník optika/elektrické rozhraní E1,
+- Nově se systémy SDH nebudují, oddělená přenosová síť GSM-R MPLS
+- IP (Internet Protocol),
+- IP/MPLS (Internet Protocol/Multiprotocol Label Switching),
+- digitální vlnový multiplex (CWDM Coarse Wavelenght Division Multiplex, DWDM Dense
+Wavelenght Division Multiplex),
+- multiplexory nižšího řádu (nejvýše 4 x 2Mbit/s) – výhradně v případě potřeby přenosu
+kanálů s časovým dělením (TDM), např. pro připojení základnových radiostanic systému
+GSM-R po souhlasném projednání se správcem
+(2) Koncová zařízení pro přenos dat, hlasu a obrazu sítě smí být připojována pouze k uzlům
+technologie IP, IP/MPLS CE
+(3) Použité uzly musí umožňovat:
+- dálkové monitorování a konfiguraci z již provozovaných dohledových systémů,
+- změnu konfiguračních parametrů bez provedení resetu uzlu.
+(4) Na optická vlákna smějí být připojovány i jednoúčelové průmyslové automaty pro spojení
+bod – bod (např. vazby diferenciálních ochran pro silnoproudá zařízení). Tyto automaty
+nemusejí umožňovat dálkové monitorování a konfiguraci.
+28.2.4 Rádiová zařízení
+(1) Požadavky na rádiová zařízení používaná v rádiových sítích Správy železnic jsou uvedeny
+ve Směrnici SŽDC č. 35, která řeší traťové rádiové systémy a ve Směrnici SŽDC č. 116,
+která řeší místní rádiové sítě v pásmu 150 MHz. Jednotlivé prvky rádiových systémů a
+zařízení dále musí splňovat požadavky Směrnice SŽDC č. 34, která upravuje podmínky pro
+uvádění těchto prvků do provozu. Kmitočtovou koordinaci vykonává CTD (Centrum
+telematiky a diagnostiky Správy železnic).
+(2) Preferovaným systémem je síť GSM-R, a to jako traťový rádiový systém i jako rádiový
+systém pro spojení ve stanici. Systémy TRSM a MRS jsou jím postupně nahrazovány. Před
+zrušením rádiového systému MRS případně i TRSM je nutné si vyžádat stanovisko uživatele
+a stanovisko správce těchto systémů.
+28.2.5 Telefonní spojovací systémy (telefonní ústředny)
+(1) Spojovací systémy jsou součástí služební telefonní sítě Správy železnic jako soubor
+technických prostředků a programového vybavení, umožňující spojení mezi vstupními
+a výstupními body systému.
+(2) V prostředí správy železnic se budují výhradně telefonní ústředny v provedení IP. IP telefonní
+systémy mohou být zakončeny převodníkem MB/IP. V prostředí Správy železnic existují dva
+typy telefonních sítí – služební a dispečerské.
+28.2.6 Integrovaná telekomunikační zařízení (ITZ)
+(1) Integrované telekomunikační zařízení je varianta spojovacího systému, slučující funkce
+telefonního zapojovače a telefonní ústředny z hlediska programového i technického vybavení
+do jednoho celku. Kromě těchto základních funkcí zařízení umožňuje ovládání rozhlasu,
+případně další speciální funkce (připojení do rádiových sítí, připojení datových rozhraní).
+Součástí ITZ je speciální koncové ovládací zařízení - kompaktní terminál, určený pro obsluhu
+a ovládání sdělovacích zařízení v dopravnách. Další údaje jsou uvedeny v TS-6/2010-S.
+7/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+28.2.7 Prvky přenosového systému a ostatní zařízení pro přenos dat
+(1) Při rozšiřování datové sítě SŽ musí být použita pouze zařízení schválená do provozu
+a odpovídající Pokynu generálního ředitele č. 21/2017.
+(2) Při rozšiřování datové sítě SŽ musí být pro každé nově připojované koncové zařízení
+definována virtuální privátní síť (VRF VPN) a vazby s jinými VRF VPN.
+28.2.8 Informační zařízení pro cestující
+(1) Informační systémy určené pro informování cestujících musí poskytovat aktuální informace
+o jízdách všech druhů vlaků osobní dopravy.
+(2) Způsob ovládání informačního systému, rozsah a forma poskytované informace i vhodný typ
+schváleného zařízení musí být určeny v dokumentaci.
+(3) Podle charakteru dopravny a intenzity provozu se zřizuje jeden nebo několik různých
+informačních systémů, které mohou pracovat samostatně nebo být integrovány do jediného
+komplexního informačního systému. Konkrétní provedení musí odpovídat dokumentaci.
+28.2.9 Rozhlasová zařízení
+(1) Rozhlasová zařízení slouží k předávání akustických informací cestujícím i zaměstnancům
+Správy železnic konajícím službu v ozvučeném prostoru.
+(2) Rozhlasové zařízení musí umožnit zejména:
+- způsob obsluhy určený v dokumentaci,
+- operativní provádění změn velikosti ozvučeného prostoru podle provozní potřeby
+a charakteru informace,
+- regulaci intenzity ozvučení,
+- integraci s jinými informačními systémy v dopravně.
+(3) Počet a rozsah ozvučených prostorů a způsob zapojení do integrovaného informačního
+systému v dopravně musí být specifikovány v dokumentaci.
+28.2.10 Požárně bezpečnostní zařízení a ostatní bezpečnostní systémy
+(1) Požárně bezpečnostní zařízení a ostatní bezpečnostní systémy.
+a) Požárně bezpečnostní zařízení. Nutnost instalace systému doložit požárně
+bezpečnostním řešením. Pokud nebude vyžadován plnohodnotný systém EPS dle ČSN
+730875, je možné doplnit ZPDP (samostatná ústředna ZPDP) nebo LDP (samostatná
+ústředna LDP), jako součást systému PZTS.
+b) Poplachové zabezpečovací a tísňové systémy PZTS navržené dle souboru norem ČSN
+EN 50131 Poplachové systémy s přihlédnutím k ČSN EN 50398 Poplachové systémy -
+Kombinované a integrované poplachové systémy.
+c) Kamerové systémy. Systémy musí splňovat normu ZTP č.j. 18453/2018 SŽDC-O14 u
+kamer pro bezpečnostní využití se řídí souborem norem ČSN EN 62676-1-1 a ČSN EN
+12464-2 Je nutno respektovat účel průmyslové televize - televize určená pro provoz v
+žel. dopravě nebo televize sloužící pro zajištění bezpečnosti v Správy železnic.
+(2) Druh a rozsah těchto sdělovacích systémů a typ zařízení pro jejich výstavbu musí odpovídat
+dokumentaci.
+(3) Nutno určit bezpečnostní kategorii objektu resp. Rozmístění bezpečnostních zón objektu
+určených k zabezpečení systémem PZTS (zpravidla technologické prostory).
+(4) Systémy EPS (elektrická požární signalizace) jako požárně bezpečnostní zařízení se zřizují v
+případech, kdy je toto vyžadováno požárně bezpečnostním řešením stavby. Pokud zřízení
+EPS není požárně bezpečnostním řešením stavby požadováno, zřizují se systémy ZPDP nebo
+8/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+LDP (lokální detekce požáru) jako součást systému PZTS nebo systém PZTS může být rovněž
+doplněn o samotné hlásiče požáru bez ústředny ZPDP či LDP (hlásiče požáru musí být voleny
+dle souboru norem (ČSN EN 54).
+(5) Systémy PZTS se zřizují ve všech budovách a prostorách.
+(6) Požárně bezpečnostní zařízení a ostatní bezpečnostní systémy podle tohoto článku pracují s
+obsluhou nebo automaticky a poskytují zásadně informace služebního charakteru. U všech
+systémů smějí být používána jen zařízení s platnou homologací v ČR.
+a) Nutnost instalace systému (EPS,ZPDP,LDP) a dalších zařízení pro požární signalizaci
+doložit požárně bezpečnostním řešením. Poplachové zabezpečovací a tísňové systémy
+(PZTS). Nutno určit bezpečnostní kategorii objektu resp. Rozmístění bezpečnostních
+zón objektu určených k zabezpečení systémem PZTS.
+b) Kamerové systémy. Systémy musí splňovat ZTP č.j. 18453/2018 SŽDC-O14. V
+prostředí správy železnic rozlišujeme tyto druhy kamerových systému: kamerové
+systémy určené pro dohled nad dopravní cestou, kamerové systémy určené pro
+zabezpečení budov, kamerové systémy na přejezdech a kamerové systémy na
+přejezdech určené pro automatickou detekci dopravních přestupků. Kamerové systémy
+určené pro zabezpečení budov se řídí souborem norem ČSN EN 62676-1-1
+(7) Druh a rozsah těchto sdělovacích systémů a typ zařízení pro jejich výstavbu musí odpovídat
+dokumentaci.
+28.2.11 Zařízení pro řídicí a diagnostické systémy Správy železnic
+(1) Řídicí systémy Správy železnic umožňují centralizované dálkové ovládání technologických
+zařízení a procesů. Diagnostické systémy umožňují monitorovat technický stav
+technologických zařízení. Příklady těchto systémů jsou systémy dálkového ovládání
+a diagnostiky zabezpečovacích zařízení, technologické a diagnostické systémy pro
+automatizaci třídícího procesu na seřaďovacích nádražích, systémy pevných elektrických
+trakčních zařízení a napájení zabezpečovacích zařízení, systém dálkové diagnostiky
+technologických systémů železniční dopravní cesty.
+(2) Druh, rozsah a specifikace funkcí těchto řídicích systémů, typ zařízení a požadavky na
+přenosové cesty pro jejich výstavbu musí být určeny v dokumentaci. Současně musí být
+stanoveny i požadavky na konfiguraci ostatních sdělovacích zařízení, které podmiňují
+používání daného řídícího či diagnostického systému.
+28.2.12 Koncová (účastnická) zařízení
+(1) Koncová (účastnická) zařízení podle tohoto článku jsou všechna sdělovací zařízení, která
+jsou zapojena za koncovým bodem telekomunikační sítě bez ohledu na charakter
+komunikace (hlasová, datová, vizuální). Typy koncových zařízení musí být určeny
+v dokumentaci.
+28.2.13 Záznamová zařízení
+(1) Záznamová zařízení, včetně centrálního systému správy záznamů, umožňují komplexní,
+účelově definovaný záznam určených hlasových a datových informací (hovorová
+komunikace, video, obrazovky PC, provozní data, …) vztažných k provozním a
+infrastrukturním potřebám při provozování dráhy a drážní dopravy na železniční dopravní
+cestě.
+(2) Druh, rozsah a specifikace funkcí tohoto záznamového zařízení, požadavky na parametry
+připojených koncových zařízení a požadavky na přenosové cesty pro jejich výstavbu musí
+být určeny v projektové dokumentaci konkrétní investiční akce. Dle platných provozních
+postupů a předpisů musí být umožněna reprodukce záznamů ze strany oprávněných osob a
+činnost a funkce záznamového zařízení musí být trvale kontrolována.
+9/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+(3) Záznamová zařízení musí být prostřednictvím datové či přenosové sítě začleněna do
+centralizovaného systému správy záznamů, který umožňuje oprávněným osobám rozšířené
+funkcionality pro vyhodnocování, analýzu a predikci situací vztažených k řízení a
+organizování drážního provozu za podmínek jednoznačně definovaného přístupového
+algoritmu a zásad GDPR. Záznamová zařízení komunikují s centralizovaným systémem
+správy záznamů na základě aktuální specifikace výměny dat.
+28.2.14 Technologické prostory
+(1) Technologické prostory musí být fyzicky oddělené prostory určené výhradně pro technologie
+ve správě SŽ (např. sdělovací zařízení) od ostatních technologií třetích stran.
+(2) Technologické místnosti musí splňovat prostorové nároky pro umístění veškeré technologie
+s dostatečnou prostorou rezervou dle TKP, TNŽ.
+(3) Umístění a rozmístění rack skříní v technologických místnostech v zastávkách se
+předpokládá plocha min. 8 m2, v železničních stanicích min. 16 m2. Výška rack skříní se
+předpokládá 47 U, v provedení 19“, případné úprava nutno v rámci zpracování dokumentace
+konzultovat se zástupci správce.
+(4) Racky budou umístěny ve stojanových řadách v souladu s TKP, TNŽ, ČSN a dalších
+dokumentů např. mezi řadami bude 800 mm ulička. Přístup k rackům bude zepředu i zezadu.
+(5) Pro technologickou místnost bude zřízeno zálohované napájení. Napájení pro technologii –
+napájení z trakčního vedení nebo distribuční sítě, záložního zdroje, pokud je instalován nebo
+zásuvka pro připojení záložního zdroje. Vždy musí být dva zdroje napájení. Tedy centrální
+modulární napájecí zdroj 48 V a střídač napájení 48 V/230 V s bypassem, vybavené
+dálkovým dohledem s připojením do nadřazeného systému DDTS ŽDC. Zdroje i střídače
+koncipovat N+1. Zdroje s výkonovou rezervou 30 %.
+(6) Centrální baterie s dlouhou životností s kapacitou pro minimální dobu zálohy 6 hodin s
+kapacitní rezervou 30 %
+(7) Ze zdroje 48 V realizovat rozvody do racků s DC technologií zakončené podružným
+rozváděcím panelem s DC jističi pro jednotlivá zařízení. Ze střídače 230V realizovat rozvody
+do racků s AC technologií zakončené pevnou zásuvkou a dále podružným AC rozváděcím
+panelem, nebo rozvodným panelem.
+(8) Napájení sdělovacích zařízení se musí provádět zásadně silovými kabely s elektrickou
+pevností 4 kV. Uzemnění – je nutné dodržet tzv. selektivitu uzemnění, např. do sdělovací
+místnosti přivést slaněný vodič CYA zelenožlutý o profilu 25 mm2, zakončit na hlavní zemnící
+sběrnici místnosti a dále do skříní s technologiemi pokračovat slaněným vodičem CYA
+zelenožlutým o profilu 16 mm2. Dodržet princip zapojení do hvězdy / násobné hvězdy –
+každá skříň má své vlastní uzemnění na hlavní zemnící sběrnici místnosti. Pokud je do skříní
+zataženo uzemnění z podlahového žlabu, je nutné Cu zemnící sběrnici 19“ instalovat ve
+spodní části skříně. Pokud je uzemnění přiváděno z kabelového roštu, je nutné instalovat
+zemnící sběrnici v horní části skříně. Zemnící sběrnice musí být přístupné pro revizní účely.
+Vždy platí, že zelenožlutý slaněný vodič je nejdříve zakončen na zemnící sběrnici. Teprve ze
+zemnící sběrnice je připojen zemnící šroub skříně a další technologie. Všeobecně platí, že co
+jeden slaněný vodič, to jeden šroub či svorka, uchycení více vodičů pod jeden šroub či svorku
+není podporováno. Kabelový rošt musí být vždy uzemněn.
+(9) V rámci výstavby nových sdělovacích místností je nutné zajistit, aby sdělovací místností
+nevedlo potrubí s tlakovou vodou, etážovým vytápěním a odpadní potrubí. V případě
+rekonstrukce stávajících sdělovacích místností a nemožnosti vymístění těchto potrubí, je
+nutné provést takové stavební úpravy např. zakrytím / obestavěním potrubí, aby nedošlo k
+poškození technologií stříkající či odkapávající vodou. Výjimkou je potrubí s odvodem
+kondenzátu z klimatizační jednotky instalované ve sdělovací místnosti. V tomto případě
+odvodu kondenzátu nesmí být nad technologiemi spojka či koleno tohoto potrubí.
+10/2
+1
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+(10) Technologické prostory musí být po stavebně začištěny, opatřeny předepsanými doplňky
+(např. protipožární ucpávky, dielektrická podlahová krytina, výměna starého nábytku),
+případně opatřeny novou malbou.
+(11) V prostředí SŽ se připouští i použití malých technologických objektů (MTO) například na
+zastávkách. Jejich použití a umístění definuje připravovaná směrnice SŽ SM009.
+28.3 Technologické postupy prací
+(1) Požadavky na dodávku a způsob provedení stavebních a montážních prací pro všechny
+druhy sdělovacích zařízení podle těchto TKP musí být uvedeny v dokumentaci.
+(2) Práce na sdělovacích zařízeních mohou být zahájeny až po předání staveniště zhotoviteli.
+(3) Před montáží technologických zařízení zajistí zhotovitel stavební připravenost podle
+dokumentace a stavební dozor provede její kontrolu. Kontrola stavební připravenosti se
+provede v rozsahu podle následujících bodů:
+a) ověření prostor určených pro montáž podle platné dokumentace a platných norem
+s kontrolou
+- rozměrů místností,
+- polohy a rozměru prostupů - okosení hran apod.,
+- správný směr otvírání dveří,
+- materiálové provedení,
+- funkčnost odvodnění drenáží,
+- zabezpečení prostor proti zatékání dešťových vod.
+- Přítomnost potrubí s tlakovou, odpadní, či dešťovou vodou
+b) kvalitu podlah (bezprašnost), provedení soklu u podlahy a bezprašných nátěrů stěn;
+pro zachování kvality podlahy v technologických místnostech se sdělovacím zařízením
+během výstavby se požaduje provést druhou pokládku méně kvalitní podlahovou
+krytinou, která se po ukončení montáže technologického zařízení odstraní
+c) kvalitu a funkčnost elektroinstalace a uzemnění - podle druhu prostředí
+d) kvalitu a funkčnost větrání - podle druhu prostředí a montovaného zařízení
+e) únosnost podlah, podlahových roštů a montážních plošin, podle požadavku
+dokumentace (zhotovitel doloží atesty zabudovaných výrobků beton. panelů
+a ocelových konstrukcí)
+f) kvalitu a funkčnost temperování a chlazení podle zařazení montovaného zařízení
+v případě, že není instalované topení napojeno na funkční zdroj, zhotovitel zajistí
+náhradní zdroj temperování. Ve sdělovací místnosti nesmí být instalován radiátor
+etážového vytápění s tlakovou vodou. Vytápění provádět el. Přímotopem.
+g) umístění bezpečnostních tabulek podle ČSN EN ISO 7010 a souboru norem ČSN ISO
+3864 a označení místností (na dveřích), musí odpovídat požárně bezpečnostnímu
+řešení a všechny bezpečnostní značky pro označení prostor určených pro montáž
+technologických zařízení musí splňovat požadavky ČSN ISO 3864-1 a ČSN ISO 3864-4
+(fotometrické) a ČSN EN ISO 7010 (designové).
+h) větrání a protipožární opatření (dodržení podmínek podle TNŽ 34 2612); umístění,
+počet a druh hasebních prostředků musí odpovídat požárně bezpečnostnímu řešení
+stavby.
+i) zakrytí rozvodných žlabů a šachet, montážních žlabů poklopy pro zajištění bezpečnosti
+11/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+j) zabezpečení kabelových vstupů a průchodů požárními zábranami, které zamezí
+i vnikání malých hlodavců do místnosti
+k) uzamykatelnost dveří patentními klíči a poklopů z důvodu zajištění prostor proti
+vniknutí neoprávněných osob
+l) splnění podmínek z hlediska bezpečnosti práce podle ČSN EN IEC 62485-2a ČSN 34
+3104 (tekoucí voda - je-li požadována, ochranné pomůcky apod.)
+m) kvalitu a typ připojení k napájecí soustavě, kvalitu a typ náhradního napájení pro případ
+výpadku síťového napájení.
+(4) Při výstavbě sdělovacích zařízení musí zhotovitel použít technologické postupy vylučující
+ohrožení provozu ostatních zařízení. Během provádění prací je nutno vyloučit vodivé spojení
+plášťů pokládaných kabelů s konstrukcemi spojenými s kolejí, pokud se tak nestane
+způsobem a za podmínek platných pro dokončení stavby. V nezbytně nutných případech
+musí být předem dohodnut termín a délka provozní výluky konkrétně určených zařízení
+provozovaných v místě montáže. Odstávku zařízení je třeba provádět přednostně v době
+slabého sdělovacího provozu.
+(5) Při výstavbě sdělovacích zařízení v blízkosti stávajících zařízení v provozním stavu musí být
+včas zhotovitelem dohodnuta vhodná forma spolupráce zhotovitele a provozovatele
+příslušných zařízení.
+(6) Sdělovací zařízení musí být instalována tak, aby v provozním stavu nemohla být poškozena
+překročením povolené tolerance napájecího napětí, přepětím a nadproudem atmosférického
+nebo jiného původu nebo vlivy vnějších elektromagnetických polí překračujícími povolené
+meze a aby nebyla vystavena nedovoleným otřesům a vibracím.
+(7) Z hlediska obsluhy a údržby sdělovacích zařízení je třeba zajistit, aby stávající a nově
+budovaná zařízení téhož charakteru byla v provozních prostorách téhož provozovatele
+instalována jednotným způsobem, včetně prostorového rozmístění dílů.
+(8) Zhotovitel si musí zajistit nezbytnou a prokazatelně (např. atestem) kvalitní výbavu pro
+zhotovení díla specifikovaného ve smlouvě a pro prokázání jeho kvality, zejména nářadí
+a strojní vybavení, měřicí přístroje, speciální přístroje a speciální mechanizmy nezbytné pro
+provedení prací podle uzavřené smlouvy.
+(9) Při výstavbě prováděné ve venkovním prostředí musí zhotovitel zajistit zejména:
+- aby nebyly překročeny meze dovoleného namáhání sdělovacích vedení v tahu a ohybu
+použitím nevhodných technologických postupů (např. násilné zatahování kabelů
+s použitím mechanizačních prostředků bez omezovače tažné síly, pěchování zeminy
+v zasypané rýze koly jedoucího nákladního auta) ani vlivem manipulace s kabelovými
+bubny při nedovolené teplotě,
+- aby bylo montážní pracoviště dostatečně zajištěno proti nepříznivým vlivům povětrnosti
+(déšť, sníh, nadměrná prašnost, přímé sluneční záření). Použitá ochranná opatření musí
+odpovídat charakteru montážních úkonů, aby nebyly ohroženy stanovené kvalitativní
+parametry díla,
+- aby bylo sdělovací zařízení instalováno tak, aby v provozním stavu nemohlo dojít k jeho
+nedovolenému podchlazení, přehřátí, navlhnutí, narušení korozí a jinými vlivy prostředí.
+28.3.1 Kabelová vedení - optická
+(1) Optická vlákna vyváděná do železničních stanic a dalších objektů Správy železnic musí být
+ukončena v optických rozvaděčích. Počty vyváděných optických vláken v železničních
+stanicích a dalších objektech musí být uvedeny v dokumentaci.
+(2) Pokud budou v trakčních napájecích stanicích použity statické měniče pro napájení trakčního
+vedení, musí být v trakčních napájecích stanicích ukončen DOK odpovídajícím počtem
+vláken.
+12/2
+1
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+(3) Úložné optické kabely se instalují do ochranných plastových trubek, pokládaných buď při
+výstavbě kabelové trati, nebo v předstihu v rámci jiné stavby. Pro účely správy železnic se
+kladou mezistaničně současně tři trubky (modrá, černá a fialová). Případně další trubky
+např. pro účely detekce lomu kolejnic. V rámci výkopových prací stavby je nutno řešit
+kladení trubek i na odbočné tratě, s barevným odlišením nebo značením. V obvodu
+železničních stanic se pak kladou další HDPE s barevným značením, případně
+mikrotrubičkový systém dle SŽ TS 1/2022-SZ v platném znění.
+(4) Při výstavbě tratí optických kabelů nesmí být překročeny mezní hodnoty mechanického
+a tepelného namáhání kabelu, dané technickými podmínkami výrobce.
+(5) Pokud je kabelová trasa uložena v kabelovodu, musí být součástí PD kabelovodu zatahovací
+plán, s popisem všech vyhrazených pozic, zatahované kabeláže a HDPE. Zatahovací plán
+musí být pak rovněž součástí DSPS kabelových souborů.
+(6) Technologické postupy prací, včetně požadované dokumentace, procesu výstavby až do
+přejímacího řízení stavby, musí splňovat podmínky dle technických specifikací SŽ TS
+1/2022-SZ v platném znění.
+(7) Při souběžných nebo samostatných stavbách na kolejovém tělese, včetně umělých staveb
+se požaduje projektovou dokumentací zohlednit stávající i nové kabelové sítě. Zejména pak
+popsat koordinaci výstavby a uložení sítí před a po výstavbě, s případným technickým
+řešením definitivního uložení dle příslušných norem a předpisů. V ochranném pásmu
+kabelových tras je nutno respektovat podmínky činnosti předepsané správcem vedení. Nad
+trasou nesmí být svévolně zřizovány navážky a snižováno krytí trasy. (platí pro sdělovací
+sítě všeobecně)
+28.3.2 Kabelová vedení – metalická
+(1) Novostavba dálkových metalických a hybridních kabelů se nově neuvažuje. Stávající dálková
+kabeláž je postupně nahrazována kabelizací traťovou. V rámci staveb traťových kabelů v
+souběhu s dálkovým kabelem je vždy nutno řešit veškerá vyvádění tak, aby mohl být ve
+stavbě převeden veškerý neopomenutelný provoz z dálkového kabelu a ten následně mohl
+být vyřazen z provozu.
+(2) Metalické sítě se kladou po standardních výrobních délkách (např. ZE 10XN 0,8 – 1 km),
+bez zbytečného vkládání spojek – nutnost koordinace stavebních postupů.
+(3) Během realizace stavby z hlediska technického stavu a provozuschopnosti veškerá sdělovací
+kabelizace v obvodu staveniště a přístupových cest podléhá odpovědnosti zhotovitele,
+kterému bude předán správcem soupis kabeláže v obvodu staveniště (DLM) dle Směrnice
+SŽDC č.42.
+(4) V případě poškození kabelu ve stavbě budou opravy stávajících provozovaných kabelů
+opraveny na základě objednávky zhotovitele servisní organizací, nebo s jeho úzkou
+spoluprací (dohledem).
+(5) Po realizaci definitivní kabeláže musí být provizorní kabelové trasy a trasy
+nepotřebné/nahrazené demontovány, včetně ukončení a propojů v objektech, se stavebním
+zapravením a opravou dotčené provozní dokumentace.
+(6) V dokumentaci musí být uvedeno, zda se při výstavbě nebo rekonstrukci kabelové sítě
+požaduje přiložit do některých kabelových tratí ochranné plastové trubky pro pozdější
+instalaci optických kabelů.
+(7) V kabelových sítích se budují vyrovnávané i nevyrovnávané kabely. Požadavky na vyrovnání
+kapacitních nerovnováh u konkrétních kabelů musí být uvedeny v dokumentaci. Vyrovnání
+kapacitních nerovnováh musí být předepsáno ve všech mezistaničních úsecích traťových
+kabelů a u všech kabelů delších než 1,6 km. Vyrovnání kapacitních nerovnováh traťových
+kabelů se provádí pro celý mezistaniční úsek
+(8) Počet čtyřek (párů) musí být důsledně navržen podle počtu a typu připojovaných zařízení.
+Při výstavbě musí zhotovitel respektovat inženýrské sítě a zařízení (křížení, souběhy)
+13/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+a zajistit nepřekročení předepsaných mezí vzájemného ovlivnění stávajících a nových
+zařízení. Projektová dokumentace musí obsahovat výpočty vlivů VVN na sdělovací vedení,
+včetně popisu technického řešení u nevyhovujících parametrů.
+(9) Vnitřní sdělovací rozvody v nově budovaných objektech, kde se předpokládá zřízení místních
+datových sítí (LAN), musí být provedeny jako strukturovaná kabeláž minimálně třídy 5e.
+Obdobně se postupuje i při rekonstrukcí sdělovacích rozvodů.
+(10) Před vypsáním výběrového řízení pro realizaci stavby je nutné nechat investorem zrevidovat
+projektovou dokumentaci starší více než dva roky z pohledu koncepce, aktuálních potřeb a
+předpisů SŽ, případně zajistit dopracování.
+(11) Veškeré nově kladené sdělovací sítě musí být geodeticky zaměřeny. Po ukončení stavby se
+ke sdělovacím metalickým kabelům zpracovává kabelová kniha plánů pro traťovou a zvlášť
+pro místní část. U stanic s malým kabelovým rozvětvením, lze po dohodě se správcem sítě
+zapracovat místní kabely do traťové části. V případě kladení HDPE, optických a metalických
+kabelů se zpracovává společná kniha. Správci vedení se dodává ve třech tištěných pare a
+digitální (otevřené/uzavřené) podobě. U staveb malého rozsahu (typicky PZS apod.) je
+nutno zpracovat dokumentaci ve stejném formátu a obsahu, aby následná stavba mohla na
+předpoložený úsek navázat. Současně je povinnost opravit/doplnit stávající provozní
+kabelovou dokumentaci. Kabelová kniha se před tiskem zasílá k odsouhlasení na
+CTDkabelovakniha@spravazeleznic.cz.
+28.3.3 Zařízení přenosové techniky po vedení - digitální
+(1) V přenosové síti Správy železnic se přednostně budují digitální přenosové systémy
+technologie IP/MPLS, jako nedílná součást optoelektronického přenosového systému na
+vybrané železniční síti Správy železnic.
+(2) Technologické postupy prací při výstavbě digitálních přenosových systémů jsou uvedeny
+v technické dokumentaci dodávané výrobci a musí být aplikovány v dokumentaci každého
+budovaného systému.
+(3) Hlavní zásady obecně platné pro výstavbu digitálních přenosových systémů v přenosové síti
+Správy železnic budou stanoveny v ZTKP (ZTP).
+(4) Při nasazování digitálních přenosových zařízení na vybrané okruhy stávajících metalických
+kabelů je třeba vyloučit rušivé vlivy na stávající analogové systémy nebo jiná digitální
+přenosová zařízení provozovaná na jiných okruzích v témže kabelu.
+(5) Digitální přenosové systémy musí mít zajištěno napájení I. stupně (bezvýpadkové).
+Konkrétní způsob zajištění musí být uveden v dokumentaci budovaného systému.
+28.3.4 Rádiová zařízení
+(1) Pokud nemají základnové radiostanice zajištěno síťové napájení I. stupně (tzv.
+bezvýpadkové), musí být při výpadku zaručen provoz v režimu trvalého vysílání minimálně
+po dobu 6 hodin.
+(2) Aktivace rádiových zařízení do provozu, včetně předání uživateli "Oprávnění ke zřízení
+vysílacích rádiových stanic a Oprávnění k provozování vysílacích rádiových stanic a užívání
+rádiových kmitočtů, včetně intenzity šíření rádiového signálu příslušné základnové
+radiostanice", je možná až po přidělení kmitočtů jejich správcem CTD (Centrum telematiky
+a diagnostiky SŽ).
+(3) V projektové dokumentaci musí být uvedeno zejména:
+- umístění a souřadnice anténního systému, umístění anténních systémů je preferováno
+na samostatných anténních stožárech na pozemku SŽ
+- typ a parametry navrhované antény,
+- výška antény nad zemí a její směrování,
+14/2
+1
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+- délka a útlum navržených koaxiálních kabelů,
+- kmitočty, výstupní výkon,
+- rádiové sítě, ve kterých bude základnová radiostanice pracovat, včetně způsobu jejích
+ovládání (místní, dálkové).
+(4) Požadavky na rádiové pokrytí jsou uvedeny ve Směrnici SŽDC č. 35 a Směrnici SŽDC č. 116.
+Pro uvedení rádiových systémů do provozu je nutné akceptační měření dle Směrnice SŽDC
+č. 35 nebo akceptační zkouška dle Směrnice SŽDC č. 116. Akceptační měření se před
+uvedením do provozu předá KOR OŘ a HLO OJ. V rámci projektové přípravy se provádí
+matematická simulace rádiového pokrytí a/nebo projektové měření přímo v terénu (v
+lokalitách vytipovaných dle výsledků matematické simulace).
+28.3.5 Integrovaná telekomunikační zařízení (ITZ)
+(1) Technologické postupy prací při výstavbě integrovaných telekomunikačních zařízení jsou
+uvedeny v technické dokumentaci dodávané výrobci a musí být aplikovány v dokumentaci
+každého budovaného systému.
+(2) Výstavba venkovních telefonních objektů (VTO) se řídí předpisem SŽDC T1
+28.3.6 Prvky přenosového systému a ostatní zařízení pro přenos dat
+(1) Technologický postup výstavby zahrnuje:
+- navržení datových uzlů nebo tras projektantem s přihlédnutím k platným Technickým
+specifikacím,
+- přidělení nových IP adres na základě platného číslovacího plánu správcem adresního
+rozsahu,
+- při výstavbě přenosové sítě přeadresování všech technologických koncových prvků a
+připojení do sítě MPLS
+- navržení samostatné přenosové sítě pro TDS a ERTMS
+- začlenění do příslušné virtuální privátní sítě (VRF VPN),
+- začlenění nových datových uzlů do stávající IP/MPLS infrastruktury a ověření
+funkcionality,
+- připojení nově budovaných technologií k monitoringu v dohledovém centru,
+- propojení s datovými sítěmi sousedních železničních správ.
+- definice služeb, které bude nově budovaný datový uzel poskytovat do sítě a zabez-
+pečení přístupu k těmto službám pro cílové skupiny uživatel (firewalling),
+- předání super administrátorských práv správci zařízení,
+- zabezpečení nově vznikajících datových uzlů proti neoprávněnému přístupu v souladu
+s aktuálně platnými směrnicemi SŽ,
+- zajištění bezvýpadkového napájení,
+- předání dokumentace a uvedení do provozu.
+28.3.7 Integrované uzly pro přenos dat, hlasu a obrazu
+(1) Technologický postup výstavby zahrnuje:
+- umístění uzlů včetně zajištění ochrany před přístupem nepovolaných osob,
+- propojení uzlů,
+- vyřešení návaznosti na provozovaná datová, spojovací a obrazová zařízení,
+15/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+- doplnění řídicího systému jednotlivých technologií,
+- definici kvality služeb pro jednotlivá rozhraní,
+- definici adresního schématu.
+(2) Uzly musí mít zajištěno napájení I. stupně (bezvýpadkové).
+28.3.8 Informační zařízení pro cestující
+(1) Technologický postup výstavby zahrnuje:
+- výstavbu a ochranu nosných konstrukcí,
+- provedení vnitřních sdělovacích rozvodů,
+- instalaci technologického zařízení řídícího stanoviště a informačních bodů,
+- propojení technologických zařízení sdělovacími kabely,
+- zajištění napájení elektrickou energií.
+(2) Podle zásad uvedených v dokumentaci může být několik informačních systémů integrováno
+do jediného komplexního informačního systému s různou úrovní automatizace řízení.
+(3) Při projektování a montáži je nutno postupovat dle Závazných pokynů pro výběr,
+projektování a užívaní elektricky ovládaných informačních zařízení.
+(4) Použitá zařízení musí vyhovovat ČSN EN 62368-1.
+(5) Orientační majáčky pro nevidomé se zřizují podle vyhlášky č. 398/2009 sb.
+28.3.9 Rozhlasová zařízení
+(1) Technologický postup výstavby zahrnuje:
+- provedení vnitřních sdělovacích rozvodů,
+- montáž rozhlasové ústředny a vybavení obsluhovacího pracoviště,
+- montáž vnitřního a vnějšího reproduktorového rozvodu vč. ochran podle dokumentace,
+- zajištění napájení elektrickou energií.
+(2) Vnitřní sdělovací rozvod a kabelizace vnějšího reproduktorového rozvodu musí v technicky
+možném rozsahu využívat společné trasy s ostatními sdělovacími rozvody v dopravně.
+(3) Rozhlasová zařízení pro informování cestujících mohou být integrována do komplexního
+informačního systému.
+(4) Nově budované nebo rekonstruované rozhlasové ústředny musí umožňovat automatizaci
+obsluhy.
+28.3.10 Požárně bezpečnostní zařízení a ostatní bezpečnostní systémy
+(1) Pro zřizování sdělovacích systémů platí zejména následující normy:
+a) systémy elektrické požární signalizace EPS – soubor norem ČSN EN 54, ČSN 34 2710,
+ČSN 73 0875 a soubor norem 7308.
+b) Poplachové zabezpečovací a tísňové systémy PZTS - ČSN EN 50131-1 ED. 2, ČSN EN
+50398
+c) u kamer pro bezpečnostní využití se řídí souborem norem ČSN EN 62676-1-1
+(2) Pro technologický postup výstavby platí přiměřeně údaje uvedené v článcích 28.2.9
+a 28.2.10 této kapitoly TKP.
+16/2
+1
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+28.3.11 Zařízení pro řídicí a diagnostické systémy Správy železnic
+(1) Pro výstavbu řídicích a diagnostických systémů správy železnic platí zejména:
+- Předpis SŽDC E6,
+- Technické specifikace SŽDC 2/2006–ZS,
+- Technické specifikace SŽDC 2/2007–Z,
+- Technické specifikace SŽDC 2/2008–ZSE,
+- Technické specifikace SŽDC 4/2008–Z.
+(2) Technologický postup výstavby musí zahrnovat:
+- −výstavbu, doplnění nebo rekonstrukci řídicího stanoviště včetně požadované
+konfigurace ostatního sdělovacího zařízení podmiňující využití daného řídicího systému,
+- −montáž řídicí techniky ve vzdálených objektech centrálně řízené nebo diagnostikované
+technologie v dostatečném předstihu tak, aby vznikl dostatečný časový prostor pro
+provedení přejímacích zkoušek,
+- -výstavbu přenosové sítě řídicího či diagnostického systému k zajištění obousměrného
+přenosu informací určených v dokumentaci mezi řídicím centrem systému a řízenou
+technologií.
+(3) Při nové výstavbě a rekonstrukcích řídicích systémů musí být přednostně použity pro přenos
+informací digitální přenosové systémy.
+28.3.12 Koncová (účastnická) zařízení
+(1) Technologický postup prací při montáži koncových zařízení je předepsán výrobcem zařízení.
+Související práce (např. umístění koncového zařízení včetně případných úprav stanoviště,
+určení přípojného bodu a jeho IP adresy, zařazení do příslušné VRF VPN, sdělovací a silový
+přívod, ochranná opatření před vlivy přepětí a nadproudu, opatření k zajištění bezpečnosti
+obsluhy) musí být stanoveny v dokumentaci.
+(2) Použitá účastnická vedení musí vyhovovat požadavkům předepsaným výrobcem.
+(3) Při montáži musí zhotovitel zejména vyhovět požadavkům ČSN 33 2160, ČSN 33 4000
+a ČSN 33 4010.
+(4) V případě plnění požadavku na dodání koncových zařízení typu přenosných terminálů (např.
+pro rádiovou síť GSM-R), musí být toto zařízení dodáváno včetně náhradního zdroje (baterie)
+28.3.13 Záznamová zařízení
+Technologický postup výstavby musí zahrnovat:
+1) Výstavbu, doplnění nebo rekonstrukci záznamového systému včetně požadovaného
+připojení a konfigurace ostatních určených zařízení podmiňujících využití daného
+záznamového systému.
+2) Úpravu přenosové sítě určené k zajištění obousměrného přenosu informačních dat
+určených v dokumentaci mezi záznamovým systémem a souvisejícími technologiemi
+3) Začlenění zařízení do centralizovaného systému správy záznamů dat ŽDC a zabezpečení
+dohledů provozu zařízení.
+4) Ověření funkcí záznamového systému včetně dohledů provozu zařízení.
+17/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+28.4 Dodávka, skladování a průkazní zkoušky
+(1) U dodaných sdělovacích zařízení provede zadavatel stavby kontrolu komplexnosti dodávky
+podle dokumentace a technických podmínek výrobce. Dodaná zařízení jsou do převzetí
+objednatelem v opatrování zhotovitele. Musí mít dodací listy a osvědčení o jakosti.
+(2) Dodávka technologických počítačů, které jsou součástí sdělovacího zařízení, musí být
+doložena kopií licenční smlouvy na použitý software. Evidence technologických počítačů se
+řídí příslušným pokynem.
+(3) Nezabudovaná sdělovací zařízení musí být skladována za klimatických a dalších podmínek
+stanovených jejich výrobci v technické dokumentaci dodané se zařízením.
+(4) Kvalita nezabudovaných sdělovacích zařízení nesmí být ohrožena možností přístupu
+neoprávněných osob.
+28.5 Odebírání vzorků a kontrolní zkoušky
+(1) V dokumentaci nebo ve smlouvě může být stanoveno, že při kontrole dodávky zařízení
+budou odebrány vzorky (např. určitý počet modulů od každého dodaného typu) pro ověření
+deklarovaných parametrů.
+(2) Kontrolní zkoušky (měření v rozsahu daném technickými předpisy nebo dohodou
+objednatele se zhotovitelem) jsou nutné zejména:
+- k ověření kvality pasivní protikorozní ochrany kabelových délek (před zahájením
+montáže) a částí kabelové trati v průběhu výstavby,
+- pro zjištění technického stavu demontovaných zařízení nebo jejich částí, předávaných
+objednatelem zhotoviteli k novému provoznímu nasazení,
+- před zásahy do stávajících kabelových tratí při přeložkách a dílčích rekonstrukcích
+(zkrácená závěrečná měření),
+- před zahájením úprav provozovaných sdělovacích systémů.
+(3) Kontrolní zkoušky podle předchozího odstavce mohou být nahrazeny podklady (např.
+měřicími protokoly) předanými zhotoviteli objednatelem. Tím nejsou dotčena práva
+zhotovitele prověřit předané podklady na svůj náklad a povinnost objednatele tyto náklady
+uhradit v případě prokazatelně vadných podkladů.
+(4) V průběhu prací je nutné ověřit provedení všech částí díla, které budou následně podle
+stanoveného technologického postupu výstavby, zakryty. Ověření provede stavební dozor
+nebo jiný pověřený pracovník objednatele.
+28.6 Přípustné odchylky, míra opotřebení, záruky
+28.6.1 Přípustné odchylky při výstavbě sdělovacích zařízení
+(1) Změny kabelových tras, přemístění rozhlasových a jiných stožárů, venkovních telefonních
+objektů, částí informačních systémů a jiných sdělovacích zařízení umístěných ve venkovním
+prostředí na pozemku dráhy může stavební dozor odsouhlasit, pokud to není v rozporu
+s vydaným stavebním povolením, s ustanovením ČSN 37 5711, bude zachován průjezdný
+průřez a nedojde-li k ohrožení bezpečnosti železničního provozu a cestující veřejnosti, ani
+stávajících podzemních zařízení a inženýrských sítí.
+(2) Při výstavbě uvnitř stavebních objektů může stavební dozor odsouhlasit změny umístění
+sdělovacích zařízení, pokud to není na závadu jejich funkčnosti a přehlednosti, a budou
+dodrženy tolerance předepsané
+(3) v dokumentaci, zejména vzdálenost stojanových řad a volná šířka uliček nejméně 80 cm.
+18/2
+1
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+(4) Změny druhu a výstroje zařízení, jejich elektrického zapojení a aplikovaného software jsou
+přípustné jen na podkladě a v rozsahu objednatelem schválené úpravy dokumentace.
+28.6.2 Záruční doba
+(1) Záruční doby všeobecně stanoví kapitola 1 TKP. Pokud pro dodávku dílčího celku nejsou
+sjednány technické podmínky, stanoví délku záruční doby odborný útvar Správy železnic.
+28.7 Klimatická omezení
+(1) Typy sdělovacích zařízení určené v dokumentaci musí vyhovovat pro klimatické podmínky,
+jimž budou vystaveny v provozním stavu po celou dobu jejich technické upotřebitelnosti.
+(2) Podle těchto TKP musí zhotovitel zajistit, aby sdělovací zařízení, kabely a vodiče byly
+transportovány, skladovány a montovány (kabely pokládány) výhradně v klimatických
+podmínkách přípustných podle dokumentace, technických norem a schválených technických
+podmínek jednotlivých zařízení a transportních, popř. dalších podmínek stanovených
+výrobcem.
+(3) Pro sdělovací zařízení platí ustanovení TNŽ 34 2090.
+(4) Sdělovací místnosti se vybavují topením a klimatizací pro zajištění vyšší dlouhodobé
+spolehlivosti v nich umísťovaných zařízení. Výkon topení a klimatizace se stanovuje dle
+tepelných ztrát dané místnosti a tepelných zisků produkovaných v místnosti umístěnými
+zařízeními. V případě lokalit s vysokým významem pro provozuschopnost železniční sítě se
+klimatizace zdvojuje, aby byla zajištěná její dostatečná funkce při poruše a/nebo při
+opravách a údržbě.
+28.8 Odsouhlasení a převzetí prací
+(1) Odsouhlasení prací se provede pro dokončené práce zahrnuté do měsíční fakturace a pro
+práce, které budou následujícími pracemi zakryty. Pro odsouhlasení prací platí ustanovení
+kapitoly 1 TKP.
+(2) Odevzdání a převzetí díla se provádí pro celé dílo nebo jeho ucelenou provozuschopnou část
+formou přejímacího řízení podle kapitoly 1 TKP.
+(3) Při odevzdání a převzetí díla se zjišťuje, zda je provedeno podle uzavřené smlouvy řádně
+a v celém rozsahu, zda odpovídá schválené dokumentaci a zda jeho provedení odpovídá
+příslušným normám a předpisům podle kapitoly 1 TKP.
+(4) V případě vodivého spojení pláště kabelu s konstrukcemi spojenými s kolejemi nebo
+ukolejněnými musí být provedení shodné s KSU a TP ověřeným určenými oprávněnými
+osobami podle č.j. 56 731/96-S14 ve znění pozdějších výnosů.
+(5) Zhotovitel je povinen připravit kromě nezbytných podkladů podle kapitoly 1 TKP dále
+zejména:
+- dokumentaci včetně montážních výkresů s vyznačenými změnami podle skutečného
+provedení, včetně geodetického zaměření, a to i v digitální formě v termínu po dohodě
+s odběratelem
+- technickou dokumentaci instalovaných sdělovacích zařízení a dokumentaci pro obsluhu,
+provoz a údržbu těchto zařízení
+- zprávu z výchozí revize podle ČSN 33 1500
+- protokoly o závěrečných měřeních kabelů
+- protokoly o kapacitní zkoušce baterií
+- doklady o provedení komplexního vyzkoušení.
+19/21
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+(6) Objednatel dále připraví:
+- zprávu, jak odpovídá provedení prací schválené dokumentaci, smluvním podmínkám,
+technickým normám a příslušným předpisům,
+- udělené výjimky z norem a předpisů,
+- změnu KSUaTP ověřeného určenými oprávněnými osobami, pokud je vyvolána stavbou,
+- souhlas k ověřovacímu provozu (je-li prováděn),
+- soupis všech dosud neodstraněných vad zjištěných prohlídkou a komplexním
+vyzkoušením.
+(7) Přejímací řízení se uzavře Protokolem o převzetí prací, který vystaví stavební dozor.
+V protokolu musí být zhodnocena kvalita díla. V případě nevyhovující kvality nutno uvést
+důvody, dohodnout způsob odstranění vad bránících převzetí a termín opakování přejímky.
+28.9 Kontrolní měření, měření posunů a přetvoření
+(1) Před dokončením díla je zhotovitel povinen provést závěrečná měření pro jednotlivé druhy
+instalovaných sdělovacích zařízení a vyplněné měřicí protokoly předat objednateli před
+zahájením přejímacího řízení. Výsledky závěrečných měření sdělovacích zařízení slouží
+zejména pro posouzení jakosti díla a jako etalon pro provozní měření prováděná v době
+provozního využití zařízení.
+(2) Rozsah požadovaných závěrečných měření pro jednotlivé druhy sdělovacích zařízení je třeba
+uvést ve smlouvě.
+(3) Zhotovitel za účasti objednatele zajistí prohlídku a komplexní vyzkoušení vybudovaného
+sdělovacího zařízení tak včas, aby zjištěné hrubé vady mohly být odstraněny do zahájení
+přejímky. Rozsah komplexního vyzkoušení a hrubé vady bránící převzetí díla je třeba
+specifikovat ve smlouvě.
+(4) Prohlídkou podle předchozího odstavce je nutno zkontrolovat především, zda vybudovaná
+sdělovací zařízení nebo jejich části nezasahují do průjezdného průřezu a volného
+manipulačního prostoru pro použití mechanizačních prostředků v souladu s vyhláškou
+č. 177/1995 Sb.
+28.10 Ekologie
+(1) Kromě základních požadavků uvedených v kapitole 1 TKP - Všeobecně musí být při výstavbě
+sdělovacích zařízení Správy železnic splněny ještě tyto speciální ekologické požadavky:
+- při manipulaci s kyselými i alkalickými akumulátorovými bateriemi musí být
+s nepotřebným elektrolytem a s kaly z vymývaných článků nakládáno jako s odpadem,
+- ekologicky nebezpečný odpad (např. zbytky barev a laků, rozpouštědel, ředidel,
+ropných produktů používaných pro chod mechanizmů a při pomocných pracích) musí
+být odborně likvidován, zásadně nesmí být ponechán na místě montáže,
+- likvidace většího množství odpadu, dovoleného likvidovat spálením, musí být
+provedena na určeném bezpečném místě a ve stanovenou dobu,
+- pomocné práce prováděné při montáži sdělovacích zařízení pomocí těžké i malé
+mechanizace (např. bourání zdiva, průrazy v betonu, hloubení kabelových rýh v hustě
+zastavěných prostorách, drážkování uvnitř provozovaných budov) musí být prováděny
+předem určeným způsobem, aby okolí bylo co nejméně ohroženo nadměrným hlukem,
+otřesy, vibracemi a prašností. Práce zatěžující okolí těmito negativními vlivy musí být
+prováděny v souladu se stavebním povolením,
+- po dokončení stavebních a montážních prací musí být staveniště (uvnitř budov,
+v intravilánu i v extravilánu) řádně uklizeno.
+20/2
+1
+TKP Kapitola 28 – Sdělovací zařízení Účinnost od 1. ledna 2023
+28.11 Bezpečnost práce a technických zařízení, požární ochrana
+(1) Při práci v kolejišti nebo jeho blízkosti musí zhotovitel dodržovat zásady bezpečnosti
+a ochrany zdraví podle kapitoly 1. TKP.
+(2) Při montáži sdělovacích zařízení musí být dodržovány všechny další obecně platné normy
+a směrnice týkající se bezpečnosti a ochrany zdraví při práci.
+(3) Vedoucí pracoviště je povinen dbát na to, aby pracoviště bylo řádně předem připraveno
+a aby odpovídalo platným bezpečnostním předpisům. Před nastoupením pracovníků na
+montáž je vedoucí pracoviště povinen na pracovišti zajistit odborný dozor při práci. Pokud
+na pracovišti není přímo mistr nebo vedoucí čety a pracují zde nejméně dva pracovníci, musí
+být jeden z nich pověřen řízením pracovního postupu s ohledem na bezpečnost práce. Práce
+osamělého pracovníka v prostoru kolejiště a v jeho bezprostřední blízkosti je zakázána.
+(4) Při použití mechanizmů je nutné, aby jejich pohyb v kolejišti byl řádně projednán
+s odpovědným pracovníkem dopravy. Při práci ve vyloučené koleji nebo v blízkosti kolejiště
+musí být dbáno na zachování průjezdného profilu pojížděné sousední koleje. Při práci na
+elektrizovaných tratích je potřeba dodržet předepsané vzdálenosti od trakčního vedení pod
+napětím, případně požádat o napěťovou výluku trakčního vedení.
+28.12 Citované a související dokumenty
+(1) Seznam citovaných a souviseních dokumentů je uveden v Příloze A Kapitoly 1 TKP, která
+je ke stažení na odkaze https://typdok.tudc.cz/files/tkp/seznam.html .
+Bc. Jan Bednář v.r.
+21/21
+Ověřovací doložka konverze dokumentu
+Ověřuji pod pořadovým číslem 3213189, že tento dokument, který vznikl převedením vstupu v listinné
+podobě do podoby elektronické, skládající se z 21 listů, se doslovně shoduje s obsahem vstupu.
+Ověřující osoba: Jan BEDNÁŘ
+Vystavil: Správa železnic, státní organizace
+Datum: 05.12.2022 09:38:54

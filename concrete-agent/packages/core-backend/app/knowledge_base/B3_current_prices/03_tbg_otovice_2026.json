@@ -1,0 +1,263 @@
+{
+  "meta": {
+    "supplier": "TBG SEVEROZÁPADNÍ ČECHY s.r.o.",
+    "plant": "Betonárna Karlovy Vary – Otovice, Na Vlečce 179, 360 01 Otovice",
+    "contact": {
+      "name": "Radek Štěpina",
+      "tel": "602 157 306",
+      "email": "radek.stepina@heidelbergmaterials.com"
+    },
+    "dispatcher": {
+      "tel": "602 485 522"
+    },
+    "valid_from": "2026-01-01",
+    "currency": "CZK",
+    "vat_rate": 0.21,
+    "group": "Heidelberg Materials"
+  },
+  "concrete": [
+    {
+      "class": "C8/10",
+      "env": "X0",
+      "cons": "C1",
+      "Dmax": 16,
+      "price_ex_vat": 2490
+    },
+    {
+      "class": "C8/10",
+      "env": "X0",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 2730
+    },
+    {
+      "class": "C12/15",
+      "env": "X0",
+      "cons": "C1",
+      "Dmax": 16,
+      "price_ex_vat": 2630
+    },
+    {
+      "class": "C12/15",
+      "env": "X0",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 2870
+    },
+    {
+      "class": "C16/20",
+      "env": "X0",
+      "cons": "C1",
+      "Dmax": 16,
+      "price_ex_vat": 2760
+    },
+    {
+      "class": "C16/20",
+      "env": "XC1",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 2990
+    },
+    {
+      "class": "C16/20",
+      "env": "XC2",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3090
+    },
+    {
+      "class": "C20/25",
+      "env": "X0",
+      "cons": "C1",
+      "Dmax": 16,
+      "price_ex_vat": 2870
+    },
+    {
+      "class": "C20/25",
+      "env": "XC1-2",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3150
+    },
+    {
+      "class": "C20/25",
+      "env": "XC3",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3250
+    },
+    {
+      "class": "C25/30",
+      "env": "X0",
+      "cons": "C1",
+      "Dmax": 16,
+      "price_ex_vat": 3020
+    },
+    {
+      "class": "C25/30",
+      "env": "XC1-2",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3320
+    },
+    {
+      "class": "C25/30",
+      "env": "XA1,XF1,XC3,XD1",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3440
+    },
+    {
+      "class": "C25/30",
+      "env": "XA2,XC4,XD2,XF2",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3540
+    },
+    {
+      "class": "C30/37",
+      "env": "X0",
+      "cons": "C1",
+      "Dmax": 16,
+      "price_ex_vat": 3150
+    },
+    {
+      "class": "C30/37",
+      "env": "XC1-2",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3440
+    },
+    {
+      "class": "C30/37",
+      "env": "XA1,XF1,XC3,XD1",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3570
+    },
+    {
+      "class": "C30/37",
+      "env": "XA2,XC4,XD2",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3700
+    },
+    {
+      "class": "C30/37",
+      "env": "XA3,XD3,XF2,XF4",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3840
+    },
+    {
+      "class": "C35/45",
+      "env": "XA1-2,XC1-4,XD1-2,XF1",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 4360
+    },
+    {
+      "class": "C35/45",
+      "env": "XA3,XD3,XF2,XF4",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 4560
+    },
+    {
+      "class": "C40/50",
+      "env": "XA1-2,XC1-4,XD1-2,XF1",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 4710
+    },
+    {
+      "class": "C40/50",
+      "env": "XA3,XD3,XF2,XF4",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 4860
+    },
+    {
+      "class": "C25/30",
+      "env": "XA2 (piloty suché, síranuvzdorný)",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3660
+    },
+    {
+      "class": "C25/30",
+      "env": "XA2 (piloty mokré, síranuvzdorný)",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3760
+    },
+    {
+      "class": "C30/37",
+      "env": "XA2,XA3 (piloty, síranuvzdorný)",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 3860
+    },
+    {
+      "class": "C35/45",
+      "env": "XA2,XA3 (piloty, síranuvzdorný)",
+      "cons": "S4",
+      "Dmax": 16,
+      "price_ex_vat": 4760
+    }
+  ],
+  "pump": {
+    "order_advance_note": "dle provozních podmínek",
+    "tower_pumps": [
+      {
+        "name": "MX 28-TR",
+        "reach_m": 28,
+        "stay_per_day": 3500,
+        "volume_per_m3": 40
+      },
+      {
+        "name": "MX 32-TR",
+        "reach_m": 32,
+        "stay_per_day": 3500,
+        "volume_per_m3": 40
+      }
+    ],
+    "stationary_diesel_electric": {
+      "operation_per_15min": 470,
+      "operation_per_m3": 30
+    },
+    "floor_pumps": {
+      "Estrich Boy (ANHYMENT)": {
+        "arrival": 800,
+        "operation_per_15min": 350,
+        "volume_per_m3": 50
+      },
+      "Aeronicer (PORIMENT)": {
+        "arrival": 800,
+        "operation_per_15min": 500,
+        "volume_per_m3": 50
+      },
+      "Pístové (CEMFLOW)": {
+        "arrival": 800,
+        "operation_per_15min": 460,
+        "volume_per_m3": 50
+      }
+    },
+    "pump_surcharges": {
+      "additional_pipe_per_bm_per_day": 110,
+      "rubber_hose_per_bm_per_day": 140,
+      "rubber_hose_piston_per_bm_per_day": 100,
+      "hose_pipe_transport_per_km": 30,
+      "primer_one_time": 500,
+      "saturday_night_20_06_per_15min": 55,
+      "sunday_holiday_per_15min": 70,
+      "fibreconcrete_per_m3": 35,
+      "standby_pump_per_15min": 550,
+      "late_cancellation_24h_one_time": 500,
+      "futile_trip_one_time": 2500,
+      "futile_trip_per_km": 65,
+      "residual_concrete_removal": 1100,
+      "slow_down_elbow_one_time": 550
+    }
+  }
+}

@@ -1,0 +1,170 @@
+###############################################################
+# STAVAGENT - Cloud Build Pipeline (monorepo)
+# Builds and deploys all Cloud Run services on push to main.
+#
+# Trigger config:
+#   Configuration type: Cloud Build configuration file (yaml)
+#   Location: / (repo root)
+#   File: cloudbuild.yaml
+#
+# Required substitution variables (set in trigger):
+#   _REGION: europe-west3
+#   _AR_REPO: Artifact Registry repository name (default: stavagent)
+###############################################################
+
+substitutions:
+  _REGION: europe-west3
+  _AR_REPO: stavagent
+
+steps:
+
+  # ============================================================
+  # 1. stavagent-portal-backend
+  # ============================================================
+  - name: gcr.io/cloud-builders/docker
+    id: build-portal
+    args:
+      - build
+      - -f
+      - stavagent-portal/Dockerfile
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:latest
+      - stavagent-portal
+
+  - name: gcr.io/cloud-builders/docker
+    id: push-portal
+    waitFor: [build-portal]
+    args:
+      - push
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend'
+      - --all-tags
+
+  - name: gcr.io/cloud-builders/gcloud
+    id: deploy-portal
+    waitFor: [push-portal]
+    args:
+      - run
+      - deploy
+      - stavagent-portal-backend
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
+      - --region=$_REGION
+      - --platform=managed
+      - --allow-unauthenticated
+
+  # ============================================================
+  # 2. concrete-agent (CORE / YADRO)
+  # ============================================================
+  - name: gcr.io/cloud-builders/docker
+    id: build-core
+    args:
+      - build
+      - -f
+      - concrete-agent/packages/core-backend/Dockerfile
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:latest
+      - .
+
+  - name: gcr.io/cloud-builders/docker
+    id: push-core
+    waitFor: [build-core]
+    args:
+      - push
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent'
+      - --all-tags
+
+  - name: gcr.io/cloud-builders/gcloud
+    id: deploy-core
+    waitFor: [push-core]
+    args:
+      - run
+      - deploy
+      - concrete-agent
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
+      - --region=$_REGION
+      - --platform=managed
+      - --allow-unauthenticated
+
+  # ============================================================
+  # 3. monolit-planner-api
+  # ============================================================
+  - name: gcr.io/cloud-builders/docker
+    id: build-monolit
+    args:
+      - build
+      - -f
+      - Monolit-Planner/Dockerfile
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:latest
+      - Monolit-Planner
+
+  - name: gcr.io/cloud-builders/docker
+    id: push-monolit
+    waitFor: [build-monolit]
+    args:
+      - push
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api'
+      - --all-tags
+
+  - name: gcr.io/cloud-builders/gcloud
+    id: deploy-monolit
+    waitFor: [push-monolit]
+    args:
+      - run
+      - deploy
+      - monolit-planner-api
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
+      - --region=$_REGION
+      - --platform=managed
+      - --allow-unauthenticated
+
+  # ============================================================
+  # 4. urs-matcher-service
+  # ============================================================
+  - name: gcr.io/cloud-builders/docker
+    id: build-urs
+    args:
+      - build
+      - -f
+      - URS_MATCHER_SERVICE/Dockerfile.backend
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:latest
+      - .   # context = repo root (Dockerfile.backend uses cross-service COPY paths)
+
+  - name: gcr.io/cloud-builders/docker
+    id: push-urs
+    waitFor: [build-urs]
+    args:
+      - push
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service'
+      - --all-tags
+
+  - name: gcr.io/cloud-builders/gcloud
+    id: deploy-urs
+    waitFor: [push-urs]
+    args:
+      - run
+      - deploy
+      - urs-matcher-service
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
+      - --region=$_REGION
+      - --platform=managed
+      - --allow-unauthenticated
+
+images:
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
+
+timeout: 1800s
+options:
+  machineType: E2_HIGHCPU_8
+  logging: CLOUD_LOGGING_ONLY

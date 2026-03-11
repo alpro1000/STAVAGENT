@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* ============================================================================
+   STAVAGENT — Digital Concrete Design System
+   Brutalist Neumorphism: monochrome grays + orange accent
+   ============================================================================ */
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -22,6 +27,18 @@
     --input: 240 5.9% 90%;
     --ring: 240 5.9% 10%;
     --radius: 0.5rem;
+
+    /* Digital Concrete tokens */
+    --concrete-bg: #C9CBCD;
+    --concrete-panel: #EAEBEC;
+    --concrete-surface: #F5F6F7;
+    --concrete-dark: #B0B2B5;
+    --brand-orange: #FF9F1C;
+    --brand-orange-hover: #FFB347;
+    --brand-orange-active: #E88A00;
+    --brand-orange-glow: rgba(255, 159, 28, 0.4);
+    --shadow-dark: rgba(80, 83, 87, 0.45);
+    --shadow-light: rgba(255, 255, 255, 0.65);
   }
 
   .dark {
@@ -44,6 +61,13 @@
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
     --ring: 240 4.9% 83.9%;
+
+    --concrete-bg: #1A1C1E;
+    --concrete-panel: #252729;
+    --concrete-surface: #2E3032;
+    --concrete-dark: #111213;
+    --shadow-dark: rgba(0, 0, 0, 0.6);
+    --shadow-light: rgba(60, 63, 67, 0.25);
   }
 }
 
@@ -53,5 +77,82 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* ============================================================================
+   Landing page animations
+   ============================================================================ */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px var(--brand-orange-glow), 0 0 40px rgba(255, 159, 28, 0.15);
+  }
+  50% {
+    box-shadow: 0 0 30px var(--brand-orange-glow), 0 0 60px rgba(255, 159, 28, 0.25);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.7s ease-out both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out both;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.animation-delay-100 { animation-delay: 100ms; }
+.animation-delay-200 { animation-delay: 200ms; }
+.animation-delay-300 { animation-delay: 300ms; }
+.animation-delay-400 { animation-delay: 400ms; }
+.animation-delay-500 { animation-delay: 500ms; }
+
+/* Neumorphic utilities */
+.shadow-neu {
+  box-shadow:
+    8px 8px 20px var(--shadow-dark),
+    -4px -4px 12px var(--shadow-light);
+}
+
+.shadow-neu-sm {
+  box-shadow:
+    4px 4px 10px var(--shadow-dark),
+    -2px -2px 6px var(--shadow-light);
+}
+
+.shadow-neu-inset {
+  box-shadow:
+    inset 3px 3px 8px var(--shadow-dark),
+    inset -2px -2px 6px var(--shadow-light);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in-up,
+  .animate-fade-in,
+  .animate-pulse-glow {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }

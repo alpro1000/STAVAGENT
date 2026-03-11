@@ -1,0 +1,335 @@
+═══════════════════════════════════════════════════════════════════════════════
+PORTAL TABS + MODAL REDESIGN PATCH
+═══════════════════════════════════════════════════════════════════════════════
+
+ЦЕЛЬ:
+1. Модальное окно в дизайн-системе (c-modal, c-panel)
+2. Вкладки "Služby" / "Projekty" для разделения контента
+
+═══════════════════════════════════════════════════════════════════════════════
+FILE 1: CreateProjectModal.tsx - Redesign to Design System
+═══════════════════════════════════════════════════════════════════════════════
+
+REPLACE ENTIRE FILE WITH:
+
+/**
+ * Create Project Modal
+ * Design System: Digital Concrete (Brutalist Neumorphism)
+ */
+
+import { useState } from 'react';
+import { X } from 'lucide-react';
+
+interface CreateProjectModalProps {
+  onClose: () => void;
+  onCreate: (data: {
+    project_name: string;
+    project_type: string;
+    description?: string;
+    stavba_name?: string;
+  }) => Promise<void>;
+}
+
+export default function CreateProjectModal({ onClose, onCreate }: CreateProjectModalProps) {
+  const [formData, setFormData] = useState({
+    project_name: '',
+    project_type: 'custom',
+    description: '',
+    stavba_name: '',
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const projectTypes = [
+    { value: 'bridge', label: 'Most 🌉' },
+    { value: 'building', label: 'Budova 🏢' },
+    { value: 'road', label: 'Silnice 🛣️' },
+    { value: 'parking', label: 'Parkoviště 🅿️' },
+    { value: 'custom', label: 'Jiné 📋' }
+  ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!formData.project_name.trim()) {
+      setError('Název projektu je povinný');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await onCreate({
+        project_name: formData.project_name.trim(),
+        project_type: formData.project_type,
+        description: formData.description.trim() || undefined,
+        stavba_name: formData.stavba_name.trim() || undefined,
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Chyba při vytváření projektu');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div
+      style={{
+        position: 'fixed',
+        inset: 0,
+        background: 'rgba(0, 0, 0, 0.7)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        zIndex: 1000,
+        padding: '24px',
+      }}
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
+      <div className="c-panel" style={{ maxWidth: '500px', width: '100%' }}>
+        {/* Header */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '24px',
+          paddingBottom: '16px',
+          borderBottom: '2px solid var(--brand-orange)'
+        }}>
+          <h3 style={{ fontSize: '20px', fontWeight: 700, color: 'var(--text-primary)' }}>
+            Nový projekt
+          </h3>
+          <button
+            onClick={onClose}
+            className="c-btn c-btn--ghost"
+            disabled={loading}
+            style={{ padding: '8px' }}
+          >
+            <X size={20} />
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {/* Project Name */}
+          <div>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+              Název projektu *
+            </label>
+            <input
+              type="text"
+              value={formData.project_name}
+              onChange={(e) => setFormData({ ...formData, project_name: e.target.value })}
+              className="c-input"
+              placeholder="např. Most SO201"
+              disabled={loading}
+              required
+            />
+          </div>
+
+          {/* Stavba Name */}
+          <div>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+              Stavba <span style={{ fontWeight: 400, color: 'var(--text-secondary)' }}>(volitelné)</span>
+            </label>
+            <input
+              type="text"
+              value={formData.stavba_name}
+              onChange={(e) => setFormData({ ...formData, stavba_name: e.target.value })}
+              className="c-input"
+              placeholder="např. D35 Dálniční přivaděč"
+              disabled={loading}
+            />
+            <p style={{ fontSize: '12px', color: 'var(--text-secondary)', marginTop: '4px' }}>
+              Objekty se stejnou stavbou budou seskupeny
+            </p>
+          </div>
+
+          {/* Project Type */}
+          <div>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+              Typ projektu *
+            </label>
+            <select
+              value={formData.project_type}
+              onChange={(e) => setFormData({ ...formData, project_type: e.target.value })}
+              className="c-input"
+              disabled={loading}
+            >
+              {projectTypes.map(type => (
+                <option key={type.value} value={type.value}>
+                  {type.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Description */}
+          <div>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)', marginBottom: '8px' }}>
+              Popis
+            </label>
+            <textarea
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              className="c-input"
+              rows={3}
+              placeholder="Volitelný popis projektu..."
+              disabled={loading}
+              style={{ resize: 'vertical' }}
+            />
+          </div>
+
+          {/* Error */}
+          {error && (
+            <div className="c-panel" style={{ background: 'var(--status-error)', color: 'white', padding: '12px' }}>
+              <p style={{ margin: 0, fontSize: '14px' }}>{error}</p>
+            </div>
+          )}
+
+          {/* Actions */}
+          <div style={{ display: 'flex', gap: '12px', paddingTop: '8px' }}>
+            <button
+              type="button"
+              onClick={onClose}
+              className="c-btn c-btn--secondary"
+              disabled={loading}
+              style={{ flex: 1 }}
+            >
+              Zrušit
+            </button>
+            <button
+              type="submit"
+              className="c-btn c-btn--primary"
+              disabled={loading}
+              style={{ flex: 1 }}
+            >
+              {loading ? 'Vytváření...' : 'Vytvořit'}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+═══════════════════════════════════════════════════════════════════════════════
+FILE 2: PortalPage.tsx - Add Tabs
+═══════════════════════════════════════════════════════════════════════════════
+
+ADD AFTER LINE 169 (after const [projectNotFound...]):
+
+  const [activeTab, setActiveTab] = useState<'services' | 'projects'>('services');
+
+═══════════════════════════════════════════════════════════════════════════════
+
+REPLACE SECTION (after Header, before Available Services):
+
+      <div className="c-container" style={{
+        paddingTop: '32px',
+        paddingBottom: '32px',
+        flex: 1,
+        width: '100%',
+        overflowY: 'auto'
+      }}>
+
+WITH:
+
+      {/* Tabs */}
+      <div className="c-container" style={{ paddingTop: '24px' }}>
+        <div style={{
+          display: 'flex',
+          gap: '8px',
+          borderBottom: '2px solid var(--border-color)',
+          marginBottom: '32px'
+        }}>
+          <button
+            onClick={() => setActiveTab('services')}
+            style={{
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 600,
+              color: activeTab === 'services' ? 'var(--brand-orange)' : 'var(--text-secondary)',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: activeTab === 'services' ? '3px solid var(--brand-orange)' : '3px solid transparent',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            📊 Služby
+          </button>
+          <button
+            onClick={() => setActiveTab('projects')}
+            style={{
+              padding: '12px 24px',
+              fontSize: '16px',
+              fontWeight: 600,
+              color: activeTab === 'projects' ? 'var(--brand-orange)' : 'var(--text-secondary)',
+              background: 'transparent',
+              border: 'none',
+              borderBottom: activeTab === 'projects' ? '3px solid var(--brand-orange)' : '3px solid transparent',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              marginBottom: '-2px'
+            }}
+          >
+            📁 Projekty ({projects.length})
+          </button>
+        </div>
+      </div>
+
+      <div className="c-container" style={{
+        paddingBottom: '32px',
+        flex: 1,
+        width: '100%',
+        overflowY: 'auto'
+      }}>
+
+═══════════════════════════════════════════════════════════════════════════════
+
+WRAP "Available Services Section" WITH:
+
+        {activeTab === 'services' && (
+          <>
+            {/* Available Services Section */}
+            <section style={{ marginBottom: '48px' }}>
+              ...existing services code...
+            </section>
+
+            {/* Poradna norms */}
+            <PoradnaWidget />
+          </>
+        )}
+
+═══════════════════════════════════════════════════════════════════════════════
+
+WRAP "Stats Section" + "Projects Section" WITH:
+
+        {activeTab === 'projects' && (
+          <>
+            {/* Stats Section */}
+            <section style={{ marginBottom: '48px' }}>
+              ...existing stats code...
+            </section>
+
+            {/* Projects Section */}
+            <section>
+              ...existing projects code...
+            </section>
+          </>
+        )}
+
+═══════════════════════════════════════════════════════════════════════════════
+TESTING
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Click "Nový projekt" → Modal opens with design system styling
+2. Click tabs → Content switches between Services and Projects
+3. Projects tab shows count badge
+4. Modal closes on backdrop click or X button
+
+═══════════════════════════════════════════════════════════════════════════════

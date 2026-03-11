@@ -1,0 +1,199 @@
+═══════════════════════════════════════════════════════════════════════════════
+MONOLIT PLANNER - XLSX IMPORT FLOW ANALYSIS
+═══════════════════════════════════════════════════════════════════════════════
+
+ПРОБЛЕМА: При нажатии "💾 Nahrát XLSX" файл парсится, данные показываются в таблице,
+но проект НЕ создается ни в Portal, ни в левом sidebar.
+
+═══════════════════════════════════════════════════════════════════════════════
+ТЕКУЩИЙ FLOW
+═══════════════════════════════════════════════════════════════════════════════
+
+1. User clicks "💾 Nahrát XLSX"
+2. File uploaded → uploadAPI.uploadXLSX(file)
+3. Backend parses XLSX → creates bridges in database
+4. Frontend updates:
+   - setBridges() → adds to context
+   - setSelectedBridge() → selects first bridge
+   - Sidebar shows new bridges
+5. Table shows positions
+
+ПРОБЛЕМА: Нет связи с Portal!
+
+═══════════════════════════════════════════════════════════════════════════════
+ДВА ПАРСЕРА
+═══════════════════════════════════════════════════════════════════════════════
+
+1. MONOLIT PLANNER PARSER (Header.tsx → uploadAPI.uploadXLSX)
+   Location: Monolit-Planner/backend/src/routes/upload.js
+   Purpose: Import XLSX → create bridges + positions
+   Creates: monolith_projects + positions in Monolit DB
+   Portal link: ❌ NO
+
+2. PORTAL PARSER (ParsePreviewModal → "Náhled výkazu")
+   Location: stavagent-portal/backend/src/routes/parser.js
+   Purpose: Preview XLSX → show metadata + recommendations
+   Creates: ❌ NOTHING (preview only)
+   Portal link: ❌ NO
+
+═══════════════════════════════════════════════════════════════════════════════
+АРХИТЕКТУРА
+═══════════════════════════════════════════════════════════════════════════════
+
+STAVAGENT SYSTEM:
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PORTAL (stavagent-portal)                                               │
+│ - Entry point for users                                                 │
+│ - Stores projects (portal_projects table)                               │
+│ - Links to kiosks via kiosk_links table                                 │
+└─────────────────────────────────────────────────────────────────────────┘
+                              │
+                              │ Links to kiosks
+                              ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│ MONOLIT PLANNER (kiosk)                                                 │
+│ - Standalone calculator                                                 │
+│ - Own database (monolith_projects + positions)                          │
+│ - Can work WITHOUT Portal                                               │
+│ - Optional: Link to Portal via portal_project_id                        │
+└─────────────────────────────────────────────────────────────────────────┘
+
+CURRENT STATE: Monolit works standalone, no Portal integration on import.
+
+═══════════════════════════════════════════════════════════════════════════════
+РЕШЕНИЕ 1: ДОБАВИТЬ PORTAL LINK ПОСЛЕ ИМПОРТА (МИНИМАЛЬНОЕ)
+═══════════════════════════════════════════════════════════════════════════════
+
+После успешного импорта XLSX показать диалог:
+
+┌─────────────────────────────────────────────────────────────────────────┐
+│ ✅ Import úspěšný! Nalezeno 3 objektů s 45 pozicemi.                   │
+│                                                                          │
+│ Chcete vytvořit projekt v Portal?                                       │
+│                                                                          │
+│ [Ano, vytvořit projekt]  [Ne, pokračovat bez Portal]                   │
+└─────────────────────────────────────────────────────────────────────────┘
+
+IF "Ano":
+1. Call Portal API: POST /api/portal-projects
+   Body: { project_name, project_type: "custom", description }
+2. Get portal_project_id from response
+3. Call Monolit API: POST /api/monolith-projects/:id/link-portal
+   Body: { portal_project_id }
+4. Create kiosk link in Portal: POST /api/kiosk-links
+   Body: { portal_project_id, kiosk_type: "monolit", kiosk_project_id }
+
+═══════════════════════════════════════════════════════════════════════════════
+РЕШЕНИЕ 2: НАЧИНАТЬ С PORTAL (ПРАВИЛЬНОЕ, НО СЛОЖНЕЕ)
+═══════════════════════════════════════════════════════════════════════════════
+
+FLOW:
+1. User opens Portal → creates project
+2. Portal shows "Dostupné služby" → click "Monolit Planner"
+3. Portal opens Monolit with ?portal_project_id=XXX
+4. Monolit shows "Import XLSX" button
+5. After import → automatically link to Portal project
+
+ПРЕИМУЩЕСТВА:
+- Все проекты начинаются в Portal
+- Централизованное управление
+- Автоматическая связь
+
+НЕДОСТАТКИ:
+- Требует изменений в Portal UI
+- Monolit теряет автономность
+- Сложнее для пользователей
+
+═══════════════════════════════════════════════════════════════════════════════
+РЕШЕНИЕ 3: SIDEBAR ПОКАЗЫВАЕТ ПРОЕКТЫ ИЗ MONOLIT DB (ТЕКУЩЕЕ)
+═══════════════════════════════════════════════════════════════════════════════
+
+ТЕКУЩЕЕ СОСТОЯНИЕ:
+- Sidebar.tsx загружает bridges из Monolit DB
+- Группирует по project_name
+- Показывает в левом sidebar
+
+ПРОБЛЕМА: Это НЕ Portal проекты!
+- monolith_projects.project_name ≠ portal_projects.project_name
+- Нет связи между ними
+
+РЕШЕНИЕ: Sidebar уже работает правильно для Monolit.
+Просто нужно добавить опцию "Link to Portal" для каждого проекта.
+
+═══════════════════════════════════════════════════════════════════════════════
+РЕКОМЕНДАЦИЯ
+═══════════════════════════════════════════════════════════════════════════════
+
+МИНИМАЛЬНЫЙ ФИКС (1-2 часа):
+1. После импорта XLSX показать диалог "Vytvořit projekt v Portal?"
+2. Если да → создать проект в Portal + link
+3. Sidebar остается как есть (показывает Monolit проекты)
+
+ПОЛНОЕ РЕШЕНИЕ (1-2 дня):
+1. Добавить в Portal кнопку "Otevřít Monolit Planner"
+2. Передавать portal_project_id через URL
+3. Monolit автоматически линкует импорт к Portal проекту
+4. Sidebar показывает Portal link status (🔗 icon)
+
+═══════════════════════════════════════════════════════════════════════════════
+КОД ДЛЯ МИНИМАЛЬНОГО ФИКСА
+═══════════════════════════════════════════════════════════════════════════════
+
+File: Monolit-Planner/frontend/src/components/Header.tsx
+
+After line 95 (after alert), ADD:
+
+```typescript
+// Ask user if they want to create Portal project
+const createPortalProject = window.confirm(
+  `✅ Import úspěšný! Nalezeno ${result.bridges?.length || 0} objektů.\n\n` +
+  `Chcete vytvořit projekt v Portal?\n` +
+  `(Umožní centrální správu a propojení s dalšími službami)`
+);
+
+if (createPortalProject) {
+  try {
+    // Create project in Portal
+    const portalResponse = await fetch('https://stavagent-backend.vercel.app/api/portal-projects', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('auth_token') || ''}`
+      },
+      body: JSON.stringify({
+        project_name: result.project_name || 'Import z Monolit',
+        project_type: 'custom',
+        description: `Import ${result.bridges?.length} objektů z XLSX`
+      })
+    });
+
+    if (portalResponse.ok) {
+      const portalData = await portalResponse.json();
+      alert(`✅ Projekt vytvořen v Portal!\nID: ${portalData.project.portal_project_id}`);
+      
+      // Optional: Link Monolit projects to Portal
+      // (requires backend endpoint implementation)
+    } else {
+      alert('⚠️ Nepodařilo se vytvořit projekt v Portal (možná nejste přihlášeni)');
+    }
+  } catch (err) {
+    console.error('Portal project creation failed:', err);
+  }
+}
+```
+
+═══════════════════════════════════════════════════════════════════════════════
+ZÁVĚR
+═══════════════════════════════════════════════════════════════════════════════
+
+AKTUÁLNÍ STAV:
+✅ XLSX import funguje
+✅ Sidebar zobrazuje projekty z Monolit DB
+✅ Tabulka zobrazuje pozice
+❌ Žádná vazba na Portal
+
+DOPORUČENÍ:
+1. Přidat dialog "Vytvořit v Portal?" po importu (5 min)
+2. Nebo: Začínat workflow v Portal (2 dny)
+
+Který přístup preferujete?

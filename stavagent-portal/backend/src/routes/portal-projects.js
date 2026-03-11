@@ -5,62 +5,433 @@
  * Portal is the main entry point - stores all files and coordinates between Kiosks and CORE.
  *
  * Routes:
- * - GET    /api/portal-projects          - List all projects for current user
- * - POST   /api/portal-projects          - Create new portal project
- * - GET    /api/portal-projects/:id      - Get specific project
- * - PUT    /api/portal-projects/:id      - Update project
- * - DELETE /api/portal-projects/:id      - Delete project
+ * - GET    /api/portal-projects              - List all projects for current user
+ * - GET    /api/portal-projects/registry     - Cross-kiosk project registry (all projects + position linkage stats)
+ * - POST   /api/portal-projects              - Create new portal project
+ * - GET    /api/portal-projects/:id          - Get specific project
+ * - PUT    /api/portal-projects/:id          - Update project
+ * - DELETE /api/portal-projects/:id          - Delete project
  * - POST   /api/portal-projects/:id/send-to-core - Send project to CORE
- * - GET    /api/portal-projects/:id/files       - Get all files for project
- * - GET    /api/portal-projects/:id/kiosks      - Get all kiosk links for project
+ * - GET    /api/portal-projects/:id/files         - Get all files for project
+ * - GET    /api/portal-projects/:id/kiosks        - Get all kiosk links for project
  */
 
 import express from 'express';
 import { v4 as uuidv4 } from 'uuid';
 import { requireAuth } from '../middleware/auth.js';
 import { getPool } from '../db/postgres.js';
+import { USE_POSTGRES } from '../db/index.js';
 import * as concreteAgent from '../services/concreteAgentClient.js';
+
+/**
+ * Helper to safely get PostgreSQL pool
+ * Returns null if PostgreSQL is not configured
+ */
+function safeGetPool() {
+  if (!USE_POSTGRES) {
+    return null;
+  }
+  try {
+    return getPool();
+  } catch (error) {
+    console.error('[PortalProjects] Failed to get database pool:', error.message);
+    return null;
+  }
+}
 
 const router = express.Router();
 
-// All routes require authentication
+/**
+ * POST /api/portal-projects/create-from-kiosk
+ * Create portal project from kiosk (Monolit, Registry, etc.)
+ * NO AUTH REQUIRED - kiosks communicate without user session
+ *
+ * Body:
+ * - project_name: string (required)
+ * - project_type: string (optional)
+ * - kiosk_type: 'monolit' | 'registry' | 'urs_matcher' (required)
+ * - kiosk_project_id: string (required) - ID in kiosk's system
+ * - description: string (optional)
+ *
+ * Returns:
+ * - portal_project_id: string - ID in Portal system
+ * - link_id: string - kiosk link ID
+ */
+router.post('/create-from-kiosk', async (req, res) => {
+  try {
+    const { project_name, project_type, kiosk_type, kiosk_project_id, description, stavba_name } = req.body;
+
+    // Validation
+    if (!project_name || !kiosk_type || !kiosk_project_id) {
+      return res.status(400).json({
+        success: false,
+        error: 'project_name, kiosk_type, and kiosk_project_id are required'
+      });
+    }
+
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
+
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      const portal_project_id = `proj_${uuidv4()}`;
+      const link_id = `link_${uuidv4()}`;
+
+      // 1. Create portal project (owner_id=1 for kiosk-created projects)
+      await client.query(
+        `INSERT INTO portal_projects (
+          portal_project_id,
+          project_name,
+          project_type,
+          description,
+          stavba_name,
+          owner_id,
+          core_status,
+          created_at,
+          updated_at
+        ) VALUES ($1, $2, $3, $4, $5, 1, 'not_sent', NOW(), NOW())`,
+        [portal_project_id, project_name, project_type || 'custom', description || '', stavba_name || null]
+      );
+
+      // 2. Create kiosk link
+      await client.query(
+        `INSERT INTO kiosk_links (link_id, portal_project_id, kiosk_type, kiosk_project_id, status, created_at, last_sync)
+         VALUES ($1, $2, $3, $4, 'active', NOW(), NOW())`,
+        [link_id, portal_project_id, kiosk_type, kiosk_project_id]
+      );
+
+      await client.query('COMMIT');
+
+      console.log(`[PortalProjects] Created from ${kiosk_type}: ${portal_project_id} (${project_name})`);
+
+      res.status(201).json({
+        success: true,
+        portal_project_id,
+        link_id,
+        message: `Project created in Portal and linked to ${kiosk_type}`
+      });
+
+    } catch (dbError) {
+      try {
+        await client.query('ROLLBACK');
+      } catch (rollbackError) {
+        console.error('[PortalProjects] Rollback error:', rollbackError);
+      }
+      console.error('[PortalProjects] DB error creating from kiosk:', dbError);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create project'
+      });
+    } finally {
+      client.release();
+    }
+
+  } catch (error) {
+    console.error('[PortalProjects] Error creating from kiosk:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to create project'
+    });
+  }
+});
+
+// All routes below require authentication
 router.use(requireAuth);
 
 /**
+ * GET /api/portal-projects/registry
+ * Cross-kiosk project registry — shows ALL projects with:
+ *   - Kiosk links (which kiosks are connected)
+ *   - Position counts and linkage stats (monolith, dov, both)
+ *   - Summary metrics per project
+ *
+ * NOTE: Must be defined BEFORE /:id to avoid route conflicts
+ */
+router.get('/registry', async (req, res) => {
+  try {
+    const userId = req.user?.userId || 1;
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.json({
+        success: true,
+        projects: [],
+        _warning: 'Database not available'
+      });
+    }
+
+    // 1. All projects with kiosk links in one query
+    const projectsResult = await pool.query(
+      `SELECT
+         pp.portal_project_id,
+         pp.project_name,
+         pp.project_type,
+         pp.stavba_name,
+         pp.description,
+         pp.created_at,
+         pp.updated_at,
+         -- Kiosk links as JSON array
+         COALESCE(
+           json_agg(
+             json_build_object(
+               'kiosk_type', kl.kiosk_type,
+               'kiosk_project_id', kl.kiosk_project_id,
+               'status', kl.status,
+               'last_sync', kl.last_sync
+             )
+           ) FILTER (WHERE kl.link_id IS NOT NULL),
+           '[]'::json
+         ) AS kiosk_links
+       FROM portal_projects pp
+       LEFT JOIN kiosk_links kl ON pp.portal_project_id = kl.portal_project_id
+       WHERE pp.owner_id = $1
+       GROUP BY pp.portal_project_id
+       ORDER BY pp.updated_at DESC`,
+      [userId]
+    );
+
+    // 2. Position linkage stats per project (single query)
+    const statsResult = await pool.query(
+      `SELECT
+         po.portal_project_id,
+         COUNT(*)::int AS total_positions,
+         COUNT(*) FILTER (WHERE pp.monolith_payload IS NOT NULL)::int AS monolit_linked,
+         COUNT(*) FILTER (WHERE pp.dov_payload IS NOT NULL)::int AS registry_linked,
+         COUNT(*) FILTER (WHERE pp.monolith_payload IS NOT NULL AND pp.dov_payload IS NOT NULL)::int AS both_linked,
+         COUNT(*) FILTER (WHERE pp.monolit_position_id IS NOT NULL)::int AS has_monolit_id,
+         COUNT(*) FILTER (WHERE pp.registry_item_id IS NOT NULL)::int AS has_registry_id
+       FROM portal_positions pp
+       JOIN portal_objects po ON pp.object_id = po.object_id
+       JOIN portal_projects proj ON po.portal_project_id = proj.portal_project_id
+       WHERE proj.owner_id = $1
+       GROUP BY po.portal_project_id`,
+      [userId]
+    );
+
+    // Build stats map
+    const statsMap = new Map();
+    for (const row of statsResult.rows) {
+      statsMap.set(row.portal_project_id, {
+        total_positions: row.total_positions,
+        monolit_linked: row.monolit_linked,
+        registry_linked: row.registry_linked,
+        both_linked: row.both_linked,
+        has_monolit_id: row.has_monolit_id,
+        has_registry_id: row.has_registry_id
+      });
+    }
+
+    // 3. Merge into response
+    const projects = projectsResult.rows.map(p => {
+      const stats = statsMap.get(p.portal_project_id) || {
+        total_positions: 0,
+        monolit_linked: 0,
+        registry_linked: 0,
+        both_linked: 0,
+        has_monolit_id: 0,
+        has_registry_id: 0
+      };
+
+      const kioskTypes = p.kiosk_links
+        .filter(k => k.kiosk_type)
+        .map(k => k.kiosk_type);
+
+      return {
+        portal_project_id: p.portal_project_id,
+        project_name: p.project_name,
+        project_type: p.project_type,
+        stavba_name: p.stavba_name,
+        description: p.description,
+        created_at: p.created_at,
+        updated_at: p.updated_at,
+
+        // Kiosk connections
+        kiosk_links: p.kiosk_links.filter(k => k.kiosk_type),
+        linked_kiosks: kioskTypes,
+        has_monolit: kioskTypes.includes('monolit'),
+        has_registry: kioskTypes.includes('registry'),
+
+        // Position-level cross-kiosk stats
+        position_stats: stats,
+
+        // Completeness score (0-100)
+        completeness: stats.total_positions > 0
+          ? Math.round((stats.both_linked / stats.total_positions) * 100)
+          : 0
+      };
+    });
+
+    // Global summary
+    const summary = {
+      total_projects: projects.length,
+      projects_with_monolit: projects.filter(p => p.has_monolit).length,
+      projects_with_registry: projects.filter(p => p.has_registry).length,
+      projects_with_both: projects.filter(p => p.has_monolit && p.has_registry).length,
+      total_positions: projects.reduce((s, p) => s + p.position_stats.total_positions, 0),
+      total_monolit_linked: projects.reduce((s, p) => s + p.position_stats.monolit_linked, 0),
+      total_registry_linked: projects.reduce((s, p) => s + p.position_stats.registry_linked, 0),
+      total_both_linked: projects.reduce((s, p) => s + p.position_stats.both_linked, 0)
+    };
+
+    res.json({
+      success: true,
+      projects,
+      summary
+    });
+
+  } catch (error) {
+    console.error('[PortalProjects] Error fetching registry:', error);
+
+    const isConnTimeout = error.message?.includes('timeout') ||
+      error.message?.includes('Connection terminated') ||
+      error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT';
+
+    if (isConnTimeout) {
+      return res.json({
+        success: true,
+        projects: [],
+        summary: {},
+        _warning: 'Database waking up, please refresh in a moment'
+      });
+    }
+
+    res.status(500).json({ success: false, error: 'Failed to fetch project registry' });
+  }
+});
+
+/**
+ * GET /api/portal-projects/by-kiosk/:kioskType/:kioskProjectId
+ * Find portal project by kiosk reference (reverse lookup)
+ * NOTE: Must be defined BEFORE /:id to avoid route conflicts
+ */
+router.get('/by-kiosk/:kioskType/:kioskProjectId', async (req, res) => {
+  try {
+    const { kioskType, kioskProjectId } = req.params;
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
+
+    const result = await pool.query(
+      `SELECT pp.* FROM portal_projects pp
+       JOIN kiosk_links kl ON pp.portal_project_id = kl.portal_project_id
+       WHERE kl.kiosk_type = $1 AND kl.kiosk_project_id = $2`,
+      [kioskType, kioskProjectId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'No portal project found for this kiosk reference'
+      });
+    }
+
+    res.json({
+      success: true,
+      project: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('[PortalProjects] Error in reverse lookup:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to find portal project'
+    });
+  }
+});
+
+/**
  * GET /api/portal-projects
- * List all portal projects for current user
+ * List all portal projects + projects from all linked kiosks
+ * For authenticated users: show their projects
+ * For kiosks: show all projects (no auth)
  */
 router.get('/', async (req, res) => {
   try {
-    const userId = req.user.userId;
-    const pool = getPool();
+    const userId = req.user?.userId || 1; // Default to 1 for kiosk requests
 
-    const result = await pool.query(
+    // Check if PostgreSQL is available
+    const pool = safeGetPool();
+    if (!pool) {
+      console.warn('[PortalProjects] PostgreSQL not available, returning empty projects list');
+      return res.json({
+        success: true,
+        projects: [],
+        _warning: 'Database not configured - running in mock mode'
+      });
+    }
+
+    // Get all portal projects for this user
+    const portalResult = await pool.query(
       `SELECT
         portal_project_id,
         project_name,
         project_type,
         description,
+        stavba_name,
         owner_id,
         core_project_id,
         core_status,
         core_audit_result,
         core_last_sync,
         created_at,
-        updated_at
+        updated_at,
+        'portal' as source
        FROM portal_projects
        WHERE owner_id = $1
-       ORDER BY updated_at DESC`,
+       ORDER BY stavba_name NULLS LAST, updated_at DESC`,
       [userId]
     );
 
+    // Get all kiosk links for these projects
+    const kioskLinksResult = await pool.query(
+      `SELECT kl.*, pp.project_name
+       FROM kiosk_links kl
+       JOIN portal_projects pp ON kl.portal_project_id = pp.portal_project_id
+       WHERE pp.owner_id = $1
+       ORDER BY kl.last_sync DESC`,
+      [userId]
+    );
+
+    // Enrich portal projects with kiosk info
+    const projectsWithKiosks = portalResult.rows.map(project => ({
+      ...project,
+      kiosks: kioskLinksResult.rows.filter(link => link.portal_project_id === project.portal_project_id)
+    }));
+
     res.json({
       success: true,
-      projects: result.rows
+      projects: projectsWithKiosks,
+      total: projectsWithKiosks.length,
+      kiosk_links_count: kioskLinksResult.rows.length
     });
 
   } catch (error) {
     console.error('[PortalProjects] Error listing projects:', error);
+
+    // DB waking up (Render Free Tier sleep) — return empty list instead of 500
+    const isConnTimeout = error.message?.includes('timeout') ||
+      error.message?.includes('Connection terminated') ||
+      error.code === 'ECONNREFUSED' ||
+      error.code === 'ETIMEDOUT';
+
+    if (isConnTimeout) {
+      return res.json({
+        success: true,
+        projects: [],
+        _warning: 'Database waking up, please refresh in a moment'
+      });
+    }
+
     res.status(500).json({
       success: false,
       error: 'Failed to list projects'
@@ -78,12 +449,9 @@ router.get('/', async (req, res) => {
  * - description: string
  */
 router.post('/', async (req, res) => {
-  const pool = getPool();
-  const client = await pool.connect();
-
   try {
     const userId = req.user.userId;
-    const { project_name, project_type, description } = req.body;
+    const { project_name, project_type, description, stavba_name } = req.body;
 
     // Validation
     if (!project_name) {
@@ -95,42 +463,79 @@ router.post('/', async (req, res) => {
 
     const portal_project_id = `proj_${uuidv4()}`;
 
-    await client.query('BEGIN');
-
-    // Create portal project
-    const result = await client.query(
-      `INSERT INTO portal_projects (
+    // Check if PostgreSQL is available
+    const pool = safeGetPool();
+    if (!pool) {
+      // Return mock project if PostgreSQL not available (dev mode or misconfigured)
+      const mockProject = {
         portal_project_id,
         project_name,
-        project_type,
-        description,
-        owner_id,
-        core_status,
-        created_at,
-        updated_at
-      ) VALUES ($1, $2, $3, $4, $5, 'not_sent', NOW(), NOW())
-      RETURNING *`,
-      [portal_project_id, project_name, project_type || 'custom', description || '', userId]
-    );
+        project_type: project_type || 'custom',
+        description: description || '',
+        stavba_name: stavba_name || null,
+        owner_id: userId,
+        core_status: 'not_sent',
+        core_project_id: null,
+        core_audit_result: null,
+        core_last_sync: null,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
 
-    await client.query('COMMIT');
+      console.log(`[PortalProjects] Mock project created (no DB): ${portal_project_id} (${project_name})`);
+      return res.status(201).json({
+        success: true,
+        project: mockProject,
+        _warning: 'Database not configured - project not persisted'
+      });
+    }
+    const client = await pool.connect();
 
-    console.log(`[PortalProjects] Created project: ${portal_project_id} (${project_name})`);
+    try {
+      await client.query('BEGIN');
 
-    res.status(201).json({
-      success: true,
-      project: result.rows[0]
-    });
+      // Create portal project
+      const result = await client.query(
+        `INSERT INTO portal_projects (
+          portal_project_id,
+          project_name,
+          project_type,
+          description,
+          stavba_name,
+          owner_id,
+          core_status,
+          created_at,
+          updated_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, 'not_sent', NOW(), NOW())
+        RETURNING *`,
+        [portal_project_id, project_name, project_type || 'custom', description || '', stavba_name || null, userId]
+      );
+
+      await client.query('COMMIT');
+
+      console.log(`[PortalProjects] Created project: ${portal_project_id} (${project_name})`);
+
+      res.status(201).json({
+        success: true,
+        project: result.rows[0]
+      });
+    } catch (dbError) {
+      await client.query('ROLLBACK').catch(() => {});
+      console.error('[PortalProjects] DB error creating project:', dbError);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to create project'
+      });
+    } finally {
+      client.release();
+    }
 
   } catch (error) {
-    await client.query('ROLLBACK');
     console.error('[PortalProjects] Error creating project:', error);
     res.status(500).json({
       success: false,
       error: 'Failed to create project'
     });
-  } finally {
-    client.release();
   }
 });
 
@@ -142,7 +547,13 @@ router.get('/:id', async (req, res) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     const result = await pool.query(
       `SELECT * FROM portal_projects
@@ -185,7 +596,13 @@ router.put('/:id', async (req, res) => {
     const userId = req.user.userId;
     const { id } = req.params;
     const { project_name, project_type, description } = req.body;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     // Check ownership
     const checkResult = await pool.query(
@@ -261,7 +678,13 @@ router.delete('/:id', async (req, res) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     const result = await pool.query(
       `DELETE FROM portal_projects
@@ -301,7 +724,13 @@ router.delete('/:id', async (req, res) => {
  * Currently uses Workflow A (document parsing).
  */
 router.post('/:id/send-to-core', async (req, res) => {
-  const pool = getPool();
+  const pool = safeGetPool();
+  if (!pool) {
+    return res.status(503).json({
+      success: false,
+      error: 'Database not available'
+    });
+  }
   const client = await pool.connect();
 
   try {
@@ -316,6 +745,7 @@ router.post('/:id/send-to-core', async (req, res) => {
     );
 
     if (projectResult.rows.length === 0) {
+      client.release();
       return res.status(404).json({
         success: false,
         error: 'Project not found'
@@ -333,6 +763,7 @@ router.post('/:id/send-to-core', async (req, res) => {
     );
 
     if (filesResult.rows.length === 0) {
+      client.release();
       return res.status(400).json({
         success: false,
         error: 'No files uploaded for this project'
@@ -343,7 +774,10 @@ router.post('/:id/send-to-core', async (req, res) => {
     const firstFile = filesResult.rows[0];
 
     console.log(`[PortalProjects] Sending project ${id} to CORE via file: ${firstFile.file_name}`);
+    console.log(`[PortalProjects] Note: Using Workflow A (document parsing only). Multi-Role audit disabled.`);
 
+    // WARNING: performAudit() and enrichWithAI() have been removed (2025-12-10)
+    // Multi-Role validation is not part of the send-to-core workflow
     const coreResult = await concreteAgent.workflowAStart(firstFile.file_path, {
       projectId: id,
       projectName: project.project_name,
@@ -404,7 +838,13 @@ router.get('/:id/files', async (req, res) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     // Check project ownership
     const projectCheck = await pool.query(
@@ -448,7 +888,13 @@ router.get('/:id/kiosks', async (req, res) => {
   try {
     const userId = req.user.userId;
     const { id } = req.params;
-    const pool = getPool();
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
 
     // Check project ownership
     const projectCheck = await pool.query(
@@ -480,6 +926,265 @@ router.get('/:id/kiosks', async (req, res) => {
     res.status(500).json({
       success: false,
       error: 'Failed to fetch kiosk links'
+    });
+  }
+});
+
+/**
+ * GET /api/portal-projects/:id/unified
+ * Get unified project view with data from all linked kiosks
+ *
+ * Returns:
+ * - portal: Portal project data
+ * - files: Uploaded files
+ * - kiosks: Array of kiosk data with their project details
+ * - summary: Aggregated metrics from all kiosks
+ */
+router.get('/:id/unified', async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { id } = req.params;
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
+
+    // 1. Get portal project
+    const projectResult = await pool.query(
+      `SELECT * FROM portal_projects
+       WHERE portal_project_id = $1 AND owner_id = $2`,
+      [id, userId]
+    );
+
+    if (projectResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Project not found'
+      });
+    }
+
+    const project = projectResult.rows[0];
+
+    // 2. Get files
+    const filesResult = await pool.query(
+      `SELECT * FROM portal_files WHERE portal_project_id = $1 ORDER BY uploaded_at DESC`,
+      [id]
+    );
+
+    // 3. Get kiosk links
+    const kiosksResult = await pool.query(
+      `SELECT * FROM kiosk_links WHERE portal_project_id = $1 ORDER BY created_at DESC`,
+      [id]
+    );
+
+    // 4. Fetch data from each kiosk (async)
+    const kioskDataPromises = kiosksResult.rows.map(async (link) => {
+      try {
+        const kioskData = await fetchKioskData(link.kiosk_type, link.kiosk_project_id);
+        return {
+          kiosk_type: link.kiosk_type,
+          kiosk_project_id: link.kiosk_project_id,
+          status: link.status,
+          last_sync: link.last_sync,
+          data: kioskData,
+          error: null
+        };
+      } catch (error) {
+        return {
+          kiosk_type: link.kiosk_type,
+          kiosk_project_id: link.kiosk_project_id,
+          status: 'error',
+          last_sync: link.last_sync,
+          data: null,
+          error: error.message
+        };
+      }
+    });
+
+    const kioskData = await Promise.all(kioskDataPromises);
+
+    // 5. Calculate summary metrics
+    const summary = calculateUnifiedSummary(kioskData);
+
+    console.log(`[PortalProjects] Unified view for ${id}: ${kioskData.length} kiosks`);
+
+    res.json({
+      success: true,
+      portal: project,
+      files: filesResult.rows,
+      kiosks: kioskData,
+      summary
+    });
+
+  } catch (error) {
+    console.error('[PortalProjects] Error fetching unified view:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch unified project view'
+    });
+  }
+});
+
+/**
+ * Fetch data from a specific kiosk service
+ */
+async function fetchKioskData(kioskType, kioskProjectId) {
+  const kioskUrls = {
+    'monolit': process.env.MONOLIT_API_URL || 'https://monolit-planner-api-3uxelthc4q-ey.a.run.app',
+    'urs_matcher': process.env.URS_MATCHER_API_URL || 'https://urs-matcher-service-3uxelthc4q-ey.a.run.app',
+    'r0': process.env.MONOLIT_API_URL || 'https://monolit-planner-api-3uxelthc4q-ey.a.run.app'
+  };
+
+  const baseUrl = kioskUrls[kioskType];
+  if (!baseUrl) {
+    throw new Error(`Unknown kiosk type: ${kioskType}`);
+  }
+
+  let endpoint;
+  switch (kioskType) {
+    case 'monolit':
+      endpoint = `${baseUrl}/api/monolith-projects/${kioskProjectId}`;
+      break;
+    case 'r0':
+      endpoint = `${baseUrl}/api/r0/projects/${kioskProjectId}`;
+      break;
+    case 'urs_matcher':
+      endpoint = `${baseUrl}/api/jobs/${kioskProjectId}`;
+      break;
+    default:
+      throw new Error(`Unsupported kiosk type: ${kioskType}`);
+  }
+
+  const response = await fetch(endpoint, {
+    headers: { 'Content-Type': 'application/json' },
+    signal: AbortSignal.timeout(10000)
+  });
+
+  if (!response.ok) {
+    throw new Error(`Kiosk returned ${response.status}`);
+  }
+
+  return await response.json();
+}
+
+/**
+ * Calculate unified summary from all kiosk data
+ */
+function calculateUnifiedSummary(kioskData) {
+  const summary = {
+    total_kiosks: kioskData.length,
+    active_kiosks: kioskData.filter(k => k.status === 'active' && k.data).length,
+    error_kiosks: kioskData.filter(k => k.error).length,
+    metrics: {
+      total_concrete_m3: 0,
+      total_cost_czk: 0,
+      total_elements: 0,
+      urs_matched_items: 0
+    }
+  };
+
+  for (const kiosk of kioskData) {
+    if (!kiosk.data) continue;
+
+    switch (kiosk.kiosk_type) {
+      case 'monolit':
+        if (kiosk.data.project) {
+          summary.metrics.total_concrete_m3 += kiosk.data.project.concrete_m3 || 0;
+          summary.metrics.total_cost_czk += kiosk.data.project.sum_kros_czk || 0;
+          summary.metrics.total_elements += kiosk.data.project.element_count || 0;
+        }
+        break;
+
+      case 'r0':
+        if (kiosk.data.project) {
+          // R0 aggregates from captures
+          const elements = kiosk.data.elements || [];
+          summary.metrics.total_concrete_m3 += elements.reduce((sum, el) => sum + (el.volume_m3 || 0), 0);
+          summary.metrics.total_elements += elements.length;
+        }
+        break;
+
+      case 'urs_matcher':
+        if (kiosk.data.job || kiosk.data) {
+          const job = kiosk.data.job || kiosk.data;
+          summary.metrics.urs_matched_items += job.processed_rows || 0;
+        }
+        break;
+    }
+  }
+
+  return summary;
+}
+
+/**
+ * POST /api/portal-projects/:id/link-kiosk
+ * Link a kiosk project to this portal project
+ *
+ * Body:
+ * - kiosk_type: 'monolit' | 'urs_matcher' | 'r0' | 'rozpocet'
+ * - kiosk_project_id: string (ID in the kiosk's system)
+ */
+router.post('/:id/link-kiosk', async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { id } = req.params;
+    const { kiosk_type, kiosk_project_id } = req.body;
+
+    if (!kiosk_type || !kiosk_project_id) {
+      return res.status(400).json({
+        success: false,
+        error: 'kiosk_type and kiosk_project_id are required'
+      });
+    }
+
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({
+        success: false,
+        error: 'Database not available'
+      });
+    }
+
+    // Check project ownership
+    const projectCheck = await pool.query(
+      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1 AND owner_id = $2',
+      [id, userId]
+    );
+
+    if (projectCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: 'Project not found'
+      });
+    }
+
+    const link_id = `link_${uuidv4()}`;
+
+    // Insert or update kiosk link (upsert)
+    const result = await pool.query(
+      `INSERT INTO kiosk_links (link_id, portal_project_id, kiosk_type, kiosk_project_id, status, created_at, last_sync)
+       VALUES ($1, $2, $3, $4, 'active', NOW(), NOW())
+       ON CONFLICT (portal_project_id, kiosk_type)
+       DO UPDATE SET kiosk_project_id = $4, status = 'active', last_sync = NOW()
+       RETURNING *`,
+      [link_id, id, kiosk_type, kiosk_project_id]
+    );
+
+    console.log(`[PortalProjects] Linked kiosk ${kiosk_type}:${kiosk_project_id} to project ${id}`);
+
+    res.json({
+      success: true,
+      link: result.rows[0]
+    });
+
+  } catch (error) {
+    console.error('[PortalProjects] Error linking kiosk:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to link kiosk'
     });
   }
 });

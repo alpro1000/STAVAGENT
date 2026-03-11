@@ -7,14 +7,17 @@ import { useCreateSnapshot } from '../hooks/useCreateSnapshot';
 import DaysPerMonthToggle from './DaysPerMonthToggle';
 
 export default function KPIPanel() {
-  const { headerKPI, selectedBridge, daysPerMonth, activeSnapshot } = useAppContext();
+  const { headerKPI, selectedBridge, bridges, daysPerMonth, activeSnapshot } = useAppContext();
   const { handleCreateSnapshot, isCreating } = useCreateSnapshot();
+
+  // Get full bridge data for display
+  const currentBridge = bridges.find(b => b.bridge_id === selectedBridge);
 
   if (!selectedBridge || !headerKPI) {
     return (
-      <div className="kpi-float-card empty-state-kpi">
-        <div className="kpi-empty-icon">📊</div>
-        <p className="kpi-empty-text">Vyberte most pro zobrazení KPI</p>
+      <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-xl)' }}>
+        <div style={{ fontSize: '48px', opacity: 0.6 }}>📊</div>
+        <p className="u-text-muted">Vyberte objekt pro zobrazení KPI</p>
       </div>
     );
   }
@@ -28,23 +31,33 @@ export default function KPIPanel() {
   const isLocked = activeSnapshot !== null;
 
   return (
-    <div className="kpi-float-card">
-      <div className="kpi-header">
-        <div className="kpi-title-section">
-          <h2 className="kpi-bridge-title">
+    <div className="c-panel" style={{ marginBottom: 'var(--space-lg)' }}>
+      <div className="u-flex-between u-mb-md" style={{ flexWrap: 'wrap', gap: 'var(--space-md)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)', flexWrap: 'wrap' }}>
+          <h2 className="u-text-orange u-text-bold" style={{ fontSize: 'var(--font-size-xl)', margin: 0 }}>
             🏗️ {selectedBridge}
           </h2>
-          <p className="kpi-metadata">
-            {headerKPI.span_length_m && `Délka: ${headerKPI.span_length_m}m`}
-            {headerKPI.deck_width_m && ` | Šířka: ${headerKPI.deck_width_m}m`}
-            {headerKPI.pd_weeks && ` | PD: ${headerKPI.pd_weeks} týdnů`}
-          </p>
+          {currentBridge && (
+            <span className="u-text-bold" style={{ fontSize: 'var(--font-size-base)', color: 'var(--text-primary)' }}>
+              {currentBridge.object_name}
+            </span>
+          )}
+          {currentBridge?.project_name && (
+            <span style={{ fontSize: 'var(--font-size-sm)', color: 'var(--text-secondary)' }}>
+              | 📁 {currentBridge.project_name}
+            </span>
+          )}
+          {headerKPI.sum_concrete_m3 > 0 && (
+            <span className="u-text-muted" style={{ fontSize: 'var(--font-size-sm)' }}>
+              | 🧱 {formatNumber(headerKPI.sum_concrete_m3)} m³
+            </span>
+          )}
         </div>
 
-        <div className="kpi-header-controls">
+        <div className="u-flex u-gap-sm" style={{ alignItems: 'center' }}>
           <DaysPerMonthToggle />
           <button
-            className={`btn-lock-kpi ${isLocked ? 'locked' : 'unlocked'}`}
+            className={`c-btn ${isLocked ? 'c-btn--success' : 'c-btn--primary'}`}
             onClick={handleCreateSnapshot}
             disabled={isCreating || isLocked}
             title={isLocked ? "Data jsou zafixována (snapshot vytvořen)" : "Zafixovat aktuální stav (vytvořit snapshot)"}
@@ -82,7 +95,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card kpi-card-success">
           <div className="kpi-card-label">
-            <span>⏱️</span> Měsíce (výpočet)
+            <span>⏱️</span> Měsíce
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.estimated_months, 1)}
@@ -92,7 +105,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>📆</span> Týdny (výpočet)
+            <span>📆</span> Týdny
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.estimated_weeks, 1)}
@@ -103,7 +116,7 @@ export default function KPIPanel() {
         {/* ROW 2: Averages */}
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>👥</span> Průměr: lidi
+            <span>👥</span> Lidé (Ø)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.avg_crew_size, 1)}
@@ -113,7 +126,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>💵</span> Průměr: Kč/hod
+            <span>💵</span> Kč/hod (Ø)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.avg_wage_czk_ph, 0)}
@@ -123,7 +136,7 @@ export default function KPIPanel() {
 
         <div className="kpi-card">
           <div className="kpi-card-label">
-            <span>⏰</span> Průměr: hod/den
+            <span>⏰</span> Hod/den (Ø)
           </div>
           <div className="kpi-card-value">
             {formatNumber(headerKPI.avg_shift_hours, 1)}

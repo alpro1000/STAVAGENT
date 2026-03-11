@@ -52,14 +52,23 @@ class Settings(BaseSettings):
     # ==========================================
     # AI MODELS
     # ==========================================
-    CLAUDE_MODEL: str = Field(default="claude-sonnet-4-5-20250929", description="Claude model (Sonnet 4.5 - latest)")
-    GEMINI_MODEL: str = Field(default="gemini-2.0-flash-exp", description="Gemini model (2.0 Flash - FREE, fastest)")
-    GPT4_MODEL: str = Field(default="gpt-4-vision-preview", description="GPT-4 model")
+    CLAUDE_MODEL: str = Field(default="claude-sonnet-4-6", description="Claude model (Sonnet 4.6 - latest Feb 2026)")
+    GEMINI_MODEL: str = Field(default="gemini-2.5-flash-lite", description="Gemini model (2.5 Flash Lite - Feb 2026, fast, cheap)")
+    GPT4_MODEL: str = Field(default="gpt-4.1", description="GPT-4 model (gpt-4.1 - Feb 2026, includes vision)")
     CLAUDE_MAX_TOKENS: int = Field(default=4000, description="Max tokens for Claude")
     GPT4_MAX_TOKENS: int = Field(default=4000, description="Max tokens for GPT-4")
 
-    # Multi-Role LLM selection: "claude", "gemini", "auto" (Gemini with Claude fallback)
-    MULTI_ROLE_LLM: str = Field(default="gemini", description="LLM for Multi-Role: claude, gemini, auto")
+    # Multi-Role LLM selection: "claude", "gemini", "bedrock", "auto" (Gemini → Bedrock → Claude)
+    MULTI_ROLE_LLM: str = Field(default="gemini", description="LLM for Multi-Role: claude, gemini, bedrock, auto")
+
+    # ==========================================
+    # AWS BEDROCK (uses AWS Activate credits)
+    # ==========================================
+    AWS_ACCESS_KEY_ID: str = Field(default="", description="AWS access key for Bedrock")
+    AWS_SECRET_ACCESS_KEY: str = Field(default="", description="AWS secret key for Bedrock")
+    AWS_DEFAULT_REGION: str = Field(default="eu-central-1", description="AWS region (Frankfurt)")
+    BEDROCK_MODEL_ID: str = Field(default="anthropic.claude-3-5-haiku-20241022-v1:0", description="Bedrock model ID")
+    BEDROCK_ENABLED: bool = Field(default=True, description="Enable Bedrock as LLM provider")
     
     # ==========================================
     # WORKFLOW FEATURE FLAGS

@@ -1,0 +1,278 @@
+ČESKÉ DRÁHY, státní organizace
+DIVIZE DOPRAVNÍ CESTY, o.z.
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB ČESKÝCH DRAH
+Kapitola 11
+TRVALÉ OPLOCENÍ
+Třetí - aktualizované vydání
+Schváleno VŘ DDC č.j. TÚDC-15036/2000 ze dne 18.10.2000
+Účinnost od 1.12.2000
+Praha 2000
+Označení textu po stranách znamená věcnou změnu textu oproti TKP 98 (v kapitole č. 7
+oproti aktualizovanému vydání z roku 1999). Tento způsob označení není použit ve článku
+x.12 - Související normy a předpisy.
+Všechna práva vyhrazena.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím
+systému nebo přenášena, a to v žádné formě a žádnými prostředky elektronickými,
+fotokopírovacími či jinými, bez předchozího písemného svolení vydavatele.
+Výhradní distributor: České dráhy, státní organizace,
+Divize dopravní cesty, odštěpný závod
+Technická ústředna dopravní cesty
+Sekce technické dokumentace - Oddělení typové dokumentace
+772 58 Olomouc, Nerudova l
+Obsah
+11.1 ÚVOD 2
+11.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 2
+11.2.1 Sloupky 2
+11.2.2 Pletivo, napínací a vázací dráty 2
+11.2.3 Ostnatý drát 2
+11.2.4 Betonové základy 2
+11.2.5 Vrata a vrátka 2
+11.2.6 Betonové plotové dílce 3
+11.3 TECHNOLOGICKÉ POSTUPY PRACÍ 3
+11.3.1 Konstrukce oplocení 3
+11.3.2 Ochrana proti korozi 3
+11.3.3 Mechanizace 3
+11.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 3
+11.4.1 Dodávka 3
+11.4.2 Skladování 4
+11.4.2.1 Kovové sloupky, vrata a vrátka 4
+11.4.2.2 Železobetonové sloupky 4
+11.4.2.3 Drátěné pletivo 4
+11.4.2.4 Nátěrové hmoty 4
+11.4.3 Průkazní zkoušky 4
+11.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 4
+11.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 4
+11.7 KLIMATICKÁ OMEZENÍ 4
+11.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 4
+11.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A DEFORMACÍ 5
+11.10 EKOLOGIE 5
+11.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 5
+11.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 5
+11.12.1 Technické normy 5
+11.12.2 Předpisy 6
+11.12.3 Související kapitoly TKP 6
+1
+11.1 ÚVOD
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP -
+Všeobecně.
+Kapitola 11 TKP platí pro montované, trvalé oplocení drážního pozemku z drátěného pletiva nebo z drátěného
+pletiva kombinovaného s ostnatým drátem a montované oplocení ze železobetonových desek s kovovými nebo
+betonovými sloupky.
+Zděné oplocení určují ZTKP.
+Oplocení se provádí podle návrhu v projektové dokumentaci (dále jen dokumentaci) nebo podle pokynu
+stavebního dozoru, a to v souladu s TNŽ 73 6334.
+11.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+Kovové části oplocení na elektrizované trati, které nelze umístit mimo prostoru ohrožení trakčního vedení musí
+být chráněny podle kapitoly 31, čl. 31.3.10; na neelektrizovaných tratích nesmí být s kolejemi spojeny.
+11.2.1 Sloupky
+Plotové sloupky jsou buď kovové, nebo betonové, jak je předepsáno v dokumentaci nebo stanoveno stavebním
+dozorem. Plotové sloupky musí splňovat následující požadavky:
+Kovové plotové sloupky, vzpěry a vratové sloupky jsou z trubek normalizované výroby. Minimální vnější
+průměr ocelové trubky je 38 mm. Minimální tloušťka stěny je 2 mm. Materiál ocelových trubek použitých na
+plotové a vratové sloupky je z ocelí podle ČSN 73 1401 a musí dále odpovídat požadavkům ČSN 42 0142,
+ČSN 42 5723 a kapitoly 19 TKP. Plotové sloupky, vzpěry a vratové sloupky jsou dodávány buď pokovované,
+nebo natřené základní syntetickou barvou.
+Železobetonové plotové sloupky musí být nové, z prefabrikovaných dílců. Sloupky musí odpovídat požadavkům
+ČSN 72 3000 a kapitoly 17 TKP. Třída betonu použitého pro výrobu železobetonových plotových sloupků je
+minimálně B 25. Není připuštěna tvorba výkvětů, barva betonu musí být stejnoměrná, šedá.
+11.2.2 Pletivo, napínací a vázací dráty
+Drátěné pletivo bude použito nové, musí odpovídat požadavkům ČSN 15 3152 nebo ČSN 15 3153. Rozměr ok
+drátěného pletiva je maximálně 50x50 mm, minimální průměr drátu pletiva je 1,8 mm. Drátěné pletivo je buď
+z ocelového pozinkovaného drátu s volnými okraji bez napínacího drátu, z ocelového pozinkovaného drátu
+s provlečeným napínacím drátem, nebo z ocelového pozinkovaného drátu potaženého plastem.
+Napínací drát musí být nový, pokovovaný, minimálního průměru 3 mm.
+Vázací drát musí být nový, pokovovaný, minimálního průměru 2 mm.
+11.2.3 Ostnatý drát
+Ostnatý drát, kterým může být doplněn plot z drátěného pletiva, musí být nový a pokovovaný. Musí odpovídat
+požadavkům ČSN 15 3905. Rozměry ostnatého drátu musí odpovídat požadavkům ČSN 15 3910 nebo
+ČSN 15 3911.
+11.2.4 Betonové základy
+Betonové patky musí být v souladu s dokumentací buď betonované na místě, nebo prefabrikované. Betonové
+patky musí být vyrobeny z betonu minimálně třídy B10 a musí splňovat požadavky kapitoly 17 TKP.
+11.2.5 Vrata a vrátka
+Plotová vrata a vrátka se vyrobí z kovových tenkostěnných uzavřených nebo trubkových profilů, plechů
+a ploché oceli podle ČSN 73 1401. Vrata a vrátka jsou pokovována nebo natřena základním nátěrem proti
+korozi, jak vyžaduje dokumentace nebo ZTKP.
+2
+11.2.6 Betonové plotové dílce
+Betonové plotové dílce musí být nové, prefabrikované. Musí odpovídat požadavkům ČSN 72 3000 a kapitoly 17
+TKP. Třída betonu použitého pro výrobu železobetonových plotových sloupků je minimálně B 25. Není
+připuštěna tvorba výkvětů, barva betonu musí být stejnoměrná, šedá.
+11.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+11.3.1 Konstrukce oplocení
+Výkopy patek a otvory pro plotové sloupky musí být vykopány v linii určené dokumentací nebo stavebním
+dozorem.
+V souladu s dokumentací vykope zhotovitel otvory pro patky. Při použití monolitických betonových patek osadí
+do připravených otvorů do správné výšky plotové sloupky a řádně je uklínuje. Po odsouhlasení stavebním
+dozorem mohou být patky betonované na místě vybetonovány. Povrch patek v úrovni terénu musí být hladký
+a musí být ošetřován po dobu 7 dní. Napínací dráty pletiva je možno ke sloupkům monoliticky betonovaným
+připevnit 5 dní po skončení betonáže. Prefabrikované patky se osadí do otvorů, jejichž dno se vysype pískem. Po
+odsouhlasení stavebním dozorem základové patky zasype zhotovitel zhutněným zásypem a mohou být
+připevněny napínací dráty.
+Montáž oplocení je nutno začínat od vrat nebo vrátek. Drátěné pletivo, případně ostnatý drát, musí být řádně
+připevněno k napínacím drátům a plotovým sloupkům. Monolitické betonové pásy musí být ošetřovány po dobu
+7 dní. Požadavky na kvalitu betonu jsou stejné jako pro betonové patky plotových sloupků.
+Pokud není zřízení vrat a vrátek podrobně uvedeno v dokumentaci, postupuje se podle TNŽ 73 6334. Připravené
+sloupky se namontují do svislé polohy. Řádné osazení musí zajistit snadné otvírání i zavírání a zastavení
+v libovolné poloze. Vrata a vrátka musí být v otevřené i zavřené poloze zajistitelná. U vrat, kterými projíždějí
+motorová nebo kolejová vozidla a pro jejichž rozměry byla povolena výjimka v souladu s příslušnými předpisy,
+se označí vratové pilíře a rámy vratových křídel výstražnými černožlutými pruhy.
+11.3.2 Ochrana proti korozi
+Drátěné pletivo pokovované nebo potažené plastem nevyžaduje žádnou další ochranu proti korozi. Žádnou další
+ochranu proti korozi nevyžadují rovněž pokovované plotové sloupky, vzpěry, vrata a vrátka.
+U plotových sloupků, vrat a vrátek, které byly na stavbu dodány se základním nátěrem, provede zhotovitel jejich
+definitivní osazení, odstranění rzi, nečistot a vlhkosti podle ČSN ISO 85 01-1, obnoví základní nátěr a provede
+nátěr vrchní barvou. Nátěrový systém určuje dokumentace. Nejdelší přípustnou dobu mezi dokončením úpravy
+povrchu a zhotovením prvního nátěru určuje ČSN 03 8220. Před nanášením další vrstvy nátěru je nutno
+zkontrolovat, případně obnovit čistotu povrchu předcházející vrstvy. Další vrstvu nátěru lze nanášet po souhlasu
+stavebního dozoru.
+Ochrana proti korozi, způsobené povětrnostními vlivy a korozi způsobené bludnými proudy musí splňovat
+požadavky kapitoly 25 TKP.
+11.3.3 Mechanizace
+Připouští se použití mechanizace za podmínek uvedených v oddíle 11.11 této kapitoly TKP a při dodržení
+požadované kvality.
+11.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+11.4.1 Dodávka
+Všechny dodávané součásti oplocení musí být nové, jejich kvalita musí odpovídat požadavkům uvedeným
+v oddíle 11.2 této kapitoly TKP.
+Dodaný materiál musí mít předepsanou kvalitu dokladovanou atestem nebo certifikací.
+3
+11.4.2 Skladování
+11.4.2.1 Kovové sloupky, vrata a vrátka
+Skladování těchto součásti musí odpovídat požadavkům bývalé ON 73 3630.
+11.4.2.2 Železobetonové sloupky
+Železobetonové sloupky oplocení je nutno na stavbě skladovat naležato na pevném vyrovnaném podloží
+s dřevěnými proklady, umístěnými 0,30 m od kraje sloupku, a to do maximální výšky 2 m.
+11.4.2.3 Drátěné pletivo
+Drátěné pletivo se na stavbě skladuje jen v krytých suchých skladech tak, aby nedošlo k jeho poškození
+deformací nebo vlhkostí. Drátěné pletivo potažené plastem se musí skladovat v prostorách, které jsou prosté
+chemických výparů, a nesmí se skladovat v bezprostřední blízkosti topných těles.
+11.4.2.4 Nátěrové hmoty
+Řeší kapitola 25 TKP.
+11.4.3 Průkazní zkoušky
+Nejsou obecně požadovány. Pokud budou stavebním dozorem požadovány zkoušky pro betonové základy,
+provedou se podle kapitoly 17 TKP.
+11.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Není obecně požadováno. Pokud budou stavebním dozorem požadovány zkoušky pro betonové základy,
+provedou se podle kapitoly 17 TKP.
+11.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+Směrové a výškové vedení linie plotu musí mít plynulý průběh bez viditelných nerovností.
+Přípustné směrové odchylky od předepsaného průběhu se musí pohybovat v toleranci 30 mm, pokud není
+v dokumentaci předepsáno jinak.
+Přípustné výškové odchylky od předepsaného průběhu se musí pohybovat v toleranci 30 mm, pokud není
+v dokumentaci předepsáno jinak.
+Opotřebení materiálů uvedených v oddíle 11.2 těchto TKP není přípustné.
+Záruční dobu všeobecně stanoví kapitola 1 TKP. Je-li ke zhotovení trvalého oplocení použito drátěné pletivo,
+které není potaženo plastovou ochranou, je povinností zhotovitele provést po jednom roce po výstavbě jeho
+kompletní protikorozní nátěr. Po celou záruční dobu je třeba sledovat celkový stav oplocení a jakákoliv zjištění
+zakládající důvod k zahájení reklamačního řízení musí být správcem bez zbytečného odkladu písemně oznámena
+zhotoviteli a investorovi.
+11.7 KLIMATICKÁ OMEZENÍ
+Betonáž monolitických patek a pásů za nízkých teplot musí být v souladu s ustanoveními kapitoly 17 TKP
+a článku 12 ČSN 73 2400.
+Olejové a syntetické nátěry lze provádět pouze za teplot vyšších než +5°C, akrylátové od +8°C.
+11.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+Při odsouhlasení a převzetí prací zkontroluje stavební dozor dodržení tolerancí ve směrovém a výškovém vedení
+oplocení. Sloupky oplocení musí být osazeny svisle a řádně ukotveny. Napínací dráty musí být utaženy a drátěné
+pletivo přichyceno k napínacím drátům a sloupkům, případně k obrubníkům. U betonových konstrukcí není
+4
+připuštěna tvorba výkvětů, barva betonu musí být stejnoměrná, šedá. Vrata a vrátka musí být řádně osazena,
+vybavena zavíracím mechanizmem a klikou se štíty, případně dorazem zástrče a okem pro zápěrnou tyč. U vrat
+a vrátek vyzkouší stavební dozor celkovou funkci.
+U pokovovaných součástí oplocení vyzkouší stavební dozor tloušťku kovového povlaku a jeho přilnavost.
+Zkoušky zinkového povlaku se provádějí podle ČSN EN 22063. Povlak nesmí být narušen a ani se nesmí
+oddělovat od podkladu. U natřených konstrukcí se nepřipouští žádný rozsah poškození nátěru.
+Jsou-li součástí oplocení vrata a vrátka, stavební dozor při převzetí zkontroluje, zda je plot od koleje vzdálen
+tak, aby okraj vrat a vrátek byl v nejnepříznivější poloze vzdálen od koleje v přímé o rozchodu 1435 mm
+nejméně 2500 mm. V oblouku musí být tato vzdálenost zvětšena s ohledem na rozšíření a naklonění
+průjezdného průřezu (ČSN 73 6320).
+U kovových částí oplocení na elektrizované trati musí být ověřeno splnění podmínek, které jsou předepsány
+dokumentem podle 31.3.10.
+Stavební dozor je povinen zkontrolovat, zda rozsah prací provedených zhotovitelem odpovídá požadovanému
+rozsahu podle smlouvy o dílo a rozsahu vykázanému ve zjišťovacím protokolu.
+11.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A DEFORMACÍ
+Není požadováno.
+11.10 EKOLOGIE
+Při pracích na staveništi je povinností zhotovitele při manipulaci s škodlivými látkami a následně při likvidaci
+odpadů postupovat v souladu s předpisy uvedenými v kapitole 1 TKP, což je zejména zákon č. 513/91 Sb.,
+o podrobnostech nakládání s odpady, a zákon č. 138/73 Sb., o vodách.
+11.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví kapitola 1
+TKP.
+11.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich
+aktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj.
+právních předpisů, technických norem a předpisů a předpisů ČD.
+11.12.1 Technické normy
+ČSN 03 8220 Zásady povrchové úpravy nátěrem
+ČSN 15 3152 Drôtěné pletivá so štvorúhelníkovými okami a s voľnými okrajmi. Rozmery.
+ČSN 15 3153 Drôtěné pletivá so štvorúhelníkovými okami a s napínacími drôtmi. Rozmery.
+ČSN 15 3905 Ostnatý drôt. Technické dodacie predpisy.
+ČSN 15 3910 Ostnatý drôt. Typ Y. Rozmery.
+ČSN 15 3911 Ostnatý drôt. Typ G. Rozmery.
+ČSN 33 2000-4-41 Elektrotechnické předpisy . Elektrická zařízení Část 4: Bezpečnost. Kapitola 41: Ochrana
+před úrazem elektrickým proudem.
+ČSN 33 2000-5-54 Elektrotechnické předpisy. Elektrická zařízení. Část 5: Výběr a stavba elektrických
+zařízení. Kapitola 54: Uzemnění a ochranné vodiče
+ČSN 42 0142 Trubky ocelové svařované přesné a závitové. Technické dodací předpisy
+ČSN 42 5723 Trubky z ocelí tříd 11 a 12 podélně svařované hladké do vnějšího průměru 152 mm.
+Rozměry.
+ČSN 49 0071 Usporiadanie skladov dreva z h1adiska požiarnej bezpečnosti
+ČSN 65 0201 Hořlavé kapaliny. Provozovny a sklady
+ČSN 72 3000 Výroba a kontrola betonových stavebních dílců. Společná ustanovení
+ČSN 73 0802 Požární bezpečnost staveb. Nevýrobní objekty
+5
+ČSN 73 0804 Požární bezpečnost staveb. Výrobní objekty
+ČSN 73 1401 Navrhování ocelových konstrukcí.
+ČSN 73 2400 Provádění a kontrola betonových konstrukcí.
+ČSN 73 5530 Sklady výbušnin a výbušných předmětů.
+ČSN 73 6320 Průjezdné průřezy na dráhách celostátních, dráhách regionálních a vlečkách normálního
+rozchodu
+ČSN 73 6380 Železniční přejezdy a přechody
+ČSN EN 22 063 (03 8551) Kovové a jiné anorganické povlaky. Žárové stříkání. Zinek, hliník a jejich slitiny
+ČSN ISO 3864 (01 8010) Bezpečnostní barvy a bezpečnostní značky
+ČSN ISO 8501-1 (03 8221) Příprava ocelových podkladů před nanesením nátěrových hmot a obdobných
+výrobků. Vizuální vyhodnocení čistoty povrchu. Část 1: Stupně zarezavění a stupně
+přípravy ocelového podkladu bez povlaku a ocelového podkladu po úplném
+odstranění předchozích povlaků
+TNŽ 73 6334 Oplocení a zábradlí na drahách celostátních a regionálních
+býv. ON 73 3630 Zámečnické práce stavební. Základní ustanovení.
+11.12.2 Předpisy
+ČD Op 16 Pravidla o bezpečnosti a ochraně zdraví při práci
+Vyhláška č. 324/1990 Sb. Vyhláška o bezpečnosti práce a technických zařízení při stavebních pracích
+Výnos federálního ministerstva dopravy č.j. 42 148/78-13 pro rozměry vrat pro kolejová vozidla a mechanismy
+traťového hospodářství
+Zákon č. 65/1965 Sb. Zákoník práce včetně všech změn
+Zákon č. 125/1997 Sb. o odpadech
+Zákon č. 138/1973 Sb. o vodách (vodní zákon), ve znění pozdějších předpisů
+Zákon č. 513/1991 Sb. obchodní zákoník
+11.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 17 - Beton pro konstrukce
+Kapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí
+Kapitola 27 - Zabezpečovací zařízení
+Kapitola 31 - Trakční vedení
+6
+Poznámky:
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB ČESKÝCH DRAH
+Vydavatel: České dráhy, s.o. - Divize dopravní cesty, o.z.
+P r v n í v y d á n í / z roku 1996/ bylo vyhotoveno a připomínkováno v tomto složení:
+Zpracovatel: PRAGOPROJEKT, a.s., a SUDOP Praha, a.s.
+Zpracovatel kap. 11: Ing. Hana Staňková (SUDOP Praha, a.s.)
+Technická rada: Ing. Milan Strnad (Pragoprojekt, a.s.), Ing. Miloslav Bažant (Pragoprojekt, a.s.),
+Ing. Jiří Stříbrný (SUDOP Praha, a.s.), Ing. Petr Lapáček (SUDOP Praha, a.s.),
+Ing. Vítězslav Herle (SG-Geotechnika, a.s.), Ing. Jiří Bureš (ČD-DDC),
+Ing. Ondřej Chládek (ČD-DDC), Ing. Danuše Marusičová (ČD-DDC),
+Ing. Pavel Stoulil (MD ČR)
+T ř e t í - aktualizované v y d á n í /z roku 2000/ :
+Zpracovatel: České dráhy, s.o., DDC, o.z., Technická ústředna dopravní cesty Praha
+Gestor kapitoly 11: Ing. Hana Bouberlová (ČD-DDC O13)
+Zpracovatel připomínek ke kapitole 11:
+Ing. Josef Dekastello (ČD, DDC, Technická ústředna dopravní cesty - sekce 13)
+Distribuce: České dráhy, s.o., DDC, o.z
+Technická ústředna dopravní cesty - Sekce technické dokumentace
+772 58 Olomouc, Nerudova l
+tel. 950-2241, st. tel. 068-4722241
+fax 950-5290, st. fax 068-4725290
+e-mail: TUDCOTDOLCsek@tudc.olc.cdrail.cz

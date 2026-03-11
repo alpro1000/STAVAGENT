@@ -12,7 +12,6 @@ import { dirname, join } from 'path';
 import fs from 'fs';
 
 // Routes
-import authRoutes from './src/routes/auth.js';
 import uploadRoutes from './src/routes/upload.js';
 import positionsRoutes from './src/routes/positions.js';
 import bridgesRoutes from './src/routes/bridges.js';
@@ -23,10 +22,16 @@ import mappingRoutes from './src/routes/mapping.js';
 import configRoutes from './src/routes/config.js';
 import snapshotsRoutes from './src/routes/snapshots.js';
 import otskpRoutes from './src/routes/otskp.js';
-import adminRoutes from './src/routes/admin.js';
 import documentsRoutes from './src/routes/documents.js';
 import sheathingRoutes from './src/routes/sheathing.js';
+import formworkCalcRoutes from './src/routes/formwork-calculator.js';
+import formworkAssistantRoutes from './src/routes/formwork-assistant.js';
+import exportToRegistryRoutes from './src/routes/export-to-registry.js';
 import debugRoutes from './src/routes/debug.js';
+import r0Routes from './src/routes/r0.js';
+import kbResearchRoutes from './src/routes/kb-research.js';
+import registryRoutes from './src/routes/registry.js';
+import relinkRoutes from './src/routes/relink.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -35,7 +40,6 @@ import { logger } from './src/utils/logger.js';
 import { schedulePeriodicCleanup } from './src/utils/fileCleanup.js';
 
 // Middleware
-import { requireAuth } from './src/middleware/auth.js';
 import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter } from './src/middleware/rateLimiter.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -45,19 +49,18 @@ const __dirname = dirname(__filename);
 const PORT = process.env.PORT || 3001;
 
 // CORS configuration - support multiple origins
-const ALLOWED_ORIGINS = [
+// Deduplicate CORS origins (CORS_ORIGIN env may overlap with hardcoded entries)
+const ALLOWED_ORIGINS = [...new Set([
   // Local development
   'http://localhost:5173',
   'http://localhost:3000',
-  // Monolit-Planner domains
-  'https://monolit-planner-frontend.onrender.com', // Production
-  'https://monolit-planner-test.onrender.com',    // Test
-  // StavaAgent Portal domains (auth & redirect)
-  'https://stavagent-portal-frontend.onrender.com',
-  'https://stavagent-portal-test.onrender.com',
+  // Monolit-Planner frontend (Vercel)
+  'https://monolit-planner-frontend.vercel.app',
+  // StavAgent Portal
+  'https://www.stavagent.cz',
   // Custom origin from environment
-  process.env.CORS_ORIGIN
-].filter(Boolean); // Remove undefined/null values
+  process.env.CORS_ORIGIN,
+].filter(Boolean))];
 
 // Initialize Express
 const app = express();
@@ -66,8 +69,9 @@ const app = express();
 // This prevents IP spoofing attacks in local development
 // Enable ONLY:
 // 1. On Render (detected by RENDER env var), OR
-// 2. Explicitly with TRUST_PROXY=true env var
-const shouldTrustProxy = process.env.RENDER === 'true' || process.env.TRUST_PROXY === 'true';
+// 2. On Google Cloud Run (detected by K_SERVICE env var set automatically by Cloud Run), OR
+// 3. Explicitly with TRUST_PROXY=true env var
+const shouldTrustProxy = process.env.RENDER === 'true' || process.env.TRUST_PROXY === 'true' || !!process.env.K_SERVICE;
 if (shouldTrustProxy) {
   app.set('trust proxy', 1);
   console.log('[Security] Trust proxy enabled (behind verified proxy)');
@@ -87,6 +91,11 @@ app.use(cors({
       return callback(null, true);
     }
 
+    // Allow Vercel preview deployments (PR previews, branch deploys)
+    if (origin.endsWith('.vercel.app')) {
+      return callback(null, true);
+    }
+
     if (ALLOWED_ORIGINS.includes(origin)) {
       callback(null, true);
     } else {
@@ -97,8 +106,11 @@ app.use(cors({
   credentials: true
 }));
 
-// Logging
-app.use(morgan('combined', { stream: { write: msg => logger.info(msg.trim()) } }));
+// Logging (exclude healthcheck requests from logs)
+app.use(morgan('combined', {
+  skip: (req, res) => req.path === '/healthcheck',
+  stream: { write: msg => logger.info(msg.trim()) }
+}));
 
 // Rate limiting - apply to all routes by default
 app.use(apiLimiter);
@@ -126,14 +138,28 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Keep-Alive healthcheck (with secret key protection)
+app.get('/healthcheck', (req, res) => {
+  const keepAliveKey = process.env.KEEP_ALIVE_KEY;
+
+  // If no key configured, disable endpoint
+  if (!keepAliveKey) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+
+  // Validate X-Keep-Alive-Key header
+  const providedKey = req.headers['x-keep-alive-key'];
+
+  if (providedKey !== keepAliveKey) {
+    // Return 404 to hide endpoint existence
+    return res.status(404).json({ error: 'Not found' });
+  }
+
+  // Return minimal response (no DB queries)
+  res.json({ status: 'alive', service: 'monolit-planner' });
+});
+
 // API Routes
-// Auth routes (no auth required for login/register)
-app.use('/api/auth', authLimiter, authRoutes);
-
-// Admin routes (requires authentication + admin role)
-app.use('/api/admin', adminRoutes);
-
-// Protected routes (authentication will be applied within each route handler)
 app.use('/api/upload', uploadLimiter, uploadRoutes);
 app.use('/api/positions', positionsRoutes);
 app.use('/api/bridges', bridgesRoutes);
@@ -146,7 +172,21 @@ app.use('/api/snapshots', snapshotsRoutes);
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
 app.use('/api/documents', uploadLimiter, documentsRoutes);
 app.use('/api/sheathing', sheathingRoutes);
-app.use('/api/debug', debugRoutes); // 🚨 DEBUG ONLY - disable in production
+app.use('/api/formwork-calculator', formworkCalcRoutes);
+app.use('/api/formwork-assistant', formworkAssistantRoutes);
+app.use('/api/export-to-registry', exportToRegistryRoutes);
+app.use('/api/r0', r0Routes);
+app.use('/api/kb/research', kbResearchRoutes);
+app.use('/api/v1/registry', registryRoutes);
+app.use('/api/relink', relinkRoutes);
+
+// DEBUG routes - ONLY enabled in development
+if (process.env.NODE_ENV !== 'production') {
+  app.use('/api/debug', debugRoutes);
+  logger.info('🐛 DEBUG routes enabled (development mode)');
+} else {
+  logger.info('🔒 DEBUG routes disabled (production mode)');
+}
 
 // 404 handler
 app.use((req, res) => {

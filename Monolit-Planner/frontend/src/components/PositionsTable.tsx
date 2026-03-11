@@ -10,12 +10,15 @@ import { usePositions } from '../hooks/usePositions';
 import { useSnapshots } from '../hooks/useSnapshots';
 import { positionsAPI } from '../services/api';
 import type { Position, Subtype, Unit } from '@stavagent/monolit-shared';
+import { SUBTYPE_LABELS, calculateElementTotalDays } from '@stavagent/monolit-shared';
 import PositionRow from './PositionRow';
 import SnapshotBadge from './SnapshotBadge';
 import PartHeader from './PartHeader';
 import WorkTypeSelector from './WorkTypeSelector';
 import NewPartModal from './NewPartModal';
 import CustomWorkModal from './CustomWorkModal';
+import FormworkCalculatorModal from './FormworkCalculatorModal';
+import type { FormworkCalculatorRow } from '@stavagent/monolit-shared';
 
 export default function PositionsTable() {
   const { selectedBridge, positions, setPositions, setHeaderKPI, showOnlyRFI } = useAppContext();
@@ -28,6 +31,13 @@ export default function PositionsTable() {
   const [showNewPartModal, setShowNewPartModal] = useState(false);
   const [showCustomWorkModal, setShowCustomWorkModal] = useState(false);
   const [pendingCustomWork, setPendingCustomWork] = useState<{ subtype: Subtype; } | null>(null);
+  const [showFormworkCalc, setShowFormworkCalc] = useState(false);
+  const [formworkCalcPartName, setFormworkCalcPartName] = useState<string | null>(null);
+  const [formworkCalcElementDays, setFormworkCalcElementDays] = useState<number>(0);
+
+  // Resizable column state
+  const [workColumnWidth, setWorkColumnWidth] = useState<number>(150); // Default width in pixels
+  const [isResizing, setIsResizing] = useState(false);
 
   // Group positions by part_name and sort each group (beton first, then others)
   const groupedPositions = useMemo(() => {
@@ -78,25 +88,27 @@ export default function PositionsTable() {
     updatePositions(updates);
   };
 
-  // Handle item name update from PartHeader
-  const handleItemNameUpdate = (partName: string, newItemName: string) => {
-    // Update item_name for all positions in this part
-    const partPositions = positions.filter(p => p.part_name === partName);
+  // Handle part name update from PartHeader
+  // This updates the part_name field for ALL positions in this construction part
+  const handlePartNameUpdate = (oldPartName: string, newPartName: string) => {
+    // Update part_name for all positions in this part
+    const partPositions = positions.filter(p => p.part_name === oldPartName);
 
     if (partPositions.length === 0) return;
 
     // IMPORTANT: Only send editable fields!
     const updates = partPositions.map(pos => ({
       id: pos.id,
-      item_name: newItemName
+      part_name: newPartName
     }));
 
     updatePositions(updates);
   };
 
   // Handle OTSKP code AND name update together (prevent race condition)
-  const handleOtskpCodeAndNameUpdate = (partName: string, newOtskpCode: string, newItemName: string) => {
-    // Update BOTH otskp_code and item_name for all positions in this part
+  const handleOtskpCodeAndNameUpdate = (partName: string, newOtskpCode: string, newPartName: string, _unitPrice?: number, _unit?: string) => {
+    // Update BOTH otskp_code and part_name for all positions in this part
+    // Note: unitPrice and unit are passed for UI display but not stored in database
     const partPositions = positions.filter(p => p.part_name === partName);
 
     if (partPositions.length === 0) return;
@@ -105,7 +117,7 @@ export default function PositionsTable() {
     const updates = partPositions.map(pos => ({
       id: pos.id,
       otskp_code: newOtskpCode,
-      item_name: newItemName
+      part_name: newPartName
     }));
 
     updatePositions(updates);
@@ -160,6 +172,30 @@ export default function PositionsTable() {
     setExpandedParts(newExpanded);
   };
 
+  // Resizable column handlers
+  const handleResizeStart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+
+    const startX = e.clientX;
+    const startWidth = workColumnWidth;
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const deltaX = moveEvent.clientX - startX;
+      const newWidth = Math.max(80, Math.min(400, startWidth + deltaX)); // Min 80px, max 400px
+      setWorkColumnWidth(newWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseup', handleMouseUp);
+  };
+
   // Handle adding new row to a part - show work type selector first
   const handleAddRow = (partName: string) => {
     setSelectedPartForAdd(partName);
@@ -180,11 +216,14 @@ export default function PositionsTable() {
     }
 
     try {
+      // Get default name from subtype (e.g., "Betonování", "Bednění", "Výztuž")
+      const defaultName = SUBTYPE_LABELS[subtype] || subtype;
+
       const newPosition: Partial<Position> = {
         id: uuidv4(),
         bridge_id: selectedBridge,
         part_name: selectedPartForAdd,
-        item_name: 'Nová práce',
+        item_name: defaultName,
         subtype: subtype,
         unit: unit,
         qty: 0,
@@ -272,6 +311,94 @@ export default function PositionsTable() {
     setPendingCustomWork(null);
   };
 
+  // Handle formwork calculator transfer - create bednění positions + update beton curing days
+  const handleFormworkTransfer = async (calcRows: FormworkCalculatorRow[], targetPartName?: string) => {
+    if (!selectedBridge) return;
+
+    if (!targetPartName) {
+      const partNames = Object.keys(groupedPositions);
+      if (partNames.length === 0) {
+        alert('Nejprve vytvořte část konstrukce');
+        return;
+      }
+      targetPartName = partNames[0];
+    }
+
+    try {
+      const newPositions: Partial<Position>[] = [];
+
+      calcRows.forEach(row => {
+        newPositions.push({
+          id: uuidv4(),
+          bridge_id: selectedBridge,
+          part_name: targetPartName,
+          item_name: `Bednění + ${row.construction_name} - Montáž`,
+          subtype: 'bednění' as Subtype,
+          unit: 'm2',
+          qty: row.total_area_m2,
+          crew_size: 4,
+          wage_czk_ph: 398,
+          shift_hours: 10,
+          days: row.assembly_days_per_tact * row.num_tacts
+        });
+
+        newPositions.push({
+          id: uuidv4(),
+          bridge_id: selectedBridge,
+          part_name: targetPartName,
+          item_name: `Bednění + ${row.construction_name} - Demontáž`,
+          subtype: 'bednění' as Subtype,
+          unit: 'm2',
+          qty: row.total_area_m2,
+          crew_size: 4,
+          wage_czk_ph: 398,
+          shift_hours: 10,
+          days: row.disassembly_days_per_tact * row.num_tacts
+        });
+      });
+
+      const result = await positionsAPI.create(selectedBridge, newPositions as Position[]);
+
+      if (result.positions) {
+        setPositions(result.positions);
+        if (result.header_kpi) {
+          setHeaderKPI(result.header_kpi);
+        }
+      }
+
+      // Transfer curing days from MaturityConfigPanel → beton row's curing_days
+      // Use result.positions (fresh from API) instead of stale component state
+      const maturityDays = (calcRows[0] as any)?._maturity_curing_days;
+      if (maturityDays && maturityDays > 0 && targetPartName && result.positions) {
+        const betonPosition = result.positions.find(
+          (p: Position) => p.part_name === targetPartName && p.subtype === 'beton'
+        );
+        if (betonPosition?.id) {
+          updatePositions([{ id: betonPosition.id, curing_days: maturityDays }]);
+        }
+      }
+
+      queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge, showOnlyRFI] });
+      setShowFormworkCalc(false);
+      setFormworkCalcPartName(null);
+
+      const totalRentalDays = Math.max(...calcRows.map(r => r.formwork_term_days));
+      const totalArea = calcRows.reduce((acc, r) => acc + r.total_area_m2, 0);
+      const curingInfo = maturityDays ? `\n   Zrání betonu: ${maturityDays} dní (přeneseno do tabulky)` : '';
+
+      alert(
+        `Přeneseno ${newPositions.length} řádků (Montáž + Demontáž) do části "${targetPartName}"${curingInfo}\n\n` +
+        `NÁJEM BEDNĚNÍ - přidejte do Registry TOV:\n` +
+        `Parametry pro kalkulátor:\n` +
+        `   Plocha: ${totalArea.toFixed(1)} m²\n` +
+        `   Termín nájmu: ${totalRentalDays} dní\n` +
+        `   Systém: ${calcRows[0]?.system_name || 'FRAMI XLIFE'}\n`
+      );
+    } catch (error) {
+      alert(`Chyba: ${error instanceof Error ? error.message : 'Neznámá chyba'}`);
+    }
+  };
+
   // Handle new part creation from OTSKP search
   const handleNewPartSelected = async (otskpCode: string, partName: string) => {
     if (!selectedBridge) return;
@@ -284,7 +411,7 @@ export default function PositionsTable() {
         id: uuidv4(),
         bridge_id: selectedBridge,
         part_name: partName,
-        item_name: partName, // Use OTSKP name as item name
+        item_name: SUBTYPE_LABELS['beton'] || 'Betonování', // Use subtype name, not part name
         otskp_code: otskpCode,
         subtype: 'beton', // First position is always beton (concrete volume)
         unit: 'M3',
@@ -326,23 +453,19 @@ export default function PositionsTable() {
 
   if (!selectedBridge) {
     return (
-      <div className="positions-container">
-        <div className="empty-state">
-          <div className="empty-state-icon">🏗️</div>
-          <h3>Vyberte most</h3>
-          <p>Vyberte most ze seznamu vlevo nebo nahrajte XLSX soubor</p>
-        </div>
+      <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-lg)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
+        <div style={{ fontSize: '64px', opacity: 0.5 }}>🏗️</div>
+        <h3 className="u-text-bold" style={{ margin: 0, fontSize: 'var(--font-size-xl)' }}>Vyberte objekt</h3>
+        <p className="u-text-muted">Vyberte objekt ze seznamu vlevo nebo nahrajte XLSX soubor</p>
       </div>
     );
   }
 
   if (isLoading) {
     return (
-      <div className="positions-container">
-        <div style={{ textAlign: 'center', padding: '64px' }}>
-          <div className="spinner"></div>
-          <p className="text-muted" style={{ marginTop: '16px' }}>Načítání pozic...</p>
-        </div>
+      <div className="c-panel u-flex-center" style={{ flexDirection: 'column', gap: 'var(--space-md)', padding: 'var(--space-2xl)', minHeight: '300px' }}>
+        <div className="spinner"></div>
+        <p className="u-text-muted">Načítání pozic...</p>
       </div>
     );
   }
@@ -356,16 +479,18 @@ export default function PositionsTable() {
       <SnapshotBadge />
 
       {/* Add New Part Button */}
-      <div style={{
-        padding: '16px',
-        borderBottom: '1px solid var(--border-light)',
-        background: 'var(--bg-secondary)'
-      }}>
+      <div className="c-panel--inset u-p-md u-mb-md" style={{ borderRadius: 'var(--radius-md)' }}>
         <button
-          className="btn-add-part"
+          className="c-btn"
           onClick={() => setShowNewPartModal(true)}
           disabled={isLocked}
           title={isLocked ? 'Nelze přidat část - snapshot je zamčen' : 'Přidat novou část konstrukce s OTSKP kódem'}
+          style={{
+            background: 'var(--accent-orange, #FF9F1C)',
+            color: '#1a1a1a',
+            fontWeight: 600,
+            border: 'none'
+          }}
         >
           🏗️ Přidat část konstrukce
         </button>
@@ -384,14 +509,18 @@ export default function PositionsTable() {
         const isExpanded = expandedParts.has(partName);
 
         return (
-          <div key={partName} className="part-card">
-            <div className="part-header" onClick={() => togglePart(partName)}>
-              <span>{partPositions[0]?.item_name || partName}</span>
-              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                <span>{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
+          <div key={partName} id={`part-${partName}`} className="c-panel u-mb-md" style={{ padding: 0 }}>
+            <div
+              className="u-flex-between u-p-md"
+              onClick={() => togglePart(partName)}
+              style={{ cursor: 'pointer', background: 'var(--data-surface-alt)' }}
+            >
+              <span className="u-text-bold">{partPositions[0]?.item_name || partName}</span>
+              <div className="u-flex u-gap-md" style={{ alignItems: 'center' }}>
+                <span className="u-text-muted">{isExpanded ? '▼' : '▶'} {partPositions.length} pozic</span>
                 {!isLocked && (
                   <button
-                    className="btn-delete-part"
+                    className="c-btn c-btn--sm c-btn--danger"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDeletePart(partName);
@@ -407,37 +536,82 @@ export default function PositionsTable() {
             {isExpanded && (
               <>
                 <PartHeader
-                  itemName={partPositions[0]?.item_name || ''}
+                  partName={partPositions[0]?.part_name || ''}
                   betonQuantity={partPositions
                     .filter(p => p.subtype === 'beton')
                     .reduce((sum, p) => sum + (p.qty || 0), 0)}
                   otskpCode={partPositions[0]?.otskp_code || ''}
-                  onItemNameUpdate={(newName) =>
-                    handleItemNameUpdate(partName, newName)
+                  partTotalKrosCzk={partPositions.reduce((sum, p) => sum + (p.kros_total_czk || 0), 0)}
+                  partPositions={partPositions}
+                  onPartNameUpdate={(newName) =>
+                    handlePartNameUpdate(partName, newName)
                   }
                   onBetonQuantityUpdate={(newQuantity) =>
                     handleBetonQuantityUpdate(partName, newQuantity)
                   }
-                  onOtskpCodeAndNameUpdate={(code, name) =>
-                    handleOtskpCodeAndNameUpdate(partName, code, name)
+                  onOtskpCodeAndNameUpdate={(code, name, unitPrice, unit) =>
+                    handleOtskpCodeAndNameUpdate(partName, code, name, unitPrice, unit)
                   }
+                  onOpenFormworkCalculator={() => {
+                    setFormworkCalcPartName(partName);
+                    setFormworkCalcElementDays(calculateElementTotalDays(partPositions));
+                    setShowFormworkCalc(true);
+                  }}
                   isLocked={isLocked}
                 />
 
                 {/* Unified Table Wrapper - Synchronized header and body widths */}
-                <div className="table-wrapper">
+                <div
+                  className="c-table-wrapper"
+                  style={{
+                    margin: 'var(--space-md)',
+                    borderRadius: 'var(--radius-md)',
+                    '--work-column-width': `${workColumnWidth}px`
+                  } as React.CSSProperties}
+                >
                   {/* Header Table - Sticky with synchronized width */}
-                  <table className="positions-table">
+                  <table className="c-table positions-table">
                     <thead>
                     <tr>
                       {isLocked && <th className="lock-col" title="Snapshot je zamčen">🔒</th>}
-                      <th className="col-podtyp" title="Typ práce: beton, bednění, výztuž, oboustranné, jiné">Práce</th>
+                      <th
+                        className="col-podtyp"
+                        title="Typ práce: beton, bednění, výztuž, oboustranné, jiné"
+                        style={{
+                          width: `${workColumnWidth}px`,
+                          minWidth: `${workColumnWidth}px`,
+                          maxWidth: `${workColumnWidth}px`,
+                          position: 'relative'
+                        }}
+                      >
+                        Práce
+                        <div
+                          className="column-resizer"
+                          onMouseDown={handleResizeStart}
+                          style={{
+                            position: 'absolute',
+                            right: 0,
+                            top: 0,
+                            bottom: 0,
+                            width: '4px',
+                            cursor: 'col-resize',
+                            background: isResizing ? 'var(--accent-orange, #FF9F1C)' : 'transparent',
+                            transition: 'background 0.2s ease',
+                            zIndex: 10
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.background = 'var(--border-hover, #ccc)'}
+                          onMouseLeave={(e) => {
+                            if (!isResizing) e.currentTarget.style.background = 'transparent';
+                          }}
+                        />
+                      </th>
                       <th className="col-mj" title="Měrná jednotka: m³, m², kg">MJ</th>
                       <th className="col-mnozstvi" title="Množství v měrných jednotkách (EDITABLE)">Množ.</th>
                       <th className="col-lidi" title="Počet lidí v partě (EDITABLE)">Počet</th>
                       <th className="col-cena-hod" title="Hodinová sazba v CZK (EDITABLE)">Kč/h</th>
                       <th className="col-hod-den" title="Hodin za směnu (EDITABLE)">Hod./den</th>
                       <th className="col-den" title="Počet dní - koeficient 1 (EDITABLE)">Dny</th>
+                      <th className="col-rychlost" title="Norma rychlosti v MJ/hod (EDITABLE). Zadejte normu → přepočítá dny. Nebo zadejte dny → norma se vypočítá zpětně.">MJ/h</th>
                       <th className="col-hod-celkem" title="Celkový počet hodin = Počet × Hod./den × Dny">Celk.hod.</th>
                       <th className="col-kc-celkem" title="Celková cena v CZK = Celk.hod. × Kč/h">Celk.Kč</th>
                       <th className="col-kc-m3" title="⭐ KLÍČOVÁ METRIKA: Jednotková cena Kč/m³ betonu = Celk.Kč ÷ Objem betonu">
@@ -451,18 +625,34 @@ export default function PositionsTable() {
                     </thead>
                     <tbody>
                       {partPositions.length > 0 ? (
-                        partPositions.map((position) => (
-                          <PositionRow key={position.id} position={position} isLocked={isLocked} />
-                        ))
+                        partPositions.map((position) => {
+                          // For beton rows, compute numSets from rental positions in same part
+                          const partNumSets = position.subtype === 'beton'
+                            ? Math.max(1, ...partPositions
+                                .filter(p => {
+                                  if (p.subtype !== 'jiné') return false;
+                                  const meta = (p as any).metadata;
+                                  const isFR = typeof meta === 'string'
+                                    ? meta.includes('formwork_rental')
+                                    : (meta && typeof meta === 'object' && meta.type === 'formwork_rental');
+                                  return isFR;
+                                })
+                                .map(p => p.qty || 1)
+                              )
+                            : undefined;
+                          return (
+                            <PositionRow key={position.id} position={position} isLocked={isLocked} partNumSets={partNumSets} />
+                          );
+                        })
                       ) : (
                         <tr>
-                          <td colSpan={isLocked ? 15 : 14} style={{
+                          <td colSpan={isLocked ? 16 : 15} style={{
                             textAlign: 'center',
                             padding: '20px',
                             color: 'var(--text-secondary)',
                             fontStyle: 'italic'
                           }}>
-                            Zatім žádné řádky. Klikněte na "➕ Přidat řádek" níže.
+                            Zatím žádné řádky. Klikněte na „➕ Přidat řádek" níže.
                           </td>
                         </tr>
                       )}
@@ -470,13 +660,9 @@ export default function PositionsTable() {
                   </table>
                 </div>
 
-                <div style={{
-                  padding: '16px',
-                  borderTop: '1px solid var(--border-light)',
-                  background: 'var(--bg-tertiary)'
-                }}>
+                <div className="u-p-md" style={{ background: 'var(--panel-inset)' }}>
                   <button
-                    className="btn-create"
+                    className="c-btn c-btn--primary c-btn--sm"
                     onClick={() => handleAddRow(partName)}
                     disabled={isLocked}
                     title={isLocked ? 'Nelze přidat řádek - snapshot je zamčen' : 'Přidat nový řádek'}
@@ -511,6 +697,22 @@ export default function PositionsTable() {
         <CustomWorkModal
           onSelect={handleCustomWorkSubmit}
           onCancel={handleCustomWorkCancelled}
+        />
+      )}
+
+      {/* Formwork Calculator Modal */}
+      {showFormworkCalc && selectedBridge && formworkCalcPartName && (
+        <FormworkCalculatorModal
+          bridgeId={selectedBridge}
+          partNames={Object.keys(groupedPositions)}
+          currentPartName={formworkCalcPartName}
+          elementTotalDays={formworkCalcElementDays}
+          onTransfer={(rows) => handleFormworkTransfer(rows, formworkCalcPartName)}
+          onClose={() => {
+            setShowFormworkCalc(false);
+            setFormworkCalcPartName(null);
+            setFormworkCalcElementDays(0);
+          }}
         />
       )}
     </div>

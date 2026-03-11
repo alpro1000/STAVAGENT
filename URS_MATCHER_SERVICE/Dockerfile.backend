@@ -21,14 +21,18 @@ RUN pip3 install --no-cache-dir --break-system-packages \
 # NODE.JS SETUP
 # ============================================
 # Copy package files
-COPY backend/package*.json ./
+COPY URS_MATCHER_SERVICE/backend/package*.json ./
 
 # Install dependencies
 RUN npm ci --only=production
 
 # Copy source code
-COPY backend/src ./src
-COPY backend/.env.example ./.env
+COPY URS_MATCHER_SERVICE/backend/src ./src
+COPY URS_MATCHER_SERVICE/backend/.env.example ./.env
+
+# Copy frontend static files
+# app.js resolves __dirname(=/app/src) + ../../frontend/public = /frontend/public
+COPY URS_MATCHER_SERVICE/frontend/public /frontend/public
 
 # ============================================
 # CONCRETE-AGENT INTEGRATION

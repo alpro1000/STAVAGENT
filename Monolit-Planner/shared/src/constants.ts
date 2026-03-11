@@ -19,7 +19,7 @@ export const DEFAULT_CONFIG = {
 };
 
 export const FEATURE_FLAGS = {
-  FF_AI_DAYS_SUGGEST: false,
+  FF_AI_DAYS_SUGGEST: true,  // ✅ AI-powered days estimation (Time Norms Automation)
   FF_PUMP_MODULE: false,
   FF_ADVANCED_METRICS: false,
   FF_DARK_MODE: false,

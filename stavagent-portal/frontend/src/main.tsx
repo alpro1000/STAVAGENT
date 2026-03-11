@@ -2,7 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
+// Global styles (base reset - loaded FIRST)
 import './styles/global.css';
+// Digital Concrete Design System (overrides global - loaded LAST for priority)
+import './styles/design-system/tokens.css';
+import './styles/design-system/components.css';
 
 const queryClient = new QueryClient({
   defaultOptions: {

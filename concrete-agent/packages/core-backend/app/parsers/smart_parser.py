@@ -1,13 +1,20 @@
 """
 Smart Parser - автоматический выбор оптимального парсера
-БЕЗ CLAUDE FALLBACK - только локальные парсеры
+Waterfall: pdfplumber -> MinerU (async) -> streaming
 
 Логика:
-- Файл < 20MB → Стандартные парсеры (pandas, pdfplumber)
-- Файл > 20MB → Streaming парсеры (memory-efficient)
-- Автовыбор формата (Excel, PDF, XML)
+ - PDF < 20MB -> pdfplumber (быстро)
+ - PDF без текста (скан) -> MinerU async worker
+ - Файл > 20MB -> Streaming парсеры (memory-efficient)
+ - Автовыбор формата (Excel, PDF, XML)
 """
+import asyncio
 import logging
+import os
+import re
+import shutil
+import tempfile
+import unicodedata
 from pathlib import Path
 from typing import Dict, Any, Optional
 
@@ -22,179 +29,147 @@ from app.parsers.memory_efficient import (
 
 logger = logging.getLogger(__name__)
 
-# Порог размера файла для переключения на streaming (20MB)
 SIZE_THRESHOLD_MB = 20
+ENABLE_MINERU = os.getenv("ENABLE_MINERU", "false").lower() == "true"
+
+
+def _slugify(text: str) -> str:
+    """
+    Convert filename stem to ASCII-safe slug.
+    Prevents MinerU crash on Windows with diacritics.
+    e.g. 'IV MM-Ceník2026' -> 'IV_MM-Cenik2026'
+    """
+    normalized = unicodedata.normalize("NFKD", text)
+    ascii_text = normalized.encode("ascii", "ignore").decode("ascii")
+    safe = re.sub(r"[^\w\-]", "_", ascii_text)
+    return safe.strip("_") or "document"
+
+
+def _get_file_size_mb(file_path: Path) -> float:
+    return file_path.stat().st_size / (1024 * 1024)
 
 
 class SmartParser:
-    """
-    Умный парсер - выбирает оптимальную стратегию
-    
-    Преимущества:
-    - Автоматический выбор метода по размеру файла
-    - Memory-safe для больших файлов
-    - Без Claude fallback = без трат
-    - Простой API
-    """
-    
+
     def __init__(self):
-        # Стандартные парсеры (быстрые, удобные)
         self.excel_parser = ExcelParser()
         self.pdf_parser = PDFParser()
         self.kros_parser = KROSParser()
-        
-        # Streaming парсеры (экономные по памяти)
-        self.streaming_excel = MemoryEfficientExcelParser()
-        self.streaming_pdf = MemoryEfficientPDFParser()
-        self.streaming_xml = MemoryEfficientXMLParser()
-    
-    def parse(self, file_path: Path, project_id: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Умный парсинг - автоопределение формата и метода
-        
-        Args:
-            file_path: Path to file
-            
-        Returns:
-            Parsed data
-        """
-        # Определить тип файла
-        suffix = file_path.suffix.lower()
-        
-        if suffix in ['.xlsx', '.xls']:
-            return self.parse_excel(file_path, project_id=project_id)
-        elif suffix == '.pdf':
-            return self.parse_pdf(file_path, project_id=project_id)
-        elif suffix == '.xml':
-            return self.parse_xml(file_path, project_id=project_id)
-        else:
-            raise ValueError(f"Unsupported file format: {suffix}")
-    
-    def parse_excel(self, file_path: Path, project_id: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Parse Excel с автоматическим выбором метода
-        
-        Args:
-            file_path: Path to Excel file
-            
-        Returns:
-            Parsed data
-        """
-        size_mb = file_path.stat().st_size / (1024 * 1024)
-        
-        project_prefix = f"[project={project_id}] " if project_id else ""
+        self.memory_excel = MemoryEfficientExcelParser()
+        self.memory_pdf = MemoryEfficientPDFParser()
+        self.memory_xml = MemoryEfficientXMLParser()
 
-        logger.info(
-            "%s📊 Excel file: %s (%.1fMB)",
-            project_prefix,
-            file_path.name,
-            size_mb,
-        )
-        
-        if size_mb < SIZE_THRESHOLD_MB:
-            # Небольшой файл → стандартный парсер
-            logger.info("%s✅ Using standard pandas parser", project_prefix)
-            try:
-                return self.excel_parser.parse(file_path, project_id=project_id)
-            except Exception as e:
-                logger.warning("%sStandard parser failed: %s", project_prefix, e)
-                logger.info("%s⚠️ Falling back to streaming parser", project_prefix)
-                return self.streaming_excel.parse(file_path)
+    def parse(self, file_path: str, file_type: Optional[str] = None) -> Dict[str, Any]:
+        path = Path(file_path)
+        if not path.exists():
+            raise FileNotFoundError(f"File not found: {file_path}")
+        detected_type = file_type or self._detect_type(path)
+        if detected_type == "excel":
+            return self.parse_excel(path)
+        elif detected_type == "xml":
+            return self.parse_xml(path)
         else:
-            # Большой файл → streaming парсер
-            logger.info("%s✅ Using streaming parser (large file)", project_prefix)
-            return self.streaming_excel.parse(file_path)
-    
-    def parse_pdf(self, file_path: Path, project_id: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Parse PDF с автоматическим выбором метода
-        
-        Args:
-            file_path: Path to PDF file
-            
-        Returns:
-            Parsed data
-        """
-        size_mb = file_path.stat().st_size / (1024 * 1024)
-        
-        project_prefix = f"[project={project_id}] " if project_id else ""
+            return self.parse_pdf(path)
 
-        logger.info(
-            "%s📄 PDF file: %s (%.1fMB)",
-            project_prefix,
-            file_path.name,
-            size_mb,
-        )
-        
-        if size_mb < SIZE_THRESHOLD_MB:
-            # Небольшой файл → стандартный парсер
-            logger.info("%s✅ Using standard pdfplumber parser", project_prefix)
-            try:
-                return self.pdf_parser.parse(file_path)
-            except Exception as e:
-                logger.warning("%sStandard parser failed: %s", project_prefix, e)
-                logger.info("%s⚠️ Falling back to streaming parser", project_prefix)
-                return self.streaming_pdf.parse(file_path, max_pages=100)
-        else:
-            # Большой файл → streaming парсер
-            logger.info("%s✅ Using streaming parser (large file)", project_prefix)
-            return self.streaming_pdf.parse(file_path, max_pages=100)
-    
-    def parse_xml(self, file_path: Path, project_id: Optional[str] = None) -> Dict[str, Any]:
-        """
-        Parse XML с автоматическим выбором метода
-        
-        Args:
-            file_path: Path to XML file
-            
-        Returns:
-            Parsed data
-        """
-        size_mb = file_path.stat().st_size / (1024 * 1024)
-        
-        project_prefix = f"[project={project_id}] " if project_id else ""
+    def parse_excel(self, path: Path) -> Dict[str, Any]:
+        size_mb = _get_file_size_mb(path)
+        logger.info(f"SmartParser: Excel {path.name} ({size_mb:.1f}MB)")
+        if size_mb > SIZE_THRESHOLD_MB:
+            return self.memory_excel.parse(str(path))
+        return self.excel_parser.parse(str(path))
 
-        logger.info(
-            "%s📝 XML file: %s (%.1fMB)",
-            project_prefix,
-            file_path.name,
-            size_mb,
-        )
-        
-        if size_mb < SIZE_THRESHOLD_MB:
-            # Небольшой файл → стандартный KROS парсер
-            logger.info("%s✅ Using standard KROS parser", project_prefix)
+    def parse_xml(self, path: Path) -> Dict[str, Any]:
+        size_mb = _get_file_size_mb(path)
+        logger.info(f"SmartParser: XML {path.name} ({size_mb:.1f}MB)")
+        if size_mb > SIZE_THRESHOLD_MB:
+            return self.memory_xml.parse(str(path))
+        return self.kros_parser.parse(str(path))
+
+    def parse_pdf(self, path: Path) -> Dict[str, Any]:
+        size_mb = _get_file_size_mb(path)
+        logger.info(f"SmartParser: PDF {path.name} ({size_mb:.1f}MB)")
+        if size_mb > SIZE_THRESHOLD_MB:
+            return self.memory_pdf.parse(str(path))
+        try:
+            result = self.pdf_parser.parse(str(path))
+            positions = result if isinstance(result, list) else result.get("positions", [])
+            if positions:
+                logger.info(f"SmartParser: pdfplumber extracted {len(positions)} positions")
+                return {"positions": positions, "strategy": "pdfplumber"}
+            logger.info("SmartParser: pdfplumber returned 0 positions, trying MinerU")
+        except Exception as e:
+            logger.warning(f"SmartParser: pdfplumber failed: {e}")
+        if ENABLE_MINERU:
             try:
-                return self.kros_parser.parse(file_path, project_id=project_id)
+                mineru_result = asyncio.run(self._parse_with_mineru_async(path))
+                if mineru_result and mineru_result.get("positions"):
+                    return mineru_result
             except Exception as e:
-                logger.warning("%sStandard parser failed: %s", project_prefix, e)
-                logger.info("%s⚠️ Falling back to streaming parser", project_prefix)
-                return self.streaming_xml.parse(file_path)
+                logger.warning(f"SmartParser: MinerU failed: {e}")
+        return self.memory_pdf.parse(str(path))
+
+    async def _parse_with_mineru_async(self, pdf_path: Path) -> Dict[str, Any]:
+        safe_stem = _slugify(pdf_path.stem)
+        output_dir = Path(tempfile.gettempdir()) / "mineru_output" / safe_stem
+        output_dir.mkdir(parents=True, exist_ok=True)
+        if safe_stem != pdf_path.stem:
+            safe_pdf = output_dir / f"{safe_stem}.pdf"
+            shutil.copy2(pdf_path, safe_pdf)
+            source_path = safe_pdf
         else:
-            # Большой файл → streaming парсер
-            logger.info("%s✅ Using streaming parser (large file)", project_prefix)
-            return self.streaming_xml.parse(file_path)
-    
-    def get_file_info(self, file_path: Path) -> Dict[str, Any]:
-        """
-        Get file information without parsing
-        
-        Args:
-            file_path: Path to file
-            
-        Returns:
-            File info
-        """
-        size_bytes = file_path.stat().st_size
-        size_mb = size_bytes / (1024 * 1024)
-        
-        will_use_streaming = size_mb >= SIZE_THRESHOLD_MB
-        
+            source_path = pdf_path
+        cmd = ["mineru", "-p", str(source_path), "-o", str(output_dir), "-b", "pipeline", "-d", "cpu"]
+        logger.info(f"SmartParser: running MinerU async: {' '.join(cmd)}")
+        proc = await asyncio.create_subprocess_exec(
+            *cmd,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE,
+        )
+        stdout, stderr = await proc.communicate()
+        if proc.returncode != 0:
+            err = stderr.decode("utf-8", errors="replace")
+            logger.error(f"SmartParser: MinerU exited {proc.returncode}: {err[:500]}")
+            return {"positions": [], "strategy": "mineru_failed", "error": err[:200]}
+        md_files = list(output_dir.rglob("*.md"))
+        if not md_files:
+            return {"positions": [], "strategy": "mineru_no_output"}
+        md_content = md_files[0].read_text(encoding="utf-8", errors="replace")
+        positions = self._extract_positions_from_markdown(md_content)
+        logger.info(f"SmartParser: MinerU extracted {len(positions)} positions")
+        return {"positions": positions, "strategy": "mineru", "md_path": str(md_files[0])}
+
+    def _extract_positions_from_markdown(self, md_content: str) -> list:
+        """Uses module-level re (no redundant local import)."""
+        positions = []
+        rows = re.findall(r"<tr>(.*?)</tr>", md_content, re.DOTALL)
+        for row in rows:
+            cells = re.findall(r"<td[^>]*>(.*?)</td>", row, re.DOTALL)
+            cells = [re.sub(r"<[^>]+>", "", c).strip() for c in cells]
+            if len(cells) >= 2 and cells[0]:
+                positions.append({
+                    "code": cells[0] if len(cells) > 0 else "",
+                    "name": cells[1] if len(cells) > 1 else "",
+                    "unit": cells[2] if len(cells) > 2 else "",
+                    "price": cells[-1] if len(cells) > 1 else "",
+                })
+        return positions
+
+    def _detect_type(self, path: Path) -> str:
+        ext = path.suffix.lower()
+        if ext in (".xlsx", ".xls", ".xlsm"):
+            return "excel"
+        elif ext in (".xml",):
+            return "xml"
+        else:
+            return "pdf"
+
+    def get_file_info(self, file_path: str) -> Dict[str, Any]:
+        path = Path(file_path)
+        size_mb = _get_file_size_mb(path)
         return {
-            "filename": file_path.name,
-            "format": file_path.suffix.lower(),
-            "size_bytes": size_bytes,
+            "name": path.name,
             "size_mb": round(size_mb, 2),
-            "will_use_streaming": will_use_streaming,
-            "recommended_parser": "streaming" if will_use_streaming else "standard"
+            "type": self._detect_type(path),
+            "strategy": "streaming" if size_mb > SIZE_THRESHOLD_MB else "standard",
+            "mineru_enabled": ENABLE_MINERU,
         }

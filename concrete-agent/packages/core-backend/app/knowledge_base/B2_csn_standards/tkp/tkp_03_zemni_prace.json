@@ -1,0 +1,139 @@
+{
+  "_meta": {
+    "tkp": "03",
+    "title": "Zemní práce",
+    "title_en": "Earthwork",
+    "year": 2008,
+    "month": "07",
+    "effective": "2008-07-01",
+    "publisher": "Správa železniční dopravní cesty (SŽDC), státní organizace",
+    "source_pdf": "TKP03_2008_07.pdf",
+    "extracted": "2026-02-25",
+    "scope": "Zemní práce při stavbách státních drah: výkopy, násypy, přechody, geotextilie. Platí společně s TKP01."
+  },
+
+  "zakazane_materialy": {
+    "_note": "Materiály nevhodné pro násypy a zásypy",
+    "seznam": [
+      "Organické zeminy, rašelina, humus, ornice s organickým obsahem > 5 %",
+      "Zasolené zeminy s rozpustnými solemi > 10 %",
+      "Objemově nestabilní zeminy se změnou objemu > 3 %",
+      "Jíly s mezí tekutosti > 60 % nebo indexem plasticity > 40 %",
+      "Jílovité zeminy s konzistencí Ic < 0.5"
+    ]
+  },
+
+  "vlhkost_nasypovych_zemin": {
+    "_note": "Povolené rozmezí vlhkosti pro hutnění (w_opt = optimální vlhkost dle Proctora)",
+    "jemnozrnne": {
+      "tolerancia_wopt_pct": "± 3 %",
+      "alternativa_velka_Ip": "w_opt − 3 % až w_opt + 5 % (pokud Ip > 17)"
+    },
+    "sprasite_jilovite_hliny": {
+      "tolerancia_wopt_pct": "± 2 %"
+    },
+    "hrubozrnne": {
+      "tolerancia_wopt_pct": "± 2 % (−2 % až +2 %)"
+    },
+    "max_vzdusne_dutiny_pct": 12
+  },
+
+  "hutneni": {
+    "_note": "Minimální stupně hutnění. Aktivní zóna = 0,50 m pod zemní plání.",
+    "hrubozrnne_zeminy_ID": {
+      "_poznamka": "Relativní ulehlost ID (0–1)",
+      "GW_sterkopravek": { "nasep_teleso": 0.75, "aktivni_zona": 0.85 },
+      "GP_sterk_spatne_gradevany": { "nasep_teleso": 0.75, "aktivni_zona": 0.85 },
+      "SP_pisek_spatne_gradevany": { "nasep_teleso": 0.80, "aktivni_zona": 0.90 }
+    },
+    "jemnozrnne_zeminy_D_pct": {
+      "_poznamka": "Stupeň hutnění D (%) = ρd / ρd_max × 100",
+      "ML_prach_nizke_plasticity": { "nasep_teleso": 95, "aktivni_zona": 103 },
+      "CL_jil_nizke_plasticity":   { "nasep_teleso": 102, "aktivni_zona": null },
+      "CH_jil_vysoke_plasticity":  { "nasep_teleso": 95,  "aktivni_zona": null },
+      "GM_SM_GC_SC_jil_pisek_sterk": { "nasep_teleso": 100, "aktivni_zona": null }
+    },
+    "min_ulehlost_suchy_objem_kg_m3": 1500,
+    "max_tloustka_vrstvy_m": 0.30,
+    "max_vyskovy_rozdil_obou_stran_m": 0.50
+  },
+
+  "zemni_plan": {
+    "_note": "Požadavky na zemní pláň (zemní těleso pod kolejovým ložem)",
+    "min_hloubka_podhutneni_m": 0.50,
+    "tolerance_vyskova_mm": 20,
+    "tolerance_sirka_mm": 100,
+    "max_prohybeni_pod_3m_lati_mm": 20,
+    "max_odchylka_pricneho_sklonu_pct": 0.5,
+    "max_zrno_v_005m_vrstvě_mm": 16,
+    "min_hloubka_hladiny_podzemni_vody_m": 0.50
+  },
+
+  "zasypove_materialy_za_opernymi_kcemi": {
+    "zona_1m_od_kce": "Hutnění jako aktivní zóna",
+    "zona_nad_1m": "Hutnění jako těleso násypu (min. 95 % PS)",
+    "nad_propustky_mosty_vyska_m": 1.0,
+    "zakazane_v_ochranne_zone": "Mrazivé materiály (frost-susceptible)"
+  },
+
+  "geotextilie": {
+    "prekryvy_min_m": 0.20,
+    "prekryvy_doporucene_mekke_podlozi_m": 0.50,
+    "opravy_patche_min_mm_kazda_strana": 300,
+    "funkce": ["Separace", "Drenáž", "Filtrace", "Výztuž", "Ochrana před erozí"]
+  },
+
+  "zkouseni_nakopanych_zemin": {
+    "_note": "Frekvence zkoušení výkopových zemin",
+    "frekvence_per_m3": 10000,
+    "parametry": ["Přirozená vlhkost", "Zrnitost", "Meze plasticity", "Organická hmota", "Objemová hmotnost", "Proctorova zkouška"],
+    "poznamka": "Při změně materiálu: zkoušení všech parametrů znovu"
+  },
+
+  "zkouseni_nasypovych_vrstev": {
+    "jemnozrnne": {
+      "vlhkost": "1× per 2 000 m² nebo 500 m³",
+      "objemova_hmotnost": "1× per 2 000 m² nebo 500 m³",
+      "zrnitost": "1× per 10 000 m³ nebo při změně materiálu",
+      "hutneni_PS": "1× per 4 000 m² nebo 1 000 m³",
+      "min_denni_zkousky_pri_intenzivni_tezbe": "2× denně (při > 2 000 m³/den homogenního)"
+    },
+    "aktivni_zona": {
+      "vlhkost_jemno": "1× per 500 m² nebo 150 m³",
+      "vlhkost_hrubozrnne": "1× per 1 000 m² nebo 300 m³",
+      "objemova_hmotnost_jemno": "1× per 500 m² nebo 150 m³",
+      "hutneni_jemno": "1× per 2 000 m² nebo 500 m³",
+      "hutneni_hrubozrnne": "1× per 4 000 m² nebo 1 000 m³",
+      "zatezovaci_deska": "1× per 250 m délky"
+    },
+    "zemni_plan": {
+      "zrnitost": "1× per 200 m koleje nebo 1 000 m²",
+      "vlhkost": "1× per 100 m",
+      "objemova_hmotnost": "1× per 100 m",
+      "zatezovaci_deska": "1× per 250 m"
+    }
+  },
+
+  "omezeni_zimni_vystavba": {
+    "pod_minus_5_C": "Pouze tvrdé kamenivo (< 15 % zrna pod 2 mm)",
+    "zakazano": [
+      "Stavba na zmrzlém podloží",
+      "Rozmrazování zmrzlé zeminy",
+      "Zmrzlá základna násypu",
+      "Ledový déšť nebo sněžení"
+    ]
+  },
+
+  "dovolene_odchylky": {
+    "vyskova_mm": 20,
+    "sirka_mm": 100,
+    "rovnost_povrchu_mm_pod_3m_lati": 20,
+    "pricny_sklon_pct": 0.5,
+    "modul_deformability": "Max 10 % výsledků pod specifikací; nesmí být 2 sousední pod hodnotou"
+  },
+
+  "kriteria_zeminy": {
+    "sypna_zemina_zakazy": ["organické nečistoty > 5 %", "soli > 10 %", "objem. nestabilita > 3 %", "Ic < 0.5"],
+    "filter_kriterium": "Dle TNŽ 73 6949 — pokud nesplněno, geotextilní separace"
+  }
+}

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import type { Project, Position, ChatResponse, UploadProgress } from './types';
 
-const DEFAULT_API_URL = 'https://concrete-agent.onrender.com';
+const DEFAULT_API_URL = 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ||
   process.env.NEXT_PUBLIC_API_BASE_URL ||

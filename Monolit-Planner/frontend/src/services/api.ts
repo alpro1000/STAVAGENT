@@ -45,9 +45,11 @@ interface PartTemplate {
   created_at: string;
 }
 
-const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
+export const API_URL = (import.meta as any).env?.VITE_API_URL || 'http://localhost:3001';
 
-console.log('[API Service] Initializing with API_URL:', API_URL);
+if (import.meta.env.DEV) {
+  console.log('[API Service] Initializing with API_URL:', API_URL);
+}
 
 const api = axios.create({
   baseURL: API_URL,
@@ -64,7 +66,9 @@ api.interceptors.request.use(request => {
     request.headers.Authorization = `Bearer ${token}`;
   }
 
-  console.log(`[API] ${request.method?.toUpperCase()} ${request.url}`, request.params);
+  if (import.meta.env.DEV) {
+    console.log(`[API] ${request.method?.toUpperCase()} ${request.url}`, request.params);
+  }
   return request;
 });
 
@@ -78,7 +82,9 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 // Retry logic for 429 errors (no auth - kiosk mode)
 api.interceptors.response.use(
   response => {
-    console.log(`[API] Response ${response.status}:`, response.data);
+    if (import.meta.env.DEV) {
+      console.log(`[API] Response ${response.status}:`, response.data);
+    }
     return response;
   },
   async error => {
@@ -99,9 +105,11 @@ api.interceptors.response.use(
       config.__retryCount += 1;
       const retryDelay = RETRY_DELAY * Math.pow(2, config.__retryCount - 1);
 
-      console.warn(
-        `[API] 429 Rate Limited. Retry ${config.__retryCount}/${MAX_RETRIES} after ${retryDelay}ms`
-      );
+      if (import.meta.env.DEV) {
+        console.warn(
+          `[API] 429 Rate Limited. Retry ${config.__retryCount}/${MAX_RETRIES} after ${retryDelay}ms`
+        );
+      }
 
       await delay(retryDelay);
       return api.request(config);
@@ -119,39 +127,77 @@ export const bridgesAPI = {
   },
 
   getOne: async (bridgeId: string): Promise<Bridge> => {
-    const { data } = await api.get(`/api/monolith-projects/${bridgeId}`);
+    const { data } = await api.get(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`);
     return data;
   },
 
   create: async (params: { project_id?: string; bridge_id?: string; project_name?: string; object_name?: string; description?: string }): Promise<void> => {
     // VARIANT 1: Accept both project_id and bridge_id for backward compatibility
     const monolithParams = {
-      project_id: params.project_id || params.bridge_id,  // Accept both!
+      project_id: params.project_id || params.bridge_id,
       project_name: params.project_name,
       object_name: params.object_name,
       description: params.description
     };
+    
+    // Create locally
     await api.post('/api/monolith-projects', monolithParams);
+    
+    // Fire-and-forget Portal sync — do NOT await so modal doesn't hang
+    // Portal (Render free tier) can take 10-30s to wake from sleep
+    const portalAPI = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
+    const portalController = new AbortController();
+    const portalTimeout = setTimeout(() => portalController.abort(), 5000); // 5s max
+    fetch(`${portalAPI}/api/portal-projects/create-from-kiosk`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      signal: portalController.signal,
+      body: JSON.stringify({
+        project_name: params.project_name || params.project_id,
+        project_type: 'monolit',
+        kiosk_type: 'monolit',
+        kiosk_project_id: params.project_id || params.bridge_id,
+        description: params.description
+      })
+    })
+      .then(() => { if (import.meta.env.DEV) console.log('[API] Project synced to Portal'); })
+      .catch((error) => { console.warn('[API] Failed to sync project to Portal:', error.name === 'AbortError' ? 'timeout' : error); })
+      .finally(() => clearTimeout(portalTimeout));
   },
 
   update: async (bridgeId: string, params: Partial<Bridge>): Promise<void> => {
-    await api.put(`/api/monolith-projects/${bridgeId}`, params);
+    await api.put(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`, params);
   },
 
   updateStatus: async (bridgeId: string, status: 'active' | 'completed' | 'archived'): Promise<void> => {
     // Use PUT to update status (no dedicated PATCH endpoint)
-    await api.put(`/api/monolith-projects/${bridgeId}`, { status });
+    await api.put(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`, { status });
   },
 
   complete: async (bridgeId: string, params?: { created_by?: string; description?: string }): Promise<{ success: boolean; final_snapshot_id: string; snapshots_deleted: number }> => {
     // Complete is now handled through updateStatus + snapshot system
     // For now, just update status to completed
-    await api.put(`/api/monolith-projects/${bridgeId}`, { status: 'completed', ...params });
+    await api.put(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`, { status: 'completed', ...params });
     return { success: true, final_snapshot_id: '', snapshots_deleted: 0 };
   },
 
   delete: async (bridgeId: string): Promise<void> => {
-    await api.delete(`/api/monolith-projects/${bridgeId}`);
+    await api.delete(`/api/monolith-projects/${encodeURIComponent(bridgeId)}`);
+  },
+
+  deleteByProjectName: async (projectName: string): Promise<{ deleted_count: number; deleted_ids: string[] }> => {
+    const { data } = await api.delete(`/api/monolith-projects/by-project-name/${encodeURIComponent(projectName)}`);
+    return data;
+  },
+
+  renameProject: async (oldName: string, newName: string): Promise<{ old_name: string; new_name: string; objects_updated: number }> => {
+    const { data } = await api.put(`/api/monolith-projects/rename-project/${encodeURIComponent(oldName)}`, { new_name: newName });
+    return data;
+  },
+
+  bulkDelete: async (projectIds: string[]): Promise<{ deleted_count: number; deleted_ids: string[] }> => {
+    const { data } = await api.post('/api/monolith-projects/bulk-delete', { project_ids: projectIds });
+    return data;
   }
 };
 
@@ -167,7 +213,7 @@ export const monolithProjectsAPI = {
   },
 
   getOne: async (projectId: string): Promise<MonolithProject> => {
-    const { data } = await api.get(`/api/monolith-projects/${projectId}`);
+    const { data } = await api.get(`/api/monolith-projects/${encodeURIComponent(projectId)}`);
     return data;
   },
 
@@ -183,16 +229,16 @@ export const monolithProjectsAPI = {
   },
 
   update: async (projectId: string, params: Partial<MonolithProject>): Promise<MonolithProject> => {
-    const { data } = await api.put(`/api/monolith-projects/${projectId}`, params);
+    const { data } = await api.put(`/api/monolith-projects/${encodeURIComponent(projectId)}`, params);
     return data;
   },
 
   updateStatus: async (projectId: string, status: 'active' | 'completed' | 'archived'): Promise<void> => {
-    await api.patch(`/api/monolith-projects/${projectId}/status`, { status });
+    await api.patch(`/api/monolith-projects/${encodeURIComponent(projectId)}/status`, { status });
   },
 
   delete: async (projectId: string): Promise<void> => {
-    await api.delete(`/api/monolith-projects/${projectId}`);
+    await api.delete(`/api/monolith-projects/${encodeURIComponent(projectId)}`);
   },
 
   searchByType: async (type: string): Promise<MonolithProject[]> => {

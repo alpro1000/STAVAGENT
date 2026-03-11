@@ -1,0 +1,294 @@
+{
+  "metadata": {
+    "source": "Cenik-mechanizace-a-pracovniku-02-2026.pdf",
+    "company": "BERGER BOHEMIA a.s.",
+    "valid_until": "2026-12-31",
+    "currency": "CZK",
+    "vat": "excluded",
+    "note": "Ceny mohou být upraveny v závislosti na navýšení cen PHM"
+  },
+  "machinery_hourly": [
+    {
+      "category": "Rypadlo kolové",
+      "weight": "10-14 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 565,
+      "price_with_fuel_operator": 1410
+    },
+    {
+      "category": "Rypadlo kolové",
+      "weight": "15-18 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 810,
+      "price_with_fuel_operator": 1650
+    },
+    {
+      "category": "Rypadlo kolové",
+      "weight": "19-24 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 995,
+      "price_with_fuel_operator": 1775
+    },
+    {
+      "category": "Minirypadlo",
+      "weight": "2-4 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 355,
+      "price_with_fuel_operator": 1175
+    },
+    {
+      "category": "Minirypadlo + Hydr. kladivo",
+      "weight": "0.2 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 635,
+      "price_with_fuel_operator": 1335
+    },
+    {
+      "category": "Rypadlo pásové",
+      "weight": "8-10 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 494,
+      "price_with_fuel_operator": 1340
+    },
+    {
+      "category": "Rypadlo pásové + Hydr. kladivo",
+      "weight": "0.3 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 800,
+      "price_with_fuel_operator": 1615
+    },
+    {
+      "category": "Rypadlo pásové",
+      "weight": "11-19 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 950,
+      "price_with_fuel_operator": 1885
+    },
+    {
+      "category": "Rypadlo pásové + Hydr. kladivo",
+      "weight": "0.9 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1235,
+      "price_with_fuel_operator": 2175
+    },
+    {
+      "category": "Rypadlo pásové",
+      "weight": "20-22 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1165,
+      "price_with_fuel_operator": 2040
+    },
+    {
+      "category": "Rypadlo pásové + Hydr. kladivo",
+      "weight": "1.8 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1455,
+      "price_with_fuel_operator": 2450
+    },
+    {
+      "category": "Rypadlo pásové",
+      "weight": "23-27 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1220,
+      "price_with_fuel_operator": 2305
+    },
+    {
+      "category": "Rypadlo pásové + Hydr. kladivo",
+      "weight": "1.8 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1515,
+      "price_with_fuel_operator": 2630
+    },
+    {
+      "category": "Rypadlo pásové",
+      "weight": "35-40 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1715,
+      "price_with_fuel_operator": 3020
+    },
+    {
+      "category": "Dvoucestné rypadlo",
+      "weight": "22 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1995,
+      "price_with_fuel_operator": 3145
+    },
+    {
+      "category": "Nakladač kolový Kramer",
+      "weight": "4-6 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 380,
+      "price_with_fuel_operator": 1320
+    },
+    {
+      "category": "Nakladač kolový",
+      "weight": "20-25 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1470,
+      "price_with_fuel_operator": 3030
+    },
+    {
+      "category": "Manipulátor Merlo",
+      "weight": "16 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 725,
+      "price_with_fuel_operator": 2005
+    },
+    {
+      "category": "Manipulátor Merlo + spec. výbava",
+      "weight": "16 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1020,
+      "price_with_fuel_operator": 2340
+    },
+    {
+      "category": "Manipulátor Kramer 2607",
+      "weight": "4.5 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 600,
+      "price_with_fuel_operator": 1600
+    },
+    {
+      "category": "Váleček příkopový",
+      "weight": "1.5 t",
+      "unit": "Kč/den",
+      "price_without_fuel_operator": 1705,
+      "price_with_fuel_operator": 7460
+    },
+    {
+      "category": "Vibrační válce",
+      "weight": "12-16 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 735,
+      "price_with_fuel_operator": 1770
+    },
+    {
+      "category": "Vibrační ježkový válec",
+      "weight": "16 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1060,
+      "price_with_fuel_operator": 2060
+    },
+    {
+      "category": "Vibrační válce",
+      "weight": "20 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1130,
+      "price_with_fuel_operator": 1855
+    },
+    {
+      "category": "Grader",
+      "weight": "16 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1165,
+      "price_with_fuel_operator": 2200
+    },
+    {
+      "category": "Grader s 2D/3D",
+      "weight": "16 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1465,
+      "price_with_fuel_operator": 2950
+    },
+    {
+      "category": "Buldozer s 3D",
+      "weight": "8-10 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1300,
+      "price_with_fuel_operator": 2450
+    },
+    {
+      "category": "Buldozer s 3D",
+      "weight": "11-15 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1110,
+      "price_with_fuel_operator": 2605
+    },
+    {
+      "category": "Buldozer",
+      "weight": "16-20 t",
+      "unit": "Kč/h",
+      "price_without_fuel_operator": 1275,
+      "price_with_fuel_operator": 2320
+    }
+  ],
+  "transport_hourly": [
+    {
+      "type": "Sklápěcí nákl. auto 6x6",
+      "unit": "Kč/h",
+      "price": 980
+    },
+    {
+      "type": "Sklápěcí nákl. auto 8x8",
+      "unit": "Kč/h",
+      "price": 1185
+    },
+    {
+      "type": "Nákl. auto kontejnerové",
+      "unit": "Kč/h",
+      "price": 1155
+    },
+    {
+      "type": "Nákl. auto kontejnerové + podvalníkový přívěs",
+      "unit": "Kč/h",
+      "price": 1545
+    },
+    {
+      "type": "Tahač + podvalníkový návěs",
+      "unit": "Kč/h",
+      "price": 1680
+    },
+    {
+      "type": "Tříos. sklápěč (hruška)",
+      "unit": "Kč/h",
+      "price": 1000
+    },
+    {
+      "type": "Tříos. sklápěč (hruška) + podvalníkový přívěs",
+      "unit": "Kč/h",
+      "price": 1420
+    },
+    {
+      "type": "Dvouos. sklápěč s HR",
+      "unit": "Kč/h",
+      "price": 840
+    },
+    {
+      "type": "Odtahové vozidlo",
+      "unit": "Kč/h",
+      "price": 895
+    }
+  ],
+  "workers_hourly": [
+    {
+      "role": "Pomocný dělník",
+      "unit": "Kč/h",
+      "price": 555
+    },
+    {
+      "role": "Dělník (zedník + tesař,...)",
+      "unit": "Kč/h",
+      "price": 585
+    },
+    {
+      "role": "Strojník",
+      "unit": "Kč/h",
+      "price": 710
+    },
+    {
+      "role": "Předák / Polier",
+      "unit": "Kč/h",
+      "price": 730
+    },
+    {
+      "role": "Geodet",
+      "unit": "Kč/h",
+      "price": 975
+    },
+    {
+      "role": "Serviceauto",
+      "unit": "Kč/h",
+      "price": 935
+    }
+  ]
+}

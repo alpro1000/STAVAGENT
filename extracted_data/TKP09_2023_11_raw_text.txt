@@ -1,0 +1,893 @@
+(cid:32) (cid:32) (cid:32)
+Úroveň přístupu(cid:32)
+(cid:65)(cid:32)
+(cid:32)
+Technické kvalitativní
+podmínky staveb státních
+(cid:100)(cid:114)(cid:97)(cid:104)(cid:32)
+(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)(cid:32)
+ŽELEZNIČNÍ(cid:32)PŘEJEZDY
+(cid:65)(cid:32)PŘECHODY(cid:32)
+(cid:32)
+Vydání: (cid:108)(cid:105)(cid:115)(cid:116)(cid:111)(cid:112)(cid:97)(cid:100)(cid:32)(cid:50)(cid:48)(cid:50)(cid:51)(cid:32)
+(cid:32)
+Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+Nahrazení předchozího znění kapitoly(cid:32)
+Datem účinností tohoto dokumentu se nahrazuje kapitola (cid:57)(cid:32)(cid:45)(cid:32)Úrovňové přejezdy a přechody
+(cid:115)(cid:99)(cid:104)(cid:118)álená(cid:32)(cid:100)(cid:110)(cid:101)(cid:32)(cid:55)(cid:46)(cid:32)(cid:52)(cid:46)(cid:32)(cid:50)(cid:48)(cid:48)(cid:56)(cid:32)účinná(cid:32)(cid:111)(cid:100)(cid:32)(cid:49)(cid:46)(cid:32)(cid:55)(cid:46)(cid:32)(cid:50)(cid:48)(cid:48)(cid:56)(cid:46)(cid:32)
+(cid:32) (cid:32)
+Schváleno pod čj(cid:46)(cid:32)(cid:56)(cid:49)(cid:48)(cid:57)(cid:56)(cid:47)(cid:50)(cid:48)(cid:50)(cid:51)(cid:45)SŽ(cid:45)GŘ(cid:45)(cid:79)(cid:49)(cid:51)(cid:32) (cid:32)
+(cid:68)(cid:110)(cid:101)(cid:32)(cid:49)(cid:53)(cid:46)(cid:32)(cid:49)(cid:50)(cid:46)(cid:32)(cid:50)(cid:48)(cid:50)(cid:51)(cid:32) (cid:32)
+(cid:32) (cid:32)
+Bc. Jiří Svoboda, MBA v. r.(cid:32) (cid:32)
+Generální ředitel(cid:32) (cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+(cid:32)
+Technické kvalitativní podmínky (cid:32)
+(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)(cid:45)(cid:32)Železniční(cid:32)přejezdy(cid:32)(cid:97)(cid:32)přechody(cid:32)
+(cid:32) (cid:32)
+Gestorský útvar:(cid:32) Správa železnic, státní organizace(cid:32)
+Generální ředitelství (cid:32)
+(cid:79)(cid:100)(cid:98)(cid:111)(cid:114)(cid:32)traťového hospodářství (O13)(cid:32)(cid:32)
+(cid:80)(cid:114)(cid:97)(cid:104)(cid:97)(cid:32)(cid:32)
+(cid:119)(cid:119)(cid:119)(cid:46)(cid:115)(cid:112)(cid:114)(cid:97)(cid:118)(cid:97)(cid:122)(cid:101)(cid:108)(cid:101)(cid:122)(cid:110)(cid:105)(cid:99)(cid:46)(cid:99)(cid:122)(cid:32)
+(cid:71)(cid:101)(cid:115)(cid:116)(cid:111)(cid:114)(cid:58)(cid:32) Ing. Hana Bouberlová(cid:32)
+(cid:86)ydání:(cid:32) (cid:108)(cid:105)(cid:115)(cid:116)(cid:111)(cid:112)(cid:97)(cid:100)(cid:32)(cid:50)(cid:48)(cid:50)(cid:51)(cid:32)
+Náklad:(cid:32) vydáno pouze v(cid:32)elektronické podobě (PDF), formát (A4)(cid:32)
+(cid:32) (cid:32)
+©(cid:32)Správa železnic, státní organizace, rok(cid:32)(cid:50)(cid:48)(cid:50)(cid:51)(cid:32)
+Tento dokument je duševním vlastnictvím státní organizace Správa železnic, na které se vztahuje zákon č.(cid:32)(cid:49)(cid:50)(cid:49)(cid:47)(cid:50)(cid:48)(cid:48)(cid:48)(cid:32)(cid:83)(cid:98)(cid:46)(cid:44)(cid:32)
+(cid:111)(cid:32)právu autorském, o(cid:32)právech souvisejících s(cid:32)právem autorským a(cid:32)(cid:111)(cid:32)změně některých zákonů (autorský zákon), ve znění
+pozdějších předpisů. Státní organizace Správa železnic(cid:32)(cid:106)(cid:101)(cid:32)(cid:118)(cid:32)uvedené souvislosti rovněž(cid:32)vykonavatelem majetkových práv.
+Tento dokument smí fyzická osoba použít pouze pro svou osobní potřebu, právnická osoba pro svou vlastní vnitřní potřebu.
+Poskytování tohoto dokumentu nebo jeho části v(cid:32)jakékoliv formě nebo jakýmkoliv způsobem třetí osobě je(cid:32)bez svolení státní
+(cid:111)(cid:114)(cid:103)(cid:97)(cid:110)(cid:105)(cid:122)(cid:97)(cid:99)(cid:101)(cid:32)Správa železnic(cid:32)zakázáno.(cid:32)
+(cid:32)
+(cid:50)(cid:47)(cid:49)(cid:56)(cid:32) (cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:79)(cid:66)(cid:83)(cid:65)(cid:72)(cid:32)
+(cid:32) (cid:83)(cid:116)(cid:114)(cid:97)(cid:110)(cid:97)(cid:32)
+(cid:32)
+(cid:83)(cid:69)(cid:90)(cid:78)(cid:65)(cid:77)(cid:32)(cid:90)(cid:75)(cid:82)(cid:65)(cid:84)(cid:69)(cid:75)(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:53)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49) ÚVOD(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:54)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:46)(cid:49) Předmět (cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:32)(cid:57)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:54)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:46)(cid:50) Související úpravy(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:54)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:50) (cid:80)(cid:79)(cid:80)(cid:73)(cid:83)(cid:32)(cid:65)(cid:32)(cid:75)(cid:86)(cid:65)(cid:76)(cid:73)(cid:84)(cid:65)(cid:32)(cid:83)(cid:84)(cid:65)(cid:86)EBNÍCH MATERIÁLŮ A ČÁSTÍ STAVBY(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:54)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:49) Všeobecně(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:54)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:50) Pryžové přejezdové konstrukce(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:54)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:51) Plastbetonové přejezdové konstrukce(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:55)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:52) Železobetonové přejezdové konstrukce(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:55)
+(cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:53) Železobetonové přejezdové konstrukce s(cid:32)velkoplošnými panely s(cid:32)integrovanými prostupy pro
+(cid:32)
+kontunuálně uložené kolejnice(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:55)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:54) Železobetonové panely(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:55)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:55) Přejezdový pražec(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:56)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:56) Živičné přejezdové vozovky(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:56)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:57) Nestmelené vozovkové kryty(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:56)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51) TECHNOLOGICKÉ PŘEDPI(cid:83)(cid:89)(cid:32)(cid:65)(cid:32)(cid:80)(cid:79)(cid:83)(cid:84)(cid:85)(cid:80)(cid:89)(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:56)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:49) Pražcové podloží, odvodnění přejezdu, úprava inženýrských sítí v(cid:32)blízkosti přejezdu(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:56)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:50) Železniční svršek na přejezdu(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:57)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51) Montáž přejezdových konstrukcí(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:57)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:49) Pryžové přejezdové konstrukce(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:57)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:50) Plastbetonové přejezdové konstrukce(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:48)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:51) Železobetonové přejezdové konstrukce(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:48)
+(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:52) Železobetonové přejezdové konstrukce s(cid:32)velkoplošnými panel(cid:121)(cid:32)(cid:115)(cid:32)integrovanými
+(cid:32)
+prostupy pro kontinuálně uložené kolejnice(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:48)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:53) Železobetonové panely(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:48)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:54) Živičné přejezdové vozovky(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:48)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:55) Nestmelené vozovkové kryty(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:49)
+(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:52) Napojení přejezdu na pozemní komunikaci a úprava vozovky v(cid:32)mezikolejovém (cid:112)(cid:114)(cid:111)(cid:115)(cid:116)(cid:111)(cid:114)(cid:117)(cid:32)(cid:110)(cid:97)(cid:32)
+(cid:32)
+vícekolejných přejezdech(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:49)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:52)(cid:46)(cid:49) Závěrné zídky, závěrné prahy nebo základové bloky(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:49)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:53) Zabezpečovací zařízení(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:49)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:54) Rozhledové poměry na přejezdu(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:49)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:55) Oplocení a ochranná zařízení(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:49)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:56) Dopravní značení(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:50)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:57) Osazení návěstidly(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:50)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52) DODÁVKA, SKLADOVÁNÍ A POČÁTEČNÍ ZKOUŠKY(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:50)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49) Dodávka a skladování(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:50)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:49) Pryžové přejezdové konstrukce(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:50)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:50) Plastbetonové přejezdové konstrukce(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:50)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:51) Železobetonové přejezdové konstrukce(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:51)
+(cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:52) Železobetonové přejezdové konstrukce s(cid:32)velkoplošnými panely s(cid:32)integrovanými
+(cid:32)
+prostupy pro kontinuálně uložené kolejnice(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:51)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:53) Železobetonové panely(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:51)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:54) Živičné přejezdové vozovky(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:51)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:55) Nestmelené vozovkové kryty(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:51)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:50) Počáteční zkoušky(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:51)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:50)(cid:46)(cid:49) Všeobecně(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:51)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:50)(cid:46)(cid:50) Živičné přejezdové vozovky(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:52)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:53) ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:52)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:54) PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁR(cid:85)(cid:75)(cid:89)(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:52)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:54)(cid:46)(cid:49) Všeobecně(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:52)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:54)(cid:46)(cid:50) Požada(cid:118)(cid:107)(cid:121)(cid:32)(cid:112)(cid:111)(cid:100)(cid:108)(cid:101)(cid:32)(cid:100)(cid:114)(cid:117)(cid:104)(cid:117)(cid:32)(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:101)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:53)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:55) KLIMATICKÁ OMEZENÍ(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:53)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:56) ODSOUHLASENÍ A PŘEVZETÍ PRACÍ(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:54)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:57) KONTROLNÍ A OVĚŘOVACÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A (cid:32)PŘETVOŘENÍ (DEFORMACÍ)(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:55)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:48) ŽIVOTNÍ PROSTŘEDÍ(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:55)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49) BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ,(cid:32)POŽÁRNÍ OCHRANA(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:55)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49)(cid:46)(cid:49) Všeobecně(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:55)
+(cid:32)
+(cid:51)(cid:47)(cid:49)(cid:56)(cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49)(cid:46)(cid:50) Práce bez výluky koleje(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:55)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49)(cid:46)(cid:51) Práce za výluky koleje(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:55)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49)(cid:46)(cid:52) Bezpečnost při práci s(cid:32)přejezdovými konstrukcemi(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:56)
+(cid:32) (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:50) CITOVANÉ A SOUVISEJÍCÍ DOKUMENTY(cid:32)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:46)(cid:32)(cid:49)(cid:56)
+(cid:32)
+(cid:32) (cid:32)
+(cid:52)(cid:47)(cid:49)(cid:56)(cid:32) (cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:83)(cid:69)(cid:90)(cid:78)(cid:65)(cid:77)(cid:32)(cid:90)(cid:75)(cid:82)(cid:65)(cid:84)(cid:69)(cid:75)(cid:32)(cid:32)
+(cid:32)
+ČR(cid:32) Česká republika(cid:32)
+ČSN(cid:32) Česká technická norma(cid:32)
+GŘ (cid:32) Generální ředitelství(cid:32)
+(cid:77)(cid:90)(cid:75)(cid:32) Mechanicky zpevněné kamenivo(cid:32)
+(cid:80)(cid:68)(cid:32) Projektová dokumentace(cid:32)
+(cid:80)(cid:75)(cid:32) Pozemní komunikace(cid:32)
+(cid:80)(cid:86)(cid:67)(cid:32) (cid:80)(cid:111)(cid:108)(cid:121)(cid:118)(cid:105)(cid:110)(cid:121)(cid:108)(cid:99)(cid:104)(cid:108)(cid:111)(cid:114)(cid:105)(cid:100)(cid:32)
+(cid:82)(cid:80)(cid:32) Rychlostní pásmo(cid:32)
+SŽ(cid:32) Správa železnic, státní organizace(cid:32)
+SŽDC(cid:32) Správa železniční dopravní cesty, státní organizace(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32) Technické kvalitativní podmínky(cid:32)staveb státních drah(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:32) Technické kvalitativní podmínky staveb pozemních komunikací (viz
+(cid:104)(cid:116)(cid:116)(cid:112)(cid:115)(cid:58)(cid:47)(cid:47)(cid:112)(cid:106)(cid:112)(cid:107)(cid:46)(cid:114)(cid:115)(cid:100)(cid:46)(cid:99)(cid:122)(cid:41)(cid:32)
+(cid:84)(cid:80)(cid:32)číslo(cid:32) Technické podmínky(cid:32)staveb pozemních komunikací (viz https(cid:58)(cid:47)(cid:47)(cid:112)(cid:106)(cid:112)(cid:107)(cid:46)(cid:114)(cid:115)(cid:100)(cid:46)(cid:99)(cid:122)(cid:41)(cid:32)
+(cid:84)(cid:80)(cid:68)(cid:32) Technické podmínky dodací(cid:32)
+VŠ(cid:32) Vibrovaný štěrk(cid:32)
+(cid:90)(cid:84)(cid:75)(cid:80)(cid:32) Zvláštní technické kvalitativní podmínky(cid:32)
+(cid:32) (cid:32)
+(cid:32)
+(cid:53)(cid:47)(cid:49)(cid:56)(cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:57)(cid:46)(cid:49)(cid:32) ÚVOD(cid:32)
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené
+(cid:118)(cid:32)kapitole 1 TKP Všeobecně.(cid:32) Od roku 2021 jsou Technické kvalitativní podmínky
+vydávány pouze elektronicky ve formátu *.PDF a jsou ke stažení na webových
+stránkách Správy železnic, státní organizace.(cid:32)
+(cid:57)(cid:46)(cid:49)(cid:46)(cid:49)(cid:32) PŘEDMĚT KAPITOLY (cid:57)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Kapitola 9 TKP předepisuje technické kvalitativní podmínky (dále jen „TKP“) pro
+přejezdové vozovky a přejezdové konstrukce v(cid:32)celé délce a šířce přejezdu.(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Řešení prostorového uspořádání přejezdu, (cid:111)(cid:112)(cid:116)(cid:105)(cid:109)(cid:97)(cid:108)(cid:105)(cid:122)(cid:97)(cid:99)(cid:101)(cid:32)směrového a výškového vedení
+pozemní komunikace a dráhy v(cid:32)blízkosti přejezdu v(cid:32)(cid:115)(cid:111)(cid:117)(cid:108)(cid:97)(cid:100)(cid:117)(cid:32) (cid:115)(cid:32)ČSN 73 6101, ČSN
+(cid:55)(cid:51)(cid:32)6102, ČSN 73 6108, ČSN 73 6109, ČSN 73 6110, ČSN 73 6360(cid:45)1 a ČSN 73 6380
+(cid:97)(cid:32)stanovení vhodného typu (druhu materiálu) přejezdové konstrukce při současném
+dodržení zásad hospodárnosti je součástí projektové dokumentace (dále jen „PD“). Při
+jejím zpracování se přihlédne k(cid:32)dopravnímu významu, funkčnímu zatřídění a dopravnímu
+zatížení pozemní komunikace a k(cid:32)potřebám dráhy. (cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Kvalita přejezdu bezprostředně(cid:32)závisí na stavu železničního spodku, železničního svršku
+a na stavu připojujícího se úseku pozemní komunikace. (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:46)(cid:50)(cid:32) SOUVISEJÍCÍ ÚPRAVY(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Kapitola nezahrnuje TKP pro provádění veškerých souvisejících prací, i když jsou
+prováděny při stavbě, rekonstrukci nebo údržbě přejezdu. TKP pro provádění zemních
+prací předepisuje kapitola 3 TKP, pro odvodnění kolejiště kapitola 4 TKP, pro konstrukční
+vrstvy tělesa železničního spodku kapitola 6 TKP, pro kolejové lože kapitola 7 TKP, pro
+konstrukce koleje a výhybek kapi(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)pro nástupiště, rampy, zarážedla a účelové
+(cid:107)(cid:111)(cid:109)(cid:117)(cid:110)(cid:105)(cid:107)(cid:97)(cid:99)(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:48)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)pro oplocení kapitola 11 TKP, případně i další specializované
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:46)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)(cid:80)(cid:111)(cid:107)(cid:117)(cid:100)(cid:32)(cid:115)(cid:101)(cid:32)(cid:115)tavební úpravy přejezdů(cid:32)(cid:122)(cid:32)technických nebo technologických důvodů dotýkají
+i přilehlé pozemní komunikace a jejího příslušenství, musí tato část stavby vyhovovat
+(cid:105)(cid:32)požadavkům stanovený(cid:109)(cid:32) (cid:80)(cid:111)(cid:108)(cid:105)(cid:116)(cid:105)(cid:107)(cid:111)(cid:117)(cid:32) (cid:106)(cid:97)(cid:107)(cid:111)(cid:115)(cid:116)(cid:105)(cid:32) (cid:118)(cid:32)oboru pozemních komunikací(cid:32) (cid:40)(cid:118)(cid:105)(cid:122)(cid:32)
+(cid:104)(cid:116)(cid:116)(cid:112)(cid:115)(cid:58)(cid:47)(cid:47)(cid:112)(cid:106)(cid:112)(cid:107)(cid:46)(cid:114)(cid:115)(cid:100)(cid:46)(cid:99)(cid:122)(cid:41)(cid:32) (cid:97)(cid:32) (cid:80)(cid:68)(cid:32) musí být projednána s vlastníkem(cid:32) pozemní komuni(cid:107)(cid:97)(cid:99)(cid:101)(cid:46)(cid:32)
+Nájezdy z(cid:32)komunikace na přejezdovou vozovku a úseky přejezdové vozovky mezi
+přejezdovými konstrukcemi vloženými v(cid:32)jednotlivých kolejích vícekolejných přejezdů se
+obvykle opatří stejným druhem krytu vozovky, jaký má navazující komunikace.(cid:32)
+(cid:57)(cid:46)(cid:50)(cid:32) (cid:80)(cid:79)(cid:80)(cid:73)(cid:83)(cid:32)(cid:65)(cid:32)KVALITA STAVEBNÍCH MATERIÁLŮ A ČÁSTÍ STA(cid:86)(cid:66)(cid:89)(cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:49)(cid:32) VŠEOBECNĚ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Materiály, stavební dílce a konstrukce použité při stavbě přejezdů musí odpovídat
+požadavkům PD a musí zajistit správnou funkci, užitnou hodnotu, požadovanou životnost
+a konstrukční bezpečnost přejezdové vozovky. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Pro konstrukci přejezdových vozovek může zhotovitel použít pouze takové přejezdové
+konstrukce, pro které byly Správou železnic, státní organizací (dále jen „SŽ“(cid:41)(cid:32)schváleny
+Technické podmínky dodací (dále jen „TPD“).(cid:32)(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Výběr vhodného typu přejezdové konstrukce uvádějí Vzorové listy železničního spodku
+Ž11 Železniční přejezdy a přechody (dále jen „Ž11“). (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:50)(cid:32) PRYŽOVÉ PŘEJEZDOVÉ K(cid:79)(cid:78)(cid:83)(cid:84)(cid:82)(cid:85)(cid:75)(cid:67)(cid:69)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Pryžové přejezdové konstrukce jsou konstrukce sestavené z(cid:32)pryžových přejezdových
+panelů a (cid:32)(cid:122)(cid:32)dalších (cid:112)ryžových, ocelových nebo plastových dílců sloužících k(cid:32)jejich uložení,
+(cid:54)(cid:47)(cid:49)(cid:56)(cid:32) (cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+spojení nebo k(cid:32)zajištění polohy v(cid:32)přejezdu proti účinkům provozních sil vyvolaných
+silniční nebo železniční dopravou(cid:32)(například spínací táhla, ocelové spojovací dílce nebo
+šroubové spoje ocelových přírub)(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Při výrobě přejezdových panelů se používají různé technologie z(cid:32)oblasti gumárenství nebo
+chemické výroby. Určení pryžové přejezdové vozovky pro daný typ konstrukce
+železničního svršku, možnost dodávky dílců specifických rozměrů nebo odlišného
+barevného provedení, možnost úpravy pryžových dílců opracováním a řezáním pro
+instalaci přejezdové vozovky do míst souběhů kolejí uvádí TPD dané přejezdové
+(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:101)(cid:32)(cid:97)(cid:32)Ž11. (cid:32)(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Pokud jsou součástí konstrukce pryžové přejezdové vozovky i prefabrikované betonové
+dílce (cid:40)například závěrné zídky)(cid:44)(cid:32)vztahuje se na ně kapitola 18 TKP Betonové mosty a
+(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:101)(cid:32)(dále jen „kapitola 18 TKP“)(cid:46)(cid:32)Základový beton pod tyto konstrukce se provede
+(cid:112)(cid:111)(cid:100)(cid:108)(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:32)(cid:49)(cid:55)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:66)(cid:101)(cid:116)(cid:111)(cid:110)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:101)(cid:32)(dále jen „kapitola 17 TKP“)(cid:46)(cid:32)(cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:51)(cid:32) PLASTBETONOVÉ PŘEJEZDOVÉ KONSTRUKCE(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Plastbetonové přejezdové konstrukce jsou konstrukce sestavené z(cid:32)vnitřních a vnějších
+plastbetonových přejezdových dílců(cid:32) uložených do průběžných pryžových podpor
+umístěných ve spojkové komoře kolejnic. Přejezdová(cid:32)konstrukce vně koleje je zakončena
+betonovou nebo plastbetonovou závěrnou zídkou; v(cid:32)mezikolejovém prostoru společnou
+úložnou zídkou pro vnější dílce. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Na betonové součásti(cid:32)přejezdové konstrukce(cid:32)(cid:115)(cid:101)(cid:32)(cid:118)(cid:122)(cid:116)(cid:97)(cid:104)(cid:117)(cid:106)(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:55)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:97)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)
+(cid:49)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:46)(cid:32)(cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:52)(cid:32) ŽELEZOBETONOVÉ PŘEJEZDOVÉ KONSTRUKCE(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Železobetonové přejezdové konstrukce jsou konstrukce, u kterých je panel tvořící
+přejezdovou vozovku zároveň nosným prvkem konstrukce.(cid:32)(cid:80)(cid:111)(cid:108)(cid:111)(cid:104)(cid:97)(cid:32)(cid:112)(cid:97)(cid:110)(cid:101)(cid:108)(cid:117)(cid:32)(cid:118)(cid:32)(cid:107)(cid:111)(cid:108)(cid:101)(cid:106)(cid:105)(cid:32)(cid:112)(cid:114)(cid:111)(cid:116)(cid:105)(cid:32)
+posunu účinkem provozních sil ze silniční a železniční dopravy je dána vymezovacími
+(cid:115)(cid:107)(cid:108)(cid:97)(cid:100)(cid:101)(cid:98)(cid:110)ý(cid:109)(cid:105)(cid:32)(cid:112)(cid:114)(cid:118)(cid:107)(cid:121)(cid:32)(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:101)(cid:44)(cid:32)(cid:110)(cid:111)(cid:115)(cid:110)ými prvky konstrukce (kloubové nebo tuhé nosiče).(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Železobetonové přejezdové konstrukce jsou vně koleje zakončeny železobetonovou
+závěrnou zídkou nebo závěrným prahem; alternativně (cid:118)(cid:32)mezikolejovém prostoru
+společným úložným prahem pro vnější panely. (cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Na betonové součásti přejezdové konstrukce se vztahuje kapitola 17(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:97)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)
+(cid:49)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:46)(cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:53)(cid:32) ŽELEZOBETONOVÉ PŘEJEZDOVÉ KONSTRUKCE S(cid:32)VELKOPLOŠNÝMI
+(cid:80)(cid:65)(cid:78)(cid:69)(cid:76)(cid:89)(cid:32)(cid:83)(cid:32)INTEGROVANÝ(cid:77)(cid:73)(cid:32)(cid:80)(cid:82)(cid:79)(cid:83)(cid:84)(cid:85)(cid:80)(cid:89)(cid:32)(cid:80)(cid:82)(cid:79)(cid:32)(cid:75)(cid:79)(cid:78)(cid:84)UNUÁLNĚ ULOŽENÉ
+(cid:75)(cid:79)(cid:76)(cid:69)(cid:74)(cid:78)(cid:73)(cid:67)(cid:69)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Jedná se o železobetonové přejezdové konstrukce, které jsou tvořeny železobetonovými
+velkoplošnými panely s(cid:32)integrovanými průběžnými prostupy pro kontinuálně uložené
+kolejnice, které jsou ve své poloze a v(cid:32)požadovaném úklonu zajištěny pružným systémem
+komponent se zálivkou. Tyto přejezdové konstrukce neobsahují štěrkové kolejové lože
+(cid:97)(cid:32)nemají závěrné zídky. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Na betonové součásti přejezdové konstrukce se vzta(cid:104)(cid:117)(cid:106)(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:55)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:97)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)
+(cid:49)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:46)(cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:54)(cid:32) ŽELEZOBETONOVÉ PANELY(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Jedná se o železobetonové přejezdové konstrukce ze zádlažbových panelů, které nejsou
+vlastními nosnými prvky konstrukce a leží na zvlášť upraveném podkladu. Pro úpr(cid:97)(cid:118)(cid:117)(cid:32)
+podkladu platí Ž11, odsouhlasené TPD, odsouhlasená PD (zadávací), nebo musí být
+stavební úprava uložení zádlažbových panelů odsouhlasena stavebním dozorem. (cid:32)
+(cid:32)
+(cid:55)(cid:47)(cid:49)(cid:56)(cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Na betonové součásti přejezdové konstrukce se vztahuje kapitola 17(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:97)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)
+(cid:49)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:46)(cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:55)(cid:32) PŘEJEZDOVÝ PRAŽEC(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Jedná se o betonový přejezdový pražec VPS, který je vystrojen svařovanou dvojitou
+podkladnicí (dle Ž11) (cid:112)(cid:114)(cid:111)(cid:32)(cid:107)(cid:111)(cid:108)(cid:101)(cid:106)(cid:110)(cid:105)(cid:99)(cid:105)(cid:32)(cid:116)(cid:118)(cid:97)(cid:114)(cid:117)(cid:32)(cid:52)(cid:57)(cid:69)(cid:49)(cid:32)(cid:40)(cid:83)(cid:52)(cid:57)(cid:41)(cid:32)(cid:115)(cid:32)úkonem 1 : 20 s(cid:32)tuhými svěrkami
+ŽS 4 (v žlábku je užita upravená svěrka ŽS 4 dle Ž11) a je součástí kolejového roštu
+(cid:118)(cid:101)(cid:32)štěrkovém loži. (cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:56)(cid:32) ŽIVIČNÉ PŘEJEZDOVÉ V(cid:79)(cid:90)(cid:79)(cid:86)(cid:75)(cid:89)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Jedná se o technologie silničního stavitelství. Popis a kvalita materiálu je dána T(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:32)
+(cid:118)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:101)(cid:32)7 Hutněné asfaltové vrstvy a(cid:32)(cid:118)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:101)(cid:32)(cid:56)(cid:32)Litý asfalt. Skladba vozovky mimo
+kolej musí odpovídat TP 170 Navrhování vozovek pozemních komunikací a je
+specifikována (cid:118)(cid:32)(cid:80)(cid:68). Skladba přejezdové vozovky v(cid:32)koleji jakožto i konstrukce žlábku
+(cid:118)(cid:32)přejezdové vozovce se provede podle Ž11 a předpisu SŽDC S3 Železniční svršek (dále
+jen „S3“(cid:41)(cid:46)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Odolnost vozovky proti tvorbě trvalých deformací lze zvýšit podle TP 147 Užití asfaltových
+membrán a výztužných prvků v(cid:32)(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:105)(cid:32)(cid:118)(cid:111)(cid:122)(cid:111)(cid:118)(cid:107)(cid:121)(cid:46)(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Pro použití modifikovaného asfaltového betonu, modifikovaného litého asfaltu anebo
+dalších technologii musí zhotovitel zpracovat a předložit k(cid:32)(cid:111)(cid:100)(cid:115)(cid:111)(cid:117)hlasení Zvláštní
+technické kvalitativní podmínky (dále jen „(cid:90)(cid:84)(cid:75)(cid:80)“(cid:41)(cid:46)(cid:32)(cid:80)(cid:114)(cid:111)(cid:32)(cid:109)(cid:111)(cid:100)(cid:105)(cid:102)(cid:105)(cid:107)(cid:97)(cid:99)(cid:105)(cid:32)(cid:97)(cid:115)(cid:102)(cid:97)(cid:108)(cid:116)(cid:111)(cid:98)(cid:101)(cid:116)(cid:111)(cid:110)(cid:117)(cid:32)(cid:100)(cid:114)(cid:99)(cid:101)(cid:110)(cid:111)(cid:117)(cid:32)
+pryží TP 148 Hutněné asfaltové vrstvy s(cid:32)přídavkem drcené gumy z(cid:32)(cid:112)(cid:110)(cid:101)(cid:117)(cid:109)(cid:97)(cid:116)(cid:105)(cid:107)(cid:46)(cid:32)
+(cid:57)(cid:46)(cid:50)(cid:46)(cid:57)(cid:32) NESTMELENÉ VOZOVKOVÉ(cid:32)(cid:75)(cid:82)(cid:89)(cid:84)(cid:89)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)(cid:78)estmelené vrstvy jsou zhotoveny z(cid:32)(cid:110)(cid:101)(cid:115)(cid:116)(cid:109)(cid:101)(cid:108)(cid:101)ných materiálů nebo zemin. Základním
+stavebním materiálem pro nestmelené vrstvy je směs drceného kameniva o zrnitosti od
+0 mm do 32 mm (někdy až 45 mm). Nestmelená v(cid:114)(cid:115)(cid:116)(cid:118)(cid:97)(cid:32)(cid:115)(cid:32)dostatečným množstvím
+jemných částic má uzavřený povrch a je schopná(cid:32)(cid:111)(cid:100)(cid:111)lávat dopravnímu zatížení o nízké
+intenzitě. Nestmelené vrstvy a požadavky na ně kladené jsou uvedeny v ČSN 73 6126(cid:45)(cid:49)(cid:32)
+(cid:40)(cid:77)(cid:90)(cid:75)(cid:41)(cid:32)a ČSN 73 6126(cid:45)(cid:50)(cid:32)(VŠ), v případě použití technologie recyklace za studena též
+(cid:118)(cid:32)(cid:84)(cid:80)(cid:32)(cid:50)(cid:48)(cid:56)(cid:46)(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:32) TECHNOLOGICKÉ PŘEDPI(cid:83)(cid:89)(cid:32)(cid:65)(cid:32)(cid:80)(cid:79)(cid:83)(cid:84)(cid:85)(cid:80)(cid:89)(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:49)(cid:32) PRAŽCOVÉ PODLOŽÍ, ODVODNĚNÍ PŘEJEZDU, ÚPRAVA INŽENÝRSKÝCH
+SÍTÍ V(cid:32)BLÍZKOSTI PŘE(cid:74)(cid:69)(cid:90)(cid:68)(cid:85)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Skladba pražcového podloží a řešení odvodnění v(cid:32)blízkosti přejezdu(cid:32) je dáno PD(cid:32)
+(cid:97)(cid:32)Vzorovým listem železničního spodku Ž4 Pražcové podloží (dále jen „Ž4“). Technologie
+provádění prací musí odpovídat technickým a kvalitním požadavkům na provádění
+zemních prací podle kapitoly 3 TKP Zemní práce (dále jen „kapitola 3 TKP“), na odvodnění
+kolejiště podle kapitoly 4 TKP Odvodnění tratí(cid:32)a stanic (dále jen „kapitola 4 TKP“) a na
+konstrukční vrstvy tělesa železničního spodku podle kapitoly 6 TKP Konstrukční vrstvy
+tělesa železničního spodku (dále jen „kapitola 6 TKP“). Technologie prací ve vztahu
+(cid:107)(cid:32)nástupištím, rampám, zarážedlům, účelovým komunikacím a zpevněným plochám musí
+odpovídat kapitole 10(cid:32)TKP Nástupiště, rampy, zarážedla, účelové komunikace a zpevněné
+(cid:112)(cid:108)(cid:111)(cid:99)(cid:104)(cid:121)(cid:32)(dále jen „kapitola 10 TKP“)(cid:46)(cid:32)(cid:86)(cid:32)uvedených kapitolách jsou obsaženy požadavky
+na provádění zhotovovacích prací, které se vztahují i na oblast přejezdu. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Dotýkají(cid:45)li se práce i přilehlé části pozemní komunikace ve správě silničního správce,
+musí technologické postupy splňovat i požadavky na odvodnění pozemní komunikace
+(cid:112)(cid:111)(cid:100)(cid:108)(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:32)(cid:51)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:115)(cid:116)(cid:97)(cid:118)(cid:101)(cid:98)(cid:32)(cid:80)(cid:75)(cid:32)Odvodnění a chráničky pro inženýrské sítě(cid:32)(dále jen
+„(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:51)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)“(cid:41)(cid:44)(cid:32)zemní práce podl(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:32)(cid:52)(cid:32)TKP staveb PK Zemní práce(cid:32)(dále jen
+(cid:56)(cid:47)(cid:49)(cid:56)(cid:32) (cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+„(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)4 TKP PK“)(cid:32)(cid:97)(cid:32)podkladní vrstvy pozemní komunikace podle kapitoly 5 TKP staveb
+PK Podkladní vrstvy(cid:32)(dále jen „(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)5 TKP PK“).(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Srážková voda z(cid:32)pozemní komunikace nesmí být svedena do přejezdu. Toto je možno
+zajistit vhodnou kombinací výškového řešení a příčného sklonu pozemní komunikace
+(cid:118)(cid:32)blízkosti přejezdu(cid:32)nebo osazením příčného odvodňovacího žlabu nebo prahové vpusti.(cid:32)
+Požadavky na odvodnění pozemních komunikací uvádí TP 83 Odvodnění pozemních
+(cid:107)(cid:111)munikací.(cid:32)(cid:32)
+(cid:40)(cid:52)(cid:41)(cid:32)Požadavky na prefabrikované výrobky z(cid:32)betonu uvádí kapitola 18 TKP(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:50)(cid:32) ŽELEZNIČNÍ SVRŠEK NA PŘEJEZDU(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Technické a kvalitativní požadavky na provedení kolejového lože uvádí 7 TKP Kolejové
+lože (dále jen „kapitola 7 TKP“), na provedení konstrukce(cid:32)koleje a výhybek kapitola 8(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)
+Konstrukce koleje a výhybek (dále jen „kapitola 8 TKP“). V(cid:32)uvedených kapitolách jsou
+obsaženy požadavky na provedení zhotovovacích prací na železničním svršku. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Konstrukční úpravy na železničním svršku v prostoru přejezdů (tloušťka kolejového lože,
+použití pražců v místě přejezdu(cid:32)a jejich rozdělení, umístění kolejnicových styků a svarů,
+řešení ochranných náběhů, nutnost použití spojovacích a upevňovacích součástí
+železničního svršku se schválenou antikorozní úpravou, řešení požadavku na
+rozebíratelnost přejezdové konstrukce a zajištění volného prostoru kolejového roštu
+(cid:115)(cid:116)(cid:97)(cid:110)(cid:111)(cid:118)(cid:117)(cid:106)(cid:101)(cid:32)předpis SŽDC S3, ČSN 73 6380 Železniční přejezdy(cid:32)a přechody (dále jen „ČSN
+73 6380“), schválené TPD a(cid:32)Ž11. (cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Na elektrizovaných tratích se stejnosměrnou trakční soustavou (DC 3 kV, popř. DC
+(cid:49)(cid:44)(cid:53)(cid:32)kV) musí železniční svršek včetně přejezdové konstrukce trvale vykazovat nejvýše
+hodnoty měrné svodové vodivosti mezi kolejí a zemí dle ČSN(cid:32)(cid:69)(cid:78)(cid:32)(cid:53)(cid:48)(cid:49)(cid:50)(cid:50)(cid:45)(cid:50)(cid:32)(cid:101)(cid:100)(cid:46)(cid:32)(cid:51)(cid:46)(cid:32)
+Přejezdová konstrukce nesmí kolejnicové pásy strojeně nebo náhodně vodivě spojovat.(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:32) MONTÁŽ PŘEJEZDOVÝCH KONSTRUKCÍ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Postup montáže jednotlivých přejezdových konstrukcí je stanoven v(cid:32)příslušných TPD,
+montážních pokynech výrobců přejezdových konstrukcí nebo v(cid:32)Ž11.(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Pro manipulaci a pro montáž některých přejezdových konstrukcí jsou předepsány
+speciální závěsné, manipulační nebo montážní přípravky, které dodává výrobce
+přejezdové konstrukce. Pokud je jejich použití předepsáno ve schválených TPD(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)(cid:100)(cid:97)(cid:110)(cid:111)(cid:117)(cid:32)
+přejezdovou konstrukci, musí je zhotovitel stavebních prací na přejezdu použít. (cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)(cid:80)(cid:111)(cid:107)(cid:117)(cid:100)(cid:32)(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:101)(cid:32)přejezdové vozovky umožňuje montážní postup od středu přejezdu
+(cid:107)(cid:32)jeho okrajům (tj. ze dvou pracovních čel), doporučuje se z(cid:32)důvodu urychlení prací
+(cid:97)(cid:32)lepšího rozdělení chyby v(cid:32)přesnosti osazení dílců(cid:44)(cid:32)přednostně použít tento postup.(cid:32)
+(cid:40)(cid:52)(cid:41)(cid:32)Kolejové lože musí být řádně zhutněno do roviny s(cid:32)úložnou plochou pražců. Zrna štěrku
+přečnívající úložnou plochu pražců znesnadňují montáž přejezdových dílců. (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:49)(cid:32) Pryžové přejezdové konstrukce(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Pryžové přejezdové konstrukce obsahují vnitřní nebo vnější pryžové dílce plošně nebo
+lokálně uložené a sepnuté pomocí spínacích táhel nebo VP šroub(cid:121). Přejezdová konstrukce
+vně koleje je zakončena betonovou nebo pryžovou závěrnou zídkou. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Pro snadnější montáž a snadnější spínání panelů je vhodné(cid:32)styčné plochy na závěrných(cid:32)
+zídkách, pražcích,(cid:32)(cid:107)(cid:111)(cid:108)(cid:101)(cid:106)(cid:111)(cid:118)ých(cid:32)opěrkách(cid:32)apod. natřít montážní pastou případně tekutým
+mýdlem. (cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Při spínání panelů pomocí spínacích táhel, je nutné dbát na rovnoměrné upnutí panelů
+bez mezer. Při dotahování spínacích táhel je nutno vzít v(cid:32)úvahu roztažnost pryže
+(cid:118)(cid:32)závislosti na teplotě pryžových panelů a okolní teplotě. (cid:32)
+(cid:32)
+(cid:57)(cid:47)(cid:49)(cid:56)(cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:40)(cid:52)(cid:41)(cid:32)(cid:80)ři spínání panelů šroubovým spojem ocelových přírub v(cid:32)pryžových dílcích je nutné
+spojovací šrouby dotáhnout momentovým klíčem na předepsanou hodnotu. Spojování se
+provádí průběžně při pokládce panelů, ne když je již celý přejezd položen. (cid:32)
+(cid:40)(cid:53)(cid:41)(cid:32)Napojení živičné vozovky na pryžový přejezd se provede tak, aby obrusná vrstva vozovky
+(cid:98)(cid:121)(cid:108)(cid:97)(cid:32)(cid:111)(cid:32)(cid:32)5 mm níže než horní plocha krajního přejezdového dílce. (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:50)(cid:32) Plastbetonové přejezdové konstrukce(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Při pokládce přejezdové konstrukce se napřed roznesou a uloží na paty kolejnic spodní
+části vnitřních pryžových profilů a následuje osazení vnitřních panelů. Dále se (cid:114)(cid:111)(cid:122)(cid:110)(cid:101)(cid:115)(cid:111)(cid:117)(cid:32)
+a osadí vnější pryžové profily(cid:32)(cid:97)(cid:32)poté se osadí(cid:32)vnější panely(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)(cid:77)(cid:97)nipulace se provádí buď ručně, nebo pomocí zdvihacích zařízení při použití
+předepsaných závěsů. (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:51)(cid:32) Železobetonové přejezdové konstrukce(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Při montáži železobetonových přejezdových konstrukcí(cid:32)je nutno zajistit rovinnost uložení
+nosných konstrukčních prvků. Jakékoliv odchylky v(cid:32)jejich uložení mají za následek
+vyvolání nepřirozeného namáhání panelů, a tím i zkrácení životnosti díla(cid:46)(cid:32) (cid:80)(cid:111)(cid:107)(cid:117)(cid:100)(cid:32)
+konstrukce obsahuje i závěrné zídky, nebo závěrné prahy, osadí se podle článku(cid:32)(cid:57)(cid:46)(cid:51)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)(cid:77)(cid:97)(cid:110)(cid:105)(cid:112)(cid:117)(cid:108)(cid:97)(cid:99)(cid:101)(cid:32)(cid:115)(cid:32)jednotlivými přejezdovými panely musí být prováděna jeřábem při použití
+odpovídajících závěsů(cid:32)nebo vysokozdvižným vozíkem. (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:52)(cid:32) Železobetonové přejezdové konstrukce s(cid:32)velkoplošnými (cid:112)(cid:97)(cid:110)(cid:101)(cid:108)(cid:121)(cid:32)(cid:115)(cid:32)(cid:105)(cid:110)(cid:116)(cid:101)(cid:103)(cid:114)(cid:111)(cid:118)(cid:97)(cid:45)
+nými(cid:32)prostupy pro kontinuálně uložené kolejnice(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)(cid:75)aždé použití tohoto typu(cid:32) přejezdové konstrukce musí být řešeno projektovou
+dokumentací s(cid:32)doplněním o technologický postup výstavby. Realizační projektová
+dokumentace musí být odsouhlasena dodavatelem systému. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)(cid:80)řed montáží této přejezdové konstrukce je nutné upravit únosnost pláně tělesa
+železničního spodku v(cid:32)místě přejezdu tak, aby hodnota modulu přetvárnosti byla
+minimálně 80 MPa. (cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)(cid:77)(cid:97)(cid:110)(cid:105)(cid:112)(cid:117)(cid:108)(cid:97)(cid:99)(cid:101)(cid:32)(cid:115)(cid:32)(cid:112)(cid:97)(cid:110)(cid:101)(cid:108)(cid:121)(cid:32)se provádí pomocí jeřábů při použití odpovídajících závěsů. (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:53)(cid:32) Železobetonové panely(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Při montáži železobetonových zádlažbových konstrukcí je nutno dbát na předepsanou
+přípravu podkladu pod zádlažbové dílce. Bez této úpravy by zádlažbové dílce byly
+namáhány v(cid:32)(cid:114)(cid:111)(cid:122)(cid:112)(cid:111)(cid:114)(cid:117)(cid:32)(cid:115)(cid:32)jejich dimenzováním a výrazně by se zkrátila životnost přejezdové
+úpravy. Typizovaný podklad pro danou přejezdovou konstrukci je součástí schválených
+(cid:84)(cid:80)(cid:68)(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)(cid:77)(cid:97)(cid:110)(cid:105)(cid:112)(cid:117)(cid:108)(cid:97)(cid:99)(cid:101)(cid:32)(cid:115)(cid:32)panely se provádí pomocí vysokozdvižných vozíků nebo jeřábů při použití
+odpovídajících závěsů. (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:54)(cid:32) Živičné přejezdové vozov(cid:107)(cid:121)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Při návrhu živičných vozovek nebo při návrhu konstrukčního uspořádání částí pozemních
+komunikací nacházejících se vně kolejového roštu nebo v(cid:32)mezikolejovém prostoru
+vícekolejných přejezdů(cid:32)se použije, je(cid:45)(cid:108)(cid:105)(cid:32)to technicky možné, ustanovení technických
+(cid:112)(cid:111)(cid:100)(cid:109)ínek TP 170. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)(cid:86)(cid:32)konstrukcích živičných vozovek přejezdů se nejčastěji používají hutněné asfaltové
+vrstvy a litý asfalt.(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Skladba konstrukčních vrstev živičných vozovek je vždy limitována výškou použité
+kolejnice a nehomogenitou podkladních vrstev v(cid:32)úrovni příčných pražců kolejového roštu.(cid:32)
+(cid:49)(cid:48)(cid:47)(cid:49)(cid:56)(cid:32) (cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:51)(cid:46)(cid:55)(cid:32) Nestmelené vozovkové kryty(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Nestmelené vozovkové kryty vně koleje lze použít pro přejezdy polních a lesních cest
+tratí v(cid:32)rychlostním pásmu RP0(cid:32)v kolejích(cid:32)(cid:52)(cid:46)(cid:32)(cid:45)(cid:32)6. řádu (cid:97)(cid:32)(cid:116)(cid:111)(cid:32)(cid:106)(cid:101)(cid:110)(cid:32)(cid:118)(cid:32)odůvodněných případech,
+(cid:107)(cid:100)(cid:101)(cid:32) nelze dosáhnout přiměřeného řešení přejezdovou konstrukcí nebo živičnou
+přejezdovou vozovkou. Například přejezdy polních a lesních cest, kd(cid:101)(cid:32)(cid:110)(cid:101)(cid:110)(cid:97)(cid:118)(cid:97)(cid:122)(cid:117)(cid:106)(cid:101)(cid:32)vně
+přejezdu konstruk(cid:99)(cid:101)(cid:32)(cid:118)(cid:111)(cid:122)(cid:111)(cid:118)(cid:107)(cid:121)(cid:32)(cid:110)(cid:101)(cid:98)(cid:111)(cid:32)(cid:106)(cid:101)(cid:45)(cid:108)(cid:105)(cid:32)přejezd používán výlučně sezónně. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Nestmelené vozovkové kryty lze použít do kolejí s(cid:32)dřevěnými pražci nebo do kolejí
+(cid:115)(cid:32)betonovými pražci s(cid:32)podkladnicovým uložením kolejnice. Další podrobnosti řeší Ž11. (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:52)(cid:32) NAPOJENÍ PŘEJEZDU NA(cid:32)POZEMNÍ KOMUNIKACI A ÚPRAVA VOZOVKY
+(cid:86)(cid:32)MEZIKOLEJOVÉM PROS(cid:84)(cid:79)(cid:82)(cid:85)(cid:32)NA VÍCEKOLEJNÝCH PŘE(cid:74)(cid:69)(cid:90)(cid:68)(cid:69)(cid:67)(cid:72)(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:52)(cid:46)(cid:49)(cid:32) Závěrné zídky, závěrné prahy(cid:32)nebo základové bloky(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Součástí některých přejezdových konstrukcí jsou závěrné(cid:32) zídky, závěrné prahy
+respektive základové bloky. (cid:32)Jejich použití je nutné pro zajištění rovinnosti uložení
+vnějších přejezdových panelů. Osazení závěrných zídek, prahů nebo základových bloků
+musí být v(cid:32)(cid:115)(cid:111)(cid:117)(cid:108)(cid:97)(cid:100)(cid:117)(cid:32)(cid:115)(cid:32)Ž11. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Při zřizování přejezdové konstrukce na vícekolejném přejezdu musí být použití závěrných
+zídek, prahů nebo základových bloků v(cid:32)mezikolejovém prost(cid:111)(cid:114)(cid:117)(cid:32)(cid:122)(cid:118)(cid:108)ášť posouzeno PD(cid:32)
+(cid:115)(cid:32)ohledem na osovou vzdálenost kolejí a skladebnou délku prvků přejezdové konstrukce. (cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Závěrné zídky a závěrné prahy vně (cid:107)(cid:111)(cid:108)(cid:101)(cid:106)(cid:101)(cid:32)se osadí (cid:118)(cid:32)(cid:115)(cid:111)(cid:117)(cid:108)(cid:97)(cid:100)(cid:117)(cid:32)(cid:115)(cid:32)požadavkem předpisu
+SŽDC S3.(cid:32)
+(cid:40)(cid:52)(cid:41)(cid:32)Úložná vrstva základových bloků musí být řádně navržena a pro(cid:118)(cid:101)(cid:100)(cid:101)(cid:110)(cid:97)(cid:32)(cid:116)(cid:97)(cid:107)(cid:44)(cid:32)(cid:97)(cid:98)(cid:121)(cid:32)(cid:122)(cid:97)(cid:106)(cid:105)(cid:115)(cid:116)(cid:105)(cid:108)(cid:97)(cid:32)
+odtok vody ze štěrkového lože příčným sklonem zemní pláně nebo subpláně s(cid:32)napojením
+(cid:110)(cid:97)(cid:32)(cid:116)(cid:114)(cid:97)(cid:116)(cid:105)(cid:118)(cid:111)(cid:100)(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:53)(cid:41)(cid:32)Betonová směs monolitických základových bloků musí být třídy C30/37 XF4 nebo vyšší. (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:53)(cid:32) ZABEZPEČOVACÍ ZAŘÍZENÍ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Zásady pro provádění vnějších i vnitřních částí přejezdového zabezpečovacího zařízení
+stanoví kapitola 27 TKP(cid:32)Zabezpečovací zařízení(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)(cid:80)(cid:111)(cid:107)(cid:117)(cid:100)(cid:32) konstrukce přejezdového zabezpečovacího zařízení (staniční, traťové nebo
+přejezdové) využívá nebo bude využívat kolejové obvod(cid:121)(cid:44)(cid:32)musí konstrukce železničního
+svršku umožnit vedení signálního proudu kolejových obvodů železničního
+zabezpečovacího zařízení. Tato funkce nesmí být negativně ovlivněna vložením
+přejezdové konstrukce. (cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Při použití přejezdových konstrukcí není nutné, (cid:97)(cid:98)(cid:121)(cid:32) (cid:115)(cid:101)(cid:32) (cid:80)(cid:68)(cid:32) zabývala úpravou
+zabezpečovacího zařízení, použije(cid:45)(cid:108)(cid:105)(cid:32)(cid:115)(cid:101)(cid:32)přejezdová konstrukce(cid:44)(cid:32)(cid:117)(cid:32)(cid:107)(cid:116)(cid:101)(cid:114)é její dodavatel při
+schválení TPD prokáže a v(cid:32)TPD uvede, že v(cid:32)ochranných kmitočtových pásmech pro
+vysokofrekvenční kolejové obvody (10 kHz(cid:32)a 50 kHz) podle ČSN 34 2613 ed. 2 má
+hodnotu specifického odporu vyšší než (cid:82) (cid:111)(cid:32)(cid:109)(cid:105)(cid:110) (cid:32)(cid:61)(cid:32)(cid:51)(cid:48)(cid:48)(cid:48)(cid:32)Ω(cid:109)(cid:46)(cid:32)
+(cid:40)(cid:52)(cid:41)(cid:32)Základní požadavky na přejezdová zabezpečovací zařízení stanoví vyhláška
+č.(cid:32)(cid:32)(cid:49)(cid:55)(cid:55)(cid:47)(cid:49)(cid:57)(cid:57)(cid:53)(cid:32)(cid:32)Sb. a ČSN 34 2650 ed. 2.(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:54)(cid:32) ROZHLEDOVÉ POMĚRY NA(cid:32)PŘEJEZDU(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Kritéria pro posuzování rozhledových poměrů na přejezdech stanovuje ČSN 73 6380. (cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:55)(cid:32) OPLOCENÍ A OCHRANNÁ ZAŘÍZENÍ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)(cid:79)(cid:112)(cid:108)(cid:111)(cid:99)ení se provede podle PD(cid:32)(cid:97)(cid:32)(cid:112)(cid:111)(cid:100)(cid:108)(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:32)(cid:49)(cid:49)(cid:32)(cid:84)(cid:75)(cid:80)(cid:46)(cid:32)
+(cid:32)
+(cid:49)(cid:49)(cid:47)(cid:49)(cid:56)(cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Na přejezdech s(cid:32)vyloučením silničního provozu se zabrání vjezdu vozidel osazením
+ochranných zařízení podle ČSN 73 6380. Základy ochranného zařízení se umístí
+(cid:118)(cid:32)nezámrzné hloubce, povrchová úprava se provede podle pokynů vlastníka(cid:32)přejezdu(cid:46)(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:56)(cid:32) DOPRAVNÍ ZNAČENÍ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Místní a přechodná úprava provozu na pozemních komunikacích v místě přejezdu se
+stanoví v souladu se zákonem č. 361/2000 Sb., o provozu na pozemních komunikacích
+(cid:97)(cid:32)o změnách některých zákonů (zákon o silničním provozu)(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Vlastnosti, provedení a způsob osazení svislých a vodorovných dopravních značek
+používaných k(cid:32)řízení provozu na pozemních komunikacích stanoví kapi(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:52)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:32)
+Dopravní značky a dopravní zařízení(cid:44)(cid:32)(cid:84)(cid:80)(cid:32)(cid:54)(cid:53)(cid:44)(cid:32)(cid:84)(cid:80)(cid:32)(cid:54)(cid:54)(cid:44)(cid:32)(cid:84)(cid:80)(cid:32)(cid:49)(cid:51)(cid:51)(cid:44)(cid:32)(cid:84)(cid:80)(cid:32)(cid:49)(cid:54)(cid:57)(cid:32)a vzorové listy
+pozemních komunikací VL 6.1 Svislé dopravní značky a VL 6.2(cid:32)Vodorovné dopravní
+značky.(cid:32)
+(cid:57)(cid:46)(cid:51)(cid:46)(cid:57)(cid:32) OSAZENÍ NÁVĚSTIDLY(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Umístění výstražných návěstidel na trati v(cid:32)(cid:115)(cid:111)(cid:117)(cid:118)(cid:105)(cid:115)(cid:108)(cid:111)(cid:115)(cid:116)(cid:105)(cid:32)(cid:115)(cid:32)přejezdem musí být (cid:118)(cid:32)(cid:115)(cid:111)(cid:117)(cid:108)(cid:97)(cid:100)(cid:117)(cid:32)
+(cid:115)(cid:32)předpis(cid:101)(cid:109)(cid:32)SŽ D1(cid:32)ČÁST PRVNÍ Dopravní a návěstní předpis pro tratě nevybavené
+evropských vlakovým zabezpečovačem. Kvalitativní požadavky na(cid:32) (cid:106)(cid:101)(cid:106)(cid:105)(cid:99)(cid:104)(cid:32) (cid:112)(cid:114)ovedení
+stanoví kapitola 32 TKP Zařízení tratí a traťové značky.(cid:32)(cid:32)
+(cid:57)(cid:46)(cid:52)(cid:32) DODÁVKA, SKLADOVÁNÍ A POČÁTEČNÍ ZKOUŠKY(cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:32) DODÁVKA A SKLADOVÁNÍ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Jednu dodávku(cid:32)tvoří vždy kompletní(cid:32)osazení konstrukce(cid:32)přejezdu. Rámcový způsob
+označení jednotlivých dílců provede výrobce přejezdové konstrukce podle schválených
+TPD. Konkrétní specifikaci označení může výrobce dohodnout s(cid:32)(cid:111)(cid:98)(cid:106)(cid:101)(cid:100)(cid:110)(cid:97)(cid:116)(cid:101)(cid:108)(cid:101)(cid:109)(cid:32)
+(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:101)(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)(cid:80)(cid:111)dle schválených TPD se provádí:(cid:32)
+(cid:45)(cid:32) Manipulace (použití správného druhu palet, kontejnerů, manipulačních prostředků
+(cid:97)(cid:116)(cid:112)(cid:46)(cid:41)(cid:44)(cid:32)
+(cid:45)(cid:32) Identifikace (označení, štítkování atp.),(cid:32)
+(cid:45)(cid:32) Balení (čištění, konzervace, uložení součástí do beden atp.), (cid:32)
+(cid:45)(cid:32) Uskladnění (podmínky a způsob uskladnění, ošetřování atp.).(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Tato smluvní ujednání jsou pak závazná i pro zhotovitele prací na instalaci přejezdové
+(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:101)(cid:32)(cid:118)(cid:32)rozsahu péče o zabudovaný materiá(cid:108)(cid:32)(cid:97)(cid:32)(cid:109)(cid:97)(cid:110)(cid:105)(cid:112)(cid:117)(cid:108)(cid:97)(cid:99)(cid:101)(cid:32)(cid:115)(cid:32)ním.(cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:49)(cid:32) Pryžové přejezdové konstrukce(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Pryžové panely se dodávají na dřevěných paletách. Palety pryžových panelů je možné
+skladovat volně stohováním na zpevněné ploše maximálně ve dvou vrstvách s proložením
+dřevěnými hranoly(cid:46)(cid:32) Ostatní části přejezdové konstrukce musí být expedovány ve
+skříňových paletách nebo v(cid:32)bednách. Při dopravě a skladování nesmí dojít
+(cid:107)(cid:32)mechanickému poškození. (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:50)(cid:32) Plastbetonové přejezdové konstrukce(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)(cid:80)řejezdové panely se dodávají balené na jednorázových(cid:32)dřevěných paletách. Ocelové
+části jsou opatřeny ochranou proti korozi a jsou dodávány v(cid:32)samostatné bedně.
+Jednotlivé díly je možné skladovat na volném úložišti. Při uložení na sebe, je nutno je
+proložit dřevěnými proklady, přičemž je možné uložit nejvíce dvě palety na sebe. (cid:32)
+(cid:49)(cid:50)(cid:47)(cid:49)(cid:56)(cid:32) (cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:51)(cid:32) Železobetonové přejezdové konstrukce(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)(cid:80)řejezdové panely se dodávají na otevřených dopravních prostředcích. Ocelové, pryžové
+(cid:97)(cid:32)plastové díly jsou dopravovány volně nebo v(cid:32)samostatných PVC pytlích. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Přejezdové panely lze skladova(cid:116)(cid:32)na volném prostranství(cid:46)(cid:32)Skládky výrobků musí být rovné,
+zpevněné, odvodněné a přístupné manipulačním prostředkům. Vnější a vnitřní panely se
+skladují ve stozích podloženy a proloženy dřevěnými proklady. Dílce závěrných zídek
+(cid:97)(cid:32)prahových vpustí(cid:44)(cid:32)(cid:115)(cid:101)(cid:32)(cid:115)(cid:107)(cid:108)(cid:97)(cid:100)(cid:117)(cid:106)í na dřevěných podkladech v(cid:32)jedné vrstvě. (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:52)(cid:32) Železobetonové přejezdové konstrukce s(cid:32)velkoplošnými panely s(cid:32)(cid:105)(cid:110)(cid:116)(cid:101)(cid:103)(cid:114)(cid:111)(cid:118)(cid:97)(cid:45)
+nými prostupy pro kontinuálně uložené kolejnice(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)(cid:80)řejezdové panely se dodávají nebalené na protiskluzové podložce na nákladním voze.
+(cid:86)(cid:32)rámci dodávky panelů je současně v(cid:32)plastových a nerezových nádobách dodávána
+zálivka pro upevnění kolejnic, a to na jednorázových dřevěných paletách zabalených do
+plastové fólie. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Jednotlivé panely je možné skladovat na volném rovném úložišti. Při uložení(cid:32)(cid:110)(cid:97)(cid:32)(cid:115)(cid:101)(cid:98)(cid:101)(cid:44)(cid:32)(cid:106)(cid:101)(cid:32)
+nutno je proložit dřevěnými proklady, nejvíce 2 až 3 panely na sebe. Palety s(cid:32)nádobami
+se zálivkou je možné skladovat mimo přímé sluneční záření na volném prostranství
+(cid:97)(cid:32)(cid:118)(cid:32)suchu. Předepsaná skladovací teplota pro zálivku je + 5 °C až 30 °C.(cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:53)(cid:32) Železobetonové panely(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)(cid:80)řejezdové panely se dodávají v(cid:32)otevřených dopravních prostředcích. Výrobky jsou
+loženy do stohů, obvykle 5 vrstev, a to v(cid:32)poloze zabudování. Výrobcem je doporučeno
+prokládat jednotlivé vrstvy dřevěnými proklady. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Skládky výrobků musí být rovné, zpevněné, odvodněné a přístupné manipulačním
+prostředkům. (cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Podklady musí být uloženy na rovné ploše, aby nedocházelo ke kroucení panelů do vrtule. (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:54)(cid:32) Živičné přejezdové vozovky(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Dodávku a skladování materiálu pro zřízení asfaltových vrstev stanoví TKP(cid:32)(cid:80)(cid:75)(cid:32)(cid:118)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:101)(cid:32)
+(cid:53)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:44)(cid:32)(cid:118)(cid:32)kapitole 7 TKP staveb PK Hutněné(cid:32)asfaltové vrstvy(cid:32)(dále jen „kapitola 7 TKP
+KP“)(cid:32)(cid:97)(cid:32)(cid:118)(cid:32)kapitole 8 TKP staveb PK Litý asfalt(cid:32)(dále jen „kapitola 8 TKP PK“)(cid:46)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Odebranou asfaltovou směs je nutno zpracovat za podmínek a teplot uvedených
+(cid:118)(cid:32)příslušných článcích TKP(cid:32)(cid:75)(cid:80)(cid:32)a není proto skladovatelná. V(cid:32)průběhu dopravy je nutno
+kontrolovat ztrátu teploty asfaltové směsi a zakrytí vozidel alespoň plachtami. (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:49)(cid:46)(cid:55)(cid:32) Nestmelené vozovkové kryty(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)(cid:80)(cid:114)(cid:111)(cid:32)(cid:100)odávku a skladování kameniva(cid:32)nestmelených vozovkových krytů platí ustanovení
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:32)(cid:53)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)K. Požadavky na kamenivo pro nestmelené směsi stanoví ČSN EN 13285
+ed.2 Nestmelené směsi (cid:45)(cid:32)(cid:83)(cid:112)(cid:101)(cid:99)(cid:105)(cid:102)(cid:105)(cid:107)(cid:97)(cid:99)(cid:101)(cid:46)(cid:32)(cid:32)(cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:50)(cid:32) POČÁTEČNÍ ZKOUŠKY(cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:50)(cid:46)(cid:49)(cid:32) Všeobecně(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Provedení počátečních zkoušek zajišťuje každý dodavatel materiálu, který vstupuje do
+výroby stavebních hmot a dílců spotřebovávaných při zhotovovacích pracích na
+přejezdové vozovce.(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Počátečními zkouškami autorizovaná odborná zkušebna potvrdí, že v(cid:32)daném zařízení
+dodavatele stavebního materiálu nebo(cid:32)stavebního výrobku, z(cid:32)daných surovin, příslušným
+technologickým postupem a na použitém výrobním zařízení je možné vyrábět výrobek
+(cid:115)(cid:32)požadovanými vlastnostmi podle TKP a souvisejících norem. (cid:32)
+(cid:32)
+(cid:49)(cid:51)(cid:47)(cid:49)(cid:56)(cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Počáteční zkoušky je nutno opakovat vždy, kdy se mění surovinová(cid:32) základna,
+technologický postup nebo výrobní zařízení. Provedením počátečních zkoušek dodavatel
+prokazuje svoji způsobilost poskytovat dodávky v(cid:32)požadované předepsané kvalitě. (cid:32)
+(cid:40)(cid:52)(cid:41)(cid:32)Za výsledek počátečních zkoušek materiálů pro výrobu jednotlivých(cid:32) přejezdových
+konstrukcí se považuje prohlášení shody se schválenými TKP a TPD (Prohlášení o shodě
+a Stavební technické osvědčení). (cid:32)
+(cid:57)(cid:46)(cid:52)(cid:46)(cid:50)(cid:46)(cid:50)(cid:32) Živičné přejezdové vozovky(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Postup pro zajišťování počátečních zkoušek stanoví (cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:53)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:44)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:55)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:32)
+(cid:97)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:46)(cid:32)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Zhotovitel prokáže objednateli vlastnosti směsi doložením(cid:32)
+(cid:45)(cid:32) Výsledků počátečních zkoušek směsí a posouzením kvalitativních parametrů podle
+požadavků TKP(cid:32)(cid:80)(cid:75)(cid:32)(cid:97)(cid:32)(cid:110)(cid:111)(cid:114)(cid:101)(cid:109)(cid:32)(cid:118)(cid:32)nich citovaných(cid:44)(cid:32)
+(cid:45)(cid:32) Prohlášení o shodě podle nařízení vlády č. 163/2002 (cid:83)(cid:98)(cid:46), kterým se stanoví technické
+požadavky na vybrané stavební výrobky(cid:32)(dále jen „Prohlášení o shodě“).(cid:32)
+(cid:57)(cid:46)(cid:53)(cid:32) ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Kontrolními zkouškami se v(cid:32)průběhu hromadné výroby přejezdových konstrukcí průběžně
+ověřují vlastnosti předepsané technickými normami a jejich soulad s(cid:32)výsledkem
+počátečních zkoušek. Jsou podkladem pro Prohlášení o shodě. Na zpracovávané materiály
+a výrobky musí objednatel materiálu pro konstrukci přejezdu toto Prohlášení o shodě
+vyžadovat. Kontrolní zkoušky jsou soustavně prováděny podle používaného vnitřního
+kontrolního systému výrobce. Dokumentace výsledku kontrol musí být výrobcem
+archivována. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Kontrolními zkouškami zhotovitele při provádění zhotovovacích prací podle kontrolního
+(cid:97)(cid:32)(cid:32)zkušebního plánu zhotovitele se ověřuje a stavebnímu dozoru prokazuje dosažení
+parametrů předepsaných TKP ((cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:68)(cid:44)(cid:32)(cid:84)(cid:80)(cid:68)(cid:32)(cid:97)(cid:32)(cid:118)(cid:32)(cid:116)(cid:101)(cid:99)(cid:104)(cid:110)(cid:105)(cid:99)(cid:107)ých(cid:32)(cid:110)(cid:111)(cid:114)(cid:109)ách(cid:41)(cid:46)(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)(cid:75)(cid:32)provedení kontrolních zkoušek podle vlastního systému řízení jakosti je oprávněn
+(cid:105)(cid:32)objednatel prací.(cid:32)
+(cid:57)(cid:46)(cid:54)(cid:32) PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY(cid:32)
+(cid:57)(cid:46)(cid:54)(cid:46)(cid:49)(cid:32) (cid:86)ŠEOBECNĚ(cid:32)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Přípustné odchylky, míru opotřebení a záruky pro práci, které jsou prováděny při stavbě
+nebo rekonstrukci přejezdů stanoví příslušné kapitoly TKP. Pro zemní práce(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)
+(cid:51)(cid:32)TKP, pro odvodnění kolejiště (cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:52)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:112)ro konstrukční vrstvy tělesa železničního
+(cid:115)(cid:112)(cid:111)(cid:100)(cid:107)(cid:117)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)6 TKP, pro kolejové lože(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)7 TKP, pro konstrukce koleje a výhybek(cid:32)
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)pro nástupiště, rampy, zarážedla, účelové komunikace a zpevněné plochy(cid:32)
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:48)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)pro oplocení kapitola(cid:32)11 TKP, pro podchody chrániček a kolektorů
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:50)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)(cid:112)(cid:111)(cid:100)(cid:99)(cid:104)(cid:111)(cid:100)(cid:121)(cid:32)(cid:112)(cid:108)(cid:121)(cid:110)(cid:117)(cid:32)(cid:97)(cid:32)(cid:118)(cid:111)(cid:100)(cid:121)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:51)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)(cid:112)(cid:111)(cid:100)(cid:99)(cid:104)(cid:111)(cid:100)(cid:121)(cid:32)(cid:107)(cid:97)(cid:110)(cid:97)(cid:108)(cid:105)(cid:122)(cid:97)(cid:99)(cid:101)(cid:32)
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)14 TKP, pro zabezpečovací zařízení(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)27 TKP, pro podchody sdělovacích
+kabelů(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)28 TKP, pro elektrické vedení(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:51)(cid:48)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:97)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:51)(cid:49)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:97)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)
+zařízení trati a traťové značky(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:51)(cid:50)(cid:32)(cid:84)(cid:75)(cid:80)(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Pro úpravu napojení pozemní komunikace na přejezdovou vozovku v(cid:32)úseku správy
+správce pozemní komunikace se uplatní příslušná ustanovení TKP (cid:80)(cid:75)(cid:32)a to podle prací
+(cid:97)(cid:32)materiálů použitých v(cid:32)konstrukci vozovky. Pro zemní práce kapitola 4 TKP (cid:80)(cid:75)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)
+odvodnění a (cid:32)chráničky inženýrských sítí kapitola 3 TKP (cid:80)(cid:75), pro podkladní vrstvy kapitola
+(cid:53)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro hutněné asfaltové vrstvy kapitola 7 TKP (cid:80)(cid:75), pro litý asfalt kapitola(cid:32)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:44)(cid:32)
+pro dlažby kapitola 9 TKP (cid:80)(cid:75), pro dopravní značky a dopravní zařízení kapitola 14 TKP(cid:32)(cid:80)(cid:75)(cid:44)(cid:32)
+pro postřiky a nátěry vozovek kapitola 26 TKP (cid:80)(cid:75), případně i další související kapitoly.(cid:32)
+(cid:49)(cid:52)(cid:47)(cid:49)(cid:56)(cid:32) (cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Přípustné odchylky v(cid:32)rozdělení pražců v(cid:32)oblasti přejezdové konstrukce(cid:32)na přejezdu jsou
+(cid:117)(cid:118)(cid:101)(cid:100)(cid:101)(cid:110)(cid:121)(cid:32)(cid:118)(cid:32)předpisu SŽDC S3, případně v TPD jednotlivých přejezdových konstrukcí(cid:46)(cid:32)
+(cid:40)(cid:52)(cid:41)(cid:32)Přípustné tolerance od předepsaných rozměrů žlábku pro okolek kola železničního vozidla
+(cid:106)(cid:115)(cid:111)(cid:117)(cid:32)(cid:117)(cid:118)(cid:101)(cid:100)(cid:101)(cid:110)(cid:121)(cid:32)(cid:118)(cid:32)předpisu SŽDC S3. Pro zajištění požadavku bezbariérového přístupu
+(cid:107)(cid:32)nástupišti lze použít přejezdové konstrukce, které umožňují pružné zakrytí žlábku pro
+okolek. Pružné zakrytí žlábku pro okolek bezbariérového přístupu k nástupišti lze použít
+pro rychlost V ≤ 80 km.h(cid:45)(cid:49)(cid:32)(viz ČSN EN 16587).(cid:32)
+(cid:40)(cid:53)(cid:41)(cid:32)(cid:75)(cid:111)(cid:110)(cid:116)(cid:114)(cid:111)(cid:108)(cid:97)(cid:32)přesnosti nezabudovaných stavebních dílců bez ohledu na použité suroviny
+(cid:97)(cid:32)materiály použité pro jejich výrobu se provede podle ČSN 73 0212(cid:45)5 Geometrická
+přesnost ve výstavbě. Kontrola přesnosti. Část 5: Kontrola přesnosti stavebních dílců.
+(cid:84)(cid:97)(cid:116)(cid:111)(cid:32)(cid:110)(cid:111)(cid:114)(cid:109)(cid:97)(cid:32)(cid:115)(cid:116)(cid:97)noví zásady pro stanovení míst měření nezabudovaných stavebních dílců,
+tj. předvyrobených částí stavebních objektů a konstrukcí, stanovuje(cid:32)přesnosti kontrolních
+měření a metody pro jejich(cid:32)vyhodnocení, to je porovnání mezi skutečným provedením
+dílce a mezními hodnotami stanovenými příslušnou technickou normou výrobce,
+výkresem dílce apod. (dále jen technickým podkladem).(cid:32)
+(cid:57)(cid:46)(cid:54)(cid:46)(cid:50)(cid:32) POŽADAVKY PODLE DRUH(cid:85)(cid:32)(cid:75)(cid:79)(cid:78)(cid:83)(cid:84)(cid:82)(cid:85)(cid:75)(cid:67)(cid:69)(cid:32)(cid:32)
+(cid:57)(cid:46)(cid:54)(cid:46)(cid:50)(cid:46)(cid:49)(cid:32) Pryžové přejezdové konstrukce(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Rozměrové tolerance a geometrické tolerance pro výrobky z(cid:32)(cid:112)(cid:114)(cid:121)že stanoví ČSN ISO
+(cid:51)(cid:51)(cid:48)(cid:50)(cid:45)(cid:49)(cid:32)(cid:97)(cid:32)(cid:32)ČSN ISO 3302(cid:45)(cid:50)(cid:46)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Specifické požadavky na úpravu a hodnocení jiných vlastností se provedou podle
+schválených TPD příslušných přejezdových konstrukcí. (cid:32)
+(cid:57)(cid:46)(cid:54)(cid:46)(cid:50)(cid:46)(cid:50)(cid:32) (cid:80)lastbetonové přejezdové kon(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:101)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Rozměrové tolerance musejí odpovídat schváleným TPD přejezdové konstrukce(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Specifické požadavky na úpravu a hodnocení jiných vlastností se provedou podle
+schválených TPD příslušných přejezdových konstrukcí.(cid:32)
+(cid:57)(cid:46)(cid:54)(cid:46)(cid:50)(cid:46)(cid:51)(cid:32) Železobetonové přejezdové konstrukce s(cid:32)velkoplošnými panely
+(cid:115)(cid:32)integrovanými prostupy pro kontinuálně uložené kolejnice(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Rozměrové tolerance musejí odpovídat schváleným TPD přejezdové konstrukce. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Specifické požadavky na úpravu a hodnocení jiných vlastností se provedou podle
+schválených TPD příslušných přejezdových konstrukcí.(cid:32)
+(cid:57)(cid:46)(cid:54)(cid:46)(cid:50)(cid:46)(cid:52)(cid:32) Přejezdový pražec(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Pražce musejí odpovídat požadavkům ČSN EN 13230(cid:45)1 Železniční aplikace (cid:45)(cid:32)(cid:75)(cid:111)(cid:108)(cid:101)(cid:106)(cid:32)(cid:45)(cid:32)
+Betonové příčné a výhybkové pražce (cid:45)(cid:32)Část 1: Obecné požadavky.(cid:32)
+(cid:57)(cid:46)(cid:54)(cid:46)(cid:50)(cid:46)(cid:53)(cid:32) Živičné přejezdové vozovky(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Přípustné odchylky pro úpravu přejezdové (cid:118)(cid:111)(cid:122)(cid:111)(cid:118)(cid:107)(cid:121)(cid:32)(cid:118)(cid:32)úseku správy vlastníka dráhy jsou
+(cid:117)(cid:118)(cid:101)(cid:100)(cid:101)(cid:110)(cid:121)(cid:32)(cid:118)(cid:32)příslušných kapitolách TKP (cid:80)(cid:75)(cid:32)a to podle prací a druhu materiálu použitého
+(cid:118)(cid:32)konstrukci přejezdové vozovky. Pro hutněné asfaltové vrstvy v(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:101)(cid:32)(cid:55)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)
+litý asfalt v(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:101)(cid:32)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)(cid:100)(cid:108)(cid:97)žby v(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:101)(cid:32)(cid:57)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:32)a pro postřiky a nátěry
+(cid:118)(cid:111)(cid:122)(cid:111)(cid:118)(cid:101)(cid:107)(cid:32)(cid:118)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:101)(cid:32)(cid:50)(cid:54)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:46)(cid:32)(cid:32)
+(cid:57)(cid:46)(cid:55)(cid:32) KLIMATICKÁ OMEZENÍ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Klimatická omezení pro práce, které jsou prováděny při stavbě nebo rekonstrukci
+přejezdů stanoví příslušné kapitoly TKP. Pro zemní práce kapitola 3 TKP, pro odvodnění
+kolejiště kapitola 4 TKP, pro konstrukční vrstvy tělesa železničního spodku kapitola 6
+TKP, pro kolejové lože kapitola 7 TKP, pro konstrukce koleje a výhybek kapitola 8 TKP,
+pro oplocení kapitola 11 TKP, pro podchody chrániček a kolektorů kapi(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:50)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)
+(cid:112)(cid:111)(cid:100)(cid:99)(cid:104)(cid:111)(cid:100)(cid:121)(cid:32)(cid:112)(cid:108)(cid:121)(cid:110)(cid:117)(cid:32)(cid:97)(cid:32)(cid:118)(cid:111)(cid:100)(cid:121)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:51)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)(cid:112)(cid:111)(cid:100)(cid:99)(cid:104)(cid:111)(cid:100)(cid:121)(cid:32)(cid:107)(cid:97)(cid:110)(cid:97)(cid:108)(cid:105)(cid:122)(cid:97)(cid:99)(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:52)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)
+zabezpečovací zařízení kapitola 27 TKP, pro podchody sdělovacích kabelů kapitola 28
+(cid:32)
+(cid:49)(cid:53)(cid:47)(cid:49)(cid:56)(cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+TKP, pro elektrické vedení kapitola 30 a 31 TKP a pro zařízení trati a traťové značky
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:51)(cid:50)(cid:32)(cid:84)(cid:75)(cid:80)(cid:46)(cid:32)(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Pro úpravu napojení pozemní komunikace na přejezdovou vozovku (cid:118)(cid:32)úseku správy
+vlastníka pozemní komunikace stanoví klimatická omezení příslušná kapitola TKP (cid:80)(cid:75)(cid:32)(cid:97)(cid:32)(cid:116)(cid:111)(cid:32)
+podle prací a materiálů použitých v(cid:32)(cid:107)(cid:111)(cid:110)(cid:115)(cid:116)(cid:114)(cid:117)(cid:107)(cid:99)(cid:105)(cid:32)vozovky. Pro zemní práce kapitola 4
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro odvodnění a chráničky inženýrských sítí kapitola 3 TKP (cid:80)(cid:75), pro podkladní
+(cid:118)(cid:114)(cid:115)(cid:116)(cid:118)(cid:121)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:53)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro hutněné asfaltové vrstvy kapitola 7 TKP (cid:80)(cid:75), pro litý asfalt
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro dlažby kapitola 9 TKP(cid:32)(cid:80)(cid:75), pro dopravní značky a dopravní zařízení
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:52)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro postřiky a nátěry vozovek kapitola 26 TKP (cid:80)(cid:75), případně i další
+související kapitoly.(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Pro živičné konstrukce přejezdové vozovky v(cid:32)úseku správy vlastníka dráhy stanoví
+klimatická omezení příslušná kapitola TKP (cid:80)(cid:75)(cid:32)a to podle prací a materiálů použitých
+(cid:118)(cid:32)konstrukci vozovky. Pro hutněné asfaltové vrstvy kapitola 7(cid:32)(cid:32)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro litý (cid:97)(cid:115)(cid:102)(cid:97)(cid:108)(cid:116)(cid:32)
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro dlažby kapitola 9 TKP (cid:80)(cid:75), pro postřiky a nátěry vozovek kapitola
+(cid:50)(cid:54)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), případně další související kapitoly. (cid:32)
+(cid:57)(cid:46)(cid:56)(cid:32) ODSOUHLASENÍ A PŘEVZETÍ PRACÍ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Pro odsouhlasení stavebních prací, které jsou prováděny při stavbě nebo rekonstrukci
+přejezdů stanoví požadované postupy příslušné kapitoly TKP. Pro zemní práce kapitola 3
+(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)(cid:111)dvodnění kolejiště kapitola 4 TKP, pro konstrukční vrstvy tělesa železničního
+spodku kapitola 6 TKP, pro kolejové lože kapitola 7 TKP, pro konstrukce koleje a výhybek
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)pro nástupiště, rampy, zarážedla a účelové komunikace kapitola 10 TKP,
+(cid:112)(cid:114)o oplocení kapitola 11 TKP, pro podchody chrániček a kolektorů kapitola 12 TKP, pro
+(cid:112)(cid:111)(cid:100)(cid:99)(cid:104)(cid:111)(cid:100)(cid:121)(cid:32)(cid:112)(cid:108)(cid:121)(cid:110)(cid:117)(cid:32)(cid:97)(cid:32)(cid:118)(cid:111)(cid:100)(cid:121)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:51)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)(cid:112)(cid:111)(cid:100)(cid:99)(cid:104)(cid:111)(cid:100)(cid:121)(cid:32)(cid:107)(cid:97)(cid:110)(cid:97)(cid:108)(cid:105)(cid:122)(cid:97)(cid:99)(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:49)(cid:52)(cid:32)(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)(cid:112)(cid:114)(cid:111)(cid:32)
+zabezpečovací zařízení kapitola 27 TKP, pro podchody sdělovacích kabelů kapitola 28
+(cid:84)(cid:75)(cid:80)(cid:44)(cid:32)pro elektrické vedení kapitola 30(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:97)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)31 TKP a pro zařízení trati a traťové
+značky kapitola 32 TKP. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Pro odsouhlasení stavebních prací v(cid:32)oblasti napojení pozemní komunikace na
+přejezdovou vozovku v(cid:32)úseku správy vlastníka pozemní komunikace stanoví požadavky
+na přejímku prací příslušná kapitola TKP (cid:80)(cid:75)(cid:32)a to podle prací a materiálů použitých
+(cid:118)(cid:32)konstrukci vozovky. Pro zemní práce kapitola 4 TKP (cid:80)(cid:75), pro odvodnění a chráničky
+inženýrských sítí kapitola 3 TKP (cid:80)(cid:75), pro podkladní vrstvy kapitola 5 TKP (cid:80)(cid:75)(cid:44)(cid:32)pro hutněné
+asfaltové vrstvy kapitola 7 TKP (cid:80)(cid:75), pro litý asfalt kapitola 8 TKP (cid:80)(cid:75), pro dlažby kapitola
+(cid:57)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro dopravní značky a dopravní zařízení kapitola 14 TKP (cid:80)(cid:75), pro postřiky
+(cid:97)(cid:32)nátěry vozovek kapitola 26 TKP (cid:80)(cid:75), případně i další související kap(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:46)(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)Pro stanovení a odsouhlasení správného postupu prací předloží zhotovitel před jejich
+zahájením kontrolní a zkušební plán. Kontrolní a zkušební plán musí zahrnovat kontrolní
+postupy pro stavební úpravy specifické pro daný typ přejezdové konstrukce podle těchto
+TKP a podle schválených TPD. Vložení přejezdové konstrukce se provádí obvykle(cid:32)při
+uzavírce pozemní komunikace a výluce koleje. Z(cid:32)časových důvodů je nutné, aby
+konstrukční vrstvy, které budou zakryty(cid:44)(cid:32)(cid:98)(cid:121)(cid:108)(cid:121)(cid:32)(cid:112)(cid:114)(cid:111)(cid:118)(cid:101)(cid:100)(cid:101)(cid:110)(cid:121)(cid:32)(cid:118)(cid:32)takové kvalitě, aby mohly bý(cid:116)(cid:32)
+odsouhlaseny stavebním dozorem operativně. (cid:32)
+(cid:40)(cid:52)(cid:41)(cid:32)Pro přejezdy mohou být použity pouze konstrukce vyrobené podle schválených TPD
+(cid:97)(cid:32)(cid:117)(cid:32)nichž výrobce dokladuje tzv. Prohlášení o shodě a platné Stavební technické
+osvědčení. (cid:32)
+(cid:40)(cid:53)(cid:41)(cid:32)Stavební dozor provede do stavebního deníku zápis o odsouhlasení kompletnosti a stavu
+dodávky přejezdové konstrukce před jejím zabudováním do přejezdové vozovky. Se
+součástmi případně poškozenými při přepravě či skladování se naloží podle pokynu
+stavebního dozoru (mohou se například instalovat (cid:107)(cid:32)dopravou nezatíženému okraji
+přejezdu, mohou být opraveny, případně se označí a vyřadí). (cid:32)
+(cid:40)(cid:54)(cid:41)(cid:32)Pro živičné části konstrukce přejezdové vozovky v(cid:32)úseku správy vlastníka dráhy stanoví
+požadavky na přejímku prací příslušná kapitola TKP (cid:80)(cid:75)(cid:32)a to podle prací a materiálů
+použitých v(cid:32)konstrukci vozovky. Pro hutněné asfaltové vrstvy kapitola 7 TKP (cid:80)(cid:75), pro litý
+(cid:49)(cid:54)(cid:47)(cid:49)(cid:56)(cid:32) (cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+(cid:97)(cid:115)(cid:102)(cid:97)(cid:108)(cid:116)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:56)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro dlažby kapitola 9 TKP (cid:80)(cid:75), pro postřiky a nátěry vozovek
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:50)(cid:54)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), případně další související kapitoly. (cid:32)
+(cid:40)(cid:55)(cid:41)(cid:32)Převzetí prací (cid:115)(cid:101)(cid:32)(cid:112)(cid:114)(cid:111)(cid:118)(cid:101)(cid:100)(cid:101)(cid:32)(cid:112)(cid:111)(cid:100)(cid:108)(cid:101)(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:32)(cid:49)(cid:32)(cid:84)(cid:75)(cid:80)(cid:32)Všeobecně (dále jen „kapitola 1 TKP“)(cid:44)(cid:32)
+případně také kapitoly 1 TKP (cid:80)(cid:75)(cid:32)Všeobecně (dále jen „kapitola 1 TKP PK“)(cid:46)(cid:32)Po převzetí
+díla uschová vlastník přejezdu příslušné certifikáty osvědčení o jakosti materiálu
+(cid:97)(cid:32)výrobků nejméně na dobu smluvně sjednané záruky na provedené dílo. (cid:32)
+(cid:40)(cid:56)(cid:41)(cid:32)Pokud přejezdová konstrukce vyžaduje v(cid:32)(cid:115)(cid:111)(cid:117)(cid:108)(cid:97)(cid:100)(cid:117)(cid:32)(cid:115)(cid:32)TPD údržbu během záruční doby,
+zajišťuje tuto údržbu provozovatel dráhy. (cid:32)
+(cid:57)(cid:46)(cid:57)(cid:32) KONTROLNÍ A OVĚŘOVACÍ MĚŘENÍ, MĚŘENÍ POSUNŮ
+(cid:65)(cid:32)(cid:32)PŘETVOŘENÍ(cid:32)(cid:40)(cid:68)(cid:69)FORMACÍ)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Pro kontrolní měření a měření posunů a deformací platí kapitola 1 TKP. Kontrolní měření
+se provedou podle projektové dokumentace přejezdu a podle kontrolního a zkušebního
+plánu. Kontrolní a zkušební plán stanoví i kontrolní měření souvisejících zhotovovacích
+prací na přejezdu podle jednotlivých kapitol těchto TKP a podle jednotlivých kapitol
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75)(cid:46)(cid:32)(cid:32)
+(cid:57)(cid:46)(cid:49)(cid:48)(cid:32) ŽIVOTNÍ PROSTŘEDÍ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Přejezdové konstrukce s(cid:32)pryžovou pojížděnou vozovkou snižují hlučnost provozu
+silničních vozidel na přejezdu.(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Materiál vyzískaný při stavbě a rekonstrukci přejezdu může být recyklován, nebo je nutno
+(cid:115)(cid:32)materiálem naložit jako s(cid:32)výziskem(cid:32)(cid:112)(cid:111)(cid:100)(cid:108)(cid:101)(cid:32)(cid:100)(cid:114)(cid:117)(cid:104)(cid:117)(cid:32)(cid:106)(cid:101)(cid:104)(cid:111)(cid:32)zařazení ve shodě s(cid:32)(cid:80)(cid:68)(cid:32)(cid:110)(cid:101)(cid:98)(cid:111)(cid:32)
+rozhodnutím stavebního dozoru. (cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49)(cid:32) BEZPEČNOST PRÁCE A TECHNICKÝCH (cid:90)AŘÍZENÍ, POŽÁRNÍ
+(cid:79)(cid:67)(cid:72)(cid:82)(cid:65)(cid:78)(cid:65)(cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49)(cid:46)(cid:49)(cid:32) (cid:86)ŠEOBECNĚ(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně
+stanoví kapitola 1 TKP. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Práce na pokládce přejezdu obvykle probíhají za uzavírky pozemní komunikace a za
+výluky koleje. Technologické postupy doporučené v(cid:32)(cid:111)(cid:100)(cid:115)(cid:116)avci 9.3.3 této kapitoly TKP byly
+vypracovány s(cid:32)ohledem na zkrácení výluky koleje na minimální dobu. Po přípravě
+pražcového podloží a(cid:32)železničního svršku je možné provádět(cid:32)(cid:122)(cid:104)(cid:111)(cid:116)(cid:111)(cid:118)(cid:111)(cid:118)(cid:97)cí práce(cid:32)(cid:105)(cid:32)(cid:122)(cid:97)(cid:32)
+(cid:112)(cid:114)(cid:111)(cid:118)(cid:111)(cid:122)(cid:117)(cid:32)(cid:107)(cid:111)(cid:108)(cid:101)(cid:106)(cid:101)(cid:32)(cid:118)(cid:32)závislosti na použité technologii prací (použité mechanizaci) a přijatých
+bezpečnostních opatřeních(cid:46)(cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49)(cid:46)(cid:50)(cid:32) PRÁCE BEZ VÝLUKY KOL(cid:69)(cid:74)(cid:69)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Práce bez výluky koleje se musí řídit tak, aby pracovní místo mohlo být v(cid:32)každé době
+bezpečně pojížděno určenou rychlostí. Práce řídí odpovědný zástupce zhotovitele.(cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49)(cid:46)(cid:51)(cid:32) PRÁCE ZA VÝLUKY KOLE(cid:74)(cid:69)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)(cid:80)ředpokládané výluky kolejí se projednávají, povolují, zahajují a ukončují podle předpisu
+SŽ D7/2 Organizování výlukových činností. (cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Práce musí být připraveny a organizovány tak, aby výluka byla co neúčelněji využita
+(cid:97)(cid:32)výlukové časy byly dodrženy. Současně musí být dodržena ustanovení předpisů SŽ (cid:68)(cid:49)(cid:32)
+ČÁST PRVNÍ(cid:32)(cid:68)opravní a návěstní předpis pro tratě nevybavené evropským vlakovým
+(cid:32)
+(cid:49)(cid:55)(cid:47)(cid:49)(cid:56)(cid:32)
+(cid:32)
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:75)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:97)(cid:32)(cid:57)(cid:32)–(cid:32)Železniční(cid:32)přejezdy a(cid:32)přechody(cid:32) Účinnost od (cid:49)(cid:46)(cid:32)(cid:108)(cid:101)(cid:100)(cid:110)(cid:97)(cid:32)(cid:50)(cid:48)(cid:50)(cid:52)(cid:32)
+(cid:32)
+(cid:32)
+zabezpečovačem(cid:32) případně(cid:32) SŽ (cid:68)(cid:51)(cid:32) Předpis pro zjednodušené řízení drážní dopravy(cid:32)
+provozovatele dráhy.(cid:32)
+(cid:40)(cid:51)(cid:41)(cid:32)(cid:79)(cid:98)(cid:101)(cid:99)né zásady pro výluky dopravní cesty jsou popsány v(cid:32)(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:101)(cid:32)(cid:49)(cid:32)(cid:84)(cid:75)(cid:80)(cid:46)(cid:32)
+(cid:57)(cid:46)(cid:49)(cid:49)(cid:46)(cid:52)(cid:32) BEZPEČNOST PŘI PRÁCI(cid:32)(cid:83)(cid:32)PŘEJEZDOVÝMI KONS(cid:84)(cid:82)(cid:85)(cid:75)(cid:67)(cid:69)(cid:77)(cid:73)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Pro montáž přejezdových konstrukcí je nutno používat speciální závěsné prostředky
+uvedené výrobcem ve schválených TPD.(cid:32)
+(cid:40)(cid:50)(cid:41)(cid:32)Při práci s(cid:32)(cid:109)(cid:97)teriály silničního stavitelství je nutné dodržet bezpečnostní ustanovení,
+která uvádí pro hutněné asfaltové vrstvy kapitola 7 TKP (cid:80)(cid:75), pro litý asfalt kapitola 8 TKP
+(cid:80)(cid:75), pro dlažby kapitola 9 TKP (cid:80)(cid:75), pro dopravní značky a dopravní zařízení kapitola 14
+(cid:84)(cid:75)(cid:80)(cid:32)(cid:80)(cid:75), pro postřiky a nátěry vozovek kapitola 26 TKP (cid:80)(cid:75), případně i další související
+(cid:107)(cid:97)(cid:112)(cid:105)(cid:116)(cid:111)(cid:108)(cid:121)(cid:46)(cid:32)(cid:32)
+(cid:57)(cid:46)(cid:49)(cid:50)(cid:32) CITOVANÉ A SOUVISEJÍCÍ(cid:32)(cid:68)(cid:79)(cid:75)(cid:85)(cid:77)(cid:69)(cid:78)(cid:84)(cid:89)(cid:32)
+(cid:40)(cid:49)(cid:41)(cid:32)Seznam citovaných a souvisejících dokumentů je uveden v(cid:32)Příloze A Kapitoly 1 TKP, která
+je ke stažení na webových stránkách SŽ(cid:46)(cid:32)
+(cid:32)
+(cid:49)(cid:56)(cid:47)(cid:49)(cid:56)(cid:32) (cid:32)
+(cid:32)
+Ověřovací doložka konverze dokumentu
+Ověřuji pod pořadovým číslem 4283993, že tento dokument, který vznikl převedením vstupu v listinné
+podobě do podoby elektronické, skládající se z 18 listů, se doslovně shoduje s obsahem vstupu.
+Ověřující osoba: Hana BOUBERLOVÁ
+Vystavil: Správa železnic, státní organizace
+Datum: 05.01.2024 11:52:58

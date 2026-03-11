@@ -1,0 +1,847 @@
+Úroveň přístupu
+A
+Technické kvalitativní
+podmínky staveb státních
+drah
+Kapitola 15
+VEGETAČNÍ ÚPRAVY
+Vydání: únor 2021
+Účinnost od 1. března 2021
+Nahrazení předchozího znění kapitoly
+Datem účinností tohoto dokumentu se nahrazuje kapitola 15 – VEGETAČNÍ ÚPRAVY schválená
+dne 18. 10. 2000 účinná od 01. 12. 2000.
+Schváleno pod č. j. 9567/2021-SŽ-GŘ-O15
+Dne 25. 2. 2021
+Bc. Jiří Svoboda, MBA v. r.
+Generální ředitel
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+Technické kvalitativní podmínky
+Kapitola 15
+VEGETAČNÍ ÚPRAVY
+Gestorský útvar: Správa železnic, státní organizace
+Generální ředitelství
+Odbor provozuschopnosti
+Praha
+spravazeleznic.cz
+Vydání: 2021
+Náklad: vydáno pouze v elektronické podobě (PDF), formát (A4)
+© Správa železnic, státní organizace, rok 2021
+Tento dokument je duševním vlastnictvím státní organizace Správa železnic, na které se vztahuje zákon č. 121/2000 Sb.,
+o právu autorském, o právech souvisejících s právem autorským a o změně některých zákonů (autorský zákon), ve znění
+pozdějších předpisů. Státní organizace Správa železnic je v uvedené souvislosti rovněž vykonavatelem majetkových práv.
+Tento dokument smí fyzická osoba použít pouze pro svou osobní potřebu, právnická osoba pro svou vlastní vnitřní potřebu.
+Poskytování tohoto dokumentu nebo jeho části v jakékoliv formě nebo jakýmkoliv způsobem třetí osobě je bez svolení
+státní organizace Správa železnic zakázáno.
+2
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+OBSAH
+Strana
+15 VEGETAČNÍ ÚPRAVY ...................................................................................................................... 5
+15.1 Předmluva ..................................................................................................................................... 5
+15.2 výsadby ........................................................................................................................................ 5
+15.2.1 Úvod ............................................................................................................................. 5
+15.2.2 Popis a kvalita stavebních materiálů .................................................................................. 5
+15.2.3 Dodávka, skladování a průkazní zkoušky ........................................................................... 8
+15.2.4 Technologické postupy prací ............................................................................................. 9
+15.2.5 Odebírání vzorků a kontrolní zkoušky ............................................................................... 12
+15.2.6 Přípustné odchylky, míra opotřebení, záruky ..................................................................... 13
+15.2.7 Klimatická omezení ........................................................................................................ 13
+15.2.8 Odsouhlasení a převzetí prací .......................................................................................... 13
+15.2.9 Kontrolní měření, měření posunů a přetvoření ................................................................... 14
+15.2.10 Reklamace .................................................................................................................... 14
+15.3 ZAKLÁDÁNÍ TRÁVNÍKU ................................................................................................................. 14
+15.3.1 Úvod ............................................................................................................................ 14
+15.3.2 Popis a kvalita stavebních materiálů ................................................................................. 14
+15.3.3 Dodávka, skladování a průkazní zkoušky .......................................................................... 15
+15.3.4 Technologické postupy prací ............................................................................................ 15
+15.3.5 Odebírání vzorků a kontrolní zkoušky ............................................................................... 17
+15.3.6 Přípustné odchylky, míra opotřebení, záruky ..................................................................... 17
+15.3.7 Klimatická omezení ........................................................................................................ 17
+15.3.8 Odsouhlasení a převzetí prací .......................................................................................... 17
+15.3.9 Kontrolní měření, měření posunů a přetvoření ................................................................... 18
+15.4 EKOLOGIE ................................................................................................................................... 18
+15.5 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA ............................................ 18
+SOUVISEJÍCÍ NORMY A PŘEDPISY .............................................................................................................. 19
+Mezinárodní a národní právní předpisy, technické normy ................................................................... 19
+PŘÍLOHA A PŘÍKLADY TRAVNÍCH SMĚSÍ …………………………………………………………………………..... 20
+3
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+SEZNAM ZKRATEK
+ČD České dráhy, akciová společnost
+DLHM dlouhodobý hmotný majetek
+DSP dokumentace skutečného provedení
+EIA proces posuzování vlivů záměrů na životní prostředí (z angl. Environmental Impact
+Assessment)
+EMC elektromagnetická kompatibilita
+ES Norma evropského společenství
+FIDIC Fédération Internationale Des Ingénieurs-Conseils
+GIS geografický informační systém
+GŘ Generální ředitel Správy železnic, státní organizace
+GŘ SŽ Generální ředitelství Správy železnic, státní organizace
+HIM hmotný investiční majetek
+HZS Hasičský záchranný sbor
+IZS Integrovaný záchranný systém ČR
+LIS lepený izolovaný styk
+MD ČR Ministerstvo dopravy České republiky
+MZE Ministerstvo zemědělství
+NN nízké napětí
+NV nařízení vlády
+OIP oblastní inspektorát práce
+ON oborová norma
+OP odbor provozuschopnosti
+OŘ oblastní ředitelství -místně příslušná organizační jednotka SŽ zajišťující správu dopravní
+cesty
+OTH odbor traťového hospodářství
+OZOV odpovědný zástupce objednatele výluky
+PPK prostorová poloha koleje
+SPPK standardy péče o přírodu a krajinu
+RDS realizační dokumentace stavby
+SŽ Správa železnic, státní organizace
+SŽG Správa železniční geodézie
+TBZ technicko-bezpečnostní zkouška
+TDS technický dozor stavebníka
+TKP Technické kvalitativní podmínky staveb státních drah
+TNŽ technické normy železnic
+ZTP zvláštní technické podmínky
+ZTKP zvláštní technické kvalitativní podmínky
+VTP všeobecné technické podmínky
+ŽBP železniční bodového pole
+ŽP Životní prostředí
+4
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+15 VEGETAČNÍ ÚPRAVY
+15.1 PŘEDMLUVA
+15.1.1 Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené
+v kapitole 1 Technických kvalitativních podmínek - Všeobecně.
+15.1.2 Kapitola 15 Technických kvalitativních podmínek (dále jen „TKP“) zahrnuje zakládání
+trávníku a provedení výsadeb, obsahuje popis stavebních materiálů, určuje jejich
+kvalitu, stanovuje technologické postupy prací a vymezuje další činnosti související
+s předmětem díla a zajišťující jeho kvalitu. Oddíly 2 až 9 této kapitoly TKP jsou uvedeny
+ve dvou oddělených částech. Část 15.2 pojednává o výsadbě a část 15.3 o zakládání
+trávníku. Ustanovení v Části 15.4 až 15.5 jsou společné pro obě části, tj. pro Část 15.2
+a 15.3.
+15.1.3 Pro vegetační úpravy platí Typový podklad stavebního dílu. Železniční spodek. Vzorový
+list železničního spodku Ž 5 - Úprava drážních svahů.
+15.1.4 Tyto technické kvalitativní podmínky (dále jen TKP) neřeší použití technicko-biologických
+zabezpečovacích opatření. Toto je řešeno v kapitole 5 TKP - Ochrana zemního tělesa.
+15.2 VÝSADBY
+15.2.1 Úvod
+Zhotovitel dodá rostlinný materiál, provede přípravné a výsadbové práce a činnosti při
+dokončovací péči a další vedlejší práce nutné k zajištění kvality díla ve shodě
+s projektovou dokumentací (dále jen „dokumentace“) a TKP, případně zvláštními
+technickými kvalitativními podmínkami (dále jen „ZTKP“).
+Stromy, keře a popínavé dřeviny budou společně uváděny jako „výpěstky“, „rostliny“,
+„dřeviny“ nebo „rostlinný materiál“.
+Substráty použité k “humusování“ (ornice, náhrady ornice, zúrodnitelná zemina) jsou
+dále uváděny jako „půda“ nebo „zemina“.
+15.2.2 Popis a kvalita stavebních materiálů
+15.2.2.1 Půda
+Jednu z podmínek existence a možnosti dalšího rozvoje rostlin určuje půda.
+K osázení a dalšímu pěstování rostlin je vhodná půda s vlastnostmi blízkými ornici
+ve vrstvě silné minimálně 20 cm na podkladě, který umožní pohyb vody, vzduchu
+a živin.
+Součástí dokumentace pro vegetační úpravy je návrh úpravy půdních podmínek,
+který je úměrný kvalitě použité zeminy a nárokům rostlin a stanovištním
+podmínkám. Je třeba věnovat náležitou péči předepsanému doplnění obsahu živin,
+organických látek a vody. Provedení výsadeb navazuje na zemní práce, provedené
+podle kapitoly 3 TKP, kde je řešena manipulace s půdou (ornice, náhrady ornice)
+od sejmutí přes skladování, ošetřování mechanické a chemické až po rozprostření.
+Jestliže se při realizaci zjistí, že výsadby jsou navrženy na plochy, kde ani
+po úpravě nelze zajistit existenci a růst rostlin, je zhotovitel povinen oznámit tuto
+skutečnost stavebnímu dozoru a navrhnout náhradní řešení.
+Pro práce s půdou platí ČSN DIN 18 915 (83 9011) - Technologie vegetačních
+úprav v krajině - Práce s půdou.
+5
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+15.2.2.2 Rostlinný materiál
+15.2.2.2.1 Obecně
+Sortiment navržených dřevin musí odpovídat daným klimatickým podmínkám
+a musí respektovat zákon č. 114/1992 Sb., o ochraně přírody a krajiny ve znění
+pozdějších předpisů. Možné náhrady určuje dokumentace. Výjimky musí být
+schváleny příslušným orgánem ochrany přírody.
+Pro vegetační úpravy u staveb Správy železnic, státní organizace se užijí školkařské
+výpěstky I. třídy jakosti podle ČSN 46 4902 - Výpěstky okrasných dřevin. Ve
+zdůvodněných případech a po dohodě se stavebním dozorem může zhotovitel užít i
+výpěstky II. třídy jakosti. Je nepřípustné použití rostlin, poškozených nebo
+oslabených. Dodané školkařské výpěstky musí být zdravé, bez chorob a škůdců,
+jejich habitus (vzrůst a vzhled) musí odpovídat znakům daného druhu (kultivaru),
+musí být bez deformací a znaků poškození teplem, suchem, zimou, větrem,
+špatným zacházením při vyzvedávání a přepravě, to jest bez mechanického
+poškození - odřenin, pohmožděnin, polámaných větví a kořenů,
+s nesoudržným balem nebo nádobou. Nesmí mít při výsadbě deformované kořeny
+(stočené do smyček, spirál nebo uzlovité). Je zakázáno použít materiál z míst
+zamořených chorobami a škůdci. Dovážený materiál lze použít pouze tehdy, je-li
+jeho zdravotní stav doložen (prokázán) podle platných dovozních řádů a předpisů
+o ochraně proti šíření chorob a škůdců (Vyhláška č. 215/2008 Sb., o opatřeních
+proti zavlékání a rozšiřování škodlivých organismů rostlin a rostlinných produktů).
+15.2.2.2.2 Kategorie výpěstků
+a) prostokořenné výpěstky - dopěstovány ve volné půdě a expedovány bez
+zemního balu;
+b) výpěstky s baly - dopěstovány ve volné půdě, vyzvednuty a expedovány
+se zemním balem chráněným proti rozpadnutí a vysychání obalem;
+c) výpěstky v kontejnerech (nádobách) - dopěstovány a expedovány v pěstebních
+nádobách nebo obalech;
+d) hrnkované (hrnkové) výpěstky - dopěstovány a expedovány v nádobách
+(obalech) s objemem menším než 2 l.
+Použití druhů podle způsobu dopěstění a expediční úpravy určuje dokumentace,
+změnu schvaluje stavební dozor.
+15.2.2.2.3 Určující (hodnoty) údaje o výpěstcích
+a) velikost výpěstků je dána pro:
+ alejové listnaté stromy výškou (délkou) kmene od kořenového krčku
+po korunu a obvodem kmene ve výšce 100 cm nad kořenovým krčkem,
+ keřové a pyramidální tvary listnatých stromů a jehličnaté stromy výškou
+výpěstků od kořenového krčku po vrchol koruny,
+ keře listnaté i jehličnaté počtem a délkou (výškou) výhonů od kořenového
+krčku k vrcholu.
+b) velikost balu je dána jeho průměrem (předpokládá se, že bal má kruhový
+průřez);
+c) velikost kontejneru (nádoby) je dána jeho obsahem v litrech;
+d) posuzuje se podle stavu všech částí výpěstků:
+Velikost, tvar a kategorii výpěstků určuje dokumentace.
+6
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+e) kvalita výpěstků se řídí dle následujících ustanovení:
+ pro okrasné dřeviny platí ČSN 46 4902 Výpěstky okrasných dřevin –
+- všeobecná ustanovení a ukazatele jakosti;
+ pro lesnické sazenice platí ČSN 48 2115 – Sadební materiál lesních dřevin
+z roku 1998 a její změna Z1 z roku 2002;
+ ovocné dřeviny pak řeší prováděcí vyhláška č. 129/2012 Sb., o
+podrobnostech uvádění osiva a sadby pěstovaných rostlin do oběhu, ve znění
+pozdějších předpisů.
+15.2.2.2.4 Označení výpěstků
+Pro identifikaci rostlin v souladu s ustanovením obchodního zákoníku je označení
+nezbytné. Čitelná jmenovka musí být připevněna na každé rostlině dodávané
+samostatně, na každém svazku, krabici či kontejneru. Jmenovka musí obsahovat
+platný název rodu a druhu, popřípadě kultivaru, třídu jakosti označenou římskou
+číslicí, velikost a počet kusů ve svazku, krabici či kontejneru.
+15.2.2.3 Hnojiva
+Do oběhu se smí uvádět pouze hnojiva a pomocné látky, které jsou registrovány dle
+zákona o hnojivech. Množství a druh hnojiva jsou určeny v dokumentaci. Pro použití
+hnojiv platí ČSN EN 12944-1 a ČSN EN 12944-2 65 4802 a ČSN 46 5735.
+15.2.2.4 Kůly
+Kůly musí být oloupané. Jejich životnost musí být minimálně 2 roky. Délka kůlu
+musí být úměrná velikosti stromu. Pro upevnění alejových a vzrostlých stromů
+se užijí kůly o průměru nejméně 10 cm, délky nejméně 220 cm. U ostatních
+výpěstků lze použít kůlů kratších a kulatý průměr není podmínkou.
+15.2.2.5 Upevňovací materiály
+Upevňovací materiály musí mít životnost minimálně 2 roky. Při pohybech ve větru
+nesmí způsobit poškození kůry.
+15.2.2.6 Mulčovací materiály
+Mulčovací materiál dělíme na organický a anorganický, jeho cílem je snížit výpar
+z povrchu půdy zmírnění extrémních výkyvů teplot a vlhkosti, zvýšení biologické
+aktivity půdy a zabránění růstu nežádoucí vegetace. Mulčovací materiály nesmí
+poškozovat výsadby a nesmí bránit svými vlastnostmi pronikání vzduchu a vody
+do půdy. Jako mulčovací materiály se použijí kůra, sláma, štěpky, plachetky,
+mulčovací fólie apod. Při návrhu použití mulčovacích materiálů je nutno zohlednit
+jejich hořlavost (jižní svahy).
+15.2.2.7 Prostředky na ochranu rostlin
+Používané chemické prostředky na ochranu rostlin musí být uvedeny v Seznamu
+povolených prostředků na ochranu rostlin, který každoročně vydává MZe ČR
+a ÚKZÚZ Brno, případně v Seznamu povolených prostředků na ochranu lesa, který
+každoročně vydává MZe ČR. Registrované prostředky musí být použity
+v předepsaných koncentracích, dávkách a způsobem, který je uveden na etiketě
+použitých prostředků.
+7
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+15.2.3 Dodávka, skladování a průkazní zkoušky
+15.2.3.1 Manipulace a přeprava
+15.2.3.1.1 Obecně:
+Rostliny prostokořenné a se zemními baly by měly být dobývány
+ve školkách bezprostředně před expedicí. Rostliny je nutno připravovat tak, aby
+se zabránilo poškození např. vyschnutím nebo neodborným uskladněním.
+15.2.3.1.2 Převoz materiálů ze školky na staveniště lze provádět pouze se souhlasem
+stavebního dozoru:
+ při teplotách pod -1°C od 1. 10. do 15. 3. (měřeno v 8.00 hod. v den odeslání);
+ při teplotách pod -2°C v době od 16. 3. do 30. 9. (měřeno v 8.00 hod. v den;
+odeslání);
+ při nebezpečí vzestupu teplot nad 25°C.
+15.2.3.1.3 Kořenový systém všech rostlin musí být chráněn proti vysychání, nesmí být
+vystavován umělému teplu ani teplotám pod bodem mrazu. Během transportu musí
+být rostliny zabaleny a naskládány tak, aby nedošlo k jejich mechanickému
+poškození, k vyschnutí kořenového systému a poškození teplem či větrem. Pokud
+se rostliny přepravují nákladními automobily, musí být přikryty plachtou.
+15.2.3.1.4 Prostokořenné dřeviny - musí být svázány, aby nedošlo k ulomení nebo odření větví
+a umožnila se tak dobrá manipulace. Kořenový systém musí být zabezpečen proti
+vyschnutí.
+15.2.3.1.5 Dřeviny s balem - bal musí být pevný, soudržný, nesmí se drolit, musí být zabalen
+do juty či jiného materiálu propouštějícího vodu, dostatečně pevného
+a zaručujícího soudržnost balu při manipulaci a přepravě. Zem musí být dostatečně
+vlhká a nesmí během transportu vysychat. Při manipulaci nesmí být bal poškozen.
+15.2.3.1.6 Dřeviny v kontejnerech - při přepravě musí být zajištěny proti samovolnému
+pohybu, aby nedošlo k jejich polámání nebo odření. Zemina nesmí během
+transportu proschnout.
+15.2.3.2 Uskladnění na staveništi
+15.2.3.2.1 Rostliny musí být vysázeny ihned po dodání. Není-li to možné, mohou být rostliny
+na dobu 48 hodin přechodně uskladněny. Během této doby je nutno chránit rostliny
+jednoduchými opatřeními, např. zvlhčováním, přikrýváním tak, aby bylo vyloučeno
+poškození vyschnutím, mrazem, větrem nebo přehřátím.
+15.2.3.2.2 Jestliže skladovací doba překročí 48 hodin, musí se provádět výše uvedené opatření
+nadále, případně jejich provádění zintenzívnit. Pokud tato opatření nestačí, musí se
+rostliny založit. Rozsah opatření stanoví zhotovitel s ohledem na povětrnostní
+podmínky, termín výsadby, druh přepravných obalů, expediční provedení apod.
+a předloží návrh rozsahu opatření stavebnímu dozoru ke schválení.
+15.2.3.2.3 Při zakládání je nutno rostliny umístit do připravených rýh, kořeny nebo baly
+prosypat a ze všech stran zahrnout kyprou zeminou, přitlačit a zalít. Rostliny
+ve svazcích nutno podle potřeby uvolnit, aby se zemina dostala ke všem kořenům.
+V zakládce je nutno udržovat přiměřenou vlhkost tak, aby se zabránilo vysušování
+kořenového systému a předešlo rozpadu zemních balů. Rovněž je nutno zajistit
+ochranu proti okusu zvěří a choulostivé rostliny chránit v zimním období před
+namrzáním vhodnými materiály (sláma, chvojí).
+8
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+15.2.3.3 Průkazní zkoušky
+15.2.3.3.1 Každá zásilka materiálu musí být doprovázena dodacím listem. Údaje v dodacím
+listu musí souhlasit s označením materiálu na jmenovkách připevněných
+k rostlinám, svazkům či kontejnerům. V případě hnojiva musí být uvedeno, o jaký
+druh hnojiva se jedná.
+15.2.3.3.2 Zhotovitel je povinen informovat stavební dozor o dodávce materiálu před
+výsadbou. Stavební dozor zkontroluje, zda údaje v dodacím listu souhlasí
+se jmenovkami rostlin, prověří správnost dodávky co do množství, velikosti
+a kvality a zda tento materiál odpovídá parametrům předepsaných dokumentací.
+Pokud materiál není odpovídajícího druhu, velikosti a kvality, je zhotovitel povinen
+materiál na vlastní náklady odstranit a nahradit materiálem odpovídajícím.
+15.2.3.3.3 Při přejímání materiálu stavební dozor kontroluje i zdravotní stav rostlin.
+15.2.4 Technologické postupy prací
+Obecně pro tyto práce platí ČSN DIN 18 915 (83 9011) a ČSN DIN 18 916 (83 9021).
+15.2.4.1 Vyznačení míst a ploch pro výsadby
+15.2.4.1.1 Před zahájením výsadbových prací zhotovitel vyznačí vnější hranice vysazovaných
+ploch, hranice mezi jednotlivými druhy vysazovaného materiálu a místa pro
+vysázení solitérních dřevin podle dokumentace a informuje stavební dozor, který
+vyznačení odsouhlasí.
+15.2.4.1.2 Výsadby musí být provedeny tak, aby ani v budoucnu nedocházelo k zhoršování
+rozhledových poměrů na železničních přejezdech, nebyla znemožněna předepsaná
+viditelnost návěstidel, ohrožena funkce odvodňovacích zařízení, nadzemních
+a podzemních vedení, bezpečnost a plynulost železničního provozu
+15.2.4.2 Příprava ploch pro výsadbu
+15.2.4.2.1 Všeobecně:
+Výsadby se zakládají na plochách, jejichž úprava odpovídá dokumentaci. Plochy
+musí být urovnané, nezaplevelené a bez stavebních zbytků. Ošetřování půdy
+na deponii a po rozprostření na plochy před předáním staveniště pro vegetační
+úpravy musí být řešeno v dokumentaci pro zemní práce. Pro práce s půdou platí
+ČSN DIN 18 915 (ČSN 83 9011).
+15.2.4.2.2 Mechanické obdělávání půdy musí být prováděno tak, aby nedocházelo
+k poškozování stability svahů a k sesuvům půdy.
+15.2.4.2.3 V případě výsadeb kolem železniční dopravní cesty je nutné respektovat interní
+předpis SŽ Metodický pokyn pro údržbu stromoví, v aktuálním znění, případně také
+SPPK A02 010:2020, a to zejména ve vztahu dopadové vzdálenosti.
+15.2.4.2.4 Výsadba porostu v rovině:
+Vegetační plochy pro výsadbu se, je-li to nutné, mechanicky nebo chemicky
+odplevelí. Obdělají se do hloubky alespoň 15 cm a zapraví se organická
+a anorganická hnojiva tak, jak je určeno v dokumentaci. U výsadeb v rovině není
+technicky opodstatněná výsadba bez obdělání půdy (dostupnost pro mechanizační
+prostředky) nebo do trávníku (eroze), proto se nepřipouští.
+15.2.4.2.5 Výsadby na svazích bez mulčování:
+ Bezprostředně po dokončení zemních prací je nutné založit trávník, popřípadě
+realizovat jiná protierozní opatření. Zhotovitel musí až do převzetí prací trávník
+ošetřovat, tj. kosit, vyhrabávat, případně odplevelovat. Způsob musí být řešen
+v dokumentaci. Z důvodu nebezpečí eroze nelze zakládat trávník po výsadbách.
+Harmonogram provádění prací je třeba upravit tak, aby této technologii
+9
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+vyhovoval. Pokud jsou na svazích navrženy výsadby v řadách, strhne se drn
+v šířce 0,50 m2, čímž se vytvoří nezatravněný pás, do kterého je pak možno
+sázet dřeviny. Pásy je možno obdělávat i strojně, jestliže je svah dostupný
+mechanizačním prostředkům. V tomto případě se požaduje zároveň zapravit
+do půdy organická a anorganická hnojiva.
+ Pro výsadbu uspořádanou jinak je nutné strhnout drn v průměru 0,25 m2 pro
+keř a 1 m2 pro strom.
+ Není přípustné sázet rostliny do trávníku.
+15.2.4.2.6 Výsadby na svazích s mulčováním:
+Je-li na svazích navrženo celoplošné mulčování, zatravnění se neprovádí. Dřeviny
+se vysazují co nejdříve po dokončení zemních prací a pak se výsadby namulčují
+způsobem určeným v projektové dokumentaci. Pokud je mulčování navrženo
+v pásech nebo menších plochách, technologický postup zůstane stejný jako
+u výsadeb na svazích bez mulčování. Mulčování je provedeno jako další práce.
+15.2.4.3 Hloubení jamek a rýh
+15.2.4.3.1 Jamky a rýhy pro výsadbu je nutné vyhloubit v šířce odpovídající 1,5ti násobku
+průměru kořenového systému nebo kořenového balu. Tvar výsadbových jam by
+měl být pokud možno co nejúčelnější a místo šetřící. Z tohoto pohledu je optimální
+kruhový či obdélníkový (čtvercový) tvar jámy. Půda z výkopů se ukládá odděleně
+podle kvality (zvlášť úrodná a neúrodná). Úrodná půda se použije na zasypání
+kořenového systému. Dno jamky pod kořenovým systémem se musí zkypřit. Stěny
+a dno výsadbové jámy nesmí být před samotnou výsadbou proschlé.
+15.2.4.3.2 Pokud se stane, že půdní podmínky neodpovídají navrhovanému výsadbovému
+materiálu, zhotovitel je povinen oznámit to ekologickému dozoru (pokud je
+na stavbě legislativně určen), anebo specialistovi ŽP investora, stavebnímu dozoru
+investora a navrhnout řešení.
+15.2.4.4 Ošetření dřevin před výsadbou
+15.2.4.4.1 Těsně před výsadbou je nutné ošetření kořenového systému - odstranění
+poškozených, nemocných a nadměrně dlouhých kořenů a všech jejich zaschlých
+částí až do živé tkáně. U kontejnerovaných rostlin spirálovitě stočené, zaškrcené
+a uzlovité kořeny se proříznou a odstraní se kořenová plst. Kořeny se chrání před
+vyschnutím zakrytím, popřípadě namáčením do vody či použitím antitranspirantů.
+15.2.4.4.2 Úměrně ke zkrácení kořenového systému je nutno zkrátit nadzemní části výhonů
+listnatých prostokořenných keřů nebo upravit komparativním řezem (SPPK A02
+002) korunu listnatých stromů na ¼ - ½ jejich původní délky, u hustého větvení
+vyřezáním několika výhonů korunu prosvětlit. U jarních výsadeb může být řez ještě
+hlubší. Současně je nutno odstranit veškeré poškozené větve a větvičky. Řezy musí
+být čisté, bez pohmožděné a zatržené kůry, do živého dřeva, kde je předpoklad
+dobrého zahojení. Řezy přes 2 cm v průměru musí být zatřeny schváleným nátěrem
+na poranění stromů. Výhony jehličnatých dřevin se nezkracují.
+15.2.4.5 Výsadba
+15.2.4.5.1 Všechny rostliny budou zasázeny do kvalitnější půdy, která při výkopu jamky byla
+dána stranou. Do této půdy se přidávají organická a anorganická hnojiva podle
+dokumentace. Kvalitní půda se použije na obsypání kolem kořenů a balů, horší
+půda pak na dosypání zbytku jamky nebo rýhy. Kořenový krček vysázených dřevin
+musí zůstat v úrovni terénu. Nesmí být zasypán kmen ani obnaženy kořeny. Půda
+v jamce musí být zhutněna přišlápnutím tak, aby v půdě nezůstaly větší vzduchové
+mezery. Nejvýhodnější je zhutnění půdy vodou. Na povrch zasypané jamky
+se kolem vysázené dřeviny upraví miska schopná udržet vodu při zálivce
+a za deště. Při vysazování se kořeny dřevin bez balu rozloží na vrstvu úrodné
+10
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+zeminy uložené na dno jamky a postupně se zasypávají tak, aby se zemina dostala
+ke všem kořenům. Kořeny dřevin musí být zdravé, čistě zařezané, rozprostřené
+do přirozené polohy a nesmí být ohnuté nahoru. Při vysazování rostlin s baly
+se rozváže uzel obalového materiálu a obalový materiál, který nemůže zetlít,
+se opatrně vytáhne. Úrodná půda se ušlapává okolo zemního balu, aby se vyplnily
+všechny mezery. Při výsadbách je možné provést přihnojení, pokud to nebylo
+provedeno při přípravě ploch pro výsadbu. Po výsadbě se musí vždy provést
+zálivka.
+15.2.4.5.2 Při vyjímání dřevin z kontejnerů je nutné postupovat opatrně, aby se předešlo
+porušení kořenového systému nebo zemního balu. Kořenový systém musí být dobře
+vyvinutý, přirozeně rozvětvený, bez výrazných deformací, jako je stáčení kořenů
+ve spirále, kořenové smyčky a uzly.
+15.2.4.5.3 Termín výsadeb se řídí dle typu zvolených sazenic (prostokořenné, s kořenovým
+balem, kontejnerované).
+15.2.4.5.4 U prostokořenných sazenic je nejvhodnější doba vegetačního klidu, tj. po opadu
+a před rašením listů a před růstem kořenů v předjaří.
+15.2.4.6 Kotvení a úvazky
+15.2.4.6.1 Úkolem kotvení je fixace stromu proti pohybům do stran a ochrana nově
+vysazeného stromu před vandaly. Kotvení nesmí však nikdy bránit pohybu stromu
+směrem dolů, což může nastat při sléhávání substrátu ve výsadbové jámě
+po vysazení stromu. Základními typy kotvení jsou kotvení pomocí kůlů
+(nejběžnější), kotvení pomocí lan a kotvení podzemní – tj. kořenového balu ve
+výsadbové jámě.
+15.2.4.6.2 Nejpoužívanější je kotvení pomocí kůlů, a to kotvení jedním, dvěma, třemi a více
+kůly v závislosti na velikosti vysazovaných dřevin. Kůl musí být úměrně dlouhý
+k velikosti výpěstku. Strom má být připevněn ke kůlu přibližně ve 2/3 své výšky.
+Každý strom je nutno upevnit ke kůlu pomocí úvazku. Úvazek by měl být pokud
+možno široký, hladký a pevný s životností min. 2 roky. Úvazek se musí křížit mezi
+stromem a kůlem, musí zajistit kmen proti bočnímu pohybu, nesmí však způsobit
+odření kůry nebo její zaškrcení a musí být na kůlu zajištěn proti posunutí.
+15.2.4.6.3 Pro prostokořenné stromy je nutno před vlastní výsadbou zatlouci do jam dřevěný
+kůl, ke kterému se stromek přichycuje úvazkem a zabezpečuje proti vyvrácení.
+Strom má být umístěn do 10 cm od kůlu.
+15.2.4.6.4 Balové dřeviny jsou kotveny šikmým kůlem. V případě výsadeb na svazích je kůl
+zaražen do svahu nad vysázenou dřevinou.
+15.2.4.6.5 Listnaté stromy s obvodem kmene přes 20 cm a jehličnaté stromy přes 2 m výšky
+musí být upevněny buď třemi kůly, nebo třemi lany kotvenými k zemi. V žádném
+případě nesmí dojít k poškození kůry, strom musí být v místě přichycení chráněn.
+15.2.4.7 Úprava ploch po výsadbě
+15.2.4.7.1 Po provedené výsadbě je potřeba dokončit úpravu ploch. Musí být vysbírány
+kameny s průměrem větším než 5 cm, odstraněny stavební zbytky, útržky tkanin,
+obaly, těžko zetlívající rostlinné části a jiné odpady. Půda se musí nakypřit buď
+celoplošně ve skupinových výsadbách v rovině, v pásech na svazích, nebo v ploše
+o průměru 1 m2 kolem solitérně vysázených stromů a 0,25m2 kolem keřů. Půdu je
+potřeba urovnat.
+15.2.4.7.2 Celkový vzhled výsadeb musí být estetický, upravený, bez kamenů a stavebních
+zbytků, ve výškovém uspořádání a liniích určených dokumentací.
+15.2.4.7.3 Jedenkrát ročně se provádí odplevelení, přihnojení výsadeb a zálivka v době sucha.
+11
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+15.2.4.8 Mulčování
+15.2.4.8.1 Materiál a síla vrstvy mulče se musí přizpůsobit stanovišti a typu výsadby. Vrstva
+se rozprostírá souvisle a rovnoměrně a povrch po ukončení mulčování musí být
+urovnaný. Aby se zabránilo poškození rostlin mulčovacím materiálem se širokým
+poměrem C: N (uhlík:dusík), např. stromovou kůrou nebo dřevní štěpkou, je nutné
+předem aplikovat vyrovnávací dávku dusíku.
+15.2.4.8.2 Je nutno, aby výška ploch s mulčováním byla přizpůsobena výšce okolního terénu,
+aby se omezilo splachování mulče do odvodňovacích zařízení, na chodníky
+a travnaté plochy.
+15.2.4.9 Hnojení
+Hnojení musí být provedeno podle pokynů v dokumentaci, a to jak hnojení
+organickými, tak anorganickými hnojivy. Zpravidla se provádí při přípravě ploch, při
+výsadbě nebo může být i součástí dokončovací péče. Zhotovitel nemůže bez
+schválení stavebního dozoru změnit druh, množství nebo složení hnojiva. Hnojení
+do výsadbových jam se provádí jen v nezbytném rozsahu, používají se pouze
+hnojiva zásobní, jejichž minerální látky se postupně uvolňují v průběhu několika let.
+Jedná se zejména o kombinovaná granulovaná hnojiva krytá voskem nebo blankou.
+15.2.4.10 Ochrana proti okusu zvěří
+Výsadby ohrožené zvěří je nutno zajistit proti okusu např. přípravky na ochranu
+rostlin, mechanickou ochranou kmenů nebo oplocením. Způsob ochrany určuje
+dokumentace a změnu odsouhlasuje stavební dozor.
+15.2.4.11 Dokončovací péče
+15.2.4.11.1 Jedná se o jednu z částí tzv. povýsadbové péče, která se skládá z práce
+dokončovací, rozvojové a udržovací. Nároky, druh, rozsah a termín jednotlivých
+činností se řídí zejména obdobím a způsobem výsadeb, druhem rostlin,
+stanovištními podmínkami a harmonogramem stavebních prací. Rozhodující pro
+stanovení rozsahu činností je doba od provedení výsadby do převzetí prací.
+15.2.4.11.2 Dokončovací péče je prováděna od výsadby do okamžiku převzetí a předání díla
+zadavatelem. Cílem je dosáhnout ujmutí a stavu, který při navazující péči zaručuje
+další růst a rozvoj vysazených dřevin. Zahrnuje zalévání, kypření, mechanické
+a chemické odplevelování, hnojení, uvazování uvolněných úvazků, zarážení kůlů,
+napínání uvolněných drátů, odstraňování suchých a poškozených částí rostlin, tj.
+provádění veškerých prací nutných k zabezpečení kvality díla. Veškeré tyto práce
+zajišťuje zhotovitel a jejich rozsah je předmětem dokumentace.
+15.2.4.12 Ochrana rostlin
+U výsadeb je nutno sledovat výskyt chorob a škůdců. Jestliže během doby
+od výsadby do převzetí budou vysázené dřeviny napadeny chorobami a škůdci,
+provede zhotovitel jejich ošetření nebo výměnu za zdravý rostlinný materiál
+na vlastní náklady.
+15.2.5 Odebírání vzorků a kontrolní zkoušky
+V odůvodněných případech, kdy je nebezpečí přenosu chorob a škůdců, zhotovitel
+provede odběr vzorků rostlinného materiálu pro posouzení odborným ústavem.
+Na základě výsledků stavební dozor rozhodne o dalších opatřeních.
+Kontrolní zkoušky se neprovádí.
+12
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+15.2.6 Přípustné odchylky, míra opotřebení, záruky
+15.2.6.1 Přípustné odchylky - náhrady rostlinného materiálu
+15.2.6.1.1 Náhrady rostlin jiným druhem nejsou povoleny, pokud není prokázáno,
+že předepsaný rostlinný materiál není možné v příslušném vegetačním období
+zajistit. Veškeré změny druhu, velikosti a kategorie musí být povoleny stavebním
+dozorem a lze je připustit pouze za předpokladu, že náhrada bude rovnocenná
+co do požadavku a množství.
+15.2.6.1.2 V případě, že se jedná o náhradu materiálem, který není v sortimentu rostlin
+povoleným pro stavbu, je rovněž nutné, aby zhotovitel zajistil schválení příslušným
+orgánem ochrany přírody.
+15.2.6.2 Míra opotřebení
+Pro vegetační úpravy nepřipadá v úvahu.
+15.2.6.3 Záruky
+15.2.6.3.1 Záruční doby všeobecně stanoví kapitola 1 TKP.
+15.2.6.3.2 Údržbu v záruční době zajišťuje správce HIM podle ustanovení v kapitole 1 TKP.
+15.2.7 Klimatická omezení
+15.2.7.1 Výsadby prostokořenných a balových dřevin lze provádět pouze v době vegetačního
+klidu v jarní nebo podzimní agrotechnické lhůtě. Olistěné výpěstky nelze vysazovat.
+15.2.7.2 Výsadby v kontejnerech je možno provádět za příznivých klimatických podmínek,
+zejména dostatečné vlhkosti, celoročně.
+15.2.8 Odsouhlasení a převzetí prací
+15.2.8.1 Odsouhlasení prací
+Při odsouhlasování prací stavební dozor zkontroluje:
+ zda rozsah prací účtovaných zhotovitelem odpovídá skutečně provedeným
+pracím,
+ zda práce jsou odvedeny způsobem a v kvalitě podle dokumentace a TKP,
+případně ZTKP,
+ zda materiál uváděný v soupisu prací odpovídá materiálu podle dokumentace
+a podle skutečného provedení, popřípadě odsouhlaseným náhradám.
+15.2.8.2 Převzetí prací
+15.2.8.2.1 Podmínkou pro převzetí prací je dokumentace skutečného provedení, kde zhotovitel
+vyznačí veškeré provedené změny, které vznikly během realizace.
+15.2.8.2.2 Vegetační úpravy mohou být převzaty teprve po dokončení všech prací určených
+dokumentací zabezpečujících kvalitu a další rozvoj výsadeb. Budou převzaty pouze
+výsadby v dobrém zdravotním stavu, vitální, nezaplevelené, nakypřené, s miskami
+kolem solitérních stromů, s kůly u stromů a funkčními úvazky. Před převzetím je
+nutno vyměnit poškozené, uschlé nebo napadené dřeviny za dřeviny kvalitní,
+stejného druhu, velikosti a v dobrém zdravotním stavu.
+15.2.8.2.3 Pokud výsadby nebudou vinou zhotovitele takto k převzetí připraveny, nebudou
+převzaty a zhotovitel hradí náklady na jejich ošetřování až do další přejímky.
+15.2.8.2.4 Pokud objednatel převezme dílo s vadami a nedodělky, které převzetí díla nebrání,
+stanoví lhůtu k jejich odstranění. Zhotovitel je povinen se současně zavázat
+odstranit vady a nedodělky v termínech a rozsahu, které stanoví objednatel.
+13
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+15.2.8.2.5 Optimální období pro kompletní převzetí je červen až srpen, kdy je možné podle
+nejvíce symptomů odhadnout úspěšnost provedené výsadby. Převzetí prací se
+zpravidla uskuteční při přejímacím řízení, které svolává objednatel/správce stavby
+po oznámení zhotovitele, že dokončil příslušný objekt. Podkladem bývá realizační
+dokumentace stavby (dále jen „RDS“), případně dokumentace skutečného
+provedení (dále jen „DSP“) s vyznačením všech změn oproti původnímu projektu.
+15.2.9 Kontrolní měření, měření posunů a přetvoření
+Po čas záruční lhůty je předmětem sledování zejména úhyn rostlin a zjišťování jeho
+příčin. Kontroluje se také, zda nedošlo k pohybu osázených ploch na svazích
+a následnému poškození provedené výsadby. Sledování úhynu je podkladem pro
+reklamační řízení.
+15.2.10 Reklamace
+Aby se předešlo reklamacím výsadeb je dobré, aby dodavatel zajistil zároveň
+s výsadbou i její povýsadbovou péči a k předání výsadeb došlo až po odeznění
+povýsadbového šoku.
+15.3 ZAKLÁDÁNÍ TRÁVNÍKU
+15.3.1 Úvod
+Tato část kapitoly 15 TKP zahrnuje zakládání trávníku hydroosevem, výsevem
+(suchým) a drnováním. Pro zakládání trávníku platí norma ČSN DIN 18 917 (83 9031).
+15.3.2 Popis a kvalita stavebních materiálů
+15.3.2.1 Půda
+15.3.2.1.1 Pro růst travního porostu je nutno vytvořit půdní podmínky.
+15.3.2.1.2 Zhotovitel v předstihu zajistí agrotechnický rozbor půdy, která bude použita
+do povrchové vrstvy, k prokázání její vhodnosti.
+15.3.2.1.3 K založení trávníku je vhodná zemina s vlastnostmi blízkými ornici ve vrstvě
+minimálně 10 cm na podkladě, který umožní pohyb vody, vzduchu a živin.
+V případě, že na plochách se založeným trávníkem budou později provedeny
+výsadby, vrstva zeminy by měla být nejméně 20 cm. U staveb Správy železnic
+se vyskytnou případy, kdy je potřeba založit trávník i na plochách, kde není možné
+rozprostření vhodné zeminy. V těchto případech se musí technologie výsevu
+přizpůsobit půdním podmínkám. Pro práci s půdou platí ČSN DIN 18 915
+(ČSN 83 9011).
+15.3.2.2 Osivo
+Návrh osivové směsi a množství výsevu stanoví dokumentace na základě
+stanovištních podmínek (klimatické a půdní podmínky) a plánovaného záměru
+zatravněné plochy.
+15.3.2.3 Voda
+Voda může být použita pitná nebo z přírodních vodních zdrojů. Zdroj vody musí být
+řešen v dokumentaci.
+15.3.2.4 Organická hmota
+15.3.2.4.1 Používá se rašelina, odpadní celulóza, celulózové kaly, odvodněná sukovina,
+buničina, sláma apod.
+14
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+15.3.2.4.2 Pro použité materiály platí:
+ČSN 46 5730
+15.3.2.5 Hnojivo
+15.3.2.5.1 Množství a druh hnojiva musí být určen v dokumentaci. Řídí se stanovištními
+podmínkami a plánovaným záměrem zatravněné plochy.
+15.3.2.5.2 Pro použití hnojiv platí:
+ ČSN EN 12944-2 a 12944-1
+ ČSN 46 5735
+15.3.2.6 Protierozní přísady
+Protierozní přísady se používají na ochranu nástřiku proti větru a vodě
+a na přikotvení osiva a organické hmoty na nestabilních zeminách nebo v místech,
+kde je potřebná zvýšená protierozní ochrana. Při jednoetapovém provedení
+se přísady přidávají do směsí a při víceetapovém provedení se stříkají jako poslední
+fáze hydroosevu. Přísady nesmí poškozovat životní prostředí.
+15.3.3 Dodávka, skladování a průkazní zkoušky
+15.3.3.1 Opatření při přepravě musí zohledňovat zejména teplotu, dobu trvání přepravy
+a druh nákladu. Nesmí dojít k poškození přepravovaných materiálů, zejména
+k jejich přehřátí. Při vykládce se nesmí náklad vyklápět nebo shazovat.
+15.3.3.2 Dodávky jednotlivých komponentů musí být doloženy osvědčením o jakosti.
+Osvědčení musí obsahovat i vyjádření o nezávadnosti pro životní prostředí. Složení
+osivových směsí je třeba na vyžádání prokázat předložením osvědčení o složení
+a pravosti směsi, jestliže potřebné množství osiva pro jednotlivá opatření
+překračuje 30 kg.
+15.3.3.3 Jednotlivé materiály pro zakládání trávníku musí být skladovány v suchu
+a chráněny před poškozením. Pouze trávníkové koberce a trávní drny je
+na staveništi nutno chránit před vyschnutím, přehřátím a neprodleně je pokládat
+na určené stanoviště. Skladování má být omezeno na co nejkratší dobu.
+15.3.4 Technologické postupy prací
+Na základě vyhodnocení stanovištních podmínek, tj. agrochemického rozboru půdy,
+klimatických podmínek, expozice ke světovým stranám a požadavků na funkci
+zatravněné plochy, dokumentace stanoví technologický postup zakládání trávníku,
+složení trávních směsí, množství osiva, dávkování hnojiva a v případě zakládání
+trávníku hydroosevem i množství ostatních komponentů.
+15.3.4.1 Vyznačování ploch pro zakládání trávníku
+Plochy pro výsev trávníku musí být vytyčeny a zřetelně vyznačeny.
+15.3.4.2 Příprava ploch pro zakládání trávníku
+Trávník se zakládá na plochách nezaplevelených, nejlépe co nejdříve po dokončení
+zemních prací a ve vhodné vegetační době podle oddílu 15.3.7 TKP. Plochy pro
+výsev musí být bez nerovností, erozních rýh a stavebních zbytků. V případě
+zapleveleného pozemku je nutné nejdříve plevel odstranit, ať už mechanicky, nebo
+chemicky. V rovině nebo na svazích dostupných mechanizačním prostředkům
+se musí půda před výsevem obdělat. Při tom je potřeba dbát, aby nedošlo
+k narušení stability svahů nebo sesuvům půdy. V případě zakládání trávníku
+15
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+výsevem (suchým) je vhodné při obdělávání půdy zapravit hnojivo. Způsob
+obdělání a hnojení stanoví dokumentace.
+15.3.4.3 Výsev trávníku (suchý)
+Používá se zpravidla při zatravňování menších ploch nebo ploch v rovině. Výsev
+se provádí ručně nebo secími stroji, pak se travní semeno zapraví do země a plochy
+se uválejí.
+15.3.4.4 Technologie hydroosevu (mokrý výsev)
+15.3.4.4.1 Hydroosev je proces mísení osiva, mulčovacího materiálu, fixátoru a dalších přísad
+s vodou ve správném poměru uvnitř nádrže. Po promíchání v nádrži zařízení pro
+hydroosev probíhá nástřik homogenní suspenzí na určené plochy. Vlastní nástřik
+se provádí vysokým tlakem hadicí nebo věžovou stříkací jednotkou zakončenou
+různými typy rozprašovacích trysek. Mulčovací materiál a fixátor pomáhají držet
+půdu a osivo v požadovaném místě do doby, než tuto funkci převezme vlastní
+porost. Dále je minimalizováno spláchnutí osiva silnými dešti, ale i vysychání půdy
+a rostlin. Hydroosevová směs může obsahovat i přísady pro urychlení klíčení
+a doplnění živin potřebných pro růst rostlin. Takto založený souvislý travní porost
+zpevňuje osévané plochy proti erozi, zabraňuje prašnosti, ale splňuje i funkci
+estetickou. Podle stanovištních podmínek, zejména půdních (plochy s rozprostřenou
+vrstvou ornice, plochy kamenité a písčité apod.), se hydroosev provádí
+jednorázovým nástřikem všech komponentů, nebo ve dvou až třech etapách.
+15.3.4.4.2 Pokud nebude v dokumentaci řešeno jinak, platí následující pracovní postupy:
+a) 1. pracovní etapa - osivo, hnojivo, organická hmota
+2. pracovní etapa - protierozní přísada (případně + organická hmota)
+b) 1. pracovní etapa - osivo, hnojivo, rašelina
+2. pracovní etapa - organická hmota
+3. pracovní etapa - protierozní přísada
+Způsob b) se použije u velkých sklonů svahů bez humusové vrstvy. Kamenité
+plochy se zatravňují tak, že se do záměsi přidá rašelina ve 2. a 3. pracovní
+etapě.
+15.3.4.5 Zakládání trávníku drnováním
+15.3.4.5.1 Pro drnování můžeme použít travní drny z přirozených porostů nebo předpěstované
+trávníkové koberce. Jednotlivé díly trávníkového koberce nebo trávního drnu by
+měly mít stejné šířky a délky, nejméně však 0,25m2.
+15.3.4.5.2 Díly trávníkového koberce nebo trávního drnu se kladou buď celoplošně, nebo
+úsporně - ve čtvercích nebo pásech. Prostor mezi pásy koberců a drnů kladených
+úsporně se vyplní zeminou, která se oseje. Při celoplošném pokládání musí být
+povrch jednotlivých dílů v rovině a jen s úzkými spárami. Příčné spáry na sebe
+nesmí navazovat. Po položení musí být díly stejnoměrně přitlačeny a zality.
+Na svažitých plochách je nutno trávníkový koberec nebo travní drn připevnit
+nejméně dvěma kolíky na 1m2, přičemž každý jednotlivý díl musí být připevněn
+alespoň jedním kolíkem.
+15.3.4.6 Dokončovací péče po výsevu
+Po provedení výsevu se trávník dále ošetřuje, tj. zalévá, přihnojuje, odpleveluje
+a kosí a vyhrabává až do převzetí. Potřeba, druh, rozsah a termín úkonů se řídí
+obdobím založení, typem trávníku, stanovištními podmínkami a harmonogramem
+provádění prací. Trávník je možno předat nejdříve po prvním posekání. V případě
+velkých staveb, které se přejímají najednou, je nutné počítat s ošetřováním
+trávníku až do předání stavby. Potřebu dokončovací péče stanoví dokumentace
+16
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+a zajišťuje ji zhotovitel. Práce musí být provedeny podle pokynů a ke spokojenosti
+stavebního dozoru.
+15.3.5 Odebírání vzorků a kontrolní zkoušky
+Stavební dozor si v případě potřeby odebere vzorky osiva pro kontrolu klíčivosti
+a dodržování složení osevní směsi. Dávkování směsi na 1 m2 provedeného hydroosevu
+se kontroluje položením odvážené podložky na osévanou plochu o ploše 1 m2 před
+nástřikem. Po provedení hydroosevu se podložka odváží. Odchylka od požadovaného
+dávkování nesmí být větší než 25 %.
+15.3.6 Přípustné odchylky, míra opotřebení, záruky
+15.3.6.1 Přípustné odchylky
+Změnu ve složení osevní směsi, dávkování osiva, technologie výsevu nebo
+receptury schvaluje stavební dozor. Ke změnám může dojít v případě,
+že stanovištní podmínky neodpovídají navržené technologii a dávkování
+jednotlivých komponentů.
+15.3.6.2 Míra opotřebení
+Při zakládání trávníku nepřipadá v úvahu.
+15.3.6.3 Záruky, údržba v záruční době
+15.3.6.3.1 Záruční doby všeobecně stanoví kapitola 1 TKP.
+15.3.6.3.2 Zhotovitel je povinen zabezpečit první preventivní postřik proti plevelům. Vegetační
+úpravy zemního tělesa je možno předat správci až po prvním posekání.
+15.3.6.3.3 Údržbu v záruční době zajišťuje správce HIM podle ustanovení v kapitole 1 TKP
+(hubení plevelů včetně kosení, odstraňování náletových dřevin).
+15.3.7 Klimatická omezení
+Příznivé podmínky pro vzcházení travního osiva nastávají při teplotách půdy minimálně
+8°C a při dostatečné půdní vlhkosti, tedy zpravidla od května až do září. V případě
+zakládání trávníku v letním období, je-li sucho, je nutno zajistit dostatečnou zálivku.
+U dřívějších nebo pozdějších výsevů mohou nastat nežádoucí posuny ve složení
+trávníku ve prospěch druhů klíčících při nižších teplotách (např. jílek - Lolium).
+Trávníkové koberce a travní drny nelze pokládat za mrazu nebo na zmrzlou půdu.
+15.3.8 Odsouhlasení a převzetí prací
+15.2.2.8 Odsouhlasení prací
+Při odsouhlasování stavební dozor zkontroluje:
+ zda rozsah prací účtovaných zhotovitelem odpovídá skutečně provedeným
+pracím,
+ zda travní osivo u zakládání trávníku výsevem (suchým) je rovnoměrně
+rozprostřeno,
+ zda u trávníku zakládaného hydroosevem jsou všechny plochy rovnoměrně
+pokryty vrstvou nástřikové směsi, zvláště je-li rovnoměrně rozptýleno osivo
+a krycí protierozní přísada vytvořila na půdním povrchu film,
+ zda technologie prováděných prací odpovídá dokumentaci.
+15.2.2.9 Převzetí prací
+Stavu schopného převzetí je dosaženo, když:
+17
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+ výsevy parkového trávníku tvoří vyrovnaný porost, který vykazuje v posečeném
+stavu průměrné plošné pokrytí půdy asi ze 75 % rostlinami požadované osevní
+směsi. Poslední seč smí být provedena nejpozději týden před převzetím;
+ výsevy lučního trávníku tvoří pokud možno vyrovnaný porost, který vykazuje
+v posečeném stavu průměrné plošné pokrytí půdy asi z 50 % rostlinami osevní
+směsi. Poslední seč smí být provedena nejpozději dva týdny před převzetím.
+Jiné druhy trav a bylin, které neruší, lze akceptovat. Výsevy lučních trávníků
+se zvláštními záměry zatravnění na extrémních stanovištích (např. zatravnění
+kamenitých svahů) mohou vykazovat jiný stupeň vyrovnanosti porostu
+a pokryvu půdy;
+ pokud objednatel převezme dílo s vadami a nedodělky, které převzetí díla
+nebrání, stanoví lhůtu k jejich odstranění. Zhotovitel je povinen se současně
+zavázat k odstranění vad a nedodělků v termínech a rozsahu, které stanoví
+objednatel.
+15.3.9 Kontrolní měření, měření posunů a přetvoření
+Po čas záruční doby se sleduje pokryvnost půdy, hustota travního drnu, úhyn trav
+a zaplevelenost. Sledování je podkladem pro odstranění vad, popřípadě pro
+reklamační řízení.
+15.4 EKOLOGIE
+15.4.1 Výsadby a zakládání trávníku je nutno provádět tak, aby nedošlo k znečištění
+životního prostředí. Nesmí dojít ke kontaminaci prostředí při skladování hnojiv,
+komponentů pro hydroosev a přípravků na ochranu rostlin. Rovněž nesmí dojít
+k jejich předávkování.
+15.4.2 Dále je důležité jak u vegetace, tak u trávníků, nepoužívání nepůvodních
+a invazních druhů a druhovou skladbu dřevin a trávníků přizpůsobit okolnímu
+biotopu a ekosystému
+15.5 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu
+obecně stanoví kapitola 1 TKP.
+18
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp.
+jejich aktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu
+kap. 1.3 TKP, tj. právních předpisů, technických norem a předpisů a předpisů SŽ.
+Mezinárodní a národní právní předpisy, technické normy
+zákon č. 89/2012 Sb., občanský zákoník, ve znění pozdějších předpisů
+zákon č. 114/1992 Sb., o ochraně přírody a krajiny, ve znění pozdějších předpisů
+zákon č. 133/1985 Sb., o požární ochraně, ve znění pozdějších předpisů
+zákon č. 326/2004 Sb., o rostlinolékařské péči a o změnách některých souvisejících zákonů, ve znění
+pozdějších předpisů
+vyhláška č. 395/1992 Sb., kterou se provádějí některá ustanovení zákona České národní rady č. 114/1992
+Sb., o ochraně přírody a krajiny, ve znění pozdějších předpisů
+ČSN 46 4901 Sadba okrasných dřevin
+ČSN 46 4902 Výpěstky okrasných dřevin. Společná a základní ustanovení
+ČSN 46 5730 Rašeliny a rašelinné zeminy
+ČSN 46 5735 Průmyslové komposty
+ČSN EN 12944-2 a 12944-1 Průmyslová hnojiva. Základní pojmy, rozdělení a nejdůležitější vlastnosti
+ČSN 83 9001 Sadovnictví a krajinářství - Terminologie - Základní odborné termíny a definice
+ČSN 83 9011 Technologie vegetačních úprav v krajině - Práce s půdou
+ČSN DIN 18 916
+(83 9021) Sadovnictví a krajinářství. Výsadby rostlin
+ČSN DIN 18 917
+(83 9031) Sadovnictví a krajinářství. Zakládání trávníku
+ČSN DIN 18 918
+(83 9041) Sadovnictví a krajinářství. Technicko-biologická zabezpečovací opatření.
+ČSN 83 9051 Technologie vegetačních úprav v krajině – Rozvojová a udržovací péče o vegetační plochy
+ČSN 83 9061 Technologie vegetačních úprav v krajině – Ochrana stromů, porostů a vegetačních ploch
+při stavebních pracích
+SPPK A02 002 Řez stromů
+SPPK A02 010:2020 Péče o dřeviny kolem veřejné dopravní infrastruktury
+Vnitřní předpisy
+Související kapitoly TKP
+Kapitola 1 - Všeobecně v aktuálním znění
+Kapitola 3 - Zemní práce v aktuálním znění
+Kapitola 5 - Ochrana zemního tělesa v aktuálním znění
+MP pro údržbu stromoví v aktuálním znění
+Vzorový list Ž 5 Úprava drážních svahů v aktuálním znění
+19
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+Příloha A (informativní)
+Příklady travních směsí
+A.1 Směs pro písčité, suché půdy s výslunnou polohou a suššími klimatickými podmínkami
+A.1.1 15% kostřava červená trsnatá Ferota (Rosana)
+20% kostřava červená výběžkatá Táborská
+35% kostřava ovčí Jana
+15% lipnice smáčknutá Razula
+10% jílek vytrvalý Sport (Bača)
+5% jetel plazivý (štírovník růžkatý)
+Doporučený výsevek 25 - 30 g/m2
+A.1.2 10% kostřava červená trsnatá Ferota (Rosana)
+10% kostřava červená trsnatá Valaška
+20% kostřava červená výběžkatá Táborská
+30% kostřava ovčí Jana
+10% lipnice smáčknutá Razula
+10% lipnice luční Krasa
+10% jílek vytrvalý Sport
+Doporučený výsevek 25 - 30 g/m2
+A.2 Směs pro sušší středně těžké půdy s výslunnou polohou
+20% kostřava červená trsnatá Ferota (Rosana)
+10% kostřava červená trsnatá Valaška
+20% kostřava červená výběžkatá Táborská
+10% kostřava ovčí Jana
+20% lipnice luční Krasa
+10% psineček tenký Golf (Teno)
+10% jílek vytrvalý Sport (Bača)
+Doporučený výsevek 15 - 20 g/m2
+A.3 Směs pro vlhčí, středně těžké a těžké půdy s výslunnou polohou
+25% kostřava červená trsnatá Ferota (Rosana)
+10% kostřava červená trsnatá Valaška
+15% kostřava červená výběžkatá Táborská
+20% lipnice luční Krasa
+10% psineček tenký Golf (Teno)
+10% jílek vytrvalý Sport (Bača)
+10% bojínek cibulkatý
+Doporučený výsevek 15 - 20 g/m2
+A.4 Směs pro břehy vodních toků nebo lokality s vyšší hladinou spodní vody
+20% kostřava červená trsnatá Ferota (Rosana)
+10% kostřava červená výběžkatá Táborská
+30% lipnice luční Krasa
+10% psineček tenký Golf
+20% poháňka hřebenitá Rožnovská
+10% jílek vytrvalý Sport
+Doporučený výsevek 12 - 15 g/m2
+20
+TKP Kapitola 15 – Vegetační úpravy Účinnost od 1. března 2021
+A.5 Směs pro zastíněná stanoviště
+20% kostřava červená trsnatá
+10% kostřava červená výběžkatá
+40% lipnice hajní Dekora
+10% psineček tenký Golf (Teno)
+10% poháňka hřebenitá Rožnovská
+10% jílek vytrvalý Sport
+Doporučený výsevek 15 - 20 g/m2
+21
+Ověřovací doložka konverze dokumentu
+Ověřuji pod pořadovým číslem 1379411, že tento dokument, který vznikl převedením vstupu v listinné
+podobě do podoby elektronické, skládající se z 21 listů, se doslovně shoduje s obsahem vstupu.
+Ověřující osoba: Miroslav BULANT
+Vystavil: Správa železnic, státní organizace
+Datum: 02.03.2021 09:23:05

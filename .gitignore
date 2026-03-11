@@ -1,6 +1,2 @@
-# Local dependency installs
 node_modules/
-
-# Local cloned worktrees (not part of this repository)
-rozpocet-registry/
-rozpocet-registry-backend/
+package-lock.json

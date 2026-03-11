@@ -4,36 +4,61 @@
  * v4.4.0: Added OTSKP autocomplete search
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import OtskpAutocomplete from './OtskpAutocomplete';
+import { otskpAPI } from '../services/api';
+import { calculateElementTotalDays } from '@stavagent/monolit-shared';
+import type { Position } from '@stavagent/monolit-shared';
 
 interface Props {
-  itemName?: string;
+  partName?: string;  // Name of the construction part (from OTSKP)
   betonQuantity: number;
   otskpCode?: string;
-  onItemNameUpdate: (itemName: string) => void;
+  catalogPrice?: number;
+  catalogUnit?: string;
+  partTotalKrosCzk?: number;  // Sum of KROS total for all positions in this part
+  partPositions?: Position[];  // All positions in this part (for element total days)
+  onPartNameUpdate: (partName: string) => void;  // Update part_name for all positions
   onBetonQuantityUpdate: (quantity: number) => void;
-  onOtskpCodeAndNameUpdate: (code: string, name: string) => void;
+  onOtskpCodeAndNameUpdate: (code: string, name: string, unitPrice?: number, unit?: string) => void;
+  onOpenFormworkCalculator?: () => void;
   isLocked: boolean;
 }
 
 export default function PartHeader({
-  itemName,
+  partName,
   betonQuantity,
   otskpCode,
-  onItemNameUpdate,
+  catalogPrice,
+  catalogUnit,
+  partTotalKrosCzk,
+  partPositions,
+  onPartNameUpdate,
   onBetonQuantityUpdate,
   onOtskpCodeAndNameUpdate,
+  onOpenFormworkCalculator,
   isLocked
 }: Props) {
-  const [editedName, setEditedName] = useState(itemName || '');
+  // Calculate Kč/m³ for this part (for comparison with catalog)
+  const calculatedPricePerM3 = betonQuantity > 0 && partTotalKrosCzk
+    ? partTotalKrosCzk / betonQuantity
+    : undefined;
+
+  // Calculate element total days (all work types + curing)
+  const elementTotalDays = useMemo(() => {
+    if (!partPositions || partPositions.length === 0) return 0;
+    return calculateElementTotalDays(partPositions);
+  }, [partPositions]);
+  const [editedName, setEditedName] = useState(partName || '');
   const [editedBeton, setEditedBeton] = useState(betonQuantity.toString());
   const [editedOtskp, setEditedOtskp] = useState(otskpCode || '');
+  const [localCatalogPrice, setLocalCatalogPrice] = useState<number | undefined>(catalogPrice);
+  const [localCatalogUnit, setLocalCatalogUnit] = useState<string | undefined>(catalogUnit);
 
   // Sync state when props change (two-way binding)
   useEffect(() => {
-    setEditedName(itemName || '');
-  }, [itemName]);
+    setEditedName(partName || '');
+  }, [partName]);
 
   useEffect(() => {
     setEditedBeton(betonQuantity.toString());
@@ -43,9 +68,36 @@ export default function PartHeader({
     setEditedOtskp(otskpCode || '');
   }, [otskpCode]);
 
+  useEffect(() => {
+    setLocalCatalogPrice(catalogPrice);
+  }, [catalogPrice]);
+
+  useEffect(() => {
+    setLocalCatalogUnit(catalogUnit);
+  }, [catalogUnit]);
+
+  // Fetch catalog price when OTSKP code exists but price is not loaded
+  useEffect(() => {
+    const fetchCatalogPrice = async () => {
+      if (otskpCode && !localCatalogPrice) {
+        try {
+          const otskpData = await otskpAPI.getByCode(otskpCode);
+          if (otskpData?.unit_price) {
+            setLocalCatalogPrice(otskpData.unit_price);
+            setLocalCatalogUnit(otskpData.unit);
+          }
+        } catch (error) {
+          // Code not found in catalog - that's okay
+          console.debug(`OTSKP code ${otskpCode} not found in catalog`);
+        }
+      }
+    };
+    fetchCatalogPrice();
+  }, [otskpCode, localCatalogPrice]);
+
   const handleNameBlur = () => {
-    if (editedName !== itemName) {
-      onItemNameUpdate(editedName);
+    if (editedName !== partName) {
+      onPartNameUpdate(editedName);
     }
   };
 
@@ -61,12 +113,17 @@ export default function PartHeader({
     setEditedBeton(e.target.value);
   };
 
-  const handleOtskpSelect = (code: string, name: string) => {
+  const handleOtskpSelect = (code: string, name: string, unitPrice?: number, unit?: string) => {
     setEditedOtskp(code);
+    // Update local catalog price immediately for UI feedback
+    if (unitPrice !== undefined) {
+      setLocalCatalogPrice(unitPrice);
+      setLocalCatalogUnit(unit);
+    }
     // Don't update editedName locally - let API response update it via useEffect
     // This prevents the "flash" where it shows new name then reverts to old
     // Update BOTH code and name in a SINGLE API call to avoid race condition
-    onOtskpCodeAndNameUpdate(code, name);
+    onOtskpCodeAndNameUpdate(code, name, unitPrice, unit);
   };
 
   return (
@@ -115,6 +172,114 @@ export default function PartHeader({
             disabled={isLocked}
           />
         </div>
+
+        {/* Catalog Price (read-only display) */}
+        <div className="concrete-param">
+          <label>Cena dle katalogu:</label>
+          <div className="catalog-price-display" style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '6px 10px',
+            background: localCatalogPrice ? 'var(--status-success-bg, #e8f5e9)' : 'var(--panel-inset)',
+            borderRadius: 'var(--radius-sm)',
+            minWidth: '140px',
+            border: '1px solid var(--border-default)'
+          }}>
+            {localCatalogPrice ? (
+              <span style={{
+                fontWeight: 600,
+                color: 'var(--status-success, #2e7d32)',
+                fontVariantNumeric: 'tabular-nums'
+              }}>
+                {localCatalogPrice.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč/{localCatalogUnit || 'MJ'}
+              </span>
+            ) : (
+              <span style={{ color: 'var(--text-tertiary)', fontStyle: 'italic' }}>
+                Vyberte OTSKP kód
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Calculated Kč/m³ for this part (for comparison) */}
+        <div className="concrete-param">
+          <label>⭐ Kč/m³ (výpočet):</label>
+          <div className="calculated-price-display" style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '6px 10px',
+            background: calculatedPricePerM3 ? 'var(--status-info-bg, #e3f2fd)' : 'var(--panel-inset)',
+            borderRadius: 'var(--radius-sm)',
+            minWidth: '140px',
+            border: '1px solid var(--border-default)'
+          }}>
+            {calculatedPricePerM3 ? (
+              <span style={{
+                fontWeight: 600,
+                color: 'var(--status-info, #1565c0)',
+                fontVariantNumeric: 'tabular-nums'
+              }}>
+                {calculatedPricePerM3.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} Kč/m³
+              </span>
+            ) : (
+              <span style={{ color: 'var(--text-tertiary)', fontStyle: 'italic' }}>
+                —
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* Element total days (all work types + curing) */}
+        <div className="concrete-param">
+          <label>Celk. doba:</label>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            padding: '6px 10px',
+            background: elementTotalDays > 0 ? '#fff3e0' : 'var(--panel-inset)',
+            borderRadius: 'var(--radius-sm)',
+            minWidth: '80px',
+            border: '1px solid var(--border-default)'
+          }}>
+            {elementTotalDays > 0 ? (
+              <span style={{
+                fontWeight: 600,
+                color: '#e65100',
+                fontVariantNumeric: 'tabular-nums'
+              }}>
+                {elementTotalDays} dní
+              </span>
+            ) : (
+              <span style={{ color: 'var(--text-tertiary)', fontStyle: 'italic' }}>—</span>
+            )}
+          </div>
+        </div>
+
+        {/* Formwork calculator button */}
+        {onOpenFormworkCalculator && (
+          <div className="concrete-param">
+            <label>&nbsp;</label>
+            <button
+              onClick={onOpenFormworkCalculator}
+              disabled={isLocked}
+              title="Otevřít kalkulátor bednění (pronájem)"
+              style={{
+                background: '#1565c0',
+                color: 'white',
+                border: 'none',
+                borderRadius: 'var(--radius-sm)',
+                padding: '6px 12px',
+                cursor: isLocked ? 'not-allowed' : 'pointer',
+                fontWeight: 600,
+                fontSize: '12px',
+                opacity: isLocked ? 0.5 : 1,
+                whiteSpace: 'nowrap'
+              }}
+            >
+              Kalkulátor bednění
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

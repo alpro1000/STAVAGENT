@@ -1,0 +1,39 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle (concrete) -->
+  <circle cx="60" cy="60" r="55" fill="#CFD1D3" stroke="#A8AAAC" stroke-width="2"/>
+
+  <!-- Letter "S" made of concrete blocks (ПРАВИЛЬНАЯ ОРИЕНТАЦИЯ) -->
+  <!-- Top horizontal bar -->
+  <rect x="35" y="30" width="50" height="12" fill="#5A5D60" rx="1"/>
+
+  <!-- Top-LEFT vertical bar (исправлено с right на left) -->
+  <rect x="35" y="30" width="12" height="28" fill="#6B6E71" rx="1"/>
+
+  <!-- Middle horizontal bar (ACCENT - Orange) -->
+  <rect x="35" y="46" width="50" height="12" fill="#FF9F1C" rx="1"/>
+
+  <!-- Bottom-RIGHT vertical bar (исправлено с left на right) -->
+  <rect x="73" y="58" width="12" height="28" fill="#6B6E71" rx="1"/>
+
+  <!-- Bottom horizontal bar -->
+  <rect x="35" y="74" width="50" height="12" fill="#5A5D60" rx="1"/>
+
+  <!-- Small construction details (rivets/bolts) -->
+  <circle cx="40" cy="36" r="2" fill="#4A4D50"/>
+  <circle cx="80" cy="36" r="2" fill="#4A4D50"/>
+  <circle cx="40" cy="52" r="2" fill="#2F3133"/>
+  <circle cx="80" cy="52" r="2" fill="#2F3133"/>
+  <circle cx="40" cy="80" r="2" fill="#4A4D50"/>
+  <circle cx="80" cy="80" r="2" fill="#4A4D50"/>
+
+  <!-- Grid pattern overlay (subtle concrete texture) -->
+  <line x1="35" y1="36" x2="85" y2="36" stroke="#4A4D50" stroke-width="0.5" opacity="0.3"/>
+  <line x1="35" y1="52" x2="85" y2="52" stroke="#2F3133" stroke-width="0.5" opacity="0.3"/>
+  <line x1="35" y1="80" x2="85" y2="80" stroke="#4A4D50" stroke-width="0.5" opacity="0.3"/>
+
+  <!-- Vertical lines for texture -->
+  <line x1="50" y1="30" x2="50" y2="42" stroke="#4A4D50" stroke-width="0.5" opacity="0.2"/>
+  <line x1="70" y1="30" x2="70" y2="42" stroke="#4A4D50" stroke-width="0.5" opacity="0.2"/>
+  <line x1="50" y1="74" x2="50" y2="86" stroke="#4A4D50" stroke-width="0.5" opacity="0.2"/>
+  <line x1="70" y1="74" x2="70" y2="86" stroke="#4A4D50" stroke-width="0.5" opacity="0.2"/>
+</svg>

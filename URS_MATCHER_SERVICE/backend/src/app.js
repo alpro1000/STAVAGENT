@@ -16,6 +16,13 @@ import jobsRouter from './api/routes/jobs.js';
 import catalogRouter from './api/routes/catalog.js';
 import healthRouter from './api/routes/health.js';
 import tridnikRouter from './api/routes/tridnik.js';
+import batchRouter from './api/routes/batch.js';
+import pipelineRouter from './api/routes/pipeline.js';
+import settingsRouter from './api/routes/settings.js';
+import projectAnalysisRouter from './api/routes/projectAnalysis.js';
+import normsRouter from './api/routes/norms.js';
+import pricesRouter from './api/routes/prices.js';
+import technologyRouter from './api/routes/technology.js';
 
 // Middleware
 import { errorHandler } from './api/middleware/errorHandler.js';
@@ -45,7 +52,15 @@ logger.info(`[APP] Static files path: ${path.join(__dirname, '../../frontend/pub
 // ============================================================================
 
 // CORS configuration
-const corsOrigins = (process.env.CORS_ORIGIN || '*').split(',');
+const DEFAULT_CORS_ORIGINS = [
+  'http://localhost:3000',
+  'http://localhost:5173',
+  'https://www.stavagent.cz',
+  'https://stavagent-backend-ktwx.vercel.app',
+];
+const corsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map(s => s.trim())
+  : DEFAULT_CORS_ORIGINS;
 logger.info(`[APP] CORS origins: ${corsOrigins.join(', ')}`);
 
 app.use(cors({
@@ -93,6 +108,13 @@ app.use('/api/health', healthRouter);
 app.use('/api/jobs', jobsRouter);
 app.use('/api/urs-catalog', catalogRouter);
 app.use('/api/tridnik', tridnikRouter);
+app.use('/api/batch', batchRouter);
+app.use('/api/pipeline', pipelineRouter);
+app.use('/api/settings', settingsRouter);
+app.use('/api/project-analysis', projectAnalysisRouter);
+app.use('/api/norms', normsRouter);
+app.use('/api/prices', pricesRouter);
+app.use('/api/technology', technologyRouter);
 
 // Serve frontend (SPA fallback)
 app.get('*', (req, res) => {

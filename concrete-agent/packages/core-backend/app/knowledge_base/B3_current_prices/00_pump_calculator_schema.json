@@ -1,0 +1,215 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "pump_calculator_v1",
+  "title": "Universální kalkulátor betonové pumpy",
+  "description": "Kalkulace celkových nákladů: beton + doprava + čerpadlo + příplatky pro stavbu D6 KV",
+  "inputs": {
+    "project": {
+      "volume_m3": {
+        "type": "number",
+        "description": "Objem betonu v m³"
+      },
+      "concrete_class": {
+        "type": "string",
+        "example": "C30/37"
+      },
+      "env_class": {
+        "type": "string",
+        "example": "XA3"
+      },
+      "consistency": {
+        "type": "string",
+        "enum": [
+          "S1",
+          "S2",
+          "S3",
+          "S4"
+        ]
+      },
+      "dmax_mm": {
+        "type": "integer",
+        "enum": [
+          8,
+          16,
+          22
+        ]
+      },
+      "norm": {
+        "type": "string",
+        "enum": [
+          "ČSN EN 206",
+          "TKP18",
+          "TKP16",
+          "TKP17"
+        ]
+      },
+      "is_fibreconcrete": {
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "logistics": {
+      "distance_km_one_way": {
+        "type": "number",
+        "description": "Vzdálenost betonárna → stavba v km"
+      },
+      "pump_reach_m": {
+        "type": "integer",
+        "description": "Potřebný výškový dosah čerpadla v m"
+      },
+      "pump_speed_m3_per_h": {
+        "type": "number",
+        "default": 30,
+        "description": "Rychlost čerpání m³/h"
+      },
+      "additional_hose_m": {
+        "type": "number",
+        "default": 0,
+        "description": "Délka přídavného vedení v m"
+      },
+      "additional_hose_days": {
+        "type": "number",
+        "default": 1
+      },
+      "need_slow_down_elbow": {
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "time": {
+      "day_type": {
+        "type": "string",
+        "enum": [
+          "workday",
+          "saturday",
+          "sunday_holiday"
+        ]
+      },
+      "is_night": {
+        "type": "boolean",
+        "default": false,
+        "description": "Čerpání v noční době"
+      },
+      "is_winter": {
+        "type": "boolean",
+        "default": false,
+        "description": "Zimní provoz (15.11-15.03 nebo T<5°C)"
+      },
+      "pump_duration_h": {
+        "type": "number",
+        "description": "Doba provozu čerpadla v hodinách (auto z volume/speed)"
+      }
+    },
+    "supplier": {
+      "id": {
+        "type": "string",
+        "enum": [
+          "berger_beton_sadov",
+          "frischbeton_kv",
+          "tbg_otovice",
+          "tbg_offer_d6",
+          "berger_offer_d6"
+        ]
+      },
+      "own_concrete": {
+        "type": "boolean",
+        "default": true,
+        "description": "True = pump od stejného dodavatele jako beton (nižší sazba čerpadla)"
+      }
+    }
+  },
+  "calculation_steps": [
+    {
+      "step": 1,
+      "name": "Cena betonu",
+      "formula": "concrete_price_per_m3 × volume_m3",
+      "notes": [
+        "+200 Kč/m³ za TKP 16/17/18 (Berger Sadov)",
+        "+40 Kč/m³ za Dmax16, +110 Kč/m³ za Dmax8 (Berger Sadov)",
+        "+150 Kč/m³ za čerpatelný C12/15–C16/20 S3 (Berger Sadov)"
+      ]
+    },
+    {
+      "step": 2,
+      "name": "Doprava betonu",
+      "formula": "transport_price_per_m3(distance_km) × volume_m3",
+      "notes": [
+        "Frischbeton: cena dle pásma (vzdálenost tam+zpět)",
+        "Berger Sadov: cena dle zóny (vzdušná čára)",
+        "TBG D6 nabídka: paušál 400 Kč/m³ (min. 5 m³), Zóna 2",
+        "Min. 6 m³ na mix, nevytížení: dopočet dle sazby dodavatele"
+      ]
+    },
+    {
+      "step": 3,
+      "name": "Příjezd/přistavení čerpadla",
+      "formula": {
+        "berger_sadov": "distance_km × 2 × price_per_km",
+        "frischbeton": "arrival_one_time_fixed",
+        "tbg_otovice": "stay_per_day + transport_dle_dohody"
+      }
+    },
+    {
+      "step": 4,
+      "name": "Provoz čerpadla",
+      "formula": {
+        "berger_sadov": "pump_duration_h × rate_per_h + volume_m3 × 65",
+        "frischbeton": "ceil(pump_duration_h × 4) × rate_per_15min",
+        "tbg_otovice": "ceil(pump_duration_h × 4) × 470 + volume_m3 × 30"
+      },
+      "billing_note": "Účtuje se každých započatých 15 min od příjezdu na stavbu"
+    },
+    {
+      "step": 5,
+      "name": "Přídavné vedení (hadice/potrubí)",
+      "formula": "additional_hose_m × price_per_m_per_day × additional_hose_days"
+    },
+    {
+      "step": 6,
+      "name": "Příplatky čas/typ",
+      "formula": {
+        "saturday": "base_pump_cost × surcharge_pct",
+        "sunday_holiday": "base_pump_cost × surcharge_pct",
+        "night": "base_pump_cost × surcharge_pct  OR  pump_hours × rate_per_h"
+      }
+    },
+    {
+      "step": 7,
+      "name": "Zimní provoz betonu",
+      "formula": "volume_m3 × winter_surcharge_per_m3",
+      "applies_when": "is_winter == true"
+    },
+    {
+      "step": 8,
+      "name": "Ostatní jednorázové položky",
+      "items": [
+        "rozjezdová chemie (addiment): 500 Kč",
+        "zpomalovací koleno: 500–590 Kč",
+        "odvoz zbytkového betonu: 1100–1200 Kč",
+        "fibrobeton příplatek: 35–50 Kč/m³"
+      ]
+    },
+    {
+      "step": 9,
+      "name": "CELKEM bez DPH",
+      "formula": "SUM(steps 1–8)"
+    },
+    {
+      "step": 10,
+      "name": "CELKEM s DPH",
+      "formula": "CELKEM × 1.21"
+    }
+  ],
+  "output": {
+    "concrete_cost": "Kč",
+    "transport_cost": "Kč",
+    "pump_arrival_cost": "Kč",
+    "pump_operation_cost": "Kč",
+    "pump_hose_cost": "Kč",
+    "surcharges_total": "Kč",
+    "total_ex_vat": "Kč",
+    "total_incl_vat": "Kč",
+    "cost_per_m3_ex_vat": "Kč/m³",
+    "recommended_supplier": "string"
+  }
+}

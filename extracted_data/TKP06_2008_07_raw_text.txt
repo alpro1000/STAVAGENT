@@ -1,0 +1,1150 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 6
+KONSTRUKČNÍ VRSTVY TĚLESA
+ŽELEZNIČNÍHO SPODKU
+Třetí - aktualizované vydání
+změna č. 6
+Schváleno generálním ředitelem SŽDC
+dne: 7.4.2008
+č.j.: 12153/08-OKS
+Účinnost od: 1.7.2008
+Počet listů : 14
+Počet příloh: 0
+Počet listů příloh: 0
+Praha 2008
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+6.1 ÚVOD 3
+6.2 POPIS A KVALITA MATERIÁLŮ 3
+6.2.1 Nestmelené vrstvy 4
+6.2.2 Stmelené vrstvy 4
+6.2.3 Plošné prvky 5
+6.3 TECHNOLOGICKÉ POSTUPY PRACÍ 6
+6.3.1 Technologie se snášením kolejového roštu 6
+6.3.1.1 Všeobecné zásady 6
+6.3.1.2 Postup provádění 6
+6.3.1.3 Technologie provádění prací 7
+6.3.2 Technologie bez snášení kolejového roštu 10
+6.3.2.1 Všeobecné zásady 10
+6.3.2.2 Metody a postup provádění 10
+6.3.2.3 Technologie provádění 11
+6.4 DODÁVKA, SKLADOVÁNÍ A POČÁTEČNÍ ZKOUŠKY 13
+6.4.1 Dodávka a skladování 13
+6.4.2 Počáteční zkoušky 13
+6.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 15
+6.5.1 Zemní pláň 15
+6.5.2 Konstrukční vrstvy 15
+6.5.2.1 Materiál konstrukčních vrstev 15
+6.5.2.2 Zkoušení vytvořené konstrukční vrstvy 18
+6.5.2.3 Zkušební postupy 19
+6.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 19
+6.6.1 Zemní pláň 19
+6.6.2 Konstrukční vrstvy 20
+6.6.3 Záruky, údržba v záruční době 20
+6.7 KLIMATICKÁ OMEZENÍ 20
+6.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 21
+6.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 22
+6.10 EKOLOGIE 22
+6.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 22
+6.12 SOUVISEJÍCÍ NORMY, ZÁKONY A PŘEDPISY 22
+6.12.1 Technické normy 22
+6.12.2 Zákony 24
+6.12.3 Předpisy SŽDC a ČD 25
+6.12.4 Předpisy MD odbor PK 25
+1
+Seznam zkratek
+CBR California Bearing Ratio (Kalifornský poměr únosnosti)
+ČD České dráhy, akciová společnost
+ČSN Česká norma
+DLHM Dlouhodobý hmotný majetek
+GPK Geometrické parametry koleje
+CHKO Chráněná krajinná oblast
+OTP Obecné technické podmínky
+PSŘ Projekt souhrnného řešení
+SŽDC Správa železniční dopravní cesty, státní organizace
+SŽDC OTH Správa železniční dopravní cesty, státní organizace, Odbor traťového hospodářství
+TKP Technické kvalitativní podmínky
+TNŽ Technická norma železnic
+TP Technické podmínky
+ZTKP Zvláštní technické kvalitativní podmínky
+2
+6.1 ÚVOD
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP -
+Všeobecně.
+Kapitola 6 Technických kvalitativních podmínek staveb státních drah (dále TKP) platí pro konstrukční vrstvy
+tělesa železničního spodku a v případě vrstev zlepšené zeminy a stabilizací rovněž pro technologické vrstvy
+zemního tělesa a podloží zemního tělesa staveb státních drah, s právem hospodaření Správy železniční dopravní
+cesty (dále SŽDC).
+Konstrukční vrstvy tělesa železničního spodku (dále konstrukční vrstvy), jako součást pražcového podloží (tvoří
+jej vrstva kolejového lože, konstrukční vrstva a zemní těleso), musí zajišťovat trvalé geometrické parametry
+koleje a dosahovat požadovanou únosnost. Konstrukční vrstvy slouží zároveň k ochraně zemní pláně před
+nepříznivými účinky vody a mrazu.
+Předmětem této kapitoly TKP nejsou požadavky na kolejové lože, o kterých pojednává kapitola 7 TKP
+a požadavky na zemní pláň, o kterých pojednává kapitola 3 TKP.
+Pro konstrukční vrstvy a technologické vrstvy zemního tělesa pod pevnou jízdní dráhou musí být zpracovány
+Zvláštní technické kvalitativní podmínky (dále ZTKP).
+V případě, že kolejové lože spočívá přímo na zemní pláni bez konstrukční vrstvy, musí zemní pláň splňovat
+požadavky kladené na pláň tělesa železničního spodku dle předpisu SŽDC S4 a vzorových listů železničního
+spodku (dále vzorové listy).
+Pro vytváření konstrukčních vrstev jsou používány dvě navzájem odlišné technologie, a to :
+- technologie se snášením kolejového roštu,
+- technologie bez snášení kolejového roštu.
+Použité názvosloví a pojmy jsou převzaty z ČSN, ČSN EN, TNŽ, předpisů SŽDC a ČD, citovaných v oddíle
+6.12 této kapitoly TKP.
+6.2 POPIS A KVALITA MATERIÁLŮ
+Konstrukční vrstvy vymezené v úvodu kapitoly, jsou tvořeny vrstvami z materiálů nestmelených, stmelených
+a plošných prvků.
+K materiálům vytvářejícím nestmelené vrstvy patří:
+− přírodní štěrkopísčité nebo štěrkovité zeminy a přírodní drcené i nedrcené kamenivo, jako je písek (pouze
+pro ochrannou vrstvu), štěrk, štěrkopísek, štěrkodrť, případně jejich směsi,
+− umělé kamenivo, které obvykle vzniká při výrobě jiného produktu (např. vysokopecní struska),
+− již dříve použitý materiál (např. výzisk - kamenivo ze stávajícího kolejového lože, recyklovaná štěrkodrť,
+upravený recyklát, rozdrcené betonové pražce, beton apod.),
+− minerální směsi pro zřizování konstrukčních vrstev, u kterých je požadována malá propustnost a vyšší
+únosnost konstrukce. Minerálními směsmi nejsou štěrkopísky a štěrkodrtě.
+Stmelené vrstvy zahrnují:
+− zlepšené zeminy,
+− stabilizované zeminy (dále stabilizace),
+− popílkový stabilizát,
+− úpravy kameniva živicí (dále živičné vrstvy),
+− kamenivo stmelené hydraulickými pojivy.
+Plošné prvky zahrnují:
+− geosyntetika (geotextilie, geomřížky, geomembrány, geobuňky, geokompozity, geosyntetické jílové těsnění,
+geosíť apod.),
+− antivibrační rohože,
+3
+− tepelně izolační desky,
+− betonové desky.
+6.2.1 Nestmelené vrstvy
+Požadavky na materiál nestmelených vrstev jsou obsaženy v:
+− ČSN EN 13242, ČSN 73 6126 – 1,2 a TNŽ 73 6949,
+− předpisu SŽDC S4, přílohy 14, 15 a 17,
+− Obecných technických podmínkách (dále OTP),
+− Zásadách pro zřizování konstrukčních vrstev pražcového podloží technologiemi bez snášení kolejového
+roštu (dále „Zásady“).
+Materiál nestmelených vrstev musí splňovat následující základní požadavky:
+− odolnost proti zvětrávání a mechanickému opotřebení,
+− přípustný obsah jemnozrnných a cizorodých částic,
+− nenamrzavost a propustnost (v případě minerálních směsí málá propustnost),
+− zrnitost s plynulou křivkou zrnitosti, s číslem nestejnozrnnosti C ≥ 15 a maximálním zrnem D = 22 mm resp.
+u
+32 mm,
+Pro technologie bez snášení kolejového roštu musí materiál konstrukčních vrstev splňovat další požadavky
+„Zásad“ pro použití dané soupravy.
+Při použití vysokopecní strusky a již dříve použitého materiálu (např. výzisku) je kromě splnění technických
+požadavků nutno prokázat i jejich nezávadnost vůči životnímu prostředí ve smyslu zákona č. 185/2001 Sb.,
+o odpadech (viz článek 6.12.2 této kapitoly TKP).
+Na styku se zemní plání musí být nestmelené vrstvy posouzeny podle filtračního kriteria ve smyslu
+TNŽ 73 6949. V případě, že není toto kritérium splněno, musí být na zemní pláni položena vhodná separační
+vrstva (např. minerální nebo geosyntetická).
+Filtrační kritérium ve smyslu TNŽ 73 6949 musí být splněno i mezi konstrukční vrstvou tvořící pláň tělesa
+železničního spodku a vrstvou kolejového lože.
+Vlastnosti materiálů musí zhotovitel prokázat počátečními zkouškami podle článku 6.4.2 této kapitoly TKP.
+6.2.2 Stmelené vrstvy
+Stmelené vrstvy jsou vytvořeny zlepšenou zeminou, stabilizací, popílkovým stabilizátem, kamenivem
+stmeleným hydraulickými pojivy nebo živičnými vrstvami (např. obalované kamenivo, kamenivo s penetračním
+nástřikem apod.).
+Zlepšení zemin je úprava zeminy promísením s jinou zeminou nebo pojivem s cílem umožnit a usnadnit
+zpracování málo vhodných zemin v podloží zemního tělesa a v zemním tělese. V konstrukčních vrstvách se
+zlepšené zeminy běžně nepoužívají (viz předpis SŽDC S4).
+Stabilizace je způsob úpravy zemin, směsí zemin nebo jiného zrnitého materiálu s použitím pojiva nebo
+chemické příměsi, kterou stabilizované materiály získají požadovanou pevnost v prostém tlaku (dále jen
+pevnost) a odolnost proti mrazu a vodě.
+Jako pojivo jsou používány:
+− hydraulické látky (např. cement),
+− vápno (včetně bezprašného),
+− chemické přípravky,
+− živice.
+Vhodnost použití zemin pro zlepšení nebo stabilizaci musí být prokázána počátečními zkouškami provedenými
+akreditovanou zkušebnou. Počátečními zkouškami musí být zároveň stanoveno složení a vlastnosti zlepšené
+zeminy.
+Druh pojiva stanoví projektová dokumentace na základě výsledků geotechnického průzkumu.
+4
+Požadavky na materiál, zhotovení a zkoušení vrstev zlepšené zeminy a stabilizací, jsou obsaženy v předpisu
+SŽDC S4, ČSN 73 6124 – 1,2, ČSN EN 14227 – 1,2,3,4,5,10,11,12,13,14, ČSN 73 6133 a TP 94. Zlepšené
+zeminy a stabilizace chemickými přípravky, které nejsou uvedeny v běžných normách a předpisech, musí řešit
+dokumentace a Zvláštní technické kvalitativní podmínky (dále ZTKP).
+Požadavky na materiál, zhotovení a zkoušení živičných vrstev jsou obsaženy v ČSN 73 6121, ČSN 73 6122,
+ČSN 73 6127 – 1,2,3,4, ČSN 73 6129, ČSN EN 13 043 a v kapitole 9 TKP.
+6.2.3 Plošné prvky
+Geosyntetika
+Geosyntetika představují geosyntetické materiály vyrobené z plastů, určené pro zabudování do zemních a jim
+podobných konstrukcí. Patří k nim například geotextilie, geomřížky, geomembrány, geobuňky a geokompozity.
+Geotextilie jsou plošné propustné výrobky ze syntetických nebo přírodních materiálů, určené k zabudování do
+horninových, zemních a jim podobných konstrukcí k zajištění nových specifických vlastností konstrukcí. Podle
+způsobu výroby se geotextilie dělí na netkané, tkané, pletené a kompozitní. V tělese železničního spodku plní
+geotextilie funkci filtrační, oddělovací (dříve separační), drenážní a výztužnou. Zásady a podmínky jejich
+použití jsou obsaženy v předpisu SŽDC S4 a OTP Geotextilie v tělese železničního spodku.
+Geomřížky jsou plošná geosyntetika ve tvaru mřížky s pravidelně rozmístěnými otvory (oky). V tělese
+železničního spodku zachycují tahová napětí a zvyšují tak jeho únosnost a stabilitu. Mohou být použity
+samostatně nebo v kombinaci s geotextilií. Požadavky na geomřížky řeší předpis SŽDC S4 a OTP Geomřížky
+a geomembrány v tělese železničního spodku.
+Geomembrány jsou plošná geosyntetika v podobě nepropustné hydroizolační fólie, které kromě funkce
+oddělovací a drenážní zajišťují svojí nepropustností také ochranu (hydroizolaci) zemní pláně před účinky
+srážkové vody. Požadavky na geomembrány použité v tělese železničního spodku jsou uvedeny v OTP
+Geomřížky a geomembrány v tělese železničního spodku.
+Geobuňky jsou prostorová geosyntetika, která kromě funkce oddělovací zajišťují i funkci vyztužnou, případně
+vytvářejí podmínky na ochranu povrchu zemních svahů proti erozi.
+Geokompozity jsou plošné výrobky složené z více komponentů (prvků), ze kterých alespoň jeden je
+geosyntetikum.
+Geosyntetické jílové těsnění jsou továrně provedené kompozity z geosyntetických materiálů a jílových materiálů
+s nízkou filtrační schopností (např. bentonitu), používané ve styku se zeminou nebo jinými materiály při
+zemních a stavebních pracích
+Návrh druhu geosyntetik a jejich umístění v pražcovém podloží řeší dokumentace.
+Antivibrační rohože jsou plošné prvky ve tvaru desek nebo pásů, vyrobené např. z přírodního nebo
+syntetického kaučuku, polyuretanu, pryžového recyklátu ap. V konstrukci pražcového podloží se používají
+v případě, kdy je nutno omezit vibrace způsobené železničním provozem.
+Konstrukční řešení pražcového podloží s použitím antivibračních rohoží je obsaženo v předpise SŽDC S4,
+Příloha 28 a ve vzorovém listu Ž4.
+Tepelně izolační desky jsou plošné prvky vyrobené z tepelně izolačních materiálů (např. polystyrenu,
+polyuretanu apod.). V konstrukci pražcového podloží se používají v případě, kdy je nutno zajistit ochranu zemní
+pláně před nepříznivými účinky mrazu a současně je taková konstrukce technicky a ekonomicky výhodnější než
+použití ochranné vrstvy z jiných materiálů (např. nestmelených).
+Konstrukční řešení pražcového podloží s použitím tepelně izolačních desek je obsaženo ve vzorovém listu Ž4.
+Betonové desky
+Betonové desky se používají ke zvýšení únosnosti pražcového podloží jen ve výjimečných případech a ve velmi
+omezeném množství při řešení nepředvídaných situací. Druh betonových desek a jejich použití se řídí
+ustanoveními předpisu SŽDC S4 a vzorového listu Ž4.
+5
+6.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+6.3.1 Technologie se snášením kolejového roštu
+6.3.1.1 Všeobecné zásady
+Pokládka konstrukčních vrstev touto technologií následuje po provedení povrchového i podpovrchového
+odvodnění a vytvoření zemní pláně a musí být prováděna v souladu s technologickým postupem obsaženým
+v dokumentaci.
+Při pokládce konstrukčních vrstev ve výluce je nutno respektovat podmínky rozkazu o výluce, zpracovaného
+podle předpisu SŽDC (ČD) D7/2.
+6.3.1.2 Postup provádění
+Pokládku konstrukčních vrstev je možno zahájit po provedení odvodnění a vytvoření zemní pláně a jejich
+odsouhlasení stavebním dozorem.
+Odvodnění
+Zásady pro provádění a kontrolu prací na odvodnění tělesa železničního spodku jsou obsaženy v kapitole
+4 TKP.
+Při pokládce konstrukčních vrstev musí být odvodňovací zařízení chráněno před poškozením a po celou dobu
+výstavby musí být zajištěna jeho funkčnost.
+Po celou dobu výstavby musí zhotovitel zajistit plynulý odtok vody ze zemní pláně a chránit ji před zaplavením.
+Pokud tak neučiní a dojde k znehodnocení zemní pláně, provede zhotovitel na vlastní náklady její úpravu podle
+požadavku stavebního dozoru. Zhotovitel musí chránit všechny výkopy před zaplavením vodou, způsobeném
+např. klimatickými vlivy, aby stavební práce byly prováděny v optimálních podmínkách. Prosakuje-li do zemní
+pláně podzemní voda, je povinností zhotovitele tuto vodu řízeně odvádět. Zjistí-li zhotovitel během prací, že se
+vyskytly nepředvídané výrony vody, okamžitě provede taková opatření, která zamezí zhoršení kvality zemní
+pláně a neprodleně o tom vyrozumí stavební dozor. Veškeré prosakující vody, včetně srážkové, musí být po
+ukončení stavby trvale odváděny z pražcového podloží do odvodňovacího systému, který je nedílnou součástí
+stavebního díla.
+Zemní pláň
+Zemní pláň musí splňovat požadavky uvedené v kapitole 3 TKP. Zemní pláň musí být vytvořena z materiálů
+stanovených v dokumentaci, provedena v předepsaných příčných a podélných sklonech a výškových tolerancích
+a v souladu se směrovým vytyčením. Povrch zemní pláně, připravený k předání stavebnímu dozoru, musí být
+čistý, rovný, neporušený a zhutněný na požadované parametry.
+Pokud zemní pláň nesplňuje předepsané požadavky, musí být na náklady zhotovitele znovu upravena,
+odzkoušena a odsouhlasena stavebním dozorem.
+Technologický postup musí být volen tak, aby zamezil nebo minimalizoval pojezdy mechanizace po zemní
+pláni.
+Pokládka konstrukčních vrstev smí být zahájena až po odsouhlasení zemní pláně stavebním dozorem. Tvoří-li
+zemní pláň zeminy jemnozrnné nebo takové, u kterých lze očekávat kvalitativní změny v čase spojené
+s možností jejich pronikání do konstrukčních vrstev, musí být na povrch zemní pláně položena geotextílie, nebo
+jiná separační vrstva plnící oddělovací funkci. Nutnost použití separační vrstvy určuje dokumentace na základě
+filtračního kritéria, uvedeného v TNŽ 73 6949. Je-li zemní pláně tvořena stabilizací nebo zlepšenou zeminou
+podle článku 6.2.2, není geotextilie nebo separační vrstva nutná.
+Konstrukční vrstvy
+Konstrukční vrstvy je možno provádět při splnění následujících požadavků:
+− stavební dozor převzal od zhotovitele výsledky počátečních zkoušek ve formě osvědčení o jakosti materiálů,
+které budou použity do konstrukčních vrstev - vlastnosti těchto materiálů musí splňovat požadavky uvedené
+v oddíle 6.2 této kapitoly TKP,
+− stavební dozor odsouhlasil zemní pláň a odvodnění,
+6
+− kontrolními zkouškami podle oddílu 6.5 TKP zhotovitel prokázal shodu vlastností materiálu připraveného
+pro konstrukční vrstvy s výsledky počátečních zkoušek
+− zhotovitel prokázal, že použije hutnící prostředky shodné s hutnícím prostředkem, který byl použit
+k zhutňovací zkoušce podle článku 6.5.2.3 této kapitoly TKP,
+− klimatické podmínky jsou příznivé a neomezují provádění prací ve smyslu oddílu 6.7 této kapitoly TKP.
+Navážení materiálu do konstrukčních vrstev povolí stavební dozor na základě splnění výše uvedených
+požadavků. Pokud zhotovitel nezajistí odběry vzorků s následnými kontrolními zkouškami materiálu ve smyslu
+oddílu 6.5 této kapitoly TKP a o své vůli tento materiál zabuduje do pražcového podloží, stavební dozor tyto
+práce neodsouhlasí a objednatel neuhradí. Zhotovitel musí na své náklady zajistit dodatečné odběry vzorků
+a příslušné kontrolní zkoušky. V případě, že výsledky kontrolních zkoušek splňují požadovaná kritéria, může
+stavební dozor povolit další práce. V opačném případě, při nesplnění požadovaných kritérií, zhotovitel
+konstrukční vrstvu z tohoto materiálu na své náklady odstraní. Vytvořená konstrukční vrstva musí splňovat
+požadavky stanovené v dokumentaci, jejich dodržování kontroluje stavební dozor. Pokud nejsou požadovaná
+kvalitativní kritéria splněna, provede zhotovitel nápravu na své náklady.
+Jakákoliv doprava po dokončené nestmelené nebo stmelené vrstvě je možná jen se souhlasem stavebního dozoru
+s ohledem na únosnost vrstvy a povětrnostní podmínky. Přímé pojezdy po rozvinutých geosyntetických
+plošných prvcích, antivibračních rohožích a tepelně izolačních deskách jsou nepřípustné.
+Materiál konstrukčních vrstev musí být bezprostředně po navezení rozprostírán a hutněn. Jeho deponování na
+zemní pláni je nepřípustné. Rovněž se nepřipouští využívat zemní pláň nebo povrch vytvořené konstrukční
+vrstvy pro skládku stavebního materiálu.
+Na konstrukčních vrstvách převzatých stavebním dozorem nesmí být prováděny žádné dodatečné úpravy ani
+výkopové práce.
+6.3.1.3 Technologie provádění prací
+Nasazení mechanizmů pro vytváření konstrukčních vrstev, přímo ovlivňujících kvalitu prací, podléhá schválení
+stavebního dozoru. Je zakázáno používat mechanizmy, které nesplňují požadované technické parametry, nebo
+mechanizmy, jejichž stav nezaručuje dodržení předepsaných parametrů vytvářených vrstev.
+Nestmelené vrstvy
+Pro provádění nestmelených vrstev platí ČSN 73 6126 – 1,2.
+Materiál nestmelených vrstev se rozprostírá v jedné nebo více vrstvách. Vrstvy se pokládají s takovým
+nadvýšením, aby po zhutnění tloušťka vrstvy odpovídala tloušťce stanovené v dokumentaci. Tloušťka
+nestmelených konstrukčních vrstev je min. 0,15 m.
+Po rozprostření a urovnání povrchu každé vrstvy je nutno začít ihned s jejím zhutňováním. Pokud se pokládá
+více vrstev, je třeba hutnit každou samostatně.
+Vrstva se zhutňuje postupně:
+− od krajů do středu při oboustranném sklonu,
+− od spodního kraje po předhutněný horní okraj při jednostranném sklonu.
+Postup hutnění se opakuje až do dosažení požadovaného zhutnění. Četnost pojezdů hutnících mechanizmů po
+vrstvě se určí zhutňovací zkouškou podle ČSN 72 1006.
+Nestmelená vrstva musí být překryta navazující vrstvou v technologicky nejkratší možné době.
+Stmelené vrstvy
+Zlepšené zeminy
+Zlepšené zeminy se používají zejména pro zřizování vrstev v podloží náspů a ve vlastním náspovém tělese,
+případně pro zlepšení zemin zemní pláně. Pro konstrukční vrstvy tělesa železničního spodku (vrstvy mezi
+kolejovým ložem a zemním tělesem) se nepoužívají.
+Vrstvy zlepšené zeminy se provádí převážně mísením na místě. Mísením v centru lze provádět při zřizování
+vrstev tělesa náspu a ZTKP pouze se souhlasem stavebního dozoru.
+7
+Vrstvy zlepšené zeminy se provádí na celou šířku zemní pláně, minimálně však 2,50 m od osy koleje, na styku
+s trativodem vždy po hranu trativodní rýhy. Při budování náspového tělesa se vrstva ze zlepšené zeminy provádí
+na celou šířku násypového tělesa. Tloušťka vrstvy ze zlepšené zeminy je min. 0,30 m po zhutnění.
+Před provedením vrstvy zlepšené zeminy zemní pláně, musí být ze zemní pláně odstraněny organické látky,
+kameny a nežádoucí předměty. Zemní pláň musí být srovnána a odvodněna.
+Dávkování pojiva se provádí pomocí dávkovačů. Přesnost dávkování pojiva pro vrstvy zlepšené zeminy musí
+být ± 10 %.
+Před dávkováním se doporučuje materiál profrézovat nebo rozrušit rozrývači pro zajištění rovnoměrnějšího
+promísení s pojivem.
+Promísení zeminy se provádí zásadně zemními frézami. Při mísení ve více pásech se sousední pásy musí
+překrývat min. 0,20 m. Rozmělnění hrudek ve vrstvě zlepšené zeminy má být takové, aby obsah hrudek splňoval
+požadavky tab. 4 přílohy 13 předpisu SŽDC S4.
+Při provádění více vrstev ze zlepšené zeminy je nutné zabezpečit vzájemné promísení vrstev v tloušťce
+min. 0,05 m.
+V případě nutnosti se směs po promísení s pojivem dovlhčuje, aby bylo dosaženo optimální vlhkosti s přesností
+± 3 %.
+Rozprostřená vrstva se zhutňuje na předepsanou objemovou hmotnost. Zvýšenou pozornost je třeba věnovat
+hutnění překryvů a okrajů vrstvy zlepšené zeminy.
+Požadovaná míra zhutnění musí být dosažena v celé tloušťce zlepšené vrstvy. Sestava zhutňovacích
+mechanizmů technologie zhutňování musí být prokázána zhutňovací zkouškou dle ČSN 72 1006. Použití jiných
+zhutňovacích prostředků musí být ověřeno novou zhutňovací zkouškou a odsouhlaseno stavebním dozorem. Při
+zhutňovací zkoušce se rovněž měří hloubka promísení k ověření stejnoměrnosti promísení a účinnosti mísících a
+hutnících mechanizmů.
+Velikost rozpracovaného úseku se stanoví v závislosti na výkonnosti mechanizace, resp. jejich sestav.
+Rozpracovanost omezuje doba nutná pro rozprostření, zpracování a zhutnění. Doba zpracování nesmí překročit
+maximální délku technologické prodlevy, která se doporučuje stanovit v rámci zhutňovací zkoušky.
+Provedenou vrstvu zlepšené zeminy je nutné po dobu 24 hodin ošetřovat a chránit před poškozením
+a vysycháním. Překrytí vrstvy zlepšené zeminy v úrovni zemní pláně konstrukční vrstvou je možné po
+24 hodinách, pokud modul přetvárnosti E zemní pláně dosáhne min. 35 MPa.
+pzlep
+Obnovení železničního provozu se doporučuje až po 3 dnech zrání provedené vrstvy.
+Stabilizace
+Stabilizace se používají zejména pro zřizování konstrukčních vrstev, vrstev v podloží náspu a ve vlastním
+náspovém tělese.
+Stabilizace se provádí mísením v centru nebo mísením na místě. Pří mísení v centru je zajištěno dokonalé
+promíchání stavební směsi a přesnost dávkování.
+Pří mísení v centru se směs dopravuje na místo stavby mísícími vozy, nákladními auty apod.. Při dopravě je
+nutné směs chránit před vysycháním a oddělením pojiva od zeminy.
+Provádění stabilizace mísením na místě je vhodné pro úpravy zemin zemní pláně, případně zemin v podloží
+náspů. Stabilizaci na místě lze provádět z materiálu místního nebo dovezeného.
+Vrstva stabilizace se provádí na celou šířku zemní pláně, minimálně však 2,50 m od osy koleje, na styku
+s trativodem vždy po hranu trativodní rýhy. Tloušťka vrstvy stabilizace musí být min. 0,25 m po zhutnění.
+Před prováděním stabilizace je třeba ze zemní pláně odstranit organické látky, kameny a nežádoucí předměty.
+Při použití stabilizace dovezené z mísícího centra je nutné provést úpravu zemní pláně do požadované výšky
+a sklonu s případným přehutněním zemní pláně.
+Při technologii mísením na místě se dávkování pojiva provádí pomocí dávkovačů. Přesnost dávkování pojiva
+pro vrstvy stabilizace musí být ± 10 %. Před dávkováním se doporučuje zeminu zemní pláně profrézovat nebo
+rozrušit rozrývači pro zajištění rovnoměrnějšího promísení s pojivem.
+8
+Po přidání pojiva se provádí mísení za sucha. Mísení se provádí pojezdem zemní frézy v pásech odpovídajících
+šířce pracovního záběru stroje. Při mísení dalšího pásu se provádí i mísení předchozího pásu s překrytím
+min. 0,20 m. Pro rozprostírání směsi dovezené z mísícího centra je nejvhodnější finišer.
+Po promísení s pojivem se směs dovlhčuje tak, aby bylo dosaženo optimální vlhkosti s přesností ± 3%. Vlhčení
+se provádí buď přímo do mísícího stroje (frézy) nebo kropícími vozy s regulovatelným dávkováním vody.
+Pokud vlhkost směsi převyšuje hodnotu optimální vlhkosti o více než 2% je nutno ji vhodným způsobem upravit
+(např. přimísením vápna).
+Je-li jedním z kombinace pojiv vzdušné nehašené vápno, je nutné nejprve promísit zeminu s vápnem a ponechat
+směs reagovat nejméně 8 hodin pro vyhašení vápna. Teprve potom je možné dávkovat další pojivo, promísit
+a upravit vlhkost. Při kombinaci popílku a cementu se nejprve dávkuje popílek, promísí se a potom se dávkuje
+cement, promísí se a provede se dovlhčení směsi.
+Rozprostřená a srovnaná směs připravená ke zhutnění smí mít maximální obsah hrudek v % hmotnosti udávaný
+v tab. 9 přílohy 13 předpisu SŽDC S4.
+Rozprostřená směs o optimální vlhkosti se urovná do předepsaného tvaru a sklonu a zhutní se.
+Požadovaná míra zhutnění musí být dosažena v celé tloušťce stabilizace. Zvýšenou pozornost je třeba věnovat
+hutnění překryvů a okrajů stabilizace. Sestava zhutňovacích prostředků a technologie zhutňování musí být
+prokázána zhutňovací zkouškou dle ČSN 72 1006. Použití jiných zhutňovacích prostředků musí být ověřeno
+novou zhutňovací zkouškou a odsouhlaseno stavebním dozorem. Při zhutňovací zkoušce se rovněž měří hloubka
+promísení k ověření stejnoměrnosti promísení a účinnosti mísících a hutnících mechanizmů.
+Velikost rozpracovaného úseku se stanoví v závislosti na výkonnosti mechanizace resp. jejich sestav.
+Rozpracovanost omezuje doba nutná pro rozprostření, zpracování (promíchání) směsi a její zhutnění. Doba
+zpracování nesmí překročit 3 hodiny od přidání pojiva pro stabilizace cementem a 6 hodin od přidání pojiva pro
+stabilizace pomalu tuhnoucími pojivy a stabilizace kombinací pojiv.
+Provedenou stabilizaci je nutné po dobu zrání (min. 7 dnů) chránit před odpařováním vody (kropením, zakrytím
+folií ap.). Stabilizovaná vrstva nesmí být před zakrytím další vrstvou poškozena (prolomena). Nutná stavební
+doprava může k pojíždění využít stabilizovanou vrstvu po dosažení modulu přetvárnosti min. 60 MPa, nejdříve
+však po 7 dnech.
+Živičné vrstvy
+Provádění živičných vrstev se řídí ustanoveními ČSN 73 6121, ČSN 73 6122, ČSN 73 6127 – 1,2,3,4
+a ČSN 73 6129.
+Plošné prvky
+Geosyntetika
+Pokládka těchto plošných prvků se provádí podle předpisu SŽDC S4 a vzorového listu Ž4. Uvedené plošné
+prvky se pokládají na vrstvu odsouhlasenou a převzatou stavebním dozorem (zemní pláň, nestmelená
+konstrukční vrstva). Položené geosyntetikum musí mít povrch bez záhybů, krabacení a musí být dodržen
+předepsaný způsob spojování.
+Umístění geosyntetik v pražcovém podloží je stanoveno dokumentací.
+Pokud je do pražcového podloží použita geomřížka spolu s geotextilií, je třeba jejich uložení provést tak, aby na
+zemní pláni ležela geotextilie a na ní geomřížka.
+Na pláň tělesa železničního spodku se geotextilie a geomřížky ukládají pouze výjimečně. V takovém případě
+musí mít tato geosyntetika vlastnosti odpovídající požadavkům OTP a nad nimi vytvořené kolejové lože musí
+mít tloušťku min. 0,55 m.
+Pro vkládání geosyntetik do konstrukce pražcového podloží technologií bez snášení kolejového roštu platí
+ustanovení „Zásad“.
+Geobuňky
+Geobuňky se do konstrukce pražcového podloží vkládají v úrovni zemní pláně a základové spáry náspového
+tělesa (odřezu), resp. na povrch zemních svahú. Zajišťuje tak tedy funkci oddělovací, výztužnou a ochrannou.
+Při instalaci geobuněk je nutné dbát na jejich uložení v požadované rozvinuté poloze tak, aby jejich stěny byly
+kolmo k úložné rovině. Při zasypávání geobuněk je nutné dbát aby nedošlo k jejich zborcení. Geobuňky je nutné
+zásypovým materiálem přesypat cca o 25 % výšky geobuňky, pro jejich ochranu. Hutnění zásypu geobuněk je
+9
+možné pouze při dostatečném přesypání tak, aby nedošlo k destrukci prostorového systému geobuněk. Spoje je
+nutné sešívat dle dokumentace výrobce tak, aby byl zachován prostorový systém geobuněk.
+Umístění geobuněk v konstrukci pražcového podloží je stanoveno dokumentací. Technologii provádění
+a pokládku geobuněk řeší ZTKP nebo projekt souhrnného řešení (PSŘ).
+Antivibrační rohože
+Antivibrační rohože se do konstrukce pražcového podloží vkládají v úrovni, která zajišťuje jejich největší
+tlumící účinek, např. na zemní pláň nebo na pláň tělesa železničního spodku.
+Před vkládáním antivibračních rohoží je třeba provést odvodnění pražcového položí a vytvořit zhutněnou pláň
+v požadovaném sklonu. Pláň musí být zhutněna hladkým válcem a zbavena hrubých nečistot. Pokládka
+antivibrační rohože smí být zahájena až po odsouhlasení vrstvy, na kterou bude antivibrační rohož pokládána,
+stavebním dozorem.
+Konstrukční řešení a umístění antivibrační rohože je obsaženo v předpise SŽDC S4, Příloha 28 a vzorovém listu
+železničního spodku Ž4.
+Tepelně izolační desky
+Umístění tepelně izolačních desek v konstrukci pražcového podloží je stanoveno dokumentací. Pokládku tepelně
+izolačních desek řeší ZTKP a PSŘ.
+Betonové desky
+Konstrukční vrstva z betonových desek se provádí v souladu s ustanoveními předpisu SŽDC S4 a podle
+vzorového listu Ž4.
+Betonové desky se kladou na zhutněnou vyrovnávací vrstvu o tloušťce min. 0,10 m tak, aby vytvářely pod kolejí
+pruh o šířce min. 3,00 m.
+Zemní pláň pod betonovými deskami má jednostranný nebo oboustranný příčný sklon 4 %. Na zemní pláň se při
+použití betonových desek vždy rozprostírá geotextilie.
+6.3.2 Technologie bez snášení kolejového roštu
+6.3.2.1 Všeobecné zásady
+Technologie bez snesení kolejového roštu představuje zvyšování únosnosti a stability pražcového podloží
+vkládáním konstrukčních vrstev speciálním strojem (např. SČ 600 S, AHM 800R, KSEM, RPM 2002,
+PM 200 – 2R a dalších), vytvářejícím vícevrstevnou konstrukci s odvodněním zemní pláně a její ochranou před
+nepříznivými účinky mrazu. Použití jiného stroje než je uvedeno v „Zásadách“, musí být odsouhlaseno SŽDC
+OTH, včetně technologie provádění prací. Technologie prací musí být přizpůsobena technickým parametrům
+použitého stroje, případně sestavy strojů.
+Základní požadavky pro zvyšování únosnosti pražcového podloží prováděného touto technologií, v dalším
+zkráceně nazývanou „vkládání konstrukčních vrstev“, vycházejí ze „Zásad“ a respektují technické normy (ČSN,
+TNŽ) a předpisy SŽDC.
+Při této technologii je zemní pláň pouze upravována do předepsaného sklonu, bez hutnění.
+Tloušťka vytvářené konstrukční vrstvy je závislá na konstrukci stroje a je uvedena v „Zásadách“.
+Mocnost a složení konstrukčních vrstev stanoví dokumentace na základě výsledků geotechnického průzkumu.
+Součástí dokumentace je rámcový technologický postup. Podrobný technologický postup stanoví dokumentace
+zhotovitele dle navrhovaných mechanismů.
+Dokumentace musí též obsahovat způsob ochrany, úpravy a případné přeložky podzemních vedení vyvolané
+vkládáním konstrukčních vrstev pražcového podloží.
+6.3.2.2 Metody a postup provádění
+V závislosti na použité sestavě strojů je možno vkládání konstrukčních vrstev provádět metodou:
+− obracení vrstev (ve výjimečných případech, pouze se souhlasem SŽDC OTH),
+− kontinuálního zřizování konstrukční vrstvy.
+10
+Obě uvedené metody sestávají z následujících činností:
+− plnoprofilového čistění kolejového lože (u metody obracení vrstev strojem SČ 600S musí být provedeno
+před rozprostřením materiálu podkladní vrstvy, u ostatních strojů podle stavu kolejového lože),
+− kladení geosyntetik,
+− zřízení konstrukční vrstvy,
+− zřízení kolejového lože na pláni tělesa železničního spodku.
+V případě splnění filtračního kritéria mezi materiálem konstrukční vrstvy a zeminou zemní pláně podle
+TNŽ 73 6949 nemusí být geotextilie použita.
+Základní podmínky pro uplatnění technologie bez snášení kolejového roštu jsou stanoveny v „Zásadách“.
+6.3.2.3 Technologie provádění
+Výchozí podmínky
+Vkládání konstrukčních vrstev je možno provádět pouze ve výlukách vlakové dopravy. Sestava strojů
+a mechanizmů pro vkládání konstrukčních vrstev je navržena v dokumentaci.
+Přípravné práce
+Přípravné práce zahrnují:
+− skladování a skládkování materiálu ,
+− ochranu podzemních a nadzemních vedení,
+− úpravu zemního tělesa a odvodňovacích zařízení,
+− ověření hloubky zemní pláně pod ložnou plochou pražce,
+− čištění kolejového lože,
+− částečné odtěžení kolejového lože,
+− technicko-organizační zabezpečení.
+Skladování a skládkování materiálu
+Požadavky na skladování a skládkování materiálu jsou obsaženy v článku 6.4.1 této kapitoly TKP.
+Ochrana podzemních a nadzemních vedení
+Způsob ochrany podzemních a nadzemních vedení je uveden v „Zásadách“.
+Úprava zemního tělesa a odvodňovacích zařízení
+Vkládání konstrukčních vrstev vyžaduje normový tvar a rozměry zemního tělesa a odvodňovacích zařízení,
+které musí být řešeny v dokumentaci podle vzorových listů Ž1, Ž3 a TNŽ 73 6949.
+Stezka po obou stranách kolejového lože musí mít šířku min. 0,40 m. Úpravy zemního tělesa a odvodňovacích
+zařízení musí být realizovány v předstihu.
+Úpravy tvarů a rozměrů zemního tělesa pro technologii vkládání konstrukčních vrstev pražcového podloží na
+tratích vybudovaných podle dřívějších norem a předpisů, neumožňujících zejména vytvoření zemní pláně
+v potřebné šířce, musí být řešeny v dokumentaci.
+Ověření hloubky zemní pláně
+Ověření hloubky zemní pláně pod ložnou plochou pražců se provede v kopaných sondách u hlav pražců.
+Čištění kolejového lože
+Uplatňování technologických postupů zvyšování únosnosti konstrukce pražcového podloží vkládáním
+konstrukčních vrstev bez snášení kolejového roštu vyžaduje čistění kolejového lože v plném profilu.
+Pokud při úpravách zemní pláně v rámci čistění kolejového lože nelze zajistit, že se zemina zemní pláně ve
+formě hrudek nevrátí spolu s vyčištěným štěrkem do kolejového lože, je třeba volit technologii s úplným
+odstraněním kolejového lože.
+11
+Čistění kolejového lože musí zhotovitel opakovat, dokud není dosaženo hodnoty součinitele znečistění
+S < 15 %. Součinitel znečistění kolejového lože S představuje hmotnost zrn o průměru D < 22 mm, vyjádřenou
+z z
+v % celkové hmotnosti vzorku.
+V případě snížení nivelety zemní pláně je třeba zohlednit technologický postup a její úprava do příčného sklonu
+musí být provedena již při čistění kolejového lože.
+Částečné odtěžení kolejového lože
+Částečné odtěžení kolejového lože se provede:
+- při snížení nivelety koleje,
+- pro recyklaci kameniva stávajícího kolejového lože na recyklační základně.
+Technicko-organizační zabezpečení
+Dodržení hloubky těžení a sklonu nivelety zemní pláně musí být v průběhu prací kontrolovány zhotovitelem za
+přítomnosti stavebního dozoru.
+Podmínky pro nasazení strojů a mechanizmů na elektrizované trati jsou stanoveny v „Zásadách“.
+Vkládání konstrukčních vrstev
+Složení konstrukčních vrstev pražcového podloží je navrženo v dokumentaci.
+Technologií vkládání konstrukčních vrstev pražcového podloží je možno vytvářet tyto základní konstrukce:
+− zemní pláň, konstrukční vrstva,
+− zemní pláň, geosyntetikum, konstrukční vrstva.
+Konstrukci pražcového podloží bez podkladní vrstvy s geotextilií, případně geotextilií a geomřížkou, položenou
+na pláň tělesa železničního spodku pod kolejovým ložem, je možno vytvářet pouze ve výjimečných případech se
+souhlasem SŽDC OTH. Použitá geotextilie musí splňovat podmínky uvedené v článku 6.2.3 TKP.
+Vkládání geosyntetik
+Při použití geosyntetik je nutno respektovat ustanovení článků 6.2.3 a 6.3.1.3 této kapitoly TKP.
+Konstrukční úprava stroje nebo soupravy umožňuje kontinuální kladení geosyntetik na zemní pláň z odvíjející
+se role na tyči, zavěšené na rámu žlabu těžícího řetězu tohoto stroje. Délka geosyntetik v jedné roli je omezena
+maximálním průměrem role (průměr role je uveden v „Zásadách“) a určuje rozsah technologických zastávek
+stroje nezbytných k zasunutí nové role pod stroj a k zabezpečení kontinuálního kladení geosyntetik na zemní
+pláň. Překrytí pásů geosyntetik musí být min. 0,20 m v příčném směru a min. 0,50 m v podélném směru.
+Geosyntetika musí být vypnuta a nesmí vytvářet vlny. V obloucích je přípustné jejich přeložení. Geosyntetika se
+nesmí předpínat.
+Zřízení konstrukční vrstvy
+Konstrukční vrstva je vytvářena průběžně speciálním strojem (např. SČ 600 S, AHM 800R, KSEM, RPM,
+PM 200 apod.) z materiálu definovaného v článku 6.2.1 této kapitoly TKP. Je ukládána přímo na zemní pláň,
+vytvořenou těžícím řetězem speciálního stroje, na zemní pláň pokrytou geotextilií nebo doplněnou navíc
+o geomřížku, popřípadě na dříve vytvořenou konstrukční vrstvu, kterou tak zesiluje.
+Zřízení konstrukční vrstvy technologií bez snášení kolejového roštu vychází dále z podmínek, že:
+− zřízená zemní pláň bude vodorovná nebo ve sklonu min. 4 %,
+− konstrukční vrstva bude mít šířku min. 4,00 m a bude zhutněna na relativní hutnost min. I = 0,80.
+D
+Další podrobnosti vkládání konstrukčních vrstev technologií bez snášení kolejového roštu obsahují „Zásady.“
+Dokončovací práce
+Druh dokončovacích prací a jejich rozsah závisí na místních podmínkách.
+Dokončovací práce pozůstávají zejména z:
+− konečné úpravy kolejového lože, směru a výšky koleje,
+− přisypání stezky u otevřeného kolejového lože (zapuštěné kolejové lože řeší kapitola 7 TKP),
+− úpravy skládek,
+12
+− odstranění dočasných pomocných objektů,
+− zajištění funkce odvodnění,
+− úpravy terénu narušeného prováděním prací.
+Další podrobnosti dokončovacích prací obsahují „Zásady“.
+6.4 DODÁVKA, SKLADOVÁNÍ A POČÁTEČNÍ ZKOUŠKY
+6.4.1 Dodávka a skladování
+Dodávka materiálů pro konstrukční vrstvy se uskutečňuje na základě objednávky zhotovitele, jejíž hlavní
+součástí jsou požadavky na kvalitu objednávaného materiálu. Zásilka musí být opatřena potvrzením výrobce, že
+dodávaný materiál odpovídá požadavkům objednávky (prohlášení shody, osvědčení o použití na stavbách
+státních drah, případně certifikát).
+Za kvalitu materiálu, připraveného k zabudování do pražcového podloží, zodpovídá zhotovitel.
+Dodávané materiály (kamenivo, geosyntetika, pojiva apod.) musí být skladovány tak, aby nedocházelo k jejich
+poškození nebo znehodnocení vlivem klimatických a jiných poměrů. Skladované materiály musí být označeny
+názvem výrobku a výrobce. Důsledky za nevhodné skladování nese plně zhotovitel.
+Kamenivo se musí nakládat, skládat a přemisťovat takovým způsobem, aby nedošlo ke vzájemnému promíchání
+jeho druhů nebo oddělení frakcí. Skladování kameniva je přípustné jen na plochách, které jsou v celém rozsahu
+zpevněny panely nebo jiným srovnatelným způsobem, rozprostřená geotextilie nepostačuje. Plocha pro
+skladování kameniva nebo zeminy musí být odvodněna.
+Pokud je na jedné ploše uskladňováno několik druhů kameniva, musí být mezi sebou odděleny, aby nedošlo
+k jejich promíchání a musí být označeny.
+Před navážení kameniva musí být skladovací plocha převzata stavebním dozorem. Pokud zhotovitel bez vědomí
+stavebního dozoru zřídí skladovací plochu nesplňující výše uvedené požadavky, nesmí být kamenivo z této
+skladovací plochy použito do konstrukce pražcového podloží. Důsledky a náklady s tím spojené nese zhotovitel.
+Hydraulická pojiva pro úpravu zemin musí být dodávána v autocisternách, účelových vysokokapacitních
+přepravnících, v případě staveb malého rozsahu se připouštějí i pytlovaná. Při volném uskladnění v silech je
+nutné délku skladování omezit na 15 dní až 1 měsíc podle druhu pojiva a pokynů od výrobce. Při použití vápna
+je nutné zřizovat kapacitu skladu ekvivalentní dvěma dnům provádění vápenné stabilizace. Upřednostňuje se
+plnění dávkovačů přímo z cisteren, aniž by procházely sily.
+Doprava a skladování chemických přípravků pro stabilizace se řídí ustanoveními ZTKP.
+Doprava, skladování a manipulace s geosyntetiky se řídí podmínkami výrobce, zahrnujícími zejména vliv
+slunečního záření, teploty a vlhkosti prostředí.
+Dodávku a skladování tepelně izolačních desek stanoví ZTKP. Dodávka a skladování antivibračních rohoží se
+řídí konkrétními technickými podmínkami.
+6.4.2 Počáteční zkoušky
+Vlastnosti materiálů navrhovaných dokumentací do konstrukčních vrstev musí splňovat požadavky oddílu 6.2
+této kapitoly TKP a prokazují se počátečními zkouškami. Za výsledek počátečních zkoušek materiálů a plošných
+prvků se považuje osvědčení o jakosti výrobku, doplněné dokladem o splnění dalších parametrů, které jsou pro
+příslušný druh konstrukční vrstvy požadovány TKP a ZTKP. Počáteční zkoušky materiálu (vyjma zkoušek,
+které jsou součástí dokumentace) zajišťuje zhotovitel stavby u výrobce resp. dodavatele materiálu a předkládá je
+stavebnímu dozoru před zahájením prací v termínu určeném stavebním dozorem.
+Počáteční zkoušky musí provádět akreditované laboratoře.
+Při změně druhu nebo vlastností stavebních materiálů a směsí nebo požadavků na ně, musí zhotovitel zajistit
+provedení nových počátečních zkoušek.
+Druh a rozsah počátečních zkoušek je dán požadavky na vlastnosti materiálu konstrukčních vrstev a požadavky
+na vlastnosti směsí, ze kterých jsou konstrukční vrstvy vytvářeny.
+Pokud počáteční zkoušky neprokáží požadované vlastnosti, nesmí být materiál použit.
+13
+Nestmelené vrstvy
+Vlastnosti materiálu pro nestmelené konstrukční vrstvy jsou předepsány v OTP, v článku 6.2.1 této kapitoly
+TKP, v normách a předpisech SŽDC.
+Stmelené vrstvy
+Zlepšené zeminy
+Stavební materiály
+Za počáteční zkoušky sypanin pro zlepšené zeminy se považují výsledky geotechnického průzkumu, za
+počáteční zkoušky pojiv a vody se považují osvědčení o jakosti výrobku.
+Počátečními zkouškami zemin se stanoví:
+- vlhkost dle ČSN CEN ISO / TS 17 892 – 4,
+- zrnitost dle ČSN EN 933-1, ČSN 72 1017,
+- číslo plasticity dle ČSN CEN ISO / TS 17 892 - 12,
+- obsah organických látek dle ČSN 72 1021,
+- pH faktor vodního výluhu zeminy dle ČSN 72 1070,
+- parametr zhutnění dle Proctor Standard (PS) dle ČSN EN 13 286 - 2.
+Stavební směsi
+V rámci počátečních zkoušek zlepšené zeminy se zjišťuje:
+- složení směsi dle přílohy 13 předpisu SŽDC S4,
+- zhutnitelnost dle ČSN EN 13 286 – 2, ČSN 72 1006,
+- poměr únosnosti CBR dle ČSN 72 1016.
+Požadavky na počáteční zkoušky materiálů a směsí vytvářejících konstrukční vrstvy pomocí chemických pojiv
+a přípravků stanoví ZTKP.
+Počáteční zkoušky musí být provedeny před zahájením zemních prací na příslušném úseku stavby a musí je
+provádět akreditovaná laboratoř. Požadované vlastnosti zlepšené zeminy udává příloha 13 předpisu SŽDC S4.
+Pokud počáteční zkoušky neprokáží požadované vlastnosti zlepšené zeminy, nesmí být zlepšené zeminy v tělese
+železničního spodku použity.
+Stabilizace
+Stavební materiály
+Za počáteční zkoušky sypanin pro stabilizace se považují výsledky geotechnického průzkumu, za počáteční
+zkoušky pojiv a vody se považují osvědčení o jakosti výrobku.
+Počátečními zkouškami zemin se stanoví:
+- vlhkost dle ČSN CEN ISO / TS 17 892 – 4,
+- zrnitost dle ČSN EN 933-1, ČSN 72 1017
+- číslo plasticity dle ČSN CEN ISO / TS 17 892 - 12,
+- obsah organických látek dle ČSN 72 1021,
+- pH faktor vodního výluhu zeminy dle ČSN 72 1070,
+- parametr zhutnění dle ČSN EN 13 286 – 2, ČSN 72 1018.
+Vlastnosti materiálu pro stmelené konstrukční vrstvy vytvořené stabilizací a stmelením kameniva hydraulickým
+pojivem musí vyhovovat požadavkům ČSN 73 6124 – 1,2, ČSN EN 14227 – 1,2,3,4,5,10,11,12,13,14.
+Stavební směsi
+V rámci počátečních zkoušek stabilizací se zjišťují kvalitativní parametry pevnosti v prostém tlaku a odolnosti
+stabilizací proti nepříznivým účinkům mrazu a vody. Pro jednotlivé druhy použití stabilizací musí zkoušky
+prokázat dosažení hodnot stanovených v příloze 13 předpisu SŽDC S4.
+Počáteční zkoušky musí být provedeny před zahájením prací na stavbě a musí je provádět akreditovaná
+laboratoř.
+Pokud počáteční zkoušky neprokáží požadované vlastnosti stabilizace, nesmí být stabilizace do tělesa
+železničního spodku navržena.
+14
+Živičné vrstvy
+Požadavky na počáteční zkoušky materiálů a stavebních směsí vytvářející konstrukční vrstvy ze živičných
+materiálů jsou stanoveny v ČSN 73 6121, ČSN 73 6122, ČSN 73 6127 – 1,2,3,4 a ČSN 73 6129.
+Plošné prvky
+Požadavky na materiál a rozsah počátečních zkoušek pro geosyntetika jsou obsaženy v ČSN EN 13 250, OTP
+„Geotextilie v tělese železničního spodku“ a OTP „Geomřížky a geomembrány v tělese železničního spodku“
+(viz článek 6.12.2 této kapitoly TKP).
+Požadavky na materiál a rozsah počátečních zkoušek pro betonové desky obsahuje ČSN 73 6131-2.
+Požadavky na materiál a rozsah počátečních zkoušek pro geobuńky a tepelně izolační desky stanoví ZTKP.
+Požadavek na materiálové vlastnosti a rozsah počátečních zkoušek antivibračních rohoží jsou obsaženy v OTP
+Antivibrační rohože v tělese železničního spodku.
+6.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Kontrolní zkoušky ověřují v průběhu provádění konstrukčních vrstev výsledky počátečních zkoušek a dalších
+vlastností předepsaných v TKP a ZTKP a umožňují stavebnímu dozoru kontrolu prací během výstavby.
+Odběr vzorků materiálu a jeho posouzení je součástí kontrolních zkoušek.
+Zhotovitel odsouhlasí se stavebním dozorem čas a místo odběru nebo zkoušky. Místa odběrů a zkoušek musí být
+volena tak, aby vystihovala kvalitu sledovaného úseku a postihla i případná místa s nedostatečnou kvalitou.
+K určení míst odběrů a zkoušek je vhodné použití nepřímých metod (např. rázová zkouška, radiometrické
+měření apod.).
+Nesplňuje-li materiál připravený pro konstrukční vrstvu předepsané požadavky, stavební dozor jeho uložení do
+pražcového podloží nepovolí.
+Kontrolní zkoušky provádí na své náklady zhotovitel a jejich výsledky předává dohodnutou formou stavebnímu
+dozoru. Při nesplnění kvalitativních požadavků stavební dozor práce nepřevezme a další pokračování nepovolí.
+Náklady spojené s odstraněním závad nese zhotovitel, který uhradí i náklady na opakované kontrolní zkoušky.
+Druh, četnost a předepsaná kritéria kontrolních zkoušek. jsou uvedeny v dalších článcích.
+6.5.1 Zemní pláň
+Kontrolní zkoušky zemní pláně, na které jsou uloženy konstrukční vrstvy, se provádějí podle kapitoly 3 TKP.
+6.5.2 Konstrukční vrstvy
+6.5.2.1 Materiál konstrukčních vrstev
+Nestmelené vrstvy
+Na materiálu nestmelených vrstev se před jeho uložením zjišťuje:
+− zrnitost,
+− namrzavost a propustnost,
+− nestejnozrnnost,
+− obsah jemných částic,
+− obsah cizorodých částic.
+Požadované parametry jsou uvedeny v oddíle 6.2 této kapitoly TKP.
+Uvedené fyzikální vlastnosti se určují nejméně na každých:
+− 2 000 t materiálu u technologie se snášením kolejového roštu a novostaveb,
+− 1 000 t materiálu nebo 500 m délky koleje u technologie bez snášení kolejového roštu.
+Odběr vzorků materiálu se provádí podle ČSN EN 932-1.
+15
+Stmelené vrstvy
+Zlepšené zeminy
+Při těžbě a navážení zeminy je nutno kontrolovat shodu vlastností a stavu zeminy s počátečními zkouškami
+a požadavky dokumentace stavby.
+K ověření závěrů a předpokladů učiněných na základě laboratorních zkoušek, k ověření navržené technologie
+hutnění (typ válce, tloušťka vrstvy, počet pojezdů apod.) a k ověření dosažených geotechnických parametrů
+zhutněných zlepšených zemin, se provede zhutňovací zkouška podle ČSN 72 1006 a kontrola hloubky
+promísení.
+Kontrolní zkoušky zlepšené zeminy a jejich četnost stanoví tabulka 1.
+tabulka 1 Kontrolní zkoušky zlepšené zeminy a jejich četnost
+Zkouška Metodika Četnost
+A. Podloží náspu
+vlhkost ČSN CEN ISO / TS 17 892 – 4 1x na 5 000 m2
+poměr únosnosti CBR ČSN 72 1016 1x na 10 000 m2
+zhutnitelnost ČSN 72 1006 1x na 5 000 m2
+B. Násep
+vlhkost ČSN CEN ISO / TS 17 892 – 4 1x na 500 m2
+poměr únosnosti CBR ČSN 72 1016 1x na 5 000 m2
+zhutnitelnost ČSN 72 1006 1x na 1 000 m2
+obsah hrudek ČSN 73 6133 1x na 5 000 m2
+ČSN 73 6124-1,2; ČSN EN 14227
+dávkování pojiva 1x na 2 000 m2
+– 1,2,3,4,5,10,11,12,13,14
+ČSN 73 6124-1,2; ČSN EN 14227
+stejnoměrnost a hloubka promísení 1x na 2 000 m2
+– 1,2,3,4,5,10,11,12,13,14
+C. Aktivní zóna
+vlhkost ČSN CEN ISO / TS 17 892 – 4 1x na 1 000 m2
+poměr únosnosti CBR ČSN 72 1016 1x na 5 000 m2
+zhutnitelnost ČSN 72 1006 1x na 5 000 m2
+obsah hrudek ČSN 73 6133 1x na 10 000 m2
+ČSN 73 6124-1,2; ČSN EN 14227
+dávkování pojiva 1x na 2 000 m2
+– 1,2,3,4,5,10,11,12,13,14
+ČSN 73 6124-1,2; ČSN EN 14227
+stejnoměrnost a hloubka promísení 1x na 2 000 m2
+– 1,2,3,4,5,10,11,12,13,14
+Nesplňuje - li zlepšená zemina stanovené požadavky, nepřevezme stavební dozor provedené vrstvy ze zlepšené
+zeminy.
+Stabilizace
+Kontrolní zkoušky zemin ověřují shodu vlastností s požadavky počátečních zkoušek. U materiálů z místních
+zdrojů se ověřuje, zda zeminy používané na stavbě odpovídají zeminám, se kterými byl proveden návrh
+stabilizace.
+16
+Kontrolní zkoušky stabilizace a jejich četnost stanoví tabulka 2.
+tabulka 2 Kontrolní zkoušky stabilizace a jejich četnost
+Zkouška Metodika Četnost
+U zemin pro stabilizaci se zkouší:
+vlhkost ČSN CEN ISO / TS 17 892 – 4 1x denně
+zrnitost ČSN EN 933-1, ČSN 72 1017 1x denně
+číslo plasticity ČSN CEN ISO / TS 17 892 - 12 četnost dle dokumentace
+obsah organických látek ČSN 72 1021 četnost dle dokumentace
+reakce pH ČSN 73 6124-1,2; ČSN EN 14227 četnost dle dokumentace.
+– 1,2,3,4,5,10,11,12,13,14
+V rámci kontrolních zkoušek stabilizace se zjišťují následující kvalitativní parametry směsi
+pevnost v tlaku ČSN 73 6124-1,2; ČSN EN 14227 1x denně
+– 1,2,3,4,5,10,11,12,13,14
+odolnost proti účinkům mrazu ČSN 73 6124-1,2; ČSN EN 14227 1x za dva dny
+– 1,2,3,4,5,10,11,12,13,14
+vlhkost ČSN CEN ISO/TS 17892-1 1x denně
+zhutnitelnost ČSN EN 13 286 – 2 1x na 5 000 m2
+obsah hrudek ČSN 73 6124-1,2; ČSN EN 14227 1x na 5 000 m2
+– 1,2,3,4,5,10,11,12,13,14
+dávkování pojiva ČSN 73 6124-1,2; ČSN EN 14227 1x na 1 000 m2
+– 1,2,3,4,5,10,11,12,13,14
+stejnoměrnost promísení ČSN 73 6124-1,2; ČSN EN 14227 1x na 1 000 m2
+– 1,2,3,4,5,10,11,12,13,14
+Výsledky kontrolních zkoušek musí splňovat požadavky udávané v předpisu SŽDC S4, příloze 13 a odpovídat
+požadavkům počátečních zkoušek. Pokud kontrolní zkoušky stabilizace neprokáží požadované vlastnosti,
+stavební dozor je nepřevezme.
+Požadavky na kontrolní zkoušky materiálů a směsí vytvářejících konstrukční vrstvy pomocí chemických pojiv
+a přípravků stanoví ZTKP.
+Živičné vrstvy
+Požadavky na kontrolní zkoušky materiálů a stavebních směsí vytvářejících živičné vrstvy jsou stanoveny
+v ČSN 73 6121, ČSN 73 6122, ČSN 73 6127 – 1,2,3,4 a ČSN 73 6129.
+Plošné prvky
+Geosyntetika
+U těchto plošných prvcích se zjišťuje:
+− pevnost v tahu podélná a příčná,
+− tažnost podélná a příčná (poměrné protažení),
+− odolnost proti protržení (geotextílie, geomembrány, apod.).
+Uvedené zkoušky se provádějí na vzorcích geosyntetik před položením, odebraných z každých 10 000 m2 těchto
+plošných prvků, (nebo v případě zpochybnění kvality dodaného materiálu se provedenou zkoušky na menší
+výměru) a to podle ČSN EN 13250, ČSN EN ISO 10319, ČSN EN ISO 12236, ČSN EN ISO 13433..
+Antivibrační rohože a tepelně izolační desky
+Kontrolní zkoušky tepelně izolačních desek stanoví ZTKP. Kontrolní zkoušky antivibračních rohoží se
+provádějí na třech vzorcích antivibračních rohoží o rozměrech 500 mm x 500 mm před jejich vložením na
+17
+každých 1000 m2. Za minimální rozsah kontrolních zkoušek se považuje určení objemové hmotnosti, pevnosti
+v tahu, tažnosti, statické tuhosti, modulu přetvárnosti a rázového modulu deformace. Podrobnosti stanoví OTP
+Antivibrační rohože v tělese železničního spodku.
+Betonové desky
+Ve smyslu ČSN 73 6131-2 se kontrolní zkoušky betonových desek provádějí u odborného pracoviště jen
+v případě zpochybnění kvality dodaných dílců.
+6.5.2.2 Zkoušení vytvořené konstrukční vrstvy
+Nestmelené a stmelené vrstvy
+Technologie se snášením kolejového roštu
+Na nestmelené i stmelené konstrukční vrstvě se zjišťuje:
+− šířka vrstvy po 100 m,
+− tloušťka vrstvy po zhutnění po 100 m délky,
+− nerovnost povrchu a příčný sklon latí dle ČSN 73 6175 s četností po 100 m,
+− celistvost povrchu vizuálně - průběžně (závadou celistvosti povrchu je výskyt hnízd nedokonale
+zpracovaného materiálu, rýh apod.),
+− únosnost statickou zatěžovací zkouškou, vyjádřenou modulem přetvárnosti, který musí splňovat požadavky
+předpisu SŽDC S4, přílohy 6, tabulky 1 - provádí se po max. 200 m pro jednu kolej. Použití rázových
+dynamických zkoušek pro určení únosnosti se považuje pouze za orientační. Tyto zkoušky jsou vhodné pro
+podrobnou rekognoskaci (např. neúnosných míst, stavu rozpracování apod.). Závěry z výsledků těchto
+zkoušek musí být potvrzeny statickou zatěžovací zkouškou,
+− míra zhutnění s četností zjišťování po 100 m nebo 500 m2 se provádí
+- u nestmelených konstrukčních vrstev přímými metodami podle ČSN 72 1006 a předpisu
+SŽDC S4,
+- u stmelených konstrukčních vrstev podle ČSN 73 6121, ČSN 73 6122, ČSN 73 6124-1,2;
+ČSN EN 14227 – 1,2,3,4,5,10,11,12,13,14, ČSN 73 6127 – 1,2,3,4, ČSN 73 6129,
+případně ZTKP,
+Zhutnění lze dokladovat i nepřímými metodami (např. statickou a rázovou zatěžovací zkouškou, radiometrickým
+měřením objemové hmotnosti, měřičem zhutnění-kompaktometrem apod.). Před jejich použitím je nutné
+prokázat dostatečně těsnou korelaci mezi výsledky přímých měření a zvolenou nepřímou metodou v souladu
+s ČSN 72 1006 apod. Použití nepřímých metod schvaluje vždy stavební dozor na základě písemné žádosti
+zhotovitele.
+U vrstvy stabilizace se ve smyslu ČSN 73 6124-1,2; ČSN EN 14227 – 1,2,3,4,5,10,11,12,13,14dále zjišťuje:
+− pevnost v tlaku na vzorcích odebraných ze směsi před hutněním min. 1x denně,
+− odolnost proti účinkům mrazu na vzorcích odebraných ze směsi před hutněním min. 1x za dva dny,
+− celistvost povrchu vizuálně, průběžně (závadou celistvosti povrchu je výskyt hnízd nedokonale
+zpracovaného materiálu, rýh apod.).
+Stabilizace chemickými přípravky se kontrolují podle ZTKP.
+Živičné vrstvy se kontrolují podle ČSN 73 6121, ČSN 73 6122, ČSN 73 6127 – 1,2,3,4 a ČSN 73 6129.
+Technologie bez snášení kolejového roštu
+Při použití technologie bez snášení kolejového roštu se zjišťuje:
+− sklon zemní pláně - provádí se po 100 m pomocí latě délky 4 m a vodováhy,
+− šířka vytvořené konstrukční vrstvy po 100 m,
+− tloušťka vytvořené konstrukční vrstvy se provádí po 100 m,
+− míra zhutnění dle ČSN 72 1006 po max. 200 m,
+− únosnost vytvořené konstrukční vrstvy statickou zatěžovací zkouškou dle předpisu SŽDC S4 při zahájení
+práce stroje (soupravy) a při změně konstrukce nebo materiálu konstrukční vrstvy.
+18
+Plošné prvky
+Geosyntetika
+Na vloženém geosyntetiku se kontroluje:
+− neporušenost,
+− poloha na zemní pláni, případné upevnění,
+− rovnost uložení, bez záhybů a vln,
+− dodržení přesahu, případně jiného spojení jednotlivých dílů,
+− výplň geobuněk.
+Antivibrační rohože a tepelně izolační desky
+Způsob kontroly vložených antivibračních rohoží a tepelně izolačních desek stanovuje ZTKP.
+Betonové desky
+Na konstrukční vrstvě vytvořené betonovými deskami se zjišťuje:
+− příčný sklon latí délky 4 m nebo nivelací - po 50 m,
+− výškový rozdíl na styku dvou desek - měřením, průběžně,
+− výšková úroveň vytvořeného povrchu (pláně tělesa železničního spodku) v porovnání s dokumentací -
+nivelací, průběžně.
+6.5.2.3 Zkušební postupy
+Laboratorní zkoušky a polní zkoušky se provádějí podle ČSN a předpisů SŽDC. Zkušební metody, pro které
+není v ČR vydána technická norma nebo předpis SŽDC, musí být popsány v ZTKP.
+Přednost mají zkušební metody přímé před zkušebními metodami nepřímými (např. podle ČSN 72 1006).
+Laboratorní zkoušky
+Zkušební postupy pro zeminy, kamenivo, stmelené a nestmelené vrstvy a geotextilie jsou popsány v ČSN,
+jejichž seznam je obsažen v článku 6.12.1.
+Polní zkoušky
+Pro kontrolu konstrukčních vrstev platí tyto ČSN a předpisy:
+ČSN 72 1006, ČSN 72 1010, ČSN 73 6121, ČSN 73 6122, ČSN 73 6124-1,2; ČSN EN 14227 –
+1,2,3,4,5,10,11,12,13,14, ČSN 73 6126–1,2, ČSN 73 6127 – 1,2,3,4, ČSN 73 6129, ČSN 73 6131-2,
+ČSN 73 6133, ČSN 73 6175, ČSN 73 6192 a předpis SŽDC S4.
+Zhutňovací zkouška se provádí v souladu s ČSN 72 1006. Cílem zkoušky je vypracování technologie hutnění
+pro daný materiál a konkrétní hutnící prostředek.
+Povinností zhotovitele je používat při vytváření konstrukčních vrstev jen ty hutnící prostředky, které zhotovitel
+použil pro zhutňovací zkoušku. Je nepřípustné během stavebních prací měnit hutnící prostředky, které nejsou
+svými parametry totožné s hutnícím prostředkem použitým pro zhutňovací zkoušku. Výsledky zhutňovací
+zkoušky s návrhem technologie hutnění předá zhotovitel stavebnímu dozoru. Bez zhutňovací zkoušky stavební
+dozor zřizování konstrukčních vrstev nepovolí.
+6.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+6.6.1 Zemní pláň
+Přípustné odchylky pro zemní pláň jsou uvedeny v kapitole 3 TKP. Přípustná odchylka sklonu zemní pláně,
+měřeného latí délky 4 m, se od sklonu navrženého dokumentací nesmí lišit o více než 0,5 %.
+Pokud je zemní pláň současně i plání tělesa železničního spodku, potom nesmí být překročeny hodnoty 20 mm
+od projektované výškové polohy pláně tělesa železničního spodku.
+19
+6.6.2 Konstrukční vrstvy
+Povrch konstrukčních vrstev musí být rovný, bez nerovností a bez podélných nebo příčných rýh. Rovnost
+povrchu se měří podle ČSN 73 6175 v podélné směru latí délky 4 m a v příčném směru latí délky 2 m. Přípustné
+odchylky na povrchu vrstvy v příčném a podélném směru nesmí překročit hodnotu 15 mm. Výšková úroveň
+povrchu konstrukční vrstvy nesmí překročit hodnotu ± 20 mm od projektované polohy.
+Přípustná odchylka tloušťky vrstvy je 20 mm.
+Přípustná odchylka sklonu povrchu vrstvy v příčném směru je 0,5 %.
+Měření se provádí:
+− v přímé v ose koleje,
+− v oblouku v místě nepřevýšeného kolejnicového pásu.
+Výškový rozdíl na styku dvou betonových desek se připouští max. 7 mm (viz ČSN 73 6131-2).
+Pro zjišťování únosnosti a míry zhutnění konstrukční vrstvy jsou stanoveny následující tolerance:
+- pokud soubor zkoušek hodnoceného úseku stavby na jedné vrstvě obsahuje méně než 5 hodnot, musí všechny
+hodnoty překročit stanovenou minimální hodnotu modulu přetvárnosti,
+- pokud soubor zkoušek jedné vrstvy hodnoceného úseku obsahuje 5 a více hodnot, potom žádná z jednotlivých
+hodnot modulu přetvárnosti nesmí být menší o více než 10 % a žádná z jednotlivých hodnot míry zhutnění
+nesmí být menší o více než 3 %, než je stanovená minimální hodnota. V tomto povoleném rozmezí se však může
+vyskytovat pouze 1 hodnota z měření 5 vedle sebe ležících zkušebních míst.
+Pro vrstvy v aktivní zóně je minimální hodnota pevnosti v tlaku stabilizované vrstvy 1,8 MPa. Průměrná
+hodnota odolnosti proti účinkům mrazu je 3,5 MPa a minimální hodnota odolnosti proti účinkům mrazu je
+2,5 MPa, přičemž naměřené hodnoty jednotlivých válečků se musí pohybovat v rozmezí 15% od průměru sady.
+Hodnoty lišící se o více než 15% se do průměru neuvažují.
+Pro vrstvy v podloží zemního tělesa a v zemním tělese je minimální hodnota pevnosti v tlaku stabilizované
+vrstvy 0,7 MPa. Průměrná hodnota odolnosti proti účinkům mrazu je 1,2 MPa a minimální hodnota odolnosti
+proti účinkům mrazu je 0,9 MPa, přičemž naměřené hodnoty jednotlivých válečků se musí pohybovat v rozmezí
+15 % od průměru sady. Hodnoty lišící se o více než 15 % se do průměru neuvažují.
+6.6.3 Záruky, údržba v záruční době
+Záruční doby všeobecně stanoví kapitola 1 TKP. Během záruční doby nesmí dojít k závadám konstrukčních
+vrstev tělesa železničního spodku. Únosnost zemní pláně a pláně tělesa železničního spodku musí dosahovat
+předepsaných hodnot dle platných předpisů po celou záruční dobu.
+Vegetační úpravy zemního tělesa je možno předat až po prvním posekání. Součástí prováděného díla je
+zabezpečení prvního preventivního postřiku proti plevelům.
+Před uvedením stavby do provozu je třeba provést kontinuální radarové měření pražcového podloží. V případě
+pochybností resp. závad v GPK zajistí správce nejpozději půl roku před ukončením záruční doby opakované
+kontrolní radarové měření, které je součástí podkladů k reklamačnímu řízení.
+Údržbu v záruční době zajišťuje správce DLHM podle ustanovení v kapitole 1 TKP. V této době za odstranění
+plevele, náletových dřevin, přírodního spadu a překážek vzniklých dopravním provozem odpovídá příslušná
+SDC.
+6.7 KLIMATICKÁ OMEZENÍ
+Nestmelené vrstvy
+Klimatická omezení pro zřizování nestmelených vrstev jsou obsažena v ČSN 73 6126 – 1,2.
+Nestmelené vrstvy nesmí být zřizovány na rozbředlou nebo promrzlou zemní pláň a na zemní pláň pokrytou
+sněhem a ledem. Pokládka nestmelené vrstvy se nesmí provádět při mrznoucím, silném nebo dlouhotrvajícím
+dešti, při sněžení a při teplotách nižších než 0°C. Zřizování konstrukční vrstvy ze zmrzlého materiálu pod 0°C je
+nepřípustné.
+U technologie bez snášení kolejového roštu není dále přípustné provádět úpravu zemní pláně při silném nebo
+dlouhotrvajícím dešti, při sněžení a při teplotách nižších než 0°C.
+20
+Stmelené vrstvy
+Klimatická omezení pro zřizování vrstev ze zlepšené zeminy jsou obsažena v ČSN 73 6133 a pro zřizování
+stabilizace v ČSN 73 6124-1,2; ČSN EN 14227 – 1,2,3,4,5,10,11,12,13,14.
+Vrstvy ze zlepšené zeminy a stabilizace se nesmí provádět za deštivého počasí nebo sněžení.
+Stabilizaci hydraulickými pojivy nelze provádět bez zvláštních opatření je-li nebezpečí, že teplota při provádění
+stabilizace klesne pod +5ºC a při ošetřování (po dobu 7 dnů) pod 0ºC.
+Zeminy zlepšené vápnem se smí zpracovávat do teplot –5 ºC, zeminy zlepšené cementem pouze do teploty
+–2 ºC.
+Při přerušení prací přes zimní období je nutno vrstvu zeminy upravené vápnem chránit před působením vlhkosti
+a mrazu. Způsob ochrany řeší projektová dokumentace po dohodě ze stavebním dozorem..
+Technologií zlepšení zemin nebo stabilizace nelze zpracovávat zeminu promrzlou, obsahující sníh a ledové
+čočky.
+Klimatická omezení pro zlepšení zemin chemickými prostředky (stabilizátory) stanoví ZTKP.
+Klimatická omezení pro zřizování živičných vrstev jsou uvedena v ČSN 73 6121, ČSN 73 6122, ČSN 73 6127 –
+1,2,3,4 a ČSN 73 6129.
+Plošné prvky
+Geosyntetika
+Geosyntetika je nutno chránit před dlouhodobými účinky slunečního záření, které může způsobit změnu jejich
+technických vlastností (fotodegradace). Na otevřených skládkách musí být přikryty plachtami. Geotextilie musí
+být na skládkách chráněny před deštěm (vodou nasáklá geotextilie podstatně zvyšuje svoji hmotnost, která
+ztěžuje manipulaci). Manipulaci s tuhými geomřížkami, geobuňkami a geomembránami není vhodné provádět
+při teplotách pod + 3 ºC.
+Antivibrační rohože a tepelně izolační desky
+Klimatická omezení pro antivibrační rohože a tepelně izolační desky stanoví ZTKP.
+Betonové desky
+Betonové desky se podle ČSN 73 6131-2 pokládají v přiměřených povětrnostních podmínkách, kdy průměrné
+teploty neklesnou pod +3ºC. Zemní pláň nesmí být zmrzlá nebo rozbředlá, materiál vyrovnávací vrstvy pod
+betonovými deskami nesmí obsahovat sníh a led.
+6.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+Zásady odsouhlasení prací a přejímacího řízení řeší kapitola 1 TKP.
+Při odsouhlasování nestmelených a stmelených vrstev se kontrolují následující parametry:
+− šířka,
+− tloušťka,
+− rovnost povrchu,
+− příčný sklon,
+− zhutnění,
+− únosnost statickou zatěžovací zkouškou,
+− poloha (geodetickým zaměřením),
+− celistvost povrchu.
+U stabilizace se dále kontroluje pevnost v tlaku a odolnost proti účinkům mrazu.
+Bez odsouhlasení dokončené zemní pláně nebo konstrukční vrstvy stavebním dozorem nelze zahájit práce na
+budování další konstrukční vrstvy. Pláň tělesa železničního spodku a konstrukční vrstvy nesmí být stavebním
+dozorem převzaty, pokud nejsou zhotovitelem doloženy výsledky požadovaných zkoušek a kontrol. V případě,
+že výsledky zkoušek nedosahují požadovaných parametrů, lze v pracích pokračovat až po provedení nápravy
+a dosažení požadovaných parametrů a po souhlasu stavebního dozoru.
+Odsouhlasení prací provede stavební dozor zápisem do stavebního deníku.
+21
+Při odsouhlasení a převzetí prací dokládá zhotovitel výsledky všech zkoušek podle článku 6.4.2 a oddílu 6.5 této
+kapitoly TKP, přičemž nesmí být překročeny odchylky stanovené v oddíle 6.6.
+K přejímacímu řízení předloží zhotovitel kromě podkladů dle TKP kapitola 1.8.2 i záznam radarového měření
+konstrukce pražcového podloží nebo doklad firmy provádějící radarové měření, že radarové měření bylo
+provedeno a záznam uložen do databáze.
+6.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+Požadavky na kontrolní měření a případné sledování konstrukčních vrstev musí být obsaženy v dokumentaci,
+včetně návrhu metodiky měření.
+6.10 EKOLOGIE
+Při zřizování konstrukčních a technologických vrstev je nutno dodržovat obecné zásady ochrany životního
+prostředí obsažené především v zákonech č. 17/1992 Sb., č. 100/201 Sb.a č. 114/1992 Sb. a v TKP kapitole 1.
+Technologie zřizování konstrukčních a technologických vrstev musí být volena s ohledem na požadavky
+ochrany životního prostředí tak, aby stavba nadměrně nezatěžovala okolí např. prachem, emisemi a hlukem
+a vibracemi (viz nařízení vlády č. 148/2006 Sb.).
+Práce prováděné v exponovaných lokalitách (např. intravilán) a v oblastech se zvláštním režimem (např. CHKO,
+ochranná pásma vodních zdrojů apod.) se kromě obecných předpisů řídí požadavky příslušných státních orgánů.
+Zabudované materiály nesmí vést ke zhoršení životního prostředí. Při zabudování již dříve použitých materiálů
+(např. výzisku) a umělého kameniva (např. vysokopecní strusky) musí být prokázána jejich nezávadnost vůči
+životnímu prostředí podle zákona 185 /2001 Sb.
+6.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení, jakož i na požární ochranu obecně stanoví TKP
+kapitola 1.
+S ohledem na zajištění bezpečnosti při práci po dobu zřizování konstrukčních vrstev je nutno zavést na sousední
+souběžné koleji, nevyloučené z provozu, sníženou rychlost vlaků.
+6.12 SOUVISEJÍCÍ NORMY, ZÁKONY A PŘEDPISY
+Uvedené normy, zákony a předpisy představují stav k datu zpracování této aktualizace TKP kapitoly 6.
+Ve smyslu TKP kapitoly 1 platí v době použití těchto podkladů jejich aktuální verze.
+6.12.1 Technické normy
+ČSN 72 1002 Klasifikace zemin pro dopravní stavby.
+ČSN 72 1006 Kontrola zhutnění zemin a sypanin
+ČSN 72 1010 Stanovení objemové hmotnosti zemin. Laboratorní a polní metody.
+ČSN 72 1014 Laboratorní stanovení meze tekutosti zemin
+ČSN 72 1015 Laboratorní stanovení zhutnitelnosti zemin
+ČSN 72 1016 Laboratorní stanovení poměru únosnosti zemin (CBR)
+ČSN 72 1018 Laboratorní stanovení relativní ulehlosti nesoudržných zemin
+ČSN 72 1021 Laboratórne stanovenie organických látok v zeminách
+ČSN 72 1070 Stanovení pH keramických surovin a hmot
+ČSN 72 1176 Zkouška trvanlivosti a odolnosti kameniva proti mrazu
+ČSN 72 1180 Stanovení rozlišných částic kameniva
+ČSN 73 3050 Zemné práce. Všeobecné ustanovenia
+ČSN 73 6121 Stavba vozovek. Hutněné asfaltové vrstvy
+ČSN 73 6122 Stavba vozovek - Vrstvy z litého asfaltu - Provádění a kontrola shody
+22
+ČSN 73 6124-1 Stavba vozovek – Vrstvy ze směsí stmelených hydraulickými pojivy - Část 1 : Provádění
+a kontrola shody
+ČSN 73 6124-2 Stavba vozovek – Vrstvy ze směsí stmelených hydraulickými pojivy - Část 2 :
+Mezerovitý beton
+ČSN 73 6126-1 Stavba vozovek - Nestmelené vrstvy - Část 1: Provádění a kontrola shody
+ČSN 73 6126-2 Stavba vozovek - Nestmelené vrstvy - Část 2: Vrstva z vibrovaného štěrku
+ČSN 73 6127-1 Stavba vozovek - Prolévané vrstvy - Část 1: Vrstva ze štěrku částečně vyplněného
+cementovou maltou
+ČSN 73 6127-2 Stavba vozovek - Prolévané vrstvy - Část 2: Penetrační makadam
+ČSN 73 6127-3 Stavba vozovek - Prolévané vrstvy - Část 3: Asfaltocementový beton
+ČSN 73 6127-4 Stavba vozovek - Prolévané vrstvy - Část 4: Kamenivo zpevněné popílkovou suspenzí
+ČSN 73 6129 Stavba vozovek. Postřiky a nátěry
+ČSN 73 6131-2 Stavba vozovek. Dlažby a dílce. Část 2: Kryty ze silničních dílců
+ČSN 73 6133 Navrhování a provádění zemního tělesa pozemních komunikací
+ČSN 73 6175 Měření nerovnosti povrchů vozovek.
+ČSN 73 6190 Statická zatěžovací zkouška podloží a podkladních vrstev vozovek
+ČSN 73 6192 Rázová zatěžovací zkouška netuhých vozovek a podloží
+ČSN 73 6301 Projektování železničních drah
+ČSN 73 6360-1 Konstrukční a geometrické uspořádání koleje železničních drah a její prostorová poloha.
+Část 1: Projektování
+ČSN 73 6360-2 Konstrukční a geometrické uspořádání koleje železničních drah a její prostorová poloha.
+Část 2: Stavba a přejímka, provoz a údržba
+ČSN 73 6380 Železniční přejezdy a přechody
+ČSN CEN ISO/TS Geotechnický průzkum a zkoušení - Laboratorní zkoušky zemin - Část 1: Stanovení
+17892-1 vlhkosti zemin
+ČSN CEN ISO/TS Geotechnický průzkum a zkoušení - Laboratorní zkoušky zemin - Část 12: Stanovení
+17892-12 konzistenčních mezí
+ČSN EN 932-1 Zkoušení všeobecných vlastností kameniva. Část 1: Metody odběru vzorků
+ČSN EN 933-1 Zkoušení geometrických vlastností kameniva. Část 1: Stanovení zrnitosti – Sítový rozbor
+ČSN EN 933-2 Zkoušení geometrických vlastností kameniva. Část 2: Stanovení zrnitosti- Zkušební síta,
+jmenovité velikosti otvorů
+ČSN EN 1097-2 Zkoušení fyzikálních a mechanických vlastností kameniva. Část 2: Metody pro stanovení
+odolnosti proti drcení
+ČSN EN 1097-3 Zkoušení fyzikálních a mechanických vlastností kameniva. Část 3: Stanovení sypné
+hmotnosti a mezerovitosti volně sypaného kameniva
+ČSN EN 1097-6 Zkoušení fyzikálních a mechanických vlastností kameniva. Část 6: Stanovení objemové
+hmotnosti zrn a nasákavosti
+ČSN EN 1367-1 Zkoušení kameniva vůči teplotě a zvětrávání. Část 1: Stanovení odolnosti proti
+zmrazování a rozmrazování
+ČSN EN 13043 Kamenivo pro asfaltové směsi a povrchové vrstvy pozemních komunikací, letištních
+a jiných dopravních ploch
+ČSN EN 13242 Kamenivo pro nestmelené směsi a směsi stmelené hydraulickými pojivy pro inženýrské
+stavby a pozemní komunikace
+ČSN EN 13250 Geotextilie a výrobky podobné geotextiliím – Vlastnosti požadované pro použití při
+stavbě železnic
+ČSN EN 13450 Kamenivo pro kolejové lože
+ČSN EN 14227-1 Směsi stmelené hydraulickými pojivy - Specifikace - Část 1: Směsi stmelené cementem
+ČSN EN 14227-2 Směsi stmelené hydraulickými pojivy - Specifikace - Část 2: Směsi stmelené struskou
+ČSN EN 14227-3 Směsi stmelené hydraulickými pojivy - Specifikace - Část 3: Směsi stmelené popílkem
+23
+ČSN EN 14227-4 Směsi stmelené hydraulickými pojivy - Specifikace -Část 4: Popílky pro směsi stmelené
+hydraulickými pojivy
+ČSN EN 14227-5 Směsi stmelené hydraulickými pojivy - Specifikace - Část 5: Směsi stmelené
+hydraulickými silničními pojivy
+ČSN EN 14227-11 Směsi stmelené hydraulickými pojivy - Specifikace - Část 11: Zeminy upravené vápnem
+ČSN EN 14227-12 Směsi stmelené hydraulickými pojivy - Specifikace - Část 12: Zeminy upravené struskou
+ČSN EN 14227-13 Směsi stmelené hydraulickými pojivy - Specifikace - Část 13: Zeminy upravené
+hydraulickými silničními pojivy
+ČSN EN 14227-14 Směsi stmelené hydraulickými pojivy - Specifikace - Část 14: Zeminy upravené
+popílkem
+ČSN EN 14475 Provádění speciálních geotechnických prací – Vyztužené zemní konstrukce
+ČSN EN ISO 9862 Geosyntetika - Odběr a příprava vzorků ke zkouškám
+ČSN EN ISO 10319 Geotextilie. Tahová zkouška na širokém proužku
+ČSN EN ISO 10320 Geotextilie a výrobky podobné geotextiliím – Identifikace na staveništi
+ČSN EN ISO 12236 Geosyntetika – Statická zkouška protržení (zkouška CBR)
+ČSN EN ISO 13433 Geosyntetika - Zkouška dynamickým protržením (zkouška padajícím kuželem)
+ČSN EN ISO/IEC Posuzování shody - Prohlášení dodavatele o shodě - Část 1: Všeobecné požadavky
+17050-1
+ČSN EN ISO/IEC Posuzování shody - Prohlášení dodavatele o shodě - Část 2: Podpůrná dokumentace
+17050-2
+TNŽ 01 0101 Názvosloví Českých drah
+TNŽ 73 6949 Odvodnění železničních tratí a stanic
+6.12.2 Zákony
+Zákon č. 17/1992 Sb., o životním prostředí v platném znění
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění některých zákonů
+v platném znění
+Zákon č. 183/2006 Sb. o územním plánování a stavebním řádu (stavební zákon) v platném znění
+Zákon č. 77/2002 Sb. o akciové společnosti České dráhy,, státní organizaci Správa železniční dopravní
+cesty a o změně zákona č. 266/1994 Sb., o dráhách, ve znění pozdějších předpisů,
+a zákona č. 77/1997 Sb., o státním podniku, ve znění pozdějších předpisů, v platném
+znění
+Zákon č. 100/2001 Sb. o posuzování vlivů na životní prostředí a o změně některých souvisejících zákonů
+(zákon o posuzování vlivů na životní prostředí), v platném znění
+Zákon č. 114/1992 Sb. o ochraně přírody a krajiny, v platném znění
+Zákon č. 185/2001 Sb. o odpadech a o změně některých dalších zákonů, v platném znění
+Zákon č. 266/1994 Sb. o dráhách, v platném znění
+Vyhláška
+č. 177/1995 Sb., kterou se vydává stavební a technický řád drah, v platném znění
+Vyhláška kterou se provádějí některá ustanovení zákona ČNR č. 114/1992 Sb., o ochraně
+č. 395/1992 Sb., přírody a krajiny, v platném znění
+Nařízení vlády
+č. 163/2002 Sb., kterým se stanoví technické požadavky na vybrané stavební výrobky, v platném
+znění
+Nařízení vlády kterým se stanoví technické požadavky na stavební výrobky označované CE,
+č. 190/2002 Sb., v platném znění
+Nařízení vlády
+č. 148/2006 Sb., o ochraně zdraví před nepříznivými účinky hluku a vibrací, v platném znění
+24
+6.12.3 Předpisy SŽDC a ČD
+SŽDC S4 Železniční spodek
+SŽDC S4/3 Předpis pro správu a udržování železničních přejezdů a přechodů
+Zásady pro zřizování konstrukčních vrstev pražcového podloží technologiemi bez snášení kolejového roštu
+Pokyny pro použití nedestruktivních geofyzikálních metod v diagnostice a průzkumu tělesa železničního spodku
+Obecné technické podmínky SŽDC (OTP):
+Antivibrační rohože v tělese železničního spodku
+Štěrkopísek, štěrkodrť a recyklovaná štěrkodrť z kolejového lože pro konstrukční vrstvy tělesa železničního spodku
+Geotextilie v tělese železničního spodku
+Geomřížky a geomembrány v tělese železničního spodku
+Kamenivo pro kolejové lože
+Vzorové listy
+Ž1 Základní rozměry pláně tělesa železničního spodku
+Ž2 Zemní těleso
+Ž3 Odvodňovací zařízení
+Ž4 Pražcové podloží
+Ž5 Úprava drážních svahů
+Technické kvalitativní podmínky staveb státních drah (TKP):
+Kapitola 1 - Všeobecně
+Kapitola 3 - Zemní práce
+Kapitola 4 - Odvodnění tratí a stanic
+Kapitola 5 - Ochrana drážního tělesa
+Kapitola 7 - Kolejové lože
+Kapitola 9 - Úrovňové přejezdy a přechody
+6.12.4 Předpisy MD odbor PK
+TP 94 Technické podmínky - zlepšení zemin
+TKP 5 Technické kvalitativní podmínky staveb pozemních komunikací, kapitola 5 Podkladní vrstvy
+25
+26
+Poznámky:
+27
+28
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 6
+Třetí - aktualizované vydání se zapracovanou změnou č. 6 /z roku 2008/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Ing. Ladislav Minář, CSc.,
+KolejConsult & Servis, s.r.o.
+Odborný gestor: Ing. Petr Jasanský,
+Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Vydal: Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 241, +420 972 741 769,
+fax: +420 972 741 290,
+e-mail: otd@tudc.cz
+www.tudc.cz

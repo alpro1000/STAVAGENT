@@ -1,0 +1,307 @@
+/**
+ * Digital Concrete Design System v2.0 - Tokens
+ * Концепция: "Чертёж на бетоне" (3-уровневая иерархия текстуры)
+ *
+ * LEVEL 1: Фон приложения (текстурированный бетон)
+ * LEVEL 2: Рабочие панели (чистый гладкий бетон)
+ * LEVEL 3: Данные и таблицы (максимальная читаемость)
+ *
+ * Version: 2.0.0
+ * Date: 2025-12-28
+ * Supports: Light + Dark themes
+ */
+
+/* ============================================
+   GOOGLE FONTS IMPORT
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap');
+
+/* ============================================
+   LIGHT THEME (DEFAULT)
+   ============================================ */
+:root {
+  /* === SURFACES (3 levels) === */
+
+  /* Level 1: Textured Background */
+  --bg-textured: #B0B2B5;
+  --bg-gradient-start: #C4C6C9;
+  --bg-gradient-end: #A8AAAD;
+
+  /* Level 2: Clean Panels */
+  --panel-clean: #EAEBEC;
+  --panel-clean-end: #DCDEE0;
+  --panel-inset: #D0D2D4;
+
+  /* Level 3: Data Surfaces (Maximum readability) */
+  --data-surface: #F5F6F7;
+  --data-surface-alt: #ECEDEF; /* Alternate rows */
+
+  /* === TEXT === */
+  --text-primary: #1A1C1E;
+  --text-secondary: #4A4D50;
+  --text-muted: #7A7D80;
+  --text-code: #5A5D61; /* For technical codes */
+
+  /* === ACCENTS === */
+  --accent-orange: #FF9F1C;
+  --accent-orange-glow: rgba(255, 159, 28, 0.5);
+  --accent-orange-strong: rgba(255, 159, 28, 0.7);
+
+  /* Legacy aliases (for backward compatibility) */
+  --app-bg-concrete: var(--bg-textured);
+  --brand-orange: var(--accent-orange);
+  --panel-bg-concrete: var(--panel-clean);
+
+  --accent-green: #4CAF50;
+  --accent-green-glow: rgba(76, 175, 80, 0.4);
+
+  --accent-red: #EF5350;
+  --accent-red-glow: rgba(239, 83, 80, 0.4);
+
+  --accent-blue: #42A5F5;
+  --accent-blue-glow: rgba(66, 165, 245, 0.4);
+
+  /* === STATUS COLORS === */
+  --status-success: #4CAF50;
+  --status-warning: #FFC107;
+  --status-error: #F44336;
+  --status-info: #2196F3;
+
+  /* === SHADOWS (Light theme - drop shadows) === */
+  --shadow-panel:
+    10px 10px 25px rgba(80, 83, 87, 0.45),
+    -4px -4px 12px rgba(255, 255, 255, 0.6);
+
+  --shadow-button:
+    8px 8px 18px rgba(80, 83, 87, 0.5),
+    -3px -3px 10px rgba(255, 255, 255, 0.6);
+
+  --shadow-inset:
+    inset 4px 4px 10px rgba(80, 83, 87, 0.4),
+    inset -2px -2px 6px rgba(255, 255, 255, 0.5);
+
+  --shadow-hover:
+    12px 12px 28px rgba(80, 83, 87, 0.55),
+    -5px -5px 14px rgba(255, 255, 255, 0.65);
+
+  /* === EDGES & BORDERS (Light) === */
+  --edge-light: rgba(255, 255, 255, 0.5);
+  --edge-dark: rgba(0, 0, 0, 0.1);
+  --divider: rgba(0, 0, 0, 0.08);
+
+  /* === FONTS === */
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+
+  /* === SPACING === */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+
+  /* === RADIUS === */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-round: 50%;
+
+  /* === TRANSITIONS === */
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.25s ease-out;
+  --transition-slow: 0.4s ease-out;
+}
+
+/* ============================================
+   DARK THEME
+   Метафора: "Ночная стройка / Индустриальный бункер"
+   ============================================ */
+[data-theme="dark"] {
+  /* === SURFACES (Dark) === */
+
+  /* Level 1: Dark Textured Background */
+  --bg-textured: #1A1C1E;
+  --bg-gradient-start: #2A2D30;
+  --bg-gradient-end: #1A1C1E;
+
+  /* Level 2: Dark Panels */
+  --panel-clean: #32363A;
+  --panel-clean-end: #2A2D30;
+  --panel-inset: #2A2D30;
+
+  /* Level 3: Data Surfaces (Lighter than panels for contrast) */
+  --data-surface: #3E4348;
+  --data-surface-alt: #454A50;
+
+  /* === TEXT (Dark) === */
+  --text-primary: #F0F1F2;
+  --text-secondary: #A0A4A8;
+  --text-muted: #6A6E72;
+  --text-code: #8A9099;
+
+  /* === ACCENTS (Enhanced glow for dark!) === */
+  --accent-orange-glow: rgba(255, 159, 28, 0.6);
+  --accent-orange-strong: rgba(255, 159, 28, 0.8);
+
+  --accent-green: #66BB6A;
+  --accent-green-glow: rgba(102, 187, 106, 0.5);
+
+  --accent-red: #EF5350;
+  --accent-red-glow: rgba(239, 83, 80, 0.5);
+
+  /* === STATUS (Dark - brighter) === */
+  --status-success: #66BB6A;
+  --status-warning: #FFB74D;
+  --status-error: #EF9A9A;
+  --status-info: #64B5F6;
+
+  /* === SHADOWS (Dark - rim light style) === */
+  --shadow-panel:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 4px 20px rgba(0, 0, 0, 0.4);
+
+  --shadow-button:
+    0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 2px 8px rgba(0, 0, 0, 0.3);
+
+  --shadow-inset:
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    inset 0 0 0 1px rgba(0, 0, 0, 0.2);
+
+  --shadow-hover:
+    0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 4px 16px rgba(0, 0, 0, 0.4);
+
+  /* === EDGES & BORDERS (Dark - visible!) === */
+  --edge-light: rgba(255, 255, 255, 0.08);
+  --edge-dark: rgba(0, 0, 0, 0.2);
+  --divider: rgba(255, 255, 255, 0.06);
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+body {
+  background-color: var(--bg-textured);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === TEXTURED BACKGROUND (Level 1) === */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+
+  /* Concrete texture via SVG noise */
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+    linear-gradient(165deg, var(--bg-gradient-start) 0%, var(--bg-textured) 50%, var(--bg-gradient-end) 100%);
+}
+
+/* Dark theme - lighter noise */
+[data-theme="dark"] body::before {
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 30% 0%, var(--bg-gradient-start) 0%, var(--bg-textured) 70%);
+}
+
+/* Additional depth for dark theme */
+[data-theme="dark"] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at 0% 0%, transparent 0%, rgba(0,0,0,0.2) 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Container */
+.c-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* Grid System */
+.c-grid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.c-grid--2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.c-grid--3 {
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.c-grid--4 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Responsive grid - single column on mobile */
+@media (max-width: 768px) {
+  .c-grid--2,
+  .c-grid--3,
+  .c-grid--4 {
+    grid-template-columns: 1fr;
+    gap: var(--space-md);
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY
+   ============================================ */
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid var(--accent-orange);
+  outline-offset: 2px;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-fast: 0s;
+    --transition-normal: 0s;
+    --transition-slow: 0s;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* High contrast mode adjustments */
+@media (prefers-contrast: high) {
+  :root {
+    --text-primary: #000;
+    --text-secondary: #333;
+  }
+
+  [data-theme="dark"] {
+    --text-primary: #FFF;
+    --text-secondary: #CCC;
+  }
+}

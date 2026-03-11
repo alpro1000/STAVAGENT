@@ -4,7 +4,7 @@ Czech Building Audit System
 """
 import logging
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
@@ -19,6 +19,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Suppress pdfminer warnings (invalid PDF patterns)
+logging.getLogger("pdfminer").setLevel(logging.ERROR)
+
 # Create FastAPI app
 app = FastAPI(
     title="Czech Building Audit System",
@@ -29,14 +32,32 @@ app = FastAPI(
     openapi_url="/openapi.json"
 )
 
-# CORS middleware
+# CORS middleware - Allow all STAVAGENT services
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify exact origins
+    allow_origin_regex=r"https://.*\.(vercel\.app|onrender\.com)|https://(www\.)?stavagent\.cz",
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+        "http://localhost:8000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Middleware to exclude /healthcheck from access logs
+@app.middleware("http")
+async def filter_healthcheck_logs(request: Request, call_next):
+    """Exclude /healthcheck requests from access logs."""
+    if request.url.path == "/healthcheck":
+        # Temporarily disable logger for this request
+        import logging
+        logging.getLogger("uvicorn.access").disabled = True
+        response = await call_next(request)
+        logging.getLogger("uvicorn.access").disabled = False
+        return response
+    return await call_next(request)
 
 # Include API routes
 app.include_router(api_router)
@@ -54,6 +75,7 @@ async def startup_event():
     logger.info("=" * 80)
     logger.info("🚀 Czech Building Audit System Starting...")
     logger.info("=" * 80)
+    logger.info(f"🌐 Port: {os.getenv('PORT', '8000')} (Render: $PORT env var)")
     logger.info(f"📂 Base directory: {settings.BASE_DIR}")
     logger.info(f"📂 Data directory: {settings.DATA_DIR}")
     logger.info(f"📚 KB directory: {settings.KB_DIR}")
@@ -99,7 +121,7 @@ async def startup_event():
         logger.error(f"⚠️  KB loading failed: {str(e)}")
     
     logger.info("=" * 80)
-    logger.info("✅ System ready!")
+    logger.info("✅ System ready! Listening on 0.0.0.0:%s", os.getenv('PORT', '8000'))
     logger.info("=" * 80)
 
 
@@ -122,12 +144,42 @@ async def health_check():
     return {"status": "healthy"}
 
 
+@app.get("/healthcheck")
+@app.head("/healthcheck")
+async def keep_alive_healthcheck(request: Request):
+    """
+    Lightweight healthcheck endpoint for Keep-Alive system.
+
+    Validates X-Keep-Alive-Key header to prevent unauthorized access.
+    This endpoint is designed to prevent server sleep on free-tier hosting (Render/Fly.io).
+    """
+    # Get the Keep-Alive key from environment
+    keep_alive_key = os.getenv("KEEP_ALIVE_KEY")
+
+    # If no key is configured, disable this endpoint
+    if not keep_alive_key:
+        raise HTTPException(status_code=404, detail="Not found")
+
+    # Validate the X-Keep-Alive-Key header
+    provided_key = request.headers.get("X-Keep-Alive-Key")
+
+    if provided_key != keep_alive_key:
+        # Return 404 instead of 403 to hide endpoint existence
+        raise HTTPException(status_code=404, detail="Not found")
+
+    # Return minimal response (no DB queries, no heavy processing)
+    return {"status": "alive", "service": "concrete-agent"}
+
+
 if __name__ == "__main__":
     import uvicorn
+    # Use PORT env var (Render requirement) or fallback to 8000 for local dev
+    port = int(os.getenv("PORT", 8000))
+    logger.info(f"🚀 Starting uvicorn on 0.0.0.0:{port}")
     uvicorn.run(
         "app.main:app",
         host="0.0.0.0",
-        port=8000,
+        port=port,
         reload=True,
         log_level="info"
     )

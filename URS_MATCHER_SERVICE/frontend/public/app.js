@@ -31,7 +31,6 @@ debugLog(`API_URL: ${API_URL}`);
 const fileInput = document.getElementById('fileInput');
 const fileDropZone = document.getElementById('fileDropZone');
 const processFileBtn = document.getElementById('processFileBtn');
-const projectContextInput = document.getElementById('projectContextInput');
 const textInput = document.getElementById('textInput');
 const quantityInput = document.getElementById('quantityInput');
 const unitInput = document.getElementById('unitInput');
@@ -48,6 +47,318 @@ const backBtn = document.getElementById('backBtn');
 const errorBackBtn = document.getElementById('errorBackBtn');
 const exportBtn = document.getElementById('exportBtn');
 const copyBtn = document.getElementById('copyBtn');
+const exportToRegistryBtn = document.getElementById('exportToRegistryBtn');
+
+// Theme Toggle Elements
+const themeToggle = document.getElementById('themeToggle');
+const themeIcon = document.getElementById('themeIcon');
+const themeText = document.getElementById('themeText');
+
+// Processing Mode Elements
+const fastModeRadio = document.getElementById('fastModeRadio');
+const advancedModeRadio = document.getElementById('advancedModeRadio');
+
+// ============================================================================
+// THEME TOGGLE (Digital Concrete Design System v2.0)
+// ============================================================================
+
+function initTheme() {
+  // Load saved theme or use system preference
+  const savedTheme = localStorage.getItem('urs-matcher-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+
+  setTheme(initialTheme);
+  debugLog(`🎨 Theme initialized: ${initialTheme}`);
+}
+
+function setTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('urs-matcher-theme', theme);
+
+  // Update button UI
+  if (theme === 'dark') {
+    themeIcon.textContent = '☀️';
+    themeText.textContent = 'Světlý režim';
+  } else {
+    themeIcon.textContent = '🌙';
+    themeText.textContent = 'Tmavý režim';
+  }
+
+  debugLog(`🎨 Theme switched to: ${theme}`);
+}
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  setTheme(newTheme);
+}
+
+// Theme Toggle Event Listener
+if (themeToggle) {
+  themeToggle.addEventListener('click', toggleTheme);
+  debugLog('✅ Theme toggle button initialized');
+} else {
+  debugError('⚠️ Theme toggle button not found!');
+}
+
+// Initialize theme on load
+initTheme();
+
+// ============================================================================
+// MODEL SELECTOR
+// ============================================================================
+
+const modelSelect = document.getElementById('modelSelect');
+const modelStatus = document.getElementById('modelStatus');
+
+/**
+ * Load available models from the API
+ */
+async function loadModels() {
+  debugLog('🤖 Loading models...');
+
+  try {
+    const response = await fetch(`${API_URL}/settings/models`);
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+    debugLog('🤖 Models loaded:', data);
+
+    if (!data.success || !data.models) {
+      throw new Error('Invalid response format');
+    }
+
+    // Populate the select dropdown
+    modelSelect.innerHTML = '';
+
+    // Group models by provider
+    const modelsByProvider = {};
+    data.models.forEach(model => {
+      const provider = model.provider || 'other';
+      if (!modelsByProvider[provider]) {
+        modelsByProvider[provider] = [];
+      }
+      modelsByProvider[provider].push(model);
+    });
+
+    // Add models to select, grouped by provider
+    Object.entries(modelsByProvider).forEach(([provider, models]) => {
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = formatProviderName(provider);
+
+      models.forEach(model => {
+        const option = document.createElement('option');
+        option.value = model.id;
+        option.textContent = model.name;
+        option.disabled = !model.available;
+
+        // Mark current model as selected
+        if (data.currentModel && model.id === data.currentModel.model) {
+          option.selected = true;
+        }
+
+        // Add pricing info as data attribute
+        if (model.pricing) {
+          option.dataset.pricing = model.pricing.tier || 'standard';
+        }
+
+        optgroup.appendChild(option);
+      });
+
+      modelSelect.appendChild(optgroup);
+    });
+
+    // Update status badge
+    updateModelStatus(data.currentModel);
+
+    debugLog('🤖 Model selector populated with', data.models.length, 'models');
+
+  } catch (error) {
+    debugError('🤖 Failed to load models:', error);
+    modelSelect.innerHTML = '<option value="">Chyba načítání</option>';
+    updateModelStatus({ error: true });
+  }
+}
+
+/**
+ * Format provider name for display
+ */
+function formatProviderName(provider) {
+  const names = {
+    'claude': 'Anthropic Claude',
+    'openai': 'OpenAI',
+    'gemini': 'Google Gemini',
+    'deepseek': 'DeepSeek',
+    'grok': 'xAI Grok',
+    'qwen': 'Alibaba Qwen',
+    'glm': 'Zhipu GLM'
+  };
+  return names[provider] || provider.charAt(0).toUpperCase() + provider.slice(1);
+}
+
+/**
+ * Update the model status badge
+ */
+function updateModelStatus(currentModel) {
+  if (!modelStatus) return;
+
+  if (currentModel?.error) {
+    modelStatus.textContent = 'Chyba';
+    modelStatus.className = 'model-status error';
+    return;
+  }
+
+  if (!currentModel) {
+    modelStatus.textContent = '';
+    return;
+  }
+
+  // Determine pricing tier based on model
+  const modelId = currentModel.model || '';
+  let tier = 'standard';
+  let label = '';
+
+  // Free tier models
+  if (modelId.includes('glm-4-flash') || modelId.includes('glm-4-free')) {
+    tier = 'free';
+    label = 'ZDARMA';
+  }
+  // Cheap tier models
+  else if (modelId.includes('deepseek') || modelId.includes('qwen') || modelId.includes('gemini-flash')) {
+    tier = 'cheap';
+    label = 'Levný';
+  }
+  // Premium tier models
+  else if (modelId.includes('claude') || modelId.includes('gpt-4') || modelId.includes('opus')) {
+    tier = 'premium';
+    label = 'Premium';
+  }
+  else {
+    tier = 'cheap';
+    label = 'Aktivní';
+  }
+
+  modelStatus.textContent = label;
+  modelStatus.className = `model-status ${tier}`;
+}
+
+/**
+ * Handle model selection change
+ */
+async function handleModelChange(event) {
+  const selectedModel = event.target.value;
+
+  if (!selectedModel) return;
+
+  debugLog('🤖 Changing model to:', selectedModel);
+
+  // Disable select during update
+  modelSelect.disabled = true;
+
+  try {
+    const response = await fetch(`${API_URL}/settings/model`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ model: selectedModel })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok || !data.success) {
+      throw new Error(data.error || 'Failed to set model');
+    }
+
+    debugLog('🤖 Model changed successfully:', data);
+
+    // Update status badge
+    updateModelStatus(data);
+
+    // Save preference to localStorage
+    localStorage.setItem('urs-matcher-model', selectedModel);
+
+  } catch (error) {
+    debugError('🤖 Failed to change model:', error);
+
+    // Revert to previous selection
+    const savedModel = localStorage.getItem('urs-matcher-model');
+    if (savedModel && savedModel !== selectedModel) {
+      modelSelect.value = savedModel;
+    }
+
+    // Show error briefly
+    modelStatus.textContent = 'Chyba!';
+    modelStatus.className = 'model-status error';
+
+    setTimeout(() => {
+      loadModels(); // Reload to get correct state
+    }, 2000);
+
+  } finally {
+    modelSelect.disabled = false;
+  }
+}
+
+// Initialize model selector
+if (modelSelect) {
+  modelSelect.addEventListener('change', handleModelChange);
+  loadModels();
+  debugLog('✅ Model selector initialized');
+} else {
+  debugError('⚠️ Model selector element not found!');
+}
+
+// ============================================================================
+// PROCESSING MODE TOGGLE
+// ============================================================================
+
+function initProcessingMode() {
+  // Load saved mode preference
+  const savedMode = localStorage.getItem('urs-matcher-advanced-mode');
+  const isAdvanced = savedMode === 'true';
+
+  if (fastModeRadio && advancedModeRadio) {
+    if (isAdvanced) {
+      advancedModeRadio.checked = true;
+    } else {
+      fastModeRadio.checked = true;
+    }
+    debugLog(`🔧 Processing mode initialized: ${isAdvanced ? 'Advanced' : 'Fast'}`);
+  }
+}
+
+// Processing Mode Change Event Listeners
+if (fastModeRadio) {
+  fastModeRadio.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      localStorage.setItem('urs-matcher-advanced-mode', 'false');
+      debugLog('🔧 Processing mode changed to: Fast');
+    }
+  });
+}
+
+if (advancedModeRadio) {
+  advancedModeRadio.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      localStorage.setItem('urs-matcher-advanced-mode', 'true');
+      debugLog('🔧 Processing mode changed to: Advanced');
+    }
+  });
+}
+
+if (fastModeRadio && advancedModeRadio) {
+  debugLog('✅ Processing mode toggle initialized');
+} else {
+  debugError('⚠️ Processing mode radio buttons not found!');
+}
+
+// Initialize processing mode on load
+initProcessingMode();
 
 let currentJobId = null;
 let currentResults = null;
@@ -57,7 +368,8 @@ debugLog('✓ DOM Elements found:', {
   fileInput: !!fileInput,
   fileDropZone: !!fileDropZone,
   processFileBtn: !!processFileBtn,
-  projectContextInput: !!projectContextInput,
+  fastModeRadio: !!fastModeRadio,
+  advancedModeRadio: !!advancedModeRadio,
   textInput: !!textInput,
   quantityInput: !!quantityInput,
   unitInput: !!unitInput,
@@ -138,15 +450,14 @@ async function processFile() {
     const formData = new FormData();
     formData.append('file', fileInput.files[0]);
 
-    if (projectContextInput.value.trim()) {
-      formData.append('project_context', projectContextInput.value.trim());
-      debugLog('📊 Project context provided:', projectContextInput.value.trim());
-    } else {
-      debugLog('📊 No project context provided');
-    }
+    // Choose endpoint based on processing mode
+    const isAdvancedMode = advancedModeRadio && advancedModeRadio.checked;
+    const endpoint = isAdvancedMode ? '/jobs/block-match' : '/jobs/block-match-fast';
 
-    debugLog('📊 Sending POST to:', `${API_URL}/jobs/block-match`);
-    const response = await fetch(`${API_URL}/jobs/block-match`, {
+    debugLog(`📊 Processing mode: ${isAdvancedMode ? 'Advanced (Multi-Role)' : 'Fast (Optimized)'}`);
+    debugLog('📊 Sending POST to:', `${API_URL}${endpoint}`);
+
+    const response = await fetch(`${API_URL}${endpoint}`, {
       method: 'POST',
       body: formData
     });
@@ -702,38 +1013,60 @@ exportBtn.addEventListener('click', async () => {
     exportBtn.disabled = true;
     exportBtn.textContent = 'Příprava...';
 
-    let csv = '';
-    let items = currentResults.items || [];
+    // Helper: escape CSV field with semicolon separator
+    const esc = (val) => {
+      if (val === null || val === undefined) return '';
+      const s = String(val);
+      if (s.includes('"') || s.includes(';') || s.includes('\n')) {
+        return '"' + s.replace(/"/g, '""') + '"';
+      }
+      return s;
+    };
 
-    // Handle block-match results (blocks instead of items)
-    if (!items.length && currentResults.blocks) {
-      csv = 'Blok,Řádek,Vstupní text,Kód ÚRS,Název,MJ\n';
+    let csv = 'sep=;\n';
+    let items = currentResults.items || [];
+    const candidates = currentResults.candidates || [];
+    const relatedItems = currentResults.related_items || [];
+
+    // Handle text-match results (manual input)
+    if (candidates.length > 0) {
+      csv += 'Typ;Kód ÚRS;Název;MJ;Jistota (%);Důvod\n';
+
+      candidates.forEach((item) => {
+        const confidence = ((item.confidence || 0) * 100).toFixed(0);
+        csv += [esc('Hlavní'), esc(item.urs_code), esc(item.urs_name), esc(item.unit), confidence, esc(item.reason)].join(';') + '\n';
+      });
+
+      if (relatedItems.length > 0) {
+        relatedItems.forEach((item) => {
+          csv += [esc('Doplňková'), esc(item.urs_code), esc(item.urs_name), esc(item.unit), '', esc(item.reason)].join(';') + '\n';
+        });
+      }
+    }
+    // Handle block-match results
+    else if (!items.length && currentResults.blocks) {
+      csv += 'Blok;Řádek;Vstupní text;Kód ÚRS;Název;MJ\n';
       currentResults.blocks.forEach((block) => {
         const blockName = block.block_name || '';
         (block.items || []).forEach((item) => {
-          const rowId = item.row_id || '';
-          const inputText = item.input_text || '';
-          const ursCode = item.selected_urs?.urs_code || '';
-          const ursName = item.selected_urs?.urs_name || '';
-          const unit = item.selected_urs?.unit || '';
-          csv += `"${blockName}","${rowId}","${inputText}","${ursCode}","${ursName}","${unit}"\n`;
+          csv += [esc(blockName), esc(item.row_id), esc(item.input_text), esc(item.selected_urs?.urs_code), esc(item.selected_urs?.urs_name), esc(item.selected_urs?.unit)].join(';') + '\n';
         });
       });
     } else {
-      // Handle text-match results (regular items)
-      csv = 'Řádek,Vstupní text,Kód ÚRS,Název,MJ,Množství,Jistota,Typ\n';
+      // Handle regular file upload results
+      csv += 'Řádek;Vstupní text;Kód ÚRS;Název;MJ;Množství;Jistota;Typ\n';
       items.forEach((item) => {
         const type = item.extra_generated ? 'Doplňková' : 'Přímá';
-        csv += `"${item.input_row_id}","${item.input_text}","${item.urs_code}","${item.urs_name}","${item.unit}","${item.quantity}","${item.confidence.toFixed(2)}","${type}"\n`;
+        csv += [esc(item.input_row_id), esc(item.input_text), esc(item.urs_code), esc(item.urs_name), esc(item.unit), item.quantity || '', item.confidence?.toFixed(2) || '', type].join(';') + '\n';
       });
     }
 
-    // Create download with UTF-8 BOM for Excel compatibility
+    // Download with UTF-8 BOM for Excel compatibility
     const BOM = '\uFEFF';
     const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
     const link = document.createElement('a');
     link.setAttribute('href', URL.createObjectURL(blob));
-    link.setAttribute('download', `urs_results_${new Date().getTime()}.csv`);
+    link.setAttribute('download', `urs_vysledky_${new Date().getTime()}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -751,27 +1084,65 @@ copyBtn.addEventListener('click', () => {
   if (!currentResults) return;
 
   try {
-    let text = 'Výsledky hledání ÚRS\n\n';
-    const items = currentResults.items || [];
+    let text = 'Výsledky hledání ÚRS\n';
+    text += '═'.repeat(60) + '\n\n';
 
+    const items = currentResults.items || [];
+    const candidates = currentResults.candidates || [];
+    const relatedItems = currentResults.related_items || [];
+
+    // Handle text-match results (manual input)
+    if (candidates.length > 0) {
+      text += '🎯 DOPORUČENÉ POZICE ÚRS:\n';
+      text += '─'.repeat(60) + '\n';
+
+      candidates.forEach((item, idx) => {
+        const confidence = ((item.confidence || 0) * 100).toFixed(0);
+        text += `${idx + 1}. ${item.urs_code || ''} | ${item.urs_name || ''}\n`;
+        text += `   MJ: ${item.unit || ''} | Jistota: ${confidence}%\n`;
+        if (item.reason) {
+          text += `   Důvod: ${item.reason}\n`;
+        }
+        text += '\n';
+      });
+
+      if (relatedItems.length > 0) {
+        text += '\n⚙️ DOPORUČENÉ DOPLŇKOVÉ PRÁCE:\n';
+        text += '─'.repeat(60) + '\n';
+
+        relatedItems.forEach((item, idx) => {
+          text += `${idx + 1}. ${item.urs_code || ''} | ${item.urs_name || ''}\n`;
+          text += `   MJ: ${item.unit || ''}\n`;
+          if (item.reason) {
+            text += `   Důvod: ${item.reason}\n`;
+          }
+          text += '\n';
+        });
+      }
+    }
     // Handle block-match results (blocks instead of items)
-    if (!items.length && currentResults.blocks) {
+    else if (!items.length && currentResults.blocks) {
       currentResults.blocks.forEach((block) => {
         text += `📂 ${block.block_name}\n`;
+        text += '─'.repeat(60) + '\n';
         (block.items || []).forEach((item) => {
           const ursCode = item.selected_urs?.urs_code || '';
           const ursName = item.selected_urs?.urs_name || '';
           const unit = item.selected_urs?.unit || '';
-          text += `  ${ursCode} | ${ursName} | ${unit}\n`;
+          text += `  • ${ursCode} | ${ursName} | ${unit}\n`;
         });
         text += '\n';
       });
     } else {
-      // Handle text-match results (regular items)
-      items.forEach((item) => {
-        text += `${item.urs_code} | ${item.urs_name} | ${item.unit} | ${item.quantity}\n`;
+      // Handle regular file upload results
+      items.forEach((item, idx) => {
+        text += `${idx + 1}. ${item.urs_code} | ${item.urs_name}\n`;
+        text += `   MJ: ${item.unit} | Množství: ${item.quantity}\n\n`;
       });
     }
+
+    text += '─'.repeat(60) + '\n';
+    text += `Vygenerováno: ${new Date().toLocaleString('cs-CZ')}\n`;
 
     navigator.clipboard.writeText(text).then(() => {
       copyBtn.textContent = '✓ Zkopírováno';
@@ -781,6 +1152,155 @@ copyBtn.addEventListener('click', () => {
     });
   } catch (error) {
     alert(`Chyba: ${error.message}`);
+  }
+});
+
+// ============================================================================
+// EXPORT TO REGISTRY
+// ============================================================================
+
+exportToRegistryBtn?.addEventListener('click', async () => {
+  if (!currentResults) {
+    alert('Žádné výsledky k exportu');
+    return;
+  }
+
+  try {
+    exportToRegistryBtn.disabled = true;
+    exportToRegistryBtn.textContent = 'Odesílání...';
+    debugLog('📤 Starting export to Registry');
+
+    // Map results to unified format
+    const positions = [];
+
+    // Handle block-match results
+    if (currentResults.blocks && currentResults.blocks.length > 0) {
+      currentResults.blocks.forEach((block, blockIdx) => {
+        const items = block.analysis?.items || block.items || [];
+        items.forEach((item, itemIdx) => {
+          const ursCode = item.selected_urs?.urs_code || '';
+          const ursName = item.selected_urs?.urs_name || '';
+          const unit = item.selected_urs?.unit || '';
+
+          if (ursCode) {
+            positions.push({
+              id: `urs-${blockIdx}-${itemIdx}-${Date.now()}`,
+              sourceKiosk: 'urs-matcher',
+              code: ursCode,
+              description: ursName || item.input_text || '',
+              quantity: item.quantity || null,
+              unit: unit,
+              unitPrice: null,
+              totalPrice: null,
+              workGroup: null,
+              metadata: {
+                inputText: item.input_text || '',
+                blockName: block.block_name || '',
+                confidence: item.confidence || null,
+                rowId: item.row_id || null
+              }
+            });
+          }
+        });
+      });
+    }
+
+    // Handle text-match results (candidates)
+    if (currentResults.candidates && currentResults.candidates.length > 0) {
+      currentResults.candidates.forEach((candidate, idx) => {
+        positions.push({
+          id: `urs-cand-${idx}-${Date.now()}`,
+          sourceKiosk: 'urs-matcher',
+          code: candidate.urs_code || '',
+          description: candidate.urs_name || '',
+          quantity: currentResults.quantity || null,
+          unit: candidate.unit || currentResults.unit || '',
+          unitPrice: null,
+          totalPrice: null,
+          workGroup: null,
+          metadata: {
+            confidence: candidate.confidence || null,
+            reason: candidate.reason || ''
+          }
+        });
+      });
+    }
+
+    // Handle file upload results (items array)
+    if (currentResults.items && currentResults.items.length > 0) {
+      currentResults.items.forEach((item, idx) => {
+        positions.push({
+          id: `urs-item-${idx}-${Date.now()}`,
+          sourceKiosk: 'urs-matcher',
+          code: item.urs_code || '',
+          description: item.urs_name || '',
+          quantity: item.quantity || null,
+          unit: item.unit || '',
+          unitPrice: null,
+          totalPrice: null,
+          workGroup: null,
+          metadata: {
+            inputText: item.input_text || '',
+            inputRowId: item.input_row_id || null,
+            confidence: item.confidence || null,
+            extraGenerated: item.extra_generated || false
+          }
+        });
+      });
+    }
+
+    if (positions.length === 0) {
+      alert('Žádné pozice k exportu');
+      return;
+    }
+
+    debugLog(`📤 Exporting ${positions.length} positions to Registry`);
+
+    // Send to Registry
+    const response = await fetch('https://stavagent-backend-ktwx.vercel.app/api/sync?action=import-positions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        positions,
+        sourceKiosk: 'urs-matcher',
+        projectName: `URS Import ${new Date().toLocaleDateString('cs-CZ')}`,
+        metadata: {
+          jobId: currentJobId || null,
+          exportedAt: new Date().toISOString()
+        }
+      })
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(errorData.error || `HTTP ${response.status}`);
+    }
+
+    const result = await response.json();
+    debugLog('📤 ✓ Export to Registry successful:', result);
+
+    // Show success
+    exportToRegistryBtn.textContent = '✓ Exportováno!';
+    setTimeout(() => {
+      exportToRegistryBtn.textContent = '📤 Export do Registry';
+      exportToRegistryBtn.disabled = false;
+    }, 2000);
+
+    // Optionally open Registry in new tab
+    if (result.projectId) {
+      const openRegistry = confirm(`Export úspěšný! Otevřít Registry s ${positions.length} položkami?`);
+      if (openRegistry) {
+        window.open(`https://stavagent-backend-ktwx.vercel.app/?project=${result.projectId}`, '_blank');
+      }
+    }
+
+  } catch (error) {
+    debugError('📤 Export to Registry error:', error);
+    alert(`Chyba při exportu do Registry: ${error.message}`);
+    exportToRegistryBtn.disabled = false;
+    exportToRegistryBtn.textContent = '📤 Export do Registry';
   }
 });
 
@@ -1082,7 +1602,259 @@ function attachDocumentUploadHandlers() {
       validationResults.style.display = 'block';
     }
 
+    // Show extraction button if documents were uploaded successfully
+    const extractionActions = document.getElementById('extraction-actions');
+    if (extractionActions && validation.uploaded_documents && validation.uploaded_documents.length > 0) {
+      extractionActions.style.display = 'block';
+
+      // Store uploaded files for extraction (from selectedFiles closure)
+      window.uploadedDocumentFiles = selectedFiles;
+
+      // Attach extraction handler
+      const extractWorksBtn = document.getElementById('extract-works-btn');
+      if (extractWorksBtn) {
+        extractWorksBtn.onclick = handleDocumentExtraction;
+      }
+    }
+
     debugLog('📄 ✓ Document validation results displayed');
+  }
+
+  // Handle document extraction
+  async function handleDocumentExtraction() {
+    const extractWorksBtn = document.getElementById('extract-works-btn');
+    const extractSpinner = document.getElementById('extract-spinner');
+
+    if (!window.uploadedDocumentFiles || window.uploadedDocumentFiles.length === 0) {
+      showError('Nejprve nahrajte dokumenty');
+      return;
+    }
+
+    try {
+      // Use first PDF/DOCX file for extraction
+      const documentFile = window.uploadedDocumentFiles.find(f =>
+        f.name.match(/\.(pdf|docx|doc)$/i)
+      );
+
+      if (!documentFile) {
+        showError('Nenalezen žádný PDF nebo DOCX dokument pro extrakci');
+        return;
+      }
+
+      extractWorksBtn.disabled = true;
+      if (extractSpinner) extractSpinner.style.display = 'inline-block';
+
+      debugLog(`🔬 Starting extraction for: ${documentFile.name}`);
+
+      // Create FormData with file
+      const formData = new FormData();
+      formData.append('file', documentFile);
+
+      // Call extraction API
+      const response = await fetch('/api/jobs/document-extract', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        // Build structured error with pipeline stage info
+        const stageLabel = errorData.stageLabel || '';
+        const suggestion = errorData.suggestion || '';
+        const detail = errorData.details || errorData.error || 'Extraction failed';
+        let errorMsg = detail;
+        if (stageLabel) {
+          errorMsg = `${detail}\n\nFáze: ${stageLabel}`;
+        }
+        if (suggestion) {
+          errorMsg += `\nDoporučení: ${suggestion}`;
+        }
+        throw new Error(errorMsg);
+      }
+
+      const result = await response.json();
+      debugLog('✓ Document extraction successful:', result);
+
+      // Display extracted works
+      displayExtractedWorks(result.extraction);
+
+    } catch (error) {
+      debugError('🔬 Document extraction error:', error);
+      showError(`Chyba při extrakci prací:\n${error.message}`);
+    } finally {
+      extractWorksBtn.disabled = false;
+      if (extractSpinner) extractSpinner.style.display = 'none';
+    }
+  }
+
+  // Display extracted works
+  function displayExtractedWorks(extraction) {
+    const extractionResults = document.getElementById('extraction-results');
+    const worksCount = document.getElementById('works-count');
+    const sectionsCount = document.getElementById('sections-count');
+    const tskpMatched = document.getElementById('tskp-matched');
+    const worksBySection = document.getElementById('works-by-section');
+
+    // Update stats
+    if (worksCount) worksCount.textContent = extraction.stats.after_deduplication || 0;
+    if (sectionsCount) sectionsCount.textContent = extraction.stats.sections_count || 0;
+    if (tskpMatched) tskpMatched.textContent = extraction.stats.tskp_matched || 0;
+
+    // Display works by section
+    if (worksBySection && extraction.sections) {
+      worksBySection.innerHTML = extraction.sections.map(section => {
+        const confidenceBadge = (confidence) => {
+          if (confidence >= 0.7) return '<span class="confidence-badge confidence-high">VYSOKÁ</span>';
+          if (confidence >= 0.4) return '<span class="confidence-badge confidence-medium">STŘEDNÍ</span>';
+          return '<span class="confidence-badge confidence-low">NÍZKÁ</span>';
+        };
+
+        return `
+          <div class="work-section">
+            <div class="section-header">
+              <span>${section.name}</span>
+              <span class="section-count">${section.count} prací</span>
+            </div>
+            <table class="works-table">
+              <thead>
+                <tr>
+                  <th>Název Práce</th>
+                  <th>TSKP Kód</th>
+                  <th>Kategorie</th>
+                  <th>Jednotka</th>
+                  <th>Množství</th>
+                  <th>Jistota</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${section.works.map(work => `
+                  <tr>
+                    <td>${work.name || ''}</td>
+                    <td>
+                      ${work.tskp_code
+                        ? `<span class="tskp-code">${work.tskp_code}</span>`
+                        : '<span class="tskp-missing">—</span>'
+                      }
+                    </td>
+                    <td>${work.category || '—'}</td>
+                    <td>${work.unit || '—'}</td>
+                    <td>${work.quantity !== null ? work.quantity : '—'}</td>
+                    <td>${work.tskp_code ? confidenceBadge(work.tskp_confidence) : '—'}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Show results section
+    if (extractionResults) {
+      extractionResults.style.display = 'block';
+    }
+
+    // Store extraction results globally for export
+    window.extractedWorks = extraction;
+
+    // Attach export handlers
+    const exportExcelBtn = document.getElementById('export-works-excel');
+    const sendToBatchBtn = document.getElementById('send-to-batch');
+
+    if (exportExcelBtn) {
+      exportExcelBtn.onclick = exportWorksToExcel;
+    }
+
+    if (sendToBatchBtn) {
+      sendToBatchBtn.onclick = sendWorksToBatch;
+    }
+
+    debugLog('🔬 ✓ Extracted works displayed');
+  }
+
+  // Export works to Excel (CSV with semicolon separator for European Excel)
+  function exportWorksToExcel() {
+    if (!window.extractedWorks) {
+      showError('Nejsou k dispozici žádná data pro export');
+      return;
+    }
+
+    // Helper: escape CSV field (handle quotes, newlines)
+    const esc = (val) => {
+      if (val === null || val === undefined) return '';
+      const s = String(val);
+      if (s.includes('"') || s.includes(';') || s.includes('\n')) {
+        return '"' + s.replace(/"/g, '""') + '"';
+      }
+      return s;
+    };
+
+    // Create CSV with semicolon separator (Czech Excel default)
+    // sep=; tells Excel which delimiter to use
+    let csv = 'sep=;\n';
+    csv += 'Sekce;Název práce;TSKP kód;TSKP název;Kategorie;Jednotka;Množství;Jistota\n';
+
+    window.extractedWorks.sections.forEach(section => {
+      section.works.forEach(work => {
+        const confidence = work.tskp_confidence
+          ? (work.tskp_confidence * 100).toFixed(0) + '%'
+          : '';
+
+        csv += [
+          esc(section.name),
+          esc(work.name),
+          esc(work.tskp_code),
+          esc(work.tskp_name),
+          esc(work.category),
+          esc(work.unit),
+          work.quantity !== null && work.quantity !== undefined ? work.quantity : '',
+          confidence
+        ].join(';') + '\n';
+      });
+    });
+
+    // Download CSV with UTF-8 BOM for Excel compatibility
+    const BOM = '\uFEFF';
+    const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `extrakce_praci_${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    URL.revokeObjectURL(url);
+
+    debugLog('📥 ✓ Works exported to CSV');
+  }
+
+  // Send works to batch processor
+  function sendWorksToBatch() {
+    if (!window.extractedWorks) {
+      showError('Nejsou k dispozici žádná data');
+      return;
+    }
+
+    // Prepare batch input text
+    const batchText = window.extractedWorks.works.map(work => {
+      return `${work.name} ${work.unit ? `[${work.unit}]` : ''}`;
+    }).join('\n');
+
+    // Store in sessionStorage
+    sessionStorage.setItem('batchInputText', batchText);
+
+    // Switch to batch section
+    const batchTextInput = document.getElementById('batchTextInput');
+    if (batchTextInput) {
+      batchTextInput.value = batchText;
+    }
+
+    // Navigate to batch section
+    const openBatchBtn = document.getElementById('openBatchBtn');
+    if (openBatchBtn) {
+      openBatchBtn.click();
+      debugLog('📋 ✓ Works sent to batch processor');
+    } else {
+      showError('Batch procesor není k dispozici');
+    }
   }
 
   // Add back button handler for document upload section
@@ -1505,6 +2277,69 @@ document.addEventListener('DOMContentLoaded', () => {
   debugLog('✅ DOMContentLoaded event fired');
   debugLog('📄 Document ready, showing upload section');
   showUpload();
+
+  // Portal import: check for ?portal_file_id=&portal_api= URL params
+  const urlParams = new URLSearchParams(window.location.search);
+  const portalFileId = urlParams.get('portal_file_id');
+  const portalApi = urlParams.get('portal_api');
+
+  if (portalFileId && portalApi) {
+    // Clean URL params immediately
+    window.history.replaceState({}, '', window.location.pathname);
+    debugLog('🌐 Portal import detected, fetching data...');
+
+    fetch(`${portalApi}/api/portal-files/${portalFileId}/parsed-data/for-kiosk/urs_matcher`)
+      .then(resp => {
+        if (!resp.ok) throw new Error(`Portal fetch failed: ${resp.status}`);
+        return resp.json();
+      })
+      .then(data => {
+        if (!data.success || !data.sheets?.length) {
+          showError('Portal vrátil prázdná data. Ujistěte se, že soubor byl nejdříve zparsován.');
+          return;
+        }
+
+        // Collect all item descriptions for batch matching
+        const lines = [];
+        for (const sheet of data.sheets) {
+          for (const item of sheet.items) {
+            const desc = item.popis || item.kod;
+            if (desc && desc.trim().length > 3) {
+              lines.push(desc.trim());
+            }
+          }
+        }
+
+        if (lines.length === 0) {
+          showError('V souboru nebyly nalezeny žádné popisky pro URS Matcher.');
+          return;
+        }
+
+        const batchText = lines.join('\n');
+        sessionStorage.setItem('batchInputText', batchText);
+
+        // Navigate to batch section and pre-fill input
+        const openBatchBtn = document.getElementById('openBatchBtn');
+        if (openBatchBtn) {
+          openBatchBtn.click();
+          // Fill textarea after section is visible
+          setTimeout(() => {
+            const batchTextInput = document.getElementById('batchTextInput');
+            if (batchTextInput) {
+              batchTextInput.value = batchText;
+            }
+          }, 100);
+          debugLog(`🌐 ✓ Portal import: ${lines.length} položek načteno z Portal (${data.file_name || portalFileId})`);
+        } else {
+          showError('Batch procesor není k dispozici.');
+        }
+      })
+      .catch(err => {
+        debugError('❌ Portal import failed:', err.message);
+        showError(`Import z Portal selhal: ${err.message}`);
+      });
+  }
+
   debugLog('✅ Initialization complete');
 });
 

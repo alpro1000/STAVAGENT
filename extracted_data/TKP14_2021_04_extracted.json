@@ -1,0 +1,299 @@
+{
+  "type": "tkp_document",
+  "filename": "TKP14_2021_04.pdf",
+  "extracted_at": "2026-02-25T15:41:40.692200",
+  "document_info": {
+    "tkp_number": "14",
+    "year": "2021",
+    "month": "04"
+  },
+  "technical_specs": [
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "150",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "250",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "15",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "5",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "80",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "5",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "0",
+      "unit": "mm",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "32",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "200",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "100",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "150",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "600",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "250",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "15",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "300",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "4",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "5",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "8",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "10",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "30",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "50",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "80",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "5",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    },
+    {
+      "value": "0",
+      "unit": "m[²³]?",
+      "context": "extracted_from_text"
+    }
+  ],
+  "prices": [],
+  "raw_text": "Úroveň přístupu\nA\nTechnické kvalitativní\npodmínky staveb státních\ndrah\nKapitola 14\nKANALIZACE, ODPADNÍ JÍMKY,\nČISTÍRNY, LAPAČE\nVydání: duben 2021\nÚčinnost od 1.5.2021\nNahrazení předchozího znění kapitoly\nDatem účinností tohoto dokumentu se nahrazuje kapitola 14 KANALIZACE, ODPADNÍ JÍMKY,\nČISTÍRNY, LAPAČE schválená dne 21. 1. 2017, účinná od 1. 4. 2017.\nSchváleno pod čj. 17647/2021-SŽ-GŘ-O23\nDne 13.4.2021\nBc. Jiří Svoboda, MBA v. r.\nGenerální ředitel\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\nTechnické kvalitativní podmínky\nKapitola 14 KANALIZACE, ODPADNÍ JÍMKY, ČISTÍRNY, LAPAČE\nGestorský útvar: Správa železnic, státní organizace\nGenerální ředitelství\nOdbor pozemních staveb\nPraha\nspravazeleznic.cz\nGestor: Ing. Vanda Šimánková\nVydání: Duben 2021\nNáklad: vydáno pouze v elektronické podobě (PDF), formát (A4)\n© Správa železnic, státní organizace, rok 2021\nTento dokument je duševním vlastnictvím státní organizace Správa železnic, na které se vztahuje zákon č. 121/2000 Sb.,\no právu autorském, o právech souvisejících s právem autorským a o změně některých zákonů (autorský zákon), ve znění\npozdějších předpisů. Státní organizace Správa železnic je v uvedené souvislosti rovněž vykonavatelem majetkových práv.\nTento dokument smí fyzická osoba použít pouze pro svou osobní potřebu, právnická osoba pro svou vlastní vnitřní potřebu.\nPoskytování tohoto dokumentu nebo jeho části v jakékoliv formě nebo jakýmkoliv způsobem třetí osobě je bez svolení\nstátní organizace Správa železnic zakázáno.\n2\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\nOBSAH\nStrana\nZKRATKY A ZNAČKY ........................................................................................................ 4\n14.1 ÚVOD .................................................................................................................. 5\n14.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ ............................................................. 5\n14.2.1 Všeobecně ........................................................................................................ 5\n14.2.2 Materiály pro stoky ............................................................................................ 5\n14.2.3 Trubní materiál pro drenáže ................................................................................ 6\n14.2.4 Šachty, vpusti a příslušenství kanalizace .............................................................. 6\n14.2.5 Odpadní jímky, čistírny, lapače ........................................................................... 6\n14.2.6 Materiál zásypů, obsypů a podsypů ..................................................................... 7\n14.2.7 Drobné objekty stokových sítí ............................................................................. 7\n14.3 Technologické postupy prací................................................................................... 7\n14.3.1 Kanalizace ........................................................................................................ 7\n14.3.2 Drenáže, trativody ............................................................................................. 9\n14.3.3 Odpadní jímky, čistírny, lapače ........................................................................... 9\n14.4 Dodávka, skladování a průkazní zkoušky ................................................................ 10\n14.5 Odebírání vzorků a kontrolní zkoušky ..................................................................... 10\n14.6 Přípustné odchylky, záruky ................................................................................... 10\n14.7 Klimatická omezení .............................................................................................. 11\n14.8 Odsouhlasení a převzetí prací ................................................................................ 11\n14.9 Kontrolní měření, měření posunů a přetvoření ......................................................... 12\n14.10 Ekologie .......................................................................................................... 12\n14.11 Bezpečnost práce a technických zařízení, požární ochrana ..................................... 12\nCITOVANÉ DOKUMENTY .................................................................................................. 13\nSOUVISEJÍCÍ DOKUMENTY .............................................................................................. 14\n3\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\nZKRATKY A ZNAČKY\nNíže uvedený seznam obsahuje zkratky a značky použité v tomto dokumentu. V seznamu se\nneuvádějí legislativní zkratky, zkratky a značky obecně známé, zavedené právními předpisy,\nuvedené v obrázcích, příkladech nebo tabulkách.\nPVC Polyvinylchlorid\nPE-HD Polyethylen s vysokou hustotou\nPP Polypropylen\nKSUaTP Koordinační schéma ukolejnění a trakčního propojení\nZTKP Zvláštní technické kvalitativní podmínky\n4\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\n14.1 ÚVOD\n(1) Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené\nv kapitole 1 TKP - Všeobecně.\n(2) Tato kapitola Technických kvalitativních podmínek staveb státních drah (dále jen TKP)\nzahrnuje práce spojené s objekty odvodnění drážních objektů, a to jednak odvedení\nsrážkové vody s případnou nutnou úpravou kvality vody před jejich vypouštěním\ndo recipientu, a dále objekty spojené s kanalizací odvádějící splaškovou vodu s nutným\nčistěním. TKP obsahují soubor požadavků objednatele na způsob provádění, kontrolu\nprovádění a převzetí provedených prací.\n(3) Na elektrizovaných tratích při projektování a realizaci staveb a rekonstrukcí kovových\núložných zařízení musí být dodržena také v souvislosti s ukolejněním konstrukcí\nspojených s ocelovým potrubím vztažná ustanovení kapitoly 12 TKP (čl. 12.1.1); 25A\nTKP; 27 TKP (čl. 27.2.2); 31 TKP; jiné i zprostředkované spojení s kolejemi je\nnepřípustné. Projektem odsouhlasené a uskutečněné elektrické spojení v souvislosti\ns ukolejněním konstrukcí musí být vždy zaznamenané v aktuálním elektrickém\nschématu KSUaTP.\n(4) Kapitola neřeší odvodnění tratí a stanic, to je součástí kapitoly 4 TKP. Dále nezahrnuje\nodvodnění nástupišť, ramp, zarážedel, účelových komunikací a zpevněných ploch, to je\nsoučástí kapitoly 10 TKP.\n14.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ\n14.2.1 Všeobecně\n(1) Použité materiály, rozměry, tvar a typ určuje projektová dokumentace (dále jen\ndokumentace) v souladu s touto kapitolou, pokud není ve Zvláštních technických\nkvalitativních podmínkách (dále jen ZTKP) určeno jinak.\n(2) V případech, kdy nejsou blíže specifikovány materiály v dokumentaci, je možné použít\nmateriály výrobců tuzemských nebo zahraničních, pokud odpovídají požadavkům\nv těchto TKP a jsou odsouhlaseny stavebním dozorem.\n14.2.2 Materiály pro stoky\n14.2.2.1 Zděné stoky\nProvedení a podmínky předepisuje dokumentace nebo ZTKP. Materiály pro stavbu musí\nbýt ve shodě s ČSN 75 6101.\n14.2.2.2 Betonové a železobetonové trouby\n(1) Způsob spojování trub určuje dokumentace s tím, že spoj musí vyhovovat svou\ntěsností a životností danému užití.\n(2) Vlastnosti trub, požadavky na zkoušení a materiál musí odpovídat ČSN EN 1916.\n(3) Pro beton se požaduje dodržet podmínky z kapitoly 17 TKP (čl. 17.3).\n(4) Rok výroby, druh, profil a výrobce musí být vyznačen na každé troubě.\n14.2.2.3 Kameninové trouby\n(1) Fyzikální, mechanické a chemické vlastnosti musí odpovídat ČSN EN 295-1, pokud\ndokumentace nebo ZTKP nestanoví jinak.\n(2) Rok výroby, profil a výrobce musí být vyznačeny na každé troubě.\n5\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\n14.2.2.4 Plastové trouby\n(1) Vlastnosti trub z PVC musí odpovídat ČSN EN ISO 1452-2.\n(2) Vlastnosti trub z PE-HD musí odpovídat ČSN EN 13476-1, pro tlakovou kanalizaci\nČSN EN 12201-2+A1.\n(3) Vlastnosti trub z PP musí odpovídat ČSN EN 1852-1 a ČSN EN 14758-1.\n(4) Značení trub je prováděno na troubě nebo na svazku trub. Zde musí být uveden vnější\nprofil, tloušťka stěny, rok výroby a výrobce.\n14.2.2.5 Sklolaminátové trouby\nPoužití a vlastnosti předepisuje dokumentace nebo ZTKP.\n14.2.2.6 Litinové trouby\n(1) Požadavky na materiál a přípustné vady, mezní odchylky udává ČSN EN 598+A1.\nTrouby musí mít ochranný povlak podle kapitoly 4.4 ČSN EN 598+A1. Stavební dozor\nmůže požadovat, aby druh ochranného nátěru a technologie jeho provádění byly jím\npředem odsouhlaseny.\n(2) Pro spojení trub je možno použít spoj temovaný, TYTON (násuvný spoj na pryžový\nkroužek) a přírubový. Ucpávkové spojení se použije pouze v případě,\nže to odůvodněně vyžaduje dokumentace. Pak trouby musí splňovat podmínky ČSN EN\n598+A1.\n(3) Každá trouba musí mít trvalé označení udávající profil, rok výroby a výrobce a u trub\nTYTON též značení TYTON.\n14.2.2.7 Ocelové trouby\nOcelové trouby (s výjimkou speciálních trub v provedení nerez) jsou pro stoky s volnou\nhladinou nevyhovujícím materiálem. Jejich užití, pokud je předepisuje dokumentace,\nmusí být vždy v ní nebo v ZTKP zvlášť odůvodněno.\n14.2.2.8 Jiné druhy trub\nPro kanalizaci je možno použít jakýkoli jiný, pro daný účel vhodný druh trub, pokud je\nto stanoveno dokumentací. V tom případě je nutno, aby technické kvalitativní\npodmínky byly stanoveny přímo v dokumentaci nebo v ZTKP.\n14.2.3 Trubní materiál pro drenáže\nPodmínky specifikuje kapitola 4 TKP.\n14.2.4 Šachty, vpusti a příslušenství kanalizace\n(1) Pro drobné objekty kanalizace platí pro stavební materiály vše, co je uvedeno\nv čl. 14.2.5 této kapitoly TKP.\n(2) U vpustí, poklopů šachet a odvodňovačů musí mít mříž, respektive poklop únosnost\nshodnou s návrhovým zatížením odvodňované plochy podle ČSN 73 6101, resp.\nČSN 73 6110, podmínky mohou být odlišně specifikovány v dokumentaci nebo ZTKP.\n(3) Pro šachty, vpusti a i další kanalizační objekty se připouští použití jiných než klasických\nmateriálů - především plastických hmot v souladu s dokumentací nebo\npo odsouhlasení stavebním dozorem.\n14.2.5 Odpadní jímky, čistírny, lapače\n(1) Pro stavbu odpadních jímek, čisticích zařízení včetně lapačů splavenin a ropných látek\nje nutno užít materiálů v souladu s dokumentací.\n6\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\n(2) Beton konstrukcí musí odpovídat podmínkám podle kapitoly 17 TKP.\n(3) U smáčených ocelových konstrukcí je nutno jako ochranu užít kombinovaných\nochranných systémů podle dokumentace. Není-li ochrana oceli přesně specifikována\nv dokumentaci nebo ZTKP, je nutno, aby zhotovitel před zahájením prací předložil\nnávrh provedení ochrany stavebnímu dozoru k odsouhlasení. Pokud použitá ocel není\njen výplňový, nekonstrukční materiál, je nutno užít vždy druh se zaručenou\nsvařitelností.\n(4) Použité konkrétní technologické zařízení musí odpovídat dokumentaci.\n14.2.6 Materiál zásypů, obsypů a podsypů\nPředepisuje-li dokumentace nebo oddíl 14.3 této kapitoly TKP „vhodné materiály“,\nmusí být jejich užití vždy předem odsouhlaseno stavebním dozorem.\n14.2.7 Drobné objekty stokových sítí\n(1) Objekty na stokové síti se betonují na místě, zdí nebo se sestavují ze stavebních nebo\nmontážních předem vyrobených dílců a prefabrikátů (např. betonových\na železobetonových prefabrikátů, plastových nebo sklolaminátových dílců šachet, popř.\ni kombinací různých druhů materiálů).\n(2) Podmínky pro materiály vpustí, šachet, poklopů, mříží, spadišť, výustních objektů\npředepisuje dokumentace, ZTKP nebo příslušná kapitola TKP, zejména kapitoly 17, 18\na 19 TKP.\n14.3 TECHNOLOGICKÉ POSTUPY PRACÍ\n14.3.1 Kanalizace\n(1) Kanalizační potrubí se navrhuje a provádí s utěsněnými spárami (ČSN EN 1610).\nNestanoví-li dokumentace nebo ZTKP jinak, provede se uložení a montáž potrubí podle\ntěchto zásad:\n(2) Při křížení s kolejemi (dráhou) je třeba vždy dodržet vnitřní předpis SŽ S4 Železniční\nspodek a dále zabezpečit potrubí proti poškození volbou vhodného trubního materiálu\na úpravou jeho uložení v rýze (TNŽ 73 6949).\n(3) Kanalizace musí být z potrubí s profilem minimálně DN 300 mm. Menší profil je\npřípustný pouze u přípojek.\n(4) U ocelových trub při provádění prací na elektrizované trati nesmí být porušeny\npodmínky, které pro potrubí stanoví dokumentace podle kapitoly 25A TKP a 31 TKP.\n14.3.1.1 Lože pod potrubí\nPotrubí se v zemi ukládá, ve shodě s dokumentací, s obetonováním, nebo na betonové\nsedlo, nebo do pískového či štěrkopískového lože. Pro uložení musí podklad splňovat\npodmínku dostatečné únosnosti pro položení a provoz trub. Pokud dokumentace nebo\nZTKP nestanoví jinak, postupuje se následujícím způsobem:\nVýkop rýhy se provádí se zaručeným zabezpečením proti sesuvu zeminy a s postupem\nproti sklonu stoky. Úprava dna rýhy se provede takto:\na) Dno rýhy je pod hladinou podzemní vody\nNa okraji dna rýhy se provede drenáž se štěrkovým obsypem (gravitační drenáž,\njímací jímky) a na takto upravené pokladní lože se zřídí betonová podkladní deska\nz betonu min. C12/15, nebo štěrkopískové lože.\nb) Dno rýhy je nad hladinou podzemní vody\n7\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\nb1) Dno tvoří skalní nebo poloskalní horniny (zrna 32 mm) a soudržné zeminy tuhé\na pevné konzistence (Ic = 0,7):\nPro potrubí, které má být podle dokumentace obetonováno nebo uloženo na\npokladní prahy, se musí dno rýhy upravit do předepsaného spádu betonem\nC12/15.\nPro potrubí, které dokumentace neurčuje k obetonování nebo k uložení na\npokladní prahy, se zřídí štěrkopískové lože se zrnem s max. velikosti 8 mm;\nb2) Dno rýhy tvoří zeminy nesoudržné se zrny max. 32 mm:\nDno rýhy se urovná, upraví do předepsaného spádu a zhutní na ulehlost zemin\nsoudržných. Další postup podle předchozího bodu.\nc) Dno rýhy tvoří neúnosné zeminy:\nNeúnosné zeminy se musí odstranit (min. v tl. 200 mm) a nahradit zhutněným\npískovým ložem o zrnitosti max. 8 mm. Posouzení nutnosti odtěžení větší vrstvy\npodle místních poměrů provede stavební dozor.\n14.3.1.2 Uložení potrubí\n(1) Pokud má být potrubí obetonováno nebo uloženo na betonové sedlo, ukládá se potrubí\nna betonové (železobetonové) pražce (nejedná se o pražce železniční). Velikost pražce\nmusí být taková, aby pod nejnižším místem hrdla bylo min. 50 mm. Min. šířka pražce\nmusí být 100 mm. Pro každou troubu se počítá se dvěma pražci. Pražce musí být\nurovnány do konečného sklonu dna nivelety.\n(2) Kvalita betonu pražce musí odpovídat kvalitě betonu pro obetonování nebo sedlo.\nPoužití cihel klasických nebo vápenopískových jako pražce je nepřípustné. Proti\nodvalení se trouby na pražcích zajišťují klíny z vhodného materiálu (obvykle dřevo). Při\nbetonáži sedla nebo při obetonování trub je nutno tyto klíny odstranit. Kvalita betonu,\nkterou určuje dokumentace, musí odpovídat agresivitě prostředí okolní zeminy,\nrespektive agresivitě podzemní vody, pokud se zde tato nachází. Použití suchých směsí\npro podbetonování nebo obetonování potrubí je možné pouze v případech, že to\nvýslovně předepisuje dokumentace nebo ZTKP.\n(3) Potrubí z plastů, sklolaminátu a litiny se většinou neukládá s pomocí betonového sedla\nnebo s obetonováním. Tyto trouby se ukládají do lože. Min. tl. lože musí být 100 mm,\nmaximální velikost zrna 8 mm. Pro tento účel se užívá písek, písčitá nebo hlinitopísčitá\nzemina. V rýze se nesmí vyskytnout žádné větší kameny (např. náhodně vypadlé ze\nstěn výkopu).\n(4) Pokud se stoka obetonovává, musí být min. tloušťka obetonování 100 mm a musí být\nprovedeno z betonu min. třídy C 12/15 XC2.\n(5) Zkouška vodotěsnosti se provádí před provedením obetonování a před částečným nebo\núplným zasypáním rýhy, pokud dokumentace či ZTKP nestanoví jinak.\n(6) Obsyp potrubí se provádí vhodným materiálem (viz oddíl 14.2.6 této kapitoly TKP) za\nsoučasného hutnění po vrstvách nejvíce 150 mm tlustých a do výšky alespoň 300 mm\nnad vrchol potrubí. Pro stoky s výškou větší jak 600 mm se obsyp může hutnit po\nvrstvách 250 mm, pokud je zajištěno, že nenastane porušení stoky. Maximální velikost\nzrna obsypu je 15 mm. U obetonovaných trub nebo u konstrukce stoky se provede\nzásyp do výšky 300 mm nad vrchol obetonování materiálem vhodným na obsyp\ns maximálním zrnem 30 mm.\n(7) Potrubí z plastů a sklolaminátu se obsypává pískem. Max. velikost zrna 8 mm. Jiný\nzpůsob včetně užití geotextilie a zálivky z emulgovaného popílku, pokud není uveden\nv dokumentaci, musí odsouhlasit stavební dozor.\n(8) Zásyp rýhy v komunikacích a ve zpevněných plochách musí být zhutněný na míru\nzhutnění předepsanou dokumentací. Provádí se ve vrstvách max tl. 300 mm za\n8\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\nneustálého hutnění. Při zásypu a následném hutnění nesmí dojít k poškození ani\nvybočení stoky.\n(9) Pažení se s postupujícím zásypem odstraňuje, pokud dokumentace nebo\nZTKP nestanoví jinak.\n(10) Ve volném terénu se zásyp přiměřeně nadvýší oproti původnímu terénu a vrchní vrstva\nv parcích a na zemědělských pozemcích se provede shodně s původním stavem\nz ornice.\n14.3.1.3 Pokládka a spojování potrubí\n(1) Trubky se vždy kladou od nejnižšího konce hrdlem proti sklonu. Pro stavbu se nesmí\npoužít poškozených trub. Ve sporných případech rozhoduje stavební dozor. Při\npokládce musí být potrubí zabezpečeno proti znečištění nebo ucpání. Pokud by\nk tomuto došlo, je nutno potrubí vyčistit a zprůchodnit ještě před pokračováním\nv pokládce návazných trub. Spodní plocha trub musí ležet plně na správně\nvyrovnaném a upraveném podloží nebo betonovém sedle.\n(2) U spojů je nutno dodržet postup provádění spoje a použití prvků ke spojování podle\ntypu spoje a podle technologických předpisů montáže jednotlivých druhů potrubí.\nNepřipojené odbočky musí být před započetím zásypu zaslepeny zátkami a vodotěsně\nzatmeleny.\n14.3.1.4 Stoky z netrubních materiálů\n(1) Stavební dílce použité pro stavbu stok a spoje mezi nimi musí být vodotěsné, zde viz\noddíl 14.9 této kapitoly TKP. Stoka musí odolávat vnitřnímu přetlaku, odpovídající 4 m\nvodního sloupce (měřeno ode dna stoky).\n(2) U cihelných stok je nutno cihly před použitím očistit a namočit na nutnou dobu do\nvody. Při zdění nesmí vzniknout ve spárách dutiny. Spáry nesmí být užší jak 5 mm\na širší jak 8 mm. Vnitřní povrch musí být hladký a pečlivě vyspárovaný.\n(3) U monolitických stok nutno dbát především na jejich celistvost, hladkost\na neporušenost povrchu. Vodotěsnost nutno především vyžadovat a kontrolovat na\nnutných dilatačních spárách. Vodotěsnost - viz oddíl 14.9 této kapitoly TKP.\n(4) Zhotovení a ošetření betonu viz kapitola 17 TKP.\n14.3.2 Drenáže, trativody\nPodmínky specifikuje kapitola 4 TKP.\n14.3.3 Odpadní jímky, čistírny, lapače\n(1) Pro tyto objekty je možno použít všechny materiály, u nichž je prokazatelná odolnost,\nživotnost a vhodnost k provozu a k údržbě. Kromě klasických betonových prefabrikátů\na zděných konstrukcí jsou vhodné především plastové a sklolaminátové díly.\n(2) Pokud jsou tato zařízení navrhována, nebo alespoň jejich části, z prostého či\nželezového betonu, musí použité materiály a postupy práce, jakož i průkazní\na kontrolní zkoušky, odpovídat kapitole 17 TKP.\n(3) Případná izolace proti podzemní vodě se provede podle dokumentace a ve shodě\ns požadavky kapitoly 22 TKP.\n(4) Pro betonové prefabrikáty použité pro stavbu platí ustanovení kapitoly 17 TKP.\n(5) Protikorozní ochrana ocelových částí musí odpovídat kapitole 25A TKP a 25B TKP.\n(6) U kompletních dodávek ČOV a dalších technologických zařízení musí tyto být osazeny\nv souladu s technickými podmínkami výrobce.\n9\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\n(7) Stavební postupy, provádění zemních prací, izolací proti vodě a další podmínky pro\nstavbu těchto zařízení určuje dokumentace.\n14.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY\n(1) Zhotovitel požádá při každé dodávce trub a prefabrikovaných dílců pro drobné objekty\nstavební dozor o povolení k použití dodaných trub, přičemž předloží doklad o dodávce\n(dodací list, prohlášení o jakosti), ze kterého je patrno, že trouby splňují technické\npožadavky na ně kladené (dokumentací, TKP a ZTKP). Zhotovitel umožní stavebnímu\ndozoru kontrolu dodaných trub. Pokud některé trouby nebudou stavebním dozorem\nschváleny, budou okamžitě odstraněny ze staveniště.\n(2) Trubky a dílce křehké a snadno deformovatelné musí být na skládkách proloženy\ndřevěnými latěmi. Pokud o to stavební dozor požádá, provede zhotovitel zkoušky\nvybraného množství trubek na pevnost, vodotěsnost a nasákavost. Náklady na\nzkoušku jsou hrazeny objednavatelem jen tehdy, jestliže zkouška požadované hodnoty\nprokáže.\n(3) Dovezené materiály musí být uloženy a skladovány tak, aby nedošlo k jejich\nznečištění, poškození nebo ztrátě.\n(4) Pokud dokumentace stanoví, že vodotěsnost bude zajištěna vodotěsným betonem,\npředloží zhotovitel návrh receptury betonu, kterou doloží průkazní zkouškou\nvodotěsnosti vzorků (minimálně 3 ks). Průkazní zkoušky betonu se provádějí podle\nkapitoly 17 TKP.\n14.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY\n(1) Kontrolní zkoušky betonu se provádějí podle kapitoly 17 TKP a zemin a zemních prací\npodle kapitoly 3 TKP. Zkoušky hotového díla na vodotěsnost se provádějí před\nzásypem potrubí nebo konstrukce. Elektrojiskrová zkouška izolace, pokud ji\npředepisuje dokumentace, se provádí v rozsahu čl. 8.5.3 ČSN EN 1594 za přítomnosti\nstavebního dozoru. Zkoušky svarů předepisuje dokumentace nebo ZTKP. O všech\nzkouškách musí být vystaven protokol.\n(2) Kanalizační potrubí, s výjimkou přípojek, se zkouší na vodotěsnost podle ČSN 75 6909.\nPokud není v dokumentaci stanoveno jinak, je možno zkoušet pouze potrubí bez\nšachet. Spoje trub při zkoušce musí zůstat volné.\n(3) Kanalizační přípojky se na vodotěsnost nezkoušejí, stavební dozor však může zkoušku\nvodotěsnosti nařídit. Zhotovitel je však na požádání stavebního dozoru povinen\nprokázat, že přípojka je průtočná. Potrubí se za účasti stavebního dozoru vyčistí\nproudem vody. Čištění je ukončeno, když přestane z potrubí vytékat znečištěná voda.\n(4) Zkoušky vodotěsnosti nádrží se provedou podle ČSN 75 0905, pokud dokumentace\nnebo smlouva o dílo nestanoví jinak. Ocelové válcované materiály musí mít vlastnosti\n(hlavně svařitelnost a pevnost) předepsané dokumentací, to musí zhotovitel doložit\npředložením dokladů před zabudováním materiálu. Hotová technologická zařízení\ndodaná výrobci musí mít doklad, ze kterého lze jednoznačně usoudit, že jde o výrobky\npředepsané dokumentací. Tyto doklady předloží zhotovitel stavebnímu dozoru ke\nkontrole.\n14.6 PŘÍPUSTNÉ ODCHYLKY, ZÁRUKY\n(1) Pro uložení trub platí, že výšková odchylka při sklonu nivelety do 1 % může být nejvíce\n 10 mm a při sklonu nad 1 %  30 mm oproti kótě určené dokumentací. Současně\nnesmí vzniknout v niveletě dna protisklon. Pro přímé úseky stok platí, že mezi dvěma\nšachtami mohou mít směrovou odchylku od přímého směru při jmenovité světlosti do\nDN 500 včetně 50 mm a u vyšších průměrů nejvýše 80 mm.\n10\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\n(2) Tolerance ve výškovém osazení poklopu a vtokové mříže ve vozovce nebo v chodníku\nmusí vyhovovat tolerancím podle ČSN 73 6101 a ČSN 73 6110.\n(3) U mříží vpustí a poklopů šachet umístěných v komunikačních plochách se připouští\nodchylka max. -5 mm a +0 mm nad okolní úroveň (v souladu s ČSN 73 6101).\n(4) U objektů musí být vždy zachovány vnitřní rozměry podle ČSN 73 0205.\n(5) Záruční doby všeobecně stanoví kapitola 1 TKP.\n14.7 KLIMATICKÁ OMEZENÍ\n(1) Zkoušky vodotěsnosti se neprovádějí, když je nebezpečí poklesu teploty ovzduší\nokolního prostředí pod bod mrazu (ČSN 75 6909).\n(2) Betonářské a omítkářské práce se nesmějí provádět v období, kdy průměrná denní\nteplota v průběhu tří dnů klesla pod 5 °C při použití portlandských cementů a pod 8 °C\npři použití směsných cementů. Noční teplota nesmí nikdy klesnout pod bod mrazu.\nToto omezení neplatí při betonáži v uzavřených objektech, které jsou vytápěny alespoň\nna výše uvedené teploty. Podmínky betonáže jsou stanoveny ČSN EN 206.\n(3) Svařovat potrubí z PVC je povoleno při teplotách nad bodem mrazu. Není povoleno\nsvařovat za deště a sněžení.\n14.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ\n(1) Konstrukce nebo objekty, které budou následně zakryty (nepřístupné), se odsouhlasují\nnebo přejímají před jejich zasypáním. Tlakové zkoušky a zkoušky vodotěsnosti se\nprovádějí tak, jak je uvedeno v předchozích článcích. Vodotěsné izolace vnějších stěn\na stropů se odsouhlasují před zásypem, izolace vnitřních stěn až v rámci dílčího\nodsouhlasení. Upravený povrch terénu se přejímá v rámci objektu, do kterého je\nv dokumentaci zahrnut.\n(2) U ocelových trub při odsouhlasení a převzetí prací na elektrizované trati musí být\nověřeno splnění podmínek předepsaných v dokumentaci podle kapitoly 25A TKP a\nkapitoly 31 TKP.\n(3) Následně zakryté i ostatní přístupné zhotovovací práce nebo objekty se zkoušejí,\nodsouhlasují nebo přejímají v souladu s kapitolou 1 TKP. Objekty nebo jejich části,\nkteré budou uvedeny do provozu v průběhu stavby, se přejímají v dřívějších, předem\nurčených termínech. Zhotovitel je povinen předat kromě zakreslení změn, ke kterým\ndošlo oproti dokumentaci, i dokumentaci dodaných technologických souborů a předpisy\no jejich provozu a údržbě.\n(4) Před zakrytím odsouhlasených konstrukcí a objektů zaměří zhotovitel geodetickou část\ndokumentace skutečného provedení stavby podle kapitoly 1 TKP (čl. 1.7.3)\nv souřadnicovém systému JTSK a výškopisném systému Balt po vyrovnání, pokud\nsmlouva o dílo neurčuje jinak. O úmyslu provádět zaměření informuje předem\nzhotovitel písemně stavební dozor.\n(5) U kanalizačních šachet se zaměří poloha a výška středu poklopu, kóta dna žlábku\nv šachtě a odlehlost středu poklopu a osy kanalizace.\n(6) U vpustí se zaměří poloha a výška středu mříže.\n(7) Je-li kanalizace vedena v oblouku, zaměří se poloha dna kanalizace na začátku, na\nkonci a uprostřed oblouku.\n(8) U výustních objektů se zaměří výška dna kanalizace v místě přechodu ze zakryté do\notevřené části, u vyústění do šachty výška vyústění ve stěně šachty.\n(9) U lapačů splavenin se zaměří poloha a výška dna odtokového potrubí a úhlová\nodchylka osy lapače a odpadního potrubí ve stupních.\n11\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\n(10) Zaměření předá zhotovitel stavebnímu dozoru v souladu s kapitolou 1 TKP.\n(11) Průtočnost kanalizace a její skutečné trasování bude ověřeno kamerovou prohlídkou.\nPřed převzetím prací bude zhotovitelem na jeho náklady provedena kamerová zkouška\npotrubí. Záznam z této prohlídky bude součástí dokladů k předání tohoto díla.\n14.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ\nVodotěsnost se prokazuje a zkouší podle ČSN 75 6909, případně ČSN 75 0905.\nVodotěsnost kameninových trub a jejich spojů se zkouší podle ČSN EN 295-3 ed. 2\na vyhodnocuje podle ČSN EN 295-2.\n14.10 EKOLOGIE\n(1) Veškerá stavební činnost prováděná podle této kapitoly musí být v souladu s oddílem\n1.12 kapitoly 1 TKP.\n(2) Při navrhování nátěrů konstrukcí a hydroizolací musí být dodrženy příslušné hygienické\npožadavky, obsažené v souvisejících předpisech. Při použití nových materiálů nebo\ntechnologií ve skladbě hydroizolace nebo nátěru, na které dosud nejsou vydány\npředpisy obsahující hygienické požadavky, musí jejich nezávadnost schválit Hlavní\nhygienik ČR, což zajistí zhotovitel.\n(3) Hydroizolační vrstvy, vzhledem k tomu, že jsou obvykle v bezprostředním styku\ns vodou, nesmějí uvolňovat žádné škodlivé látky, které by mohly ohrozit kvalitu\npovrchové vody, popř. vody provozní.\n(4) Materiály, které přicházejí do styku s potravinami nebo s pitnou vodou, musí být\nschváleny příslušným orgánem hygienické služby.\n(5) Požaduje se přihlížet k ekologické nezávadnosti materiálů v případě požáru nebo při\njejich likvidaci po opravách a rekonstrukcích.\n(6) Pro veškeré odpady vzniklé z procesu stavby platí, že pokud musí být skladovány\nv prostoru stavby, musí to být provedeno tak, aby neohrozily životní prostředí, a byly\nodstraněny v souladu se zákonem č. 541/2020 Sb., o odpadech, ve znění pozdějších\npředpisů.\n14.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA\n(1) Bezpečnost práce a technických zařízení jakož i požární ochranu obecně stanoví\nkapitola 1 TKP.\n(2) Při výkopových pracích na kanalizaci a u ostatních vodohospodářských objektů je třeba\npředevším dbát na řádné zabezpečení výkopu proti sesutí a řádnému značení\na zabezpečení proti pádu fyzických osob. Platí nařízení vlády č. 591/2006 Sb.\n12\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\nCITOVANÉ DOKUMENTY\nUvedené předpisy a normy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich aktualizace.\nUživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj. právních\npředpisů, technických norem a předpisů a předpisů SŽ.\nPrávní předpisy\nZákon č. 541/2020 Sb. Zákon o odpadech\nZákon č. 254/2001 Sb. Zákon o vodách a o změně některých zákonů (vodní zákon), ve znění\npozdějších předpisů\nNařízení vlády č. 591/2006 Sb. Nařízení vlády o bližších minimálních požadavcích na bezpečnost\na ochranu zdraví při práci na staveništích\nMezinárodní a národní technické normy\nČSN EN ISO 1452-2 Plastové potrubní systémy pro rozvod vody a tlakové kanalizační přípojky\na stokové sítě uložené v zemi i nadzemní - Neměkčený polyvinylchlorid (PVC-U) -\nČást 2: Trubky\nČSN EN 295-1 Kameninové odvodňovací a kanalizační potrubí - Část 1: Požadavky na trouby,\ntvarovky a spoje\nČSN EN 598+A1 Trubky, tvarovky a příslušenství z tvárné litiny a jejich spojování pro kanalizační\npotrubí - Požadavky a metody zkoušení\nČSN EN 1594 Zařízení pro zásobování plynem - Plynovody s nejvyšším provozním tlakem nad\n16 bar - Funkční požadavky\nČSN EN 1610 Provádění stok a kanalizačních přípojek a jejich zkoušení\nČSN EN 1916 Trouby a tvarovky z prostého betonu, drátkobetonu a železobetonu\nČSN EN 12201-2+A1 Plastové potrubní systémy pro rozvod vody a pro tlakové kanalizační přípojky\na stokové sítě - Polyetylen (PE) - Část 2: Trubky\nČSN EN 1852-1 Plastové potrubní systémy pro beztlakové kanalizační přípojky a stokové sítě\nuložené v zemi - Polypropylen (PP) - Část 1: Specifikace pro trubky, tvarovky\na systém\nČSN EN 13476-1 Plastové potrubní systémy pro beztlakové kanalizační přípojky a stokové sítě\nuložené v zemi – Potrubní systémy se strukturovanou stěnou z neměkčeného\npolyvinylchloridu (PVC-U), polypropylenu (PP) a polyetylenu (PE) – Část 1:\nObecné požadavky a charakteristiky zkoušení\nČSN EN 14758-1 Plastové potrubní systémy pro beztlakové kanalizační přípojky a stokové sítě -\nPolypropylen s minerálními modifikátory (PP-MD) - Část 1: Specifikace pro trubky,\ntvarovky a systém\nČSN 73 0205 Geometrická přesnost ve výstavbě. Navrhování geometrické přesnosti\nČSN 73 6101 Projektování silnic a dálnic\nČSN 73 6110 Projektování místních komunikací\nČSN 75 0905 Zkoušky vodotěsnosti vodárenských a kanalizačních nádrží\nČSN 75 6101 Stokové sítě a kanalizační přípojky\nČSN 75 6909 Zkoušky vodotěsnosti stok a kanalizačních přípojek\nTNŽ 73 6949 Odvodnění železničních tratí a stanic\nTechnické kvalitativní podmínky\nTKP 1 Všeobecně\nTKP 3 Zemní práce\nTKP 4 Odvodnění tratí a stanic\nTKP 12 Chráničky a kolektory\nTKP 17 Beton pro konstrukce\nTKP 22 Izolace proti vodě\nTKP 25A Protikorozní ochrana úložných zařízení a konstrukcí - Ochrana proti\nelektrochemické korozi a korozi bludnými proudy\nTKP 25B Protikorozní ochrana úložných zařízení a konstrukcí - Ochrana ocelových\nkonstrukcí proti atmosférické korozi\nTKP 25B Protikorozní ochrana úložných zařízení a konstrukcí - Ochrana ocelových\nkonstrukcí proti atmosférické korozi\nTKP 27 Zabezpečovací zařízení\nTKP 31 Trakční vedení\n13\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\nSOUVISEJÍCÍ DOKUMENTY\nMezinárodní a národní technické normy, ve znění pozdějších předpisů\nČSN ISO 1920-10 Zkoušení betonu - Část 10: Stanovení statického modulu pružnosti v tlaku\nČSN EN 124-1 Poklopy a vtokové mříže pro dopravní plochy - Část 1: Definice, klasifikace,\nkonstrukční zásady, funkční požadavky a zkušební metody\nČSN EN 124-2 Poklopy a vtokové mříže pro dopravní plochy - Část 2: Poklopy a vtokové mříže\nz litiny\nČSN EN 124-3 Poklopy a vtokové mříže pro dopravní plochy - Část 3: Poklopy a vtokové mříže\nz oceli nebo slitiny hliníku\nČSN EN 124-4 Poklopy a vtokové mříže pro dopravní plochy - Část 4: Poklopy a vtokové mříže\nze železobetonu\nČSN EN 124-5 Poklopy a vtokové mříže pro dopravní plochy - Část 5: Poklopy a vtokové mříže\nz kompozitů\nČSN EN 124-6 Poklopy a vtokové mříže pro dopravní plochy - Část 6: Poklopy a vtokové mříže\nz polypropylenu (PP), polyethylenu (PE) nebo neměkčeného polyvinylchloridu (PVC-\nU)\nČSN EN 206+A1 Beton - Specifikace, vlastnosti, výroba a shoda\nČSN EN 295-2 Kameninové odvodňovací a kanalizační potrubí - Část 2: Hodnocení shody a odběr\nvzorků\nČSN EN 295-3 ed. 2 Kameninové potrubí pro venkovní a vnitřní kanalizaci - Část 3: Zkušební metody\nČSN EN 295-4 Kameninové odvodňovací a kanalizační potrubí - Část 4: Požadavky na speciální\ntvarovky, přechody a příslušenství\nČSN EN 295-6 Kameninové odvodňovací a kanalizační potrubí - Část 6: Požadavky na součásti\nvstupních šachet a inspekčních komor\nČSN EN 295-7 Kameninové odvodňovací a kanalizační potrubí - Část 7: Požadavky na kameninové\ntrouby a jejich spoje určené pro protlačování\nČSN EN 512 Vláknocementové výrobky - Tlakové trouby a spoje\nČSN EN 771-2 ed. 2 Specifikace zdicích prvků - Část 2: Vápenopískové zdicí prvky\nČSN EN 933-1 Zkoušení geometrických vlastností kameniva - Část 1: Stanovení zrnitosti - Sítový\nrozbor\nČSN EN 933-2 Zkoušení geometrických vlastností kameniva - Část 2 : Stanovení zrnitosti -\nZkušební síta, jmenovité velikosti otvorů\nČSN EN 933-3 Zkoušení geometrických vlastností kameniva - Část 3: Stanovení tvaru zrn - Index\nplochosti\nČSN EN 998-1 ed. 2 Specifikace malt pro zdivo - Část 1: Malta pro vnitřní a vnější omítky\nČSN EN 998-2 ed. 2 Specifikace malt pro zdivo - Část 2: Malta pro zdění\nČSN EN 12201-1 Plastové potrubní systémy pro rozvod vody a pro tlakové kanalizační přípojky\na stokové sítě - Polyethylen (PE) - Část 1: Všeobecně\nČSN EN 12201-3+A1 Plastové potrubní systémy pro rozvod vody a pro tlakové kanalizační přípojky\na stokové sítě - Polyethylen (PE) - Část 3: Tvarovky\nČSN EN 12201-5 Plastové potrubní systémy pro rozvod vody a pro tlakové kanalizační přípojky\na stokové sítě - Polyethylen (PE) - Část 5: Vhodnost použití systému\nČSN EN 12390-3 Zkoušení ztvrdlého betonu - Část 3: Pevnost v tlaku zkušebních těles\nČSN EN 13670 Provádění betonových konstrukcí\nČSN EN 50122-2 Ochranná opatření proti účinkům bludných proudů DC trakčních soustav\nČSN EN 50162 Ochrana před korozí bludnými proudy ze stejnosměrných proudových soustav\nČSN EN 50443 Účinky elektromagnetické interference na potrubí způsobené AC vysokonapěťovými\nelektrickými trakčními soustavami\nČSN 03 8370 Snížení korozního účinku bludných proudů na úložná zařízení\nČSN 03 8372 Zásady ochrany proti korozi neliniových zařízení uložených v zemi nebo ve vodě\nČSN 72 2627-1 Cihlářské prvky pro zvláštní účely. Cihly kanalizační – rovnoběžky\nČSN 72 2627-2 Cihlářské prvky pro zvláštní účely. Cihly kanalizační – klíny\nČSN 72 2699 Cihlářské prvky pro zvláštní účely. Trativodky\nČSN 72 3000 Výroba a kontrola betonových stavebních dílců. Společná ustanovení\nČSN 73 0037 Zemní tlak na stavební konstrukce\nČSN 73 0212-4 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 4: Liniové stavební\nobjekty\nČSN 73 0420-1 Přesnost vytyčování staveb - Část 1: Základní požadavky\nČSN 73 0420-2 Přesnost vytyčování staveb - Část 2: Vytyčovací odchylky\nČSN 73 0802 ed.2 Požární bezpečnost staveb - Nevýrobní objekty\nČSN 75 2130 Křížení a souběhy vodních toků s dráhami, pozemními komunikacemi a vedeními\nČSN 75 4210 Hydromeliorace - Odvodňovací kanály\nČSN 75 6230 Podchody stok a kanalizačních přípojek pod dráhou a pozemní komunikací\nČSN 75 6261 Dešťové nádrže\nČSN 75 6551 Odvádění a čištění odpadních vod s obsahem ropných látek\nČSN 75 6909 Zkoušky vodotěsnosti stok a kanalizačních přípojek\n14\nTKP Kapitola 14\nKanalizace, odpadní jímky, čistírny, lapače účinnost od 1.5.2021\nČSN 75 7220 Jakost vod - Kontrola jakosti povrchových vod\nČSN 75 7300 Jakost vod - Chemický a fyzikální rozbor - Všeobecná ustanovení a pokyny\nČSN 80 0016 Plošné textilie. Názvy a definice vzhledových vad\nVnitřní předpisy, v aktuálním znění\nBp1 Pokyny provozovatele dráhy k zajištění bezpečnosti a k ochraně zdraví osob při\nčinnostech a pohybu v jeho prostorách a v prostorách železniční dráhy provozované\nSprávou železnic, státní organizací\nBp2 Předpis o bezpečnosti a ochraně zdraví při práci zaměstnanců Správy železnic,\nstátní organizace\nBp3 Bezpečnost a ochrana zdraví při práci na stavbách a při stavebních činnostech\nv prostorách Správy železnic, státní organizace\n15\n"
+}

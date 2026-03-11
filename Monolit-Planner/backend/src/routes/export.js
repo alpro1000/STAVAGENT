@@ -15,6 +15,14 @@ import { logger } from '../utils/logger.js';
 
 const router = express.Router();
 
+// Custom error class for 404 responses
+class NotFoundError extends Error {
+  constructor(message) {
+    super(message);
+    this.statusCode = 404;
+  }
+}
+
 // Helper function to fetch and calculate positions
 async function getCalculatedPositions(bridge_id) {
   // Get positions (async/await for PostgreSQL)
@@ -23,7 +31,7 @@ async function getCalculatedPositions(bridge_id) {
   `).all(bridge_id);
 
   if (positions.length === 0) {
-    throw new Error('No positions found for this bridge');
+    throw new NotFoundError(`Žádné pozice pro most "${bridge_id}". Přidejte pozice před exportem.`);
   }
 
   // Get bridge metadata (async/await for PostgreSQL)
@@ -72,7 +80,8 @@ router.get('/xlsx', async (req, res) => {
     res.send(buffer);
   } catch (error) {
     logger.error('XLSX export error:', error);
-    res.status(500).json({ error: error.message });
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ error: error.message });
   }
 });
 
@@ -98,7 +107,8 @@ router.post('/save', async (req, res) => {
     });
   } catch (error) {
     logger.error('XLSX save error:', error);
-    res.status(500).json({ error: error.message });
+    const statusCode = error.statusCode || 500;
+    res.status(statusCode).json({ error: error.message });
   }
 });
 

@@ -14,7 +14,8 @@ interface WorkType {
 }
 
 const WORK_TYPES: WorkType[] = [
-  { value: 'beton', label: 'Betonování', unit: 'M3', icon: '🧱' },
+  // 'beton' is hidden from selector - it's auto-created with each part
+  // { value: 'beton', label: 'Betonování', unit: 'M3', icon: '🪨' },
   { value: 'bednění', label: 'Bednění', unit: 'm2', icon: '🪵' },
   { value: 'výztuž', label: 'Výztuž', unit: 't', icon: '⚙️' },
   { value: 'oboustranné (opěry)', label: 'Oboustranné bednění', unit: 'm2', icon: '📐' },

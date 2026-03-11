@@ -1,0 +1,217 @@
+═══════════════════════════════════════════════════════════════════════════════
+CONCRETE-AGENT MEMORY ISSUE - RENDER
+═══════════════════════════════════════════════════════════════════════════════
+
+ALERT: Web Service concrete-agent exceeded its memory limit
+STATUS: Instance automatically restarted
+IMPACT: Temporary unavailability
+
+═══════════════════════════════════════════════════════════════════════════════
+POSSIBLE CAUSES
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Memory leak in application
+2. Traffic spike
+3. Undersized instance type
+
+═══════════════════════════════════════════════════════════════════════════════
+IMMEDIATE ACTIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+1. CHECK RENDER METRICS
+   - Go to: https://dashboard.render.com
+   - Select: concrete-agent service
+   - View: Metrics tab
+   - Look for: Memory usage spikes, CPU usage, request count
+
+2. CHECK LOGS
+   - Render Dashboard → concrete-agent → Logs
+   - Look for:
+     * Large file uploads (PDF parsing)
+     * Multiple concurrent requests
+     * Error messages before restart
+     * Memory warnings
+
+3. CHECK CURRENT INSTANCE TYPE
+   - Render Dashboard → concrete-agent → Settings
+   - Current plan: Free tier (512 MB RAM) or Starter ($7/mo, 512 MB)?
+   - Recommendation: Upgrade to Standard ($25/mo, 2 GB RAM)
+
+═══════════════════════════════════════════════════════════════════════════════
+LIKELY CULPRITS IN CONCRETE-AGENT
+═══════════════════════════════════════════════════════════════════════════════
+
+1. PDF PARSING (MinerU/pdfplumber)
+   - Large PDF files loaded into memory
+   - Multiple concurrent uploads
+   - No memory cleanup after processing
+
+2. LLM RESPONSES
+   - Large context windows (30K chars before fix)
+   - Multiple model fallbacks loading into memory
+   - Response caching
+
+3. DOCUMENT ACCUMULATOR
+   - Multiple documents stored in memory
+   - Hash cache growing unbounded
+   - No cleanup of old documents
+
+═══════════════════════════════════════════════════════════════════════════════
+QUICK FIXES
+═══════════════════════════════════════════════════════════════════════════════
+
+FIX 1: Add Memory Limits to PDF Processing
+File: concrete-agent/packages/core-backend/app/services/document_parser.py
+
+Add max file size check:
+```python
+MAX_FILE_SIZE_MB = 10  # 10 MB limit
+
+def parse_pdf(file_path):
+    file_size = os.path.getsize(file_path) / (1024 * 1024)
+    if file_size > MAX_FILE_SIZE_MB:
+        raise ValueError(f"File too large: {file_size:.1f} MB (max {MAX_FILE_SIZE_MB} MB)")
+    # ... existing code
+```
+
+FIX 2: Add Garbage Collection After Processing
+File: concrete-agent/packages/core-backend/app/api/routes_passport.py
+
+```python
+import gc
+
+@router.post("/generate")
+async def generate_passport(...):
+    try:
+        # ... existing code
+        return result
+    finally:
+        gc.collect()  # Force garbage collection
+```
+
+FIX 3: Limit Concurrent Requests
+File: concrete-agent/packages/core-backend/app/main.py
+
+```python
+from fastapi import FastAPI
+from starlette.middleware.base import BaseHTTPMiddleware
+import asyncio
+
+class ConcurrencyLimitMiddleware(BaseHTTPMiddleware):
+    def __init__(self, app, max_concurrent=3):
+        super().__init__(app)
+        self.semaphore = asyncio.Semaphore(max_concurrent)
+    
+    async def dispatch(self, request, call_next):
+        async with self.semaphore:
+            return await call_next(request)
+
+app.add_middleware(ConcurrencyLimitMiddleware, max_concurrent=3)
+```
+
+FIX 4: Add Memory Monitoring Endpoint
+File: concrete-agent/packages/core-backend/app/api/routes_health.py
+
+```python
+import psutil
+import os
+
+@router.get("/memory")
+async def memory_status():
+    process = psutil.Process(os.getpid())
+    mem_info = process.memory_info()
+    
+    return {
+        "rss_mb": mem_info.rss / (1024 * 1024),  # Resident Set Size
+        "vms_mb": mem_info.vms / (1024 * 1024),  # Virtual Memory Size
+        "percent": process.memory_percent(),
+        "available_mb": psutil.virtual_memory().available / (1024 * 1024)
+    }
+```
+
+═══════════════════════════════════════════════════════════════════════════════
+LONG-TERM SOLUTIONS
+═══════════════════════════════════════════════════════════════════════════════
+
+1. UPGRADE INSTANCE TYPE
+   Current: Free/Starter (512 MB RAM)
+   Recommended: Standard ($25/mo, 2 GB RAM)
+   
+   Why: Python + FastAPI + LLM clients need ~1 GB baseline
+
+2. IMPLEMENT STREAMING RESPONSES
+   - Stream LLM responses instead of buffering
+   - Process PDFs in chunks
+   - Use generators for large data
+
+3. ADD REDIS CACHE
+   - Cache parsed documents
+   - Cache LLM responses
+   - Offload memory to Redis
+
+4. IMPLEMENT RATE LIMITING
+   - Limit requests per IP
+   - Limit concurrent uploads
+   - Queue large file processing
+
+5. OPTIMIZE DEPENDENCIES
+   - Remove unused packages
+   - Use lighter alternatives (e.g., pypdf instead of pdfplumber)
+   - Lazy load LLM clients
+
+═══════════════════════════════════════════════════════════════════════════════
+MONITORING COMMANDS
+═══════════════════════════════════════════════════════════════════════════════
+
+# Check memory usage in logs
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/health/memory
+
+# Monitor Render metrics
+# Go to: https://dashboard.render.com → concrete-agent → Metrics
+
+# Check service status
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/health
+
+═══════════════════════════════════════════════════════════════════════════════
+DECISION TREE
+═══════════════════════════════════════════════════════════════════════════════
+
+IF memory usage < 400 MB normally:
+  → Likely traffic spike or large file
+  → Add file size limits + garbage collection
+  → Monitor for 24 hours
+
+IF memory usage 400-512 MB normally:
+  → Instance too small
+  → Upgrade to Standard (2 GB RAM)
+  → Add monitoring endpoint
+
+IF memory usage grows over time:
+  → Memory leak
+  → Add garbage collection
+  → Profile with memory_profiler
+  → Fix leaking code
+
+═══════════════════════════════════════════════════════════════════════════════
+IMMEDIATE RECOMMENDATION
+═══════════════════════════════════════════════════════════════════════════════
+
+1. Check Render logs NOW (last 1 hour before restart)
+2. Check Render metrics (memory graph)
+3. If spike → add file size limits
+4. If baseline high → upgrade instance
+5. Add memory monitoring endpoint
+6. Monitor for 24 hours
+
+═══════════════════════════════════════════════════════════════════════════════
+COST COMPARISON
+═══════════════════════════════════════════════════════════════════════════════
+
+Free Tier:     $0/mo,  512 MB RAM,  sleeps after 15 min
+Starter:       $7/mo,  512 MB RAM,  no sleep
+Standard:     $25/mo,    2 GB RAM,  no sleep  ← RECOMMENDED
+Pro:          $85/mo,    4 GB RAM,  no sleep
+
+For production AI service with PDF processing: Standard minimum.
+
+═══════════════════════════════════════════════════════════════════════════════

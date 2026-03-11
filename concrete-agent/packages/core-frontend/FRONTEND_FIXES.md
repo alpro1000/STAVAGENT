@@ -395,7 +395,7 @@ npm run build
 **Check**:
 1. Frontend deployed with latest code? (check build timestamp)
 2. Browser cache cleared? (`Ctrl+Shift+R`)
-3. Correct API_BASE_URL in .env? (`VITE_API_URL=https://concrete-agent.onrender.com`)
+3. Correct API_BASE_URL in .env? (`VITE_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app`)
 
 ### Issue: Console doesn't show debug logs
 

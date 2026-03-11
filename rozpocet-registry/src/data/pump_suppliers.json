@@ -1,0 +1,128 @@
+{
+  "suppliers": [
+    {
+      "id": "berger_sadov",
+      "name": "Berger Beton Sadov",
+      "billing_model": "hourly_plus_m3",
+      "pumps": [
+        {
+          "name": "PUMI",
+          "reach_m": 24,
+          "arrival_per_km": 82,
+          "operation_per_h": 2450,
+          "volume_per_m3": 65
+        },
+        {
+          "name": "32-36m",
+          "reach_m": 36,
+          "arrival_per_km": 80,
+          "operation_per_h": 2500,
+          "volume_per_m3": 65
+        },
+        {
+          "name": "38-42m",
+          "reach_m": 42,
+          "arrival_per_km": 80,
+          "operation_per_h": 3600,
+          "volume_per_m3": 65
+        }
+      ],
+      "hose_per_m_per_day": 140,
+      "surcharges": {
+        "saturday_pct": 15,
+        "sunday_pct": 20,
+        "night_pct": 15,
+        "fibreconcrete_per_m3": 50,
+        "slow_down_elbow": 590,
+        "primer_chemical": 500
+      }
+    },
+    {
+      "id": "frischbeton_kv",
+      "name": "Frischbeton KV",
+      "billing_model": "per_15min",
+      "pumps": [
+        {
+          "name": "24-26m PUMI",
+          "reach_m": 26,
+          "arrival_fixed": 2200,
+          "operation_per_15min": 550
+        },
+        {
+          "name": "28m",
+          "reach_m": 28,
+          "arrival_fixed": 2200,
+          "operation_per_15min": 550
+        },
+        {
+          "name": "32m",
+          "reach_m": 32,
+          "arrival_fixed": 2400,
+          "operation_per_15min": 550
+        },
+        {
+          "name": "34-36m",
+          "reach_m": 36,
+          "arrival_fixed": 2480,
+          "operation_per_15min": 630
+        },
+        {
+          "name": "38m",
+          "reach_m": 38,
+          "arrival_fixed": 2720,
+          "operation_per_15min": 630
+        }
+      ],
+      "hose_per_m_per_day": 130,
+      "surcharges": {
+        "night_per_h": 200,
+        "sunday_per_h": 220,
+        "fibreconcrete_per_m3": 50,
+        "slow_down_elbow": 500,
+        "primer_chemical": 500
+      }
+    },
+    {
+      "id": "beton_union",
+      "name": "Beton Union Plzeň",
+      "billing_model": "hourly",
+      "pumps": [
+        {
+          "name": "PUMI 24m",
+          "reach_m": 24,
+          "arrival_fixed": 2500,
+          "arrival_per_km": 50,
+          "operation_per_h": 2200
+        },
+        {
+          "name": "32m",
+          "reach_m": 32,
+          "arrival_fixed": 2500,
+          "arrival_per_km": 50,
+          "operation_per_h": 2400
+        },
+        {
+          "name": "36m",
+          "reach_m": 36,
+          "arrival_fixed": 2800,
+          "arrival_per_km": 50,
+          "operation_per_h": 2600
+        },
+        {
+          "name": "42m",
+          "reach_m": 42,
+          "arrival_fixed": 3200,
+          "arrival_per_km": 50,
+          "operation_per_h": 3000
+        }
+      ],
+      "hose_per_m_per_day": 120,
+      "surcharges": {
+        "saturday": 1500,
+        "sunday": 2000,
+        "night": 1200,
+        "slow_down_elbow": 500
+      }
+    }
+  ]
+}

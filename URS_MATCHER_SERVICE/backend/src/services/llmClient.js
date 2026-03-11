@@ -7,7 +7,7 @@
 import axios from 'axios';
 import { logger } from '../utils/logger.js';
 import { getSystemPrompt, createMatchUrsItemPrompt } from '../prompts/ursMatcher.prompt.js';
-import { getLLMConfig, createLLMClient, getAvailableProviders, getFallbackChain, getModelForTask, getTaskTypes } from '../config/llmConfig.js';
+import { getLLMConfig, createLLMClient, getAvailableProviders, getFallbackChain, getModelForTask, getTaskTypes, onModelChange } from '../config/llmConfig.js';
 import {
   markProviderFailed as cacheMarkProviderFailed,
   isProviderRecentlyFailed as cacheIsProviderRecentlyFailed
@@ -22,6 +22,21 @@ let llmConfig = null;
 let availableProviders = null;
 let fallbackChain = null;
 // NOTE: Removed global currentProviderIndex to fix race condition with concurrent requests
+
+/**
+ * Reset LLM client cache when model changes
+ * Called by llmConfig when user selects a different model
+ */
+function resetLLMClientCache(newModelInfo) {
+  logger.info(`[LLMClient] Model changed to ${newModelInfo.model} (${newModelInfo.provider}) - resetting cache`);
+  llmClient = null;
+  llmConfig = null;
+  availableProviders = null;
+  fallbackChain = null;
+}
+
+// Register for model change notifications
+onModelChange(resetLLMClientCache);
 
 /**
  * Check if a provider recently failed and should be skipped
@@ -357,20 +372,46 @@ export async function callLLMForTask(taskType, systemPrompt, userPrompt, timeout
 
   logger.info(`[LLMClient] Task "${taskType}" → ${taskClient.provider}/${taskClient.model}`);
 
-  // Call with task-specific model
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), effectiveTimeout);
+  // Retry with exponential backoff for 429 rate limiting
+  const MAX_RETRIES = 3;
+  const BASE_DELAY_MS = 2000;
 
-  try {
-    if (taskClient.provider === 'claude') {
-      return await callClaudeAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
-    } else if (taskClient.provider === 'gemini') {
-      return await callGeminiAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
-    } else {
-      return await callOpenAIAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), effectiveTimeout);
+
+    try {
+      let result;
+      if (taskClient.provider === 'claude') {
+        result = await callClaudeAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+      } else if (taskClient.provider === 'gemini') {
+        result = await callGeminiAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+      } else {
+        result = await callOpenAIAPIWithClient(taskClient, systemPrompt, userPrompt, controller);
+      }
+      clearTimeout(timeout);
+      return result;
+    } catch (error) {
+      clearTimeout(timeout);
+      const status = error.response?.status;
+
+      // Retry on 429 (rate limit) or 503 (overloaded) with backoff
+      if ((status === 429 || status === 503) && attempt < MAX_RETRIES) {
+        const delay = BASE_DELAY_MS * Math.pow(2, attempt);
+        logger.warn(`[LLMClient] Task "${taskType}": ${status} rate limited (attempt ${attempt + 1}/${MAX_RETRIES}), retrying in ${delay}ms...`);
+        await new Promise(resolve => setTimeout(resolve, delay));
+        continue;
+      }
+
+      // On final failure, fall back to main provider chain
+      if (attempt === MAX_RETRIES && (status === 429 || status === 503)) {
+        logger.warn(`[LLMClient] Task "${taskType}": ${taskClient.provider} exhausted retries, falling back to provider chain`);
+        initializeLLMClient();
+        return await callLLMWithTimeout(systemPrompt, userPrompt, effectiveTimeout);
+      }
+
+      throw error;
     }
-  } finally {
-    clearTimeout(timeout);
   }
 }
 
@@ -461,177 +502,9 @@ async function callOpenAIAPIWithClient(client, systemPrompt, userPrompt, control
 // Export task types for external use
 export { TASKS };
 
-/**
- * Call Claude API (Anthropic)
- */
-async function callClaudeAPI(systemPrompt, userPrompt, controller) {
-  try {
-    const response = await axios.post(
-      llmClient.apiUrl,
-      {
-        model: llmClient.model,
-        max_tokens: 4096,
-        system: systemPrompt,
-        messages: [
-          {
-            role: 'user',
-            content: userPrompt
-          }
-        ]
-      },
-      {
-        headers: llmClient.headers,
-        timeout: llmConfig.timeoutMs,
-        signal: controller.signal
-      }
-    );
-
-    if (!response.data || !response.data.content || response.data.content.length === 0) {
-      logger.error('[LLMClient] Invalid Claude API response - no content', {
-        status: response.status,
-        provider: 'claude',
-        model: llmClient.model
-      });
-      throw new Error('Invalid Claude API response: no content returned');
-    }
-
-    return response.data.content[0].text;
-  } catch (error) {
-    logger.error('[LLMClient] Claude API call failed', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      provider: 'claude',
-      model: llmClient.model,
-      message: error.message
-    });
-    throw error;
-  }
-}
-
-/**
- * Call OpenAI API
- */
-async function callOpenAIAPI(systemPrompt, userPrompt, controller) {
-  try {
-    const response = await axios.post(
-      llmClient.apiUrl,
-      {
-        model: llmClient.model,
-        messages: [
-          {
-            role: 'system',
-            content: systemPrompt
-          },
-          {
-            role: 'user',
-            content: userPrompt
-          }
-        ],
-        temperature: 0.3,  // Lower temperature for more deterministic responses
-        max_tokens: 4096
-      },
-      {
-        headers: llmClient.headers,
-        timeout: llmConfig.timeoutMs,
-        signal: controller.signal
-      }
-    );
-
-    if (!response.data || !response.data.choices || response.data.choices.length === 0) {
-      logger.error('[LLMClient] Invalid OpenAI API response - no choices', {
-        status: response.status,
-        provider: 'openai',
-        model: llmClient.model
-      });
-      throw new Error('Invalid OpenAI API response: no choices in response');
-    }
-
-    return response.data.choices[0].message.content;
-  } catch (error) {
-    logger.error('[LLMClient] OpenAI API call failed', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      provider: 'openai',
-      model: llmClient.model,
-      message: error.message
-    });
-    throw error;
-  }
-}
-
-/**
- * Call Google Gemini API
- * Note: API key is sent in x-goog-api-key header for security (not in URL)
- */
-async function callGeminiAPI(systemPrompt, userPrompt, controller) {
-  // Gemini API endpoint - no key in URL for security
-  const apiUrl = `${llmClient.apiUrl}/${llmClient.model}:generateContent`;
-
-  // Create headers with API key in secure header (not URL)
-  const headers = {
-    ...llmClient.headers,
-    'x-goog-api-key': llmClient.apiKey  // Gemini API secure header
-  };
-
-  try {
-    const response = await axios.post(
-      apiUrl,
-      {
-        system_instruction: {
-          parts: {
-            text: systemPrompt
-          }
-        },
-        contents: {
-          parts: [
-            {
-              text: userPrompt
-            }
-          ]
-        },
-        generationConfig: {
-          temperature: 0.3,
-          maxOutputTokens: 4096
-        }
-      },
-      {
-        headers: headers,
-        timeout: llmConfig.timeoutMs,
-        signal: controller.signal
-      }
-    );
-
-    if (!response.data || !response.data.candidates || response.data.candidates.length === 0) {
-      logger.error('[LLMClient] Invalid Gemini API response - no candidates', {
-        status: response.status,
-        provider: 'gemini',
-        model: llmClient.model
-      });
-      throw new Error('Invalid Gemini API response: no candidates in response');
-    }
-
-    const content = response.data.candidates[0].content;
-    if (!content || !content.parts || content.parts.length === 0) {
-      logger.error('[LLMClient] Invalid Gemini API response - no content', {
-        status: response.status,
-        provider: 'gemini',
-        model: llmClient.model
-      });
-      throw new Error('No content in Gemini response');
-    }
-
-    return content.parts[0].text;
-  } catch (error) {
-    logger.error('[LLMClient] Gemini API call failed', {
-      status: error.response?.status,
-      statusText: error.response?.statusText,
-      provider: 'gemini',
-      model: llmClient.model,
-      message: error.message
-    });
-    throw error;
-  }
-}
+// NOTE: Legacy callClaudeAPI, callOpenAIAPI, callGeminiAPI removed (dead code).
+// All API calls now route through callClaudeAPIWithClient, callOpenAIAPIWithClient,
+// callGeminiAPIWithClient via callLLMProvider().
 
 /**
  * Parse LLM response for MATCH_URS_ITEM mode

@@ -1,0 +1,162 @@
+{
+  "meta": {
+    "supplier": "BERGER BETON spol. s r.o.",
+    "plant": "Závod 03 K.Vary – Sadov",
+    "buyer": "BERGER BOHEMIA a.s. / Oleksandr Prokopov",
+    "offer_number": "01/26/KV/Sp",
+    "stavba": "D6 Olšová Vrata – Karlovy Vary, cca 10 km",
+    "date": "2026-01-29",
+    "valid_to": "2026-12-31",
+    "currency": "CZK",
+    "prices_include": "doprava + vykládka do 30 min",
+    "min_volume_m3": 6,
+    "underfill_surcharge_per_m3": 400,
+    "waiting_over_30_to_45min_per_15min": 300,
+    "waiting_over_45min_per_15min": 400,
+    "payment_days": 30,
+    "vat_rate": 0.21
+  },
+  "concrete_franko_stavba": [
+    {
+      "class": "C8/10",
+      "env": "X0",
+      "cons": "S3",
+      "Dmax": 22,
+      "qty_m3": 855,
+      "fco_stavba": 3142
+    },
+    {
+      "class": "C12/15",
+      "env": "X0",
+      "cons": "S3",
+      "Dmax": 22,
+      "qty_m3": 1318,
+      "fco_stavba": 3265
+    },
+    {
+      "class": "C16/20",
+      "env": "X0",
+      "cons": "S3",
+      "Dmax": 22,
+      "qty_m3": 151,
+      "fco_stavba": 3388
+    },
+    {
+      "class": "C20/25",
+      "env": "XC1",
+      "cons": "S3",
+      "Dmax": 22,
+      "qty_m3": 679,
+      "fco_stavba": 3472
+    },
+    {
+      "class": "C25/30",
+      "env": "XA1,XC4,XF1",
+      "cons": "S3-S4",
+      "Dmax": 22,
+      "qty_m3": 2756,
+      "fco_stavba": 3821
+    },
+    {
+      "class": "C25/30",
+      "env": "XA2,XF3",
+      "cons": "S3-S4",
+      "Dmax": 22,
+      "qty_m3": 3671,
+      "fco_stavba": 4039
+    },
+    {
+      "class": "C25/30",
+      "env": "XF2",
+      "cons": "S3-S4",
+      "Dmax": 22,
+      "qty_m3": 577,
+      "fco_stavba": 4039
+    },
+    {
+      "class": "C30/37",
+      "env": "XA2,XF3",
+      "cons": "S3-S4",
+      "Dmax": 22,
+      "qty_m3": 7823,
+      "fco_stavba": 4264
+    },
+    {
+      "class": "C30/37",
+      "env": "XA3",
+      "cons": "S3-S4",
+      "Dmax": 22,
+      "qty_m3": 334,
+      "fco_stavba": 4277,
+      "cement": "CEM III"
+    },
+    {
+      "class": "C30/37",
+      "env": "XF2-4",
+      "cons": "S3-S4",
+      "Dmax": 22,
+      "qty_m3": 16564,
+      "fco_stavba": 4277,
+      "cement": "CEM I"
+    },
+    {
+      "class": "C35/45",
+      "env": "XF2-4",
+      "cons": "S3-S4",
+      "Dmax": 22,
+      "qty_m3": 16613,
+      "fco_stavba": 4982,
+      "cement": "CEM I"
+    }
+  ],
+  "concrete_bez_dopravy": [
+    {
+      "class": "C12/15n",
+      "env": "X0",
+      "cons": "S1",
+      "Dmax": 8,
+      "qty_m3": 2381,
+      "price_wo_transport": 2808
+    },
+    {
+      "class": "C16/20n",
+      "env": "XF1",
+      "cons": "S1",
+      "Dmax": 8,
+      "qty_m3": 76,
+      "price_wo_transport": 2877
+    },
+    {
+      "class": "C20/25n",
+      "env": "XF3",
+      "cons": "S1",
+      "Dmax": 8,
+      "qty_m3": 3482,
+      "price_wo_transport": 2965
+    },
+    {
+      "class": "C25/30n",
+      "env": "XF3",
+      "cons": "S1",
+      "Dmax": 8,
+      "qty_m3": 463,
+      "price_wo_transport": 3015
+    },
+    {
+      "class": "MCB",
+      "env": "",
+      "cons": "S1",
+      "Dmax": 22,
+      "qty_m3": 156,
+      "price_wo_transport": 2391
+    },
+    {
+      "class": "SC C8/10",
+      "env": "",
+      "cons": "S1",
+      "Dmax": 22,
+      "qty_m3": 265,
+      "price_wo_transport": 2287
+    }
+  ]
+}

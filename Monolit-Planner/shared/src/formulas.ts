@@ -3,7 +3,8 @@
  * Core business logic for position calculations
  */
 
-import { Position, HeaderKPI } from './types';
+import { Position, HeaderKPI, FormworkCalculatorRow } from './types';
+import { scheduleElement } from './calculators/element-scheduler.js';
 
 /**
  * Calculate labor hours for a position
@@ -172,11 +173,19 @@ export function calculateWeightedAverage(
   field: keyof Position,
   weightField: 'concrete_m3' = 'concrete_m3'
 ): number {
-  const validPositions = positions.filter(p =>
-    p[weightField] !== undefined &&
-    p[weightField] !== 0 &&
-    p[field] !== undefined
-  );
+  const validPositions = positions.filter(p => {
+    const weight = p[weightField];
+    const value = p[field];
+
+    // Type safety: ensure both weight and value are numbers
+    return (
+      typeof weight === 'number' &&
+      typeof value === 'number' &&
+      weight !== 0 &&
+      !isNaN(weight) &&
+      !isNaN(value)
+    );
+  });
 
   if (validPositions.length === 0) return 0;
 
@@ -201,7 +210,9 @@ export function calculateEstimatedMonths(
   days_per_month: number
 ): number {
   const cost_per_day = avg_crew_size * avg_wage_czk_ph * avg_shift_hours;
-  if (cost_per_day === 0) return 0;
+
+  // Prevent division by zero
+  if (cost_per_day === 0 || days_per_month === 0) return 0;
 
   const total_days = sum_kros_total_czk / cost_per_day;
   return total_days / days_per_month;
@@ -209,13 +220,16 @@ export function calculateEstimatedMonths(
 
 /**
  * ⭐ Calculate duration in weeks
- * Formula: estimated_months × days_per_month / 7
+ * Formula:
+ *   days_per_month=30 (calendar days) → divide by 7 (calendar days/week)
+ *   days_per_month=22 (working days)  → divide by 5 (working days/week)
  */
 export function calculateEstimatedWeeks(
   estimated_months: number,
   days_per_month: number
 ): number {
-  return (estimated_months * days_per_month) / 7;
+  const days_per_week = days_per_month === 22 ? 5 : 7;
+  return (estimated_months * days_per_month) / days_per_week;
 }
 
 /**
@@ -283,4 +297,173 @@ export function calculateHeaderKPI(
     days_per_month: days_per_month_mode,
     rho_t_per_m3
   };
+}
+
+// ============================================================
+// FORMWORK CALCULATOR FORMULAS
+// ============================================================
+
+/**
+ * Calculate number of tacts (cycles) for formwork
+ * Default: ceil(total_area / set_area), but user can override
+ */
+export function calculateFormworkTacts(
+  total_area_m2: number,
+  set_area_m2: number
+): number {
+  if (set_area_m2 <= 0) return 1;
+  return Math.ceil(total_area_m2 / set_area_m2);
+}
+
+/**
+ * Calculate formwork term in days (pure formwork work only)
+ * termín = taktů × dní_na_takt
+ */
+export function calculateFormworkTerm(
+  num_tacts: number,
+  days_per_tact: number
+): number {
+  return num_tacts * days_per_tact;
+}
+
+/**
+ * Calculate monthly rental cost per set
+ * měsíční_nájem_sada = sada_m² × cena_Kč/m²
+ */
+export function calculateMonthlyRentalPerSet(
+  set_area_m2: number,
+  rental_czk_per_m2_month: number
+): number {
+  return set_area_m2 * rental_czk_per_m2_month;
+}
+
+/**
+ * Calculate final rental cost for the usage period
+ * konečný_nájem = měsíční_nájem_sada × (termín_dní / 30)
+ */
+export function calculateFinalRentalCost(
+  monthly_rental_per_set: number,
+  term_days: number
+): number {
+  if (term_days <= 0) return 0;
+  return monthly_rental_per_set * (term_days / 30);
+}
+
+/**
+ * Calculate total element duration (all work types + curing)
+ * Used to determine total element calendar duration for rental calculation
+ *
+ * Two modes:
+ *
+ * 1. RCPSP Scheduler (when num_tacts available in formwork_rental metadata):
+ *    Builds a DAG of activities per tact, schedules with resource constraints
+ *    (formwork sets, crews), finds critical path. Models parallel work on
+ *    different sets during curing and rebar overlap with assembly.
+ *
+ * 2. Simple formula (fallback):
+ *    Celk. doba = max(bednění, výztuž) + beton + effectiveCuring + jiné
+ *    Parallel prep + curing divided by num_sets.
+ *
+ * Metadata for RCPSP mode (in formwork_rental position):
+ *   { type: "formwork_rental", num_tacts: 4, stripping_days: 1, rebar_lag_pct: 50 }
+ */
+export function calculateElementTotalDays(
+  partPositions: Position[]
+): number {
+  let bedneniDays = 0;
+  let vyztuzDays = 0;
+  let betonDays = 0;
+  let maxCuringDays = 0;
+  let otherDays = 0;
+  let maxNumSets = 1;
+  let numTacts = 0;
+  let strippingDays = 1;
+  let rebarLagPct = 50;
+
+  for (const pos of partPositions) {
+    const days = pos.days || 0;
+    const subtype = pos.subtype;
+
+    if (subtype === 'bednění' || subtype?.startsWith('oboustranné')) {
+      bedneniDays += days;
+    } else if (subtype === 'výztuž') {
+      vyztuzDays += days;
+    } else if (subtype === 'beton') {
+      betonDays += days;
+      const curing = (pos as any).curing_days ?? 3;
+      if (curing > maxCuringDays) maxCuringDays = curing;
+    } else if (subtype === 'jiné') {
+      // "jiné" with rental metadata don't count towards element time
+      // they are a result of the calculator, not a work activity
+      const meta = (pos as any).metadata;
+      const parsed = typeof meta === 'string' ? safeParseMeta(meta) : meta;
+      const isFormworkRental = parsed && parsed.type === 'formwork_rental';
+      if (isFormworkRental) {
+        // Extract num_sets from rental position (stored as qty)
+        const sets = pos.qty || 1;
+        if (sets > maxNumSets) maxNumSets = sets;
+        // Extract RCPSP scheduler params if available
+        if (parsed.num_tacts && parsed.num_tacts > 0) {
+          numTacts = parsed.num_tacts;
+          if (typeof parsed.stripping_days === 'number') strippingDays = parsed.stripping_days;
+          if (typeof parsed.rebar_lag_pct === 'number') rebarLagPct = parsed.rebar_lag_pct;
+        }
+      } else {
+        otherDays += days;
+      }
+    }
+  }
+
+  // --- Mode 1: RCPSP Scheduler (graph-based, parallel sets + crews) ---
+  if (numTacts > 0 && maxNumSets > 0 && (bedneniDays > 0 || betonDays > 0)) {
+    const result = scheduleElement({
+      num_tacts: numTacts,
+      num_sets: maxNumSets,
+      assembly_days: bedneniDays / numTacts,
+      rebar_days: vyztuzDays > 0 ? vyztuzDays / numTacts : 0,
+      concrete_days: betonDays > 0 ? betonDays / numTacts : 1,
+      curing_days: maxCuringDays,
+      stripping_days: strippingDays,
+      rebar_lag_pct: rebarLagPct,
+    });
+    return result.total_days + otherDays;
+  }
+
+  // --- Mode 2: Simple parallel formula (fallback) ---
+  // Effective curing: divided by num_sets (parallel work with multiple sets)
+  const effectiveCuring = maxNumSets > 1
+    ? maxCuringDays / maxNumSets
+    : maxCuringDays;
+
+  // Bednění and výztuž run in parallel (different crews, overlapping work)
+  // Critical path = the longer of the two
+  const criticalPrep = Math.max(bedneniDays, vyztuzDays);
+
+  return criticalPrep + betonDays + effectiveCuring + otherDays;
+}
+
+/** Safely parse JSON metadata string */
+function safeParseMeta(meta: string): Record<string, any> | null {
+  try {
+    return JSON.parse(meta);
+  } catch {
+    // Legacy format: check for substring match
+    if (meta.includes('formwork_rental')) {
+      return { type: 'formwork_rental' };
+    }
+    return null;
+  }
+}
+
+/**
+ * Generate KROS description for formwork rental position
+ */
+export function generateFormworkKrosDescription(
+  row: Pick<FormworkCalculatorRow, 'construction_name' | 'system_name' | 'system_height' | 'rental_czk_per_m2_month' | 'set_area_m2' | 'monthly_rental_per_set'>
+): string {
+  const price = row.rental_czk_per_m2_month.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const setArea = row.set_area_m2.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const monthlyRental = row.monthly_rental_per_set.toLocaleString('cs-CZ', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+  return `Bednění - ${row.construction_name} (${row.system_name} ${row.system_height}; ${price} Kč/m2) sada - ${setArea} m2 => ${monthlyRental} Kč/sada/měsíc`;
 }

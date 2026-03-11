@@ -1,0 +1,470 @@
+{
+  "metadata": {
+    "source": "Tarif-delnici-02.2026.pdf",
+    "company": "BERGER BOHEMIA a.s.",
+    "valid_from": "2026-02-19",
+    "currency": "CZK",
+    "note": "Příplatky bez stravenkového paušálu, bez ubytování a bez jízdného"
+  },
+  "categories": [
+    {
+      "category": "Řidiči / Fahrer",
+      "roles": [
+        {
+          "role": "skl. návěs / Kippsattel",
+          "brutto_min": 226,
+          "brutto_max": 247,
+          "brutto_avg": 233,
+          "with_supplements_min": 387,
+          "with_supplements_max": 423,
+          "with_supplements_avg": 399
+        },
+        {
+          "role": "auto s hydr. rukou, podvalníky / Abrollkipper, Tieflader",
+          "brutto_min": 229,
+          "brutto_max": 285,
+          "brutto_avg": 261,
+          "with_supplements_min": 392,
+          "with_supplements_max": 487,
+          "with_supplements_avg": 448
+        },
+        {
+          "role": "Cisterna na naftu / Dieseltankwagen (ADR)",
+          "brutto_min": 229,
+          "brutto_max": 235,
+          "brutto_avg": 232,
+          "with_supplements_min": 392,
+          "with_supplements_max": 403,
+          "with_supplements_avg": 398
+        }
+      ]
+    },
+    {
+      "category": "Strojníci / Maschinisten",
+      "roles": [
+        {
+          "role": "Grader, Menk",
+          "brutto_min": 356,
+          "brutto_max": 356,
+          "brutto_avg": 356,
+          "with_supplements_min": 610,
+          "with_supplements_max": 610,
+          "with_supplements_avg": 610
+        },
+        {
+          "role": "rypadla a válce / Bagger und Walzen",
+          "brutto_min": 271,
+          "brutto_max": 336,
+          "brutto_avg": 300,
+          "with_supplements_min": 464,
+          "with_supplements_max": 576,
+          "with_supplements_avg": 514
+        },
+        {
+          "role": "dozery / Raupen",
+          "brutto_min": 251,
+          "brutto_max": 312,
+          "brutto_avg": 282,
+          "with_supplements_min": 430,
+          "with_supplements_max": 534,
+          "with_supplements_avg": 483
+        }
+      ]
+    },
+    {
+      "category": "Asfaltová četa / Schwarzdeckenbau",
+      "roles": [
+        {
+          "role": "pomocník / Helfer",
+          "brutto_min": 237,
+          "brutto_max": 287,
+          "brutto_avg": 259,
+          "with_supplements_min": 406,
+          "with_supplements_max": 491,
+          "with_supplements_avg": 511
+        },
+        {
+          "role": "strojník / Maschinist",
+          "brutto_min": 265,
+          "brutto_max": 287,
+          "brutto_avg": 273,
+          "with_supplements_min": 453,
+          "with_supplements_max": 491,
+          "with_supplements_avg": 468
+        },
+        {
+          "role": "Řidič Unimog / Unimogfahrer",
+          "brutto_min": 287,
+          "brutto_max": 287,
+          "brutto_avg": 287,
+          "with_supplements_min": 491,
+          "with_supplements_max": 491,
+          "with_supplements_avg": 491
+        },
+        {
+          "role": "Polier",
+          "brutto_min": 337,
+          "brutto_max": 337,
+          "brutto_avg": 337,
+          "with_supplements_min": 577,
+          "with_supplements_max": 577,
+          "with_supplements_avg": 577
+        }
+      ]
+    },
+    {
+      "category": "Silniční stavitelství / Tiefbau",
+      "roles": [
+        {
+          "role": "pomocník / Helfer",
+          "brutto_min": 179,
+          "brutto_max": 244,
+          "brutto_avg": 205,
+          "with_supplements_min": 306,
+          "with_supplements_max": 417,
+          "with_supplements_avg": 351
+        },
+        {
+          "role": "dělník+strojník / Bauarbeiter+Maschinist",
+          "brutto_min": 197,
+          "brutto_max": 372,
+          "brutto_avg": 238,
+          "with_supplements_min": 338,
+          "with_supplements_max": 637,
+          "with_supplements_avg": 408
+        },
+        {
+          "role": "zedník / Maurer",
+          "brutto_min": 200,
+          "brutto_max": 246,
+          "brutto_avg": 229,
+          "with_supplements_min": 342,
+          "with_supplements_max": 421,
+          "with_supplements_avg": 393
+        },
+        {
+          "role": "tesař / Zimmermann",
+          "brutto_min": 215,
+          "brutto_max": 277,
+          "brutto_avg": 236,
+          "with_supplements_min": 369,
+          "with_supplements_max": 475,
+          "with_supplements_avg": 404
+        },
+        {
+          "role": "předák / Vorarbeiter",
+          "brutto_min": 289,
+          "brutto_max": 326,
+          "brutto_avg": 301,
+          "with_supplements_min": 495,
+          "with_supplements_max": 558,
+          "with_supplements_avg": 516
+        },
+        {
+          "role": "stavbyvedoucí (polier) / Bauleiter (Polier)",
+          "brutto_min": 302,
+          "brutto_max": 330,
+          "brutto_avg": 316,
+          "with_supplements_min": 518,
+          "with_supplements_max": 565,
+          "with_supplements_avg": 541
+        },
+        {
+          "role": "Polier",
+          "brutto_min": 280,
+          "brutto_max": 401,
+          "brutto_avg": 330,
+          "with_supplements_min": 480,
+          "with_supplements_max": 687,
+          "with_supplements_avg": 565
+        }
+      ]
+    },
+    {
+      "category": "Silniční stavitelství-Morava / Tiefbau-Morava",
+      "roles": [
+        {
+          "role": "pomocník / Helfer",
+          "brutto_min": 194,
+          "brutto_max": 194,
+          "brutto_avg": 194,
+          "with_supplements_min": 333,
+          "with_supplements_max": 333,
+          "with_supplements_avg": 333
+        },
+        {
+          "role": "dělník+strojník / Bauarbeiter+Maschinist",
+          "brutto_min": 229,
+          "brutto_max": 229,
+          "brutto_avg": 229,
+          "with_supplements_min": 392,
+          "with_supplements_max": 392,
+          "with_supplements_avg": 392
+        },
+        {
+          "role": "zedník / Maurer",
+          "brutto_min": 210,
+          "brutto_max": 257,
+          "brutto_avg": 226,
+          "with_supplements_min": 360,
+          "with_supplements_max": 441,
+          "with_supplements_avg": 387
+        },
+        {
+          "role": "tesař / Zimmermann",
+          "brutto_min": 221,
+          "brutto_max": 221,
+          "brutto_avg": 221,
+          "with_supplements_min": 378,
+          "with_supplements_max": 378,
+          "with_supplements_avg": 378
+        },
+        {
+          "role": "stavbyvedoucí (polier) / Bauleiter (Polier)",
+          "brutto_min": 323,
+          "brutto_max": 323,
+          "brutto_avg": 323,
+          "with_supplements_min": 554,
+          "with_supplements_max": 554,
+          "with_supplements_avg": 554
+        },
+        {
+          "role": "Polier",
+          "brutto_min": 271,
+          "brutto_max": 271,
+          "brutto_avg": 271,
+          "with_supplements_min": 464,
+          "with_supplements_max": 464,
+          "with_supplements_avg": 464
+        }
+      ]
+    },
+    {
+      "category": "Pozemní stavitelství / Hochbau",
+      "roles": [
+        {
+          "role": "stavební dělník / Bauarbeiter",
+          "brutto_min": 226,
+          "brutto_max": 226,
+          "brutto_avg": 226,
+          "with_supplements_min": 387,
+          "with_supplements_max": 387,
+          "with_supplements_avg": 387
+        },
+        {
+          "role": "zedník / Maurer",
+          "brutto_min": 188,
+          "brutto_max": 242,
+          "brutto_avg": 185,
+          "with_supplements_min": 322,
+          "with_supplements_max": 414,
+          "with_supplements_avg": 317
+        },
+        {
+          "role": "Tesař / Zimmermann",
+          "brutto_min": 188,
+          "brutto_max": 257,
+          "brutto_avg": 218,
+          "with_supplements_min": 322,
+          "with_supplements_max": 441,
+          "with_supplements_avg": 373
+        },
+        {
+          "role": "strojník, zední, tesař / Maschinist, Mauer, Zimmermann",
+          "brutto_min": 264,
+          "brutto_max": 264,
+          "brutto_avg": 264,
+          "with_supplements_min": 451,
+          "with_supplements_max": 451,
+          "with_supplements_avg": 451
+        },
+        {
+          "role": "asistent stavbyvedoucího / Bauleiterassistent",
+          "brutto_min": 287,
+          "brutto_max": 287,
+          "brutto_avg": 287,
+          "with_supplements_min": 491,
+          "with_supplements_max": 491,
+          "with_supplements_avg": 491
+        },
+        {
+          "role": "stavbyvedoucí (polier) / Bauleiter (Polier)",
+          "brutto_min": 302,
+          "brutto_max": 370,
+          "brutto_avg": 337,
+          "with_supplements_min": 518,
+          "with_supplements_max": 633,
+          "with_supplements_avg": 576
+        },
+        {
+          "role": "Polier",
+          "brutto_min": 200,
+          "brutto_max": 295,
+          "brutto_avg": 253,
+          "with_supplements_min": 342,
+          "with_supplements_max": 505,
+          "with_supplements_avg": 434
+        }
+      ]
+    },
+    {
+      "category": "Mostní stavitelství / Brückenbau",
+      "roles": [
+        {
+          "role": "strojník / Maschinist",
+          "brutto_min": 301,
+          "brutto_max": 301,
+          "brutto_avg": 301,
+          "with_supplements_min": 516,
+          "with_supplements_max": 516,
+          "with_supplements_avg": 516
+        },
+        {
+          "role": "zedník / Maurer",
+          "brutto_min": 188,
+          "brutto_max": 320,
+          "brutto_avg": 254,
+          "with_supplements_min": 322,
+          "with_supplements_max": 549,
+          "with_supplements_avg": 435
+        },
+        {
+          "role": "Tesař / Zimmermann",
+          "brutto_min": 158,
+          "brutto_max": 315,
+          "brutto_avg": 244,
+          "with_supplements_min": 270,
+          "with_supplements_max": 540,
+          "with_supplements_avg": 418
+        },
+        {
+          "role": "stavbyvedoucí (polier) / Bauleiter (Polier)",
+          "brutto_min": 294,
+          "brutto_max": 373,
+          "brutto_avg": 325,
+          "with_supplements_min": 504,
+          "with_supplements_max": 639,
+          "with_supplements_avg": 556
+        },
+        {
+          "role": "Polier",
+          "brutto_min": 210,
+          "brutto_max": 251,
+          "brutto_avg": 230,
+          "with_supplements_min": 360,
+          "with_supplements_max": 430,
+          "with_supplements_avg": 395
+        }
+      ]
+    },
+    {
+      "category": "Železniční stavby / Bahnbau",
+      "roles": [
+        {
+          "role": "zedník / Maurer",
+          "brutto_min": 206,
+          "brutto_max": 209,
+          "brutto_avg": 207,
+          "with_supplements_min": 353,
+          "with_supplements_max": 358,
+          "with_supplements_avg": 355
+        },
+        {
+          "role": "stavební dělník / Bauarbeiter",
+          "brutto_min": 194,
+          "brutto_max": 253,
+          "brutto_avg": 224,
+          "with_supplements_min": 333,
+          "with_supplements_max": 433,
+          "with_supplements_avg": 383
+        },
+        {
+          "role": "stavbyvedoucí (polier) / Bauleiter (Polier)",
+          "brutto_min": 362,
+          "brutto_max": 362,
+          "brutto_avg": 362,
+          "with_supplements_min": 621,
+          "with_supplements_max": 621,
+          "with_supplements_avg": 621
+        },
+        {
+          "role": "Polier",
+          "brutto_min": 183,
+          "brutto_max": 291,
+          "brutto_avg": 257,
+          "with_supplements_min": 313,
+          "with_supplements_max": 498,
+          "with_supplements_avg": 440
+        }
+      ]
+    },
+    {
+      "category": "Kolejové stavby / Gleisbau",
+      "roles": [
+        {
+          "role": "traťový dělník / Gleisarbeiter",
+          "brutto_min": 235,
+          "brutto_max": 242,
+          "brutto_avg": 238,
+          "with_supplements_min": 403,
+          "with_supplements_max": 414,
+          "with_supplements_avg": 408
+        },
+        {
+          "role": "zedník / Maurer",
+          "brutto_min": 203,
+          "brutto_max": 203,
+          "brutto_avg": 203,
+          "with_supplements_min": 347,
+          "with_supplements_max": 347,
+          "with_supplements_avg": 347
+        },
+        {
+          "role": "strojník, traťový dělník / Maschinist, Gleisarbeiter",
+          "brutto_min": 221,
+          "brutto_max": 301,
+          "brutto_avg": 256,
+          "with_supplements_min": 378,
+          "with_supplements_max": 516,
+          "with_supplements_avg": 439
+        },
+        {
+          "role": "zámečník, traťový dělník / Schweisser, Gleisarbeiter",
+          "brutto_min": 235,
+          "brutto_max": 236,
+          "brutto_avg": 236,
+          "with_supplements_min": 403,
+          "with_supplements_max": 405,
+          "with_supplements_avg": 404
+        },
+        {
+          "role": "předák / Vorarbeiter",
+          "brutto_min": 370,
+          "brutto_max": 370,
+          "brutto_avg": 370,
+          "with_supplements_min": 633,
+          "with_supplements_max": 633,
+          "with_supplements_avg": 633
+        },
+        {
+          "role": "Polier",
+          "brutto_min": 205,
+          "brutto_max": 370,
+          "brutto_avg": 277,
+          "with_supplements_min": 351,
+          "with_supplements_max": 633,
+          "with_supplements_avg": 475
+        },
+        {
+          "role": "stavbyvedoucí / Bauleiter",
+          "brutto_min": 347,
+          "brutto_max": 393,
+          "brutto_avg": 363,
+          "with_supplements_min": 594,
+          "with_supplements_max": 673,
+          "with_supplements_avg": 622
+        }
+      ]
+    }
+  ]
+}

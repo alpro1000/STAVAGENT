@@ -1,0 +1,707 @@
+/**
+ * Formwork Assistant API — v3
+ * POST /api/formwork-assistant
+ *
+ * Calculation model (ČSN EN 13670):
+ *
+ *   CYCLE per capture (all phases in FULL WORK DAYS — ceil()):
+ *     [MONTÁŽ A] → [ARMOVÁNÍ R] → [BETONÁŽ B=1] → [ZRÁNÍ C] → [DEMONTÁŽ D]
+ *     cycle_days = A + R + B + C + D
+ *
+ *   KEY FIX v3: All days are ceil() — crews work full shifts, no 0.96 days.
+ *   KEY FIX v3: set_area_m2 is OPTIONAL — auto-derived from total_area / pocet_taktu.
+ *   KEY FIX v3: Rebar days use ceil(), min 1 day when rebar_kg > 0.
+ *   KEY FIX v3: Strategy B cadence accounts for rebar as bottleneck.
+ *   KEY FIX v3: Bottleneck analysis + crew optimization table.
+ *   KEY FIX v3: Rental cost uses KB prices (Kč/m²/month), min 1 month billing.
+ *
+ *   3 STRATEGIES:
+ *     A — Sequential (1 set):   total = N × cycle
+ *     B — Overlapping (2 sets): cadence = max(A+D, R+B+C), total = cycle + (N-1)×cadence
+ *     C — Parallel (N sets):    total = cycle
+ *
+ *   AUTO-OPTIMIZATION: compare min cost vs min time
+ */
+
+import express from 'express';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
+import { logger } from '../utils/logger.js';
+import {
+  calculateConstructionCuring,
+  CONSTRUCTION_LABELS as SHARED_CONSTRUCTION_LABELS,
+  SEASON_LABELS as SHARED_SEASON_LABELS,
+  CONSTRUCTION_ORIENTATION,
+  PROPS_MIN_DAYS as SHARED_PROPS_MIN_DAYS,
+  calculateCadenceB,
+  findFormworkSystem as findSharedFormworkSystem,
+  FORMWORK_SYSTEMS as SHARED_FORMWORK_SYSTEMS,
+} from '@stavagent/monolit-shared';
+
+const router = express.Router();
+
+const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
+const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT || '60000', 10);
+
+// ── Assembly norms (h/m²) ───────────────────────────────────────────────────
+
+const ASSEMBLY_NORMS_FALLBACK = {
+  'Frami Xlife':       { h_m2: 0.72, disassembly_h_m2: 0.25, disassembly_ratio: 0.35, rental_czk_m2_month: 507.20 },
+  'Framax Xlife':      { h_m2: 0.55, disassembly_h_m2: 0.17, disassembly_ratio: 0.30, rental_czk_m2_month: 520.00 },
+  'TRIO':              { h_m2: 0.50, disassembly_h_m2: 0.15, disassembly_ratio: 0.30, rental_czk_m2_month: 480.00 },
+  'Top 50':            { h_m2: 0.60, disassembly_h_m2: 0.21, disassembly_ratio: 0.35, rental_czk_m2_month: 380.00 },
+  'Dokaflex':          { h_m2: 0.45, disassembly_h_m2: 0.14, disassembly_ratio: 0.30, rental_czk_m2_month: 350.00 },
+  'SL-1 Sloupové':     { h_m2: 0.80, disassembly_h_m2: 0.28, disassembly_ratio: 0.35, rental_czk_m2_month: 580.00 },
+  'Tradiční tesařské': { h_m2: 1.30, disassembly_h_m2: 0.65, disassembly_ratio: 0.50, rental_czk_m2_month: 0 },
+  'Římsové bednění T': { h_m2: 0.38, disassembly_h_m2: 0.10, disassembly_ratio: 0.25, rental_czk_m2_month: 0, unit: 'bm' },
+};
+
+function loadAssemblyNorms() {
+  const candidates = [
+    process.env.BEDNENI_JSON_PATH,
+    resolve(dirname(fileURLToPath(import.meta.url)), '../../../../concrete-agent/packages/core-backend/app/knowledge_base/B4_production_benchmarks/bedneni.json'),
+    resolve(dirname(fileURLToPath(import.meta.url)), '../../../../../concrete-agent/packages/core-backend/app/knowledge_base/B4_production_benchmarks/bedneni.json'),
+  ].filter(Boolean);
+
+  for (const candidatePath of candidates) {
+    try {
+      const raw = readFileSync(candidatePath, 'utf8');
+      const kb = JSON.parse(raw);
+      if (!kb.systemy) continue;
+      const norms = {};
+      for (const [systemName, data] of Object.entries(kb.systemy)) {
+        const isBm = data.assembly_h_mb_min != null;
+        const assemblyH = isBm
+          ? (data.assembly_h_mb_min + data.assembly_h_mb_max) / 2
+          : data.assembly_h_m2;
+        const disassemblyH = isBm
+          ? assemblyH * (data.disassembly_ratio || 0.25)
+          : data.disassembly_h_m2;
+        norms[systemName] = {
+          h_m2:              assemblyH,
+          disassembly_h_m2:  disassemblyH,
+          disassembly_ratio: data.disassembly_ratio,
+          rental_czk_m2_month: data.rental_czk_m2_month || 0,
+          ...(isBm ? { unit: 'bm' } : {}),
+        };
+      }
+      logger.info(`[Formwork v3] Loaded ${Object.keys(norms).length} systems from KB: ${candidatePath}`);
+      return norms;
+    } catch {
+      // try next candidate
+    }
+  }
+  logger.warn('[Formwork v3] bedneni.json not found — using hardcoded norms');
+  return ASSEMBLY_NORMS_FALLBACK;
+}
+
+const ASSEMBLY_NORMS = loadAssemblyNorms();
+
+// ── Crew configs ────────────────────────────────────────────────────────────
+
+const CREW_CONFIG = {
+  '2_bez_jeravu': { crew: 2, shift: 8,  crane: false, crane_factor: 1.00 },
+  '3_bez_jeravu': { crew: 3, shift: 8,  crane: false, crane_factor: 1.00 },
+  '4_bez_jeravu': { crew: 4, shift: 10, crane: false, crane_factor: 1.00 },
+  '4_s_jeravem':  { crew: 4, shift: 10, crane: true,  crane_factor: 0.80 },
+  '6_s_jeravem':  { crew: 6, shift: 10, crane: true,  crane_factor: 0.70 },
+};
+
+// ── Curing (delegated to shared/calculators/maturity.ts) ────────────────────
+// Single source of truth: calculateConstructionCuring() from @stavagent/monolit-shared
+// Maps construction_type + season → ElementType + temperature → ČSN EN 13670 Table NA.2
+
+// ── Rebar norms ──────────────────────────────────────────────────────────────
+// Simplified model: single averaged norm based on typical reinforcement mix
+// (80% main bars d16-d20 ≈ 18 h/t + 20% stirrups d8-d10 ≈ 32 h/t → ~21 h/t)
+// This keeps Q5 simple: user only enters kg/m³ + m³/tact + rebar crew
+
+const REBAR_NORM_H_PER_T = 22;    // Weighted average for typical construction
+const SPACER_PCS_PER_M2 = 5;      // Distanční kroužky: 5 ks/m²
+const SPACER_PRICE_CZK = 4.50;    // Cena za kus
+
+// ── Labels + orientation (from shared maturity.ts) ──────────────────────────
+
+const CONSTRUCTION_LABELS = SHARED_CONSTRUCTION_LABELS;
+const SEASON_LABELS = SHARED_SEASON_LABELS;
+const ORIENTATION = CONSTRUCTION_ORIENTATION;
+
+// ── Route ──────────────────────────────────────────────────────────────────
+
+router.post('/', async (req, res) => {
+  try {
+    const {
+      construction_type = 'steny',
+      season            = 'leto',
+      concrete_class    = 'C30_37',
+      cement_type       = 'CEM_I_II',
+      crew              = '4_bez_jeravu',
+      total_area_m2     = 0,
+      set_area_m2       = 0,
+      system_name       = 'Framax Xlife',
+      model             = 'gemini',
+      // Rebar params (simplified — just kg/m³ + volume)
+      rebar_kg_per_m3   = 0,       // 0 = no rebar in cycle
+      concrete_m3_per_tact = 0,    // volume per tact (for rebar calc)
+      crew_size_rebar   = 0,       // 0 = same crew as formwork
+      // Rental params
+      transport_days    = 1,       // Transport each way
+    } = req.body;
+
+    if (typeof total_area_m2 !== 'number' || total_area_m2 <= 0) {
+      return res.status(400).json({ error: 'total_area_m2 must be a positive number' });
+    }
+
+    // ── Deterministic core v3 ───────────────────────────────────────────────
+
+    const norm    = ASSEMBLY_NORMS[system_name] || ASSEMBLY_NORMS['Framax Xlife'];
+    const crewCfg = CREW_CONFIG[crew]           || CREW_CONFIG['4_bez_jeravu'];
+
+    // v3: set_area_m2 is OPTIONAL — auto-derive from total_area / pocet_taktu
+    // If set_area_m2=0 but pocet_taktu_input > 0: derive set area
+    // If both set_area_m2=0 and pocet_taktu_input=0: use total_area as single tact
+    const pocetTaktuInput = req.body.pocet_taktu || 0;
+    let effectiveSetArea;
+    let pocetTaktu;
+
+    if (set_area_m2 > 0) {
+      // User selected a specific set (e.g., Frami Xlife 53.6 m²)
+      effectiveSetArea = set_area_m2;
+      pocetTaktu = Math.ceil(total_area_m2 / effectiveSetArea);
+    } else if (pocetTaktuInput > 0) {
+      // User knows number of tacts but not set area — derive it
+      pocetTaktu = pocetTaktuInput;
+      effectiveSetArea = round1(total_area_m2 / pocetTaktu);
+    } else {
+      // No set info — treat as single tact (entire area at once)
+      pocetTaktu = 1;
+      effectiveSetArea = total_area_m2;
+    }
+
+    // 1. Assembly (A) — v3: ceil() to full work days
+    const assemblyWorkerH = effectiveSetArea * norm.h_m2 * crewCfg.crane_factor;
+    const dailyH          = crewCfg.crew * crewCfg.shift;
+    const assemblyDays    = dailyH > 0 ? Math.ceil(assemblyWorkerH / dailyH) : 1;
+
+    // 2. Disassembly (D) — v3: ceil(), min 1 day
+    const disassemblyWorkerH = norm.disassembly_h_m2 != null
+      ? effectiveSetArea * norm.disassembly_h_m2 * crewCfg.crane_factor
+      : assemblyWorkerH * (norm.disassembly_ratio || 0.35);
+    const disassemblyDays = dailyH > 0 ? Math.max(1, Math.ceil(disassemblyWorkerH / dailyH)) : 1;
+
+    // 3. Reinforcement (R) — simplified: kg/m³ × m³ → hours → days
+    let rebarDays = 0;
+    let rebarWorkerHours = 0;
+    let rebarDetails = null;
+    const hasRebar = rebar_kg_per_m3 > 0 && concrete_m3_per_tact > 0;
+
+    if (hasRebar) {
+      const rebarMassKg = rebar_kg_per_m3 * concrete_m3_per_tact;
+      const rebarMassT  = rebarMassKg / 1000;
+
+      // Unified norm: ~22 h/t (weighted average for typical mix d16 main + d8 stirrups)
+      rebarWorkerHours = rebarMassT * REBAR_NORM_H_PER_T;
+
+      // Rebar days — ceil(), separate crew option
+      const rebarCrew   = crew_size_rebar > 0 ? crew_size_rebar : crewCfg.crew;
+      const rebarShift  = crew_size_rebar > 0 ? 8 : crewCfg.shift;  // separate rebar crew → 8h shift
+      const rebarDailyH = rebarCrew * rebarShift;
+      rebarDays = rebarDailyH > 0 ? Math.max(1, Math.ceil(rebarWorkerHours / rebarDailyH)) : 1;
+
+      // Spacers
+      const spacerPcs  = Math.round(effectiveSetArea * SPACER_PCS_PER_M2);
+      const spacerCost = spacerPcs * SPACER_PRICE_CZK;
+
+      rebarDetails = {
+        rebar_mass_kg:    Math.round(rebarMassKg),
+        rebar_mass_t:     round2(rebarMassT),
+        rebar_hours:      round1(rebarWorkerHours),
+        rebar_days:       rebarDays,
+        rebar_crew:       rebarCrew,
+        rebar_shift:      rebarShift,
+        norm_h_per_t:     REBAR_NORM_H_PER_T,
+        spacer_pcs:       spacerPcs,
+        spacer_cost_czk:  round2(spacerCost),
+      };
+    }
+
+    // 4. Concrete pouring = 1 day (fixed)
+    const concreteDays = 1;
+
+    // 5. Curing (C) — delegated to shared maturity.ts (ČSN EN 13670 Table NA.2)
+    // Maps construction_type + season → ElementType + temperature → curing days
+    const concreteClassNormalized = concrete_class.replace('_', '/');
+    const sharedCementType = cement_type === 'CEM_III' ? 'CEM_III'
+      : cement_type === 'CEM_II' ? 'CEM_II' : 'CEM_I';
+    const curingResult = calculateConstructionCuring({
+      construction_type: construction_type,
+      season: season,
+      concrete_class: concreteClassNormalized,
+      cement_type: sharedCementType,
+    });
+    const adjustedCuringDays = Math.ceil(curingResult.curing.min_curing_days);
+    const curingBase = curingResult.curing.min_curing_days;
+    const cementFactor = sharedCementType === 'CEM_III' ? (1 / 0.6)
+      : sharedCementType === 'CEM_II' ? (1 / 0.85) : 1.0;
+
+    // Props min days (horizontal only) — from shared
+    const propsDays = curingResult.props_min_days;
+
+    // 6. CYCLE per capture — all in full work days
+    const A = assemblyDays;
+    const R = rebarDays;
+    const B = concreteDays;
+    const C = adjustedCuringDays;
+    const D = disassemblyDays;
+    const cycleDays = A + R + B + C + D;
+    const workDays  = A + R + B + D;  // everything except curing
+
+    // ── BOTTLENECK ANALYSIS ─────────────────────────────────────────────────
+
+    const phases = [
+      { phase: 'assembly', days: A },
+      { phase: 'rebar',    days: R },
+      { phase: 'curing',   days: C },
+    ];
+    const bottleneck = phases.reduce((a, b) => a.days >= b.days ? a : b).phase;
+
+    // ── CREW OPTIMIZATION TABLE ─────────────────────────────────────────────
+    // Each crew size uses its OWN shift hours from CREW_CONFIG (2-3 = 8h, 4+ = 10h)
+
+    const crewOptions = [
+      { label: '2 lidé',          crew: 2, shift: 8,  crane_f: 1.00 },
+      { label: '3 lidé',          crew: 3, shift: 8,  crane_f: 1.00 },
+      { label: '4 lidé',          crew: 4, shift: 10, crane_f: 1.00 },
+      { label: '4 lidé + jeřáb',  crew: 4, shift: 10, crane_f: 0.80 },
+      { label: '6 lidí + jeřáb',  crew: 6, shift: 10, crane_f: 0.70 },
+    ];
+
+    const crewOptimization = crewOptions.map(opt => {
+      const optDailyH = opt.crew * opt.shift;
+      const optAssemblyH = effectiveSetArea * norm.h_m2 * opt.crane_f;
+      const optDisassemblyH = norm.disassembly_h_m2 != null
+        ? effectiveSetArea * norm.disassembly_h_m2 * opt.crane_f
+        : optAssemblyH * (norm.disassembly_ratio || 0.35);
+      const optA = Math.ceil(optAssemblyH / optDailyH);
+      const optD = Math.max(1, Math.ceil(optDisassemblyH / optDailyH));
+      // Rebar days also scale with crew if same brigade
+      let optR = R;
+      if (hasRebar && crew_size_rebar <= 0) {
+        // Rebar done by formwork crew — recalculate for this crew size
+        const optRebarDailyH = opt.crew * opt.shift;
+        optR = Math.max(1, Math.ceil(rebarWorkerHours / optRebarDailyH));
+      }
+      const optCycle = optA + optR + B + C + optD;
+      const optTotalSeq = pocetTaktu * optCycle;
+      return {
+        label: opt.label,
+        crew: opt.crew,
+        shift: opt.shift,
+        assembly_days: optA,
+        disassembly_days: optD,
+        rebar_days: optR,
+        cycle_days: optCycle,
+        total_sequential: optTotalSeq,
+        is_current: opt.crew === crewCfg.crew && opt.crane_f === crewCfg.crane_factor,
+      };
+    });
+
+    // Find crew where adding more people doesn't help
+    let optimalCrewIdx = 0;
+    for (let i = 1; i < crewOptimization.length; i++) {
+      if (crewOptimization[i].cycle_days < crewOptimization[optimalCrewIdx].cycle_days) {
+        optimalCrewIdx = i;
+      }
+    }
+    // Find smallest crew with same result as optimal
+    const optimalCycle = crewOptimization[optimalCrewIdx].cycle_days;
+    const efficientCrewIdx = crewOptimization.findIndex(c => c.cycle_days === optimalCycle);
+    const efficientCrew = crewOptimization[efficientCrewIdx];
+
+    // ── 3 STRATEGIES ────────────────────────────────────────────────────────
+
+    const rentalPerM2Month = norm.rental_czk_m2_month || 0;
+    const transportDaysBoth = (transport_days || 1) * 2;
+
+    // Strategy A — Sequential (1 set): total = N × cycle
+    const totalA = pocetTaktu * cycleDays;
+    const rentalDaysA = totalA + transportDaysBoth;
+    const rentalMonthsA = Math.max(1, rentalDaysA / 30);  // min 1 month billing
+    const rentalCostA = round0(1 * effectiveSetArea * rentalPerM2Month * rentalMonthsA);
+
+    // Strategy B — Overlapping (2 sets)
+    // Cadence = max(A+D, R+B+C) — from shared calculateCadenceB()
+    const cadenceB = calculateCadenceB(A, D, R, B, C);
+    const totalB   = pocetTaktu <= 1 ? cycleDays : cycleDays + (pocetTaktu - 1) * cadenceB;
+    const rentalDaysB = totalB + transportDaysBoth;
+    const rentalMonthsB = Math.max(1, rentalDaysB / 30);
+    const rentalCostB = round0(2 * effectiveSetArea * rentalPerM2Month * rentalMonthsB);
+
+    // Strategy C — Fully parallel (N sets): total = cycle
+    const totalC = cycleDays;
+    const rentalDaysC = totalC + transportDaysBoth;
+    const rentalMonthsC = Math.max(1, rentalDaysC / 30);
+    const rentalCostC = round0(pocetTaktu * effectiveSetArea * rentalPerM2Month * rentalMonthsC);
+
+    // ── AUTO-OPTIMIZATION ───────────────────────────────────────────────────
+
+    const strategies = [
+      { id: 'A', label: 'Posloupně (1 sada)', sets: 1,          total_days: totalA, rental_cost: rentalCostA },
+      { id: 'B', label: 'S překrytím (2 sady)', sets: 2,        total_days: totalB, rental_cost: rentalCostB },
+      { id: 'C', label: 'Paralelně (plný)',     sets: pocetTaktu, total_days: totalC, rental_cost: rentalCostC },
+    ];
+
+    const filteredStrategies = pocetTaktu <= 2
+      ? strategies.filter(s => s.id !== 'C')
+      : strategies;
+
+    const safeStrategies = filteredStrategies.length > 0 ? filteredStrategies : strategies;
+    const minCost = safeStrategies.reduce((a, b) => a.rental_cost <= b.rental_cost ? a : b);
+    const minTime = safeStrategies.reduce((a, b) => a.total_days <= b.total_days ? a : b);
+
+    // ── Labor cost ──────────────────────────────────────────────────────────
+
+    const wageCzkH = crewCfg.shift === 8 ? 380 : 398;
+    const laborCostPerTact = round0((assemblyWorkerH + disassemblyWorkerH + rebarWorkerHours) * wageCzkH);
+    const laborCostTotal   = laborCostPerTact * pocetTaktu;
+
+    // ── Build response ──────────────────────────────────────────────────────
+
+    const deterministic = {
+      // Capture cycle
+      pocet_taktu:               pocetTaktu,
+      total_area_m2,
+      set_area_m2:               effectiveSetArea,
+      set_area_derived:          set_area_m2 <= 0,  // true if auto-calculated
+      assembly_worker_hours:     round1(assemblyWorkerH),
+      assembly_days:             A,
+      rebar_days:                R,
+      concrete_days:             B,
+      curing_days:               adjustedCuringDays,
+      curing_base_days:          curingBase,
+      cement_factor:             cementFactor,
+      disassembly_worker_hours:  round1(disassemblyWorkerH),
+      disassembly_days:          D,
+      cycle_days:                cycleDays,
+      work_days:                 workDays,
+      // Bottleneck
+      bottleneck,
+      bottleneck_days:           phases.reduce((a, b) => a.days >= b.days ? a : b).days,
+      // Crew optimization
+      crew_optimization:         crewOptimization,
+      efficient_crew:            efficientCrew ? efficientCrew.label : null,
+      // Props (horizontal)
+      props_min_days:            propsDays,
+      orientation:               ORIENTATION[construction_type] || 'vertical',
+      // Strategies
+      strategies:                filteredStrategies,
+      cadence_B:                 cadenceB,
+      recommended_cost:          minCost.id,
+      recommended_time:          minTime.id,
+      // Crew
+      crew_size:                 crewCfg.crew,
+      shift_hours:               crewCfg.shift,
+      crane:                     crewCfg.crane,
+      // Rebar
+      rebar:                     rebarDetails,
+      // Cost
+      labor_cost_per_tact:       laborCostPerTact,
+      labor_cost_total:          laborCostTotal,
+      rental_per_m2_month:       rentalPerM2Month,
+      // Legacy compat fields
+      assembly_days_per_tact:    A,
+      disassembly_days_per_tact: D,
+      days_per_tact:             A + D,
+      zrani_days:                adjustedCuringDays,
+      formwork_term_days:        totalA,
+    };
+
+    logger.info(`[Formwork v3] ${pocetTaktu} taktů, cycle=${cycleDays}d (A=${A} R=${R} B=${B} C=${C} D=${D}), total: A=${totalA}d B=${totalB}d C=${totalC}d, bottleneck=${bottleneck}`);
+
+    // ── Warnings ────────────────────────────────────────────────────────────
+
+    const warnings = [];
+
+    if (season === 'zima') {
+      warnings.push('Zima: beton nutno ohřívat min. +5 °C po dobu 72 h (TKP17 §6.4)');
+      warnings.push('Prověřit ochranu čerstvého betonu před mrazem a větrem');
+    }
+    if (season === 'podzim_jaro') {
+      warnings.push('Přechodné období: sledovat noční teploty, možná potřeba zakrytí');
+    }
+    if (cement_type === 'CEM_III') {
+      warnings.push(`CEM III: pomalý nárůst pevnosti — ošetřování ×${cementFactor} (TKP17)`);
+    }
+    if (construction_type === 'mostovka') {
+      warnings.push('Mostovka: stojky nesmí se odstraňovat min. ' + propsDays + ' dní — počítat v nájmu');
+    }
+    if (construction_type === 'pilire_mostu') {
+      warnings.push('Pilíře: takt max 3,0 m výšky, krytí 50 mm, XC4/XF3 (TKP18)');
+    }
+    if (ORIENTATION[construction_type] === 'horizontal' && propsDays > 0) {
+      warnings.push(`Stojky zůstávají min. ${propsDays} dní — pronájem stojek navíc`);
+    }
+    if (pocetTaktu > 10) {
+      warnings.push(`${pocetTaktu} taktů — zvažte strategii B (2 sady) pro zkrácení`);
+    }
+    if (safeStrategies.length > 0 && minCost.id !== minTime.id) {
+      warnings.push(`Optimum: ${minCost.label} = nejlevnější (${minCost.rental_cost.toLocaleString('cs')} Kč), ${minTime.label} = nejrychlejší (${minTime.total_days} dní)`);
+    }
+    if (hasRebar && crew_size_rebar > 0 && crew_size_rebar !== crewCfg.crew) {
+      warnings.push(`Paralelní armování: ${rebarDetails.rebar_crew} armovačů + ${crewCfg.crew} bednařů — armování ${R}d souběžně s montáží ${A}d`);
+    }
+    // v3: bottleneck warning
+    if (bottleneck === 'rebar' && R > A) {
+      warnings.push(`Úzké místo: armování (${R} dní > montáž ${A} dní) — zvažte přidání armovačů nebo paralelní brigádu`);
+    } else if (bottleneck === 'curing' && C > A + R) {
+      warnings.push(`Úzké místo: zrání betonu (${C} dní) — nelze urychlit, ale strategie B/C pomůže překrýt čekání`);
+    }
+    // v3: crew optimization hint
+    if (efficientCrew && !efficientCrew.is_current) {
+      warnings.push(`Optimální parta: ${efficientCrew.label} — cyklus ${efficientCrew.cycle_days}d vs. aktuální ${cycleDays}d`);
+    }
+
+    // ── AI explanation ──────────────────────────────────────────────────────
+    // Chain: Direct Gemini → Direct OpenAI → CORE Multi-Role → Deterministic fallback
+    // Direct API calls avoid dependency on sleeping CORE (Render free tier)
+
+    let aiExplanation = '';
+    let modelUsed = model;
+
+    const consLabel   = CONSTRUCTION_LABELS[construction_type] || construction_type;
+    const seasonLabel = SEASON_LABELS[season] || season;
+    const concrLabel  = concrete_class.replace('_', '/');
+    const crewLabel   = `${crewCfg.crew} lidí${crewCfg.crane ? ' + jeřáb' : ''}`;
+
+    const stratSummary = filteredStrategies.map(s =>
+      `${s.id}: ${s.total_days}d / ${s.rental_cost.toLocaleString('cs')} Kč (${s.sets} sad)`
+    ).join('; ');
+
+    const buildPrompt = (detailed = false) => detailed
+      ? `Jsi expert na stavební bednění (ČSN EN 13670, TKP17, TKP18). Podrobné doporučení pro "${consLabel}" (${system_name}). `
+        + `${total_area_m2} m², ${pocetTaktu} taktů. Beton ${concrLabel}, ${seasonLabel}. Parta ${crewLabel}. `
+        + `Cyklus: A=${A}d R=${R}d B=1d C=${C}d D=${D}d = ${cycleDays}d. `
+        + `Strategie: ${stratSummary}. Odkaž na TKP17/TKP18. Stručně, max 8 vět.`
+      : `Jsi expert na stavební bednění. Shrň: "${consLabel}" (${system_name}), ${total_area_m2} m², ${pocetTaktu}×${cycleDays}d. `
+        + `Cyklus: montáž ${A}d + arm. ${R}d + beton 1d + zrání ${C}d + dem. ${D}d. `
+        + `Strategie: ${stratSummary}. Doporuč optimální strategii. Max 5 vět.`;
+
+    // Helper: call Gemini API directly (fastest, cheapest)
+    async function callGeminiDirect(prompt) {
+      const apiKey = process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY;
+      if (!apiKey) {
+        logger.warn('[Formwork v3] Gemini skipped — GOOGLE_AI_KEY / GOOGLE_API_KEY not set');
+        return null;
+      }
+
+      const geminiModel = process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite';
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      try {
+        const gRes = await fetch(
+          `https://generativelanguage.googleapis.com/v1beta/models/${geminiModel}:generateContent?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              contents: [{ parts: [{ text: prompt }] }],
+              generationConfig: { maxOutputTokens: 600, temperature: 0.4 },
+            }),
+            signal: controller.signal,
+          }
+        );
+        clearTimeout(timeoutId);
+        if (!gRes.ok) throw new Error(`Gemini ${gRes.status}`);
+        const gData = await gRes.json();
+        const text = gData.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) return { text, model: geminiModel };
+      } catch (e) {
+        clearTimeout(timeoutId);
+        logger.warn(`[Formwork v3] Gemini direct: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
+      }
+      return null;
+    }
+
+    // Helper: call OpenAI API directly
+    async function callOpenAIDirect(prompt) {
+      if (!process.env.OPENAI_API_KEY) {
+        logger.warn('[Formwork v3] OpenAI skipped — OPENAI_API_KEY not set');
+        return null;
+      }
+
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      try {
+        const oRes = await fetch('https://api.openai.com/v1/chat/completions', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${process.env.OPENAI_API_KEY}` },
+          body: JSON.stringify({ model: 'gpt-4o-mini', messages: [{ role: 'user', content: prompt }], max_tokens: 500, temperature: 0.4 }),
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        if (!oRes.ok) throw new Error(`OpenAI ${oRes.status}`);
+        const oData = await oRes.json();
+        const text = oData.choices?.[0]?.message?.content;
+        if (text) return { text, model: 'gpt-4o-mini' };
+      } catch (e) {
+        clearTimeout(timeoutId);
+        logger.warn(`[Formwork v3] OpenAI direct: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
+      }
+      return null;
+    }
+
+    // Helper: call CORE Multi-Role API (may be sleeping)
+    async function callCoreMultiRole(question) {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), CORE_TIMEOUT);
+      try {
+        const aiRes = await fetch(`${CORE_API_URL}/api/v1/multi-role/ask`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            question,
+            context: { tool: 'formwork_assistant_v3', construction_type, season, deterministic },
+            enable_kb: true, enable_perplexity: false, use_cache: true,
+          }),
+          signal: controller.signal,
+        });
+        clearTimeout(timeoutId);
+        if (!aiRes.ok) throw new Error(`Multi-Role ${aiRes.status}`);
+        const aiData = await aiRes.json();
+        if (aiData.answer) return { text: aiData.answer, model: 'multi-role' };
+      } catch (e) {
+        clearTimeout(timeoutId);
+        logger.warn(`[Formwork v3] CORE Multi-Role: ${e.name === 'AbortError' ? 'timeout' : e.message}`);
+      }
+      return null;
+    }
+
+    // Execute AI chain based on selected model
+    const hasGemini = !!(process.env.GOOGLE_AI_KEY || process.env.GOOGLE_API_KEY);
+    const hasOpenAI = !!process.env.OPENAI_API_KEY;
+    logger.info(`[Formwork v3] AI chain: model=${model}, gemini=${hasGemini}, openai=${hasOpenAI}, core=${CORE_API_URL}`);
+
+    try {
+      const isDetailed = model === 'claude';
+      const prompt = buildPrompt(isDetailed);
+      let aiResult = null;
+
+      if (model === 'gemini') {
+        // Gemini selected: Gemini direct → OpenAI → CORE → fallback
+        aiResult = await callGeminiDirect(prompt)
+          || await callOpenAIDirect(prompt)
+          || await callCoreMultiRole(prompt);
+      } else if (model === 'openai') {
+        // OpenAI selected: OpenAI direct → Gemini → CORE → fallback
+        aiResult = await callOpenAIDirect(prompt)
+          || await callGeminiDirect(prompt)
+          || await callCoreMultiRole(prompt);
+      } else {
+        // Claude/other: CORE first (claude via multi-role) → Gemini → OpenAI → fallback
+        aiResult = await callCoreMultiRole(buildPrompt(true))
+          || await callGeminiDirect(prompt)
+          || await callOpenAIDirect(prompt);
+      }
+
+      if (aiResult) {
+        aiExplanation = aiResult.text;
+        modelUsed = aiResult.model;
+      } else {
+        throw new Error('All AI providers failed');
+      }
+    } catch (aiErr) {
+      logger.warn(`[Formwork v3] All AI failed, using deterministic fallback`);
+      aiExplanation = buildFallbackExplanation(deterministic, construction_type, season, warnings);
+      modelUsed = 'fallback';
+    }
+
+    res.json({
+      success: true,
+      deterministic,
+      ai_explanation: aiExplanation,
+      warnings,
+      model_used: modelUsed,
+    });
+
+  } catch (err) {
+    logger.error('[Formwork v3] Error:', err);
+    res.status(500).json({ error: 'Formwork assistant failed', details: err.message });
+  }
+});
+
+// ── Fallback explanation ────────────────────────────────────────────────────
+
+function buildFallbackExplanation(det, constructionType, season, warnings) {
+  const constr = CONSTRUCTION_LABELS[constructionType] || constructionType;
+  const lines = [
+    `**Kalkulace bednění v3 — ${constr}**`,
+    ``,
+    `Plocha **${det.total_area_m2} m²** → **${det.pocet_taktu} taktů** po ${det.set_area_m2} m²${det.set_area_derived ? ' (odvozeno)' : ''}.`,
+    ``,
+    `**Cyklus zachvátky:**`,
+    `| Fáze | Dní |`,
+    `|---|---|`,
+    `| Montáž bednění (A) | ${det.assembly_days} |`,
+    det.rebar ? `| Armování (R) | ${det.rebar_days} (${det.rebar.rebar_mass_kg} kg, ${det.rebar.rebar_hours} h) |` : null,
+    `| Betonáž (B) | ${det.concrete_days} |`,
+    `| Zrání (C) | ${det.curing_days}${det.cement_factor > 1 ? ` (základ ${det.curing_base_days}d × CEM III ×${det.cement_factor})` : ''} |`,
+    `| Demontáž (D) | ${det.disassembly_days} |`,
+    `| **Celkem cyklus** | **${det.cycle_days} dní** |`,
+    ``,
+    `**Úzké místo:** ${det.bottleneck} (${det.bottleneck_days} dní)`,
+    ``,
+    `**Srovnání strategií:**`,
+    `| Strategie | Sady | Doba | Nájem |`,
+    `|---|---|---|---|`,
+    ...det.strategies.map(s =>
+      `| ${s.label} | ${s.sets} | ${s.total_days} dní | ${s.rental_cost.toLocaleString('cs')} Kč |`
+    ),
+  ].filter(Boolean);
+
+  if (det.cadence_B > 0) {
+    lines.push(``, `Kadence B: max(A+D=${det.assembly_days}+${det.disassembly_days}, R+B+C=${det.rebar_days}+1+${det.curing_days}) = **${det.cadence_B}d**`);
+  }
+
+  // Crew optimization table
+  if (det.crew_optimization && det.crew_optimization.length > 0) {
+    const hasR = det.rebar_days > 0;
+    lines.push(``, `**Optimalizace party:**`);
+    if (hasR) {
+      lines.push(`| Parta | Směna | Montáž | Arm. | Demontáž | Cyklus | Celkem |`);
+      lines.push(`|---|---|---|---|---|---|---|`);
+    } else {
+      lines.push(`| Parta | Směna | Montáž | Demontáž | Cyklus | Celkem |`);
+      lines.push(`|---|---|---|---|---|---|`);
+    }
+    for (const opt of det.crew_optimization) {
+      const mark = opt.is_current ? ' ◀' : '';
+      if (hasR) {
+        lines.push(`| ${opt.label}${mark} | ${opt.shift}h | ${opt.assembly_days}d | ${opt.rebar_days}d | ${opt.disassembly_days}d | ${opt.cycle_days}d | ${opt.total_sequential}d |`);
+      } else {
+        lines.push(`| ${opt.label}${mark} | ${opt.shift}h | ${opt.assembly_days}d | ${opt.disassembly_days}d | ${opt.cycle_days}d | ${opt.total_sequential}d |`);
+      }
+    }
+    if (det.efficient_crew) {
+      lines.push(``, `Nejefektivnější: **${det.efficient_crew}**`);
+    }
+  }
+
+  if (det.props_min_days > 0) {
+    lines.push(``, `Stojky zůstávají min. **${det.props_min_days} dní** (horizontální konstrukce).`);
+  }
+  if (warnings.length > 0) {
+    lines.push('', '**Upozornění:**');
+    warnings.forEach(w => lines.push(`- ${w}`));
+  }
+  lines.push('', '_AI nedostupná — zobrazena deterministická kalkulace._');
+  return lines.join('\n');
+}
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+
+function round0(v) { return Math.round(v); }
+function round1(v) { return Math.round(v * 10) / 10; }
+function round2(v) { return Math.round(v * 100) / 100; }
+
+export default router;

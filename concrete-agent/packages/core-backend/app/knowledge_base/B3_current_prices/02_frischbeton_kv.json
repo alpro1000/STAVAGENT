@@ -1,0 +1,345 @@
+{
+  "meta": {
+    "supplier": "FRISCHBETON s.r.o.",
+    "plant": "Karlovy Vary – Olšová Vrata, Strahovská 170, 360 17 KV",
+    "contact": {
+      "name": "Ing. Bc. Jan Foltýn",
+      "tel": "+420 602 431 226",
+      "email": "jan.foltyn@frischbeton.eu"
+    },
+    "dispatcher": {
+      "name": "Antonín Klaban",
+      "tel": "+420 734 392 973"
+    },
+    "valid_from": "2025-03-01",
+    "offer_D6_valid_to": "2026-12-31",
+    "offer_number": "46753/24726",
+    "currency": "CZK",
+    "vat_rate": 0.21,
+    "certified_TKP_SPK_18": true
+  },
+  "concrete_D6_offer": [
+    {
+      "spec": "SC-typ 4-0/22-C8/10",
+      "qty_m3": 265,
+      "price_wo_transport": 2295,
+      "fco_stavba": null
+    },
+    {
+      "spec": "C8/10-Cl0.2-Dmax22-S3",
+      "qty_m3": 265,
+      "price_wo_transport": 2700,
+      "fco_stavba": 3000
+    },
+    {
+      "spec": "C12/15-X0-Cl0.2-Dmax22-S3",
+      "qty_m3": 1318,
+      "price_wo_transport": 2735,
+      "fco_stavba": 3025
+    },
+    {
+      "spec": "C16/20-X0-Cl0.2-Dmax22-S3",
+      "qty_m3": 150,
+      "price_wo_transport": 2950,
+      "fco_stavba": 3240
+    },
+    {
+      "spec": "C16/20n-XF1-Cl0.2-Dmax8-S1",
+      "qty_m3": 75,
+      "price_wo_transport": 3040,
+      "fco_stavba": null
+    },
+    {
+      "spec": "C20/25-X0-Cl0.2-Dmax22-S3",
+      "qty_m3": 46,
+      "price_wo_transport": 3110,
+      "fco_stavba": 3400
+    },
+    {
+      "spec": "C20/25n-XF3-Cl0.2-Dmax8-S1",
+      "qty_m3": 3484,
+      "price_wo_transport": 3100,
+      "fco_stavba": null
+    },
+    {
+      "spec": "C25/30-X0-Cl0.2-Dmax22-S3",
+      "qty_m3": 249,
+      "price_wo_transport": 3150,
+      "fco_stavba": 3440
+    },
+    {
+      "spec": "C25/30-XA1-Cl0.2-Dmax22-S4 (piloty mokré)",
+      "qty_m3": 610,
+      "price_wo_transport": 3180,
+      "fco_stavba": 3470
+    },
+    {
+      "spec": "C25/30-XA2-Cl0.2-Dmax22-S4 (piloty mokré)",
+      "qty_m3": 1042,
+      "price_wo_transport": 3180,
+      "fco_stavba": 3470
+    },
+    {
+      "spec": "C25/30-XC2-Cl0.2-Dmax22-S3",
+      "qty_m3": 296,
+      "price_wo_transport": 3150,
+      "fco_stavba": 3440
+    },
+    {
+      "spec": "C25/30-XA1-Cl0.2-Dmax22-S3",
+      "qty_m3": 714,
+      "price_wo_transport": 3150,
+      "fco_stavba": 3440
+    },
+    {
+      "spec": "C25/30-XF1-Cl0.2-Dmax22-S3",
+      "qty_m3": 1743,
+      "price_wo_transport": 3300,
+      "fco_stavba": 3590
+    },
+    {
+      "spec": "C25/30n-XF3-Cl0.2-Dmax8-S1",
+      "qty_m3": 464,
+      "price_wo_transport": 3130,
+      "fco_stavba": null
+    },
+    {
+      "spec": "C25/30-XF2-Cl0.2-Dmax22-S3",
+      "qty_m3": 578,
+      "price_wo_transport": 3300,
+      "fco_stavba": 3590
+    },
+    {
+      "spec": "C25/30-XF3-Cl0.2-Dmax22-S3",
+      "qty_m3": 923,
+      "price_wo_transport": 3300,
+      "fco_stavba": 3590
+    },
+    {
+      "spec": "C30/37-XA2-Cl0.2-Dmax22-S4 (piloty mokré)",
+      "qty_m3": 7795,
+      "price_wo_transport": 3180,
+      "fco_stavba": 3470
+    },
+    {
+      "spec": "C30/37-XA3-Cl0.2-Dmax22-S3",
+      "qty_m3": 335,
+      "price_wo_transport": 3300,
+      "fco_stavba": 3590,
+      "note": "není odolný vůči síran./uhličit. agresi"
+    },
+    {
+      "spec": "C30/37-XF2-Cl0.2-Dmax22-S3",
+      "qty_m3": 279,
+      "price_wo_transport": 3400,
+      "fco_stavba": 3690
+    },
+    {
+      "spec": "C30/37-XF3-Cl0.2-Dmax22-S3",
+      "qty_m3": 28,
+      "price_wo_transport": 3400,
+      "fco_stavba": 3690
+    },
+    {
+      "spec": "C30/37-XF4-Cl0.2-Dmax22-S3",
+      "qty_m3": 16286,
+      "price_wo_transport": 3400,
+      "fco_stavba": 3690
+    },
+    {
+      "spec": "C35/45-XF2-Cl0.2-Dmax22-S3",
+      "qty_m3": 15183,
+      "price_wo_transport": 3500,
+      "fco_stavba": 3790
+    },
+    {
+      "spec": "C35/45-XF4-Cl0.2-Dmax22-S3",
+      "qty_m3": 1431,
+      "price_wo_transport": 3500,
+      "fco_stavba": 3790
+    },
+    {
+      "spec": "CB II jednovrstvý S1 (C30/37 XF4)",
+      "qty_m3": 123,
+      "price_wo_transport": 3240,
+      "fco_stavba": 3530
+    },
+    {
+      "spec": "MCB mezerovitý beton",
+      "qty_m3": 156,
+      "price_wo_transport": 2350,
+      "fco_stavba": null
+    }
+  ],
+  "transport": {
+    "method": "zones_by_round_trip_km",
+    "min_volume_m3": 6,
+    "min_charge_note": "vždy min. 6 m³",
+    "free_unloading_min": 30,
+    "waiting_per_15min": 360,
+    "zones": [
+      {
+        "zone": 5,
+        "km_roundtrip_max": 5,
+        "price_per_m3": 240
+      },
+      {
+        "zone": 10,
+        "km_roundtrip_max": 10,
+        "price_per_m3": 290
+      },
+      {
+        "zone": 15,
+        "km_roundtrip_max": 15,
+        "price_per_m3": 330
+      },
+      {
+        "zone": 20,
+        "km_roundtrip_max": 20,
+        "price_per_m3": 370
+      },
+      {
+        "zone": 25,
+        "km_roundtrip_max": 25,
+        "price_per_m3": 410
+      },
+      {
+        "zone": 30,
+        "km_roundtrip_max": 30,
+        "price_per_m3": 450
+      },
+      {
+        "zone": 35,
+        "km_roundtrip_max": 35,
+        "price_per_m3": 490
+      },
+      {
+        "zone": 40,
+        "km_roundtrip_max": 40,
+        "price_per_m3": 530
+      },
+      {
+        "zone": 45,
+        "km_roundtrip_max": 45,
+        "price_per_m3": 580
+      },
+      {
+        "zone": 50,
+        "km_roundtrip_max": 50,
+        "price_per_m3": 630
+      },
+      {
+        "zone": 55,
+        "km_roundtrip_max": 55,
+        "price_per_m3": 680
+      },
+      {
+        "zone": 60,
+        "km_roundtrip_max": 60,
+        "price_per_m3": 730
+      },
+      {
+        "zone": 65,
+        "km_roundtrip_max": 65,
+        "price_per_m3": 800
+      },
+      {
+        "zone": 70,
+        "km_roundtrip_max": 70,
+        "price_per_m3": 860
+      },
+      {
+        "zone": 80,
+        "km_roundtrip_max": 80,
+        "price_per_m3": 910
+      },
+      {
+        "zone": 90,
+        "km_roundtrip_max": 90,
+        "price_per_m3": 1010
+      }
+    ]
+  },
+  "surcharges_D6_offer": {
+    "free_unloading_min": 45,
+    "waiting_per_15min": 360,
+    "winter_per_m3": 60,
+    "dmax_16_surcharge": 0,
+    "dmax_8_surcharge": 80,
+    "consistency_S4_surcharge": 0,
+    "off_hours_holiday_per_m3": 80,
+    "off_hours_saturday_per_m3": 80,
+    "off_hours_sunday_per_m3": 80,
+    "night_per_m3": 100
+  },
+  "pump": {
+    "order_advance_hours": 72,
+    "billing_unit": "per_15min_from_arrival",
+    "wash_surcharge_if_no_site_wash": "0.5h at pump rate",
+    "models": [
+      {
+        "name": "24m/26m/PUMI",
+        "reach_m": 26,
+        "arrival_one_time": 2200,
+        "operation_per_15min": 35
+      },
+      {
+        "name": "28m",
+        "reach_m": 28,
+        "arrival_one_time": 2200,
+        "operation_per_15min": 35
+      },
+      {
+        "name": "32m",
+        "reach_m": 32,
+        "arrival_one_time": 2400,
+        "operation_per_15min": 35
+      },
+      {
+        "name": "34m/36m",
+        "reach_m": 36,
+        "arrival_one_time": 2480,
+        "operation_per_15min": 40
+      },
+      {
+        "name": "38m",
+        "reach_m": 38,
+        "arrival_one_time": 2720,
+        "operation_per_15min": 40
+      },
+      {
+        "name": "42m (na vyžádání)",
+        "reach_m": 42,
+        "arrival_one_time": null,
+        "operation_per_15min": 50
+      },
+      {
+        "name": "47m (na vyžádání)",
+        "reach_m": 47,
+        "arrival_one_time": null,
+        "operation_per_15min": 60
+      },
+      {
+        "name": "52m (na vyžádání)",
+        "reach_m": 52,
+        "arrival_one_time": null,
+        "operation_per_15min": 60
+      }
+    ],
+    "pump_surcharges": {
+      "transport_up_to_42m_one_time": 2500,
+      "transport_45m_52m_one_time": 5000,
+      "primer_chemical_one_time": 500,
+      "additional_steel_pipe_per_bm_per_day": 100,
+      "additional_flex_hose_per_bm_per_day": 130,
+      "fibreconcrete_per_m3": 50,
+      "slow_down_elbow_one_time": 500,
+      "night_weekday_22_06_per_h": 200,
+      "sunday_holiday_per_h": 220,
+      "late_cancellation_12h_one_time": 1000,
+      "futile_trip_one_time": 2000,
+      "futile_trip_per_km": 49,
+      "pipe_transport_over_10bm_per_km": 16
+    }
+  }
+}

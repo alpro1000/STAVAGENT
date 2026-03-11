@@ -1,377 +1,303 @@
-# NEXT SESSION TASKS
+# NEXT SESSION — Session 9 Complete
 
-**Created:** 2025-12-10
-**Service:** concrete-agent (CORE / ЯДРО)
-**Branch:** `claude/read-documentation-files-01Vo44KnWy6z62npLLLTPg1C`
+**Date:** 2026-03-11
+**Branch:** `claude/price-parser-integration-cCRX3`
+**Status:** Session 9 — CORS fix (Amazon Q review), env vars documentation.
 
 ---
 
-## Session Summary (2025-12-10) - Gemini Integration
+## What Was Done (2026-03-11, Session 9)
 
-### 🎯 PRIMARY GOAL ACHIEVED
-**CRITICAL COST OPTIMIZATION**: Successfully integrated Google Gemini as primary LLM for Multi-Role API, achieving **40-250x cost savings** over Claude Sonnet.
+### 1. CORS Cleanup (Amazon Q review fix)
+- `stavagent-portal/backend/server.js` — убраны 2 дублирующихся origin
+- `Monolit-Planner/backend/server.js` — убраны 3 дублирующихся origin (3x одна и та же vercel.app, 2x одна и та же stavagent.cz)
+- Commit: `d91d92b` — FIX: Remove duplicate CORS origins in portal and monolit server.js
 
-### Completed Tasks
-- [x] **Fixed Multi-Role JSON parsing** - Updated 5 role prompts to return pure JSON instead of Markdown
-- [x] **Created Gemini client** - Complete drop-in replacement for ClaudeClient (gemini_client.py - 330+ lines)
-- [x] **Updated orchestrator** - LLM selection logic with Gemini + Claude fallback (orchestrator.py)
-- [x] **Updated config** - Added GOOGLE_API_KEY, GEMINI_MODEL, MULTI_ROLE_LLM settings (config.py)
-- [x] **Updated requirements** - Added google-generativeai==0.8.3 (requirements.txt)
-- [x] **Created test suite** - Complete Gemini validation (test_gemini_client.py - 210+ lines)
-- [x] **Created documentation** - Full setup guide (GEMINI_SETUP.md - 220+ lines)
-- [x] User deployed to Render with GOOGLE_API_KEY configured
+### 2. Документация
+- Составлен полный список env переменных для всех 5 сервисов
+- Инструкция по Google Cloud Run: Console → Cloud Run → Edit & Deploy → Variables & Secrets
 
-### 💰 Cost Impact Analysis
+---
 
-**Before (Claude Sonnet 4.5):**
-- Input: $3 per 1M tokens
-- Output: $15 per 1M tokens
-- Multi-Role request (30k tokens): **$0.10-0.50 per request**
-- **Problem:** User exhausted Anthropic credits after ~20-50 requests
+## What Was Done (2026-03-08, Session 8)
 
-**After (Gemini 2.0 Flash):**
-- **FREE**: 1,500 requests per day
-- Paid tier: $0.075 per 1M tokens (40x cheaper!)
-- Multi-Role request: **$0.00 (FREE) or $0.002 (paid)**
-- **Result:** Virtually unlimited Multi-Role requests on free tier
+### 1. Betonárny Discovery — GPS-based concrete plant search
+- **BetonServer scraper** — correct URL, anti-bot headers, robust HTML parsing
+- **Price calculator panel** — real-time cost comparison per supplier (CZK/m³ × volume)
+- **AWS Bedrock integration** — Claude via AWS Activate credits (fallback chain: Bedrock → Anthropic → Gemini)
 
-**Savings: 50-250x cheaper with Gemini!**
+### 2. Objednávka Betonu Page (Unified Ordering)
+- **ObjednavkaBetonuPage** — `/objednavka-betonu` route, search + calculate + compare in one flow
+- Infinite re-render loop fix (useEffect dependency cycle)
+- Mobile-responsive layout
 
-### 📋 Commits (on branch `claude/read-documentation-files-01Vo44KnWy6z62npLLLTPg1C`)
+### 3. Performance: Lazy-load all pages
+- **Bundle reduction**: 519KB → 407KB initial load (-22%)
+- All pages lazy-loaded with `React.lazy()` + `Suspense`
+- Vercel SPA routing fix (`vercel.json` rewrites)
+
+### 4. CORE Proxy + Workflow Fixes
+- **Portal backend proxy** to concrete-agent (`/api/core/*` → `concrete-agent-3uxelthc4q-ey.a.run.app/*`)
+- Fixed all 5 workflows (file upload, Workflow A/B/C, Drawing Analysis)
+
+### 5. Universal Parser Pipeline (4-step)
+- Full positions table with quantities, units, prices
+- 4-step flow: Upload → Parse → Review → Send to Kiosk
+- Kiosk import buttons (Monolit, Registry, URS Matcher)
+
+### 6. Curing Days Fix
+- `elementTotalDays` теперь передаётся из PositionsTable → FormworkCalculatorModal
+- Rental term correctly includes curing period
+
+### Previous Sessions Summary
+| Session | Date | Key Work |
+|---------|------|----------|
+| 9 | 2026-03-11 | CORS cleanup, env vars docs |
+| 8 | 2026-03-08 | Betonárny, Bedrock, Objednávka betonu, Universal Parser, curing fix |
+| 7 | 2026-03-07 | Price Parser UI, batch comparison |
+| 6 | 2026-03-07 | Calculator audit: 3 bugs fixed, 332 tests |
+| 5 | 2026-03-07 | TariffPage + Pump engine unification |
+| 4 | 2026-03-07 | PDF Price Parser backend (17 files, 7 parsers, 21 tests) |
+| 1-3 | 2026-03-06 | Formwork refactor, PERT/Maturity, MaturityConfigPanel |
+
+---
+
+## Architecture: Portal Frontend Pages
+
 ```
-b012bb2 FEAT: Add Gemini support for Multi-Role API (40x cost savings)
-a9316db FIX: Update Multi-Role prompts to return JSON instead of Markdown
-1164eec FIX: Remove invalid 801xxx URS codes from catalog
-c627e54 FEAT: Implement Excel export and fix URS catalog for foundations
-b7bdc64 WIP: Add Excel export utility for block-match results
-```
-
-### Key Code Changes
-
-#### 1. gemini_client.py (NEW - 330+ lines)
-```python
-class GeminiClient:
-    """Drop-in replacement for ClaudeClient using Google Gemini API"""
-
-    def __init__(self):
-        if not settings.GOOGLE_API_KEY:
-            raise ValueError("GOOGLE_API_KEY not set in environment")
-
-        genai.configure(api_key=settings.GOOGLE_API_KEY)
-        self.model_name = getattr(settings, 'GEMINI_MODEL', 'gemini-2.0-flash-exp')
-
-        # Safety settings - allow technical content
-        self.safety_settings = [
-            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
-            # ... other categories
-        ]
-
-    def call(self, prompt: str, system_prompt: Optional[str] = None,
-             temperature: float = 0.3) -> Dict[str, Any]:
-        """Call Gemini API - compatible with ClaudeClient.call()"""
-        # Gemini doesn't have separate system prompt, prepend to user message
-        full_prompt = f"{system_prompt}\n\n{prompt}" if system_prompt else prompt
-
-        response = model.generate_content(full_prompt)
-        result_text = response.text
-
-        # Remove markdown code blocks
-        code_block_match = re.search(r'```(?:json)?\s*(.*?)\s*```', result_text, re.DOTALL)
-        if code_block_match:
-            result_text = code_block_match.group(1).strip()
-
-        # Parse JSON or return raw text
-        try:
-            return json.loads(result_text)
-        except json.JSONDecodeError:
-            return {"raw_text": result_text}
+/                    → LandingPage
+/portal              → PortalPage (services hub + projects)
+/pump                → PumpCalculatorPage (mobile-first pump calculator)
+/price-parser        → PriceParserPage (PDF price list upload + comparison)
+/objednavka-betonu   → ObjednavkaBetonuPage (search + calculate + compare)
+/dashboard           → DashboardPage (auth required)
+/admin               → AdminDashboard (auth required)
 ```
 
-#### 2. orchestrator.py - LLM Selection Logic
-```python
-class MultiRoleOrchestrator:
-    def __init__(self):
-        # Select LLM client based on MULTI_ROLE_LLM setting
-        multi_role_llm = getattr(settings, 'MULTI_ROLE_LLM', 'gemini').lower()
+## Architecture: Monolit Frontend Pages
 
-        if multi_role_llm == "gemini":
-            if not GEMINI_AVAILABLE:
-                print("⚠️  Gemini requested but not available, falling back to Claude")
-                self.llm_client = ClaudeClient()
-                self.llm_name = "claude"
-            else:
-                try:
-                    self.llm_client = GeminiClient()
-                    self.llm_name = "gemini"
-                    print(f"✅ Using Gemini for Multi-Role ({self.llm_client.model_name})")
-                except Exception as e:
-                    print(f"⚠️  Gemini failed to initialize: {e}, falling back to Claude")
-                    self.llm_client = ClaudeClient()
-                    self.llm_name = "claude"
-
-        elif multi_role_llm == "auto":
-            # Auto = Try Gemini first, fallback to Claude if it fails
-            if GEMINI_AVAILABLE:
-                self.llm_client = GeminiClient()
-                self.fallback_client = ClaudeClient()
-                print(f"✅ Using Gemini with Claude fallback for Multi-Role")
 ```
-
-#### 3. config.py - New Settings
-```python
-# ==========================================
-# API KEYS
-# ==========================================
-ANTHROPIC_API_KEY: str = Field(default="", description="Anthropic Claude API key")
-GOOGLE_API_KEY: str = Field(default="", description="Google AI API key (Gemini)")
-
-# ==========================================
-# AI MODELS
-# ==========================================
-CLAUDE_MODEL: str = Field(default="claude-sonnet-4-5-20250929")
-GEMINI_MODEL: str = Field(default="gemini-2.0-flash-exp", description="Gemini model (2.0 Flash - FREE, fastest)")
-
-# Multi-Role LLM selection: "claude", "gemini", "auto" (Gemini with Claude fallback)
-MULTI_ROLE_LLM: str = Field(default="gemini", description="LLM for Multi-Role: claude, gemini, auto")
-```
-
-#### 4. Role Prompts - JSON Format Enforcement
-All 5 role prompts updated with:
-```markdown
-## OUTPUT FORMAT
-
-**⚠️ CRITICAL: You MUST return ONLY valid JSON! No markdown, no text wrapping, ONLY pure JSON!**
-
-**IMPORTANT RULES:**
-1. ❌ Do NOT wrap JSON in markdown code blocks (```json)
-2. ❌ Do NOT add any text before or after the JSON
-3. ✅ Return ONLY the raw JSON object
-4. ✅ Ensure JSON is valid and parseable
+/                    → MainApp (positions table, KPI, import)
+/planner             → PlannerPage (planElement() orchestrator UI)
+/tariffs             → TariffPage (supplier tariff CRUD)
+/registry/:projectId → RegistryView (unified position browse)
+/r0/*                → R0App (deterministic core, elements/captures/schedule)
 ```
 
 ---
 
-## Tasks for Next Session
+## Full Environment Variables Reference
 
-### Priority 1: VERIFY GEMINI DEPLOYMENT (CRITICAL)
+### concrete-agent (GCR)
+```env
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_API_KEY=...
+GEMINI_MODEL=gemini-2.5-flash-lite
+MULTI_ROLE_LLM=gemini
+OPENAI_API_KEY=sk-...
+AWS_ACCESS_KEY_ID=...           # optional, Bedrock
+AWS_SECRET_ACCESS_KEY=...       # optional, Bedrock
+AWS_DEFAULT_REGION=eu-central-1
+DATABASE_URL=postgresql+asyncpg://...
+REDIS_URL=redis://...           # optional
+PERPLEXITY_API_KEY=pplx-...
+GOOGLE_CLIENT_ID=...            # optional, Drive
+GOOGLE_CLIENT_SECRET=...        # optional, Drive
+GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/google/callback
+GOOGLE_CREDENTIALS_ENCRYPTION_KEY=...
+```
 
-**Goal:** Confirm Gemini integration is working in production on Render
+### stavagent-portal backend (GCR)
+```env
+NODE_ENV=production
+PORT=8080
+JWT_SECRET=...
+DATABASE_URL=postgresql://...
+CORS_ORIGIN=https://www.stavagent.cz
+CONCRETE_AGENT_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+```
 
-**User has already:**
-- ✅ Deployed to Render
-- ✅ Added GOOGLE_API_KEY to environment variables
+### stavagent-portal frontend (Vercel)
+```env
+VITE_DISABLE_AUTH=true
+VITE_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
+VITE_CONCRETE_AGENT_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+```
 
-**What to check:**
+### Monolit-Planner backend (GCR)
+```env
+NODE_ENV=production
+PORT=8080
+DATABASE_URL=postgresql://...
+CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
+STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+FF_AI_DAYS_SUGGEST=true
+```
 
-1. **Render Startup Logs - MOST IMPORTANT**
-   ```
-   Expected SUCCESS logs:
-   ✅ Using Gemini for Multi-Role (gemini-2.0-flash-exp)
-   ✅ Gemini client initialized with model: gemini-2.0-flash-exp
+### Monolit-Planner frontend (Vercel)
+```env
+VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
+```
 
-   Expected FAILURE logs (needs fix):
-   ⚠️ Gemini requested but not available, falling back to Claude
-   anthropic.BadRequestError: Your credit balance is too low
-   ```
+### URS_MATCHER_SERVICE (GCR)
+```env
+NODE_ENV=production
+PORT=8080
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_AI_KEY=...
+OPENAI_API_KEY=sk-...
+PERPLEXITY_API_KEY=pplx-...
+LLM_TIMEOUT_MS=90000
+STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+```
 
-2. **Test Multi-Role API Endpoint**
-   ```bash
-   # Test from Render Shell or browser
-   curl -X POST https://concrete-agent.onrender.com/api/v1/multi-role/ask \
-     -H "Content-Type: application/json" \
-     -d '{
-       "question": "What is the minimum concrete class for outdoor foundations in Czech Republic?",
-       "enable_kb": true
-     }'
-   ```
-
-3. **Check Environment Variables**
-   - GOOGLE_API_KEY = [set correctly]
-   - GEMINI_MODEL = gemini-2.0-flash-exp (optional, defaults to this)
-   - MULTI_ROLE_LLM = gemini (optional, defaults to gemini)
-
-4. **Monitor Google AI Studio Usage**
-   - Go to https://aistudio.google.com/
-   - Check API usage incrementing
-   - Verify FREE tier (1500 req/day) is being used
-
-5. **Verify NO Anthropic Errors**
-   - Search Render logs for "Your credit balance is too low"
-   - Should be **ZERO occurrences** if Gemini is working
+### rozpocet-registry backend (GCR)
+```env
+NODE_ENV=production
+PORT=8080
+DATABASE_URL=postgresql://...
+```
 
 ---
 
-### Priority 2: TEST GEMINI CLIENT LOCALLY (OPTIONAL)
+## Google Cloud Run — Как вносить переменные
 
-If you want to test locally before production verification:
+```
+console.cloud.google.com
+→ Cloud Run
+→ Выбрать сервис (например, concrete-agent)
+→ кнопка "Edit & Deploy New Revision"
+→ вкладка "Variables & Secrets"
+→ "+ Add Variable"
+→ Вводить по одной или загрузить .env через gcloud CLI:
+```
 
 ```bash
+# Через gcloud CLI (рекомендуется для bulk):
+gcloud run services update concrete-agent \
+  --region=europe-west4 \
+  --set-env-vars ANTHROPIC_API_KEY=sk-ant-...,GOOGLE_API_KEY=...,GEMINI_MODEL=gemini-2.5-flash-lite
+```
+
+---
+
+## Implementation Priority (Next Sessions)
+
+### Priority 1: End-to-End Testing & Deploy
+- [ ] **Deploy concrete-agent** to GCR (price-parser + proxy endpoints)
+- [ ] **Deploy Portal** to Vercel (all new pages + CORE proxy)
+- [ ] **Deploy Monolit** to Vercel (planner + tariffs + vercel.json SPA fix)
+- [ ] **Set env vars** in GCR for all services
+- [ ] **Test with real PDFs** — run price parser on actual supplier price lists
+- [ ] **Test Betonárny discovery** — verify GPS search + scraping in production
+
+### Priority 2: Formwork Calculator Audit
+- [x] Curing days flow: table → calculator → scheduler (FIXED)
+- [ ] Verify rental cost includes full curing period in production
+
+### Priority 3: Cross-System Integration
+- [ ] Kiosk import buttons end-to-end (Monolit, Registry, URS)
+- [ ] End-to-end production testing with Portal DB
+
+### Priority 4: Phase 2 Engines — R0 Core Gaps
+
+| # | Gap | Описание | Сложность |
+|---|-----|----------|-----------|
+| G1 | `move`/`inspection` узлы DAG | move_clean_hours → полноценный Activity в DAG | Medium |
+| G2 | Кран/насос resource constraints | crane + pump как shared resources в forward pass | Hard |
+| G3 | Calendar-aware forward pass | Праздники/выходные прямо в DAG, не post-hoc | Medium |
+| G4 | Weather stochastic | P(rain) сезон → PERT множитель | Easy |
+| G5 | Supply chain delays | Lead-time бетона/арматуры как predecessor edge | Medium |
+| G6 | Resource leveling | Выравнивание пиков crew, сдвиг non-critical | Hard |
+| G7 | Scenario comparison UI | vary sets/crews → side-by-side таблица + chart | Medium |
+| G8 | Optimization mode | Minimize cost vs time — Pareto front | Hard |
+
+### Priority 5: Quality
+- [ ] Vitest migration for Monolit frontend
+- [ ] React Error Boundaries
+- [ ] Node.js 18.x → 20.x upgrade
+
+---
+
+## User Action Required (Deploy)
+
+1. **Set env vars** в GCR для каждого сервиса (см. полный список выше)
+2. **Deploy concrete-agent** (new endpoints: price-parser, proxy)
+3. **Deploy Portal Frontend** to Vercel (6 new pages + CORE proxy backend)
+4. **Deploy Monolit Frontend** to Vercel (vercel.json SPA routing + new routes)
+5. **Execute** `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB (FF_AI_DAYS_SUGGEST)
+
+---
+
+## Testing Status
+
+| Component | Tests | Status |
+|-----------|-------|--------|
+| Monolit formulas | 55 | Pass |
+| Planner Orchestrator | 40 | Pass |
+| Calendar Engine | 35 | Pass |
+| Shared Pump Engine | 30 | Pass |
+| Element Scheduler | 27 | Pass |
+| Element Classifier | 26 | Pass |
+| Tariff Versioning | 24 | Pass |
+| Pour Decision | 22 | Pass |
+| Price Parser (CORE) | 21 | Pass |
+| Concrete Maturity | 21 | Pass |
+| PERT estimation | 20 | Pass |
+| Pour Task Engine | 14 | Pass |
+| Rebar Lite | 10 | Pass |
+| Formwork 3-Phase | 8 | Pass |
+| **Monolit shared total** | **332** | **Pass** |
+| URS Matcher | 159 | Pass |
+| **Grand Total** | **512+** | **Pass** |
+
+---
+
+## Quick Start Commands
+
+```bash
+# === КОМАНДА ДЛЯ СЛЕДУЮЩЕЙ СЕССИИ ===
+cd /home/user/STAVAGENT && \
+git checkout claude/price-parser-integration-cCRX3 && \
+git pull origin claude/price-parser-integration-cCRX3 && \
+echo "=== Branch ready ===" && \
+git log --oneline -5 && \
+echo "=== Running shared tests ===" && \
+cd Monolit-Planner/shared && npx vitest run 2>&1 | tail -5 && \
+echo "=== Portal build check ===" && \
+cd ../../stavagent-portal/frontend && npx tsc --noEmit 2>&1 | tail -3 && \
+echo "=== All checks done ==="
+```
+
+```bash
+# Run all shared tests (332)
+cd Monolit-Planner/shared && npx vitest run
+
+# Build Portal frontend
+cd stavagent-portal/frontend && npm run build
+
+# Start Monolit dev
+cd Monolit-Planner/backend && npm run dev   # :3001
+cd Monolit-Planner/frontend && npm run dev  # :5173
+
+# Start Portal dev
+cd stavagent-portal && npm run dev
+
+# Test price parser
 cd concrete-agent/packages/core-backend
+PYTHONPATH=. python -m pytest tests/test_price_parser.py -v
 
-# Run Gemini test suite
-python scripts/test_gemini_client.py
+# Parse a PDF (API)
+curl -X POST http://localhost:8000/api/v1/price-parser/parse \
+  -F "file=@cenik_beton.pdf"
 
-# Expected output:
-# ✅ Gemini client initialized with model: gemini-2.0-flash-exp
-# ✅ TEST PASSED: Gemini returned valid JSON!
-# ✅ TEST PASSED: Gemini handled Multi-Role prompt!
-# 🎉 ALL TESTS PASSED!
+# Set env vars in GCR via CLI (пример)
+gcloud run services update concrete-agent \
+  --region=europe-west4 \
+  --set-env-vars ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 ---
 
-### Priority 3: PERFORMANCE MONITORING
-
-**What to watch:**
-1. **Cost Tracking**
-   - Google AI Studio → Quotas
-   - Should show FREE tier usage (< 1500 req/day)
-   - Cost should be $0.00
-
-2. **Response Quality**
-   - Compare Gemini vs Claude responses
-   - Check if Gemini returns valid JSON (not raw_text)
-   - Verify confidence scores are reasonable
-
-3. **Response Time**
-   - Gemini should be **faster** than Claude (⚡⚡⚡ vs ⚡⚡)
-   - Target: < 2 seconds for Multi-Role request
-
-**If Problems Occur:**
-- Check Gemini API quota (1500 req/day limit on free tier)
-- Verify prompt updates (JSON format) are deployed
-- Consider switching to "auto" mode (Gemini + Claude fallback)
-
----
-
-### Priority 4: ROLLBACK PLAN (IF NEEDED)
-
-If Gemini quality is insufficient or errors occur:
-
-**Option 1: Switch to Auto Mode (Recommended)**
-```bash
-# In Render Environment Variables:
-MULTI_ROLE_LLM=auto
-# Redeploy - will try Gemini first, fallback to Claude
-```
-
-**Option 2: Rollback to Claude**
-```bash
-# In Render Environment Variables:
-MULTI_ROLE_LLM=claude
-# Redeploy - will use Claude for all Multi-Role requests
-```
-
-**Option 3: Optimize Prompts Further**
-- Reduce prompt size from ~42k tokens to ~20k tokens
-- Remove large tables and examples
-- Keep only critical logic
-- **ONLY DO THIS** if Gemini doesn't solve cost problem
-
----
-
-## 📊 Verification Checklist
-
-When starting next session:
-
-- [ ] Read GEMINI_SETUP.md for complete setup guide
-- [ ] Check Render logs for "Using Gemini for Multi-Role"
-- [ ] Verify GOOGLE_API_KEY is set in Render environment
-- [ ] Test Multi-Role API endpoint (no Anthropic errors)
-- [ ] Check Google AI Studio for API usage
-- [ ] Monitor cost (should be $0.00 on FREE tier)
-- [ ] Compare response quality (Gemini vs Claude)
-- [ ] Check response times (should be faster)
-
----
-
-## 📁 Key Files Created/Modified
-
-### New Files
-```
-concrete-agent/packages/core-backend/
-├── app/core/gemini_client.py          (330+ lines) - NEW ✅
-├── scripts/test_gemini_client.py      (210+ lines) - NEW ✅
-└── GEMINI_SETUP.md                    (220+ lines) - NEW ✅
-```
-
-### Modified Files
-```
-concrete-agent/packages/core-backend/
-├── app/core/config.py                 (+3 settings: GOOGLE_API_KEY, GEMINI_MODEL, MULTI_ROLE_LLM)
-├── app/services/orchestrator.py       (+60 lines: LLM selection logic)
-├── requirements.txt                   (+1 line: google-generativeai==0.8.3)
-└── app/prompts/roles/
-    ├── document_validator.md          (JSON format enforcement)
-    ├── structural_engineer.md         (JSON format enforcement)
-    ├── standards_checker.md           (JSON format enforcement)
-    ├── concrete_specialist.md         (JSON format enforcement)
-    └── cost_estimator.md              (JSON format enforcement)
-```
-
----
-
-## 🔍 Diagnostic Commands (Render Shell)
-
-```bash
-# Check if google-generativeai is installed
-python -c "import google.generativeai; print('✅ Gemini available')"
-
-# Check environment variables
-echo "GOOGLE_API_KEY: ${GOOGLE_API_KEY:0:20}..."
-echo "GEMINI_MODEL: $GEMINI_MODEL"
-echo "MULTI_ROLE_LLM: $MULTI_ROLE_LLM"
-
-# Test Gemini client directly
-cd concrete-agent/packages/core-backend
-python scripts/test_gemini_client.py
-```
-
----
-
-## 🎯 SUCCESS CRITERIA
-
-**Gemini integration is successful if:**
-1. ✅ Render logs show "Using Gemini for Multi-Role"
-2. ✅ Multi-Role API responds without Anthropic errors
-3. ✅ Google AI Studio shows API usage
-4. ✅ Cost is $0.00 (FREE tier)
-5. ✅ Response quality is comparable to Claude
-6. ✅ Response time is < 2 seconds
-
-**If all criteria met:**
-- 🎉 Cost optimization COMPLETE
-- 🎉 User can now use Multi-Role API without credit exhaustion
-- 🎉 40-250x cost savings achieved
-
----
-
-## 📚 Documentation Reference
-
-**Complete Gemini Setup Guide:**
-- **concrete-agent/GEMINI_SETUP.md** - 11 sections:
-  1. Cost Savings Analysis
-  2. Quick Setup (4 steps)
-  3. Available Models Comparison
-  4. Multi-Role LLM Modes (gemini, claude, auto)
-  5. Testing Multi-Role with Gemini
-  6. Troubleshooting (4 common errors)
-  7. Production Deployment
-  8. Monitor Usage & Costs
-  9. Rollback to Claude (if needed)
-  10. Notes & Recommendations
-  11. Checklist (8 items)
-
-**Related Documentation:**
-- `/CLAUDE.md` - Full system context
-- `concrete-agent/CLAUDE.md` - CORE system documentation
-- `concrete-agent/packages/core-backend/app/core/gemini_client.py` - Implementation
-- `concrete-agent/packages/core-backend/scripts/test_gemini_client.py` - Test suite
-
----
-
-**Status:** ✅ **IMPLEMENTATION COMPLETE** - Awaiting Production Verification
-**Branch:** Ready to merge (all commits pushed)
-**Deployment:** User deployed to Render with GOOGLE_API_KEY
-
-**Next Step:** Verify Gemini is working in production (check Render logs)
+**Version:** 2.9.0
+**Last Updated:** 2026-03-11

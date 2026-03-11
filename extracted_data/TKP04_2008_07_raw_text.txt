@@ -1,0 +1,493 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 4
+ODVODNĚNÍ TRATÍ A STANIC
+Třetí - aktualizované vydání
+změna č. 6
+Schváleno generálním ředitelem SŽDC
+dne: 7.4.2008
+č.j.: 12153/08-OKS
+Účinnost od: 1.7.2008
+Počet listů : 6
+Počet příloh: 0
+Počet listů příloh: 0
+Praha 2008
+Označení textu po stranách znamená věcnou změnu textu oproti TKP - Třetímu aktualizovanému
+vydání, změně č. 3 z roku 2002.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+4.1 ÚVOD 3
+4.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 3
+4.2.1 Obecně 3
+4.2.2 Příkopy a náhorní příkopy 3
+4.2.3 Příkopové zídky, skluzy a kaskády 3
+4.2.4 Trativody, trativodní šachty, svahová trativodní žebra 3
+4.2.5 Odvodňovací vrty 4
+4.2.6 Svodná potrubí a hlavní sběrače 5
+4.2.7 Horské vpusti, lapače splavenin, trativodní výústi 5
+4.2.8 Geotextilie 5
+4.3 TECHNOLOGICKÉ POSTUPY PRACÍ 5
+4.3.1 Příkopy, náhorní příkopy 5
+4.3.2 Příkopové zídky, skluzy a kaskády 6
+4.3.3 Trativody, trativodní šachty, svahová trativodní žebra 6
+4.3.4 Odvodňovací vrty 7
+4.3.5 Svodná potrubí a hlavní sběrače 7
+4.3.6 Horské vpusti, lapače splavenin, trativodní výústi 7
+4.3.7 Geotextilie 7
+4.4 DODÁVKY MATERIÁLŮ, SKLADOVÁNÍ, POČÁTEČNÍ ZKOUŠKY 7
+4.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 8
+4.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY, ÚDRŽBA
+V ZÁRUČNÍ DOBĚ 8
+4.7 KLIMATICKÁ OMEZENÍ 9
+4.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 9
+4.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 10
+4.10 EKOLOGIE 10
+4.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 10
+4.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 10
+4.12.1 Technické normy 10
+4.12.2 Předpisy 11
+4.12.3 Související kapitoly TKP 12
+1
+Seznam zkratek
+CBR California Bearing Ratio (Kalifornský poměr únosnosti)
+ČD České dráhy, akciová společnost
+ČSN Česká norma
+OTP Obecné technické podmínky
+SŽDC Správa železniční dopravní cesty, státní organizace
+TKP Technické kvalitativní podmínky
+ZTKP Zvláštní technické kvalitativní podmínky
+2
+4.1 ÚVOD
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP.
+Kapitola 4 technických kvalitativních podmínek staveb státních drah (dále jen TKP) řeší odvodnění tratí a stanic
+zařízeními k zachycení a odvedení povrchových nebo podzemních vod. Konstrukce a zařízení jsou příkopy,
+trativody, svahová trativodní žebra, svodná potrubí, odvodňovací vrty apod. Kapitola navazuje na kapitolu 1, 2,
+3, 6, 10, 14, 17, 18, 22 a 24 TKP.
+V této kapitole nejsou řešeny propustky, pro které platí kapitola 18 TKP a odvodnění zpevněných ploch, ramp
+a nástupišť, které je uvedeno v kapitole 10 TKP.
+4.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+4.2.1 Obecně
+Tento oddíl kapitoly 4 TKP určuje rozměry, materiál, typ a požadované vlastnosti materiálů, trub, dílců
+a konstrukcí používaných pro odvodnění tratí a stanic.
+V případech, kdy nejsou blíže specifikovány materiály v projektové dokumentaci, je možné použít materiály
+výrobců tuzemských nebo zahraničních, pokud odpovídají požadavkům uvedeným v těchto TKP, zvláštních
+technických kvalitativních podmínkách (dále jen ZTKP), dokumentaci a souvisejících normách a předpisech.
+4.2.2 Příkopy a náhorní příkopy
+Pro provádění příkopů a jejich konstrukci platí ustanovení Vzorových listů železničního spodku Ž 3.11
+a TNŽ 73 6949 - Odvodnění železničních tratí a stanic.
+V případě použití betonových prefabrikátů (příkopových tvárnic, obkladních desek apod.), příp. betonových
+monolitických konstrukcí je nutné dodržet předepsanou kvalitu betonu, kterou určuje ČSN EN 206-1/73 2403,
+ČSN P ENV 3670-1/73 2400, kapitola 18 TKP.
+4.2.3 Příkopové zídky, skluzy a kaskády
+Příkopové zídky
+Příkopová zídka je betonová konstrukce s krycí deskou. Provádí se v souladu se Vzorovým listem železničního
+spodku Ž 3.12 nebo jako prefabrikovaný příkopový žlab.
+Skluzy, stupně a kaskády
+Provedou se v souladu se Vzorovým listem železničního spodku Ž 3.13.
+Kvalitu všech uvedených konstrukcí z betonu určuje dokumentace. Pro výrobu a ošetření betonu a podkladních
+betonů platí kapitola 17 TKP.
+4.2.4 Trativody, trativodní šachty, svahová trativodní žebra
+Trativody se konstruují podle TNŽ 73 6949 a Vzorového listu železničního spodku Ž 3.21.
+Do trativodních rýh se vkládá potrubí, jako materiál se použijí drenážní trubky z plastu, kameninové děrované
+trouby, betonové trouby, popřípadě jiný vhodný materiál určený dokumentací stavby nebo ZTKP.
+Drenážní trubky z plastů
+Použité trubky musí splňovat parametry podle ČSN 13 8740. Minimální vnitřní průměr je 90 mm.
+Kameninové trubky děrované
+Fyzikální, mechanické a chemické vlastnosti určuje ČSN 72 5220. Používají se trubky hrdlové s utěsněnými
+čely. Minimální vnitřní průměr je 150 mm.
+3
+Betonové trubky
+Podle vzor. listu Ž 3.21 lze použít betonové trubky s hladkými konci, délky max. 500 mm. Užití určuje
+ČSN 72 3129, ČSN 72 3155. Minimální vnitřní průměr je 150 mm.
+Jiné druhy trub
+Použijí se v případech, kdy toto předepisuje dokumentace. Jejich popis a požadavky na kvalitu specifikují
+ZTKP.
+Zásyp trativodní rýhy
+Zásyp trativodní rýhy se zřizuje jako jednotná výplň z jednoho druhu materiálu. Zásyp trativodní rýhy musí
+zaručovat velmi dobrou propustnost dle TNŽ 73 6949 a nenamrzavost dle ČSN 72 1002. Musí splňovat
+požadavky na zrnitost a na další technické vlastnosti stanovené přílohou 19 předpisu SŽDC S4.
+Výplň trativodní rýhy musí být posouzena podle filtračního kritéria podle TNŽ 73 6949. Nevyhovuje-li výplň
+filtračnímu kritériu vloží se mezi zeminu, příp. konstrukční vrstvu a výplň vhodná geotextílie. K zamezení
+vplavování výplně trativodní rýhy do trativodních trubek musí výplň trativodů splňovat podmínku
+TNŽ 73 6949.
+Pro výplň může být ve shodě s dokumentací použita štěrkodrť nebo štěrkopísek, popř. drcená struska,
+recyklovaný materiál nebo jiný vhodný materiál.
+Trativodní šachty
+Trativodní šachty se konstruují jako vrcholové, přípojné nebo kontrolní šachty a koncové šachty.
+Konstrukci a rozměry předepisuje TNŽ 73 6949 a Vzorový list železničního spodku Ž 3.3.
+Odvodňovací žebra
+Provedou se podle TNŽ 73 6949, Vzorového listu železničního spodku Ž 3.23. a na základě inženýrsko-geolo-
+gického průzkumu nebo rozhodnutí stavebního dozoru.
+4.2.5 Odvodňovací vrty
+Odvodňovací vrty se zřizují pro odvedení podzemních vod, které nepříznivě ovlivňují stabilitu svahu, ze
+zemního příp. horninového masivu na povrch terénu. Odvodňovací vrty lze podle prostorové polohy rozdělit:
+– horizontální - dovrchní nebo úpatní
+– vertikální
+Provádí se převážně jako dovrchní vrty s výstrojí z drenážního potrubí, filtru a výtokového čela. Vrty lze
+doplňovat kontrolními šachtami a nebo kombinovat s vertikálními vrty.
+Prostorová poloha vrtů a sklon se stanoví na základě hydrogeologického průzkumu.
+Pro drenážní potrubí se použijí děrované ocelové trubky nebo trubky z plastů. Pro horizontální vrty se volí
+přednostně perforace s kruhovými otvory po celém obvodu profilu z důvodu vyšší tuhosti v kroucení při
+zatahování trubek. Použití potrubí se štěrbinovými otvory je vhodnější při zřizování vertikálních vrtů. Obvyklé
+průměry ocelových profilů: d=89 mm, d=108 mm při délce vrtů do 150 m, d=133 mm při délce vrtů do 50 m.
+Ocelové potrubí musí být na povrchu opatřeno antikorozní úpravou.
+Při použití potrubí z plastů mimo oblast zatížení železničním provozem je přípustná trvalá vertikální deformace
+potrubí 6 %, v oblasti zatížení je přípustná trvalá vertikální deformace potrubí 3 %. Délka potrubí z plastů je
+omezená v závislosti na použité technologii vrtu.
+Zemní masiv se ve volném prostoru vrtu postupně dotvaruje k povrchu drenážního potrubí a vytvoří přirozený
+filtr. K zamezení vplavování zemin do potrubí musí být splněna podmínka:
+d > D (mm)
+50
+kde d průměr zrna zeminy při 50% propadu, D je průměr kruhového otvoru děrované trubky/ šířka štěrbiny
+50
+perforovaných trub.
+4
+Pro zamezení vplavování zemin do potrubí lze použít technické filtry. Filtry mohou být zřízeny drenážním
+obsypem potrubí, textilním filtrem, jako lepený filtr překrytím otvorů směsí písku a lepidla apod. Při zatahování
+potrubí do vrtů je nutno mít na zřeteli možné sedření nebo održení filtru.
+Zřizování drenážního filtru obsypem je možné pouze u vertikálních vrtů. Při požadavku na sypaný filtr
+dovrchních vrtů je nutno vrt dvojitě zapažit a výplň zafoukat nebo zaplavit. Takto zřízený obsyp nelze ideálně
+provést na celý profil vrtu a v celé jeho délce (částečné vyplnění v profilu, nedofouknutí do konce vrtu,
+deformace vrtu při odpažení se zatlačováním obsypu do drenážních otvorů apod.). Z uvedených důvodů se
+u dovrchních vrtů obsyp obvykle nenavrhuje.
+Výtokové čelo odvodňovacího vrtu se navrhuje podle zásad pro provádění trativodních výústí, čl. 4.2.7.
+4.2.6 Svodná potrubí a hlavní sběrače
+Svodná potrubí a hlavní sběrače se provádějí podle TNŽ 73 6949 a Vzorového listu železničního spodku Ž 3.4
+jako kanalizační potrubí s utěsněnými spárami. Podrobnosti jsou uvedeny v kapitole 14 TKP.
+4.2.7 Horské vpusti, lapače splavenin, trativodní výústi
+Provádějí se podle dokumentace v souladu se zásadami Vzorového listu železničního spodku Ž 3.14. Zřizují se
+jako prefabrikované díly, z monolitického betonu nebo z kamenného zdiva. Prefabrikované díly se provádějí
+jako staveništní prefabrikáty z betonu prostého minimální kvality C 30/37 XF3, železobetonové díly z betonu
+minimální kvality C 30/37 XF3, objekty z monolitického betonu minimální kvality C 30/37 XF3. Další
+požadavky na beton stanoví kapitola 17 TKP a na betonové konstrukce kapitola 18 TKP. Hydroizolace objektů
+na styku s vodou nebo se zemní vlhkostí se provádí podle požadavků stanovených v kapitole 22 TKP.
+U menších objektů je vhodné použít vodostavební beton s maximálním průsakem 50 mm podle zásad technické
+normy SVB ČR 01-2004 bez potřeby další ochrany proti vodě. Konstrukce z kamenného zdiva se provádí na
+cementovou maltu z opracovaného kamene. Nejmenší tloušťka kamenného zdiva je 0,40 m. Požadavky na
+výrobky z kamene stanoví ČSN 72 1860, na pojivo z cementu ČSN EN 197-1 (72 1001). Požadavky na
+provádění zděných konstrukcí z kamene stanoví ČSN 73 2310.
+Vtoková mříž objektů odvodnění, určená pro dopravní zatížení – těžký typ, musí být litinová s pevností
+odpovídající stupni zatížení podle daného místa (stanoví projektová dokumentace). Pro vtokovou mříž objektů
+odvodnění, bez zatížení nebo pochozí – lehký typ, se použije vylehčená mříž (svařovaná síť, můstkový rošt,
+mřížkový rošt, plech s otvory apod.).
+V případě požadavku na ochranu svahů u těchto objektů se provádí jejich ochrana podle zásad Vzorového listu
+železničního spodku Ž 6.11. Svahy pod výtokem z objektů musí být vždy spolehlivě opevněny proti erozi
+a vymílání proudící vodou.
+V závislosti na místních podmínkách se přednostně použije kamenná dlažba nebo drátokamenné konstrukce.
+Dále lze použít pohozy, štěrkové koberce, patky a záhozy, rovnaniny, masivní obklady, gabiony z plastů, textilní
+matrace.
+4.2.8 Geotextilie
+Druh geotextilie a požadavky na jejich vlastnosti určuje dokumentace nebo stavební dozor ve shodě
+s ČSN 73 3040 a obecnými technickými podmínkami „Geotextilie v tělese železničního spodku“. Základními
+funkcemi geotextilie v rámci této kapitoly se rozumějí separace, filtrace, odvodnění.
+Použití geotextilie určuje projektová dokumentace nebo ZTKP. Dodávky geotextilií musí být doloženy certi-
+fikáty jakosti.
+4.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+4.3.1 Příkopy, náhorní příkopy
+Příkopy se provádějí podle projektové dokumentace a zemní práce podle zásad uvedených v kapitole 3 TKP
+a ČSN 73 3050.
+Náhorní příkop se zřizuje nad svahem zářezu, konstrukčně musí být uspořádán tak, aby nebyla porušena stabilita
+svahu a musí být zásadně zpevněný a nepropustný.
+5
+Je-li navrženo zpevnění příkopu tvárnicemi nebo dlažbou z přírodního kamene, klade se na řádně zhutněný
+podklad. Tvárnice a dlažba se osazuje do lože z betonu C 16/20 – XF3 v tloušťce min. 0,10 m. Spáry mezi
+tvárnicemi nebo v dlažbě musí být vždy vyplněny cementovou maltou nebo betonovou mazaninou. Horní část
+spáry je možno uzavřít živičnou zálivkou. Další požadavky na provádění zpevněného příkopu tvárnicemi
+stanoví Vzorový list železničního spodku Ž 3.11, pro provádění zpevněného příkopu z dlažby vzorový list
+železničního spodku Ž 6.11.
+Rozhrnutí organické zeminy nebo půdy a osetí přilehlých svahů se provádí až po dokončení příkopu.
+Stavební postup musí zajišťovat stálé odvodnění staveniště a nesmí docházet v průběhu zřizování příkopů
+k znečišťování štěrkového lože a narušování konstrukčních vrstev.
+4.3.2 Příkopové zídky, skluzy a kaskády
+Zřizují se na základovou spáru provedenou podle zásad uvedených v kapitole 3 těchto TKP. Spára musí být
+odsouhlasena stavebním dozorem.
+Konstrukční detaily určuje projektová dokumentace.
+U monolitických betonových konstrukcí musí pracovní záběr končit zásadně dilatační spárou (viz kapitola 17
+a 18 TKP).
+4.3.3 Trativody, trativodní šachty, svahová trativodní žebra
+Stavba trativodu
+Zemní práce na stavbě trativodu mohou být zahájeny až po zjištění a vytyčení polohy všech inženýrských sítí
+a udělení souhlasu všech dotčených organizací. V blízkosti potrubí, stok, kabelů a jiných podzemních a nadzem-
+ních inženýrských sítí je nutno zemní práce provádět s maximální opatrností podle ČSN 73 3050 a ostatních
+souvisejících předpisů. Při provádění zemních prací je nutno počítat s důsledky nepříznivých vnějších účinků
+(mráz, vodní příval apod.).
+Hloubení trativodních rýh
+Při zemních pracích je nutno postupovat podle ČSN 73 3050. Výkop trativodní rýhy musí být směrově
+a výškově vytyčen. Trativodní rýhu je nutno hloubit před konečnou úpravou zemní pláně. Výkop trativodní rýhy
+se provádí proti spádu trativodu. Výkop trativodní rýhy musí být proveden v navrženém sklonu s přesností
+±2 ‰ a s výškovou tolerancí ± 0,025 m.
+Výkopový materiál musí být ihned odvážen. Nerovnosti dna trativodní rýhy se vyrovnají vrstvou písku tloušťky
+min. 0,05 m.
+Po provedení výkopu a úpravy dna rýhy, které musí tvořit rostlá nerozrušená zemina, se provede odsouhlasení
+rýhy stavebním dozorem.
+Kladení trativodních trubek
+Pro stavbu trativodů se používají pouze nepoškozené a čisté trativodní trubky. Trativodní trubky s hrdly musí
+být ukládány tak, aby hrdla byla orientována proti směru toku vody. Potrubí se klade po spádu nivelety
+(z důvodu zanášení). U trativodních trubek bez hrdel je nutno při kladení dbát na to, aby spára byla co nejmenší.
+Spáry je vhodné chránit před zarůstáním a vplavováním jemných částic zásypu trativodní rýhy do trativodního
+potrubí (např. geotextilií). Toto neplatí při použití trubek spojovaných hrdlem s pryžovým těsněním, se
+spojovacím nátrubkem, příp. svařovaných.
+Trativodní trubky se kladou v delších úsecích, nejméně mezi dvěma šachtami. Kde to není možné (z důvodu
+organizace výstavby), zajistí se dříve položená část trativodního potrubí proti znečištění (např. víčkem). Při po-
+kračování v kladení trubek se toto zajištění odstraní. Trativodní trubky, děrované v horní části profilu, se
+zásadně ukládají drenážními otvory vzhůru po svislé ose symetrie otvorů. Vsakovací trubky, děrované v celém
+profilu, se ukládají vyznačenou pokládací linií vzhůru.
+Po položení trativodního potrubí musí být trativodní rýha ihned vyplněna vhodným materiálem. Po provedení
+zásypu a po vplavení drobných částic výplně do trativodu se trativodní potrubí pročistí proudem tlakové vody.
+Zásyp trativodních rýh
+Obsyp trativodního potrubí se provede odděleně od zásypu. Zásyp se v první vrstvě zhutní v tloušťce min.
+0,30 m nad potrubím zhutňovacím zařízením s maximální opatrností tak, aby potrubí trativodu nebylo
+6
+poškozeno ani deformováno. Zásyp a hutnění dalších vrstev se provádí tloušťce max. 0,50 m. Poslední vrstvu
+lze navýšit až do úrovně pláně tělesa železničního spodku. V případě mělce uloženého potrubí je nutno provést
+přesypání materiálu a jeho zhutnění. Zásyp se následně upraví do projektových profilů.
+V průběhu manipulace a vlastní realizace nesmí dojít k znečištění materiálu zásypu příměsemi nebo případné
+segregaci. Při vyplňování trativodní rýhy nesmí být zemní pláň porušena pojezdy vozidel a stavebních
+machanizmů. Konstrukce trativodu musí být bezpečně ochráněna před přímým pojezdem vozidel.
+Trativodní šachty
+Trativodní šachty se budují zároveň s postupem kladení trativodního potrubí. Po dokončení zásypu musí být
+poklopy nejvýše 0,05 m nad úrovní přilehlého terénu, stezky apod.
+Svahová trativodní žebra
+Provedou se podle projektové dokumentace, geologického posudku nebo ZTKP, případně podle skutečných
+geologických poměrů zjištěných při realizaci stavby a pokynů stavebního dozoru.
+Není-li stanoveno jinak, provede se výplň bezprostředně po dokončení a odsouhlasení zemních prací.
+Výplň trativodních žeber nesmí být v průběhu realizace znečištěna a segregována.
+Práce musí být prováděny tak, aby nebyla narušena stabilita tělesa železničního spodku.
+4.3.4 Odvodňovací vrty
+Použitá technologie vrtů musí zajistit projektové parametry a geometrickou přesnost předepsanou projektovou
+dokumentací. V geologických složitých poměrech, v obtížných geomorfologických podmínkách a při rozsáhlých
+sanacích zemního tělesa je nutno zpracovat ZTKP. Zhotovitel odvodňovacích vrtů doloží způsob provádění
+technologickou dokumentací.
+4.3.5 Svodná potrubí a hlavní sběrače
+Podrobnosti zřizování svodných potrubí a hlavních sběračů jsou obsaženy v kapitole 14 TKP.
+4.3.6 Horské vpusti, lapače splavenin, trativodní výústi
+Stavební a montážní práce betonových a kamenných konstrukcí se provádí podle standardních stavebních
+postupů, které vyplývají z požadavků TKP, kapitola 5 Ochrana drážního tělesa, kapitola 17 Beton pro
+konstrukce a kapitola 22 Izolace proti vodě.
+Přípravné a zemní práce se provádí podle TKP, kapitola 2 - Příprava staveniště, kapitola 3- Zemní práce. Při
+zřizování odkopávek pro objekty musí být po celou dobu stavebních prací zajištěna stabilita svahů se zvláštním
+zřetelem na přitížení terénu železničním provozem. Sklony svahů odkopávek nebo pažení stěn odkopávek
+je určeno ČSN 73 3050. Základová spára před zahájením stavebních prací musí být řádně odvodněna a suchá.
+V případě potřeby je nutno vybudovat těsnící stěny nebo jímky podle TKP, kapitola 24 - Zvláštní zakládání
+a vodu z odkopávek průběžně odčerpávat.
+4.3.7 Geotextilie
+Geotextilie se klade zásadně s předepsanými přesahy a se zvláštním zřetelem na její nepoškození.
+4.4 DODÁVKY MATERIÁLŮ, SKLADOVÁNÍ, POČÁTEČNÍ ZKOUŠKY
+Ke každé dodávce materiálu (trub, betonu, betonových konstrukcí, kameniva, geotextilií, hutního materiálu)
+musí zhotovitel zajistit požadované doklady o kvalitě (certifikáty jakosti, prohlášení o shodě), ze kterých je
+zřejmé, že materiály splňují technické požadavky stanovené projektovou dokumentací, OTP, TKP nebo ZTKP.
+Zhotovitel je povinen umožnit stavebnímu dozoru kontrolu těchto materiálů a příslušných dokladů.
+Konstrukce, trubky a ostatní materiály musí zhotovitel skladovat tak, aby nedošlo k jejich poškození a zneho-
+dnocení před vlastním použitím.
+U monolitických betonových konstrukcí musí zhotovitel zajistit počáteční zkoušky podle kapitoly 17 TKP.
+7
+4.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Trativodní potrubí se, není-li předepsáno jinak, nezkouší, ale stavební dozor musí být přítomen a odsouhlasit
+provedené nezakryté drenáže (trativodní potrubí) před obsypem a zásypem. Po dokončení trativodního potrubí
+nesmí být toto potrubí dotčeno dalšími pracemi. Pokud k zásahu do trativodního potrubí dojde, je nutno po
+ukončení dalších prací uvést trativodní potrubí do původního stavu a prověřit vhodnou metodou (proplachem,
+pérem, kamerovou sondou apod.) funkčnost dotčeného trativodního potrubí.
+Svodné potrubí a potrubí hlavních sběračů se zkouší na vodotěsnost v případech, kdy to určuje dokumentace
+nebo ZTKP, popř. na základě požadavku stavebního dozoru. Přesné postupy zkoušek pro dané případy stanoví
+ČSN 75 6909.
+Pokud dokumentace stanoví kontrolní zkoušky betonu, provádějí se podle kapitoly 17 TKP.
+Vhodnost materiálu trativodů musí být doložena prohlášením shody (osvědčením o jakosti), u materiálu výplně
+trativodu křivkou zrnitosti. Vzorky pro kontrolní zkoušky je nutno odebírat před zasypáním rýhy. V případě, že
+materiál nevyhoví požadavkům čl. 4.2.4, nelze jej pro výplň trativodu použít.
+Před provedením zásypu trativodu se kontrolními zkouškami ověřuje shoda vlastností materiálu pro výplň trati-
+vodu s výsledky počátečních zkoušek. Kontrolní zkoušky provádí zhotovitel nejméně 1x na délku 200 m
+trativodu, pokud není stavebním dozorem stanoveno jinak. Odběr vzorků a jejich příprava pro kontrolní zkoušky
+se řídí ustanovením ČSN EN 932-1.
+U geotextilie s oddělovací a filtrační funkcí se dokladuje propustnost (součinitel filtrace kolmo na rovinu
+geotextílie), pevnost v tahu v podélném a příčném směru, velikost otvoru, odolnost proti statickému porušení
+Všechny neobvyklé materiály použité na utěsnění spár, izolační nátěry, ochranu svahu příkopů apod. musí být
+doloženy certifikátem výrobku nebo prohlášením shody prokazujícím jejich technickou použitelnost a ekologic-
+kou nezávadnost.
+4.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY, ÚDRŽBA
+V ZÁRUČNÍ DOBĚ
+Výškové odchylky
+Dovolené odchylky uložení trubek jsou určeny takto:
+Při sklonu do 10 ‰ může být výšková odchylka uložení svodného potrubí a hlavního sběrače do ±10 mm, při
+sklonu nad 10 ‰ do ±30 mm, u dna trativodního potrubí tato odchylka nesmí být větší než ±25 mm.
+Odchylky se vztahují ke kótě určené projektovou dokumentací.
+Poklopy šachet a vpustě umístěné ve zpevněné ploše nebo ve volném schůdném prostoru musí být v úrovni
+přilehlé úpravy, v ostatních případech se připouští maximální odchylka do ±50 mm.
+Příkopy, žlaby a skluzy smí mít odchylku do ±10 mm za podmínky, že nebude docházet k zadržování vody.
+Směrové odchylky
+Přímé úseky odvodňovacího zařízení - příkopy (tvárnice) a stoky mezi dvěma šachtami smí mít směrovou
+odchylku od přímého směru nejvýše 50 mm, eventuální přechod křivosti musí být plynulý. Polohové odchylky
+odvodňovacího zařízení od vytyčovacího plánu nesmí zhoršovat parametry stavby (např. zestrmění příkopových
+svahů, zásah konstrukce odvodnění do pracovního prostoru koleje).
+Sklonové odchylky
+Při sklonu trativodního potrubí do 5 ‰ nesmí být v celé délce trasy lokální sklon menší než 2 ‰, při sklonu nad
+5 ‰ menší než 3 ‰.
+Lokální sklon je určen relativní výškovou odchylkou na měřické základně 2,00 m.
+Záruční doby všeobecně stanoví kapitola 1 TKP.
+Údržbu v záruční době zajišťuje provozovatel dráhy podle ustanovení v kapitole 1 TKP. V této době za
+odstranění plevele, náletových dřevin, přírodního spadu a překážek vzniklých dopravním provozem odpovídá
+příslušná SDC.
+8
+4.7 KLIMATICKÁ OMEZENÍ
+Betonářské práce se smí provádět v období, kdy průměrná denní teplota v průběhu tří dnů neklesne pod +5°C
+(portlandské cementy) a pod +8°C (směsné cementy). Noční teploty nesmí poklesnout pod bod mrazu.
+Podmínky betonářských prací jsou určeny v ČSN P ENV 13 670-1, ČSN EN 206-1 a v kapitole 17 TKP.
+Manipulace a svařování potrubí z PVC je povoleno pouze při teplotách nad bodem mrazu, práce se nesmí
+provádět při sněžení a dešti.
+Tlakové zkoušky hlavních sběračů (svodných potrubí) v případech, kdy to určuje projektová dokumentace, se
+smí provádět pouze, pokud teplota neklesne pod +5°C (ČSN 75 6909), pokud nejsou provedena jiná ochranná
+opatření odsouhlasená stavebním dozorem.
+4.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+Provedení konstrukcí a objektů, které budou následně kryty zásypem, se odsouhlasuje před jejich zasypáním.
+Přejímka potrubí odvodňovacího zařízení se provádí při bočním obsypu do výšky 2/3 profilu potrubí.
+Pokud jsou požadovány tlakové zkoušky, popřípadě zkoušky vodotěsnosti, provádí se podle předcházejících
+článků (platí pro svodné potrubí a hlavní sběrače) a jejich úspěšný výsledek je podmínkou pro odsouhlasení.
+Podklady pro převzetí prací jsou prohlídka stavebního objektu a doložená prohlášení o shodě (osvědčení
+o jakosti) včetně požadovaných počátečních a kontrolních zkoušek určených dokumentací, TKP nebo ZTKP.
+Při odsouhlasení odvodnění (před zakrytím) je zhotovitel povinen předat stavebnímu dozoru tabulku nivelace
+odvodnění - potvrzení sklonu (spádu) s hustotou bodů 5-20/100 bm odvodňovacího zařízení podle typu
+odvodňovacího zařízení. Hustotu bodů určuje stavební dozor.
+Před zásypem potrubí se kontroluje:
+− dodržení předepsaných sklonů (spádů) odvodnění,
+− kvalita napojení a položení trubek, včetně správné polohy drenážních otvorů,
+− těsnost potrubí (tlaková zkouška) s výjimkou trativodního,
+− polohová a výšková rovinatost,
+− ochrana potrubí pod kolejí,
+− napojení potrubí na šachty,
+− provedení a nepropustnost šachet,
+− kvalita použitého betonu na monolitické konstrukce,
+− kvalita všech použitých materiálů na těsnění spár, izolační nátěry apod.,
+− zhutnění základové spáry, pokud je projektovou dokumentací požadováno.
+Po ukončení prací se kontroluje:
+− čistota potrubí (propláchnutí proudem vody),
+− výplňový materiál trativodu,
+− zhutnění zásypu,
+− sedání zásypů rýh a vliv na kvalitu povrchu terénu.
+Součástí dokumentace skutečného provedení je:
+− zhotovitelem zaměřený podélný profil odvodňovacího zařízení
+− polohové zaměření odvodňovacích zařízení v charakteristických bodech určených vytyčovacím plánem,
+v lomových bodech a v bodech nivelace
+− polohové zaměření objektů odvodnění v charakteristických bodech určených vytyčovacím plánem
+Veškerá kanalizační a trativodní síť musí být před převzetím prací zaměřena v souřadnicovém systému
+a výškopisném systému projektové dokumentace. Zaměření předá zhotovitel stavebnímu dozoru.
+9
+4.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+Není požadováno.
+4.10 EKOLOGIE
+Stavební činnost popsaná v této kapitole musí být prováděna v souladu s články o životním prostředí v kapitole
+1 TKP.
+4.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví kapitola
+1 TKP.
+4.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich aktuali-
+zace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj. právních
+předpisů, technických norem a předpisů SŽDC (ČD).
+4.12.1 Technické normy
+ČSN 72 1006 Kontrola zhutnění zemin a sypanin
+ČSN 72 1860 Kámen pro zdivo a stavební účely. Společná ustanovení
+ČSN 72 2699 Cihlářské výrobky pro zvláštní účely. Trativodky
+ČSN 72 5220 Hospodářská kamenina. Jakost, tvary a rozměry
+ČSN 73 1200 Názvoslovie v odbore betonu a betonárských prác
+ČSN 73 1201 Navrhování betonových konstrukcí
+ČSN 73 2310 Provádění zděných konstrukcí
+ČSN 73 1326 Stanovení odolnosti povrchu cementového betonu proti působení vody a chemických
+rozmrazovacích látek
+ČSN 73 3050 Zemné práce. Všeobecné ustanovenia
+ČSN 73 6301 Projektování železničních drah
+ČSN 73 6310 Navrhování železničních stanic
+ČSN 75 4030 Křížení a souběhy melioračních zařízení s dráhami, pozemními komunikacemi
+a vedeními
+ČSN 75 6101 Stokové sítě a kanalizační přípojky
+ČSN 75 6230 Podchody stok a kanalizačních přípojek pod dráhou a pozemní komunikací
+ČSN 75 6551 Odvádění a čištění odpadních vod s obsahem ropných látek
+ČSN 75 6909 Zkoušky vodotěsnosti stok a kanalizačních přípojek
+ČSN 83 0901 Ochrana povrchových vod před znečištěním. Všeobecné požadavky
+ČSN EN Změna Z2
+206-1/73 2403 Beton – Část 1: Specifikace, vlastnosti, výroba a shoda
+ČSN EN 295-1 Kameninové trouby, tvarovky a spoje trub pro odpadní a stokovou kanalizaci.
+(72 5201-1) Požadavky
+ČSN EN 295-2 Kameninové trouby, tvarovky a spoje trub pro odpadní a stokovou kanalizaci.
+(72 5201-2) Kontrola jakosti a odběr vzorků
+ČSN EN 295-3 Kameninové trouby, tvarovky a spoje trub pro odpadní a stokovou kanalizaci.
+(72 5201-3) Zkušební postupy
+10
+ČSN EN 932-1 Zkoušení všeobecných vlastností kameniva -Část 1: Metody odběru vzorků
+(72 1185-1)
+ČSN EN 1401-1 Plastové potrubní systémy pro beztlakové kanalizační přípojky a stykové sítě uložené
+(64 3172-1) v zemi - Neměkčený polyvinylchlorid (PVC-U) - Část 1: Specifikace pro trubky,
+tvarovky a systémy
+ČSN EN 1452 - 2 Plastové potrubní systémy pro rozvod vody - Neměkčené polyvinylchlorid PVC-U -
+(64 3185) Část 2: Trubky
+ČSN EN 1916/72 3146 Trouby a tvarovky z prostého betonu, drátkobetonu a železobetonu
+ČSN EN ISO 14689- Geotechnický průzkum a zkoušení – Pojmenování a zatříďování hornin
+1/7210005 Část 1 – Pojmenování a popis
+ČSN P ENV Provádění a kontrola betonových konstrukcí
+13670-1/73 2400 Část 1: Společná ustanovení
+TNŽ 73 6311 Navrhování kolejišť ve stanovištích a dopravnách
+TNŽ 73 6949 Odvodnění železničních tratí a stanic
+SVB ČR 01-2004 Obyčejný a vodostavebný beton – Technická norma Svazu Výrobců Betonu ČR
+4.12.2 Předpisy
+SŽDC (ČD) Op16 Pravidla o bezpečnosti a ochraně zdraví při práci
+SŽDC S3 Železniční svršek
+SŽDC S4 Železniční spodek
+SŽDC (ČSD) SR104/1(S) Pracovní postupy sanace pražcového podloží pod výhybkami
+SŽDC (ČSD) SR104/2(S) Pracovné postupy sanácie podvalového podložia staničných a traťových kolají
+Obecné technické podmínky SŽDC č.j. 20034/04-OP a ČD č.j. 60 124/2004-O13 „Geotextilie v tělese
+železničního spodku“
+Obecné technické podmínky ČD - DDC č.j. 60 245/98 - O13 „Výrobky pro odvodnění železničních tratí
+a stanic“.
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění některých zákonů,
+v platném znění
+Nařízení vlády kterým se stanoví technické požadavky na vybrané stavební výrobky, v platném
+č. 163/2002 Sb znění
+Nařízení vlády kterým se stanoví technické požadavky na stavební výrobky označované CE,
+č. 190/2002 Sb v platném znění
+Vzorové listy železničního spodku
+Ž1 Základní rozměry pláně tělesa železničního spodku
+Ž2 Zemní těleso
+Ž3 Odvodňovací zařízení
+Ž4 Pražcové podloží
+Ž5 Úprava drážních svahů
+Ž6 Železniční těleso ve styku s vodními toky a díly
+Ž10 Účelové komunikace a dopravní plochy v dopravnách a stanovištích ČD.
+11
+4.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 2 - Příprava staveniště
+Kapitola 3 - Zemní práce
+Kapitola 6 - Konstrukční vrstvy tělesa železničního spodku
+Kapitola 10 - Nástupiště, rampy, zarážedla, účelové komunikace a zpevněné plochy
+Kapitola 14 - Kanalizace, septiky, čističky a lapače
+Kapitola 17 - Beton pro konstrukce
+Kapitola 18 - Betonové mosty a konstrukce
+Kapitola 22 - Izolace proti vodě
+Kapitola 24 - Zvláštní zakládání
+12
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 4
+T ř e t í - aktualizované vydání se zapracovanou změnou č. 6 /z roku 2008/
+Vydala Správa železniční dopravní cesty, státní organizace
+Zpracovatel: Ing. Milan Koblása,
+Pragoprojekt, a.s., Praha
+Odborný gestor: Ing. Jan Tupý,
+Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Vydal: Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 241, +420 972 741 769,
+fax: +420 972 741 290,
+e-mail: otd@tudc.cz
+www.tudc.cz

@@ -19,6 +19,8 @@ const JWT_EXPIRY = process.env.JWT_EXPIRY || '24h';
 export function requireAuth(req, res, next) {
   try {
     // 🚨 TEMPORARY: Dev mode bypass for calculator testing
+    // Requires explicit DISABLE_AUTH=true — never bypassed automatically.
+    // On Cloud Run: set DISABLE_AUTH=true in service env vars if auth is not needed.
     const TEMP_BYPASS_AUTH = process.env.DISABLE_AUTH === 'true';
 
     if (TEMP_BYPASS_AUTH) {

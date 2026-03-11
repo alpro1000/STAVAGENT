@@ -1,0 +1,342 @@
+/* Import Digital Concrete Design System v2.0 */
+@import './styles/tokens.css';
+
+/* Tailwind directives */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   COMPONENT ADAPTATIONS FOR REGISTRY
+   ============================================ */
+
+@layer components {
+  /* Button base (adapted for new tokens) */
+  .btn {
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: all var(--transition-fast);
+    font-family: var(--font-body);
+    cursor: pointer;
+    border: none;
+  }
+
+  .btn:focus-visible {
+    outline: 2px solid var(--accent-orange);
+    outline-offset: 2px;
+  }
+
+  .btn-primary {
+    background: var(--accent-orange);
+    color: var(--panel-clean);
+    box-shadow: var(--shadow-button);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .btn-primary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-inset);
+  }
+
+  .btn-secondary {
+    background: var(--panel-clean);
+    color: var(--text-primary);
+    border: 1px solid var(--edge-light);
+    box-shadow: var(--shadow-button);
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent-orange);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: var(--shadow-inset);
+  }
+
+  /* Input base (using new tokens) */
+  .input {
+    width: 100%;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--data-surface);
+    border: 1px solid var(--edge-light);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 14px;
+    transition: all var(--transition-fast);
+  }
+
+  .input::placeholder {
+    color: var(--text-muted);
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 3px var(--accent-orange-glow);
+  }
+
+  /* Card base (Level 2: Clean Panels) */
+  .card {
+    background: var(--panel-clean);
+    border: 1px solid var(--edge-light);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-panel);
+  }
+
+  /* Table base (Level 3: Data Surfaces) */
+  .table {
+    width: 100%;
+    table-layout: auto; /* Allow natural column widths based on content */
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--data-surface);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    min-width: max-content; /* Prevent table from shrinking below content width */
+  }
+
+  .table th {
+    background: var(--panel-clean);
+    padding: var(--space-md);
+    text-align: left;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--divider);
+    font-family: var(--font-body);
+  }
+
+  .table td {
+    padding: var(--space-md);
+    font-size: 14px;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--divider);
+    font-family: var(--font-body);
+  }
+
+  .table tbody tr {
+    transition: background-color var(--transition-fast);
+  }
+
+  .table tbody tr:hover {
+    background: var(--data-surface-alt);
+  }
+
+  .table tbody tr:nth-child(even) {
+    background: var(--data-surface-alt);
+  }
+
+  /* Select input (for skupina dropdown) */
+  select.input {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%234A4D50' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-sm) center;
+    padding-right: var(--space-xl);
+    cursor: pointer;
+  }
+}
+
+@layer utilities {
+  /* Scrollbar styling */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: var(--text-muted) var(--panel-clean);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: var(--panel-clean);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: var(--text-muted);
+    border-radius: var(--radius-sm);
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-orange);
+  }
+
+  /* Text utilities for code */
+  .text-code {
+    font-family: var(--font-mono);
+    color: var(--text-code);
+    font-size: 13px;
+  }
+
+  /* Shadow utilities */
+  .shadow-panel {
+    box-shadow: var(--shadow-panel);
+  }
+
+  .shadow-button {
+    box-shadow: var(--shadow-button);
+  }
+
+  .shadow-inset {
+    box-shadow: var(--shadow-inset);
+  }
+}
+
+/* ============================================
+   CUSTOM ADAPTATIONS
+   ============================================ */
+
+/* Orange accent compatibility */
+.bg-accent-primary {
+  background-color: var(--accent-orange);
+}
+
+.text-accent-primary {
+  color: var(--accent-orange);
+}
+
+.border-accent-primary {
+  border-color: var(--accent-orange);
+}
+
+/* Status colors */
+.text-success {
+  color: var(--status-success);
+}
+
+.text-warning {
+  color: var(--status-warning);
+}
+
+.text-error {
+  color: var(--status-error);
+}
+
+.bg-success {
+  background-color: var(--status-success);
+}
+
+.bg-warning {
+  background-color: var(--status-warning);
+}
+
+.bg-error {
+  background-color: var(--status-error);
+}
+
+/* ============================================
+   MODAL STYLES - НЕПРОЗРАЧНЫЙ ФОН
+   ============================================ */
+
+/* Modal backdrop - темный непрозрачный фон */
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.85); /* 85% непрозрачный черный */
+  backdrop-filter: blur(2px); /* Небольшое размытие фона */
+}
+
+/* Modal content - светлая панель с тенью */
+.modal-content {
+  background: var(--panel-clean);
+  border: 1px solid var(--edge-light);
+  border-radius: var(--radius-lg);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 10px 10px -5px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal header */
+.modal-header {
+  border-bottom: 1px solid var(--divider);
+}
+
+.modal-title {
+  color: var(--text-primary);
+}
+
+/* Modal body */
+.modal-body {
+  background: var(--panel-clean);
+  color: var(--text-primary);
+}
+
+/* Modal close button */
+.modal-close-btn {
+  color: var(--text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.modal-close-btn:hover {
+  background: var(--data-surface-alt);
+  color: var(--text-primary);
+}
+
+/* Alert Modal variants */
+.modal-alert-info {
+  color: var(--text-primary);
+}
+
+.modal-alert-success {
+  color: var(--status-success);
+}
+
+.modal-alert-warning {
+  color: var(--status-warning);
+}
+
+.modal-alert-error {
+  color: var(--status-error);
+}
+
+.modal-alert-message {
+  color: var(--text-secondary);
+}
+
+/* Цветовые переменные для модального окна */
+.bg-panel-clean {
+  background-color: var(--panel-clean);
+}
+
+.text-text-primary {
+  color: var(--text-primary);
+}
+
+.text-text-secondary {
+  color: var(--text-secondary);
+}
+
+.border-edge-light {
+  border-color: var(--edge-light);
+}
+
+.border-divider {
+  border-color: var(--divider);
+}
+
+.bg-bg-secondary {
+  background-color: var(--data-surface-alt);
+}
+
+/* App-level background (~8% darker than panels for depth) */
+.bg-bg-primary {
+  background-color: var(--app-bg);
+}
+
+/* Autocomplete bg colors */
+.bg-bg-tertiary {
+  background-color: var(--data-surface);
+}
+
+.border-border-color {
+  border-color: var(--edge-light);
+}

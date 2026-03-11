@@ -33,8 +33,15 @@ export default function CustomWorkModal({ onSelect, onCancel }: Props) {
   const selectedUnit = isCustomUnit ? customUnit : unit;
 
   return (
-    <div className="custom-work-modal-overlay" onClick={onCancel}>
+    <div className="custom-work-modal-overlay">
       <div className="custom-work-modal" onClick={(e) => e.stopPropagation()}>
+        <button
+          className="custom-work-modal-close"
+          onClick={onCancel}
+          title="Zavřít"
+        >
+          ✕
+        </button>
         <h3 className="custom-work-title">➕ Přidat vlastní práci</h3>
 
         <div className="custom-work-content">
@@ -146,6 +153,7 @@ export default function CustomWorkModal({ onSelect, onCancel }: Props) {
           width: 90%;
           box-shadow: var(--shadow-xl);
           animation: slideUp 0.3s ease;
+          position: relative;
         }
 
         @keyframes slideUp {
@@ -157,6 +165,36 @@ export default function CustomWorkModal({ onSelect, onCancel }: Props) {
             opacity: 1;
             transform: translateY(0);
           }
+        }
+
+        .custom-work-modal-close {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+          font-size: 20px;
+          line-height: 1;
+          cursor: pointer;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .custom-work-modal-close:hover {
+          background: var(--color-error);
+          color: white;
+          transform: scale(1.1);
+        }
+
+        .custom-work-modal-close:active {
+          transform: scale(0.95);
         }
 
         .custom-work-title {

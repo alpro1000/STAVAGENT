@@ -1,0 +1,1169 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 27
+ZABEZPEČOVACÍ ZAŘÍZENÍ
+Třetí - aktualizované vydání
+změna č. 8
+Schváleno generálním ředitelem SŽDC
+dne: 27.3.2013
+č. j.: S 3916/2012-TÚDC
+Účinnost od: 1.5.2013
+Počet stran : 25
+Počet příloh: 0
+Počet listů příloh: 0
+Praha 2013
+Všechna práva vyhrazena.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+Úsek automatizační a telekomunikační techniky - Oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+SEZNAM POUŽITÝCH ZNAČEK A ZKRATEK 3
+27.1 ÚVOD 4
+27.2 POPIS, KVALITA A PARAMETRY POUŽITÝCH ZAŘÍZENÍ 4
+27.2.1 Vnější části zabezpečovacího zařízení 5
+27.2.2 Vnější kabelové rozvody 5
+27.2.3 Vnitřní části zabezpečovacího zařízení 5
+27.2.4 Vnitřní kabelové rozvody 5
+27.2.4.1 Kabelové rozvody centrálního pracoviště DOZ a v tunelech délky nad 3000 m 6
+27.2.5 Ovládací a indikační prvky zabezpečovacího zařízení 6
+27.3 TECHNOLOGICKÉ POSTUPY PRACÍ 6
+27.3.1 Zemní práce a použité mechanizmy 6
+27.3.2 Montáž vnějších prvků 6
+27.3.3 Vnější kabelové rozvody 7
+27.3.4 Montáž vnitřních prvků 8
+27.3.5 Vnitřní kabelové rozvody 9
+27.3.6 Ovládací prvky 9
+27.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 9
+27.4.1 Vnější části zabezpečovacího zařízení 9
+27.4.2 Vnější kabelové rozvody 10
+27.4.3 Vnitřní části zabezpečovací zařízení 10
+27.4.4 Vnitřní kabelové rozvody 10
+27.4.5 Ovládací prvky 10
+27.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 11
+27.5.1 Všeobecně 11
+27.5.2 Ověření provedení prací a konstrukcí zakrytých v průběhu výstavby 11
+27.5.3 Komplexní vyzkoušení zhotovitelem 11
+27.5.4 Přezkušování zařízení při stavebních postupech 12
+27.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 12
+27.6.1 Vnější části zabezpečovacího zařízení 12
+27.6.2 Vnější kabelové rozvody 12
+27.6.3 Vnitřní části zabezpečovacího zařízení 12
+27.6.4 Vnitřní kabelové rozvody 13
+27.6.5 Ovládací prvky 13
+27.6.6 Míra opotřebení 13
+27.6.7 Záruční doba 13
+27.7 KLIMATICKÁ OMEZENÍ 13
+27.7.1 Vnější části zabezpečovacího zařízení 13
+27.7.2 Vnější kabelové rozvody 13
+27.7.3 Vnitřní části zabezpečovacího zařízení 14
+27.7.4 Vnitřní kabelové rozvody 14
+27.7.5 Ovládací prvky 14
+27.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 14
+27.8.1 Všeobecně 14
+27.8.2 Příprava k převzetí prací 15
+27.8.3 Odborná komise 16
+27.8.4 Technické prohlídky 16
+27.8.5 Přezkoušení jednotlivých zařízení SZZ, TZZ a PZZ 16
+27.8.6 Požadavky na dokumentaci v rámci dodávek 17
+27.8.7 Zapnutí zařízení do provozu 17
+1
+27.9 KONTROLNÍ MĚŘENÍ 18
+27.9.1 Vnější části zabezpečovacího zařízení 18
+27.9.2 Vnější kabelové rozvody 18
+27.9.3 Vnitřní části zabezpečovacího zařízení 18
+27.9.4 Vnitřní kabelové rozvody 18
+27.10 EKOLOGIE 18
+27.10.1 Vnější a vnitřní kabelové rozvody 19
+27.10.2 Vnější části zabezpečovacího zařízení 19
+27.10.3 Vnitřní části zabezpečovacího zařízení 19
+27.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 19
+27.11.1 Bezpečnost práce při montážích v kolejišti 19
+27.11.2 Bezpečnost práce na elektrických zařízeních 19
+27.11.3 Montážní práce prováděné na provozovaném zařízení 19
+27.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 19
+27.12.1 Technické normy 19
+27.12.2 Předpisy 22
+27.12.3 Související Kapitoly TKP 25
+2
+SEZNAM POUŽITÝCH ZNAČEK A ZKRATEK
+ČD ...................... České dráhy, a. s.
+DLM .................. dlouhodobý majetek
+DLZT ................. Diagnostická laboratoř zabezpečovací technicky (TÚDC)
+DOZ ................... dálkové ovládání zabezpečovacího zařízení
+EMC ................... elektromagnetická kompatibilita
+KSUaTP ............. Koordinační schéma ukolejnění a trakčního propojení
+MD ..................... Ministerstvo dopravy
+MDS ................... Ministerstvo dopravy a spojů
+PBZ .................... požárně bezpečnostní zařízení
+OK...................... odborná komise podle předpisu SŽDC (ČSD) T200
+OŘ ...................... oblastní ředitelství (SŽDC)
+POTV ................. prostor ohrožení trolejovým vedením
+PZZ .................... přejezdové(á) zabezpečovací zařízení
+SÚ ...................... stavědlová ústředna
+SZZ .................... staniční zabezpečovací zařízení
+SŽDC ................. Správa železniční dopravní cesty, státní organizace
+TBZ .................... technicko bezpečnostní zkouška (Stavební zákon)
+TKP .................... Technické kvalitativní podmínky staveb státních drah
+TP....................... Technické podmínky (výrobku(ů))
+TSI ..................... technické specifikace interoperability
+TÚDC ................ Technická ústředna dopravní cesty (SŽDC)
+TV ...................... trakční vedení
+TZZ .................... traťové zabezpečovací zařízení
+UPS .................... zdroj nepřetržitého napájení
+UTZ.................... určené technické zařízené podle Vyhlášky č. 100/1995 Sb.
+3
+27.1 ÚVOD
+Pro tuto Kapitolu 27 platí všechny pojmy, ustanovení, požadavky a údaje uvedené v Kapitole 1 TKP -
+Všeobecně.
+Kapitola 27 TKP platí pro dodávku a montáž železničního zabezpečovacího zařízení staničního, traťového
+a přejezdového (dále jen SZZ, TZZ a PZZ), traťové části vlakového zabezpečovacího zařízení a dálkového ovládání
+zabezpečovacího zařízení (DOZ). I pro ostatní méně běžná zabezpečovací zařízení se postupuje při dodávce
+a montáži, pokud není zvláštními TKP určeno jinak, analogicky podle těchto TKP. Při zabezpečení stavebních
+a technologických postupů jsou potřebná omezení, pokud jsou nutná, uvedena v jednotlivých oddílech a článcích
+této Kapitoly.
+Montáž zabezpečovacího zařízení se provádí zásadně podle projektové dokumentace (dále jen „dokumentace“)
+vypracované oprávněnou osobou na základě polohopisného výkresu a situačního schématu s vyznačením venkovních
+prvků zabezpečovacího zařízení, doplněného dle potřeby Závěrovou tabulkou, případně Tabulkou přejezdu,
+schématy izolace kolejiště, KSUaTP, kabelů, umístění zařízení v budovách a výkresy uspořádání ovládacích
+a kontrolních prvků.
+Situační schéma, Závěrová tabulka a Tabulka přejezdu musí být prověřeny organizační složkou OŘ pro řízení
+provozu, DLZT a odsouhlaseny Odborem automatizace a elektrotechniky SŽDC (podrobnosti stanoví předpis1)
+SŽDC).
+Při zabezpečení stavebních a technologických postupů na provozovaném zařízení je nutné na každý stavební postup
+zpracovat dokumentaci (může být i zjednodušená, která svým obsahem jednoznačně popisuje a zobrazuje změny
+technologie) a při vypracování Rozkazu o výluce postupovat jak podle této dokumentace, tak podle předpisů SŽDC
+(ČSD) T100 i SŽDC D7/2.
+Geodetická dokumentace se zpracovává dle požadavků uvedených v Kapitole 1 TKP.
+27.2 POPIS, KVALITA A PARAMETRY POUŽITÝCH ZAŘÍZENÍ
+Při montáži zabezpečovacího zařízení musí být zohledněny požadavky na EMC, jak z hlediska zabezpečovacího
+zařízení jako zdroje rušení, tak i z hlediska jeho ovlivnitelnosti rušením z jiných zdrojů včetně atmosférických vlivů
+(přepěťové ochrany) v rámci budoucích konkrétních provozních podmínek.
+Dodávaná a montovaná zabezpečovací zařízení musí být v souladu s ČSN 34 2600 ed. 2, ověřena a schválena pro
+používání na železniční dopravní cestě ve vlastnictví státu (dále jen u SŽDC). Při použití nezavedených zařízení se
+postupuje podle Směrnice SŽDC č. 34 „Směrnice pro uvádění do provozu výrobků, které jsou součástí sdělovacích a
+zabezpečovacích zařízení a zařízení elektrotechniky a energetiky, na železniční dopravní cestě ve vlastnictví státu
+státní organizace Správa železniční dopravní cesty“. Nezavedená zařízení musí být uvedena v dokumentaci (obvykle
+technické zprávě), ve které musí být doložen:
+a) Souhlas se sjednáním Technických podmínek výrobku respektive se změnou již schválených Technických
+podmínek výrobku až v průběhu realizace dodávky, nebo
+b) doklad o upuštění od jejich sjednání, nebo
+c) Schválení podmínek pro ověřovací provoz nezavedených vnějších prvků, nebo
+d) Souhlas s použitím nezavedeného zařízení v konkrétní aplikaci.
+Uvedené souhlasy podle Směrnice SŽDC č. 34 musí být vydány vždy před uvedením zabezpečovacího zařízení do
+provozu.
+Nová nezavedená zabezpečovací zařízení musí respektovat příslušné Základní technické požadavky, Funkční
+požadavky ČD vydané do 31.12.2005, Technické specifikace SŽDC a na tratích evropského železničního systému
+také TSI. Odchylky od těchto požadavků (mimo TSI) musí být projednány s určeným útvarem SŽDC. Požadavky na
+kvalitu se řeší pro každé nové zařízení/výrobek při jeho zavádění pro používání u SŽDC. Zařízení v ověřovacím
+provozu je zhotovitel povinen na své náklady po ukončení ověřovacího provozu uvést do stavu odpovídajícího
+zaváděnému zařízení.
+1 Výnos č. 1 k TNŽ 34 2604 „Závěrové tabulky – přezkušování a schvalování“ č. j. 44 134/2009–OAE z 9.9.2009
+a „Metodický pokyn pro přezkušování a schvalování Tabulek přejezdů“ č.j. S338/11–OAE ze 17.1.2011
+4
+27.2.1 Vnější části zabezpečovacího zařízení
+Dodávané vnější části pro montáž zabezpečovacího zařízení jsou u nově budovaných zařízení (SZZ, TZZ a PZZ)
+nové. Případné použití vyzískaných zařízení musí být řešeno v dokumentaci a odsouhlaseno objednatelem.
+Při rekonstrukcích zabezpečovacího zařízení a při zabezpečení stavebních postupů se používá, je-li to možné,
+stávající vnější zařízení v souladu s dokumentací.
+Součásti výstroje kolejových obvodů konstruované s ohledem na podmínky provozu zpětného trakčního vedení jsou
+UTZ podle vyhlášky č. 100/1995 Sb. § 1 odstavec 4 písmeno k) a zároveň písmeno d). Jejich průkaz způsobilosti
+musí být doložen technickými prohlídkami a zkouškami vykonanými osobou určenou MD pro jeden druh UTZ spolu
+s osobou určenou MD pro druhý druh UTZ.
+Před zprovozněním kolejových obvodů musí být vytvořeny vnější podmínky jejich funkce stanovené pro trakční
+zařízení a pro vodivé konstrukce umístěné v POTV na elektrizované trati dokumentací podle čl. 31.3.10 těchto TKP.
+Tyto podmínky musí být splněny pro každý stavební postup, při kterém jsou v činnosti kolejové obvody.
+Součástí dodávky a montáže vnějšího zabezpečovacího zařízení jsou také upozorňovadla, která předcházejí
+nepřenosným návěstidlům, návěst ”Vlak se blíží k hlavnímu návěstidlu”, návěst ”Konec vlakové cesty”, návěsti pro
+vlakový zabezpečovač apod. Tato pevná návěstidla se provedením a způsobem montáže shodují s výstrojí trati, proto
+pro ně platí Kapitola 32 TKP.
+27.2.2 Vnější kabelové rozvody
+Vnějšími kabelovými rozvody se rozumějí kabelové rozvody v obvodu dopraven a na širé trati. Pro vnější kabelové
+rozvody zabezpečovacího zařízení se přednostně používají plastové kabely párové s měděnými jádry minimálního
+průřezu 1 mm2, s vrstvenými plášti a s ochranou proti podélnému pronikání vody, typové řady TCEKPFLE.
+Výjimečně se použijí kabely čtyřkované. Při střídavé elektrické trakční soustavě a při vlivech vn a vvn se používají
+kabely se stínícím pláštěm. Konkrétní provedení ochranných obalů (-E, -EY, -PE, -PY, - ZE, -ZY, -DE, -DY) musí
+být zásadně stanoveno a zdůvodněno v dokumentaci. Pro napájecí kabely zabezpečovacího zařízení nebo jeho části
+mohou být použity i kabely s hliníkovými jádry o průřezu 25 mm2 a více. Tam, kde je to účelné, se používají optické
+kabely.
+Kabely se ukládají buď přímo do země, nebo do úložných zařízení, tj. do žlabů, rour, betonových prefabrikátů, trub
+pro optické kabely, kabelovodů a kolektorů, a to demontovatelným způsobem v prostoru vymezeném ČSN 73 6301.
+Použité výrobky a materiály musí splňovat požadavky Kapitoly 12 TKP.
+Pokládané kabely se používají nové. Použití stávajících kabelů v zemi již uložených musí být řešeno v dokumentaci.
+Pro přechodnou kabelizaci použitou jen v rámci řešení stavebních postupů mohou být kabely používány opakovaně
+pro různé postupy. Při využití stávajících kabelů, případně kabelů položených v rámci jiné stavby, musí být
+prostřednictvím objednatele zhotovitelovi předány od vlastníka nebo správce kabelu potřebné doklady o stavu
+využívaných kabelů.
+27.2.3 Vnitřní části zabezpečovacího zařízení
+Dodávané vnitřní prvky pro montáž zabezpečovacího zařízení jsou u kompletně nových zařízení (SZZ, TZZ a PZZ)
+nové. Případné použití vyzískaných zařízení musí být řešeno v dokumentaci a odsouhlaseno objednatelem. Při
+rekonstrukcích zabezpečovacího zařízení a při zabezpečení stavebních postupů se používá, je-li to možné, stávající
+vnitřní zařízení v souladu s dokumentací. Dodávané vnitřní prvky pro montáž zabezpečovacího zařízení nesmí
+obsahovat žádné látky pevného, tekutého nebo plynného skupenství (například materiály obsahující silikon), které by
+negativně ovlivňovaly jeho správnou činnost (bezpečnost, spolehlivost) a to po celou dobu jeho technické životnosti.
+Pro tunely délky nad 3 000 m se musí veškerá kabelová vedení včetně optických navrhovat a provádět se zvýšenou
+odolností proti šíření plamene kategorie A podle ČSN EN 60332-3-22 (provedení r- barva pláště oranž návěstní).
+Kabelové nosné konstrukce musí mít rovněž zaručenou funkční schopnost při požáru 90 min.
+27.2.4 Vnitřní kabelové rozvody
+Vnitřními kabelovými rozvody se rozumějí kabelové rozvody uvnitř budov. Jedná se o kabely ve stavědlové ústředně
+(dále jen „SÚ“) mezi SÚ a dopravní kanceláří, mezi SÚ a místností kabelových závěrů a podobně. Pro vnitřní
+kabelové rozvody se používají kabely jednoplášťové celoplastové párované, šňůry nebo jednotlivé vodiče v souladu
+s dokumentací. Izolace vodičů, včetně doplňkových izolací (bužírek) ve vnitřních kabelových rozvodech (tzn.
+v reléové místnosti, reléovém domku anebo reléové skříni) nesmí být z materiálů obsahujících silikon. Pokládané
+5
+rozvody se používají zásadně nové. Rozvody nesmí být vystaveny vlivům, které je mohou zvýšenou měrou
+poškozovat (např. sluneční záření).
+Přenosové systémy, které využívají komunikaci v uzavřeném přenosovém zabezpečovacím systému podle
+ČSN EN 50159, musí být provedeny způsobem vylučujícím jakoukoli možnost „narušení uzavřenosti“
+v prostorech, ve kterých není umístěna technologie zabezpečovacího zařízení.
+Pro zvýšení odolnosti sdělovacích a zabezpečovacích systémů ve stavědlových ústřednách se umístění součástí
+technologie těchto systémů a bleskosvody vně budov musí navrhovat tak, aby uvnitř budov kabelové rozvody,
+veškeré součásti technologie sdělovacích a zabezpečovacích systémů, prvky pro obsluhu a řízení dráhy jejich pomocí
+byly od bleskosvodů v horizontální i vertikální rovině vzdáleny nejméně 2,0 m.
+27.2.4.1 Kabelové rozvody centrálního pracoviště DOZ a v tunelech délky nad 3000 m
+Pro centrální dispečerské pracoviště DOZ (jinak také CDP), se pro vnitřní kabelové rozvody technologií sdělovací
+a zabezpečovací techniky, která zajišťují bezpečnost osob a činnost důležitých funkčních schopností, musí veškerá
+kabelová vedení včetně optických navrhovat a provádět se zvýšenou odolností proti šíření plamene kategorie A
+podle ČSN EN 60332-3-22, (provedení r- barva pláště oranž návěstní). Kabelové nosné konstrukce musí mít rovněž
+zaručenou funkční schopnost při požáru 90 min.
+Stejně se navrhují a provádějí kabelové rozvody technologií sdělovací a zabezpečovací techniky a kabelové nosné
+konstrukce v tunelech délky nad 3000 m.
+27.2.5 Ovládací a indikační prvky zabezpečovacího zařízení
+Ovládací prvky se montují nové, při rekonstrukcích stávajícího zařízení lze v souladu s dokumentací používat
+zařízení stávající.
+Pro přechodné použití v rámci řešení stavebního postupu mohou být používány vyzískané ovládací a indikační
+prvky. Trvalé použití vyzískaných prvků musí být řešeno v dokumentaci a odsouhlaseno objednatelem
+a projektantem.
+27.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+27.3.1 Zemní práce a použité mechanizmy
+Výkopy pro kabelové rozvody a základy vnějších prvků se provádějí v trasách a místech určených dokumentací.
+V dokumentaci musí být řešena všechna křížení a podchody stávajících sítí, kolejí a komunikací. Případné změny
+musí být odsouhlaseny technickým dozorem stavebníka.
+Vlastní výkopové práce se provádějí v definitivně upraveném terénu nebo před zahájením terénních úprav za
+podmínky, že těmito pracemi nebudou kabely a základy zařízení poškozeny a po terénních úpravách bude dodržena
+hloubka pro uložení kabelů a základů. Pro provádění zemních prací platí obecně Kapitola 3 TKP.
+Pro výkopové práce se používají také mechanizační prostředky. Zásady pro bezpečnost práce těchto mechanizmů
+v kolejišti jsou uvedeny v článku 1.13 Kapitoly 1 TKP. Při využití těchto mechanizmů musí zhotovitel dbát na to,
+aby nedocházelo k poškozování již hotových částí železničního spodku (plání, svahů, příkopů apod.) a jiných
+zařízení, která jsou součástí dopravní cesty.
+Uložení kabelu, kabelové kanály a trasy je nutno řešit tak, aby se zabránilo šíření případného požáru po vedení.
+Kabelové trasy musí být navrženy tak, aby bylo zajištěno bezpečné vypnutí (odpojení) elektrické energie v objektu a
+tím zajištěn účinný a bezpečný zásah jednotky požární ochrany. Přitom prvky jištění přívodu elektrické energie pro
+zabezpečovací zařízení musí být barevně zvýrazněny (odlišeny) oproti prvkům jištění jiného elektrického zařízení.
+27.3.2 Montáž vnějších prvků
+Vnější prvky zabezpečovacího zařízení lze rozdělit podle způsobu montáže zásadně do dvou skupin.
+První skupinu tvoří zařízení, která nejsou pevně spojena se železničním svrškem, jako jsou návěstidla, výstražníky,
+stojany závor apod. Tato zařízení se montují na typové betonové základy usazené do výkopu. U návěstidel je nutno
+provést komisionální situování návěstidel v souladu s předpisem SŽDC (ČSD) T100. Pokud není zápis o situování
+návěstidel součástí dokumentace, provede objednatel na výzvu zhotovitele komisionální situování před zahájením
+6
+montáže návěstidel. Postup a složení komise se řídí dokumentem SŽDC Pokyn GŘ č. 12/2009. Prvky, jejichž
+umístění má vztah k poloze návěstidel, jako jsou izolované styky, návěstní lávky, krakorce, eurobalízy apod.,
+je nutno umístit ve vztahu ke skutečné poloze návěstidel podle zápisu o situování návěstidel. Podkladem pro
+situování výstražníků a stojanů závor je dokumentace, doplněná rozhodnutím Drážního úřadu o zabezpečení nebo
+změně zabezpečení přejezdu. Při osazování základů všech výše uvedených prvků v předstihu před dokončením prací
+na železničním spodku a svršku je třeba dbát na definitivní tvar terénu a geometrickou polohu budoucí koleje, popř.
+pozemní komunikace. Polohu a výšku základů je nutné vytyčit v souřadnicích. Vnější prvky montované v předstihu
+(např. návěstidla, výstražníky, přejezdníky, upozorňovadla apod.) nesmí zakrývat stávající dosud provozované
+prvky, nebo svým osazením způsobit možnou záměnu se stávajícími prvky.
+Druhou skupinu tvoří zařízení, která jsou pevně spojena s železničním svrškem, jako jsou přestavníky včetně
+doplňujících zařízení, výstroj kolejových obvodů, počítače náprav apod., která se montují na definitivně položený,
+směrově a výškově vyrovnaný železniční svršek. Zejména pro stykový transformátor je třeba zajistit stabilní podklad
+(panel nebo rám apod.). Montáž těchto zařízení musí zhotovitel provést tak, aby tyto prvky nebyly překážkami při
+strojním podbíjení kolejí a výhybek (viz předpis SŽDC S3). Nelze-li to takto provést, pak způsobem, který umožní
+snadnou demontáž těchto prvků pro průchod mechanizačních prostředků traťového hospodářství. Montáž
+přestavníku smí být provedena jen na výhybku, která je v souladu s technickými podmínkami platnými pro daný typ
+výhybky, zejména z hlediska předepsaných chodů pohyblivých částí a přestavného odporu. Montáž výstroje
+kolejových obvodů se provádí na kolejový rošt, který musí splňovat hodnoty předepsaného izolačního stavu
+a izolované styky nesmí být vodivé (viz Kapitola 8 TKP).
+Při vlastním provádění montáže vnějších zařízení postupuje zhotovitel podle montážních pokynů výrobce
+jednotlivých zařízení (jedná se zejména o dodržení umístění těchto zařízení z hlediska příčného řezu kolejiště;
+zajištění průjezdného průřezu a z hlediska vibrací a rázů podle ČSN EN 50125-3, popř. o zajištění volné šířky
+a výšky pozemní komunikace podle ČSN 73 6101, resp. ČSN 73 6110), případné odchylky od těchto pokynů musí
+být uvedeny v dokumentaci.
+Pro montáž vnějších prvků se používají běžně dostupné mechanizmy. Pro stavění návěstidel, reléových skříní,
+výstražníků a stojanů závor se používají obvykle kolové nebo kolejové jeřáby. Při využití těchto mechanizmů musí
+být dbáno na to, aby nedocházelo k poškozování již hotových částí železničního spodku (plání, svahů, příkopů
+apod.).
+Zásady pro bezpečnost práce, včetně použití mechanizmů, v kolejišti a jeho blízkosti jsou uvedeny v Kapitole
+1 TKP.
+27.3.3 Vnější kabelové rozvody
+Zabezpečovací kabely se kladou do připravených tras podle článku 27.3.1 této Kapitoly TKP.
+Při pokládce kabelů je nutné dodržet ustanovení TNŽ 34 2609, a to část IV. Vnější kabelové rozvody a dalších
+souvisejících norem (ČSN 73 6005, ČSN 37 5711 ed. 2, TNŽ 37 5711). Způsob uložení kabelů je uveden
+v dokumentaci. Při uložení do země bez úložného zařízení se kabely kladou na vrstvu jemnozrnného písku nebo
+proseté zeminy do hloubky nejméně 80 cm a překryjí se krycí vrstvou nebo ochrannou fólií podle dokumentace. Po
+rozvinutí kabelů do délky a před jejich definitivním uložením do kabelové trasy musí zhotovitel dbát na to, aby
+nedošlo k jejich poškození ostatní stavební činností.
+Pro vedení kabelů je možno vytvořit sdružené kabelové trasy silnoproudé, sdělovací a zabezpečovací. Pro sdruženou
+kabelovou trasu je vhodné využít povrchové kabelové žlaby, samostatné pro každou skupinu kabelů, zakryté
+betonovou deskou (panelem). Konstrukce úložných zařízení musí být navržena a zakryta takovým způsobem, aby
+nejen dostatečně chránila kabely před mechanickým poškozením, ale také chránila kabely před nedovoleným
+zásahem cizích osob (krádeže).
+Do kynety s metalickými kabely, na nichž se provozují nebo mají provozovat obvody zabezpečovacího zařízení, se
+nesmí ukládat zemniče. Stávající zemniče uložené společně s metalickými kabely, na nichž se provozují, nebo mají
+provozovat obvody elektronického nebo kombinovaného (společně reléové a elektronické) zabezpečovacího zařízení
+musí být odpojeno a nahrazeno novými uloženými samostatně.
+Při pokládce kabelů do kabelovodů, kabelových kanálů a kolektorů, pro které platí Kapitola 12 TKP, musí vlastní
+pokládce kabelů předcházet přejímka těchto úložných zařízení objednatelem. Vstup kabelů ze země do budovy musí
+být řešen dokumentací. Otvory pro pokládku kabelů musí zhotovitel řádně utěsnit proti vnikání vlhkosti, hlodavců
+a šíření požáru podle požadavků TNŽ 34 2609.
+Každý kabel musí být označen podle TNŽ 34 2609.
+7
+Konce kabelů musí být zajištěny proti vnikání vlhkosti do duše kabelu nebo mezi plášť kabelu a ochranný obal
+a musí být upevněny tak, aby byly přístupné k měření.
+27.3.4 Montáž vnitřních prvků
+Montáž vnitřních prvků provádí zhotovitel do stavědlových ústředen nebo reléových domků a skříní. V průběhu
+výstavby nebo rekonstrukce zabezpečovacího zařízení se nesmí ve vnitřních prostorách stavědlových ústředen,
+reléových domků a skříní provádět práce, v jejichž důsledku by mohlo dlouhodobě dojít ke změně prostředí, a tím
+k narušení bezpečnosti nebo spolehlivosti funkce zabezpečovacího zařízení (práce jako broušení, řezání, mazání,
+provádění impregnací nebo nátěrů, užití nestabilních látek, zvláště s obsahem silikonu). Materiály obsahující silikon,
+případně jiné nestabilní látky nesmí být v prostorách určených pro zabezpečovací zařízení ani přechodně skladovány
+nebo montovány.
+Před montáží technologických zařízení musí zhotovitel zajistit stavební připravenost podle dokumentace a dát
+provést její kontrolu. Kontrolu stavební připravenosti provede technický dozor stavebníka nejméně v rozsahu podle
+následujících bodů:
+a) ověření prostor určených pro montáž podle platné dokumentace a platných norem s kontrolou
+− rozměrů místností,
+− polohy a rozměru prostupů - okosení hran apod.,
+− správný směr otvírání dveří,
+− materiálové provedení,
+− funkčnost odvodnění drenáží,
+− zabezpečení prostor proti zatékání dešťových vod;
+b) kvalitu podlah (bezprašnost), provedení soklu u podlahy a bezprašných nátěrů stěn; pro zachování kvality
+podlahy ve stavědlové ústředně během výstavby se požaduje provést druhou pokládku méně kvalitní podlahovou
+krytinou, která se po ukončení montáže technologického zařízení odstraní. Definitivní podlaha musí vyhovovat
+podmínkám provozu umístěného zabezpečovacího zařízení;
+c) kvalitu a funkčnost elektroinstalace a uzemnění - podle druhu prostředí;
+d) kvalitu a funkčnost větrání - podle druhu prostředí;
+e) omezení pronikání přímého slunečního záření okny;
+f) únosnost podlah, podlahových roštů a montážních plošin, podle požadavku dokumentace (zhotovitel doloží
+atesty zabudovaných výrobků beton. panelů a ocelových konstrukcí);
+g) kvalitu a funkčnost temperování podle zařazení montovaných zařízení (viz oddíl 27.7 této Kapitoly) v případě, že
+není instalované topení napojeno na funkční zdroj, zhotovitel zajistí náhradní zdroj temperování;
+h) přístupové cesty
+− pro osoby provádějící montáž,
+− pro přesun technologických zařízení;
+i) umístění a vybavení bezpečnostními tabulkami (zejména druh a počet podle ČSN ISO 3864-1, ČSN 01 8013
+a TNŽ 34 2612) a označení místností (na dveřích) musí odpovídat projektové dokumentaci; dodávku a montáž
+bezpečnostních tabulek zajišťuje zhotovitel;
+j) protipožární opatření jakož i umístění, počet a druh hasebních prostředků musí odpovídat zpracovanému požárně
+bezpečnostnímu řešení stavby;
+k) zakrytí rozvodných žlabů a šachet, montážních žlabů poklopy pro zajištění bezpečnosti;
+l) zabezpečení kabelových vstupů a průchodů požárními zábranami (např. požární přepážky a ucpávky ve smyslu
+§2 odst. 4 písm. f) vyhlášky 246/2001 Sb.), které zamezí i vnikání malých hlodavců do místnosti;
+m) uzamykatelnost dveří a poklopů patentními klíči jednotnými pro dohodnutý traťový úsek z důvodu zajištění
+prostor proti vniknutí neoprávněných osob;
+n) splnění podmínek z hlediska bezpečnosti práce podle ČSN EN 50 272-2 ed. 2 a ČSN EN 50110-1 ed. 2 (tekoucí
+voda, je-li požadována dokumentací, ochranné pomůcky apod.);
+o) kvalitu a funkčnost chladicích resp. klimatizačních jednotek - podle druhu prostředí;
+p) ověření opatření pro zajištění EMC podle projektu a ČSN EN 62305-1, ČSN EN 62305-4.
+8
+Při montáži vnitřních prvků se postupuje podle montážních pokynů výrobce jednotlivých výrobků/zařízení, případné
+odchylky od těchto pokynů musí být uvedeny v dokumentaci.
+Použité vnitřní prvky musí vyhovovat prostředí, ve kterém budou použity, podle ČSN EN 50125-3. Pokud některé
+prvky mají přísnější požadavky na prostředí (např. baterie nebo elektromechanické spínací prvky), musí jim být
+odpovídající prostředí zajištěno. Zajištění přísnějšího prostředí se smí provést jen pro prvky, které to vyžadují (např.
+umístění do klimatizovaných skříní), nikoliv pro celou místnost či objekt.
+Pozn.: Pokud je takové zajištění podmínek prostředí použito, musí být v rámci výběrového řízení předloženy údaje
+o příkonu klimatizace, či podobného zařízení a propočet nákladů na spotřebu energie, údržbu a opravy po dobu 25
+let. Není-li všeobecným předpisem stanoveno jinak, počítají se náklady na opravy a údržby ve výši 8 % na rok
+z pořizovací ceny klimatizace bez montáže. Tyto náklady se zohlední při porovnání cen jednotlivých nabídek ve
+výběrovém řízení.
+Zásady pro bezpečnost práce na elektrických zařízeních jsou uvedeny v článku 27.11.2 této Kapitoly TKP. Při
+rekonstrukcích stávajících zařízení, případně při zabezpečení stavebních postupů je obvykle nutné provádět práce na
+provozovaném (nevypnutém) zařízení. Hlavní zásady pro bezpečnost práce a železničního provozu při těchto pracích
+jsou uvedeny v článku 27.11.3 této Kapitoly TKP.
+27.3.5 Vnitřní kabelové rozvody
+Pro montáž vnitřních kabelových rozvodů je nutná stavební připravenost, jejíž rozsah a kontrola jejího provedení
+jsou obdobné jako v článku 27.3.4 této Kapitoly. Vnitřní kabelové vedení lze klást do kabelových žlabů, kanálů,
+tvárnic, rour, dutin ve stavebních konstrukcích, na rošty, přímo na jiný vhodný podklad apod. Podrobnosti pro
+pokládku vnitřních kabelových rozvodů stanovuje dokumentace a pro vlastní technické řešení je závazná
+TNŽ 34 2609 část V. Vnitřní kabelové rozvody s využitím ČSN 73 0848 – Požární bezpečnost staveb – Kabelové
+rozvody.
+Prostupy kabelů a vodičů požárně dělícími konstrukcemi a požárně dělícími přepážkami
+− musí odpovídat zpracovanému požárně bezpečnostnímu řešení stavby
+− musí být provedeny podle ČSN 73 0810
+− musí splňovat podmínky požární odolnosti a klasifikaci podle ČSN EN 13501-2
+Utěsnění prostupů kabelu se provádí požární ucpávkou, která musí vykazovat stejnou požární odolnost jako
+konstrukce, kterou kabely prostupují, nepožaduje se však vyšší požární odolnost než 60 minut.
+27.3.6 Ovládací prvky
+Pro montáž ovládacích prvků je nutná stavební připravenost, jejíž rozsah a kontrola jejího provedení jsou obdobné
+jako v článku 27.3 této Kapitoly TKP.
+Při montáži ovládacích prvků se postupuje podle montážních pokynů výrobce jednotlivých zařízení, případné
+odchylky od těchto pokynů musí být uvedeny v dokumentaci.
+Při umísťování ovládacích prvků do místnosti obsluhy je nutné kromě dokumentace respektovat ”Zadávací
+podmínky staveb sdělovací a zabezpečovací techniky” schválené č. j. 703/95-S7/INV. Jedná se o ergonometrické
+řešení místností, provedení pracovních stolů, omezení zdrojů tepla a hluku, řešení světelných podmínek pracoviště
+a koordinace umístění ovládacích prvků.
+Při rekonstrukcích stávajících zařízení, případně při zabezpečení stavebních postupů je obvykle nutné provádět práce
+na provozovaném (nevypnutém) zařízení. Hlavní zásady pro bezpečnost práce a železničního provozu při těchto
+pracích jsou uvedeny v článku 27.11.3 této Kapitoly TKP.
+27.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+27.4.1 Vnější části zabezpečovacího zařízení
+Při převzetí dodávky vnějších částí zabezpečovacího zařízení, jako jsou návěstidla, přestavníky, výstražníky, stojany
+závor, výstroj kolejových obvodů apod., provede technický dozor stavebníka kontrolu komplexnosti dodávky podle
+dokumentace a technických podmínek výrobce. Dodávka každého vnějšího prvku musí být doložena dodacím listem
+a osvědčením o jakosti (a pokud to vyplývá z obecně právních předpisů i prohlášením o shodě (ujištěním o shodě),
+příp. jiným stanoveným certifikátem), které do převzetí kompletního zařízení objednatelem jsou v opatrování
+9
+zhotovitele. Skladování vnějších prvků zabezpečovacího zařízení na stavbě musí být zajištěno v krytých nebo
+oplocených skladech, aby nedošlo k jejich poškození deformací.
+Průkazní zkoušky pro výrobky, kde je to požadováno podmínkami pro jejich používání u SŽDC, provádí výrobce
+a zhotovitel předá jejich výsledky objednateli.
+27.4.2 Vnější kabelové rozvody
+Kabely musí být dodávány s osvědčením jakosti od specializovaného výrobce.
+Kabely se na stavbu dodávají na kabelových bubnech, které je možno skladovat jen na oplocených prostranstvích.
+Kabely musí být zajištěny proti samovolnému rozvinutí. Při manipulaci s kabely musí být zajištěno, aby konce
+kabelů byly zajištěny proti vnikání vlhkosti podle podmínek výrobce.
+Kabely nesmí být vystaveny sálavému teplu topidel a nesmí být skladovány společně s hořlavými kapalinami
+a rozpouštědly nebo s výrobky tyto obsahující.
+27.4.3 Vnitřní části zabezpečovací zařízení
+Při převzetí dodávky vnitřního zabezpečovacího zařízení, jako jsou relé, reléové sady a bloky, reléové stojany,
+měniče, kodéry, napájecí panely, elektronické soubory, počítačové jednotky apod., stojany, skříně s technologií
+zabezpečovacího zařízení apod. provede technický dozor stavebníka kontrolu komplexnosti dodávky podle
+dokumentace a technických podmínek výrobce. Dodávka každé samostatné části, resp. prvku vnitřního zařízení musí
+být doložena dodacím listem a osvědčením o jakosti (a pokud to vyplývá z obecně právních předpisů i prohlášením o
+shodě (ujištěním o shodě), příp. jiným stanoveným certifikátem), které do převzetí kompletního zařízení
+objednatelem jsou v opatrování zhotovitele. Skladování vnitřních částí zabezpečovacího zařízení na stavbě musí být
+zajištěno v přepravních obalech a v krytých a suchých skladech podle podmínek výrobce. Přednostně se doporučuje
+skladování ve stavědlových ústřednách s ukončenou stavební připraveností.
+Průkazní zkoušky pro výrobky, kde je to požadováno podmínkami pro jejich používání u SŽDC, provádí výrobce
+a zhotovitel předá jejich výsledky objednateli.
+Dodávka technologických počítačů a diagnostických počítačů, které jsou součástí zabezpečovacího zařízení, musí
+být doložena kopií licenční smlouvy na použitý software.
+27.4.4 Vnitřní kabelové rozvody
+Kabely, šňůry a vodiče musí být dodávány s osvědčením o jakosti od specializovaného výrobce.
+Vnitřní kabely a jejich příslušenství se na stavbě skladují v suchých uzavřených prostorách podle podmínek výrobce.
+Přednostně se doporučuje skladování ve stavědlových ústřednách s ukončenou stavební připraveností.
+Kabely nesmí být vystaveny sálavému teplu topidel a nesmí být skladovány společně s hořlavými kapalinami
+a rozpouštědly nebo s výrobky tyto obsahující.
+27.4.5 Ovládací prvky
+Při převzetí dodávky ovládacích a kontrolních prvků zabezpečovacího zařízení, jako jsou tlačítka, řadiče, žárovky,
+svítivé diody, prosvětlovací buňky, indikační desky, ovládací stoly, desky nouzových obsluh, klávesnice, monitory
+apod. provede technický dozor stavebníka kontrolu komplexnosti dodávky podle dokumentace a technických
+podmínek výrobce. Dodávka každé samostatné části, resp. prvku zařízení musí být doložena dodacím listem
+a osvědčením o jakosti, které do převzetí kompletního zařízení objednatelem jsou v opatrování zhotovitele. Ovládací
+stoly a skříně s poškozenou povrchovou úpravou nesmějí být připuštěny k přejímce. Skladování ovládacích částí
+zabezpečovacího zařízení na stavbě musí být zajištěno v krytých a suchých skladech podle podmínek výrobce.
+Přednostně se doporučuje skladování ve stavědlových ústřednách s ukončenou stavební připraveností.
+Průkazní zkoušky pro výrobky, kde je to požadováno podmínkami pro jejich používání u SŽDC, provádí zhotovitel
+a předá jejich výsledky objednateli.
+10
+27.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+27.5.1 Všeobecně
+V průběhu prací je nutné ověřit provedení prací a konstrukcí, které budou stanoveným technologickým postupem
+zakryty v průběhu výstavby. Ověření provedení prací a konstrukcí a jejich odsouhlasení provede technický dozor
+stavebníka, resp. pověřený zaměstnanec objednatele. Rovněž je nutné provést komplexní přezkoušení zařízení
+zhotovitelem.
+Dále technický dozorem stavebníka zajistí nebo sám průběžně provádí:
+− ověření shody skutečně dosažených hodnot uzemnění
+− pro každý stavební postup před jeho zahájením odsouhlasení KSUaTP, resp. odsouhlasení změn KSUaTP podle
+předpisů SŽDC (ČD) T120 a „Směrnice pro zavedení, používání a správu koordinačních schémat ukolejnění
+a trakčního propojení“ č. j. ČD 56 731/96-S14,
+− kontrolu stavu ukolejnění a trakčního propojení podle takto odsouhlaseného KSUaTP průběžně během
+stavebního postupu a před ukončením stavebního postupu,
+− zajistí ověření shody skutečného stavu a provedení ukolejnění s nově vyhotoveným KSUaTP (jeho změnou)
+u pověřených osob č. j. ČD 56 731/96-S14 ve znění pozdějších výnosů.
+Každé ověřené KSUaTP předá určenému správci KSUaTP u OŘ s dostatečným počtem kopií pro jednotlivé dotčené
+správy OŘ; platí i pro jednotlivé stavební postupy.
+27.5.2 Ověření provedení prací a konstrukcí zakrytých v průběhu výstavby
+Zhotovitel je povinen průběžně požadovat od technického dozoru stavebníka odsouhlasení provedení prací
+a konstrukcí, které budou následně zakryty, a pořizovat o tom zápisy. Tato povinnost je předepsána předpisem
+SŽDC (ČSD) T200.
+Jedná se především o odsouhlasení hloubky a způsobu zakrytí pokládaných kabelů, zda jsou v souladu
+s TNŽ 34 2609 a dokumentací. Před zakrytím se rovněž zkontroluje řádné označení kabelů podle TNŽ 34 2609
+čl. 196-198, umístění prvků pro lokalizaci kabelové spojky (pokud jsou použity podle projektu) a umístění prvků pro
+lokalizaci kabelové trasy pouze s optickými kabely (resp. prázdnými trubkami pro optické kabely) bez vytyčovacího
+vodiče v místě lomových bodů (bez ohledu na to, zda to stanoví projekt). Maximální vzdálenost mezi kabelovými
+štítky je 50 m.
+27.5.3 Komplexní vyzkoušení zhotovitelem
+Komplexním vyzkoušením zhotovitelem se rozumí ověření kvality, funkčnosti a provozuschopnosti zařízení ve
+všech funkcích a vzájemných vazbách. Zhotovitel je v souladu s předpisem SŽDC (ČSD) T200 povinen před
+zahájením komplexního vyzkoušení provést oživení, seřízení a nastavení zařízení. Datum zahájení komplexního
+vyzkoušení oznámí zhotovitel nejméně 5 pracovních dnů předem objednateli (technickému dozoru stavebníka
+a předsedovi OK). Provádí se mimo jiné podle přezkoušeného a schváleného Situačního schéma, Závěrové tabulky
+a Tabulky přejezdu.
+Při komplexním vyzkoušení zhotovitel postupně ověří za přítomnosti odborné komise kvalitu, funkci
+a provozuschopnost zařízení ve všech funkcích a souvislostech podle projektové dokumentace. Průběh komplexního
+vyzkoušení zhotovitel zapisuje do montážního deníku, výsledky zkoušek předkládá ve formě předepsané předpisem
+SŽDC (ČSD) T200 nebo podle předpisu výrobce pro vyzkoušení a aktivaci zabezpečovacího zařízení odborné
+komisi.
+Odborná komise ověří požadované vlastnosti zařízení vyhodnocením výsledků funkčních zkoušek komplexního
+vyzkoušení zhotovitelem, popř. další funkční zkouškou nebo opakováním některé z již provedených funkčních
+zkoušek (viz 27.8.5). K tomu je zhotovitel povinen poskytnout odborné komisi nezbytný materiál, pomůcky,
+a požadovaný časový prostor. Zhotovitel je povinen při těchto zkouškách spolupracovat.
+Na základě kladného vyhodnocení komplexního vyzkoušení odborná komise vydá souhlas se zahájením postupného
+uvádění zařízení do provozu. Podmínkou vydání tohoto souhlasu je i kladný výsledek kontroly odstranění závad
+zjištěných při technických prohlídkách prováděných podle SŽDC (ČSD) T200 a SŽDC (ČD) T115.
+Práce při postupném zapínání zařízení do provozu řídí pověřený člen OK.
+11
+27.5.4 Přezkušování zařízení při stavebních postupech
+Při stavebních postupech, kdy je montážními pracemi dotčena pouze část zařízení, se postupuje podle předpisu
+SŽDC (ČSD) T100 část - Přezkušování zabezpečovacího zařízení před uvedením do provozu.
+Před předáním zabezpečovacího zařízení k přezkoušení musí být zařízení přezkoušeno zhotovitelem. Přezkoušení při
+jednotlivých stavebních postupech se provádí podle čl. 27.5.3 TKP s tím, že odpovědný zaměstnanec objednatele
+resp. budoucího provozovatele musí být účasten celého přezkoušení a zajišťuje potřebná dopravní opatření. V rámci
+stavebních postupů uvede zařízení do provozu na základě provedené technické prohlídky a zkoušky, zápisu změny
+do průkazu způsobilosti UTZ Drážním úřadem a nakonec zápisem do “Záznamníku poruch na sdělovacím
+a zabezpečovacím zařízení“ a v ”Knize přehlídek”; případně lze postupovat podle Opatření Drážního úřadu
+č. 4/2010 (č.j. DUCR-32726/10/Pk) resp. opatření, které ho nahrazuje.
+27.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+27.6.1 Vnější části zabezpečovacího zařízení
+Zařízení, která nejsou pevně spojena se železničním svrškem, jako jsou návěstidla, výstražníky, stojany závor apod.,
+musí být umístěna podle Protokolu o situování návěstidel, respektive podle dokumentace.
+Při montáži návěstidel musí být dodrženy podmínky protokolu o komisionálním situování návěstidel (viz předpis
+SŽDC (ČSD) T100). Případné požadované odůvodněné změny (při respektování rozhodnutí Drážního úřadu) musí
+být odsouhlaseny odpovědným zaměstnancem objednatele, který rozhodne, zda je nutné projednat nové situování
+návěstidel. Návěstidla musí být umístěna tak, aby nezasahovala do průjezdného průřezu navrženého dokumentací
+pro danou trať a nebránila průjezdu těžké mechanizace. Dále je nutné dodržet vzdálenost návěstidla od živé části
+trakčního vedení (dále jen TV) 1500 mm podle ČSN 34 1530 ed. 2 čl. 6.5.1d) (TNŽ 34 1540 čl. 48) a předepsanou
+dohlednost podle vyhlášky č. 173/1995 Sb. Při umístění návěstidla zavěšeného nad nástupiště musí být dodržena
+minimální výška spodní hrany návěstidla nad nástupištěm podle ČSN 73 4959.
+Při montáži výstražníků a stojanů závor musí být dodrženy podmínky rozhodnutí Drážního úřadu o zabezpečení
+přejezdu. Případné odůvodněné změny (při respektování rozhodnutí Drážního úřadu) musí být odsouhlaseny
+technickým dozorem stavebníka. Při změnách musí být ověřeno, zda nové umístění vyhovuje vypočtené přibližovací
+době, popřípadě i předzváněcí době PZZ. Rovněž musí být dodržena předepsaná minimální vzdálenost kterékoli
+části výstražníku a zařízení závory od osy koleje a vzdálenost závorových břeven od živých částí TV a další
+podmínky stanovené ČSN 73 6380 a minimální vzdálenost k průjezdnému/průchozímu prostoru pozemní
+komunikace při respektování bezpečnostního odstupu dle ČSN 73 6101 a ČSN 73 6110, při umístění nad pozemní
+komunikací také ČSN 73 6201.
+Při montáži zařízení, která jsou pevně spojena se železničním svrškem, jako jsou přestavníky včetně doplňujících
+zařízení, výstroj kolejových obvodů, počítače náprav apod., je nutné dodržet tolerance, které jsou uvedeny ve
+výrobní, resp. montážní dokumentaci jednotlivých zařízení.
+27.6.2 Vnější kabelové rozvody
+Vnější kabelové rozvody musí být provedeny podle dokumentace. Změny kabelových tras vyžádané zhotovitelem
+jsou možné v odůvodněných případech, ale musí být odsouhlaseny technickým dozorem stavebníka a projektantem.
+Při změně kabelové trasy musí technický dozor stavebníka ověřit, zda její změna není v rozporu se stavebním
+povolením stavby, a to především z hlediska stávajících podzemních sítí a práv vlastníků dotčených, případně
+sousedících pozemků. Při všech změnách kabelové trasy musí být dodržena závazná ustanovení TNŽ 34 2609.
+27.6.3 Vnitřní části zabezpečovacího zařízení
+U vnitřní části zabezpečovacího zařízení jako celku se jedná o dva druhy odchylek. Za prvé o odchylky
+v mechanickém provedení zařízení a za druhé o změny elektrického zapojení, resp. změny aplikovaného software.
+Při montáži zařízení je nutné dodržet mechanické tolerance, které jsou uvedeny ve výrobní, resp. montážní
+dokumentaci jednotlivých zařízení. Při montáži stojanových řad nebo skříní do stavědlové ústředny je třeba dodržet
+předepsanou minimální šířku uliček kolem zařízení (nejméně 80 cm) podle TNŽ 34 2620 resp. ČSN 34 2650 ed. 2.
+Povolená tolerance v tomto případě je 20 mm.
+Změny elektrického zapojení a aplikovaného software oproti schválené dokumentaci se nepřipouštějí. Každé změně
+musí předcházet změna nebo doplnění dokumentace a její odsouhlasení. Současně musí být respektovány podmínky
+12
+č.j. 55715/98-O14 ze dne 12.2.1998 ”Systémová opatření k provozu mikroprocesorových zabezpečovacích
+zařízení”.
+27.6.4 Vnitřní kabelové rozvody
+Vnitřní kabelové rozvody musí být provedeny podle dokumentace. Změny kabelových rozvodů uvnitř budov jsou
+možné v odůvodněných případech a musí být odsouhlaseny technickým dozorem stavebníka. Při všech změnách
+musí být respektována TNŽ 34 2609 –část V. Vnitřní kabelové rozvody s využitím ČSN 73 0848.
+Navrženou změnou nesmí dojít ke snížení požární bezpečnosti objektu, zejména ke snížení bezpečnosti osob nebo ke
+ztížení zásahu jednotek požární ochrany tj. zejména třída reakce stavebních výrobků na oheň nebo druh konstrukcí
+použitých v měněných stavebních konstrukcích není oproti původnímu stavu zhoršen; na nově provedenou
+povrchovou úpravu stěn a stropů není použito výrobků třídy reakce na oheň E nebo F, u stropů (podhledů) není
+použito hmot, které při požáru (při zkoušce podle ČSN 73 0865) jako hořící odkapávají nebo odpadávají a nově
+zřizované prostupy všemi stěnami či stropy jsou utěsněny podle ČSN 73 0810.
+Zabezpečovací zařízení ve stavbě, je technické zařízení jehož náhlé odstavení nebo vypnutí může vyvolat havárii
+nebo jinou mimořádnou událost, musí být proto zřetelně označeno štítkem obsahujícím informaci o určení zařízení
+a charakteristice nebezpečí.
+27.6.5 Ovládací prvky
+Pro tento článek platí obdobné podmínky jako v článku 27.6.3 této Kapitoly TKP. Při montáži zařízení je nutné
+dodržet mechanické tolerance uvedené ve výrobní, resp. montážní dokumentaci výrobce.
+Změny rozmístění ovládacích a kontrolních prvků, jejich elektrického zapojení a aplikovaného software oproti
+schválené dokumentaci se nepřipouštějí. Každé změně musí předcházet změna nebo doplnění dokumentace a její
+odsouhlasení.
+27.6.6 Míra opotřebení
+Zařízení podle článků 27.6.1 - 27.6.5 této Kapitoly TKP se zásadně uvažuje nové, pouze při rekonstrukcích
+a stavebních postupech se využívá zařízení stávající. Při použití stávajících zařízení stanoví možnou míru jeho
+opotřebení dokumentace (viz oddíl. 27.2 této Kapitoly TKP).
+27.6.7 Záruční doba
+Záruční doby všeobecně stanoví Kapitola 1 TKP. Údržbu v záruční době zajišťuje správce DLM podle Kapitoly 1
+TKP. Technologické postupy (pokyny, předpisy výrobce - zhotovitele) pro údržbu předá zhotovitel správci DLM
+nejpozději tři měsíce před uvedením díla do provozu. V případě, že některé části (technologické celky) díla bude po
+dobu záruky udržovat zhotovitel (dodavatel) díla, pak je povinen tyto části opatřit kryty a pečetěmi tak, aby zásah
+správce DLM do zařízení mohl být tímto způsobem registrován.
+Na ty části díla, které jsou v ověřovacím provozu, se vzhledem k provádění údržby a k zárukám vztahují nejen
+články 1.8.2 a 1.8.3 těchto TKP, ale navíc i ustanovení smlouvy o zajištění ověřovacího provozu, která musí být
+mezi správcem DLM a zhotovitelem zařízení uzavřena dostatečně včas před zahájením ověřovacího provozu.
+27.7 KLIMATICKÁ OMEZENÍ
+27.7.1 Vnější části zabezpečovacího zařízení
+Použité venkovní prvky musí vyhovovat prostředí, ve kterém budou použity, podle ČSN EN 50125-3. Klimatická
+omezení pro montáž jednotlivých vnějších zařízení stanoví podmínky pro jejich dodávku a montáž (stanoveno
+podmínkami pro jejich používání u SŽDC). Pokud nejsou stanoveny, je nutné respektovat pracovní podmínky pro
+venkovní části zabezpečovacího zařízení podle ČSN 34 2600 ed. 2. Jsou-li s montáží zařízení spojeny práce na
+ukončování kabelů (kabelové formy, vodní zábrany apod.), platí ustanovení článku 27.7.1 této Kapitoly TKP.
+27.7.2 Vnější kabelové rozvody
+Podle těchto TKP musí zhotovitel zajistit, aby kabely byly transportovány, skladovány, pokládány a montovány
+výhradně v klimatických podmínkách přípustných podle schválených technických podmínek výrobce.
+13
+Není-li v TP výrobce klimatické omezení stanoveno, nesmí pokládka probíhat při teplotách nižších než +4°C bez
+zvláštních opatření podle ČSN 33 2000-5-52.
+Klimatická omezení pro zemní práce jsou uvedena v Kapitole 3 TKP.
+27.7.3 Vnitřní části zabezpečovacího zařízení
+Použité vnitřní prvky musí vyhovovat prostředí, ve kterém budou použity, podle ČSN 50125-3, nebo musí být
+zajištěny podmínky podle 27.3.4 této Kapitoly TKP. Klimatická omezení pro montáž vnitřních zařízení stanoví
+podmínky výrobce pro dodávku a montáž jednotlivých zařízení. Pokud nejsou stanoveny, je nutné respektovat
+pracovní podmínky pro vnitřní části zabezpečovacího zařízení podle ČSN EN 50125-3. Jsou-li s montáží zařízení
+spojeny práce na ukončování kabelů (kabelové formy, vodní zábrany apod.), platí ustanovení článku 27.7.1 této
+Kapitoly TKP.
+Aktivace zařízení, umístěného v místnostech budov, pokud není výrobcem zabezpečovacího zařízení pro konkrétní
+případ stanoveno jinak, musí probíhat při temperování místností alespoň na teplotu + 15 °C.
+27.7.4 Vnitřní kabelové rozvody
+Podle těchto TKP musí zhotovitel zajistit, aby kabely byly transportovány, skladovány, pokládány a montovány
+výhradně v klimatických podmínkách přípustných podle schválených technických podmínek výrobce.
+Není-li v TP výrobce klimatické omezení stanoveno nesmí pokládka probíhat při teplotách nižších než +4 °C bez
+zvláštních opatření podle ČSN 33 2000-5-52.
+27.7.5 Ovládací prvky
+Použité ovládací prvky musí vyhovovat prostředí, ve kterém budou použity, podle ČSN EN 50125-3, nebo musí být
+zajištěny podmínky podle 27.3.4 této Kapitoly TKP. Klimatická omezení pro montáž ovládacích prvků stanoví
+podmínky výrobce pro dodávku a montáž jednotlivých zařízení. Pokud nejsou stanoveny, je nutné respektovat
+pracovní podmínky pro vnitřní části zabezpečovacího zařízení podle ČSN EN 50125-3. Jsou-li s montáží zařízení
+spojeny práce na ukončování kabelů (kabelové formy, vodní zábrany apod.), platí ustanovení článku 27.7.1 této
+Kapitoly TKP.
+Oživování a přezkušování zařízení musí probíhat v místnostech obsluhy zabezpečovacího zařízení temperovaných
+alespoň na teplotu + 15 °C.
+27.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+27.8.1 Všeobecně
+Základním předpokladem odsouhlasení a převzetí prací od zhotovitele je:
+− kladné vyhodnocení vydané odbornou komisí o provedení technických prohlídek a o přezkoušení
+zařízení zhotovitelem a
+− získání průkazu způsobilosti podle § 47 Zákona č. 266/1994 Sb., o drahách.
+Požaduje se, aby určená technická zařízení podle vyhlášky č. 100/1995 Sb. byla předávána zhotovitelem
+provozuschopná a s vystaveným průkazem způsobilosti pro veškerá použitá UTZ. Při uvádění zařízení do provozu
+po etapách musí být respektovány podmínky Drážního úřadu pro vystavení Průkazu způsobilosti. Prohlídka
+a kontrola zařízení se řídí předpisem výrobce a předpisem SŽDC (ČSD) T200.
+Převzetí prací se provádí pro ucelené zařízení SZZ, TZZ nebo PZZ podle dokumentace formou přejímacího řízení
+a ve smyslu ustanovení čl. 1.8 těchto TKP. Vady a nedodělky zjištěné při přejímacím řízení musí odstranit
+zhotovitel. Do doby odstranění vad a nedodělků, které mohou ohrozit bezpečnost osob nebo provoz dráhy, nebudou
+práce převzaty. Odsouhlasení provedených prací je nezbytné pro jejich ocenění a pro možnost zahájení navazujících
+prací. Zhotovitel odsouhlasených prací za ně odpovídá až do doby převzetí prací. Po převzetí prací udržuje zařízení
+již objednatel způsobem a v rozsahu daném Pokyny pro údržbu výrobku dodané zhotovitelem. Obsah dokumentace
+pro údržbu stanovuje ČSN EN 13460.
+Kladné vyjádření odborné komise po ukončení aktivace zařízení/výrobku je nutnou podmínkou pro ukončení TBZ,
+předání díla a provedení kolaudace stavby podle Stavebního zákona.
+14
+Vyžaduje-li to charakter předávaného zařízení/výrobku a v zájmu zajištění co nejvyšší pohotovosti předávaného
+zařízení, musí být ke dni předání zařízení stanoveny podmínky a uzavřena smlouva o zajištění záručního
+a pozáručního servisu dotčeného zařízení mezi zhotovitelem a budoucím správcem předávaného zařízení.
+27.8.2 Příprava k převzetí prací
+Povinnosti objednatele a zhotovitele jsou uvedeny v předpisu SŽDC (ČSD) T200.
+Zhotovitel je povinen připravit nezbytné podklady, a to zejména:
+− dokumentaci dle Kapitoly 1 TKP včetně montážních výkresů s vyznačenými změnami podle skutečného
+provedení, včetně geodetického zaměření,
+− pro určená technická zařízení technickou dokumentaci ve smyslu vyhlášky č. 100/1995 Sb., pro ostatní zařízení
+obvyklou technickou dokumentaci vztahující se k zařízení, popřípadě jeho jednotlivým částem a ostatní
+dokumentaci potřebnou pro řádnou obsluhu, provozování a údržbu dodaného zařízení,
+− zápisy o odsouhlasení provedených prací a konstrukcí zakrytých v průběhu výstavby (viz čl. 27.5.2),
+− osvědčení o provedených zkouškách použitých materiálů a konstrukcí, zprávu o provedení výchozí revize
+zařízení podle ČSN 33 1500,
+− protokol o měření kabelů,
+− protokol o měření izolačních stavů,
+− protokol o kapacitní zkoušce baterie, u bezúdržbových baterií zápis o provedení provozní zkoušky s uvedením
+doby, po kterou bylo zařízení napájeno z baterie,
+− protokol o nastavení kolejových obvodů,
+− protokol o technické prohlídce a zkoušce UTZ,
+− certifikát o přezkoumání typu subsystému nebo certifikát o ověření subsystému podle nařízení vlády
+č. 133/2005 Sb., pokud ho má na základě smlouvy zhotovitel pro provozovatele zajistit,
+− montážní deník,
+− udělené výjimky z norem a předpisů,
+− souhlas k ověřovacímu provozu (je-li prováděn),
+− souhlas s použitím nezavedeného zařízení (je-li použito),
+− doklady o provedení komplexního vyzkoušení,
+− prohlášení zhotovitele o shodě dodaného a namontovaného zařízení s předloženou dokumentací, technickými
+podmínkami a typovými podklady a ujištění o shodě podle zákona č. 22/1997 Sb.,
+− doklad o montáži požární přepážky a ucpávky ve smyslu §2 odst. 4 písm. f) vyhlášky 246/2001 Sb. (§6 a §10
+vyhlášky 246/2001 Sb.) ,
+− doklad o oprávnění osob k montáži pro požární přepážky a ucpávky (§6 odst. 2 vyhlášky 246/2001 Sb.) ,
+− doklad o kontrole provozuschopnosti pro požární přepážky a ucpávky (PBZ k omezení šíření požáru),
+− doklad potvrzující požadované vlastnosti z požárně bezpečnostního řešení stavby pro požární přepážky
+a ucpávky (prohlášení o shodě, klasifikační protokol),
+− prohlášení zhotovitele, že použité díly a funkční celky jsou v souladu s typem schváleným pro použití na
+železniční dopravní cestě a neschválené díly a funkční celky zajišťující přímo bezpečnosti drážní dopravy jsou
+v souladu s dokumentací předloženou hodnotiteli bezpečnosti,
+Pozn.: Výrobky zabezpečovací technicky již schválené pro použití na železniční dopravní cestě jsou uvedeny
+v Ústředním registru zaváděcích listů umožňujícím dálkový přístup na http://webzl.tudc.cz/.
+− uzavřenou smlouvu o záručním a pozáručním servisu, pokud to charakter předávaného zařízení vyžaduje,
+− dokument o složení a technologii provedení bezpečnostních a ochranných nátěrů vnějších prvků
+zabezpečovacího zařízení včetně jejich záručních podmínek,
+− je-li to zakotveno ve smlouvě i protokol o proškolení obsluhujících a udržujících zaměstnanců, včetně předání
+výukových simulačních programů.
+Objednatel je povinen na základě v předstihu zhotovitelem předložených dokladů a prohlášení připravit:
+− zprávu, jak odpovídá provedení prací schválené dokumentaci, smluvním podmínkám, technickým normám
+a příslušným předpisům,
+15
+− pokud stavba zabezpečovacího zařízení na elektrizované trati vyvolá změnu KSUaTP i ověření nového (případně
+změny stávajícího) KSUaTP oprávněnými určenými osobami podle č.j. ČD 56 731/96-S14 ve znění pozdějších
+výnosů a SŽDC (ČD) T120 čl. 66.
+Pokud je zabezpečovací zařízení aktivováno v menším rozsahu, než v jakém bylo vyprojektováno a schváleno (tzv.
+výhledový stav), je objednatel povinen zajistit schválenou dokumentaci také na stav ke dni aktivace. Zkoušení
+zařízení se v takovém případě provádí jednak pro celé zařízení pomocí maket, jednak ke dni aktivace předepsaným
+způsobem podle předpisu SŽDC (ČSD) T200.
+27.8.3 Odborná komise
+Odborná komise ve smyslu předpisu SŽDC (ČSD) T200, jmenovaná na žádost objednatele nebo příslušného OŘ, se
+zřizuje:
+− k provedení technických prohlídek zařízení,
+− k vyhodnocení výsledků komplexního vyzkoušení zhotovitelem, popř. k provedení dalších funkčních zkoušek
+v rámci TBZ.
+Odborná komise ke dni zahájení své činnosti musí obdržet aktualizovanou a schválenou Závěrovou tabulku, Tabulku
+přejezdu.
+Odborná komise se zúčastní:
+− komplexního vyzkoušení zařízení prováděného zhotovitelem,
+− zhodnocení komplexního vyzkoušení zařízení,
+− zapnutí a uvedení zařízení do provozu.
+Činnost odborné komise končí písemným vyhodnocením technického stavu zařízení zkontrolovaného jednotlivými
+pracovními skupinami OK a ukončených činností spojených s aktivací zařízení.
+27.8.4 Technické prohlídky
+Technickou prohlídkou se ověřuje úplnost montáže podle projektové dokumentace, platných směrnic, norem,
+předpisů, vzorových a zaváděcích listů. Technickou prohlídku lze zahájit až po provedení výchozí revize
+elektrických zařízení podle ČSN 33 1500, resp. ČSN 33 2000-6. Technickou prohlídku provádí odborná komise
+nezávisle na kontrole zhotovitelem (provádí se zpravidla před komplexním vyzkoušením).
+Odborná komise při technických prohlídkách kontroluje:
+− venkovní části - zařízení umístěná v kolejišti, včetně výhybek a zařízení na trati,
+− vnitřní část - zařízení umístěná uvnitř budovy, domku nebo v reléové skříni.
+Podrobnosti pro provádění technických prohlídek jsou uvedeny v předpisu SŽDC (ČSD) T200, SŽDC (ČD) T115
+a předpisech výrobce.
+27.8.5 Přezkoušení jednotlivých zařízení SZZ, TZZ a PZZ
+Funkční zkoušky jednotlivých zařízení se provádějí podle předpisu SŽDC (ČSD) T200 ”Předpis pro vyzkoušení
+a uvádění železničních zabezpečovacích zařízení do provozu“ a k němu přidružených předpisů:
+− SŽDC (ČSD) T200/1 - Funkční zkoušky reléového staničního zabezpečovacího zařízení,
+− SŽDC (ČSD) T200/2 - Funkční zkoušky automatického bloku,
+− SŽDC (ČSD) T200/3 - Funkční zkoušky elektromechanického staničního zabezpečovacího zařízení,
+− SŽDC (ČSD) T200/4 - Funkční zkoušky železničního přejezdového zabezpečovacího zařízení.
+Pro typy zařízení, pro něž nejsou tyto předpisy přímo použitelné, musí být upraveny podmínky pro vykonání
+zkoušek stanovených předpisy řady T200 a technologie provedení těchto zkoušek musí být zapracována do předpisu
+výrobce pro přezkoušení konkrétního zařízení.
+Funkční zkoušky zařízení prováděné za provozu musí být organizovány tak, aby neohrozily bezpečnost železničního
+a silničního provozu.
+16
+27.8.6 Požadavky na dokumentaci v rámci dodávek
+V rámci dodávky stavby musí být Správě dopravní cesty předána následující dokumentace skutečného provedení
+řešená podle čl. 1.11.4 Kapitoly 1 TKP:
+a) schéma izolace kolejiště - na elektrifikovaných tratích 4x
+- na neelektrifikovaných tratích 7x,
+b) situační schéma, Závěrová tabulka (TNŽ 34 2604), Tabulka přejezdu (ČSN 34 2650) 5x,
+c) přehledová schémata, obvodová schémata 2x,
+d) zapojovací schémata (montážní výkresy) - nejméně obsazení stojanů, skříní, obsazení svorkovnic
+a svorek prvků, multiply, čísla spojů a přechodů 2x,
+e) KSUaTP (jen na elektrifikovaných tratích) 9x,
+f) schéma uzemnění budov a jejich hromosvodů 5x,
+g) stanovení zón ochran před účinky blesku uvnitř a vně budov (podle souboru norem ČSN EN 62 305) 2x,
+h) dokumentace v rozsahu a počtu podle Směrnice SŽDC č. 34,
+i) doplňující ustanovení k technickému popisu, návodu pro montáž, návodu pro údržbu a návodu pro hodnocení
+provozní způsobilosti,
+j) návod pro provádění funkčních zkoušek zařízení (není-li zcela v souladu s předpisy řady SŽDC (ČSD) T200
+nebo není-li již obsahem návodu pro hodnocení provozní způsobilosti),
+k) podklady pro vypracování doplňujícího ustanovení pro obsluhu (natolik včas před uvedením do provozu, aby
+mohlo být doplňující ustanovení zpracováno),
+l) návody dodávané s výrobky, které nejsou primárně vyráběny pro zabezpečovací zařízení (např. monitory,
+modemy, nabíječe, komerční časové soubory, atd.), počet dodávaný výrobcem
+m) dokumentace ke staničním bateriím podle ČSN EN 50272-2,
+n) software a soupis použitého software.
+Tato dokumentace se rovněž dodává na datovém nosiči v digitální formě, a to jak otevřené (editovatelné), tak
+v uzavřené (archivní a neměnitelné) formě.
+Návody pro hodnocení provozní způsobilosti, resp. jejich doplnění musí obsahovat konkrétní technologické postupy
+provedení přezkoušení. Mohou se odkazovat na předpisy řady SŽDC (ČSD) T200, přitom však musí rovněž
+obsahovat technologické postupy přezkoušení. Pokud postupy uvedené v předpisech řady SŽDC (ČSD) T200 nelze
+využít (např. nejsou řadiče pro individuální stavění výhybek, kterými se při přezkušování podle předpisu SŽDC
+(ČSD) T200/1 přidržuje výhybka v opačné než požadované poloze), nebo se při přezkoušení má zařízení chovat
+odlišně (např. stavění cesty od zhaslého návěstidla), mohou návody pro hodnocení provozní způsobilosti vyžadovat
+použití maket při hodnocení provozní způsobilosti při technické prohlídce a zkoušce UTZ.
+Návody pro údržbu se nemusí předávat pro mechanické zámky, mechanické závorníky, mechanické přestavníky,
+mechanická návěstidla a předvěsti uvedené v předpise SŽDC (ČD) T121, mechanická a elektromechanická
+zabezpečovací zařízení uvedená v předpise SŽDC (ČD) T122, zabezpečovací relé, reléové sady, kodéry a kmitací
+adaptéry, ovládací a kontrolní prvky, zástrčkové pojistky uvedené v předpise SŽDC (ČD) T123.
+Podklady pro vypracování doplňujícího ustanovení pro obsluhu musí být předány příslušné organizační složce OŘ
+pro provoz infrastruktury nejméně 10 pracovních dní před termínem, kdy musí tato předat podklady příslušné
+organizační složce OŘ pro řízení provozu.
+27.8.7 Zapnutí zařízení do provozu
+Zapnutí zařízení do provozu se provede podle ”Rozkazu o výluce”.
+Pro jednotlivé stavební postupy musí být dodány KSUaTP, Závěrová tabulka a Tabulka přejezdu odsouhlasené
+TÚDC - DLZT.
+Odpovědný zaměstnanec SŽDC (OZOV) uvede zařízení do provozu na základě souhlasu Odborné komise (dle
+SŽDC (ČSD) T200) v rozsahu a za podmínek stanovených v „Protokolu o zavedení zkušebního provozu“ Drážním
+úřadem (resp. Průkazu způsobilosti, pokud je již vydán). V rámci stavebních postupů uvede zařízení do provozu na
+17
+základě provedené technické prohlídky a zkoušky, zápisu změny do průkazu způsobilosti UTZ Drážním úřadem a na
+konec zápisem do ”Záznamníku poruch na sdělovacím a zabezpečovacím zařízení” a v ”Knize přehlídek”; případně
+lze postupovat podle Opatření Drážního úřadu č. 4/2010 (č.j. DUCR-32726/10/PK) resp. opatření, které ho
+nahrazuje.
+27.9 KONTROLNÍ MĚŘENÍ
+27.9.1 Vnější části zabezpečovacího zařízení
+Je nutné zkontrolovat, zda namontované zařízení nezasahuje do průjezdného průřezu a volného manipulačního
+prostoru pro použití mechanizačních prostředků v souladu s Vyhláškou č. 177/1995 Sb. a do prostoru, který má být
+volný podle ČSN 73 4959, ČSN 73 6101, ČSN 73 6110 a ČSN 73 6201.
+U kolejových obvodů se ověří, zda lana a vodiče neomezují volný schůdný a manipulační prostor a vyhovují
+ustanovením předpisu SŽDC S3 a SŽDC (ČD) T120 čl. 66. Dále se ověří upevnění, správný počet a průřez
+použitých propojek a lanových propojení a shoda skutečného provedení se schématem izolace kolejiště. V případě
+elektrizované tratě se ověří shoda skutečného provedení se změnou KSUaTP ověřenou určenými oprávněnými
+osobami podle č. j. ČD 56 731/96-S14 ve znění pozdějších výnosů.
+U návěstidel je nutné přeměřit vzdálenost nejbližší části návěstidla od živé části trakčního vedení (min 1 500 mm).
+Provede se měření odporu ochranného uzemnění, pokud je použito, a ověří se, zda dosažená hodnota je v souladu
+s dokumentací.
+U kolejových obvodů se provede kontrola hodnot napájecího a výstupního napětí podle regulačních tabulek. Dále se
+provede fázová kontrola izolovaných styků. Provede se změření izolačního stavu kolejového roštu. Před vlastním
+měřením ověří zhotovitel za účasti technického dozoru stavebníka provedení vnějších částí podle dokumentace,
+zejména v záležitostech trakčního propojení a ukolejnění. Ověření se provede podle KSUaTP, jehož návrh je
+součástí dokumentace (obsah a náplň viz TNŽ 34 2603). Dále se provede změření odporu všech ukolejněných
+konstrukcí (nově budovaných i stávajících) vůči zemi, a to zejména v případech důvodného podezření na nadměrné
+svody a obchozí cesty. Měření provádí zhotovitel. Pokud objednatel předá naměřené hodnoty zemních odporů
+stávajících konstrukcí, jejich měření se neprovádí.
+27.9.2 Vnější kabelové rozvody
+U všech položených kabelů provede zhotovitel závěrečné měření podle předpisu SŽDC (ČSD) T200 a zpracuje
+o tomto protokol.
+27.9.3 Vnitřní části zabezpečovacího zařízení
+U každé použité akumulátorové baterie je nutné provést měření izolačního odporu, ověřit její dostatečnou kapacitu
+a výsledek zaznamenat do protokolu.
+U měničů a napájecích zdrojů se kontroluje jmenovité napětí, napětí při zatížení a měření se opakuje po zahřátí
+zdroje na provozní teplotu. Provede se kontrola výkonnosti zdroje podle technických podmínek výrobce.
+Ve stavědlové ústředně se měří izolační odpor mezi izolovanými živými částmi a kostrou a mezi živými částmi
+různých soustav navzájem.
+Provede se měření odporu ochranného uzemnění a ověří se, zda dosažená hodnota je v souladu s dokumentací.
+27.9.4 Vnitřní kabelové rozvody
+U všech položených kabelů provede zhotovitel závěrečné měření podle předpisu SŽDC (ČSD) T200 a zpracuje
+o tomto protokol.
+27.10 EKOLOGIE
+Při všech montážních pracích na zabezpečovacím zařízení je nutné dodržet ustanovení pro odpadové hospodářství
+Kapitoly 1 TKP - Všeobecně. Dále platí pro jednotlivé druhy prací:
+18
+27.10.1 Vnější a vnitřní kabelové rozvody
+Při spojkování kabelů nesmí dojít ke znečištění půdy a vod působením spojovacích hmot. Musí být bezpečně
+uloženy hmoty a dodržen výrobcem předepsaný postup práce. Zbytky spojovacích hmot a kabelů lze likvidovat
+pouze na skládkách k tomu určených.
+27.10.2 Vnější části zabezpečovacího zařízení
+Při pracích nesmí dojít k znečištění půdy a vod.
+Při natěračských pracích na staveništi je nutné zajistit likvidaci ekologicky škodlivých odpadů, jako jsou použité
+štětce, obaly od nátěrových hmot, ředidla apod.
+Při pracích s ropnými produkty (olejová náplň stykových transformátorů) je nutné dodržovat ochranu půdy a vod
+před únikem těchto produktů.
+27.10.3 Vnitřní části zabezpečovacího zařízení
+Při natěračských pracích na staveništi musí zhotovitel zajistit likvidaci ekologicky škodlivých odpadů, jako jsou
+použité štětce, obaly od nátěrových hmot, ředidla apod.
+Manipulace s bateriemi je možné provádět pouze v prostorách k tomu určených. Při manipulaci s elektrolytem nesmí
+dojít k poškození půdy a vod.
+27.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+27.11.1 Bezpečnost práce při montážích v kolejišti
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví Kapitola 1 TKP.
+27.11.2 Bezpečnost práce na elektrických zařízeních
+Při práci na elektrickém zařízení a práci s elektrickým zařízením a při práci v blízkosti TV je nutno dodržovat
+zejména ČSN EN 50110-1 ed. 2.
+27.11.3 Montážní práce prováděné na provozovaném zařízení
+Práce zhotovitele na provozovaném zařízení je možné provádět pouze za přímého dozoru a odpovědnosti
+udržujícího zaměstnance. Při pracích se postupuje podle předpisu SŽDC (ČSD) T100 čl. 113.
+27.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich aktualizace.
+Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu Kap. 1.3 TKP, tj. právních
+předpisů, technických norem a předpisů a předpisů SŽDC.
+27.12.1 Technické normy
+ČSN 33 0050-603 Mezinárodní elektrotechnický slovník. Kapitola 603: Výroba, přenos a rozvod elektrické
+energie. Plánování a řízení elektrizační soustavy
+ČSN 33 0120 Elektrotechnické předpisy – Normalizovaná napětí IEC
+ČSN 33 0121 Elektrotechnické předpisy – Jmenovitá napětí veřejných distribučních sítí nn
+ČSN 33 1500 Elektrotechnické předpisy. Revize elektrických zařízení
+ČSN 33 2000-1 Elektrické instalace nízkého napětí – Část 1: Základní hlediska, stanovení základních
+ed. 2 charakteristik, definice
+ČSN 33 2000-4-41 Elektrické instalace nízkého napětí – Část 4–41: Ochranná opatření pro zajištění
+ed. 2 bezpečnosti – Ochrana před úrazem elektrickým proudem
+ČSN 33 2000-4-442 Elektrické instalace nízkého napětí – Část 4-442: Bezpečnost –Ochrana instalací nízkého
+ed. 2 napětí proti dočasným přepětím v důsledku zemních poruch v soustavách vysokého napětí
+19
+ČSN 33 2000-4-443 Elektrické instalace budov – Část 4–44: Bezpečnost - Ochrana před rušivým napětím
+ed. 2 a elektromagnetickým rušením – Kapitola 443: Ochrana proti atmosférickým nebo
+spínacím přepětím
+ČSN 33 2000-4-444 Elektrické instalace nízkého napětí – Část 4–444: Bezpečnost – Ochrana před napěťovým a
+elektromagnetickým rušením
+ČSN 33 2000-5-52 Elektrické instalace nízkého napětí – Část 5-52: Výběr a stavba elektrických zařízení –
+ed. 2 Elektrická vedení
+ČSN 33 2000-5-523 Elektrické instalace budov – Část 5: Výběr a stavba elektrických zařízení – Oddíl 523:
+ed. 2 Dovolené proudy v elektrických rozvodech
+ČSN 33 2000-5-54 Elektrické instalace nízkého napětí – Část 5–54: Výběr a stavba elektrických zařízení –
+ed. 3 Uzemnění a ochranné vodiče
+ČSN 33 2000-6 Elektrické instalace nízkého napětí – Část 6: Revize
+ČSN 33 2130 ed. 2 Elektrické instalace nízkého napětí – Vnitřní elektrické rozvody
+ČSN 33 2160 Elektrotechnické předpisy. Předpisy pro ochranu sdělovacích vedení a zařízení před
+nebezpečnými vlivy trojfázových vedení VN, VVN a ZVN
+ČSN 34 1500 ed. 2 Drážní zařízení – Pevná trakční zařízení – Předpisy pro elektrická trakční zařízení
+ČSN 34 1530 ed. 2 Drážní zařízení – Elektrická trakční vedení železničních drah celostátních, regionálních
+a vleček
+ČSN 34 2040 Elektrotechnické předpisy ČSN. Předpisy pro ochranu sdělovacích a zabezpečovacích
+vedení a zařízení před nebezpečnými a rušivými vlivy elektrické trakce 25 kV, 50 Hz
+ČSN 34 2600 ed. 2 Drážní zařízení – Železniční zabezpečovací zařízení
+ČSN 34 2613 ed. 2 Železniční zabezpečovací zařízení - Kolejové obvody a vnější podmínky pro jejich činnost
+ČSN 34 2614 ed. 2 Železniční zabezpečovací zařízení – Předpisy pro projektování, provozování a používání
+kolejových obvodů
+ČSN 34 2617 Určování a ověřování ukazatelů spolehlivosti železničních zabezpečovacích zařízení
+ČSN 34 2650 ed. 2 Železniční zabezpečovací zařízení – Přejezdová zabezpečovací zařízení
+ČSN 37 5711 ed. 2 Drážní zařízení – Křížení kabelových vedení s železničními dráhami
+ČSN 73 0810 Požární bezpečnost staveb – Společná ustanovení
+ČSN 73 0848 Požární bezpečnost staveb – Kabelové rozvody
+ČSN 73 0865 Požární bezpečnost staveb – Hodnocení odkapávání hmot z podhledů stropů a střech
+ČSN 73 4959 Nástupiště a nástupištní přístřešky na drahách celostátních, regionálních a vlečkách
+ČSN 73 6005 Prostorové uspořádání sítí technických vybavení
+ČSN 73 6101 Projektování silnic a dálnic
+ČSN 73 6110 Projektování místních komunikací
+ČSN 73 6201 Projektování mostních objektů
+ČSN 73 6301 Projektování železničních drah
+ČSN 73 6320 Průjezdné průřezy na dráhách celostátních, dráhách regionálních a vlečkách normálního
+rozchodu
+ČSN 73 6380 Železniční přejezdy a přechody
+ČSN EN 13460 Údržba - Dokumentace pro údržbu
+ČSN EN 13501-1 Požární klasifikace stavebních výrobků a konstrukcí staveb – Část 1: Klasifikace podle
++A1 výsledků zkoušek reakce na oheň
+ČSN EN 13501-2 Požární klasifikace stavebních výrobků a konstrukcí staveb – Část 2: Klasifikace podle
++A1 výsledků zkoušek požární odolnosti kromě vzduchotechnických zařízení
+ČSN EN ISO/IEC Posuzování shody – Prohlášení dodavatele o shodě – Část 1: Všeobecné požadavky
+17050-1 (01 5259)
+ČSN EN 50110-1 Obsluha a práce na elektrických zařízeních
+ed. 2
+ČSN EN 50121-1 Drážní zařízení – Elektromagnetická kompatibilita – Část 1: Všeobecně
+ed. 2 (33 3590)
+20
+ČSN EN 50121-2 Drážní zařízení – Elektromagnetická kompatibilita – Část 2: Drážní vozidla – Zařízení
+ed. 2 (33 3590)
+ČSN EN 50121-3-1 Drážní zařízení – Elektromagnetická kompatibilita – Část 4: Emise a celkové vozidlo
+ed. 2 (33 3590)
+ČSN EN 50121-3-2 Drážní zařízení – Elektromagnetická kompatibilita – Část 3-2: Drážní vozidla – Zařízení
+ed. 2 (33 3590)
+ČSN EN 50121-4 Drážní zařízení – Elektromagnetická kompatibilita – Část 4: Emise a odolnost
+ed. 2 (33 3590) zabezpečovacích a sdělovacích zařízení
+ČSN EN 50122-1 Drážní zařízení – Pevná trakční zařízení – Elektrická bezpečnost, uzemňování a zpětný
+ed. 2 (34 1520) obvod – Část 1: Ochranná opatření proti úrazu elektrickým proudem
+ČSN EN 50122-2 Drážní zařízení – Pevná trakční zařízení – Elektrická bezpečnost, uzemnění a zpětný obvod
+ed. 2 (34 1520) – Část 2: Ochranná opatření proti účinkům bludných proudů DC trakčních soustav
+ČSN EN 50122-3 Drážní zařízení – Pevná trakční zařízení – Elektrická bezpečnost, uzemnění a zpětný obvod
+(34 1520) – Část 3: Vzájemná interakce mezi AC a DC trakčními soustavami
+ČSN EN 50124-1 Drážní zařízení – Koordinace izolace – Část 1: Základní požadavky – Vzdušné vzdálenosti
+(33 3501) a povrchové cesty pro všechna elektrická a elektronická zařízení
+ČSN EN 50125-3 Drážní zařízení – Podmínky prostředí pro zařízení – Část 3: Zabezpečovací a sdělovací
+(33 3504) zařízení
+ČSN EN 50126-1 Drážní zařízení – Stanovení a prokázání bezporuchovosti, pohotovosti, udržovatelnosti
+(33 3502) a bezpečnosti (RAMS)
+ČSN EN 50128 ed. 2 Drážní zařízení – Sdělovací a zabezpečovací systémy a systémy zpracování dat – Software
+(34 2680) pro drážní řídicí a ochranné systémy
+ČSN EN 50129 Drážní zařízení – Sdělovací a zabezpečovací systémy a systémy zpracování dat –
+Elektronické zabezpečovací systémy
+ČSN EN 50159 Drážní zařízení – Sdělovací a zabezpečovací systémy a systémy zpracování dat -
+(34 2670) Komunikace v přenosových zabezpečovacích systémech
+ČSN EN 50160 Charakteristiky napětí elektrické energie dodávané z veřejných distribučních sítí
+ed. 3 (33 0122)
+ČSN EN 50163 Drážní zařízení – Napájecí napětí trakčních soustav
+ed. 2 (33 3500)
+ČSN EN 50205 Relé s nuceně ovládanými (mechanicky spřaženými) kontakty
+(35 3439)
+ČSN EN 50238 Drážní zařízení – Kompatibilita mezi drážním vozidlem a systémy pro detekování vlaků
+(33 3592)
+ČSN CLC/TS Drážní zařízení – Kompatibilita mezi drážním vozidlem a systémy pro detekování vlaků –
+50238-2 (33 3592) Část 2: Kompatibilita s kolejovými obvody
+ČSN CLC/TS Drážní zařízení – Kompatibilita mezi drážním vozidlem a systémy pro detekování vlaků –
+50238-3 (33 3592) Část 3: Kompatibilita s počítači náprav
+ČSN EN 60332-3- Zkoušky elektrických a optických kabelů v podmínkách požáru - Část 3-10: Zkouška
+10 (34 7107) vertikálního šíření plamene na vertikálně namontovaných svazcích vodičů nebo kabelů –
+Zařízení
+ČSN EN 60332-3- Zkoušky elektrických a optických kabelů v podmínkách požáru - Část 3-22: Zkouška
+22 (34 7107) vertikálního šíření plamene na vertikálně namontovaných svazcích vodičů nebo kabelů –
+Kategorie A
+ČSN EN 50272-2 Bezpečnostní požadavky pro akumulátorové baterie a akumulátorové instalace – Část 2:
+(36 4380) Staniční baterie
+ČSN EN 60146-1-1 Polovodičové měniče - Všeobecné požadavky a měniče se síťovou komutací –
+ed. 2 (35 1530) Část 1-1:Stanovení základních požadavků
+ČSN EN 60529 Stupně ochrany krytem (krytí – IP kód)
+(33 0330)
+ČSN EN 61140 Ochrana před úrazem elektrickým proudem – Společná hlediska pro instalaci a zařízení
+ed. 2 (33 0500)
+21
+ČSN EN 61204 Napájecí zařízení nízkého napětí se stejnosměrným výstupem – Charakteristické vlastnosti
+(35 1536) a požadavky na bezpečnost
+ČSN EN 61558-1 Bezpečnost výkonových transformátorů, napájecích zdrojů, tlumivek a podobných výrobků
+ed. 2 (35 1330) – Část 1: Všeobecné požadavky a zkoušky
+ČSN EN 61558-2-6 Bezpečnost transformátorů, tlumivek, napájecích zdrojů a podobných výrobků pro napájecí
+ed. 2 (35 1330) napětí do 1 100 V – Část 2–6: Zvláštní požadavky a zkoušky pro bezpečnostní ochranné
+transformátory a pro napájecí zdroje obsahující bezpečnostní ochranné transformátory
+ČSN EN 61663-1 Ochrana před bleskem – Telekomunikační vedení – Část 1: Instalace s optickými kabely
+(34 1391)
+ČSN EN 61663-2 Ochrana před bleskem – Telekomunikační vedení – Část 2: Vedení s kovovými vodiči
+(34 1391)
+ČSN IEC 61713 Zajištění spolehlivosti softwaru pomocí procesů jeho životního cyklu – Návod k použití
+(01 0692)
+ČSN EN 62040-1 Zdroje nepřerušovaného napájení (UPS) – Část 1: Všeobecné a bezpečnostní požadavky
+(36 9066) pro UPS
+ČSN EN 62305-1 Ochrana před bleskem – Část 1: Obecné principy
+ed. 2 (34 1390)
+ČSN EN 62305-4 Ochrana před bleskem – Část 4: Elektrické a elektronické systémy ve stavbách
+ed. 2 (34 1390)
+ČSN ISO 3864-1 Grafické značky - Bezpečnostní barvy a bezpečnostní značky - Část 1: Zásady navrhování
+(01 8011) bezpečnostních značek a bezpečnostního značení
+TNŽ 01 0101 Názvosloví Českých drah
+TNŽ 34 2602 Pravidla pro kreslení schémat železničních zabezpečovacích zařízení
+TNŽ 34 2603 Pravidla pro kreslení koordinačních schémat ukolejnění a trakčních propojení
+TNŽ 34 2604 Železniční zabezpečovací zařízení. Závěrové tabulky
+TNŽ 34 2605 Návěstní nátěry a bezpečnostní sdělení na železničních sdělovacích a zabezpečovacích
+zařízeních
+TNŽ 34 2606 Rozbory bezpečnosti obvodů železničních zabezpečovacích zařízení
+TNŽ 34 2607 Indikace v železničních zabezpečovacích zařízeních
+TNŽ 34 2609 Projektování kabelových rozvodů železničních zabezpečovacích zařízení
+TNŽ 34 2610 Železniční světelná návěstidla
+TNŽ 34 2612 Ochrana zabezpečovacích zařízení před požárem
+TNŽ 34 2616 Výběr ukazatelů spolehlivosti železničních zabezpečovacích zařízení
+TNŽ 34 2620 Železniční zabezpečovací zařízení. Staniční a traťové zabezpečovací zařízení
+TNŽ 34 2640 Železniční zabezpečovací zařízení. Předpisy pro vlakové zabezpečovací zařízení
+TNŽ 34 2660 Zařízení pro mechanizaci a automatizaci spádovišť
+TNŽ 34 3109 Bezpečnostní předpisy pro činnost na trakčním vedení a v jeho blízkosti na železničních
+dráhách celostátních, regionálních a vlečkách
+TNŽ 34 5542 Značky pro situační schémata železničních zabezpečovacích zařízení
+TNŽ 34 5543 Značky pro obvodová schémata železničních zabezpečovacích zařízení
+TNŽ 36 5530 Elektromechanická relé pro železniční zabezpečovací zařízení
+TNŽ 36 5540 Přestavníky
+TNŽ 37 5711 Křížení úložných, závlačných a závěsných kabelů s celostátními drahami a vlečkami
+27.12.2 Předpisy
+SŽDC (ČD) D1/5 Prováděcí opatření ke směrnici pro tvorbu a zpracování základní dopravní dokumentace
+SŽDC D7/2 Předpis pro organizování výlukové činnosti na tratích provozovaných Správou železniční
+dopravní cesty, státní organizace
+22
+SŽDC Ob14 Předpis pro stanovení organizace zabezpečení požární ochrany Správy železniční dopravní
+cesty, státní organizace
+SŽDC (ČD) Op16 Pravidla o bezpečnosti a ochraně zdraví při práci
+SŽDC S3 Železniční svršek
+SŽDC (ČSD) T100 Provoz zabezpečovacích zařízení
+SŽDC (ČD) T115 Předpis pro opravy výměnných dílů zabezpečovacích zařízení
+SŽDC (ČD) T120 Předpis pro provozování a údržbu zařízení pro kontrolu volnosti nebo obsazenosti
+kolejových úseků
+SŽDC (ČSD) T121 Údržba venkovních zabezpečovacích zařízení
+SŽDC (ČSD) T122 Údržba mechanických a elektromechanických zabezpečovacích zařízení
+SŽDC (ČSD) T123 Údržba reléových zabezpečovacích zařízení
+SŽDC (ČSD) T200 Předpis pro vyzkoušení a uvádění zabezpečovacích zařízení do provozu
+SŽDC (ČD) Z1 Předpis pro obsluhu staničního a traťového zabezpečovacího zařízení
+SŽDC (ČD) Z2 Obsluha přejezdových zabezpečovacích zařízení
+Nařízení vlády č. 272/2011 Sb., o ochraně zdraví před nepříznivými účinky hluku a vibrací
+Nařízení vlády č. 133/2005 Sb., o technických požadavcích na provozní a technickou propojenost evropského
+železničního systému
+Nařízení vlády č. 426/2000 Sb., kterým se stanoví technické požadavky na rádiová a na telekomunikační
+koncová zařízení
+Vyhláška č. 100/1995 Sb. Podmínky pro provoz, konstrukci a výrobu určených technických zařízení
+Vyhláška č. 173/1995 Sb. Dopravní řád drah
+Vyhláška č. 177/1995 Sb. Stavební a technický řád drah
+Vyhláška č. 30/2001 Sb. kterou se provádějí pravidla provozu na pozemních komunikacích a úprava a řízení
+provozu na pozemních komunikacích
+Vyhláška č. 246/2001Sb. o stanovení podmínek požární bezpečnosti a výkonu státního požárního dozoru
+(vyhláška o požární prevenci)
+Vyhláška č. 381/2001 Sb. kterou se stanoví Katalog odpadů, Seznam nebezpečných odpadů
+Vyhláška č. 447/2001 Sb. o báňské záchranné službě
+Vyhláška č. 376/2006 Sb. o systému bezpečnosti provozování dráhy a drážní dopravy a postupech při vzniku
+mimořádných událostí na dráhách
+Vyhláška č. 23/2008 Sb. o technických podmínkách požární ochrany staveb
+Vyhláška č. 398/2009 Sb. o obecných technických požadavcích zabezpečujících bezbariérové užívání staveb
+MDS TP 65 Zásady pro dopravní značení na pozemních komunikacích (rozšiřuje Centrum dopravního
+výzkumu) , včetně dodatku 1 (lze získat na webových stránkách Ministerstva dopravy)
+MDS TP 133 Zásady pro vodorovné dopravní značení na pozemních komunikacích (rozšiřuje Centrum
+dopravního výzkumu) , včetně dodatku 1 (lze získat na webových stránkách Ministerstva
+dopravy)
+MDS TP 169 Zásady pro označování dopravních situací na pozemních komunikacích (rozšiřuje Centrum
+dopravního výzkumu)
+Drážní úřad č. j. DUCR-32726/10/Pk ze dne 28. 6. 2010 “Vydávání průkazů způsobilosti UTZ po modernizaci
+a rekonstrukci stavby dráhy ve výjimečných situacích“
+Výnos ČD DDC č. j. 55 715/98-O14 ”Systémová opatření k provozu mikroprocesorových zabezpečovacích
+zařízení” – Věstník ČD č. 4/98.
+Výnos ČD DDC č. j. 56 731/96-S14 Směrnice pro zavedení, používání a správu koordinačních schémat
+ukolejnění a trakčního propojení - prováděcí pokyny ve znění pozdějších výnosů
+Výnos SŽDC č. j. 21 981/08-OP ze dne 20.06.2008 „Zásady technického řešení akcí racionalizace řízení
+provozu na železniční dopravní cestě
+Pokyn GŘ č. 12/2009 Situování nepřenosných návěstidel zabezpečovacího zařízení dle TNŽ 34 2620
+Směrnice GŘ č. 11 Směrnice pro hospodaření s vyzískaným materiálem z majetku SŽDC ve správě ČD
+23
+Směrnice GŘ Zásady optimalizace a modernizace vybrané sítě České republiky
+č. 16/2005
+Směrnice SŽDC č. 30 Zásady rekonstrukce celostátních drah České republiky nezařazených do evropského
+železničního systému
+Směrnice SŽDC č. 32 Zásady rekonstrukce regionálních drah
+Směrnice SŽDC č. 34 Směrnice pro uvádění do provozu výrobků, které jsou součástí sdělovacích a
+zabezpečovacích zařízení a zařízení elektrotechniky a energetiky, na železniční
+dopravní cestě ve vlastnictví státu státní organizace Správa železniční dopravní cesty
+Směrnice SŽDC č. 50 Požadavky na odbornou způsobilost dodavatelů při činnostech na dráhách
+provozovaných státní organizací Správa železniční dopravní cesty
+Směrnice SŽDC č. S měrnice pro ochranu zabezpečovacích a sdělovacích zařízení před účinky blesku
+(připravuje se) a proti přepětí (připravuje se)
+Výnos ČD DDC č. j. 703/95-S7/INV Zadávací podmínky staveb sdělovací a zabezpečovací techniky
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění některých zákonů
+Zákon č. 266/1994 Sb. o drahách
+Zákon č. 361/2000 Sb. o provozu na pozemních komunikacích a o změnách některých zákonů
+Zákon č. 185/2001 Sb. o odpadech a o změně některých dalších zákonů
+ZTP 01/1994 Základní technické požadavky - Dálkové ovládání zabezpečovacích zařízení
+ZTP 01/1999 Základní technické požadavky na Světelný indikátor pro ČD
+ZTP 01/2000 Základní technické požadavky na systém napájení zabezpečovacích zařízení z trakčního
+vedení
+ZTP 02/2000 Základní technické požadavky na PZM 2 uzamykatelné na místě
+ZTP 03/2000 Základní technické požadavky na Výkolejky
+ZTP 04/2000 Základní technické požadavky na Výkolejky přenosné oboustranné
+ZTP 05/2000 Základní technické požadavky - Jednotné obslužné pracoviště - vydání IV
+ZTP 06/2000 Základní technické požadavky - Diagnostika železničních zabezpečovacích zařízení
+ZTP 01/2002 Základní technické požadavky - Technologický domek - objekt k použití u Českých drah
+TS 1/2006-Z Změny návěstí světelných návěstidel hlavních a samostatných a opakovacích předvěstí při
+poruchách jejich svícení Vydání I
+TS 2/2006-ZS Technické specifikace systémů, zařízení a výrobků. Dálkové ovládání zabezpečovacího
+zařízení. Druhé vydání
+TS 1/2007-Z Technické specifikace pro velkoplošné zobrazení na tratích vybavených dálkovým
+ovládáním zabezpečovacího zařízení. Druhé vydání
+TS 2/2007-Z Technické specifikace systémů, zařízení a výrobků. Diagnostika zabezpečovacích zařízení.
+Vydání I
+TS 3/2007-Z Technické specifikace systémů, zařízení a výrobků. Dálkově ovládaná zvuková signalizace
+pro nevidomé doplňující světelné přejezdové zabezpečovací zařízení. Vydání I
+TS 2/2008-ZSE Technické specifikace systémů, zařízení a výrobků. Dálková diagnostika technologických
+systémů železniční dopravní cesty. Druhé vydání
+TS 3/2008-Z Technické specifikace systémů, zařízení a výrobků. Zabezpečovací zařízení dle
+TNŽ 34 2620 Část 1. Neprofilové úseky u SZZ 3.kategorie. Vydání I
+TS 4/2008 Technické specifikace systémů, zařízení a výrobků. Diagnostika zabezpečovacích zařízení
+na tratích vybavených dálkovým ovládáním zabezpečovacích zařízení. Vydání I
+TS 6/2008-Z Technické specifikace systémů, zařízení a výrobků. Zabezpečovací zařízení dle
+TNŽ 34 2620 Část 2. Návěstění. Vydání I
+TS 11/2009-Z Technické specifikace systémů, zařízení a výrobků.
+Eliminace ztráty šuntu na staniční koleji. Vydání II
+TS 1/2010-Z Technické specifikace systémů, zařízení a výrobků.
+Automatické stavění vlakových cest. První vydání
+24
+TS 5/2010-Z Technické specifikace systémů, zařízení a výrobků. Návěstění jízdy na cílovou kolej podle
+rozhledových poměrů. Vydání I
+TS 1/2012-Z Technické specifikace systémů, zařízení a výrobků. Přenos kódu vlakového zabezpečovače
+na tratích bez automatického bloku. Vydání I
+nařízení Komise ES o přijetí společné bezpečnostní metody pro hodnocení a posuzování rizik
+č. 352/2009
+Rozhodnutí komise EU o technické specifikaci pro interoperabilitu týkající se subsystémů pro řízení a zabezpečení
+transevropského železničního systému – aktuálně platné a účinné rozhodnutí v platném
+a účinném znění (např. od 1.1.2013 Rozhodnutí komise 2012/88/EU ve znění Rozhodnutí
+komise 2012/696/EU)
+27.12.3 Související Kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 3 - Zemní práce
+Kapitola 8 - Konstrukce koleje a výhybek
+Kapitola 9 - Úrovňové přejezdy a přechody
+Kapitola 12 - Chráničky a kolektory
+Kapitola 19 - Ocelové mosty a konstrukce
+Kapitola 25 - Protikorozní ochrana úložných zařízení a konstrukcí
+Část A: Ochrana proti elektrochemické korozi a korozi bludnými proudy
+Část B: Ochrana ocelových konstrukcí proti atmosférické korozi
+Kapitola 26 - Osvětlení, rozvody nn včetně dálkového ovládání, EOV, stožárové transformovny VN/NN
+a kabelový rozvod pro EPZ
+Kapitola 31 - Trakční vedení
+Kapitola 32 - Zařízení trati a traťové značky
+Kapitola 33 - Elektromagnetická kompatibilita (EMC)
+25
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 27
+T ř e t í aktualizované vydání se zapracovanou změnou č. 8 /z roku 2013/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Ing. Lubomír Anton
+Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+Odborný gestor: Ing. Marcel Klega
+Správa železniční dopravní cesty, státní organizace
+Odbor automatizace a elektrotechniky
+Vydal: Správa železniční dopravní cesty, státní organizace
+Generální ředitelství
+Odbor automatizace a elektrotechniky
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+www.szdc.cz
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty - oddělení technické dokumentace
+772 58 Olomouc, Nerudova l
+tel.: +420 972 742 396, +420 972 741 769
+fax: +420 972 741 290
+e-mail: typdok@tudc.cz
+http://typdok.tudc.cz

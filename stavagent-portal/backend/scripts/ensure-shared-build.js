@@ -17,8 +17,14 @@ function run(command, args) {
     cwd: sharedDir,
     stdio: 'inherit',
     env: process.env,
-    shell: process.platform === 'win32'
+    shell: process.platform === 'win32',
+    timeout: 120_000 // 2 min max to prevent blocking Render deploy
   });
+
+  if (result.signal === 'SIGTERM') {
+    console.warn('[prepare:shared] Command timed out after 120s, continuing...');
+    return;
+  }
 
   if (result.status !== 0) {
     process.exit(result.status ?? 1);

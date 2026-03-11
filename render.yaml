@@ -1,0 +1,70 @@
+# STAVAGENT - Render Deployment Blueprint
+# Backend only - Frontend deployed on Vercel
+# https://render.com/docs/blueprint-spec
+
+services:
+  # Backend API (Node.js + Express)
+  - type: web
+    name: stavagent-portal-backend
+    env: node
+    plan: free
+    region: frankfurt
+    rootDir: stavagent-portal
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRY
+        value: 24h
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        value: noreply@stavagent.com
+      - key: CORE_API_URL
+        value: https://concrete-agent-3uxelthc4q-ey.a.run.app
+      - key: UPLOAD_DIR
+        value: /opt/render/project/src/backend/uploads
+      - key: EXPORT_DIR
+        value: /opt/render/project/src/backend/exports
+      - key: MAX_FILE_SIZE
+        value: 10485760
+      - key: CORS_ORIGIN
+        value: "*"
+      - key: RENDER
+        value: "true"
+      - key: DISABLE_AUTH
+        value: "true"
+
+  # Registry TOV Backend (Node.js + Express + PostgreSQL)
+  - type: web
+    name: rozpocet-registry-backend
+    env: node
+    plan: free
+    region: frankfurt
+    rootDir: rozpocet-registry-backend
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: false
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3002
+      - key: DATABASE_URL
+        sync: false

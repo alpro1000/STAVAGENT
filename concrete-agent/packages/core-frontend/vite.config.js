@@ -7,8 +7,9 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 10000,
     allowedHosts: [
-      'stav-agent.onrender.com',
-      '.onrender.com'
+      'stavagent-backend.vercel.app',
+      'www.stavagent.cz',
+      '.run.app'
     ]
   },
   server: {
@@ -16,7 +17,7 @@ export default defineConfig({
     port: 5173,
     proxy: {
       '/api': {
-        target: 'https://concrete-agent.onrender.com',
+        target: 'https://concrete-agent-3uxelthc4q-ey.a.run.app',
         changeOrigin: true,
       }
     }

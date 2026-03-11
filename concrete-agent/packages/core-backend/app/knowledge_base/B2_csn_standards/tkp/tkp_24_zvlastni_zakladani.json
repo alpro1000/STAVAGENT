@@ -1,0 +1,142 @@
+{
+  "_meta": {
+    "tkp": "24",
+    "title": "Zvláštní zakládání",
+    "title_en": "Special Foundations",
+    "year": 2003,
+    "month": "12",
+    "effective": "2003-12-31",
+    "publisher": "České dráhy (ČD), a.s. / Správa železnic (SŽ)",
+    "source_pdf": "TKP24_2003_12.pdf",
+    "extracted": "2026-02-25",
+    "scope": "Speciální zakládací metody: piloty, záporové pažení, mikropiloty, kotvy, injektáže, trysková injektáž, hloubené míchání."
+  },
+
+  "systemy_pokryte": [
+    "Piloty vrtané (ČSN EN 1536)",
+    "Piloty ražené (ČSN EN 12699)",
+    "Podzemní stěny — milánské (ČSN EN 1538)",
+    "Záporové pažení — štětovnice (ČSN EN 12063)",
+    "Kotvy (ČSN EN 1537)",
+    "Mikropiloty (EN 14199)",
+    "Hřebíkování zemin (EN 14490)",
+    "Injektáže — zemní a horninové (ČSN EN 12715)",
+    "Tryskové injektáže / Jet grouting (ČSN EN 12716)",
+    "Hloubené míchání — vápno-cementové sloupky (EN 14679)"
+  ],
+
+  "piloty_vrtane": {
+    "norma": "ČSN EN 1536",
+    "lhuty_pred_betonazi": {
+      "suchý_vrt_bez_pazenı_hod_max": 36,
+      "pazenı_ocelovou_paznici_hod_max": 72,
+      "vrt_s_pažicı_suspenzı_hod_max": 8,
+      "prekrocenı": "Nutno převrtat nebo rozšířit"
+    },
+    "betonaz": {
+      "metoda": "Betonáž pod vodou nebo suspenzí pomocí sypákové roury (tremie)",
+      "tremie_pod_betonem": "Vždy — roura musí být ponořena pod úroveň betonu",
+      "kontinuita": "Betonáž musí být nepřerušená",
+      "hlava_piloty": "Odstranit 0,4 m znehodnoceného betonu (kontaminace suspenzí)"
+    },
+    "zkouseni": {
+      "zkusebnı_kostky_per_pilota_velka": "1× pro piloty průměr ≥ 1 800 mm",
+      "zkuseny_vzdy_pri": "Pochybnostech o kvalitě",
+      "vodotesnost_per_m3": "1× per 600 m³",
+      "zpracovatelnost": "2× za směnu"
+    },
+    "integrita_piloty": {
+      "metody": ["PIT (impulzní zkouška)", "SIT", "Ultrazvuk", "Dynamická zkouška (high-strain)"],
+      "povinne_pro": "Piloty na mostních stavbách — každá pilota"
+    }
+  },
+
+  "piloty_razene": {
+    "norma": "ČSN EN 12699",
+    "min_vzdalenost_bez_doczasne_paznice": "6 × průměr piloty (dokud beton nedozraje)",
+    "min_kryt_vyztuze_mm": 30,
+    "min_kryt_agresivni_prostredi_XA3_mm": 50,
+    "monitoring_razeni": "Sledovat penetraci za posledních 10 úderů (dokumentovat)"
+  },
+
+  "mikropiloty": {
+    "norma": "EN 14199",
+    "max_prumer_mm": 300,
+    "typicke_rozmery_mm": ["70/12", "89/10", "108/16"],
+    "voda_cement_pomer": {
+      "cementova_suspenze_max": 0.4,
+      "cementova_malta_max": 0.6
+    },
+    "max_zrno_kameniva_mm": 8,
+    "max_frakce_mm": 4
+  },
+
+  "podzemni_steny_milanske": {
+    "norma": "ČSN EN 1538",
+    "min_prumer_vyztuze_svisla_mm": 12,
+    "min_pocet_prutu_na_1m_steny": "3 pruty na každou stranu",
+    "vyztuznı_kos": "Jeden prostorový celek, osazení před betonáží",
+    "vodotesnost": "Nulové mokré skvrny nebo průsak (pokud projekt nestanoví jinak)",
+    "max_prusakovost": "Stanovena projektem [l/m²/24 h]"
+  },
+
+  "kotvy": {
+    "norma": "ČSN EN 1537",
+    "min_pocet_zkusek": 3,
+    "typy_zkousek": {
+      "typova_zkouska": "Nové podmínky — stanovení max. zatížení",
+      "prikazova_zkouska": "Min. 3 kusy, identické podmínky — ověření meze kluzu a ztráty zatížení"
+    }
+  },
+
+  "injektaze_zemni_horninska": {
+    "norma_zemina": "ČSN EN 12715",
+    "norma_tryskova": "ČSN EN 12716",
+    "kontrolni_vrty": {
+      "min_pct_z_celkove_delky": 7,
+      "max_sekce_m": 5,
+      "metody_overeni": ["Tlakové zkoušky vodou (hornina)", "Změny rychlosti vrtání", "Přítok vody", "Zkoušky modulů na blocích 20×20×20 cm"]
+    },
+    "injektazni_suspenze_testovani": {
+      "hustota": "Hustoměr — každá dávka",
+      "separace_vody_max_pct": 1.0,
+      "frekvence_separace": "Nejméně 1× týdně",
+      "pevnost_v_tlaku_vzorky": "Válce ø 50 mm × 100 mm, 28 dní při 10–25 °C",
+      "archivace_dni": 28
+    }
+  },
+
+  "hluboke_michani": {
+    "norma": "EN 14679",
+    "metody": ["Suchá metoda (lime/cement prášek)", "Mokrá metoda (cement. suspenze)"],
+    "pomer_pevnosti_lab_vs_in_situ": "0.2 až 1.0 (laboratorní / in-situ)"
+  },
+
+  "zatezovaci_zkousky": {
+    "piloty_staticke": {
+      "norma": "ČSN EN 1536 §9.3 nebo EN 12699",
+      "typicke_zkousky": ["Statická zatěžovací zkouška", "Dynamická zkouška (high-strain)"]
+    },
+    "kotvy": {
+      "min_zkusebni_kusy": 3,
+      "podminky": "Identické — stejný postup, materiál, podmínky"
+    }
+  },
+
+  "geotechnicky_monitoring": {
+    "merena_veliciny": [
+      "Napětí na rozhraní zemina/konstrukce",
+      "Svislé deformace (sedání)",
+      "Vodorovné deformace (roznos, seizmické vlivy)",
+      "Hladiny podzemní vody a pórové tlaky",
+      "Deformace geosyntetik",
+      "Vibrace (pokud relevantní)"
+    ]
+  },
+
+  "hrebiky_zeme": {
+    "norma": "EN 14490",
+    "metody_instalace": ["Přímá (dynamické zatlačení, vibrace, vystřelení)", "S injektáží (vrt + injektáž)"],
+    "odvodneni": "Odvrtávané drenáže — průměr, úhel, délka, strojní vybavení specifikovat"
+  }
+}

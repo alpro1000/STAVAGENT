@@ -4,13 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>URS Matcher Kiosk</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/logo.svg">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
   <div id="root" class="app-container">
     <header class="app-header">
+      <div class="header-controls">
+        <!-- Theme Toggle Button -->
+        <button id="themeToggle" class="c-theme-toggle" aria-label="Toggle theme">
+          <span id="themeIcon">🌙</span>
+          <span id="themeText">Tmavý režim</span>
+        </button>
+
+        <!-- Model Selector -->
+        <div class="model-selector" id="modelSelector">
+          <label for="modelSelect" class="model-label">🤖 Model:</label>
+          <select id="modelSelect" class="model-select">
+            <option value="">Načítám...</option>
+          </select>
+          <span id="modelStatus" class="model-status"></span>
+        </div>
+      </div>
+
       <div class="header-content">
-        <h1>🏗️ URS Matcher Kiosk</h1>
+        <h1>URS Matcher Kiosk</h1>
         <p class="subtitle">Automatické vyhledání pozic v katalogu ÚRS</p>
       </div>
     </header>
@@ -33,14 +51,48 @@
                 <span class="upload-text">Klikněte nebo táhněte soubor sem</span>
               </div>
 
-              <textarea id="projectContextInput" placeholder='Kontext projektu (volitelné, JSON formát):&#10;{"building_type":"bytový dům","storeys":4,"main_system":["Porotherm","ŽB"]}' rows="3"></textarea>
+              <!-- Processing Mode Selection -->
+              <div class="processing-mode-selector">
+                <h4 style="margin: 1rem 0 0.5rem; font-size: 0.9rem; color: var(--text-muted);">Režim zpracování:</h4>
+
+                <label class="mode-option">
+                  <input type="radio" name="processingMode" id="fastModeRadio" value="fast" checked>
+                  <span class="mode-card">
+                    <span class="mode-header">
+                      <span class="mode-icon">⚡</span>
+                      <strong>Rychlý režim</strong>
+                      <span class="mode-timing">~2-3 min</span>
+                    </span>
+                    <span class="mode-description">
+                      Optimalizovaný pipeline pro běžné BOQ listy
+                      <br>• Gemini AI + Lokální databáze + Perplexity
+                      <br>• Doporučeno pro většinu souborů
+                    </span>
+                  </span>
+                </label>
+
+                <label class="mode-option">
+                  <input type="radio" name="processingMode" id="advancedModeRadio" value="advanced">
+                  <span class="mode-card">
+                    <span class="mode-header">
+                      <span class="mode-icon">🧠</span>
+                      <strong>Rozšířený režim</strong>
+                      <span class="mode-timing">~5-10 min</span>
+                    </span>
+                    <span class="mode-description">
+                      Multi-Role AI validace (6 expertních rolí)
+                      <br>• Hluboká analýza + ČSN kontrola
+                      <br>• Pro složité TZ, dokumentaci, nestandartní formáty
+                    </span>
+                  </span>
+                </label>
+              </div>
 
               <div class="action-buttons">
                 <button class="btn btn-primary" id="processFileBtn" disabled>
                   📊 Zpracovat soubor
                 </button>
               </div>
-              <p class="action-hint">💡 Vyplňte kontext projektu pro rozšířenou analýzu s multi-role validací</p>
             </div>
 
             <!-- Text Input -->
@@ -71,6 +123,17 @@
                 📄 Nahrát Dokumenty
               </button>
             </div>
+
+            <!-- Batch Mode (NEW) -->
+            <div class="action-card">
+              <div class="action-icon">📋</div>
+              <h3>Dávkové zpracování</h3>
+              <p>Seznam pozic → automatické vyhledání ÚRS kódů</p>
+
+              <button class="btn btn-primary" id="openBatchBtn">
+                📋 Dávkový režim
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -83,6 +146,106 @@
       <!-- Context Editor Section (Phase 2) -->
       <div id="contextEditorSection" class="section hidden">
         <div id="contextEditorContainer"></div>
+      </div>
+
+      <!-- Batch Mode Section (NEW) -->
+      <div id="batchSection" class="section hidden">
+        <div class="section-content">
+          <div class="results-header">
+            <h2>📋 Dávkové zpracování</h2>
+            <button class="btn btn-secondary" id="backFromBatchBtn">← Zpět</button>
+          </div>
+
+          <!-- Input Area -->
+          <div class="batch-input-area">
+            <h3>Vstup</h3>
+            <textarea id="batchTextInput" placeholder="Vložte seznam pozic (každá na novém řádku):&#10;Výkop stavební jámy kat. 3&#10;Beton C 25/30 vč. doprava&#10;Výztuž B 500" rows="10"></textarea>
+
+            <!-- Settings -->
+            <div class="batch-settings">
+              <h4>Nastavení</h4>
+              <div class="settings-grid">
+                <label>
+                  Kandidátů na práci:
+                  <select id="batchCandidatesPerWork">
+                    <option value="3">3</option>
+                    <option value="4" selected>4</option>
+                    <option value="5">5</option>
+                  </select>
+                </label>
+                <label>
+                  Hloubka hledání:
+                  <select id="batchSearchDepth">
+                    <option value="quick">Rychlá</option>
+                    <option value="normal" selected>Normální</option>
+                    <option value="deep">Hluboká</option>
+                  </select>
+                </label>
+                <label>
+                  Katalog:
+                  <select id="batchCatalog">
+                    <option value="urs" selected>ÚRS (online)</option>
+                    <option value="otskp">OTSKP (lokální)</option>
+                    <option value="both">Oba katalogy</option>
+                  </select>
+                </label>
+              </div>
+            </div>
+
+            <div class="batch-actions">
+              <button class="btn btn-primary" id="batchStartBtn">
+                🚀 Spustit zpracování
+              </button>
+              <button class="btn btn-secondary" id="batchPauseBtn" disabled>
+                ⏸️ Pozastavit
+              </button>
+            </div>
+          </div>
+
+          <!-- Progress Area -->
+          <div class="batch-progress" id="batchProgressArea" style="display: none;">
+            <h3>Průběh zpracování</h3>
+            <div class="progress-bar-container">
+              <div class="progress-bar" id="batchProgressBar" style="width: 0%;"></div>
+            </div>
+            <p class="progress-text" id="batchProgressText">0 / 0 (0%)</p>
+            <p class="progress-details">
+              <span id="batchNeedsReview">⚠️ Kontrola: 0</span> |
+              <span id="batchErrors">❌ Chyby: 0</span>
+            </p>
+          </div>
+
+          <!-- Results Table -->
+          <div class="batch-results" id="batchResultsArea" style="display: none;">
+            <h3>Výsledky</h3>
+            <div class="table-wrapper">
+              <table class="results-table" id="batchResultsTable">
+                <thead>
+                  <tr>
+                    <th>№</th>
+                    <th>Původní text</th>
+                    <th>TSKP Sekce</th>
+                    <th>Typ</th>
+                    <th>Kód</th>
+                    <th>Název</th>
+                    <th>Skóre</th>
+                    <th>Jistota</th>
+                    <th>Kontrola</th>
+                  </tr>
+                </thead>
+                <tbody id="batchResultsBody">
+                  <!-- Results will be inserted here -->
+                </tbody>
+              </table>
+            </div>
+
+            <div class="results-actions">
+              <button class="btn btn-success" id="batchExportBtn">
+                📥 Stáhnout Excel
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Results Section -->
@@ -103,6 +266,9 @@
             </button>
             <button class="btn btn-secondary" id="copyBtn">
               📋 Kopírovat do schránky
+            </button>
+            <button class="btn btn-primary" id="exportToRegistryBtn">
+              📤 Export do Registry
             </button>
           </div>
         </div>
@@ -184,5 +350,6 @@
   </div>
 
   <script src="/app.js"></script>
+  <script src="/batch.js"></script>
 </body>
 </html>

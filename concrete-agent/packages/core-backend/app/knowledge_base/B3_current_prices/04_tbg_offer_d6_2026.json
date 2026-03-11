@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "supplier": "TBG SEVEROZÁPADNÍ ČECHY s.r.o.",
+    "buyer": "BERGER BOHEMIA a.s.",
+    "offer_number": "KV/Št/2026/020",
+    "stavba": "D6 Karlovy Vary – Olšová Vrata",
+    "transport_zone": 2,
+    "valid_to": "2027-12-31",
+    "currency": "CZK",
+    "vat_rate": 0.21,
+    "payment_days": 45
+  },
+  "concrete": [
+    {
+      "spec": "C8/10 X0 S3 Dmax16",
+      "price_wo_transport": 2635,
+      "fco_stavba": 3035
+    },
+    {
+      "spec": "C12/15 X0 S3 Dmax16",
+      "price_wo_transport": 2775,
+      "fco_stavba": 3175
+    },
+    {
+      "spec": "C16/20 X0 S3 Dmax16",
+      "price_wo_transport": 2885,
+      "fco_stavba": 3285
+    },
+    {
+      "spec": "C20/25 X0 S3 Dmax16",
+      "price_wo_transport": 3045,
+      "fco_stavba": 3445
+    },
+    {
+      "spec": "C25/30 X0 S3 Dmax16",
+      "price_wo_transport": 3225,
+      "fco_stavba": 3625
+    },
+    {
+      "spec": "C25/30 XA1 S3-4 Dmax16",
+      "price_wo_transport": 3400,
+      "fco_stavba": 3800
+    },
+    {
+      "spec": "C25/30 XF1,XA2 S3-4 Dmax16",
+      "price_wo_transport": 3500,
+      "fco_stavba": 3900
+    },
+    {
+      "spec": "C25/30 XC2,XF2-3,XA1-2 TKP18 S3-4 Dmax16",
+      "price_wo_transport": 3600,
+      "fco_stavba": 4000
+    },
+    {
+      "spec": "C30/37 XA2 S3-4 Dmax16",
+      "price_wo_transport": 3700,
+      "fco_stavba": 4100
+    },
+    {
+      "spec": "C30/37 XA3,XF2-4,XD3 TKP18 S3-4 Dmax16/22",
+      "price_wo_transport": 3840,
+      "fco_stavba": 4240
+    },
+    {
+      "spec": "C35/45 XF2-4 S3-4 Dmax16/22",
+      "price_wo_transport": 4560,
+      "fco_stavba": 4960
+    },
+    {
+      "spec": "CB I S2 Dmax16",
+      "price_wo_transport": 3840,
+      "fco_stavba": 4240
+    },
+    {
+      "spec": "CB II S2 Dmax16",
+      "price_wo_transport": 3760,
+      "fco_stavba": 4160
+    },
+    {
+      "spec": "MCB S1 Dmax22",
+      "price_wo_transport": 2300,
+      "fco_stavba": null
+    },
+    {
+      "spec": "SC C8/10 (KSC I) S1 Dmax22",
+      "price_wo_transport": 2200,
+      "fco_stavba": null
+    },
+    {
+      "spec": "C16/20n XF1 S1/2 Dmax16",
+      "price_wo_transport": 2800,
+      "fco_stavba": null
+    },
+    {
+      "spec": "C20/25n XF3 S1/2 Dmax16",
+      "price_wo_transport": 2970,
+      "fco_stavba": null
+    }
+  ],
+  "transport": {
+    "zone": 2,
+    "price_per_m3_over_6m3": 400,
+    "min_6m3_charge_per_mix": 2400,
+    "free_unloading_min": 30,
+    "waiting_per_15min": 330
+  }
+}

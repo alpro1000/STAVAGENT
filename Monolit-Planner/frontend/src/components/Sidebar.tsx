@@ -1,34 +1,109 @@
 /**
- * Sidebar component - Collapsible with Modern Animations
+ * Sidebar component - Collapsible with Resizable Width
  * Features:
  * - Smooth collapse/expand with cubic-bezier easing
  * - Hover tooltips for collapsed state
  * - Enhanced visual feedback
  * - Keyboard shortcut: Ctrl+B / Cmd+B
+ * - Resizable width by dragging the right edge
  */
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import HistoryModal from './HistoryModal';
 import DeleteBridgeModal from './DeleteBridgeModal';
+import DeleteProjectModal from './DeleteProjectModal';
+import RenameProjectModal from './RenameProjectModal';
+import CreateMonolithForm from './CreateMonolithForm';
 
 interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
 
+const MIN_WIDTH = 180;
+const MAX_WIDTH = 400;
+const DEFAULT_WIDTH = 240;
+const STORAGE_KEY = 'monolit-sidebar-width';
+
 export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
   const { selectedBridge, setSelectedBridge, bridges, showOnlyRFI, setShowOnlyRFI } = useAppContext();
-  const { completeBridge, deleteBridge, isLoading } = useBridges();
+  const { completeBridge, deleteBridge, deleteProject, renameProject, bulkDelete, refetch: refetchBridges, isLoading } = useBridges();
   const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [hoveredBridgeId, setHoveredBridgeId] = useState<string | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'completed'>('active');
   const [bridgeToDelete, setBridgeToDelete] = useState<typeof bridges[0] | null>(null);
+  const [projectToDelete, setProjectToDelete] = useState<{ name: string; count: number } | null>(null);
+  const [projectToRename, setProjectToRename] = useState<string | null>(null);
+  const [showAddObjectModal, setShowAddObjectModal] = useState(false);
+  const [selectedProjectForAdd, setSelectedProjectForAdd] = useState<string | null>(null);
+  // Multi-select state
+  const [selectedObjects, setSelectedObjects] = useState<Set<string>>(new Set());
+
+  // Resize state
+  const sidebarRef = useRef<HTMLElement>(null);
+  const [isResizing, setIsResizing] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(() => {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        const parsed = parseInt(saved, 10);
+        // Validate: must be a number within bounds
+        if (!isNaN(parsed) && parsed >= MIN_WIDTH && parsed <= MAX_WIDTH) {
+          return parsed;
+        }
+      }
+    } catch {
+      // localStorage unavailable (e.g., private browsing)
+    }
+    return DEFAULT_WIDTH;
+  });
 
   const bridgeCount = bridges.length;
+
+  // Resize handlers
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+  }, []);
+
+  const handleMouseMove = useCallback((e: MouseEvent) => {
+    if (!isResizing || !sidebarRef.current) return;
+
+    const newWidth = e.clientX;
+    if (newWidth >= MIN_WIDTH && newWidth <= MAX_WIDTH) {
+      setSidebarWidth(newWidth);
+      try {
+        localStorage.setItem(STORAGE_KEY, String(newWidth));
+      } catch {
+        // localStorage unavailable - width won't persist but UI still works
+      }
+    }
+  }, [isResizing]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsResizing(false);
+  }, []);
+
+  // Global mouse event listeners for resize
+  useEffect(() => {
+    if (isResizing) {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = 'col-resize';
+      document.body.style.userSelect = 'none';
+    }
+
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseup', handleMouseUp);
+      document.body.style.cursor = '';
+      document.body.style.userSelect = '';
+    };
+  }, [isResizing, handleMouseMove, handleMouseUp]);
 
   const handleBridgeHover = (bridgeId: string, e: React.MouseEvent<HTMLLIElement>) => {
     if (!isOpen) {
@@ -107,9 +182,136 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       if (selectedBridge === bridgeToDelete.bridge_id) {
         setSelectedBridge(null);
       }
+
+      // Refetch bridges to update sidebar immediately
+      await refetchBridges();
+
     } catch (error) {
       console.error('Failed to delete bridge:', error);
-      alert('Chyba při mazání mostu');
+      alert('Chyba při mazání objektu');
+    }
+  };
+
+  // Handle project delete click (open modal)
+  const handleDeleteProjectClick = (e: React.MouseEvent, projectName: string, objectCount: number) => {
+    e.stopPropagation();
+    setProjectToDelete({ name: projectName, count: objectCount });
+  };
+
+  // Confirm project delete (called from modal)
+  const confirmDeleteProject = async () => {
+    if (!projectToDelete) return;
+
+    try {
+      const result = await deleteProject(projectToDelete.name);
+      setProjectToDelete(null);
+
+      // Clear selection if the selected bridge was in the deleted project
+      if (selectedBridge) {
+        const deletedIds = result.deleted_ids || [];
+        if (deletedIds.includes(selectedBridge)) {
+          setSelectedBridge(null);
+        }
+      }
+
+      // Refetch bridges to update sidebar immediately
+      await refetchBridges();
+
+    } catch (error) {
+      console.error('Failed to delete project:', error);
+      alert('Chyba při mazání projektu');
+    }
+  };
+
+  // Handle "Add Object to Project" click
+  const handleAddObjectClick = (e: React.MouseEvent, projectName: string) => {
+    e.stopPropagation();
+    setSelectedProjectForAdd(projectName);
+    setShowAddObjectModal(true);
+  };
+
+  // Handle object creation success
+  const handleObjectCreated = async (bridgeId: string) => {
+    setShowAddObjectModal(false);
+    setSelectedProjectForAdd(null);
+
+    // Refetch bridges to update sidebar
+    await refetchBridges();
+
+    // Select the new bridge
+    setSelectedBridge(bridgeId);
+  };
+
+  // Handle project rename
+  const handleRenameClick = (e: React.MouseEvent, projectName: string) => {
+    e.stopPropagation();
+    setProjectToRename(projectName);
+  };
+
+  const confirmRename = async (newName: string) => {
+    if (!projectToRename) return;
+    try {
+      await renameProject(projectToRename, newName);
+      setProjectToRename(null);
+      await refetchBridges();
+    } catch (error) {
+      console.error('Failed to rename project:', error);
+      alert('Chyba při přejmenování projektu');
+    }
+  };
+
+  // Multi-select toggle for a single object
+  const toggleObjectSelection = (bridgeId: string) => {
+    setSelectedObjects(prev => {
+      const next = new Set(prev);
+      if (next.has(bridgeId)) {
+        next.delete(bridgeId);
+      } else {
+        next.add(bridgeId);
+      }
+      return next;
+    });
+  };
+
+  // Select/deselect all objects in a project
+  const toggleSelectAllInProject = (projectBridges: typeof bridges) => {
+    const ids = projectBridges.map(b => b.bridge_id);
+    const allSelected = ids.every(id => selectedObjects.has(id));
+
+    setSelectedObjects(prev => {
+      const next = new Set(prev);
+      if (allSelected) {
+        ids.forEach(id => next.delete(id));
+      } else {
+        ids.forEach(id => next.add(id));
+      }
+      return next;
+    });
+  };
+
+  // Bulk delete selected objects
+  const handleBulkDelete = async () => {
+    if (selectedObjects.size === 0) return;
+
+    const confirmed = window.confirm(
+      `Smazat ${selectedObjects.size} ${selectedObjects.size === 1 ? 'objekt' : selectedObjects.size < 5 ? 'objekty' : 'objektů'}?\n\nTuto akci nelze vrátit!`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await bulkDelete(Array.from(selectedObjects));
+
+      // Clear selection for deleted bridges
+      if (selectedBridge && selectedObjects.has(selectedBridge)) {
+        setSelectedBridge(null);
+      }
+
+      setSelectedObjects(new Set());
+      await refetchBridges();
+    } catch (error) {
+      console.error('Failed to bulk delete:', error);
+      alert('Chyba při mazání objektů');
     }
   };
 
@@ -124,20 +326,87 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
     setExpandedProjects(newExpanded);
   };
 
-  // Expand all projects by default on first load
+  // Expand all projects by default, including NEW projects after import
   useEffect(() => {
     const projectNames = Object.keys(bridgesByProject);
-    if (expandedProjects.size === 0 && projectNames.length > 0) {
-      setExpandedProjects(new Set(projectNames));
+    if (projectNames.length > 0) {
+      // Find projects that aren't expanded yet (new projects from import)
+      const newProjects = projectNames.filter(name => !expandedProjects.has(name));
+
+      if (newProjects.length > 0 || expandedProjects.size === 0) {
+        // Add new projects to expanded set (keep existing expanded state)
+        setExpandedProjects(prev => {
+          const updated = new Set(prev);
+          projectNames.forEach(name => updated.add(name));
+          return updated;
+        });
+      }
     }
   }, [bridges, statusFilter]); // Зависимость от bridges и statusFilter, не от bridgesByProject!
 
   return (
-    <aside className={`sidebar ${isOpen ? 'open' : 'collapsed'}`}>
+    <aside
+      ref={sidebarRef}
+      className={`c-panel sidebar ${isOpen ? 'open' : 'collapsed'}`}
+      style={{
+        borderRadius: 0,
+        padding: 0,
+        borderTop: 'none',
+        width: isOpen ? `${sidebarWidth}px` : '70px',
+        transition: isResizing ? 'none' : 'width 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        position: 'relative',
+        minWidth: isOpen ? `${MIN_WIDTH}px` : undefined,
+        maxWidth: isOpen ? `${MAX_WIDTH}px` : undefined,
+      }}
+    >
+      {/* Resize Handle */}
+      {isOpen && (
+        <div
+          className="sidebar-resize-handle"
+          onMouseDown={handleMouseDown}
+          style={{
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            width: '6px',
+            height: '100%',
+            cursor: 'col-resize',
+            background: isResizing ? 'var(--accent-orange)' : 'transparent',
+            transition: 'background 0.2s ease',
+            zIndex: 20,
+          }}
+          onMouseEnter={(e) => {
+            if (!isResizing) {
+              (e.target as HTMLElement).style.background = 'var(--border-default)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isResizing) {
+              (e.target as HTMLElement).style.background = 'transparent';
+            }
+          }}
+          title="Tažením změníte šířku"
+        />
+      )}
       <button
-        className="sidebar-toggle"
+        className="c-btn sidebar-toggle"
         onClick={onToggle}
-        title={isOpen ? 'Skrýt (Ctrl+B)' : `Zobrazit seznam (Ctrl+B) • ${bridgeCount} mostů`}
+        title={isOpen ? 'Skrýt (Ctrl+B)' : `Zobrazit seznam (Ctrl+B) • ${bridgeCount} objektů`}
+        style={{
+          position: 'absolute',
+          top: '10px',
+          right: '-2px',
+          zIndex: 30,
+          minHeight: '32px',
+          minWidth: '36px',
+          padding: '6px 12px',
+          background: 'var(--accent-orange)',
+          color: '#1a1a1a',
+          border: 'none',
+          borderRadius: '0 6px 6px 0',
+          boxShadow: '2px 2px 8px rgba(0, 0, 0, 0.2)',
+          fontWeight: 'bold'
+        }}
       >
         {isOpen ? '◀' : '▶'}
       </button>
@@ -146,37 +415,37 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
       {!isOpen && bridgeCount > 0 && (
         <div className="sidebar-collapsed-indicator">
           <div className="collapsed-icon">🏗️</div>
-          <div className="collapsed-badge">{bridgeCount}</div>
+          <div className="c-badge c-badge--orange">{bridgeCount}</div>
         </div>
       )}
 
       {isOpen && (
-        <div className="sidebar-content">
+        <div className="sidebar-content" style={{ padding: 'var(--space-md)', paddingRight: 'var(--space-lg)', overflowX: 'hidden', overflowY: 'auto' }}>
           <div className="sidebar-section">
-            <h3 className="sidebar-heading">
-              <span>🏗️</span> Mosty
+            <h3 className="c-section-title">
+              <span>🏗️</span> Objekty
             </h3>
 
             {/* Status Filter Tabs */}
-            <div className="status-filter-tabs">
+            <div className="c-tabs" style={{ marginBottom: 'var(--space-md)' }}>
               <button
-                className={`filter-tab ${statusFilter === 'active' ? 'active' : ''}`}
+                className={`c-tab ${statusFilter === 'active' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('active')}
-                title="Zobrazit aktivní mosty"
+                title="Zobrazit aktivní objekty"
               >
                 🚧 Aktivní
               </button>
               <button
-                className={`filter-tab ${statusFilter === 'completed' ? 'active' : ''}`}
+                className={`c-tab ${statusFilter === 'completed' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('completed')}
-                title="Zobrazit dokončené mosty"
+                title="Zobrazit dokončené objekty"
               >
-                ✅ Dokončené
+                ✅ Hotové
               </button>
               <button
-                className={`filter-tab ${statusFilter === 'all' ? 'active' : ''}`}
+                className={`c-tab ${statusFilter === 'all' ? 'is-active' : ''}`}
                 onClick={() => setStatusFilter('all')}
-                title="Zobrazit všechny mosty"
+                title="Zobrazit všechny objekty"
               >
                 📋 Vše
               </button>
@@ -184,18 +453,49 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
 
             {bridges.length === 0 ? (
               <div className="sidebar-empty">
-                <p>Žádné mosty.</p>
+                <p>Žádné objekty.</p>
                 <p className="text-muted">Vytvořte nový nebo nahrajte XLSX.</p>
               </div>
             ) : filteredBridges.length === 0 ? (
               <div className="sidebar-empty">
-                <p>Žádné mosty v této kategorii.</p>
+                <p>Žádné objekty v této kategorii.</p>
               </div>
             ) : (
+              <>
+              {/* Bulk actions bar */}
+              {selectedObjects.size > 0 && (
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: '8px',
+                  padding: '6px 8px', marginBottom: '8px',
+                  background: 'var(--bg-hover)', borderRadius: '6px',
+                  fontSize: '12px', color: 'var(--text-secondary)'
+                }}>
+                  <span>{selectedObjects.size} vybráno</span>
+                  <button
+                    className="c-btn c-btn--sm"
+                    onClick={handleBulkDelete}
+                    disabled={isLoading}
+                    style={{ marginLeft: 'auto', background: 'var(--danger)', color: '#fff', border: 'none', padding: '3px 8px', fontSize: '11px' }}
+                  >
+                    Smazat vybrané
+                  </button>
+                  <button
+                    className="c-btn c-btn--sm"
+                    onClick={() => setSelectedObjects(new Set())}
+                    style={{ padding: '3px 8px', fontSize: '11px' }}
+                  >
+                    Zrušit
+                  </button>
+                </div>
+              )}
+
               <div className="project-list">
                 {Object.entries(bridgesByProject).map(([projectName, projectBridges]) => {
                   const isExpanded = expandedProjects.has(projectName);
                   const bridgeCount = projectBridges.length;
+                  const projectIds = projectBridges.map(b => b.bridge_id);
+                  const allSelected = projectIds.length > 0 && projectIds.every(id => selectedObjects.has(id));
+                  const someSelected = projectIds.some(id => selectedObjects.has(id));
 
                   return (
                     <div key={projectName} className="project-group">
@@ -203,12 +503,49 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                       <div
                         className="project-header"
                         onClick={() => toggleProject(projectName)}
-                        title={`${projectName} (${bridgeCount} mostů)`}
+                        title={`${projectName} (${bridgeCount} objektů)`}
                       >
+                        {/* Select all checkbox for project */}
+                        <input
+                          type="checkbox"
+                          checked={allSelected}
+                          ref={(el) => { if (el) el.indeterminate = someSelected && !allSelected; }}
+                          onChange={(e) => { e.stopPropagation(); toggleSelectAllInProject(projectBridges); }}
+                          onClick={(e) => e.stopPropagation()}
+                          style={{ width: '14px', height: '14px', cursor: 'pointer', flexShrink: 0 }}
+                          title={allSelected ? 'Zrušit výběr všech' : 'Vybrat všechny objekty'}
+                        />
                         <span className="project-toggle">{isExpanded ? '▼' : '▶'}</span>
                         <span className="project-icon">📁</span>
-                        <span className="project-name">{projectName}</span>
+                        <span className="project-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 }}>{projectName}</span>
                         <span className="project-count">{bridgeCount}</span>
+                        <button
+                          className="bridge-action-btn"
+                          onClick={(e) => handleRenameClick(e, projectName)}
+                          title="Přejmenovat projekt"
+                          disabled={isLoading}
+                          style={{ marginLeft: '4px' }}
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          className="bridge-action-btn btn-add"
+                          onClick={(e) => handleAddObjectClick(e, projectName)}
+                          title="Přidat objekt do tohoto projektu"
+                          disabled={isLoading}
+                          style={{ marginLeft: '2px' }}
+                        >
+                          ➕
+                        </button>
+                        <button
+                          className="bridge-action-btn btn-delete"
+                          onClick={(e) => handleDeleteProjectClick(e, projectName, bridgeCount)}
+                          title="Smazat celý projekt"
+                          disabled={isLoading}
+                          style={{ marginLeft: '2px' }}
+                        >
+                          🗑️
+                        </button>
                       </div>
 
                       {/* Bridge List (shown when expanded) */}
@@ -223,9 +560,18 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                               onMouseLeave={() => setHoveredBridgeId(null)}
                               title={`${bridge.object_name || bridge.bridge_id} (${bridge.element_count} prvků)`}
                             >
-                              <div className="bridge-info">
-                                <span className="bridge-name">{bridge.object_name || bridge.bridge_id}</span>
-                                <span className="bridge-id">{bridge.bridge_id}</span>
+                              {/* Object checkbox */}
+                              <input
+                                type="checkbox"
+                                checked={selectedObjects.has(bridge.bridge_id)}
+                                onChange={() => toggleObjectSelection(bridge.bridge_id)}
+                                onClick={(e) => e.stopPropagation()}
+                                style={{ width: '14px', height: '14px', cursor: 'pointer', flexShrink: 0, marginRight: '4px' }}
+                                title="Vybrat objekt"
+                              />
+                              <div className="bridge-info" style={{ overflow: 'hidden' }}>
+                                <span className="bridge-name" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{bridge.object_name || bridge.bridge_id}</span>
+                                <span className="bridge-id" style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'block' }}>{bridge.bridge_id}</span>
                               </div>
                               <div className="bridge-actions">
                                 <span className="bridge-badge">{bridge.element_count}</span>
@@ -242,7 +588,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                                 <button
                                   className="bridge-action-btn btn-delete"
                                   onClick={(e) => handleDeleteClick(e, bridge)}
-                                  title="Smazat most"
+                                  title="Smazat objekt"
                                   disabled={isLoading}
                                 >
                                   🗑️
@@ -256,6 +602,7 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
                   );
                 })}
               </div>
+              </>
             )}
 
             {/* Hover Tooltip for Collapsed State */}
@@ -284,36 +631,70 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
             )}
           </div>
 
-          <div className="sidebar-section">
-            <h3 className="sidebar-heading">
+          <div className="sidebar-section u-mt-lg">
+            <h3 className="c-section-title">
               <span>🔍</span> Filtry
             </h3>
 
-            <label className="sidebar-checkbox" title="Zobrazit pouze řádky s problémy (varovná oznámení)">
+            <label className="u-flex u-gap-sm" style={{ cursor: 'pointer', alignItems: 'center' }} title="Zobrazit pouze řádky s problémy (varovná oznámení)">
               <input
                 type="checkbox"
                 checked={showOnlyRFI}
                 onChange={(e) => setShowOnlyRFI(e.target.checked)}
+                style={{ width: '18px', height: '18px' }}
               />
-              <span className="checkbox-label">⚠️ Jen problémy</span>
+              <span style={{ color: 'var(--text-secondary)' }}>⚠️ Jen problémy</span>
             </label>
           </div>
 
-          <div className="sidebar-section">
-            <h3 className="sidebar-heading">
+          <div className="sidebar-section u-mt-lg">
+            <h3 className="c-section-title">
+              <span>📊</span> Registry
+            </h3>
+            <button
+              className="c-btn c-btn--sm"
+              onClick={() => window.location.href = `/registry/${selectedBridge || 'all'}`}
+              disabled={!selectedBridge}
+              title={selectedBridge ? 'Zobrazit unified registry' : 'Nejprve vyberte objekt'}
+              style={{ width: '100%' }}
+            >
+              📋 Zobrazit pozice
+            </button>
+          </div>
+
+          <div className="sidebar-section u-mt-lg">
+            <h3 className="c-section-title">
+              <span>📐</span> Plánovač
+            </h3>
+            <button
+              className="c-btn c-btn--sm"
+              onClick={() => window.location.href = '/planner'}
+              style={{ width: '100%' }}
+              title="Plánování elementu: bednění, výztuž, betonáž, harmonogram"
+            >
+              📐 Plánovač elementu
+            </button>
+          </div>
+
+          <div className="sidebar-section u-mt-lg">
+            <h3 className="c-section-title">
               <span>🔧</span> Nástroje
             </h3>
-            <div className="sidebar-tools">
+            <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap' }}>
               <button
-                className="tool-button"
+                className="c-btn c-btn--sm"
                 onClick={() => setShowHistoryModal(true)}
                 disabled={!selectedBridge}
-                title={selectedBridge ? 'Zobrazit historii snapshots' : 'Nejprve vyberte most'}
+                title={selectedBridge ? 'Zobrazit historii snapshots' : 'Nejprve vyberte objekt'}
               >
                 📊 Historie
               </button>
-              <button className="tool-button" disabled title="Připravujeme">
-                ⚙️ Nastavení
+              <button
+                className="c-btn c-btn--sm"
+                onClick={() => window.location.href = '/tariffs'}
+                title="Správa tarifů dodavatelů (čerpadla, beton, bednění)"
+              >
+                💰 Tarify
               </button>
             </div>
           </div>
@@ -328,6 +709,34 @@ export default function Sidebar({ isOpen, onToggle }: SidebarProps) {
         onCancel={() => setBridgeToDelete(null)}
         isDeleting={isLoading}
       />
+      <DeleteProjectModal
+        projectName={projectToDelete?.name || null}
+        objectCount={projectToDelete?.count || 0}
+        isOpen={!!projectToDelete}
+        onConfirm={confirmDeleteProject}
+        onCancel={() => setProjectToDelete(null)}
+        isDeleting={isLoading}
+      />
+      <RenameProjectModal
+        projectName={projectToRename}
+        isOpen={!!projectToRename}
+        onConfirm={confirmRename}
+        onCancel={() => setProjectToRename(null)}
+        isRenaming={isLoading}
+      />
+
+      {/* Modal for adding object to project */}
+      {showAddObjectModal && selectedProjectForAdd && (
+        <div className="modal-overlay" onClick={() => setShowAddObjectModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <CreateMonolithForm
+              preselectedProject={selectedProjectForAdd}
+              onSuccess={handleObjectCreated}
+              onCancel={() => setShowAddObjectModal(false)}
+            />
+          </div>
+        </div>
+      )}
     </aside>
   );
 }

@@ -27,6 +27,7 @@ export interface Position {
   wage_czk_ph: number;            // Kč/hod
   shift_hours: number;            // Hod/den
   days: number;                   // den (koef 1)
+  curing_days?: number;           // Dny zrání betonu (only for subtype='beton')
 
   // OTSKP code (pricing catalog reference)
   otskp_code?: string;            // OTSKP code from catalog (e.g., "113472")
@@ -39,6 +40,9 @@ export interface Position {
   unit_cost_on_m3?: number;       // Kč/m³ (KEY METRIC!)
   kros_unit_czk?: number;         // KROS — JC práce
   kros_total_czk?: number;        // KROS celkem
+
+  // Portal PositionInstance link (for cross-kiosk write-back)
+  position_instance_id?: string;
 
   // Metadata
   has_rfi?: boolean;
@@ -89,6 +93,10 @@ export interface Bridge {
   status?: 'active' | 'completed' | 'archived';  // Bridge lifecycle status
   created_at?: string;
   updated_at?: string;
+
+  // Portal Integration (Phase 7)
+  portal_project_id?: string;     // UUID from stavagent-portal (links to unified project)
+  portal_linked_at?: string;      // ISO timestamp when linked to Portal
 }
 
 export interface MappingProfile {
@@ -317,4 +325,54 @@ export interface SheathingProjectConfig {
 
   created_at?: string;
   updated_at?: string;
+}
+
+/**
+ * FormworkCalculatorRow - One row in the Formwork Calculator
+ * Represents a formwork set for a specific construction element
+ */
+export interface FormworkCalculatorRow {
+  id: string;                       // Unique ID (uuid)
+  bridge_id: string;                // Project reference
+  construction_name: string;        // e.g., "Základ OP (sada: 1x základ / dilatace / LM)"
+  total_area_m2: number;            // Celkem [m²]
+  set_area_m2: number;              // Sada [m²] - area of one formwork set
+  num_tacts: number;                // Množství taktů [kus] (editable, default = ceil(total/set))
+  num_sets: number;                 // Množství sad [kus] (usually 1)
+
+  // Time
+  assembly_days_per_tact: number;   // Dny montáže na takt
+  disassembly_days_per_tact: number; // Dny demontáže na takt
+  days_per_tact: number;            // počet dní na takt (zřízení+odstranění)
+  formwork_term_days: number;       // termín bednění [den] (= taktů × dní_na_takt)
+
+  // Formwork system
+  system_name: string;              // Bednící systém (Frami Xlife, TRIO, Framax...)
+  system_height: string;            // Rozměry / Výška (h= 0.9 m, h= 1.50 m...)
+
+  // Rental pricing
+  rental_czk_per_m2_month: number;  // Měsíční nájem [Kč/m²]
+  monthly_rental_per_set: number;   // Měsíční nájem [sada] = set_m2 × Kč/m²
+  final_rental_czk: number;         // Konečný nájem = monthly × (termín / 30)
+
+  // KROS
+  kros_code?: string;               // Kód položky - KROS
+  kros_description?: string;        // Auto-generated KROS description
+
+  created_at?: string;
+  updated_at?: string;
+}
+
+/**
+ * FormworkSystem - Pre-defined formwork system from catalog
+ */
+export interface FormworkSystem {
+  name: string;                     // System name (e.g., "Frami Xlife")
+  manufacturer: string;             // DOKA, PERI, etc.
+  heights: string[];                // Available heights
+  rental_czk_m2_month: number;      // Typical rental price per m² (or per bm) per month
+  assembly_h_m2: number;            // Assembly labor norm (hours/m² or hours/bm when unit='bm')
+  disassembly_ratio: number;        // Disassembly as fraction of assembly (0.3-0.5)
+  description?: string;             // Notes
+  unit?: 'm2' | 'bm';              // Measurement unit: 'm2' (default) or 'bm' (linear meters, e.g. Římsové)
 }

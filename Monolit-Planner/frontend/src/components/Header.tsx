@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useAppContext } from '../context/AppContext';
 import { useBridges } from '../hooks/useBridges';
 import { useExports } from '../hooks/useExports';
-import { exportAPI, uploadAPI } from '../services/api';
+import { exportAPI, uploadAPI, API_URL } from '../services/api';
 import CreateMonolithForm from './CreateMonolithForm';
 import EditBridgeForm from './EditBridgeForm';
 import ExportHistory from './ExportHistory';
@@ -20,7 +20,7 @@ interface HeaderProps {
 }
 
 export default function Header({ isDark, toggleTheme }: HeaderProps) {
-  const { selectedBridge, setSelectedBridge, bridges } = useAppContext();
+  const { selectedBridge, setSelectedBridge, bridges, setBridges } = useAppContext();
   const { refetch: refetchBridges } = useBridges();
   const { saveXLSX, isSaving } = useExports();
   const queryClient = useQueryClient();
@@ -29,6 +29,7 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showExportHistory, setShowExportHistory] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isExportingToRegistry, setIsExportingToRegistry] = useState(false);
 
   const handleBridgeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedBridge(e.target.value || null);
@@ -46,25 +47,29 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     try {
       const result = await uploadAPI.uploadXLSX(file);
 
-      console.log('[Upload] Response:', result);
+      if (import.meta.env.DEV) console.log('[Upload] Response:', result);
 
-      // Refetch bridges after upload
+      // Calculate total positions from all imported bridges
+      const totalPositions = result.bridges?.reduce((sum: number, b: any) => sum + (b.positions_count || 0), 0) || 0;
+
+      // ✅ FIX: Force refetch to update sidebar
+      // Simple and reliable - let React Query handle the update
       await refetchBridges();
 
-      // ✅ AGGRESSIVE CACHE INVALIDATION
-      // Invalidate ALL caches to force complete refresh
-      await queryClient.refetchQueries({ queryKey: ['bridges'] });
-      queryClient.invalidateQueries({ queryKey: ['positions'] });
-
-      // Optional: Force refetch of positions if a bridge is selected
-      if (selectedBridge) {
-        console.log('[Upload] Refetching positions for bridge:', selectedBridge);
-        await queryClient.refetchQueries({
-          queryKey: ['positions', selectedBridge]
-        });
+      // Auto-select the first imported bridge
+      if (result.bridges?.length > 0) {
+        setSelectedBridge(result.bridges[0].bridge_id);
       }
 
-      alert(`✅ Import úspěšný! Nalezeno ${result.bridges.length} objektů s ${result.row_count} řádky.`);
+      // Invalidate positions cache
+      queryClient.invalidateQueries({ queryKey: ['positions'] });
+
+      alert(
+        `✅ Import úspěšný!\n\n` +
+        `Objektů: ${result.bridges?.length || 0}\n` +
+        `Pozic: ${totalPositions}\n\n` +
+        `Objekty jsou nyní viditelné v levém panelu.`
+      );
     } catch (error: any) {
       alert(`❌ Nahrání selhalo: ${error.message}`);
     } finally {
@@ -117,6 +122,43 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
     }
   };
 
+  const handleExportToRegistry = async () => {
+    if (!selectedBridge) {
+      alert('Nejdříve vyberte objekt');
+      return;
+    }
+
+    setIsExportingToRegistry(true);
+    try {
+      // Call backend endpoint which handles all the export logic
+      const response = await fetch(`${API_URL}/api/export-to-registry/${selectedBridge}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const text = await response.text();
+      let parsed: any = null;
+      try { parsed = JSON.parse(text); } catch { /* non-JSON body */ }
+
+      if (!response.ok) {
+        throw new Error(parsed?.error || `Export failed (${response.status})`);
+      }
+
+      const result = parsed;
+
+      // Open Registry in new tab
+      window.open(result.registry_url, '_blank');
+
+      alert(`✅ Export do Registry úspěšný!\n${result.positions_count} pozic s TOV daty a cenami`);
+
+    } catch (error: any) {
+      console.error('[Export to Registry] Error:', error);
+      alert(`❌ Export do Registry selhal: ${error.message}`);
+    } finally {
+      setIsExportingToRegistry(false);
+    }
+  };
+
   const handleCreateSuccess = async (bridge_id: string) => {
     setShowCreateForm(false);
 
@@ -150,112 +192,139 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
   };
 
   return (
-    <header className="header">
-      <div
-        className="header-logo"
-        onClick={handleLogoClick}
-        style={{ cursor: 'pointer' }}
-        title="Obnovit aplikaci (F5)"
-      >
-        <span className="header-icon">🏗️</span>
-        <h1>Monolit Planner</h1>
-      </div>
-
-      <div className="header-controls">
-        <button
-          className="btn-theme-toggle"
-          onClick={toggleTheme}
-          title={isDark ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
+    <header className="c-header">
+      <div className="c-container u-flex-between" style={{ maxWidth: 'none', width: '100%' }}>
+        <div
+          className="u-flex u-gap-md"
+          onClick={handleLogoClick}
+          style={{ cursor: 'pointer', alignItems: 'center' }}
+          title="Obnovit aplikaci (F5)"
         >
-          {isDark ? '☀️' : '🌙'}
-        </button>
+          <span style={{ fontSize: '28px' }}>🏗️</span>
+          <h1 className="c-header__title" style={{ fontSize: '20px' }}>Monolit Planner</h1>
+        </div>
 
-        <button
-          className="btn-create"
-          onClick={() => setShowCreateForm(true)}
-          title="Vytvořit nový objekt s prázdnými pozicemi"
-        >
-          ➕ Nový objekt
-        </button>
+        <div className="u-flex u-gap-sm" style={{ flexWrap: 'wrap', alignItems: 'center', gap: '6px' }}>
+          <button
+            className="c-btn"
+            onClick={toggleTheme}
+            title={isDark ? 'Přepnout na světlý režim' : 'Přepnout na tmavý režim'}
+            style={{ minWidth: '36px', padding: '6px' }}
+          >
+            {isDark ? '☀️' : '🌙'}
+          </button>
 
-        <select
-          className="bridge-selector"
-          value={selectedBridge || ''}
-          onChange={handleBridgeChange}
-        >
-          <option value="">Vyberte objekt...</option>
-          {bridges.map((bridge) => (
-            <option key={bridge.bridge_id} value={bridge.bridge_id}>
-              {bridge.object_name || bridge.bridge_id} - {bridge.bridge_id} ({bridge.element_count} prvků)
-            </option>
-          ))}
-        </select>
+          <button
+            className="c-btn c-btn--primary"
+            onClick={() => setShowCreateForm(true)}
+            title="Vytvořit nový objekt s prázdnými pozicemi"
+            style={{ padding: '6px 10px' }}
+          >
+            ➕ Nový objekt
+          </button>
 
-        <button
-          className="btn-secondary"
-          onClick={() => setShowEditForm(true)}
-          disabled={!selectedBridge}
-          title="Upravit název a metadata objektu"
-        >
-          ✏️ Upravit objekt
-        </button>
+          <select
+            className="c-select"
+            value={selectedBridge || ''}
+            onChange={handleBridgeChange}
+            style={{ minWidth: '150px', maxWidth: '250px', fontSize: '14px' }}
+          >
+            <option value="">Vyberte objekt...</option>
+            {bridges.map((bridge) => (
+              <option key={bridge.bridge_id} value={bridge.bridge_id}>
+                {bridge.object_name || bridge.bridge_id} - {bridge.bridge_id} ({bridge.element_count} prvků)
+              </option>
+            ))}
+          </select>
 
-        <button
-          className="btn-secondary"
-          onClick={handleUploadClick}
-          disabled={isUploading}
-          title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi objektů'}
-        >
-          {isUploading ? (
-            <>
-              <span className="upload-spinner"></span>
-              Načítání...
-            </>
-          ) : (
-            <>💾 Nahrát XLSX</>
-          )}
-        </button>
+          <button
+            className="c-btn"
+            onClick={() => setShowEditForm(true)}
+            disabled={!selectedBridge}
+            title="Upravit název a metadata objektu"
+            style={{ padding: '6px 8px' }}
+          >
+            ✏️ Upravit
+          </button>
 
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".xlsx,.xls"
-          style={{ display: 'none' }}
-          onChange={handleFileUpload}
-        />
+          <button
+            className="c-btn"
+            onClick={handleUploadClick}
+            disabled={isUploading}
+            title={isUploading ? 'Načítání souboru...' : 'Nahrát Excel soubor s pozicemi objektů'}
+            style={{ padding: '6px 10px' }}
+          >
+            {isUploading ? (
+              <>
+                <span className="upload-spinner"></span>
+                Načítání...
+              </>
+            ) : (
+              <>💾 Nahrát XLSX</>
+            )}
+          </button>
 
-        <button
-          className="btn-success"
-          onClick={handleExport}
-          disabled={!selectedBridge}
-          title="Exportovat aktuální pozice do Excel souboru"
-        >
-          📥 Export XLSX
-        </button>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".xlsx,.xls"
+            style={{ display: 'none' }}
+            onChange={handleFileUpload}
+          />
 
-        <button
-          className="btn-success"
-          onClick={handleSaveToServer}
-          disabled={!selectedBridge || isSaving}
-          title="Uložit export na server"
-        >
-          💾 {isSaving ? 'Ukládám...' : 'Uložit na server'}
-        </button>
+          <button
+            className="c-btn c-btn--success"
+            onClick={handleExport}
+            disabled={!selectedBridge}
+            title="Exportovat aktuální pozice do Excel souboru"
+            style={{ padding: '6px 8px' }}
+          >
+            📥 Export XLSX
+          </button>
 
-        <button
-          className="btn-secondary"
-          onClick={() => setShowExportHistory(true)}
-          title="Zobrazit historii exportů"
-        >
-          📋 Historie exportů
-        </button>
+          <button
+            className="c-btn"
+            onClick={handleExportToRegistry}
+            disabled={!selectedBridge || isExportingToRegistry}
+            title="Exportovat pozice do Rozpočet Registry"
+            style={{ padding: '6px 8px', background: 'var(--color-info, #3b82f6)' }}
+          >
+            {isExportingToRegistry ? '⏳ Exportuji...' : '📤 → Registry'}
+          </button>
 
+          <button
+            className="c-btn c-btn--success"
+            onClick={handleSaveToServer}
+            disabled={!selectedBridge || isSaving}
+            title="Uložit export na server"
+            style={{ padding: '6px 10px' }}
+          >
+            💾 {isSaving ? 'Ukládám...' : 'Uložit'}
+          </button>
+
+          <button
+            className="c-btn"
+            onClick={() => setShowExportHistory(true)}
+            title="Zobrazit historii exportů"
+            style={{ padding: '6px 8px' }}
+          >
+            📋 Historie
+          </button>
+
+        </div>
       </div>
 
       {/* Modal for Create Monolith Form */}
       {showCreateForm && (
-        <div className="modal-overlay" onClick={() => setShowCreateForm(false)}>
+        <div className="modal-overlay">
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowCreateForm(false)}
+              title="Zavřít"
+            >
+              ✕
+            </button>
             <CreateMonolithForm
               onSuccess={handleCreateSuccess}
               onCancel={() => setShowCreateForm(false)}
@@ -266,8 +335,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
       {/* Modal for Export History */}
       {showExportHistory && (
-        <div className="modal-overlay" onClick={() => setShowExportHistory(false)}>
+        <div className="modal-overlay">
           <div className="modal-content-large" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowExportHistory(false)}
+              title="Zavřít"
+            >
+              ✕
+            </button>
             <ExportHistory onClose={() => setShowExportHistory(false)} />
           </div>
         </div>
@@ -275,8 +351,15 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
 
       {/* Modal for Edit Bridge Form */}
       {showEditForm && selectedBridge && (
-        <div className="modal-overlay" onClick={() => setShowEditForm(false)}>
+        <div className="modal-overlay">
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button
+              className="modal-close-btn"
+              onClick={() => setShowEditForm(false)}
+              title="Zavřít"
+            >
+              ✕
+            </button>
             <EditBridgeForm
               bridge={bridges.find(b => b.bridge_id === selectedBridge)!}
               onSuccess={handleEditSuccess}
@@ -309,6 +392,37 @@ export default function Header({ isDark, toggleTheme }: HeaderProps) {
           to {
             transform: rotate(360deg);
           }
+        }
+
+        /* Modal close button (X) */
+        .modal-close-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          width: 32px;
+          height: 32px;
+          border: none;
+          background: var(--bg-tertiary);
+          color: var(--text-primary);
+          font-size: 20px;
+          line-height: 1;
+          cursor: pointer;
+          border-radius: 6px;
+          transition: all 0.2s ease;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .modal-close-btn:hover {
+          background: var(--color-error);
+          color: white;
+          transform: scale(1.1);
+        }
+
+        .modal-close-btn:active {
+          transform: scale(0.95);
         }
       `}</style>
     </header>

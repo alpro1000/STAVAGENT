@@ -17,7 +17,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x]
+        node-version: [20.x]
 
     steps:
       - name: 📥 Checkout repository
@@ -50,7 +50,7 @@ jobs:
 
           # LLM Configuration
           LLM_PROVIDER: claude
-          LLM_MODEL: claude-sonnet-4-5-20250929
+          LLM_MODEL: claude-sonnet-4-6
           LLM_TIMEOUT_MS: 30000
 
           # Server Configuration

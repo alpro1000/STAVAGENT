@@ -1,0 +1,722 @@
+Úroveň přístupu
+A
+Technické kvalitativní
+podmínky staveb státních
+drah
+Kapitola 2
+PŘÍPRAVA STAVENIŠTĚ
+Vydání: duben 2022
+Účinnost od 1. června 2022
+Nahrazení předchozího znění kapitoly:
+Datem účinnosti tohoto dokumentu se nahrazuje kapitola 2 – PŘÍPRAVA STAVENIŠTĚ chválená
+dne 18. 10. 2000, účinná od 1. 12. 2000.
+Schváleno pod čj. 23497/2022-SŽ-GŘ-O7
+Dne 26. dubna 2022
+Bc. Jiří Svoboda, MBA v. r.
+Generální ředitel
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. listopadu 2020
+Technické kvalitativní podmínky
+Kapitola 2 PŘÍPRAVA STAVENIŠTĚ
+Gestorský útvar: Správa železnic, státní organizace
+Generální ředitelství
+Odbor investiční (O7)
+Praha
+www.spravazeleznic.cz
+Gestor: Ing. Petr Fojta
+Vydání: duben 2022
+Náklad: vydáno pouze v elektronické podobě (PDF), formát (A4)
+© Správa železnic, státní organizace, rok 2022
+Tento dokument je duševním vlastnictvím státní organizace Správa železnic, na které se vztahuje zákon č. 121/2000 Sb.,
+o právu autorském, o právech souvisejících s právem autorským a o změně některých zákonů (autorský zákon), ve znění
+pozdějších předpisů. Státní organizace Správa železnic je v uvedené souvislosti rovněž vykonavatelem majetkových práv.
+Tento dokument smí fyzická osoba použít pouze pro svou osobní potřebu, právnická osoba pro svou vlastní vnitřní potřebu.
+Poskytování tohoto dokumentu nebo jeho části v jakékoliv formě nebo jakýmkoliv způsobem třetí osobě je bez svolení státní
+organizace Správa železnic zakázáno.
+2/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. června 2022
+OBSAH
+Strana
+SEZNAM ZKRATEK ................................................................................................................................... 5
+2.1 ÚVOD .......................................................................................................................................... 6
+2.1.1 Všeobecně ...................................................................................................................................6
+2.1.2 Rozsah prací a činností .................................................................................................................6
+2.1.2.1 Odstranění travin, křovin a nevhodných materiálů............................................................ 7
+2.1.2.2 Kácení stromů a odstranění pařezů ................................................................................ 7
+2.1.2.3 Odvodnění staveniště ................................................................................................... 8
+2.1.2.4 Dočasné oplocení ......................................................................................................... 8
+2.1.2.5 Protihluková opatření ................................................................................................... 8
+2.1.2.6 Odstranění stávajících objektů, demolice ........................................................................ 8
+2.1.2.7 Dočasné přejezdy, přechody, lávky, provizorní mosty, ochranné konstrukce a jiné
+pomocné konstrukce .................................................................................................... 9
+2.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ ............................................................................ 9
+2.2.1 Dočasné oplocení .........................................................................................................................9
+2.2.2 Protihluková opatření ...................................................................................................................9
+2.2.3 Dočasné přejezdy, přechody, lávky, provizorní mosty, ochranné konstrukce a jiné pomocné
+konstrukce ................................................................................................................................ 10
+2.3 TECHNOLOGICKÉ PŘEDPISY A POSTUPY ................................................................................ 10
+2.3.1 Odstranění travin, křovin a nevhodných materiálů ........................................................................ 10
+2.3.2 Kácení stromů a odstranění pařezů .............................................................................................. 10
+2.3.3 Dočasné oplocení ....................................................................................................................... 11
+2.3.4 Protihluková opatření ................................................................................................................. 11
+2.3.5 Odstranění stávajících objektů, demolice ..................................................................................... 11
+2.3.6 Trhací práce při přípravě staveniště ............................................................................................. 12
+2.3.7 Dočasné přejezdy, přechody, lávky, provizorní mosty, ochranné konstrukce ................................... 12
+2.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY ................................................................... 13
+2.4.1 Dočasné oplocení ....................................................................................................................... 13
+2.4.2 Protihluková opatření ................................................................................................................. 13
+2.4.3 Trhací práce při přípravě staveniště ............................................................................................. 13
+2.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY ....................................................................... 13
+2.5.1 Kontrolní zkoušky....................................................................................................................... 13
+2.5.2 Zeminy ..................................................................................................................................... 13
+2.5.3 Materiály s nebezpečnými vlastnostmi (kontaminované materiály) ................................................ 13
+2.5.3.1 Vzorkování a charakterizace kontaminovaného materiálu ................................................. 13
+2.5.3.2 Lokalizování a prostorové vymezení kontaminovaného materiálu ...................................... 14
+2.5.3.3 Azbest ....................................................................................................................... 14
+2.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY, ÚDRŽBA V ZÁRUČNÍ DOBĚ.............. 14
+2.6.1 Dočasné oplocení ....................................................................................................................... 14
+2.6.2 Protihluková opatření ................................................................................................................. 14
+2.6.3 Dočasné přejezdy, přechody, lávky, provizorní mosty a ochranné konstrukce ................................. 14
+2.6.4 Záruky, údržba v záruční době .................................................................................................... 15
+2.7 KLIMATICKÁ OMEZENÍ ............................................................................................................ 15
+2.7.1 Kácení stromů a odstranění pařezů .............................................................................................. 15
+2.7.2 Dočasné oplocení ....................................................................................................................... 15
+2.7.3 Protihluková opatření ................................................................................................................. 15
+2.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ ....................................................................................... 15
+2.8.1 Odstranění travin, křovin a nevhodných materiálů ........................................................................ 15
+2.8.2 Kácení stromů a odstranění pařezů .............................................................................................. 15
+2.8.3 Dočasné oplocení ....................................................................................................................... 16
+2.8.4 Protihluková opatření ................................................................................................................. 16
+2.8.5 Odstranění stávajících objektů, demolice ..................................................................................... 16
+2.8.6 Dočasné přejezdy, přechody, lávky, provizorní mosty, ochranné konstrukce a jiné pomocné
+konstrukce ................................................................................................................................ 16
+2.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ ........................................................ 16
+2.10 ŽIVOTNÍ PROSTŘEDÍ ............................................................................................................... 17
+2.10.1 Všeobecně ................................................................................................................................. 17
+2.10.2 Deponie, mezideponie a ukládání na skládky ................................................................................ 17
+2.10.3 Protihluková opatření ................................................................................................................. 17
+3/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. listopadu 2020
+2.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA ................................ 18
+2.11.1 Bezpečnost práce a technických zařízení ...................................................................................... 18
+2.11.2 Požární ochrana ......................................................................................................................... 18
+2.12 CITOVANÉ A SOUVISEJÍCÍ DOKUMENTY ................................................................................ 18
+4/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. června 2022
+SEZNAM ZKRATEK
+Níže uvedený seznam obsahuje zkratky a značky použité v tomto dokumentu. V seznamu se
+neuvádějí legislativní zkratky, zkratky a značky obecně známé, zavedené právními předpisy,
+uvedené v obrázcích, příkladech nebo tabulkách.
+DLHM Dlouhodobý hmotný majetek
+OTP Obecné technické podmínky
+SŽ Správa železnic, státní organizace
+TKP Technické kvalitativní podmínky staveb státních drah
+ZTP Zvláštní technické podmínky
+5/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. listopadu 2020
+2.1 ÚVOD
+2.1.1 VŠEOBECNĚ
+(1) Pro tuto Kapitolu 2 – Příprava staveniště (dále jen „kapitola“) platí všechny pojmy,
+ustanovení, požadavky a údaje uvedené v Kapitole 1 – Všeobecně (dále jen „kapitola 1 TKP).
+Od roku 2021 jsou Technické kvalitativní podmínky (dále jen „TKP“) vydávány pouze
+elektronicky ve formátu *.PDF a jsou ke stažení na webových stánkách Správy železnic,
+státní organizace (dále jen „SŽ).
+(2) Tato kapitola se musí vykládat a chápat ve smyslu ustanovení, definic, pokynů a doporučení
+uvedených v kapitole 1 TKP. Použití této kapitoly je možné pouze společně s kapitolou 1 TKP.
+(3) Tato kapitola je zpracována s ohledem na požadavky právních předpisů, norem a vnitřních
+předpisů provozovatele dráhy s tím, že se některé jejich požadavky upřesňují a doplňují.
+(4) Tato kapitola navazuje na ČSN EN/ENV a ČSN, případně na jiné technické předpisy
+a dokumenty, na které jsou v jednotlivých ustanoveních této kapitoly příslušné odkazy a je
+zde stanovena jejich úplná nebo omezená závaznost pro definování požadavků na výrobky,
+materiály, provádění prací, zkoušení, technologické přepisy a postupy a převzetí výkonů
+a dodávek při přípravě Staveniště. Určuje povolené způsoby pro uvolnění a vyklizení ploch
+potřebných pro Stavbu, pro nezbytná zařízení a provoz Staveniště, včetně jejich ochrany
+před nepříznivými vlivy, a další činnosti související s přípravou Staveniště na stavbách
+státních drah.
+(5) V případech, kdy jsou požadovány jiné práce než práce obsažené v této kapitole, nebo
+je potřeba změnit nebo doplnit ustanovení této kapitoly, nebo se jedná o ojedinělé technické
+řešení, stanoví Objednatel podmínky ve Zvláštních technických podmínkách (dále
+jen „ZTP“).
+(6) Pokud jsou v textu této kapitoly odkazy na obecně závazné právní předpisy, normy
+nebo vnitřní předpisy provozovatele dráhy (dále jen „vnitřní předpisy“), pak se
+vztahují na platné znění příslušného dokumentu. Plné znění názvu je uvedeno
+v Příloze A kapitoly 1 TKP.
+2.1.2 ROZSAH PRACÍ A ČINNOSTÍ
+(1) Příprava Staveniště zahrnuje všechny práce a činnosti, které jsou nutné pro plynulé
+zhotovení Stavby. Výjimku tvoří přípravné práce a činnosti spojené například s vybudováním
+deponií, dočasných objektů zařízení Staveniště, přívodů energií, napojovacích a odběrových
+míst vody, energií, telefonu, kanalizace, apod. Tyto práce a činnosti zajišťuje Zhotovitel
+Stavby ve své režii, pokud nejsou obsaženy v Zadávací dokumentaci.
+(2) Při přípravě Staveniště je Zhotovitel především povinen:
+ zajistit odvedení povrchových a srážkových vod ze Staveniště,
+ zajistit opatření k zabránění kontaminace podzemních vod škodlivými látkami. Rozsah
+a způsob těchto prací stanoví Dokumentace nebo osoba vykonávající Stavební dozor,
+ dbát na to, aby nedošlo ke zhoršení fyzikálně mechanických vlastností zemin v místě
+trasy dráhy,
+ odstranit ze Staveniště nevhodné materiály, vzrostlou zeleň, porosty křovin a travin,
+ odstranit Stavbě překážející stávající objekty a provést nutné demoliční práce,
+ provést ostatní práce podle článků 2.1.2.1 - 2.1.2.7 této kapitoly,
+ oddělit Staveniště od veřejného prostoru vhodným oplocením, ochranným zábradlím
+nebo jinak, z důvodu zajištění bezpečnosti a ochrany majetku,
+ v předstihu, v rámci přípravy Staveniště, provést ty samostatné objekty, jejichž
+realizací by došlo ke zlepšení podmínek provozu Staveniště nebo ke snížení
+6/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. června 2022
+nepříznivých vlivů Stavby na její okolí (např. protihluková opatření a další), nebo
+zajistit snížení nepříznivých vlivů provizorním řešením po dobu Stavby,
+ organizovat a uskutečňovat přípravné práce tak, aby byly minimalizovány dopady
+Stavby na podmínky železničního provozu určené Dokumentací a nebyla ohrožena jeho
+bezpečnost,
+ zajistit a provést zřízení provizorních přejezdů, přechodů, lávek, provizorních mostů,
+ochranných konstrukcí apod., pokud to vyžaduje potřeba zachování železničního
+provozu nebo přístupu cestujících k provozním objektům železnice nebo činnost
+Zhotovitele při provozování Staveniště,
+ bezpečně ochránit veřejná prostranství, stavby, komunikace, zeleň, stromy, výškové
+a směrové body a ostatní vytyčovací prvky, vedení sítí technické infrastruktury, včetně
+měřičských značek u podzemních vedení technické infrastruktury na Staveništi atd.,
+a to po celou dobu provádění nebo odstraňování Stavby,
+ zajistit pasportizaci stavu přístupových komunikací dotčených staveništní dopravou
+a všech objektů (zástavby) v jejich okolí a v okolí Staveniště (v zóně ovlivnění).
+Pasportizaci zajišťuje Zhotovitel dle příslušných ustanovení kapitoly 1 TKP, pokud není
+v Zadávací dokumentaci uvedeno jinak.
+(3) Uvolnění určených ploch Staveniště provede Zhotovitel nejpozději v termínech stanovených
+Zadávací dokumentací a stavebním povolením. Vybouraný materiál z dočasných objektů,
+zřízených v rámci přípravy Staveniště, nebo i z ostatních odstraněných objektů, může být
+použit na dalších stavbách, pokud svým stavem tomu vyhovuje, jinak musí být odvezen
+a uložen na povolených skládkách.
+(4) Tato kapitola nezahrnuje způsob zhotovení, provozování a likvidaci dočasných objektů
+a technologických zařízení Staveniště Zhotovitele, jako např. staveništní zpevněné plochy,
+dílny, kanceláře, sklady, skládky, betonárny, stavební stroje a zařízení. Zhotovitel tyto
+objekty a zařízení navrhuje, provozuje a likviduje v souladu se stavebním povolením
+a případně jím zpracovanou Dokumentací. Přitom musí být plně respektována ustanovení
+článků 1.9.4 až 1.9.6 kapitoly 1 TKP.
+(5) Práce nezbytné pro vyklizení Staveniště, které nejsou uvedeny v této kapitole, se provedou
+podle ustanovení příslušných kapitol TKP, např. odstranění mostů (kapitola 18 a 19 TKP),
+trakčního vedení (kapitola 31 TKP), stožárů návěstidel (kapitola 27 TKP) apod.
+(6) Tato kapitola neurčuje způsob odstraňování (likvidaci, demolici) těch stávajících objektů,
+které jsou řešeny samostatnou Dokumentací.
+2.1.2.1 Odstranění travin, křovin a nevhodných materiálů
+(1) Zhotovitel odstraní z plochy Staveniště všechny traviny, křoviny a nevhodné materiály,
+které by ponecháním v prostoru prováděných prací bránily zhotovení Stavby nebo
+znehodnocovaly provedenou Stavbu. Mezi nevhodné materiály patří zejména odpadky,
+plasty, zbytky dřevěných materiálů, kovové materiály, vybourané hmoty, kontaminované
+materiály, zeminy a další materiály určené Dokumentací nebo osobou vykonávající Stavební
+dozor. Povinnost odstranit traviny, křoviny a nevhodné materiály předepisuje Zhotoviteli
+Dokumentace, případně Stavební dozor. Stanovení objemu a určení skládek navrhuje
+Zhotovitel a nechá si je odsouhlasit osobou vykonávající Stavební dozor.
+2.1.2.2 Kácení stromů a odstranění pařezů
+(1) Zhotovitel odstraní ze Staveniště stromy, které jsou k vykácení určeny zadávací
+dokumentací. Povolení ke kácení zajistí Objednatel a předá je Zhotoviteli před zahájením
+prací. Povolení stanoví podmínky, za kterých je kácení možno provést. Tyto podmínky
+je Zhotovitel povinen splnit. Způsob odstranění, manipulaci a místo uložení určuje
+Dokumentace nebo je navrhuje Zhotovitel a předloží k odsouhlasení osobě vykonávající
+Stavební dozor.
+7/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. listopadu 2020
+(2) Provádění kácení a údržby stromoví na železničních dráhách a na stavbě dráhy, včetně
+staveb na dráze, resp. v obvodu dráhy a v ochranném pásmu dráhy, se řídí Metodickým
+pokynem pro údržbu stromoví.
+(3) Dřeviny, které nejsou navržené ke kácení, musí být chráněny dle ČSN 83 9061, Technologie
+vegetačních úprav v krajině – Ochrana stromů, porostů a vegetačních ploch při stavebních
+pracích.
+2.1.2.3 Odvodnění staveniště
+(1) Zhotovitel je povinen vhodným technologickým způsobem průběžně zajistit odvodnění
+Staveniště. Nesmí dojít ke zhoršení fyzikálně-mechanických vlastností zemin na Staveništi,
+ke znehodnocování rozestavěných objektů ani negativnímu ovlivnění jiných objektů
+a zařízení v blízkosti Stavby. Zhotovitel je povinen zabezpečit Staveniště tak, aby
+nedocházelo ke znečištění veřejných prostranství a k ohrožení bezpečnosti veřejného
+provozu splachem látek a materiálů a vytékáním vody ze Staveniště. Zároveň musí být
+respektovány příslušné vodohospodářské a ekologické právní předpisy a Dokumenty
+a předpisy. V případě vypouštění těchto vod mimo Staveniště zajistí Zhotovitel příslušné
+povolení a/nebo souhlasy dotčených vlastníků.
+(2) V případě vzniku škod v důsledku nedostatečného nebo nesprávného odvádění srážkových
+nebo povrchových vod musí Zhotovitel zjednat okamžitě nápravu na svůj náklad a uhradit
+případné vzniklé škody.
+2.1.2.4 Dočasné oplocení
+(1) Staveniště, popřípadě jeho oddělená pracoviště, musí být oploceno dle příslušných právních
+předpisů, Dokumentů a předpisů, tj. předpisů v oblasti bezpečnosti a ochrany zdraví
+při práci.
+(2) Dočasné oplocení se provádí v místech určených Zadávací dokumentací, podmínkami
+stavebního povolení, bezpečnostními předpisy nebo osobou vykonávající Stavební dozor
+a podle požadavků kapitoly 11 TKP, s odchylkami uvedenými v této kapitole. Dočasné
+oplocení musí plnit svou funkci ochrannou i vzhledovou.
+(3) Tato kapitola se nevztahuje na oplocení, které si zřídí pro svoji potřebu Zhotovitel, aby
+ochránil nebo zamezil přístup k jeho staveništnímu vybavení, např. skládkám materiálu,
+parkovišti strojů apod.
+2.1.2.5 Protihluková opatření
+(1) V Zadávací dokumentaci a/nebo ve stavebním povolení mohou být určeny přípustné hladiny
+hluku vyšší než ty, které jsou stanoveny platnou legislativou. Jde zpravidla o vymezení
+stanoveného hlukového zatížení okolí prováděné Stavby v jednotlivých časových úsecích
+dne. Požadavky na protihluková opatření jsou uvedeny v kapitole 16 TKP.
+(2) Při přípravných pracích na Staveništi se mohou protihluková opatření zajistit následujícími
+způsoby:
+ vybudují se trvalé protihlukové clony již v počáteční fázi výstavby tak, aby plnily svoji
+funkci i po dobu provádění stavebních prací. Uvedený postup je zpravidla již navržen
+v Zadávací dokumentaci a Zhotovitel jej zohlední v harmonogramu výstavby,
+ situováním dočasných deponií zeminy, ornice a dalších sypkých hmot a materiálů tak,
+aby plnily funkci protihlukové clony po dobu Stavby,
+ vybudováním dílčích provizorních protihlukových clon.
+2.1.2.6 Odstranění stávajících objektů, demolice
+(1) V rámci přípravných prací se odstraní stávající objekty, které překážejí Stavbě. Jejich rozsah
+stanoví Dokumentace. Materiál z odstraněných objektů se použije způsobem předepsaným
+v Dokumentaci nebo bude zlikvidován v souladu se zákonem č. 541/2020 Sb., o odpadech
+(dále jen „zákon o odpadech“), pokud Dokumentace nestanoví jinak.
+8/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. června 2022
+(2) Demoliční práce při přípravě Staveniště zahrnují demolice všech stávajících objektů, které
+tvoří překážku Stavbě, a nejsou samostatně řešeny Dokumentací objektů. Takové demolice
+zpravidla nevyžadují zvláštní dokumentaci. Rozsah a způsob demolice, včetně odstranění
+a uložení vybouraného materiálu, stanoví Dokumentace.
+(3) Před započetím demoličních prací se musí uskutečnit průzkum stavu objektu určeného
+k demolici a jeho okolí, zjistit inženýrské sítě a stav dotčených sousedních objektů.
+V souladu s Metodickým návodem odboru odpadů MŽP pro řízení vzniku stavebních
+a demoličních odpadů a pro nakládání s nimi (MŽP, srpen 2018) musí být součástí průzkumu
+vymezení částí Stavby, které se po vyjmutí ze Stavby stanou nebezpečnými odpady –
+zejména materiálů s obsahem azbestu, dalších materiálů s nebezpečnými vlastnostmi,
+kontaminované zeminy, apod. K průzkumu musí být využity stávající podklady o objektu
+a podklady o objektech sousedních. O provedeném průzkumu musí být pořízen zápis.
+Na základě průzkumu Zhotovitel stavebních prací zajistí před zahájením bouracích prací
+vypracování jejich Technologického předpisu a nechá si jej odsouhlasit osobou vykonávající
+Stavební dozor.
+2.1.2.7 Dočasné přejezdy, přechody, lávky, provizorní mosty, ochranné konstrukce
+a jiné pomocné konstrukce
+(1) Zřizování dočasných přejezdů, přechodů, lávek, provizorních mostů, ochranných konstrukcí
+a jiných pomocných konstrukcí, zajišťuje Zhotovitel v souladu se Zadávací dokumentací
+(včetně projednání s příslušným stavebním úřadem a příslušnou organizační jednotkou).
+Dočasné přejezdy, přechody, lávky, provizorní mosty, ochranné konstrukce atp., které
+zhotovuje, provozuje a likviduje Zhotovitel výhradně pro provádění zhotovovacích prací
+na Stavbě, navrhuje a zajišťuje Zhotovitel. Projektování, výstavba a minimální údržba
+veřejně přístupných ploch a objektů v obvodu Staveniště se řídí pokynem SŽ PO-9/2021­GŘ.
+(2) Pro uvedené dočasné objekty a konstrukce může být použito úlev vyplývajících z jejich
+charakteru a dočasnosti. Rozsah a velikost úlev stanoví osoba vykonávající Stavební dozor
+podle místních podmínek.
+2.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+2.2.1 DOČASNÉ OPLOCENÍ
+(1) Pro oplocení mohou být použity materiály, které jsou v souladu se zákonem č.102/2001 Sb.,
+o obecné bezpečnosti výrobků a zákonem č. 22/1997 Sb., o technických požadavcích
+na výrobky.
+(2) Konstrukce dočasných oplocení musí odpovídat požadavkům kapitoly 11 TKP s případnými
+úpravami uvedenými tamtéž. Dočasné oplocení musí plnit funkci ochrannou i vzhledovou.
+(3) Použité materiály (kov, dřevo, příp. jiné) musí zaručovat požadovanou funkci, vzhled
+a potřebnou životnost oplocení. Výhradně nový materiál musí být použit pro napínací drát
+(o min. průměru 3 mm) a ostnatý drát. Materiál pro kovové dočasné oplocení musí odpovídat
+ČSN 42 0142 - Trubky ocelové, s přiměřenými úlevami vzhledem ke krátkodobosti Stavby,
+které stanoví osoba vykonávající Stavební dozor.
+(4) Základy pro sloupky a způsob osazení sloupků musí zaručovat stabilitu oplocení.
+(5) Vhodnost dřevěného materiálu pro dočasné oplocení musí být posouzena a odsouhlasena
+osobou vykonávající Stavební dozor. Pokud je předepsáno neprůhledné oplocení, určí ZTP
+i požadavky na příslušné materiály.
+2.2.2 PROTIHLUKOVÁ OPATŘENÍ
+(1) Pro materiály dočasných protihlukových opatření platí přiměřeně ustanovení kapitoly 16
+TKP, použité materiály musí být v souladu se zákonem č. 22/1997 Sb., o technických
+požadavcích na výrobky. Všechny výrobky, stavební materiály a směsi, které budou použity
+k realizaci protihlukových opatření, předloží Zhotovitel osobě vykonávající Stavební dozor
+9/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. listopadu 2020
+ke schválení. Pro využití již dříve použitých materiálů je nutný souhlas osoby vykonávající
+Stavební dozor.
+2.2.3 DOČASNÉ PŘEJEZDY, PŘECHODY, LÁVKY, PROVIZORNÍ MOSTY,
+OCHRANNÉ KONSTRUKCE A JINÉ POMOCNÉ KONSTRUKCE
+(1) Přejezdy a přechody jsou zřizovány z materiálů popsaných v kapitole 9 TKP. S přihlédnutím
+k předpokládané životnosti mohou být využity i materiály již dříve použité (pražce, panely,
+kolejnice atd.).
+(2) Lávky, provizorní mosty a ochranné konstrukce jsou zřizovány dřevěné nebo kovové. Jejich
+konstrukci, pokud není určena Dokumentací, navrhne Zhotovitel a předloží osobě
+vykonávající Stavební dozor k odsouhlasení.
+2.3 TECHNOLOGICKÉ PŘEDPISY A POSTUPY
+2.3.1 ODSTRANĚNÍ TRAVIN, KŘOVIN A NEVHODNÝCH MATERIÁLŮ
+(1) Veškeré traviny se odstraní posečením a shrabáním, usušením a spálením nebo drcením
+ve vyhrazeném prostoru, případně se uloží na skládku. Vrchní vrstva zeminy s kořeny travin
+se odstraní v rámci sejmutí ornice a použije se pro potřeby Stavby při rozprostření ornice
+na svahy nebo se předisponuje podle Dokumentace. Křoviny musí být odstraněny s kořeny
+a shrnuty na deponii, kde mohou být drceny, nebo se z deponií odvážejí na skládky, nebo
+se spalují v předem vymezeném prostoru za příslušného dozoru.
+(2) Zvláštní pozornost je nutné věnovat způsobu likvidace vymýcených dřevin a travin pálením.
+Při této činnosti musí být zodpovědně vybráno místo pro spalování (páleniště) tak, aby
+nedošlo k nepovolenému obtěžování okolí kouřovými zplodinami, poškození blízkých
+objektů, vedení sítí technické infrastruktury, případně dalších zařízení. Není-li součástí
+stavebního povolení soubor opatření, který je nutné dodržovat při likvidaci dřevin pálením,
+zajistí toto povolení u příslušného úřadu Zhotovitel. Zhotovitel je povinen respektovat
+příslušná ustanovení zákona č. 133/1985 Sb., o požární ochraně, především § 5, odst. 2
+zákona. Zároveň musí vždy postupovat v souladu s požadavky příslušných právních
+předpisů, např. zákonem č. 201/2012 Sb., č. 289/1995 Sb., zákonem o odpadech nebo
+s vyhláškami příslušných obcí.
+(3) Nevhodné materiály se odstraní ze Staveniště a uloží na skládky vhodného typu vždy
+v souladu se zákonem o odpadech. Popel ze spálených travin a křovin likviduje Zhotovitel,
+při likvidaci musí být respektovány požadavky právních předpisů, bezpečnostních předpisů
+a povolení k pálení. Provádění kácení a údržby stromoví na stavbě dráhy, včetně staveb
+na dráze, resp. v obvodu dráhy a v ochranném pásmu dráhy, se řídí Metodickým pokynem
+pro údržbu stromoví.
+2.3.2 KÁCENÍ STROMŮ A ODSTRANĚNÍ PAŘEZŮ
+(1) Kácení stromů se provádí ručními nebo motorovými pilami. Stromy menších průměrů kmene
+je možno odstranit mechanizací, pomocí níž se kmeny vytáhnou i s kořeny. Samostatné
+pařezy se odstraní dozerem nebo mechanizmy se spodovou lžící. Samostatné a velké pařezy
+lze ještě likvidovat speciálními mechanizmy-frézami, které přímo štěpkují dřevní hmotu
+v místě bývalého stromu. Velké pařezy, které nelze odstranit dostupnými mechanizmy,
+se odstraní pomocí trhavin za podmínek podle čl. 2.3.6 této kapitoly. Jámy po pařezech
+se neprodleně zasypou vhodnou zeminou do úrovně okolního terénu a zhutní se
+na předepsanou míru, aby nedošlo k prosednutí povrchu nebo zaplavení vodou a rozmočení
+zeminy. V místech budoucího tělesa platí pro stupeň zhutnění ustanovení kapitoly 3 TKP.
+Při použití mechanizmů nebo trhacích prací musí postupováno tak, aby nebyla ohrožena
+stabilita svahů náspů a zářezů.
+(2) Pokud se práce provádějí za provozu na veřejných komunikacích, je Zhotovitel povinen
+dodržet ustanovení uvedené v kapitole 1 TKP.
+10/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. června 2022
+(3) Zvláštní pozornost při kácení stromů musí být věnována nenarušení průjezdného průřezu
+dráhy a nepoškození provozovaných trakčních, sdělovacích, zabezpečovacích a dalších
+zařízení. Způsob kácení, použitá mechanizace a potřebná bezpečnostní opatření, musí být
+předem odsouhlaseny správcem dlouhodobého hmotného majetku (dále jen „DLHM“)
+a osobou vykonávající Stavební dozor. Při pracích za provozu na křižujících veřejných
+komunikacích musí být dodržovány podmínky, které určují příslušné právní předpisy (např.
+vyhláška č. 294/2015 Sb., kterou se provádějí pravidla provozu na pozemních
+komunikacích) a podmínky, které stanoví jejich správce.
+2.3.3 DOČASNÉ OPLOCENÍ
+(1) K zřízení dočasného oplocení se přiměřeně použije kapitola 11 TKP. Ochrana proti korozi
+u nepokovovaných a opakovaně použitých materiálů se provede, pokud je výjimečně
+požadována, podle kapitoly 25 TKP.
+(2) Odstranění dočasného oplocení provádí Zhotovitel vhodným způsobem s přihlédnutím
+k tomu, zda má být některý materiál opakovaně použit. Jámy po základech sloupků se vyplní
+zeminou, která se zhutní. V případě, že sloupky byly osazeny v trvalých zpevněných
+plochách, musí být tyto opraveny vhodným způsobem, který byl odsouhlasen osobou
+vykonávající Stavební dozor.
+2.3.4 PROTIHLUKOVÁ OPATŘENÍ
+(1) Pro realizaci protihlukových opatření platí ustanovení kapitoly 16 TKP. Vzhledem
+k požadované dočasnosti opatření lze předmětná ustanovení aplikovat přiměřeně
+k potřebám a rozsahu Stavby, které je nutno předem projednat s osobou vykonávající
+Stavební dozor.
+(2) Likvidace dočasných protihlukových opatření se provádí libovolným způsobem
+s přihlédnutím k možnému opakovanému a následnému využití jednotlivých prvků. Jámy
+po základech sloupků se neprodleně zasypou určenou zeminou do úrovně okolního terénu
+a zhutní se na předepsanou míru, aby nedošlo k prosednutí povrchu nebo zaplavení vodou
+a rozmočení zeminy. V místech budoucího tělesa platí pro stupeň zhutnění ustanovení
+kapitoly 3 TKP. V případě, že některé prvky (patky, sloupky, soklové panely) byly osazeny
+v trvalých zpevněných plochách, musí být i povrch těchto ploch upraven vhodným způsobem
+podle požadavku Zadávací dokumentace nebo osoby vykonávající Stavební dozor.
+2.3.5 ODSTRANĚNÍ STÁVAJÍCÍCH OBJEKTŮ, DEMOLICE
+(1) Demoliční práce se provádí dle Zadávací dokumentace a řídí se ustanoveními nařízení vlády
+č. 362/2005 Sb., o bližších požadavcích na bezpečnost a ochranu zdraví při práci
+na pracovištích s nebezpečím pádu z výšky nebo do hloubky. Před započetím prací ověří
+Zhotovitel s osobou vykonávající Stavební dozor splnění předpokladů pro demoliční práce,
+které byly uvedeny v Zadávací dokumentaci. O výsledku se pořídí zápis.
+(2) Způsob odstranění stávajících objektů a demolic, pokud není určen Zadávací dokumentací,
+navrhuje a zajišťuje Zhotovitel. K vlastnímu odstranění použije Zhotovitel potřebnou
+mechanizaci podle druhu a konstrukce odstraňovaného objektu a vhodné pracovní postupy.
+(3) K odstranění podkladních vrstev železničního spodku nebo nestmelených vozovek se použijí
+vhodné postupy a zemní stroje tak, aby bylo možné tento materiál dále použít jako
+stavebního materiálu za podmínek stanovených Zadávací dokumentací nebo podle
+požadavků osoby vykonávající Stavební dozor.
+(4) Technologické předpisy demoličních prací vypracuje Zhotovitel a odsouhlasí osoba
+vykonávající Stavební dozor.
+(5) Pro provádění demolic inženýrských sítí, které nejsou obsahem Zadávací dokumentace,
+musí Zhotovitel zpracovat příslušnou dokumentaci a Technologický předpis. Tyto práce musí
+provádět odborní pracovníci nebo pracovníci Zhotovitele za odborného dohledu. U demolic
+objektů v trase kolejiště je nutno před zahájením demolice prověřit, zda jsou provedeny
+11/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. listopadu 2020
+přeložky nebo demolice inženýrských sítí uložených v demolovaném objektu nebo v jeho
+blízkosti. Na provádění demolic pozemních objektů musí být vydáno stavebním úřadem
+pravomocné povolení k odstranění stavby. Vydání povolení k odstranění stavby zajišťuje
+Objednatel. Před vydáním povolení nemůže být demolice pozemního objektu zahájena. Před
+zahájením demolice je nutno provést odpojení inženýrských sítí a zajištění odpojovacích
+míst u příslušných vlastníků (správců sítí).
+(6) Případné využití materiálu z demolic určuje Dokumentace. Pokud Dokumentace nestanoví
+další jeho použití, musí to být před zahájením prací schváleno osobou vykonávající Stavební
+dozor zápisem ve stavebním deníku. Likvidace materiálů se provádí dle platných právních
+předpisů.
+2.3.6 TRHACÍ PRÁCE PŘI PŘÍPRAVĚ STAVENIŠTĚ
+(1) Trhací práce mohou být obvykle použity při odstraňování pařezů, stávajících objektů,
+demolicích apod., pokud v určité lokalitě není vydán jejich zákaz.
+(2) Pro provádění trhacích prací platí a musí být Zhotovitelem respektován zejména zákon
+č. 61/1988 Sb., o hornické činnosti, výbušninách a o státní báňské správě,.
+(3) Pro trhací práce velkého rozsahu musí být ve smyslu příslušných ustanovení zákona
+č. 61/1988 Sb. vypracován technický projekt odstřelu, pro trhací práce malého rozsahu
+a pro ostatní práce spojené s použitím výbušnin technologický postup trhacích prací.
+(4) Definici trhacích prací malého a velkého rozsahu, náležitosti technologického postupu
+trhacích prací, náležitosti technického projektu odstřelu a podrobnější úpravy provádění
+trhacích prací stanovuje vyhláška Českého báňského úřadu č. 72/1988 Sb., o používání
+výbušnin.
+(5) Provádět trhací práce smí jen fyzická nebo právnická osoba s příslušnou odborností
+na základě povolení, ve smyslu vyhlášky Českého báňského úřadu č. 72/1988 Sb.,
+o používání výbušnin.
+(6) Zemní práce prováděné za použití strojů a výbušnin, pokud se na jedné lokalitě přemísťuje
+více než 100 000 m3 horniny, s výjimkou zakládání staveb (§ 3 písm. e) zákona
+č. 61/1988 Sb.), smí provádět pouze organizace s příslušným oprávněním dle vyhlášky
+Českého báňského úřadu č. 15/1995 Sb., o oprávnění k hornické činnosti a činnosti
+prováděné hornickým způsobem, jakož i k projektování objektů a zařízení, které jsou
+součástí těchto činností.
+(7) Technický projekt odstřelu a technologický postup trhacích prací zajišťuje Zhotovitel.
+(8) Žádost o povolení trhacích prací lze podat na místně příslušný Obvodní báňský úřad pouze
+v případě, že na Stavbu bylo již vydáno stavební povolení (viz zákon č. 183/2006 Sb.),
+ve kterém jsou jako jedna z možných technologií rozpojování uvedeny trhací práce. Povolení
+k nakládání s výbušninami zajišťuje a uchovává organizace provádějící trhací práce.
+2.3.7 DOČASNÉ PŘEJEZDY, PŘECHODY, LÁVKY, PROVIZORNÍ MOSTY,
+OCHRANNÉ KONSTRUKCE
+(1) Povolené způsoby a provádění zřizování přejezdů (přechodů) jsou uvedeny v kapitole 9 TKP.
+Způsoby a postup výstavby provizorních mostů, ochranných konstrukcí apod., musí být
+uvedeny v Zadávací dokumentaci. Pokud se vyskytne potřeba dalších, výše uvedených
+zařízení, musí být Zhotovitelem tato potřeba projednána s příslušnými útvary Objednatele
+a odsouhlasena osobou vykonávající Stavební dozor.
+(2) Odstranění objektů uvedených v tomto článku se provádí buď rozebráním s tím, že mohou
+být využity na dalších stavbách, nebo likvidací dle platné legislativy.
+(3) Termíny odstranění navrhne s ohledem na postup výstavby a podmínky stavebního povolení
+Zhotovitel a odsouhlasí osoba vykonávající Stavební dozor.
+12/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. června 2022
+2.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+2.4.1 DOČASNÉ OPLOCENÍ
+(1) Skladování materiálů dočasného oplocení musí odpovídat požadavkům na jeho ochranu před
+nepříznivými povětrnostními vlivy a způsob uložení musí zajišťovat jeho nepoškození.
+(2) Průkazní zkoušky nejsou požadovány.
+2.4.2 PROTIHLUKOVÁ OPATŘENÍ
+(1) Skladování materiálů pro protihluková opatření musí odpovídat požadavkům na jejich
+ochranu před nepříznivými vlivy, způsob uložení musí zajišťovat jejich nepoškození. Průkazní
+zkoušky nejsou požadovány s výjimkou případů, kdy v rámci přípravných prací budou
+realizována trvalá protihluková opatření (ve smyslu čl. 2.1.2.5 této kapitoly). V těchto
+případech platí v plném rozsahu ustanovení kapitoly 16 TKP.
+2.4.3 TRHACÍ PRÁCE PŘI PŘÍPRAVĚ STAVENIŠTĚ
+(1) Dodávka a skladování výbušnin musí být prováděny v souladu s ustanoveními vyhlášky
+č. 99/1995 Sb., o skladování výbušnin.
+2.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+2.5.1 KONTROLNÍ ZKOUŠKY
+(1) Kontrolní zkoušky je nutno provést u kontaminovaných materiálů (materiálů
+s nebezpečnými vlastnostmi), které se vyskytují na Staveništi. Výsledek zkoušek předkládá
+Zhotovitel Objednateli před uložením kontaminovaných materiálů na skládku. Případné další
+požadavky na vzorky nebo kontrolní zkoušky určují ZTP nebo osoba vykonávající
+Stavební dozor.
+2.5.2 ZEMINY
+(1) Pokud Dokumentace určuje u zásypu zhutňování zeminy, postupuje se podle ustanovení
+kapitoly 3 TKP.
+2.5.3 MATERIÁLY S NEBEZPEČNÝMI VLASTNOSTMI (KONTAMINOVANÉ
+MATERIÁLY)
+(1) Podmínky, požadavky a postupy při řešení ukládání odpadů na skládky a jejich využívání
+na povrchu terénu stanovuje zákon o odpadech.
+(2) Kritéria, metody a postup hodnocení nebezpečných vlastností materiálů (odpadů) stanoví
+vyhláška č. 8/2021 Sb., o Katalogu odpadů a posuzování vlastnosti odpadů (katalog odpadů)
+a ČSN EN 14899.
+2.5.3.1 Vzorkování a charakterizace kontaminovaného materiálu
+(1) V případě výskytu kontaminovaných materiálů na Staveništi zajistí Zhotovitel před
+zahájením stavebních prací, případně ihned po zjištění výskytu těchto materiálů, činnosti
+spojené s odběrem vzorků stavebních materiálů (odpadů) z vymezených částí Stavby dle
+zákona č. 541/2020 Sb. a ČSN EN 14899 a zkouškami zajistí ověření přítomnosti škodlivin
+v nich. Odběr vzorků smí provést pouze oprávněná osoba nebo pracoviště ve smyslu
+citované vyhlášky. O výskytu kontaminovaných materiálů (odpadů) na Staveništi Zhotovitel
+prokazatelně informuje osobu vykonávající Stavební dozor.
+(2) Vzhledem k tomu, že výzisk z kolejového lože a výkopové zeminy ze Stavby jsou
+potencionálním odpadem, Zhotovitel zajistí převzorkování těchto těžených materiálů
+13/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. listopadu 2020
+v souladu s Metodickým návodem odboru odpadů MŽP pro řízení vzniku stavebních odpadů
+a demoličních odpadů a pro nakládání s nimi a v souladu s vnitřními předpisy. Pro posouzení
+použitelnosti materiálu kolejového lože se postupuje dle OTP Kamenivo pro kolejové lože
+železničních drah. Ve všech případech odběru vzorků bude provedena fotodokumentace,
+lokalizace odběrů vzorků formou mapového zákresu s uvedením kilometráže a souřadnic
+GPS. Vzorkování kolejového lože a ostatních těžených zemin se Zhotovitel zavazuje zajistit
+nejméně čtyři týdny před zahájením prací za účasti osoby vykonávající Stavební dozor
+a pověřeného zástupce zabývajícího se agendy životního prostředí Objednatele. Odebrané
+vzorky se budou analyzovat jako potencionální odpad v souladu se zákonem
+č. 541/2020 Sb., včetně prováděcích předpisů k tomuto zákonu. Dva týdny před zahájením
+prací osoba vykonávající Stavební dozor rozhodne o způsobu využití výzisku z kolejového
+lože a zemin v souladu se závěry vzorkování.
+2.5.3.2 Lokalizování a prostorové vymezení kontaminovaného materiálu
+(1) Při vzorkování se uplatňuje etapový přístup postupného upřesňování lokalizace a celkového
+množství kontaminovaného materiálu s využitím metody vzorkování dle čl. 2.5.3.1
+této kapitoly.
+2.5.3.3 Azbest
+(1) Při nakládání s odpady azbestu a s odpady, které azbest obsahují, je nutné postupovat
+zejména v souladu s § 85 zákona o odpadech a Metodickým návodem pro řízení vzniku
+odpadů s obsahem azbestu při provádění a odstraňování staveb a pro nakládání s nimi
+(MŽP, 2018).
+(2) Při odstraňování stavebních materiálů s obsahem azbestu ze Stavby musí být voleny takové
+technologické postupy, které minimalizují dopad na životní prostředí. Je nutné především
+předcházet uvolňování azbestu do ovzduší.
+2.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY, ÚDRŽBA
+V ZÁRUČNÍ DOBĚ
+2.6.1 DOČASNÉ OPLOCENÍ
+(1) Přípustné směrové i výškové odchylky od předepsaného průběhu se musí pohybovat
+v toleranci 50 mm. V exponovaných místech určí odchylky osoba vykonávající
+Stavební dozor.
+2.6.2 PROTIHLUKOVÁ OPATŘENÍ
+(1) Pro dočasná protihluková opatření se použijí hodnoty přípustných odchylek uvedených v OTP
+Protihlukové stěny. V exponovaných místech je oprávněna upřesnit odchylky osoba
+vykonávající Stavební dozor. Pro trvalá protihluková opatření (ve smyslu čl. 2.1.2.5 této
+kapitoly) realizovaná v rámci přípravných prací, platí v plném rozsahu hodnoty přípustných
+odchylek uvedené v kapitole 16 TKP.
+2.6.3 DOČASNÉ PŘEJEZDY, PŘECHODY, LÁVKY, PROVIZORNÍ MOSTY
+A OCHRANNÉ KONSTRUKCE
+(1) Přípustné odchylky dočasných přejezdů a přechodů stanoví osoba vykonávající Stavební
+dozor. Vždy je nutné zachovat průjezdný průřez dráhy dle příslušných předpisů.
+(2) Přípustné odchylky dočasných lávek, provizorních mostů a ochranných konstrukcí,
+pomocných staveb apod. navrhne Zhotovitel a předloží osobě vykonávající Stavební dozor
+k odsouhlasení.
+14/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. června 2022
+2.6.4 ZÁRUKY, ÚDRŽBA V ZÁRUČNÍ DOBĚ
+(1) Záruční doby všeobecně stanoví kapitola 1 TKP.
+(2) Údržbu v záruční době zajišťuje správce DLHM podle ustanovení v kapitole 1 TKP.
+(3) Ošetřování vegetačních úprav, s výjimkou prvního kosení (viz kapitola 15 TKP),
+je zajišťováno správci DLHM.
+2.7 KLIMATICKÁ OMEZENÍ
+2.7.1 KÁCENÍ STROMŮ A ODSTRANĚNÍ PAŘEZŮ
+(1) Kácení stromů lze provádět pouze v době vegetačního klidu. Výjimky z tohoto omezení může
+povolit pouze orgán státní správy, který vydal povolení ke kácení.
+(2) Zásypy po pařezech není vhodné provádět v deštivém a mrazivém počasí.
+2.7.2 DOČASNÉ OPLOCENÍ
+(1) Pro osazování dočasného oplocení platí klimatická omezení uvedená v kapitole 11 TKP
+s úlevami vyplývajícími z dočasnosti oplocení.
+(2) Základy betonované na místě za nízkých teplot se musí provádět za dodržení ustanovení
+kapitoly 17 TKP.
+2.7.3 PROTIHLUKOVÁ OPATŘENÍ
+(1) Při provádění částí protihlukových stěn betonových a ocelových je třeba přiměřeně
+dočasnosti opatření dodržet příslušná ustanovení kapitol 16, 17 a 19 TKP a doporučení
+výrobce. Při provádění protihlukových stěn z jiných materiálů musí být klimatická omezení
+odsouhlasena osobou vykonávající Stavební dozor.
+2.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+2.8.1 ODSTRANĚNÍ TRAVIN, KŘOVIN A NEVHODNÝCH MATERIÁLŮ
+(1) Při odsouhlasení prací osoba vykonávající Stavební dozor vizuálně zkontroluje, zda
+na plochách, na nichž bylo odstranění jím předepsáno nebo požadováno, nejsou zbytky
+odstraňovaných materiálů. Popel ze spálených travin a křovin musí Zhotovitel zlikvidovat
+jako odpad.
+(2) Zhotovitel zaměří skutečně posečené a smýcené plochy a tyto se porovnají s Dokumentací,
+popřípadě s požadavky osoby vykonávající Stavební dozor. U vytěžených nevhodných
+materiálů ověří osoba vykonávající Stavební dozor místo jejich uložení.
+2.8.2 KÁCENÍ STROMŮ A ODSTRANĚNÍ PAŘEZŮ
+(1) Osoba vykonávající Stavební dozor zkontroluje, zda všechny stromy určené v Dokumentaci
+k vykácení byly odstraněny včetně pařezů, zda byl řádně proveden zásyp jam po pařezech
+předepsanou zeminou a jeho zhutnění.
+(2) Pokud během stavebních prací dojde k poškození kořenového systému stromů, které nejsou
+Zadávací dokumentací určeny k vykácení, musí být tyto stromy odborně posouzeny (např.
+dendrologický posudek), popř. odstraněny. Zasahuje-li dopadová vzdálenost těchto stromů
+do provozované koleje, musí být stromy s poškozeným kořenovým systémem posouzeny,
+případně odstraněny, ještě před zahájením provozu.
+15/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. listopadu 2020
+2.8.3 DOČASNÉ OPLOCENÍ
+(1) Odsouhlasení prací se provede přiměřeně podle kapitoly 11 TKP s úlevami vyplývajícími
+z dočasnosti oplocení.
+(2) Práce musí být provedeny tak, aby:
+ vyhovovaly požadavkům Zadávací dokumentace (přichází-li to v úvahu),
+ byly respektovány podmínky stavebního povolení,
+ oplocení nezasahovalo do průjezdného průřezu dráhy nebo volné šířky pozemní
+komunikace, pokud nebyla provedena zvláštní opatření,
+ nebyly omezovány požadované rozhledové poměry,
+ je osoba vykonávající Stavební dozor odsouhlasila.
+2.8.4 PROTIHLUKOVÁ OPATŘENÍ
+(1) Odsouhlasení rozsahu a úplnosti prací se provede přiměřeně podle kapitoly 16 TKP s úlevami
+vyplývajícími z dočasnosti protihlukových opatření.
+2.8.5 ODSTRANĚNÍ STÁVAJÍCÍCH OBJEKTŮ, DEMOLICE
+(1) Při odsouhlasení a převzetí prací provede osoba vykonávající Stavební dozor vizuální
+kontrolu úplného odstranění objektů podle Zadávací dokumentace. Dále Zhotovitel zaměří
+skutečně odstraněné konstrukce.
+(2) U demolic inženýrských sítí osoba vykonávající Stavební dozor zkontroluje provedení prací
+podle Dokumentace. Zhotovitel předloží k přejímce potřebné doklady potvrzené správci
+(provozovateli) demontovaných inženýrských sítí.
+(3) Po provedení všech demolic osoba vykonávající Stavební dozor při přejímce zkontroluje
+úplnosti provedených prací podle Dokumentace. Prověří odstranění podzemních částí
+objektů předepsané Dokumentací a odstranění materiálů ze Staveniště. Pokud
+Dokumentace nebo technologický postup předepisují zasypání podzemních prostor, prověří
+úplnost zásypů a míru zhutnění, kterou Zhotovitel k přejímce doloží výsledky kontrolních
+zkoušek.
+(4) Zaměření odstraňovaných objektů a demolic, pokud jsou součástí soupisu prací, provede
+Zhotovitel zásadně před započetím prací, pokud není již obsaženo v Dokumentaci.
+Po provedení demolice zaměří Zhotovitel skutečný upravený terén a případně skutečný
+objem zasypané jámy nebo podzemních prostor. U podzemních inženýrských sítí se zaměří
+skutečný objem zemních prací ve fázi odkrytí inženýrské sítě a skutečná hloubka
+jejich uložení.
+2.8.6 DOČASNÉ PŘEJEZDY, PŘECHODY, LÁVKY, PROVIZORNÍ MOSTY,
+OCHRANNÉ KONSTRUKCE A JINÉ POMOCNÉ KONSTRUKCE
+(1) Pro odsouhlasení a převzetí prací po zřízení dočasných přejezdů, přechodů, lávek,
+provizorních mostů, ochranných konstrukcí a jiných podobných konstrukcí, se přiměřeně
+použijí ustanovení kapitoly 1 TKP a oddílu 8. Odsouhlasení a převzetí prací kapitol 9
+a 19 TKP.
+2.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+(1) Kontrolní měření, měření posunů a přetvoření se v běžných případech nepožaduje. Pokud
+je požadováno, je rozsah a jeho forma stanovena v Zadávací dokumentaci, případně
+v odůvodněných případech specifikována osobou vykonávající Stavební dozor. Takovým
+případem může být např. umístění zařízení Staveniště v blízkosti provozované koleje
+(měření průjezdného průřezu, vzdálenost zařízení od trolejového vedení atd.).
+16/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. června 2022
+2.10 ŽIVOTNÍ PROSTŘEDÍ
+2.10.1 VŠEOBECNĚ
+(1) Při provádění všech prací v souvislosti s přípravou Staveniště je Zhotovitel povinen
+dodržovat veškerá ustanovení právních předpisů o ochraně životního prostředí uvedená
+v kapitole 1. TKP.
+(2) Zhotovitel musí zejména dbát na to, aby mechanizmy, stroje a vozidla pracující
+na Staveništi, byly v řádném technickém stavu a nedocházelo k úniku olejů a pohonných
+hmot. Dojde-li k úniku ropných látek, zajistí Zhotovitel bezodkladně nápravu na vlastní
+náklady. Postup nápravy se řídí především ustanoveními zákona č. 254/2001 Sb., o vodách
+a o změně některých zákonů (vodní zákon), a zákona o odpadech. Při manipulaci se zdraví
+škodlivými látkami je povinen Zhotovitel dodržovat opatření vyplývající ze zákona
+o odpadech a zákona č. 350/2011 Sb., o chemických látkách a chemických směsích
+(chemický zákon). V případě havárie se postupuje v souladu s ustanovením vyhlášky
+Ministerstva životního prostředí č. 450/2005 Sb., o náležitostech nakládání se závadnými
+látkami a náležitostech havarijního plánu, způsobu a rozsahu hlášení havárií, jejich
+zneškodňování a odstraňování jejich škodlivých následků. Zhotovitel odpovídá za dodržování
+a plnění podmínek havarijního plánu a zavazuje se na vyžádání předložit osobě vykonávající
+Stavební dozor havarijní plán ke kontrole.
+2.10.2 DEPONIE, MEZIDEPONIE A UKLÁDÁNÍ NA SKLÁDKY
+(1) Shromažďování odpadů a dalších materiálů je povoleno pouze na vyhrazených plochách
+v prostoru Staveniště.
+(2) Shromažďování mimo prostor Staveniště je v odpovědnosti Zhotovitele, včetně zajištění
+příslušných povolení a souhlasů vlastníků. O této skutečnosti je Zhotovitel povinen
+informovat osobu vykonávající Stavební dozor a předložit jí příslušná povolení
+a souhlasy vlastníků.
+(3) Pokud není v Dokumentaci uvedeno jinak, předpokládá se při pracích s kontinuálním
+odvozem materiálu bez mezideponií.
+(4) Zhotovitel musí prověřit možnosti a aktuální stav skládek, a to dle celkového množství
+a kategorie odpadů, v době podávání nabídky a zohlednit v nabídce rozvozné vzdálenosti
+a ceny za skládkovné. Polohy a vzdálenosti skládek pro likvidaci odpadů uvedené
+v Dokumentaci jsou pouze informativní a slouží pro interní potřeby Objednatele
+a stavebního řízení.
+(5) V případě, že je v Dokumentaci uvažováno se zřízením mezideponií, zohlední Zhotovitel
+náklady související se zřízením, provozováním a likvidací mezideponií v nabídce, včetně
+projednání s příslušnými orgány státní správy. Mezideponie zřizované v průběhu přípravných
+prací nesmí svým umístěním nadměrně zatěžovat okolní prostředí (nadměrnou prašností,
+hlučností, apod.). Při pálení travin a křovin nesmí docházet k nepovolenému obtěžování okolí
+kouřovými plyny.
+(6) Přístupové trasy ke skládkám musí Zhotovitel projednat se správci komunikací.
+2.10.3 PROTIHLUKOVÁ OPATŘENÍ
+(1) Při provádění přípravných prací musí být dodržovány stanovené hladiny hluku pro příslušná
+prostředí dle platné legislativy a/nebo podmínek vydaných povolení Stavby. Snižování
+nadměrného hluku musí být zajišťováno podle článku 1.2.5 této kapitoly. V případě
+překročení stanovených limitů se zřídí dočasné nebo trvalé protihlukové clony. Protihluková
+opatření u zařízení Staveniště jsou realizována na náklad Zhotovitele.
+17/18
+TKP Kapitola 2 – Příprava staveniště Účinnost od 1. listopadu 2020
+2.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ
+OCHRANA
+2.11.1 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ
+(1) Požadavky na bezpečnost práce a technických zařízení, jakož i na požární ochranu obecně,
+stanoví kapitola 1 TKP.
+(2) Pro trhací práce při přípravě Staveniště platí obecně zákon č. 61/1988 Sb. a vyhlášky
+č. 72/1988 Sb..
+2.11.2 POŽÁRNÍ OCHRANA
+(1) Zásady požární ochrany při pracích na Staveništi ve vyhrazeném obvodu dráhy určuje
+předpis SŽ R14 Řád zabezpečení požární ochrany státní organizace Správa železnic.
+(2) Zvláštní pozornost je nutné věnovat způsobu likvidace vymýcených dřevin a travin pálením.
+Takto je možné spálit ve výjimečných případech v otevřeném ohništi ostatní biologický
+materiál, o který není zájem a není vhodný ani ke štěpkování, a to za předem stanovených
+podmínek, kde lze spalovat jen suché rostlinné materiály neznečištěné chemickými látkami
+vymezenými zákonem č. 201/2012 Sb., o ochraně ovzduší. Pálení se provádí na předem
+určených místech po udělení povolení vydaného příslušným orgánem státní správy a za
+dohledu Hasičského záchranného sboru SŽ. Pálení je zpravidla ve větších městech orgány
+státní správy zakázáno. Povoleno může být pouze se souhlasem či v souladu s obecně
+platnou vyhláškou místně příslušného obecního úřadu.
+(3) Při navrhování stavby zařízení Staveniště musí být splněny technické podmínky požární
+ochrany stanovené v ČSN uvedených v příloze č. 1 části 1 vyhlášky č. 23/2008 Sb.,
+o technických podmínkách požární ochrany staveb.
+(4) Stavba ubytovacího zařízení Staveniště musí být vybavena zařízením autonomní detekce
+a signalizace. Zařízení autonomní detekce a signalizace musí být umístěno v každém pokoji
+určeném pro ubytování osob a v části vedoucí k východu z ubytovacího zařízení Staveniště.
+(5) V ubytovací části stavby zařízení Staveniště nesmí být umístěno tepelné zařízení a tepelná
+soustava se zkapalněnými uhlovodíkovými plyny, včetně zásobních nádob.
+2.12 CITOVANÉ A SOUVISEJÍCÍ DOKUMENTY
+(1) Seznam citovaných a souviseních dokumentů je uveden v Příloze A Kapitoly 1 TKP, která
+je ke stažení na webových stránkách SŽ.
+18/18
+Ověřovací doložka konverze dokumentu
+Ověřuji pod pořadovým číslem 2658965, že tento dokument, který vznikl převedením vstupu v listinné
+podobě do podoby elektronické, skládající se z 18 listů, se doslovně shoduje s obsahem vstupu.
+Ověřující osoba: Petr FOJTA
+Vystavil: Správa železnic, státní organizace
+Datum: 29.04.2022 10:13:53

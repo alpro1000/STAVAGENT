@@ -80,28 +80,38 @@ class KnowledgeBaseLoader:
         start_time = datetime.now()
         
         for category in self.CATEGORIES:
-            category_path = self.kb_dir / category
+            try:
+                logger.info(f"📂 Processing category: {category}")
+                category_path = self.kb_dir / category
 
-            if not category_path.exists():
-                logger.warning(f"⚠️  Category not found: {category}")
+                if not category_path.exists():
+                    logger.warning(f"⚠️  Category not found: {category}")
+                    continue
+
+                # Загружаем категорию
+                self.data[category] = self._load_category(category_path)
+
+                # Загружаем metadata
+                metadata_path = category_path / "metadata.json"
+                if metadata_path.exists():
+                    with open(metadata_path, "r", encoding="utf-8") as f:
+                        self.metadata[category] = json.load(f)
+
+                logger.info(f"✅ Loaded: {category}")
+            except Exception as e:
+                logger.error(f"❌ Failed to load category {category}: {e}", exc_info=True)
+                # Continue loading other categories
                 continue
-
-            # Загружаем категорию
-            self.data[category] = self._load_category(category_path)
-
-            # Загружаем metadata
-            metadata_path = category_path / "metadata.json"
-            if metadata_path.exists():
-                with open(metadata_path, "r", encoding="utf-8") as f:
-                    self.metadata[category] = json.load(f)
-
-            logger.info(f"✅ Loaded: {category}")
         
         self.loaded_at = datetime.now()
         elapsed = (self.loaded_at - start_time).total_seconds()
         
         logger.info(f"✨ Knowledge Base loaded in {elapsed:.2f}s")
-        self._print_summary()
+        
+        try:
+            self._print_summary()
+        except Exception as e:
+            logger.error(f"⚠️  Failed to print KB summary: {e}")
         
         return self.data
     
@@ -118,7 +128,10 @@ class KnowledgeBaseLoader:
         data = {}
         
         # Рекурсивно ищем все файлы
-        for file_path in path.rglob("*"):
+        files = list(path.rglob("*"))
+        logger.debug(f"Found {len(files)} files in {path.name}")
+        
+        for file_path in files:
             if not file_path.is_file():
                 continue
 
@@ -127,6 +140,8 @@ class KnowledgeBaseLoader:
                 continue
             
             try:
+                logger.debug(f"Loading file: {file_path.name}")
+                
                 # Определяем формат и загружаем
                 file_data = self._load_file(file_path)
                 
@@ -135,7 +150,9 @@ class KnowledgeBaseLoader:
                 data[relative_path] = file_data
                 
             except Exception as e:
-                logger.error(f"❌ Failed to load {file_path}: {e}")
+                logger.error(f"❌ Failed to load {file_path.name}: {e}")
+                # Continue loading other files
+                continue
         
         return data
     
@@ -226,14 +243,40 @@ class KnowledgeBaseLoader:
             # Используем PyPDF2 или pdfplumber
             import pdfplumber
             
+            # Skip if file is too large (>50MB) to prevent memory issues
+            file_size_mb = path.stat().st_size / (1024 * 1024)
+            if file_size_mb > 50:
+                logger.warning(f"⚠️  Skipping large PDF ({file_size_mb:.1f}MB): {path.name}")
+                return {
+                    "filename": path.name,
+                    "text": None,
+                    "path": str(path),
+                    "note": f"Skipped (file too large: {file_size_mb:.1f}MB)"
+                }
+            
             text = ""
+            page_count = 0
+            
             with pdfplumber.open(path) as pdf:
-                for page in pdf.pages:
-                    text += page.extract_text() or ""
+                page_count = len(pdf.pages)
+                # Limit to first 50 pages to prevent hanging
+                max_pages = min(50, page_count)
+                
+                for i, page in enumerate(pdf.pages[:max_pages]):
+                    try:
+                        page_text = page.extract_text()
+                        if page_text:
+                            text += page_text
+                    except Exception as e:
+                        logger.debug(f"Failed to extract page {i+1} from {path.name}: {e}")
+                        continue
+                
+                if page_count > max_pages:
+                    text += f"\n\n[... truncated {page_count - max_pages} pages ...]\n"
             
             return {
                 "filename": path.name,
-                "pages": len(pdf.pages) if 'pdf' in locals() else 0,
+                "pages": page_count,
                 "text": text,
                 "path": str(path)
             }
@@ -245,6 +288,14 @@ class KnowledgeBaseLoader:
                 "text": None,
                 "path": str(path),
                 "note": "Install pdfplumber to extract text"
+            }
+        except Exception as e:
+            logger.error(f"❌ Failed to parse PDF {path.name}: {e}")
+            return {
+                "filename": path.name,
+                "text": None,
+                "path": str(path),
+                "note": f"PDF parsing failed: {str(e)}"
             }
     
     def _load_text(self, path: Path) -> str:

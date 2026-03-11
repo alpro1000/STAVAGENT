@@ -1,0 +1,25 @@
+#!/bin/sh
+# Husky pre-push hook - Final checks before push
+
+echo "🚀 Running pre-push checks..."
+
+# Check branch name (должен начинаться с claude/ и заканчиваться session ID)
+BRANCH=$(git branch --show-current)
+echo "📝 Current branch: $BRANCH"
+
+if [[ ! $BRANCH =~ ^claude/.+-[a-zA-Z0-9]{5}$ ]]; then
+  echo "⚠️  Warning: Branch name doesn't match pattern 'claude/*-xxxxx'"
+  echo "   Current: $BRANCH"
+  echo "   Expected: claude/feature-name-abcde"
+fi
+
+# Run full test suite one more time
+echo "🧪 Running full test suite..."
+cd Monolit-Planner/shared && npm test
+if [ $? -ne 0 ]; then
+  echo "❌ Shared tests failed!"
+  exit 1
+fi
+
+echo "✅ All pre-push checks passed!"
+exit 0

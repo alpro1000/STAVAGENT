@@ -1,0 +1,1650 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 8
+KONSTRUKCE KOLEJE A VÝHYBEK
+Třetí - aktualizované vydání
+změna č. 8
+Schváleno generálním ředitelem SŽDC
+dne: 27.3.2013
+č.j.: S 3916/2012-TÚDC
+Účinnost od: 1.5.2013
+Počet stran : 35
+Počet příloh: 0
+Počet stran příloh: 0
+Praha 2013
+Všechna práva vyhrazena.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému nebo
+přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či jinými, bez
+předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+Obsah
+8.1 ÚVOD 4
+8.1.1 Všeobecně 4
+8.1.2 Geodetické zajištění prostorové polohy koleje 4
+8.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 5
+8.2.1 Kolejnice 6
+8.2.2 Kolejnicové podpory - příčné pražce 6
+8.2.2.1 Pražce betonové 6
+8.2.2.2 Dřevěné pražce a mostnice 7
+8.2.2.3 Ocelové pražce, včetně pražců Y 7
+8.2.3 Systémy upevnění a spojení 7
+8.2.4 Nekovový materiál železničního svršku (plasty, pryž) 7
+8.2.5 Zvláštní konstrukce železničního svršku a speciální zařízení dopravní cesty 8
+8.2.6 Konstrukce železničního svršku 8
+8.2.6.1 Kolejový rošt 8
+8.2.6.2 Výhybky a výhybkové konstrukce 8
+8.2.7 Zabezpečení výhybek 9
+8.2.8 Ohřev výhybek 10
+8.2.9 Mazání a zařízení k odstranění mazání výhybek 10
+8.2.10 Hospodaření s vyzískaným materiálem ze stavební činnosti a jeho použití při stavbě
+železničního svršku 10
+8.2.11 Regenerovaný a užitý materiál, podmínky pro použití 11
+8.2.12 Zajišťovací značky 11
+8.3 TECHNOLOGICKÉ POSTUPY PRACÍ 11
+8.3.1 Dílčí celky, jejich montáž mimo staveniště, manipulace a doprava 11
+8.3.1.1 Kolejová pole, vystrojování pražců 11
+8.3.1.2 Kolejnicové pásy 11
+8.3.1.3 Části výhybek a výhybkových konstrukcí 12
+8.3.1.4 Spojovací a přípojná pole ve výhybkovém uspořádání 13
+8.3.2 Podmínky práce na staveništi 14
+8.3.2.1 Způsobilost zhotovitele 14
+8.3.2.2 Práce strojů v kolejišti 14
+8.3.2.3 Výluky 14
+8.3.3 Podmínky pro snesení staré konstrukce železničního svršku 15
+8.3.4 Podmínky pro pokládku nové konstrukce železničního svršku 15
+8.3.4.1 Podmínky pro pokládku koleje 15
+8.3.4.2 Podmínky pro pokládku výhybkových konstrukcí 15
+8.3.5 Úprava směrového a výškového uspořádání kolejí a výhybek, úprava kolejového lože 15
+8.3.6 Svařování kolejnic v kolejích a výhybkách a podmínky pro zřizování bezstykové koleje 16
+8.3.7 Podmínky pro zřízení zvláštních konstrukcí železničního svršku a speciálních zařízení
+dopravní cesty 16
+8.3.8 Úprava pojížděných ploch kolejnic a výhybek 17
+8.3.8.1 Úprava pojížděných ploch nově vložených kolejnic 17
+8.3.8.2 Broušení výhybek 17
+8.3.9 Zajištění prostorové polohy koleje 17
+8.4 DODÁVKA, SKLADOVÁNÍ, PRŮKAZNÍ ZKOUŠKY 18
+8.4.1 Definice kvality, systém zabezpečení kvality 18
+8.4.2 Odběr zásilky, přejímka množství a kvality 18
+8.4.3 Uskladnění materiálů 19
+8.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 19
+8.5.1 Druhy zkoušek 19
+8.5.1.1 Elektrický odpor kolejových polí, měrná svodová admitance 19
+8.5.1.2 Dotažení upevňovadel 19
+8.5.1.3 Defektoskopická kontrola 19
+1
+8.5.1.4 Kontrola geometrie svarů kolejnic a dovolených odchylek návarů kolejnic, srdcovek 19
+8.5.1.5 Izolační stav izolovaných styků 20
+8.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 20
+8.6.1 Dovolené tolerance uspořádání železničního svršku 20
+8.6.2 Dovolené tolerance hodnot elektrických veličin železničního svršku 21
+8.6.3 Dovolené odchylky geodetických měření a hodnocení prostorové polohy koleje 21
+8.6.4 Hodnocení geometrické kvality koleje diagnostickými prostředky 21
+8.6.5 Hodnocení prostorové průchodnosti 22
+8.6.6 Záruky, údržba v záruční době 23
+8.7 KLIMATICKÁ OMEZENÍ 23
+8.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 24
+8.8.1 Předání a převzetí prací 24
+8.8.2 Technicko-bezpečnostní zkouška a zkušební provoz 25
+8.8.3 Ukončení zkušebního provozu 25
+8.8.4 Odstranění závad 26
+8.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 26
+8.9.1 Kontinuální měření geometrické kvality koleje 26
+8.9.2 Sledování prostorové polohy koleje 26
+8.10 VLIV STAVBY NA ŽIVOTNÍ PROSTŘEDÍ 27
+8.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 27
+8.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 28
+8.12.1 Obecně závazné právní předpisy 29
+8.12.2 Technické normy 30
+8.12.3 Dokumenty vnitropodnikové legislativy SŽDC 32
+8.12.4 Přístupy k dokumentům, seznamům a pomůckám SŽDC 35
+8.12.5 Související kapitoly TKP 35
+2
+Seznam zkratek
+AL Mez sledování
+ASP Automatická strojní podbíječka
+A-LIS Ambulantní lepený izolovaný styk
+BK Bezstyková kolej
+CZK Celková známka kvality geometrických parametrů koleje ve smyslu SŽDC SR 103/4(S)
+GNSS Globální navigační satelitní systém
+GŘ Generální ředitel
+GPK Geometrické parametry koleje (výklad ve smyslu ČSN 73 6360-1)
+HZS Hasičský záchranný sbor
+IAL Mez bezodkladného zásahu
+IL Mez zásahu – opravy
+LIS Lepený izolovaný styk
+MD Měřicí drezína pro železniční svršek
+MIB Magnetický informační bod
+MV Měřicí vůz pro železniční svršek
+OTP Obecné technické podmínky
+PPK Prostorová poloha koleje
+OŘ Oblastní ředitelství (organizační složka SŽDC)
+SPPK Správce prostorové polohy koleje
+ST Správa trati (místně příslušná organizační jednotka provozovatele dráhy zajišťující správu trati)
+SW Software
+SŽDC Správa železniční dopravní cesty, státní organizace
+SŽDC OP Odbor provozuschopnosti Generálního ředitelství SŽDC
+SŽDC OTH Odbor traťového hospodářství Generálního ředitelství SŽDC
+TBZ Technicko-bezpečnostní zkouška
+TPD Technické podmínky dodací
+TTP Tabulky traťových poměrů
+TÚDC Technická ústředna dopravní cesty
+UTZ Určené technické zařízení trati
+ZKV Známka kvality geometrických parametrů koleje ve smyslu SŽDC SR 103/4(S)
+ŽBP Železniční bodové pole
+3
+8.1 ÚVOD
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP.
+8.1.1 Všeobecně
+Kapitola určuje podmínky pro konstrukci a zřízení kolejí a výhybek železničních drah v majetku České republiky,
+se kterými má právo hospodařit Správa železniční dopravní cesty, státní organizace (dále jen „železničních drah
+ČR“) s maximální projektovanou rychlostí do 200 km.h-1.
+Pro údržbu a opravné práce se tyto podmínky použijí v souladu s ustanovením kapitoly 1 TKP, čl. 1.1.1 a 1.1.2.
+Pojmem „výhybka“ se obecně rozumí rovněž výhybková konstrukce ve smyslu předpisu SŽDC S3, díl IX.
+Tato kapitola neřeší plně podmínky pro koleje a výhybky tratí s maximální projektovanou rychlostí nad 200 km.h-1,
+pro pevnou jízdní dráhu a pro koleje a výhybky bez kolejového lože (mostní konstrukce a tunely bez kolejového
+lože, kolejové váhy, dezinfekční koleje, prohlížecí jámy, točny, přesuvny, křížení s tramvajovou dopravou a další
+speciální konstrukce). Odlišné podmínky pro takové konstrukce a zařízení musí být řešeny vypracováním
+zvláštních technických kvalitativních podmínek (dále jen „ZTKP“).
+Podmínky pro zřízení kolejového lože jsou uvedeny v kapitole 7 TKP.
+Pojem „technický dozor stavebníka“ (dále i „TDS“) nově na základě aktuálního znění stavebního zákona nahrazuje
+dříve zaužívaný pojem „stavební dozor“ dle výkladu pojmů kapitoly 1. TKP, Třetího - aktualizovaného vydání,
+ve znění změny č.6.
+8.1.2 Geodetické zajištění prostorové polohy koleje
+Geodetická dokumentace pro stavby železničních drah ČR musí vyhovovat všeobecným zásadám a legislativním
+dokumentům uvedeným pro zeměměřickou činnost v kapitole 1 tohoto dokumentu (dále jen „TKP 1“) a dále
+v předpisu SŽDC S3, díl III.
+Metody a přesnost geodetického zaměření, způsob výpočtů, zpracování dat a formu předávaných výsledků
+prostorové polohy koleje, včetně jejího zajištění stanovuje a upřesňuje správce prostorové polohy koleje (dále
+i „SPPK“).
+Prostorová poloha koleje (dále i „PPK“) ve smyslu ČSN 73 6360-2, se zajišťuje a kontroluje metodami
+stanovenými v předpisu SŽDC S3, díl III.
+Rozsah a technologii zajištění projektované prostorové polohy kolejí a výhybek stanoví objednatel v zadávacích
+podmínkách. Návrh rozmístění zajišťovacích značek vypracovaný zhotovitelem projektu zajištění prostorové
+polohy odsouhlasí místně příslušná organizační jednotka provozovatele dráhy zajišťující správu trati (ST) a SPPK.
+Použití zajišťovacích značek musí odpovídat předpisu SŽDC S3, díl III a technologie geodetického kontinuálního
+měření jsou uskutečněny v souladu s provozně – technickými předpisy SŽDC pro oblast železniční geodézie.
+Obsah předávané geodetické dokumentace pro provizorní i definitivní zajištění prostorové polohy koleje a uvedení
+stavby do zkušebního provozu je uveden v předpisu SŽDC S3, díl III. Objednatel stavby zajistí vyhotovení,
+příp. dopracování a předání dokumentace pro zajištění prostorové polohy koleje (definitivní i provizorní) podle
+tohoto předpisu. Za dokumentaci provizorního zajištění prostorové polohy koleje je nutno považovat pouze
+tu dokumentaci, která vychází ze zaměření hřebových značek pro účely provedení stavby v nových základech
+stožárů trakčního vedení před dosažením stabilní polohy stožárů ve smyslu předpisu SŽDC S3, díl III.
+Při osazení zajišťovacích značek na stavbách, kde stožáry trakčního vedení nejsou předmětem rekonstrukce
+(tj. zůstávání stávající) se provede definitivní zajištění koleje nejpozději v přípravné fázi stavby. Musí být součástí
+projektové dokumentace stavby.
+Před zahájením prací na zřízení železničního svršku (včetně kolejového lože) vyzve zástupce objednatele SPPK
+k posouzení homogenity vytyčovací sítě a zajišťovacích značek. Pro zajištění prostorové polohy koleje mohou být
+použity jako výchozí jen ověřené a správcem prostorové polohy koleje schválené body železničního bodového
+pole (dále jen „ŽBP“) – viz TKP 1.
+Za tím účelem bude zhotovitelem stavby předložena ke kontrole dokumentace v minimálním rozsahu stanoveném
+pro provizorní zajištění prostorové polohy koleje (podle vzorů předpisu SŽDC S3, díl III).
+Tato dokumentace musí být zpracována a kontrolována i v případě, že se jedná o provizorní zajištění prostorové
+polohy koleje pro účely stavby.
+4
+Při stavbě jsou využívány metody stanovené předpisem SŽDC S3, pro úpravy směrového a výškového uspořádání
+koleje podle předpisu SŽDC (ČD) S3/1. Uvedené vytyčení podrobných bodů projektované polohy koleje
+zabezpečí zhotovitel.
+8.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+Ve smyslu těchto TKP smějí být používány pouze takové materiály, konstrukční celky a součásti železničního
+svršku, jejichž používání bylo schváleno SŽDC (do roku 2005 ČD) a jsou doloženy posouzením shody
+dle Nařízením vlády č. 163/2002 Sb. ve znění NV č.312/2005 Sb,. Pro užitý a regenerovaný materiál vyzískaný při
+stavební činnosti z tratí železničních drah ČR platí čl. 8.2.10 a 8.2.11 těchto TKP.
+Při volbě soustavy železničního svršku musí být dodržena směrnice GŘ SŽDC č. 28/2005 „Koncepce používání
+jednotlivých tvarů kolejnic a typů upevnění v kolejích železničních drah ve vlastnictví ČR“ a ustanovení předpisu
+SŽDC S3, díl VII.
+Materiál musí odpovídat:
+− obecným technickým podmínkám a technickým podmínkám dodacím,
+− vzorovým listům a technickým normáliím SŽDC (dále jen vzorové listy) podle seznamu ve služební rukověti
+SŽDC (ČD) SR103/1(S) a podle SŽDC SR103/3(S), SŽDC (ČD) SR103/6(S) a SŽDC SR103/6-2(S), případně
+výkresům ověřovaných konstrukcí (dále jen „VOK“),
+− projektové dokumentaci schválené SŽDC.
+Obecné technické podmínky (dále i „OTP“) vydané SŽDC (do roku 2005 ČD) obsahují údaje a zásady nutné pro
+funkčnost daného výrobku a jsou závazné.
+Konkrétní technické podmínky dodací (dále jen „TPD“) jsou zpracovávány jednotlivými výrobci a schvalovány
+SŽDC jako smluvně závazné technické specifikace budoucích kupních smluv. Na jejich základě jsou uzavírány
+smlouvy na dodávky a prováděno ověřování kvality výrobků.
+Provozní ověřování nových materiálů nebo výrobků v konstrukci kolejí a výhybek se smí provádět pouze
+se souhlasem SŽDC OTH v souladu se systémem péče o kvalitu uplatňovaným SŽDC. Souhlas s provozním
+ověřováním však musí být již součástí zadávací dokumentace stavby.
+Materiál objednává zhotovitel podle dokumentace stavby a v souladu s těmito TKP, vždy s odkazem na konkrétní
+TPD.
+Kvalita určených výrobků, které mají bezprostřední vliv na kvalitu konstrukce železničního svršku a provozu-
+schopnost železniční dopravní cesty, musí být vždy ověřena pro každou dodávku SŽDC pověřeným orgánem
+(pověřeným kontrolorem jakosti SŽDC) tak, jak je uvedeno v příslušných TPD. Takto ověřené dodávky musí být
+doloženy originálem nebo řízenou kopií „Protokolu o ověření jakosti“. Jsou to:
+− výhybky a výhybkové konstrukce (včetně náhradních dílů),
+− dilatační zařízení,
+− kolejnice,
+− podkladnice,
+− upevňovadla a vybrané drobné kolejivo (vrtule a pražcové šrouby, VP šrouby, svěrkové a spojkové šrouby,
+matice, pružné kroužky, distanční kroužky, svěrky tuhé),
+− pryžové podložky pod patu kolejnice,
+− kolejnicové spojky ocelové,
+− LIS,
+− pražce příčné a výhybkové,
+− mostnice.
+Způsob ověření kvality je stanoven v TPD.
+U konstrukcí (sestav součástí), které se vzhledem k jejich specifikaci kompletují až ve stavbě („in-situ“), jako
+např. konstrukce A-LIS, se v rámci kontroly kvality jejich zřízení, provádí i kontrola kvality jednotlivých
+komponentů podle dokladů dodávaných příslušnými výrobci dle příslušných TPD. O zřízení A-LIS vede zhotovitel
+montážní deník A-LIS.
+5
+V TPD jsou rovněž stanoveny příslušné doklady vydávané výrobcem na každou dodávku, které nesou
+své specifické označení podle uzavřené dohody jako např.: prohlášení o shodě s objednávkou, inspekční certifikát,
+protokol o výstupní jakostní kontrole, osvědčení o jakosti a kompletnosti, hutní atest, atest výrobku apod. Pro účely
+této kapitoly TKP se nadále používá obecný název tohoto dokladu, tj. „Prohlášení výrobce o kvalitě a kompletnosti
+dodávky“.
+Aktuální přehled schválených TPD a související technické dokumentace je k dispozici v elektronické podobě
+na internetu na adrese: http://typdok.tudc.cz nebo www.szdc.cz (odkaz: Provozuschopnost dráhy/Technické
+požadavky na výrobky, zařízení a technologie pro ŽDC/Železniční svršek).
+8.2.1 Kolejnice
+Ve smyslu těchto TKP se jedná o Vignolovy kolejnice (symetrické širokopatní), srdcovkové kolejnice, asymetrické
+kolejnice (jazykové) a žlábkové kolejnice, jejichž žlábek vyhovuje průjezdu kol železničních vozidel a pro které
+platí předpis SŽDC S3, díl IV.
+Použití příslušného tvaru a třídy oceli nových nebo regenerovaných kolejnic určuje dokumentace ve smyslu
+předpisu SŽDC S3, díl IV a VII, a směrnice GŘ SŽDC č. 28/2005.
+Objednávka kolejnic musí z hlediska kvality materiálu a jeho použitelnosti kromě jiného obsahovat:
+− číslo TPD,
+− tvar a délky kolejnic včetně požadavků na případné vrtání otvorů pro spojkové šrouby; (viz však čl. 8.3.1.2)
+− třídu oceli,
+− případně další speciální požadavky.
+Kolejnice musí být vyrobeny, ověřeny a dodány podle TPD schválených SŽDC. Dodávky musí být doloženy
+originálem nebo řízenou kopií „Protokolu o ověření jakosti“ a všechny kolejnice musí být na čele označeny
+razidlem pověřeného kontrolora jakosti SŽDC. Každá dodávka musí být doložena prohlášením výrobce o kvalitě
+a kompletnosti dodávky.
+Kolejnice nesmí mít v žádném místě profilu defekty vzniklé např. nedodržením technologie přepravy, montáže atd.
+a nesmí vykazovat deformace vzniklé např. nesprávnou manipulací. Povrchová vrstva temene hlavy kolejnice
+nesmí být narušena případným nevhodným doplňováním materiálu kolejového lože (drcení kameniva na temenu
+hlavy kolejnice kolejovými vozidly) nebo hloubkovou korozí.
+8.2.2 Kolejnicové podpory - příčné pražce
+Použití nových, zánovních, užitých nebo regenerovaných pražců včetně druhů jejich materiálů, typů a kvality řeší
+dokumentace v souladu s předpisy SŽDC S3, díl V, VII, XI, XV a SŽDC (ČD) S68.
+Do koleje nesmí být vloženy pražce, u nichž nesprávnou technologií, skladováním, manipulací či montáží došlo
+ke vzniku vad nebo k porušení či ohrožení jejich funkčnosti (např. obnažení předpínací výztuže, poškození
+hmoždinek apod.) – viz předpis SŽDC (ČD) S68.
+Každá dodávka nových pražců musí být opatřena doklady podle příslušných TPD.
+8.2.2.1 Pražce betonové
+Tvary, rozměry a požadavky na betonové příčné a výhybkové pražce stanovují OTP „Betonové pražce
+pro železniční dráhy“ č.j. 14503/07-OP (platnost od 1.6.2007), příslušné TPD a jsou uvedeny v předpisu
+SŽDC S3, díl V a služební rukověti SŽDC SR103/3(S) a na příslušných vzorových listech.
+Při objednávce pražců je nutno uvést, zda jsou požadovány pražce s předmontovaným upevněním nebo
+bez upevnění. Pražce pro bezpodkladnicové upevnění se dodají zpravidla předmontované včetně pryžových
+podložek pod patu kolejnice (tzv. vystrojené pražce).
+Každá dodávka musí být doložena originálem nebo řízenou kopií „Protokolu o ověření jakosti“ a všechny pražce
+musí být označeny značkou pověřeného kontrolora jakosti SŽDC. Každá dodávka musí být doložena prohlášením
+výrobce o kvalitě a kompletnosti dodávky.
+6
+8.2.2.2 Dřevěné pražce a mostnice
+Tvary, rozměry i kvalita dřevěných pražců a mostnic jsou uvedeny v OTP „Dřevěné kolejnicové podpory
+pro železniční dráhy“ č.j. 22693/06-OP, TPD, ČSN EN 13145 „Železniční aplikace – Tratě – Dřevěné příčné
+a výhybkové pražce“ a dále v předpisu SŽDC S3, díl V a služební rukověti SŽDC SR103/3(S). Na mostech
+s mostnicemi se použijí mostnice podle OTP č.j. 22693/06-OP, TPD a TNŽ 736261.
+Do kolejí železničních drah ČR se nesmějí vložit pražce či mostnice, jejichž způsob impregnace nevyhovuje
+ustanovením OTP č.j. 22693/06-OP, TPD, ČSN EN 13145, ČSN 49 0609, ČSN 49 0616-2 a ČSN 65 8050.
+Každá dodávka musí být doložena originálem nebo řízenou kopií „Protokolu o ověření jakosti“ a všechny pražce
+a mostnice musí být označeny dvěma hřeby (značkou výrobce a značkou pověřeného kontrolora jakosti SŽDC).
+Každá dodávka musí být doložena prohlášením výrobce o kvalitě a kompletnosti dodávky.
+8.2.2.3 Ocelové pražce, včetně pražců Y
+Tvary, rozměry a požadavky na ocelové pražce Y stanovují příslušné TPD a jsou uvedeny v předpisu SŽDC S3,
+díl V a služební rukověti SŽDC SR103/3(S) a na příslušných vzorových listech.
+Podmínky použití ocelových pražců jsou stanoveny předpisem SŽDC S3, díl V, XI a předpisem SŽDC S3/2.
+Při objednávce pražců je nutno uvést, zda jsou požadovány pražce s předmontovaným upevněním (tzv. vystrojené)
+nebo bez upevnění (nevystrojené). Ocelové pražce Y se zpravidla dodávají vystrojené.
+Každá dodávka musí být doložena originálem nebo řízenou kopií „Protokolu o ověření jakosti“. Každá dodávka
+musí být doložena prohlášením výrobce o kvalitě a kompletnosti dodávky.
+8.2.3 Systémy upevnění a spojení
+Způsob upevnění a spojení součástí železničního svršku stanoví dokumentace v souladu se vzorovými listy
+a předpisem SŽDC S3, díl VI, VII a směrnice GŘ ČD 28/2005. Jednotlivé komponenty šroubových spojení musí
+být ošetřeny ekologicky nezávadnými prostředky schválenými SŽDC (do roku 2005 ČD).
+Pro jednotlivé kovové součásti upevnění platí.
+Obecné technické podmínky č.j. 60 555/99-O13 - pro upevnění kolejnic
+Obecné technické podmínky č.j. 60 788/99-O13 - pro pružné svěrky a spony
+Obecné technické podmínky č.j. 58 961/2002-O13 - Vrtule pro železniční svršek
+Obecné technické podmínky č.j. 58 960/02-O13 - pro ocelové šrouby a matice pro železniční svršek
+Každá dodávka nových součástí upevnění a spojení musí být opatřena originálními doklady podle příslušných TPD
+včetně originálu nebo řízené kopie „Protokolu o ověření jakosti“, není-li v TPD stanoveno jinak. Každá dodávka
+musí být doložena prohlášením výrobce o kvalitě a kompletnosti dodávky.
+8.2.4 Nekovový materiál železničního svršku (plasty, pryž)
+Nekovovým materiálem železničního svršku se zde rozumějí prvky vyrobené z elastomerů a polymerních
+materiálů, tj. z pryže, neplněných konstrukčních plastů a polymerních kompozitů. Podmínky pro:
+− plastové izolační kolejnicové spojky stanovují OTP č.j. 55 498/95-S7/STAV,
+− pružné podložky pod patu kolejnice v bezpodkladnicovém upevnění stanovují OTP č.j. 57045/96-S13,
+− pružné podložky pod patu kolejnice v podkladnicovém upevnění stanovují OTP č.j. 60789/99-O13,
+− regenerační vložky do dřevěných i betonových pražců stanovují OTP č.j. 55 497/95-S7/STAV,
+− plastové vložky do betonových pražců stanovují OTP č.j. 55 496/95-S7/STAV,
+− upevnění kolejnic stanovují OTP č.j. 60 555/99-O13,
+− pružné podložky pod podkladnice stanovují OTP č.j. 56 710/2001-O13.
+Používání nekovových prvků v konstrukci železničního svršku se řídí podmínkami a ustanoveními předpisu
+SŽDC S3, díl VI a služební rukověti SŽDC SR103/3(S) a technologickými postupy montáže jednotlivých typů
+upevnění stanovenými výrobcem a schválenými SŽDC (do roku 2005 ČD).
+7
+Dodávky nekovových součástí železničního svršku musí být opatřeny originálními doklady podle příslušných TPD
+včetně „Protokolu o ověření jakosti“ nebo jejich řízenými kopiemi, není-li v TPD stanoveno jinak. Každá dodávka
+musí být doložena prohlášením výrobce o kvalitě a kompletnosti dodávky.
+8.2.5 Zvláštní konstrukce železničního svršku a speciální zařízení dopravní cesty
+Zvláštní konstrukce železničního svršku jsou uvedeny v předpisu SŽDC S3, díl VIII. Konkrétně se jedná o:
+− konstrukční úpravy na železničních přejezdech a přechodech,
+− pražcové kotvy,
+− přídržné a ochranné kolejnice,
+− kolejnicová dilatační zařízení,
+− konstrukční úpravy na čisticích a prohlížecích jámách, dezinfekčních kolejích a myčkách kolejových vozidel
+− konstrukční úpravy na točnicích, přesuvnách a kolejových váhách,
+− ozubnicové dráhy.
+Konstrukční úpravy železničního svršku na mostech jsou uvedeny v předpisu SŽDC S3, díl XII.
+Speciální zařízení dopravní cesty montovaná na konstrukci železničního svršku jsou uvedena v předpisu SŽDC S3,
+následovně:
+− zařízení spádovišť, kolejové brzdy včetně měřičů hmotnosti v dílu XIII,
+− indikátory horkoběžnosti a indikátory plochých kol v dílu XIII,
+− propojky (stykové, jazykové a srdcovkové), lanová propojení (kosá, výhybková, příčná, středová,
+mezikolejová, zkratovací, obcházecí a přípojná) a ukolejnění, v dílu XIV,
+− kolejnicové mazníky v dílu XIII,
+− magnetické značky (pro měřicí vůz železničního svršku a MIB pro automatické vedení vlaků-AVV) v dílu XIII,
+− prvky sdělovacího a zabezpečovacího zařízení umístěné na železničním svršku v dílu XIII,
+− ohřev výhybek elektrický i plynový a profukovače výhybek, v dílu IX.
+Izolované styky kolejnic (LIS dílenské a ambulantní, izolované styky se spojkami z plastických hmot) jsou
+uvedeny v předpisu SŽDC S3, díl XIV včetně podmínek pro používání.
+Obecně platí, že veškeré použité výrobky pro zvláštní konstrukce železničního svršku a speciální zařízení dopravní
+cesty musí být vyráběny, zkoušeny, dodávány a používány v souladu s platnými vzorovými listy, výrobní
+technickou dokumentací schválenou SŽDC (do roku 2005 ČD) a podle TPD schválených SŽDC.
+8.2.6 Konstrukce železničního svršku
+8.2.6.1 Kolejový rošt
+Kolejový rošt musí být smontován v souladu s ustanoveními předpisů SŽDC S3, díl VI, VII, IX, SŽDC (ČD) S3/1
+a ČSN 73 6360-2.
+Kolejový rošt se zhotovuje buď technologií odděleného kladení, nebo kladením předmontovaných kolejových polí
+v délkách podle dokumentace, resp. konstrukčních celků v případě výhybek a výhybkových konstrukcí.
+Výstroj trati jako kolejnicové propojky a lanová propojení kolejnic jsou součástí určeného technického zařízení
+trati (dále i UTZ) a podmínky jejich dodávek a montáž se řídí kapitolami 27 a 31 TKP.
+8.2.6.2 Výhybky a výhybkové konstrukce
+Všechny výhybky a výhybkové konstrukce musí být vyrobeny, ověřeny a dodány podle TPD nebo výrobní
+dokumentace odsouhlasené SŽDC (do roku 2005 ČD) a v souladu se směrnicí SŽDC č. 77 „Technická specifikace
+nových výhybek a výhybkových konstrukcí soustav UIC 60 a S 49 2. generace“ č.j. S 36645/10-OTH s účinností
+od 1.10.2010 (dále jen „směrnice SŽDC č. 77“). Dodávky musí být doloženy originálem „Protokolu o ověření
+jakosti“ nebo jeho řízenou kopií a každá výhybka nebo výhybková konstrukce musí být označena na štítku
+razidlem pověřeného kontrolora jakosti SŽDC (do 06/2008 ČD).
+8
+Konstrukční a materiálové uspořádání výhybek a výhybkových konstrukcí je uvedeno v předpisu SŽDC S3, díl IX,
+služební rukověti SŽDC (ČD) SR103/6(S) a SŽDC SR103/6-2(S). Geometrické uspořádání ve výhybkách
+a výhybkových konstrukcích, musí vyhovovat ustanovením normy ČSN 73 6360-1,2. Pro stavby mohou být
+použity pouze konstrukce schválené SŽDC (do roku 2005 ČD) nebo pro něž byl vydán souhlas s ověřováním
+nových konstrukcí - viz oddíl 8.2 této kapitoly TKP.
+Pro výhybkové betonové pražce platí ustanovení předpisu SŽDC S3, díl V a příslušná OTP.
+Pro výhybkové žlabové pražce platí výnos č.j. 58 310/99-O13 z 15.12.1999 „Schválení žlabového pražce
+pro výhybky soustavy UIC 60 a S 49 2. generace”; rozsah použití žlabových pražců se řídí směrnicí SŽDC č. 77.
+Pro výrobu, zkoušení, dodávání a provoz čelisťových a hákových závěrů platí příslušné TPD.
+Demontáž a montáž čelisťového závěru mohou provádět jen pracovníci s platným „Osvědčením způsobilosti
+k provádění částečné demontáže a zpětné montáže čelisťových závěrů“ a výrobce čelisťových závěrů ve smyslu
+ustanovení předpisu SŽDC (ČD) S3/1.
+Obloukové výhybky jsou vytvářeny transformací základního tvaru jednoduchých výhybek. Poloměry transformace
+stanoví projektová dokumentace. V objednávce se uvedou poloměry jednotlivých větví a jejich orientace
+(jednostranná, oboustranná).
+Obloukové výhybky soustav S 49 1. generace a R 65 se dodávají s kolejnicemi střední části jednostranně
+děrovanými a o 50 mm delšími, než je jejich jmenovitá největší délka. Obloukové výhybky UIC 60 a S 49
+2. generace jsou vyráběny a dodávány v požadovaných poloměrech podle objednávky s vrtáním kolejnic pro jeden,
+vzdálenější otvor.
+Pro regenerované výhybky musí průběh trajektorie přechodu kola z křídlové kolejnice na klín srdcovky a naopak
+odpovídat přechodu průměrně opotřebovaných kol. Kontrola se provádí prostorovou šablonou PŠR - 1 podle
+výnosu č.j. 92/98-O13. Hodnocení stavu výměnové části se provádí šablonou PŠR – 3 podle výnosu
+č.j. 59 654/2002-O13 a obecně dle výnosu č.j 55 474/03-O13.
+Pro regeneraci výhybek platí OTP č.j. 21 240/07-OP ze dne 25.7.2007.
+Výhybkové konstrukce jsou zásadně dodávány včetně přestavného zařízení a žlabových pražců (pokud jsou
+navrženy) a s přechodovými podkladnicemi 1:80 a/nebo 1:40, popřípadě s upraveným profilem hlavy kolejnice,
+pokud není objednatelem požadováno jinak. Výhybky na betonových pražcích jsou zásadně dodávány s již
+předmontovanou smontovanou výměnovou a střední částí, nebo výjimečně jen s vystrojenými pražci v celé
+výhybce, s ohledem na předchozí schválení technologie stavby objednatelem (viz oddíl 8.3 této kapitoly TKP).
+Pro jednoznačnost objednávky musí být v dokumentaci stanovena přesná specifikace pro každý tvar a typ výhybky
+podle předpisu SŽDC S3, díl IX a směrnice SŽDC č. 77 včetně požadavku na vrtání pro spojkové otvory, vodivá
+propojení a montáže LIS, druh a počet přechodových podkladnic, typ srdcovky, závěru, případně další požadavky.
+Pro výhybky které budou svařeny, musí být objednávány kolejnicové části s vrtáním otvorů pouze pro vzdálenější
+spojkový šroub od čela kolejnice (pokud není možné použít pro montáž nevrtané kolejnice).
+Pro přechod z jednoho tvaru kolejnice na jiný tvar v hlavních a předjízdných kolejích se provádí v souladu
+s předpisem SŽDC S3 díl IV. Přípustnost použití přechodových aluminotermických svarů a přechodových spojek
+definuje předpis S3, díl IV. V nově vkládaných výhybkách a výhybkových konstrukcích nesmějí být použity
+přechodové kolejnice nebo přechodové styky. Vlastní úprava přechodu na jinou soustavu železničního svršku musí
+být provedena v přípojném poli mimo oblast s dlouhými společnými pražci.
+Pro dočasné ovládání výhybky s čelisťovým závěrem během stavby (před zapnutím výhybky do ústředního stavění)
+vybavené mechanickým výměníkem se připevní k pražci (délky 2,6 m) ocelový díl sloužící k prodloužení
+výměníkového pražce, na který lze upevnit mechanický výměník obvyklým způsobem. Pro tento způsob ovládání
+je nutno doplnit závorovací tyč o stavitelné dorazy, kterými se seřídí rozevření jazyků.
+8.2.7 Zabezpečení výhybek
+Zabezpečení výhybek stanovuje kapitola 27 TKP.
+V železničních drahách ČR mohou být použity pouze výhybky se schválenými typy závěrů. Jsou-li ve výhybce
+použity systémy kontroly polohy jazyka a/nebo pohyblivého hrotu srdcovky smějí být namontovány pouze
+v místech určených vzorovými listy a seřízeny na předepsané krajní polohy. Výhybky při zapojení
+zabezpečovacího zařízení musí splňovat všechny mechanické parametry předepsané předpisem SŽDC S3, díl IX.
+9
+8.2.8 Ohřev výhybek
+Ve výhybkách může být použity elektrický ohřev; plynový může být použit jen jako náhrada stávajícího ohřevu
+stejného typu. Zařízení musí být provedena podle schválených DAP SŽDC. Montáž, obsluha a údržba ohřevů
+výhybek jsou řešeny schválenými TPD a předpisem SŽDC E2. Pro zařízení ohřevu výhybek v místech provozu
+kolejových obvodů musí být v dokumentaci stavby předepsány a při jejím provádění dodrženy podmínky, které
+vylučují ovlivnění jejich funkce. Pro elektrizovanou trať platí též čl. 31.3.10 TKP.
+8.2.9 Mazání a zařízení k odstranění mazání výhybek
+Ošetřování kluzných ploch kluzných stoliček a pohyblivých součástí přestavného zařízení ve výměnové a/nebo
+srdcovkové části výhybky je třeba provádět dle pokynů výrobce mazacího prostředku a dle provozní potřeby
+výhybky. Je možné používat pouze mazací prostředky schválené SŽDC OTH. Zhotovitel zajistí předepsané
+ošetření kluzných ploch pouze při zřizování; periodické ošetřování kluzných ploch není předmětem záruky na dílo.
+V případě osazení výměnové části výhybky a/nebo srdcovky s pohyblivým hrotem zařízením k odstranění mazání,
+tj. válečkovými stoličkami, kdy jazyk a/nebo PHS při přestavování není v kontaktu s kluznou plochou kluzné
+stoličky, ošetřují se mazacím prostředkem pouze pohyblivé součásti přestavného zařízení. Kluzné stoličky
+je v tomto případě třeba ošetřovat pouze pro zajištění jejich odolnosti proti korozi, a to dle provozní potřeby
+výhybky.
+Ve výhybkách mohou být použity pouze válečkové stoličky schválené SŽDC OTH. Rozsah použití jednotlivých
+typů válečkových stoliček a další náležitosti jsou uvedeny v příslušných TPD. Montáž, seřízení a údržbu
+válečkových stoliček smí provádět pouze oprávněná osoba (oprávnění vydává výrobce válečkových stoliček na
+základě proškolení), a to v souladu s návodem vydaným výrobcem válečkových stoliček a při respektování
+ustanovení předpisu SŽDC S3, díl IX a XIII.
+8.2.10 Hospodaření s vyzískaným materiálem ze stavební činnosti a jeho použití při
+stavbě železničního svršku
+Nakládání s vyzískaným materiálem železničního svršku se řídí předpisem SŽDC S3, díl XV. Organizační
+a ekonomické zásady pro další využití vyzískaného materiálu železničního svršku při stavební činnosti
+na základním prostředku SŽDC stanovuje směrnice SŽDC č. 42 „Hospodaření s vyzískaným materiálem“. Veškerý
+materiál vyzískávaný zhotovitelem při stavbě zůstává vždy majetkem SŽDC.
+Jednotlivé součásti konstrukce vyzískávaného kolejového roštu musí být kategorizovány SŽDC pověřeným
+odborným specialistou (kategorizátorem). Samotné kategorizaci, resp. konečné kategorizaci musí předcházet
+předběžná kategorizace, tzv. předkategorizace, která slouží k posouzení využitelnosti vyzískaného materiálu a je
+nezbytná pro účely zpracování projektové dokumentace stavby.
+Materiál vyjímaný při stavební činnosti z trati musí být vyzískáván, tříděn, značen, ukládán, veden v evidenci
+a následně druhotně využit:
+a) přímo - jako materiál zánovní nebo užitý,
+b) pro regeneraci,
+c) k prodeji, případně k sešrotování či likvidaci - materiál nepoužitelný.
+Způsob dělení a vyjmutí materiálu železničního svršku odsouhlasuje místně příslušná organizační jednotka
+provozovatele dráhy zajišťující správu trati v souladu s předpisem SŽDC (ČD) S3/1.
+Pokyny pro další využití vyzískaného materiálu stanoví dokumentace stavby, která vychází z předběžné
+kategorizace (předkategorizace) v souladu s předpisem SŽDC S3, díl VII a XV. Tato může být doplněna zápisy
+z jednání Komise pro hospodaření s vyzískaným materiálem z majetku SŽDC. Pokud druhotné využití materiálu
+dokumentace neřeší, musí zhotovitel vypracovat návrh, který odsouhlasí objednatel po dohodě se správcem
+železničního svršku. Návrh musí obsahovat:
+− způsob demontáže, místa dělení kolejnic s ohledem na jejich další použití, způsob kategorizace, roztřídění,
+naložení nebo uložení na místo určené objednatelem,
+− ochranu před znehodnocením a krádeží.
+10
+8.2.11 Regenerovaný a užitý materiál, podmínky pro použití
+Použití zánovního, užitého nebo regenerovaného materiálu řeší dokumentace v souladu s předpisem SŽDC S3,
+díl IV, VII a XV.
+8.2.12 Zajišťovací značky
+Prostorová poloha koleje se zajišťuje značkami podle předpisu SŽDC S3, díl III.
+Zřizování zajišťovacích značek probíhá v závislosti na technologii stavby dle zásad kapitoly 8 čl. 8.1.2.
+Výroba, osazování a ošetřování zajišťovacích značek je stanoveno příslušnými TPD a schválenými techno-
+logickými postupy.
+8.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+V případě, že zhotovitel použije jinou technologii montáže, manipulace, dopravy, snesení či pokládky konstrukcí
+kolejí a výhybek v důsledku použití jiných strojů či zařízení, než obsahuje oddíl 8.3 této kapitoly TKP, musí být
+tato technologie předem zhotovitelem zpracována a odsouhlasena SŽDC TÚDC, nebo v určených případech
+SŽDC OTH a objednatelem (technickým dozorem stavebníka).
+8.3.1 Dílčí celky, jejich montáž mimo staveniště, manipulace a doprava
+8.3.1.1 Kolejová pole, vystrojování pražců
+Montáž kolejových polí musí být prováděna v souladu s předpisem SŽDC (ČD) S3/1 a služební rukovětí
+SŽDC (ČD) SR103/2(S), se vzorovými listy, případně podle pokynů výrobce jednotlivých součástí schválených
+SŽDC (do roku 2005 ČD) a podle dokumentace tak, aby kolejová pole svými rozměry i vlastnostmi vyhověla
+podmínkám stanoveným ČSN 73 6360-2 a předpisem SŽDC S3, díl VI, VII, XI a XIV.
+Při montáži je nutno dbát na:
+− dodržení předepsaného rozdělení pražců a kolmost pražců k ose koleje podle předpisu SŽDC S3, díl XI,
+− správný sled kolejnic podle dokumentace,
+− správnou polohu součástí upevnění kolejnic podle předpisu SŽDC S3, díl VI a VII,
+− dodržení projektovaného rozšíření rozchodu koleje v obloucích o poloměru R < 275 m včetně předepsaných
+výběhů,
+− dodržení výrobcem předepsaného technologického postupu montáže upevňovadel.
+Při manipulaci musí být kolejová pole zavěšena takovým způsobem, aby nemohlo vlivem vlastní hmotnosti pole
+dojít k trvalé deformaci kolejnic či upevňovadel nebo jinému poškození součástí kolejového roštu.
+Přeprava kolejových polí smí být prováděna jen způsobem určeným technologickým postupem zpracovaným
+zhotovitelem, který podléhá odsouhlasení SŽDC OP a zástupcem objednatele (technickým dozorem stavebníka).
+Způsob naložení kolejových polí, upevnění nákladu a přepravy naložených vozidel stanoví předpisy
+SŽDC (ČD) D2/81 a S8/3.
+Vystrojování pražců (předmontáž) pro pokládku obnovovacím strojem se provádí analogicky jako část montáže
+kolejových polí. Jednotlivé vrstvy pražců na vozech nebo skládkách musí být odděleny dřevěnými proklady
+v souladu s ustanoveními předpisu SŽDC S3, díl V.
+8.3.1.2 Kolejnicové pásy
+Kolejnice se svařují do kolejnicových pásů ve stabilních svařovnách, postupným přivařováním kolejnic v ose
+koleje a výjimečně na roštu. Přitom musí být dodržena ustanovení předpisů SŽDC S3, SŽDC S3/2
+a SŽDC (ČD) S3/5. Zhotovitel svarů musí mít platné „Osvědčení způsobilosti ke svařování“ vydané SŽDC OTH.
+Volba technologie a metody svařování musí být předem projednány s místně příslušnou organizační jednotkou
+provozovatele dráhy zajišťující správu trati.
+Nové kolejnice pro bezstykovou kolej musí být neděrované. Smějí mít pouze otvory pro připojení propojek a
+lanových propojení, jejichž velikost a umístění odpovídá předpisu SŽDC S3, díl XIV.
+11
+Boční manipulace s kolejnicovými pásy ve stabilních svařovnách musí být prováděna manipulačními a vázacími
+prostředky tak, aby nedošlo k poškození těchto kolejnicových pásů a to v souladu s technologickým postupem
+zpracovaným zhotovitelem, který podléhá odsouhlasení SŽDC TÚDC. Práce jeřábů musí být synchronizována tak,
+aby nemohlo dojít k deformaci kolejnicových pásů.
+Manipulace s kolejnicovými pásy na stavbě musí být prováděna v souladu s ustanoveními předpisu
+SŽDC (ČD) S3/1.
+Způsoby ložení, zajištění nákladu a přepravy kolejnicových pásů určují předpisy SŽDC (ČD) S3/1,
+SŽDC (ČD) S8/3, SŽDC (ČD) D2 a SŽDC (ČD) D2/81.
+8.3.1.3 Části výhybek a výhybkových konstrukcí
+Zásady konstrukčního uspořádání výhybek a výhybkových konstrukcí jsou uvedeny v předpisu SŽDC S3, díl IX.
+Montáž výhybek a výhybkových konstrukcí je stanovena předpisem SŽDC (ČD) S3/1, služební rukovětí
+SŽDC (ČD) SR103/6(S), služební rukovětí SŽDC SR103/6-2(S) a technickou dokumentací:
+a) dispozičním plánem,
+b) montážním plánem,
+c) podrobným výkresem výměnové části,
+d) podrobným výkresem srdcovkové části,
+e) výkresem stavěcího zařízení.
+Uspořádání pražců v mezipolích jednoduchých kolejových spojek o osových vzdálenostech kolejí menších než
+4,75 m určuje dokumentace výrobce výhybky. V jednostranných obloukových výhybkách je třeba zachovat
+vějířovité uspořádání pražců s přihlédnutím ke změnám délek kolejnic střední části výhybky.
+Montáž žlabových pražců se řídí pokyny vydanými výrobcem výhybek.
+Zřízení izolovaných styků a vyvrtání otvorů pro připojení propojek v nových výhybkách musí být přednostně
+uplatněno u výrobce. Druh a provedení izolovaných styků (LIS kalený - nekalený, A-LIS), průměr a počet otvorů
+v jednotlivých místech připojení propojek musí být uvedeny ve specifikaci k objednávce výhybky v souladu
+s projektovou dokumentací. Pokud nebudou izolované styky součástí dodávky výhybky, musí postup jejich zřízení
+odsouhlasit TDS, který zajistí projednání postupu u místně příslušného OŘ.
+Při montáži výhybek všeobecně je nutno dbát zejména na:
+− správné rozdělení pražců podle dispozičního plánu (zvláště důležité u výhybek na betonových pražcích
+a v oblasti závěrů),
+− včasné ošetření kluzných ploch kluzných stoliček a spodních ploch jazyků podle technologie schválené
+SŽDC OTH,
+− správnou manipulaci s dlouhými jazyky - aby nedošlo k jejich deformaci nevhodným zavěšením,
+− přesnou polohu začátku jazyka vzhledem k otvoru v neutrální ose opornice s ohledem na teplotu jazyka
+(viz SŽDC S3, díl IX, čl.39),
+− správnou polohu pružných spon pružného vnitřního upevnění opornic v dutině kluzné stoličky a u paty
+opornice,
+− dotažení pružných svěrek na vnější straně opornice do předepsané polohy, případně nasazení pružných spon,
+které musí být provedeno až po nasazení vnitřního pružného upevnění opornic,
+− dodržení minimální šířky žlábku mezi hlavou opornice a hlavou odlehlého jazyka po celé volné délce
+jazyka – min. 60 mm, přičemž hodnota tohoto žlábku nemá překročit 75 mm u jednozávěrových a 70 mm
+u vícezávěrových výhybek,
+− doléhání jazyka ke všem jazykovým opěrkám; vůle mezi stojinou jazyka a jazykovou opěrkou musí vyhovět
+předpisu SŽDC S3, díl IX,
+− přiléhání jazyka k hlavě opornice; vůle mezi jazykem a hlavou opornice musí vyhovět předpisu SŽDC S3,
+díl IX,
+− správnou polohu žebrových plochých podkladnic u betonových výhybkových pražců uvedenou ve vzorových
+listech,
+12
+− dodržení mezních stavebních odchylek rozchodu koleje ve výhybce včetně vzájemných vzdáleností pracovní
+hrany přídržnice a pojížděné hrany klínu srdcovky nebo odpovídající křídlové kolejnice podle přílohy A
+ČSN 736360-2,
+− správnou polohu hrotu klínu srdcovky; při úpravách délek kolejnicových součástí a/nebo svařování výhybky
+nesmí dojít k porušení jejího geometrického uspořádání,
+− vložení polyetylenových podložek pod všechny kluzné stoličky, abnormální podkladnice i běžné žebrové
+podkladnice,
+− to, aby příslušné pryžové podložky byly vloženy pod paty opornic, pojížděných kolejnic ve střední
+a srdcovkové části výhybky a pod srdcovkou,
+− to, aby nebyly elektricky propojeny ocelové pražce s kolejnicemi
+− použití dvojitých pružných kroužků pod hlavy vrtulí a pražcových šroubů,
+− to, aby přechod svislé polohy kolejnice na úklon běžné koleje pomocí přechodových podkladnic byl vždy mimo
+výhybku podle předpisu SŽDC S3, díl IX. Přechod stanoví dispoziční plán konkrétní konstrukce. Přechodové
+podkladnice jsou součástí dodávky výhybky,
+− výhybky nesmějí být jakkoliv kráceny, s výjimkou středových kolejnic obloukových výhybek,
+− osazení topných tyčí elektrického ohřevu výhybky musí být v souladu s předpisem SŽDC S3, díl IX, Kap. III,
+nesmí narušit funkci pohyblivých částí výhybky a při montáži topných tyčí musí být dodržena jejich přesná
+poloha daná příslušným vzorovým listem EOV,
+− udržování kluzných ploch kluzných stoliček ve výměně a případně srdcovce s PHS v čistotě,
+v případě osazení výměny a/nebo PHS válečkovými stoličkami dbát na jejich montáž a seřízení oprávněnou
+osobou (oprávnění vydává výrobce válečkových stoliček na základě proškolení) a v souladu s návodem vydaným
+výrobcem válečkových stoliček.
+V nově vkládaných výhybkách a výhybkových konstrukcích nesmějí být použity přechodové kolejnice nebo
+přechodové styky (a to ani ve výměnových ani koncových stycích). Vlastní úprava přechodu na jinou soustavu
+železničního svršku musí být provedena v přípojném poli mimo oblast s dlouhými společnými pražci. U stávajících
+konstrukcích může být odchylná úprava ponechána do doby nejbližší rekonstrukce.
+Pro manipulace se smontovanými částmi prováděné jeřáby musí zhotovitel vypracovat technologický postup
+ve smyslu SŽDC (ČD) SR103/2(S) a SŽDC (ČD) S111 a předložit ho objednateli ke schválení předem.
+Při manipulaci s výhybkami na betonových pražcích musí být tyto zavěšeny podle pokynů výrobce výhybky
+uvedených v TPD schválených SŽDC (do roku 2005 ČD) a vyhovět předpisu SŽDC (ČD) S3/1, kde jsou uvedeny
+i zásady pro vypracování technologického postupu.
+Obloukové výhybky a výhybkové konstrukce se montují podle výrobní dokumentace výrobce, kterou obdrží
+zhotovitel současně s výhybkou (výhybkovou konstrukcí). Tuto dokumentaci následně při přejímce prací zhotovitel
+předává místně příslušné organizační jednotce provozovatele dráhy zajišťující správu trati.
+Zvláštní pozornost musí být věnována zejména:
+− předepsanému rozšíření rozchodu koleje odchylnému od základního tvaru výhybky,
+− úpravě délky kolejnic střední části pro daný poloměr oblouku, pokud nejsou dodány již v délkách stanovených
+dokumentací,
+− změně rozdělení pražců ve střední části výhybky,
+− tvaru oblouků s dodržením předepsaného vzepětí v obou větvích.
+Výhybky určené k vybavení čelisťovým závěrem musí být před jeho montáží:
+− vyrovnány a podbity v celé své délce do projektované polohy,
+− s roztečí pražců odpovídající vzorovým listům a předpisu SŽDC S3, díl IX,
+− s mezipražcovými prostory určenými pro montáž výměnových závěrů s odstraněným přebytečným štěrkem.
+8.3.1.4 Spojovací a přípojná pole ve výhybkovém uspořádání
+U výhybek na dřevěných pražcích musí zhotovitel zpracovat a předložit na místně příslušné OŘ k odsouhlasení
+dispoziční plán spojovacích a přípojných polí s rozdělením pražců, pokud není řešen v dokumentaci. V návrhu
+nesmí dojít k přesahu hlav pražců, délka hlavy pražce musí být nejméně 150 mm od osy vnější vrtule. Pokud
+budou dřevěné pražce kráceny, musí být znovu zajištěny protištěpnými destičkami a řez ošetřen proti hnilobě.
+Pro výhybky na betonových pražcích musí být dispoziční plán součástí dokumentace výrobce.
+13
+8.3.2 Podmínky práce na staveništi
+8.3.2.1 Způsobilost zhotovitele
+Zaměstnanci zhotovitele pracující v kolejišti železničních drah ČR musí splňovat podmínky zdravotní způsobilosti
+podle vyhlášky č. 101/1995 Sb.
+Odborná způsobilost zaměstnanců je stanovena směrnicí SŽDC č. 50 „Požadavky na odbornou způsobilost
+dodavatelů při činnostech na dráhách provozovaných státní organizací Správa železniční dopravní cesty“
+v aktuálním znění. V této směrnici jsou stanoveny rozsahy znalostí k vykonání příslušných odborných zkoušek pro
+jednotlivé pracovní činnosti.
+Pro některé další činnosti SŽDC dále vyžaduje zvláštní odbornou způsobilost:
+− zeměměřičskou činnost ve výstavbě podle zákona č. 200/1994 Sb. a vyhlášky č. 31/1995 Sb. mohou provádět
+nebo její výsledky ověřovat pouze úředně oprávnění zeměměřičští inženýři (§ 13÷18 výše uvedené vyhlášky),
+− svářečské práce na železničním svršku mohou vykonávat jen právnické a fyzické osoby, které jsou držiteli
+platného „Osvědčení způsobilosti ke svařování“ vydaného SŽDC OTH,
+− montáž A-LIS mohou provádět jen právnické a fyzické osoby, které jsou držiteli platného „Osvědčení
+způsobilosti k montáži A-LIS“ vydaného SŽDC,
+− broušení pojížděných částí výhybek mohou vykonávat jen právnické a fyzické osoby, které jsou držiteli
+platného „Osvědčením způsobilosti k broušení výhybkových součástí“ vydaného SŽDC TÚDC,
+− demontáž a zpětnou montáž čelisťových závěrů výhybek smějí vykonávat pouze fyzické a právnické osoby,
+které jsou držiteli platného „Osvědčení způsobilosti k provádění částečné demontáže a zpětné montáže
+čelisťových závěrů“ vydaného SŽDC TÚDC,
+− nedestruktivní zkoušení kolejnic, srdcovek, svarů kolejnic a návarů mohou provádět jen právnické a fyzické
+osoby, které jsou držiteli platného dokladu „Osvědčení způsobilosti k nedestruktivnímu zkoušení“ vydaného
+SŽDC OTH.
+− Montáž konzolových zajišťovacích značek mohou vykonávat jen právnické a fyzické osoby, které jsou držiteli
+platného „Osvědčení způsobilosti k montáži konzolových zajišťovacích značek“ vydaného SŽDC OTH,
+− Měření a vyhodnocování kvality geometrie koleje měřicím vozíkem KRAB mohou vykonávat jen právnické
+a fyzické osoby, které jsou držiteli platného „Osvědčení způsobilosti k měření měřicím vozíkem KRAB“
+vydaného SŽDC TÚDC (do 31.7.2012 SŽDC OTH).
+8.3.2.2 Práce strojů v kolejišti
+Na kolejích železničních drah ČR mohou být provozována pouze speciální vozidla schválená pro provoz na tratích
+v ČR ve smyslu vyhlášky č. 173/1995 Sb.
+Speciální vozidla neschválená pro provoz na tratích železničních drah ČR ve smyslu vyhlášky č. 173/1995 Sb.
+mohou být na železničních drahách ČR provozována pouze se souhlasem Drážního úřadu a po splnění jím
+stanovených podmínek.
+Na stavbách v kolejišti a v jeho bezprostřední blízkosti mohou být použity stavební stroje, jejichž specifické
+podmínky a parametry pro provoz, technologické využití a opravy jednotlivých typů speciálních vozidel na tratích
+ve správě SŽDC stanoví předpis SŽDC (ČD) S8/3. Podmínky pro technologické využití speciálních vozidel
+na tratích provozovaných SŽDC, pokud tyto nejsou v ČR typově schválena, stanoví SŽDC na základě návrhu
+zpracovaného zhotovitelem prací. Schválením technologie práce strojů je pověřená SŽDC TÚDC dle ustanovení
+směrnice SŽDC č. 67.
+Za technický stav použité mechanizace je plně odpovědný zhotovitel stavby. V případě, že technický dozor
+stavebníka zjistí závadu na technickém stavu použité mechanizace, je oprávněn požadovat okamžitou nápravu.
+Odstávka takových mechanismů, jejich důsledky a vyvolané náklady jdou v tomto případě na vrub zhotovitele
+stavby.
+Bezpečnostní opatření pro práci těchto strojů stanoví kapitola 1 TKP.
+8.3.2.3 Výluky
+Organizování výluk řeší kapitola 1 TKP.
+14
+8.3.3 Podmínky pro snesení staré konstrukce železničního svršku
+Pro snesení staré konstrukce železničního svršku platí ustanovení předpisu SŽDC (ČD) S3/1.
+Použitá technologie (pracovní postup) musí umožnit další využití vyzískávaného svrškového materiálu,
+v co největším rozsahu; zásady pro dělení kolejnicového materiálu stanoví předpis SŽDC (ČD) S3/1. Hospodaření
+s vyzískaným materiálem železničního svršku viz čl. 8.2.10 TKP.
+Při zpracování technologie pro manipulaci s výhybkami musí být dodrženy zásady uvedené v předpisu
+SŽDC (ČD) S3/1.
+Při práci na tratích s malými poloměry, případně na velkých sklonech překračujících hodnoty stanovené
+pro příslušné stroje v předpisu SŽDC (ČD) S8/3, musí být zejména pro kladecí a trhací stroje vypracována
+zhotovitelem zvláštní opatření, která musí být schválena odpovědným orgánem provozovatele dráhy.
+Při demontáži kolejového roštu se postupuje podle předpisu SŽDC (ČD) S3/1.
+8.3.4 Podmínky pro pokládku nové konstrukce železničního svršku
+Základní podmínkou zahájení pokládky kolejového roštu je odsouhlasení pláně tělesa železničního spodku podle
+kapitoly 6 TKP a kolejového lože podle kapitoly 7 TKP.
+Technologie pokládky železničního svršku pro použití na stavbách železničních drah ČR musí být v souladu
+s předpisem SŽDC (ČD) S3/1. Využití odlišné technologie musí být odsouhlaseno odpovědným orgánem
+provozovatele dráhy SŽDC TÚDC a objednatelem (technickým dozorem stavebníka).
+8.3.4.1 Podmínky pro pokládku koleje
+Zásady pokládky koleje jsou uvedeny v předpisu SŽDC (ČD) S3/1.
+8.3.4.2 Podmínky pro pokládku výhybkových konstrukcí
+Zásady pokládky výhybkových konstrukcí jsou uvedeny v předpisu SŽDC (ČD) S3/1.
+Při pokládce výhybkových konstrukcí s průběžně svařenými kolejnicovými pásy o délce větší než 35 m, resp. 50 m
+je nutné dodržet předpis SŽDC S3, díl XI, kap. 7.
+8.3.5 Úprava směrového a výškového uspořádání kolejí a výhybek, úprava kolejového
+lože
+Podmínky a zásady platné pro úpravu směrového a výškového uspořádání kolejí a výhybek a úpravu kolejového
+lože jsou uvedeny v předpisu SŽDC (ČD) S3/1 a v kapitole 7 TKP. Profil kolejového lože musí být upraven
+v souladu s předpisem SŽDC S3, díl X a XII a v souladu s předpisem SŽDC S3/2.
+Postup prací a jejich přejímek při směrové a výškové úpravě kolejí a výhybek jsou SŽDC zpracovány
+do přehledové tabulky, která je k dispozici na internetu:
+http://www.szdc.cz/provozuschopnost-drahy/technicke-pozadavky/zeleznicni-svrsek/soubory-ke-stazeni/ppp.html
+včetně odkazů na související dokumenty a předpisy a jejich znění, kde jsou průběžně aktualizovány.
+Po novostavbě či rekonstrukci koleje nebo výhybky musí zhotovitel provést následnou úpravu směrového
+a výškového uspořádání koleje (výhybky) ve smyslu předpisu SŽDC (ČD) S3/1. Tato úprava je součástí zhotovení
+stavby.
+Při každé směrové a výškové úpravě koleje ASP, resp. výhybek ASPv (dále jen „ASP“) musí být pořízen záznam
+technologických veličin stroje provádějící tuto úpravu; tj. nastavený zdvih (pro každý kolejový pás samostatně,
+umožní-li to SW ASP) a směr, event. doba svírání a hloubka podbíjení (dle možností SW ASP). Tento doklad
+je nezbytnou součástí dokumentace pro přejímku prací v koleji, resp. výhybkách a slouží pro ověření kontroly
+práce ASP ve smyslu SŽDC (ČD) S3/1, zejména pro ověření dodržování povolených zdvihů a posunů ASP
+a návazně dosaženou kvalitu geometrie koleje. Záznam technologických veličin musí být pořízen i při práci
+dynamického stabilizátoru v kterémkoli technologickém kroku. Digitální záznam technologických veličin archivuje
+zhotovitel min. po dobu trvání záruky provedeného díla.
+Technický dozor stavebníka potvrzuje zhotoviteli doklad, že práce ASP byla prováděna přesnou metodou, pokud
+je tato na základě ustanovení předpisu SŽDC (ČD) S3/1 vyžadována.
+15
+8.3.6 Svařování kolejnic v kolejích a výhybkách a podmínky pro zřizování bezstykové
+koleje
+Svařování kolejnic v kolejích a výhybkách je pouze technickým prostředkem pro zřizování bezstykové koleje (dále
+i „BK“). Za výběr zhotovitele svarů a ověření jeho způsobilosti ke svařování odpovídá zhotovitel BK. Zhotovitel
+BK zabezpečuje a řídí práce zhotovitele svarů ve smyslu předpisu SŽDC S3/2, do vlastních technologických
+postupů svařování však není oprávněn zasahovat.
+Svařovat mohou jen zhotovitelé (podzhotovitelé) způsobilí ve smyslu části 8.3.2.1 TKP. Práce smějí vykonávat jen
+v rozsahu v osvědčení uvedeném a jen podle technologických postupů svařování schválených SŽDC (do roku 2005
+ČD) při respektování podmínek požární bezpečnosti stanovených v Pokynu k plnění „Směrnice SŽDC č. 56
+o požární bezpečnosti při svařování ve státní organizaci Správa železniční dopravní cesty“ při svářečských pracích
+na železničním svršku, č.j. 33674/09-OTH ze dne 29.6.2009.
+Zřizování bezstykové koleje a svařování výhybek se řídí předpisem SŽDC S3/2.
+Zřízení bezstykové koleje je podmíněno provedením směrové a výškové úpravy koleje při dodržení následujících
+ustanovení. Vytýčení pro tuto úpravu se provádí přesnou metodou ve smyslu předpisu SŽDC (ČD) S3/1. SPPK
+musí před zřízením bezstykové koleje ověřit prostorovou polohu koleje a současně s ní provádí ověření
+zajišťovacích značek. Zhotovitel musí organizačně zajistit dostatečný časový prostor pro provedení tohoto ověření
+SPPK před zřízením bezstykové koleje. Výsledek ověření PPK a zajišťovacích značek musí obdržet objednatel,
+TDS a místně příslušná organizační jednotka provozovatele dráhy zajišťující správu trati. Před obdržením
+kladného výsledku ověření PPK od SPPK nesmí zhotovitel zahájit zřizování BK. Příslušná dokumentace musí být
+zpracována a tato kontrola provedena i v případě, že se jedná o prozatímní zajištění prostorové polohy koleje
+pro účely stavby.
+8.3.7 Podmínky pro zřízení zvláštních konstrukcí železničního svršku a speciálních
+zařízení dopravní cesty
+Dilatační zařízení se zřídí podle vzorových listů v místech určených projektovou (prováděcí) dokumentací.
+Při montáži dilatačních zařízení se musí dodržet vzájemné nastavení dilatujících částí v závislosti na teplotě podle
+údajů uvedených v tabulce na vzorových listech.
+Propojky a lanová propojení se ke kolejnicím připojují pouze způsobem schváleným SŽDC (do roku 2005 ČD)
+v souladu se schválenou dokumentací stavby, předpisem SŽDC S3, díl XIV, technickou dokumentací určeného
+technického elektrického zařízení a předpisem SŽDC (ČD) T 120. Propojky a lanová propojení nesmí zasahovat
+do prostoru činnosti podbíjecích pěchů strojních podbíječek ve smyslu předpisu SŽDC S3, díl XIII. Vedeny musí
+být v kolejišti tak, aby v co nejmenší míře omezovaly práci s upevňovadly. Vodiče lanových propojení musí být
+vhodným způsobem upevněny k pražcům (např. třmeny schváleného typu). Propojky ani lanová propojení nesmí
+být připojeny k jazyku výhybky v jeho pohyblivé části. Při poruše vodivého propojení smí být použito náhradní
+vodivé propojení schváleného typu podle schválených podmínek.
+Způsob ukolejnění stožárů trakčního vedení a ostatních součástí dopravní cesty nacházejících se v prostoru
+ohrožení trakčním vedením musí odpovídat schválené dokumentaci stavby, předpisu SŽDC S3, díl XIV, technické
+dokumentaci určeného technického elektrického zařízení, předpisu SŽDC (ČD) T120 a zásadám uvedeným
+v kap. 31 TKP.
+Práce na železničním svršku a spodku na elektrizovaných tratích, na tratích s kolejovými obvody železničního
+zabezpečovacího zařízení a s provozem elektrických zařízení (např. elektrický ohřev výhybek, zařízení
+pro předtápění souprav, zabezpečovací zařízení, ústřední a dálkové ovládání, indikátory horkoběžnosti aj.)
+napájených přes transformátory nebo měniče připojené na trakční vedení musí být předem projednány s místně
+příslušnou organizační složkou provozovatele elektrického zařízení, který stanoví technické a technologické
+podmínky. Zápis o projednání a odsouhlasení postupu prací musí být nedílnou součástí smlouvy o dílo (viz předpis
+SŽDC (ČD) S3/1).
+16
+8.3.8 Úprava pojížděných ploch kolejnic a výhybek
+8.3.8.1 Úprava pojížděných ploch nově vložených kolejnic
+Úprava pojížděných ploch kolejnic se provádí broušením nebo frézováním. Zásady úpravy pojížděných ploch
+kolejnic jsou stanoveny předpisem SŽDC (ČD) S3/1 a kvalitativní požadavky normou ČSN EN 13231-3.
+Při novostavbě či rekonstrukci
+− koridorových tratí bez ohledu na traťovou rychlost a
+− ostatních celostátních tratí v úsecích s traťovou rychlostí vyšší než 80 km/h
+je nutno u nově vložených kolejnic v hlavních kolejích upravit pojížděnou plochu brousicími vlaky nebo
+frézovacími stroji.
+Tato základní (první, tzv. preventivní) úprava pojížděných ploch kolejnic je jako výkon součástí zhotovení stavby.
+Provádí se přednostně při nejbližší „brousicí“ kampani po dokončení směrové a výškové úpravy koleje vyhovující
+pro rychlost vyšší než 80 km/h a po zřízení bezstykové koleje, a to do jednoho roku od zahájení zkušebního
+provozu. Organizátor „brousící“ kampaně nebo specializovaná firma provádějící broušení nebo frézování mimo
+„brousicí“ kampaň si u SŽDC OTH vždy vyžádá pokyny pro úpravu pojížděných ploch kolejnic. V pokynech
+SŽDC OTH upřesní kvalitativní požadavky na úpravu pojížděných ploch a stanoví předepsané výsledné profily
+kolejnic. Kampaň smí podle potřeby organizovat i SŽDC prostřednictvím pověřené stavební správy nebo jiné
+organizační jednotky.
+Úpravu pojížděných ploch kolejnic broušením nebo frézováním zajišťují zhotovitelé jednotlivých staveb. Tito
+zhotovitelé rovněž uzavírají smlouvy s organizátorem „brousicí“ kampaně nebo se specializovanou firmou
+provádějící broušení nebo frézování a odpovídají za hladký průběh práce brousicího vlaku nebo frézovacího stroje
+ve vztahu k provozování drážní dopravy a související legislativě. Zhotovitelé musí při zajišťování úpravy
+pojížděných ploch kolejnic dodržet nasmlouvané termíny staveb.
+Zapracování povinnosti základní úpravy pojížděných ploch kolejnic do smluvního vztahu se zhotovitelem zajišťuje
+místně příslušná Stavební správa SŽDC nebo dotčený objednatel stavby, který rovněž sjednotí požadavky
+zhotovitelů na úpravu pojížděných ploch kolejnic tak, aby byly vytvořeny podmínky pro ucelenou kampaň. Dohled
+na kvalitu prací brousícího vlaku nebo frézovacího stroje zajišťuje místně příslušné OŘ ve spolupráci
+se SŽDC OTH. Protipožární opatření při práci brousícího vlaku nebo frézovacího stroje jsou uvedena v oddíle
+8.11 TKP.
+8.3.8.2 Broušení výhybek
+Zásady broušení pojížděných částí výhybek a kvalitativní požadavky jsou stanoveny předpisem SŽDC (ČD) S3/1.
+Základní broušení výhybek je součástí zhotovení stavby. Termín a podmínky provádění základního broušení
+stanoví předpis SŽDC (ČD) S3/1.
+Broušení opravné a po navařování prováděné v rámci stavby na užitých a regenerovaných, případně i na stávajících
+výhybkách se rovněž řídí podmínkami stanovenými předpisem SŽDC (ČD) S3/1.
+8.3.9 Zajištění prostorové polohy koleje
+Způsob zajištění musí vyhovět předpisu SŽDC S3, díl III.
+V případě, kdy podpěry trakčního vedení, a tedy i zajišťovací značky osazuje zhotovitel před zřízením koleje, musí
+zajišťovací značky po osazení zaměřit a zajistit doplnění geodetické dokumentace o projektovaný vztah osy koleje
+a nivelety temene kolejnicového pásu k zajišťovacím značkám.
+Případný jiný postup osazení zajišťovacích značek či rozsah a způsob doplnění odpovídající části dokumentace
+stavby stanoví smlouva.
+Součástí dokumentace zajištění prostorové polohy koleje musí být i technologie kontroly a údržby systému
+zajištění PPK, umožňující splnění kritérií přesnosti stanovených ČSN 73 6360-2 – viz předpis SŽDC S3, díl III.
+Zástupce místně příslušné organizační jednotky provozovatele dráhy zajišťující správu trati provádí kontrolu
+osazení ZZ, zda jsou umístěny v souladu s ustanovením předpisu SŽDC S3, díl III. Doklad o výsledku kontroly
+osazení ZZ musí obdržet objednatel a daný doklad se následně stává součástí dokladů o kontrole PPK.
+17
+Kontrolu osazení ZZ provádí rovněž SPPK současně při ověřování PPK před zřízením bezstykové koleje
+dle čl. 8.3.6.
+Místně příslušná organizační jednotka provozovatele dráhy zajišťující správu trati má na stavbách převzatých
+do provozu povinnost zajišťovat kontrolní měření prostorové polohy koleje v termínech stanovených předpisem
+SŽDC (ČD) S 2/3.
+Za účelem dodržení požadovaného zajištění prostorové polohy koleje je SŽDC zpracován souhrnný přehled
+postupu prací, jejich přejímek a ověřovacích měření SPPK při směrové a výškové úpravě kolejí a výhybek
+v návaznosti na související dokumenty a předpisy, včetně jejich znění do přehledové tabulky, která je k dispozici
+na internetu:
+http://www.szdc.cz/provozuschopnost-drahy/technicke-pozadavky/zeleznicni-svrsek/soubory-ke-stazeni/ppp.html,
+kde jsou veškeré uvedené údaje průběžně aktualizovány.
+8.4 DODÁVKA, SKLADOVÁNÍ, PRŮKAZNÍ ZKOUŠKY
+8.4.1 Definice kvality, systém zabezpečení kvality
+Kvalita stavebního díla je definována souvisejícími technickými normami a interními předpisy a dokumenty SŽDC
+(ČSN, OTP) a kapitolou 1 TKP.
+Zhotovitel musí pro stavbu použít jen výrobky stanovené dokumentací. Technologii stavby železničního svršku
+musí zhotovitel předem odsouhlasit s technickým dozorem stavebníka a při realizaci ji dodržet. Technologie musí
+respektovat specifika drážního provozu a minimalizovat jeho narušení. Technologie nesmí ohrozit bezpečnost
+železniční dopravy. Musí také vyhovovat požadavkům ekologickým. Případné změny v technologii musí předem
+odsouhlasit technický dozor stavebníka.
+8.4.2 Odběr zásilky, přejímka množství a kvality
+Odběrem zásilky se rozumí její převzetí zhotovitelem ve výrobně, ve skladech obchodníků s materiálem nebo
+od přepravce podle zásad uvedených v příslušné smlouvě o dílo. U vyjmenovaných dílů a celků (viz oddíl 8.2 této
+kapitoly TKP) ověřuje kvalitu přímo u výrobce uživatelem pověřený orgán (tj. kontrolor jakosti SŽDC) podle
+parametrů stanovených v příslušných schválených TPD a označí je stanoveným způsobem. Originál nebo řízená
+kopie „Protokolu o ověření jakosti“ výrobku pověřeným kontrolorem jakosti SŽDC je součástí dokladů zásilky.
+Toto ověření kvality nezbavuje dodavatele odpovědnosti za kvalitní plnění dodávek a poskytnuté záruky
+a nenahrazuje přejímku odběratelem. Minimální rozsah přejímky dodávky je stanoven příslušnými TPD.
+Od přepravce přebírá zhotovitel zásilku na základě průvodního dokladu a zjišťuje přitom, zda je zásilka
+nepoškozená, úplná a zda souhlasí dodané množství. Součástí dodávky jsou doklady, které musí obsahovat číslo
+příslušných TPD, případně odkaz na schválenou výrobní dokumentaci součástí železničního svršku a dále uvedené
+náležitosti. Zhotovitel je povinen provádět průběžnou kontrolu kvality a parametrů materiálů a výrobků určených
+pro zhotovení stavby minimálně v rozsahu stanoveném ve schválených TPD. Souběžně provádí kontrolu podle
+smluvních podmínek technický dozor stavebníka.
+Průvodní doklady ke každé dodávce musí obsahovat tyto údaje:
+a) číslo a datum vyhotovení,
+b) plný nebo zkrácený název výrobce, provozovny, expedičního místa,
+c) název a sídlo odběratele,
+d) místo určení dodávky,
+e) množství dodávaného materiálu,
+f) název, druh, třída,
+g) datum odeslání,
+h) označení „Technických podmínek dodacích“,
+i) „Protokol o ověření jakosti“ výrobku pověřeným kontrolorem jakosti SŽDC, pokud to stanovují TPD,
+j) osvědčení výrobce o kvalitě a kompletnosti dodávky.
+Každý materiál nebo konstrukční prvek, který není z hlediska kvalitativních parametrů přesněji specifikován nebo
+má odlišné vlastnosti od požadavků specifikovaných v příslušných TPD, smí být zabudován nebo použit jen
+na základě písemného souhlasu SŽDC OTH.
+18
+8.4.3 Uskladnění materiálů
+Způsob zacházení s materiálem železničního svršku včetně uložení na úložištích před zabudováním stanoví obecně
+předpisy SŽDC S3 v příslušných dílech, SŽDC (ČD) S3/1, OTP a TPD výrobce, případně se postupuje podle
+pokynů objednatele. Způsoby dopravy, manipulace a skladování musí být zásadně takové, aby nedošlo k poškození
+nebo jinému znehodnocení materiálu.
+Materiál železničního svršku musí být uložen mimo průjezdný průřez tak, aby se jeho poloha nemohla účinky
+provozu měnit.
+Veškerý materiál je třeba zabezpečit před poškozením, znečištěním a krádeží.
+Zhotovitel je povinen použít při manipulaci s pražci, kolejnicemi a výhybkovými součástmi vázací, závěsné nebo
+transportní prostředky, které zajistí jejich nepoškození.
+Při uskladnění nového i vyzískaného materiálu musí zhotovitel dodržet ekologická hlediska (viz oddíl 8.10 této
+kapitoly TKP).
+8.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+Odebírání vzorků se železničního svršku netýká. Výjimku tvoří odběr zabudovaného materiálu zhotovitelem
+pro reklamační řízení v době stavby nebo záruky.
+Kontrolou kvality staveb železničního svršku se rozumí kromě kvality materiálu i kontrola dodržování
+odsouhlasené technologie práce a kvality jízdní dráhy, zejména GPK.
+8.5.1 Druhy zkoušek
+8.5.1.1 Elektrický odpor kolejových polí, měrná svodová admitance
+Velikost měrné svodové admitance je dána vyhláškou č. 177/1995 Sb. Stav jednotlivých součástí železničního
+svršku musí v místech provozu kolejových obvodů trvale vykazovat nejvýše hodnoty uvedené v § 18 odst. 4 výše
+uvedené vyhlášky, předpise SŽDC S3, díl XIV a příslušných OTP a TPD. Parametry, tolerance a způsob měření
+obsahuje ČSN 34 2613 ed.2 a předpis SŽDC (ČD) T 120. Výsledky měření musí zhotovitel předložit
+při přejímacím řízení.
+8.5.1.2 Dotažení upevňovadel
+Správnost montáže upevňovadel se kontroluje postupem, stanoveným předpisem SŽDC S3, díl VI, OTP, TPD,
+případně dokumentací výrobce pro příslušný typ upevnění. Podmínky funkčnosti jednotlivých typů upevnění
+kolejnic, poloha upevňovadel včetně doporučených a limitních hodnot utahovacích momentů jsou uvedeny
+v předpisu SŽDC S3, díl VI.
+8.5.1.3 Defektoskopická kontrola
+Defektoskopická kontrola nových kolejnic a jazyků je součástí výstupní kontroly u výrobce kolejnic.
+Defektoskopickou kontrolu kolejnic a výhybek vyjímaných z koleje, které jsou určeny k dalšímu použití, zajišťuje
+místně příslušná organizační jednotka provozovatele dráhy zajišťující správu trati. Doklad o poslední
+defektoskopické kontrole přitom nesmí být starší než 3 měsíce. Tento doklad musí být předložen technickému
+dozoru stavebníka za účelem ověření. Kontrola musí být prováděna podle předpisu SŽDC (ČD) S3/4, vady jsou
+vyhodnocovány podle předpisu SŽDC (ČD) S67.
+Kontrolu mohou vykonávat jen právnické nebo fyzické osoby, které splňují podmínky uvedené v čl. 8.3.2.1 této
+kapitoly TKP.
+8.5.1.4 Kontrola geometrie svarů kolejnic a dovolených odchylek návarů kolejnic, srdcovek
+Na tratích vybrané sítě bez ohledu na rychlost a na ostatních tratích s rychlostí vyšší než 80 km/h (dle údajů TTP
+či nejvyšší projektované rychlosti), musí zhotovitel v průběžných traťových kolejích, v dopravních kolejích
+hlavních a prvních předjízdných provádět a dokladovat kontrolu geometrie všech svarů elektronickým měřidlem
+se záznamovým zařízením, na ostatních tratích, resp. v ostatních staničních kolejích je postačující měření
+19
+elektronickým, případně mechanickým měřidlem nebo ocelovým pravítkem a klínovou nebo listovou měrkou
+se čtením po 0,1 mm. Pro kontrolu mohou být používána jen měřidla schválená SŽDC (do 30.6.2008 ČD). Délka
+měřicí základny měřidla je 1000 mm. Výsledky měření se uvedou do zápisu nebo se zaznamenají do deníku
+svařování a předloží k přejímacímu řízení.
+Kontrolu geometrie všech návarů musí zhotovitel provádět prostorovou šablonou nebo ocelovým pravítkem
+(v případech stanovených technologickým postupem navařování odsouhlaseným SŽDC) a klínovou nebo listovou
+měrkou se čtením po 0,1 mm. Pro kontrolu mohou být používány jen šablony schválené SŽDC (do 30.6.2008 ČD).
+Výsledek měření se uvede do deníku o opravě srdcovky (jazyka) navařováním a předloží k přejímacímu řízení.
+Povolené odchylky jsou uvedeny v čl. 8.6.1 této kapitoly TKP.
+8.5.1.5 Izolační stav izolovaných styků
+Zkoušku izolačního stavu všech izolovaných styků kolejnic zřizovaných v koleji zajišťuje zhotovitel podle
+předpisu SŽDC (ČD) T120, zkoušku izolačního stavu dílensky vyráběných izolovaných styků jejich výrobce.
+Povolené odchylky - viz čl. 8.6.2 této kapitoly TKP.
+8.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+8.6.1 Dovolené tolerance uspořádání železničního svršku
+Železniční svršek musí při převzetí prací vyhovovat stavebním odchylkám v závislosti na rychlostním pásmu
+a použitém materiálu, uvedeným v ČSN 73 6360-2 a v příslušných dílech předpisu SŽDC S3. Ostatní dovolené
+tolerance:
+a) u konstrukce styků ve stykované koleji jsou stanoveny předpisem SŽDC S3, díl XI,
+u bezstykové koleje jsou stanoveny předpisem SŽDC S3/2,
+b) u svarů se geometrie měří na délce 1000 mm, svar je uprostřed měřené délky. Mohou být použita jen měřidla
+schválená SŽDC. Níže uvedené hodnoty platí pro svary provedené v koleji, na roštu a ve stabilní svařovně.
+Hlava kolejnice musí být opracována v plném profilu.
+b1) u svarů kolejnic nových:
+− dovolené odchylky geometrie svarů ve svislém směru od 0,0 mm do + 0,5 mm,
+− dovolená směrová odchylka na pojížděné hraně:
+pro kolej v přímé a ve směrovém oblouku poloměru R ≥ 310 m může být svar přímý, nebo odchylka
+vzepětí může dosahovat až + 0,3 mm,
+pro kolej ve směrovém oblouku o poloměru 180 m ≤ R < 310 m může odchylka vzepětí dosahovat
+- 0,4 mm až + 0,4 mm,
+pro kolej ve směrovém oblouku o poloměru R < 180 m může odchylka vzepětí dosahovat
+- 0,6 mm až + 0,6 mm,
+− změny průběhu geometrie svaru na pojížděných plochách musí být obroušeny do plynulého přechodu.
+Pokud budou kolejnicové pásy svařované na roštu vloženy do směrového oblouku, bude zkontrolována
+směrová odchylka svaru pro daný poloměr oblouku.
+b2) u svarů kolejnic zánovních nebo regenerovaných platí dovolené odchylky jako u kolejnic nových.
+b3) u svarů kolejnic užitých stanoví odchylky od přímosti ve svislém a vodorovném směru odpovědný zástupce
+místně příslušné OŘ s přihlédnutím ke stavu kolejnic a záměru pro další použití kolejnic. Požadované
+tolerance musí být uvedeny ve smlouvě o dílo, ve které jsou definovány požadavky na svářečské práce.
+U smluv, ve kterých požadavky na svářečské práce definovány nejsou, musí být tolerance prokazatelně
+dohodnuty před zahájením svářečských prací.
+Geometrie svislého směru se dokladuje výstupem z elektronického měřidla.
+Hodnoty naměřených vzepětí a hodnocení směrových odchylek na pojížděné nebo nepojížděné hraně
+se dokladuje formou tabulky.
+20
+c) u návarů kolejnic:
+− dovolené odchylky v příčném profilu a podélné výšce smí být ± 0,5 mm, návar na pojížděných plochách
+musí být plynule obroušen do profilu nepoškozených částí. V případě požadavku odstranění lokálních
+defektoskopických vad (bez navaření celé srdcovky do profilu), musí být dovolené odchylky mimo
+stanovený rámec předem a prokazatelně dohodnuty mezi správcem trati a zhotovitelem opravy a uvedeny
+v deníku o navaření do kolonky „Popis vad k opravě, poznámky“.
+8.6.2 Dovolené tolerance hodnot elektrických veličin železničního svršku
+Prostor, ve kterém je umístěna výstroj kolejových obvodů, musí být řádně odvodněn.
+U dílensky vyrobených izolovaných styků kolejnic (LIS a A-LIS) musí výrobce (zhotovitel) měřit izolační odpor
+podle TNŽ 34 6570. Izolační odpor musí být nejméně 50 kΩ při napětí 500 V. Dodávka dílensky vyrobených
+izolovaných styků musí být doložena „Protokolem o ověření jakosti“ SŽDC pověřeným orgánem.
+U všech izolovaných styků (IS, LIS a A-LIS) v kolejích a výhybkách musí zhotovitel technickému dozoru
+stavebníka předložit potvrzení o jejich funkčnosti. Funkčnost ověřuje kvalifikovaný zaměstnanec místně příslušné
+organizační jednotky provozovatele dráhy zajišťující správu sdělovací a zabezpečovací techniky. Zhotovitel
+předává objednateli ve smyslu předpisu SŽDC S3:
+- soupis izolovaných styků s identifikačními údaji (může být nahrazen situačním schématem s uvedenými údaji),
+- doklady o kvalitě
+- montážní deník A-LIS,
+- potvrzení o funkčnosti zabudovaných izolovaných styků,
+- grafické záznamy měření geometrie LIS, A-LIS.
+8.6.3 Dovolené odchylky geodetických měření a hodnocení prostorové polohy koleje
+Přesnost geodetických prací při zřizování železničního svršku stanoví vyhláška č. 31/1995 Sb. a ČSN 73 0415,
+ČSN 73 0420-1, ČSN 73 0420-2.
+Přesnost geodetických bodů pro potřebu staveb železničních drah ČR, pokud SPPK nestanoví jinak, je dána výše
+uvedenými předpisy a normami. Poloha zajišťovacích značek musí odpovídat zásadám stanovených předpisu
+SŽDC S3, díl III.
+Odchylky ve vytýčení prostorové polohy koleje nesmí překročit hodnoty stanovené ČSN 73 0420-2.
+Skutečná prostorová poloha koleje se kontroluje určením podrobných bodů pomocí metod stanovených v předpisu
+SŽDC S3, díl III. Při převzetí stavby se porovnávají hodnoty projektovaných parametrů s hodnotami změřenými
+kontinuální geodetickou metodou.
+Hodnoty mezních stavebních odchylek v prostorové poloze koleje pro přejímku dokončených prací podle
+použitého materiálu (nový, užitý, resp. druhu prací) jsou stanoveny ČSN 73 6360 – 2, kapitola 6.4 „Stavební
+odchylky prostorové polohy koleje“.
+Překročení příslušných mezních stavebních odchylek v prostorové poloze je klasifikováno jako závada
+při přejímce prací - viz čl. 8.8.4 této kapitoly TKP.
+Využití posouzení záporné odchylky příčné vzdálenosti osy koleje a hrany nástupiště (dle ČSN 73 6360 – 2,
+kapitola 6.4) ve vztahu k její jmenovité hodnotě lze provést pouze se souhlasem SŽDC OTH. Standardně
+se odchylka příčné vzdálenosti osy koleje a hrany nástupiště (kladná i záporná) posuzuje pouze ve vztahu
+k projektované hodnotě.
+8.6.4 Hodnocení geometrické kvality koleje diagnostickými prostředky
+Před uvedením stavby do provozu je nezbytné uskutečnit kontinuální měření a hodnocení geometrické kvality
+koleje v předepsaných parametrech konstrukčního a geometrického uspořádání koleje stanovených normou
+ČSN 73 6360 – 2, kapitola 5. Hodnoty mezních stavebních odchylek v koleji i ve výhybkách a výhybkových
+konstrukcích pro vyjmenované geometrické veličiny - RK, ZR, VK (VL, VP), SK (SL, SP), PK a ZK jsou
+dle rychlostních pásem (RP) a použitého materiálu (nový, užitý, resp. ostatních prací) stanoveny normou
+ČSN 736360-2, kapitola 6. K danému hodnocení geometrické kvality koleje musí být předložen grafický záznam
+21
+měřícího zařízení schváleného SŽDC pořízený po provedení poslední úpravy koleje (např. grafický záznam
+ze záznamového zařízení ASP, dynamického stabilizátoru, nebo měřícího zařízení KRAB, obsahující vyjmenované
+geometrické parametry a technologické veličiny dle přílohy 3 předpisu S3/1.). Tento vyhodnocený doklad slouží
+jak pro účely TBZ k prokázání způsobilosti k zahájení zkušebního provozu, tak také pro účely předání i převzetí
+prací v koleji. Ve výhybkách a výhybkových konstrukcích pak musí být tento záznam doplněný o podrobné měření
+ve smyslu článku 3.6 směrnice GŘ SŽDC č. 51.
+Překročení příslušných mezních stavebních odchylek je klasifikováno jako závada při přejímce prací a musí být
+nejpozději před ukončením zkušebního provozu odstraněny - viz čl. 8.8.4 této kapitoly TKP.
+Měření měřicím vozem pro železniční svršek (dále i „MV“) nebo měřicí drezínou (dále i „MD“) dle charakteru
+trati musí být provedeno nejdříve 3 dny po zahájení zkušebního provozu. V hlavních kolejích tratí vybrané
+železniční sítě (směrnice GŘ SŽDC č. 16/2005 č.j. 3790/05-OP ze 17.1.2006 „Zásady modernizace vybrané
+železniční sítě České republiky“) musí být měření pro přejímku provedeno vždy měřicím vozem pro železniční
+svršek. Toto měření slouží pro hodnocení geometrické kvality koleje ve smyslu služební rukověti
+SŽDC SR103/4(S), ČSN 73 6360-2 a této kapitoly TKP. Účastníkem měření je vždy zástupce místně příslušné
+organizační jednotky provozovatele dráhy zajišťující správu dopravní cesty. Měření koleje jiným měřicím
+zařízením (např. měřicím zařízením KRAB, záznamovým zařízením ASP nebo dynamického stabilizátoru)
+se používá pouze v rámci TBZ pro uvedení koleje do zkušebního provozu ve smyslu vyhlášky č. 177/1995 Sb.
+Viz výše.Tento vyhodnocený doklad slouží rovněž pro účely předání i převzetí prací.
+Podmínkou pro přejímku (resp. kladný výsledek přejímky) rekonstrukce z hlediska kvality geometrie koleje
+se rozumí dodržení mezních stavebních odchylek geometrických veličin od projektovaných nebo předepsaných
+hodnot, stanovených ČSN 736360-2, kap. 6 a dodržení mezních hodnot známek kvality při měření MV (příp. MD)
+v režimu pro přejímku prací dle SŽDC SR103/4(S).
+Rozchod koleje v srdcovkách s přídržnicemi při měření měřicím vozem se hodnotí podle výnosu
+č.j. 18 535/07-OP ze dne 11.6.2007.
+Dále platí:
+− pro dané rychlostní pásmo nesmí být překročeny mezní odchylky jednotlivých parametrů GPK pro přejímku
+prací podle ČSN 73 6360-2, kap. 6,
+− mezní stavební odchylky pro přejímku prací u parametru RK v obloucích s projektovaným rozšířením rozchodu
+se kontrolují s využitím grafického záznamu diagnostického prostředku,
+− pro dané RP nesmí být překročeny mezní hodnoty CZK a ZKV jednotlivých geometrických parametrů podle
+služební rukověti SŽDC SR103/4(S) v celém měřeném úseku ani v žádném z úseků při úsekovém hodnocení
+po 200 m. Pokud se v hodnoceném úseku koleje zařazené do RP 3 nacházejí výhybky nebo kolejové
+křižovatky, nesmí v nich známky kvality jednotlivých geometrických parametrů a celková známka kvality
+překročit hodnotu 3,7.
+Jízdy měřicího vozu pro železniční svršek v traťových úsecích staveb koridorových tratí se vždy provádějí
+s nastavením rychlostního pásma (dále i „RP“) pro největší rychlost, pro kterou byla trať modernizovaná nebo
+optimalizovaná, tj. i pro rychlost při nasazení vlakových souprav umožňujících využití nedostatku převýšení
+130 mm, 150 mm a pro rychlost jednotek s naklápěcími skříněmi.
+Překročení příslušných mezních stavebních odchylek v geometrické kvalitě je klasifikováno jako závada
+při přejímce prací - viz čl. 8.8.4 této kapitoly TKP.
+8.6.5 Hodnocení prostorové průchodnosti
+Zaměření prostorové průchodnosti zajistí zhotovitel stavby a k TBZ doloží, že rekonstruované koleje jsou
+prostorově průchodné ve smyslu předpisu SŽDC (ČD) S65.
+V době zkušebního provozu, a to nejpozději do 60 dnů po jeho zahájení, musí být provedeno na modernizovaných
+či optimalizovaných úsecích tratí vybrané železniční sítě ČR (viz směrnice GŘ SŽDC č. 16/2005) na náklady
+zhotovitele kontrolní měření a posouzení prostorové průchodnosti celého rekonstruovaného traťového úseku. Toto
+kontrolní měření může být požadováno i na stavbách na ostatních tratích, a to v závislosti na jejich charakteru
+(obtížně měřitelná místa apod.). Použité měřické zařízení a postupy musí odpovídat předpisu SŽDC (ČD) S65
+(např. fotogammetrický stroj FS 3). Vykonávat toto měření smí pouze subjekt, kterému bylo vydáno osvědčení
+o způsobilosti k měření a hodnocení prostorové průchodnosti tratí železničních drah ČR. Toto osvědčení vydává
+SŽDC TÚDC (do 1.8.2012 SŽDC OTH).
+22
+Posouzení stavby, zařízení nebo přírodního objektu se provádí vždy v normálové rovině k ose koleje.
+Za nevyhovující se považuje takový objekt, jehož obrys se i jen dotýká projektovaného průjezdného průřezu
+(včetně postranních prostorů průjezdného průřezu Z-GC podle obrázku č. A1 normy ČSN 736320).
+8.6.6 Záruky, údržba v záruční době
+Záruční doby všeobecně stanoví kapitola 1 TKP.
+Nedostatky a závady zjištěné na stavbě v průběhu předání a převzetí stavby, TBZ a zkušebního provozu musí být
+odstraněny zhotovitelem stavby nejpozději do ukončení zkušebního provozu. Zásady pro prokazování odstranění
+závad u geometrických parametrů koleje jsou uvedeny v čl. 8.8.4 této kapitoly TKP.
+V záruční době je pak důvodem pro uplatnění reklamace u geometrických parametrů koleje překročení provozních
+odchylek ve stupni IL a mezních provozních odchylek ve stupni IAL stanovených v kapitole 7, normy
+ČSN 73 6360-2. Odstranění závad v záruční době (reklamovaných) musí zhotovitel prokázat dodržením mezních
+stavebních odchylek pro přejímku prací v koleji ostatních prací v koleji podle ČSN 73 6360-2, kap. 6 (např. výpis
+ze záznamového zařízení ASP). Odstranění závad v podélné výšce a směru koleje v RP3 a vyšším musí být
+doloženo hodnocením geometrických veličin VK a SK ve vlnovém pásmu D2 (např. výpis MV), rovněž v režimu
+hodnocení pro přejímku prací v koleji s vložením užitého materiálu, resp. ostatních prací v koleji podle
+ČSN 73 6360-2, kap. 6.
+Před ukončením záruční doby v případě překročení provozních odchylek ve stupni AL podle ČSN 73 6360-2 nebo
+mezních hladin CZK či ZKV za provozu podle SŽDC SR103/4(S) u geometrických parametrů:
+− SK, VK a PK provede zhotovitel směrovou a výškovou úpravu koleje. Přitom v hodnocených úsecích, v nichž
+se nacházejí výhybky nebo kolejové křižovatky, se za mezní hladinu CZK a ZKV geometrických parametrů SK,
+VK a PK v rychlostním pásmu RP 3 uvažuje hodnota 4,5. Podmínky úpravy musí být dohodnuty mezi
+objednatelem a zhotovitelem,
+− RK a ZR zajistí zhotovitel odstranění závad u rekonstrukcí materiálem novým i užitým. Provozní odchylky
+veličin RK a ZR jsou definovány ČSN 73 6360-2. Ve výhybkách se změří skutečné hodnoty rozchodu koleje
+ruční rozchodkou a zhotovitel odstraní závady překračující odchylky ve stupni AL podle ČSN 73 6360-2,
+přílohy B.
+Pokud byly zjištěny závady v prostorové průchodnosti, předloží zhotovitel stavby před ukončením zkušebního
+provozu doklady o jejich odstranění a zápis o kontrole prostorové průchodnosti v místech zjištěných závad.
+Zástupce objednavatele stavby může podle množství, závažnosti a charakteru závad rozhodnout o opakovaném
+kontrolním měření a posouzení prostorové průchodnosti podle č. 8.6.5.
+U jednotlivých materiálů (součástí železničního svršku) je záruční doba stanovena v TPD schválených SŽDC
+(do roku 2005 ČD).
+Záruční doba u materiálu užitého (tj. záruka za provedené opravné nebo regenerační práce - navařování, svařování
+apod.) je 2 roky. Údržbu v záruční době zajišťuje provozovatel dráhy podle ustanovení v kapitole 1 TKP.
+Údržba tratí v záruční době zahrnuje:
+− dohled (pochůzky, prohlídky, kontrolní jízdy, měření kolejí a výhybek),
+− ošetřování (ošetření a seřízení součástí výhybek, údržba izolovaných styků, propojek a vodivých lanových
+propojení, hubení plevelů včetně chemického ošetření, odstraňování náletových dřevin, mazání výhybek,
+čištění odvodňovacích zařízení).
+8.7 KLIMATICKÁ OMEZENÍ
+Práce na železničním svršku (kromě prací na BK) jsou obecně dle předpisu SŽDC (ČD) S3/1 omezeny dolní
+hranicí -5°C. Výjimku tvoří pouze údržba, případně práce na odstraňování následků přírodních katastrof
+a nehodových událostí (tj. nouzové opravy pro zajištění provozuschopnosti).
+Klimatické omezení jsou rovněž stanoveny technologickými přepisy a postupy příslušných prací.
+Práce na bezstykové koleje musí být prováděny v souladu ustanoveními předpisu SŽDC S3/2.
+23
+8.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+Předání a převzetí železničního svršku a posouzení způsobilosti železničního svršku k zahájení zkušebního
+provozu (také u případů, kde se TBZ neprovádí, např. po opravných pracích) je zpravidla spojeno s posouzením
+způsobilosti nebo převzetím kolejového lože, železničního spodku, úrovňových přejezdů, zabezpečovacího
+zařízení, trakčního vedení apod.
+8.8.1 Předání a převzetí prací
+Po dokončení prací předmětné stavby vyzve zhotovitel v souladu s harmonogramem objednatele k předání
+a převzetí prací a je stanoven termín předání a převzetí prací. Zároveň objednatel vyzve zástupce místně příslušné
+organizační jednotky provozovatele dráhy zajišťující správu trati k účasti na aktu předání a převzetí díla.
+Ve stanoveném termínu se provede pochůzka po předávaném díle, při níž zhotovitel předkládá ke kontrole
+a vyhodnocení následující doklady, pro konstrukci koleje a výhybek zejména:
+− doklady o ověření kvality použitých materiálů železničního svršku, doklady o kontrole výrobků, dílů a montáži
+dílčích celků,
+− doklad o únosnosti pláně tělesa železničního spodku (eventuelně zápis o odsouhlasení pláně tělesa železničního
+spodku),
+− záznam technologických veličin ASP z každé směrové a výškové úpravy koleje, příp. dynamického
+stabilizátoru ve smyslu čl. 8.3.5 této kapitoly TKP,
+− doklad potvrzený technickým dozorem stavebníka, že práce ASP byla prováděna přesnou metodou (pokud byla
+tato pro danou práci ASP byla na základě ustanovení předpisu SŽDC (ČD) S3/1 vyžadována),
+− zápis o převzetí výhybky před montáží čelisťového závěru včetně dokladu dle ustanovení směrnice SŽDC č. 51
+pro provádění prohlídek a měření výhybek,
+− montážní deník A-LIS, včetně potvrzení o funkčnosti a grafický záznam o měření geometrie A-LIS,
+− doklad o kontrole prostorové polohy koleje ve smyslu čl. 8.3.6. této kapitoly TKP (tj. před zřízením BK),
+− prohlášení zhotovitele svarů o dodržení technologického postupu svařování,
+− doklady o zřízení bezstykové koleje a svaření výhybek stanové předpisem SŽDC S3/2, vč. dokladu o měření
+upínací teploty,
+− zápis o přejímce bezstykové koleje podle předpisu SŽDC S3/2,
+− doklad o dosažené kvalitě geometrie koleje - vyhodnocený grafický záznam kontinuálního měření
+předepsaných parametrů konstrukčního a geometrického uspořádání koleje pro účely uvedení stavby
+do zkušebního provozu, resp. TBZ ve smyslu čl. 8.6.4 této kapitoly TKP,
+− doklad o skutečné prostorové poloze koleje – vyhodnocené ověřovací měření prostorové polohy koleje
+po uvedení do zkušebního provozu ve smyslu čl. 8.6.3 této kapitoly TKP,
+− zápis o kontrole prostorové průchodnosti (návěstidla, sloupy, zábradlí apod.),
+− výsledky měření dle ustanovení čl. 8.5.1.1.,
+− projektovou dokumentaci opravenou dle skutečnosti (min. podélné profily kolejí),
+− podklady od kolejí výhybek dle předpisu SR 107, tj. pasportní údaje.
+Dále zhotovitel připraví protokol o geodetické poloze stavby železničního svršku a objektů v jejím okolí, který
+zahrnuje:
+a) zápis o předání geodetických bodů ŽBP v prostoru stavby správci prostorové polohy koleje,
+b) seznam geodetických bodů ŽBP, kterých bylo využito pro kontrolní měření,
+c) geodetickou dokumentaci opravenou podle skutečného provedení stavby,
+d) seznam geodetických souřadnic identických bodů stavby a jejího projektu,
+e) doklad o vyhodnocení PPK kontinuální metodou ověřený správcem prostorové polohy koleje,
+f) zápis o vyhodnocení geodetické polohy stavby a jejího projektu potvrzený úředně oprávněnými zástupci
+objednatele a zhotovitele,
+g) dokumentaci pro definitivní zajištění prostorové polohy koleje podle předpisu SŽDC S3, díl III ověřenou
+správcem prostorové polohy koleje,
+24
+Součástí předání a převzetí železničního svršku musí být rovněž podklady pro aktualizaci pasportní evidence podle
+předpisu SŽDC S3, služební rukověti SŽDC (ČD) SR103/7(S) a Opatření k vedení pasportní evidence
+železničního svršku č.j. 4200/05-OP.
+Na základě hodnocení pochůzky a dokladů se sepíší zjištěné závady či nedostatky, příp. stanoví termíny na jejich
+rychlé odstranění či doplnění. Zpravidla se v jednom zápise předávává železniční svršek i spodek.
+Po kladném zhodnocení zúčastněnými proběhne vlastní akt předání a převzetí mezi zhotovitelem a objednatelem,
+následně pak předání a převzetí mezi objednatelem a správcem. Některé doklady z daného aktu slouží i jako
+doklady pro potřeby Drážního úřadu (dále i DÚ) k provedení technicko-bezpečnostní zkoušky (dále i TBZ)
+a zavedení zkušebního provozu dle kap. 8.8.2. Před provedením TBZ a rozhodnutím DÚ nesmí být zahájen
+provoz.
+8.8.2 Technicko-bezpečnostní zkouška a zkušební provoz
+Technicko-bezpečnostní zkouškou se ověřuje stavba nebo její část z hlediska dosažení projektovaných parametrů,
+funkce stavby a bezpečnosti provozování dráhy a drážní dopravy a její kladný výsledek je podmínkou povolení
+zahájení zkušebního provozu.
+Dle vyhlášky č. 177/1995 Sb. §6, u tratí se TBZ provádí:
+- ověření prostorové průchodnosti,
+- ověření GPK záznamovým prostředkem s kontinuálním záznamem nebo jízdou hnacího vozidla,
+- ověření únosnosti železničního spodku (pokud bylo předmětem stavby).
+Pokud rekonstrukce koleje (stavba v profesi železniční svršek a spodek) zasáhne určitým způsobem i do jiných
+profesí (elektro, zabezpečovací a sdělovacích techniky, příp. mostní stavby a pod.) je nutné k vyhodnocení TBZ
+i od jiných profesí.
+Potřebná měření v rámci TBZ zajistí zhotovitel.
+Způsobilost stavby dráhy k užívání musí být ověřena zkušebním provozem. Zkušební provoz může být zahájen
+(u staveb, na něž bylo vydáno stavební povolení) až po souhlasu DÚ. Zkušební provoz se zavádí před vydáním
+kolaudačního rozhodnutí DÚ na danou stavbu zápisem podle vyhlášky č. 177/1995 Sb.
+O způsobilosti železničního svršku k zahájení zkušebního provozu musí být vyhotoven zápis, ve kterém zúčastněné
+strany - objednatel, zhotovitel a provozovatel dráhy (místně příslušná organizační jednotka provozovatele dráhy
+zajišťující správu trati) vysloví se zahájením zkušebního provozu souhlas. Ten však může být vydán až po kladném
+výsledku technicko-bezpečnostní zkoušky (TBZ).
+Zkušební provoz slouží k ověření funkce dokončené stavby dráhy jako celku nebo její samostatné části. Rozsah
+a podmínky zkušebního provozu stanovuje rovněž vyhláška č. 177/1995 Sb.
+Nejdříve po 3 dnech od zahájení zkušebního provozu musí být na hlavních kolejích provedeno hodnocení kvality
+geometrie koleje v zatíženém stavu měřicím vozem pro železniční svršek, případně měřicí drezínou dle charakteru
+rekonstruované trati ve smyslu čl. 8.6.4. této kapitoly TKP.
+Při zavedení zkušebního provozu se po nutné době konsolidace kolejového lože a po kladném vyhodnocení jízd
+MV pro železniční svršek (a MV trakčního vedení) zavádí návrhová rychlost a jde o běžný železniční provoz.
+8.8.3 Ukončení zkušebního provozu
+Před termínem ukončení zkušebního provozu správce provede vyhodnocení zkušebního provozu a výsledky dodá
+objednateli (investorovi). Objednatel provede souhrn nutných dokladů a požádá DÚ o kolaudaci. Pokud je dílo bez
+vad a nedodělků vydá Drážní úřad kolaudační souhlas (§ 122 zákona 183/2006 Sb.).. Zkolaudováním stavby
+a zavádí se tzv. trvalý provoz.
+Stavba železničního svršku připravená k převzetí do trvalého provozu (Užívání dokončené stavby
+§ 119 zákona 183/2006 Sb.) musí být bez vad a nedodělků a umožnit železniční provoz stanovenou traťovou
+rychlostí.
+25
+8.8.4 Odstranění závad
+Popis a termíny pro odstranění závad a nedodělků a potvrzení o jejich odstranění v průběhu stavby musí být
+dokladovány ve stavebním deníku. Zápisy musí být odsouhlaseny zhotovitelem a technickým dozorem stavebníka.
+Odstranění lokálních závad GPK zjištěných:
+- při uvádění stavby do zkušebního provozu v rámci TBZ (hodnocení dle 8.6.4),
+- při přejímce rekonstrukce; tj. jízda MV nebo MD (hodnocení dle 8.6.4),
+- nebo při ověřovacím měření prostorové polohy koleje pro účely přejímky rekonstrukce (dle 8.6.3),
+musí zhotovitel prokázat nejpozději do doby převzetí stavby do trvalého užívání. Při prokazování odstranění
+takových závad se pro hodnocení kvality koleje použijí stejná kritéria pro hodnocení jako pro přejímku prací,
+tj. mezní stavební odchylky dle ČSN 736360-2.
+Odstranění závad v kvalitě geometrie zjištěných při přejímce prací musí být prokázáno opakovaným měřením MV
+(MD). Odstraňování závad v kvalitě geometrie koleje v záruční době se musí uskutečňovat v rozsahu
+odpovídajícímu nejvyšší projektované rychlosti (resp. RP), pro které byla stavba modernizace nebo optimalizace
+projektována.
+V úsecích již provedených staveb modernizace a optimalizace, kde skutečná poloha koleje neodpovídá její
+projektované poloze, uplatní místně příslušná organizační jednotka provozovatele dráhy zajišťující správu trati
+u zástupce objednatele stavby v záruční době reklamaci.
+V průběhu reklamačního řízení prostorové polohy koleje, jehož se spolu se zástupci místně příslušné organizační
+jednotky provozovatele dráhy zajišťující správu trati účastní i zástupce SPPK, se v závislosti na rozsahu
+a hodnotách odchylek stanoví způsob jejich odstranění.
+Uvedený způsob zaměření aktuální polohy koleje musí být použit i při jiném způsobu odstranění reklamovaných
+odchylek.
+Závady ohrožující bezpečnost železničního provozu musí být zhotovitelem odstraněny bezodkladně, jinak
+se vystavuje odpovědnosti za ztráty vzniklé přerušením nebo omezením provozu.
+Závady zjištěné při převzetí do trvalého provozu se uvádějí do kolaudačního zápisu včetně termínů odstranění
+a finančních postihů podle zákona č. 513/1991 Sb. a smlouvy.
+8.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+8.9.1 Kontinuální měření geometrické kvality koleje
+K hodnocení geometrické kvality koleje jak pro převzetí prací tak i pro průběžné hodnocení stavu v době záruky
+se využívá schválený měřicí prostředek ve smyslu vyhlášky č. 177/1995 Sb. a předpisu SŽDC (ČD) S2/3, zpravidla
+měřicí vůz pro železniční svršek, případně měřicí drezína podle charakteru trati. Hodnocení je uvedeno v čl. 8.6.4
+této kapitoly.
+8.9.2 Sledování prostorové polohy koleje
+Prostorová poloha koleje vůči její projektované poloze se měří geodetickou kontinuální metodou:
+- během stavby dle čl. 8.3.6; tj. vytýčení pro směrovou a výškovou úpravu koleje přesnou metodou
+ve smyslu předpisu SŽDC (ČD)S3/1,
+- po dokončení stavby, jako k přejímce stavby,
+- pro účely vytýčení pro následné podbití ve smyslu SŽDC (ČD)S3/1.
+Hodnoty mezních stavebních odchylek prostorové polohy koleje stanovuje norma ČSN 736360-2, kap.6.4.
+Po zahájení trvalého provozu se prostorová poloha koleje měří podle ustanovení předpisu SŽDC (ČD) S2/3. Pokud
+během záruční doby dojde k překročení provozních odchylek povolených pro provoz podle ČSN 73 6360-2,
+posuzuje se taková skutečnost jako vada dodávky.
+Metody pro ověření prostorové polohy koleje jsou stanoveny předpisem SŽDC S3, díl III.
+26
+8.10 VLIV STAVBY NA ŽIVOTNÍ PROSTŘEDÍ
+Orgánem státní správy v oblasti odpadového hospodářství je stavbě místně příslušný referát životního prostředí
+Tato oblast se řídí zákonem č. 185/2001 Sb. Ve smyslu těchto zákonů je nutný souhlas orgánů státní správy
+pro nakládání s odpadem, tj. pro manipulaci, skladování, úpravu, přepravu a zřízení zařízení k zneškodňování
+odpadů. Kategorii zařazení výzisků a způsob likvidace odpadů či jejich skládkování stanovuje dokumentace.
+Skládky jak nových, tak i vyzískaných materiálů, výzisků, případně odpadů z hlediska ekologické nezávadnosti
+řeší dokumentace.
+V oblasti železničního svršku se jedná zejména o dřevěné pražce, konzervační oleje či maziva pro šroubová
+spojení a materiály pro ošetření kluzných částí výhybek.
+Materiály zabudované do železničního svršku musí splňovat ustanovení zákona č. 114/1992 Sb.
+a vyhlášky č. 395/1992 Sb., dále zákona 22/1997 Sb. Jejich nezávadnost musí být zhotovitelem prokázána.
+Z mechanizačních prostředků a strojů nesmí unikat olej ani pohonné hmoty. Pokud nevyhoví těmto požadavkům,
+nemohou být na stavbě použity.
+Při provádění prací musí zhotovitel zvolit takovou technologii, aby nebyly překročeny přípustné hodnoty hluku
+a vibrací. Ochrana před hlukem a vibracemi vyplývá z § 30 a § 31 zákona č. 258/2000 Sb., které ukládají vlastníku
+dráhy a provozovateli strojů a zařízení zajistit, aby hluk a vibrace nepřekračovaly hygienické limity stanovené
+prováděcím předpisem (nařízení vlády č. 148/2006 Sb.)
+8.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanoví kapitola 1 TKP.
+Požární zabezpečení při svařování a řezání kovů.
+Svářečské práce (včetně řezání kovů kyslíkem) lze provádět pouze v souladu s vyhláškou č. 87/2000 Sb. v platném
+znění, předpisem SŽDC Ob14 pro stanovení organizace zabezpečení požární ochrany Správy železniční dopravní
+cesty, státní organizace, směrnicí SŽDC č. 56, s přihlédnutím k ČSN 05 0600, 05 0601, 05 0610, 05 0630,
+05 0650, 07 8304 a rovněž Pokynu k plnění „Směrnice SŽDC č. 56 o požární bezpečnosti při svařování ve státní
+organizaci Správa železniční dopravní cesty“ při svářečských pracích na železničním svršku, č.j. 33674/09-OTH
+ze dne 29.6.2009.
+Před svařováním termitem, elektrickým obloukem a řezáním kovů kyslíkem musí zhotovitel vyhodnotit podmínky
+požární bezpečnosti v daném prostředí, v němž se svařuje, včetně jeho okolí s přihlédnutím zejména
+k ČSN 05 0601 a přijmout taková opatření, aby se snížilo případné nebezpečí požáru. Vyhodnotí možné požární
+nebezpečí ve vztahu k druhu svařování, stavu svářečského pracoviště a přilehlých prostorů, použitých zařízení
+a materiálů a reaguje na ně v požárně bezpečnostních opatřeních s tím, že:
+- vymezí oprávnění a povinnosti osob k zajištění požární bezpečnosti při zahájení svařování, v jeho průběhu,
+při přerušení a po jeho skončení,
+- stanoví požadavky na účastníky svařování vyžadující zvláštní požárně bezpečnostní opatření a na osoby
+provádějící požární dohled při přerušení a po skončení svařování, pokud není požární dohled nepřetržitý,
+- stanoví požadavky na bezpečný pohyb a pohyb osob včetně zákazů,
+- zabezpečí volné únikové cesty včetně přístupu k nim,
+- určí provozní podmínky technických zařízení a technologického procesu, včetně podmínek případných odstávek
+zařízení nebo omezení provozu,
+- stanoví další opatření s ohledem na druh činnosti, případně specifické riziko svářečského pracoviště, zejména
+v období dlouhodobého sucha zohlední i ustanovení příslušného nařízení kraje.
+Ve zvlášť specifických případech si vyžádá posouzení pracoviště odborně způsobilé osoby požární ochrany
+příslušné OŘ popř. odborně způsobilé osoby požární ochrany odboru krizového řízení.
+Svařování nesmí být zahájeno, jestliže nejsou stanovena požárně bezpečnostní opatření s ohledem na druh a místo
+svářečských prací, svářeč a ostatní zúčastnění zaměstnanci nejsou prokazatelně seznámeni s místními podmínkami
+požární bezpečnosti nebo nejsou splněny podmínky pro bezpečné zahájení prací.
+27
+Svařovací pracoviště je třeba mít vybavené dostatečným počtem vhodných hasebních a ochranných prostředků,
+jako lopaty, hasicí přístroje, zásoby vody, písku, zástěny proti úletu jisker apod.
+Požární dohled je vykonáván osobou k tomu předem určenou s písemně stanovenými úkoly. Osoby provádějící
+požární dohled musí být prokazatelně seznámeny s požárním nebezpečím provozované činnosti, se způsobem
+vyhlášení požárního poplachu, přivolání jednotky požární ochrany a s poskytnutím pomoci v souvislosti
+se zdoláváním požáru, s rozmístěním a použitím věcných prostředků požární ochrany a požárně bezpečnostního
+zařízení, se způsobem, podmínkami a možnosti hašení požárů, evakuace osob, zvířat nebo materiálu v místech
+provádění svařování v rozsahu tématického a časového plánu odborné přípravy pro preventivní požární hlídky.
+O provedeném seznámení musí být zhotoven záznam obsahující náležitosti uvedené v § 36 vyhlášky
+č. 246/2001 Sb.
+Požární dohled je vykonáván v průběhu svařování nepřetržitě. V případě vzniku požáru musí být tato skutečnost
+ohlášena příslušné jednotky požární ochrany HZS SŽDC a to i v případě, že byl požár osobami provádějící požární
+dohled uhašen.
+Pro požárně bezpečné používání aluminotermického svařování je třeba písemně stanovit zvláštní pokyny, které
+obsahují podmínky požární bezpečnosti. Stanovení a dodržování podmínek požární bezpečnosti zabezpečuje
+zhotovitel, který tyto činnosti vykonává.
+Práce spojené se svařování (navařováním) kolejnic a kolejnicové části výhybek (včetně jazyků, opornic
+a srdcovek) mohou být vykonávány pouze při respektování příslušných ustanovení TNŽ 05 0715, přičemž
+stanovené podmínky požární bezpečnosti musí obsahovat příslušné pracovní a technologie postupy a zohledňovat
+příslušná ustanovení souvisejících normativních požadavků (např. ČSN 05 0705, ČSN EN 287-1+ A2).
+Protipožární opatření při práci brousicího vlaku a frézovacího stroje
+Brousící a frézovací práce na železničním svršku, prováděné soupravou pro broušení nebo frézování kolejnic,
+se provádí v souladu s předpisem SŽDC Ob14.
+Pracovní vozy brousicího vlaku a frézovacího stroje musí být vybaveny kryty brousicích kotoučů pro zamezení
+úletu žhavých částic.
+Rozsah protipožárních opatření je nutno přizpůsobit místním podmínkám, stavu okolního prostředí a ročnímu
+období.
+Brousicí vlak musí být vybaven zásobou vody a hadicemi k hašení vznikajícího požáru. Před a za pracovištěm
+brousicího vlaku se zpravidla zdržuje mobilní samohybné kolejové vozidlo, vybavené zásobou vody, hasicími
+přístroji, lopatami a preventivní požární hlídkou určenou k případnému hašení.
+Osoby zařazené do preventivní požární hlídky musí být prokazatelně seznámeny s požárním nebezpečím
+provozované činnosti, se způsobem vyhlášení požárního poplachu, přivolání jednotky požární ochrany
+a s poskytnutím pomoci v souvislosti se zdoláváním požáru, s rozmístěním a použitím věcných prostředků požární
+ochrany a požárně bezpečnostního zařízení, se způsobem, podmínkami a možnosti hašení požárů, evakuace osob,
+zvířat nebo materiálu v místech prováděné činnosti v rozsahu tématického a časového plánu odborné přípravy
+pro preventivní požární hlídky. O provedeném seznámení musí být zhotoven záznam obsahující náležitosti
+uvedené v § 36 vyhlášky č. 246/2001 Sb.
+Pokyny pro činnost preventivní požární hlídky vždy musí obsahovat určení prostor nebo činností, pro které
+je preventivní požární hlídka zřízena, jmenný seznam, stanovení úkolů jednotlivých zaměstnanců zařazených
+do preventivní požární hlídky a potřebného vybavení k provedení prvotního zásahu, popřípadě další skutečnosti
+vyplývají z průvodní dokumentace výrobce vozů brousicího vlaku či frézovacího stroje.
+Rozsah protipožárních opatření navrhne zhotovitel a odsouhlasí technickým dozorem stavebníka. Stanovení
+a dodržování protipožárních opatření zabezpečuje zhotovitel, který předmětné činnosti vykonává.
+O nasazení brousicího vlaku nebo frézovacího stroje musí zhotovitel alespoň týden před zahájením prací
+informovat HZS SŽDC, a to především o místě a termínu broušení nebo frézování, o možných rizicích těchto prací
+z hlediska požární bezpečnosti a o způsobu zajištění požární bezpečnosti.
+8.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+Uvedené související normy a předpisy vycházejí z aktuálního stavu v době zpracování TKP, resp. jejich
+aktualizace. Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP,
+tj právních předpisů, technických norem a předpisů a předpisů SŽDC a ČD.
+28
+8.12.1 Obecně závazné právní předpisy
+Zákon č. 22/1997 Sb. o technických požadavcích na výrobky a o změně a doplnění některých zákonů
+v platném znění
+Zákon č. 114/1992 Sb. o ochraně přírody a krajiny v platném znění
+Zákon č. 185/2001 Sb. o odpadech a o změně některých dalších zákonů v platném znění
+Zákon č. 183/2006 Sb. o územním plánování a stavebním řádu (stavební zákon) v platném znění
+Zákon č. 133/1985 Sb. o požární ochraně v platném znění
+Zákon č. 200/1994 Sb. o zeměměřictví a o změně a doplnění některých zákonů souvisejících s jeho
+zavedením v platném znění
+Zákon č. 266/1994 Sb. o drahách v platném znění
+Zákon č. 513/1991 Sb. Obchodní zákoník v platném znění
+Zákon č. 258/2000 Sb. o ochraně veřejného zdraví a o změně některých souvisejících předpisů
+v platném znění
+Nařízení vlády č. 133/2005 Sb. o technických požadavcích na provozní a technickou propojenost
+evropského železničního systému v platném znění
+Nařízení vlády č. 148/2006 Sb. o ochraně před nepříznivými účinky hluku a vibrací v platném znění
+Nařízení vlády č. 163/2002 Sb. kterým se stanoví technické požadavky na vybrané stavební výrobky,
+v platném znění
+Nařízení vlády č. 190/2002 Sb. kterým se stanoví technické požadavky na stavební výrobky označované CE,
+v platném znění
+Nařízení vlády č. 430/2006 Sb. o stanovení geodetických referenčních systémů a státních mapových děl
+závazných na území státu a zásadách jejich používání v platném znění
+Vyhláška č. 31/1995 Sb. Českého úřadu zeměměřického a katastrálního, kterou se provádí zákon
+č. 200/1994 Sb., o zeměměřictví a o změně a doplnění některých zákonů
+souvisejících s jeho zavedením, v platném znění
+Vyhláška č. 48/1982 Sb. Českého úřadu bezpečnosti práce, kterou se stanoví základní požadavky
+k zajištění bezpečnosti práce a technických zařízení, v platném znění
+Vyhláška č. 87/2000 Sb. Ministerstva vnitra, kterou se stanoví podmínky požární bezpečnosti při
+svařování a nahřívání živic v tavných nádobách, v platném znění
+Vyhláška č. 100/1995 Sb. Ministerstva dopravy, kterou se stanoví podmínky pro provoz, konstrukci a
+výrobu určených technických zařízení a jejich konkretizace (Řád určených
+technických zařízení), v platném znění
+Vyhláška č. 101/1995 Sb. Ministerstva dopravy, kterou se vydává Řád pro zdravotní a odbornou
+způsobilost osob při provozování dráhy a drážní dopravy, v platném znění
+Vyhláška č. 173/1995 Sb. Ministerstva dopravy, kterou se vydává dopravní řád drah, v platném znění
+Vyhláška č. 177/1995 Sb. Ministerstva dopravy, kterou se vydává stavební a technický řád drah,
+v platném znění
+Vyhláška č. 246/2001 Sb. Ministerstva vnitra o stanovení podmínek požární bezpečnosti a výkonu
+státního požárního dozoru (vyhláška o požární prevenci) v platném znění
+Vyhláška č. 395/1992 Sb. Ministerstva životního prostředí, kterou se provádějí některá ustanovení zákona
+České národní rady č. 114/1992 Sb., o ochraně přírody a krajiny, v platném
+znění
+Vyhláška č. 352/2004 Sb. Ministerstva dopravy o provozní a technické propojenosti evropského
+železničního systému v platném znění
+29
+8.12.2 Technické normy
+ČSN 05 0600 Zváranie. Bezpečnostné ustanovenia pre zváranie kovov. Projektovanie a príprava
+pracovísk
+ČSN 05 0601 Zváranie. Bezpečnostné ustanovenia pre zváranie kovov. Prevádzka
+ČSN 05 0610 Zváranie. Bezpečnostné ustanovenia pre plameňové zváranie kovov a rezanie kovov
+ČSN 05 0630 Zváranie. Bezpečnostné ustanovenia pre oblúkové zváranie kovov
+ČSN 05 0650 Zváranie. Bezpečnostné ustanovenia pre odporové zváranie kovov
+ČSN 05 0705 Zaškolení pracovníků a základní kursy svářečů
+ČSN EN 287-1 Zkoušky svářečů - Tavné svařování - část 1: ocel
++A2 (05 0711)
+ČSN EN 14 730-1 Železniční aplikace - Kolej - Aluminotermické svařování kolejnic - Část 1: Schvalování
++A1 svařovacích procesů
+ČSN EN 14 730-2 Železniční aplikace - Kolej - Aluminotermické svařování kolejnic - Část 2: Kvalifikace
+svářečů pro aluminotermické svařování, způsobilost zhotovitelů a přejímka svarů
+ČSN EN 14 587-1 Železniční aplikace - Kolej - Odtavovací stykové svařování kolejnic - Část 1: Nové
+kolejnice třídy R220, R260, R260Mn a R350HT svařované ve stabilní svařovně
+ČSN EN 14 587-2 Železniční aplikace - Kolej - Odtavovací stykové svařování kolejnic - Část 2: Nové
+kolejnice třídy R220, R260, R260Mn a R350HT svařované mobilními svářečkami mimo
+stabilní svařovnu
+ČSN EN 15 594 Železniční aplikace - Kolej – Oprava kolejnic navařováním elektrickým obloukem
+ČSN 34 1500 ed.2 Drážní zařízení – Pevná trakční zařízení – Předpisy pro elektrická trakční zařízení
+ČSN 34 1530 ed.2 Drážní zařízení - Elektrická trakční vedení železničních drah celostátních, regionálních
+a vleček
+ČSN 34 2613 ed.2 Železniční zabezpečovací zařízení - Kolejové obvody a vnější podmínky pro jejich
+činnost
+ČSN 34 2614 ed.2 Železniční zabezpečovací zařízení - Předpisy pro projektování, provozování a používání
+kolejových obvodů
+ČSN EN 50110-1 Obsluha a práce na elektrických zařízeních
+ed.2
+ČSN EN 50110-2 Obsluha a práce na elektrických zařízeních - Část 2: Národní dodatky
+ed.2
+ČSN 49 0000 Nazvoslovie v drevárskom priemysle. Všeobecné pojmy a vlastnosti dreva
+ČSN 49 0609 Ochrana dreva. Skúšanie akosti ochrany dreva
+ČSN 49 0616-2 Ochrana dreva. Impregnácia drevených podvalov. Dvojitý spôsob podľa Rüpinga.
+Modifikovaný spôsob
+ČSN 64 0090 Plasty. Skladování výrobků z plastů.
+ČSN 65 8050 Zkoušení černouhelných dehtových olejů
+ČSN 73 0212-4 Geometrická přesnost ve výstavbě. Kontrola přesnosti. Část 4: Liniové stavební objekty
+ČSN 73 0415 Geodetické body
+ČSN 73 0420-1 Přesnost vytyčování staveb - Část 1: Základní požadavky
+ČSN 73 0420-2 Přesnost vytyčování staveb - Část 2: Vytyčovací odchylky
+ČSN 73 4959 Nástupiště a nástupištní přístřešky na drahách celostátních, regionálních a vlečkách
+ČSN 73 6201 Projektování mostních objektů
+ČSN 73 6301 Projektování železničních drah
+ČSN 73 6310 Navrhování železničních stanic
+ČSN 73 6320 Průjezdné průřezy na dráhách celostátních, dráhách regionálních a vlečkách normálního
+rozchodu
+30
+ČSN 73 6360 -1 Konstrukční a geometrické uspořádání koleje železničních drah a její prostorová poloha -
+Část 1: Projektování
+ČSN 73 6360–2 Konstrukční a geometrické uspořádání koleje železničních drah a její prostorová poloha -
+Část 2: Stavba a přejímka, provoz a údržba
+ČSN 73 6380 Železniční přejezdy a přechody
+ČSN EN 1001-2 Trvanlivost dřeva a materiálů na bázi dřeva - Terminologie - Část 2: Slovník 2
+(490001)
+ČSN EN 13145 Železniční aplikace - Tratě - Dřevěné příčné a výhybkové pražce
+(49 1410)
+ČSN EN 13146-1 Železniční aplikace - Kolej - Metody zkoušení systémů upevnění - Část 1: Stanovení
+odporu proti podélnému posunutí kolejnice
+ČSN EN 13146-2 Železniční aplikace - Kolej - Metody zkoušení systémů upevnění - Část 2: Stanovení
+odporu proti pootočení
+ČSN EN 13146-3 Železniční aplikace - Kolej - Metody zkoušení systémů upevnění - Část 3: Stanovení
+útlumu rázového zatížení
+ČSN EN 13146-4 Železniční aplikace - Kolej - Metody zkoušení systémů upevnění - Část 4: Účinek
+opakovaného zatěžování
+ČSN EN 13146-5 Železniční aplikace - Kolej - Metody zkoušení systémů upevnění - Část 5: Stanovení
+elektrického odporu
+ČSN EN 13146-6 Železniční aplikace - Kolej - Metody zkoušení systémů upevnění - Část 6: Vliv
+nepříznivých vnějších podmínek
+ČSN EN 13146-7 Železniční aplikace - Kolej - Metody zkoušení systémů upevnění - Část 7: Stanovení
+svěrné síly
+ČSN EN 13146-8 Železniční aplikace - Kolej - Metody zkoušení systémů upevnění - Část 8: Provozní
+ověřování
+ČSN EN 13146-9 Železniční aplikace - Kolej - Metody zkoušení systémů upevnění - Část 9: Stanovení
++ A1 tuhosti
+ČSN EN 13230-1 Železniční aplikace - Kolej - Betonové příčné a výhybkové pražce – Část 1: Všeobecné
+požadavky
+ČSN EN 13230-2 Železniční aplikace - Kolej - Betonové příčné a výhybkové pražce – Část 2: Předpjaté
+monoblokové pražce
+ČSN EN 13230-3 Železniční aplikace - Kolej - Betonové příčné a výhybkové pražce - Část 3: Dvoublokové
+železobetonové pražce
+ČSN EN 13230-4 Železniční aplikace – Kolej - Betonové příčné a výhybkové pražce – Část 4: Předpjaté
+pražce pro výhybky a výhybkové konstrukce
+ČSN EN 13230-5 Železniční aplikace - Kolej - Betonové příčné a výhybkové pražce - Část 5: Zvláštní prvky
+ČSN EN 13231-3 Železniční aplikace- Kolej-Přejímka prací- Část 3: Přejímka broušení, frézování
+a hoblování kolejnic v koleji
+ČSN EN 13232-1 Železniční aplikace - Kolej - Výhybky a výhybkové konstrukce - Část 1: Definice
+ČSN EN 13232-2 Železniční aplikace - Kolej - Výhybky a výhybkové konstrukce - Část 2: Požadavky
+na návrh geometrie
+ČSN EN 13232-3 Železniční aplikace - Kolej - Výhybky a výhybkové konstrukce - Část 3: Požadavky
+na interakci kolo/kolejnice
+ČSN EN 13232-4 Železniční aplikace – Kolej - Výhybky a výhybkové konstrukce - Část 4: Přestavování,
+zajištění polohy a indikace
+ČSN EN 13232-5 Železniční aplikace - Kolej - Výhybky a výhybkové konstrukce - Část 5: Výměny
+ČSN EN 13232-6 Železniční aplikace - Kolej - Výhybky a výhybkové konstrukce - Část 6: Pevné
+jednoduché a dvojité srdcovky
+ČSN EN 13232-7 Železniční aplikace - Kolej - Výhybky a výhybkové konstrukce - Část 7: Srdcovky
+s pohyblivými částmi
+ČSN EN 13232-8 Železniční aplikace - Kolej - Výhybky a výhybkové konstrukce - Část 8: Dilatační
+zařízení
+31
+ČSN EN 13232-9 Železniční aplikace - Kolej - Výhybky a výhybkové konstrukce - Část 9: Návrh
+konstrukce, dokumentace a přejímka
+ČSN EN 13450 Kamenivo pro kolejové lože
+ČSN EN 15689 Železniční aplikace - Kolej - Výhybky a výhybkové konstrukce - srdcovky z lité
+austenitické manganové oceli
+ČSN EN 13481-1 Železniční aplikace - Kolej - Požadavky na vlastnosti systémů upevnění - Část 1: Definice
+ČSN EN 13481-2 Železniční aplikace - Kolej - Požadavky na vlastnosti systémů upevnění - Část 2: Systémy
+upevnění pro betonové pražce
+ČSN EN 13481-3 Železniční aplikace - Kolej - Požadavky na vlastnosti systémů upevnění - Část 3: Systémy
+upevnění pro dřevěné pražce
+ČSN EN 13481-4 Železniční aplikace - Kolej - Požadavky na vlastnosti systémů upevnění - Část 4: Systémy
+upevnění pro ocelové pražce
+ČSN EN 13481-5 Železniční aplikace - Kolej - Požadavky na vlastnosti systémů upevnění - Část 5: Systémy
+upevnění pro pevnou jízdní dráhu s kolejnicí na jejím povrchu nebo zapuštěnou ve žlábku
+ČSN EN 13481-7 Železniční aplikace - Kolej - Požadavky na vlastnosti systémů upevnění - Část 7:
+Speciální systémy upevnění pro výhybky a výhybkové konstrukce a přídržné kolejnice
+ČSN EN 13674-1 Železniční aplikace – Kolej – Kolejnice – Část 1: Vignolovy železniční kolejnice
+(73 6361) o hmotnosti 46 kg/m a větší
+ČSN EN 13674-2 Železniční aplikace – Kolej – Kolejnice – Část 2: Kolejnice pro výhybky a výhybkové
++A1 (73 6361) konstrukce používané s Vignolovými železničními kolejnicemi o hmotnosti 46 kg/m
+a větší
+ČSN EN 13848-2 Železniční aplikace- Kolej-Geometrická kvalita koleje- Část 2: Měřicí zařízení- měřicí
+(73 6359) vozy
+ČSN IEC 913 Elektrotechnické předpisy. Elektrické trakční nadzemní vedení.
+(34 1540)
+TNŽ 05 0715 Zkoušky svářečů. Svařování a navařování kolejnic
+TNŽ 34 6570 Elektrické vlastnosti izolovaných kolejnicových styků
+TNŽ 73 6334 Oplocení a zábradlí na drahách celostátních a regionálních
+8.12.3 Dokumenty vnitropodnikové legislativy SŽDC
+SŽDC (ČD) D2 Předpis pro organizování a provozování drážní dopravy
+SŽDC (ČD) D2/81 Doprava speciálních vozidel podle typu
+SŽDC (ČD) D3 Předpis pro zjednodušené řízení drážní dopravy
+SŽDC D7/2 Předpis pro organizování výlukové činnosti na tratích provozovaných Správou
+železniční dopravní cesty, státní organizace
+SŽDC E2 Předpis pro obsluhu a údržbu zařízení pro elektrický ohřev výhybek
+SŽDC Zam1 (prozatímní) Předpis o odborné způsobilosti zaměstnanců Správy železniční dopravní cesty,
+státní organizace
+SŽDC Ob 14 Předpis pro stanovení organizace zabezpečení požární ochrany Správy železniční
+dopravní cesty, státní organizace
+SŽDC (ČD) Op16 Pravidla o bezpečnosti a ochraně zdraví při práci
+SŽDC (ČD) S2/3 Organizace a provádění kontrol tratí Českých drah
+SŽDC S3 Železniční svršek
+SŽDC (ČD) S3/1 Práce na železničním svršku
+SŽDC S3/2 Bezstyková kolej
+SŽDC (ČD) S3/3 Železniční svršek úzkorozchodných drah
+SŽDC (ČD) S3/4 Nedestruktivní zkoušení kolejnic
+SŽDC (ČD) S3/5 Předpis pro svařování součástí železničního svršku v traťovém hospodářství
+32
+SŽDC S4 Železniční spodek
+SŽDC S8 Provoz, udržování a opravy speciálních vozidel
+SŽDC (ČD) S8/3 Předpis pro provoz speciálních vozidel podle typů
+SŽDC S9 Pevná jízdní dráha
+SŽDC (ČD) S65 Evidence překážek prostorové průchodnosti tratí Českých drah
+SŽDC (ČD) S67 Vady a lomy kolejnic
+SŽDC (ČD) S68 Vady betonových pražců
+SŽDC (ČD) SR103/1(S) Seznam vzorových listů železničního svršku
+SŽDC (ČSD) SR103/2(S) Pracovní postupy pro drobnou údržbu, souvislé propracování, střední opravy
+a komplexní rekonstrukce železničního svršku
+SŽDC SR103/3(S) Výkresy materiálu pro železniční svršek. Kolej
+SŽDC SR103/4(S) Využívání měřicích vozů pro železniční svršek s kontinuálním měřením tratě pod
+zatížením
+SŽDC (ČSD) SR103/5(S) Měření výhybek
+SŽDC (ČD) SR103/6(S) Výkresy materiálu železničního svršku. Výhybky soustavy R 65, S 49, T
+SŽDC SR103/6-2(S) Výkresy materiálu železničního svršku. Výhybky soustavy UIC 60 a
+S 49 2.generace
+SŽDC (ČD) SR103/7(S) Pasportní evidence železničního svršku
+SŽDC SR 103/8(S) Komentář ČSN 736360. Konstrukční a geometrické uspořádání koleje železničních
+drah a její prostorová poloha
+SŽDC (ČD) T120 Předpis pro provozování a údržbu zařízení pro kontrolu volnosti nebo obsazenosti
+kolejových úseků
+SŽDC (ČSD) T121 Údržba venkovního zabezpečovacího zařízení
+Obecné technické podmínky č.j. 55 497/95-S7/STAV – pro plastové regenerační vložky do dřevěných
+a betonových pražců
+Obecné technické podmínky č.j. 55 498/95-S7/STAV – pro plastové kolejnicové spojky
+Obecné technické podmínky č.j. 22 693/06-OP – Dřevěné kolejnicové podpory pro železniční dráhy
+Obecné technické podmínky č.j. 56 710/2001-O13 – pro pružné podložky pod podkladnice
+Obecné technické podmínky č.j. 57 045/96-S13 – pro pružné podložky pod patu kolejnice
+v bezpodkladnicovém upevnění
+Obecné technické podmínky č.j. 58 478/2001-O13 – pro ocelové distanční kroužky
+Obecné technické podmínky č.j. 58 479/2001-O13 – pro izolační podložky pod ocelové distanční kroužky
+Obecné technické podmínky č.j. 60 555/99-O13 – pro upevnění kolejnic
+Obecné technické podmínky č.j. 14 503/07-OP – Betonové pražce pro železniční dráhy
+Obecné technické podmínky č.j. 60 788/99-O13 – pro pružné svěrky a spony
+Obecné technické podmínky č.j. 60 789/99-O13 – pro pružné podložky pod patu kolejnice v podkladnicovém
+upevnění
+Obecné technické podmínky č.j. 58 961/2002-O13 – Vrtule pro železniční svršek
+Obecné technické podmínky č.j. 58 960/02-O13 – pro ocelové šrouby a matice pro železniční svršek
+Obecné technické podmínky č.j. 21 240/07-OP – pro opravy a regenerace železničních výhybek a
+výhybkových konstrukcí
+Opatření VŘ DDC č. 106 „Metodický pokyn pro zřizování ohřevu výhybek v síti ČD“ č.j. 56 790/2001-O13
+Opatření k vedení pasportní evidence železničního svršku č.j. 4 200/05-OP
+Pokyn GŘ SŽDC č.6/2006 Svařování kolejnic elektrickým obloukem – vymezení podmínek pro použití
+č.j. 27 168/06-OP technologií
+Pokyn generálního ředitele Opatření k zavedení účinnosti Změny 1 ČSN 73 6320
+č. 6/2012 (ČSN 73 6320:1997+Z1:2012)
+Směrnice GŘ č. 11/2006 Dokumentace pro přípravu staveb na železničních drahách celostátních
+a regionálních, č.j. 13 511/06-OP
+33
+Směrnice GŘ SŽDC č. 16/2005 Zásady modernizace vybrané železniční sítě České republiky,
+č.j. 37 90/05-OP ze 17.1.2006
+Směrnice GŘ SŽDC č. 28/2005 Koncepce používání jednotlivých tvarů kolejnic a typů upevnění v kolejích
+železničních drah ve vlastnictví České republiky, č.j. 6 037/05-OP
+Směrnice SŽDC č. 42 Hospodaření s vyzískaným materiálem
+č.j. 45 731/2012-ONVZ/1, účinnost od 7.1.2013
+Směrnice SŽDC č. 50 Požadavky na odbornou způsobilost dodavatelů při činnostech na dráhách
+provozovaných státní organizací Správa železniční dopravní cesty,
+č.j. 28 692/2012-OP, účinnost od 1.7.2012
+Směrnice SŽDC č. 51 pro provádění prohlídek a měření výhybek,
+č.j. 31 124/08-OTH s účinností od 1.10.2008
+Směrnice SŽDC č. 56 o požární bezpečnosti při svařování ve státní organizaci Správa železniční
+dopravní cesty, č.j. 40 870/08-OKŘ, účinnost od 1.6.2009
+Pokyny k plnění „Směrnice SŽDC č.56 o požární bezpečnosti při svařování ve státní organizaci Správa
+železniční dopravní cesty“ při svářečských pracích na železničním
+svršku, č.j. 33 674/09-OTH ze dne 29.6.2009
+Směrnice SŽDC č. 67 Systém péče o kvalitu v oblasti traťového hospodářství,
+č.j. S 35 410/11-OTH ze dne 8.8.2011, účinnost od 1.9.2011
+Směrnice SŽDC č. 77 Technická specifikace nových výhybek a výhybkových konstrukcí soustav
+UIC 60 a S 49 2. generace, č.j. S 36 645/10-OTH, účinnost od 1.10.2010
+Výcvikový řád pro řidiče a obsluhovatele speciálních vozidel na tratích ČD č.j. 59 598/95-S7/TK
+Výnos ČD DDC č.j. 14 028/77-13 Směrnice pro navrhování a montáž obloukových výhybek
+Výnos ČD DDC č.j. 58 208/95-S7/stav Použití malého dilatačního zařízení (MDZ) pro ochranu výhybek před
+silami od BK
+Výnos ČD DDC č.j. 1 044/96-13 Zajištění přesnosti měření nerovnosti povrchu svarů elektronickým
+měřidlem
+Výnos ČD DDC č.j. 55 5420/96-S13 Podmínky pro nedestruktivní zkoušení ultrazvukem pro mimodrážní
+firmy u DDC a kvalifikační předpoklady pro defektoskopické
+pracovníky
+Výnos ČD DDC č.j. 92/98-O13 Prostorová šablona PŠR – 1 z 28.1.1998
+Výnos ČD DDC č.j. 58 310/99-O13 Schválení žlabového pražce pro výhybky UIC 60 a S 49 druhé generace
+z 15.12.1999
+Výnos č.j.: 172/2002-O13 Nákup součástí železničního svršku po uplynutí jejich záruční doby
+ze dne z 19.02.2002
+Výnos č.j. 59 654/2002-O13 Směrnice DDC O13 pro posuzování provozního stavu jazyků a opornic
+šablonou PŠR-3
+Výnos č.j. 55 474/03-O13 Pokyny pro využívání měřidel a technologických pomůcek (šablon) pro
+posuzování pojížděných součástí výhybek
+Výnos č.j.: 763/05-O13 Měření upínací teploty přístrojem RailScan
+(pozn.: výnos k zákazu používání daného zařízení) z 14.06.2005
+Výnos SŽDC č.j. 62 38/07-OP z 16.3.2007 Opatření k zavedení účinnosti novelizované normy
+ČSN 73 6360-2:2007 (platí pro stavby se smlouvou o dílo
+uzavřené do 30.10.2009)
+Výnos SŽDC č.j.50 673/09-OTH z 5.10.2009 Opatření k zavedení účinnosti novelizované normy
+ČSN 73 6360-2:2009
+Výnos SŽDC č.j. 4 098/09-OTH z 2.2.2009 Opatření k zajištění jakosti svářečských prací
+34
+8.12.4 Přístupy k dokumentům, seznamům a pomůckám SŽDC
+Schválená typová dokumentace:
+http://typdok.tudc.cz
+Seznam výrobků schválených pro železniční svršek a Směrnice SŽDC č. 67:
+www.szdc.cz (odkaz: Provozuschopnost dráhy/Technické požadavky na výrobky, zařízení a technologie pro
+ŽDC/Železniční svršek)
+Postup prací a jejich přejímek – směrové a výšková úprava koleje – ověřovací měření PPK, nutné doklady
+a kontroly:
+www.szdc.cz/provozuschopnost-drahy/technicke-pozadavky/zeleznicni-svrsek/soubory-ke-stazeni/ppp.html
+8.12.5 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 4 - Odvodnění kolejiště
+Kapitola 6 - Pražcové podloží
+Kapitola 7 - Kolejové lože
+Kapitola 9 - Úrovňové přejezdy a přechody
+Kapitola 10 - Nástupiště, rampy a zpevněné plochy
+Kapitola 18 - Betonové mosty
+Kapitola 19 - Ocelové mosty
+Kapitola 20 - Tunely
+Kapitola 27 - Zabezpečovací zařízení
+Kapitola 31 - Trakční vedení
+35
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+Kapitola 8
+T ř e t í - aktualizované vydání se zapracovanou změnou č. 8 /z roku 2013/
+Vydala Správa železniční dopravní cesty, státní organizace.
+Zpracovatel: Ing. Vojtěch Langer,
+Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Odborný gestor: Ing. Vojtěch Langer,
+Správa železniční dopravní cesty, státní organizace
+Odbor traťového hospodářství
+Vydal: Správa železniční dopravní cesty, státní organizace
+Generální ředitelství
+Odbor traťového hospodářství
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+www.szdc.cz
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT - oddělení typové dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 396, +420 972 741 769
+fax: +420 972 741 290
+e-mail: typdok@tudc.cz
+http://typdok.tudc.cz

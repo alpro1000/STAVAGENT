@@ -8,7 +8,11 @@ import { logger } from '../utils/logger.js';
 const LLM_PROVIDERS = {
   CLAUDE: 'claude',
   OPENAI: 'openai',
-  GEMINI: 'gemini'
+  GEMINI: 'gemini',
+  DEEPSEEK: 'deepseek',    // DeepSeek (Chinese, very cheap)
+  GROK: 'grok',            // xAI Grok
+  QWEN: 'qwen',            // Alibaba Qwen (free tier available)
+  GLM: 'glm'               // Zhipu GLM-4 (Chinese)
 };
 
 /**
@@ -17,24 +21,61 @@ const LLM_PROVIDERS = {
  * @returns {Object} LLM configuration object
  */
 export function getLLMConfig() {
+  // CHECK RUNTIME SELECTED MODEL FIRST (from UI selection)
+  if (runtimeSelectedModel && runtimeSelectedProvider) {
+    const apiKey = getApiKeyForProvider(runtimeSelectedProvider);
+    if (apiKey) {
+      logger.debug(`[LLMConfig] Using runtime selected model: ${runtimeSelectedModel} (${runtimeSelectedProvider})`);
+      return {
+        enabled: true,
+        provider: runtimeSelectedProvider,
+        apiKey: apiKey,
+        model: runtimeSelectedModel,
+        timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10),
+        primaryProvider: runtimeSelectedProvider,
+        isRuntimeSelected: true
+      };
+    }
+  }
+
+  // Fall back to environment configuration
   const primaryProvider = process.env.LLM_PROVIDER || 'gemini';
 
   // Determine API key based on provider
+  const provider = primaryProvider.toLowerCase();
   let apiKey;
-  if (primaryProvider.toLowerCase() === 'claude') {
-    apiKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
-  } else if (primaryProvider.toLowerCase() === 'gemini') {
-    apiKey = process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
-  } else {
-    apiKey = process.env.LLM_API_KEY || process.env.OPENAI_API_KEY;
-  }
+  let defaultModel;
 
-  // Set appropriate default model based on provider
-  let defaultModel = 'gpt-4o-mini';  // OpenAI default (66x cheaper than gpt-4-turbo)
-  if (primaryProvider.toLowerCase() === 'claude') {
-    defaultModel = 'claude-sonnet-4-5-20250929';  // Latest Sonnet 4.5
-  } else if (primaryProvider.toLowerCase() === 'gemini') {
-    defaultModel = 'gemini-2.0-flash';  // Latest Gemini 2.0 Flash
+  switch (provider) {
+  case 'claude':
+    apiKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+    // claude-sonnet-4-6 is current as of Feb 2026 (claude-sonnet-4-5 → 4-6)
+    defaultModel = 'claude-sonnet-4-6';
+    break;
+  case 'gemini':
+    apiKey = process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
+    // gemini-2.5-flash-lite (Feb 2026, fast, cheap). gemini-2.0-flash retired.
+    defaultModel = 'gemini-2.5-flash-lite';
+    break;
+  case 'deepseek':
+    apiKey = process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
+    defaultModel = 'deepseek-v3';  // DeepSeek V3 (very cheap!)
+    break;
+  case 'grok':
+    apiKey = process.env.XAI_API_KEY || process.env.LLM_API_KEY;
+    defaultModel = 'grok-3';
+    break;
+  case 'qwen':
+    apiKey = process.env.DASHSCOPE_API_KEY || process.env.LLM_API_KEY;
+    defaultModel = 'qwen-max';  // Alibaba Qwen (Feb 2026 flagship)
+    break;
+  case 'glm':
+    apiKey = process.env.ZHIPU_API_KEY || process.env.LLM_API_KEY;
+    defaultModel = 'glm-4-flash';  // Zhipu GLM-4 Flash (free)
+    break;
+  default:
+    apiKey = process.env.LLM_API_KEY || process.env.OPENAI_API_KEY;
+    defaultModel = 'gpt-5-mini';
   }
 
   const model = process.env.LLM_MODEL || defaultModel;
@@ -55,8 +96,33 @@ export function getLLMConfig() {
     apiKey: apiKey,
     model: model,
     timeoutMs: timeoutMs,
-    primaryProvider: primaryProvider.toLowerCase()
+    primaryProvider: primaryProvider.toLowerCase(),
+    isRuntimeSelected: false
   };
+}
+
+/**
+ * Get API key for a specific provider
+ */
+function getApiKeyForProvider(provider) {
+  switch (provider) {
+  case 'claude':
+    return process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
+  case 'gemini':
+    return process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
+  case 'deepseek':
+    return process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
+  case 'grok':
+    return process.env.XAI_API_KEY || process.env.LLM_API_KEY;
+  case 'qwen':
+    return process.env.DASHSCOPE_API_KEY || process.env.LLM_API_KEY;
+  case 'glm':
+    return process.env.ZHIPU_API_KEY || process.env.LLM_API_KEY;
+  case 'openai':
+    return process.env.OPENAI_API_KEY || process.env.LLM_API_KEY;
+  default:
+    return process.env.LLM_API_KEY;
+  }
 }
 
 /**
@@ -74,7 +140,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'claude',
       apiKey: claudeKey,
-      model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-5-20250929',
+      model: process.env.CLAUDE_MODEL || 'claude-sonnet-4-6',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -86,7 +152,7 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'gemini',
       apiKey: geminiKey,
-      model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+      model: process.env.GEMINI_MODEL || 'gemini-2.5-flash-lite',
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -98,7 +164,55 @@ export function getAvailableProviders() {
       enabled: true,
       provider: 'openai',
       apiKey: openaiKey,
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',  // 66x cheaper than gpt-4-turbo
+      model: process.env.OPENAI_MODEL || 'gpt-5-mini',
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
+    };
+  }
+
+  // Check DeepSeek (OpenAI-compatible API, very cheap!)
+  const deepseekKey = process.env.DEEPSEEK_API_KEY;
+  if (deepseekKey) {
+    providers.deepseek = {
+      enabled: true,
+      provider: 'deepseek',
+      apiKey: deepseekKey,
+      model: process.env.DEEPSEEK_MODEL || 'deepseek-v3',
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
+    };
+  }
+
+  // Check Grok (xAI)
+  const grokKey = process.env.XAI_API_KEY;
+  if (grokKey) {
+    providers.grok = {
+      enabled: true,
+      provider: 'grok',
+      apiKey: grokKey,
+      model: process.env.GROK_MODEL || 'grok-3',
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
+    };
+  }
+
+  // Check Qwen (Alibaba DashScope)
+  const qwenKey = process.env.DASHSCOPE_API_KEY;
+  if (qwenKey) {
+    providers.qwen = {
+      enabled: true,
+      provider: 'qwen',
+      apiKey: qwenKey,
+      model: process.env.QWEN_MODEL || 'qwen-max',
+      timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
+    };
+  }
+
+  // Check GLM (Zhipu AI - Chinese, has free tier)
+  const glmKey = process.env.ZHIPU_API_KEY;
+  if (glmKey) {
+    providers.glm = {
+      enabled: true,
+      provider: 'glm',
+      apiKey: glmKey,
+      model: process.env.GLM_MODEL || 'glm-4-flash',  // Free tier available
       timeoutMs: parseInt(process.env.LLM_TIMEOUT_MS || '90000', 10)
     };
   }
@@ -117,13 +231,20 @@ export function getFallbackChain(primaryProvider = null) {
   const primary = primaryProvider || process.env.LLM_PROVIDER || 'gemini';
 
   // Define fallback chains for each provider
+  // Priority: cheapest/free first for fallbacks
+  const defaultFallback = ['deepseek', 'glm', 'qwen', 'gemini', 'grok', 'openai', 'claude'];
+
   const chains = {
-    gemini: ['gemini', 'claude', 'openai'],      // Try Gemini, then Claude, then OpenAI
-    claude: ['claude', 'gemini', 'openai'],      // Try Claude, then Gemini, then OpenAI
-    openai: ['openai', 'claude', 'gemini']       // Try OpenAI, then Claude, then Gemini
+    gemini: ['gemini', 'deepseek', 'glm', 'qwen', 'grok', 'openai', 'claude'],
+    claude: ['claude', 'deepseek', 'gemini', 'glm', 'qwen', 'grok', 'openai'],
+    openai: ['openai', 'deepseek', 'gemini', 'glm', 'qwen', 'grok', 'claude'],
+    deepseek: ['deepseek', 'glm', 'qwen', 'gemini', 'grok', 'openai', 'claude'],
+    grok: ['grok', 'deepseek', 'gemini', 'glm', 'qwen', 'openai', 'claude'],
+    qwen: ['qwen', 'deepseek', 'glm', 'gemini', 'grok', 'openai', 'claude'],
+    glm: ['glm', 'deepseek', 'qwen', 'gemini', 'grok', 'openai', 'claude']
   };
 
-  return chains[primary.toLowerCase()] || chains.gemini;
+  return chains[primary.toLowerCase()] || defaultFallback;
 }
 
 /**
@@ -137,7 +258,10 @@ export function createLLMClient(config) {
     return null;
   }
 
-  if (config.provider === LLM_PROVIDERS.CLAUDE) {
+  const provider = config.provider;
+
+  // Claude (Anthropic)
+  if (provider === LLM_PROVIDERS.CLAUDE) {
     return {
       provider: 'claude',
       apiUrl: 'https://api.anthropic.com/v1/messages',
@@ -149,7 +273,10 @@ export function createLLMClient(config) {
       model: config.model,
       timeoutMs: config.timeoutMs
     };
-  } else if (config.provider === LLM_PROVIDERS.GEMINI) {
+  }
+
+  // Gemini (Google)
+  if (provider === LLM_PROVIDERS.GEMINI) {
     return {
       provider: 'gemini',
       apiUrl: 'https://generativelanguage.googleapis.com/v1beta/models',
@@ -160,19 +287,80 @@ export function createLLMClient(config) {
       model: config.model,
       timeoutMs: config.timeoutMs
     };
-  } else {
-    // OpenAI (default)
+  }
+
+  // DeepSeek (OpenAI-compatible API)
+  if (provider === LLM_PROVIDERS.DEEPSEEK) {
     return {
-      provider: 'openai',
-      apiUrl: 'https://api.openai.com/v1/chat/completions',
+      provider: 'deepseek',
+      apiUrl: 'https://api.deepseek.com/v1/chat/completions',
       headers: {
         'authorization': `Bearer ${config.apiKey}`,
         'content-type': 'application/json'
       },
       model: config.model,
-      timeoutMs: config.timeoutMs
+      timeoutMs: config.timeoutMs,
+      isOpenAICompatible: true
     };
   }
+
+  // Grok (xAI - OpenAI-compatible API)
+  if (provider === LLM_PROVIDERS.GROK) {
+    return {
+      provider: 'grok',
+      apiUrl: 'https://api.x.ai/v1/chat/completions',
+      headers: {
+        'authorization': `Bearer ${config.apiKey}`,
+        'content-type': 'application/json'
+      },
+      model: config.model,
+      timeoutMs: config.timeoutMs,
+      isOpenAICompatible: true
+    };
+  }
+
+  // Qwen (Alibaba DashScope)
+  if (provider === LLM_PROVIDERS.QWEN) {
+    return {
+      provider: 'qwen',
+      apiUrl: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
+      headers: {
+        'authorization': `Bearer ${config.apiKey}`,
+        'content-type': 'application/json'
+      },
+      model: config.model,
+      timeoutMs: config.timeoutMs,
+      isOpenAICompatible: true
+    };
+  }
+
+  // GLM (Zhipu AI - OpenAI-compatible API)
+  if (provider === LLM_PROVIDERS.GLM) {
+    return {
+      provider: 'glm',
+      apiUrl: 'https://open.bigmodel.cn/api/paas/v4/chat/completions',
+      headers: {
+        'authorization': `Bearer ${config.apiKey}`,
+        'content-type': 'application/json'
+      },
+      model: config.model,
+      timeoutMs: config.timeoutMs,
+      isOpenAICompatible: true
+    };
+  }
+
+  // OpenAI (default)
+  return {
+    provider: 'openai',
+    apiUrl: 'https://api.openai.com/v1/chat/completions',
+    headers: {
+      'authorization': `Bearer ${config.apiKey}`,
+      'content-type': 'application/json'
+    },
+    model: config.model,
+    timeoutMs: config.timeoutMs,
+    isOpenAICompatible: true
+  };
 }
 
 /**
@@ -247,6 +435,13 @@ export function getPerplexityConfig() {
     };
   }
 
+  // Validate API key format
+  if (!apiKey.startsWith('pplx-')) {
+    logger.warn(`[PerplexityConfig] PPLX_API_KEY does not start with "pplx-" (starts with "${apiKey.substring(0, 4)}..."). This may cause 401 errors.`);
+  }
+
+  logger.info(`[PerplexityConfig] Perplexity ENABLED: model=${model}, timeout=${timeoutMs}ms, key=${apiKey.substring(0, 8)}...`);
+
   return {
     enabled: true,
     apiKey: apiKey,
@@ -259,24 +454,57 @@ export function getPerplexityConfig() {
 export const PERPLEXITY_CONFIG = getPerplexityConfig();
 
 // ============================================================================
+// BRAVE SEARCH CONFIGURATION
+// ============================================================================
+
+/**
+ * Get Brave Search API configuration
+ * Brave Search can supplement or replace Perplexity for URS catalog search
+ * @returns {Object} Brave config
+ */
+export function getBraveSearchConfig() {
+  const apiKey = process.env.BRAVE_API_KEY;
+  const timeoutMs = parseInt(process.env.BRAVE_TIMEOUT_MS || '15000', 10);
+
+  if (!apiKey) {
+    logger.info('[BraveConfig] No BRAVE_API_KEY set. Brave Search fallback will be disabled.');
+    return {
+      enabled: false,
+      timeoutMs: timeoutMs
+    };
+  }
+
+  logger.info(`[BraveConfig] Brave Search ENABLED: timeout=${timeoutMs}ms, key=${apiKey.substring(0, 8)}...`);
+
+  return {
+    enabled: true,
+    apiKey: apiKey,
+    apiUrl: 'https://api.search.brave.com/res/v1/web/search',
+    timeoutMs: timeoutMs
+  };
+}
+
+export const BRAVE_SEARCH_CONFIG = getBraveSearchConfig();
+
+// ============================================================================
 // MODEL PRICING & COST COMPARISON
 // ============================================================================
 
 /**
  * Model pricing information (USD per 1M tokens)
- * Last updated: December 2024
+ * Last updated: February 2026
  */
 const MODEL_PRICING = {
-  // Claude models
-  'claude-sonnet-4-5-20250929': {
+  // Claude models (Anthropic)
+  'claude-sonnet-4-6': {
     provider: 'claude',
     inputCost: 3.0,      // $3 per 1M input tokens
     outputCost: 15.0,    // $15 per 1M output tokens
-    costPerMinute: 0.30, // Estimated for typical usage
-    speedScore: 8,       // 1-10 scale (10 = fastest)
-    qualityScore: 10     // 1-10 scale (10 = best)
+    costPerMinute: 0.30,
+    speedScore: 8,
+    qualityScore: 10
   },
-  'claude-opus': {
+  'claude-opus-4-6': {
     provider: 'claude',
     inputCost: 15.0,
     outputCost: 75.0,
@@ -285,15 +513,7 @@ const MODEL_PRICING = {
     qualityScore: 10
   },
   // OpenAI models
-  'gpt-4-turbo': {
-    provider: 'openai',
-    inputCost: 10.0,
-    outputCost: 30.0,
-    costPerMinute: 1.00,
-    speedScore: 7,
-    qualityScore: 9
-  },
-  'gpt-4o': {
+  'gpt-4.1': {
     provider: 'openai',
     inputCost: 5.0,
     outputCost: 15.0,
@@ -301,7 +521,7 @@ const MODEL_PRICING = {
     speedScore: 9,
     qualityScore: 9
   },
-  'gpt-4o-mini': {
+  'gpt-5-mini': {
     provider: 'openai',
     inputCost: 0.15,
     outputCost: 0.60,
@@ -309,21 +529,89 @@ const MODEL_PRICING = {
     speedScore: 10,
     qualityScore: 7
   },
-  // Gemini models
-  'gemini-2.0-flash': {
+  // Gemini models (Google)
+  'gemini-2.5-flash-lite': {
     provider: 'gemini',
-    inputCost: 0.075,     // $0.075 per 1M input tokens (cheapest!)
-    outputCost: 0.30,     // $0.30 per 1M output tokens
-    costPerMinute: 0.001, // Extremely cheap
-    speedScore: 10,       // Very fast
-    qualityScore: 8       // Good quality
+    inputCost: 0.075,     // extremely cheap
+    outputCost: 0.30,
+    costPerMinute: 0.001,
+    speedScore: 10,
+    qualityScore: 8
   },
-  'gemini-pro': {
+  'gemini-2.5-pro': {
     provider: 'gemini',
-    inputCost: 0.5,
-    outputCost: 1.5,
-    costPerMinute: 0.05,
+    inputCost: 1.25,
+    outputCost: 5.0,
+    costPerMinute: 0.10,
+    speedScore: 8,
+    qualityScore: 10
+  },
+  // DeepSeek models (VERY CHEAP!)
+  'deepseek-v3': {
+    provider: 'deepseek',
+    inputCost: 0.14,      // $0.14 per 1M input tokens (cache hit: $0.014!)
+    outputCost: 0.28,
+    costPerMinute: 0.001,
     speedScore: 9,
+    qualityScore: 9
+  },
+  'deepseek-reasoner': {
+    provider: 'deepseek',
+    inputCost: 0.55,
+    outputCost: 2.19,
+    costPerMinute: 0.01,
+    speedScore: 7,
+    qualityScore: 10
+  },
+  // Grok models (xAI)
+  'grok-3': {
+    provider: 'grok',
+    inputCost: 3.0,
+    outputCost: 15.0,
+    costPerMinute: 0.30,
+    speedScore: 8,
+    qualityScore: 9
+  },
+  'grok-3-mini': {
+    provider: 'grok',
+    inputCost: 0.3,
+    outputCost: 0.5,
+    costPerMinute: 0.02,
+    speedScore: 10,
+    qualityScore: 7
+  },
+  // Qwen models (Alibaba)
+  'qwen-max': {
+    provider: 'qwen',
+    inputCost: 1.6,
+    outputCost: 6.4,
+    costPerMinute: 0.05,
+    speedScore: 8,
+    qualityScore: 9
+  },
+  'qwen-turbo': {
+    provider: 'qwen',
+    inputCost: 0.3,
+    outputCost: 0.6,
+    costPerMinute: 0.01,
+    speedScore: 10,
+    qualityScore: 7
+  },
+  // GLM models (Zhipu AI - has FREE tier!)
+  'glm-4-flash': {
+    provider: 'glm',
+    inputCost: 0.0,       // FREE for limited usage!
+    outputCost: 0.0,
+    costPerMinute: 0.0,
+    speedScore: 9,
+    qualityScore: 7
+  },
+  'glm-4': {
+    provider: 'glm',
+    inputCost: 0.7,
+    outputCost: 0.7,
+    costPerMinute: 0.02,
+    speedScore: 8,
     qualityScore: 8
   }
 };
@@ -361,7 +649,7 @@ export function recommendBestModel(criteria = 'balanced') {
         return name;
       }
       return best;
-    });
+    }, null);
     const bestInfo = MODEL_PRICING[bestModelName];
     reason = `Lowest cost ($${bestInfo.costPerMinute}/min) - ideal for high volume`;
     break;
@@ -374,7 +662,7 @@ export function recommendBestModel(criteria = 'balanced') {
         return name;
       }
       return best;
-    });
+    }, null);
     const bestInfo = MODEL_PRICING[bestModelName];
     reason = `Fastest speed (${bestInfo.speedScore}/10) with low latency`;
     break;
@@ -387,7 +675,7 @@ export function recommendBestModel(criteria = 'balanced') {
         return name;
       }
       return best;
-    });
+    }, null);
     const bestInfo = MODEL_PRICING[bestModelName];
     reason = `Best quality (${bestInfo.qualityScore}/10) with excellent performance`;
     break;
@@ -408,7 +696,7 @@ export function recommendBestModel(criteria = 'balanced') {
         return name;
       }
       return best;
-    });
+    }, null);
     const bestInfo = MODEL_PRICING[bestModelName];
     reason = `Optimal balance: fast (${bestInfo.speedScore}/10), cheap ($${bestInfo.costPerMinute}/min), quality (${bestInfo.qualityScore}/10)`;
     break;
@@ -477,32 +765,32 @@ const TASK_MODEL_ROUTING = {
   [TASK_TYPES.KEYWORD_GENERATION]: {
     priority: ['gemini', 'openai', 'claude'],
     reason: 'Fast and cheap for simple extraction',
-    preferModel: 'gemini-2.0-flash'
+    preferModel: 'gemini-2.5-flash-lite'
   },
   [TASK_TYPES.TRANSLATION]: {
     priority: ['gemini', 'claude', 'openai'],
     reason: 'Fast translation with good quality',
-    preferModel: 'gemini-2.0-flash'
+    preferModel: 'gemini-2.5-flash-lite'
   },
   [TASK_TYPES.BLOCK_ANALYSIS]: {
     priority: ['claude', 'openai', 'gemini'],
     reason: 'Complex reasoning requires best quality',
-    preferModel: 'claude-sonnet-4-5-20250929'
+    preferModel: 'claude-sonnet-4-6'
   },
   [TASK_TYPES.URS_SELECTION]: {
     priority: ['claude', 'openai', 'gemini'],
     reason: 'Critical decision - needs expert reasoning',
-    preferModel: 'claude-sonnet-4-5-20250929'
+    preferModel: 'claude-sonnet-4-6'
   },
   [TASK_TYPES.VALIDATION]: {
     priority: ['openai', 'claude', 'gemini'],
     reason: 'Different POV for validation',
-    preferModel: 'gpt-4-turbo'
+    preferModel: 'gpt-4.1'
   },
   [TASK_TYPES.NORMS_INTERPRETATION]: {
     priority: ['claude', 'openai', 'gemini'],
     reason: 'Technical norms require precise understanding',
-    preferModel: 'claude-sonnet-4-5-20250929'
+    preferModel: 'claude-sonnet-4-6'
   }
 };
 
@@ -548,3 +836,241 @@ export function getTaskTypes() {
 }
 
 export const TASK_ROUTING = TASK_MODEL_ROUTING;
+
+// ============================================================================
+// MODEL SELECTION API
+// ============================================================================
+
+/**
+ * Get all available models with their details
+ * Used by frontend for model selection dropdown
+ * @returns {Array} List of models with provider, pricing, and availability
+ */
+export function getAllModels() {
+  const availableProviders = getAvailableProviders();
+  const models = [];
+
+  for (const [modelName, info] of Object.entries(MODEL_PRICING)) {
+    const providerAvailable = availableProviders[info.provider]?.enabled || false;
+
+    models.push({
+      id: modelName,
+      name: formatModelName(modelName),
+      provider: info.provider,
+      providerName: formatProviderName(info.provider),
+      available: providerAvailable,
+      pricing: {
+        inputCost: info.inputCost,
+        outputCost: info.outputCost,
+        costPerMinute: info.costPerMinute,
+        isFree: info.costPerMinute === 0
+      },
+      scores: {
+        speed: info.speedScore,
+        quality: info.qualityScore
+      },
+      recommended: isRecommendedModel(modelName)
+    });
+  }
+
+  // Sort by: available first, then by cost (cheapest first)
+  models.sort((a, b) => {
+    if (a.available !== b.available) return b.available ? 1 : -1;
+    return a.pricing.costPerMinute - b.pricing.costPerMinute;
+  });
+
+  return models;
+}
+
+/**
+ * Format model name for display
+ */
+function formatModelName(modelId) {
+  const names = {
+    'claude-sonnet-4-6': 'Claude Sonnet 4.6',
+    'claude-opus-4-6': 'Claude Opus 4.6',
+    'gpt-4.1': 'GPT-4.1',
+    'gpt-5-mini': 'GPT-5 Mini',
+    'gemini-2.5-flash-lite': 'Gemini 2.5 Flash Lite',
+    'gemini-2.5-pro': 'Gemini 2.5 Pro',
+    'deepseek-v3': 'DeepSeek V3',
+    'deepseek-reasoner': 'DeepSeek Reasoner',
+    'grok-3': 'Grok 3',
+    'grok-3-mini': 'Grok 3 Mini',
+    'qwen-max': 'Qwen Max',
+    'qwen-turbo': 'Qwen Turbo',
+    'glm-4-flash': 'GLM-4 Flash (Free)',
+    'glm-4': 'GLM-4'
+  };
+  return names[modelId] || modelId;
+}
+
+/**
+ * Format provider name for display
+ */
+function formatProviderName(provider) {
+  const names = {
+    'claude': 'Anthropic',
+    'openai': 'OpenAI',
+    'gemini': 'Google',
+    'deepseek': 'DeepSeek',
+    'grok': 'xAI',
+    'qwen': 'Alibaba',
+    'glm': 'Zhipu AI'
+  };
+  return names[provider] || provider;
+}
+
+/**
+ * Check if model is recommended (best value)
+ */
+function isRecommendedModel(modelId) {
+  // Recommended models: cheap + good quality
+  const recommended = ['deepseek-v3', 'gemini-2.5-flash-lite', 'glm-4-flash', 'gpt-5-mini'];
+  return recommended.includes(modelId);
+}
+
+/**
+ * Runtime model selection storage
+ * Allows changing model without restart
+ */
+let runtimeSelectedModel = null;
+let runtimeSelectedProvider = null;
+
+/**
+ * Set model at runtime (for user selection)
+ * @param {string} modelId - Model ID to use
+ * @returns {Object} Result with success status
+ */
+export function setRuntimeModel(modelId) {
+  const pricing = getModelPricing(modelId);
+
+  if (!pricing || pricing.provider === 'unknown') {
+    logger.warn(`[LLMConfig] Unknown model: ${modelId}`);
+    return { success: false, error: `Unknown model: ${modelId}` };
+  }
+
+  const availableProviders = getAvailableProviders();
+  if (!availableProviders[pricing.provider]?.enabled) {
+    logger.warn(`[LLMConfig] Provider ${pricing.provider} not available for model ${modelId}`);
+    return {
+      success: false,
+      error: `Provider ${pricing.provider} not configured. Set ${getEnvKeyForProvider(pricing.provider)} environment variable.`
+    };
+  }
+
+  runtimeSelectedModel = modelId;
+  runtimeSelectedProvider = pricing.provider;
+
+  logger.info(`[LLMConfig] Runtime model set to: ${modelId} (${pricing.provider})`);
+
+  // Notify listeners about model change (so they can reset caches)
+  notifyModelChange();
+
+  return {
+    success: true,
+    model: modelId,
+    provider: pricing.provider,
+    providerName: formatProviderName(pricing.provider)
+  };
+}
+
+/**
+ * Get runtime selected model (or default)
+ * @returns {Object} Current model config
+ */
+export function getRuntimeModel() {
+  if (runtimeSelectedModel) {
+    const pricing = getModelPricing(runtimeSelectedModel);
+    return {
+      model: runtimeSelectedModel,
+      provider: runtimeSelectedProvider,
+      providerName: formatProviderName(runtimeSelectedProvider),
+      isRuntimeSelected: true,
+      pricing: {
+        inputCost: pricing.inputCost,
+        outputCost: pricing.outputCost,
+        costPerMinute: pricing.costPerMinute
+      }
+    };
+  }
+
+  // Return default from environment
+  const config = getLLMConfig();
+  const pricing = getModelPricing(config.model);
+
+  return {
+    model: config.model,
+    provider: config.provider,
+    providerName: formatProviderName(config.provider),
+    isRuntimeSelected: false,
+    pricing: {
+      inputCost: pricing.inputCost,
+      outputCost: pricing.outputCost,
+      costPerMinute: pricing.costPerMinute
+    }
+  };
+}
+
+/**
+ * Get environment variable key for provider
+ */
+function getEnvKeyForProvider(provider) {
+  const keys = {
+    'claude': 'ANTHROPIC_API_KEY',
+    'openai': 'OPENAI_API_KEY',
+    'gemini': 'GOOGLE_API_KEY',
+    'deepseek': 'DEEPSEEK_API_KEY',
+    'grok': 'XAI_API_KEY',
+    'qwen': 'DASHSCOPE_API_KEY',
+    'glm': 'ZHIPU_API_KEY'
+  };
+  return keys[provider] || 'LLM_API_KEY';
+}
+
+/**
+ * Reset runtime model selection to default
+ */
+export function resetRuntimeModel() {
+  runtimeSelectedModel = null;
+  runtimeSelectedProvider = null;
+  logger.info('[LLMConfig] Runtime model reset to default');
+
+  // Notify listeners about model change
+  notifyModelChange();
+
+  return getRuntimeModel();
+}
+
+// ============================================================================
+// MODEL CHANGE NOTIFICATION SYSTEM
+// ============================================================================
+
+/**
+ * Listeners for model changes (used by llmClient to reset cache)
+ */
+const modelChangeListeners = [];
+
+/**
+ * Register a listener for model changes
+ * @param {Function} callback - Function to call when model changes
+ */
+export function onModelChange(callback) {
+  if (typeof callback === 'function') {
+    modelChangeListeners.push(callback);
+  }
+}
+
+/**
+ * Notify all listeners about model change
+ */
+function notifyModelChange() {
+  const currentModel = getRuntimeModel();
+  for (const listener of modelChangeListeners) {
+    try {
+      listener(currentModel);
+    } catch (error) {
+      logger.warn(`[LLMConfig] Model change listener error: ${error.message}`);
+    }
+  }
+}

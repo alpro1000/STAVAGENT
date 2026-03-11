@@ -6,12 +6,8 @@
 import express from 'express';
 import db from '../db/init.js';
 import { logger } from '../utils/logger.js';
-import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
-
-// Apply authentication to all routes
-router.use(requireAuth);
 
 /**
  * GET /api/debug/templates
@@ -31,13 +27,7 @@ router.get('/templates', async (req, res) => {
         universal: allTemplates.length
       },
       templates: allTemplates,
-      note: 'VARIANT 1: All templates are universal (not type-specific)',
-      auth: {
-        userId: req.user?.userId,
-        email: req.user?.email,
-        role: req.user?.role,
-        authBypass: process.env.DISABLE_AUTH === 'true'
-      }
+      note: 'VARIANT 1: All templates are universal (not type-specific)'
     });
   } catch (error) {
     logger.error('Error in debug/templates:', error);
@@ -64,12 +54,7 @@ router.get('/projects', async (req, res) => {
     res.json({
       success: true,
       count: projects.length,
-      projects,
-      auth: {
-        userId: req.user?.userId,
-        email: req.user?.email,
-        role: req.user?.role
-      }
+      projects
     });
   } catch (error) {
     logger.error('Error in debug/projects:', error);
@@ -119,12 +104,6 @@ router.get('/health', async (req, res) => {
         projects: projectsCount.count,
         parts: partsCount.count,
         users: usersCount.count
-      },
-      auth: {
-        bypassEnabled: process.env.DISABLE_AUTH === 'true',
-        userId: req.user?.userId,
-        email: req.user?.email,
-        role: req.user?.role
       },
       environment: {
         NODE_ENV: process.env.NODE_ENV || 'development',

@@ -11,6 +11,10 @@
  * - CORE integration (concreteAgentClient)
  */
 
+// Load environment variables from .env file
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -27,6 +31,12 @@ import portalFilesRoutes from './src/routes/portal-files.js';
 import kioskLinksRoutes from './src/routes/kiosk-links.js';
 import otskpRoutes from './src/routes/otskp.js';
 import debugRoutes from './src/routes/debug.js';
+import integrationRoutes from './src/routes/integration.js';
+import kbResearchRoutes from './src/routes/kb-research.js';
+import parsePreviewRoutes from './src/routes/parse-preview.js';
+import positionInstancesRoutes from './src/routes/position-instances.js';
+import portalDocumentsRoutes from './src/routes/portal-documents.js';
+import coreProxyRoutes from './src/routes/core-proxy.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -45,12 +55,20 @@ const __dirname = dirname(__filename);
 const PORT = process.env.PORT || 3001;
 
 // CORS configuration - support multiple origins
-const ALLOWED_ORIGINS = [
+// Deduplicate CORS origins (CORS_ORIGIN env may overlap with hardcoded entries)
+const ALLOWED_ORIGINS = [...new Set([
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://monolit-planner-frontend.onrender.com',
-  process.env.CORS_ORIGIN // Allow custom origin from env
-].filter(Boolean); // Remove undefined/null values
+  'https://monolit-planner-frontend.vercel.app',
+  'https://www.stavagent.cz',
+  'https://stavagent.cz',
+  'https://stavagent-backend.vercel.app',
+  'https://stavagent-backend-ktwx.vercel.app',
+  process.env.CORS_ORIGIN,
+].filter(Boolean))];
+
+// Also allow Vercel preview deployments (*.vercel.app)
+const VERCEL_PREVIEW_REGEX = /^https:\/\/[a-zA-Z0-9-]+\.vercel\.app$/;
 
 // Initialize Express
 const app = express();
@@ -59,8 +77,9 @@ const app = express();
 // This prevents IP spoofing attacks in local development
 // Enable ONLY:
 // 1. On Render (detected by RENDER env var), OR
-// 2. Explicitly with TRUST_PROXY=true env var
-const shouldTrustProxy = process.env.RENDER === 'true' || process.env.TRUST_PROXY === 'true';
+// 2. On Google Cloud Run (detected by K_SERVICE env var set automatically by Cloud Run), OR
+// 3. Explicitly with TRUST_PROXY=true env var
+const shouldTrustProxy = process.env.RENDER === 'true' || process.env.TRUST_PROXY === 'true' || !!process.env.K_SERVICE;
 if (shouldTrustProxy) {
   app.set('trust proxy', 1);
   console.log('[Security] Trust proxy enabled (behind verified proxy)');
@@ -68,19 +87,22 @@ if (shouldTrustProxy) {
   console.log('[Security] Trust proxy disabled (development mode)');
 }
 
+// Helper: check if origin is allowed
+function isOriginAllowed(origin) {
+  if (!origin) return true;
+  if (ALLOWED_ORIGINS.includes('*')) return true;
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  if (VERCEL_PREVIEW_REGEX.test(origin)) return true;
+  return false;
+}
+
 // Security middleware
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: false, // Don't block cross-origin requests
+}));
 app.use(cors({
   origin: (origin, callback) => {
-    // Allow requests with no origin (like mobile apps or curl)
-    if (!origin) return callback(null, true);
-
-    // Check if wildcard is set (for development or multiple frontends)
-    if (ALLOWED_ORIGINS.includes('*')) {
-      return callback(null, true);
-    }
-
-    if (ALLOWED_ORIGINS.includes(origin)) {
+    if (isOriginAllowed(origin)) {
       callback(null, true);
     } else {
       logger.warn(`CORS blocked origin: ${origin}`);
@@ -90,8 +112,11 @@ app.use(cors({
   credentials: true
 }));
 
-// Logging
-app.use(morgan('combined', { stream: { write: msg => logger.info(msg.trim()) } }));
+// Logging (exclude healthcheck requests from logs)
+app.use(morgan('combined', {
+  skip: (req, res) => req.path === '/healthcheck',
+  stream: { write: msg => logger.info(msg.trim()) }
+}));
 
 // Rate limiting - apply to all routes by default
 app.use(apiLimiter);
@@ -111,12 +136,39 @@ dirs.forEach(dir => {
 
 // Health check
 app.get('/health', (req, res) => {
+  const dbMode = process.env.DATABASE_URL ? 'postgresql' : 'sqlite (no DATABASE_URL set!)';
+  const authMode = (process.env.DISABLE_AUTH === 'true' || (!!process.env.K_SERVICE && !process.env.JWT_SECRET))
+    ? 'disabled' : 'jwt';
   res.json({
     status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    version: '1.0.0'
+    version: '1.0.0',
+    db: dbMode,
+    auth: authMode,
+    env: process.env.K_SERVICE ? 'cloud-run' : (process.env.RENDER ? 'render' : 'local')
   });
+});
+
+// Keep-Alive healthcheck (with secret key protection)
+app.get('/healthcheck', (req, res) => {
+  const keepAliveKey = process.env.KEEP_ALIVE_KEY;
+
+  // If no key configured, disable endpoint
+  if (!keepAliveKey) {
+    return res.status(404).json({ error: 'Not found' });
+  }
+
+  // Validate X-Keep-Alive-Key header
+  const providedKey = req.headers['x-keep-alive-key'];
+
+  if (providedKey !== keepAliveKey) {
+    // Return 404 to hide endpoint existence
+    return res.status(404).json({ error: 'Not found' });
+  }
+
+  // Return minimal response (no DB queries)
+  res.json({ status: 'alive', service: 'stavagent-portal' });
 });
 
 // API Routes
@@ -131,8 +183,26 @@ app.use('/api/portal-projects', portalProjectsRoutes);
 app.use('/api/portal-files', uploadLimiter, portalFilesRoutes);
 app.use('/api/kiosk-links', kioskLinksRoutes);
 
+// Portal documents (passports, summaries, kiosk outputs) - NO AUTH for kiosk saving
+app.use('/api/portal-documents', portalDocumentsRoutes);
+
 // OTSKP reference (shared across all kiosks)
 app.use('/api/otskp', otskpLimiter, otskpRoutes);
+
+// Integration routes (Monolit ↔ Registry sync) - NO AUTH REQUIRED
+app.use('/api/integration', integrationRoutes);
+
+// Position Instances API (PositionInstance Architecture v1.0) - NO AUTH for kiosk access
+app.use('/api/positions', positionInstancesRoutes);
+
+// KB Research proxy — no auth required (question is public)
+app.use('/api/kb/research', kbResearchRoutes);
+
+// Parse Preview — no auth required, no DB storage (temp file only)
+app.use('/api/parse-preview', uploadLimiter, parsePreviewRoutes);
+
+// CORE proxy — forwards all /api/core/* to concrete-agent with server-side timeouts
+app.use('/api/core', coreProxyRoutes);
 
 // Debug routes (disable in production)
 app.use('/api/debug', debugRoutes);
@@ -148,31 +218,44 @@ app.use((req, res) => {
 // Error handler
 app.use(errorHandler);
 
-// Bootstrap function - initialize database then start server
+// Bootstrap function - start server first, then initialize database
+// Render health check needs port open within 15 min, so we listen BEFORE DB init
 async function bootstrap() {
+  // Start server IMMEDIATELY so health check passes on Render
+  const server = app.listen(PORT, () => {
+    logger.info(`🚀 StavAgent Portal Backend running on port ${PORT}`);
+    logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
+    logger.info(`🗄️  Database: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
+    logger.info(`🏛️  Portal API: Auth, Admin, Projects, Files, Kiosk Links`);
+  });
+
+  // Initialize database in background (routes will fail gracefully until ready)
   try {
-    // Initialize database (await for PostgreSQL migrations)
     await initDatabase();
     logger.info('✅ Database initialized successfully');
 
     // Schedule periodic file cleanup
     schedulePeriodicCleanup();
-
-    // Start server
-    app.listen(PORT, () => {
-      logger.info(`🚀 StavAgent Portal Backend running on port ${PORT}`);
-      logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
-      logger.info(`🗄️  Database: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
-      logger.info(`🏛️  Portal API: Auth, Admin, Projects, Files, Kiosk Links`);
-    });
   } catch (error) {
     logger.error('❌ Database initialization failed:', error);
-    process.exit(1);
+    // Don't exit - keep server alive for health checks, allow Render to retry
   }
 }
 
 // Start application
-bootstrap();
+// On Vercel serverless, don't call listen() — just export the app
+// VERCEL env var is automatically set by Vercel runtime
+if (process.env.VERCEL) {
+  // Vercel: initialize DB on first import (no listen, no cleanup scheduler)
+  initDatabase()
+    .then(() => logger.info('✅ Database initialized (Vercel)'))
+    .catch(err => logger.error('❌ Database init failed (Vercel):', err));
+} else {
+  bootstrap();
+}
+
+// Export app for Vercel serverless (used by api/index.js)
+export default app;
 
 // Graceful shutdown
 process.on('SIGTERM', () => {

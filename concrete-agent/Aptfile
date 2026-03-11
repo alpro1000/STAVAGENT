@@ -1,14 +1,12 @@
 # System dependencies for MinerU (magic-pdf)
-# Render.com automatically installs packages listed here
+# Render will install these via apt-get
 
-# Poppler for PDF rendering
+# Poppler - PDF rendering library
 poppler-utils
 
-# Tesseract OCR for scanned documents
+# Tesseract - OCR engine
 tesseract-ocr
 tesseract-ocr-ces
-tesseract-ocr-eng
 
-# Additional libraries for image processing
-libgl1-mesa-glx
-libglib2.0-0
+# Image processing
+libmagic1

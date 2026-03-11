@@ -75,20 +75,17 @@ html {
 
   /* Typography */
   --font-base: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: 'Roboto Mono', 'Courier New', monospace;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
 
-  /* Font Sizes - Standardized Scale */
-  --font-size-xs: 9px;         /* Component units */
-  --font-size-sm: 10px;        /* KPI labels, stat labels */
-  --font-size-meta: 11px;      /* Badges, metadata, headers */
-  --font-size-label: 12px;     /* Form labels, dates */
-  --font-size-body: 13px;      /* Table cells, inputs */
-  --font-size-base: 14px;      /* STANDARD: Body, buttons, values */
-  --font-size-md: 16px;        /* Secondary headings, icons */
-  --font-size-lg: 18px;        /* Component titles */
-  --font-size-xl: 20px;        /* Section headers (h2) */
-  --font-size-2xl: 24px;       /* Page titles (h1) */
-  --font-size-3xl: 32px;       /* Large icons, special elements */
+  /* Font Sizes - VARIANT A: Strict Unification */
+  --font-size-meta: 11px;      /* Uppercase labels, badges, section titles */
+  --font-size-sm: 12px;        /* Muted text, small hints */
+  --font-size-secondary: 13px; /* Secondary text, table cells */
+  --font-size-base: 14px;      /* STANDARD: Body, buttons, inputs */
+  --font-size-md: 16px;        /* Medium headings (h3) */
+  --font-size-xl: 20px;        /* Large headings (h1) */
+  --font-size-2xl: 24px;       /* Extra large headings */
+  --font-size-icon: 28px;      /* Icons, emoji */
 
   /* Font Weights */
   --font-weight-regular: 400;  /* Default text */

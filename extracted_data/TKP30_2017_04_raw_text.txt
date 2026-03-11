@@ -1,0 +1,839 @@
+Správa železniční dopravní cesty, státní organizace
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY
+STAVEB STÁTNÍCH DRAH
+Kapitola 30
+SILNOPROUDÉ ROZVODY VN,
+SOUSTAVA 6 V A 22 V, NAPÁJENÍ Z TV
+k k
+Třetí - aktualizované vydání
+změna č. 11
+Schváleno generálním ředitelem SŽDC
+dne 8. 12. 2016
+č. j. S48321/2016 - SŽDC - O14
+Účinnost od: 1. 4. 2017
+Počet listů: 24
+Počet příloh: 0
+Počet listů příloh: 0
+Praha 2017
+Všechna práva vyhrazena.
+Tato publikace ani žádná její část nesmí být reprodukována, uložena ve vyhledávacím systému
+nebo přenášena, a to v žádné formě a žádnými prostředky elektronickými, fotokopírovacími či
+jinými, bez předchozího písemného svolení vydavatele.
+Výhradní distributor: Správa železniční dopravní cesty, státní organizace,
+Technická ústředna dopravní cesty
+ÚATT - oddělení distribuce dokumentace
+772 58 Olomouc, Nerudova l
+Obsah
+Seznam zkratek 3
+30.1 ÚVOD 4
+30.1.1 Obecně 4
+30.1.1.1 Rozvodná soustava 6 kV 4
+30.1.1.2 Rozvodná soustava 22 kV 5
+30.1.1.3 Napájení z trakčního vedení 5
+30.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ 5
+30.2.1 Technologická zařízení NTS, STS, TTS, PTS a RS 6 kV 5
+30.2.1.1 Rozvodny VN 6
+30.2.1.2 Transformátory 6
+30.2.1.3 Rozvaděče 6
+30.2.1.4 Zdroje pomocného napětí 6
+30.2.1.5 Dálkové a ústřední ovládání a dálková diagnostika technologických systému ŽDC 6
+30.2.1.6 Telekomunikační zařízení 7
+30.2.2 Technologická zařízení NTS, STS, TTS a PTS 22 kV 7
+30.2.2.1 Rozvodny VN 7
+30.2.2.2 Transformátory 7
+30.2.2.3 Rozvaděče 7
+30.2.2.4 Zdroje pomocného napětí 8
+30.2.2.5 Dálkové a ústřední ovládání a dálková diagnostika technologických systému ŽDC 8
+30.2.2.6 Telekomunikační zařízení 8
+30.2.3 Technologická zařízení pro napájení z trakčního vedení 8
+30.2.3.1 Transformátory 8
+30.2.3.2 Rozvaděče 8
+30.2.3.3 Zdroje pomocného napětí 9
+30.2.3.4 Dálkové a ústřední ovládání a dálková diagnostika technologických systémů ŽDC 9
+30.2.4 Kabely 6 kV a 22 kV zavěšené na podpěrách trakčního vedení 9
+30.2.5 Kabely, vodiče, kabelové soubory uložené v zemi 9
+30.2.6 Základy pro stožáry venkovního vedení VN 9
+30.2.7 Stožáry venkovního vedení VN 9
+30.3 TECHNOLOGICKÉ POSTUPY PRACÍ 10
+30.3.1 Technologická zařízení NTS, STS, TTS, PTS, RS 6 kV, NTS, STS, TTS a PTS 22 kV a pro
+napájení z TV 10
+30.3.1.1 Stavební připravenost 10
+30.3.1.2 Montáž technologického zařízení 10
+30.3.2 Kabelové vedení VN 11
+30.3.3 Venkovní vedení VN 12
+30.3.3.1 Základy stožárů pro venkovní vedení VN 12
+30.3.3.2 Stožáry pro venkovní vedení VN 12
+30.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY 12
+30.4.1 Technologické zařízení NTS, STS, TTS, PTS, RS 6 kV a TS 25/0,4 kV pro napájení z TV 12
+30.4.2 Kabelové vedení VN 12
+30.4.3 Základy stožárů venkovního vedení VN 13
+30.4.4 Stožáry venkovního vedení VN 13
+30.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY 13
+30.5.1 Technologické zařízení NTS, STS, TTS, PTS a RS 6 kV a TS 25/0,4 kV pro napájení z TV 13
+30.5.2 Kabelová vedení VN 14
+30.5.3 Základy venkovního vedení VN 14
+30.5.4 Stožáry venkovního vedení VN 14
+30.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY 14
+30.6.1 Technologické zařízení NTS, STS, TTS, PTS a RS 6 kV a TS 25/0,4 kV pro napájení z TV 14
+1
+30.6.2 Kabelové vedení VN 14
+30.6.3 Základy stožárů venkovního vedení VN 14
+30.6.4 Stožáry venkovního vedení VN 14
+30.6.5 Záruky, údržba v záruční době 14
+30.7 KLIMATICKÁ OMEZENÍ 14
+30.7.1 Technologické zařízení NTS, STS, TTS, PTS a RS 6 kV a 22 kV a TS 25/0,4 kV pro
+napájení z TV 14
+30.7.2 Kabelové vedení VN 15
+30.7.3 Základy venkovního vedení VN 15
+30.7.4 Stožáry venkovního vedení VN 15
+30.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ 15
+30.8.1 Všeobecně 15
+30.8.2 Příprava k uvedení do provozu 16
+30.8.3 Příprava přejímacího řízení 16
+30.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ 17
+30.10 EKOLOGIE 17
+30.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA 17
+30.12 SOUVISEJÍCÍ NORMY A PŘEDPISY 17
+30.12.1 Technické normy 17
+30.12.2 Předpisy 19
+30.12.3 Související kapitoly TKP 19
+2
+Seznam zkratek
+TKP Technické kvalitativní podmínky staveb státních drah
+ZTKP Zvláštní technické kvalitativní podmínky staveb státních drah
+SŽDC Správa železniční dopravní cesty s.o.
+VN Vysoké napětí
+NN Nízké napětí
+NTS Napájecí transformovna
+STS Staniční transformovna
+TTS Traťová transformovna
+PTS Přejezdová transformovna
+RS Rozpojovací skříň
+THD Činitel harmonického zkreslení (Total Harmonic Distorsion)
+GSM-R Global Systém for Mobile Communication – Railway
+IED Intelligent Electronic Device
+DDTS ŽDC Dálková diagnostika technologických systémů železniční dopravní cesty
+UTZ Určené technické zařízení
+TP Technické předpisy
+DAP-SŽDC Dokumenty a předpisy Správy železniční dopravní cesty
+3
+30.1 ÚVOD
+Zhotovitel stavby je povinen respektovat požadavky soustavy platných českých technických norem, pokud nejsou
+v rozporu s platnou TKP, projektovou dokumentací nebo zadávacími a smluvními podmínkami a platnou legislati-
+vou. Pokud je projektová dokumentace zpracována podle již neplatných norem, je před zahájením stavby nutno
+projektovou dokumentaci aktualizovat.
+Pro tuto kapitolu platí všechny pojmy, ustanovení, požadavky a údaje uvedené v kapitole 1 TKP - Všeobecně.
+V tomto dokumentu jsou uváděné normy uvažovány v platné edici; dojde-li v průběhu platnosti TKP k aktualizaci
+norem, musí být tyto normy používány vždy v platné edici. Normy a předpisy uvedené v tomto dokumentu jsou při
+aplikaci těchto TKP závazné.
+30.1.1 Obecně
+Tato kapitola Technických kvalitativních podmínek staveb SŽDC (dále jen TKP) určuje podmínky zřízení
+rozvodné soustavy SŽDC 6 kV a rozvodné soustavy SŽDC 22 kV, včetně kabelového rozvodu VN, dále určuje
+podmínky pro napájení zařízení SŽDC z trakčního vedení a podmínky pro výstavbu kabelových a venkovních
+vedení VN. Technické řešení napájecí soustavy SŽDC 6 kV a 22 kV, napájení zařízení SŽDC z trakčního vedení
+a technické řešení pro výstavbu kabelových rozvodů a venkovních vedení VN stanovuje schválená projektová
+dokumentace.
+30.1.1.1 Rozvodná soustava 6 kV
+Rozmístění napájecích transformoven (dále jen NTS), staničních transformoven (dále jen STS), traťových transfor-
+moven (dále jen TTS), přejezdových transformoven (dále jen PTS) a rozpojovacích skříní (dále jen RS) 6 kV podél
+železniční trati řeší projektová dokumentace (dále jen dokumentace). Součástí rozvodné soustavy SŽDC 6 kV je
+i ústřední ovládání ze stanoviště elektrodispečera silnoproudých zařízení SŽDC.
+Uvedené objekty (NTS, STS a TTS, PTS a RS ) musí být v souladu s dokumentací situovány tak, aby byl umožněn
+přístup silničními vozidly až k objektu, nebráni-li tomu zvláštní okolnosti.
+Pozn.: Tato kapitola TKP nezahrnuje soustavu 6 kV, 75 Hz. Pro její případné úpravy se zpracují Zvláštní technické
+kvalitativní podmínky (dále jen ZTKP).
+Z důvodu značného kapacitního příkonu napájecího kabelu 6 kV, je nutné v dokumentaci řešit problematiku
+kompenzace kabelu 6 kV pomocí tlumivek tak, aby byly dodrženy obchodně dodací podmínky mezi SŽDC
+a regionálním distributorem elektrické energie a nedocházelo k přetěžování rozvodu jalovými kapacitními proudy.
+Výpočtem a technickými prostředky navrženými v projektové dokumentaci musí být zajištěno, aby rezonanční jevy
+v rozvodné soustavě 6 kV, vyvolané harmonickými vyššího řádu při různých provozních konfiguracích napájecího
+systému, byly v případě napájení z trakčních měníren eliminovány pomocí filtračních LC obvodů.
+Hodnoty harmonického zkreslení napájecího napětí (činitel THD) v rozvodu 6 kV, 50 Hz v případě kdy je
+napájecím bodem rozvodu 6 kV trakční měnírna, napěťové charakteristiky elektrické energie v rozvodu 6 kV,
+50 Hz a zamezení ovlivnění napájecí sítě harmonickými vyššího řádu produkovanými statickými měniči pro
+napájení zabezpečovacího zařízení, musí být v souladu se zněním kapitoly 33 TKP.
+S touto kapitolou souvisí podmínky pro zřizování trakčního vedení, které určuje kapitola 31 TKP Trakční vedení,
+protože prvky pro případné zavěšení kabelu 6 kV určuje projektová dokumentace trakčního vedení.
+S touto kapitolou souvisejí i podmínky provádění zemních prací pro výkop kabelových kynet, které určuje ka-
+pitola 3 TKP a podmínky pro zřizování betonových základů pro stožáry venkovního vedení VN, které určuje kapi-
+tola 17 TKP.
+Součástí projektu trakčního vedení musí být i posouzení, na kterých železničních tratích budou trakční podpěry
+dimenzovány i na zatížení od závěsného kabelu.
+Pozn.: Měřícím místem spotřeby elektrické energie v rozvodu 6 kV je vývod na transformátor 22/6 kV v rozvodně
+22 kV.
+4
+30.1.1.2 Rozvodná soustava 22 kV
+Rozmístění NTS, STS, TTS, PTS 22 kV podél železniční trati řeší projektová dokumentace (dále jen
+dokumentace). Součástí rozvodné soustavy SŽDC 22 kV je i ústřední ovládání ze stanoviště elektrodispečera
+silnoproudých zařízení SŽDC.
+Uvedené objekty (NTS, STS, TTS a PTS) musí být v souladu s dokumentací situovány tak, aby byl umožněn
+přístup silničními vozidly až k objektu, nebráni-li tomu zvláštní okolnosti.
+Z důvodu značného kapacitního příkonu napájecího kabelu 22 kV, je nutné v dokumentaci řešit problematiku
+kompenzace kabelu 22 kV pomocí tlumivek tak, aby byly dodrženy obchodně smluvní podmínky mezi SŽDC
+a regionálním distributorem elektrické energie a nedocházelo k přetěžování rozvodu jalovými kapacitními proudy.
+Výpočtem a technickými prostředky navrženými v projektové dokumentaci musí být zajištěno, aby rezonanční jevy
+v rozvodné soustavě 22 kV, vyvolané harmonickými vyššího řádu při různých provozních konfiguracích napájecího
+systému, byly v případě napájení z trakčních měníren eliminovány pomocí filtračních LC obvodů.
+Hodnoty harmonického zkreslení napájecího napětí (činitel THD) v rozvodu 22 kV, 50 Hz v případě kdy je
+napájecím bodem rozvodu 22 kV trakční měnírna, napěťové charakteristiky elektrické energie v rozvodu 22 kV,
+50 Hz a zamezení ovlivnění napájecí sítě harmonickými vyššího řádu produkovanými statickými měniči, musí být
+v souladu se zněním kapitoly 33TKP.
+S touto kapitolou souvisí podmínky pro zřizování trakčního vedení, které určuje kapitola 31 TKP Trakční vedení,
+protože prvky pro zavěšení kabelu 22 kV určuje projektová dokumentace trakčního vedení.
+S touto kapitolou souvisejí i podmínky provádění zemních prací pro výkop kabelových kynet, které určuje kapi-
+tola 3 TKP a podmínky zřizování betonových základů pro stožáry venkovního vedení VN, které určuje kapito-
+la 17 TKP.
+Součástí projektu trakčního vedení musí být i posouzení, na kterých železničních tratích budou trakční podpěry
+dimenzovány i na zatížení od závěsného kabelu.
+Pozn.: Měřícím místem spotřeby elektrické energie v rozvodu 22 kV je vývod na oddělovací transformátor 22/22 kV
+v rozvodně 22 kV.
+30.1.1.3 Napájení z trakčního vedení
+Tato kapitola určuje podmínky vybudování zařízení pro napájení staničního, traťového a přejezdového zabezpečo-
+vacího zařízení, elektrického ohřevu výměn a zařízení pro napájení sdělovacích zařízení GSM-R z trakčního vedení
+25 kV, 50 Hz a 3 kV DC.
+Situování trafostanic 25 kV a statických měničů 3 kV DC a způsob jejich připojení k trakčnímu vedení určuje pro-
+jektová dokumentace.
+S touto kapitolou souvisí podmínky pro zřizování trakčního vedení, které určuje kapitola 31 TKP Trakční vedení,
+protože prvky pro připojení trafostanic 25/0,4 kV a statických měničů určuje projektová dokumentace trakčního
+vedení.
+S touto kapitolou souvisejí i podmínky provádění zemních prací pro výkop kabelových kynet, které určuje kapi-
+tola 3 TKP a podmínky zřizování betonových základů pro stožáry venkovního vedení VN, které určuje kapito-
+la 17 TKP.
+Pozn : Měřícím místem spotřeby elektrické energie v případě trafostanice 25 kV napájené z trakčního vedení je
+rozvaděč NN pod trafostanicí.
+30.2 POPIS A KVALITA STAVEBNÍCH MATERIÁLŮ
+30.2.1 Technologická zařízení NTS, STS, TTS, PTS a RS 6 kV
+Rozměry, provedení, typ a případné další požadované vlastnosti zařízení a použitých materiálů určuje dokumentace
+ve shodě s touto kapitolou TKP, pokud v ZTKP není uvedeno jinak.
+Jednotlivá technologická zařízení napájecí soustavy 6 kV, 50 Hz jsou propojena kabelem 6 kV, jehož uložení je
+řešeno podle místních podmínek buď zavěšením na podpěry trakčního vedení anebo uložením do zemní kabelové
+5
+kynety. Způsob uložení kabelu 6 kV řeší projektová dokumentace. Napájecí soustava 6 kV je zřizována na tratích
+se stejnosměrnou trakční soustavou 3 kV DC i střídavou trakční soustavou 25 kV, 50 Hz.
+Technologická zařízení NTS pro napájení rozvodné soustavy 6 kV, 50 Hz sestává z rozvodny 35 kV, 22 kV a 6 kV
+ve skříňovém provedení, dále ze stanoviště transformátorů 35/22/6 kV, tlumivek pro kompenzaci kapacitního
+výkonu kabelu 6 kV (případně rozřaďovacího LC členu), z rozvodny NN s hlavním rozvaděčem NN a rozvaděče
+vlastní spotřeby. Ovládání a signalizace NTS na elektrodispečink je zajištěna pomocí terminálů IED (Intelligent
+Electronic Device).
+Technologická zařízení STS pro napájení rozvodné soustavy 6 kV, 50 Hz sestává z rozvodny 6 kV ve skříňovém
+provedení, stanoviště transformátorů 6/0,4 kV, tlumivek pro kompenzaci kapacitního výkonu kabelu 6 kV,
+z rozvodny NN a rozvaděče vlastní spotřeby. Ovládání a signalizace STS na elektrodispečink je zajištěna pomocí
+terminálů IED.
+Z provozních, ekonomických a ekologických důvodů je vhodné do společného technologického objektu s NTS
+a STS umístit i transformovnu VN/NN pro napájení elektrických rozvodů žst.
+Technologické zařízení TTS, PTS a RS 6 kV je obvykle umístěno v kioskové trafostanici v aluzinkovém provedení
+vybavené odpojovači, transformátory a ostatní technologii podle dokumentace.
+30.2.1.1 Rozvodny VN
+Rozvodny VN se provedou skříňové podle dokumentace. Rozvodny musí vyhovovat ČSN EN 62271-1 a ČSN EN
+62271-200. Rozvodny musí být označeny podle dokumentace.
+30.2.1.2 Transformátory
+V NTS, STS TTS a PTS se instalují suché a olejové transformátory. Jejich provedení musí odpovídat ČSN EN
+60076-1. Umístění transformátorů musí odpovídat ČSN EN 61936-1. Výkon transformátorů 35, 22 nebo 10/6 kV se
+stanovuje na základě odběru z rozvodu 6 kV. Výkon transformátorů 6/0,4/0,23 kV se stanovují na základě
+požadavků na elektrickou energii v místě odběru.
+30.2.1.3 Rozvaděče
+Druh, velikost, umístění a zapojení rozvaděčů řeší dokumentace.
+Montáž a provoz rozvaděčů musí odpovídat příslušným ČSN a zejména ČSN EN 62271-201 a ČSN EN 61439-1.
+Do venkovního prostředí se přednostně instalují rozvaděče plastové, zejména z hlediska koroze a ochrany před
+nebezpečným dotykovým a zavlečeným napětím.
+30.2.1.4 Zdroje pomocného napětí
+Druh, velikost a zapojení zdrojů pomocného napětí řeší dokumentace podle instalovaných zařízení. Montáž
+a provoz zdroje pomocného napětí musí odpovídat ČSN EN 50272-2. Přednostně se doporučuje používat pro tento
+účel staniční olověné bezúdržbové gelové baterie, které mohou být umístěny ve společné místnosti s ostatním
+zařízením a nevyžadují samostatnou akumulátorovnu.
+30.2.1.5 Dálkové a ústřední ovládání a dálková diagnostika technologických systému ŽDC
+Ze stanoviště elektrodispečera musí být u bezobslužných VN a VVN rozvoden zajištěno dálkové povelování pro
+změnu stavu (síťových) vypínačů a odpojovačů nebo nastavení provozních podmínek zařízení zajišťujících
+distribuci elektrické energie a celkový dohled nad stavem elektrické distribuční sítě z hlediska bezpečnosti,
+spolehlivosti a hospodárnosti v zásobování elektrickou energií.
+Systém dálkové diagnostiky technologických systémů ŽDC zajišťuje dohled nad vybraným zařízením určeným
+dokumentací. Místa dohledu určuje dokumentace. Typ zařízení a spojovací cesty řeší dokumentace ústředního
+ovládání, DDTS ŽDC a sdělovacího zařízení.
+Před ukončením stavby musí dodavatel předat správci zařízení úplnou dokumentaci skutečného provedení
+(fyzického, logického a funkčního), dokumentaci ke všem zařízením včetně výpisu konfigurace všech
+nastavitelných hodnot (parametrizace) síťových prvků a všech zařízení výpočetní techniky výše uvedených
+systémů. Současně musí být dodavatelem předána přístupová jména a hesla uživatelů s nejvyšším přístupovým
+oprávněním (administrátorská hesla).
+6
+Základní technická dokumentace od výrobce zařízení musí být součástí dodávky a musí být zpracována v českém
+jazyce. Veškeré texty v popisech, obrázcích a manuálech musí být psané latinkou a obecně používanými písmeny
+řecké abecedy. Za základní technickou dokumentaci se považuje soubor schémat a dokumentů popisujících funkci,
+způsob a podmínky instalace, funkční parametry a technická data. U jednotlivých dokumentů musí být uvedeny
+odkazy na webové stránky výrobce s adresou, na které se budou nacházet aktualizace k předané základní
+dokumentaci.
+Ke všem aktivním síťovým prvkům a veškerým zařízením výpočetní techniky musí být dodány doklady (případně
+jejich kopie) nebo prohlášení dodavatele prokazující nabytí a délku platnosti licencí operačních systémů
+a veškerého dalšího aplikačního programového vybavení. V dokumentaci musí být popsán způsob obnovy nebo
+prodloužení doby platnosti jednotlivých licencí. SŽDC musí být koncovým uživatelem těchto licencí.
+30.2.1.6 Telekomunikační zařízení
+Vybavení objektů NTS a STS sdělovacím zařízením se řídí platnou legislativou. Sdělovací vedení a spojovací cesty
+jsou řešeny zásadně pomocí optických kabelů.
+30.2.2 Technologická zařízení NTS, STS, TTS a PTS 22 kV
+Rozměry, provedení, typ a případné další požadované vlastnosti zařízení a použitých materiálů určuje dokumentace
+ve shodě s touto kapitolou TKP, pokud v ZTKP není uvedeno jinak.
+Jednotlivá technologická zařízení napájecí soustavy 22 kV, 50 Hz jsou propojena kabelem 22 kV, jehož uložení je
+řešeno podle místních podmínek buď zavěšením na podpěry trakčního vedení anebo uložením do zemní kabelové
+kynety. Způsob uložení kabelu 22 kV řeší projektová dokumentace. Napájecí soustava 22 kV je zřizována na
+tratích se stejnosměrnou trakční soustavou 3 kV DC i střídavou trakční soustavou 25 kV, 50 Hz. Rozhodnutí o jejím
+vybudování v příslušném traťovém úseku musí být podloženo technicko-ekonomickou rozvahou, která stanoví
+i koncepci technického řešení napájecího systému 22 kV.
+Technologická zařízení NTS pro napájecí soustavu 22 kV, 50 Hz sestává z rozvodny 35 kV nebo 22 kV ve
+skříňovém provedení, dále ze stanoviště oddělovacích transformátorů 35/22 kV nebo 22/22 kV, tlumivek pro
+kompenzaci kapacitního výkonu kabelu 22 kV (případně rozřaďovacího LC členu), z rozvodny NN s hlavním
+rozvaděčem NN a rozvaděče vlastní spotřeby. Ovládání a signalizace NTS na elektrodispečink je zajištěna pomocí
+terminálů IED (Intelligent Electronic Device).
+Technologická zařízení STS pro napájení rozvodné soustavy 22 kV, 50 Hz sestává z rozvodny 22 kV ve skříňovém
+provedení, dvou stanovišť transformátorů 22/0,4 kV z nichž jeden slouží pouze pro napájení zabezpečovacího
+zařízení a druhý pro napájení vlastní spotřeby železniční stanice, dále z tlumivek pro kompenzaci kapacitního
+výkonu kabelu 22 kV, z rozvodny NN a rozvaděče vlastní spotřeby. Ovládání a signalizace STS na elektrodispečink
+je zajištěna pomocí terminálů IED.
+Technologické zařízení TTS, PTS a RS 6 kV je obvykle umístěno v kioskové trafostanici v aluzinkovém provedení
+vybavené odpojovači, transformátory a ostatní technologii podle dokumentace.
+30.2.2.1 Rozvodny VN
+Rozvodny VN se provedou skříňové podle dokumentace. Rozvodny musí být označeny podle dokumentace.
+30.2.2.2 Transformátory
+V NTS, STS TTS a PTS se instalují suché a olejové transformátory. Jejich provedení musí odpovídat ČSN EN
+60076-1. Umístění transformátorů musí odpovídat ČSN EN 61936-1. Výkon transformátorů 35, 22 nebo 10/6 kV se
+stanovuje na základě odběru z rozvodu 6 kV. Výkon transformátorů 6/0,4/0,23 kV se stanovují na základě
+požadavků na elektrickou energii v místě odběru.
+30.2.2.3 Rozvaděče
+Druh, velikost, umístění a zapojení rozvaděčů řeší dokumentace.
+Montáž a provoz rozvaděčů musí odpovídat příslušným ČSN a zejména ČSN EN 62271-201 a ČSN EN 61439-1.
+Do venkovního prostředí se přednostně instalují rozvaděče plastové, zejména z hlediska koroze a ochrany před
+nebezpečným dotykovým a zavlečeným napětím.
+7
+30.2.2.4 Zdroje pomocného napětí
+Druh, velikost a zapojení zdrojů pomocného napětí řeší dokumentace podle instalovaných zařízení. Montáž
+a provoz zdroje pomocného napětí musí odpovídat ČSN EN 50272-2. Přednostně se doporučuje používat pro tento
+účel staniční olověné bezúdržbové gelové baterie, které mohou být umístěny ve společné místnosti s ostatním
+zařízením a nevyžadují samostatnou akumulátorovnu.
+30.2.2.5 Dálkové a ústřední ovládání a dálková diagnostika technologických systému ŽDC
+Vybrané prvky silnoproudých zařízení v železničních stanicích určené dokumentací se ovládají ústředně ze stano-
+viště elektrodispečera silnoproudých zařízení SŽDC.
+Systém dálkové diagnostiky technologických systémů ŽDC zajišťuje dohled nad vybraným zařízením určeným
+dokumentací. Místa dohledu určuje dokumentace. Typ zařízení a spojovací cesty řeší dokumentace ústředního
+ovládání, DDTSŽDC a sdělovacího zařízení.
+30.2.2.6 Telekomunikační zařízení
+Vybavení objektů NTS a STS sdělovacím zařízením řeší předpis SŽDC E8. Sdělovací vedení a spojovací cesty jsou
+řešeny zásadně pomocí optických kabelů.
+30.2.3 Technologická zařízení pro napájení z trakčního vedení
+Rozměry, provedení, typ a případné další požadované vlastnosti zařízení a použitých materiálů určuje dokumentace
+ve shodě s touto kapitolou TKP, pokud v ZTKP není uvedeno jinak.
+Technologické zařízení pro napájení zabezpečovacího zařízení, EOV a sdělovacího zařízení z trakčního vedení
+25 kV, 50 Hz sestává ze dvou trakčních odpojovačů VN, z bleskojistky, transformátoru 25/2x0,23 kV nebo
+25/2x0,2 kV, rozvaděče NN, kabelových propojení VN a NN a ukolejnění.
+Technologické zařízení pro napájení zab.zař., EOV a sdělovacího zařízení z trakčního vedení 3 kV DC sestává ze
+dvou trakčních odpojovačů VN, z bleskojistky, ze statického měniče DAK 3 kV DC/0,46 kV AC, kabelových
+propojení VN a NN a ukolejnění.
+Technologická zařízení jsou obvykle umísťována na stožáry trakčního vedení anebo do kioskových trafostanic.
+Trafostanice 25 kV i statické měniče DAK musí být připojeny k trakčnímu vedení pomoci dvou trakčních
+odpojovačů, přičemž jeden odpojovač musí být připojen do liché skupiny trakčního vedení a druhy do sudé
+skupiny.Na jednokolejných tratích musí být trafostanice 25 kV a statický měnič DAK v železničních stanicích
+připojeny jedním odpojovačem ke staničnímu trakčnímu vedení a druhým odpojovačem k obcházecímu vedení.
+U každého odpojovače musí být zajištěna ochrana kabelového svodu proti zemnímu spojení.
+Trakční odpojovače, které napájí trafostanice 25 kV nebo statický měnič DAK umístěné v železničních stanicích,
+musí být ústředně ovládány z elektrodispečinku. Trakční odpojovače, které napájí trafostanice 25 kV a statické
+měniče DAK umístěné na tratích, jsou ovládány ručně z místa obsluhy.
+30.2.3.1 Transformátory
+Trafostanice 25 kV se osazují hermetizovanými olejovými transformátory 25/2x0,23 kV nebo 25/2x0,2 kV. Jejich
+provedení musí odpovídat ČSN EN 60076-1. Umístění transformátorů musí odpovídat ČSN EN 61936-1. Výkon
+transformátorů 25 kV se stanovuje na základě požadavku na elektrickou energii v místě odběru.
+30.2.3.2 Rozvaděče
+Druh, velikost, umístění a zapojení rozvaděčů řeší dokumentace.
+Montáž a provoz rozvaděčů musí odpovídat příslušným ČSN a zejména ČSN EN 62271-201 a ČSN EN 61439-1.
+Do venkovního prostředí se přednostně instalují rozvaděče plastové, zejména z hlediska koroze a ochrany před
+nebezpečným dotykovým a zavlečeným napětím.
+8
+30.2.3.3 Zdroje pomocného napětí
+Druh, velikost a zapojení zdrojů pomocného napětí řeší dokumentace podle instalovaných zařízení. K trafostanicím
+25 kV pro napájení zab.zař. a EOV, které jsou umístěny v železničních stanicích musí být přivedeno pomocné
+napětí 230V, 50 Hz, které zajistí jejich ovládání a monitoring po dobu, kdy jsou odpojeny od trakčního vedení.
+30.2.3.4 Dálkové a ústřední ovládání a dálková diagnostika technologických systémů ŽDC
+U zařízení pro napájení z TV 25 kV ve stanici jsou ovládány trakční odpojovače dálkově z místa umístění ovláda-
+cích skříní (většinou z technologické budovy nebo dopravní kanceláře) a ústředně ze stanoviště elektrodispečera
+silnoproudých zařízení SŽDC. Systém dálkové diagnostiky technologických systémů ŽDC zajišťuje dohled nad
+vybranými prvky trafostanice 25/0,4 kV, které určuje dokumentace. Místa dohledu určuje dokumentace. Typ zaří-
+zení a spojovací cesty řeší dokumentace ústředního ovládání, DDTSŽDC a sdělovacího zařízení.
+30.2.4 Kabely 6 kV a 22 kV zavěšené na podpěrách trakčního vedení
+Kabely VN zavěšené na podpěrách trakčního vedení se používají zásadně třížilové, samonosné (bez nosného lana)
+doporučeně se spirálově stočenými žilami v trojúhelníkové konfiguraci a společným mřížkovým cínovaným Cu
+stíněním a společným pláštěm LLD-PE vně laminovaným Cu-PET folií. Kabely pro napájení soustavy 6 kV lze
+v odůvodněných případech používat v izolační hladině 22 kV. Jedná se o kabely například typu AXCES (RW) /
+FXCEL (RW) 3x70/16 12 kV, 3x70/25 22 kV a 3x95/25 22 kV.
+Uchycení / zavěšení kabelového systému na trakční podpěry se řeší zásadně za pomocí systémových (výrobcem
+doporučených) armatur. Nosných svorek a kotevních spirál a napínáků. Konzolovina tzn. konzole, výložníky, háky
+se řeší v dokumentaci a jsou součástí výzbroje trakčních podpěr eventuálně stožárů VN.
+Proudové zatížení, úbytky napětí a z nich vyplývající průřezy kabelů a vodičů řeší dokumentace. Kabelové soubory
+se volí dle použitých typů kabelů.
+30.2.5 Kabely, vodiče, kabelové soubory uložené v zemi
+Průřez a typ kabelů určuje dokumentace. Dostatečnou mechanickou odolnost pro uložení kabelů v drážním tělese
+a jeho blízkosti se přednostně používají vodotěsné, celoplastové, třížilové kabely v trojúhelníkové konfiguraci s Al
+stíněním a společným TT pláštěm. Plášť kabelu TT musí být dvouvrstvý s vnitřní absorpční a vnější tvrzenou
+vrstvou. Kabely nesmí obsahovat Cu (stínění) aby se eliminovaly důvody krádeže a poškození. Např. typ AXAL TT
+PRO 3x50/25/12 kV a AXAL TT PRO 3x95/25/22 kV. Kabely pro napájení soustavy 6 kV lze v odůvodněných
+případech používat v izolační hladině 22 kV
+Proudové zatížení, úbytky napětí a z nich vyplývající průřezy kabelů a vodičů řeší dokumentace. Kabelové soubory
+se volí dle použitých typů kabelů.
+30.2.6 Základy pro stožáry venkovního vedení VN
+Kubaturu a rozměry základů uvádějí výrobci příhradových stožárů v typových podkladech pro příhradové stožáry.
+Základy betonových sloupů se navrhují dle ČSN EN 50423-3-19, tabulky M/CZ.7. Pro betonové základy dále platí
+požadavky kapitoly 17 TKP. Podmínky pro pilotované základy určí ZTKP.
+30.2.7 Stožáry venkovního vedení VN
+Stožáry jsou nosiči armatur a elektrovýzbroje. Jejich typ určuje dokumentace. Pro stavbu venkovního vedení se
+používají typizované stožáry, u kterých se pouze kontroluje namáhání. Používají se stožáry ocelové příhradové,
+trubkové nebo z odstřeďovaného předpjatého betonu. Stožáry musí být označeny názvem výrobce, typovým
+označením stožáru, číslem normy, rokem výroby, výrobní značkou nebo číslem. Údaje musí být vyznačeny na
+trvanlivém štítku připevněném na povrchu stožáru.
+Požadavky na armatury stanoví norma ČSN EN 61284 Předpoklady pro výpočet i kontrolu stožárů stanoví. ČSN
+EN 50423-3-19.
+9
+30.3 TECHNOLOGICKÉ POSTUPY PRACÍ
+30.3.1 Technologická zařízení NTS, STS, TTS, PTS, RS 6 kV, NTS, STS, TTS a PTS
+22 kV a pro napájení z TV
+Technologická zařízení se umisťují do stavebního objektu anebo do venkovního prostředí podle dokumentace.
+30.3.1.1 Stavební připravenost
+Stavební připravenost pro montáž technologických zařízení musí splňovat následující požadavky:
+ vytvořit potřebné pracovní podmínky pro navržené elektrické zařízení transformovny. Zejména je nutné dbát na
+opatření proti vlhkosti, vnikání sněhu, vody, prachu, popílku, případně škodlivých par a plynů. Prostorem
+transformovny nesmí procházet žádné potrubí, jehož porušení by mohlo ohrozit bezpečnost provozu (vodovod,
+plynovod apod.)
+ zabránit vniknutí cizích osob, živočichů nebo předmětů
+ v potřebné míře zajistit ochranu životního prostředí - zejména proti hluku, vibracím a vytékání oleje
+ zajistit alespoň 40ti-letou životnost stavební části v příslušných specifických podmínkách, při minimálních
+požadavcích na údržbu
+ umožnit dopravu a přesun těžkých zařízení do transformovny, z transformovny i uvnitř transformovny
+ zajistit ochranu proti atmosférickým přepětím
+Vlastní stavební objekt transformovny musí být vybaven:
+ základovými rámy pod rozvaděči VN
+ kabelovými kanály s odnímatelnými zákryty o odpovídající únosnosti
+ kabelovými šachtami a prostupy pro kabelové přípojky
+ podlahy a stěny musí být v bezprašném provedení (dielektrické koberce a podlahovou krytinu dodat až po
+montáži technologie), v místnosti ÚO natřít stěny otěruvzdorným nebo omyvatelným nátěrem
+ vstupními dveřmi o rozměrech podle dokumentace stavby
+ mříží na otvíratelných oknech, pokud jsou v transformovně navrženy
+ větracími otvory se žaluziemi nebo připravenost pro osazení ventilace
+ pomocnými konstrukcemi a nosníky, lemováním překladů a nosníků podle dokumentace
+ základovým a obvodovým uzemněním včetně jeho vyvedení nad terén na minimálně dvou místech
+ protihlukovým opatřením na stanovištích transformátorů
+ el. instalací světelnou a zásuvkovou podle ČSN 33 2130
+ v případě vybudování akumulátorovny provést stavební úpravy podle ČSN EN 50272-2 s antikorozní ochranou
+a odvětráním
+ temperováním prostor transformovny na požadovanou teplotu, pokud to zařízení transformovny vyžadují
+ hasicím zařízením
+ přípojkou NN odpovídající požadavkům kapitoly 26 TKP
+30.3.1.2 Montáž technologického zařízení
+Při montáži musí být dodrženy zásady dispozičního a prostorového uspořádání podle platných předpisů a norem
+a podle dokumentace stavby. Příjezdová komunikace a pozemek stanice musí být zabezpečeny před zaplavením
+stoletou vodou, případně před přívaly vod z cizích pozemků. Ochranné pásmo stanice je dáno vlastním ochranným
+pásmem stanice a dále ochranným pásmem kabelových, příp. venkovních vedení zaústěných do stanice.
+Po zhotovení nosných konstrukcí a vnitřního uzemnění a po proschnutí celé stavby se musí provést jejich vrchní
+nátěry. Až do takto připravených prostor se smí montovat technologická zařízení. Veškerá elektrická zařízení
+a kovové konstrukce se musí připojit vhodným způsobem na uzemňovací soustavu. Z transformovny musí být
+vyvedeny minimálně 2 vývody na vnější uzemnění. Do vývodů se umístí zkušební rozpojovací svorky. Po ukončení
+montáže zhotovitel provede konečné úpravy nátěrů, rozmístění označovacích a bezpečnostních tabulek, položí
+podlahovou krytinu a dielektrické koberce.
+10
+30.3.2 Kabelové vedení VN
+Kabelovou trasu včetně její koordinace se souvisejícími objekty určuje dokumentace. Kabely se kladou do země, na
+pomocné konstrukce, do kabelových kanálů a šachet nebo jako závěsné na pomocné konstrukce. Kladení kabelů ve
+zvláštních technologických podmínkách řeší dokumentace. Pro instalaci a kladení kabelů a vodičů platí, ČSN EN
+50341, ČSN 33 2000-5-52, ČSN 73 6005. Kabelové soubory musí odpovídat ČSN EN 61442 a ČSN 34 7006.
+Kabely, vodiče a kabelové soubory, uložené v tělese železničního svršku a spodku, musí splňovat ustanovení
+předpisu SŽDC S4, část druhá, kapitola V. a přílohy 26.
+Pokud to technické a prostorové podmínky dovolí, musí být kabelový rozvod VN pro SŽDC navržen na pozemku
+dráhy. V mezistaničních úsecích musí být kabely VN uloženy v samostatné kynetě vzdálené od kabelové kynety se
+sdělovacími a zabezpečovacími kabely minimálně 80 cm. Pokud je navržena z důvodu stísněných terénních
+podmínek společná kyneta, musí být kabel VN uložen v betonovém žlabu s víkem, vzdáleném od kabelů
+sdělovacích a zabezpečovacích minimálně 30 cm. V případě použití společné kynety budou kabely VN uloženy ve
+žlabu odděleně od ostatních silových kabelů NN. V odůvodněných případech lze kabely VN zavěsit na stožáry
+trakčního vedení. Způsob zavěšení kabelů řeší dokumentace. Sdělovací a zabezpečovací kabely mají být ve stanici
+vedeny v samostatných trasách odděleně od kabelů silových v souladu s ČSN.
+Kabelové rozvody VN se provedou podle dokumentace. Aby byla zajištěna provozní spolehlivost kabelového
+rozvodu, což je jedna z jeho rozhodujících vlastností, je nutno pečlivě dodržet správnou technologií manipulace
+a pokládky kabelů. Jedná se především o ochranu kabelového rozvodu před poškozením při jeho křížení
+komunikací, cest a železnic, případně o uložení kabelů pod zpevněnými plochami. V případě křížení parovodů musí
+zhotovitel zajistit oddělení vzdáleností nebo tepelnou izolací tak, aby ani v případě poškození tepelné izolace
+parovodu nebo úniku páry nedošlo k přehřátí izolace kabelu. Přechody přes vodní toky musí být řešeny
+v dokumentaci, zásadně nad vodním tokem a mimo záplavová území. Důležité je dbát na kvalitní provedení výstupu
+z ochranných trubek, které musí být bez břitů, zajištěny proti uskřípnutí zpevněním prostoru pod trubkami
+betonovou mazaninou. Dále je nutno dodržet dovolené poloměry ohybu kabelů jak ve vodorovné, tak horizontální
+rovině podle ČSN EN 50341, ČSN 33 2000-5-52. V případě, že z terénních důvodů (překážky v trase) budou
+kabely uloženy v menší hloubce, než předepisuje ČSN EN 50341, ČSN 33 2000-5-52, musí být kabely zabezpečeny
+vhodnou mechanickou ochranou určenou dokumentací. Dále je nutno dbát na umístění spojkového lože s příslušnou
+rezervou na vybočení kabelu pro případnou poruchu ve spojce. Harmonogram prací při pokládce kabelů je nutno
+plánovat do příznivých ročních období. Při nižší teplotě nesmí být s kabelem manipulováno. Montážní práce je
+možno provádět až tehdy, je-li k dispozici veškerý montážní materiál, neboť všechny práce se musí provádět
+v jednom sledu současně s odzkoušením kabelového rozvodu. Souběžně uložené kabely VN musí být od sebe
+vzdáleny podle ČSN EN 50341, ČSN 33 2000-5-52.
+Ve volném terénu se kabely kladou do výkopu do vrstvy jemnozrnného písku tloušťky minimálně 8 cm, který nesmí
+obsahovat žádné příměsi. Po položení se kabely zasypou pískovou vrstvou stejné tloušťky, která se měří od povrchu
+kabelu. Zapískované kabely se musí pokrýt cihlami, tvárnicemi, dlaždicemi apod. Krytí musí překrývat kabel
+minimálně o 5 cm. Při změně kabelové trasy oproti dokumentaci není možno volit trasu přímočaře ve směru svahu.
+Ve směru svahu je nutno trasu navrhnout zvlněnou, přičemž v obloucích se bere v úvahu dovolený poloměr kabelů.
+Pokud z prostorových důvodů není možno volit uvedený způsob uložení je nutno použít kotevní zařízení.
+Vzdálenost kabelů od stavebního objektu má být alespoň 60 cm. Nejmenší dovolené vzdálenosti mezi souběžnými
+a křižujícími podzemními vedeními určuje ČSN 73 6005.
+Před kladením kabelů do výkopu musí být v místech málo únosné zeminy stěny výkopu zapaženy proti sesutí
+zeminy do výkopu. Kabelové lože musí být vyčištěno od zbytků stavebních materiálů, větších kamenů a jiných
+předmětů, které by kabel při uložení mohly poškodit. Kabely musí být označeny kabelovými štítky, a to na začátku,
+na konci a v průběhu kabelové trasy každých 50 m a při křížení s ostatními kabely.
+Pokládka kabelů se předpokládá ruční, případná strojní pokládka musí být předem dohodnuta v podmínkách
+dodávky mezi zhotovitelem a objednatelem.
+Kabely 6 kV a 22 kV je dovoleno zavěšovat i na podpěry trakčního vedení. Způsob jejich zavěšení řeší projektová
+dokumentace.
+Zemní práce pro výkop kabelové kynety musí být provedeny v souladu s kapitolou 3 TKP.
+11
+30.3.3 Venkovní vedení VN
+Způsob provedení venkovního vedení VN určuje ČSN EN 50423-3-19. Stavba vedení se skládá z vybudování
+základů, postavení stožárů, natažení a namontování vodičů a z dokončovacích prací.
+Ocelové a železobetonové stožáry je dovoleno zapustit do země i bez zvláštních základů, pokud to umožní
+vlastnosti půdy a stabilita. Ocelové konstrukce uložené přímo do země musí být vhodným způsobem chráněny proti
+korozi. Při větších zatíženích je nutno stožáry opatřit betonovými nebo pilotovými základy. Stožáry ocelové
+příhradové venkovního vedení VN se osazují do betonových monolitických základů. Monolitické betonové základy
+se provádějí do vyhloubených nebo vrtaných otvorů. Betonové základy musí převyšovat terén alespoň o 20 cm,
+v orné půdě o 30 cm. Jejich povrch musí být zešikmen, aby voda snadno stékala směrem od konstrukce.
+30.3.3.1 Základy stožárů pro venkovní vedení VN
+Stožáry venkovních energetických vedení se považují za zvláštní stavby a pro jejich základy platí ustanovení normy
+ČSN EN 50 423.
+Základy stožárů určuje dokumentace. Základy jsou namáhány velkými ohybovými tahy způsobenými jak vodiči, tak
+tlakem větru. Proto je nutno věnovat zvětšenou pozornost zejména jejich provedení. Při provádění výkopu je nutno
+dbát zejména na to, aby jáma zůstala soudržná a její rozrušení bylo co nejmenší. Základovou jámu je nutno chránit
+před zatopením vodou a působením mrazu. Stěny základové jámy je nutno chránit před mechanickým rozrušením.
+Betonáž základu je nutno provést ihned po vyhloubení stožárové jámy. Vlastnosti základové půdy lze zlepšit výmě-
+nou zeminy, injektováním nebo zhutněním zeminy. Ocelové části v betonu nesmějí být natřeny.
+30.3.3.2 Stožáry pro venkovní vedení VN
+Venkovní vedení musí být chráněno před úderem blesku. Železobetonové stožáry se v sítích VN považují za
+vodivé, ocelová výstroj nesoucí vodiče se neuzemňuje ani zvlášť nepropojuje.(s výjimkou drážních křižovatek,
+úsekových odpojovačů a ochrany proti přepětí svodičem přepětí). V případě vedení VN navrženého z ocelových
+stožárů se musí uzemnit každý třetí stožár, pokud přechodový odpor základu je větší jak 15 ohmů. Na
+transformovnách a přechodech do kabelového vedení je nutno umístit omezovače přepětí VN. Úsekové odpojovače
+se uzemní tak, aby přechodový odpor vyhovoval ČSN 33 2000-5-54 Uzemnění a ochranné vodiče a ČSN EN
+50 423. Pokud není možno ekonomickým způsobem této hodnoty dosáhnout, provede zhotovitel ochranu před
+nebezpečným dotykovým napětím neživých části pomocí dvou popř. tří ekvipotenciálních kruhů kolem stožáru
+nebo okolí stožárů upraví pomoci živičného povrchu.
+30.4 DODÁVKA, SKLADOVÁNÍ A PRŮKAZNÍ ZKOUŠKY
+30.4.1 Technologické zařízení NTS, STS, TTS, PTS, RS 6 kV a TS 25/0,4 kV pro napájení
+z TV
+Při převzetí dodávky od výrobce se provede kontrola komplexnosti dodávky podle dokumentace a technických pod-
+mínek výrobce. Dodávka musí být doložena dodacím listem a osvědčením o jakosti. Veškeré elektrické rozvaděče
+musí být vybaveny schématem zapojení. Skladování musí být zabezpečeno v krytých skladech tak, aby nedošlo
+k jejich poškození a k následnému znehodnocení.
+U zařízení z dovozu musí zhotovitel s originálem technické dokumentace předat i český překlad (vyhláška
+č. 48/1982 Sb.) a certifikáty pro nasazení těchto zařízení v ČR.
+Dodávka technologických počítačů, které jsou součástí silnoproudých zařízení, ústředního řízení musí být doložena
+kopií licenční smlouvy na použitý software.
+30.4.2 Kabelové vedení VN
+Způsob skladování a dopravy kabelů VN je dán způsobem balení výrobcem a dodavatelem. Kabely se dodávají na
+dřevěných nebo ocelových kabelových bubnech. Kabelové bubny jsou přepravovány na místo určení přímo na
+ploše železničního vagónu nebo nákladního automobilu. Kabelové bubny musí být řádně zajištěny proti jejich
+posunutí během jízdy. Složení kabelových bubnů se provádí pomocí autojeřábu nebo vysokozdvižného vozíku.
+Přímé shození kabelových bubnů i na měkkou podložku je nepřípustné. Konce kabelů musí být zabezpečeny proti
+vnikání vlhkosti. Jednotlivé kabelové bubny musí být opatřeny výrobním štítkem, na kterém je uveden výrobce,
+jmenovité napětí kabelu, typové označení kabelu, počet žil, průřez jádra, délka kabelu, číslo kabelu a celková
+12
+hmotnost bubnu. Při delším skladování kabelů je účelné chránit kabely před působením povětrnostních vlivů,
+zejména proti slunečnímu záření a vlhkosti.
+30.4.3 Základy stožárů venkovního vedení VN
+Dodávka, skladování a průkazní zkoušky jednotlivých materiálů pro výrobu betonu na základy musí odpovídat
+požadavkům uvedeným v kapitole 17 TKP.
+30.4.4 Stožáry venkovního vedení VN
+Současně s dodávkou stožárů musí zhotovitel předložit osvědčení o jejich jakosti podle ČSN EN 50423-3-19.
+Stožáry se skladují na volném prostranství podložené dřevěnými hranoly. Zhotovitel musí zajistit, aby byly
+zabezpečeny proti sesutí.
+30.5 ODEBÍRÁNÍ VZORKŮ A KONTROLNÍ ZKOUŠKY
+30.5.1 Technologické zařízení NTS, STS, TTS, PTS a RS 6 kV a TS 25/0,4 kV pro
+napájení z TV
+Funkční způsobilost celku prokáže zhotovitel zkouškou před uvedením do provozu. Zkoušky před uvedením do
+provozu jsou určeny ke zjištění vad montáže, nežádoucích změn rozvodného zařízení způsobených dopravou
+a skladováním. Provádějí se na kompletně smontovaném zařízení. Jedná se o zkoušky dodržení rozměrových
+tolerancí při montáži, zkoušky správné funkce všech součástí, zkoušky řídících a pomocných obvodů a zkoušky
+vlivu zařízení na okolí. Uvedené zkoušky jsou součástí výchozí revize ve smyslu ČSN 33 2000-6, ČSN 33 1500
+a ČSN EN 50522. Jestliže pro některé zařízení je vydáno speciální ustanovení, provedou se zkoušky podle nich. Po
+ukončení zkoušek musí zhotovitel požádat drážní správní úřad o vydání průkazu způsobilosti zařízení podle
+ustanovení § 47 zákona č. 266/1994 Sb., o drahách, v platném znění.
+Úplnost, funkci zařízení a řádné provedení montáže, jakož i kvalitu a schopnost zařízení pro zkušební provoz
+prokáže zhotovitel zejména těmito dále uvedenými úkony, které přísluší dodávanému zařízení.
+1. Předvedení kompletnosti zařízení podle dokumentace.
+2. Krytí podle druhu prostředí.
+3. Některé izolační a provozní vzdálenosti.
+4. Označení (prostoru, zařízení, kobek, polí, obvodu, přístrojů, poloh vodičů atd.).
+5. Ochrana před nebezpečným dotykovým napětím.
+6. Některá jištění (25 %).
+7. Dotažení některých spojů.
+8. Mechanická funkce spínacího zařízení (25 %). Uvedené zařízení se ověří vizuální prohlídkou.
+9. Blokovací podmínky podle dokumentace.
+10. Působení ochranných relé (signalizace, ovládací impulsy).
+11. Signalizace ztráty ss napětí, případně zemního spojení rozvodu.
+12. Stav nabití akumulátorových baterií (u 10 % článků).
+13. Udržování hladiny napětí při automatickém dobíjení.
+14. Přepínání baterií.
+15. Dálkové ovládání spínání.
+16. Působení plynových relé transformátorů.
+17. Zkouška provozním napětím po dobu 1 hodiny.
+18. Výchylky měřících přístrojů (podle poskytnutého zatížení).
+19. Zapnutí transformátoru na síť.
+20. Záskok transformátoru.
+21. Primární zkoušky (najetí) ochranných relé.
+Při předvádění funkcí, které se provádějí v omezeném počtu (v % namátkově), volí si prvky, na kterých se předve-
+dení provede, objednatel.
+13
+Pozn.: Objednatel má právo vyžadovat komplexní odzkoušení dodávky v širším než výše uvedeném rozsahu, pokud
+byl tento požadavek uplatněn v podmínkách dodávky. Jinak pouze na základě dodatečné dohody objednatele
+a zhotovitele.
+30.5.2 Kabelová vedení VN
+U všech nově pokládaných celoplastových kabelů VN je nutno provést minimální zkoušku izolačního stavu,
+případně diagnostiku kabelu. Zkoušku mezi jednotlivými žilami a kovovým pláštěm není nutno u těchto kabelů
+provádět. Uvedená měření se musí provádět před vlastním položením, kdy je kabel ještě navinut na bubnu a po
+položení kabelu do výkopu, kabelového kanálu nebo chrániček. Kabely VN se proměřují induktorem s napětím
+1000 nebo 2500 V ss. Doporučené nejnižší hodnoty izolačního odporu jsou pro napětí do 10 kV 400 MΩ pro napětí
+22  35 kV 600 MΩ. Důležité je na obou stranách kabelu roztáhnout jednotlivé žíly od sebe do vějíře a řádně
+očistit, aby nedošlo k mylnému měření. Po uložení kabelů a namontování kabelových souborů proměří zhotovitel
+kabelové vedení zkouškou stejnosměrným zkušebním napětím. Zkouší se nejméně 10 minut stejným napětím proti
+zemi a mezi fázemi.
+30.5.3 Základy venkovního vedení VN
+Pro odebírání vzorků a kontrolní zkoušky základů venkovního vedení platí kapitola 17 TKP.
+30.5.4 Stožáry venkovního vedení VN
+Kromě vizuální kontroly se vlastní kontrolní zkoušky stožárů na stavbě neprovádí.
+30.6 PŘÍPUSTNÉ ODCHYLKY, MÍRA OPOTŘEBENÍ, ZÁRUKY
+30.6.1 Technologické zařízení NTS, STS, TTS, PTS a RS 6 kV a TS 25/0,4 kV pro
+napájení z TV
+Odchylky se nepřipouštějí.
+30.6.2 Kabelové vedení VN
+Možné odchylky položení kabelů jsou dány ČSN ČSN 33 2000-5-52 a ČSN 73 6005, ČSN EN 50341.
+30.6.3 Základy stožárů venkovního vedení VN
+Možné odchylky stanoví dokumentace na základě ověření únosnosti zeminy.
+30.6.4 Stožáry venkovního vedení VN
+Odchylky od dokumentace se připouštějí pouze v osazení stožárů.
+30.6.5 Záruky, údržba v záruční době
+Záruční doby všeobecně stanovuje kapitola 1 TKP.
+Údržbu v záruční době zajišťuje správce HIM podle ustanovení uvedených v kapitole 1 TKP.
+30.7 KLIMATICKÁ OMEZENÍ
+30.7.1 Technologické zařízení NTS, STS, TTS, PTS a RS 6 kV a 22 kV a TS 25/0,4 kV pro
+napájení z TV
+Pokud to vyžadují jednotlivá zařízení, je zhotovitel povinen zajistit temperování, případně větrání technologických
+místností podle dokumentace.
+14
+30.7.2 Kabelové vedení VN
+Kabely se kladou při teplotách, jejichž meze jsou stanoveny v normách příslušného výrobku nebo v údajích
+uváděných výrobcem
+30.7.3 Základy venkovního vedení VN
+Betonáž základů pro stožáry a ostatní konstrukce musí být provedena v souladu s kapitolou 17 TKP.
+30.7.4 Stožáry venkovního vedení VN
+Nejsou klimatická omezení.
+30.8 ODSOUHLASENÍ A PŘEVZETÍ PRACÍ
+30.8.1 Všeobecně
+Základním předpokladem odsouhlasení a převzetí prací od zhotovitele je získání průkazu způsobilosti podle
+ustanovení § 47 zákona č. 266/1994 Sb., o drahách, v platném znění. Požaduje se, aby určená technická zařízení
+podle vyhlášky Ministerstva dopravy č. 100/1995 Sb., řád určených technických zařízení, v platném znění byla
+předávána zhotovitelem provozuschopná a s vystaveným průkazem způsobilosti.
+Elektrické výrobky uváděné do provozu musí mít schválené technické podmínky ve smyslu Směrnice SŽDC č. 34.
+Odevzdání a převzetí díla se provádí pro celé dílo nebo jeho ucelenou provozuschopnou část formou přejímacího
+řízení.
+Při odevzdání a převzetí díla se zjišťuje, zda je provedeno podle uzavřené smlouvy řádně a v celém rozsahu, zda
+odpovídá schválené dokumentaci a zda jeho provedení odpovídá normám a předpisům podle oddílu 30.12 této
+kapitoly TKP.
+Požadovaný termín přejímky dokončeného díla oznámí zhotovitel stavebnímu dozoru, který přizve případné další
+účastníky (např. budoucího uživatele a vlastníka). V průběhu přejímacího řízení musí být zhodnocena kvalita díla
+nebo jeho části nabídnuté k přejímce a rozhodnuto, zda zjištěné vady a dosud neodstraněné vady brání uskutečnění
+aktu odevzdání díla zhotovitelem a jeho převzetí objednatelem.
+V průběhu výstavby díla, zejména před zakrytím výkopů s uzemněním a kabely, kdy k tomuto zařízení nebude dále
+přístup, musí být zhotovitelem zaměřena jeho skutečná prostorová poloha a toto zařízení musí být před zakrytím
+ověřeno a odsouhlaseno stavebním dozorem a pořízen o provedené práci a její kvalitě zápis. Jedná se především
+o kabely ve výkopech a uzemnění ve výkopech.
+Každé předávané technologické zařízení a stavební dílo musí být vybaveno dokumentací v českém jazyce, která
+odpovídá skutečnému provedení.
+Každé předávané technologické zařízení musí být vybaveno pracovními a ochrannými pomůckami podle ČSN EN
+61936-1.
+Funkční způsobilost jednotlivých komponent technologických zařízení a dodržení povolených mezí jejich působení
+na okolí prokazuje zhotovitel doklady o typových a kusových zkouškách - viz ČSN 33 2000-5-54.
+Při odsouhlasení a převzetí prací kontroluje stavební dozor rozsah, kvalitu a způsob provedení prací. Případné
+změny oproti dokumentaci musí být předem dohodnuty a odsouhlaseny stavebním dozorem. Kvalita provedených
+prací musí odpovídat příslušným ustanovením této kapitoly. Kontrolní zkoušky dokončených prací se provádějí
+v rozsahu stanoveném závaznými předpisy, které jsou uvedeny v oddíle 30.5 této kapitoly TKP.
+Před zasypáním nebo zakrytím konstrukcí, objektů a kabelů požádá zhotovitel stavební dozor o odsouhlasení prací
+a pořídí o tom zápis. Upravený povrch terénu se přejímá v rámci objektu, do kterého je v dokumentu zahrnut.
+Objekty nebo jejich části, které mají být uvedeny do provozu v průběhu stavby, se přejímají v předem určených
+termínech. Zhotovitel je povinen předat kromě zakreslených změn, ke kterým došlo oproti dokumentaci stavby,
+i dokumentaci dodaných technologických souborů a předpisy o jejich provozu a údržbě.
+Před odsouhlasením prací zaměří zhotovitel nově vybudované kabelové rozvody venkovní vedení VN podle
+dokumentace. O úmyslu provádět zaměření informuje předem zhotovitel písemně stavební dozor.
+15
+U pokovených součástí venkovního vedení se vyzkouší tloušťka kovového povlaku a jeho přilnavost. Zkoušky
+zinkového nebo hliníkového povlaku se provádějí podle ČSN EN ISO 2063. U natřených konstrukcí se nepřipouští
+žádný rozsah poškození nátěru.
+30.8.2 Příprava k uvedení do provozu
+Před uvedením do provozu provede zhotovitel za účasti stavebního dozoru a právnické osoby podle ustanovení § 47
+zákona č. 266/1994 Sb., o drahách, v platném znění, a v návaznosti na oddíl 29.5.2 zkoušky, které jsou určeny ke
+zjištění vad montáže, nežádoucích změn STZ způsobených dopravou, skladováním a montáží. Provádějí se na
+kompletně smontovaném zařízení a jedná se podle ČSN EN 61936-1:
+ zkoušky rozměrových tolerancí (při montáži a po montáži, pokud jsou tolerance v dokumentaci předepsány)
+ zkoušky správné funkce
+ zkoušky řídících a pomocných obvodů
+ zkoušky vlivů zařízení na okolí
+ další předepsané nebo zvlášť dohodnuté zkoušky
+ rozsah zkoušek NS, STS, PTS a RS musí být v souladu s platnými normami
+Zkoušky před uvedením do provozu jsou součástí výchozí revize podle ČSN 33 1500.
+U nově zřízených nebo rekonstruovaných uzemnění zhotovitel musí před uvedením do provozu zajistit měření
+zemního odporu uzemnění jako celku. Měření dotykových a krokových napětí musí zhotovitel zajistit jen u stanic
+uvedených v ČSN 33 2000-5-54.
+Do provozu lze uvést jen ta technologická zařízení a stavební objekty nebo jejich části, která:
+a) splňují požadavky příslušných norem a předpisů, na základě výchozí revize podle ČSN 33 1500 a na základě
+technické prohlídky a zkoušky, provedené právnickou osobou určenou Ministerstvem dopravy podle ustanovení
+§ 47 zákona č. 266/1994 Sb., o drahách, v platném znění,
+b) mají platný průkaz způsobilosti UTZ podle ustanovení § 1 odst. 4. písm. k) vyhlášky Ministerstva dopravy
+č. 100/1995 Sb., řád určených technických zařízení, v platném znění, jedná-li se o zařízení, které musí být konstruo-
+váno s ohledem na podmínky provozu kolejových obvodů
+c) jsou uvedena v KSU a TP ověřeném určenými oprávněnými osobami podle platných DAP SŽDC.
+30.8.3 Příprava přejímacího řízení
+K žádosti o přejímací řízení musí zhotovitel připravit doklady:
+ platný originál průkazu způsobilosti UTZ vyhlášky Ministerstva dopravy č. 100/1995 Sb., řád určených
+technických zařízení, v platném znění včetně protokolu o technické prohlídce a zkoušce elektrického zařízení,
+provedené podle ustanovení § 47 zákona č. 266/1994 Sb., o drahách, v platném znění,
+ dokumentaci včetně montážních výkresů s vyznačenými změnami podle skutečného provedení, včetně geodetic-
+kého zaměření, dokumentace musí být předložena v takovém provedení a rozsahu jak je stanoveno v kapitole
+1 TKP
+ technickou dokumentaci instalovaných strojů, přístrojů a zařízení a dokumentaci pro obsluhu, provoz a údržbu
+těchto zařízení,
+ zápisy o prověření části díla zakrytých v průběhu výstavby,
+ osvědčení a protokoly o provedených zkouškách potvrzené oprávněnou osobou,
+ zprávu z výchozí revize podle ČSN 33 2000-6 a ČSN 33 1500, ČSN EN 50522
+ stavební (montážní) deník,
+ doklady o provedení komplexního vyzkoušení,
+ doklad o přezkoušení o zajištění proti vlivu na okolí,
+ ve spolupráci s objednatelem provozní dokumentaci (provozní řád STZ, údržbový plán, místní pracovní
+a bezpečnostní předpisy).
+16
+Objednatel připraví:
+ zprávu, jak odpovídá provedení prací schválené dokumentaci, smluvním podmínkám, technickým normám
+a předpisům,
+ rozhodnutí o povolení výjimek z norem a předpisů,
+ stavební povolení,
+ přehled o vybavení ochrannými a pracovními pomůckami,
+ souhlas k ověřovacímu provozu (je-li prováděn),
+ soupis všech dosud neodstraněných vad zjištěných prohlídkou a komplexním vyzkoušením.
+O přejímacím řízení provede stavební dozor ve spolupráci se zhotovitelem zápis, ve kterém musí být zhodnocena
+kvalita díla. V případě nevyhovující kvality nutno uvést důvody, dohodnout způsob odstranění vad bránících
+převzetí a termín opakování přejímacího řízení. V případě, že k přejímacímu řízení nebudou doloženy výše uvedené
+doklady, nebude přejímací řízení zahájeno.
+30.9 KONTROLNÍ MĚŘENÍ, MĚŘENÍ POSUNŮ A PŘETVOŘENÍ
+Není požadováno.
+30.10 EKOLOGIE
+Zhotovitel musí dodržet příslušná ustanovení kap. 1 TKP. V případě použití olejových transformátorů a zařízení
+obsahujících olej je nutno stavebními úpravami zabránit jeho případnému úniku. Způsob zábrany řeší dokumentace.
+V případě, že z výkopu bude vytěžena kontaminovaná zemina, zhotovitel jí uloží na skládku k tomu určenou.
+30.11 BEZPEČNOST PRÁCE A TECHNICKÝCH ZAŘÍZENÍ, POŽÁRNÍ OCHRANA
+Požadavky na bezpečnost práce a technických zařízení jakož i na požární ochranu obecně stanovuje kapitola 1 TKP.
+Při práci na elektrickém zařízení a práci s elektrickým zařízením a práci v blízkosti trakčního vedení, je nutno
+dodržovat zejména ČSN EN 50110-1 a TNŽ 34 3109.
+Zhotovitel se musí při práci a pobytu na stavbě řídit ustanoveními o požární bezpečnosti a musí poučit pracovníky
+o požární ochraně a způsobu použití ručních hasicích přístrojů.
+Problematiku požární bezpečnosti včetně vybavení elektrických stanic hasícími prostředky stanoví ČSN 73 0802.
+Vybavení elektrických stanic ochrannými a pracovními pomůckami řeší ČSN EN 61936-1.
+30.12 SOUVISEJÍCÍ NORMY A PŘEDPISY
+U nedatovaných technických norem platí poslední vydání příslušné normy popřípadě normy, která ji nahrazuje.
+Uživatel TKP odpovídá za použití aktuální verze výchozích podkladů ve smyslu kap. 1.3 TKP, tj. právních
+předpisů, technických norem a předpisů a předpisů SŽDC.
+30.12.1 Technické normy
+ČSN 33 1500 Elektrotechnické předpisy. Revize elektrických zařízení.
+ČSN 33 2000-1 Elektrická instalace nízkého napětí – Část 1: Základní hlediska, stanovení základních
+charakteristik, definice
+ČSN 33 2000-4-41 Elektrické instalace nízkého napětí – Část 4-41: Ochranná opatření pro zajištění bezpeč-
+nosti – Ochrana před úrazem elektrickým proudem
+ČSN 33 2000-5-52 Elektrická instalace nízkého napětí – Část 5-52: Výběr a stavba elektrických zařízení –
+Elektrická vedení
+ČSN 33 2000-5-54 Elektrické instalace nízkého napětí – Část 5-54: Výběr a stavba elektrických zařízení –
+Uzemnění a ochranné vodiče
+ČSN 33 2000-6 Elektrotechnické předpisy. Elektrické instalace nízkého napětí – Část 6: Revize
+ČSN 33 2130 Elektrické instalace nízkého napětí - Vnitřní elektrické rozvody
+ČSN 33 3015 Elektrotechnické předpisy. Elektrické stanice a elektrická zařízení. Zásady dimenzování
+podle elektrodynamické a tepelné odolnosti při zkratech.
+17
+ČSN 33 3051 Ochrany elektrických strojů a rozvodných zařízení.
+ČSN 33 3080 Elektrotechnické předpisy. Kompenzace indukčního výkonu statickými kondenzátory.
+ČSN 33 3265 Elektrotechnické předpisy. Měření elektrických veličin v dozornách výroben a rozvodů
+elektřiny.
+ČSN 34 1500 Drážní zařízení – Pevná trakční zařízení – Předpisy pro elektrická trakční zařízení
+ČSN 34 7006 Zkušební požadavky na příslušenství silových kabelů pro jmenovitá napětí od 3,6/6
+(7,2) kV do 20,8/36 (42) kV - Část 1: Kabely s výtlačně lisovanou izolací
+ČSN 38 1140 Akumulátorové baterie v elektrárnách a elektrických stanicích.
+ČSN 38 1754 Dimenzování elektrického zařízení podle účinku zkratových proudů.
+ČSN 73 0802 Požární bezpečnost staveb - Nevýrobní objekty
+ČSN 73 6005 Prostorové uspořádání sítí technického vybavení.
+ČSN 73 6133 Návrh a provádění zemního tělesa pozemních komunikací
+ČSN EN 13670 Provádění betonových konstrukcí.
+ČSN EN 206 Beton – Specifikace, vlastnosti, výroba a shoda
+ČSN EN 50110-1 Obsluha a práce na elektrických zařízeních
+ČSN EN 50160 Charakteristiky napětí elektrické energie dodávané z veřejných distribučních sítí
+ČSN EN 60076-11 Výkonové transformátory – Část 11: Suché transformátory
+ČSN EN 50272-2 Bezpečnostní požadavky pro akumulátorové baterie a akumulátorové instalace - Část 2:
+Staniční baterie
+ČSN EN 50341 Elektrická venkovní vedení s napětím nad AC 1 kV
+ČSN EN 50423 Elektrická venkovní s napětím nad 1 kV AC do 45 kV včetně
+ČSN EN 50423-3-19 Národní příloha k ČSN EN 50423-3
+ČSN EN 50522 Uzemňování elektrických instalací AC na 1 kV
+ČSN EN 60909-0 Zkratové proudy v trojfázových střídavých soustavách – Část 0: Výpočet proudů
+ČSN EN 61000-2-2 Elektromagnetická kompatibilita (EMC) – Část 2-2: Prostředí – Kompatibilní úroveň pro
+nízkofrekvenční rušení šířené vedením a signály ve veřejných rozvodných sítích nízkého
+napětí
+ČSN EN 61284 Venkovní vedení - Požadavky na armatury a jejich zkoušky
+ČSN EN 61439-1 Rozváděče nízkého napětí - Část 1: Všeobecná ustanovení
+ČSN EN 61442 Zkušební metody pro silnoproudé kabelové soubory se jmenovitým napětím od 6 kV
+(Um = 7,2 kV) do 36 kV (Um = 42 kV)
+ČSN EN 62271-1 Vysokonapěťová spínací a řídicí zařízení - Část 1: Společná ustanovení
+ČSN EN 62271-200 Vysokonapěťová spínací a řídící zařízení – Část 200: Kovově kryté rozvaděče na střídavý
+proud pro jmenovitá napětí nad 1 kV do 52 kV včetně
+ČSN EN 62271-201 Vysokonapěťová spínací a řídící zařízení – část 201: Izolačně kryté rozvaděče na střídavý
+proud pro jmenovitá napětí nad 1 kV do 52 kV včetně
+ČSN EN 62305-1 Obrana před bleskem – Část 1: Obecné principy
+ČSN EN 62305-2 Obrana před bleskem – Část 2: Řízení rizika
+ČSN EN 62305-3 Obrana před bleskem – Část 3: Hmotné škody na stavbách a ohrožení života
+ČSN EN ISO 2063 Žárové stříkání – Kovové a jiné anorganické povlaky – Zinek, hliník a jejich slitin
+ČSN ISO 3800 Spojovací součásti se závitem - Zkouška únavy osovým zatížením - Zkušební metody
+(02 1006) a vyhodnocení výsledků.
+ČSN EN 60076-1 Výkonové transformátory - Část 1: Obecně
+TNŽ 37 5711 Drážní zařízení – Křížení kabelových vedení s železničními dráhami
+TNŽ 37 5715 Silová kabelová vedení celostátních drah.
+TNŽ 34 3109 Bezpečnostní předpisy pro činnost na trakčním vedení a v jeho blízkosti na železničních
+dráhách celostátních, regionálních a vlečkách
+18
+30.12.2 Předpisy
+SŽDC E 8 Předpis pro provoz zařízení energetického napájení zabezpečovacích zařízení.
+Vyhláška č. 48/1982 Sb. Vyhláška Českého úřadu bezpečnosti práce, kterou se stanoví požadavky k zajištění
+bezpečnosti práce a technických zařízení, v platném znění
+Vyhláška č. 100/1995 Sb. Vyhláška Ministerstva dopravy, kterou se stanoví podmínky pro provoz, konstrukci
+a výrobu určených technických zařízení, v platném znění
+Vyhláška č. 177/1995 Sb. Vyhláška Ministerstva dopravy, kterou se vydává stavební a technický řád drah,
+v platném znění
+Zákon č. 266/1994 Sb. o drahách, v platném znění
+Směrnice SŽDC č. 34 o uvádění výrobků do provozu, kterou jsou součástí sdělovacích a zabezpečovacích
+zařízení a zařízení elektrotechniky a energetiky, na železniční dopravní cestě ve
+vlastnictví státu statní organizace Správa železniční dopravní cesty.
+SŽDC S4 Železniční spodek.
+Předpis SŽDC Technické podmínky připojení k „Lokální distribuční soustavě železnic.
+30.12.3 Související kapitoly TKP
+Kapitola 1 - Všeobecně
+Kapitola 3 - Zemní práce
+Kapitola 17 - Beton pro konstrukce
+Kapitola 26 - Osvětlení, rozvody NN včetně dálkového ovládání
+19
+TECHNICKÉ KVALITATIVNÍ PODMÍNKY STAVEB STÁTNÍCH DRAH
+KAPITOLA 30
+Třetí aktualizované vydání se zapracovanou změnou č. 11 /z roku 2017/
+Vydala Správa železniční dopravní cesty, státní organizace
+Zpracovatel: Správa železniční dopravní cesty, státní organizace
+Odborný gestor: Bc. Jaroslav Valníček
+Správa železniční dopravní cesty, státní organizace
+Odbor automatizace a elektrotechniky
+Vydal: Správa železniční dopravní cesty, státní organizace
+Odbor automatizace a elektrotechniky
+Dlážděná 1003/7, 110 00 Praha 1, Nové Město
+www.szdc.cz
+Distribuce: Správa železniční dopravní cesty, státní organizace
+Technická ústředna dopravní cesty
+ÚATT – oddělení distribuce dokumentace
+772 58 Olomouc, Nerudova 1
+tel.: +420 972 742 396, +420 972 741 769
+mobil: +420 725 039 782
+e-mail: typdok@tudc.cz
+www.tudc.cz

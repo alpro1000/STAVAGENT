@@ -8,6 +8,7 @@ services:
     env: python
     region: frankfurt  # Ближе к Чехии
     plan: starter  # Можно начать с free
+    rootDir: concrete-agent/packages/core-backend
     buildCommand: pip install --no-cache-dir -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     envVars:
@@ -16,12 +17,22 @@ services:
         sync: true
       - key: OPENAI_API_KEY
         sync: true
+      - key: GOOGLE_API_KEY       # Gemini — REQUIRED for Multi-Role AI (MULTI_ROLE_LLM=gemini)
+        sync: true
+      - key: PERPLEXITY_API_KEY   # Optional — for KB Research live search (Poradna norem)
+        sync: true
+
+      # Multi-Role LLM (explicit — don't rely on default)
+      - key: MULTI_ROLE_LLM
+        value: gemini
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash-lite
       
       # AI Models
       - key: CLAUDE_MODEL
-        value: claude-sonnet-4-20250514
+        value: claude-sonnet-4-6
       - key: GPT4_MODEL
-        value: gpt-4-vision-preview
+        value: gpt-4.1
       - key: CLAUDE_MAX_TOKENS
         value: 4000
       - key: GPT4_MAX_TOKENS
@@ -86,16 +97,7 @@ services:
         value: 3.11.9
     
     healthCheckPath: /
+    # Auto-deploy when concrete-agent files change
+    autoDeploy: true
 
-  # Frontend Node.js Server
-  - type: web
-    name: stav-agent
-    env: node
-    region: frankfurt
-    buildCommand: cd stav-agent && npm install && npm run build
-    startCommand: cd stav-agent && npm start
-    envVars:
-      - key: VITE_API_URL
-        value: https://concrete-agent.onrender.com
-      - key: NODE_ENV
-        value: production
+# NOTE: Frontend is in stavagent-portal/ with its own render.yaml

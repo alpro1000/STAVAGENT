@@ -86,6 +86,52 @@
         <!-- Generated dynamically -->
       </div>
     </div>
+
+    <!-- Work Extraction Section -->
+    <div id="extraction-actions" class="extraction-actions" style="display: none;">
+      <h3>🔬 Extrakce Prací</h3>
+      <p>Extrahujte seznam prací z nahraného dokumentu a přiřaďte ÚRS kódy.</p>
+      <button id="extract-works-btn" class="btn btn-primary">
+        <span class="spinner" id="extract-spinner" style="display: none;">⏳</span>
+        🔬 Extrahovat Práce z Dokumentu
+      </button>
+    </div>
+  </div>
+
+  <!-- Extracted Works Results -->
+  <div id="extraction-results" class="extraction-results" style="display: none;">
+    <h2>✓ Extrahované Práce</h2>
+
+    <!-- Stats Summary -->
+    <div class="extraction-stats">
+      <div class="stat-card">
+        <div class="stat-value" id="works-count">0</div>
+        <div class="stat-label">Celkem Prací</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="sections-count">0</div>
+        <div class="stat-label">Sekcí</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="tskp-matched">0</div>
+        <div class="stat-label">TSKP Přiřazeno</div>
+      </div>
+    </div>
+
+    <!-- Works by Section -->
+    <div id="works-by-section" class="works-sections">
+      <!-- Generated dynamically -->
+    </div>
+
+    <!-- Export Actions -->
+    <div class="export-actions">
+      <button id="export-works-excel" class="btn btn-primary">
+        📥 Exportovat do Excel
+      </button>
+      <button id="send-to-batch" class="btn btn-primary">
+        📋 Odeslat do Dávkového Zpracování
+      </button>
+    </div>
   </div>
 </div>
 
@@ -442,5 +488,162 @@ h3 {
 
 .critical-title {
   color: #dc3545;
+}
+
+/* Extraction Actions */
+.extraction-actions {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f0f7ff;
+  border-radius: 8px;
+  border-left: 4px solid #17a2b8;
+}
+
+.extraction-actions h3 {
+  color: #17a2b8;
+  margin-top: 0;
+}
+
+.extraction-actions p {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* Extraction Results */
+.extraction-results {
+  margin-top: 30px;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  border-left: 4px solid #28a745;
+}
+
+.extraction-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.stat-card {
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: #28a745;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Works Sections */
+.works-sections {
+  margin: 20px 0;
+}
+
+.work-section {
+  margin-bottom: 20px;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.section-header {
+  background: #17a2b8;
+  color: white;
+  padding: 15px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.works-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.works-table th {
+  background: #f5f5f5;
+  padding: 12px;
+  text-align: left;
+  font-weight: 500;
+  color: #555;
+  border-bottom: 2px solid #ddd;
+}
+
+.works-table td {
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  color: #333;
+}
+
+.works-table tr:hover {
+  background: #f9f9f9;
+}
+
+.tskp-code {
+  font-family: 'Courier New', monospace;
+  background: #e7f3ff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #007bff;
+}
+
+.tskp-missing {
+  color: #999;
+  font-style: italic;
+}
+
+.confidence-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.confidence-high {
+  background: #d4edda;
+  color: #155724;
+}
+
+.confidence-medium {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.confidence-low {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* Export Actions */
+.export-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
 }
 </style>

@@ -16,8 +16,8 @@ export function useBridges() {
     queryFn: async () => {
       return await bridgesAPI.getAll();
     },
-    staleTime: 10 * 60 * 1000, // Cache for 10 minutes - no refetch unless stale
-    refetchOnMount: false, // CRITICAL: Never refetch on mount
+    staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    refetchOnMount: true, // Fetch on mount if data is stale (ensures initial load)
     refetchOnWindowFocus: false, // Don't refetch when window regains focus
     // refetchOnReconnect defaults to true - important for recovering from network issues
     retry: 3, // Retry failed requests 3 times
@@ -27,6 +27,7 @@ export function useBridges() {
 
   // Update context when query.data changes
   // Use useEffect to prevent infinite render loops
+  // Server data is source of truth - always update from API response
   useEffect(() => {
     if (query.data) {
       setBridges(query.data);
@@ -76,6 +77,36 @@ export function useBridges() {
     }
   });
 
+  // Mutation: Delete entire project (all bridges with same project_name)
+  const deleteProjectMutation = useMutation({
+    mutationFn: (projectName: string) => {
+      return bridgesAPI.deleteByProjectName(projectName);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+    }
+  });
+
+  // Mutation: Rename project (update project_name for all objects)
+  const renameProjectMutation = useMutation({
+    mutationFn: ({ oldName, newName }: { oldName: string; newName: string }) => {
+      return bridgesAPI.renameProject(oldName, newName);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+    }
+  });
+
+  // Mutation: Bulk delete objects by IDs
+  const bulkDeleteMutation = useMutation({
+    mutationFn: (projectIds: string[]) => {
+      return bridgesAPI.bulkDelete(projectIds);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['bridges'] });
+    }
+  });
+
   return {
     ...query,
     createBridge: async (params: any) => {
@@ -90,6 +121,15 @@ export function useBridges() {
     deleteBridge: async (bridgeId: string) => {
       await deleteMutation.mutateAsync(bridgeId);
     },
-    isLoading: query.isLoading || createMutation.isPending || statusMutation.isPending || deleteMutation.isPending || completeMutation.isPending
+    deleteProject: async (projectName: string) => {
+      return await deleteProjectMutation.mutateAsync(projectName);
+    },
+    renameProject: async (oldName: string, newName: string) => {
+      return await renameProjectMutation.mutateAsync({ oldName, newName });
+    },
+    bulkDelete: async (projectIds: string[]) => {
+      return await bulkDeleteMutation.mutateAsync(projectIds);
+    },
+    isLoading: query.isLoading || createMutation.isPending || statusMutation.isPending || deleteMutation.isPending || completeMutation.isPending || deleteProjectMutation.isPending || renameProjectMutation.isPending || bulkDeleteMutation.isPending
   };
 }

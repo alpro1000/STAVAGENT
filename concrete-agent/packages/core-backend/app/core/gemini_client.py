@@ -34,9 +34,9 @@ class GeminiClient:
 
         genai.configure(api_key=settings.GOOGLE_API_KEY)
 
-        # Default model: gemini-2.0-flash-exp (newest, FREE, fast)
-        # Alternatives: gemini-1.5-flash, gemini-1.5-pro
-        self.model_name = getattr(settings, 'GEMINI_MODEL', 'gemini-2.0-flash-exp')
+        # Default model: gemini-2.5-flash-lite (Feb 2026, fast, cheap)
+        # Alternatives: gemini-2.5-pro (higher quality), gemini-2.5-flash-lite (balanced)
+        self.model_name = getattr(settings, 'GEMINI_MODEL', 'gemini-2.5-flash-lite')
 
         # Safety settings - allow technical content
         self.safety_settings = [

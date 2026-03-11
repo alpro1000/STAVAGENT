@@ -9,8 +9,21 @@ import db from '../db/init.js';
 import { calculatePositions, calculateKPI } from '../services/calculator.js';
 import { logger } from '../utils/logger.js';
 import { extractPartName } from '../utils/text.js';
+import { suggestDays } from '../services/timeNormsService.js';
+import { writeBackBatch } from '../services/portalWriteBack.js';
 
 const router = express.Router();
+
+/**
+ * Whitelist of allowed field names for SQL updates
+ * Prevents SQL injection through field name manipulation
+ */
+const ALLOWED_UPDATE_FIELDS = new Set([
+  'part_name', 'item_name', 'subtype', 'unit', 'qty', 'qty_m3_helper',
+  'crew_size', 'wage_czk_ph', 'shift_hours', 'days', 'otskp_code',
+  'concrete_m3', 'cost_czk', 'metadata', 'position_number', 'curing_days',
+  'position_instance_id'
+]);
 
 /**
  * Template positions with correct part_name -> item_name mappings
@@ -88,9 +101,15 @@ router.get('/', async (req, res) => {
       WHERE id = 1
     `).get();
 
+    let defaults = {};
+    try {
+      defaults = configRow?.defaults ? JSON.parse(configRow.defaults) : {};
+    } catch (e) {
+      logger.warn('Failed to parse config defaults, using empty object:', e.message);
+    }
     const config = {
-      defaults: JSON.parse(configRow.defaults),
-      days_per_month_mode: configRow.days_per_month_mode
+      defaults,
+      days_per_month_mode: configRow?.days_per_month_mode || 30
     };
 
     // Calculate all derived fields
@@ -107,7 +126,7 @@ router.get('/', async (req, res) => {
     // Filter RFI if requested
     let responsePositions = calculatedPositions;
     if (include_rfi === 'false') {
-      responsePositions = calculatedPositions.filter(p => p.has_rfi);
+      responsePositions = calculatedPositions.filter(p => !p.has_rfi);
     }
 
     // RFI summary
@@ -214,9 +233,15 @@ router.post('/', async (req, res) => {
     const configRow = await db.prepare(`
       SELECT defaults, days_per_month_mode FROM project_config WHERE id = 1
     `).get();
+    let defaults = {};
+    try {
+      defaults = configRow?.defaults ? JSON.parse(configRow.defaults) : {};
+    } catch (e) {
+      logger.warn('Failed to parse config defaults:', e.message);
+    }
     const config = {
-      defaults: JSON.parse(configRow.defaults),
-      days_per_month_mode: configRow.days_per_month_mode
+      defaults,
+      days_per_month_mode: configRow?.days_per_month_mode || 30
     };
 
     const calculatedPositions = calculatePositions(positions, config);
@@ -267,7 +292,7 @@ router.put('/', async (req, res) => {
     logger.info(`📝 PUT /api/positions: bridge_id=${bridge_id}, ${updates.length} updates`);
     // Log all updates (up to 5 for readability)
     const previewUpdates = updates.slice(0, 5).map(u => ({
-      id: u.id?.substring(0, 20) + '...' || 'unknown',
+      id: u.id ? u.id.substring(0, 20) + '...' : 'unknown',
       fields: Object.keys(u).filter(k => k !== 'id').join(', ')
     }));
     logger.info(`Updates preview: ${JSON.stringify(previewUpdates)}`);
@@ -288,12 +313,19 @@ router.put('/', async (req, res) => {
         }
 
         // Build SQL dynamically for each update
-        const fieldNames = Object.keys(fields);
+        // Filter to only allowed fields (SQL injection prevention)
+        const fieldNames = Object.keys(fields).filter(f => ALLOWED_UPDATE_FIELDS.has(f));
+
+        // Log if any fields were rejected
+        const rejectedFields = Object.keys(fields).filter(f => !ALLOWED_UPDATE_FIELDS.has(f));
+        if (rejectedFields.length > 0) {
+          logger.warn(`  ⚠️ Rejected non-whitelisted fields: ${rejectedFields.join(', ')}`);
+        }
 
         // If there are no fields to update, skip this update
         // (only updated_at will be set by the DEFAULT in the UPDATE statement)
         if (fieldNames.length === 0) {
-          logger.warn(`  ⚠️ No fields to update for position id=${id}, skipping`);
+          logger.warn(`  ⚠️ No valid fields to update for position id=${id}, skipping`);
           continue;
         }
 
@@ -306,7 +338,8 @@ router.put('/', async (req, res) => {
           WHERE id = ? AND bridge_id = ?
         `;
 
-        const values = [...Object.values(fields), id, bridgeId];
+        // Only include values for whitelisted fields (in same order as fieldNames)
+        const values = [...fieldNames.map(f => fields[f]), id, bridgeId];
 
         logger.info(`  Updating position id=${id}: ${fieldNames.join(', ')}`);
 
@@ -330,9 +363,15 @@ router.put('/', async (req, res) => {
     const configRow = await db.prepare(`
       SELECT defaults, days_per_month_mode FROM project_config WHERE id = 1
     `).get();
+    let defaults = {};
+    try {
+      defaults = configRow?.defaults ? JSON.parse(configRow.defaults) : {};
+    } catch (e) {
+      logger.warn('Failed to parse config defaults:', e.message);
+    }
     const config = {
-      defaults: JSON.parse(configRow.defaults),
-      days_per_month_mode: configRow.days_per_month_mode
+      defaults,
+      days_per_month_mode: configRow?.days_per_month_mode || 30
     };
 
     const calculatedPositions = calculatePositions(positions, config);
@@ -344,6 +383,12 @@ router.put('/', async (req, res) => {
       pd_weeks: bridge?.pd_weeks,
       days_per_month_mode: config.days_per_month_mode
     }, config);
+
+    // Non-blocking Portal write-back: send MonolithPayload for linked positions
+    // Uses position_instance_id to identify which Portal positions to update
+    writeBackBatch(positions, bridge_id).catch(err => {
+      logger.warn(`[WriteBack] Batch write-back error (non-critical): ${err.message}`);
+    });
 
     res.json({
       success: true,
@@ -371,6 +416,83 @@ router.delete('/:id', async (req, res) => {
   } catch (error) {
     logger.error('Error deleting position:', error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+/**
+ * POST /api/positions/:id/suggest-days
+ * AI-powered days suggestion using concrete-agent Multi-Role API
+ *
+ * Returns suggested duration based on:
+ * - Work type (beton, bednění, výztuž, jiné)
+ * - Quantity and unit
+ * - Crew size and shift hours
+ * - Official construction norms (KROS, RTS, ČSN)
+ *
+ * ENHANCED (2026-01-20): Stores suggestion in position_suggestions table for audit trail
+ */
+router.post('/:id/suggest-days', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    logger.info(`[API] Requesting time norms suggestion for position ${id}`);
+
+    // Get position from database
+    const position = await db.prepare(
+      'SELECT * FROM positions WHERE id = ?'
+    ).get(id);
+
+    if (!position) {
+      return res.status(404).json({ error: 'Position not found' });
+    }
+
+    // Validate required fields
+    if (!position.qty || position.qty <= 0) {
+      return res.status(400).json({
+        error: 'Invalid quantity',
+        message: 'Position must have a valid quantity > 0'
+      });
+    }
+
+    // Call AI service
+    const suggestion = await suggestDays(position);
+
+    logger.info(`[API] Time norms suggestion completed for position ${id}: ${suggestion.suggested_days} days`);
+
+    // Store suggestion in position_suggestions table for audit trail
+    const suggestionId = uuidv4();
+    try {
+      await db.prepare(`
+        INSERT INTO position_suggestions (
+          id, position_id, suggested_days, suggested_by,
+          normset_id, norm_source, assumptions_log, confidence,
+          status, created_at
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+      `).run(
+        suggestionId,
+        id,
+        suggestion.suggested_days,
+        'MULTI_ROLE_AI',
+        'norm_urs_2024', // Default normset (ÚRS 2024)
+        suggestion.norm_source || 'AI Multi-Role',
+        suggestion.reasoning || '',
+        suggestion.confidence || 0.8,
+        'pending'
+      );
+      logger.info(`[Audit] Stored suggestion ${suggestionId} for position ${id}`);
+    } catch (auditError) {
+      // Don't fail the request if audit logging fails
+      logger.warn(`[Audit] Failed to store suggestion: ${auditError.message}`);
+    }
+
+    res.json(suggestion);
+
+  } catch (error) {
+    logger.error('[API] Error suggesting days:', error);
+    res.status(500).json({
+      error: 'Failed to suggest days',
+      message: error.message
+    });
   }
 });
 
