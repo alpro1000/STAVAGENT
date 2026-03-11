@@ -1,3 +1,21 @@
+# Next Session Starter — 2026-03-11 Update (Deck Pour Rules)
+
+## Latest Completed Change
+
+- Updated `shared/src/calculators/planner-orchestrator.ts` to account for:
+  - uninterrupted monolithic deck pour staffing boost (up to 12 workers),
+  - overtime premium +25% after 10h,
+  - minimum skruž hold 21 days from last concrete finish for bridge deck.
+- Commit: `cc3ef1c`
+- PR title: `Handle uninterrupted bridge-deck pours with overtime and skruž hold`
+
+## Next Action
+
+- Re-open PR review comments and align implementation details with reviewer expectations.
+- Add dedicated tests for thresholds/edge-cases (10h overtime boundary, skruž extension behavior).
+
+---
+
 # Next Session Starter Commands
 
 **Branch:** `claude/portal-audit-improvements-8F2Co`

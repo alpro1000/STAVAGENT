@@ -1,3 +1,28 @@
+# NEXT SESSION — 2026-03-11 (Deck Pour + Skruž Rules)
+
+## Краткое резюме последней сессии
+
+- В `Monolit-Planner/shared/src/calculators/planner-orchestrator.ts` внедрены изменения по бизнес-логике непрерывной монолитной заливки без швов.
+- Добавлены сверхурочные (+25% после 10ч) в стоимость бетонных работ.
+- Для mostovková deska введена минимальная выдержка skruž 21 день от последней бетонной операции.
+- Изменения закоммичены (`cc3ef1c`) и оформлены в PR с заголовком:
+  `Handle uninterrupted bridge-deck pours with overtime and skruž hold`.
+
+## Что проверить в следующей сессии
+
+1. Пройтись по inline-комментариям к PR и уточнить спорные места реализации.
+2. Добавить/обновить unit-тесты на:
+   - overtime-расчет (граница 10h и >10h),
+   - авто-скейл osádky при длинной заливке,
+   - удлинение schedule при skruž hold.
+3. При необходимости вынести параметры в конфиг:
+   - max crew cap (12),
+   - overtime threshold (10h),
+   - overtime premium (1.25),
+   - skruž hold days (21).
+
+---
+
 # NEXT SESSION — Session 9 Complete
 
 **Date:** 2026-03-11
