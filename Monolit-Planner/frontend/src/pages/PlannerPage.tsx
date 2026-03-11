@@ -91,6 +91,7 @@ interface FormState {
   formwork_system_name: string; // empty = auto
   enable_monte_carlo: boolean;
   start_date: string; // ISO date string for calendar mapping
+  num_bridges: number; // 1 = jeden most, 2 = levý+pravý (souběžné)
 }
 
 const DEFAULT_FORM: FormState = {
@@ -122,6 +123,7 @@ const DEFAULT_FORM: FormState = {
   formwork_system_name: '',
   enable_monte_carlo: false,
   start_date: new Date().toISOString().split('T')[0],
+  num_bridges: 1,
 };
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -211,6 +213,9 @@ export default function PlannerPage() {
       }
       if (form.formwork_system_name) {
         input.formwork_system_name = form.formwork_system_name;
+      }
+      if (form.num_bridges > 1) {
+        input.num_bridges = form.num_bridges;
       }
 
       const output = planElement(input);
@@ -307,6 +312,32 @@ export default function PlannerPage() {
               </Field>
             )}
           </Section>
+
+          {/* ─── Mostovková deska: bridge config + context hint ─── */}
+          {(form.element_type === 'mostovkova_deska' && !form.use_name_classification) && (
+            <>
+              <div style={{
+                padding: '10px 12px', marginBottom: 12,
+                background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: 6,
+                fontSize: 11, color: '#0c4a6e', lineHeight: 1.6,
+              }}>
+                <strong>Mostovková deska — logika záběrů:</strong><br/>
+                <strong>Bez dilatačních spár:</strong> zálivka v jednom průchodu → navýšit čerpadla, osádku a kapacitu čerstvého betonu.<br/>
+                <strong>Se spárami:</strong> sekční postup, šachovnicový pořadí; počet souprav bednění = počet souběžných záběrů.<br/>
+                <strong>Levý + pravý most:</strong> bez spár = 2 kompletní soupravy; se spárami = šachovnice napříč mosty nebo postup z obou konců.
+              </div>
+              <Field label="Počet mostů">
+                <select
+                  style={inputStyle}
+                  value={form.num_bridges}
+                  onChange={e => update('num_bridges', parseInt(e.target.value))}
+                >
+                  <option value={1}>1 — jeden most</option>
+                  <option value={2}>2 — levý + pravý (souběžné)</option>
+                </select>
+              </Field>
+            </>
+          )}
 
           {/* ─── Volumes ─── */}
           <Section title="Objemy">
