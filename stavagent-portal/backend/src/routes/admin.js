@@ -5,6 +5,9 @@
  */
 
 import express from 'express';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 import db from '../db/index.js';
 import { requireAuth } from '../middleware/auth.js';
 import { adminOnly } from '../middleware/adminOnly.js';
@@ -12,6 +15,21 @@ import { logger } from '../utils/logger.js';
 import { logAdminAction } from '../utils/auditLogger.js';
 
 const router = express.Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+function resolveModelAuditReportPath() {
+  const explicitPath = process.env.MODEL_AUDIT_REPORT_PATH;
+  const candidates = [
+    explicitPath,
+    resolve(process.cwd(), 'MODEL_CONNECTION_REPORT.md'),
+    resolve(process.cwd(), '..', 'MODEL_CONNECTION_REPORT.md'),
+    resolve(process.cwd(), '..', '..', 'MODEL_CONNECTION_REPORT.md'),
+    resolve(__dirname, '../../../../MODEL_CONNECTION_REPORT.md'),
+  ].filter(Boolean);
+
+  return candidates.find(p => fs.existsSync(p));
+}
 
 /**
  * GET /api/admin/users
@@ -445,6 +463,50 @@ router.get('/stats', requireAuth, adminOnly, async (req, res) => {
     res.status(500).json({
       error: 'Failed to fetch statistics',
       message: 'Chyba při načítání statistik'
+    });
+  }
+});
+
+/**
+ * GET /api/admin/model-audit-report
+ * Returns generated model connectivity audit report
+ */
+router.get('/model-audit-report', requireAuth, adminOnly, async (req, res) => {
+  try {
+    const reportPath = resolveModelAuditReportPath();
+
+    if (!reportPath) {
+      return res.status(404).json({
+        success: false,
+        error: 'MODEL_CONNECTION_REPORT.md not found',
+        message: 'Audit report was not found on server. Run ./scripts/check_model_connections.sh first.',
+      });
+    }
+
+    const content = fs.readFileSync(reportPath, 'utf8');
+    const stats = fs.statSync(reportPath);
+
+    await logAdminAction(req.user.userId, 'VIEW_MODEL_AUDIT_REPORT', {
+      report_path: reportPath,
+      report_size_bytes: stats.size,
+      report_updated_at: stats.mtime.toISOString(),
+    });
+
+    res.json({
+      success: true,
+      data: {
+        path: reportPath,
+        updated_at: stats.mtime.toISOString(),
+        size_bytes: stats.size,
+        content,
+      },
+    });
+  } catch (error) {
+    logger.error('[ADMIN] Error loading model audit report:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to load model audit report',
+      message: 'Chyba při načítání reportu modelového auditu',
     });
   }
 });

@@ -513,6 +513,10 @@ export const adminAPI = {
   getStats: async (): Promise<any> => {
     const { data } = await api.get('/api/admin/stats');
     return data;
+  },
+  getModelAuditReport: async (): Promise<any> => {
+    const { data } = await api.get('/api/admin/model-audit-report');
+    return data;
   }
 };
 
