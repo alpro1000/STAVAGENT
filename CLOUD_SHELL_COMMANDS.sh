@@ -268,6 +268,7 @@ setup_portal_backend() {
     --set-env-vars "^|^\
 DATABASE_URL=$DB_PG|\
 NODE_ENV=production|\
+DISABLE_AUTH=true|\
 JWT_SECRET=$JWT_SECRET|\
 JWT_EXPIRY=24h|\
 CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app|\
