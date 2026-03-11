@@ -76,6 +76,16 @@ describe('Element Classifier', () => {
       const result = classifyElement('mostovka');
       expect(result.element_type).toBe('mostovkova_deska');
     });
+
+    it('classifies bridge deck from common alternate naming', () => {
+      const result = classifyElement('MOSTNÍ DESKA - levý most');
+      expect(result.element_type).toBe('mostovkova_deska');
+    });
+
+    it('classifies mixed-language bridge deck naming', () => {
+      const result = classifyElement('Bridge deck / пролетное строение');
+      expect(result.element_type).toBe('mostovkova_deska');
+    });
   });
 
   // ─── getElementProfile ───────────────────────────────────────────────
