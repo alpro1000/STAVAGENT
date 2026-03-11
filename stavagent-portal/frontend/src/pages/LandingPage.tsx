@@ -21,7 +21,7 @@ const SERVICES = [
   {
     icon: '📋',
     name: 'Shrnutí dokumentu',
-    desc: 'Jednorázová extrakce dat z PDF/Excel.',
+    desc: 'Adaptive extraction + summary z PDF/Excel s volbou modelu.',
   },
   {
     icon: '🪨',

@@ -50,8 +50,9 @@ import type {
   PassportGenerationResponse,
   ProjectPassport,
   AIModelType,
+  VertexServiceAccountType,
 } from '../../types/passport';
-import { AI_MODEL_OPTIONS } from '../../types/passport';
+import { AI_MODELS, AI_MODEL_OPTIONS, VERTEX_SERVICE_ACCOUNT_OPTIONS } from '../../types/passport';
 
 interface DocumentSummaryProps {
   projectId?: string;
@@ -72,6 +73,8 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   // AI Model Selection
   const [selectedModel, setSelectedModel] = useState<AIModelType>('gemini');
   const [enableAiEnrichment, setEnableAiEnrichment] = useState(true);
+  const [analysisMode, setAnalysisMode] = useState<'adaptive_extraction' | 'summary_only'>('adaptive_extraction');
+  const [selectedVertexAccount, setSelectedVertexAccount] = useState<VertexServiceAccountType>('vertex-ai-search');
 
   // File input ref
   const fileInputRef = useCallback((node: HTMLInputElement | null) => {
@@ -157,6 +160,12 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       if (enableAiEnrichment) {
         formData.append('preferred_model', selectedModel);
       }
+      formData.append('analysis_mode', analysisMode);
+
+      const isVertexModel = selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH;
+      if (enableAiEnrichment && isVertexModel) {
+        formData.append('vertex_service_account', selectedVertexAccount);
+      }
 
       // Fetch with timeout (5 minutes for large documents - 46+ pages)
       const controller = new AbortController();
@@ -211,7 +220,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     } finally {
       setIsUploading(false);
     }
-  }, [selectedModel, enableAiEnrichment]);
+  }, [selectedModel, enableAiEnrichment, analysisMode, selectedVertexAccount]);
 
   // Drag and drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -506,6 +515,22 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
               <span style={{ fontSize: '14px' }}>Povolit AI obohacení (rizika, lokace, časový plán)</span>
             </label>
 
+            {/* Analysis mode */}
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <label style={{ fontSize: '14px', color: 'var(--text-secondary)', minWidth: '100px' }}>
+                Režim:
+              </label>
+              <select
+                value={analysisMode}
+                onChange={(e) => setAnalysisMode(e.target.value as 'adaptive_extraction' | 'summary_only')}
+                className="c-input"
+                style={{ flex: 1, maxWidth: '300px' }}
+              >
+                <option value="adaptive_extraction">Adaptive extraction + summary</option>
+                <option value="summary_only">Pouze shrnutí</option>
+              </select>
+            </div>
+
             {/* Model selection */}
             {enableAiEnrichment && (
               <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -524,6 +549,33 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                     </option>
                   ))}
                 </select>
+              </div>
+            )}
+
+            {/* Vertex service account selector */}
+            {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <label style={{ fontSize: '14px', color: 'var(--text-secondary)', minWidth: '100px' }}>
+                  Vertex účet:
+                </label>
+                <select
+                  value={selectedVertexAccount}
+                  onChange={(e) => setSelectedVertexAccount(e.target.value as VertexServiceAccountType)}
+                  className="c-input"
+                  style={{ flex: 1, maxWidth: '300px' }}
+                >
+                  {VERTEX_SERVICE_ACCOUNT_OPTIONS.map(account => (
+                    <option key={account.id} value={account.id}>
+                      {account.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
+              <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
+                {VERTEX_SERVICE_ACCOUNT_OPTIONS.find(a => a.id === selectedVertexAccount)?.description}
               </div>
             )}
 
