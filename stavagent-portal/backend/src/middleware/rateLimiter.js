@@ -16,6 +16,7 @@ export const apiLimiter = rateLimit({
   message: 'Příliš mnoho požadavků z vaší IP adresy, zkuste to znovu později',
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
+  validate: { xForwardedForHeader: false }, // Cloud Run sits behind Google's proxy; trust proxy is handled in server.js
   skip: (req) => {
     // Don't rate limit health checks
     return req.path === '/health';
@@ -41,6 +42,7 @@ export const authLimiter = rateLimit({
   message: 'Příliš mnoho pokusů o přihlášení, zkuste to znovu později',
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   handler: (req, res) => {
     logger.warn(`Auth rate limit exceeded for IP: ${req.ip}`);
     res.status(429).json({
@@ -60,6 +62,7 @@ export const uploadLimiter = rateLimit({
   message: 'Maximálně 10 nahrání za hodinu',
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   handler: (req, res) => {
     logger.warn(`Upload rate limit exceeded for IP: ${req.ip}`);
     res.status(429).json({
@@ -79,6 +82,7 @@ export const otskpLimiter = rateLimit({
   message: 'Příliš mnoho vyhledávacích požadavků',
   standardHeaders: true,
   legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
   handler: (req, res) => {
     logger.warn(`OTSKP search rate limit exceeded for IP: ${req.ip}`);
     res.status(429).json({

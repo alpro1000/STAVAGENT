@@ -159,24 +159,55 @@ router.get('/project/:projectId/linked', async (req, res) => {
   try {
     const { projectId } = req.params;
 
-    const result = await pool.query(
-      `SELECT pp.position_id,
-              pp.kod, pp.popis, pp.mnozstvi, pp.mj,
-              pp.cena_jednotkova, pp.cena_celkem,
-              pp.skupina, pp.sheet_name, pp.row_index,
-              pp.monolit_position_id, pp.registry_item_id,
-              pp.monolith_payload IS NOT NULL AS has_monolith,
-              pp.dov_payload IS NOT NULL AS has_dov,
-              pp.monolith_payload,
-              pp.dov_payload,
-              pp.last_sync_from, pp.last_sync_at,
-              po.object_code, po.object_name
-       FROM portal_positions pp
-       JOIN portal_objects po ON pp.object_id = po.object_id
-       WHERE po.portal_project_id = $1
-       ORDER BY po.object_code, pp.row_index`,
-      [projectId]
-    );
+    // Try full query first (requires Phase 8 migration columns).
+    // Fall back to a narrower query if Phase 8 columns don't exist yet.
+    let result;
+    try {
+      result = await pool.query(
+        `SELECT pp.position_id,
+                pp.kod, pp.popis, pp.mnozstvi, pp.mj,
+                pp.cena_jednotkova, pp.cena_celkem,
+                pp.skupina, pp.sheet_name, pp.row_index,
+                pp.monolit_position_id, pp.registry_item_id,
+                pp.monolith_payload IS NOT NULL AS has_monolith,
+                pp.dov_payload IS NOT NULL AS has_dov,
+                pp.monolith_payload,
+                pp.dov_payload,
+                pp.last_sync_from, pp.last_sync_at,
+                po.object_code, po.object_name
+         FROM portal_positions pp
+         JOIN portal_objects po ON pp.object_id = po.object_id
+         WHERE po.portal_project_id = $1
+         ORDER BY po.object_code, pp.row_index`,
+        [projectId]
+      );
+    } catch (queryErr) {
+      // Phase 8 columns not yet migrated — return positions without payload data
+      if (queryErr.message && queryErr.message.includes('column')) {
+        console.warn('[PositionInstances] /linked fallback query (Phase 8 columns missing):', queryErr.message);
+        result = await pool.query(
+          `SELECT pp.position_id,
+                  pp.kod, pp.popis, pp.mnozstvi, pp.mj,
+                  pp.cena_jednotkova, pp.cena_celkem,
+                  pp.skupina,
+                  false AS has_monolith,
+                  false AS has_dov,
+                  NULL AS monolith_payload,
+                  NULL AS dov_payload,
+                  NULL AS sheet_name, NULL::integer AS row_index,
+                  NULL AS monolit_position_id, NULL AS registry_item_id,
+                  NULL AS last_sync_from, NULL AS last_sync_at,
+                  po.object_code, po.object_name
+           FROM portal_positions pp
+           JOIN portal_objects po ON pp.object_id = po.object_id
+           WHERE po.portal_project_id = $1
+           ORDER BY po.object_code`,
+          [projectId]
+        );
+      } else {
+        throw queryErr;
+      }
+    }
 
     const positions = result.rows.map(row => {
       const mp = row.monolith_payload;
