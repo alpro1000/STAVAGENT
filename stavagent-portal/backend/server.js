@@ -136,11 +136,17 @@ dirs.forEach(dir => {
 
 // Health check
 app.get('/health', (req, res) => {
+  const dbMode = process.env.DATABASE_URL ? 'postgresql' : 'sqlite (no DATABASE_URL set!)';
+  const authMode = (process.env.DISABLE_AUTH === 'true' || (!!process.env.K_SERVICE && !process.env.JWT_SECRET))
+    ? 'disabled' : 'jwt';
   res.json({
     status: 'OK',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
-    version: '1.0.0'
+    version: '1.0.0',
+    db: dbMode,
+    auth: authMode,
+    env: process.env.K_SERVICE ? 'cloud-run' : (process.env.RENDER ? 'render' : 'local')
   });
 });
 
