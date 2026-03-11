@@ -13,6 +13,7 @@
 
 substitutions:
   _REGION: europe-west3
+  _AR_REPO: stavagent
 
 steps:
 
@@ -26,15 +27,18 @@ steps:
       - -f
       - stavagent-portal/Dockerfile
       - -t
-      - gcr.io/$PROJECT_ID/stavagent-portal-backend:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
       - -t
-      - gcr.io/$PROJECT_ID/stavagent-portal-backend:latest
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:latest
       - stavagent-portal
 
   - name: gcr.io/cloud-builders/docker
     id: push-portal
     waitFor: [build-portal]
-    args: [push, gcr.io/$PROJECT_ID/stavagent-portal-backend, --all-tags]
+    args:
+      - push
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend
+      - --all-tags
 
   - name: gcr.io/cloud-builders/gcloud
     id: deploy-portal
@@ -43,7 +47,7 @@ steps:
       - run
       - deploy
       - stavagent-portal-backend
-      - --image=gcr.io/$PROJECT_ID/stavagent-portal-backend:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
@@ -58,15 +62,18 @@ steps:
       - -f
       - concrete-agent/packages/core-backend/Dockerfile
       - -t
-      - gcr.io/$PROJECT_ID/concrete-agent:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
       - -t
-      - gcr.io/$PROJECT_ID/concrete-agent:latest
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:latest
       - .
 
   - name: gcr.io/cloud-builders/docker
     id: push-core
     waitFor: [build-core]
-    args: [push, gcr.io/$PROJECT_ID/concrete-agent, --all-tags]
+    args:
+      - push
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent
+      - --all-tags
 
   - name: gcr.io/cloud-builders/gcloud
     id: deploy-core
@@ -75,7 +82,7 @@ steps:
       - run
       - deploy
       - concrete-agent
-      - --image=gcr.io/$PROJECT_ID/concrete-agent:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
@@ -90,15 +97,18 @@ steps:
       - -f
       - Monolit-Planner/Dockerfile
       - -t
-      - gcr.io/$PROJECT_ID/monolit-planner-api:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
       - -t
-      - gcr.io/$PROJECT_ID/monolit-planner-api:latest
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:latest
       - Monolit-Planner
 
   - name: gcr.io/cloud-builders/docker
     id: push-monolit
     waitFor: [build-monolit]
-    args: [push, gcr.io/$PROJECT_ID/monolit-planner-api, --all-tags]
+    args:
+      - push
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api
+      - --all-tags
 
   - name: gcr.io/cloud-builders/gcloud
     id: deploy-monolit
@@ -107,7 +117,7 @@ steps:
       - run
       - deploy
       - monolit-planner-api
-      - --image=gcr.io/$PROJECT_ID/monolit-planner-api:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
@@ -122,15 +132,18 @@ steps:
       - -f
       - URS_MATCHER_SERVICE/Dockerfile.backend
       - -t
-      - gcr.io/$PROJECT_ID/urs-matcher-service:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
       - -t
-      - gcr.io/$PROJECT_ID/urs-matcher-service:latest
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:latest
       - .   # context = repo root (Dockerfile.backend uses cross-service COPY paths)
 
   - name: gcr.io/cloud-builders/docker
     id: push-urs
     waitFor: [build-urs]
-    args: [push, gcr.io/$PROJECT_ID/urs-matcher-service, --all-tags]
+    args:
+      - push
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service
+      - --all-tags
 
   - name: gcr.io/cloud-builders/gcloud
     id: deploy-urs
@@ -139,16 +152,16 @@ steps:
       - run
       - deploy
       - urs-matcher-service
-      - --image=gcr.io/$PROJECT_ID/urs-matcher-service:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
 
 images:
-  - gcr.io/$PROJECT_ID/stavagent-portal-backend:$SHORT_SHA
-  - gcr.io/$PROJECT_ID/concrete-agent:$SHORT_SHA
-  - gcr.io/$PROJECT_ID/monolit-planner-api:$SHORT_SHA
-  - gcr.io/$PROJECT_ID/urs-matcher-service:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
 
 timeout: 1800s
 options:
