@@ -1,8 +1,21 @@
-# NEXT SESSION — Session 8 Complete
+# NEXT SESSION — Session 9 Complete
 
-**Date:** 2026-03-08
-**Branch:** `claude/price-parser-integration-jeClp`
-**Status:** Session 8 complete — Betonárny discovery, AWS Bedrock, Objednávka betonu, Universal Parser pipeline, curing days fix.
+**Date:** 2026-03-11
+**Branch:** `claude/price-parser-integration-cCRX3`
+**Status:** Session 9 — CORS fix (Amazon Q review), env vars documentation.
+
+---
+
+## What Was Done (2026-03-11, Session 9)
+
+### 1. CORS Cleanup (Amazon Q review fix)
+- `stavagent-portal/backend/server.js` — убраны 2 дублирующихся origin
+- `Monolit-Planner/backend/server.js` — убраны 3 дублирующихся origin (3x одна и та же vercel.app, 2x одна и та же stavagent.cz)
+- Commit: `d91d92b` — FIX: Remove duplicate CORS origins in portal and monolit server.js
+
+### 2. Документация
+- Составлен полный список env переменных для всех 5 сервисов
+- Инструкция по Google Cloud Run: Console → Cloud Run → Edit & Deploy → Variables & Secrets
 
 ---
 
@@ -26,31 +39,26 @@
 ### 4. CORE Proxy + Workflow Fixes
 - **Portal backend proxy** to concrete-agent (`/api/core/*` → `concrete-agent-3uxelthc4q-ey.a.run.app/*`)
 - Fixed all 5 workflows (file upload, Workflow A/B/C, Drawing Analysis)
-- Drawing Analysis UI with GPT-4 Vision integration
 
 ### 5. Universal Parser Pipeline (4-step)
 - Full positions table with quantities, units, prices
 - 4-step flow: Upload → Parse → Review → Send to Kiosk
-- Kiosk import buttons (Monolit, Registry, URS Matcher) with bidirectional push
+- Kiosk import buttons (Monolit, Registry, URS Matcher)
 
-### 6. CorePanel Rewrite
-- Replaced all Tailwind classes with inline styles (portal uses Digital Concrete CSS, not Tailwind)
-
-### 7. Curing Days Fix (Formwork Calculator)
-- **BUG FOUND**: `elementTotalDays` was NOT passed to `FormworkCalculatorModal` from `PositionsTable`
-- Calculator always received `0`, falling back to formwork-only duration for rental calculation
-- **FIX**: Now passes `elementTotalDays` + `currentPartName` from PositionsTable → FormworkCalculatorModal
-- Rental term now correctly includes curing period
+### 6. Curing Days Fix
+- `elementTotalDays` теперь передаётся из PositionsTable → FormworkCalculatorModal
+- Rental term correctly includes curing period
 
 ### Previous Sessions Summary
 | Session | Date | Key Work |
 |---------|------|----------|
-| 7 | 2026-03-07 | Price Parser UI, batch comparison, service registration |
+| 9 | 2026-03-11 | CORS cleanup, env vars docs |
+| 8 | 2026-03-08 | Betonárny, Bedrock, Objednávka betonu, Universal Parser, curing fix |
+| 7 | 2026-03-07 | Price Parser UI, batch comparison |
 | 6 | 2026-03-07 | Calculator audit: 3 bugs fixed, 332 tests |
 | 5 | 2026-03-07 | TariffPage + Pump engine unification |
 | 4 | 2026-03-07 | PDF Price Parser backend (17 files, 7 parsers, 21 tests) |
-| 3 | 2026-03-07 | PumpCalculatorPage, PlannerPage, Calendar dates |
-| 1-2 | 2026-03-06 | Formwork refactor, PERT/Maturity, MaturityConfigPanel |
+| 1-3 | 2026-03-06 | Formwork refactor, PERT/Maturity, MaturityConfigPanel |
 
 ---
 
@@ -78,73 +86,131 @@
 
 ---
 
+## Full Environment Variables Reference
+
+### concrete-agent (GCR)
+```env
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_API_KEY=...
+GEMINI_MODEL=gemini-2.5-flash-lite
+MULTI_ROLE_LLM=gemini
+OPENAI_API_KEY=sk-...
+AWS_ACCESS_KEY_ID=...           # optional, Bedrock
+AWS_SECRET_ACCESS_KEY=...       # optional, Bedrock
+AWS_DEFAULT_REGION=eu-central-1
+DATABASE_URL=postgresql+asyncpg://...
+REDIS_URL=redis://...           # optional
+PERPLEXITY_API_KEY=pplx-...
+GOOGLE_CLIENT_ID=...            # optional, Drive
+GOOGLE_CLIENT_SECRET=...        # optional, Drive
+GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/google/callback
+GOOGLE_CREDENTIALS_ENCRYPTION_KEY=...
+```
+
+### stavagent-portal backend (GCR)
+```env
+NODE_ENV=production
+PORT=8080
+JWT_SECRET=...
+DATABASE_URL=postgresql://...
+CORS_ORIGIN=https://www.stavagent.cz
+CONCRETE_AGENT_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+```
+
+### stavagent-portal frontend (Vercel)
+```env
+VITE_DISABLE_AUTH=true
+VITE_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
+VITE_CONCRETE_AGENT_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+```
+
+### Monolit-Planner backend (GCR)
+```env
+NODE_ENV=production
+PORT=8080
+DATABASE_URL=postgresql://...
+CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
+STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+FF_AI_DAYS_SUGGEST=true
+```
+
+### Monolit-Planner frontend (Vercel)
+```env
+VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
+```
+
+### URS_MATCHER_SERVICE (GCR)
+```env
+NODE_ENV=production
+PORT=8080
+ANTHROPIC_API_KEY=sk-ant-...
+GOOGLE_AI_KEY=...
+OPENAI_API_KEY=sk-...
+PERPLEXITY_API_KEY=pplx-...
+LLM_TIMEOUT_MS=90000
+STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+```
+
+### rozpocet-registry backend (GCR)
+```env
+NODE_ENV=production
+PORT=8080
+DATABASE_URL=postgresql://...
+```
+
+---
+
+## Google Cloud Run — Как вносить переменные
+
+```
+console.cloud.google.com
+→ Cloud Run
+→ Выбрать сервис (например, concrete-agent)
+→ кнопка "Edit & Deploy New Revision"
+→ вкладка "Variables & Secrets"
+→ "+ Add Variable"
+→ Вводить по одной или загрузить .env через gcloud CLI:
+```
+
+```bash
+# Через gcloud CLI (рекомендуется для bulk):
+gcloud run services update concrete-agent \
+  --region=europe-west4 \
+  --set-env-vars ANTHROPIC_API_KEY=sk-ant-...,GOOGLE_API_KEY=...,GEMINI_MODEL=gemini-2.5-flash-lite
+```
+
+---
+
 ## Implementation Priority (Next Sessions)
 
 ### Priority 1: End-to-End Testing & Deploy
-- [ ] **Deploy concrete-agent** to Render (price-parser + proxy endpoints)
+- [ ] **Deploy concrete-agent** to GCR (price-parser + proxy endpoints)
 - [ ] **Deploy Portal** to Vercel (all new pages + CORE proxy)
 - [ ] **Deploy Monolit** to Vercel (planner + tariffs + vercel.json SPA fix)
+- [ ] **Set env vars** in GCR for all services
 - [ ] **Test with real PDFs** — run price parser on actual supplier price lists
 - [ ] **Test Betonárny discovery** — verify GPS search + scraping in production
 
 ### Priority 2: Formwork Calculator Audit
 - [x] Curing days flow: table → calculator → scheduler (FIXED)
 - [ ] Verify rental cost includes full curing period in production
-- [ ] Test MaturityConfigPanel → curing_days transfer end-to-end
 
 ### Priority 3: Cross-System Integration
-- [ ] Template application workflow testing
 - [ ] Kiosk import buttons end-to-end (Monolit, Registry, URS)
 - [ ] End-to-end production testing with Portal DB
 
-### Priority 4: Phase 2 Engines — R0 Core Gaps (Audit 2026-03-08)
-
-**Аудит проведён:** 8/10 пунктов реализованы, 2 частично. Спрашивай в начале каждой сессии: «Будем реализовывать один из gaps?»
+### Priority 4: Phase 2 Engines — R0 Core Gaps
 
 | # | Gap | Описание | Сложность |
 |---|-----|----------|-----------|
-| G1 | `move` / `inspection` узлы DAG | Сейчас move_clean_hours — плоское число, не узел графа. Добавить как отдельные Activity в DAG → влияет на critical path | Medium |
-| G2 | Кран / насос как resource constraints | Сейчас только crews + sets. Добавить crane (shared, 1 unit) и pump (shared, blockout window) как ресурсы в forward pass | Hard |
-| G3 | Calendar-aware forward pass | Сейчас DAG считает в work-days, calendar-engine — post-hoc маппинг. Интегрировать праздники/выходные прямо в forward pass | Medium |
-| G4 | Weather stochastic | Расширить PERT: вероятность дождя (сезон → P(rain)) как множитель на outdoor activities | Easy |
-| G5 | Supply chain delays | Добавить lead-time для бетона (заказ → доставка) и арматуры как predecessor edge в DAG | Medium |
-| G6 | Resource leveling (post-CPM) | После CPM: выровнять пики crew utilization, сдвигая non-critical activities в пределах float | Hard |
-| G7 | Scenario comparison UI | Frontend: vary sets/crews, compare total_days + cost side-by-side (таблица + chart) | Medium |
-| G8 | Optimization mode | Minimize cost vs minimize time (Pareto front): перебор sets×crews→ dominance filtering | Hard |
-
-**Полностью реализовано (8/10):**
-- ✅ DAG + RCPSP + CPM (element-scheduler.ts, 631 lines)
-- ✅ PERT + Monte Carlo (pert.ts, 256 lines, seeded PRNG)
-- ✅ Concrete maturity ČSN EN 13670 (maturity.ts, 477 lines)
-- ✅ Formwork 3-phase cost (formwork.ts, 411 lines)
-- ✅ Pour decision tree (pour-decision.ts, 390 lines)
-- ✅ Element classifier (8 types, 400+ lines)
-- ✅ Pump engine (3 billing models, surcharges, supplier comparison)
-- ✅ Planner orchestrator (459 lines, wires all engines)
-- ✅ Calendar engine (holidays, work days, Easter)
-- ✅ 332 tests passing
-
-### Competitive Intelligence: Brickanta (YC F25)
-
-**Спрашивай в начале сессии: «Хочешь работать над конкурентным преимуществом vs Brickanta?»**
-
-**Brickanta** — «Cursor для строительных смет», Стокгольм, YC Fall 2025, 8 человек.
-- **Модуль 1:** AI Document Analysis — ищет пропущенные позиции, несоответствия нормам, риски перерасходов
-- **Модуль 2:** Repackaging — автоматическое создание RFP пакетов (3-4ч → 15мин)
-- **Модуль 3:** Knowledge Capture — AI-поиск по всем документам проекта
-
-**Их фокус:** Eurocodes (Швеция), MS SharePoint/Outlook/Teams, крупный бизнес, top-down.
-
-| Слабость Brickanta | Сила StavAgent |
-|---|---|
-| Нет OTSKP/DSS локализации | OTSKP подключена, URS Matcher |
-| Eurocodes ≠ чешский DSS/ČSN | ČSN EN 13670, чешские нормы в KB |
-| Корпоративный Microsoft-стек | Веб-сервис для малого/среднего бизнеса |
-| Нет калькуляторов (бетон, опалубка, арматура) | R0 Core: 9 калькуляторов, 332 теста |
-| Нет планирования (DAG/CPM/PERT) | Element Scheduler + Monte Carlo |
-| Команда далеко от чешского рынка | Berger Bohemia — потребитель своего продукта |
-
-**Стратегия:** Они идут сверху (корпорации), мы — снизу (сметчики). Разные рынки, но если придут в Чехию раньше выхода StavAgent — занять позицию будет сложнее.
+| G1 | `move`/`inspection` узлы DAG | move_clean_hours → полноценный Activity в DAG | Medium |
+| G2 | Кран/насос resource constraints | crane + pump как shared resources в forward pass | Hard |
+| G3 | Calendar-aware forward pass | Праздники/выходные прямо в DAG, не post-hoc | Medium |
+| G4 | Weather stochastic | P(rain) сезон → PERT множитель | Easy |
+| G5 | Supply chain delays | Lead-time бетона/арматуры как predecessor edge | Medium |
+| G6 | Resource leveling | Выравнивание пиков crew, сдвиг non-critical | Hard |
+| G7 | Scenario comparison UI | vary sets/crews → side-by-side таблица + chart | Medium |
+| G8 | Optimization mode | Minimize cost vs time — Pareto front | Hard |
 
 ### Priority 5: Quality
 - [ ] Vitest migration for Monolit frontend
@@ -155,30 +221,11 @@
 
 ## User Action Required (Deploy)
 
-1. **Deploy concrete-agent** to Render (new endpoints: price-parser, proxy)
-2. **Deploy Portal Frontend** to Vercel (6 new pages + CORE proxy backend)
-3. **Deploy Monolit Frontend** to Vercel (vercel.json SPA routing + new routes)
-4. **Environment Variables** on Render:
-   - `PERPLEXITY_API_KEY` for concrete-agent
-   - `OPENAI_API_KEY` for concrete-agent
-   - `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` (optional, for Bedrock)
-   - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB
-
----
-
-## Key Files Changed (Session 8)
-
-| File | Lines | Change |
-|------|-------|--------|
-| `stavagent-portal/frontend/src/pages/ObjednavkaBetonuPage.tsx` | ~400 | NEW — Unified ordering page |
-| `stavagent-portal/frontend/src/services/betonServerScraper.ts` | ~180 | NEW — BetonServer plant scraper |
-| `stavagent-portal/frontend/src/components/portal/PriceCalculatorPanel.tsx` | ~200 | NEW — Price comparison calculator |
-| `stavagent-portal/frontend/src/services/bedrockClient.ts` | ~120 | NEW — AWS Bedrock integration |
-| `stavagent-portal/frontend/src/components/portal/CorePanel.tsx` | ~300 | REWRITE — Tailwind → inline styles |
-| `stavagent-portal/frontend/src/App.tsx` | +20 | Lazy-load all pages + new routes |
-| `stavagent-portal/backend/src/routes/core-proxy.js` | ~50 | NEW — CORE proxy route |
-| `Monolit-Planner/frontend/src/components/PositionsTable.tsx` | +5 | FIX — Pass elementTotalDays to FormworkCalc |
-| `Monolit-Planner/vercel.json` | NEW | SPA routing rewrites |
+1. **Set env vars** в GCR для каждого сервиса (см. полный список выше)
+2. **Deploy concrete-agent** (new endpoints: price-parser, proxy)
+3. **Deploy Portal Frontend** to Vercel (6 new pages + CORE proxy backend)
+4. **Deploy Monolit Frontend** to Vercel (vercel.json SPA routing + new routes)
+5. **Execute** `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB (FF_AI_DAYS_SUGGEST)
 
 ---
 
@@ -202,7 +249,6 @@
 | Formwork 3-Phase | 8 | Pass |
 | **Monolit shared total** | **332** | **Pass** |
 | URS Matcher | 159 | Pass |
-| Portal frontend | — | Build OK |
 | **Grand Total** | **512+** | **Pass** |
 
 ---
@@ -210,15 +256,12 @@
 ## Quick Start Commands
 
 ```bash
-# === START OF SESSION COMMAND ===
-# Run this at the beginning of the next session:
-
+# === КОМАНДА ДЛЯ СЛЕДУЮЩЕЙ СЕССИИ ===
 cd /home/user/STAVAGENT && \
-git checkout claude/price-parser-integration-jeClp && \
-git pull origin claude/price-parser-integration-jeClp && \
+git checkout claude/price-parser-integration-cCRX3 && \
+git pull origin claude/price-parser-integration-cCRX3 && \
 echo "=== Branch ready ===" && \
-echo "=== Recent commits ===" && \
-git log --oneline -10 && \
+git log --oneline -5 && \
 echo "=== Running shared tests ===" && \
 cd Monolit-Planner/shared && npx vitest run 2>&1 | tail -5 && \
 echo "=== Portal build check ===" && \
@@ -247,9 +290,14 @@ PYTHONPATH=. python -m pytest tests/test_price_parser.py -v
 # Parse a PDF (API)
 curl -X POST http://localhost:8000/api/v1/price-parser/parse \
   -F "file=@cenik_beton.pdf"
+
+# Set env vars in GCR via CLI (пример)
+gcloud run services update concrete-agent \
+  --region=europe-west4 \
+  --set-env-vars ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 ---
 
-**Version:** 2.8.0
-**Last Updated:** 2026-03-08
+**Version:** 2.9.0
+**Last Updated:** 2026-03-11
