@@ -49,7 +49,8 @@ const __dirname = dirname(__filename);
 const PORT = process.env.PORT || 3001;
 
 // CORS configuration - support multiple origins
-const ALLOWED_ORIGINS = [
+// Deduplicate CORS origins (CORS_ORIGIN env may overlap with hardcoded entries)
+const ALLOWED_ORIGINS = [...new Set([
   // Local development
   'http://localhost:5173',
   'http://localhost:3000',
@@ -58,8 +59,8 @@ const ALLOWED_ORIGINS = [
   // StavAgent Portal
   'https://www.stavagent.cz',
   // Custom origin from environment
-  process.env.CORS_ORIGIN
-].filter(Boolean);
+  process.env.CORS_ORIGIN,
+].filter(Boolean))];
 
 // Initialize Express
 const app = express();
