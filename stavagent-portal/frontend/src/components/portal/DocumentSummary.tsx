@@ -83,13 +83,6 @@ function extractPassportError(data: any): string {
 }
 
 
-const ALLOWED_FILE_EXTENSIONS = ['.pdf', '.xlsx', '.xls', '.xml'];
-
-function getFileExtension(fileName: string): string {
-  const idx = fileName.lastIndexOf('.');
-  return idx >= 0 ? fileName.slice(idx).toLowerCase() : '';
-}
-
 export default function DocumentSummary({ projectId: _projectId, onClose }: DocumentSummaryProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -197,6 +190,12 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       if (enableAiEnrichment && isVertexModel(selectedModel)) {
         formData.append('vertex_service_account', selectedVertexAccount);
         formData.append('llm_provider', 'vertex-ai');
+      }
+      formData.append('analysis_mode', analysisMode);
+
+      const isVertexModel = selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH;
+      if (enableAiEnrichment && isVertexModel) {
+        formData.append('vertex_service_account', selectedVertexAccount);
       }
 
       // Fetch with timeout (5 minutes for large documents - 46+ pages)
@@ -600,7 +599,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
             )}
 
             {/* Vertex service account selector */}
-            {enableAiEnrichment && isVertexModel(selectedModel) && (
+            {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
               <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
                 <label style={{ fontSize: '14px', color: 'var(--text-secondary)', minWidth: '100px' }}>
                   Vertex účet:
@@ -620,15 +619,9 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
               </div>
             )}
 
-            {enableAiEnrichment && isVertexModel(selectedModel) && (
+            {enableAiEnrichment && (selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH) && (
               <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
                 {VERTEX_SERVICE_ACCOUNT_OPTIONS.find(a => a.id === selectedVertexAccount)?.description}
-              </div>
-            )}
-
-            {enableAiEnrichment && isVertexModel(selectedModel) && (
-              <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
-                Vertex režim: soubor jde do CORE passport pipeline, která použije Google routing (`llm_provider=vertex-ai`) a servisní účet. Pro kompatibilitu posíláme i fallback model `gemini`.
               </div>
             )}
 
