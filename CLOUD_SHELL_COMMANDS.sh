@@ -26,7 +26,7 @@ set -euo pipefail
 # ================================================================
 # 🌍 РЕГИОН
 # ================================================================
-REGION="europe-west4"
+REGION="europe-west3"
 # Узнать свой регион: gcloud run services list
 
 # ================================================================
@@ -237,10 +237,10 @@ AWS_BEDROCK_MODEL=$AWS_STD|\
 AWS_BEDROCK_MODEL_HEAVY=$AWS_HEAVY|\
 GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID|\
 GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET|\
-GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/google/callback|\
+GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback|\
 GOOGLE_CREDENTIALS_ENCRYPTION_KEY=$GOOGLE_CREDENTIALS_ENCRYPTION_KEY|\
 GOOGLE_WEBHOOK_SECRET_KEY=$GOOGLE_WEBHOOK_SECRET_KEY|\
-PUBLIC_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app|\
+PUBLIC_URL=https://concrete-agent-1086027517695.europe-west3.run.app|\
 ENABLE_WORKFLOW_A=true|\
 ENABLE_WORKFLOW_B=true|\
 USE_MINERU=true|\
@@ -271,7 +271,7 @@ NODE_ENV=production|\
 PORT=8080|\
 JWT_SECRET=$JWT_SECRET|\
 JWT_EXPIRY=24h|\
-CORE_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app|\
+CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app|\
 CORS_ORIGIN=https://www.stavagent.cz|\
 UPLOAD_DIR=./uploads|\
 EXPORT_DIR=./exports|\
@@ -297,7 +297,7 @@ DATABASE_URL=$DB_PG|\
 NODE_ENV=production|\
 PORT=8080|\
 CORS_ORIGIN=https://monolit-planner-frontend.vercel.app|\
-CORE_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app|\
+CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app|\
 CORE_TIMEOUT=90000|\
 ENABLE_CORE_FALLBACK=true|\
 GOOGLE_AI_KEY=$GOOGLE_API_KEY|\
@@ -349,7 +349,7 @@ PPLX_MODEL=$PPLX_LIGHT|\
 PPLX_MODEL_HEAVY=$PPLX_HEAVY|\
 PPLX_TIMEOUT_MS=60000|\
 BRAVE_API_KEY=$BRAVE_API_KEY|\
-STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app"
+STAVAGENT_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app"
   echo "✅ urs-matcher-service [LLM_PROVIDER=$LLM_PROVIDER, model=$PRIMARY_GEMINI/$PRIMARY_CLAUDE]"
 }
 
@@ -389,23 +389,23 @@ setup_vercel() {
   cd "$SCRIPT_DIR/stavagent-portal/frontend"
   vercel link --yes 2>/dev/null || true
   echo "true" | vercel env add VITE_DISABLE_AUTH production --force
-  echo "https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app" \
+  echo "https://stavagent-portal-backend-1086027517695.europe-west3.run.app" \
     | vercel env add VITE_API_URL production --force
-  echo "https://concrete-agent-3uxelthc4q-ey.a.run.app" \
+  echo "https://concrete-agent-1086027517695.europe-west3.run.app" \
     | vercel env add VITE_CONCRETE_AGENT_URL production --force
   cd "$SCRIPT_DIR"
 
   echo "--- [V2] monolit-planner-frontend ---"
   cd "$SCRIPT_DIR/Monolit-Planner/frontend"
   vercel link --yes 2>/dev/null || true
-  echo "https://monolit-planner-api-3uxelthc4q-ey.a.run.app" \
+  echo "https://monolit-planner-api-1086027517695.europe-west3.run.app" \
     | vercel env add VITE_API_URL production --force
   cd "$SCRIPT_DIR"
 
   echo "--- [V3] rozpocet-registry (frontend + Vercel Functions) ---"
   cd "$SCRIPT_DIR/rozpocet-registry"
   vercel link --yes 2>/dev/null || true
-  echo "https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app" \
+  echo "https://rozpocet-registry-backend-1086027517695.europe-west3.run.app" \
     | vercel env add VITE_API_URL production --force
   # GEMINI_API_KEY без VITE_ — только для Vercel Functions (server-side)
   echo "$GOOGLE_API_KEY" | vercel env add GEMINI_API_KEY production --force
@@ -418,12 +418,12 @@ setup_vercel() {
   echo "Если Vercel CLI недоступен — добавь вручную в Vercel Dashboard:"
   echo "  stavagent-portal:"
   echo "    VITE_DISABLE_AUTH             = true"
-  echo "    VITE_API_URL                  = https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app"
-  echo "    VITE_CONCRETE_AGENT_URL       = https://concrete-agent-3uxelthc4q-ey.a.run.app"
+  echo "    VITE_API_URL                  = https://stavagent-portal-backend-1086027517695.europe-west3.run.app"
+  echo "    VITE_CONCRETE_AGENT_URL       = https://concrete-agent-1086027517695.europe-west3.run.app"
   echo "  monolit-planner-frontend:"
-  echo "    VITE_API_URL                  = https://monolit-planner-api-3uxelthc4q-ey.a.run.app"
+  echo "    VITE_API_URL                  = https://monolit-planner-api-1086027517695.europe-west3.run.app"
   echo "  rozpocet-registry:"
-  echo "    VITE_API_URL                  = https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app"
+  echo "    VITE_API_URL                  = https://rozpocet-registry-backend-1086027517695.europe-west3.run.app"
   echo "    GEMINI_API_KEY                = <твой Google API ключ>  ← НЕ добавляй VITE_ prefix!"
   echo "    GEMINI_MODEL                  = $GEMINI_LIGHT"
 }
