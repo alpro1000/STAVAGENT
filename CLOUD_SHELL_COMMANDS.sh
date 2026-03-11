@@ -268,7 +268,6 @@ setup_portal_backend() {
     --set-env-vars "^|^\
 DATABASE_URL=$DB_PG|\
 NODE_ENV=production|\
-PORT=8080|\
 JWT_SECRET=$JWT_SECRET|\
 JWT_EXPIRY=24h|\
 CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app|\
@@ -295,7 +294,6 @@ setup_monolit_api() {
     --set-env-vars "^|^\
 DATABASE_URL=$DB_PG|\
 NODE_ENV=production|\
-PORT=8080|\
 CORS_ORIGIN=https://monolit-planner-frontend.vercel.app|\
 CORE_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app|\
 CORE_TIMEOUT=90000|\
@@ -330,7 +328,6 @@ setup_urs_matcher() {
     --set-env-vars "^|^\
 DATABASE_URL=$DB_PG|\
 NODE_ENV=production|\
-PORT=8080|\
 LLM_PROVIDER=$LLM_PROVIDER|\
 LLM_TIMEOUT_MS=90000|\
 MULTI_ROLE_TIMEOUT_MS=90000|\
@@ -366,7 +363,6 @@ setup_registry_backend() {
     --set-env-vars "^|^\
 DATABASE_URL=$DB_PG|\
 NODE_ENV=production|\
-PORT=8080|\
 CORS_ORIGIN=https://stavagent-backend-ktwx.vercel.app"
   echo "✅ rozpocet-registry-backend [нет LLM — только БД]"
 }
