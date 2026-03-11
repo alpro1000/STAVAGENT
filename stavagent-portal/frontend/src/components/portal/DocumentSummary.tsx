@@ -50,8 +50,9 @@ import type {
   PassportGenerationResponse,
   ProjectPassport,
   AIModelType,
+  VertexServiceAccountType,
 } from '../../types/passport';
-import { AI_MODEL_OPTIONS } from '../../types/passport';
+import { AI_MODELS, AI_MODEL_OPTIONS, VERTEX_SERVICE_ACCOUNT_OPTIONS } from '../../types/passport';
 
 interface DocumentSummaryProps {
   projectId?: string;
@@ -63,6 +64,25 @@ import { API_URL } from '../../services/api';
 // Proxied through portal backend
 const CORE_API_URL = `${API_URL}/api/core`;
 
+function isVertexModel(model: AIModelType): boolean {
+  return model === AI_MODELS.VERTEX_AI_GEMINI || model === AI_MODELS.VERTEX_AI_SEARCH;
+}
+
+function resolveCorePreferredModel(model: AIModelType): AIModelType {
+  // CORE passport endpoint currently accepts legacy provider model IDs.
+  // For Vertex modes we keep compatibility by falling back to gemini and
+  // sending Vertex routing hints in additional fields.
+  if (isVertexModel(model)) {
+    return AI_MODELS.GEMINI;
+  }
+  return model;
+}
+
+function extractPassportError(data: any): string {
+  return data?.detail || data?.error || data?.message || data?.metadata?.error || 'Generování pasportu selhalo. Zkuste jiný dokument.';
+}
+
+
 export default function DocumentSummary({ projectId: _projectId, onClose }: DocumentSummaryProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -72,6 +92,8 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
   // AI Model Selection
   const [selectedModel, setSelectedModel] = useState<AIModelType>('gemini');
   const [enableAiEnrichment, setEnableAiEnrichment] = useState(true);
+  const [analysisMode, setAnalysisMode] = useState<'adaptive_extraction' | 'summary_only'>('adaptive_extraction');
+  const [selectedVertexAccount, setSelectedVertexAccount] = useState<VertexServiceAccountType>('vertex-ai-search');
 
   // File input ref
   const fileInputRef = useCallback((node: HTMLInputElement | null) => {
@@ -155,7 +177,14 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       formData.append('project_name', file.name.replace(/\.[^/.]+$/, '')); // Remove extension
       formData.append('enable_ai_enrichment', enableAiEnrichment.toString());
       if (enableAiEnrichment) {
-        formData.append('preferred_model', selectedModel);
+        formData.append('preferred_model', resolveCorePreferredModel(selectedModel));
+        formData.append('requested_model', selectedModel);
+      }
+      formData.append('analysis_mode', analysisMode);
+
+      if (enableAiEnrichment && isVertexModel(selectedModel)) {
+        formData.append('vertex_service_account', selectedVertexAccount);
+        formData.append('llm_provider', 'vertex-ai');
       }
 
       // Fetch with timeout (5 minutes for large documents - 46+ pages)
@@ -190,10 +219,15 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
       const data: PassportGenerationResponse = await response.json();
 
-      if (data.success) {
-        setPassportData(data);
+      if (data?.success === false) {
+        throw new Error(extractPassportError(data));
+      }
+
+      if (data?.passport) {
+        // Some CORE versions do not return `success`, only passport payload.
+        setPassportData({ ...data, success: true });
       } else {
-        throw new Error('Generování pasportu selhalo. Zkuste jiný dokument.');
+        throw new Error(extractPassportError(data));
       }
     } catch (err) {
       let errorMessage = 'Neznámá chyba při zpracování';
@@ -211,7 +245,7 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
     } finally {
       setIsUploading(false);
     }
-  }, [selectedModel, enableAiEnrichment]);
+  }, [selectedModel, enableAiEnrichment, analysisMode, selectedVertexAccount]);
 
   // Drag and drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
@@ -506,6 +540,22 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
               <span style={{ fontSize: '14px' }}>Povolit AI obohacení (rizika, lokace, časový plán)</span>
             </label>
 
+            {/* Analysis mode */}
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+              <label style={{ fontSize: '14px', color: 'var(--text-secondary)', minWidth: '100px' }}>
+                Režim:
+              </label>
+              <select
+                value={analysisMode}
+                onChange={(e) => setAnalysisMode(e.target.value as 'adaptive_extraction' | 'summary_only')}
+                className="c-input"
+                style={{ flex: 1, maxWidth: '300px' }}
+              >
+                <option value="adaptive_extraction">Adaptive extraction + summary</option>
+                <option value="summary_only">Pouze shrnutí</option>
+              </select>
+            </div>
+
             {/* Model selection */}
             {enableAiEnrichment && (
               <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
@@ -524,6 +574,39 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
                     </option>
                   ))}
                 </select>
+              </div>
+            )}
+
+            {/* Vertex service account selector */}
+            {enableAiEnrichment && isVertexModel(selectedModel) && (
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <label style={{ fontSize: '14px', color: 'var(--text-secondary)', minWidth: '100px' }}>
+                  Vertex účet:
+                </label>
+                <select
+                  value={selectedVertexAccount}
+                  onChange={(e) => setSelectedVertexAccount(e.target.value as VertexServiceAccountType)}
+                  className="c-input"
+                  style={{ flex: 1, maxWidth: '300px' }}
+                >
+                  {VERTEX_SERVICE_ACCOUNT_OPTIONS.map(account => (
+                    <option key={account.id} value={account.id}>
+                      {account.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
+
+            {enableAiEnrichment && isVertexModel(selectedModel) && (
+              <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
+                {VERTEX_SERVICE_ACCOUNT_OPTIONS.find(a => a.id === selectedVertexAccount)?.description}
+              </div>
+            )}
+
+            {enableAiEnrichment && isVertexModel(selectedModel) && (
+              <div style={{ fontSize: '13px', color: 'var(--text-tertiary)', paddingLeft: '24px' }}>
+                Vertex režim: soubor jde do CORE passport pipeline, která použije Google routing (`llm_provider=vertex-ai`) a servisní účet. Pro kompatibilitu posíláme i fallback model `gemini`.
               </div>
             )}
 
