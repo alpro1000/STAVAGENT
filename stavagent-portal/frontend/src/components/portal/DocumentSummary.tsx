@@ -64,6 +64,25 @@ import { API_URL } from '../../services/api';
 // Proxied through portal backend
 const CORE_API_URL = `${API_URL}/api/core`;
 
+function isVertexModel(model: AIModelType): boolean {
+  return model === AI_MODELS.VERTEX_AI_GEMINI || model === AI_MODELS.VERTEX_AI_SEARCH;
+}
+
+function resolveCorePreferredModel(model: AIModelType): AIModelType {
+  // CORE passport endpoint currently accepts legacy provider model IDs.
+  // For Vertex modes we keep compatibility by falling back to gemini and
+  // sending Vertex routing hints in additional fields.
+  if (isVertexModel(model)) {
+    return AI_MODELS.GEMINI;
+  }
+  return model;
+}
+
+function extractPassportError(data: any): string {
+  return data?.detail || data?.error || data?.message || data?.metadata?.error || 'Generování pasportu selhalo. Zkuste jiný dokument.';
+}
+
+
 export default function DocumentSummary({ projectId: _projectId, onClose }: DocumentSummaryProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
@@ -158,7 +177,14 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
       formData.append('project_name', file.name.replace(/\.[^/.]+$/, '')); // Remove extension
       formData.append('enable_ai_enrichment', enableAiEnrichment.toString());
       if (enableAiEnrichment) {
-        formData.append('preferred_model', selectedModel);
+        formData.append('preferred_model', resolveCorePreferredModel(selectedModel));
+        formData.append('requested_model', selectedModel);
+      }
+      formData.append('analysis_mode', analysisMode);
+
+      if (enableAiEnrichment && isVertexModel(selectedModel)) {
+        formData.append('vertex_service_account', selectedVertexAccount);
+        formData.append('llm_provider', 'vertex-ai');
       }
       formData.append('analysis_mode', analysisMode);
 
@@ -199,10 +225,15 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
 
       const data: PassportGenerationResponse = await response.json();
 
-      if (data.success) {
-        setPassportData(data);
+      if (data?.success === false) {
+        throw new Error(extractPassportError(data));
+      }
+
+      if (data?.passport) {
+        // Some CORE versions do not return `success`, only passport payload.
+        setPassportData({ ...data, success: true });
       } else {
-        throw new Error('Generování pasportu selhalo. Zkuste jiný dokument.');
+        throw new Error(extractPassportError(data));
       }
     } catch (err) {
       let errorMessage = 'Neznámá chyba při zpracování';

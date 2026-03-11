@@ -115,7 +115,7 @@ export interface ProjectPassport {
 // ===== API Response =====
 
 export interface PassportGenerationResponse {
-  success: boolean;
+  success?: boolean;
   passport: ProjectPassport;
   metadata?: {
     file_name: string;
@@ -123,6 +123,8 @@ export interface PassportGenerationResponse {
     parser_used: string;               // "SmartParser"
     extraction_method: string;         // "Regex + AI"
     ai_model_used: string | null;      // "gemini" | "claude-sonnet" | null
+    requested_model?: string | null;
+    llm_provider?: string | null;
     total_confidence: number;          // Average confidence across all fields
   };
   statistics?: {
