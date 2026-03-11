@@ -223,7 +223,7 @@ export function planElement(input: PlannerInput): PlannerOutput {
   const shift = input.shift_h ?? DEFAULTS.shift_h;
   const k = input.k ?? DEFAULTS.k;
   const wage = input.wage_czk_h ?? DEFAULTS.wage_czk_h;
-  const numSets = input.num_sets ?? DEFAULTS.num_sets;
+  const rawNumSets = input.num_sets ?? DEFAULTS.num_sets;
   const numFWCrews = input.num_formwork_crews ?? DEFAULTS.num_formwork_crews;
   const numRBCrews = input.num_rebar_crews ?? DEFAULTS.num_rebar_crews;
   const temperature = input.temperature_c ?? DEFAULTS.temperature_c;
@@ -297,6 +297,17 @@ export function planElement(input: PlannerInput): PlannerOutput {
   // ─── 3b. Bridge-specific advice (mostovkova_deska) ──────────────────────
 
   const numBridges = input.num_bridges ?? 1;
+  const isBridgeMonolith = elementType === 'mostovkova_deska' && !input.has_dilatacni_spary;
+  // No-joint bridge deck uses one full formwork kit per whole bridge. You cannot split
+  // one bridge into extra parallel kits, so cap practical kit count by bridge count.
+  const numSets = isBridgeMonolith ? Math.min(rawNumSets, numBridges) : rawNumSets;
+  if (isBridgeMonolith && rawNumSets > numBridges) {
+    warnings.push(
+      `Mostovková deska bez spár: použito max. ${numBridges} kompletní souprava/y (1 souprava na 1 most). ` +
+      `Zadaných ${rawNumSets} souprav bylo omezeno.`
+    );
+    log.push(`Formwork kits capped for monolithic bridge deck: ${rawNumSets} → ${numSets}`);
+  }
   if (elementType === 'mostovkova_deska' && numBridges >= 2) {
     if (!input.has_dilatacni_spary) {
       // Each bridge is a full monolithic pour — 2 full formwork kits needed for parallel work
@@ -486,6 +497,16 @@ export function planElement(input: PlannerInput): PlannerOutput {
       );
       log.push(`Skruz hold applied: last CON finish ${roundTo(lastConcreteFinish, 2)}d + 21d => total ${roundTo(withSkruzHold, 2)}d`);
     }
+  }
+
+  // Bridge-deck advice: with one kit/crew, bridges can still be prepared in staged manner,
+  // but monolithic pours must run as separate uninterrupted operations.
+  if (isBridgeMonolith && numBridges >= 2 && (numSets < numBridges || numFWCrews < numBridges)) {
+    warnings.push(
+      `Souběžná betonáž 2 mostů není reálná (soupravy: ${numSets}/${numBridges}, čety: ${numFWCrews}/${numBridges}). ` +
+      `Prakticky: betonáž po mostech (L → P), při možnosti paralelně připravovat bednění.`
+    );
+    log.push(`Bridge pour sequencing required by resources: sets=${numSets}/${numBridges}, crews=${numFWCrews}/${numBridges}`);
   }
 
   // ─── 8. Cost Summary ──────────────────────────────────────────────────

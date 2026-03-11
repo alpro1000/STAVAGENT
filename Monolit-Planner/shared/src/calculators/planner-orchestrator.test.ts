@@ -307,6 +307,22 @@ describe('Planner Orchestrator', () => {
   // ─── Edge cases ────────────────────────────────────────────────────────
 
   describe('edge cases', () => {
+    it('caps excessive formwork sets for dual bridge monolith and warns about pour sequencing', () => {
+      const plan = planElement({
+        element_type: 'mostovkova_deska',
+        volume_m3: 1800,
+        has_dilatacni_spary: false,
+        num_bridges: 2,
+        num_sets: 5,
+        num_formwork_crews: 1,
+      });
+
+      expect(plan.warnings.some(w => w.includes('použito max. 2 kompletní souprava/y'))).toBe(true);
+      expect(plan.warnings.some(w => w.includes('Souběžná betonáž 2 mostů není reálná'))).toBe(true);
+      expect(plan.decision_log.some(l => l.includes('Formwork kits capped'))).toBe(true);
+      expect(plan.decision_log.some(l => l.includes('Bridge pour sequencing required'))).toBe(true);
+    });
+
     it('handles small volume element', () => {
       const plan = planElement({
         element_type: 'mostni_zavirne_zidky',

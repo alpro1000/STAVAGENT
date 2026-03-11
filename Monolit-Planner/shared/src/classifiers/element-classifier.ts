@@ -209,13 +209,21 @@ interface KeywordRule {
 }
 
 const KEYWORD_RULES: KeywordRule[] = [
-  { element_type: 'mostovkova_deska', keywords: ['mostovka', 'mostovkov', 'deska mostu', 'nosna konstrukce', 'nosná konstrukce'], priority: 10 },
+  {
+    element_type: 'mostovkova_deska',
+    keywords: [
+      'mostovka', 'mostovkov', 'mostova deska', 'mostní deska', 'mostni deska',
+      'deska mostu', 'nosna konstrukce', 'nosná konstrukce', 'bridge deck',
+      'мостов', 'мостовая плита', 'пролетное строение',
+    ],
+    priority: 10,
+  },
   { element_type: 'rimsa', keywords: ['rimsa', 'říms', 'rimsov'], priority: 10 },
   { element_type: 'mostni_zavirne_zidky', keywords: ['zavirn', 'závěrn', 'zidka', 'zídka'], priority: 9 },
   { element_type: 'rigel', keywords: ['pricnik', 'příčník', 'pricni', 'příčn', 'rigel'], priority: 9 },
   { element_type: 'zaklady_piliru', keywords: ['zaklad', 'základ', 'patka', 'pas ', 'pás ', 'zakladov', 'základov', 'plošin'], priority: 8 },
   { element_type: 'driky_piliru', keywords: ['drik', 'dřík', 'sloup'], priority: 7 },
-  { element_type: 'operne_zdi', keywords: ['opern', 'opěrn', 'zed', 'zeď', 'stena', 'stěna', 'kridl', 'křídl'], priority: 7 },
+  { element_type: 'operne_zdi', keywords: ['opern', 'opěrn', 'zed', 'zeď', 'stena', 'stěna', 'kridl', 'křídl', 'подпорн'], priority: 7 },
   { element_type: 'opery_ulozne_prahy', keywords: ['opera', 'opěra', 'ulozn', 'úložn', 'prah', 'sedlo'], priority: 7 },
 ];
 
