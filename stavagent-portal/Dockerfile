@@ -3,21 +3,20 @@ FROM node:18-alpine
 WORKDIR /app
 
 # ---- Build shared TypeScript package ----
-COPY stavagent-portal/shared/package*.json ./shared/
-# Install all deps including devDeps (TypeScript needed for build)
+# Context root = stavagent-portal/
+COPY shared/package*.json ./shared/
 RUN cd shared && npm install
-COPY stavagent-portal/shared/src ./shared/src
-COPY stavagent-portal/shared/tsconfig.json ./shared/
+COPY shared/src ./shared/src
+COPY shared/tsconfig.json ./shared/
 RUN cd shared && npm run build
 
 # ---- Install backend deps ----
-# package.json references "@stavagent/portal-shared": "file:../shared"
-# npm ci resolves it from /app/shared/ (../shared relative to /app/backend/)
-COPY stavagent-portal/backend/package*.json ./backend/
+# "@stavagent/portal-shared": "file:../shared" resolves to /app/shared/
+COPY backend/package*.json ./backend/
 RUN cd backend && npm ci --only=production
 
 # ---- Copy backend source ----
-COPY stavagent-portal/backend/ ./backend/
+COPY backend/ ./backend/
 
 # Create runtime directories
 RUN mkdir -p ./backend/data ./backend/uploads ./backend/exports ./backend/logs
