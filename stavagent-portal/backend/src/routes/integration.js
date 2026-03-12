@@ -421,6 +421,19 @@ router.post('/import-from-registry', async (req, res) => {
 
     // Create or reuse portal project
     let projectId = portal_project_id;
+
+    // If no portal_project_id provided, check if registry project already has a portal link
+    if (!projectId && registry_project_id) {
+      const existingLink = await client.query(
+        `SELECT portal_project_id FROM kiosk_links WHERE kiosk_project_id = $1 AND kiosk_type = 'registry' LIMIT 1`,
+        [registry_project_id]
+      );
+      if (existingLink.rows.length > 0) {
+        projectId = existingLink.rows[0].portal_project_id;
+        console.log('[Integration] Reusing existing portal link for registry project:', projectId);
+      }
+    }
+
     if (!projectId) {
       projectId = `proj_${uuidv4()}`;
       console.log('[Integration] Creating new portal project for Registry:', projectId);
@@ -453,6 +466,20 @@ router.post('/import-from-registry', async (req, res) => {
     // 1. Get/create objects for each sheet
     // 2. UPSERT positions by registry_item_id (preserves position_instance_id)
     // 3. Clean up positions that no longer exist in incoming data
+
+    // Check if Phase 8 columns exist (sheet_name, row_index, skupina, dov_payload, created_by)
+    // They're added by the add-position-instance-architecture.sql migration; fall back gracefully if not yet run
+    let hasPhase8Columns = true;
+    try {
+      await client.query('SELECT sheet_name FROM portal_positions LIMIT 0');
+    } catch (colErr) {
+      if (colErr.message && colErr.message.includes('column')) {
+        hasPhase8Columns = false;
+        console.warn('[Integration] Phase 8 columns not yet migrated — using fallback INSERT (sheet_name omitted)');
+      } else {
+        throw colErr;
+      }
+    }
 
     let totalItems = 0;
     let updatedItems = 0;
@@ -507,33 +534,108 @@ router.post('/import-from-registry', async (req, res) => {
 
           if (existing.rows.length > 0) {
             // UPDATE existing position — preserves position_instance_id + monolith_payload!
-            result = await client.query(
-              `UPDATE portal_positions
-               SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
-                   cena_jednotkova = $6, cena_celkem = $7,
-                   tov_labor = $8, tov_machinery = $9, tov_materials = $10,
-                   dov_payload = COALESCE($11, dov_payload),
-                   sheet_name = $12, row_index = $13, skupina = $14,
-                   last_sync_from = 'registry', last_sync_at = NOW(),
-                   updated_by = 'registry_sync', updated_at = NOW()
-               WHERE position_instance_id = $15
-               RETURNING position_instance_id, monolith_payload`,
-              [
-                dbObjectId,
-                item.kod || '', item.popis || '',
-                item.mnozstvi || 0, item.mj || '',
-                item.cenaJednotkova || 0, item.cenaCelkem || 0,
-                JSON.stringify(itemTov.labor || []),
-                JSON.stringify(itemTov.machinery || []),
-                JSON.stringify(itemTov.materials || []),
-                dovPayload,
-                sheet.name || '', itemIdx, item.skupina || null,
-                existing.rows[0].position_instance_id
-              ]
-            );
+            if (hasPhase8Columns) {
+              result = await client.query(
+                `UPDATE portal_positions
+                 SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
+                     cena_jednotkova = $6, cena_celkem = $7,
+                     tov_labor = $8, tov_machinery = $9, tov_materials = $10,
+                     dov_payload = COALESCE($11, dov_payload),
+                     sheet_name = $12, row_index = $13, skupina = $14,
+                     last_sync_from = 'registry', last_sync_at = NOW(),
+                     updated_by = 'registry_sync', updated_at = NOW()
+                 WHERE position_instance_id = $15
+                 RETURNING position_instance_id, monolith_payload`,
+                [
+                  dbObjectId,
+                  item.kod || '', item.popis || '',
+                  item.mnozstvi || 0, item.mj || '',
+                  item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                  JSON.stringify(itemTov.labor || []),
+                  JSON.stringify(itemTov.machinery || []),
+                  JSON.stringify(itemTov.materials || []),
+                  dovPayload,
+                  sheet.name || '', itemIdx, item.skupina || null,
+                  existing.rows[0].position_instance_id
+                ]
+              );
+            } else {
+              result = await client.query(
+                `UPDATE portal_positions
+                 SET object_id = $1, kod = $2, popis = $3, mnozstvi = $4, mj = $5,
+                     cena_jednotkova = $6, cena_celkem = $7,
+                     tov_labor = $8, tov_machinery = $9, tov_materials = $10,
+                     last_sync_from = 'registry', last_sync_at = NOW(), updated_at = NOW()
+                 WHERE position_id = $11
+                 RETURNING position_id AS position_instance_id`,
+                [
+                  dbObjectId,
+                  item.kod || '', item.popis || '',
+                  item.mnozstvi || 0, item.mj || '',
+                  item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                  JSON.stringify(itemTov.labor || []),
+                  JSON.stringify(itemTov.machinery || []),
+                  JSON.stringify(itemTov.materials || []),
+                  existing.rows[0].position_id
+                ]
+              );
+            }
             updatedItems++;
           } else {
             // INSERT new position
+            if (hasPhase8Columns) {
+              result = await client.query(
+                `INSERT INTO portal_positions (
+                  position_id, object_id, kod, popis, mnozstvi, mj,
+                  cena_jednotkova, cena_celkem,
+                  tov_labor, tov_machinery, tov_materials,
+                  dov_payload,
+                  registry_item_id, last_sync_from, last_sync_at,
+                  sheet_name, row_index, skupina,
+                  created_by, updated_by,
+                  created_at, updated_at
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'registry', NOW(), $14, $15, $16, 'registry_import', 'registry_import', NOW(), NOW())
+                RETURNING position_instance_id`,
+                [
+                  `pos_${uuidv4()}`, dbObjectId,
+                  item.kod || '', item.popis || '',
+                  item.mnozstvi || 0, item.mj || '',
+                  item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                  JSON.stringify(itemTov.labor || []),
+                  JSON.stringify(itemTov.machinery || []),
+                  JSON.stringify(itemTov.materials || []),
+                  dovPayload,
+                  registryItemId,
+                  sheet.name || '', itemIdx, item.skupina || null
+                ]
+              );
+            } else {
+              const posId = `pos_${uuidv4()}`;
+              result = await client.query(
+                `INSERT INTO portal_positions (
+                  position_id, object_id, kod, popis, mnozstvi, mj,
+                  cena_jednotkova, cena_celkem,
+                  tov_labor, tov_machinery, tov_materials,
+                  registry_item_id, last_sync_from, last_sync_at,
+                  created_at, updated_at
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'registry', NOW(), NOW(), NOW())
+                RETURNING position_id AS position_instance_id`,
+                [
+                  posId, dbObjectId,
+                  item.kod || '', item.popis || '',
+                  item.mnozstvi || 0, item.mj || '',
+                  item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                  JSON.stringify(itemTov.labor || []),
+                  JSON.stringify(itemTov.machinery || []),
+                  JSON.stringify(itemTov.materials || []),
+                  registryItemId
+                ]
+              );
+            }
+          }
+        } else {
+          // No registry_item_id — always INSERT
+          if (hasPhase8Columns) {
             result = await client.query(
               `INSERT INTO portal_positions (
                 position_id, object_id, kod, popis, mnozstvi, mj,
@@ -559,34 +661,28 @@ router.post('/import-from-registry', async (req, res) => {
                 sheet.name || '', itemIdx, item.skupina || null
               ]
             );
+          } else {
+            result = await client.query(
+              `INSERT INTO portal_positions (
+                position_id, object_id, kod, popis, mnozstvi, mj,
+                cena_jednotkova, cena_celkem,
+                tov_labor, tov_machinery, tov_materials,
+                registry_item_id, last_sync_from, last_sync_at,
+                created_at, updated_at
+              ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'registry', NOW(), NOW(), NOW())
+              RETURNING position_id AS position_instance_id`,
+              [
+                `pos_${uuidv4()}`, dbObjectId,
+                item.kod || '', item.popis || '',
+                item.mnozstvi || 0, item.mj || '',
+                item.cenaJednotkova || 0, item.cenaCelkem || 0,
+                JSON.stringify(itemTov.labor || []),
+                JSON.stringify(itemTov.machinery || []),
+                JSON.stringify(itemTov.materials || []),
+                registryItemId
+              ]
+            );
           }
-        } else {
-          // No registry_item_id — always INSERT
-          result = await client.query(
-            `INSERT INTO portal_positions (
-              position_id, object_id, kod, popis, mnozstvi, mj,
-              cena_jednotkova, cena_celkem,
-              tov_labor, tov_machinery, tov_materials,
-              dov_payload,
-              registry_item_id, last_sync_from, last_sync_at,
-              sheet_name, row_index, skupina,
-              created_by, updated_by,
-              created_at, updated_at
-            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, 'registry', NOW(), $14, $15, $16, 'registry_import', 'registry_import', NOW(), NOW())
-            RETURNING position_instance_id`,
-            [
-              `pos_${uuidv4()}`, dbObjectId,
-              item.kod || '', item.popis || '',
-              item.mnozstvi || 0, item.mj || '',
-              item.cenaJednotkova || 0, item.cenaCelkem || 0,
-              JSON.stringify(itemTov.labor || []),
-              JSON.stringify(itemTov.machinery || []),
-              JSON.stringify(itemTov.materials || []),
-              dovPayload,
-              registryItemId,
-              sheet.name || '', itemIdx, item.skupina || null
-            ]
-          );
         }
 
         totalItems++;

@@ -18,8 +18,8 @@ export const apiLimiter = rateLimit({
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
   validate: { xForwardedForHeader: false }, // Cloud Run sits behind Google's proxy; trust proxy is handled in server.js
   skip: (req) => {
-    // Don't rate limit health checks
-    return req.path === '/health';
+    // Don't rate limit health checks or internal kiosk sync endpoints
+    return req.path === '/health' || req.path.startsWith('/api/integration/');
   },
   handler: (req, res) => {
     logger.warn(`Rate limit exceeded for IP: ${req.ip}, path: ${req.path}`);
