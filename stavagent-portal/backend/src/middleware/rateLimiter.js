@@ -8,11 +8,11 @@ import { logger } from '../utils/logger.js';
 
 /**
  * General API rate limiter
- * 100 requests per 15 minutes per IP
+ * 500 requests per 15 minutes per IP
  */
 export const apiLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100,
+  max: 500,
   message: 'Příliš mnoho požadavků z vaší IP adresy, zkuste to znovu později',
   standardHeaders: true, // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false, // Disable `X-RateLimit-*` headers
