@@ -191,12 +191,6 @@ export default function DocumentSummary({ projectId: _projectId, onClose }: Docu
         formData.append('vertex_service_account', selectedVertexAccount);
         formData.append('llm_provider', 'vertex-ai');
       }
-      formData.append('analysis_mode', analysisMode);
-
-      const isVertexModel = selectedModel === AI_MODELS.VERTEX_AI_GEMINI || selectedModel === AI_MODELS.VERTEX_AI_SEARCH;
-      if (enableAiEnrichment && isVertexModel) {
-        formData.append('vertex_service_account', selectedVertexAccount);
-      }
 
       // Fetch with timeout (5 minutes for large documents - 46+ pages)
       const controller = new AbortController();
