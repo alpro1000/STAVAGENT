@@ -1,0 +1,54 @@
+name: Shared Package Tests
+
+on:
+  push:
+    branches: [ main, claude/** ]
+    paths:
+      - 'Monolit-Planner/shared/**'
+      - '.github/workflows/test-shared.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'Monolit-Planner/shared/**'
+
+jobs:
+  test-shared:
+    name: Run Shared Formula Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+          cache-dependency-path: Monolit-Planner/shared/package-lock.json
+
+      - name: Install dependencies
+        working-directory: ./Monolit-Planner/shared
+        run: npm ci
+
+      - name: Build shared package
+        working-directory: ./Monolit-Planner/shared
+        run: npm run build
+
+      - name: Run tests
+        working-directory: ./Monolit-Planner/shared
+        run: npm test
+
+      - name: Run tests with coverage
+        working-directory: ./Monolit-Planner/shared
+        run: npm run test:coverage
+        continue-on-error: true
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        if: always()
+        with:
+          files: ./Monolit-Planner/shared/coverage/coverage-final.json
+          flags: shared
+          name: shared-coverage
+        continue-on-error: true
