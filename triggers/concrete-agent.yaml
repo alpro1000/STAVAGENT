@@ -1,0 +1,11 @@
+name: concrete-agent-deploy
+github:
+  owner: alpro1000
+  name: STAVAGENT
+  push:
+    branch: "^main$"
+filename: cloudbuild-concrete.yaml
+includedFiles:
+  - "concrete-agent/**"
+substitutions:
+  _REGION: europe-west3

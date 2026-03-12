@@ -1,0 +1,11 @@
+name: monolit-deploy
+github:
+  owner: alpro1000
+  name: STAVAGENT
+  push:
+    branch: "^main$"
+filename: cloudbuild-monolit.yaml
+includedFiles:
+  - "Monolit-Planner/**"
+substitutions:
+  _REGION: europe-west3
