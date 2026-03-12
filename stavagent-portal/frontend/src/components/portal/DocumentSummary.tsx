@@ -61,6 +61,14 @@ interface DocumentSummaryProps {
 
 import { API_URL } from '../../services/api';
 
+// File extension utilities
+const ALLOWED_FILE_EXTENSIONS = ['.pdf', '.xlsx', '.xls', '.xml'];
+
+function getFileExtension(filename: string): string {
+  const match = filename.match(/\.[^.]+$/);
+  return match ? match[0].toLowerCase() : '';
+}
+
 // Proxied through portal backend
 const CORE_API_URL = `${API_URL}/api/core`;
 
