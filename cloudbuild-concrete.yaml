@@ -5,8 +5,26 @@ substitutions:
   _REGION: europe-west3
 
 steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+    id: guard
+    entrypoint: bash
+    args:
+      - -c
+      - |
+        git fetch --depth=2 2>/dev/null || true
+        CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --format="" HEAD)
+        echo "Changed files: $$CHANGED"
+        if ! echo "$$CHANGED" | grep -q "^concrete-agent/"; then
+          echo "No changes in concrete-agent/ — cancelling build"
+          gcloud builds cancel $$BUILD_ID --project=$$PROJECT_ID --quiet 2>/dev/null || true
+          sleep 20
+          exit 0
+        fi
+        echo "Changes detected in concrete-agent/ — proceeding"
+
   - name: gcr.io/cloud-builders/docker
     id: build-core
+    waitFor: [guard]
     args:
       - build
       - -f
