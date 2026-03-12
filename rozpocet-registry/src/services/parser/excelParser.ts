@@ -103,8 +103,8 @@ function isItemCode(value: string): boolean {
   // Коды ÚRS: может быть с точками (23.11.12)
   if (/^\d{2,3}\.\d{2,3}\.\d{2,3}$/.test(trimmed)) return true;
 
-  // Коды OTSKP: буква + 5+ цифр (A12345)
-  if (/^[A-Z]\d{5,}$/.test(trimmed)) return true;
+  // Коды OTSKP: буква + 5+ цифр, с опциональным буквенным суффиксом (A12345, R42194B)
+  if (/^[A-Z]\d{4,}[A-Z]{0,2}$/.test(trimmed)) return true;
 
   // Коды RTS: формат XXX-YYY (123-456)
   if (/^\d{3,4}-\d{3,4}$/.test(trimmed)) return true;
