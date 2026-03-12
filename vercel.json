@@ -1,0 +1,7 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "cd rozpocet-registry && npm ci",
+  "buildCommand": "cd rozpocet-registry && npm run build",
+  "outputDirectory": "rozpocet-registry/dist"
+}
