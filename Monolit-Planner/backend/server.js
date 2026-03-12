@@ -38,6 +38,7 @@ import { initDatabase } from './src/db/init.js';
 import { errorHandler } from './src/utils/errorHandler.js';
 import { logger } from './src/utils/logger.js';
 import { schedulePeriodicCleanup } from './src/utils/fileCleanup.js';
+import { autoImportOtskpIfNeeded } from './src/services/otskpAutoImport.js';
 
 // Middleware
 import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter } from './src/middleware/rateLimiter.js';
@@ -205,6 +206,9 @@ async function bootstrap() {
     // Initialize database (await for PostgreSQL migrations)
     await initDatabase();
     logger.info('✅ Database initialized successfully');
+
+    // Auto-import OTSKP catalog if table is empty
+    await autoImportOtskpIfNeeded();
 
     // Schedule periodic file cleanup
     schedulePeriodicCleanup();
