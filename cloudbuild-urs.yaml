@@ -1,5 +1,43 @@
+###############################################################
+# urs-matcher-service — triggered only on changes in URS_MATCHER_SERVICE/**
+###############################################################
+substitutions:
+  _REGION: europe-west3
+
 steps:
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent/urs-matcher-service', '-f', 'URS_MATCHER_SERVICE/backend/Dockerfile', '.']
+  - name: gcr.io/cloud-builders/docker
+    id: build-urs
+    args:
+      - build
+      - -f
+      - URS_MATCHER_SERVICE/Dockerfile.backend
+      - -t
+      - gcr.io/$PROJECT_ID/urs-matcher-service:$SHORT_SHA
+      - -t
+      - gcr.io/$PROJECT_ID/urs-matcher-service:latest
+      - .
+
+  - name: gcr.io/cloud-builders/docker
+    id: push-urs
+    waitFor: [build-urs]
+    args: [push, gcr.io/$PROJECT_ID/urs-matcher-service, --all-tags]
+
+  - name: gcr.io/cloud-builders/gcloud
+    id: deploy-urs
+    waitFor: [push-urs]
+    args:
+      - run
+      - deploy
+      - urs-matcher-service
+      - --image=gcr.io/$PROJECT_ID/urs-matcher-service:$SHORT_SHA
+      - --region=$_REGION
+      - --platform=managed
+      - --allow-unauthenticated
+
 images:
-- 'europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent/urs-matcher-service'
+  - gcr.io/$PROJECT_ID/urs-matcher-service:$SHORT_SHA
+
+timeout: 600s
+options:
+  machineType: E2_HIGHCPU_8
+  logging: CLOUD_LOGGING_ONLY
