@@ -411,6 +411,9 @@ router.post('/import-from-registry', async (req, res) => {
   let client;
   try {
     client = await pool.connect();
+    // Clear any stale aborted transaction on this pooled connection (Render free tier DB restarts)
+    await client.query('ROLLBACK').catch(() => {});
+
     const { registry_project_id, project_name, portal_project_id, sheets, tovData } = req.body;
 
     if (!project_name || !sheets || !Array.isArray(sheets)) {
@@ -444,10 +447,13 @@ router.post('/import-from-registry', async (req, res) => {
         [projectId, project_name]
       );
     } else {
-      // Update existing project name
+      // UPSERT — the portal_project_id may be stale (from localStorage after a DB reset).
+      // Using INSERT ... ON CONFLICT ensures the project row exists before kiosk_links FK insert.
       await client.query(
-        `UPDATE portal_projects SET project_name = $1, updated_at = NOW() WHERE portal_project_id = $2`,
-        [project_name, projectId]
+        `INSERT INTO portal_projects (portal_project_id, project_name, project_type, owner_id, created_at, updated_at)
+         VALUES ($1, $2, 'registry', 1, NOW(), NOW())
+         ON CONFLICT (portal_project_id) DO UPDATE SET project_name = $2, updated_at = NOW()`,
+        [projectId, project_name]
       );
     }
 

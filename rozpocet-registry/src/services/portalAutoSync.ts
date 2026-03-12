@@ -22,6 +22,9 @@ const PORTAL_API_URL = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent
 // Debounce timers per project
 const syncTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
+// Prevent parallel in-flight syncs for the same project (avoids duplicate auto-link calls)
+const syncInProgress = new Set<string>();
+
 // Track portal project IDs for registry projects
 const portalProjectMap = new Map<string, string>();
 
@@ -165,11 +168,18 @@ export function debouncedSyncToPortal(
   if (existing) clearTimeout(existing);
 
   const timer = setTimeout(async () => {
+    // Skip if another sync for this project is already in-flight (parallel timer race)
+    if (syncInProgress.has(project.id)) return;
+    syncInProgress.add(project.id);
     syncTimers.delete(project.id);
-    const portalId = await syncProjectToPortal(project, tovData);
-    if (portalId && !project.portalLink && onAutoLink) {
-      onAutoLink(project.id, portalId);
-      console.log(`[PortalAutoSync] Auto-linked project "${project.projectName}" → Portal ${portalId}`);
+    try {
+      const portalId = await syncProjectToPortal(project, tovData);
+      if (portalId && !project.portalLink && onAutoLink) {
+        onAutoLink(project.id, portalId);
+        console.log(`[PortalAutoSync] Auto-linked project "${project.projectName}" → Portal ${portalId}`);
+      }
+    } finally {
+      syncInProgress.delete(project.id);
     }
   }, 3000);
 
