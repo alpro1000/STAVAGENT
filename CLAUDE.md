@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.5.0
-**Last Updated:** 2026-03-08
+**Version:** 2.6.0
+**Last Updated:** 2026-03-12
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,8 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-12 | All services | Session 10: Cloud Build CI/CD (4 cloudbuild-*.yaml per service + guard steps + triggers/ dir), bug fixes: OTSKP variant suffix, import-from-registry 429/500, kiosk unlink 404, DocumentSummary missing helpers. PRs #591–#597. GCR блокер: нужен AR repo или Container Registry API | ✅ Pushed |
+| 2026-03-11 | Portal + Monolit | Session 9: CORS cleanup (дубликаты origins), bridge-deck logic (overtime +25%, skruž hold 21d), env vars docs | ✅ Pushed |
 | 2026-03-08 | Portal + Monolit | Session 8: Betonárny discovery, AWS Bedrock, Objednávka betonu page, CORE proxy, Universal Parser pipeline, CorePanel inline styles, curing days fix | ✅ Pushed |
 | 2026-03-07 | Monolit shared | Calculator audit: 3 bugs fixed (calculateEstimatedWeeks 22d mode ÷7→÷5, dead effectiveRebarDays, pour-decision NaN guard). 332 tests pass | ✅ Pushed |
 | 2026-03-07 | Monolit + Registry | TariffPage CRUD UI (/tariffs), Pump engine unification (registry mirrors shared API, Gauss Easter) | ✅ Pushed |

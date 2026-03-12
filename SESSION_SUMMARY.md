@@ -1,217 +1,96 @@
-# Session Summary — Monolithic Deck Pour Logic Adjustments
+# Session Summary — 2026-03-12 (Session 10: Cloud Build CI/CD + Bug Fixes)
 
-**Date:** 2026-03-11  
-**Branch:** `work`  
-**Status:** ✅ Completed and committed
+**Date:** 2026-03-12
+**Branch:** `claude/cleanup-cors-duplicates-WOQfk`
+**Status:** ✅ Completed (PRs #591–#597 merged)
+
+---
 
 ## Что сделано
 
-1. Обновлена логика планировщика для монолитной мостовки без дилатационных швов:
-   - авто-масштабирование эффективной осадки бетонщиков (до 12 чел.) при длительной непрерывной заливке;
-   - предупреждение о непрерывной заливке в расширенную смену (12–15 ч).
+### 1. CORS / Backend URL fixes
+- `FIX: Point registry PortalAutoSync to new Cloud Run backend` (PR #591)
+- `FIX: Parse OTSKP codes with variant suffix letters (R42194B)` (PR #592-like)
+- `FIX: Repair import-from-registry — duplicates, 500, and 429 errors` (PR #593)
+- `FIX: Kiosk unlink 404, positions 429/column errors, rate limit increase` (PR #594)
+- `FIX: OTSKP variant suffix regex in universalParser and rowClassificationService` (PR #595)
 
-2. Обновлен расчет стоимости бетонных работ:
-   - после 10 часов включается сверхурочная оплата +25% от базовой ставки;
-   - стоимость бетонных работ учитывает эффективную усиленную осадку.
-
-3. Добавлено ограничение по skruž (подпорной конструкции) для mostovková deska:
-   - минимум 21 день удержания от окончания последней бетонной операции;
-   - общий срок графика автоматически продлевается при необходимости;
-   - перерасчет savings и запись в warning/decision log.
-
-## Проверка
-
-- Запущены таргетные тесты shared-калькуляторов (planner orchestrator + pour task engine) — все тесты прошли.
-
-## Git
-
-- Commit: `cc3ef1c`  
-- PR title: `Handle uninterrupted bridge-deck pours with overtime and skruž hold`
+### 2. Cloud Build CI/CD (Google Cloud Run)
+- **FEAT:** 4 отдельных `cloudbuild-*.yaml` для каждого сервиса с шагами build+push+deploy
+  - `cloudbuild-portal.yaml`, `cloudbuild-monolit.yaml`, `cloudbuild-concrete.yaml`, `cloudbuild-urs.yaml`
+- **FEAT:** Guard steps — пропускают сборку если нет изменений в нужном сервисе (`exit 1` при отсутствии diff)
+- **FEAT:** Trigger YAML файлы в `triggers/` для ручного создания триггеров через gcloud CLI
+- **FIX:** Убрана race condition в guard steps (cancel → exit 1) (PR #596)
+- **FIX:** Add missing `getFileExtension` and `ALLOWED_FILE_EXTENSIONS` in DocumentSummary (PR #597)
 
 ---
 
-# Session Summary - Week 8 Optimizations + TOV Export Fix
-
-**Date:** 2025-01-XX  
-**Branch:** `feature/relink-algorithm`  
-**Duration:** ~2 hours  
-**Status:** ✅ Complete
-
----
-
-## ✅ Completed Work
-
-### 1. TOV Export Fix ✅
-**File:** `rozpocet-registry/src/services/export/excelExportService.ts`
-
-**Change:** Moved TOV labels from Skupina column (H) to Kód column (B)
-
-**Before:**
-```
-Poř. | Kód | Popis                    | ... | Skupina
-186  | 272324 | ZÁKLADY ZE ŽELEZOBETONU | ... | BETON_MONOLIT
-     |        | 👷 Betonář — 1 prac...  | ... | TOV:Práce
-     |        | 🏗️ Rypadlo — 1 ks...    | ... | TOV:Mechanizace
-```
-
-**After:**
-```
-Poř. | Kód           | Popis                    | ... | Skupina
-186  | 272324        | ZÁKLADY ZE ŽELEZOBETONU | ... | BETON_MONOLIT
-     | TOV:Práce     | 👷 Betonář — 1 prac...  | ... | BETON_MONOLIT
-     | TOV:Mechanizace | 🏗️ Rypadlo — 1 ks...  | ... | BETON_MONOLIT
-```
-
-**Impact:**
-- Better data organization
-- Skupina column shows parent group
-- TOV type clearly visible in Kód column
-
----
-
-### 2. Relink Algorithm Optimization ✅
-**File:** `Monolit-Planner/backend/src/services/relinkService.js`
-
-#### Primary Match: O(n²) → O(n)
-- Used Map for O(1) lookups instead of nested loops
-- **Performance:** 250ms → 10ms for 500 positions (25x faster)
-
-#### Fuzzy Match: Group by catalog_code
-- Pre-group positions by catalog_code
-- Only compare within same code group
-- **Performance:** 5000ms → 500ms for 500 positions (10x faster)
-
-**Total Performance Gain:** 8.8x faster (5350ms → 610ms for 500 positions)
-
----
-
-### 3. Documentation Created ✅
-
-#### WEEK_8_TESTING_GUIDE.md
-- 5 test scenarios with expected results
-- Sample Excel files (3 versions)
-- Integration test templates
-- Performance benchmarks
-- Edge case checklist
-
-#### WEEK_8_PROGRESS.md
-- Optimization details
-- Performance comparison
-- Testing status
-- Next steps
-
----
-
-## 📊 Statistics
-
-| Metric | Value |
-|--------|-------|
-| **Session Duration** | 2 hours |
-| **Files Modified** | 2 |
-| **Files Created** | 3 |
-| **Commits** | 2 |
-| **Performance Gain** | 8.8x faster |
-| **Lines Changed** | ~900 |
-
----
-
-## 🎯 Achievements
-
-- ✅ TOV export improved (better UX)
-- ✅ Relink algorithm optimized (8.8x faster)
-- ✅ Comprehensive testing guide created
-- ✅ Performance targets met
-- ✅ Code quality maintained
-
----
-
-## 🔜 Next Steps
-
-### When Server Available:
-1. Apply migration 011 (auto on server start)
-2. Test relink API endpoints
-3. Create sample Excel files
-4. Run integration tests
-5. Measure real performance
-
-### Week 9 (UI Development):
-1. Create RelinkReportModal.tsx component
-2. Show matches with confidence indicators (🟢🟡🔴)
-3. Manual relink UI
-4. Approve/reject workflow
-5. Version history UI
-
----
-
-## 📁 Files Summary
-
-### Modified:
-1. `rozpocet-registry/src/services/export/excelExportService.ts`
-   - TOV labels moved to Kód column
-
-2. `Monolit-Planner/backend/src/services/relinkService.js`
-   - Primary match optimized (Map-based)
-   - Fuzzy match optimized (grouping)
-
-### Created:
-1. `WEEK_8_TESTING_GUIDE.md` - Comprehensive testing guide
-2. `WEEK_8_PROGRESS.md` - Progress summary
-3. `SESSION_SUMMARY.md` - This document
-
----
-
-## 🐛 Known Issues
-
-### SSL Certificate (Corporate Proxy)
-- **Impact:** Cannot install npm packages or run tests locally
-- **Workaround:** Testing in production/CI environment
-- **Status:** Blocking local development
-
----
-
-## 📝 Commits
+## Проблема при деплое (текущий блокер)
 
 ```
-791eb0f PERF: Optimize relink algorithm - 8.8x faster
-72166cf DOCS: Week 7 COMPLETE - Relink Algorithm Foundation
+denied: gcr.io repo does not exist. Creating on push requires the
+artifactregistry.repositories.createOnPush permission
+```
+
+**Причина:** Сервисный аккаунт Cloud Build не имеет права создавать репозитории в Artifact Registry (GCR).
+
+**Решение (нужно сделать вручную в GCP):**
+```bash
+# Вариант 1: Включить Container Registry API (старый gcr.io)
+gcloud services enable containerregistry.googleapis.com --project=YOUR_PROJECT_ID
+
+# Вариант 2: Переключиться на Artifact Registry (рекомендуется)
+# Создать репозиторий вручную:
+gcloud artifacts repositories create stavagent \
+  --repository-format=docker \
+  --location=europe-west3 \
+  --project=YOUR_PROJECT_ID
+
+# Затем поменять образ в cloudbuild файлах:
+# gcr.io/$PROJECT_ID/... → europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/...
 ```
 
 ---
 
-## 🎓 Key Learnings
+## Commits этой сессии
 
-### Performance Optimization
-- Map-based lookups are 25x faster than nested loops
-- Grouping data reduces comparisons by 90%
-- Always profile before optimizing
-
-### Code Quality
-- ES modules for modern JavaScript
-- Async/await for clean async code
-- Transaction support for data integrity
-
-### Documentation
-- Comprehensive testing guides save time
-- Performance benchmarks validate optimizations
-- Clear next steps help continuity
+| Commit | Описание |
+|--------|----------|
+| `33905f2` | FIX: Add missing getFileExtension and ALLOWED_FILE_EXTENSIONS |
+| `c803c19` | FIX: Remove cancel race condition in guard steps |
+| `7de1796` | FIX: Add guard steps to cloudbuild files |
+| `e5360c1` | FEAT: Add trigger YAML files for per-service triggers |
+| `6a04be4` | FEAT: Complete individual cloudbuild yamls |
+| `2d171a1` | FIX: OTSKP variant suffix regex |
+| `f9daea3` | FIX: Kiosk unlink 404, 429, column errors |
+| `13b718c` | FIX: import-from-registry duplicates/500/429 |
+| `75e0d7c` | FIX: Point registry PortalAutoSync to Cloud Run |
+| `29b136a` | FIX: Parse OTSKP codes with variant suffix |
 
 ---
 
-## ✅ Status
+## Структура Cloud Build файлов
 
-**Week 7:** ✅ COMPLETE (Foundation)  
-**Week 8:** ✅ COMPLETE (Optimization)  
-**Week 9:** ⏳ PENDING (UI Development)
+```
+STAVAGENT/
+├── cloudbuild.yaml              ← Общий (monorepo, старый)
+├── cloudbuild-portal.yaml       ← Portal backend (guard + build + push + deploy)
+├── cloudbuild-monolit.yaml      ← Monolit backend (guard + build + push + deploy)
+├── cloudbuild-concrete.yaml     ← concrete-agent (guard + build + push + deploy)
+├── cloudbuild-urs.yaml          ← URS Matcher (guard + build + push + deploy)
+└── triggers/
+    ├── portal.yaml              ← Cloud Build trigger definition
+    ├── monolit.yaml
+    ├── concrete-agent.yaml
+    └── urs.yaml
+```
 
-**Total Progress:** 10/32 hours (31% of Weeks 7-9)  
-**Remaining:** 22 hours (Week 9 UI + testing)
-
----
-
-**Branch:** feature/relink-algorithm  
-**Ready for:** Testing when server available  
-**Next Session:** Week 9 UI development or testing
-
----
-
-**Questions?** See WEEK_8_TESTING_GUIDE.md for detailed testing instructions.
+**Шаблон trigg-ера (gcloud):**
+```bash
+gcloud builds triggers create github \
+  --repo-owner=alpro1000 \
+  --repo-name=STAVAGENT \
+  --branch-pattern=^main$ \
+  --build-config=cloudbuild-portal.yaml \
+  --name=stavagent-portal-trigger
+```
