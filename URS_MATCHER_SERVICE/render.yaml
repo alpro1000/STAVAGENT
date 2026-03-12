@@ -33,6 +33,10 @@ services:
         sync: false
       - key: PPLX_API_KEY
         sync: false
+      # URS Catalog Mode: 'perplexity_only' uses Perplexity to search podminky.urs.cz
+      # 'local' uses only ~40 hardcoded sample items (useless for real searches)
+      - key: URS_CATALOG_MODE
+        value: perplexity_only
       # LLM Configuration
       - key: LLM_PROVIDER
         value: claude
