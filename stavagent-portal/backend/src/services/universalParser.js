@@ -49,7 +49,7 @@ const HEADER_KEYWORDS = [
 const CODE_PATTERNS = {
   urs: /^\d{5,9}$/,                          // 231112, 231112111
   ursDotted: /^\d{2,3}\.\d{2,3}\.\d{2,3}$/,  // 23.11.12
-  otskp: /^[A-Z]\d{5,}$/,                    // A12345
+  otskp: /^[A-Z]\d{4,}[A-Z]{0,2}$/,          // A12345, R42194B
   rts: /^\d{3,4}-\d{3,4}$/,                  // 123-456
   construction: /^\d{3,6}(-R\d{1,2})?$/,     // 231112 or 231112-R01
 };
