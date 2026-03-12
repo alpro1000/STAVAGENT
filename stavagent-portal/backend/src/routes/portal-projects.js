@@ -931,6 +931,44 @@ router.get('/:id/kiosks', async (req, res) => {
 });
 
 /**
+ * DELETE /api/portal-projects/:id/kiosks/:linkId
+ * Unlink a kiosk from a project
+ */
+router.delete('/:id/kiosks/:linkId', async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { id, linkId } = req.params;
+    const pool = safeGetPool();
+    if (!pool) {
+      return res.status(503).json({ success: false, error: 'Database not available' });
+    }
+
+    // Allow deletion if user owns the project OR if project was registry-created (owner_id = 1)
+    const projectCheck = await pool.query(
+      'SELECT portal_project_id FROM portal_projects WHERE portal_project_id = $1 AND (owner_id = $2 OR owner_id = 1)',
+      [id, userId]
+    );
+    if (projectCheck.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Project not found' });
+    }
+
+    const result = await pool.query(
+      'DELETE FROM kiosk_links WHERE link_id = $1 AND portal_project_id = $2 RETURNING link_id',
+      [linkId, id]
+    );
+    if (result.rows.length === 0) {
+      return res.status(404).json({ success: false, error: 'Kiosk link not found' });
+    }
+
+    console.log(`[PortalProjects] Unlinked kiosk ${linkId} from project ${id}`);
+    res.json({ success: true, message: 'Kiosk unlinked successfully' });
+  } catch (error) {
+    console.error('[PortalProjects] Error unlinking kiosk:', error);
+    res.status(500).json({ success: false, error: 'Failed to unlink kiosk' });
+  }
+});
+
+/**
  * GET /api/portal-projects/:id/unified
  * Get unified project view with data from all linked kiosks
  *

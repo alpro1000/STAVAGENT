@@ -92,13 +92,25 @@ router.get('/project/:projectId', async (req, res) => {
       filterParams.push(row_role);
     }
 
+    // Detect Phase 8 columns once (sheet_name added by add-position-instance-architecture.sql)
+    let hasPhase8Cols = true;
+    try {
+      await pool.query('SELECT sheet_name FROM portal_positions LIMIT 0');
+    } catch (colErr) {
+      if (colErr.message && colErr.message.includes('column')) {
+        hasPhase8Cols = false;
+      } else {
+        throw colErr;
+      }
+    }
+
     // Get positions for each object
     const objects = [];
     let total = 0;
 
     for (const obj of objectsResult.rows) {
-      const positionsResult = await pool.query(
-        `SELECT pp.position_id, pp.position_instance_id, pp.object_id,
+      const selectCols = hasPhase8Cols
+        ? `pp.position_id, pp.position_instance_id, pp.object_id,
                 pp.kod, pp.popis, pp.mnozstvi, pp.mj,
                 pp.cena_jednotkova, pp.cena_celkem,
                 pp.sheet_name, pp.row_index, pp.skupina, pp.row_role,
@@ -106,10 +118,22 @@ router.get('/project/:projectId', async (req, res) => {
                 pp.monolith_payload, pp.dov_payload, pp.overrides,
                 pp.monolit_position_id, pp.registry_item_id,
                 pp.created_by, pp.updated_by,
-                pp.created_at, pp.updated_at
+                pp.created_at, pp.updated_at`
+        : `pp.position_id, pp.position_id AS position_instance_id, pp.object_id,
+                pp.kod, pp.popis, pp.mnozstvi, pp.mj,
+                pp.cena_jednotkova, pp.cena_celkem,
+                NULL AS sheet_name, 0 AS row_index, NULL AS skupina, 'unknown' AS row_role,
+                NULL AS template_id, NULL AS template_confidence,
+                NULL AS monolith_payload, NULL AS dov_payload, NULL AS overrides,
+                pp.monolit_position_id, pp.registry_item_id,
+                'legacy' AS created_by, 'legacy' AS updated_by,
+                pp.created_at, pp.updated_at`;
+      const orderCol = hasPhase8Cols ? 'pp.row_index, pp.created_at' : 'pp.created_at';
+      const positionsResult = await pool.query(
+        `SELECT ${selectCols}
          FROM portal_positions pp
          WHERE pp.object_id = $1${filterClause}
-         ORDER BY pp.row_index, pp.created_at`,
+         ORDER BY ${orderCol}`,
         [obj.object_id, ...filterParams]
       );
 
@@ -409,6 +433,16 @@ router.get('/templates/:projectId', async (req, res) => {
   try {
     const { projectId } = req.params;
     const { catalog_code } = req.query;
+
+    // Check if position_templates exists (created in Phase 8 migration)
+    try {
+      await pool.query('SELECT 1 FROM position_templates LIMIT 0');
+    } catch (tableErr) {
+      if (tableErr.message && tableErr.message.includes('does not exist')) {
+        return res.json({ success: true, templates: [] });
+      }
+      throw tableErr;
+    }
 
     let query = `SELECT * FROM position_templates WHERE project_id = $1`;
     const params = [projectId];
