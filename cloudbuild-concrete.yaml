@@ -16,9 +16,7 @@ steps:
         echo "Changed files: $$CHANGED"
         if ! echo "$$CHANGED" | grep -q "^concrete-agent/"; then
           echo "No changes in concrete-agent/ — cancelling build"
-          gcloud builds cancel $$BUILD_ID --project=$$PROJECT_ID --quiet 2>/dev/null || true
-          sleep 20
-          exit 0
+          exit 1
         fi
         echo "Changes detected in concrete-agent/ — proceeding"
 

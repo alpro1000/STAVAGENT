@@ -64,6 +64,12 @@ import { API_URL } from '../../services/api';
 // Proxied through portal backend
 const CORE_API_URL = `${API_URL}/api/core`;
 
+const ALLOWED_FILE_EXTENSIONS = ['pdf', 'xlsx', 'xls', 'xml'];
+
+function getFileExtension(filename: string): string {
+  return filename.split('.').pop()?.toLowerCase() ?? '';
+}
+
 function isVertexModel(model: AIModelType): boolean {
   return model === AI_MODELS.VERTEX_AI_GEMINI || model === AI_MODELS.VERTEX_AI_SEARCH;
 }
