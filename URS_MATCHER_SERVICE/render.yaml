@@ -31,7 +31,7 @@ services:
         sync: false
       - key: GOOGLE_AI_KEY
         sync: false
-      - key: PERPLEXITY_API_KEY
+      - key: PPLX_API_KEY
         sync: false
       # LLM Configuration
       - key: LLM_PROVIDER
