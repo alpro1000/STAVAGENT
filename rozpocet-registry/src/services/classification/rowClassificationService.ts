@@ -44,8 +44,8 @@ const URS_CODE = /^\d{6,}$/;
 /** ÚRS dotted: 23.11.12 */
 const URS_DOTTED = /^\d{2,3}\.\d{2,3}\.\d{2,3}$/;
 
-/** OTSKP codes: letter + 5+ digits (A12345) */
-const OTSKP_CODE = /^[A-Z]\d{5,}$/;
+/** OTSKP codes: letter + 4+ digits + optional variant suffix (A12345, R42194B) */
+const OTSKP_CODE = /^[A-Z]\d{4,}[A-Z]{0,2}$/;
 
 /** RTS codes: XXX-YYY (123-456) */
 const RTS_CODE = /^\d{3,4}-\d{3,4}$/;
