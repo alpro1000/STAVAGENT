@@ -1,11 +1,5 @@
-###############################################################
-# urs-matcher-service — triggered only on changes in URS_MATCHER_SERVICE/**
-###############################################################
-substitutions:
-  _REGION: europe-west3
-
 steps:
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: guard
     entrypoint: bash
     args:
@@ -13,8 +7,8 @@ steps:
       - |
         git fetch --depth=2 2>/dev/null || true
         CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --format="" HEAD)
-        echo "Changed files: $$CHANGED"
-        if ! echo "$$CHANGED" | grep -q "^URS_MATCHER_SERVICE/"; then
+        echo "Changed files: $CHANGED"
+        if ! echo "$CHANGED" | grep -q "^URS_MATCHER_SERVICE/"; then
           echo "No changes in URS_MATCHER_SERVICE/ — cancelling build"
           exit 1
         fi
@@ -22,38 +16,28 @@ steps:
 
   - name: gcr.io/cloud-builders/docker
     id: build-urs
-    waitFor: [guard]
     args:
       - build
-      - -f
-      - URS_MATCHER_SERVICE/Dockerfile.backend
       - -t
-      - gcr.io/$PROJECT_ID/urs-matcher-service:$SHORT_SHA
+      - europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent-repo/urs-matcher-backend:$SHORT_SHA
       - -t
-      - gcr.io/$PROJECT_ID/urs-matcher-service:latest
-      - .
+      - europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent-repo/urs-matcher-backend:latest
+      - URS_MATCHER_SERVICE
 
   - name: gcr.io/cloud-builders/docker
     id: push-urs
-    waitFor: [build-urs]
-    args: [push, gcr.io/$PROJECT_ID/urs-matcher-service, --all-tags]
+    args:
+      - push
+      - europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent-repo/urs-matcher-backend
+      - --all-tags
 
-  - name: gcr.io/cloud-builders/gcloud
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: deploy-urs
-    waitFor: [push-urs]
     args:
       - run
       - deploy
-      - urs-matcher-service
-      - --image=gcr.io/$PROJECT_ID/urs-matcher-service:$SHORT_SHA
-      - --region=$_REGION
+      - urs-matcher-backend
+      - --image=europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent-repo/urs-matcher-backend:$SHORT_SHA
+      - --region=europe-west3
       - --platform=managed
       - --allow-unauthenticated
-
-images:
-  - gcr.io/$PROJECT_ID/urs-matcher-service:$SHORT_SHA
-
-timeout: 600s
-options:
-  machineType: E2_HIGHCPU_8
-  logging: CLOUD_LOGGING_ONLY
