@@ -3,6 +3,8 @@
 ###############################################################
 substitutions:
   _REGION: europe-west3
+  _PROJECT_ID: project-947a512a-481d-49b5-81c
+  _AR_REPO: stavagent-repo
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -28,30 +30,33 @@ steps:
       - -f
       - stavagent-portal/Dockerfile
       - -t
-      - gcr.io/$PROJECT_ID/stavagent-portal-backend:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend:$SHORT_SHA
       - -t
-      - gcr.io/$PROJECT_ID/stavagent-portal-backend:latest
+      - $_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend:latest
       - stavagent-portal
 
   - name: gcr.io/cloud-builders/docker
     id: push-portal
     waitFor: [build-portal]
-    args: [push, gcr.io/$PROJECT_ID/stavagent-portal-backend, --all-tags]
+    args:
+      - push
+      - $_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend
+      - --all-tags
 
-  - name: gcr.io/cloud-builders/gcloud
+  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
     id: deploy-portal
     waitFor: [push-portal]
     args:
       - run
       - deploy
       - stavagent-portal-backend
-      - --image=gcr.io/$PROJECT_ID/stavagent-portal-backend:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend:$SHORT_SHA
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
 
 images:
-  - gcr.io/$PROJECT_ID/stavagent-portal-backend:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend:$SHORT_SHA
 
 timeout: 600s
 options:

@@ -41,3 +41,4 @@ steps:
       - --region=europe-west3
       - --platform=managed
       - --allow-unauthenticated
+      - --update-secrets=DATABASE_URL=DATABASE_URL:latest,GOOGLE_AI_KEY=GOOGLE_AI_KEY:latest
