@@ -52,6 +52,7 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
+      - --update-secrets=DATABASE_URL=DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest
 
   # ============================================================
   # 2. concrete-agent (CORE / YADRO)
@@ -87,6 +88,7 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
+      - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,DATABASE_URL=DATABASE_URL:latest
 
   # ============================================================
   # 3. monolit-planner-api
@@ -122,6 +124,7 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
+      - --update-secrets=DATABASE_URL=DATABASE_URL:latest
 
   # ============================================================
   # 4. urs-matcher-service
@@ -157,6 +160,7 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
+      - --update-secrets=PPLX_API_KEY=PPLX_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,GOOGLE_AI_KEY=GOOGLE_AI_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest
 
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
