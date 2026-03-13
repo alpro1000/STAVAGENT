@@ -41,3 +41,4 @@ steps:
       - --region=europe-west3
       - --platform=managed
       - --allow-unauthenticated
+      - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,DATABASE_URL=DATABASE_URL:latest
