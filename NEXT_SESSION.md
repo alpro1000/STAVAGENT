@@ -1,78 +1,132 @@
-# NEXT SESSION — 2026-03-13 (Audit: Registry loop confirmed fixed)
+# NEXT SESSION — 2026-03-13 (Sessions 10a+10b Complete)
 
-## Краткое резюме последней сессии (Session 10 — 2026-03-13)
+## Краткое резюме последних сессий
 
-**Тип:** Code audit (только чтение, изменений нет)
+### Session 10b (2026-03-13) — Code Audit
 **Ветка:** `claude/run-shared-tests-0HJWR`
+**Тип:** Только чтение, изменений нет
 
-### Проверено: бесконечный цикл создания проектов в rozpocet-registry
+Проверен commit `d5836e6` (FIX: Registry→Portal infinite loop):
+1. **`portalAutoSync.ts`** — `syncInProgress` Set предотвращает параллельные таймеры; `!project.portalLink` в таймере проверяет актуальный объект → `onAutoLink` не вызывается повторно ✅
+2. **`integration.js`** — `ROLLBACK` перед `BEGIN` чистит зависшую транзакцию пула; UPSERT с `ON CONFLICT` для `portal_projects` — stale localStorage ID больше не ломает FK ✅
+3. **`kiosk_links` UNIQUE constraint** — `UNIQUE(portal_project_id, kiosk_type)` в `schema-postgres.sql:207` существует → `ON CONFLICT DO UPDATE` работает корректно ✅
 
-Предыдущий commit `d5836e6` (FIX: Registry→Portal infinite loop) был проаудирован — все 4 исправления подтверждены корректными:
-
-1. **`portalAutoSync.ts`** — `syncInProgress` Set предотвращает параллельные in-flight таймеры. `!project.portalLink` внутри таймера проверяет ОБНОВЛЁННЫЙ объект (тот, что приходит из подписчика после `linkToPortal`) → повторный `onAutoLink` не вызывается.
-2. **`integration.js`** — `ROLLBACK` перед `BEGIN` (строка 415) чистит зависшую транзакцию pooled-соединения. UPSERT с `ON CONFLICT` для `portal_projects` (строки 443–457) — стale `portal_project_id` из localStorage больше не вызывает FK violation.
-3. **`kiosk_links` UNIQUE constraint** — проверен в `schema-postgres.sql` строка 207: `UNIQUE(portal_project_id, kiosk_type)` существует → `ON CONFLICT DO UPDATE` в integration.js работает корректно.
-
-**Итог:** зацикливание полностью устранено. Новых багов не обнаружено.
+**Итог:** зацикливание создания проектов полностью устранено.
 
 ---
 
-# NEXT SESSION — Session 9 Complete
+### Session 10a (2026-03-12) — Cloud Build CI/CD
+**Ветка:** `claude/cleanup-cors-duplicates-WOQfk` (PRs #591–#597 смержены)
+**Status:** Cloud Build настроен, но упал с ошибкой GCR permissions
 
-**Date:** 2026-03-11
-**Branch:** `claude/price-parser-integration-cCRX3`
-**Status:** Session 9 — CORS fix (Amazon Q review), env vars documentation.
+#### Bug Fixes
+- FIX: Point registry PortalAutoSync to Cloud Run backend URL
+- FIX: Parse OTSKP codes с variant suffix letters (`R42194B`)
+- FIX: import-from-registry — duplicates, 500, 429 errors
+- FIX: Kiosk unlink 404, positions 429/column errors
+- FIX: missing `getFileExtension` / `ALLOWED_FILE_EXTENSIONS` in DocumentSummary
 
----
-
-## What Was Done (2026-03-11, Session 9)
-
-### 1. CORS Cleanup (Amazon Q review fix)
-- `stavagent-portal/backend/server.js` — убраны 2 дублирующихся origin
-- `Monolit-Planner/backend/server.js` — убраны 3 дублирующихся origin (3x одна и та же vercel.app, 2x одна и та же stavagent.cz)
-- Commit: `d91d92b` — FIX: Remove duplicate CORS origins in portal and monolit server.js
-
-### 2. Документация
-- Составлен полный список env переменных для всех 5 сервисов
-- Инструкция по Google Cloud Run: Console → Cloud Run → Edit & Deploy → Variables & Secrets
+#### Cloud Build CI/CD
+- 4 `cloudbuild-*.yaml` (portal, monolit, concrete, urs) с guard steps
+- Trigger YAML в `triggers/` для создания через gcloud CLI
 
 ---
 
-## What Was Done (2026-03-08, Session 8)
+## 🔴 БЛОКЕР: gcr.io permission denied
 
-### 1. Betonárny Discovery — GPS-based concrete plant search
-- **BetonServer scraper** — correct URL, anti-bot headers, robust HTML parsing
-- **Price calculator panel** — real-time cost comparison per supplier (CZK/m³ × volume)
-- **AWS Bedrock integration** — Claude via AWS Activate credits (fallback chain: Bedrock → Anthropic → Gemini)
+**Ошибка при первом пуше через Cloud Build:**
+```
+denied: gcr.io repo does not exist. Creating on push requires the
+artifactregistry.repositories.createOnPush permission
+```
 
-### 2. Objednávka Betonu Page (Unified Ordering)
-- **ObjednavkaBetonuPage** — `/objednavka-betonu` route, search + calculate + compare in one flow
-- Infinite re-render loop fix (useEffect dependency cycle)
-- Mobile-responsive layout
+**Решение (одна из опций):**
 
-### 3. Performance: Lazy-load all pages
-- **Bundle reduction**: 519KB → 407KB initial load (-22%)
-- All pages lazy-loaded with `React.lazy()` + `Suspense`
-- Vercel SPA routing fix (`vercel.json` rewrites)
+### Опция A — Включить Container Registry API (быстро)
+```bash
+gcloud services enable containerregistry.googleapis.com --project=YOUR_PROJECT_ID
+```
 
-### 4. CORE Proxy + Workflow Fixes
-- **Portal backend proxy** to concrete-agent (`/api/core/*` → `concrete-agent-3uxelthc4q-ey.a.run.app/*`)
-- Fixed all 5 workflows (file upload, Workflow A/B/C, Drawing Analysis)
+### Опция B — Создать Artifact Registry репозиторий (рекомендуется)
+```bash
+gcloud artifacts repositories create stavagent \
+  --repository-format=docker \
+  --location=europe-west3 \
+  --project=YOUR_PROJECT_ID
 
-### 5. Universal Parser Pipeline (4-step)
-- Full positions table with quantities, units, prices
-- 4-step flow: Upload → Parse → Review → Send to Kiosk
-- Kiosk import buttons (Monolit, Registry, URS Matcher)
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+  --member="serviceAccount:YOUR_PROJECT_NUMBER@cloudbuild.gserviceaccount.com" \
+  --role="roles/artifactregistry.writer"
+```
+Затем заменить в `cloudbuild-*.yaml`:
+```
+gcr.io/$PROJECT_ID/... → europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/...
+```
 
-### 6. Curing Days Fix
-- `elementTotalDays` теперь передаётся из PositionsTable → FormworkCalculatorModal
-- Rental term correctly includes curing period
+---
 
-### Previous Sessions Summary
+## Приоритеты следующей сессии
+
+### P0 — Исправить GCR (без этого CI/CD не работает)
+- [ ] Включить Container Registry или создать AR repo
+- [ ] Дать Cloud Build SA права на запись
+- [ ] Либо переключить `cloudbuild-*.yaml` на AR URL
+- [ ] Тест: ручной триггер через `gcloud builds submit`
+
+### P1 — Создать Cloud Build Triggers в GCP
+```bash
+gcloud builds triggers create github \
+  --repo-owner=alpro1000 \
+  --repo-name=STAVAGENT \
+  --branch-pattern=^main$ \
+  --build-config=cloudbuild-portal.yaml \
+  --name=stavagent-portal-trigger
+# Аналогично для monolit, concrete-agent, urs
+```
+
+### P2 — Деплой и тестирование
+- [ ] Deploy concrete-agent (price-parser + proxy endpoints)
+- [ ] Deploy Portal (6 new pages + CORE proxy)
+- [ ] Deploy Monolit (vercel.json SPA routing + new routes)
+- [ ] Set env vars в Cloud Run
+- [ ] Test Betonárny discovery в production
+- [ ] Test price parser с реальными PDF
+
+### P3 — R0 Core Gaps
+
+| # | Gap | Описание | Сложность |
+|---|-----|----------|-----------|
+| G1 | `move`/`inspection` узлы DAG | move_clean_hours → Activity в DAG | Medium |
+| G2 | Кран/насос resource constraints | shared resources в forward pass | Hard |
+| G3 | Calendar-aware forward pass | Праздники/выходные прямо в DAG | Medium |
+| G4 | Weather stochastic | P(rain) → PERT множитель | Easy |
+
+---
+
+## Cloud Build файлы
+
+```
+STAVAGENT/
+├── cloudbuild-portal.yaml
+├── cloudbuild-monolit.yaml
+├── cloudbuild-concrete.yaml
+├── cloudbuild-urs.yaml
+└── triggers/
+    ├── portal.yaml
+    ├── monolit.yaml
+    ├── concrete-agent.yaml
+    └── urs.yaml
+```
+
+---
+
+## Previous Sessions Summary
+
 | Session | Date | Key Work |
 |---------|------|----------|
-| 10 | 2026-03-13 | Audit: Registry→Portal loop fix verified (portalAutoSync + integration.js + kiosk_links UNIQUE) |
-| 9 | 2026-03-11 | CORS cleanup, env vars docs |
+| 10b | 2026-03-13 | Audit: Registry→Portal loop fix verified (portalAutoSync + integration.js + kiosk_links UNIQUE) |
+| 10a | 2026-03-12 | Cloud Build CI/CD (4 cloudbuild-*.yaml + guard steps), bug fixes, PRs #591–#597 |
+| 9 | 2026-03-11 | CORS cleanup, env vars docs, bridge-deck overtime+skruž |
 | 8 | 2026-03-08 | Betonárny, Bedrock, Objednávka betonu, Universal Parser, curing fix |
 | 7 | 2026-03-07 | Price Parser UI, batch comparison |
 | 6 | 2026-03-07 | Calculator audit: 3 bugs fixed, 332 tests |
@@ -87,9 +141,9 @@
 ```
 /                    → LandingPage
 /portal              → PortalPage (services hub + projects)
-/pump                → PumpCalculatorPage (mobile-first pump calculator)
-/price-parser        → PriceParserPage (PDF price list upload + comparison)
-/objednavka-betonu   → ObjednavkaBetonuPage (search + calculate + compare)
+/pump                → PumpCalculatorPage
+/price-parser        → PriceParserPage
+/objednavka-betonu   → ObjednavkaBetonuPage
 /dashboard           → DashboardPage (auth required)
 /admin               → AdminDashboard (auth required)
 ```
@@ -97,12 +151,23 @@
 ## Architecture: Monolit Frontend Pages
 
 ```
-/                    → MainApp (positions table, KPI, import)
-/planner             → PlannerPage (planElement() orchestrator UI)
-/tariffs             → TariffPage (supplier tariff CRUD)
-/registry/:projectId → RegistryView (unified position browse)
-/r0/*                → R0App (deterministic core, elements/captures/schedule)
+/                    → MainApp
+/planner             → PlannerPage
+/tariffs             → TariffPage
+/registry/:projectId → RegistryView
+/r0/*                → R0App
 ```
+
+---
+
+## Тесты
+
+| Component | Tests | Status |
+|-----------|-------|--------|
+| Monolit shared total | 332 | Pass |
+| URS Matcher | 159 | Pass |
+| Price Parser (CORE) | 21 | Pass |
+| **Grand Total** | **512+** | **Pass** |
 
 ---
 
@@ -115,14 +180,14 @@ GOOGLE_API_KEY=...
 GEMINI_MODEL=gemini-2.5-flash-lite
 MULTI_ROLE_LLM=gemini
 OPENAI_API_KEY=sk-...
-AWS_ACCESS_KEY_ID=...           # optional, Bedrock
-AWS_SECRET_ACCESS_KEY=...       # optional, Bedrock
+AWS_ACCESS_KEY_ID=...
+AWS_SECRET_ACCESS_KEY=...
 AWS_DEFAULT_REGION=eu-central-1
 DATABASE_URL=postgresql+asyncpg://...
-REDIS_URL=redis://...           # optional
+REDIS_URL=redis://...
 PERPLEXITY_API_KEY=pplx-...
-GOOGLE_CLIENT_ID=...            # optional, Drive
-GOOGLE_CLIENT_SECRET=...        # optional, Drive
+GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
 GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/google/callback
 GOOGLE_CREDENTIALS_ENCRYPTION_KEY=...
 ```
@@ -180,144 +245,37 @@ DATABASE_URL=postgresql://...
 
 ---
 
-## Google Cloud Run — Как вносить переменные
-
-```
-console.cloud.google.com
-→ Cloud Run
-→ Выбрать сервис (например, concrete-agent)
-→ кнопка "Edit & Deploy New Revision"
-→ вкладка "Variables & Secrets"
-→ "+ Add Variable"
-→ Вводить по одной или загрузить .env через gcloud CLI:
-```
-
-```bash
-# Через gcloud CLI (рекомендуется для bulk):
-gcloud run services update concrete-agent \
-  --region=europe-west4 \
-  --set-env-vars ANTHROPIC_API_KEY=sk-ant-...,GOOGLE_API_KEY=...,GEMINI_MODEL=gemini-2.5-flash-lite
-```
-
----
-
-## Implementation Priority (Next Sessions)
-
-### Priority 1: End-to-End Testing & Deploy
-- [ ] **Deploy concrete-agent** to GCR (price-parser + proxy endpoints)
-- [ ] **Deploy Portal** to Vercel (all new pages + CORE proxy)
-- [ ] **Deploy Monolit** to Vercel (planner + tariffs + vercel.json SPA fix)
-- [ ] **Set env vars** in GCR for all services
-- [ ] **Test with real PDFs** — run price parser on actual supplier price lists
-- [ ] **Test Betonárny discovery** — verify GPS search + scraping in production
-
-### Priority 2: Formwork Calculator Audit
-- [x] Curing days flow: table → calculator → scheduler (FIXED)
-- [ ] Verify rental cost includes full curing period in production
-
-### Priority 3: Cross-System Integration
-- [ ] Kiosk import buttons end-to-end (Monolit, Registry, URS)
-- [ ] End-to-end production testing with Portal DB
-
-### Priority 4: Phase 2 Engines — R0 Core Gaps
-
-| # | Gap | Описание | Сложность |
-|---|-----|----------|-----------|
-| G1 | `move`/`inspection` узлы DAG | move_clean_hours → полноценный Activity в DAG | Medium |
-| G2 | Кран/насос resource constraints | crane + pump как shared resources в forward pass | Hard |
-| G3 | Calendar-aware forward pass | Праздники/выходные прямо в DAG, не post-hoc | Medium |
-| G4 | Weather stochastic | P(rain) сезон → PERT множитель | Easy |
-| G5 | Supply chain delays | Lead-time бетона/арматуры как predecessor edge | Medium |
-| G6 | Resource leveling | Выравнивание пиков crew, сдвиг non-critical | Hard |
-| G7 | Scenario comparison UI | vary sets/crews → side-by-side таблица + chart | Medium |
-| G8 | Optimization mode | Minimize cost vs time — Pareto front | Hard |
-
-### Priority 5: Quality
-- [ ] Vitest migration for Monolit frontend
-- [ ] React Error Boundaries
-- [ ] Node.js 18.x → 20.x upgrade
-
----
-
-## User Action Required (Deploy)
-
-1. **Set env vars** в GCR для каждого сервиса (см. полный список выше)
-2. **Deploy concrete-agent** (new endpoints: price-parser, proxy)
-3. **Deploy Portal Frontend** to Vercel (6 new pages + CORE proxy backend)
-4. **Deploy Monolit Frontend** to Vercel (vercel.json SPA routing + new routes)
-5. **Execute** `БЫСТРОЕ_РЕШЕНИЕ.sql` in Monolit DB (FF_AI_DAYS_SUGGEST)
-
----
-
-## Testing Status
-
-| Component | Tests | Status |
-|-----------|-------|--------|
-| Monolit formulas | 55 | Pass |
-| Planner Orchestrator | 40 | Pass |
-| Calendar Engine | 35 | Pass |
-| Shared Pump Engine | 30 | Pass |
-| Element Scheduler | 27 | Pass |
-| Element Classifier | 26 | Pass |
-| Tariff Versioning | 24 | Pass |
-| Pour Decision | 22 | Pass |
-| Price Parser (CORE) | 21 | Pass |
-| Concrete Maturity | 21 | Pass |
-| PERT estimation | 20 | Pass |
-| Pour Task Engine | 14 | Pass |
-| Rebar Lite | 10 | Pass |
-| Formwork 3-Phase | 8 | Pass |
-| **Monolit shared total** | **332** | **Pass** |
-| URS Matcher | 159 | Pass |
-| **Grand Total** | **512+** | **Pass** |
-
----
-
-## Quick Start Commands
+## Quick Start — следующая сессия
 
 ```bash
 # === КОМАНДА ДЛЯ СЛЕДУЮЩЕЙ СЕССИИ ===
 cd /home/user/STAVAGENT && \
-git checkout claude/price-parser-integration-cCRX3 && \
-git pull origin claude/price-parser-integration-cCRX3 && \
+git checkout main && \
+git pull origin main && \
 echo "=== Branch ready ===" && \
 git log --oneline -5 && \
 echo "=== Running shared tests ===" && \
-cd Monolit-Planner/shared && npx vitest run 2>&1 | tail -5 && \
-echo "=== Portal build check ===" && \
-cd ../../stavagent-portal/frontend && npx tsc --noEmit 2>&1 | tail -3 && \
-echo "=== All checks done ==="
+cd Monolit-Planner/shared && npx vitest run 2>&1 | tail -5
 ```
 
 ```bash
+# Проверить состояние Cloud Build
+gcloud builds list --project=YOUR_PROJECT_ID --limit=5
+
+# Ручной тест пуша Docker:
+cd stavagent-portal
+gcloud builds submit --config=../cloudbuild-portal.yaml .
+
+# Создать AR репозиторий (если ещё нет):
+gcloud artifacts repositories create stavagent \
+  --repository-format=docker \
+  --location=europe-west3
+
 # Run all shared tests (332)
 cd Monolit-Planner/shared && npx vitest run
-
-# Build Portal frontend
-cd stavagent-portal/frontend && npm run build
-
-# Start Monolit dev
-cd Monolit-Planner/backend && npm run dev   # :3001
-cd Monolit-Planner/frontend && npm run dev  # :5173
-
-# Start Portal dev
-cd stavagent-portal && npm run dev
-
-# Test price parser
-cd concrete-agent/packages/core-backend
-PYTHONPATH=. python -m pytest tests/test_price_parser.py -v
-
-# Parse a PDF (API)
-curl -X POST http://localhost:8000/api/v1/price-parser/parse \
-  -F "file=@cenik_beton.pdf"
-
-# Set env vars in GCR via CLI (пример)
-gcloud run services update concrete-agent \
-  --region=europe-west4 \
-  --set-env-vars ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 ---
 
-**Version:** 3.0.0
+**Version:** 3.1.0
 **Last Updated:** 2026-03-13
