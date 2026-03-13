@@ -26,6 +26,11 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
   const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
   const MONOLIT_URL = import.meta.env.VITE_MONOLIT_URL || window.location.origin;
+  const EXPORT_API_KEY = import.meta.env.VITE_EXPORT_API_KEY || '';
+
+  const exportAuthHeaders = EXPORT_API_KEY
+    ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${EXPORT_API_KEY}` }
+    : { 'Content-Type': 'application/json' };
 
   const handleRegistrovat = async () => {
     setLoading(true);
@@ -36,7 +41,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
       // 1. Export via backend (handles Portal + direct Registry sync)
       const exportRes = await fetch(`${API_URL}/api/export-to-registry/${projectId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: exportAuthHeaders,
         body: JSON.stringify({ monolit_url: MONOLIT_URL })
       });
 

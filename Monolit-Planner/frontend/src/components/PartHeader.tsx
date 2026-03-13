@@ -116,10 +116,14 @@ export default function PartHeader({
     setRegStatus('idle');
     setRegMessage('');
 
+    const exportKey = (import.meta as any).env?.VITE_EXPORT_API_KEY || '';
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (exportKey) headers['Authorization'] = `Bearer ${exportKey}`;
+
     try {
       const res = await fetch(`${API_URL}/api/export-to-registry/${projectId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify({ part_name: partName }),
       });
       const data = await res.json();

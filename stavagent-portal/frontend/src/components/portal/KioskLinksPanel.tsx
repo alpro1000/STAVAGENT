@@ -128,9 +128,13 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
       if (link.kiosk_type === 'monolit') {
         // Fetch from Monolit kiosk API and push to Portal
         // GET /api/export-to-registry/:bridge_id — read-only data export (no side effects)
+        const monolitExportKey = import.meta.env.VITE_MONOLIT_EXPORT_API_KEY || '';
         const kioskRes = await fetch(
           `https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/export-to-registry/${link.kiosk_project_id}`,
-          { signal: AbortSignal.timeout(30000) }
+          {
+            signal: AbortSignal.timeout(30000),
+            headers: monolitExportKey ? { 'Authorization': `Bearer ${monolitExportKey}` } : {},
+          }
         );
         if (!kioskRes.ok) throw new Error(`${label}: chyba ${kioskRes.status}`);
         const kioskData = await kioskRes.json();

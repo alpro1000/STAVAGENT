@@ -15,10 +15,47 @@ const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-
 const REGISTRY_URL = process.env.REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
 
 /**
+ * Authentication middleware for export endpoints.
+ *
+ * Requires EXPORT_API_KEY environment variable to be set.
+ * Callers must send:  Authorization: Bearer <key>
+ *                  or X-Export-Token: <key>
+ *
+ * Fails closed: if EXPORT_API_KEY is not configured the request is rejected
+ * in all environments (no silent dev bypass).
+ */
+function requireExportAuth(req, res, next) {
+  const expectedKey = process.env.EXPORT_API_KEY;
+
+  if (!expectedKey) {
+    console.error('[Export] EXPORT_API_KEY env var not set — rejecting request');
+    return res.status(503).json({
+      error: 'Export endpoint not configured. Set EXPORT_API_KEY environment variable.'
+    });
+  }
+
+  const authHeader = req.headers['authorization'];
+  const tokenHeader = req.headers['x-export-token'];
+
+  // Accept either "Authorization: Bearer <key>" or "X-Export-Token: <key>"
+  const provided =
+    (authHeader && authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null) ||
+    tokenHeader ||
+    null;
+
+  if (!provided || provided !== expectedKey) {
+    console.warn('[Export] Unauthorized export attempt — invalid or missing token');
+    return res.status(401).json({ error: 'Unauthorized — invalid or missing export token' });
+  }
+
+  next();
+}
+
+/**
  * POST /api/export-to-registry/:bridge_id
  * Export project to Registry with Portal integration
  */
-router.post('/:bridge_id', async (req, res) => {
+router.post('/:bridge_id', requireExportAuth, async (req, res) => {
   const { bridge_id } = req.params;
   // Optional: filter export to a single construction part
   const { monolit_url, part_name: filterPartName } = req.body || {};
@@ -405,7 +442,7 @@ function mapPositionToMaterials(partName, pos) {
  * Return project data in Portal-compatible format (for KioskLinksPanel pull).
  * Does NOT sync to Portal or Registry — read-only data export.
  */
-router.get('/:bridge_id', async (req, res) => {
+router.get('/:bridge_id', requireExportAuth, async (req, res) => {
   const { bridge_id } = req.params;
 
   if (!bridge_id || typeof bridge_id !== 'string' || bridge_id.length > 255) {
