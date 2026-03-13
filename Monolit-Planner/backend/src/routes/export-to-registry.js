@@ -15,11 +15,50 @@ const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-
 const REGISTRY_URL = process.env.REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
 
 /**
+ * Authentication middleware for export endpoints.
+ *
+ * Requires EXPORT_API_KEY environment variable to be set.
+ * Callers must send:  Authorization: Bearer <key>
+ *                  or X-Export-Token: <key>
+ *
+ * Fails closed: if EXPORT_API_KEY is not configured the request is rejected
+ * in all environments (no silent dev bypass).
+ */
+function requireExportAuth(req, res, next) {
+  const expectedKey = process.env.EXPORT_API_KEY;
+
+  if (!expectedKey) {
+    console.error('[Export] EXPORT_API_KEY env var not set — rejecting request');
+    return res.status(503).json({
+      error: 'Export endpoint not configured. Set EXPORT_API_KEY environment variable.'
+    });
+  }
+
+  const authHeader = req.headers['authorization'];
+  const tokenHeader = req.headers['x-export-token'];
+
+  // Accept either "Authorization: Bearer <key>" or "X-Export-Token: <key>"
+  const provided =
+    (authHeader && authHeader.startsWith('Bearer ') ? authHeader.slice(7) : null) ||
+    tokenHeader ||
+    null;
+
+  if (!provided || provided !== expectedKey) {
+    console.warn('[Export] Unauthorized export attempt — invalid or missing token');
+    return res.status(401).json({ error: 'Unauthorized — invalid or missing export token' });
+  }
+
+  next();
+}
+
+/**
  * POST /api/export-to-registry/:bridge_id
  * Export project to Registry with Portal integration
  */
-router.post('/:bridge_id', async (req, res) => {
+router.post('/:bridge_id', requireExportAuth, async (req, res) => {
   const { bridge_id } = req.params;
+  // Optional: filter export to a single construction part
+  const { monolit_url, part_name: filterPartName } = req.body || {};
 
   if (!bridge_id || typeof bridge_id !== 'string' || bridge_id.length > 255) {
     return res.status(400).json({ error: 'Invalid bridge_id' });
@@ -37,13 +76,20 @@ router.post('/:bridge_id', async (req, res) => {
       return res.status(404).json({ error: 'Project not found' });
     }
 
-    // 2. Fetch positions (already have calculated fields stored in DB)
-    const positions = await db.prepare(`
-      SELECT * FROM positions WHERE bridge_id = ? ORDER BY part_name, created_at
-    `).all(bridge_id);
+    // 2. Fetch positions — optionally filtered by part_name
+    let positions;
+    if (filterPartName) {
+      positions = await db.prepare(`
+        SELECT * FROM positions WHERE bridge_id = ? AND part_name = ? ORDER BY created_at
+      `).all(bridge_id, filterPartName);
+    } else {
+      positions = await db.prepare(`
+        SELECT * FROM positions WHERE bridge_id = ? ORDER BY part_name, created_at
+      `).all(bridge_id);
+    }
 
     if (!positions || positions.length === 0) {
-      return res.status(400).json({ error: 'No positions to export' });
+      return res.status(400).json({ error: filterPartName ? `Část "${filterPartName}" nemá žádné pozice` : 'No positions to export' });
     }
 
     // 3. Check/create Portal project (non-blocking – Portal may be sleeping on free tier)
@@ -151,25 +197,59 @@ router.post('/:bridge_id', async (req, res) => {
         console.log('[Export] Portal sync success');
 
         // Store position_instance_id mapping back in Monolit DB
+        // Also record registered_kros_total in metadata for drift detection
         if (importData.instance_mapping && importData.instance_mapping.length > 0) {
           for (const mapping of importData.instance_mapping) {
             try {
+              const pos = positions.find(p => p.id === mapping.monolit_id);
+              const krosTotal = pos?.kros_total_czk ?? null;
+              // Merge registered_kros_total into existing metadata JSON
+              const existingMeta = (() => {
+                try { return pos?.metadata ? JSON.parse(pos.metadata) : {}; } catch { return {}; }
+              })();
+              const newMeta = JSON.stringify({
+                ...existingMeta,
+                registered_kros_total: krosTotal,
+                registered_at: new Date().toISOString()
+              });
+
               if (db.isPostgres) {
                 const pool = db.getPool();
                 await pool.query(
-                  'UPDATE positions SET position_instance_id = $1 WHERE id = $2 AND position_instance_id IS NULL',
-                  [mapping.position_instance_id, mapping.monolit_id]
+                  `UPDATE positions SET position_instance_id = COALESCE(position_instance_id, $1), metadata = $2 WHERE id = $3`,
+                  [mapping.position_instance_id, newMeta, mapping.monolit_id]
                 );
               } else {
                 await db.prepare(
-                  'UPDATE positions SET position_instance_id = ? WHERE id = ? AND position_instance_id IS NULL'
-                ).run(mapping.position_instance_id, mapping.monolit_id);
+                  'UPDATE positions SET position_instance_id = COALESCE(position_instance_id, ?), metadata = ? WHERE id = ?'
+                ).run(mapping.position_instance_id, newMeta, mapping.monolit_id);
               }
             } catch (mapErr) {
               console.warn(`[Export] Failed to store instance mapping for ${mapping.monolit_id}: ${mapErr.message}`);
             }
           }
-          console.log(`[Export] ✅ Stored ${importData.instance_mapping.length} position_instance_id mappings`);
+          console.log(`[Export] ✅ Stored ${importData.instance_mapping.length} position_instance_id mappings with drift snapshot`);
+        }
+
+        // Also update drift snapshot for positions that already had position_instance_id (re-export)
+        const alreadyLinked = positions.filter(p => p.position_instance_id && !importData.instance_mapping?.some((m) => m.monolit_id === p.id));
+        for (const pos of alreadyLinked) {
+          try {
+            const existingMeta = (() => {
+              try { return pos.metadata ? JSON.parse(pos.metadata) : {}; } catch { return {}; }
+            })();
+            const newMeta = JSON.stringify({
+              ...existingMeta,
+              registered_kros_total: pos.kros_total_czk ?? null,
+              registered_at: new Date().toISOString()
+            });
+            if (db.isPostgres) {
+              const pool = db.getPool();
+              await pool.query('UPDATE positions SET metadata = $1 WHERE id = $2', [newMeta, pos.id]);
+            } else {
+              await db.prepare('UPDATE positions SET metadata = ? WHERE id = ?').run(newMeta, pos.id);
+            }
+          } catch { /* non-critical */ }
         }
       }
     } catch (portalErr) {
@@ -356,5 +436,92 @@ function mapPositionToMaterials(partName, pos) {
 
   return materials;
 }
+
+/**
+ * GET /api/export-to-registry/:bridge_id
+ * Return project data in Portal-compatible format (for KioskLinksPanel pull).
+ * Does NOT sync to Portal or Registry — read-only data export.
+ */
+router.get('/:bridge_id', requireExportAuth, async (req, res) => {
+  const { bridge_id } = req.params;
+
+  if (!bridge_id || typeof bridge_id !== 'string' || bridge_id.length > 255) {
+    return res.status(400).json({ error: 'Invalid bridge_id' });
+  }
+
+  try {
+    const project = await db.prepare(`
+      SELECT project_id, project_name, object_name, concrete_m3
+      FROM monolith_projects WHERE project_id = ?
+    `).get(bridge_id);
+
+    if (!project) return res.status(404).json({ error: 'Project not found' });
+
+    const positions = await db.prepare(`
+      SELECT * FROM positions WHERE bridge_id = ? ORDER BY part_name, created_at
+    `).all(bridge_id);
+
+    const positionsByPart = positions.reduce((acc, pos) => {
+      const partName = pos.part_name || 'Bez části';
+      if (!acc[partName]) acc[partName] = [];
+      acc[partName].push(pos);
+      return acc;
+    }, {});
+
+    const MONOLIT_FRONTEND_URL = process.env.MONOLIT_FRONTEND_URL || 'https://monolit-planner-frontend.vercel.app';
+
+    const objects = Object.entries(positionsByPart).map(([partName, partPositions]) => ({
+      code: partName,
+      name: `Objekt ${partName}`,
+      positions: partPositions.map(pos => ({
+        monolit_id: pos.id,
+        position_instance_id: pos.position_instance_id || null,
+        kod: pos.otskp_code || '',
+        popis: pos.item_name || partName,
+        mnozstvi: pos.qty || 0,
+        mj: pos.unit || '',
+        cena_jednotkova: pos.unit_cost_native || pos.kros_unit_czk || 0,
+        cena_celkem: pos.cost_czk || pos.kros_total_czk || 0,
+        monolith_payload: {
+          monolit_position_id: pos.id,
+          monolit_project_id: bridge_id,
+          part_name: partName,
+          monolit_url: `${MONOLIT_FRONTEND_URL}/?project=${bridge_id}`,
+          subtype: pos.subtype,
+          otskp_code: pos.otskp_code || null,
+          item_name: pos.item_name || null,
+          crew_size: pos.crew_size || 0,
+          wage_czk_ph: pos.wage_czk_ph || 0,
+          shift_hours: pos.shift_hours || 0,
+          days: pos.days || 0,
+          labor_hours: pos.labor_hours || 0,
+          cost_czk: pos.cost_czk || 0,
+          concrete_m3: pos.concrete_m3 || null,
+          unit_cost_on_m3: pos.unit_cost_on_m3 || null,
+          kros_unit_czk: pos.kros_unit_czk || null,
+          kros_total_czk: pos.kros_total_czk || null,
+          source_tag: 'MONOLIT_EXPORT',
+          confidence: 1.0,
+          calculated_at: pos.updated_at || new Date().toISOString()
+        },
+        tov: {
+          labor: mapPositionToLabor(pos),
+          machinery: mapPositionToMachinery(pos),
+          materials: mapPositionToMaterials(partName, pos)
+        }
+      }))
+    }));
+
+    res.json({
+      project_name: project.project_name || bridge_id,
+      project_id: bridge_id,
+      objects
+    });
+
+  } catch (error) {
+    console.error('[Export GET] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
 
 export default router;

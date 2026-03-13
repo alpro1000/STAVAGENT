@@ -558,6 +558,11 @@ export default function PositionsTable() {
                     setShowFormworkCalc(true);
                   }}
                   isLocked={isLocked}
+                  projectId={selectedBridge || undefined}
+                  onPartRegistered={() => {
+                    // Refresh positions so position_instance_id values update in UI
+                    queryClient.invalidateQueries({ queryKey: ['positions', selectedBridge] });
+                  }}
                 />
 
                 {/* Unified Table Wrapper - Synchronized header and body widths */}

@@ -7,6 +7,7 @@
  */
 
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { ArrowRight, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { API_URL } from '../services/api';
 
@@ -20,10 +21,16 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const queryClient = useQueryClient();
 
   const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
   const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
   const MONOLIT_URL = import.meta.env.VITE_MONOLIT_URL || window.location.origin;
+  const EXPORT_API_KEY = import.meta.env.VITE_EXPORT_API_KEY || '';
+
+  const exportAuthHeaders = EXPORT_API_KEY
+    ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${EXPORT_API_KEY}` }
+    : { 'Content-Type': 'application/json' };
 
   const handleRegistrovat = async () => {
     setLoading(true);
@@ -34,7 +41,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
       // 1. Export via backend (handles Portal + direct Registry sync)
       const exportRes = await fetch(`${API_URL}/api/export-to-registry/${projectId}`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: exportAuthHeaders,
         body: JSON.stringify({ monolit_url: MONOLIT_URL })
       });
 
@@ -42,6 +49,8 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
         const exportData = await exportRes.json();
         setStatus('success');
         setMessage(`Registrováno ${exportData.positions_count || 0} pozic`);
+        // Refresh positions so position_instance_id values appear in the table
+        queryClient.invalidateQueries({ queryKey: ['positions', projectId] });
 
         // Open Registry with portal project
         const registryUrl = exportData.registry_url || REGISTRY_URL;
@@ -98,6 +107,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
 
       setStatus('success');
       setMessage(`Registrováno ${objects.reduce((s, o) => s + o.positions.length, 0)} pozic`);
+      queryClient.invalidateQueries({ queryKey: ['positions', projectId] });
 
       // Open Registry
       const url = portalProjectId
@@ -184,12 +194,22 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const mapMachinery = (pos: any) => {
     const machinery = [];
     if (pos.subtype === 'beton' && pos.qty > 0) {
+      const estimateHours = Math.ceil(pos.qty / 20);
+      let pumpCost = estimateHours * 2500;
+      try {
+        if (pos.metadata) {
+          const meta = JSON.parse(pos.metadata);
+          if (typeof meta.pump_cost_czk === 'number' && meta.pump_cost_czk > 0) {
+            pumpCost = meta.pump_cost_czk;
+          }
+        }
+      } catch { /* use default */ }
       machinery.push({
         id: `mach_${pos.id}_pump`,
         name: 'Čerpadlo betonové směsi',
-        hours: Math.ceil(pos.qty / 20),
-        hourlyRate: 2500,
-        totalCost: Math.ceil(pos.qty / 20) * 2500
+        hours: estimateHours,
+        hourlyRate: estimateHours > 0 ? Math.round(pumpCost / estimateHours) : 2500,
+        totalCost: pumpCost
       });
     }
     return machinery;

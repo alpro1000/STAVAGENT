@@ -8,7 +8,7 @@ import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useConfig } from '../hooks/useConfig';
 import FormulaDetailsModal from './FormulaDetailsModal';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Send } from 'lucide-react';
 
 // AI Suggestion interface
 interface DaysSuggestion {
@@ -46,9 +46,75 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
   const [speedInput, setSpeedInput] = useState<string>('');
   const [isEditingSpeed, setIsEditingSpeed] = useState(false);
 
+  // Pump cost state (stored in metadata.pump_cost_czk)
+  const parsedMeta = (() => {
+    try { return position.metadata ? JSON.parse(position.metadata) : {}; } catch { return {}; }
+  })();
+  const defaultPumpCost = Math.ceil((position.qty || 0) / 20) * 2500;
+  const [pumpCost, setPumpCost] = useState<number>(
+    typeof parsedMeta.pump_cost_czk === 'number' ? parsedMeta.pump_cost_czk : defaultPumpCost
+  );
+
   // Work name editing state
   const [isEditingWorkName, setIsEditingWorkName] = useState(false);
   const [workNameInput, setWorkNameInput] = useState('');
+
+  // Portal TOV sync state
+  const [syncingToPortal, setSyncingToPortal] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'ok' | 'error'>('idle');
+
+  // Push this position's calculated data as DOV payload to Portal
+  const handleSyncToPortal = async () => {
+    if (!position.position_instance_id || syncingToPortal) return;
+    setSyncingToPortal(true);
+    setSyncStatus('idle');
+
+    const PORTAL_API = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
+    const professionMap: Record<string, string> = {
+      beton: 'Betonář', 'bednění': 'Tesař / Bednář', výztuž: 'Železář / Armovač', jiné: 'Stavební dělník'
+    };
+    const profession = professionMap[position.subtype] || 'Stavební dělník';
+    const crewSize = position.crew_size || 0;
+    const shiftHours = position.shift_hours || 0;
+    const days = position.days || 0;
+
+    const dovPayload = {
+      labor: [{
+        id: `lab_${position.id}`,
+        profession,
+        count: crewSize,
+        hours: shiftHours,
+        norm_hours: position.labor_hours || crewSize * shiftHours * days,
+        hourly_rate: position.wage_czk_ph || 0,
+        total_cost_czk: position.cost_czk || 0,
+      }],
+      labor_summary: {
+        total_norm_hours: position.labor_hours || crewSize * shiftHours * days,
+        total_workers: crewSize,
+        total_cost_czk: position.cost_czk || 0,
+      },
+      machinery: [],
+      machinery_summary: { total_machine_hours: 0, total_units: 0, total_cost_czk: 0 },
+      materials: [],
+      materials_summary: { total_cost_czk: 0, item_count: 0 },
+      formwork_rental: null,
+      pump_rental: null,
+      source_tag: 'MONOLIT_LIVE',
+    };
+
+    try {
+      const res = await fetch(
+        `${PORTAL_API}/api/positions/${position.position_instance_id}/dov`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ payload: dovPayload }), signal: AbortSignal.timeout(5000) }
+      );
+      setSyncStatus(res.ok ? 'ok' : 'error');
+    } catch {
+      setSyncStatus('error');
+    } finally {
+      setSyncingToPortal(false);
+      setTimeout(() => setSyncStatus('idle'), 3000);
+    }
+  };
 
   // Check if AI Days Suggestion feature is enabled
   const isAiDaysSuggestEnabled = config?.feature_flags?.FF_AI_DAYS_SUGGEST ?? false;
@@ -265,6 +331,15 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
   const handleCancelEditWorkName = () => {
     setIsEditingWorkName(false);
     setWorkNameInput('');
+  };
+
+  // Save pump rental cost to metadata.pump_cost_czk
+  const handlePumpRentalChange = (cost: number) => {
+    if (isLocked) return;
+    let meta: Record<string, unknown> = {};
+    try { if (position.metadata) meta = JSON.parse(position.metadata); } catch { /* ignore */ }
+    meta.pump_cost_czk = cost;
+    updatePositions([{ id: position.id, metadata: JSON.stringify(meta) }]);
   };
 
   return (
@@ -692,6 +767,35 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
           >
             ℹ️
           </button>
+          {/* Portal TOV sync — only visible when position is linked to Portal */}
+          {position.position_instance_id && (
+            <button
+              className="icon-btn"
+              onClick={handleSyncToPortal}
+              disabled={syncingToPortal}
+              title={
+                syncStatus === 'ok'
+                  ? '✅ Přeneseno do Portal TOV'
+                  : syncStatus === 'error'
+                  ? '⚠️ Přenos selhal – zkuste znovu'
+                  : '📤 Přenést do TOV\n\nOdešle výpočet (normohodiny, náklady)\npřímo do TOV tohoto záznamu v Registru'
+              }
+              style={{
+                color: syncStatus === 'ok' ? '#22c55e' : syncStatus === 'error' ? '#ef4444' : '#6366f1',
+                opacity: syncingToPortal ? 0.5 : 1,
+              }}
+            >
+              {syncingToPortal ? (
+                <span style={{ fontSize: '11px' }}>⏳</span>
+              ) : syncStatus === 'ok' ? (
+                <span style={{ fontSize: '13px' }}>✅</span>
+              ) : syncStatus === 'error' ? (
+                <span style={{ fontSize: '13px' }}>⚠️</span>
+              ) : (
+                <Send size={13} />
+              )}
+            </button>
+          )}
         </div>
       </td>
     </tr>
@@ -741,6 +845,55 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
               );
             }
             return <span>Technologická pauza • {curingDays} dní zrání betonu</span>;
+          })()}
+        </td>
+        <td></td>
+      </tr>
+    )}
+
+    {/* Pump sub-row - only for beton positions */}
+    {position.subtype === 'beton' && (
+      <tr className="pump-sub-row" style={{
+        background: 'var(--status-info-bg, #e3f2fd)',
+        borderBottom: '1px solid var(--border-default, #eee)'
+      }}>
+        {isLocked && <td></td>}
+        <td colSpan={2} style={{ padding: '4px 12px', fontSize: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ fontSize: '14px' }}>🔧</span>
+            <span style={{ fontWeight: 600, color: '#1565c0' }}>Čerpadlo betonu</span>
+          </div>
+        </td>
+        <td colSpan={7}></td>
+        <td style={{ padding: '4px 6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <input
+              type="number"
+              min={0}
+              step={500}
+              className="input-cell"
+              value={pumpCost}
+              onChange={(e) => setPumpCost(Math.max(0, parseFloat(e.target.value) || 0))}
+              onBlur={(e) => handlePumpRentalChange(Math.max(0, parseFloat(e.target.value) || 0))}
+              disabled={isLocked}
+              title="Celkové náklady na čerpadlo betonu (Kč). Uloží se do TOV export."
+              style={{ width: '80px', textAlign: 'right', fontWeight: 600, fontSize: '13px' }}
+            />
+            <span style={{ fontSize: '11px', color: 'var(--text-secondary)' }}>Kč</span>
+          </div>
+        </td>
+        <td colSpan={4} style={{ padding: '4px 12px', fontSize: '11px', color: 'var(--text-secondary)' }}>
+          {(() => {
+            const estimateHours = Math.ceil((position.qty || 0) / 20);
+            const estimate = estimateHours * 2500;
+            return (
+              <span>
+                Odhad: {position.qty || 0} m³ ÷ 20 m³/h × 2 500 Kč/h = <b style={{ color: '#1565c0' }}>{estimate.toLocaleString('cs-CZ')} Kč</b>
+                {pumpCost !== estimate && pumpCost !== defaultPumpCost && (
+                  <span style={{ marginLeft: '8px', color: '#4caf50' }}>✓ vlastní</span>
+                )}
+              </span>
+            );
           })()}
         </td>
         <td></td>

@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useMemo } from 'react';
 import OtskpAutocomplete from './OtskpAutocomplete';
-import { otskpAPI } from '../services/api';
+import { otskpAPI, API_URL } from '../services/api';
 import { calculateElementTotalDays } from '@stavagent/monolit-shared';
 import type { Position } from '@stavagent/monolit-shared';
 
@@ -23,6 +23,10 @@ interface Props {
   onOtskpCodeAndNameUpdate: (code: string, name: string, unitPrice?: number, unit?: string) => void;
   onOpenFormworkCalculator?: () => void;
   isLocked: boolean;
+  /** Project ID (bridge_id) — required for per-part registration */
+  projectId?: string;
+  /** Callback after successful part registration */
+  onPartRegistered?: () => void;
 }
 
 export default function PartHeader({
@@ -37,7 +41,9 @@ export default function PartHeader({
   onBetonQuantityUpdate,
   onOtskpCodeAndNameUpdate,
   onOpenFormworkCalculator,
-  isLocked
+  isLocked,
+  projectId,
+  onPartRegistered,
 }: Props) {
   // Calculate Kč/m³ for this part (for comparison with catalog)
   const calculatedPricePerM3 = betonQuantity > 0 && partTotalKrosCzk
@@ -75,6 +81,66 @@ export default function PartHeader({
   useEffect(() => {
     setLocalCatalogUnit(catalogUnit);
   }, [catalogUnit]);
+
+  // === Per-part registration state ===
+  const [registering, setRegistering] = useState(false);
+  const [regStatus, setRegStatus] = useState<'idle' | 'ok' | 'error'>('idle');
+  const [regMessage, setRegMessage] = useState('');
+
+  // Derive sync status from positions
+  const registeredCount = useMemo(
+    () => (partPositions || []).filter(p => p.position_instance_id).length,
+    [partPositions]
+  );
+  const totalCount = partPositions?.length ?? 0;
+  const allRegistered = registeredCount > 0 && registeredCount === totalCount;
+  const partiallyRegistered = registeredCount > 0 && registeredCount < totalCount;
+
+  // Drift detection: any position whose kros_total_czk differs from its registered value?
+  // We store registered_kros_total in position metadata at registration time.
+  const hasDrift = useMemo(() => {
+    if (registeredCount === 0) return false;
+    return (partPositions || []).some(p => {
+      if (!p.position_instance_id) return false;
+      try {
+        const meta = p.metadata ? JSON.parse(p.metadata) : {};
+        return typeof meta.registered_kros_total === 'number' &&
+          meta.registered_kros_total !== p.kros_total_czk;
+      } catch { return false; }
+    });
+  }, [partPositions, registeredCount]);
+
+  const handleRegisterPart = async () => {
+    if (!projectId || !partName || registering) return;
+    setRegistering(true);
+    setRegStatus('idle');
+    setRegMessage('');
+
+    const exportKey = (import.meta as any).env?.VITE_EXPORT_API_KEY || '';
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (exportKey) headers['Authorization'] = `Bearer ${exportKey}`;
+
+    try {
+      const res = await fetch(`${API_URL}/api/export-to-registry/${projectId}`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ part_name: partName }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+
+      setRegStatus('ok');
+      setRegMessage(`${data.positions_count ?? 0} pozic`);
+      onPartRegistered?.();
+      setTimeout(() => setRegStatus('idle'), 4000);
+    } catch (err) {
+      setRegStatus('error');
+      setRegMessage(err instanceof Error ? err.message : 'Chyba');
+      setTimeout(() => setRegStatus('idle'), 5000);
+    } finally {
+      setRegistering(false);
+    }
+  };
 
   // Fetch catalog price when OTSKP code exists but price is not loaded
   useEffect(() => {
@@ -278,6 +344,70 @@ export default function PartHeader({
             >
               Kalkulátor bednění
             </button>
+          </div>
+        )}
+
+        {/* Per-part registration button + sync status badge */}
+        {projectId && (
+          <div className="concrete-param" style={{ marginLeft: 'auto' }}>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap' }}>
+              {allRegistered && !hasDrift && (
+                <span title={`Všechny pozice registrovány${regMessage ? ` (${regMessage})` : ''}`}
+                  style={{ color: '#22c55e', fontSize: '13px' }}>
+                  ✅ {registeredCount}/{totalCount}
+                </span>
+              )}
+              {partiallyRegistered && !hasDrift && (
+                <span title={`${registeredCount} z ${totalCount} pozic registrováno`}
+                  style={{ color: '#f59e0b', fontSize: '13px' }}>
+                  🔗 {registeredCount}/{totalCount}
+                </span>
+              )}
+              {hasDrift && (
+                <span title="Výpočet se změnil od posledního přenosu — klikněte Registrovat znovu"
+                  style={{ color: '#ef4444', fontSize: '13px', fontWeight: 700 }}>
+                  ⚠️ změněno
+                </span>
+              )}
+              {registeredCount === 0 && regStatus === 'idle' && (
+                <span style={{ color: 'var(--text-tertiary)', fontSize: '11px' }}>
+                  neregistrováno
+                </span>
+              )}
+            </label>
+            <button
+              onClick={handleRegisterPart}
+              disabled={registering || isLocked}
+              title={
+                registeredCount > 0
+                  ? `Aktualizovat TOV pro část "${partName}" v Registru (${registeredCount}/${totalCount} pozic propojeno)`
+                  : `Registrovat část "${partName}" do Registru rozpočtů`
+              }
+              style={{
+                background: regStatus === 'ok'
+                  ? '#22c55e'
+                  : regStatus === 'error'
+                  ? '#ef4444'
+                  : registeredCount > 0 ? '#7c3aed' : '#3b82f6',
+                color: 'white',
+                border: 'none',
+                borderRadius: 'var(--radius-sm)',
+                padding: '6px 12px',
+                cursor: (registering || isLocked) ? 'not-allowed' : 'pointer',
+                fontWeight: 600,
+                fontSize: '12px',
+                opacity: (registering || isLocked) ? 0.6 : 1,
+                whiteSpace: 'nowrap',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px',
+              }}
+            >
+              {registering ? '⏳ Registruji...' : regStatus === 'ok' ? `✅ Hotovo (${regMessage})` : regStatus === 'error' ? `⚠️ Chyba` : registeredCount > 0 ? '📤 Aktualizovat TOV' : '📤 Registrovat část'}
+            </button>
+            {regStatus === 'error' && regMessage && (
+              <span style={{ fontSize: '11px', color: '#ef4444', marginTop: '2px' }}>{regMessage}</span>
+            )}
           </div>
         )}
       </div>

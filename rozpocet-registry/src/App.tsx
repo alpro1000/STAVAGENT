@@ -20,7 +20,128 @@ import { loadFromBackend, mergeProjects, debouncedPushToBackend } from './servic
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
+import type { TOVData } from './types/unified';
 import { Trash2, FileSpreadsheet, Download, Package, ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight, ChevronDown, RotateCcw, GitCompareArrows } from 'lucide-react';
+
+/**
+ * Convert portal item data (tov_labor/tov_machinery/tov_materials OR dov_payload)
+ * into Registry TOVData format and seed registryStore.
+ *
+ * Two sources:
+ * 1. item.dov_payload — set by Registry writeBackDOV, already typed (profession, machine_type…)
+ * 2. item.tovData     — set during Monolit export (uses `name` instead of `profession`)
+ */
+function buildTOVFromPortalItem(item: Record<string, unknown>): TOVData | null {
+  // Prefer dov_payload (contains Registry edits including formwork/pump)
+  const dov = item.dov_payload as Record<string, unknown> | null | undefined;
+  if (dov && (
+    (Array.isArray(dov.labor) && dov.labor.length > 0) ||
+    (Array.isArray(dov.machinery) && dov.machinery.length > 0) ||
+    (Array.isArray(dov.materials) && dov.materials.length > 0)
+  )) {
+    const labor = (dov.labor as Record<string, unknown>[]) || [];
+    const machinery = (dov.machinery as Record<string, unknown>[]) || [];
+    const materials = (dov.materials as Record<string, unknown>[]) || [];
+    return {
+      labor: labor.map((l, i) => ({
+        id: String(l.id || `lab_${i}`),
+        profession: String(l.profession || l.name || ''),
+        count: Number(l.count ?? 1),
+        hours: Number(l.hours ?? 0),
+        normHours: Number(l.norm_hours ?? l.normHours ?? 0),
+        hourlyRate: Number(l.hourly_rate ?? l.hourlyRate ?? 0),
+        totalCost: Number(l.total_cost_czk ?? l.totalCost ?? 0),
+      })),
+      laborSummary: {
+        totalNormHours: Number((dov.labor_summary as Record<string, unknown>)?.total_norm_hours ?? 0),
+        totalWorkers: Number((dov.labor_summary as Record<string, unknown>)?.total_workers ?? 0),
+      },
+      machinery: machinery.map((m, i) => ({
+        id: String(m.id || `mach_${i}`),
+        type: String(m.machine_type ?? m.type ?? m.name ?? ''),
+        count: Number(m.count ?? 1),
+        hours: Number(m.hours ?? 0),
+        machineHours: Number(m.machine_hours ?? m.machineHours ?? Number(m.count ?? 1) * Number(m.hours ?? 0)),
+        hourlyRate: Number(m.hourly_rate ?? m.hourlyRate ?? 0),
+        totalCost: Number(m.total_cost_czk ?? m.totalCost ?? 0),
+      })),
+      machinerySummary: {
+        totalMachineHours: Number((dov.machinery_summary as Record<string, unknown>)?.total_machine_hours ?? 0),
+        totalUnits: Number((dov.machinery_summary as Record<string, unknown>)?.total_units ?? 0),
+      },
+      materials: materials.map((m, i) => ({
+        id: String(m.id || `mat_${i}`),
+        name: String(m.name ?? ''),
+        quantity: Number(m.quantity ?? 0),
+        unit: String(m.unit ?? ''),
+        unitPrice: Number(m.unit_price ?? m.unitPrice ?? 0),
+        totalCost: Number(m.total_cost_czk ?? m.totalCost ?? 0),
+      })),
+      materialsSummary: {
+        totalCost: Number((dov.materials_summary as Record<string, unknown>)?.total_cost_czk ?? 0),
+        itemCount: materials.length,
+      },
+      formworkRental: Array.isArray(dov.formwork_rental) ? dov.formwork_rental as TOVData['formworkRental'] : [],
+      pumpRental: (dov.pump_rental as TOVData['pumpRental']) ?? undefined,
+    };
+  }
+
+  // Fallback: tov_labor/machinery/materials from initial Monolit export
+  const raw = item.tovData as { labor?: unknown[]; machinery?: unknown[]; materials?: unknown[] } | null | undefined;
+  if (!raw) return null;
+  const labor = Array.isArray(raw.labor) ? raw.labor : [];
+  const machinery = Array.isArray(raw.machinery) ? raw.machinery : [];
+  const materials = Array.isArray(raw.materials) ? raw.materials : [];
+  if (labor.length === 0 && machinery.length === 0 && materials.length === 0) return null;
+
+  const typedLabor = (labor as Record<string, unknown>[]).map((l, i) => ({
+    id: String(l.id || `lab_${i}`),
+    // Monolit exports `name`, Registry uses `profession` — normalise here
+    profession: String(l.profession ?? l.name ?? ''),
+    count: Number(l.count ?? 1),
+    hours: Number(l.hours ?? 0),
+    normHours: Number(l.normHours ?? Number(l.count ?? 1) * Number(l.hours ?? 0) * Number((l as Record<string, unknown>).days ?? 1)),
+    hourlyRate: Number(l.hourlyRate ?? 0),
+    totalCost: Number(l.totalCost ?? 0),
+  }));
+  const typedMachinery = (machinery as Record<string, unknown>[]).map((m, i) => ({
+    id: String(m.id || `mach_${i}`),
+    // Monolit exports `name`, Registry uses `type`
+    type: String(m.type ?? m.name ?? ''),
+    count: Number(m.count ?? 1),
+    hours: Number(m.hours ?? 0),
+    machineHours: Number(m.machineHours ?? Number(m.count ?? 1) * Number(m.hours ?? 0)),
+    hourlyRate: Number(m.hourlyRate ?? 0),
+    totalCost: Number(m.totalCost ?? 0),
+  }));
+  const typedMaterials = (materials as Record<string, unknown>[]).map((m, i) => ({
+    id: String(m.id || `mat_${i}`),
+    name: String(m.name ?? ''),
+    quantity: Number(m.quantity ?? 0),
+    unit: String(m.unit ?? ''),
+    unitPrice: Number(m.unitPrice ?? 0),
+    totalCost: Number(m.totalCost ?? 0),
+  }));
+
+  return {
+    labor: typedLabor,
+    laborSummary: {
+      totalNormHours: typedLabor.reduce((s, l) => s + l.normHours, 0),
+      totalWorkers: typedLabor.reduce((s, l) => s + l.count, 0),
+    },
+    machinery: typedMachinery,
+    machinerySummary: {
+      totalMachineHours: typedMachinery.reduce((s, m) => s + m.machineHours, 0),
+      totalUnits: typedMachinery.reduce((s, m) => s + m.count, 0),
+    },
+    materials: typedMaterials,
+    materialsSummary: {
+      totalCost: typedMaterials.reduce((s, m) => s + (m.totalCost ?? 0), 0),
+      itemCount: typedMaterials.length,
+    },
+    formworkRental: [],
+  };
+}
 
 function App() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
@@ -407,6 +528,21 @@ function App() {
       addProject(newProject);
       linkToPortal(newProject.id, portalProjectId, portalProject.name);
       setSelectedProject(newProject.id);
+
+      // Seed registryStore.tovData from Portal TOV data so TOVModal shows Monolit calculations.
+      // Two sources: item.dov_payload (Registry edits stored in Portal) or item.tovData (Monolit export).
+      const { setItemTOV } = useRegistryStore.getState();
+      let seededCount = 0;
+      for (const sheet of portalProject.sheets) {
+        for (const item of sheet.items) {
+          const tov = buildTOVFromPortalItem(item);
+          if (tov) {
+            setItemTOV(item.id, tov);
+            seededCount++;
+          }
+        }
+      }
+      if (seededCount > 0) console.log(`[Portal Import] Seeded TOV for ${seededCount} items`);
 
       alert(`✅ Načteno z Portal: ${portalProject.sheets.length} objektů`);
     } catch (error) {
