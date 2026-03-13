@@ -12,6 +12,8 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-13 | rozpocet-registry + Portal | Session 10 (audit only): Registry→Portal infinite loop fix verified — syncInProgress guard, !portalLink check, kiosk_links UNIQUE constraint ok | ✅ No changes |
+| 2026-03-11 | Portal + Monolit | Session 9: CORS cleanup (duplicate origins removed), full env vars reference for all 5 GCR services | ✅ Pushed |
 | 2026-03-08 | Portal + Monolit | Session 8: Betonárny discovery, AWS Bedrock, Objednávka betonu page, CORE proxy, Universal Parser pipeline, CorePanel inline styles, curing days fix | ✅ Pushed |
 | 2026-03-07 | Monolit shared | Calculator audit: 3 bugs fixed (calculateEstimatedWeeks 22d mode ÷7→÷5, dead effectiveRebarDays, pour-decision NaN guard). 332 tests pass | ✅ Pushed |
 | 2026-03-07 | Monolit + Registry | TariffPage CRUD UI (/tariffs), Pump engine unification (registry mirrors shared API, Gauss Easter) | ✅ Pushed |

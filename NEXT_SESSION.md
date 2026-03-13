@@ -1,25 +1,19 @@
-# NEXT SESSION — 2026-03-11 (Deck Pour + Skruž Rules)
+# NEXT SESSION — 2026-03-13 (Audit: Registry loop confirmed fixed)
 
-## Краткое резюме последней сессии
+## Краткое резюме последней сессии (Session 10 — 2026-03-13)
 
-- В `Monolit-Planner/shared/src/calculators/planner-orchestrator.ts` внедрены изменения по бизнес-логике непрерывной монолитной заливки без швов.
-- Добавлены сверхурочные (+25% после 10ч) в стоимость бетонных работ.
-- Для mostovková deska введена минимальная выдержка skruž 21 день от последней бетонной операции.
-- Изменения закоммичены (`cc3ef1c`) и оформлены в PR с заголовком:
-  `Handle uninterrupted bridge-deck pours with overtime and skruž hold`.
+**Тип:** Code audit (только чтение, изменений нет)
+**Ветка:** `claude/run-shared-tests-0HJWR`
 
-## Что проверить в следующей сессии
+### Проверено: бесконечный цикл создания проектов в rozpocet-registry
 
-1. Пройтись по inline-комментариям к PR и уточнить спорные места реализации.
-2. Добавить/обновить unit-тесты на:
-   - overtime-расчет (граница 10h и >10h),
-   - авто-скейл osádky при длинной заливке,
-   - удлинение schedule при skruž hold.
-3. При необходимости вынести параметры в конфиг:
-   - max crew cap (12),
-   - overtime threshold (10h),
-   - overtime premium (1.25),
-   - skruž hold days (21).
+Предыдущий commit `d5836e6` (FIX: Registry→Portal infinite loop) был проаудирован — все 4 исправления подтверждены корректными:
+
+1. **`portalAutoSync.ts`** — `syncInProgress` Set предотвращает параллельные in-flight таймеры. `!project.portalLink` внутри таймера проверяет ОБНОВЛЁННЫЙ объект (тот, что приходит из подписчика после `linkToPortal`) → повторный `onAutoLink` не вызывается.
+2. **`integration.js`** — `ROLLBACK` перед `BEGIN` (строка 415) чистит зависшую транзакцию pooled-соединения. UPSERT с `ON CONFLICT` для `portal_projects` (строки 443–457) — стale `portal_project_id` из localStorage больше не вызывает FK violation.
+3. **`kiosk_links` UNIQUE constraint** — проверен в `schema-postgres.sql` строка 207: `UNIQUE(portal_project_id, kiosk_type)` существует → `ON CONFLICT DO UPDATE` в integration.js работает корректно.
+
+**Итог:** зацикливание полностью устранено. Новых багов не обнаружено.
 
 ---
 
@@ -77,6 +71,7 @@
 ### Previous Sessions Summary
 | Session | Date | Key Work |
 |---------|------|----------|
+| 10 | 2026-03-13 | Audit: Registry→Portal loop fix verified (portalAutoSync + integration.js + kiosk_links UNIQUE) |
 | 9 | 2026-03-11 | CORS cleanup, env vars docs |
 | 8 | 2026-03-08 | Betonárny, Bedrock, Objednávka betonu, Universal Parser, curing fix |
 | 7 | 2026-03-07 | Price Parser UI, batch comparison |
@@ -324,5 +319,5 @@ gcloud run services update concrete-agent \
 
 ---
 
-**Version:** 2.9.0
-**Last Updated:** 2026-03-11
+**Version:** 3.0.0
+**Last Updated:** 2026-03-13
