@@ -41,3 +41,4 @@ steps:
       - --region=europe-west3
       - --platform=managed
       - --allow-unauthenticated
+      - --update-secrets=ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,GOOGLE_AI_KEY=GOOGLE_AI_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,PPLX_API_KEY=PPLX_API_KEY:latest

@@ -28,7 +28,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const MONOLIT_URL = import.meta.env.VITE_MONOLIT_URL || window.location.origin;
   const EXPORT_API_KEY = import.meta.env.VITE_EXPORT_API_KEY || '';
 
-  const exportAuthHeaders = EXPORT_API_KEY
+  const exportAuthHeaders: Record<string, string> = EXPORT_API_KEY
     ? { 'Content-Type': 'application/json', 'Authorization': `Bearer ${EXPORT_API_KEY}` }
     : { 'Content-Type': 'application/json' };
 
