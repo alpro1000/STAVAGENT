@@ -8,7 +8,7 @@ import { useAppContext } from '../context/AppContext';
 import { usePositions } from '../hooks/usePositions';
 import { useConfig } from '../hooks/useConfig';
 import FormulaDetailsModal from './FormulaDetailsModal';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Send } from 'lucide-react';
 
 // AI Suggestion interface
 interface DaysSuggestion {
@@ -58,6 +58,63 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
   // Work name editing state
   const [isEditingWorkName, setIsEditingWorkName] = useState(false);
   const [workNameInput, setWorkNameInput] = useState('');
+
+  // Portal TOV sync state
+  const [syncingToPortal, setSyncingToPortal] = useState(false);
+  const [syncStatus, setSyncStatus] = useState<'idle' | 'ok' | 'error'>('idle');
+
+  // Push this position's calculated data as DOV payload to Portal
+  const handleSyncToPortal = async () => {
+    if (!position.position_instance_id || syncingToPortal) return;
+    setSyncingToPortal(true);
+    setSyncStatus('idle');
+
+    const PORTAL_API = (import.meta as any).env?.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
+    const professionMap: Record<string, string> = {
+      beton: 'Betonář', 'bednění': 'Tesař / Bednář', výztuž: 'Železář / Armovač', jiné: 'Stavební dělník'
+    };
+    const profession = professionMap[position.subtype] || 'Stavební dělník';
+    const crewSize = position.crew_size || 0;
+    const shiftHours = position.shift_hours || 0;
+    const days = position.days || 0;
+
+    const dovPayload = {
+      labor: [{
+        id: `lab_${position.id}`,
+        profession,
+        count: crewSize,
+        hours: shiftHours,
+        norm_hours: position.labor_hours || crewSize * shiftHours * days,
+        hourly_rate: position.wage_czk_ph || 0,
+        total_cost_czk: position.cost_czk || 0,
+      }],
+      labor_summary: {
+        total_norm_hours: position.labor_hours || crewSize * shiftHours * days,
+        total_workers: crewSize,
+        total_cost_czk: position.cost_czk || 0,
+      },
+      machinery: [],
+      machinery_summary: { total_machine_hours: 0, total_units: 0, total_cost_czk: 0 },
+      materials: [],
+      materials_summary: { total_cost_czk: 0, item_count: 0 },
+      formwork_rental: null,
+      pump_rental: null,
+      source_tag: 'MONOLIT_LIVE',
+    };
+
+    try {
+      const res = await fetch(
+        `${PORTAL_API}/api/positions/${position.position_instance_id}/dov`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ payload: dovPayload }), signal: AbortSignal.timeout(5000) }
+      );
+      setSyncStatus(res.ok ? 'ok' : 'error');
+    } catch {
+      setSyncStatus('error');
+    } finally {
+      setSyncingToPortal(false);
+      setTimeout(() => setSyncStatus('idle'), 3000);
+    }
+  };
 
   // Check if AI Days Suggestion feature is enabled
   const isAiDaysSuggestEnabled = config?.feature_flags?.FF_AI_DAYS_SUGGEST ?? false;
@@ -710,6 +767,35 @@ export default function PositionRow({ position, isLocked = false, partNumSets }:
           >
             ℹ️
           </button>
+          {/* Portal TOV sync — only visible when position is linked to Portal */}
+          {position.position_instance_id && (
+            <button
+              className="icon-btn"
+              onClick={handleSyncToPortal}
+              disabled={syncingToPortal}
+              title={
+                syncStatus === 'ok'
+                  ? '✅ Přeneseno do Portal TOV'
+                  : syncStatus === 'error'
+                  ? '⚠️ Přenos selhal – zkuste znovu'
+                  : '📤 Přenést do TOV\n\nOdešle výpočet (normohodiny, náklady)\npřímo do TOV tohoto záznamu v Registru'
+              }
+              style={{
+                color: syncStatus === 'ok' ? '#22c55e' : syncStatus === 'error' ? '#ef4444' : '#6366f1',
+                opacity: syncingToPortal ? 0.5 : 1,
+              }}
+            >
+              {syncingToPortal ? (
+                <span style={{ fontSize: '11px' }}>⏳</span>
+              ) : syncStatus === 'ok' ? (
+                <span style={{ fontSize: '13px' }}>✅</span>
+              ) : syncStatus === 'error' ? (
+                <span style={{ fontSize: '13px' }}>⚠️</span>
+              ) : (
+                <Send size={13} />
+              )}
+            </button>
+          )}
         </div>
       </td>
     </tr>
