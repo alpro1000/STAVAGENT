@@ -357,4 +357,91 @@ function mapPositionToMaterials(partName, pos) {
   return materials;
 }
 
+/**
+ * GET /api/export-to-registry/:bridge_id
+ * Return project data in Portal-compatible format (for KioskLinksPanel pull).
+ * Does NOT sync to Portal or Registry — read-only data export.
+ */
+router.get('/:bridge_id', async (req, res) => {
+  const { bridge_id } = req.params;
+
+  if (!bridge_id || typeof bridge_id !== 'string' || bridge_id.length > 255) {
+    return res.status(400).json({ error: 'Invalid bridge_id' });
+  }
+
+  try {
+    const project = await db.prepare(`
+      SELECT project_id, project_name, object_name, concrete_m3
+      FROM monolith_projects WHERE project_id = ?
+    `).get(bridge_id);
+
+    if (!project) return res.status(404).json({ error: 'Project not found' });
+
+    const positions = await db.prepare(`
+      SELECT * FROM positions WHERE bridge_id = ? ORDER BY part_name, created_at
+    `).all(bridge_id);
+
+    const positionsByPart = positions.reduce((acc, pos) => {
+      const partName = pos.part_name || 'Bez části';
+      if (!acc[partName]) acc[partName] = [];
+      acc[partName].push(pos);
+      return acc;
+    }, {});
+
+    const MONOLIT_FRONTEND_URL = process.env.MONOLIT_FRONTEND_URL || 'https://monolit-planner-frontend.vercel.app';
+
+    const objects = Object.entries(positionsByPart).map(([partName, partPositions]) => ({
+      code: partName,
+      name: `Objekt ${partName}`,
+      positions: partPositions.map(pos => ({
+        monolit_id: pos.id,
+        position_instance_id: pos.position_instance_id || null,
+        kod: pos.otskp_code || '',
+        popis: pos.item_name || partName,
+        mnozstvi: pos.qty || 0,
+        mj: pos.unit || '',
+        cena_jednotkova: pos.unit_cost_native || pos.kros_unit_czk || 0,
+        cena_celkem: pos.cost_czk || pos.kros_total_czk || 0,
+        monolith_payload: {
+          monolit_position_id: pos.id,
+          monolit_project_id: bridge_id,
+          part_name: partName,
+          monolit_url: `${MONOLIT_FRONTEND_URL}/?project=${bridge_id}`,
+          subtype: pos.subtype,
+          otskp_code: pos.otskp_code || null,
+          item_name: pos.item_name || null,
+          crew_size: pos.crew_size || 0,
+          wage_czk_ph: pos.wage_czk_ph || 0,
+          shift_hours: pos.shift_hours || 0,
+          days: pos.days || 0,
+          labor_hours: pos.labor_hours || 0,
+          cost_czk: pos.cost_czk || 0,
+          concrete_m3: pos.concrete_m3 || null,
+          unit_cost_on_m3: pos.unit_cost_on_m3 || null,
+          kros_unit_czk: pos.kros_unit_czk || null,
+          kros_total_czk: pos.kros_total_czk || null,
+          source_tag: 'MONOLIT_EXPORT',
+          confidence: 1.0,
+          calculated_at: pos.updated_at || new Date().toISOString()
+        },
+        tov: {
+          labor: mapPositionToLabor(pos),
+          machinery: mapPositionToMachinery(pos),
+          materials: mapPositionToMaterials(partName, pos)
+        }
+      }))
+    }));
+
+    res.json({
+      project_name: project.project_name || bridge_id,
+      project_id: bridge_id,
+      objects
+    });
+
+  } catch (error) {
+    console.error('[Export GET] Error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 export default router;

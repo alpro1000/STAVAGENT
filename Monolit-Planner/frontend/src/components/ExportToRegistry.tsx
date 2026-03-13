@@ -7,6 +7,7 @@
  */
 
 import { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { ArrowRight, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { API_URL } from '../services/api';
 
@@ -20,6 +21,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
+  const queryClient = useQueryClient();
 
   const PORTAL_API = import.meta.env.VITE_PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
   const REGISTRY_URL = import.meta.env.VITE_REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
@@ -42,6 +44,8 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
         const exportData = await exportRes.json();
         setStatus('success');
         setMessage(`Registrováno ${exportData.positions_count || 0} pozic`);
+        // Refresh positions so position_instance_id values appear in the table
+        queryClient.invalidateQueries({ queryKey: ['positions', projectId] });
 
         // Open Registry with portal project
         const registryUrl = exportData.registry_url || REGISTRY_URL;
@@ -98,6 +102,7 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
 
       setStatus('success');
       setMessage(`Registrováno ${objects.reduce((s, o) => s + o.positions.length, 0)} pozic`);
+      queryClient.invalidateQueries({ queryKey: ['positions', projectId] });
 
       // Open Registry
       const url = portalProjectId
