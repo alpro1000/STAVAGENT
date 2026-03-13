@@ -54,6 +54,7 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
+      - --update-secrets=DATABASE_URL=DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest
 
 images:
   - $_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend:$SHORT_SHA
