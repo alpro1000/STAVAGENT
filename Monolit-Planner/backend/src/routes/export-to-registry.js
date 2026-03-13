@@ -20,6 +20,8 @@ const REGISTRY_URL = process.env.REGISTRY_URL || 'https://stavagent-backend-ktwx
  */
 router.post('/:bridge_id', async (req, res) => {
   const { bridge_id } = req.params;
+  // Optional: filter export to a single construction part
+  const { monolit_url, part_name: filterPartName } = req.body || {};
 
   if (!bridge_id || typeof bridge_id !== 'string' || bridge_id.length > 255) {
     return res.status(400).json({ error: 'Invalid bridge_id' });
@@ -37,13 +39,20 @@ router.post('/:bridge_id', async (req, res) => {
       return res.status(404).json({ error: 'Project not found' });
     }
 
-    // 2. Fetch positions (already have calculated fields stored in DB)
-    const positions = await db.prepare(`
-      SELECT * FROM positions WHERE bridge_id = ? ORDER BY part_name, created_at
-    `).all(bridge_id);
+    // 2. Fetch positions — optionally filtered by part_name
+    let positions;
+    if (filterPartName) {
+      positions = await db.prepare(`
+        SELECT * FROM positions WHERE bridge_id = ? AND part_name = ? ORDER BY created_at
+      `).all(bridge_id, filterPartName);
+    } else {
+      positions = await db.prepare(`
+        SELECT * FROM positions WHERE bridge_id = ? ORDER BY part_name, created_at
+      `).all(bridge_id);
+    }
 
     if (!positions || positions.length === 0) {
-      return res.status(400).json({ error: 'No positions to export' });
+      return res.status(400).json({ error: filterPartName ? `Část "${filterPartName}" nemá žádné pozice` : 'No positions to export' });
     }
 
     // 3. Check/create Portal project (non-blocking – Portal may be sleeping on free tier)
@@ -151,25 +160,59 @@ router.post('/:bridge_id', async (req, res) => {
         console.log('[Export] Portal sync success');
 
         // Store position_instance_id mapping back in Monolit DB
+        // Also record registered_kros_total in metadata for drift detection
         if (importData.instance_mapping && importData.instance_mapping.length > 0) {
           for (const mapping of importData.instance_mapping) {
             try {
+              const pos = positions.find(p => p.id === mapping.monolit_id);
+              const krosTotal = pos?.kros_total_czk ?? null;
+              // Merge registered_kros_total into existing metadata JSON
+              const existingMeta = (() => {
+                try { return pos?.metadata ? JSON.parse(pos.metadata) : {}; } catch { return {}; }
+              })();
+              const newMeta = JSON.stringify({
+                ...existingMeta,
+                registered_kros_total: krosTotal,
+                registered_at: new Date().toISOString()
+              });
+
               if (db.isPostgres) {
                 const pool = db.getPool();
                 await pool.query(
-                  'UPDATE positions SET position_instance_id = $1 WHERE id = $2 AND position_instance_id IS NULL',
-                  [mapping.position_instance_id, mapping.monolit_id]
+                  `UPDATE positions SET position_instance_id = COALESCE(position_instance_id, $1), metadata = $2 WHERE id = $3`,
+                  [mapping.position_instance_id, newMeta, mapping.monolit_id]
                 );
               } else {
                 await db.prepare(
-                  'UPDATE positions SET position_instance_id = ? WHERE id = ? AND position_instance_id IS NULL'
-                ).run(mapping.position_instance_id, mapping.monolit_id);
+                  'UPDATE positions SET position_instance_id = COALESCE(position_instance_id, ?), metadata = ? WHERE id = ?'
+                ).run(mapping.position_instance_id, newMeta, mapping.monolit_id);
               }
             } catch (mapErr) {
               console.warn(`[Export] Failed to store instance mapping for ${mapping.monolit_id}: ${mapErr.message}`);
             }
           }
-          console.log(`[Export] ✅ Stored ${importData.instance_mapping.length} position_instance_id mappings`);
+          console.log(`[Export] ✅ Stored ${importData.instance_mapping.length} position_instance_id mappings with drift snapshot`);
+        }
+
+        // Also update drift snapshot for positions that already had position_instance_id (re-export)
+        const alreadyLinked = positions.filter(p => p.position_instance_id && !importData.instance_mapping?.some((m) => m.monolit_id === p.id));
+        for (const pos of alreadyLinked) {
+          try {
+            const existingMeta = (() => {
+              try { return pos.metadata ? JSON.parse(pos.metadata) : {}; } catch { return {}; }
+            })();
+            const newMeta = JSON.stringify({
+              ...existingMeta,
+              registered_kros_total: pos.kros_total_czk ?? null,
+              registered_at: new Date().toISOString()
+            });
+            if (db.isPostgres) {
+              const pool = db.getPool();
+              await pool.query('UPDATE positions SET metadata = $1 WHERE id = $2', [newMeta, pos.id]);
+            } else {
+              await db.prepare('UPDATE positions SET metadata = ? WHERE id = ?').run(newMeta, pos.id);
+            }
+          } catch { /* non-critical */ }
         }
       }
     } catch (portalErr) {
