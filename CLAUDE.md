@@ -13,7 +13,8 @@
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
 | 2026-03-13 | Monolit + Portal | Session 11: Pump Calculator sub-row in PositionRow (metadata.pump_cost_czk, handlePumpRentalChange, TOV export uses actual cost). Kiosk E2E fixes: GET /api/export-to-registry/:id endpoint (KioskLinksPanel import was broken — route didn't exist), KioskLinksPanel URL fix, positions query invalidation after export so position_instance_id appear in UI. Write-back audit: portalWriteBack.js + dovWriteBack.ts both complete, no action needed. | ✅ Pushed |
-| 2026-03-12 | All services | Session 10: Cloud Build CI/CD (4 cloudbuild-*.yaml per service + guard steps + triggers/ dir), bug fixes: OTSKP variant suffix, import-from-registry 429/500, kiosk unlink 404, DocumentSummary missing helpers. PRs #591–#597. GCR блокер: нужен AR repo или Container Registry API | ✅ Pushed |
+| 2026-03-13 | rozpocet-registry + Portal | Session 10b (audit): Registry→Portal infinite loop fix verified — syncInProgress guard, !portalLink check, kiosk_links UNIQUE constraint ok | ✅ No changes |
+| 2026-03-12 | All services | Session 10a: Cloud Build CI/CD (4 cloudbuild-*.yaml + guard steps + triggers/), bug fixes: OTSKP variant suffix, import-from-registry 429/500, kiosk unlink 404. PRs #591–#597. GCR блокер: нужен AR repo | ✅ Pushed |
 | 2026-03-11 | Portal + Monolit | Session 9: CORS cleanup (дубликаты origins), bridge-deck logic (overtime +25%, skruž hold 21d), env vars docs | ✅ Pushed |
 | 2026-03-08 | Portal + Monolit | Session 8: Betonárny discovery, AWS Bedrock, Objednávka betonu page, CORE proxy, Universal Parser pipeline, CorePanel inline styles, curing days fix | ✅ Pushed |
 | 2026-03-07 | Monolit shared | Calculator audit: 3 bugs fixed (calculateEstimatedWeeks 22d mode ÷7→÷5, dead effectiveRebarDays, pour-decision NaN guard). 332 tests pass | ✅ Pushed |
