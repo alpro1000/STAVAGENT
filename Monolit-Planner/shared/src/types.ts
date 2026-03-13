@@ -44,6 +44,9 @@ export interface Position {
   // Portal PositionInstance link (for cross-kiosk write-back)
   position_instance_id?: string;
 
+  // Flexible metadata (JSON string in DB) — stores pump_cost_czk, etc.
+  metadata?: string;
+
   // Metadata
   has_rfi?: boolean;
   rfi_message?: string;

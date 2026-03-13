@@ -184,12 +184,22 @@ export function ExportToRegistry({ projectId, projectName, disabled }: ExportToR
   const mapMachinery = (pos: any) => {
     const machinery = [];
     if (pos.subtype === 'beton' && pos.qty > 0) {
+      const estimateHours = Math.ceil(pos.qty / 20);
+      let pumpCost = estimateHours * 2500;
+      try {
+        if (pos.metadata) {
+          const meta = JSON.parse(pos.metadata);
+          if (typeof meta.pump_cost_czk === 'number' && meta.pump_cost_czk > 0) {
+            pumpCost = meta.pump_cost_czk;
+          }
+        }
+      } catch { /* use default */ }
       machinery.push({
         id: `mach_${pos.id}_pump`,
         name: 'Čerpadlo betonové směsi',
-        hours: Math.ceil(pos.qty / 20),
-        hourlyRate: 2500,
-        totalCost: Math.ceil(pos.qty / 20) * 2500
+        hours: estimateHours,
+        hourlyRate: estimateHours > 0 ? Math.round(pumpCost / estimateHours) : 2500,
+        totalCost: pumpCost
       });
     }
     return machinery;
