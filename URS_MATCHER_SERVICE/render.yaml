@@ -1,4 +1,7 @@
-# URS Matcher Service - Render Deployment Blueprint
+# DEPRECATED: Production uses Google Cloud Run (see cloudbuild-urs.yaml)
+# This file is kept for reference only.
+#
+# URS Matcher Service - Render Deployment Blueprint (LEGACY)
 # https://render.com/docs/blueprint-spec
 #
 # IMPORTANT: This service should ONLY redeploy when files in URS_MATCHER_SERVICE/ change

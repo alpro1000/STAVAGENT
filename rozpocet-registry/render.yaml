@@ -1,4 +1,6 @@
-# Render.com deployment configuration for Rozpočet Registry
+# DEPRECATED: Frontend deployed on Vercel. This file is kept for reference only.
+#
+# Render.com deployment configuration for Rozpočet Registry (LEGACY)
 # Static React/Vite application
 
 services:

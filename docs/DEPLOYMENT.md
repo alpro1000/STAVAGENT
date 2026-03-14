@@ -1,476 +1,212 @@
-# Deployment Guide: Render
+# Deployment Guide: Google Cloud Run
 
-**How to deploy StavAgent services to Render.com**
+**How to deploy StavAgent services to Google Cloud Run**
 
 ---
 
 ## Overview
 
-StavAgent is designed for deployment on Render.com with the following architecture:
+StavAgent is deployed on Google Cloud Platform with the following architecture:
 
 ```
-StavAgent Monorepo (Single GitHub Repository)
+StavAgent Monorepo (GitHub)
+    ↓ push to main
+    ├── Cloud Build (per-service triggers)
+    │   ├── cloudbuild-concrete.yaml  → concrete-agent
+    │   ├── cloudbuild-monolit.yaml   → monolit-planner-api
+    │   ├── cloudbuild-portal.yaml    → stavagent-portal-backend
+    │   ├── cloudbuild-urs.yaml       → urs-matcher-service
+    │   └── cloudbuild-registry.yaml  → rozpocet-registry-backend
     ↓
-    ├── concrete-agent (Python FastAPI service)
-    ├── stavagent-portal (Node.js Express + React)
-    └── Monolit-Planner (Node.js Express + React)
-         ↓
-    All deployed as separate services on Render
-         ↓
-    Shared PostgreSQL database
-    Shared Redis cache (optional)
+    ├── Artifact Registry (Docker images)
+    │   europe-west3-docker.pkg.dev/$PROJECT_ID/stavagent/
+    ↓
+    ├── Cloud Run (5 backends, europe-west3)
+    ↓
+    └── Cloud SQL PostgreSQL 15 (stavagent-db)
+         ├── stavagent_portal
+         ├── monolit_planner
+         └── rozpocet_registry
+
+Frontends: Vercel (auto-deploy from GitHub)
 ```
 
-**Key Points**:
+**Key Points:**
 - **Single monorepo** on GitHub
-- **Three independent services** deployed separately
-- **Each service has its own** root directory, port, and environment
-- **Shared database** (one PostgreSQL instance for all services)
-- **DNS/Load Balancer** routes requests to appropriate service
+- **Five independent backends** deployed as Cloud Run services
+- **Cloud Build triggers** deploy only changed services (push to main)
+- **Cloud SQL PostgreSQL 15** shared database (instance: `stavagent-db`)
+- **Secret Manager** for API keys and credentials
+- **Frontends** deployed separately on Vercel
 
 ---
 
 ## Prerequisites
 
-1. **GitHub Account**: Repository must be on GitHub
-2. **Render Account**: Free or paid (https://render.com)
-3. **PostgreSQL Database**: Create on Render or use external
-4. **Environment Variables**: API keys, secrets, database URLs
-5. **Domain** (optional): For production use
+1. **GCP Project** with billing enabled
+2. **APIs enabled:**
+   - Cloud Run API
+   - Cloud Build API
+   - Artifact Registry API
+   - Cloud SQL Admin API
+   - Secret Manager API
+3. **GitHub** connected to Cloud Build
+4. **gcloud CLI** installed and authenticated
 
 ---
 
-## Deployment Architecture
+## Production URLs
 
-### Service Configuration
-
-Each service on Render:
-
-```
-Service: concrete-agent
-├── Type: Web Service (Python)
-├── Root Directory: concrete-agent/packages/core-backend/
-├── Build Command: pip install -r requirements.txt
-├── Start Command: python -m uvicorn app.main:app --host 0.0.0.0 --port 10000
-├── Port: 10000 (auto-assigned by Render)
-└── Environment: Python 3.10+
-
-Service: stavagent-portal
-├── Type: Web Service (Node.js)
-├── Root Directory: stavagent-portal/
-├── Build Command: npm install && npm run build
-├── Start Command: npm run start
-├── Port: 10000 (auto-assigned by Render)
-└── Environment: Node 18+
-
-Service: Monolit-Planner
-├── Type: Web Service (Node.js)
-├── Root Directory: Monolit-Planner/
-├── Build Command: npm install && npm run build
-├── Start Command: npm run start
-├── Port: 10000 (auto-assigned by Render)
-└── Environment: Node 18+
-
-Database: PostgreSQL
-├── Type: PostgreSQL Database
-├── Plan: Standard or Premium
-└── Used by: All three services
-```
+| Service | Type | URL |
+|---------|------|-----|
+| concrete-agent (CORE) | Cloud Run | https://concrete-agent-3uxelthc4q-ey.a.run.app |
+| stavagent-portal | Cloud Run | https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app |
+| stavagent-portal | Vercel | https://www.stavagent.cz |
+| Monolit-Planner | Cloud Run | https://monolit-planner-api-3uxelthc4q-ey.a.run.app |
+| Monolit-Planner | Vercel | https://monolit-planner-frontend.vercel.app |
+| URS_MATCHER_SERVICE | Cloud Run | https://urs-matcher-service-3uxelthc4q-ey.a.run.app |
+| rozpocet-registry | Cloud Run | https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app |
+| rozpocet-registry | Vercel | https://stavagent-backend-ktwx.vercel.app |
 
 ---
 
-## Deployment Steps
+## CI/CD: Cloud Build
 
-### Step 1: Prepare the Repository
+### How it works
 
-Ensure your repository has these files in each service root:
+1. Push changes to `main` branch
+2. Cloud Build trigger detects which service changed (via `includedFiles` filter)
+3. Guard step verifies files actually changed (`git diff`)
+4. Docker image built and pushed to Artifact Registry
+5. Cloud Run service updated with new image
 
-**concrete-agent/packages/core-backend/**:
-- `requirements.txt` - Python dependencies
-- `.env.example` - Example environment variables
-- `app/main.py` - FastAPI entry point
+### Trigger configuration
 
-**stavagent-portal/**:
-- `package.json` - Node dependencies (root)
-- `.env.example` - Example environment files
-- `backend/server.js` - Backend entry point
-- `render.yaml` - (Optional) Render deployment config
-
-**Monolit-Planner/**:
-- `package.json` - Node dependencies (root)
-- `.env.example` - Example environment files
-- `backend/src/server.js` - Backend entry point
-- `render.yaml` - (Optional) Render deployment config
-
-### Step 2: Create PostgreSQL Database on Render
-
-1. Log in to Render.com
-2. Click "New +" → "PostgreSQL"
-3. Configure:
-   - **Name**: `stavagent-postgres`
-   - **Region**: Your preferred region
-   - **PostgreSQL Version**: 14+
-4. Note the **Internal Database URL** (for services) and **Database URL** (for external access)
-
-Example Internal URL:
-```
-postgresql://user:password@stavagent-postgres.c2hmhk8j8j.postgres.onrender.com:5432/stavagent
-```
-
-### Step 3: Create Redis Cache (Optional)
-
-For better performance with caching and task queues:
-
-1. Click "New +" → "Redis"
-2. Configure:
-   - **Name**: `stavagent-redis`
-   - **Region**: Same as PostgreSQL
-3. Note the **Internal Redis URL**
-
-### Step 4: Deploy concrete-agent (Python)
-
-1. Click "New +" → "Web Service"
-2. Connect your GitHub repository
-3. Configure:
-   - **Name**: `stavagent-concrete-agent`
-   - **GitHub Repo**: Your STAVAGENT repo
-   - **Root Directory**: `concrete-agent/packages/core-backend/`
-   - **Environment**: Python 3
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `python -m uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-
-4. Set Environment Variables:
-```env
-PYTHONUNBUFFERED=1
-FASTAPI_ENV=production
-
-# Database
-DATABASE_URL=postgresql://... (from Step 2)
-
-# Redis (optional)
-REDIS_URL=redis://... (from Step 3)
-
-# API Keys
-ANTHROPIC_API_KEY=sk-ant-...
-OPENAI_API_KEY=sk-... (if using Workflow B)
-PERPLEXITY_API_KEY=... (if using KB search)
-
-# Feature Flags
-ENABLE_WORKFLOW_A=true
-ENABLE_WORKFLOW_B=true
-ENABLE_KROS_MATCHING=true
-```
-
-5. Click "Create Web Service"
-6. Wait for deployment to complete (5-10 minutes)
-7. Note the service URL: `https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app`
-
-### Step 5: Deploy stavagent-portal (Node.js)
-
-1. Click "New +" → "Web Service"
-2. Connect your GitHub repository
-3. Configure:
-   - **Name**: `stavagent-portal`
-   - **GitHub Repo**: Your STAVAGENT repo
-   - **Root Directory**: `stavagent-portal/`
-   - **Environment**: Node
-   - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm run start` (or `node backend/server.js`)
-
-4. Set Environment Variables:
-```env
-NODE_ENV=production
-
-# Backend Database
-DATABASE_URL=postgresql://... (from Step 2)
-
-# JWT
-JWT_SECRET=your-secret-key-here (generate: `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`)
-JWT_EXPIRE_HOURS=24
-
-# External Services
-CORE_API_URL=https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app (from Step 4)
-KIOSK_MONOLIT_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app (you'll get this in Step 6)
-
-# Frontend (for build)
-VITE_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
-
-# Email (optional)
-SMTP_HOST=smtp.gmail.com
-SMTP_PORT=587
-SMTP_USER=...
-SMTP_PASS=...
-```
-
-5. Click "Create Web Service"
-6. Wait for deployment (5-10 minutes)
-7. Note the service URL: `https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app`
-
-### Step 6: Deploy Monolit-Planner (Node.js Kiosk)
-
-1. Click "New +" → "Web Service"
-2. Connect your GitHub repository
-3. Configure:
-   - **Name**: `stavagent-monolit`
-   - **GitHub Repo**: Your STAVAGENT repo
-   - **Root Directory**: `Monolit-Planner/`
-   - **Environment**: Node
-   - **Build Command**: `npm install && npm run build`
-   - **Start Command**: `npm run start` (or `node backend/src/server.js`)
-
-4. Set Environment Variables:
-```env
-NODE_ENV=production
-
-# Kiosk Database
-DATABASE_URL=postgresql://... (from Step 2)
-
-# External Services
-PORTAL_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app (from Step 5)
-CORE_API_URL=https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app (from Step 4)
-
-# Frontend
-VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
-```
-
-5. Click "Create Web Service"
-6. Wait for deployment (5-10 minutes)
-7. Note the service URL: `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
-
-### Step 7: Update Portal Configuration
-
-Go back to stavagent-portal service and update:
-
-```env
-KIOSK_MONOLIT_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
-```
-
-Then redeploy.
-
----
-
-## Service URLs
-
-After deployment, you'll have:
+Each service has a trigger file in `triggers/`:
 
 ```
-Frontend (Portal):       https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
-Backend (Portal):        https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app/api
-Core API:                https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app
-Monolit API:             https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api
-
-concrete-agent Docs:     https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app/docs
-concrete-agent ReDoc:    https://stavagent-concrete-agent-3uxelthc4q-ey.a.run.app/redoc
+triggers/
+├── concrete-agent.yaml     → watches concrete-agent/**
+├── monolit.yaml            → watches Monolit-Planner/**
+├── portal.yaml             → watches stavagent-portal/**
+├── urs.yaml                → watches URS_MATCHER_SERVICE/**
+└── registry.yaml           → watches rozpocet-registry-backend/**
 ```
 
----
+### Import triggers
 
-## Configuration
-
-### Database Initialization
-
-On first deployment, databases are created automatically. If you need to run migrations:
-
-**For Portal or Monolit** (Node.js with migrations):
 ```bash
-# Add to build command:
-npm install && npm run migrations:up && npm run build
+gcloud builds triggers import --source=triggers/concrete-agent.yaml
+gcloud builds triggers import --source=triggers/monolit.yaml
+gcloud builds triggers import --source=triggers/portal.yaml
+gcloud builds triggers import --source=triggers/urs.yaml
+gcloud builds triggers import --source=triggers/registry.yaml
 ```
 
-**For concrete-agent** (Python with Alembic):
+### Manual deploy
+
 ```bash
-# Add to build command:
-pip install -r requirements.txt && alembic upgrade head
+# Deploy a specific service manually
+gcloud builds submit --config=cloudbuild-concrete.yaml --region=europe-west3
+gcloud builds submit --config=cloudbuild-monolit.yaml --region=europe-west3
+gcloud builds submit --config=cloudbuild-portal.yaml --region=europe-west3
+gcloud builds submit --config=cloudbuild-urs.yaml --region=europe-west3
+gcloud builds submit --config=cloudbuild-registry.yaml --region=europe-west3
 ```
 
-### Environment Variables Checklist
+---
 
-**concrete-agent**:
-- [ ] `DATABASE_URL` - PostgreSQL connection
-- [ ] `ANTHROPIC_API_KEY` - Claude API key
-- [ ] `OPENAI_API_KEY` - GPT-4 API key (if using Workflow B)
-- [ ] `FASTAPI_ENV=production`
+## Database: Cloud SQL
 
-**stavagent-portal**:
-- [ ] `DATABASE_URL` - PostgreSQL connection
-- [ ] `JWT_SECRET` - Secure random string
-- [ ] `CORE_API_URL` - concrete-agent URL
-- [ ] `KIOSK_MONOLIT_URL` - Monolit-Planner URL
-- [ ] `NODE_ENV=production`
+**Instance:** `stavagent-db` (PostgreSQL 15, europe-west3)
 
-**Monolit-Planner**:
-- [ ] `DATABASE_URL` - PostgreSQL connection
-- [ ] `PORTAL_API_URL` - Portal URL
-- [ ] `CORE_API_URL` - concrete-agent URL
-- [ ] `NODE_ENV=production`
+**Databases:**
+- `stavagent_portal` — Portal service
+- `monolit_planner` — Monolit Planner service
+- `rozpocet_registry` — Registry backend
+
+**Connection:** Cloud SQL Proxy (automatic via `--add-cloudsql-instances` in cloudbuild)
+
+---
+
+## Secrets: Secret Manager
+
+All sensitive values stored in GCP Secret Manager:
+
+| Secret Name | Used By | Description |
+|-------------|---------|-------------|
+| `PORTAL_DATABASE_URL` | stavagent-portal | PostgreSQL connection string |
+| `MONOLIT_DATABASE_URL` | monolit-planner-api | PostgreSQL connection string |
+| `REGISTRY_DATABASE_URL` | rozpocet-registry-backend | PostgreSQL connection string |
+| `JWT_SECRET` | stavagent-portal | JWT signing key |
+| `GOOGLE_API_KEY` | concrete-agent | Gemini API key |
+| `ANTHROPIC_API_KEY` | concrete-agent, urs-matcher | Claude API key |
+| `GOOGLE_AI_KEY` | urs-matcher | Google AI key |
+| `OPENAI_API_KEY` | urs-matcher | OpenAI API key |
+| `PPLX_API_KEY` | urs-matcher | Perplexity API key |
+
+### Create a secret
+
+```bash
+echo -n "secret-value" | gcloud secrets create SECRET_NAME --data-file=-
+```
+
+### Update a secret
+
+```bash
+echo -n "new-value" | gcloud secrets versions add SECRET_NAME --data-file=-
+```
 
 ---
 
 ## Monitoring & Troubleshooting
 
-### View Logs
-
-In Render dashboard:
-1. Click on service
-2. Click "Logs"
-3. Stream live logs or download history
-
-### Common Issues
-
-**Service Won't Start**:
-- Check logs for error messages
-- Verify build command is correct
-- Ensure start command matches entry point
-
-**Database Connection Error**:
-- Verify `DATABASE_URL` environment variable
-- Check PostgreSQL database is running
-- Ensure firewall rules allow Render → PostgreSQL
-
-**Services Can't Talk to Each Other**:
-- Verify environment URLs are correct
-- Use internal URLs for inter-service communication
-- Check CORS settings
-
-**Performance Issues**:
-- Upgrade PostgreSQL plan
-- Enable Redis caching
-- Check logs for slow queries
-
-### Restart a Service
-
-1. Click on service in Render dashboard
-2. Click "Settings"
-3. Click "Restart Service"
-
-### View Metrics
-
-1. Click on service
-2. Click "Metrics"
-3. View CPU, Memory, Network usage
-
----
-
-## Custom Domain (Optional)
-
-To use your own domain instead of `*.onrender.com`:
-
-1. In Render dashboard, click on service
-2. Click "Settings"
-3. Scroll to "Custom Domain"
-4. Enter your domain (e.g., `app.stavagent.com`)
-5. Update DNS records at your domain provider
-6. Render will auto-provision SSL certificate
-
----
-
-## Scaling & Performance
-
-### For Small Load (< 100 users)
-- PostgreSQL: Standard instance
-- No Redis needed
-- Services: Default plan sufficient
-
-### For Medium Load (100-1000 users)
-- PostgreSQL: Upgrade to larger instance
-- Enable Redis for caching
-- Consider upgrading service plans
-
-### For Large Load (> 1000 users)
-- PostgreSQL: Premium plan or separate cluster
-- Redis: Larger instance
-- Services: Upgrade to professional plans
-- Consider load balancer
-
----
-
-## Backup & Recovery
-
-### PostgreSQL Backups
-
-Render automatically creates daily backups. To restore:
-
-1. Click on PostgreSQL in Render dashboard
-2. Click "Backups"
-3. Select a backup point
-4. Click "Restore"
-
-### Manual Database Export
+### View logs
 
 ```bash
-# Export PostgreSQL data
-pg_dump $DATABASE_URL > backup.sql
-
-# Restore from backup
-psql $DATABASE_URL < backup.sql
+gcloud run services logs read concrete-agent --region europe-west3 --limit 50
+gcloud run services logs read monolit-planner-api --region europe-west3 --limit 50
 ```
 
----
+### Check service status
 
-## Continuous Deployment
+```bash
+gcloud run services describe concrete-agent --region europe-west3 --format="value(status.url)"
+```
 
-Render automatically redeploys when you push to your GitHub repository:
+### Health checks
 
-1. Push changes to main branch
-2. Render detects the change
-3. Runs build command
-4. Deploys new version
-5. Service is updated with zero downtime
+```bash
+curl https://concrete-agent-3uxelthc4q-ey.a.run.app/health
+curl https://monolit-planner-api-3uxelthc4q-ey.a.run.app/health
+curl https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app/health
+curl https://urs-matcher-service-3uxelthc4q-ey.a.run.app/health
+curl https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/health
+```
 
-To disable auto-deployment:
-1. Service → Settings → Build & Deploy
-2. Toggle "Auto-Deploy" off
+### Common issues
 
----
+**Service Won't Start:**
+- Check Cloud Build logs: `gcloud builds list --limit 5`
+- Check Cloud Run logs in GCP Console
+- Verify Dockerfile builds locally
 
-## Security Checklist
-
-- [ ] Use strong JWT_SECRET (32+ random characters)
-- [ ] Rotate API keys regularly
-- [ ] Enable HTTPS (automatic with Render)
-- [ ] Use environment variables for all secrets (not hardcoded)
-- [ ] Set proper CORS origins
-- [ ] Enable rate limiting on APIs
-- [ ] Use strong database passwords
-- [ ] Regularly update dependencies
-- [ ] Enable database backups
-- [ ] Monitor logs for suspicious activity
+**Database Connection Error:**
+- Verify `--add-cloudsql-instances` flag in cloudbuild
+- Check Cloud SQL instance is running
+- Verify secret exists: `gcloud secrets versions access latest --secret=DATABASE_URL_SECRET`
 
 ---
 
-## Cost Estimation
+## Cost Optimization
 
-### Typical Monthly Cost (Rough)
-
-| Service | Plan | Cost |
-|---------|------|------|
-| concrete-agent | Web Service | $7/month |
-| stavagent-portal | Web Service | $7/month |
-| Monolit-Planner | Web Service | $7/month |
-| PostgreSQL | Standard | $15/month |
-| **Total** | | **~$36/month** |
-
-Prices vary based on usage. See https://render.com/pricing for current rates.
+- **Cloud Run:** Pay only for requests (min instances = 0 by default)
+- **Cloud SQL:** Shared instance for all services
+- **Artifact Registry:** Cleanup old images periodically
+- **Keep-Alive:** GitHub Actions prevents cold starts (see KEEP_ALIVE_SETUP.md)
 
 ---
 
-## References
-
-- **Render Docs**: https://render.com/docs
-- **GitHub Integration**: https://render.com/docs/github
-- **Environment Variables**: https://render.com/docs/configure-environment
-- **PostgreSQL on Render**: https://render.com/docs/databases
-
----
-
-## Support
-
-- **Issues**: [GitHub Issues](https://github.com/alpro1000/STAVAGENT/issues)
-- **Render Support**: https://render.com/support
-- **Documentation**: See `/docs` directory
-
----
-
-**Created**: November 2025
-**Last Updated**: November 2025
-**Status**: Production-ready
+**Created:** November 2025 (Render)
+**Migrated to GCP:** March 2026
+**Last Updated:** 2026-03-14

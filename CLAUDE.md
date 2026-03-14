@@ -807,11 +807,11 @@ Import triggers: `gcloud builds triggers import --source=triggers/{service}.yaml
 
 ### Awaiting User Action
 1. **Cloud Build Triggers** (GCP) - Import triggers via `gcloud builds triggers import --source=triggers/*.yaml` if not yet created
-2. **Environment Variables** (Render) - `PERPLEXITY_API_KEY`, `OPENAI_API_KEY` for concrete-agent
-3. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Render DB shell
+2. **Environment Variables** (GCP Secret Manager) - `PERPLEXITY_API_KEY`, `OPENAI_API_KEY` for concrete-agent
+3. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Cloud SQL shell
 4. **Portal Backend Deploy** - Phase 8 DB migration (position_instance_id columns + 13 endpoints)
 5. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
-6. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Render secrets
+6. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Cloud Run env
 
 ### Recently Completed (March 2-6)
 - ✅ PERT 3-point estimation + Monte Carlo simulation (20 tests)
@@ -855,10 +855,10 @@ Import triggers: `gcloud builds triggers import --source=triggers/{service}.yaml
 | `BACKLOG.md` | Pending tasks and priorities |
 | `README.md` | Project overview (Russian) |
 | `DESIGN_SYSTEM.md` | Digital Concrete design specification |
-| `KEEP_ALIVE_SETUP.md` | Render Free Tier sleep prevention guide |
+| `KEEP_ALIVE_SETUP.md` | Cloud Run keep-alive (cold start prevention) |
 | `UNIFIED_ARCHITECTURE.md` | Portal-centric project integration |
 | `UNIFIED_ARCHITECTURE_IMPLEMENTATION_PLAN.md` | Detailed implementation plan (Weeks 1-9) |
-| `render.yaml` | Render Blueprint deployment config |
+| `render.yaml` | Legacy Render config (deprecated, see cloudbuild-*.yaml) |
 | `docs/POSITION_INSTANCE_ARCHITECTURE.ts` | Two-level identity model (PositionInstance + PositionTemplate) v1.0 |
 | `docs/MONOLIT_REGISTRY_INTEGRATION.md` | Monolit-Registry integration guide (Phase 1+2) |
 | `docs/UNIFIED_REGISTRY_WEEKS_1-3_SUMMARY.md` | Unified Registry Foundation summary |

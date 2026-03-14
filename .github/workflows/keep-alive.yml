@@ -8,7 +8,7 @@ on:
 
 jobs:
   keep-alive:
-    name: Ping Services to Prevent Sleep
+    name: Ping Cloud Run Services to Prevent Cold Starts
     runs-on: ubuntu-latest
 
     strategy:

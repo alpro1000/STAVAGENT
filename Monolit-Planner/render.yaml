@@ -1,4 +1,7 @@
-# Render deployment configuration
+# DEPRECATED: Production uses Google Cloud Run (see cloudbuild-monolit.yaml)
+# This file is kept for reference only.
+#
+# Render deployment configuration (LEGACY)
 # https://render.com/docs/blueprint-spec
 
 services:

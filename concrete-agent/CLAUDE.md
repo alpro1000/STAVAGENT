@@ -215,7 +215,7 @@ All other code remains identical - this is purely a structural reorganization.
   - ✅ Dependencies installed (SQLAlchemy 2.0.36, asyncpg, Alembic)
   - ✅ Alembic configured for async migrations
   - ✅ Initial schema migration created (10 tables, 30+ indexes)
-  - ⏳ Migration testing (pending Render PostgreSQL)
+  - ✅ Migration testing (Cloud SQL PostgreSQL)
 - [x] **Day 3 (Nov 7):** SQLAlchemy models & relationships ✅
   - ✅ Created app/db/models/ structure (FastAPI best practice)
   - ✅ Base model with UUIDMixin & TimestampMixin
@@ -476,7 +476,7 @@ CORE_TIMEOUT=30000                  # 30s timeout
 - ✅ Nov 18: Live implementation (endpoint, client, fallback)
 - ✅ Nov 20: PRODUCTION FIX + Complete documentation (CORE_INTEGRATION.md)
   - Endpoint corrected: `/api/upload` (not `/workflow-a/start`)
-  - Auto-deployment to production (Render)
+  - Auto-deployment to production (Cloud Run)
   - Full API docs, examples, troubleshooting
 - ⏳ Nov 21-23: Performance tuning (Redis caching, Celery optimization)
 

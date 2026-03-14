@@ -1,5 +1,7 @@
-# STAVAGENT - Render Deployment Blueprint
-# Backend only - Frontend deployed on Vercel
+# DEPRECATED: Production uses Google Cloud Run (see cloudbuild-*.yaml)
+# This file is kept for reference only. Do not use for deployment.
+#
+# STAVAGENT - Render Deployment Blueprint (LEGACY)
 # https://render.com/docs/blueprint-spec
 
 services:
