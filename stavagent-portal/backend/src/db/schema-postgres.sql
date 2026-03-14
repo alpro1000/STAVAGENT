@@ -173,6 +173,7 @@ CREATE TABLE IF NOT EXISTS portal_projects (
   core_status VARCHAR(50) DEFAULT 'not_sent',
   core_audit_result VARCHAR(50),
   core_last_sync TIMESTAMP,
+  stavba_name VARCHAR(255),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -282,4 +283,11 @@ CREATE INDEX IF NOT EXISTS idx_chat_messages_created ON chat_messages(created_at
 CREATE INDEX IF NOT EXISTS idx_portal_documents_project ON portal_documents(portal_project_id);
 CREATE INDEX IF NOT EXISTS idx_portal_documents_type ON portal_documents(document_type);
 CREATE INDEX IF NOT EXISTS idx_portal_documents_source ON portal_documents(source_file_id);
+
+-- ============================================================================
+-- MIGRATIONS (safe to re-run, uses IF NOT EXISTS / ADD COLUMN IF NOT EXISTS)
+-- ============================================================================
+
+-- Add stavba_name to portal_projects (required by portal-projects.js)
+ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS stavba_name VARCHAR(255);
 
