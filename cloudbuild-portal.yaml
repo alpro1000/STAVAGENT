@@ -3,8 +3,8 @@
 ###############################################################
 substitutions:
   _REGION: europe-west3
-  _PROJECT_ID: project-947a512a-481d-49b5-81c
-  _AR_REPO: stavagent-repo
+  _AR_REPO: stavagent
+  _CLOUD_SQL_INSTANCE: stavagent-db
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -14,7 +14,7 @@ steps:
       - -c
       - |
         git fetch --depth=2 2>/dev/null || true
-        CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --format="" HEAD)
+        CHANGED=$$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --format="" HEAD)
         echo "Changed files: $$CHANGED"
         if ! echo "$$CHANGED" | grep -q "^stavagent-portal/"; then
           echo "No changes in stavagent-portal/ — cancelling build"
@@ -30,9 +30,9 @@ steps:
       - -f
       - stavagent-portal/Dockerfile
       - -t
-      - $_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
       - -t
-      - $_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend:latest
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:latest
       - stavagent-portal
 
   - name: gcr.io/cloud-builders/docker
@@ -40,24 +40,25 @@ steps:
     waitFor: [build-portal]
     args:
       - push
-      - $_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend
       - --all-tags
 
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  - name: gcr.io/cloud-builders/gcloud
     id: deploy-portal
     waitFor: [push-portal]
     args:
       - run
       - deploy
       - stavagent-portal-backend
-      - --image=$_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
-      - --update-secrets=DATABASE_URL=DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest
+      - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
+      - --update-secrets=DATABASE_URL=PORTAL_DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest
 
 images:
-  - $_REGION-docker.pkg.dev/$_PROJECT_ID/$_AR_REPO/stavagent-portal-backend:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
 
 timeout: 600s
 options:

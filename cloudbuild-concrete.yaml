@@ -1,14 +1,21 @@
+###############################################################
+# concrete-agent — triggered only on changes in concrete-agent/**
+###############################################################
+substitutions:
+  _REGION: europe-west3
+  _AR_REPO: stavagent
+
 steps:
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
     id: guard
     entrypoint: bash
     args:
       - -c
       - |
         git fetch --depth=2 2>/dev/null || true
-        CHANGED=$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --format="" HEAD)
-        echo "Changed files: $CHANGED"
-        if ! echo "$CHANGED" | grep -q "^concrete-agent/"; then
+        CHANGED=$$(git diff --name-only HEAD~1 HEAD 2>/dev/null || git show --name-only --format="" HEAD)
+        echo "Changed files: $$CHANGED"
+        if ! echo "$$CHANGED" | grep -q "^concrete-agent/"; then
           echo "No changes in concrete-agent/ — cancelling build"
           exit 1
         fi
@@ -16,29 +23,42 @@ steps:
 
   - name: gcr.io/cloud-builders/docker
     id: build-concrete
+    waitFor: [guard]
     args:
       - build
+      - -f
+      - concrete-agent/packages/core-backend/Dockerfile
       - -t
-      - europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent-repo/concrete-agent-backend:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
       - -t
-      - europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent-repo/concrete-agent-backend:latest
-      - concrete-agent
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:latest
+      - .
 
   - name: gcr.io/cloud-builders/docker
     id: push-concrete
+    waitFor: [build-concrete]
     args:
       - push
-      - europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent-repo/concrete-agent-backend
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent
       - --all-tags
 
-  - name: gcr.io/google.com/cloudsdktool/cloud-sdk
+  - name: gcr.io/cloud-builders/gcloud
     id: deploy-concrete
+    waitFor: [push-concrete]
     args:
       - run
       - deploy
-      - concrete-agent-backend
-      - --image=europe-west3-docker.pkg.dev/project-947a512a-481d-49b5-81c/stavagent-repo/concrete-agent-backend:$SHORT_SHA
-      - --region=europe-west3
+      - concrete-agent
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
+      - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
-      - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,DATABASE_URL=DATABASE_URL:latest
+      - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest
+
+images:
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
+
+timeout: 600s
+options:
+  machineType: E2_HIGHCPU_8
+  logging: CLOUD_LOGGING_ONLY

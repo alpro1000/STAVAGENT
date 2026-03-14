@@ -1,6 +1,6 @@
 ###############################################################
 # STAVAGENT - Cloud Build Pipeline (monorepo)
-# Builds and deploys all Cloud Run services on push to main.
+# Builds and deploys ALL Cloud Run services on push to main.
 #
 # Trigger config:
 #   Configuration type: Cloud Build configuration file (yaml)
@@ -10,11 +10,15 @@
 # Required substitution variables (set in trigger):
 #   _REGION: europe-west3
 #   _AR_REPO: Artifact Registry repository name (default: stavagent)
+#
+# Cloud SQL Instance: stavagent-db (PostgreSQL 15)
+# Databases: stavagent_portal, monolit_planner, rozpocet_registry
 ###############################################################
 
 substitutions:
   _REGION: europe-west3
   _AR_REPO: stavagent
+  _CLOUD_SQL_INSTANCE: stavagent-db
 
 steps:
 
@@ -52,7 +56,8 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
-      - --update-secrets=DATABASE_URL=DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest
+      - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
+      - --update-secrets=DATABASE_URL=PORTAL_DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest
 
   # ============================================================
   # 2. concrete-agent (CORE / YADRO)
@@ -88,7 +93,7 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
-      - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,DATABASE_URL=DATABASE_URL:latest
+      - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest
 
   # ============================================================
   # 3. monolit-planner-api
@@ -124,7 +129,8 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
-      - --update-secrets=DATABASE_URL=DATABASE_URL:latest
+      - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
+      - --update-secrets=DATABASE_URL=MONOLIT_DATABASE_URL:latest
 
   # ============================================================
   # 4. urs-matcher-service
@@ -139,7 +145,7 @@ steps:
       - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
       - -t
       - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:latest
-      - .   # context = repo root (Dockerfile.backend uses cross-service COPY paths)
+      - .
 
   - name: gcr.io/cloud-builders/docker
     id: push-urs
@@ -162,11 +168,49 @@ steps:
       - --allow-unauthenticated
       - --update-secrets=PPLX_API_KEY=PPLX_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,GOOGLE_AI_KEY=GOOGLE_AI_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest
 
+  # ============================================================
+  # 5. rozpocet-registry-backend
+  # ============================================================
+  - name: gcr.io/cloud-builders/docker
+    id: build-registry
+    args:
+      - build
+      - -f
+      - rozpocet-registry-backend/Dockerfile
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:$SHORT_SHA
+      - -t
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:latest
+      - rozpocet-registry-backend
+
+  - name: gcr.io/cloud-builders/docker
+    id: push-registry
+    waitFor: [build-registry]
+    args:
+      - push
+      - '$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend'
+      - --all-tags
+
+  - name: gcr.io/cloud-builders/gcloud
+    id: deploy-registry
+    waitFor: [push-registry]
+    args:
+      - run
+      - deploy
+      - rozpocet-registry-backend
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:$SHORT_SHA
+      - --region=$_REGION
+      - --platform=managed
+      - --allow-unauthenticated
+      - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
+      - --update-secrets=DATABASE_URL=REGISTRY_DATABASE_URL:latest
+
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:$SHORT_SHA
 
 timeout: 1800s
 options:
