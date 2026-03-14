@@ -4,6 +4,7 @@
 substitutions:
   _REGION: europe-west3
   _AR_REPO: stavagent
+  _TAG: latest
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -33,7 +34,7 @@ steps:
       - -f
       - rozpocet-registry-backend/Dockerfile
       - -t
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:${_TAG}
       - -t
       - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:latest
       - rozpocet-registry-backend
@@ -53,7 +54,7 @@ steps:
       - run
       - deploy
       - rozpocet-registry-backend
-      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:${_TAG}
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
@@ -62,7 +63,7 @@ steps:
       - --update-secrets=DATABASE_URL=REGISTRY_DATABASE_URL:latest
 
 images:
-  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/rozpocet-registry-backend:${_TAG}
 
 timeout: 600s
 options:

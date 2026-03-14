@@ -5,6 +5,7 @@ substitutions:
   _REGION: europe-west3
   _AR_REPO: stavagent
   _CLOUD_SQL_INSTANCE: stavagent-db
+  _TAG: latest
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -34,7 +35,7 @@ steps:
       - -f
       - stavagent-portal/Dockerfile
       - -t
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:${_TAG}
       - -t
       - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:latest
       - stavagent-portal
@@ -54,7 +55,7 @@ steps:
       - run
       - deploy
       - stavagent-portal-backend
-      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:${_TAG}
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
@@ -63,7 +64,7 @@ steps:
       - --update-secrets=DATABASE_URL=PORTAL_DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest
 
 images:
-  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/stavagent-portal-backend:${_TAG}
 
 timeout: 600s
 options:

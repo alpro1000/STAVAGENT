@@ -9,3 +9,4 @@ includedFiles:
   - "concrete-agent/**"
 substitutions:
   _REGION: europe-west3
+  _TAG: $SHORT_SHA

@@ -4,6 +4,7 @@
 substitutions:
   _REGION: europe-west3
   _AR_REPO: stavagent
+  _TAG: latest
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -33,7 +34,7 @@ steps:
       - -f
       - URS_MATCHER_SERVICE/Dockerfile.backend
       - -t
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:${_TAG}
       - -t
       - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:latest
       - .
@@ -53,7 +54,7 @@ steps:
       - run
       - deploy
       - urs-matcher-service
-      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:${_TAG}
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
@@ -61,7 +62,7 @@ steps:
       - --update-secrets=PPLX_API_KEY=PPLX_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,GOOGLE_AI_KEY=GOOGLE_AI_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest
 
 images:
-  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/urs-matcher-service:${_TAG}
 
 timeout: 600s
 options:
