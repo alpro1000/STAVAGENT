@@ -60,6 +60,7 @@ steps:
       - --allow-unauthenticated
       - --port=3002
       - --add-cloudsql-instances=$PROJECT_ID:$_REGION:stavagent-db
+      - --remove-env-vars=DATABASE_URL
       - --update-secrets=DATABASE_URL=REGISTRY_DATABASE_URL:latest
 
 images:
