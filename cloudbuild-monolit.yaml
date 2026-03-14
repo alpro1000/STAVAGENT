@@ -61,6 +61,7 @@ steps:
       - --allow-unauthenticated
       - --port=3001
       - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
+      - --remove-env-vars=DATABASE_URL
       - --update-secrets=DATABASE_URL=MONOLIT_DATABASE_URL:latest
 
 images:
