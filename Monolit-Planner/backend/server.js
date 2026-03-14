@@ -200,10 +200,17 @@ app.use((req, res) => {
 // Error handler
 app.use(errorHandler);
 
-// Bootstrap function - initialize database then start server
+// Bootstrap function - start server immediately, then initialize database
 async function bootstrap() {
+  // Start server FIRST so Cloud Run health check passes
+  const server = app.listen(PORT, () => {
+    logger.info(`🚀 Monolit Planner Backend running on port ${PORT}`);
+    logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
+    logger.info(`🗄️  Database: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
+  });
+
+  // Then initialize database (async, non-blocking for health check)
   try {
-    // Initialize database (await for PostgreSQL migrations)
     await initDatabase();
     logger.info('✅ Database initialized successfully');
 
@@ -212,16 +219,9 @@ async function bootstrap() {
 
     // Schedule periodic file cleanup
     schedulePeriodicCleanup();
-
-    // Start server
-    app.listen(PORT, () => {
-      logger.info(`🚀 Monolit Planner Backend running on port ${PORT}`);
-      logger.info(`📊 CORS enabled for: ${ALLOWED_ORIGINS.join(', ')}`);
-      logger.info(`🗄️  Database: ${process.env.DATABASE_URL ? 'PostgreSQL' : 'SQLite'}`);
-    });
   } catch (error) {
     logger.error('❌ Database initialization failed:', error);
-    process.exit(1);
+    // Don't exit — keep server alive for diagnostics via /health
   }
 }
 

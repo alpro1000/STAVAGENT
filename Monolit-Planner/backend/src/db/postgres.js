@@ -23,12 +23,17 @@ export function initPostgres() {
     throw new Error('DATABASE_URL environment variable is required for PostgreSQL');
   }
 
+  // Cloud SQL Proxy uses Unix socket — no SSL needed when host starts with /cloudsql
+  const dbUrl = process.env.DATABASE_URL || '';
+  const isCloudSqlSocket = dbUrl.includes('/cloudsql/') || dbUrl.includes('%2Fcloudsql%2F');
+  const needsSsl = process.env.NODE_ENV === 'production' && !isCloudSqlSocket;
+
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
-    max: 20, // Maximum connections in pool
+    ssl: needsSsl ? { rejectUnauthorized: false } : false,
+    max: 20,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 2000,
+    connectionTimeoutMillis: 10000, // 10s (Cloud SQL Proxy may take a moment)
   });
 
   // Test connection

@@ -54,6 +54,7 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
+      - --port=3001
       - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
       - --update-secrets=DATABASE_URL=MONOLIT_DATABASE_URL:latest
 
