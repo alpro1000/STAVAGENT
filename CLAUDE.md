@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.7.0
-**Last Updated:** 2026-03-13
+**Version:** 2.8.0
+**Last Updated:** 2026-03-14
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -64,20 +64,30 @@ STAVAGENT/
 
 **Production URLs:**
 
-ALL backends on **Render**, ALL frontends on **Vercel**.
+ALL backends on **Google Cloud Run** (europe-west3), ALL frontends on **Vercel**.
+CI/CD: **Cloud Build** triggers per service (push to main → selective deploy).
 
 | Service | Type | URL |
 |---------|------|-----|
-| concrete-agent (CORE) | Backend | https://concrete-agent-3uxelthc4q-ey.a.run.app |
-| stavagent-portal | Backend | https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app |
-| stavagent-portal | Frontend | https://www.stavagent.cz (Vercel: stavagent-backend-*.vercel.app) |
-| Monolit-Planner | Backend | https://monolit-planner-api-3uxelthc4q-ey.a.run.app |
-| Monolit-Planner | Frontend | https://monolit-planner-frontend.vercel.app |
-| URS_MATCHER_SERVICE | Backend | https://urs-matcher-service-3uxelthc4q-ey.a.run.app |
-| rozpocet-registry | Backend | https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app |
-| rozpocet-registry | Frontend | https://stavagent-backend-ktwx.vercel.app (naming legacy) |
+| concrete-agent (CORE) | Backend (Cloud Run) | https://concrete-agent-3uxelthc4q-ey.a.run.app |
+| stavagent-portal | Backend (Cloud Run) | https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app |
+| stavagent-portal | Frontend (Vercel) | https://www.stavagent.cz |
+| Monolit-Planner | Backend (Cloud Run) | https://monolit-planner-api-3uxelthc4q-ey.a.run.app |
+| Monolit-Planner | Frontend (Vercel) | https://monolit-planner-frontend.vercel.app |
+| URS_MATCHER_SERVICE | Backend (Cloud Run) | https://urs-matcher-service-3uxelthc4q-ey.a.run.app |
+| rozpocet-registry | Backend (Cloud Run) | https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app |
+| rozpocet-registry | Frontend (Vercel) | https://stavagent-backend-ktwx.vercel.app (naming legacy) |
 
-**DB (Render PostgreSQL):** `postgresql://stavagent_portal:***@dpg-d68br3mr433s73cht4r0-a/stavagent_portal`
+**DB:** Cloud SQL PostgreSQL 15 (instance: `stavagent-db`, databases: `stavagent_portal`, `monolit_planner`, `rozpocet_registry`)
+
+**Cloud Build Triggers (per-service, push to main):**
+```
+cloudbuild-concrete.yaml  + triggers/concrete-agent.yaml  → concrete-agent/**
+cloudbuild-monolit.yaml   + triggers/monolit.yaml         → Monolit-Planner/**
+cloudbuild-portal.yaml    + triggers/portal.yaml          → stavagent-portal/**
+cloudbuild-urs.yaml       + triggers/urs.yaml             → URS_MATCHER_SERVICE/**
+cloudbuild-registry.yaml  + triggers/registry.yaml        → rozpocet-registry-backend/**
+```
 
 ---
 
@@ -763,36 +773,40 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 2. Re-import Excel files (re-classify with new rules)
 
 ### CORE: Service Unavailable
-1. Check Render deployment status
+1. Check Cloud Run service status in GCP Console
 2. Check `/health` endpoint
-3. Check API keys in environment
+3. Check secrets in Secret Manager
 
-### PostgreSQL Connection Timeout (Render Free Tier)
-- Root cause: DB sleeps after 15min inactivity
-- Keep-Alive system available (GitHub Actions cron, see KEEP_ALIVE_SETUP.md)
-- Solution: Configure `KEEP_ALIVE_KEY` secret in GitHub + Render
+### PostgreSQL Connection Issues
+- DB: Cloud SQL PostgreSQL 15 (instance: `stavagent-db`)
+- Check Cloud SQL instance status in GCP Console
+- Verify `--add-cloudsql-instances` flag in cloudbuild deploy steps
 
 ---
 
 ## CI/CD & Workflows
 
+### Cloud Build (per-service triggers, push to main)
+Each service has its own `cloudbuild-{service}.yaml` with:
+- **Guard step** — checks git diff, cancels if no relevant files changed
+- **Docker build** → Artifact Registry (`europe-west3-docker.pkg.dev`)
+- **Cloud Run deploy** with secrets from Secret Manager
+
+Manual deploy: `gcloud builds submit --config=cloudbuild-{service}.yaml --region=europe-west3`
+Import triggers: `gcloud builds triggers import --source=triggers/{service}.yaml`
+
 ### GitHub Actions (`.github/workflows/`)
-1. **keep-alive.yml** - Pings all services every 14 min (prevents Render sleep)
+1. **keep-alive.yml** - Pings all services every 14 min (prevents cold starts)
 2. **monolit-planner-ci.yml** - Tests, linting, coverage for Monolit
 3. **test-coverage.yml** - Code coverage analysis
 4. **test-urs-matcher.yml** - 159 URS Matcher tests
-
-### Deployment
-- All services deploy on Render.com
-- Each service has `render.yaml` with deployment config
-- `autoDeploy: true` for automatic deployment on push
 
 ---
 
 ## Pending Work (Backlog)
 
 ### Awaiting User Action
-1. **Registry Backend Deploy** (Render) - Deploy new `server.js` with graceful DB startup + bulk endpoint; Set `DATABASE_URL` env var
+1. **Cloud Build Triggers** (GCP) - Import triggers via `gcloud builds triggers import --source=triggers/*.yaml` if not yet created
 2. **Environment Variables** (Render) - `PERPLEXITY_API_KEY`, `OPENAI_API_KEY` for concrete-agent
 3. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Render DB shell
 4. **Portal Backend Deploy** - Phase 8 DB migration (position_instance_id columns + 13 endpoints)
@@ -928,5 +942,5 @@ rozpocet-registry/
 
 ---
 
-**Last Updated:** 2026-03-07
+**Last Updated:** 2026-03-14
 **Maintained By:** Development Team
