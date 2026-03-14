@@ -17,6 +17,7 @@ import { startPolling, stopPolling, refreshNow, type PollState, type ComparisonI
 // FormworkRentalCalculator removed from header — now integrated into TOV/Materiály tab
 import { useRegistryStore } from './stores/registryStore';
 import { loadFromBackend, mergeProjects, debouncedPushToBackend } from './services/backendSync';
+import { setSuppressAutoSync } from './stores/registryStore';
 import { searchProjects, type SearchResultItem, type SearchFilters } from './services/search/searchService';
 import { exportAndDownload, exportFullProjectAndDownload, exportToOriginalFile, canExportToOriginal } from './services/export/excelExportService';
 import { mapUnifiedToItems } from './services/sync/unifiedMapper';
@@ -207,13 +208,16 @@ function App() {
       const { projects: localProjects } = useRegistryStore.getState();
       const merged = mergeProjects(localProjects, backendProjects);
       if (merged.length > localProjects.length) {
-        // Add new backend projects to the store
+        // Suppress auto-sync subscriber to prevent sync loop
+        // (backend-loaded projects should not be re-synced back to Portal)
+        setSuppressAutoSync(true);
         const localIds = new Set(localProjects.map(p => p.id));
         for (const p of merged) {
           if (!localIds.has(p.id)) {
             useRegistryStore.getState().addProject(p);
           }
         }
+        setSuppressAutoSync(false);
       }
     }).catch(() => {});
   }, []);

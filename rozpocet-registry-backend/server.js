@@ -144,13 +144,17 @@ app.get('/api/registry/projects', requireDB, async (req, res) => {
 
 app.post('/api/registry/projects', requireDB, async (req, res) => {
   try {
-    const { project_name, portal_project_id } = req.body;
+    const { project_name, portal_project_id, project_id } = req.body;
     const userId = req.body.user_id || 1;
-    const projectId = `reg_${uuidv4()}`;
+    const projectId = project_id || `reg_${uuidv4()}`;
 
     const result = await pool.query(
       `INSERT INTO registry_projects (project_id, project_name, owner_id, portal_project_id, created_at, updated_at)
        VALUES ($1, $2, $3, $4, NOW(), NOW())
+       ON CONFLICT (project_id) DO UPDATE SET
+         project_name = EXCLUDED.project_name,
+         portal_project_id = COALESCE(EXCLUDED.portal_project_id, registry_projects.portal_project_id),
+         updated_at = NOW()
        RETURNING *`,
       [projectId, project_name, userId, portal_project_id]
     );
@@ -205,12 +209,29 @@ app.get('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
 
 app.post('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
   try {
-    const { sheet_name, sheet_order } = req.body;
-    const sheetId = `sheet_${uuidv4()}`;
+    const { sheet_name, sheet_order, sheet_id } = req.body;
+    const sheetId = sheet_id || `sheet_${uuidv4()}`;
+
+    // Ensure parent project exists (auto-create if needed to prevent FK violation)
+    const projectCheck = await pool.query(
+      'SELECT project_id FROM registry_projects WHERE project_id = $1',
+      [req.params.id]
+    );
+    if (projectCheck.rows.length === 0) {
+      await pool.query(
+        `INSERT INTO registry_projects (project_id, project_name, owner_id, created_at, updated_at)
+         VALUES ($1, $2, 1, NOW(), NOW())`,
+        [req.params.id, 'Auto-created']
+      );
+    }
 
     const result = await pool.query(
       `INSERT INTO registry_sheets (sheet_id, project_id, sheet_name, sheet_order, created_at, updated_at)
        VALUES ($1, $2, $3, $4, NOW(), NOW())
+       ON CONFLICT (sheet_id) DO UPDATE SET
+         sheet_name = EXCLUDED.sheet_name,
+         sheet_order = EXCLUDED.sheet_order,
+         updated_at = NOW()
        RETURNING *`,
       [sheetId, req.params.id, sheet_name, sheet_order || 0]
     );
