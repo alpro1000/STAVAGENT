@@ -53,6 +53,7 @@ steps:
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
+      - --port=8000
       - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest
 
 images:
