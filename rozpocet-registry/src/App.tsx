@@ -154,6 +154,7 @@ function App() {
     setSelectedProject,
     setSelectedSheet,
     removeProject,
+    removeAllProjects,
     addProject,
     getSheet,
     linkToPortal,
@@ -1010,12 +1011,26 @@ function App() {
                   <h2 className="text-lg font-semibold">
                     Projekty ({projects.length})
                   </h2>
-                  <button
-                    className="btn btn-primary"
-                    onClick={() => setIsImportModalOpen(true)}
-                  >
-                    📁 Přidat projekt
-                  </button>
+                  <div className="flex items-center gap-2">
+                    {projects.length > 1 && (
+                      <button
+                        className="btn border border-red-400 text-red-600 hover:bg-red-50 transition-colors"
+                        onClick={() => {
+                          if (window.confirm(`Opravdu smazat všech ${projects.length} projektů?`)) {
+                            removeAllProjects();
+                          }
+                        }}
+                      >
+                        🗑️ Smazat vše
+                      </button>
+                    )}
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => setIsImportModalOpen(true)}
+                    >
+                      📁 Přidat projekt
+                    </button>
+                  </div>
                 </div>
 
                 {/* Project Tabs (Excel-style navigation) */}
