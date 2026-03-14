@@ -1,0 +1,45 @@
+# Git
+.git/
+.github/
+
+# Node modules (each service installs its own in Docker)
+node_modules/
+**/node_modules/
+
+# Python caches
+__pycache__/
+**/__pycache__/
+*.pyc
+.venv/
+**/.venv/
+
+# Frontend builds (rebuilt in Docker or deployed via Vercel)
+**/dist/
+**/build/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Docs (not needed for builds)
+docs/
+*.md
+!**/README.md
+
+# Test files (not needed in production images)
+**/*.test.ts
+**/*.test.js
+**/*.spec.ts
+**/*.spec.js
+**/tests/
+**/test/
+
+# Husky hooks
+.husky/
+
+# Large data files
+**/*.xlsx
+**/*.pdf
+**/*.csv
