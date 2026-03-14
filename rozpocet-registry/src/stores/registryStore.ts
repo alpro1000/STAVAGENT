@@ -49,6 +49,7 @@ interface RegistryState {
   // Действия с проектами
   addProject: (project: Project) => void;
   removeProject: (projectId: string) => void;
+  removeAllProjects: () => void;
   updateProject: (projectId: string, updates: Partial<Omit<Project, 'sheets'>>) => void;
   setSelectedProject: (projectId: string | null) => void;
   getProject: (projectId: string) => Project | undefined;
@@ -163,6 +164,14 @@ export const useRegistryStore = create<RegistryState>()(
           selectedSheetId:
             state.selectedProjectId === projectId ? null : state.selectedSheetId,
         }));
+      },
+
+      removeAllProjects: () => {
+        set({
+          projects: [],
+          selectedProjectId: null,
+          selectedSheetId: null,
+        });
       },
 
       updateProject: (projectId, updates) => {
