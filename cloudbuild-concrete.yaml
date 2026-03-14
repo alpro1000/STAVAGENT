@@ -54,7 +54,8 @@ steps:
       - --platform=managed
       - --allow-unauthenticated
       - --port=8000
-      - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest
+      - --update-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,PERPLEXITY_API_KEY=PERPLEXITY_API_KEY:latest,DATABASE_URL=CONCRETE_DATABASE_URL:latest
+      - --set-env-vars=GEMINI_MODEL=gemini-2.5-flash-lite,MULTI_ROLE_LLM=gemini
 
 images:
   - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA

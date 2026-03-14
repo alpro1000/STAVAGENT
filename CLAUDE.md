@@ -738,7 +738,7 @@ PORT=3001
 ANTHROPIC_API_KEY=sk-ant-...
 GOOGLE_AI_KEY=...
 OPENAI_API_KEY=sk-...
-PERPLEXITY_API_KEY=pplx-...
+PPLX_API_KEY=pplx-...
 LLM_TIMEOUT_MS=90000
 STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
 ```
@@ -807,7 +807,7 @@ Import triggers: `gcloud builds triggers import --source=triggers/{service}.yaml
 
 ### Awaiting User Action
 1. **Cloud Build Triggers** (GCP) - Import triggers via `gcloud builds triggers import --source=triggers/*.yaml` if not yet created
-2. **Environment Variables** (GCP Secret Manager) - `PERPLEXITY_API_KEY`, `OPENAI_API_KEY` for concrete-agent
+2. **Environment Variables** (GCP Secret Manager) - `PERPLEXITY_API_KEY` for concrete-agent, `PPLX_API_KEY` for URS Matcher, `OPENAI_API_KEY` for both
 3. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Cloud SQL shell
 4. **Portal Backend Deploy** - Phase 8 DB migration (position_instance_id columns + 13 endpoints)
 5. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
