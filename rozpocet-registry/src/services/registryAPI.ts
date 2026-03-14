@@ -100,11 +100,12 @@ class RegistryAPI {
     return data.projects || [];
   }
 
-  async createProject(name: string, portalProjectId?: string): Promise<RegistryProject> {
+  async createProject(name: string, portalProjectId?: string, projectId?: string): Promise<RegistryProject> {
     const res = await fetchWithTimeout(`${API_URL}/api/registry/projects`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        project_id: projectId,
         project_name: name,
         portal_project_id: portalProjectId,
         user_id: USER_ID,
@@ -138,11 +139,12 @@ class RegistryAPI {
     return data.sheets || [];
   }
 
-  async createSheet(projectId: string, name: string, order: number = 0): Promise<RegistrySheet> {
+  async createSheet(projectId: string, name: string, order: number = 0, sheetId?: string): Promise<RegistrySheet> {
     const res = await fetchWithTimeout(`${API_URL}/api/registry/projects/${projectId}/sheets`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        sheet_id: sheetId,
         sheet_name: name,
         sheet_order: order,
       }),

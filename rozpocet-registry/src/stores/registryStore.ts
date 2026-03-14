@@ -985,9 +985,21 @@ setInstanceMappingCallback((mappings) => {
 /**
  * Auto-sync subscriber: when projects/tovData change, push to Portal DB.
  * Uses debounced sync (3s delay) to avoid flooding API during rapid edits.
+ *
+ * suppressAutoSync: set to true during backend loading to prevent sync loops.
+ * When projects are loaded from backend → addProject() fires subscriber →
+ * which would re-sync each project back to Portal, creating duplicates.
  */
+let suppressAutoSync = false;
+export function setSuppressAutoSync(value: boolean): void {
+  suppressAutoSync = value;
+}
+
 let prevProjectIds = new Set<string>();
 useRegistryStore.subscribe((state, prevState) => {
+  // Skip sync when loading from backend (prevents loop)
+  if (suppressAutoSync) return;
+
   // Sync changed projects
   if (state.projects !== prevState.projects || state.tovData !== prevState.tovData) {
     const currentIds = new Set(state.projects.map(p => p.id));

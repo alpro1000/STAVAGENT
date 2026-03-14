@@ -138,7 +138,7 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
     }
 
     if (!exists) {
-      await registryAPI.createProject(project.projectName, project.portalLink?.portalProjectId);
+      await registryAPI.createProject(project.projectName, project.portalLink?.portalProjectId, project.id);
     }
 
     // 2. Get existing sheets from backend
@@ -155,7 +155,7 @@ export async function pushProjectToBackend(project: Project): Promise<void> {
       const sheet = project.sheets[si];
 
       if (!existingSheetIds.has(sheet.id)) {
-        await registryAPI.createSheet(project.id, sheet.name, si);
+        await registryAPI.createSheet(project.id, sheet.name, si, sheet.id);
       }
 
       // Bulk upsert items

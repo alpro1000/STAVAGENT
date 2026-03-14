@@ -120,6 +120,66 @@ app.get('/', (req, res) => {
   });
 });
 
+// ============ CLEANUP ============
+
+// DELETE /api/registry/cleanup-empty — remove empty/duplicate projects (no sheets or no items)
+// Protected by a simple secret query param to prevent accidental calls
+app.delete('/api/registry/cleanup-empty', requireDB, async (req, res) => {
+  try {
+    const secret = req.query.secret;
+    if (secret !== 'cleanup2026') {
+      return res.status(403).json({ success: false, error: 'Invalid secret. Use ?secret=cleanup2026' });
+    }
+
+    // Find projects with zero items (empty projects)
+    const emptyProjects = await pool.query(`
+      SELECT p.project_id, p.project_name,
+        (SELECT COUNT(*) FROM registry_sheets WHERE project_id = p.project_id) as sheets_count,
+        (SELECT COUNT(*) FROM registry_items i
+         JOIN registry_sheets s ON i.sheet_id = s.sheet_id
+         WHERE s.project_id = p.project_id) as items_count
+      FROM registry_projects p
+      HAVING (SELECT COUNT(*) FROM registry_items i
+              JOIN registry_sheets s ON i.sheet_id = s.sheet_id
+              WHERE s.project_id = p.project_id) = 0
+      ORDER BY p.created_at
+    `);
+
+    if (req.query.dry_run === 'true') {
+      return res.json({
+        success: true,
+        dry_run: true,
+        would_delete: emptyProjects.rows.length,
+        projects: emptyProjects.rows.map(p => ({
+          project_id: p.project_id,
+          project_name: p.project_name,
+          sheets_count: Number(p.sheets_count),
+          items_count: Number(p.items_count),
+        })),
+      });
+    }
+
+    // Delete empty projects (CASCADE will remove sheets too)
+    const ids = emptyProjects.rows.map(p => p.project_id);
+    let deleted = 0;
+    if (ids.length > 0) {
+      const result = await pool.query(
+        'DELETE FROM registry_projects WHERE project_id = ANY($1)',
+        [ids]
+      );
+      deleted = result.rowCount;
+    }
+
+    res.json({
+      success: true,
+      deleted,
+      message: `Removed ${deleted} empty projects`,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // ============ PROJECTS ============
 
 app.get('/api/registry/projects', requireDB, async (req, res) => {
@@ -144,13 +204,17 @@ app.get('/api/registry/projects', requireDB, async (req, res) => {
 
 app.post('/api/registry/projects', requireDB, async (req, res) => {
   try {
-    const { project_name, portal_project_id } = req.body;
+    const { project_name, portal_project_id, project_id } = req.body;
     const userId = req.body.user_id || 1;
-    const projectId = `reg_${uuidv4()}`;
+    const projectId = project_id || `reg_${uuidv4()}`;
 
     const result = await pool.query(
       `INSERT INTO registry_projects (project_id, project_name, owner_id, portal_project_id, created_at, updated_at)
        VALUES ($1, $2, $3, $4, NOW(), NOW())
+       ON CONFLICT (project_id) DO UPDATE SET
+         project_name = EXCLUDED.project_name,
+         portal_project_id = COALESCE(EXCLUDED.portal_project_id, registry_projects.portal_project_id),
+         updated_at = NOW()
        RETURNING *`,
       [projectId, project_name, userId, portal_project_id]
     );
@@ -205,12 +269,29 @@ app.get('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
 
 app.post('/api/registry/projects/:id/sheets', requireDB, async (req, res) => {
   try {
-    const { sheet_name, sheet_order } = req.body;
-    const sheetId = `sheet_${uuidv4()}`;
+    const { sheet_name, sheet_order, sheet_id } = req.body;
+    const sheetId = sheet_id || `sheet_${uuidv4()}`;
+
+    // Ensure parent project exists (auto-create if needed to prevent FK violation)
+    const projectCheck = await pool.query(
+      'SELECT project_id FROM registry_projects WHERE project_id = $1',
+      [req.params.id]
+    );
+    if (projectCheck.rows.length === 0) {
+      await pool.query(
+        `INSERT INTO registry_projects (project_id, project_name, owner_id, created_at, updated_at)
+         VALUES ($1, $2, 1, NOW(), NOW())`,
+        [req.params.id, 'Auto-created']
+      );
+    }
 
     const result = await pool.query(
       `INSERT INTO registry_sheets (sheet_id, project_id, sheet_name, sheet_order, created_at, updated_at)
        VALUES ($1, $2, $3, $4, NOW(), NOW())
+       ON CONFLICT (sheet_id) DO UPDATE SET
+         sheet_name = EXCLUDED.sheet_name,
+         sheet_order = EXCLUDED.sheet_order,
+         updated_at = NOW()
        RETURNING *`,
       [sheetId, req.params.id, sheet_name, sheet_order || 0]
     );
