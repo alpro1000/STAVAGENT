@@ -74,7 +74,7 @@ monolit-planner/
 │   │   └── constants.ts
 │   └── package.json
 │
-├── render.yaml                       ← Deployment config (Blueprint)
+├── render.yaml                       ← Legacy deployment config (не используется)
 ├── CLAUDE.MD                         ← 📄 AI Context Document (this file)
 ├── DEVELOPMENT_PLAN.md               ← 🚀 Strategic Development Plan (NEW!)
 ├── claude.md                         ← Session logs
@@ -529,7 +529,7 @@ monolit-planner/
 ├── backend/          ← Node.js + Express + SQLite
 ├── frontend/         ← React + TypeScript + Vite
 ├── shared/           ← Общие типы и формулы
-├── render.yaml       ← Конфиг деплоя
+├── render.yaml       ← Legacy конфиг (не используется)
 ├── DEPLOY.md         ← Инструкции
 ├── CLAUDE.MD         ← ⭐ ЭТОТ ФАЙЛ (для AI)
 └── README.md         ← Пользовательская документация
@@ -635,126 +635,43 @@ monolit-planner/
 
 ---
 
-## 🚀 DEPLOYMENT (Render)
+## DEPLOYMENT (Google Cloud Run)
 
-### Использовать Blueprint! (render.yaml)
+### Production URLs:
+- **Frontend:** https://monolit-planner-frontend.vercel.app (Vercel)
+- **Backend:** https://monolit-planner-api-3uxelthc4q-ey.a.run.app (Cloud Run, europe-west3)
+- **Database:** Cloud SQL PostgreSQL 15 (instance: `stavagent-db`, db: `monolit_planner`)
 
-**НЕ создавай вручную "New Web Service"!**
+### CI/CD: Cloud Build
 
-### Правильный процесс:
+Push to `main` → Cloud Build trigger → Docker build → Cloud Run deploy
 
-1. **Push код на GitHub** ✅ (уже сделано)
+```bash
+# Manual deploy
+gcloud builds submit --config=cloudbuild-monolit.yaml --region=europe-west3
 
-2. **В Render Dashboard:**
-   - Нажать **"New" → "Blueprint"**
-   - Выбрать репозиторий `alpro1000/Monolit-Planner`
-   - Render автоматически найдёт `render.yaml`
-   - Нажать **"Create New Resources"**
-
-3. **Render создаст 2 сервиса:**
-   - `monolit-planner-api` (backend)
-   - `monolit-planner-frontend` (frontend)
-
-4. **После успешного деплоя backend:**
-   - Backend получит URL типа: `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
-   - ⚠️ **ВАЖНО**: Нужно вручную настроить frontend!
-
-5. **Настройка frontend (ОБЯЗАТЕЛЬНО!):**
-   - Открой Render Dashboard → `monolit-planner-frontend` → Environment
-   - Добавь переменную `VITE_API_URL` = `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
-   - Нажми **"Save Changes"** → frontend пересобрётся автоматически
-
-6. **(Опционально) Ограничить CORS:**
-   - После деплоя frontend получит URL типа: `https://monolit-planner-frontend.vercel.app`
-   - Открой backend Environment
-   - Измени `CORS_ORIGIN` с `*` на URL frontend'а для безопасности
-
-7. **URLs:**
-   - Frontend: `https://monolit-planner-frontend.vercel.app`
-   - Backend: `https://monolit-planner-api-3uxelthc4q-ey.a.run.app`
-
-### ⚠️ НЕ делай:
-- ❌ New Web Service вручную (сложно настроить связи)
-- ❌ Редактировать build commands вручную (всё в render.yaml)
-
-### ✅ Делай:
-- ✅ Используй Blueprint (render.yaml)
-- ✅ Auto-deploy: push в main → автодеплой
-
-### 📝 Правильный синтаксис render.yaml:
-
-**Backend (Web Service):**
-```yaml
-- type: web
-  name: monolit-planner-api
-  env: node
-  plan: free
-  buildCommand: ...
-  startCommand: ...
+# Check status
+gcloud run services describe monolit-planner-api --region europe-west3
 ```
 
-**Frontend (Static Site):**
-```yaml
-- type: web              # ⚠️ НЕ "static"!
-  name: monolit-planner-frontend
-  env: static            # Это указывает на static site
-  buildCommand: ...
-  staticPublishPath: frontend/dist
+**Trigger config:** `triggers/monolit.yaml` (watches `Monolit-Planner/**`)
+
+### Environment Variables (Cloud Run + Secret Manager)
+
+```env
+NODE_ENV=production
+PORT=3001
+DATABASE_URL=<from Secret Manager: MONOLIT_DATABASE_URL>
+CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
+VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
 ```
 
-⚠️ **ВАЖНО:**
-- Render Blueprint НЕ поддерживает `type: static`
-- Используй `type: web` + `env: static` для static sites
-- НЕ добавляй `region` — не поддерживается free tier
-- **Node.js версия ОБЯЗАТЕЛЬНА**: better-sqlite3 требует Node 18.x
-  - ✅ Добавлен .nvmrc → 18.20.4
-  - ✅ Добавлен NODE_VERSION в render.yaml
-  - ❌ Node 25.x НЕ РАБОТАЕТ (ошибки компиляции C++)
+### Legacy: render.yaml
 
-### 🔍 Почему CORS_ORIGIN="*" и VITE_API_URL=sync:false - НЕ костыли?
+`render.yaml` в корне Monolit-Planner — **устаревший файл** (Render больше не используется).
+Production deploy через Cloud Build (`cloudbuild-monolit.yaml`).
 
-**Проблема fromService (circular dependency):**
-
-При первом деплое через Blueprint с fromService возникает deadlock:
-```yaml
-# ❌ НЕПРАВИЛЬНО - создаёт deadlock:
-backend:
-  envVars:
-    - key: CORS_ORIGIN
-      fromService:
-        name: frontend  # Backend ждёт URL frontend
-
-frontend:
-  envVars:
-    - key: VITE_API_URL
-      fromService:
-        name: backend   # Frontend ждёт URL backend
-```
-
-**Результат:** Backend ждёт frontend → Frontend ждёт backend → **Бесконечный цикл!**
-
-**✅ ПРАВИЛЬНОЕ решение:**
-
-1. **CORS_ORIGIN = "\*"**:
-   - Стандартная практика для development
-   - Позволяет запросы от любого origin при первом деплое
-   - После деплоя frontend можно ограничить на конкретный домен
-   - В production: установи `CORS_ORIGIN=https://monolit-planner-frontend.vercel.app`
-
-2. **VITE_API_URL = sync:false**:
-   - Говорит Render НЕ ждать значение от другого сервиса
-   - Устанавливается вручную в Dashboard после деплоя backend
-   - Стандартный паттерн для статических сайтов с отдельным API
-
-**Альтернативы и почему они хуже:**
-
-- ❌ **Использовать один сервис**: теряем масштабируемость и разделение ответственности
-- ❌ **Reverse proxy на frontend**: усложняет архитектуру, нужен nginx/express
-- ❌ **Относительные URL (/api)**: не работает для статических сайтов на отдельных доменах
-
-**Итог:** Это НЕ костыли, а правильная архитектура для микросервисов!
-
-### 🤖 Автоматическая сборка shared пакета
+### Автоматическая сборка shared пакета
 
 **ensure-shared-build.js** (в backend/scripts и frontend/scripts):
 
@@ -763,11 +680,6 @@ frontend:
 - Устанавливает зависимости, если нужно
 - Собирает shared пакет, если dist/ отсутствует
 - Пропускает сборку, если dist/ уже существует
-
-**Преимущества:**
-- Не нужно явно собирать shared в render.yaml buildCommand
-- prestart/prebuild хуки делают всё автоматически
-- Ускоряет локальную разработку (только первая сборка)
 
 ---
 
@@ -880,7 +792,7 @@ POST /api/config
 - ✅ Апельсиновые input-поля визуально отличимы
 - ✅ RFI-система подсвечивает пропуски (но не блокирует)
 - ✅ Экспорт XLSX/CSV готов к KROS4
-- ✅ Деплой на Render через Blueprint работает
+- ✅ Деплой на Cloud Run через Cloud Build работает
 - ✅ Frontend и Backend работают раздельно
 
 ---
@@ -990,9 +902,9 @@ cd backend && npm start
 # Запускает express сервер на порту 3001
 ```
 
-### Развёртывание на Render
+### Развёртывание (Google Cloud Run)
 
-Используется **Blueprint** (`render.yaml`):
+Используется **Cloud Build** (`cloudbuild-monolit.yaml`):
 
 1. Push код на GitHub
 2. В Render Dashboard: **"New" → "Blueprint"**

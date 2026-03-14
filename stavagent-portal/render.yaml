@@ -1,4 +1,7 @@
-# StavAgent Portal - Render Deployment Blueprint
+# DEPRECATED: Production uses Google Cloud Run (see cloudbuild-portal.yaml)
+# This file is kept for reference only.
+#
+# StavAgent Portal - Render Deployment Blueprint (LEGACY)
 # https://render.com/docs/blueprint-spec
 
 services:

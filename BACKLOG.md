@@ -1,6 +1,6 @@
 # STAVAGENT Backlog & Pending Plans
 
-**Last Updated:** 2026-03-08
+**Last Updated:** 2026-03-14
 **Maintained By:** Development Team
 
 ---
@@ -17,21 +17,21 @@
 
 ## 🔴 Immediate / Pending User Action
 
-### 1. Переменные окружения для Poradna norem (добавить в Render)
+### 1. Переменные окружения для Poradna norem (добавить в GCP Secret Manager)
 
 **Status:** ⏳ Code complete, awaiting env vars setup
 **Branch:** `claude/formwork-calculator-review-ArdKs`
 **Service:** Monolit-Planner backend + concrete-agent
 
-**Добавить в Render:**
+**Добавить в GCP Secret Manager + Cloud Run:**
 ```env
-# Monolit-Planner backend (Render → monolit-planner-api → Environment):
+# Monolit-Planner (Cloud Run → monolit-planner-api):
 STAVAGENT_CORE_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app   # уже есть дефолт, но лучше явно
 
-# concrete-agent (Render → concrete-agent → Environment):
+# concrete-agent (Cloud Run → concrete-agent):
 PERPLEXITY_API_KEY=pplx-...   # без него — Gemini fallback (работает, но без источников)
 
-# Monolit-Planner backend (для OpenAI GPT-4o mini):
+# Monolit-Planner (Cloud Run → monolit-planner-api):
 OPENAI_API_KEY=sk-...          # без него — Multi-Role fallback (работает)
 ```
 
@@ -51,7 +51,7 @@ FormworkAIModal → вкладка [Poradna norem] → ввести вопрос
 
 **User Action Required:**
 ```bash
-# In Render Dashboard → monolit-db → Shell:
+# In Cloud SQL Console → stavagent-db:
 psql -U monolit_user -d monolit_planner
 
 # Execute:
@@ -99,7 +99,7 @@ curl -s https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/config | jq '.fe
 1. Create Google Cloud Project
 2. Enable Google Drive API
 3. Configure OAuth2 credentials
-4. Add environment variables to Render
+4. Add environment variables to Cloud Run (Secret Manager)
 
 **Reference:** `GOOGLE_DRIVE_SETUP.md`
 
@@ -113,7 +113,7 @@ curl -s https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/config | jq '.fe
 **User Action Required:**
 1. Generate secret key: `openssl rand -base64 32`
 2. Add `KEEP_ALIVE_KEY` to GitHub Secrets
-3. Add `KEEP_ALIVE_KEY` to Render (all 3 services)
+3. Add `KEEP_ALIVE_KEY` to Cloud Run (all services via Secret Manager)
 4. Enable workflow in GitHub Actions
 
 **Reference:** `KEEP_ALIVE_SETUP.md`

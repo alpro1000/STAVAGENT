@@ -1,4 +1,7 @@
-# Rozpočet Registry Backend
+# DEPRECATED: Production uses Google Cloud Run (see cloudbuild-registry.yaml)
+# This file is kept for reference only.
+#
+# Rozpočet Registry Backend (LEGACY)
 # Express.js + PostgreSQL
 type: web
 name: rozpocet-registry-backend

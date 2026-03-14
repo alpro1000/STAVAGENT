@@ -1,4 +1,7 @@
-# Render Configuration для Czech Building Audit System
+# DEPRECATED: Production uses Google Cloud Run (see cloudbuild-concrete.yaml)
+# This file is kept for reference only.
+#
+# Render Configuration для Czech Building Audit System (LEGACY)
 # https://render.com/docs/yaml-spec
 
 services:
