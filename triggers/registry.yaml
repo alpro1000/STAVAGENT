@@ -9,3 +9,4 @@ includedFiles:
   - "rozpocet-registry-backend/**"
 substitutions:
   _REGION: europe-west3
+  _TAG: $SHORT_SHA

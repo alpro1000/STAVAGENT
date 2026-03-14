@@ -4,6 +4,7 @@
 substitutions:
   _REGION: europe-west3
   _AR_REPO: stavagent
+  _TAG: latest
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -33,7 +34,7 @@ steps:
       - -f
       - concrete-agent/packages/core-backend/Dockerfile
       - -t
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}
       - -t
       - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:latest
       - .
@@ -53,7 +54,7 @@ steps:
       - run
       - deploy
       - concrete-agent
-      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
@@ -62,7 +63,7 @@ steps:
       - --set-env-vars=GEMINI_MODEL=gemini-2.5-flash-lite,MULTI_ROLE_LLM=gemini
 
 images:
-  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/concrete-agent:${_TAG}
 
 timeout: 600s
 options:

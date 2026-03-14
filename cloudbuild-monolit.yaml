@@ -5,6 +5,7 @@ substitutions:
   _REGION: europe-west3
   _AR_REPO: stavagent
   _CLOUD_SQL_INSTANCE: stavagent-db
+  _TAG: latest
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -34,7 +35,7 @@ steps:
       - -f
       - Monolit-Planner/Dockerfile
       - -t
-      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
+      - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:${_TAG}
       - -t
       - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:latest
       - Monolit-Planner
@@ -54,7 +55,7 @@ steps:
       - run
       - deploy
       - monolit-planner-api
-      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
+      - --image=$_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:${_TAG}
       - --region=$_REGION
       - --platform=managed
       - --allow-unauthenticated
@@ -63,7 +64,7 @@ steps:
       - --update-secrets=DATABASE_URL=MONOLIT_DATABASE_URL:latest
 
 images:
-  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:$SHORT_SHA
+  - $_REGION-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/monolit-planner-api:${_TAG}
 
 timeout: 600s
 options:
