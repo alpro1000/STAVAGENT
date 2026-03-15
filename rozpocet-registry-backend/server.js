@@ -27,8 +27,14 @@ if (process.env.DATABASE_URL) {
   const isCloudSqlSocket = dbUrl.includes('/cloudsql/') || dbUrl.includes('%2Fcloudsql%2F');
   const needsSsl = process.env.NODE_ENV === 'production' && !isCloudSqlSocket;
 
+  // For Cloud SQL Unix sockets, append sslmode=disable to prevent pg from attempting SSL
+  let connString = process.env.DATABASE_URL;
+  if (isCloudSqlSocket && !connString.includes('sslmode=')) {
+    connString += (connString.includes('?') ? '&' : '?') + 'sslmode=disable';
+  }
+
   pool = new pg.Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: connString,
     ssl: needsSsl ? { rejectUnauthorized: false } : false,
     connectionTimeoutMillis: 10000,
     idleTimeoutMillis: 30000,
