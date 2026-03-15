@@ -89,7 +89,7 @@ GOOGLE_APPLICATION_CREDENTIALS=/etc/secrets/gcs-key.json
 
 В Stripe Dashboard → Developers → Webhooks → Add endpoint:
 ```
-URL: https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app/api/webhooks/stripe
+URL: https://stavagent-portal-backend-1086027517695.europe-west3.run.app/api/webhooks/stripe
 Events:
   - checkout.session.completed
   - customer.subscription.updated

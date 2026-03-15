@@ -570,7 +570,7 @@ export interface WorkflowCProgress {
 // Workflow C API — proxied through portal backend (/api/core/*)
 // Direct CORE URL kept as fallback for WebSocket connections only
 /** Direct URL for WebSocket connections (cannot be proxied through HTTP) */
-export const CORE_DIRECT_URL = (import.meta as any).env?.VITE_CORE_API_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
+export const CORE_DIRECT_URL = (import.meta as any).env?.VITE_CORE_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
 /** Proxied URL for all HTTP API calls */
 const CORE_API_URL = `${API_URL}/api/core`;
 

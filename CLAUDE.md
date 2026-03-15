@@ -69,13 +69,13 @@ CI/CD: **Cloud Build** triggers per service (push to main → selective deploy).
 
 | Service | Type | URL |
 |---------|------|-----|
-| concrete-agent (CORE) | Backend (Cloud Run) | https://concrete-agent-3uxelthc4q-ey.a.run.app |
-| stavagent-portal | Backend (Cloud Run) | https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app |
+| concrete-agent (CORE) | Backend (Cloud Run) | https://concrete-agent-1086027517695.europe-west3.run.app |
+| stavagent-portal | Backend (Cloud Run) | https://stavagent-portal-backend-1086027517695.europe-west3.run.app |
 | stavagent-portal | Frontend (Vercel) | https://www.stavagent.cz |
-| Monolit-Planner | Backend (Cloud Run) | https://monolit-planner-api-3uxelthc4q-ey.a.run.app |
+| Monolit-Planner | Backend (Cloud Run) | https://monolit-planner-api-1086027517695.europe-west3.run.app |
 | Monolit-Planner | Frontend (Vercel) | https://monolit-planner-frontend.vercel.app |
-| URS_MATCHER_SERVICE | Backend (Cloud Run) | https://urs-matcher-service-3uxelthc4q-ey.a.run.app |
-| rozpocet-registry | Backend (Cloud Run) | https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app |
+| URS_MATCHER_SERVICE | Backend (Cloud Run) | https://urs-matcher-service-1086027517695.europe-west3.run.app |
+| rozpocet-registry | Backend (Cloud Run) | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app |
 | rozpocet-registry | Frontend (Vercel) | https://stavagent-backend-ktwx.vercel.app (naming legacy) |
 
 **DB:** Cloud SQL PostgreSQL 15 (instance: `stavagent-db`, databases: `stavagent_portal`, `monolit_planner`, `rozpocet_registry`)
@@ -148,7 +148,7 @@ Main Flow:
 
 ```http
 # Portal → concrete-agent
-POST https://concrete-agent-3uxelthc4q-ey.a.run.app/workflow/a/import
+POST https://concrete-agent-1086027517695.europe-west3.run.app/workflow/a/import
 Content-Type: multipart/form-data
 
 # Portal → Kiosk
@@ -157,7 +157,7 @@ Content-Type: application/json
 { projectId, projectName, positions[] }
 
 # Kiosk → concrete-agent (Multi-Role)
-POST https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/multi-role/ask
+POST https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/multi-role/ask
 Content-Type: application/json
 { role, question, context }
 ```
@@ -170,7 +170,7 @@ Content-Type: application/json
 
 **Location:** `/concrete-agent`
 **Technology:** Python 3.10+, FastAPI
-**Production URL:** `https://concrete-agent-3uxelthc4q-ey.a.run.app`
+**Production URL:** `https://concrete-agent-1086027517695.europe-west3.run.app`
 **Port (Dev):** 8000
 
 **Purpose:** Central AI system that processes documents, performs audits, and provides Multi-Role validation.
@@ -387,7 +387,7 @@ Monolit-Planner/
 
 **Location:** `/URS_MATCHER_SERVICE`
 **Technology:** Node.js, Express, SQLite
-**Production URL:** `https://urs-matcher-service-3uxelthc4q-ey.a.run.app`
+**Production URL:** `https://urs-matcher-service-1086027517695.europe-west3.run.app`
 **Port (Dev):** Backend 3001, Frontend 3000
 
 **Purpose:** Match BOQ (Bill of Quantities) descriptions to URS codes using AI.
@@ -719,7 +719,7 @@ REDIS_URL=redis://...
 # Google Drive (optional)
 GOOGLE_CLIENT_ID=...
 GOOGLE_CLIENT_SECRET=...
-GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/google/callback
+GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback
 GOOGLE_CREDENTIALS_ENCRYPTION_KEY=...
 ```
 
@@ -727,7 +727,7 @@ GOOGLE_CREDENTIALS_ENCRYPTION_KEY=...
 ```env
 NODE_ENV=production
 PORT=3001
-VITE_API_URL=https://monolit-planner-api-3uxelthc4q-ey.a.run.app
+VITE_API_URL=https://monolit-planner-api-1086027517695.europe-west3.run.app
 CORS_ORIGIN=https://monolit-planner-frontend.vercel.app
 ```
 
@@ -740,7 +740,7 @@ GOOGLE_AI_KEY=...
 OPENAI_API_KEY=sk-...
 PPLX_API_KEY=pplx-...
 LLM_TIMEOUT_MS=90000
-STAVAGENT_API_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+STAVAGENT_API_URL=https://concrete-agent-1086027517695.europe-west3.run.app
 ```
 
 ### stavagent-portal
@@ -755,7 +755,7 @@ VITE_DISABLE_AUTH=true          # Disables authentication in production
 ### URS Matcher: Empty Results
 1. Check LLM timeout in `llmConfig.js` (should be 90s)
 2. Check AbortController in `llmClient.js` (each provider needs own controller)
-3. Check Multi-Role URL in `multiRoleClient.js` (concrete-agent-3uxelthc4q-ey.a.run.app)
+3. Check Multi-Role URL in `multiRoleClient.js` (concrete-agent-1086027517695.europe-west3.run.app)
 
 ### Monolit: Calculations Wrong
 1. Check `concrete_m3` value in beton position

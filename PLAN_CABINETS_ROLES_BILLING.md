@@ -591,7 +591,7 @@ Sprint 3:
   10. Run migration 004
   11. Deploy backend (billing + webhooks-stripe)
   12. Register Stripe webhook:
-      https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app/api/webhooks/stripe
+      https://stavagent-portal-backend-1086027517695.europe-west3.run.app/api/webhooks/stripe
   13. Deploy frontend (BillingPage)
 
 Sprint 4:

@@ -34,7 +34,7 @@ services:
       - key: CORS_ORIGIN
         value: "https://monolit-planner-frontend.vercel.app"
       - key: CORE_API_URL
-        value: "https://concrete-agent-3uxelthc4q-ey.a.run.app"
+        value: "https://concrete-agent-1086027517695.europe-west3.run.app"
       - key: CORE_TIMEOUT
         value: "90000"
       - key: ENABLE_CORE_FALLBACK
@@ -61,7 +61,7 @@ services:
       - key: NODE_VERSION
         value: 20.11.0
       - key: VITE_API_URL
-        value: "https://monolit-planner-api-3uxelthc4q-ey.a.run.app"
+        value: "https://monolit-planner-api-1086027517695.europe-west3.run.app"
       - key: VITE_PORTAL_API_URL
         value: "https://stavagent-backend.vercel.app"
       - key: VITE_REGISTRY_URL

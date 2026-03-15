@@ -13,7 +13,7 @@
 
 import { logger } from '../utils/logger.js';
 
-const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app';
+const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
 const MONOLIT_FRONTEND_URL = process.env.MONOLIT_FRONTEND_URL || 'https://monolit-planner-frontend.vercel.app';
 const WRITE_BACK_TIMEOUT = parseInt(process.env.PORTAL_WRITE_BACK_TIMEOUT) || 5000;
 

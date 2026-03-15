@@ -28,11 +28,11 @@ gcloud builds list --limit=5 --region=europe-west3
 
 ```bash
 # Health checks
-curl -s https://concrete-agent-3uxelthc4q-ey.a.run.app/health
-curl -s https://monolit-planner-api-3uxelthc4q-ey.a.run.app/health
-curl -s https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app/health
-curl -s https://urs-matcher-service-3uxelthc4q-ey.a.run.app/health
-curl -s https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/health
+curl -s https://concrete-agent-1086027517695.europe-west3.run.app/health
+curl -s https://monolit-planner-api-1086027517695.europe-west3.run.app/health
+curl -s https://stavagent-portal-backend-1086027517695.europe-west3.run.app/health
+curl -s https://urs-matcher-service-1086027517695.europe-west3.run.app/health
+curl -s https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/health
 ```
 
 ### 3. Проверить что деплой применился

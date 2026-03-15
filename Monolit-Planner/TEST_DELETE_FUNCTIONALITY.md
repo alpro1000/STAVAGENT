@@ -92,7 +92,7 @@ DELETE /api/monolith-projects/by-project-name/:projectName
    - В консоли браузера: `DELETE /api/monolith-projects/SOUPIS` → 200 OK
 
 5. ✅ **Проверь базу данных** (опционально)
-   - Открой: https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/monolith-projects/debug/database
+   - Открой: https://monolit-planner-api-1086027517695.europe-west3.run.app/api/monolith-projects/debug/database
    - В `monolith_projects` объект должен исчезнуть
    - Позиции (positions) для этого объекта тоже должны быть удалены
 

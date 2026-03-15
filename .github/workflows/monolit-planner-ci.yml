@@ -193,7 +193,7 @@ jobs:
         working-directory: ./Monolit-Planner/frontend
         run: npm run build
         env:
-          VITE_API_URL: https://monolit-planner-api-3uxelthc4q-ey.a.run.app
+          VITE_API_URL: https://monolit-planner-api-1086027517695.europe-west3.run.app
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4

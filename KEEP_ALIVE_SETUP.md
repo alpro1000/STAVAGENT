@@ -96,18 +96,18 @@ gcloud run services update urs-matcher-service \
 ```bash
 # Test concrete-agent
 curl -H "X-Keep-Alive-Key: YOUR_SECRET_KEY" \
-  https://concrete-agent-3uxelthc4q-ey.a.run.app/healthcheck
+  https://concrete-agent-1086027517695.europe-west3.run.app/healthcheck
 
 # Test monolit-planner
 curl -H "X-Keep-Alive-Key: YOUR_SECRET_KEY" \
-  https://monolit-planner-api-3uxelthc4q-ey.a.run.app/healthcheck
+  https://monolit-planner-api-1086027517695.europe-west3.run.app/healthcheck
 
 # Test urs-matcher
 curl -H "X-Keep-Alive-Key: YOUR_SECRET_KEY" \
-  https://urs-matcher-service-3uxelthc4q-ey.a.run.app/health
+  https://urs-matcher-service-1086027517695.europe-west3.run.app/health
 
 # Without key (should return 404)
-curl -i https://concrete-agent-3uxelthc4q-ey.a.run.app/healthcheck
+curl -i https://concrete-agent-1086027517695.europe-west3.run.app/healthcheck
 ```
 
 ### Step 5: Enable GitHub Actions Workflow

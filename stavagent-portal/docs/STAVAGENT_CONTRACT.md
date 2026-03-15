@@ -29,7 +29,7 @@
      ↓              ↓
 ┌────────────────────────┐
 │  Concrete-Agent CORE   │  Репо: concrete-agent
-│  Парсинг, AI, аудит    │  URL:  https://concrete-agent-3uxelthc4q-ey.a.run.app
+│  Парсинг, AI, аудит    │  URL:  https://concrete-agent-1086027517695.europe-west3.run.app
 └────────────────────────┘
 ```
 
@@ -78,7 +78,7 @@ proj_abc123       | core       | core_xyz789
 
 ### Base URL
 ```
-CORE: https://concrete-agent-3uxelthc4q-ey.a.run.app
+CORE: https://concrete-agent-1086027517695.europe-west3.run.app
 ```
 
 ### 1. Отправить документ в CORE
@@ -492,7 +492,7 @@ GET /api/portal/open-project?portal_project_id=proj_abc123&token=jwt_token
    POST /api/portal/projects/proj_abc123/files
 
 2. [PORTAL] Отправляет файл в CORE
-   POST https://concrete-agent-3uxelthc4q-ey.a.run.app/workflow-a/start
+   POST https://concrete-agent-1086027517695.europe-west3.run.app/workflow-a/start
    {
      file: VV_most.xlsx,
      project_id: "proj_abc123",

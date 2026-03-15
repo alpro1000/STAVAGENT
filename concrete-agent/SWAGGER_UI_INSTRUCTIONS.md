@@ -31,7 +31,7 @@ Cmd + Shift + R
 
 Откройте в режиме инкогнито:
 ```
-https://concrete-agent-3uxelthc4q-ey.a.run.app/docs
+https://concrete-agent-1086027517695.europe-west3.run.app/docs
 ```
 
 ---
@@ -42,7 +42,7 @@ https://concrete-agent-3uxelthc4q-ey.a.run.app/docs
 
 1. **Откройте /docs**
    ```
-   https://concrete-agent-3uxelthc4q-ey.a.run.app/docs
+   https://concrete-agent-1086027517695.europe-west3.run.app/docs
    ```
 
 2. **Найдите нужный эндпоинт** (например, `POST /api/chat/assistant`)
@@ -183,7 +183,7 @@ GET /api/workflow/a/positions?project_id=proj_abc123def456
 
 ### Вариант 1: Проверить OpenAPI схему напрямую
 ```
-https://concrete-agent-3uxelthc4q-ey.a.run.app/openapi.json
+https://concrete-agent-1086027517695.europe-west3.run.app/openapi.json
 ```
 
 Найдите в схеме ваш эндпоинт (Ctrl+F: "tech-card") и проверьте что там есть `requestBody`.
@@ -194,12 +194,12 @@ https://concrete-agent-3uxelthc4q-ey.a.run.app/openapi.json
 
 ```bash
 # Windows (PowerShell)
-curl -X POST "https://concrete-agent-3uxelthc4q-ey.a.run.app/api/chat/assistant" `
+curl -X POST "https://concrete-agent-1086027517695.europe-west3.run.app/api/chat/assistant" `
   -H "Content-Type: application/json" `
   -d '{\"question\": \"Jaké jsou požadavky ČSN pro beton C30/37?\"}'
 
 # Linux/macOS/Git Bash
-curl -X POST "https://concrete-agent-3uxelthc4q-ey.a.run.app/api/chat/assistant" \
+curl -X POST "https://concrete-agent-1086027517695.europe-west3.run.app/api/chat/assistant" \
   -H "Content-Type: application/json" \
   -d '{"question": "Jaké jsou požadavky ČSN pro beton C30/37?"}'
 ```
@@ -208,7 +208,7 @@ curl -X POST "https://concrete-agent-3uxelthc4q-ey.a.run.app/api/chat/assistant"
 
 1. Скачайте [Postman](https://www.postman.com/downloads/)
 2. Создайте POST запрос:
-   - URL: `https://concrete-agent-3uxelthc4q-ey.a.run.app/api/chat/assistant`
+   - URL: `https://concrete-agent-1086027517695.europe-west3.run.app/api/chat/assistant`
    - Headers: `Content-Type: application/json`
    - Body: Raw JSON:
      ```json
@@ -243,10 +243,10 @@ curl -X POST "https://concrete-agent-3uxelthc4q-ey.a.run.app/api/chat/assistant"
 
 ## 🔗 Полезные ссылки
 
-- **Swagger UI:** https://concrete-agent-3uxelthc4q-ey.a.run.app/docs
-- **ReDoc:** https://concrete-agent-3uxelthc4q-ey.a.run.app/redoc
-- **OpenAPI JSON:** https://concrete-agent-3uxelthc4q-ey.a.run.app/openapi.json
-- **Health Check:** https://concrete-agent-3uxelthc4q-ey.a.run.app/health
+- **Swagger UI:** https://concrete-agent-1086027517695.europe-west3.run.app/docs
+- **ReDoc:** https://concrete-agent-1086027517695.europe-west3.run.app/redoc
+- **OpenAPI JSON:** https://concrete-agent-1086027517695.europe-west3.run.app/openapi.json
+- **Health Check:** https://concrete-agent-1086027517695.europe-west3.run.app/health
 
 ---
 

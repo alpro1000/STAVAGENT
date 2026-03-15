@@ -17,7 +17,7 @@
 import { logger } from '../utils/logger.js';
 
 // Path to concrete-agent Core API (STAVAGENT ЯДРО)
-const STAVAGENT_API_BASE = process.env.STAVAGENT_API_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
+const STAVAGENT_API_BASE = process.env.STAVAGENT_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
 
 /**
  * Ask question to Multi-Role AI System
