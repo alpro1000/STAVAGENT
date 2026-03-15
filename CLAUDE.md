@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.8.0
-**Last Updated:** 2026-03-14
+**Version:** 2.9.0
+**Last Updated:** 2026-03-15
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,8 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-15 | All services | Session 13: Render→GCR migration complete. All 5 backends on Cloud Run (europe-west3). Cloud Build CI/CD verified (5 triggers, auto-deploy on merge to main). Fixes: Cloud Run URLs in all services, SSL disabled for Cloud SQL Unix sockets, registry-backend 503 race condition, cloudbuild env var conflicts. All services healthy, all DBs connected. | ✅ Deployed |
+| 2026-03-14 | stavagent-portal | Session 12: Planning only — PLAN_CABINETS_ROLES_BILLING.md (4-sprint SaaS transformation: Cabinets+Roles, Service Connections, Stripe Billing, Object Storage) | ✅ Pushed |
 | 2026-03-13 | Monolit + Portal | Session 11: Pump Calculator sub-row in PositionRow (metadata.pump_cost_czk, handlePumpRentalChange, TOV export uses actual cost). Kiosk E2E fixes: GET /api/export-to-registry/:id endpoint (KioskLinksPanel import was broken — route didn't exist), KioskLinksPanel URL fix, positions query invalidation after export so position_instance_id appear in UI. Write-back audit: portalWriteBack.js + dovWriteBack.ts both complete, no action needed. | ✅ Pushed |
 | 2026-03-13 | rozpocet-registry + Portal | Session 10b (audit): Registry→Portal infinite loop fix verified — syncInProgress guard, !portalLink check, kiosk_links UNIQUE constraint ok | ✅ No changes |
 | 2026-03-12 | All services | Session 10a: Cloud Build CI/CD (4 cloudbuild-*.yaml + guard steps + triggers/), bug fixes: OTSKP variant suffix, import-from-registry 429/500, kiosk unlink 404. PRs #591–#597. GCR блокер: нужен AR repo | ✅ Pushed |
@@ -806,28 +808,25 @@ Import triggers: `gcloud builds triggers import --source=triggers/{service}.yaml
 ## Pending Work (Backlog)
 
 ### Awaiting User Action
-1. **Cloud Build Triggers** (GCP) - Import triggers via `gcloud builds triggers import --source=triggers/*.yaml` if not yet created
+1. **Cloud Build Triggers Import** (GCP) - `gcloud builds triggers import --source=triggers/*.yaml` (if not auto-imported yet)
 2. **Environment Variables** (GCP Secret Manager) - `PERPLEXITY_API_KEY` for concrete-agent, `PPLX_API_KEY` for URS Matcher, `OPENAI_API_KEY` for both
 3. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Cloud SQL shell
-4. **Portal Backend Deploy** - Phase 8 DB migration (position_instance_id columns + 13 endpoints)
-5. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
-6. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Cloud Run env
+4. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
+5. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Cloud Run env
+6. **MASTER_ENCRYPTION_KEY** - Generate `openssl rand -hex 32` → add to Secret Manager (needed for Sprint 2: Service Connections)
 
-### Recently Completed (March 2-6)
-- ✅ PERT 3-point estimation + Monte Carlo simulation (20 tests)
-- ✅ Concrete maturity/curing model ČSN EN 13670 (21 tests)
-- ✅ MaturityConfigPanel UI in FormworkCalculatorModal
-- ✅ Registry Backend Sync: localStorage ↔ PostgreSQL (backendSync.ts + bulk endpoint)
-- ✅ Registry health check fix (old + new response format support)
-- ✅ Removed dead registryStoreAPI.ts
-- ✅ Unified Registry Foundation (Weeks 1-4): DB migrations, 11 API endpoints, adapters
-- ✅ Relink Algorithm (Weeks 7-9): 4-step confidence matching, 8.8x perf, UI modal
-- ✅ Unified Registry Frontend (Weeks 5-6, 93%): RegistryView, filters, sorting, CSV export
-- ✅ Multi-supplier pump calculator: 3 billing models, supplier comparison
-- ✅ Time Norms Automation: AI days suggestion implementation
-- ✅ Portal tabs/modal redesign: Master-Detail layout, Czech labels
-- ✅ Document Passport optimization: 300s → 2-8s
-- ✅ CORS fix + MinerU dependencies + Render Blueprint
+### Recently Completed (Session 13, March 15)
+- ✅ **Render → Google Cloud Run migration complete** — all 5 backends deployed and healthy
+- ✅ Cloud Run URLs updated across all services (CORS origins, API URLs, env vars)
+- ✅ Cloud SQL SSL fix — disabled SSL for Unix socket connections (registry-backend)
+- ✅ Registry-backend 503 race condition fix (DB init before route setup)
+- ✅ Cloud Build env var conflicts resolved (--remove-env-vars removed)
+- ✅ All 5 health checks passing: concrete-agent, portal, monolit, urs-matcher, registry
+
+### Recently Completed (Sessions 11-12, March 13-14)
+- ✅ PLAN_CABINETS_ROLES_BILLING.md — 4-sprint SaaS transformation plan
+- ✅ Pump Calculator sub-row in PositionRow
+- ✅ Kiosk E2E fixes (export-to-registry endpoint, KioskLinksPanel URL, query invalidation)
 
 ### Technical Debt
 - Node.js 18.x → 20.x upgrade (all services)
@@ -904,6 +903,8 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
+| 2026-03-15 | All services | Session 13: Render→GCR migration complete. Cloud Run URLs updated across all services, Cloud SQL SSL fix, registry 503 race condition fix, cloudbuild env var conflicts. 5/5 services healthy + DB connected. Cloud Build CI/CD: 5 triggers configured for auto-deploy on merge to main. | 15 |
+| 2026-03-14 | stavagent-portal | Session 12: PLAN_CABINETS_ROLES_BILLING.md — 4-sprint SaaS transformation plan (Cabinets+Roles, Service Connections, Stripe Billing, Object Storage). 6 SQL migrations designed. | 1 |
 | 2026-03-08 | Portal + Monolit | Session 8: Betonárny discovery (GPS search), AWS Bedrock integration, Objednávka betonu page (search+calculate+compare), lazy-load pages (-22% bundle), CORE proxy + all workflows fix, Universal Parser 4-step pipeline, kiosk import buttons, CorePanel inline styles rewrite, curing days fix (elementTotalDays→FormworkCalc) | 8 |
 | 2026-03-07 | concrete-agent | PDF Price Parser module: 17 files, pdfplumber+OCR extractor, LLM classifier, 7 section parsers (regex+LLM), Pydantic models, API endpoint, 21 tests | 1 |
 | 2026-03-07 | Monolit + Portal | PlannerPage (orchestrator UI), PumpCalculatorPage (mobile), Calendar date mapping, PortalBreadcrumb, ServiceCard activation | 5 |

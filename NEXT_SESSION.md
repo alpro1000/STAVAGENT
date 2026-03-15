@@ -1,117 +1,73 @@
-# NEXT SESSION — 2026-03-14 (Session 12 Complete)
+# NEXT SESSION — 2026-03-15 (Session 13 Complete)
 
-## Краткое резюме Session 12 (2026-03-14)
+## Краткое резюме Session 13 (2026-03-15)
 
-**Ветка:** `claude/deploy-agent-portal-pHm5K`
-**Коммит:** `434dcb8`
-**Тип:** Планирование (только документация, код не изменялся)
+**Ветка:** `claude/cabinets-roles-sprint1-BEa5m`
+**Тип:** Infrastructure — Render → Google Cloud Run migration
 
 ### Что сделано
 
-Создан файл `/PLAN_CABINETS_ROLES_BILLING.md` — полный план 4-спринтовой трансформации
-Portal из single-tenant кальkulяtора в multi-tenant SaaS-платформу.
+**Полная миграция на Google Cloud Run (europe-west3):**
+- Все 5 бэкендов задеплоены и работают на Cloud Run
+- Cloud SQL PostgreSQL 15 подключён (3 базы: portal, monolit, registry)
+- SSL отключён для Cloud SQL Unix socket соединений
+- Cloud Build CI/CD: 5 триггеров настроены для авто-деплоя при мерже в main
 
-**Содержание плана:**
+**Статус сервисов (все healthy):**
 
-| Спринт | Что | Объём |
-|--------|-----|-------|
-| Sprint 1 | Organizations + 5 ролей + /cabinet | ~15 файлов |
-| Sprint 2 | Service Connections (зашифрованные AI ключи) + model routing | ~8 файлов |
-| Sprint 3 | Stripe Billing (4 тарифа) + usage metering + webhooks | ~10 файлов |
-| Sprint 4 | GCS/S3 presigned URLs + async task queue + BYOS | ~15 файлов |
+| Сервис | URL | DB |
+|--------|-----|-----|
+| concrete-agent | https://concrete-agent-1086027517695.europe-west3.run.app | — |
+| stavagent-portal | https://stavagent-portal-backend-1086027517695.europe-west3.run.app | connected |
+| monolit-planner | https://monolit-planner-api-1086027517695.europe-west3.run.app | connected |
+| urs-matcher | https://urs-matcher-service-1086027517695.europe-west3.run.app | connected |
+| rozpocet-registry | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app | connected |
 
-**6 SQL-миграций:**
-- `001_extend_users.sql` — phone, company, avatar_url, org_id
-- `002_organizations.sql` — organizations + org_members (5 ролей)
-- `003_service_connections.sql` — зашифрованные API ключи AES-256-GCM
-- `004_billing.sql` — subscriptions + usage_events + usage_monthly
-- `005_task_queue.sql` — async task queue
-- `006_storage_uris.sql` — storage_uri, content_hash в portal_files
+### CI/CD — Авто-деплой при мерже
+
+После мержа PR в `main`, Cloud Build автоматически деплоит **только изменённые сервисы**:
+
+```
+Push to main → Cloud Build trigger → Guard (check path filter) → Docker build → Push to AR → Cloud Run deploy
+```
+
+| Сервис | Path Filter | Trigger |
+|--------|-------------|---------|
+| concrete-agent | `concrete-agent/**` | cloudbuild-concrete.yaml |
+| Monolit-Planner | `Monolit-Planner/**` | cloudbuild-monolit.yaml |
+| stavagent-portal | `stavagent-portal/**` | cloudbuild-portal.yaml |
+| URS_MATCHER_SERVICE | `URS_MATCHER_SERVICE/**` | cloudbuild-urs.yaml |
+| rozpocet-registry-backend | `rozpocet-registry-backend/**` | cloudbuild-registry.yaml |
+
+**Фронтенды** деплоятся через Vercel (GitHub интеграция, автоматически при push).
+
+**ВАЖНО:** Триггеры нужно импортировать один раз:
+```bash
+for f in triggers/*.yaml; do gcloud builds triggers import --source=$f; done
+```
 
 ---
 
-## Что нужно сделать ВРУЧНУЮ перед началом Sprint 1
+## Следующий шаг: Sprint 1 — Cabinets + Roles
 
-### 1. Render PostgreSQL — генерация MASTER_ENCRYPTION_KEY
-
-На локальной машине или в терминале:
-```bash
-openssl rand -hex 32
-# Пример: a3f8c2d1e4b5...64chars
-```
-→ Добавить в Render Dashboard → Portal Backend → Environment:
-```
-MASTER_ENCRYPTION_KEY=<64-char hex>
-```
-
-### 2. Stripe — создать аккаунт и продукты
-
-1. Зайти на https://dashboard.stripe.com
-2. Создать 4 продукта: Starter, Professional (+ годовые варианты)
-3. Получить price_id для каждого → добавить в Render:
-```
-STRIPE_SECRET_KEY=sk_live_...
-STRIPE_WEBHOOK_SECRET=whsec_...         ← получить ПОСЛЕ деплоя webhook
-STRIPE_PRICE_STARTER_MONTHLY=price_...
-STRIPE_PRICE_STARTER_ANNUAL=price_...
-STRIPE_PRICE_PROFESSIONAL_MONTHLY=price_...
-STRIPE_PRICE_PROFESSIONAL_ANNUAL=price_...
-```
-
-### 3. Google Cloud Storage — создать bucket (Sprint 4)
-
-```bash
-# Через gcloud CLI или Google Cloud Console
-gcloud storage buckets create gs://stavagent-prod-files \
-  --location=europe-west3 \
-  --uniform-bucket-level-access
-
-# Создать Service Account
-gcloud iam service-accounts create stavagent-portal-storage \
-  --display-name="StavAgent Portal Storage"
-
-# Выдать права
-gcloud storage buckets add-iam-policy-binding gs://stavagent-prod-files \
-  --member="serviceAccount:stavagent-portal-storage@PROJECT.iam.gserviceaccount.com" \
-  --role="roles/storage.objectAdmin"
-
-# Скачать JSON ключ → загрузить в Render как Secret File
-```
-
-→ В Render env добавить:
-```
-GCS_BUCKET=stavagent-prod-files
-GCS_PROJECT_ID=<gcp-project-id>
-GOOGLE_APPLICATION_CREDENTIALS=/etc/secrets/gcs-key.json
-```
-
-### 4. Stripe Webhook URL — после деплоя Sprint 3
-
-В Stripe Dashboard → Developers → Webhooks → Add endpoint:
-```
-URL: https://stavagent-portal-backend-1086027517695.europe-west3.run.app/api/webhooks/stripe
-Events:
-  - checkout.session.completed
-  - customer.subscription.updated
-  - customer.subscription.deleted
-  - invoice.payment_failed
-  - invoice.payment_succeeded
-```
-→ Скопировать `whsec_...` → добавить в Render как `STRIPE_WEBHOOK_SECRET`
+План: `/PLAN_CABINETS_ROLES_BILLING.md`
 
 ---
 
-## Команда для начала новой сессии
+## Команда для начала следующей сессии
 
 ```
-Прочитай CLAUDE.md и NEXT_SESSION.md. Начинаем реализацию PLAN_CABINETS_ROLES_BILLING.md.
+Прочитай CLAUDE.md и NEXT_SESSION.md.
 
-Старт с Sprint 1: Cabinets + Roles.
+Контекст: Миграция на Google Cloud Run завершена (Session 13). Все 5 сервисов работают.
+CI/CD: Cloud Build авто-деплоит при мерже в main.
 
-Ветка: создай новую ветку claude/cabinets-roles-<random5chars>
+Начинаем реализацию Sprint 1 из PLAN_CABINETS_ROLES_BILLING.md: Cabinets + Roles.
+
+Ветка: создай новую ветку claude/cabinets-roles-sprint1-<random5chars>
 
 Порядок работы:
-1. Прочитай PLAN_CABINETS_ROLES_BILLING.md полностью
+1. Прочитай PLAN_CABINETS_ROLES_BILLING.md полностью (Sprint 1 секция)
 2. Прочитай stavagent-portal/backend/src/db/schema-postgres.sql (текущая схема)
 3. Прочитай stavagent-portal/backend/src/middleware/adminOnly.js (паттерн для orgRole.js)
 4. Прочитай stavagent-portal/backend/src/routes/auth.js (добавим PATCH /api/auth/me)
@@ -120,27 +76,31 @@ Events:
 7. Прочитай stavagent-portal/frontend/src/App.tsx (добавим роуты /cabinet, /org/:id)
 
 Затем реализуй Sprint 1 по чеклисту из плана:
-Backend: middleware/orgRole.js, routes/cabinet.js, routes/orgs.js, PATCH /api/auth/me
+Backend: SQL миграции (001_extend_users + 002_organizations), middleware/orgRole.js, routes/cabinet.js, routes/orgs.js, PATCH /api/auth/me
 Frontend: CabinetPage, OrgPage, OrgInvitePage, компоненты cabinet/ и org/
 
 После каждого логического блока коммить и пушить.
+После завершения — создай PR в main. CI/CD автоматически задеплоит portal при мерже.
 ```
 
 ---
 
-## Статус сервисов (на 2026-03-14)
+## Статус сервисов (на 2026-03-15)
 
-| Сервис | Статус | Последнее изменение |
-|--------|--------|---------------------|
-| concrete-agent | ✅ Работает | Session 11 (2026-03-13) |
-| stavagent-portal | ✅ Работает | Session 12 — только план |
-| Monolit-Planner | ✅ Работает | Session 11 |
-| URS_MATCHER_SERVICE | ✅ Работает | Session 10a |
-| rozpocet-registry | ✅ Работает | Session 10a |
+| Сервис | Статус | Platform | Последнее изменение |
+|--------|--------|----------|---------------------|
+| concrete-agent | ✅ Healthy | Cloud Run | Session 13 (deployed) |
+| stavagent-portal | ✅ Healthy | Cloud Run | Session 13 (deployed) |
+| Monolit-Planner | ✅ Healthy | Cloud Run | Session 13 (deployed) |
+| URS_MATCHER_SERVICE | ✅ Healthy | Cloud Run | Session 13 (deployed) |
+| rozpocet-registry-backend | ✅ Healthy + DB | Cloud Run | Session 13 (SSL fix deployed) |
 
-## Backlog (не в этом плане)
+## Backlog (не в Sprint 1)
 
-- GCR permissions для Cloud Build (нужен AR repo: `gcloud artifacts repositories create`)
-- Keep-Alive `KEEP_ALIVE_KEY` в GitHub + Render secrets
+- Cloud Build Triggers import (если ещё не сделано): `gcloud builds triggers import --source=triggers/*.yaml`
+- MASTER_ENCRYPTION_KEY для Sprint 2 (Service Connections): `openssl rand -hex 32`
+- Stripe аккаунт для Sprint 3 (Billing)
+- GCS bucket для Sprint 4 (Object Storage)
+- Keep-Alive `KEEP_ALIVE_KEY` в GitHub + Cloud Run secrets
 - React Error Boundaries
 - Node.js 18 → 20 upgrade
