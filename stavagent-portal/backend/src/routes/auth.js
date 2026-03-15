@@ -176,7 +176,8 @@ router.get('/me', requireAuth, async (req, res) => {
   try {
     // req.user is set by requireAuth middleware
     const user = await db.prepare(`
-      SELECT id, email, name, role, email_verified, created_at
+      SELECT id, email, name, role, email_verified, created_at,
+             phone, company, avatar_url, timezone, preferences, org_id
       FROM users
       WHERE id = ?
     `).get(req.user.userId);
@@ -193,12 +194,80 @@ router.get('/me', requireAuth, async (req, res) => {
         name: user.name,
         role: user.role,
         email_verified: user.email_verified,
-        created_at: user.created_at
+        created_at: user.created_at,
+        phone: user.phone,
+        company: user.company,
+        avatar_url: user.avatar_url,
+        timezone: user.timezone,
+        preferences: user.preferences,
+        org_id: user.org_id
       }
     });
   } catch (error) {
     logger.error('Get user info error:', error);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// PATCH /api/auth/me - Update current user profile
+router.patch('/me', requireAuth, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { name, phone, company, timezone, preferences } = req.body;
+
+    // Validate allowed fields only
+    const updates = [];
+    const values = [];
+
+    if (name !== undefined) {
+      if (typeof name !== 'string' || name.trim().length === 0) {
+        return res.status(400).json({ error: 'name must be a non-empty string' });
+      }
+      updates.push('name = ?');
+      values.push(name.trim());
+    }
+    if (phone !== undefined) {
+      updates.push('phone = ?');
+      values.push(phone || null);
+    }
+    if (company !== undefined) {
+      updates.push('company = ?');
+      values.push(company || null);
+    }
+    if (timezone !== undefined) {
+      updates.push('timezone = ?');
+      values.push(timezone || 'Europe/Prague');
+    }
+    if (preferences !== undefined) {
+      if (typeof preferences !== 'object' || Array.isArray(preferences)) {
+        return res.status(400).json({ error: 'preferences must be a JSON object' });
+      }
+      updates.push('preferences = ?');
+      values.push(JSON.stringify(preferences));
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ error: 'No valid fields to update' });
+    }
+
+    updates.push('updated_at = CURRENT_TIMESTAMP');
+    values.push(userId);
+
+    await db.prepare(`
+      UPDATE users SET ${updates.join(', ')} WHERE id = ?
+    `).run(...values);
+
+    const updated = await db.prepare(`
+      SELECT id, email, name, role, email_verified, created_at,
+             phone, company, avatar_url, timezone, preferences, org_id
+      FROM users WHERE id = ?
+    `).get(userId);
+
+    logger.info(`Profile updated for user ${userId}`);
+    res.json({ success: true, user: updated });
+  } catch (error) {
+    logger.error('Update profile error:', error);
+    res.status(500).json({ error: 'Server error during profile update' });
   }
 });
 

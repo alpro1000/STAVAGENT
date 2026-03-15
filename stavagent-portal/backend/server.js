@@ -37,6 +37,8 @@ import parsePreviewRoutes from './src/routes/parse-preview.js';
 import positionInstancesRoutes from './src/routes/position-instances.js';
 import portalDocumentsRoutes from './src/routes/portal-documents.js';
 import coreProxyRoutes from './src/routes/core-proxy.js';
+import cabinetRoutes from './src/routes/cabinet.js';
+import orgsRoutes from './src/routes/orgs.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -203,6 +205,12 @@ app.use('/api/parse-preview', uploadLimiter, parsePreviewRoutes);
 
 // CORE proxy — forwards all /api/core/* to concrete-agent with server-side timeouts
 app.use('/api/core', coreProxyRoutes);
+
+// Cabinet — personal dashboard stats (Sprint 1)
+app.use('/api/cabinet', cabinetRoutes);
+
+// Organizations — multi-tenant org model (Sprint 1)
+app.use('/api/orgs', orgsRoutes);
 
 // Debug routes (disable in production)
 app.use('/api/debug', debugRoutes);
