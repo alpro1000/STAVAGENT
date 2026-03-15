@@ -22,9 +22,14 @@ let pool = null;
 let dbReady = false;
 
 if (process.env.DATABASE_URL) {
+  // Detect Cloud SQL socket — SSL must be disabled for Unix socket connections
+  const dbUrl = process.env.DATABASE_URL || '';
+  const isCloudSqlSocket = dbUrl.includes('/cloudsql/') || dbUrl.includes('%2Fcloudsql%2F');
+  const needsSsl = process.env.NODE_ENV === 'production' && !isCloudSqlSocket;
+
   pool = new pg.Pool({
     connectionString: process.env.DATABASE_URL,
-    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
+    ssl: needsSsl ? { rejectUnauthorized: false } : false,
     connectionTimeoutMillis: 10000,
     idleTimeoutMillis: 30000,
     max: 10,
@@ -701,9 +706,12 @@ app.post('/api/registry/export/excel-with-pump', async (req, res) => {
   }
 });
 
+// Initialize database BEFORE accepting connections (prevents 503 race condition)
+await initDatabase();
+
 // Start server
-app.listen(PORT, async () => {
+app.listen(PORT, () => {
   console.log(`[Registry Backend] v1.1.0 running on port ${PORT}`);
   console.log(`[Registry Backend] DATABASE_URL: ${process.env.DATABASE_URL ? 'configured' : 'NOT SET'}`);
-  await initDatabase();
+  console.log(`[Registry Backend] DB ready: ${dbReady}`);
 });
