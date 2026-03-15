@@ -291,3 +291,80 @@ CREATE INDEX IF NOT EXISTS idx_portal_documents_source ON portal_documents(sourc
 -- Add stavba_name to portal_projects (required by portal-projects.js)
 ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS stavba_name VARCHAR(255);
 
+-- ============================================================================
+-- MIGRATION 001: Extend users table (Sprint 1 — Cabinets + Roles)
+-- ============================================================================
+
+ALTER TABLE users
+  ADD COLUMN IF NOT EXISTS phone VARCHAR(30),
+  ADD COLUMN IF NOT EXISTS company VARCHAR(255),
+  ADD COLUMN IF NOT EXISTS avatar_url VARCHAR(512),
+  ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMP,
+  ADD COLUMN IF NOT EXISTS timezone VARCHAR(50) DEFAULT 'Europe/Prague',
+  ADD COLUMN IF NOT EXISTS preferences JSONB DEFAULT '{}',
+  ADD COLUMN IF NOT EXISTS org_id UUID;
+
+-- ============================================================================
+-- MIGRATION 002: Organizations + Members (Sprint 1 — Cabinets + Roles)
+-- ============================================================================
+
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'storage_mode_enum') THEN
+    CREATE TYPE storage_mode_enum AS ENUM ('managed', 'byos', 'private');
+  END IF;
+END $$;
+
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'plan_enum') THEN
+    CREATE TYPE plan_enum AS ENUM ('free', 'starter', 'professional', 'enterprise');
+  END IF;
+END $$;
+
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'org_role_enum') THEN
+    CREATE TYPE org_role_enum AS ENUM ('admin', 'manager', 'estimator', 'viewer', 'api_client');
+  END IF;
+END $$;
+
+CREATE TABLE IF NOT EXISTS organizations (
+  id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  name          VARCHAR(255) NOT NULL,
+  slug          VARCHAR(100) NOT NULL UNIQUE,
+  plan          plan_enum NOT NULL DEFAULT 'free',
+  storage_mode  storage_mode_enum NOT NULL DEFAULT 'managed',
+  storage_config JSONB DEFAULT NULL,
+  stripe_customer_id    VARCHAR(255),
+  stripe_subscription_id VARCHAR(255),
+  max_projects    INTEGER DEFAULT 5,
+  max_storage_gb  REAL    DEFAULT 1.0,
+  max_team_members INTEGER DEFAULT 1,
+  is_active BOOLEAN DEFAULT true,
+  trial_ends_at  TIMESTAMP,
+  created_at     TIMESTAMP DEFAULT NOW(),
+  updated_at     TIMESTAMP DEFAULT NOW(),
+  owner_id       INTEGER NOT NULL REFERENCES users(id) ON DELETE RESTRICT
+);
+
+CREATE TABLE IF NOT EXISTS org_members (
+  id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  org_id      UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
+  user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  role        org_role_enum NOT NULL DEFAULT 'estimator',
+  invited_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  invited_at  TIMESTAMP DEFAULT NOW(),
+  joined_at   TIMESTAMP,
+  invite_token_hash VARCHAR(64),
+  invite_expires_at TIMESTAMP,
+  UNIQUE(org_id, user_id)
+);
+
+ALTER TABLE users
+  ADD CONSTRAINT IF NOT EXISTS fk_users_org_id
+  FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE SET NULL;
+
+CREATE INDEX IF NOT EXISTS idx_organizations_owner ON organizations(owner_id);
+CREATE INDEX IF NOT EXISTS idx_organizations_slug ON organizations(slug);
+CREATE INDEX IF NOT EXISTS idx_org_members_org ON org_members(org_id);
+CREATE INDEX IF NOT EXISTS idx_org_members_user ON org_members(user_id);
+CREATE INDEX IF NOT EXISTS idx_org_members_invite_token ON org_members(invite_token_hash);
+

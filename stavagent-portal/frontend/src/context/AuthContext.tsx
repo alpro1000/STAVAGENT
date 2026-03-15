@@ -13,6 +13,14 @@ interface User {
   email: string;
   name: string;
   role: string;
+  phone?: string | null;
+  company?: string | null;
+  avatar_url?: string | null;
+  timezone?: string;
+  preferences?: Record<string, unknown>;
+  org_id?: string | null;
+  email_verified?: boolean;
+  created_at?: string;
 }
 
 interface AuthContextType {
@@ -21,6 +29,7 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
+  updateProfile: (fields: Partial<Pick<User, 'name' | 'phone' | 'company' | 'timezone' | 'preferences'>>) => Promise<void>;
   isAuthenticated: boolean;
   isLoading: boolean;
 }
@@ -126,12 +135,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
   };
 
+  // Update profile fields via PATCH /api/auth/me
+  const updateProfile = async (fields: Partial<Pick<User, 'name' | 'phone' | 'company' | 'timezone' | 'preferences'>>) => {
+    if (!token) throw new Error('Not authenticated');
+    const response = await axios.patch(`${API_URL}/api/auth/me`, fields, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (response.data.success) {
+      setUser(prev => prev ? { ...prev, ...response.data.user } : response.data.user);
+    } else {
+      throw new Error('Profile update failed');
+    }
+  };
+
   const value = {
     user,
     token,
     login,
     register,
     logout,
+    updateProfile,
     isAuthenticated: !!user && !!token,
     isLoading
   };
