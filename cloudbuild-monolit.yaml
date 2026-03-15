@@ -61,8 +61,7 @@ steps:
       - --allow-unauthenticated
       - --port=3001
       - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
-      - --remove-env-vars=DATABASE_URL
-      - --update-secrets=DATABASE_URL=MONOLIT_DATABASE_URL:latest
+      - --set-secrets=DATABASE_URL=MONOLIT_DATABASE_URL:latest
       - --set-env-vars=PORTAL_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app,REGISTRY_API_URL=https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app
 
 images:
