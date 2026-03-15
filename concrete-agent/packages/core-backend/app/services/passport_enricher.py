@@ -25,6 +25,7 @@ Date: 2026-02-10
 
 import json
 import logging
+import os
 from typing import Dict, Any, List, Optional
 from anthropic import Anthropic
 import google.generativeai as genai
@@ -187,7 +188,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
     OPENAI_MINI_MODEL = "gpt-5-mini"  # Fast, budget GPT-5
     PERPLEXITY_MODEL = "llama-3.1-sonar-large-128k-online"
 
-    def __init__(self, preferred_model: Optional[str] = None):
+    def __init__(self, preferred_model: Optional[str] = None, vertex_service_account: Optional[str] = None):
         """
         Initialize enricher with LLM clients.
 
@@ -199,15 +200,20 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 - "openai" (GPT-4 Turbo)
                 - "openai-mini" (GPT-4o Mini, cheap)
                 - "perplexity" (with web search)
+                - "vertex-ai-gemini" (Gemini via Vertex AI / Google Cloud billing)
+                - "vertex-ai-search" (Vertex AI Search + Gemini enrichment)
                 - "auto" (fallback chain)
+            vertex_service_account: Optional service account ID hint for Vertex AI
         """
         self.preferred_model = preferred_model or settings.MULTI_ROLE_LLM or "gemini"
+        self.vertex_service_account = vertex_service_account
 
         # Initialize all available clients
         self.gemini_model = None
         self.claude_client = None
         self.openai_client = None
         self.perplexity_available = False
+        self.vertex_gemini_model = None
 
         # Gemini (FREE)
         if settings.GOOGLE_API_KEY:
@@ -274,12 +280,39 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             self.perplexity_available = True
             logger.info(f"✅ Perplexity initialized: {self.PERPLEXITY_MODEL}")
 
+        # Vertex AI (Google Cloud billing — uses ADC or GOOGLE_APPLICATION_CREDENTIALS)
+        # Activated when preferred_model is "vertex-ai-gemini" or "vertex-ai-search"
+        if self.preferred_model in ("vertex-ai-gemini", "vertex-ai-search"):
+            try:
+                import vertexai
+                from vertexai.generative_models import GenerativeModel as VertexGenerativeModel
+                project_id = os.getenv("GOOGLE_PROJECT_ID", getattr(settings, "GOOGLE_PROJECT_ID", None))
+                location = os.getenv("VERTEX_LOCATION", "europe-west3")
+                # Credentials: Cloud Run uses ADC automatically; local dev needs GOOGLE_APPLICATION_CREDENTIALS
+                creds_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+                if creds_path and os.path.exists(creds_path):
+                    from google.oauth2 import service_account
+                    import google.auth
+                    credentials = service_account.Credentials.from_service_account_file(
+                        creds_path,
+                        scopes=["https://www.googleapis.com/auth/cloud-platform"]
+                    )
+                    vertexai.init(project=project_id, location=location, credentials=credentials)
+                else:
+                    # Use Application Default Credentials (Cloud Run, Workload Identity, gcloud auth)
+                    vertexai.init(project=project_id, location=location)
+                self.vertex_gemini_model = VertexGenerativeModel(self.GEMINI_MODEL)
+                logger.info(f"✅ Vertex AI Gemini initialized (project={project_id}, sa={vertex_service_account})")
+            except Exception as e:
+                logger.warning(f"Vertex AI unavailable: {e}. Falling back to direct Gemini.")
+
         # Log available models
         available = []
         if self.gemini_model: available.append("Gemini")
         if self.claude_client: available.append("Claude")
         if self.openai_client: available.append("OpenAI")
         if self.perplexity_available: available.append("Perplexity")
+        if self.vertex_gemini_model: available.append("Vertex AI")
 
         logger.info(f"Available LLM providers: {', '.join(available) if available else 'None'}")
 
@@ -362,7 +395,11 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 logger.info(f"Calling {provider_name} for enrichment")
                 result = None
 
-                if provider_name == "Gemini" and self.gemini_model:
+                if provider_name == "Vertex Gemini" and self.vertex_gemini_model:
+                    result = await self._call_vertex_gemini(prompt)
+                elif provider_name == "Vertex Search":
+                    result = await self._call_vertex_search(prompt)
+                elif provider_name == "Gemini" and self.gemini_model:
                     result = await self._call_gemini(prompt)
                 elif provider_name == "Claude Sonnet" and self.claude_client:
                     result = await self._call_claude(prompt, self.CLAUDE_MODEL)
@@ -396,6 +433,8 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
             "openai": ["OpenAI", "Gemini", "Claude Sonnet", "Claude Haiku"],
             "openai-mini": ["OpenAI Mini", "Gemini", "Claude Haiku", "OpenAI"],
             "perplexity": ["Perplexity", "Gemini", "Claude Sonnet", "OpenAI"],
+            "vertex-ai-gemini": ["Vertex Gemini", "Gemini", "Claude Haiku", "OpenAI Mini"],
+            "vertex-ai-search": ["Vertex Search", "Vertex Gemini", "Gemini", "Claude Haiku"],
             "auto": ["Gemini", "Claude Haiku", "OpenAI Mini", "Claude Sonnet", "OpenAI", "Perplexity"]
         }
 
@@ -486,6 +525,54 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                     return self._parse_json_response(text)
 
         return None
+
+    async def _call_vertex_gemini(self, prompt: str) -> Optional[Dict[str, Any]]:
+        """Call Gemini via Vertex AI SDK (uses Google Cloud billing / credits)"""
+        if not self.vertex_gemini_model:
+            return None
+        import asyncio
+
+        def _sync_call():
+            return self.vertex_gemini_model.generate_content(
+                prompt,
+                generation_config={"temperature": 0.3, "max_output_tokens": 2048},
+            )
+
+        response = await asyncio.to_thread(_sync_call)
+        if response and response.text:
+            return self._parse_json_response(response.text)
+        return None
+
+    async def _call_vertex_search(self, prompt: str) -> Optional[Dict[str, Any]]:
+        """
+        Call Vertex AI Search to retrieve relevant construction norms, then enrich
+        the prompt with those norms before calling Vertex Gemini.
+        Falls back to plain Vertex Gemini if Vertex Search is unconfigured.
+        """
+        search_context = ""
+        try:
+            from app.integrations.vertex_search import VertexSearchClient
+            client = VertexSearchClient()
+            if client.datastore_id:
+                # Extract a representative search query from the prompt
+                import re
+                snippet = re.search(r'(beton[^\n]{0,80}|výztuž[^\n]{0,80}|bednění[^\n]{0,80})', prompt, re.IGNORECASE)
+                query = snippet.group(0).strip() if snippet else "betonové monolitické konstrukce"
+                norms = await client.search_norms(query, top_k=5)
+                if norms:
+                    lines = [
+                        f"- {n.norm_code}: {n.title} — {n.unit_price_czk} Kč/{n.unit}"
+                        f"{f', {n.labor_hours} Nh' if n.labor_hours else ''}"
+                        for n in norms
+                    ]
+                    search_context = "\n\nRELEVANTNÍ NORMY (Vertex AI Search):\n" + "\n".join(lines)
+                    logger.info(f"Vertex Search returned {len(norms)} norms for enrichment context")
+        except Exception as e:
+            logger.warning(f"Vertex Search skipped: {e}")
+
+        # Augment prompt and call Vertex Gemini
+        augmented_prompt = prompt + search_context
+        return await self._call_vertex_gemini(augmented_prompt)
 
     def _parse_json_response(self, text: str) -> Optional[Dict[str, Any]]:
         """Parse JSON from LLM response, handling markdown code blocks"""

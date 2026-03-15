@@ -61,7 +61,7 @@ class DocumentProcessor:
     - Layer 3: AI enrichment (context, risks, relationships)
     """
 
-    def __init__(self, preferred_model: Optional[str] = None):
+    def __init__(self, preferred_model: Optional[str] = None, vertex_service_account: Optional[str] = None):
         """
         Initialize processor with all layers.
 
@@ -73,11 +73,17 @@ class DocumentProcessor:
                 - openai (GPT-4 Turbo)
                 - openai-mini (GPT-4o Mini)
                 - perplexity (with web search)
+                - vertex-ai-gemini (Gemini via Vertex AI / Google Cloud billing)
+                - vertex-ai-search (Vertex AI Search + Gemini)
                 - auto (fallback chain)
+            vertex_service_account: Optional Vertex AI service account ID hint
         """
         self.parser = SmartParser()
         self.extractor = CzechConstructionExtractor()
-        self.enricher = PassportEnricher(preferred_model=preferred_model)
+        self.enricher = PassportEnricher(
+            preferred_model=preferred_model,
+            vertex_service_account=vertex_service_account,
+        )
 
         logger.info(f"DocumentProcessor initialized (AI model: {preferred_model or 'default'})")
 
