@@ -287,6 +287,10 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 import vertexai
                 from vertexai.generative_models import GenerativeModel as VertexGenerativeModel
                 project_id = os.getenv("GOOGLE_PROJECT_ID", getattr(settings, "GOOGLE_PROJECT_ID", None))
+                if not project_id:
+                    raise ValueError(
+                        "GOOGLE_PROJECT_ID env var or settings attribute is required for Vertex AI"
+                    )
                 location = os.getenv("VERTEX_LOCATION", "europe-west3")
                 # Credentials: Cloud Run uses ADC automatically; local dev needs GOOGLE_APPLICATION_CREDENTIALS
                 creds_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
@@ -557,7 +561,7 @@ VRAŤ POUZE JSON, žádný další text před ani za."""
                 # Extract a representative search query from the prompt
                 import re
                 snippet = re.search(r'(beton[^\n]{0,80}|výztuž[^\n]{0,80}|bednění[^\n]{0,80})', prompt, re.IGNORECASE)
-                query = snippet.group(0).strip() if snippet else "betonové monolitické konstrukce"
+                query = snippet.group(0).strip() if snippet is not None else "betonové monolitické konstrukce"
                 norms = await client.search_norms(query, top_k=5)
                 if norms:
                     lines = [
