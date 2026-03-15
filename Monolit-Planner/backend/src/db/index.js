@@ -88,7 +88,9 @@ if (USE_POSTGRES) {
     pragma: postgres.pragma,
     isPostgres: true,
     isSqlite: false,
-    getPool: postgres.getPool  // Expose pool for direct access if needed
+    getPool: postgres.getPool,       // Expose pool getter
+    query: postgres.query,           // Raw query for registry/relink/adapter code
+    pool: postgres.getPool()         // Direct pool reference (same as getPool())
   };
 } else {
   console.log('[Database] Using SQLite (development mode)');

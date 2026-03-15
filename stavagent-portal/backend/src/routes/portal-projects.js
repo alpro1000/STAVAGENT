@@ -745,7 +745,6 @@ router.post('/:id/send-to-core', async (req, res) => {
     );
 
     if (projectResult.rows.length === 0) {
-      client.release();
       return res.status(404).json({
         success: false,
         error: 'Project not found'
@@ -763,7 +762,6 @@ router.post('/:id/send-to-core', async (req, res) => {
     );
 
     if (filesResult.rows.length === 0) {
-      client.release();
       return res.status(400).json({
         success: false,
         error: 'No files uploaded for this project'
