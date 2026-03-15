@@ -23,10 +23,11 @@ export function initPostgres() {
     throw new Error('DATABASE_URL environment variable is required for PostgreSQL');
   }
 
-  // Cloud SQL Proxy uses Unix socket — no SSL needed when host starts with /cloudsql
-  const dbUrl = process.env.DATABASE_URL || '';
-  const isCloudSqlSocket = dbUrl.includes('/cloudsql/') || dbUrl.includes('%2Fcloudsql%2F');
-  const needsSsl = process.env.NODE_ENV === 'production' && !isCloudSqlSocket;
+  // Cloud SQL Proxy uses Unix socket — SSL is not supported on Unix sockets.
+  // On Cloud Run (K_SERVICE is auto-set), always disable SSL.
+  // For other production environments (e.g. Render with remote PG), enable SSL.
+  const isCloudRun = !!process.env.K_SERVICE;
+  const needsSsl = !isCloudRun && process.env.NODE_ENV === 'production';
 
   pool = new Pool({
     connectionString: process.env.DATABASE_URL,
