@@ -22,16 +22,23 @@ let pool = null;
 let dbReady = false;
 
 if (process.env.DATABASE_URL) {
-  // Cloud Run → Cloud SQL connections are always secure (Unix socket or VPC).
-  // SSL must be OFF — Cloud SQL PostgreSQL does not accept SSL over Unix sockets.
+  // Cloud SQL Unix socket connections (Cloud Run) do NOT support SSL.
+  // Remote TCP connections (direct IP, non-Cloud SQL) should use SSL.
+  // Detection: Cloud SQL Unix socket paths contain '/cloudsql/' in the host param.
+  const isCloudSqlUnixSocket =
+    process.env.DATABASE_URL.includes('/cloudsql/') ||
+    process.env.CLOUD_SQL_UNIX_SOCKET === 'true';
+
   let connString = process.env.DATABASE_URL;
-  if (!connString.includes('sslmode=')) {
+  if (isCloudSqlUnixSocket && !connString.includes('sslmode=')) {
     connString += (connString.includes('?') ? '&' : '?') + 'sslmode=disable';
   }
 
+  const sslConfig = isCloudSqlUnixSocket ? false : { rejectUnauthorized: false };
+
   pool = new pg.Pool({
     connectionString: connString,
-    ssl: false,
+    ssl: sslConfig,
     connectionTimeoutMillis: 10000,
     idleTimeoutMillis: 30000,
     max: 10,
