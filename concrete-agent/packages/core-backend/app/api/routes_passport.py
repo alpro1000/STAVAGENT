@@ -46,8 +46,10 @@ async def generate_passport(
     file: UploadFile = File(..., description="Construction document (PDF, Excel, XML)"),
     project_name: str = Form(..., description="Project name"),
     enable_ai_enrichment: bool = Form(True, description="Enable AI enrichment (Layer 3)"),
-    preferred_model: Optional[str] = Form(None, description="Preferred AI model: gemini, claude-sonnet, claude-haiku, openai, openai-mini, perplexity, auto"),
-    project_id: Optional[str] = Form(None, description="Optional project ID")
+    preferred_model: Optional[str] = Form(None, description="Preferred AI model: gemini, claude-sonnet, claude-haiku, openai, openai-mini, perplexity, vertex-ai-gemini, vertex-ai-search, auto"),
+    project_id: Optional[str] = Form(None, description="Optional project ID"),
+    vertex_service_account: Optional[str] = Form(None, description="Vertex AI service account ID (e.g. stavagent-vertex-search@...)"),
+    llm_provider: Optional[str] = Form(None, description="LLM provider hint: vertex-ai, google, anthropic, openai")
 ):
     """
     Generate project passport from a single document.
@@ -96,7 +98,10 @@ async def generate_passport(
         logger.info(f"Saved file to: {temp_file_path} ({len(content)} bytes)")
 
         # Process document
-        processor = DocumentProcessor(preferred_model=preferred_model)
+        processor = DocumentProcessor(
+            preferred_model=preferred_model,
+            vertex_service_account=vertex_service_account,
+        )
         response = await processor.process(
             file_path=temp_file_path,
             project_name=project_name,
