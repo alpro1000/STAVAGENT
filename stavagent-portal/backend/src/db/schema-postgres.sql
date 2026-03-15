@@ -358,3 +358,85 @@ CREATE INDEX IF NOT EXISTS idx_org_members_org ON org_members(org_id);
 CREATE INDEX IF NOT EXISTS idx_org_members_user ON org_members(user_id);
 CREATE INDEX IF NOT EXISTS idx_org_members_invite_token ON org_members(invite_token_hash);
 
+-- ============================================================================
+-- MIGRATION 003: Position Instance Architecture (Portal v1.0)
+-- Tables: portal_objects, portal_positions, position_templates, position_audit_log
+-- ============================================================================
+
+-- Objects: grouping layer (one per Excel sheet / SO bridge object)
+CREATE TABLE IF NOT EXISTS portal_objects (
+  object_id         VARCHAR(255) PRIMARY KEY,
+  portal_project_id VARCHAR(255) NOT NULL REFERENCES portal_projects(portal_project_id) ON DELETE CASCADE,
+  object_code       VARCHAR(100) NOT NULL,  -- e.g. "Sheet1", "SO-201"
+  object_name       VARCHAR(255),
+  created_at        TIMESTAMP DEFAULT NOW(),
+  updated_at        TIMESTAMP DEFAULT NOW(),
+  UNIQUE(portal_project_id, object_code)
+);
+
+-- Positions: individual work items (BOQ line items)
+CREATE TABLE IF NOT EXISTS portal_positions (
+  position_id           VARCHAR(255) PRIMARY KEY,
+  position_instance_id  UUID UNIQUE DEFAULT gen_random_uuid(),
+  object_id             VARCHAR(255) NOT NULL REFERENCES portal_objects(object_id) ON DELETE CASCADE,
+  kod                   VARCHAR(100) NOT NULL DEFAULT '',   -- catalog code
+  popis                 TEXT NOT NULL DEFAULT '',           -- description
+  mnozstvi              REAL DEFAULT 0,
+  mj                    VARCHAR(50) DEFAULT '',             -- unit
+  cena_jednotkova       REAL,
+  cena_celkem           REAL,
+  sheet_name            VARCHAR(255),
+  row_index             INTEGER,
+  skupina               VARCHAR(100),                       -- work group (BETON_MONOLIT, etc.)
+  row_role              VARCHAR(50) DEFAULT 'unknown',      -- main / sub / header
+  template_id           VARCHAR(255),
+  template_confidence   VARCHAR(20),
+  overrides             JSONB DEFAULT '{}',
+  monolith_payload      JSONB,                              -- Monolit kiosk write-back
+  dov_payload           JSONB,                              -- Registry DOV write-back
+  created_by            VARCHAR(255),
+  updated_by            VARCHAR(255),
+  created_at            TIMESTAMP DEFAULT NOW(),
+  updated_at            TIMESTAMP DEFAULT NOW()
+);
+
+-- Templates: saved calculation payloads for reuse
+CREATE TABLE IF NOT EXISTS position_templates (
+  template_id             UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  project_id              VARCHAR(255) NOT NULL REFERENCES portal_projects(portal_project_id) ON DELETE CASCADE,
+  catalog_code            VARCHAR(100) NOT NULL DEFAULT '',
+  unit                    VARCHAR(50) NOT NULL DEFAULT '',
+  normalized_description  TEXT NOT NULL DEFAULT '',
+  display_description     TEXT,
+  monolith_template       JSONB,
+  dov_template            JSONB,
+  scaling_rule            VARCHAR(50) DEFAULT 'linear',
+  source_qty              REAL DEFAULT 1,
+  source_instance_id      UUID,
+  apply_count             INTEGER DEFAULT 0,
+  created_by              VARCHAR(255),
+  created_at              TIMESTAMP DEFAULT NOW(),
+  updated_at              TIMESTAMP DEFAULT NOW(),
+  UNIQUE(project_id, catalog_code, unit, normalized_description)
+);
+
+-- Audit log: changes to position payloads and templates
+CREATE TABLE IF NOT EXISTS position_audit_log (
+  id                  BIGSERIAL PRIMARY KEY,
+  event               VARCHAR(100) NOT NULL,
+  actor               VARCHAR(255),
+  project_id          VARCHAR(255),
+  position_instance_id UUID,
+  template_id         UUID,
+  details             JSONB,
+  created_at          TIMESTAMP DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_portal_objects_project ON portal_objects(portal_project_id);
+CREATE INDEX IF NOT EXISTS idx_portal_positions_object ON portal_positions(object_id);
+CREATE INDEX IF NOT EXISTS idx_portal_positions_instance ON portal_positions(position_instance_id);
+CREATE INDEX IF NOT EXISTS idx_portal_positions_skupina ON portal_positions(skupina);
+CREATE INDEX IF NOT EXISTS idx_position_templates_project ON position_templates(project_id);
+CREATE INDEX IF NOT EXISTS idx_position_audit_project ON position_audit_log(project_id);
+CREATE INDEX IF NOT EXISTS idx_position_audit_instance ON position_audit_log(position_instance_id);
+
