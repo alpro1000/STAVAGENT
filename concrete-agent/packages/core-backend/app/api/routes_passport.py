@@ -97,16 +97,28 @@ async def generate_passport(
 
         logger.info(f"Saved file to: {temp_file_path} ({len(content)} bytes)")
 
+        # Determine effective model: preferred_model takes precedence;
+        # fall back to a default derived from llm_provider hint if neither is set.
+        effective_model = preferred_model
+        if not effective_model and llm_provider:
+            provider_defaults = {
+                "vertex-ai": "vertex-ai-gemini",
+                "google": "gemini",
+                "anthropic": "claude-sonnet",
+                "openai": "openai",
+            }
+            effective_model = provider_defaults.get(llm_provider)
+
         # Process document
         processor = DocumentProcessor(
-            preferred_model=preferred_model,
+            preferred_model=effective_model,
             vertex_service_account=vertex_service_account,
         )
         response = await processor.process(
             file_path=temp_file_path,
             project_name=project_name,
             enable_ai_enrichment=enable_ai_enrichment,
-            preferred_model=preferred_model,
+            preferred_model=effective_model,
             project_id=project_id
         )
 
