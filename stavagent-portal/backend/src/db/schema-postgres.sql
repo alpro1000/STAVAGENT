@@ -295,43 +295,30 @@ ALTER TABLE portal_projects ADD COLUMN IF NOT EXISTS stavba_name VARCHAR(255);
 -- MIGRATION 001: Extend users table (Sprint 1 — Cabinets + Roles)
 -- ============================================================================
 
-ALTER TABLE users
-  ADD COLUMN IF NOT EXISTS phone VARCHAR(30),
-  ADD COLUMN IF NOT EXISTS company VARCHAR(255),
-  ADD COLUMN IF NOT EXISTS avatar_url VARCHAR(512),
-  ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMP,
-  ADD COLUMN IF NOT EXISTS timezone VARCHAR(50) DEFAULT 'Europe/Prague',
-  ADD COLUMN IF NOT EXISTS preferences JSONB DEFAULT '{}',
-  ADD COLUMN IF NOT EXISTS org_id UUID;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(30);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS company VARCHAR(255);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar_url VARCHAR(512);
+ALTER TABLE users ADD COLUMN IF NOT EXISTS last_login_at TIMESTAMP;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS timezone VARCHAR(50) DEFAULT 'Europe/Prague';
+ALTER TABLE users ADD COLUMN IF NOT EXISTS preferences JSONB DEFAULT '{}';
+ALTER TABLE users ADD COLUMN IF NOT EXISTS org_id UUID;
 
 -- ============================================================================
 -- MIGRATION 002: Organizations + Members (Sprint 1 — Cabinets + Roles)
+-- NOTE: Using VARCHAR + CHECK instead of ENUM types to avoid dependency on
+-- CREATE TYPE ordering (migrations.js runs CREATE TABLE before other statements).
+-- DO $$ blocks are avoided — they contain internal semicolons that break
+-- the schema runner's semicolon-based statement splitter.
 -- ============================================================================
-
-DO $$ BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'storage_mode_enum') THEN
-    CREATE TYPE storage_mode_enum AS ENUM ('managed', 'byos', 'private');
-  END IF;
-END $$;
-
-DO $$ BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'plan_enum') THEN
-    CREATE TYPE plan_enum AS ENUM ('free', 'starter', 'professional', 'enterprise');
-  END IF;
-END $$;
-
-DO $$ BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'org_role_enum') THEN
-    CREATE TYPE org_role_enum AS ENUM ('admin', 'manager', 'estimator', 'viewer', 'api_client');
-  END IF;
-END $$;
 
 CREATE TABLE IF NOT EXISTS organizations (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name          VARCHAR(255) NOT NULL,
   slug          VARCHAR(100) NOT NULL UNIQUE,
-  plan          plan_enum NOT NULL DEFAULT 'free',
-  storage_mode  storage_mode_enum NOT NULL DEFAULT 'managed',
+  plan          VARCHAR(20) NOT NULL DEFAULT 'free'
+                  CHECK (plan IN ('free','starter','professional','enterprise')),
+  storage_mode  VARCHAR(20) NOT NULL DEFAULT 'managed'
+                  CHECK (storage_mode IN ('managed','byos','private')),
   storage_config JSONB DEFAULT NULL,
   stripe_customer_id    VARCHAR(255),
   stripe_subscription_id VARCHAR(255),
@@ -349,7 +336,8 @@ CREATE TABLE IF NOT EXISTS org_members (
   id          UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   org_id      UUID NOT NULL REFERENCES organizations(id) ON DELETE CASCADE,
   user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  role        org_role_enum NOT NULL DEFAULT 'estimator',
+  role        VARCHAR(20) NOT NULL DEFAULT 'estimator'
+                CHECK (role IN ('admin','manager','estimator','viewer','api_client')),
   invited_by  INTEGER REFERENCES users(id) ON DELETE SET NULL,
   invited_at  TIMESTAMP DEFAULT NOW(),
   joined_at   TIMESTAMP,
@@ -358,8 +346,10 @@ CREATE TABLE IF NOT EXISTS org_members (
   UNIQUE(org_id, user_id)
 );
 
-ALTER TABLE users
-  ADD CONSTRAINT IF NOT EXISTS fk_users_org_id
+-- FK from users.org_id → organizations.id
+-- Runs after CREATE TABLE pass, so organizations already exists.
+-- Will error "already exists" on re-runs — caught by schema runner, safe to ignore.
+ALTER TABLE users ADD CONSTRAINT fk_users_org_id
   FOREIGN KEY (org_id) REFERENCES organizations(id) ON DELETE SET NULL;
 
 CREATE INDEX IF NOT EXISTS idx_organizations_owner ON organizations(owner_id);
