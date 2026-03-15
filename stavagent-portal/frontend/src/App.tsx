@@ -28,6 +28,10 @@ const DocumentUploadPage = lazy(() => import('./pages/DocumentUploadPage'));
 const PumpCalculatorPage = lazy(() => import('./pages/PumpCalculatorPage'));
 const PriceParserPage = lazy(() => import('./pages/PriceParserPage'));
 const ObjednavkaBetonuPage = lazy(() => import('./pages/ObjednavkaBetonuPage'));
+const CabinetPage = lazy(() => import('./pages/CabinetPage'));
+const CabinetOrgsPage = lazy(() => import('./pages/CabinetOrgsPage'));
+const OrgPage = lazy(() => import('./pages/OrgPage'));
+const OrgInvitePage = lazy(() => import('./pages/OrgInvitePage'));
 
 // ── Loading fallback ─────────────────────────────────────────────────────────
 function PageLoader() {
@@ -92,6 +96,16 @@ function App() {
 
               {/* Betonárny — redirects to unified page */}
               <Route path="/betonarny" element={<Navigate to="/objednavka-betonu" replace />} />
+
+              {/* Cabinet — personal profile + orgs (Sprint 1) */}
+              <Route path="/cabinet" element={<ProtectedRoute><CabinetPage /></ProtectedRoute>} />
+              <Route path="/cabinet/orgs" element={<ProtectedRoute><CabinetOrgsPage /></ProtectedRoute>} />
+
+              {/* Org detail (Sprint 1) */}
+              <Route path="/org/:id" element={<ProtectedRoute><OrgPage /></ProtectedRoute>} />
+
+              {/* Accept org invite — public (user may not be logged in yet) */}
+              <Route path="/org/accept-invite" element={<OrgInvitePage />} />
 
               {/* Protected routes */}
               <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
