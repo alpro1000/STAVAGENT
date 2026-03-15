@@ -195,7 +195,7 @@ git push origin main
 ### Step 2: Backend Deployment
 - Render auto-deploys from main
 - Migration 011 auto-applies on startup
-- Verify: https://monolit-planner-api-3uxelthc4q-ey.a.run.app/health
+- Verify: https://monolit-planner-api-1086027517695.europe-west3.run.app/health
 
 ### Step 3: Frontend Deployment
 - Vercel auto-deploys from main
@@ -204,7 +204,7 @@ git push origin main
 ### Step 4: Testing
 ```bash
 # Test API
-curl -X POST https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/relink/generate \
+curl -X POST https://monolit-planner-api-1086027517695.europe-west3.run.app/api/relink/generate \
   -H "Content-Type: application/json" \
   -d '{"old_version_id": 1, "new_version_id": 2}'
 

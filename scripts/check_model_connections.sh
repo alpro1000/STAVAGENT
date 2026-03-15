@@ -237,9 +237,9 @@ PY
   echo "## 4) Production service reachability checks"
   echo
   curl_check "Portal API /health" "https://stavagent-backend.vercel.app/health"
-  curl_check "Monolit API /health" "https://monolit-planner-api-3uxelthc4q-ey.a.run.app/health"
-  curl_check "CORE /health" "https://concrete-agent-3uxelthc4q-ey.a.run.app/health"
-  curl_check "URS Matcher /health" "https://urs-matcher-service-3uxelthc4q-ey.a.run.app/health"
+  curl_check "Monolit API /health" "https://monolit-planner-api-1086027517695.europe-west3.run.app/health"
+  curl_check "CORE /health" "https://concrete-agent-1086027517695.europe-west3.run.app/health"
+  curl_check "URS Matcher /health" "https://urs-matcher-service-1086027517695.europe-west3.run.app/health"
   curl_check "Registry backend /health" "https://stavagent-backend-ktwx.vercel.app/health"
   echo
   generate_token_cost_section

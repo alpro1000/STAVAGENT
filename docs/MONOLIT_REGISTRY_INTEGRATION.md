@@ -421,13 +421,13 @@ CORS_ORIGIN=https://www.stavagent.cz
 
 ### Monolit Frontend
 ```env
-VITE_PORTAL_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
+VITE_PORTAL_API_URL=https://stavagent-portal-backend-1086027517695.europe-west3.run.app
 VITE_REGISTRY_URL=https://stavagent-backend-ktwx.vercel.app
 ```
 
 ### Registry
 ```env
-VITE_PORTAL_API_URL=https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app
+VITE_PORTAL_API_URL=https://stavagent-portal-backend-1086027517695.europe-west3.run.app
 ```
 
 ---

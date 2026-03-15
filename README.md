@@ -33,13 +33,13 @@
 
 | Сервис | Тип | URL |
 |--------|-----|-----|
-| concrete-agent (CORE) | Backend (Cloud Run) | https://concrete-agent-3uxelthc4q-ey.a.run.app |
-| stavagent-portal | Backend (Cloud Run) | https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app |
+| concrete-agent (CORE) | Backend (Cloud Run) | https://concrete-agent-1086027517695.europe-west3.run.app |
+| stavagent-portal | Backend (Cloud Run) | https://stavagent-portal-backend-1086027517695.europe-west3.run.app |
 | stavagent-portal | Frontend (Vercel) | https://www.stavagent.cz |
-| Monolit-Planner | Backend (Cloud Run) | https://monolit-planner-api-3uxelthc4q-ey.a.run.app |
+| Monolit-Planner | Backend (Cloud Run) | https://monolit-planner-api-1086027517695.europe-west3.run.app |
 | Monolit-Planner | Frontend (Vercel) | https://monolit-planner-frontend.vercel.app |
-| URS_MATCHER_SERVICE | Backend (Cloud Run) | https://urs-matcher-service-3uxelthc4q-ey.a.run.app |
-| rozpocet-registry | Backend (Cloud Run) | https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app |
+| URS_MATCHER_SERVICE | Backend (Cloud Run) | https://urs-matcher-service-1086027517695.europe-west3.run.app |
+| rozpocet-registry | Backend (Cloud Run) | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app |
 | rozpocet-registry | Frontend (Vercel) | https://stavagent-backend-ktwx.vercel.app |
 
 ---

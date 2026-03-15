@@ -158,7 +158,7 @@ VITE_REGISTRY_URL=https://stavagent-backend-ktwx.vercel.app
 ### Registry Frontend
 ```bash
 VITE_REGISTRY_API_URL=http://localhost:3002  # Development
-VITE_REGISTRY_API_URL=https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app  # Production
+VITE_REGISTRY_API_URL=https://rozpocet-registry-backend-1086027517695.europe-west3.run.app  # Production
 ```
 
 ## Files Modified

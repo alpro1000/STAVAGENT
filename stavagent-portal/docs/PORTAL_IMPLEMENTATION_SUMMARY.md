@@ -180,7 +180,7 @@ CREATE TABLE chat_messages (...)      -- Chat history
 - `enrichWithAI(workflowId, data, provider)` - AI enrichment
 - `searchKnowledgeBase(query, category)` - OTSKP/standards search
 
-**URL:** `https://concrete-agent-3uxelthc4q-ey.a.run.app`
+**URL:** `https://concrete-agent-1086027517695.europe-west3.run.app`
 
 ### Portal ↔ Kiosks
 

@@ -33,7 +33,7 @@ interface KioskLinksPanelProps {
 const KIOSK_META: Record<string, { label: string; icon: string; color: string; url: string }> = {
   monolit: { label: 'Monolit Planner', icon: '\u{1FAA8}', color: '#6366f1', url: 'https://monolit-planner-frontend.vercel.app' },
   registry: { label: 'Registr Rozpočtů', icon: '\u{1F4CA}', color: '#f59e0b', url: 'https://stavagent-backend-ktwx.vercel.app' },
-  urs_matcher: { label: 'URS Matcher', icon: '\u{1F50E}', color: '#22c55e', url: 'https://urs-matcher-service-3uxelthc4q-ey.a.run.app' },
+  urs_matcher: { label: 'URS Matcher', icon: '\u{1F50E}', color: '#22c55e', url: 'https://urs-matcher-service-1086027517695.europe-west3.run.app' },
 };
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
@@ -130,7 +130,7 @@ export function KioskLinksPanel({ projectId, onRefresh }: KioskLinksPanelProps) 
         // GET /api/export-to-registry/:bridge_id — read-only data export (no side effects)
         const monolitExportKey = import.meta.env.VITE_MONOLIT_EXPORT_API_KEY || '';
         const kioskRes = await fetch(
-          `https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/export-to-registry/${link.kiosk_project_id}`,
+          `https://monolit-planner-api-1086027517695.europe-west3.run.app/api/export-to-registry/${link.kiosk_project_id}`,
           {
             signal: AbortSignal.timeout(30000),
             headers: monolitExportKey ? { 'Authorization': `Bearer ${monolitExportKey}` } : {},

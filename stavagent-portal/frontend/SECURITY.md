@@ -139,7 +139,7 @@ export default function ProtectedRoute({ children }) {
 
 1. **Environment Variables:**
    - `VITE_API_URL` → https://www.stavagent.cz
-   - `VITE_CORE_API_URL` → https://concrete-agent-3uxelthc4q-ey.a.run.app
+   - `VITE_CORE_API_URL` → https://concrete-agent-1086027517695.europe-west3.run.app
    - **DO NOT SET:** `VITE_DISABLE_AUTH`
 
 2. **Build Command:**

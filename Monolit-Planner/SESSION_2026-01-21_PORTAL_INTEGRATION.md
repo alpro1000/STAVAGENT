@@ -269,7 +269,7 @@ monolith_projects.portal_project_id
 ## ⚠️ Known Issues
 
 ### 1. API Unreachable from Server Environment
-**Problem:** HTTP 403/000 errors when trying to access `monolit-planner-api-3uxelthc4q-ey.a.run.app`
+**Problem:** HTTP 403/000 errors when trying to access `monolit-planner-api-1086027517695.europe-west3.run.app`
 
 **Cause:** Network restrictions or proxy blocking
 

@@ -10,7 +10,7 @@
 
 **Error:**
 ```
-Access to fetch at 'https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/passport/generate' 
+Access to fetch at 'https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/passport/generate' 
 from origin 'https://www.stavagent.cz' has been blocked by CORS policy: 
 No 'Access-Control-Allow-Origin' header is present on the requested resource.
 ```
@@ -35,9 +35,9 @@ allow_origins=["*"]
 allow_origins=[
     "https://www.stavagent.cz",
     "https://stavagent.cz",
-    "https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app",
+    "https://stavagent-portal-backend-1086027517695.europe-west3.run.app",
     "https://monolit-planner-frontend.vercel.app",
-    "https://monolit-planner-api-3uxelthc4q-ey.a.run.app",
+    "https://monolit-planner-api-1086027517695.europe-west3.run.app",
     "https://stavagent-backend-ktwx.vercel.app",
     "http://localhost:3000",
     "http://localhost:5173",
@@ -56,7 +56,7 @@ allow_origins=[
 
 ### 2. Render Auto-Deploy
 **Service:** concrete-agent  
-**URL:** https://concrete-agent-3uxelthc4q-ey.a.run.app
+**URL:** https://concrete-agent-1086027517695.europe-west3.run.app
 
 **Expected:**
 - Render detects commit on main
@@ -72,7 +72,7 @@ https://dashboard.render.com
 # Should see: "CORS middleware configured with 9 origins"
 
 # 3. Test CORS headers
-curl -I https://concrete-agent-3uxelthc4q-ey.a.run.app/health \
+curl -I https://concrete-agent-1086027517695.europe-west3.run.app/health \
   -H "Origin: https://www.stavagent.cz"
 
 # Expected response headers:
@@ -99,7 +99,7 @@ curl -I https://concrete-agent-3uxelthc4q-ey.a.run.app/health \
 
 ```bash
 # Test from Portal origin
-curl -X OPTIONS https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/passport/generate \
+curl -X OPTIONS https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/passport/generate \
   -H "Origin: https://www.stavagent.cz" \
   -H "Access-Control-Request-Method: POST" \
   -v

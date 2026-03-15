@@ -59,13 +59,13 @@ Frontends: Vercel (auto-deploy from GitHub)
 
 | Service | Type | URL |
 |---------|------|-----|
-| concrete-agent (CORE) | Cloud Run | https://concrete-agent-3uxelthc4q-ey.a.run.app |
-| stavagent-portal | Cloud Run | https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app |
+| concrete-agent (CORE) | Cloud Run | https://concrete-agent-1086027517695.europe-west3.run.app |
+| stavagent-portal | Cloud Run | https://stavagent-portal-backend-1086027517695.europe-west3.run.app |
 | stavagent-portal | Vercel | https://www.stavagent.cz |
-| Monolit-Planner | Cloud Run | https://monolit-planner-api-3uxelthc4q-ey.a.run.app |
+| Monolit-Planner | Cloud Run | https://monolit-planner-api-1086027517695.europe-west3.run.app |
 | Monolit-Planner | Vercel | https://monolit-planner-frontend.vercel.app |
-| URS_MATCHER_SERVICE | Cloud Run | https://urs-matcher-service-3uxelthc4q-ey.a.run.app |
-| rozpocet-registry | Cloud Run | https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app |
+| URS_MATCHER_SERVICE | Cloud Run | https://urs-matcher-service-1086027517695.europe-west3.run.app |
+| rozpocet-registry | Cloud Run | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app |
 | rozpocet-registry | Vercel | https://stavagent-backend-ktwx.vercel.app |
 
 ---
@@ -177,11 +177,11 @@ gcloud run services describe concrete-agent --region europe-west3 --format="valu
 ### Health checks
 
 ```bash
-curl https://concrete-agent-3uxelthc4q-ey.a.run.app/health
-curl https://monolit-planner-api-3uxelthc4q-ey.a.run.app/health
-curl https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app/health
-curl https://urs-matcher-service-3uxelthc4q-ey.a.run.app/health
-curl https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app/health
+curl https://concrete-agent-1086027517695.europe-west3.run.app/health
+curl https://monolit-planner-api-1086027517695.europe-west3.run.app/health
+curl https://stavagent-portal-backend-1086027517695.europe-west3.run.app/health
+curl https://urs-matcher-service-1086027517695.europe-west3.run.app/health
+curl https://rozpocet-registry-backend-1086027517695.europe-west3.run.app/health
 ```
 
 ### Common issues

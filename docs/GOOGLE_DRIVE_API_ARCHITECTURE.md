@@ -1140,7 +1140,7 @@ redis==5.0.1
 # Google OAuth2
 GOOGLE_CLIENT_ID=your-client-id.apps.googleusercontent.com
 GOOGLE_CLIENT_SECRET=your-client-secret
-GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-3uxelthc4q-ey.a.run.app/api/v1/google/callback
+GOOGLE_OAUTH_REDIRECT_URI=https://concrete-agent-1086027517695.europe-west3.run.app/api/v1/google/callback
 GOOGLE_CLIENT_SECRETS_FILE=/app/client_secrets.json
 
 # Encryption
@@ -1148,7 +1148,7 @@ GOOGLE_CREDENTIALS_ENCRYPTION_KEY=<base64-encoded-key>
 WEBHOOK_SECRET_KEY=<random-secret-key>
 
 # Public URL (for webhooks)
-PUBLIC_URL=https://concrete-agent-3uxelthc4q-ey.a.run.app
+PUBLIC_URL=https://concrete-agent-1086027517695.europe-west3.run.app
 ```
 
 ---

@@ -122,7 +122,7 @@ Height multipliers: 1.2m→0.9, 1.5m→1.0, 2.4m→1.1, 2.7m→1.15, 3.0m→1.2
 2. Задеплоить Registry frontend на Vercel
 3. Обновить environment variables:
    - Monolit: `VITE_REGISTRY_URL=https://stavagent-backend-ktwx.vercel.app`
-   - Registry: `VITE_REGISTRY_API_URL=https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app`
+   - Registry: `VITE_REGISTRY_API_URL=https://rozpocet-registry-backend-1086027517695.europe-west3.run.app`
 4. User acceptance testing
 
 ### Будущие улучшения

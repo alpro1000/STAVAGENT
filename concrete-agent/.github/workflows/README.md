@@ -100,7 +100,7 @@ Configure these secrets in your repository settings (`Settings > Secrets and var
 |--------|-------------|--------------|
 | `RENDER_API_KEY` | Render API authentication key | Deployment |
 | `RENDER_BACKEND_SERVICE_ID` | Render service ID for backend | Deployment |
-| `RENDER_SERVICE_URL` | Production URL (e.g., https://concrete-agent-3uxelthc4q-ey.a.run.app) | Health checks |
+| `RENDER_SERVICE_URL` | Production URL (e.g., https://concrete-agent-1086027517695.europe-west3.run.app) | Health checks |
 | `OPENAI_API_KEY` | OpenAI API key (optional for CI) | Agent testing |
 
 ### Generated Files

@@ -416,7 +416,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     }
 
     // Sync created projects to Portal (non-blocking)
-    const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app';
+    const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-1086027517695.europe-west3.run.app';
     for (const bridge of createdBridges) {
       try {
         await axios.post(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {
@@ -512,7 +512,7 @@ router.delete('/cache/clear/:fileHash', (req, res) => {
 // GET /api/upload/diagnostics - Show CORE configuration and test connectivity
 router.get('/diagnostics', async (req, res) => {
   try {
-    const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-3uxelthc4q-ey.a.run.app';
+    const CORE_API_URL = process.env.CORE_API_URL || 'https://concrete-agent-1086027517695.europe-west3.run.app';
     const CORE_TIMEOUT = parseInt(process.env.CORE_TIMEOUT) || 30000;
     const CORE_ENABLED = process.env.ENABLE_CORE_FALLBACK !== 'false';
 

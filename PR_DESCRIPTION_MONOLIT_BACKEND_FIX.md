@@ -7,7 +7,7 @@ Fixes two backend errors in Monolit Planner: OTSKP search 500 error and delete p
 
 ### 1. OTSKP Search 500 Error
 ```
-monolit-planner-api-3uxelthc4q-ey.a.run.app/api/otskp/search?q=420324
+monolit-planner-api-1086027517695.europe-west3.run.app/api/otskp/search?q=420324
 Status: 500 Internal Server Error
 ```
 
@@ -123,7 +123,7 @@ if (projectsToDelete.length === 0) {
 
 ### Test 1: OTSKP Search (Empty Database)
 ```bash
-curl "https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/otskp/search?q=420324"
+curl "https://monolit-planner-api-1086027517695.europe-west3.run.app/api/otskp/search?q=420324"
 ```
 **Expected:**
 ```json
@@ -137,7 +137,7 @@ curl "https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/otskp/search?q=420
 
 ### Test 2: Delete Non-Existent Project
 ```bash
-curl -X DELETE "https://monolit-planner-api-3uxelthc4q-ey.a.run.app/api/monolith-projects/by-project-name/NonExistent"
+curl -X DELETE "https://monolit-planner-api-1086027517695.europe-west3.run.app/api/monolith-projects/by-project-name/NonExistent"
 ```
 **Expected:**
 ```json
