@@ -59,7 +59,7 @@ class SmartParser:
         self.memory_pdf = MemoryEfficientPDFParser()
         self.memory_xml = MemoryEfficientXMLParser()
 
-    def parse(self, file_path: str, file_type: Optional[str] = None) -> Dict[str, Any]:
+    def parse(self, file_path: str, file_type: Optional[str] = None, project_id: Optional[str] = None) -> Dict[str, Any]:
         path = Path(file_path)
         if not path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")

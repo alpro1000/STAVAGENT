@@ -22,10 +22,15 @@ import { API_URL } from '../../services/api';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
+interface ByTypeEntry {
+  count: number;
+  totalCena: number;
+}
+
 interface SheetStats {
   totalItems: number;
   totalCena: number;
-  byType: Record<string, number>;
+  byType: Record<string, ByTypeEntry | number>;
   sections: string[];
 }
 
@@ -72,7 +77,7 @@ interface ParseSummary {
   totalItems: number;
   totalSheets: number;
   totalCena: number;
-  byType: Record<string, number>;
+  byType: Record<string, ByTypeEntry | number>;
   withConcreteGrade: number;
   withCode: number;
   withPrice: number;
@@ -510,18 +515,25 @@ export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
                   </p>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
                     {Object.entries(preview.summary.byType)
-                      .sort(([, a], [, b]) => b - a)
-                      .map(([type, count]) => (
-                        <span key={type} style={{
-                          padding: '3px 10px', borderRadius: '12px',
-                          background: `${TYPE_COLORS[type] || '#9ca3af'}18`,
-                          border: `1px solid ${TYPE_COLORS[type] || '#9ca3af'}40`,
-                          fontSize: '12px', color: TYPE_COLORS[type] || '#9ca3af',
-                          fontWeight: 600,
-                        }}>
-                          {TYPE_LABELS[type] || type} {count}
-                        </span>
-                      ))}
+                      .sort(([, a], [, b]) => {
+                        const aNum = typeof a === 'object' ? a.count : a;
+                        const bNum = typeof b === 'object' ? b.count : b;
+                        return bNum - aNum;
+                      })
+                      .map(([type, val]) => {
+                        const cnt = typeof val === 'object' ? val.count : val;
+                        return (
+                          <span key={type} style={{
+                            padding: '3px 10px', borderRadius: '12px',
+                            background: `${TYPE_COLORS[type] || '#9ca3af'}18`,
+                            border: `1px solid ${TYPE_COLORS[type] || '#9ca3af'}40`,
+                            fontSize: '12px', color: TYPE_COLORS[type] || '#9ca3af',
+                            fontWeight: 600,
+                          }}>
+                            {TYPE_LABELS[type] || type} {cnt}
+                          </span>
+                        );
+                      })}
                   </div>
                 </div>
               )}
