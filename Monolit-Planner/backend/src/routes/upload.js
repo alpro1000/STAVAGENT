@@ -416,7 +416,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     }
 
     // Sync created projects to Portal (non-blocking)
-    const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
+    const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app';
     for (const bridge of createdBridges) {
       try {
         await axios.post(`${PORTAL_API}/api/portal-projects/create-from-kiosk`, {

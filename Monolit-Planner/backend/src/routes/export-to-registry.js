@@ -9,8 +9,8 @@ import db from '../db/init.js';
 
 const router = express.Router();
 
-// Environment URLs
-const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-backend.vercel.app';
+// Environment URLs — Cloud Run (europe-west3)
+const PORTAL_API = process.env.PORTAL_API_URL || 'https://stavagent-portal-backend-3uxelthc4q-ey.a.run.app';
 const REGISTRY_API = process.env.REGISTRY_API_URL || 'https://rozpocet-registry-backend-3uxelthc4q-ey.a.run.app';
 const REGISTRY_URL = process.env.REGISTRY_URL || 'https://stavagent-backend-ktwx.vercel.app';
 
