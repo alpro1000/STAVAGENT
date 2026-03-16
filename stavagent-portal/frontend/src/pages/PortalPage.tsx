@@ -13,7 +13,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Plus, FileText, Activity, MessageSquare, Send, Upload, Settings } from 'lucide-react';
+import { Plus, FileText, Activity, MessageSquare, Send, Upload, Settings, ArrowLeft } from 'lucide-react';
 import { API_URL } from '../services/api';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
@@ -449,7 +449,7 @@ export default function PortalPage() {
 
       {/* Tabs */}
       <div className="c-container" style={{ paddingTop: '24px' }}>
-        <div style={{
+        <div className="c-tabs" style={{
           display: 'flex',
           gap: '8px',
           borderBottom: '2px solid var(--border-color)',
@@ -618,14 +618,9 @@ export default function PortalPage() {
             )}
 
             {/* Master-Detail Layout */}
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: selectedProject ? '380px 1fr' : '1fr',
-              gap: '24px',
-              minHeight: '60vh',
-            }}>
+            <div className={`portal-md${selectedProject ? ' portal-md--detail-open' : ' portal-md--list-only'}`}>
               {/* LEFT: Project List (Master) */}
-              <div className="c-panel" style={{
+              <div className="c-panel portal-md__list" style={{
                 padding: 0,
                 maxHeight: '70vh',
                 overflowY: 'auto',
@@ -762,7 +757,13 @@ export default function PortalPage() {
 
               {/* RIGHT: Project Detail (Detail) */}
               {selectedProject ? (
-                <div style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                <div className="portal-md__detail" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                  <button
+                    className="portal-md__back"
+                    onClick={() => setSelectedProject(null)}
+                  >
+                    <ArrowLeft size={16} /> Zpět na projekty
+                  </button>
                   <CorePanel
                     project={selectedProject}
                     onClose={() => setSelectedProject(null)}
@@ -772,7 +773,7 @@ export default function PortalPage() {
                   />
                 </div>
               ) : (
-                <div className="c-panel" style={{
+                <div className="c-panel portal-md__detail" style={{
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
