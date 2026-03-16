@@ -6,6 +6,7 @@ substitutions:
   _AR_REPO: stavagent
   _CLOUD_SQL_INSTANCE: stavagent-db
   _TAG: latest
+  _FORCE_DEPLOY: 'false'
 
 steps:
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:slim'
@@ -14,6 +15,10 @@ steps:
     args:
       - -c
       - |
+        if [ "${_FORCE_DEPLOY}" = "true" ]; then
+          echo "Force deploy requested — skipping guard"
+          exit 0
+        fi
         if ! git rev-parse --git-dir >/dev/null 2>&1; then
           echo "No git repo (manual submit) — skipping guard"
           exit 0
