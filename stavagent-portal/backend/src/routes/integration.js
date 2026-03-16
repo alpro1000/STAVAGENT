@@ -85,6 +85,21 @@ router.post('/import-from-monolit', async (req, res) => {
       [`link_${uuidv4()}`, projectId, monolit_project_id]
     );
 
+    // Check if Migration 005 columns exist (tov_labor, monolit_position_id, etc.)
+    let hasExtendedColumns = true;
+    try {
+      await client.query('SELECT monolit_position_id, tov_labor FROM portal_positions LIMIT 0');
+    } catch (colErr) {
+      if (colErr.message && colErr.message.includes('column')) {
+        hasExtendedColumns = false;
+        console.warn('[Integration] Migration 005 columns not yet applied — using basic INSERT for Monolit import');
+        await client.query('ROLLBACK');
+        await client.query('BEGIN');
+      } else {
+        throw colErr;
+      }
+    }
+
     // Import objects and positions
     console.log('[Integration] Importing', objects.length, 'objects');
     for (const obj of objects) {
@@ -104,8 +119,25 @@ router.post('/import-from-monolit', async (req, res) => {
         const pos = obj.positions[posIdx];
         let result;
 
-        // Check if position already exists by monolit_position_id
-        if (pos.monolit_id) {
+        if (!hasExtendedColumns) {
+          // === BASIC FALLBACK: no extended columns ===
+          result = await client.query(
+            `INSERT INTO portal_positions (
+              position_id, object_id, kod, popis, mnozstvi, mj,
+              cena_jednotkova, cena_celkem,
+              monolith_payload,
+              created_at, updated_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW(), NOW())
+            RETURNING position_id AS position_instance_id`,
+            [
+              `pos_${uuidv4()}`, dbObjectId,
+              pos.kod || '', pos.popis || '', pos.mnozstvi || 0, pos.mj || '',
+              pos.cena_jednotkova || 0, pos.cena_celkem || 0,
+              pos.monolith_payload ? JSON.stringify(pos.monolith_payload) : null
+            ]
+          );
+        } else if (pos.monolit_id) {
+          // Check if position already exists by monolit_position_id
           const existing = await client.query(
             `SELECT pp.position_instance_id, pp.position_id
              FROM portal_positions pp
@@ -344,6 +376,25 @@ router.post('/sync-tov', async (req, res) => {
       return res.status(404).json({ success: false, error: 'Project not found' });
     }
 
+    // Check if Migration 005 columns exist
+    let hasTovColumns = true;
+    try {
+      await client.query('SELECT tov_labor FROM portal_positions LIMIT 0');
+    } catch (colErr) {
+      if (colErr.message && colErr.message.includes('column')) {
+        hasTovColumns = false;
+      } else {
+        throw colErr;
+      }
+    }
+
+    if (!hasTovColumns) {
+      return res.status(503).json({
+        success: false,
+        error: 'TOV columns not yet migrated. Run Migration 005 (schema-postgres.sql).'
+      });
+    }
+
     await client.query('BEGIN');
 
     // Update TOV data for each position
@@ -473,17 +524,34 @@ router.post('/import-from-registry', async (req, res) => {
     // 2. UPSERT positions by registry_item_id (preserves position_instance_id)
     // 3. Clean up positions that no longer exist in incoming data
 
-    // Check if Phase 8 columns exist (sheet_name, row_index, skupina, dov_payload, created_by)
-    // They're added by the add-position-instance-architecture.sql migration; fall back gracefully if not yet run
-    let hasPhase8Columns = true;
+    // Check if Migration 005 columns exist (registry_item_id, tov_labor, etc.)
+    // These are required for full registry sync. Fall back gracefully if not yet run.
+    let hasRegistrySyncColumns = true;
     try {
-      await client.query('SELECT sheet_name FROM portal_positions LIMIT 0');
+      await client.query('SELECT registry_item_id, tov_labor FROM portal_positions LIMIT 0');
     } catch (colErr) {
       if (colErr.message && colErr.message.includes('column')) {
-        hasPhase8Columns = false;
-        console.warn('[Integration] Phase 8 columns not yet migrated — using fallback INSERT (sheet_name omitted)');
+        hasRegistrySyncColumns = false;
+        console.warn('[Integration] Migration 005 columns not yet applied — using basic INSERT (no TOV/registry_item_id)');
+        // ROLLBACK the failed statement to reset transaction state
+        await client.query('ROLLBACK');
+        await client.query('BEGIN');
       } else {
         throw colErr;
+      }
+    }
+
+    // Check if Phase 8 columns exist (sheet_name, row_index, skupina, dov_payload, created_by)
+    let hasPhase8Columns = hasRegistrySyncColumns;
+    if (hasRegistrySyncColumns) {
+      try {
+        await client.query('SELECT sheet_name FROM portal_positions LIMIT 0');
+      } catch (colErr) {
+        if (colErr.message && colErr.message.includes('column')) {
+          hasPhase8Columns = false;
+        } else {
+          throw colErr;
+        }
       }
     }
 
@@ -525,10 +593,28 @@ router.post('/import-from-registry', async (req, res) => {
           materials_summary: itemTov.materialsSummary || null,
         }) : null;
 
-        // Try to find existing position by registry_item_id (preserves position_instance_id)
+        // Try to find existing position and UPSERT
         let result;
-        if (registryItemId) {
-          // Check if position already exists for this registry item in this project
+
+        if (!hasRegistrySyncColumns) {
+          // === BASIC FALLBACK: Migration 005 not applied, no TOV/registry columns ===
+          const posId = `pos_${uuidv4()}`;
+          result = await client.query(
+            `INSERT INTO portal_positions (
+              position_id, object_id, kod, popis, mnozstvi, mj,
+              cena_jednotkova, cena_celkem,
+              created_at, updated_at
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW(), NOW())
+            RETURNING position_id AS position_instance_id`,
+            [
+              posId, dbObjectId,
+              item.kod || '', item.popis || '',
+              item.mnozstvi || 0, item.mj || '',
+              item.cenaJednotkova || 0, item.cenaCelkem || 0
+            ]
+          );
+        } else if (registryItemId) {
+          // === FULL PATH: Find existing by registry_item_id, UPSERT with TOV ===
           const existing = await client.query(
             `SELECT pp.position_instance_id, pp.position_id
              FROM portal_positions pp
@@ -539,7 +625,7 @@ router.post('/import-from-registry', async (req, res) => {
           );
 
           if (existing.rows.length > 0) {
-            // UPDATE existing position — preserves position_instance_id + monolith_payload!
+            // UPDATE existing — preserves position_instance_id + monolith_payload!
             if (hasPhase8Columns) {
               result = await client.query(
                 `UPDATE portal_positions
@@ -588,7 +674,7 @@ router.post('/import-from-registry', async (req, res) => {
             }
             updatedItems++;
           } else {
-            // INSERT new position
+            // INSERT new position with full TOV + registry_item_id
             if (hasPhase8Columns) {
               result = await client.query(
                 `INSERT INTO portal_positions (
@@ -616,7 +702,6 @@ router.post('/import-from-registry', async (req, res) => {
                 ]
               );
             } else {
-              const posId = `pos_${uuidv4()}`;
               result = await client.query(
                 `INSERT INTO portal_positions (
                   position_id, object_id, kod, popis, mnozstvi, mj,
@@ -627,7 +712,7 @@ router.post('/import-from-registry', async (req, res) => {
                 ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, 'registry', NOW(), NOW(), NOW())
                 RETURNING position_id AS position_instance_id`,
                 [
-                  posId, dbObjectId,
+                  `pos_${uuidv4()}`, dbObjectId,
                   item.kod || '', item.popis || '',
                   item.mnozstvi || 0, item.mj || '',
                   item.cenaJednotkova || 0, item.cenaCelkem || 0,
@@ -640,7 +725,7 @@ router.post('/import-from-registry', async (req, res) => {
             }
           }
         } else {
-          // No registry_item_id — always INSERT
+          // === No registry_item_id — always INSERT with TOV ===
           if (hasPhase8Columns) {
             result = await client.query(
               `INSERT INTO portal_positions (
@@ -714,7 +799,7 @@ router.post('/import-from-registry', async (req, res) => {
     // Clean up positions that no longer exist in incoming data
     // Only delete positions that were created by registry (have registry_item_id)
     // and are NOT in the incoming set. Preserve monolit-created positions.
-    if (allIncomingRegistryItemIds.length > 0) {
+    if (hasRegistrySyncColumns && allIncomingRegistryItemIds.length > 0) {
       await client.query(
         `DELETE FROM portal_positions pp
          USING portal_objects po
