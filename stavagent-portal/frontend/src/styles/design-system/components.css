@@ -656,4 +656,82 @@
     width: 14px;
     height: 14px;
   }
+
+  /* Tabs responsive */
+  .c-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .c-tabs__btn {
+    padding: 10px 14px !important;
+    font-size: 13px !important;
+    white-space: nowrap;
+  }
+}
+
+/* ============================================
+   PORTAL MASTER-DETAIL LAYOUT
+   ============================================ */
+.portal-md {
+  display: grid;
+  gap: 24px;
+  min-height: 60vh;
+}
+
+/* Desktop: side-by-side */
+@media (min-width: 769px) {
+  .portal-md {
+    grid-template-columns: 380px 1fr;
+  }
+
+  .portal-md--list-only {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-md__back {
+    display: none !important;
+  }
+}
+
+/* Mobile: show list OR detail, not both */
+@media (max-width: 768px) {
+  .portal-md {
+    grid-template-columns: 1fr;
+    gap: 0;
+    min-height: auto;
+  }
+
+  /* When detail is open, hide list */
+  .portal-md--detail-open .portal-md__list {
+    display: none;
+  }
+
+  /* When no detail, hide detail placeholder */
+  .portal-md:not(.portal-md--detail-open) .portal-md__detail {
+    display: none;
+  }
+
+  .portal-md__list {
+    max-height: none !important;
+  }
+
+  .portal-md__detail {
+    max-height: none !important;
+  }
+
+  .portal-md__back {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--brand-orange);
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-color, #e5e7eb);
+    cursor: pointer;
+    width: 100%;
+  }
 }
