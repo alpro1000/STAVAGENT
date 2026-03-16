@@ -53,7 +53,7 @@ export function getLLMConfig() {
     defaultModel = 'claude-sonnet-4-6';
     break;
   case 'gemini':
-    apiKey = process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
+    apiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.LLM_API_KEY;
     // gemini-2.5-flash-lite (Feb 2026, fast, cheap). gemini-2.0-flash retired.
     defaultModel = 'gemini-2.5-flash-lite';
     break;
@@ -109,7 +109,7 @@ function getApiKeyForProvider(provider) {
   case 'claude':
     return process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
   case 'gemini':
-    return process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
+    return process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.LLM_API_KEY;
   case 'deepseek':
     return process.env.DEEPSEEK_API_KEY || process.env.LLM_API_KEY;
   case 'grok':
@@ -146,7 +146,7 @@ export function getAvailableProviders() {
   }
 
   // Check Gemini
-  const geminiKey = process.env.GOOGLE_API_KEY || process.env.LLM_API_KEY;
+  const geminiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.LLM_API_KEY;
   if (geminiKey) {
     providers.gemini = {
       enabled: true,

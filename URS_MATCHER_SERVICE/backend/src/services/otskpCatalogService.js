@@ -20,11 +20,17 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Path to OTSKP catalog in concrete-agent knowledge base
-const OTSKP_XML_PATH = path.join(
+// Docker: /app/concrete-agent/..., Local dev: ../../../../concrete-agent/...
+const DOCKER_OTSKP_PATH = '/app/concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/2025_03_otskp.xml';
+const LOCAL_OTSKP_PATH = path.join(
   __dirname,
   '../../../..',
   'concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/2025_03_otskp.xml'
 );
+
+// Use Docker path if it exists (production), otherwise local dev path
+import fsSync from 'fs';
+const OTSKP_XML_PATH = fsSync.existsSync(DOCKER_OTSKP_PATH) ? DOCKER_OTSKP_PATH : LOCAL_OTSKP_PATH;
 
 class OTSKPCatalogService {
   constructor() {
