@@ -2,8 +2,8 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.8.0
-**Last Updated:** 2026-03-14
+**Version:** 2.9.0
+**Last Updated:** 2026-03-16
 **Repository:** STAVAGENT (Monorepo)
 
 ---
@@ -12,6 +12,8 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-16 | stavagent-portal | Session 13: Sprint 1 Cabinets+Roles реализован и задеплоен. Backend: organizations+org_members в DB, orgRole.js middleware, cabinet.js, orgs.js (12 endpoints), PATCH /api/auth/me. Frontend: CabinetPage, CabinetOrgsPage, OrgPage, OrgInvitePage + все компоненты cabinet/ и org/. Деплой на Cloud Run — исправлены PORTAL_DATABASE_URL secret (version 4), DATABASE_URL .trim() парсинг, SSL off для Cloud SQL unix socket. Сервис работает. | ✅ Pushed |
+| 2026-03-16 | stavagent-portal + Monolit | Session 13 (инфра): 19 коммитов по стабилизации Cloud Run деплоя: Vertex AI Gemini+Search интеграция, position architecture tables в schema, Cloud Build approval gate off, SSL fix, DISABLE_AUTH, _FORCE_DEPLOY substitution, DATABASE_URL ERR_INVALID_URL fix (x2), .trim() fix для Monolit тоже. | ✅ Pushed |
 | 2026-03-13 | Monolit + Portal | Session 11: Pump Calculator sub-row in PositionRow (metadata.pump_cost_czk, handlePumpRentalChange, TOV export uses actual cost). Kiosk E2E fixes: GET /api/export-to-registry/:id endpoint (KioskLinksPanel import was broken — route didn't exist), KioskLinksPanel URL fix, positions query invalidation after export so position_instance_id appear in UI. Write-back audit: portalWriteBack.js + dovWriteBack.ts both complete, no action needed. | ✅ Pushed |
 | 2026-03-13 | rozpocet-registry + Portal | Session 10b (audit): Registry→Portal infinite loop fix verified — syncInProgress guard, !portalLink check, kiosk_links UNIQUE constraint ok | ✅ No changes |
 | 2026-03-12 | All services | Session 10a: Cloud Build CI/CD (4 cloudbuild-*.yaml + guard steps + triggers/), bug fixes: OTSKP variant suffix, import-from-registry 429/500, kiosk unlink 404. PRs #591–#597. GCR блокер: нужен AR repo | ✅ Pushed |
@@ -904,6 +906,7 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
+| 2026-03-16 | stavagent-portal | Session 13: Sprint 1 Cabinets+Roles — organizations+org_members в DB (schema-postgres.sql), orgRole.js middleware, cabinet.js (GET /api/cabinet/stats), orgs.js (12 endpoints полный CRUD + invite flow), PATCH /api/auth/me. Frontend: CabinetPage, CabinetOrgsPage, OrgPage, OrgInvitePage, все компоненты cabinet/ и org/. Build чистый (1407 модулей). Деплой исправлен: PORTAL_DATABASE_URL secret v4, DATABASE_URL .trim() в postgres.js и Monolit, SSL off для Cloud SQL unix socket. | 19 |
 | 2026-03-08 | Portal + Monolit | Session 8: Betonárny discovery (GPS search), AWS Bedrock integration, Objednávka betonu page (search+calculate+compare), lazy-load pages (-22% bundle), CORE proxy + all workflows fix, Universal Parser 4-step pipeline, kiosk import buttons, CorePanel inline styles rewrite, curing days fix (elementTotalDays→FormworkCalc) | 8 |
 | 2026-03-07 | concrete-agent | PDF Price Parser module: 17 files, pdfplumber+OCR extractor, LLM classifier, 7 section parsers (regex+LLM), Pydantic models, API endpoint, 21 tests | 1 |
 | 2026-03-07 | Monolit + Portal | PlannerPage (orchestrator UI), PumpCalculatorPage (mobile), Calendar date mapping, PortalBreadcrumb, ServiceCard activation | 5 |

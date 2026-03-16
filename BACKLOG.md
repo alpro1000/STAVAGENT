@@ -1,6 +1,6 @@
 # STAVAGENT Backlog & Pending Plans
 
-**Last Updated:** 2026-03-14
+**Last Updated:** 2026-03-16
 **Maintained By:** Development Team
 
 ---
@@ -16,6 +16,26 @@
 ---
 
 ## 🔴 Immediate / Pending User Action
+
+### 0. MASTER_ENCRYPTION_KEY — нужен для Sprint 2
+
+**Status:** ⏳ Ожидает действий пользователя
+**Service:** stavagent-portal
+
+**Действие (1 команда в терминале):**
+```bash
+openssl rand -hex 32
+```
+→ Добавить результат в GCP Secret Manager:
+```bash
+echo -n "<64-char-hex>" | gcloud secrets create MASTER_ENCRYPTION_KEY \
+  --data-file=- --project=project-947a512a-481d-49b5-81c
+```
+→ Добавить в Cloud Run: `gcloud run services update stavagent-portal-backend --region=europe-west3 --update-secrets=MASTER_ENCRYPTION_KEY=MASTER_ENCRYPTION_KEY:latest`
+
+**Зачем:** Sprint 2 (service_connections) шифрует API ключи через AES-256-GCM с этим мастер-ключом.
+
+---
 
 ### 1. Переменные окружения для Poradna norem (добавить в GCP Secret Manager)
 
@@ -121,6 +141,51 @@ curl -s https://monolit-planner-api-1086027517695.europe-west3.run.app/api/confi
 ---
 
 ## 🟠 High Priority
+
+### NEW: Sprint 2 — Service Connections + AI Models
+
+**Status:** ⏳ Готов к реализации
+**Service:** stavagent-portal
+**Зависит от:** MASTER_ENCRYPTION_KEY в Secret Manager
+
+**Что нужно сделать:**
+- `backend/src/db/schema-postgres.sql` — migration 003 (service_connections таблица)
+- `backend/src/services/encryptionService.js` — AES-256-GCM wrapper
+- `backend/src/routes/connections.js` — 8 endpoints (CRUD + test + model-config + kiosk-toggles)
+- `frontend/src/types/connection.ts` — TypeScript типы
+- `frontend/src/components/connections/` — ConnectionCard, ConnectionForm, ConnectionTestButton, ModelConfigPanel, KioskTogglePanel
+- `frontend/src/pages/ConnectionsPage.tsx` — `/cabinet/connections`
+
+**API (из PLAN_CABINETS_ROLES_BILLING.md):**
+```
+GET    /api/connections
+POST   /api/connections
+PUT    /api/connections/:id
+DELETE /api/connections/:id
+POST   /api/connections/:id/test      ← rate limited: 5/min
+GET    /api/connections/model-config
+GET    /api/connections/kiosk-toggles
+PATCH  /api/connections/kiosk-toggles
+```
+
+**Rate limiting** (добавить в rateLimiter.js):
+- `connectionTestLimiter`: windowMs 1min, max 5
+
+---
+
+### NEW: Sprint 3 — Billing + Subscriptions
+
+**Status:** ⏳ Ожидает Stripe аккаунт
+**Service:** stavagent-portal
+**Зависит от:** Stripe аккаунт + MASTER_ENCRYPTION_KEY
+
+**Нужные действия пользователя:**
+1. Создать https://dashboard.stripe.com аккаунт
+2. Создать 4 продукта (Free/Starter/Professional/Enterprise)
+3. Получить price_id для каждого
+4. Добавить STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, 4x STRIPE_PRICE_* в Secret Manager
+
+---
 
 ### 5. Pump Calculator — незакрытые задачи (TOVModal)
 
@@ -356,6 +421,16 @@ docs/archive/
 
 **Total Pending Items:** 17
 **Next Critical Path:** Deploy all services → Test with real PDFs → Formwork rental audit → Kiosk import E2E
+
+### Recently Completed (Session 13, 2026-03-16)
+- ✅ Sprint 1 Backend: organizations, org_members в DB, 5 ролей, 12 org endpoints, cabinet stats, PATCH /api/auth/me
+- ✅ Sprint 1 Frontend: CabinetPage, CabinetOrgsPage, OrgPage, OrgInvitePage, все компоненты cabinet/ и org/
+- ✅ orgRole.js middleware для role-based access control
+- ✅ PORTAL_DATABASE_URL secret v4 + .trim() fix + SSL off для Cloud SQL unix socket
+- ✅ Cloud Run revision 00049-fd7 задеплоен и работает
+- ✅ Vertex AI Gemini + Vertex AI Search → PassportEnricher (concrete-agent)
+- ✅ position_instances / position_templates в portal schema
+- ✅ Cloud Build _FORCE_DEPLOY + approval gate off
 
 ### Recently Completed (Session 8, 2026-03-08)
 - ✅ Betonárny Discovery — GPS-based concrete plant search + scraping
