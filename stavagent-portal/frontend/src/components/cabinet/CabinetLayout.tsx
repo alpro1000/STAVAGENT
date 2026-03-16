@@ -10,6 +10,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { label: 'Profil', path: '/cabinet', icon: '👤' },
   { label: 'Organizace', path: '/cabinet/orgs', icon: '🏢' },
+  { label: 'Pripojeni', path: '/cabinet/connections', icon: '🔑' },
   { label: 'Zabezpečení', path: '/change-password', icon: '🔐' },
 ];
 

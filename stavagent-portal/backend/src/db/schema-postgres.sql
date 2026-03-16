@@ -440,3 +440,40 @@ CREATE INDEX IF NOT EXISTS idx_position_templates_project ON position_templates(
 CREATE INDEX IF NOT EXISTS idx_position_audit_project ON position_audit_log(project_id);
 CREATE INDEX IF NOT EXISTS idx_position_audit_instance ON position_audit_log(position_instance_id);
 
+-- ============================================================================
+-- MIGRATION 004: Service Connections — Encrypted API Keys (Sprint 2)
+-- Encryption: AES-256-GCM, MASTER_ENCRYPTION_KEY in env, never in DB
+-- credentials_encrypted = base64(iv + ciphertext + authTag)
+-- ============================================================================
+
+CREATE TABLE IF NOT EXISTS service_connections (
+  id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id              INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  org_id               UUID REFERENCES organizations(id) ON DELETE CASCADE,
+  service_type         VARCHAR(30) NOT NULL
+                         CHECK (service_type IN (
+                           'gemini','openai','anthropic','aws_bedrock',
+                           'perplexity','azure_openai',
+                           'gcs','aws_s3','azure_blob'
+                         )),
+  display_name         VARCHAR(255),
+  credentials_encrypted TEXT NOT NULL,
+  credentials_iv        VARCHAR(64) NOT NULL,
+  config               JSONB DEFAULT '{}',
+  status               VARCHAR(20) DEFAULT 'untested'
+                         CHECK (status IN ('active','error','untested','disabled')),
+  last_tested_at       TIMESTAMP,
+  last_error           TEXT,
+  created_by           INTEGER NOT NULL REFERENCES users(id),
+  created_at           TIMESTAMP DEFAULT NOW(),
+  updated_at           TIMESTAMP DEFAULT NOW(),
+  CONSTRAINT chk_connection_scope CHECK (
+    (user_id IS NOT NULL AND org_id IS NULL) OR
+    (user_id IS NULL AND org_id IS NOT NULL)
+  )
+);
+
+CREATE INDEX IF NOT EXISTS idx_service_connections_user ON service_connections(user_id);
+CREATE INDEX IF NOT EXISTS idx_service_connections_org ON service_connections(org_id);
+CREATE INDEX IF NOT EXISTS idx_service_connections_type ON service_connections(service_type);
+

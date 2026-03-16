@@ -39,6 +39,7 @@ import portalDocumentsRoutes from './src/routes/portal-documents.js';
 import coreProxyRoutes from './src/routes/core-proxy.js';
 import cabinetRoutes from './src/routes/cabinet.js';
 import orgsRoutes from './src/routes/orgs.js';
+import connectionsRoutes from './src/routes/connections.js';
 
 // Utils
 import { initDatabase } from './src/db/init.js';
@@ -48,7 +49,7 @@ import { schedulePeriodicCleanup } from './src/utils/fileCleanup.js';
 
 // Middleware
 import { requireAuth } from './src/middleware/auth.js';
-import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter } from './src/middleware/rateLimiter.js';
+import { apiLimiter, authLimiter, uploadLimiter, otskpLimiter, connectionTestLimiter } from './src/middleware/rateLimiter.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -211,6 +212,9 @@ app.use('/api/cabinet', cabinetRoutes);
 
 // Organizations — multi-tenant org model (Sprint 1)
 app.use('/api/orgs', orgsRoutes);
+
+// Service Connections — encrypted API keys + model routing (Sprint 2)
+app.use('/api/connections', connectionsRoutes);
 
 // Debug routes (disable in production)
 app.use('/api/debug', debugRoutes);
