@@ -2,7 +2,7 @@
 
 > **IMPORTANT:** Read this file at the start of EVERY session to understand the full system architecture.
 
-**Version:** 2.9.0
+**Version:** 3.0.0
 **Last Updated:** 2026-03-16
 **Repository:** STAVAGENT (Monorepo)
 
@@ -12,6 +12,7 @@
 
 | Date | Service | Summary | Status |
 |------|---------|---------|--------|
+| 2026-03-16 | All services | Session 14: Production bug-fix sprint. Fixes: (1) Portal integration.js "current transaction is aborted" — Migration 005 (7 new columns in portal_positions) + column detection with ROLLBACK+BEGIN reset + fallback INSERT paths. (2) Monolit "permission denied for monolith_projects" — Cloud SQL secrets updated to use correct owner users (monolit_user, stavagent_portal, registry_user). (3) Registry bulk items 500 — better error logging, CWE-209 security fix (error.detail removed). (4) URS Matcher Gemini key fix was already in FEAT commit. Passwords standardized to BHubk66f49cZTVL86dni across all users. All services redeployed. Deploy trigger files added for Portal+URS+Monolit. | ⏳ PR pending merge |
 | 2026-03-16 | stavagent-portal | Session 13: Sprint 1 Cabinets+Roles реализован и задеплоен. Backend: organizations+org_members в DB, orgRole.js middleware, cabinet.js, orgs.js (12 endpoints), PATCH /api/auth/me. Frontend: CabinetPage, CabinetOrgsPage, OrgPage, OrgInvitePage + все компоненты cabinet/ и org/. Деплой на Cloud Run — исправлены PORTAL_DATABASE_URL secret (version 4), DATABASE_URL .trim() парсинг, SSL off для Cloud SQL unix socket. Сервис работает. | ✅ Pushed |
 | 2026-03-16 | stavagent-portal + Monolit | Session 13 (инфра): 19 коммитов по стабилизации Cloud Run деплоя: Vertex AI Gemini+Search интеграция, position architecture tables в schema, Cloud Build approval gate off, SSL fix, DISABLE_AUTH, _FORCE_DEPLOY substitution, DATABASE_URL ERR_INVALID_URL fix (x2), .trim() fix для Monolit тоже. | ✅ Pushed |
 | 2026-03-13 | Monolit + Portal | Session 11: Pump Calculator sub-row in PositionRow (metadata.pump_cost_czk, handlePumpRentalChange, TOV export uses actual cost). Kiosk E2E fixes: GET /api/export-to-registry/:id endpoint (KioskLinksPanel import was broken — route didn't exist), KioskLinksPanel URL fix, positions query invalidation after export so position_instance_id appear in UI. Write-back audit: portalWriteBack.js + dovWriteBack.ts both complete, no action needed. | ✅ Pushed |
@@ -903,6 +904,7 @@ rozpocet-registry/
 
 | Date | Service | Key Changes | Commits |
 |------|---------|-------------|---------|
+| 2026-03-16 | All services | Session 14: Production bug-fix sprint — Portal integration.js tx abort fix (Migration 005 + fallback SQL), Monolit permission denied fix (Cloud SQL secrets → correct owners), Registry bulk items logging + CWE-209 fix, all secrets/passwords standardized, all 5 services redeployed | 5 |
 | 2026-03-16 | stavagent-portal | Session 13: Sprint 1 Cabinets+Roles — organizations+org_members в DB (schema-postgres.sql), orgRole.js middleware, cabinet.js (GET /api/cabinet/stats), orgs.js (12 endpoints полный CRUD + invite flow), PATCH /api/auth/me. Frontend: CabinetPage, CabinetOrgsPage, OrgPage, OrgInvitePage, все компоненты cabinet/ и org/. Build чистый (1407 модулей). Деплой исправлен: PORTAL_DATABASE_URL secret v4, DATABASE_URL .trim() в postgres.js и Monolit, SSL off для Cloud SQL unix socket. | 19 |
 | 2026-03-08 | Portal + Monolit | Session 8: Betonárny discovery (GPS search), AWS Bedrock integration, Objednávka betonu page (search+calculate+compare), lazy-load pages (-22% bundle), CORE proxy + all workflows fix, Universal Parser 4-step pipeline, kiosk import buttons, CorePanel inline styles rewrite, curing days fix (elementTotalDays→FormworkCalc) | 8 |
 | 2026-03-07 | concrete-agent | PDF Price Parser module: 17 files, pdfplumber+OCR extractor, LLM classifier, 7 section parsers (regex+LLM), Pydantic models, API endpoint, 21 tests | 1 |
