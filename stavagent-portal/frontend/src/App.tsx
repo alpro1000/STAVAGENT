@@ -32,6 +32,7 @@ const CabinetPage = lazy(() => import('./pages/CabinetPage'));
 const CabinetOrgsPage = lazy(() => import('./pages/CabinetOrgsPage'));
 const OrgPage = lazy(() => import('./pages/OrgPage'));
 const OrgInvitePage = lazy(() => import('./pages/OrgInvitePage'));
+const ConnectionsPage = lazy(() => import('./pages/ConnectionsPage'));
 
 // ── Loading fallback ─────────────────────────────────────────────────────────
 function PageLoader() {
@@ -100,6 +101,7 @@ function App() {
               {/* Cabinet — personal profile + orgs (Sprint 1) */}
               <Route path="/cabinet" element={<ProtectedRoute><CabinetPage /></ProtectedRoute>} />
               <Route path="/cabinet/orgs" element={<ProtectedRoute><CabinetOrgsPage /></ProtectedRoute>} />
+              <Route path="/cabinet/connections" element={<ProtectedRoute><ConnectionsPage /></ProtectedRoute>} />
 
               {/* Org detail (Sprint 1) */}
               <Route path="/org/:id" element={<ProtectedRoute><OrgPage /></ProtectedRoute>} />

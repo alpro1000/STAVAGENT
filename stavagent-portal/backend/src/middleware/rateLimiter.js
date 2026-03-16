@@ -73,6 +73,26 @@ export const uploadLimiter = rateLimit({
 });
 
 /**
+ * Connection test rate limiter
+ * 5 tests per minute per IP (prevent key-fishing)
+ */
+export const connectionTestLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 5,
+  message: 'Příliš mnoho testů připojení, zkuste to znovu za minutu',
+  standardHeaders: true,
+  legacyHeaders: false,
+  validate: { xForwardedForHeader: false },
+  handler: (req, res) => {
+    logger.warn(`Connection test rate limit exceeded for IP: ${req.ip}`);
+    res.status(429).json({
+      error: 'Too Many Requests',
+      message: 'Příliš mnoho testů připojení, zkuste to znovu za minutu'
+    });
+  }
+});
+
+/**
  * OTSKP search rate limiter
  * 50 searches per 15 minutes per IP
  */
