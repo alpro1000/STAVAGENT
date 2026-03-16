@@ -387,7 +387,7 @@ app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
     await client.query('ROLLBACK').catch(() => {});
     console.error(`[BULK ITEMS] Error for sheet ${req.params.id}:`, error.message);
     console.error(`[BULK ITEMS] Detail:`, error.detail || error.hint || 'no detail');
-    res.status(500).json({ success: false, error: error.message, detail: error.detail });
+    res.status(500).json({ success: false, error: 'Bulk insert failed' });
   } finally {
     client.release();
   }
