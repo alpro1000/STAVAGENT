@@ -22,7 +22,10 @@ let pool = null;
  * - Cloud SQL unix socket: postgresql://user:pass@/db?host=/cloudsql/project:region:instance
  * - Passwords with special chars (not URL-encoded)
  */
-function parseConnectionConfig(connectionString) {
+function parseConnectionConfig(rawConnectionString) {
+  // Trim whitespace/newlines — common when pasting secrets into GCP Secret Manager
+  const connectionString = rawConnectionString.trim();
+
   // Try standard URL parsing first
   try {
     const url = new URL(connectionString);

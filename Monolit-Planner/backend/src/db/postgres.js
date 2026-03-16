@@ -16,12 +16,70 @@ const __dirname = dirname(__filename);
 let pool = null;
 
 /**
+ * Parse DATABASE_URL robustly.
+ * Handles:
+ * - Standard: postgresql://user:pass@host:5432/db
+ * - Cloud SQL unix socket: postgresql://user:pass@/db?host=/cloudsql/project:region:instance
+ * - Passwords with special chars (not URL-encoded)
+ * - Trailing newlines (common when pasting into GCP Secret Manager)
+ */
+function parseConnectionConfig(rawConnectionString) {
+  const connectionString = rawConnectionString.trim();
+
+  try {
+    const url = new URL(connectionString);
+    const socketHost = url.searchParams.get('host');
+    return {
+      user: decodeURIComponent(url.username || ''),
+      password: decodeURIComponent(url.password || ''),
+      database: (url.pathname || '').replace(/^\//, ''),
+      host: socketHost || url.hostname || 'localhost',
+      port: url.port ? parseInt(url.port, 10) : 5432,
+    };
+  } catch (_urlErr) {
+    // Fallback: regex parser for passwords with unencoded special chars
+    const m = connectionString.match(
+      /^(?:postgresql|postgres):\/\/([^:]+):(.+)@([^/?]*)(?::(\d+))?\/?([^?]*)(?:\?(.*))?$/
+    );
+    if (!m) {
+      throw new Error(
+        `[PostgreSQL] Cannot parse DATABASE_URL. ` +
+        `Ensure format: postgresql://user:pass@host:5432/db ` +
+        `or postgresql://user:pass@/db?host=/cloudsql/project:region:instance. ` +
+        `If password contains special chars (@, #, ?, /), URL-encode them.`
+      );
+    }
+    const [, user, password, host, port, database, query] = m;
+    const socketHost = query
+      ? Object.fromEntries(new URLSearchParams(query)).host
+      : null;
+    return {
+      user,
+      password,
+      database: database || '',
+      host: socketHost || host || 'localhost',
+      port: port ? parseInt(port, 10) : 5432,
+    };
+  }
+}
+
+/**
  * Initialize PostgreSQL connection
  */
 export function initPostgres() {
   if (!process.env.DATABASE_URL) {
     throw new Error('DATABASE_URL environment variable is required for PostgreSQL');
   }
+
+  let connConfig;
+  try {
+    connConfig = parseConnectionConfig(process.env.DATABASE_URL);
+  } catch (parseErr) {
+    console.error('[PostgreSQL] Failed to parse DATABASE_URL:', parseErr.message);
+    throw parseErr;
+  }
+
+  console.log(`[PostgreSQL] Connecting to database "${connConfig.database}" at host "${connConfig.host}"`);
 
   // Cloud SQL Proxy uses Unix socket — SSL is not supported on Unix sockets.
   // On Cloud Run (K_SERVICE is auto-set), always disable SSL.
@@ -30,11 +88,15 @@ export function initPostgres() {
   const needsSsl = !isCloudRun && process.env.NODE_ENV === 'production';
 
   pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    user: connConfig.user,
+    password: connConfig.password,
+    database: connConfig.database,
+    host: connConfig.host,
+    port: connConfig.port,
     ssl: needsSsl ? { rejectUnauthorized: false } : false,
     max: 20,
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 10000, // 10s (Cloud SQL Proxy may take a moment)
+    connectionTimeoutMillis: 10000,
   });
 
   // Test connection
