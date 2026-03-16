@@ -193,6 +193,43 @@ export function debouncedPushToBackend(project: Project): void {
 }
 
 /**
+ * Delete a project from the backend (fire-and-forget).
+ */
+export async function deleteProjectFromBackend(projectId: string): Promise<void> {
+  const available = await isBackendAvailable();
+  if (!available) return;
+
+  try {
+    await registryAPI.deleteProject(projectId);
+    console.log(`[BackendSync] Deleted project ${projectId} from backend`);
+  } catch (err) {
+    console.warn(`[BackendSync] Failed to delete project ${projectId} from backend:`, err);
+  }
+}
+
+/**
+ * Delete all projects from the backend (fire-and-forget).
+ */
+export async function deleteAllProjectsFromBackend(): Promise<void> {
+  const available = await isBackendAvailable();
+  if (!available) return;
+
+  try {
+    const apiProjects = await registryAPI.getProjects();
+    for (const ap of apiProjects) {
+      try {
+        await registryAPI.deleteProject(ap.project_id);
+      } catch {
+        // Continue deleting others
+      }
+    }
+    console.log(`[BackendSync] Deleted ${apiProjects.length} projects from backend`);
+  } catch (err) {
+    console.warn('[BackendSync] Failed to delete all projects from backend:', err);
+  }
+}
+
+/**
  * Merge backend projects into local projects array.
  * Only adds projects that don't already exist locally.
  */
