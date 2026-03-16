@@ -3,6 +3,7 @@
  * Uses Portal to render above all other elements
  */
 
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 interface Bridge {
@@ -21,10 +22,18 @@ interface Props {
 }
 
 export default function DeleteBridgeModal({ bridge, isOpen, onConfirm, onCancel, isDeleting = false }: Props) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onCancel(); };
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', handleEsc); document.body.style.overflow = ''; };
+  }, [isOpen, onCancel]);
+
   if (!isOpen || !bridge) return null;
 
   const modalContent = (
-    <div className="modal-overlay">
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Smazat objekt">
       <div className="modal-content delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header delete-header">
           <h2>⚠️ Smazat objekt?</h2>

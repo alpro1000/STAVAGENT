@@ -2,6 +2,7 @@
  * FormulaDetailsModal - Shows calculation formulas and details for a position
  */
 
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { Position } from '@stavagent/monolit-shared';
 
@@ -12,6 +13,14 @@ interface Props {
 }
 
 export default function FormulaDetailsModal({ position, isOpen, onClose }: Props) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', handleEsc); document.body.style.overflow = ''; };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const formatNumber = (num: number | undefined, decimals = 2): string => {
@@ -20,10 +29,10 @@ export default function FormulaDetailsModal({ position, isOpen, onClose }: Props
   };
 
   const modalContent = (
-    <div className="modal-overlay">
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Detaily výpočtu">
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2>📋 Detaily výpočtu</h2>
+          <h2>Detaily výpočtu</h2>
           <button className="btn-close" onClick={onClose} title="Zavřít">✕</button>
         </div>
 

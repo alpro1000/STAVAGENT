@@ -12,7 +12,7 @@
  *   POST /api/parse-preview/import (Step 3: create project + positions in DB)
  */
 
-import { useState, useRef, DragEvent } from 'react';
+import { useState, useRef, useEffect, DragEvent } from 'react';
 import {
   X, Upload, FileSpreadsheet, Loader2, CheckCircle2,
   AlertTriangle, ExternalLink, ChevronDown, ChevronUp,
@@ -164,6 +164,17 @@ interface ParsePreviewModalProps {
 type Step = 'upload' | 'preview' | 'positions' | 'saved';
 
 export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
+  // ESC key handler + body scroll lock
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
   const [step, setStep] = useState<Step>('upload');
   const [dragging, setDragging] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -343,18 +354,19 @@ export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
   // ── Render ──────────────────────────────────────────────────────────────
 
   return (
-    <div style={{
-      position: 'fixed', inset: 0,
-      background: 'rgba(0,0,0,0.65)',
-      display: 'flex', alignItems: 'center', justifyContent: 'center',
-      zIndex: 1000, padding: '24px',
-    }}
+    <div
+      style={{
+        position: 'fixed', inset: 0,
+        background: 'rgba(0, 0, 0, 0.7)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        zIndex: 1000, padding: '24px',
+      }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Universal Parser"
     >
-      <div style={{
-        background: 'var(--bg-primary, #1a1a2e)',
-        border: '1px solid var(--border-color)',
-        borderRadius: '12px',
+      <div className="c-panel" style={{
         width: '100%',
         maxWidth: step === 'positions' ? '1100px' : '840px',
         maxHeight: '92vh',
@@ -392,7 +404,9 @@ export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
             )}
             <button
               onClick={onClose}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-secondary)', padding: '4px' }}
+              className="c-btn c-btn--ghost"
+              style={{ padding: '4px' }}
+              aria-label="Zavřít"
             >
               <X size={20} />
             </button>
@@ -444,8 +458,9 @@ export default function ParsePreviewModal({ onClose }: ParsePreviewModalProps) {
           {/* Error */}
           {error && (
             <div style={{
-              padding: '12px 16px', background: '#fef2f2', border: '1px solid #fca5a5',
-              borderRadius: '8px', color: '#dc2626', fontSize: '13px',
+              padding: '12px 16px', background: 'color-mix(in srgb, var(--status-error) 10%, transparent)',
+              border: '1px solid color-mix(in srgb, var(--status-error) 40%, transparent)',
+              borderRadius: '8px', color: 'var(--status-error)', fontSize: '13px',
               display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px',
             }}>
               <AlertTriangle size={16} /> {error}

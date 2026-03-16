@@ -137,7 +137,7 @@ async function fuzzyMatch(unmatchedOld, unmatchedNew) {
       return {
         position: candidate,
         similarity: stringSimilarity.compareTwoStrings(oldDesc, newDesc),
-        qty_diff: Math.abs(candidate.quantity - oldPos.quantity) / oldPos.quantity
+        qty_diff: oldPos.quantity === 0 ? (candidate.quantity === 0 ? 0 : 1) : Math.abs(candidate.quantity - oldPos.quantity) / oldPos.quantity
       };
     });
 
@@ -231,7 +231,7 @@ async function generateRelinkReport(oldVersionId, newVersionId) {
     confidence_green: allMatches.filter(m => m.confidence === 'GREEN').length,
     confidence_amber: allMatches.filter(m => m.confidence === 'AMBER').length,
     confidence_red: allMatches.filter(m => m.confidence === 'RED').length,
-    match_rate: Math.round((allMatches.length / oldRows.length) * 100)
+    match_rate: oldRows.length > 0 ? Math.round((allMatches.length / oldRows.length) * 100) : 0
   };
 
   // Save report to database
