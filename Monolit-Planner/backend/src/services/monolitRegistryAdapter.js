@@ -13,8 +13,8 @@ function categorizeMonolitPosition(position) {
 
 export class MonolitRegistryAdapter {
   // Convert Monolit project → Registry project
-  static async importMonolitProject(projectName) {
-    const result = await db.query(
+  static async importMonolitProject(projectName, queryFn = db.query.bind(db)) {
+    const result = await queryFn(
       `INSERT INTO registry_projects (project_name, display_name, metadata)
        VALUES ($1, $1, $2)
        ON CONFLICT (project_name) DO UPDATE SET updated_at = NOW()
@@ -25,8 +25,8 @@ export class MonolitRegistryAdapter {
   }
 
   // Convert Monolit bridge → Registry object
-  static async importMonolitBridge(projectId, bridgeName, bridgeData) {
-    const result = await db.query(
+  static async importMonolitBridge(projectId, bridgeName, bridgeData, queryFn = db.query.bind(db)) {
+    const result = await queryFn(
       `INSERT INTO registry_objects (project_id, object_name, object_type, metadata)
        VALUES ($1, $2, 'bridge', $3)
        ON CONFLICT (project_id, object_name) DO UPDATE SET updated_at = NOW()
@@ -72,8 +72,9 @@ export class MonolitRegistryAdapter {
     try {
       await client.query('BEGIN');
 
-      // 1. Create/get registry project
-      const projectId = await this.importMonolitProject(projectName);
+      // 1. Create/get registry project (use client to stay in transaction)
+      const queryFn = client.query.bind(client);
+      const projectId = await this.importMonolitProject(projectName, queryFn);
 
       // 2. Get all Monolit bridges for this project
       const bridges = await client.query(
@@ -92,7 +93,8 @@ export class MonolitRegistryAdapter {
         const objectId = await this.importMonolitBridge(
           projectId,
           bridge.bridge_name,
-          { bridge_id: bridge.id }
+          { bridge_id: bridge.id },
+          queryFn
         );
         importSummary.objects_imported++;
 
