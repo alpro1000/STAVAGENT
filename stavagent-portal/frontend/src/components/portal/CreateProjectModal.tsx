@@ -3,7 +3,7 @@
  * Design System: Digital Concrete (Brutalist Neumorphism)
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 
 interface CreateProjectModalProps {
@@ -17,6 +17,17 @@ interface CreateProjectModalProps {
 }
 
 export default function CreateProjectModal({ onClose, onCreate }: CreateProjectModalProps) {
+  // ESC key handler + body scroll lock
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = '';
+    };
+  }, [onClose]);
+
   const [formData, setFormData] = useState({
     project_name: '',
     project_type: 'custom',
@@ -73,6 +84,9 @@ export default function CreateProjectModal({ onClose, onCreate }: CreateProjectM
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
+      role="dialog"
+      aria-modal="true"
+      aria-label="Nový projekt"
     >
       <div className="c-panel" style={{ maxWidth: '500px', width: '100%' }}>
         {/* Header */}
@@ -170,7 +184,12 @@ export default function CreateProjectModal({ onClose, onCreate }: CreateProjectM
 
           {/* Error */}
           {error && (
-            <div className="c-panel" style={{ background: 'var(--status-error)', color: 'white', padding: '12px' }}>
+            <div className="c-panel" style={{
+              background: 'color-mix(in srgb, var(--status-error) 10%, var(--panel-bg-concrete))',
+              border: '1px solid var(--status-error)',
+              color: 'var(--status-error)',
+              padding: '12px'
+            }}>
               <p style={{ margin: 0, fontSize: '14px' }}>{error}</p>
             </div>
           )}

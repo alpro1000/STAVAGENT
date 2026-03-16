@@ -1,9 +1,11 @@
 /**
  * NewPartModal - Modal for creating new bridge parts with OTSKP search
  * Type 1: Adding NEW bridge elements (ZÁKLADY, ŘÍMSY, etc.) - requires OTSKP code
+ * Design: Slate Minimal (shared .modal-overlay / .modal-content)
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import OtskpAutocomplete from './OtskpAutocomplete';
 
 interface Props {
@@ -15,6 +17,17 @@ export default function NewPartModal({ onSelect, onCancel }: Props) {
   const [selectedCode, setSelectedCode] = useState('');
   const [selectedName, setSelectedName] = useState('');
   const [partName, setPartName] = useState('');
+
+  // ESC key handler + body scroll lock
+  useEffect(() => {
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onCancel(); };
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleEsc);
+      document.body.style.overflow = '';
+    };
+  }, [onCancel]);
 
   const handleOtskpSelect = (code: string, name: string) => {
     setSelectedCode(code);
@@ -30,62 +43,63 @@ export default function NewPartModal({ onSelect, onCancel }: Props) {
     onSelect(selectedCode, partName);
   };
 
-  return (
-    <div className="new-part-modal-overlay">
-      <div className="new-part-modal" onClick={(e) => e.stopPropagation()}>
-        <button
-          className="new-part-modal-close"
-          onClick={onCancel}
-          title="Zavřít"
-        >
-          ✕
-        </button>
-        <h3 className="new-part-title">Přidat novou část konstrukce</h3>
+  const modalContent = (
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Přidat novou část konstrukce">
+      <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '600px', overflow: 'visible' }}>
+        <div className="modal-header">
+          <h2>Přidat novou část konstrukce</h2>
+          <button className="btn-close" onClick={onCancel} title="Zavřít">✕</button>
+        </div>
 
-        <div className="new-part-content">
-          <div className="new-part-section">
-            <label className="new-part-label">
+        <div className="modal-body" style={{ overflow: 'visible' }}>
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '8px' }}>
               1. Vyhledejte OTSKP kód (volitelné):
             </label>
             <OtskpAutocomplete
               value={selectedCode}
               onSelect={handleOtskpSelect}
             />
-            <p className="new-part-hint">
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0', fontStyle: 'italic' }}>
               Začněte psát kód nebo název prvku (např. "základ", "opěra", "římsa")
             </p>
           </div>
 
           {selectedCode && (
-            <div className="new-part-selected">
+            <div style={{
+              padding: '10px 12px', marginBottom: '16px',
+              background: 'rgba(76, 175, 80, 0.1)', border: '1px solid var(--color-success)',
+              borderRadius: '6px', color: 'var(--text-primary)', fontSize: '14px',
+            }}>
               ✓ Vybrán OTSKP: <strong>{selectedCode}</strong> - {selectedName}
             </div>
           )}
 
-          <div className="new-part-section">
-            <label className="new-part-label">
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: 'var(--text-primary)', marginBottom: '8px' }}>
               2. Název části konstrukce:
             </label>
             <input
               type="text"
-              className="new-part-input"
+              className="slate-input"
               value={partName}
               onChange={(e) => setPartName(e.target.value)}
               placeholder="např. ZÁKLADY ZE ŽELEZOBETONU DO C30/37"
               autoFocus
+              style={{ width: '100%' }}
             />
-            <p className="new-part-hint">
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', margin: '4px 0 0', fontStyle: 'italic' }}>
               Přesný název prvku podle projektové dokumentace
             </p>
           </div>
         </div>
 
-        <div className="new-part-actions">
-          <button className="btn-cancel-new-part" onClick={onCancel}>
+        <div className="modal-footer" style={{ justifyContent: 'flex-end' }}>
+          <button className="btn-secondary" onClick={onCancel}>
             Zrušit
           </button>
           <button
-            className="btn-create-new-part"
+            className="btn-primary"
             onClick={handleCreate}
             disabled={!partName.trim()}
           >
@@ -93,213 +107,8 @@ export default function NewPartModal({ onSelect, onCancel }: Props) {
           </button>
         </div>
       </div>
-
-      <style>{`
-        .new-part-modal-overlay {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(4px);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          z-index: 1000;
-          animation: fadeIn 0.2s ease;
-        }
-
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-
-        .new-part-modal {
-          background: var(--bg-secondary);
-          border-radius: 12px;
-          padding: 2rem;
-          max-width: 600px;
-          width: 90%;
-          box-shadow: var(--shadow-xl);
-          animation: slideUp 0.3s ease;
-          max-height: 90vh;
-          overflow: visible;
-          display: flex;
-          flex-direction: column;
-        }
-
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .new-part-modal-close {
-          position: absolute;
-          top: 12px;
-          right: 12px;
-          width: 32px;
-          height: 32px;
-          border: none;
-          background: var(--bg-tertiary);
-          color: var(--text-primary);
-          font-size: 20px;
-          line-height: 1;
-          cursor: pointer;
-          border-radius: 6px;
-          transition: all 0.2s ease;
-          z-index: 10;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .new-part-modal-close:hover {
-          background: var(--color-error);
-          color: white;
-          transform: scale(1.1);
-        }
-
-        .new-part-modal-close:active {
-          transform: scale(0.95);
-        }
-
-        .new-part-title {
-          margin: 0 0 1.5rem 0;
-          font-size: 1.5rem;
-          color: var(--text-primary);
-          text-align: center;
-        }
-
-        .new-part-content {
-          display: flex;
-          flex-direction: column;
-          gap: 1.5rem;
-          margin-bottom: 1.5rem;
-        }
-
-        .new-part-section {
-          display: flex;
-          flex-direction: column;
-          gap: 0.5rem;
-        }
-
-        /* Expand OTSKP autocomplete to full width inside modal */
-        .new-part-section .otskp-autocomplete-container {
-          max-width: 100%;
-        }
-
-        .new-part-label {
-          font-size: 0.95rem;
-          font-weight: 500;
-          color: var(--text-primary);
-        }
-
-        .new-part-input {
-          width: 100%;
-          padding: 0.75rem;
-          font-size: 1rem;
-          border: 2px solid var(--border-default);
-          border-radius: 6px;
-          background: var(--bg-tertiary);
-          color: var(--text-primary);
-          transition: all 0.2s ease;
-        }
-
-        .new-part-input:focus {
-          outline: none;
-          border-color: var(--color-primary);
-          background: var(--bg-secondary);
-        }
-
-        .new-part-hint {
-          font-size: 0.85rem;
-          color: var(--text-secondary);
-          margin: 0;
-          font-style: italic;
-        }
-
-        .new-part-selected {
-          padding: 0.75rem;
-          background: rgba(76, 175, 80, 0.1);
-          border: 1px solid var(--color-success);
-          border-radius: 6px;
-          color: var(--text-primary);
-          font-size: 0.9rem;
-        }
-
-        .new-part-actions {
-          display: flex;
-          gap: 1rem;
-          justify-content: flex-end;
-        }
-
-        .btn-cancel-new-part {
-          padding: 0.75rem 1.5rem;
-          background: var(--bg-tertiary);
-          border: 1px solid var(--border-default);
-          border-radius: 6px;
-          color: var(--text-primary);
-          font-size: 1rem;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .btn-cancel-new-part:hover {
-          background: var(--bg-dark);
-          border-color: var(--border-hover);
-        }
-
-        .btn-create-new-part {
-          padding: 0.75rem 1.5rem;
-          background: var(--color-primary);
-          border: none;
-          border-radius: 6px;
-          color: white;
-          font-size: 1rem;
-          font-weight: 500;
-          cursor: pointer;
-          transition: all 0.2s ease;
-        }
-
-        .btn-create-new-part:hover:not(:disabled) {
-          background: var(--color-primary-dark);
-          transform: translateY(-1px);
-          box-shadow: 0 4px 12px rgba(63, 81, 181, 0.3);
-        }
-
-        .btn-create-new-part:disabled {
-          opacity: 0.5;
-          cursor: not-allowed;
-        }
-
-        /* Mobile responsive */
-        @media (max-width: 480px) {
-          .new-part-modal {
-            padding: 1.5rem;
-            width: 95%;
-          }
-
-          .new-part-title {
-            font-size: 1.25rem;
-          }
-
-          .new-part-actions {
-            flex-direction: column;
-          }
-
-          .btn-cancel-new-part,
-          .btn-create-new-part {
-            width: 100%;
-          }
-        }
-      `}</style>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }

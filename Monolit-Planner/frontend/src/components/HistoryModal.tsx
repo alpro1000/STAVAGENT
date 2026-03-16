@@ -104,13 +104,21 @@ export default function HistoryModal({ isOpen, onClose }: HistoryModalProps) {
     );
   };
 
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', handleEsc); document.body.style.overflow = ''; };
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   const modalContent = (
-    <div className="modal-overlay">
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Historie Snapshots">
       <div className="modal-content history-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
-          <h2 className="modal-title">📊 Historie Snapshots</h2>
+          <h2 className="modal-title">Historie Snapshots</h2>
           <button className="modal-close" onClick={onClose}>✕</button>
         </div>
 

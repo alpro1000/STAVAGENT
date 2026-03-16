@@ -3,6 +3,7 @@
  * Deletes ALL objects within a project (grouped by project_name)
  */
 
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 
 interface Props {
@@ -22,10 +23,18 @@ export default function DeleteProjectModal({
   onCancel,
   isDeleting = false
 }: Props) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEsc = (e: KeyboardEvent) => { if (e.key === 'Escape') onCancel(); };
+    document.addEventListener('keydown', handleEsc);
+    document.body.style.overflow = 'hidden';
+    return () => { document.removeEventListener('keydown', handleEsc); document.body.style.overflow = ''; };
+  }, [isOpen, onCancel]);
+
   if (!isOpen || !projectName) return null;
 
   const modalContent = (
-    <div className="modal-overlay">
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-label="Smazat projekt">
       <div className="modal-content delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header delete-header">
           <h2>⚠️ Smazat celý projekt?</h2>

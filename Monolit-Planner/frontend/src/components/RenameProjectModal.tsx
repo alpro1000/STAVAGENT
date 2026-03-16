@@ -31,6 +31,12 @@ export default function RenameProjectModal({
     }
   }, [isOpen, projectName]);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = ''; };
+  }, [isOpen]);
+
   if (!isOpen || !projectName) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -48,7 +54,7 @@ export default function RenameProjectModal({
   };
 
   const modalContent = (
-    <div className="modal-overlay" onClick={onCancel}>
+    <div className="modal-overlay" onClick={onCancel} role="dialog" aria-modal="true" aria-label="Přejmenovat projekt">
       <div className="modal-content" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '450px' }}>
         <div className="modal-header">
           <h2>Přejmenovat projekt</h2>
@@ -66,7 +72,7 @@ export default function RenameProjectModal({
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="c-input"
+              className="slate-input"
               style={{ width: '100%', padding: '8px 12px', fontSize: '14px' }}
               placeholder="Zadejte název projektu"
               autoFocus
@@ -85,7 +91,7 @@ export default function RenameProjectModal({
             </button>
             <button
               type="submit"
-              className="c-btn c-btn--primary"
+              className="btn-primary"
               disabled={isRenaming || !newName.trim() || newName.trim() === projectName}
             >
               {isRenaming ? 'Ukládám...' : 'Přejmenovat'}
