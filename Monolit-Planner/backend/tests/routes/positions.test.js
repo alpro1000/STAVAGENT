@@ -1,19 +1,26 @@
 /**
  * Positions API Tests
- * Testing critical business logic: unit_cost_on_m3, KROS rounding, calculations
+ * Tests for the bulk positions API (current implementation)
+ *
+ * Note: Business logic (unit_cost_on_m3, kros_unit_czk) is covered
+ * by shared/src/formulas.test.ts (55 tests).
+ * Here we test API validation and HTTP contract.
  */
 
 import { jest } from '@jest/globals';
 import request from 'supertest';
 import express from 'express';
-import positionsRoutes from '../../src/routes/positions.js';
 
-// Mock database
+// --- Mock all dependencies before importing the route ---
+
 const mockDb = {
   prepare: jest.fn()
 };
 
-// Mock logger
+jest.unstable_mockModule('../../src/db/init.js', () => ({
+  default: mockDb
+}));
+
 jest.unstable_mockModule('../../src/utils/logger.js', () => ({
   logger: {
     info: jest.fn(),
@@ -22,12 +29,26 @@ jest.unstable_mockModule('../../src/utils/logger.js', () => ({
   }
 }));
 
-// Mock database init
-jest.unstable_mockModule('../../src/db/init.js', () => ({
-  default: mockDb
+jest.unstable_mockModule('../../src/utils/text.js', () => ({
+  extractPartName: jest.fn((name) => name)
 }));
 
-// Create test app
+jest.unstable_mockModule('../../src/services/calculator.js', () => ({
+  calculatePositions: jest.fn((positions) => positions),
+  calculateKPI: jest.fn(() => ({}))
+}));
+
+jest.unstable_mockModule('../../src/services/timeNormsService.js', () => ({
+  suggestDays: jest.fn()
+}));
+
+jest.unstable_mockModule('../../src/services/portalWriteBack.js', () => ({
+  writeBackBatch: jest.fn()
+}));
+
+// Dynamic import AFTER mocks are set up (required for ESM mocking)
+const { default: positionsRoutes } = await import('../../src/routes/positions.js');
+
 const app = express();
 app.use(express.json());
 app.use('/api/positions', positionsRoutes);
@@ -37,221 +58,112 @@ describe('Positions API', () => {
     jest.clearAllMocks();
   });
 
-  describe('POST /api/positions - Create Position', () => {
-    it('should calculate unit_cost_on_m3 correctly for бетон', async () => {
-      // Mock database responses
-      const mockBridge = { bridge_id: 'test-bridge-1', project_id: 'test-project' };
-      const mockPart = { part_id: 'test-part-1' };
-      const mockInsertedPosition = {
-        position_id: '123',
-        bridge_id: 'test-bridge-1',
-        part_id: 'test-part-1',
-        subtype: 'beton',
-        concrete_m3: 100,
-        cost_czk: 50000,
-        unit_cost_on_m3: 500, // 50000 / 100
-        kros_unit_czk: 500    // ceil(500/50)*50 = 500
-      };
-
-      mockDb.prepare.mockImplementation((sql) => {
-        if (sql.includes('SELECT * FROM bridges')) {
-          return { get: jest.fn().mockResolvedValue(mockBridge) };
-        }
-        if (sql.includes('SELECT * FROM parts')) {
-          return { get: jest.fn().mockResolvedValue(mockPart) };
-        }
-        if (sql.includes('INSERT INTO positions')) {
-          return { run: jest.fn().mockResolvedValue({ lastInsertRowid: 123 }) };
-        }
-        if (sql.includes('SELECT * FROM positions WHERE')) {
-          return { get: jest.fn().mockResolvedValue(mockInsertedPosition) };
-        }
-        return { get: jest.fn(), run: jest.fn(), all: jest.fn() };
-      });
-
+  describe('POST /api/positions - Validation', () => {
+    it('should reject request missing bridge_id', async () => {
       const response = await request(app)
         .post('/api/positions')
-        .send({
-          bridge_id: 'test-bridge-1',
-          part_id: 'test-part-1',
-          subtype: 'beton',
-          item_name: 'Beton C30/37',
-          concrete_m3: 100,
-          cost_czk: 50000
-        });
+        .send({ positions: [{ part_name: 'Test', subtype: 'beton', qty: 10, days: 5 }] });
 
-      expect(response.status).toBe(201);
-      expect(response.body).toMatchObject({
-        unit_cost_on_m3: 500,
-        kros_unit_czk: 500
-      });
+      expect(response.status).toBe(400);
+      expect(response.body.error).toMatch(/bridge_id/);
     });
 
-    it('should round KROS unit cost up to nearest 50 CZK', async () => {
-      const mockBridge = { bridge_id: 'test-bridge-1' };
-      const mockPart = { part_id: 'test-part-1' };
-      const mockInsertedPosition = {
-        position_id: '124',
-        subtype: 'beton',
-        concrete_m3: 100,
-        cost_czk: 52500,      // 525 per m³
-        unit_cost_on_m3: 525,
-        kros_unit_czk: 550    // ceil(525/50)*50 = 550
-      };
-
-      mockDb.prepare.mockImplementation((sql) => {
-        if (sql.includes('SELECT * FROM bridges')) {
-          return { get: jest.fn().mockResolvedValue(mockBridge) };
-        }
-        if (sql.includes('SELECT * FROM parts')) {
-          return { get: jest.fn().mockResolvedValue(mockPart) };
-        }
-        if (sql.includes('INSERT INTO positions')) {
-          return { run: jest.fn().mockResolvedValue({ lastInsertRowid: 124 }) };
-        }
-        if (sql.includes('SELECT * FROM positions WHERE')) {
-          return { get: jest.fn().mockResolvedValue(mockInsertedPosition) };
-        }
-        return { get: jest.fn(), run: jest.fn() };
-      });
-
+    it('should reject request missing positions array', async () => {
       const response = await request(app)
         .post('/api/positions')
-        .send({
-          bridge_id: 'test-bridge-1',
-          part_id: 'test-part-1',
-          subtype: 'beton',
-          concrete_m3: 100,
-          cost_czk: 52500  // Should round 525 → 550
-        });
+        .send({ bridge_id: 'bridge-1' });
 
-      expect(response.status).toBe(201);
-      expect(response.body.kros_unit_czk).toBe(550);
+      expect(response.status).toBe(400);
+      expect(response.body.error).toMatch(/positions/);
     });
 
-    it('should reject negative concrete_m3', async () => {
+    it('should reject request with non-array positions', async () => {
+      const response = await request(app)
+        .post('/api/positions')
+        .send({ bridge_id: 'bridge-1', positions: 'not-array' });
+
+      expect(response.status).toBe(400);
+      expect(response.body.error).toMatch(/positions/);
+    });
+
+    it('should reject position with missing part_name', async () => {
       const response = await request(app)
         .post('/api/positions')
         .send({
-          bridge_id: 'test-bridge-1',
-          part_id: 'test-part-1',
-          subtype: 'beton',
-          concrete_m3: -10,
-          cost_czk: 50000
+          bridge_id: 'bridge-1',
+          positions: [{ subtype: 'beton', qty: 10, days: 5 }]
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toMatch(/negative/i);
+      expect(response.body.error).toMatch(/part_name/);
     });
 
-    it('should reject negative cost_czk', async () => {
+    it('should reject position with negative qty', async () => {
       const response = await request(app)
         .post('/api/positions')
         .send({
-          bridge_id: 'test-bridge-1',
-          part_id: 'test-part-1',
-          subtype: 'beton',
-          concrete_m3: 100,
-          cost_czk: -50000
+          bridge_id: 'bridge-1',
+          positions: [{ part_name: 'Test', subtype: 'beton', qty: -5, days: 5 }]
         });
 
       expect(response.status).toBe(400);
-      expect(response.body.error).toMatch(/negative/i);
-    });
-  });
-
-  describe('PATCH /api/positions/:id - Update Position', () => {
-    it('should recalculate unit_cost_on_m3 when cost_czk is updated', async () => {
-      const originalPosition = {
-        position_id: '123',
-        subtype: 'beton',
-        concrete_m3: 100,
-        cost_czk: 50000,
-        unit_cost_on_m3: 500
-      };
-
-      const updatedPosition = {
-        ...originalPosition,
-        cost_czk: 60000,
-        unit_cost_on_m3: 600,  // 60000 / 100
-        kros_unit_czk: 600
-      };
-
-      mockDb.prepare.mockImplementation((sql) => {
-        if (sql.includes('SELECT * FROM positions WHERE position_id')) {
-          return { get: jest.fn().mockResolvedValue(updatedPosition) };
-        }
-        if (sql.includes('UPDATE positions SET')) {
-          return { run: jest.fn().mockResolvedValue({ changes: 1 }) };
-        }
-        return { get: jest.fn(), run: jest.fn() };
-      });
-
-      const response = await request(app)
-        .patch('/api/positions/123')
-        .send({ cost_czk: 60000 });
-
-      expect(response.status).toBe(200);
-      expect(response.body.unit_cost_on_m3).toBe(600);
+      expect(response.body.error).toMatch(/qty/);
     });
 
-    it('should recalculate unit_cost_on_m3 when concrete_m3 is updated', async () => {
-      const updatedPosition = {
-        position_id: '123',
-        subtype: 'beton',
-        concrete_m3: 200,      // Changed from 100 to 200
-        cost_czk: 50000,
-        unit_cost_on_m3: 250,  // 50000 / 200
-        kros_unit_czk: 250
-      };
-
-      mockDb.prepare.mockImplementation((sql) => {
-        if (sql.includes('SELECT * FROM positions WHERE position_id')) {
-          return { get: jest.fn().mockResolvedValue(updatedPosition) };
-        }
-        if (sql.includes('UPDATE positions SET')) {
-          return { run: jest.fn().mockResolvedValue({ changes: 1 }) };
-        }
-        return { get: jest.fn(), run: jest.fn() };
-      });
-
+    it('should reject position with negative days', async () => {
       const response = await request(app)
-        .patch('/api/positions/123')
-        .send({ concrete_m3: 200 });
+        .post('/api/positions')
+        .send({
+          bridge_id: 'bridge-1',
+          positions: [{ part_name: 'Test', subtype: 'beton', qty: 10, days: -1 }]
+        });
 
-      expect(response.status).toBe(200);
-      expect(response.body.unit_cost_on_m3).toBe(250);
+      expect(response.status).toBe(400);
+      expect(response.body.error).toMatch(/days/);
     });
   });
 
   describe('DELETE /api/positions/:id', () => {
-    it('should delete position successfully', async () => {
-      mockDb.prepare.mockImplementation((sql) => {
-        if (sql.includes('DELETE FROM positions')) {
-          return { run: jest.fn().mockResolvedValue({ changes: 1 }) };
-        }
-        return { run: jest.fn() };
-      });
+    it('should return 404 when position not found', async () => {
+      mockDb.prepare.mockImplementation(() => ({
+        run: jest.fn().mockReturnValue({ changes: 0 })
+      }));
 
-      const response = await request(app)
-        .delete('/api/positions/123');
+      const response = await request(app).delete('/api/positions/nonexistent');
+
+      expect(response.status).toBe(404);
+      expect(response.body.error).toMatch(/not found/i);
+    });
+
+    it('should delete position successfully', async () => {
+      mockDb.prepare.mockImplementation(() => ({
+        run: jest.fn().mockReturnValue({ changes: 1 })
+      }));
+
+      const response = await request(app).delete('/api/positions/existing-id');
 
       expect(response.status).toBe(200);
       expect(response.body.success).toBe(true);
     });
+  });
 
-    it('should return 404 when position not found', async () => {
-      mockDb.prepare.mockImplementation((sql) => {
-        if (sql.includes('DELETE FROM positions')) {
-          return { run: jest.fn().mockResolvedValue({ changes: 0 }) };
-        }
-        return { run: jest.fn() };
-      });
-
+  describe('PUT /api/positions - Validation', () => {
+    it('should reject request missing bridge_id', async () => {
       const response = await request(app)
-        .delete('/api/positions/nonexistent');
+        .put('/api/positions')
+        .send({ updates: [{ id: '1', field: 'days', value: 5 }] });
 
-      expect(response.status).toBe(404);
+      expect(response.status).toBe(400);
+      expect(response.body.error).toMatch(/bridge_id/);
+    });
+
+    it('should reject request missing updates array', async () => {
+      const response = await request(app)
+        .put('/api/positions')
+        .send({ bridge_id: 'bridge-1' });
+
+      expect(response.status).toBe(400);
+      expect(response.body.error).toMatch(/updates/);
     });
   });
 });

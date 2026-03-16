@@ -61,6 +61,7 @@ steps:
       - --allow-unauthenticated
       - --port=3001
       - --add-cloudsql-instances=$PROJECT_ID:$_REGION:${_CLOUD_SQL_INSTANCE}
+      - --set-env-vars=DISABLE_AUTH=true
       - --remove-env-vars=DATABASE_URL,JWT_SECRET
       - --update-secrets=DATABASE_URL=PORTAL_DATABASE_URL:latest,JWT_SECRET=JWT_SECRET:latest
 
