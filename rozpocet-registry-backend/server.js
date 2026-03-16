@@ -333,12 +333,23 @@ app.delete('/api/registry/sheets/:id', requireDB, async (req, res) => {
 app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
   const client = await pool.connect();
   try {
-    await client.query('BEGIN');
-
     const { items } = req.body;
     if (!Array.isArray(items) || items.length === 0) {
+      client.release();
       return res.status(400).json({ success: false, error: 'items array required' });
     }
+
+    // Validate sheet exists before starting transaction (prevents FK violation)
+    const sheetCheck = await client.query(
+      'SELECT sheet_id FROM registry_sheets WHERE sheet_id = $1',
+      [req.params.id]
+    );
+    if (sheetCheck.rows.length === 0) {
+      client.release();
+      return res.status(404).json({ success: false, error: 'Sheet not found' });
+    }
+
+    await client.query('BEGIN');
 
     let created = 0;
     for (let i = 0; i < items.length; i++) {
@@ -351,7 +362,8 @@ app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
          ON CONFLICT (item_id) DO UPDATE SET
            kod = EXCLUDED.kod, popis = EXCLUDED.popis, mnozstvi = EXCLUDED.mnozstvi,
            mj = EXCLUDED.mj, cena_jednotkova = EXCLUDED.cena_jednotkova,
-           cena_celkem = EXCLUDED.cena_celkem, updated_at = NOW()`,
+           cena_celkem = EXCLUDED.cena_celkem, item_order = EXCLUDED.item_order,
+           sync_metadata = EXCLUDED.sync_metadata, updated_at = NOW()`,
         [
           itemId,
           req.params.id,
@@ -367,12 +379,14 @@ app.post('/api/registry/sheets/:id/items/bulk', requireDB, async (req, res) => {
       );
 
       if (item.tov_data) {
+        // Delete existing TOV data for this item before inserting new data
+        // This prevents duplicates from retries (each insert uses a new UUID)
+        await client.query('DELETE FROM registry_tov WHERE item_id = $1', [itemId]);
         for (const [type, data] of Object.entries(item.tov_data)) {
           if (Array.isArray(data) && data.length > 0) {
             await client.query(
               `INSERT INTO registry_tov (tov_id, item_id, tov_type, tov_data, created_at, updated_at)
-               VALUES ($1, $2, $3, $4, NOW(), NOW())
-               ON CONFLICT (tov_id) DO UPDATE SET tov_data = EXCLUDED.tov_data, updated_at = NOW()`,
+               VALUES ($1, $2, $3, $4, NOW(), NOW())`,
               [`tov_${uuidv4()}`, itemId, type, JSON.stringify(data)]
             );
           }

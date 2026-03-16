@@ -13,7 +13,7 @@
 
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Plus, FileText, Activity, MessageSquare, Send, Upload } from 'lucide-react';
+import { Plus, FileText, Activity, MessageSquare, Send, Upload, Settings } from 'lucide-react';
 import { API_URL } from '../services/api';
 import CreateProjectModal from '../components/portal/CreateProjectModal';
 import CorePanel from '../components/portal/CorePanel';
@@ -418,14 +418,31 @@ export default function PortalPage() {
                 </p>
               </div>
             </div>
-            <button
-              onClick={() => setShowCreateModal(true)}
-              className="c-btn c-btn--primary"
-              style={{ flexShrink: 0 }}
-            >
-              <Plus size={20} />
-              Nový projekt
-            </button>
+            <div style={{ display: 'flex', gap: '8px', flexShrink: 0 }}>
+              <button
+                onClick={() => setShowCreateModal(true)}
+                className="c-btn c-btn--primary"
+              >
+                <Plus size={20} />
+                Nový projekt
+              </button>
+              <button
+                onClick={() => navigate('/cabinet')}
+                className="c-btn"
+                style={{
+                  background: 'var(--bg-secondary, #f1f5f9)',
+                  color: 'var(--text-primary)',
+                  border: '1px solid var(--border-color, #e5e7eb)',
+                  padding: '8px 14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+                title="Nastavení"
+              >
+                <Settings size={18} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
