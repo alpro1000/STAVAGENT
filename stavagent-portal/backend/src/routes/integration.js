@@ -246,7 +246,7 @@ router.post('/import-from-monolit', async (req, res) => {
     });
 
   } catch (error) {
-    if (client) await client.query('ROLLBACK');
+    if (client) await client.query('ROLLBACK').catch(() => {});
     console.error('[Integration] Error importing from Monolit:', error.message);
     console.error('[Integration] Stack:', error.stack);
     res.status(500).json({ success: false, error: error.message });
@@ -363,6 +363,7 @@ router.post('/sync-tov', async (req, res) => {
     const { portal_project_id, updates } = req.body;
 
     if (!portal_project_id || !updates || !Array.isArray(updates)) {
+      client.release();
       return res.status(400).json({ success: false, error: 'Invalid request body' });
     }
 
@@ -373,6 +374,7 @@ router.post('/sync-tov', async (req, res) => {
     );
 
     if (projectCheck.rows.length === 0) {
+      client.release();
       return res.status(404).json({ success: false, error: 'Project not found' });
     }
 
@@ -389,6 +391,7 @@ router.post('/sync-tov', async (req, res) => {
     }
 
     if (!hasTovColumns) {
+      client.release();
       return res.status(503).json({
         success: false,
         error: 'TOV columns not yet migrated. Run Migration 005 (schema-postgres.sql).'
@@ -427,7 +430,7 @@ router.post('/sync-tov', async (req, res) => {
     });
 
   } catch (error) {
-    await client.query('ROLLBACK');
+    await client.query('ROLLBACK').catch(() => {});
     console.error('[Integration] Error syncing TOV:', error);
     res.status(500).json({ success: false, error: 'Failed to sync TOV data' });
   } finally {
@@ -549,6 +552,10 @@ router.post('/import-from-registry', async (req, res) => {
       } catch (colErr) {
         if (colErr.message && colErr.message.includes('column')) {
           hasPhase8Columns = false;
+          console.warn('[Integration] Phase 8 columns (sheet_name) not yet applied — using fallback INSERT');
+          // Reset aborted transaction state
+          await client.query('ROLLBACK');
+          await client.query('BEGIN');
         } else {
           throw colErr;
         }
@@ -826,7 +833,7 @@ router.post('/import-from-registry', async (req, res) => {
     });
 
   } catch (error) {
-    if (client) await client.query('ROLLBACK');
+    if (client) await client.query('ROLLBACK').catch(() => {});
     console.error('[Integration] Error importing from Registry:', error.message);
     res.status(500).json({ success: false, error: error.message });
   } finally {
