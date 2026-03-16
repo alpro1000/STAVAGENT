@@ -18,7 +18,15 @@ let db;
 if (USE_POSTGRES) {
   console.log('[Database] Using PostgreSQL (production mode)');
   const postgres = await import('./postgres.js');
-  postgres.initPostgres();
+  try {
+    postgres.initPostgres();
+  } catch (err) {
+    console.error('[Database] PostgreSQL initialization failed:', err.message);
+    console.error('[Database] Hint: Check DATABASE_URL in Secret Manager.');
+    console.error('[Database] Expected: postgresql://user:pass@/dbname?host=/cloudsql/project:region:instance');
+    console.error('[Database] If password has special chars (@#?/), URL-encode them (e.g. @ → %40)');
+    throw err;
+  }
 
   // Create adapter with SQLite-compatible interface
   db = {
