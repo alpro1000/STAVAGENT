@@ -808,28 +808,25 @@ Import triggers: `gcloud builds triggers import --source=triggers/{service}.yaml
 ## Pending Work (Backlog)
 
 ### Awaiting User Action
-1. **Cloud Build Triggers** (GCP) - Import triggers via `gcloud builds triggers import --source=triggers/*.yaml` if not yet created
+1. **Cloud Build Triggers Import** (GCP) - `gcloud builds triggers import --source=triggers/*.yaml` (if not auto-imported yet)
 2. **Environment Variables** (GCP Secret Manager) - `PERPLEXITY_API_KEY` for concrete-agent, `PPLX_API_KEY` for URS Matcher, `OPENAI_API_KEY` for both
 3. **AI Suggestion Button** (Monolit) - Execute `БЫСТРОЕ_РЕШЕНИЕ.sql` in Cloud SQL shell
-4. **Portal Backend Deploy** - Phase 8 DB migration (position_instance_id columns + 13 endpoints)
-5. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
-6. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Cloud Run env
+4. **Google Drive Setup** (optional) - Create Google Cloud project + OAuth2 credentials
+5. **Keep-Alive Setup** (optional) - Add `KEEP_ALIVE_KEY` to GitHub + Cloud Run env
+6. **MASTER_ENCRYPTION_KEY** - Generate `openssl rand -hex 32` → add to Secret Manager (needed for Sprint 2: Service Connections)
 
-### Recently Completed (March 2-6)
-- ✅ PERT 3-point estimation + Monte Carlo simulation (20 tests)
-- ✅ Concrete maturity/curing model ČSN EN 13670 (21 tests)
-- ✅ MaturityConfigPanel UI in FormworkCalculatorModal
-- ✅ Registry Backend Sync: localStorage ↔ PostgreSQL (backendSync.ts + bulk endpoint)
-- ✅ Registry health check fix (old + new response format support)
-- ✅ Removed dead registryStoreAPI.ts
-- ✅ Unified Registry Foundation (Weeks 1-4): DB migrations, 11 API endpoints, adapters
-- ✅ Relink Algorithm (Weeks 7-9): 4-step confidence matching, 8.8x perf, UI modal
-- ✅ Unified Registry Frontend (Weeks 5-6, 93%): RegistryView, filters, sorting, CSV export
-- ✅ Multi-supplier pump calculator: 3 billing models, supplier comparison
-- ✅ Time Norms Automation: AI days suggestion implementation
-- ✅ Portal tabs/modal redesign: Master-Detail layout, Czech labels
-- ✅ Document Passport optimization: 300s → 2-8s
-- ✅ CORS fix + MinerU dependencies + Render Blueprint
+### Recently Completed (Session 13, March 15)
+- ✅ **Render → Google Cloud Run migration complete** — all 5 backends deployed and healthy
+- ✅ Cloud Run URLs updated across all services (CORS origins, API URLs, env vars)
+- ✅ Cloud SQL SSL fix — disabled SSL for Unix socket connections (registry-backend)
+- ✅ Registry-backend 503 race condition fix (DB init before route setup)
+- ✅ Cloud Build env var conflicts resolved (--remove-env-vars removed)
+- ✅ All 5 health checks passing: concrete-agent, portal, monolit, urs-matcher, registry
+
+### Recently Completed (Sessions 11-12, March 13-14)
+- ✅ PLAN_CABINETS_ROLES_BILLING.md — 4-sprint SaaS transformation plan
+- ✅ Pump Calculator sub-row in PositionRow
+- ✅ Kiosk E2E fixes (export-to-registry endpoint, KioskLinksPanel URL, query invalidation)
 
 ### Technical Debt
 - Node.js 18.x → 20.x upgrade (all services)
