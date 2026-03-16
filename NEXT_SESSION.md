@@ -1,181 +1,159 @@
-# NEXT SESSION — 2026-03-16 (Session 13 Complete)
+# NEXT SESSION — 2026-03-16 (Session 14 Complete)
 
-## Краткое резюме Session 13 (2026-03-16)
+## Краткое резюме Session 14 (2026-03-16)
 
-**Ветка:** `claude/implement-cabinets-feature-Vd0ma`
-**Коммиты:** `3fea990` → `fd8f2f7` (19 коммитов)
-**Тип:** Feature (Sprint 1) + Infrastructure Fixes
+**Ветка:** `claude/sprint2-connections-ZJ1IU`
+**Коммиты:** `f1c23c4` → `4a23614` (5 коммитов)
+**Тип:** Production Bug-Fix Sprint + Infrastructure
 
 ---
 
 ### Что сделано
 
-#### Sprint 1: Cabinets + Roles — ПОЛНОСТЬЮ РЕАЛИЗОВАН ✅
+#### 1. Portal: integration.js — "current transaction is aborted" ✅
 
-**Backend (`stavagent-portal/backend`):**
+**Причина:** `portal_positions` не имела колонок `registry_item_id`, `tov_labor`, `tov_machinery`, `tov_materials`, `last_sync_from`, `last_sync_at`, `monolit_position_id`. Запрос `INSERT INTO portal_positions (...registry_item_id...)` падал с "column does not exist", отравляя всю транзакцию.
 
-| Файл | Что сделано |
-|------|-------------|
-| `src/db/schema-postgres.sql` | 6 новых ALTER/CREATE: phone/company/avatar_url/org_id в users, organizations, org_members, индексы |
-| `src/middleware/orgRole.js` | Middleware проверки роли в org_members для любого org-scope маршрута |
-| `src/routes/cabinet.js` | `GET /api/cabinet/stats` — статистика проектов, файлов, членства в орг |
-| `src/routes/orgs.js` | 12 endpoints: CRUD орг, invite по email, список членов, смена роли, удаление |
-| `src/routes/auth.js` | `PATCH /api/auth/me` — обновление профиля (name, phone, company, timezone, preferences) |
-| `backend/server.js` | Регистрация `/api/cabinet` и `/api/orgs` роутеров |
+**Файлы:**
+- `stavagent-portal/backend/src/db/schema-postgres.sql` — добавлена **Migration 005** (7 ALTER TABLE + индекс)
+- `stavagent-portal/backend/src/routes/integration.js` — добавлена column detection с ROLLBACK+BEGIN reset, fallback INSERT без расширенных колонок
 
-**Frontend (`stavagent-portal/frontend`):**
-
-| Файл | Что сделано |
-|------|-------------|
-| `src/pages/CabinetPage.tsx` | `/cabinet` — CabinetStats + ProfileForm |
-| `src/pages/CabinetOrgsPage.tsx` | `/cabinet/orgs` — список орг + OrgCreate |
-| `src/pages/OrgPage.tsx` | `/org/:id` — детали орг + OrgMembersList + OrgInviteForm |
-| `src/pages/OrgInvitePage.tsx` | `/org/accept-invite?token=...` — принять приглашение |
-| `src/components/cabinet/CabinetLayout.tsx` | Sidebar: Přehled / Organizace / Platby / Zabezpečení |
-| `src/components/cabinet/CabinetStats.tsx` | Карточки: проекты / файлы / организации |
-| `src/components/cabinet/ProfileForm.tsx` | Форма обновления профиля |
-| `src/components/org/OrgCard.tsx` | Карточка организации с ролью |
-| `src/components/org/OrgCreate.tsx` | Форма создания организации |
-| `src/components/org/OrgMembersList.tsx` | Список членов + смена роли + удаление |
-| `src/components/org/OrgInviteForm.tsx` | Форма приглашения по email + выбор роли |
-| `src/components/org/OrgRoleBadge.tsx` | Бейдж роли (admin/manager/estimator/viewer/api_client) |
-| `src/types/org.ts` | TypeScript типы: Organization, OrgMember, OrgRole |
-| `src/App.tsx` | Роуты /cabinet, /cabinet/orgs, /org/:id, /org/accept-invite |
-
-**5 ролей реализованы:**
-```
-admin      — полный контроль, удаление орг
-manager    — управление проектами, приглашения (кроме admin)
-estimator  — создание проектов, загрузка файлов, AI
-viewer     — только просмотр
-api_client — API-доступ с ключами
+**Паттерн column detection:**
+```javascript
+let hasRegistrySyncColumns = true;
+try {
+  await client.query('SELECT registry_item_id, tov_labor FROM portal_positions LIMIT 0');
+} catch (colErr) {
+  if (colErr.message && colErr.message.includes('column')) {
+    hasRegistrySyncColumns = false;
+    await client.query('ROLLBACK');
+    await client.query('BEGIN'); // reset poisoned tx
+  } else throw colErr;
+}
 ```
 
-#### Инфраструктурные фиксы (Cloud Run / GCP)
+#### 2. Monolit: "permission denied for table monolith_projects" ✅
 
-| Коммит | Фикс |
-|--------|------|
-| `3601fb8` | Sprint 1 SQL: VARCHAR+CHECK вместо ENUM, совместимость с semicolon splitter |
-| `48e29fb` | Conditional SSL: off для Cloud SQL unix socket, on для remote PG |
-| `4fbd98b` | package-lock.json sync |
-| `80904d5` | CLOUD_LOGGING_ONLY в Cloud Build |
-| `3fea990` | Sprint 1 Backend |
-| `28c6784` | Sprint 1 Frontend |
-| `194e1fa` | position_instances / position_templates таблицы добавлены в schema |
-| `1cf902c` | SSL полностью отключён для Cloud Run |
-| `4418e88` | Cloud Build approval gate отключён |
-| `6c2a3c6` | Критические баги DB интерфейса (Monolit + Portal) |
-| `663278a` | DISABLE_AUTH=true в Portal Cloud Run |
-| `2aa6b48` | positions.test.js под актуальный bulk API |
-| `4218edd` | _FORCE_DEPLOY substitution в guard steps |
-| `87e6a97` | --remove-env-vars конфликт убран |
-| `84b6709` | Vertex AI Gemini + Vertex AI Search → PassportEnricher |
-| `6487670` | 3 review issues в Vertex AI |
-| `b405ee9` | SmartParser project_id kwarg + ParsePreviewModal byType |
-| `56b675d` | Robust DATABASE_URL parsing (ERR_INVALID_URL) |
-| `fd8f2f7` | .trim() для DATABASE_URL в portal + monolit |
+**Причина:** Cloud SQL секреты использовали юзера `postgres`, у которого `cloudsqlsuperuser` (не SUPERUSER) — не может писать в таблицы, созданные другими юзерами.
 
-#### Secret Manager
-- `PORTAL_DATABASE_URL` обновлён до **version 4** (format с `?host=/cloudsql/...`)
-- Portal Backend задеплоен revision `stavagent-portal-backend-00049-fd7`
+**Исправление:** Обновлены все 4 секрета в Secret Manager с правильными владельцами:
+```
+MONOLIT_DATABASE_URL  → monolit_user:BHubk66f49cZTVL86dni
+PORTAL_DATABASE_URL   → stavagent_portal:BHubk66f49cZTVL86dni
+CONCRETE_DATABASE_URL → stavagent_portal:BHubk66f49cZTVL86dni
+REGISTRY_DATABASE_URL → registry_user:BHubk66f49cZTVL86dni
+```
+
+Все пароли стандартизированы: `BHubk66f49cZTVL86dni` для всех 4 юзеров.
+Все 4 сервиса перезапущены через `gcloud run services update --update-env-vars=REDEPLOY=$(date +%s)`.
+
+#### 3. Registry bulk items: CWE-209 security fix ✅
+
+- `rozpocet-registry-backend/server.js` — убран `error.detail` из ответа (утечка деталей БД клиенту)
+- Детали остаются в серверных логах (`console.error`)
+
+#### 4. Force deploy trigger ✅
+
+Добавлены `.deploy-trigger` файлы в `stavagent-portal/`, `URS_MATCHER_SERVICE/`, `Monolit-Planner/` чтобы Cloud Build guard step детектировал изменения при следующем merge в `main`.
 
 ---
 
-## Состояние сервисов (на 2026-03-16)
+### Понимание архитектуры portal_positions (ключевое)
 
-| Сервис | Cloud Run URL | Статус |
-|--------|---------------|--------|
-| concrete-agent | https://concrete-agent-1086027517695.europe-west3.run.app | ✅ Работает |
-| stavagent-portal backend | https://stavagent-portal-backend-1086027517695.europe-west3.run.app | ✅ Задеплоен (revision 00049) |
-| stavagent-portal frontend | https://www.stavagent.cz | ✅ Работает |
-| Monolit-Planner | https://monolit-planner-api-1086027517695.europe-west3.run.app | ✅ Работает |
-| URS_MATCHER_SERVICE | https://urs-matcher-service-1086027517695.europe-west3.run.app | ✅ Работает |
-| rozpocet-registry | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app | ✅ Работает |
+`portal_positions` — кросс-кiosk аккумулятор данных:
+- `tov_labor/machinery/materials` — TOV декомпозиция из Monolit (профессии, машины, материалы)
+- `registry_item_id` — привязка к конкретной строке в rozpocet-registry
+- `monolit_position_id` — привязка к конкретной позиции в Monolit
+
+Это позволяет Portal показывать консолидированные данные по позиции из обоих kiosk.
 
 ---
 
-## С чего начать Session 14
+## Состояние сервисов (на 2026-03-16, после Session 14)
 
-### Приоритет 1: Проверить что Portal работает корректно
+| Сервис | Cloud Run URL | Статус | Примечание |
+|--------|---------------|--------|------------|
+| concrete-agent | https://concrete-agent-1086027517695.europe-west3.run.app | ✅ Работает | — |
+| stavagent-portal backend | https://stavagent-portal-backend-1086027517695.europe-west3.run.app | ⏳ Ожидает деплоя | Migration 005 ещё не задеплоена — нужно смерджить PR |
+| stavagent-portal frontend | https://www.stavagent.cz | ✅ Работает | — |
+| Monolit-Planner | https://monolit-planner-api-1086027517695.europe-west3.run.app | ✅ Работает | Секреты исправлены |
+| URS_MATCHER_SERVICE | https://urs-matcher-service-1086027517695.europe-west3.run.app | ⏳ Ожидает деплоя | Gemini key fix нужен деплой |
+| rozpocet-registry-backend | https://rozpocet-registry-backend-1086027517695.europe-west3.run.app | ⏳ Ожидает деплоя | CWE-209 fix нужен деплой |
 
+---
+
+## С чего начать Session 15
+
+### Шаг 0: Смерджить PR (ОБЯЗАТЕЛЬНО ПЕРВЫМ ДЕЛОМ)
+
+```
+Открыть GitHub → Pull Requests → ветка claude/sprint2-connections-ZJ1IU
+Смерджить в main
+```
+
+После merge Cloud Build автоматически задеплоит все 4 сервиса (trigger файлы обеспечат это).
+
+**Проверить деплой:**
 ```bash
-# Проверить health
+# Проверить что Portal отвечает с новой Migration 005
 curl https://stavagent-portal-backend-1086027517695.europe-west3.run.app/health
 
-# Проверить cabinet stats (потребует JWT токен)
-curl -H "Authorization: Bearer <token>" \
-  https://stavagent-portal-backend-1086027517695.europe-west3.run.app/api/cabinet/stats
-
-# Проверить список орг
-curl -H "Authorization: Bearer <token>" \
-  https://stavagent-portal-backend-1086027517695.europe-west3.run.app/api/orgs
+# Проверить что import-from-registry работает (раньше давал 500)
+# Открыть Monolit → KioskLinksPanel → "Import to Registry" кнопка
 ```
 
-Если получаем ошибки БД → проверить Cloud SQL logs в GCP Console.
-
-### Приоритет 2: Sprint 2 — Service Connections + AI Models
-
-**Ветка:** создай `claude/sprint2-connections-<random5chars>`
+### Шаг 1: Sprint 2 — Service Connections
 
 **Что нужно реализовать:**
 
 ```
-backend/src/services/encryptionService.js   ← AES-256-GCM (MASTER_ENCRYPTION_KEY)
-backend/src/routes/connections.js           ← 8 endpoints
-backend/src/db/schema-postgres.sql          ← service_connections таблица (migration 003)
-frontend/src/pages/ConnectionsPage.tsx
-frontend/src/components/connections/ConnectionCard.tsx
-frontend/src/components/connections/ConnectionForm.tsx
-frontend/src/components/connections/ConnectionTestButton.tsx
-frontend/src/components/connections/ModelConfigPanel.tsx
-frontend/src/components/connections/KioskTogglePanel.tsx
-frontend/src/types/connection.ts
+stavagent-portal/backend/src/services/encryptionService.js   ← AES-256-GCM
+stavagent-portal/backend/src/routes/connections.js           ← 8 endpoints
+stavagent-portal/backend/src/db/schema-postgres.sql          ← Migration 006: service_connections
+stavagent-portal/frontend/src/pages/ConnectionsPage.tsx
+stavagent-portal/frontend/src/components/connections/ConnectionCard.tsx
+stavagent-portal/frontend/src/components/connections/ConnectionForm.tsx
+stavagent-portal/frontend/src/components/connections/ConnectionTestButton.tsx
+stavagent-portal/frontend/src/components/connections/ModelConfigPanel.tsx
+stavagent-portal/frontend/src/components/connections/KioskTogglePanel.tsx
+stavagent-portal/frontend/src/types/connection.ts
 ```
 
 **Порядок работы:**
 1. Прочитай `PLAN_CABINETS_ROLES_BILLING.md` раздел "Sprint 2" и "Migration 003"
-2. Прочитай `stavagent-portal/backend/src/db/schema-postgres.sql` — текущий вид схемы
-3. Добавь migration 003 (service_connections) в schema-postgres.sql
+2. Прочитай `stavagent-portal/backend/src/db/schema-postgres.sql` — увидишь Migration 005 (новейшая)
+3. Добавь Migration 006 (service_connections) — нумерация следует за 005
 4. Реализуй `encryptionService.js` (AES-256-GCM, AAD = connection.id)
 5. Реализуй `connections.js` router (8 endpoints из плана)
 6. Реализуй frontend компоненты
 7. Зарегистрируй маршруты в `backend/server.js` + роуты в `frontend/src/App.tsx`
 
-**Нужна env переменная перед деплоем:**
+**Нужна env переменная:**
 ```bash
-# Сгенерировать и добавить в GCP Secret Manager:
+# Если ещё не создан — добавить в GCP Secret Manager:
 openssl rand -hex 32
 # → gcloud secrets create MASTER_ENCRYPTION_KEY --data-file=-
+# → В cloudbuild-portal.yaml добавить: --update-secrets=...MASTER_ENCRYPTION_KEY=MASTER_ENCRYPTION_KEY:latest
 ```
 
-### Приоритет 3 (если Sprint 2 завершён): Sprint 3 — Billing
+### Шаг 2 (если Sprint 2 завершён): Sprint 3 — Billing
 
-**Ветка:** `claude/sprint3-billing-<random5chars>`
-
-Подождать пока пользователь создаст Stripe аккаунт и продукты.
+Подождать пока пользователь создаст Stripe аккаунт + продукты.
 Подробности — в `PLAN_CABINETS_ROLES_BILLING.md` раздел "Sprint 3".
 
 ---
 
-## Команда для быстрого старта
+## Cloud SQL — Правильные юзеры (ВАЖНО!)
 
 ```
-Прочитай CLAUDE.md и NEXT_SESSION.md. Сегодня реализуем Sprint 2 из плана PLAN_CABINETS_ROLES_BILLING.md.
-
-Sprint 1 (Cabinets + Roles) уже полностью готов и задеплоен.
-
-Ветка: создай claude/sprint2-connections-<random5chars>
-
-Начни с:
-1. PLAN_CABINETS_ROLES_BILLING.md — раздел Sprint 2 и Migration 003
-2. stavagent-portal/backend/src/db/schema-postgres.sql — посмотри текущее состояние
-3. stavagent-portal/backend/src/routes/orgs.js — паттерн для нового роутера
-4. stavagent-portal/backend/src/middleware/orgRole.js — уже есть, использовать как есть
-
-Порядок реализации:
-Backend: schema migration 003 → encryptionService.js → connections.js router → регистрация в server.js
-Frontend: connection.ts типы → ConnectionForm → ConnectionCard → ConnectionTestButton → ModelConfigPanel → KioskTogglePanel → ConnectionsPage → App.tsx роут /cabinet/connections
+База данных        │ Юзер               │ Пароль
+───────────────────┼────────────────────┼────────────────────────
+stavagent_portal   │ stavagent_portal   │ BHubk66f49cZTVL86dni
+monolit_planner    │ monolit_user       │ BHubk66f49cZTVL86dni
+rozpocet_registry  │ registry_user      │ BHubk66f49cZTVL86dni
 ```
+
+Никогда не используй `postgres` юзера для приложений — у него нет прав на таблицы других владельцев!
 
 ---
 
@@ -183,8 +161,34 @@ Frontend: connection.ts типы → ConnectionForm → ConnectionCard → Conne
 
 | Действие | Срочность | Описание |
 |----------|-----------|----------|
+| **Смерджить PR** `claude/sprint2-connections-ZJ1IU` | 🔴 СРОЧНО | Задеплоит все исправления Session 14 |
 | Добавить MASTER_ENCRYPTION_KEY в Secret Manager | 🔴 Нужно для Sprint 2 | `openssl rand -hex 32` → Secret Manager |
 | Создать Stripe аккаунт + продукты | 🟡 Нужно для Sprint 3 | 4 плана (Free/Starter/Professional/Enterprise) |
 | Создать GCS bucket | 🟡 Нужно для Sprint 4 | `gs://stavagent-prod-files` в europe-west3 |
 | SQL: Включить FF_AI_DAYS_SUGGEST | 🟢 Удобная фича | `Monolit-Planner/БЫСТРОЕ_РЕШЕНИЕ.sql` в Cloud SQL |
 | Добавить PERPLEXITY_API_KEY | 🟢 Опционально | Улучшает Poradna norem в Monolit |
+
+---
+
+## Команда для быстрого старта Session 15
+
+```
+Прочитай CLAUDE.md и NEXT_SESSION.md.
+
+СНАЧАЛА убедись что PR из ветки claude/sprint2-connections-ZJ1IU смерджен.
+
+Сегодня реализуем Sprint 2 из плана PLAN_CABINETS_ROLES_BILLING.md.
+Sprint 1 (Cabinets + Roles) готов и задеплоен.
+Session 14 исправила production баги (portal tx abort, monolit permission denied, registry security).
+
+Ветка: создай claude/sprint2-connections-<random5chars>
+
+Начни с:
+1. PLAN_CABINETS_ROLES_BILLING.md — раздел Sprint 2 и Migration 003
+2. stavagent-portal/backend/src/db/schema-postgres.sql — посмотри Migration 005 (новейшая)
+3. stavagent-portal/backend/src/routes/orgs.js — паттерн для нового роутера
+
+Порядок реализации:
+Backend: Migration 006 (service_connections) → encryptionService.js → connections.js → server.js
+Frontend: connection.ts → ConnectionForm → ConnectionCard → ConnectionTestButton → ModelConfigPanel → KioskTogglePanel → ConnectionsPage → App.tsx /cabinet/connections
+```
