@@ -22,6 +22,7 @@ import { isMainCodeExported } from '../services/classification/rowClassification
 import { debouncedSyncToPortal, cancelSync, setAutoLinkCallback, setInstanceMappingCallback } from '../services/portalAutoSync';
 import { writeBackDOV } from '../services/dovWriteBack';
 import { fetchMonolithData } from '../services/portalMonolithFetch';
+import { deleteProjectFromBackend, deleteAllProjectsFromBackend } from '../services/backendSync';
 
 interface RegistryState {
   // Данные
@@ -164,6 +165,8 @@ export const useRegistryStore = create<RegistryState>()(
           selectedSheetId:
             state.selectedProjectId === projectId ? null : state.selectedSheetId,
         }));
+        // Also delete from backend (fire-and-forget)
+        deleteProjectFromBackend(projectId);
       },
 
       removeAllProjects: () => {
@@ -172,6 +175,8 @@ export const useRegistryStore = create<RegistryState>()(
           selectedProjectId: null,
           selectedSheetId: null,
         });
+        // Also delete all from backend (fire-and-forget)
+        deleteAllProjectsFromBackend();
       },
 
       updateProject: (projectId, updates) => {

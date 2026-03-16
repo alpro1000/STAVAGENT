@@ -15,11 +15,16 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Путь к TSKP классификатору в concrete-agent
-const TSKP_XML_PATH = path.join(
+// Docker: /app/concrete-agent/..., Local dev: ../../../../concrete-agent/...
+const DOCKER_TSKP_PATH = '/app/concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/xmk_tskp_tridnik.xml';
+const LOCAL_TSKP_PATH = path.join(
   __dirname,
   '../../../..',
   'concrete-agent/packages/core-backend/app/knowledge_base/B1_otkskp_codes/xmk_tskp_tridnik.xml'
 );
+
+import fsSync from 'fs';
+const TSKP_XML_PATH = fsSync.existsSync(DOCKER_TSKP_PATH) ? DOCKER_TSKP_PATH : LOCAL_TSKP_PATH;
 
 class TSKPParserService {
   constructor() {

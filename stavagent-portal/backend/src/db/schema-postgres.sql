@@ -477,3 +477,18 @@ CREATE INDEX IF NOT EXISTS idx_service_connections_user ON service_connections(u
 CREATE INDEX IF NOT EXISTS idx_service_connections_org ON service_connections(org_id);
 CREATE INDEX IF NOT EXISTS idx_service_connections_type ON service_connections(service_type);
 
+-- ============================================================================
+-- MIGRATION 005: Add registry sync columns to portal_positions
+-- Required by POST /import-from-registry (integration.js)
+-- ============================================================================
+
+ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS registry_item_id VARCHAR(255);
+ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS tov_labor JSONB;
+ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS tov_machinery JSONB;
+ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS tov_materials JSONB;
+ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS last_sync_from VARCHAR(50);
+ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS last_sync_at TIMESTAMP;
+ALTER TABLE portal_positions ADD COLUMN IF NOT EXISTS monolit_position_id VARCHAR(255);
+
+CREATE INDEX IF NOT EXISTS idx_portal_positions_registry_item ON portal_positions(registry_item_id);
+
