@@ -146,6 +146,15 @@ const SERVICES: Service[] = [
     tags: ['Deterministické', 'Scheduling', 'AI-prořab', 'Traceability']
   },
   {
+    id: 'element-planner',
+    name: 'Plánovač elementu',
+    description: 'Plánování betonáže mostních a stavebních elementů. AI doporučení podstu, bednění, normy ČSN EN. Skruž, záběry, šachovnicový postup, maturity model.',
+    icon: '📐',
+    url: 'https://monolit-planner-frontend.vercel.app/planner',
+    status: 'active',
+    tags: ['Plánování', 'Bednění', 'Skruž', 'AI doporučení', 'ČSN EN 13670']
+  },
+  {
     id: 'objednavka-betonu',
     name: 'Objednávka betonu',
     description: 'Najít betonárny → spočítat cenu (beton + doprava + čerpadlo) → porovnat dodavatele. Ruční zadání cen od prořaba. Jeden flow pro objednávku.',

@@ -1154,6 +1154,21 @@ function PlanResult({ plan, startDate, showLog, onToggleLog }: {
         </div>
       </Card>
 
+      {/* Norms Sources */}
+      {plan.norms_sources && (
+        <Card title="Zdroje norem" icon="📚">
+          <div style={{ fontSize: 12, lineHeight: 1.7, color: 'var(--r0-slate-600)' }}>
+            <Row label="Montáž bednění" value={plan.norms_sources.formwork_assembly} />
+            <Row label="Demontáž" value={plan.norms_sources.formwork_disassembly} />
+            <Row label="Výztuž" value={plan.norms_sources.rebar} />
+            <Row label="Zrání betonu" value={plan.norms_sources.curing} />
+            {plan.norms_sources.skruz && (
+              <Row label="Skruž" value={plan.norms_sources.skruz} />
+            )}
+          </div>
+        </Card>
+      )}
+
       {/* Decision Log */}
       <button onClick={onToggleLog} style={{
         background: 'none', border: 'none', color: 'var(--r0-blue)',
