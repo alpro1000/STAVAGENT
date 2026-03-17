@@ -112,16 +112,43 @@ export interface ProjectPassport {
   structure_type: string | null;
 }
 
+// ===== Adaptive Summary (v2 — universal document analysis) =====
+
+export interface AdaptiveTopic {
+  title: string;                       // Topic name
+  icon: string;                        // Emoji icon
+  content: string;                     // Detailed explanation
+  key_facts: string[];                 // Extracted facts with numbers
+  importance: 'high' | 'medium' | 'low';
+}
+
+export interface AdaptiveSummary {
+  summary: string;                     // Executive summary (backward compat)
+  document_type: string;               // Detected document type
+  document_title: string;              // Document title/identifier
+  topics: AdaptiveTopic[];             // Dynamic topics array
+  warnings: string[];                  // Important warnings
+  processing_time_ms: number;
+  chars_processed: number;
+  model_used: string;
+  format: 'adaptive_v2';
+}
+
 // ===== API Response =====
 
 export interface PassportGenerationResponse {
   success?: boolean;
-  passport: ProjectPassport;
+  passport: ProjectPassport & {
+    // Additional fields returned in summary_only mode
+    document_type?: string;
+    topics?: AdaptiveTopic[];
+    warnings?: string[];
+  };
   metadata?: {
     file_name: string;
     processing_time_seconds: number;
-    parser_used: string;               // "SmartParser"
-    extraction_method: string;         // "Regex + AI"
+    parser_used: string;               // "SmartParser" | "AdaptiveSummarizer"
+    extraction_method: string;         // "Regex + AI" | "NotebookLM-inspired INDEX→EXPLAIN"
     ai_model_used: string | null;      // "gemini" | "claude-sonnet" | null
     requested_model?: string | null;
     llm_provider?: string | null;
@@ -135,6 +162,10 @@ export interface PassportGenerationResponse {
     deterministic_fields: number;      // Count of fields with confidence = 1.0
     ai_enriched_fields: number;        // Count of fields with confidence < 1.0
   };
+  // Adaptive summary mode fields
+  analysis_mode?: 'adaptive_extraction' | 'summary_only';
+  format?: 'adaptive_v2';
+  adaptive_summary?: AdaptiveSummary;
 }
 
 // ===== AI Model Selection =====

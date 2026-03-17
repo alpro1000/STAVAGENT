@@ -41,7 +41,7 @@ _passport_storage: Dict[str, ProjectPassport] = {}
 # ENDPOINTS
 # ============================================================================
 
-@router.post("/generate", response_model=PassportGenerationResponse)
+@router.post("/generate")
 async def generate_passport(
     file: UploadFile = File(..., description="Construction document (PDF, Excel, XML)"),
     project_name: str = Form(..., description="Project name"),
@@ -49,31 +49,42 @@ async def generate_passport(
     preferred_model: Optional[str] = Form(None, description="Preferred AI model: gemini, claude-sonnet, claude-haiku, openai, openai-mini, perplexity, vertex-ai-gemini, vertex-ai-search, auto"),
     project_id: Optional[str] = Form(None, description="Optional project ID"),
     vertex_service_account: Optional[str] = Form(None, description="Vertex AI service account ID (e.g. stavagent-vertex-search@...)"),
-    llm_provider: Optional[str] = Form(None, description="LLM provider hint: vertex-ai, google, anthropic, openai")
+    llm_provider: Optional[str] = Form(None, description="LLM provider hint: vertex-ai, google, anthropic, openai"),
+    analysis_mode: Optional[str] = Form("adaptive_extraction", description="Analysis mode: adaptive_extraction (full passport) or summary_only (adaptive topics)")
 ):
     """
-    Generate project passport from a single document.
+    Generate project passport or adaptive summary from a document.
 
-    **3-Layer Architecture:**
+    **Modes:**
+    - `adaptive_extraction` (default): Full 3-layer passport (structured JSON, 50+ fields)
+    - `summary_only`: Adaptive topic-based summary (dynamic topics, any document type)
+
+    **3-Layer Architecture (adaptive_extraction):**
     - Layer 1: Document parsing (MinerU/SmartParser) - 1-3s
     - Layer 2: Regex extraction (deterministic facts) - <100ms
     - Layer 3: AI enrichment (Claude/Gemini, optional) - 3-5s
 
-    **Returns:**
-    - Passport with concrete specs, reinforcement, quantities
-    - Special requirements (Bílá vana, Pohledový beton)
-    - Building dimensions and layout
-    - AI-enriched: risks, location, timeline, stakeholders
+    **Adaptive Summary (summary_only):**
+    NotebookLM-inspired 2-step approach:
+    - Step 1 (INDEX): Discover all topics in the document
+    - Step 2 (EXPLAIN): Deep-dive each topic with facts and numbers
+    - Works with ANY document type (not limited to construction)
 
     **Example:**
     ```bash
-    curl -X POST "http://localhost:8000/api/v1/passport/generate" \\
+    # Full passport
+    curl -X POST ".../api/v1/passport/generate" \\
       -F "file=@technicka_zprava.pdf" \\
-      -F "project_name=Polyfunkční dům Praha 5" \\
-      -F "enable_ai_enrichment=true"
+      -F "project_name=Polyfunkční dům Praha 5"
+
+    # Adaptive summary
+    curl -X POST ".../api/v1/passport/generate" \\
+      -F "file=@document.pdf" \\
+      -F "project_name=Any Document" \\
+      -F "analysis_mode=summary_only"
     ```
     """
-    logger.info(f"Generating passport: {project_name}, AI: {enable_ai_enrichment}")
+    logger.info(f"Generating passport: {project_name}, AI: {enable_ai_enrichment}, mode: {analysis_mode}")
 
     # Validate file type
     allowed_extensions = ['.pdf', '.xlsx', '.xls', '.xml']
@@ -97,8 +108,7 @@ async def generate_passport(
 
         logger.info(f"Saved file to: {temp_file_path} ({len(content)} bytes)")
 
-        # Determine effective model: preferred_model takes precedence;
-        # fall back to a default derived from llm_provider hint if neither is set.
+        # Determine effective model
         effective_model = preferred_model
         if not effective_model and llm_provider:
             provider_defaults = {
@@ -109,7 +119,13 @@ async def generate_passport(
             }
             effective_model = provider_defaults.get(llm_provider)
 
-        # Process document
+        # === SUMMARY_ONLY MODE: Adaptive topic-based summary ===
+        if analysis_mode == "summary_only":
+            return await _generate_adaptive_summary(
+                temp_file_path, project_name, effective_model or "gemini"
+            )
+
+        # === ADAPTIVE_EXTRACTION MODE: Full passport ===
         processor = DocumentProcessor(
             preferred_model=effective_model,
             vertex_service_account=vertex_service_account,
@@ -144,6 +160,114 @@ async def generate_passport(
                 os.rmdir(temp_dir)
         except Exception as e:
             logger.warning(f"Failed to cleanup temp files: {e}")
+
+
+async def _generate_adaptive_summary(
+    file_path: str, project_name: str, preferred_model: str
+) -> JSONResponse:
+    """
+    Generate adaptive topic-based summary (summary_only mode).
+
+    Extracts text from document, then uses NotebookLM-inspired
+    2-step approach (INDEX → EXPLAIN) for universal document analysis.
+    """
+    import time as _time
+    start = _time.time()
+
+    # Extract text from document
+    document_text = ""
+    file_ext = Path(file_path).suffix.lower()
+
+    if file_ext == '.pdf':
+        try:
+            import pdfplumber
+            with pdfplumber.open(file_path) as pdf:
+                for page in pdf.pages[:10]:  # First 10 pages (more than old 5)
+                    page_text = page.extract_text()
+                    if page_text:
+                        document_text += page_text + "\n"
+        except Exception as e:
+            logger.warning(f"Failed to extract PDF text: {e}")
+
+    if not document_text:
+        # Fallback: try SmartParser for Excel/XML
+        try:
+            from app.parsers.smart_parser import SmartParser
+            parser = SmartParser()
+            parsed = parser.parse(Path(file_path))
+            if 'positions' in parsed:
+                for pos in parsed['positions']:
+                    if 'popis' in pos:
+                        document_text += pos['popis'] + " "
+            if 'text' in parsed:
+                document_text = parsed['text']
+        except Exception as e:
+            logger.warning(f"SmartParser fallback failed: {e}")
+
+    if not document_text:
+        raise HTTPException(status_code=400, detail="Failed to extract text from document")
+
+    # Generate adaptive summary
+    summarizer = BriefDocumentSummarizer(preferred_model=preferred_model)
+    result = await summarizer.summarize(
+        document_text=document_text,
+        language="cs",
+        max_chars=8000
+    )
+
+    # Wrap in passport-compatible response format
+    # so frontend can detect and render appropriately
+    return JSONResponse(content={
+        "success": True,
+        "analysis_mode": "summary_only",
+        "format": "adaptive_v2",
+        "project_name": project_name,
+        "adaptive_summary": result,
+        # Minimal passport stub for backward compatibility
+        "passport": {
+            "passport_id": f"summary_{int(_time.time())}",
+            "project_name": project_name,
+            "generated_at": datetime.now().isoformat(),
+            "source_documents": [Path(file_path).name],
+            "description": result.get("summary", ""),
+            "document_type": result.get("document_type", ""),
+            "topics": result.get("topics", []),
+            "warnings": result.get("warnings", []),
+            # Empty arrays for structured fields (not applicable in summary mode)
+            "concrete_specifications": [],
+            "reinforcement": [],
+            "quantities": [],
+            "dimensions": None,
+            "special_requirements": [],
+            "objects": [],
+            "structure_type": None,
+            "location": None,
+            "timeline": None,
+            "stakeholders": [],
+            "risks": [],
+            "technical_highlights": [],
+            "extraction_stats": {},
+            "processing_time_ms": result.get("processing_time_ms", 0),
+            "layer_breakdown": {},
+        },
+        "processing_time_ms": result.get("processing_time_ms", 0),
+        "metadata": {
+            "file_name": Path(file_path).name,
+            "processing_time_seconds": round((_time.time() - start), 2),
+            "parser_used": "AdaptiveSummarizer",
+            "extraction_method": "NotebookLM-inspired INDEX→EXPLAIN",
+            "ai_model_used": result.get("model_used", preferred_model),
+            "total_confidence": 0.85,
+        },
+        "statistics": {
+            "total_concrete_m3": 0,
+            "total_reinforcement_t": 0,
+            "unique_concrete_classes": 0,
+            "unique_steel_grades": 0,
+            "deterministic_fields": 0,
+            "ai_enriched_fields": len(result.get("topics", [])),
+        },
+    })
 
 
 @router.post("/summarize")
