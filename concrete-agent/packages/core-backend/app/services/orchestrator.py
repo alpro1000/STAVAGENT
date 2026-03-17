@@ -191,21 +191,39 @@ class MultiRoleOrchestrator:
                         self.llm_name = "claude"
 
         elif multi_role_llm == "auto":
-            # Auto = Try Gemini first, fallback to Claude if it fails
+            # Auto = Try Gemini API first, then Vertex AI (ADC), Claude only as last resort
             if GEMINI_AVAILABLE:
                 try:
                     self.llm_client = GeminiClient()
                     self.llm_name = "gemini"
-                    self.fallback_client = ClaudeClient()
-                    print(f"✅ Using Gemini with Claude fallback for Multi-Role")
+                    print(f"✅ Using Gemini for Multi-Role (auto)")
+                except Exception:
+                    try:
+                        self.llm_client = VertexGeminiClient()
+                        self.llm_name = "vertex-ai-gemini"
+                        print("✅ Using Vertex AI Gemini for Multi-Role (auto, ADC)")
+                    except Exception:
+                        self.llm_client = ClaudeClient()
+                        self.llm_name = "claude"
+            else:
+                try:
+                    self.llm_client = VertexGeminiClient()
+                    self.llm_name = "vertex-ai-gemini"
+                    print("✅ Using Vertex AI Gemini for Multi-Role (auto, ADC)")
                 except Exception:
                     self.llm_client = ClaudeClient()
                     self.llm_name = "claude"
-                    self.fallback_client = None
-            else:
+            self.fallback_client = None
+
+        elif multi_role_llm == "vertex-ai-gemini":
+            try:
+                self.llm_client = VertexGeminiClient()
+                self.llm_name = "vertex-ai-gemini"
+                print("✅ Using Vertex AI Gemini for Multi-Role (ADC)")
+            except Exception as e:
+                print(f"⚠️  Vertex AI Gemini failed: {e}, falling back to Claude")
                 self.llm_client = ClaudeClient()
                 self.llm_name = "claude"
-                self.fallback_client = None
 
         else:  # "claude" or anything else
             self.llm_client = ClaudeClient()
