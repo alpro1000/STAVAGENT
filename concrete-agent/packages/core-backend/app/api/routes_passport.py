@@ -174,18 +174,22 @@ async def _generate_adaptive_summary(
     import time as _time
     start = _time.time()
 
-    # Extract text from document
+    # Extract text from document — read ALL pages for large documents
     document_text = ""
+    total_pages = 0
     file_ext = Path(file_path).suffix.lower()
 
     if file_ext == '.pdf':
         try:
             import pdfplumber
             with pdfplumber.open(file_path) as pdf:
-                for page in pdf.pages[:10]:  # First 10 pages (more than old 5)
+                total_pages = len(pdf.pages)
+                logger.info(f"PDF has {total_pages} pages — reading all")
+                for page in pdf.pages:  # Read ALL pages, not just first 10
                     page_text = page.extract_text()
                     if page_text:
                         document_text += page_text + "\n"
+                logger.info(f"Extracted {len(document_text)} chars from {total_pages} pages")
         except Exception as e:
             logger.warning(f"Failed to extract PDF text: {e}")
 
