@@ -53,13 +53,19 @@ class Settings(BaseSettings):
     # AI MODELS
     # ==========================================
     CLAUDE_MODEL: str = Field(default="claude-sonnet-4-6", description="Claude model (Sonnet 4.6 - latest Feb 2026)")
-    GEMINI_MODEL: str = Field(default="gemini-2.5-flash-lite", description="Gemini model (2.5 Flash Lite - Feb 2026, fast, cheap)")
+    GEMINI_MODEL: str = Field(default="gemini-2.0-flash", description="Gemini model (2.0 Flash - stable, fast)")
     GPT4_MODEL: str = Field(default="gpt-4.1", description="GPT-4 model (gpt-4.1 - Feb 2026, includes vision)")
     CLAUDE_MAX_TOKENS: int = Field(default=4000, description="Max tokens for Claude")
     GPT4_MAX_TOKENS: int = Field(default=4000, description="Max tokens for GPT-4")
 
-    # Multi-Role LLM selection: "claude", "gemini", "bedrock", "auto" (Gemini → Bedrock → Claude)
-    MULTI_ROLE_LLM: str = Field(default="gemini", description="LLM for Multi-Role: claude, gemini, bedrock, auto")
+    # Multi-Role LLM selection:
+    # "vertex-ai-gemini" — Vertex AI Gemini via ADC (Cloud Run, no API key needed)
+    # "vertex-ai-search" — Vertex AI Search + Gemini (needs VERTEX_DATA_STORE_ID)
+    # "gemini" — direct Gemini API key (GOOGLE_API_KEY)
+    # "bedrock" — AWS Bedrock
+    # "claude" — Anthropic Claude
+    # "auto" — Vertex → Gemini → Bedrock → Claude
+    MULTI_ROLE_LLM: str = Field(default="vertex-ai-gemini", description="LLM for Multi-Role: vertex-ai-gemini, gemini, claude, bedrock, auto")
 
     # ==========================================
     # AWS BEDROCK (uses AWS Activate credits)
