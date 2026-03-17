@@ -584,22 +584,27 @@ export default function PlannerPage() {
                       setNormsScrapeResult(null);
                       const coreUrl = (import.meta as any).env?.VITE_CORE_API_URL
                         || 'https://concrete-agent-1086027517695.europe-west3.run.app';
-                      const categories = ['concrete_formwork', 'concrete_placement', 'concrete_reinforcement', 'excavation'];
-                      let ok = 0;
-                      for (const cat of categories) {
-                        try {
-                          const r = await fetch(`${coreUrl}/api/v1/norms/scrape`, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ category: cat }),
-                          });
-                          if (r.ok) ok++;
-                        } catch { /* skip */ }
+                      try {
+                        const r = await fetch(`${coreUrl}/api/v1/norms/scrape-all`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({}),
+                        });
+                        if (r.ok) {
+                          const data = await r.json();
+                          const cats = data.summary?.categories || {};
+                          const total = Object.keys(cats).length;
+                          const ok = Object.values(cats).filter((c: any) => c.has_data).length;
+                          setNormsScrapeResult(`Staženo ${ok}/${total} kategorií (${data.summary?.total_queries || '?'} dotazů)`);
+                        } else {
+                          setNormsScrapeResult('Chyba při stahování');
+                        }
+                      } catch (e: any) {
+                        setNormsScrapeResult(`Chyba: ${e.message}`);
                       }
                       setNormsScraping(false);
-                      setNormsScrapeResult(`Staženo ${ok}/${categories.length} kategorií`);
                       // Refresh advisor to pick up new norms
-                      if (ok > 0) fetchAdvisor();
+                      fetchAdvisor();
                     }}
                     style={{
                       fontSize: 10, padding: '2px 8px', borderRadius: 4,
@@ -608,7 +613,7 @@ export default function PlannerPage() {
                       fontFamily: 'inherit', fontWeight: 500,
                     }}
                   >
-                    {normsScraping ? '⏳ Stahuji...' : '📥 Stáhnout normy z methvin.co'}
+                    {normsScraping ? '⏳ Stahuji všechny normy...' : '📥 Stáhnout všechny normy z methvin.co'}
                   </button>
                 </div>
                 {normsScrapeResult && (
