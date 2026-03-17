@@ -135,7 +135,7 @@ export function getAvailableProviders() {
 
   // Check Claude
   const claudeKey = process.env.ANTHROPIC_API_KEY || process.env.LLM_API_KEY;
-  if (claudeKey) {
+  if (claudeKey && validateAPIKey(claudeKey, 'claude')) {
     providers.claude = {
       enabled: true,
       provider: 'claude',
@@ -147,7 +147,7 @@ export function getAvailableProviders() {
 
   // Check Gemini
   const geminiKey = process.env.GOOGLE_API_KEY || process.env.GOOGLE_AI_KEY || process.env.LLM_API_KEY;
-  if (geminiKey) {
+  if (geminiKey && validateAPIKey(geminiKey, 'gemini')) {
     providers.gemini = {
       enabled: true,
       provider: 'gemini',
@@ -159,7 +159,7 @@ export function getAvailableProviders() {
 
   // Check OpenAI
   const openaiKey = process.env.OPENAI_API_KEY || process.env.LLM_API_KEY;
-  if (openaiKey) {
+  if (openaiKey && validateAPIKey(openaiKey, 'openai')) {
     providers.openai = {
       enabled: true,
       provider: 'openai',
