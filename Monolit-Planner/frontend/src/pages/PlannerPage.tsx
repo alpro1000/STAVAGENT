@@ -58,6 +58,11 @@ interface AIAdvisorResult {
     sources: string[];
     model: string;
   } | null;
+  productivity_norms: {
+    source: string;
+    work_types: string[];
+    data: Record<string, any>;
+  } | null;
   warnings: string[];
 }
 
@@ -191,6 +196,9 @@ export default function PlannerPage() {
   const [advisor, setAdvisor] = useState<AIAdvisorResult | null>(null);
   const [advisorLoading, setAdvisorLoading] = useState(false);
   const [showNorms, setShowNorms] = useState(false);
+  const [showProductivityNorms, setShowProductivityNorms] = useState(false);
+  const [normsScraping, setNormsScraping] = useState(false);
+  const [normsScrapeResult, setNormsScrapeResult] = useState<string | null>(null);
 
   const update = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm(prev => ({ ...prev, [key]: value }));
@@ -549,6 +557,94 @@ export default function PlannerPage() {
                   )}
                 </div>
               )}
+
+              {/* Productivity Norms (from methvin.co) */}
+              <div style={{ paddingTop: 8, borderTop: '1px solid #ddd6fe' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  {advisor.productivity_norms?.data && Object.keys(advisor.productivity_norms.data).length > 0 ? (
+                    <button
+                      onClick={() => setShowProductivityNorms(!showProductivityNorms)}
+                      style={{
+                        background: 'none', border: 'none', color: '#059669', cursor: 'pointer',
+                        fontSize: 11, fontWeight: 600, padding: 0, fontFamily: 'inherit',
+                      }}
+                    >
+                      {showProductivityNorms ? '▼' : '▶'} Výrobní normy (methvin.co)
+                      {` — ${advisor.productivity_norms.work_types?.join(', ')}`}
+                    </button>
+                  ) : (
+                    <span style={{ fontSize: 11, color: '#9ca3af' }}>
+                      Výrobní normy zatím nestaženy
+                    </span>
+                  )}
+                  <button
+                    disabled={normsScraping}
+                    onClick={async () => {
+                      setNormsScraping(true);
+                      setNormsScrapeResult(null);
+                      const coreUrl = (import.meta as any).env?.VITE_CORE_API_URL
+                        || 'https://concrete-agent-1086027517695.europe-west3.run.app';
+                      try {
+                        const r = await fetch(`${coreUrl}/api/v1/norms/scrape-all`, {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({}),
+                        });
+                        if (r.ok) {
+                          const data = await r.json();
+                          const cats = data.summary?.categories || {};
+                          const total = Object.keys(cats).length;
+                          const ok = Object.values(cats).filter((c: any) => c.has_data).length;
+                          setNormsScrapeResult(`Staženo ${ok}/${total} kategorií (${data.summary?.total_queries || '?'} dotazů)`);
+                        } else {
+                          setNormsScrapeResult('Chyba při stahování');
+                        }
+                      } catch (e: any) {
+                        setNormsScrapeResult(`Chyba: ${e.message}`);
+                      }
+                      setNormsScraping(false);
+                      // Refresh advisor to pick up new norms
+                      fetchAdvisor();
+                    }}
+                    style={{
+                      fontSize: 10, padding: '2px 8px', borderRadius: 4,
+                      border: '1px solid #d1d5db', background: normsScraping ? '#f3f4f6' : '#ecfdf5',
+                      color: '#059669', cursor: normsScraping ? 'wait' : 'pointer',
+                      fontFamily: 'inherit', fontWeight: 500,
+                    }}
+                  >
+                    {normsScraping ? '⏳ Stahuji všechny normy...' : '📥 Stáhnout všechny normy z methvin.co'}
+                  </button>
+                </div>
+                {normsScrapeResult && (
+                  <div style={{ fontSize: 10, color: '#059669', marginTop: 4 }}>
+                    {normsScrapeResult}
+                  </div>
+                )}
+                {showProductivityNorms && advisor.productivity_norms?.data && (
+                  <div style={{
+                    marginTop: 6, fontSize: 11, color: '#065f46',
+                    maxHeight: 300, overflowY: 'auto',
+                  }}>
+                    {Object.entries(advisor.productivity_norms.data).map(([key, val]) => (
+                      <div key={key} style={{ marginBottom: 8 }}>
+                        <div style={{ fontWeight: 600, color: '#047857', marginBottom: 2 }}>
+                          {key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                        </div>
+                        <pre style={{
+                          fontSize: 10, background: '#f0fdf4', padding: 6, borderRadius: 4,
+                          overflowX: 'auto', whiteSpace: 'pre-wrap', margin: 0,
+                        }}>
+                          {JSON.stringify(val, null, 2).slice(0, 2000)}
+                        </pre>
+                      </div>
+                    ))}
+                    <div style={{ fontSize: 9, color: '#6b7280', marginTop: 4 }}>
+                      Zdroj: {advisor.productivity_norms.source}
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div style={{ fontSize: 10, color: 'var(--r0-slate-400)', marginTop: 6, textAlign: 'right' }}>
                 Model: {advisor.approach?.model || 'vertex-ai'}
